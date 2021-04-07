@@ -51,7 +51,7 @@
 <p>Come mai si utilizzano i tipi unsigned per contare oggetti?</p>
 </li>
 <li>
-<p>n cosa consiste il fenomeno dei rimbalzi? Quanto dura? In quali situazioni è dannoso?</p>
+<p>In cosa consiste il fenomeno dei rimbalzi? Quanto dura? In quali situazioni è dannoso?</p>
 </li>
 <li>
 <p>Come si può risolvere il problema ei rimbalzi in maniera SW? Quale strategia usiamo noi periodica o aperiodica?</p>
