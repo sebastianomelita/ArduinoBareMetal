@@ -24,6 +24,5 @@
 
 	<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 	<span class="token punctuation">}</span>
-	```
 </code></pre>
 
