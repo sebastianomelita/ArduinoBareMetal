@@ -21,9 +21,7 @@
 </ul>
 <p>Ad es.:</p>
 <pre class=" language-c"><code class="prism ++ language-c">val <span class="token operator">=</span> <span class="token function">digitalRead</span><span class="token punctuation">(</span>pulsante<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// lettura ingressi</span>
-
 stato <span class="token operator">=</span> <span class="token operator">!</span><span class="token punctuation">(</span>stato<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// calcolo logica di comando</span>
-
 <span class="token function">digitalWrite</span><span class="token punctuation">(</span>led<span class="token punctuation">,</span>stato<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// scrittura uscite</span>
 </code></pre>
 <p>In un microcontrollore le <strong>tre fasi</strong> sono eseguite in quell’ordine ma, se inserite dentro la funzione loop(), sono eseguite <strong>periodicamente</strong>, all’infinito, fino allo spegnimento della macchina.</p>
