@@ -69,4 +69,60 @@
 </code></pre>
 <p><strong><em>tbase</em></strong> rappresenta la <strong>distanza</strong> del <strong>prossimo</strong> tempo “buono” dall’<strong>ultimo</strong> valutato. Ogni <strong>istante stabilito</strong> viene misurato a <strong>partire dall’ultimo</strong> calcolato. Si determina il <strong>tempo attuale</strong> di esecuzione aggiungendo un tbase all’<strong>ultimo tempo buono calcolato</strong> e preventivamente <strong>memorizzato</strong> in precm. Facciamo una simulazione.</p>
 <p>Se <strong>tbase</strong> vale 1000 msec e <strong>precm</strong> vale 0, accade che per 0, 1, 2,…,999 msec l’if <strong>non scatta</strong> perché la condizione è falsa <strong>poi</strong>, dopo, al millis che restituisce il valore 1000, <strong>scatta</strong> e si esegue <strong>il compito schedulato</strong>. In definitiva l’if <strong>ignora</strong> 999 chiamate loop() mentre <strong>agisce</strong> alla millesima che <strong>capita</strong> esattamente dopo un secondo. Dopo questo momento <strong>precm</strong> vale adesso 1000, millis(), ad ogni loop(), vale, ad es., 1001, 1002,…,1999 msec, l’if <strong>non scatta</strong> perché la condizione è falsa <strong>poi</strong>, dopo, al millis che restituisce il valore 2000, <strong>scatta,</strong> si <strong>aggiorna</strong> nuovamente <strong>precm</strong> al valore attuale di millis(), cioè 2000, e si <strong>esegue</strong> nuovamente il <strong>compito schedulato</strong>. In maniera analoga si preparano gli <strong>scatti successivi</strong>.</p>
+<h2 id="schedulatore-compiti"><strong>SCHEDULATORE COMPITI</strong></h2>
+<p>Di seguito è riportato un esempio di schedulatore che pianifica nel tempo <strong>l’esecuzione periodica</strong> di una serie di <strong>compiti</strong> (task) da eseguire con <strong>cadenza diversa</strong>.</p>
+<p>E’ buona norma evitare l’esecuzione frequente di operazioni lente quando queste non sono strettamente necessarie in modo da lasciare spazio ad altre operazioni, quali ad esempio gestione degli eventi di input, che richiedono una velocità maggiore per usufruirne in modo più interattivo.</p>
+<p>Il <strong>tempo base</strong> è la base dei tempi di tutte le schedulazioni.</p>
+<p>Le varie schedulazioni <strong>sono calcolate</strong> a partire da un <strong>multiplo intero</strong> del tempo base, ne segue che il tempo base dovrebbe essere calcolato come il massimo comune divisore (<strong>MCD</strong>) di tutti i tempi che devono essere generati.</p>
+<p>Il conteggio dei multipli del tempo base è tenuto da un <strong>contatore circolare</strong> (step) che deve essere <strong>ruotato</strong> dopo aver effettuato un numero di conteggi superiori al <strong>massimo dei multipli</strong> del tempo base necessari.</p>
+<p>Se ci sono <strong>pulsanti</strong> da gestire insieme ad altri task il tempo base può essere impostato tra 50 e 200 mSec in maniera da poterlo utilizzare per effettuare un <strong>polling degli ingressi</strong> immune dal fenomeno dei rimbalzi (<strong>antibounce SW</strong>).</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">define</span> tbase  1000  </span><span class="token comment">// periodo base in milliseconds</span>
+<span class="token macro property">#<span class="token directive keyword">define</span> nstep  1000  </span><span class="token comment">// numero di fasi massimo di un periodo generico</span>
+<span class="token keyword">unsigned</span> <span class="token keyword">long</span> precm <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">unsigned</span> <span class="token keyword">long</span> step <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+byte pari<span class="token punctuation">,</span> in<span class="token punctuation">;</span>
+byte led1 <span class="token operator">=</span> <span class="token number">13</span><span class="token punctuation">;</span>
+byte led2 <span class="token operator">=</span> <span class="token number">12</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">setup</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token function">pinMode</span><span class="token punctuation">(</span>led<span class="token punctuation">,</span> OUTPUT<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+	<span class="token comment">// polling della millis() alla ricerca del tempo stabilito</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">-</span>precm<span class="token punctuation">)</span> <span class="token operator">&gt;=</span> tbase<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token comment">// lo eseguo se è il tempo stabilito</span>
+		precm <span class="token operator">=</span> <span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// preparo il tic successivo al tempo stabilito</span>
+		step <span class="token operator">=</span> <span class="token punctuation">(</span>step <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> nstep<span class="token punctuation">;</span>  <span class="token comment">// conteggio circolare arriva al massimo a nstep-1</span>
+
+		<span class="token comment">// task 1</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>step<span class="token operator">%</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>  <span class="token comment">// schedulo eventi al multiplo del tempo stabilito (2 sec)</span>
+			<span class="token function">digitalWrite</span><span class="token punctuation">(</span>led1<span class="token punctuation">,</span><span class="token operator">!</span><span class="token function">digitalRead</span><span class="token punctuation">(</span>led1<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// stato alto: led blink</span>
+		<span class="token punctuation">}</span>
+		<span class="token comment">// task 2</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>step<span class="token operator">%</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>  <span class="token comment">// schedulo eventi al multiplo del tempo stabilito (3 sec)</span>
+			<span class="token function">digitalWrite</span><span class="token punctuation">(</span>led2<span class="token punctuation">,</span><span class="token operator">!</span><span class="token function">digitalRead</span><span class="token punctuation">(</span>led2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// stato alto: led blink</span>
+		<span class="token punctuation">}</span>
+		<span class="token comment">// il codice eseguito al tempo del metronomo va quì</span>
+	<span class="token punctuation">}</span>
+	<span class="token comment">// il codice eseguito al tempo massimo della CPU va qui</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>MISURE DI TEMPO ASSOLUTE</strong></p>
+<p>Per ottenere una cadenza periodica precisa è necessario usare una forma diversa dal solito schedulatore più adatta a cumulare con precisione lunghe misure di tempo. E’essenziale che l’accumulatore tass venga aggiornato esattamente con il tempo campionato. L’accumulatore unisce i vari campionamenti per ottenere una misura unica. Con questa forma ci si può aspettare un errore di qualche secondo all’ora dipendente solo dall’imprecisione dell’oscillatore.</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">unsigned</span> <span class="token keyword">long</span> tass <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> tass<span class="token punctuation">)</span> <span class="token operator">&gt;=</span> periodo<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+tass <span class="token operator">+</span><span class="token operator">=</span> periodo<span class="token punctuation">;</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Invece la forma seguente è errata. La condizione viene valutata in ritardo rispetto al momento ideale, “reimpostando” la variabile ‘tass” al tempo attuale, questo ritardo si aggiunge a tutti i ritardi precedenti. Con questa forma ci si può aspettare un errore di diversi secondi al minuto o anche peggiore.</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> tass<span class="token punctuation">)</span> <span class="token operator">&gt;=</span> periodo<span class="token punctuation">)</span>
+<span class="token punctuation">{</span>
+tass <span class="token operator">=</span> <span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
 
