@@ -35,7 +35,7 @@
 <p><strong>Quanto spesso</strong>.</p>
 <ul>
 <li>
-<p>Se le metto <strong>“nude e crude”</strong> dentro il blocco loop() vengono eseguite molto spesso, anzi più spesso che si può. Il numero di volte al secondo dipende dalla velocità della CPU e dalla velocità delle singole operazioni.</p>
+<p>Se le metto <strong>“direttamente”</strong> dentro il blocco loop() vengono eseguite molto spesso, anzi più spesso che si può. Il numero di volte al secondo dipende dalla velocità della CPU e dalla velocità delle singole operazioni.</p>
 </li>
 <li>
 <p>Se le metto dentro un blocco di codice la cui esecuzione è forzata ad avvenire in certi istanti prestabiliti (ad esempio ogni 9 loop) allora possono essere eseguite meno frequentemente. La <strong>periodicità</strong> dell’esecuzione è controllabile mediante algoritmi di <strong>scheduling</strong> (pianificazione nel tempo) che possono essere realizzati in vario modo. In genere, <strong>a basso livello</strong>, i modi sono tre:</p>
