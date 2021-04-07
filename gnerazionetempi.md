@@ -109,7 +109,7 @@ byte led2 <span class="token operator">=</span> <span class="token number">12</s
 	<span class="token comment">// il codice eseguito al tempo massimo della CPU va qui</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p><strong>MISURE DI TEMPO ASSOLUTE</strong></p>
+<h2 id="misure-di-tempo-assolute"><strong>MISURE DI TEMPO ASSOLUTE</strong></h2>
 <p>Per ottenere una cadenza periodica precisa è necessario usare una forma diversa dal solito schedulatore più adatta a cumulare con precisione lunghe misure di tempo. E’essenziale che l’accumulatore tass venga aggiornato esattamente con il tempo campionato. L’accumulatore unisce i vari campionamenti per ottenere una misura unica. Con questa forma ci si può aspettare un errore di qualche secondo all’ora dipendente solo dall’imprecisione dell’oscillatore.</p>
 <pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">unsigned</span> <span class="token keyword">long</span> tass <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> tass<span class="token punctuation">)</span> <span class="token operator">&gt;=</span> periodo<span class="token punctuation">)</span>
