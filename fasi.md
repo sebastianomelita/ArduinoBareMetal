@@ -19,7 +19,14 @@
 <p><strong>Scrittura</strong> uscite</p>
 </li>
 </ul>
-<p>In un microcontrollore le tre fasi sono eseguite in quell’ordine ma, se inserite dentro la funzione loop(), sono eseguite <strong>periodicamente</strong>, all’infinito, fino allo spegnimento della macchina.</p>
+<p>Ad es.:</p>
+<pre class=" language-c"><code class="prism ++ language-c">val <span class="token operator">=</span> <span class="token function">digitalRead</span><span class="token punctuation">(</span>pulsante<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// lettura ingressi</span>
+
+stato <span class="token operator">=</span> <span class="token operator">!</span><span class="token punctuation">(</span>stato<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// calcolo logica di comando</span>
+
+<span class="token function">digitalWrite</span><span class="token punctuation">(</span>led<span class="token punctuation">,</span>stato<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// scrittura uscite</span>
+</code></pre>
+<p>In un microcontrollore le <strong>tre fasi</strong> sono eseguite in quell’ordine ma, se inserite dentro la funzione loop(), sono eseguite <strong>periodicamente</strong>, all’infinito, fino allo spegnimento della macchina.</p>
 <p>Questo fatto impone alcune riflessioni:</p>
 <ul>
 <li>
@@ -52,16 +59,23 @@
 </ul>
 </li>
 </ul>
-<p><strong>Filtro delle esecuzioni</strong>. Ovviamente blocchi di codice possono essere filtrati tramite istruzioni di selezione, quindi inserendoli nel blocco then o in quello else di un <strong>costrutto if-then-else</strong>. La condizione di selezione può valutare il <strong>tempo</strong> (mediante millis()) oppure altri <strong>ingressi</strong>, oppure lo <strong>stato</strong> di altre variabili del programma.</p>
+<p><strong>Filtro delle esecuzioni</strong>. Ovviamente blocchi di codice possono essere filtrati tramite <strong>istruzioni di selezione</strong>, quindi inserendoli nel blocco then o in quello else di un <strong>costrutto if-then-else</strong>. La condizione di selezione può valutare il <strong>tempo</strong> (la faccio durare fino ad un certo tempo) oppure altri <strong>ingressi</strong> (confronto il valore attuale di un ingresso con quello di altri ingressi), oppure lo <strong>stato</strong> del sistema (se il motore è in movimento faccio una certa cosa se no non la faccio). Di seguito la fase di scrittura delle uscite non viene eseguita ad ogni loop ma solo se un certo ingresso ha un determinato valore:</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">if</span><span class="token punctuation">(</span>in<span class="token operator">==</span>HIGH<span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token function">digitalWrite</span><span class="token punctuation">(</span>led<span class="token punctuation">,</span>closed<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//scrittura uscita</span>
+<span class="token punctuation">}</span>
+</code></pre>
 <p><strong>Memoria</strong>. In genere si fanno frequentemente due cose:</p>
 <ul>
-<li>
-<p>Tenere memoria degli <strong>ingressi</strong> al loop precedente. Cioè conservare il valore corrente di uno o più ingressi in una variabile per poi poterlo “consumare” cioè leggere ed utilizzarlo durante l’esecuzione del loop successivo.</p>
+<li>Tenere memoria degli <strong>ingressi</strong> al loop precedente. Cioè conservare il valore corrente di uno o più ingressi in una variabile per poi poterlo “consumare” cioè leggere ed utilizzarlo durante l’esecuzione del loop successivo.<pre class=" language-c"><code class="prism ++ language-c">pval <span class="token operator">=</span> val<span class="token punctuation">;</span> <span class="token comment">// ultima istruzione che chiude loop()</span>
+</code></pre>
 </li>
-<li>
-<p>Tenere traccia dello <strong>stato</strong> del mio algoritmo, cioè memoria di informazioni importanti (dedotte dalla storia di ingressi e da quella di altre variabili di stato) conservandole all’interno di una o più <strong>variabili</strong>.</p>
+<li>Tenere traccia dello <strong>stato</strong> del mio algoritmo, cioè memoria di informazioni importanti (dedotte dalla storia di ingressi e da quella di altre variabili di stato) conservandole all’interno di una variabile di stato. Ad esempio se<br>
+deduco il nuovo stato da quello precedente:<pre class=" language-c"><code class="prism ++ language-c">stato <span class="token operator">=</span> <span class="token operator">!</span>stato 
+</code></pre>
+oppure, se deduco il nuovo stato da un ingresso e dallo stato precedente:<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">if</span><span class="token punctuation">(</span>in <span class="token operator">==</span> HIGH <span class="token operator">&amp;&amp;</span> stato <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> 	stato <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> 
+</code></pre>
 </li>
 </ul>
 <p>In <strong>entrambi</strong> i casi precedenti le informazioni devono “<strong>sopravvivere</strong>” tra un <strong>loop e l’altro</strong>, cioè il loro valore non deve essere cancellato al termine dell’esecuzione della funzione loop() e ciò può essere ottenuto dichiarando le <strong>variabili di memoria globali</strong>, cioè dichiarandole <strong>all’esterno</strong> di tutte le funzioni del sistema, compresa la funzione loop().</p>
-<p>In conclusione, quando vogliamo gestire <strong>l’evento di un pulsante</strong> dobbiamo chiederci che <strong>caratteristiche</strong> ha l’evento e, alla luce delle considerazioni precedenti, capire quale è la <strong>maniera più appropriata</strong> per gestirlo.</p>
+<p><strong>In conclusione,</strong> quando vogliamo gestire <strong>l’evento di un pulsante</strong> dobbiamo chiederci che <strong>caratteristiche</strong> ha l’evento alla luce delle considerazioni precedenti per capire quale è la <strong>maniera più appropriata</strong> per gestirlo.</p>
 
