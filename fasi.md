@@ -63,5 +63,5 @@
 </li>
 </ul>
 <p>In <strong>entrambi</strong> i casi precedenti le informazioni devono “<strong>sopravvivere</strong>” tra un <strong>loop e l’altro</strong>, cioè il loro valore non deve essere cancellato al termine dell’esecuzione della funzione loop() e ciò può essere ottenuto dichiarando le <strong>variabili di memoria globali</strong>, cioè dichiarandole <strong>all’esterno</strong> di tutte le funzioni del sistema, compresa la funzione loop().</p>
-<p>**In conclusione, ** quando vogliamo gestire <strong>l’evento di un pulsante</strong> dobbiamo chiederci che <strong>caratteristiche</strong> ha l’evento alla luce delle considerazioni precedenti per capire quale è la <strong>maniera più appropriata</strong> per gestirlo.</p>
+<p>In conclusione, quando vogliamo gestire <strong>l’evento di un pulsante</strong> dobbiamo chiederci che <strong>caratteristiche</strong> ha l’evento e, alla luce delle considerazioni precedenti, capire quale è la <strong>maniera più appropriata</strong> per gestirlo.</p>
 
