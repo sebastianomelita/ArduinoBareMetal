@@ -7,7 +7,7 @@ Un pulsante è un **contatto** che **chiude** un circuito alla **pressione** ese
 
 Il pulsante è **senza stato** nel senso che non “ricorda” né elettricamente nè meccanicamente lo stato della sua impostazione **precedente**.
 
-![pulsante](https://db3pap001files.storage.live.com/y4pRpxO3QHTmemnyAlXrnl3jaxGAJwEcmL_JZBcU539FfG-YgyIvqgfMuC7m7Wu46kElE8Tj6ly_nXns0Awo_-dRPBJUF24LwReshg9azJF3aGlnDygCURi0EYq847sV81eanV8l5SEMZa7f7Uh2xmmhhxFrsJsn9MwramAiOELz2yz2TAO9uZaIjRQmhLEyEBSg5tQdPyxlXIcYrWqr35WMzhBCYl_eVM-5A5nk20IhW4?psid=2&width=318&height=158)
+![pulsante](pulsante.png)
 
 
 Il **contatto** che si chiude alla pressione del pulsante è in realtà **uno solo** e unisce **due terminali** indicati in figura con a-b e c-d.
@@ -64,5 +64,5 @@ Di seguito è riportato lo schema di un **possibile collegamento** di due pulsan
 
 ![pulsantiboard](pulsantiboard.png)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3MTg0Njk1M119
+eyJoaXN0b3J5IjpbLTE3Mjc5NjMzODksLTE3MTg0Njk1M119
 -->
