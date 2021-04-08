@@ -1,6 +1,6 @@
 
 
-
+>[Torna all'indice](indexpulsanti.md)
 ## **PULSANTE TOGGLE**
 
 Si vuole realizzare un pulsante con una memoria dello stato che possa essere modificata ad ogni pressione. Pressioni successive in sequenza accendono e spengono un led. Quindi, a seconda da quando si comincia, pressioni in numero pari accendono mentre quelle in numero dispari spengono, oppure al contrario, pressioni in numero pari spengono mentre quelle in numero dispari accendono.
@@ -90,6 +90,7 @@ void loop()
 	}
 }
 ```
+>[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3OTI2ODg5ODFdfQ==
+eyJoaXN0b3J5IjpbLTk1MzQ1NDY2NSwtMTc5MjY4ODk4MV19
 -->
