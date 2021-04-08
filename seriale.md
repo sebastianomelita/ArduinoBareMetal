@@ -160,7 +160,6 @@ void loop(){
 			digitalWrite(LED, HIGH);
 		}
 		if(str.indexOf("spegni")){
-			Serial.println("off");
 			digitalWrite(LED, LOW);
 		}
 	}
@@ -247,5 +246,5 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxMzE2OTIyMjBdfQ==
+eyJoaXN0b3J5IjpbOTM4OTc5MjQ0LC0yMTMxNjkyMjIwXX0=
 -->
