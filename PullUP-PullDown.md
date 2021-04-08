@@ -63,6 +63,9 @@ Un valore di **compromesso** spazia da qualche KOhm fino a 50 KOhm (tipicamente 
 Di seguito è riportato lo schema di un **possibile collegamento** di due pulsanti in pulldown (a sinistra) e in pullup (a destra) su una breadboard:
 
 ![pulsantiboard](pulsantiboard.png)
+
+>[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3OTkzMTUyNDVdfQ==
+eyJoaXN0b3J5IjpbLTEwNzE0MzIzOTksLTE3OTkzMTUyNDVdfQ
+==
 -->
