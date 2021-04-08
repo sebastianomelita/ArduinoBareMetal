@@ -12,11 +12,11 @@ Il discorso è generale e non vale solo per i pulsanti ma per qualunque **applic
 
 Quindi le **fasi** di una **generica applicazione** dovrebbero essere nell’ordine:
 
-- **Lettura** ingressi
+1. **Lettura** ingressi
 
--  **Elaborazione logica** di comando
+2.  **Elaborazione logica** di comando
 
-- **Scrittura** uscite
+3. **Scrittura** uscite
 
 Ad es.:
 ```C++
@@ -74,5 +74,5 @@ In **entrambi** i casi precedenti le informazioni devono “**sopravvivere**” 
 
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTA3MjUxNDI3OF19
+eyJoaXN0b3J5IjpbMjc5MDE0MzUzLDEwNzI1MTQyNzhdfQ==
 -->
