@@ -156,7 +156,7 @@ void loop(){
 		//parsing di una stringa dal flusso di dati 
 		String str = Serial.readString();
 		//parsing di un comando (sottostringa) all'interno di una stringa	
-		if(str.indexOf("on")){
+		if(str.indexOf("accendi")){
 			digitalWrite(LED, HIGH);
 		}
 		if(str.indexOf("spegni")){
@@ -246,5 +246,5 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk5MjA4MzQ4N119
+eyJoaXN0b3J5IjpbMTk2MzAyNDk3NywxOTkyMDgzNDg3XX0=
 -->
