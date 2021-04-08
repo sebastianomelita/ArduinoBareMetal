@@ -5,10 +5,10 @@
 2. [Fasi applicazione](fasi.md)
 3. [Generazione tempi](gnerazionetempi.md)
 4. [Rimbalzi](rimbalzi.md)
-5. []()
-6. []()
+5. [Pulsanti senza memoria](pulsantememoryless.md)
+6. [Pulsanti con memoria (](toggle.md)
 7. []()
 8. []()
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5OTE4NzczMiw5NDc5NDMyNjFdfQ==
+eyJoaXN0b3J5IjpbMjAyOTQyMjU2Myw5NDc5NDMyNjFdfQ==
 -->
