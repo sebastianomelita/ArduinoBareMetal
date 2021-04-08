@@ -153,9 +153,9 @@ void setup ()
 
 void loop(){
 	if(Serial.available() > 0 ){//anche while va bene!
-		//parsing di una string all'interno 
+		//parsing di una stringa dal flusso di dati 
 		String str = Serial.readString();
-			
+		//parsing di un comando (sottostringa)	
 		if(str.indexOf("on")){
 			digitalWrite(LED, HIGH);
 		}
@@ -247,6 +247,6 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDY3NDYwOTkxLC04OTY2Njg3NTgsMTIwMT
-EwMzE3OV19
+eyJoaXN0b3J5IjpbMjEyMDYzODE1Niw0Njc0NjA5OTEsLTg5Nj
+Y2ODc1OCwxMjAxMTAzMTc5XX0=
 -->
