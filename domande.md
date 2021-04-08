@@ -1,7 +1,7 @@
 
 
 
-
+>[Torna all'indice](indexpulsanti.md)
 ## **Domande:**
 
 1. Quanti contatti ha normalmente un pulsante? Quanti terminali?
@@ -66,5 +66,5 @@
 
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwNDc0MzU0NTNdfQ==
+eyJoaXN0b3J5IjpbMTMxNDAyNzU2NywtMTA0NzQzNTQ1M119
 -->
