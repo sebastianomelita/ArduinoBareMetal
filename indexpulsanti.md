@@ -2,7 +2,7 @@
 
 ## Pulsanti
 1. [Pull Up e Pull Down](PullUP-PullDown.md)
-2. []()
+2. [Fasi applicazione](fasi.md)
 3. []()
 4. []()
 5. []()
@@ -10,5 +10,5 @@
 7. []()
 8. []()
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbOTQ3OTQzMjYxXX0=
+eyJoaXN0b3J5IjpbLTEzMzE4MzUzMTEsOTQ3OTQzMjYxXX0=
 -->
