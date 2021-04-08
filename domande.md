@@ -66,5 +66,5 @@
 
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTMxNDAyNzU2NywtMTA0NzQzNTQ1M119
+eyJoaXN0b3J5IjpbMTMxNDAyNzU2N119
 -->
