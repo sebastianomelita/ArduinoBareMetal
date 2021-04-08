@@ -1,6 +1,6 @@
 
 
-
+>[Torna all'indice](indexpulsanti.md)
 ## **PULSANTE SEMPLICE**
 
 Si vuole accendere un led alla pressione del pulsante e spegnerlo al suo rilascio.
@@ -31,6 +31,7 @@ Se il numero di compiti è grande, in relazione alla limitata potenza di calcolo
 		}
 	}
 ```
+>[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjEwOTkyMzAzOV19
+eyJoaXN0b3J5IjpbLTEzMzI0MzE3MDksMjEwOTkyMzAzOV19
 -->
