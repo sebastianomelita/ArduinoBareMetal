@@ -74,7 +74,7 @@ void setup ()
 {
 	pinMode(LED, OUTPUT);
 	Serial.begin(9600);
-}  // end of setup
+}  	// end of setup
 ```
 E’ possibile anche definire una ISR di ricezione customizzata definendo il codice della funzione Serial.serialEvent() per Arduino Uno
 ```C++
@@ -93,7 +93,7 @@ void serialEvent2(){
 }
 
 void serialEvent3(){
-/	/statements
+	//statements
 }
 ```
 Per **semplificare** la vita agli sviluppatori, alcune ISR sono fornite direttamente dalle **librerie di Arduino**.
@@ -247,5 +247,5 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjEzMjIzMzg3NV19
+eyJoaXN0b3J5IjpbMTIwMTEwMzE3OV19
 -->
