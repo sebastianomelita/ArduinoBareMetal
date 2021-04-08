@@ -1,5 +1,5 @@
 
-
+>[Torna all'indice](indexpulsanti.md)
 
 ## **IL PROBLEMA DEI RIMBALZI MECCANICI**
 
@@ -44,6 +44,7 @@ I **timer** si possono realizzare in due maniere:
 - **Interrupt generato da un timer HW.** Si imposta il timer, questo è un circuito HW che procede parallelamente alla funzione loop() e in maniera indipendente da essa. Allo scadere del timer viene inviato un segnale di interrupt che può essere raccolto da una ISR (Interrupt Service Routine) che esegue al suo interno il codice previsto allo scadere del timer.
 
 Nel seguito introdurremo due tecniche basate su **un filtraggio periodico** dei valori, uno basato sui delay() e uno basato sulla millis().
+>[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQ1NjA3MTE1M119
+eyJoaXN0b3J5IjpbNTU1ODc1Njk1LC00NTYwNzExNTNdfQ==
 -->
