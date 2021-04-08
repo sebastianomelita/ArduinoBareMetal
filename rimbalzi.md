@@ -46,5 +46,5 @@ I **timer** si possono realizzare in due maniere:
 Nel seguito introdurremo due tecniche basate su **un filtraggio periodico** dei valori, uno basato sui delay() e uno basato sulla millis().
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTU1ODc1Njk1LC00NTYwNzExNTNdfQ==
+eyJoaXN0b3J5IjpbNTU1ODc1Njk1XX0=
 -->
