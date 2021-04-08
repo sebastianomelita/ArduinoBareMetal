@@ -154,9 +154,7 @@ void setup ()
 void loop(){
 	if(Serial.available() > 0 ){//anche while va bene!
 		String str = Serial.readString();
-		Serial.print("indice: ");
-		Serial.println(str.indexOf("spegni"));
-		Serial.println(str.indexOf("accendi"));
+			
 		if(str.indexOf("on")){
 			digitalWrite(LED, HIGH);
 		}
@@ -248,5 +246,6 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTg5NjY2ODc1OCwxMjAxMTAzMTc5XX0=
+eyJoaXN0b3J5IjpbLTI4MzIzNTgxOCwtODk2NjY4NzU4LDEyMD
+ExMDMxNzldfQ==
 -->
