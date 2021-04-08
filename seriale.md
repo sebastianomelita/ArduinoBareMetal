@@ -153,6 +153,7 @@ void setup ()
 
 void loop(){
 	if(Serial.available() > 0 ){//anche while va bene!
+		//parsing di una string all'interno 
 		String str = Serial.readString();
 			
 		if(str.indexOf("on")){
@@ -246,6 +247,6 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTI4MzIzNTgxOCwtODk2NjY4NzU4LDEyMD
-ExMDMxNzldfQ==
+eyJoaXN0b3J5IjpbNDY3NDYwOTkxLC04OTY2Njg3NTgsMTIwMT
+EwMzE3OV19
 -->
