@@ -140,7 +140,7 @@ void serialEvent(){
 }
 ```
 **Esempio di interprete di un comando vocale trascritto via seriale**
-Si tratta di interpretare una frase in linguaggio naturale in cui il comando non è espresso in modo non formale ma va dedotto cercando la corrispondenza simultanea di alcune parole chiave. In realtà la variabilità delle frasi umane per esprimere il generico comando di accendere una luce può essere molto ampio, può, ad esempio includere le parole accendi, attiva, on, illumina, o altre parole con significati analoghi. Il nostro parser dovrebbe provare la corrispondenza con ognuna di esse ma di seguito, per sem
+Si tratta di interpretare una frase in linguaggio naturale in cui il comando non è espresso in modo non formale ma va dedotto cercando la corrispondenza simultanea di alcune parole chiave. In realtà la variabilità delle frasi umane per esprimere il generico comando di accendere una luce può essere molto ampio, può, ad esempio includere le parole accendi, attiva, on, illumina, o altre parole con significati analoghi. Il nostro parser dovrebbe provare la corrispondenza con ognuna di esse ma di seguito, per semplicità, si cerca la corrispondenza 
 ```C++
 const byte LED = 13;
 const byte BUTTON = 2;
@@ -248,5 +248,5 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5NDYwMjQyNDAsMTIwMTEwMzE3OV19
+eyJoaXN0b3J5IjpbLTE0NTMzNzg1NDcsMTIwMTEwMzE3OV19
 -->
