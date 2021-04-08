@@ -33,5 +33,5 @@ Se il numero di compiti è grande, in relazione alla limitata potenza di calcolo
 ```
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMzI0MzE3MDksMjEwOTkyMzAzOV19
+eyJoaXN0b3J5IjpbLTEzMzI0MzE3MDldfQ==
 -->
