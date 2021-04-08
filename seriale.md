@@ -140,7 +140,7 @@ void serialEvent(){
 }
 ```
 **Esempio di interprete di un comando vocale trascritto via seriale**
-Il
+Si tratta di interpretare una frase in linguaggio naturale in cui il comando non è espresso in modo non formale ma va dedotto cercando la corrispondenza simultanea di alcune parole chiave. In realtà la variabi
 ```C++
 const byte LED = 13;
 const byte BUTTON = 2;
@@ -248,5 +248,5 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTc3Mzc2NTU5MCwxMjAxMTAzMTc5XX0=
+eyJoaXN0b3J5IjpbLTIwMjkzNDIyNDMsMTIwMTEwMzE3OV19
 -->
