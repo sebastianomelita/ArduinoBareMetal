@@ -64,5 +64,5 @@ Di seguito è riportato lo schema di un **possibile collegamento** di due pulsan
 
 ![pulsantiboard](pulsantiboard.png)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3OTkzMTUyNDUsLTE3MTg0Njk1M119
+eyJoaXN0b3J5IjpbLTE3OTkzMTUyNDVdfQ==
 -->
