@@ -66,6 +66,5 @@ Di seguito è riportato lo schema di un **possibile collegamento** di due pulsan
 
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwNzE0MzIzOTksLTE3OTkzMTUyNDVdfQ
-==
+eyJoaXN0b3J5IjpbLTEwNzE0MzIzOTldfQ==
 -->
