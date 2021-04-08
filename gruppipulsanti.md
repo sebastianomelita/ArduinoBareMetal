@@ -231,7 +231,7 @@ void loop(){
 		}
 	} //chiudi schedulatore
 }
->[Torna all'indice](indexpulsanti.md)
+>[[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzYwMzMwMTMxXX0=
+eyJoaXN0b3J5IjpbLTE4NjY5MTAxNTBdfQ==
 -->
