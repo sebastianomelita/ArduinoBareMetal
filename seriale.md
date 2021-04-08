@@ -140,6 +140,7 @@ void serialEvent(){
 }
 ```
 **Esempio di interprete di un comando vocale trascritto via seriale**
+Il
 ```C++
 const byte LED = 13;
 const byte BUTTON = 2;
@@ -247,5 +248,5 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTIwMTEwMzE3OV19
+eyJoaXN0b3J5IjpbMTc3Mzc2NTU5MCwxMjAxMTAzMTc5XX0=
 -->
