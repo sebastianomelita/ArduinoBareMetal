@@ -74,5 +74,5 @@ In **entrambi** i casi precedenti le informazioni devono “**sopravvivere**” 
 
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjc5MDE0MzUzLDEwNzI1MTQyNzhdfQ==
+eyJoaXN0b3J5IjpbMjc5MDE0MzUzXX0=
 -->
