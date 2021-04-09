@@ -34,8 +34,8 @@ I formati dei messaggi più utilizzati in genere sono:
  - Testo formattato con separatori di campo (spazi, virgole, ecc.) e separatori di riga (\0, \n,\r)
  - dati rappresentati sotto forma di oggetti XML
  - dati rappresentati sotto forma di oggetti JSON
-In IOT, come in molti altri ambiti, attualmente si preferisce la costruzione di messaggi JSON per la proprietà di compatezza che li contraddistingue.
- Nell'esempio seguente utilizzeremo una codifica a tag customizzata. La si può adattare ai messaggi JSON sostituendo i tag < e > con ".
+In IOT, come in molti altri ambiti, attualmente si preferisce la costruzione di messaggi JSON per la proprietà di compattezza che li contraddistingue.
+Nell'esempio seguente utilizzeremo una codifica a tag standard in cui s
  
 **Esempio di gestione comandi locali e remoti via seriale**
 ```C++
@@ -43,7 +43,7 @@ In IOT, come in molti altri ambiti, attualmente si preferisce la costruzione di 
 Scrivere un programma Arduino che manda sulla seriale ogni due secondi lo stato di un led (cucina).
 Accenderlo con un pulsante toggle.
 Ricevere dalla seriale il comando di accensione nel formato
-"cucina":"on" oppure "cucina":"off"
+"cucina":"on" oppure "cucina":"off>
 */
 #define TBASE 100
 #define NSTEP 100
@@ -200,5 +200,6 @@ void loop(){
 ```
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxMDUzODIzMTBdfQ==
+eyJoaXN0b3J5IjpbLTE5ODczOTI5NDksLTIxMDUzODIzMTBdfQ
+==
 -->
