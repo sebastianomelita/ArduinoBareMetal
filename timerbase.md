@@ -227,20 +227,13 @@ void loop() {
 				}
 			}
 			btntime = 0;
-
-}
-
-// se premo il pulsante sufficientemente a lungo accendi il led
-
-if(start && (btntime >= txtime)){
-
-digitalWrite(led));
-
-start = false;
-
-}
-
-}
+		}
+		// se premo il pulsante sufficientemente a lungo accendi il led
+		if(start && (btntime >= txtime)){
+			digitalWrite(led));
+			start = false;
+		}
+	}
 
 //switch per un solo pulsante attivo su entrambi i fronti
 
@@ -255,6 +248,7 @@ precval = val;  // valore di val campionato al loop precedente
 return changed;  // rivelatore di fronte (salita o discesa)
 
 }
+```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTM3MTM1ODQ4NSwtNzA3MjI1MTgyXX0=
+eyJoaXN0b3J5IjpbNDk3NjE0NzA1LC03MDcyMjUxODJdfQ==
 -->
