@@ -28,7 +28,7 @@ Di conseguenza, i **valori delle attivazioni** dei segmenti (mediante i livelli 
 
 - **Catodo a GND (porta sorgente)**:
 
-<![if !supportLists]>o <![endif]>le **porte** del microcontrollore **spengono** un led se poste a livello **LOW** e lo **accendono** se poste a livello **HIGH** e in questa condizione erogano corrente (pin di sorgente)
+- le **porte** del microcontrollore **spengono** un led se poste a livello **LOW** e lo **accendono** se poste a livello **HIGH** e in questa condizione erogano corrente (pin di sorgente)
 
 - **Anodo a GND (porta pozzo)**:
 
@@ -38,5 +38,5 @@ La situazione delle porte del microcontrollore in caso di led collegato ad **ano
 
 **Polarizzazione con catodo a massa.**
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTU0Mjc4MTQyN119
+eyJoaXN0b3J5IjpbMTUxMzc1NTc4NV19
 -->
