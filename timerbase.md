@@ -49,7 +49,8 @@ void loop()
 	if(condA){
 		atimer1 = millis();
 	}
-
+        
+	//blocco polling
 	if (millis() - atimer1 >= (unsigned long) TLIMITE1)
 	{
 		// istruzioni eseguite allo scadere del timer 1
@@ -65,6 +66,7 @@ unsigned long atimer1;
 
 void loop()
 {
+	//blocco polling
 	if (millis() - atimer1 >= (unsigned long) TLIMITE1)
 	{
 		// istruzioni eseguite allo scadere del timer 1
@@ -77,7 +79,7 @@ void loop()
 	}
 }
 ```
-Le istruzioni eseguite allo scadere del timer possono essere inserite in una **callback**, funzione dal nome sempre uguale, che, di volta in volta, può essere invocata con un diverso corpo di istruzioni:
+Le istruzioni eseguite allo scadere del timer possono essere inserite in una **callback**, funzione dal nome sempre uguale, che, di volta in volta, è invocata dal timer con un diverso corpo di istruzioni:
 ```C++
 //Timer aperiodico 1
 #define TLIMITE1  1000
@@ -89,6 +91,7 @@ void onElapse(){
 
 void loop()
 {
+	//blocco polling 
 	if (millis() - atimer1 >= (unsigned long) TLIMITE1)
 	{
 		onElapse();
@@ -136,6 +139,7 @@ void onElapse(){
 }
 	
 void loop(){
+	//blocco polling
 	aggiornaTimer();  //aggiorna il primo timer
 		
 	//se accade qualcosa parte il timer
