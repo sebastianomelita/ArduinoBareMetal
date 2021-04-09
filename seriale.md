@@ -166,6 +166,7 @@ void loop(){
 	}
 }
 ```
+I comandi possono anche essere inviati in maniera meno ambigua utilizzando un formato preventivamente concordato tra mittente e destinatario. In questo caso 
 **Esempio di gestione comandi locali e remoti via seriale**
 ```C++
 /*
@@ -247,6 +248,6 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMDE4Mjc1ODUsMTk2MzAyNDk3NywxOT
-kyMDgzNDg3XX0=
+eyJoaXN0b3J5IjpbNDk1NTQ0NjU5LC0xMzAxODI3NTg1LDE5Nj
+MwMjQ5NzcsMTk5MjA4MzQ4N119
 -->
