@@ -200,5 +200,5 @@ void loop(){
 ```
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzODQ1MjcxNDIsNDkxMzcwMzM4XX0=
+eyJoaXN0b3J5IjpbLTEzODQ1MjcxNDJdfQ==
 -->
