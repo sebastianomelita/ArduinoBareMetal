@@ -20,7 +20,7 @@ if ((millis() – atimer2) < (unsigned long) TLIMITE2)
 }
 }
 ```
-Molti timers possono anche essere attivi nascosti all’interno di funzioni che sono richiamate all’interno del loop():
+Molti timers possono anche essere attivi nascosti all’interno di funzioni che sono richiamate all’interno del loop(). Possono realizzare una codice che, benchè sia eseguito linearmente, viene eseguito aggiungendo nuovi pezzi in istanti successivi:
 
 ```C++
 void loop()
