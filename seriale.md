@@ -254,7 +254,7 @@ void loop(){
 }
 	
 ```
-Nell'esemp
+Nell'esempio seguente utilizzeremo la funzione cmdParser(instr,"attributo",10) per realizzare un parser che restituisce il va
 			
 			
 	
@@ -341,6 +341,6 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MzkxMDk2MDIsLTE2ODM4MTg4MDQsLT
-EzMDE4Mjc1ODUsMTk2MzAyNDk3NywxOTkyMDgzNDg3XX0=
+eyJoaXN0b3J5IjpbMTQ2NDYxOTc3NywtMTY4MzgxODgwNCwtMT
+MwMTgyNzU4NSwxOTYzMDI0OTc3LDE5OTIwODM0ODddfQ==
 -->
