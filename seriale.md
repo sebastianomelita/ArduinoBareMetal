@@ -166,8 +166,10 @@ void loop(){
 	}
 }
 ```
-I comandi possono anche essere inviati in maniera meno ambigua utilizzando un formato preventivamente concordato tra mittente e destinatario. In questo caso comandi diversi in genere condividono per lo meno un formato comune. I formati dei messaggi più utilizzati in genere sono:
- 
+I comandi possono anche essere inviati in maniera meno ambigua utilizzando un formato preventivamente concordato tra mittente e destinatario. In questo caso comandi diversi in genere condividono per lo meno un formato comune. 
+I formati dei messaggi più utilizzati in genere sono:
+ - Testo formattato con separatori di campo (spazi, virgole, ecc.) e separatori di riga (\0, \n,\r)
+ - 
 **Esempio di gestione comandi locali e remoti via seriale**
 ```C++
 /*
@@ -335,6 +337,6 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzg2MTkzODI5LC0xNjgzODE4ODA0LC0xMz
-AxODI3NTg1LDE5NjMwMjQ5NzcsMTk5MjA4MzQ4N119
+eyJoaXN0b3J5IjpbMTg4ODEzNjczMywtMTY4MzgxODgwNCwtMT
+MwMTgyNzU4NSwxOTYzMDI0OTc3LDE5OTIwODM0ODddfQ==
 -->
