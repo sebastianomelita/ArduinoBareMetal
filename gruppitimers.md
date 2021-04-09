@@ -131,7 +131,7 @@ void loop(){
 	}
     }    
 
-    //INGRESSO
+    // polling pulsante INGRESSO
     in=digitalRead(CMDINGRESSO);
       if(transizione(in,INGRESSO)){
         if(in==HIGH){ //se fronte di salita
