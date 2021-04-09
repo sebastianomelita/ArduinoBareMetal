@@ -101,29 +101,18 @@ void poll()
 }
 ```
 Attenzione ad un **errore insidioso**:
-
+```C++
 void poll()
-
 {
-
-if ((millis() – atimer1) < (unsigned long) TLIMITE1)
-
+	if ((millis() – atimer1) < (unsigned long) TLIMITE1)
 {
-
-....
-
-// istruzioni eseguite finchè NON scade il timer 1
-
+	....
+	// istruzioni eseguite finchè NON scade il timer 1
 }
-
 if ((millis() – atimer2) < (unsigned long) TLIMITE2)
-
 {
-
-....
-
-// istruzioni eseguite finchè NON scade il timer 2
-
+	....
+	// istruzioni eseguite finchè NON scade il timer 2
 }
 
 }
@@ -336,5 +325,5 @@ return changed;  // rivelatore di fronte (salita o discesa)
 
 }
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTcwNzIyNTE4Ml19
+eyJoaXN0b3J5IjpbNzE2NzkxMjQ5LC03MDcyMjUxODJdfQ==
 -->
