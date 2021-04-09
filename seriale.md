@@ -254,12 +254,7 @@ void loop(){
 }
 	
 ```
-Nell'esempio seguente utilizzeremo la funzione cmdParser(instr, "parametro", 10) per realizzare un parser che restituisce il valore ricevuto del parametro inserito come argomento. Un valore negativo significa parametro non trovato, uno positivo parametro trovato con il valore restituito. L'uilizzo di questa funzione permette di risparmiare qualche riga di codice ed eventualmente la gestione dinamica dei parametri mediante un ciclo che scorrendo un vettore di parametri ne cerca il valore, se esiste, nel messaggio ricevut
-			
-			
-	
-	
-	
+Nell'esempio seguente utilizzeremo la funzione cmdParser(instr, "parametro", 10) per realizzare un parser che restituisce il valore ricevuto del parametro inserito come argomento. Un valore negativo significa parametro non trovato, uno positivo parametro trovato con il valore restituito. L'utilizzo di questa funzione permette di risparmiare qualche riga di codice ed eventualmente la gestione dinamica dei parametri mediante un ciclo che scorrendo un vettore di parametri li cerca nel messaggio ricevuto e, se esistono, ne restituisce il valore.
 	
 ```C++
 /*
@@ -341,6 +336,5 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzNzk1MTM3MDgsLTE2ODM4MTg4MDQsLT
-EzMDE4Mjc1ODUsMTk2MzAyNDk3NywxOTkyMDgzNDg3XX0=
+eyJoaXN0b3J5IjpbMjAxNzAwMjUyMF19
 -->
