@@ -39,7 +39,8 @@ bool timerState <span class="token operator">=</span> false<span class="token pu
 <span class="token punctuation">}</span>
 </code></pre>
 <p>Di seguito è un esempio di <strong>timer aperiodico</strong> che misura il tempo a partire dal verificarsi di una certa condizione fino a che, al superamento di un tempo limite, si decide di fare qualcosa ma solo <strong>dopo</strong> lo scadere del timer:</p>
-<pre class=" language-c"><code class="prism ++ language-c"><span class="token comment">//Timer aperiodico 1</span>
+<pre class=" language-c"><code class="prism ++ language-c">
+<span class="token comment">//Timer aperiodico 1</span>
 <span class="token macro property">#<span class="token directive keyword">define</span> TLIMITE1  1000</span>
 <span class="token keyword">unsigned</span> <span class="token keyword">long</span> atimer1<span class="token punctuation">;</span>
 
@@ -51,11 +52,11 @@ bool timerState <span class="token operator">=</span> false<span class="token pu
 		atimer1 <span class="token operator">=</span> <span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token punctuation">}</span>
 
-	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> atimer1<span class="token punctuation">)</span> <span class="token operator">&gt;=</span> <span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span><span class="token punctuation">)</span> TLIMITE1<span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> atimer1 <span class="token operator">&gt;=</span> <span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span><span class="token punctuation">)</span> TLIMITE1<span class="token punctuation">)</span>
 	<span class="token punctuation">{</span>
-		<span class="token comment">//....</span>
-		<span class="token comment">// istruzioni eseguite allo scadere del timer 1</span>
+	<span class="token comment">// istruzioni eseguite allo scadere del timer 1</span>
 	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
+
 </code></pre>
 
