@@ -61,7 +61,6 @@ void loop()
 {
 	// condizione che valuta l’accadere di un certo evento
 	// di attivazione del conteggio del tempo
-
 	if(condA){
 		atimer2 = millis();
 	}
@@ -70,22 +69,16 @@ void loop()
 	{
 		....
 		// istruzioni eseguite finchè NON scade il timer 2
-
+	}
 }
-
-}
-
+```
 I timers possono anche essere in funzione **all’interno di funzioni** che sono richiamate all’interno del loop():
-
+```C++
 void loop()
-
 {
-
-poll();  // funzione con **blocchi** di codice eseguiti **prima** o **dopo** di certi eventi
-
-…….
-
-}
+	poll();  // funzione con **blocchi** di codice eseguiti **prima** o **dopo** di certi eventi
+	…….
+	}
 
 void poll()
 
@@ -353,5 +346,5 @@ return changed;  // rivelatore di fronte (salita o discesa)
 
 }
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIwMTEyMTg1OTVdfQ==
+eyJoaXN0b3J5IjpbMTU0MzQyODkxMF19
 -->
