@@ -38,7 +38,11 @@ La situazione delle porte del microcontrollore in caso di led collegato ad **ano
 
 **Polarizzazione con catodo a massa.**
 ![Pulsanti](led1.png)
+
+<![endif]-->
+
+**Polarizzazione con anodo a massa.**
+![Pulsanti](led2.png)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzMDg3Njg3NjAsNzU4OTgxNzUxLDE1MT
-M3NTU3ODVdfQ==
+eyJoaXN0b3J5IjpbLTEzMDk4MTAwMzddfQ==
 -->
