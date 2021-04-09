@@ -76,7 +76,7 @@ void loop()
 	}
 }
 ```
-
+Le istruzioni eseguite allo scadere del timer possono essere inserite in una callback, funzione dal nome sempre uguale, che, di volta in volta, può essere invocata con un diverso corpo di istruzioni:
 ```C++
 //Timer aperiodico 1
 #define TLIMITE1  1000
