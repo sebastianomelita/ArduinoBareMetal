@@ -1,4 +1,4 @@
 >[Torna all'indice generale](index.md)
-1. [Polled timers](timerbase.md)
-2. [Generazione messaggi](serialegenerazionecmd.md)
-3. [Interprete comandi](serialeInterpreteComandi.md)
+1. [Timers base](timerbase.md)
+2. [Gruppi di timers](gruppiters.md)
+3. [Catene di eventi (protocolli)](chaintimers.md)
