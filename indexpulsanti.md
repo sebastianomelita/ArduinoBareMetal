@@ -1,8 +1,3 @@
----
-
-
----
-
 <blockquote>
 <p><a href="index.md">Torna all’indice generale</a></p>
 </blockquote>
@@ -19,5 +14,5 @@
 </ol>
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzEwNzAzMzAwXX0=
+eyJoaXN0b3J5IjpbLTEyMDg1MTMyOTAsNzEwNzAzMzAwXX0=
 -->
