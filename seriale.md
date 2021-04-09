@@ -177,6 +177,93 @@ Ricevere dalla seriale il comando di accensione nel formato
 */
 #define TBASE 100
 #define NSTEP 100
+#define CMDSOGGIORNO 2
+#define CMDCUCINA 3
+#define LEDSOGGIORNO 12
+#define LEDCUCINA 13
+
+enum btn
+{
+	CUCINA				=0,
+	SOGGIORNO			=1
+};
+byte precval[2]={0,0};
+byte stato[2]={0,0};
+unsigned long precm=0;
+unsigned short step=0;
+
+void setup(){
+	pinMode(CMDSOGGIORNO, INPUT);
+	pinMode(CMDCUCINA, INPUT);
+	pinMode(LEDSOGGIORNO, OUTPUT);
+	pinMode(LEDCUCINA, OUTPUT);
+	Serial.begin(115200);
+}
+
+bool transizione(byte val,byte n){ 	//transizione di un pulsante
+	bool cambiato=false;
+	cambiato = (precval[n] != val);
+	precval[n] = val;  
+	return cambiato; 
+}
+
+
+void loop(){
+	byte in;
+	if(millis()-precm>=(unsigned long)TBASE){ 	//schedulatore e antirimbalzo
+		precm=millis(); 	
+		step=(step+1)%NSTEP; //conteggio circolare
+		
+		// comunicazione stato led
+		if(!(step%20)){
+			Serial.print("stato led cucina: ");
+			Serial.println(stato[CUCINA]);
+			Serial.print("stato led soggiorno: ");
+			Serial.println(stato[SOGGIORNO]);
+		}
+			
+		// gestione evento comando da seriale
+		if(Serial.available() > 0 ){//anche while va bene!
+			short val;
+			String instr = Serial.readString();
+			
+			if(instr.indexOf("\"cucina\":\"on\"") >= 0){
+			  stato[CUCINA] = HIGH;
+			  digitalWrite(LEDCUCINA, stato[CUCINA]);
+			}
+			if(instr.indexOf("\"cucina\":\"off\"") >= 0){
+			  stato[CUCINA] = LOW;
+			  digitalWrite(LEDCUCINA, stato[CUCINA]);
+			}
+			if(instr.indexOf("\"soggiorno\":\"on\"") >= 0){
+			  stato[SOGGIORNO] = HIGH;
+			  digitalWrite(LEDSOGGIORNO, stato[SOGGIORNO]);
+			}
+			if(instr.indexOf("\"soggiorno\":\"off\"") >= 0){
+			  stato[SOGGIORNO] = LOW;
+			  digitalWrite(LEDSOGGIORNO, stato[SOGGIORNO]);
+			}
+		}
+	} 	//chiudi schedulatore	
+}
+	
+
+	
+			
+			
+	
+	
+	
+	
+
+/*
+Scrivere un programma Arduino che manda sulla seriale ogni due secondi lo stato di un led (cucina).
+Accenderlo con un pulsante toggle.
+Ricevere dalla seriale il comando di accensione nel formato
+<cucina>:<on> oppure <cucina>:<off>
+*/
+#define TBASE 100
+#define NSTEP 100
 #define CMDCUCINA 3
 #define LEDCUCINA 13
 byte precval=0;
@@ -248,6 +335,6 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2ODM4MTg4MDQsLTEzMDE4Mjc1ODUsMT
-k2MzAyNDk3NywxOTkyMDgzNDg3XX0=
+eyJoaXN0b3J5IjpbLTE3NjQ5MzQ0NDgsLTE2ODM4MTg4MDQsLT
+EzMDE4Mjc1ODUsMTk2MzAyNDk3NywxOTkyMDgzNDg3XX0=
 -->
