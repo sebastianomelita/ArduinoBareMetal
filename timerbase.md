@@ -45,6 +45,7 @@ void loop()
 	if(condA){
 		atimer1 = millis();
 	}
+	
 	if ((millis() - atimer1) >= (unsigned long) TLIMITE1)
 	{
 		....
@@ -54,5 +55,5 @@ void loop()
 ```
 Analogamente si potrebbe eseguire un blocco di codice continuamente **solo** all’interno di un tempo massimo prestabilito, cioè solo **prima** dello scadere del timer:
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDY2NzczNjcyXX0=
+eyJoaXN0b3J5IjpbLTIwOTE1MTU2OTQsNDY2NzczNjcyXX0=
 -->
