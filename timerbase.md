@@ -105,37 +105,30 @@ Attenzione ad un **errore insidioso**:
 void poll()
 {
 	if ((millis() – atimer1) < (unsigned long) TLIMITE1)
-{
+	{
 	....
 	// istruzioni eseguite finchè NON scade il timer 1
-}
-if ((millis() – atimer2) < (unsigned long) TLIMITE2)
-{
+	}
+	if ((millis() – atimer2) < (unsigned long) TLIMITE2)
+	{
 	....
 	// istruzioni eseguite finchè NON scade il timer 2
+	}
 }
-
-}
+```
 
 In questa situazione se scade il primo timer **viene comunque controllato** lo scadere del secondo. La cascata degli if equivale ad un OR logico sulle condizioni di scadenza.
 
 Se voglio che **ne accada solo una** posso scrivere così:
-
+```C++
 void poll()
-
 {
-
-if ((millis() – atimer1) < (unsigned long) TLIMITE1)
-
-{
-
-....
-
-// istruzioni eseguite finchè NON scade il timer 1
-
-}else if ((millis() – atimer2) < (unsigned long) TLIMITE2)
-
-{
+	if ((millis() – atimer1) < (unsigned long) TLIMITE1)
+	{
+		....
+		// istruzioni eseguite finchè NON scade il timer 1
+	}else if ((millis() – atimer2) < (unsigned long) TLIMITE2)
+	{
 
 ....
 
@@ -325,5 +318,5 @@ return changed;  // rivelatore di fronte (salita o discesa)
 
 }
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzE2NzkxMjQ5LC03MDcyMjUxODJdfQ==
+eyJoaXN0b3J5IjpbMTIxNDU4MDkxMCwtNzA3MjI1MTgyXX0=
 -->
