@@ -55,7 +55,7 @@ void loop()
 	}
 }
 ```
-La condizione, in realtà, può essere collocata in un punto qualsiasi del loop() (può essere ad esempio attivata dalla pressione di un pulsante):
+La **condizione**, in realtà, può essere collocata in un punto qualsiasi del loop() (può essere ad esempio attivata dalla pressione di un pulsante):
 
 ```C++
 //Timer aperiodico 1
