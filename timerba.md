@@ -47,10 +47,7 @@ bool timerState <span class="token operator">=</span> false<span class="token pu
 <span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">{</span>
 	<span class="token comment">// condizione che valuta l’accadere di un certo evento</span>
-	<span class="token comment">// di attivazione del conteggio del tempo</span>
-	<span class="token keyword">if</span><span class="token punctuation">(</span>condA<span class="token punctuation">)</span><span class="token punctuation">{</span>
-		atimer1 <span class="token operator">=</span> <span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
+
 <span class="token punctuation">}</span>
 
 </code></pre>
