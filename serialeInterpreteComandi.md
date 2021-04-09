@@ -35,7 +35,7 @@ I formati dei messaggi più utilizzati in genere sono:
  - dati rappresentati sotto forma di oggetti XML
  - dati rappresentati sotto forma di oggetti JSON
 In IOT, come in molti altri ambiti, attualmente si preferisce la costruzione di messaggi JSON per la proprietà di compattezza che li contraddistingue.
-Nell'esempio seguente utilizzeremo una codifica a tag standard in cui s
+Nell'esempio seguente utilizzeremo una codifica a tag standard in cui, sia attributi che valori, sono racchiusi tra doppi apici nel formato "attributo":"valore" ma nulla vieta di sost 
  
 **Esempio di gestione comandi locali e remoti via seriale**
 ```C++
@@ -200,6 +200,5 @@ void loop(){
 ```
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5ODczOTI5NDksLTIxMDUzODIzMTBdfQ
-==
+eyJoaXN0b3J5IjpbLTc0MTQ3ODM4NCwtMjEwNTM4MjMxMF19
 -->
