@@ -45,5 +45,5 @@ La situazione delle porte del microcontrollore in caso di led collegato ad **ano
 
 >[Torna all'indice generale](index.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM3NzYzOTU4NCwtMTQ3ODk4MjU3NF19
+eyJoaXN0b3J5IjpbMTM3NzYzOTU4NF19
 -->
