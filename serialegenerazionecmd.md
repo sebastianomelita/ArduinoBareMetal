@@ -1,7 +1,8 @@
 
 
 
-[Torna all'indice](indexseriale.md)
+>[Torna all'indice](indexseriale.md)
+
 La generazione dei comandi sulla seriale può avvenire in qualunque punto del codice, anche all'interno di uno schedulatore, ma non dentro una ISR.
 La generazione dei messaggi in genere avviene:
 - **periodicamente**, cioè inserita dentro uno schedulatore che la genera a la invia ad intervalli regolari. Utile per generare un report periodico dello stato del sistema.
@@ -76,6 +77,5 @@ void loop(){
 
 >[Torna all'indice](indexseriale.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2ODQ0ODE5MjcsLTExNzQwMzcyNzddfQ
-==
+eyJoaXN0b3J5IjpbNjIzNTQxMzAxXX0=
 -->
