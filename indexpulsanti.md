@@ -1,5 +1,5 @@
 
-
+>[Torna all'indice generale](index.md)
 ## Pulsanti
 1. [Pull Up e Pull Down](PullUP-PullDown.md)
 2. [Fasi applicazione](fasi.md)
@@ -10,5 +10,5 @@
 7. [Gruppi di pulsanti](gruppipulsanti.md)
 8. [Domande e sitografia](domande.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTYyOTU2NzQ5Myw5NDc5NDMyNjFdfQ==
+eyJoaXN0b3J5IjpbMTg1ODI4ODc4Nl19
 -->
