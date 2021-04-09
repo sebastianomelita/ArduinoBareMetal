@@ -1,5 +1,5 @@
 
->[Torna all'indice](indexpulsanti.md)
+>[Torna all'indice](indexseriale.md)
 ## **Interprete di comandi**
 
 Si tratta di interpretare una frase in linguaggio naturale in cui il comando non è espresso in modo non formale ma va dedotto cercando la corrispondenza simultanea di alcune parole chiave. In realtà la variabilità delle frasi umane per esprimere il generico comando di accendere una luce può essere molto ampio, può, ad esempio includere le parole "accendi", "attiva", "on", "illumina", o altre parole con significati analoghi. Il nostro parser dovrebbe provare la corrispondenza con ognuna di esse ma di seguito, per semplicità, si cerca la corrispondenza con la sola parola "accendi".
@@ -198,7 +198,7 @@ void loop(){
 	}
 }
 ```
->[Torna all'indice](indexpulsanti.md)
+>[Torna all'indice](indexseriale.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzODQ1MjcxNDJdfQ==
+eyJoaXN0b3J5IjpbMzAzNTA5ODc2LC0xMzg0NTI3MTQyXX0=
 -->
