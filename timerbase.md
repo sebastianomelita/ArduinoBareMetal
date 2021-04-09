@@ -39,48 +39,37 @@ Di seguito è un esempio di **timer aperiodico** che misura il tempo a partire d
 unsigned long atimer1;
 void loop()
 {
-// condizione che valuta l’accadere di un certo evento
-// di attivazione del conteggio del tempo
+	// condizione che valuta l’accadere di un certo evento
+	// di attivazione del conteggio del tempo
 	if(condA){
 		atimer1 = millis();
 	}
 
 	if ((millis() - atimer1) >= (unsigned 	long) TLIMITE1)
-{
-	....
-	// istruzioni eseguite allo scadere del timer 1
+	{
+		....
+		// istruzioni eseguite allo scadere del timer 1
+	}
 }
-}
-
+```
 Analogamente si potrebbe eseguire un blocco di codice continuamente **solo** all’interno di un tempo massimo prestabilito, cioè solo **prima** dello scadere del timer:
-
+```C++
 //Timer aperiodico 2
-
 #define TLIMITE  1000
-
 unsigned long atimer2;
-
 void loop()
-
 {
+	// condizione che valuta l’accadere di un certo evento
+	// di attivazione del conteggio del tempo
 
-// condizione che valuta l’accadere di un certo evento
+	if(condA){
+		atimer2 = millis();
+	}
 
-// di attivazione del conteggio del tempo
-
-if(condA){
-
-atimer2 = millis();
-
-}
-
-if ((millis() – atimer2) < (unsigned long) TLIMITE2)
-
-{
-
-....
-
-// istruzioni eseguite finchè NON scade il timer 2
+	if ((millis() – atimer2) < (unsigned long) TLIMITE2)
+	{
+		....
+		// istruzioni eseguite finchè NON scade il timer 2
 
 }
 
@@ -364,5 +353,5 @@ return changed;  // rivelatore di fronte (salita o discesa)
 
 }
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE2MjQzNzUzNDRdfQ==
+eyJoaXN0b3J5IjpbLTIwMTEyMTg1OTVdfQ==
 -->
