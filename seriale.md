@@ -171,7 +171,8 @@ I formati dei messaggi più utilizzati in genere sono:
  - Testo formattato con separatori di campo (spazi, virgole, ecc.) e separatori di riga (\0, \n,\r)
  - dati rappresentati sotto forma di oggetti XML
  - dati rappresentati sotto forma di oggetti JSON
- In IOT 
+In IOT, come in molti altri ambiti, attualmente si preferisce la costruzione di messaggi JSON per la proprietà di compatezza che li contraddistingue.
+ Nell'esempio seguente utili
 **Esempio di gestione comandi locali e remoti via seriale**
 ```C++
 /*
@@ -339,6 +340,6 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTk4ODEwNjMzNiwtMTY4MzgxODgwNCwtMT
-MwMTgyNzU4NSwxOTYzMDI0OTc3LDE5OTIwODM0ODddfQ==
+eyJoaXN0b3J5IjpbODM3NjY2NDIwLC0xNjgzODE4ODA0LC0xMz
+AxODI3NTg1LDE5NjMwMjQ5NzcsMTk5MjA4MzQ4N119
 -->
