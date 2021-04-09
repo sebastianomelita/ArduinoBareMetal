@@ -200,5 +200,5 @@ void loop(){
 ```
 >[Torna all'indice](indexseriale.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMzAzNTA5ODc2LC0xMzg0NTI3MTQyXX0=
+eyJoaXN0b3J5IjpbMzAzNTA5ODc2XX0=
 -->
