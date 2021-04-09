@@ -1,4 +1,4 @@
-Analogamente si potrebbe eseguire un blocco di codice continuamente solo all’interno di un tempo massimo prestabilito, cioè solo prima dello scadere del timer:
+Talvolta si potrebbe voler eseguire un blocco di codice continuamente ma solo se un evento accade all’interno di un tempo massimo prestabilito, cioè solo prima dello scadere di un timer:
 
 ```C++
 //Timer aperiodico 2
