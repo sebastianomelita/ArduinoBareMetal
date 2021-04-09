@@ -55,6 +55,7 @@ void loop()
 	}
 }
 ```
+La condizione, in realtà, può essere collocata in un punto qualsiasi del loop() (può essere ad esempio attivata dalla pressione di un pulsante):
 
 ```C++
 //Timer aperiodico 1
@@ -99,6 +100,8 @@ void loop()
 	}
 }
 ```
+
+Reset del timer, polling del tempo trascorso e istruzioni triggerate (scatenate) dal timer potrebbero anche essere rinchiuse in altrettante funzioni:
 
 ```C++
 //inizio variabili timer
