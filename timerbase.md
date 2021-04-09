@@ -78,33 +78,25 @@ void loop()
 {
 	poll();  // funzione con **blocchi** di codice eseguiti **prima** o **dopo** di certi eventi
 	…….
-	}
-
-void poll()
-
-{
-
-if(condA){ // evento che attiva il timer (può essere ricorrente ma, in generale, è aperiodico)
-
-atimer1 = millis();
-
 }
 
-// finchè non si raggiunge TLIMITE1 ritorna senza fare nulla
+void poll()
+{
+	if(condA){ // evento che attiva il timer (può essere ricorrente ma, in generale, è aperiodico)
+		atimer1 = millis();
+	}
 
-if ((millis() – atime1) < (unsigned long) TLIMITE1) return;
+	// finchè non si raggiunge TLIMITE1 ritorna senza fare nulla
+	if ((millis() – atime1) < (unsigned long) TLIMITE1) return;
+	//BLOCCO_A
 
-//BLOCCO_A
+	// finchè non si raggiunge TLIMITE2 ritorna dopo avere eseguito il blocco di istruzioni A
+	if ((millis() – atimer2) < (unsigned long) TLIMITE2) return;
+	//BLOCCO_B
 
-// finchè non si raggiunge TLIMITE2 ritorna dopo avere eseguito il blocco di istruzioni A
+	// finchè non si raggiunge TLIMITE3 ritorna dopo avere eseguito il blocco di istruzioni
 
-if ((millis() – atimer2) < (unsigned long) TLIMITE2) return;
-
-//BLOCCO_B
-
-// finchè non si raggiunge TLIMITE3 ritorna dopo avere eseguito il blocco di istruzioni
-
-// A e B
+	// A e B
 
 if ((millis() – atimer1) < (unsigned long) TLIMITE3) return;
 
@@ -346,5 +338,5 @@ return changed;  // rivelatore di fronte (salita o discesa)
 
 }
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTU0MzQyODkxMF19
+eyJoaXN0b3J5IjpbMTI2OTIwODU4XX0=
 -->
