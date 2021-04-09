@@ -189,45 +189,31 @@ void loop(){
 		startTimer(1000);
 	}
 
-if(B){ //se accade qualcosa blocco il timer
-
-stopTimer();
-
+	if(B){ //se accade qualcosa blocco il timer
+		stopTimer();
+	}
 }
-
-}
-
+```
 **POLLED TIMERS SCHEDULATI**
 
 Si possono realizzare timer **anche** a partire dalla **base dei tempi** misurata da uno **schedulatore** semplicemente **contando i passi** raggiunti finchè questi non arrivano ad un valore **target**, **prima** del quale, o **dopo** il quale, far **accadere** qualcosa.
 
 Il codice di seguito fa partire un comando alla pressione di un pulsante solo se questo è stato **premuto per un tempo minimo**, in caso contrario non fa nulla (filtra i comandi)
-
+```C++
 unsigned long lastTime = 0;
-
 unsigned long timerDelay = TBASE;  // send readings timer
-
 unsigned step = 0;
-
 bool start=false;
-
 unsigned short  val;
-
 byte precval=0; //switchdf e toggle
-
 byte cmdin=2;
 
 void loop() {
-
-if ((millis() - lastTime) > timerDelay) {
-
-lastTime = millis();
-
-step = (step + 1) % NSTEP;
-
-btntime = (btntime + 1) % NSTEP;
-
-val = !digitalRead(cmdin)); // pulsante pull up
+	if ((millis() - lastTime) > timerDelay) {
+		lastTime = millis();
+		step = (step + 1) % NSTEP;
+		btntime = (btntime + 1) % NSTEP;
+		val = !digitalRead(cmdin)); // pulsante pull up
 
 if(switchdf(val)){ //rivelatore di fronte (salita e discesa)
 
@@ -281,5 +267,5 @@ return changed;  // rivelatore di fronte (salita o discesa)
 
 }
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTkxMTY1MTc2OCwtNzA3MjI1MTgyXX0=
+eyJoaXN0b3J5IjpbMTk2OTkwMTAxMywtNzA3MjI1MTgyXX0=
 -->
