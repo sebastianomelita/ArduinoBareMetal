@@ -129,32 +129,23 @@ void poll()
 		// istruzioni eseguite finchè NON scade il timer 1
 	}else if ((millis() – atimer2) < (unsigned long) TLIMITE2)
 	{
-
-....
-
-// istruzioni eseguite finchè NON scade il timer 2
-
+		....
+		// istruzioni eseguite finchè NON scade il timer 2
+	}
 }
-
-}
+```
 
 Dove **l’ordine** stabilisce la **priorità** di valutazione.
 
 Alcuni codici, ritenendo un evento disabilitante per tutto il resto della funzione, talvolta fanno così:
-
+```C++
 void poll()
-
 {
-
-if ((millis() – atimer1) < (unsigned long) TLIMITE1)
-
-{
-
-....
-
-// istruzioni eseguite finchè NON scade il timer 1
-
-**return 0;** // NON SONO PRONTO! RICONTROLLA AL PROSSIMO GIRO…
+	if ((millis() – atimer1) < (unsigned long) TLIMITE1)
+	{
+		....
+		// istruzioni eseguite finchè NON scade il timer 1
+	**return 0;** // NON SONO PRONTO! RICONTROLLA AL PROSSIMO GIRO…
 
 }
 
@@ -318,5 +309,5 @@ return changed;  // rivelatore di fronte (salita o discesa)
 
 }
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTIxNDU4MDkxMCwtNzA3MjI1MTgyXX0=
+eyJoaXN0b3J5IjpbODI3Njk3NTE3LC03MDcyMjUxODJdfQ==
 -->
