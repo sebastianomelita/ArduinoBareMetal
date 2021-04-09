@@ -132,17 +132,4 @@ bool timerState <span class="token operator">=</span> false<span class="token pu
 	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>Dove <strong>l’ordine</strong> stabilisce la <strong>priorità</strong> di valutazione.</p>
-<p>Alcuni codici, ritenendo un evento disabilitante per tutto il resto della funzione, talvolta fanno così:</p>
-<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">void</span> <span class="token function">poll</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">{</span>
-	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> – atimer1<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span><span class="token punctuation">)</span> TLIMITE1<span class="token punctuation">)</span>
-	<span class="token punctuation">{</span>
-		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-		<span class="token comment">// istruzioni eseguite finchè NON scade il timer 1</span>
-		<span class="token keyword">return</span> <span class="token punctuation">;</span> <span class="token comment">// NON SONO PRONTO! RICONTROLLA AL PROSSIMO GIRO…</span>
-	<span class="token punctuation">}</span>
-	<span class="token comment">// ISTRUZIONI IMPORTANTI SI MA CHE…QUALCHE VOLTA…NON SI FANNO…</span>
-<span class="token punctuation">}</span>
-</code></pre>
 
