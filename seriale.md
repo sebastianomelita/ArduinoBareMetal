@@ -1,4 +1,4 @@
-
+>[Torna all'indice](indexseriale.md)
 
 ## **SERIALE ADUINO**
 
@@ -139,6 +139,8 @@ void serialEvent(){
 }
 ```
 
+>[Torna all'indice](indexseriale.md)
+
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEwNzc1Mzg2XX0=
+eyJoaXN0b3J5IjpbMjA3NTI5MzE1NCwtMTA3NzUzODZdfQ==
 -->
