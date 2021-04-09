@@ -142,5 +142,5 @@ void serialEvent(){
 >[Torna all'indice](indexseriale.md)
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjA3NTI5MzE1NCwtMTA3NzUzODZdfQ==
+eyJoaXN0b3J5IjpbMjA3NTI5MzE1NF19
 -->
