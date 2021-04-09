@@ -215,29 +215,18 @@ void loop() {
 		btntime = (btntime + 1) % NSTEP;
 		val = !digitalRead(cmdin)); // pulsante pull up
 
-if(switchdf(val)){ //rivelatore di fronte (salita e discesa)
-
-Serial.println("Ho una transizione dell'ingresso");
-
-if(val == HIGH){ // ho un fronte di salita
-
-if(start==true){
-
-start = false;
-
-Serial.println("Ho filtrato un comando");
-
-}else{
-
-start = true;
-
-Serial.println("Ho abilitato un comando");
-
-}
-
-}
-
-btntime = 0;
+		if(switchdf(val)){ //rivelatore di fronte (salita e discesa)
+			Serial.println("Ho una transizione dell'ingresso");
+			if(val == HIGH){ // ho un fronte di salita
+				if(start==true){
+					start = false;
+					Serial.println("Ho filtrato un comando");
+				}else{
+					start = true;
+					Serial.println("Ho abilitato un comando");
+				}
+			}
+			btntime = 0;
 
 }
 
@@ -267,5 +256,5 @@ return changed;  // rivelatore di fronte (salita o discesa)
 
 }
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTk2OTkwMTAxMywtNzA3MjI1MTgyXX0=
+eyJoaXN0b3J5IjpbLTM3MTM1ODQ4NSwtNzA3MjI1MTgyXX0=
 -->
