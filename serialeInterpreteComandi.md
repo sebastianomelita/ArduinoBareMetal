@@ -43,7 +43,7 @@ In IOT, come in molti altri ambiti, attualmente si preferisce la costruzione di 
 Scrivere un programma Arduino che manda sulla seriale ogni due secondi lo stato di un led (cucina).
 Accenderlo con un pulsante toggle.
 Ricevere dalla seriale il comando di accensione nel formato
-<cucina>:<on> oppure <cucina>:<off>
+"cucina":"on" oppure "cucina":"off"
 */
 #define TBASE 100
 #define NSTEP 100
@@ -200,5 +200,5 @@ void loop(){
 ```
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNTY4NTkyNjQ2XX0=
+eyJoaXN0b3J5IjpbLTIxMDUzODIzMTBdfQ==
 -->
