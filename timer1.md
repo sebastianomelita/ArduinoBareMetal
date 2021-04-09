@@ -75,12 +75,4 @@ bool timerState <span class="token operator">=</span> false<span class="token pu
 	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>I timers possono anche essere in funzione <strong>all’interno di funzioni</strong> che sono richiamate all’interno del loop():</p>
-<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">{</span>
-	<span class="token function">poll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// funzione con **blocchi** di codice eseguiti **prima** o **dopo** di certi eventi</span>
-	……<span class="token punctuation">.</span>
-<span class="token punctuation">}</span>
-
-</code></pre>
 
