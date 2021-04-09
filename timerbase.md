@@ -126,7 +126,7 @@ void stopTimer(){
 	timerState=0;
 }
 
-//verifica se è arrivato il tempo di far scattare il timer
+// polling: verifica se è arrivato il tempo di far scattare il timer
 void aggiornaTimer(){
 	if((timerState == 1) && (millis() - startTime >= timelapse)){
 		timerState=0;
