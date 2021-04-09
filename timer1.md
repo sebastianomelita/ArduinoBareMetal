@@ -32,7 +32,7 @@ bool timerState <span class="token operator">=</span> false<span class="token pu
 	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>timerState<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> ptimer1<span class="token punctuation">)</span> <span class="token operator">&gt;=</span> <span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span><span class="token punctuation">)</span> PERIODO<span class="token punctuation">)</span>
 	<span class="token punctuation">{</span>
 		ptimer1 <span class="token operator">=</span> <span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		<span class="token comment">//....</span>
 		<span class="token comment">// istruzioni eseguite periodicamente, se attivo…</span>
 	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
