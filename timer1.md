@@ -82,24 +82,5 @@ bool timerState <span class="token operator">=</span> false<span class="token pu
 	……<span class="token punctuation">.</span>
 <span class="token punctuation">}</span>
 
-<span class="token keyword">void</span> <span class="token function">poll</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">{</span>
-	<span class="token keyword">if</span><span class="token punctuation">(</span>condA<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token comment">// evento che attiva il timer (può essere ricorrente ma, in generale, è aperiodico)</span>
-		atimer1 <span class="token operator">=</span> <span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-
-	<span class="token comment">// finchè non si raggiunge TLIMITE1 ritorna senza fare nulla</span>
-	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> – atime1<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span><span class="token punctuation">)</span> TLIMITE1<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
-	<span class="token comment">//BLOCCO_A</span>
-
-	<span class="token comment">// finchè non si raggiunge TLIMITE2 ritorna dopo avere eseguito il blocco di istruzioni A</span>
-	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> – atimer2<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span><span class="token punctuation">)</span> TLIMITE2<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
-	<span class="token comment">//BLOCCO_B</span>
-
-	<span class="token comment">// finchè non si raggiunge TLIMITE3 ritorna dopo avere eseguito il blocco di istruzioni</span>
-
-	<span class="token comment">// A e B</span>
-	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> – atimer1<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span><span class="token punctuation">)</span> TLIMITE3<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
 </code></pre>
 
