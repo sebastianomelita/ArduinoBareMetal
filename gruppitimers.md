@@ -1,7 +1,7 @@
 ## **GRUPPI DI TIMERS**
 
 La logica di molti pulsanti potrebbe essere gestita sotto forma di dati strutturati (multivalore) in una delle seguenti maniere: array, struct ed oggetti. 
-In ciascuna delle precedenti strutture dati vanno memorizzate almeno 3 cose: lo stato del timer, la memoria del suo istante iniziale, la durata del conteggio del tempo prima del timeout
+In ciascuna delle precedenti strutture dati vanno memorizzate almeno 3 cose: lo **stato** del timer, la memoria del suo **istante iniziale**, la **durata** del conteggio del tempo prima del timeout
 La differenza tra i vari modi di gestione consiste in come si memorizzano stati, ingressi e logica:
 - **Array**. Una sola funzione gestisce la logica di più pulsanti, stato e ingressi passati sono memorizzati sulle celle di due array paralleli. Gli array sono comuni a tutti i timer, ma ogni indice di entrambi gli array si riferisce sempre ad un solo timer.
 - **Struct**. Una sola funzione gestisce la logica di più timer, stato e ingressi passati sono memorizzati su una struct separata per ogni timer. Al limite le struct possono essere organizzate in un array, soprattutto in presenza di molti timer.
