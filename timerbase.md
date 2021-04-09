@@ -134,14 +134,14 @@ void onElapse(){
 void loop(){
 	aggiornaTimer();  //aggiorna il primo timer
 		
-		//se accade qualcosa parte il timer
-		if(A){
-			startTimer(1000);
-		}
-		
-		if(B){ //se accade qualcosa blocco il timer
-			stopTimer();   
-		}
+	//se accade qualcosa parte il timer
+	if(A){
+		startTimer(1000);
+	}
+
+	if(B){ //se accade qualcosa blocco il timer
+		stopTimer();   
+	}
 }
 
 ```
