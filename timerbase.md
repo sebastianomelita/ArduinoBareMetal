@@ -1,3 +1,4 @@
+>[Torna all'indice](indextimers.md)
 ## **POLLED TIMERS**
 
 E’ possibile realizzare dei timers ottenuti eseguendo, ad ogni loop(), il **polling della funzione millis()** per verificare che questa abbia raggiunto il **valore finale** stabilito come target (obiettivo), quando ciò accade, possiamo fare eseguire il blocco di istruzioni **associato** a questo evento.
