@@ -19,7 +19,8 @@ if ((millis() – atimer2) < (unsigned long) TLIMITE2)
     // istruzioni eseguite finchè NON scade il timer 2
 }
 }
-
+```
+```C++
 I timers possono anche essere in funzione all’interno di funzioni che sono richiamate all’interno del loop():
 void loop()
 {
