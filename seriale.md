@@ -166,7 +166,7 @@ void loop(){
 	}
 }
 ```
-I comandi possono anche essere inviati in maniera meno ambigua utilizzando un formato preventivamente concordato tra mittente e destinatario. In questo caso 
+I comandi possono anche essere inviati in maniera meno ambigua utilizzando un formato preventivamente concordato tra mittente e destinatario. In questo caso comandi diversi in genere condividono per lo meno un formato comune. Il formato dei messaggi più utilizzato 
 **Esempio di gestione comandi locali e remoti via seriale**
 ```C++
 /*
@@ -248,6 +248,6 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDk1NTQ0NjU5LC0xMzAxODI3NTg1LDE5Nj
-MwMjQ5NzcsMTk5MjA4MzQ4N119
+eyJoaXN0b3J5IjpbLTE2ODM4MTg4MDQsLTEzMDE4Mjc1ODUsMT
+k2MzAyNDk3NywxOTkyMDgzNDg3XX0=
 -->
