@@ -1,5 +1,6 @@
 Analogamente si potrebbe eseguire un blocco di codice continuamente solo all’interno di un tempo massimo prestabilito, cioè solo prima dello scadere del timer:
 
+```C++
 //Timer aperiodico 2
 #define TLIMITE	1000
 unsigned long atimer2;
@@ -46,7 +47,9 @@ if ((millis() – atimer2) < (unsigned long) TLIMITE2) return;
 // A e B
 if ((millis() – atimer1) < (unsigned long) TLIMITE3) return;
 }
+```
 
+```C++
 Attenzione ad un errore insidioso:
 void poll()
 {
@@ -63,9 +66,12 @@ if ((millis() – atimer2) < (unsigned long) TLIMITE2)
 }
 
 }
+```
 
 In questa situazione se scade il primo timer viene comunque controllato lo scadere del secondo. La cascata degli if equivale ad un OR logico sulle condizioni di scadenza.
 Se voglio che ne accada solo una posso scrivere così:
+
+```C++
 void poll()
 {
 if ((millis() – atimer1) < (unsigned long) TLIMITE1)
@@ -79,9 +85,12 @@ if ((millis() – atimer1) < (unsigned long) TLIMITE1)
 }
 }
 
+```
 Dove l’ordine stabilisce la priorità di valutazione.
 
 Alcuni codici, ritenendo un evento disabilitante per tutto il resto della funzione, talvolta fanno così:
+
+```C++
 void poll()
 {
 if ((millis() – atimer1) < (unsigned long) TLIMITE1)
@@ -92,3 +101,4 @@ if ((millis() – atimer1) < (unsigned long) TLIMITE1)
 }
 // ISTRUZIONI IMPORTANTI SI MA CHE…QUALCHE VOLTA…NON SI FANNO…
 }
+```
