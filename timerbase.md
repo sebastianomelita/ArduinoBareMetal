@@ -13,6 +13,8 @@ I timers possono essere **periodici**, ed uno di questi era proprio lo schedulat
 
 - **istruzioni triggerate** (scatenate) dal timer. Vengono eseguite (o non eseguite) in base al **tempo** **misurato** dal timer
 
+- **condizione di attivazione** posta in punto qualsiasi del loop determina, quando è vera, la partenza del timer
+
 - (opzionale) la **variabile stato** del timer che **abilita** il timer quando serve e lo **disabilita** quando non serve per evitare **attivazioni spurie** accidentali.
 
 Un esempio di **timer periodico** (del tutto analogo ad un o schedulatore) potrebbe apparire così:
@@ -44,8 +46,7 @@ unsigned long atimer1;
 
 void loop()
 {
-	// condizione che valuta l’accadere di un certo evento
-	// di attivazione del conteggio del tempo
+	// blocco condizione di attivazione
 	if(condA){
 		atimer1 = millis();
 	}
@@ -72,8 +73,7 @@ void loop()
 		// istruzioni eseguite allo scadere del timer 1
 	}
 	
-	// condizione che valuta l’accadere di un certo evento
-	// di attivazione del conteggio del tempo
+	// blocco condizione di attivazione
 	if(condA){
 		atimer1 = millis();
 	}
@@ -97,15 +97,14 @@ void loop()
 		onElapse();
 	}
 	
-	// condizione che valuta l’accadere di un certo evento
-	// di attivazione del conteggio del tempo
+	// blocco condizione di attivazione
 	if(condA){
 		atimer1 = millis();
 	}
 }
 ```
 
-Reset del timer, polling del tempo trascorso e istruzioni triggerate (scatenate) dal timer potrebbero anche essere rinchiuse in altrettante funzioni:
+Reset del timer, polling del tempo trascorso e istruzioni triggerate (scatenate) dal timer potrebbero anche essere rinchiuse in altrettante funzioni, inoltre viene introdotta una variabile di stato che potrebbe essere adoperata sia per bloccare il timer in un certo momento come per riattivarlo in un momento successivo fino al completamento del tempo rimanente:
 
 ```C++
 //inizio variabili timer
@@ -113,13 +112,15 @@ unsigned long startTime;
 unsigned long timelapse;
 byte timerState=0;
 //fine variabili timer
-
+.
+// funzione di attivazione
 void startTimer(unsigned long duration){
 	timerState=1;
 	timelapse=duration;
 	startTime=millis();
 }
 
+// funzione di attivazione
 void stopTimer(){
 	timerState=0;
 }
@@ -142,12 +143,12 @@ void loop(){
 	//blocco polling
 	aggiornaTimer();  //aggiorna il primo timer
 		
-	//se accade qualcosa parte il timer
+	// blocco condizione di attivazione
 	if(A){
 		startTimer(1000);
 	}
 
-	if(B){ //se accade qualcosa blocco il timer
+	if(B){ blocco condizione di disattivazione
 		stopTimer();   
 	}
 }
