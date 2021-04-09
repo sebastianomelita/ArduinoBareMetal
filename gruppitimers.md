@@ -104,23 +104,12 @@ void loop(){
   if(millis()-precm>=(unsigned long)TBASE){   //schedulatore e antirimbalzo
     precm=millis();   
     step=(step+1)%NSTEP; //conteggio circolare
-    
-    // comunicazione stato led
-    if(!(step%100)){
-      Serial.println();
-      Serial.print("stato led scala: ");
-      Serial.println(stato[SCALA]);
-      Serial.print("stato led sala: ");
-      Serial.println(stato[SALA]);
-      Serial.print("stato led ingresso: ");
-      Serial.println(stato[INGRESSO]);
-    }
-    
+       
     //polling pulsante SCALA
     in=digitalRead(CMDSCALA);
     if(transizione(in,SCALA)){
-      if(in==HIGH){ //se fronte di salita
-        startTimer(TSCALA, TMRSCALA);
+      if(in==HIGH){ //se fronte di salita (pressione)
+        startTimer(TSCALA, TMRSCALA); 
         stato[SCALA] = !stato[SCALA];
         digitalWrite(LEDSCALA,stato[SCALA]);
         Serial.print("stato led scala: ");
@@ -131,13 +120,13 @@ void loop(){
     //polling pulsante SALA
     in=digitalRead(CMDSALA);
       if(transizione(in,SALA)){
-        if(in==HIGH){ //se fronte di salita
+        if(in==HIGH){ //se fronte di salita (pressione)
 	  startTimer(TSPEGNI, TMRSPEGNI);
           stato[SALA] = !stato[SALA];
           digitalWrite(LEDSALA,stato[SALA]);
           Serial.print("stato led sala: ");
       	  Serial.println(stato[SALA]);
-	}else{
+	}else{ // rilascio
 	  stopTimer(TMRSPEGNI);
 	}
     }    
@@ -151,7 +140,7 @@ void loop(){
           digitalWrite(LEDINGRESSO,stato[INGRESSO]);
           Serial.print("stato led ingresso: ");
       	  Serial.println(stato[INGRESSO]);
-	}else{
+	}else{ // rilascio
 	  stopTimer(TMRSPEGNI);
 	}
     }
