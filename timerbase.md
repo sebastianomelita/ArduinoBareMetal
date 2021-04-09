@@ -147,6 +147,6 @@ void loop(){
 		stopTimer();   
 	}
 }
-
+>[Torna all'indice](indextimers.md)
 ```
 
