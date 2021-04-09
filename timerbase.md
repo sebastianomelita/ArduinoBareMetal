@@ -97,11 +97,9 @@ void poll()
 	// finchè non si raggiunge TLIMITE3 ritorna dopo avere eseguito il blocco di istruzioni
 
 	// A e B
-
-if ((millis() – atimer1) < (unsigned long) TLIMITE3) return;
-
+	if ((millis() – atimer1) < (unsigned long) TLIMITE3) return;
 }
-
+```
 Attenzione ad un **errore insidioso**:
 
 void poll()
@@ -338,5 +336,5 @@ return changed;  // rivelatore di fronte (salita o discesa)
 
 }
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTI2OTIwODU4XX0=
+eyJoaXN0b3J5IjpbLTcwNzIyNTE4Ml19
 -->
