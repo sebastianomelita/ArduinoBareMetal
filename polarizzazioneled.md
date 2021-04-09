@@ -37,7 +37,8 @@ Di conseguenza, i **valori delle attivazioni** dei segmenti (mediante i livelli 
 La situazione delle porte del microcontrollore in caso di led collegato ad **anodo a massa (GND)** può sembrare, dal punto di vista elettrico, abbastanza insolita. In questo caso la corrente scorre quando **l’anodo** del segmento va a potenziale +5V (**esterno**, ad es. una batteria) mentre la **porta** è posta a un potenziale di GND (**interno**, ottenuto impostandola col livello logico **LOW**). La porta in questo caso, pur essendo in modo OUTPUT, assorbe la corrente del led dirottandola verso GND (massa). Si tratta di una modalità di funzionamento speciale non sempre pienamente supportata da tutti i dispositivi che è detta modo DRAIN (scarico) o anche modalità SINK (pozzo). Si contrappone al modo usuale delle porte poste a livello logico alto che sono, di fatto, assimilabili a un **generatore di tensione,** internamente posto a +5V, che eroga corrente verso GND (o un qualunque potenziale più basso della porta). In genere la **corrente massima** assorbibile in modo DRAIN **è minore** di quella massima erogabile quando la porta è posta in modo generatore di tensione.
 
 **Polarizzazione con catodo a massa.**
-
+![Pulsanti](led1.png)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNzU4OTgxNzUxLDE1MTM3NTU3ODVdfQ==
+eyJoaXN0b3J5IjpbLTEzMDg3Njg3NjAsNzU4OTgxNzUxLDE1MT
+M3NTU3ODVdfQ==
 -->
