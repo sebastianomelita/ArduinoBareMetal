@@ -104,7 +104,7 @@ void loop()
 }
 ```
 
-Reset del timer, polling del tempo trascorso e istruzioni triggerate (scatenate) dal timer potrebbero anche essere rinchiuse in altrettante funzioni. 
+Reset del timer, polling del tempo trascorso e istruzioni triggerate (scatenate) dal timer potrebbero anche essere **rinchiuse** in altrettante **funzioni**. 
 Inoltre viene introdotta una **variabile di stato** che potrebbe essere adoperata sia per **bloccare** il timer in un certo momento come per **riattivarlo** in un momento successivo, per il tempo rimanente prima del timeout:
 
 ```C++
