@@ -49,8 +49,7 @@ bool timerState <span class="token operator">=</span> false<span class="token pu
 	<span class="token keyword">if</span><span class="token punctuation">(</span>condA<span class="token punctuation">)</span><span class="token punctuation">{</span>
 		atimer1 <span class="token operator">=</span> <span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token punctuation">}</span>
-	
-	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> atimer1<span class="token punctuation">)</span> <span class="token operator">&gt;=</span> <span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span><span class="token punctuation">)</span> TLIMITE1<span class="token punctuation">)</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> atimer1<span class="token punctuation">)</span> <span class="token operator">&gt;=</span> <span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span><span class="token punctuation">)</span> TLIMITE1<span class="token punctuation">)</span>
 	<span class="token punctuation">{</span>
 		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 		<span class="token comment">// istruzioni eseguite allo scadere del timer 1</span>
