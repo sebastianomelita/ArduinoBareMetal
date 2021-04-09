@@ -20,8 +20,9 @@ if ((millis() – atimer2) < (unsigned long) TLIMITE2)
 }
 }
 ```
-```C++
 Molti timers possono anche essere attivi nascosti all’interno di funzioni che sono richiamate all’interno del loop():
+
+```C++
 void loop()
 {
 poll();  // funzione con blocchi di codice eseguiti prima o dopo di certi eventi
