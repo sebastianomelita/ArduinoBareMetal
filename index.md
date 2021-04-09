@@ -1,8 +1,9 @@
 
 
 ## Arduino Bare Metal
-1. [Pulsanti](indexpulsanti.md)
-2. [Seriale](indexseriale.md)
+1. [Polarizzazione led](polarizzazioneled.md)
+2. [Pulsanti](indexpulsanti.md)
+3. [Seriale](indexseriale.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTYxNDQ2MTMzOF19
+eyJoaXN0b3J5IjpbMTk1MTYzNTI1NV19
 -->
