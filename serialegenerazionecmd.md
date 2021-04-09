@@ -1,13 +1,13 @@
 
 
 
->>[Torna all'indice](indexseriale.md)
+>[Torna all'indice](indexseriale.md)
 La generazione dei comandi sulla seriale può avvenire in qualunque punto del codice, anche all'interno di uno schedulatore, ma non dentro una ISR.
 La generazione dei messaggi in genere avviene:
 - **periodicamente**, cioè inserita dentro uno schedulatore che la genera a la invia ad intervalli regolari. Utile per generare un report periodico dello stato del sistema.
 - **triggerata da eventi**, cioè il messaggio viene generato all'accadere di un evento specifico come la pressione di un pulsante, il superamento di una soglia per il valore di un sensore, ecc.
 - **su richiesta**, in seguito al polling eseguito da un master potrebbero generare una risposta che descriva lo stato generale del sistema o di una sua parte specificata come parametro della richiesta.
-- 
+
 ```C++
 /*
 Scrivere un programma Arduino che manda sulla seriale ogni due secondi lo stato di due led 
@@ -76,5 +76,5 @@ void loop(){
 
 >[Torna all'indice](indexseriale.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTEzNzY2MTI0MTBdfQ==
+eyJoaXN0b3J5IjpbLTExNzQwMzcyNzddfQ==
 -->
