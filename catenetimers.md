@@ -20,7 +20,8 @@ if ((millis() – atimer2) < (unsigned long) TLIMITE2)
 }
 }
 ```
-Molti timers possono anche essere attivi nascosti all’interno di funzioni che sono richiamate all’interno del loop(). Possono realizzare una codice che, benchè sia eseguito linearmente, viene eseguito aggiungendo nuovi pezzi in istanti successivi:
+Molti timers possono anche essere attivi nascosti all’interno di funzioni che sono richiamate all’interno del loop(). Possono realizzare una codice che, benchè sia eseguito **linearmente**, viene eseguito aggiungendo nuove parti in istanti via via **successivi**, man mano che passa il tempo. 
+Ogni evento che scade prima viene ritenuto **disabilitante** per tutto il resto della funzione, realizzano una catena di eventi:
 
 ```C++
 void loop()
@@ -89,18 +90,3 @@ if ((millis() – atimer1) < (unsigned long) TLIMITE1)
 
 ```
 Dove l’ordine stabilisce la priorità di valutazione.
-
-Alcuni codici, ritenendo un evento disabilitante per tutto il resto della funzione, talvolta fanno così:
-
-```C++
-void poll()
-{
-if ((millis() – atimer1) < (unsigned long) TLIMITE1)
-{
-    .... 
-    // istruzioni eseguite finchè NON scade il timer 1
-    return 0; // NON SONO PRONTO! RICONTROLLA AL PROSSIMO GIRO…
-}
-// ISTRUZIONI IMPORTANTI SI MA CHE…QUALCHE VOLTA…NON SI FANNO…
-}
-```
