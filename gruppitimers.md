@@ -22,7 +22,7 @@
 enum btn
 {
   SCALA        =0,
-  SALA     	   =1,
+  SALA         =1,
   INGRESSO     =2
 };
 enum timer
