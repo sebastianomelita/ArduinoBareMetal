@@ -78,5 +78,5 @@ void loop(){
 
 >[Torna all'indice](indexseriale.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTIxMzM1MDQwODAsMTM1MDU5NDE1N119
+eyJoaXN0b3J5IjpbLTIxMzM1MDQwODBdfQ==
 -->
