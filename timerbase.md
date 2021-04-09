@@ -168,40 +168,26 @@ void stopTimer(){
 	timerState=0;
 }
 
-	//verifica se è arrivato il tempo di far scattare il timer
+//verifica se è arrivato il tempo di far scattare il timer
 void aggiornaTimer(){
-
-if((timerState == 1) && (millis() - startTime >= timelapse)){
-
-timerState=0;
-
-onElapse();
-
-}
-
+	if((timerState == 1) && (millis() - startTime >= timelapse)){
+		timerState=0;
+		onElapse();
+	}
 }
 
 // azione da compiere allo scadere del timer, definita fuori dal loop
-
 void onElapse(){
-
-//azione da compiere
-
-.......
-
+	//azione da compiere
+	.......
 }
 
 void loop(){
-
-aggiornaTimer();  //aggiorna il primo timer
-
-//se accade qualcosa parte il timer
-
-if(A){
-
-startTimer(1000);
-
-}
+	aggiornaTimer();  //aggiorna il primo timer
+	//se accade qualcosa parte il timer
+	if(A){
+		startTimer(1000);
+	}
 
 if(B){ //se accade qualcosa blocco il timer
 
@@ -295,5 +281,5 @@ return changed;  // rivelatore di fronte (salita o discesa)
 
 }
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbODcyNjU5ODY0LC03MDcyMjUxODJdfQ==
+eyJoaXN0b3J5IjpbLTkxMTY1MTc2OCwtNzA3MjI1MTgyXX0=
 -->
