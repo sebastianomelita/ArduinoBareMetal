@@ -112,8 +112,6 @@ void loop(){
         startTimer(TSCALA, TMRSCALA); 
         stato[SCALA] = !stato[SCALA];
         digitalWrite(LEDSCALA,stato[SCALA]);
-        Serial.print("stato led scala: ");
-        Serial.println(stato[SCALA]);
       }
     }
     
@@ -124,8 +122,6 @@ void loop(){
 	  startTimer(TSPEGNI, TMRSPEGNI);
           stato[SALA] = !stato[SALA];
           digitalWrite(LEDSALA,stato[SALA]);
-          Serial.print("stato led sala: ");
-      	  Serial.println(stato[SALA]);
 	}else{ // rilascio
 	  stopTimer(TMRSPEGNI);
 	}
@@ -138,8 +134,6 @@ void loop(){
           startTimer(TSPEGNI, TMRSPEGNI);
           stato[INGRESSO] = !stato[INGRESSO];
           digitalWrite(LEDINGRESSO,stato[INGRESSO]);
-          Serial.print("stato led ingresso: ");
-      	  Serial.println(stato[INGRESSO]);
 	}else{ // rilascio
 	  stopTimer(TMRSPEGNI);
 	}
