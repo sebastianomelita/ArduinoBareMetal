@@ -145,44 +145,30 @@ void poll()
 	{
 		....
 		// istruzioni eseguite finchè NON scade il timer 1
-	**return 0;** // NON SONO PRONTO! RICONTROLLA AL PROSSIMO GIRO…
-
+		return ; // NON SONO PRONTO! RICONTROLLA AL PROSSIMO GIRO…
+	}
+	// ISTRUZIONI IMPORTANTI SI MA CHE…QUALCHE VOLTA…NON SI FANNO…
 }
-
-// ISTRUZIONI IMPORTANTI SI MA CHE…QUALCHE VOLTA…NON SI FANNO…
-
-}
-
+```
 **Reset** del timer, **polling** del tempo trascorso e **istruzioni triggerate** (scatenate) dal timer potrebbero anche essere rinchiuse in altrettante **funzioni**:
-
+```C++
 //inizio variabili timer
-
 unsigned long startTime;
-
 unsigned long timelapse;
-
 byte timerState=0;
-
 //fine variabili timer
 
 void startTimer(unsigned long duration){
-
-timerState=1;
-
-timelapse=duration;
-
-startTime=millis();
-
+	timerState=1;
+	timelapse=duration;
+	startTime=millis();
 }
 
 void stopTimer(){
-
-timerState=0;
-
+	timerState=0;
 }
 
-//verifica se è arrivato il tempo di far scattare il timer
-
+	//verifica se è arrivato il tempo di far scattare il timer
 void aggiornaTimer(){
 
 if((timerState == 1) && (millis() - startTime >= timelapse)){
@@ -309,5 +295,5 @@ return changed;  // rivelatore di fronte (salita o discesa)
 
 }
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbODI3Njk3NTE3LC03MDcyMjUxODJdfQ==
+eyJoaXN0b3J5IjpbODcyNjU5ODY0LC03MDcyMjUxODJdfQ==
 -->
