@@ -127,8 +127,8 @@ void aggiornaTimer(){
 
 // azione da compiere allo scadere del timer, definita fuori dal loop
 void onElapse(){
-	    //azione da compiere
-		//.......
+	//azione da compiere
+	//.......
 }
 	
 void loop(){
@@ -140,7 +140,7 @@ void loop(){
 		}
 		
 		if(B){ //se accade qualcosa blocco il timer
-				stopTimer();   
+			stopTimer();   
 		}
 }
 
