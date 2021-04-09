@@ -60,7 +60,7 @@ void loop(){
 }
 ```	
 
-**Esempio di generazione triggerata da un evento di un comando**
+**Esempio di generazione triggerata da evento di un comando**
 ```C++
 /*
 1) Scrivere un programma Arduino che accenda due led (ingresso, sala). Accenderli con due pulsanti toggle separati. Lo stato dei led deve essere scritto sulla seriale all'avvenire (occorrenza) di ogni comando.
@@ -152,5 +152,5 @@ void loop(){
 
 >[Torna all'indice](indexseriale.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbNDA5MDI0NzldfQ==
+eyJoaXN0b3J5IjpbLTU1MjY2MTU4XX0=
 -->
