@@ -166,7 +166,8 @@ void loop(){
 	}
 }
 ```
-I comandi possono anche essere inviati in maniera meno ambigua utilizzando un formato preventivamente concordato tra mittente e destinatario. In questo caso comandi diversi in genere condividono per lo meno un formato comune. Il formato dei messaggi più utilizzato 
+I comandi possono anche essere inviati in maniera meno ambigua utilizzando un formato preventivamente concordato tra mittente e destinatario. In questo caso comandi diversi in genere condividono per lo meno un formato comune. I formati dei messaggi più utilizzati in genere sono:
+ 
 **Esempio di gestione comandi locali e remoti via seriale**
 ```C++
 /*
@@ -207,7 +208,6 @@ bool transizione(byte val,byte n){ 	//transizione di un pulsante
 	return cambiato; 
 }
 
-
 void loop(){
 	byte in;
 	if(millis()-precm>=(unsigned long)TBASE){ 	//schedulatore e antirimbalzo
@@ -247,7 +247,7 @@ void loop(){
 	} 	//chiudi schedulatore	
 }
 	
-
+```
 	
 			
 			
@@ -255,7 +255,7 @@ void loop(){
 	
 	
 	
-
+```C++
 /*
 Scrivere un programma Arduino che manda sulla seriale ogni due secondi lo stato di un led (cucina).
 Accenderlo con un pulsante toggle.
@@ -335,6 +335,6 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE3NjQ5MzQ0NDgsLTE2ODM4MTg4MDQsLT
-EzMDE4Mjc1ODUsMTk2MzAyNDk3NywxOTkyMDgzNDg3XX0=
+eyJoaXN0b3J5IjpbNzg2MTkzODI5LC0xNjgzODE4ODA0LC0xMz
+AxODI3NTg1LDE5NjMwMjQ5NzcsMTk5MjA4MzQ4N119
 -->
