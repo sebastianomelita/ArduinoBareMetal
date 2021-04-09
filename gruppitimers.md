@@ -108,6 +108,7 @@ bool transizione(byte val,byte n){  //transizione di un pulsante
 }
 
 void loop(){
+  // polling dei tempi
   aggiornaTimer(TMRSCALA);
   aggiornaTimer(TMRSPEGNI);
   aggiornaTimer(TMRSICUREZZA);
