@@ -3,6 +3,9 @@
 
 ---
 
+<blockquote>
+<p><a href="index.md">Torna all’indice generale</a></p>
+</blockquote>
 <h2 id="polled-timers"><strong>POLLED TIMERS</strong></h2>
 <p>E’ possibile realizzare dei timers ottenuti eseguendo, ad ogni loop(), il <strong>polling della funzione millis()</strong> per verificare che questa abbia raggiunto il <strong>valore finale</strong> stabilito come target (obiettivo), quando ciò accade, possiamo fare eseguire il blocco di istruzioni <strong>associato</strong> a questo evento.</p>
 <p>I timers possono essere <strong>periodici</strong>, ed uno di questi era proprio lo schedulatore adoperato per generare la base degli eventi di sistema, oppure possono essere <strong>aperiodici</strong> (detti anche monostabili), cioè devono essere attivati, con una istruzione apposita, solamente quando serve.</p>
