@@ -169,7 +169,9 @@ void loop(){
 I comandi possono anche essere inviati in maniera meno ambigua utilizzando un formato preventivamente concordato tra mittente e destinatario. In questo caso comandi diversi in genere condividono per lo meno un formato comune. 
 I formati dei messaggi più utilizzati in genere sono:
  - Testo formattato con separatori di campo (spazi, virgole, ecc.) e separatori di riga (\0, \n,\r)
- - 
+ - dati rappresentati sotto forma di oggetti XML
+ - dati rappresentati sotto forma di oggetti JSON
+ In IOT 
 **Esempio di gestione comandi locali e remoti via seriale**
 ```C++
 /*
@@ -337,6 +339,6 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTg4ODEzNjczMywtMTY4MzgxODgwNCwtMT
+eyJoaXN0b3J5IjpbLTk4ODEwNjMzNiwtMTY4MzgxODgwNCwtMT
 MwMTgyNzU4NSwxOTYzMDI0OTc3LDE5OTIwODM0ODddfQ==
 -->
