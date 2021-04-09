@@ -1,6 +1,7 @@
 
 
 
+>[Torna all'indice generale](index.md)
 
 **ACCENSIONE DI UN LED CON UN MICROCONTROLLORE**
 
@@ -41,6 +42,8 @@ La situazione delle porte del microcontrollore in caso di led collegato ad **ano
 
 **Polarizzazione con anodo a massa.**
 ![Pulsanti](led2.png)
+
+>[Torna all'indice generale](index.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE0Nzg5ODI1NzRdfQ==
+eyJoaXN0b3J5IjpbMTM3NzYzOTU4NCwtMTQ3ODk4MjU3NF19
 -->
