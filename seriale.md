@@ -254,7 +254,7 @@ void loop(){
 }
 	
 ```
-Nell'esempio seguente utilizzeremo la funzione cmdParser(instr, "parametro", 10) per realizzare un parser che restituisce il valore ricevuto del parametro inserito come argomento. Un valore negativo significa parametro non trovato, uno positivo parametro trovato con il valore restituito.
+Nell'esempio seguente utilizzeremo la funzione cmdParser(instr, "parametro", 10) per realizzare un parser che restituisce il valore ricevuto del parametro inserito come argomento. Un valore negativo significa parametro non trovato, uno positivo parametro trovato con il valore restituito. L'uilizzo di questa funzione permette di risparmiare qualche riga di codice ed eventualmente la gestione dinamica dei parametri mediante un ciclo che scorre un vettore di parametri e 
 			
 			
 	
@@ -341,6 +341,6 @@ void loop(){
 }
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTc4NTQ1Njg0NiwtMTY4MzgxODgwNCwtMT
+eyJoaXN0b3J5IjpbMTc0NTU5NzE3OCwtMTY4MzgxODgwNCwtMT
 MwMTgyNzU4NSwxOTYzMDI0OTc3LDE5OTIwODM0ODddfQ==
 -->
