@@ -132,7 +132,7 @@ void loop(){
     in=digitalRead(CMDSALA);
       if(transizione(in,SALA)){
         if(in==HIGH){ //se fronte di salita
-		  startTimer(TSPEGNI, TMRSPEGNI);
+	  startTimer(TSPEGNI, TMRSPEGNI);
           stato[SALA] = !stato[SALA];
           digitalWrite(LEDSALA,stato[SALA]);
           Serial.print("stato led sala: ");
@@ -146,7 +146,7 @@ void loop(){
     in=digitalRead(CMDINGRESSO);
       if(transizione(in,INGRESSO)){
         if(in==HIGH){ //se fronte di salita
-		  startTimer(TSPEGNI, TMRSPEGNI);
+          startTimer(TSPEGNI, TMRSPEGNI);
           stato[INGRESSO] = !stato[INGRESSO];
           digitalWrite(LEDINGRESSO,stato[INGRESSO]);
           Serial.print("stato led ingresso: ");
