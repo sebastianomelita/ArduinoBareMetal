@@ -134,7 +134,7 @@ void aggiornaTimer(){
 	}
 }	
 
-// azione da compiere allo scadere del timer, definita fuori dal loop
+// callback: azione **standard** da compiere allo scadere del timer, **definita** fuori dal loop
 void onElapse(){
 	//azione da compiere
 	//.......
