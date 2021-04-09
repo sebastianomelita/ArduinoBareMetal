@@ -4,7 +4,9 @@
 >[Torna all'indice](indexseriale.md)
 
 La generazione dei messaggi sulla seriale può avvenire in qualunque punto del codice, anche all'interno di uno schedulatore, ma non dentro una ISR.
-Un messaggio può
+Un messaggio può essere inviato sulla seriale essenzialmente per:
+- **generare un report ** dello stato del sistema
+-  **generare dei comandi ** con cui configura
 La generazione dei messaggi in genere avviene:
 - **periodicamente**, cioè inserita dentro uno schedulatore che la genera a la invia ad intervalli regolari. Utile per creare un report periodico dello stato del sistema.
 - **triggerata da eventi**, cioè il messaggio viene generato all'accadere di un evento specifico come la pressione di un pulsante, il superamento di una soglia per il valore di un sensore, ecc.
@@ -153,5 +155,5 @@ void loop(){
 
 >[Torna all'indice](indexseriale.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMjM2MzIzNzI4LC01NTI2NjE1OF19
+eyJoaXN0b3J5IjpbMTg1NzY0NTc4NCwtNTUyNjYxNThdfQ==
 -->
