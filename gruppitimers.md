@@ -137,9 +137,9 @@ void loop(){
           digitalWrite(LEDSALA,stato[SALA]);
           Serial.print("stato led sala: ");
       	  Serial.println(stato[SALA]);
-		}else{
-		  stopTimer(TMRSPEGNI);
-		}
+	}else{
+	  stopTimer(TMRSPEGNI);
+	}
     }    
 
     //INGRESSO
@@ -151,9 +151,9 @@ void loop(){
           digitalWrite(LEDINGRESSO,stato[INGRESSO]);
           Serial.print("stato led ingresso: ");
       	  Serial.println(stato[INGRESSO]);
-		}else{
-		  stopTimer(TMRSPEGNI);
-		}
+	}else{
+	  stopTimer(TMRSPEGNI);
+	}
     }
   } //chiudi schedulatore 
   
@@ -161,9 +161,9 @@ void loop(){
     short val;
     String instr = Serial.readString();
 	
-	if(instr.indexOf("\"statosala\":\"on\"") >= 0){
-		startTimer(TSICUREZZA, TMRSICUREZZA);
-		digitalWrite(LEDSPIA, LOW);
+    if(instr.indexOf("\"statosala\":\"on\"") >= 0){
+	startTimer(TSICUREZZA, TMRSICUREZZA);
+	digitalWrite(LEDSPIA, LOW);
     }
   }
 }
