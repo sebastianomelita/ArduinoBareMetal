@@ -9,6 +9,7 @@ La generazione dei messaggi in genere avviene:
 - **triggerata da eventi**, cioè il messaggio viene generato all'accadere di un evento specifico come la pressione di un pulsante, il superamento di una soglia per il valore di un sensore, ecc.
 - **su richiesta**, in seguito al polling eseguito da un master,  si potrebbe generare una risposta che descriva lo stato generale del sistema o di una sua parte specificata come parametro della richiesta.
 
+**Esempio di generazione periodica di un comando**
 ```C++
 /*
 Scrivere un programma Arduino che manda sulla seriale ogni due secondi lo stato di due led 
@@ -77,5 +78,5 @@ void loop(){
 
 >[Torna all'indice](indexseriale.md)
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbMTM1MDU5NDE1N119
+eyJoaXN0b3J5IjpbLTIxMzM1MDQwODAsMTM1MDU5NDE1N119
 -->
