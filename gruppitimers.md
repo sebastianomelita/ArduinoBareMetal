@@ -1,3 +1,4 @@
+>[Torna all'indice](indextimers.md)
 ## **GRUPPI DI TIMERS**
 
 La logica di molti pulsanti potrebbe essere gestita sotto forma di dati strutturati (multivalore) in una delle seguenti maniere: array, struct ed oggetti. 
@@ -162,3 +163,4 @@ void loop(){
   }
 }
 ```
+>[Torna all'indice](indextimers.md)
