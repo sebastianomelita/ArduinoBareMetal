@@ -1,6 +1,6 @@
 
 
-
+>[Torna all'indice](indexpulsanti.md)
 ## **SERIALE ADUINO**
 
 L’interfaccia seriale di Arduino possiede due **registri dati**, uno di **ricezione** (registro RX) da accedere in lettura ed uno di **trasmissione** (registro TX) da accedere in scrittura. Il primo è collegato alla **porta RX** della seriale, il secondo, ovviamente, a **quella TX**. Entrambi hanno la dimensione di un byte, quindi pochissimo spazio a disposizione, ma entrambi posseggono un **registro di stato** ed **eventi** di segnalazione (**interrupt**) che permettono di gestire prontamente la scrittura o la lettura di nuovi dati sui registri facendo in modo che **non vengano mai persi**.
@@ -139,8 +139,9 @@ void serialEvent(){
 	}
 }
 ```
-
+>[Torna all'indice](indexpulsanti.md)
 
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5Njg2MjE3MjJdfQ==
+eyJoaXN0b3J5IjpbLTE3MTI4MzE0NTAsLTE5Njg2MjE3MjJdfQ
+==
 -->
