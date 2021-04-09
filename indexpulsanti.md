@@ -1,14 +1,20 @@
+---
 
->[Torna all'indice generale](index.md)
-## Pulsanti
-1. [Pull Up e Pull Down](PullUP-PullDown.md)
-2. [Fasi applicazione](fasi.md)
-3. [Generazione tempi](gnerazionetempi.md)
-4. [Rimbalzi](rimbalzi.md)
-5. [Pulsanti senza memoria](pulsantememoryless.md)
-6. [Pulsanti con memoria (toggle)](toggle.md)
-7. [Gruppi di pulsanti](gruppipulsanti.md)
-8. [Domande e sitografia](domande.md)
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbMTg1ODI4ODc4Nl19
--->
+
+---
+
+<blockquote>
+<p><a href="index.md">Torna all’indice generale</a></p>
+</blockquote>
+<h2 id="pulsanti">Pulsanti</h2>
+<ol>
+<li><a href="PullUP-PullDown.md">Pull Up e Pull Down</a></li>
+<li><a href="fasi.md">Fasi applicazione</a></li>
+<li><a href="gnerazionetempi.md">Generazione tempi</a></li>
+<li><a href="rimbalzi.md">Rimbalzi</a></li>
+<li><a href="pulsantememoryless.md">Pulsanti senza memoria</a></li>
+<li><a href="toggle.md">Pulsanti con memoria (toggle)</a></li>
+<li><a href="gruppipulsanti.md">Gruppi di pulsanti</a></li>
+<li><a href="domande.md">Domande e sitografia</a></li>
+</ol>
+
