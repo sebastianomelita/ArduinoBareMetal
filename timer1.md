@@ -145,47 +145,4 @@ bool timerState <span class="token operator">=</span> false<span class="token pu
 	<span class="token comment">// ISTRUZIONI IMPORTANTI SI MA CHE…QUALCHE VOLTA…NON SI FANNO…</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p><strong>Reset</strong> del timer, <strong>polling</strong> del tempo trascorso e <strong>istruzioni triggerate</strong> (scatenate) dal timer potrebbero anche essere rinchiuse in altrettante <strong>funzioni</strong>:</p>
-<pre class=" language-c"><code class="prism ++ language-c"><span class="token comment">//inizio variabili timer</span>
-<span class="token keyword">unsigned</span> <span class="token keyword">long</span> startTime<span class="token punctuation">;</span>
-<span class="token keyword">unsigned</span> <span class="token keyword">long</span> timelapse<span class="token punctuation">;</span>
-byte timerState<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token comment">//fine variabili timer</span>
-
-<span class="token keyword">void</span> <span class="token function">startTimer</span><span class="token punctuation">(</span><span class="token keyword">unsigned</span> <span class="token keyword">long</span> duration<span class="token punctuation">)</span><span class="token punctuation">{</span>
-	timerState<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
-	timelapse<span class="token operator">=</span>duration<span class="token punctuation">;</span>
-	startTime<span class="token operator">=</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">void</span> <span class="token function">stopTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-	timerState<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token comment">//verifica se è arrivato il tempo di far scattare il timer</span>
-<span class="token keyword">void</span> <span class="token function">aggiornaTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span>timerState <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token function">millis</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span> startTime <span class="token operator">&gt;=</span> timelapse<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-		timerState<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-		<span class="token function">onElapse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token comment">// azione da compiere allo scadere del timer, definita fuori dal loop</span>
-<span class="token keyword">void</span> <span class="token function">onElapse</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-	<span class="token comment">//azione da compiere</span>
-	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">void</span> <span class="token function">loop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-	<span class="token function">aggiornaTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//aggiorna il primo timer</span>
-	<span class="token comment">//se accade qualcosa parte il timer</span>
-	<span class="token keyword">if</span><span class="token punctuation">(</span>A<span class="token punctuation">)</span><span class="token punctuation">{</span>
-		<span class="token function">startTimer</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-
-	<span class="token keyword">if</span><span class="token punctuation">(</span>B<span class="token punctuation">)</span><span class="token punctuation">{</span> <span class="token comment">//se accade qualcosa blocco il timer</span>
-		<span class="token function">stopTimer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</code></pre>
 
