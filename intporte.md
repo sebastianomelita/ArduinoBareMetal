@@ -3,7 +3,7 @@
 
 Per gestire un interrupt di cambio stato di un pin è necessario
 -	Specificare quale pin nel gruppo. Questa è la variabile PCMSKn (dove n è 0, 1 o 2 dalla tabella seguente). Puoi avere interruzioni su più di un pin.
--	Abilita il gruppo appropriato di interrupt (0, 1 o 2)
+-	Abilitare il gruppo appropriato di interrupt (0, 1 o 2)
 -	Fornire un gestore di interrupt come mostrato sopra
 
 |    ACIS1 | ACIS0                           | 
