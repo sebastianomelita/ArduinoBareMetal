@@ -40,6 +40,7 @@ void loop ()
   // loop doing nothing 
 } 
 ``` 
+![polling vs interrupt](poll-int.png)
 La struttura del codice ricalca lo schema di principio (modello a destra) tipico di una invocazione ISR che avviene tutta all’esterno del loop e in maniera indipendente da questo (che può anche non fare nulla). 
 Il modello a sinistra è invece il tipo schema di gestione della periferica mediante polling puro, cioè la gestione delle periferiche avviene tutta all’interno del loop col programma principale, a margine del task principale.
 Le due righe di codice seguenti sortiscono lo stesso effetto, cioè realizzare l’associazione tra una ISR definita dall’utente e un certo evento di interrupt su una certa porta:
