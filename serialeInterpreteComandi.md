@@ -34,6 +34,7 @@ I formati dei messaggi più utilizzati in genere sono:
  - Testo formattato con separatori di campo (spazi, virgole, ecc.) e separatori di riga (\0, \n,\r)
  - dati rappresentati sotto forma di oggetti XML
  - dati rappresentati sotto forma di oggetti JSON
+
 In IOT, come in molti altri ambiti, attualmente si preferisce la costruzione di messaggi JSON per la proprietà di compattezza che li contraddistingue.
 Nell'esempio seguente utilizzeremo una codifica a tag standard in cui, sia attributi che valori, sono racchiusi tra doppi apici nel formato "attributo":"valore" ma nulla vieta di sostituire  il carattere " con altri tag come, ad esempio, < o >.  Il carattere ':' è utilizzato come delimitatore tra l'attributo ed il suo valore.
  
