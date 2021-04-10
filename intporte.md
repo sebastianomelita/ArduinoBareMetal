@@ -115,14 +115,19 @@ ISR (PCINT0_vect) // handle pin change interrupt for ?? here {}
 |PCIE1 = 0  |   don't enable pin change interrupt on pins PCINT14 through PCINT8 |     ISR (PCINT1_vect) |
 |PCIE0 = 0  |   don't enable pin change interrupt on pins PCINT7 through PCINT0	 |    ISR (PCINT0_vect) |
 
------------------------------------------------------------------------------------------------------------------------------------------------
-PCMSK2 - Pin Change Mask Register 2
-bit           7           6           5           4          3            2            1           0
-	name       PCINT23     PCINT22     PCINT21     PCINT20     PCINT19     PCINT18      PCINT17     PCINT16
-	set to        0           0           0           0           0           1            0           0
+
+**PCMSK2 - Pin Change Mask Register 2**
+| | | | | | | | | | 
+|:----:|:-------|------:|:------|:-----:|:---------:|:-------:|:-----:|:---------:|
+|bit    |       7       |    6      |     5      |     4      |    3       |     2       |     1      |     0  |
+|name   |    PCINT23  |   PCINT22  |   PCINT21    | PCINT20   |  PCINT19  |   PCINT18   |   PCINT17     PCINT16  |
+|set to |      0      |     0      |     0       |    0       |    0      |     1       |     0        |   0     |
+
+```C++
 //Set PCIE0 to enable PCMSK2 scan.
 PCIFR |= (1 << PCIF2);   // clear any outstanding interrupts
 PCICR |= (1 << PCIE2);   // set change interrupt
 PCMSK2 |= (1 << PCINT20);
 ISR (PCINT2_vect) // handle pin change interrupt for A8 - A15 here {}
+```
 
