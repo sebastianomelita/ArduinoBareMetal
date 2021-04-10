@@ -32,11 +32,10 @@ Si possono considerare tipici ingressi:
   *	riconoscimento di particolari campi o flag del messaggio (ack, nack, messaggio dati, messaggio controllo, ecc.)
 
 si possono considerare stati:
-
 - situazione tipiche in cui evolve un protocollo alla ricezione di un certo messaggio:
-  * stato di idle del canale (WAIT_STATE)
-  * stato di attesa di ricezione di un messaggio di controllo entro lo scadere di un timeout (ACK_STATE, ecc.)
-  * stato di attesa di trasmissione di un messaggio di controllo entro lo scadere di un timeout (BACKOFF_STATE, DIFS, ecc.)
+ * stato di idle del canale (WAIT_STATE)
+ * stato di attesa di ricezione di un messaggio di controllo entro lo scadere di un timeout (ACK_STATE, ecc.)
+ * stato di attesa di trasmissione di un messaggio di controllo entro lo scadere di un timeout (BACKOFF_STATE, DIFS, ecc.)
 
 ## **Esempio di un protocollo**
 
