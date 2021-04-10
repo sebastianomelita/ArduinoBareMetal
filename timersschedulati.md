@@ -42,7 +42,7 @@ void loop() {
 		        btntime = 0;
 		}
 		
-// se premo il pulsante sufficientemente a lungo accendi il led
+		// se premo il pulsante sufficientemente a lungo accendi il led
 		if(start && (btntime >= txtime)){
 			digitalWrite(led));
 			start = false;
