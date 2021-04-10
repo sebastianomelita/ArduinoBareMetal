@@ -26,10 +26,10 @@ Si possono considerare tipici ingressi:
 
 -	nessun messaggio. In questo caso, presumibilmente, l’evento che si attende è lo scadere del timeout di un timer (timeout di trasmissione, o timeout di un backoff, ecc.)
 -	l’evento arrivo di un messaggio (messaggio dati, messaggio di controllo, messaggio errato o incompleto, ecc.), valutato in base a:
-  - lunghezza del messaggio
-  - valutazione checksum sul messaggio
-  - riconoscimento indirizzi del messaggio
-  - riconoscimento di particolari campi o flag del messaggio (ack, nack, messaggio dati, messaggio controllo, ecc.)
+    - lunghezza del messaggio
+    - valutazione checksum sul messaggio
+    - riconoscimento indirizzi del messaggio
+    - riconoscimento di particolari campi o flag del messaggio (ack, nack, messaggio dati, messaggio controllo, ecc.)
 
 si possono considerare stati:
 - situazione tipiche in cui evolve un protocollo alla ricezione di un certo messaggio:
