@@ -53,10 +53,10 @@ Talvolta si vogliono realizzare corse critiche che non alterino lo stato inizial
 -	se erano disattivati prima del blocco da proteggere lo devono rimanere anche dopo
 -	se erano attivati prima del blocco da proteggere lo devono rimanere anche dopo
 Una funzione, non sapendo lo stato effettivo degli interrupt al momento della sua invocazione e non volendo alterarli:
-1.	memorizza lo stato corrente degli interrupts (attivati/disattivati) su una variabile di appoggio oldSREG
-2.	disattiva gli interrupts con CLI() oppure noInterrupts()
-3.	esegue il codice proprio della funzione
-4.	ripristina lo stato precedente degli interrupts (attivati/disattivati) memorizzato in oldSREG
+ 1.	memorizza lo stato corrente degli interrupts (attivati/disattivati) su una variabile di appoggio oldSREG
+ 2.	disattiva gli interrupts con CLI() oppure noInterrupts()
+ 3.	esegue il codice proprio della funzione
+ 4.	ripristina lo stato precedente degli interrupts (attivati/disattivati) memorizzato in oldSREG
 
 Esempio che mostra come viene realizzata una corsa critica dentro la funzione millis():
 
