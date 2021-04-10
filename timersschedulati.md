@@ -11,6 +11,14 @@ unsigned short  val;
 byte precval=0; //switchdf e toggle
 byte cmdin=2;
 
+//switch per un solo pulsante attivo su entrambi i fronti
+bool transizione(byte val){
+	bool changed = false;
+	changed = (val != precval); 	// campiona tutte le transizioni
+	precval = val;              	// valore di val campionato al loop precedente 
+	return changed;		// rivelatore di fronte (salita o discesa)
+}
+
 void loop() {
 	if ((millis() - lastTime) > timerDelay) {
 		lastTime = millis();
@@ -38,13 +46,5 @@ void loop() {
 			digitalWrite(led));
 			start = false;
 		}
-}
-
-//switch per un solo pulsante attivo su entrambi i fronti
-bool switchdf(byte val){
-	bool changed = false;
-	changed = (val != precval); 	// campiona tutte le transizioni
-	precval = val;              	// valore di val campionato al loop precedente 
-	return changed;		// rivelatore di fronte (salita o discesa)
 }
 ```
