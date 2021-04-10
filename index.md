@@ -7,6 +7,7 @@
 4. [Polled timers](indextimers.md)
 5. [Interrupts](indexinterrupts.md)
 6. [Macchine a stati finiti](indexstatifiniti.md)
+7. [Esercizi](esercizi.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTk1MTYzNTI1NV19
 -->
