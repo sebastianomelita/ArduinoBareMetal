@@ -56,5 +56,5 @@ void loop ()
   
   }  // end of loop
 ```
- È possibile anche una impostazione che realizza un collegamento interno tra l’uscita del convertitore ADC e l’ingresso del riferimento del comparatore. Queta impostazione permette di modificare il valore del riferimento in base al valore di più ingressi analogici campionati e digitalizzati in intervalli di tempo differenti (multiplexing).
+È possibile anche una impostazione che realizza un collegamento interno tra l’uscita del convertitore ADC e l’ingresso del riferimento del comparatore. Questa impostazione permette di modificare il valore del riferimento in base al valore di più ingressi analogici campionati e digitalizzati in intervalli di tempo differenti (multiplexing).
 
