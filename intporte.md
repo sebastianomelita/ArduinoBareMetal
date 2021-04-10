@@ -69,9 +69,9 @@ The following External Interrupts are available on the Arduino:
 | n/c    |PE6  6  |    8  (fake pin 75) **|
  |n/c    | PE7  7 |     9  (fake pin 76)|
  
-Pin Change Interrupts ----------------------------------------------------------
+Pin Change Interrupts 
 ATMEGA2560 Pin Change Interrupts
-Arduino              Arduino              Arduino
+
 |  Pin  |  PORT | PCINT  |  Pin  |  PORT |    PCINT |      Pin |     PORT |   PCINT|
 |:----:|:-------|------:|:------|:-----:|:---------:|:-------:|:-----:|:--------:|
 |  A8   |  PK0  |16    |   10 |    PB4 |  4    |   SS    | PB0 |  0   |
@@ -89,14 +89,18 @@ PK0 - PK7 - (89 - 82)  - A8 - A15
 
 
 
-EICRA - External Interrupt Control Register A
-	bit         7       6       5       4         3           2          1        0
-	name        -       -       -       -       ISC11       ISC10      ISC01    ISC00
-	set to      0       0       0       0         0           0          0        1
+|EICRA - External Interrupt Control Register A
+|:----:|:-------|------:|:------|:-----:|:---------:|:-------:|:-----:|:--------:|
+|bit   |      7 |     6  |     5 |  4  |       3   |        2 |     1  |      0  |
+|name  |      -  |     -  |     - |  -  |     ISC11 |   ISC10  |  ISC01 |   ISC00|
+|set to |     0   |    0  |     0 |   0 |        0  |        0 |     0   |     1  |
+
+```C++
 PCIFR |= (1 << PCIF2);   // clear any outstanding interrupts
 PCICR |= (1 << PCIE2);   // set change interrupt
 PCMSK2 |= (1 << PCINT20);
 ISR (PCINT0_vect) // handle pin change interrupt for ?? here {}
+```
 
 PCICR - Pin Change Interrupt Control Register	
 	bit         7       6       5       4       3         2          1        0
