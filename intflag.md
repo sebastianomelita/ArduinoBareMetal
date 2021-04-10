@@ -1,3 +1,4 @@
+>[Torna all'indice](indexinterrupts.md)
 ## **Variabili flag**
 
 Una delle esigenze primarie di una ISR() è che sia molto veloce, per far ciò è opportuno che valgano entrambe le condizioni:
@@ -89,3 +90,4 @@ void serialEvent(){
   }
 }
 ```
+>[Torna all'indice](indexinterrupts.md)
