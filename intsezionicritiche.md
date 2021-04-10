@@ -34,8 +34,8 @@ interrupts ()
 Una sezione critica delimita quelle porzioni del codice che devono essere eseguite in maniera strettamente seriale, senza parallelizzazioni.
 Le parallelizzazioni, nel programma principale, possono incrementare le prestazioni di un programma ma, per essere eseguite in maniera safe (sicura), devono riguardare le parti del codice:
 
-•	non condivise tra programma principale e ISR
-•	essere di sola lettura se riguardano informazioni (variabili) condivise tra programma principale e ISR
+-	non condivise tra programma principale e ISR
+-	essere di sola lettura se riguardano informazioni (variabili) condivise tra programma principale e ISR
 
 
 **Sicurezza delle letture**
