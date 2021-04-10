@@ -1,3 +1,4 @@
+>[Torna all'indice generale](index.md)
 **FILA A**
 1) Scrivere un programma Arduino che gestisca un sensore di transito di due sale che ospitano eventi artistici. Il sensore si attiva alla pressione di un pulsante sotto il pavimento. Il gradimento viene valutato contando i calpestii (pressioni). 
 2) Un pulsante di reset in sala comando legge il risultato dei contatori e lo invia in rete tramite la seriale come messaggio JSON e azzera il conteggio subito dopo. 
@@ -21,5 +22,5 @@
 2) Prevedere anche il comando via seriale proveniente da un telecomando.
 3)  Creare un pulsante che comanda l'apertura della scala fintanto che è premuto. Inviare via seriale il conteggio dei metri aperti (uno ogni secondo).
 4) Un pulsante comanda l'accensione di tre pompe antincendio, avanti, destra e sinistra, contando il numero delle pressioni (1:avanti, 2:destra, 3:sinistra).
-
+>[Torna all'indice generale](index.md)
 
