@@ -7,19 +7,18 @@ Nella prima modalità un messaggio viene letto un carattere alla volta ad ogni l
 La seconda modalità, il buffering, usa il loop solo per verificare la disponibilità di dati (byte) nel buffer di ricezione, si controlla inoltre la loro quantità, che ad ogni loop() cresce con nuovi arrivi. Quando il numero di byte ricevuti è sufficiente, oppure quando scade un timer oppure quando si legge (senza prelevarlo) un carattere speciale, allora, e solo allora, i caratteri vengono letti tutti insieme e vengono caricati sul buffer dei messaggi per essere elaborati dall’applicazione. In sostanza, il messaggio, pur essendo controllato in tutti i loop, non viene letto in nessuno meno che in un loop() particolare quando, in una sola volta (solitamente tramite un ciclo while), viene letto tutto intero e caricato sul buffer dell’applicazione. 
 
 
-Esempio di caricamento ad ogni loop
+**Esempio di caricamento ad ogni loop**
 
 Viene considerato un messaggio tutta la parte numerica terminata dai caratteri speciali + e =
 
-
-
+```C++
 int vals[3];
 unsigned count;
 char p;
 char buf[10];
 
 void setup() {                
-// Attiva il protocollo seriale
+  // Attiva il protocollo seriale
   Serial.begin(9600);
   count = 0;
 }
@@ -75,8 +74,8 @@ void loop() {
 		    	Serial.read();    // leggi il carattere speciale e saltalo
 			count++; // passa all’operando successivo
 		}else if(p == '='){ //carichi il secondo operando
-			 Serial.read();    // leggi il carattere speciale e saltalo
-		   	 count = 0;        // torna al primo operando
+			Serial.read();    // leggi il carattere speciale e saltalo
+		   	count = 0;        // torna al primo operando
 			
 			Serial.print("La somma di ");
 			Serial.print(vals[0]);  
@@ -90,6 +89,7 @@ void loop() {
 		}
     }
 }	
+```
 
 Viene considerato un messaggio tutta la parte numerica terminata dai caratteri speciali + e =
 
@@ -97,13 +97,8 @@ La funzione Serial.parseInt() internamente chiama la Serial.available() per effe
 	
 L’esempio seguente mostra come si possa realizzare il riempimento del buffer fino al prossino carattere speciale con un ciclo while.
 
-
-
-
-
-
-Esempio di caricamento in modalità buffering	
-
+**Esempio di caricamento in modalità buffering**	
+```C++
 int vals[3];
 unsigned count, v;
 char p;
@@ -152,3 +147,4 @@ void loop() {
 		}
     }
 }
+```
