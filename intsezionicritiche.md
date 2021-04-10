@@ -3,15 +3,16 @@
 Comandi per abilitare e disabilitare interrupts:
 
 **Abilitazione:**
-
+```C++
 interrupts ();  // or ...
-  sei ();         // set interrupts flag
-  
+sei ();         // set interrupts flag
+```
+
 **Disabilitazione:**
-
+```C++
 noInterrupts ();  // or ...
-  cli ();           // clear interrupts flag
-
+cli ();           // clear interrupts flag
+```
 Sezioni critiche
 Le variabili condivise tra ISR e programma principale devono essere protette da accessi concorrenti, cioè contemporanei tra ISR e altre istruzioni (in genere di scrittura).
 Il problema deriva dal fatto che alcune istruzioni di accesso alle variabili, come le assegnazioni, non sono atomiche, questo significa che sono scomponibili in due o più istruzioni assembly che sono suscettibili di essere separate da una chiamata di interrupt: se la chiamata ISR legge una variabile che è stata scritta solo parzialmente, il risultato può essere impredicibile e causare malfunzionamenti. 
@@ -25,7 +26,6 @@ Una sezione critica delimita quelle porzioni del codice che devono essere esegui
 Le parallelizzazioni, nel programma principale, possono incrementare le prestazioni di un programma ma, per essere eseguite in maniera safe (sicura), devono riguardare le parti del codice:
 •	non condivise tra programma principale e ISR
 •	essere di sola lettura se riguardano informazioni (variabili) condivise tra programma principale e ISR
-
 
 
 **Sicurezza delle letture**
@@ -46,7 +46,7 @@ A maggior ragione, le variabili ad 8bit in Arduino sono sicure anche in lettura 
 Le modifiche a valori maggiori non lo sono, pertanto le variabili a 16 o 32bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati durante una routine di servizio di interrupt, quindi non si verificherà il danneggiamento di una variabile multibyte nell'ISR. Quindi, riassumendo, per variabili multibyte:
 -	dentro l’ISR. il valore di una variabile multibyte non può cambiare perché di default gli interrupt sono disabilitati. Non è necessario usare un blocco noInterrupts()-interrupts().
 -	al di fuori dell'ISR . Il valore in una variabile multibyte può cambiare durante un'operazione di lettura/scrittura che deve essere protetta disabilitando gli interrupt durante la lettura/scrittura e quindi riabilitandoli subito dopo. E’ necessario usare un blocco noInterrupts()-interrupts().
--	
+
 **Salvataggio stato corrente interrupts**
 
 Talvolta si vogliono realizzare corse critiche che non alterino lo stato iniziale degli interrupt, cioè che realizzino questo risultato:
