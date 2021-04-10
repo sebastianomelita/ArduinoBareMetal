@@ -2,6 +2,7 @@
 
 Un'altra applicazione comune per un FSM è la ricezione di un flusso di caratteri dalla porta seriale.
 Per questo esempio supponiamo che un messaggio sia definito come caratteri ASCII leggibili tra un carattere iniziale ("<") e un carattere finale (">").
+
 I caratteri ricevuti tramite una porta seriale potrebbero non essere tutti disponibili contemporaneamente, quindi la funzione dell'FSM è di memorizzare nel buffer tutti i caratteri validi fino alla ricezione del messaggio completo. Inoltre, se ci troviamo nel mezzo di un messaggio e non viene ricevuto alcun carattere per 1 secondo, il messaggio scade e l'FSM dovrebbe risincronizzarsi all'inizio del messaggio successivo.
 
 Possiamo suddividere l'FSM nelle seguenti fasi:
