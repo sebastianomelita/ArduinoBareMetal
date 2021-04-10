@@ -88,7 +88,7 @@ ATMEGA2560 Pin Change Interrupts
 PK0 - PK7 - (89 - 82)  - A8 - A15
 
 
- EICRA - External Interrupt Control Register A 
+**EICRA - External Interrupt Control Register A**
 | | | | | | | | | | 
 |:----:|:-------|------:|:------|:-----:|:---------:|:-------:|:-----:|:---------:|
 |bit   |      7 |     6  |     5 |  4  |       3   |        2 |     1  |      0   |
@@ -102,13 +102,17 @@ PCMSK2 |= (1 << PCINT20);
 ISR (PCINT0_vect) // handle pin change interrupt for ?? here {}
 ```
 
-PCICR - Pin Change Interrupt Control Register	
-	bit         7       6       5       4       3         2          1        0
-	name        -       -       -       -       -       PCIE2      PCIE1    PCIE0
-	set to      0       0       0       0       0         1          0        0
+**PCICR - Pin Change Interrupt Control Register**	
+| | | | | | | | | | 
+|:----:|:-------|------:|:------|:-----:|:---------:|:-------:|:-----:|:---------:|
+|bit    |     7 |      6 |    5|       4|       3   |      2   |    1  |      0    |
+|name  |      -|       -|     -|      -  |     -   |    PCIE2 |   PCIE1|    PCIE0   |
+|set to |     0 |      0|      0|      0|       0   |      1  |      0 |       0   |
+
 PCIE2 = 1     enable pin change interrupt on pins PCINT23 through PCINT16              ISR (PCINT2_vect)
 PCIE1 = 0     don't enable pin change interrupt on pins PCINT14 through PCINT8      ISR (PCINT1_vect)
 PCIE0 = 0     don't enable pin change interrupt on pins PCINT7 through PCINT0	     ISR (PCINT0_vect)
+
 -----------------------------------------------------------------------------------------------------------------------------------------------
 PCMSK2 - Pin Change Mask Register 2
 bit           7           6           5           4          3            2            1           0
