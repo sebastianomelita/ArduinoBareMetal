@@ -14,14 +14,16 @@ Le **variabili flag (bandierina)**, nel contesto degli interrupt, sono delle var
 -	Devono essere “azzerate” dopo essere state “consumate”. Cioè dopo essere state lette devono essere resettate al valore di default di evento non pronto (0, false,ecc.).
 
  
-Il polling di un flag nel loop fa partire, nel programma principale, un task che è complementare a quello eseguito dalla ISR nel realizzare la gestione completa dell’evento di interrupt. Si ha adesso una gestione mista della periferica polling-interrupt che avviene in parte dentro la ISR e in parte dentro il loop principale.
+Il **polling di un flag** nel loop fa partire, nel programma principale, un task che è complementare a quello eseguito dalla ISR nel realizzare la gestione completa dell’evento di interrupt. Si ha adesso una **gestione mista** della periferica **polling-interrupt** che avviene in parte dentro la ISR e in parte dentro il loop principale.
 
 Il polling in questo caso è una soluzione poco costosa perché la lettura periodica di una variabile in memoria è un’operazione molto veloce. Inoltre anche la lettura di una periferica “lenta” nel loop in questo caso sarebbe accettabile perché non verrebbe eseguita periodicamente ma, in maniera asincrona, solo quando il momento buono è segnalato da un flag (in pratica, una forma di polled interrupt, figura a sinistra).
-L’interazione tra ISR e loop() mediante il flag può anche essere bidirezionale, cioè una modifica del flag fatta nel loop() può essere letta all’interno della ISR (figura a destra).
+
+L’interazione tra ISR e loop() mediante il flag può anche essere **bidirezionale**, cioè una modifica del flag fatta nel loop() può essere letta all’interno della ISR (figura a destra).
 
 **Variabili volatili**
 
 Le variabili condivise tra le funzioni ISR e le funzioni normali (come i flag), oltre ad essere eventualmente protette in scrittura da sezioni critiche, dovrebbero essere dichiarate "volatili". Questo dice al compilatore che tali variabili potrebbero cambiare in qualsiasi momento, e quindi il compilatore deve ricaricare la variabile ogni volta che si fa riferimento ad essa, piuttosto che fare affidamento su una copia che potrebbe avere in un registro del processore.
+
 ```C++
 volatile boolean flag;
 
