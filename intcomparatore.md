@@ -15,9 +15,8 @@ All’operazione di confronto del comparatore si possono associare alcuni eventi
 Lo schema interno ad Arduino del comparatore è:
 ![comparatore](comparatore.jpg)
  
-
-
 Un esempio di setup HW delle porte D6 e D7 potrebbe essere:
+![setupporte](setupporte.png)
 
 |    ACIS1 | ACIS0 | Mode           |
 |:--------:|:-----:|:---------------|
