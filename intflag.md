@@ -22,7 +22,7 @@ L’interazione tra ISR e loop() mediante il flag può anche essere **bidirezion
 
 **Variabili volatili**
 
-Le variabili condivise tra le funzioni ISR e le funzioni normali (come i flag), oltre ad essere eventualmente protette in scrittura da sezioni critiche, dovrebbero essere dichiarate "volatili". Questo dice al compilatore che tali variabili potrebbero cambiare in qualsiasi momento, e quindi il compilatore deve ricaricare la variabile ogni volta che si fa riferimento ad essa, piuttosto che fare affidamento su una copia che potrebbe avere in un registro del processore.
+Le variabili **condivise** tra le funzioni ISR e le funzioni normali (come i flag), oltre ad essere eventualmente protette in scrittura da sezioni critiche, dovrebbero essere dichiarate "volatili". Questo dice al compilatore che tali variabili potrebbero cambiare in qualsiasi momento, e quindi il compilatore deve ricaricare la variabile ogni volta che si fa riferimento ad essa, piuttosto che fare affidamento su una copia che potrebbe avere in un registro del processore.
 
 ```C++
 volatile boolean flag;
