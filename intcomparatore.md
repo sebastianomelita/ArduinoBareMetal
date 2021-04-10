@@ -33,7 +33,7 @@ volatile boolean triggered;
 
 ISR (ANALOG_COMP_vect)
   {
-  triggered = true;
+   triggered = true;
   }
 
 void setup ()
@@ -50,8 +50,8 @@ void loop ()
   {
   if (triggered)
     {
-    Serial.println ("Triggered!"); 
-    triggered = false;
+     Serial.println ("Triggered!"); 
+     triggered = false;
     }
   
   }  // end of loop
