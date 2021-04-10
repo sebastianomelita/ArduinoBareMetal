@@ -1,3 +1,4 @@
+>[Torna all'indice](indexinterrupts.md)
 ## **PULSANTE CON INTERRUPT**
 
 Di seguito è riportato un esempio di pulsante con antirimbalzo realizzato con interrupt, polling di un flag e la generazione di un evento pressione/rilascio debounced (senza rimbalzi) grazie ad un timer polled. 
@@ -67,3 +68,4 @@ Vale il **“corto circuito”** degli operatori, cioè nel valutare l’espress
 Valgono le proprietà che:
 -	è vera se le tre condizioni sono contemporaneamente vere
 -	le condizioni a destra sono valutate solo se quelle a sinistra sono vere (la lenta digitalRead() non si fa se non necessario)
+>[Torna all'indice](indexinterrupts.md)
