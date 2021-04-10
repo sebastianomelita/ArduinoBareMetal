@@ -5,7 +5,8 @@ Per gestire un interrupt di cambio stato di un pin è necessario
 -	Abilita il gruppo appropriato di interrupt (0, 1 o 2)
 -	Fornire un gestore di interrupt come mostrato sopra
 
-|---------|----------------------------------|
+|    ACIS1 | ACIS0                           | 
+|:-------:|:--------------------------------:|
 | D0	  | PCINT16 (PCMSK2 / PCIF2 / PCIE2) |
 | D1	  | PCINT17 (PCMSK2 / PCIF2 / PCIE2) |
 | D2	  | PCINT18 (PCMSK2 / PCIF2 / PCIE2) |
