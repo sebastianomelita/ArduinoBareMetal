@@ -172,8 +172,8 @@ int8_t getRxBuffer()
         u8BufferSize ++;
 	// segnala evento di buffer overflow (un attacco hacker?)
         if (u8BufferSize >= MAX_BUFFER){
-			return ERR_BUFF_OVERFLOW;
-	  }
+		return ERR_BUFF_OVERFLOW;
+	}
     }
     return u8BufferSize;
 }
