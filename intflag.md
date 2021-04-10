@@ -22,6 +22,7 @@ L’interazione tra ISR e loop() mediante il flag può anche essere bidirezional
 **Variabili volatili**
 
 Le variabili condivise tra le funzioni ISR e le funzioni normali (come i flag), oltre ad essere eventualmente protette in scrittura da sezioni critiche, dovrebbero essere dichiarate "volatili". Questo dice al compilatore che tali variabili potrebbero cambiare in qualsiasi momento, e quindi il compilatore deve ricaricare la variabile ogni volta che si fa riferimento ad essa, piuttosto che fare affidamento su una copia che potrebbe avere in un registro del processore.
+```C++
 volatile boolean flag;
 
 // Interrupt Service Routine (ISR)
@@ -42,10 +43,15 @@ void loop ()
     // interrupt has occurred
     }
 }  // end of loop
+```
+
 Per semplificare la vita agli sviluppatori, alcune ISR sono fornite direttamente dalle librerie di Arduino.  
 Nell’esempio seguente viene adoperata la ISR serialEvent()che risponde all’evento arrivo di un nuovo carattere nella seriale e che può essere riempita con codice personalizzabile.
+
 Nell’esempio la ISR viene utilizzata per creare una stringa, cioè una parola, unendo i singoli caratteri che man mano arrivano. La stringa è pronta, e quindi il flag viene attivato, quando arriva un carattere di fine linea “\n”.
 Quando il loop principale si accorge del flag attivo ristampa in uscita la parola ottenuta tramite l’istruzione Serial.println.
+
+```C++
 string inputString = "";         // a String to hold incoming data
 boolean volatile stringComplete = false;  // whether the string is complete
 byte byteRead;
@@ -80,3 +86,4 @@ void serialEvent(){
     }
   }
 }
+```
