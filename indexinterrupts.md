@@ -4,3 +4,4 @@
 3. [Flag](intflag.md)
 4. [Pulsante con interrupts](intpulsante.md)
 5. [Comparatore analogico con interrupts](intcomparatore.md)
+6. [Interrupts sulle porte](intporte.md)
