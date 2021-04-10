@@ -1,3 +1,4 @@
+>[Torna all'indice](indexstatifiniti.md)
 ## **ESEMPIO DI SFM**
 Ci concentreremo sugli aspetti pratici della programmazione di un compito utilizzando un FSM, utilizzando il LED lampeggiante come esempio iniziale. Per essere chiari, questa non è un'attività che necessita davvero di un approccio FSM, ma è utile illustrare come passare dal codice lineare a una struttura FSM con un esempio semplice e familiare.
 
@@ -93,3 +94,4 @@ Analizziamo le modifiche effettuate:
 -	lo stato predefinito nell'istruzione switch è una misura difensiva per garantire che qualsiasi stato non definito o danneggiato non arresti l'FSM - uno stato non gestito altrimenti salterebbe semplicemente l'intero blocco switch! Esempi di quando ciò può verificarsi è se viene aggiunto uno stato e si omette il codice nell'istruzione switch o se la memoria della variabile di stato viene danneggiata.
 
 In realtà la definizione degli stati possiede dei margini di discrezionalità e quelli scelti per realizzare il blink possono infatti sembrare un tantino artificiosi.
+>[Torna all'indice](indexstatifiniti.md)
