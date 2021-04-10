@@ -87,12 +87,12 @@ int8_t poll(modbus_t *rt)
 {
 	uint8_t u8current;
 	
-      // controlla quanti caratteri del messaggio sono arrivati
-      // sulla coda di ricezione
-      u8current = Serial.available(); 
+      	// controlla quanti caratteri del messaggio sono arrivati
+      	// sulla coda di ricezione
+      	u8current = Serial.available(); 
     
 	if (u8current == 0){ // nessun messaggio 
-   //allora valuta lo scadere del timer
+		//allora valuta lo scadere del timer
 		if(u8state == ACKSTATE){
 			if(millis()-precAck > timeoutTime){
 				if(retry < MAXATTEMPTS){
@@ -108,42 +108,42 @@ int8_t poll(modbus_t *rt)
 		return 0;  // se non è arrivato nulla ricontrolla al prossimo giro
 	}
 	
-    // se arrivano nuovi caratteri rimani in ascolto
-    // perchè il messaggio è ancora incompleto
-    if (u8current != u8lastRec)
-    {
-        // aggiorna ogni volta che arriva un nuovo carattere!
-	  u8lastRec = u8current;
-        u32time = millis();
-	  // rendi mutuamente esclusivo il blocco di codice
-        return 0;
-    }
+    	// se arrivano nuovi caratteri rimani in ascolto
+    	// perchè il messaggio è ancora incompleto
+    	if (u8current != u8lastRec)
+    	{
+		// aggiorna ogni volta che arriva un nuovo carattere!
+		u8lastRec = u8current;
+		u32time = millis();
+		// rendi mutuamente esclusivo il blocco di codice
+		return 0;
+    	}
     
-    // non arrivano nuovi caratteri ma è troppo presto allora aspetta
-    if ((unsigned long)(millis() -u32time) < (unsigned long)STOP_BIT) 
+    	// non arrivano nuovi caratteri ma è troppo presto allora aspetta
+    	if ((unsigned long)(millis() -u32time) < (unsigned long)STOP_BIT) 
  		// rendi mutuamente esclusivo il blocco di codice
-return 0;
+		return 0;
 	
-    // non arrivano nuovi caratteri ma è passato il tempo di interframe
-    // alllora vuol dire che la trama è completa allora bufferizza
-    int8_t i8state = getRxBuffer();  
+    	// non arrivano nuovi caratteri ma è passato il tempo di interframe
+    	// alllora vuol dire che la trama è completa allora bufferizza
+   	 int8_t i8state = getRxBuffer();  
 	
-    // ma se è palesemente incompleta scartala!
-    if (i8state < PAYLOAD + 1) 
-    {
-	  // rendi mutuamente esclusivo il blocco di codice
-        return i8state;
-    }
+    	// ma se è palesemente incompleta scartala!
+   	if (i8state < PAYLOAD + 1) 
+    	{
+	  	// rendi mutuamente esclusivo il blocco di codice
+        	return i8state;
+    	}
 
-    if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
+    	if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
 		// prendi l'indirizzo di sorgente del messaggio ricevuto
 		// e fallo iventare indirizzo di destinazione del messaggio di ack
-	      ackobj.u8da = u8Buffer[ SA ]; 
-      rcvEvent(rt, i8state); // parallelizza
-	      // se ricevo un messaggio invio l'ack
+		ackobj.u8da = u8Buffer[ SA ]; 
+		rcvEvent(rt, i8state); // parallelizza
+		// se ricevo un messaggio invio l'ack
 		ackobj.u8si = ACK;
 		sendMsg(&ackobj);  
-// funzione che realizza l'azione da compiere all'arrivo del  //messaggio
+		// funzione che realizza l'azione da compiere all'arrivo del  //messaggio
 		rcvEventCallback(rt);
 		// rendi mutuamente esclusivo il blocco di codice
 		return i8state; 
@@ -170,7 +170,7 @@ int8_t getRxBuffer()
     {					  // e mettili sul buffer di ricezione
         u8Buffer[ u8BufferSize ] = Serial.read();
         u8BufferSize ++;
-	  // segnala evento di buffer overflow (un attacco hacker?)
+	// segnala evento di buffer overflow (un attacco hacker?)
         if (u8BufferSize >= MAX_BUFFER){
 			return ERR_BUFF_OVERFLOW;
 	  }
