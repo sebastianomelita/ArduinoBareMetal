@@ -13,7 +13,7 @@ Una rappresentazione alternativa al grafo, buona per la memorizzazione in un PC,
 La macchina a stati finiti è una tecnica importante nella programmazione embedded per creare codice che non si blocchi pur facendo accadere molte cose contemporaneamente (multitasking). Comunemente, si rappresentano con macchine a stati la schedulazione dei processi e dei thread, ma anche l’evoluzione di quei protocolli di comunicazione in cui i dati, scambiati in un certo istante, sono correlati a quelli scambiati in istanti precedenti (ad esempio dati di acquisto solo dopo che sono stati forniti dati di login).
 Ci concentreremo sugli aspetti pratici della programmazione di un compito utilizzando un FSM, utilizzando il LED lampeggiante come esempio iniziale. Per essere chiari, questa non è un'attività che necessita davvero di un approccio FSM, ma è utile illustrare come passare dal codice lineare a una struttura FSM con un esempio semplice e familiare.
 
-Il codice “lineare” avrebbe grossomodo questa forma:
+Il codice **“lineare”** avrebbe grossomodo questa forma:
 
 ```C++
 #define LED_DELAY 1000       // periodo base in millisecondi
@@ -38,7 +38,7 @@ if(millis()-precm >= (unsigned long) LED_DELAY){
 }
 ```
 
-Una prima versione FSM del codice potrebbe essere:
+Una prima **versione FSM** del codice potrebbe essere:
 
 ```C++
 void blink()
