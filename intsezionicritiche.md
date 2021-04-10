@@ -52,6 +52,7 @@ Le modifiche a valori maggiori non lo sono, pertanto le variabili a 16 o 32bit a
 Talvolta si vogliono realizzare corse critiche che non alterino lo stato iniziale degli interrupt, cioè che realizzino questo risultato:
 -	se erano disattivati prima del blocco da proteggere lo devono rimanere anche dopo
 -	se erano attivati prima del blocco da proteggere lo devono rimanere anche dopo
+
 Una funzione, non sapendo lo stato effettivo degli interrupt al momento della sua invocazione e non volendo alterarli:
  1.	memorizza lo stato corrente degli interrupts (attivati/disattivati) su una variabile di appoggio oldSREG
  2.	disattiva gli interrupts con CLI() oppure noInterrupts()
