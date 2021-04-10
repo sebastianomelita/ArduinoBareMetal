@@ -15,6 +15,7 @@ noInterrupts ();  // or ...
 cli ();           // clear interrupts flag
 ```
 
+
 **Sezioni critiche**
 
 Le variabili condivise tra ISR e programma principale devono essere protette da accessi concorrenti, cioè contemporanei tra ISR e altre istruzioni (in genere di scrittura).
@@ -38,6 +39,7 @@ Le parallelizzazioni, nel programma principale, possono incrementare le prestazi
 
 -	non condivise tra programma principale e ISR
 -	essere di sola lettura se riguardano informazioni (variabili) condivise tra programma principale e ISR
+
 
 
 **Sicurezza delle letture**
