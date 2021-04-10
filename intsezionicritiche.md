@@ -2,12 +2,12 @@
 
 Comandi per abilitare e disabilitare interrupts:
 
-Abilitazione:
+**Abilitazione:**
 
 interrupts ();  // or ...
   sei ();         // set interrupts flag
   
-Disabilitazione:
+**Disabilitazione:**
 
 noInterrupts ();  // or ...
   cli ();           // clear interrupts flag
@@ -28,27 +28,30 @@ Le parallelizzazioni, nel programma principale, possono incrementare le prestazi
 
 
 
-Sicurezza delle letture
+**Sicurezza delle letture**
+
 Le operazioni di lettura se avvengono su variabili non condivise (locali al main), anche se interrotte, sono ritenute safe (sicure) perché le interruzioni non danneggiano il loro valore e quindi non creano inconsistenze (valori ambigui, ormai privi di significato): benchè interrotte, in qualunque punto del loop le variabili assumono sempre lo stesso valore se nessuno nel loop le modifica (ed essendo non condivise, nessuno oltre il loop può farlo).
 Le operazioni di lettura su variabili condivise tra loop e ISR, se nel loop avvengono in concomitanza di una scrittura di un task concorrente, cioè dell’ISR, potrebbero portare ad un risultato inconsistente (si potrebbe leggere un misto tra il valore prima e quello dopo la scrittura). 
 Inoltre, anche senza valori inconsistenti, a seguito di letture in punti diversi del loop(), la stessa variabile condivisa potrebbe assumere valori diversi se, in mezzo al codice tra due letture successive, è avvenuta una interruzione che ne ha modificato il valore.
 Per evitare questo tipo di anomalie in lettura, le soluzioni si potrebbero ottenere:
-•	mantenendo le interruzioni
-o	all’inizio del codice del loop, copiare la variabile condivisa su una variabile locale mediante un’operazione di scrittura (assegnamento) che dovrebbe avvenire protetta, da eventuali interruzioni, all’interno di una corsa critica.
-o	nel resto del codice, accedere in lettura alla sola variabile locale che, anche se viene interrotta, manterrà comunque, in ogni parte del codice, il suo valore originale che verrà aggiornato al loop successivo.
-•	eliminando le interruzioni. E’ la soluzione più drastica, basta trattare tutte le operazioni in lettura sulle variabili condivise come se fossero in scrittura e quindi proteggere ogni singolo accesso con una corsa critica che, disabilitando gli interrupt, impedisce le interruzioni. La soluzione può essere macchinosa in presenza di molti accessi o in presenza di istruzioni condizionali, cicli, ecc.
+-	mantenendo le interruzioni
+ -	all’inizio del codice del loop, copiare la variabile condivisa su una variabile locale mediante un’operazione di scrittura (assegnamento) che dovrebbe avvenire protetta, da eventuali interruzioni, all’interno di una corsa critica.
+ -	nel resto del codice, accedere in lettura alla sola variabile locale che, anche se viene interrotta, manterrà comunque, in ogni parte del codice, il suo valore originale che verrà aggiornato al loop successivo.
+-	eliminando le interruzioni. E’ la soluzione più drastica, basta trattare tutte le operazioni in lettura sulle variabili condivise come se fossero in scrittura e quindi proteggere ogni singolo accesso con una corsa critica che, disabilitando gli interrupt, impedisce le interruzioni. La soluzione può essere macchinosa in presenza di molti accessi o in presenza di istruzioni condizionali, cicli, ecc.
 
-Quale codice proteggere?
+**Quale codice proteggere?**
 Il codice da racchiudere in una sezione critica dovrebbe includere tutte le istruzioni suscettibili di essere svolte in maniera non atomica. Alcune, però in Arduino sono, per loro natura, atomiche e non è necessario proteggerle: sono quelle che accedono (in lettura o scrittura) a variabili ad 8bit. 
 Una modifica (scrittura)a una variabile a 8 bit è atomica. Può essere usata in maniera safe sia dentro che fuori un ISR.
 A maggior ragione, le variabili ad 8bit in Arduino sono sicure anche in lettura pur se condivise con una ISR.
 Le modifiche a valori maggiori non lo sono, pertanto le variabili a 16 o 32bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati durante una routine di servizio di interrupt, quindi non si verificherà il danneggiamento di una variabile multibyte nell'ISR. Quindi, riassumendo, per variabili multibyte:
-•	dentro l’ISR. il valore di una variabile multibyte non può cambiare perché di default gli interrupt sono disabilitati. Non è necessario usare un blocco noInterrupts()-interrupts().
-•	al di fuori dell'ISR . Il valore in una variabile multibyte può cambiare durante un'operazione di lettura/scrittura che deve essere protetta disabilitando gli interrupt durante la lettura/scrittura e quindi riabilitandoli subito dopo. E’ necessario usare un blocco noInterrupts()-interrupts().
-Salvataggio stato corrente interrupts
+-	dentro l’ISR. il valore di una variabile multibyte non può cambiare perché di default gli interrupt sono disabilitati. Non è necessario usare un blocco noInterrupts()-interrupts().
+-	al di fuori dell'ISR . Il valore in una variabile multibyte può cambiare durante un'operazione di lettura/scrittura che deve essere protetta disabilitando gli interrupt durante la lettura/scrittura e quindi riabilitandoli subito dopo. E’ necessario usare un blocco noInterrupts()-interrupts().
+-	
+**Salvataggio stato corrente interrupts**
+
 Talvolta si vogliono realizzare corse critiche che non alterino lo stato iniziale degli interrupt, cioè che realizzino questo risultato:
-•	se erano disattivati prima del blocco da proteggere lo devono rimanere anche dopo
-•	se erano attivati prima del blocco da proteggere lo devono rimanere anche dopo
+-	se erano disattivati prima del blocco da proteggere lo devono rimanere anche dopo
+-	se erano attivati prima del blocco da proteggere lo devono rimanere anche dopo
 Una funzione, non sapendo lo stato effettivo degli interrupt al momento della sua invocazione e non volendo alterarli:
 1.	memorizza lo stato corrente degli interrupts (attivati/disattivati) su una variabile di appoggio oldSREG
 2.	disattiva gli interrupts con CLI() oppure noInterrupts()
@@ -56,6 +59,8 @@ Una funzione, non sapendo lo stato effettivo degli interrupt al momento della su
 4.	ripristina lo stato precedente degli interrupts (attivati/disattivati) memorizzato in oldSREG
 
 Esempio che mostra come viene realizzata una corsa critica dentro la funzione millis():
+
+```C++
 unsigned long millis()
 {
   unsigned long m;
@@ -70,3 +75,4 @@ unsigned long millis()
 
   return m;
 }
+```
