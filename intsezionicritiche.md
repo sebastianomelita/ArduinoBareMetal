@@ -1,3 +1,4 @@
+>[Torna all'indice](indexinterrupts.md)
 ## **SEZIONI CRITICHE**
 
 Comandi per abilitare e disabilitare interrupts:
@@ -77,3 +78,4 @@ unsigned long millis()
   return m;
 }
 ```
+>[Torna all'indice](indexinterrupts.md)
