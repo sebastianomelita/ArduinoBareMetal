@@ -57,7 +57,7 @@ void setup ()
 ATmega2560 Support
 External Interrupts 
 The following External Interrupts are available on the Arduino:
-Arduino           
+          
   |Pin   | PORT INT  |   ATmega2560 pin  | 
   |:----:|:-----:|:-------:|
   |21    | PD0 |0 |    43  |
@@ -72,15 +72,16 @@ Arduino
 Pin Change Interrupts ----------------------------------------------------------
 ATMEGA2560 Pin Change Interrupts
 Arduino              Arduino              Arduino
-  Pin  PORT PCINT     Pin   PORT PCINT     Pin   PORT PCINT
-  A8     PK0  16       10     PB4   4       SS     PB0   0
-  A9     PK1  17       11     PB5   5       SCK    PB1   1
- A10     PK2  18       12     PB6   6       MOSI   PB2   2
- A11     PK3  19       13     PB7   7       MISO   PB3   3
- A12     PK4  20       14     PJ1  10
- A13     PK5  21       15     PJ0   9
- A14     PK6  22        0     PE0   8 - this one is a little odd. *
- A15     PK7  23
+  Pin    PORT  PCINT    Pin    PORT     PCINT       Pin      PORT    PCINT
+|:----:|:----|------:|:------|:-----:|:---------:|:-------:|:-----:|:--------:|
+|  A8   |  PK0  |16    |   10 |    PB4 |  4    |   SS    | PB0 |  0   |
+||  A9  |   PK1 | 17  |     11  |   PB5 |  5  |     SCK   | PB1  | 1  |
+| A10   |  PK2 | 18   |    12   |  PB6  | 6   |    MOSI  | PB2 |  2  |
+| A11  |   PK3 | 19   |    13  |   PB7  | 7   |    MISO  | PB3 |  3  |
+| A12  |   PK4 | 20  |     14  |   PJ1 | 10   |       |
+| A13  |   PK5 | 21   |    15  |   PJ0 |  9    |        |      |
+| A14  |   PK6 | 22   |     0   |  PE0 |  8 - this one is a little odd. * |
+| A15  |   PK7 | 23   |        |           |        |
 
 Port K
 
