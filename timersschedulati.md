@@ -1,3 +1,4 @@
+>[Torna all'indice](indextimers.md)
 ## **POLLED TIMERS SCHEDULATI**
 
 Si possono realizzare timer anche a partire dalla base dei tempi misurata da uno schedulatore semplicemente contando i passi raggiunti finchè questi non arrivano ad un valore target, prima del quale, o dopo il quale, far accadere qualcosa.
@@ -48,3 +49,4 @@ void loop() {
 		}
 }
 ```
+>[Torna all'indice](indextimers.md)
