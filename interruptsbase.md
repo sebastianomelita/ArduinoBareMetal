@@ -1,3 +1,4 @@
+>[Torna all'indice](indexinterrupts.md)
 ## **INTERRUPT IN ARDUINO**
 
 Cosa tenere a mente quando si scrive una ISR():
@@ -87,3 +88,5 @@ Le ragioni principali che potrebbero spingere ad usare un interrupt sono:
 -	conversions ADC (da analogico a digitale)
 - rilevare lo stato pronto alla lettura della EEPROM 
 -	rilevare lo stato pronto della Flash memory 
+
+>[Torna all'indice](indexinterrupts.md)
