@@ -28,7 +28,7 @@ void loop() {
 		
 		val = !digitalRead(cmdin)); // pulsante pull up
 		
-		if(switchdf(val)){ 	//rivelatore di fronte (salita e discesa)
+		if(transizione(val)){ 	//rivelatore di fronte (salita e discesa)
 			Serial.println("Ho una transizione dell'ingresso");
                       	if(val == HIGH){ // ho un fronte di salita
 				if(start==true){
