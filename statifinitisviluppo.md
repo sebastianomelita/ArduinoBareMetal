@@ -1,4 +1,5 @@
 
+>[Torna all'indice](indexstatifiniti.md)
 ## **Sviluppo di una FSM**
 
 In linea generale, una linea guida per sviluppare una macchina a stati finiti potrebbe proporre due strade:
@@ -155,3 +156,4 @@ void loop(void)
   // do something else
 }
 ```
+>[Torna all'indice](indexstatifiniti.md)
