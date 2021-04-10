@@ -35,7 +35,7 @@ enum MESSAGE
 // stati del protocollo
 enum PROTO_STATE
 {
-    WAITSTATE             	  	= 1,
+    WAITSTATE             	= 1,
     ACKSTATE                  	= 2
 };
 
