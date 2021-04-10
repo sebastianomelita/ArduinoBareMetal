@@ -3,3 +3,4 @@
 2. [Sezioni critiche](intsezionicritiche.md)
 3. [Flag](intflag.md)
 4. [Pulsante con interrupts](intpulsante.md)
+5. [Comparatore analogico con interrupts](incomp.md)
