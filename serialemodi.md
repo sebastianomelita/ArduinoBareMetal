@@ -2,7 +2,7 @@
 ## **MODALITA DI ELABORAZIONE DEI MESSAGGI**
 
 I messaggi provenienti in ricezione dalla seriale possono essere gestiti nel loop() sostanzialmente in due maniere: 
-- o **un byte alla volta** 
+- **un byte alla volta** 
 - **in buffering**
 
 In entrambi i casi l’applicazione tiene un proprio buffer (**buffer dei messaggi**) dove memorizzare i messaggi ricevuti per poterli elaborare. Si tratta di un buffer **gestito direttamente dall’applicazione** e a parte rispetto a quelli di RX e TX che sono nascosti all’applicazione e gestiti in maniera ad essa trasparente da un apposito driver (funzione di libreria di Aduino).  
