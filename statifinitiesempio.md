@@ -1,3 +1,4 @@
+>[Torna all'indice](indexstatifiniti.md)
 ## **Esempio di un protocollo**
 
 Un'altra applicazione comune per un FSM è la ricezione di un flusso di caratteri dalla porta seriale.
@@ -118,7 +119,7 @@ void loop(void)
   // do something else
 }
 ```
-
+>[Torna all'indice](indexstatifiniti.md)
 
 
 
