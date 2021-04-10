@@ -35,6 +35,7 @@ long myCounter = isrCounter;  // get value set by ISR
 interrupts ()
 ```
 Una sezione critica delimita quelle porzioni del codice che devono essere eseguite in maniera strettamente seriale, senza parallelizzazioni.
+
 Le parallelizzazioni, nel programma principale, possono incrementare le prestazioni di un programma ma, per essere eseguite in maniera safe (sicura), devono riguardare le parti del codice:
 
 -	non condivise tra programma principale e ISR
