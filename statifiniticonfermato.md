@@ -18,8 +18,9 @@ Comportamento in trasmissione.
 -	Se non arriva il messaggio di conferma entro lo scadere di un tempo massimo (timout) allora il protocollo riinvia il messaggio. Questo processo viene ripetuto per un certo numero di volte dopodichè il protocollo rinuncia a trasmettere.
              
 
-Schema di principio del codice:
+**Schema di principio del codice:**
 
+```C++
 // offesets (spiazzamenti) dei campi del messaggio a partire dall’inizio
 enum MESSAGE
 {
@@ -38,8 +39,6 @@ enum PROTO_STATE
     ACKSTATE                  	= 2
 };
 
-
-```C++
 // struttura dati parallela (non serializzata) che costituisce il messaggio
 typedef struct
 {
