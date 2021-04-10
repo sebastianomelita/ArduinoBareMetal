@@ -21,7 +21,7 @@ Un esempio di setup HW delle porte D6 e D7 potrebbe essere:
 
     |    ACIS1 | ACIS0 | Mode           |
     |:--------:|:-----:|:---------------|
-  	 | 0        |  0    | Toggle         |
+  	 |    0     |  0    | Toggle         |
    	|  0       |   1   | Reserved       |
     |	  1      |    0  | Falling Edge   |
     |	  1      |    1  | Rising Edge    |
