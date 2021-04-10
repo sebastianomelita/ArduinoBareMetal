@@ -109,9 +109,10 @@ ISR (PCINT0_vect) // handle pin change interrupt for ?? here {}
 |name  |      -|       -|     -|      -  |     -   |    PCIE2 |   PCIE1|    PCIE0   |
 |set to |     0 |      0|      0|      0|       0   |      1  |      0 |       0   |
 
-PCIE2 = 1     enable pin change interrupt on pins PCINT23 through PCINT16              ISR (PCINT2_vect)
-PCIE1 = 0     don't enable pin change interrupt on pins PCINT14 through PCINT8      ISR (PCINT1_vect)
-PCIE0 = 0     don't enable pin change interrupt on pins PCINT7 through PCINT0	     ISR (PCINT0_vect)
+|-----------|-------------------------------------------------------------------|-------------------------|
+|PCIE2 = 1  |   enable pin change interrupt on pins PCINT23 through PCINT16     |      ISR (PCINT2_vect) |
+|PCIE1 = 0  |   don't enable pin change interrupt on pins PCINT14 through PCINT8 |     ISR (PCINT1_vect) |
+|PCIE0 = 0  |   don't enable pin change interrupt on pins PCINT7 through PCINT0	 |    ISR (PCINT0_vect) |
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 PCMSK2 - Pin Change Mask Register 2
