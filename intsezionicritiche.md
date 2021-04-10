@@ -16,15 +16,24 @@ cli ();           // clear interrupts flag
 ```
 Sezioni critiche
 Le variabili condivise tra ISR e programma principale devono essere protette da accessi concorrenti, cioè contemporanei tra ISR e altre istruzioni (in genere di scrittura).
+
 Il problema deriva dal fatto che alcune istruzioni di accesso alle variabili, come le assegnazioni, non sono atomiche, questo significa che sono scomponibili in due o più istruzioni assembly che sono suscettibili di essere separate da una chiamata di interrupt: se la chiamata ISR legge una variabile che è stata scritta solo parzialmente, il risultato può essere impredicibile e causare malfunzionamenti. 
+
 La soluzione è aver cura, nel programma principale, di effettuare tutte le operazioni di scrittura (modifica del valore) delle variabili condivise tra loop() e ISR in maniera strettamente atomica, cioè le istruzioni assembly sottostanti devono essere svolte o tutte o nessuna.
-Per ottenere, dentro il loop(), l’atomicità delle istruzioni su una variabile è sufficiente che queste siano rese non interrompibili, disabilitando gli interrupt immediatamente prima di esse (CLI) e riabilitandoli immediatamente dopo di esse (STI). L’equivalente ad alto livello di una istruzione assembly CLI è il comando noInterrupts(), mentre l’equivalente ad alto livello di una istruzione assembly STI è il comando interrupts(). 
+
+Per ottenere, dentro il loop(), l’atomicità delle istruzioni su una variabile è sufficiente che queste siano rese non interrompibili, disabilitando gli interrupt immediatamente prima di esse (CLI) e riabilitandoli immediatamente dopo di esse (STI). 
+
+L’equivalente ad alto livello di una istruzione assembly CLI è il comando noInterrupts(), mentre l’equivalente ad alto livello di una istruzione assembly STI è il comando interrupts(). 
+
 Il blocco delimitato da due chiamate successive noInterrupts() e interrupts() viene detto, in gergo, sezione critica. 
+```C++
 noInterrupts ();
 long myCounter = isrCounter;  // get value set by ISR
 interrupts ()
+```
 Una sezione critica delimita quelle porzioni del codice che devono essere eseguite in maniera strettamente seriale, senza parallelizzazioni.
 Le parallelizzazioni, nel programma principale, possono incrementare le prestazioni di un programma ma, per essere eseguite in maniera safe (sicura), devono riguardare le parti del codice:
+
 •	non condivise tra programma principale e ISR
 •	essere di sola lettura se riguardano informazioni (variabili) condivise tra programma principale e ISR
 
