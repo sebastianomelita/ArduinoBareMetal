@@ -122,7 +122,7 @@ bool processInput(bool reset = false)
         state = PROCESS_MESG;
       else if (c != '\0')   // not empty
       {
-        cBuf[lenBuf++] = c;
+        cBuf[lenBuf++] = c; 
         if (lenBuf == MAX_LEN)   // buffer overflow
         {
           state = WAIT_START;
