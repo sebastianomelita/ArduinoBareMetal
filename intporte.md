@@ -83,13 +83,12 @@ ATMEGA2560 Pin Change Interrupts
 | A14  |   PK6 | 22   |     0   |  PE0 |  8 - this one is a little odd. * |
 | A15  |   PK7 | 23   |        |           |        |
 
-Port K
+**Port K**
 
 PK0 - PK7 - (89 - 82)  - A8 - A15
 
 
-
-|EICRA - External Interrupt Control Register A
+EICRA - External Interrupt Control Register A
 |:----:|:-------|------:|:------|:-----:|:---------:|:-------:|:-----:|:--------:|
 |bit   |      7 |     6  |     5 |  4  |       3   |        2 |     1  |      0  |
 |name  |      -  |     -  |     - |  -  |     ISC11 |   ISC10  |  ISC01 |   ISC00|
