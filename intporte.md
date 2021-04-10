@@ -5,27 +5,27 @@ Per gestire un interrupt di cambio stato di un pin è necessario
 -	Abilita il gruppo appropriato di interrupt (0, 1 o 2)
 -	Fornire un gestore di interrupt come mostrato sopra
 
-|---------|--------------------------------|
-|D0	  |PCINT16 (PCMSK2 / PCIF2 / PCIE2)|
-|D1	  |PCINT17 (PCMSK2 / PCIF2 / PCIE2)|
-|D2	  |PCINT18 (PCMSK2 / PCIF2 / PCIE2)|
-|D3	  |PCINT19 (PCMSK2 / PCIF2 / PCIE2)|
-|D4	  |PCINT20 (PCMSK2 / PCIF2 / PCIE2)|
-|D5	  |PCINT21 (PCMSK2 / PCIF2 / PCIE2)|
-|D6	  |PCINT22 (PCMSK2 / PCIF2 / PCIE2)|
-|D7	  |PCINT23 (PCMSK2 / PCIF2 / PCIE2)|
-|D8	  |PCINT0  (PCMSK0 / PCIF0 / PCIE0)|
-|D9	  |PCINT1  (PCMSK0 / PCIF0 / PCIE0)|
-|D10	  |PCINT2  (PCMSK0 / PCIF0 / PCIE0)|
-|D11	  |PCINT3  (PCMSK0 / PCIF0 / PCIE0)|
-|D12	  |PCINT4  (PCMSK0 / PCIF0 / PCIE0)|
-|D13	  |PCINT5  (PCMSK0 / PCIF0 / PCIE0)|
-|A0	  |PCINT8  (PCMSK1 / PCIF1 / PCIE1)|
-|A1	  |PCINT9  (PCMSK1 / PCIF1 / PCIE1)|
-|A2	  |PCINT10 (PCMSK1 / PCIF1 / PCIE1)|
-|A3	  |PCINT11 (PCMSK1 / PCIF1 / PCIE1)|
-|A4	  |PCINT12 (PCMSK1 / PCIF1 / PCIE1)|
-|A5	  |PCINT13 (PCMSK1 / PCIF1 / PCIE1)|
+|---------|----------------------------------|
+| D0	  | PCINT16 (PCMSK2 / PCIF2 / PCIE2) |
+| D1	  | PCINT17 (PCMSK2 / PCIF2 / PCIE2) |
+| D2	  | PCINT18 (PCMSK2 / PCIF2 / PCIE2) |
+| D3	  | PCINT19 (PCMSK2 / PCIF2 / PCIE2) |
+| D4	  | PCINT20 (PCMSK2 / PCIF2 / PCIE2) |
+| D5	  | PCINT21 (PCMSK2 / PCIF2 / PCIE2) |
+| D6	  | PCINT22 (PCMSK2 / PCIF2 / PCIE2) |
+| D7	  | PCINT23 (PCMSK2 / PCIF2 / PCIE2) |
+| D8	  | PCINT0  (PCMSK0 / PCIF0 / PCIE0) |
+| D9	  | PCINT1  (PCMSK0 / PCIF0 / PCIE0) |
+| D10	  | PCINT2  (PCMSK0 / PCIF0 / PCIE0) |
+| D11	  | PCINT3  (PCMSK0 / PCIF0 / PCIE0) |
+| D12	  | PCINT4  (PCMSK0 / PCIF0 / PCIE0) |
+| D13	  | PCINT5  (PCMSK0 / PCIF0 / PCIE0) |
+| A0	  | PCINT8  (PCMSK1 / PCIF1 / PCIE1) |
+| A1	  | PCINT9  (PCMSK1 / PCIF1 / PCIE1) |
+| A2	  | PCINT10 (PCMSK1 / PCIF1 / PCIE1) |
+| A3	  | PCINT11 (PCMSK1 / PCIF1 / PCIE1) |
+| A4	  | PCINT12 (PCMSK1 / PCIF1 / PCIE1) |
+| A5	  | PCINT13 (PCMSK1 / PCIF1 / PCIE1) 
 
 ```C++
 ISR (PCINT0_vect)
