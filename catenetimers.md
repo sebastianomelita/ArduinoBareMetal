@@ -1,3 +1,5 @@
+>[Torna all'indice](indextimers.md)
+
 ## **CATENE TEMPORALI**
 
 Talvolta si potrebbe voler eseguire un blocco di codice **continuamente** ma solo se un evento accade all’interno di un **tempo massimo** prestabilito, cioè solo prima dello scadere di un timer:
@@ -93,3 +95,4 @@ if ((millis() – atimer1) < (unsigned long) TLIMITE1)
 
 ```
 Dove l’ordine stabilisce la priorità di valutazione.
+>[Torna all'indice](indextimers.md)
