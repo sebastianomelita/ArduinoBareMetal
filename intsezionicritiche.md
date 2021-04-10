@@ -45,8 +45,10 @@ Le parallelizzazioni, nel programma principale, possono incrementare le prestazi
 **Sicurezza delle letture**
 
 Le operazioni di lettura se avvengono su variabili non condivise (locali al main), anche se interrotte, sono ritenute safe (sicure) perché le interruzioni non danneggiano il loro valore e quindi non creano inconsistenze (valori ambigui, ormai privi di significato): benchè interrotte, in qualunque punto del loop le variabili assumono sempre lo stesso valore se nessuno nel loop le modifica (ed essendo non condivise, nessuno oltre il loop può farlo).
+
 Le operazioni di lettura su variabili condivise tra loop e ISR, se nel loop avvengono in concomitanza di una scrittura di un task concorrente, cioè dell’ISR, potrebbero portare ad un risultato inconsistente (si potrebbe leggere un misto tra il valore prima e quello dopo la scrittura). 
 Inoltre, anche senza valori inconsistenti, a seguito di letture in punti diversi del loop(), la stessa variabile condivisa potrebbe assumere valori diversi se, in mezzo al codice tra due letture successive, è avvenuta una interruzione che ne ha modificato il valore.
+
 Per evitare questo tipo di anomalie in lettura, le soluzioni si potrebbero ottenere:
 -	mantenendo le interruzioni
  -	all’inizio del codice del loop, copiare la variabile condivisa su una variabile locale mediante un’operazione di scrittura (assegnamento) che dovrebbe avvenire protetta, da eventuali interruzioni, all’interno di una corsa critica.
@@ -56,9 +58,12 @@ Per evitare questo tipo di anomalie in lettura, le soluzioni si potrebbero otten
 **Quale codice proteggere?**
 
 Il codice da racchiudere in una sezione critica dovrebbe includere tutte le istruzioni suscettibili di essere svolte in maniera non atomica. Alcune, però in Arduino sono, per loro natura, atomiche e non è necessario proteggerle: sono quelle che accedono (in lettura o scrittura) a variabili ad 8bit. 
+
 Una modifica (scrittura)a una variabile a 8 bit è atomica. Può essere usata in maniera safe sia dentro che fuori un ISR.
 A maggior ragione, le variabili ad 8bit in Arduino sono sicure anche in lettura pur se condivise con una ISR.
-Le modifiche a valori maggiori non lo sono, pertanto le variabili a 16 o 32bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati durante una routine di servizio di interrupt, quindi non si verificherà il danneggiamento di una variabile multibyte nell'ISR. Quindi, riassumendo, per variabili multibyte:
+Le modifiche a valori maggiori non lo sono, pertanto le variabili a 16 o 32bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati durante una routine di servizio di interrupt, quindi non si verificherà il danneggiamento di una variabile multibyte nell'ISR. 
+
+Quindi, riassumendo, per variabili multibyte:
 -	dentro l’ISR. il valore di una variabile multibyte non può cambiare perché di default gli interrupt sono disabilitati. Non è necessario usare un blocco noInterrupts()-interrupts().
 -	al di fuori dell'ISR . Il valore in una variabile multibyte può cambiare durante un'operazione di lettura/scrittura che deve essere protetta disabilitando gli interrupt durante la lettura/scrittura e quindi riabilitandoli subito dopo. E’ necessario usare un blocco noInterrupts()-interrupts().
 
