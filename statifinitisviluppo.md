@@ -29,7 +29,7 @@ Si possono considerare tipici ingressi:
   * lunghezza del messaggio
   * valutazione checksum sul messaggio
   * riconoscimento indirizzi del messaggio
-  *	riconoscimento di particolari campi o flag del messaggio (ack, nack, messaggio dati, messaggio controllo, ecc.)
+  * riconoscimento di particolari campi o flag del messaggio (ack, nack, messaggio dati, messaggio controllo, ecc.)
 
 si possono considerare stati:
 - situazione tipiche in cui evolve un protocollo alla ricezione di un certo messaggio:
