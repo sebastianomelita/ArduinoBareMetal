@@ -64,6 +64,6 @@ Vale il **“corto circuito”** degli operatori, cioè nel valutare l’espress
 ```C++
 (numberOfButtonInterrupts != 0) && (millis() - lastintTime > DEBOUNCETIME ) && digitalRead(BUTTONPIN) == lastState)
 ```
-valgono le proprietà che:
+Valgono le proprietà che:
 -	è vera se le tre condizioni sono contemporaneamente vere
 -	le condizioni a destra sono valutate solo se quelle a sinistra sono vere (la lenta digitalRead() non si fa se non necessario)
