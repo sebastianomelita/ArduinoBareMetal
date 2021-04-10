@@ -21,7 +21,7 @@ void loop() {
 		
 		if(switchdf(val)){ 	//rivelatore di fronte (salita e discesa)
 			Serial.println("Ho una transizione dell'ingresso");
-                                   if(val == HIGH){ // ho un fronte di salita
+                      	if(val == HIGH){ // ho un fronte di salita
 				if(start==true){
 					start = false;
 					Serial.println("Ho filtrato un comando");
@@ -29,8 +29,8 @@ void loop() {
 					start = true;
 					Serial.println("Ho abilitato un comando");
 				}
-} 
-		           btntime = 0;
+			} 
+		        btntime = 0;
 		}
 		
 // se premo il pulsante sufficientemente a lungo accendi il led
