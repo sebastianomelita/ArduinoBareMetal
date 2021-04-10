@@ -19,6 +19,8 @@ Lo schema interno ad Arduino del comparatore è:
 Un esempio di setup HW delle porte D6 e D7 potrebbe essere:
 
 
+
+    | Colonna 1 | Colonna 2 | Colonna 3 | | : ------------- | : ----------: | -----------: | | Contenuto della cella | Più cose | E ancora | | Puoi anche | Metti i tubi in | Mi piace questo \ | |
     |    ACIS1 | ACIS0 | Mode           |
     |:--------:|:-----:|:---------------|
   	 |    0     |  0    | Toggle         |
