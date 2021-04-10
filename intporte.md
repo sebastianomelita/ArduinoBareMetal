@@ -72,8 +72,8 @@ The following External Interrupts are available on the Arduino:
 Pin Change Interrupts ----------------------------------------------------------
 ATMEGA2560 Pin Change Interrupts
 Arduino              Arduino              Arduino
-  Pin    PORT  PCINT    Pin    PORT     PCINT       Pin      PORT    PCINT
-|:----:|:----|------:|:------|:-----:|:---------:|:-------:|:-----:|:--------:|
+|  Pin  |  PORT | PCINT  |  Pin  |  PORT |    PCINT |      Pin |     PORT |   PCINT|
+|:----:|:-------|------:|:------|:-----:|:---------:|:-------:|:-----:|:--------:|
 |  A8   |  PK0  |16    |   10 |    PB4 |  4    |   SS    | PB0 |  0   |
 ||  A9  |   PK1 | 17  |     11  |   PB5 |  5  |     SCK   | PB1  | 1  |
 | A10   |  PK2 | 18   |    12   |  PB6  | 6   |    MOSI  | PB2 |  2  |
