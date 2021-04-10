@@ -2,4 +2,4 @@
 1. [Interrupt in Arduino](interruptsbase.md)
 2. [Sezioni critiche](intsezionicritiche.md)
 3. [Flag](intflag.md)
-4. [Pulsante con interrupts](indexpulsanti.md)
+4. [Pulsante con interrupts](intpulsante.md)
