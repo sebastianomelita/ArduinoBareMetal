@@ -88,7 +88,8 @@ ATMEGA2560 Pin Change Interrupts
 PK0 - PK7 - (89 - 82)  - A8 - A15
 
 
-| EICRA - External Interrupt Control Register A |
+ EICRA - External Interrupt Control Register A 
+| | | | | | | | | | 
 |:----:|:-------|------:|:------|:-----:|:---------:|:-------:|:-----:|:---------:|
 |bit   |      7 |     6  |     5 |  4  |       3   |        2 |     1  |      0   |
 |name  |      -  |     -  |     - |  -  |     ISC11 |   ISC10  |  ISC01 |   ISC00 |
