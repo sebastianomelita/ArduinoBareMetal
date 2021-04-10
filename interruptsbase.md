@@ -11,6 +11,8 @@ Cosa tenere a mente quando si scrive una ISR():
 
 All’interno di una ISR di default gli interrupt sono disabilitati per cui, tutte le funzioni che ne fanno uso, invocate in una ISR, non funzionerebbero correttamente. Millis() e micros() aggiornano il loro tic con un interrupt che non può quindi essere raccolto in una ISR. Possono però al limite essere usate per ottenere una istantanea del tempo in cui viene eseguita una ISR, ma anche questo uso potrebbe non essere consigliabile: se millis() non è aggiornata con l’interrupt di un timer in tempo utile, allora perde il conteggio di un tic. In generale, il problema non è grave se la ISR viene eseguita velocemente. Millis() per funzionare correttamente deve ricevere un interrupt entro 500 μs, ma ciò non dovrebbe essere un problema visto che una buona ISR non dovrebbe durare più di qualche microsecondo (5 μs per essere ritenuta ben fatta).
 Esempio di un interrupt che rileva la transizione di stato di un pulsante e accende un led:
+
+```C++
 const byte LED = 13;
 const byte BUTTON = 2;
 
@@ -36,7 +38,7 @@ void loop ()
 {
   // loop doing nothing 
 } 
- 
+``` 
 La struttura del codice ricalca lo schema di principio (modello a destra) tipico di una invocazione ISR che avviene tutta all’esterno del loop e in maniera indipendente da questo (che può anche non fare nulla). 
 Il modello a sinistra è invece il tipo schema di gestione della periferica mediante polling puro, cioè la gestione delle periferiche avviene tutta all’interno del loop col programma principale, a margine del task principale.
 Le due righe di codice seguenti sortiscono lo stesso effetto, cioè realizzare l’associazione tra una ISR definita dall’utente e un certo evento di interrupt su una certa porta:
@@ -44,6 +46,7 @@ attachInterrupt (0, switchPressed, CHANGE);    // that is, for pin D2
 attachInterrupt (digitalPinToInterrupt (2), switchPressed, CHANGE); 
 ma la seconda è più portabile su varie versioni di Arduino (i pin interrupt non necessariamente coincidono con i pin delle porte digitali).
 Di seguito è riportata una lista completa degli interruppt di un Arduino:
+```C++
  1  Reset 
  2  External Interrupt Request 0  (pin D2)          (INT0_vect)
  3  External Interrupt Request 1  (pin D3)          (INT1_vect)
@@ -70,16 +73,17 @@ Di seguito è riportata una lista completa degli interruppt di un Arduino:
 24  Analog Comparator                               (ANALOG_COMP_vect)
 25  2-wire Serial Interface  (I2C)                  (TWI_vect)
 26  Store Program Memory Ready                  (SPM_READY_vect)
+```
 Quelli riportati tra parentesi sono i nomi delle ISR che, internamente al sistema, vengono richiamate all’attivazione di un interrupt.
 L'ordine di priorità è la sequenza in cui il processore controlla gli eventi di interrupt. Più in alto è in elenco, maggiore è la priorità. Quindi, ad esempio, una richiesta di interrupt esterno 0 (pin D2) verrebbe servita prima della richiesta di interrupt esterno 1 (pin D3).
 
 Le ragioni principali che potrebbero spingere ad usare un interrupt sono:
-•	To rilevare cambiamenti di valori nelle porte (eg. rotary encoders, button presses)
-•	Watchdog timer (egse non accade nulla dopo 8 seconds, interrompimi)
-•	Timer interrupts – usati per realizzare timer 
-•	Trasferimenti di dati via BUS SPI
-•	Trasferimenti di dati via BUS I2C
-•	Trasferimenti di dati via BUS USART
-•	conversions ADC (da analogico a digitale)
-•	rilevare lo stato pronto alla lettura della EEPROM 
-•	rilevare lo stato pronto della Flash memory 
+-	To rilevare cambiamenti di valori nelle porte (eg. rotary encoders, button presses)
+-	Watchdog timer (egse non accade nulla dopo 8 seconds, interrompimi)
+-	Timer interrupts – usati per realizzare timer 
+-	Trasferimenti di dati via BUS SPI
+- Trasferimenti di dati via BUS I2C
+-	Trasferimenti di dati via BUS USART
+-	conversions ADC (da analogico a digitale)
+- rilevare lo stato pronto alla lettura della EEPROM 
+-	rilevare lo stato pronto della Flash memory 
