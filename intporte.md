@@ -55,18 +55,19 @@ void setup ()
 ```
 
 ATmega2560 Support
-External Interrupts ------------------------------------------------------------
+External Interrupts 
 The following External Interrupts are available on the Arduino:
 Arduino           
-  Pin  PORT INT  ATmega2560 pin
-  21     PD0  0     43
-  20     PD1  1     44
-  19     PD2  2     45
-  18     PD3  3     46
-   2     PE4  4      6
-   3     PE5  5      7
- n/c     PE6  6      8  (fake pin 75) **
- n/c     PE7  7      9  (fake pin 76)
+  |Pin   | PORT  |    INT  |       ATmega2560 pin      |
+  |:----:|:-----:|:-------:|:-------------------------:|
+  |21    | PD0 |0     |43|
+  |20    |PD1  1  |   44|
+  |19    | PD2  2 |    45|
+  |18    | PD3  3  |   46|
+  | 2    |PE4  4  |    6|
+  | 3    | PE5  5  |    7|
+| n/c    |PE6  6  |    8  (fake pin 75) **|
+ |n/c    | PE7  7 |     9  (fake pin 76)|
  
 Pin Change Interrupts ----------------------------------------------------------
 ATMEGA2560 Pin Change Interrupts
