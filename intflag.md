@@ -1,15 +1,15 @@
 ## **Variabili flag**
 
 Una delle esigenze primarie di una ISR() è che sia molto veloce, per far ciò è opportuno che valgano entrambe le condizioni:
-•	ISR corte ovvero con il minor numero di istruzioni possibile
-•	Limitare al massimo l’inserimento di istruzioni lente all’interno di una ISR().
+-	ISR corte ovvero con il minor numero di istruzioni possibile
+-	Limitare al massimo l’inserimento di istruzioni lente all’interno di una ISR().
 Ad esempio, le istruzioni di accesso ad una periferica sono mediamente molto più lente di quelle di accesso di una variabile in RAM 
 D’altro canto però fare, nel programma principale, il polling continuo delle periferiche potrebbe comportare ritardi inutili se queste sono per la maggior parte del tempo inattive. Il polling periodico perlomeno andrebbe dilazionato con uno schedulamento poco frequente per renderlo meno costoso.
 Invece, utilizzare gli interrupt delle periferiche per poterle interrogarle una tantum, all’interno di una ISR, potrebbe essere, in questo caso, una alternativa percorribile per velocizzare di molto l’esecuzione del programma principale (tecnica polled interrupt).
 Le variabili flag (bandierina), nel contesto degli interrupt, sono delle variabili globali comuni (cioè condivise) tra una ISR e il loop() principale che:
-•	Vengono modificate dall’ISR a seguito di un interrupt
-•	Vengono interrogate tramite polling nel loop() principale per determinare se si è completato un’evento secondario collegato all’interrupt della periferica.
-•	Devono essere “azzerate” dopo essere state “consumate”. Cioè dopo essere state lette devono essere resettate al valore di default di evento non pronto (0, false,ecc.).
+-	Vengono modificate dall’ISR a seguito di un interrupt
+-	Vengono interrogate tramite polling nel loop() principale per determinare se si è completato un’evento secondario collegato all’interrupt della periferica.
+-	Devono essere “azzerate” dopo essere state “consumate”. Cioè dopo essere state lette devono essere resettate al valore di default di evento non pronto (0, false,ecc.).
 
  
 Il polling di un flag nel loop fa partire, nel programma principale, un task che è complementare a quello eseguito dalla ISR nel realizzare la gestione completa dell’evento di interrupt. Si ha adesso una gestione mista della periferica polling-interrupt che avviene in parte dentro la ISR e in parte dentro il loop principale.
