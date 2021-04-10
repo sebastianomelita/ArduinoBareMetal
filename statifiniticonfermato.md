@@ -8,11 +8,11 @@ Il protocollo ha un’unica coda, di dimensione fissa, usata come:
 La funzione sendMsg() vengono chiamate nel loop in modo asincrono, quando l’applicazione ha qualcosa da trasmettere
 La funzione poll() è chiamata in ogni loop in modo periodico e continuativo, alla massima velocità della CPU. Il suo scopo è stare in perenne ricezione del canale cercando di riconoscere il momento in cui è stato ricevuto un messaggio completo e valido, quando ciò accade, carica il messaggio sulla coda di ricezione.
 
-Comportamento in ricezione. 
+**Comportamento in ricezione.** 
 -	Il protocollo notifica l‘arrivo di un messaggio chiamando una funzione di callback  rcvEventCallback(rt) che ha per parametro il record (la struct) su cui è caricato il messaggio in arrivo (header+payload) in formato parallelo (non serializzato). 
 -	Ad ogni arrivo di un messaggio il protocollo risponde trasmettendo un messaggio di ack alla volta del mittente del messaggio ricevuto.
 
-Comportamento in trasmissione. 
+**Comportamento in trasmissione.** 
 -	L’applicazione chiama la funzione sendMsg(txobj) dove txobj è il messaggio in formato non serializzato sotto forma di record (struct)
 -	Ad ogni invio il protocollo fa partire un timer di trasmissione che può essere fermato all’arrivo di un messaggio di conferma (ack) da parte del ricevente
 -	Se non arriva il messaggio di conferma entro lo scadere di un tempo massimo (timout) allora il protocollo riinvia il messaggio. Questo processo viene ripetuto per un certo numero di volte dopodichè il protocollo rinuncia a trasmettere.
