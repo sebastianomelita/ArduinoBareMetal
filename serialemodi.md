@@ -1,7 +1,7 @@
 >[Torna all'indice](indexseriale.md)
 ## **MODALITA DI ELABORAZIONE DEI MESSAGGI**
 
-I messaggi provenienti in ricezione dalla seriale possono essere **letti** nel loop() sostanzialmente in **due maniere**: 
+I **messaggi** provenienti in ricezione dalla seriale possono essere **letti** nel loop() sostanzialmente in **due maniere**: 
 - **un byte alla volta** 
 - **in buffering**
 
