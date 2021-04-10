@@ -139,7 +139,7 @@ bool processInput(bool reset = false)
     default:
       state = WAIT_START;
       break;
-   }
+   } 
  return(b);
  }
  
