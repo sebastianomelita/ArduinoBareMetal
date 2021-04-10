@@ -50,10 +50,10 @@ void loop() {
 		}
     }
 }
+```
 
-
-Esempio di caricamento in modalità buffering			
-			
+**Esempio di caricamento in modalità buffering**			
+```C++			
 int vals[3];
 unsigned count;
 char p;
