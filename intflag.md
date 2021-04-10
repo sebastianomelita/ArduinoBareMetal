@@ -14,6 +14,7 @@ Le **variabili flag (bandierina)**, nel contesto degli interrupt, sono delle **v
 -	Vengono interrogate tramite polling nel loop() principale per determinare se si è completato un’evento secondario collegato all’interrupt della periferica.
 -	Devono essere “azzerate” dopo essere state “consumate”. Cioè dopo essere state lette devono essere resettate al valore di default di evento non pronto (0, false,ecc.).
 
+![intflag](intflag.png)
  
 Il **polling di un flag** nel loop fa partire, nel programma principale, un task che è complementare a quello eseguito dalla ISR nel realizzare la gestione completa dell’evento di interrupt. Si ha adesso una **gestione mista** della periferica **polling-interrupt** che avviene in parte dentro la ISR e in parte dentro il loop principale.
 
