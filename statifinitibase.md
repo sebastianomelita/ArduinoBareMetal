@@ -1,3 +1,4 @@
+indexstatifiniti.md
 **MACCHINE A STATI FINITI**
 
 Un automa a stati finiti (o macchina a stati finiti) è un modello astratto utile per rappresentare il comportamento di un sistema. 
