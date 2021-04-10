@@ -13,7 +13,7 @@ All’operazione di confronto del comparatore si possono associare alcuni eventi
 -	**toggle:** segnala entrambi gli eventi precedenti (con soglie differenti per ciascuno per evitare oscillazioni)
 
 Lo schema interno ad Arduino del comparatore è:
-
+![comparatore](comparatore.jpg)
  
 
 
