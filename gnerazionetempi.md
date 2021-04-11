@@ -142,16 +142,16 @@ Per ottenere una cadenza periodica precisa è necessario usare una forma diversa
 unsigned long tass = 0;
 if ((millis() - tass) >= periodo)
 {
-tass += periodo;
-....
+	tass += periodo;
+	....
 }
 ```
 Invece la forma seguente è errata. La condizione viene valutata in ritardo rispetto al momento ideale, “reimpostando” la variabile ‘tass” al tempo attuale, questo ritardo si aggiunge a tutti i ritardi precedenti. Con questa forma ci si può aspettare un errore di diversi secondi al minuto o anche peggiore.
 ```C++
 if ((millis() - tass) >= periodo)
 {
-tass = millis();
-....
+	tass = millis();
+	....
 }
 ```
 >[Torna all'indice generale](index.md)
