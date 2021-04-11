@@ -18,7 +18,7 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
 -	polling di funzioni o di flag legati ad eventi HW o SW (verifica della disponibilità di dati in ricezione su un canale tramite Serial.available(), verifica dell’avvenuto scadere di un timeout tramite millis(), ecc.)
 
 Si possono considerare **stati**:
--	situazione in cui evolve un protocollo alle quali corrisponde un ben preciso messaggio
+-	situazione in cui evolve un protocollo alla quale corrisponde un ben preciso messaggio
 -	situazione in cui si trova l’applicazione alla quale corrisponde un preciso elenco di azioni possibili
 
 Nello specifico di un **protocollo di comunicazione**:
