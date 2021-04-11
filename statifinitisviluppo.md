@@ -2,14 +2,14 @@
 >[Torna all'indice](indexstatifiniti.md)
 ## **Sviluppo di una FSM**
 
-In linea generale, una linea guida per sviluppare una macchina a stati finiti potrebbe proporre due strade:
-Prima valutare gli ingressi e poi gli stati:
--	scrivere tante funzioni (o blocchi di codice mutuamente esclusivi di una stessa funzione) quanti sono tutti i possibili ingressi
--	dentro ogni funzione (o blocco di codice) scrivere uno switch-case (o un blocco if-else-if) con tutti i soli stati raggiungibili dall’ingresso che essa rappresenta
+In linea generale, una **linea guida per** sviluppare una macchina a stati finiti potrebbe proporre due strade: 
+- Prima valutare gli ingressi e poi gli stati:
+    - scrivere tante funzioni (o blocchi di codice mutuamente esclusivi di una stessa funzione) quanti sono tutti i possibili ingressi
+    - dentro ogni funzione (o blocco di codice) scrivere uno switch-case (o un blocco if-else-if) con tutti i soli stati raggiungibili dall’ingresso che essa rappresenta
 
-oppure, alternativamente, prima valutare gli stati e poi gli ingressi:
--	scrivere uno switch-case con tutti gli stati possibili del sistema
--	all’interno di ogni campo dello switch-case valutare soltanto tutti i possibili ingressi che potrebbero generare una transizione da quel particolare stato
+- oppure, alternativamente, prima valutare gli stati e poi gli ingressi:
+   - scrivere uno switch-case con tutti gli stati possibili del sistema
+   - all’interno di ogni campo dello switch-case valutare soltanto tutti i possibili ingressi che potrebbero generare una transizione da quel particolare stato
 
 In generale, si possono considerare ingressi:
 -	eventi generati dall’utente (input dati, pressione di un pulsante, ecc.)
