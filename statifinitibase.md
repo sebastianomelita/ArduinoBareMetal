@@ -16,5 +16,7 @@ L'usuale rappresentazione grafica di un automa a stati finiti è il grafo orient
 
 Una rappresentazione alternativa al grafo, buona per la memorizzazione in un PC, è la matrice di transizione, dove, per ogni stato (righe) e per ogni ingresso (colonne) si trova, all’incrocio, il valore dello stato successivo.
 
-La macchina a stati finiti è una tecnica importante nella programmazione embedded per creare codice che non si blocchi pur facendo accadere molte cose contemporaneamente (multitasking). Comunemente, si rappresentano con macchine a stati la schedulazione dei processi e dei thread, ma anche l’evoluzione di quei protocolli di comunicazione in cui i dati, scambiati in un certo istante, sono correlati a quelli scambiati in istanti precedenti (ad esempio dati di acquisto solo dopo che sono stati forniti dati di login).
+La macchina a stati finiti è una tecnica importante nella programmazione embedded per creare codice che non si blocchi pur facendo accadere molte cose contemporaneamente (multitasking). 
+
+Comunemente, si rappresentano con macchine a stati la schedulazione dei processi e dei thread, ma anche l’evoluzione di quei protocolli di comunicazione in cui i dati, scambiati in un certo istante, sono correlati a quelli scambiati in istanti precedenti (ad esempio dati di acquisto solo dopo che sono stati forniti dati di login).
 >[Torna all'indice](indexstatifiniti.md)
