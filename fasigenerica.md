@@ -14,7 +14,7 @@ il **colloquio** si può realizzare sostanzialmente usando due **tecniche di ges
 
 Il **polling** degli ingressi è una attività che, insieme al codice del programma, si effettua **all'interno del loop()**.
 
-Una **iSR()** è una funzione a parte, **esterna al loop()** che viene richiamata in risposta ad un evento di interrupt.
+Una **ISR()** è una funzione a parte, **esterna al loop()** che viene richiamata in risposta ad un evento di interrupt.
 
 Sia che venga notificato con un interrupt, sia che venga rilevato dall'appplicazione, in qualche modo si genera un **evento di input** che deve essere gestito. 
 
