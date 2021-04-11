@@ -156,4 +156,4 @@ void loop(void)
   // do something else
 }
 ```
->[Torna all'indice](indexstatifiniti.md)
+>[Torna all'indice](indexstatifiniti.md) 
