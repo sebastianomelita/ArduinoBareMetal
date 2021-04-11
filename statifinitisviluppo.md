@@ -32,7 +32,7 @@ Si possono considerare tipici **ingressi**:
     - riconoscimento indirizzi del messaggio
     - riconoscimento di particolari campi o flag del messaggio (ack, nack, messaggio dati, messaggio controllo, ecc.)
 
-si possono considerare **stati**:
+Si possono considerare **stati**:
 - situazione tipiche in cui evolve un protocollo alla ricezione di un certo messaggio:
   * stato di idle del canale (WAIT_STATE)
   * stato di attesa di ricezione di un messaggio di controllo entro lo scadere di un timeout (ACK_STATE, ecc.)
