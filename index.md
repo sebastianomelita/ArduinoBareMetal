@@ -2,7 +2,7 @@
 
 ## Arduino Bare Metal
 1. [Polarizzazione led](polarizzazioneled.md)fasi.md
-2. [Fasi applicazione](fasi.md)
+2. [Fasi applicazione](fasigenerica.md)
 3. [Generazione tempi](gnerazionetempi.md)
 4. [Pulsanti](indexpulsanti.md)
 5. [Seriale](indexseriale.md)
