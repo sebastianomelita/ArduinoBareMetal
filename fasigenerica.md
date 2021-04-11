@@ -8,7 +8,7 @@
 
 Un microcontrollore ha la specificità di avere integrate nello stesso chip un gran numero di periferiche con le quali una generica applicazione in qualche modo deve colloquiare.
 
-il colloquio si può realizzare sostanzialmente usando due tecniche:
+il **colloquio** si può realizzare sostanzialmente usando due **tecniche di gestione**:
 - **polling**. Le periferiche vengono interrogate periodicamente osservando i loro **stato**, se questo è **ready** cioè **pronto** per una determinata modalità di accesso (lettura, scrittura o lettura/scrittura) allora **l'applicazione** legge il valore della periferica con una opportuna istruzione di **I/O**. Questa tecnica si dice sincrona in quando i tempi di accesso alla periferica sono prevedibili in quanto stabiliti dall'applicazione).
 - **interrupt** Le periferiche segnalano la loro disponibilità (o necessità) di comunicare con la CPU (e quindi con l'applicazione) solamente quando sono pronte inviando un particolare segnale che viaggia dalla periferica alla CPU attraverso il bus controlli detto segnale di interrupt. Il segnale di Interrupt sospende l'esecuzione dell'applicazione e attiva una funzione di servizio, detta ISR (Interrupt Service Routine), che gestirà la comunicazione con la periferica. Questa tecnica si dice asincrona in quando i tempi di accesso alla periferica non sono prevedibili in quanto stabiliti sa un sistema esterno fuori dal controllo del nostro sistema.
 
