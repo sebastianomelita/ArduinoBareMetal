@@ -9,17 +9,17 @@
 Un microcontrollore ha la specificità di avere integrate nello stesso chip un gran numero di periferiche con le quali una generica applicazione in qualche modo deve colloquiare.
 
 il **colloquio** si può realizzare sostanzialmente usando due **tecniche di gestione**:
-- **polling**. Le periferiche vengono interrogate periodicamente osservando i loro **stato**, se questo è **ready** cioè **pronto** per una determinata modalità di accesso (lettura, scrittura o lettura/scrittura) allora **l'applicazione** legge il valore della periferica con una opportuna istruzione di **I/O**. Questa tecnica si dice sincrona in quando i tempi di accesso alla periferica sono prevedibili in quanto stabiliti dall'applicazione).
-- **interrupt** Le periferiche segnalano la loro disponibilità (o necessità) di comunicare con la CPU (e quindi con l'applicazione) solamente quando sono pronte inviando un particolare segnale che viaggia dalla periferica alla CPU attraverso il bus controlli detto segnale di interrupt. Il segnale di Interrupt sospende l'esecuzione dell'applicazione e attiva una funzione di servizio, detta ISR (Interrupt Service Routine), che gestirà la comunicazione con la periferica. Questa tecnica si dice asincrona in quando i tempi di accesso alla periferica non sono prevedibili in quanto stabiliti sa un sistema esterno fuori dal controllo del nostro sistema.
+- **polling**. Le periferiche vengono interrogate periodicamente osservando i loro **stato**, se questo è **ready** cioè **pronto** per una determinata modalità di accesso (lettura, scrittura o lettura/scrittura) allora **l'applicazione** legge il valore della periferica con una opportuna istruzione di **I/O**. Questa tecnica si dice **sincrona** poichè i tempi di accesso alla periferica sono prevedibili in quanto stabiliti dall'applicazione).
+- **interrupt** Le periferiche segnalano la loro disponibilità (o necessità) di comunicare con la CPU (e quindi con l'applicazione) solamente quando sono pronte inviando un particolare segnale che viaggia dalla periferica alla CPU attraverso il bus controlli, detto segnale di interrupt. Il segnale di Interrupt sospende l'esecuzione dell'applicazione e attiva una funzione di servizio, detta ISR (Interrupt Service Routine), che gestirà la comunicazione con la periferica. Questa tecnica si dice **asincrona** poichè i tempi di accesso alla periferica non sono prevedibili in quanto stabiliti sa un sistema esterno fuori dal controllo del nostro sistema.
 
-Il polling degli ingressi è una attività che, insieme al codice del programma, si effettua all'interno del loop().
-Una iSR è una funzione a parte, esterna al loop() che viene richiamata in risposta ad un evento di interrupt.
+Il **polling** degli ingressi è una attività che, insieme al codice del programma, si effettua **all'interno del loop()**.
+Una **iSR()** è una funzione a parte, **esterna al loop()** che viene richiamata in risposta ad un evento di interrupt.
 
-Sia che venga notificato con un interrupt, sia che venga rilevato dall'appplicazione, in qualche modo si genera un evento di input che deve essere gestito. 
+Sia che venga notificato con un interrupt, sia che venga rilevato dall'appplicazione, in qualche modo si genera un **evento di input** che deve essere gestito. 
 
-Eventi di input possono essere di varia natura: l'input di un pulsante, l'input da una seriale, l'input da una porta digitale in genere. Qualunque sia il tipo di dispositiv,o nello sviluppo del ragionamento che faremo adesso, lo possiamo assimilare ad un generico **sensore**.
+Eventi di input possono essere di varia natura: l'input di un pulsante, l'input da una seriale, l'input da una porta digitale in genere. Qualunque sia il tipo di dispositivo nello sviluppo del ragionamento che faremo adesso, lo possiamo assimilare ad un generico **sensore**.
 
-In definitiva, se il nostro "sensore" è un pulsante, dovremmo vedere la pressione del pulsante come un generico **evento di input** al quale il microcontrollore **risponde** generando un **output** dopo avere **elaborato una logica di comando**. Possiamo interpretare **la logica di comando** come l’algoritmo che genera la risposta all’evento.
+In definitiva, se il nostro **"sensore"** è un pulsante, dovremmo vedere la pressione del pulsante come un generico **evento di input** al quale il microcontrollore **risponde** generando un **output** dopo avere **elaborato una logica di comando**. Possiamo interpretare **la logica di comando** come l’algoritmo che genera la risposta all’evento.
 
 Il discorso è generale e non vale solo per i pulsanti ma per qualunque **applicazione** eseguita da un microcontrollore, che, non a caso, in ambito industriale è spesso indicato come **Logic Solver**.
 
