@@ -1,6 +1,6 @@
 
 
->[Torna all'indice](indexpulsanti.md)
+>[Torna all'indice generale](index.md)
 # **GENERAZIONE DI TEMPI**
 
 ## **DELAY() E MILLIS()**
@@ -154,7 +154,7 @@ tass = millis();
 ....
 }
 ```
->[Torna all'indice](indexpulsanti.md)
+>[Torna all'indice generale](index.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTEwNDI2NDY0N119
 -->
