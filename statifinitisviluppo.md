@@ -23,7 +23,7 @@ Si possono considerare stati:
 
 Nello specifico di un protocollo di comunicazione:
 
-Si possono considerare tipici ingressi:
+Si possono considerare tipici **ingressi**:
 
 -	nessun messaggio. In questo caso, presumibilmente, l’evento che si attende è lo scadere del timeout di un timer (timeout di trasmissione, o timeout di un backoff, ecc.)
 -	l’evento arrivo di un messaggio (messaggio dati, messaggio di controllo, messaggio errato o incompleto, ecc.), valutato in base a:
@@ -32,7 +32,7 @@ Si possono considerare tipici ingressi:
     - riconoscimento indirizzi del messaggio
     - riconoscimento di particolari campi o flag del messaggio (ack, nack, messaggio dati, messaggio controllo, ecc.)
 
-si possono considerare stati:
+si possono considerare **stati**:
 - situazione tipiche in cui evolve un protocollo alla ricezione di un certo messaggio:
   * stato di idle del canale (WAIT_STATE)
   * stato di attesa di ricezione di un messaggio di controllo entro lo scadere di un timeout (ACK_STATE, ecc.)
