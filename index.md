@@ -1,14 +1,15 @@
 
 
 ## Arduino Bare Metal
-1. [Polarizzazione led](polarizzazioneled.md)
-2. [Generazione tempi](gnerazionetempi.md)
-3. [Pulsanti](indexpulsanti.md)
-4. [Seriale](indexseriale.md)
-5. [Polled timers](indextimers.md)
-6. [Interrupts](indexinterrupts.md)
-7. [Macchine a stati finiti](indexstatifiniti.md)
-8. [Esercizi](esercizi.md)
+1. [Polarizzazione led](polarizzazioneled.md)fasi.md
+2. [Fasi applicazione](fasi.md)
+3. [Generazione tempi](gnerazionetempi.md)
+4. [Pulsanti](indexpulsanti.md)
+5. [Seriale](indexseriale.md)
+6. [Polled timers](indextimers.md)
+7. [Interrupts](indexinterrupts.md)
+8. [Macchine a stati finiti](indexstatifiniti.md)
+9. [Esercizi](esercizi.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTk1MTYzNTI1NV19
 -->
