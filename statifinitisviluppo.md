@@ -11,17 +11,17 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
    - scrivere uno switch-case con tutti gli stati possibili del sistema
    - all’interno di ogni campo dello switch-case valutare soltanto tutti i possibili ingressi che potrebbero generare una transizione da quel particolare stato
 
-In generale, si possono considerare ingressi:
+**In generale**, si possono considerare **ingressi**:
 -	eventi generati dall’utente (input dati, pressione di un pulsante, ecc.)
 -	eventi in risposta ad eventi generati dall’utente (invio di un messaggio su un canale, attivazione di un timer, ecc.) 
 -	eventi generati dall’HW (interrupt che segnalano lo scadere di un timer, o l’arrivo di un dato sul canale)
 -	polling di funzioni o di flag legati ad eventi HW o SW (verifica della disponibilità di dati in ricezione su un canale tramite Serial.available(), verifica dell’avvenuto scadere di un timeout tramite millis(), ecc.)
 
-Si possono considerare stati:
+Si possono considerare **stati**:
 -	situazione in cui evolve un protocollo alle quali corrisponde un ben preciso messaggio
 -	situazione in cui si trova l’applicazione alla quale corrisponde un preciso elenco di azioni possibili
 
-Nello specifico di un protocollo di comunicazione:
+Nello specifico di un **protocollo di comunicazione**:
 
 Si possono considerare tipici **ingressi**:
 
