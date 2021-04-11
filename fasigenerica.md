@@ -13,6 +13,7 @@ il **colloquio** si può realizzare sostanzialmente usando due **tecniche di ges
 - **interrupt** Le periferiche segnalano la loro disponibilità (o necessità) di comunicare con la CPU (e quindi con l'applicazione) solamente quando sono pronte inviando un particolare **segnale** che viaggia dalla periferica alla CPU attraverso il bus controlli, detto **interrupt**. Il segnale di Interrupt sospende l'esecuzione dell'applicazione e attiva una funzione di servizio, detta **ISR (Interrupt Service Routine)**, che gestirà la comunicazione con la periferica. Questa tecnica si dice **asincrona** poichè i tempi di accesso alla periferica non sono prevedibili in quanto stabiliti sa un sistema esterno fuori dal controllo del nostro sistema.
 
 Il **polling** degli ingressi è una attività che, insieme al codice del programma, si effettua **all'interno del loop()**.
+
 Una **iSR()** è una funzione a parte, **esterna al loop()** che viene richiamata in risposta ad un evento di interrupt.
 
 Sia che venga notificato con un interrupt, sia che venga rilevato dall'appplicazione, in qualche modo si genera un **evento di input** che deve essere gestito. 
