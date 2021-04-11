@@ -2,7 +2,7 @@
 
 ## Arduino Bare Metal
 1. [Polarizzazione led](polarizzazioneled.md)
-2. [generazione tempi](gnerazionetempi.md)
+2. [Generazione tempi](gnerazionetempi.md)
 3. [Pulsanti](indexpulsanti.md)
 4. [Seriale](indexseriale.md)
 5. [Polled timers](indextimers.md)
