@@ -5,7 +5,6 @@
 <ol>
 <li><a href="PullUP-PullDown.md">Pull Up e Pull Down</a></li>
 <li><a href="fasi.md">Fasi applicazione</a></li>
-<li><a href="gnerazionetempi.md">Generazione tempi</a></li>
 <li><a href="rimbalzi.md">Rimbalzi</a></li>
 <li><a href="pulsantememoryless.md">Pulsanti senza memoria</a></li>
 <li><a href="toggle.md">Pulsanti con memoria (toggle)</a></li>
