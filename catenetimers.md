@@ -26,7 +26,7 @@ if ((millis() – atimer2) < (unsigned long) TLIMITE2)
 ```
 Molti timers possono anche essere attivi **mimetizzati** all’interno di funzioni che sono richiamate nel loop(). Si potrebbe realizzare:
 - un codice che, benchè sia eseguito **linearmente**, viene eseguito aggiungendo nuove parti in istanti via via **successivi**, man mano che passa il tempo. 
-- una catena di timer che si attivano man mano che un certo mumero di condizioni vengono soddisfatte in cui ogni evento che scade prima viene ritenuto **disabilitante** per tutto il resto della funzione, interropendo prematuramente la catena di operazioni:
+- una catena di timer che si attivano man mano che un certo mumero di condizioni vengono soddisfatte in cui, ogni evento che scade prima viene ritenuto **disabilitante** per tutto il resto della funzione, interropendo prematuramente la catena di operazioni:
 
 ```C++
 void loop()
