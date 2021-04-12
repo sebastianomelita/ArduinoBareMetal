@@ -58,7 +58,7 @@ Questo fatto impone alcune riflessioni:
 
   -  **Ritardo** dell’esecuzione mediante funzione delay() impostabile ad un tempo di millisecondi prefissato.
 
-  -  **Polling** della funzione millis() nel loop che permette di scegliere l’istante di tempo adatto per eseguire un certo blocco di codice posto all’interno del loop (tipicamente dentro un blocco if-then-else con una condizione che valuta millis())
+  -  **Polling della funzione millis()** nel loop che permette di scegliere l’istante di tempo adatto per eseguire un certo blocco di codice posto all’interno del loop (tipicamente dentro un blocco if-then-else con una condizione che valuta millis())
 
    - **Interrupt** generato da un timer HW che permette di eseguire una funzione definita al di fuori dal loop() allo scadere del timer.
 - se le metto dentro una **ISR()** saranno eseguite in maniera asincrona ma, se solo una fase sta dentro la ISR(), va gestita opportunamente la **comunicazione** con le altre fasi che sono dentro il loop().
