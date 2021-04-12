@@ -227,7 +227,7 @@ void loop(){
 		//polling pulsante soggiorno
 		in=digitalRead(CMDSOGGIORNO);
 		if(soggiorno.toggleH(in)){
-			digitalWrite(LEDSOGGIORNO, 			soggiorno.getStato());
+			digitalWrite(LEDSOGGIORNO, soggiorno.getStato());
 		}
 	} //chiudi schedulatore
 }
