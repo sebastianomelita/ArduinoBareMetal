@@ -67,7 +67,7 @@ Le modifiche a valori maggiori non lo sono, pertanto le variabili a 16 o 32bit a
 
 Quindi, riassumendo, per **variabili multibyte**:
 -	**dentro l’ISR**. il valore di una variabile multibyte non può cambiare perché di default gli interrupt sono disabilitati. Non è necessario usare un blocco noInterrupts()-interrupts().
--	**al di fuori dell'ISR**. Il valore in una variabile multibyte può cambiare durante un'operazione di lettura/scrittura che deve essere protetta disabilitando gli interrupt durante la lettura/scrittura e quindi riabilitandoli subito dopo. E’ necessario usare un blocco noInterrupts()-interrupts().
+-	**al di fuori dell'ISR**. Il valore in una variabile multibyte può cambiare durante un'operazione di lettura/scrittura che deve essere protetta disabilitando gli interrupt durante l'operazione e quindi riabilitandoli subito dopo. E’ necessario usare un blocco noInterrupts()-interrupts().
 
 **Salvataggio stato corrente interrupts**
 
