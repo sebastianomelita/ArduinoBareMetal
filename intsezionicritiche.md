@@ -45,9 +45,9 @@ Le **parallelizzazioni**, nel programma principale, possono incrementare le pres
 
 **Sicurezza delle letture**
 
-Le **operazioni di lettura** su variabili non condivise (**locali** al main), anche se interrotte, sono ritenute **safe (sicure)** perché le interruzioni non danneggiano il loro valore e quindi non creano inconsistenze (valori ambigui, ormai privi di significato). Infatti, anche se interrotte interrotte in qualche punto del loop, le variabili locali assumono sempre lo stesso valore se nessuno le modifica e, poichè sono non condivise, nessuno oltre il loop può farlo.
+Le **operazioni di lettura** su **variabili non condivise** (locali al main), anche se interrotte, sono ritenute **safe (sicure)** perché le interruzioni non danneggiano il loro valore e quindi non creano inconsistenze (valori ambigui, ormai privi di significato). Infatti, anche se interrotte interrotte in qualche punto del loop, le variabili locali assumono sempre lo stesso valore se nessuno le modifica e, poichè sono non condivise, nessuno oltre il loop può farlo.
 
-Le operazioni di lettura su variabili **condivise tra loop e ISR**, se nel loop avvengono in concomitanza di una scrittura di un task concorrente, cioè dell’ISR, potrebbero portare ad un **risultato inconsistente** (si potrebbe leggere un misto tra il valore prima e quello dopo la scrittura) che chiaramente rappresenta un valore **corrotto** e **privo di significato**. 
+Le **operazioni di lettura** su variabili **condivise tra loop e ISR**, se nel loop avvengono in concomitanza di una scrittura di un task concorrente, cioè dell’ISR, potrebbero portare ad un **risultato inconsistente** (si potrebbe leggere un misto tra il valore prima e quello dopo la scrittura) che chiaramente rappresenta un valore **corrotto** e **privo di significato**. 
 
 In ogni caso, pur in assenza di valori inconsistenti, può sempre capitare che, a seguito di letture in punti diversi del loop(), la stessa variabile condivisa potrebbe assumere valori diversi se, capita che tra le due letture successive, è avvenuta una interruzione che ne ha modificato il valore.
 
