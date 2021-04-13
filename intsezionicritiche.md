@@ -20,7 +20,7 @@ cli ();           // clear interrupts flag
 
 Le **variabili condivise** tra ISR e programma principale devono essere protette da accessi concorrenti, cioè contemporanei tra ISR e altre istruzioni (in genere di scrittura).
 
-Il problema deriva dal fatto che alcune **istruzioni di accesso** alle variabili, come le assegnazioni, **non sono atomiche**, questo significa che sono scomponibili in due o più istruzioni assembly che sono suscettibili di essere separate da una chiamata di interrupt: se la chiamata ISR legge una variabile che è stata scritta solo parzialmente, il risultato può essere impredicibile e causare malfunzionamenti. 
+Il problema deriva dal fatto che alcune **istruzioni di accesso** alle variabili, come le assegnazioni, **non sono atomiche**, questo significa che sono scomponibili in due o più istruzioni assembly che sono suscettibili di essere separate da una chiamata di interrupt: se la chiamata ISR legge una variabile che è stata scritta solo parzialmente, il risultato può essere **impredicibile e causare malfunzionamenti**. 
 
 La soluzione è aver cura, nel programma principale, di effettuare tutte le **operazioni di scrittura** (modifica del valore) delle variabili condivise tra loop() e ISR in maniera strettamente atomica, cioè le istruzioni assembly sottostanti devono essere svolte o tutte o nessuna.
 
