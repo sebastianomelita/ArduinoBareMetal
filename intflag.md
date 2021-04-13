@@ -23,7 +23,7 @@ Il **polling** in questo caso è una soluzione poco costosa perché la lettura p
 
 Inoltre anche l'**accesso** ad una **periferica “lenta” nel loop** in questo caso sarebbe accettabile perché non verrebbe eseguita periodicamente ma, in **maniera asincrona**, solo quando il momento buono è **segnalato da un flag** (si tratta in pratica di una forma di **polled interrupt**, figura a sinistra).
 
-L’interazione tra ISR e loop() mediante il flag può anche essere **bidirezionale**, cioè una modifica del flag fatta nel loop() può essere letta all’interno della ISR (figura a destra).
+L’**interazione** tra ISR e loop() mediante il flag può anche essere **bidirezionale**, cioè una modifica del flag fatta nel loop() può essere letta all’interno della ISR (figura a destra).
 
 **Variabili volatili**
 
