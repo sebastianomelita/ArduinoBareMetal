@@ -2,8 +2,8 @@
 ## **Variabili flag**
 
 Una delle esigenze primarie di una ISR() è che sia molto veloce, per far ciò è opportuno che valgano entrambe le condizioni:
--	ISR corte ovvero con il minor numero di istruzioni possibile
--	Limitare al massimo l’inserimento di istruzioni lente all’interno di una ISR().
+-	**ISR corte** ovvero con il minor numero di istruzioni possibile
+-	**Limitare** al massimo l’inserimento di **istruzioni lente** all’interno di una ISR().
 
 Ad esempio, le istruzioni di accesso ad una periferica sono mediamente molto più lente di quelle di accesso di una variabile in RAM 
 D’altro canto però fare, nel programma principale, il polling continuo delle periferiche potrebbe comportare ritardi inutili se queste sono per la maggior parte del tempo inattive. Il polling periodico perlomeno andrebbe dilazionato con uno schedulamento poco frequente per renderlo meno costoso.
