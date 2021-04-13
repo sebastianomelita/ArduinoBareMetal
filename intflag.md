@@ -17,7 +17,7 @@ Le **variabili flag (bandierina)**, nel contesto degli interrupt, sono delle **v
 
 ![intflag](intflag.png)
  
-Il **polling di un flag** nel loop fa partire, nel programma principale, un task che è complementare a quello eseguito dalla ISR nel realizzare la gestione completa dell’evento di interrupt. Si ha adesso una **gestione mista** della periferica **polling-interrupt** che avviene in parte dentro la ISR e in parte dentro il loop principale.
+Il **polling di un flag** nel loop fa partire, nel programma principale, un **task** che è **complementare a quello eseguito dalla ISR** nel realizzare la gestione completa dell’evento di interrupt. Si ha adesso una **gestione mista** della periferica **polling-interrupt** che avviene in parte dentro la ISR e in parte dentro il loop principale.
 
 Il polling in questo caso è una soluzione poco costosa perché la lettura periodica di una variabile in memoria è un’operazione molto veloce. Inoltre anche la lettura di una periferica “lenta” nel loop in questo caso sarebbe accettabile perché non verrebbe eseguita periodicamente ma, in maniera asincrona, solo quando il momento buono è segnalato da un flag (in pratica, una forma di polled interrupt, figura a sinistra).
 
