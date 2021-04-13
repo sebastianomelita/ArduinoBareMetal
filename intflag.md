@@ -7,7 +7,8 @@ Una delle esigenze primarie di una ISR() è che sia molto veloce, per far ciò �
 
 Ad esempio, le istruzioni di accesso ad una periferica sono mediamente molto più lente di quelle di accesso di una variabile in RAM 
 D’altro canto però fare, nel programma principale, il polling continuo delle periferiche potrebbe comportare ritardi inutili se queste sono per la maggior parte del tempo inattive. Il polling periodico perlomeno andrebbe dilazionato con uno schedulamento poco frequente per renderlo meno costoso.
-Invece, utilizzare gli interrupt delle periferiche per poterle interrogarle una tantum, all’interno di una ISR, potrebbe essere, in questo caso, una alternativa percorribile per velocizzare di molto l’esecuzione del programma principale (tecnica polled interrupt).
+
+Invece, utilizzare gli interrupt delle periferiche per poterle **interrogare una tantum**, all’interno di una ISR, potrebbe essere, in questo caso, una alternativa percorribile per velocizzare di molto l’esecuzione del programma principale (tecnica **polled interrupt**).
 
 Le **variabili flag (bandierina)**, nel contesto degli interrupt, sono delle **variabili globali comuni (cioè condivise) tra una ISR e il loop() principale** che:
 -	Vengono **modificate dall’ISR** a seguito di un interrupt
