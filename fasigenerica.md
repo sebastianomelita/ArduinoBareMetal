@@ -61,7 +61,7 @@ Questo fatto impone alcune riflessioni:
   -  **Polling della funzione millis()** nel loop che permette di scegliere l’istante di tempo adatto per eseguire un certo blocco di codice posto all’interno del loop (tipicamente dentro un blocco if-then-else con una condizione che valuta millis())
 
    - **Interrupt** generato da un timer HW che permette di eseguire una funzione definita al di fuori dal loop() allo scadere del timer.
-- se le metto dentro una **ISR()** saranno eseguite in maniera asincrona ma, se solo una fase sta dentro la ISR(), va gestita opportunamente la **comunicazione** con le altre fasi che sono dentro il loop().
+- se le metto dentro una **ISR()** saranno eseguite in maniera **asincrona** ma, se solo una fase sta dentro la ISR(), va gestita opportunamente la **comunicazione** con le altre fasi che sono dentro il loop().
 
 
 **Filtro delle esecuzioni**. Ovviamente blocchi di codice possono essere filtrati tramite **istruzioni di selezione**, quindi inserendoli nel blocco then o in quello else di un **costrutto if-then-else**. La condizione di selezione può valutare il **tempo** (la faccio durare fino ad un certo tempo) oppure altri **ingressi** (confronto il valore attuale di un ingresso con quello di altri ingressi), oppure lo **stato** del sistema (se il motore è in movimento faccio una certa cosa se no non la faccio). Di seguito la fase di scrittura delle uscite non viene eseguita ad ogni loop ma solo se un certo ingresso ha un determinato valore:
