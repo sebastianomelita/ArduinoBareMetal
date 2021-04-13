@@ -52,7 +52,7 @@ Le operazioni di lettura su variabili condivise tra loop e ISR, se nel loop avve
 In ogni caso, pur in assenza di valori inconsistenti, può sempre capitare che, a seguito di letture in punti diversi del loop(), la stessa variabile condivisa potrebbe assumere valori diversi se, tra le due letture successive, è avvenuta una interruzione che ne ha modificato il valore.
 
 Per evitare questo tipo di anomalie in lettura, le soluzioni si potrebbero realizzare:
--	**mantenendo le interruzioni**
+-	**mantenendo le interruzioni**, facendo in modo che:
     -	**all’inizio del codice** del loop, copiare la variabile condivisa su una variabile locale mediante un’operazione di scrittura (assegnamento) che dovrebbe avvenire all’interno di una corsa critica per proteggerla da eventuali interruzioni.
     -	nel **resto del codice**, accedere in lettura alla sola variabile locale che, anche se viene interrotta, manterrà comunque, in ogni parte del codice, il suo valore originale che non verrà aggiornato prima del loop successivo.
 -	**eliminando le interruzioni**. E’ la soluzione più drastica, basta trattare tutte le operazioni in lettura sulle variabili condivise come se fossero in scrittura e quindi proteggere ogni singolo accesso con una corsa critica che, disabilitando gli interrupt, impedisce le interruzioni. La soluzione può essere macchinosa in presenza di molti accessi o in presenza di istruzioni condizionali, cicli, ecc.
