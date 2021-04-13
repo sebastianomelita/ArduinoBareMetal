@@ -35,7 +35,7 @@ Noi tratteremo solo i **debouncer di tipo SW**. Questi realizzano un filtraggio 
 
 
 
-  - **Aperiodico** registrando in una variabile il **momento** in cui si verificano **i cambiamenti di stato degli ingressi**, e ignorando tutti quelli successivi che stanno all’interno di un **tempo limite** che marca la **zona di inaffidabilità** che è suscettibile ai rimbalzi. Ciò si ottiene impostando un **timer** che si attiva ad ogni transizione.
+  - **Aperiodico** registrando in una variabile il **momento** in cui si verificano **i cambiamenti di stato degli ingressi**, e ignorando tutti quelli successivi che stanno all’interno di un **tempo limite** che marca la **zona di inaffidabilità** che è sensibile ai rimbalzi. Ciò si ottiene impostando un **timer** che si attiva ad ogni transizione.
 
 I **timer** si possono realizzare in due maniere:
 
