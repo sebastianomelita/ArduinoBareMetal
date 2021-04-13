@@ -28,7 +28,7 @@ Per ottenere, dentro il loop(), l’**atomicità delle istruzioni** su una varia
 
 L’equivalente ad alto livello di una istruzione assembly CLI è il comando **noInterrupts()**, mentre l’equivalente ad alto livello di una istruzione assembly STI è il comando **interrupts()**. 
 
-Il blocco delimitato da due chiamate successive noInterrupts() e interrupts() viene detto, in gergo, sezione critica. 
+Il blocco delimitato da due chiamate successive noInterrupts() e interrupts() viene detto, in gergo, **sezione critica**. 
 ```C++
 noInterrupts ();
 long myCounter = isrCounter;  // get value set by ISR
