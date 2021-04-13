@@ -53,7 +53,7 @@ In ogni caso, pur in assenza di valori inconsistenti, può sempre capitare che, 
 
 Per evitare questo tipo di anomalie in lettura, le soluzioni si potrebbero realizzare:
 -	**mantenendo le interruzioni**, facendo in modo che:
-    -	**all’inizio del codice** del loop, si **copi** la variabile globale condivisa su una **variabile locale** con un assegnamento che dovrebbe avvenire all’interno di una **corsa critica** per proteggerla da eventuali interruzioni.
+    -	**all’inizio del codice** del loop, si **copi** la variabile globale condivisa su una **variabile locale** con un assegnamento che dovrebbe avvenire all’interno di una **corsa critica** per proteggerlo da eventuali interruzioni.
     -	nel **resto del codice**, si **acceda** in lettura alla sola **variabile locale** che, anche se viene interrotta, manterrà comunque, in ogni parte del codice, il suo valore originale che non verrà aggiornato prima del loop successivo.
 -	**eliminando le interruzioni**. E’ la soluzione più drastica, basta trattare tutte le operazioni in lettura sulle variabili condivise come se fossero in scrittura e quindi proteggere ogni singolo accesso con una corsa critica che, disabilitando gli interrupt, impedisce le interruzioni. La soluzione può essere macchinosa in presenza di molti accessi o in presenza di istruzioni condizionali, cicli, ecc.
 
