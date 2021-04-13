@@ -49,7 +49,7 @@ Le **operazioni di lettura** su **variabili non condivise** (locali al main), an
 
 Le **operazioni di lettura** su variabili **condivise tra loop e ISR**, se nel loop avvengono in concomitanza di una scrittura di un task concorrente, cioè dell’ISR, potrebbero portare ad un **risultato inconsistente** (si potrebbe leggere un misto tra il valore prima e quello dopo la scrittura) che chiaramente rappresenta un valore **corrotto** e **privo di significato**. 
 
-In ogni caso, pur in assenza di valori inconsistenti, può sempre capitare che, a seguito di **letture in punti diversi** del loop(), la stessa variabile condivisa potrebbe assumere valori diversi se, capita che tra le due letture successive, è avvenuta una interruzione che ne ha modificato il valore.
+In ogni caso, pur in assenza di valori inconsistenti, può sempre capitare che, a seguito di **letture in punti diversi** del loop(), la stessa variabile condivisa potrebbe assumere **valori diversi** se, capita che tra le due letture successive, è avvenuta una interruzione che ne ha modificato il valore.
 
 Per evitare questo tipo di **anomalie in lettura**, le soluzioni si potrebbero realizzare:
 -	**mantenendo le interruzioni**, cioè:
