@@ -10,7 +10,10 @@ Cosa tenere a mente quando si scrive una ISR():
 -	Le variabili condivise con il codice principale devono essere, all’interno di questo, protette da accessi concorrenti rinchiudendole dentro “sezioni critiche”
 -	Non cercare di attivare o disattivare interrupt al suo interno quando non necessario
 
-All’interno di una ISR di default gli interrupt sono disabilitati per cui, tutte le funzioni che ne fanno uso, invocate in una ISR, non funzionerebbero correttamente. Millis() e micros() aggiornano il loro tic con un interrupt che non può quindi essere raccolto in una ISR. Possono però al limite essere usate per ottenere una istantanea del tempo in cui viene eseguita una ISR, ma anche questo uso potrebbe non essere consigliabile: se millis() non è aggiornata con l’interrupt di un timer in tempo utile, allora perde il conteggio di un tic. In generale, il problema non è grave se la ISR viene eseguita velocemente. Millis() per funzionare correttamente deve ricevere un interrupt entro 500 μs, ma ciò non dovrebbe essere un problema visto che una buona ISR non dovrebbe durare più di qualche microsecondo (5 μs per essere ritenuta ben fatta).
+All’interno di una ISR di default gli interrupt sono disabilitati per cui, tutte le funzioni che ne fanno uso, invocate in una ISR, non funzionerebbero correttamente. Millis() e micros() aggiornano il loro tic con un interrupt che non può quindi essere raccolto in una ISR. Possono però al limite essere usate per ottenere una **istantanea del tempo** in cui viene eseguita una ISR, ma anche questo uso potrebbe non essere consigliabile: se millis() non è aggiornata con l’interrupt di un timer in tempo utile, allora perde il conteggio di un tic. In generale, il problema non è grave se la ISR viene eseguita velocemente. 
+
+Millis() per funzionare correttamente deve ricevere un interrupt entro 500 μs, ma ciò non dovrebbe essere un problema visto che una buona ISR non dovrebbe durare più di qualche microsecondo (5 μs per essere ritenuta ben fatta).
+
 Esempio di un interrupt che rileva la transizione di stato di un pulsante e accende un led:
 
 ```C++
