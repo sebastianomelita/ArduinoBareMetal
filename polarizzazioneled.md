@@ -21,9 +21,9 @@ Per **accendere** un led con un microcontrollore:
 
 - le **porte** del microcontrollore possono essere o **sorgente** della corrente o **pozzo** della corrente:
 
-- In caso di **sorgente**, la porta è analoga ad un generatore di tensione interno alla porta pari a Vcc (5V) e la corrente generata dalla porta **scorre** verso il led e si **scarica** a massa (GND). **L’anodo** del led è collegato alla **porta** mentre il **catodo** è collegato a **GND**.
+    - In caso di **sorgente**, la porta è analoga ad un generatore di tensione interno alla porta pari a Vcc (5V) e la corrente generata dalla porta **scorre** verso il led e si **scarica** a massa (GND). **L’anodo** del led è collegato alla **porta** mentre il **catodo** è collegato a **GND**.
 
-- In caso di **pozzo**, stavolta la porta è connessa a GND e la corrente **scorre** da un generatore esterno verso la porta dove si **scarica** a massa. Il **catodo** del led è collegato alla **porta** mentre **l’anodo** è collegato a al generatore **Vcc**.
+    - In caso di **pozzo**, stavolta la porta è connessa a GND e la corrente **scorre** da un generatore esterno verso la porta dove si **scarica** a massa. Il **catodo** del led è collegato alla **porta** mentre **l’anodo** è collegato a al generatore **Vcc**.
 
 Di conseguenza, i **valori delle attivazioni** dei segmenti (mediante i livelli HIGH o LOW) sono:
 
