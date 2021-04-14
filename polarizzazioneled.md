@@ -21,9 +21,9 @@ Per **accendere** un led con un microcontrollore:
 
 - le **porte** del microcontrollore possono essere o **sorgente** della corrente o **pozzo** della corrente:
 
-    - In caso di **sorgente**, la porta è analoga ad un generatore di tensione interno alla porta pari a Vcc (5V) e la corrente generata dalla porta **scorre** verso il led e si **scarica** a massa (GND). **L’anodo** del led è collegato alla **porta** mentre il **catodo** è collegato a **GND**.
+    - In caso di **sorgente**, la porta è analoga ad un generatore di tensione **interno** alla porta pari a Vcc (5V) e la corrente generata dalla porta **scorre** verso il led e si **scarica** su una massa (GND) **esterna**. **L’anodo** del led è collegato alla **porta** mentre il **catodo** è collegato a **GND**. E' la modalità più comune.
 
-    - In caso di **pozzo**, stavolta la porta è connessa a GND e la corrente **scorre** da un generatore esterno verso la porta dove si **scarica** a massa. Il **catodo** del led è collegato alla **porta** mentre **l’anodo** è collegato a al generatore **Vcc**.
+    - In caso di **pozzo**, stavolta la porta è connessa a GND e la corrente **scorre** da un generatore di tensione **esterno** verso la porta dove si **scarica** su una massa **interna** alla porta. Il **catodo** del led è collegato alla **porta** mentre **l’anodo** è collegato a al generatore **Vcc**. E' una modlaità meno usuale.
 
 Di conseguenza, i **valori delle attivazioni** dei segmenti (mediante i livelli HIGH o LOW) sono:
 
@@ -37,7 +37,8 @@ Di conseguenza, i **valori delle attivazioni** dei segmenti (mediante i livelli 
 
 La situazione delle porte del microcontrollore in caso di led collegato ad **anodo a massa (GND)** può sembrare, dal punto di vista elettrico, abbastanza insolita. In questo caso la corrente scorre quando **l’anodo** del segmento va a potenziale +5V (**esterno**, ad es. una batteria) mentre la **porta** è posta a un potenziale di GND (**interno**, ottenuto impostandola col livello logico **LOW**). La porta in questo caso, pur essendo in modo OUTPUT, assorbe la corrente del led dirottandola verso GND (massa). 
 
-Si tratta di una modalità di funzionamento speciale non sempre pienamente supportata da tutti i dispositivi che è detta **modo DRAIN** (scarico). Si contrappone al modo usuale delle porte poste a livello logico alto che sono, di fatto, assimilabili a un **generatore di tensione,** internamente posto a +5V, che eroga corrente verso GND (o un qualunque potenziale più basso della porta). In genere la **corrente massima** assorbibile in modo DRAIN **è minore** di quella massima erogabile quando la porta è posta in modo generatore di tensione.
+Si tratta di una modalità di funzionamento speciale non sempre pienamente supportata da tutti i dispositivi che è detta **modo DRAIN** (scarico). 
+In genere la **corrente massima** assorbibile in modo DRAIN **è minore** di quella massima erogabile quando la porta è posta in modo generatore di tensione.
 
 **Polarizzazione con catodo a massa.**
 ![Pulsanti](led1.png)
