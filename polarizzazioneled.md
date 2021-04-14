@@ -41,10 +41,10 @@ Si tratta di una modalità di funzionamento speciale non sempre pienamente suppo
 In genere la **corrente massima** assorbibile in modo DRAIN **è minore** di quella massima erogabile quando la porta è posta in modo generatore di tensione.
 
 **Polarizzazione con catodo a massa.**
-![Pulsanti](led1.png)
+![Pulsanti](led1bis.png)
 
 **Polarizzazione con anodo a massa.**
-![Pulsanti](led2.png)
+![Pulsanti](led2bis.png)
 
 >[Torna all'indice generale](index.md)
 <!--stackedit_data:
