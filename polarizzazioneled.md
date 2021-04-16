@@ -33,7 +33,7 @@ Di conseguenza, i **valori delle attivazioni** dei segmenti (mediante i livelli 
 
 - **Anodo a GND (porta pozzo)**:
 
-    - **porte** del microcontrollore **spengono** un led se poste a livello **HIGH** e lo **accendono** se poste a livello **LOW** in questa condizione assorbono corrente (pin di pozzo o drain).
+    - le **porte** del microcontrollore **spengono** un led se poste a livello **HIGH** e lo **accendono** se poste a livello **LOW** in questa condizione assorbono corrente (pin di pozzo o drain).
 
 La situazione delle porte del microcontrollore in caso di led collegato ad **anodo a massa (GND)** può sembrare, dal punto di vista elettrico, abbastanza insolita. In questo caso la corrente scorre quando **l’anodo** del segmento va a potenziale +5V (**esterno**, ad es. una batteria) mentre la **porta** è posta a un potenziale di GND (**interno**, ottenuto impostandola col livello logico **LOW**). La porta in questo caso, pur essendo in modo OUTPUT, assorbe la corrente del led dirottandola verso GND (massa). 
 
