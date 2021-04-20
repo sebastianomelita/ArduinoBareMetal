@@ -44,7 +44,7 @@ if __name__ == "__main__":
 
 **Schedulatore con delay().**
 ```Python
-	from gpio import *
+from gpio import *
 from time import *
 
 def main():
