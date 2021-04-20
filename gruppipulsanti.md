@@ -150,87 +150,157 @@ void loop(){
 }
 ```
 **Esempio di due pulsanti toggle gestiti con due oggetti**
-```C++
-/*
-Scrivere un programma Arduino che accenda due led (cucina, soggiorno).
-Accenderli con due pulsanti toggle separati.
-*/
-#define TBASE 100
-#define CMDSOGGIORNO 2
-#define CMDCUCINA 3
-#define LEDSOGGIORNO 12
-#define LEDCUCINA 13
+```Python
+#
+# 1) Scrivere un programma Arduino che accenda due led (ingresso, sala, scala). Accenderli con tre pulsanti toggle separati. Lo stato dei led deve essere scritto sulla seriale all'avvenire (occorrenza) di ogni comando.
+# 3) Realizzare, con un timer, l funzione di spegnimento automatico, dopo 10 secondi, della luce della scala. (dispensa timer.doc)
+# 4) Utilizzare un altro timer per gestire lo spegnimento delle luci delle due sale alla pressione prolungata di uno dei loro pulsanti.
+# 5) Realizzare, con un timer, la funzione "lampada viva" che accende (o fa lampeggiare) due led di segnalazione, uno per ogni sala, se non riceve via seriale il il comando "sala":"alive" e "ingresso":"alive" entro 10 secondi. 
+#   Se lo riceve non segnala, se non lo riceve segnala. Al massimo aspetta 10 secondi per segnalare.
+#
+from gpio import *
+from time import *
 
-class Toggle
-{
-	private:
-	uint8_t precval;
-	uint8_t stato;
-
-	public:
-	Toggle(uint8_t new_precval = 0, uint8_t new_stato = 0){
-		precval = new_precval;
-		stato = new_stato;
-	}
-
-	bool toggleH(uint8_t val){ //transizione di un pulsante
-		bool cambiato = false;
-		if (precval  == LOW  && val == HIGH){
-			cambiato = true;
-			stato = !stato;
-		}
-		precval = val;
-		return cambiato;
-	}
-
-	uint8_t getPrecval()
-	{
-		return precval;
-	}
-
-	void setPrecval(uint8_t new_precval)
-	{
-		precval = new_precval;
-	}
+def main():
+	#inizio variabili timer
+	startTime = 0  		# tempo in sec
+	timelapse = 0
+	timerState = False
+	# variabili schedulatore
+	TBASE = 0.1
+	NSTEP = 100
+	step = 0
 	
-	uint8_t getStato()
-	{
-		return stato;
-	}
+	class Pulsanti:
+		CMDINGRESSO = 0
+		CMDSALA = 1
+		CMDSCALA = 2
+		
+	class Lampade:
+		LEDINGRESSO = 3
+		LEDSALA = 4
+		LEDSCALA = 5
+		LEDSPIA = 6
+		
+	class Times:
+		TSICUREZZA = 10
+		TSCALA = 10
+		TSPEGNI = 10
+		
+	class Timers:
+		TMRSCALA = 0
+		TMRSPEGNI = 1
+		TMRSICUREZZA = 2
 
-	void setStato(uint8_t new_stato)
-	{
-		stato = new_stato;
-	}
-};
+	class Ambienti:
+		SCALA = 0
+		SALA = 1
+		INGRESSO = 2
+	
+	# funzione di attivazione
+	def startTimer(duration, n):
+		timerState[n] = 1 
+		timelapse[n] = duration
+		startTime[n] = uptime()
 
-Toggle cucina(0,0);
-Toggle soggiorno(0,0);
-unsigned long precm=0;
+	# funzione di disattivazione
+	def stopTimer(n):
+		timerState[n] = False
+		
+	# callback: azione standard da compiere allo scadere del timer, definita fuori dal loop
+	def onElapse(n):
+		# azione da compiere
+		#.......
 
-void setup(){
-	pinMode(CMDSOGGIORNO, INPUT);
-	pinMode(CMDCUCINA, INPUT);
-	pinMode(LEDSOGGIORNO, OUTPUT);
-	pinMode(LEDCUCINA, OUTPUT);
-}
+	# polling: verifica se è arrivato il tempo di far scattare il timer
+	def aggiornaTimer(n):
+		if (timerState[n] == True) and (uptime() - startTime[n] >= timelapse[n]):
+			timerState[n] = False
+			onElapse(n)
+	
+	# azione da compiere allo scadere del timer, definita fuori dal loop
+	def onElapse(n):
+		if n == TMRSCALA:
+			stato[Ambienti.SCALA] = LOW
+			digitalWrite(Lampade.LEDSCALA, stato[Ambienti.SCALA])
+		else if n == TMRSPEGNI:
+			stato[Ambienti.SCALA] = LOW
+			digitalWrite(Lampade.LEDSALA, stato[Ambienti.SALA])
+			stato[Ambienti.INGRESSO] = LOW
+			digitalWrite(Lampade.LEDINGRESSO, stato[Ambienti.INGRESSO])
+		else if n == TMRSICUREZZA:
+			digitalWrite(Lampade.LEDSPIA, HIGH)
+    
+	def transizione(val, n):  # transizione di un pulsante
+		cambiato = False 
+		cambiato = (precval[n] != val)
+		precval[n] = val  
+		return cambiato
+		
+	precval = [0, 0, 0]
+	stato = [0, 0, 0]
+	precm = 0
+	startTime = [0, 0, 0]
+	timelapse = [0, 0, 0]
+	timerState = [false, false, false]
+	pinMode(Pulsanti.CMDSCALA, IN)
+	pinMode(Pulsanti.CMDSALA, IN)
+	pinMode(Pulsanti.CMDINGRESSO, IN)
+	pinMode(Lampade.LEDINGRESSO, OUT)
+	pinMode(Lampade.LEDSALA, OUT)
+	pinMode(Lampade.LEDSCALA, OUT)
+	pinMode(Lampade.LEDSPIA, OUT)
+	stopTimer(Timers.TMRSCALA)
+	stopTimer(Timers.TMRSPEGNI)
+	stopTimer(Timers.TMRSICUREZZA)
+	usb = USB(0, 9600)
+	
+	while True:
+		# polling dei tempi
+		aggiornaTimer(TMRSCALA)
+		aggiornaTimer(TMRSPEGNI)
+		aggiornaTimer(TMRSICUREZZA)
+			
+		if (uptime() - precm) >= TBASE:  	   	# schedulatore (e anche antirimbalzo)
+			precm = uptime()  			   		# preparo il tic successivo	
+			step = (step+1) % NSTEP				# conteggio circolare
+			
+			# polling pulsante SCALA
+			val = digitalRead(Pulsanti.CMDSCALA)
+			if transizione(val ,Ambienti.SCALA) == True:
+				if in == HIGH: # se fronte di salita (pressione)
+					startTimer(Times.TSCALA, Timers.TMRSCALA)
+					stato[Ambienti.SCALA] = (stato[Ambienti.SCALA] + 1) % 2;
+					digitalWrite(Lampade.LEDSCALA, stato[Ambienti.SCALA]*1023);
+			
+			# polling pulsante SALA
+			val = digitalRead(Pulsanti.CMDSALA)
+			if transizione(val ,Ambienti.SALA) == True:
+				if in == HIGH: # se fronte di salita (pressione)
+					startTimer(Times.TSPEGNI, Timers.TMRSPEGNI)
+					stato[Ambienti.SALA] = (stato[Ambienti.SALA] + 1) % 2
+					digitalWrite(Lampade.LEDSALA, stato[Ambienti.SALA]*1023)
+				else: # rilascio
+					stopTimer(Timers.TMRSPEGNI)
+	
+			# polling pulsante INGRESSO
+			val = digitalRead(Pulsanti.CMDINGRESSO)
+			if transizione(val ,Ambienti.INGRESSO) == True:
+				if in == HIGH: # se fronte di salita (pressione)
+					startTimer(Times.TSPEGNI, Timers.TMRSPEGNI)
+					stato[Ambienti.INGRESSO] = (stato[Ambienti.INGRESSO] + 1) % 2
+					digitalWrite(Lampade.LEDINGRESSO, stato[Ambienti.INGRESSO]*1023)
+				else: # rilascio
+					stopTimer(Timers.TMRSPEGNI)
+					
+		if usb.inWaiting() > 0: # anche while va bene!			
+			instr = usb.readLine()
+			if instr.index("\"statosala\":\"on\"") >= 0:
+				startTimer(Times.TSICUREZZA, Timers.TMRSICUREZZA);
+				digitalWrite(Lampade.LEDSPIA, LOW);
 
-void loop(){
-	uint8_t in;
-	if(millis()-precm>=(unsigned long)TBASE){ 	//schedulatore e antirimbalzo
-		precm=millis();
-		//polling pulsante cucina
-		in=digitalRead(CMDCUCINA);
-		if(cucina.toggleH(in)){
-			digitalWrite(LEDCUCINA, cucina.getStato());
-		}
-		//polling pulsante soggiorno
-		in=digitalRead(CMDSOGGIORNO);
-		if(soggiorno.toggleH(in)){
-			digitalWrite(LEDSOGGIORNO, soggiorno.getStato());
-		}
-	} //chiudi schedulatore
-}
+if __name__ == "__main__":
+	main()
 ```
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](gruppipulsantipy.md)
 <!--stackedit_data:
