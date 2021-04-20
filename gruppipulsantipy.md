@@ -1,5 +1,5 @@
 
->[Torna all'indice](indexpulsanti.md) >[versione in Python](gruppipulsanti.md)
+>[Torna all'indice](indexpulsanti.md) >[versione in C++](gruppipulsanti.md)
 ## **GESTIONE GRUPPI DI PULSANTI**
 
 La **logica di molti** pulsanti potrebbe essere gestita sotto forma di **dati strutturati** (multivalore) in una delle seguenti maniere: array, struct ed oggetti.
@@ -149,87 +149,61 @@ void loop(){
 }
 ```
 **Esempio di due pulsanti toggle gestiti con due oggetti**
-```C++
-/*
-Scrivere un programma Arduino che accenda due led (cucina, soggiorno).
-Accenderli con due pulsanti toggle separati.
-*/
-#define TBASE 100
-#define CMDSOGGIORNO 2
-#define CMDCUCINA 3
-#define LEDSOGGIORNO 12
-#define LEDCUCINA 13
+```Python
+# Scrivere un programma Arduino che accenda due led (cucina, soggiorno).
+# Accenderli con due pulsanti toggle separati.
+from gpio import *
+from time import *
 
-class Toggle
-{
-	private:
-	uint8_t precval;
-	uint8_t stato;
+def main():
 
-	public:
-	Toggle(uint8_t new_precval = 0, uint8_t new_stato = 0){
-		precval = new_precval;
-		stato = new_stato;
-	}
+	TBASE = 0.1
 
-	bool toggleH(uint8_t val){ //transizione di un pulsante
-		bool cambiato = false;
-		if (precval  == LOW  && val == HIGH){
-			cambiato = true;
-			stato = !stato;
-		}
-		precval = val;
-		return cambiato;
-	}
+	class Pulsanti:
+		CMDSOGGIORNO = 0
+		CMDCUCINA = 1
+		
+	class Lampade:
+		LEDSOGGIORNO = 2
+		LEDCUCINA = 3
+			
+	class Toggle(object):
+		def __init__(self, precval, stato):
+			self.precval = precval
+			self.stato = stato
 
-	uint8_t getPrecval()
-	{
-		return precval;
-	}
-
-	void setPrecval(uint8_t new_precval)
-	{
-		precval = new_precval;
-	}
+		def toggleH(self, val): # transizione di un pulsante
+			cambiato = False
+			if self.precval  == LOW  and val == HIGH:
+				cambiato = True
+				self.stato = (self.stato + 1) % 2 
+			self.precval = val
+			return cambiato
 	
-	uint8_t getStato()
-	{
-		return stato;
-	}
+	cucina = Toggle(0,0)
+	soggiorno = Toggle(0,0)
+	precm = 0;
+	pinMode(Pulsanti.CMDSOGGIORNO, IN);
+	pinMode(Pulsanti.CMDCUCINA, IN);
+	pinMode(Lampade.LEDSOGGIORNO, OUT);
+	pinMode(Lampade.LEDCUCINA, OUT);
 
-	void setStato(uint8_t new_stato)
-	{
-		stato = new_stato;
-	}
-};
-
-Toggle cucina(0,0);
-Toggle soggiorno(0,0);
-unsigned long precm=0;
-
-void setup(){
-	pinMode(CMDSOGGIORNO, INPUT);
-	pinMode(CMDCUCINA, INPUT);
-	pinMode(LEDSOGGIORNO, OUTPUT);
-	pinMode(LEDCUCINA, OUTPUT);
-}
-
-void loop(){
-	uint8_t in;
-	if(millis()-precm>=(unsigned long)TBASE){ 	//schedulatore e antirimbalzo
-		precm=millis();
-		//polling pulsante cucina
-		in=digitalRead(CMDCUCINA);
-		if(cucina.toggleH(in)){
-			digitalWrite(LEDCUCINA, cucina.getStato());
-		}
-		//polling pulsante soggiorno
-		in=digitalRead(CMDSOGGIORNO);
-		if(soggiorno.toggleH(in)){
-			digitalWrite(LEDSOGGIORNO, soggiorno.getStato());
-		}
-	} //chiudi schedulatore
-}
+	while True:
+		if (uptime() - precm) >= TBASE:  	   	# schedulatore (e anche antirimbalzo)
+			precm = uptime()  			   		# preparo il tic successivo	
+			
+			#polling pulsante cucina
+			val = digitalRead(Pulsanti.CMDCUCINA)    
+			if cucina.toggleH(val) == True:				
+				digitalWrite(Lampade.LEDCUCINA, cucina.stato*1023);
+				
+			#polling pulsante soggiorno
+			val = digitalRead(Pulsanti.CMDSOGGIORNO)    
+			if soggiorno.toggleH(val) == True:				
+				digitalWrite(Lampade.LEDSOGGIORNO, soggiorno.stato*1023);
+					
+if __name__ == "__main__":
+	main()
 ```
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
