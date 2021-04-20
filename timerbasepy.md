@@ -31,8 +31,8 @@ def main():
 	timerState = False 	# stato del timer
 
 	while True:
-		if (timerState == True) and (millis() - prectimer1) >= PERIODO:
-		prectimer1 = millis();
+		if (timerState == True) and (uptime() - prectimer1) >= PERIODO:
+		prectimer1 = uptime()
 		#....
 		# istruzioni eseguite periodicamente, se attivo…	
 
