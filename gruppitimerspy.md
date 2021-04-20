@@ -11,157 +11,155 @@ La differenza tra i vari modi di gestione consiste in come si memorizzano stati,
 
 
 ```Python
-/*
-1) Scrivere un programma Arduino che accenda due led (ingresso, sala, scala). Accenderli con tre pulsanti toggle separati. Lo stato dei led deve essere scritto sulla seriale all'avvenire (occorrenza) di ogni comando.
-3) Realizzare, con un timer, l funzione di spegnimento automatico, dopo 10 secondi, della luce della scala. (dispensa timer.doc)
-4) Utilizzare un altro timer per gestire lo spegnimento delle luci delle due sale alla pressione prolungata di uno dei loro pulsanti.
-5) Realizzare, con un timer, la funzione "lampada viva" che accende (o fa lampeggiare) due led di segnalazione, uno per ogni sala, se non riceve via seriale il il comando "sala":"alive" e "ingresso":"alive" entro 10 secondi. 
-   Se lo riceve non segnala, se non lo riceve segnala. Al massimo aspetta 10 secondi per segnalare.
-*/
-#define TBASE 100
-#define NSTEP 100
-#define CMDSCALA 2
-#define CMDSALA 3
-#define CMDINGRESSO 4
-#define LEDINGRESSO 11
-#define LEDSALA 12
-#define LEDSCALA 13
-#define LEDSPIA 11
-#define TSCALA 10000
-#define TSPEGNI 10000
-#define TSICUREZZA 10000
+#
+# 1) Scrivere un programma Arduino che accenda due led (ingresso, sala, scala). Accenderli con tre pulsanti toggle separati. Lo stato dei led deve essere scritto sulla seriale all'avvenire (occorrenza) di ogni comando.
+# 3) Realizzare, con un timer, l funzione di spegnimento automatico, dopo 10 secondi, della luce della scala. (dispensa timer.doc)
+# 4) Utilizzare un altro timer per gestire lo spegnimento delle luci delle due sale alla pressione prolungata di uno dei loro pulsanti.
+# 5) Realizzare, con un timer, la funzione "lampada viva" che accende (o fa lampeggiare) due led di segnalazione, uno per ogni sala, se non riceve via seriale il il comando "sala":"alive" e "ingresso":"alive" entro 10 secondi. 
+#   Se lo riceve non segnala, se non lo riceve segnala. Al massimo aspetta 10 secondi per segnalare.
+#
+from gpio import *
+from time import *
 
-enum btn
-{
-  SCALA        =0,
-  SALA         =1,
-  INGRESSO     =2
-};
-enum timer
-{
-  TMRSCALA        =0,
-  TMRSPEGNI       =1,
-  TMRSICUREZZA    =2
-};
-
-byte precval[3]={0,0,0};
-byte stato[3]={0,0,0};
-unsigned long precm=0;
-unsigned short step=0;
-unsigned long startTime[3];
-unsigned long timelapse[3];
-bool timerState[3]={false,false,false};
-
-
-void setup(){
-  pinMode(CMDSCALA, INPUT);
-  pinMode(CMDSALA, INPUT);
-  pinMode(CMDINGRESSO, INPUT);
-  pinMode(LEDINGRESSO, OUTPUT);
-  pinMode(LEDSALA, OUTPUT);
-  pinMode(LEDSCALA, OUTPUT);
-  pinMode(LEDSPIA, OUTPUT);
-  Serial.begin(115200);
-  stopTimer(TMRSCALA);
-  stopTimer(TMRSPEGNI);
-  stopTimer(TMRSICUREZZA);
-}
-
-void startTimer(unsigned long duration, unsigned short n){
-	timerState[n]=true;
-	timelapse[n]=duration;
-	startTime[n]=millis();
-}
-
-void stopTimer(unsigned short n){
-	timerState[n]=false;
-}
-
-//verifica se è arrivato il tempo di far scattare il timer
-void aggiornaTimer(unsigned short n){
-	if((timerState[n] == true) && (millis() - startTime[n] >= timelapse[n])){
-		timerState[n]=false;
-		onElapse(n);
-	}
-}
-
-// azione da compiere allo scadere del timer, definita fuori dal loop
-void onElapse(unsigned short n){
-	if(n==TMRSCALA){
-		stato[SCALA] = LOW;
-		digitalWrite(LEDSCALA, stato[SCALA]);
-	}else if(n==TMRSPEGNI){
-		stato[SCALA] = LOW;
-		digitalWrite(LEDSALA, stato[SALA]);
-		stato[INGRESSO] = LOW;
-		digitalWrite(LEDINGRESSO, stato[INGRESSO]);
-	}else if(n==TMRSICUREZZA){
-		digitalWrite(LEDSPIA, HIGH);
-	}
-}
-
-bool transizione(byte val,byte n){  //transizione di un pulsante
-  bool cambiato=false;
-  cambiato = (precval[n] != val);
-  precval[n] = val;  
-  return cambiato; 
-}
-
-void loop(){
-  // polling dei tempi
-  aggiornaTimer(TMRSCALA);
-  aggiornaTimer(TMRSPEGNI);
-  aggiornaTimer(TMRSICUREZZA);
-  
-  byte in;
-  if(millis()-precm>=(unsigned long)TBASE){   //schedulatore e antirimbalzo
-    precm=millis();   
-    step=(step+1)%NSTEP; //conteggio circolare
-       
-    //polling pulsante SCALA
-    in=digitalRead(CMDSCALA);
-    if(transizione(in,SCALA)){
-      if(in==HIGH){ //se fronte di salita (pressione)
-        startTimer(TSCALA, TMRSCALA); 
-        stato[SCALA] = !stato[SCALA];
-        digitalWrite(LEDSCALA,stato[SCALA]);
-      }
-    }
-    
-    //polling pulsante SALA
-    in=digitalRead(CMDSALA);
-      if(transizione(in,SALA)){
-        if(in==HIGH){ //se fronte di salita (pressione)
-	  startTimer(TSPEGNI, TMRSPEGNI);
-          stato[SALA] = !stato[SALA];
-          digitalWrite(LEDSALA,stato[SALA]);
-	}else{ // rilascio
-	  stopTimer(TMRSPEGNI);
-	}
-    }    
-
-    // polling pulsante INGRESSO
-    in=digitalRead(CMDINGRESSO);
-      if(transizione(in,INGRESSO)){
-        if(in==HIGH){ //se fronte di salita
-          startTimer(TSPEGNI, TMRSPEGNI);
-          stato[INGRESSO] = !stato[INGRESSO];
-          digitalWrite(LEDINGRESSO,stato[INGRESSO]);
-	}else{ // rilascio
-	  stopTimer(TMRSPEGNI);
-	}
-    }
-  } //chiudi schedulatore 
-  
-  if(Serial.available() > 0 ){//anche while va bene!
-    short val;
-    String instr = Serial.readString();
+def main():
+	#inizio variabili timer
+	startTime = 0  		# tempo in sec
+	timelapse = 0
+	timerState = False
+	# variabili schedulatore
+	TBASE = 0.1
+	NSTEP = 100
+	step = 0
 	
-    if(instr.indexOf("\"statosala\":\"on\"") >= 0){
-	startTimer(TSICUREZZA, TMRSICUREZZA);
-	digitalWrite(LEDSPIA, LOW);
-    }
-  }
-}
+	class Pulsanti:
+		CMDINGRESSO = 0
+		CMDSALA = 1
+		CMDSCALA = 2
+		
+	class Lampade:
+		LEDINGRESSO = 3
+		LEDSALA = 4
+		LEDSCALA = 5
+		LEDSPIA = 6
+		
+	class Times:
+		TSICUREZZA = 10
+		TSCALA = 10
+		TSPEGNI = 10
+		
+	class Timers:
+		TMRSCALA = 0
+		TMRSPEGNI = 1
+		TMRSICUREZZA = 2
+
+	class Ambienti:
+		SCALA = 0
+		SALA = 1
+		INGRESSO = 2
+	
+	# funzione di attivazione
+	def startTimer(duration, n):
+		timerState[n] = 1 
+		timelapse[n] = duration
+		startTime[n] = uptime()
+
+	# funzione di disattivazione
+	def stopTimer(n):
+		timerState[n] = False
+		
+	# callback: azione standard da compiere allo scadere del timer, definita fuori dal loop
+	def onElapse(n):
+		# azione da compiere
+		#.......
+
+	# polling: verifica se è arrivato il tempo di far scattare il timer
+	def aggiornaTimer(n):
+		if (timerState[n] == True) and (uptime() - startTime[n] >= timelapse[n]):
+			timerState[n] = False
+			onElapse(n)
+	
+	# azione da compiere allo scadere del timer, definita fuori dal loop
+	def onElapse(n):
+		if n == TMRSCALA:
+			stato[Ambienti.SCALA] = LOW
+			digitalWrite(Lampade.LEDSCALA, stato[Ambienti.SCALA])
+		else if n == TMRSPEGNI:
+			stato[Ambienti.SCALA] = LOW
+			digitalWrite(Lampade.LEDSALA, stato[Ambienti.SALA])
+			stato[Ambienti.INGRESSO] = LOW
+			digitalWrite(Lampade.LEDINGRESSO, stato[Ambienti.INGRESSO])
+		else if n == TMRSICUREZZA:
+			digitalWrite(Lampade.LEDSPIA, HIGH)
+    
+	def transizione(val, n):  # transizione di un pulsante
+		cambiato = False 
+		cambiato = (precval[n] != val)
+		precval[n] = val  
+		return cambiato
+		
+	precval = [0, 0, 0]
+	stato = [0, 0, 0]
+	precm = 0
+	startTime = [0, 0, 0]
+	timelapse = [0, 0, 0]
+	timerState = [false, false, false]
+	pinMode(Pulsanti.CMDSCALA, IN)
+	pinMode(Pulsanti.CMDSALA, IN)
+	pinMode(Pulsanti.CMDINGRESSO, IN)
+	pinMode(Lampade.LEDINGRESSO, OUT)
+	pinMode(Lampade.LEDSALA, OUT)
+	pinMode(Lampade.LEDSCALA, OUT)
+	pinMode(Lampade.LEDSPIA, OUT)
+	stopTimer(Timers.TMRSCALA)
+	stopTimer(Timers.TMRSPEGNI)
+	stopTimer(Timers.TMRSICUREZZA)
+	usb = USB(0, 9600)
+	
+	while True:
+		# polling dei tempi
+		aggiornaTimer(TMRSCALA)
+		aggiornaTimer(TMRSPEGNI)
+		aggiornaTimer(TMRSICUREZZA)
+			
+		if (uptime() - precm) >= TBASE:  	   	# schedulatore (e anche antirimbalzo)
+			precm = uptime()  			   		# preparo il tic successivo	
+			step = (step+1) % NSTEP				# conteggio circolare
+			
+			# polling pulsante SCALA
+			val = digitalRead(Pulsanti.CMDSCALA)
+			if transizione(val ,Ambienti.SCALA) == True:
+				if in == HIGH: # se fronte di salita (pressione)
+					startTimer(Times.TSCALA, Timers.TMRSCALA)
+					stato[Ambienti.SCALA] = (stato[Ambienti.SCALA] + 1) % 2;
+					digitalWrite(Lampade.LEDSCALA, stato[Ambienti.SCALA]*1023);
+			
+			# polling pulsante SALA
+			val = digitalRead(Pulsanti.CMDSALA)
+			if transizione(val ,Ambienti.SALA) == True:
+				if in == HIGH: # se fronte di salita (pressione)
+					startTimer(Times.TSPEGNI, Timers.TMRSPEGNI)
+					stato[Ambienti.SALA] = (stato[Ambienti.SALA] + 1) % 2
+					digitalWrite(Lampade.LEDSALA, stato[Ambienti.SALA]*1023)
+				else: # rilascio
+					stopTimer(Timers.TMRSPEGNI)
+	
+			# polling pulsante INGRESSO
+			val = digitalRead(Pulsanti.CMDINGRESSO)
+			if transizione(val ,Ambienti.INGRESSO) == True:
+				if in == HIGH: # se fronte di salita (pressione)
+					startTimer(Times.TSPEGNI, Timers.TMRSPEGNI)
+					stato[Ambienti.INGRESSO] = (stato[Ambienti.INGRESSO] + 1) % 2
+					digitalWrite(Lampade.LEDINGRESSO, stato[Ambienti.INGRESSO]*1023)
+				else: # rilascio
+					stopTimer(Timers.TMRSPEGNI)
+					
+		if usb.inWaiting() > 0: # anche while va bene!			
+			instr = usb.readLine()
+			if instr.index("\"statosala\":\"on\"") >= 0:
+				startTimer(Times.TSICUREZZA, Timers.TMRSICUREZZA);
+				digitalWrite(Lampade.LEDSPIA, LOW);
+
+if __name__ == "__main__":
+	main()
 ```
 >[Torna all'indice](indextimers.md) >[versione in C++](gruppitimers.md)
