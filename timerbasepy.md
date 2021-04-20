@@ -42,24 +42,26 @@ if __name__ == "__main__":
 
 Di seguito è un esempio di **timer aperiodico** che misura il tempo a partire dal verificarsi di una certa condizione fino a che, al superamento di un tempo limite, si decide di fare qualcosa ma solo **dopo** lo scadere del timer:
 
-```C++
-//Timer aperiodico 1
-#define TLIMITE1  1000
-unsigned long atimer1;
+```Python
+# Timer aperiodico 1
+from gpio import *
+from time import *
 
-void loop()
-{
-	// blocco condizione di attivazione
-	if(condA){
-		atimer1 = millis();
-	}
-        
-	//blocco polling
-	if (millis() - atimer1 >= (unsigned long) TLIMITE1)
-	{
-		// istruzioni eseguite allo scadere del timer 1
-	}
-}
+def main():
+	TLIMITE1 = 1  		# tempo in sec
+	atimer1 = 0
+
+	while True:
+		# blocco condizione di attivazione
+		if condA:
+			atimer1 = uptime()
+			
+		# blocco polling
+		if uptime() - atimer1 >= TLIMITE1:
+			# istruzioni eseguite allo scadere del timer 1
+
+if __name__ == "__main__":
+	main()
 ```
 La **condizione**, in realtà, può essere collocata in un punto qualsiasi del loop() (può essere ad esempio attivata dalla pressione di un pulsante):
 
