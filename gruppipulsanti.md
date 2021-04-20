@@ -232,7 +232,7 @@ void loop(){
 	} //chiudi schedulatore
 }
 ```
->[Torna all'indice](indexpulsanti.md)
+>[Torna all'indice](indexpulsanti.md) >[versione in Python](gruppipulsantipy.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTc1MzU3MTYzXX0=
 -->
