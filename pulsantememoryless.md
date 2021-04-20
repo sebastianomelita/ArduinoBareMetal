@@ -1,6 +1,6 @@
 
 
->[Torna all'indice](indexpulsanti.md)
+>[Torna all'indice](indexpulsanti.md)   >[versione in Python](pulsantememorylesspy.md)
 ## **PULSANTE SEMPLICE**
 
 Si vuole accendere un led alla pressione del pulsante e spegnerlo al suo rilascio.
