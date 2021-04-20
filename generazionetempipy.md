@@ -1,4 +1,4 @@
->[Torna all'indice generale](index.md)     >[Versione in C++](index.md)
+>[Torna all'indice generale](index.md)     >[Versione in C++](gnerazionetempi.md)
 # **GENERAZIONE DI TEMPI**
 
 ## **DELAY() E MILLIS()**
