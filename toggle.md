@@ -88,7 +88,7 @@ void loop()
 	}
 }
 ```
->[Torna all'indice](indexpulsanti.md)
+>[Torna all'indice](indexpulsanti.md) >[versione in Python](togglepy.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbLTE1NTkxOTA3OTIsLTk1MzQ1NDY2NV19
 -->
