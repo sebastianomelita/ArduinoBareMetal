@@ -21,7 +21,6 @@ La **differenza** tra i vari modi di gestione consiste in come si memorizzano st
 from gpio import *
 from time import *
 
-
 def main():
 
 	TBASE = 0.1
