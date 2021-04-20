@@ -1,7 +1,7 @@
 >[Torna all'indice generale](index.md)     >[Versione in C++](gnerazionetempi.md)
 # **GENERAZIONE DI TEMPI**
 
-## **DELAY() E uptime()**
+## **DELAY() E UPTIME()**
 
 **Delay()**
 
