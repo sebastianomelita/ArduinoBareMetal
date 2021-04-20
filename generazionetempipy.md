@@ -26,22 +26,24 @@ se precm è dello stesso tipo di millis(), cioè è di tipo unsigned long, allor
 Ciò accade perché l’operazione di sottrazione delle variabili senza segno nei computer avviene modulo il valore massimo di conteggio della variabile.
 
 Infatti si può verificare che il programma seguente restituisce il valore 2.
-```C++
-	void setup() {
-		Serial.begin(115200);
-		unsigned long a = 1;
-		unsigned long b = 4294967295; //unsigned long maximum value
-		Serial.println(a-b);
-	}
+```Python
+def main():
+	pulsante = 0
+	a = 1
+	b = 4294967295
+	print(a-b)
 
-	void loop() {
-	}
+	while True:
+		pass
+
+if __name__ == "__main__":
+	main()
 ```
 
 ## **ESEMPI DI SCHEDULATORI**
 
 **Schedulatore con delay().**
-```C++
+```Python
 	byte led = 13;
 	byte pulsante = 2;
 	void setup()
@@ -61,7 +63,7 @@ Infatti si può verificare che il programma seguente restituisce il valore 2.
 ```
 
 **Schedulatore con millis().**
-```C++
+```Python
 	#define TBASE 100  // periodo base in millisecondi
 	byte in;
 	byte pulsante = 2;
@@ -103,7 +105,7 @@ Le varie schedulazioni **sono calcolate** a partire da un **multiplo intero** de
 Il conteggio dei multipli del tempo base è tenuto da un **contatore circolare** (step) che deve essere **ruotato** dopo aver effettuato un numero di conteggi superiori al **massimo dei multipli** del tempo base necessari.
 
 Se ci sono **pulsanti** da gestire insieme ad altri task il tempo base può essere impostato tra 50 e 200 mSec in maniera da poterlo utilizzare per effettuare un **polling degli ingressi** immune dal fenomeno dei rimbalzi (**antibounce SW**).
-```C++
+```Python
 #define tbase  1000  // periodo base in milliseconds
 #define nstep  1000  // numero di fasi massimo di un periodo generico
 unsigned long precm = 0;
@@ -140,7 +142,7 @@ void loop()
 ## **MISURE DI TEMPO ASSOLUTE**
 
 Per ottenere una cadenza periodica precisa è necessario usare una forma diversa dal solito schedulatore più adatta a cumulare con precisione lunghe misure di tempo. E’essenziale che l’accumulatore tass venga aggiornato esattamente con il tempo campionato. L’accumulatore unisce i vari campionamenti per ottenere una misura unica. Con questa forma ci si può aspettare un errore di qualche secondo all’ora dipendente solo dall’imprecisione dell’oscillatore.
-```C++
+```Python
 unsigned long tass = 0;
 if ((millis() - tass) >= periodo)
 {
@@ -149,7 +151,7 @@ if ((millis() - tass) >= periodo)
 }
 ```
 Invece la forma seguente è errata. La condizione viene valutata in ritardo rispetto al momento ideale, “reimpostando” la variabile ‘tass” al tempo attuale, questo ritardo si aggiunge a tutti i ritardi precedenti. Con questa forma ci si può aspettare un errore di diversi secondi al minuto o anche peggiore.
-```C++
+```Python
 if ((millis() - tass) >= periodo)
 {
 	tass = millis();
