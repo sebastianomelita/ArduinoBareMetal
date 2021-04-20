@@ -31,7 +31,7 @@ Se il numero di compiti è grande, in relazione alla limitata potenza di calcolo
 		}
 	}
 ```
->[Torna all'indice](indexpulsanti.md)
+>[Torna all'indice](indexpulsanti.md) >[versione in Python](pulsantememorylesspy.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbLTEzMzI0MzE3MDldfQ==
 -->
