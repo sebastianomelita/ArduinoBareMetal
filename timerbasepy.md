@@ -65,24 +65,26 @@ if __name__ == "__main__":
 ```
 La **condizione**, in realtà, può essere collocata in un punto qualsiasi del loop() (può essere ad esempio attivata dalla pressione di un pulsante):
 
-```C++
-//Timer aperiodico 1
-#define TLIMITE1  1000
-unsigned long atimer1;
+```Python
+# Timer aperiodico 1
+from gpio import *
+from time import *
 
-void loop()
-{
-	//blocco polling
-	if (millis() - atimer1 >= (unsigned long) TLIMITE1)
-	{
-		// istruzioni eseguite allo scadere del timer 1
-	}
-	
-	// blocco condizione di attivazione
-	if(condA){
-		atimer1 = millis();
-	}
-}
+def main():
+	TLIMITE1 = 1  		# tempo in sec
+	atimer1 = 0
+
+	while True:
+		# blocco polling
+		if uptime() - atimer1 >=  TLIMITE1:
+			# istruzioni eseguite allo scadere del timer 1
+		
+		# blocco condizione di attivazione
+		if condA:
+			atimer1 = uptime()
+
+if __name__ == "__main__":
+	main()
 ```
 Le istruzioni eseguite allo scadere del timer possono essere inserite in una **callback**, funzione dal nome sempre uguale, che, di volta in volta, è invocata dal timer con un diverso corpo di istruzioni:
 ```C++
