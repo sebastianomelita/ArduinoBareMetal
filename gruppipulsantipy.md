@@ -73,22 +73,22 @@ if __name__ == "__main__":
 	main()
 ```
 Si noti l’uso delle due **costanti enum** CUCINA e SOGGIORNO per gestire in maniera **automatica** gli **indici** dei due array paralleli
-```C++
-byte stato[2];
-byte precval[2];
+```Python
+stato = [0, 0];
+precval = [0, 0];
 ```
 Ad esempio, il valori dello **stato** e dell’**ingresso** **passato** del pulsante CUCINA si trovano rispettivamente:
 ```C++
-statoCucina = stato[CUCINA];
-precvalCucina = precval[CUCINA];
+statoCucina = stato[Ambienti.CUCINA];
+precvalCucina = precval[Ambienti.CUCINA];
 ```
 Negli esempi successivi utilizzeremo una funzione di rilevazione delle transizioni diversa perché mirata a rilevare soltanto i fronti di salita valutando la condizione 
-```C++
-precval  == LOW  && val == HIGH.
+```Python
+precval  == LOW  and val == HIGH.
 ```
 In maniera analoga si possono creare rilevatori di fronti di discesa valutando la condizione 
-```C++
-precval  == HIGH  && val == LOW.
+```Python
+precval  == HIGH  and val == LOW.
 ```
 L’uso di queste funzioni permette di **spostare** la **logica del comando** toggle (stato = !stato dal loop alla funzione di gestione del tasto, semplificando il codice del loop.
 
