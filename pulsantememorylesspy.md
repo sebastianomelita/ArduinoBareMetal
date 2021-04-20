@@ -20,7 +20,7 @@ def main():
 	pinMode(pulsante, IN)
 
 	while True:
-		val = digitalRead(pulsante)    		# lettura ingressi
+		val = digitalRead(pulsante)    			# lettura ingressi
 		if val == HIGH:      				# rivelatore di fronte di salita
 			digitalWrite(led, HIGH);   		# scrittura uscite
 		else:
