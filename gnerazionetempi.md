@@ -1,6 +1,6 @@
 
 
->[Torna all'indice generale](index.md)
+>[Torna all'indice generale](index.md)   >[Versione in Python](generazionetempipy.md)
 # **GENERAZIONE DI TEMPI**
 
 ## **DELAY() E MILLIS()**
