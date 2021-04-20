@@ -97,56 +97,61 @@ Adesso però conviene **cambiare il nome** della funzione poiché non rappresent
 Volendo, una funzione analoga si poteva usare anche sopra, nel codice dei pulsanti con gli array.
 
 **Esempio di due pulsanti toggle gestiti con due struct**
-```C++
-/*
-Scrivere un programma Arduino che accenda due led (cucina, soggiorno).
-Accenderli con due pulsanti toggle separati.
-*/
-#define TBASE 100
-#define CMDSOGGIORNO 2
-#define CMDCUCINA 3
-#define LEDSOGGIORNO 12
-#define LEDCUCINA 13
-struct Toggle
-{
-	uint8_t precval;
-	uint8_t stato;
-} cucina, soggiorno;
+```Python
+# Scrivere un programma Arduino che accenda due led (cucina, soggiorno).
+# Accenderli con due pulsanti toggle separati.
+from gpio import *
+from time import *
 
-unsigned long precm=0;
-void setup(){
-	pinMode(CMDSOGGIORNO, INPUT);
-	pinMode(CMDCUCINA, INPUT);
-	pinMode(LEDSOGGIORNO, OUTPUT);
-	pinMode(LEDCUCINA, OUTPUT);
-}
+def main():
 
-bool toggleH(byte val, struct Toggle &btn) { 		//transizione di un pulsante
-	bool cambiato = false;
-	if (btn.precval  == LOW  && val == HIGH){
-		cambiato = true;
-		btn.stato = !btn.stato;
-	}
-	return cambiato;
-}
+	TBASE = 0.1
 
-void loop(){
-	byte in;
+	class Pulsanti:
+		CMDSOGGIORNO = 0
+		CMDCUCINA = 1
+		
+	class Lampade:
+		LEDSOGGIORNO = 2
+		LEDCUCINA = 3
 	
-	if(millis()-precm>=(unsigned long)TBASE){ 	//schedulatore e antirimbalzo
-		precm=millis();
-		//polling pulsante cucina
-		in=digitalRead(CMDCUCINA);
-		if(toggleH(in,cucina)){
-			digitalWrite(LEDCUCINA, cucina.stato);
-		}
-		//polling pulsante soggiorno
-		in=digitalRead(CMDSOGGIORNO);
-		if(toggleH(in,soggiorno)){
-			digitalWrite(LEDSOGGIORNO, soggiorno.stato);
-		}
-	} //chiudi schedulatore
-}
+	class Toggle:
+		precval = 0
+		stato = 0
+			
+	def toggleH(val, btn): # transizione di un pulsante
+		cambiato = False
+		if btn.precval  == LOW  and val == HIGH:
+			cambiato = True
+			btn.stato = (btn.stato + 1) % 2 
+		btn.precval = val
+		return cambiato
+		
+	
+	cucina = Toggle()
+	soggiorno = Toggle()
+	precm = 0;
+	pinMode(Pulsanti.CMDSOGGIORNO, IN);
+	pinMode(Pulsanti.CMDCUCINA, IN);
+	pinMode(Lampade.LEDSOGGIORNO, OUT);
+	pinMode(Lampade.LEDCUCINA, OUT);
+
+	while True:
+		if (uptime() - precm) >= TBASE:  	   	# schedulatore (e anche antirimbalzo)
+			precm = uptime()  			   		# preparo il tic successivo	
+			
+			#polling pulsante cucina
+			val = digitalRead(Pulsanti.CMDCUCINA)    
+			if toggleH(val, cucina) == True:				
+				digitalWrite(Lampade.LEDCUCINA, cucina.stato*1023);
+				
+			#polling pulsante soggiorno
+			val = digitalRead(Pulsanti.CMDSOGGIORNO)    
+			if toggleH(val, soggiorno) == True:				
+				digitalWrite(Lampade.LEDSOGGIORNO, soggiorno.stato*1023);
+					
+if __name__ == "__main__":
+	main()
 ```
 **Esempio di due pulsanti toggle gestiti con due oggetti**
 ```Python
