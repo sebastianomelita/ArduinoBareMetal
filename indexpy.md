@@ -4,22 +4,26 @@
 
 Inizialmente si potrebbe essere tentati di provare seguente soluzione, adattando la soluzione del pulsante precedente introducendo una variabile che conservi lo stato del pulsante che chiameremo _closed_.
 ```Python
-byte in;
-byte pulsante =2;
-boolean closed=false; // stato pulsante
-void setup()
-{
-	pinMode(pulsante, INPUT);
-}
+from gpio import *
+from time import *
 
-void loop()
-{
-	in = digitalRead(pulsante);
-	if(in==HIGH){ // selezione del livello alto (logica di comando)
-		closed = !closed;
-		digitalWrite(led,closed);  //scrittura uscita
-	}
-}
+def main():
+	pulsante = 0
+	led = 1
+	pinMode(led, OUT)
+	pinMode(pulsante, IN)
+	stato = 0
+
+	while True:
+		val = digitalRead(pulsante)    # lettura ingressi
+		if val == HIGH:      # rivelatore di fronte di salita
+			stato = (stato + 1)%2        # impostazione dello stato del toggle
+			digitalWrite(led,stato*1023)   # scrittura uscite
+			print(stato)
+
+if __name__ == "__main__":
+	main()
+
 ```
 Purtroppo questa soluzione ha un paio di **problemi** che ne pregiudicano il **funzionamento corretto**.
 
