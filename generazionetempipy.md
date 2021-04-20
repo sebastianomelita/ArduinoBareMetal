@@ -197,7 +197,7 @@ def main():
 if __name__ == "__main__":
 	main()
 ```
->[Torna all'indice generale](index.md)
+>[Torna all'indice generale](index.md)  >[Versione in C++](gnerazionetempi.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTEwNDI2NDY0N119
 -->
