@@ -1,5 +1,5 @@
 
->[Torna all'indice](indexpulsanti.md)
+>[Torna all'indice](indexpulsanti.md) >[versione in Python](gruppipulsantipy.md)
 ## **GESTIONE GRUPPI DI PULSANTI**
 
 La **logica di molti** pulsanti potrebbe essere gestita sotto forma di **dati strutturati** (multivalore) in una delle seguenti maniere: array, struct ed oggetti.
