@@ -20,22 +20,24 @@ I timers possono essere **periodici**, ed uno di questi era proprio lo schedulat
 
 Un esempio di **timer periodico** (del tutto analogo ad un o schedulatore) potrebbe apparire così:
 
-```C++
-//Timer periodico
-#define PERIODO  1000
-unsigned long ptimer1;
-bool timerState = false; // stato del timer
+```Python
+# Timer periodico
+from gpio import *
+from time import *
 
-void loop()
-{
-	if ((timerState) && (millis() - ptimer1) >= (unsigned long) PERIODO)
-	{
-		ptimer1 = millis();
-		//....
-		// istruzioni eseguite periodicamente, se attivo…
-	}
+def main():
+	PERIODO = 1  		# tempo in sec
+	prectimer1 = 0
+	timerState = False 	# stato del timer
 
-}
+	while True:
+		if (timerState == True) and (millis() - prectimer1) >= PERIODO:
+		prectimer1 = millis();
+		#....
+		# istruzioni eseguite periodicamente, se attivo…	
+
+if __name__ == "__main__":
+	main()
 ```
 
 Di seguito è un esempio di **timer aperiodico** che misura il tempo a partire dal verificarsi di una certa condizione fino a che, al superamento di un tempo limite, si decide di fare qualcosa ma solo **dopo** lo scadere del timer:
