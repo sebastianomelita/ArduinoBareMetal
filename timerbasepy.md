@@ -115,51 +115,51 @@ if __name__ == "__main__":
 Reset del timer, polling del tempo trascorso e istruzioni triggerate (scatenate) dal timer potrebbero anche essere **rinchiuse** in altrettante **funzioni**. 
 Inoltre viene introdotta una **variabile di stato** che potrebbe essere adoperata sia per **bloccare** il timer in un certo momento come per **riattivarlo** in un momento successivo, per il tempo rimanente prima del timeout:
 
-```C++
-//inizio variabili timer
-unsigned long startTime;
-unsigned long timelapse;
-byte timerState=0;
-//fine variabili timer
-.
-// funzione di attivazione
-void startTimer(unsigned long duration){
-	timerState=1;
-	timelapse=duration;
-	startTime=millis();
-}
+```Python
+# Timer aperiodico 1
+from gpio import *
+from time import *
 
-// funzione di attivazione
-void stopTimer(){
-	timerState=0;
-}
-
-// polling: verifica se è arrivato il tempo di far scattare il timer
-void aggiornaTimer(){
-	if((timerState == 1) && (millis() - startTime >= timelapse)){
-		timerState=0;
-		onElapse();
-	}
-}	
-
-// callback: azione standard da compiere allo scadere del timer, definita fuori dal loop
-void onElapse(){
-	//azione da compiere
-	//.......
-}
+def main():
+	#inizio variabili timer
+	startTime = 0  		# tempo in sec
+	timelapse = 0
+	timerState = False
+	#fine variabili timer
 	
-void loop(){
-	//blocco polling
-	aggiornaTimer();  //aggiorna il primo timer
-		
-	// blocco condizione di attivazione
-	if(A){
-		startTimer(1000);
-	}
+	# funzione di attivazione
+	def startTimer(duration):
+		timerState = 1 
+		timelapse = duration
+		startTime = uptime()
 
-	if(B){ blocco condizione di disattivazione
-		stopTimer();   
-	}
-}
+	# funzione di disattivazione
+	def stopTimer():
+		timerState = False
+		
+	# callback: azione standard da compiere allo scadere del timer, definita fuori dal loop
+	def onElapse():
+		# azione da compiere
+		#.......
+
+	# polling: verifica se è arrivato il tempo di far scattare il timer
+	def aggiornaTimer():
+		if (timerState == True) and (uptime() - startTime >= timelapse):
+			timerState = False
+			onElapse()
+
+	while True:
+		# blocco polling
+		aggiornaTimer()  # aggiorna il primo timer
+			
+		# blocco condizione di attivazione
+		if(A):
+			startTimer(1)
+
+		if(B): # blocco condizione di disattivazione
+			stopTimer()  
+
+if __name__ == "__main__":
+	main()
 ```
 >[Torna all'indice](indextimers.md)  >[versione in C++](timerbase.md)
