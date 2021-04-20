@@ -210,7 +210,7 @@ def main():
 if __name__ == "__main__":
 	main()
 ```
->[Torna all'indice](indexpulsanti.md)
+>[Torna all'indice](indexpulsanti.md) >[versione in C++](gruppipulsanti.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTc1MzU3MTYzXX0=
 -->
