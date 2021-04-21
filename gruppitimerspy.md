@@ -127,7 +127,7 @@ def main():
 			
 			# polling pulsante SCALA
 			val = digitalRead(Pulsanti.CMDSCALA)
-			if transizione(val ,Ambienti.SCALA) == True:
+			if transizione(val, Ambienti.SCALA) == True:
 				if in == HIGH: # se fronte di salita (pressione)
 					startTimer(Times.TSCALA, Timers.TMRSCALA)
 					stato[Ambienti.SCALA] = (stato[Ambienti.SCALA] + 1) % 2;
@@ -135,7 +135,7 @@ def main():
 			
 			# polling pulsante SALA
 			val = digitalRead(Pulsanti.CMDSALA)
-			if transizione(val ,Ambienti.SALA) == True:
+			if transizione(val, Ambienti.SALA) == True:
 				if in == HIGH: # se fronte di salita (pressione)
 					startTimer(Times.TSPEGNI, Timers.TMRSPEGNI)
 					stato[Ambienti.SALA] = (stato[Ambienti.SALA] + 1) % 2
@@ -145,7 +145,7 @@ def main():
 	
 			# polling pulsante INGRESSO
 			val = digitalRead(Pulsanti.CMDINGRESSO)
-			if transizione(val ,Ambienti.INGRESSO) == True:
+			if transizione(val, Ambienti.INGRESSO) == True:
 				if in == HIGH: # se fronte di salita (pressione)
 					startTimer(Times.TSPEGNI, Timers.TMRSPEGNI)
 					stato[Ambienti.INGRESSO] = (stato[Ambienti.INGRESSO] + 1) % 2
