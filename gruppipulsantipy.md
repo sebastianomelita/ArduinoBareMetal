@@ -187,25 +187,25 @@ def main():
 	
 	cucina = Toggle(0,0)
 	soggiorno = Toggle(0,0)
-	precm = 0;
-	pinMode(Pulsanti.CMDSOGGIORNO, IN);
-	pinMode(Pulsanti.CMDCUCINA, IN);
-	pinMode(Lampade.LEDSOGGIORNO, OUT);
-	pinMode(Lampade.LEDCUCINA, OUT);
+	precm = 0
+	pinMode(Pulsanti.CMDSOGGIORNO, IN)
+	pinMode(Pulsanti.CMDCUCINA, IN)
+	pinMode(Lampade.LEDSOGGIORNO, OUT)
+	pinMode(Lampade.LEDCUCINA, OUT)
 
 	while True:
 		if (uptime() - precm) >= TBASE:  	   	# schedulatore (e anche antirimbalzo)
-			precm = uptime()  			   		# preparo il tic successivo	
+			precm = uptime()  			# preparo il tic successivo	
 			
 			#polling pulsante cucina
 			val = digitalRead(Pulsanti.CMDCUCINA)    
 			if cucina.toggleH(val) == True:				
-				digitalWrite(Lampade.LEDCUCINA, cucina.stato*1023);
+				digitalWrite(Lampade.LEDCUCINA, cucina.stato*1023)
 				
 			#polling pulsante soggiorno
 			val = digitalRead(Pulsanti.CMDSOGGIORNO)    
 			if soggiorno.toggleH(val) == True:				
-				digitalWrite(Lampade.LEDSOGGIORNO, soggiorno.stato*1023);
+				digitalWrite(Lampade.LEDSOGGIORNO, soggiorno.stato*1023)
 					
 if __name__ == "__main__":
 	main()
