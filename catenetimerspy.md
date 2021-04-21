@@ -85,19 +85,15 @@ In questa situazione se scade il primo timer viene comunque controllato lo scade
 Se voglio che ne accada solo una posso scrivere così:
 
 ```Python
-void poll()
-{
-if ((millis() – atimer1) < (unsigned long) TLIMITE1)
-{
-    .... 
-    // istruzioni eseguite finchè NON scade il timer 1
-}else if ((millis() – atimer2) < (unsigned long) TLIMITE2)
-{
-    .... 
-    // istruzioni eseguite finchè NON scade il timer 2
-}
-}
+def poll():
 
+	if (millis() – atimer1) <  TLIMITE1:
+		# .... 
+		# istruzioni eseguite finchè NON scade il timer 1
+
+	else if (millis() – atimer2) < TLIMITE2:
+		# .... 
+		# istruzioni eseguite finchè NON scade il timer 2
 ```
 Dove l’ordine stabilisce la priorità di valutazione.
 >[Torna all'indice](indextimers.md) >[versione in C++](catenetimers.md)
