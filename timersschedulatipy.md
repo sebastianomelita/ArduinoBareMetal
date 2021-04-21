@@ -3,50 +3,56 @@
 
 Si possono realizzare timer anche a partire dalla base dei tempi misurata da uno schedulatore semplicemente contando i passi raggiunti finchè questi non arrivano ad un valore target, prima del quale, o dopo il quale, far accadere qualcosa.
 Il codice di seguito fa partire un comando alla pressione di un pulsante solo se questo è stato premuto per un tempo minimo, in caso contrario non fa nulla (filtra i comandi)
-```C++
-unsigned long lastTime = 0;  
-unsigned long timerDelay = TBASE;  // send readings timer
-unsigned step = 0;  
-bool start=false;
-unsigned short  val;
-byte precval=0; //switchdf e toggle
-byte cmdin=2;
+```Python
+from gpio import *
+from time import *
 
-//switch per un solo pulsante attivo su entrambi i fronti
-bool transizione(byte val){
-	bool changed = false;
-	changed = (val != precval); 	// campiona tutte le transizioni
-	precval = val;              	// valore di val campionato al loop precedente 
-	return changed;		// rivelatore di fronte (salita o discesa)
-}
+def main():
+			
+	NSTEP = 1000
+	lastTime = 0  
+	timerDelay = 2
+	txtime = 0
+	btntime = 0
+	step = 0  
+	start = False
+	cmdin = 0
+	led = 2
+	pinMode(cmdin, IN)
+	pinMode(led, OUT)
+	precval = [0]
+	
+	def transizione(val, n): 
+		cambiato = False
+		cambiato = (precval[n] != val)
+		precval[n] = val
+		return cambiato
 
-void loop() {
-	if ((millis() - lastTime) > timerDelay) {
-		lastTime = millis();
-		step = (step + 1) % NSTEP;
-		btntime = (btntime + 1) % NSTEP;
+	while True:
+		if (uptime() - lastTime) > timerDelay:
+			lastTime = uptime()
+			step = (step + 1) % NSTEP
+			btntime = (btntime + 1) % NSTEP
 		
-		val = !digitalRead(cmdin)); // pulsante pull up
+			val = digitalRead(cmdin)
 		
-		if(transizione(val)){ 	//rivelatore di fronte (salita e discesa)
-			Serial.println("Ho una transizione dell'ingresso");
-                      	if(val == HIGH){ // ho un fronte di salita
-				if(start==true){
-					start = false;
-					Serial.println("Ho filtrato un comando");
-				}else{
-					start = true;
-					Serial.println("Ho abilitato un comando");
-				}
-			} 
-		        btntime = 0;
-		}
+			if transizione(val,0) == True: 	# rivelatore di fronte (salita e discesa)
+				print("Ho una transizione dell'ingresso")
+				if start == True:
+					start = False
+					print("Ho filtrato un comando")
+				else:
+					start = True
+					print("Ho abilitato un comando")
+				btntime = 0
 		
-		// se premo il pulsante sufficientemente a lungo accendi il led
-		if(start && (btntime >= txtime)){
-			digitalWrite(led));
-			start = false;
-		}
-}
+		# se premo il pulsante sufficientemente a lungo accendi il led
+		if start == True and (btntime >= txtime):
+			digitalWrite(led, val*1023)
+			start = False
+
+if __name__ == "__main__":
+	main()
+
 ```
 >[Torna all'indice](indextimers.md) >[versione in C++](timersschedulati.md)
