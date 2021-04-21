@@ -38,18 +38,18 @@ def main():
 		CUCINA = 1
 	
 	def transizione(val, n): # transizione di un pulsante
-		cambiato = False;
+		cambiato = False
 		cambiato = (precval[n] != val)
 		precval[n] = val
 		return cambiato
 	
-	precval = [0, 0];
-	stato = [0, 0];
-	precm = 0;
-	pinMode(Pulsanti.CMDSOGGIORNO, IN);
-	pinMode(Pulsanti.CMDCUCINA, IN);
-	pinMode(Lampade.LEDSOGGIORNO, OUT);
-	pinMode(Lampade.LEDCUCINA, OUT);
+	precval = [0, 0]
+	stato = [0, 0]
+	precm = 0
+	pinMode(Pulsanti.CMDSOGGIORNO, IN)
+	pinMode(Pulsanti.CMDCUCINA, IN)
+	pinMode(Lampade.LEDSOGGIORNO, OUT)
+	pinMode(Lampade.LEDCUCINA, OUT)
 
 	while True:
 		if (uptime() - precm) >= TBASE:  	   	# schedulatore (e anche antirimbalzo)
@@ -59,15 +59,15 @@ def main():
 			val = digitalRead(Pulsanti.CMDCUCINA)    
 			if transizione(val,Ambienti.CUCINA) == True:				
 				if val == HIGH: # se fronte di salita
-					stato[Ambienti.CUCINA] =  (stato[Ambienti.CUCINA] + 1) % 2;
-					digitalWrite(Lampade.LEDCUCINA, stato[Ambienti.CUCINA]*1023);
+					stato[Ambienti.CUCINA] =  (stato[Ambienti.CUCINA] + 1) % 2
+					digitalWrite(Lampade.LEDCUCINA, stato[Ambienti.CUCINA]*1023)
 				
 			#polling pulsante soggiorno
 			val = digitalRead(Pulsanti.CMDSOGGIORNO)    
 			if transizione(val,Ambienti.SOGGIORNO) == True:				
 				if val == HIGH: # se fronte di salita
-					stato[Ambienti.SOGGIORNO] =  (stato[Ambienti.SOGGIORNO] + 1) % 2;
-					digitalWrite(Lampade.LEDSOGGIORNO, stato[Ambienti.SOGGIORNO]*1023);
+					stato[Ambienti.SOGGIORNO] =  (stato[Ambienti.SOGGIORNO] + 1) % 2
+					digitalWrite(Lampade.LEDSOGGIORNO, stato[Ambienti.SOGGIORNO]*1023)
 					
 if __name__ == "__main__":
 	main()
@@ -130,11 +130,11 @@ def main():
 	
 	cucina = Toggle()
 	soggiorno = Toggle()
-	precm = 0;
-	pinMode(Pulsanti.CMDSOGGIORNO, IN);
-	pinMode(Pulsanti.CMDCUCINA, IN);
-	pinMode(Lampade.LEDSOGGIORNO, OUT);
-	pinMode(Lampade.LEDCUCINA, OUT);
+	precm = 0
+	pinMode(Pulsanti.CMDSOGGIORNO, IN)
+	pinMode(Pulsanti.CMDCUCINA, IN)
+	pinMode(Lampade.LEDSOGGIORNO, OUT)
+	pinMode(Lampade.LEDCUCINA, OUT)
 
 	while True:
 		if (uptime() - precm) >= TBASE:  	   	# schedulatore (e anche antirimbalzo)
@@ -143,12 +143,12 @@ def main():
 			#polling pulsante cucina
 			val = digitalRead(Pulsanti.CMDCUCINA)    
 			if toggleH(val, cucina) == True:				
-				digitalWrite(Lampade.LEDCUCINA, cucina.stato*1023);
+				digitalWrite(Lampade.LEDCUCINA, cucina.stato*1023)
 				
 			#polling pulsante soggiorno
 			val = digitalRead(Pulsanti.CMDSOGGIORNO)    
 			if toggleH(val, soggiorno) == True:				
-				digitalWrite(Lampade.LEDSOGGIORNO, soggiorno.stato*1023);
+				digitalWrite(Lampade.LEDSOGGIORNO, soggiorno.stato*1023)
 					
 if __name__ == "__main__":
 	main()
