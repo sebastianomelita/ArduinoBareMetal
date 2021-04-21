@@ -26,6 +26,7 @@ setup(){
 	led = 2;
 	pinMode(cmdin, INPUT);
 	pinMode(led, OUTPUT);
+	Serial.begin(115200);
 }
 
 void loop() {
