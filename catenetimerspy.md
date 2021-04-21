@@ -23,6 +23,9 @@ def main():
 		if uptime() – atimer2 < TLIMITE2:
 			#.... 
 			# istruzioni eseguite finchè NON scade il timer 2
+			
+if __name__ == "__main__":
+	main()
 ```
 Molti timers possono anche essere attivi **mimetizzati** all’interno di funzioni che sono richiamate nel loop(). 
 
@@ -59,10 +62,14 @@ def main():
 	while True:
 		poll()  # funzione con blocchi di codice eseguiti prima o dopo di certi eventi
 		# …….
-```
 
-```C++
+if __name__ == "__main__":
+	main()
+```
 Attenzione ad un errore insidioso:
+
+```Python
+
 void poll()
 {
 if ((millis() – atimer1) < (unsigned long) TLIMITE1)
