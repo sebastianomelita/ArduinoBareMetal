@@ -5,24 +5,24 @@
 Talvolta si potrebbe voler eseguire un blocco di codice **continuamente** ma solo se un evento accade all’interno di un **tempo massimo** prestabilito, cioè solo prima dello scadere di un timer:
 
 ```Python
-//Timer aperiodico 2
-#define TLIMITE	1000
-unsigned long atimer2;
+# Timer aperiodico 2
+from gpio import *
+from time import *
 
-void loop()
-{
-// condizione che valuta l’accadere di un certo evento 
-// di attivazione del conteggio del tempo
-if(condA){
-    atimer2 = millis();
-}
+def main():
 
-if ((millis() – atimer2) < (unsigned long) TLIMITE2)
-{
-    .... 
-    // istruzioni eseguite finchè NON scade il timer 2
-}
-}
+	TLIMITE	= 1000
+	atimer2 = 0
+
+	while True:
+		# condizione che valuta l’accadere di un certo evento 
+		# di attivazione del conteggio del tempo
+		if condA:
+			atimer2 = uptime()
+
+		if uptime() – atimer2 < TLIMITE2:
+			#.... 
+			# istruzioni eseguite finchè NON scade il timer 2
 ```
 Molti timers possono anche essere attivi **mimetizzati** all’interno di funzioni che sono richiamate nel loop(). 
 
