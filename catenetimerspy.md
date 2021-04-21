@@ -1,4 +1,4 @@
->[Torna all'indice](indextimers.md) >[versione in Python](catenetimers.md)
+>[Torna all'indice](indextimers.md) >[versione in C++](catenetimers.md)
 
 ## **CATENE TEMPORALI**
 
@@ -97,4 +97,4 @@ if ((millis() – atimer1) < (unsigned long) TLIMITE1)
 
 ```
 Dove l’ordine stabilisce la priorità di valutazione.
->[Torna all'indice](indextimers.md) >[versione in Python](catenetimers.md)
+>[Torna all'indice](indextimers.md) >[versione in C++](catenetimers.md)
