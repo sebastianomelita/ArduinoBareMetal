@@ -22,10 +22,10 @@ bool transizione(byte val){
 }
 
 setup(){
-	cmdin = 0
-	led = 2
-	pinMode(cmdin, INPUT)
-	pinMode(led, OUTPUT)
+	cmdin = 0;
+	led = 2;
+	pinMode(cmdin, INPUT);
+	pinMode(led, OUTPUT);
 }
 
 void loop() {
