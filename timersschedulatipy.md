@@ -2,7 +2,7 @@
 ## **POLLED TIMERS SCHEDULATI**
 
 Si possono realizzare timer anche a partire dalla base dei tempi misurata da uno schedulatore semplicemente contando i passi raggiunti finchè questi non arrivano ad un valore target, prima del quale, o dopo il quale, far accadere qualcosa.
-Il codice di seguito fa partire un comando alla pressione di un pulsante solo se questo è stato premuto per un tempo minimo, in caso contrario non fa nulla (filtra i comandi)
+Il codice di seguito accende un led alla pressione di un pulsante solo se questo è stato premuto per un tempo minimo, oppure lo spegne solo se questo è rilasciato per almeno un tempo minimo, in tutti gli altri casi non fa nulla (filtra i comandi)
 ```Python
 from gpio import *
 from time import *
@@ -46,7 +46,8 @@ def main():
 					print("Ho abilitato un comando")
 				btntime = 0
 		
-		# se premo il pulsante sufficientemente a lungo accendi il led
+		# se premo il pulsante sufficientemente a lungo accendo il led
+		# ma se lo rilascio sufficientemente a lungo lo spengo
 		if start == True and (btntime >= txtime):
 			digitalWrite(led, val*1023)
 			start = False
