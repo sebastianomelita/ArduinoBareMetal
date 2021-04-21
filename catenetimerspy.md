@@ -70,27 +70,21 @@ Attenzione ad un errore insidioso:
 
 ```Python
 
-void poll()
-{
-if ((millis() – atimer1) < (unsigned long) TLIMITE1)
-{
-    .... 
-    // istruzioni eseguite finchè NON scade il timer 1
-}
+def poll():
 
-if ((millis() – atimer2) < (unsigned long) TLIMITE2)
-{
-    .... 
-    // istruzioni eseguite finchè NON scade il timer 2
-}
+	if (millis() – atimer1) <  TLIMITE1:
+		# .... 
+		# istruzioni eseguite finchè NON scade il timer 1
 
-}
+	if (millis() – atimer2) < TLIMITE2:
+		# .... 
+		# istruzioni eseguite finchè NON scade il timer 2
 ```
 
 In questa situazione se scade il primo timer viene comunque controllato lo scadere del secondo. La cascata degli if equivale ad un OR logico sulle condizioni di scadenza.
 Se voglio che ne accada solo una posso scrivere così:
 
-```C++
+```Python
 void poll()
 {
 if ((millis() – atimer1) < (unsigned long) TLIMITE1)
