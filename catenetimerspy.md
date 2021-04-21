@@ -30,33 +30,35 @@ Si potrebbe realizzare:
 - un codice che, benchè sia eseguito **linearmente**, viene eseguito aggiungendo nuove parti in istanti via via **successivi**, man mano che passa il tempo. 
 - una catena di timer che si attivano man mano che un certo mumero di condizioni vengono soddisfatte in cui, ogni evento che scade prima viene ritenuto **disabilitante** per tutto il resto della funzione, interropendo prematuramente la catena di operazioni:
 
-```C++
-void loop()
-{
-poll();  // funzione con blocchi di codice eseguiti prima o dopo di certi eventi
-…….
-}
+```Python
+# Timer aperiodico 2
+from gpio import *
+from time import *
 
-void poll()
-{
-if(condA){ // evento che attiva il timer (può essere ricorrente ma, in generale, è aperiodico)
-    atimer1 = millis();
-}
+def poll():
+	if condA): # evento che attiva il timer (può essere ricorrente ma, in generale, è aperiodico)
+		atimer1 = millis();
 
-// finchè non si raggiunge TLIMITE1 ritorna senza fare nulla
-if ((millis() – atime1) < (unsigned long) TLIMITE1) return;
+	# finchè non si raggiunge TLIMITE1 ritorna senza fare nulla
+	if (millis() – atime1) <  TLIMITE1:
+		return 0
 
-//BLOCCO_A
+	# BLOCCO_A
+	# finchè non si raggiunge TLIMITE2 ritorna dopo avere eseguito il blocco di istruzioni A
+	if (millis() – atimer2) <  TLIMITE2:
+		return 0
 
-// finchè non si raggiunge TLIMITE2 ritorna dopo avere eseguito il blocco di istruzioni A
-if ((millis() – atimer2) < (unsigned long) TLIMITE2) return;
+	# BLOCCO_B
+	# finchè non si raggiunge TLIMITE3 ritorna dopo avere eseguito il blocco di istruzioni 
+	# A e B
+	if (millis() – atimer1) <  TLIMITE3):
+		return 0
 
-//BLOCCO_B
+def main():
 
-// finchè non si raggiunge TLIMITE3 ritorna dopo avere eseguito il blocco di istruzioni 
-// A e B
-if ((millis() – atimer1) < (unsigned long) TLIMITE3) return;
-}
+	while True:
+		poll()  # funzione con blocchi di codice eseguiti prima o dopo di certi eventi
+		# …….
 ```
 
 ```C++
