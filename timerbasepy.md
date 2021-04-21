@@ -152,11 +152,10 @@ def main():
 		# blocco polling
 		aggiornaTimer()  # aggiorna il primo timer
 			
-		# blocco condizione di attivazione
-		if(A):
+		if(A):	# blocco condizione di attivazione
 			startTimer(1)
 
-		if(B): # blocco condizione di disattivazione
+		if(B): 	# blocco condizione di disattivazione
 			stopTimer()  
 
 if __name__ == "__main__":
