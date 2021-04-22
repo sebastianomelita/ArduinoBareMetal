@@ -26,12 +26,12 @@ def main():
 	TBASE = 0.1
 
 	class Pulsanti:
-		CMDSOGGIORNO = 0
-		CMDCUCINA = 1
+		SOGGIORNO = 0
+		CUCINA = 1
 		
 	class Lampade:
-		LEDSOGGIORNO = 2
-		LEDCUCINA = 3
+		SOGGIORNO = 2
+		CUCINA = 3
 		
 	class Ambienti:
 		SOGGIORNO = 0
@@ -46,28 +46,28 @@ def main():
 	precval = [0, 0]
 	stato = [0, 0]
 	precm = 0
-	pinMode(Pulsanti.CMDSOGGIORNO, IN)
-	pinMode(Pulsanti.CMDCUCINA, IN)
-	pinMode(Lampade.LEDSOGGIORNO, OUT)
-	pinMode(Lampade.LEDCUCINA, OUT)
+	pinMode(Pulsanti.SOGGIORNO, IN)
+	pinMode(Pulsanti.CUCINA, IN)
+	pinMode(Lampade.SOGGIORNO, OUT)
+	pinMode(Lampade.CUCINA, OUT)
 
 	while True:
 		if (uptime() - precm) >= TBASE:  	   	# schedulatore (e anche antirimbalzo)
 			precm = uptime()  			   		# preparo il tic successivo	
 			
 			#polling pulsante cucina
-			val = digitalRead(Pulsanti.CMDCUCINA)    
+			val = digitalRead(Pulsanti.CUCINA)    
 			if transizione(val,Ambienti.CUCINA) == True:				
 				if val == HIGH: # se fronte di salita
 					stato[Ambienti.CUCINA] =  (stato[Ambienti.CUCINA] + 1) % 2
-					digitalWrite(Lampade.LEDCUCINA, stato[Ambienti.CUCINA]*1023)
+					digitalWrite(Lampade.CUCINA, stato[Ambienti.CUCINA]*1023)
 				
 			#polling pulsante soggiorno
-			val = digitalRead(Pulsanti.CMDSOGGIORNO)    
+			val = digitalRead(Pulsanti.SOGGIORNO)    
 			if transizione(val,Ambienti.SOGGIORNO) == True:				
 				if val == HIGH: # se fronte di salita
 					stato[Ambienti.SOGGIORNO] =  (stato[Ambienti.SOGGIORNO] + 1) % 2
-					digitalWrite(Lampade.LEDSOGGIORNO, stato[Ambienti.SOGGIORNO]*1023)
+					digitalWrite(Lampade.SOGGIORNO, stato[Ambienti.SOGGIORNO]*1023)
 					
 if __name__ == "__main__":
 	main()
@@ -108,12 +108,12 @@ def main():
 	TBASE = 0.1
 
 	class Pulsanti:
-		CMDSOGGIORNO = 0
-		CMDCUCINA = 1
+		SOGGIORNO = 0
+		CUCINA = 1
 		
 	class Lampade:
-		LEDSOGGIORNO = 2
-		LEDCUCINA = 3
+		SOGGIORNO = 2
+		CUCINA = 3
 	
 	class Toggle:
 		precval = 0
@@ -131,24 +131,24 @@ def main():
 	cucina = Toggle()
 	soggiorno = Toggle()
 	precm = 0
-	pinMode(Pulsanti.CMDSOGGIORNO, IN)
-	pinMode(Pulsanti.CMDCUCINA, IN)
-	pinMode(Lampade.LEDSOGGIORNO, OUT)
-	pinMode(Lampade.LEDCUCINA, OUT)
+	pinMode(Pulsanti.SOGGIORNO, IN)
+	pinMode(Pulsanti.CUCINA, IN)
+	pinMode(Lampade.SOGGIORNO, OUT)
+	pinMode(Lampade.CUCINA, OUT)
 
 	while True:
 		if (uptime() - precm) >= TBASE:  	   	# schedulatore (e anche antirimbalzo)
 			precm = uptime()  			   		# preparo il tic successivo	
 			
 			#polling pulsante cucina
-			val = digitalRead(Pulsanti.CMDCUCINA)    
+			val = digitalRead(Pulsanti.CUCINA)    
 			if toggleH(val, cucina) == True:				
-				digitalWrite(Lampade.LEDCUCINA, cucina.stato*1023)
+				digitalWrite(Lampade.CUCINA, cucina.stato*1023)
 				
 			#polling pulsante soggiorno
-			val = digitalRead(Pulsanti.CMDSOGGIORNO)    
+			val = digitalRead(Pulsanti.SOGGIORNO)    
 			if toggleH(val, soggiorno) == True:				
-				digitalWrite(Lampade.LEDSOGGIORNO, soggiorno.stato*1023)
+				digitalWrite(Lampade.SOGGIORNO, soggiorno.stato*1023)
 					
 if __name__ == "__main__":
 	main()
@@ -165,12 +165,12 @@ def main():
 	TBASE = 0.1
 
 	class Pulsanti:
-		CMDSOGGIORNO = 0
-		CMDCUCINA = 1
+		SOGGIORNO = 0
+		CUCINA = 1
 		
 	class Lampade:
-		LEDSOGGIORNO = 2
-		LEDCUCINA = 3
+		SOGGIORNO = 2
+		CUCINA = 3
 			
 	class Toggle(object):
 		def __init__(self, precval, stato):
@@ -188,24 +188,24 @@ def main():
 	cucina = Toggle(0,0)
 	soggiorno = Toggle(0,0)
 	precm = 0
-	pinMode(Pulsanti.CMDSOGGIORNO, IN)
-	pinMode(Pulsanti.CMDCUCINA, IN)
-	pinMode(Lampade.LEDSOGGIORNO, OUT)
-	pinMode(Lampade.LEDCUCINA, OUT)
+	pinMode(Pulsanti.SOGGIORNO, IN)
+	pinMode(Pulsanti.CUCINA, IN)
+	pinMode(Lampade.SOGGIORNO, OUT)
+	pinMode(Lampade.CUCINA, OUT)
 
 	while True:
 		if (uptime() - precm) >= TBASE:  	   	# schedulatore (e anche antirimbalzo)
 			precm = uptime()  			# preparo il tic successivo	
 			
 			#polling pulsante cucina
-			val = digitalRead(Pulsanti.CMDCUCINA)    
+			val = digitalRead(Pulsanti.CUCINA)    
 			if cucina.toggleH(val) == True:				
-				digitalWrite(Lampade.LEDCUCINA, cucina.stato*1023)
+				digitalWrite(Lampade.CUCINA, cucina.stato*1023)
 				
 			#polling pulsante soggiorno
-			val = digitalRead(Pulsanti.CMDSOGGIORNO)    
+			val = digitalRead(Pulsanti.SOGGIORNO)    
 			if soggiorno.toggleH(val) == True:				
-				digitalWrite(Lampade.LEDSOGGIORNO, soggiorno.stato*1023)
+				digitalWrite(Lampade.SOGGIORNO, soggiorno.stato*1023)
 					
 if __name__ == "__main__":
 	main()
