@@ -32,25 +32,25 @@ def main():
 	step = 0
 	
 	class Pulsanti:
-		CMDINGRESSO = 0
-		CMDSALA = 1
-		CMDSCALA = 2
+		INGRESSO = 0
+		SALA = 1
+		SCALA = 2
 		
 	class Lampade:
-		LEDINGRESSO = 3
-		LEDSALA = 4
-		LEDSCALA = 5
-		LEDSPIA = 6
+		INGRESSO = 3
+		SALA = 4
+		SCALA = 5
+		SPIA = 6
 		
 	class Times:
-		TSICUREZZA = 10
-		TSCALA = 10
-		TSPEGNI = 10
+		SICUREZZA = 10
+		SCALA = 10
+		SPEGNI = 10
 		
 	class Timers:
-		TMRSCALA = 0
-		TMRSPEGNI = 1
-		TMRSICUREZZA = 2
+		SCALA = 0
+		SPEGNI = 1
+		SICUREZZA = 2
 
 	class Ambienti:
 		SCALA = 0
@@ -80,16 +80,16 @@ def main():
 	
 	# azione da compiere allo scadere del timer, definita fuori dal loop
 	def onElapse(n):
-		if n == TMRSCALA:
+		if n == Timers.SCALA:
 			stato[Ambienti.SCALA] = LOW
-			digitalWrite(Lampade.LEDSCALA, stato[Ambienti.SCALA])
-		else if n == TMRSPEGNI:
+			digitalWrite(Lampade.SCALA, stato[Ambienti.SCALA])
+		else if n == Timers.SPEGNI:
 			stato[Ambienti.SCALA] = LOW
-			digitalWrite(Lampade.LEDSALA, stato[Ambienti.SALA])
+			digitalWrite(Lampade.SALA, stato[Ambienti.SALA])
 			stato[Ambienti.INGRESSO] = LOW
-			digitalWrite(Lampade.LEDINGRESSO, stato[Ambienti.INGRESSO])
-		else if n == TMRSICUREZZA:
-			digitalWrite(Lampade.LEDSPIA, HIGH)
+			digitalWrite(Lampade.INGRESSO, stato[Ambienti.INGRESSO])
+		else if n == Timers.SICUREZZA:
+			digitalWrite(Lampade.SPIA, HIGH)
     
 	def transizione(val, n):  # transizione di un pulsante
 		cambiato = False 
@@ -103,61 +103,61 @@ def main():
 	startTime = [0, 0, 0]
 	timelapse = [0, 0, 0]
 	timerState = [false, false, false]
-	pinMode(Pulsanti.CMDSCALA, IN)
-	pinMode(Pulsanti.CMDSALA, IN)
-	pinMode(Pulsanti.CMDINGRESSO, IN)
-	pinMode(Lampade.LEDINGRESSO, OUT)
-	pinMode(Lampade.LEDSALA, OUT)
-	pinMode(Lampade.LEDSCALA, OUT)
-	pinMode(Lampade.LEDSPIA, OUT)
-	stopTimer(Timers.TMRSCALA)
-	stopTimer(Timers.TMRSPEGNI)
-	stopTimer(Timers.TMRSICUREZZA)
+	pinMode(Pulsanti.SCALA, IN)
+	pinMode(Pulsanti.SALA, IN)
+	pinMode(Pulsanti.INGRESSO, IN)
+	pinMode(Lampade.INGRESSO, OUT)
+	pinMode(Lampade.SALA, OUT)
+	pinMode(Lampade.SCALA, OUT)
+	pinMode(Lampade.SPIA, OUT)
+	stopTimer(Timers.SCALA)
+	stopTimer(Timers.SPEGNI)
+	stopTimer(Timers.SICUREZZA)
 	usb = USB(0, 9600)
 	
 	while True:
 		# polling dei tempi
-		aggiornaTimer(TMRSCALA)
-		aggiornaTimer(TMRSPEGNI)
-		aggiornaTimer(TMRSICUREZZA)
+		aggiornaTimer(Timers.SCALA)
+		aggiornaTimer(Timers.SPEGNI)
+		aggiornaTimer(Timers.SICUREZZA)
 			
 		if (uptime() - precm) >= TBASE:  	   	# schedulatore (e anche antirimbalzo)
 			precm = uptime()  			   		# preparo il tic successivo	
 			step = (step+1) % NSTEP				# conteggio circolare
 			
 			# polling pulsante SCALA
-			val = digitalRead(Pulsanti.CMDSCALA)
+			val = digitalRead(Pulsanti.SCALA)
 			if transizione(val, Ambienti.SCALA) == True:
 				if in == HIGH: # se fronte di salita (pressione)
-					startTimer(Times.TSCALA, Timers.TMRSCALA)
+					startTimer(Times.SCALA, Timers.SCALA)
 					stato[Ambienti.SCALA] = (stato[Ambienti.SCALA] + 1) % 2;
-					digitalWrite(Lampade.LEDSCALA, stato[Ambienti.SCALA]*1023);
+					digitalWrite(Lampade.SCALA, stato[Ambienti.SCALA]*1023);
 			
 			# polling pulsante SALA
-			val = digitalRead(Pulsanti.CMDSALA)
+			val = digitalRead(Pulsanti.SALA)
 			if transizione(val, Ambienti.SALA) == True:
 				if in == HIGH: # se fronte di salita (pressione)
-					startTimer(Times.TSPEGNI, Timers.TMRSPEGNI)
+					startTimer(Times.SPEGNI, Timers.SPEGNI)
 					stato[Ambienti.SALA] = (stato[Ambienti.SALA] + 1) % 2
-					digitalWrite(Lampade.LEDSALA, stato[Ambienti.SALA]*1023)
+					digitalWrite(Lampade.SALA, stato[Ambienti.SALA]*1023)
 				else: # rilascio
 					stopTimer(Timers.TMRSPEGNI)
 	
 			# polling pulsante INGRESSO
-			val = digitalRead(Pulsanti.CMDINGRESSO)
+			val = digitalRead(Pulsanti.INGRESSO)
 			if transizione(val, Ambienti.INGRESSO) == True:
 				if in == HIGH: # se fronte di salita (pressione)
-					startTimer(Times.TSPEGNI, Timers.TMRSPEGNI)
+					startTimer(Times.SPEGNI, Timers.SPEGNI)
 					stato[Ambienti.INGRESSO] = (stato[Ambienti.INGRESSO] + 1) % 2
-					digitalWrite(Lampade.LEDINGRESSO, stato[Ambienti.INGRESSO]*1023)
+					digitalWrite(Lampade.INGRESSO, stato[Ambienti.INGRESSO]*1023)
 				else: # rilascio
 					stopTimer(Timers.TMRSPEGNI)
 					
 		if usb.inWaiting() > 0: # anche while va bene!			
 			instr = usb.readLine()
 			if instr.index("\"statosala\":\"on\"") >= 0:
-				startTimer(Times.TSICUREZZA, Timers.TMRSICUREZZA);
-				digitalWrite(Lampade.LEDSPIA, LOW);
+				startTimer(Times.SICUREZZA, Timers.SICUREZZA);
+				digitalWrite(Lampade.SPIA, LOW);
 
 if __name__ == "__main__":
 	main()
