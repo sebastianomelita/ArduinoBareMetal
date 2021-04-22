@@ -50,7 +50,7 @@ def main():
 	
 	while True:
 		if (uptime() - precm) >= TBASE:  	   	# schedulatore (e anche antirimbalzo)
-			precm = uptime()  			   		# preparo il tic successivo	
+			precm = uptime()  			   	# preparo il tic successivo	
 			step = (step+1) % NSTEP				# conteggio circolare
 			
 			# comunicazione stato led
@@ -111,7 +111,7 @@ def main():
 	
 	while True:
 		if (uptime() - precm) >= TBASE:  	   	# schedulatore (e anche antirimbalzo)
-			precm = uptime()  			   		# preparo il tic successivo	
+			precm = uptime()  			   	# preparo il tic successivo	
 			step = (step+1) % NSTEP				# conteggio circolare
 			
 			# polling pulsante SCALA
