@@ -1,4 +1,4 @@
->[Torna all'indice](indexseriale.md)
+>[Torna all'indice](indexseriale.md) >[versione in Python](serialepy.md)
 
 ## **SERIALE ADUINO**
 
@@ -139,7 +139,7 @@ void serialEvent(){
 }
 ```
 
->[Torna all'indice](indexseriale.md)
+>[Torna all'indice](indexseriale.md) >[versione in Python](serialepy.md)
 
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMjA3NTI5MzE1NF19
