@@ -61,7 +61,6 @@ void setup(){
   pinMode(LEDSALA, OUTPUT);
   pinMode(LEDSCALA, OUTPUT);
   pinMode(LEDSPIA, OUTPUT);
-  Serial.begin(115200);
   stopTimer(TMRSCALA);
   stopTimer(TMRSPEGNI);
   stopTimer(TMRSICUREZZA);
