@@ -1,7 +1,7 @@
 
 
 
->[Torna all'indice](indexseriale.md)
+>[Torna all'indice](indexseriale.md) >[versione in Python](serialegenerazionecmdpy.md)
 
 La generazione dei messaggi sulla seriale può avvenire in qualunque punto del codice, anche all'interno di uno schedulatore, ma non dentro una ISR.
 Un messaggio può essere inviato sulla seriale essenzialmente per:
@@ -139,22 +139,7 @@ void loop(){
 }
 
 ```	
-
-	
-			
-			
-	
-	
-	
-	
-
-
-
-
-
-
-
->[Torna all'indice](indexseriale.md)
+>[Torna all'indice](indexseriale.md) >[versione in Python](serialegenerazionecmdpy.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMjA4MTI3NTg5Ml19
 -->
