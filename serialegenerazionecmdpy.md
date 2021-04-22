@@ -116,7 +116,7 @@ def main():
 			
 			# polling pulsante SCALA
 			in=digitalRead(Pulsanti.SALA)
-			if  transizione(in,SALA):
+			if  transizione(in,Ambienti.SALA):
 				if in == HIGH: # se fronte di salita
 					stato[Ambienti.SALA] = HIGH - stato[Ambienti.SALA];
 					digitalWrite(Lampade.SALA, stato[Ambienti.SALA]);
@@ -128,7 +128,7 @@ def main():
 
 			# polling pulsante INGRESSO
 			in=digitalRead(Pulsanti.INGRESSO)
-			if  transizione(in,INGRESSO):
+			if  transizione(in,Ambienti.INGRESSO):
 				if in == HIGH: # se fronte di salita
 					stato[Ambienti.INGRESSO] = HIGH - stato[Ambienti.INGRESSO];
 					digitalWrite(Lampade.INGRESSO, stato[Ambienti.INGRESSO]);
@@ -140,6 +140,7 @@ def main():
 								
 if __name__ == "__main__":
 	main()
+	
 ```	
 >[Torna all'indice](indexseriale.md) >[versione in C++](serialegenerazionecmd.md)
 <!--stackedit_data:
