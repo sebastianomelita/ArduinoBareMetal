@@ -36,9 +36,8 @@ from gpio import *
 from time import *
 
 def main():
-
+	usb = USB(0, 9600)
 	while True:
-	
 		if usb.inWaiting() > 0: # anche while va bene!			
 				instr = usb.readLine()
 				# …………………………………….
@@ -74,12 +73,12 @@ In genere viene **eseguita** con queste funzioni:
 - **Serial.println(x).** Analoga alla precedente, l’unica differenza è che appende in coda un carattere di newLine (a capo).
 
 In ogni caso è necessario **inizializzare la seriale** impostando la sua velocità che deve essere la stessa sia nel dispositivo in TX che in quello in RX. L’impostazione non è automatica e deve essere fatta dal programmatore (assenza di negoziazione automatica). L’inizializzazione in genere si esegue nel **setup(). Le velocità** possibili vanno da 9600 baud a 115200 baud.
-```C++
+```Python
 void setup ()
 {
-	pinMode(LED, OUTPUT);
-	Serial.begin(9600);
-}  	// end of setup
+	pinMode(LED, OUT);
+	usb = USB(0, 9600)
+}  	# end of setup
 ```
 E’ possibile anche definire una ISR di ricezione customizzata definendo il codice della funzione Serial.serialEvent() per Arduino Uno
 ```C++
