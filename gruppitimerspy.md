@@ -141,7 +141,7 @@ def main():
 					stato[Ambienti.SALA] = (stato[Ambienti.SALA] + 1) % 2
 					digitalWrite(Lampade.SALA, stato[Ambienti.SALA]*1023)
 				else: # rilascio
-					stopTimer(Timers.TMRSPEGNI)
+					stopTimer(Timers.SPEGNI)
 	
 			# polling pulsante INGRESSO
 			val = digitalRead(Pulsanti.INGRESSO)
@@ -151,7 +151,7 @@ def main():
 					stato[Ambienti.INGRESSO] = (stato[Ambienti.INGRESSO] + 1) % 2
 					digitalWrite(Lampade.INGRESSO, stato[Ambienti.INGRESSO]*1023)
 				else: # rilascio
-					stopTimer(Timers.TMRSPEGNI)
+					stopTimer(Timers.SPEGNI)
 					
 		if usb.inWaiting() > 0: # anche while va bene!			
 			instr = usb.readLine()
