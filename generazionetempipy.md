@@ -66,7 +66,7 @@ if __name__ == "__main__":
 	main()
 ```
 La generazione di più task in tempi diversi risulta **molto semplice** se eseguita con la funzione delay() soprattutto per la natura **lineare** della programmazione che permette di scrivere il codice dei task con lo **stesso ordine** con cui questi verranno effettivamente eseguiti **nel tempo**. Lo svantaggio di questa realizzazione è una sostanziale **inefficienza** perchè il **blocco di un task** comporta anche il blocco di **tutti gli altri**, compreso il programma principale (**main**). Riassumendo, la **schedulazione mediante delay** comporta:
-- **vantaggio**. Programmazione lineare molto semplice
+- **vantaggio**. Programmazione lineare molto semplice secondo una logica strettamente sequenziale
 - **svantaggio**. Inefficienza intrinseca nell'esecuzione dei programmi.
 
 
@@ -100,7 +100,7 @@ Se **tbase** vale 1000 msec e **precm** vale 0, accade che per 0, 1, 2,…,999 m
 
 La generazione di più task in tempi diversi risulta **molto eficciente** perchè i task vengono eseguiti priodicamente in istanti stabiliti senza bloccare l'esecuzione degli altri task. La programmazione dei task è però più complessa perchè la programmazione non è più **lineare** in quanto l'ordine di scrittura dei task non rispecchia l'ordine di esecuzione **nel tempo**. Inoltre il gestore delle schedulazioni è un algoritmo che è parte stessa del programma principale, cioè il programma principale, oltre a gestire la logica dell'applicazione deve gestire la logica del gestore delle schedulazioni. Riassumendo, la **schedulazione mediante uptime** comporta:
 - **vantaggio**.  efficienza molto elevata nell'esecuzione dei programmi.
-- **svantaggio**. programmazione a salti non lineare.
+- **svantaggio**. programmazione a salti non lineare, secondo una logica iterativa.
 - **svantaggio**. l'applicazione deve gestire la logica dello schedulatore
 
 
