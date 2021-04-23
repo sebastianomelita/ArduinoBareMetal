@@ -1,3 +1,5 @@
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
+>
 ## **MISURE DI TEMPO ASSOLUTE**
 
 Per ottenere una cadenza periodica precisa è necessario usare una forma diversa dal solito schedulatore più adatta a cumulare con precisione lunghe misure di tempo. E’essenziale che l’accumulatore tass venga aggiornato esattamente con il tempo campionato. L’accumulatore unisce i vari campionamenti per ottenere una misura unica. Con questa forma ci si può aspettare un errore di qualche secondo all’ora dipendente solo dall’imprecisione dell’oscillatore.
@@ -38,3 +40,4 @@ def main():
 if __name__ == "__main__":
 	main()
 ```
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
