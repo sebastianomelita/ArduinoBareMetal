@@ -205,6 +205,13 @@ def main():
 if __name__ == "__main__":
 	main()
 ```
+
+# ** SCHEDULAZIONE CON I THREAD**
+
+Eè possibile realizzare la schedulazione di compiti utilizzando i thread. I thread, detti anche processi leggeri, sono dei **flussi di esecuzione** separati da quello principale (il programma main) che procedono **indipendentemente** l'uno dall'altro e soprattutto in maniera **paralllela** cioè **contemporaneamente** l'uno con l'altro. Il parallelismo può essere:
+- **reale** se flussi di esecuzione diversi sono eseguiti da core (o CPU) diversi. Possiede la proprietà di effettiva **simultaneità** nell'esezuzione di più istruzioni.
+- **emulato** se flussi di esecuzione diversi sono eseguiti dallo stesso core della stessa CPU. La proprietà di **simultaneità** è relativa all'esezuzione di più **programmi** nello stesso momento ma con **istruzioni** dell'uno e dell'altro eseguite in momenti diversi (tenica dell'interleaving).
+
 >[Torna all'indice generale](index.md)  >[Versione in C++](gnerazionetempi.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTEwNDI2NDY0N119
