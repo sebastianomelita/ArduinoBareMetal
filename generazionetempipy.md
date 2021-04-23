@@ -72,7 +72,7 @@ La generazione di più task in tempi diversi risulta **molto semplice** se esegu
 
 **Schedulatore con uptime().**
 ```Python
-	from gpio import *
+from gpio import *
 from time import *
 
 def main():
