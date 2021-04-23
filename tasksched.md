@@ -1,61 +1,50 @@
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in Python](taskschedpy.md)
 
-## **ESEMPI DI SCHEDULATORI**
+## **SCHEDULATORE COMPITI**
 
-**Schedulatore con delay().**
+Di seguito è riportato un esempio di schedulatore che pianifica nel tempo **l’esecuzione periodica** di una serie di **compiti** (task) da eseguire con **cadenza diversa**.
+
+E’ buona norma evitare l’esecuzione frequente di operazioni lente quando queste non sono strettamente necessarie in modo da lasciare spazio ad altre operazioni, quali ad esempio gestione degli eventi di input, che richiedono una velocità maggiore per usufruirne in modo più interattivo.
+
+Il **tempo base** è la base dei tempi di tutte le schedulazioni.
+
+Le varie schedulazioni **sono calcolate** a partire da un **multiplo intero** del tempo base, ne segue che il tempo base dovrebbe essere calcolato come il massimo comune divisore (**MCD**) di tutti i tempi che devono essere generati.
+
+Il conteggio dei multipli del tempo base è tenuto da un **contatore circolare** (step) che deve essere **ruotato** dopo aver effettuato un numero di conteggi superiori al **massimo dei multipli** del tempo base necessari.
+
+Se ci sono **pulsanti** da gestire insieme ad altri task il tempo base può essere impostato tra 50 e 200 mSec in maniera da poterlo utilizzare per effettuare un **polling degli ingressi** immune dal fenomeno dei rimbalzi (**antibounce SW**).
 ```C++
-	byte led = 13;
-	byte pulsante = 2;
-	void setup()
-	{
-		pinMode(led, OUTPUT);
-		pinMode(pulsante, INPUT);
-	}
+#define tbase  1000  // periodo base in milliseconds
+#define nstep  1000  // numero di fasi massimo di un periodo generico
+unsigned long precm = 0;
+unsigned long step = 0;
+byte pari, in;
+byte led1 = 13;
+byte led2 = 12;
 
-	void loop()
-	{
-		//codice eseguito al tempo stabilito
-		in = digitalRead(pulsante);  //pulsante collegato in pulldown
-		// Inserire qui la logica di comando
-		//……………………………………
-		delay(100);  // ritarda del tempo necessario
-	}
-```
-La generazione di più task in tempi diversi risulta **molto semplice** se eseguita con la funzione delay() soprattutto per la natura **lineare** della programmazione che permette di scrivere il codice dei task con lo **stesso ordine** con cui questi verranno effettivamente eseguiti **nel tempo**. Lo svantaggio di questa realizzazione è una sostanziale **inefficienza** perchè il **blocco di un task** comporta anche il blocco di **tutti gli altri**, compreso il programma principale (**main**). Riassumendo, la **schedulazione mediante delay** comporta:
-- **vantaggio**. Programmazione lineare molto semplice secondo una **logica strettamente sequenziale**
-- **svantaggio**. Inefficienza intrinseca nell'esecuzione dei programmi.
+void setup()
+{
+	pinMode(led, OUTPUT);
+}
 
-**Schedulatore con millis().**
-```C++
-	#define TBASE 100  // periodo base in millisecondi
-	byte in;
-	byte pulsante = 2;
-	unsigned long precm=0;
-	void setup()
-	{
-		pinMode(pulsante, INPUT);
-	}
+void loop()
+{
+	// polling della millis() alla ricerca del tempo stabilito
+	if((millis()-precm) >= tbase){ // lo eseguo se è il tempo stabilito
+		precm = millis();  // preparo il tic successivo al tempo stabilito
+		step = (step + 1) % nstep;  // conteggio circolare arriva al massimo a nstep-1
 
-	void loop()
-	{
-		// polling di millis()
-		if((millis()-precm) >= tbase){  // ricerca del nuovo tempo “buono per eseguire”
-			// codice eseguito al tempo “buono per eseguire” attuale
-			precm = millis();  // memorizzo l’istante dell’ultimo tempo “buono per eseguire”
-			in = digitalRead(pulsante);  // lettura ingresso
-			// Inserire qui la logica di comando
-			//……………………………………
+		// task 1
+		if(!(step%2)){  // schedulo eventi al multiplo del tempo stabilito (2 sec)
+			digitalWrite(led1,!digitalRead(led1)); // stato alto: led blink
 		}
+		// task 2
+		if(!(step%3)){  // schedulo eventi al multiplo del tempo stabilito (3 sec)
+			digitalWrite(led2,!digitalRead(led2)); // stato alto: led blink
+		}
+		// il codice eseguito al tempo del metronomo va quì
 	}
+	// il codice eseguito al tempo massimo della CPU va qui
+}
 ```
-
-**_tbase_** rappresenta la **distanza** del **prossimo** tempo “buono” dall’**ultimo** valutato. Ogni **istante stabilito** viene misurato a **partire dall’ultimo** calcolato. Si determina il **tempo attuale** di esecuzione aggiungendo un tbase all’**ultimo tempo buono calcolato** e preventivamente **memorizzato** in precm. Facciamo una simulazione.
-
-Se **tbase** vale 1000 msec e **precm** vale 0, accade che per 0, 1, 2,…,999 msec l’if **non scatta** perché la condizione è falsa **poi**, dopo, al millis che restituisce il valore 1000, **scatta** e si esegue **il compito schedulato**. In definitiva l’if **ignora** 999 chiamate loop() mentre **agisce** alla millesima che **capita** esattamente dopo un secondo. Dopo questo momento **precm** vale adesso 1000, millis(), ad ogni loop(), vale, ad es., 1001, 1002,…,1999 msec, l’if **non scatta** perché la condizione è falsa **poi**, dopo, al millis che restituisce il valore 2000, **scatta,** si **aggiorna** nuovamente **precm** al valore attuale di millis(), cioè 2000, e si **esegue** nuovamente il **compito schedulato**. In maniera analoga si preparano gli **scatti successivi**.
-
-La generazione di più task in tempi diversi risulta **molto eficciente** perchè i task vengono eseguiti priodicamente in istanti stabiliti senza bloccare l'esecuzione degli altri task. La programmazione dei task è però più complessa perchè la programmazione non è più **lineare** in quanto l'ordine di scrittura dei task non rispecchia l'ordine di esecuzione **nel tempo**. Inoltre il gestore delle schedulazioni è un algoritmo che è parte stessa del programma principale, cioè il programma principale, oltre a gestire la logica dell'applicazione deve gestire la logica del gestore delle schedulazioni. Riassumendo, la **schedulazione mediante millis** comporta:
-- **vantaggio**.  efficienza molto elevata nell'esecuzione dei programmi.
-- **svantaggio**. programmazione a salti non lineare, secondo una **logica iterativa**
-- **svantaggio**. l'applicazione deve gestire la logica dello schedulatore
-
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in Python](taskschedpy.md)
