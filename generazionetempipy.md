@@ -212,8 +212,6 @@ I thread, detti anche processi leggeri, sono dei **flussi di esecuzione** separa
 - **reale** se flussi di esecuzione diversi sono eseguiti da core (o CPU) diversi. Possiede la proprietà di effettiva **simultaneità** nell'esezuzione di più istruzioni.
 - **emulato** se flussi di esecuzione diversi sono eseguiti dallo stesso core della stessa CPU. La proprietà di **simultaneità** è relativa all'esezuzione di più **programmi** nello stesso momento ma con **istruzioni** dell'uno e dell'altro eseguite in momenti diversi (tenica dell'interleaving).
 
-E' possibile realizzare la schedulazione di compiti utilizzando i thread. Il vantaggio chiave consiste nell'utilizzare tecniche di programmazione lineare basate sulla attesa di un singolo thread nella progettazione della tempistica dei vari task. 
-
 Normalmente una istruzione delay(x) fa attendere per x secondi non solo l'esecuzione di un certo task ma anche quella di tutti gli altri che quindi, in quel frattempo, sono bloccati. Il motivo consiste nel fatto che tutti i task condividono lo stesso flusso di esecuzione o thread e, se questo viene fermato, viene fermato per tutti.
 
 Se però due o più task vengono eseguiti su thread differenti è possibile bloccarne uno con un delay impedendo temporaneamente ad un suo task di andare avanti, ma laciando liberi tutti gli altri task sugli altri thread di proseguire la loro esecuzione senza interruzioni di sorta. 
