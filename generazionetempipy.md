@@ -232,6 +232,8 @@ Riassumendo, la **schedulazione mediante thread** comporta:
 - **svantaggio**. Bisogna conoscere le API di libreria con cui viene realizzato il multithreading in un certo sistema con un certo linguaggio specifico. Le maniere possono essere parecchie per cui potrebbe essere utile ricorrere ad interfacce standard consolidate (ad esempio Thread POSIX)
 - **svantaggio**. la schedulazione, cioè il passaggio da un thread all'altro, è comandata dallo schedulatore secondo una tempistica che **non è governata dal programma principale**, per effetto di ciò potrebbe diventare molto probematica la gestione delle **variabili globali** condivise tra un thread e l'altro. Cosa accede se due istruzioni di due task differenti scrivono contemporaneamente sullo stesso dato? 
 
+L'ultimo svantaggio è particolarmente critico e può comportare l'introduzione di errori difficilmente rilevabili, anche dopo innumerevoli prove sistematiche. La progettazione della gestione delle **variabili condivise**, e della gestione della **comunicazione tra i thread** in generale, deve essere molto accurata e ben ponderata. Vari strumenti SW e metodologie ad hoc permettono di affrontare più o meno efficacemente il problema.
+
 ```Python
 #
 # example ESP32 multitasking
