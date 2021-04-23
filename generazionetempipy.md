@@ -269,11 +269,11 @@ th.start_new_thread(blink2, (0.25,))
 
 count = 0
 while True:
-  print("Doing stuff... " + str(count))
-  count += 1
-  if count >= 10:
+print("Doing stuff... " + str(count))
+     count += 1
+     if count >= 10:
   	break
-  time.sleep(1)
+     time.sleep(1)
 
 print("Ending threads...")
 blink1_running = False
