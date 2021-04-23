@@ -13,40 +13,51 @@ Le varie schedulazioni **sono calcolate** a partire da un **multiplo intero** de
 Il conteggio dei multipli del tempo base è tenuto da un **contatore circolare** (step) che deve essere **ruotato** dopo aver effettuato un numero di conteggi superiori al **massimo dei multipli** del tempo base necessari.
 
 Se ci sono **pulsanti** da gestire insieme ad altri task il tempo base può essere impostato tra 50 e 200 mSec in maniera da poterlo utilizzare per effettuare un **polling degli ingressi** immune dal fenomeno dei rimbalzi (**antibounce SW**).
-```C++
-#define tbase  1000  // periodo base in milliseconds
-#define nstep  1000  // numero di fasi massimo di un periodo generico
-unsigned long precm = 0;
-unsigned long step = 0;
-byte pari, in;
-byte led1 = 13;
-byte led2 = 12;
+```Python
+from gpio import *
+from time import *
 
-void setup()
-{
-	pinMode(led, OUTPUT);
-}
-
-void loop()
-{
-	// polling della millis() alla ricerca del tempo stabilito
-	if((millis()-precm) >= tbase){ // lo eseguo se è il tempo stabilito
-		precm = millis();  // preparo il tic successivo al tempo stabilito
-		step = (step + 1) % nstep;  // conteggio circolare arriva al massimo a nstep-1
-
-		// task 1
-		if(!(step%2)){  // schedulo eventi al multiplo del tempo stabilito (2 sec)
-			digitalWrite(led1,!digitalRead(led1)); // stato alto: led blink
-		}
-		// task 2
-		if(!(step%3)){  // schedulo eventi al multiplo del tempo stabilito (3 sec)
-			digitalWrite(led2,!digitalRead(led2)); // stato alto: led blink
-		}
-		// il codice eseguito al tempo del metronomo va quì
-	}
-	// il codice eseguito al tempo massimo della CPU va qui
-}
-```
+def main():
+	pulsante = 0
+	led1 = 1
+	led2 = 2
+	pinMode(led1, OUT)
+	pinMode(led2, OUT)
+	ledstate1 = LOW
+	ledstate2 = LOW
+	precm = 0
+	precval = 0
+	step = 0
+	tbase = 1
+	nstep = 100
+	
+	while True:
+		# il codice eseguito al tempo massimo della CPU va qui	
+		# .........
+		if (uptime() - precm) >= tbase:  	   # schedulatore (e anche antirimbalzo)
+			precm = uptime()  			   # preparo il tic successivo	
+			step = (step + 1) % nstep      # conteggio circolare arriva al massimo a nstep-1
+			# il codice eseguito al tempo base va quì	
+			# ..........
+			
+			# task 1
+			if not(step % 2):      # schedulo eventi al multiplo del tempo stabilito (2 sec)
+				ledstate1 = HIGH - ledstate1
+				digitalWrite(led1, ledstate1)  # stato alto: led blink
+								
+			# task 2
+			if not(step % 3):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
+				ledstate2 = HIGH - ledstate2
+				digitalWrite(led2, ledstate2)  # stato alto: led blink
+								
+			# il codice eseguito al tempo base va quì	
+			# ..........
+				
+		# il codice eseguito al tempo massimo della CPU va qui	
+		# ........
+		
+if __name__ == "__main__":
+	main()
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
 
 
