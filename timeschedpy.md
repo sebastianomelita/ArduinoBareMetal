@@ -1,4 +1,4 @@
->[Torna all'indice generale](index.md)     >[Versione in C++](timefunc.md)
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in C++](timefunc.md)
 ## **ESEMPI DI SCHEDULATORI**
 
 **Schedulatore con delay().**
@@ -62,7 +62,7 @@ La generazione di più task in tempi diversi risulta **molto eficiente** perchè
 - **svantaggio**. programmazione a salti non lineare, secondo una logica iterativa.
 - **svantaggio**. l'applicazione deve gestire la logica dello schedulatore
 
->[Torna all'indice generale](index.md)  >[Versione in C++](timefuncpy.md)
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)   >[Versione in C++](timefuncpy.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTEwNDI2NDY0N119
 -->
