@@ -206,11 +206,57 @@ if __name__ == "__main__":
 	main()
 ```
 
-# ** SCHEDULAZIONE CON I THREAD**
+# **SCHEDULAZIONE CON I THREAD**
 
 Eè possibile realizzare la schedulazione di compiti utilizzando i thread. I thread, detti anche processi leggeri, sono dei **flussi di esecuzione** separati da quello principale (il programma main) che procedono **indipendentemente** l'uno dall'altro e soprattutto in maniera **paralllela** cioè **contemporaneamente** l'uno con l'altro. Il parallelismo può essere:
 - **reale** se flussi di esecuzione diversi sono eseguiti da core (o CPU) diversi. Possiede la proprietà di effettiva **simultaneità** nell'esezuzione di più istruzioni.
 - **emulato** se flussi di esecuzione diversi sono eseguiti dallo stesso core della stessa CPU. La proprietà di **simultaneità** è relativa all'esezuzione di più **programmi** nello stesso momento ma con **istruzioni** dell'uno e dell'altro eseguite in momenti diversi (tenica dell'interleaving).
+
+```Python
+#
+# example ESP32 multitasking
+# phil van allen
+#
+# thanks to https://youtu.be/iyoS9aSiDWg
+#
+import _thread as th
+import time
+from machine import Pin
+
+blink1_running = True
+blink2_running = True
+
+led1 = Pin(4, Pin.OUT)
+led2 = Pin(13, Pin.OUT)
+
+def blink1(delay):
+     while blink1_running:
+         led1.value(not led1.value())
+         time.sleep(delay)
+     led1.value(0)
+
+def blink2(delay):
+     while blink2_running:
+         led2.value(not led2.value())
+         time.sleep(delay)
+     led2.value(0)
+
+print("Starting other tasks...")
+th.start_new_thread(blink1, (0.5,))
+th.start_new_thread(blink2, (0.25,))
+
+count = 0
+while True:
+  print("Doing stuff... " + str(count))
+  count += 1
+  if count >= 10:
+    break
+  time.sleep(1)
+
+print("Ending threads...")
+blink1_running = False
+blink2_running = False
+```
 
 >[Torna all'indice generale](index.md)  >[Versione in C++](gnerazionetempi.md)
 <!--stackedit_data:
