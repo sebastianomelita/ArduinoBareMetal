@@ -1,3 +1,5 @@
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
+>
 # **SCHEDULAZIONE CON I THREAD**
 
 I thread, detti anche processi leggeri, sono dei **flussi di esecuzione** separati da quello principale (il programma main) che procedono **indipendentemente** l'uno dall'altro e soprattutto in maniera **paralllela** cioè **contemporaneamente** l'uno con l'altro. Il **parallelismo** può essere:
@@ -74,7 +76,7 @@ blink1_running = False
 blink2_running = False
 ```
 
->[Torna all'indice generale](index.md)  >[Versione in C++](gnerazionetempi.md)
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)   >[Versione in C++](gnerazionetempi.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTEwNDI2NDY0N119
 -->
