@@ -1,4 +1,4 @@
->[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in C++](tasksched.md)
 
 ## **SCHEDULATORE COMPITI**
 
@@ -59,5 +59,5 @@ def main():
 if __name__ == "__main__":
 	main()
 ```
->[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in C++](tasksched.md)
 
