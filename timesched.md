@@ -2,7 +2,7 @@
 
 ## **ESEMPI DI SCHEDULATORI**
 
-**Schedulatore con delay().**
+**SCHEDULATORE CON DELAY()**
 ```C++
 	byte led = 13;
 	byte pulsante = 2;
@@ -25,7 +25,8 @@ La generazione di più task in tempi diversi risulta **molto semplice** se esegu
 - **vantaggio**. Programmazione lineare molto semplice secondo una **logica strettamente sequenziale**
 - **svantaggio**. Inefficienza intrinseca nell'esecuzione dei programmi.
 
-**Schedulatore con millis().**
+
+**SCHEDULATORE CON MILLIS()**
 ```C++
 	#define TBASE 100  // periodo base in millisecondi
 	byte in;
