@@ -9,10 +9,6 @@
 
 Mette in pausa il programma per la quantità di tempo (in millisecondi) specificata come parametro. (Ci sono 1000 millisecondi in un secondo).
 
-La generazione di più task in tempi diversi risulta **molto semplice** se eseguita con la funzione delay() soprattutto per la natura **lineare** della programmazione che permette di scrivere il codice dei task nelllo **stesso ordine** con cui questi verranno poi eseguiti **temporalmnete**. Lo svantaggio di questa realizzazione è **l'inefficienza** perchè il **blocco di un task** comporta il blocco di **tutti gli altri**, compreso il programma principale (**main**). Riassumendo l'utilizzo dei delay comporta:
-- vantaggio. Programmazione lineare semplice
-- svataggio. Inefficienza intrinseca.
-
 **Millis()**
 
 Restituisce il numero di millisecondi trascorsi da quando la scheda Arduino ha iniziato a eseguire il programma corrente. Questo numero supererà (tornerà a zero), dopo circa 50 giorni (overflow).
@@ -65,6 +61,9 @@ Infatti si può verificare che il programma seguente restituisce il valore 2.
 		delay(100);  // ritarda del tempo necessario
 	}
 ```
+La generazione di più task in tempi diversi risulta **molto semplice** se eseguita con la funzione delay() soprattutto per la natura **lineare** della programmazione che permette di scrivere il codice dei task nelllo **stesso ordine** con cui questi verranno poi eseguiti **temporalmnete**. Lo svantaggio di questa realizzazione è **l'inefficienza** perchè il **blocco di un task** comporta il blocco di **tutti gli altri**, compreso il programma principale (**main**). Riassumendo l'utilizzo dei delay comporta:
+- vantaggio. Programmazione lineare semplice
+- svataggio. Inefficienza intrinseca.
 
 **Schedulatore con millis().**
 ```C++
