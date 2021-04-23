@@ -1,4 +1,4 @@
->[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)   >[Versione in Python](absolutetime.md)
 >
 ## **MISURE DI TEMPO ASSOLUTE**
 
@@ -40,4 +40,4 @@ def main():
 if __name__ == "__main__":
 	main()
 ```
->[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)   >[Versione in Python](absolutetime.md)
