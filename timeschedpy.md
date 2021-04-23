@@ -1,7 +1,7 @@
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in C++](timesched.md)
 ## **ESEMPI DI SCHEDULATORI**
 
-**Schedulatore con delay().**
+**SCHEDULATORE CON DELAY()**
 ```Python
 from gpio import *
 from time import *
@@ -29,7 +29,7 @@ La generazione di più task in tempi diversi risulta **molto semplice** se esegu
 - **svantaggio**. Inefficienza intrinseca nell'esecuzione dei programmi.
 
 
-**Schedulatore con uptime().**
+**SCHEDULATORE CON UPTIME()**
 ```Python
 from gpio import *
 from time import *
