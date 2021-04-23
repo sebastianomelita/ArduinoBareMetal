@@ -1,3 +1,5 @@
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in Python](timeschedpy.md)
+
 ## **ESEMPI DI SCHEDULATORI**
 
 **Schedulatore con delay().**
@@ -55,3 +57,5 @@ La generazione di piÃ¹ task in tempi diversi risulta **molto eficciente** perchÃ
 - **vantaggio**.  efficienza molto elevata nell'esecuzione dei programmi.
 - **svantaggio**. programmazione a salti non lineare, secondo una **logica iterativa**
 - **svantaggio**. l'applicazione deve gestire la logica dello schedulatore
+
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in Python](timeschedpy.md)
