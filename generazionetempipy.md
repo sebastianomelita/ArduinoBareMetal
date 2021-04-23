@@ -216,7 +216,7 @@ Normalmente una **istruzione delay(x)** fa attendere per x secondi non solo l'es
 
 Se però due o più task vengono eseguiti su thread differenti è possibile **bloccarne uno** con un delay impedendo temporaneamente ad un suo task di andare avanti, ma **laciando liberi tutti gli altri** task sugli altri thread di proseguire la loro esecuzione senza interruzioni di sorta. 
 
-Abbiamo visto che usare i delay per progettare i tempi di un task **è più semplice** perchè la programmazione rimane quella lineare a cui è solito ricorrere un programmatore per pensare gli algoritmi ma, in questo caso **è anche molto meno inefficiente** che in un programma a singolo thread dato che la CPU può sempre servire tutti i task nello stesso momento (in maniera reale o simulata). 
+Abbiamo visto che usare i delay per progettare i tempi di un task **è più semplice** perchè la programmazione rimane quella lineare a cui è solito ricorrere un programmatore per pensare gli algoritmi ma, in questo caso, **è anche molto meno inefficiente** che in un programma a singolo thread dato che la CPU può sempre servire tutti i task nello stesso momento (in maniera reale o simulata). 
 
 Un **altro vantaggio** per il programmatore è che la gestione della schedulazione è trasparente alla applicazione che sta realizzando nel senso che l'algoritmo che deve gestirla non deve essere incluso nel codice dell'applicazione. Qualcuno deve comunque gestire la schedulazione nel tempo dei thread e questo qualcuno è un **modulo SW** diverso dall'applicazione che può:
 - essere fornito da una **libreria** apposita
