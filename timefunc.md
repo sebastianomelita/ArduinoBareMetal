@@ -1,3 +1,5 @@
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in C++](timefunc.md)
+
 # **GENERAZIONE DI TEMPI**
 
 ## **DELAY() E MILLIS()**
@@ -36,3 +38,4 @@ Infatti si può verificare che il programma seguente restituisce il valore 2.
 	void loop() {
 	}
 ```
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in C++](timefunc.md)
