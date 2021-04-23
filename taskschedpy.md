@@ -1,3 +1,5 @@
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
+
 ## **SCHEDULATORE COMPITI**
 
 Di seguito è riportato un esempio di schedulatore che pianifica nel tempo **l’esecuzione periodica** di una serie di **compiti** (task) da eseguire con **cadenza diversa**.
@@ -45,6 +47,6 @@ void loop()
 	// il codice eseguito al tempo massimo della CPU va qui
 }
 ```
-
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
 
 
