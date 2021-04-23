@@ -46,7 +46,5 @@ void loop()
 }
 ```
 
-## **GENERAZIONE DI TEMPI CON DELAY E THREAD**
-
 
 
