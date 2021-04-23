@@ -1,4 +1,4 @@
->[Torna all'indice generale](index.md)     >[Versione in C++](timefunc.md)
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in C++](timefunc.md)
 # **GENERAZIONE DI TEMPI**
 
 ## **DELAY() E UPTIME()**
@@ -39,7 +39,7 @@ def main():
 if __name__ == "__main__":
 	main()
 ```
->[Torna all'indice generale](index.md)  >[Versione in C++](timefuncpy.md)
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in C++](timefunc.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTEwNDI2NDY0N119
 -->
