@@ -1,5 +1,5 @@
 >[Torna all'indice generale](index.md)
-1. [Funzioni di tempo](timefuncpy.md.md)
+1. [Funzioni di tempo](timefuncpy.md)
 2. [Sezioni critiche](intsezionicritiche.md)
 3. [Flag](intflag.md)
 4. [Pulsante con interrupts](intpulsante.md)
