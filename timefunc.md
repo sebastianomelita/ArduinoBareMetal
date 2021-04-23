@@ -1,4 +1,4 @@
->[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in C++](timefunc.md)
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in Python](timefuncpy.md)
 
 # **GENERAZIONE DI TEMPI**
 
@@ -38,4 +38,4 @@ Infatti si può verificare che il programma seguente restituisce il valore 2.
 	void loop() {
 	}
 ```
->[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in C++](timefunc.md)
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in Python](timefuncpy.md)
