@@ -61,4 +61,3 @@ if __name__ == "__main__":
 	
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
 
-
