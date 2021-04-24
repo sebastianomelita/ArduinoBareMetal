@@ -1,7 +1,7 @@
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
 >
-# **SCHEDULAZIONE CON I PROtOTHREAD**
+# **SCHEDULAZIONE CON I PROTOTHREAD**
 
 I protothread sono un tipo di thread leggeri senza stack progettati per sistemi con vincoli di memoria severi come sistemi profondamente integrati o
 nodi di rete di sensori. I protothreads possono essere usati con o senza un RTOS.
