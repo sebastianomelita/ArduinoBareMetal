@@ -119,7 +119,6 @@ void blink1(void * parameter){
 	
 	while(true){
 		while(blink1_running == true) {
-			// Turn the LED on
 			digitalWrite(led1, HIGH);
 			delay(500);
 			digitalWrite(led1, LOW);
@@ -137,7 +136,6 @@ void blink2(void * parameter){
 	
 	while(true){
 		if (blink2_running == true) {
-			// Turn the LED on
 			digitalWrite(led2, HIGH);
 			delay(1000);
 			digitalWrite(led2, LOW);
