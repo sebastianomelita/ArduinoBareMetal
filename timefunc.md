@@ -38,7 +38,7 @@ Infatti si può verificare che il programma seguente restituisce il valore 2.
 	void loop() {
 	}
 ```
-Esempio di ricampionamento periodico del tempo corrente dopo una differenza tbase abbastanza breve da non andare in overflow:
+Esempio di **ricampionamento periodico** del tempo corrente dopo una differenza tbase abbastanza breve da non andare in overflow:
 ```C++
 	#define TBASE 100  // periodo base in millisecondi
 	unsigned long precm=0;
