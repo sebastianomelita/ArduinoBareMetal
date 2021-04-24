@@ -150,11 +150,10 @@ void blink2(void * parameter){
 }
  
 void setup() {
- 
   Serial.begin(115200);
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
- 
+  
   Serial.print("Starting to create task on core ");
   Serial.println(taskCore0);
   xTaskCreatePinnedToCore(
