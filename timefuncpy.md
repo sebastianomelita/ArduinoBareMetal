@@ -39,7 +39,7 @@ def main():
 if __name__ == "__main__":
 	main()
 ```
-Esempio di ricampionamento periodico del tempo corrente dopo una differenza tbase abbastanza breve da non andare in overflow:
+Esempio di **ricampionamento periodico** del tempo corrente dopo una differenza tbase abbastanza breve da non andare in overflow:
 ```Python	
 	def main():
 		TBASE = 100  # periodo base in millisecondi
