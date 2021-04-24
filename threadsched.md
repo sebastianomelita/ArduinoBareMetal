@@ -100,8 +100,8 @@ void loop() {
 		delay(1000);
 	}
 	Serial.print("Ending threads...");
-	blink1_running = False
-	blink2_running = False
+	blink1_running = false;
+	blink2_running = false;
 }
 ```
 
