@@ -108,7 +108,6 @@ Stesso esempio precedente ma eseguito su Arduino Uno con la libreria porotothrea
 ```C++
 /*
   Blink
-
   Turns an LED on for one second, then off for one second, repeatedly. Rewritten with Protothreads.
 */
 
