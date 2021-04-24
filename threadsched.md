@@ -31,50 +31,70 @@ L'ultimo svantaggio è **particolarmente critico** e può comportare l'introduzi
 
 Esempio di realizzazione di due task che eseguono un blink mediante delay() insieme ad altre generiche operazioni svolte nel main:
 
-```Python
-#
-# example ESP32 multitasking
-# phil van allen
-#
-# thanks to https://youtu.be/iyoS9aSiDWg
-#
-import _thread as th
-import time
-from machine import Pin
+```C++
+#include <pthread.h>
 
-blink1_running = True
-blink2_running = True
+pthread_t t1;
+pthread_t t2;
+int delay ;
+bool blink1_running = true;
+bool blink2_running = true;
+led1 = 13;
+led2 = 12;
 
-led1 = Pin(4, Pin.OUT)
-led2 = Pin(13, Pin.OUT)
+void * blink1(void * d)
+{
+    int time;
+    time = (int) d;
+	while(blink1_running){
+		digitalWrite(led1, !digitalRead(led1));
+		delay(time);
+	}
+	digitalWrite(led1, LOW);
+    return NULL;
+}
 
-def blink1(delay):
-     while blink1_running:
-         led1.value(not led1.value())
-         time.sleep(delay)
-     led1.value(0)
+void * blink2(void * d)
+{
+    int time;
+    time = (int) d;
+	while(blink2_running){
+		digitalWrite(led2, !digitalRead(led2));
+		delay(time);
+	}
+	digitalWrite(led2, LOW);
+    return NULL;
+}
 
-def blink2(delay):
-     while blink2_running:
-         led2.value(not led2.value())
-         time.sleep(delay)
-     led2.value(0)
+void setup() {
+  Serial.begin(115200);
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  delay = 500;
+  if (pthread_create(&t1, NULL, blink1, (void *)delay)) {
+         Serial.println("Errore crezione thread 1");
+  }
+  delay = 1000;
+  if (pthread_create(&t2, NULL, blink2, (void *)delay)) {
+         Serial.println("Errore crezione thread 2");
+  } 
+}
 
-print("Starting other tasks...")
-th.start_new_thread(blink1, (0.5,))
-th.start_new_thread(blink2, (0.25,))
-
-count = 0
-while True:
-print("Doing stuff... " + str(count))
-     count += 1
-     if count >= 10:
-  	break
-     time.sleep(1)
-
-print("Ending threads...")
-blink1_running = False
-blink2_running = False
+void loop() {
+	int count = 0
+	while(true){
+		print("Doing stuff... " + str(count))
+		Serial.print("Doing stuff... ");
+		Serial.println(count);
+		count += 1;
+		if(count >= 10){
+			break
+		delay(1000);
+	}
+	Serial.print("Ending threads...");
+	blink1_running = False
+	blink2_running = False
+}
 ```
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](threadschedpy.md)
