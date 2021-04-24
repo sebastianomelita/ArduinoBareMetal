@@ -103,7 +103,7 @@ void loop() {
 	blink2_running = false;
 }
 ```
-Stesso esempio precedente ma eseguito su **Arduino Uno**, con **IDE Arduino** e  con la libreria **porotothread.h**  (https://gitlab.com/airbornemint/arduino-protothreads). I thread sono senza stack e non preemptive. La programmazione sequenziale del blink del led è emulata tramite una sleep fornita dalla libreria PT_SLEEP(pt, 200);
+Stesso esempio precedente ma eseguito su **Arduino Uno**, con **IDE Arduino** e  con la libreria **porotothread.h**  (https://gitlab.com/airbornemint/arduino-protothreads). I thread sono senza stack e **non preemptive** (solo collaborativi). La programmazione sequenziale del blink del led è emulata tramite una sleep fornita dalla libreria PT_SLEEP(pt, 200);
 
 ```C++
 /*
