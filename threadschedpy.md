@@ -8,7 +8,9 @@ I thread, detti anche processi leggeri, sono dei **flussi di esecuzione** separa
 
 Normalmente una **istruzione delay(x)** fa attendere per x secondi non solo l'esecuzione di un certo task ma anche quella di tutti gli altri che quindi, in quel frattempo, sono bloccati. Il motivo risiede nel fatto che tutti i task condividono **il medesimo flusso** di esecuzione (o thread) e, se questo viene fermato, viene fermato per tutti i task.
 
-Se però due o più task vengono eseguiti su thread differenti è possibile **bloccarne uno** con un delay impedendo temporaneamente ad uno dei suoi task di andare avanti, ma **laciando liberi tutti gli altri** task sugli altri thread di proseguire la loro esecuzione senza interruzioni di sorta. Ciò accade a patto che **i thread siano "preemptive"** cioè supportino il **prerilascio** della risorsa CPU prima del termine naturale del task (il comando return o il completamento del task). 
+Se però due o più task vengono eseguiti su thread differenti è possibile **bloccarne uno** con un delay impedendo temporaneamente ad uno dei suoi task di andare avanti, ma **laciando liberi tutti gli altri** task sugli altri thread di proseguire la loro esecuzione senza interruzioni di sorta. 
+
+Ciò accade a patto che i thread siano **"preemptive"** cioè supportino il **prerilascio** della risorsa CPU prima del termine naturale del task (il comando return o il completamento del task). 
 
 Normalmente i thread possono lavorare in due **modalità operative**:
 - **prempitive o competitiva**. Se un task di un thread possiede una risorsa (ad esempio la CPU) ed è bloccato in attesa di un input o di un un delay(), viene marcato come **interrompibile** in **maniera trasparente al task**, senza che questo se ne accorga. Allo scadere di un timer HW, **il task** viene interrotto da un segnale di **interrupt** che blocca il flusso di esecuzione corrente e assegna la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettavano di andare in esecuzione (**stato ready**).
