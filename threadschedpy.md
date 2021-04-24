@@ -1,5 +1,7 @@
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in C++](threadsched.md)
 
+# **SCHEDULAZIONE CON I THREAD**
+
 I thread, detti anche processi leggeri, sono dei **flussi di esecuzione** separati da quello principale (il programma main) che procedono **indipendentemente** l'uno dall'altro e soprattutto in maniera **paralllela** cioè **contemporaneamente** l'uno con l'altro. Il **parallelismo** può essere:
 - **reale** se flussi di esecuzione diversi sono eseguiti da core (o CPU) diversi. Possiede la proprietà di effettiva **simultaneità** nell'esezuzione di più istruzioni.
 - **emulato** se flussi di esecuzione diversi sono eseguiti dallo stesso core della stessa CPU. La proprietà di **simultaneità** è relativa all'esecuzione di più **programmi** nello stesso momento ma con **istruzioni** dell'uno e dell'altro eseguite in momenti diversi (tenica dell'interleaving).
