@@ -51,7 +51,7 @@ Esempio di ricampionamento periodico del tempo corrente dopo una differenza tbas
 			# polling di millis()
 			if (uptime()-precm) >= tbase:    # tbase deve essere minore del valore di overflow
 				# ricampionamento
-				precm = millis();  	 # memorizzo l’istante dell’ultimo tempo “buono per eseguire”
+				precm = uptime();  	 # memorizzo l’istante dell’ultimo tempo “buono per eseguire”
 				#......
 ```
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in C++](timefunc.md)
