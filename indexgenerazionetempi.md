@@ -3,5 +3,5 @@
 2. [Schedulatori](timesched.md)
 4. [Generazione tempi assoluti](absolutetime.md)
 3. [Schedulatore di compiti basati sul polling del tempo](tasksched.md)
-5. [Schedulatori di compiti basati sui thread](threadsched.md)protothreadsched.md
+5. [Schedulatori di compiti basati sui thread](threadsched.md)
 6. [Schedulatori di compiti basati sui protothread](protothreadsched.md)
