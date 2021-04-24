@@ -91,12 +91,12 @@ void setup() {
 void loop() {
 	int count = 0;
 	while(true){
-		print("Doing stuff... " + str(count))
+		print("Doing stuff... " + str(count));
 		Serial.print("Doing stuff... ");
 		Serial.println(count);
 		count += 1;
-		if(count >= 10){
-			break
+		if(count >= 10)
+			break;
 		delay(1000);
 	}
 	Serial.print("Ending threads...");
