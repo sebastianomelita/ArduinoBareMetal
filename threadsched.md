@@ -176,7 +176,6 @@ void setup() {
                     0,          /* Priority of the task */
                     NULL,       /* Task handle. */
                     taskCore1);  /* Core where the task should run */
- 
   Serial.println("Task created...");
 }
  
