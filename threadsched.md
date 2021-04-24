@@ -89,7 +89,7 @@ void setup() {
 }
 
 void loop() {
-	int count = 0
+	int count = 0;
 	while(true){
 		print("Doing stuff... " + str(count))
 		Serial.print("Doing stuff... ");
@@ -104,7 +104,7 @@ void loop() {
 	blink2_running = false;
 }
 ```
-
+Stesso esempio precedente ma eseguito su Arduino Uno con la libreria porotothread.h (https://gitlab.com/airbornemint/arduino-protothreads). I thread sono senza stack e non preemptive. La programmazione sequenziale del blink del led è emulata tramite una sleep fornita dalla libreria PT_SLEEP(pt, 200);
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](threadschedpy.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTEwNDI2NDY0N119
