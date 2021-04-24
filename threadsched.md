@@ -46,11 +46,11 @@ void * blink1(void * d)
 {
     int time;
     time = (int) d;
-	while(blink1_running){
-		digitalWrite(led1, !digitalRead(led1));
-		delay(time);
-	}
-	digitalWrite(led1, LOW);
+    while(blink1_running){
+	digitalWrite(led1, !digitalRead(led1));
+	delay(time);
+    }
+    digitalWrite(led1, LOW);
     return NULL;
 }
 
@@ -58,11 +58,11 @@ void * blink2(void * d)
 {
     int time;
     time = (int) d;
-	while(blink2_running){
-		digitalWrite(led2, !digitalRead(led2));
-		delay(time);
-	}
-	digitalWrite(led2, LOW);
+    while(blink2_running){
+	digitalWrite(led2, !digitalRead(led2));
+	delay(time);
+    }
+    digitalWrite(led2, LOW);
     return NULL;
 }
 
