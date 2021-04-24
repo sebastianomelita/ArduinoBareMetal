@@ -125,12 +125,12 @@ int blinkThread1(struct pt* pt) {
   // Loop forever
   for(;;) {
 	if (blink1_running == true) {
-		digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+		digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
 		PT_SLEEP(pt, 500);
-		digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+		digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
 		PT_SLEEP(pt, 500);
 	} else {
-		digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+		digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
 		PT_YIELD(pt);
 	}
   }
@@ -145,12 +145,12 @@ int blinkThread2(struct pt* pt) {
   // Loop forever
   for(;;) {
 	if (blink2_running == true) {
-		digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+		digitalWrite(led2, HIGH);   // turn the LED on (HIGH is the voltage level)
 		PT_SLEEP(pt, 1000);
-		digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+		digitalWrite(led2, LOW);    // turn the LED off by making the voltage LOW
 		PT_SLEEP(pt, 1000);
 	} else {
-		digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+		digitalWrite(led2, LOW);    // turn the LED off by making the voltage LOW
 		PT_YIELD(pt);
 	}
   }
