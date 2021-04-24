@@ -14,7 +14,7 @@ Restituisce il numero di millisecondi trascorsi da quando la scheda Arduino ha i
 
 Il tipo di dato ritornato dalla funzione è unsigned long.
 
-![Unigned overfow]('unsigned overflow.png')
+![Unigned overfow](unsignedOverflow.png)
 
 Bisogna prestare attenzione alle **operazioni aritmetiche** con **espressioni** che comprendono, oltre a millis() anche altre variabili aventi tipi più piccoli, come ad esempio int. Infatti la capacità di conteggio di variabili di dimensione inferiore ad unsigned long è minore di quella di millis() per cui potrebbero andare in overflow in un momento differente rispetto a millis() generando risultati scorretti.
 
