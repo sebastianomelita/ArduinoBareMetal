@@ -38,4 +38,23 @@ Infatti si può verificare che il programma seguente restituisce il valore 2.
 	void loop() {
 	}
 ```
+```C++
+	#define TBASE 100  // periodo base in millisecondi
+	unsigned long precm=0;
+	
+	void setup()
+	{
+		pinMode(pulsante, INPUT);
+	}
+
+	void loop()
+	{
+		// polling di millis()
+		if((millis()-precm) >= tbase){  // tbase deve essere minore del valore di overflow
+			// ricampionamento
+			precm = millis();  // memorizzo l’istante dell’ultimo tempo “buono per eseguire”
+			//......
+		}
+	}
+```
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in Python](timefuncpy.md)
