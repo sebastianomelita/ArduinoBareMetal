@@ -3,8 +3,8 @@
 >
 # **SCHEDULAZIONE CON I PROTOTHREAD**
 
-I protothread sono un tipo di thread leggeri senza stack progettati per sistemi con vincoli di memoria severi come sistemi profondamente integrati o
-nodi di rete di sensori. I protothreads possono essere usati con o senza un RTOS.
+I protothread sono un tipo di thread leggeri senza stack progettati per sistemi con vincoli di memoria severi come sottosistemi embedded o
+nodi di reti di sensori. I protothreads possono essere usati con o senza un RTOS.
 
 I protothread forniscono un meccanismo di blocco in cima a un sistema ad eventi, senza l'overhead di uno stack per ogni thread. Lo **scopo** dei protothread è quello di implementare un **flusso sequenziale di controllo** senza utilizzare complesse macchine a stati finiti ed evitando l'overhead di un multi-threading completo, cioè quello dotato anche del **modo preemptive**.  I protothread forniscono la sola modalità cooperativa e il rilascio anticipato delle risorse è realizzato con una sorta di emulazione.
 
