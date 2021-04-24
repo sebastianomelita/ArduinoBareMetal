@@ -41,8 +41,6 @@ if __name__ == "__main__":
 ```
 Esempio di ricampionamento periodico del tempo corrente dopo una differenza tbase abbastanza breve da non andare in overflow:
 ```Python	
-	void setup(){}
-
 	def main():
 		TBASE = 100  # periodo base in millisecondi
 		precm=0;
