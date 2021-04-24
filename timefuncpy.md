@@ -39,6 +39,21 @@ def main():
 if __name__ == "__main__":
 	main()
 ```
+Esempio di ricampionamento periodico del tempo corrente dopo una differenza tbase abbastanza breve da non andare in overflow:
+```Python	
+	void setup(){}
+
+	def main():
+		TBASE = 100  # periodo base in millisecondi
+		precm=0;
+		
+		while True:
+			# polling di millis()
+			if (uptime()-precm) >= tbase:    # tbase deve essere minore del valore di overflow
+				# ricampionamento
+				precm = millis();  	 # memorizzo l’istante dell’ultimo tempo “buono per eseguire”
+				#......
+```
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in C++](timefunc.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTEwNDI2NDY0N119
