@@ -2,5 +2,5 @@
 1. [Funzioni di tempo](timefunc.md)
 2. [Schedulatori](timesched.md)
 4. [Generazione tempi assoluti](absolutetime.md)
-3. [Schedulatore di compiti con polling del tempo](tasksched.md)
+3. [Schedulatore di compiti con il polling del tempo](tasksched.md)
 5. [Schedulatori di compiti con i thread](threadsched.md)
