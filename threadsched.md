@@ -115,7 +115,7 @@ int led2 = 12;
  
 void blink1(void * parameter){
 	String taskMessage = "Task running on core ";
-    taskMessage = taskMessage + xPortGetCoreID();
+    	taskMessage = taskMessage + xPortGetCoreID();
 	
 	while(true){
 		while(blink1_running == true) {
@@ -133,7 +133,7 @@ void blink1(void * parameter){
 
 void blink2(void * parameter){
 	String taskMessage = "Task running on core ";
-    taskMessage = taskMessage + xPortGetCoreID();
+    	taskMessage = taskMessage + xPortGetCoreID();
 	
 	while(true){
 		if (blink2_running == true) {
