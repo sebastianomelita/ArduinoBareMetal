@@ -3,12 +3,12 @@
 >
 # **SCHEDULAZIONE CON I PROtOTHREAD**
 
-I protothread sono un tipo di thread impilati leggeri progettati per sistemi con vincoli di memoria severi come sistemi profondamente integrati o
-nodi di rete di sensori. Protothreads fornisce un'esecuzione di codice lineare per sistemi guidati da eventi implementati in C. Protothreads possono essere usati con o senza un RTOS.
+I protothread sono un tipo di thread leggeri senza stack progettati per sistemi con vincoli di memoria severi come sistemi profondamente integrati o
+nodi di rete di sensori. I protothreads possono essere usati con o senza un RTOS.
 
-I protothread sono un tipo di thread estremamente leggero e senza stack che fornisce un contesto di blocco in cima a un sistema guidato dagli eventi, senza l'overhead di uno stack per ogni thread. Lo **scopo** dei protothread è quello di implementare un **flusso sequenziale di controllo** senza utilizzare complesse macchine a stati finiti ed evitando l'overhead di un multi-threading completo del modo preemptive. 
+I protothread forniscono un meccanismo di blocco in cima a un sistema ad eventi, senza l'overhead di uno stack per ogni thread. Lo **scopo** dei protothread è quello di implementare un **flusso sequenziale di controllo** senza utilizzare complesse macchine a stati finiti ed evitando l'overhead di un multi-threading completo, cioè quello dotato anche del **modo preemptive**.  I protothread forniscono la sola modalità cooperativa e il rilascio anticipato delle risorse è realizzato con una sorta di emulazione.
 
-Stesso esempio precedente ma eseguito su **Arduino Uno**, con **IDE Arduino** e  con la libreria **porotothread.h**  (https://gitlab.com/airbornemint/arduino-protothreads). I thread sono senza stack e **non preemptive** (solo collaborativi). La programmazione sequenziale del blink del led è emulata tramite una funzione delay() non bloccante fornita dalla libreria PT_SLEEP(pt, 200);
+Di seguito è riportato un esempio di blink sequenziale in esecuzione su due thread separati su scheda **Arduino Uno**, con **IDE Arduino** e  con la libreria **porotothread.h**  (https://gitlab.com/airbornemint/arduino-protothreads). I thread sono senza stack e **non preemptive** (solo collaborativi). La programmazione sequenziale del blink del led è emulata tramite una funzione delay() non bloccante fornita dalla libreria PT_SLEEP(pt, 200);
 
 ```C++
 /*
