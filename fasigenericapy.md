@@ -1,7 +1,7 @@
 
 
 
->[Torna all'indice generale](index.md) >[versione in Python](fasigenericapy.md)
+>[Torna all'indice generale](index.md) >[versione in C++](fasigenerica.md)
 ## **Fasi di una applicazione**
 
 ![accensioneled](accensioneled.png)
@@ -65,32 +65,31 @@ Questo fatto impone alcune riflessioni:
 
 
 **Filtro delle esecuzioni**. Ovviamente blocchi di codice possono essere filtrati tramite **istruzioni di selezione**, quindi inserendoli nel blocco then o in quello else di un **costrutto if-then-else**. La condizione di selezione può valutare il **tempo** (la faccio durare fino ad un certo tempo) oppure altri **ingressi** (confronto il valore attuale di un ingresso con quello di altri ingressi), oppure lo **stato** del sistema (se il motore è in movimento faccio una certa cosa se no non la faccio). Di seguito la fase di scrittura delle uscite non viene eseguita ad ogni loop ma solo se un certo ingresso ha un determinato valore:
-```C++
-if(in==HIGH){
-	digitalWrite(led,closed);  //scrittura uscita
-}
+```Python
+if in == HIGH:
+	digitalWrite(led,closed)	  #scrittura uscita
 ```
 **Memoria**. In genere si fanno frequentemente due cose:
 
 - Tenere memoria degli **ingressi** al loop precedente. Cioè conservare il valore corrente di uno o più ingressi in una variabile per poi poterlo “consumare” cioè leggere ed utilizzarlo durante l’esecuzione del loop successivo.
-	```Python
+```Python
 	pval = val    # ultima istruzione che chiude loop()
-	```
+```
 - Tenere traccia dello **stato** del mio algoritmo, cioè memoria di informazioni importanti (dedotte dalla storia di ingressi e da quella di altre variabili di stato) conservandole all’interno di una variabile di stato. Ad esempio se
  deduco il nuovo stato da quello precedente:
-	```Python
-	stato = not stato 
-	```
-	oppure, se deduco il nuovo stato da un ingresso e dallo stato precedente:
-	```Python
-	if in == HIGH and stato == 0 	
-      stato = 1 
-	```
+```Python
+stato = not stato 
+```
+oppure, se deduco il nuovo stato da un ingresso e dallo stato precedente:
+```Python
+if in == HIGH and stato == 0: 	
+	stato = 1 
+```
 In **entrambi** i casi precedenti le informazioni devono “**sopravvivere**” tra un **loop e l’altro**, cioè il loro valore non deve essere cancellato al termine dell’esecuzione della funzione loop() e ciò può essere ottenuto dichiarando le **variabili di memoria globali**, cioè dichiarandole **all’esterno** di tutte le funzioni del sistema, compresa la funzione loop().
 
 **In conclusione,** quando vogliamo gestire **l’evento di un pulsante** dobbiamo chiederci che **caratteristiche** ha l’evento alla luce delle considerazioni precedenti per capire quale è la **maniera più appropriata** per gestirlo.
 
->[Torna all'indice generale](index.md) >[versione in Python](fasigenericapy.md)
+>[Torna all'indice generale](index.md) >[versione in C++](fasigenerica.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMjc5MDE0MzUzXX0=
 -->
