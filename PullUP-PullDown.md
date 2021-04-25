@@ -1,7 +1,7 @@
 
 
 >[Torna all'indice](indexpulsanti.md)
-## **GESTIONE DEI PULSANTI NEI MICROCONTROLLORI**
+## **GESTIONE ELETTRICA DEI PULSANTI**
 
 Un pulsante è un **contatto** che **chiude** un circuito alla **pressione** esercitata dall’esterno su di un **pistoncino** e che ritorna automaticamente ad una **posizione di riposo** di circuito **aperto** per effetto di una molla interna di richiamo.
 
