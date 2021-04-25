@@ -90,7 +90,7 @@ In maniera analoga si possono creare rilevatori di fronti di discesa valutando l
 ```Python
 precval  == HIGH  and val == LOW.
 ```
-L’uso di queste funzioni permette di **spostare** la **logica del comando** toggle (stato = !stato dal loop alla funzione di gestione del tasto, semplificando il codice del loop.
+L’uso di queste funzioni permette di **spostare** la **logica del comando** toggle stato = not stato dal loop alla funzione di gestione del tasto, semplificando il codice del loop.
 
 Adesso però conviene **cambiare il nome** della funzione poiché non rappresenta più soltanto un generico rilevatore di transizioni ma anche la logica “toggle” valutata sul fronte di salita.
 
