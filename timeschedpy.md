@@ -86,6 +86,29 @@ In realtà il timer HW è spesso utilizzato **indirettamente** dai programmi per
 
 La **gestione diretta** di un timer per programmare nel tempo dei task (**schedulazione dei task**) può risultare complicata e inoltre, anche in questo caso, la programmazione dei task è **più complessa** perchè la programmazione non è più **lineare** in quanto l'ordine di scrittura dei task non rispecchia l'ordine di esecuzione dei medesimi **nel tempo**.  
 
+Esempio in **Micropython** su piattaforma **ESP32** che esegue il blink di un led su comando di un **Timer**:
+
+```Python
+import machine
+ 
+led = machine.Pin(12, machine.Pin.OUT)
+ 
+# Is the LED on?
+led_state = False
+ 
+# Interrupt handler for the timer.
+# The argument t is the timer object that triggered the interrupt
+def toggle_led(t) :
+  global led_state
+ 
+  led_state = not led_state
+  led.value(led_state)
+ 
+# Create a virtual timer with period 500ms
+tim = machine.Timer(-1)
+tim.init(period=500, callback = toggle_led)
+```
+
 Spesso la gestione del timer è affidata ad modulo SW esterno ai task per cui l'intervento del timer **non è deciso** dal programmatore ma è deciso da un modulo detto **schedulatore dei thread** che agisce in **maniera trasparente** al di fuori del controllo del programmatore. 
 
 Scopo dello schedulatore è gestire il **multitaskig**, cioè l'esecuzione **parallela** di più programmi su un unica CPU. Ciò si ottiene togliendo periodicamente la risorsa CPU ad un programma per darla ad un'altro. L'esecuzione dei task, questo caso può essere programmata come al solito ordinando le istruzioni in **maniera sequenziale** non badando al fatto che queste possano essere interrotte dallo schedulatore.
