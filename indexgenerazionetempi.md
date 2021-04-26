@@ -1,6 +1,6 @@
 >[Torna all'indice generale](index.md)
 1. [Funzioni di tempo](timefunc.md)
-2. [Schedulatori](timesched.md)
+2. [Tecniche di schedulazione](timesched.md)
 4. [Generazione di tempi assoluti](absolutetime.md)
 3. [Schedulatore di compiti basati sui time tick](tasksched.md)
 5. [Schedulatorei di compiti basato sui thread](threadsched.md)
