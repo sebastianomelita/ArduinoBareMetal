@@ -64,7 +64,7 @@ Riassumendo, la **schedulazione mediante millis** comporta:
 - **svantaggio**. programmazione a salti non lineare, secondo una **logica iterativa**
 - **svantaggio**. l'applicazione deve gestire la logica dello schedulatore
 
-## **SCHEDULATORE CON TIMER HARDWARE**
+**SCHEDULATORE CON TIMER HARDWARE**
 
 Dopo la tecnica basata sulla **pianificazione dei ritardi** delay() e quella basata sul **polling periodico della funzione millis()** per generare una catena di tick esiste un terzo modo di generare con precisione dei tempi per il quale però è necessario impostare un **HW esterno detto Timer**.
 
