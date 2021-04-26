@@ -1,6 +1,6 @@
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in Python](taskschedpy.md)
 
-## **SCHEDULATORE COMPITI**
+## **SCHEDULATORE COMPITI BASATO SUL CONTEGGIO DEI TICK**
 
 Di seguito è riportato un esempio di schedulatore che pianifica nel tempo **l’esecuzione periodica** di una serie di **compiti** (task) da eseguire con **cadenza diversa**.
 
