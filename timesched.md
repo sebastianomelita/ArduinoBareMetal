@@ -82,7 +82,7 @@ La maniera **più comune** di impostare in maniera esplicita un timer in un prog
 
 In realtà il timer HW è spesso utilizzato **indirettamente** dai programmi perchè il meccanismo degli interrupt e alla base sia della funzione delay() che della funzione millis() che, internamente, si limitano a contare un prefisato numero di tick generati da un timer HW. In ogni caso l'intervento del timer è sempre dal programmatore  **pianificato  esplicitamente**.
 
-La **gestione diretta** di un timer per programmare nel tempo **molti** task (**schedulazione dei task**) può risultare complicata e inoltre, anche in questo caso, la programmazione dei task è **più complessa** perchè la programmazione non è più **lineare** in quanto l'ordine di scrittura dei task non rispecchia l'ordine di esecuzione dei medesimi **nel tempo**.  
+La **gestione diretta** di un timer per programmare nel tempo **molti** task (**schedulazione dei task**) può risultare complicata e inoltre, anche in questo caso, la programmazione dei task è **più complessa** rispetto ad altre soluzioni perchè la programmazione non è più **lineare** in quanto l'ordine di scrittura dei task non rispecchia l'ordine di esecuzione dei medesimi **nel tempo**.  
 ```C++
 /*
  *  Timer1 library example
