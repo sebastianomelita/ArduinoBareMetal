@@ -84,11 +84,19 @@ La maniera **più comune** di impostare in maniera esplicita un timer in un prog
 
 In realtà il timer HW è spesso utilizzato **indirettamente** dai programmi perchè il meccanismo degli interrupt e alla base sia della funzione delay() che della funzione millis() che, internamente, si limitano a contare un prefisato numero di tick generati da un timer HW. In ogni caso l'intervento del timer è sempre dal programmatore  **pianificato  esplicitamente**.
 
-La **gestione diretta** di un timer per programmare nel tempo dei task (**schedulazione dei task**) può risultare complicata per cui, per questo scopo, spesso l'intervento del timer **non è deciso** dal programmatore ma è deciso da un modulo SW a parte detto **schedulatore dei thread** che agisce in **maniera trasparente** al di fuori del controllo del programmatore. 
+La **gestione diretta** di un timer per programmare nel tempo dei task (**schedulazione dei task**) può risultare complicata e inoltre, anche in questo caso, la programmazione dei task è **più complessa** perchè la programmazione non è più **lineare** in quanto l'ordine di scrittura dei task non rispecchia l'ordine di esecuzione dei medesimi **nel tempo**.  
 
-Scopo dello schedulatore è gestire il **multitaskig**, cioè l'esecuzione **parallela** di più programmi su un unica CPU. Ciò si ottiene togliendo periodicamente la risorsa CPU ad un programma per darla ad un'altro. 
+Spesso la gestione del timer è affidata ad modulo SW esterno ai task per cui l'intervento del timer **non è deciso** dal programmatore ma è deciso da un modulo detto **schedulatore dei thread** che agisce in **maniera trasparente** al di fuori del controllo del programmatore. 
+
+Scopo dello schedulatore è gestire il **multitaskig**, cioè l'esecuzione **parallela** di più programmi su un unica CPU. Ciò si ottiene togliendo periodicamente la risorsa CPU ad un programma per darla ad un'altro. L'esecuzione dei task, questo caso può essere programmata come al solito ordinando le istruzioni in **maniera sequenziale** non badando al fatto che queste possano essere interrotte dallo schedulatore.
 
 Una applicazione in genere non è programmata per essere altruista per cui non cede spontaneamente la CPU. Il **ruolo del timer HW** è proprio quello di **contare** il tempo assegnato ad una applicazione e di **sottrargli la CPU** quando questo è scaduto. Un segnale di interrupt interrompe l'esecuzione del programma corrente e fa partire la ISR() dello schedulatore dei thread che assegna la CPU ad un altro programma. L'operazione viene ripetuta **a turno** per tutti i programmi in esecuzione. Questa tecnica è detta **multi-threading** ed è gestita e coordinata da un modulo software detto schedulatore dei thread. Uno **schedulatore dei thread** può essere **integrato nel SO** oppure inserito in una **libreria a parte**. 
+
+**Riassumendo**, la schedulazione dei task mediante **timers** comporta:
+
+- vantaggio. l'applicazione non deve gestire la logica dello schedulatore
+- svantaggio. programmazione diretta a salti non lineare, secondo una logica d eventi
+- vantaggio. programmazione nei sistemi multithreading lineare, secondo una logica sequenziale
 
 Parleremo brevemente del multitasking illustrando qualche esempio in una scheda successiva.
 
