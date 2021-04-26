@@ -83,7 +83,33 @@ La maniera **più comune** di impostare in maniera esplicita un timer in un prog
 In realtà il timer HW è spesso utilizzato **indirettamente** dai programmi perchè il meccanismo degli interrupt e alla base sia della funzione delay() che della funzione millis() che, internamente, si limitano a contare un prefisato numero di tick generati da un timer HW. In ogni caso l'intervento del timer è sempre dal programmatore  **pianificato  esplicitamente**.
 
 La **gestione diretta** di un timer per programmare nel tempo dei task (**schedulazione dei task**) può risultare complicata e inoltre, anche in questo caso, la programmazione dei task è **più complessa** perchè la programmazione non è più **lineare** in quanto l'ordine di scrittura dei task non rispecchia l'ordine di esecuzione dei medesimi **nel tempo**.  
-
+```C++
+/*
+ *  Timer1 library example
+ *  June 2008 | jesse dot tane at gmail dot com
+ *  Sets up PWM output on pin 9 with a 50% duty cycle, and attaches an interrupt that toggles digital pin 10 every half second.
+ */
+ 
+#include "TimerOne.h"
+ 
+void setup()
+{
+  pinMode(13, OUTPUT);
+  Timer1.initialize(500000);         // initialize timer1, and set a 1/2 second period
+  Timer1.pwm(9, 512);                // setup pwm on pin 9, 50% duty cycle
+  Timer1.attachInterrupt(callback);  // attaches callback() as a timer overflow interrupt
+}
+ 
+void callback()
+{
+  digitalWrite(10, !digitalRead(10));
+}
+ 
+void loop()
+{
+  // your program here...
+}
+```
 Spesso la gestione del timer è affidata ad modulo SW esterno ai task per cui l'intervento del timer **non è deciso** dal programmatore ma è deciso da un modulo detto **schedulatore dei thread** che agisce in **maniera trasparente** al di fuori del controllo del programmatore. 
 
 Scopo dello schedulatore è gestire il **multitaskig**, cioè l'esecuzione **parallela** di più programmi su un unica CPU. Ciò si ottiene togliendo periodicamente la risorsa CPU ad un programma per darla ad un'altro. L'esecuzione dei task, questo caso può essere programmata come al solito ordinando le istruzioni in **maniera sequenziale** non badando al fatto che queste possano essere interrotte dallo schedulatore.
