@@ -84,7 +84,7 @@ La maniera **più comune** di impostare in maniera esplicita un timer in un prog
 
 In realtà il timer HW è spesso utilizzato **indirettamente** dai programmi perchè il meccanismo degli interrupt e alla base sia della funzione delay() che della funzione millis() che, internamente, si limitano a contare un prefisato numero di tick generati da un timer HW. In ogni caso l'intervento del timer è sempre dal programmatore  **pianificato  esplicitamente**.
 
-La **gestione diretta** di un timer per programmare nel tempo dei task (**schedulazione dei task**) può risultare complicata e inoltre, anche in questo caso, la programmazione dei task è **più complessa** perchè la programmazione non è più **lineare** in quanto l'ordine di scrittura dei task non rispecchia l'ordine di esecuzione dei medesimi **nel tempo**.  
+La **gestione diretta** di un timer per programmare nel tempo **molti** task (**schedulazione dei task**) può risultare complicata e inoltre, anche in questo caso, la programmazione dei task è **più complessa** perchè la programmazione non è più **lineare** in quanto l'ordine di scrittura dei task non rispecchia l'ordine di esecuzione dei medesimi **nel tempo**. 
 
 Esempio in **Micropython** su piattaforma **ESP32** che esegue il blink di un led su comando di un **Timer**:
 
@@ -118,7 +118,7 @@ Una applicazione in genere non è programmata per essere altruista per cui non c
 **Riassumendo**, la schedulazione dei task mediante **timers** comporta:
 
 - vantaggio. l'applicazione non deve gestire la logica dello schedulatore
-- svantaggio. programmazione diretta a salti non lineare, secondo una logica d eventi
+- svantaggio. programmazione diretta a salti non lineare, secondo una logica ad eventi
 - vantaggio. programmazione nei sistemi multithreading lineare, secondo una logica sequenziale
 
 Parleremo brevemente del multitasking illustrando qualche esempio in una scheda successiva.
