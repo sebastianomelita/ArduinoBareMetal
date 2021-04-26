@@ -27,6 +27,9 @@ La generazione di più task in tempi diversi risulta **molto semplice** se esegu
 
 
 **SCHEDULATORE CON MILLIS()**
+
+Il **tempo base** è la base dei tempi di tutte le schedulazioni, viene calcolato **periodicamente** all'accadere di un **evento** (superamento di una soglia di tempo) che viene detto **tick** (scatto, in analogia con il metronomo per la musica).
+
 ```C++
 	#define TBASE 100  // periodo base in millisecondi
 	byte in;
@@ -50,7 +53,7 @@ La generazione di più task in tempi diversi risulta **molto semplice** se esegu
 	}
 ```
 
-**_tbase_** rappresenta la **distanza** del **prossimo** tempo “buono” dall’**ultimo** valutato. Ogni **istante stabilito** viene misurato a **partire dall’ultimo** calcolato. Si determina il **tempo attuale** di esecuzione aggiungendo un tbase all’**ultimo tempo buono calcolato** e preventivamente **memorizzato** in precm. Facciamo una simulazione.
+**_tbase_** rappresenta la **distanza** del **prossimo** "tick" dall’**ultimo** valutato. Ogni **istante stabilito** per un tick viene misurato a **partire dall’ultimo** calcolato. Si determina il **momento del tick attuale** aggiungendo un tbase costante all’**ultimo tick calcolato** e preventivamente **memorizzato** in precm. Facciamo una simulazione.
 
 Se **tbase** vale 1000 msec e **precm** vale 0, accade che per 0, 1, 2,…,999 msec l’if **non scatta** perché la condizione è falsa **poi**, dopo, al millis che restituisce il valore 1000, **scatta** e si esegue **il compito schedulato**. In definitiva l’if **ignora** 999 chiamate loop() mentre **agisce** alla millesima che **capita** esattamente dopo un secondo. Dopo questo momento **precm** vale adesso 1000, millis(), ad ogni loop(), vale, ad es., 1001, 1002,…,1999 msec, l’if **non scatta** perché la condizione è falsa **poi**, dopo, al millis che restituisce il valore 2000, **scatta,** si **aggiorna** nuovamente **precm** al valore attuale di millis(), cioè 2000, e si **esegue** nuovamente il **compito schedulato**. In maniera analoga si preparano gli **scatti successivi**.
 
