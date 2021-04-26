@@ -70,7 +70,7 @@ Riassumendo, la **schedulazione mediante uptime** comporta:
 - **svantaggio**. l'applicazione deve gestire la logica dello schedulatore
 
 
-## **SCHEDULATORE CON TIMER HARDWARE**
+**SCHEDULATORE CON TIMER HARDWARE**
 
 Dopo la tecnica basata sulla **pianificazione dei ritardi** delay() e quella basata sul **polling periodico della funzione millis()** per generare una catena di tick esiste un terzo modo di generare con precisione dei tempi per il quale però è necessario impostare un **HW esterno detto Timer**.
 
@@ -80,14 +80,13 @@ Allo scadere dl timer viene generato un segnale di **interrupt** che fa partire 
 
 L'operazione di **settaggio diretto**, da programma, del timer eseguita a basso livello può essere scomoda perchè intrinsecamente legata al tipo di CPU da un lato e perchè richiede l'uso di qualche espressione di algebra booleana bit a bit che può risultare un tantino astrusa dall'altro.
 
-La maniera più comune di impostare in maniera esplicita un timer in un programma, perchè più portabile e più semplice, è utilizzare le funzioni messe a disposizione per questo scopo da **librerie di terze parti**.
+La maniera **più comune** di impostare in maniera esplicita un timer in un programma, perchè più portabile e più semplice, è utilizzare le funzioni messe a disposizione per questo scopo da **librerie di terze parti**.
 
 In realtà il timer HW è spesso utilizzato **indirettamente** dai programmi perchè il meccanismo degli interrupt e alla base sia della funzione delay() che della funzione millis() che, internamente, si limitano a contare un prefisato numero di tick generati da un timer HW. In ogni caso l'intervento del timer è sempre dal programmatore  **pianificato  esplicitamente**.
 
 C'è una seconda situazione tipica, in cui l'intervento del timer **non è deciso** dal programmatore ma è deciso da un modulo SW a parte detto **schedulatore dei thread** che agisce in **maniera trasparente** al di fuori del controllo del programmatore. Scopo dello schedulatore è gestire il **multitaskig**, cioè l'esecuzione **parallela** di più programmi su un unica CPU. Ciò si ottiene togliendo periodicamente la risorsa CPU ad un programma per darla ad un'altro. 
 
-Una applicazione in genere non è programmata per essere altruista per cui non cede spontaneamente la CPU. Il ruolo del time HW è proprio quello di contare il tempo assegnato ad una applicazione e di **sottrargli la CPU** quando questo è scaduto. Un segnale di interrupt interrompe l'esecuzione del programma corrente e fa partire la ISR() dello schedulatore dei thread che assegna la CPU ad un altro programma. L'operazione viene ripetuta a turno per tutti i programmi in esecuzione. Questa tecnica è detta **multi-threading** ed è gestita e coordinata da un modulo software detto schedulatore dei thread. Uno schedulatore dei thread può essere **integrato nel SO** oppure inserito in una **libreria a parte**. 
-
+Una applicazione in genere non è programmata per essere altruista per cui non cede spontaneamente la CPU. Il ruolo del time HW è proprio quello di **contare** il tempo assegnato ad una applicazione e di **sottrargli la CPU** quando questo è scaduto. Un segnale di interrupt interrompe l'esecuzione del programma corrente e fa partire la ISR() dello schedulatore dei thread che assegna la CPU ad un altro programma. L'operazione viene ripetuta **a turno** per tutti i programmi in esecuzione. Questa tecnica è detta **multi-threading** ed è gestita e coordinata da un modulo software detto schedulatore dei thread. Uno **schedulatore dei thread** può essere **integrato nel SO** oppure inserito in una **libreria a parte**. 
 Parleremo brevemente del multitasking illustrando qualche esempio in una scheda successiva.
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)    >[Versione in C++](timesched.md)
