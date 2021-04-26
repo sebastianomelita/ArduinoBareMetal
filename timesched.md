@@ -74,7 +74,7 @@ Il **timer** in genere è alimentato dal clock della CPU e genera dei tempi a pa
 
 Allo scadere dl timer viene generato un segnale di **interrupt** che fa partire una ISR (Interrupt Service Routine) che svolge le istruzioni associate all'evento.
 
-L'operazione di **settaggio diretto**, da programma, del timer eseguita a basso livello può essere scomoda perchè intrinsecamente legata al tipo di CPU da un lato e perchè richiede l'uso di qualche espressione di algebra booleana bit a bit che può risultare un tantino astrusa dall'altro.
+L'operazione di **settaggio diretto** da programma del timer, se eseguita a basso livello, può risultare scomoda o perchè intrinsecamente legata al tipo di CPU da un lato o perchè richiede l'uso di qualche espressione di algebra booleana bit a bit che può risultare un tantino astrusa dall'altro.
 
 La maniera **più comune** di impostare in maniera esplicita un timer in un programma, perchè più portabile e più semplice, è utilizzare le funzioni messe a disposizione per questo scopo da **librerie di terze parti**.
 
