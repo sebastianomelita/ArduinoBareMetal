@@ -30,6 +30,9 @@ La generazione di più task in tempi diversi risulta **molto semplice** se esegu
 
 
 **SCHEDULATORE CON UPTIME()**
+
+Il **tempo base** è la base dei tempi di tutte le schedulazioni, viene calcolato **periodicamente** all'accadere di un **evento** (superamento di una soglia di tempo) che viene detto **tick** (scatto, in analogia con il metronomo per la musica).
+
 ```Python
 from gpio import *
 from time import *
