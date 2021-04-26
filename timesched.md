@@ -92,9 +92,9 @@ Una applicazione in genere non è programmata per essere altruista per cui non c
 
 **Riassumendo**, la schedulazione dei task mediante **timers** comporta:
 
-vantaggio. l'applicazione non deve gestire la logica dello schedulatore
-svantaggio. programmazione diretta a salti non lineare, secondo una logica d eventi
-vantaggio. programmazione nei sistemi multithreading lineare, secondo una logica sequenziale
+- vantaggio. l'applicazione non deve gestire la logica dello schedulatore
+- svantaggio. programmazione diretta a salti non lineare, secondo una logica d eventi
+- vantaggio. programmazione nei sistemi multithreading lineare, secondo una logica sequenziale
 
 
 
