@@ -25,7 +25,8 @@ La generazione di più task in tempi diversi risulta **molto semplice** se esegu
 - **vantaggio**. Programmazione lineare molto semplice secondo una **logica strettamente sequenziale**
 - **svantaggio**. Inefficienza intrinseca nell'esecuzione dei programmi.
 
-
+ 
+ 
 **SCHEDULATORE CON MILLIS()**
 
 Il **tempo base** è la base dei tempi di tutte le schedulazioni, viene calcolato **periodicamente** all'accadere di un **evento** (superamento di una soglia di tempo) che viene detto **tick** (scatto, in analogia con il metronomo per la musica).
@@ -63,7 +64,8 @@ Riassumendo, la **schedulazione mediante millis** comporta:
 - **vantaggio**.  efficienza molto elevata nell'esecuzione dei programmi.
 - **svantaggio**. programmazione a salti non lineare, secondo una **logica iterativa**
 - **svantaggio**. l'applicazione deve gestire la logica dello schedulatore
-
+ 
+ 
 **SCHEDULATORE CON TIMER HARDWARE**
 
 Dopo la tecnica basata sulla **pianificazione dei ritardi** delay() e quella basata sul **polling periodico della funzione millis()** per generare una catena di tick esiste un terzo modo di generare con precisione dei tempi per il quale però è necessario impostare un **HW esterno detto Timer**.
