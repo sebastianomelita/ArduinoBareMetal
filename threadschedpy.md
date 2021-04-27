@@ -73,10 +73,10 @@ th.start_new_thread(blink2, (0.25,))
 
 count = 0
 while True:
-print("Doing stuff... " + str(count))
+     print("Doing stuff... " + str(count))
      count += 1
      if count >= 10:
-  	break
+  	     break
      time.sleep(1)
 
 print("Ending threads...")
