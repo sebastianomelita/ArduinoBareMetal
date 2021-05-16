@@ -20,7 +20,7 @@ Abbiamo visto che **usare i delay** per progettare i tempi di un task **è più 
 
 Può capitare, specie in **dispositivi con risorse HW molto ristrette**, che i thread non siano interrompibili ma possano lavorare solo in modo "cooperativo", allora, in questo caso, alcune librerie forniscono una funzione delay() alternativa che contiene al suo interno il comando yeld() di rilascio "spontaneo" della CPU. In questo modo **è preservata**, anche su quei dispositivi, la possibilità di adottare uno stile di **programmazione sequenziale** degli algoritmi.
 
-Un **altro vantaggio** per il programmatore è che la gestione della schedulazione è trasparente alla applicazione che sta realizzando nel senso che l'algoritmo che deve gestirla non deve essere incluso nel codice dell'applicazione. Qualcuno deve comunque gestire la schedulazione nel tempo dei thread e questo qualcuno è un **modulo SW** diverso dall'applicazione che può:
+Un altro vantaggio per il programmatore è che la gestione della schedulazione è trasparente alla applicazione che deve essere schedulata, nel senso che l'algoritmo che deve gestire la schedulazione non deve essere incluso nel codice dell'applicazione. Qualcuno deve comunque gestire la schedulazione nel tempo dei thread e questo qualcuno è un modulo SW diverso dall'applicazione che può:
 - essere fornito da una **libreria** apposita
 - essere incluso in framework di terze parti (**middleware**)
 - essere fornito dal **sistema operativo** presente sulla macchina
