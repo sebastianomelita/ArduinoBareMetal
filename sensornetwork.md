@@ -33,7 +33,7 @@ Una o più reti secondarie di accesso per i dispositivi sensori o attuatori con 
         - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
         - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
 
-- Ethernet. Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
+- **Ethernet**. Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
    
 In ogni caso è necessario un **server di gestione** con funzioni di:
 - Processamento (elaborazione nuovo stato e comando attuatori)
@@ -43,7 +43,7 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 - Segnalazione anomalie
 - Backup dei dati e gestione disaster recovery di dati e servizi
      
-Spesso i **sensori** o gli **attuatori** non sono dotati di interfaccia ethernet e sono organizzati in **sottoreti apposite (ad hoc)** cablate con interfacce industriali (Dallas, I2C, SPI, Modbus, Profibus, ecc.). Queste sono spesso caratterizzate dal fatto di possedere una **topologia fisica a BUS o ad anello** che possiede il vantaggio di interconnettere **molti dispositivi** (sensori o attuatori) sfruttando l'utilizzo di **un solo cavo**. 
+Spesso i **sensori** o gli **attuatori** che non sono dotati di interfaccia ethernet e sono organizzati in **sottoreti apposite (ad hoc)** cablate con interfacce industriali comunque standardizzate (Dallas, I2C, SPI, Modbus, Profibus, ecc.). Queste sono spesso caratterizzate dal fatto di possedere una **topologia fisica a BUS o ad anello** che possiede il vantaggio di interconnettere **molti dispositivi** (sensori o attuatori) sfruttando l'utilizzo di **un solo cavo**. 
 
 E' comune anche una topologia di accesso a **bus wireless** in cui la contesa del mezzo è regolata da protocolli di arbitraggio del tipo **ALOHA** O **CSMA/CA**. Questo è il caso di reti di sensori wireless potenzialmente compostre da molti nodi aventi anche capacità di smistamento gestite in ogni aspetto da tecnologie complesse come Zigbee o BLE che definiscono sia i dettagli delle interfacce radio che i protocolli di gestione dei canali e delle risorse sui nodi.
 
