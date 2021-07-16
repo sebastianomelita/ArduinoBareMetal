@@ -1,16 +1,20 @@
-Reti di ufficio vs reti di sensori
+**Reti di ufficio**
+
 Le reti di ufficio sono realizzate con tecnologie ethernet a topologia fisica a stella o a stella gerachica (albero). Lo switch ha la funzione dI:
 - **concentratore di dispositivi**. Un collegamento punto punto è dedicato ad ogni dispositivo che occupa esattamente una porta sul concentratore. Servono tante porte quanti sono i dispositiviin prossimità del concentratore.
 - **commutazione** cioè smistamento dei dati lungo le dorsali della rete fino ai router di confine della stessa (gateway).
 
-
 Lo switch è generalmente regolato dal protocollo STP che, secondo lo standard, limita i collegamenti a cascate a poche unità (profondità nominale di 3 dispositivi secondo standard EIA/TIA).
-Il cablaggio può risultare oneroso in presenza di un elevato numero di dispositivi (un cavo per dispositivo).
-Reti industriali o ferrotramviarie ethernet spesso realizzate con topologia fisica a BUS o ad anello
-uso di lunghe cascate di switch equipaggiati con protocollo STP modificato o con altri protocolli proprietari non standardizzati
-Cablaggio più economico in presenza di un cluster numeroso di dispositivi (un unico cavo per più dispositivi)
+Il cablaggio può risultare oneroso in presenza di un elevato numero di dispositivi, ad esempio, un cavo per ogni sensore. Mativo per cui dispositivi ed architettura sono generalmente ritenute poco adatte per le ampie reti di sensori comuni in ambito industriale.
+
+**Reti industriali**
+
+Le reti industriali o ferrotramviarie che utilizzano la tecnologia ethernet sono spesso realizzate con topologia fisica a BUS o ad anello.
+Un anello è composto da lunghe cascate di switch equipaggiati con protocollo STP modificato o con altri protocolli proprietari.
+Il cablaggio è più economico in presenza di un cluster numeroso di dispositivi dato che con un unico cavo si possono collegare più switch.
 Possibilità di topologie ridondate a doppio anello (treni, industria)
-![image](https://user-images.githubusercontent.com/18554803/126007695-e4e08a3a-1dd3-423e-a268-e08f1d80c5e2.png)
+
+![industrialnet](industrialnet.png)
 
 
 
