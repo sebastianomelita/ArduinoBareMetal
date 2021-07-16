@@ -18,7 +18,7 @@ Possibilità di topologie ridondate a doppio anello (treni, industria)
 
 
 
-**Reti di sensori**
+**Reti di sensori e attuatori**
 
 Spesso sono reti miste cioè composte da sottoreti eterogenee.
 
