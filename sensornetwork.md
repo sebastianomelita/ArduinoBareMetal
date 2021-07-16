@@ -19,11 +19,10 @@ Possibilità di topologie ridondate a doppio anello (treni, industria)
 
 
 Reti di sensori 
-Rete principale ethernet con dorsali fisiche a stella cablate e collegamenti periferici cablati o wireless WiFi
-
-Sottoreti di sensori cablati o wireless con interfacce non ethernet spesso in topologia fisica a BUS:
-Necessario un gateway con possibili funzioni di:
-Traduzione di formato dei dati da rete a bus a rete ethernet
+Rete principale ethernet con dorsali fisiche cablate (a stella o a bus) e collegamenti periferici cablati o wireless wifi.
+Spesso i sensori non sono dotati di interfaccia ethernet e sono organizzati in sottoreti di sensori cablati o wireless con interfacce non ethernet spesso in topologia fisica a BUS:
+- E' Necessario un gateway con possibili funzioni di:
+    - Traduzione di formato dei dati da rete a bus a rete ethernet
 Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
 Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
 Sottoreti di sensori cablati o wireless con interfacce ethernet:
