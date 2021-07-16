@@ -20,11 +20,44 @@ Possibilità di topologie ridondate a doppio anello (treni, industria)
 
 **Reti di sensori**
 
-Spesso sono composte da sottoreti eterogenee.
+Spesso sono reti miste cioè composte da sottoreti eterogenee.
 
 ![sensor network](sensornet1.png)
 
-La **rete principale** è ethernet con dorsali fisiche cablate (a stella o a bus) che interconnettono gli **switch di core** e collegamenti periferici cablati o wireless wifi per i collegamenti tra i dispositivi (sensori e attuatori) e gli **switch di accesso** (quelli su cui si aggregano i dispositivi).
+La rete principale è ethernet con dorsali fisiche a stella cablate e collegamenti periferici cablati o wireless WiFi
+
+
+E' necessario un **gateway** con possibili funzioni di:
+- **Traduzione di formato** dei dati da rete a bus a rete ethernet
+- Interrogazione periodica (**polling**) dei dispositivi (master di una architettura master/slave)
+- Raccolta e **memorizzazione locale**  delle informazioni per essere trasferite in un secondo momento al server di gestione
+
+Sottoreti di sensori cablati o wireless con interfacce non ethernet spesso in topologia fisica a BUS:
+
+Sottoreti di sensori cablati o wireless con interfacce ethernet:
+- Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
+    - Necessario un gateway con possibili funzioni di:
+        - Traduzione di formato dei dati da rete a bus a rete ethernet
+        - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
+        - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
+
+
+
+
+In ogni caso è necessario un **server di gestione** con funzioni di:
+- Processamento (elaborazione nuovo stato e comando attuatori)
+- Memorizzazione (storage) ed estrazione (mining) delle informazioni
+- Analisi dei dati per estrarre reportistica di aiuto alle decisioni (risparmio energetico)
+- Pubblicazione in Internet delle informazioni su un un sito o su un WebService (opendata)
+- Segnalazione anomalie
+- Backup dei dati e gestione disaster recovery di dati e servizi
+     
+
+Basicamente realizzano due canali:
+
+- il canale di collegamento tra il gateway e il server di gestione delle informazioni. E+ La **rete principale** ed in genere è ethernet con dorsali fisiche cablate (a stella o a bus) che interconnettono gli **switch di core**.
+
+- collegamenti periferici cablati o wireless wifi tra i dispositivi (sensori e attuatori) e i **gateway verso la LAN** (quelli su cui si aggregano i dispositivi).
 
 Spesso i **sensori** o gli **attuatori** non sono dotati di interfaccia ethernet e sono organizzati in **sottoreti apposite (ad hoc)** cablate con interfacce industriali (Dallas, I2C, SPI, Modbus, Profibus, ecc.). Queste sono spesso caratterizzate dal fatto di possedere una **topologia fisica a BUS o ad anello** che possiede il vantaggio di interconnettere **molti dispositivi** (sensori o attuatori) sfruttando l'utilizzo di **un solo cavo**. 
 
@@ -42,21 +75,7 @@ A seconda dello schema adoperato è interessante dal **punto di vista energetico
 
 
 
-E' necessario un **gateway** con possibili funzioni di:
-- **Traduzione di formato** dei dati da rete a bus a rete ethernet
-- Interrogazione periodica (**polling**) dei dispositivi (master di una architettura master/slave)
-- Raccolta e **memorizzazione locale**  delle informazioni per essere trasferite in un secondo momento al server di gestione
 
-Se le sottoreti di sensori sono cablate o wireless con interfacce ethernet non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
-
-In ogni caso è necessario un **server di gestione** con funzioni di:
-- Processamento (elaborazione nuovo stato e comando attuatori)
-- Memorizzazione (storage) ed estrazione (mining) delle informazioni
-- Analisi dei dati per estrarre reportistica di aiuto alle decisioni (risparmio energetico)
-- Pubblicazione in Internet delle informazioni su un un sito o su un WebService (opendata)
-- Segnalazione anomalie
-- Backup dei dati e gestione disaster recovery di dati e servizi
-     
     
 
 
