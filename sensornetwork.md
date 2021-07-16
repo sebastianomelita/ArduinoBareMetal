@@ -31,8 +31,10 @@ Spesso i **sensori** o gli **attuatori** non sono dotati di interfaccia ethernet
 E' comune anche una topologia di accesso a **bus wireless** in cui la contesa del mezzo è regolata da protocolli di arbitraggio del tipo **ALOHA** O **CSMA/CA**. Questo è il caso di reti di sensori wireless potenzialmente compostre da molti nodi aventi anche capacità di smistamento gestite in ogni aspetto da tecnologie complesse come Zigbee o BLE che definiscono sia i dettagli delle interfacce radio che i protocolli di gestione dei canali e delle risorse sui nodi.
 
 Le reti di **sensori wireless** hanno una estensione nello spazio variabile e la loro toplogia preferita è a stella o a maglia.
+
 ![hops](hops.png)
-A seconda dello schema adoperato è interessante dal punto di vista energetico considerare se un comando o l'accesso ad un sensore avvenga connettendosi direttamente ad un dispositivo hub centrale o attraverso una cascata di nodi:
+
+A seconda dello schema adoperato è interessante dal **punto di vista energetico** considerare se un comando o l'accesso ad un sensore avvenga connettendosi direttamente ad un dispositivo hub centrale o attraverso una cascata di nodi:
 - **Hop singolo**: ciascun nodo del sensore è collegato al gateway, sebbene sia possibile la trasmissione a lunga distanza, il consumo di energia per la comunicazione sarà significativamente superiore alla raccolta e al calcolo dei dati. 
 - **Hop multiplo**: esiste un percorso verso i nodi terminali passando attraverso dei nodi intermedi. L’energia per raggiungere nodi distanti si limita a quella per raggiungere i nodi vicini. Su reti mesh di grandi dimensioni anche questa energia può essere non trascurabile. Su reti indoor è invece la soluzione decisamente più conveniente.
 
