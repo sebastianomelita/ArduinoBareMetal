@@ -9,7 +9,7 @@ Il cablaggio può risultare oneroso in presenza di un elevato numero di disposit
 
 **Reti ethernet industriali**
 
-Le reti industriali o ferrotramviarie che utilizzano la tecnologia ethernet sono spesso realizzate con topologia fisica a BUS o ad anello.
+Le **reti industriali o ferrotramviarie** che utilizzano la tecnologia ethernet sono spesso realizzate con **topologia fisica a BUS o ad anello**.
 Un anello è composto da lunghe cascate di switch equipaggiati con protocollo STP modificato o con altri protocolli proprietari.
 Il cablaggio è più economico in presenza di un cluster numeroso di dispositivi dato che con un unico cavo si possono collegare più switch.
 Possibilità di topologie ridondate a doppio anello (treni, industria)
@@ -21,9 +21,9 @@ Possibilità di topologie ridondate a doppio anello (treni, industria)
 **Reti di sensori**
 Spesso sono composte da sottoreti eterogenee.
 
-La rete principale ethernet con dorsali fisiche cablate (a stella o a bus) che interconnettono gli switch e collegamenti periferici cablati o wireless wifi per i collegamenti tra i dispositivi (sensori e attuatori) e gli switch di accesso (quelli su cui si aggregano i dispositivi).
+La **rete principale** è ethernet con dorsali fisiche cablate (a stella o a bus) che interconnettono gli **switch di core** e collegamenti periferici cablati o wireless wifi per i collegamenti tra i dispositivi (sensori e attuatori) e gli **switch di accesso** (quelli su cui si aggregano i dispositivi).
 
-Spesso i sensori non sono dotati di interfaccia ethernet e sono organizzati in sottoreti di sensori cablate o wireless con interfacce industriali non ethernet spesso caratterizzate adal fatto di apossedere una topologia fisica a BUS o ad anello che permette di interconnettere con il medesimo cavo moti dispositivi (sensori o attuatori).
+Spesso i **sensori** o gli **attuatori** non sono dotati di interfaccia ethernet e sono organizzati in **sottoreti apposite (ad hoc)** cablate con interfacce industriali non ethernet spesso caratterizzate dal fatto di possedere una **topologia fisica a BUS o ad anello** che permette di interconnettere **molti dispositivi** (sensori o attuatori) con il **un solo cavo**. E' comune anche una topologia di accesso a **bus wireless** in cui la contesa del mezzo è regolata da protocolli di arbitraggio del tipo **ALOHA** O **CSMA/CA**. Questo è il caso di reti di sensori wireless potenzialmente compostre da molti nodi aventi anche capacità di smistamento gestite in ogni aspetto da tecnologie complesse come Zigbee o BLE che definiscono sia i dettagli delle interfacce radio che i protocolli di gestione dei canali e delle risorse sui nodi.
 
 ![sensor network](sensornet1.png)
 
