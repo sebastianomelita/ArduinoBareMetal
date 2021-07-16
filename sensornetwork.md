@@ -14,7 +14,7 @@ Un anello è composto da lunghe cascate di switch equipaggiati con protocollo ST
 Il cablaggio è più economico in presenza di un cluster numeroso di dispositivi dato che con un unico cavo si possono collegare più switch.
 Possibilità di topologie ridondate a doppio anello (treni, industria)
 
-![industrialnet](industrialnet.png)
+![industrialnet](industrialnet.jpg)
 
 
 
