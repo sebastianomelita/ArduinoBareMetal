@@ -21,19 +21,21 @@ Possibilità di topologie ridondate a doppio anello (treni, industria)
 Reti di sensori 
 Rete principale ethernet con dorsali fisiche cablate (a stella o a bus) e collegamenti periferici cablati o wireless wifi.
 Spesso i sensori non sono dotati di interfaccia ethernet e sono organizzati in sottoreti di sensori cablati o wireless con interfacce non ethernet spesso in topologia fisica a BUS:
-- E' Necessario un gateway con possibili funzioni di:
+- E' necessario un gateway con possibili funzioni di:
     - Traduzione di formato dei dati da rete a bus a rete ethernet
-Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
-Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
-Sottoreti di sensori cablati o wireless con interfacce ethernet:
-Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
-Necessario un server di gestione con funzioni di:
-Processamento (elaborazione nuovo stato e comando attuatori)
-Memorizzazione (storage) ed estrazione (mining) delle informazioni 
-Analisi dei dati per estrarre reportistica di aiuto alle decisioni (risparmio energetico)
-Pubblicazione in Internet delle informazioni su un un sito o su un WebService (opendata)
-Segnalazione anomalie 
-Backup dei dati e gestione disaster recovery di dati e servizi
+    - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
+    - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
+
+Se le sottoreti di sensori sono cablate o wireless con interfacce ethernet:
+    - Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
+
+In ogni caso è necessario un server di gestione con funzioni di:
+    - Processamento (elaborazione nuovo stato e comando attuatori)
+    - Memorizzazione (storage) ed estrazione (mining) delle informazioni 
+    - Analisi dei dati per estrarre reportistica di aiuto alle decisioni (risparmio energetico)
+    - Pubblicazione in Internet delle informazioni su un un sito o su un WebService (opendata)
+    - Segnalazione anomalie 
+    - Backup dei dati e gestione disaster recovery di dati e servizi
 ![sensor network](sensornet1.png)
 
 
