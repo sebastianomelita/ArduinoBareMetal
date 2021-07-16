@@ -19,20 +19,22 @@ Possibilità di topologie ridondate a doppio anello (treni, industria)
 
 
 **Reti di sensori**
+Spesso sono composte da sottoreti eterogenee.
 
-Rete principale ethernet con dorsali fisiche cablate (a stella o a bus) e collegamenti periferici cablati o wireless wifi.
-Spesso i sensori non sono dotati di interfaccia ethernet e sono organizzati in sottoreti di sensori cablati o wireless con interfacce non ethernet spesso in topologia fisica a BUS.
+La rete principale ethernet con dorsali fisiche cablate (a stella o a bus) che interconnettono gli switch e collegamenti periferici cablati o wireless wifi per i collegamenti tra i dispositivi (sensori e attuatori) e gli switch di accesso (quelli su cui si aggregano i dispositivi).
+
+Spesso i sensori non sono dotati di interfaccia ethernet e sono organizzati in sottoreti di sensori cablate o wireless con interfacce industriali non ethernet spesso caratterizzate adal fatto di apossedere una topologia fisica a BUS o ad anello che permette di interconnettere con il medesimo cavo moti dispositivi (sensori o attuatori).
 
 ![sensor network](sensornet1.png)
 
-E' necessario un gateway con possibili funzioni di:
-- Traduzione di formato dei dati da rete a bus a rete ethernet
-- Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
-- Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
+E' necessario un **gateway** con possibili funzioni di:
+- **Traduzione di formato** dei dati da rete a bus a rete ethernet
+- Interrogazione periodica (**polling**) dei dispositivi (master di una architettura master/slave)
+- Raccolta e **memorizzazione locale**  delle informazioni per essere trasferite in un secondo momento al server di gestione
 
 Se le sottoreti di sensori sono cablate o wireless con interfacce ethernet non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
 
-In ogni caso è necessario un server di gestione con funzioni di:
+In ogni caso è necessario un **server di gestione** con funzioni di:
 - Processamento (elaborazione nuovo stato e comando attuatori)
 - Memorizzazione (storage) ed estrazione (mining) delle informazioni
 - Analisi dei dati per estrarre reportistica di aiuto alle decisioni (risparmio energetico)
