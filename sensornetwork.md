@@ -16,7 +16,6 @@ Segnalazione anomalie
 Backup dei dati e gestione disaster recovery di dati e servizi
 ![sensor network](sensornet1.png)
 
-![sensor network 2](sensornet2.png)
 
 ![hops](sensorunit.png)
 
