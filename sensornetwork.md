@@ -36,7 +36,8 @@ In ogni caso è necessario un server di gestione con funzioni di:
      - Pubblicazione in Internet delle informazioni su un un sito o su un WebService (opendata)
      - Segnalazione anomalie 
      - Backup dei dati e gestione disaster recovery di dati e servizi
-![sensor network](sensornet1.png)
+     
+     ![sensor network](sensornet1.png)
 
 
 ![hops](sensorunit.png)
