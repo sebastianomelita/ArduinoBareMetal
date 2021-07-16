@@ -28,7 +28,7 @@ Ad essa si collegano una o più **reti secondarie di accesso** per i dispositivi
 - **Non ethernet** (cablate o wireless) spesso in topologia fisica a BUS:
     - organizzate in **sottoreti apposite (ad hoc)** cablate con interfacce industriali comunque standardizzate (Dallas, I2C, SPI, Modbus, Profibus, ecc.). 
     - Spesso hanno una **topologia fisica a BUS o ad anello** che possiede il vantaggio di interconnettere **molti dispositivi** (sensori o attuatori) sfruttando l'utilizzo di **un solo cavo**. 
-    - Necessario un **gateway** di confine avente una **interfaccia nella rete principale** con possibili funzioni di:
+    - Necessitano di un **gateway** di confine avente almeno una **interfaccia nella rete principale** con possibili funzioni di:
         - **Traduzione di formato** dei dati da rete a bus a rete ethernet
         - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
         - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
