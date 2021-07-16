@@ -1,4 +1,4 @@
-**Reti ethernet di ufficio**
+## **Reti ethernet di ufficio**
 
 Le reti di ufficio sono realizzate con tecnologie ethernet a topologia fisica a stella o a stella gerachica (albero). Lo switch ha la funzione dI:
 - **concentratore di dispositivi**. Un collegamento punto punto è dedicato ad ogni dispositivo che occupa esattamente una porta sul concentratore. Servono tante porte quanti sono i dispositiviin prossimità del concentratore.
@@ -7,7 +7,7 @@ Le reti di ufficio sono realizzate con tecnologie ethernet a topologia fisica a 
 Lo switch è generalmente regolato dal protocollo STP che, secondo lo standard, limita i collegamenti a cascate a poche unità (profondità nominale di 3 dispositivi secondo standard EIA/TIA).
 Il cablaggio può risultare oneroso in presenza di un elevato numero di dispositivi, ad esempio, un cavo per ogni sensore. Motivo per cui dispositivi ed architettura sono generalmente ritenute poco adatte per le ampie reti di sensori comuni in ambito industriale.
 
-**Reti ethernet industriali**
+## **Reti ethernet industriali**
 
 Le **reti industriali o ferrotramviarie** che utilizzano la tecnologia ethernet sono spesso realizzate con **topologia fisica a BUS o ad anello**.
 Un anello è composto da lunghe cascate di switch equipaggiati con protocollo STP modificato o con altri protocolli proprietari.
@@ -16,9 +16,7 @@ Possibilità di topologie ridondate a doppio anello (treni, industria)
 
 ![industrialnet](industrialnet.jpg)
 
-
-
-**Reti di sensori e attuatori**
+## **Reti di sensori e attuatori**
 
 Spesso sono reti miste cioè composte da sottoreti eterogenee.
 
@@ -55,7 +53,7 @@ A seconda dello schema adoperato è interessante dal **punto di vista energetico
 - **Hop singolo**: ciascun nodo del sensore è collegato al gateway, sebbene sia possibile la trasmissione a lunga distanza, il consumo di energia per la comunicazione sarà significativamente superiore alla raccolta e al calcolo dei dati. 
 - **Hop multiplo**: esiste un percorso verso i nodi terminali passando attraverso dei nodi intermedi. L’energia per raggiungere nodi distanti si limita a quella per raggiungere i nodi vicini. Su reti mesh di grandi dimensioni anche questa energia può essere non trascurabile. Su reti indoor è invece la soluzione decisamente più conveniente.
 
-**Canali di comunicazione principali**
+##  **Canali di comunicazione principali**
 
 Sono necessari almeno due canali di comunicazione tra sensori e gestore delle informazioni:
 - tra sensori e gateway verso la LAN:
