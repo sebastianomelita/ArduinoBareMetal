@@ -33,14 +33,15 @@ E' necessario un **gateway** con possibili funzioni di:
 - Raccolta e **memorizzazione locale**  delle informazioni per essere trasferite in un secondo momento al server di gestione
 
 Sottoreti di sensori cablati o wireless con interfacce non ethernet spesso in topologia fisica a BUS:
-
-Sottoreti di sensori cablati o wireless con interfacce ethernet:
-- Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
-    - Necessario un gateway con possibili funzioni di:
+- Necessario un gateway con possibili funzioni di:
         - Traduzione di formato dei dati da rete a bus a rete ethernet
         - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
         - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
 
+
+Sottoreti di sensori cablati o wireless con interfacce ethernet:
+- Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
+   
 
 
 
