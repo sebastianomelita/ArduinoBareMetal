@@ -26,14 +26,14 @@ Spesso sono reti miste cioè composte da sottoreti eterogenee.
 
 La **rete principale** è ethernet con dorsali fisiche a stella cablate e collegamenti periferici cablati o wireless WiFi
 
-Una o più sottoreti di sensori (cablate o wireless) con interfacce non ethernet spesso in topologia fisica a BUS:
-- Necessario un **gateway** di confine avente una **interfaccia nella rete principale** con possibili funzioni di:
-    - Traduzione di formato dei dati da rete a bus a rete ethernet
-    - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
-    - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
+Una o più reti secondarie di accesso per i dispositivi sensori o attuatori con interfacce di tipo:
+- **Non ethernet** (cablate o wireless) spesso in topologia fisica a BUS:
+    - Necessario un **gateway** di confine avente una **interfaccia nella rete principale** con possibili funzioni di:
+        - Traduzione di formato dei dati da rete a bus a rete ethernet
+        - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
+        - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
 
-Sottoreti di sensori cablati o wireless con interfacce ethernet:
-- Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
+- Ethernet. Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
    
 In ogni caso è necessario un **server di gestione** con funzioni di:
 - Processamento (elaborazione nuovo stato e comando attuatori)
