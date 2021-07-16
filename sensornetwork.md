@@ -56,18 +56,18 @@ A seconda dello schema adoperato è interessante dal **punto di vista energetico
 ##  **Canali di comunicazione principali**
 
 Sono necessari almeno due canali di comunicazione tra sensori e gestore delle informazioni:
-- tra sensori e gateway verso la LAN:
-    - A filo con accesso:
-        - dedicato: un filo o un canale per sensore (SDM, TDM)
-        - multiplo a mezzo condiviso (BUS) di tipo master slave (Modubus) o peer to peer (CanBUS, KNX, ecc) o misto (ProfiBUS). 
-        - Spesso bidirezionale specie se in presenza di attuatori
+- **tra sensori e gateway** verso la LAN:
+    - **A filo** con accesso:
+        - **singolo dedicato**: un filo o un canale per sensore (SDM, TDM)
+        - **multiplo condiviso** cioè tramite mezzo broadcast (BUS) con **arbitraggio** di tipo **master slave** (Modubus) o **peer to peer** (CanBUS, KNX, ecc) o misto (ProfiBUS). 
+        - Spesso **bidirezionale** specie se in presenza di attuatori
         
-    - Senza filo cioè wireless con accesso:
-        - singolo dedicato: link punto-punto analogico digitalizzato con AX25 oppure digitale con un radio modem (Yarm ACME Systems, 6LoWPAN, LoRa) resi full duplex con FDM o TDM.
-        - Multiplo e condiviso (BUS) di tipo half duplex reso bidirezionale (full duplex) tramite tecniche asincrone CSMA/CA (Zigbee, wifi, LoRa) o sincrone TDMA (Zigbee, Bluetooth).
+    - **Senza filo** cioè wireless con accesso:
+        - **singolo dedicato**: link punto-punto analogico digitalizzato con AX25 oppure digitale con un radio modem (Yarm ACME Systems, 6LoWPAN, LoRa) resi full duplex con FDM o TDM.
+        - **Multiplo e condiviso** (BUS) di tipo half duplex reso bidirezionale (full duplex) tramite tecniche asincrone CSMA/CA (Zigbee, wifi, LoRa) o sincrone TDMA (Zigbee, Bluetooth).
         - 
-- Tra gateway e gestore delle informazioni:
-     - Tipicamente tramite LAN ethernet e architettura Client/Server
+- **Tra gateway e gestore** delle informazioni:
+     - Tipicamente tramite **LAN ethernet** e architettura **Client/Server**
      - Interazioni di tipo PUSH o PULL
      - Paradigma Request/Response (HTTPS, COAP), Publish/Subscriber (MQTT) oppure canale persistente bidirezionale (BSD socket o WebSocket)
 
