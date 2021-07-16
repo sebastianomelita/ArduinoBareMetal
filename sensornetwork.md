@@ -26,8 +26,8 @@ La **rete principale** è ethernet con dorsali fisiche a stella cablate e colleg
 
 Ad essa si collegano una o più **reti secondarie di accesso** per i dispositivi sensori o attuatori con **interfacce** di tipo:
 - **Non ethernet** (cablate o wireless) spesso in topologia fisica a BUS:
-    - Spesso i **sensori** o gli **attuatori** che non sono dotati di interfaccia ethernet e sono organizzati in **sottoreti apposite (ad hoc)** cablate con interfacce industriali comunque standardizzate (Dallas, I2C, SPI, Modbus, Profibus, ecc.). 
-    - Spesso caratterizzate dal fatto di possedere una **topologia fisica a BUS o ad anello** che possiede il vantaggio di interconnettere **molti dispositivi** (sensori o attuatori) sfruttando l'utilizzo di **un solo cavo**. 
+    - organizzate in **sottoreti apposite (ad hoc)** cablate con interfacce industriali comunque standardizzate (Dallas, I2C, SPI, Modbus, Profibus, ecc.). 
+    - Spesso hanno una **topologia fisica a BUS o ad anello** che possiede il vantaggio di interconnettere **molti dispositivi** (sensori o attuatori) sfruttando l'utilizzo di **un solo cavo**. 
     - Necessario un **gateway** di confine avente una **interfaccia nella rete principale** con possibili funzioni di:
         - **Traduzione di formato** dei dati da rete a bus a rete ethernet
         - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
