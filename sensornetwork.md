@@ -26,8 +26,7 @@ Spesso i sensori non sono dotati di interfaccia ethernet e sono organizzati in s
     - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
     - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
 
-Se le sottoreti di sensori sono cablate o wireless con interfacce ethernet:
-    - Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
+Se le sottoreti di sensori sono cablate o wireless con interfacce ethernet non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
 
 In ogni caso è necessario un server di gestione con funzioni di:
       - Processamento (elaborazione nuovo stato e comando attuatori)
