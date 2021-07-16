@@ -28,9 +28,9 @@ La **rete principale** è ethernet con dorsali fisiche a stella cablate e colleg
 
 Una o più sottoreti di sensori (cablate o wireless) con interfacce non ethernet spesso in topologia fisica a BUS:
 - Necessario un **gateway** di confine avente una **interfaccia nella rete principale** con possibili funzioni di:
-        - Traduzione di formato dei dati da rete a bus a rete ethernet
-        - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
-        - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
+         - Traduzione di formato dei dati da rete a bus a rete ethernet
+         - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
+         - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
 
 Sottoreti di sensori cablati o wireless con interfacce ethernet:
 - Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
