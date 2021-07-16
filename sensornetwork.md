@@ -22,13 +22,23 @@ Possibilità di topologie ridondate a doppio anello (treni, industria)
 
 Spesso sono composte da sottoreti eterogenee.
 
+![sensor network](sensornet1.png)
+
 La **rete principale** è ethernet con dorsali fisiche cablate (a stella o a bus) che interconnettono gli **switch di core** e collegamenti periferici cablati o wireless wifi per i collegamenti tra i dispositivi (sensori e attuatori) e gli **switch di accesso** (quelli su cui si aggregano i dispositivi).
 
 Spesso i **sensori** o gli **attuatori** non sono dotati di interfaccia ethernet e sono organizzati in **sottoreti apposite (ad hoc)** cablate con interfacce industriali (Dallas, I2C, SPI, Modbus, Profibus, ecc.). Queste sono spesso caratterizzate dal fatto di possedere una **topologia fisica a BUS o ad anello** che possiede il vantaggio di interconnettere **molti dispositivi** (sensori o attuatori) sfruttando l'utilizzo di **un solo cavo**. 
 
 E' comune anche una topologia di accesso a **bus wireless** in cui la contesa del mezzo è regolata da protocolli di arbitraggio del tipo **ALOHA** O **CSMA/CA**. Questo è il caso di reti di sensori wireless potenzialmente compostre da molti nodi aventi anche capacità di smistamento gestite in ogni aspetto da tecnologie complesse come Zigbee o BLE che definiscono sia i dettagli delle interfacce radio che i protocolli di gestione dei canali e delle risorse sui nodi.
 
-![sensor network](sensornet1.png)
+Le reti di **sensori wireless** hanno una estensione nello spazio variabile e la loro toplogia preferita è a stella o a maglia.
+![hops](hops.png)
+A seconda dello schema adoperato è interessante dal punto di vista energetico considerare se un comando o l'accesso ad un sensore avvenga connettendosi direttamente ad un dispositivo hub centrale o attraverso una cascata di nodi:
+- **Hop singolo**: ciascun nodo del sensore è collegato al gateway, sebbene sia possibile la trasmissione a lunga distanza, il consumo di energia per la comunicazione sarà significativamente superiore alla raccolta e al calcolo dei dati. 
+- **Hop multiplo**: esiste un percorso verso i nodi terminali passando attraverso dei nodi intermedi. L’energia per raggiungere nodi distanti si limita a quella per raggiungere i nodi vicini. Su reti mesh di grandi dimensioni anche questa energia può essere non trascurabile. Su reti indoor è invece la soluzione decisamente più conveniente.
+
+
+
+
 
 E' necessario un **gateway** con possibili funzioni di:
 - **Traduzione di formato** dei dati da rete a bus a rete ethernet
@@ -50,5 +60,5 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 
 ![hops](sensorunit.png)
 
-![hops](hops.png)
+
 
