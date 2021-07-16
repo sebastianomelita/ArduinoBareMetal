@@ -30,7 +30,7 @@ Se le sottoreti di sensori sono cablate o wireless con interfacce ethernet:
     - Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
 
 In ogni caso è necessario un server di gestione con funzioni di:
--     Processamento (elaborazione nuovo stato e comando attuatori)
+      - Processamento (elaborazione nuovo stato e comando attuatori)
       - Memorizzazione (storage) ed estrazione (mining) delle informazioni 
       - Analisi dei dati per estrarre reportistica di aiuto alle decisioni (risparmio energetico)
       - Pubblicazione in Internet delle informazioni su un un sito o su un WebService (opendata)
