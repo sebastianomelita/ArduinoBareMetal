@@ -14,4 +14,11 @@ Analisi dei dati per estrarre reportistica di aiuto alle decisioni (risparmio en
 Pubblicazione in Internet delle informazioni su un un sito o su un WebService (opendata)
 Segnalazione anomalie 
 Backup dei dati e gestione disaster recovery di dati e servizi
-![image](https://user-images.githubusercontent.com/18554803/125980626-ff35f983-826f-4a82-be26-57014d2514ae.png)
+![sensor network](sensornet1.png)
+
+![sensor network 2](sensornet2.png)
+
+![hops](sensorunit.png)
+
+![hops](hops.png)
+
