@@ -50,8 +50,8 @@ Le reti di **sensori wireless** hanno una estensione nello spazio variabile e la
 ![hops](hops.png)
 
 A seconda dello schema adoperato è interessante dal **punto di vista energetico** considerare se un comando o l'accesso ad un sensore avvenga connettendosi direttamente ad un dispositivo hub centrale o attraverso una cascata di nodi:
-- **Hop singolo**: ciascun nodo del sensore è collegato al gateway, sebbene sia possibile la trasmissione a lunga distanza, il consumo di energia per la comunicazione sarà significativamente superiore alla raccolta e al calcolo dei dati. 
-- **Hop multiplo**: esiste un percorso verso i nodi terminali passando attraverso dei nodi intermedi. L’energia per raggiungere nodi distanti si limita a quella per raggiungere i nodi vicini. Su reti mesh di grandi dimensioni anche questa energia può essere non trascurabile. Su reti indoor è invece la soluzione decisamente più conveniente.
+- **Hop singolo**: ciascun nodo del sensore è collegato al gateway, sebbene sia possibile la trasmissione a lunga distanza, il consumo di energia per la comunicazione sarà significativamente superiore superiore a quella spesa per la misura e la sua elaborazione. 
+- **Hop multiplo**: esiste un percorso verso i nodi terminali passando attraverso dei nodi intermedi. L’energia che un singolo dispositivo impiega per raggiungere nodi distanti si limita a quella per raggiungere il **nodo più prossimo**. Su reti mesh di **grandi dimensioni** anche questa energia può essere non trascurabile. Su **reti indoor** è invece la soluzione decisamente più conveniente.
 
 ##  **Canali di comunicazione principali**
 
