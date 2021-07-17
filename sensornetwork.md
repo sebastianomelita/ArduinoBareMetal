@@ -20,7 +20,7 @@ Possibilità di topologie **ridondate a doppio anello** (treni, industria)
 
 ## **Reti di sensori e attuatori**
 
-Spesso sono **reti miste** cioè composte da sottoreti eterogenee.
+Spesso sono **reti miste** cioè composte da **sottoreti eterogenee**.
 
 ![sensor network](sensornet1.png)
 
