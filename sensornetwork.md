@@ -101,6 +101,7 @@ Quasi **tutte le tecnologie wireless** poi permettono di mettere, nell'intervall
 ![radiolinks](radiolinks.jpg)
 
 **Sitografia:**
+
 https://www.electronicshub.org/wireless-sensor-networks-wsn/
 
 
