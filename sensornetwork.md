@@ -12,7 +12,7 @@ Lo **switch** è generalmente regolato dal **protocollo STP** che, secondo lo st
 
 Il **cablaggio** può risultare **oneroso** in presenza di un elevato numero di dispositivi poichè richiederebbe l'impiego di **un cavo a parte** per ogni sensore. Per questo motivo dispositivi di commutazione e architettura **tradizionali** sono generalmente ritenuti poco adatti per la realizzazione delle **ampie reti di sensori** diffuse in ambito industriale.
 
-![core-access-dist-banner_1](core-access-dist-banner_1.jpg)
+![core-access-dist-banner_1](hierarchical-internetworking-model-for-distribution-switch-vs-access-Switch-vs-core-switch.jpg)
 
 ## **Reti ethernet industriali**
 
