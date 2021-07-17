@@ -49,7 +49,7 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 - Segnalazione anomalie
 - Backup dei dati e gestione disaster recovery di dati e servizi
 - Gestione dei FW dei vari dispositivi
-- gestione della sicurezza
+- Gestione della sicurezza
      
 ##  **Considerazioni energetiche nelle reti di sensori**     
  
