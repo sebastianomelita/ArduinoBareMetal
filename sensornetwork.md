@@ -1,6 +1,6 @@
 >[Torna all'indice generale](index.md)
 
-## **Reti ethernet di ufficio**
+## **Reti ethernet da ufficio**
 
 Le **reti di ufficio** sono realizzate con tecnologie ethernet a topologia fisica a stella o a stella gerachica (albero). Lo switch ha la funzione dI:
 - **concentratore di dispositivi**. Un collegamento punto punto è dedicato ad ogni dispositivo che occupa esattamente una porta sul concentratore. Servono tante porte quanti sono i dispositivi in prossimità del concentratore.
