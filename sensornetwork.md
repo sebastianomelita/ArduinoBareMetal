@@ -20,13 +20,13 @@ Possibilità di topologie **ridondate a doppio anello** (treni, industria)
 
 ## **Reti di sensori e attuatori**
 
-Spesso sono **reti miste** cioè composte da **sottoreti eterogenee** ed organizzate gerarchicamente.
+Spesso sono **reti miste** cioè composte da **sottoreti eterogenee** ed **organizzate gerarchicamente**.
 
 ![sensor network](sensornet1.png)
 
-La **rete principale**, al livello gerarchicamente superiore,è ethernet con dorsali fisiche a stella cablate e collegamenti periferici cablati o wireless WiFi. Ha principalmente la funzione di **distribuzione** dei dati **dai nodi gateway** con le reti secondarie **fino al server di gestione** dei dati. Va attentamente progettata perchè sia in grado di smaltire il traffico complessivo di **tutti i sensori**. Può diventare **critica** se, oltre ai sensori, sono presenti **sorgenti multimediali** quali **microfoni** o **telecamere** di videosorvelianza.
+La **rete principale**, al livello gerarchicamente superiore, è ethernet con dorsali fisiche a stella cablate e collegamenti periferici cablati o wireless WiFi. Ha principalmente la funzione di **distribuzione** dei dati **dai nodi gateway** con le reti secondarie **fino al server di gestione** dei dati. Va attentamente progettata perchè sia in grado di smaltire il traffico complessivo di **tutti i sensori**. Può diventare **critica** se, oltre ai sensori, sono presenti **sorgenti multimediali** quali **microfoni** o **telecamere** di videosorvelianza.
 
-Ad essa si collegano una o più **reti secondarie di accesso** per i dispositivi sensori o attuatori con **interfacce** di tipo:
+Ad essa si collegano una o più **reti secondarie**, sono a livello gerarchico inferiore e servono da **rete di accesso** per i dispositivi sensori o attuatori con **interfacce** di tipo:
 - **Non ethernet** (cablate o wireless) spesso in topologia fisica a BUS:
     - Necessitano di un **gateway** di confine avente almeno una **interfaccia ethernet nella rete principale** con possibili funzioni di:
         - **Traduzione di formato** dei dati da rete a bus a rete ethernet
