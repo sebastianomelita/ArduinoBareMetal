@@ -33,7 +33,7 @@ Ad essa si collegano una o più **reti secondarie di accesso** per i dispositivi
         - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
         - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
 
-- **Ethernet**. Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
+- **Ethernet**. Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch di accesso oppure ad un AP WiFi
    
 ## **Server di gestione**
 
