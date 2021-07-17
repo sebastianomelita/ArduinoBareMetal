@@ -41,7 +41,7 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 - Segnalazione anomalie
 - Backup dei dati e gestione disaster recovery di dati e servizi
      
-##  **Canali di comunicazione principali**     
+##  **Considerazioni energetiche nelle reti di sensori**     
  
 Le reti di **sensori wireless** hanno una estensione nello spazio variabile e la loro toplogia preferita è a stella o a maglia.
 
