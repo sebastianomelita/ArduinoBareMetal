@@ -74,8 +74,7 @@ A seconda dello schema adoperato, dal **punto di vista energetico** non è indif
      - Paradigma Request/Response (HTTPS, COAP), Publish/Subscriber (MQTT) oppure canale persistente bidirezionale (BSD socket o WebSocket)
 
 
-
-
+![radiolinks](radiolinks.jpg)
 
 
 
