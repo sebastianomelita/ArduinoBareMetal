@@ -1,3 +1,5 @@
+>[Torna all'indice generale](index.md)
+
 ## **Reti ethernet di ufficio**
 
 Le reti di ufficio sono realizzate con tecnologie ethernet a topologia fisica a stella o a stella gerachica (albero). Lo switch ha la funzione dI:
@@ -77,7 +79,7 @@ A seconda dello schema adoperato, dal **punto di vista energetico** non è indif
 ![radiolinks](radiolinks.jpg)
 
 
-
+>[Torna all'indice generale](index.md)
     
 
 
