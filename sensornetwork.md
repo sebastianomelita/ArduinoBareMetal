@@ -7,6 +7,7 @@ Le **reti di ufficio** sono realizzate con tecnologie ethernet a topologia fisic
 - **commutazione** cioè smistamento dei dati lungo le dorsali della rete LAN fino ai router di confine della stessa (**gateway**).
 
 Più switch collegati insieme realizzano una rete LAN che si estende fino al primo router che incontrano. I router sono i dispositivi che, di fatto, delimitano una LAN Ethernet.
+
 Lo **switch** è generalmente regolato dal **protocollo STP** che, secondo lo standard, limita i collegamenti a cascate a poche unità (profondità nominale di 3 dispositivi secondo standard EIA/TIA).
 Il **cablaggio** può risultare **oneroso** in presenza di un elevato numero di dispositivi poichè richiederebbe l'impiego di **un cavo a parte** per ogni sensore. Per questo motivo dispositivi di commutazione e architettura **tradizionali** sono generalmente ritenuti poco adatti per la realizzazione delle **ampie reti di sensori** diffuse in ambito industriale.
 
