@@ -47,7 +47,7 @@ Le reti di **sensori wireless** hanno una estensione nello spazio variabile e la
 
 ![hops](hops.png)
 
-La rete principale ethernet può estendersi nello spazio secondo un'architettura (ad albero o ad anello) che può prevedere molti switch. Lo smistamento completo di una trama dati lungo la rete può prevedere una catena di smistamenti lungo gli switch (hop) più o meno lunga. Nel caso di una rete ethernet questo non è generalmente un problema eccessivo nè dal punto di vista dei ritardi nè rispetto a quello dei consumi (gli switch sono alimentati attraverso la rete elettrica).
+La rete principale ethernet può estendersi nello spazio secondo un'architettura (ad albero o ad anello) che può comprendere molti switch. Lo smistamento completo di una trama dati lungo la rete può prevedere una catena di smistamenti lungo gli switch (hop) più o meno lunga. Nel caso di una rete ethernet questo non è generalmente un problema eccessivo nè dal punto di vista dei ritardi nè rispetto a quello dei consumi (gli switch sono alimentati attraverso la rete elettrica).
 
 la situazione può essere diversa nel caso delle reti di sensori. Queste sono spesso wireless e realizzate con dispositivi alimentati a batteria che si vorrebbe cambiare idealmente dopo almeno due anni.
 
