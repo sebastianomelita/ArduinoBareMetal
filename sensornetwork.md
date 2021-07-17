@@ -28,7 +28,7 @@ La **rete principale** è ethernet con dorsali fisiche a stella cablate e colleg
 
 Ad essa si collegano una o più **reti secondarie di accesso** per i dispositivi sensori o attuatori con **interfacce** di tipo:
 - **Non ethernet** (cablate o wireless) spesso in topologia fisica a BUS:
-    - Necessitano di un **gateway** di confine avente almeno una **interfaccia nella rete principale** con possibili funzioni di:
+    - Necessitano di un **gateway** di confine avente almeno una **interfaccia ethernet nella rete principale** con possibili funzioni di:
         - **Traduzione di formato** dei dati da rete a bus a rete ethernet
         - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
         - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
