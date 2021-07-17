@@ -57,7 +57,7 @@ A seconda dello schema adoperato dal **punto di vista energetico** non è indiff
 
 ##  **Canali di comunicazione principali**
 
-**Riassumendo**, sono necessari almeno due canali di comunicazione tra sensori e gestore delle informazioni:
+**Riassumendo**, sono necessari almeno due canali di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
 - **tra sensori e gateway** verso la LAN realizzato dalle sottoreti dei sensori:
     - **A filo** con accesso:
         - **singolo dedicato**: un filo o un canale per sensore (SDM, TDM)
