@@ -59,7 +59,7 @@ Le reti di **sensori wireless** hanno una estensione nello spazio variabile e la
 
 La rete principale ethernet può estendersi nello spazio secondo un'architettura (ad albero o ad anello) che può comprendere molti switch. Lo **smistamento completo** di una trama dati lungo la rete può prevedere una catena di smistamenti lungo gli switch (hop) più o meno lunga. Nel caso di una rete ethernet questo non è generalmente un problema eccessivo nè dal punto di vista dei ritardi nè rispetto a quello dei consumi (gli switch sono alimentati attraverso la rete elettrica).
 
-La situazione può essere diversa nel caso delle **reti di sensori**. Queste sono spesso **wireless** e realizzate con dispositivi **alimentati a batteria** che si vorrebbe cambiare idealmente dopo **non meno di due anni**.
+La situazione può essere diversa nel caso delle **reti di sensori**. Queste sono spesso **wireless** e realizzate con dispositivi **alimentati a batteria** che si vorrebbe fosse sostituita idealmente  **non prima di un paio di anni**.
 
 A seconda dello schema adoperato, dal **punto di vista energetico** non è indifferente considerare se **un comando** o **l'accesso in lettura ad un sensore** avvengono connettendosi direttamente **all'unico** dispositivo hub centrale o connettendosi **al primo** di una cascata di nodi:
 - **Hop singolo**: ciascun nodo del sensore è collegato all'**unico gateway centrale**, sebbene sia possibile la trasmissione a lunga distanza, il consumo di energia per la comunicazione sarà significativamente superiore superiore a quella spesa per la misura e la sua elaborazione. 
