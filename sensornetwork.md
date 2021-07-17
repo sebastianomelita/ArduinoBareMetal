@@ -4,7 +4,7 @@
 
 Le **reti di ufficio** sono realizzate con tecnologie ethernet a topologia fisica a stella o a stella gerachica (albero). Lo **switch** ha la funzione dI:
 - **concentratore di dispositivi**. Un **collegamento punto punto** è dedicato ad ogni dispositivo che occupa esattamente una porta sul concentratore. Servono tante porte (e tanti cavi) quanti sono i dispositivi **in prossimità** del concentratore. L'**uso esclusivo** di un cavo da parte di un dispositivo è detto **microsegmentazione** e di fatto azzera il problema delle collisioni. Se la porta è **condivisa da più dispositivi** tramite un **collegamento a BUS** o un **HUB** si dice che lo switch realizza una **macrosegmentazione**, situazione in cui le collisioni ci sono e sono **arbitrate** dal protocollo Ethernet (di tipo CSMA/CD) abilitato sulla porta.
-- **commutazione** cioè lo **smistamento** dei dati tra le **dorsali** della rete LAN che, comprendendo certi switch e non per altri, realizza un **percorso** (path) fino ai router di confine della stessa (**gateway**).
+- **commutazione** cioè lo **smistamento** dei dati tra le **dorsali** della rete LAN che, comprendendo certi switch e non altri, realizza un **percorso** (path) fino ai router di confine della stessa (**gateway**).
 
 **Più switch** collegati insieme **realizzano una rete LAN** che si estende fino al primo router che incontrano. I **router** sono i dispositivi che, di fatto, **delimitano** una LAN Ethernet.
 
