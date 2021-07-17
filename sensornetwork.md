@@ -35,6 +35,8 @@ Ad essa si collegano una o più **reti secondarie di accesso** per i dispositivi
 
 - **Ethernet**. Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch oppure ad un AP WiFi
    
+## **server di gestione**
+
 In ogni caso è necessario un **server di gestione** con funzioni di:
 - Processamento (elaborazione nuovo stato e comando attuatori)
 - Memorizzazione (storage) ed estrazione (mining) delle informazioni
