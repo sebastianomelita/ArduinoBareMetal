@@ -77,7 +77,6 @@ A seconda dello schema adoperato, dal **punto di vista energetico** non è indif
     - **Senza filo** cioè wireless con accesso:
         - **singolo dedicato**: link punto-punto analogico digitalizzato con AX25 oppure digitale con un radio modem (Yarm ACME Systems, 6LoWPAN, LoRa) resi full duplex con FDM o TDM.
         - **Multiplo e condiviso** (BUS) di tipo half duplex reso bidirezionale (full duplex) tramite tecniche asincrone CSMA/CA (Zigbee, wifi, LoRa) o sincrone TDMA (Zigbee, Bluetooth).
-        - 
 - **Tra gateway e gestore** delle informazioni realizzato dalla rete principale:
      - Tipicamente tramite **LAN ethernet** e architettura **Client/Server**
      - Interazioni di tipo PUSH o PULL
