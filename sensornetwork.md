@@ -41,11 +41,17 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 - Segnalazione anomalie
 - Backup dei dati e gestione disaster recovery di dati e servizi
      
+##  **Canali di comunicazione principali**     
+ 
 Le reti di **sensori wireless** hanno una estensione nello spazio variabile e la loro toplogia preferita è a stella o a maglia.
 
 ![hops](hops.png)
 
-A seconda dello schema adoperato è interessante dal **punto di vista energetico** considerare se un comando o l'accesso ad un sensore avvenga connettendosi direttamente ad un dispositivo hub centrale o attraverso una cascata di nodi:
+La rete principale ethernet può estendersi nello spazio secondo un'architettura (ad albero o ad anello) che può prevedere molti switch. Lo smistamento completo di una trama dati lungo la rete può prevedere una catena di smistamenti lungo gli switch (hop) più o meno lunga. Nel caso di una rete ethernet questo non è generalmente un problema eccessivo nè dal punto di vista dei ritardi nè rispetto a quello dei consumi (gli switch sono alimentati attraverso la rete elettrica).
+
+la situazione può essere diversa nel caso delle reti di sensori. Queste sono spesso wireless e realizzate con dispositivi alimentati a batteria che si vorrebbe cambiare idealmente dopo almeno due anni.
+
+A seconda dello schema adoperato dal **punto di vista energetico** non è indifferente considerare se un comando o l'accesso ad un sensore avvengano connettendosi direttamente **all'unico** dispositivo hub centrale o connettendosi **al primo** di una cascata di nodi:
 - **Hop singolo**: ciascun nodo del sensore è collegato al gateway, sebbene sia possibile la trasmissione a lunga distanza, il consumo di energia per la comunicazione sarà significativamente superiore superiore a quella spesa per la misura e la sua elaborazione. 
 - **Hop multiplo**: esiste un percorso verso i nodi terminali passando attraverso dei nodi intermedi. L’energia che un singolo dispositivo impiega per raggiungere nodi distanti si limita a quella per raggiungere il **nodo più prossimo**. Su reti mesh di **grandi dimensioni** anche questa energia può essere non trascurabile. Su **reti indoor** è invece la soluzione decisamente più conveniente.
 
