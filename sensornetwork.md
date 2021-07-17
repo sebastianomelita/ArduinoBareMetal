@@ -33,8 +33,8 @@ Ad essa si collegano una o più **reti secondarie di accesso** per i dispositivi
         - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
         - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
 
-- **Ethernet**. Non è necessario alcun gateway di traduzione dato che i sensori si collegano direttamente ad una porta di uno switch di accesso oppure ad un AP WiFi
-   
+- **Ethernet**. Non è necessario alcun gateway di traduzione dato che uno o più sensori si collegano direttamente ad una porta di uno switch di accesso oppure ad un AP WiFi. Sulla porta sono possibili **collisioni** di accesso tra dispositivi (hub) **arbitrate** dal protocollo **Ethernet** propriamente detto (CSMA/CD IEEE 802.3) nel caso del collegamento realizzato con cavo UTP. L'arbitraggio dell'accesso avviene con il protocollo **WiFi** (CSMA/CA IEEE 802.11) nel caso di collegamento wireless basato su trame MAC di tipo ethernet.
+    
 ## **Server di gestione**
 
 In genere è localizzato all'intermo della **rete principale** con una collocazione **on-premise** all'interno del sistema.
