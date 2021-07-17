@@ -54,9 +54,9 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 - Gestione dei FW dei vari dispositivi
 - Gestione della sicurezza
      
-##  **Considerazioni energetiche nelle reti di sensori**     
+##  **Topologia delle reti di sensori**     
  
-Le reti di **sensori wireless** hanno una estensione nello spazio variabile e la loro toplogia preferita è a stella o a maglia.
+Le reti di **sensori wireless** hanno una estensione nello spazio variabile e la loro toplogia preferita è **a stella** o **a maglia**.
 
 ![hops](hops.png)
 
