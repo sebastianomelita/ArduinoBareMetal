@@ -52,8 +52,8 @@ La rete principale ethernet può estendersi nello spazio secondo un'architettura
 La situazione può essere diversa nel caso delle **reti di sensori**. Queste sono spesso **wireless** e realizzate con dispositivi **alimentati a batteria** che si vorrebbe cambiare idealmente dopo **non meno di due anni**.
 
 A seconda dello schema adoperato, dal **punto di vista energetico** non è indifferente considerare se **un comando** o **l'accesso in lettura ad un sensore** avvengono connettendosi direttamente **all'unico** dispositivo hub centrale o connettendosi **al primo** di una cascata di nodi:
-- **Hop singolo**: ciascun nodo del sensore è collegato al gateway, sebbene sia possibile la trasmissione a lunga distanza, il consumo di energia per la comunicazione sarà significativamente superiore superiore a quella spesa per la misura e la sua elaborazione. 
-- **Hop multiplo**: esiste un percorso verso i nodi terminali passando attraverso dei nodi intermedi. L’energia che un singolo dispositivo impiega per raggiungere nodi distanti si limita a quella per raggiungere il **nodo più prossimo**. Su reti mesh di **grandi dimensioni** anche questa energia può essere non trascurabile. Su **reti indoor** è invece la soluzione decisamente più conveniente.
+- **Hop singolo**: ciascun nodo del sensore è collegato all'**unico gateway centrale**, sebbene sia possibile la trasmissione a lunga distanza, il consumo di energia per la comunicazione sarà significativamente superiore superiore a quella spesa per la misura e la sua elaborazione. 
+- **Hop multiplo**: esiste un percorso verso i nodi terminali passando attraverso dei nodi intermedi. L’energia che un **singolo dispositivo** impiega per raggiungere **un nodo remoto** (ad esempio per accenderlo) si limita a quella per raggiungere il **nodo più prossimo**. Su reti mesh di **grandi dimensioni** anche questa energia può essere non trascurabile. Su **reti indoor** è invece la soluzione decisamente **più conveniente**.
 
 ##  **Canali di comunicazione principali**
 
