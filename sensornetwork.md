@@ -13,7 +13,7 @@ Il cablaggio può risultare **oneroso** in presenza di un elevato numero di disp
 
 Le **reti industriali o ferrotramviarie** che utilizzano la tecnologia ethernet sono spesso realizzate con **topologia fisica a BUS o ad anello**.
 Un anello è composto da lunghe cascate di switch equipaggiati con protocollo STP modificato o con altri protocolli proprietari.
-Il cablaggio è più economico in presenza di un cluster numeroso di dispositivi dato che con un unico cavo si possono collegare più switch.
+Il cablaggio, in presenza di un cluster numeroso di dispositivi risulta più economico dato che con un unico cavo si possono collegare più switch.
 Possibilità di topologie **ridondate a doppio anello** (treni, industria)
 
 ![industrialnet](industrialnet.jpg)
