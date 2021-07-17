@@ -26,8 +26,6 @@ La **rete principale** è ethernet con dorsali fisiche a stella cablate e colleg
 
 Ad essa si collegano una o più **reti secondarie di accesso** per i dispositivi sensori o attuatori con **interfacce** di tipo:
 - **Non ethernet** (cablate o wireless) spesso in topologia fisica a BUS:
-    - organizzate in **sottoreti apposite (ad hoc)** cablate con interfacce industriali comunque standardizzate (Dallas, I2C, SPI, Modbus, Profibus, ecc.). 
-    - Spesso hanno una **topologia fisica a BUS o ad anello** che possiede il vantaggio di interconnettere **molti dispositivi** (sensori o attuatori) sfruttando l'utilizzo di **un solo cavo**. 
     - Necessitano di un **gateway** di confine avente almeno una **interfaccia nella rete principale** con possibili funzioni di:
         - **Traduzione di formato** dei dati da rete a bus a rete ethernet
         - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
@@ -43,8 +41,6 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 - Segnalazione anomalie
 - Backup dei dati e gestione disaster recovery di dati e servizi
      
-E' comune anche una topologia di accesso a **bus wireless** in cui la contesa del mezzo è regolata da protocolli di arbitraggio del tipo **ALOHA** O **CSMA/CA**. Questo è il caso di reti di sensori wireless potenzialmente compostre da molti nodi aventi anche capacità di smistamento gestite in ogni aspetto da tecnologie complesse come Zigbee o BLE che definiscono sia i dettagli delle interfacce radio che i protocolli di gestione dei canali e delle risorse sui nodi.
-
 Le reti di **sensori wireless** hanno una estensione nello spazio variabile e la loro toplogia preferita è a stella o a maglia.
 
 ![hops](hops.png)
@@ -55,8 +51,8 @@ A seconda dello schema adoperato è interessante dal **punto di vista energetico
 
 ##  **Canali di comunicazione principali**
 
-Sono necessari almeno due canali di comunicazione tra sensori e gestore delle informazioni:
-- **tra sensori e gateway** verso la LAN:
+**Riassumendo**, sono necessari almeno due canali di comunicazione tra sensori e gestore delle informazioni:
+- **tra sensori e gateway** verso la LAN realizzato dalle sottoreti dei sensori:
     - **A filo** con accesso:
         - **singolo dedicato**: un filo o un canale per sensore (SDM, TDM)
         - **multiplo condiviso** cioè tramite mezzo broadcast (BUS) con **arbitraggio** di tipo **master slave** (Modubus) o **peer to peer** (CanBUS, KNX, ecc) o misto (ProfiBUS). 
@@ -66,7 +62,7 @@ Sono necessari almeno due canali di comunicazione tra sensori e gestore delle in
         - **singolo dedicato**: link punto-punto analogico digitalizzato con AX25 oppure digitale con un radio modem (Yarm ACME Systems, 6LoWPAN, LoRa) resi full duplex con FDM o TDM.
         - **Multiplo e condiviso** (BUS) di tipo half duplex reso bidirezionale (full duplex) tramite tecniche asincrone CSMA/CA (Zigbee, wifi, LoRa) o sincrone TDMA (Zigbee, Bluetooth).
         - 
-- **Tra gateway e gestore** delle informazioni:
+- **Tra gateway e gestore** delle informazioni realizzato dalla rete principale:
      - Tipicamente tramite **LAN ethernet** e architettura **Client/Server**
      - Interazioni di tipo PUSH o PULL
      - Paradigma Request/Response (HTTPS, COAP), Publish/Subscriber (MQTT) oppure canale persistente bidirezionale (BSD socket o WebSocket)
