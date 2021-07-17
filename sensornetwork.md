@@ -37,6 +37,10 @@ Ad essa si collegano una o più **reti secondarie di accesso** per i dispositivi
    
 ## **Server di gestione**
 
+In genere è localizzato all'intermo della rete principale con una collocazione on-premise all'interno del sistema.
+
+Tendenze sempre più recenti portano al trasferimento di funzioni anche sul cloud. Una **soluzione estrema** è quella di spostare tutte le funzioni sul cloud tenendo ben presente che un **guasto della connessione ad internet** causerebbe una cessazione delle **funzioni** di regolazione e controllo che sono **centralizzate sul server**.
+
 In ogni caso è necessario un **server di gestione** con funzioni di:
 - Processamento (elaborazione nuovo stato e comando attuatori)
 - Memorizzazione (storage) ed estrazione (mining) delle informazioni
@@ -44,6 +48,7 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 - Pubblicazione in Internet delle informazioni su un un sito o su un WebService (opendata)
 - Segnalazione anomalie
 - Backup dei dati e gestione disaster recovery di dati e servizi
+- Gestione dei FW dei vari dispositivi
      
 ##  **Considerazioni energetiche nelle reti di sensori**     
  
