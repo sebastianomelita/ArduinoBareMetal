@@ -24,7 +24,7 @@ Spesso sono **reti miste** cioè composte da sottoreti eterogenee.
 
 ![sensor network](sensornet1.png)
 
-La **rete principale** è ethernet con dorsali fisiche a stella cablate e collegamenti periferici cablati o wireless WiFi. Ha principalmente la funzione di distribuzione dei dati dai nodi gateway con le reti sendarie fino al server di gestione dei dati. Va attentamente progettata perchè sia in grado di smaltire il traffico complessivo di tutti i sensori. Può diventare **critica** se altre ai sensori sono presenti **sorgenti multimediali** quali **microfoni** o **telecamere** di videosorvelianza.
+La **rete principale** è ethernet con dorsali fisiche a stella cablate e collegamenti periferici cablati o wireless WiFi. Ha principalmente la funzione di **distribuzione** dei dati **dai nodi gateway** con le reti sendarie **fino al server di gestione** dei dati. Va attentamente progettata perchè sia in grado di smaltire il traffico complessivo di tutti i sensori. Può diventare **critica** se altre ai sensori sono presenti **sorgenti multimediali** quali **microfoni** o **telecamere** di videosorvelianza.
 
 Ad essa si collegano una o più **reti secondarie di accesso** per i dispositivi sensori o attuatori con **interfacce** di tipo:
 - **Non ethernet** (cablate o wireless) spesso in topologia fisica a BUS:
