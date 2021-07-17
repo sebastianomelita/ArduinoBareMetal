@@ -69,9 +69,9 @@ A seconda dello schema adoperato, dal **punto di vista energetico** non è indif
 
 **Riassumendo**, sono necessari almeno due canali di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
 - **tra sensori e gateway** verso la LAN realizzato dalle sottoreti dei sensori:
-    - **A filo** con accesso:
-        - **singolo dedicato**: un filo o un canale per sensore (SDM, TDM)
-        - **multiplo condiviso** cioè tramite mezzo broadcast (BUS) con **arbitraggio** di tipo **master slave** (Modubus) o **peer to peer** (CanBUS, KNX, ecc) o misto (ProfiBUS). 
+    - **A filo** con accesso:,
+        - **singolo dedicato**: un filo o un canale per sensore in tecnologia SDM o TDM (multiplexer, UART, porta analogica, porta digitale)
+        - **multiplo condiviso** cioè tramite mezzo broadcast (BUS) con **arbitraggio** di tipo **master slave** (Modubus, Dallas, I2C, SPI) o **peer to peer** (CanBUS, KNX, ecc) o misto (ProfiBUS). 
         - Spesso **bidirezionale** specie se in presenza di attuatori
         
     - **Senza filo** cioè wireless con accesso:
