@@ -109,8 +109,7 @@ http://www.iosrjournals.org/iosr-jece/papers/Vol.%2011%20Issue%206/Version-1/H11
 https://it.wikipedia.org/wiki/Low_Energy_Adaptive_Clustering_Hierarchy
 https://it.wikipedia.org/wiki/Ad-hoc_On-demand_Distance_Vector
 https://repository.vtc.edu.hk/cgi/viewcontent.cgi?article=1043&context=ive-eng-sp
-file:///C:/Users/Seb/Dropbox/OSPF/ICEMIS2016_paper_33.pdf
-
+https://www.researchgate.net/publication/316563960_Comparative_study_and_simulation_of_flat_and_hierarchical_routing_protocols_for_wireless_sensor_network
 
 >[Torna all'indice generale](index.md)
     
