@@ -105,6 +105,9 @@ Quasi **tutte le tecnologie wireless** poi permettono di mettere, nell'intervall
 **Sitografia:**
 
 https://www.electronicshub.org/wireless-sensor-networks-wsn/
+http://www.iosrjournals.org/iosr-jece/papers/Vol.%2011%20Issue%206/Version-1/H1106014856.pdf
+https://it.wikipedia.org/wiki/Low_Energy_Adaptive_Clustering_Hierarchy
+https://repository.vtc.edu.hk/cgi/viewcontent.cgi?article=1043&context=ive-eng-sp
 
 
 >[Torna all'indice generale](index.md)
