@@ -107,8 +107,8 @@ Quasi **tutte le tecnologie wireless** poi permettono di mettere, nell'intervall
 https://www.electronicshub.org/wireless-sensor-networks-wsn/
 http://www.iosrjournals.org/iosr-jece/papers/Vol.%2011%20Issue%206/Version-1/H1106014856.pdf
 https://it.wikipedia.org/wiki/Low_Energy_Adaptive_Clustering_Hierarchy
-https://it.wikipedia.org/wiki/Ad-hoc_On-demand_Distance_Vector
 https://repository.vtc.edu.hk/cgi/viewcontent.cgi?article=1043&context=ive-eng-sp
+https://it.wikipedia.org/wiki/Ad-hoc_On-demand_Distance_Vector
 https://www.researchgate.net/publication/316563960_Comparative_study_and_simulation_of_flat_and_hierarchical_routing_protocols_for_wireless_sensor_network
 
 >[Torna all'indice generale](index.md)
