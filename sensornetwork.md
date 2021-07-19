@@ -60,7 +60,7 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 
 Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per le applicazioni di nostro interesse le topologie più adoperate sono quelle classiche ad stella e a bus.
 
-Esempi di collegamenti con topologia a stella:
+### **Esempi di collegamenti con topologia a stella**:
 
   <img src="Star-network-1024x466.png" alt="alt text" width="700">
   
@@ -72,7 +72,7 @@ Esempi di collegamenti con topologia a stella:
   
   <img src="potenziometro.png" alt="alt text" width="500">
 
-Esempi di collegamenti con topologia a bus:
+### **Esempi di collegamenti con topologia a bus:**
 
  <img src="bus.png" alt="alt text" width="600">
 Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
