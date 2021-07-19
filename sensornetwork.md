@@ -74,6 +74,10 @@ Esempio di bus **SPI** detto anche a 3-4 fili (four-wire):
 
  <img src="spi.png" alt="alt text" width="600">
  
+ Esempio di bus **RS485** arbitrato dal protocollo Modbus:
+
+ <img src="Modbus-system-example.png" alt="alt text" width="600">
+ 
 ##  **Topologia delle reti di sensori wireless**     
  
 Le reti di **sensori wireless** hanno una estensione nello spazio variabile e la loro **topologia** preferita è **a stella** o **a maglia**.
