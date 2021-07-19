@@ -58,6 +58,7 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 
 ##  **Topologia delle reti di sensori cablata** 
 
+Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per le applicazioni di nostro interesse le topologie più adoperate sono quelle classiche ad stella e a bus.
 
 ![sensors](sensors.png)
 
