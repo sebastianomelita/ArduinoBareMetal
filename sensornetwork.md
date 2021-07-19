@@ -59,9 +59,9 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 ##  **Topologia delle reti di sensori cablata** 
 
 Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per le applicazioni di nostro interesse le topologie più adoperate sono quelle classiche ad stella e a bus.
+ <img src="star.png" alt="alt text" width="600">
 
  <img src="bus.png" alt="alt text" width="600">
- 
 Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
 
  <img src="Schematic-dallas-18s20.gif" alt="alt text" width="600">
