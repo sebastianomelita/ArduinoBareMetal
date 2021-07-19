@@ -66,17 +66,17 @@ Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
 
 ![dallas](Schematic-dallas-18s20.gif)  
 
-Esempio di bus **I2C** detto anche a 2 fili (two-wire):
+Esempio di bus **I2C** detto anche a 2 fili (two-wire  | width=300):
 
  ![i2cbus](I2C-communication-protocol-ESP32.png)    
  
 Esempio di bus **I2C** detto anche a 2 fili (two-wire):
 
- ![i2cbus](I2C-communication-protocol-ESP32.png)    
+ ![i2cbus](I2C-communication-protocol-ESP32.png  | width=300)    
  
 Esempio di bus **SPI** detto anche a 3-4 fili (four-wire):
 
- ![spi](spi.png =300x)   
+ ![spi](spi.png  | width=300)   
  
 ##  **Topologia delle reti di sensori wireless**     
  
