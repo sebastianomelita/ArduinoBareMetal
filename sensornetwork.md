@@ -76,6 +76,10 @@ Esempio di bus **SPI** detto anche a 3-4 fili (four-wire):
  
  Esempio di bus **RS485** arbitrato dal protocollo Modbus:
 
+ <img src="rs485network.png" alt="alt text" width="600">
+ 
+  Esempio di attuatori collegati con BUS **RS485** arbitrato dal protocollo Modbus:
+
  <img src="Modbus-system-example.png" alt="alt text" width="600">
  
 ##  **Topologia delle reti di sensori wireless**     
