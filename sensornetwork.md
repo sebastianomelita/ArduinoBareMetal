@@ -110,7 +110,7 @@ Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un *
 
 **Successivamente** il canale FDM **potrebbe** essere ulteriormente **partizionato in gruppi di utenti** tutti collegati ad uno **stesso dispositivo**. I dispositivi (ad es. gli AP wifi di uno stesso palazzo) interferiscono tra loro ma le comunicazioni sono rese distinguibili e private mediante multiplazione a spettro espanso **CDM** (Code Division Multiplexing) che associa un SSID diverso ad ogni dispositivo. Ciò è dovuto al fatto che usiamo uno dei canali della banda ISM su cui non esistono coordinamento e controllo alcuno.
 
-Su **questo canale risultante**. privato ed associato ad un certo **SSID**. **possono parlare**, a seconda del servizio richiesto:
+Su **questo canale risultante**. privato ed associato ad un certo **SSID**. **possono parlare**, a seconda del **servizio richiesto**:
 
 - **due interlocutori**, allora si vuole realizzare un collegamento punto-punto tra i due che deve essere reso full duplex. La bidirezionalità, di solito, si ottiene con una multiplazione statica TDM. Cioè il periodo di trasmissione è diviso temporalmente a metà, nella prima parla un interlocutore, nella seconda l'altro.
 - **molti interlocutori**, allora siamo in presenza di un mezzo condiviso tra più comunicazioni che viene, anhe in questo caso, partizionato con tecnica TDM, c'è da decidere però se statica TDMA o dinamica (ALOHA o CSMA/CA). Molti dispositivi li supportano entrambi, insieme o separatamente:
