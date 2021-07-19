@@ -85,7 +85,7 @@ Quasi **tutte le tecnologie wireless** poi permettono di mettere, nell'intervall
 
 ## **Interfaccia radio**
 
-Il **mezzo trasmissivo radio** è partizionabile in **frequenza**, **tempo**, **spazio** e **potenza**. Delle grandezze precedenti quella in assolutp **più limitata** è la **frequenza** essendo proprietà dello Stato e ceduta in concessione sotto ben precise condizioni (licenze). Questo è il motivo per cui nel realizzare qualsiasi tipo di comunicazione radio, per prima cosa, bisogna cominciare col **riservare** una porzione del campo delle frequenze radio (spettro) **allocando** degli intervalli di frequenze detti **canali**. 
+Il **mezzo trasmissivo radio** è partizionabile in **frequenza**, **tempo**, **spazio** e **potenza**. Delle grandezze precedenti quella in assolutp **più limitata** è la **frequenza** essendo proprietà dello Stato e ceduta in concessione sotto ben precise condizioni (licenze). Questo è il motivo per cui, nel realizzare qualsiasi tipo di comunicazione radio, per prima cosa, bisogna cominciare col **riservare** una porzione del campo delle frequenze radio (spettro) **allocando** degli intervalli di frequenze detti **canali**. 
 
 I **canali** sono allocabili all'interno di intervalli di frequenze dette **bande**. Le bande si dividono in **licenziate** cioè quelle per le quali bisogna acquistare dallo stato la **concessione** per trasmmetterci e in quelle **non licenziate** per le quali, sotto ben precise condizioni è libera la trasmissione. Una di queste ultime è la banda **ISM** (Industrial Scientific Medical). L'**ampiezza del canale** dipende dalla **tecnologia adoperata**. 
 
