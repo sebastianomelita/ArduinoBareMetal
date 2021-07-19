@@ -66,7 +66,7 @@ Esempi di collegamenti con topologia a stella:
   
   <img src="ultrasonic-sensor-with-arduino-hc-sr04.jpg" alt="alt text" width="700">
   
-  <img src="potenziometro.png" alt="alt text" width="300">
+  <img src="potenziometro.png" alt="alt text" width="500">
 
 Esempi di collegamenti con topologia a bus:
 
