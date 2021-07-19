@@ -137,6 +137,9 @@ Il mezzo radio possiede la proprietà di essere intrinsecamente **multipunto (me
 <img src="duplexer.png" alt="alt text" width="700">
 
 Una trasmissione radio **full duplex** può essere realizzata o utilizzando **due canali diversi** nelle **due direzioni** di trasmissione (tecnica FDM) o **partizionando** ulteriormente il canale nelle grandezze residue **ancora non partizionate** in **due sottocanali** (TDM o CDM). Normalmente si usa allo scopo il **tempo** con tecniche TDM, cioè interlocutori diversi parlano nello stesso canale in **istanti diversi** e ciò può essere fatto per un **numero arbitrario** di interlocutori. 
+
+<img src="6.25kHz-transmission-mask.jpg" alt="alt text" width="700">
+
 La partizione **TDM** nel tempo del canale può essere statica o dinamica. Quella **statica** utilizza la tecnica di multiplazione **TDMA**. Quella **dinamica** utilizza un **protocollo di arbitraggio** che, con un meccanismo di **ack**, permette di realizzare **l'alternanza nel tempo** delle comunicazioni. Si basa essenzialmente sui protocolli **ALOHA** o **CSMA/CA**.
 
 Spesso il **TDM** è preceduto da una ulteriore divisione del canale nel **dominio della potenza** detta divisione di codice o **CDMA** che è associata ad un certo **cluster di utenti** afferenti ad un **certo dispositivo** (ad esempio un AP WiFi). Gruppi diversi hanno codici (detti ortogonali) diversi. Ad es, il **BSSID** del wifi è associato ad un **codice ortogonale** diverso da quello degli altri BSSID che fa in modo che una sua comunicazione sia **distinguibile** da quella degli altri, pur interferndo completamente con quelle. In sostanza si possono **annidare** le multiplazioni una dentro l'altra differenziando per **caratteristiche fisiche** diverse le **singole comunicazioni** dei **singoli gruppi**.
