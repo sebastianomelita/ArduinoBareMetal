@@ -140,6 +140,8 @@ Una trasmissione radio **full duplex** può essere realizzata o utilizzando **du
 
 <img src="6.25kHz-transmission-mask.jpg" alt="alt text" width="1000">
 
+<img src="Spectrum-efficiency-1.jpg" alt="alt text" width="1000">
+
 La partizione **TDM** nel tempo del canale può essere statica o dinamica. Quella **statica** utilizza la tecnica di multiplazione **TDMA**. Quella **dinamica** utilizza un **protocollo di arbitraggio** che, con un meccanismo di **ack**, permette di realizzare **l'alternanza nel tempo** delle comunicazioni. Si basa essenzialmente sui protocolli **ALOHA** o **CSMA/CA**.
 
 Spesso il **TDM** è preceduto da una ulteriore divisione del canale nel **dominio della potenza** detta divisione di codice o **CDMA** che è associata ad un certo **cluster di utenti** afferenti ad un **certo dispositivo** (ad esempio un AP WiFi). Gruppi diversi hanno codici (detti ortogonali) diversi. Ad es, il **BSSID** del wifi è associato ad un **codice ortogonale** diverso da quello degli altri BSSID che fa in modo che una sua comunicazione sia **distinguibile** da quella degli altri, pur interferndo completamente con quelle. In sostanza si possono **annidare** le multiplazioni una dentro l'altra differenziando per **caratteristiche fisiche** diverse le **singole comunicazioni** dei **singoli gruppi**.
