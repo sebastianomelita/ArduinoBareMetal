@@ -144,7 +144,7 @@ Una trasmissione radio **full duplex** può essere realizzata o utilizzando **du
 
 La partizione **TDM** nel tempo del canale può essere statica o dinamica. Quella **statica** utilizza la tecnica di multiplazione **TDMA**. Quella **dinamica** utilizza un **protocollo di arbitraggio** che, con un meccanismo di **ack**, permette di realizzare **l'alternanza nel tempo** delle comunicazioni. Si basa essenzialmente sui protocolli **ALOHA** o **CSMA/CA**. 
 
- I riquadri indicano le trame. I riquadri ombreggiati indicano le trame che hanno colliso.
+ Rappresentazione grafica del protocollo **ALOHA**. I riquadri indicano le trame. I **riquadri ombreggiati** indicano le trame che hanno **colliso** e che verranno scartate perchè arrivate corrotte. Le trame corrotte non saranno confermate dal ricevente e, allo scadere di un timeout, verranno ritrasmesse.
  
 <img src="Pure_ALOHA1.svg.png" alt="alt text" width="600">
 
