@@ -60,7 +60,7 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 
 Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per le applicazioni di nostro interesse le topologie più adoperate sono quelle classiche ad stella e a bus.
 
-![sensors](sensors.png)
+![sensors](bus.png)
 
 Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
 
