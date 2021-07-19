@@ -55,6 +55,12 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 - Backup dei dati e gestione disaster recovery di dati e servizi
 - Gestione dei FW dei vari dispositivi
 - Gestione della sicurezza
+
+##  **Topologia delle reti di sensori cablata** 
+
+
+![sensors](sensors.png)
+
      
 ##  **Topologia delle reti di sensori wireless**     
  
