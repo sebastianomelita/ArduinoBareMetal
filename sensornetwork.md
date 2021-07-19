@@ -64,11 +64,11 @@ Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per
 
 Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
 
-![dallas](Schematic-dallas-18s20.gif)  
+ <img src="Schematic-dallas-18s20.gif" alt="alt text" width="600">
 
 Esempio di bus **I2C** detto anche a 2 fili (two-wire):
  
- <img src="I2C-communication-protocol-ESP32.png" alt="alt text" width="600">
+ <img src="I2C-communication-protocol-ESP32.png" alt="alt text" width="700">
  
 Esempio di bus **SPI** detto anche a 3-4 fili (four-wire):
 
