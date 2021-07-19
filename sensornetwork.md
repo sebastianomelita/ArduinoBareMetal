@@ -62,6 +62,8 @@ Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per
 
 ![sensors](sensors.png)
 
+Esempio di bus **I2C** detto anche a 2 fili (two-wire):
+
  ![i2cbus](I2C-communication-protocol-ESP32.png)    
  
 ##  **Topologia delle reti di sensori wireless**     
