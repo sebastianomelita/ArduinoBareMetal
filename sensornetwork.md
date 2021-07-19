@@ -96,7 +96,7 @@ La partizione **TDM** nel tempo del canale può essere statica o dinamica. Quell
 
 Spesso il **TDM** è preceduto da una ulteriore divisione del canale nel **dominio della potenza** detta divisione di codice o **CDMA** che è associata ad un certo **cluster di utenti** afferenti ad un **certo dispositivo** (ad esempio un AP WiFi). Gruppi diversi hanno codici (detti ortogonali) diversi. Ad es, il **BSSID** del wifi è associato ad un **codice ortogonale** diverso da quello degli altri BSSID che fa in modo che una sua comunicazione sia **distinguibile** da quella degli altri, pur interferndo completamente con quelle. In sostanza si possono **annidare** le multiplazioni una dentro l'altra differenziando per **caratteristiche fisiche** diverse le **singole comunicazioni** dei **singoli gruppi**.
 
-Normalmente le **multiplazioni** sono gestite a **livello fisico** in HW utilizzando delle **schede radio dedicate** su cui si impostano i **registri** per la **configuraxione** e da cui provengono le **notifiche** dei vari **eventi** legati alla **trasmissione** o alla **ricezione**.
+Normalmente le **multiplazioni** sono gestite a **livello fisico** in HW utilizzando delle **schede radio dedicate** su cui si impostano i **registri** per la **configurazione** e da cui provengono le **notifiche** dei vari **eventi** legati alla **trasmissione** o alla **ricezione**.
 
 A seconda della tecnologia adoperata si possono realizare comunicazioni **punto-punto** o **multipunto**, al limite anche **broadcast**. L'isolamento punto punto è in genere **logico** e si ottiene, come in tutti i mezzi a BUS, a livello di scheda **ignorando** le comunicazioni non proprie. Diventa più effettivo con la **cifratura** delle informazioni.
 
