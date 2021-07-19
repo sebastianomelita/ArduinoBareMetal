@@ -104,6 +104,20 @@ In ogi caso con il **TDMA** o con il **CSMA** è possibile pure **condividere** 
 
 La **multiplazione SDM** (divisione di spazio) del mezzo radio è sempre in qualche misura possibile **controllando accuratamente le potenze** di trasmissione dato che la **propagazione** delle onde radio, anche **nel vuoto**, è soggetta ad un **intenso fenomeno di attenuazione** che cresce con il **quadrato della frequenza** e con il **quadrato della distanza**. Un esempio di SDM radio è la **divisione in celle** dell'area di **copertura del servizio** radio avente la proprietà che **celle vicine** usano frequenze molto diverse mentre **celle distanti** riutilizzano la stessa frequenza.
 
+## **Serevizi di accesso radio**
+
+Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un **canale radio** di una multiplazione **FDM**. L'allocazione può essere sia statica (eseguita dal sistemista) che dinamica cioè variabile nel tempo ed automatica.
+
+**Successivamente** il canale FDM **potrebbe** essere ulteriormente **partizionato in gruppi di utenti** tutti collegati ad uno **stesso dispositivo**. I dispositivi (ad es. gli AP wifi di uno stesso palazzo) interferiscono tra loro ma le comunicazioni sono rese distinguibili e private mediante multiplazione a spettro espanso **CDM** (Code Division Multiplexing) che associa un SSID diverso ad ogni dispositivo. Ciò è dovuto al fatto che usiamo uno dei canali della banda ISM su cui non esistono coordinamento e controllo alcuno.
+
+su questo canale risultante privato ed associato ad un certo **SSID** possono parlare, a seconda del servizio richiesto:
+
+- **due interlocutori**, allora si vuole realizzare un collegamento punto-punto tra i due che deve essere reso full duplex. La bidirezionalità, di solito, si ottiene con una multiplazione statica TDM. Cioè il periodo di trasmissione è diviso temporalmente a metà, nella prima parla un interlocutore, nella seconda l'altro.
+- **molti interlocutori**, allora siamo in presenza di un mezzo condiviso tra più comunicazioni che viene, anhe in questo caso, partizionato con tecnica TDM, c'è da decidere però se statica TDMA o dinamica ALOHA o CSMA/CA. Molti dispositivi li supportano entrambi, insieme o separatamente:
+    - se si eseguono **operazioni periodiche** come il **polling** di un grappolo di sensori potrebbe essere conveniente utilizzare la multiplazione **TDM statica**. il servizio di accesso è **sincrono** in quanto una **sorgente** deve trasmettere esclusivamente nello **slot** temporale ad essa assegnato nella fase di **setup** della comunicazione.
+    - se si eseguono **operazioni una tantum**, **asincrone** cioè di cui non si riesce a sapere **in anticipo** l'accadere allora riservare uno slot temporale ad una sorgente che per la maggior parte del tempo non lo utilizzerebbe è certamente **uno spreco** per cui si preferisce utilizzare la tecnica di accesso TDM **a contesa** con accesso al canale arbitrato dai protocolli **ALOHA** O **CSMA/CA**.      - 
+
+
 ##  **Canali di comunicazione principali**
 
 **Riassumendo**, sono necessari almeno due canali di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
