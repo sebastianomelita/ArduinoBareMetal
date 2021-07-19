@@ -83,6 +83,19 @@ Un'altra funzione **potenzialmente energivora** è il **polling dei sensori** ov
 
 Quasi **tutte le tecnologie wireless** poi permettono di mettere, nell'intervallo di tempo tra una misura e l'altra, il dispositivo in modalità di **sleep** o **standby** profondo che **rallenta** di molto il clock della CPU permettendo un grande **risparmo di energia**.
 
+## **Interfaccia radio**
+
+Il **mezzo trasmissivo radio** è partizionabile in **frequenza**, **tempo**, **spazio** e **potenza**. Delle grandezze precedenti quella in assolutp **più limitata** è la **frequenza** essendo proprietà dello Stato e ceduta in concessione sotto ben precise condizioni (licenze), motivo per cui nel realizzare qualsiasi tipo di comunicazione radio, per prima cosa, bisogna cominciare col **riservare** una porzione del campo delle frequenze radio (spettro) **allocando** degli intervalli di frequenze detti **canali**. 
+
+I **canali** sono allocabili all'interno di intervalli di frequenze dette **bande**. Le bande si dividono in **licenziate** cioè quelle per le quali bisogna acquistare dallo stato la **concessione** per trasmmetterci e in quelle **non licenziate** per le quali, sotto ben precise condizioni è libera la trasmissione. Una di queste ultime è la banda **ISM** (Industrial Scientific Medical). L'**ampiezza del canale** dipende dalla tecnologia adoperata. 
+
+Il mezzo radio possiede la proprietà di essere intrinsecamente **multipunto (mezzo broadcast)** cioè, se un interlocutore trasmette **tutti ascoltano**. Inoltre, essendo in pratica un BUS, è sogetto al fenomeno delle **collisioni** (in quest'ambito sono fisicamente delle interferenze distruttive) che si possono risolvere come sempre, cioè facendo in modo che in **certo canale**, in un **dato posto** e in un **dato tempo** si parli **uno alla volta**. Il canale cioè, è intrinsecamente **half duplex**. 
+
+Una trasmissione radio **full duplex** può essere realizzata o utilizzando due canali diversi nelle due direzioni di trasmissione o **partizionando** ulteriormente il canale nelle grandezze residue. Normalmente si usa allo scopo il **tempo**, cioè interlocutori diversi prlano nello stesso canale in **istanti diversi** e ciò può essere fatto per un **numero arbitrario** di interlocutori. 
+La partizione **TDM** nel tempo del canale può essere statica o dinamica. Quella **statica** utilizza la tecnica di multiplazione **TDMA** quella **dinamica** utilizza un meccanismo di **ack** che permettono di stabilire la **riuscita con successo** di una trasmissione e si basa essenzialmente sui protocolli **ALOHA** o **CSMA/CA**.
+
+Spesso il **TDM** è preceduto da una ulteriore divisione del canale nel **dominio della potenza** detta divisione di codice o **CDMA** che è associata ad un certo **cluster di utenti** afferenti ad un **certo dispositivo** (ad esempio un AP WiFi). In sostanza si usa una multiplazione dentro un'atra multiplazione differenziando per caratteristiche fisiche diverse le singole comunicazioni.
+
 ##  **Canali di comunicazione principali**
 
 **Riassumendo**, sono necessari almeno due canali di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
