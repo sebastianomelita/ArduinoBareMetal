@@ -27,7 +27,7 @@ Possibilità di topologie **ridondate a doppio anello** (treni, industria)
 
 Spesso sono **reti miste** cioè composte da **sottoreti eterogenee**.
 
-![sensor network](sensornet1.png)
+ <img src="sensornet1.png" alt="alt text" width="800">
 
 La **rete principale**, **è di tipo ethernet** con dorsali fisiche a stella cablate e collegamenti periferici cablati o wireless WiFi. Ha principalmente la funzione di **distribuzione** dei dati **dai nodi gateway** con le reti secondarie **fino al server di gestione** dei dati. Va attentamente progettata perchè sia in grado di smaltire il traffico complessivo di **tutti i sensori**. Può diventare **critica** se, oltre ai sensori, sono presenti **sorgenti multimediali** quali **microfoni** o **telecamere** di videosorvelianza.
 
