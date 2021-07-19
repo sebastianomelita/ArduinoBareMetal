@@ -72,7 +72,7 @@ Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per
   
   <img src="ultrasonic-sensor-with-arduino-hc-sr04.jpg" alt="alt text" width="700">
   
-  Accesso in in lettura su una porta analogica di un sensore:
+  Accesso in in lettura su una porta analogica di un sensore di luminosità:
   
   <img src="potenziometro.png" alt="alt text" width="500">
 
