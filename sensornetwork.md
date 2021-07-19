@@ -62,6 +62,10 @@ Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per
 
 ![sensors](sensors.png)
 
+Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
+
+![dallas](Schematic-dallas-18s20.gif)  
+
 Esempio di bus **I2C** detto anche a 2 fili (two-wire):
 
  ![i2cbus](I2C-communication-protocol-ESP32.png)    
