@@ -215,6 +215,7 @@ In una **supertrama** due **beacon** fungono da **limiti** (iniziale e finale) e
 - https://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.736.8723&rep=rep1&type=pdf
 - https://www.researchgate.net/publication/316563960_Comparative_study_and_simulation_of_flat_and_hierarchical_routing_protocols_for_wireless_sensor_network
 - https://dpmrassociation.org/dPMR-Spectrum-Efficiency.html
+- https://en.wikipedia.org/wiki/ALOHAnet
 
 >[Torna all'indice generale](index.md)
     
