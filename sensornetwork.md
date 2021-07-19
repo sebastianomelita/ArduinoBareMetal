@@ -76,7 +76,7 @@ Esempio di bus **I2C** detto anche a 2 fili (two-wire):
  
 Esempio di bus **SPI** detto anche a 3-4 fili (four-wire):
 
- ![spi](spi.png)   
+ ![spi](spi.png =300x)   
  
 ##  **Topologia delle reti di sensori wireless**     
  
