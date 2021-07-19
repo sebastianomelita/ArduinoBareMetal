@@ -138,7 +138,7 @@ Il mezzo radio possiede la proprietà di essere intrinsecamente **multipunto (me
 
 Una trasmissione radio **full duplex** può essere realizzata o utilizzando **due canali diversi** nelle **due direzioni** di trasmissione (tecnica FDM) o **partizionando** ulteriormente il canale nelle grandezze residue **ancora non partizionate** in **due sottocanali** (TDM o CDM). Normalmente si usa allo scopo il **tempo** con tecniche TDM, cioè interlocutori diversi parlano nello stesso canale in **istanti diversi** e ciò può essere fatto per un **numero arbitrario** di interlocutori. 
 
-<img src="6.25kHz-transmission-mask.jpg" alt="alt text" width="700">
+<img src="6.25kHz-transmission-mask.jpg" alt="alt text" width="1000">
 
 La partizione **TDM** nel tempo del canale può essere statica o dinamica. Quella **statica** utilizza la tecnica di multiplazione **TDMA**. Quella **dinamica** utilizza un **protocollo di arbitraggio** che, con un meccanismo di **ack**, permette di realizzare **l'alternanza nel tempo** delle comunicazioni. Si basa essenzialmente sui protocolli **ALOHA** o **CSMA/CA**.
 
