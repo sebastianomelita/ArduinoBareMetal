@@ -62,7 +62,8 @@ Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per
 
 ![sensors](sensors.png)
 
-     
+ ![i2cbus](I2C-communication-protocol-ESP32.png)    
+ 
 ##  **Topologia delle reti di sensori wireless**     
  
 Le reti di **sensori wireless** hanno una estensione nello spazio variabile e la loro **topologia** preferita è **a stella** o **a maglia**.
