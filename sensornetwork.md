@@ -63,6 +63,8 @@ Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per
 Esempi di collegamenti con topologia a stella:
 
   <img src="Star-network-1024x466.png" alt="alt text" width="700">
+  
+  <img src="ultrasonic-sensor-with-arduino-hc-sr04.png" alt="alt text" width="700">
 
 Esempi di collegamenti con topologia a bus:
 
