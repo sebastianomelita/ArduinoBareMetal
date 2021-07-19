@@ -64,7 +64,11 @@ Esempi di collegamenti con topologia a stella:
 
   <img src="Star-network-1024x466.png" alt="alt text" width="700">
   
+  Accesso in scrittura e in lettura su due porte digitali di un sensore ad ultrasuoni:
+  
   <img src="ultrasonic-sensor-with-arduino-hc-sr04.jpg" alt="alt text" width="700">
+  
+  Accesso in in lettura su una porta analogica di un sensore:
   
   <img src="potenziometro.png" alt="alt text" width="500">
 
