@@ -70,6 +70,14 @@ Esempio di bus **I2C** detto anche a 2 fili (two-wire):
 
  ![i2cbus](I2C-communication-protocol-ESP32.png)    
  
+Esempio di bus **I2C** detto anche a 2 fili (two-wire):
+
+ ![i2cbus](I2C-communication-protocol-ESP32.png)    
+ 
+Esempio di bus **SPI** detto anche a 3-4 fili (four-wire):
+
+ ![spi](spi.png)   
+ 
 ##  **Topologia delle reti di sensori wireless**     
  
 Le reti di **sensori wireless** hanno una estensione nello spazio variabile e la loro **topologia** preferita è **a stella** o **a maglia**.
