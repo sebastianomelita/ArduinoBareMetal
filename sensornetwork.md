@@ -106,7 +106,7 @@ La **multiplazione SDM** (divisione di spazio) del mezzo radio è sempre in qual
 
 ## **Servizi di accesso radio**
 
-Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un **canale radio** di una multiplazione **FDM**. L'allocazione può essere sia statica (eseguita dal sistemista) che dinamica cioè variabile nel tempo ed automatica.
+Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un **canale radio** di una multiplazione **FDM**. L'allocazione può essere sia **statica** (eseguita dal sistemista) che dinamica cioè variabile nel tempo ed **automatica**.
 
 **Successivamente** il canale FDM **potrebbe** essere ulteriormente **partizionato in gruppi di utenti** tutti collegati ad uno **stesso dispositivo**. I dispositivi (ad es. gli AP wifi di uno stesso palazzo) interferiscono tra loro ma le comunicazioni sono rese distinguibili e private mediante multiplazione a spettro espanso **CDM** (Code Division Multiplexing) che associa un SSID diverso ad ogni dispositivo. Ciò è dovuto al fatto che usiamo uno dei canali della banda ISM su cui non esistono coordinamento e controllo alcuno.
 
