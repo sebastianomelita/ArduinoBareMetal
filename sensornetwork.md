@@ -142,9 +142,10 @@ Una trasmissione radio **full duplex** può essere realizzata o utilizzando **du
 
 <img src="Spectrum-efficiency-1.jpg" alt="alt text" width="1000">
 
-La partizione **TDM** nel tempo del canale può essere statica o dinamica. Quella **statica** utilizza la tecnica di multiplazione **TDMA**. Quella **dinamica** utilizza un **protocollo di arbitraggio** che, con un meccanismo di **ack**, permette di realizzare **l'alternanza nel tempo** delle comunicazioni. Si basa essenzialmente sui protocolli **ALOHA** o **CSMA/CA**.
+La partizione **TDM** nel tempo del canale può essere statica o dinamica. Quella **statica** utilizza la tecnica di multiplazione **TDMA**. Quella **dinamica** utilizza un **protocollo di arbitraggio** che, con un meccanismo di **ack**, permette di realizzare **l'alternanza nel tempo** delle comunicazioni. Si basa essenzialmente sui protocolli **ALOHA** o **CSMA/CA**. 
 
-
+ I riquadri indicano i frame. Le riquadri ombreggiati indicano i le trame che hanno colliso.
+ 
 <img src="Pure_ALOHA1.svg.png" alt="alt text" width="600">
 
 Spesso il **TDM** è preceduto da una ulteriore divisione del canale nel **dominio della potenza** detta divisione di codice o **CDMA** che è associata ad un certo **cluster di utenti** afferenti ad un **certo dispositivo** (ad esempio un AP WiFi). Gruppi diversi hanno codici (detti ortogonali) diversi. Ad es, il **BSSID** del wifi è associato ad un **codice ortogonale** diverso da quello degli altri BSSID che fa in modo che una sua comunicazione sia **distinguibile** da quella degli altri, pur interferndo completamente con quelle. In sostanza si possono **annidare** le multiplazioni una dentro l'altra differenziando per **caratteristiche fisiche** diverse le **singole comunicazioni** dei **singoli gruppi**.
@@ -153,7 +154,7 @@ Normalmente le **multiplazioni** sono gestite a **livello fisico** in HW utilizz
 
 A seconda della tecnologia adoperata si possono realizare comunicazioni **punto-punto** o **multipunto**, al limite anche **broadcast**. L'isolamento punto punto è in genere **logico** e si ottiene, come in tutti i mezzi a BUS, a livello di scheda **ignorando** le comunicazioni non proprie. Diventa più effettivo con la **cifratura** delle informazioni.
 
-In ogi caso con il **TDMA** o con il **CSMA** è possibile pure **condividere** lo stesso canale per **più** comunicazioni **punto-punto**. Il mezzo radio è quindi anche assimilabile ad un **BUS condiviso** o mediante un **protocollo di arbitraggio** (ALOHA, CSMA/CA) o mediante una **tecnica di multiplazione statica** (FDMA, TDMA, CDMA, SDMA). Protocollo ALOHA puro. Le riquadri indicano i frame. Le riquadri ombreggiati indicano i le trame che hanno colliso.
+In ogi caso con il **TDMA** o con il **CSMA** è possibile pure **condividere** lo stesso canale per **più** comunicazioni **punto-punto**. Il mezzo radio è quindi anche assimilabile ad un **BUS condiviso** o mediante un **protocollo di arbitraggio** (ALOHA, CSMA/CA) o mediante una **tecnica di multiplazione statica** (FDMA, TDMA, CDMA, SDMA). Protocollo ALOHA puro.
 
 <img src="multiple-access-protocol.png" alt="alt text" width="600">
 
