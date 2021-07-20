@@ -136,7 +136,7 @@ Il mezzo radio possiede la proprietà di essere intrinsecamente **multipunto (me
 
 <img src="duplexer.png" alt="alt text" width="700">
 
-Una trasmissione radio **full duplex** può essere realizzata o utilizzando **due canali diversi** nelle **due direzioni** di trasmissione (tecnica FDM) o **partizionando** ulteriormente il canale nelle grandezze residue **ancora non partizionate** in **due sottocanali** (TDM o CDM). Normalmente si usa allo scopo il **tempo** con tecniche TDM, cioè interlocutori diversi parlano nello stesso canale in **istanti diversi**. Ma il meccanismo dell'alternanza nel tempo può anche essere esteso ad un **numero arbitrario** di interlocutori che parlano a turno secondo un criterio di dialogo assimilabile a quello della **"tavola rotonda"**. 
+Una trasmissione radio **full duplex** può essere realizzata o utilizzando **due canali diversi** nelle **due direzioni** di trasmissione (tecnica FDM) o **partizionando** ulteriormente il canale nelle grandezze residue **ancora non partizionate** in **due sottocanali** (TDM o CDM). Normalmente si usa allo scopo il **tempo** con tecniche TDM, cioè **due interlocutori** diversi parlano nello stesso canale in **istanti diversi**. Ma il meccanismo dell'alternanza nel tempo può anche essere esteso ad un **numero arbitrario** di interlocutori che parlano **a turn**o secondo un criterio di dialogo assimilabile a quello della **"tavola rotonda"**. 
 
 <img src="6.25kHz-transmission-mask.jpg" alt="alt text" width="1000">
 
