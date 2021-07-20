@@ -156,7 +156,7 @@ Normalmente le **multiplazioni** sono gestite a **livello fisico** in HW utilizz
 
 A seconda della tecnologia adoperata si possono realizare comunicazioni **punto-punto** o **multipunto**, al limite anche **broadcast**. 
 
-L'**isolamento punto punto** è in genere **logico** e si ottiene, come in tutti i mezzi a BUS, a livello di scheda facendo in modo che una stazione radio che non riconosca il **proprio indirizzo** nella destinazione dei messaggi **ignori** le comunicazioni non proprie. Diventa più effettivo con la **cifratura** delle informazioni.
+L'**isolamento punto punto** nei mezzi a BUS con **arbitraggio a contesa** (ALOHA E CSMA/CA) è in genere **logico** e si ottiene, a livello di scheda facendo in modo che una stazione radio che non riconosca il **proprio indirizzo** nella destinazione dei messaggi **ignori** le comunicazioni non proprie. Diventa più effettivo con la **cifratura** delle informazioni.
 
 In ogi caso con il **TDMA** o con il **CSMA** è possibile pure **condividere** lo stesso canale per **più** comunicazioni **punto-punto**. Il mezzo radio è quindi anche assimilabile ad un **BUS condiviso** o mediante un **protocollo di arbitraggio** (ALOHA, CSMA/CA) o mediante una **tecnica di multiplazione statica** (FDMA, TDMA, CDMA, SDMA).
 
