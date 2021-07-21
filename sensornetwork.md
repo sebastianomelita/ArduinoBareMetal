@@ -248,6 +248,7 @@ Gli **stack commerciali**, essendo completi fino al **livello di applicazione**,
 **Sitografia:**
 
 - https://www.u-blox.com/en/publication/white-paper/short-range-low-power-wireless-devices-and-internet-things-iot
+- https://www.digikey.it/it/articles/how-to-quickly-start-low-power-wireless-iot-sensing
 - https://www.electronicshub.org/wireless-sensor-networks-wsn/
 - http://www.iosrjournals.org/iosr-jece/papers/Vol.%2011%20Issue%206/Version-1/H1106014856.pdf
 - https://it.wikipedia.org/wiki/Low_Energy_Adaptive_Clustering_Hierarchy
