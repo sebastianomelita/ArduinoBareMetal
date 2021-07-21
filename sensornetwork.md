@@ -36,9 +36,8 @@ Il **gap** tra il livello **fisico** e quello **applicativo** in genere è colma
 
 L'**ISO/OSI** ha catalogato e organizzato in una **architettura a 7 strati** tutti i **protocolli** concepiti nel tempo organizzandoli in base alle **categorie di problemi** di rete che essi risolvono. L'architettutura è **modulare** nel senso che uno strato può essere sostituito senza che quelli sopra di lui se ne accorgano permettendo una grande **flessibilità**. Questà flessibilità può essere utilizzata per adattare un protocollo a vari mezzi fisici o per ottenere su un certo mezzo fisico una determinata qualità del servizio. **Obiettivo finale** è garantire l'**interoperabilità tra i dispositivi** da collegare a dispetto di qualunque differenza reciproca riguardo a marca, modello e tecnologie. In figura la lettera H sta per **header** cioè intestazione (ad es. AH=Application header).
 
-<img src="iso-osi.png" alt="alt text" width="1000">
-
 <img src="iso-osi1.png" alt="alt text" width="1000">
+<img src="iso-osi.png" alt="alt text" width="1000">
 
 Un **vincolo dell'architettura** è che uno strato può dialogare solo con quelli adiacenti, o sopra o sotto di lui. Un tecnica, detta **imbustamento multiplo**, con la quale si **incapsulano** i messaggi di un livello, le **PDU** (Protol Data Unit),  nel campo dati, le **SDU** (Service Data Unit), del livello **immediatamente inferiore**, permette la creazione dei coasidetti **canali virtuali** cioè dei collegamenti **apparenti** e **diretti** tra **strati corrispondenti** di dispositivi **remoti**. La particolarità di questi collegamenti è quella di realizzare una **virtualizzazione della rete** e dei suoi dispositivi che, man mano che si sale dal livello fisico a quello applicativo, si fa sempre più spinta, **nascondendo** i dispositivi degli strati inferiori e rendendo **impercettibili** le loro **differenze** ai livelli sopra di essi. Nel caso della rete di sensori, un livello TCP di trasporto già non **"vede** più le differenze tecnologiche tra una rete modbus e un collegamento I2C, essendo stati questi entrambi **"astratti"** in due collegamenti **uniformi** di tipo TCP.
 
