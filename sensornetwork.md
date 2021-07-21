@@ -194,14 +194,14 @@ La **multiplazione SDM** (divisione di spazio) del mezzo radio è sempre in qual
 
 <img src="cellulare.png" alt="alt text" width="300">
 
-
+unico 
 ## **Servizi di accesso radio**
 
-Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un **canale radio** di una multiplazione **FDM**. L'allocazione può essere sia **statica** (eseguita dal sistemista) che dinamica cioè variabile nel tempo ed **automatica**.
+Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un **unico canale radio** di una multiplazione **FDM**. L'allocazione può essere sia **statica** (eseguita dal sistemista) che dinamica cioè variabile nel tempo ed **automatica**.
 
-**Successivamente** il canale FDM **potrebbe** essere ulteriormente **partizionato in gruppi di utenti** tutti collegati ad uno **stesso dispositivo**. I dispositivi (ad es. gli AP wifi di uno stesso palazzo) interferiscono tra loro ma le comunicazioni sono rese distinguibili e private mediante multiplazione a spettro espanso **CDM** (Code Division Multiplexing) che associa un SSID diverso ad ogni dispositivo. Ciò è dovuto al fatto che usiamo uno dei canali della banda ISM su cui non esistono coordinamento e controllo alcuno.
+**Successivamente** il canale FDM **potrebbe** essere ulteriormente **partizionato in gruppi di utenti** tutti collegati ad uno **stesso dispositivo**. I dispositivi (ad es. gli AP wifi di uno stesso palazzo) interferiscono tra loro ma le comunicazioni sono rese distinguibili e private mediante multiplazione a spettro espanso **CDM** (Code Division Multiplexing) che associa un SSID diverso ad ogni dispositivo. Ciò è dovuto al fatto che usiamo uno dei canali della banda ISM su cui non esistono coordinamento e controllo alcuno. La tecnica si chiama **Frequency hopping** o **FHSS**.
 
-Alcune tecnologie radio 
+Alcune **tecnologie radio** realizzano un **accesso multiplo** al canale radio, **apparentemente** allocando **molti canali** nello **stesso istante**. In realtà la tecnica  alloca un canale alla volta ma **saltando** da uno all'altro con una **velocità** che **alla sorgente** appare **istantanea**. Questo fenomeno ha l'effetto di sparpagliare (spreading) l'energia di un canale su tutta la banda disponibile. Si tratta di una **variante di CDM** ottenuta per altra via. Infatti La **sequenza di saltellamento** è diversa per ogni comunicazione ed associata ad un **SSID**. Le **sequenze** sono **ortogonali** e quindi permettono la ricostruzione in ricezione della **comunicazione originale**.
 
 Su **questo canale risultante**, privato ed associato ad un certo **SSID**, a seconda del **servizio richiesto**, **possono parlare**:
 
