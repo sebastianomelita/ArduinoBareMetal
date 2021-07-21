@@ -15,7 +15,7 @@ Il **cablaggio** può risultare **oneroso** in presenza di un elevato numero di 
 
 ## **Reti ethernet industriali**
 
-Le **reti industriali o ferrotramviarie** che utilizzano la tecnologia ethernet sono spesso realizzate con **topologia fisica a BUS o ad anello**.
+Le **reti industriali o ferrotramviarie** sono anch'esse a tecnologia ethernet ma mentre utilizzano ancora la tradizionale topologia a stella per connettere i dispositivi terminali, per connettere tra loto gli switch spesso utilizzano **topologia fisica a BUS o ad anello**.
 Un **anello** è composto da lunghe **cascate** di switch collegati in serie ed equipaggiati con protocollo STP modificato o con altri protocolli proprietari.
 Il **cablaggio**, in presenza di un cluster numeroso di dispositivi **risulta più economico** dato che con **un unico cavo** si possono collegare più switch.
 Possibilità di topologie **ridondate a doppio anello** (treni, industria)
@@ -192,6 +192,8 @@ La **multiplazione SDM** (divisione di spazio) del mezzo radio è sempre in qual
 Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un **canale radio** di una multiplazione **FDM**. L'allocazione può essere sia **statica** (eseguita dal sistemista) che dinamica cioè variabile nel tempo ed **automatica**.
 
 **Successivamente** il canale FDM **potrebbe** essere ulteriormente **partizionato in gruppi di utenti** tutti collegati ad uno **stesso dispositivo**. I dispositivi (ad es. gli AP wifi di uno stesso palazzo) interferiscono tra loro ma le comunicazioni sono rese distinguibili e private mediante multiplazione a spettro espanso **CDM** (Code Division Multiplexing) che associa un SSID diverso ad ogni dispositivo. Ciò è dovuto al fatto che usiamo uno dei canali della banda ISM su cui non esistono coordinamento e controllo alcuno.
+
+Alcune tecnologie radio 
 
 Su **questo canale risultante**, privato ed associato ad un certo **SSID**, a seconda del **servizio richiesto**, **possono parlare**:
 
