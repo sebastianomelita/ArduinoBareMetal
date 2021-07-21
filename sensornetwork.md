@@ -210,7 +210,11 @@ La parte logica dei due stack sotto (LoraWan a sinistra e Zigbee a destra) potre
 
 <img src="ibridi.png" alt="alt text" width="1000">
 
-Molti framework per IoT come **TinyOS**, **Contiki** e **RIOT** posseggono una **struttura modulare** che permette loro di includere, senza particolare sforzo, **stack personalizzati** di protocolli  in maniera tale da adattarli alle esigenze più particolari svicolandosi dagli stack protocollari completi certificati dall'industria (Zigbee, LoraWan). Gli **stack commerciali**, essendo completi fino al **livello di applicazione**, hanno il vantaggio di garantire una grande **interoperabilità** con i dispositivi comunemente in commercio e prodotti da **vari marchi**. Gli **stack personalizzati** sono utili per realizzare **soluzioni ad hoc** calate in un ben preciso **contesto aziendale**. 
+Molti framework per IoT come **TinyOS**, **Contiki** e **RIOT** posseggono una **struttura modulare** che permette loro di includere, senza particolare sforzo, **stack personalizzati** di protocolli  in maniera tale da adattarli alle esigenze più particolari svicolandosi dagli stack protocollari completi certificati dall'industria (Zigbee, LoraWan). 
+
+Esistono anche **stack opensource** rilasciati da alleanze di sviluppatori pensati per sostituire il **livello applicativo** dei chip IoT attualmente più diffusi per orientarli verso ambiti di utilizzo più **specializzato**. Un esempio è **OpenThread** che si pone sopra i chip **802.15.4** realizzando una implementazione dello stack **Thread** una alternativa a Zigbee per l'**industria**.
+
+Gli **stack commerciali**, essendo completi fino al **livello di applicazione**, hanno il vantaggio di garantire una grande **interoperabilità** con i dispositivi comunemente in commercio e prodotti da **vari marchi**. Gli **stack personalizzati** o **opensource** sono utili per realizzare **soluzioni ad hoc** calate in un ben preciso **contesto aziendale**. 
 
 ##  **Canali di comunicazione principali**
 
