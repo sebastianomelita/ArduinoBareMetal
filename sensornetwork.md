@@ -38,7 +38,7 @@ L'**ISO/OSI** ha catalogato e organizzato in una **architettura a 7 strati** tut
 
 <img src="iso-osi.png" alt="alt text" width="1000">
 
-<img src="iso-osi1.png" alt="alt text" width="600">
+<img src="iso-osi1.png" alt="alt text" width="1000">
 
 Un **vincolo dell'architettura** è che uno strato può dialogare solo con quelli adiacenti, o sopra o sotto di lui. Un tecnica, detta **imbustamento multiplo**, con la quale si **incapsulano** i messaggi di un livello nel campo dati del livello immediatamente inferiore, permette la creazione dei coasidetti **canali virtuali** cioè dei collegamenti **apparenti** e **diretti** tra **strati corrispondenti** di dispositivi **remoti**. La particolarità di questi collegamenti è quella di realizzare una **virtualizzazione della rete** e dei suoi dispositivi che, man mano che si sale dal livello fisico a quello applicativo, si fa sempre più spinta, **nascondendo** i dispositivi degli strati inferiori e rendendo **impercettibili** le loro **differenze** ai livelli sopra di essi. Nel caso della rete di sensori, un livello TCP di trasporto già non **"vede** più le differenze tecnologiche tra una rete modbus e un collegamento I2C, essendo stati questi entrambi **"astratti"** in due collegamenti **uniformi** di tipo TCP.
 
