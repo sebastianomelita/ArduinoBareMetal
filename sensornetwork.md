@@ -200,7 +200,7 @@ In una **supertrama** due **beacon** fungono da **limiti** (iniziale e finale) e
 
 ##  **Stack specifici per IOT**
 
-Ci si potrebbe chiedere se è proprio necessario sapere i dettagli sui protocolli adoperati da questo o quel dispositivo. La risposta è legata al livello di astrazione con cui la nostra applicazione vede la risorsa rete. 
+Ci si potrebbe chiedere se è proprio necessario sapere i **dettagli sui protocolli** adoperati da questo o quel dispositivo. La risposta è legata al **livello di astrazione** con cui la nostra applicazione **vede** la **risorsa rete**. 
 
 Con alcuni protocolli essa ha della rete e dei suoi protocolli una visione che si può ridurre all'**elenco di servizi** di livello applicativo che lo **stack espone**, per cui, quando l'applicazione utilizza un servizio, sullo stack viene scelto, strato per strato, il **protocollo più adatto** per realizzarlo. Addirittura in Blutooth BLE e in Zigbee i **servizi applicativi**, cioè la definizione dei cai d'uso come accendere una lampadina o aprire una tapparella, sono dettagliatamente **catalogati** e **definiti** nello stack.
 
