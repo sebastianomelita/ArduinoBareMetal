@@ -15,7 +15,7 @@ Il **cablaggio** può risultare **oneroso** in presenza di un elevato numero di 
 
 ## **Reti ethernet industriali**
 
-Le **reti industriali o ferrotramviarie** sono anch'esse a tecnologia ethernet ma mentre utilizzano ancora la tradizionale topologia a stella per connettere i dispositivi terminali, per connettere tra loto gli switch spesso utilizzano **topologia fisica a BUS o ad anello**.
+Le **reti industriali o ferrotramviarie** sono anch'esse a **tecnologia ethernet** ma, oltre la tradizionale **topologia a stella**, per connettere tra loro i dispositivi **terminali** e per connettere tra loto **più switch** spesso utilizzano **topologia fisica a BUS o ad anello**.
 Un **anello** è composto da lunghe **cascate** di switch collegati in serie ed equipaggiati con protocollo STP modificato o con altri protocolli proprietari.
 Il **cablaggio**, in presenza di un cluster numeroso di dispositivi **risulta più economico** dato che con **un unico cavo** si possono collegare più switch.
 Possibilità di topologie **ridondate a doppio anello** (treni, industria)
