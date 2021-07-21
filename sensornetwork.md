@@ -203,6 +203,7 @@ Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un *
 
 Alcune **tecnologie radio** realizzano un **accesso multiplo** al canale radio, **apparentemente** allocando **molti canali** nello **stesso istante**. In realtà la tecnica  alloca un canale alla volta ma **saltando** da uno all'altro con una **velocità** che **alla sorgente** appare **istantanea**. Questo fenomeno ha l'effetto di sparpagliare (spreading) l'energia di un canale su tutta la banda disponibile. Si tratta di una **variante di CDM** ottenuta per altra via. Infatti, la **sequenza di saltellamento** è diversa per ogni comunicazione ed è associata ad un **SSID**. Le **sequenze** sono **ortogonali** e quindi permettono la ricostruzione in ricezione della **comunicazione originale**. Anche una eventuale **multiplazione TDM** effettuata dentro il canale FDM non si accorgerebbe del saltellamento e procederebbe come al solito, assegnando **diversi slot** temporali a **comunicazioni diverse**. La tecnica si chiama **Frequency hopping** o anche detta **FHSS**.
 
+<img src="fhss.png" alt="alt text" width="300">
 
 
 Su **questo canale risultante**, privato ed associato ad un certo **SSID**, a seconda del **servizio richiesto**, **possono parlare**:
