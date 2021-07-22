@@ -240,6 +240,8 @@ Molti framework per IoT come **TinyOS**, **Contiki** e **RIOT** posseggono una *
 
 Esistono anche **stack opensource** rilasciati da alleanze di sviluppatori pensati per sostituire il **livello applicativo** dei chip IoT attualmente più diffusi per orientarli verso ambiti di utilizzo più **specializzato**. Un esempio è **OpenThread** che si pone sopra i chip **802.15.4** realizzando una implementazione dello stack **Thread** una alternativa a Zigbee per l'**industria**, oppure **OpenWSN** che utilizza l'implementazione di TSCH IEEE 802.15.4g/e come protocollo di acceso al mezzo e protocolli standard IETF come protocolli di livello superiore (6LowPan, REPL e UDP), o anche **OSS-7** che impleta la pila di protocolli **DASH7**. **DASH7** ha la particolarità di avere un livello fisico praticamente agnostico, cioè supporta la maggior parte dei protocolli di accesso disponibili come, ad esempio, LoRa, inoltra possiede la particolarità insolita di mapparsi perfettamente sullo stack ISO/OSI, cioè definisce un **protocollo per ogni livello OSI**.
 
+<img src="Stack-organization-of-DASH7-Alliance-Mode.png" alt="alt text" width="600">
+
 Gli **stack commerciali**, essendo completi fino al **livello di applicazione**, hanno il vantaggio di garantire una grande **interoperabilità** con i dispositivi comunemente in commercio e prodotti da **vari marchi**. Gli **stack personalizzati** o **opensource** sono utili per realizzare **soluzioni ad hoc** calate in un ben preciso **contesto aziendale**. 
 
 ##  **Canali di comunicazione principali**
