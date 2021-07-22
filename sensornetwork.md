@@ -244,7 +244,7 @@ Esistono anche **stack opensource** rilasciati da alleanze di sviluppatori pensa
 
 Gli **stack commerciali**, essendo completi fino al **livello di applicazione**, hanno il vantaggio di garantire una grande **interoperabilità** con i dispositivi comunemente in commercio e prodotti da **vari marchi**. Gli **stack personalizzati** o **opensource** sono utili per realizzare **soluzioni ad hoc** calate in un ben preciso **contesto aziendale**. 
 
-##  **Canali di comunicazione principali**
+##  **Canali di comunicazione principali in una rete di sensori**
 
 **Riassumendo**, sono necessari almeno due canali di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
 - **tra sensori e gateway** verso la LAN realizzato dalle sottoreti dei sensori:
