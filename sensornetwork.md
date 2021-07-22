@@ -53,9 +53,17 @@ In figura la lettera H sta per **header** cioè intestazione (ad es. AH=Applicat
 Lo **stack di protocolli OSI** è un **modello architetturale** di riferimento. Per **ogni strato** sono stati studiati nel tempo un gran numero di protocolli, ciascuno con i propri **pregi e difetti**. Un'**architettura reale**, quella che poi verrà standardizzata ed implementata in un dispositivo commerciale, per ogni strato della propria pila, sceglierà, tra i tanti disponibili in letteratura tecnica, un certo **tipo di protocollo** del quale realizzerà e standardizzerà la propria **particolare versione**. Attualmente, per **accedere ad Internet** e all'interno della maggior parte delle **reti locali LAN**, si adopera la cosidetta suite **TCP/IP**. Ma molte **reti di sensori**, per funzionare localmente al loro ambiente di lavoro, **non sempre usano** la suite TCP/IP. Inoltre, anche le reti di sensori che l'adoperano, ai livelli inferiori come **collegamento e fisico**, spesso utilizzano protocolli **diversi** da quelli che sono stati standardizzati per le LAN. 
 
 In ogni caso, un qualsiasi **ente di telecomunicazione internazionale** (IEE, IETF, ITUT, ecc.) o **alleanza di case produttrici** di dispositivi di rete (Zigbee, Bluetooth) o anche **singole aziende** (LoraWan e Sigfox) per realizzare reti di dispositivi devono **instanziare** una propria versione dello **stack ISO/OSI**. Occorre però tenere presente che una **interoperabilità completa** tra dispositivi di **tecnolgie diverse** si può ottenere: 
-- **creando un unica rete** con un **livello di rete** (il terzo OSI) **comune**. Attualmente ciò avviene solo grazie al **protocollo IP** (IPV4 o IPV6).
+- **creando un unica rete** con un **livello di rete** (il terzo OSI) **comune**. Attualmente ciò avviene solo grazie al **protocollo IP** (IPV4 o IPV6). I **livelli successivi** (dal trasposrto in poi) devono essere **uguali** nelle due reti. 
 - **utilizzando un gateway**  tra livelli **di rete** diversi, che si occupa di **tradurre** i messaggi del livelli di rete da un formato all'altro: I **livelli successivi** (dal trasposrto in poi) devono essere **uguali** nelle due reti. 
 - **utilizzando un gateway** tra livelli **di applicazione** diversi (detto talvolta **bridge**), che si occupa di **tradurre** i messaggi del livello di applicazione da un formato in uso nella rete non IP a quello in uso nella rete IP (molto comune è usare il **protocollo MQTT** nella rete IP).
+
+La **seconda maniera** in pratica non si applica mai, se non per protocolli **compatibili** o **praticamente uguali** come sono **IPV6 e 6LowPan**. In pratica, i primi due modi **collassano** in uno solo.
+
+**Unica rete con IPV6 e 6LowPan**:
+<img src="jsan-02-00235-g001.webp" alt="alt text" width="700">
+
+**Gateway applicativo**:
+<img src="jsan-02-00235-g002.webp" alt="alt text" width="700">
 
 Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi di BUS** a cui si collega. Il **gateway** deve possedere anche **una interffaccia** capace di traffico ethernet (cablata o wifi) che lo collega alla **rete di distribuzione** (in genere cablata).
 
@@ -290,6 +298,7 @@ Gli **stack commerciali**, essendo completi fino al **livello di applicazione**,
 - https://hal.inria.fr/hal-01282597/file/iwipcps.pdf
 - https://it.scribd.com/document/462861362/Dash7Surveyfinalreport-pdf
 - https://openwsn.atlassian.net/wiki/spaces/OW/overview
+- https://www.mdpi.com/2224-2708/2/2/235/htm
 
 >[Torna all'indice generale](index.md)
     
