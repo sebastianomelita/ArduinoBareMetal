@@ -301,6 +301,7 @@ Gli **stack commerciali**, essendo completi fino al **livello di applicazione**,
 - https://it.scribd.com/document/462861362/Dash7Surveyfinalreport-pdf
 - https://openwsn.atlassian.net/wiki/spaces/OW/overview
 - https://www.mdpi.com/2224-2708/2/2/235/htm
+- https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6806188/
 
 >[Torna all'indice generale](index.md)
     
