@@ -57,7 +57,7 @@ In ogni caso, un qualsiasi **ente di telecomunicazione internazionale** (IEE, IE
 - **utilizzando un gateway**  tra livelli **di rete** diversi, che si occupa di **tradurre** i messaggi del livelli di rete da un formato all'altro: I **livelli successivi** si devono comportare come nel caso precedente.
 - **utilizzando un gateway** tra livelli **di applicazione** diversi (detto talvolta **bridge**), che si occupa di **tradurre** i messaggi del livello di applicazione dal formato in uso nella rete  IP a quello in uso nella rete non IP invocando le API di questa. Un problema potrebbe sorgere se allo stesso gateway colleghiamo due reti proprietarie non IP diverse, questo sarebbe tenuto a conoscere anche le API applicative dell'altra rete di sensori.
 
-La **seconda maniera** in pratica non si applica mai, se non per protocolli **compatibili** o **praticamente uguali** come sono **IPV6 e 6LowPan**. In pratica, i primi due modi **collassano** in uno solo. Il **payload dell'applicazion**e ora può viaggiare direttamente dal **client** al **sensore**, dove viene elaborato e utilizzato.
+La **seconda maniera** in pratica non si applica mai, se non per protocolli **compatibili** o **praticamente uguali** come sono **IPV6 e 6LowPan**. In pratica, i primi due modi **collassano** in uno solo. Il **payload dell'applicazion**e ora può viaggiare **direttamente** dal **client** al **sensore**, dove viene elaborato e utilizzato.
 
 **Unica rete con IPV6 e 6LowPan**:
 
