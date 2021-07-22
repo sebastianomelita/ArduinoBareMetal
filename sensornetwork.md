@@ -56,7 +56,7 @@ In ogni caso, un qualsiasi **ente di telecomunicazione internazionale** (IEE, IE
 - **creando un unica rete** con un **livello di rete** (il terzo OSI) **comune**. Attualmente ciò avviene solo grazie al **protocollo IP** (IPV4 o IPV6).
 - **utilizzando un gateway**  tra livelli **di rete** diversi, che si occupa o di tradurre i messaggi del livelli di rete da un formato all'altro 
 - **utilizzando un gateway** tra livelli **di applicazione** diversi (detto talvolta **bridge**), che si occupa o di tradurre i messaggi del livello di applicazione da un formato in uso nella rete non IP a quello in uso nella rete IP (molto comune è usare il **protocollo MQTT** nella rete IP).
-- 
+
 Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi di BUS** a cui si collega. Il **gateway** deve possedere anche **una interffaccia** capace di traffico ethernet (cablata o wifi) che lo collega alla **rete di distribuzione** (in genere cablata).
 
 Il **gateway** ha anche la funzione di adattare il **formato dei servizi** offerti dalle varie **sottoreti di sensori** nel **formato di servizio unificato** (ad esempio un particolare messaggio JSON) con cui i sensori sono interrogati nella rete di distribuzione IP. I **protocolli di livello applicativo** utilizzati a questo scopo in genere sono **HTTPS** o **COAP** per il paradigma di interazione **Request/response** oppure **MQTT** o **Telegram** per il paradigma di interazione **Publish/Subscribe**, oppure **Websocket**, **Webhooks** e **WebRTC** per richieste asincrone, l'ultimo anche per quelle multimediali.
