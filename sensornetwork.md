@@ -279,6 +279,7 @@ Gli **stack commerciali**, essendo completi fino al **livello di applicazione**,
 - https://www.researchgate.net/publication/316563960_Comparative_study_and_simulation_of_flat_and_hierarchical_routing_protocols_for_wireless_sensor_network
 - https://dpmrassociation.org/dPMR-Spectrum-Efficiency.html
 - https://en.wikipedia.org/wiki/ALOHAnet
+- https://research-information.bris.ac.uk/ws/portalfiles/portal/110218284/duquennoy17tsch.pdf
 
 >[Torna all'indice generale](index.md)
     
