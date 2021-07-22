@@ -72,14 +72,10 @@ Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi d
 
 Il **gateway** ha anche la funzione di adattare il **formato dei servizi** offerti dalle varie **sottoreti di sensori** nel **formato di servizio unificato** (ad esempio un particolare messaggio JSON) con cui i sensori sono interrogati nella rete di distribuzione IP. I **protocolli di livello applicativo** utilizzati a questo scopo in genere sono **HTTPS** o **COAP** per il paradigma di interazione **Request/response** oppure **MQTT** o **Telegram** per il paradigma di interazione **Publish/Subscribe**, oppure **Websocket**, **Webhooks** e **WebRTC** per richieste asincrone, l'ultimo anche per quelle multimediali.
 
-Alla **rete di distribuzione IP** si collegano, quindi, una o più **reti secondarie** che servono da **rete di accesso** per i dispositivi sensori o attuatori con **interfacce** di tipo:
-- **Non ethernet** (cablate o wireless) spesso in topologia fisica a BUS:
-    - Necessitano di un **gateway** di confine avente almeno una **interfaccia ethernet nella rete principale** con possibili funzioni di:
+Alla **rete di distribuzione IP** si collegano, quindi, una o più **reti secondarie** che servono da **rete di accesso** per i dispositivi sensori o attuatori con **interfacce** spesso di tipo **Non ethernet** che necessitano di un **gateway** di confine avente almeno una **interfaccia ethernet nella rete principale** con possibili funzioni di:
         - **Traduzione di formato** dei dati da rete a bus a rete ethernet
-        - Interrogazione periodica (polling) dei dispositivi (master di una architettura master/slave)
-        - Raccolta e memorizzazione delle informazioni per essere trasferite in un secondo momento al server di gestione
-
-- **Ethernet**. Non è necessario alcun gateway di traduzione dato che uno o più sensori si collegano direttamente ad una porta di uno switch di accesso oppure ad un AP WiFi. 
+        - **Interrogazione periodica** (polling) dei dispositivi (master di una architettura master/slave)
+        - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un secondo momento al server di gestione
     
 ## **Server di gestione**
 
