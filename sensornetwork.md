@@ -114,14 +114,16 @@ Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per
 
 ### **Esempi di collegamenti con topologia a bus:**
 
-Il BUS è un mezzo ad **accesso multiplo** composto da un **unico filo** su cui sono collegate **tutte** le stazioni. Il tipo dei collegamenti lo rende un **mezzo broadcast** cioè un mezzo dove se una stazione **parla** tutte le altre ricevono ed **ascoltano**. I mezzi broadcast sono soggetti a **collisioni** che devono essere risolte costringendo le stazioni a parlare **una alla volta** mediante un **protocollo di arbitraggio**. Questi si dividono in due categorie: **centralizzati** e **distribuiti**. Quelli con cui si collegano i **dispositivi sensori** sono spesso **centralizzati** e comunque lo sono quelli che vedremo di seguito.
+Il BUS è un mezzo ad **accesso multiplo** composto da un **unico filo** per **tutte** le stazioni. Il tipo del collegamento **in parallelo** dei dispositivi lo rende un **mezzo broadcast** cioè un mezzo dove se una stazione **parla** tutte le altre ricevono ed **ascoltano**. I mezzi broadcast sono soggetti a **collisioni** che devono essere risolte costringendo le stazioni a parlare **una alla volta** mediante un **protocollo di arbitraggio**. Questi si dividono in due categorie: **centralizzati** e **distribuiti**. Quelli con cui si collegano i **dispositivi sensori** sono spesso **centralizzati** e comunque lo sono quelli che vedremo di seguito.
 
 In un sistema **centralizzato** una stazione è più importante delle altre perché può avere l’**iniziativa di cominciare** una comunicazione ed è detta **Master**. Le altre stazioni hanno un **ruolo passivo**, nel senso che rispondono solo se sono interrogate dal master mediante una tecnica detta polling e sono dette **Slave**. Il **polling** equivale all’**interrogazione periodica** di più dispositivi seguita da una **risposta immediata**. Il master decide **chi** parla e **quando** parla a rotazione, seguendo un ordine prestabilito detto **round robin**, secondo il quale si scandisce ogni interazione richiesta-risposta. 
 Esistono sistemi centralizzati con un **solo master** e altri **multimaster** in cui il controllo del BUS passa alternativamente da un master all'altro. I due master richiedono comunque di un **meccanismo di sincronizzazione** per evitare **sovrapposizioni**.
 
  <img src="bus.png" alt="alt text" width="600">
  
-In genere i BUS sono in due stati IDLE (riposo) e comunicazione. Lo stato di IDLE è quello predefinito ed è ottenuto tramite una rrsistenza di pullup colegata sulla linea. Il valore 0 è codificato con il livello basso L=0Volt mentre il valore 1 è codificato con lo stesso valore dell'IDLE cioè H. L'inizio della trasmissione di una trama è in genere segnalata da uno livello basso L iniziale.
+In genere i BUS sono in due stati **IDLE** (riposo) e comunicazione. Lo stato di **IDLE** è quello **predefinito** ed è ottenuto tramite una resistenza di **pullup** colegata sulla linea. Il **valore bit 0** è codificato con il livello basso L=0Volt mentre il **valore bit 1** è codificato con lo stesso valore dell'IDLE cioè **H**. L'**inizio della trasmissione** di una trama è in genere **segnalata** da uno livello basso **L iniziale**.
+
+Ci sono **sistemi a BUS** che si **connettono direttamente** alle **porte digitali** di un **microcontrollor**e senza **driver HW** aggiuntivi. I più diffusi sono 1-wire (Dallas), two-wire (I2C) e 3 o 4-wire (SPI). Il collegamento **senza driver HW**  (bit banging) alle porte digitali del microcontrollore genera sul BUS **segnali non bilanciati** circostanza che **limita la lunghezza** ammissibile dei collegamenti da **qualche metro** ad una **decina di metri**.
  
  
 Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
