@@ -114,7 +114,13 @@ Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per
 
 ### **Esempi di collegamenti con topologia a bus:**
 
+Il BUS è un mezzo ad **accesso multiplo** composto da un **unico filo** su cui sono collegate **tutte** le stazioni. Il tipo dei collegamenti lo rende un **mezzo broadcast** cioè un mezzo dove se una stazione **parla** tutte le altre ricevono ed **ascoltano**. I mezzi broadcast sono soggetti a **collisioni** che devono essere risolte costringendo le stazioni a parlare **una alla volta** mediante un **protocollo di arbitraggio**. Questi si dividono in due categorie: centralizzati e distribuiti. Quelli con cui si collegano i dispositivi sensori sono centralizzati e comunque lo sono quelli che vdremo di seguito.
+
+In un sistema **centralizzato** una stazione è più importante delle altre perché può avere l’**iniziativa di cominciare** una comunicazione ed è detta Master. Le altre stazioni hanno un **ruolo passivo**, nel senso che rispondono solo se sono interrogate dal master mediante una tecnica detta polling. Il **polling** equivale all’**interrogazione periodica** di più dispositivi seguita da una **risposta immediata**. Il master decide **chi** parla e **quando** parla a rotazione, seguendo un ordine prestabilito detto **round robin**, secondo il quale si scandisce ogni interazione richiesta-risposta. 
+
  <img src="bus.png" alt="alt text" width="600">
+ 
+ 
 Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
 
  <img src="Schematic-dallas-18s20.gif" alt="alt text" width="600">
