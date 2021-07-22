@@ -24,9 +24,13 @@ Possibilità di topologie **ridondate a doppio anello** (treni, industria)
 
 ## **Reti di sensori e attuatori**
 
-Spesso sono **reti miste** cioè composte da **sottoreti eterogenee**.
+Spesso sono **reti miste** cioè composte da **sottoreti eterogenee**: 
+- **reti di sensori** costituite da dispositivi sensori e da nodi di smistamento. Sono spesso realizzate in tecnologie non IP proprietarie.
+- **una rete centrale di distribuzione**. E' una rete IP e può essere una LAN, spesso interconessa ad Internet, oppure Internet stessa.
 
  <img src="sensornet1.png" alt="alt text" width="1000">
+ 
+Tra le due tipologie di reti ci sono dei **nodi di confine** aventi una interfaccia **nella rete di sensori** ed un'altra **nella rete principale IP**. Questi nodi **cerniera** sono detti **gateway** e devono trovare un modo di **rendere compatibili** i messaggi che circolano nelle due teipologie di reti, spesso realizzate con tecnologie completamente **diverse**.
 
 La **rete principale**, **è di tipo ethernet** con dorsali fisiche a stella cablate e collegamenti periferici cablati o wireless WiFi. Ha principalmente la funzione di **distribuzione** dei dati **dai nodi gateway** con le reti secondarie **fino al server di gestione** dei dati. Va attentamente progettata perchè sia in grado di smaltire il traffico complessivo di **tutti i sensori**. Può diventare **critica** se, oltre ai sensori, sono presenti **sorgenti multimediali** quali **microfoni** o **telecamere** di videosorvelianza.
 
