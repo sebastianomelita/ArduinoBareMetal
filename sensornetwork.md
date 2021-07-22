@@ -280,6 +280,8 @@ Gli **stack commerciali**, essendo completi fino al **livello di applicazione**,
 - https://dpmrassociation.org/dPMR-Spectrum-Efficiency.html
 - https://en.wikipedia.org/wiki/ALOHAnet
 - https://research-information.bris.ac.uk/ws/portalfiles/portal/110218284/duquennoy17tsch.pdf
+- https://hal.inria.fr/hal-01282597/file/iwipcps.pdf
+- https://it.scribd.com/document/462861362/Dash7Surveyfinalreport-pdf
 
 >[Torna all'indice generale](index.md)
     
