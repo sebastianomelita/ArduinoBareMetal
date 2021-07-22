@@ -242,7 +242,7 @@ Qualunque sia la modalità di accesso, alla fine, su **questo canale risultante*
 - **due interlocutori**.
 - **molti interlocutori**
 
-In entrambi i casi sono possibili due soluzioni:
+In entrambi i casi sono possibili **due soluzioni**:
 - **servizio sincrono**. Viene realizzato con un **TDM statico** ed è adatto **operazioni periodiche** come il **polling** di un grappolo di sensori.
 - **servizio asincrono**. E' adatto a **operazioni una tantum**,cioè di cui non si riesce a sapere **in anticipo** l'occorenza (accadere nel tempo), ad esempio il comando di accensione di una lampadina.  In questo caso riservare uno slot temporale ad una sorgente che per la maggior parte del tempo non lo utilizzerebbe è certamente **uno spreco**. Si preferisce utilizzare la tecnica di accesso **TDM a contesa** con accesso al canale arbitrato dai protocolli **ALOHA** O **CSMA/CA**.
     
