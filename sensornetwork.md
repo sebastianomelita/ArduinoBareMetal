@@ -60,9 +60,11 @@ In ogni caso, un qualsiasi **ente di telecomunicazione internazionale** (IEE, IE
 La **seconda maniera** in pratica non si applica mai, se non per protocolli **compatibili** o **praticamente uguali** come sono **IPV6 e 6LowPan**. In pratica, i primi due modi **collassano** in uno solo.
 
 **Unica rete con IPV6 e 6LowPan**:
+
 <img src="jsan-02-00235-g001.webp" alt="alt text" width="700">
 
 **Gateway applicativo**:
+
 <img src="jsan-02-00235-g002.webp" alt="alt text" width="700">
 
 Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi di BUS** a cui si collega. Il **gateway** deve possedere anche **una interffaccia** capace di traffico ethernet (cablata o wifi) che lo collega alla **rete di distribuzione** (in genere cablata).
