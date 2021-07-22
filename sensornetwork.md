@@ -209,7 +209,7 @@ Un'altra tecnologia radio realizza **accesso al canale singolo**, nel senso che 
 
 <img src="Time-Slotted-Channel-Hopping-TSCH-slot-channel-matrix-with-a-simple-network-topology.png" alt="alt text" width="600">
 
-Qualunque sia la modalità di accesso, alla fine, su **questo canale risultante**, privato ed evebtualmente associato ad un certo **SSID**, a seconda del **servizio richiesto**, **possono parlare**:
+Qualunque sia la modalità di accesso, alla fine, su **questo canale risultante**, privato ed eventualmente associato ad un certo **SSID**, a seconda del **servizio richiesto**, **possono parlare**:
 
 - **due interlocutori**, allora si vuole realizzare un collegamento punto-punto tra i due che deve essere reso full duplex. La bidirezionalità, di solito, si ottiene con una multiplazione statica TDM. Cioè il periodo di trasmissione è diviso temporalmente a metà, nella prima parla un interlocutore, nella seconda l'altro.
 - **molti interlocutori**, allora siamo in presenza di un mezzo condiviso tra più comunicazioni che viene, anhe in questo caso, partizionato con tecnica TDM, c'è da decidere però se statica TDMA o dinamica (ALOHA o CSMA/CA). Molti dispositivi li supportano entrambi, insieme o separatamente:
