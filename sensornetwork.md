@@ -121,6 +121,8 @@ Esistono sistemi centralizzati con un **solo master** e altri **multimaster** in
 
  <img src="bus.png" alt="alt text" width="600">
  
+In genere i BUS sono in due stati IDLE (riposo) e comunicazione. Lo stato di IDLE è quello predefinito ed è ottenuto tramite una rrsistenza di pullup colegata sulla linea. Il valore 0 è codificato con il livello basso L=0Volt mentre il valore 1 è codificato con lo stesso valore dell'IDLE cioè H. L'inizio della trasmissione di una trama è in genere segnalata da uno livello basso L iniziale.
+ 
  
 Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
 
