@@ -234,7 +234,7 @@ Un'altra tecnologia radio realizza **accesso al canale singolo**, nel senso che 
 
 <img src="Time-Slotted-Channel-Hopping-TSCH-slot-channel-matrix-with-a-simple-network-topology.png" alt="alt text" width="600">
 
-Qualunque sia la modalità di accesso, alla fine, su **questo canale risultante**, privato ed eventualmente associato ad un certo **SSID**, a seconda del **servizio richiesto**, **possono parlare**:
+Qualunque sia la **modalità di accesso**, alla fine, su **questo canale risultante**, privato ed eventualmente associato ad un certo **SSID**, a seconda del **servizio richiesto**, **possono parlare**:
 - **due interlocutori**.
 - **molti interlocutori**
 
