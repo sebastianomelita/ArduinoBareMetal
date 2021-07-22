@@ -239,11 +239,12 @@ Un'altra tecnologia radio realizza **accesso al canale singolo**, nel senso che 
 <img src="Time-Slotted-Channel-Hopping-TSCH-slot-channel-matrix-with-a-simple-network-topology.png" alt="alt text" width="600">
 
 Qualunque sia la modalità di accesso, alla fine, su **questo canale risultante**, privato ed eventualmente associato ad un certo **SSID**, a seconda del **servizio richiesto**, **possono parlare**:
+- **due interlocutori**.
+- **molti interlocutori**
 
-- **due interlocutori**, allora si vuole realizzare un collegamento punto-punto tra i due che deve essere reso full duplex. La bidirezionalità, di solito, si ottiene con una multiplazione statica TDM. Cioè il periodo di trasmissione è diviso temporalmente a metà, nella prima parla un interlocutore, nella seconda l'altro.
-- **molti interlocutori**, allora siamo in presenza di un mezzo condiviso tra più comunicazioni che viene, anhe in questo caso, partizionato con tecnica TDM, c'è da decidere però se statica TDMA o dinamica (ALOHA o CSMA/CA). Molti dispositivi li supportano entrambi, insieme o separatamente:
-    - se si eseguono **operazioni periodiche** come il **polling** di un grappolo di sensori potrebbe essere conveniente utilizzare la multiplazione **TDM statica**. 
-    - se si eseguono **operazioni una tantum**, **asincrone**, cioè di cui non si riesce a sapere **in anticipo** l'accadere (ad esempio il comando di accensione di una lampadina), allora riservare uno slot temporale ad una sorgente che per la maggior parte del tempo non lo utilizzerebbe è certamente **uno spreco**. Di conseguenza, in questo caso, si preferisce utilizzare la tecnica di accesso TDM **a contesa** con accesso al canale arbitrato dai protocolli **ALOHA** O **CSMA/CA**.  
+In entrambi i casi sono possibili due soluzioni:
+- **servizio sincrono**. Viene realizzato con un **TDM statico** ed è adatto **operazioni periodiche** come il **polling** di un grappolo di sensori.
+- **servizio asincrono**. E' adatto a **operazioni una tantum**,cioè di cui non si riesce a sapere **in anticipo** l'occorenza (accadere nel tempo), ad esempio il comando di accensione di una lampadina.  In questo caso riservare uno slot temporale ad una sorgente che per la maggior parte del tempo non lo utilizzerebbe è certamente **uno spreco**. Si preferisce utilizzare la tecnica di accesso **TDM a contesa** con accesso al canale arbitrato dai protocolli **ALOHA** O **CSMA/CA**.
     
 Molti sistemi (wifi, zigbee, bluetooth BLE, LoRaWan, Sigfox) permettono di impostare **contemporaneamente**, sulla **stessa interfaccia** radio, un **servizio sincrono** mediante **TDMA** per le sorgenti che eseguono il **polling** di sensori e un servizio **asincrono** con **ALOHA** o **CSMA/CA** per le sorgenti che devono inoltrare il **comando** di un pulsante di accensione di un attuatore. Ciò è ottenuto **attivando** sul canale la funzionalità **beacon** con le cosidette **superframe**.
 
