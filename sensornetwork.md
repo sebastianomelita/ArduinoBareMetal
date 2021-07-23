@@ -125,7 +125,7 @@ In genere i BUS si trovano in due stati **IDLE** (riposo) e **comunicazione**. L
 
 Ci sono **sistemi a BUS** che si **connettono direttamente** alle **porte digitali** di un **microcontrollor**e senza **driver HW** aggiuntivi. I più diffusi sono 1-wire (Dallas), two-wire (I2C) e 3 o 4-wire (SPI). Il collegamento **senza driver HW**  (bit banging) alle porte digitali del microcontrollore genera sul BUS **segnali non bilanciati** circostanza che **limita la lunghezza** ammissibile dei collegamenti da **qualche metro** ad una **decina di metri**.
 
-Tutti i tipi di BUS richiedono l'installazione di **librerie SW** per poter gestire l'accesso al BUS, all'interno del codice di un applicativo, mediante API di servizio di alto livello e quindi comode da utilizzare. 
+**Tutti i tipi di BUS** richiedono l'**installazione** di **librerie SW** per poter gestire l'accesso al BUS, **all'interno del codice** di un applicativo, mediante **API** di servizio di **alto livello** e quindi comode da utilizzare. 
  
 Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
 - è costituito da un solo filo, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore.
@@ -135,18 +135,18 @@ Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
  <img src="Schematic-dallas-18s20.gif" alt="alt text" width="600">
 
 Esempio di bus **I2C** detto anche a 2 fili (two-wire):
-- è costituito da 2 fili, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore
-- terminale SDA (Serial DAta) per i dati
-- SCL (Serial CLock) per il clock (per la presenza di questo segnale l'I2C è un bus sincrono)
+- è costituito da **2 fili**, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore
+- terminale **SDA** (Serial DAta) per i dati
+- terminale **SCL** (Serial CLock) per il clock (per la presenza di questo segnale l'I2C è un bus sincrono)
  
  <img src="I2C-communication-protocol-ESP32.png" alt="alt text" width="700">
  
-Esempio di bus **SPI** detto anche a 3-4 fili (four-wire):
-- è costituito da 3 fili, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore
-- terminale SCLK - SCK: Serial Clock (emesso dal master)  per il clock (per la presenza di questo segnale l'SPI è un bus sincrono)
-- terminale SDI – MISO – SOMI – DI - SO: Serial Data Input, Master Input Slave Output (ingresso per il master e uscita per lo slave)
-- terminale SDO – MOSI – SIMO – DO – SI: Serial Data Output, Master Output Slave Input (uscita dal master)
-- terminale CS – SS – nCS – nSS – STE: Chip Select, Slave Select, emesso dal master per scegliere con quale dispositivo slave vuole comunicare (dalla figura, il segnale SS negato, si comprende che per comunicare con il dispositivo slave deve venire messo a livello logico basso)
+Esempio di bus **SPI** detto anche 4 fili (four-wire):
+- è costituito da **4 fili**, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore
+- terminale **SCLK** - SCK: Serial Clock (emesso dal master)  per il clock (per la presenza di questo segnale l'SPI è un bus sincrono)
+- terminale SDI – **MISO** – SOMI – DI - SO: Serial Data Input, Master Input Slave Output (ingresso per il master e uscita per lo slave)
+- terminale SDO – **MOSI** – SIMO – DO – SI: Serial Data Output, Master Output Slave Input (uscita dal master)
+- terminale **CS** – SS – nCS – nSS – STE: Chip Select, Slave Select, emesso dal master per scegliere con quale dispositivo slave vuole comunicare (dalla figura, il segnale SS negato, si comprende che per comunicare con il dispositivo slave deve venire messo a livello logico basso)
 
  <img src="spi.png" alt="alt text" width="600">
  
