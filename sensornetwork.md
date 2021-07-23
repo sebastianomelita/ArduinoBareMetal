@@ -137,16 +137,16 @@ Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
 Esempio di bus **I2C** detto anche a 2 fili (two-wire):
 - è costituito da 2 fili, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore
 - terminale SDA (Serial DAta) per i dati
-- terminale SDI – MISO – SOMI – DI - SO: Serial Data Input, Master Input Slave Output (ingresso per il master e uscita per lo slave)
-- SDO – MOSI – SIMO – DO – SI: Serial Data Output, Master Output Slave Input (uscita dal master)
-- CS – SS – nCS – nSS – STE: Chip Select, Slave Select, emesso dal master per scegliere con quale dispositivo slave vuole comunicare (dalla figura, il segnale SS negato, si comprende che per comunicare con il dispositivo slave deve venire messo a livello logico basso)
+- SCL (Serial CLock) per il clock (per la presenza di questo segnale l'I2C è un bus sincrono)
  
  <img src="I2C-communication-protocol-ESP32.png" alt="alt text" width="700">
  
 Esempio di bus **SPI** detto anche a 3-4 fili (four-wire):
 - è costituito da 3 fili, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore
 - terminale SCLK - SCK: Serial Clock (emesso dal master)  per il clock (per la presenza di questo segnale l'SPI è un bus sincrono)
-- terminale SCL (Serial CLock)
+- terminale SDI – MISO – SOMI – DI - SO: Serial Data Input, Master Input Slave Output (ingresso per il master e uscita per lo slave)
+- terminale SDO – MOSI – SIMO – DO – SI: Serial Data Output, Master Output Slave Input (uscita dal master)
+- terminale CS – SS – nCS – nSS – STE: Chip Select, Slave Select, emesso dal master per scegliere con quale dispositivo slave vuole comunicare (dalla figura, il segnale SS negato, si comprende che per comunicare con il dispositivo slave deve venire messo a livello logico basso)
 
  <img src="spi.png" alt="alt text" width="600">
  
