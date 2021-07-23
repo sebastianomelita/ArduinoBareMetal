@@ -250,7 +250,7 @@ La **multiplazione SDM** (divisione di spazio) del mezzo radio è sempre in qual
 
 <img src="cellulare.png" alt="alt text" width="300">
 
-unico 
+
 ## **Servizi di accesso radio**
 
 Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un **unico canale radio** di una multiplazione **FDM**. L'allocazione può essere sia **statica** (eseguita dal sistemista) che dinamica cioè variabile nel tempo ed **automatica**.
