@@ -104,11 +104,21 @@ Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per
 
   <img src="Star-network-1024x466.png" alt="alt text" width="700">
   
-  Accesso in scrittura e in lettura su due porte digitali di un sensore ad ultrasuoni:
-  
+  Accesso in scrittura e in lettura su due **porte digitali** di un sensore ad ultrasuoni:
+  - si collega su una delle porte **digitali** del microcontrollore e trasporta bit codificati
+  - sono **punto-punto**, cioè **un filo** (escluso GND che comunque va collegato al sensore) per ogni sensore
+  - il **collegamento** è in genere **simplex** cioè in una direzione sola, da o verso il sensore
+      - se in **ingresso** al microcontrollore si collega ad una porta impostata in modalità **INPUT**
+      - se in **uscita** al microcontrollore si collega ad una porta impostata in modalità **OUTPUT**
+
   <img src="ultrasonic-sensor-with-arduino-hc-sr04.jpg" alt="alt text" width="700">
   
-  Accesso in in lettura su una porta analogica di un sensore di luminosità:
+  Accesso in in lettura su una **porta analogica** di un sensore di luminosità:
+  - si collega su una delle porte **analogiche** del microcontrollore e trasporta bit codificati
+  - sono **punto-punto**, cioè **un filo** (escluso GND che comunque va collegato al sensore) per ogni sensore
+  - il collegamento è in genere **simplex** cioè in una direzione sola, da o verso il sensore
+      - se in **ingresso** al microcontrollore si collega ad una porta **ADC** (Analog Digital Converter) del microcontrollore
+      - se in **uscita** al microcontrollore si collega ad una porta **PWM** (Pulse Width Modulation) del microcontrollore
   
   <img src="potenziometro.png" alt="alt text" width="500">
 
@@ -128,7 +138,7 @@ Ci sono **sistemi a BUS** che si **connettono direttamente** alle **porte digita
 **Tutti i tipi di BUS** richiedono l'**installazione** di **librerie SW** per poter gestire l'accesso al BUS, **all'interno del codice** di un applicativo, mediante **API** di servizio di **alto livello** e quindi comode da utilizzare. 
  
 Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
-- è costituito da un solo filo, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore.
+- è costituito da **un solo filo**, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore.
 - il dispositivo riceve l'alimentazione in CC miscelata insieme ai dati. Durante i bit zero, non ricevendo alimentazione dal cavo, il dispositivo la riceve da un condensatore tampone.
 - alcuni dispositivi posseggono comunque una linea di alimentazione separata da quella dati esibendo quindi, complessivamente 3 terminali.
 
@@ -151,6 +161,7 @@ Esempio di bus **SPI** detto anche 4 fili (four-wire):
  <img src="spi.png" alt="alt text" width="600">
  
  Esempio di bus **RS485** arbitrato dal protocollo Modbus:
+ - è costituito da **2 fili**, escluso il filo GND, comune a tutti i collegamenti che **NON** va collegato anch'esso al sensore
  - il BUS RS485 è bilanciato per cui non è possibile collegare i suoi terminali direttamente sulle porte digitali di un microcontrollore ma bisogna interporre un driver HW che trasli i livelli da logica TTL (a 5V o 3V) a logica bilanciata AB.
  - i cavi del BUS sono 2 attestati sui morsetii A e B del driver. La differenza A-B codifica il valore del bit trasmesso.
  - le linee bilanciate permettono distanze che vanno da un minimo di 30cm ad un massimo di circa 1Km. 
