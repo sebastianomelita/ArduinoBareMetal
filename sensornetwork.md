@@ -137,22 +137,22 @@ Ci sono **sistemi a BUS** che si **connettono direttamente** alle **porte digita
 
 **Tutti i tipi di BUS** richiedono l'**installazione** di **librerie SW** per poter gestire l'accesso al BUS, **all'interno del codice** di un applicativo, mediante **API** di servizio di **alto livello** e quindi comode da utilizzare. 
  
-Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
-- è costituito da **un solo filo**, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore.
-- il dispositivo riceve l'alimentazione in CC miscelata insieme ai dati. Durante i bit zero, non ricevendo alimentazione dal cavo, il dispositivo la riceve da un condensatore tampone.
-- alcuni dispositivi posseggono comunque una linea di alimentazione separata da quella dati esibendo quindi, complessivamente 3 terminali.
+Esempio di bus **Dallas** detto anche a 1 filo (**one-wire**):
+- è costituito da **un solo filo**, escluso il filo **GND**, comune a tutti i collegamenti e che **va collegato** anch'esso **al sensore****.
+- il dispositivo riceve l'alimentazione in CC **miscelata insieme ai dati**. Durante i bit zero, non ricevendo alimentazione dal cavo, il dispositivo la riceve da un condensatore tampone.
+- alcuni dispositivi posseggono comunque una linea di **alimentazione separata** da quella dati esibendo quindi, complessivamente **3 terminali**.
 
  <img src="Schematic-dallas-18s20.gif" alt="alt text" width="600">
 
-Esempio di bus **I2C** detto anche a 2 fili (two-wire):
-- è costituito da **2 fili**, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore
+Esempio di bus **I2C** detto anche a 2 fili (**two-wire**):
+- è costituito da **2 fili**, escluso il filo **GND**, comune a tutti i collegamenti e che **va collegato** anch'esso **al sensore**
 - terminale **SDA** (Serial DAta) per i dati
 - terminale **SCL** (Serial CLock) per il clock (per la presenza di questo segnale l'I2C è un bus sincrono)
  
  <img src="I2C-communication-protocol-ESP32.png" alt="alt text" width="700">
  
-Esempio di bus **SPI** detto anche 4 fili (four-wire):
-- è costituito da **4 fili**, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore
+Esempio di bus **SPI** detto anche 4 fili (**four-wire**):
+- è costituito da **4 fili**, escluso il filo **GND**, comune a tutti i collegamenti e che **va collegato** anch'esso **al sensore**
 - terminale **SCLK** - SCK: Serial Clock (emesso dal master)  per il clock (per la presenza di questo segnale l'SPI è un bus sincrono)
 - terminale SDI – **MISO** – SOMI – DI - SO: Serial Data Input, Master Input Slave Output (ingresso per il master e uscita per lo slave)
 - terminale SDO – **MOSI** – SIMO – DO – SI: Serial Data Output, Master Output Slave Input (uscita dal master)
@@ -161,11 +161,11 @@ Esempio di bus **SPI** detto anche 4 fili (four-wire):
  <img src="spi.png" alt="alt text" width="600">
  
  Esempio di bus **RS485** arbitrato dal protocollo Modbus:
- - è costituito da **2 fili**, escluso il filo GND, comune a tutti i collegamenti che **NON** va collegato anch'esso al sensore
- - il BUS RS485 è bilanciato per cui non è possibile collegare i suoi terminali direttamente sulle porte digitali di un microcontrollore ma bisogna interporre un driver HW che trasli i livelli da logica TTL (a 5V o 3V) a logica bilanciata AB.
- - i cavi del BUS sono 2 attestati sui morsetii A e B del driver. La differenza A-B codifica il valore del bit trasmesso.
- - le linee bilanciate permettono distanze che vanno da un minimo di 30cm ad un massimo di circa 1Km. 
- - il numero di dispositivi connettibile dipende dalle implementazioni e dalla massima corrente erogabile sul BUS, accreditato è un numero di almeno 32 dispositivi.
+ - è costituito da **2 fili**, escluso il filo **GND**, comune a tutti i collegamenti che **NON** va collegato anch'esso al sensore
+ - il **BUS RS485** è **bilanciato** per cui non è possibile collegare i suoi terminali direttamente sulle porte digitali di un microcontrollore ma bisogna interporre **un driver HW** che trasli i livelli da logica TTL (a 5V o 3.3V) a logica bilanciata AB.
+ - i **fili** del BUS sono **attestati** sui **morsetii A e B** del driver. La differenza A-B codifica il valore del bit trasmesso.
+ - le **linee bilanciat**e permettono distanze che vanno da un **minimo** di 30cm ad un **massimo** di circa 1Km. 
+ - il **numero di dispositivi** connettibile dipende dalle implementazioni e dalla massima corrente erogabile sul BUS, accreditato è un numero di almeno 32 dispositivi.
 
  <img src="rs485network.png" alt="alt text" width="600">
  
