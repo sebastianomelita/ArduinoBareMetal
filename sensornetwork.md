@@ -161,7 +161,7 @@ Esempio di bus **SPI** detto anche 4 fili (**four-wire**):
  - è costituito da **2 fili**, escluso il filo **GND**, comune a tutti i collegamenti che **NON** va collegato anch'esso al sensore
  - il **BUS RS485** è **bilanciato** per cui non è possibile collegare i suoi terminali direttamente sulle porte digitali di un microcontrollore ma bisogna interporre **un driver HW** che trasli i livelli da logica TTL (a 5V o 3.3V) a logica bilanciata AB.
  - i **fili** del BUS sono **attestati** sui **morsetii A e B** del driver. La differenza A-B codifica il valore del bit trasmesso.
- - le **linee bilanciat**e permettono distanze che vanno da un **minimo** di 30cm ad un **massimo** di circa 1Km. 
+ - le **linee bilanciate** permettono distanze che vanno da un **minimo** di 30cm ad un **massimo** di circa 1Km. 
  - il **numero di dispositivi** connettibile dipende dalle implementazioni e dalla massima corrente erogabile sul BUS, accreditato è un numero di almeno 32 dispositivi.
 
  <img src="rs485network.png" alt="alt text" width="600">
