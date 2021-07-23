@@ -135,6 +135,9 @@ Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
  <img src="Schematic-dallas-18s20.gif" alt="alt text" width="600">
 
 Esempio di bus **I2C** detto anche a 2 fili (two-wire):
+- è costituito da 2 solo filo, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore
+- terminale SDA (Serial DAta) per i dati
+- terminale SCL (Serial CLock) per il clock (per la presenza di questo segnale l'I2C è un bus sincrono)
  
  <img src="I2C-communication-protocol-ESP32.png" alt="alt text" width="700">
  
