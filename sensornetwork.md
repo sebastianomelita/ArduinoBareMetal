@@ -95,7 +95,7 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 
 ##  **Topologia delle reti di sensori cablata** 
 
-Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per le applicazioni di nostro interesse le topologie più adoperate sono quelle classiche ad stella e a bus.
+Nelle reti industriali sono molto comuni topologie complesse a più livelli. Per le applicazioni di nostro interesse le topologie più adoperate sono quelle classiche a **stella** e a **bus**. **I collegamenti** dei sensori, in queesto caso, si attestano sulle **porte** di **schede programmabili** che ospitano dispositivi a microcontrollore. Le stesse schede hanno, in genere, funzione di **gateway** verso la **rete di distribuzione** per cui posseggono almeno **due interfacce**: una **verso il BUS** ed un altra, ethernet ed IP **verso la rete LAN**. Inoltre le schede ospitano le **librerie** SW di **gestione del BUS** e il codice per realizzare il **bridge** tra il livello applicativo in uso nella rete di sensori e quello in uso nella rete IP. Il bridge è generalmente realizzato o da librerie di **terze parti** oppure direttamente dal **programmatore** mediante linguaggi di scripting come **Python** o **Node.js**, spesso anche in maniera **visuale** con **framework** come **Nodered** e **Openhab**.
 
 ### **Esempi di collegamenti con topologia a stella**:
 
