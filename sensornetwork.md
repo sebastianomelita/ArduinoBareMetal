@@ -127,6 +127,9 @@ Ci sono **sistemi a BUS** che si **connettono direttamente** alle **porte digita
  
  
 Esempio di bus **Dallas** detto anche a 1 filo (one-wire):
+- è costituito da un solo filo, escluso il filo GND, comune a tutti i collegamenti e che va collegato anch'esso al sensore.
+- il dispositivo riceve l'alimentazione in CC miscelata insieme ai dati. Durante i bit zero, non ricevendo alimentazione dal cavo, il dispositivo la riceve da un condensatore tampone.
+- alcuni dispositivi posseggono comunque una linea di alimentazione separata da quella dati esibendo quindi, complessivamente 3 terminali.
 
  <img src="Schematic-dallas-18s20.gif" alt="alt text" width="600">
 
