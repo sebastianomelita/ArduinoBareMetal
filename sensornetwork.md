@@ -132,7 +132,7 @@ In genere i BUS si trovano in due stati **IDLE** (riposo) e **comunicazione**. L
 
 Ci sono **sistemi a BUS** che si **connettono direttamente** alle **porte digitali** di un **microcontrollor**e senza **driver HW** aggiuntivi. I più diffusi sono 1-wire (Dallas), two-wire (I2C) e 3 o 4-wire (SPI). Il collegamento **senza driver HW**  (bit banging) alle porte digitali del microcontrollore genera sul BUS **segnali non bilanciati** circostanza che **limita la lunghezza** ammissibile dei collegamenti da **qualche metro** ad una **decina di metri**.
 
-**Tutti i tipi di BUS** richiedono l'**installazione** di **librerie SW** per poter gestire l'accesso al BUS, **all'interno del codice** di un applicativo, mediante **API** di servizio di **alto livello** e quindi comode da utilizzare. Nel codice del programma o in un file di configurazione va riportato il mappaggio tra il numero di porta e il ruolo della stessa all'interno del protocollo.
+**Tutti i tipi di BUS** richiedono l'**installazione** di **librerie SW** per poter gestire l'accesso al BUS, **all'interno del codice** di un applicativo, mediante **API** di servizio di **alto livello** e quindi comode da utilizzare. Nel codice del programma, o in un file di configurazione, va riportato il** mappaggio** tra il **numero di porta** e il **ruolo** della stessa all'interno del **protocollo** per tutte quelle **adoperate** per realizzare il **BUS**.
  
 Esempio di bus **Dallas** detto anche a 1 filo (**one-wire**):
 - è costituito da **un solo filo**, escluso il filo **GND**, comune a tutti i collegamenti e che **va collegato** anch'esso **al sensore****.
