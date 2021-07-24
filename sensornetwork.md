@@ -278,7 +278,7 @@ In entrambi i casi sono possibili **due tipi** di **servizio** di **accesso radi
 - **servizio sincrono**. Viene realizzato con un **TDM statico** ed è adatto **operazioni periodiche** come il **polling** di un grappolo di sensori.
 - **servizio asincrono**. E' adatto a **operazioni una tantum**, cioè di cui non si riesce a sapere **in anticipo** l'occorenza (accadere nel tempo), ad esempio il comando di accensione di una lampadina.  In questo caso riservare uno slot temporale ad una sorgente che per la maggior parte del tempo non lo utilizzerebbe è certamente **uno spreco**. Si preferisce utilizzare la tecnica di accesso **TDM a contesa** con accesso al canale arbitrato dai protocolli **ALOHA** O **CSMA/CA**.
 
-Ulteriori differenziazioni del servizio distinguono tra:
+Ulteriori **differenziazioni del servizio** distinguono tra:
 - la presenza o meno di una funzione di **conferma** dei messaggi trasmessi (protocollo confermato).
 - la presenza o meno di **classi di prestazione**, magari abbinate ad uno o più dei servizi precedenti.
     
