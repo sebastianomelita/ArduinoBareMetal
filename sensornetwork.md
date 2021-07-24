@@ -180,6 +180,25 @@ Esempio di bus **SPI** detto anche 4 fili (**four-wire**):
  
 Abbiamo visto BUS centralizzati e di uso generale cioè liberamente adoperabili in progetti per realizzazioni customizzate. Esistono molti altri protocolli adatti per situazioni specifiche che non abbiamo trattato. Alcuni utilizano una tipologia di arbitraggio del bus decentralizzazta basata su protocolli di accesso ALOHA o CSMA/CA O CSMA/CD. In genere fanno tutti parte di **stack commerciali** che si occupano di domotica e automazione che a livello fisico utilizzano sia reti cablate che wireless. Esempi notevoli sono KNX, BACNet, DALI.
 
+##  **Stack cablati specifici per IOT**
+
+<img src="bacnet-knx.png" alt="alt text" width="1000">
+
+BACnet è stato progettato per consentire la comunicazione dei sistemi di automazione e controllo degli edifici per applicazioni come il controllo del riscaldamento, della ventilazione e del condizionamento dell'aria (HVAC), il controllo dell'illuminazione, il controllo degli accessi e i sistemi di rilevazione incendi e le relative apparecchiature. Il protocollo BACnet fornisce meccanismi per i dispositivi di automazione degli edifici computerizzati per lo scambio di informazioni, indipendentemente dal particolare servizio dell'edificio che svolgono.
+
+Il protocollo BACnet definisce un numero di collegamenti dati/livelli fisici, inclusi ARCNET, Ethernet, BACnet/IP, BACnet/IPv6, BACnet/MSTP, Point-to-Point su RS-232, Master-Slave/Token-Passing su RS- 485, ZigBee e LonTalk.
+
+KNX è uno standard di building automation aperto, coperto da royalty. Il marchio KNX non è una semplice dichiarazione del produttore, ma si basa sul superamento di prove di conformità effettuate dai laboratori di KNX. Le prove e la certificazione hanno un costo che si paga all'associazione KNX.
+
+Esistono tre modalità di KNX: Automatic-Mode, Easy-Mode, System-Mode.
+
+Lo **standard KNX** prevede **diversi mezzi trasmissivi** che possono essere utilizzati in combinazione con uno o più modi di configurazione in funzione della particolare applicazione:
+- **TP-1** (Twisted Pair, tipo 1): Mezzo trasmissivo basato su cavo a conduttori intrecciati con bitrate di 9600 bit/s, proveniente da EIB. Le comunicazioni sono didirezionali e half duplex regolate da un protocollo di arbitraggio peer to peer di tipo CSMA/CA. I dispositivi che implemntano il protocollo comunicano direttamente tra loro senza l'ausilio di un master centrale. 
+- **PL-110** (Power Line, 110 kHz): Mezzo trasmissivo ad onda convogliata (power-line) con bitrate di 1200 bit/s, proveniente da EIB. I prodotti certificati EIB e KNX PL-110 funzionano e comunicano fra di loro sulla stessa rete di distribuzione dell'alimentazione elettrica. Usano la modulazione S-FSK (spread frequency-shift keying) che genera un canale half dupex arbitrato da CSMA/CA.
+- **RF** (Radio Frequency, 868 MHz): Mezzo trasmissivo in radiofrequenza con bitrate di 38.4 kBit/s, sviluppato direttamente all'interno della piattaforma standard KNX.
+- **Ethernet** (KNXnet/IP): Mezzo trasmissivo diffuso che può essere utilizzato unitamente alle specifiche KNXnet/IP che permettono il tunneling di frame KNX incorporati in frame IP (Internet Protocol).
+
+
  
 ##  **Topologia delle reti di sensori wireless**     
  
@@ -317,13 +336,6 @@ Esistono anche **stack opensource** rilasciati da alleanze di sviluppatori pensa
 
 Gli **stack commerciali**, essendo completi fino al **livello di applicazione**, hanno il vantaggio di garantire una grande **interoperabilità** con i dispositivi comunemente in commercio e prodotti da **vari marchi**. Gli **stack personalizzati** o **opensource** sono utili per realizzare **soluzioni ad hoc** calate in un ben preciso **contesto aziendale**. 
 
-##  **Stack cablati specifici per IOT**
-
-<img src="bacnet-knx.png" alt="alt text" width="1000">
-
-BACnet è stato progettato per consentire la comunicazione dei sistemi di automazione e controllo degli edifici per applicazioni come il controllo del riscaldamento, della ventilazione e del condizionamento dell'aria (HVAC), il controllo dell'illuminazione, il controllo degli accessi e i sistemi di rilevazione incendi e le relative apparecchiature. Il protocollo BACnet fornisce meccanismi per i dispositivi di automazione degli edifici computerizzati per lo scambio di informazioni, indipendentemente dal particolare servizio dell'edificio che svolgono.
-
-Il protocollo BACnet definisce un numero di collegamenti dati/livelli fisici, inclusi ARCNET, Ethernet, BACnet/IP, BACnet/IPv6, BACnet/MSTP, Point-to-Point su RS-232, Master-Slave/Token-Passing su RS- 485, ZigBee e LonTalk.
 
 ##  **Canali di comunicazione principali in una rete di sensori**
 
