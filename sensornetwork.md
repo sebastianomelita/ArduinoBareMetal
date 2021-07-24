@@ -239,7 +239,7 @@ Spesso il **TDM** non partiziona direttamente il canale FDM ma tra esso e il can
 **Riassumendo**, si possono **annidare** le multiplazioni una dentro l'altra differenziando per **caratteristiche fisiche** diverse le **singole comunicazioni** e associandole a **gruppi di sorgenti diverse**. In questo caso:
 - la **banda** è **divisa** tra più **gruppi** di dispositivi (ad es. AP WiFi), ogni gruppo sul **suo canale FDM**, tramite una multiplazione **FDMA**.
 - un **canale FDM**, assegnato ad un gruppo di dispositivi, è **diviso** tra **più dispositivi**, ogni dispositivo col **suo BSSID (canale CDM)**, tramite multiplazione **CDMA**.
-- un **canale CDM**, assegnato ad un gruppo di sorgenti, è **diviso** tra **più sorgenti**, ogni sorgente col suo **slot temporale (canale TDM)**, tramite multiplazione **TDMA**.   
+- un **canale CDM**, assegnato ad un gruppo di sorgenti (quelle **attestate** su **un dispositivo**), è **diviso** tra **più sorgenti**, ogni sorgente col suo **slot temporale (canale TDM)**, tramite multiplazione **TDMA**.   
  
 Normalmente le **multiplazioni** sono gestite a **livello fisico** in HW utilizzando delle **schede radio dedicate** su cui si impostano i **registri** per la **configurazione** e da cui provengono le **notifiche** dei vari **eventi** legati alla **trasmissione** o alla **ricezione**.
 
