@@ -321,6 +321,10 @@ Gli **stack commerciali**, essendo completi fino al **livello di applicazione**,
 
 <img src="bacnet-knx.png" alt="alt text" width="1000">
 
+BACnet è stato progettato per consentire la comunicazione dei sistemi di automazione e controllo degli edifici per applicazioni come il controllo del riscaldamento, della ventilazione e del condizionamento dell'aria (HVAC), il controllo dell'illuminazione, il controllo degli accessi e i sistemi di rilevazione incendi e le relative apparecchiature. Il protocollo BACnet fornisce meccanismi per i dispositivi di automazione degli edifici computerizzati per lo scambio di informazioni, indipendentemente dal particolare servizio dell'edificio che svolgono.
+
+Il protocollo BACnet definisce un numero di collegamenti dati/livelli fisici, inclusi ARCNET, Ethernet, BACnet/IP, BACnet/IPv6, BACnet/MSTP, Point-to-Point su RS-232, Master-Slave/Token-Passing su RS- 485, ZigBee e LonTalk.
+
 ##  **Canali di comunicazione principali in una rete di sensori**
 
 **Riassumendo**, sono necessari almeno due canali di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
