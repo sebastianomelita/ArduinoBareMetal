@@ -169,8 +169,8 @@ Esempio di bus **SPI** detto anche 4 fili (**four-wire**):
  - i **fili** del BUS sono **attestati** sui **morsetii A e B** del driver. La differenza A-B codifica il valore del bit trasmesso.
  - le **linee bilanciate** permettono distanze che vanno da un **minimo** di 30cm ad un **massimo** di circa 1Km. 
  - il **numero di dispositivi** connettibile dipende dalle implementazioni e dalla massima corrente erogabile sul BUS, accreditato è un numero di almeno 32 dispositivi.
- - può essere arbitrato dal protocollo **Modbu** che gestisce diversi servizi codificati nel campo **function code** contenuto nel telegramma di ciascuna richiesta
- - può essere arbitrato dal protocolllo DMX (Digital MultipleX), uno standard di comunicazione digitale usato principalmente per il controllo dell'illuminazionedi scena nell'industria dello spettacolo.
+ - può essere arbitrato dal protocollo **Modbus** che gestisce diversi servizi codificati nel campo **function code** contenuto nel telegramma di ciascuna richiesta
+ - può essere arbitrato dal protocolllo **DMX** (Digital MultipleX), uno standard di comunicazione digitale usato principalmente per il controllo dell'illuminazionedi scena nell'industria dello spettacolo.
 
  <img src="rs485network.png" alt="alt text" width="600">
  
@@ -178,7 +178,8 @@ Esempio di bus **SPI** detto anche 4 fili (**four-wire**):
 
  <img src="Modbus-system-example.png" alt="alt text" width="600">
  
- Abbiamo visto BUS centralizzati e di uso generale cioè liberamente adoperabili in progetti per realizzazioni
+Abbiamo visto BUS centralizzati e di uso generale cioè liberamente adoperabili in progetti per realizzazioni customizzate. Esistono molti altri protocolli adatti per situazioni specifiche che non abbiamo trattato. Alcuni utilizano una tipologia di arbitaggio del bus decentralizzazta basata su protocolli di accesso ALOHA o CSMA/CA O CSMA/CD.
+
  
 ##  **Topologia delle reti di sensori wireless**     
  
