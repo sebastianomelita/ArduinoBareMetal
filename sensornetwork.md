@@ -188,7 +188,7 @@ Molti di questi forniscono una **definizione elaborata**, **standard** ed **esau
 
 <img src="bacnet-knx.png" alt="alt text" width="1000">
 
-**BACnet** è stato progettato per consentire la comunicazione dei sistemi di automazione e controllo degli edifici per applicazioni come il **controllo** del **riscaldamento**, della **entilazione** e del **condizionamento** dell'**aria** (**HVAC**), il controllo dell'**illuminazione**, il controllo degli **accessi** e i sistemi di **rilevazione incendi** e le relative apparecchiature. Ha una **struttura centralizzata** sia per l'arbitraggio del BUS che per la gestione della rete.
+**BACnet** è stato progettato per consentire la comunicazione dei sistemi di automazione e controllo degli edifici per applicazioni come il **controllo** del **riscaldamento**, della **entilazione** e del **condizionamento** dell'**aria** (**HVAC**), il controllo dell'**illuminazione**, il controllo degli **accessi** e i sistemi di **rilevazione incendi** e le relative apparecchiature. Ha una **struttura centralizzata** er la gestione della rete e l'arbitaggio del BUS è di tipo **distribuito deterministico a gettone (token**).
 
 Il **protocollo BACnet** definisce un numero di collegamenti **ati/livelli fisici**, inclusi **ARCNET**, **Ethernet**, **BACnet/IP**, **BACnet/IPv6**, **BACnet/MSTP**, **Point-to-Point** su RS-232, **Master-Slave/Token-Passing** su RS- 485, **ZigBee** e **LonTalk**.
 
