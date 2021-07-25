@@ -384,6 +384,7 @@ Gli **stack commerciali**, essendo completi fino al **livello di applicazione**,
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6806188/
 - https://en.wikipedia.org/wiki/BACnet
 - https://it.wikipedia.org/wiki/KNX_(standard)
+- https://optigo.net/blog/which-better-bacnet-lonworks-modbus-or-knx
 - https://en.wikipedia.org/wiki/List_of_automation_protocols
 
 >[Torna all'indice generale](index.md)
