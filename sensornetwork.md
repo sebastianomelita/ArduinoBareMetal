@@ -178,7 +178,7 @@ Esempio di bus **SPI** detto anche 4 fili (**four-wire**):
  Esempio di bus **RS485**:
  - è costituito da **2 fili**, escluso il filo **GND**, comune a tutti i collegamenti che **NON** va collegato anch'esso al sensore
  - il **BUS RS485** è **bilanciato** per cui non è possibile collegare i suoi terminali direttamente sulle porte digitali di un microcontrollore ma bisogna interporre **un driver HW** che trasli i livelli da logica TTL (a 5V o 3.3V) a logica bilanciata AB.
- - i **fili** del BUS sono **attestati** sui **morsetii A e B** del driver. La differenza A-B codifica il valore del bit trasmesso.
+ - i **fili** del BUS sono **attestati** sui **morsetti A e B** del driver. La differenza A-B codifica il valore del bit trasmesso.
  - le **linee bilanciate** permettono distanze che vanno da un **minimo** di 30cm ad un **massimo** di circa 1Km. 
  - il **numero di dispositivi** connettibile dipende dalle implementazioni e dalla massima corrente erogabile sul BUS, accreditato è un numero di almeno 32 dispositivi.
  - può essere arbitrato dal protocollo **Modbus** che gestisce diversi servizi codificati nel campo **function code** contenuto nel telegramma di ciascuna richiesta
@@ -191,9 +191,11 @@ Esempio di bus **SPI** detto anche 4 fili (**four-wire**):
  <img src="Modbus-system-example.png" alt="alt text" width="600">
  
  Esempio di bus **CAN**:
+ - è diffuso in automotive, in home automation è una possibilità ancora poco utilizzata.
+ - **scelta economica** se la scheda microntrollore possiede già con un driver logico a bordo realizzato in HW che espone una interfaccia CAN TTL nella pedinatura.
  - è costituito da **2 fili** CANH e CANL
  - il **CANBus** è **bilanciato** per cui non è possibile collegare i suoi terminali direttamente sulle porte digitali di un microcontrollore ma bisogna interporre **un driver HW** che trasli i livelli da logica TTL (a 5V o 3.3V) a logica bilanciata HL.
- - i **fili** del BUS sono **attestati** sui **morsetii CANH e CANL** del driver. La differenza CANH-CANL codifica il valore del bit trasmesso.
+ - i **fili** del BUS sono **attestati** sui **morsetti CANH e CANL** del driver. La differenza CANH-CANL codifica il valore del bit trasmesso.
  - le **linee bilanciate** permettono distanze che vanno da un **minimo** di 40m ad un **massimo** di circa 13Km (1Mbps-5kbps). 
  - il **numero di dispositivi** connettibile dipende dalle implementazioni, dalla massima corrente erogabile sul BUS e dai ritardi, accreditato è un numero di almeno un centinaio di dispositivi.
  - a differenza di tutti i BUS precedenti, l'**accesso** è regolato con un protocollo di **arbitraggio distribuito CSMA/CA**
