@@ -318,6 +318,8 @@ La **multiplazione SDM** (divisione di spazio) del mezzo radio è sempre in qual
 
 <img src="cellulare.png" alt="alt text" width="300">
 
+I dispositivi mobili che si spostano da una cella all'altra vengono presi in carico automaticamente e in modo trasparente dalla nuova cella senza perdere il collegamento (meccanismo del roaming).
+
 
 ## **Servizi di accesso radio per WSN**
 
