@@ -180,7 +180,7 @@ Esempio di bus **SPI** detto anche 4 fili (**four-wire**):
  
 Abbiamo visto BUS centralizzati e di uso generale cioè liberamente adoperabili in progetti per realizzazioni customizzate. Esistono molti altri protocolli adatti per situazioni specifiche che non abbiamo trattato. Alcuni utilizano una tipologia di arbitraggio del bus decentralizzazta basata su protocolli di accesso ALOHA o CSMA/CA O CSMA/CD. In genere fanno tutti parte di **stack commerciali** che si occupano di domotica e automazione che a livello fisico utilizzano sia reti cablate che wireless. Esempi notevoli sono KNX, BACNet, DALI.
 
-##  **Stack cablati specifici per IOT**
+##  **Stack cablati specifici per domotica e sensoristica**
 
 <img src="bacnet-knx.png" alt="alt text" width="1000">
 
