@@ -380,9 +380,9 @@ Gli **stack commerciali**, essendo completi fino al **livello di applicazione**,
 - https://openwsn.atlassian.net/wiki/spaces/OW/overview
 - https://www.mdpi.com/2224-2708/2/2/235/htm
 - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6806188/
-- https://en.wikipedia.org/wiki/List_of_automation_protocols
 - https://en.wikipedia.org/wiki/BACnet
 - https://it.wikipedia.org/wiki/KNX_(standard)
+- https://en.wikipedia.org/wiki/List_of_automation_protocols
 
 >[Torna all'indice generale](index.md)
     
