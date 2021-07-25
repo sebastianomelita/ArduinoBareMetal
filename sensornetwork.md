@@ -194,7 +194,7 @@ Molti di questi forniscono una **definizione elaborata**, **standard** ed **esau
 
 Il **protocollo BACnet** definisce un numero di collegamenti **ati/livelli fisici**, inclusi **ARCNET**, **Ethernet**, **BACnet/IP**, **BACnet/IPv6**, **BACnet/MSTP**, **Point-to-Point** su RS-232, **Master-Slave/Token-Passing** su RS- 485, **ZigBee** e **LonTalk**. 
 
-**LonTalk** è un protocollo **molto sofisticato**, perché copre i 7 livelli ISO/OSI, può essere adoperato sopra **qualunque strato fisico**, utilizzando l’ opportuno **transceiver**. L'accesso al bus è **distribuito** di tipo **CSMA/CD** e gestisce sottoreti fino a 128 nodi (con router fino a 32.000 nodi). La sua **velocità** arriva fino a 1,25 Mbit/s, ma può essere limitata dai mezzi trasmissivi.
+**LonTalk** è un protocollo **molto sofisticato**, perché copre i 7 livelli ISO/OSI, può essere adoperato sopra **qualunque strato fisico**, utilizzando l'opportuno **transceiver**. L'accesso al bus è **distribuito** di tipo **CSMA/CD** e gestisce sottoreti fino a 128 nodi (con router fino a 32.000 nodi). La sua **velocità** arriva fino a 1,25 Mbit/s, ma può essere limitata dai mezzi trasmissivi.
 
 **KNX** è uno **standard** di building automation **aperto**, **coperto da royalty**. Il marchio KNX non è una semplice dichiarazione del produttore, ma si basa sul superamento di **prove di conformità** effettuate dai laboratori di KNX. Le **aziende** interessate al marchio, al prezzo di una tassa versata all'associazione KNX, effettuano le prove ed ottengono la **certificazione** (non basta una **autocertificazione**)
 
