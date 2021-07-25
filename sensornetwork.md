@@ -196,7 +196,7 @@ Lo **standard KNX** prevede **diversi mezzi trasmissivi** che possono essere uti
 - **TP-1** (Twisted Pair, tipo 1): Mezzo trasmissivo basato su cavo a conduttori intrecciati con bitrate di 9600 bit/s, proveniente da EIB. Le comunicazioni sono didirezionali e half duplex regolate da un protocollo di arbitraggio peer to peer di tipo CSMA/CA. I dispositivi comunicano direttamente tra loro senza l'ausilio di un master centrale. 
 - **PL-110** (Power Line, 110 kHz): Mezzo trasmissivo ad onda convogliata (power-line) con bitrate di 1200 bit/s, proveniente da EIB. I prodotti certificati EIB e KNX PL-110 funzionano e comunicano fra di loro sulla stessa rete di distribuzione dell'alimentazione elettrica. Usano la modulazione S-FSK (spread frequency-shift keying) che genera un canale half dupex arbitrato da CSMA/CA.
 - **RF** (Radio Frequency, 868 MHz): Mezzo trasmissivo in radiofrequenza con bitrate di 38.4 kBit/s, sviluppato direttamente all'interno della piattaforma standard KNX.
-- **Ethernet** (KNXnet/IP): Mezzo trasmissivo diffuso che può essere utilizzato unitamente alle specifiche KNXnet/IP che permettono il tunneling di frame KNX incorporati in frame IP (Internet Protocol).
+- **Ethernet** (KNXnet/IP): Mezzo trasmissivo ottenuto mediante il tunneling di frame KNX incorporati in frame IP (Internet Protocol) convogliate su reti LAN di qualunque tipo (Ethernet, WiFi).
 
 
  
