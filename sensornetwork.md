@@ -192,7 +192,7 @@ Esempio di bus **SPI** detto anche 4 fili (**four-wire**):
  
  Esempio di bus **CAN**:
  - è diffuso in automotive, in home automation è una possibilità ancora poco utilizzata.
- - **scelta economica** se la scheda microntrollore possiede già con un driver logico a bordo realizzato in HW che espone una interfaccia CAN TTL nella pedinatura.
+ - **scelta economica** se la scheda microntrollore possiede già con un driver logico (CAN Controller) a bordo realizzato in HW che espone una interfaccia CAN TTL nella pedinatura.
  - è costituito da **2 fili** CANH e CANL
  - il **CANBus** è **bilanciato** per cui non è possibile collegare i suoi terminali direttamente sulle porte digitali di un microcontrollore ma bisogna interporre **un driver HW** che trasli i livelli da logica TTL (a 5V o 3.3V) a logica bilanciata HL.
  - i **fili** del BUS sono **attestati** sui **morsetti CANH e CANL** del driver. La differenza CANH-CANL codifica il valore del bit trasmesso.
