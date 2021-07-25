@@ -105,7 +105,7 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 
 Nelle **reti industriali** sono molto comuni topologie complesse a più livelli. Per le applicazioni di **nostro interesse** le **topologie** più adoperate sono quelle classiche a **stella** e a **bus**. **I collegamenti** dei sensori, in questo caso, si attestano sulle **porte** di **schede programmabili** che ospitano dispositivi a microcontrollore. Le stesse schede hanno, in genere, funzione di **gateway** verso la **rete di distribuzione** per cui posseggono almeno **due interfacce**: una **verso il BUS** ed un altra, ethernet ed IP **verso la rete LAN**. Inoltre le schede ospitano le **librerie** SW di **gestione del BUS** e il codice per realizzare il **bridge** tra il **livello applicativo** in uso nella rete di sensori e quello in uso nella rete IP. Il **bridge** è generalmente realizzato o da librerie di **terze parti** oppure direttamente dal **programmatore** in C/C++ o, se la potenza di calcolo della scheda lo consente, mediante linguaggi di scripting come **Python** o **Node.js**. Si realizzano spesso anche in maniera **visuale** adoperando **framework** come **Nodered** e **Openhab**.
 
-### **Esempi di collegamenti con topologia a stella**:
+### **Esempi di collegamenti base con topologia a stella**:
 
   <img src="Star-network-1024x466.png" alt="alt text" width="700">
   
@@ -127,7 +127,7 @@ Nelle **reti industriali** sono molto comuni topologie complesse a più livelli.
   
   <img src="potenziometro.png" alt="alt text" width="500">
 
-### **Esempi di collegamenti con topologia a bus:**
+### **Esempi di collegamenti base con topologia a bus:**
 
 Il BUS è un mezzo ad **accesso multiplo** composto da un **unico filo** per **tutte** le stazioni. Il tipo del collegamento **in parallelo** dei dispositivi lo rende un **mezzo broadcast** cioè un mezzo dove se una stazione **parla** tutte le altre ricevono ed **ascoltano**. I mezzi broadcast sono soggetti a **collisioni** che devono essere risolte costringendo le stazioni a parlare **una alla volta** mediante un **protocollo di arbitraggio**. Questi si dividono in due categorie: **centralizzati** e **distribuiti**. Quelli con cui si collegano i **dispositivi sensori** sono spesso **centralizzati** e comunque lo sono quelli che vedremo di seguito.
 
@@ -208,7 +208,7 @@ Lo **standard KNX** prevede **diversi mezzi trasmissivi** che possono essere uti
 
 ### **Tendenze future**
 
-Le **prestazioni** elevate delle **interfacce general purpose** (**Ethernet**, ecc.), la loro possibilità di alimentare via **POE** i dispositivi e la costante diminuzione del **prezzo**, sta introducendo una tendenza all’ utilizzo di queste ultime, che compensano con l’ eccesso di prestazioni e i bassi costi il fatto di non essere concettualmente adatte all’impiego in automazione. I sensori e gli attuatori o escono dalla fabbrica direttamente con prese ethernet oppure si collegano con i protocolli di livello fisico basilari con collegamento a stella o a BUS su piccole schede a microprocessore che, dotate di connettività ethernet, ricoprono il ruolo di gateway.
+Le **prestazioni** elevate delle **interfacce general purpose** (**Ethernet**, ecc.), la loro possibilità di alimentare via **POE** i dispositivi e la costante diminuzione del **prezzo**, sta introducendo una tendenza all’ utilizzo di queste ultime, che compensano con l’ eccesso di prestazioni e i bassi costi il fatto di non essere concettualmente adatte all’impiego in automazione. I sensori e gli attuatori o escono dalla fabbrica direttamente con prese ethernet oppure si collegano con i protocolli di livello fisico **basilari** con collegamento a stella o a BUS su piccole schede a microprocessore che, dotate di connettività ethernet, ricoprono il ruolo di gateway.
 
 
  
