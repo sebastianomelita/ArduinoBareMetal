@@ -182,11 +182,15 @@ Esempio di bus **SPI** detto anche 4 fili (**four-wire**):
  
 Abbiamo visto BUS **centralizzati** e di uso generale che **definiscono** il **livello fisico** di una comunicazione via cavo. Degli altri livelli OSI o **non forniscono** affatto la definizione o ne forniscono una **molto essenziale** sotto forma di **function code**. Esistono molti altri **stack commerciali** che si occupano di domotica e automazione che a livello fisico utilizzano sia **reti cablate** che **wireless**. **Esempi notevoli** sono **KNX**, **BACNet**, **DALI**. 
 
-<img src="tassobus.png" alt="alt text" width="700">
-
 Molti di questi forniscono una **definizione elaborata**, **standard** ed **esaustiva** di tutti i possibili **tipi di servizi** adoperabili nei vari **scenari pratici** dell'automazione (dall'accensione di una lampadina all'azionamento di una tapparella, ecc.) spesso **catalogati e raccolti** in strutture dati dette **profili**. Molti di questi BUS, per **accrescere l'affidabilità**, adoperano un **arbitraggio** del mezzo trasmissivo di tipo **peer to peer** usando, ad esempio, protocolli di tipo **ALOHA** o **CSMA/CA**. 
 
 ### **Stack cablati specifici per domotica e sensoristica**:
+
+Molte architetture commerciali adoperano complessi BUS di campo adatti per impianti di grandi dimensioni e molto strutturati, con una cablatura parallela ed a parte rispetto a quella ethernet utilizzata dai dati.
+
+<img src="tassobus.png" alt="alt text" width="700">
+
+Due stack sofisticati utilizzati per la gestione dell'automazione degli edifici sono BACNet e KNX:
 
 <img src="bacnet-knx.png" alt="alt text" width="1000">
 
@@ -208,7 +212,7 @@ Lo **standard KNX** prevede **diversi mezzi trasmissivi** che possono essere uti
 
 ### **Tendenze future**
 
-Le **prestazioni** elevate delle **interfacce general purpose** (**Ethernet**, ecc.), la loro possibilità di alimentare via **POE** i dispositivi e la costante diminuzione del **prezzo**, sta introducendo una tendenza all’ utilizzo di queste ultime, che compensano con l’ eccesso di prestazioni e i bassi costi il fatto di non essere concettualmente adatte all’impiego in automazione. I sensori e gli attuatori o escono dalla fabbrica direttamente con prese ethernet oppure si collegano con i protocolli di livello fisico **basilari** con collegamento a stella o a BUS su piccole schede a microprocessore che, dotate di connettività ethernet, ricoprono il ruolo di gateway.
+Le **prestazioni** elevate delle **interfacce general purpose** (**Ethernet**, ecc.), la loro possibilità di alimentare via **POE** i dispositivi e la costante diminuzione del **prezzo**, sta introducendo una tendenza all’ utilizzo di queste ultime, che compensano con l’ eccesso di prestazioni e i bassi costi il fatto di non essere concettualmente adatte all’impiego in automazione. I sensori e gli attuatori o escono dalla fabbrica direttamente con prese ethernet oppure si collegano con i protocolli di livello fisico **basilari** con collegamento a stella o a BUS su piccole schede a microprocessore che, dotate di connettività ethernet, ricoprono il ruolo di gateway. Questa filosofia permette di creare snelle reti a BUS che si strutturano in maniera più articolata poggiandosi sulla stessa rete IP adoperata per i dati.
 
 
  
