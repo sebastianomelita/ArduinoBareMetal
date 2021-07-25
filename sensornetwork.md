@@ -208,7 +208,7 @@ Lo **standard KNX** prevede **diversi mezzi trasmissivi** che possono essere uti
 
 ### **Tendenze future**
 
-Le **prestazioni** elevate delle **interfacce general purpose** (**Ethernet**, ecc.), la loro possibilità di alimentare via **POE** i dispositivi e la costante diminuzione del **prezzo**, sta introducendo una tendenza all’ utilizzo di queste ultime, che compensano con l’ eccesso di prestazioni e i bassi costi il fatto di non essere concettualmente adatte all’impiego in automazione.
+Le **prestazioni** elevate delle **interfacce general purpose** (**Ethernet**, ecc.), la loro possibilità di alimentare via **POE** i dispositivi e la costante diminuzione del **prezzo**, sta introducendo una tendenza all’ utilizzo di queste ultime, che compensano con l’ eccesso di prestazioni e i bassi costi il fatto di non essere concettualmente adatte all’impiego in automazione. I sensori e gli attuatori o escono dalla fabbrica direttamente con prese ethernet oppure si collegano con i protocolli di livello fisico basilari con collegamento a stella o a BUS su piccole schede a microprocessore che, dotate di connettività ethernet, ricoprono il ruolo di gateway.
 
 
  
