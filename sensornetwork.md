@@ -272,6 +272,7 @@ Il **grafico sotto** mostra **il posizionamento** delle varie tecnologie wireles
 - **lungo raggio**. **LPWAN** (Low Power Wide Area Network) garantiscono una trasmissione a **lungo raggio** (da qualche chilometro a qualche decina di chilometri), un **consumo energetico contenuto** per la trasmissione/ricezione dati e un **basso costo** di realizzazione dei dispositivi al prezzo di una **ridotta velocità** di trasferimento dati (poche decine di kilobit al secondo). Forniscono anche **servizi outdoor** di **posizionamento** e **tracciamento** di oggetti. Sono adatti sia per applicazioni indoor che autdoor ma **outdoor** forniscono servizi che altre tecnologie hanno difficolta a fornire con uguale semplicità. L'infrastruttura è leggera dato che anche migliaia di dispositivi possono essere serviti da un'unica BS (Stazione Base) chiamata Gateway. Il resto dell'infrastruttura può essere realizzato semplicemente in house e utilizzato ancora più semplicemente se realizzato in cloud. Le principali **tecnologie LPWA** attualmente disponibili sono **LoraWan**, **Sigfox** e, recentemente, **RIIoT**.  **VSAT** è una tecnologia satellitare piuttosto datata ma a basso costo e disponibile ovunque nel globo, è utilizzata in regioni rurali e con alimentazione solare.
 
 <img src="Data-rate-vs-range-in-communication-networks-Source-27.png" alt="alt text" width="700">
+<img src="detail-0503_how-is-a-private-5g-network-different-from-a-public-5g-network1-1.webp" alt="alt text" width="700">
 
 ## **Interfaccia radio**
 
@@ -422,6 +423,7 @@ Gli **stack personalizzati** o **opensource** sono utili per realizzare **soluzi
 - https://optigo.net/blog/which-better-bacnet-lonworks-modbus-or-knx
 - https://en.wikipedia.org/wiki/List_of_automation_protocols
 - https://iot.eetimes.com/private-lte-networks-for-critical-iot-applications/
+- https://www.samsung.com/global/business/networks/insights/blog/0503_how-is-a-private-5g-network-different-from-a-public-5g-network/
 
 >[Torna all'indice generale](index.md)
     
