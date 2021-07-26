@@ -421,6 +421,7 @@ Gli **stack personalizzati** o **opensource** sono utili per realizzare **soluzi
 - https://it.wikipedia.org/wiki/KNX_(standard)
 - https://optigo.net/blog/which-better-bacnet-lonworks-modbus-or-knx
 - https://en.wikipedia.org/wiki/List_of_automation_protocols
+- https://iot.eetimes.com/private-lte-networks-for-critical-iot-applications/
 
 >[Torna all'indice generale](index.md)
     
