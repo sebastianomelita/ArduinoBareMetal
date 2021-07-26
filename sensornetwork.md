@@ -343,11 +343,11 @@ Un'altra tecnologia radio realizza **accesso al canale singolo**, nel senso che 
 
 E' una tecnologia che realizza un **accesso al canale multiplo**, cioè i bit di una comunicazione vengono inviati contemporaneamente in parallelo su **più canali** OFDM detti **sottoportanti**. L'**ampiezza complessiva** di tutte le sottoportanti allocate per una comunicazione è uguale all'**ampiezza** di banda della **comunicazione** stessa. In sostanza, la **banda del canale** originaria è divisa in **fette (slices)** ed ogni fetta e distribuita in **posizioni non contigue** dello spettro. La scelta delle **frequenze** dove sparpaglare è fatta usando il criterio della **ortogonalità delle sottoportanti**, cioè la proprietà che hanno le **"fette"** di un canale di **non interferirsi mai** con quelle di un altro canale. Questa proprietà (che non si ottiene prendendo sottoportanti a caso) garantisce una **distribuzione** abbastanza **uniforme** delle sottoportanti lungo tutta la banda per cui, in presenza di una **interferenza distruttiva** ad una certa frequenza si perderanno le informazioni li trasmesse ma non quelle trasmesse sulle altre sotoportanti di quel canale. E' il criterio dei **compartimenti stagni** di una nave (le **sottoportanti**) applicato al **canale** di una sorgente (l'intera **nave**). E'adoperato dal **WiFi 5** e dalla telefonia mobile **4G**. Ha la proprità di trasmettere dati ad **alta velocità** in ambienti con **forti interferenze**.
 
-<img src="xofdm2.png.pagespeed.ic.xbNKOFXXdi.webp" alt="alt text" width="600">
+<img src="xofdm2.png.pagespeed.ic.xbNKOFXXdi.webp" alt="alt text" width="700">
 
 ### **OFDMA**
 
-<img src="ofdma.jpg" alt="alt text" width="600">
+<img src="ofdma.jpg" alt="alt text" width="1000">
 
 Qualunque sia la modalità di accesso, alla fine, su **questo canale risultante**, privato ed eventualmente associato ad un certo **SSID**, a seconda del **servizio richiesto**, **possono parlare**:
 - **due interlocutori**.
