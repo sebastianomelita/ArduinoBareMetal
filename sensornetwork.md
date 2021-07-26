@@ -442,6 +442,7 @@ Uno **stack commerciale**, essendo completo fino al **livello di applicazione**,
 - https://www.samsung.com/global/business/networks/insights/blog/0503_how-is-a-private-5g-network-different-from-a-public-5g-network/
 - https://www.grandmetric.com/2018/03/15/how-does-ofdm-work/
 - https://www.asus.com/it/support/FAQ/1042759/
+- https://www.gta.ufrj.br/ensino/eel879/trabalhos_vf_2014_2/rafaelreis/ofdma_scfdma.html
 
 >[Torna all'indice generale](index.md)
     
