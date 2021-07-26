@@ -348,6 +348,7 @@ E' una tecnologia che realizza un **accesso al canale multiplo**, cioè i bit di
 ### **OFDMA**
 
 <img src="ofdma.jpg" alt="alt text" width="1000">
+<img src="ofdma.png" alt="alt text" width="700">
 
 Qualunque sia la modalità di accesso, alla fine, su **questo canale risultante**, privato ed eventualmente associato ad un certo **SSID**, a seconda del **servizio richiesto**, **possono parlare**:
 - **due interlocutori**.
