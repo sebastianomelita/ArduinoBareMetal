@@ -440,6 +440,7 @@ Uno **stack commerciale**, essendo completo fino al **livello di applicazione**,
 - https://iot.eetimes.com/private-lte-networks-for-critical-iot-applications/
 - https://www.samsung.com/global/business/networks/insights/blog/0503_how-is-a-private-5g-network-different-from-a-public-5g-network/
 - https://www.grandmetric.com/2018/03/15/how-does-ofdm-work/
+- https://www.asus.com/it/support/FAQ/1042759/
 
 >[Torna all'indice generale](index.md)
     
