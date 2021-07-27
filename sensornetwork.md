@@ -369,10 +369,10 @@ Il segnale iniziale viene processato da **due blocchi**. Il **secondo** è un no
 
 Nella **figura** sottostante, **4 simboli**, con **4 colori diversi**, erano **inizialmente** trasmessi **in parallelo** su **4 sottoportanti** diverse ma con **ampiezze nel tempo** molto **ariabil**i. Dopo il **blocco DFT**, hanno **ampiezza costante** nel tempo ma variabile nella frequenza. Inoltre la DFT, di fatto, ha effettuatto una conversione dei simboli da parallelo a seriale perchè vengono **trasmessi nel tempo in serie**, uno dopo l'altro.
 
-<img src="sc-fdma.png" alt="alt text" width="1000">
+<img src="sc-fdma.png" alt="alt text" width="800">
 
 
-
+### **Classificazione dei servizi radio**
 
 Qualunque sia la modalità di accesso, alla fine, su **questo canale risultante**, privato ed eventualmente associato ad un certo **SSID**, a seconda del **servizio richiesto**, **possono parlare**:
 - **due interlocutori**.
