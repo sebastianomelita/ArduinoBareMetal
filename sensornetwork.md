@@ -345,7 +345,7 @@ Un'altra tecnologia radio realizza **accesso al canale singolo**, nel senso che 
 
 <img src="Time-Slotted-Channel-Hopping-TSCH-slot-channel-matrix-with-a-simple-network-topology.png" alt="alt text" width="600">
 
-E' usata dal protocollo IEEE 802.15.4g/e, livello fisico degli stack **RIIoT**, **OpenWSN** e delle ultime versioni di **Zigbee** e **6LowPan**.
+E' usata dal protocollo IEEE 802.15.4g/e, livello fisico degli stack **RIIoT**, **OpenWSN** e dalle ultime versioni di **Zigbee** e **6LowPan**.
 
 
 ### **OFDM**
