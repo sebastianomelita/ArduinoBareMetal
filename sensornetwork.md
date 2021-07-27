@@ -351,7 +351,7 @@ Benchè venga effettuato un **TDM**, può accadere che le **bitrate** delle sorg
 
 Servono per far ciò: 
 - la possibilità di inviare messaggi di **sorgenti diverse** su **sottoportanti diverse** dello stesso canale
-- una **schedulazione efficace** che sappia **riordinare** i messaggi sulle sottoportanti cercando di rispettare le richiestein termini di **latenza** che erano state **prenotate** per ogni sorgente in fase di **setup** della connessione. 
+- una **schedulazione efficace** che sappia **riordinare** i messaggi sulle sottoportanti cercando di rispettare le richieste in termini di **latenza** che erano state **prenotate** per ogni sorgente in fase di **setup** della connessione. 
 
 <img src="ofdma.jpg" alt="alt text" width="1000">
 
