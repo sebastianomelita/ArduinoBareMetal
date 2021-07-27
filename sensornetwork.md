@@ -375,7 +375,7 @@ OFDMA divide lo spettro in **unità di risorse tempo-frequenza (RU)**. Un'**enti
 
 <img src="ofdm_ofdma.png" alt="alt text" width="700">
 
-E' adoperato dal **WiFi 6** e dalla telefonia mobile **5G** e anche dal downlink dello **NB IoT**.
+E' adoperato dal **downlink** di **WiFi 6**, telefonia mobile **5G** e **NB IoT**.
 
 ### **SC-FDMA**
 
@@ -387,7 +387,7 @@ Nella **figura** sottostante, **4 simboli**, con **4 colori diversi**, erano **i
 
 <img src="sc-fdma.png" alt="alt text" width="800">
 
-E'adoperato dal **WiFi 6** e dall'uplink della telefonia mobile **5G** e anche dal uplink dello **NB IoT**.
+E'adoperato dall'**uplink** di **WiFi 6**, della telefonia mobile **5G** e **NB IoT**.
 
 
 ### **Classificazione dei servizi radio**
