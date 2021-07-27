@@ -387,6 +387,8 @@ Nella **figura** sottostante, **4 simboli**, con **4 colori diversi**, erano **i
 
 <img src="sc-fdma.png" alt="alt text" width="800">
 
+E'adoperato dal **WiFi 6** e dall'uplink della telefonia mobile **5G** e anche dal uplink dello **NB IoT**.
+
 
 ### **Classificazione dei servizi radio**
 
