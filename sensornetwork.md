@@ -361,6 +361,15 @@ La **principale differenza** tra un sistema **OFDM** e un sistema **OFDMA** (Ort
 
 <img src="ofdm_ofdma.png" alt="alt text" width="700">
 
+### **SC-FDMA**
+
+SC-FDMA ha attirato grande attenzione come alternativa interessante a OFDMA, specialmente nelle comunicazioni uplink poichè il rapporto di potenza di picco potenza su media media basso (PAPR) avvantaggia notevolmente il terminale mobile in termini di efficienza della potenza di trasmissione e costi ridotti dell'amplificatore di potenza. È stato adottato come schema di accesso multiplo del 5G e del NB-IoT.
+
+<img src="sc-fdma.png" alt="alt text" width="1000">
+
+Il segnale iniziale viene processato da due blocchi. Il secondo è un normale OFDMA mentre il primo si chiama DFT ed è una elaborazione numerica il cui effetto finale è di convertire i simboli dei dati nel dominio del tempo trasportandoli nel dominio della frequenza. Il risultato è che essi sono disposti in frequenza allo stesso modo in cui erano prima disposti nel tempo. Una volta nel dominio della frequenza, vengono trasportati nella posizione desiderata nella larghezza di banda complessiva del canale. 
+
+
 
 Qualunque sia la modalità di accesso, alla fine, su **questo canale risultante**, privato ed eventualmente associato ad un certo **SSID**, a seconda del **servizio richiesto**, **possono parlare**:
 - **due interlocutori**.
