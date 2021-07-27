@@ -354,9 +354,10 @@ E' una tecnologia che realizza un **accesso al canale multiplo**, cioè i bit di
 
 Questa proprietà (che si ottiene prendendo sottoportanti opportunamente spaziate) garantisce una **distribuzione** abbastanza **uniforme** delle sottoportanti lungo tutta la banda per cui, in presenza di una **interferenza distruttiva** ad una certa frequenza si perderanno le informazioni li trasmesse ma non quelle trasmesse sulle altre sotoportanti di quel canale. E' il criterio dei **compartimenti stagni** di una nave (le **sottoportanti**) applicato al **canale** di una sorgente (l'intera **nave**). All'**interno** del canale OFDM viena fatta una multiplazione **TDM** per cui, al variare del tempo, sullo  **stesso canale** verranno allocate **sorgenti diverse**. 
 
+<img src="xofdm2.png" alt="alt text" width="1000">
+
 E' adoperato dal **WiFi 5** e dalla telefonia mobile **4G**. Ha la proprità di trasmettere dati ad **alta velocità** in ambienti con **forti interferenze**. 
 
-<img src="xofdm2.png" alt="alt text" width="1000">
 
 ### **OFDMA**
 
@@ -372,9 +373,9 @@ La **principale differenza** tra un sistema **OFDM** e un sistema **OFDMA** (Ort
 
 OFDMA divide lo spettro in **unità di risorse tempo-frequenza (RU)**. Un'**entità di coordinamento centrale** (l'AP in 802.11ax) assegna le UR per la ricezione o la trasmissione alle stazioni associate. La **pianificazione centralizzata** delle RU permette di evitare un sovraccarico di contesa del canale, il che aumenta l'efficienza in contesti affollati di richieste di accesso.
 
-E' adoperato dal **WiFi 6** e dalla telefonia mobile **5G** e anche dal downlink dello **NB IoT**.
-
 <img src="ofdm_ofdma.png" alt="alt text" width="700">
+
+E' adoperato dal **WiFi 6** e dalla telefonia mobile **5G** e anche dal downlink dello **NB IoT**.
 
 ### **SC-FDMA**
 
