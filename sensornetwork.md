@@ -363,11 +363,11 @@ La **principale differenza** tra un sistema **OFDM** e un sistema **OFDMA** (Ort
 
 ### **SC-FDMA**
 
-SC-FDMA ha attirato grande attenzione come alternativa interessante a OFDMA, specialmente nelle comunicazioni uplink poichè il rapporto di potenza di picco potenza su media media basso (PAPR) avvantaggia notevolmente il terminale mobile in termini di efficienza della potenza di trasmissione e costi ridotti dell'amplificatore di potenza. È stato adottato come schema di accesso multiplo del 5G e del NB-IoT.
+**SC-FDMA** ha attirato grande attenzione come **alternativa** interessante a OFDMA, specialmente nelle **comunicazioni uplink** poichè il rapporto di potenza di picco potenza su media media basso (**PAPR**) avvantaggia notevolmente **il terminale mobile** in termini di efficienza della potenza di trasmissione e costi ridotti dell'amplificatore di potenza. È stato adottato come schema di accesso multiplo del 5G e del NB-IoT.
 
-Il segnale iniziale viene processato da due blocchi. Il secondo è un normale OFDMA mentre il primo si chiama DFT ed è una elaborazione numerica il cui effetto finale è di convertire i simboli dei dati nel dominio del tempo trasportandoli nel dominio della frequenza. Il risultato è che essi sono disposti in frequenza allo stesso modo in cui erano prima disposti nel tempo. Una volta nel dominio della frequenza, vengono trasportati nella posizione desiderata nella larghezza di banda complessiva del canale. 
+Il segnale iniziale viene processato da **due blocchi**. Il **secondo** è un normale **OFDMA** mentre **il primo** si chiama **DFT** ed è una **elaborazione numerica** il cui effetto finale è di **convertire** i simboli dei dati dal dominio del tempo trasportandoli nel dominio della frequenza. Il **risultato** è che essi sono **disposti in frequenza** allo stesso modo in cui erano prima **disposti nel tempo**. Una volta nel dominio della frequenza, vengono trasportati nella posizione desiderata nella larghezza di banda complessiva del canale. 
 
-Iin figura 4 simboli, con 4 colori diversi, erano inizialmente trasmessi in parallelo su 4 sottoportanti diverse ma con ampiezze nel tempo molto variabili. Dopo il blocco DFT, hanno ampiezza costante nel tempo ma variabile nella frequenza. Inoltre la DFT, di fatto, ha effettuatto una conversione dei simboli da parallelo a seriale perchè vengono trasmessi nel tempo uno dopo l'altro.
+Nella **figura** sottostante, **4 simboli**, con **4 colori diversi**, erano **inizialmente** trasmessi **in parallelo** su **4 sottoportanti** diverse ma con **ampiezze nel tempo** molto **ariabil**i. Dopo il **blocco DFT**, hanno **ampiezza costante** nel tempo ma variabile nella frequenza. Inoltre la DFT, di fatto, ha effettuatto una conversione dei simboli da parallelo a seriale perchè vengono **trasmessi nel tempo in serie**, uno dopo l'altro.
 
 <img src="sc-fdma.png" alt="alt text" width="1000">
 
