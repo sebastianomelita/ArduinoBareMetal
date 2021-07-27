@@ -357,7 +357,11 @@ Servono per far ciò:
 
 <img src="ofdma.jpg" alt="alt text" width="1000">
 
-La **principale differenza** tra un sistema **OFDM** e un sistema **OFDMA** (Orthogonal Frequency Division Multiple Access) sta nel fatto che nell'OFDM l'utente è allocato nel dominio del **tempo soltanto**. Durante l'utilizzo di un **sistema OFDMA**, l'utente viene allocato sia **in base al tempo** che **in base alla frequenza**. Questo è utile per LTE poiché rende possibile sfruttare al meglio la pianificazione in base alla frequenza. Ad esempio, sarebbe possibile sfruttare il fatto che l'utente  potrebbe avere una **migliore qualità** del collegamento radio su specifiche sottoportanti della banda disponibile, evitando di trasmettere sulle altre che in quel momento sono molto disturbate. E' adoperato dal **WiFi 6** e dalla telefonia mobile **5G** e anche dal downlink dello **NB IoT**.
+La **principale differenza** tra un sistema **OFDM** e un sistema **OFDMA** (Orthogonal Frequency Division Multiple Access) sta nel fatto che nell'OFDM l'utente è allocato nel dominio del **tempo soltanto**. Durante l'utilizzo di un **sistema OFDMA**, l'utente viene allocato sia **in base al tempo** che **in base alla frequenza**. Questo è utile per LTE poiché rende possibile sfruttare al meglio la pianificazione in base alla frequenza. Ad esempio, sarebbe possibile sfruttare il fatto che l'utente  potrebbe avere una **migliore qualità** del collegamento radio su specifiche sottoportanti della banda disponibile, evitando di trasmettere sulle altre che in quel momento sono molto disturbate. 
+
+OFDMA divide lo spettro in **unità di risorse tempo-frequenza (RU)**. Un'**entità di coordinamento centrale** (l'AP in 802.11ax) assegna le UR per la ricezione o la trasmissione alle stazioni associate. La **pianificazione centralizzata** delle RU permette di evitare un sovraccarico di contesa del canale, il che aumenta l'efficienza in contesti affollati di richieste di accesso.
+
+E' adoperato dal **WiFi 6** e dalla telefonia mobile **5G** e anche dal downlink dello **NB IoT**.
 
 <img src="ofdm_ofdma.png" alt="alt text" width="700">
 
