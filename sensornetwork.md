@@ -347,7 +347,16 @@ E' una tecnologia che realizza un **accesso al canale multiplo**, cioè i bit di
 
 ### **OFDMA**
 
+Benchè venga effettuato un **TDM**, può accadere che le **bitrate** delle sorgenti siano **molto diverse**, per cui nello **slot assegnato** a ciascuna, l'**occupazione** di banda, e quindi delle sottoportanti, potrebbe essere soltanto **parziale**, cioè non è sfruttata appieno la capacità trasmissiva del mezzo. L'analogia del canale è quella dei TIR che in **giorni diversi** viaggiano semiscarichi quando il **carico complessivo** dei tre giorni avrebbe potuto benisssimo essere accomodato su **un unico TIR** direttamente il primo giorno. 
+
+Servono per far ciò: 
+- la possibilità di inviare messaggi di **sorgenti diverse** su **sottoportanti diverse** dello stesso canale
+- una **schedulazione efficace** cge sappia **riordinare** i messaggi sulle sottoportanti cercando di rispettare le richiestein termini di **latenza** che erano state **prenotate** per ogni sorgente in fase di **setup** della connessione. 
+
 <img src="ofdma.jpg" alt="alt text" width="1000">
+
+La **principale differenza** tra un sistema **OFDM** e un sistema **OFDMA** (Orthogonal Frequency Division Multiple Access) sta nel fatto che nell'OFDM l'utente è allocato nel dominio del **tempo soltanto**. Durante l'utilizzo di un **sistema OFDMA**, l'utente viene allocato sia **in base al tempo** che **in base alla frequenza**. Questo è utile per LTE poiché rende possibile sfruttare al meglio la pianificazione in base alla frequenza. Ad esempio, sarebbe possibile sfruttare il fatto che l'utente  potrebbe avere una migliore qualità del collegamento radio su specifiche sottoportanti della banda disponibile perchè magari meno disturbate delle altre.
+
 <img src="ofdm_ofdma.png" alt="alt text" width="700">
 
 Qualunque sia la modalità di accesso, alla fine, su **questo canale risultante**, privato ed eventualmente associato ad un certo **SSID**, a seconda del **servizio richiesto**, **possono parlare**:
