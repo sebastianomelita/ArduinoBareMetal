@@ -347,7 +347,7 @@ E' una tecnologia che realizza un **accesso al canale multiplo**, cioè i bit di
 
 ### **OFDMA**
 
-Benchè venga effettuato un **TDM**, può accadere che le **bitrate** delle sorgenti siano **molto diverse**, per cui nello **slot assegnato** a ciascuna, l'**occupazione** di banda, e quindi delle sottoportanti, potrebbe essere soltanto **parziale**, cioè non è sfruttata appieno la capacità trasmissiva del mezzo. L'**analogia del canale** è quella dei **TIR** che in **giorni diversi** viaggiano semiscarichi quando il **carico complessivo** dei tre giorni avrebbe potuto benisssimo essere accomodato su **un unico TIR** direttamente il primo giorno. 
+Benchè venga effettuato un **TDM**, può accadere che le **bitrate** delle sorgenti siano **molto diverse**, per cui nello **slot assegnato** a ciascuna, l'**occupazione** di banda, e quindi delle sottoportanti, potrebbe essere soltanto **parziale**, cioè non è sfruttata appieno la **capacità trasmissiva** del mezzo. L'**analogia del canale** è quella dei **TIR** che in **giorni diversi** viaggiano semiscarichi quando il **carico complessivo** dei tre giorni avrebbe potuto benisssimo essere accomodato su **un unico TIR** direttamente il primo giorno. 
 
 Servono per far ciò: 
 - la possibilità di inviare messaggi di **sorgenti diverse** su **sottoportanti diverse** dello stesso canale
