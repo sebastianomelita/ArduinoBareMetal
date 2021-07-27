@@ -453,6 +453,7 @@ Uno **stack commerciale**, essendo completo fino al **livello di applicazione**,
 - https://www.grandmetric.com/2018/03/15/how-does-ofdm-work/
 - https://www.asus.com/it/support/FAQ/1042759/
 - https://www.gta.ufrj.br/ensino/eel879/trabalhos_vf_2014_2/rafaelreis/ofdma_scfdma.html
+- https://m.eet.com/media/1072709/LTE_Chapter2_38to42.pdf
 
 >[Torna all'indice generale](index.md)
     
