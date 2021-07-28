@@ -371,7 +371,7 @@ E' adoperato dal **WiFi 5** e dalla telefonia mobile **4G**. Ha la proprità di 
 
 ### **OFDMA**
 
-Realizza una **parallelizzazione** dell'accesso al canale radio da parte di **più sorgenti** tramite **FDM**. Infatti, nelll'OFDM, Benchè venga effettuato un **TDM**, può accadere che le **bitrate** delle sorgenti siano **molto diverse**, e generino brevi messaggi che occupano **tutte** le sottoportanti **uno slot** temporale alla volta. L'**analogia del canale** è quella dei **TIR** che in **giorni diversi** viaggiano semiscarichi quando il **carico complessivo** dei tre giorni avrebbe potuto benisssimo essere accomodato su **un unico TIR**, direttamente al primo giorno, **riducendo** i **tempi di attesa**. 
+Realizza una **parallelizzazione** dell'accesso al canale radio da parte di **più sorgenti** tramite **FDM**. Infatti, nelll'OFDM, Benchè venga effettuato un **TDM**, può accadere che le **bitrate** delle sorgenti siano **molto diverse**, e generino **brevi messaggi** che occupano **tutte** le sottoportanti **uno slot** temporale alla volta. L'**analogia del canale** è quella dei **TIR** che in **giorni diversi** viaggiano semiscarichi quando il **carico complessivo** dei tre giorni avrebbe potuto benisssimo essere accomodato su **un unico TIR**, direttamente al primo giorno, **riducendo** i **tempi di attesa**. 
 
 **Servono** per far ciò: 
 - la possibilità di inviare, nello stesso slot temporale, messaggi di **sorgenti diverse** su **sottoportanti diverse** dello stesso canale (multiplazione FDM)
