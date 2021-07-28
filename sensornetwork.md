@@ -341,7 +341,7 @@ Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un *
 
 Nel **CDM** la sorgente viene:
 - **traslata**: cioè portata alla frequenza centrale della banda di trasmissione
-- **spansa**: cioè trasformata da segnale a banda stretta a segnale che occupa tutta la banda di lavoro detto segnale a banda espansa.  
+- **espansa**: cioè trasformata da segnale a banda stretta a segnale che occupa tutta la banda di lavoro detto segnale a banda espansa.  
 
 L’**espansione in frequenza** si ottiene trasformando artificialmente un segnale **lentamente variabile** nel tempo in uno **rapidamente variabile** nel tempo.
 Ad ogni sorgente è associato un **codice di espansione** da usare in trasmissione. Lo stesso codice, **usato in ricezione**, riporta a **banda strett** solo lei lasciando espanse tutte le altre sorgenti.
