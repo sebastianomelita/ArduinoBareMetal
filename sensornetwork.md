@@ -362,7 +362,7 @@ All'**interno** del canale OFDM viena fatta una multiplazione **TDM** a contesa 
 
 Le **sorgenti lente** impiegheranno un certo **tempo** per recuperare un numero sufficiente di bit per alimentare adeguatamente tutte le sottoportanti, ne consegue che la loro trasmissione sarò caratterizzata da **brevi impulsi** distanziati da **lunghi ritardi** e trasmessi con grande spreco di **potenza**.
 
-Oppure potrebbero esserci molte trasmissioni brevi che competono per il canale mediante il TDM a contesa CSMA/CA. QUesta situazione genera uno scambio di messaggi di controllo aventi dimensione analoga a quella dei messaggi dati. Vuol dire che il canale potrebbe essere più occupato dai messaggi necessari per portare avanti il protocollo CSMA /CA che dai messaggi dati.
+Oppure potrebbero esserci molte **trasmissioni brevi** che competono per il canale mediante il TDM a contesa **CSMA/CA**. QUesta situazione genera uno scambio di **messaggi di controllo** aventi **dimensione** analoga a quella dei **messaggi dati**. Vuol dire che il canale potrebbe essere **più occupato** dai messaggi necessari per portare avanti il protocollo CSMA /CA che dai messaggi dati (**overhead eccessivo del CSMA/CA**).
 
 <img src="xofdm2.png" alt="alt text" width="1000">
 
