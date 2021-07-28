@@ -409,6 +409,8 @@ Realizza una **parallelizzazione** dell'accesso al canale radio da parte di **pi
 
 La **principale differenza** tra un sistema **OFDM** e un sistema **OFDMA** (Orthogonal Frequency Division Multiple Access) sta nel fatto che nell'OFDM l'utente è allocato nel dominio del **tempo soltanto**. Durante l'utilizzo di un **sistema OFDMA**, l'utente viene allocato sia **in base al tempo** che **in base alla frequenza**. Il sistema in un **certo istante** è in grado di trasmettere o ricevere comunicazioni di **più dispositivi** in **parallelo** diminuendo i **tempi di attesa**. Si potrebbe anche pianificare la **QoS** in base alla **frequenza**. Ad esempio, sarebbe possibile sfruttare il fatto che l'utente  potrebbe avere una **migliore qualità** del collegamento radio su specifiche sottoportanti della banda disponibile, evitando di trasmettere sulle altre che in quel momento sono molto disturbate. 
 
+<img src="scheduler.png" alt="alt text" width="700">
+
 OFDMA divide lo spettro in **unità di risorse (RU)** tempo-frequenza. Un'**entità di coordinamento centrale** (l'AP in 802.11ax) assegna le RU per la ricezione o la trasmissione a non più di **una stazione** alla volta. La **pianificazione centralizzata** delle RU permette, inviando più messaggi brevi contemporaneamente sul mezzo radio, di evitare un **sovraccarico** (overhead) di contesa CSMA del canale, il che aumenta l'efficienza in contesti **affollati** di brevi messaggi come le **reti IoT**. OFDMA in, sostanza **scala** meglio ler risorse adeguandole a differenti **mix di traffico**, nel contempo, **riducendo l'overhead** delle comunicazioni.
 
 <img src="ofdm_ofdma.png" alt="alt text" width="700">
