@@ -525,6 +525,8 @@ Uno **stack commerciale**, essendo completo fino al **livello di applicazione**,
 - https://www.gta.ufrj.br/ensino/eel879/trabalhos_vf_2014_2/rafaelreis/ofdma_scfdma.html
 - https://m.eet.com/media/1072709/LTE_Chapter2_38to42.pdf
 - https://www.wwt.com/article/wi-fi-6e-the-next-generation-of-wireless/
+- https://www.netmanias.com/en/post/oneshot/14103/5g/5g-protocol-stack-user-plane-control-plane
+- https://www.netmanias.com/en/post/blog/14500/5g-edge-kt-sk-telecom/7-deployment-scenarios-of-private-5g-networks
 
 >[Torna all'indice generale](index.md)
     
