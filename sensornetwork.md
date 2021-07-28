@@ -337,6 +337,27 @@ Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un *
 
 **Successivamente** il canale FDM **potrebbe** essere ulteriormente **partizionato in gruppi di utenti** tutti collegati ad uno **stesso dispositivo**. I dispositivi (ad es. gli AP wifi di uno stesso palazzo) interferiscono tra loro ma le comunicazioni sono rese **distinguibili e private** mediante multiplazione a spettro espanso **CDM** (Code Division Multiplexing) che associa un SSID diverso ad ogni dispositivo. Ciò è dovuto al fatto che usiamo uno dei canali della banda ISM su cui non esistono coordinamento e controllo alcuno. Anche se questa tecnica è adesso usata solo in dispositivi LPWA mentre WiFi 6 e telefonia mobile 5G preferiscono ad essa la tecnica OFDM.
 
+### **DSSS**
+
+Nel CDM la sorgente viene:
+- traslata: cioè portata alla frequenza centrale della banda di trasmissione
+- espansa: cioè trasformata da segnale a banda stretta a segnale che occupa tutta la banda di lavoro detto segnale a banda espansa.  
+- 
+L’espansione in frequenza si ottiene trasformando artificialmente un segnale lentamente variabile nel tempo in uno rapidamente variabile nel tempo.
+Ad ogni sorgente è associato un codice di espansione da usare in trasmissione. Lo stesso codice, usato in ricezione, riporta a banda stretta solo lei lasciando espanse tutte le altre sorgenti.
+
+<img src="spread1.png" alt="alt text" width="600">
+
+La proprietà che viene divisa fisicamente è la potenza di trasmissione. La proprietà che viene suddivisa logicamente è un insieme di codici ortogonali
+In TX la sorgente viene espansa: cioè trasformata da segnale a banda stretta a segnale che occupa tutta la banda di lavoro, detto segnale a spettro espanso.  
+L’espansione in frequenza di un segnale:
+- mantiene immutata l’energia complessiva del segnale originale, cioè l’area sottesa al segnale nel diagramma potenza – frequenza rimane la stessa (si allarga la base del segnale ma, nel contempo, si diminuisce l’altezza).
+- si ottiene nel tempo moltiplicando il segnale di partenza per un altro segnale di frequenza molto maggiore detto chirp (o spreading code). L’energia viene così diffusa su tutte le frequenze della banda ma con una ampiezza molto bassa.
+- La moltiplicazione trasforma un segnale lentamente variabile in uno rapidamente variabile sostituendo il bit originale con una sequenza di bit veloci detti chirp.
+
+<img src="spread2.png" alt="alt text" width="600">
+
+
 ### **FHSS**
 
 Alcune **tecnologie radio** realizzano un **accesso multiplo** al canale radio, **apparentemente** allocando **molti canali** nello **stesso istante**. In realtà la tecnica  alloca un canale alla volta ma **saltando** da uno all'altro con una **velocità** che **alla sorgente** appare **istantanea**. Questo fenomeno ha l'effetto di sparpagliare (**spreading**) l'energia di un canale su **tutta la banda** disponibile. Si tratta di una **variante di CDM** ottenuta per altra via. Infatti, la **sequenza di saltellamento** è diversa per ogni comunicazione ed è associata ad un **SSID**. Le **sequenze** sono **ortogonali** e quindi permettono la ricostruzione in ricezione della **comunicazione originale**. Anche una eventuale **multiplazione TDM** effettuata dentro il canale FDM non si accorgerebbe del saltellamento e procederebbe come al solito, assegnando **diversi slot** temporali a **comunicazioni diverse**. Un messaggio potrebbe **partire** in un canale, passare ad altri 7 e completarsi solo nell' ottavo canale, ovvero l'ultimo visitato. La tecnica si chiama **Frequency hopping** o anche detta **FHSS**. La **distribuzione** della comunicazione su una **gamma ampia** di frequenze rende questo tipo di modulazione **meno sensibile** alle **interferenze**.
