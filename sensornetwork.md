@@ -477,8 +477,12 @@ Uno **stack commerciale**, essendo completo fino al **livello di applicazione**,
 La rete 5G privata può essere implementata in due modi:
 - Il primo è implementare una rete 5G privata fisicamente isolata (isola 5G) indipendente dalla rete 5G pubblica dell'operatore di telefonia mobile (come se si costruisse una LAN cablata o una WLAN Wi-Fi nell'azienda). In questo caso, la rete 5G privata può essere realizzata da imprese specializzate o operatori mobili.
 - Il secondo è costruire reti 5G private condividendo le risorse di rete 5G pubbliche dell'operatore mobile. In questo caso, il gestore costruirà reti 5G private per le imprese.
-- 
+
+La RAN gestisce lo spettro radio, assicurandosi che sia utilizzato in modo efficiente e soddisfi i requisiti di qualità del servizio di ogni utente. Corrisponde a un insieme distribuito di stazioni base.
+
 <img src="Private 5G definition (en).png" alt="alt text" width="600">
+
+
 <img src="5g-user-plane.png" alt="alt text" width="800">
 <img src="slicing.png" alt="alt text" width="1000">
 
