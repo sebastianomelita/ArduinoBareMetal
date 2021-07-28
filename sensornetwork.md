@@ -360,6 +360,8 @@ La **distribuzione uniforme** delle sottoportanti lungo tutta la banda fa si che
 
 All'**interno** del canale OFDM viena fatta una multiplazione **TDM** a contesa sia per renderlo full duplex sia per consentire l'accesso multiplo al canale da parte di più sorgenti, per cui, al variare del tempo, sullo  **stesso canale** verranno allocate **sorgenti diverse**. In ogni caso la trasmissione di una sorgente avviene sempre su tutte le sottoportanti (no FDM).
 
+Le **sorgenti lente** impiegheranno un certo **tempo** per recuperare un numero sufficiente di bit per alimentare adeguatamente tutte le sottoportanti, ne consegue che la loro trasmissione sarò caratterizzata da **brevi impulsi** distanziati da **lunghi ritardi** e trasmessi con grande spreco di **potenza**.
+
 <img src="xofdm2.png" alt="alt text" width="1000">
 
 E' adoperato dal **WiFi 5** e dalla telefonia mobile **4G**. Ha la proprità di trasmettere dati ad **alta velocità** in ambienti con **forti interferenze**. 
