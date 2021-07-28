@@ -361,7 +361,7 @@ Nel CDM le **sorgenti** occupano e **condividono** tutta la **banda** di frequen
 
 **In ricezione** la moltiplicazione nel tempo di un segnale ricevuto per lo stesso chirp (o spreading code) con cui era stato espanso in trasmissione, riporta il segnale ricevuto a banda stretta, permettendone la decodifica dei bit. La moltiplicazione con quel codice avviene anche con gli altri segnali ricevuti ma, essendo questo diverso dal loro spreading code, li lascia a spettro espanso. 
 
-E' una tecnica di accesso usata dal protocollo **Zigbee** e **6LowPan**.
+E' una tecnica di accesso usata dal protocollo **Zigbee** e **6LowPan** (IEEE 802.15.4).
 
 ### **FHSS**
 
