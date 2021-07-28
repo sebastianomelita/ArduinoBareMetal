@@ -534,6 +534,7 @@ Uno **stack commerciale**, essendo completo fino al **livello di applicazione**,
 - https://www.netmanias.com/en/post/oneshot/14103/5g/5g-protocol-stack-user-plane-control-plane
 - https://www.netmanias.com/en/post/blog/14500/5g-edge-kt-sk-telecom/7-deployment-scenarios-of-private-5g-networks
 - https://www.sdxcentral.com/5g/definitions/5g-network-slicing/
+- https://www.zte.com.cn/global/about/magazine/zte-technologies/2018/1/Special-Topic/5G-network-Slicing.html
 
 >[Torna all'indice generale](index.md)
     
