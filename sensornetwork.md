@@ -346,7 +346,7 @@ Nel CDM la sorgente viene:
 L’espansione in frequenza si ottiene trasformando artificialmente un segnale lentamente variabile nel tempo in uno rapidamente variabile nel tempo.
 Ad ogni sorgente è associato un codice di espansione da usare in trasmissione. Lo stesso codice, usato in ricezione, riporta a banda stretta solo lei lasciando espanse tutte le altre sorgenti.
 
-<img src="spread1.png" alt="alt text" width="600">
+<img src="spread1.png" alt="alt text" width="800">
 
 La proprietà che viene divisa fisicamente è la potenza di trasmissione. La proprietà che viene suddivisa logicamente è un insieme di codici ortogonali
 In TX la sorgente viene espansa: cioè trasformata da segnale a banda stretta a segnale che occupa tutta la banda di lavoro, detto segnale a spettro espanso.  
@@ -355,7 +355,7 @@ L’espansione in frequenza di un segnale:
 - si ottiene nel tempo moltiplicando il segnale di partenza per un altro segnale di frequenza molto maggiore detto chirp (o spreading code). L’energia viene così diffusa su tutte le frequenze della banda ma con una ampiezza molto bassa.
 - La moltiplicazione trasforma un segnale lentamente variabile in uno rapidamente variabile sostituendo il bit originale con una sequenza di bit veloci detti chirp.
 
-<img src="spread2.png" alt="alt text" width="600">
+<img src="spread2.png" alt="alt text" width="800">
 
 Nel CDM le sorgenti occupano e condividono tutta la banda di frequenza nello stesso tempo e in tutto lo spazio sovrapponendo l’energia di una con quella dell’altra (interferenza completa). Il ricevitore riceve i segnali di più sorgenti sotto forma espansa e sovrapposti tra loro (segnali interferenti) che sono, in pratica, indistinguibili.
 
