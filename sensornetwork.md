@@ -371,17 +371,17 @@ E' adoperato dal **WiFi 5** e dalla telefonia mobile **4G**. Ha la proprità di 
 
 ### **OFDMA**
 
-Benchè venga effettuato un **TDM**, può accadere che le **bitrate** delle sorgenti siano **molto diverse**, per cui se lo **slot assegnato** a ciascuna fosse troppo piccolo e quindi arrivassero pochi simboli, l'**occupazione** di banda, e quindi delle sottoportanti, potrebbe essere soltanto **parziale**, cioè non è sfruttata appieno la **capacità trasmissiva** del mezzo. L'**analogia del canale** è quella dei **TIR** che in **giorni diversi** viaggiano semiscarichi quando il **carico complessivo** dei tre giorni avrebbe potuto benisssimo essere accomodato su **un unico TIR**, direttamente al primo giorno. 
+Realizza una **parallelizzazione** dell'accesso al canale radio da parte di **più sorgenti** tramite **FDM**. Infatti, nelll'OFDM, Benchè venga effettuato un **TDM**, può accadere che le **bitrate** delle sorgenti siano **molto diverse**, e generino brevi messaggi che occupano **tutte** le sottoportanti **uno slot** temporale alla volta. L'**analogia del canale** è quella dei **TIR** che in **giorni diversi** viaggiano semiscarichi quando il **carico complessivo** dei tre giorni avrebbe potuto benisssimo essere accomodato su **un unico TIR**, direttamente al primo giorno, **riducendo** i **tempi di attesa**. 
 
-Servono per far ciò: 
-- la possibilità di inviare messaggi di **sorgenti diverse** su **sottoportanti diverse** dello stesso canale (multiplazione FDM)
-- una **schedulazione efficace** che sappia **riordinare** i messaggi sulle sottoportanti (mediante FDM) cercando di rispettare le richieste in termini di **latenza** che erano state **prenotate** per ogni sorgente in fase di **setup** della connessione. 
+**Servono** per far ciò: 
+- la possibilità di inviare, nello stesso slot temporale, messaggi di **sorgenti diverse** su **sottoportanti diverse** dello stesso canale (multiplazione FDM)
+- una **schedulazione efficace** che sappia **riordinare** i messaggi sulle sottoportanti (slot FDM) cercando di rispettare le richieste in termini di **latenza** che erano state **prenotate** per ogni sorgente in fase di **setup** della connessione. 
 
 <img src="ofdma.jpg" alt="alt text" width="1000">
 
-La **principale differenza** tra un sistema **OFDM** e un sistema **OFDMA** (Orthogonal Frequency Division Multiple Access) sta nel fatto che nell'OFDM l'utente è allocato nel dominio del **tempo soltanto**. Durante l'utilizzo di un **sistema OFDMA**, l'utente viene allocato sia **in base al tempo** che **in base alla frequenza**. Questo è utile per LTE poiché rende possibile sfruttare al meglio la pianificazione in base alla frequenza. Ad esempio, sarebbe possibile sfruttare il fatto che l'utente  potrebbe avere una **migliore qualità** del collegamento radio su specifiche sottoportanti della banda disponibile, evitando di trasmettere sulle altre che in quel momento sono molto disturbate. 
+La **principale differenza** tra un sistema **OFDM** e un sistema **OFDMA** (Orthogonal Frequency Division Multiple Access) sta nel fatto che nell'OFDM l'utente è allocato nel dominio del **tempo soltanto**. Durante l'utilizzo di un **sistema OFDMA**, l'utente viene allocato sia **in base al tempo** che **in base alla frequenza**. Il sistema in un **certo istante** è in grado di trasmettere o ricevere comunicazioni di **più dispositivi** in **parallelo** diminuendo i **tempi di attesa**. Si potrebbe anche pianificare la **QoS** in base alla **frequenza**. Ad esempio, sarebbe possibile sfruttare il fatto che l'utente  potrebbe avere una **migliore qualità** del collegamento radio su specifiche sottoportanti della banda disponibile, evitando di trasmettere sulle altre che in quel momento sono molto disturbate. 
 
-OFDMA divide lo spettro in **unità di risorse (RU)** tempo-frequenza. Un'**entità di coordinamento centrale** (l'AP in 802.11ax) assegna le RU per la ricezione o la trasmissione a non più di **una stazione** alla volta. La **pianificazione centralizzata** delle RU permette di evitare un sovraccarico di contesa del canale, il che aumenta l'efficienza in contesti affollati di richieste di accesso.
+OFDMA divide lo spettro in **unità di risorse (RU)** tempo-frequenza. Un'**entità di coordinamento centrale** (l'AP in 802.11ax) assegna le RU per la ricezione o la trasmissione a non più di **una stazione** alla volta. La **pianificazione centralizzata** delle RU permette, inviando più messaggi brevi contemporaneamente sul mezzo radio, di evitare un **sovraccarico** (overhead) di contesa CSMA del canale, il che aumenta l'efficienza in contesti **affollati** di brevi messaggi come le **reti IoT**.
 
 <img src="ofdm_ofdma.png" alt="alt text" width="700">
 
