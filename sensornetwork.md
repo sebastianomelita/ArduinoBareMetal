@@ -339,28 +339,26 @@ Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un *
 
 ### **DSSS**
 
-Nel CDM la sorgente viene:
-- traslata: cioè portata alla frequenza centrale della banda di trasmissione
-- espansa: cioè trasformata da segnale a banda stretta a segnale che occupa tutta la banda di lavoro detto segnale a banda espansa.  
-- 
-L’espansione in frequenza si ottiene trasformando artificialmente un segnale lentamente variabile nel tempo in uno rapidamente variabile nel tempo.
-Ad ogni sorgente è associato un codice di espansione da usare in trasmissione. Lo stesso codice, usato in ricezione, riporta a banda stretta solo lei lasciando espanse tutte le altre sorgenti.
+Nel **CDM** la sorgente viene:
+- **traslata**: cioè portata alla frequenza centrale della banda di trasmissione
+- **spansa**: cioè trasformata da segnale a banda stretta a segnale che occupa tutta la banda di lavoro detto segnale a banda espansa.  
+
+L’**espansione in frequenza** si ottiene trasformando artificialmente un segnale **lentamente variabile** nel tempo in uno **rapidamente variabile** nel tempo.
+Ad ogni sorgente è associato un **codice di espansione** da usare in trasmissione. Lo stesso codice, **usato in ricezione**, riporta a **banda strett** solo lei lasciando espanse tutte le altre sorgenti.
 
 <img src="spread1.png" alt="alt text" width="1000">
 
-La proprietà che viene divisa fisicamente è la potenza di trasmissione. La proprietà che viene suddivisa logicamente è un insieme di codici ortogonali
-In TX la sorgente viene espansa: cioè trasformata da segnale a banda stretta a segnale che occupa tutta la banda di lavoro, detto segnale a spettro espanso.  
+La **proprietà** che viene **divisa** fisicamente è la **potenza** di trasmissione. La proprietà che viene suddivisa logicamente è un insieme di **codici ortogonali**
+**In TX** la sorgente viene espansa: cioè trasformata da segnale a banda stretta a segnale che occupa tutta la banda di lavoro, detto segnale a spettro espanso.  
 L’espansione in frequenza di un segnale:
-- mantiene immutata l’energia complessiva del segnale originale, cioè l’area sottesa al segnale nel diagramma potenza – frequenza rimane la stessa (si allarga la base del segnale ma, nel contempo, si diminuisce l’altezza).
-- si ottiene nel tempo moltiplicando il segnale di partenza per un altro segnale di frequenza molto maggiore detto chirp (o spreading code). L’energia viene così diffusa su tutte le frequenze della banda ma con una ampiezza molto bassa.
-- La moltiplicazione trasforma un segnale lentamente variabile in uno rapidamente variabile sostituendo il bit originale con una sequenza di bit veloci detti chirp.
+- mantiene **immutata l’energia** complessiva del segnale originale, cioè l’area sottesa al segnale nel diagramma potenza – frequenza rimane la stessa (si allarga la base del segnale ma, nel contempo, si diminuisce l’altezza).
+- si **ottiene nel tempo** moltiplicando il segnale di partenza per un altro segnale di frequenza molto maggiore detto **chirp (o spreading code)**. L’**energia** viene così **diffusa** su **tutte** le frequenze della banda ma con una **ampiezza** molto bassa. La **moltiplicazione** trasforma un segnale lentamente variabile in uno rapidamente variabile **sostituendo** il **bit originale** con una **sequenza di bit** veloci detti **chirp**.
 
 <img src="spread2.png" alt="alt text" width="1000">
 
-Nel CDM le sorgenti occupano e condividono tutta la banda di frequenza nello stesso tempo e in tutto lo spazio sovrapponendo l’energia di una con quella dell’altra (interferenza completa). Il ricevitore riceve i segnali di più sorgenti sotto forma espansa e sovrapposti tra loro (segnali interferenti) che sono, in pratica, indistinguibili.
+Nel CDM le **sorgenti** occupano e **condividono** tutta la **banda** di frequenza nello **stesso tempo** e in **tutto lo spazio** sovrapponendo l’energia di una con quella dell’altra (interferenza completa). Il **ricevitore** riceve i segnali di più sorgenti sotto **forma espansa** e sovrapposti tra loro (segnali interferenti) che sono, in pratica, indistinguibili.
 
-In ricezione la moltiplicazione nel tempo di un segnale ricevuto per lo stesso chirp (o spreading code) con cui era stato espanso in trasmissione, riporta il segnale ricevuto a banda stretta, permettendone la decodifica dei bit. La moltiplicazione con quel codice avviene anche con gli altri segnali ricevuti ma, essendo questo diverso dal loro spreading code, li lascia a spettro espanso. 
-
+**In ricezione** la moltiplicazione nel tempo di un segnale ricevuto per lo stesso chirp (o spreading code) con cui era stato espanso in trasmissione, riporta il segnale ricevuto a banda stretta, permettendone la decodifica dei bit. La moltiplicazione con quel codice avviene anche con gli altri segnali ricevuti ma, essendo questo diverso dal loro spreading code, li lascia a spettro espanso. 
 
 
 
