@@ -486,6 +486,8 @@ Il Mobile Core è un insieme di funzionalità (al contrario di un dispositivo) c
 - Tiene traccia della mobilità degli utenti per garantire un servizio ininterrotto.
 - Tiene traccia dell'utilizzo dell'abbonato per la fatturazione e l'addebito.
 
+Il Mobile Core in 4G questo è chiamato Evolved Packet Core (EPC) e in 5G è chiamato Next Generation Core (NG-Core).
+
 <img src="Private 5G definition (en).png" alt="alt text" width="600">
 
 
