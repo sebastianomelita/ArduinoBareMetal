@@ -474,7 +474,7 @@ Uno **stack commerciale**, essendo completo fino al **livello di applicazione**,
 
 <img src="5g-services.png" alt="alt text" width="1000">
 <img src="Private 5G definition (en).png" alt="alt text" width="600">
-<img src="5g-user-plane.png" alt="alt text" width="600">
+<img src="5g-user-plane.png" alt="alt text" width="800">
 <img src="slicing.png" alt="alt text" width="1000">
 
 
