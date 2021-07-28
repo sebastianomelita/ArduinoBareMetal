@@ -362,6 +362,8 @@ All'**interno** del canale OFDM viena fatta una multiplazione **TDM** a contesa 
 
 Le **sorgenti lente** impiegheranno un certo **tempo** per recuperare un numero sufficiente di bit per alimentare adeguatamente tutte le sottoportanti, ne consegue che la loro trasmissione sarò caratterizzata da **brevi impulsi** distanziati da **lunghi ritardi** e trasmessi con grande spreco di **potenza**.
 
+Oppure potrebbero esserci molte trasmissioni brevi che competono per il canale mediante il TDM a contesa CSMA/CA. QUesta situazione genera uno scambio di messaggi di controllo di dimensione analoga al messaggio dati. Vuol dire che il canale potrebbe essere più occupato dai messaggi necessari per portare avanti il protocollo CSNA /CA che dai messaggi dati.
+
 <img src="xofdm2.png" alt="alt text" width="1000">
 
 E' adoperato dal **WiFi 5** e dalla telefonia mobile **4G**. Ha la proprità di trasmettere dati ad **alta velocità** in ambienti con **forti interferenze**. 
@@ -369,11 +371,11 @@ E' adoperato dal **WiFi 5** e dalla telefonia mobile **4G**. Ha la proprità di 
 
 ### **OFDMA**
 
-Benchè venga effettuato un **TDM**, può accadere che le **bitrate** delle sorgenti siano **molto diverse**, per cui nello **slot assegnato** a ciascuna, l'**occupazione** di banda, e quindi delle sottoportanti, potrebbe essere soltanto **parziale**, cioè non è sfruttata appieno la **capacità trasmissiva** del mezzo. L'**analogia del canale** è quella dei **TIR** che in **giorni diversi** viaggiano semiscarichi quando il **carico complessivo** dei tre giorni avrebbe potuto benisssimo essere accomodato su **un unico TIR**, direttamente al primo giorno. 
+Benchè venga effettuato un **TDM**, può accadere che le **bitrate** delle sorgenti siano **molto diverse**, per cui se lo **slot assegnato** a ciascuna fosse troppo piccolo e quindi arrivassero pochi simboli, l'**occupazione** di banda, e quindi delle sottoportanti, potrebbe essere soltanto **parziale**, cioè non è sfruttata appieno la **capacità trasmissiva** del mezzo. L'**analogia del canale** è quella dei **TIR** che in **giorni diversi** viaggiano semiscarichi quando il **carico complessivo** dei tre giorni avrebbe potuto benisssimo essere accomodato su **un unico TIR**, direttamente al primo giorno. 
 
 Servono per far ciò: 
-- la possibilità di inviare messaggi di **sorgenti diverse** su **sottoportanti diverse** dello stesso canale
-- una **schedulazione efficace** che sappia **riordinare** i messaggi sulle sottoportanti cercando di rispettare le richieste in termini di **latenza** che erano state **prenotate** per ogni sorgente in fase di **setup** della connessione. 
+- la possibilità di inviare messaggi di **sorgenti diverse** su **sottoportanti diverse** dello stesso canale (multiplazione FDM)
+- una **schedulazione efficace** che sappia **riordinare** i messaggi sulle sottoportanti mediante FDM) cercando di rispettare le richieste in termini di **latenza** che erano state **prenotate** per ogni sorgente in fase di **setup** della connessione. 
 
 <img src="ofdma.jpg" alt="alt text" width="1000">
 
