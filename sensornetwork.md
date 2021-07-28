@@ -480,6 +480,12 @@ La rete 5G privata può essere implementata in due modi:
 
 La RAN gestisce lo spettro radio, assicurandosi che sia utilizzato in modo efficiente e soddisfi i requisiti di qualità del servizio di ogni utente. Corrisponde a un insieme distribuito di stazioni base.
 
+Il Mobile Core è un insieme di funzionalità (al contrario di un dispositivo) che serve a diversi scopi.
+- Fornisce connettività Internet (IP) sia per i dati che per i servizi vocali.
+- Assicura che questa connettività soddisfi i requisiti di QoS promessi.
+- Tiene traccia della mobilità degli utenti per garantire un servizio ininterrotto.
+- Tiene traccia dell'utilizzo dell'abbonato per la fatturazione e l'addebito.
+
 <img src="Private 5G definition (en).png" alt="alt text" width="600">
 
 
