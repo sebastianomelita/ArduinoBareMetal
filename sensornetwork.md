@@ -518,15 +518,15 @@ L'RU è il luogo in cui vengono trasmessi, ricevuti, amplificati e digitalizzati
 
 <img src="o-RAN1.png" alt="alt text" width="1000">
 
-Dettaglio livello fisico downlink e uplink:
-
-<img src="o-RAN2.png" alt="alt text" width="1000">
-
 Il concetto chiave di Open RAN è "aprire" i protocolli e le interfacce tra questi vari elementi costitutivi (radio, hardware e software) nella RAN. L'O-RAN ALLIANCE ha definito 11 diverse interfacce all'interno della RAN, incluse quelle per:
 
 - Fronthaul tra l'unità radio e l'unità distribuita
 - Midhaul tra l'Unità Distribuita e l'Unità Centralizzata
 - Backhaul che collega la RAN al Core
+
+Dettaglio livello fisico downlink e uplink:
+
+<img src="o-RAN2.png" alt="alt text" width="1000">
 
 Un'altra caratteristica di Open RAN è il RAN Intelligent Controller (RIC) che aggiunge programmabilità alla RAN.
 
