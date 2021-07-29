@@ -526,7 +526,7 @@ Si è calcolato che per poter soddisfare servizi ad **alta bit rate**, la qualit
 
 Una novità dei prossimi anni sarà l'introduzione delle **reti 5G private**, cioè di **proprietà dell'utente**, che permetteranno l'**accesso alla rete LAN** con gli **stessi dispositivi** in uso per la **rete cellulare**. La **rete 5G privata** potrà essere **installata** e **gestita** da un **operatore telefonico**, oppure installata e gestita **da terzi**, oppure **installata** da **terzi** e **gestita** direttamente **dall'utente**, al limite, se ne ha le capacità tecniche, fa **tutto in house** l'utente. Le reti 5G private, per ragioni di costi, dovranno essere composte da **dispositivi di rete** necessariamente **multivendor**, cioè produttori diversi dovranno fabbricare dispositivi tra loro **interoperabili** (cosa che non è accaduta finora in ambito operatore di telefonia).
 
-il **processo di standardizzazione** è ancora in atto sotto il nome **Open RAN (O-RAN)** e include la standardizzazione di protocolli e di interfacce tra i vari dispositivi (potenzialmente di marca diversa). la **scalabilità dei servizi** e l'**esigenza di semplificazione** ha suggerito di includere in questo processo anche la virtualizzazione della rete con l'introduzione dei **network slice**, piani di servizio e gestione paralleli resi disponibili da **tecnologie di automazione** e virtualizzazione basate su **SDN** (Software Defined Network).
+il **processo di standardizzazione** è ancora in atto sotto il nome **Open RAN (O-RAN)** e include la standardizzazione di protocolli e di interfacce tra i vari dispositivi (potenzialmente di marca diversa). la **scalabilità dei servizi** e l'**esigenza di semplificazione** ha suggerito di includere in questo processo anche la virtualizzazione della rete con l'introduzione dei **network slice**, piani di servizio e gestione paralleli, resi disponibili da **tecnologie di automazione** e virtualizzazione basate su **SDN** (Software Defined Network).
 
 La **rete 5G privata** può essere implementata in **due modi**:
 - Il **primo** è implementare una **rete 5G privata** fisicamente isolata (isola 5G) indipendente dalla rete 5G pubblica dell'operatore di telefonia mobile (come se si costruisse una LAN cablata o una WLAN Wi-Fi nell'azienda). In questo caso, la rete 5G privata può essere realizzata da **imprese specializzate** o **operatori mobili**.
@@ -592,13 +592,12 @@ Per comprendere l'impatto delle tecnologie e delle pratiche cloud applicate alla
 
 - **Commoditizzazione**: essere in grado di scalare in modo elastico quei componenti virtuali attraverso i mattoncini hardware di base in base al carico di lavoro.
 
-Lo slicing della rete 5G è l'uso della virtualizzazione della rete per dividere le singole connessioni di rete in più connessioni virtuali distinte che forniscono diverse quantità di risorse a diversi tipi di traffico.
+Lo **slicing della rete 5G** è l'uso della **virtualizzazione della rete** per dividere le **singole connessioni** di rete in **più connessioni virtuali** distinte che forniscono **diverse quantità di risorse** a **diversi tipi** di traffico.
 
-L'idea di base dello slicing di rete è quella di "suddividere" l'architettura di rete originale in più reti logiche e indipendenti configurate per soddisfare efficacemente i vari requisiti dei servizi. Per realizzare quantitativamente tale concetto, vengono impiegate diverse tecniche:
-
-- Funzioni di rete: esprimono funzionalità di rete elementari che vengono utilizzate come "mattoni" per creare ogni fetta di rete.
-- Virtualizzazione: fornisce una rappresentazione astratta delle risorse fisiche secondo uno schema unificato ed omogeneo. Inoltre, consente una distribuzione scalabile delle sezioni basata su NFV che consente il disaccoppiamento di ogni istanza della funzione di rete dall'hardware di rete su cui viene eseguita.
-- Orchestrazione: è un processo che consente il coordinamento di tutte le diverse componenti di rete che sono coinvolte nel ciclo di vita di ciascuna fetta di rete. In questo contesto, SDN viene impiegato per consentire una configurazione delle sezioni dinamica e flessibile.
+**Per realizzare** quantitativamente tale concetto, vengono impiegate **diverse tecniche**:
+- **Funzioni di rete**: esprimono funzionalità di rete elementari che vengono utilizzate come "mattoni" per creare ogni fetta di rete.
+- **Virtualizzazione**: fornisce una rappresentazione astratta delle risorse fisiche secondo uno schema unificato ed omogeneo. Inoltre, consente una distribuzione scalabile delle sezioni basata su NFV che consente il disaccoppiamento di ogni istanza della funzione di rete dall'hardware di rete su cui viene eseguita.
+- **Orchestrazione**: è un processo che consente il coordinamento di tutte le diverse componenti di rete che sono coinvolte nel ciclo di vita di ciascuna fetta di rete. In questo contesto, SDN viene impiegato per consentire una configurazione delle sezioni dinamica e flessibile.
 
 <img src="slicing.png" alt="alt text" width="1000">
 
