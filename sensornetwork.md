@@ -597,6 +597,9 @@ L'idea di base dello slicing di rete è quella di "suddividere" l'architettura d
 - https://www.zte.com.cn/global/about/magazine/zte-technologies/2018/1/Special-Topic/5G-network-Slicing.html
 - https://en.wikipedia.org/wiki/5G_network_slicing
 - https://www.nokia.com/about-us/newsroom/articles/open-ran-explained/
+- https://www.techplayon.com/o-ran-fornthual-c-u-sync-mgmt-planes-and-protocols-stack/
+- https://www.techplayon.com/o-ran-fronthaul-spilt-option-7-2x/
+- https://www.gruppotim.it/tit/it/notiziariotecnico/edizioni-2019/n-3-2019/N3-Open-RAN-dalle-specifiche-ai-trials/approfondimenti-1.html
 
 >[Torna all'indice generale](index.md)
     
