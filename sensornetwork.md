@@ -484,6 +484,28 @@ La rete 5G privata può essere implementata in due modi:
 
 La RAN gestisce lo spettro radio, assicurandosi che sia utilizzato in modo efficiente e soddisfi i requisiti di qualità del servizio di ogni utente. Corrisponde a un insieme distribuito di stazioni base.
 
+La RAN è il collegamento finale tra la rete e il telefono. È il pezzo visibile e include le antenne che vediamo sulle torri, in cima agli edifici o negli stadi, più le stazioni base. Quando effettuiamo una chiamata o ci connettiamo a un server remoto, ad es. per guardare un video di YouTube, l'antenna trasmette e riceve segnali da e verso i nostri telefoni o altri dispositivi portatili. Il segnale viene quindi digitalizzato nella stazione base RAN e connesso alla rete.
+
+Man mano che i produttori di apparecchiature miglioravano le capacità, l'industria si consolidava attorno a quelli con l'offerta più forte e spesso con funzionalità proprietarie. Ma oggi gli operatori vogliono un ecosistema di fornitori più diversificato e stanno ridefinendo i loro requisiti per l'architettura di rete, specialmente nella RAN.
+
+In un ambiente RAN aperto, la RAN è disaggregata in tre elementi costitutivi principali:
+
+- l'Unità Radio (UR)
+- l'Unità Distribuita (DU)
+- l'Unità Centralizzata (CU)
+
+L'RU è il luogo in cui vengono trasmessi, ricevuti, amplificati e digitalizzati i segnali in radiofrequenza. L'RU si trova vicino o integrato nell'antenna. La DU e la CU sono le parti di calcolo della stazione base, che inviano il segnale radio digitalizzato nella rete. Il DU si trova fisicamente presso o vicino al RU mentre il CU può essere posizionato più vicino al Core.
+
+Il concetto chiave di Open RAN è "aprire" i protocolli e le interfacce tra questi vari elementi costitutivi (radio, hardware e software) nella RAN. L'O-RAN ALLIANCE ha definito 11 diverse interfacce all'interno della RAN, incluse quelle per:
+
+- Fronthaul tra l'unità radio e l'unità distribuita
+- Midhaul tra l'Unità Distribuita e l'Unità Centralizzata
+- Backhaul che collega la RAN al Core
+
+Un'altra caratteristica di Open RAN è il RAN Intelligent Controller (RIC) che aggiunge programmabilità alla RAN.
+
+Un ambiente aperto espande l'ecosistema e, con più fornitori che forniscono gli elementi costitutivi, c'è più innovazione e più opzioni per gli operatori. Possono anche aggiungere nuovi servizi. Ad esempio, l'Intelligenza Artificiale può essere introdotta tramite il RIC per ottimizzare la rete in prossimità di uno stadio di calcio il giorno di una partita.
+
 Il Mobile Core è un insieme di funzionalità (al contrario di un dispositivo) che serve a diversi scopi.
 - Fornisce connettività Internet (IP) sia per i dati che per i servizi vocali.
 - Assicura che questa connettività soddisfi i requisiti di QoS promessi.
