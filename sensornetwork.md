@@ -582,7 +582,7 @@ Il **Mobile Core** è un insieme di funzionalità (al contrario di un dispositiv
 
 Il **Mobile Core** in **4G** è chiamato Evolved Packet Core (**EPC**) e in **5G** è chiamato Next Generation Core (**NG-Core**).
 
-La figura sottostante mostra un possibile uso delle retei mobili private. Un uso indipendente dal gestore con la rete di telefonia aziendale collegata alla LAN e suddivisa in classi di servizio fisse, quelle necessarie ai processi aziendali. Un uso dipendente dalla rete pubblica dell'operatore telefonico che ritaglia servizi su misura per quell'azienda utilizzando per questo scopo le proprie funzioni diamiche di network sliceing.
+La **figura sottostant**e mostra un possibile uso delle **reti mobili private**. Un uso **indipendente dal gestore** con la **rete di telefonia aziendale** collegata alla LAN e **suddivisa** in **classi di servizio fisse** (realizzate magari con reti **fisicamente separate**), solo quelle necessarie ai processi aziendali. Un uso **dipendente dalla rete pubblica** dell'operatore telefonico che ritaglia servizi su misura per quell'azienda utilizzando per questo scopo le proprie **funzioni diamiche** di **network slicing**.
 
 <img src="Private 5G definition (en).png" alt="alt text" width="600">
 
