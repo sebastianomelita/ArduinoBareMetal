@@ -496,6 +496,15 @@ Il Mobile Core in 4G questo è chiamato Evolved Packet Core (EPC) e in 5G è chi
 
 
 <img src="5g-user-plane.png" alt="alt text" width="800">
+
+Per comprendere l'impatto delle tecnologie e delle pratiche cloud applicate alla rete di accesso, è utile prima capire cosa è importante per il cloud. Il cloud ha cambiato radicalmente il modo in cui elaboriamo e, soprattutto, il ritmo dell'innovazione. Lo ha fatto attraverso una combinazione di quanto segue.
+
+- Disaggregazione: scomposizione di sistemi integrati verticalmente in componenti indipendenti con interfacce aperte.
+
+- Virtualizzazione: essere in grado di eseguire più copie indipendenti di tali componenti su una piattaforma hardware comune.
+
+- Commoditizzazione: essere in grado di scalare in modo elastico quei componenti virtuali attraverso i mattoncini hardware di base in base al carico di lavoro.
+
 <img src="slicing.png" alt="alt text" width="1000">
 
 
