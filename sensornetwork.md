@@ -563,13 +563,13 @@ Al momento la **complessità** e il **costo** del **livello fisico** della RAN h
 O-RAN **Fronthaul** definisce i seguenti **piani operativi**:
 
 - **C-Plane** (Piano di controllo): i messaggi del piano di controllo definiscono la pianificazione, il coordinamento richiesto per il trasferimento dei dati, la formazione del fascio delle antenne, ecc.
-- **U-Plane (User Plane)**: Messaggi dell'aereo utente per un trasferimento dati efficiente entro i rigorosi limiti di tempo delle numerologie 5G.
+- **U-Plane (User Plane)**: i messaggi del piano utente per un trasferimento dati efficiente entro i rigorosi limiti di tempo delle numerologie 5G.
  - **S-Plane (Piano di sincronizzazione)**: il piano di sincronizzazione è responsabile degli aspetti di temporizzazione e sincronizzazione tra O-DU e O-RU. Nelle implementazioni Cloud RAN, per svolgere tutta una serie di processi, è necessaria una sincronizzazione molto accurata tra O-DU e O-RU ottenuta sincronizzandosi con l'orologio ad alte prestazioni disponibile sul lato O-DU.
-- **Piano M (piano di gestione)**: i messaggi del piano di gestione vengono utilizzati per **gestire l'unità radio**. **M-Plane** fornisce una varietà di funzioni di gestione O-RU per impostare i parametri sul lato O-RU come richiesto da C/U-Plane e S-Plane, ad es. gestire il software O-RU, eseguire la gestione dei guasti, ecc. La specifica di fronthaul O-RAN per M-Plane fornisce vari parametri come modelli di dati che eliminino la dipendenza dall'implementazione di ciascun fornitore O-RU e rende possibile una vera Open RAN multi-vendor
+- **Piano M (piano di gestione)**: i messaggi del piano di gestione vengono utilizzati per **gestire l'unità radio**. **M-Plane** fornisce una varietà di funzioni di gestione per impostare i parametri sul lato O-RU come richiesto da C/U-Plane e S-Plane. Ad es. gestire il software O-RU, eseguire la gestione dei guasti, ecc. La specifica del fronthaul O-RAN per quanto riguarda l'M-Plane fornisce tra le varie cose modelli di dati che eliminino la dipendenza dall'implementazione di ciascun fornitore e rende possibile una vera Open RAN multi-vendor
     - Supporta il modello gerarchico/ibrido
     - C/U Plane IP e gestione dei ritardi
     - FCAPS inclusa la configurazione e lo stato della sincronizzazione
-
+    -
 **FCAPS** è l'acronimo di **fault**, **configuration**, **accounting**, **performance**, **security**, le categorie di gestione in cui il modello ISO definisce le **attività di gestione** della rete. Nelle organizzazioni **senza fatturazione** la **contabilità** viene talvolta sostituita con l'**amministrazione**.
 
 <img src="o-RAN3.png" alt="alt text" width="1000">
