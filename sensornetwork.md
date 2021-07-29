@@ -496,20 +496,41 @@ Uno **stack commerciale**, essendo completo fino al **livello di applicazione**,
 
 ## **RETI CELLULARI PRIVATE**
 
-Il 5G, per sua natura, ha una conformazione dei suoi servizi parecchio scalabile sia in termini di banda allocabile ai singoli dispositivi sia in termini di ritardi per andare incontro alle applicazioni Real Time. Inoltre %G ha inglobato nelle sue specifiche anche le teclologie del 4G NB-IoT che offrono servizi a bassisimo bit rate utili per realizzare WSN di grandi dimensioni, in concorrenza diretta con tecnologie come Sigfox e LoraWan.
+Il 5G, per sua natura, ha una conformazione dei suoi servizi parecchio **scalabile** sia in termini di **banda allocabile** ai singoli dispositivi sia in termini di **ritardi** per andare incontro alle applicazioni **Real Time**. Inoltre 5G ha **inglobato** nelle sue specifiche anche le teclologie del 4G **NB-IoT** che offrono **servizi a bassisimo bit rat**e utili per realizzare **WSN di grandi dimensioni**, in concorrenza diretta con tecnologie come **Sigfox** e **LoraWan**.
 
-Il 5G utilizza per fornire servizi ad alto bit rate deve utilizzare canalizzazioni ad alta capacità che, per la natura fisica del mezzo radio, devono stare per forza nella porzione di spettro a frequenza più elevata (dove è possibbile allocare più informazione). A queste frequnze l'attenuazione dovuta alla distanza aumenta per cui la soluzione potrebbe essere mantenere celle grandi aumentando le potenze o utilizzare le stesse potenze di prima su microcelle. Si è calcolato che per poter soddisfare servizi ad alta bit rate, la qualità del segnale ricevuto deve essere estremamente buona e questo si traduce in una
-distanza fra trasmettitore e ricevitore molto corta (nell’ordine delle decine di metri). Al contrario, altri servizi del 5G utilizzano delle capacità estremamente ridotte (nell’ordine del kilobit per secondo), e possono essere soddisfatti anche se la distanza fra trasmettitore e ricevitore è elevata (nell’ordine dei chilometri).
+Il **5G fa uso** delle seguenti **frequenze di trasmissione**:
+- **anda bassa** (inferiore a 1 GHz): 694-790 MHz
+- **Banda media** (inferiore a 6 GHz): 3,6-3,8 GHz
+- **Banda elevata** (a onde millimetriche): 26,6-27,5 GHz (Nota: le onde millimetriche
+propriamente dette partono dal valore minimo di 30 GHz. La banda 26,6-27,5 GHz viene
+tuttavia assimilata alle onde millimetriche in quanto sufficientemente vicina a questo
+valore minimo.)
+
+Ricordando che nel 5G, a **parità di potenza** trasmessa, se si **aumenta la frequenza** di
+trasmissione si **riduce la distanza** a cui il segnale è utilizzabile, ma si **aumenta la banda**
+disponibile, si può dire che:
+- la **banda bassa** è utile per garantire una copertura maggiore del territorio anche **nelle
+aree rurali**;
+- la **banda media** è utile per offrire un **misto** di **copertura e di capacità** (quello che
+tecnicamente si chiama throughput);
+- la **banda elevata** è utile in quelle applicazioni che richiedano **alta capacità**, ma
+localizzata in **aree molto limitate** per estensione (a queste alte frequenze il segnale si
+indebolisce velocemente con il propagarsi dall’antenna), con elevata direttività del
+segnale.
+
+Per quanto riguarda la **banda bassa (sub GHz)** e la **banda media (sub 6 GHz)**, **non** si prevede un aumento significativo del numero di stazioni radio base, in quanto queste frequenze sono analoghe a quelle attualmente in uso per le generazioni precedenti. Per quanto riguarda la banda a onde millimetriche, l’elevata attenuazione subita dal  segnale, unita alla necessità di supportare capacità dell’ordine dei Gigabit per secondo, renderà necessaria la **capillare installazione** di stazioni radio base in **prossimità degli utenti**. Tuttavia, tali stazioni radio base non saranno dislocate su tutto il territorio, ma verranno impiegate soltanto laddove saranno **strettamente necessarie**, per esempio in **centri commerciali**, **stadi**, **stazioni** e **aeroporti**, ovvero in luoghi dove la **richiesta di capacità**, unita al **numero di dispositivi** connessi, sarà **elevata**.
+
+Si è calcolato che per poter soddisfare servizi ad **alta bit rate**, la qualità del segnale ricevuto deve essere estremamente buona e questo si traduce in una **distanza** fra trasmettitore e ricevitore molto corta (nell’ordine delle decine di metri). Al contrario, altri servizi del 5G utilizzano delle capacità estremamente ridotte (nell’ordine del kilobit per secondo), e possono essere soddisfatti anche se la distanza fra trasmettitore e ricevitore è elevata (nell’ordine dei chilometri).
 
 <img src="5g-services.png" alt="alt text" width="1000">
 
 La rete 5G privata può essere implementata in due modi:
-- Il primo è implementare una rete 5G privata fisicamente isolata (isola 5G) indipendente dalla rete 5G pubblica dell'operatore di telefonia mobile (come se si costruisse una LAN cablata o una WLAN Wi-Fi nell'azienda). In questo caso, la rete 5G privata può essere realizzata da imprese specializzate o operatori mobili.
-- Il secondo è costruire reti 5G private condividendo le risorse di rete 5G pubbliche dell'operatore mobile. In questo caso, il gestore costruirà reti 5G private per le imprese.
+- Il **primo** è implementare una **rete 5G privata** fisicamente isolata (isola 5G) indipendente dalla rete 5G pubblica dell'operatore di telefonia mobile (come se si costruisse una LAN cablata o una WLAN Wi-Fi nell'azienda). In questo caso, la rete 5G privata può essere realizzata da **imprese specializzate** o **operatori mobili**.
+- Il **secondo** è costruire reti 5G private **condividendo** le risorse di **rete 5G pubbliche** dell'operatore mobile. In questo caso, il **gestore costruirà** reti 5G private per le imprese.
 
 La RAN gestisce lo spettro radio, assicurandosi che sia utilizzato in modo efficiente e soddisfi i requisiti di qualità del servizio di ogni utente. Corrisponde a un insieme distribuito di stazioni base.
 
-La RAN è il collegamento finale tra la rete e il telefono. È il pezzo visibile e include le antenne che vediamo sulle torri, in cima agli edifici o negli stadi, più le stazioni base. Quando effettuiamo una chiamata o ci connettiamo a un server remoto, ad es. per guardare un video di YouTube, l'antenna trasmette e riceve segnali da e verso i nostri telefoni o altri dispositivi portatili. Il segnale viene quindi digitalizzato nella stazione base RAN e connesso alla rete.
+La **RAN** è il collegamento finale tra la rete e il telefono. È il pezzo visibile e include le antenne che vediamo sulle torri, in cima agli edifici o negli stadi, più le stazioni base. Quando effettuiamo una chiamata o ci connettiamo a un server remoto, ad es. per guardare un video di YouTube, l'antenna trasmette e riceve segnali da e verso i nostri telefoni o altri dispositivi portatili. Il segnale viene quindi digitalizzato nella stazione base RAN e connesso alla rete.
 
 Man mano che i produttori di apparecchiature miglioravano le capacità, l'industria si consolidava attorno a quelli con l'offerta più forte e spesso con funzionalità proprietarie. Ma oggi gli operatori vogliono un ecosistema di fornitori più diversificato e stanno ridefinendo i loro requisiti per l'architettura di rete, specialmente nella RAN.
 
