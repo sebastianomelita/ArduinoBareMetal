@@ -505,6 +505,14 @@ Per comprendere l'impatto delle tecnologie e delle pratiche cloud applicate alla
 
 - Commoditizzazione: essere in grado di scalare in modo elastico quei componenti virtuali attraverso i mattoncini hardware di base in base al carico di lavoro.
 
+Lo slicing della rete 5G è l'uso della virtualizzazione della rete per dividere le singole connessioni di rete in più connessioni virtuali distinte che forniscono diverse quantità di risorse a diversi tipi di traffico.
+
+L'idea di base dello slicing di rete è quella di "suddividere" l'architettura di rete originale in più reti logiche e indipendenti configurate per soddisfare efficacemente i vari requisiti dei servizi. Per realizzare quantitativamente tale concetto, vengono impiegate diverse tecniche:
+
+- Funzioni di rete: esprimono funzionalità di rete elementari che vengono utilizzate come "mattoni" per creare ogni fetta di rete.
+- Virtualizzazione: fornisce una rappresentazione astratta delle risorse fisiche secondo uno schema unificato ed omogeneo. Inoltre, consente una distribuzione scalabile delle sezioni basata su NFV che consente il disaccoppiamento di ogni istanza della funzione di rete dall'hardware di rete su cui viene eseguita.
+- Orchestrazione: è un processo che consente il coordinamento di tutte le diverse componenti di rete che sono coinvolte nel ciclo di vita di ciascuna fetta di rete. In questo contesto, SDN viene impiegato per consentire una configurazione delle sezioni dinamica e flessibile.
+
 <img src="slicing.png" alt="alt text" width="1000">
 
 
@@ -566,6 +574,7 @@ Per comprendere l'impatto delle tecnologie e delle pratiche cloud applicate alla
 - https://www.netmanias.com/en/post/blog/14500/5g-edge-kt-sk-telecom/7-deployment-scenarios-of-private-5g-networks
 - https://www.sdxcentral.com/5g/definitions/5g-network-slicing/
 - https://www.zte.com.cn/global/about/magazine/zte-technologies/2018/1/Special-Topic/5G-network-Slicing.html
+- https://en.wikipedia.org/wiki/5G_network_slicing
 
 >[Torna all'indice generale](index.md)
     
