@@ -496,6 +496,11 @@ Uno **stack commerciale**, essendo completo fino al **livello di applicazione**,
 
 ## **RETI CELLULARI PRIVATE**
 
+Il 5G, per sua natura, ha una conformazione dei suoi servizi parecchio scalabile sia in termini di banda allocabile ai singoli dispositivi sia in termini di ritardi per andare incontro alle applicazioni Real Time. Inoltre %G ha inglobato nelle sue specifiche anche le teclologie del 4G NB-IoT che offrono servizi a bassisimo bit rate utili per realizzare WSN di grandi dimensioni, in concorrenza diretta con tecnologie come Sigfox e LoraWan.
+
+Il 5G utilizza per fornire servizi ad alto bit rate deve utilizzare canalizzazioni ad alta capacità che, per la natura fisica del mezzo radio, devono stare per forza nella porzione di spettro a frequenza più elevata (dove è possibbile allocare più informazione). A queste frequnze l'attenuazione dovuta alla distanza aumenta per cui la soluzione potrebbe essere mantenere celle grandi aumentando le potenze o utilizzare le stesse potenze di prima su microcelle. Si è calcolato che per poter soddisfare servizi ad alta bit rate, la qualità del segnale ricevuto deve essere estremamente buona e questo si traduce in una
+distanza fra trasmettitore e ricevitore molto corta (nell’ordine delle decine di metri). Al contrario, altri servizi del 5G utilizzano delle capacità estremamente ridotte (nell’ordine del kilobit per secondo), e possono essere soddisfatti anche se la distanza fra trasmettitore e ricevitore è elevata (nell’ordine dei chilometri).
+
 <img src="5g-services.png" alt="alt text" width="1000">
 
 La rete 5G privata può essere implementata in due modi:
@@ -508,23 +513,23 @@ La RAN è il collegamento finale tra la rete e il telefono. È il pezzo visibile
 
 Man mano che i produttori di apparecchiature miglioravano le capacità, l'industria si consolidava attorno a quelli con l'offerta più forte e spesso con funzionalità proprietarie. Ma oggi gli operatori vogliono un ecosistema di fornitori più diversificato e stanno ridefinendo i loro requisiti per l'architettura di rete, specialmente nella RAN.
 
-In un ambiente RAN aperto, la RAN è disaggregata in tre elementi costitutivi principali:
+In un **ambiente RAN aperto**, la RAN è **disaggregata** in **tre elementi** costitutivi principali:
 
-- l'Unità Radio (UR)
-- l'Unità Distribuita (DU)
-- l'Unità Centralizzata (CU)
+- **l'Unità Radio (UR)**
+- **l'Unità Distribuita (DU)**
+- **l'Unità Centralizzata (CU)**
 
-L'RU è il luogo in cui vengono trasmessi, ricevuti, amplificati e digitalizzati i segnali in radiofrequenza. L'RU si trova vicino o integrato nell'antenna. La DU e la CU sono le parti di calcolo della stazione base, che inviano il segnale radio digitalizzato nella rete. Il DU si trova fisicamente presso o vicino al RU mentre il CU può essere posizionato più vicino al Core.
+L'**RU** è il luogo in cui vengono **trasmessi**, **ricevuti**, **amplificati** e **digitalizzati** i segnali in radiofrequenza. L'RU si trova vicino o integrato nell'antenna. La DU e la CU sono le parti di calcolo della stazione base, che inviano il segnale radio digitalizzato nella rete. Il **DU** si trova fisicamente **presso** o **vicino** all'**RU** mentre il **CU** può essere posizionato **più vicino** al**Core**.
 
 <img src="o-RAN1.png" alt="alt text" width="1000">
 
-Il concetto chiave di Open RAN è "aprire" i protocolli e le interfacce tra questi vari elementi costitutivi (radio, hardware e software) nella RAN. L'O-RAN ALLIANCE ha definito 11 diverse interfacce all'interno della RAN, incluse quelle per:
+Il concetto chiave di **Open RAN** è "**aprire**" i **protocolli** e le **interfacce** tra questi vari elementi costitutivi (radio, hardware e software) nella RAN. L'**O-RAN ALLIANCE** ha definito **3** diverse **interfacce** all'**interno** della **RAN**, incluse quelle per:
 
-- Fronthaul tra l'unità radio e l'unità distribuita
-- Midhaul tra l'Unità Distribuita e l'Unità Centralizzata
-- Backhaul che collega la RAN al Core
+- **Fronthaul** tra l'**unità radio** e l'**unità distribuita**
+- **Midhaul** tra l'**Unità Distribuita** e l'**Unità Centralizzata**
+- **Backhaul** che collega la **RAN** al **Core**
 
-Dettaglio livello fisico downlink e uplink:
+Al momento la **complessità** e il **costo** del **livello fisico** della RAN ha portato alla proposta di un'architettura mista che suddivide, sia in downlink che in uplink, la **gestione fisica dei mezzo** su **due apparati** distinti, uno **abbinato all'antenna**. un'altro a parte **comune a più antenne**. Dettaglio livello fisico **downlink** e **uplink**:
 
 <img src="o-RAN2.png" alt="alt text" width="1000">
 
@@ -613,6 +618,7 @@ L'idea di base dello slicing di rete è quella di "suddividere" l'architettura d
 - https://www.techplayon.com/o-ran-fornthual-c-u-sync-mgmt-planes-and-protocols-stack/
 - https://www.techplayon.com/o-ran-fronthaul-spilt-option-7-2x/
 - https://www.gruppotim.it/tit/it/notiziariotecnico/edizioni-2019/n-3-2019/N3-Open-RAN-dalle-specifiche-ai-trials/approfondimenti-1.html
+- https://www.cnit.it/wp-content/uploads/2020/09/Spieghiamo-il-5G-200803.pdf
 
 >[Torna all'indice generale](index.md)
     
