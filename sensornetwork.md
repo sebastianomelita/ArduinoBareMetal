@@ -605,7 +605,7 @@ Lo **slicing della rete 5G** è l'uso della **virtualizzazione della rete** per 
 
 Elenco di prodotti opensource utilizzaili per lagestione di una RAN 5G:
 
-<img src="LF-Open-Source-Component-Project-for-5G.png" alt="alt text" width="800">
+<img src="LF-Open-Source-Component-Project-for-5G.png" alt="alt text" width="1000">
 
 **Sitografia:**
 
