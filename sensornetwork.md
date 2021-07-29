@@ -590,13 +590,13 @@ La **figura sottostante** mostra un possibile uso delle **reti mobili private**.
 
 <img src="Private 5G definition (en).png" alt="alt text" width="600">
 
-Per comprendere l'impatto delle tecnologie e delle pratiche cloud applicate alla rete di accesso, è utile prima capire cosa è importante per il cloud. Il cloud ha cambiato radicalmente il modo in cui elaboriamo e, soprattutto, il ritmo dell'innovazione. Lo ha fatto attraverso una combinazione di quanto segue.
+Per comprendere l'impatto delle tecnologie e delle pratiche cloud applicate alla rete di accesso (RAN), è utile prima capire cosa è importante per il cloud. **Il cloud** ha cambiato radicalmente il modo in cui elaboriamo e, soprattutto, il ritmo dell'innovazione. Lo ha fatto attraverso una **combinazione** di quanto segue.
 
 - **Disaggregazione**: scomposizione di sistemi integrati verticalmente in componenti indipendenti con interfacce aperte.
 
 - **Virtualizzazione**: essere in grado di eseguire più copie indipendenti di tali componenti su una piattaforma hardware comune.
 
-- **Commoditizzazione**: essere in grado di scalare in modo elastico quei componenti virtuali attraverso i mattoncini hardware di base in base al carico di lavoro.
+- **Commoditizzazione**: essere in grado di scalare in modo elastico quei componenti virtuali attraverso i **mattoncini hardware** di base in base al **carico di lavoro**.
 
 Lo **slicing della rete 5G** è l'uso della **virtualizzazione della rete** per dividere le **singole connessioni** di rete in **più connessioni virtuali** distinte che forniscono **diverse quantità di risorse** a **diversi tipi** di traffico.
 
@@ -607,7 +607,7 @@ Lo **slicing della rete 5G** è l'uso della **virtualizzazione della rete** per 
 
 <img src="slicing.png" alt="alt text" width="1000">
 
-Elenco di prodotti opensource utilizzabili per lagestione di una RAN 5G:
+Elenco di **prodotti opensource** utilizzabili per la gestione di una **RAN 5G**:
 
 <img src="LF-Open-Source-Component-Project-for-5G.png" alt="alt text" width="1000">
 
