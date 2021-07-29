@@ -556,7 +556,7 @@ Il concetto chiave di **Open RAN** è "**aprire**" i **protocolli** e le **inter
 
 <img src="open-RAN-architecture-simplified-1920x1080.png" alt="alt text" width="800">
 
-Al momento la **complessità** e il **costo** del **livello fisico** della RAN ha portato alla proposta di un'architettura mista che suddivide, sia in downlink che in uplink, la **gestione fisica dei mezzo** su **due apparati** distinti, uno **abbinato all'antenna**, un'altro a parte **comune a più antenne**. Dettaglio livello fisico **downlink** e **uplink**:
+Al momento la **complessità** e il **costo** del **livello fisico** della RAN ha portato alla proposta di un'architettura mista che suddivide, sia in downlink che in uplink, la **gestione fisica dei mezzo** su **due apparati** distinti, uno **abbinato all'antenna**, un'altro a parte **comune a più antenne**. Di seguito è illustrato il dettaglio del livello fisico di **downlink** e **uplink**:
 
 <img src="o-RAN2.png" alt="alt text" width="1000">
 
