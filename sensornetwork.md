@@ -524,7 +524,9 @@ Si è calcolato che per poter soddisfare servizi ad **alta bit rate**, la qualit
 
 <img src="5g-services.png" alt="alt text" width="1000">
 
-Una novità dei prossimi anni sarà l'introduzione delle **reti 5G private**, cioè di **proprietà dell'utente**, che permetteranno l'**accesso alla rete LAN** con gli **stessi dispositivi** in uso per la **rete cellulare**. La **rete 5G privata** potrà essere **installata** e **gestita** da un **operatore telefonico**, oppure installata e gestita **da terzi**, oppure **installata** da **terzi** e **gestita** direttamente **dall'utente**, al limite, se ne ha le capacità tecniche, fa **tutto in house** l'utente.
+Una novità dei prossimi anni sarà l'introduzione delle **reti 5G private**, cioè di **proprietà dell'utente**, che permetteranno l'**accesso alla rete LAN** con gli **stessi dispositivi** in uso per la **rete cellulare**. La **rete 5G privata** potrà essere **installata** e **gestita** da un **operatore telefonico**, oppure installata e gestita **da terzi**, oppure **installata** da **terzi** e **gestita** direttamente **dall'utente**, al limite, se ne ha le capacità tecniche, fa **tutto in house** l'utente. Le reti 5G private, per ragioni di costi, dovranno essere composte da **dispositivi di rete** necessariamente **multivendor**, cioè produttori diversi dovranno fabbricare dispositivi tra loro **interoperabili** (cosa che non è accaduta finora in ambito operatore di telefonia).
+
+il **processo di standardizzazione** è ancora in atto sotto il nome **Open RAN (O-RAN)** e include la standardizzazione di protocolli e di interfacce tra i vari dispositivi (potenzialmente di marca diversa). la **scalabilità dei servizi** e l'**esigenza di semplificazione** ha suggerito di includere in questo processo anche la virtualizzazione della rete con l'introduzione dei **network slice**, piani di servizio e gestione paralleli resi disponibili da **tecnologie di automazione** e virtualizzazione basate su **SDN** (Software Defined Network).
 
 La **rete 5G privata** può essere implementata in **due modi**:
 - Il **primo** è implementare una **rete 5G privata** fisicamente isolata (isola 5G) indipendente dalla rete 5G pubblica dell'operatore di telefonia mobile (come se si costruisse una LAN cablata o una WLAN Wi-Fi nell'azienda). In questo caso, la rete 5G privata può essere realizzata da **imprese specializzate** o **operatori mobili**.
@@ -561,34 +563,34 @@ O-RAN **Fronthaul** definisce i seguenti **piani operativi**:
 - **C-Plane** (Piano di controllo): i messaggi del piano di controllo definiscono la pianificazione, il coordinamento richiesto per il trasferimento dei dati, la formazione del fascio delle antenne, ecc.
 - **U-Plane (User Plane)**: Messaggi dell'aereo utente per un trasferimento dati efficiente entro i rigorosi limiti di tempo delle numerologie 5G.
  - **S-Plane (Piano di sincronizzazione)**: il piano di sincronizzazione è responsabile degli aspetti di temporizzazione e sincronizzazione tra O-DU e O-RU. Nelle implementazioni Cloud RAN, per svolgere tutta una serie di processi, è necessaria una sincronizzazione molto accurata tra O-DU e O-RU ottenuta sincronizzandosi con l'orologio ad alte prestazioni disponibile sul lato O-DU.
-- **Piano M (piano di gestione)**: i messaggi del piano di gestione vengono utilizzati per gestire l'unità radio. M-Plane fornisce una varietà di funzioni di gestione O-RU per impostare i parametri sul lato O-RU come richiesto da C/U-Plane e S-Plane, ad es. gestire il software O-RU, eseguire la gestione dei guasti, ecc. La specifica di fronthaul O-RAN per M-Plane fornisce vari parametri come modelli di dati alle funzioni FCAPS. Questo modello di dati elimina la dipendenza dall'implementazione di ciascun fornitore O-RU e rende possibile una vera Open RAN multi-vendor
+- **Piano M (piano di gestione)**: i messaggi del piano di gestione vengono utilizzati per **gestire l'unità radio**. **M-Plane** fornisce una varietà di funzioni di gestione O-RU per impostare i parametri sul lato O-RU come richiesto da C/U-Plane e S-Plane, ad es. gestire il software O-RU, eseguire la gestione dei guasti, ecc. La specifica di fronthaul O-RAN per M-Plane fornisce vari parametri come modelli di dati che eliminino la dipendenza dall'implementazione di ciascun fornitore O-RU e rende possibile una vera Open RAN multi-vendor
     - Supporta il modello gerarchico/ibrido
     - C/U Plane IP e gestione dei ritardi
     - FCAPS inclusa la configurazione e lo stato della sincronizzazione
 
 <img src="o-RAN3.png" alt="alt text" width="1000">
 
-Un'altra caratteristica di Open RAN è il RAN Intelligent Controller (RIC) che aggiunge programmabilità alla RAN.
+Un'altra **caratteristica** di **Open RAN** è il RAN Intelligent Controller (**RIC**) che aggiunge programmabilità alla RAN.
 
-Un ambiente aperto espande l'ecosistema e, con più fornitori che forniscono gli elementi costitutivi, c'è più innovazione e più opzioni per gli operatori. Possono anche aggiungere nuovi servizi. Ad esempio, l'Intelligenza Artificiale può essere introdotta tramite il RIC per ottimizzare la rete in prossimità di uno stadio di calcio il giorno di una partita.
+Un ambiente aperto espande l'ecosistema e, con più fornitori che forniscono gli elementi costitutivi, c'è più innovazione e più opzioni per gli operatori. Possono anche aggiungere nuovi servizi. Ad esempio, l'**Intelligenza Artificiale** può essere introdotta tramite il **RIC** per **ottimizzare** la rete in prossimità di uno stadio di calcio **il giorno** di una partita.
 
-Il Mobile Core è un insieme di funzionalità (al contrario di un dispositivo) che serve a diversi scopi.
-- Fornisce connettività Internet (IP) sia per i dati che per i servizi vocali.
-- Assicura che questa connettività soddisfi i requisiti di QoS promessi.
-- Tiene traccia della mobilità degli utenti per garantire un servizio ininterrotto.
-- Tiene traccia dell'utilizzo dell'abbonato per la fatturazione e l'addebito.
+Il **Mobile Core** è un insieme di funzionalità (al contrario di un dispositivo) che serve a diversi scopi.
+- Fornisce **connettività Internet (IP)** sia per i dati che per i servizi vocali.
+- Assicura che questa connettività soddisfi i **requisiti di QoS** promessi.
+- **Tiene traccia della mobilità** degli utenti per garantire un servizio ininterrotto.
+- **Tiene traccia dell'utilizzo** dell'abbonato per la fatturazione e l'addebito.
 
-Il Mobile Core in 4G questo è chiamato Evolved Packet Core (EPC) e in 5G è chiamato Next Generation Core (NG-Core).
+Il **Mobile Core** in **4G** è chiamato Evolved Packet Core (**EPC**) e in **5G** è chiamato Next Generation Core (**NG-Core**).
 
 <img src="Private 5G definition (en).png" alt="alt text" width="600">
 
 Per comprendere l'impatto delle tecnologie e delle pratiche cloud applicate alla rete di accesso, è utile prima capire cosa è importante per il cloud. Il cloud ha cambiato radicalmente il modo in cui elaboriamo e, soprattutto, il ritmo dell'innovazione. Lo ha fatto attraverso una combinazione di quanto segue.
 
-- Disaggregazione: scomposizione di sistemi integrati verticalmente in componenti indipendenti con interfacce aperte.
+- **Disaggregazione**: scomposizione di sistemi integrati verticalmente in componenti indipendenti con interfacce aperte.
 
-- Virtualizzazione: essere in grado di eseguire più copie indipendenti di tali componenti su una piattaforma hardware comune.
+- **Virtualizzazione**: essere in grado di eseguire più copie indipendenti di tali componenti su una piattaforma hardware comune.
 
-- Commoditizzazione: essere in grado di scalare in modo elastico quei componenti virtuali attraverso i mattoncini hardware di base in base al carico di lavoro.
+- **Commoditizzazione**: essere in grado di scalare in modo elastico quei componenti virtuali attraverso i mattoncini hardware di base in base al carico di lavoro.
 
 Lo slicing della rete 5G è l'uso della virtualizzazione della rete per dividere le singole connessioni di rete in più connessioni virtuali distinte che forniscono diverse quantità di risorse a diversi tipi di traffico.
 
