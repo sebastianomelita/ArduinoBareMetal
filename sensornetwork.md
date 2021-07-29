@@ -499,7 +499,7 @@ Uno **stack commerciale**, essendo completo fino al **livello di applicazione**,
 Il 5G, per sua natura, ha una conformazione dei suoi servizi parecchio **scalabile** sia in termini di **banda allocabile** ai singoli dispositivi sia in termini di **ritardi** per andare incontro alle applicazioni **Real Time**. Inoltre 5G ha **inglobato** nelle sue specifiche anche le teclologie del 4G **NB-IoT** che offrono **servizi a bassisimo bit rat**e utili per realizzare **WSN di grandi dimensioni**, in concorrenza diretta con tecnologie come **Sigfox** e **LoraWan**.
 
 Il **5G fa uso** delle seguenti **frequenze di trasmissione**:
-- **anda bassa** (inferiore a 1 GHz): 694-790 MHz
+- **Banda bassa** (inferiore a 1 GHz): 694-790 MHz
 - **Banda media** (inferiore a 6 GHz): 3,6-3,8 GHz
 - **Banda elevata** (a onde millimetriche): 26,6-27,5 GHz (Nota: le onde millimetriche
 propriamente dette partono dal valore minimo di 30 GHz. La banda 26,6-27,5 GHz viene
