@@ -528,6 +528,18 @@ Dettaglio livello fisico downlink e uplink:
 
 <img src="o-RAN2.png" alt="alt text" width="1000">
 
+O-RAN **Fronthaul** definisce i seguenti **piani operativi**:
+
+- **C-Plane** (Piano di controllo): i messaggi del piano di controllo definiscono la pianificazione, il coordinamento richiesto per il trasferimento dei dati, la formazione del fascio delle antenne, ecc.
+- **U-Plane (User Plane)**: Messaggi dell'aereo utente per un trasferimento dati efficiente entro i rigorosi limiti di tempo delle numerologie 5G.
+ - **S-Plane (Piano di sincronizzazione)**: il piano di sincronizzazione è responsabile degli aspetti di temporizzazione e sincronizzazione tra O-DU e O-RU. Nelle implementazioni Cloud RAN, per svolgere tutta una serie di processi, è necessaria una sincronizzazione molto accurata tra O-DU e O-RU ottenuta sincronizzandosi con l'orologio ad alte prestazioni disponibile sul lato O-DU.
+- **Piano M (piano di gestione)**: i messaggi del piano di gestione vengono utilizzati per gestire l'unità radio. M-Plane fornisce una varietà di funzioni di gestione O-RU per impostare i parametri sul lato O-RU come richiesto da C/U-Plane e S-Plane, ad es. gestire il software O-RU, eseguire la gestione dei guasti, ecc. La specifica di fronthaul O-RAN per M-Plane fornisce vari parametri come modelli di dati alle funzioni FCAPS. Questo modello di dati elimina la dipendenza dall'implementazione di ciascun fornitore O-RU e rende possibile una vera Open RAN multi-vendor
+    - Supporta il modello gerarchico/ibrido
+    - C/U Plane IP e gestione dei ritardi
+    - FCAPS inclusa la configurazione e lo stato della sincronizzazione
+
+<img src="o-RAN3.png" alt="alt text" width="1000">
+
 Un'altra caratteristica di Open RAN è il RAN Intelligent Controller (RIC) che aggiunge programmabilità alla RAN.
 
 Un ambiente aperto espande l'ecosistema e, con più fornitori che forniscono gli elementi costitutivi, c'è più innovazione e più opzioni per gli operatori. Possono anche aggiungere nuovi servizi. Ad esempio, l'Intelligenza Artificiale può essere introdotta tramite il RIC per ottimizzare la rete in prossimità di uno stadio di calcio il giorno di una partita.
