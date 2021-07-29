@@ -496,6 +496,8 @@ In un ambiente RAN aperto, la RAN è disaggregata in tre elementi costitutivi pr
 
 L'RU è il luogo in cui vengono trasmessi, ricevuti, amplificati e digitalizzati i segnali in radiofrequenza. L'RU si trova vicino o integrato nell'antenna. La DU e la CU sono le parti di calcolo della stazione base, che inviano il segnale radio digitalizzato nella rete. Il DU si trova fisicamente presso o vicino al RU mentre il CU può essere posizionato più vicino al Core.
 
+<img src="openRAN.png" alt="alt text" width="600">
+
 Il concetto chiave di Open RAN è "aprire" i protocolli e le interfacce tra questi vari elementi costitutivi (radio, hardware e software) nella RAN. L'O-RAN ALLIANCE ha definito 11 diverse interfacce all'interno della RAN, incluse quelle per:
 
 - Fronthaul tra l'unità radio e l'unità distribuita
