@@ -582,7 +582,7 @@ Il **Mobile Core** è un insieme di funzionalità (al contrario di un dispositiv
 
 Il **Mobile Core** in **4G** è chiamato Evolved Packet Core (**EPC**) e in **5G** è chiamato Next Generation Core (**NG-Core**).
 
-La **figura sottostant**e mostra un possibile uso delle **reti mobili private**. Un uso **indipendente dal gestore** con la **rete di telefonia aziendale** collegata alla LAN e **suddivisa** in **classi di servizio fisse** (realizzate magari con reti **fisicamente separate**), solo quelle necessarie ai processi aziendali. Un uso **dipendente dalla rete pubblica** dell'operatore telefonico che ritaglia servizi su misura per quell'azienda utilizzando per questo scopo le proprie **funzioni diamiche** di **network slicing**.
+La **figura sottostante** mostra un possibile uso delle **reti mobili private**. Un uso **indipendente dal gestore** con la **rete di telefonia aziendale** collegata alla LAN e **suddivisa** in **classi di servizio fisse** (realizzate magari con reti **fisicamente separate**), solo quelle necessarie ai processi aziendali. Un uso **dipendente dalla rete pubblica** dell'operatore telefonico che ritaglia servizi su misura per quell'azienda utilizzando per questo scopo le proprie **funzioni diamiche** di **network slicing**.
 
 <img src="Private 5G definition (en).png" alt="alt text" width="600">
 
@@ -602,6 +602,10 @@ Lo **slicing della rete 5G** è l'uso della **virtualizzazione della rete** per 
 - **Orchestrazione**: è un processo che consente il coordinamento di tutte le diverse componenti di rete che sono coinvolte nel ciclo di vita di ciascuna fetta di rete. In questo contesto, SDN viene impiegato per consentire una configurazione delle sezioni dinamica e flessibile.
 
 <img src="slicing.png" alt="alt text" width="1000">
+
+Elenco di prodotti opensource utilizzaili per lagestione di una RAN 5G:
+
+<img src="LF-Open-Source-Component-Project-for-5G.png" alt="alt text" width="600">
 
 **Sitografia:**
 
