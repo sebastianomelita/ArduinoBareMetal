@@ -492,6 +492,7 @@ Uno **stack commerciale**, essendo completo fino al **livello di applicazione**,
      - Tipicamente tramite **LAN ethernet** e architettura **Client/Server**
      - Interazioni di tipo PUSH o PULL
      - Paradigma Request/Response (HTTPS, COAP), Publish/Subscriber (MQTT) oppure canale persistente bidirezionale (BSD socket o WebSocket)
+![radiolinks](radiolinks.jpg)
 
 ## **RETI CELLULARI PRIVATE**
 
@@ -557,8 +558,6 @@ L'idea di base dello slicing di rete è quella di "suddividere" l'architettura d
 - Orchestrazione: è un processo che consente il coordinamento di tutte le diverse componenti di rete che sono coinvolte nel ciclo di vita di ciascuna fetta di rete. In questo contesto, SDN viene impiegato per consentire una configurazione delle sezioni dinamica e flessibile.
 
 <img src="slicing.png" alt="alt text" width="1000">
-
-![radiolinks](radiolinks.jpg)
 
 **Sitografia:**
 
