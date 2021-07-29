@@ -570,6 +570,8 @@ O-RAN **Fronthaul** definisce i seguenti **piani operativi**:
     - C/U Plane IP e gestione dei ritardi
     - FCAPS inclusa la configurazione e lo stato della sincronizzazione
 
+FCAPS è il modello di rete di gestione delle telecomunicazioni ISO e il framework per la gestione della rete. **FCAPS** è l'acronimo di **fault**, **configuration**, **accounting**, **performance**, **security**, le categorie di gestione in cui il modello ISO definisce le **attività di gestione** della rete. Nelle organizzazioni **senza fatturazione** la **contabilità** viene talvolta sostituita con l'**amministrazione**.
+
 <img src="o-RAN3.png" alt="alt text" width="1000">
 
 Un'altra **caratteristica** di **Open RAN** è il RAN Intelligent Controller (**RIC**) che aggiunge programmabilità alla RAN.
