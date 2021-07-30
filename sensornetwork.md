@@ -502,7 +502,7 @@ Il 5G, per sua natura, ha una conformazione dei suoi servizi parecchio **scalabi
 Il **5G fa uso** delle seguenti **frequenze di trasmissione**:
 - **Banda bassa** (inferiore a 1 GHz): 694-790 MHz
 - **Banda media** (inferiore a 6 GHz): 3,6-3,8 GHz
-- **Banda elevata** (a onde millimetriche): 26,6-27,5 GHz (Nota: le onde millimetriche
+- **Banda elevata** (a onde millimetriche): 26,6-27,5 GHz  (5G NR Band n258 in banda K)
 propriamente dette partono dal valore minimo di 30 GHz. La banda 26,6-27,5 GHz viene
 tuttavia assimilata alle onde millimetriche in quanto sufficientemente vicina a questo
 valore minimo.)
