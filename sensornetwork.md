@@ -273,6 +273,10 @@ Il **grafico sotto** mostra **il posizionamento** delle varie tecnologie wireles
 
 <img src="Data-rate-vs-range-in-communication-networks-Source-27.png" alt="alt text" width="700">
 
+Versione più **dettagliata**:
+
+<img src="lpwan-taxonomy.png" alt="alt text" width="700">
+
 ## **Interfaccia radio**
 
 Il **mezzo trasmissivo radio** è partizionabile in **frequenza**, **tempo**, **spazio** e **potenza**. Delle grandezze precedenti quella in assoluto **più limitata** è la **frequenza** essendo **proprietà dello Stato** e ceduta in **concessione** sotto ben precise condizioni (**licenze**). Questo è il motivo per cui, nel realizzare qualsiasi tipo di comunicazione radio, per prima cosa, bisogna cominciare col **riservare** una porzione del campo delle **frequenze radio** (spettro) **allocando** degli intervalli di frequenze detti **canali**. 
