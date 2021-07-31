@@ -341,7 +341,7 @@ Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un *
 
 ### **DSSS**
 
-In realtà DSSS più che unatecnica di  **multiplazione** per l' **accesso al canale radio ** è una vera e propria tecnica di **modulazione numerica** complementare alle tradizionali ASK, PSK, FSK, ecc.).
+In realtà DSSS più che una tecnica di  **multiplazione** per l' **accesso al canale radio ** è una vera e propria tecnica di **modulazione numerica** complementare alle tradizionali ASK, PSK, FSK, ecc.).
 
 Nel **CDM** la sorgente viene:
 - **traslata**: cioè portata alla frequenza centrale della banda di trasmissione
