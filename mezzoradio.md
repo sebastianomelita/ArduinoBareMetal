@@ -1,4 +1,4 @@
->[Torna a reti di sensori](sensornetworkshort.md)
+>[Torna a reti di sensori](sensornetworkshort.md#Interfaccia-radio)
 
 ## **Mezzo radio**
 
@@ -49,4 +49,4 @@ La **multiplazione SDM** (divisione di spazio) del mezzo radio è sempre in qual
 
 I dispositivi mobili che si spostano da una cella all'altra vengono presi in carico automaticamente e in modo trasparente dalla nuova cella senza perdere il collegamento (meccanismo del roaming).
 
->[Torna a reti di sensori](sensornetworkshort.md)
+>[Torna a reti di sensori](sensornetworkshort.md#Interfaccia-radio)
