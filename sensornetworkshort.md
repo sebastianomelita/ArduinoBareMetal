@@ -284,6 +284,7 @@ Molti **framework per IoT** come **TinyOS**, **Contiki** e **RIOT** posseggono u
 - https://www.gruppotim.it/tit/it/notiziariotecnico/edizioni-2019/n-3-2019/N3-Open-RAN-dalle-specifiche-ai-trials/approfondimenti-1.html
 - https://www.cnit.it/wp-content/uploads/2020/09/Spieghiamo-il-5G-200803.pdf
 - https://www.mdpi.com/1999-5903/12/3/46/htm
+- https://www.radiomakers.it/news/bande-libereguide
 
 >[Torna all'indice generale](index.md)
     
