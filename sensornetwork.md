@@ -85,7 +85,7 @@ Alla **rete di distribuzione IP** si collegano, quindi, una o più **reti second
   - **Interrogazione periodica** (polling) dei dispositivi (master di una architettura master/slave)
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un secondo momento al server di gestione
     
-## **Server di gestione**
+## **Server di gestione dei servizi**
 
 In genere è localizzato all'intermo della **rete principale** con una collocazione **on-premise** all'interno del sistema.
 
