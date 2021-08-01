@@ -116,6 +116,7 @@ Nelle **reti industriali** sono molto comuni topologie complesse a più livelli.
  <img src="bus.png" alt="alt text" width="600">
  
 [Dettaglio su collegamenti cablati a stella e a bus basici per domotica e sensoristica](cablatisemplici.md)
+
 [Dettaglio su stack cablati specifici per domotica e sensoristica](stackcablati.md)
  
 ##  **Topologia delle reti di sensori wireless**     
