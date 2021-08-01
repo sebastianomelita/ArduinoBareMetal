@@ -7,6 +7,6 @@ L’uso di tali bande è regolamentato in modo da consentirne l’impiego condiv
 
 In tabella un elenco parziale con le principali limitazioni:
 
-<img src="ismband.png" alt="alt text" width="700">
+<img src="ismband.png" alt="alt text" width="600">
 
 >[Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
