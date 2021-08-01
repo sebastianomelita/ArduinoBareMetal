@@ -172,6 +172,8 @@ Recentemente alla banda ISM si è aggiunta un'altra **banda non licenziata**, la
 
 [Dettaglio mezzo radio](mezzoradio.md)
 
+[Dettaglio banda ISM](ism.md)
+
 ## **Servizi di accesso radio per WSN**
 
 Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un **unico canale radio** di una multiplazione **FDM**. L'allocazione può essere sia **statica** (eseguita dal sistemista) che dinamica cioè variabile nel tempo ed **automatica**.
