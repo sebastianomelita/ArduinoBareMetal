@@ -105,9 +105,9 @@ Queste prese in considerazione sono generalmente tutte funzioni di **livello app
 
 ## **Server di gestione della rete**
 
-Sono delle macchine sede di elaborazioni necessarie per lo svolgimento delle funzioni di rete di tutti i dispositivi ad essa collegati. Si tratta di funzioni che interessano i primi 3 livelli della pila ISO/OSI tipicamente il **livello fisico** come la gestione della potenza dei terminali e parametri di modulazione (ad es. spreading factor), il **livello di di linea** come la gestione dei messaggi duplicati; il **livello di rete** come la gestione centralizzata del routing.
+Sono delle macchine sede di elaborazioni necessarie per lo svolgimento delle funzioni di rete di tutti i dispositivi ad essa collegati (**funzioni di controllo**). Si tratta di funzioni che interessano i primi 3 livelli della pila ISO/OSI tipicamente il **livello fisico** come la gestione della potenza dei terminali e parametri di modulazione (ad es. spreading factor), il **livello di di linea** come la gestione dei messaggi duplicati; il **livello di rete** come la gestione centralizzata del routing.
 
-Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e pertanto fanno esse stesse parte della **infrastruttura di rete**. Un'analogia con le LAN potrebbero essere i server DHCP e DNS che pur non essendo a rigore dispositivi di rete, sono comunque macchine **essenziali** per il **suo funzionamento**. Il concetto è che **fanno parte** dell'infrastruttura e non sono dislocate presso gli utenti in quanto le funzioni che esse svolgono sono **comuni** e fruite da tutti.
+Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e pertanto fanno esse stesse parte della **infrastruttura di rete**. Un'analogia con le LAN potrebbero essere i server DHCP e DNS che pur non essendo a rigore dispositivi di rete, sono comunque macchine **essenziali** per il **suo funzionamento**. Un'altro esempio può essere il **controller** che gestise il **roaming** degli utenti autorizzati tra le aree di copertura di una rete **WiFi** o **cellulare**. Il concetto è che **fanno parte** dell'infrastruttura e non sono dislocate presso gli utenti in quanto le funzioni che esse svolgono sono **comuni** e fruite da tutti.
 
 Sono presenti in quasi tutte le **infrastrutture LPWA** a lungo raggio come **LoraWan**, **Sigfox** e **NB-IoT**.
 
