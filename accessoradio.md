@@ -101,4 +101,4 @@ Nella **figura** sottostante, **4 simboli**, con **4 colori diversi**, erano **i
 
 E'adoperato dall'**uplink** di **WiFi 6**, della telefonia mobile **5G** e **NB IoT**.
 
->[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)
+>[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN) 
