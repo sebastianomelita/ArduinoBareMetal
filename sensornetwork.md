@@ -101,6 +101,19 @@ In ogni caso è necessario un **server di gestione** con funzioni di:
 - Aggiornamento via cavo o via etere (OTA) del firmware ai nodi
 - Gestione della sicurezza
 
+Queste prese in considerazione sono generalmente tutte funzioni di **livello applicativo** in quanto si limitano a gestire servizi.
+
+## **Server di gestione della rete**
+
+Sono delle macchine sede di elaborazioni necessarie per lo svolgimento delle funzioni di rete di tutti i dispositivi ad essa collegati. Si tratta di funzioni che interessano i primi 3 livelli della pila ISO/OSI tipicamente il **livello fisico** come la gestione della potenza dei terminali e parametri di modulazione (ad es. spreading factor), il **livello di di linea** come la gestione dei messaggi duplicati; il **livello di rete** come la gestione centralizzata del routing.
+
+Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e pertanto fanno esse stesse parte della **infrastruttura di rete**. Un'analogia con le LAN potrebbero essere i server DHCP e DNS che pur non essendo a rigore dispositivi di rete, sono comunque macchine **essenziali** per il **suo funzionamento**. Il concetto è che **fanno parte** dell'infrastruttura e non sono dislocate presso gli utenti in quanto le funzioni che esse svolgono sono **comuni** e fruite da tutti.
+
+Sono presenti in quasi tutte le **infrastrutture LPWA** a lungo raggio come **LoraWan**, **Sigfox** e **NB-IoT**.
+
+<img src="lpwan.png" alt="alt text" width="700">
+
+
 ##  **Topologia delle reti di sensori cablata** 
 
 Nelle **reti industriali** sono molto comuni topologie complesse a più livelli. Per le applicazioni di **nostro interesse** le **topologie** più adoperate sono quelle classiche a **stella** e a **bus**. **I collegamenti** dei sensori, in questo caso, si attestano sulle **porte** di **schede programmabili** che ospitano dispositivi a microcontrollore. Le stesse schede hanno, in genere, funzione di **gateway** verso la **rete di distribuzione** per cui posseggono almeno **due interfacce**: una **verso il BUS** ed un altra, ethernet ed IP **verso la rete LAN**. Inoltre le schede ospitano le **librerie** SW di **gestione del BUS** e il codice per realizzare il **bridge** tra il **livello applicativo** in uso nella rete di sensori e quello in uso nella rete IP. Il **bridge** è generalmente realizzato o da librerie di **terze parti** oppure direttamente dal **programmatore** in C/C++ o, se la potenza di calcolo della scheda lo consente, mediante linguaggi di scripting come **Python** o **Node.js**. Si realizzano spesso anche in maniera **visuale** adoperando **framework** come **Nodered** e **Openhab**.
