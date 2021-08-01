@@ -167,6 +167,8 @@ I **canali** sono allocabili all'interno di intervalli di frequenze dette **band
 
 <img src="wifi-bands.png" alt="alt text" width="1000">
 
+<img src="ismLora.png" alt="alt text" width="1000">
+
 Recentemente alla banda ISM si è aggiunta un'altra **banda non licenziata**, la **NR-U** centrata all'incirca intorno ai **6GHz** che è stata assegnata al **WIFI 6** (IEE 802.11ax) e alle **RAN (Radio Access Network)** della telefonia cellulare che possono essere o **gestite dall'aperatore** di telefonia o di **proprietà dell'utente** che così realizza una **rete 5G privata**. La **potenza** di un AP in banda NR-U non può eccedere i 30dBm per cui una **BS 5G** crea un'**interferenza** analoga a quella di un **AP wifi**. A parità di area, **densità** di distribuzione degli AP 5G dovrebbe essere circa la metà del WIFi ma con **costi** per dispositivo molto maggiori.
 
 [Dettaglio mezzo radio](mezzoradio.md)
