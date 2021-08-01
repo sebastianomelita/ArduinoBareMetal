@@ -217,6 +217,8 @@ Molti **framework per IoT** come **TinyOS**, **Contiki** e **RIOT** posseggono u
 
 [Dettaglio su stack wireless specifici](stackwirelesspecifici.md)
 
+[Dettaglio su reti cellullari private](ranprivata.md)
+
 ##  **Canali di comunicazione principali in una rete di sensori**
 
 **Riassumendo**, sono necessari almeno due canali di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
