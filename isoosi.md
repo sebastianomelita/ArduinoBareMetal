@@ -1,4 +1,5 @@
->[Torna a reti di sensori](sensornetworkshort.md)
+>[Torna a reti di sensori](sensornetworkshort.md#Dettaglio-ISO/OSI)
+
 
 ## **Stack ISO/OSI**
 
