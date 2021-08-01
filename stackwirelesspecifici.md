@@ -1,4 +1,4 @@
->[Torna a reti di sensori](sensornetworkshort.md)
+>[Torna a reti di sensori](sensornetworkshort.md#stack-wireless-specifici-per-IOT)
 
 ## **Stack wireless specifici**
 
@@ -40,4 +40,4 @@ I **dispositivi**, come sensori e interruttori della luce, funzionano **senza ba
 
 <img src="mbus-enoean.jpg" alt="alt text" width="1000">
 
->[Torna a reti di sensori](sensornetworkshort.md)
+>[Torna a reti di sensori](sensornetworkshort.md#stack-wireless-specifici-per-IOT)
