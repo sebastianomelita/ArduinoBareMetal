@@ -1,4 +1,4 @@
->[Torna a reti di sensori](sensornetworkshort.md)
+>[Torna a reti di sensori](sensornetworkshort.md#topologia-delle-reti-di-sensori-cablata)
 
 ## **Stack cablati specifici per domotica e sensoristica**
 
@@ -30,4 +30,4 @@ Lo **standard KNX** prevede **diversi mezzi trasmissivi** che possono essere uti
 
 Le **prestazioni** elevate delle **interfacce general purpose** (**Ethernet**, ecc.), la loro possibilità di alimentare via **POE** i dispositivi e la costante diminuzione del **prezzo**, sta introducendo una tendenza all’ utilizzo di queste ultime, che compensano con l’ eccesso di prestazioni e i bassi costi il fatto di non essere concettualmente adatte all’impiego in automazione. I **sensori** e gli **attuatori** o escono dalla fabbrica già dotati di **interfacce ethernet** oppure si collegano con i **protocolli** di livello fisico **basilari**, con collegamento a **stella** o a **BUS**, su **piccole schede** a microprocessore che, dotate di connettività ethernet, ricoprono il ruolo di **gateway**. Questa filosofia permette di creare reti a BUS **molto snelle** che si strutturano in maniera più articolata poggiandosi sulla stessa rete IP adoperata per i dati attraverso un **dispositivo gateway** con una interfaccia **sul BUS** e l'atra **sulla rete  LAN**.
 
->[Torna a reti di sensori](sensornetworkshort.md)
+>[Torna a reti di sensori](sensornetworkshort.md#topologia-delle-reti-di-sensori-cablata)
