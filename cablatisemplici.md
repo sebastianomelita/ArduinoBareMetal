@@ -1,4 +1,4 @@
->[Torna a reti di sensori](sensornetworkshort.md)
+>[Torna a reti di sensori](sensornetworkshort.md#topologia-delle-reti-di-sensori-cablata)
 
 ### **Esempi di collegamenti base con topologia a stella**:
 
@@ -100,4 +100,4 @@ Abbiamo visto BUS **centralizzati** e di uso generale che **definiscono** il **l
 
 Molti di questi forniscono una **definizione elaborata**, **standard** ed **esaustiva** di tutti i possibili **tipi di servizi** adoperabili nei vari **scenari pratici** dell'automazione (dall'accensione di una lampadina all'azionamento di una tapparella, ecc.) spesso **catalogati e raccolti** in strutture dati dette **profili**. Molti di questi BUS, per **accrescere l'affidabilità**, adoperano un **arbitraggio** del mezzo trasmissivo di tipo **peer to peer** usando, ad esempio, protocolli di tipo **ALOHA** o **CSMA/CA**. 
 
->[Torna a reti di sensori](sensornetworkshort.md)
+>[Torna a reti di sensori](sensornetworkshort.md#topologia-delle-reti-di-sensori-cablata)
