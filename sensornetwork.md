@@ -110,7 +110,7 @@ Il **network server** è comune in alcune tipologie di **reti wireles**s ed è u
 - implementa la funzionalità di **controllo remoto** dei terminali remoti tra le quali fondamentale è l'impostazione **adaptive data rate (ADR)** allo scopo di massimizzare la vita delle batterie dei dispositivi e la capacità totale della rete. Il linea generale, un minor tempo di trasmissione e minore potenza di uscita si traducono in un ovvio risparmio energetico. Il network server assegna a ogni **end node** che si vuole connettere alla rete, un **data rate** e una **potenza di uscita** diversa a seconda della esigenza e della situazione (da 300bps fino a 50kbps). :
     - un **data rate maggiore** e una **potenza di uscita minore** ai nodi terminali **piu`vicini**  al  gateway  in  quanto meno suscettibili alle interferenze (trasmissione rapida e a bassa potenza). 
     - un **data rate piu`basso** (minore suscettibilità ai rumori) e una **maggiore potenza** di uscita solo ai nodi che si trovano a distanze notevoli dal gateway (trasmissione lunga e a alta potenza). 
-    - 
+    
 Sono collegati ai gateway dei sensori mediante una normale **rete IP** mediante **protoolli di livello applicativo**. Sono dei **nodi di smistamento finale** e, in questo senso, possono essere considerati dei **router di livello applicativo**.
 I dati ricevuti possono essere **inviati agli application server** per le elaborazioni successive oppure è possibile inviare eventuali notifiche agli end device per far attuare un’azione.
 Non ci sono interfacce standard di trasmissione dei dati tra network server ed application server (webservice, websocket, webhook, MQTT sono variamente implementati).
