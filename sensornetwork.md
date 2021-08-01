@@ -107,7 +107,7 @@ Queste prese in considerazione sono generalmente tutte funzioni di **livello app
 
 Sono presenti generalmente nelle **reti di sensori wireless** per **lunghe distanze**. Sono dei nodi transito finali dei dati e, in questo senso, sono simili a dei routers su cui girano protocolli e funzioni definite dagli standard che regolano le trasmissioni in quella particolare rete. Hanno anche **funzioni di controllo**  necessarie per lo svolgimento delle comunicazioni di tutti i dispositivi della rete. Si tratta di funzioni che interessano i primi 3 livelli della pila ISO/OSI tipicamente il **livello fisico** come la gestione della potenza dei terminali e parametri di modulazione (ad es. spreading factor), il **livello di di linea** come la gestione dei messaggi duplicati; il **livello di rete** come la gestione centralizzata del routing.
 
-Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e pertanto fanno esse stesse parte della **infrastruttura di rete**. Il concetto è che **fanno parte** dell'infrastruttura e non sono dislocate presso gli utenti in quanto le funzioni che esse svolgono sono **comuni** e fruite da tutti. 
+Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e pertanto fanno esse stesse parte della **infrastruttura di rete**. Il concetto è che **fanno parte** dell'infrastruttura e sono dislocate **presso il gestore** in quanto le funzioni che esse svolgono sono **comuni** a tutti gli utenti. 
 
 Sono presenti in quasi tutte le **infrastrutture LPWA** a lungo raggio come **LoraWan**, **Sigfox** e **NB-IoT**.
 
