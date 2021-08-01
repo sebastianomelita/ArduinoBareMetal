@@ -1,5 +1,7 @@
 >[Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
 
+## **Banda ISM**
+
 Le bande libere sono le frequenze di uso libero, non tutelate, che non richiedono concessioni per il loro impiego. Sono spesso indicate come ISM (Industrial, Scientific and Medical)[Nota 1].
 
 In realtà ISM è un sottogruppo di tutte le frequenze disponibili.
