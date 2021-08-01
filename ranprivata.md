@@ -1,4 +1,4 @@
->[Torna a reti di sensori](sensornetworkshort.md)
+>[Torna a reti di sensori](sensornetworkshort.md#stack-wireless-specifici-per-IOT)
 
 ## **RETI CELLULARI PRIVATE**
 
@@ -124,4 +124,4 @@ Elenco di **prodotti opensource** utilizzabili per la gestione di una **RAN 5G**
 
 <img src="LF-Open-Source-Component-Project-for-5G.png" alt="alt text" width="1000">
 
->[Torna a reti di sensori](sensornetworkshort.md)
+>[Torna a reti di sensori](sensornetworkshort.md#stack-wireless-specifici-per-IOT)
