@@ -2,6 +2,8 @@
 
 ## **RETI CELLULARI PRIVATE**
 
+### **Bande di frequenza**
+
 Il 5G, per sua natura, ha una conformazione dei suoi servizi parecchio **scalabile** sia in termini di **banda allocabile** ai singoli dispositivi sia in termini di **ritardi** per andare incontro alle applicazioni **Real Time**. Inoltre 5G ha **inglobato** nelle sue specifiche anche le teclologie del 4G **NB-IoT** che offrono **servizi a bassisimo bit rat**e utili per realizzare **WSN di grandi dimensioni**, in concorrenza diretta con tecnologie come **Sigfox** e **LoraWan**.
 
 Il **5G fa uso** delle seguenti **frequenze di trasmissione**:
@@ -23,10 +25,20 @@ tecnicamente si chiama throughput);
 localizzata in **aree molto limitate** per estensione (a queste alte frequenze il segnale si
 indebolisce velocemente con il propagarsi dall’antenna), con elevata direttività del
 segnale.
+ 
+### **NB-IoT**
+
+La **rete NB-IoT** è composta da **5 segmenti** che sono aanloghi a qualli di altre reti WSN a **single-hop** per lunghe distanze (Sigfox e LoraWan):
+- **Terminali**: terminali IoT con interfaccia NB-IoT (e scheda SIM installata)
+- **Stazioni base**: stazioni appartenenti all’infrastruttura della rete cellulare e quindi già dispiegate dai operatori
+- **Rete di core**: connette le stazioni base alla piattaforma cloud (può essere Internet)
+- **Piattaforma cloud**: **server di rete** che raccoglie i dati provenienti dalle stazioni base e generati dai terminali al fine di processarli (se necessario) e inviarli agli utenti finali
+- **Utente finale**: ricevono i dati, li memorizzano e  (se previsto) inviano comandi ai terminal
+
 
 Per quanto riguarda la **banda bassa (sub GHz)** e la **banda media (sub 6 GHz)**, **non** si prevede un aumento significativo del numero di stazioni radio base, in quanto queste frequenze sono analoghe a quelle attualmente in uso per le generazioni precedenti. Per quanto riguarda la banda a onde millimetriche, l’elevata attenuazione subita dal  segnale, unita alla necessità di supportare capacità dell’ordine dei Gigabit per secondo, renderà necessaria la **capillare installazione** di stazioni radio base in **prossimità degli utenti**. Tuttavia, tali stazioni radio base non saranno dislocate su tutto il territorio, ma verranno impiegate soltanto laddove saranno **strettamente necessarie**, per esempio in **centri commerciali**, **stadi**, **stazioni** e **aeroporti**, ovvero in luoghi dove la **richiesta di capacità**, unita al **numero di dispositivi** connessi, sarà **elevata**.
 
-<img src="NB-IoT-deployement.png" alt="alt text" width="600">
+<img src="NNBiotscheme.jpg" alt="alt text" width="600">
 
 Il **canale NB-IoT** (la cui larghezza di banda è 180 kHz) può essere **allocato** con **tre modalità**:
 - Independent deployment (**stand-alone mode**): banda frequenziale indipendente che non si sovrappone con quella dei canali LTE
