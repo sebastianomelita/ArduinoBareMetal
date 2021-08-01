@@ -46,6 +46,9 @@ Il **canale NB-IoT** (la cui larghezza di banda è 180 kHz) può essere **alloca
 - Guard-band deployment (**guard-band mode**): banda frequenziale localizzata nelle bande di guardia dei canali LTE
 - In-band deployment (**in-band mode**): utilizza la banda frequenziale e le risorse allocate per un canale LTE
 
+Per quanto riguarda l'**allocazione di banda dell'NB-IoT** si possono prevedere due tipi di allocazione:
+- su **banda licenziata sub GHz (700 MHz)** adatta per servizi **LPWA a grande distanza** data la capacità di queste frequanze di percorrere grandi distanze con bassa attenuazione
+- su **banda non licenziata a 6Hz** più adatta a supportare l'**IoT locale** in ambito **domestico** o **industriale**.
 ### **Servizi 5G**
 
 Si è calcolato che per poter soddisfare servizi ad **alta bit rate**, la qualità del segnale ricevuto deve essere estremamente buona e questo si traduce in una **distanza** fra trasmettitore e ricevitore molto corta (nell’ordine delle decine di metri). Al contrario, altri servizi del 5G utilizzano delle capacità estremamente ridotte (nell’ordine del kilobit per secondo), e possono essere soddisfatti anche se la distanza fra trasmettitore e ricevitore è elevata (nell’ordine dei chilometri).
