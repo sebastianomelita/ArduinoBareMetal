@@ -1,4 +1,4 @@
->[Torna a reti di sensori](sensornetworkshort.md)
+>[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)
 
 ## ** Tecnologie di accesso al canale radio**
 
@@ -101,4 +101,4 @@ Nella **figura** sottostante, **4 simboli**, con **4 colori diversi**, erano **i
 
 E'adoperato dall'**uplink** di **WiFi 6**, della telefonia mobile **5G** e **NB IoT**.
 
->[Torna a reti di sensori](sensornetworkshort.md)
+>[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)
