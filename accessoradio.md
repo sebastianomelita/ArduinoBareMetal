@@ -1,6 +1,6 @@
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)
 
-## ** Tecnologie di accesso al canale radio**
+## **Tecnologie di accesso al canale radio**
 
 ### **DSSS**
 
