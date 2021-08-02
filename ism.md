@@ -22,8 +22,8 @@ In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla den
 
 I **parametri** e le **limitazioni** discusse sono tecniche volte a ridurre **mutui disturbi** fra i vari servizi dei vari utenti e la **monopolizzazione** di uncanale da parte di un singolo utente.
 
-<img src="433.png" alt="alt text" width="600">
-<img src="868.png" alt="alt text" width="600">
-<img src="2400.png" alt="alt text" width="600">
+<img src="433.png" alt="alt text" width="800">
+<img src="868.png" alt="alt text" width="800">
+<img src="2400.png" alt="alt text" width="800">
 
 >[Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
