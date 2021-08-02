@@ -220,7 +220,7 @@ La **parte logica** dei due stack sotto (LoraWan a sinistra e Zigbee a destra) p
 
 <img src="ibridi.png" alt="alt text" width="1000">
 
-Molti **framework per IoT** come **TinyOS**, **Contiki** e **RIOT** posseggono una **struttura modulare** che permette loro di includere, senza particolare sforzo, **stack personalizzati** di protocolli  in maniera tale da adattarli alle esigenze più particolari svicolandosi dagli stack protocollari completi certificati dall'industria (Zigbee, LoraWan). 
+Molti **framework per IoT** come **TinyOS**, **Contiki** e **RIOT** posseggono una **struttura modulare** che permette loro di includere, senza particolare sforzo, **stack personalizzati** di protocolli  in maniera tale da adattarli alle esigenze più particolari svicolandosi dagli **stack protocollari completi** certificati dall'industria (Zigbee, LoraWan). 
 
 [Dettaglio su stack wireless specifici](stackwirelesspecifici.md)
 
