@@ -6,7 +6,7 @@
 
 L’**assegnazione (allocazione)** della risorsa canale fisico ad una comunicazione avviene in genere con una modalità detta **on demand (cioè su richiesta)**.
 
-L’assegnazione di una risorsa ad un trasmettitore per una comunicazione è classificabile in base al tempo in cui avviene la sua  richiesta:
+L’**assegnazione di una risorsa** ad un trasmettitore per una comunicazione è **classificabile** in base al **momento** in cui avviene la sua  **richiesta**:
 - **all’apertura del contratto** con l’utente. La risorsa viene allocata ad una sorgente al momento del suo collegamento alla rete e non termina mai (allocazione assoluta). Avviene in genere nelle sottoreti di accesso alla rete (ultimo miglio del doppino telefonico, collegamento allo switch nelle LAN).
 - **all’apertura della comunicazione (allocazione statica)**: analogamente a una conversazione telefonica, la risorsa viene allocata ad una sorgente all’inizio della comunicazione (apertura) e viene deallocata alla fine (chiusura) . Garantisce, grazie all’allocazione preventiva, una continuità della qualità del servizio per tutta la durata della comunicazione. 
 - **Al momento della trasmissione** del messaggio (**allocazione dinamica**). La risorsa viene assegnata ad una sorgente all’inizio della trasmissione di un suo messaggio. Finita la trasmissione del messaggio il canale viene deallocato e occupato da un altro messaggio non necessariamente della stessa sorgente. Garantisce, tramite la multiplazione statistica, una grande efficienza di utilizzo delle risorse soprattutto quando comunicano sorgenti intermittenti.
