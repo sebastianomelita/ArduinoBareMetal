@@ -13,6 +13,7 @@ Realizzano **algoritmi distribuiti** che comprendono:
 ### **Formato messaggi**
 
 Definisce **cosa** va comunicato, **come** e **quando** va comunicato. Gli **elementi chiave** di un protocollo sono: s**intassi**, **semantica**, **temporizzazione**.
+
 <img src="MACframeEthernet.png" alt="alt text" width="600">
 
 Il **formato** è definito indicando:
@@ -53,13 +54,19 @@ Se il **timer di trasmissione** è resettato **prima** dello scadere del timeout
 
 ### **Protocolli con stato e non**
 con 
-Un protocollo si dice stateful cioè con stato quando vale una dele due situazioni che rappresentano due facce diverse di una stessa medaglia:
-- un messaggio scambiato in un certo momento è correlato con gli altri messaggi scambiati in precedenza
-- all'arrivo di ogni messaggio viene aggiornato un elemento di memoria (variabile) che riassume la storia dell'evoluzione del protocollo nel tempo.
+Un protocollo si dice **stateful** cioè **con stato** quando vale una dele due situazioni che rappresentano due facce diverse di una stessa medaglia:
+- un messaggio scambiato in un certo momento **è correlato** con gli altri messaggi scambiati in **precedenza**
+- all'arrivo di ogni messaggio viene aggiornato **un elemento di memoria** (variabile) che **riassume** la **storia dell'evoluzione** del protocollo **nel tempo**.
 
-La storia del protocollo è detta anche sessione, per cui vale anche la definizione: un protocollo stateful è un protocollo di comunicazione in cui il destinatario può mantenere lo stato di sessione dalle richieste precedenti.
+Un protocollo si dice **stateless** cioè **senza stato** quando vale una dele due situazioni:
+- un messaggio scambiato in un certo momento **non è correlato** con gli altri messaggi scambiati in **precedenza**
+- non esiste **un elemento di memoria** (variabile) che **riassume** la **storia dell'evoluzione** del protocollo **nel tempo**.
 
-Mentre al contario: un protocollo stateless è un protocollo di comunicazione in cui il destinatario non deve mantenere lo stato della sessione dalle richieste precedenti. Il mittente trasferisce lo stato di sessione rilevante al destinatario in modo tale che ogni richiesta possa essere intesa isolatamente, ovvero senza riferimento allo stato di sessione dalle richieste precedenti conservate dal destinatario.
+L'elemento di memoria che tiene tracia dello stato può essere anche un campo all'interno del messaggio opportunamente aggiornato ad ogni nouvo invio.
+
+L'evoluzione degli stati di un protocollo può essere rappresentato in funzione del loro valore e del particolare messaggio che è stato ricevuto mediante un diagramma delle transizioni di stato:
+
+<img src="TCP-1.gif" alt="alt text" width="600">
 
 
 
