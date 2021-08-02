@@ -35,7 +35,7 @@ le zone colorate rappresentano la grandezza fisica che, di volta in volta, viene
 
 ### **SDM nella telefonia cellulare**
 
-<img src="cellulare.png" alt="alt text" width="500">
+<img src="cellulare.png" alt="alt text" width="400">
 
 
 Colori uguali rappresentano frequenze uguali
