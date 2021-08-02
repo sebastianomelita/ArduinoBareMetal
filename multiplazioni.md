@@ -35,6 +35,7 @@ Nel **CDM** i segnali occupano e condividono la stessa frequenza lo stesso spazi
 <img src="multiplazioni2.jpg" alt="alt text" width="800">
 
 E’ possibile **allocare** una comunicazione su **una porzione** di una **grandezza fisica** di quel **segnale** a cui essa è **associata**.
+
 I **segnali** possono essere **frazionati** variando alternativamente le grandezze **tempo**, **frequenza**, **spazio** e **potenza**.
 Le **zone colorate** in figura rappresentano la **randezza fisica** che, di volta in volta, viene **ripartita** tra le **varie sorgenti**.
 
