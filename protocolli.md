@@ -68,6 +68,8 @@ L'evoluzione degli stati di un protocollo può essere rappresentato in funzione 
 
 <img src="TCP-1.gif" alt="alt text" width="600">
 
+I **nodi** sono gli stati mentre gli **archi** rappresentano gli **stimoli** ai cambiamenti di stato, ovvero gli **ingressi**, cioè i **messaggi ricevuti**.
+
 
 
 
