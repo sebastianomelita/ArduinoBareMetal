@@ -16,6 +16,8 @@ Una gestione efficiente delle risorse (canali) si realizza con la loro condivisi
 - Multiplazione fissa o statica: assegna una parte della risorsa (una porzione canale) alla sorgente per tutta la durata della comunicazione, anche quando questa non trasmette.
 - Multiplazione dinamica o statistica: assegna tutta la risorsa (tutta la capacità trasmissiva) per tutta la durata della trasmissione, cioè solo quando la sorgente occupa il canale.
 
+<img src="multiplazioni.jpg" alt="alt text" width="500">
+
 ### **Multiplazione statica**
 
 La capacità trasmissiva viene frazionata in tante parti quante sono le sorgenti che la devono utilizzare (ripartizione del canale in parti uguali).
@@ -25,7 +27,7 @@ Nel FDM il canale viene usato per tutto il tempo e per tutto lo spazio ma su fre
 Nel TDM tutta la banda di frequenza viene usata in tutto lo spazio ma in istanti diversi quindi anche in questo caso senza interferenza (ad esempio telefonia fissa, telefonia GSM, TV digitale terrestre).
 Nel CDM i segnali occupano e condividono la stessa frequenza lo stesso spazio e lo stesso tempo, ma, nonostante di fatto si interferiscano, possono ancora essere distinti in base alla potenza grazie ad un codice ortogonale univoco che permette di filtrare una certa comunicazione.
 
-<img src="multiplazioni2.jpg" alt="alt text" width="700">
+<img src="multiplazioni2.jpg" alt="alt text" width="800">
 
 E’ possibile associare una comunicazione ad una porzione di una grandezza fisica di quel segnale su cui essa viene allocata.
 I segnali possono essere frazionati variando alternativamente le grandezze tempo, frequenza, spazio e potenza.
@@ -33,7 +35,7 @@ le zone colorate rappresentano la grandezza fisica che, di volta in volta, viene
 
 ### **SDM nella telefonia cellulare**
 
-<img src="cellulare.png" alt="alt text" width="700">
+<img src="cellulare.png" alt="alt text" width="500">
 
 
 Colori uguali rappresentano frequenze uguali
