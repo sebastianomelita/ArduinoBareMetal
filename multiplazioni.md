@@ -52,7 +52,7 @@ Per evitare interferenze, le celle che usano la stessa frequenza si separano nel
 
 <img src="smartantenna.png" alt="alt text" width="700">
 
-Un lobo è la zona tridimensionale dello spazio dove l’antenna concentra la maggior parte della potenza emessa nonché quella da dove riceve meglio (principio di reciprocità)
+**Un lobo** è la zona tridimensionale dello spazio dove l’antenna **concentra** la maggior parte della **potenza emessa** nonché quella da dove **riceve meglio** (principio di reciprocità)
 
 I f**asci comandati elettronicamente** realizzano: un **beam switching** tra direzioni predefinite (a) oppure un **beam forming** che insegue con continuità il target (b)
 
