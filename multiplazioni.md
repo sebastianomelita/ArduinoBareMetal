@@ -13,7 +13,7 @@ L’assegnazione di una risorsa ad un trasmettitore per una comunicazione è cla
 
 ### **Efficienza e condivisione**
 
-Una gestione efficiente delle risorse (canali) si realizza con la loro condivisione tra molti utenti, attraverso la tecnica di multiplazione che può essere:
+Una **gestione efficiente** delle risorse (**canali**) si realizza attraverso la loro **condivisione** tra molti utenti, ottenibile con una **tecnica di multiplazione** che può essere:
 - **Multiplazione fissa o statica**: assegna una parte della risorsa (una porzione canale) alla sorgente per **tutta la durata della comunicazione**, anche quando questa **non trasmette**.
 - **Multiplazione dinamica o statistica**: assegna tutta la risorsa (tutta la capacità trasmissiva) per **tutta la durata della trasmissione**, cioè solo quando la sorgente **occupa il canale**.
 
