@@ -19,6 +19,8 @@ Il **formato** è definito indicando:
     - **fissa**. E' misurata in byte ed è indicata con dei numeretti posti sopra il nome del campo che misurano.
     - **variabile**. Normalmente viene indicata la lunghezza minima e quella massima. Talvolta un campo aggiuntivo (Length in figura) è deputato proprio a contenere la lunghezza del payload 
 
+Per **accedere** (in lettura o in scrittura) ad un **determinato campo** basta sommare la lunghezza dei campi che precedono il campo da accedere per determinare il suo **spiazzamento** dall'inizio del messaggio.
+
 
 
 
