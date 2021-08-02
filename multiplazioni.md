@@ -25,7 +25,7 @@ Nel FDM il canale viene usato per tutto il tempo e per tutto lo spazio ma su fre
 Nel TDM tutta la banda di frequenza viene usata in tutto lo spazio ma in istanti diversi quindi anche in questo caso senza interferenza (ad esempio telefonia fissa, telefonia GSM, TV digitale terrestre).
 Nel CDM i segnali occupano e condividono la stessa frequenza lo stesso spazio e lo stesso tempo, ma, nonostante di fatto si interferiscano, possono ancora essere distinti in base alla potenza grazie ad un codice ortogonale univoco che permette di filtrare una certa comunicazione.
 
-<img src="multiplazioni.jpg" alt="alt text" width="700">
+<img src="multiplazioni2.jpg" alt="alt text" width="700">
 
 E’ possibile associare una comunicazione ad una porzione di una grandezza fisica di quel segnale su cui essa viene allocata.
 I segnali possono essere frazionati variando alternativamente le grandezze tempo, frequenza, spazio e potenza.
