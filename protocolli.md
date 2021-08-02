@@ -55,7 +55,7 @@ Se il **timer di trasmissione** è resettato **prima** dello scadere del timeout
 I protocolli **non confermati** non necessitano di conferme mediate ricevute di ritorno e pertanto il tramittente **è sprovvisto del timer** che serve questo a scopo.
 
 ### **Protocolli con stato e non**
-con 
+
 Un protocollo si dice **stateful** cioè **con stato** quando vale una dele due situazioni che rappresentano due facce diverse di una stessa medaglia:
 - un messaggio scambiato in un certo momento **è correlato** con gli altri messaggi scambiati in **precedenza**
 - all'arrivo di ogni messaggio viene aggiornato **un elemento di memoria** (variabile) che **riassume** la **storia dell'evoluzione** del protocollo **nel tempo**.
