@@ -1,6 +1,6 @@
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)
 
-## **Le multiplazioni**
+## **Le multiplazioni statiche**
 
 ### **Modalità di allocazione di una risorsa**
 
