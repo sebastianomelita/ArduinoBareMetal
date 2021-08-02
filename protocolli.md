@@ -52,6 +52,8 @@ Il messaggio di **conferma** viene detto **ack** (acknowledgement) e viene invia
 
 Se il **timer di trasmissione** è resettato **prima** dello scadere del timeout la trasmissione è considerata **avvenuta con successo**. Se invece allo scadere del timeout ancora **non si ricevono ack** allora il messaggio viene **dato per perso** ed è, dal mittente, **ritrasmesso**.
 
+I protocolli **on confermati** non necessitano di conferme mediate ricevute di ritorno e pertanto il tramittente **è sprovvisto del timer** che serve questo scopo.
+
 ### **Protocolli con stato e non**
 con 
 Un protocollo si dice **stateful** cioè **con stato** quando vale una dele due situazioni che rappresentano due facce diverse di una stessa medaglia:
