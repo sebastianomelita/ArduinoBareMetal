@@ -133,6 +133,8 @@ Per comprendere l'impatto delle tecnologie e delle pratiche cloud applicate alla
 
 - **Commoditizzazione**: essere in grado di scalare in modo elastico quei componenti virtuali attraverso i **mattoncini hardware** di base in base al **carico di lavoro**.
 
+### **Network slicing**
+
 Lo **slicing della rete 5G** è l'uso della **virtualizzazione della rete** per dividere le **singole connessioni** di rete in **più connessioni virtuali** distinte che forniscono **diverse quantità di risorse** a **diversi tipi** di traffico.
 
 **Per realizzare** quantitativamente tale concetto, vengono impiegate **diverse tecniche**:
