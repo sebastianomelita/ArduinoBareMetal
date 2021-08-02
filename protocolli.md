@@ -62,7 +62,7 @@ Un protocollo si dice **stateless** cioè **senza stato** quando vale una dele d
 - un messaggio scambiato in un certo momento **non è correlato** con gli altri messaggi scambiati in **precedenza**
 - non esiste **un elemento di memoria** (variabile) che **riassume** la **storia dell'evoluzione** del protocollo **nel tempo**.
 
-L'elemento di memoria che tiene tracia dello stato può essere anche un campo all'interno del messaggio opportunamente aggiornato ad ogni nouvo invio.
+L'elemento di memoria che tiene tracia dello stato può essere anche un campo all'interno del messaggio opportunamente aggiornato ad ogni nuovo invio.
 
 L'evoluzione degli stati di un protocollo può essere rappresentato in funzione del loro valore e del particolare messaggio che è stato ricevuto mediante un diagramma delle transizioni di stato:
 
