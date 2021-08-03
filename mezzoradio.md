@@ -16,15 +16,17 @@ Normalmente si usa allo scopo il **tempo** con tecniche TDM, cioè **due interlo
 
 ### **Multiplazione TDM**
 
-Ma il meccanismo dell'**alternanza nel tempo** può anche essere esteso ad un **numero arbitrario** di interlocutori che parlano **a turno** secondo un criterio di dialogo assimilabile a quello della **"tavola rotonda"**. Ciascun interlocutore **è numerato** ed è **abbinato** ad **uno o più** numeri di **altri** interlocutori. Un partecipante con **un certo numero**, per realizzare una comunicazione **punto punto** o **multipunto**, dovrebbe **ascoltare** soltanto i discorsi pronunciati **da un solo** interlocutore o **da tutti** gli interlocutori aventi però uno dei numeri a cui egli **è abbinato**.
-
-<img src="6.25kHz-transmission-mask.jpg" alt="alt text" width="1000">
-
-<img src="Spectrum-efficiency-1.jpg" alt="alt text" width="1000">
+Ma il meccanismo dell'**alternanza nel tempo** può anche essere esteso ad un **numero arbitrario** di interlocutori che parlano **uno alla volta** senza accavallarsi.
 
 La partizione **TDM** nel tempo del canale può essere statica o dinamica. Quella **statica** utilizza la tecnica di multiplazione **TDMA**. Quella **dinamica** utilizza un **protocollo di arbitraggio** che, con un meccanismo di **ack**, permette di realizzare **l'alternanza nel tempo** delle comunicazioni. Si basa essenzialmente sui protocolli **ALOHA** o **CSMA/CA**. 
 
 ### **Multiplazione statica TDMA**
+
+Nel **TDMA** un **numero arbitrario** di interlocutori parlano **a turno** secondo un criterio di dialogo assimilabile a quello della **"tavola rotonda"**. Ciascun interlocutore **è numerato** ed è **abbinato** ad **uno o più** numeri di **altri** interlocutori. Un partecipante con **un certo numero**, per realizzare una comunicazione **punto punto** o **multipunto**, dovrebbe **ascoltare** soltanto i discorsi pronunciati **da un solo** interlocutore o **da tutti** gli interlocutori aventi però uno dei numeri a cui egli **è abbinato**.
+
+<img src="6.25kHz-transmission-mask.jpg" alt="alt text" width="1000">
+
+<img src="Spectrum-efficiency-1.jpg" alt="alt text" width="1000">
 
 La multiplazione **statica TDMA** di **parecchie sorgenti** richiede però che **tutte** siano **sincronizzate** con precisione presso un **nodo router**, cioè non possono comunicare **direttamente tra loro**, in maniera peer to peer, ma solo in presenza di un **nodo master** da cui devono essere **ragiungibili**. 
 
@@ -32,7 +34,9 @@ Il **nodo master** stabilisce la **composizione** della **"tavola rotonda"** (ci
 
 ### **Multiplazione TDM dinamica ALOHA**
 
-Rappresentazione grafica del protocollo **ALOHA**. I **riquadri chiari** indicano le trame ricevute correttamente. I **riquadri ombreggiati** indicano le trame che hanno **colliso** e che verranno scartate perchè arrivate **corrotte**. Il **servizio radio** potrebbe prevedere la funzione di **conferma**, cioè che **tutti i messaggi trasmessi** debbano essere **confermati** presso il **nodo** che li **ha trasmessi** mediante la **ricezione** di un **messaggio di ack** inviato dal **ricevente** al loro arrivo. Le **trame corrotte** non saranno confermate dal ricevente e, allo **scadere di un timeout**, verranno **ritrasmesse**.
+Nel **TDM** dinamico ALOHA un **numero arbitrario** di interlocutori parlano quando hanno qualcosa da dire. Se sono **fortunati** nessun altro parla sopra di loro e la comunicazione va a buon fine. Se sono **sfortunati** la comunicazione è **degradata** in maniera irreparabile da una **collisione** con un'altra comunicazione concomitante. Il **caso** determina il **problema** e il caso fornisce pure una **soluzione**.
+
+Rappresentazione grafica del protocollo **ALOHA**. I **riquadri chiari** indicano le trame ricevute correttamente. I **riquadri ombreggiati** indicano le trame che hanno **colliso** e che verranno scartate perchè arrivate **corrotte**. Il **servizio radio** potrebbe prevedere la funzione di **conferma**, cioè che **tutti i messaggi trasmessi** debbano essere **confermati** presso il **nodo** che li **ha trasmessi** mediante la **ricezione** di un **messaggio di ack** inviato dal **ricevente** al loro arrivo. Le **trame corrotte** non saranno confermate dal ricevente e, allo **scadere di un timeout**, verranno **ritrasmesse** ma **non subito**, bensì dopo un **tempo casuale** detto **backoff** che limita la probabilità che sia lo stesso scelto dalle delle altre stazioni che hanno partecipato alla collisione per ricominciare la loro trasmissione.
  
 <img src="Pure_ALOHA1.svg.png" alt="alt text" width="600">
 
