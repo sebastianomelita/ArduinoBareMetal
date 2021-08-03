@@ -40,7 +40,7 @@ Rappresentazione grafica del protocollo **ALOHA**. I **riquadri chiari** indican
  
 <img src="Pure_ALOHA1.svg.png" alt="alt text" width="600">
 
-### **Gestione interferenze sul canale**
+### **Gestione delle interferenze sul canale**
 
 Spesso il **TDM** non partiziona direttamente il canale FDM ma tra esso e il canale FDM si **interpone** una ulteriore divisione nel **dominio della potenza** o nel **dominio del tempo**, o nel **dominio dello spazio**:
 - **La prima** è detta **multiplazione a divisione di codice** o **CDMA** che è associata ad un certo **cluster di utenti** afferenti ad un **certo dispositivo** (ad esempio un AP WiFi). **Dispositivi diversi** hanno **codici** (detti ortogonali) **diversi**. Ad es, il **BSSID** di un AP (Access Point wifi) è associato ad un **codice ortogonale** diverso da quello degli altri AP in modo che una sua comunicazione sia **distinguibile** da quelle degli altri AP, pur interferndo completamente con quelle. E' la strategia generalmente adottata nei sistemi LPWA, a **bassa potenza**, e **bassa bitrate** e **basso costo**.
