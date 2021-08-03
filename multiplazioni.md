@@ -34,7 +34,8 @@ Nel **CDM** i segnali occupano e condividono la stessa frequenza lo stesso spazi
 
 <img src="multiplazioni2.jpg" alt="alt text" width="800">
 
-E’ possibile **allocare** una comunicazione su **una porzione** della **grandezza fisica** a cui essa è **associata**. La **grandezza fisica** è una **proprietà** fisica del **segnale** che **trasporta i bit** della comunicazione mediante **processi** di **modulazione** digitale.
+E’ possibile **allocare** una comunicazione su **una porzione** della **grandezza fisica** (spazio, tempo, frequenza, potenza) a cui essa **è associata**. La **grandezza fisica** è una **proprietà** del **segnale** che **codifica** sul canale i **bit**della comunicazione mediante processi di **modulazione digitale**. 
+
 
 I **segnali** possono essere **frazionati** variando alternativamente le grandezze **tempo**, **frequenza**, **spazio** e **potenza**.
 Le **zone colorate** in figura rappresentano la **randezza fisica** che, di volta in volta, viene **ripartita** tra le **varie sorgenti**.
