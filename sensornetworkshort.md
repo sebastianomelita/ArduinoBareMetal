@@ -295,6 +295,7 @@ Molti **framework per IoT** come **TinyOS**, **Contiki** e **RIOT** posseggono u
 - https://www.cnit.it/wp-content/uploads/2020/09/Spieghiamo-il-5G-200803.pdf
 - https://www.mdpi.com/1999-5903/12/3/46/htm
 - https://www.radiomakers.it/news/bande-libereguide
+- https://www.extremenetworks.com/extreme-networks-blog/what-is-a-clear-channel-assessment-cca/
 
 >[Torna all'indice generale](index.md)
     
