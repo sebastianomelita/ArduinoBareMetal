@@ -1,5 +1,5 @@
 >[Torna a reti di sensori](sensornetworkshort.md#Interfaccia-radio)
-se ancora ne sono in grado
+
 ## **Mezzo radio**
 
 <img src="duplexer.png" alt="alt text" width="700">
