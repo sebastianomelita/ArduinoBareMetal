@@ -12,12 +12,16 @@ Realizzano **algoritmi distribuiti** che comprendono:
 
 ### **Formato messaggi**
 
-Definisce **cosa** va comunicato, **come** e **quando** va comunicato. Gli **elementi chiave** di un protocollo sono: s**intassi**, **semantica**, **temporizzazione**.
+Definisce **cosa** va comunicato, il **come** e il **quando** ciò va fatto. Gli **elementi chiave** di un protocollo sono: **sintassi**, **semantica**, **temporizzazione**.
 
 <img src="MACframeEthernet.png" alt="alt text" width="600">
 
 Il **formato** è definito indicando:
-- il **significato** dei vari campi. Ad esempio **DA** rappresenta il Destination Address mentre **SA** rappresenta il Sorce Address. Il campo **Information** rappresenta il payload, cioè il carico utile, ovvero le informazioni che il protocollo deve spostare dalla sorgente alla destinazione. Tutto ciò che **sta prima** del campo paysload è l'**Header**, ovvero l'**intestazione** del messaggio detta anche **PCI (Protocol Control Information)**.
+- il **significato** dei vari campi. Ad esempio:
+    -  **DA** rappresenta il Destination Address 
+    - **SA** rappresenta il Sorce Address. 
+    - Il campo **Information** rappresenta il payload, cioè il carico utile, ovvero le informazioni che il protocollo deve spostare dalla sorgente alla destinazione. 
+- Tutto ciò che **sta prima** del campo paysload è l'**Header**, ovvero l'**intestazione** del messaggio detta anche **PCI (Protocol Control Information)**.
 - la **lunghezza** dei vari campi, può essere:
     - **fissa**. E' misurata in byte ed è indicata con dei numeretti posti sopra il nome del campo che misurano.
     - **variabile**. Normalmente viene indicata la lunghezza minima e quella massima. Talvolta un campo aggiuntivo (**Length** in figura) è deputato proprio a contenere la lunghezza del payload 
