@@ -24,7 +24,7 @@
 
 ### **Esempi di collegamenti base con topologia a bus:**
 
-Il BUS è un mezzo ad **accesso multiplo** composto da un **unico filo** per **tutte** le stazioni. Il tipo del collegamento **in parallelo** dei dispositivi lo rende un **mezzo broadcast** cioè un mezzo dove se una stazione **parla** tutte le altre ricevono ed **ascoltano**. I mezzi broadcast sono soggetti a **collisioni** che devono essere risolte costringendo le stazioni a parlare **una alla volta** mediante un **protocollo di arbitraggio**. Questi si dividono in due categorie: **centralizzati** e **distribuiti**. Quelli con cui si collegano i **dispositivi sensori** sono spesso **centralizzati** e comunque lo sono la maggior parte di quelli che vedremo di seguito (tranne l'ultimo).
+Il BUS è un mezzo ad **accesso multiplo** composto da un **unico filo** per **tutte** le stazioni. Il tipo del collegamento **in parallelo** dei dispositivi lo rende un **mezzo broadcast** cioè un mezzo trasmissivo dove se una stazione **parla** tutte le altre ricevono e **ascoltano**. I mezzi broadcast sono soggetti a **collisioni** che devono essere risolte costringendo le stazioni a parlare **una alla volta** mediante un **protocollo di arbitraggio**. Questi si dividono in due categorie: **centralizzati** e **distribuiti**. Quelli che regolano il collegamento dei **dispositivi sensori** al gateway sono spesso **centralizzati** e, in ogni caso, lo sono la maggior parte dei protocolli che vedremo di seguito (tranne l'ultimo).
 
 **Arbitraggio centralizzato Master/Slave**
 
