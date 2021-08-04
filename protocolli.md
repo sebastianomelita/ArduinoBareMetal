@@ -19,7 +19,7 @@ Definisce **cosa** va comunicato, il **come** e il **quando** ciò va fatto. Gli
 Il **formato** è definito indicando:
 - il **significato** dei vari campi. Ad esempio:
     -  **DA** rappresenta il Destination Address 
-    - **SA** rappresenta il Sorce Address. 
+    - **SA** è il Sorce Address. 
     - Il campo **Information** rappresenta il payload, cioè il carico utile, ovvero le informazioni che il protocollo deve spostare dalla sorgente alla destinazione. 
 - Tutto ciò che **sta prima** del campo paysload è l'**Header**, ovvero l'**intestazione** del messaggio detta anche **PCI (Protocol Control Information)**.
 - la **lunghezza** dei vari campi, può essere:
