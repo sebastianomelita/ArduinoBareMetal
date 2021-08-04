@@ -37,7 +37,7 @@ La **rete NB-IoT** è composta da **5 segmenti** che sono analoghi a quelli di a
 
 <img src="NBiotscheme.jpg" alt="alt text" width="600">
 
-Per quanto riguarda la **banda bassa (sub GHz)** e la **banda media (sub 6 GHz)**, **non** si prevede un aumento significativo del numero di stazioni radio base, in quanto queste frequenze sono analoghe a quelle attualmente in uso per le generazioni precedenti e quin di già coperte dalle **antenne esistenti**. Per quanto riguarda la banda a onde millimetriche, l’elevata attenuazione subita dal  segnale, unita alla necessità di supportare capacità dell’ordine dei Gigabit per secondo, renderà necessaria la **capillare installazione** di stazioni radio base in **prossimità degli utenti**. Tuttavia, tali stazioni radio base non saranno dislocate su tutto il territorio, ma verranno impiegate soltanto laddove saranno **strettamente necessarie**, per esempio in **centri commerciali**, **stadi**, **stazioni** e **aeroporti**, ovvero in luoghi dove la **richiesta di capacità**, unita al **numero di dispositivi** connessi, sarà **elevata**.
+Per quanto riguarda la **banda bassa (sub GHz)** e la **banda media (sub 6 GHz)**, **non** si prevede un aumento significativo del numero di stazioni radio base, in quanto queste frequenze sono analoghe a quelle attualmente in uso per le generazioni precedenti e quindi già coperte dalle **antenne esistenti**. Per quanto riguarda la banda a onde millimetriche, l’elevata attenuazione subita dal  segnale, unita alla necessità di supportare capacità dell’ordine dei Gigabit per secondo, renderà necessaria la **capillare installazione** di stazioni radio base in **prossimità degli utenti**. Tuttavia, tali stazioni radio base non saranno dislocate su tutto il territorio, ma verranno impiegate soltanto laddove saranno **strettamente necessarie**, per esempio in **centri commerciali**, **stadi**, **stazioni** e **aeroporti**, ovvero in luoghi dove la **richiesta di capacità**, unita al **numero di dispositivi** connessi, sarà **elevata**.
 
 <img src="NB-IoT-deployement.png" alt="alt text" width="600">
 
@@ -47,8 +47,8 @@ Il **canale NB-IoT** (la cui larghezza di banda è 180 kHz) può essere **alloca
 - In-band deployment (**in-band mode**): utilizza la banda frequenziale e le risorse allocate per un canale LTE
 
 Per quanto riguarda l'**allocazione di banda dell'NB-IoT** si possono prevedere due tipi di allocazione:
-- su **banda licenziata sub GHz (700 MHz)** adatta per servizi **LPWA a grande distanza** data la capacità di queste frequanze di percorrere grandi distanze con bassa attenuazione
-- su **banda non licenziata a 6Hz** più adatta a supportare l'**IoT locale** in ambito **domestico** o **industriale**.
+- su **banda licenziata sub GHz (700 MHz)** adatta per servizi **LPWA a grande distanza** data la capacità di queste frequenze di percorrere grandi distanze con bassa attenuazione
+- su **banda non licenziata a 6 GHz** più adatta a supportare l'**IoT locale** in ambito **domestico** o **industriale**.
 ### **Servizi 5G**
 
 Si è calcolato che per poter soddisfare servizi ad **alta bit rate**, la qualità del segnale ricevuto deve essere estremamente buona e questo si traduce in una **distanza** fra trasmettitore e ricevitore molto corta (nell’ordine delle decine di metri). Al contrario, altri servizi del 5G utilizzano delle capacità estremamente ridotte (nell’ordine del kilobit per secondo), e possono essere soddisfatti anche se la distanza fra trasmettitore e ricevitore è elevata (nell’ordine dei chilometri).
@@ -149,6 +149,8 @@ Elenco di **prodotti opensource** utilizzabili per la gestione di una **RAN 5G**
 <img src="LF-Open-Source-Component-Project-for-5G.png" alt="alt text" width="1000">
 
 >[Torna a reti di sensori](sensornetworkshort.md#stack-wireless-specifici-per-IOT)
+
+
 
 
 
