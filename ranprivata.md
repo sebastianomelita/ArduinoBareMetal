@@ -4,7 +4,7 @@
 
 ### **Bande di frequenza**
 
-Il 5G, per sua natura, ha una conformazione dei suoi servizi parecchio **scalabile** sia in termini di **banda allocabile** ai singoli dispositivi sia in termini di **ritardi** per andare incontro alle applicazioni **Real Time**. Inoltre 5G ha **inglobato** nelle sue specifiche anche le teclologie del 4G **NB-IoT** che offrono **servizi a bassisimo bit rat**e utili per realizzare **WSN di grandi dimensioni**, in concorrenza diretta con tecnologie come **Sigfox** e **LoraWan**.
+Il 5G, per sua natura, ha una conformazione dei suoi servizi parecchio **scalabile** sia in termini di **banda allocabile** ai singoli dispositivi sia in termini di **ritardi** per andare incontro alle applicazioni **Real Time**. Inoltre 5G ha **inglobato** nelle sue specifiche anche le tecnologie del 4G **NB-IoT** che offrono **servizi a bassissimo bit rat**e utili per realizzare **WSN di grandi dimensioni**, in concorrenza diretta con tecnologie come **Sigfox** e **LoraWan**.
 
 Il **5G fa uso** delle seguenti **frequenze di trasmissione**:
 - **Banda bassa** (inferiore a 1 GHz): 694-790 MHz
@@ -28,7 +28,7 @@ segnale.
  
 ### **NB-IoT**
 
-La **rete NB-IoT** è composta da **5 segmenti** che sono aanloghi a qualli di altre reti WSN a **single-hop** per lunghe distanze (Sigfox e LoraWan):
+La **rete NB-IoT** è composta da **5 segmenti** che sono analoghi a quelli di altre reti WSN a **single-hop** per lunghe distanze (Sigfox e LoraWan):
 - **Terminali**: terminali IoT con interfaccia NB-IoT (e scheda SIM installata)
 - **Stazioni base**: stazioni appartenenti all’infrastruttura della rete cellulare e quindi già dispiegate dai operatori
 - **Rete di core**: connette le stazioni base alla piattaforma cloud (può essere Internet)
@@ -149,3 +149,6 @@ Elenco di **prodotti opensource** utilizzabili per la gestione di una **RAN 5G**
 <img src="LF-Open-Source-Component-Project-for-5G.png" alt="alt text" width="1000">
 
 >[Torna a reti di sensori](sensornetworkshort.md#stack-wireless-specifici-per-IOT)
+
+
+
