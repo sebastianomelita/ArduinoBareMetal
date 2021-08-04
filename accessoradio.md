@@ -73,7 +73,7 @@ Realizza una **parallelizzazione** dell'accesso al canale radio da parte di **pi
 
 **Servono** per far ciò: 
 - la possibilità di inviare, nello **stesso slot** temporale, messaggi di **sorgenti diverse** su **sottoportanti diverse** dello stesso canale (multiplazione FDM)
-- una **schedulazione efficace** che sappia **riordinare** i messaggi sulle sottoportanti (slot FDM) cercando di rispettare le richieste in termini di **latenza** che erano state **prenotate** per ogni sorgente in fase di **setup** della connessione. 
+- una **schedulazione efficace** che sappia **riordinare** i messaggi sulle sottoportanti (slot FDM) cercando di rispettare le **richieste di servizio** in termini di **latenza** che erano state **prenotate** per ogni sorgente in fase di **setup** della connessione. 
 
 <img src="ofdma.jpg" alt="alt text" width="1000">
 
