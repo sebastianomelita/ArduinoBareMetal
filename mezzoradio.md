@@ -16,19 +16,20 @@ Normalmente si usa allo scopo il **tempo** con tecniche TDM, cioè **due interlo
 
 ### **Multiplazione TDM**
 
-Ma il meccanismo dell'**alternanza nel tempo** può anche essere esteso ad un **numero arbitrario** di interlocutori che parlano **uno alla volta** senza accavallarsi.
+Il meccanismo dell'**alternanza nel tempo** può anche essere esteso ad un **numero arbitrario** di interlocutori che parlano **uno alla volta** senza accavallarsi.
 
-La partizione **TDM** nel tempo del canale può essere statica o dinamica. Quella **statica** utilizza la tecnica di multiplazione **TDMA**. Quella **dinamica** utilizza un **protocollo di arbitraggio** che, con un meccanismo di **ack**, permette di realizzare **l'alternanza nel tempo** delle comunicazioni. Si basa essenzialmente sui protocolli **ALOHA** o **CSMA/CA**. Anche la la maniera di realizzare il **duplexer** può essere statica o dinamica sempre con **TDMA** oppure **ALOHA** o **CSMA/CA**
+La partizione **TDM** nel tempo del canale può essere statica o dinamica. Quella **statica** utilizza la tecnica di multiplazione **TDMA**. Quella **dinamica** utilizza un **protocollo di arbitraggio** che, con un meccanismo di **ack**, permette di realizzare **l'alternanza nel tempo** delle comunicazioni. Si basa essenzialmente sui protocolli **ALOHA** o **CSMA/CA**. Anche la 
+la maniera di realizzare il **duplexer** può essere statica o dinamica sempre con **TDMA** oppure **ALOHA** o **CSMA/CA**
 
 ### **Multiplazione statica TDMA**
 
-Nel **TDMA** un **numero arbitrario** di interlocutori parlano **a turno** secondo un criterio di dialogo assimilabile a quello della **"tavola rotonda"**. Ciascun interlocutore **è numerato** ed è **abbinato** ad **uno o più** numeri di **altri** interlocutori. Un partecipante con **un certo numero**, per realizzare una comunicazione **punto punto** o **multipunto**, dovrebbe **ascoltare** soltanto i discorsi pronunciati **da un solo** interlocutore o **da tutti** gli interlocutori aventi però uno dei numeri a cui egli **è abbinato**.
+Nel **TDMA** un **numero arbitrario** di interlocutori parlano **a turno** secondo un criterio di dialogo assimilabile a quello della **"tavola rotonda"**. Ciascun interlocutore **è numerato** ed è **abbinato** a **uno o più** numeri di **altri** interlocutori. Un partecipante con **un certo numero**, per realizzare una comunicazione **punto punto** o **multipunto**, dovrebbe **ascoltare** soltanto i discorsi pronunciati **da un solo** interlocutore o **da tutti** gli interlocutori aventi però uno dei numeri a cui egli **è abbinato**.
 
 <img src="6.25kHz-transmission-mask.jpg" alt="alt text" width="1000">
 
 <img src="Spectrum-efficiency-1.jpg" alt="alt text" width="1000">
 
-La multiplazione **statica TDMA** di **parecchie sorgenti** richiede però che **tutte** siano **sincronizzate** con precisione presso un **nodo router**, cioè non possono comunicare **direttamente tra loro**, in maniera peer to peer, ma solo in presenza di un **nodo master** da cui devono essere **ragiungibili**. 
+La multiplazione **statica TDMA** di **parecchie sorgenti** richiede però che **tutte** siano **sincronizzate** con precisione presso un **nodo router**, cioè non possono comunicare **direttamente tra loro**, in maniera peer to peer, ma solo in presenza di un **nodo master** da cui devono essere **raggiungibili**. 
 
 Il **nodo master** stabilisce la **composizione** della **"tavola rotonda"** (cioè **chi** può trasmettere), in che **ordine** (cioè la scaletta degli interventi) e per **quanto tempo** deve durare un intervento. La **scaletta completa**, riportata sull'**asse dei tempi**, si chiama **trama**. Tutti gli interventi hanno, sull'asse dei tempi, durata uguale detta **slot** e, complessivamente, occupano esattamente tutta la trama.  La **trama** viene ripetuta **periodicamente** in un tempo detto **periodo di trama**. 
 
@@ -43,7 +44,7 @@ Rappresentazione grafica del protocollo **ALOHA**. I **riquadri chiari** indican
 ### **Gestione delle interferenze sul canale**
 
 Spesso il **TDM** non partiziona direttamente il canale FDM ma tra esso e il canale FDM si **interpone** una ulteriore divisione nel **dominio della potenza** o nel **dominio della frequenza**, o nel **dominio dello spazio**:
-- **La prima** è detta **multiplazione a divisione di codice** o **CDMA** che è associata ad un certo **cluster di utenti** afferenti ad un **certo dispositivo** (ad esempio un AP WiFi). **Dispositivi diversi** hanno **codici** (detti ortogonali) **diversi**. Ad es, il **BSSID** di un AP (Access Point wifi) è associato ad un **codice ortogonale** diverso da quello degli altri AP in modo che una sua comunicazione sia **distinguibile** da quelle degli altri AP, pur interferndo completamente con quelle. E' la strategia generalmente adottata nei sistemi LPWA, a **bassa potenza**, e **bassa bitrate** e **basso costo**.
+- **La prima** è detta **multiplazione a divisione di codice** o **CDMA** che è associata ad un certo **cluster di utenti** afferenti ad un **certo dispositivo** (ad esempio un AP WiFi). **Dispositivi diversi** hanno **codici** (detti ortogonali) **diversi**. Ad es, il **BSSID** di un AP (Access Point wifi) è associato ad un **codice ortogonale** diverso da quello degli altri AP in modo che una sua comunicazione sia **distinguibile** da quelle degli altri AP, pur interferendo completamente con quelle. E' la strategia generalmente adottata nei sistemi LPWA, a **bassa potenza**, e **bassa bitrate** e **basso costo**.
 **Riassumendo la divisione nel dominio della potenza (spettro espanso)**, si possono **annidare** le multiplazioni una dentro l'altra differenziando per **caratteristiche fisiche** diverse le **singole comunicazioni** e associandole a **gruppi di sorgenti diverse**. In questo caso:
     - la **banda** è **divisa** tra più **gruppi** di dispositivi (ad es. AP WiFi), ogni gruppo sul **suo canale FDM**, tramite una multiplazione **FDMA**.
     - un **canale FDM**, assegnato ad un gruppo di AP o BS, è **diviso** tra **più AP**, ogni AP col **suo codice ortogonale (canale CDM)**, tramite multiplazione **CDMA**.
@@ -59,7 +60,7 @@ Normalmente le **multiplazioni** sono gestite a **livello fisico** in HW utilizz
 
 ### **Comunicazioni non broadcast**
 
-A seconda della tecnologia adoperata si possono realizare comunicazioni **punto-punto** o **multipunto**, ma di base il mezzo radio è pur sempre **intrinsecamente broadcast**. 
+A seconda della tecnologia adoperata si possono realizzare comunicazioni **punto-punto** o **multipunto**, ma di base il mezzo radio è pur sempre **intrinsecamente broadcast**. 
 
 L'**isolamento punto punto** nei mezzi a BUS con **arbitraggio a contesa** (ALOHA e CSMA/CA) è in genere **logico** e non si ottiene **in trasmissione** scegliendo un **link isolato** verso la destinazione ma si ottiene **in ricezione**, a **livello di scheda** di rete, facendo in modo che una stazione radio che non riconosca il **proprio indirizzo** nella destinazione dei messaggi **ignori** le comunicazioni non proprie. Diventa più effettivo con la **cifratura** delle informazioni.
 
