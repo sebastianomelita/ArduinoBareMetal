@@ -32,7 +32,20 @@ Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segn
 <img src="buscollisioni.png" alt="alt text" width="600">
 
 CSMA: pseudocodice
+```C++
+N=1;
+while(N <= max){
+	 waitUntil(channelFree()); 
+	 send(data_frame); 	
+	 waitUntil(ackOrTimeout()); 
+	 if(ack_received){ 
+		exit while;
+	}else{
+		/* timeout scaduto: ritrasmissione*/ 	 		N=N+1;
+}
+/* troppi tentativi: rinuncio a trasmettere*/	![image](https://user-images.githubusercontent.com/18554803/128427514-c1a690d0-3a9a-4b41-a688-6dfe217e3ae5.png)
 
+```
 
 
 >[Torna a reti di sensori](sensornetworkshort.md#Interfaccia-radio)
