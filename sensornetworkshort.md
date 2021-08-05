@@ -298,6 +298,7 @@ Molti **framework per IoT** come **TinyOS**, **Contiki** e **RIOT** posseggono u
 - https://www.mdpi.com/1999-5903/12/3/46/htm
 - https://www.radiomakers.it/news/bande-libereguide
 - https://www.extremenetworks.com/extreme-networks-blog/what-is-a-clear-channel-assessment-cca/
+- https://www.gsma.com/spectrum/wp-content/uploads/2020/04/3.5-GHz-5G-TDD-Synchronisation.pdf
 
 >[Torna all'indice generale](index.md)
     
