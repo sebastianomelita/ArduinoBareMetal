@@ -27,6 +27,9 @@ ciascuna stazione riterrà di essere l’unica a trasmettere sul canale fino a c
 La rilevazione reale, da parte di una stazione, di una collisione può avvenire solo dopo l’inizio della trasmissione (o durante o alla fine).
 Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segnale si propaga dall’una all’altra:   td = d/vP
 
+
+<img src="alohacollisioni.jpg" alt="alt text" width="600">
+
 <img src="busnocollisioni.png" alt="alt text" width="600">
 
 <img src="buscollisioni.png" alt="alt text" width="600">
