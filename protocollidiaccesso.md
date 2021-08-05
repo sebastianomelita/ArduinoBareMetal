@@ -29,6 +29,7 @@ Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segn
 
 
 <img src="alohacollisioni.jpg" alt="alt text" width="600">
+
 ```C++
 N=1;
 while(N <= max){
@@ -50,6 +51,7 @@ while(N <= max){
 <img src="buscollisioni.png" alt="alt text" width="600">
 
 CSMA: pseudocodice
+
 ```C++
 N=1;
 while(N <= max){
