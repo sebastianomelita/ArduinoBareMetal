@@ -28,7 +28,7 @@ La rilevazione reale, da parte di una stazione, di una collisione può avvenire 
 Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segnale si propaga dall’una all’altra:   td = d/vP
 
 
-<img src="alohacollisioni.jpg" alt="alt text" width="600">
+<img src="alohacollisioni.jpg" alt="alt text" width="300">
 
 ```C++
 N=1;
