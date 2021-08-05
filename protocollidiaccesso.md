@@ -82,7 +82,6 @@ while(N <= max){
 /* troppi tentativi: rinuncio a trasmettere*/	
 
 ```
-<img src="csmaflow.png" alt="alt text" width="600">
 
 ### **Riassumendo ALOHA e CSMA**
 
