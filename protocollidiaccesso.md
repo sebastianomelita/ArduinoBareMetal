@@ -43,7 +43,7 @@ while(N <= max){
 	}else{
 		/* timeout scaduto: ritrasmissione*/ 	 		
 		N=N+1;
-}
+        }
 /* troppi tentativi: rinuncio a trasmettere*/	
 
 ```
