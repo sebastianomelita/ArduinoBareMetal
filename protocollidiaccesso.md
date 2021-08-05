@@ -35,15 +35,16 @@ CSMA: pseudocodice
 ```C++
 N=1;
 while(N <= max){
-	 waitUntil(channelFree()); 
-	 send(data_frame); 	
-	 waitUntil(ackOrTimeout()); 
-	 if(ack_received){ 
+	waitUntil(channelFree()); 
+	send(data_frame); 	
+	waitUntil(ackOrTimeout()); 
+	if(ack_received){ 
 		exit while;
 	}else{
 		/* timeout scaduto: ritrasmissione*/ 	 		
 		N=N+1;
-        }
+	}
+}
 /* troppi tentativi: rinuncio a trasmettere*/	
 
 ```
