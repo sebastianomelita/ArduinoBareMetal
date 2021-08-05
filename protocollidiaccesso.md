@@ -43,7 +43,7 @@ while(N <= max){
 	}else{
 		/* timeout scaduto: ritrasmissione*/ 	 		N=N+1;
 }
-/* troppi tentativi: rinuncio a trasmettere*/	![image](https://user-images.githubusercontent.com/18554803/128427514-c1a690d0-3a9a-4b41-a688-6dfe217e3ae5.png)
+/* troppi tentativi: rinuncio a trasmettere*/	
 
 ```
 
