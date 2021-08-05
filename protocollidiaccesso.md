@@ -41,7 +41,8 @@ while(N <= max){
 	 if(ack_received){ 
 		exit while;
 	}else{
-		/* timeout scaduto: ritrasmissione*/ 	 		N=N+1;
+		/* timeout scaduto: ritrasmissione*/ 	 		
+		N=N+1;
 }
 /* troppi tentativi: rinuncio a trasmettere*/	
 
