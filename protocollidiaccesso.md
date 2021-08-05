@@ -108,7 +108,7 @@ Una stazione trasmittente:
 - Altrimenti la stazione arresta la trasmissione corrente e ricomincia da zero la trasmissione della trama dopo un tempo casuale.
 - Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
 
-### **CSMA/CD: pseudocodice**
+### **CSMA/CD basico: pseudocodice**
 
 Soluzione di base per il TX
 
