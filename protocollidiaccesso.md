@@ -1,4 +1,4 @@
-
+>[Torna a reti di sensori](sensornetworkshort.md#Interfaccia-radio)
 
 ## **CSMA**
 
@@ -28,3 +28,4 @@ La rilevazione reale, da parte di una stazione, di una collisione può avvenire 
 Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segnale si propaga dall’una all’altra:   td = d/vP
 
 
+>[Torna a reti di sensori](sensornetworkshort.md#Interfaccia-radio)
