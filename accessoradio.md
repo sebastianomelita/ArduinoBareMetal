@@ -95,7 +95,7 @@ L'**allocazione delle RU** alle varie stazioni (sorgenti) che intendono trasmett
 
 <img src="triggerofdma.png" alt="alt text" width="700">
 
-E' adoperato dal **downlink** di **WiFi 6**, telefonia mobile **5G** e **NB IoT**.
+**OFDMA è adoperato** dal **downlink** di **WiFi 6**, telefonia mobile **5G** e **NB IoT**.
 
 ### **SC-FDMA**
 
