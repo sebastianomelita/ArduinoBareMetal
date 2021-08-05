@@ -31,4 +31,8 @@ Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segn
 
 <img src="buscollisioni.png" alt="alt text" width="600">
 
+CSMA: pseudocodice
+
+
+
 >[Torna a reti di sensori](sensornetworkshort.md#Interfaccia-radio)
