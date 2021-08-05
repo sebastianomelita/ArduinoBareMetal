@@ -2,8 +2,6 @@
 
 ## **Mezzo radio**
 
-<img src="duplexer.png" alt="alt text" width="700">
-
 Il **mezzo radio** possiede la **proprietà** di essere intrinsecamente **multipunto (mezzo broadcast)** cioè, se un interlocutore trasmette **tutti gli altri ascoltano**. Inoltre, essendo in pratica un BUS, è soggetto al fenomeno delle **collisioni** (in quest'ambito sono fisicamente delle interferenze distruttive) che si possono risolvere come sempre, cioè facendo in modo che in **certo canale**, in un **dato posto** e in un **dato tempo** si parli **uno alla volta**. Il **canale radio** cioè, è intrinsecamente **half duplex**. 
 
 ### **Duplexer**
@@ -11,6 +9,8 @@ Il **mezzo radio** possiede la **proprietà** di essere intrinsecamente **multip
 Una trasmissione radio **full duplex** può essere realizzata:
 - utilizzando **due canali diversi** nelle **due direzioni** di trasmissione (tecnica FDM)
 - **partizionando** ulteriormente il canale nelle grandezze residue **ancora non partizionate** in **due sottocanali** (TDM o CDM). 
+
+<img src="duplexer2.png" alt="alt text" width="700">
 
 Normalmente si usa allo scopo il **tempo** con tecniche TDM, cioè **due interlocutori** diversi parlano nello stesso canale in **istanti diversi**. 
 
