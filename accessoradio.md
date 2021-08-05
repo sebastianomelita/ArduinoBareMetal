@@ -91,7 +91,7 @@ Si potrebbe anche pianificare la **QoS** in base alla **frequenza**. Ad esempio,
 
 <img src="ofdm_ofdma.png" alt="alt text" width="700">
 
-L'**allocazione delle RU** alle varie stazioni (sorgenti) che intendono trasmettere **in parallelo** è inviata tramite un **messaggio di controllo** multicast detto **trigger**. Ricevuto il trigger le stazioni **rispondono in parallelo** e l'avvenuta ricezione da parte dell'AP viene confermata con un unico **ack multicast**.
+L'**allocazione delle RU** alle varie stazioni (sorgenti) che intendono trasmettere **in parallelo** è inviata tramite un **messaggio di controllo** multicast detto **trigger**. Ricevuto il trigger le stazioni **rispondono in parallelo** e l'avvenuta ricezione da parte dell'AP viene confermata con un unico **ack multicast**. Il trigger contiene anche la **potenza** del segnale che l'AP si aspetta di ricevere da ogni stazione, tramite questa informazione ciascun client può regolare la potenza della propria trasmissione.
 
 <img src="triggerofdma.png" alt="alt text" width="700">
 
