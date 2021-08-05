@@ -91,6 +91,10 @@ Si potrebbe anche pianificare la **QoS** in base alla **frequenza**. Ad esempio,
 
 <img src="ofdm_ofdma.png" alt="alt text" width="700">
 
+L'**allocazione delle RU** alle varie stazioni (sorgenti) che intendono trasmettere **in parallelo** è inviata tramite un messaggio multicast detto **trigger**. Ricevuto il trigger le stazioni rispondono in parallelo e l'avvenuta ricezione da parte dell'AP viene confermata con un unico ack multicast.
+
+<img src="triggerofdma.png" alt="alt text" width="700">
+
 E' adoperato dal **downlink** di **WiFi 6**, telefonia mobile **5G** e **NB IoT**.
 
 ### **SC-FDMA**
