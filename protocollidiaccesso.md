@@ -29,6 +29,21 @@ Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segn
 
 
 <img src="alohacollisioni.jpg" alt="alt text" width="600">
+```C++
+N=1;
+while(N <= max){
+	send(data_frame);
+	waitUntil(ackOrTimeout());
+	if(ack_received){
+		exit while;
+	}else{
+		/* timeout scaduto: ritrasmissione*/
+		t=random();
+		wait(t);
+		N=N+1;
+}
+/* troppi tentativi: rinuncio a trasmette![image](https://user-images.githubusercontent.com/18554803/128429136-7f470f6d-290b-4a60-8d52-f7edbf6141fb.png)
+```
 
 <img src="busnocollisioni.png" alt="alt text" width="600">
 
