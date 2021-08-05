@@ -82,7 +82,7 @@ while(N <= max){
 /* troppi tentativi: rinuncio a trasmettere*/	
 
 ```
-<img src="csmaflow.png.jpg" alt="alt text" width="600">
+<img src="csmaflow.png" alt="alt text" width="600">
 
 ### **Riassumendo ALOHA e CSMA**
 
@@ -130,7 +130,7 @@ while(N <= max){
 	N=N+1;
 }
 /* troppi tentativi: rinuncio!*/![image](https://user-images.githubusercontent.com/18554803/128434515-4bd0ded6-fcb3-4da3-a43b-c1e9a73c32a7.png)
-```C
+```
 
 <img src="csmacdflow.jpg" alt="alt text" width="300">
 
