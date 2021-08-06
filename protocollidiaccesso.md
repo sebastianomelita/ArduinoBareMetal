@@ -346,11 +346,11 @@ Ciò causa una collisione che determina la ricezione di trame corrotte da parte 
 La ritrasmissione avviene dopo uno stesso ritardo DIFS dal momento in cui entrambe le stazioni sentono il canale libero
 Ciò determina una nuova trasmissione simultanea delle due stazioni e quindi una nuova collisione
 
-<img src="collisionicsma.png" alt="alt # **text" width="600">
+<img src="collisionicsma.png" alt="alt # **text" width="800">
 
 La soluzione è ritrasmettere sempre dopo un tempo casuale (backoff) all’interno di una finestra di contesa
 
-<img src="backoff.png" alt="alt # **text" width="600">
+<img src="backoff.png" alt="alt # **text" width="800">
 
 ```C++
 
