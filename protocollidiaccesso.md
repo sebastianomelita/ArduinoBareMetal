@@ -307,7 +307,7 @@ Una stazione trasmittente:
 
 Anche se C, sfortunatamente, valutasse il canale libero ascoltandolo durante il SIFS di B poichè DIFS>SIFS accadrebbe che C ritroverebbe il canale occupato durante la seguente trasmissione dell’ack di B e quindi si :
 
-<img src="esempio.png" alt="alt # **text" width="600">
+<img src="esempio.png" alt="alt # **text" width="800">
 
 ### **Significato di DIFS**
 
