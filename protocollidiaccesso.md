@@ -414,7 +414,7 @@ La stazione B è visibile da tutti per cui sia dalla stazione A che ha prenotato
 - Il messagio CTS dichiara l’avvenuta assegnazione del canale ad A per cui tutti gli altri, come B e C, si asterranno dal trasmettere per tutta la durata del tempo dichiarato nel CTS.
 - Spesso la gestione delle prenotazioni è centralizzata ed è effettuata dallo stesso AP che in genere è in una posizione baricentrica rispetto a tutte le stazioni ed è pertanto da queste sempre visibile.
 
-<img src="rtscts.png" alt="alt # **text" width="600">
+<img src="rtscts.png" alt="alt # **text" width="800">
 
 ## **Prenotazione del canale mediante NAV**
 
