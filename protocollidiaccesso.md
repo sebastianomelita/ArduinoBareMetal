@@ -145,7 +145,7 @@ while(N <= max){
 /* troppi tentativi: rinuncio!*/
 ```
 
-<img src="csmacdflow.jpg" alt="alt text" width="350">
+<img src="csmacdflow.jpg" alt="alt text" width="400">
 
 ### **Possiamo determinare tutte le collisioni?**
 
