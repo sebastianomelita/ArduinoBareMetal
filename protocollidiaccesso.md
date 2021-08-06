@@ -246,6 +246,67 @@ Vale la disuguaglianza:
 SIFS < DIFS < EIFS
 ```
 
+### **CSMA/CA: ricevitore**
+```C++
+While (true)
+{
+ WaitUntil(dataFrameArrived());
+	if(!duplicate())
+		{ deliver(frame) }
+ wait(SIFS);
+ send(ack_frame);
+}
+```
+La funzione deliver() consegna la trama al livello superiore (ad un protocollo di livello superiore o alla applicazione)
+
+### **Fasi CSMA/CA al ricevitore!**
+
+Una stazione ricevente:
+- Aspetta l’arrivo di una nuova trama
+- Controlla se è una trama duplicate, cioè gia ricevuta
+- Controlla il CRC della trama per verificare se è stata ricevuta correttamente
+se non lo è la consegna al livello superiore
+- Aspetta un SIFS
+- Invia una trama di ack![image](https://user-images.githubusercontent.com/18554803/128509546-a589431f-31e3-4b40-b429-f96ffa773a9c.png)
+
+### **CSMA/CA : trasmettitore!**
+```C++
+N=1;
+while(N <= max){
+    waitUntil(channelFree());
+	if(receivedCorruped())
+	{ 
+	 wait(EIFS);
+	}else
+	{ 
+	 wait(DIFS);
+	}
+	send(data_frame);
+	  waitUntil(ackOrTimeout());
+	if(ack_received){
+		exit while;
+	}else{
+		/* timeout scaduto: si ritrasmette*/
+		N=N+1;
+	}
+}
+/* troppi tentativi: rinuncio!*/	
+```
+### **Fasi CSMA/CA al trasmettitore senza backoff**
+
+Una stazione trasmittente:
+- Se la trama precedentemente ricevuta era corrotta prima di trasmettere, aspetta un tempo EIFS 
+- Altrimenti se la stazione sente il canale occupato aspetta finchè è libero, da quel momento in poi, aspetta un tempo DIFS 
+- Trascorso il DIFS invia immediatamente la trama
+- Aspetta l’arrivo di un ack, se non arriva in tempo, allo scadere di un timeout, avvia la ritrasmissione della stessa trama.
+
+
+
+
+
+
+
+
 
 
 
