@@ -63,9 +63,11 @@ La rilevazione reale, da parte di una stazione, di una collisione può avvenire 
 Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segnale si propaga dall’una all’altra:   td = d/vP
 
 **BUS senza collisioni:**
+
 <img src="busnocollisioni.png" alt="alt text" width="600">
 
 **BUS con collisioni:**
+
 <img src="buscollisioni.png" alt="alt text" width="600">
 
 CSMA: pseudocodice
