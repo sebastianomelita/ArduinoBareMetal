@@ -25,7 +25,7 @@ la maniera di realizzare il **duplexer** può essere statica o dinamica sempre c
 
 [Dettaglio CSMA](protocollidiaccesso.md#csma)
 
-[Dettaglio CSMA/CD](protocollidiaccesso.md#csma/cd)
+[Dettaglio CSMA/CD](protocollidiaccesso.md#fasi-csma/cd-basico)
 
 [Dettaglio CSMA/CA](protocollidiaccesso.md#csma/ca)
 
