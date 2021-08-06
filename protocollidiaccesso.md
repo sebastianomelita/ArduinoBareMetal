@@ -259,7 +259,8 @@ While (true)
 ```
 La funzione deliver() consegna la trama al livello superiore (ad un protocollo di livello superiore o alla applicazione)
 
-### **Fasi CSMA/CA al ricevitore!**
+### **Fasi CSMA/CA al ricevitore**
+**
 
 Una stazione ricevente:
 - Aspetta l’arrivo di una nuova trama
@@ -301,6 +302,9 @@ Una stazione trasmittente:
 - Aspetta l’arrivo di un ack, se non arriva in tempo, allo scadere di un timeout, avvia la ritrasmissione della stessa trama.
 
 
+Anche se C, sfortunatamente, valutasse il canale libero ascoltandolo durante il SIFS di B poichè DIFS>SIFS accadrebbe che C ritroverebbe il canale occupato durante la seguente trasmissione dell’ack di B e quindi si :
+
+<img src="esempio.png" alt="alt text" width="200">
 
 
 
