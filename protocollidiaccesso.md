@@ -219,6 +219,18 @@ Le altre stazioni, quando ricevono la sequenza di jamming, sono avvisate della a
 
 <img src="csmacdflow2.png" alt="alt text" width="200">
 
+### **Riassumendo CSMA e CSMA/CD!**
+
+Similitudini:
+- CSMA e CSMA/CD devono implementare un meccanismo di ascolto del canale prima della trasmissione per stabilire se esso è libero o meno. 
+
+Differenze:
+- il CSMA rileva la collisione indirettamente dopo la trasmissione in fase di ricezione, a seguito del mancato arrivo del messaggio di ack (allo scadere di un timeout), Si tratta di una tecnica SW. Trasmissione e ricezione non devono essere contemporanee.
+- Il CSMA/CD durante la trasmissione mantiene attiva anche la funzione di  ricezione che può rilevare una collisione perchè:
+- Il segnale “ascoltato” durante la trasmissione ha una potenza più elevata di quello effettivamente trasmesso. É una tecnica HW.
+- Il segnale “ascoltato” e decodificato durante la trasmissione ha un valore in bit diverso da quello trasmesso. É una tecnica SW.
+
+
 
 
 
