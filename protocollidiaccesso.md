@@ -335,9 +335,19 @@ EIFS  = SIFS + DIFS + ACK_Tx_Time
 
 <img src="eifs.png" alt="alt # **text" width="600">
 
-### **Collisioni**
+### **Backoff**
+
+Se due stazioni, dopo averlo ascoltato, trovano il canale libero potrebbero iniziare a trasmettere contemporaneamente (o quasi a meno di tempi di propagazione) 
+Ciò causa una collisione che determina la ricezione di trame corrotte da parte delle stazioni destinatarie che, a sua volta, causa il mancato invio di un ack alle stazioni trasmittenti che avviano, appena possono, la ritrasmissione
+
+La ritrasmissione avviene dopo uno stesso ritardo DIFS dal momento in cui entrambe le stazioni sentono il canale libero
+Ciò determina una nuova trasmissione simultanea delle due stazioni e quindi una nuova collisione
 
 <img src="collisionicsma.png" alt="alt # **text" width="600">
+
+La soluzione è ritrasmettere sempre dopo un tempo casuale (backoff) all’interno di una finestra di contesa
+
+<img src="backoff.png" alt="alt # **text" width="600">
 
 
 
