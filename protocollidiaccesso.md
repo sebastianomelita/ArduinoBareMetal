@@ -17,6 +17,7 @@ Una stazione trasmittente:
 <img src="alohacollisioni.jpg" alt="alt text" width="600">
 
 ```C++
+
 N=1;
 while(N <= max){
 	send(data_frame);
@@ -30,6 +31,7 @@ while(N <= max){
 		N=N+1;
 }
 /* troppi tentativi: rinuncio a trasmette
+
 ```
 
 <img src="alohaflow.png" alt="alt text" width="400">
@@ -349,7 +351,9 @@ Ciò determina una nuova trasmissione simultanea delle due stazioni e quindi una
 La soluzione è ritrasmettere sempre dopo un tempo casuale (backoff) all’interno di una finestra di contesa
 
 <img src="backoff.png" alt="alt # **text" width="600">
+
 ```C++
+
 N=1;
 while(N <= max){
 	waitUntil(channelFree());
@@ -371,7 +375,8 @@ while(N <= max){
 		 N=N+1; 
 	}
 }
-/* troppi tentativi: rinuncio!*/ 	
+/* troppi tentativi: rinuncio!*/ 
+
 ```
 
 ### **Finestra di contesa variabile**
