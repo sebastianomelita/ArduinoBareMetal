@@ -402,7 +402,7 @@ Lo scopo di tale raddoppio è quello di adattare la dimensione della finestra al
 
 <img src="finestra.png" alt="alt # **text" width="600">
 
-## **Ottimizzazioni WiFi**
+## **Ottimizzazioni**
 
 ## **Accesso immediato e differito**
 
