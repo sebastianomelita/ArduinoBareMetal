@@ -53,6 +53,25 @@ Una stazione trasmittente:
 - Altrimenti la stazione usa una strategia di backoff e invia nuovamente il pachetto dopo un tempo casuale.
 - Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
 
+### **Protocollo CSMA basico in pseudocodice**
+
+```C++
+N=1;
+while(N <= max){
+	waitUntil(channelFree()); 
+	send(data_frame); 	
+	waitUntil(ackOrTimeout()); 
+	if(ack_received){ 
+		exit while;
+	}else{
+		/* timeout scaduto: ritrasmissione*/ 	 		
+		N=N+1;
+	}
+}
+/* troppi tentativi: rinuncio a trasmettere*/	
+
+```
+
 ### **Ritardo di propagazione**
 
 Una stazione non può rilevare l’occupazione del BUS da parte di una stazione remota semplicemente ascoltando prima di trasmettere a causa di un fenomeno fisico detto ritardo di propagazione del segnale.
@@ -76,25 +95,6 @@ Una stazione non può rilevare istantaneamente l’occupazione del BUS da parte 
 
 <img src="buscollisioni.png" alt="alt text" width="700">
 
-### **Protocollo CSMA basico in pseudocodice**
-
-```C++
-N=1;
-while(N <= max){
-	waitUntil(channelFree()); 
-	send(data_frame); 	
-	waitUntil(ackOrTimeout()); 
-	if(ack_received){ 
-		exit while;
-	}else{
-		/* timeout scaduto: ritrasmissione*/ 	 		
-		N=N+1;
-	}
-}
-/* troppi tentativi: rinuncio a trasmettere*/	
-
-```
-
 ### **Riassumendo ALOHA e CSMA**
 
 Similitudini:
@@ -105,6 +105,8 @@ Differenze:
 - ALOHA trasmette senza verificare se il canale è occupato o meno.
 - CSMA trasmette solo se “sente” il canale libero.
 - CSMA deve implementare un meccanismo di ascolto del canale prima della trasmissione (CCA: Clear Channel Assesment).
+
+
 
 ## **CSMA/CD**
 
