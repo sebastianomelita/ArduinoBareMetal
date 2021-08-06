@@ -267,7 +267,7 @@ Una stazione ricevente:
 - Controlla il CRC della trama per verificare se è stata ricevuta correttamente
 se non lo è la consegna al livello superiore
 - Aspetta un SIFS
-- Invia una trama di ack![image](https://user-images.githubusercontent.com/18554803/128509546-a589431f-31e3-4b40-b429-f96ffa773a9c.png)
+- Invia una trama di ack
 
 ### **CSMA/CA : trasmettitore!**
 ```C++
