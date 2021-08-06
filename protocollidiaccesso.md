@@ -337,7 +337,7 @@ EIFS  = SIFS + DIFS + ACK_Tx_Time
 
 ### **Collisioni**
 
-<img src="collisioni.png" alt="alt # **text" width="600">
+<img src="collisionicsma.png" alt="alt # **text" width="600">
 
 
 
