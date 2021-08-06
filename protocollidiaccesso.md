@@ -432,7 +432,7 @@ I due CCA sono del tutto indipendenti e possono portare a risultati diversi.  Lo
 
 Il valore contenuto nel CTS rappresenta il tempo prenotato dalla stazione autorizzata a trasmettere ed è il tempo che essa ritiene necessario per trasmettere il suo messaggio alla velocità corrente del sistema.
 
-### *Prenotazione del canale**
+### **Prenotazione del canale**
 
 Il trasmettitore prenota dei time slot tramite un messaggio di controllo RTS (Request To Send) avente per argomento il tempo di trasmissione necessario per inviare i suoi dati . 
 
@@ -479,14 +479,6 @@ http://www.opentextbooks.org.hk/ditatopic/3611
 https://mrncciew.com/2014/10/12/cwap-802-11-medium-contention/
 https://en.wikipedia.org/wiki/Extended_interframe_space
 https://www.hamilton.ie/publications/Thesis_tianji.pdf
-
-![image](https://user-images.githubusercontent.com/18554803/128551552-36c76210-30b6-45fd-9fef-f0cf68df3cb2.png)
-
-
-
-
-
-
 
 
 >[Torna a reti di sensori](sensornetworkshort.md#Interfaccia-radio)
