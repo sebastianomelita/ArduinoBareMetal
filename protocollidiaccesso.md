@@ -40,6 +40,8 @@ while(N <= max){
 
 <img src="alohaflow.png" alt="alt text" width="400">
 
+>[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
+>
 ## **CSMA**
 
 ### **Fasi CSMA**
@@ -106,7 +108,7 @@ Differenze:
 - CSMA trasmette solo se “sente” il canale libero.
 - CSMA deve implementare un meccanismo di ascolto del canale prima della trasmissione (CCA: Clear Channel Assesment).
 
-
+>[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
 ## **CSMA/CD**
 
@@ -247,6 +249,8 @@ Differenze:
 - Il segnale “ascoltato” durante la trasmissione ha una potenza più elevata di quello effettivamente trasmesso. É una tecnica HW.
 - Il segnale “ascoltato” e decodificato durante la trasmissione ha un valore in bit diverso da quello trasmesso. É una tecnica SW.
 
+>[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
+>
 ## **CSMA/CA**
 
 Non è possibile sempre rilevare le collisioni durante la trasmissione (mezzo radio)
@@ -401,6 +405,8 @@ Ad ogni collisione,  prima di ritentare la trasmissione, la stazione raddoppia l
 Lo scopo di tale raddoppio è quello di adattare la dimensione della finestra al numero di contendenti, in considerazione del fatto che le collisioni sono indice di “affollamento”.
 
 <img src="finestra.png" alt="alt # **text" width="600">
+
+>[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
 ## **Ottimizzazioni**
 
