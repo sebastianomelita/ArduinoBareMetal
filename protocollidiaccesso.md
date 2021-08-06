@@ -401,25 +401,20 @@ Un accesso senza contesa non vuol dire un accesso senza collisioni, queste sono 
 
 ## **Problema della stazione nascosta**
 
-Il trasmettitore prenota dei time slot tramite ll messaggio di controllo RTS (Request To Send) avente per argomento il tempo di trasmissione richiesto, adatto alla lunghezza del messaggio dati.
-
-Il ricevente conferma la prenotazione tramite il messaggio di controllo CTS (Clear To Send) avente per argomento il tempo prenotato al trasmettitore
-La stazione B è visibile da tutti per cui sia dalla stazione A che ha prenotato il canale sia dalle altre, come la C, che potenzialmente potrebbero trasmettere di li a poco
-
-Il messagio CTS dichiara l’avvenuta assegnazione del canale ad A per cui tutti gli altri, come B e C, si asterranno dal trasmettere per tutta la durata del tempo dichiarato nel CTS.
-
-Spesso la gestione delle prenotazioni è centralizzata ed è effettuata dallo stesso AP che in genere è in una posizione baricentrica rispetto a tutte le stazioni ed è pertanto da queste sempre visibile.
-
-Le stazioni A e C non sono visibili una all’altra per cui l’ascolto del canale non è in grado di rilevare se una di loro ha occupato il canale prima dell’altra. 
-
-Se entrambe devono trasmettere a B, sia A che C sentiranno il canale libero e inizieranno la trasmissione delle rispettive trame. 
-
-B riceverà i messaggi provenienti da entrambe le stazioni che, a seguito della collisione, saranno inintelleggibili.
-
+**Problema:**
+- Le stazioni A e C non sono visibili una all’altra per cui l’ascolto del canale non è in grado di rilevare se una di loro ha occupato il canale prima dell’altra. 
+- Se entrambe devono trasmettere a B, sia A che C sentiranno il canale libero e inizieranno la trasmissione delle rispettive trame. 
+- B riceverà i messaggi provenienti da entrambe le stazioni che, a seguito della collisione, saranno inintelleggibili.
 <img src="hidden.png" alt="alt # **text" width="600">
 
+**Soluzione:**
+- Il trasmettitore prenota dei time slot tramite ll messaggio di controllo RTS (Request To Send) avente per argomento il tempo di trasmissione richiesto, adatto alla lunghezza del messaggio dati.
+- Il ricevente conferma la prenotazione tramite il messaggio di controllo CTS (Clear To Send) avente per argomento il tempo prenotato al trasmettitore
+La stazione B è visibile da tutti per cui sia dalla stazione A che ha prenotato il canale sia dalle altre, come la C, che potenzialmente potrebbero trasmettere di li a poco
+- Il messagio CTS dichiara l’avvenuta assegnazione del canale ad A per cui tutti gli altri, come B e C, si asterranno dal trasmettere per tutta la durata del tempo dichiarato nel CTS.
+- Spesso la gestione delle prenotazioni è centralizzata ed è effettuata dallo stesso AP che in genere è in una posizione baricentrica rispetto a tutte le stazioni ed è pertanto da queste sempre visibile.
 
-
+<img src="rtscts.png" alt="alt # **text" width="600">
 
 
 
