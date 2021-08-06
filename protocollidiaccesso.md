@@ -142,8 +142,9 @@ while(N <= max){
 	}
 	N=N+1;
 }
-/* troppi tentativi: rinuncio!*/![image](https://user-images.githubusercontent.com/18554803/128434515-4bd0ded6-fcb3-4da3-a43b-c1e9a73c32a7.png)
+/* troppi tentativi: rinuncio!*/
 ```
+
 <img src="csmacdflow.jpg" alt="alt text" width="300">
 
 ### **Possiamo determinare tutte le collisioni?**
@@ -204,6 +205,7 @@ Nel caso del CSMA/CD:
 		r = random(0, 2k – 1)*RTT; //tempo di backoff
 ```
 ### **Procollo CSMA/CD completo in pseudocodice**
+
 ```C++
 N=1;
 while(N<= max){
