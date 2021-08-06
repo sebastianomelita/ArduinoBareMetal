@@ -1,4 +1,4 @@
->[Torna a reti di sensori](sensornetworkshort.md#Interfaccia-radio)
+>[Torna a reti di sensori](mezzoradio.md#Multiplazione-TDM)
 
 ## **ALOHA**
 
@@ -494,4 +494,4 @@ https://en.wikipedia.org/wiki/Extended_interframe_space
 https://www.hamilton.ie/publications/Thesis_tianji.pdf
 
 
->[Torna a reti di sensori](sensornetworkshort.md#Interfaccia-radio)
+>[Torna a reti di sensori](mezzoradio.md#Multiplazione-TDM)
