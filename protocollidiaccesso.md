@@ -269,7 +269,7 @@ se non lo è la consegna al livello superiore
 - Aspetta un SIFS
 - Invia una trama di ack
 
-### **CSMA/CA : trasmettitore!**
+### **CSMA/CA : trasmettitore**
 ```C++
 N=1;
 while(N <= max){
