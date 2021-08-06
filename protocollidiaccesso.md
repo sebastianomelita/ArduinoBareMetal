@@ -145,14 +145,14 @@ while(N <= max){
 - Se non si ascolta evidentemente no.
 - Ma si ascolta solo finchè si trasmette…
 
-<img src="nolisten.png" alt="alt text" width="600">
+<img src="nolisten.png" alt="alt text" width="700">
 
 ### **Soluzione: trasmissione abbastanza lunga**
 
 - Caso peggiore: il tramittente A è ad un capo e la collisione avviene all’altro capo quando trasmette pure B.
 - Per ricevere l’eco della collisione A deve continuare ad ascoltare (cioè a trasmettere) finchè la trama corrotta non si propaga da B fino a lei.
 
-<img src="listen.png" alt="alt text" width="600">
+<img src="listen.png" alt="alt text" width="700">
 
 ### **Come rilevare tutte le collisioni?**
 
