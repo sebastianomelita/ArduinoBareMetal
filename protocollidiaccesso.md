@@ -348,7 +348,38 @@ Ciò determina una nuova trasmissione simultanea delle due stazioni e quindi una
 La soluzione è ritrasmettere sempre dopo un tempo casuale (backoff) all’interno di una finestra di contesa
 
 <img src="backoff.png" alt="alt # **text" width="600">
+```C++
+N=1;
+while(N <= max){
+	waitUntil(channelFree());
+	if(receivedCorruped())
+	{ 
+	 wait(EIFS);
+	}else
+	{ 
+	 wait(DIFS);
+	}
+	backoff_time = int(random[0,min(255,7*2N-1)])*T;
+    waitUntil(channelFreeDuringBackoff());
+	send(data_frame);
+   waitUntil(ackOrTimeout());
+	if(ack_received){
+		 exit while;
+	}else{ 
+		/* timeout scaduto: si ritrasmette*/
+		 N=N+1; 
+	}
+}
+/* troppi tentativi: rinuncio!*/ 	
+```
 
+### **Finestra di contesa variabile**
+
+Se accade una collisione durante il backoff spesso ciò significa che due stazioni hanno scelto lo stesso slot nella finestra di backoff.
+Ad ogni collisione,  prima di ritentare la trasmissione, la stazione raddoppia la dimensione della finestra di backoff CW (Content Window o finestra di contesa).
+Lo scopo di tale raddoppio è quello di adattare la dimensione della finestra al numero di contendenti, in considerazione del fatto che le collisioni sono indice di “affollamento”.
+
+<img src="finestra.png" alt="alt # **text" width="600">
 
 
 
