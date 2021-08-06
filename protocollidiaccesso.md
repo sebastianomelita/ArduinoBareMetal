@@ -387,6 +387,19 @@ Lo scopo di tale raddoppio è quello di adattare la dimensione della finestra al
 
 <img src="finestra.png" alt="alt # **text" width="600">
 
+## **Ottimizzazioni 802.11**
+
+## **Accesso immediato e differito**
+
+In alcune implementazioni (802.11) il DIFS può creare un accesso senza contesa: 
+- Se il canale è libero dopo questo tempo si può trasmettere con un accesso immediato, cioè senza attendere alcun backoff.
+- Se il canale è occupato, prima o dopo questo tempo, si esegue un accesso differito, cioè un DIFS dopo la fine della trasmissione corrente, scegliendo uno slot casuale all’interno di una finestra di contesa (tramite backoff).
+
+Un accesso senza contesa non vuol dire un accesso senza collisioni, queste sono sempre possibili se, dopo un DIFS, due stazioni iniziano a parlare contemporaneamente.
+
+<img src="immediato.png" alt="alt # **text" width="600">
+
+
 
 
 
