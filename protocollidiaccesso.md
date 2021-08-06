@@ -133,8 +133,8 @@ while(N <= max){
 
 <img src="csmacdflow.jpg" alt="alt text" width="300">
 
-<img src="nolisten.png" alt="alt text" width="500">
-<img src="listen.png" alt="alt text" width="500">
+<img src="nolisten.png" alt="alt text" width="600">
+<img src="listen.png" alt="alt text" width="600">
 
 
 >[Torna a reti di sensori](sensornetworkshort.md#Interfaccia-radio)
