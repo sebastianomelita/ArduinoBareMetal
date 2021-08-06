@@ -29,7 +29,7 @@ la maniera di realizzare il **duplexer** può essere statica o dinamica sempre c
 
 [Dettaglio CSMA/CA](protocollidiaccesso.md#csmaca)
 
-[Dettaglio ottimizzazioni 802.11](protocollidiaccesso.md#ottimizzazioni-wifi)
+[Dettaglio ottimizzazioni 802.11](protocollidiaccesso.md#accesso-immediato-e-differito)
 
 ### **Multiplazione statica TDMA**
 
