@@ -313,7 +313,15 @@ Anche se C, sfortunatamente, valutasse il canale libero ascoltandolo durante il 
 
 <img src="difs.png" alt="alt # **text" width="600">
 
+### **Significato di EIFS**
+```C++
+EIFS  = SIFS + DIFS + ACK_Tx_Time
+```
+- usato al posto di DIFS dalle stazioni che hanno ricevuto un frame incomprensibile
+- Anche se una stazione non è stata in grado di decodificare il frame, potrebbe essere che invece il destinatario legittimo sia ancora in grado di farlo. 
+- Se ciò accade, il destinatario dovrebbe avere l'opportunità di restituire un frame di ack; il ritardo EIFS garantisce che la trasmissione del frame di Ack possa procedere senza interferenze da parte di chi non è stato in grado di decodificare il frame.
 
+<img src="eifs.png" alt="alt # **text" width="600">
 
 
 
