@@ -14,7 +14,11 @@ Una stazione trasmittente:
 - Altrimenti la stazione usa una strategia di backoff e invia nuovamente il pachetto dopo un tempo casuale.
 - Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
 
+**Le collisioni graficamente:**
+
 <img src="alohacollisioni.jpg" alt="alt text" width="600">
+
+**Protocollo ALOHA in pseudocodice:**
 
 ```C++
 
@@ -72,7 +76,7 @@ Una stazione non può rilevare istantaneamente l’occupazione del BUS da parte 
 
 <img src="buscollisioni.png" alt="alt text" width="700">
 
-### **CSMA: pseudocodice**
+### **Protocollo CSMA basico in pseudocodice**
 
 ```C++
 N=1;
@@ -116,7 +120,7 @@ Una stazione trasmittente:
 - Altrimenti la stazione arresta la trasmissione corrente e ricomincia da zero la trasmissione della trama dopo un tempo casuale.
 - Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
 
-### **CSMA/CD basico: pseudocodice**
+### **Protocollo CSMA/CD basico in pseudocodice**
 
 Soluzione di base per il TX
 
@@ -177,9 +181,9 @@ Soluzione: Backoff esponenziale
 - È calcolato all’interno di un intervallo (finestra) di contesa
 
 Il tempo di Backoff si calcola in multipli interi di uno slot che è uguale ad un RTT (slot = 1 RTT) secondo la formula r = random(0, 2k – 1)*RTT
-- 1ma collisione : aspetta da 0 a 1 slot
-- 2da collisione : aspetta 0, 1,2 o 3 slots 
-- iesima collisione : aspetta 0..2i-1 slots 
+- 1-ma collisione : aspetta da 0 a 1 slot
+- 2-da collisione : aspetta 0, 1,2 o 3 slots 
+- i-esima collisione : aspetta 0..2i-1 slots 
 
 ### **Finestra di contesa**
 
@@ -197,7 +201,7 @@ Nel caso del CSMA/CD:
 	        k = min(10, N); //numero di tentativi
 		r = random(0, 2k – 1)*RTT; //tempo di backoff
 ```
-### **CSMA/CD completo: pseudocodice**
+### **Procollo CSMA/CD completo in pseudocodice**
 ```C++
 N=1;
 while(N<= max){
@@ -254,7 +258,7 @@ Vale la disuguaglianza:
 SIFS < DIFS < EIFS
 ```
 
-### **CSMA/CA: ricevitore**
+### **Protocollo CSMA/CA sul ricevitore in psudocodice**
 ```C++
 While (true)
 {
@@ -278,7 +282,7 @@ se non lo è la consegna al livello superiore
 - Aspetta un SIFS
 - Invia una trama di ack
 
-### **CSMA/CA : trasmettitore**
+### **Protocollo CSMA/CA sul trasmettitore in pseudocodice**
 ```C++
 N=1;
 while(N <= max){
@@ -359,24 +363,26 @@ La soluzione è ritrasmettere sempre dopo un tempo casuale (backoff) all’inter
 
 ```C++
 
+**Pseudocodice protocollo CSMA/CA sul trasmettitore con backoff:**
+
 N=1;
 while(N <= max){
 	waitUntil(channelFree());
 	if(receivedCorruped())
 	{ 
-	 wait(EIFS);
+	 	wait(EIFS);
 	}else
 	{ 
-	 wait(DIFS);
+	 	wait(DIFS);
 	}
 	backoff_time = int(random[0,min(255,7*2N-1)])*T;
-    waitUntil(channelFreeDuringBackoff());
+        waitUntil(channelFreeDuringBackoff());
 	send(data_frame);
-   waitUntil(ackOrTimeout());
+        waitUntil(ackOrTimeout());
 	if(ack_received){
 		 exit while;
 	}else{ 
-		/* timeout scaduto: si ritrasmette*/
+		 /* timeout scaduto: si ritrasmette*/
 		 N=N+1; 
 	}
 }
