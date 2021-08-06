@@ -221,7 +221,7 @@ Le altre stazioni, quando ricevono la sequenza di jamming, sono avvisate della a
 - Se ricevevano, scaricano dal buffer di ricezione quanto ricevuto fino a quell momento
 - Se trasmettevano, arrestano immediatamente la trasmissione e fanno partire l’algoritmo di backoff che stabilisce il ritardo casuale prima della ritrasmissione del messaggio interrotto.
 
-<img src="csmacdflow2.png" alt="alt text" width="200">
+<img src="csmacdflow2.png" alt="alt text" width="300">
 
 ### **Riassumendo CSMA e CSMA/CD**
 
