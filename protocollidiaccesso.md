@@ -64,15 +64,15 @@ Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segn
 
 **BUS senza collisioni:**
 
-<img src="busnocollisioni.png" alt="alt text" width="600">
+<img src="busnocollisioni.png" alt="alt text" width="700">
 
 **BUS con collisioni:**
 
 Una stazione non può rilevare istantaneamente l’occupazione del BUS da parte di una stazione remota a causa di un fenomeno fisico detto ritardo di propagazione.
 
-<img src="buscollisioni.png" alt="alt text" width="600">
+<img src="buscollisioni.png" alt="alt text" width="700">
 
-CSMA: pseudocodice
+### **CSMA: pseudocodice**
 
 ```C++
 N=1;
