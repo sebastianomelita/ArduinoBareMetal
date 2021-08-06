@@ -21,6 +21,16 @@ Il meccanismo dell'**alternanza nel tempo** può anche essere esteso ad un **num
 La partizione **TDM** nel tempo del canale può essere statica o dinamica. Quella **statica** utilizza la tecnica di multiplazione **TDMA**. Quella **dinamica** utilizza un **protocollo di arbitraggio** che, con un meccanismo di **ack**, permette di realizzare **l'alternanza nel tempo** delle comunicazioni. Si basa essenzialmente sui protocolli **ALOHA** o **CSMA/CA**. Anche la 
 la maniera di realizzare il **duplexer** può essere statica o dinamica sempre con **TDMA** oppure **ALOHA** o **CSMA/CA**
 
+[Dettaglio ALOHA](protocollidiaccesso.md.md#ALOHA)
+
+[Dettaglio CSMA](protocollidiaccesso.md.md#CSMA)
+
+[Dettaglio CSMA/CD](protocollidiaccesso.md.md#CSMA/CD)
+
+[Dettaglio CSMA/CA](protocollidiaccesso.md.md#CSMA/CA)
+
+[Dettaglio ottimizzazioni 802.11](protocollidiaccesso.md.md#Ottimizzazioni-802.11)
+
 ### **Multiplazione statica TDMA**
 
 Nel **TDMA** un **numero arbitrario** di interlocutori parlano **a turno** secondo un criterio di dialogo assimilabile a quello della **"tavola rotonda"**. Ciascun interlocutore **è numerato** ed è **abbinato** a **uno o più** numeri di **altri** interlocutori. Un partecipante con **un certo numero**, per realizzare una comunicazione **punto punto** o **multipunto**, dovrebbe **ascoltare** soltanto i discorsi pronunciati **da un solo** interlocutore o **da tutti** gli interlocutori aventi però uno dei numeri a cui egli **è abbinato**.
