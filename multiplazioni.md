@@ -32,6 +32,17 @@ Nel **TDM** tutta la banda di frequenza viene usata in tutto lo spazio ma in **i
 
 Nel **CDM** i segnali occupano e condividono la stessa frequenza lo stesso spazio e lo stesso tempo, ma, nonostante di fatto **si interferiscano**, possono ancora essere **distinti in base alla potenza** grazie ad un **codice ortogonale univoco** che permette di **filtrare** una certa comunicazione.
 
+[Dettaglio ALOHA](protocollidiaccesso.md#aloha)
+
+[Dettaglio CSMA](protocollidiaccesso.md#csma)
+
+[Dettaglio CSMA/CD](protocollidiaccesso.md#fasi-csmacd-basico)
+
+[Dettaglio CSMA/CA](protocollidiaccesso.md#csmaca)
+
+[Dettaglio ottimizzazioni 802.11](protocollidiaccesso.md#ottimizzazioni)
+
+
 <img src="multiplazioni2.jpg" alt="alt text" width="800">
 
 E’ possibile **allocare** una comunicazione su **una porzione** della **grandezza fisica** (spazio, tempo, frequenza, potenza) a cui essa **è associata**. La **grandezza fisica** è una **proprietà** del **segnale** che **codifica** sul canale i **bit** della comunicazione mediante processi di **modulazione digitale**. 
