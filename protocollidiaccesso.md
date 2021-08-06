@@ -308,8 +308,20 @@ Anche se C, sfortunatamente, valutasse il canale libero ascoltandolo durante il 
 
 ### **Significato di DIFS**
 
-- Nel grafico, DATA e ACK sono tempi di trasmissione (non di propagazione)
-- Durante il tempo di attesa DIFS l’ack ha il tempo di propagarsi fino alla stazione più remota senza essere disturbato da altre trasmissioni
+È il tempo che aspettano tutte le stazioni per trasmettere a partire dalla fine dell’ultima trasmissione valida (invio ack messaggio precedente)
+
+Serve a proteggere la trasmissione di un ack da eventuali  collisioni, è sempre:       
+```C++
+DIFS =  SIFS  + (2 * Slot time) 
+```
+
+- SIFS dovrebbe essere più breve di DIFS in modo che sia possibile inviare un frame di ACK prima che le altre stazioni riprendano il loro backoff
+- Il DIFS dura quanto basta affinchè una qualunque stazione si possa accorgere che il canale è occupato a seguito della trasmissione di un ack
+- Viene calcolato nel caso peggiore possibile (2 * Slot time ), cioè ipotizzando che la le stazioni interessate siano poste agli estremi più distanti della cella radio.
+
+Nel grafico, DATA e ACK sono tempi di trasmissione (non di propagazione)
+
+Durante il tempo di attesa DIFS l’ack ha il tempo di propagarsi fino alla stazione più remota senza essere disturbato da altre trasmissioni
 
 <img src="difs.png" alt="alt # **text" width="600">
 
