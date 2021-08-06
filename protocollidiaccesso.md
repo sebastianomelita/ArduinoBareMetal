@@ -139,7 +139,7 @@ while(N <= max){
 
 <img src="nolisten.png" alt="alt text" width="600">
 
-## **Soluzione: trasmissione abbastanza lunga
+## **Soluzione: trasmissione abbastanza lunga**
 
 - Caso peggiore: il tramittente A è ad un capo e la collisione avviene all’altro capo quando trasmette pure B.
 - Per ricevere l’eco della collisione A deve continuare ad ascoltare (cioè a trasmettere) finchè la trama corrotta non si propaga da B fino a lei.
