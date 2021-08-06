@@ -29,8 +29,9 @@ while(N <= max){
 		wait(t);
 		N=N+1;
 }
-/* troppi tentativi: rinuncio a trasmette![image](https://user-images.githubusercontent.com/18554803/128429136-7f470f6d-290b-4a60-8d52-f7edbf6141fb.png)
+/* troppi tentativi: rinuncio a trasmette
 ```
+
 <img src="alohaflow.png" alt="alt text" width="400">
 
 ## **CSMA**
