@@ -120,7 +120,7 @@ while(N <= max){
 	waitUntil(endOfFrame() or collision());
 	if(collision()){
 		stopTransmitting();
-		send(jamming); 	
+		send(jamming);
 	}else{
 		/* no collision detected */
 		wait(interframe_delay);
@@ -198,7 +198,8 @@ while(N<= max){
 	waitUntil(endOfFrame() or collision()); 	
 	if(collision()){
 		stopTransmitting();
-		send(jamming); 		k = min (10, N);
+		send(jamming);
+		k = min (10, N);
 		r = random(0, 2k – 1);
 		wait(r*RTT);
 	}else{
