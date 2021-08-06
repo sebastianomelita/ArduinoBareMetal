@@ -220,7 +220,7 @@ Le altre stazioni, quando ricevono la sequenza di jamming, sono avvisate della a
 
 <img src="csmacdflow2.png" alt="alt text" width="200">
 
-### **Riassumendo CSMA e CSMA/CD!**
+### **Riassumendo CSMA e CSMA/CD**
 
 Similitudini:
 - CSMA e CSMA/CD devono implementare un meccanismo di ascolto del canale prima della trasmissione per stabilire se esso è libero o meno. 
@@ -230,6 +230,22 @@ Differenze:
 - Il CSMA/CD durante la trasmissione mantiene attiva anche la funzione di  ricezione che può rilevare una collisione perchè:
 - Il segnale “ascoltato” durante la trasmissione ha una potenza più elevata di quello effettivamente trasmesso. É una tecnica HW.
 - Il segnale “ascoltato” e decodificato durante la trasmissione ha un valore in bit diverso da quello trasmesso. É una tecnica SW.
+
+## **CSMA/CA**
+
+Non è possibile sempre rilevare le collisioni durante la trasmissione (mezzo radio)
+
+Miglioramento del CSMA grazie all’introduzione degli IFS (interframe space):
+- Ritardo iniziale di trasmissione (EIFS) 
+- Short Inter Frame Space (SIFS): ritardo tra una trama e l’invio del suo ack. È il tempo minimo per consentire ai dispositivi HW di commutare dallo stato di ricezione a qello di trasmissione.
+- Distributed Inter Frame Space (DIFS): ritardo minimo tra due trame successive in trasmissione. DIFS =  SIFS  + (2 * Slot time). Serve a proteggere la trasmissione di un ack da eventuali  collisioni
+ SlotTime = CCATime + RxTxTurnaroundTime + AirPropagationTime+ MACProcessingDelay è il tempo per percorrere il tragitto tra due stazioni poste agli estremi più remoti della cella radio.
+
+Vale la disuguaglianza:   
+```C++
+SIFS < DIFS < EIFS
+```
+
 
 
 
