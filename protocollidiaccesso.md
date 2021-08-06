@@ -416,6 +416,72 @@ La stazione B è visibile da tutti per cui sia dalla stazione A che ha prenotato
 
 <img src="rtscts.png" alt="alt # **text" width="600">
 
+## **Prenotazione del canale mediante NAV**
+
+### **CCA Reale e CCA Virtuale**
+
+CCA Reale: è il Clear Channel Assesment realizzato mediante l’ascolto effettivo del canale fisico prima della trasmissione. Presuppone che la stazione sia in stato di ricezione e che un dispositivo a soglia sia pronto a rilevare eventuale energia trasmessa da altre stazioni. 
+
+CCA Virtuale: il Clear Channel Assesment virtuale è invece realizzato mediante l’osservazione della variabile di conteggio NAV. Il NAV è decrementato ad intervalli di tempo fissi e in ciascuno di essi può accadere:
+- Il NAV > 0 allora il canale virtuale è considerato occupato
+- Il NAV = 0 allora il canale virtuale è considerato libero
+
+I due CCA sono del tutto indipendenti e possono portare a risultati diversi.  Lo stato del canale è stabilito dalla lettura di entrambi.
+- Quando entrambi rilevano che il canale è libero allora il trasmettitore inizia effettivamente la trasmissione.
+- Il contatore NAV viene impostato da tutte le stazioni al momento in cui queste ricevono un messaggio CTS con il valore di tempo in esso contenuto.
+
+Il valore contenuto nel CTS rappresenta il tempo prenotato dalla stazione autorizzata a trasmettere ed è il tempo che essa ritiene necessario per trasmettere il suo messaggio alla velocità corrente del sistema.
+
+### *Prenotazione del canale**
+
+Il trasmettitore prenota dei time slot tramite un messaggio di controllo RTS (Request To Send) avente per argomento il tempo di trasmissione necessario per inviare i suoi dati . 
+
+Il ricevente conferma la prenotazione tramite il messaggio di controllo CTS (Clear To Send) avente per argomento il tempo prenotato dal trasmettitore.
+Il messaggio CTS è ricevuto da tutte le stazioni che, col tempo in esso riportato, impostano il proprio contantore di Carrier Sensing detto NAV con il quale tengono conto della prenotazione.
+
+Il NAV viene decrementato nel tempo, fino a 0; quando il NAV è diverso da zero, vuol dire che una trasmissione è in atto nelle vicinanze e quindi la stazione si astiene dal trasmettere.
+
+La stazione che ha prenotato il canale durante il NAV può effettuare in sicurezza la trasmissione dei suoi dati perchè il tempo di NAV è, di fatto, al riparo dalle collisioni.
+
+Le collisioni in pratica non possono colpire i messaggi di ack e i dati, gli unici messaggi soggetti a collisione sono le trame di controllo RTS e CTS che però sono molto corte.
+
+<img src="prenotazione.png" alt="alt # **text" width="600">
+
+ ### **802.11 CSMA/CA: flowchart**
+ 
+ <img src="802.11flow.png" alt="alt # **text" width="600">
+ 
+ ### **802.11 CSMA/CA: fasi**
+ 
+Il protocollo CSMA/CA (Carrier Sense Medium Access with Collision Avoidance) funziona nel seguente modo, per una trasmissione da A a B:
+1. La stazione trasmittente A cerca di determinare lo stato del mezzo valutando il contenuto di NAV (CCA Virtuale) ed ascoltando il mezzo (CCA Reale). Il canale è considerato libero, quando sia il CCA Virtuale che il CCA Reale non rilevano attività (operazione di AND logico tra i due valori). I casi sono due:
+    1. Se il canale rimane libero per un intervallo di tempo DIFS, salta al punto 3.
+    2. Se invece il canale è occupato (o viene occupato durante l’intervallo DIFS), prosegue al punto 2.
+2. A avvia la procedura di backoff.
+3. A emette un RTS.
+4. Se entro un intervallo di tempo ben definito, A non riceve il CTS da B, vuol dire, molto probabilmente, che l’RTS ha colliso con un altro frame; 
+5. Quando B riceve l’RTS, risponde con un CTS.
+6. Ricevuto il CTS, A può cominciare a trasmettere il frame contenente i dati veri e propri.
+7. Se entro un intervallo di tempo ben definito, A non riceve un ACK da B, vuol dire che il frame dati non è stato ricevuto correttamente, e quindi A deve ritrasmetterlo ripetendo tutta la procedura.
+8 Una volta che B ha ricevuto correttamente il frame Dati, risponde con un ACK concludendo il protocollo.
+
+
+Sitografia:
+
+http://ecomputernotes.com/computernetworkingnotes/communication-networks/what-is-aloha
+https://it.pinterest.com/pin/368943394449072984/
+http://www.mathcs.emory.edu/~cheung/Courses/558/Syllabus/00/CSMA/csmacd.html
+http://www.benve.org/Download/Wireless.pdf
+http://infocom.uniroma1.it/alef/802.11/on_desk/accesso.html#Distributed_Coordination_Function_
+https://www.saylor.org/site/wp-content/uploads/2011/10/SAYLOR.ORG-CS402-CSMACOLLISIONAVOIDANCE.pdf
+https://www.slideshare.net/obonaventure/5-sharingapp
+http://www.opentextbooks.org.hk/ditatopic/3611
+https://mrncciew.com/2014/10/12/cwap-802-11-medium-contention/
+https://en.wikipedia.org/wiki/Extended_interframe_space
+https://www.hamilton.ie/publications/Thesis_tianji.pdf
+
+![image](https://user-images.githubusercontent.com/18554803/128551552-36c76210-30b6-45fd-9fef-f0cf68df3cb2.png)
+
 
 
 
