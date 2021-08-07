@@ -185,7 +185,7 @@ Se tutte le stazioni ritrasmettono nello stesso istante collidono immediatamente
 
 Il **tempo di Backoff** si calcola in **multipli interi** di uno **slot** che è uguale ad un **RTT** ```(slot = 1 RTT)``` secondo la formula 
 ```C++
-r = random(0, 2k – 1)*RTT```
+r = random(0, 2k – 1)*RTT
 ```
 - 1-ma collisione : aspetta da 0 a 1 slot
 - 2-da collisione : aspetta 0, 1,2 o 3 slots 
