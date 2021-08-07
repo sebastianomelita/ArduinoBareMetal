@@ -44,6 +44,8 @@ I messaggi arrivano ad ondate successive. Mentre si trasmette quella appena rice
 
 T è anche l’intervallo di tempo che intercorre tra slot dedicati alla trasmissione di messaggi della stessa sorgente
 
+### **Struttura**
+
 Il multiplatore è composto da:
 - Code di ingresso dove i messaggi delle varie sorgenti arrivano contemporaneamente
 - Un deviatore che commuta, quasi istantaneamente, da una sorgente all’altra
