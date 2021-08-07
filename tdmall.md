@@ -27,6 +27,8 @@ La multiplazione statica TDM di parecchie sorgenti richiede però che tutti i re
 
 Il nodo master stabilisce la composizione della "tavola rotonda" (cioè chi può trasmettere), in che ordine (cioè la scaletta degli interventi) e per quanto tempo deve durare un intervento. 
 
+## **Schema di principio**
+
 <img src="tdmfisso.png" alt="alt text" width="700">
 
 I messaggi arrivano simultaneamente ma su N porte di ingresso diverse (SDM) e si caricano sul buffer a valle di ciascuna dopo un tempo T.
@@ -41,6 +43,66 @@ Il tempo T viene detto tempo di trama o periodo:
 I messaggi arrivano ad ondate successive. Mentre si trasmette quella appena ricevuta si riceve la successiva. Il ritardo tra il momento della ricezione di un messaggio e quello della sua trasmissione è esattamente T.
 
 T è anche l’intervallo di tempo che intercorre tra slot dedicati alla trasmissione di messaggi della stessa sorgente
+
+Il multiplatore è composto da:
+- Code di ingresso dove i messaggi delle varie sorgenti arrivano contemporaneamente
+- Un deviatore che commuta, quasi istantaneamente, da una sorgente all’altra
+- Una porta di uscita su cui è collegato il canale da condividere tra le sorgenti
+
+Il processo di multiplazione è una conversione parallelo-seriale:
+- messaggi ricevuti in ugual tempo su porte diverse in ingresso diventano, in uscita,  messaggi trasmessi sulla stessa porta ma in tempi diversi detti slot.
+- I messaggi di sorgenti diverse vengono ripartiti, in successione, sugli slot seguendo una turnazione delle sorgenti che si ripete uguale ogni N slot
+
+**Vincolo operativo:** nel tempo in cui arriva un messaggio in ingresso ne devono essere spediti N in uscita. Questo tempo si chiama periodo di frame.
+
+### **Caratteristiche del TDM statiche**
+
+I messaggi di comunicazioni diverse arrivano in ingresso tutte nello stesso tempo ma su porte diverse (SDM)
+I messaggi di comunicazioni diverse vengono trasmessi in uscita sulla stessa porta ma in tempi diversi (TDM)
+L’allocazione delle comunicazioni nel tempo è:
+- prestabilita e non cambia mai per tutta la durata della comunicazione (TDM statico). E’ prenotata in fase di setup della comunicazione.
+- periodica, si ripete dopo un tempo detto periodo di trama
+- esclusiva. Il canale è di una certa sorgente per tutto il tempo (slot) in cui è ad essa assegnato (tutta la durata della comunicazione), anche quando questa non trasmette.
+
+Il periodo della trama coincide col tempo di arrivo di un messaggio sulle porte di ingresso
+
+### **Identificazione della sorgente**
+
+Le risorse sono allocate on demand all’apertura della comunicazione (allocazione statica)
+
+L’allocazione effettuata in fase di setup crea l’associazione tra l’identificativo della sorgente col numero dello slot
+
+I messaggi sono identificati come appartenenti ad una certa sorgente implicitamente in base ad alla loro posizione all’interno della trama:
+- Ad esempio la sorgente A sarà sempre in posizione 1, la B in posizione 2, la C in posizione 3 e così via…
+
+I protocolli possono essere solamente di tipo connesso (connectionful) perchè deve esistere una fase di setup
+
+### **Ritardi**
+
+Completato l’arrivo sulle code di ingresso, i messaggi vengono trasmessi secondo un ordine prestabilito che si ripete periodicamente
+
+Il ritardo di trasmissione è fisso ed è pari al tempo di trama, cioè al periodo tra una trasmissione e l’altra dello stessa sorgente
+
+Ritardi si trasmissione fissi rendono la multiplazione statica adatta a quelle sorgenti che sono sensibili alle variazioni del tempo di consegna dei dati: audio, video, e multimediali in genere
+
+### **Inefficienza intrinseca**
+
+<img src="tdmineffi.png" alt="alt text" width="700">
+
+La sorgente B non sta trasmettendo, l’intervallo di trasmissione sul canale (slot) ad essa assegnato appare periodicamente vuoto e, per tutta la sua durata, la risorsa fisica (il canale) è di fatto inutilizzata. 
+
+### **TdM statico: riepilogo**
+
+i messaggi di piu’ utenti diversi condividono le stesse risorse trasmissive (multiplazione dei canali fisici) 
+La contesa per l’accesso al mezzo è risolta nel dominio del tempo  mediante allocazione statica (le risorse sono allocate all’inizio) in fase di setup della comunicazione.
+
+ogni pacchetto usa una frazione della capacità (banda) del canale (il canale è impegnato solo  in parte da una sorgente alla volta)
+I pacchetti hanno un ritardo di trasferimento fisso dipendente dal tempo di attesa in coda.
+
+L’utilizzo esclusivo del canale da parte di una sorgente è stabilito all’apertura della comunicazione, in fase di setup, e permane anche quando la sorgente non trasmette nulla 
+
+
+
 
 
 
