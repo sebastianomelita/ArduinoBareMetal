@@ -280,7 +280,6 @@ While (true)
 La funzione deliver() consegna la trama al livello superiore (ad un protocollo di livello superiore o alla applicazione)
 
 ### **Fasi CSMA/CA al ricevitore**
-**
 
 Una stazione ricevente:
 - Aspetta l’arrivo di una nuova trama
