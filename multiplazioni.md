@@ -26,9 +26,9 @@ Le proprietà fisiche del mezzo trasmissivo che possono essere suddivise sono: s
 
 Nell’**SDM** il canale viene utilizzato nelle stesse frequenze e nello stesso tempo ma in **spazi separati**, (ad esempio più fili all’interno dello stesso cavo o più celle radio con la stessa frequenza vengono usate nel medesimo istante in locazioni sufficientemente distanti da non interferirsi).
 
-Nel **FDM** il canale viene usato per tutto il tempo e per tutto lo spazio ma su **frequenze diverse**, quindi anche in questo caso senza interferenza (ad esempio telefonia ADSL, broadcast radio e TV).
+Nel **FDM** il canale viene usato nello stesso tempo e nello stesso spazio ma su **frequenze diverse**, quindi anche in questo caso senza interferenza (ad esempio telefonia ADSL, broadcast radio e TV).
 
-Nel **TDM** tutta la banda di frequenza viene usata in tutto lo spazio ma in **istanti diversi** quindi anche in questo caso senza interferenza (ad esempio telefonia fissa, telefonia GSM, TV digitale terrestre).
+Nel **TDM** tutta la banda di frequenza disponibile (la stessa per tutte le comunicazioni) viene usata in tutto lo spazio disponibile (lo stesso per tutte le comunicazioni) ma in **istanti diversi** quindi anche in questo caso senza interferenza (ad esempio telefonia fissa, telefonia GSM, TV digitale terrestre).
 
 Nel **CDM** i segnali occupano e condividono la stessa frequenza lo stesso spazio e lo stesso tempo, ma, nonostante di fatto **si interferiscano**, possono ancora essere **distinti in base alla potenza** grazie ad un **codice ortogonale univoco** che permette di **filtrare** una certa comunicazione.
 
