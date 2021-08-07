@@ -28,7 +28,7 @@ Nell’**SDM** il canale viene utilizzato nelle stesse frequenze e nello stesso 
 
 Nel **FDM** il canale viene usato nello stesso tempo e nello stesso spazio ma su **frequenze diverse**, quindi anche in questo caso senza interferenza (ad esempio telefonia ADSL, broadcast radio e TV).
 
-Nel **TDM** tutta la banda di frequenza disponibile (la stessa per tutte le comunicazioni) viene usata in tutto lo spazio disponibile (lo stesso per tutte le comunicazioni) ma in **istanti diversi** quindi anche in questo caso senza interferenza (ad esempio telefonia fissa, telefonia GSM, TV digitale terrestre).
+Nel **TDM** tutta la banda di frequenza disponibile (la stessa per tutte le comunicazioni) viene usata in tutto lo spazio disponibile (lo stesso per tutte le comunicazioni) ma in **istanti diversi** quindi anche in questo caso senza interferenza (ad esempio telefonia fissa, telefonia GSM, TV digitale terrestre). [Dettaglio TDM statico](tdmstatico.md) 
 
 Nel **CDM** i segnali occupano e condividono la stessa frequenza lo stesso spazio e lo stesso tempo, ma, nonostante di fatto **si interferiscano**, possono ancora essere **distinti in base alla potenza** grazie ad un **codice ortogonale univoco** che permette di **filtrare** una certa comunicazione.
 
