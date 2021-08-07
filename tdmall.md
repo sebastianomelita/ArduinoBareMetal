@@ -55,7 +55,7 @@ Il processo di multiplazione è una conversione parallelo-seriale:
 
 **Vincolo operativo:** nel tempo in cui arriva un messaggio in ingresso ne devono essere spediti N in uscita. Questo tempo si chiama periodo di frame.
 
-### **Caratteristiche del TDM statiche**
+### **Caratteristiche del TDM statico**
 
 I messaggi di comunicazioni diverse arrivano in ingresso tutte nello stesso tempo ma su porte diverse (SDM)
 I messaggi di comunicazioni diverse vengono trasmessi in uscita sulla stessa porta ma in tempi diversi (TDM)
