@@ -76,15 +76,15 @@ while(N <= max){
 
 ### **Ritardo di propagazione**
 
-Una stazione non può rilevare l’occupazione del BUS da parte di una stazione remota semplicemente ascoltando prima di trasmettere a causa di un fenomeno fisico detto ritardo di propagazione del segnale.
-Il ritardo di propagazione di un segnale è il tempo finito con cui esso viaggia da una parte all’altra di un mezzo trasmissivo ed è dovuto al fatto che esso si propaga nello spazio con una velocità finita:
-- Nel vuoto essa è pari alla velocità della luce cioè 300.000Km/sec
-- In un conduttore metallico ha un valore inferiore pari a circa 200.000Km/sec
+Una stazione non può rilevare l’occupazione del BUS da parte di una stazione remota semplicemente ascoltando prima di trasmettere a causa di un fenomeno fisico detto **ritardo di propagazione** del segnale.
+Il ritardo di propagazione di un segnale è il **tempo finito** con cui esso viaggia da una parte all’altra di un mezzo trasmissivo ed è dovuto al fatto che esso si propaga nello spazio con una **velocità finita**:
+- Nel **vuoto** essa è pari alla **velocità della luce** cioè **300.000Km/sec**
+- In un **conduttore metallico** ha un valore **inferiore** pari a circa **200.000Km/sec**
 
-se due stazioni A e B trasmettono in successione separate di un tempo Δt e il tempo di propagazione tra A a B è maggiore di Δt allora, ascoltando la portante, B sente il canale libero e inizia a trasmettere il suo messaggio mentre c’è quello di A che sta per arrivare.
+se due stazioni A e B trasmettonouna di seguito all'altra separate di un tempo Δt e il tempo di propagazione tra A a B è maggiore di Δt allora, ascoltando la portante, B sente il canale libero e inizia a trasmettere il suo messaggio mentre c’è quello di A che sta per arrivare.
 ciascuna stazione riterrà di essere l’unica a trasmettere sul canale fino a che la trama (corrotta dalla collisione) di A, che ha trasmesso prima, non arriverrà all’altra stazione B dopo il tempo di propagazione Δt corrispondente alla distanza tra A e B.
 
-La rilevazione reale, da parte di una stazione, di una collisione può avvenire solo dopo l’inizio della trasmissione (o durante o alla fine).
+La **rilevazione reale**, da parte di una stazione, di **una collisione** può avvenire solo **dopo l’inizio** della trasmissione (o **durante** o **alla fine**).
 Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segnale si propaga dall’una all’altra:   td = d/vP
 
 **BUS senza collisioni:**
@@ -99,14 +99,14 @@ Una stazione non può rilevare istantaneamente l’occupazione del BUS da parte 
 
 ### **Riassumendo ALOHA e CSMA**
 
-Similitudini:
+**Similitudini:**
 - Sia ALOHA che CSMA devono implementare un meccanismo di rilevazione della collisione basato su ack
 - Sia ALOHA che CSMA rilevano la collisione a seguito dell’evento mancata ricezione del messaggio di ack (allo scadere di un timeout). 
 
-Differenze:
-- ALOHA trasmette senza verificare se il canale è occupato o meno.
-- CSMA trasmette solo se “sente” il canale libero.
-- CSMA deve implementare un meccanismo di ascolto del canale prima della trasmissione (CCA: Clear Channel Assesment).
+**Differenze:**
+- ALOHA **trasmette senza verificare** se il canale è **occupato** o meno.
+- CSMA **trasmette solo se “sente”** il canale **libero**.
+- CSMA deve implementare un meccanismo di **ascolto** del canale **prima** della** trasmissione** (**CCA: Clear Channel Assesment**).
 
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
@@ -114,19 +114,19 @@ Differenze:
 
 ### **Fasi CSMA/CD basico**
 
-Significa Carrier Sensing Multiple Access Collision Detection cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione) e rilevazione della Collisione (durante la trasmissione).
+Significa **Carrier Sensing Multiple Access Collision Detection** cioè protocollo di Accesso Multiplo con **Ascolto della Portante** (**prima** della trasmissione) e **rilevazione della Collisione** (**durante** la trasmissione).
 
-Una stazione trasmittente:
-- al momento che ha una trama pronta, ascolta il canale prima di trasmettere per stabilire se esso è libero o meno.
+Una stazione **trasmittente**:
+- al momento che ha una trama pronta, **ascolta il canale prima** di trasmettere per stabilire se esso è libero o meno.
 - Appena essa rileva il canale libero invia immediatamente la trama ma ascolta anche durante la trasmissione.
-- L’ascolto durante la trasmissione serve a stabilire se sul canale è avvenuta o meno una collisione. 
-- Se non vengono rilevati echi di collisione allora la trasmissione è avvenuta con successo.
-- Altrimenti la stazione arresta la trasmissione corrente e ricomincia da zero la trasmissione della trama dopo un tempo casuale.
+- L’**ascolto durante la trasmissione** serve a stabilire se sul canale è avvenuta o meno una collisione. 
+- Se non vengono rilevati **echi di collisione** allora la trasmissione è avvenuta con successo.
+- Altrimenti la stazione arresta la trasmissione corrente e ricomincia da zero la trasmissione della trama dopo un **tempo casuale**.
 - Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
 
 ### **Protocollo CSMA/CD basico in pseudocodice**
 
-Soluzione di base per il TX
+Soluzione **di base** per il **TX**
 
 ```C++
 N=1;
@@ -151,39 +151,37 @@ while(N <= max){
 
 ### **Possiamo determinare tutte le collisioni?**
 
-- Se non si ascolta evidentemente no.
-- Ma si ascolta solo finchè si trasmette…
+- Se non si ascolta il canale evidentemente no.
+- Ma nel CSMA/CD si ascolta solo **finchè si trasmette**….
 
 <img src="nolisten.png" alt="alt text" width="700">
 
 ### **Soluzione: trasmissione abbastanza lunga**
 
-- Caso peggiore: il tramittente A è ad un capo e la collisione avviene all’altro capo quando trasmette pure B.
+- **Caso peggiore**: il tramittente A è ad un capo e la collisione avviene all’altro capo quando trasmette pure B.
 - Per ricevere l’eco della collisione A deve continuare ad ascoltare (cioè a trasmettere) finchè la trama corrotta non si propaga da B fino a lei.
 
 <img src="listen.png" alt="alt text" width="700">
 
 ### **Come rilevare tutte le collisioni?**
 
-Caso peggiore: il tramittente A è ad un capo e la collisione avviene all’altro capo quando trasmette pure B.
-
-Per ricevere l’eco della collisione A deve continuare ad ascoltare (cioè a trasmettere) finchè la trama corrotta non si propaga da B fino a lei.
-
 Il tempo di propagazione da A a B per 10Mb/sec è 25.6 µsec
-Il tempo di andata da A a B e poi di ritorno ad A è detto RTT (Round Trip Time) e alla velocità di 10Mb/sec è 51.2 µsec
+Il tempo **di andata** da A a B e poi **di ritorno** ad A è detto **RTT (Round Trip Time)** e alla velocità di 10Mb/sec è 51.2 µsec
 
-Soluzione  vincolo operativo: 
-- ogni stazione deve ascoltare (cioè trasmettere) per un tempo minimo pari a un RTT cioè 51.2 µsec
-- Se la velocità di trasmissione è fissa, la condizione sul tempo si traduce in una condizione sulla lunghezza minima della trama (nel caso di Ethernet 64 byte).
-- Cioè ogni stazione deve trasmettere trame lunghe almeno 64 byte
+**Prerequisito per rilevare tutte le collisioni**: 
+- ogni stazione **deve ascoltare (cioè trasmettere)** per un **tempo minimo** pari a **un RTT** cioè 51.2 µsec
+- Se la velocità di trasmissione è fissa, la **condizione sul tempo** si traduce in una **condizione sulla lunghezza minima** della trama (nel caso di Ethernet 64 byte).
+- Cioè ogni stazione deve trasmettere **trame lunghe almeno 64 byte**
 
 ### **Come reagire a fronte di una collisione?**
 
-Soluzione: Backoff esponenziale
-- È un tempo casuale
-- È calcolato in maniera indipendente l’una dall’altra da tutte le stazioni
-- Serve a determinare la stazione che deve trasmettere per prima minimizzando il rischio di trasmissioni contemporanee
-- È calcolato all’interno di un intervallo (finestra) di contesa
+Se tutte le stazioni ritrasmettono nello stesso istante collidono immediatamente
+
+**Soluzione**: **Backoff esponenziale**
+- È un **tempo casuale**
+- È calcolato in **maniera indipendente** l’una dall’altra da tutte le stazioni
+- Serve a determinare la stazione che deve **trasmettere per prima** minimizzando il rischio di **trasmissioni contemporanee**
+- È calcolato all’interno di un **intervallo (finestra) di contesa**
 
 Il tempo di Backoff si calcola in multipli interi di uno slot che è uguale ad un RTT (slot = 1 RTT) secondo la formula r = random(0, 2k – 1)*RTT
 - 1-ma collisione : aspetta da 0 a 1 slot
@@ -194,11 +192,11 @@ Il tempo di Backoff si calcola in multipli interi di uno slot che è uguale ad u
 
 La finestra di collisione o di contesa (contention Window o CW) è l’intervallo di valori all’interno del quale viene calcolato il tempo casuale di backoff
 
-La finestra di collisione è deterministica (cioè ha un valore non casuale) e può essere fissa o variabile, ad es: [0  2k – 1]è variabile e dipende dal numero k di tentativi andati a vuoto.
+La finestra di collisione è **deterministica** (cioè ha un valore non casuale) e può essere fissa o variabile, ad es: [0  2k – 1]è variabile e dipende dal **numero k di tentativi andati a vuoto**.
 
-Una finestra di collisione grande minimizza la probabilità di una collisione ma aumenta il ritardo medio prima della trasmissione che, a sua volta, diminuisce la velocità media di trasmissione.
+Una finestra di collisione **grande** minimizza la **probabilità** di una collisione ma aumenta il **ritardo medio** prima della trasmissione che, a sua volta, diminuisce la **velocità media** di trasmissione.
 
-Una finestra di collisione variabile realizza un buon compromesso tecnico: quando non ci sono collisioni è piccola e il ritardo è minimo, in presenza di collisioni essa si allarga gradatamente per diminuirne la probabilità ad ogni successivo tentativo.
+Una finestra di collisione **variabile** realizza un buon compromesso tecnico: quando **non ci sono collisioni** è piccola e il ritardo è minimo, in presenza di collisioni essa si **allarga gradatamente** per diminuirne la probabilità ad ogni successivo tentativo.
 
 Il tempo di backoff è un numero casuale calcolato tra un valore minimo ed un valore massimo che  rappresentano la finestra di collisione.
 Nel caso del CSMA/CD:
@@ -232,9 +230,9 @@ while(N<= max){
 
 ### **Fasi CSMA/CD completo**
 
-Le altre stazioni, quando ricevono la sequenza di jamming, sono avvisate della avvenuta collisione e:
-- Se ricevevano, scaricano dal buffer di ricezione quanto ricevuto fino a quell momento
-- Se trasmettevano, arrestano immediatamente la trasmissione e fanno partire l’algoritmo di backoff che stabilisce il ritardo casuale prima della ritrasmissione del messaggio interrotto.
+Le altre stazioni, quando ricevono la **sequenza di jamming**, sono **avvisate** della avvenuta collisione e:
+- Se **ricevevano**, **scaricano dal buffer** di ricezione quanto ricevuto fino a quell momento
+- Se **trasmettevano**, **arrestano immediatamente la trasmissione** e fanno partire l’**algoritmo di backoff** che stabilisce il ritardo casuale prima della ritrasmissione del messaggio interrotto.
 
 <img src="csmacdflow2.png" alt="alt text" width="350">
 
@@ -244,22 +242,23 @@ Similitudini:
 - CSMA e CSMA/CD devono implementare un meccanismo di ascolto del canale prima della trasmissione per stabilire se esso è libero o meno. 
 
 Differenze:
-- il CSMA rileva la collisione indirettamente dopo la trasmissione in fase di ricezione, a seguito del mancato arrivo del messaggio di ack (allo scadere di un timeout), Si tratta di una tecnica SW. Trasmissione e ricezione non devono essere contemporanee.
+- il CSMA **rileva la collisione indirettamente** dopo la trasmissione **in fase di ricezione**, a seguito del **mancato arrivo del messaggio di ack** (allo scadere di un timeout), Si tratta di una tecnica SW. Trasmissione e ricezione non devono essere contemporanee.
 - Il CSMA/CD durante la trasmissione mantiene attiva anche la funzione di  ricezione che può rilevare una collisione perchè:
-- Il segnale “ascoltato” durante la trasmissione ha una potenza più elevata di quello effettivamente trasmesso. É una tecnica HW.
-- Il segnale “ascoltato” e decodificato durante la trasmissione ha un valore in bit diverso da quello trasmesso. É una tecnica SW.
+    - Il segnale “ascoltato” durante la trasmissione ha una potenza più elevata di quello effettivamente trasmesso. É una **tecnica HW**.
+    - Il segnale “ascoltato” e decodificato durante la trasmissione ha un valore in bit diverso da quello trasmesso. É una **tecnica SW**.
 
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
->
+
 ## **CSMA/CA**
 
-Non è possibile sempre rilevare le collisioni durante la trasmissione (mezzo radio)
+Non è possibile sempre rilevare le collisioni **durante la trasmissione (mezzo radio)**
 
-Miglioramento del CSMA grazie all’introduzione degli IFS (interframe space):
-- Ritardo iniziale di trasmissione (EIFS) 
-- Short Inter Frame Space (SIFS): ritardo tra una trama e l’invio del suo ack. È il tempo minimo per consentire ai dispositivi HW di commutare dallo stato di ricezione a qello di trasmissione.
-- Distributed Inter Frame Space (DIFS): ritardo minimo tra due trame successive in trasmissione. DIFS =  SIFS  + (2 * Slot time). Serve a proteggere la trasmissione di un ack da eventuali  collisioni
- SlotTime = CCATime + RxTxTurnaroundTime + AirPropagationTime+ MACProcessingDelay è il tempo per percorrere il tragitto tra due stazioni poste agli estremi più remoti della cella radio.
+Miglioramento del CSMA grazie all’introduzione degli **IFS (interframe space)**:
+- Ritardo iniziale di trasmissione (**EIFS**) 
+- Short Inter Frame Space (**SIFS**): ritardo tra una trama e l’invio del suo ack. È il tempo minimo per consentire ai dispositivi HW di commutare dallo stato di ricezione a qello di trasmissione.
+- Distributed Inter Frame Space (**DIFS**): **ritardo minimo tra due trame successive** in trasmissione. ```DIFS =  SIFS  + (2 * Slot time)```. Serve a proteggere la trasmissione di un ack da eventuali  collisioni
+- ```SlotTime = CCATime + RxTxTurnaroundTime + AirPropagationTime+ MACProcessingDelay``` 
+ è il tempo per percorrere il tragitto tra due stazioni poste agli estremi più remoti della cella radio.
 
 Vale la disuguaglianza:   
 ```C++
@@ -281,13 +280,13 @@ La funzione deliver() consegna la trama al livello superiore (ad un protocollo d
 
 ### **Fasi CSMA/CA al ricevitore**
 
-Una stazione ricevente:
-- Aspetta l’arrivo di una nuova trama
-- Controlla se è una trama duplicate, cioè gia ricevuta
-- Controlla il CRC della trama per verificare se è stata ricevuta correttamente
-se non lo è la consegna al livello superiore
-- Aspetta un SIFS
-- Invia una trama di ack
+Una **stazione ricevente**:
+1. Aspetta l’arrivo di una nuova trama
+2. Controlla se è una trama duplicate, cioè gia ricevuta
+3. Controlla il **CRC della trama** per verificare se è stata **ricevuta correttamente**
+se non lo è la consegna al livello superiore e **non esegue** i passi successivi
+4. Aspetta un SIFS
+5. Invia una trama di ack
 
 ### **Protocollo CSMA/CA sul trasmettitore in pseudocodice**
 ```C++
@@ -314,14 +313,13 @@ while(N <= max){
 ```
 ### **Fasi CSMA/CA al trasmettitore senza backoff**
 
-Una stazione trasmittente:
+Una **stazione trasmittente**:
 - Se la trama precedentemente ricevuta era corrotta prima di trasmettere, aspetta un tempo EIFS 
-- Altrimenti se la stazione sente il canale occupato aspetta finchè è libero, da quel momento in poi, aspetta un tempo DIFS 
+- Altrimenti se la stazione sente il canale occupato aspetta **finchè è libero**, da quel momento in poi, **aspetta un tempo DIFS** 
 - Trascorso il DIFS invia immediatamente la trama
-- Aspetta l’arrivo di un ack, se non arriva in tempo, allo scadere di un timeout, avvia la ritrasmissione della stessa trama.
+- Aspetta l’**arrivo di un ack**, se non arriva in tempo, allo s**cadere di un timeout**, avvia la **ritrasmissione** della stessa trama.
 
-
-Anche se C, sfortunatamente, valutasse il canale libero ascoltandolo durante il SIFS di B poichè DIFS>SIFS accadrebbe che C ritroverebbe il canale occupato durante la seguente trasmissione dell’ack di B e quindi si :
+Anche se C, sfortunatamente, valutasse il canale libero ascoltandolo durante il SIFS di B poichè DIFS>SIFS accadrebbe che C ritroverebbe il canale occupato durante la seguente trasmissione dell’ack di B e quindi si **fermerebbe**:
 
 <img src="esempio.png" alt="alt # **text" width="800">
 
@@ -329,7 +327,7 @@ Anche se C, sfortunatamente, valutasse il canale libero ascoltandolo durante il 
 
 È il tempo che aspettano tutte le stazioni per trasmettere a partire dalla fine dell’ultima trasmissione valida (invio ack messaggio precedente)
 
-Serve a proteggere la trasmissione di un ack da eventuali  collisioni, è sempre:       
+Serve a **proteggere** la **trasmissione di un ack** da eventuali  **collisioni**, è sempre:       
 ```C++
 DIFS =  SIFS  + (2 * Slot time) 
 ```
@@ -338,7 +336,7 @@ DIFS =  SIFS  + (2 * Slot time)
 - Il DIFS dura quanto basta affinchè una qualunque stazione si possa accorgere che il canale è occupato a seguito della trasmissione di un ack
 - Viene calcolato nel caso peggiore possibile (2 * Slot time ), cioè ipotizzando che la le stazioni interessate siano poste agli estremi più distanti della cella radio.
 
-Nel grafico, DATA e ACK sono tempi di trasmissione (non di propagazione)
+Nel grafico, DATA e ACK sono **tempi di trasmissione** (non di propagazione)
 
 Durante il tempo di attesa DIFS l’ack ha il tempo di propagarsi fino alla stazione più remota senza essere disturbato da altre trasmissioni
 
@@ -360,11 +358,11 @@ Se due stazioni, dopo averlo ascoltato, trovano il canale libero potrebbero iniz
 Ciò causa una collisione che determina la ricezione di trame corrotte da parte delle stazioni destinatarie che, a sua volta, causa il mancato invio di un ack alle stazioni trasmittenti che avviano, appena possono, la ritrasmissione
 
 La ritrasmissione avviene dopo uno stesso ritardo DIFS dal momento in cui entrambe le stazioni sentono il canale libero
-Ciò determina una nuova trasmissione simultanea delle due stazioni e quindi una nuova collisione
+Ciò determina una nuova trasmissione simultanea delle due stazioni e quindi una nuova collisione.
 
 <img src="collisionicsma.png" alt="alt # **text" width="800">
 
-La soluzione è ritrasmettere sempre dopo un tempo casuale (backoff) all’interno di una finestra di contesa
+La **soluzione** è ritrasmettere sempre dopo un **tempo casuale (backoff)** all’interno di una **finestra di contesa**
 
 <img src="backoff.png" alt="alt # **text" width="800">
 
@@ -400,8 +398,8 @@ while(N <= max){
 ### **Finestra di contesa variabile**
 
 Se accade una collisione durante il backoff spesso ciò significa che due stazioni hanno scelto lo stesso slot nella finestra di backoff.
-Ad ogni collisione,  prima di ritentare la trasmissione, la stazione raddoppia la dimensione della finestra di backoff CW (Content Window o finestra di contesa).
-Lo scopo di tale raddoppio è quello di adattare la dimensione della finestra al numero di contendenti, in considerazione del fatto che le collisioni sono indice di “affollamento”.
+Ad ogni collisione, prima di ritentare la trasmissione, la stazione **raddoppia la dimensione** della finestra di backoff CW (Content Window o finestra di contesa).
+Lo scopo di tale raddoppio è quello di **adattare** la dimensione della finestra al **numero di contendenti**, in considerazione del fatto che le **collisioni** sono **indice di “affollamento”**.
 
 <img src="finestra.png" alt="alt # **text" width="600">
 
@@ -425,6 +423,7 @@ Un accesso senza contesa non vuol dire un accesso senza collisioni, queste sono 
 - Le stazioni A e C non sono visibili una all’altra per cui l’ascolto del canale non è in grado di rilevare se una di loro ha occupato il canale prima dell’altra. 
 - Se entrambe devono trasmettere a B, sia A che C sentiranno il canale libero e inizieranno la trasmissione delle rispettive trame. 
 - B riceverà i messaggi provenienti da entrambe le stazioni che, a seguito della collisione, saranno inintelleggibili.
+- 
 <img src="hidden.png" alt="alt # **text" width="600">
 
 **Soluzione:**
@@ -440,9 +439,9 @@ La stazione B è visibile da tutti per cui sia dalla stazione A che ha prenotato
 
 ### **CCA Reale e CCA Virtuale**
 
-CCA Reale: è il Clear Channel Assesment realizzato mediante l’ascolto effettivo del canale fisico prima della trasmissione. Presuppone che la stazione sia in stato di ricezione e che un dispositivo a soglia sia pronto a rilevare eventuale energia trasmessa da altre stazioni. 
+**CCA Reale:** è il Clear Channel Assesment realizzato mediante l’ascolto effettivo del canale fisico prima della trasmissione. Presuppone che la stazione sia in stato di ricezione e che un dispositivo a soglia sia pronto a rilevare eventuale energia trasmessa da altre stazioni. 
 
-CCA Virtuale: il Clear Channel Assesment virtuale è invece realizzato mediante l’osservazione della variabile di conteggio NAV. Il NAV è decrementato ad intervalli di tempo fissi e in ciascuno di essi può accadere:
+**CCA Virtuale: il Clear Channel Assesment virtuale** è invece realizzato mediante l’osservazione della variabile di conteggio NAV. Il NAV è decrementato ad intervalli di tempo fissi e in ciascuno di essi può accadere:
 - Il NAV > 0 allora il canale virtuale è considerato occupato
 - Il NAV = 0 allora il canale virtuale è considerato libero
 
