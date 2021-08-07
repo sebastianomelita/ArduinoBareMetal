@@ -91,7 +91,7 @@ Ritardi si trasmissione fissi rendono la multiplazione statica adatta a quelle s
 
 La sorgente B non sta trasmettendo, l’intervallo di trasmissione sul canale (slot) ad essa assegnato appare periodicamente vuoto e, per tutta la sua durata, la risorsa fisica (il canale) è di fatto inutilizzata. 
 
-### **TdM statico: riepilogo**
+### **TDM statico: riepilogo**
 
 i messaggi di piu’ utenti diversi condividono le stesse risorse trasmissive (multiplazione dei canali fisici) 
 La contesa per l’accesso al mezzo è risolta nel dominio del tempo  mediante allocazione statica (le risorse sono allocate all’inizio) in fase di setup della comunicazione.
