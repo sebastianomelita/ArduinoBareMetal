@@ -183,7 +183,10 @@ Se tutte le stazioni ritrasmettono nello stesso istante collidono immediatamente
 - Serve a determinare la stazione che deve **trasmettere per prima** minimizzando il rischio di **trasmissioni contemporanee**
 - È calcolato all’interno di un **intervallo (finestra) di contesa**
 
-Il **tempo di Backoff** si calcola in **multipli interi** di uno **slot** che è uguale ad un **RTT** ```(slot = 1 RTT)``` secondo la formula ```r = random(0, 2k – 1)*RTT```
+Il **tempo di Backoff** si calcola in **multipli interi** di uno **slot** che è uguale ad un **RTT** ```(slot = 1 RTT)``` secondo la formula 
+```C++
+r = random(0, 2k – 1)*RTT```
+```
 - 1-ma collisione : aspetta da 0 a 1 slot
 - 2-da collisione : aspetta 0, 1,2 o 3 slots 
 - i-esima collisione : aspetta 0..2i-1 slots 
