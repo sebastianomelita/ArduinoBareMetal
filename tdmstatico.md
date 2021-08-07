@@ -1,4 +1,4 @@
-
+>[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
 **Metafora 1**
 
@@ -105,7 +105,7 @@ L’utilizzo esclusivo del canale da parte di una sorgente è stabilito all’ap
 
 
 
-
+>[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
 
 
