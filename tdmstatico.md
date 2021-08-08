@@ -1,5 +1,8 @@
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
+
+## **Metafore**
+
 **Metafora 1**
 
 Nella **metafora** parlare significa trasmettere sul canale, un **una famiglia** è una sorgente, **una anno** è una istanza della trama nel tempo, **la vacanza** è un messaggio, la **casa** in città è la coda di ingresso, la **casa vacanze** è il canale. 
