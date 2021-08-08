@@ -90,9 +90,9 @@ I protocolli possono essere solamente di tipo connesso (connectionful) perchè d
 
 Completato l’arrivo sulle code di ingresso, i messaggi vengono trasmessi secondo un ordine prestabilito che si ripete periodicamente
 
-Il ritardo di trasmissione è fisso ed è pari al tempo di trama, cioè al periodo tra una trasmissione e l’altra dello stessa sorgente
+Il **ritardo** di trasmissione **è fisso** ed è pari al **tempo di trama**, cioè al periodo tra una trasmissione e l’altra dello stessa sorgente.
 
-Ritardi si trasmissione fissi rendono la multiplazione statica adatta a quelle sorgenti che sono sensibili alle variazioni del tempo di consegna dei dati: audio, video, e multimediali in genere
+Ritardi si trasmissione fissi rendono la multiplazione statica adatta a quelle sorgenti che sono **sensibili alle variazioni** del **tempo di consegna** dei dati: audio, video, e sorgenti multimediali in genere.
 
 ### **Inefficienza intrinseca**
 
@@ -102,13 +102,13 @@ La sorgente B non sta trasmettendo, l’intervallo di trasmissione sul canale (s
 
 ### **TDM statico: riepilogo**
 
-i messaggi di piu’ utenti diversi condividono le stesse risorse trasmissive (multiplazione dei canali fisici) 
-La contesa per l’accesso al mezzo è risolta nel dominio del tempo  mediante allocazione statica (le risorse sono allocate all’inizio) in fase di setup della comunicazione.
+i messaggi di piu’ utenti diversi **condividono** le stesse risorse trasmissive (multiplazione dei **canali fisici**) 
+La **contesa per l’accesso** al mezzo è risolta nel **dominio del temp****o  mediante **allocazione statica** (le risorse sono allocate all’inizio) in fase di setup della comunicazione.
 
-ogni pacchetto usa una frazione della capacità (banda) del canale (il canale è impegnato solo  in parte da una sorgente alla volta)
-I pacchetti hanno un ritardo di trasferimento fisso dipendente dal tempo di attesa in coda.
+Ogni pacchetto usa una **frazione della capacità** (banda) del canale (il canale è impegnato solo  in parte da una sorgente alla volta)
+I pacchetti hanno un **ritardo** di trasferimento **fisso** dipendente dal **tempo di trama**.
 
-L’utilizzo esclusivo del canale da parte di una sorgente è stabilito all’apertura della comunicazione, in fase di setup, e permane anche quando la sorgente non trasmette nulla 
+Il **periodo di utilizzo esclusivo** del canale da parte di una sorgente (**slot**) è stabilito all’apertura della comunicazione, in fase di setup, e **permane** anche quando la sorgente non **trasmette nulla** (inefficienza intrinseca). 
 
 
 
