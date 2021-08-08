@@ -44,9 +44,9 @@ Il tempo T viene detto tempo di trama o periodo:
 - Ogni slot ha la durata di T/N ed è assegnato sempre alla stessa sorgente che lo ha prenotato in fase di setup del canale.
 - La trama si ripete all’infinito sempre con lo stesso ordine di trasmissione delle sorgenti e con ugual durata T.
 
-I messaggi arrivano ad ondate successive. Mentre si trasmette quella appena ricevuta si riceve la successiva. Il ritardo tra il momento della ricezione di un messaggio e quello della sua trasmissione è esattamente T.
+I messaggi **arriva** ad **ondate successive** assimilabilia a **round periodici**. Mentre si **trasmette** quella appena **ricevuta** si **riceve** la **successiva**. Il **ritardo** tra il momento della ricezione di un messaggio e quello della sua trasmissione è esattamente **T**.
 
-T è anche l’intervallo di tempo che intercorre tra slot dedicati alla trasmissione di messaggi della stessa sorgente
+**T** è anche l’intervallo di tempo che intercorre tra **slot allocati** alla **stessa sorgente** cioè slot consecutivi in cui si trasmettono i messaggi di una stessa sorgente.
 
 ### **Struttura**
 
