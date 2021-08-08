@@ -70,7 +70,7 @@ Talvolta il livello applicativo dello stesso stack di protocolli è non compatib
   - **Interrogazione periodica** (polling) dei dispositivi (master di una architettura master/slave)
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un secondo momento al server di gestione
     
-## **Server di gestione dei servizi**
+## **Server applicativo**
 
 In genere è localizzato all'interno della **rete principale** con una collocazione **on-premise** all'interno del sistema.
 
