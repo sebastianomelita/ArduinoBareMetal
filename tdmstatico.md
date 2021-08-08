@@ -81,7 +81,7 @@ Le risorse sono allocate on demand all’apertura della comunicazione (allocazio
 
 L’allocazione effettuata in fase di setup crea l’associazione tra l’identificativo della sorgente col numero dello slot
 
-I messaggi sono identificati come appartenenti ad una certa sorgente **implicitamente**, in base ad alla **loro posizione** all’interno della trama:
+I messaggi sono **identificati** come appartenenti ad una certa sorgente **implicitamente**, in base ad alla **loro posizione** all’interno della trama:
 - Ad esempio la sorgente A sarà sempre in posizione 1, la B in posizione 2, la C in posizione 3 e così via…
 
 I protocolli possono essere solamente di tipo connesso (connectionful) perchè deve esistere una fase di setup
