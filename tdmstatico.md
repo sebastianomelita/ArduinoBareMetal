@@ -5,7 +5,7 @@
 
 **Metafora 1**
 
-Nella **metafora** parlare significa trasmettere sul canale, un **una famiglia** è una sorgente, **una anno** è una istanza della trama nel tempo, **la vacanza** è un messaggio, la **casa** in città è la coda di ingresso, la **casa vacanze** è il canale. 
+Nella **metafora** **parlare** significa trasmettere sul canale, un **una famiglia** è una sorgente, **una anno** è una istanza della trama nel tempo, **la vacanza** è un messaggio, la **casa** in città è la coda di ingresso, la **casa vacanze** è il canale. 
 
 Una casa vacanze in un luogo di villeggiatura esclusivo, molto ambito e caldo per 365 giorni l’anno è particolarmente costosa ed è mediamente utilizzata per una sola settimana.
 Si decide di abbattere i costi di acquisto offrendola in multiproprietà, forma di acquisto che ne consente un utilizzo efficiente per tutto l’anno.
