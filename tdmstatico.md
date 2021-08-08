@@ -102,8 +102,8 @@ La sorgente B non sta trasmettendo, l’intervallo di trasmissione sul canale (s
 
 ### **TDM statico: riepilogo**
 
-i messaggi di piu’ utenti diversi **condividono** le stesse risorse trasmissive (multiplazione dei **canali fisici**) 
-La **contesa per l’accesso** al mezzo è risolta nel **dominio del temp****o  mediante **allocazione statica** (le risorse sono allocate all’inizio) in fase di setup della comunicazione.
+I messaggi di piu’ utenti diversi **condividono** le stesse risorse trasmissive (multiplazione dei **canali fisici**) 
+La **contesa per l’accesso** al mezzo è risolta nel **dominio del temp**o  mediante **allocazione statica** (le risorse sono allocate all’inizio) in fase di setup della comunicazione.
 
 Ogni pacchetto usa una **frazione della capacità** (banda) del canale (il canale è impegnato solo  in parte da una sorgente alla volta)
 I pacchetti hanno un **ritardo** di trasferimento **fisso** dipendente dal **tempo di trama**.
