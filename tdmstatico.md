@@ -66,14 +66,15 @@ Il processo di multiplazione è una conversione parallelo-seriale:
 
 ### **Caratteristiche del TDM statico**
 
-I messaggi di comunicazioni diverse arrivano in ingresso tutte nello stesso tempo ma su porte diverse (SDM)
-I messaggi di comunicazioni diverse vengono trasmessi in uscita sulla stessa porta ma in tempi diversi (TDM)
-L’allocazione delle comunicazioni nel tempo è:
-- prestabilita e non cambia mai per tutta la durata della comunicazione (TDM statico). E’ prenotata in fase di setup della comunicazione.
-- periodica, si ripete dopo un tempo detto periodo di trama
-- esclusiva. Il canale è di una certa sorgente per tutto il tempo (slot) in cui è ad essa assegnato (tutta la durata della comunicazione), anche quando questa non trasmette.
+I messaggi di comunicazioni diverse arrivano in ingresso tutte nello stesso tempo ma su porte diverse (SDM).
+I messaggi di comunicazioni diverse vengono trasmessi in uscita sulla stessa porta ma in tempi diversi (TDM).
 
-Il periodo della trama coincide col tempo di arrivo di un messaggio sulle porte di ingresso
+L’**allocazione** delle comunicazioni nel tempo è:
+- **prestabilita** e **non cambia** mai per tutta la **durata della comunicazione** (TDM statico). E’ **prenotata** in **fase di setup** della comunicazione.
+- **periodica**, si ripete dopo un tempo detto **periodo di trama**
+- **esclusiva**. Il **canale** è di **una sola** sorgente per tutto il tempo (**slot**) in cui è ad essa assegnato (tutta la durata della comunicazione), anche quando questa **non trasmette**.
+
+Il **periodo** della trama coincide col tempo di **arrivo previsto** di un messaggio sulle **porte di ingresso**.
 
 ### **Identificazione della sorgente**
 
