@@ -1,4 +1,6 @@
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
 
+# **SCHEDULAZIONE CON I TIMERS**
 
 #include <Ticker.h>
  
@@ -25,3 +27,6 @@ void setup() {
 }
  
 void loop() {}
+
+
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
