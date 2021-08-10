@@ -4,6 +4,8 @@
 
 La libreria Ticker è un wrapper (involucro) di un'API del framework che si interfaccia direttamente con l'HW. Si adopera con gli stessi metodi su due piattaforme molto diverse (ESP8266 e ESP32) ma entrambe dotate di interfaccia WiFi. Il FW di bordo nel caso di ESP8266 è LWIP ed è essenzialmente uno stack TCP/IP minimale per sistemi embedded. Il FW in uso su ESP32 si chiama IDF. Entrambi forniscono librerie di timer SW. Nel caso di esp8266 si chiama os_timer, nel caso di esp32 il nome della libreria è esp_timer.
 
+La logica di utilizzo è simile a quella di una usuale ISR. Un funzione di callback viene associata ad un evento di un timer tramite un metodo **attach**. La dissociazione si fa con il metodo contrario **detach()**. Gli eventi possibili sono una chiamata una tantum (**one shot** o timer monostabile) o una chiamata **periodica** o timer bistabile. Nella definizione dell'attach() viene anche impostato il **tempo di scadenza** del timer. 
+
 ```C++
 #include <Ticker.h>
  
