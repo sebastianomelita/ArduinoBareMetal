@@ -1,6 +1,6 @@
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
->
+
 # **SCHEDULAZIONE CON I PROTOTHREAD**
 
 I protothread sono un tipo di thread leggeri senza stack progettati per sistemi con vincoli di memoria severi come sottosistemi embedded o
