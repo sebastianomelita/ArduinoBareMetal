@@ -5,3 +5,4 @@
 3. [Schedulatore di compiti basato sui time tick](tasksched.md)
 5. [Schedulatore di compiti basato sui thread](threadsched.md)
 6. [Schedulatore di compiti basato sui protothread](protothreadsched.md)
+7. [Schedulatore di compiti basato su timers](timersched.md)
