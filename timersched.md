@@ -2,6 +2,7 @@
 
 # **SCHEDULAZIONE CON I TIMERS**
 
+```C++
 #include <Ticker.h>
  
 Ticker periodicTicker;
@@ -27,6 +28,6 @@ void setup() {
 }
  
 void loop() {}
-
+```
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
