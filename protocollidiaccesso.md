@@ -425,7 +425,7 @@ Un accesso senza contesa non vuol dire un accesso senza collisioni, queste sono 
 - Le stazioni A e C non sono visibili una all’altra per cui l’ascolto del canale non è in grado di rilevare se una di loro ha occupato il canale prima dell’altra. 
 - Se entrambe devono trasmettere a B, sia A che C sentiranno il canale libero e inizieranno la trasmissione delle rispettive trame. 
 - B riceverà i messaggi provenienti da entrambe le stazioni che, a seguito della collisione, saranno inintelleggibili.
-- 
+
 <img src="hidden.png" alt="alt # **text" width="600">
 
 **Soluzione:**
