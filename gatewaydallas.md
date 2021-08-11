@@ -1,8 +1,9 @@
 
 >[Torna a gateway BUS](gateway.md)
 
-```C++
+## **Gateway per BUS Dallas (OneWire)**
 
+```C++
 #include <WiFi.h>
 #include <AsyncMqttClient.h>
 #include <OneWire.h>
