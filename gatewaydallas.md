@@ -1,6 +1,5 @@
 
-gateway.md
-
+>[Torna a gateway BUS](gateway.md)
 
 #include <WiFi.h>
 #include <AsyncMqttClient.h>
@@ -131,3 +130,5 @@ void loop() {
     Serial.printf("Messaggio: %.2f /n", sensors.getTempCByIndex(0));
   }
 }
+
+>[Torna a gateway BUS](gateway.md)
