@@ -9,8 +9,8 @@
 #include <DallasTemperature.h>
 #include <Ticker.h>
 
-#define WIFI_SSID "casafleri"
-#define WIFI_PASSWORD "fabseb050770250368120110$"
+#define WIFI_SSID "ssid"
+#define WIFI_PASSWORD "password"
 
 Ticker mqttReconnectTimer;
 Ticker wifiReconnectTimer;
