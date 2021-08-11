@@ -106,7 +106,7 @@ void setup() {
   count = 0;
   while (WiFi.status() != WL_CONNECTED && count < 10) {
     delay(500);
-	count++;
+    count++;
     Serial.print(".");
   }
 }
