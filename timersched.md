@@ -10,12 +10,12 @@ Rispetto agli altri metodi di creazione di base dei tempi (polling della millis(
 
 La **logica di utilizzo** è simile a quella di una **usuale ISR**. Una **funzione di callback** viene associata ad un evento di un timer tramite un metodo **attach()**. La dissociazione si fa con il metodo contrario **detach()**. Gli **eventi possibili** sono una chiamata una tantum (**one shot** o timer monostabile) o una chiamata **periodica** o timer bistabile. Nella definizione dell'attach() viene anche impostato il **tempo di scadenza** del timer. 
 
-Ad esempio:
+Esempio delle due modalità:
 ```C++
 periodicTicker.attach_ms(5000, periodicPrint);
-onceTicker.attach_ms(5000, oncePrint);
+onceTicker.once_ms(5000, oncePrint);
 ```
-
+Esempio completo:
 ```C++
 #include <Ticker.h>
  
