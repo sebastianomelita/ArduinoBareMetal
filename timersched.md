@@ -1,6 +1,6 @@
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
 
-# **SCHEDULAZIONE CON I TIMERS**
+# **SCHEDULAZIONE CON I TIMERS HW**
 
 La **libreria Ticker** è un **wrapper (involucro)** di un'**API** del framework che si **interfaccia direttamente** con l'**HW**. Si adopera con gli **stessi metodi** su due piattaforme molto diverse (**ESP8266** e **ESP32**) ma entrambe dotate di interfaccia WiFi. Il FW di bordo nel caso di ESP8266 è LWIP ed è essenzialmente uno stack TCP/IP minimale per sistemi embedded. Il FW in uso su ESP32 si chiama IDF. Entrambi forniscono librerie per la gestione di timer HW. Nel caso di **ESP8266** si chiama **os_timer**, nel caso di **ESP32** il nome della libreria è **esp_timer**. 
 
