@@ -1,6 +1,8 @@
 
 >[Torna a gateway BUS](gateway.md)
 
+```C++
+
 #include <WiFi.h>
 #include <AsyncMqttClient.h>
 #include <OneWire.h>
@@ -130,5 +132,6 @@ void loop() {
     Serial.printf("Messaggio: %.2f /n", sensors.getTempCByIndex(0));
   }
 }
+```
 
 >[Torna a gateway BUS](gateway.md)
