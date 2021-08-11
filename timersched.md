@@ -13,7 +13,7 @@ La **logica di utilizzo** è simile a quella di una **usuale ISR**. Una **funzio
 Ad esempio:
 ```C++
 periodicTicker.attach_ms(5000, periodicPrint);
-onceTicker.attach_ms(5000, oncePrint, maxExecutionsCount);
+onceTicker.attach_ms(5000, oncePrint);
 ```
 
 ```C++
