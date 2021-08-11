@@ -369,10 +369,9 @@ La **soluzione** è ritrasmettere sempre dopo un **tempo casuale (backoff)** all
 
 <img src="backoff.png" alt="alt # **text" width="800">
 
-```C++
-
 **Pseudocodice protocollo CSMA/CA sul trasmettitore con backoff:**
 
+```C++
 N=1;
 while(N <= max){
 	waitUntil(channelFree());
