@@ -3,6 +3,10 @@
 
 ## **Gateway per BUS Dallas (OneWire)**
 
+Il sensore di temperatura **DS18B20**:
+
+<img src="DS18B20-tempeature-sensor-pinout.jpg" alt="alt text" width="400">
+
 ### **Parasite mode**
 
 Il bus onewire teoricamente possiede **2 soli fili** (uno senza la massa):
@@ -19,6 +23,10 @@ In pratica è usuale anche un collegamento a **3 fili** (2 senza la massa):
 - un **positivo di alimentazione** che alimenta tutti i dispositivi. Questa modalità si chiama **normal mode**.
 
 <img src="ds18b20_esp32_single_normal.png" alt="alt text" width="500">
+
+Dal **punto di vista SW** sevono **due librerie** da scaricare dentro la solita cartella **libraries**:
+- **OneWire-master.zip** da scompattare e rinominare semplicemente **OneWire**. Per installare il protocollo standard OneWire.
+- **Arduino-Temperature-Control-Library-master** da scompattare e rinominare semplicemente **DallasTemperature** per installare il particolare protocollo applicativo di quella categoria di sensori di temperatura (**DS18B20**).
 
 ```C++
 #include <WiFi.h>
