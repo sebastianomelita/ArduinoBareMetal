@@ -30,6 +30,8 @@ Dal **punto di vista SW** sevono **due librerie** da scaricare dentro la solita 
 
 ### **Gateway OneWire-MQTT per la lettura di un solo sensore**
 
+La libreria MQTT è asincrona per cui non bloccante.
+
 Anche in questo caso sono possibili entrambi i collegamenti, **normal mode** e **parasite mode**. Di seguito è illustrato il **normal mode**:
 
 
