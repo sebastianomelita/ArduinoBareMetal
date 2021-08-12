@@ -188,10 +188,10 @@ void WiFiEvent(WiFiEvent_t event) {
 }
 
 void mqttConnTest() {
-	if (!mqttClient.connected() && WiFi.status() == WL_CONNECTED) {
-		Serial.print("MQTT lastError: ");
-		Serial.println(mqttClient.lastError());
-		connectToMqtt();
+    if (!mqttClient.connected() && WiFi.status() == WL_CONNECTED) {
+	Serial.print("MQTT lastError: ");
+	Serial.println(mqttClient.lastError());
+	connectToMqtt();
     }
 }
 
