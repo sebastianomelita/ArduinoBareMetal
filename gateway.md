@@ -9,6 +9,16 @@
 ### **Client MQTT per ESP32 con metodo di connessione bloccante**
 Utilizza la libreria **arduino-mqtt** scaricabille da https://github.com/256dpi/arduino-mqtt e adatta sia per esp8266 che per esp32. Ha la particolarità (comune a quasi tutte le librerie MQTT) di avere la **funzione di connessione bloccante**, per cui, se il server è momentaneamente indisponibile, il client rimane fermo sulla funzione di connessione senza ritornare. Scaduto un **timeout** la connect() **ritorna** permettendo al task che la contiene di continuare l'esecuzione. Nell'esempio seguente la connect() è dentro la callback di un timer HW ed è attivarta da una ISR associata ad un interrupt. Le ISR, per definizione, dovrebbero essere non bloccanti perchè spesso non sono interrompibili. **Bloccare una ISR** collegata ad **eventi core** della macchina può causare **instabilità** che determinano il **reset** del sistema.
 
+E' adoperabile sulle seguenti schede:
+
+- Arduino Yun & Yun-Shield (Secure)
+- Arduino Ethernet Shield
+- Arduino WiFi Shield
+- Adafruit HUZZAH ESP8266 (Secure)
+- Arduino/Genuino WiFi101 Shield (Secure)
+- Arduino MKR GSM 1400 (Secure)
+- ESP32 Development Board (Secure)
+
 In realtà, il task principale che contiene il loop() su **ESP32** non si blocca perchè sta su un thread diverso da quello in cui sta la connect MQTT (probabilmente anche un'altro core della CPU). Nel caso di una CPU single core come ESP8266 il codice potrebbe essere modificato inserendo nella callback del timer un **flag** al posto della connect e nel loop un **check del flag** che chiama la connect se questo è vero. In questo modo verrebbe bloccato solo il loop principale per qualche secondo, tempo in cui il sistema è non responsivo ma comunque funzionante. Oppure si potrebbe sostituire il timer HW che comanda la riconnessione periodica del client MQTT con un timer SW basato sul polling della millis() nel loop.
 
 Le **librerie** vanno scaricate e scompattate dentro la cartella **libraries** all'interno della **cartella di lavoro** di Arduino. Le librerie da scaricare devono avere il nome (eventualmente rinominandole): 
