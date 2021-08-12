@@ -54,10 +54,10 @@ void WiFiEvent(WiFiEvent_t event) {
 }
 
 void mqttConnTest() {
-	if (!mqttClient.connected() && WiFi.status() == WL_CONNECTED) {
-		Serial.print("MQTT lastError: ");
-		Serial.println(mqttClient.lastError());
-		connectToMqtt();
+    if (!mqttClient.connected() && WiFi.status() == WL_CONNECTED) {
+	Serial.print("MQTT lastError: ");
+	Serial.println(mqttClient.lastError());
+	connectToMqtt();
     }
 }
 
@@ -72,8 +72,8 @@ void connectToMqtt() {
   Serial.println("Connecting to MQTT...");
   mqttClient.connect("bside2botham2", "try", "try");
   if(mqttClient.connected()){
-		Serial.println("...end");
-		mqttClient.subscribe("/hello");
+	Serial.println("...end");
+	mqttClient.subscribe("/hello");
   }
   Serial.println("...end");
   mqttClient.subscribe("/hello");
@@ -91,7 +91,7 @@ void setup() {
   count = 0;
   while (WiFi.status() != WL_CONNECTED && count < 10) {
     delay(500);
-	count++;
+    count++;
     Serial.print(".");
   }
 }
@@ -102,11 +102,11 @@ void loop() {
 
   // publish a message roughly every 2 second.
   if (millis() - lastMillis > 2000) {
-    lastMillis = millis();
+        lastMillis = millis();
 	
 	Serial.println("Tick");
 	// pubblicazione periodica di test
-    mqttClient.publish("/hello", "world");
+        mqttClient.publish("/hello", "world");
   }
 }
 /*
