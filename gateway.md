@@ -246,8 +246,7 @@ void setup() {
 
 void loop() {
   unsigned long currentMillis = millis();
-  // Every X number of seconds (interval = 10 seconds) 
-  // it publishes a new MQTT message
+  // Every X number of seconds it publishes a new MQTT message
   if (currentMillis - previousMillis >= interval) {
     // Save the last time a new reading was published
     previousMillis = currentMillis;
@@ -260,9 +259,10 @@ void loop() {
     Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
     Serial.println(packetIdPub1);
     Serial.print("Messaggio inviato: ");
-    Serial.println("Ciao mondo");
+	Serial.println("Ciao mondo");
   }
 }
+
 
 ```
 
