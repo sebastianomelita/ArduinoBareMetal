@@ -12,8 +12,10 @@
 #include <MQTT.h>
 #include <Ticker.h>
 
-Ticker 
-;
+#define WIFIRECONNECTIME  2000
+#define MQTTRECONNECTIME  2000
+
+Ticker mqttReconnectTimer;
 Ticker wifiReconnectTimer;
 
 const char ssid[] = "casafleri";
@@ -44,21 +46,21 @@ void WiFiEvent(WiFiEvent_t event) {
       Serial.println("IP address: ");
       Serial.println(WiFi.localIP());
       connectToMqtt();
-      mqttReconnectTimer.attach_ms(2000, mqttConnTest);
+	  mqttReconnectTimer.attach_ms(MQTTRECONNECTIME, mqttConnTest);
       break;
     case SYSTEM_EVENT_STA_DISCONNECTED:
       Serial.println("WiFi lost connection");
-      mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
-      wifiReconnectTimer.once_ms(2000, connectToWifi);
+	  mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
+      wifiReconnectTimer.once_ms(WIFIRECONNECTIME, connectToWifi);
       break;
   }
 }
 
 void mqttConnTest() {
-    if (!mqttClient.connected() && WiFi.status() == WL_CONNECTED) {
-	Serial.print("MQTT lastError: ");
-	Serial.println(mqttClient.lastError());
-	connectToMqtt();
+	if (!mqttClient.connected() && WiFi.status() == WL_CONNECTED) {
+		Serial.print("MQTT lastError: ");
+		Serial.println(mqttClient.lastError());
+		connectToMqtt();
     }
 }
 
@@ -73,11 +75,9 @@ void connectToMqtt() {
   Serial.println("Connecting to MQTT...");
   mqttClient.connect("bside2botham2", "try", "try");
   if(mqttClient.connected()){
-	Serial.println("...end");
-	mqttClient.subscribe("/hello");
+		mqttClient.subscribe("/hello");
   }
   Serial.println("...end");
-  mqttClient.subscribe("/hello");
   // client.unsubscribe("/hello");
 }
 
@@ -92,7 +92,7 @@ void setup() {
   count = 0;
   while (WiFi.status() != WL_CONNECTED && count < 10) {
     delay(500);
-    count++;
+	count++;
     Serial.print(".");
   }
 }
@@ -103,13 +103,14 @@ void loop() {
 
   // publish a message roughly every 2 second.
   if (millis() - lastMillis > 2000) {
-        lastMillis = millis();
+    lastMillis = millis();
 	
 	Serial.println("Tick");
 	// pubblicazione periodica di test
-        mqttClient.publish("/hello", "world");
+    mqttClient.publish("/hello", "world");
   }
 }
+
 /*
 WL_CONNECTED: assigned when connected to a WiFi network;
 WL_NO_SHIELD: assigned when no WiFi shield is present;
