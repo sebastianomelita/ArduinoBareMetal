@@ -28,8 +28,8 @@ Si tratta di una libreria **molto leggera** che non occupa spazio eccessivo in m
 Ticker mqttReconnectTimer;
 Ticker wifiReconnectTimer;
 
-const char ssid[] = "casafleri";
-const char pass[] = "fabseb050770250368120110$";
+const char ssid[] = "myssd";
+const char pass[] = "mypsw$";
 const char mqttserver[] = "test.mosquitto.org";
 
 //WiFiClientSecure net;
@@ -146,8 +146,8 @@ Le **librerie** vanno scaricate e scompattate dentro la cartella **libraries** a
 #include <AsyncMqttClient.h>
 #include <Ticker.h>
 
-#define WIFI_SSID "casafleri"
-#define WIFI_PASSWORD "fabseb050770250368120110$"
+#define WIFI_SSID "myssd"
+#define WIFI_PASSWORD "mypsw"
 #define WIFIRECONNECTIME  2000
 #define MQTTRECONNECTIME  2000
 
