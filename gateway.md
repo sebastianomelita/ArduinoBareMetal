@@ -6,7 +6,7 @@
 3. [BUS spi](gatewayspi.md)
 4. [BUS modbus](gatewaymodbus.md)
 
-### **Client MQTT per ESP32 con metodo di connessione bloccante**
+### **Client MQTT per ESP32, ESP8266 e Arduino con metodo di connessione bloccante**
 Utilizza la libreria **arduino-mqtt** scaricabille da https://github.com/256dpi/arduino-mqtt e adatta sia per esp8266 che per esp32. Ha la particolarità (comune a quasi tutte le librerie MQTT) di avere la **funzione di connessione bloccante**, per cui, se il server è momentaneamente indisponibile, il client rimane fermo sulla funzione di connessione senza ritornare. Scaduto un **timeout** la connect() **ritorna** permettendo al task che la contiene di continuare l'esecuzione. Nell'esempio seguente la connect() è dentro la callback di un timer HW ed è attivarta da una ISR associata ad un interrupt. Le ISR, per definizione, dovrebbero essere non bloccanti perchè spesso non sono interrompibili. **Bloccare una ISR** collegata ad **eventi core** della macchina può causare **instabilità** che determinano il **reset** del sistema.
 
 E' adoperabile sulle seguenti schede:
