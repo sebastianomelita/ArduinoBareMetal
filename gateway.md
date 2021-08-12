@@ -8,6 +8,7 @@
 
 ### **Client MQTT per ESP32 con metodo di connessione bloccante**
 Utilizza la libreria **arduino-mqtt** scaricabille da https://github.com/256dpi/arduino-mqtt
+
 In realtà, il task principale che contiene il loop() non si blocca perchè sta su un thread diverso da quello in cui sta la connect MQTT (probabilmente anche un'altro core della CPU). Nel caso di una CPU single core come ESP8266 il codice andrebbe modificato inserendo nella callback del timer un flag al posto della connect e nel loop un check del flag che chiama la connect se questo è vero. In questo modo verrebbe bloccato solo il loop principale per qualche secondo, tempo in cui il sistema è non responsivo ma comunque funzionante.
 ```C++
 //#include <WiFiClientSecure.h>
@@ -128,6 +129,8 @@ WL_DISCONNECTED: assigned when disconnected from a network;
 
 ### **Client MQTT per ESP32 con metodo di connessione non bloccante**
 Utilizza la libreria **sync-mqtt-client** sacricabile da https://github.com/marvinroger/async-mqtt-client
+
+
 ```C++
 #include <WiFi.h>
 #include <AsyncMqttClient.h>
