@@ -260,7 +260,7 @@ void loop() {
     Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
     Serial.println(packetIdPub1);
     Serial.print("Messaggio inviato: ");
-	Serial.println("Ciao mondo");
+    Serial.println("Ciao mondo");
   }
 }
 
