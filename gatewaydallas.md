@@ -28,6 +28,8 @@ Dal **punto di vista SW** sevono **due librerie** da scaricare dentro la solita 
 - **OneWire-master.zip** da scompattare e rinominare semplicemente **OneWire**. Per installare il protocollo standard OneWire.
 - **Arduino-Temperature-Control-Library-master** da scompattare e rinominare semplicemente **DallasTemperature** per installare il particolare protocollo applicativo di quella categoria di sensori di temperatura (**DS18B20**).
 
+### **Gateway OneWire-MQTT per la lettura di un solo sensore**
+
 ```C++
 #include <WiFi.h>
 #include <AsyncMqttClient.h>
