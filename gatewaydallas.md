@@ -9,7 +9,7 @@ Notare i **collegamenti in parallelo** tra tutti i dispositivi attorno a 2 (para
 
 <img src="Schematic-dallas-18s20.gif" alt="alt text" width="600">
 
-Il sensore di temperatura **DS18B20**:
+### **Il sensore di temperatura DS18B20**
 
 <img src="DS18B20-tempeature-sensor-pinout.jpg" alt="alt text" width="400">
 
