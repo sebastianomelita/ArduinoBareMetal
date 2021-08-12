@@ -3,11 +3,15 @@
 
 ## **Gateway per BUS Dallas (OneWire)**
 
+### **Parasite mode**
+
 Il bus onewire teoricamente possiede **2 soli fili** (uno senza la massa):
 - una **massa comune** per il ritorno della corrente 
 - un **filo dati** che è usato anche per l'alimentazione del dispositivo. Poichè il livello **L (basso)** è di solito codificato con 0V l'alimentazione risulta **intermittente**. Per ovviare a questi buchi (lack) di alimentazione si collega una **capacità** in parallelo a massa e linea dati che funge da **tampone locale** alla mancanza di alimentazione dovuta a sequenze consecutive di zeri. Questo modo di funzionamente si chiama **parasite mode**.
 
 <img src="ds18b20_esp32_single_parasite_bb.png" alt="alt text" width="500">
+
+### **Normal mode**
 
 In pratica è usuale anche un collegamento a **3 fili** (2 senza la massa):
 - una **massa comune** per il ritorno della corrente 
