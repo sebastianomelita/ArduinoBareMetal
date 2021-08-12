@@ -154,4 +154,11 @@ void loop() {
 
 ```
 
+**Sitografia:**
+
+https://randomnerdtutorials.com/esp32-mqtt-publish-ds18b20-temperature-arduino/
+https://randomnerdtutorials.com/micropython-mqtt-publish-ds18b10-esp32-esp8266/
+https://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/
+https://randomnerdtutorials.com/esp32-multiple-ds18b20-temperature-sensors/
+
 >[Torna a gateway BUS](gateway.md)
