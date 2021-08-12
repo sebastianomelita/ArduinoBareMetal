@@ -143,7 +143,7 @@ WL_DISCONNECTED: assigned when disconnected from a network;
 \*/
 ```
 
-Versione per **ESP8266** con un **flag** che attiva la riconnessione all'interno del loop(). Il **loop()** rimane **bloccato** per svariati secondi (circa 18) se il server MQTT è **non disponibile** o non raggingibile. Il timer di ritrasmissione MQTT non esegue azioni bloccanti ma si limita ad **impostare il flag**. Il flag viene **controllato** con un **polling** continuo all'interno del loop().
+Versione per **ESP8266** o **Arduino** con un **flag** che attiva la riconnessione all'interno del loop(). Il **loop()** rimane **bloccato** per svariati secondi (circa 18) se il server MQTT è **non disponibile** o non raggingibile. Il timer di ritrasmissione MQTT non esegue azioni bloccanti ma si limita ad **impostare il flag**. Il flag viene **controllato** con un **polling** continuo all'interno del loop().
 
 ```C++
 //#include <WiFiClientSecure.h>
@@ -274,7 +274,7 @@ WL_DISCONNECTED: assigned when disconnected from a network;
 ```
 
 ### **Client MQTT per ESP32 e ESP8266 con metodo di connessione non bloccante**
-Utilizza la libreria **sync-mqtt-client** scaricabile da https://github.com/marvinroger/async-mqtt-client e adatta sia per esp8266 che per esp32. In questo caso la funzione di riconnessione del client MQTT è non bloccante e non crea problemi anche se viene chiamata all'interno della ISR di un timer HW. Il prezzo da pagare è la sostituzione della sottostante libreria TCP bloccante con una versione analoga asincrona che ritorna sempre. L'installazione di librerie aggiuntiva comporta una **occupazione** di memoria in area istruzioni **maggiore della soluzione** precedente.
+Utilizza la libreria **sync-mqtt-client** scaricabile da https://github.com/marvinroger/async-mqtt-client e adatta sia per esp8266 che per esp32 (non per Arduino). In questo caso la funzione di riconnessione del client MQTT è non bloccante e non crea problemi anche se viene chiamata all'interno della ISR di un timer HW. Il prezzo da pagare è la sostituzione della sottostante libreria TCP bloccante con una versione analoga asincrona che ritorna sempre. L'installazione di librerie aggiuntiva comporta una **occupazione** di memoria in area istruzioni **maggiore della soluzione** precedente.
 
 Le **librerie** vanno scaricate e scompattate dentro la cartella **libraries** all'interno della **cartella di lavoro** di Arduino. Le librerie da scaricare devono avere il nome (eventualmente rinominandole): 
 - async-mqtt-client
