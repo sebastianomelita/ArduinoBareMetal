@@ -10,8 +10,8 @@
 #include <DallasTemperature.h>
 #include <Ticker.h>
 
-#define WIFI_SSID "ssid"
-#define WIFI_PASSWORD "password"
+#define WIFI_SSID "myssid"
+#define WIFI_PASSWORD "mypsw"
 
 Ticker mqttReconnectTimer;
 Ticker wifiReconnectTimer;
@@ -38,6 +38,7 @@ AsyncMqttClient mqttClient;
 
 unsigned long previousMillis = 0;   // Stores last time temperature was published
 const long interval = 4000;        // Interval at which to publish sensor readings
+byte count = 0;
 
 void connectToWifi() {
   Serial.println("Connecting to Wi-Fi...");
@@ -63,7 +64,7 @@ void WiFiEvent(WiFiEvent_t event) {
     case SYSTEM_EVENT_STA_DISCONNECTED:
       Serial.println("WiFi lost connection");
       mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
-      wifiReconnectTimer.attach_ms(2000, connectToWifi);
+      wifiReconnectTimer.once_ms(2000, connectToWifi);
       break;
   }
 }
@@ -77,7 +78,7 @@ void onMqttConnect(bool sessionPresent) {
 void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
   Serial.println("Disconnected from MQTT.");
   if (WiFi.isConnected()) {
-    mqttReconnectTimer.attach_ms(2000, connectToMqtt);
+    mqttReconnectTimer.once_ms(2000, connectToMqtt);
   }
 }
 
@@ -107,7 +108,7 @@ void setup() {
   count = 0;
   while (WiFi.status() != WL_CONNECTED && count < 10) {
     delay(500);
-    count++;
+	count++;
     Serial.print(".");
   }
 }
@@ -130,9 +131,10 @@ void loop() {
     uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, String(temp).c_str());                            
     Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
     Serial.println(packetIdPub1);
-    Serial.printf("Messaggio: %.2f /n", sensors.getTempCByIndex(0));
+    Serial.printf("Messaggio: %.2f \n", sensors.getTempCByIndex(0));
   }
 }
+
 ```
 
 >[Torna a gateway BUS](gateway.md)
