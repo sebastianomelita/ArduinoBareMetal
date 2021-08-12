@@ -272,6 +272,7 @@ Le **librerie** vanno scaricate e scompattate dentro la cartella **libraries** a
 
 
 ```C++
+//#include <WiFiClientSecure.h>
 #include <WiFi.h>       // per ESP32
 //#include <ESP8266WiFi.h> per ESP8266
 #include <AsyncMqttClient.h>
