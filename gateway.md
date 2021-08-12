@@ -12,7 +12,8 @@
 #include <MQTT.h>
 #include <Ticker.h>
 
-Ticker mqttReconnectTimer;
+Ticker 
+;
 Ticker wifiReconnectTimer;
 
 const char ssid[] = "casafleri";
@@ -43,11 +44,11 @@ void WiFiEvent(WiFiEvent_t event) {
       Serial.println("IP address: ");
       Serial.println(WiFi.localIP());
       connectToMqtt();
-	  mqttReconnectTimer.attach_ms(2000, mqttConnTest);
+      mqttReconnectTimer.attach_ms(2000, mqttConnTest);
       break;
     case SYSTEM_EVENT_STA_DISCONNECTED:
       Serial.println("WiFi lost connection");
-	  mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
+      mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
       wifiReconnectTimer.once_ms(2000, connectToWifi);
       break;
   }
