@@ -14,6 +14,8 @@ In realtà, il task principale che contiene il loop() su **ESP32** non si blocca
 Le **librerie** vanno scaricate e scompattate dentro la cartella **libraries** all'interno della **cartella di lavoro** di Arduino. Le librerie da scaricare devono avere il nome (eventualmente rinominandole): 
 - arduino-mqtt
 
+Si tratta di una libreria **molto leggera** che non occupa spazio eccessivo in memoria istruzioni.
+
 ```C++
 //#include <WiFiClientSecure.h>
 #include <WiFi.h>
@@ -132,7 +134,7 @@ WL_DISCONNECTED: assigned when disconnected from a network;
 ```
 
 ### **Client MQTT per ESP32 con metodo di connessione non bloccante**
-Utilizza la libreria **sync-mqtt-client** scaricabile da https://github.com/marvinroger/async-mqtt-client e adatta sia per esp8266 che per esp32. In questo caso la funzione di riconnessione del client MQTT è non bloccante e non crea problemi anche se viene chiamata all'interno della ISR di un timer HW. Il prezzo da pagare è la sostituzione della sottostante libreria TCP bloccante con una versione analoga asincrona che ritorna sempre.
+Utilizza la libreria **sync-mqtt-client** scaricabile da https://github.com/marvinroger/async-mqtt-client e adatta sia per esp8266 che per esp32. In questo caso la funzione di riconnessione del client MQTT è non bloccante e non crea problemi anche se viene chiamata all'interno della ISR di un timer HW. Il prezzo da pagare è la sostituzione della sottostante libreria TCP bloccante con una versione analoga asincrona che ritorna sempre. L'installazione di librerie aggiuntiva comporta una **occupazione** di memoria in area istruzioni **maggiore della soluzione** precedente.
 
 Le **librerie** vanno scaricate e scompattate dentro la cartella **libraries** all'interno della **cartella di lavoro** di Arduino. Le librerie da scaricare devono avere il nome (eventualmente rinominandole): 
 - async-mqtt-client
