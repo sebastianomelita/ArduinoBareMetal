@@ -133,6 +133,136 @@ WL_DISCONNECTED: assigned when disconnected from a network;
 \*/
 ```
 
+Versione per **ESP8266** con un **flag** che attiva la riconnessione all'interno del loop(). Il **loop()** rimane **bloccato**per svariati secondi (circa 18) se il server MQTT è **non disponibile** o non raggingibile. Il timer di ritrasmissione MQTT non esegue azioni bloccanti ma si limita ad **impostare il flag**. Il flag viene **controllato** con un **polling** continuo all'interno del loop().
+
+```C++
+//#include <WiFiClientSecure.h>
+//#include <WiFi.h>       // per ESP32
+#include <ESP8266WiFi.h>  // per ESP8266
+#include <MQTT.h>
+#include <Ticker.h>
+
+#define WIFIRECONNECTIME  2000
+#define MQTTRECONNECTIME  2000
+
+Ticker mqttReconnectTimer;
+Ticker wifiReconnectTimer;
+
+const char ssid[] = "casafleri";
+const char pass[] = "fabseb050770250368120110$";
+const char mqttserver[] = "test.mosquitto.orge";
+
+//WiFiClientSecure net;
+WiFiClient net;
+MQTTClient mqttClient(1024);
+
+unsigned long lastMillis = 0;
+byte count = 0;
+bool mqttreconnflag = false; // 8 bit, non è necessaria una corsa critica!
+
+void messageReceived(String &topic, String &payload) {
+  Serial.println("incoming: " + topic + " - " + payload);
+
+  // Note: Do not use the client in the callback to publish, subscribe or
+  // unsubscribe as it may cause deadlocks when other things arrive while
+  // sending and receiving acknowledgments. Instead, change a global variable,
+  // or push to a queue and handle it in the loop after calling `client.loop()`.
+}
+
+void WiFiEvent(WiFiEvent_t event) {
+  Serial.printf("[WiFi-event] event: %d\n", event);
+  switch(event) {
+    case SYSTEM_EVENT_STA_GOT_IP:
+      Serial.println("WiFi connected");
+      Serial.println("IP address: ");
+      Serial.println(WiFi.localIP());
+      connectToMqtt();
+	  mqttReconnectTimer.attach_ms(MQTTRECONNECTIME, mqttConnTest2);
+      break;
+    case SYSTEM_EVENT_STA_DISCONNECTED:
+      Serial.println("WiFi lost connection");
+	  mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
+      wifiReconnectTimer.once_ms(WIFIRECONNECTIME, connectToWifi);
+      break;
+  }
+}
+
+void mqttConnTest() {
+	if (!mqttClient.connected() && WiFi.status() == WL_CONNECTED) {
+		Serial.print("MQTT lastError: ");
+		Serial.println(mqttClient.lastError());
+		connectToMqtt();
+    }
+}
+
+void mqttConnTest2() {
+	mqttreconnflag = true;
+}
+
+void connectToWifi() {
+  Serial.println("Connecting to Wi-Fi...");
+  WiFi.mode(WIFI_STA);
+  //WiFi.disconnect();
+  WiFi.begin(ssid, pass);
+}
+
+void connectToMqtt() {
+  Serial.println("Connecting to MQTT...");
+  mqttClient.connect("bside2botham2", "try", "try");
+  if(mqttClient.connected()){
+		mqttClient.subscribe("/hello");
+  }
+  Serial.println("...end");
+  // client.unsubscribe("/hello");
+}
+
+void setup() {
+  Serial.begin(115200);
+  WiFi.begin(ssid, pass);
+  WiFi.onEvent(WiFiEvent);
+  // MQTT brokers usually use port 8883 for secure connections.
+  mqttClient.begin(mqttserver, 1883, net);
+  mqttClient.onMessage(messageReceived); 
+  connectToWifi();
+  count = 0;
+  while (WiFi.status() != WL_CONNECTED && count < 10) {
+    delay(500);
+	count++;
+    Serial.print(".");
+  }
+}
+
+void loop() {
+  mqttClient.loop();
+  //delay(10);  // <- fixes some issues with WiFi stability
+  // polling del flag di riconnessione MQTT
+  if(mqttreconnflag){
+	  mqttreconnflag = false;
+	  mqttConnTest();
+  }
+  
+  // publish a message roughly every 2 second.
+  if (millis() - lastMillis > 2000) {
+    lastMillis = millis();
+	
+	Serial.println("Tick");
+	// pubblicazione periodica di test
+    mqttClient.publish("/hello", "world");
+  }
+}
+
+/*
+WL_CONNECTED: assigned when connected to a WiFi network;
+WL_NO_SHIELD: assigned when no WiFi shield is present;
+WL_IDLE_STATUS: it is a temporary status assigned when WiFi.begin() is called and remains active until the number of attempts expires (resulting in WL_CONNECT_FAILED) or a connection is established (resulting in WL_CONNECTED);
+WL_NO_SSID_AVAIL: assigned when no SSID are available;
+WL_SCAN_COMPLETED: assigned when the scan networks is completed;
+WL_CONNECT_FAILED: assigned when the connection fails for all the attempts;
+WL_CONNECTION_LOST: assigned when the connection is lost;
+WL_DISCONNECTED: assigned when disconnected from a network;
+\*/
+```
+
 ### **Client MQTT per ESP32 e ESP8266 con metodo di connessione non bloccante**
 Utilizza la libreria **sync-mqtt-client** scaricabile da https://github.com/marvinroger/async-mqtt-client e adatta sia per esp8266 che per esp32. In questo caso la funzione di riconnessione del client MQTT è non bloccante e non crea problemi anche se viene chiamata all'interno della ISR di un timer HW. Il prezzo da pagare è la sostituzione della sottostante libreria TCP bloccante con una versione analoga asincrona che ritorna sempre. L'installazione di librerie aggiuntiva comporta una **occupazione** di memoria in area istruzioni **maggiore della soluzione** precedente.
 
