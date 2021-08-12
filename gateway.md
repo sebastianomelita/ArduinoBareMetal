@@ -29,7 +29,7 @@ Ticker mqttReconnectTimer;
 Ticker wifiReconnectTimer;
 
 const char ssid[] = "myssd";
-const char pass[] = "mypsw$";
+const char pass[] = "mypsw";
 const char mqttserver[] = "test.mosquitto.org";
 
 //WiFiClientSecure net;
