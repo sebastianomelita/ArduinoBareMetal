@@ -133,7 +133,7 @@ WL_DISCONNECTED: assigned when disconnected from a network;
 \*/
 ```
 
-Versione per **ESP8266** con un **flag** che attiva la riconnessione all'interno del loop(). Il **loop()** rimane **bloccato**per svariati secondi (circa 18) se il server MQTT è **non disponibile** o non raggingibile. Il timer di ritrasmissione MQTT non esegue azioni bloccanti ma si limita ad **impostare il flag**. Il flag viene **controllato** con un **polling** continuo all'interno del loop().
+Versione per **ESP8266** con un **flag** che attiva la riconnessione all'interno del loop(). Il **loop()** rimane **bloccato** per svariati secondi (circa 18) se il server MQTT è **non disponibile** o non raggingibile. Il timer di ritrasmissione MQTT non esegue azioni bloccanti ma si limita ad **impostare il flag**. Il flag viene **controllato** con un **polling** continuo all'interno del loop().
 
 ```C++
 //#include <WiFiClientSecure.h>
