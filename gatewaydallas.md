@@ -3,6 +3,15 @@
 
 ## **Gateway per BUS Dallas (OneWire)**
 
+Il bus onewire teoricamente possiede **2 soli fili** (uno senza la massa):
+- una **massa comune** per il ritorno della corrente 
+- un **filo dati** che è usato anche per l'alimentazione del dispositivo. Poichè il livello **L (basso)** è di solito codificato con 0V l'alimentazione risulta **intermittente**. Per ovviare a questi buchi (lack) di alimentazione si collega una **capacità** in parallelo a massa e linea dati che funge da **tampone locale** alla mancanza di alimentazione dovuta a sequenze consecutive di zeri. Questo modo di funzionamente si chiama **parasite mode**.
+
+In pratica è usuale anche un collegamento a **3 fili** (2 senza la massa):
+- una **massa comune** per il ritorno della corrente 
+- un **filo dati** che è **a se stante** cioè **non** viene usato anche per l'alimentazione del dispositivo.
+- un **positivo di alimentazione** che alimenta tutti i dispositivi. Questa modalità si chiama **normal mode**.
+
 ```C++
 #include <WiFi.h>
 #include <AsyncMqttClient.h>
