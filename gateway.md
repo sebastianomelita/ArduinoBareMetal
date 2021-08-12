@@ -7,9 +7,10 @@
 4. [BUS modbus](gatewaymodbus.md)
 
 ### **Client MQTT per ESP32 con metodo di connessione bloccante**
-Utilizza la libreria **arduino-mqtt** scaricabille da https://github.com/256dpi/arduino-mqtt
+Utilizza la libreria **arduino-mqtt** scaricabille da https://github.com/256dpi/arduino-mqtt e adatta sia per esp8266 che per esp32. Ha la particolarità (comune a quasi tutte le librerie MQTT) di avere la **funzione di connessione bloccante**, per cui, se il server è momentaneamente indisponibile, il client rimane fermo sulla funzione di connessione senza ritornare. Scaduto un **timeout** la connect() **ritorna** permettendo al task che la contiene di continuare l'esecuzione. Nell'esempio seguente la connect() è dentro la callback di un timer HW ed è attivarta da una ISR associata ad un interrupt. Le ISR, per definizione, dovrebbero essere non bloccanti perchè spesso non sono interrompibili. **Bloccare una ISR** collegata ad **eventi core** del sistema può causare **instabilità** che determinano il **reset** del sistema.
 
-In realtà, il task principale che contiene il loop() non si blocca perchè sta su un thread diverso da quello in cui sta la connect MQTT (probabilmente anche un'altro core della CPU). Nel caso di una CPU single core come ESP8266 il codice andrebbe modificato inserendo nella callback del timer un flag al posto della connect e nel loop un check del flag che chiama la connect se questo è vero. In questo modo verrebbe bloccato solo il loop principale per qualche secondo, tempo in cui il sistema è non responsivo ma comunque funzionante.
+In realtà, il task principale che contiene il loop() su **ESP32** non si blocca perchè sta su un thread diverso da quello in cui sta la connect MQTT (probabilmente anche un'altro core della CPU). Nel caso di una CPU single core come ESP8266 il codice andrebbe modificato inserendo nella callback del timer un **flag** al posto della connect e nel loop un **check del flag** che chiama la connect se questo è vero. In questo modo verrebbe bloccato solo il loop principale per qualche secondo, tempo in cui il sistema è non responsivo ma comunque funzionante.
+
 ```C++
 //#include <WiFiClientSecure.h>
 #include <WiFi.h>
@@ -128,7 +129,7 @@ WL_DISCONNECTED: assigned when disconnected from a network;
 ```
 
 ### **Client MQTT per ESP32 con metodo di connessione non bloccante**
-Utilizza la libreria **sync-mqtt-client** sacricabile da https://github.com/marvinroger/async-mqtt-client
+Utilizza la libreria **sync-mqtt-client** sacricabile da https://github.com/marvinroger/async-mqtt-client e adatta sia per esp8266 che per esp32.
 
 
 ```C++
