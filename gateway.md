@@ -6,7 +6,7 @@
 3. [BUS spi](gatewayspi.md)
 4. [BUS modbus](gatewaymodbus.md)
 
-
+```C++
 //#include <WiFiClientSecure.h>
 #include <WiFi.h>
 #include <MQTT.h>
@@ -109,7 +109,6 @@ void loop() {
     mqttClient.publish("/hello", "world");
   }
 }
-
 /*
 WL_CONNECTED: assigned when connected to a WiFi network;
 WL_NO_SHIELD: assigned when no WiFi shield is present;
@@ -120,7 +119,7 @@ WL_CONNECT_FAILED: assigned when the connection fails for all the attempts;
 WL_CONNECTION_LOST: assigned when the connection is lost;
 WL_DISCONNECTED: assigned when disconnected from a network;
 \*/
-
+```
 
 >[Torna all'indice generale](index.md)
 
