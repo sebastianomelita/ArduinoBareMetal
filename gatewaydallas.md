@@ -171,7 +171,8 @@ void loop() {
 <img src="multiple_ds18b20_esp32_bb.png" alt="alt text" width="500">
 
 Dal **punto di vista SW** sevono sempre **due librerie** le due librerie del singolo sensore da scaricare dentro la solita cartella **libraries**.
-Il codice va modificato per utilizzare l'**indirizzamento** in uso nel **BUS OneWire** per recuperare le misure dei **singoli sensori**.
+
+Il **codice** va modificato per utilizzare l'**indirizzamento** in uso nel **BUS OneWire** per recuperare le misure dei **singoli sensori**.
 
 ```C++
 
