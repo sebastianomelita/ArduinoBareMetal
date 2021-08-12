@@ -148,8 +148,8 @@ Versione per **ESP8266** con un **flag** che attiva la riconnessione all'interno
 Ticker mqttReconnectTimer;
 Ticker wifiReconnectTimer;
 
-const char ssid[] = "casafleri";
-const char pass[] = "fabseb050770250368120110$";
+const char ssid[] = "myssid";
+const char pass[] = "mypsw";
 const char mqttserver[] = "test.mosquitto.orge";
 
 //WiFiClientSecure net;
