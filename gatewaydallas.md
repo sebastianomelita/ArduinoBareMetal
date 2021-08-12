@@ -115,7 +115,7 @@ void setup() {
 
 void loop() {
   unsigned long currentMillis = millis();
-  // Every X number of seconds (interval = 10 seconds) 
+  // Every X number of seconds 
   // it publishes a new MQTT message
   if (currentMillis - previousMillis >= interval) {
     // Save the last time a new reading was published
