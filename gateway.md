@@ -56,11 +56,11 @@ void WiFiEvent(WiFiEvent_t event) {
       Serial.println("IP address: ");
       Serial.println(WiFi.localIP());
       connectToMqtt();
-	  mqttReconnectTimer.attach_ms(MQTTRECONNECTIME, mqttConnTest);
+      mqttReconnectTimer.attach_ms(MQTTRECONNECTIME, mqttConnTest);
       break;
     case SYSTEM_EVENT_STA_DISCONNECTED:
       Serial.println("WiFi lost connection");
-	  mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
+      mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
       wifiReconnectTimer.once_ms(WIFIRECONNECTIME, connectToWifi);
       break;
   }
@@ -177,11 +177,11 @@ void WiFiEvent(WiFiEvent_t event) {
       Serial.println("IP address: ");
       Serial.println(WiFi.localIP());
       connectToMqtt();
-	  mqttReconnectTimer.attach_ms(MQTTRECONNECTIME, mqttConnTest2);
+      mqttReconnectTimer.attach_ms(MQTTRECONNECTIME, mqttConnTest2);
       break;
     case SYSTEM_EVENT_STA_DISCONNECTED:
       Serial.println("WiFi lost connection");
-	  mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
+      mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
       wifiReconnectTimer.once_ms(WIFIRECONNECTIME, connectToWifi);
       break;
   }
@@ -210,7 +210,7 @@ void connectToMqtt() {
   Serial.println("Connecting to MQTT...");
   mqttClient.connect("bside2botham2", "try", "try");
   if(mqttClient.connected()){
-		mqttClient.subscribe("/hello");
+	mqttClient.subscribe("/hello");
   }
   Serial.println("...end");
   // client.unsubscribe("/hello");
@@ -227,7 +227,7 @@ void setup() {
   count = 0;
   while (WiFi.status() != WL_CONNECTED && count < 10) {
     delay(500);
-	count++;
+    count++;
     Serial.print(".");
   }
 }
@@ -243,11 +243,11 @@ void loop() {
   
   // publish a message roughly every 2 second.
   if (millis() - lastMillis > 2000) {
-    lastMillis = millis();
+        lastMillis = millis();
 	
 	Serial.println("Tick");
 	// pubblicazione periodica di test
-    mqttClient.publish("/hello", "world");
+        mqttClient.publish("/hello", "world");
   }
 }
 
