@@ -5,7 +5,7 @@
 
 ### **Schema di principio del BUS OneWire**
 
-Notare i **collegamenti in parallelo** tra tutti i dispositivi attorno a 2 o tre fili.
+Notare i **collegamenti in parallelo** tra tutti i dispositivi attorno a 2 (parasite mode) o 3 fili (normal mode).
 
 <img src="Schematic-dallas-18s20.gif" alt="alt text" width="600">
 
