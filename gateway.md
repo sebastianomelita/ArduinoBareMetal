@@ -255,7 +255,7 @@ void loop() {
     Serial.println("Tick");
 	
     // Publish an MQTT message on topic 
-	//(const char* topic, uint8_t qos, bool retain, const char* payload = nullptr, size_t length = 0, bool dup = false, uint16_t message_id = 0);
+    //(const char* topic, uint8_t qos, bool retain, const char* payload = nullptr, size_t length = 0, bool dup = false, uint16_t message_id = 0);
     uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, "Ciao mondo", strlen("Ciao mondo"));                            
     Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
     Serial.println(packetIdPub1);
