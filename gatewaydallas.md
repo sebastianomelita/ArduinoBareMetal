@@ -30,13 +30,15 @@ Dal **punto di vista SW** sevono **due librerie** da scaricare dentro la solita 
 
 ### **Gateway OneWire-MQTT per la lettura di un solo sensore**
 
-La libreria MQTT è asincrona per cui non bloccante.
+La libreria MQTT è asincrona per cui non bloccante. E' adoperabile sia per **ESP8266** che per **ESP32**.
 
 Anche in questo caso sono possibili entrambi i collegamenti, **normal mode** e **parasite mode**. Di seguito è illustrato il **normal mode**:
 
 
 ```C++
-#include <WiFi.h>
+//#include <WiFiClientSecure.h>
+#include <WiFi.h>       // per ESP32
+//#include <ESP8266WiFi.h> per ESP8266
 #include <AsyncMqttClient.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
