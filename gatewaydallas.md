@@ -185,6 +185,174 @@ Dal **punto di vista SW** sevono sempre **due librerie**, le solite due librerie
 Il **codice** va modificato per utilizzare l'**indirizzamento** in uso nel **BUS OneWire** per recuperare le misure dei **singoli sensori**.
 
 ```C++
+//#include <WiFiClientSecure.h>
+#include <WiFi.h>       // per ESP32
+//#include <ESP8266WiFi.h> per ESP8266
+#include <AsyncMqttClient.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <Ticker.h>
+
+#define WIFI_SSID "myssid"
+#define WIFI_PASSWORD "mypsw"
+
+Ticker mqttReconnectTimer;
+Ticker wifiReconnectTimer;
+// Raspberry Pi Mosquitto MQTT Broker
+//#define MQTT_HOST IPAddress(192, 168, 1, 254)
+#define MQTT_HOST "test.mosquitto.org"
+// For a cloud MQTT broker, type the domain name
+//#define MQTT_HOST "example.com"
+#define MQTT_PORT 1883
+
+// Temperature MQTT Topic
+#define MQTT_PUB_TEMP "esp32/ds18b20/temperature"
+#define NSENSORS 4
+
+// GPIO where the DS18B20 is connected to
+const int oneWireBus = 4;          
+// Setup a oneWire instance to communicate with any OneWire devices
+OneWire oneWire(oneWireBus);
+// Pass our oneWire reference to Dallas Temperature sensor 
+DallasTemperature sensors(&oneWire);
+// Temperature value
+float temp;
+
+AsyncMqttClient mqttClient;
+
+unsigned long previousMillis = 0;   // Stores last time temperature was published
+const long interval = 4000;        // Interval at which to publish sensor readings
+byte count = 0;
+byte addresses[NSENSORS][8];
+
+void connectToWifi() {
+  Serial.println("Connecting to Wi-Fi...");
+  WiFi.mode(WIFI_STA);
+  //WiFi.disconnect();
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+}
+
+void connectToMqtt() {
+  Serial.println("Connecting to MQTT...");
+  mqttClient.connect();
+}
+
+void WiFiEvent(WiFiEvent_t event) {
+  Serial.printf("[WiFi-event] event: %d\n", event);
+  switch(event) {
+    case SYSTEM_EVENT_STA_GOT_IP:
+      Serial.println("WiFi connected");
+      Serial.println("IP address: ");
+      Serial.println(WiFi.localIP());
+      connectToMqtt();
+      break;
+    case SYSTEM_EVENT_STA_DISCONNECTED:
+      Serial.println("WiFi lost connection");
+      mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
+      wifiReconnectTimer.once_ms(2000, connectToWifi);
+      break;
+  }
+}
+
+void onMqttConnect(bool sessionPresent) {
+  Serial.println("Connected to MQTT.");
+  Serial.print("Session present: ");
+  Serial.println(sessionPresent);
+}
+
+void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
+  Serial.println("Disconnected from MQTT.");
+  if (WiFi.isConnected()) {
+    mqttReconnectTimer.once_ms(2000, connectToMqtt);
+  }
+}
+
+void onMqttPublish(uint16_t packetId) {
+  Serial.println("Publish acknowledged.");
+  Serial.print("  packetId: ");
+  Serial.println(packetId);
+}
+
+void addrSearch() {
+  byte j = 0;
+  while(oneWire.search(addresses[j]) && j < NSENSORS) {
+	  Serial.print(" ROM =");
+	  for(int i = 0; i < 8; i++) {
+		Serial.write(' ');
+		Serial.print(addresses[j][i], HEX);
+		Serial.println();
+	  }
+  }  
+  Serial.println(" No more addresses.");
+  Serial.println();
+  oneWire.reset_search();
+  delay(250);
+}
+
+void setup() {
+  // Start the DS18B20 sensor
+  sensors.begin();
+  
+  Serial.begin(115200);
+  Serial.println();
+  Serial.println();
+
+  WiFi.onEvent(WiFiEvent);
+
+  mqttClient.onConnect(onMqttConnect);
+  mqttClient.onDisconnect(onMqttDisconnect);
+  mqttClient.onPublish(onMqttPublish);
+  mqttClient.setServer(MQTT_HOST, MQTT_PORT);
+  // If your broker requires authentication (username and password), set them below
+  //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
+  connectToWifi();
+  count = 0;
+  while (WiFi.status() != WL_CONNECTED && count < 10) {
+    delay(500);
+    count++;
+    Serial.print(".");
+  }
+  //scan degli indirizzi sul BUS OneWire
+  addrSearch();
+}
+
+void loop() {
+  unsigned long currentMillis = millis();
+  // Every X number of seconds 
+  // it publishes a new MQTT message
+  if (currentMillis - previousMillis >= interval) {
+    // Save the last time a new reading was published
+    previousMillis = currentMillis;
+    Serial.print("Requesting temperatures...");
+	// Send the command to get temperatures
+	sensors.requestTemperatures(); 
+	Serial.println("DONE");
+    
+	//costruisci il messaggio JSON
+	String str = "{";
+	for(int i = 0; i < NSENSORS; i++){
+		str += "\"sensor";
+		str += String(i+1);
+		str += "\":\"";
+		//leggi la temperatura del sensore con un certo indirizzo
+		temp = sensors.getTempC(addresses[i]);
+		str += temp;
+		str += "\"";
+		if(i < NSENSORS-1){
+			str += ",";
+		}else{
+			str += "}";
+		}
+	}
+    
+    // Publish an MQTT message on topic esp32/ds18b20/temperature    
+	uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, str.c_str(), str.length());                           
+    Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
+    Serial.println(packetIdPub1);
+	Serial.print("Messaggio inviato: ");
+	Serial.println(str); 
+  }
+}
 
 ```
 
