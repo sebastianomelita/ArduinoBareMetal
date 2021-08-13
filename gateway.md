@@ -24,7 +24,13 @@ In realtà, il task principale che contiene il loop() su **ESP32** apparentement
 Le **librerie** vanno scaricate e scompattate dentro la cartella **libraries** all'interno della **cartella di lavoro** di Arduino. Le librerie da scaricare devono avere il nome (eventualmente rinominandole): 
 - arduino-mqtt
 
-Si tratta di una libreria **molto leggera** che non occupa spazio eccessivo in memoria istruzioni.
+Si tratta di una libreria **molto leggera** che non occupa spazio eccessivo in memoria istruzioni. 
+
+Sono stati utilizzati due **timer HW** ([Gestione dei tempi con i timer HW](timersched.md)) per realizzare i tentativi periodici di riconnessione in assenza di connessione WiFi e in assenza di un server MQTT raggiungibile:
+- **wifiReconnectTimer** è usato in congiunzione con **WiFiEvent**. Il timer viene attivato in modo **once**, cioè una sola volta. Alla sua scadenza parte la riconnessione del WiFi che, se va a buon fine, genera l'evento SYSTEM_EVENT_STA_GOT_IP che attiva il timer del **polling dello stato MQTT** in **modo periodico** mqttReconnectTimer.attach_ms(...), se invece non va a buon fine genera l'evento SYSTEM_EVENT_STA_DISCONNECTED che riattiva il timer di riconnessione WiFi per un'altra volta ancora tramite l'istruzione wifiReconnectTimer.once_ms(...). L'istruzione in caso di SYSTEM_EVENT_STA_DISCONNECTED  **mqttReconnectTimer.detach()** serve a inibire nuovi tentativi di polling della connessione MQTT durante i periodi di disservizio del WiFi dato che in questo caso il server MQTT sarebbe comunque irraggiungibile.
+- **mqttReconnectTimer** è sempre attivo se è presente il WiFi e serve a fare il polling dello stato della connessione MQTT tramite **mqttClient.connected()**. Se MQTT è connesso non accade nulla altrimenti viene lanciato un tentativo di riconnessione tramite connectToMqtt().
+
+
 
 ```C++
 //#include <WiFiClientSecure.h>
@@ -280,6 +286,9 @@ Le **librerie** vanno scaricate e scompattate dentro la cartella **libraries** a
 - async-mqtt-client
 - AsyncTCP
 
+Sono stati utilizzati due **timer HW** ([Gestione dei tempi con i timer HW](timersched.md)) per realizzare i tentativi periodici di riconnessione in assenza di connessione WiFi e in assenza di un server MQTT raggiungibile:
+- **wifiReconnectTimer** è usato in congiunzione con **WiFiEvent**. Il timer viene attivato in modo **once**, cioè una sola volta. Alla sua scadenza parte la riconnessione del WiFi che, se va a buon fine, genera l'evento SYSTEM_EVENT_STA_GOT_IP che fa partire immediatamente una richiesta di connessione MQTT tramite **connectToMqtt()**, se invece non va a buon fine genera l'evento SYSTEM_EVENT_STA_DISCONNECTED che riattiva il timer di riconnessione WiFi per un'altra volta ancora tramite l'istruzione wifiReconnectTimer.once_ms(...). L'istruzione in caso di SYSTEM_EVENT_STA_DISCONNECTED  **mqttReconnectTimer.detach()** serve a inibire nuovi tentativi di polling della connessione MQTT durante i periodi di disservizio del WiFi dato che in questo caso il server MQTT sarebbe comunque irraggiungibile.
+- **mqttReconnectTimer** viene attivato **una sola volta** tramite mqttReconnectTimer.once_ms(...) da una callback associato all'evento di disconnessione MQTT. Al suo scadere viene fatto un tentativo di riconnessione tramite  **connectToMqtt()**. Se va a vuoto viene generato un nuovo evento di disconnessione MQTT e viene nuovamente richiamata la callback che attiva mqttReconnectTimer una sola volta, e così via. L'associazione tra callback e scadenza del timer genera un evento periodico di connessione fintanto che la connessione MQTT è assente.
 
 ```C++
 //#include <WiFiClientSecure.h>
