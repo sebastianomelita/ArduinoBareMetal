@@ -346,11 +346,11 @@ void loop() {
 	}
     
     // Publish an MQTT message on topic esp32/ds18b20/temperature    
-	uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, str.c_str(), str.length());                           
+    uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, str.c_str(), str.length());                           
     Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
     Serial.println(packetIdPub1);
-	Serial.print("Messaggio inviato: ");
-	Serial.println(str); 
+    Serial.print("Messaggio inviato: ");
+    Serial.println(str); 
   }
 }
 
