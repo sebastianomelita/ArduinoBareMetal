@@ -195,8 +195,8 @@ Il **gateway** proposto di seguito esegue lo **scan** degli indirizzi OneWire de
 #include <DallasTemperature.h>
 #include <Ticker.h>
 
-#define WIFI_SSID "myssid"
-#define WIFI_PASSWORD "mypsw"
+#define WIFI_SSID "casafleri"
+#define WIFI_PASSWORD "fabseb050770250368120110$"
 
 Ticker mqttReconnectTimer;
 Ticker wifiReconnectTimer;
@@ -209,7 +209,7 @@ Ticker wifiReconnectTimer;
 
 // Temperature MQTT Topic
 #define MQTT_PUB_TEMP "esp32/ds18b20/temperature"
-#define NSENSORS 4
+#define MAXNSENSORS 4
 
 // GPIO where the DS18B20 is connected to
 const int oneWireBus = 4;          
@@ -219,13 +219,14 @@ OneWire oneWire(oneWireBus);
 DallasTemperature sensors(&oneWire);
 // Temperature value
 float temp;
+unsigned short int nsensors = 0;
 
 AsyncMqttClient mqttClient;
 
 unsigned long previousMillis = 0;   // Stores last time temperature was published
 const long interval = 4000;        // Interval at which to publish sensor readings
 byte count = 0;
-byte addresses[NSENSORS][8];
+byte addresses[MAXNSENSORS][8];
 
 void connectToWifi() {
   Serial.println("Connecting to Wi-Fi...");
@@ -276,15 +277,16 @@ void onMqttPublish(uint16_t packetId) {
 }
 
 void addrSearch() {
-  byte j = 0;
-  while(oneWire.search(addresses[j]) && j < NSENSORS) {
+  nsensors= 0;
+  while(oneWire.search(addresses[nsensors]) && nsensors < MAXNSENSORS) {
 	  Serial.print(" ROM =");
 	  for(int i = 0; i < 8; i++) {
 		Serial.write(' ');
-		Serial.print(addresses[j][i], HEX);
+		Serial.print(addresses[nsensors][i], HEX);
 		Serial.println();
 	  }
-  }  
+  } 
+  nsensors++;  
   Serial.println(" No more addresses.");
   Serial.println();
   oneWire.reset_search();
@@ -332,7 +334,7 @@ void loop() {
     
 	//costruisci il messaggio JSON
 	String str = "{";
-	for(int i = 0; i < NSENSORS; i++){
+	for(int i = 0; i < nsensors; i++){
 		str += "\"sensor";
 		str += String(i+1);
 		str += "\":\"";
@@ -340,7 +342,7 @@ void loop() {
 		temp = sensors.getTempC(addresses[i]);
 		str += temp;
 		str += "\"";
-		if(i < NSENSORS-1){
+		if(i < nsensors-1){
 			str += ",";
 		}else{
 			str += "}";
@@ -348,11 +350,11 @@ void loop() {
 	}
     
     // Publish an MQTT message on topic esp32/ds18b20/temperature    
-    uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, str.c_str(), str.length());                           
+	uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, str.c_str(), str.length());                           
     Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
     Serial.println(packetIdPub1);
-    Serial.print("Messaggio inviato: ");
-    Serial.println(str); 
+	Serial.print("Messaggio inviato: ");
+	Serial.println(str); 
   }
 }
 
