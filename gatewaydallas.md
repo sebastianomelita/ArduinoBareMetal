@@ -184,7 +184,7 @@ Dal **punto di vista SW** sevono sempre **due librerie**, le solite due librerie
 
 Il **codice** va modificato per utilizzare l'**indirizzamento** in uso nel **BUS OneWire** per recuperare le misure dei **singoli sensori**.
 
-Il **gateway** proposto di seguito esegue lo **scan** degli indirizzi OneWire dei dispositivi presenti sul BUS e li memorizza in un array di array durante il **setup()**. Nel **loop()**, ad ogni iterazione schedulata, **legge** i valori di temperatura per ogni indirizzo e li **impacchetta in un JSON** che manda **via client MQTT** all'applicazione remota. All'inizio del codice, **NSENSORS** è la costante che imposta il numero di sensori presenti sul BUS.
+Il **gateway** proposto di seguito esegue lo **scan** degli indirizzi OneWire dei dispositivi presenti sul BUS e li memorizza in un array di array durante il **setup()**. Nel **loop()**, ad ogni iterazione schedulata, **legge** i valori di temperatura per ogni indirizzo e li **impacchetta in un JSON** che manda **via client MQTT** all'applicazione remota. All'inizio del codice, **MAXNSENSORS** è la costante che imposta il numero massimo di sensori presenti sul BUS.
 
 ```C++
 //#include <WiFiClientSecure.h>
