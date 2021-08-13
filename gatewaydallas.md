@@ -168,7 +168,7 @@ void loop() {
     //temp = sensors.getTempFByIndex(0);
     
     // Publish an MQTT message on topic esp32/ds18b20/temperature
-    uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, String(temp).c_str());                            
+    uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, String(temp).c_str(), strlen(String(temp).c_str()));                            
     Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
     Serial.println(packetIdPub1);
     Serial.printf("Messaggio: %.2f \n", sensors.getTempCByIndex(0));
