@@ -184,6 +184,8 @@ Dal **punto di vista SW** sevono sempre **due librerie**, le solite due librerie
 
 Il **codice** va modificato per utilizzare l'**indirizzamento** in uso nel **BUS OneWire** per recuperare le misure dei **singoli sensori**.
 
+Il gateway proposto di seguito esegue lo **scan** degli indirizzi OneWire dei dispositivi presenti sul BUS e li memorizza in un array di array durante il setup(). Nel loop(), ad ogni iterazione schedulata, **legge** i valori di temperatura per ogni indirizzo e li **impacchetta in un JSON** che manda **via client MQTT** all'applicazione remota.
+
 ```C++
 //#include <WiFiClientSecure.h>
 #include <WiFi.h>       // per ESP32
