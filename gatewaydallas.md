@@ -220,6 +220,7 @@ DallasTemperature sensors(&oneWire);
 // Temperature value
 float temp;
 unsigned short int nsensors = 0;
+String datastr = "";
 
 AsyncMqttClient mqttClient;
 
@@ -293,10 +294,14 @@ void addrSearch() {
   delay(250);
 }
 
-void setup() {
-  // Start the DS18B20 sensor
-  sensors.begin();
-  
+void busInit(){
+	// Start the DS18B20 sensor
+	sensors.begin();
+	//scan degli indirizzi sul BUS OneWire
+	addrSearch();
+}
+
+void setup() { 
   Serial.begin(115200);
   Serial.println();
   Serial.println();
@@ -316,24 +321,12 @@ void setup() {
     count++;
     Serial.print(".");
   }
-  //scan degli indirizzi sul BUS OneWire
-  addrSearch();
+  busInit();
 }
 
-void loop() {
-  unsigned long currentMillis = millis();
-  // Every X number of seconds 
-  // it publishes a new MQTT message
-  if (currentMillis - previousMillis >= interval) {
-    // Save the last time a new reading was published
-    previousMillis = currentMillis;
-    Serial.print("Requesting temperatures...");
-	// Send the command to get temperatures
-	sensors.requestTemperatures(); 
-	Serial.println("DONE");
-    
+void readData(String &str){    
 	//costruisci il messaggio JSON
-	String str = "{";
+	str = "{";
 	for(int i = 0; i < nsensors; i++){
 		str += "\"sensor";
 		str += String(i+1);
@@ -348,13 +341,26 @@ void loop() {
 			str += "}";
 		}
 	}
+}
+
+void loop() {
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval) {
+    // Save the last time a new reading was published
+    previousMillis = currentMillis;
+    Serial.print("Requesting temperatures...");
+	// Send the command to get temperatures
+	sensors.requestTemperatures(); 
+	Serial.println("DONE");
+    //carica i valori su datastr
+	readData(datastr); 
     
     // Publish an MQTT message on topic esp32/ds18b20/temperature    
-    uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, str.c_str(), str.length());                           
+	uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, datastr.c_str(), datastr.length());                           
     Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
     Serial.println(packetIdPub1);
-    Serial.print("Messaggio inviato: ");
-    Serial.println(str); 
+	Serial.print("Messaggio inviato: ");
+	Serial.println(datastr); 
   }
 }
 
