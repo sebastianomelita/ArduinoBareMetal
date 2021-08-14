@@ -179,26 +179,26 @@ void setup() {
 }
 
 void readData(String &str){    
-	// read raw accel/gyro measurements from device
-	//accelgyro.getAcceleration(&ax, &ay, &az);
+    // read raw accel/gyro measurements from device
+
     accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
 
     // these methods (and a few others) are also available
     //accelgyro.getAcceleration(&ax, &ay, &az);
     //accelgyro.getRotation(&gx, &gy, &gz);
-	str = "{\"XAcc\":\"";
-	str += ax;
-	str += "\",YAcc\":\"";
-	str += ay;
-	str += "\",ZAcc\":\"";
-	str += az;
-	str += "\",XGyro\":\"";
-	str += gx;
-	str += "\",YGyro\":\"";
-	str += gy;
-	str += "\",ZGyro\":\"";
-	str += gz;
-	str += "\"}";
+    str = "{\"XAcc\":\"";
+    str += ax;
+    str += "\",YAcc\":\"";
+    str += ay;
+    str += "\",ZAcc\":\"";
+    str += az;
+    str += "\",XGyro\":\"";
+    str += gx;
+    str += "\",YGyro\":\"";
+    str += gy;
+    str += "\",ZGyro\":\"";
+    str += gz;
+    str += "\"}";
     //delay(500); 
 }
 
