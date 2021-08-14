@@ -10,6 +10,6 @@ Notare i **collegamenti in parallelo** tra tutti i dispositivi attorno a 3 fili 
 
 ### **Il sensore di movimento MPU6050**
 
-<img src="DS18B20-tempeature-sensor-pinout.jpg" alt="alt text" width="400">
+<img src="MPU6050-Module-Accelerometer-Gyroscope-Temperature-Sensor.jpg" alt="alt text" width="400">
 
 >[Torna a gateway BUS](gateway.md)
