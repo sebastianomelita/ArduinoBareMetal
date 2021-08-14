@@ -223,5 +223,8 @@ void loop() {
 
 
 ```
+**Sitografia:**
+- https://randomnerdtutorials.com/esp32-mpu-6050-web-server/
+
 
 >[Torna a gateway BUS](gateway.md)
