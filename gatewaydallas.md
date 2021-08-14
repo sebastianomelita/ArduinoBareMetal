@@ -346,19 +346,19 @@ void readData(String &str){
 void loop() {
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= interval) {
-    // Save the last time a new reading was published
-    previousMillis = currentMillis;
-    Serial.print("Requesting temperatures...");
+	// Save the last time a new reading was published
+	previousMillis = currentMillis;
+	Serial.print("Requesting temperatures...");
 	// Send the command to get temperatures
 	sensors.requestTemperatures(); 
 	Serial.println("DONE");
-    //carica i valori su datastr
+	//carica i valori su datastr
 	readData(datastr); 
-    
-    // Publish an MQTT message on topic esp32/ds18b20/temperature    
+
+	// Publish an MQTT message on topic esp32/ds18b20/temperature    
 	uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, datastr.c_str(), datastr.length());                           
-    Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
-    Serial.println(packetIdPub1);
+	Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
+	Serial.println(packetIdPub1);
 	Serial.print("Messaggio inviato: ");
 	Serial.println(datastr); 
   }
