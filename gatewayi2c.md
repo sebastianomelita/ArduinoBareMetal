@@ -208,16 +208,16 @@ void loop() {
     previousMillis = currentMillis;
 	
     Serial.print("Requesting data...");
-	readData(datastr);
-	Serial.println("DONE");
+    readData(datastr);
+    Serial.println("DONE");
     
     // Publish an MQTT message on topic esp32/ds18b20/temperature    
-	uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, datastr.c_str(), datastr.length());                           
+    uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, datastr.c_str(), datastr.length());                           
     Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
-	Serial.println(MQTT_PUB);
+    Serial.println(MQTT_PUB);
     Serial.println(packetIdPub1);
-	Serial.print("Messaggio inviato: ");
-	Serial.println(str); 
+    Serial.print("Messaggio inviato: ");
+    Serial.println(str); 
   }
 }
 
