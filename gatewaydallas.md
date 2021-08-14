@@ -178,7 +178,7 @@ void loop() {
 
 <img src="multiple_ds18b20_esp32_bb.png" alt="alt text" width="500">
 
-Dal **punto di vista SW** sevono sempre **due librerie**, le solite due librerie del singolo sensore da scaricare dentro la solita cartella **libraries**.
+Dal **punto di vista SW** sevono sempre **due librerie**, le solite due librerie del singolo sensore da scaricare dentro la solita cartella **libraries** (disponibili su Git al link https://github.com/PaulStoffregen/OneWire e al link https://github.com/milesburton/Arduino-Temperature-Control-Library).
 
 Il **codice** va modificato per utilizzare l'**indirizzamento** in uso nel **BUS OneWire** per recuperare le misure dei **singoli sensori**.
 
