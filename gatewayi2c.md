@@ -6,7 +6,7 @@
 
 Notare i **collegamenti in parallelo** tra tutti i dispositivi attorno a 3 fili (2 fili escluso massa).
 
-<img src="Schematic-dallas-18s20.gif" alt="alt text" width="600">
+ <img src="I2C-communication-protocol-ESP32.png" alt="alt text" width="600">
 
 ### **Il sensore di movimento MPU6050**
 
