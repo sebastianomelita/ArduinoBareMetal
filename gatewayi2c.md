@@ -15,7 +15,7 @@ Notare i **collegamenti in parallelo** tra tutti i dispositivi attorno a 3 fili 
 ### **Esempio di cablaggio**
 <img src="MPU6050_ESP32_Wiring-Schematic-Diagram.png" alt="alt text" width="600">
 
-Dal **punto di vista SW** sevono **due librerie** da scaricare dentro la solita cartella **libraries**:
+Dal **punto di vista SW** seve **una libreria** da scaricare dentro la solita cartella **libraries** (disponibile su Git al link https://github.com/ElectronicCats/mpu6050) :
 - **mpu6050-master.zip** da scompattare e rinominare semplicemente **mpu6050**. Per installare il protocollo standard I2C e il driver del sensore MPU6050.
 
 ### **Gateway I2C-MQTT per la lettura di un solo sensore**
