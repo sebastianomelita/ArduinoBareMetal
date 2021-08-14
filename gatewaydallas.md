@@ -155,11 +155,9 @@ void setup() {
 
 void loop() {
   unsigned long currentMillis = millis();
-  // Every X number of seconds 
-  // it publishes a new MQTT message
   if (currentMillis - previousMillis >= interval) {
-    // Save the last time a new reading was published
     previousMillis = currentMillis;
+    
     // New temperature readings
     sensors.requestTemperatures(); 
     // Temperature in Celsius degrees
@@ -346,8 +344,8 @@ void readData(String &str){
 void loop() {
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= interval) {
-	// Save the last time a new reading was published
 	previousMillis = currentMillis;
+	
 	Serial.print("Requesting temperatures...");
 	// Send the command to get temperatures
 	sensors.requestTemperatures(); 
