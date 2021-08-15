@@ -46,7 +46,7 @@ Il **tempo base** è la base dei tempi di tutte le schedulazioni, viene calcolat
 	void loop()
 	{
 		// polling di millis()
-		if((millis()-precm) >= tbase){  // ricerca del nuovo tempo “buono per eseguire”
+		if((millis()-precm) >= (unsigned long) TBASE){  // ricerca del nuovo tempo “buono per eseguire”
 			// codice eseguito al tempo “buono per eseguire” attuale
 			precm = millis();  // memorizzo l’istante dell’ultimo tempo “buono per eseguire”
 			in = digitalRead(pulsante);  // lettura ingresso
