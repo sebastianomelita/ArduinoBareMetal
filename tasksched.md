@@ -28,7 +28,7 @@ void setup()
 void loop()
 {
 	// polling della millis() alla ricerca del tempo stabilito
-	if((millis()-precm) >= tbase){ // lo eseguo se è il tempo stabilito
+	if((millis()-precm) >= (unsigned long) tbase){ // lo eseguo se è il tempo stabilito
 		precm = millis();  // preparo il tic successivo al tempo stabilito
 		step = (step + 1) % nstep;  // conteggio circolare arriva al massimo a nstep-1
 
