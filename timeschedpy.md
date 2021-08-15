@@ -44,6 +44,7 @@ def main():
 	pinMode(pulsante, IN)
 	precm = 0
 	precval = 0
+	tbase = 1000
 
 	while True:
 		if (uptime() - precm) >= tbase:  	   # schedulatore (e anche antirimbalzo)
