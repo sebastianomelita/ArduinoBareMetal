@@ -20,11 +20,11 @@ Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontroll
 
 ### **Condizionamento digitale**
 
-| Operating Voltage               |        3.3V         |          5V           |
-|---------------------------------|---------|-----------|-----------|-----------|
-| Dry/Wet                         |  Umido  |  Secco    |  Umido    | Secco     |
-| Capacitive Soil Moisture Sensor |  2...8  | 14...21   | 821...824 | 490...549 |
-| Resistive Soil Moisture Sensor  |  1024   | 483...505 |   1023    | 344...358 |
+    | Operating Voltage               |        3.3V         |          5V           |
+    |---------------------------------|---------|-----------|-----------|-----------|
+    | Dry/Wet                         |  Umido  |  Secco    |  Umido    | Secco     |
+    | Capacitive Soil Moisture Sensor |  2...8  | 14...21   | 821...824 | 490...549 |
+    | Resistive Soil Moisture Sensor  |  1024   | 483...505 |   1023    | 344...358 |
 
 ### **Librerie del progetto**
 
