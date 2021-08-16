@@ -8,7 +8,7 @@
 
 Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontrollore tramite linee esclusive.
 
-<img src="star.png" alt="alt text" width="600">
+<img src="star.png" alt="alt text" width="200">
 
 ### **Il sensore di temperatura DS18B20**
 
