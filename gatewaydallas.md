@@ -30,6 +30,8 @@ In pratica è usuale anche un collegamento a **3 fili** (2 senza la massa):
 
 <img src="ds18b20_esp32_single_normal.png" alt="alt text" width="500">
 
+### **Librerie del progetto**
+
 Dal **punto di vista SW** sevono **due librerie** da scaricare e scompattare dentro la solita cartella **libraries** (disponibili su Git al link https://github.com/PaulStoffregen/OneWire e al link https://github.com/milesburton/Arduino-Temperature-Control-Library) :
 - **OneWire-master.zip** da scompattare e rinominare semplicemente **OneWire**. Per installare il protocollo standard OneWire.
 - **Arduino-Temperature-Control-Library-master** da scompattare e rinominare semplicemente **DallasTemperature** per installare il particolare protocollo applicativo di quella categoria di sensori di temperatura (**DS18B20**).
