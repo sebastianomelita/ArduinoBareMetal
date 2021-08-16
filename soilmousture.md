@@ -155,7 +155,7 @@ void packData(String &str){
 void loop() {
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= interval) {
-      previousMillis = currentMillis;
+          previousMillis = currentMillis;
 	  
 	  Serial.print("Requesting data...");
 	  h1 = analogRead(SensorPin);
@@ -163,11 +163,11 @@ void loop() {
 	  
 	  packData(datastr);
 	    
-      // Publish an MQTT message on topic esp32/ds18b20/temperature    
+          // Publish an MQTT message on topic esp32/ds18b20/temperature    
 	  uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, datastr.c_str(), datastr.length());                        
-      Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
+          Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
 	  Serial.println(MQTT_PUB);
-      Serial.println(packetIdPub1);
+          Serial.println(packetIdPub1);
 	  Serial.print("Messaggio inviato: ");
 	  Serial.println(datastr); 
   }
