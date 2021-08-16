@@ -16,7 +16,7 @@ Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontroll
 
 ### **Schema cablaggio**
 
-<img src="Soil-Moisture-Sensor-ESP32-NodeMCU_Steckplatine.png" alt="alt text" width="200">
+<img src="Soil-Moisture-Sensor-ESP32-NodeMCU_Steckplatine.png" alt="alt text" width="400">
 
 ### **Librerie del progetto**
 
