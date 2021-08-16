@@ -22,9 +22,9 @@ Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontroll
 
     | Tensione di alimentazione       |        3.3V         |          5V           |
     |---------------------------------|---------|-----------|-----------|-----------|
-    | umido/Secco                     |  Umido  |  Secco    |  Umido    | Secco     |
-    | Capacitive Soil Moisture Sensor |  2...8  | 14...21   | 821...824 | 490...549 |
-    | Resistive Soil Moisture Sensor  |  1024   | 483...505 |   1023    | 344...358 |
+    | Umido/Secco                     |  Umido  |   Secco   |   Umido   |   Secco   |
+    | Capacitive Soil Moisture Sensor |  2...8  |  14...21  | 821...824 | 490...549 |
+    | Resistive Soil Moisture Sensor  |   1024  | 483...505 |   1023    | 344...358 |
 
 ### **Librerie del progetto**
 
