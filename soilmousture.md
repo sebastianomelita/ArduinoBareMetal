@@ -173,8 +173,161 @@ void loop() {
   }
 }
 
+```
+
+
+```C++
+//#include <WiFiClientSecure.h>
+//#include <ESP8266WiFi.h> per ESP8266
+#include <AsyncMqttClient.h>
+#include <WiFi.h>       // per ESP32
+
+// Raspberry Pi Mosquitto MQTT Broker
+//#define MQTT_HOST IPAddress(192, 168, 1, 254)
+#define MQTT_HOST "test.mosquitto.org"
+// For a cloud MQTT broker, type the domain name
+//#define MQTT_HOST "example.com"
+#define MQTT_PORT 1883
+
+#define WIFI_SSID "myssid"
+#define WIFI_PASSWORD "mypsw"
+
+//Temperature MQTT Topic
+#define MQTT_PUB "esp/umiditasuolo/"
+//#define SensorPin A0  // used for Arduino and ESP8266
+#define SensorPin 4     // used for ESP32
+//deep sleep
+#define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
+#define TIME_TO_SLEEP  30        /* Time ESP32 will go to sleep (in seconds) */
+
+RTC_DATA_ATTR int bootCount = 0;
+
+String datastr = "";
+
+AsyncMqttClient mqttClient;
+
+unsigned long previousMillis = 0;   // Stores last time temperature was published
+const long interval = 2000;        // Interval at which to publish sensor readings
+byte count = 0;
+
+unsigned long previusMillis = 0;
+bool sensor1 = false;
+float t1, h1;
+
+/*
+Method to print the reason by which ESP32
+has been awaken from sleep
+*/
+void print_wakeup_reason(){
+  esp_sleep_wakeup_cause_t wakeup_reason;
+
+  wakeup_reason = esp_sleep_get_wakeup_cause();
+
+  switch(wakeup_reason)
+  {
+    case ESP_SLEEP_WAKEUP_EXT0 : Serial.println("Wakeup caused by external signal using RTC_IO"); break;
+    case ESP_SLEEP_WAKEUP_EXT1 : Serial.println("Wakeup caused by external signal using RTC_CNTL"); break;
+    case ESP_SLEEP_WAKEUP_TIMER : Serial.println("Wakeup caused by timer"); break;
+    case ESP_SLEEP_WAKEUP_TOUCHPAD : Serial.println("Wakeup caused by touchpad"); break;
+    case ESP_SLEEP_WAKEUP_ULP : Serial.println("Wakeup caused by ULP program"); break;
+    default : Serial.printf("Wakeup was not caused by deep sleep: %d\n",wakeup_reason); break;
+  }
+}
+
+void connectToWifi() {
+  Serial.println("Connecting to Wi-Fi...");
+  WiFi.mode(WIFI_STA);
+  //WiFi.disconnect();
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+}
+
+void packData(String &str){    
+	str = "{\"humidity1\":\"";
+	str += h1;
+	str += "\"}";
+}
+
+void loop_once() {  
+	  Serial.print("Requesting data...");
+	  h1 = analogRead(SensorPin);
+	  Serial.println("DONE");
+	  
+	  packData(datastr);
+	    
+      // Publish an MQTT message on topic esp32/ds18b20/temperature    
+	  uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, datastr.c_str(), datastr.length());                        
+      Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
+	  Serial.println(MQTT_PUB);
+      Serial.println(packetIdPub1);
+	  Serial.print("Messaggio inviato: ");
+	  Serial.println(datastr); 
+}
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println();
+  Serial.println();
+  mqttClient.setServer(MQTT_HOST, MQTT_PORT);
+  // If your broker requires authentication (username and password), set them below
+  //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
+  
+  count = 0;
+  Serial.println("Connecting to Wi-Fi...");
+  connectToWifi();
+  while (WiFi.status() != WL_CONNECTED && count < 10) {
+	count++;
+	Serial.print(".");
+    delay(500);
+  }
+  if(WiFi.status() == WL_CONNECTED){
+	//se il WiFi è connesso
+	Serial.println("WiFi connected");
+	Serial.print("IP address: ");
+	Serial.println(WiFi.localIP());
+  }
+  
+  count = 0;
+  Serial.println("Connecting to MQTT...");
+  mqttClient.connect();
+  while (!mqttClient.connected() && WiFi.status() == WL_CONNECTED && count < 10) {
+	//Serial.print("MQTT lastError: ");
+	//Serial.println(mqttClient.lastError());
+	mqttClient.connect();
+	count++;
+	Serial.print(".");
+	delay(500);
+  }
+  if(mqttClient.connected()){
+	//se il WiFi è connesso
+	Serial.println("MQTT connected");
+  }
+  
+  //Increment boot number and print it every reboot
+  ++bootCount;
+  Serial.println("Boot number: " + String(bootCount));
+  
+  loop_once();
+  
+  //Print the wakeup reason for ESP32
+  print_wakeup_reason();
+
+  /*
+  First we configure the wake up source
+  We set our ESP32 to wake up every 5 seconds
+  */
+  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
+  Serial.println("Setup ESP32 to sleep for every " + String(TIME_TO_SLEEP) + " Seconds");
+  Serial.println("Going to sleep now");
+  delay(1000);
+  Serial.flush(); 
+  esp_deep_sleep_start();
+  Serial.println("This will never be printed");
+}
+
+void loop(){}
 
 ```
+
 
 **Sitografia:**
 
