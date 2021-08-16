@@ -38,23 +38,14 @@ Dal **punto di vista SW** non servono librerie particolari tranne quelle per la 
 
 La libreria MQTT è asincrona per cui non bloccante. E' adoperabile sia per **ESP8266** che per **ESP32**.
 
-Anche in questo caso sono possibili entrambi i collegamenti, **normal mode** e **parasite mode**. Di seguito è illustrato il **normal mode**:
-
-
 ```C++
 //#include <WiFiClientSecure.h>
-#include <WiFi.h>       // per ESP32
+
 //#include <ESP8266WiFi.h> per ESP8266
 #include <AsyncMqttClient.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
 #include <Ticker.h>
+#include <WiFi.h>       // per ESP32
 
-#define WIFI_SSID "myssid"
-#define WIFI_PASSWORD "mypsw"
-
-Ticker mqttReconnectTimer;
-Ticker wifiReconnectTimer;
 // Raspberry Pi Mosquitto MQTT Broker
 //#define MQTT_HOST IPAddress(192, 168, 1, 254)
 #define MQTT_HOST "test.mosquitto.org"
@@ -62,23 +53,28 @@ Ticker wifiReconnectTimer;
 //#define MQTT_HOST "example.com"
 #define MQTT_PORT 1883
 
-// Temperature MQTT Topic
-#define MQTT_PUB_TEMP "esp32/ds18b20/temperature"
+#define WIFI_SSID "myssid"
+#define WIFI_PASSWORD "mypsw"
 
-// GPIO where the DS18B20 is connected to
-const int oneWireBus = 4;          
-// Setup a oneWire instance to communicate with any OneWire devices
-OneWire oneWire(oneWireBus);
-// Pass our oneWire reference to Dallas Temperature sensor 
-DallasTemperature sensors(&oneWire);
-// Temperature value
-float temp;
+//Temperature MQTT Topic
+#define MQTT_PUB "esp/umiditasuolo/"
+//#define SensorPin A0  // used for Arduino and ESP8266
+#define SensorPin 4     // used for ESP32
+
+Ticker mqttReconnectTimer;
+Ticker wifiReconnectTimer;
+
+String datastr = "";
 
 AsyncMqttClient mqttClient;
 
 unsigned long previousMillis = 0;   // Stores last time temperature was published
-const long interval = 4000;        // Interval at which to publish sensor readings
+const long interval = 2000;        // Interval at which to publish sensor readings
 byte count = 0;
+
+unsigned long previusMillis = 0;
+bool sensor1 = false;
+float t1, h1;
 
 void connectToWifi() {
   Serial.println("Connecting to Wi-Fi...");
@@ -129,9 +125,6 @@ void onMqttPublish(uint16_t packetId) {
 }
 
 void setup() {
-  // Start the DS18B20 sensor
-  sensors.begin();
-  
   Serial.begin(115200);
   Serial.println();
   Serial.println();
@@ -153,33 +146,38 @@ void setup() {
   }
 }
 
+void packData(String &str){    
+	str = "{\"humidity1\":\"";
+	str += h1;
+	str += "\"}";
+}
+
 void loop() {
   unsigned long currentMillis = millis();
   if (currentMillis - previousMillis >= interval) {
-    previousMillis = currentMillis;
-    
-    // New temperature readings
-    sensors.requestTemperatures(); 
-    // Temperature in Celsius degrees
-    temp = sensors.getTempCByIndex(0);
-    // Temperature in Fahrenheit degrees
-    //temp = sensors.getTempFByIndex(0);
-    
-    // Publish an MQTT message on topic esp32/ds18b20/temperature
-    uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, String(temp).c_str(), strlen(String(temp)));                            
-    Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
-    Serial.println(packetIdPub1);
-    Serial.printf("Messaggio: %.2f \n", sensors.getTempCByIndex(0));
+      previousMillis = currentMillis;
+	  
+	  Serial.print("Requesting data...");
+	  h1 = analogRead(SensorPin);
+	  Serial.println("DONE");
+	  
+	  packData(datastr);
+	    
+      // Publish an MQTT message on topic esp32/ds18b20/temperature    
+	  uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, datastr.c_str(), datastr.length());                        
+      Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
+	  Serial.println(MQTT_PUB);
+      Serial.println(packetIdPub1);
+	  Serial.print("Messaggio inviato: ");
+	  Serial.println(datastr); 
   }
 }
+
 
 ```
 
 **Sitografia:**
 
-https://randomnerdtutorials.com/esp32-mqtt-publish-ds18b20-temperature-arduino/
-https://randomnerdtutorials.com/micropython-mqtt-publish-ds18b10-esp32-esp8266/
-https://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/
-https://randomnerdtutorials.com/esp32-multiple-ds18b20-temperature-sensors/
+https://diyi0t.com/soil-moisture-sensor-tutorial-for-arduino-and-esp8266/
 
 >[Torna a gateway BUS](gateway.md)
