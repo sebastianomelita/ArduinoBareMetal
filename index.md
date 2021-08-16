@@ -10,8 +10,7 @@
 7. [Interrupts](indexinterrupts.md)
 8. [Macchine a stati finiti](indexstatifiniti.md)
 9. [Reti di sensori](sensornetworkshort.md)
-10. [Gateway BUS di sensori](gateway.md)
-11. [Gateway stella di sensori](gatewaystar.md)
+10. [Gateway rete di sensori](gateway.md)
 12. [Esercizi](esercizi.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTk1MTYzNTI1NV19
