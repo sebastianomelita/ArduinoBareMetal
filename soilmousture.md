@@ -12,11 +12,11 @@ Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontroll
 
 ### **Il sensore di livello capacitivo**
 
-<img src="CAP-SHYG_1.png" alt="alt text" width="400">
+<img src="CAP-SHYG_1.png" alt="alt text" width="200">
 
 ### **Schema cablaggio**
 
-<img src="Soil-Moisture-Sensor-ESP32-NodeMCU_Steckplatine.png" alt="alt text" width="400">
+<img src="Soil-Moisture-Sensor-ESP32-NodeMCU_Steckplatine.png" alt="alt text" width="200">
 
 ### **Librerie del progetto**
 
