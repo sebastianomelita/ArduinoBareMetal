@@ -1,10 +1,23 @@
 >[Torna all'indice generale](index.md)
-## **Gateways per BUS di sensori**
+## **Gateways per reti di sensori**
+BUS cablato:
+1. Dallas](gatewaydallas.md)
+2. [I2C](gatewayi2c.md)
+3. [SPI](gatewayspi.md)
+4. [Modbus](gatewaymodbus.md)
 
-1. [BUS Dallas](gatewaydallas.md)
-2. [BUS I2C](gatewayi2c.md)
-3. [BUS spi](gatewayspi.md)
-4. [BUS modbus](gatewaymodbus.md)
+Stella cablato (punto-punto):
+1. [Analogico](gatewayanalogico.md)
+2. [Digitale](gatewaydigitale.md)
+
+Radio punto-punto:
+1. [Analogico](gatewayradioa.md)
+2. [Digitale](gatewayradiod.md)
+
+Radio mezzo comune:
+1. [LoraWan](gatewaylora.md)
+2. [Bluetooth](gatewayblu.md)
+
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
