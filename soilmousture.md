@@ -2,7 +2,7 @@
 
 >[Torna a gateway analogico](gateway.md)
 
-## **Gateway per Soil Mousture Sensor capacitivo**
+## **Gateway per Sensore di umidità del suolo capacitivo**
 
 ### **Schema di principio del collegamento a stella**
 
@@ -20,11 +20,15 @@ Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontroll
 
 ### **Condizionamento digitale**
 
-    | Tensione di alimentazione       |        3.3V         |          5V           |
-    |---------------------------------|---------|-----------|-----------|-----------|
-    | Umido/Secco                     |  Umido  |   Secco   |   Umido   |   Secco   |
-    | Capacitive Soil Moisture Sensor |  2...8  |  14...21  | 821...824 | 490...549 |
-    | Resistive Soil Moisture Sensor  |   1024  | 483...505 |   1023    | 344...358 |
+    | Tensione di alimentazione               |        3.3V         |          5V           |
+    |-----------------------------------------|---------|-----------|-----------|-----------|
+    | Umido/Secco                             |  Umido  |   Secco   |   Umido   |   Secco   |
+    | Sensore di umidità del suolo capacitivo |  2...8  |  14...21  | 821...824 | 490...549 |
+    | Sensore di umidità del suolo resistivo  |   1024  | 483...505 |   1023    | 344...358 |
+    
+Teoricamente si può usare una qualsiasi di queste combinazioni, ma è necessario calibrare il  sensore prima di dichiarare che il terreno è bagnato o asciutto.
+
+Per il sensore di umidità del suolo capacitivo si vede anche dalla tabella che la differenza nel valore del sensore per una tensione di esercizio di 3,3V è molto bassa. Pertanto per evitare probabili errori è consigliabile, per il sensore capacitivo, utilizzare una tensione operativa di 5V.
 
 ### **Librerie del progetto**
 
