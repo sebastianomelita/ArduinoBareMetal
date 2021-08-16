@@ -14,7 +14,7 @@ Radio punto-punto:
 1. [Analogico](gatewayradioa.md)
 2. [Digitale](gatewayradiod.md)
 
-Radio mezzo comune:
+Radio mezzo comune (BUS):
 1. [LoraWan](gatewaylora.md)
 2. [Bluetooth](gatewayblu.md)
 
