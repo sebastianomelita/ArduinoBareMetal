@@ -18,11 +18,17 @@ Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontroll
 
 <img src="Soil-Moisture-Sensor-ESP32-NodeMCU_Steckplatine.png" alt="alt text" width="400">
 
+### **Condizionamento digitale**
+
+| Operating Voltage               |        3.3V         |          5V           |
+|---------------------------------|---------|-----------|-----------|-----------|
+| Dry/Wet                         |  Umido  |  Secco    |  Umido    | Secco     |
+| Capacitive Soil Moisture Sensor |  2...8  | 14...21   | 821...824 | 490...549 |
+| Resistive Soil Moisture Sensor  |  1024   | 483...505 |   1023    | 344...358 |
+
 ### **Librerie del progetto**
 
-Dal **punto di vista SW** sevono **due librerie** da scaricare e scompattare dentro la solita cartella **libraries** (disponibili su Git al link https://github.com/PaulStoffregen/OneWire e al link https://github.com/milesburton/Arduino-Temperature-Control-Library) :
-- **OneWire-master.zip** da scompattare e rinominare semplicemente **OneWire**. Per installare il protocollo standard OneWire.
-- **Arduino-Temperature-Control-Library-master** da scompattare e rinominare semplicemente **DallasTemperature** per installare il particolare protocollo applicativo di quella categoria di sensori di temperatura (**DS18B20**).
+Dal **punto di vista SW** non servono librerie particolari tranne quelle per la pubblicazione dei valorri traite MQTT. Una parte del codice va comunque dedicata al condizionamento dei valori misurati dal sensore per tradurli ai valori di interesse di umidità.
 
 ### **Gateway OneWire-MQTT per la lettura di un solo sensore**
 
