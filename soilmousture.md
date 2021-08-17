@@ -1,6 +1,6 @@
 
 
->[Torna a gateway analogico](gateway.md)
+>[Torna a gateway analogico](gatewayanalogico.md)
 
 ## **Gateway per sensore capacitivo di umidità del suolo**
 
@@ -352,4 +352,4 @@ void loop(){}
 - https://randomnerdtutorials.com/esp32-deep-sleep-arduino-ide-wake-up-sources/
 - https://randomnerdtutorials.com/esp32-timer-wake-up-deep-sleep/
 
->[Torna a gateway BUS](gateway.md)
+>[Torna a gateway BUS](gatewayanalogico.md)
