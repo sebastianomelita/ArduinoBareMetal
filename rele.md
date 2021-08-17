@@ -36,9 +36,9 @@ Una **scheda relè** consiste di **6 pin**:
 
 <img src="rele.png" alt="alt text" width="1000">
 
-Ci sono due pin di contatto che sono normalmente aperti e normalmente chiusi. Si usa sempre un pin comune e un pin normalmente aperto o un pin normalmente chiuso per collegare il carico. A seconda di NC o NO, si utilizza un segnale attivo alto o attivo basso per controllare il relè:
-- Normalmente aperto (NA). Si utilizza un pin normalmente aperto, il relè si attiverà quando il segnale alto è presente sul pin di controllo mentre il segnale basso sullo stesso pin spegnerà il relè come mostrato in figura.
-- Normalmente chiuso (NC).  Si utilizza un pin normalmente chiuso, il segnale basso sul pin di controllo attiva il relè mentre il segnale alto sul pin di controllo disattiva il relè.
+Ci sono due **pin di contatto** che sono **normalmente aperti** e **normalmente chiusi**. Si usa sempre un **pin comune** insieme ad un pin normalmente aperto o un pin normalmente chiuso alternativamente per collegare il carico. A seconda di NC o NO, si utilizza un segnale attivo alto o attivo basso per controllare il relè:
+- **Normalmente aperto (NA)**. Si utilizza un pin normalmente aperto, il relè si attiverà quando il segnale alto è presente sul **pin di controllo** mentre il segnale basso sullo stesso pin spegnerà il relè come mostrato in figura.
+- **Normalmente chiuso (NC)**.  Si utilizza un pin normalmente chiuso, il segnale basso sul **pin di controllo** attiva il relè mentre il segnale alto sul pin di controllo disattiva il relè.
 
 Alcuni moduli relè hanno transistor che funzionano con logica invertita. Logica invertita significa che il segnale basso attivo attiverà il relè mentre il segnale alto attivo spegnerà il relè. È necessario controllare la funzionalità del modulo relè prima di utilizzarlo. SRD-05VDC-SL-C, il modulo relè a 5V utilizzato nel progetto, non funziona su logica invertita.
 
