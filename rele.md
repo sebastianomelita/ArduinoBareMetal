@@ -95,7 +95,6 @@ const long interval = 60*1000;        // Interval at which to publish sensor rea
 byte count = 0;
 int8_t ax;
 int8_t cmdport = 22;
-String datastr = "";
 
 void connectToWifi() {
   Serial.println("Connecting to Wi-Fi...");
@@ -109,20 +108,20 @@ void connectToMqtt() {
   mqttClient.connect();
 }
 
-void readDataAndPub(String &str){ 
+void readDataAndPub(){ 
     //crea la stringa JSON
     ax = digitalRead(cmdport);
-    str = "{\"rele1\":\"";
-    str += ax;
-    str += "\"}";
+	String str = "{\"rele1\":\"";
+	str += ax;
+	str += "\"}";
 	
     // Publish an MQTT message on topic esp32/ds18b20/temperature    
-    uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, datastr.c_str(), datastr.length());                           
+	uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, str.c_str(), str.length());                           
     Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
-    Serial.println(MQTT_PUB);
+	Serial.println(MQTT_PUB);
     Serial.println(packetIdPub1);
-    Serial.print("Messaggio inviato: ");
-    Serial.println(datastr); 
+	Serial.print("Messaggio inviato: ");
+	Serial.println(str); 
 }
 
 void onMqttMessage(char* topic, char* payload, AsyncMqttClientMessageProperties properties, size_t len, size_t index, size_t total) {
@@ -154,7 +153,7 @@ void onMqttMessage(char* topic, char* payload, AsyncMqttClientMessageProperties 
   }
   
   Serial.print("Requesting data...");
-  readDataAndPub(datastr);
+  readDataAndPub();
   Serial.println("DONE");
 }
 
@@ -229,10 +228,11 @@ void loop() {
     previousMillis = currentMillis;
     
     Serial.print("Requesting data...");
-    readDataAndPub(datastr);
-    Serial.println("DONE");
+	readDataAndPub();
+	Serial.println("DONE");
   }
 }
+
 
 ```
 ### **Gateway MQTT per il comando di una scheda relè individuato via topic MQTT**
@@ -250,8 +250,8 @@ Variante del codice precdente in cui, alla ricezione dei messaggi JSON, inviati 
 #include <AsyncMqttClient.h>
 #include <Ticker.h>
 
-#define WIFI_SSID "casafleri"
-#define WIFI_PASSWORD "fabseb050770250368120110$"
+#define WIFI_SSID "myssid"
+#define WIFI_PASSWORD "mypsw"
 #define WIFIRECONNECTIME  2000
 #define MQTTRECONNECTIME  2000
 
