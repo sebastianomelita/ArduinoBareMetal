@@ -12,6 +12,10 @@ Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontroll
 
 ### **La scheda relè**
 
+Il relè è un dispositivo elettromeccanico utilizzato come interruttore e frapposto tra dispositivi ad alta corrente e dispositivi a bassa corrente. Le sue parti principali sono bobina e contatti. Generalmente applichiamo tensioni cc (5-12V) alla bobina e colleghiamo il carico (240V) attraverso i contatti normalmente aperti o chiusi. Quando forniamo tensione continua attraverso la bobina, inizia a dare energia. Quando la bobina è completamente eccitata, il contatto passa dalla posizione normalmente aperta alla posizione normalmente chiusa.
+
+E' da rimarcare che normalmente non è una buona idea collegare direttamente la bobina di un relè ad una porta digitale del microcontrollore perchè questa potrebbe non fornire tutta la corrente necessaria per eccitare competamente il relè. Normalmente tra, microcontrollore e relè vi sono ei circuiti di pilotaggio che forniscono la corrente necessaria realizzati con transistor BJT o MOS. Una scheda relè normalmente ha a bordo, oltre al relè, pure i circuiti di pilotaggio necessari.
+
 <img src="Relay-module-pinout-ESP32.png" alt="alt text" width="1000">
 
 Una scheda relè consiste di 6 pin. Tre pin vengono utilizzati per il collegamento con il lato ad alta tensione, ad esempio carichi elettrici e alimentazione a 220 volt e altri tre pin vengono utilizzati per il lato a bassa tensione, vale a dire: vcc, massa e pin del segnale di controllo.
