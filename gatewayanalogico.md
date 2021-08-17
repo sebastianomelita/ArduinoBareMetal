@@ -1,5 +1,5 @@
 >[Torna a gateway analogico](gateway.md)
 
-- [Sensore di umidità capacitivo del suolo](soilmousture.md)
+- [Sensore capacitivo di umidità del suolo](soilmousture.md)
 
 >[Torna a gateway analogico](gateway.md)
