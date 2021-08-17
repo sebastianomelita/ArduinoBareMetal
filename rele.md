@@ -12,7 +12,7 @@ Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontroll
 
 ### **La scheda relè**
 
-Il relè è un dispositivo elettromeccanico utilizzato come interruttore e frapposto tra dispositivi ad alta corrente e dispositivi a bassa corrente. Le sue parti principali sono bobina e contatti. Generalmente applichiamo tensioni cc (5-12V) alla bobina e colleghiamo il carico (240V) attraverso i contatti normalmente aperti o chiusi. Quando forniamo tensione continua attraverso la bobina, inizia a dare energia. Quando la bobina è completamente eccitata, il contatto passa dalla posizione normalmente aperta alla posizione normalmente chiusa.
+Il relè è un dispositivo elettromeccanico utilizzato come interruttore e frapposto tra dispositivi ad alta corrente e dispositivi a bassa corrente. Le sue parti principali sono bobina e contatti. Generalmente applichiamo tensioni cc (5-12V) alla bobina e colleghiamo il carico (230V) attraverso i contatti normalmente aperti o chiusi. Quando forniamo tensione continua attraverso la bobina, inizia a dare energia. Quando la bobina è completamente eccitata, il contatto passa dalla posizione normalmente aperta alla posizione normalmente chiusa.
 
 <img src="rele-passo-passo-funzionamento.webp" alt="alt text" width="600">
 
@@ -34,7 +34,7 @@ Alcuni moduli relè hanno transistor che funzionano con logica invertita. Logica
 
 **Avvertenza:** prima di realizzare questo schema elettrico, assicurarsi di non aver collegato ESP32 e lampada con alimentazione ad alta tensione. Stai utilizzando l'ALTA tensione in questo progetto, prendi tutte le precauzioni prima di creare questo layout. 
 
-**Prima di toccare** il circuito per **inserire o disinserire collegamenti** assicurarsi con **certezza assoluta** di aver **scollegato la tensione di rete a 240V**. **Ripetere** questo controllo **con scrupolo** ogni volta che si **maneggia il circuito**.
+**Prima di toccare** il circuito per **inserire o disinserire collegamenti** assicurarsi con **certezza assoluta** di aver **scollegato la tensione di rete a 230V**. **Ripetere** questo controllo **con scrupolo** ogni volta che si **maneggia il circuito**.
 
 <img src="Web-Server-control-a-Relay-module-with-ESP32.jpg" alt="alt text" width="700">
 
