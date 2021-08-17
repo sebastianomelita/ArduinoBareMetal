@@ -349,6 +349,8 @@ void loop(){}
 
 **Sitografia:**
 
-https://diyi0t.com/soil-moisture-sensor-tutorial-for-arduino-and-esp8266/
+https://diyi0t.com/soil-moisture-sensor-tutorial-for-arduino-and-esp8266
+https://randomnerdtutorials.com/esp32-deep-sleep-arduino-ide-wake-up-sources/
+https://randomnerdtutorials.com/esp32-timer-wake-up-deep-sleep/
 
 >[Torna a gateway BUS](gateway.md)
