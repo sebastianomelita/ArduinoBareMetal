@@ -34,7 +34,7 @@ Per il sensore di umidità del suolo capacitivo si vede anche dalla tabella che 
 
 Dal **punto di vista SW** non servono librerie particolari tranne quelle per la pubblicazione dei valorri traite MQTT. Una parte del codice va comunque dedicata al condizionamento dei valori misurati dal sensore per tradurli ai valori di interesse di umidità.
 
-### **Gateway OneWire-MQTT per la lettura di un solo sensore**
+### **Gateway MQTT per la lettura di un solo sensore di umidità del suolo**
 
 La libreria MQTT è asincrona per cui non bloccante. E' adoperabile sia per **ESP8266** che per **ESP32**.
 
@@ -174,6 +174,23 @@ void loop() {
 }
 
 ```
+### **Gateway MQTT per la lettura a lungo termine sensore di umidità del suolo**
+
+Il codice seguente utilizza la modalità di sleep profondo del microcontrollore ESP32 che consiste nello spegnimento dei due core della CPU e di tutte le periferiche fatta eccezione per un timer HW che viene impostato ad un timeout allo scadere del quale avviene il risveglio della CPU. 
+
+L'istruzione ``` esp_deep_sleep_start(); ``` avvia la fase di sleep e viene eseguita una volta sola all'interno del setup(). Il loop() è praticamente inutile e viene lasciato vuoto dato che non è possibile arrivare alla sua esecuzione.
+
+Il risveglio fa ripartire ogni volta il sistema dal setup() per cui tutte le elaborazioni e le eventuali comunicazioni devono avvenire la dentro.
+
+L'istruzione ``` esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR) ``` imposta il timeout del timer.
+
+La funzione ``` print_wakeup_reason() ``` stampa sulla seriale il motivo del wakeup.
+
+I motivi possono essere:
+- l'evento di timer HW, che sveglia il sistema in periodi di tempo prestabiliti;
+- l'evento di tocco tattile di un certo pin;
+- un evento di riattivazione esterna: è possibile utilizzare una riattivazione esterna o più risvegli esterni diversi;
+- un evento generato dal coprocessore ULP ma questo non sarà trattato nella presente guida.
 
 
 ```C++
@@ -313,7 +330,7 @@ void setup() {
 
   /*
   First we configure the wake up source
-  We set our ESP32 to wake up every 5 seconds
+  We set our ESP32 to wake up every tot seconds
   */
   esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
   Serial.println("Setup ESP32 to sleep for every " + String(TIME_TO_SLEEP) + " Seconds");
