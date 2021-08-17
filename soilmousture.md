@@ -192,7 +192,7 @@ I motivi possono essere:
 - un evento di riattivazione esterna: è possibile utilizzare una riattivazione esterna o più risvegli esterni diversi;
 - un evento generato dal coprocessore ULP ma questo non sarà trattato nella presente guida.
 
-Nel codice seguente vengono effettuati alcuni tentativi di riconnessione in caso di mancato collegamento del WiFi o di mancata connessione MQTT. Fallito il numero massimo di tentativi si va il sleep profondo e si riprova al prossimo risveglio.
+Nel codice seguente vengono effettuati alcuni tentativi di riconnessione in caso di mancato collegamento del WiFi o di mancata connessione MQTT. Fallito il numero massimo di tentativi si va in sleep profondo e si riprova al prossimo risveglio.
 
 ```C++
 //#include <WiFiClientSecure.h>
