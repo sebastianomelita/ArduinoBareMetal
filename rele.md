@@ -30,19 +30,7 @@ Ci sono due pin di contatto che sono normalmente aperti e normalmente chiusi. Si
 
 ### **Schema cablaggio**
 
-<img src="Soil-Moisture-Sensor-ESP32-NodeMCU_Steckplatine.png" alt="alt text" width="400">
-
-### **Condizionamento digitale**
-
-    | Tensione di alimentazione               |        3.3V         |          5V           |
-    |-----------------------------------------|---------|-----------|-----------|-----------|
-    | Umido/Secco                             |  Umido  |   Secco   |   Umido   |   Secco   |
-    | Sensore di umidità del suolo capacitivo |  2...8  |  14...21  | 821...824 | 490...549 |
-    | Sensore di umidità del suolo resistivo  |   1024  | 483...505 |   1023    | 344...358 |
-    
-Teoricamente si può usare una qualsiasi di queste combinazioni, ma è necessario calibrare il  sensore prima di dichiarare che il terreno è bagnato o asciutto.
-
-Per il sensore di umidità del suolo capacitivo si vede anche dalla tabella che la differenza nel valore del sensore per una tensione di esercizio di 3,3V è molto bassa. Pertanto per evitare probabili errori è consigliabile, per il sensore capacitivo, utilizzare una tensione operativa di 5V.
+<img src="Web-Server-control-a-Relay-module-with-ESP32.jpg" alt="alt text" width="400">
 
 ### **Librerie del progetto**
 
