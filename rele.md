@@ -116,12 +116,12 @@ void readDataAndPub(){
 	str += "\"}";
 	
     // Publish an MQTT message on topic esp32/ds18b20/temperature    
-	uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, str.c_str(), str.length());                           
+    uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, str.c_str(), str.length());                           
     Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
-	Serial.println(MQTT_PUB);
+    Serial.println(MQTT_PUB);
     Serial.println(packetIdPub1);
-	Serial.print("Messaggio inviato: ");
-	Serial.println(str); 
+    Serial.print("Messaggio inviato: ");
+    Serial.println(str); 
 }
 
 void onMqttMessage(char* topic, char* payload, AsyncMqttClientMessageProperties properties, size_t len, size_t index, size_t total) {
@@ -225,9 +225,9 @@ void loop() {
   unsigned long currentMillis = millis();
   // Every X number of seconds it publishes a new MQTT message
   if (currentMillis - previousMillis >= interval) {
-    previousMillis = currentMillis;
+        previousMillis = currentMillis;
     
-    Serial.print("Requesting data...");
+        Serial.print("Requesting data...");
 	readDataAndPub();
 	Serial.println("DONE");
   }
@@ -288,16 +288,16 @@ void connectToMqtt() {
 }
 
 void readDataAndPub(){ 
-    //crea la stringa JSON
-    ax = digitalRead(cmdport);
+        //crea la stringa JSON
+        ax = digitalRead(cmdport);
 	char str[2];
 	
 	itoa(ax,str,10);
-    // Publish an MQTT message on topic esp32/ds18b20/temperature    
+        // Publish an MQTT message on topic esp32/ds18b20/temperature    
 	uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, str, 1);                           
-    Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
+        Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
 	Serial.println(MQTT_PUB);
-    Serial.println(packetIdPub1);
+        Serial.println(packetIdPub1);
 	Serial.print("Messaggio inviato: ");
 	Serial.println(str); 
 }
@@ -396,9 +396,9 @@ void loop() {
   unsigned long currentMillis = millis();
   // Every X number of seconds it publishes a new MQTT message
   if (currentMillis - previousMillis >= interval) {
-    previousMillis = currentMillis;
+        previousMillis = currentMillis;
     
-    Serial.print("Requesting data...");
+        Serial.print("Requesting data...");
 	readDataAndPub();
 	Serial.println("DONE");
   }
