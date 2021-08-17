@@ -25,8 +25,8 @@ Una scheda relè consiste di 6 pin. Tre pin vengono utilizzati per il collegamen
 <img src="rele.png" alt="alt text" width="1000">
 
 Ci sono due pin di contatto che sono normalmente aperti e normalmente chiusi. Si usa sempre un pin comune e un pin normalmente aperto o un pin normalmente chiuso per collegare il carico. A seconda di NC o NO, si utilizza un segnale attivo alto o attivo basso per controllare il relè:
-- Normalmente aperto. Si utilizza un pin normalmente aperto, il relè si attiverà quando il segnale alto è presente sul pin di controllo mentre il segnale basso sullo stesso pin spegnerà il relè come mostrato in figura.
-- Normalmente chiuso.  Si utilizza un pin normalmente chiuso, il segnale basso sul pin di controllo attiva il relè mentre il segnale alto sul pin di controllo disattiva il relè.
+- Normalmente aperto (NA). Si utilizza un pin normalmente aperto, il relè si attiverà quando il segnale alto è presente sul pin di controllo mentre il segnale basso sullo stesso pin spegnerà il relè come mostrato in figura.
+- Normalmente chiuso (NC).  Si utilizza un pin normalmente chiuso, il segnale basso sul pin di controllo attiva il relè mentre il segnale alto sul pin di controllo disattiva il relè.
 
 ### **Schema cablaggio**
 
