@@ -14,7 +14,7 @@ Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontroll
 
 <img src="Relay-module-pinout-ESP32.png" alt="alt text" width="1000">
 
-
+Una scheda relè consiste di 6 pin. Tre pin vengono utilizzati per il collegamento con il lato ad alta tensione, ad esempio carichi elettrici e alimentazione a 220 volt e altri tre pin vengono utilizzati per il lato a bassa tensione, vale a dire: vcc, massa e pin del segnale di controllo.
 
 <img src="rele.png" alt="alt text" width="1000">
 
