@@ -40,7 +40,7 @@ Alcuni moduli relè hanno transistor che funzionano con logica invertita. Logica
 
 ### **Librerie del progetto**
 
-Dal **punto di vista SW** non servono librerie particolari tranne quelle per la pubblicazione dei valorri traite MQTT. Una parte del codice va comunque dedicata al condizionamento dei valori misurati dal sensore per tradurli ai valori di interesse di umidità.
+Dal **punto di vista SW** non servono librerie particolari tranne quelle per la pubblicazione dei valori tramite MQTT. 
 
 ### **Gateway MQTT per la lettura di un solo sensore di umidità del suolo**
 
