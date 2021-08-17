@@ -14,7 +14,7 @@ Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontroll
 
 <img src="Relay-module-pinout-ESP32.webp" alt="alt text" width="500">
 
-<img src=reletab.png" alt="alt text" width="500">
+<img src="reletab.png" alt="alt text" width="500">
 
 
 <img src="rele.png" alt="alt text" width="1000">
