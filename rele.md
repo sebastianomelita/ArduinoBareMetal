@@ -12,9 +12,8 @@ Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontroll
 
 ### **La scheda relè**
 
-<img src="Relay-module-pinout-ESP32.webp" alt="alt text" width="600">
+<img src="Relay-module-pinout-ESP32.png" alt="alt text" width="1000">
 
-<img src="reletab.png" alt="alt text" width="600">
 
 
 <img src="rele.png" alt="alt text" width="1000">
