@@ -28,7 +28,13 @@ Ci sono due pin di contatto che sono normalmente aperti e normalmente chiusi. Si
 - Normalmente aperto (NA). Si utilizza un pin normalmente aperto, il relè si attiverà quando il segnale alto è presente sul pin di controllo mentre il segnale basso sullo stesso pin spegnerà il relè come mostrato in figura.
 - Normalmente chiuso (NC).  Si utilizza un pin normalmente chiuso, il segnale basso sul pin di controllo attiva il relè mentre il segnale alto sul pin di controllo disattiva il relè.
 
-### **Schema cablaggio**
+Alcuni moduli relè hanno transistor che funzionano con logica invertita. Logica invertita significa che il segnale basso attivo attiverà il relè mentre il segnale alto attivo spegnerà il relè. È necessario controllare la funzionalità del modulo relè prima di utilizzarlo. SRD-05VDC-SL-C, il modulo relè a 5V utilizzato nel progetto, non funziona su logica invertita.
+
+### **Schema cablaggio
+
+**Avvertenza:** prima di realizzare questo schema elettrico, assicurarsi di non aver collegato ESP32 e lampada con alimentazione ad alta tensione. Stai utilizzando l'ALTA tensione in questo progetto, prendi tutte le precauzioni prima di creare questo layout. 
+
+**Prima di toccare** il circuito per **inserire o disinserire collegamenti** assicurarsi con **certezza assoluta** di aver **scollegato la tensione di rete a 240V**. **Ripetere** questo controllo **con scrupolo** ogni volta che si **maneggia il circuito**.
 
 <img src="Web-Server-control-a-Relay-module-with-ESP32.jpg" alt="alt text" width="700">
 
