@@ -290,7 +290,6 @@ void setup() {
   //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
   
   count = 0;
-  Serial.println("Connecting to Wi-Fi...");
   connectToWifi();
   while (WiFi.status() != WL_CONNECTED && count < 10) {
 	count++;
