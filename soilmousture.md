@@ -174,7 +174,7 @@ void loop() {
 }
 
 ```
-### **Gateway MQTT per la lettura a lungo termine sensore di umidità del suolo**
+### **Gateway MQTT per la lettura periodica di un sensore di umidità del suolo alimentato a batteria**
 
 Il codice seguente utilizza la modalità di sleep profondo del microcontrollore ESP32 che consiste nello spegnimento dei due core della CPU e di tutte le periferiche fatta eccezione per un timer HW che viene impostato ad un timeout allo scadere del quale avviene il risveglio della CPU. Lo sleep profondo consente un drastico risparmio di energia nei periodi di inattività che allunga la durata di una eventuale alimentazione a batterie.
 
