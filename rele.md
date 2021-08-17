@@ -18,19 +18,21 @@ Il relè è un dispositivo elettromeccanico utilizzato come interruttore e frapp
 
 Le lampadine o i motori di solito funzionano con alimentazione a 230 volt in caso di alimentazione in CA (corrente alternata). Non possiamo interfacciare questi carichi AC direttamente con la scheda di sviluppo ESP32. Dobbiamo usare un relè tra ESP32 e la lampada. 
 
-Utilizzeremo un relè come interruttore per controllare lampade da 120-230 volt. Controlleremo il relè con ESP32. Useremo un comando MQTT per controllare il relè. ESP32 darà il segnale al relè a seconda del valore ricevuto dal server di telemetria MQTT. Potremmo usare qualsiasi modulo relè. Tuttavia, utilizzeremo il modulo relè SRD-05VDC-SL-C 5V. Funziona e può essere utilizzato per controllare carichi in uscita da 120-240 volt e una corrente massima di 10 A.
+Utilizzeremo un relè come interruttore per controllare lampade da 120-230 volt. Controlleremo il relè con ESP32. Potremmo usare qualsiasi modulo relè. Tuttavia, utilizzeremo il modulo relè SRD-05VDC-SL-C 5V. Funziona e può essere utilizzato per controllare carichi in uscita da 120-240 volt e una corrente massima di 10 A.
 
 Bisogna fare attenzione a distinguere tra **carichi resistivi** e **carichi induttivi**. Una lampadina è un tipico carico resistivo, mentre un motore è un tipico carico induttivo. 
 
-I carichi induttivi sono costituiti internamente da bobine più o meno grandi. I carichi induttivi soffrono del problema delle sovratensioni e delle sovracorrenti all'accensione e allo spegnimento. 
+I **carichi induttivi** sono costituiti internamente da bobine più o meno grandi. I carichi induttivi soffrono del problema delle **sovratensioni** e delle **sovracorrenti** all'**accensione** e allo **spegnimento**. 
 
-Una sovracorrente è una corrente che può essere parecchie volte superiore alla massima corrente nominale del carico (anche 10-15 volte), ha però la caratteristica di essere presente per un periodo transitorio molto breve. La sua presenza è un fattore di stress per i relè che ne accorcia la vita operativa. Esistono relè appositamente progettati per l'azionamento dei carichi induttivi ma hanno normalmente dimensioni e costo maggiore di quelli per carichi resistivi.
+Una **sovracorrente** è una corrente che può essere **parecchie volte superiore** alla **massima corrente nominale** del **carico** (anche 10-15 volte), ha però la caratteristica di essere presente per un periodo **transitorio molto breve**. La sua presenza è un **fattore di stress** per i relè che ne accorcia la vita operativa. Esistono relè **appositamente progettati** per l'azionamento dei **carichi induttivi** ma hanno normalmente dimensioni e costo maggiore di quelli per carichi resistivi.
 
-E' da rimarcare che normalmente non è una buona idea collegare direttamente la bobina di un relè ad una porta digitale del microcontrollore perchè questa potrebbe non fornire tutta la corrente necessaria per eccitare competamente il relè. Normalmente tra, microcontrollore e relè vi sono ei circuiti di pilotaggio che forniscono la corrente necessaria realizzati con transistor BJT o MOS. Una scheda relè normalmente ha a bordo, oltre al relè, pure i circuiti di pilotaggio necessari.
+E' da rimarcare che normalmente non è una buona idea **collegare direttamente** la bobina di un relè ad una porta digitale del microcontrollore perchè questa potrebbe non fornire tutta la **corrente necessaria** per **eccitare competamente** il relè. Normalmente tra, microcontrollore e relè vi sono dei **circuiti di pilotaggio** che forniscono la corrente necessaria realizzati con **transistor BJT o MOS**. Una **scheda relè** normalmente ha a bordo, oltre al relè, pure i circuiti di pilotaggio necessari.
 
 <img src="Relay-module-pinout-ESP32.png" alt="alt text" width="1000">
 
-Una scheda relè consiste di 6 pin. Tre pin vengono utilizzati per il collegamento con il lato ad alta tensione, ad esempio carichi elettrici e alimentazione a 220 volt e altri tre pin vengono utilizzati per il lato a bassa tensione, vale a dire: vcc, massa e pin del segnale di controllo.
+Una **scheda relè** consiste di **6 pin**:
+- Tre pin vengono utilizzati per il collegamento con il **lato ad alta tensione**, ad esempio carichi elettrici e alimentazione a 220 volt 
+- altri tre pin vengono utilizzati per il **lato a bassa tensione**, vale a dire: vcc, massa e pin del segnale di controllo.
 
 <img src="rele.png" alt="alt text" width="1000">
 
