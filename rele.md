@@ -112,17 +112,17 @@ void connectToMqtt() {
 void readDataAndPub(String &str){ 
     //crea la stringa JSON
     ax = digitalRead(cmdport);
-	str = "{\"rele1\":\"";
-	str += ax;
-	str += "\"}";
+    str = "{\"rele1\":\"";
+    str += ax;
+    str += "\"}";
 	
     // Publish an MQTT message on topic esp32/ds18b20/temperature    
-	uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, datastr.c_str(), datastr.length());                           
+    uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, datastr.c_str(), datastr.length());                           
     Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
-	Serial.println(MQTT_PUB);
+    Serial.println(MQTT_PUB);
     Serial.println(packetIdPub1);
-	Serial.print("Messaggio inviato: ");
-	Serial.println(datastr); 
+    Serial.print("Messaggio inviato: ");
+    Serial.println(datastr); 
 }
 
 void onMqttMessage(char* topic, char* payload, AsyncMqttClientMessageProperties properties, size_t len, size_t index, size_t total) {
@@ -229,8 +229,8 @@ void loop() {
     previousMillis = currentMillis;
     
     Serial.print("Requesting data...");
-	readDataAndPub(datastr);
-	Serial.println("DONE");
+    readDataAndPub(datastr);
+    Serial.println("DONE");
   }
 }
 
