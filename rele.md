@@ -30,7 +30,7 @@ Ci sono due pin di contatto che sono normalmente aperti e normalmente chiusi. Si
 
 ### **Schema cablaggio**
 
-<img src="Web-Server-control-a-Relay-module-with-ESP32.jpg" alt="alt text" width="400">
+<img src="Web-Server-control-a-Relay-module-with-ESP32.jpg" alt="alt text" width="600">
 
 ### **Librerie del progetto**
 
