@@ -123,8 +123,7 @@ Quando viene ricevuto EV_TXCOMPLETE o EV_RXCOMPLETE, il codice di elaborazione d
 	 receiveMessage(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
  }
 ```
-Se si vuole mettere in guardia il client dell'avvenuta ricezione di messaggi di lunghezza zero, deve essere usato un codice leggermente più complesso:
-**Funzioni di gestione run-time**
+Se si vuole mettere in guardia il client dell'avvenuta ricezione di messaggi di **lunghezza zero**, deve essere usato un codice leggermente più complesso:
 ```C++
 // Any data to be received?
  if (LMIC.dataLen != 0 || LMIC.dataBeg != 0) {
@@ -136,8 +135,11 @@ Se si vuole mettere in guardia il client dell'avvenuta ricezione di messaggi di 
 	 // nMessage might be zero.
 	 receiveMessage(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen );
  }
-
 ```
+
+**Funzioni di gestione run-time**
+
+
 
 ### **Gateway MQTT per il comando di una scheda relè individuato via JSON**
 
