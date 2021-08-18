@@ -46,6 +46,16 @@ L'unica cosa da tenere a mente è che un join OTAA richiede che il dispositivo f
 
 Un approccio migliore consiste nell'eseguire un join OTAA in una fabbrica o in un'officina in cui è possibile garantire la copertura di rete e i downlink funzionanti. Non ci sono svantaggi in questo approccio finché il dispositivo segue le migliori pratiche LoRaWAN (https://www.thethingsindustries.com/docs/devices/best-practices/).
 
+**Connessioni confermate**
+
+È possibile che non si riceva subito un ACK per ogni uplink o downlink di tipo confermato. Una buona regola empirica è attendere almeno tre ACK mancati per presumere la perdita del collegamento.
+
+In caso di perdita del collegamento, procedere come segue:
+- Imposta la potenza TX al massimo consentito/supportato e riprova
+- Diminuisci gradualmente la velocità dei dati e riprova
+- Ripristina i canali predefiniti e riprova
+- Invia richieste di adesione periodiche con backoff
+
 **Cicli di alimentazione**
 
 I dispositivi dovrebbero salvare i parametri di rete tra i cicli di alimentazione regolari. Ciò include parametri di sessione come DevAddr, chiavi di sessione, FCnt e nonces. Ciò consente al dispositivo di unirsi facilmente, poiché chiavi e contatori rimangono sincronizzati.
