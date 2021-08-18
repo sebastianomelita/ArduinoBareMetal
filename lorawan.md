@@ -29,7 +29,8 @@ Per il nostro modulo dobbiamo utilizzare un filo da 86,3 mm saldato direttamente
 
 ### **Librerie del progetto**
 
-Dal **punto di vista SW** non servono librerie particolari tranne quelle per la pubblicazione dei valori tramite MQTT. 
+La libreria **LMIC** offre un semplice **modello di programmazione** basato sugli **eventi** in cui sono presenti tutti gli eventi del protocollo
+inviato alla funzione di callback **onEvent()** dell'applicazione. Per liberare l'applicazione di dettagli come **tempi** o **interruzioni**, la libreria ha un ambiente di runtime integrato per prendersi cura di timer, code e gestione dei compiti (task).
 
 ### **Gateway MQTT per il comando di una scheda relè individuato via JSON**
 
