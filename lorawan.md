@@ -108,7 +108,7 @@ Le trasmissioni sono ancora possibili ma la loro ricezione è incerta.
 Le trasmissioni sono ancora possibili, ma la loro ricezione è incerta.
 - EV_TXSTART Questo evento viene segnalato appena prima di dire al driver radio di iniziare la trasmissione.
 - EV_SCAN_FOUND Questo evento è riservato per uso futuro e non viene mai segnalato.
-- 
+
 **Funzioni di gestione run-time**
 
 
