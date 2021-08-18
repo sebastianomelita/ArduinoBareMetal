@@ -6,15 +6,15 @@
 
 ### **Schema di principio**
 
-<img src="lora-topologies.png" alt="alt text" width="1000">
+<img src="lora-topologies.png" alt="alt text" width="600">
 
 ### **La scheda LoRa**
 
-<img src="rmf95_pinout.jpg" alt="alt text" width="500">
+<img src="rmf95_pinout.jpg" alt="alt text" width="400">
 
 ### **Schema cablaggio**
 
-<img src="LoRa_ESP32_Wiring.png" alt="alt text" width="700">
+<img src="LoRa_ESP32_Wiring.png" alt="alt text" width="600">
 
 ### **Librerie del progetto**
 
