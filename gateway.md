@@ -15,7 +15,7 @@ Radio punto-punto:
 2. [Digitale](gatewayradiod.md)
 
 Radio mezzo comune (BUS):
-1. [LoraWan](gatewaylora.md)
+1. [LoraWan](lorawan.md)
 2. [Bluetooth](gatewayblu.md)
 
 
