@@ -29,7 +29,8 @@ Per il nostro modulo dobbiamo utilizzare un filo da 86,3 mm saldato direttamente
 
 ### **Librerie del progetto**
 
-https://github.com/mcci-catena/arduino-lmic
+Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cartella **libraries**:
+- **Arduino-LMIC library**. Si scarica da https://github.com/mcci-catena/arduino-lmic come arduino-lmic-master.zip da scompattare e rinominare semplicemente come **arduino-lmic**
 
 La libreria **LMIC** offre un semplice **modello di programmazione** basato sugli **eventi** in cui sono presenti tutti gli eventi del protocollo
 inviato alla funzione di callback **onEvent()** dell'applicazione. Per liberare l'applicazione di dettagli come **tempi** o **interruzioni**, la libreria ha un ambiente di runtime integrato per prendersi cura di timer, code e gestione dei lavori (jobs).
