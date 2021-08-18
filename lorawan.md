@@ -43,6 +43,33 @@ memorizza le informazioni di **contesto**. I lavori **non** devono essere di **l
 
 Tutto ciò che un'applicazione deve fare è inizializzare l'ambiente di runtime utilizzando **os_init()** o
 **os_init_ex()** e quindi chiama periodicamente la funzione di pianificazione dei lavori (schedulatore) **os_runloop_once()**. Per avviare le azioni del protocollo e generare eventi, è necessario impostare un lavoro iniziale. Pertanto, un job di avvio (startup job) è schedulato (pianificato) utilizzando la funzione **os_setCallback()**.
+```C++
+osjob_t initjob;
+void setup () {
+ // initialize run-time env
+ os_init();
+ // setup initial job
+ os_setCallback(&initjob, initfunc);
+}
+void loop () {
+ // execute scheduled jobs and events
+ os_runloop_once();
+}
+```
+Il codice di avvio mostrato nella funzione **initfunc()** di seguito inizializza il MAC ed esegue il Join alla
+rete LoraWan:
+```C++
+// initial job
+static void initfunc (osjob_t* j) {
+ // reset MAC state
+ LMIC_reset();
+ // start joining
+ LMIC_startJoining();
+ // init done - onEvent() callback will be invoked...
+}
+```
+
+La funzione initfunc() non è bloccante ma ritorna immediatamente e lo stato della connessione verrà notificato quando verrà chiamata la funzione di callback onEvent(). La notifica avviene tramite gli eventi: EV_JOINING, EV_JOINED o EV_JOIN_FAILED.
 
 **Funzioni di gestione run-time**
 
