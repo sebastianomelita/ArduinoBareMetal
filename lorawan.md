@@ -56,7 +56,7 @@ void loop () {
  os_runloop_once();
 }
 ```
-Il codice di avvio mostrato nella funzione **initfunc()** di seguito inizializza il MAC ed esegue il Join alla
+Il codice di avvio mostrato nella funzione **```initfunc()```** di seguito inizializza il MAC ed esegue il Join alla
 rete LoraWan:
 ```C++
 // initial job
@@ -69,7 +69,7 @@ static void initfunc (osjob_t* j) {
 }
 ```
 
-La funzione initfunc() non è bloccante ma ritorna immediatamente e lo stato della connessione verrà notificato quando verrà chiamata la funzione di callback onEvent(). La notifica avviene tramite gli eventi: EV_JOINING, EV_JOINED o EV_JOIN_FAILED.
+La funzione **```initfunc()```** non è bloccante ma ritorna immediatamente e lo stato della connessione verrà notificato quando verrà chiamata la funzione di callback onEvent(). La notifica avviene tramite gli eventi: ```EV_JOINING**```, ```EV_JOINED``` o ```EV_JOIN_FAILED```.
 
 **Funzioni di gestione run-time**
 
