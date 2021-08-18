@@ -139,7 +139,7 @@ Se si vuole mettere in guardia il client dell'avvenuta ricezione di messaggi di 
 	 receiveMessage(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen );
  }
 ```
-### **Gateway LoraWan**
+### **Gateway LoraWan (ttn-otaa.ino)**
 ```C++
 /*******************************************************************************
  * Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
