@@ -18,7 +18,14 @@ In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello
 
 ### **Schema cablaggio**
 
-<img src="LoRa_ESP32_Wiring.png" alt="alt text" width="600">
+<img src="LoRa_ESP32_Wiring.png" alt="alt text" width="500">
+
+La lunghezza del filo dipende dalla frequenza:
+- 868 MHz: 86,3 mm 
+- 915 MHz: 81,9 mm
+- 433 MHz: 173,1 mm
+
+Per il nostro modulo dobbiamo utilizzare un filo da 86,3 mm saldato direttamente al pin ANA del ricetrasmettitore. Si noti che l'utilizzo di un'antenna adeguata estenderà il raggio di comunicazione.
 
 ### **Librerie del progetto**
 
