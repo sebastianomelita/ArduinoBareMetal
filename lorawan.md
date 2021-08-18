@@ -27,6 +27,16 @@ La lunghezza del filo dipende dalla frequenza:
 
 Per il nostro modulo dobbiamo utilizzare un filo da 86,3 mm saldato direttamente al pin ANA del ricetrasmettitore. Si noti che l'utilizzo di un'antenna adeguata estenderà il raggio di comunicazione.
 
+### **Modi di autenticazione**
+
+**Attivazione via etere (OTAA)**
+
+L'**attivazione over-the-air (OTAA)** è il modo preferito e più sicuro per connettersi con The Things Network. I dispositivi eseguono una procedura di unione con la rete (join), durante la quale viene assegnato un **DevAddr** dinamico e le **chiavi** di sicurezza vengono **negoziate** con il dispositivo.
+
+**Attivazione tramite personalizzazione (ABP)**
+
+In alcuni casi potrebbe essere necessario codificare il **DevAddr** e le **chiavi di sicurezza** hardcoded nel dispositivo. Ciò significa attivare un dispositivo **tramite personalizzazione (ABP)**. Questa strategia potrebbe sembrare più semplice, perché si salta la procedura di adesione, ma presenta alcuni svantaggi legati alla sicurezza.
+
 ### **Librerie del progetto**
 
 Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cartella **libraries**:
