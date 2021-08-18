@@ -109,9 +109,35 @@ Le trasmissioni sono ancora possibili, ma la loro ricezione è incerta.
 - EV_TXSTART Questo evento viene segnalato appena prima di dire al driver radio di iniziare la trasmissione.
 - EV_SCAN_FOUND Questo evento è riservato per uso futuro e non viene mai segnalato.
 
+**Gestione della ricezioe**
+
+Quando viene ricevuto EV_TXCOMPLETE o EV_RXCOMPLETE, il codice di elaborazione dell'evento dovrebbe controllare se ci sono dati in ricezione (downlink) ed eventualmente passarli all'applicazione. Per fare ciò, si usa un codice come il seguente:
+```C++
+// Any data to be received?
+ if (LMIC.dataLen != 0) {
+	 // Data was received. Extract port number if any.
+	 u1_t bPort = 0;
+	 if (LMIC.txrxFlags & TXRX_PORT)
+		 bPort = LMIC.frame[LMIC.dataBeg – 1];
+	 // Call user-supplied function with port #, pMessage, nMessage
+	 receiveMessage(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
+ }
+```
+Se si vuole mettere in guardia il client dell'avvenuta ricezione di messaggi di lunghezza zero, deve essere usato un codice leggermente più complesso:
 **Funzioni di gestione run-time**
+```C++
+// Any data to be received?
+ if (LMIC.dataLen != 0 || LMIC.dataBeg != 0) {
+	 // Data was received. Extract port number if any.
+	 u1_t bPort = 0;
+	 if (LMIC.txrxFlags & TXRX_PORT)
+	 	bPort = LMIC.frame[LMIC.dataBeg – 1];
+	 // Call user-supplied function with port #, pMessage, nMessage;
+	 // nMessage might be zero.
+	 receiveMessage(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen );
+ }
 
-
+```
 
 ### **Gateway MQTT per il comando di una scheda relè individuato via JSON**
 
