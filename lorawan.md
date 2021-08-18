@@ -39,6 +39,11 @@ In questo modello tutto il codice dell'applicazione viene eseguito nei cosiddett
 Per la **gestione dei jobs** è necessario un **descrittore** del job **osjob_t** che identifica il job e
 memorizza le informazioni di **contesto**. I lavori **non** devono essere di **lunga durata** per garantire un funzionamento **senza interruzioni**. Dovrebbero solo **aggiornare lo stato** e **pianificare le azioni**, che attiveranno nuovi **job** o **callback** di eventi.
 
+**Tempi del sistema operativo**
+
+**LMIC** utilizza valori del tipo **```ostime_t```** per rappresentare il tempo in **tick**. Il **rate** di questi tick è predefinito
+a 32768 tick al secondo, ma può essere configurato in fase di compilazione su qualsiasi valore compreso tra 10000 tick al secondo e 64516 tic al secondo.
+
 **Loop di eventi principale**
 
 Tutto ciò che un'applicazione deve fare è inizializzare l'ambiente di runtime utilizzando **os_init()** o
