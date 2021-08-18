@@ -601,7 +601,7 @@ Oltre la ```void onEvent (ev_t ev)```, la libreria LMIC richiede che l'applicazi
 respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzata in formato little-endian, ovvero lesssignificant-byte-first (LSBF).
 
 
-### Sitografia:**
+### **Sitografia:**
 
 - https://redmine.laas.fr/attachments/download/1505/LMIC-v2.3.pdf
 - https://randomnerdtutorials.com/esp32-lora-rfm95-transceiver-arduino-ide/
