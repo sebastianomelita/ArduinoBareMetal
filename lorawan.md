@@ -39,6 +39,11 @@ In questo modello tutto il codice dell'applicazione viene eseguito nei cosiddett
 Per la **gestione dei jobs** è necessario un **descrittore** del job **osjob_t** che identifica il job e
 memorizza le informazioni di **contesto**. I lavori **non** devono essere di **lunga durata** per garantire un funzionamento **senza interruzioni**. Dovrebbero solo **aggiornare lo stato** e **pianificare le azioni**, che attiveranno nuovi **job** o **callback** di eventi.
 
+**Loop di eventi principale**
+
+Tutto ciò che un'applicazione deve fare è inizializzare l'ambiente di runtime utilizzando **os_init()** o
+**os_init_ex()** e quindi chiama periodicamente la funzione di pianificazione dei lavori (schedulatore) **os_runloop_once()**. Per avviare le azioni del protocollo e generare eventi, è necessario impostare un lavoro iniziale. Pertanto, un job di avvio (startup job) è schedulato (pianificato) utilizzando la funzione os_setCallback().
+
 **Funzioni di gestione run-time**
 
 
