@@ -73,9 +73,42 @@ static void initfunc (osjob_t* j) {
  // init done - onEvent() callback will be invoked...
 }
 ```
-
 La funzione **```initfunc()```** non è bloccante ma ritorna immediatamente e lo stato della connessione verrà notificato quando verrà chiamata la funzione di callback **```onEvent()```**. La notifica avviene tramite gli eventi: ```EV_JOINING**```, ```EV_JOINED``` o ```EV_JOIN_FAILED```.
 
+
+**Callback onEvent()**
+
+Questa funzione di callback può reagire a determinati eventi e attivare nuove azioni in base all'**evento** e allo **stato** della connessione. Tipicamente, un'applicazione non elabora tutti gli eventi ma solo quelli a cui è interessata e pianifica (schedula) ulteriori azioni del protocollo utilizzando le API di LMIC. 
+
+Gli eventi possibili sono:
+- EV_JOINING
+Il nodo ha iniziato a unirsi alla rete.
+- EV_JOINED
+Il nodo si è unito con successo alla rete ed è ora pronto per gli scambi di dati.
+- EV_JOIN_FAILED
+Il nodo non è stato in grado di unirsi alla rete (dopo aver riprovato).
+- EV_REJOIN_FAILED
+Il nodo non si è unito a una nuova rete ma è ancora connesso alla vecchia rete.
+- EV_TXCOMPLETE
+I dati preparati tramite LMIC_setTxData() sono stati inviati e la finestra di ricezione per
+i dati a valle sono completi. Se è stata richiesta conferma, la conferma è stata
+ricevuto. Durante la gestione di questo evento, il codice dovrebbe anche verificare la ricezione dei dati. 
+- EV_RXCOMPLETE Solo classe B: è stato ricevuto un downlink in uno slot ping. Il codice dovrebbe controllare i dati di ricezione. 
+- EV_SCAN_TIMEOUT Dopo una chiamata a LMIC_enableTracking() non è stato ricevuto alcun beacon entro l'intervallo di beacon.
+Il monitoraggio deve essere riavviato.
+- EV_BEACON_FOUND Dopo una chiamata a LMIC_enableTracking() il primo beacon è stato ricevuto all'interno dell'intervallo di beacon .
+- EV_BEACON_TRACKED Il prossimo segnale è stato ricevuto all'ora prevista.
+- EV_BEACON_MISSED Nessun segnale è stato ricevuto all'ora prevista.
+- EV_LOST_TSYNC Il segnale è stato perso ripetutamente e la sincronizzazione dell'ora è andata persa. Il onitoraggio o ping deve essere riavviato.
+- EV_RESET Ripristino della sessione a causa del rollover dei contatori di sequenza. La rete verrà riconnessa automaticamente a acquisire nuova sessione.
+- EV_LINK_DEAD Nessuna conferma è stata ricevuta dal server di rete per un lungo periodo di tempo.
+Le trasmissioni sono ancora possibili ma la loro ricezione è incerta.
+- EV_LINK_ALIVE Il collegamento era morto, ma ora è di nuovo vivo.
+- EV_LINK_DEAD Nessuna conferma è stata ricevuta dal server di rete per un lungo periodo di tempo.
+Le trasmissioni sono ancora possibili, ma la loro ricezione è incerta.
+- EV_TXSTART Questo evento viene segnalato appena prima di dire al driver radio di iniziare la trasmissione.
+- EV_SCAN_FOUND Questo evento è riservato per uso futuro e non viene mai segnalato.
+- 
 **Funzioni di gestione run-time**
 
 
