@@ -175,7 +175,7 @@ Se si vuole mettere in guardia il client dell'avvenuta ricezione di messaggi di 
 	 receiveMessage(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen );
  }
 ```
-### **Gateway LoraWan (ttn-otaa.ino)**
+### **Gateway LoraWan con OTAA join**
 
 Si trova, assieme ad altri esempi, nella cartella al link https://github.com/oktavianabd/arduino-lmic/tree/master/examples
 
@@ -428,7 +428,7 @@ void loop() {
 }
 ```
 
-### **Gateway LoraWan con deepSleep**
+### **Gateway LoraWan con OTAA join e deepSleep**
 
 ```C++
 #include <arduino.h>
