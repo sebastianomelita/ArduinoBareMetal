@@ -10,7 +10,7 @@
 
 ### **La scheda LoRa RMF95/W**
 
-<img src="rmf95_pinout.jpg" alt="alt text" width="3400">
+<img src="rmf95_pinout.jpg" alt="alt text" width="300">
 
 E' un modem Lora che implementa esclusivamente il **livello fisico** dello stack LoraWan spesso indicato semplicemente come **LoRa**. Sopra di esso può essere utilizzato lo **stack applicativo LoRawan** oppure un qualsiasi altro stack (ad es. **6LowPan e REPL**). 
 
