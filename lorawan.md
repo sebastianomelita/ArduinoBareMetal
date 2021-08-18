@@ -130,7 +130,7 @@ Il nodo non è stato in grado di unirsi alla rete (dopo aver riprovato).
 Il nodo non si è unito a una nuova rete ma è ancora connesso alla vecchia rete.
 - EV_TXCOMPLETE
 I dati preparati tramite LMIC_setTxData() sono stati inviati e la finestra di ricezione per
-i dati a valle sono completi. Se è stata richiesta conferma, la conferma è stata
+il downlink è completa. Se era stata richiesta una conferma, allora questa è stata
 ricevuta. Durante la gestione di questo evento, il codice dovrebbe anche verificare la ricezione dei dati. 
 - EV_RXCOMPLETE Solo classe B: è stato ricevuto un downlink in uno slot ping. Il codice dovrebbe controllare i dati di ricezione. 
 - EV_SCAN_TIMEOUT Dopo una chiamata a LMIC_enableTracking() non è stato ricevuto alcun beacon entro l'intervallo di beacon.
