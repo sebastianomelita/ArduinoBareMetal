@@ -448,6 +448,8 @@ void loop() {
 }
 ```
 
+<img src="deepsleep.png" alt="alt text" width="500">
+
 ### **Gateway LoraWan con OTAA join e deepSleep**
 
 ```C++
@@ -780,5 +782,6 @@ respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzat
 - https://redmine.laas.fr/attachments/download/1505/LMIC-v2.3.pdf
 - https://randomnerdtutorials.com/esp32-lora-rfm95-transceiver-arduino-ide/
 - https://jackgruber.github.io/2020-04-13-ESP32-DeepSleep-and-LoraWAN-OTAA-join/
+- https://gitmemory.com/issue/JackGruber/Arduino-Pro-Mini-LoRa-Sensor-Node/2/678644527
 
 >[Torna a gateway digitale](gateway.md)
