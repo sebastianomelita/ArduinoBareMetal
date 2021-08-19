@@ -330,8 +330,27 @@ void do_send(osjob_t* j){
     if (LMIC.opmode & OP_TXRXPEND) {
         Serial.println(F("OP_TXRXPEND, not sending"));
     } else {
-        // Prepare upstream data transmission at the next possible time.
-        LMIC_setTxData2(1, mydata, sizeof(mydata)-1, 0);
+        // read the temperature from the DHT22
+        float temperature = dht.readTemperature();
+        Serial.print("Temperature: "); Serial.print(temperature);
+        Serial.println(" *C");
+        // adjust for the f2sflt16 range (-1 to 1)
+        temperature = temperature / 100;
+        // float -> int
+        // note: this uses the sflt16 datum (https://github.com/mcci-catena/arduino-lmic#sflt16)
+        uint16_t payloadTemp = LMIC_f2sflt16(temperature);
+        // int -> bytes
+        byte tempLow = lowByte(payloadTemp);
+        byte tempHigh = highByte(payloadTemp);
+        // place the bytes into the payload
+        payload[0] = tempLow;
+        payload[1] = tempHigh;   
+
+        // prepare upstream data transmission at the next possible time.
+        // transmit on port 1 (the first parameter); you can use any value from 1 to 223 (others are reserved).
+        // don't request an ack (the last parameter, if not zero, requests an ack from the network).
+        // Remember, acks consume a lot of network resources; don't ask for an ack unless you really need it.
+        LMIC_setTxData2(1, payload, sizeof(payload)-1, 0);
         Serial.println(F("Packet queued"));
     }
     // Next TX is scheduled after TX_COMPLETE event.
