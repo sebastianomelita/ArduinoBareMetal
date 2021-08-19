@@ -448,7 +448,7 @@ void loop() {
 }
 ```
 
-<img src="deepsleep.png" alt="alt text" width="800">
+<img src="deepsleep.png" alt="alt text" width="1000">
 
 ### **Gateway LoraWan con OTAA join e deepSleep**
 
