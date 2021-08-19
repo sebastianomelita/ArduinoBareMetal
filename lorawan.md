@@ -457,7 +457,19 @@ void loop() {
 #include <lmic.h>
 #include <hal/hal.h>
 #include <SPI.h>
-#include <ttn_credentials.h>
+
+// include the DHT22 Sensor Library
+#include "DHT.h"
+// DHT digital pin and sensor type
+#define DHTPIN 10
+#define DHTTYPE DHT22
+
+//#include <ttn_credentials.h>
+#define TTN_APPEUI {0}
+#define TTN_DEVEUI {0}
+#define TTN_APPKEY {0}
+#define MAX_BANDS 4
+//#define CFG_LMIC_EU_like 0
 
 bool GOTO_DEEPSLEEP = false;
 
@@ -469,14 +481,18 @@ void os_getArtEui(u1_t *buf) { memcpy_P(buf, APPEUI, 8); }
 void os_getDevEui(u1_t *buf) { memcpy_P(buf, DEVEUI, 8); }
 void os_getDevKey(u1_t *buf) { memcpy_P(buf, APPKEY, 16); }
 
-static uint8_t mydata[] = "Test";
+static uint8_t payload[5];
 static osjob_t sendjob;
+bool flag_TXCOMPLETE = false;
 
 // Schedule TX every this many seconds
 // Respect Fair Access Policy and Maximum Duty Cycle!
 // https://www.thethingsnetwork.org/docs/lorawan/duty-cycle.html
 // https://www.loratools.nl/#/airtime
 const unsigned TX_INTERVAL = 30;
+
+// payload to send to TTN gateway
+
 
 // Saves the LMIC structure during DeepSleep
 RTC_DATA_ATTR lmic_t RTC_LMIC;
@@ -495,65 +511,10 @@ const lmic_pinmap lmic_pins = {
     .dio = {PIN_LMIC_DIO0, PIN_LMIC_DIO1, PIN_LMIC_DIO2},
 };
 
-// opmode def
+// init. DHT
+DHT dht(DHTPIN, DHTTYPE);
+
 // https://github.com/mcci-catena/arduino-lmic/blob/89c28c5888338f8fc851851bb64968f2a493462f/src/lmic/lmic.h#L233
-
-void LoraWANDebug(lmic_t lmic_check)
-{
-    Serial.println("");
-    Serial.println("");
-
-    LoraWANPrintLMICOpmode();
-    Serial.println("");
-
-    Serial.print(F("LMIC.seqnoUp = "));
-    Serial.println(lmic_check.seqnoUp);
-
-    Serial.print(F("LMIC.globalDutyRate = "));
-    Serial.print(lmic_check.globalDutyRate);
-    Serial.print(F(" osTicks, "));
-    Serial.print(osticks2ms(lmic_check.globalDutyRate) / 1000);
-    Serial.println(F(" sec"));
-
-    Serial.print(F("LMIC.globalDutyAvail = "));
-    Serial.print(lmic_check.globalDutyAvail);
-    Serial.print(F(" osTicks, "));
-    Serial.print(osticks2ms(lmic_check.globalDutyAvail) / 1000);
-    Serial.println(F(" sec"));
-
-    Serial.print(F("LMICbandplan_nextTx = "));
-    Serial.print(LMICbandplan_nextTx(os_getTime()));
-    Serial.print(F(" osTicks, "));
-    Serial.print(osticks2ms(LMICbandplan_nextTx(os_getTime())) / 1000);
-    Serial.println(F(" sec"));
-
-    Serial.print(F("os_getTime = "));
-    Serial.print(os_getTime());
-    Serial.print(F(" osTicks, "));
-    Serial.print(osticks2ms(os_getTime()) / 1000);
-    Serial.println(F(" sec"));
-
-    Serial.print(F("LMIC.txend = "));
-    Serial.println(lmic_check.txend);
-    Serial.print(F("LMIC.txChnl = "));
-    Serial.println(lmic_check.txChnl);
-
-    Serial.println(F("Band \tavail \t\tavail_sec\tlastchnl \ttxcap"));
-    for (u1_t bi = 0; bi < MAX_BANDS; bi++)
-    {
-        Serial.print(bi);
-        Serial.print("\t");
-        Serial.print(lmic_check.bands[bi].avail);
-        Serial.print("\t\t");
-        Serial.print(osticks2ms(lmic_check.bands[bi].avail) / 1000);
-        Serial.print("\t\t");
-        Serial.print(lmic_check.bands[bi].lastchnl);
-        Serial.print("\t\t");
-        Serial.println(lmic_check.bands[bi].txcap);
-    }
-    Serial.println("");
-    Serial.println("");
-}
 
 void PrintRuntime()
 {
@@ -581,6 +542,21 @@ void onEvent(ev_t ev)
     Serial.print(": ");
     switch (ev)
     {
+    case EV_SCAN_TIMEOUT:
+        Serial.println(F("EV_SCAN_TIMEOUT"));
+        break;
+    case EV_BEACON_FOUND:
+        Serial.println(F("EV_BEACON_FOUND"));
+        break;
+    case EV_BEACON_MISSED:
+        Serial.println(F("EV_BEACON_MISSED"));
+        break;
+    case EV_BEACON_TRACKED:
+        Serial.println(F("EV_BEACON_TRACKED"));
+        break;
+    case EV_JOINING:
+        Serial.println(F("EV_JOINING"));
+        break;
     case EV_JOINED:
         Serial.println(F("EV_JOINED"));
         {
@@ -611,6 +587,20 @@ void onEvent(ev_t ev)
         // size, we don't use it in this example.
         LMIC_setLinkCheckMode(0);
         break;
+    /*
+        || This event is defined but not used in the code. No
+        || point in wasting codespace on it.
+        ||
+        || case EV_RFU1:
+        ||     Serial.println(F("EV_RFU1"));
+        ||     break;
+        */
+    case EV_JOIN_FAILED:
+        Serial.println(F("EV_JOIN_FAILED"));
+        break;
+    case EV_REJOIN_FAILED:
+        Serial.println(F("EV_REJOIN_FAILED"));
+        break;
     case EV_TXCOMPLETE:
         Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
         if (LMIC.txrxFlags & TXRX_ACK)
@@ -622,6 +612,42 @@ void onEvent(ev_t ev)
             Serial.println(F(" bytes of payload"));
         }
         GOTO_DEEPSLEEP = true;
+        break;
+    case EV_LOST_TSYNC:
+        Serial.println(F("EV_LOST_TSYNC"));
+        break;
+    case EV_RESET:
+        Serial.println(F("EV_RESET"));
+        break;
+    case EV_RXCOMPLETE:
+        // data received in ping slot
+        Serial.println(F("EV_RXCOMPLETE"));
+        break;
+    case EV_LINK_DEAD:
+        Serial.println(F("EV_LINK_DEAD"));
+        break;
+    case EV_LINK_ALIVE:
+        Serial.println(F("EV_LINK_ALIVE"));
+        break;
+    /*
+        || This event is defined but not used in the code. No
+        || point in wasting codespace on it.
+        ||
+        || case EV_SCAN_FOUND:
+        ||    Serial.println(F("EV_SCAN_FOUND"));
+        ||    break;
+        */
+    case EV_TXSTART:
+        Serial.println(F("EV_TXSTART"));
+        break;
+    case EV_TXCANCELED:
+        Serial.println(F("EV_TXCANCELED"));
+        break;
+    case EV_RXSTART:
+        /* do not print anything -- it wrecks timing */
+        break;
+    case EV_JOIN_TXCOMPLETE:
+        Serial.println(F("EV_JOIN_TXCOMPLETE: no JoinAccept"));
         break;
     default:
         Serial.print(F("Unknown event: "));
@@ -640,7 +666,27 @@ void do_send(osjob_t *j)
     else
     {
         // Prepare upstream data transmission at the next possible time.
-        LMIC_setTxData2(1, mydata, sizeof(mydata) - 1, 0);
+        // read the temperature from the DHT22
+        float temperature = dht.readTemperature();
+        Serial.print("Temperature: "); Serial.print(temperature);
+        Serial.println(" *C");
+        // adjust for the f2sflt16 range (-1 to 1)
+        temperature = temperature / 100;
+        // float -> int
+        // note: this uses the sflt16 datum (https://github.com/mcci-catena/arduino-lmic#sflt16)
+        uint16_t payloadTemp = LMIC_f2sflt16(temperature);
+        // int -> bytes
+        byte tempLow = lowByte(payloadTemp);
+        byte tempHigh = highByte(payloadTemp);
+        // place the bytes into the payload
+        payload[0] = tempLow;
+        payload[1] = tempHigh;   
+
+        // prepare upstream data transmission at the next possible time.
+        // transmit on port 1 (the first parameter); you can use any value from 1 to 223 (others are reserved).
+        // don't request an ack (the last parameter, if not zero, requests an ack from the network).
+        // Remember, acks consume a lot of network resources; don't ask for an ack unless you really need it.
+        LMIC_setTxData2(1, payload, sizeof(payload)-1, 0);
         Serial.println(F("Packet queued"));
     }
     // Next TX is scheduled after TX_COMPLETE event.
@@ -657,7 +703,7 @@ void SaveLMICToRTC(int deepsleep_sec)
     unsigned long now = millis();
 
     // EU Like Bands
-#if defined(CFG_LMIC_EU_like)
+#if defined(CFG_LMIC_EU_like2)//era CFG_LMIC_EU_like ma non funziona
     Serial.println(F("Reset CFG_LMIC_EU_like band avail"));
     for (int i = 0; i < MAX_BANDS; i++)
     {
@@ -711,8 +757,6 @@ void setup()
     {
         LoadLMICFromRTC();
     }
-
-    LoraWANDebug(LMIC);
 
     // Start job (sending automatically starts OTAA too)
     do_send(&sendjob);
