@@ -180,6 +180,7 @@ Se si vuole mettere in guardia il client dell'avvenuta ricezione di messaggi di 
 Si trova, assieme ad altri esempi, nella cartella al link https://github.com/oktavianabd/arduino-lmic/tree/master/examples
 
 ```C++
+```C++
 /*******************************************************************************
  * Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
  * Copyright (c) 2018 Terry Moore, MCCI
@@ -303,7 +304,7 @@ void onEvent (ev_t ev) {
             }
             // Disable link check validation (automatically enabled
             // during join, but because slow data rates change max TX
-	    // size, we don't use it in this example.
+	        // size, we don't use it in this example.
             LMIC_setLinkCheckMode(0);
             break;
         case EV_TXCOMPLETE:
@@ -318,6 +319,9 @@ void onEvent (ev_t ev) {
             // Schedule next transmission
             os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
             break;
+		case EV_LINK_DEAD:
+			//initLoRaWAN();
+		    break;
         default:
             Serial.print(F("Unknown event: "));
             Serial.println((unsigned) ev);
@@ -330,6 +334,7 @@ void do_send(osjob_t* j){
     if (LMIC.opmode & OP_TXRXPEND) {
         Serial.println(F("OP_TXRXPEND, not sending"));
     } else {
+        // Prepare upstream data transmission at the next possible time.
         // read the temperature from the DHT22
         float temperature = dht.readTemperature();
         Serial.print("Temperature: "); Serial.print(temperature);
@@ -356,6 +361,31 @@ void do_send(osjob_t* j){
     // Next TX is scheduled after TX_COMPLETE event.
 }
 
+void initLoRaWAN() {
+	// LMIC init
+	os_init();
+
+	// Reset the MAC state. Session and pending data transfers will be discarded.
+	LMIC_reset();
+
+	// by joining the network, precomputed session parameters are be provided.
+	LMIC_setSession(0x1, DevAddr, (uint8_t*)NwkSkey, (uint8_t*)AppSkey);
+
+	// Enabled data rate adaptation
+	LMIC_setAdrMode(1);
+
+	// Enable link check validation
+	LMIC_setLinkCheckMode(0);
+
+	// Set data rate and transmit power
+	LMIC_setDrTxpow(DR_SF12, 21);
+}
+
+void sensorInit(){
+	// Initialize the DHT sensor.
+	dht.begin();
+}
+
 void setup() {
     Serial.begin(9600);
     Serial.println(F("Starting"));
@@ -367,10 +397,10 @@ void setup() {
     delay(1000);
     #endif
 
-    // LMIC init
-    os_init();
-    // Reset the MAC state. Session and pending data transfers will be discarded.
-    LMIC_reset();
+   // Setup LoRaWAN state
+	initLoRaWAN();
+	
+	sensorInit();
 
     // Start job (sending automatically starts OTAA too)
     do_send(&sendjob);
