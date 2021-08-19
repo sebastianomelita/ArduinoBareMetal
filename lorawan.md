@@ -235,6 +235,11 @@ loop(){
 #include <hal/hal.h>
 #include <SPI.h>
 
+// include the DHT22 Sensor Library
+#include "DHT.h"
+// DHT digital pin and sensor type
+#define DHTPIN 10
+#define DHTTYPE DHT22
 //
 // For normal use, we require that you edit the sketch to replace FILLMEIN
 // with values assigned by the TTN console. However, for regression tests,
@@ -242,13 +247,15 @@ loop(){
 // COMPILE_REGRESSION_TEST, and in that case we define FILLMEIN to a non-
 // working but innocuous value.
 //
+#define FILLMEIN 1
+/*
 #ifdef COMPILE_REGRESSION_TEST
-# define FILLMEIN 0
+#define FILLMEIN 0
 #else
-# warning "You must replace the values marked FILLMEIN with real values from the TTN control panel!"
-# define FILLMEIN (#dont edit this, edit the lines that use FILLMEIN)
+#warning "You must replace the values marked FILLMEIN with real values from the TTN control panel!"
+#define FILLMEIN (#dont edit this, edit the lines that use FILLMEIN)
 #endif
-
+*/
 // This EUI must be in little-endian format, so least-significant-byte
 // first. When copying an EUI from ttnctl output, this means to reverse
 // the bytes. For TTN issued EUIs the last bytes should be 0xD5, 0xB3,
@@ -266,7 +273,8 @@ void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
 static const u1_t PROGMEM APPKEY[16] = { FILLMEIN };
 void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 
-static uint8_t mydata[] = "Hello, world!";
+// payload to send to TTN gateway
+static uint8_t payload[5];
 static osjob_t sendjob;
 bool flag_TXCOMPLETE = false;
 
@@ -281,6 +289,9 @@ const lmic_pinmap lmic_pins = {
     .rst = 5,
     .dio = {2, 3, 4},
 };
+
+// init. DHT
+DHT dht(DHTPIN, DHTTYPE);
 
 void printHex2(unsigned v) {
     v &= 0xff;
@@ -336,7 +347,7 @@ void onEvent (ev_t ev) {
             }
             // Schedule next transmission
             os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
-	    flag_TXCOMPLETE = true;
+	        flag_TXCOMPLETE = true;
             break;
 	case EV_LINK_DEAD:
             initLoRaWAN();
@@ -388,7 +399,7 @@ void initLoRaWAN() {
 	LMIC_reset();
 
 	// by joining the network, precomputed session parameters are be provided.
-	LMIC_setSession(0x1, DevAddr, (uint8_t*)NwkSkey, (uint8_t*)AppSkey);
+	//LMIC_setSession(0x1, DevAddr, (uint8_t*)NwkSkey, (uint8_t*)AppSkey);
 
 	// Enabled data rate adaptation
 	LMIC_setAdrMode(1);
@@ -397,7 +408,7 @@ void initLoRaWAN() {
 	LMIC_setLinkCheckMode(0);
 
 	// Set data rate and transmit power
-	LMIC_setDrTxpow(DR_SF12, 21);
+	LMIC_setDrTxpow(DR_SF7, 21);
 }
 
 void sensorInit(){
