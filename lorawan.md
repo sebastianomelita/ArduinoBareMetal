@@ -183,7 +183,7 @@ Al termine di una trasmissione, indicato dall'evento ```EV_TXCOMPLETE```viene pi
 
 La funzione ```os_runloop_once()``` riserva un quanto di tempo allo scheduler dei job della connessione LoRaWan. Una trasmissione LoraWan però potrebbe non essere completata in un solo quanto per cui potrebbero essere necessari parecchi loop() per completarla. Quest'ultima considerazione chiarisce che è importante non inserire delay() o istruzioni molto lente dopo una chiamata a ```os_runloop_once()``` perchè una lunga interruzione del processo di trasmissione potrebbe portare ad una perdita di dati.
 
-Un'alternativa per evitare alla radice instabilità e perdite di dati potrebbe essere chiamare nel loop() ```os_runloop_once()``` tutte le volte che sono necessarie per portare a compimento la trasmissione lasciando il controllo della CPU agli altri task del microcontrollore solo dopo che questa è terminata.
+Un'alternativa per evitare alla radice instabilità e perdite di dati potrebbe essere chiamare nel loop() ```os_runloop_once()``` tutte le volte che sono necessarie per portare a compimento una trasmissione lasciando il controllo della CPU agli altri task del microcontrollore solo dopo che questa è terminata.
 
 ```C++
 loop(){
