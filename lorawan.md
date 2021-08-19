@@ -181,6 +181,22 @@ Si trova, assieme ad altri esempi, nella cartella al link https://github.com/okt
 
 Al termine di una trasmissione, indicato dall'evento ```EV_TXCOMPLETE```viene pianficata una nuova trasmissione tramite```os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send)``` dopo un tempo ```TX_INTERVAL```.
 
+La funzione ```os_runloop_once()``` riserva un quanto di tempo allo scheduler dei job della connessione LoRaWan. Una trasmissione LoraWan però potrebbe non essere completata in un solo quanto per cui potrebbero essere necessari parecchi loop() per completarla. Quest'ultima considerazione chiarisce che è importante non inserire delay() o istruzioni molto lente dopo una chiamata a ```os_runloop_once()``` perchèl'una lunga interruzione del processo di trasmissione potrebbe portare ad una perdita di dati.
+
+Un'alternativa per evitare alla radice instabilità e perdite di dati potrebbe essere chiamare nel loop() ```os_runloop_once()``` tutte le vokte che sono necessarie per portare a compimento la trasmissione lasciando il controllo della CPU agli altri task del microcontrollore solo dopo che questa è terminata.
+
+```C++
+loop(){
+....
+	//Run LMIC loop until he as finish
+	while(flag_TXCOMPLETE == 0)
+	{
+		os_runloop_once();
+	}
+	flag_TXCOMPLETE = 0;
+}
+```
+
 ```C++
 /*******************************************************************************
  * Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
