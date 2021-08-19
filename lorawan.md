@@ -320,9 +320,9 @@ void onEvent (ev_t ev) {
             // Schedule next transmission
             os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
             break;
-		case EV_LINK_DEAD:
-			//initLoRaWAN();
-		    break;
+	case EV_LINK_DEAD:
+            initLoRaWAN();
+	    break;
         default:
             Serial.print(F("Unknown event: "));
             Serial.println((unsigned) ev);
