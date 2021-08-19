@@ -469,7 +469,7 @@ void GoDeepSleep()
 
 Il sistema però, dopo un wakeup (risveglio) non riparte dall'ultima istruzione eseguita ma dall'inizio del setup per cui è praticamente smemorato riguardo i parametri di una eventuale connessione precedentemente stabilita. Costringere il sistema a rinegoziare una join ad ogni risveglio è uno spreco di tempo e di risorse preziose di batterie per cui sarebbe opportuno trovare un modo di tenere traccia dei dati salienti di una connessione.
 
-Dichiarazione della ariabile che contiene la sessione:
+Dichiarazione della variabile che contiene la sessione:
 ```C++
 RTC_DATA_ATTR lmic_t RTC_LMIC;
 ```
