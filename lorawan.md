@@ -183,7 +183,7 @@ Al termine di una trasmissione, indicato dall'evento ```EV_TXCOMPLETE```viene pi
 
 La funzione ```os_runloop_once()``` riserva un quanto di tempo allo scheduler dei job della connessione LoRaWan. Una trasmissione LoraWan però potrebbe non essere completata in un solo quanto per cui potrebbero essere necessari parecchi loop() per completarla. Quest'ultima considerazione chiarisce che è importante non inserire delay() o istruzioni molto lente dopo una chiamata a ```os_runloop_once()``` perchèl'una lunga interruzione del processo di trasmissione potrebbe portare ad una perdita di dati.
 
-Un'alternativa per evitare alla radice instabilità e perdite di dati potrebbe essere chiamare nel loop() ```os_runloop_once()``` tutte le vokte che sono necessarie per portare a compimento la trasmissione lasciando il controllo della CPU agli altri task del microcontrollore solo dopo che questa è terminata.
+Un'alternativa per evitare alla radice instabilità e perdite di dati potrebbe essere chiamare nel loop() ```os_runloop_once()``` tutte le volte che sono necessarie per portare a compimento la trasmissione lasciando il controllo della CPU agli altri task del microcontrollore solo dopo che questa è terminata.
 
 ```C++
 loop(){
@@ -268,6 +268,7 @@ void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 
 static uint8_t mydata[] = "Hello, world!";
 static osjob_t sendjob;
+bool flag_TXCOMPLETE = false;
 
 // Schedule TX every this many seconds (might become longer due to duty
 // cycle limitations).
@@ -335,6 +336,7 @@ void onEvent (ev_t ev) {
             }
             // Schedule next transmission
             os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
+	    flag_TXCOMPLETE = true;
             break;
 	case EV_LINK_DEAD:
             initLoRaWAN();
@@ -424,7 +426,15 @@ void setup() {
 }
 
 void loop() {
-    os_runloop_once();
+	os_runloop_once();
+	/* In caso di instabilità
+	//Run LMIC loop until he as finish
+	while(flag_TXCOMPLETE == false)
+	{
+		os_runloop_once();
+	}
+	flag_TXCOMPLETE = false;
+	*/
 }
 ```
 
