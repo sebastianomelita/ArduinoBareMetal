@@ -448,9 +448,33 @@ void loop() {
 }
 ```
 
+### **Gateway LoraWan con OTAA join e deepSleep**
+
 <img src="deepsleep.png" alt="alt text" width="1000">
 
-### **Gateway LoraWan con OTAA join e deepSleep**
+Dopo la segnalazione dell'evento trasmissione completata EV_TXCOMPLETE viene settato il flag GOTO_DEEPSLEEP che comunica al loop il momento buono per andare in deep sleep. Nel loop() un if di check controlla se non ci sono operazioni interne di servizio dello schedulatore pendenti. Se esistono operazioni pendenti si painifica un nuovo check dopo 2 sec, se queste non ci stanno si comanda la discesa del sistema in deep sleep mediante la funzione GoDeepSleep() che esegue le operazioni:
+
+```C++
+void GoDeepSleep()
+{
+    Serial.println(F("Go DeepSleep"));
+    PrintRuntime();
+    Serial.flush();
+    esp_sleep_enable_timer_wakeup(TX_INTERVAL * 1000000);
+    esp_deep_sleep_start();
+}
+```
+
+Il sistema però, dopo un wakeup (risveglio) non riparte dall'ultima istruzione eseguita ma dall'inizio del setup per cui è praticamente smemorato riguardo i parametri di una eventuale connessione precedentemente stabilita. Costringere il sistema a rinegoziare una join ad ogni risveglio è uno spreco di tempo e di risorse preziose di batterie per cui sarebbe opportuno trovare un modo di tenere traccia dei dati salienti di una connessione.
+
+Dichiarazione della ariabile che contiene la sessione:
+```C++
+RTC_DATA_ATTR lmic_t RTC_LMIC;
+```
+
+La lettura viene fatta alla fine del sutup(). Il salvattaggio viene fatto dopo la segnalazione del flag GOTO_DEEPSLEEP.
+
+
 
 ```C++
 #include <arduino.h>
