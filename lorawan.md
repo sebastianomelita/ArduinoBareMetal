@@ -247,15 +247,14 @@ loop(){
 // COMPILE_REGRESSION_TEST, and in that case we define FILLMEIN to a non-
 // working but innocuous value.
 //
-#define FILLMEIN 1
-/*
+
 #ifdef COMPILE_REGRESSION_TEST
 #define FILLMEIN 0
 #else
 #warning "You must replace the values marked FILLMEIN with real values from the TTN control panel!"
 #define FILLMEIN (#dont edit this, edit the lines that use FILLMEIN)
 #endif
-*/
+
 // This EUI must be in little-endian format, so least-significant-byte
 // first. When copying an EUI from ttnctl output, this means to reverse
 // the bytes. For TTN issued EUIs the last bytes should be 0xD5, 0xB3,
