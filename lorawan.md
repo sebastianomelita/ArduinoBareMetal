@@ -1,12 +1,15 @@
 
 
->[Torna a gateway digitale](gateway.md)
+>[Torna a gateway digitale](gateway.md)lorawandallas.md
+
+- [Gateway bus dallas-LoRaWan](lorawandallas.md)
 
 ## **Gateway mondo cablato - Client LoraWan**
 
 ### **Schema di principio**
 
 <img src="lora-topologies.png" alt="alt text" width="500">
+
 
 ### **La scheda LoRa RMF95/W**
 
