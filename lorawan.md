@@ -1,6 +1,6 @@
 
 
->[Torna a gateway digitale](gateway.md)lorawandallas.md
+>[Torna a gateway digitale](gateway.md)
 
 - [Gateway bus dallas-LoRaWan](lorawandallas.md)
 
