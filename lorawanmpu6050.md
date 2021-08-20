@@ -1,4 +1,4 @@
->[Torna a gateway LoraWan](lorawanhw.md)
+>[Torna a gateway LoraWan con modem RN2483](lorawanhw.md)
 
 ## **Gateway per BUS I2C (TwoWire)**
 
@@ -20,7 +20,7 @@ Notare i **collegamenti in parallelo** tra tutti i dispositivi attorno a 3 fili 
 Dal **punto di vista SW** seve **una libreria** da scaricare dentro la solita cartella **libraries** (disponibile su Git al link https://github.com/ElectronicCats/mpu6050) :
 - **mpu6050-master.zip** da scompattare e rinominare semplicemente **mpu6050**. Per installare il protocollo standard I2C e il driver del sensore MPU6050.
 
-### **Gateway MPU6050-LoRaWan per la lettura di un solo sensore**
+### **Gateway MPU6050-LoRaWan con modem RN2483**
 
 La libreria MQTT è asincrona per cui non bloccante. E' adoperabile sia per **ESP8266** che per **ESP32**.
 
@@ -231,4 +231,4 @@ void led_off()
 - https://randomnerdtutorials.com/esp32-mpu-6050-web-server/
 
 
->[Torna a gateway LoraWan](lorawanhw.md)
+>[Torna a gateway LoraWan con modem RN2483](lorawanhw.md)
