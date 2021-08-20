@@ -1,4 +1,4 @@
->[Torna a gateway LoraWan](lorawan.md)
+>[Torna a gateway LoraWan con modem RN2483](lorawanhw.md)
 
 ## **Gateway per BME280**
 
@@ -200,4 +200,4 @@ void led_off()
 - https://learn.adafruit.com/i2c-addresses
 
 
->[Torna a gateway LoraWan](lorawan.md)
+>[Torna a gateway LoraWan con modem RN2483](lorawanhw.md)
