@@ -1,5 +1,5 @@
 
->[Torna a gateway BUS](gateway.md)
+>[Torna a gateway LoRaWan](lorawan.md)
 
 ## **Gateway per BUS Dallas (OneWire)**
 
@@ -211,5 +211,5 @@ https://randomnerdtutorials.com/micropython-mqtt-publish-ds18b10-esp32-esp8266/
 https://randomnerdtutorials.com/esp32-ds18b20-temperature-arduino-ide/
 https://randomnerdtutorials.com/esp32-multiple-ds18b20-temperature-sensors/
 
->[Torna a gateway BUS](gateway.md)
+>[Torna a gateway LoRaWan](lorawan.md)
 
