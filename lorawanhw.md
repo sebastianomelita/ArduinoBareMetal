@@ -273,9 +273,10 @@ Nel loop() un if di check controlla se non ci sono operazioni interne di servizi
 
 ### **Sitografia:**
 
--	https://github.com/jpmeijers/RN2483-Arduino-Library
+- https://github.com/jpmeijers/RN2483-Arduino-Library
 - http://nl.farnell.com/microchip/rn2483-i-rm095/lora-transceiver-mod-433-868mhz/dp/2491391?ost=rn2483&selectedCategoryId=&categoryId=700000005613farnell.com
--	https://sites.google.com/site/connecttottn/
+- https://sites.google.com/site/connecttottn/
 - https://www.disk91.com/2015/technology/networks/first-step-in-lora-land-microchip-rn2483-test/
+- http://ww1.microchip.com/downloads/en/devicedoc/70005219a.pdf
 
 >[Torna a gateway digitale](gateway.md)
