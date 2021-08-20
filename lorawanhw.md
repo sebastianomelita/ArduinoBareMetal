@@ -83,7 +83,6 @@ I dispositivi dovrebbero salvare i parametri di rete tra i cicli di alimentazion
 Dal **punto di vista SW** serve **1 libreria** da scaricare dentro la solita cartella **libraries**:
 - **RN2483-Arduino-Library**. Si scarica da https://github.com/jpmeijers/RN2483-Arduino-Library come RN2483-Arduino-Library-master.zip da scompattare e rinominare semplicemente come **RN2483-Arduino-Library**
 - **EspSoftwareSerial**. Si scarica da https://github.com/plerup/espsoftwareserial/ come espsoftwareserial-master.zip da scompattare e rinominare semplicemente come **espsoftwareserial**
-- 
 
 **Callback onEvent()**
 
