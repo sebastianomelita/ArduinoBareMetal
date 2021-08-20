@@ -4,6 +4,7 @@
 
 - [Gateway DS18B20-LoRaWan](lorawandallas.md)
 - [Gateway BME280-LoRaWan](lorawanbme280.md)
+- [Gateway MPU6050-LoRaWan](lorawanmpu6050.md)
 
 ## **Gateway mondo cablato - Client LoraWan**
 
