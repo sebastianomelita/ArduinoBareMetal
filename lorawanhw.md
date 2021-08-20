@@ -20,10 +20,20 @@ In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello
 
 <img src="LoRa_ESP32_Wiring.png" alt="alt text" width="500">
 
+```
+RN2483 pin name <--> Arduino pin number
+  UART_TX (6)   <-->   10
+  UART_RX (7)   <-->   11
+  RESET (32)    <-->   12
+  VDD (34)      <-->   3.3V
+  GND (33)      <-->   Gnd
+```
+
 La lunghezza del filo dipende dalla frequenza:
 - 868 MHz: 86,3 mm 
 - 915 MHz: 81,9 mm
 - 433 MHz: 173,1 mm
+
 
 Per il nostro modulo dobbiamo utilizzare un filo da 86,3 mm saldato direttamente al pin ANA del ricetrasmettitore. Si noti che l'utilizzo di un'antenna adeguata estenderà il raggio di comunicazione.
 
