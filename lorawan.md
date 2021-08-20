@@ -177,7 +177,7 @@ Se si vuole mettere in guardia il client dell'avvenuta ricezione di messaggi di 
 ```
 ### **File di configurazione**
 
-In questo porting LMIC, a differenza di  altri simili,  nnon va modificato il file src/lmic/config.h per configurare il FW. La configurazione è spostata sul file project_config/lmic_project_config.h. 
+In questo porting LMIC, a differenza di  altri simili,  non va modificato il file src/lmic/config.h per configurare il FW. La configurazione è spostata sul file project_config/lmic_project_config.h. 
 
 Il file imposta:
 - selezionare la versione di LoRaWAN 
