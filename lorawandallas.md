@@ -108,7 +108,7 @@ void inline readSensorsAndTx() {
 
 	//myLora.tx("!"); //send String, blocking function
 	myLora.txBytes(payload, sizeof(payload)); // blocking function
-	}
+}
 
 // the setup routine runs once when you press reset:
 void setup() {
