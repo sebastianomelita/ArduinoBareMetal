@@ -1,4 +1,4 @@
->[Torna a gateway I2C](gatewayi2c.md)
+>[Torna a gateway LoraWan](lorawan.md)
 
 ## **Gateway per BME280**
 
@@ -200,4 +200,4 @@ void led_off()
 - https://learn.adafruit.com/i2c-addresses
 
 
->[Torna a gateway I2C](gatewayi2c.md)
+>[Torna a gateway LoraWan](lorawan.md)
