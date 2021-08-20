@@ -66,11 +66,7 @@ I dispositivi dovrebbero salvare i parametri di rete tra i cicli di alimentazion
 ### **Librerie del progetto**
 
 Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cartella **libraries**:
-- **Arduino-LMIC library**. Si scarica da https://github.com/mcci-catena/arduino-lmic come arduino-lmic-master.zip da scompattare e rinominare semplicemente come **arduino-lmic**
-
-La libreria **LMIC** offre un semplice **modello di programmazione** basato sugli **eventi** in cui sono presenti tutti gli eventi del protocollo
-inviato alla funzione di callback **onEvent()** dell'applicazione. Per liberare l'applicazione di dettagli come **tempi** o **interruzioni**, la libreria ha un ambiente di runtime integrato per prendersi cura di timer, code e gestione dei lavori (jobs).
-
+- **RN2483-Arduino-Library**. Si scarica da https://github.com/jpmeijers/RN2483-Arduino-Library come RN2483-Arduino-Library-master.zip da scompattare e rinominare semplicemente come **RN2483-Arduino-Library**
 
 **Callback onEvent()**
 
