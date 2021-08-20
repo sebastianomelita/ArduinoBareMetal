@@ -10,7 +10,7 @@
 
 ### **La scheda LoRa RN2483**
 
-<img src="rn2483.png" alt="alt text" width="800">
+<img src="RN2483.png" alt="alt text" width="800">
 
 E' un modem Lora che implementa esclusivamente il **livello fisico** dello stack LoraWan spesso indicato semplicemente come **LoRa**. Sopra di esso può essere utilizzato lo **stack applicativo LoRawan** oppure un qualsiasi altro stack (ad es. **6LowPan e REPL**). 
 
