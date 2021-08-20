@@ -195,7 +195,7 @@ loop(){
 }
 ```
 
-Un'alternativa per evitare alla radice instabilità e perdite di dati potrebbe essere chiamare nel loop() ```os_runloop_once()``` tutte le volte che sono necessarie per portare a compimento una trasmissione lasciando il controllo della CPU agli altri task del microcontrollore solo dopo che questa è terminata.
+Un'alternativa per evitare alla radice instabilità e perdite di dati potrebbe essere chiamare nel loop() ```os_runloop_once()``` tutte le volte che sono necessarie per portare a compimento una trasmissione lasciando il controllo della CPU agli altri task del microcontrollore solo dopo che questa sia terminata.
 
 ```C++
 /*******************************************************************************
