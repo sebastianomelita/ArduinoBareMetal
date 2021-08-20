@@ -224,9 +224,9 @@ Nel loop() un if di check controlla se non ci sono operazioni interne di servizi
 
 ### **Sitografia:**
 
-- https://redmine.laas.fr/attachments/download/1505/LMIC-v2.3.pdf
-- https://randomnerdtutorials.com/esp32-lora-rfm95-transceiver-arduino-ide/
-- https://jackgruber.github.io/2020-04-13-ESP32-DeepSleep-and-LoraWAN-OTAA-join/
-- https://gitmemory.com/issue/JackGruber/Arduino-Pro-Mini-LoRa-Sensor-Node/2/678644527
+-	GitHub - jpmeijers/RN2483-Arduino-Library: Arduino C++ code to communicate with a Mic... github.com
+- MICROCHIP - LORA TRANSCEIVER MOD, 433/868MHZ, 14DBM | Farnell elemen... farnell.com
+-	connecttottn google.com
+- First step in LoRa land – microchip RN2483 test » disk91.com – technology blog disk91.com
 
 >[Torna a gateway digitale](gateway.md)
