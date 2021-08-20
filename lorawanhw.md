@@ -110,9 +110,9 @@ Dal **punto di vista SW** serve **1 libreria** da scaricare dentro la solita car
 //sensors defines
 #define DHTPIN 2
 #define DHTTYPE DHT22
-DHT dht(DHTPIN, DHTTYPE);
-
 SoftwareSerial mySerial(4, 5); // RX, TX !! labels on relay board is swapped !!
+
+DHT dht(DHTPIN, DHTTYPE);
 
 //create an instance of the rn2xx3 library,
 //giving the software UART as stream to use,
