@@ -476,9 +476,7 @@ Dichiarazione della variabile che contiene la sessione:
 RTC_DATA_ATTR lmic_t RTC_LMIC;
 ```
 
-La lettura viene fatta alla fine del sutup(). Il salvattaggio viene fatto dopo la segnalazione del flag GOTO_DEEPSLEEP.
-
-
+La lettura viene fatta alla fine del sutup(). Il salvataggio viene fatto dopo la segnalazione del flag GOTO_DEEPSLEEP.
 
 ```C++
 #include <arduino.h>
