@@ -12,9 +12,12 @@
 
 <img src="RN2483.png" alt="alt text" width="800">
 
-E' un modem Lora che implementa esclusivamente il **livello fisico** dello stack LoraWan spesso indicato semplicemente come **LoRa**. Sopra di esso può essere utilizzato lo **stack applicativo LoRawan** oppure un qualsiasi altro stack (ad es. **6LowPan e REPL**). 
-
-In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello fisico, con il **chip RMF95/W**M vanno implementate in SW mediante apposite **Mlibrerie**M. Se si vuole un **modem** che implementi **in HW** tutto lo **stack LoraWan** si guardi il modulo **Microchip RN2483**.
+L'RN2483 è un **modem integrato LoRa™** con:
+- una portata di oltre 15 km (raggio extraurbano)
+- capacità di utilizzo a bassa potenza per una durata della batteria superiore a 10 anni
+- alta sensibilità e immunità aòòe interferenze. E' in grado di demodulare segnali con potenze fino a 20 dB al di sotto del livello di rumore.
+- opera sui 433 e 868 MHz frequenza industriale scientifica e medica (ISM) senza licenza e funge da nodo finale (End System) nella rete di una infrastruttura LoRa.
+- possiede, caricato sul modem, l'intero stack protocollare LoRaWAN™ per cui è facile da configurare tramite semplici comandi ASCII inviati via UART, riducendo notevolmente il tempo di sviluppo. L'RN2483 è aderente alla certificazione europea R&TTE.
 
 ### **Schema cablaggio**
 
