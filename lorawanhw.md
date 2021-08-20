@@ -104,14 +104,48 @@ Dal **punto di vista SW** serve **1 libreria** da scaricare dentro la solita car
  */
 #include <rn2xx3.h>
 #include <SoftwareSerial.h>
+#include <DHT.h>
 
 #define RESET 15
+//sensors defines
+#define DHTPIN 2
+#define DHTTYPE DHT22
+DHT dht(DHTPIN, DHTTYPE);
+
 SoftwareSerial mySerial(4, 5); // RX, TX !! labels on relay board is swapped !!
 
 //create an instance of the rn2xx3 library,
 //giving the software UART as stream to use,
 //and using LoRa WAN
 rn2xx3 myLora(mySerial);
+
+void inline sensorsInit() {
+	dht.begin();
+}
+
+void inline readSensorsAndTx() {
+// Read sensor values and multiply by 100 to effictively have 2 decimals
+  uint16_t humidity = dht.readHumidity(false) * 100;
+
+  // false: Celsius (default)
+  // true: Farenheit
+  uint16_t temperature = dht.readTemperature(false) * 100;
+
+  // Split both words (16 bits) into 2 bytes of 8
+  byte payload[4];
+  payload[0] = highByte(temperature);
+  payload[1] = lowByte(temperature);
+  payload[2] = highByte(humidity);
+  payload[3] = lowByte(humidity);
+
+  Serial.print("Temperature: ");
+  Serial.println(temperature);
+  Serial.print("Humidity: ");
+  Serial.println(humidity);
+  
+  //myLora.tx("!"); //send String, blocking function
+  myLora.txBytes(payload, sizeof(payload)); // blocking function
+}
 
 // the setup routine runs once when you press reset:
 void setup() {
@@ -122,7 +156,9 @@ void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(57600);
   mySerial.begin(57600);
-
+  
+  sensorsInit();
+  
   delay(1000); //wait for the arduino ide's serial console to open
 
   Serial.println("Startup");
@@ -133,6 +169,7 @@ void setup() {
   myLora.tx("TTN Mapper on ESP8266 node");
 
   led_off();
+
   delay(2000);
 }
 
@@ -186,10 +223,9 @@ void initialize_radio()
 // the loop routine runs over and over again forever:
 void loop() {
     led_on();
-
-    Serial.println("TXing");
-    myLora.tx("!"); //one byte, blocking function
-
+    
+    readSensorsAndTx();
+	
     led_off();
     delay(200);
 }
@@ -203,7 +239,6 @@ void led_off()
 {
   digitalWrite(2, 0);
 }
-
 ```
 
 ### **Gateway LoraWan con OTAA join e deepSleep**
