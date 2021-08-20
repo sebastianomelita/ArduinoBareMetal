@@ -224,9 +224,9 @@ Nel loop() un if di check controlla se non ci sono operazioni interne di servizi
 
 ### **Sitografia:**
 
--	GitHub - jpmeijers/RN2483-Arduino-Library: Arduino C++ code to communicate with a Mic... github.com
-- MICROCHIP - LORA TRANSCEIVER MOD, 433/868MHZ, 14DBM | Farnell elemen... farnell.com
--	connecttottn google.com
-- First step in LoRa land – microchip RN2483 test » disk91.com – technology blog disk91.com
+-	https://github.com/jpmeijers/RN2483-Arduino-Library
+- http://nl.farnell.com/microchip/rn2483-i-rm095/lora-transceiver-mod-433-868mhz/dp/2491391?ost=rn2483&selectedCategoryId=&categoryId=700000005613farnell.com
+-	https://sites.google.com/site/connecttottn/
+- https://www.disk91.com/2015/technology/networks/first-step-in-lora-land-microchip-rn2483-test/
 
 >[Torna a gateway digitale](gateway.md)
