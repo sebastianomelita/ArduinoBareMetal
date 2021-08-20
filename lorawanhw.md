@@ -65,7 +65,7 @@ I dispositivi dovrebbero salvare i parametri di rete tra i cicli di alimentazion
 
 ### **Librerie del progetto**
 
-Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cartella **libraries**:
+Dal **punto di vista SW** serve **1 libreria** da scaricare dentro la solita cartella **libraries**:
 - **RN2483-Arduino-Library**. Si scarica da https://github.com/jpmeijers/RN2483-Arduino-Library come RN2483-Arduino-Library-master.zip da scompattare e rinominare semplicemente come **RN2483-Arduino-Library**
 
 **Callback onEvent()**
