@@ -10,7 +10,7 @@
 
 ### **La scheda LoRa RN2483**
 
-<img src="RN2483.png" alt="alt text" width="800">
+<img src="RN2483.png" alt="alt text" width="1000">
 
 L'RN2483 è un **modem integrato LoRa™** con:
 - una portata di oltre 15 km (raggio extraurbano)
