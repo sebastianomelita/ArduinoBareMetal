@@ -183,7 +183,7 @@ Al termine di una trasmissione, indicato dall'evento ```EV_TXCOMPLETE```viene pi
 
 La funzione ```os_runloop_once()``` riserva un quanto di tempo allo scheduler dei job della connessione LoRaWan. Una trasmissione LoraWan però potrebbe non essere completata in un solo quanto per cui potrebbero essere necessari parecchi loop() per completarla. Quest'ultima considerazione chiarisce che è importante non inserire delay() o istruzioni molto lente dopo una chiamata a ```os_runloop_once()``` perchè una lunga interruzione del processo di trasmissione potrebbe portare ad una perdita di dati.
 
-Tuttavia, durante la trasmissione di un messaggio, è fondamentale assicurarsi che ```os_runloop_once()``` venga chiamato frequentemente prima delle scadenze rigide. L'API ```os_queryTimeCriticalJobs()``` può essere utilizzata per verificare se sono previste scadenze a breve. Prima di eseguire un lavoro che richiede n millisecondi, si può chiamare ```os_queryTimeCriticalJobs(ms2osticks(n))``` e salta il lavoro se l'API indica che LMIC richiede attenzione.
+Tuttavia, durante la trasmissione di un messaggio, è fondamentale assicurarsi che ```os_runloop_once()``` venga chiamato frequentemente prima delle scadenze rigide. L'API ```os_queryTimeCriticalJobs()``` può essere utilizzata per verificare se sono previste scadenze a breve. Prima di eseguire un job che richiede n millisecondi, si può chiamare ```os_queryTimeCriticalJobs(ms2osticks(n))``` e saltare il job se l'API indica che LMIC richiede attenzione.
 
 Un'alternativa per evitare alla radice instabilità e perdite di dati potrebbe essere chiamare nel loop() ```os_runloop_once()``` tutte le volte che sono necessarie per portare a compimento una trasmissione lasciando il controllo della CPU agli altri task del microcontrollore solo dopo che questa è terminata.
 ```C++
@@ -197,8 +197,7 @@ loop(){
 	flag_TXCOMPLETE = 0;
 }
 ```
-
-
+Il codice alla luce delle considerazioni precedenti diventa:
 
 ```C++
 /*******************************************************************************
@@ -457,7 +456,7 @@ void loop() {
 
 Dopo la segnalazione dell'evento trasmissione completata EV_TXCOMPLETE viene settato il flag GOTO_DEEPSLEEP che comunica al loop il momento buono per andare in deep sleep. 
 
-Nel loop() un if di check controlla se non ci sono operazioni interne di servizio dello schedulatore pendenti. Se esistono operazioni pendenti si pianifica un nuovo check dopo 2 sec, se queste non ci stanno si comanda la discesa del sistema in deep sleep mediante la funzione GoDeepSleep() che esegue le operazioni:
+Nel loop() un if di check controlla se non ci sono operazioni interne di servizio dello schedulatore pendenti. Se esistono operazioni pendenti si pianifica un nuovo check dopo 2 sec, se queste non ci stanno si comanda la discesa del sistema in deep sleep mediante la funzione GoDeepSleep(). Le operazioni (job) ancora pendenti, prima di eseguire un nuovo job che richiede n millisecondi (o effettua il deep sleeep), si controllano con ```os_queryTimeCriticalJobs(ms2osticks(n))```.
 
 ```C++
 void GoDeepSleep()
