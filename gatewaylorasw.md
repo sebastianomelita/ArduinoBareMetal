@@ -178,7 +178,7 @@ void onEvent (ev_t ev) {
           // enable pinging mode, start scanning...
           // (set local ping interval configuration to 2^1 == 2 sec)
           LMIC_setPingable(1);
-          debug_str("SCANNING...\r\n");
+          Serial.println("SCANNING...\r\n");
           break;
 
       // beacon found by scanning
