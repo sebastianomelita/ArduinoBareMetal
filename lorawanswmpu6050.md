@@ -310,4 +310,4 @@ void loop() {
 - https://randomnerdtutorials.com/esp32-mpu-6050-web-server/
 
 
->[Torna a gateway LoraWan con modem RN2483](gatewayi2clorasw.md)
+>[Torna a gateway LoraWan con modem LMIC](gatewayi2clorasw.md)
