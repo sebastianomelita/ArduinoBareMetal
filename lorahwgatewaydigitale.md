@@ -1,5 +1,5 @@
->[Torna a gateway digitale](gateway.md)
+>[Torna a gateway digitale](gatewaylorahw.md)
 
-- [Comando relè](rele.md)
+- [Comando relè](lorahwrele.md)
 
->[Torna a gateway digitale](gateway.md)
+>[Torna a gateway digitale](gatewaylorahw.md)
