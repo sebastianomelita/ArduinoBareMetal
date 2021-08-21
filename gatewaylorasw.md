@@ -882,6 +882,7 @@ respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzat
 - https://randomnerdtutorials.com/esp32-lora-rfm95-transceiver-arduino-ide/
 - https://jackgruber.github.io/2020-04-13-ESP32-DeepSleep-and-LoraWAN-OTAA-join/
 - https://gitmemory.com/issue/JackGruber/Arduino-Pro-Mini-LoRa-Sensor-Node/2/678644527
+- https://lora-developers.semtech.com/library/tech-papers-and-guides/lorawan-class-b-devices/
 
 >[Torna all'indice generale](index.md)
 
