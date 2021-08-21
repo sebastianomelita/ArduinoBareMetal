@@ -14,11 +14,6 @@ Radio punto-punto:
 1. [Analogico](gatewayradioa.md)
 2. [Digitale](gatewayradiod.md)
 
-Radio mezzo comune (BUS):
-1. [LoraWan SW](lorawan.md)
-2. [LoraWan HW](lorawanhw.md)
-3. [Bluetooth](gatewayblu.md)
-
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
