@@ -2,7 +2,7 @@
 ## **Gateways per reti di sensori**
 BUS cablato:
 1. [Dallas](lorawandallas.md)
-2. [I2C](gatewayi2c.md)
+2. [I2C](gatewayi2clorahw.md)
 3. [SPI](gatewayspi.md)
 4. [Modbus](gatewaymodbus.md)
 
