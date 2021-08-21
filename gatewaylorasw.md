@@ -174,7 +174,6 @@ void do_recv(uint8_t  bPort, uint8_t *msg, uint8_t len){
 
 void onEvent (ev_t ev) {
     switch(ev) {
-   
       // network joined, session established
       case EV_JOINED:
           // enable pinging mode, start scanning...
