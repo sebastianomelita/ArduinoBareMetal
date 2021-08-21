@@ -54,7 +54,7 @@ Alcuni moduli relè hanno transistor che funzionano con logica invertita. Logica
 
 Dal **punto di vista SW** non servono librerie particolari tranne quelle per la pubblicazione dei valori tramite MQTT. 
 
-### **Gateway MQTT per il comando di una scheda relè individuato via JSON**
+### **Gateway GPIO-LoRaWan con modem SW per il comando di una scheda relè**
 
 La libreria MQTT è asincrona per cui non bloccante. E' adoperabile sia per **ESP8266** che per **ESP32**.
 
