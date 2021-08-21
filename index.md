@@ -11,8 +11,9 @@
 8. [Macchine a stati finiti](indexstatifiniti.md)
 9. [Reti di sensori](sensornetworkshort.md)
 10. [Gateway MQTT reti di sensori](gateway.md)
-11. [Gateway LoRaWan reti di sensori](gateway.md)
-12. [Esercizi](esercizi.md)
+11. [Gateway LoRaWan LMIC reti di sensori](gatewaylorasw.md)
+12. [Gateway LoRaWan HW reti di sensori](gatewaylorahw.md)
+13. [Esercizi](esercizi.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTk1MTYzNTI1NV19
 -->
