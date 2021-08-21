@@ -166,7 +166,7 @@ Per ricevere LMIC si unisce alla rete tramite un **join** e **ascolta ripetutame
 Quando viene ricevuto EV_TXCOMPLETE o EV_RXCOMPLETE, il codice di elaborazione dell'evento dovrebbe controllare se ci sono dati in ricezione (downlink) ed eventualmente passarli all'applicazione. Per fare ciò, si usa un codice come il seguente:
 
 ```C++
-void recv(uint8_t  bPort, uint8_t *msg, uint8_t len){
+void do_recv(uint8_t  bPort, uint8_t *msg, uint8_t len){
 	
 }
 
@@ -197,7 +197,7 @@ void onEvent (ev_t ev) {
 			bPort = LMIC.frame[LMIC.dataBeg – 1];
 		 // Call user-supplied function with port #, pMessage, nMessage;
 		 // nMessage might be zero.
-		 recv(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
+		 do_recv(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
 	  }
       break;    
     }
