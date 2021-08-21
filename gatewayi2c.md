@@ -1,7 +1,7 @@
 >[Torna a gateway BUS](gateway.md)
 
-- [Sensore di posizione MPU6050](mpu6050.md)
-- [Sensore di temperatura e umidità BME280 + display SSD1306](bme280.md)
-- [Display I2C PCF8574 + sensore digitale di temperatura e umidità DHT11](PCF8574.md)
+- [Gateway MPU6050-LoRaWan con modem SW](lorawanswmpu6050.md)
+- [Gateway BME280-LoRaWan con modem SW](lorawanswbme280.md)
+- [Gateway BME280-LoRaWan con modem SW](lorawanswbme280.md)
 
 >[Torna a gateway BUS](gateway.md)
