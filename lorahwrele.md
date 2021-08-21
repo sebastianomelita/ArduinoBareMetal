@@ -1,6 +1,6 @@
 
 
->[Torna a gateway digitale](gateway.md)
+>[Torna a gateway digitale](lorahwgatewaydigitale.md)
 
 ## **Gateway per scheda relè digitale**
 
@@ -410,4 +410,4 @@ void loop() {
 - https://microcontrollerslab.com/esp32-web-server-control-relay-220-volt-lamp/
 - https://www.monicoimpianti.net/rele-passo-passo/
 
->[Torna a gateway digitale](gateway.md)
+>[Torna a gateway digitale](lorahwgatewaydigitale.md)
