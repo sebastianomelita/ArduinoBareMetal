@@ -1,6 +1,6 @@
 
 
->[Torna a gateway analogico](loraswgatewayanalogico.md)
+>[Torna a gateway analogico](lorahwgatewayanalogico.md)
 
 ## **Gateway per sensore capacitivo di umidità del suolo**
 
@@ -299,4 +299,4 @@ Nel codice seguente vengono effettuati alcuni tentativi di riconnessione in caso
 - https://randomnerdtutorials.com/esp32-deep-sleep-arduino-ide-wake-up-sources/
 - https://randomnerdtutorials.com/esp32-timer-wake-up-deep-sleep/
 
->[Torna a gateway analogico](loraswgatewayanalogico.md)
+>[Torna a gateway analogico](lorahwgatewayanalogico.md)
