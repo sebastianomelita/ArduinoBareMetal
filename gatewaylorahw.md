@@ -1,7 +1,7 @@
 >[Torna all'indice generale](index.md)
 ## **Gateways per reti di sensori**
 BUS cablato:
-1. [Dallas](gatewaydallas.md)
+1. [Dallas](lorawandallas.md)
 2. [I2C](gatewayi2c.md)
 3. [SPI](gatewayspi.md)
 4. [Modbus](gatewaymodbus.md)
