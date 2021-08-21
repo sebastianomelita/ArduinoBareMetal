@@ -39,140 +39,234 @@ Dal **punto di vista SW** non servono librerie particolari tranne quelle per la 
 La libreria MQTT è asincrona per cui non bloccante. E' adoperabile sia per **ESP8266** che per **ESP32**.
 
 ```C++
-//#include <WiFiClientSecure.h>
+/*******************************************************************************
+ * Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
+ * Copyright (c) 2018 Terry Moore, MCCI
+ *
+ * Permission is hereby granted, free of charge, to anyone
+ * obtaining a copy of this document and accompanying files,
+ * to do whatever they want with them without any restriction,
+ * including, but not limited to, copying, modification and redistribution.
+ * NO WARRANTY OF ANY KIND IS PROVIDED.
+ *
+ * This example sends a valid LoRaWAN packet with payload "Hello,
+ * world!", using frequency and encryption settings matching those of
+ * the The Things Network.
+ *
+ * This uses OTAA (Over-the-air activation), where where a DevEUI and
+ * application key is configured, which are used in an over-the-air
+ * activation procedure where a DevAddr and session keys are
+ * assigned/generated for use with all further communication.
+ *
+ * Note: LoRaWAN per sub-band duty-cycle limitation is enforced (1% in
+ * g1, 0.1% in g2), but not the TTN fair usage policy (which is probably
+ * violated by this sketch when left running for longer)!
 
-//#include <ESP8266WiFi.h> per ESP8266
-#include <AsyncMqttClient.h>
-#include <Ticker.h>
-#include <WiFi.h>       // per ESP32
+ * To use this sketch, first register your application and device with
+ * the things network, to set or generate an AppEUI, DevEUI and AppKey.
+ * Multiple devices can use the same AppEUI, but each device has its own
+ * DevEUI and AppKey.
+ *
+ * Do not forget to define the radio type correctly in
+ * arduino-lmic/project_config/lmic_project_config.h or from your BOARDS.txt.
+ *
+ *******************************************************************************/
 
-// Raspberry Pi Mosquitto MQTT Broker
-//#define MQTT_HOST IPAddress(192, 168, 1, 254)
-#define MQTT_HOST "test.mosquitto.org"
-// For a cloud MQTT broker, type the domain name
-//#define MQTT_HOST "example.com"
-#define MQTT_PORT 1883
+#include <lmic.h>
+#include <hal/hal.h>
+#include <SPI.h>
 
-#define WIFI_SSID "myssid"
-#define WIFI_PASSWORD "mypsw"
-
-//Temperature MQTT Topic
-#define MQTT_PUB "esp/umiditasuolo/"
+//
+// For normal use, we require that you edit the sketch to replace FILLMEIN
+// with values assigned by the TTN console. However, for regression tests,
+// we want to be able to compile these scripts. The regression tests define
+// COMPILE_REGRESSION_TEST, and in that case we define FILLMEIN to a non-
+// working but innocuous value.
+//
+#define FILLMEIN 1
+/*
+#ifdef COMPILE_REGRESSION_TEST
+#define FILLMEIN 0
+#else
+#warning "You must replace the values marked FILLMEIN with real values from the TTN control panel!"
+#define FILLMEIN (#dont edit this, edit the lines that use FILLMEIN)
+#endif
+*/
 //#define SensorPin A0  // used for Arduino and ESP8266
 #define SensorPin 4     // used for ESP32
 
-Ticker mqttReconnectTimer;
-Ticker wifiReconnectTimer;
+// This EUI must be in little-endian format, so least-significant-byte
+// first. When copying an EUI from ttnctl output, this means to reverse
+// the bytes. For TTN issued EUIs the last bytes should be 0xD5, 0xB3,
+// 0x70.
+static const u1_t PROGMEM APPEUI[8]={ FILLMEIN };
+void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);}
 
-String datastr = "";
+// This should also be in little endian format, see above.
+static const u1_t PROGMEM DEVEUI[8]={ FILLMEIN };
+void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
 
-AsyncMqttClient mqttClient;
+// This key should be in big endian format (or, since it is not really a
+// number but a block of memory, endianness does not really apply). In
+// practice, a key taken from ttnctl can be copied as-is.
+static const u1_t PROGMEM APPKEY[16] = { FILLMEIN };
+void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 
-unsigned long previousMillis = 0;   // Stores last time temperature was published
-const long interval = 2000;        // Interval at which to publish sensor readings
-byte count = 0;
+// payload to send to TTN gateway
+static uint8_t payload[5];
+static osjob_t sendjob;
+bool flag_TXCOMPLETE = false;
 
-unsigned long previusMillis = 0;
-bool sensor1 = false;
-float t1, h1;
+// Schedule TX every this many seconds (might become longer due to duty
+// cycle limitations).
+const unsigned TX_INTERVAL = 60;
 
-void connectToWifi() {
-  Serial.println("Connecting to Wi-Fi...");
-  WiFi.mode(WIFI_STA);
-  //WiFi.disconnect();
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+// Pin mapping
+const lmic_pinmap lmic_pins = {
+    .nss = 6,
+    .rxtx = LMIC_UNUSED_PIN,
+    .rst = 5,
+    .dio = {2, 3, 4},
+};
+
+int16_t h1;
+
+void printHex2(unsigned v) {
+    v &= 0xff;
+    if (v < 16)
+        Serial.print('0');
+    Serial.print(v, HEX);
 }
 
-void connectToMqtt() {
-  Serial.println("Connecting to MQTT...");
-  mqttClient.connect();
+void onEvent (ev_t ev) {
+    Serial.print(os_getTime());
+    Serial.print(": ");
+    switch(ev) {
+        case EV_JOINED:
+            Serial.println(F("EV_JOINED"));
+            {
+              u4_t netid = 0;
+              devaddr_t devaddr = 0;
+              u1_t nwkKey[16];
+              u1_t artKey[16];
+              LMIC_getSessionKeys(&netid, &devaddr, nwkKey, artKey);
+              Serial.print("netid: ");
+              Serial.println(netid, DEC);
+              Serial.print("devaddr: ");
+              Serial.println(devaddr, HEX);
+              Serial.print("AppSKey: ");
+              for (size_t i=0; i<sizeof(artKey); ++i) {
+                if (i != 0)
+                  Serial.print("-");
+                printHex2(artKey[i]);
+              }
+              Serial.println("");
+              Serial.print("NwkSKey: ");
+              for (size_t i=0; i<sizeof(nwkKey); ++i) {
+                      if (i != 0)
+                              Serial.print("-");
+                      printHex2(nwkKey[i]);
+              }
+              Serial.println();
+            }
+            // Disable link check validation (automatically enabled
+            // during join, but because slow data rates change max TX
+	        // size, we don't use it in this example.
+            LMIC_setLinkCheckMode(0);
+            break;
+        case EV_TXCOMPLETE:
+            Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
+            if (LMIC.txrxFlags & TXRX_ACK)
+              Serial.println(F("Received ack"));
+            if (LMIC.dataLen) {
+              Serial.print(F("Received "));
+              Serial.print(LMIC.dataLen);
+              Serial.println(F(" bytes of payload"));
+            }
+            // Schedule next transmission
+            os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
+	        flag_TXCOMPLETE = true;
+            break;
+	case EV_LINK_DEAD:
+            initLoRaWAN();
+	    break;
+        default:
+            Serial.print(F("Unknown event: "));
+            Serial.println((unsigned) ev);
+            break;
+    }
 }
 
-void WiFiEvent(WiFiEvent_t event) {
-  Serial.printf("[WiFi-event] event: %d\n", event);
-  switch(event) {
-    case SYSTEM_EVENT_STA_GOT_IP:
-      Serial.println("WiFi connected");
-      Serial.println("IP address: ");
-      Serial.println(WiFi.localIP());
-      connectToMqtt();
-      break;
-    case SYSTEM_EVENT_STA_DISCONNECTED:
-      Serial.println("WiFi lost connection");
-      mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
-      wifiReconnectTimer.once_ms(2000, connectToWifi);
-      break;
-  }
+void do_send(osjob_t* j){
+	// Split both words (16 bits) into 2 bytes of 8
+	byte payload[2];
+
+	Serial.print("Requesting data...");
+	h1 = analogRead(SensorPin);
+	Serial.println("DONE");
+
+	payload[0] = highByte(h1);
+	payload[1] = lowByte(h1);
+
+	LMIC_setTxData2(1, payload, sizeof(payload)-1, 0);
+	Serial.println(F("Packet queued"));
 }
 
-void onMqttConnect(bool sessionPresent) {
-  Serial.println("Connected to MQTT.");
-  Serial.print("Session present: ");
-  Serial.println(sessionPresent);
+void initLoRaWAN() {
+	// LMIC init
+	os_init();
+
+	// Reset the MAC state. Session and pending data transfers will be discarded.
+	LMIC_reset();
+
+	// by joining the network, precomputed session parameters are be provided.
+	//LMIC_setSession(0x1, DevAddr, (uint8_t*)NwkSkey, (uint8_t*)AppSkey);
+
+	// Enabled data rate adaptation
+	LMIC_setAdrMode(1);
+
+	// Enable link check validation
+	LMIC_setLinkCheckMode(0);
+
+	// Set data rate and transmit power
+	LMIC_setDrTxpow(DR_SF7, 21);
 }
 
-void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
-  Serial.println("Disconnected from MQTT.");
-  if (WiFi.isConnected()) {
-    mqttReconnectTimer.once_ms(2000, connectToMqtt);
-  }
-}
-
-void onMqttPublish(uint16_t packetId) {
-  Serial.println("Publish acknowledged.");
-  Serial.print("  packetId: ");
-  Serial.println(packetId);
+void sensorInit(){
+	
 }
 
 void setup() {
-  Serial.begin(115200);
-  Serial.println();
-  Serial.println();
+    Serial.begin(9600);
+    Serial.println(F("Starting"));
 
-  WiFi.onEvent(WiFiEvent);
+    #ifdef VCC_ENABLE
+    // For Pinoccio Scout boards
+    pinMode(VCC_ENABLE, OUTPUT);
+    digitalWrite(VCC_ENABLE, HIGH);
+    delay(1000);
+    #endif
 
-  mqttClient.onConnect(onMqttConnect);
-  mqttClient.onDisconnect(onMqttDisconnect);
-  mqttClient.onPublish(onMqttPublish);
-  mqttClient.setServer(MQTT_HOST, MQTT_PORT);
-  // If your broker requires authentication (username and password), set them below
-  //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
-  connectToWifi();
-  count = 0;
-  while (WiFi.status() != WL_CONNECTED && count < 10) {
-    delay(500);
-    count++;
-    Serial.print(".");
-  }
-}
+   // Setup LoRaWAN state
+	initLoRaWAN();
+	
+	sensorInit();
 
-void packData(String &str){    
-	str = "{\"humidity1\":\"";
-	str += h1;
-	str += "\"}";
+    // Start job (sending automatically starts OTAA too)
+    do_send(&sendjob);
 }
 
 void loop() {
-  unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= interval) {
-          previousMillis = currentMillis;
-	  
-	  Serial.print("Requesting data...");
-	  h1 = analogRead(SensorPin);
-	  Serial.println("DONE");
-	  
-	  packData(datastr);
-	    
-          // Publish an MQTT message on topic esp32/ds18b20/temperature    
-	  uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, datastr.c_str(), datastr.length());                        
-          Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
-	  Serial.println(MQTT_PUB);
-          Serial.println(packetIdPub1);
-	  Serial.print("Messaggio inviato: ");
-	  Serial.println(datastr); 
-  }
+	os_runloop_once();
+	/* In caso di instabilità
+	//Run LMIC loop until he as finish
+	while(flag_TXCOMPLETE == false)
+	{
+		os_runloop_once();
+	}
+	flag_TXCOMPLETE = false;
+	*/
 }
-
 ```
 ### **Gateway MQTT per la lettura periodica di un sensore di umidità del suolo alimentato a batteria**
 
@@ -195,153 +289,6 @@ I motivi possono essere:
 Nel codice seguente vengono effettuati alcuni tentativi di riconnessione in caso di mancato collegamento del WiFi o di mancata connessione MQTT. Fallito il numero massimo di tentativi si va in sleep profondo e si riprova al prossimo risveglio.
 
 ```C++
-//#include <WiFiClientSecure.h>
-//#include <ESP8266WiFi.h> per ESP8266
-#include <AsyncMqttClient.h>
-#include <WiFi.h>       // per ESP32
-
-// Raspberry Pi Mosquitto MQTT Broker
-//#define MQTT_HOST IPAddress(192, 168, 1, 254)
-#define MQTT_HOST "test.mosquitto.org"
-// For a cloud MQTT broker, type the domain name
-//#define MQTT_HOST "example.com"
-#define MQTT_PORT 1883
-
-#define WIFI_SSID "myssid"
-#define WIFI_PASSWORD "mypsw"
-
-//Temperature MQTT Topic
-#define MQTT_PUB "esp/umiditasuolo/"
-//#define SensorPin A0  // used for Arduino and ESP8266
-#define SensorPin 4     // used for ESP32
-//deep sleep
-#define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
-#define TIME_TO_SLEEP  30        /* Time ESP32 will go to sleep (in seconds) */
-
-RTC_DATA_ATTR int bootCount = 0;
-
-String datastr = "";
-
-AsyncMqttClient mqttClient;
-
-unsigned long previousMillis = 0;   // Stores last time temperature was published
-const long interval = 2000;        // Interval at which to publish sensor readings
-byte count = 0;
-
-unsigned long previusMillis = 0;
-bool sensor1 = false;
-float t1, h1;
-
-/*
-Method to print the reason by which ESP32
-has been awaken from sleep
-*/
-void print_wakeup_reason(){
-  esp_sleep_wakeup_cause_t wakeup_reason;
-
-  wakeup_reason = esp_sleep_get_wakeup_cause();
-
-  switch(wakeup_reason)
-  {
-    case ESP_SLEEP_WAKEUP_EXT0 : Serial.println("Wakeup caused by external signal using RTC_IO"); break;
-    case ESP_SLEEP_WAKEUP_EXT1 : Serial.println("Wakeup caused by external signal using RTC_CNTL"); break;
-    case ESP_SLEEP_WAKEUP_TIMER : Serial.println("Wakeup caused by timer"); break;
-    case ESP_SLEEP_WAKEUP_TOUCHPAD : Serial.println("Wakeup caused by touchpad"); break;
-    case ESP_SLEEP_WAKEUP_ULP : Serial.println("Wakeup caused by ULP program"); break;
-    default : Serial.printf("Wakeup was not caused by deep sleep: %d\n",wakeup_reason); break;
-  }
-}
-
-void connectToWifi() {
-  Serial.println("Connecting to Wi-Fi...");
-  WiFi.mode(WIFI_STA);
-  //WiFi.disconnect();
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-}
-
-void packData(String &str){    
-	str = "{\"humidity1\":\"";
-	str += h1;
-	str += "\"}";
-}
-
-void loop_once() {  
-	  Serial.print("Requesting data...");
-	  h1 = analogRead(SensorPin);
-	  Serial.println("DONE");
-	  
-	  packData(datastr);
-	    
-          // Publish an MQTT message on topic esp32/ds18b20/temperature    
-	  uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, datastr.c_str(), datastr.length());                        
-          Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
-	  Serial.println(MQTT_PUB);
-          Serial.println(packetIdPub1);
-	  Serial.print("Messaggio inviato: ");
-	  Serial.println(datastr); 
-}
-
-void setup() {
-  Serial.begin(115200);
-  Serial.println();
-  Serial.println();
-  mqttClient.setServer(MQTT_HOST, MQTT_PORT);
-  // If your broker requires authentication (username and password), set them below
-  //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
-  
-  count = 0;
-  connectToWifi();
-  while (WiFi.status() != WL_CONNECTED && count < 10) {
-	count++;
-	Serial.print(".");
-    delay(500);
-  }
-  if(WiFi.status() == WL_CONNECTED){
-	//se il WiFi è connesso
-	Serial.println("WiFi connected");
-	Serial.print("IP address: ");
-	Serial.println(WiFi.localIP());
-  }
-  
-  count = 0;
-  Serial.println("Connecting to MQTT...");
-  mqttClient.connect();
-  while (!mqttClient.connected() && WiFi.status() == WL_CONNECTED && count < 10) {
-	//Serial.print("MQTT lastError: ");
-	//Serial.println(mqttClient.lastError());
-	mqttClient.connect();
-	count++;
-	Serial.print(".");
-	delay(500);
-  }
-  if(mqttClient.connected()){
-	//se il WiFi è connesso
-	Serial.println("MQTT connected");
-  }
-  
-  //Increment boot number and print it every reboot
-  ++bootCount;
-  Serial.println("Boot number: " + String(bootCount));
-  
-  //Print the wakeup reason for ESP32
-  print_wakeup_reason();
-  /*
-  First we configure the wake up source
-  We set our ESP32 to wake up every tot seconds
-  */
-  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
-  Serial.println("Setup ESP32 to sleep for every " + String(TIME_TO_SLEEP) + " Seconds");
-  
-  loop_once();
-  
-  Serial.println("Going to sleep now");
-  delay(1000);
-  Serial.flush(); 
-  esp_deep_sleep_start();
-  Serial.println("This will never be printed");
-}
-
-void loop(){}
 
 ```
 
