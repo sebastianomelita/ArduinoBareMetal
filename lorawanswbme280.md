@@ -1,4 +1,4 @@
->[Torna a gateway LoraWan con modem SW](lorawan.md)
+>[Torna a gateway LoraWan con modem SW](gatewaylorasw.md)
 
 ## **Gateway per BME280**
 
@@ -285,4 +285,4 @@ void loop() {
 - https://learn.adafruit.com/i2c-addresses
 
 
->[Torna a gateway LoraWan con modem SW](lorawan.md)
+>[Torna a gateway LoraWan con modem SW](gatewaylorasw.md)
