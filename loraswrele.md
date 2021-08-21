@@ -227,23 +227,23 @@ void onEvent (ev_t ev) {
             break;
 		 // beacon found by scanning
 		case EV_BEACON_FOUND:
-          // send empty frame up to notify server of ping mode and interval!
-          LMIC_sendAlive();
-          break;
-		case EV_RXCOMPLETE:
-			// data received in ping slot
-			Serial.println(F("EV_RXCOMPLETE"));
-			// Any data to be received?
-			if (LMIC.dataLen != 0 || LMIC.dataBeg != 0) {
-				 // Data was received. Extract port number if any.
-				 u1_t bPort = 0;
-				 if (LMIC.txrxFlags & TXRX_PORT)
-					bPort = LMIC.frame[LMIC.dataBeg - 1];
-				 // Call user-supplied function with port #, pMessage, nMessage;
-				 // nMessage might be zero.
-				 do_recv(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
-			 }
-        break;
+            // send empty frame up to notify server of ping mode and interval!
+            LMIC_sendAlive();
+            break;
+	case EV_RXCOMPLETE:
+		// data received in ping slot
+		Serial.println(F("EV_RXCOMPLETE"));
+		// Any data to be received?
+		if (LMIC.dataLen != 0 || LMIC.dataBeg != 0) {
+			 // Data was received. Extract port number if any.
+			 u1_t bPort = 0;
+			 if (LMIC.txrxFlags & TXRX_PORT)
+				bPort = LMIC.frame[LMIC.dataBeg - 1];
+			 // Call user-supplied function with port #, pMessage, nMessage;
+			 // nMessage might be zero.
+			 do_recv(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
+		 }
+                 break;
         case EV_TXCOMPLETE:
             Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
             if (LMIC.txrxFlags & TXRX_ACK)
