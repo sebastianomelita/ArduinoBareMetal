@@ -8,7 +8,7 @@ BUS cablato:
 
 Stella cablato (punto-punto):
 1. [Analogico](lorahwgatewayanalogico.md)
-2. [Digitale](gatewaydigitale.md)
+2. [Digitale](lorahwgatewaydigitale.md)
 
 Radio punto-punto:
 1. [Analogico](gatewayradioa.md)
