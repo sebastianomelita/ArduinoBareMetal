@@ -22,437 +22,282 @@ Radio mezzo comune (BUS):
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
-### **Client MQTT per ESP32, ESP8266 e Arduino con metodo di connessione bloccante**
-Utilizza la libreria **arduino-mqtt** scaricabille da https://github.com/256dpi/arduino-mqtt e adatta sia per esp8266 che per esp32. Ha la particolarità (comune a quasi tutte le librerie MQTT) di avere la **funzione di connessione bloccante**, per cui, se il server è momentaneamente indisponibile, il client rimane fermo sulla funzione di connessione senza ritornare. Scaduto un **timeout** la connect() **ritorna** permettendo al task che la contiene di continuare l'esecuzione. Nell'esempio seguente la connect() è dentro la callback di un timer HW ed è attivata da una ISR associata ad un interrupt. Le ISR, per definizione, dovrebbero essere non bloccanti perchè spesso non sono interrompibili. **Bloccare una ISR** collegata ad **eventi core** della macchina può causare **instabilità** che determinano il **reset** del sistema.
-
-E' adoperabile sulle seguenti schede:
-
-- Arduino Yun & Yun-Shield (Secure)
-- Arduino Ethernet Shield
-- Arduino WiFi Shield
-- Adafruit HUZZAH ESP8266 (Secure)
-- Arduino/Genuino WiFi101 Shield (Secure)
-- Arduino MKR GSM 1400 (Secure)
-- ESP32 Development Board (Secure)
-
-In realtà, il task principale che contiene il loop() su **ESP32** apparentemente **non si blocca** probabilmente perchè sta su un thread diverso da quello in cui sta la connect MQTT (forse anche un'altro core della CPU rispetto a quello del loop()). Nel caso di una CPU single core come ESP8266 il codice potrebbe essere modificato inserendo nella callback del timer un **flag** al posto della connect e nel loop un **check del flag** che chiama la connect se questo è vero. In questo modo verrebbe bloccato solo il loop principale per qualche secondo, tempo in cui il sistema è non responsivo ma comunque funzionante. Oppure si potrebbe sostituire il timer HW che comanda la riconnessione periodica del client MQTT con un timer SW basato sul polling della millis() nel loop.
-
-Le **librerie** vanno scaricate e scompattate dentro la cartella **libraries** all'interno della **cartella di lavoro** di Arduino. Le librerie da scaricare devono avere il nome (eventualmente rinominandole): 
-- arduino-mqtt
-
-Si tratta di una libreria **molto leggera** che non occupa spazio eccessivo in memoria istruzioni. 
-
-Due **timer HW** ([Gestione dei tempi con i timer HW](timersched.md)) sono stati utilizzati in **combinazione** con gli **eventi**  **onConnection** e **onDisconnection** del **WiFi** (ma **non** del **MQTT** per il quale si usa il **polling** dello **stato**), per realizzare i **tentativi periodici** di **riconnessione** in **assenza** di connessione **WiFi** e in assenza di un server **MQTT** raggiungibile:
-- **wifiReconnectTimer** è usato in congiunzione con **WiFiEvent**. Il timer viene attivato in modo **once**, cioè una sola volta. Alla sua **scadenza** parte la **funzione di riconnessione** del WiFi. Se essa va a **buon fine**, genera l'evento SYSTEM_EVENT_STA_GOT_IP (onConnection) che attiva il timer del **polling periodico dello stato MQTT** tramite l'istruzione **mqttReconnectTimer.attach_ms(...)**. Se invece la funzione di riconnessione del WiFi **non va a buon fine** essa genera l'evento SYSTEM_EVENT_STA_DISCONNECTED (onDisconnection) che riattiva il timer di riconnessione WiFi ancora per una **sola volta** tramite l'istruzione **wifiReconnectTimer.once_ms(...)**. La **combinazione** di callback e attivazione del timer di ritrasmissione WiFi genera un **evento periodico di connessione** fintanto che la connessione WiFi è assente. In caso di **onDisconnection** del WiFi, l'istruzione  **mqttReconnectTimer.detach()** serve a inibire nuovi tentativi di polling della connessione MQTT durante i periodi di disservizio del WiFi dato che, in questo caso, il server MQTT sarebbe comunque irraggiungibile.
-- **mqttReconnectTimer** è sempre attivo **se è presente il WiFi** e serve a fare il **polling** dello **stato** della connessione **MQTT** tramite **mqttClient.connected()**. Se MQTT **è connesso** (mqttClient.connected() in mqttConnTest() restituisce true) non accade nulla, altrimenti viene lanciato un tentativo di riconnessione tramite connectToMqtt().
 
 
+>[Torna a gateway digitale](gateway.md)
 
-```C++
-//#include <WiFiClientSecure.h>
-#include <WiFi.h>
-#include <MQTT.h>
-#include <Ticker.h>
+### **La scheda LoRa RN2483**
 
-#define WIFIRECONNECTIME  2000
-#define MQTTRECONNECTIME  2000
+<img src="RN2483.png" alt="alt text" width="1000">
 
-Ticker mqttReconnectTimer;
-Ticker wifiReconnectTimer;
+L'RN2483 è un **modem integrato LoRa™** con:
+- una portata di oltre 15 km (raggio extraurbano)
+- capacità di utilizzo a bassa potenza per una durata della batteria superiore a 10 anni
+- alta sensibilità e immunità aòòe interferenze. E' in grado di demodulare segnali con potenze fino a 20 dB al di sotto del livello di rumore.
+- opera sui 433 e 868 MHz frequenza industriale scientifica e medica (ISM) senza licenza e funge da nodo finale (End System) nella rete di una infrastruttura LoRa.
+- possiede, caricato sul modem, l'intero stack protocollare LoRaWAN™ per cui è facile da configurare tramite semplici comandi ASCII inviati via UART, riducendo notevolmente il tempo di sviluppo. L'RN2483 è aderente alla certificazione europea R&TTE.
 
-const char ssid[] = "myssd";
-const char pass[] = "mypsw";
-const char mqttserver[] = "test.mosquitto.org";
+### **Schema cablaggio**
 
-//WiFiClientSecure net;
-WiFiClient net;
-MQTTClient mqttClient(1024);
+<img src="LoRa_ESP32_Wiring.png" alt="alt text" width="500">
 
-unsigned long lastMillis = 0;
-byte count = 0;
-
-void messageReceived(String &topic, String &payload) {
-  Serial.println("incoming: " + topic + " - " + payload);
-
-  // Note: Do not use the client in the callback to publish, subscribe or
-  // unsubscribe as it may cause deadlocks when other things arrive while
-  // sending and receiving acknowledgments. Instead, change a global variable,
-  // or push to a queue and handle it in the loop after calling `client.loop()`.
-}
-
-void WiFiEvent(WiFiEvent_t event) {
-  Serial.printf("[WiFi-event] event: %d\n", event);
-  switch(event) {
-    case SYSTEM_EVENT_STA_GOT_IP:
-      Serial.println("WiFi connected");
-      Serial.println("IP address: ");
-      Serial.println(WiFi.localIP());
-      connectToMqtt();
-      mqttReconnectTimer.attach_ms(MQTTRECONNECTIME, mqttConnTest);
-      break;
-    case SYSTEM_EVENT_STA_DISCONNECTED:
-      Serial.println("WiFi lost connection");
-      mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
-      wifiReconnectTimer.once_ms(WIFIRECONNECTIME, connectToWifi);
-      break;
-  }
-}
-
-void mqttConnTest() {
-    if (!mqttClient.connected() && WiFi.status() == WL_CONNECTED) {
-	Serial.print("MQTT lastError: ");
-	Serial.println(mqttClient.lastError());
-	connectToMqtt();
-    }
-}
-
-void connectToWifi() {
-  Serial.println("Connecting to Wi-Fi...");
-  WiFi.mode(WIFI_STA);
-  //WiFi.disconnect();
-  WiFi.begin(ssid, pass);
-}
-
-void connectToMqtt() {
-  Serial.println("Connecting to MQTT...");
-  mqttClient.connect("bside2botham2", "try", "try");
-  if(mqttClient.connected()){
-	mqttClient.subscribe("/hello");
-  }
-  Serial.println("...end");
-  // client.unsubscribe("/hello");
-}
-
-void setup() {
-  Serial.begin(115200);
-  WiFi.begin(ssid, pass);
-  WiFi.onEvent(WiFiEvent);
-  // MQTT brokers usually use port 8883 for secure connections.
-  mqttClient.begin(mqttserver, 1883, net);
-  mqttClient.onMessage(messageReceived); 
-  connectToWifi();
-  count = 0;
-  while (WiFi.status() != WL_CONNECTED && count < 10) {
-    delay(500);
-    count++;
-    Serial.print(".");
-  }
-}
-
-void loop() {
-  mqttClient.loop();
-  //delay(10);  // <- fixes some issues with WiFi stability
-
-  // publish a message roughly every 2 second.
-  if (millis() - lastMillis > 2000) {
-        lastMillis = millis();
-	
-	Serial.println("Tick");
-	// pubblicazione periodica di test
-        mqttClient.publish("/hello", "world");
-  }
-}
-
-/*
-WL_CONNECTED: assigned when connected to a WiFi network;
-WL_NO_SHIELD: assigned when no WiFi shield is present;
-WL_IDLE_STATUS: it is a temporary status assigned when WiFi.begin() is called and remains active until the number of attempts expires (resulting in WL_CONNECT_FAILED) or a connection is established (resulting in WL_CONNECTED);
-WL_NO_SSID_AVAIL: assigned when no SSID are available;
-WL_SCAN_COMPLETED: assigned when the scan networks is completed;
-WL_CONNECT_FAILED: assigned when the connection fails for all the attempts;
-WL_CONNECTION_LOST: assigned when the connection is lost;
-WL_DISCONNECTED: assigned when disconnected from a network;
-\*/
+```
+RN2483 pin name <--> Arduino pin number
+  UART_TX (6)   <-->   10
+  UART_RX (7)   <-->   11
+  RESET (32)    <-->   12
+  VDD (34)      <-->   3.3V
+  GND (33)      <-->   Gnd
 ```
 
-Versione per **ESP8266** o **Arduino** con un **flag** che attiva la riconnessione all'interno del loop(). Il **loop()** rimane **bloccato** per svariati secondi (circa 18) se il server MQTT è **non disponibile** o non raggingibile. Il timer di ritrasmissione MQTT non esegue azioni bloccanti ma si limita ad **impostare il flag**. Il flag viene **controllato** con un **polling** continuo all'interno del loop().
+La lunghezza del filo dipende dalla frequenza:
+- 868 MHz: 86,3 mm 
+- 915 MHz: 81,9 mm
+- 433 MHz: 173,1 mm
+
+
+Per il nostro modulo dobbiamo utilizzare un filo da 86,3 mm saldato direttamente al pin ANA del ricetrasmettitore. Si noti che l'utilizzo di un'antenna adeguata estenderà il raggio di comunicazione.
+
+### **Modi di autenticazione**
+
+**Attivazione via etere (OTAA)**
+
+L'**attivazione over-the-air (OTAA)** è il modo preferito e più sicuro per connettersi con The Things Network. I dispositivi eseguono una procedura di unione con la rete (join), durante la quale viene assegnato un **DevAddr** dinamico e le **chiavi** di sicurezza vengono **negoziate** con il dispositivo.
+
+**Attivazione tramite personalizzazione (ABP)**
+
+In alcuni casi potrebbe essere necessario codificare il **DevAddr** e le **chiavi di sicurezza** hardcoded nel dispositivo. Ciò significa attivare un dispositivo **tramite personalizzazione (ABP)**. Questa strategia potrebbe sembrare più semplice, perché si salta la procedura di adesione, ma presenta alcuni svantaggi legati alla sicurezza.
+
+**ABP vs OTAA**
+
+In generale, non ci sono inconvenienti nell'utilizzo dell'OTAA rispetto all'utilizzo dell'ABP, ma ci sono alcuni requisiti che devono essere soddisfatti quando si utilizza l'OTAA.La specifica LoRaWAN avverte in modo specifico contro il ricongiungimento sistematico in caso di guasto della rete. Un dispositivo dovrebbe conservare il risultato di un'attivazione in una memoria permanente se si prevede che il dispositivo venga spento e riacceso durante la sua vita:
+- un dispositivo ABP utilizza una memoria non volatile per mantenere i contatori di frame tra i riavvii. 
+- Un approccio migliore sarebbe passare all'utilizzo di OTAA e memorizzare la sessione OTAA anziché i contatori di frame.
+
+L'unica cosa da tenere a mente è che un join OTAA richiede che il dispositivo finale si trovi all'interno della copertura della rete su cui è registrato. La ragione di ciò è che la procedura di join OTAA richiede che il dispositivo finale sia in grado di ricevere il messaggio di downlink Join Accept dal server di rete.
+
+Un approccio migliore consiste nell'eseguire un join OTAA in una fabbrica o in un'officina in cui è possibile garantire la copertura di rete e i downlink funzionanti. Non ci sono svantaggi in questo approccio finché il dispositivo segue le migliori pratiche LoRaWAN (https://www.thethingsindustries.com/docs/devices/best-practices/).
+
+### **Buone pratiche**
+
+**Connessioni confermate**
+
+È possibile che non si riceva subito un ACK per ogni uplink o downlink di tipo confermato. Una buona regola empirica è attendere almeno tre ACK mancati per presumere la perdita del collegamento.
+
+In caso di perdita del collegamento, procedere come segue:
+- Imposta la potenza TX al massimo consentito/supportato e riprova
+- Diminuisci gradualmente la velocità dei dati e riprova
+- Ripristina i canali predefiniti e riprova
+- Invia richieste di adesione periodiche con backoff
+
+**Cicli di alimentazione**
+
+I dispositivi dovrebbero salvare i parametri di rete tra i cicli di alimentazione regolari. Ciò include parametri di sessione come DevAddr, chiavi di sessione, FCnt e nonces. Ciò consente al dispositivo di unirsi facilmente, poiché chiavi e contatori rimangono sincronizzati.
+
+### **Librerie del progetto**
+
+<img src="RN2483stack.png" alt="alt text" width="800">
+
+Dal **punto di vista SW** serve **1 libreria** da scaricare dentro la solita cartella **libraries**:
+- **RN2483-Arduino-Library**. Si scarica da https://github.com/jpmeijers/RN2483-Arduino-Library come RN2483-Arduino-Library-master.zip da scompattare e rinominare semplicemente come **RN2483-Arduino-Library**
+- **EspSoftwareSerial**. Si scarica da https://github.com/plerup/espsoftwareserial/ come espsoftwareserial-master.zip da scompattare e rinominare semplicemente come **espsoftwareserial**
+
+**Callback onEvent()**
+
+
+
+### **Gateway LoraWan con OTAA join**
 
 ```C++
-//#include <WiFiClientSecure.h>
-//#include <WiFi.h>       // per ESP32
-#include <ESP8266WiFi.h>  // per ESP8266
-#include <MQTT.h>
-#include <Ticker.h>
+/*
+ * Author: JP Meijers
+ * Date: 2016-10-20
+ *
+ * Transmit a one byte packet via TTN. This happens as fast as possible, while still keeping to
+ * the 1% duty cycle rules enforced by the RN2483's built in LoRaWAN stack. Even though this is
+ * allowed by the radio regulations of the 868MHz band, the fair use policy of TTN may prohibit this.
+ *
+ * CHECK THE RULES BEFORE USING THIS PROGRAM!
+ *
+ * CHANGE ADDRESS!
+ * Change the device address, network (session) key, and app (session) key to the values
+ * that are registered via the TTN dashboard.
+ * The appropriate line is "myLora.initABP(XXX);" or "myLora.initOTAA(XXX);"
+ * When using ABP, it is advised to enable "relax frame count".
+ *
+ * Connect the RN2xx3 as follows:
+ * RN2xx3 -- ESP8266
+ * Uart TX -- GPIO4
+ * Uart RX -- GPIO5
+ * Reset -- GPIO15
+ * Vcc -- 3.3V
+ * Gnd -- Gnd
+ *
+ */
+#include <rn2xx3.h>
+#include <SoftwareSerial.h>
+#include <DHT.h>
 
-#define WIFIRECONNECTIME  2000
-#define MQTTRECONNECTIME  2000
+#define RESET 15
+//sensors defines
+#define DHTPIN 2
+#define DHTTYPE DHT22
+SoftwareSerial mySerial(4, 5); // RX, TX !! labels on relay board is swapped !!
 
-Ticker mqttReconnectTimer;
-Ticker wifiReconnectTimer;
+DHT dht(DHTPIN, DHTTYPE);
 
-const char ssid[] = "myssid";
-const char pass[] = "mypsw";
-const char mqttserver[] = "test.mosquitto.orge";
+//create an instance of the rn2xx3 library,
+//giving the software UART as stream to use,
+//and using LoRa WAN
+rn2xx3 myLora(mySerial);
 
-//WiFiClientSecure net;
-WiFiClient net;
-MQTTClient mqttClient(1024);
-
-unsigned long lastMillis = 0;
-byte count = 0;
-bool mqttreconnflag = false; // 8 bit, non è necessaria una corsa critica!
-
-void messageReceived(String &topic, String &payload) {
-  Serial.println("incoming: " + topic + " - " + payload);
-
-  // Note: Do not use the client in the callback to publish, subscribe or
-  // unsubscribe as it may cause deadlocks when other things arrive while
-  // sending and receiving acknowledgments. Instead, change a global variable,
-  // or push to a queue and handle it in the loop after calling `client.loop()`.
+void inline sensorsInit() {
+	dht.begin();
 }
 
-void WiFiEvent(WiFiEvent_t event) {
-  Serial.printf("[WiFi-event] event: %d\n", event);
-  switch(event) {
-    case SYSTEM_EVENT_STA_GOT_IP:
-      Serial.println("WiFi connected");
-      Serial.println("IP address: ");
-      Serial.println(WiFi.localIP());
-      connectToMqtt();
-      mqttReconnectTimer.attach_ms(MQTTRECONNECTIME, mqttConnTest2);
-      break;
-    case SYSTEM_EVENT_STA_DISCONNECTED:
-      Serial.println("WiFi lost connection");
-      mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
-      wifiReconnectTimer.once_ms(WIFIRECONNECTIME, connectToWifi);
-      break;
-  }
-}
+void inline readSensorsAndTx() {
+// Read sensor values and multiply by 100 to effictively have 2 decimals
+  uint16_t humidity = dht.readHumidity(false) * 100;
 
-void mqttConnTest() {
-    if (!mqttClient.connected() && WiFi.status() == WL_CONNECTED) {
-	Serial.print("MQTT lastError: ");
-	Serial.println(mqttClient.lastError());
-	connectToMqtt();
-    }
-}
+  // false: Celsius (default)
+  // true: Farenheit
+  uint16_t temperature = dht.readTemperature(false) * 100;
 
-void mqttConnTest2() {
-	mqttreconnflag = true;
-}
+  // Split both words (16 bits) into 2 bytes of 8
+  byte payload[4];
+  payload[0] = highByte(temperature);
+  payload[1] = lowByte(temperature);
+  payload[2] = highByte(humidity);
+  payload[3] = lowByte(humidity);
 
-void connectToWifi() {
-  Serial.println("Connecting to Wi-Fi...");
-  WiFi.mode(WIFI_STA);
-  //WiFi.disconnect();
-  WiFi.begin(ssid, pass);
-}
-
-void connectToMqtt() {
-  Serial.println("Connecting to MQTT...");
-  mqttClient.connect("bside2botham2", "try", "try");
-  if(mqttClient.connected()){
-	mqttClient.subscribe("/hello");
-  }
-  Serial.println("...end");
-  // client.unsubscribe("/hello");
-}
-
-void setup() {
-  Serial.begin(115200);
-  WiFi.begin(ssid, pass);
-  WiFi.onEvent(WiFiEvent);
-  // MQTT brokers usually use port 8883 for secure connections.
-  mqttClient.begin(mqttserver, 1883, net);
-  mqttClient.onMessage(messageReceived); 
-  connectToWifi();
-  count = 0;
-  while (WiFi.status() != WL_CONNECTED && count < 10) {
-    delay(500);
-    count++;
-    Serial.print(".");
-  }
-}
-
-void loop() {
-  mqttClient.loop();
-  //delay(10);  // <- fixes some issues with WiFi stability
-  // polling del flag di riconnessione MQTT
-  if(mqttreconnflag){
-	  mqttreconnflag = false;
-	  mqttConnTest();
-  }
+  Serial.print("Temperature: ");
+  Serial.println(temperature);
+  Serial.print("Humidity: ");
+  Serial.println(humidity);
   
-  // publish a message roughly every 2 second.
-  if (millis() - lastMillis > 2000) {
-        lastMillis = millis();
-	
-	Serial.println("Tick");
-	// pubblicazione periodica di test
-        mqttClient.publish("/hello", "world");
-  }
+  //myLora.tx("!"); //send String, blocking function
+  myLora.txBytes(payload, sizeof(payload)); // blocking function
 }
 
-/*
-WL_CONNECTED: assigned when connected to a WiFi network;
-WL_NO_SHIELD: assigned when no WiFi shield is present;
-WL_IDLE_STATUS: it is a temporary status assigned when WiFi.begin() is called and remains active until the number of attempts expires (resulting in WL_CONNECT_FAILED) or a connection is established (resulting in WL_CONNECTED);
-WL_NO_SSID_AVAIL: assigned when no SSID are available;
-WL_SCAN_COMPLETED: assigned when the scan networks is completed;
-WL_CONNECT_FAILED: assigned when the connection fails for all the attempts;
-WL_CONNECTION_LOST: assigned when the connection is lost;
-WL_DISCONNECTED: assigned when disconnected from a network;
-\*/
+// the setup routine runs once when you press reset:
+void setup() {
+  // LED pin is GPIO2 which is the ESP8266's built in LED
+  pinMode(2, OUTPUT);
+  led_on();
+
+  // Open serial communications and wait for port to open:
+  Serial.begin(57600);
+  mySerial.begin(57600);
+  
+  sensorsInit();
+  
+  delay(1000); //wait for the arduino ide's serial console to open
+
+  Serial.println("Startup");
+
+  initialize_radio();
+
+  //transmit a startup message
+  myLora.tx("TTN Mapper on ESP8266 node");
+
+  led_off();
+
+  delay(2000);
+}
+
+void initialize_radio()
+{
+  //reset RN2xx3
+  pinMode(RESET, OUTPUT);
+  digitalWrite(RESET, LOW);
+  delay(100);
+  digitalWrite(RESET, HIGH);
+
+  delay(100); //wait for the RN2xx3's startup message
+  mySerial.flush();
+
+  //check communication with radio
+  String hweui = myLora.hweui();
+  while(hweui.length() != 16)
+  {
+    Serial.println("Communication with RN2xx3 unsuccessful. Power cycle the board.");
+    Serial.println(hweui);
+    delay(10000);
+    hweui = myLora.hweui();
+  }
+
+  //print out the HWEUI so that we can register it via ttnctl
+  Serial.println("When using OTAA, register this DevEUI: ");
+  Serial.println(hweui);
+  Serial.println("RN2xx3 firmware version:");
+  Serial.println(myLora.sysver());
+
+  //configure your keys and join the network
+  Serial.println("Trying to join TTN");
+  bool join_result = false;
+
+  //ABP: initABP(String addr, String AppSKey, String NwkSKey);
+  join_result = myLora.initABP("02017201", "8D7FFEF938589D95AAD928C2E2E7E48F", "AE17E567AECC8787F749A62F5541D522");
+
+  //OTAA: initOTAA(String AppEUI, String AppKey);
+  //join_result = myLora.initOTAA("70B3D57ED00001A6", "A23C96EE13804963F8C2BD6285448198");
+
+  while(!join_result)
+  {
+    Serial.println("Unable to join. Are your keys correct, and do you have TTN coverage?");
+    delay(60000); //delay a minute before retry
+    join_result = myLora.init();
+  }
+  Serial.println("Successfully joined TTN");
+
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+    led_on();
+    
+    readSensorsAndTx();
+	
+    led_off();
+    delay(200);
+}
+
+void led_on()
+{
+  digitalWrite(2, 1);
+}
+
+void led_off()
+{
+  digitalWrite(2, 0);
+}
 ```
 
-### **Client MQTT per ESP32 e ESP8266 con metodo di connessione non bloccante**
-Utilizza la libreria **sync-mqtt-client** scaricabile da https://github.com/marvinroger/async-mqtt-client e adatta sia per esp8266 che per esp32 (non per Arduino). In questo caso, la funzione di riconnessione del client MQTT è non bloccante e non crea problemi anche se viene chiamata all'interno della ISR di un timer HW. Il prezzo da pagare è la sostituzione della sottostante libreria TCP bloccante con una versione analoga asincrona che ritorna sempre. L'installazione di librerie aggiuntiva comporta una **occupazione** di memoria in area istruzioni **maggiore della soluzione** precedente.
+### **Gateway LoraWan con OTAA join e deepSleep**
 
-Le **librerie** vanno scaricate e scompattate dentro la cartella **libraries** all'interno della **cartella di lavoro** di Arduino. Le librerie da scaricare devono avere il nome (eventualmente rinominandole): 
-- async-mqtt-client
-- AsyncTCP
+<img src="deepsleep.png" alt="alt text" width="1000">
 
-Due **timer HW** ([Gestione dei tempi con i timer HW](timersched.md)) sono stati utilizzati in **combinazione** con gli **eventi**  **onConnection** e **onDisconnection**, sia del **WiFi**   che del **MQTT**, per realizzare i **tentativi periodici** di **riconnessione** in **assenza** di connessione **WiFi** e in assenza di un server **MQTT** raggiungibile:
-- **wifiReconnectTimer** è usato in congiunzione con **WiFiEvent**. Il timer viene attivato in modo **once**, cioè una sola volta. Alla sua **scadenza** parte la **funzione di riconnessione** del WiFi. Se essa va a **buon fine**, genera l'evento SYSTEM_EVENT_STA_GOT_IP (onConnection) che attiva il timer del **polling periodico dello stato MQTT** tramite l'istruzione **mqttReconnectTimer.attach_ms(...)**. Se invece la funzione di riconnessione del WiFi **non va a buon fine** essa genera l'evento SYSTEM_EVENT_STA_DISCONNECTED (onDisconnection) che riattiva il timer di riconnessione WiFi ancora per una **sola volta** tramite l'istruzione **wifiReconnectTimer.once_ms(...)**. La **combinazione** di callback e attivazione del timer di ritrasmissione WiFi genera un **evento periodico di connessione** fintanto che la connessione WiFi è assente. In caso di **onDisconnection** del WiFi, l'istruzione  **mqttReconnectTimer.detach()** serve a inibire nuovi tentativi di polling della connessione MQTT durante i periodi di disservizio del WiFi dato che, in questo caso, il server MQTT sarebbe comunque irraggiungibile.
-- **mqttReconnectTimer** viene attivato **una sola volta** tramite mqttReconnectTimer.once_ms(...) da una callback associato all'evento di disconnessione MQTT. Al suo scadere viene fatto un tentativo di riconnessione tramite  **connectToMqtt()**. Se va a vuoto viene generato un nuovo evento di disconnessione MQTT (onDisconnection) e viene nuovamente richiamata la callback che attiva mqttReconnectTimer una sola volta, e così via. La **combinazione** di callback e attivazione del timer di ritrasmissione MQTT genera un **evento periodico di connessione** fintanto che la connessione MQTT è assente.
+Dopo la segnalazione dell'evento trasmissione completata EV_TXCOMPLETE viene settato il flag GOTO_DEEPSLEEP che comunica al loop il momento buono per andare in deep sleep. 
+
+Nel loop() un if di check controlla se non ci sono operazioni interne di servizio dello schedulatore pendenti. Se esistono operazioni pendenti si pianifica un nuovo check dopo 2 sec, se queste non ci stanno si comanda la discesa del sistema in deep sleep mediante la funzione GoDeepSleep() che esegue le operazioni:
 
 ```C++
-//#include <WiFiClientSecure.h>
-#include <WiFi.h>       // per ESP32
-//#include <ESP8266WiFi.h> per ESP8266
-#include <AsyncMqttClient.h>
-#include <Ticker.h>
-
-#define WIFI_SSID "myssd"
-#define WIFI_PASSWORD "mypsw"
-#define WIFIRECONNECTIME  2000
-#define MQTTRECONNECTIME  2000
-
-Ticker mqttReconnectTimer;
-Ticker wifiReconnectTimer;
-// Raspberry Pi Mosquitto MQTT Broker
-//#define MQTT_HOST IPAddress(192, 168, 1, 254)
-#define MQTT_HOST "test.mosquitto.org"
-// For a cloud MQTT broker, type the domain name
-//#define MQTT_HOST "example.com"
-#define MQTT_PORT 1883
-// Temperature MQTT Topic
-#define MQTT_PUB_TEMP "hello"
-
-AsyncMqttClient mqttClient;
-
-unsigned long previousMillis = 0;   // Stores last time temperature was published
-const long interval = 4000;        // Interval at which to publish sensor readings
-byte count = 0;
-
-void connectToWifi() {
-  Serial.println("Connecting to Wi-Fi...");
-  WiFi.mode(WIFI_STA);
-  //WiFi.disconnect();
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-}
-
-void connectToMqtt() {
-  Serial.println("Connecting to MQTT...");
-  mqttClient.connect();
-}
-
-void onMqttMessage(char* topic, char* payload, AsyncMqttClientMessageProperties properties, size_t len, size_t index, size_t total) {
-  Serial.println("Publish received.");
-  Serial.print("  topic: ");
-  Serial.println(topic);
-  Serial.print("  qos: ");
-  Serial.println(properties.qos);
-  Serial.print("  dup: ");
-  Serial.println(properties.dup);
-  Serial.print("  retain: ");
-  Serial.println(properties.retain);
-  Serial.print("  len: ");
-  Serial.println(len);
-  Serial.print("  index: ");
-  Serial.println(index);
-  Serial.print("  total: ");
-  Serial.println(total);
-  Serial.print("  payload: ");
-  Serial.println(payload);
-}
-
-void WiFiEvent(WiFiEvent_t event) {
-  Serial.printf("[WiFi-event] event: %d\n", event);
-  switch(event) {
-    case SYSTEM_EVENT_STA_GOT_IP:
-      Serial.println("WiFi connected");
-      Serial.println("IP address: ");
-      Serial.println(WiFi.localIP());
-      connectToMqtt();
-      break;
-    case SYSTEM_EVENT_STA_DISCONNECTED:
-      Serial.println("WiFi lost connection");
-      mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
-      wifiReconnectTimer.once_ms(WIFIRECONNECTIME, connectToWifi);
-      break;
-  }
-}
-
-void onMqttConnect(bool sessionPresent) {
-  Serial.println("Connected to MQTT.");
-  Serial.print("Session present: ");
-  Serial.println(sessionPresent);
-  uint16_t packetIdSub = mqttClient.subscribe("hello", 2);
-  Serial.print("Subscribing at QoS 2, packetId: ");
-  Serial.println(packetIdSub);
-}
-
-void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
-  Serial.println("Disconnected from MQTT.");
-  if (WiFi.isConnected()) {
-    mqttReconnectTimer.once_ms(MQTTRECONNECTIME, connectToMqtt);
-  }
-}
-
-void onMqttPublish(uint16_t packetId) {
-  Serial.println("Publish acknowledged.");
-  Serial.print("  packetId: ");
-  Serial.println(packetId);
-}
-
-void setup() {
-  Serial.begin(115200);
-  Serial.println();
-  Serial.println();
-
-  WiFi.onEvent(WiFiEvent);
-
-  mqttClient.onConnect(onMqttConnect);
-  mqttClient.onDisconnect(onMqttDisconnect);
-  mqttClient.onPublish(onMqttPublish);
-  mqttClient.onMessage(onMqttMessage);
-  mqttClient.setServer(MQTT_HOST, MQTT_PORT);
-  // If your broker requires authentication (username and password), set them below
-  //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
-  connectToWifi();
-  count = 0;
-  while (WiFi.status() != WL_CONNECTED && count < 10) {
-    delay(500);
-    count++;
-    Serial.print(".");
-  }
-}
-
-void loop() {
-  unsigned long currentMillis = millis();
-  // Every X number of seconds it publishes a new MQTT message
-  if (currentMillis - previousMillis >= interval) {
-    // Save the last time a new reading was published
-    previousMillis = currentMillis;
-    
-    Serial.println("Tick");
-	
-    // Publish an MQTT message on topic 
-    //(const char* topic, uint8_t qos, bool retain, const char* payload = nullptr, size_t length = 0, bool dup = false, uint16_t message_id = 0);
-    uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, "Ciao mondo", strlen("Ciao mondo"));                            
-    Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
-    Serial.println(packetIdPub1);
-    Serial.print("Messaggio inviato: ");
-    Serial.println("Ciao mondo");
-  }
-}
-
 
 ```
+### **APPENDICE DI CONSULTAZIONE**
 
-Esiste per **esp8266** anche un'altra libreria **non bloccante** basata su librerie de **SO Contiki**: https://github.com/i-n-g-o/esp-mqtt-arduino.
-Pur occupando meno memoria, il suo utilizzo però è più laborioso della precedente ed è attualmente meno mantenuta.
+ 
+
+**Callbacks dell'applicazione**
+
+
+### **Sitografia:**
+
+- https://github.com/jpmeijers/RN2483-Arduino-Library
+- http://nl.farnell.com/microchip/rn2483-i-rm095/lora-transceiver-mod-433-868mhz/dp/2491391?ost=rn2483&selectedCategoryId=&categoryId=700000005613farnell.com
+- https://sites.google.com/site/connecttottn/
+- https://www.disk91.com/2015/technology/networks/first-step-in-lora-land-microchip-rn2483-test/
+- http://ww1.microchip.com/downloads/en/devicedoc/70005219a.pdf
 
 >[Torna all'indice generale](index.md)
 
