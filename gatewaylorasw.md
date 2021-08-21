@@ -164,30 +164,46 @@ Le trasmissioni sono ancora possibili, ma la loro ricezione è incerta.
 Per ricevere LMIC si unisce alla rete tramite un **join** e **ascolta ripetutamente** i dati in **downlink**. Questo è ottenuto abilitando la **modalità ping**. La chiamata a **LMIC_setPingable()** imposta la modalità ping localmente e avvia la **scansione dei beacon**. Una volta che il primo beacon è stato trovato, è necessario inviare in uplink un frame di configurazione (in questo caso un frame vuoto tramite LMIC_sendAlive()) per trasportare le **opzioni MAC** e per notificare al server la **modalità ping** e il suo **intervallo**. Ogni volta che il server invia, in uno degli slot di ricezione, un dato in downlink, l'evento **EV_RXCOMPLETE** viene attivato e i dati ricevuti possono essere valutati nel campo **frame** del **struttura LMIC**. Il codice di esempio registra i dati ricevuti sulla console e, nel caso speciale quando viene ricevuto esattamente un byte, pilota il LED in base al valore ricevuto.
 
 Quando viene ricevuto EV_TXCOMPLETE o EV_RXCOMPLETE, il codice di elaborazione dell'evento dovrebbe controllare se ci sono dati in ricezione (downlink) ed eventualmente passarli all'applicazione. Per fare ciò, si usa un codice come il seguente:
+
 ```C++
-// Any data to be received?
- if (LMIC.dataLen != 0) {
-	 // Data was received. Extract port number if any.
-	 u1_t bPort = 0;
-	 if (LMIC.txrxFlags & TXRX_PORT)
-		 bPort = LMIC.frame[LMIC.dataBeg – 1];
-	 // Call user-supplied function with port #, pMessage, nMessage
-	 receiveMessage(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
- }
+void recv(uint8_t  bPort, uint8_t *msg, uint8_t len){
+	
+}
+
+void onEvent (ev_t ev) {
+    switch(ev) {
+   
+      // network joined, session established
+      case EV_JOINED:
+          // enable pinging mode, start scanning...
+          // (set local ping interval configuration to 2^1 == 2 sec)
+          LMIC_setPingable(1);
+          debug_str("SCANNING...\r\n");
+          break;
+
+      // beacon found by scanning
+      case EV_BEACON_FOUND:
+          // send empty frame up to notify server of ping mode and interval!
+          LMIC_sendAlive();
+          break;
+
+      // data frame received in ping slot
+      case EV_RXCOMPLETE:
+          // Any data to be received?
+	  if (LMIC.dataLen != 0 || LMIC.dataBeg != 0) {
+		 // Data was received. Extract port number if any.
+		 u1_t bPort = 0;
+		 if (LMIC.txrxFlags & TXRX_PORT)
+			bPort = LMIC.frame[LMIC.dataBeg – 1];
+		 // Call user-supplied function with port #, pMessage, nMessage;
+		 // nMessage might be zero.
+		 recv(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
+	  }
+      break;    
+    }
+}
 ```
-Se si vuole mettere in guardia il client dell'avvenuta ricezione di messaggi di **lunghezza zero**, deve essere usato un codice leggermente più complesso:
-```C++
-// Any data to be received?
- if (LMIC.dataLen != 0 || LMIC.dataBeg != 0) {
-	 // Data was received. Extract port number if any.
-	 u1_t bPort = 0;
-	 if (LMIC.txrxFlags & TXRX_PORT)
-	 	bPort = LMIC.frame[LMIC.dataBeg – 1];
-	 // Call user-supplied function with port #, pMessage, nMessage;
-	 // nMessage might be zero.
-	 receiveMessage(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen );
- }
-```
+
 ### **File di configurazione**
 
 In questo porting LMIC, a differenza di  altri simili,  non va modificato il file src/lmic/config.h per configurare il FW. La configurazione è spostata sul file project_config/lmic_project_config.h. 
@@ -883,6 +899,7 @@ respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzat
 - https://jackgruber.github.io/2020-04-13-ESP32-DeepSleep-and-LoraWAN-OTAA-join/
 - https://gitmemory.com/issue/JackGruber/Arduino-Pro-Mini-LoRa-Sensor-Node/2/678644527
 - https://lora-developers.semtech.com/library/tech-papers-and-guides/lorawan-class-b-devices/
+- https://cpp.hotexamples.com/it/examples/-/-/LMIC_sendAlive/cpp-lmic_sendalive-function-examples.html
 
 >[Torna all'indice generale](index.md)
 
