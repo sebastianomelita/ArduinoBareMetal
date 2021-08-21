@@ -22,437 +22,876 @@ Radio mezzo comune (BUS):
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
-### **Client MQTT per ESP32, ESP8266 e Arduino con metodo di connessione bloccante**
-Utilizza la libreria **arduino-mqtt** scaricabille da https://github.com/256dpi/arduino-mqtt e adatta sia per esp8266 che per esp32. Ha la particolarità (comune a quasi tutte le librerie MQTT) di avere la **funzione di connessione bloccante**, per cui, se il server è momentaneamente indisponibile, il client rimane fermo sulla funzione di connessione senza ritornare. Scaduto un **timeout** la connect() **ritorna** permettendo al task che la contiene di continuare l'esecuzione. Nell'esempio seguente la connect() è dentro la callback di un timer HW ed è attivata da una ISR associata ad un interrupt. Le ISR, per definizione, dovrebbero essere non bloccanti perchè spesso non sono interrompibili. **Bloccare una ISR** collegata ad **eventi core** della macchina può causare **instabilità** che determinano il **reset** del sistema.
-
-E' adoperabile sulle seguenti schede:
-
-- Arduino Yun & Yun-Shield (Secure)
-- Arduino Ethernet Shield
-- Arduino WiFi Shield
-- Adafruit HUZZAH ESP8266 (Secure)
-- Arduino/Genuino WiFi101 Shield (Secure)
-- Arduino MKR GSM 1400 (Secure)
-- ESP32 Development Board (Secure)
-
-In realtà, il task principale che contiene il loop() su **ESP32** apparentemente **non si blocca** probabilmente perchè sta su un thread diverso da quello in cui sta la connect MQTT (forse anche un'altro core della CPU rispetto a quello del loop()). Nel caso di una CPU single core come ESP8266 il codice potrebbe essere modificato inserendo nella callback del timer un **flag** al posto della connect e nel loop un **check del flag** che chiama la connect se questo è vero. In questo modo verrebbe bloccato solo il loop principale per qualche secondo, tempo in cui il sistema è non responsivo ma comunque funzionante. Oppure si potrebbe sostituire il timer HW che comanda la riconnessione periodica del client MQTT con un timer SW basato sul polling della millis() nel loop.
-
-Le **librerie** vanno scaricate e scompattate dentro la cartella **libraries** all'interno della **cartella di lavoro** di Arduino. Le librerie da scaricare devono avere il nome (eventualmente rinominandole): 
-- arduino-mqtt
-
-Si tratta di una libreria **molto leggera** che non occupa spazio eccessivo in memoria istruzioni. 
-
-Due **timer HW** ([Gestione dei tempi con i timer HW](timersched.md)) sono stati utilizzati in **combinazione** con gli **eventi**  **onConnection** e **onDisconnection** del **WiFi** (ma **non** del **MQTT** per il quale si usa il **polling** dello **stato**), per realizzare i **tentativi periodici** di **riconnessione** in **assenza** di connessione **WiFi** e in assenza di un server **MQTT** raggiungibile:
-- **wifiReconnectTimer** è usato in congiunzione con **WiFiEvent**. Il timer viene attivato in modo **once**, cioè una sola volta. Alla sua **scadenza** parte la **funzione di riconnessione** del WiFi. Se essa va a **buon fine**, genera l'evento SYSTEM_EVENT_STA_GOT_IP (onConnection) che attiva il timer del **polling periodico dello stato MQTT** tramite l'istruzione **mqttReconnectTimer.attach_ms(...)**. Se invece la funzione di riconnessione del WiFi **non va a buon fine** essa genera l'evento SYSTEM_EVENT_STA_DISCONNECTED (onDisconnection) che riattiva il timer di riconnessione WiFi ancora per una **sola volta** tramite l'istruzione **wifiReconnectTimer.once_ms(...)**. La **combinazione** di callback e attivazione del timer di ritrasmissione WiFi genera un **evento periodico di connessione** fintanto che la connessione WiFi è assente. In caso di **onDisconnection** del WiFi, l'istruzione  **mqttReconnectTimer.detach()** serve a inibire nuovi tentativi di polling della connessione MQTT durante i periodi di disservizio del WiFi dato che, in questo caso, il server MQTT sarebbe comunque irraggiungibile.
-- **mqttReconnectTimer** è sempre attivo **se è presente il WiFi** e serve a fare il **polling** dello **stato** della connessione **MQTT** tramite **mqttClient.connected()**. Se MQTT **è connesso** (mqttClient.connected() in mqttConnTest() restituisce true) non accade nulla, altrimenti viene lanciato un tentativo di riconnessione tramite connectToMqtt().
 
 
+>[Torna a gateway digitale](gateway.md)
+
+## **Gateway mondo cablato - Client LoraWan**
+
+- [Gateway DS18B20-LoRaWan con modem SW](lorawanswdallas.md)
+- [Gateway BME280-LoRaWan con modem SW](lorawanswbme280.md)
+- [Gateway MPU6050-LoRaWan con modem SW](lorawanswmpu6050.md)
+
+### **La scheda LoRa RMF95/W**
+
+<img src="rmf95_pinout.jpg" alt="alt text" width="300">
+
+E' un modem Lora che implementa esclusivamente il **livello fisico** dello stack LoraWan spesso indicato semplicemente come **LoRa**. Sopra di esso può essere utilizzato lo **stack applicativo LoRawan** oppure un qualsiasi altro stack (ad es. **6LowPan e REPL**). 
+
+In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello fisico, con il **chip RMF95/W**M vanno implementate in SW mediante apposite **Mlibrerie**M. Se si vuole un **modem** che implementi **in HW** tutto lo **stack LoraWan** si guardi il modulo **Microchip RN2483**.
+
+### **Schema cablaggio**
+
+<img src="LoRa_ESP32_Wiring.png" alt="alt text" width="500">
+
+La lunghezza del filo dipende dalla frequenza:
+- 868 MHz: 86,3 mm 
+- 915 MHz: 81,9 mm
+- 433 MHz: 173,1 mm
+
+Per il nostro modulo dobbiamo utilizzare un filo da 86,3 mm saldato direttamente al pin ANA del ricetrasmettitore. Si noti che l'utilizzo di un'antenna adeguata estenderà il raggio di comunicazione.
+
+### **Modi di autenticazione**
+
+**Attivazione via etere (OTAA)**
+
+L'**attivazione over-the-air (OTAA)** è il modo preferito e più sicuro per connettersi con The Things Network. I dispositivi eseguono una procedura di unione con la rete (join), durante la quale viene assegnato un **DevAddr** dinamico e le **chiavi** di sicurezza vengono **negoziate** con il dispositivo.
+
+**Attivazione tramite personalizzazione (ABP)**
+
+In alcuni casi potrebbe essere necessario codificare il **DevAddr** e le **chiavi di sicurezza** hardcoded nel dispositivo. Ciò significa attivare un dispositivo **tramite personalizzazione (ABP)**. Questa strategia potrebbe sembrare più semplice, perché si salta la procedura di adesione, ma presenta alcuni svantaggi legati alla sicurezza.
+
+**ABP vs OTAA**
+
+In generale, non ci sono inconvenienti nell'utilizzo dell'OTAA rispetto all'utilizzo dell'ABP, ma ci sono alcuni requisiti che devono essere soddisfatti quando si utilizza l'OTAA.La specifica LoRaWAN avverte in modo specifico contro il ricongiungimento sistematico in caso di guasto della rete. Un dispositivo dovrebbe conservare il risultato di un'attivazione in una memoria permanente se si prevede che il dispositivo venga spento e riacceso durante la sua vita:
+- un dispositivo ABP utilizza una memoria non volatile per mantenere i contatori di frame tra i riavvii. 
+- Un approccio migliore sarebbe passare all'utilizzo di OTAA e memorizzare la sessione OTAA anziché i contatori di frame.
+
+L'unica cosa da tenere a mente è che un join OTAA richiede che il dispositivo finale si trovi all'interno della copertura della rete su cui è registrato. La ragione di ciò è che la procedura di join OTAA richiede che il dispositivo finale sia in grado di ricevere il messaggio di downlink Join Accept dal server di rete.
+
+Un approccio migliore consiste nell'eseguire un join OTAA in una fabbrica o in un'officina in cui è possibile garantire la copertura di rete e i downlink funzionanti. Non ci sono svantaggi in questo approccio finché il dispositivo segue le migliori pratiche LoRaWAN (https://www.thethingsindustries.com/docs/devices/best-practices/).
+
+### **Buone pratiche**
+
+**Connessioni confermate**
+
+È possibile che non si riceva subito un ACK per ogni uplink o downlink di tipo confermato. Una buona regola empirica è attendere almeno tre ACK mancati per presumere la perdita del collegamento.
+
+In caso di perdita del collegamento, procedere come segue:
+- Imposta la potenza TX al massimo consentito/supportato e riprova
+- Diminuisci gradualmente la velocità dei dati e riprova
+- Ripristina i canali predefiniti e riprova
+- Invia richieste di adesione periodiche con backoff
+
+**Cicli di alimentazione**
+
+I dispositivi dovrebbero salvare i parametri di rete tra i cicli di alimentazione regolari. Ciò include parametri di sessione come DevAddr, chiavi di sessione, FCnt e nonces. Ciò consente al dispositivo di unirsi facilmente, poiché chiavi e contatori rimangono sincronizzati.
+
+### **Librerie del progetto**
+
+Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cartella **libraries**:
+- **Arduino-LMIC library**. Si scarica da https://github.com/mcci-catena/arduino-lmic come arduino-lmic-master.zip da scompattare e rinominare semplicemente come **arduino-lmic**
+
+La libreria **LMIC** offre un semplice **modello di programmazione** basato sugli **eventi** in cui sono presenti tutti gli eventi del protocollo
+inviato alla funzione di callback **onEvent()** dell'applicazione. Per liberare l'applicazione di dettagli come **tempi** o **interruzioni**, la libreria ha un ambiente di runtime integrato per prendersi cura di timer, code e gestione dei lavori (jobs).
+
+**Jobs di un'applicazione**
+
+In questo modello tutto il codice dell'applicazione viene eseguito nei cosiddetti job che vengono eseguiti sul thread principale dallo **schedulatore** dei task run-time **os_runloop()**. Questi lavori di applicazione sono codificati come normali funzioni C e possono essere gestiti a run-time utilizzando apposite funzioni.
+
+Per la **gestione dei jobs** è necessario un **descrittore** del job **osjob_t** che identifica il job e
+memorizza le informazioni di **contesto**. I lavori **non** devono essere di **lunga durata** per garantire un funzionamento **senza interruzioni**. Dovrebbero solo **aggiornare lo stato** e **pianificare le azioni**, che attiveranno nuovi **job** o **callback** di eventi.
+
+**Tempi del sistema operativo**
+
+**LMIC** utilizza valori del tipo **```ostime_t```** per rappresentare il tempo in **tick**. Il **rate** di questi tick è predefinito
+a 32768 tick al secondo, ma può essere configurato in fase di compilazione su qualsiasi valore compreso tra 10000 tick al secondo e 64516 tic al secondo.
+
+**Loop di eventi principale**
+
+Tutto ciò che un'applicazione deve fare è inizializzare l'ambiente di runtime utilizzando **os_init()** o
+**os_init_ex()** e quindi chiama periodicamente la funzione di pianificazione dei lavori (schedulatore) **os_runloop_once()**. Per avviare le azioni del protocollo e generare eventi, è necessario impostare un lavoro iniziale. Pertanto, un job di avvio (startup job) è schedulato (pianificato) utilizzando la funzione **os_setCallback()**.
+```C++
+osjob_t initjob;
+void setup () {
+ // initialize run-time env
+ os_init();
+ // setup initial job
+ os_setCallback(&initjob, initfunc);
+}
+void loop () {
+ // execute scheduled jobs and events
+ os_runloop_once();
+}
+```
+Il codice di avvio mostrato nella funzione **```initfunc()```** di seguito inizializza il MAC ed esegue il Join alla
+rete LoraWan:
+```C++
+// initial job
+static void initfunc (osjob_t* j) {
+ // reset MAC state
+ LMIC_reset();
+ // start joining
+ LMIC_startJoining();
+ // init done - onEvent() callback will be invoked...
+}
+```
+La funzione **```initfunc()```** non è bloccante ma ritorna immediatamente e lo stato della connessione verrà notificato quando verrà chiamata la funzione di callback **```onEvent()```**. La notifica avviene tramite gli eventi: ```EV_JOINING**```, ```EV_JOINED``` o ```EV_JOIN_FAILED```.
+
+
+**Callback onEvent()**
+
+Questa funzione di callback può reagire a determinati eventi e attivare nuove azioni in base all'**evento** e allo **stato** della connessione. Tipicamente, un'applicazione non elabora tutti gli eventi ma solo quelli a cui è interessata e pianifica (schedula) ulteriori azioni del protocollo utilizzando le API di LMIC. 
+
+Gli eventi possibili sono:
+- EV_JOINING
+Il nodo ha iniziato a unirsi alla rete.
+- EV_JOINED
+Il nodo si è unito con successo alla rete ed è ora pronto per gli scambi di dati.
+- EV_JOIN_FAILED
+Il nodo non è stato in grado di unirsi alla rete (dopo aver riprovato).
+- EV_REJOIN_FAILED
+Il nodo non si è unito a una nuova rete ma è ancora connesso alla vecchia rete.
+- EV_TXCOMPLETE
+I dati preparati tramite LMIC_setTxData() sono stati inviati e la finestra di ricezione per
+il downlink è completa. Se era stata richiesta una conferma, allora questa è stata
+ricevuta. Durante la gestione di questo evento, il codice dovrebbe anche verificare la ricezione dei dati. 
+- EV_RXCOMPLETE Solo classe B: è stato ricevuto un downlink in uno slot ping. Il codice dovrebbe controllare i dati di ricezione. 
+- EV_SCAN_TIMEOUT Dopo una chiamata a LMIC_enableTracking() non è stato ricevuto alcun beacon entro l'intervallo di beacon.
+Il monitoraggio deve essere riavviato.
+- EV_BEACON_FOUND Dopo una chiamata a LMIC_enableTracking() il primo beacon è stato ricevuto all'interno dell'intervallo di beacon .
+- EV_BEACON_TRACKED Il prossimo segnale è stato ricevuto all'ora prevista.
+- EV_BEACON_MISSED Nessun segnale è stato ricevuto all'ora prevista.
+- EV_LOST_TSYNC Il segnale è stato perso ripetutamente e la sincronizzazione dell'ora è andata persa. Il onitoraggio o ping deve essere riavviato.
+- EV_RESET Ripristino della sessione a causa del rollover dei contatori di sequenza. La rete verrà riconnessa automaticamente a acquisire nuova sessione.
+- EV_LINK_DEAD Nessuna conferma è stata ricevuta dal server di rete per un lungo periodo di tempo.
+Le trasmissioni sono ancora possibili ma la loro ricezione è incerta.
+- EV_LINK_ALIVE Il collegamento era morto, ma ora è di nuovo vivo.
+- EV_LINK_DEAD Nessuna conferma è stata ricevuta dal server di rete per un lungo periodo di tempo.
+Le trasmissioni sono ancora possibili, ma la loro ricezione è incerta.
+- EV_TXSTART Questo evento viene segnalato appena prima di dire al driver radio di iniziare la trasmissione.
+- EV_SCAN_FOUND Questo evento è riservato per uso futuro e non viene mai segnalato.
+
+**Gestione della ricezioe**
+
+Quando viene ricevuto EV_TXCOMPLETE o EV_RXCOMPLETE, il codice di elaborazione dell'evento dovrebbe controllare se ci sono dati in ricezione (downlink) ed eventualmente passarli all'applicazione. Per fare ciò, si usa un codice come il seguente:
+```C++
+// Any data to be received?
+ if (LMIC.dataLen != 0) {
+	 // Data was received. Extract port number if any.
+	 u1_t bPort = 0;
+	 if (LMIC.txrxFlags & TXRX_PORT)
+		 bPort = LMIC.frame[LMIC.dataBeg – 1];
+	 // Call user-supplied function with port #, pMessage, nMessage
+	 receiveMessage(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
+ }
+```
+Se si vuole mettere in guardia il client dell'avvenuta ricezione di messaggi di **lunghezza zero**, deve essere usato un codice leggermente più complesso:
+```C++
+// Any data to be received?
+ if (LMIC.dataLen != 0 || LMIC.dataBeg != 0) {
+	 // Data was received. Extract port number if any.
+	 u1_t bPort = 0;
+	 if (LMIC.txrxFlags & TXRX_PORT)
+	 	bPort = LMIC.frame[LMIC.dataBeg – 1];
+	 // Call user-supplied function with port #, pMessage, nMessage;
+	 // nMessage might be zero.
+	 receiveMessage(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen );
+ }
+```
+### **File di configurazione**
+
+In questo porting LMIC, a differenza di  altri simili,  non va modificato il file src/lmic/config.h per configurare il FW. La configurazione è spostata sul file project_config/lmic_project_config.h. 
+
+Il file imposta:
+- selezionare la versione di LoRaWAN 
+- Selezione della configurazione della regione LoRaWAN
+- Selezione del ricetrasmettitore radio 
+- Controllo dell'uso degli interrupt
+- Disabilitare PING
+- Disabilitare i Beacon
+- Abilitazione del supporto orario di rete
+- altre variabili più raramente usate
+
+
+### **Gateway LoraWan con OTAA join**
+
+Si trova, assieme ad altri esempi, nella cartella al link https://github.com/oktavianabd/arduino-lmic/tree/master/examples
+
+Al termine di una trasmissione, indicato dall'evento ```EV_TXCOMPLETE```viene pianficata una nuova trasmissione tramite```os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send)``` dopo un tempo ```TX_INTERVAL```.
+
+La funzione ```os_runloop_once()``` riserva un quanto di tempo allo scheduler dei job della connessione LoRaWan. Una trasmissione LoraWan però potrebbe non essere completata in un solo quanto per cui potrebbero essere necessari parecchi loop() per completarla. Quest'ultima considerazione chiarisce che è importante non inserire delay() o istruzioni molto lente dopo una chiamata a ```os_runloop_once()``` perchè una lunga interruzione del processo di trasmissione potrebbe portare ad una perdita di dati.
+
+Tuttavia, durante la trasmissione di un messaggio, è fondamentale assicurarsi che ```os_runloop_once()``` venga chiamato frequentemente prima delle scadenze rigide. L'API ```os_queryTimeCriticalJobs()``` può essere utilizzata per verificare se sono previste scadenze a breve. Prima di eseguire un job che richiede n millisecondi, si può chiamare ```os_queryTimeCriticalJobs(ms2osticks(n))``` e saltare il job se l'API indica che LMIC richiede attenzione.
+
+Un'alternativa per evitare alla radice instabilità e perdite di dati potrebbe essere chiamare nel loop() ```os_runloop_once()``` tutte le volte che sono necessarie per portare a compimento una trasmissione lasciando il controllo della CPU agli altri task del microcontrollore solo dopo che questa è terminata.
+```C++
+loop(){
+...
+	//Run LMIC loop until he as finish
+	while(flag_TXCOMPLETE == 0)
+	{
+		os_runloop_once();
+	}
+	flag_TXCOMPLETE = 0;
+}
+```
+Il codice alla luce delle considerazioni precedenti diventa:
 
 ```C++
-//#include <WiFiClientSecure.h>
-#include <WiFi.h>
-#include <MQTT.h>
-#include <Ticker.h>
+/*******************************************************************************
+ * Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
+ * Copyright (c) 2018 Terry Moore, MCCI
+ *
+ * Permission is hereby granted, free of charge, to anyone
+ * obtaining a copy of this document and accompanying files,
+ * to do whatever they want with them without any restriction,
+ * including, but not limited to, copying, modification and redistribution.
+ * NO WARRANTY OF ANY KIND IS PROVIDED.
+ *
+ * This example sends a valid LoRaWAN packet with payload "Hello,
+ * world!", using frequency and encryption settings matching those of
+ * the The Things Network.
+ *
+ * This uses OTAA (Over-the-air activation), where where a DevEUI and
+ * application key is configured, which are used in an over-the-air
+ * activation procedure where a DevAddr and session keys are
+ * assigned/generated for use with all further communication.
+ *
+ * Note: LoRaWAN per sub-band duty-cycle limitation is enforced (1% in
+ * g1, 0.1% in g2), but not the TTN fair usage policy (which is probably
+ * violated by this sketch when left running for longer)!
 
-#define WIFIRECONNECTIME  2000
-#define MQTTRECONNECTIME  2000
+ * To use this sketch, first register your application and device with
+ * the things network, to set or generate an AppEUI, DevEUI and AppKey.
+ * Multiple devices can use the same AppEUI, but each device has its own
+ * DevEUI and AppKey.
+ *
+ * Do not forget to define the radio type correctly in
+ * arduino-lmic/project_config/lmic_project_config.h or from your BOARDS.txt.
+ *
+ *******************************************************************************/
 
-Ticker mqttReconnectTimer;
-Ticker wifiReconnectTimer;
+#include <lmic.h>
+#include <hal/hal.h>
+#include <SPI.h>
 
-const char ssid[] = "myssd";
-const char pass[] = "mypsw";
-const char mqttserver[] = "test.mosquitto.org";
+// include the DHT22 Sensor Library
+#include "DHT.h"
+// DHT digital pin and sensor type
+#define DHTPIN 10
+#define DHTTYPE DHT22
+//
+// For normal use, we require that you edit the sketch to replace FILLMEIN
+// with values assigned by the TTN console. However, for regression tests,
+// we want to be able to compile these scripts. The regression tests define
+// COMPILE_REGRESSION_TEST, and in that case we define FILLMEIN to a non-
+// working but innocuous value.
+//
 
-//WiFiClientSecure net;
-WiFiClient net;
-MQTTClient mqttClient(1024);
+#ifdef COMPILE_REGRESSION_TEST
+#define FILLMEIN 0
+#else
+#warning "You must replace the values marked FILLMEIN with real values from the TTN control panel!"
+#define FILLMEIN (#dont edit this, edit the lines that use FILLMEIN)
+#endif
 
-unsigned long lastMillis = 0;
-byte count = 0;
+// This EUI must be in little-endian format, so least-significant-byte
+// first. When copying an EUI from ttnctl output, this means to reverse
+// the bytes. For TTN issued EUIs the last bytes should be 0xD5, 0xB3,
+// 0x70.
+static const u1_t PROGMEM APPEUI[8]={ FILLMEIN };
+void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);}
 
-void messageReceived(String &topic, String &payload) {
-  Serial.println("incoming: " + topic + " - " + payload);
+// This should also be in little endian format, see above.
+static const u1_t PROGMEM DEVEUI[8]={ FILLMEIN };
+void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
 
-  // Note: Do not use the client in the callback to publish, subscribe or
-  // unsubscribe as it may cause deadlocks when other things arrive while
-  // sending and receiving acknowledgments. Instead, change a global variable,
-  // or push to a queue and handle it in the loop after calling `client.loop()`.
+// This key should be in big endian format (or, since it is not really a
+// number but a block of memory, endianness does not really apply). In
+// practice, a key taken from ttnctl can be copied as-is.
+static const u1_t PROGMEM APPKEY[16] = { FILLMEIN };
+void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
+
+// payload to send to TTN gateway
+static uint8_t payload[5];
+static osjob_t sendjob;
+bool flag_TXCOMPLETE = false;
+
+// Schedule TX every this many seconds (might become longer due to duty
+// cycle limitations).
+const unsigned TX_INTERVAL = 60;
+
+// Pin mapping
+const lmic_pinmap lmic_pins = {
+    .nss = 6,
+    .rxtx = LMIC_UNUSED_PIN,
+    .rst = 5,
+    .dio = {2, 3, 4},
+};
+
+// init. DHT
+DHT dht(DHTPIN, DHTTYPE);
+
+void printHex2(unsigned v) {
+    v &= 0xff;
+    if (v < 16)
+        Serial.print('0');
+    Serial.print(v, HEX);
 }
 
-void WiFiEvent(WiFiEvent_t event) {
-  Serial.printf("[WiFi-event] event: %d\n", event);
-  switch(event) {
-    case SYSTEM_EVENT_STA_GOT_IP:
-      Serial.println("WiFi connected");
-      Serial.println("IP address: ");
-      Serial.println(WiFi.localIP());
-      connectToMqtt();
-      mqttReconnectTimer.attach_ms(MQTTRECONNECTIME, mqttConnTest);
-      break;
-    case SYSTEM_EVENT_STA_DISCONNECTED:
-      Serial.println("WiFi lost connection");
-      mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
-      wifiReconnectTimer.once_ms(WIFIRECONNECTIME, connectToWifi);
-      break;
-  }
-}
-
-void mqttConnTest() {
-    if (!mqttClient.connected() && WiFi.status() == WL_CONNECTED) {
-	Serial.print("MQTT lastError: ");
-	Serial.println(mqttClient.lastError());
-	connectToMqtt();
+void onEvent (ev_t ev) {
+    Serial.print(os_getTime());
+    Serial.print(": ");
+    switch(ev) {
+        case EV_JOINED:
+            Serial.println(F("EV_JOINED"));
+            {
+              u4_t netid = 0;
+              devaddr_t devaddr = 0;
+              u1_t nwkKey[16];
+              u1_t artKey[16];
+              LMIC_getSessionKeys(&netid, &devaddr, nwkKey, artKey);
+              Serial.print("netid: ");
+              Serial.println(netid, DEC);
+              Serial.print("devaddr: ");
+              Serial.println(devaddr, HEX);
+              Serial.print("AppSKey: ");
+              for (size_t i=0; i<sizeof(artKey); ++i) {
+                if (i != 0)
+                  Serial.print("-");
+                printHex2(artKey[i]);
+              }
+              Serial.println("");
+              Serial.print("NwkSKey: ");
+              for (size_t i=0; i<sizeof(nwkKey); ++i) {
+                      if (i != 0)
+                              Serial.print("-");
+                      printHex2(nwkKey[i]);
+              }
+              Serial.println();
+            }
+            // Disable link check validation (automatically enabled
+            // during join, but because slow data rates change max TX
+	        // size, we don't use it in this example.
+            LMIC_setLinkCheckMode(0);
+            break;
+        case EV_TXCOMPLETE:
+            Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
+            if (LMIC.txrxFlags & TXRX_ACK)
+              Serial.println(F("Received ack"));
+            if (LMIC.dataLen) {
+              Serial.print(F("Received "));
+              Serial.print(LMIC.dataLen);
+              Serial.println(F(" bytes of payload"));
+            }
+            // Schedule next transmission
+            os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
+	        flag_TXCOMPLETE = true;
+            break;
+	case EV_LINK_DEAD:
+            initLoRaWAN();
+	    break;
+        default:
+            Serial.print(F("Unknown event: "));
+            Serial.println((unsigned) ev);
+            break;
     }
 }
 
-void connectToWifi() {
-  Serial.println("Connecting to Wi-Fi...");
-  WiFi.mode(WIFI_STA);
-  //WiFi.disconnect();
-  WiFi.begin(ssid, pass);
+void do_send(osjob_t* j){
+    // Check if there is not a current TX/RX job running
+    if (LMIC.opmode & OP_TXRXPEND) {
+        Serial.println(F("OP_TXRXPEND, not sending"));
+    } else {
+        // Prepare upstream data transmission at the next possible time.
+        // read the temperature from the DHT22
+        float temperature = dht.readTemperature();
+        Serial.print("Temperature: "); Serial.print(temperature);
+        Serial.println(" *C");
+        // adjust for the f2sflt16 range (-1 to 1)
+        temperature = temperature / 100;
+        // float -> int
+        // note: this uses the sflt16 datum (https://github.com/mcci-catena/arduino-lmic#sflt16)
+        uint16_t payloadTemp = LMIC_f2sflt16(temperature);
+        // int -> bytes
+        byte tempLow = lowByte(payloadTemp);
+        byte tempHigh = highByte(payloadTemp);
+        // place the bytes into the payload
+        payload[0] = tempLow;
+        payload[1] = tempHigh;   
+
+        // prepare upstream data transmission at the next possible time.
+        // transmit on port 1 (the first parameter); you can use any value from 1 to 223 (others are reserved).
+        // don't request an ack (the last parameter, if not zero, requests an ack from the network).
+        // Remember, acks consume a lot of network resources; don't ask for an ack unless you really need it.
+        LMIC_setTxData2(1, payload, sizeof(payload)-1, 0);
+        Serial.println(F("Packet queued"));
+    }
+    // Next TX is scheduled after TX_COMPLETE event.
 }
 
-void connectToMqtt() {
-  Serial.println("Connecting to MQTT...");
-  mqttClient.connect("bside2botham2", "try", "try");
-  if(mqttClient.connected()){
-	mqttClient.subscribe("/hello");
-  }
-  Serial.println("...end");
-  // client.unsubscribe("/hello");
+void initLoRaWAN() {
+	// LMIC init
+	os_init();
+
+	// Reset the MAC state. Session and pending data transfers will be discarded.
+	LMIC_reset();
+
+	// by joining the network, precomputed session parameters are be provided.
+	//LMIC_setSession(0x1, DevAddr, (uint8_t*)NwkSkey, (uint8_t*)AppSkey);
+
+	// Enabled data rate adaptation
+	LMIC_setAdrMode(1);
+
+	// Enable link check validation
+	LMIC_setLinkCheckMode(0);
+
+	// Set data rate and transmit power
+	LMIC_setDrTxpow(DR_SF7, 21);
+}
+
+void sensorInit(){
+	// Initialize the DHT sensor.
+	dht.begin();
 }
 
 void setup() {
-  Serial.begin(115200);
-  WiFi.begin(ssid, pass);
-  WiFi.onEvent(WiFiEvent);
-  // MQTT brokers usually use port 8883 for secure connections.
-  mqttClient.begin(mqttserver, 1883, net);
-  mqttClient.onMessage(messageReceived); 
-  connectToWifi();
-  count = 0;
-  while (WiFi.status() != WL_CONNECTED && count < 10) {
-    delay(500);
-    count++;
-    Serial.print(".");
-  }
+    Serial.begin(9600);
+    Serial.println(F("Starting"));
+
+    #ifdef VCC_ENABLE
+    // For Pinoccio Scout boards
+    pinMode(VCC_ENABLE, OUTPUT);
+    digitalWrite(VCC_ENABLE, HIGH);
+    delay(1000);
+    #endif
+
+   // Setup LoRaWAN state
+	initLoRaWAN();
+	
+	sensorInit();
+
+    // Start job (sending automatically starts OTAA too)
+    do_send(&sendjob);
 }
 
 void loop() {
-  mqttClient.loop();
-  //delay(10);  // <- fixes some issues with WiFi stability
-
-  // publish a message roughly every 2 second.
-  if (millis() - lastMillis > 2000) {
-        lastMillis = millis();
-	
-	Serial.println("Tick");
-	// pubblicazione periodica di test
-        mqttClient.publish("/hello", "world");
-  }
+	os_runloop_once();
+	/* In caso di instabilità
+	//Run LMIC loop until he as finish
+	while(flag_TXCOMPLETE == false)
+	{
+		os_runloop_once();
+	}
+	flag_TXCOMPLETE = false;
+	*/
 }
-
-/*
-WL_CONNECTED: assigned when connected to a WiFi network;
-WL_NO_SHIELD: assigned when no WiFi shield is present;
-WL_IDLE_STATUS: it is a temporary status assigned when WiFi.begin() is called and remains active until the number of attempts expires (resulting in WL_CONNECT_FAILED) or a connection is established (resulting in WL_CONNECTED);
-WL_NO_SSID_AVAIL: assigned when no SSID are available;
-WL_SCAN_COMPLETED: assigned when the scan networks is completed;
-WL_CONNECT_FAILED: assigned when the connection fails for all the attempts;
-WL_CONNECTION_LOST: assigned when the connection is lost;
-WL_DISCONNECTED: assigned when disconnected from a network;
-\*/
 ```
 
-Versione per **ESP8266** o **Arduino** con un **flag** che attiva la riconnessione all'interno del loop(). Il **loop()** rimane **bloccato** per svariati secondi (circa 18) se il server MQTT è **non disponibile** o non raggingibile. Il timer di ritrasmissione MQTT non esegue azioni bloccanti ma si limita ad **impostare il flag**. Il flag viene **controllato** con un **polling** continuo all'interno del loop().
+### **Gateway LoraWan con OTAA join e deepSleep**
+
+<img src="deepsleep.png" alt="alt text" width="1000">
+
+Dopo la segnalazione dell'evento trasmissione completata EV_TXCOMPLETE viene settato il flag GOTO_DEEPSLEEP che comunica al loop il momento buono per andare in deep sleep. 
+
+Nel loop() un if di check controlla se non ci sono operazioni interne di servizio dello schedulatore pendenti. Se esistono operazioni pendenti si pianifica un nuovo check dopo 2 sec, se queste non ci stanno si comanda la discesa del sistema in deep sleep mediante la funzione GoDeepSleep(). Le operazioni (job) ancora pendenti, prima di eseguire un nuovo job che richiede n millisecondi (nello specifico, un deep sleeep), si controllano con ```os_queryTimeCriticalJobs(ms2osticks(n))```.
 
 ```C++
-//#include <WiFiClientSecure.h>
-//#include <WiFi.h>       // per ESP32
-#include <ESP8266WiFi.h>  // per ESP8266
-#include <MQTT.h>
-#include <Ticker.h>
+void GoDeepSleep()
+{
+    Serial.println(F("Go DeepSleep"));
+    PrintRuntime();
+    Serial.flush();
+    esp_sleep_enable_timer_wakeup(TX_INTERVAL * 1000000);
+    esp_deep_sleep_start();
+}
+```
 
-#define WIFIRECONNECTIME  2000
-#define MQTTRECONNECTIME  2000
+Il sistema però, dopo un wakeup (risveglio) non riparte dall'ultima istruzione eseguita ma dall'inizio del setup per cui è praticamente smemorato riguardo i parametri di una eventuale connessione precedentemente stabilita. Costringere il sistema a rinegoziare una join ad ogni risveglio è uno spreco di tempo e di risorse preziose di batterie per cui sarebbe opportuno trovare un modo di tenere traccia dei dati salienti di una connessione.
 
-Ticker mqttReconnectTimer;
-Ticker wifiReconnectTimer;
+Dichiarazione della variabile che contiene la sessione:
+```C++
+RTC_DATA_ATTR lmic_t RTC_LMIC;
+```
 
-const char ssid[] = "myssid";
-const char pass[] = "mypsw";
-const char mqttserver[] = "test.mosquitto.orge";
+La lettura viene fatta alla fine del sutup(). Il salvataggio viene fatto dopo la segnalazione del flag GOTO_DEEPSLEEP.
 
-//WiFiClientSecure net;
-WiFiClient net;
-MQTTClient mqttClient(1024);
+```C++
+#include <arduino.h>
+#include <lmic.h>
+#include <hal/hal.h>
+#include <SPI.h>
 
-unsigned long lastMillis = 0;
-byte count = 0;
-bool mqttreconnflag = false; // 8 bit, non è necessaria una corsa critica!
+// include the DHT22 Sensor Library
+#include "DHT.h"
+// DHT digital pin and sensor type
+#define DHTPIN 10
+#define DHTTYPE DHT22
 
-void messageReceived(String &topic, String &payload) {
-  Serial.println("incoming: " + topic + " - " + payload);
+//#include <ttn_credentials.h>
+#define TTN_APPEUI {0}
+#define TTN_DEVEUI {0}
+#define TTN_APPKEY {0}
+#define MAX_BANDS 4
+//#define CFG_LMIC_EU_like 0
 
-  // Note: Do not use the client in the callback to publish, subscribe or
-  // unsubscribe as it may cause deadlocks when other things arrive while
-  // sending and receiving acknowledgments. Instead, change a global variable,
-  // or push to a queue and handle it in the loop after calling `client.loop()`.
+bool GOTO_DEEPSLEEP = false;
+
+// rename ttn_credentials.h.example to ttn_credentials.h and add you keys
+static const u1_t PROGMEM APPEUI[8] = TTN_APPEUI;
+static const u1_t PROGMEM DEVEUI[8] = TTN_DEVEUI;
+static const u1_t PROGMEM APPKEY[16] = TTN_APPKEY;
+void os_getArtEui(u1_t *buf) { memcpy_P(buf, APPEUI, 8); }
+void os_getDevEui(u1_t *buf) { memcpy_P(buf, DEVEUI, 8); }
+void os_getDevKey(u1_t *buf) { memcpy_P(buf, APPKEY, 16); }
+
+static uint8_t payload[5];
+static osjob_t sendjob;
+bool flag_TXCOMPLETE = false;
+
+// Schedule TX every this many seconds
+// Respect Fair Access Policy and Maximum Duty Cycle!
+// https://www.thethingsnetwork.org/docs/lorawan/duty-cycle.html
+// https://www.loratools.nl/#/airtime
+const unsigned TX_INTERVAL = 30;
+
+// payload to send to TTN gateway
+
+
+// Saves the LMIC structure during DeepSleep
+RTC_DATA_ATTR lmic_t RTC_LMIC;
+
+#define PIN_LMIC_NSS 18
+#define PIN_LMIC_RST 14
+#define PIN_LMIC_DIO0 26
+#define PIN_LMIC_DIO1 33
+#define PIN_LMIC_DIO2 32
+
+// Pin mapping
+const lmic_pinmap lmic_pins = {
+    .nss = PIN_LMIC_NSS,
+    .rxtx = LMIC_UNUSED_PIN,
+    .rst = PIN_LMIC_RST,
+    .dio = {PIN_LMIC_DIO0, PIN_LMIC_DIO1, PIN_LMIC_DIO2},
+};
+
+// init. DHT
+DHT dht(DHTPIN, DHTTYPE);
+
+// https://github.com/mcci-catena/arduino-lmic/blob/89c28c5888338f8fc851851bb64968f2a493462f/src/lmic/lmic.h#L233
+
+void PrintRuntime()
+{
+    long seconds = millis() / 1000;
+    Serial.print("Runtime: ");
+    Serial.print(seconds);
+    Serial.println(" seconds");
 }
 
-void WiFiEvent(WiFiEvent_t event) {
-  Serial.printf("[WiFi-event] event: %d\n", event);
-  switch(event) {
-    case SYSTEM_EVENT_STA_GOT_IP:
-      Serial.println("WiFi connected");
-      Serial.println("IP address: ");
-      Serial.println(WiFi.localIP());
-      connectToMqtt();
-      mqttReconnectTimer.attach_ms(MQTTRECONNECTIME, mqttConnTest2);
-      break;
-    case SYSTEM_EVENT_STA_DISCONNECTED:
-      Serial.println("WiFi lost connection");
-      mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
-      wifiReconnectTimer.once_ms(WIFIRECONNECTIME, connectToWifi);
-      break;
-  }
+void PrintLMICVersion()
+{
+    Serial.print(F("LMIC: "));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_MAJOR(ARDUINO_LMIC_VERSION));
+    Serial.print(F("."));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_MINOR(ARDUINO_LMIC_VERSION));
+    Serial.print(F("."));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_PATCH(ARDUINO_LMIC_VERSION));
+    Serial.print(F("."));
+    Serial.println(ARDUINO_LMIC_VERSION_GET_LOCAL(ARDUINO_LMIC_VERSION));
 }
 
-void mqttConnTest() {
-    if (!mqttClient.connected() && WiFi.status() == WL_CONNECTED) {
-	Serial.print("MQTT lastError: ");
-	Serial.println(mqttClient.lastError());
-	connectToMqtt();
+void onEvent(ev_t ev)
+{
+    Serial.print(os_getTime());
+    Serial.print(": ");
+    switch (ev)
+    {
+    case EV_SCAN_TIMEOUT:
+        Serial.println(F("EV_SCAN_TIMEOUT"));
+        break;
+    case EV_BEACON_FOUND:
+        Serial.println(F("EV_BEACON_FOUND"));
+        break;
+    case EV_BEACON_MISSED:
+        Serial.println(F("EV_BEACON_MISSED"));
+        break;
+    case EV_BEACON_TRACKED:
+        Serial.println(F("EV_BEACON_TRACKED"));
+        break;
+    case EV_JOINING:
+        Serial.println(F("EV_JOINING"));
+        break;
+    case EV_JOINED:
+        Serial.println(F("EV_JOINED"));
+        {
+            u4_t netid = 0;
+            devaddr_t devaddr = 0;
+            u1_t nwkKey[16];
+            u1_t artKey[16];
+            LMIC_getSessionKeys(&netid, &devaddr, nwkKey, artKey);
+            Serial.print("netid: ");
+            Serial.println(netid, DEC);
+            Serial.print("devaddr: ");
+            Serial.println(devaddr, HEX);
+            Serial.print("artKey: ");
+            for (size_t i = 0; i < sizeof(artKey); ++i)
+            {
+                Serial.print(artKey[i], HEX);
+            }
+            Serial.println("");
+            Serial.print("nwkKey: ");
+            for (size_t i = 0; i < sizeof(nwkKey); ++i)
+            {
+                Serial.print(nwkKey[i], HEX);
+            }
+            Serial.println("");
+        }
+        // Disable link check validation (automatically enabled
+        // during join, but because slow data rates change max TX
+        // size, we don't use it in this example.
+        LMIC_setLinkCheckMode(0);
+        break;
+    /*
+        || This event is defined but not used in the code. No
+        || point in wasting codespace on it.
+        ||
+        || case EV_RFU1:
+        ||     Serial.println(F("EV_RFU1"));
+        ||     break;
+        */
+    case EV_JOIN_FAILED:
+        Serial.println(F("EV_JOIN_FAILED"));
+        break;
+    case EV_REJOIN_FAILED:
+        Serial.println(F("EV_REJOIN_FAILED"));
+        break;
+    case EV_TXCOMPLETE:
+        Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
+        if (LMIC.txrxFlags & TXRX_ACK)
+            Serial.println(F("Received ack"));
+        if (LMIC.dataLen)
+        {
+            Serial.print(F("Received "));
+            Serial.print(LMIC.dataLen);
+            Serial.println(F(" bytes of payload"));
+        }
+        GOTO_DEEPSLEEP = true;
+        break;
+    case EV_LOST_TSYNC:
+        Serial.println(F("EV_LOST_TSYNC"));
+        break;
+    case EV_RESET:
+        Serial.println(F("EV_RESET"));
+        break;
+    case EV_RXCOMPLETE:
+        // data received in ping slot
+        Serial.println(F("EV_RXCOMPLETE"));
+        break;
+    case EV_LINK_DEAD:
+        Serial.println(F("EV_LINK_DEAD"));
+        break;
+    case EV_LINK_ALIVE:
+        Serial.println(F("EV_LINK_ALIVE"));
+        break;
+    /*
+        || This event is defined but not used in the code. No
+        || point in wasting codespace on it.
+        ||
+        || case EV_SCAN_FOUND:
+        ||    Serial.println(F("EV_SCAN_FOUND"));
+        ||    break;
+        */
+    case EV_TXSTART:
+        Serial.println(F("EV_TXSTART"));
+        break;
+    case EV_TXCANCELED:
+        Serial.println(F("EV_TXCANCELED"));
+        break;
+    case EV_RXSTART:
+        /* do not print anything -- it wrecks timing */
+        break;
+    case EV_JOIN_TXCOMPLETE:
+        Serial.println(F("EV_JOIN_TXCOMPLETE: no JoinAccept"));
+        break;
+    default:
+        Serial.print(F("Unknown event: "));
+        Serial.println((unsigned)ev);
+        break;
     }
 }
 
-void mqttConnTest2() {
-	mqttreconnflag = true;
+void do_send(osjob_t *j)
+{
+    // Check if there is not a current TX/RX job running
+    if (LMIC.opmode & OP_TXRXPEND)
+    {
+        Serial.println(F("OP_TXRXPEND, not sending"));
+    }
+    else
+    {
+        // Prepare upstream data transmission at the next possible time.
+        // read the temperature from the DHT22
+        float temperature = dht.readTemperature();
+        Serial.print("Temperature: "); Serial.print(temperature);
+        Serial.println(" *C");
+        // adjust for the f2sflt16 range (-1 to 1)
+        temperature = temperature / 100;
+        // float -> int
+        // note: this uses the sflt16 datum (https://github.com/mcci-catena/arduino-lmic#sflt16)
+        uint16_t payloadTemp = LMIC_f2sflt16(temperature);
+        // int -> bytes
+        byte tempLow = lowByte(payloadTemp);
+        byte tempHigh = highByte(payloadTemp);
+        // place the bytes into the payload
+        payload[0] = tempLow;
+        payload[1] = tempHigh;   
+
+        // prepare upstream data transmission at the next possible time.
+        // transmit on port 1 (the first parameter); you can use any value from 1 to 223 (others are reserved).
+        // don't request an ack (the last parameter, if not zero, requests an ack from the network).
+        // Remember, acks consume a lot of network resources; don't ask for an ack unless you really need it.
+        LMIC_setTxData2(1, payload, sizeof(payload)-1, 0);
+        Serial.println(F("Packet queued"));
+    }
+    // Next TX is scheduled after TX_COMPLETE event.
 }
 
-void connectToWifi() {
-  Serial.println("Connecting to Wi-Fi...");
-  WiFi.mode(WIFI_STA);
-  //WiFi.disconnect();
-  WiFi.begin(ssid, pass);
+void SaveLMICToRTC(int deepsleep_sec)
+{
+    Serial.println(F("Save LMIC to RTC"));
+    RTC_LMIC = LMIC;
+
+    // ESP32 can't track millis during DeepSleep and no option to advanced millis after DeepSleep.
+    // Therefore reset DutyCyles
+
+    unsigned long now = millis();
+
+    // EU Like Bands
+#if defined(CFG_LMIC_EU_like2)//era CFG_LMIC_EU_like ma non funziona
+    Serial.println(F("Reset CFG_LMIC_EU_like band avail"));
+    for (int i = 0; i < MAX_BANDS; i++)
+    {
+        ostime_t correctedAvail = RTC_LMIC.bands[i].avail - ((now / 1000.0 + deepsleep_sec) * OSTICKS_PER_SEC);
+        if (correctedAvail < 0)
+        {
+            correctedAvail = 0;
+        }
+        RTC_LMIC.bands[i].avail = correctedAvail;
+    }
+
+    RTC_LMIC.globalDutyAvail = RTC_LMIC.globalDutyAvail - ((now / 1000.0 + deepsleep_sec) * OSTICKS_PER_SEC);
+    if (RTC_LMIC.globalDutyAvail < 0)
+    {
+        RTC_LMIC.globalDutyAvail = 0;
+    }
+#else
+    Serial.println(F("No DutyCycle recalculation function!"));
+#endif
 }
 
-void connectToMqtt() {
-  Serial.println("Connecting to MQTT...");
-  mqttClient.connect("bside2botham2", "try", "try");
-  if(mqttClient.connected()){
-	mqttClient.subscribe("/hello");
-  }
-  Serial.println("...end");
-  // client.unsubscribe("/hello");
+void LoadLMICFromRTC()
+{
+    Serial.println(F("Load LMIC from RTC"));
+    LMIC = RTC_LMIC;
 }
 
-void setup() {
-  Serial.begin(115200);
-  WiFi.begin(ssid, pass);
-  WiFi.onEvent(WiFiEvent);
-  // MQTT brokers usually use port 8883 for secure connections.
-  mqttClient.begin(mqttserver, 1883, net);
-  mqttClient.onMessage(messageReceived); 
-  connectToWifi();
-  count = 0;
-  while (WiFi.status() != WL_CONNECTED && count < 10) {
-    delay(500);
-    count++;
-    Serial.print(".");
-  }
+void GoDeepSleep()
+{
+    Serial.println(F("Go DeepSleep"));
+    PrintRuntime();
+    Serial.flush();
+    esp_sleep_enable_timer_wakeup(TX_INTERVAL * 1000000);
+    esp_deep_sleep_start();
 }
 
-void loop() {
-  mqttClient.loop();
-  //delay(10);  // <- fixes some issues with WiFi stability
-  // polling del flag di riconnessione MQTT
-  if(mqttreconnflag){
-	  mqttreconnflag = false;
-	  mqttConnTest();
-  }
-  
-  // publish a message roughly every 2 second.
-  if (millis() - lastMillis > 2000) {
-        lastMillis = millis();
-	
-	Serial.println("Tick");
-	// pubblicazione periodica di test
-        mqttClient.publish("/hello", "world");
-  }
+void setup()
+{
+    Serial.begin(115200);
+
+    Serial.println(F("Starting DeepSleep test"));
+    PrintLMICVersion();
+
+    // LMIC init
+    os_init();
+
+    // Reset the MAC state. Session and pending data transfers will be discarded.
+    LMIC_reset();
+
+    if (RTC_LMIC.seqnoUp != 0)
+    {
+        LoadLMICFromRTC();
+    }
+
+    // Start job (sending automatically starts OTAA too)
+    do_send(&sendjob);
 }
 
-/*
-WL_CONNECTED: assigned when connected to a WiFi network;
-WL_NO_SHIELD: assigned when no WiFi shield is present;
-WL_IDLE_STATUS: it is a temporary status assigned when WiFi.begin() is called and remains active until the number of attempts expires (resulting in WL_CONNECT_FAILED) or a connection is established (resulting in WL_CONNECTED);
-WL_NO_SSID_AVAIL: assigned when no SSID are available;
-WL_SCAN_COMPLETED: assigned when the scan networks is completed;
-WL_CONNECT_FAILED: assigned when the connection fails for all the attempts;
-WL_CONNECTION_LOST: assigned when the connection is lost;
-WL_DISCONNECTED: assigned when disconnected from a network;
-\*/
-```
+void loop()
+{
+    static unsigned long lastPrintTime = 0;
 
-### **Client MQTT per ESP32 e ESP8266 con metodo di connessione non bloccante**
-Utilizza la libreria **sync-mqtt-client** scaricabile da https://github.com/marvinroger/async-mqtt-client e adatta sia per esp8266 che per esp32 (non per Arduino). In questo caso, la funzione di riconnessione del client MQTT è non bloccante e non crea problemi anche se viene chiamata all'interno della ISR di un timer HW. Il prezzo da pagare è la sostituzione della sottostante libreria TCP bloccante con una versione analoga asincrona che ritorna sempre. L'installazione di librerie aggiuntiva comporta una **occupazione** di memoria in area istruzioni **maggiore della soluzione** precedente.
+    os_runloop_once();
 
-Le **librerie** vanno scaricate e scompattate dentro la cartella **libraries** all'interno della **cartella di lavoro** di Arduino. Le librerie da scaricare devono avere il nome (eventualmente rinominandole): 
-- async-mqtt-client
-- AsyncTCP
+    const bool timeCriticalJobs = os_queryTimeCriticalJobs(ms2osticksRound((TX_INTERVAL * 1000)));
+    if (!timeCriticalJobs && GOTO_DEEPSLEEP == true && !(LMIC.opmode & OP_TXRXPEND))
+    {
+        Serial.print(F("Can go sleep "));
+        SaveLMICToRTC(TX_INTERVAL);
+        GoDeepSleep();
+    }
+    else if (millis() - lastPrintTime > 2000)
+    {
+        Serial.print(F("Cannot sleep "));
+        Serial.print(F("TimeCriticalJobs: "));
+        Serial.print(timeCriticalJobs);
+        Serial.print(" ");
 
-Due **timer HW** ([Gestione dei tempi con i timer HW](timersched.md)) sono stati utilizzati in **combinazione** con gli **eventi**  **onConnection** e **onDisconnection**, sia del **WiFi**   che del **MQTT**, per realizzare i **tentativi periodici** di **riconnessione** in **assenza** di connessione **WiFi** e in assenza di un server **MQTT** raggiungibile:
-- **wifiReconnectTimer** è usato in congiunzione con **WiFiEvent**. Il timer viene attivato in modo **once**, cioè una sola volta. Alla sua **scadenza** parte la **funzione di riconnessione** del WiFi. Se essa va a **buon fine**, genera l'evento SYSTEM_EVENT_STA_GOT_IP (onConnection) che attiva il timer del **polling periodico dello stato MQTT** tramite l'istruzione **mqttReconnectTimer.attach_ms(...)**. Se invece la funzione di riconnessione del WiFi **non va a buon fine** essa genera l'evento SYSTEM_EVENT_STA_DISCONNECTED (onDisconnection) che riattiva il timer di riconnessione WiFi ancora per una **sola volta** tramite l'istruzione **wifiReconnectTimer.once_ms(...)**. La **combinazione** di callback e attivazione del timer di ritrasmissione WiFi genera un **evento periodico di connessione** fintanto che la connessione WiFi è assente. In caso di **onDisconnection** del WiFi, l'istruzione  **mqttReconnectTimer.detach()** serve a inibire nuovi tentativi di polling della connessione MQTT durante i periodi di disservizio del WiFi dato che, in questo caso, il server MQTT sarebbe comunque irraggiungibile.
-- **mqttReconnectTimer** viene attivato **una sola volta** tramite mqttReconnectTimer.once_ms(...) da una callback associato all'evento di disconnessione MQTT. Al suo scadere viene fatto un tentativo di riconnessione tramite  **connectToMqtt()**. Se va a vuoto viene generato un nuovo evento di disconnessione MQTT (onDisconnection) e viene nuovamente richiamata la callback che attiva mqttReconnectTimer una sola volta, e così via. La **combinazione** di callback e attivazione del timer di ritrasmissione MQTT genera un **evento periodico di connessione** fintanto che la connessione MQTT è assente.
-
-```C++
-//#include <WiFiClientSecure.h>
-#include <WiFi.h>       // per ESP32
-//#include <ESP8266WiFi.h> per ESP8266
-#include <AsyncMqttClient.h>
-#include <Ticker.h>
-
-#define WIFI_SSID "myssd"
-#define WIFI_PASSWORD "mypsw"
-#define WIFIRECONNECTIME  2000
-#define MQTTRECONNECTIME  2000
-
-Ticker mqttReconnectTimer;
-Ticker wifiReconnectTimer;
-// Raspberry Pi Mosquitto MQTT Broker
-//#define MQTT_HOST IPAddress(192, 168, 1, 254)
-#define MQTT_HOST "test.mosquitto.org"
-// For a cloud MQTT broker, type the domain name
-//#define MQTT_HOST "example.com"
-#define MQTT_PORT 1883
-// Temperature MQTT Topic
-#define MQTT_PUB_TEMP "hello"
-
-AsyncMqttClient mqttClient;
-
-unsigned long previousMillis = 0;   // Stores last time temperature was published
-const long interval = 4000;        // Interval at which to publish sensor readings
-byte count = 0;
-
-void connectToWifi() {
-  Serial.println("Connecting to Wi-Fi...");
-  WiFi.mode(WIFI_STA);
-  //WiFi.disconnect();
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+        PrintRuntime();
+        lastPrintTime = millis();
+    }
 }
-
-void connectToMqtt() {
-  Serial.println("Connecting to MQTT...");
-  mqttClient.connect();
-}
-
-void onMqttMessage(char* topic, char* payload, AsyncMqttClientMessageProperties properties, size_t len, size_t index, size_t total) {
-  Serial.println("Publish received.");
-  Serial.print("  topic: ");
-  Serial.println(topic);
-  Serial.print("  qos: ");
-  Serial.println(properties.qos);
-  Serial.print("  dup: ");
-  Serial.println(properties.dup);
-  Serial.print("  retain: ");
-  Serial.println(properties.retain);
-  Serial.print("  len: ");
-  Serial.println(len);
-  Serial.print("  index: ");
-  Serial.println(index);
-  Serial.print("  total: ");
-  Serial.println(total);
-  Serial.print("  payload: ");
-  Serial.println(payload);
-}
-
-void WiFiEvent(WiFiEvent_t event) {
-  Serial.printf("[WiFi-event] event: %d\n", event);
-  switch(event) {
-    case SYSTEM_EVENT_STA_GOT_IP:
-      Serial.println("WiFi connected");
-      Serial.println("IP address: ");
-      Serial.println(WiFi.localIP());
-      connectToMqtt();
-      break;
-    case SYSTEM_EVENT_STA_DISCONNECTED:
-      Serial.println("WiFi lost connection");
-      mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
-      wifiReconnectTimer.once_ms(WIFIRECONNECTIME, connectToWifi);
-      break;
-  }
-}
-
-void onMqttConnect(bool sessionPresent) {
-  Serial.println("Connected to MQTT.");
-  Serial.print("Session present: ");
-  Serial.println(sessionPresent);
-  uint16_t packetIdSub = mqttClient.subscribe("hello", 2);
-  Serial.print("Subscribing at QoS 2, packetId: ");
-  Serial.println(packetIdSub);
-}
-
-void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
-  Serial.println("Disconnected from MQTT.");
-  if (WiFi.isConnected()) {
-    mqttReconnectTimer.once_ms(MQTTRECONNECTIME, connectToMqtt);
-  }
-}
-
-void onMqttPublish(uint16_t packetId) {
-  Serial.println("Publish acknowledged.");
-  Serial.print("  packetId: ");
-  Serial.println(packetId);
-}
-
-void setup() {
-  Serial.begin(115200);
-  Serial.println();
-  Serial.println();
-
-  WiFi.onEvent(WiFiEvent);
-
-  mqttClient.onConnect(onMqttConnect);
-  mqttClient.onDisconnect(onMqttDisconnect);
-  mqttClient.onPublish(onMqttPublish);
-  mqttClient.onMessage(onMqttMessage);
-  mqttClient.setServer(MQTT_HOST, MQTT_PORT);
-  // If your broker requires authentication (username and password), set them below
-  //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
-  connectToWifi();
-  count = 0;
-  while (WiFi.status() != WL_CONNECTED && count < 10) {
-    delay(500);
-    count++;
-    Serial.print(".");
-  }
-}
-
-void loop() {
-  unsigned long currentMillis = millis();
-  // Every X number of seconds it publishes a new MQTT message
-  if (currentMillis - previousMillis >= interval) {
-    // Save the last time a new reading was published
-    previousMillis = currentMillis;
-    
-    Serial.println("Tick");
-	
-    // Publish an MQTT message on topic 
-    //(const char* topic, uint8_t qos, bool retain, const char* payload = nullptr, size_t length = 0, bool dup = false, uint16_t message_id = 0);
-    uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB_TEMP, 1, true, "Ciao mondo", strlen("Ciao mondo"));                            
-    Serial.printf("Pubblicato sul topic %s at QoS 1, packetId: ", MQTT_PUB_TEMP);
-    Serial.println(packetIdPub1);
-    Serial.print("Messaggio inviato: ");
-    Serial.println("Ciao mondo");
-  }
-}
-
 
 ```
+### **APPENDICE DI CONSULTAZIONE**
 
-Esiste per **esp8266** anche un'altra libreria **non bloccante** basata su librerie de **SO Contiki**: https://github.com/i-n-g-o/esp-mqtt-arduino.
-Pur occupando meno memoria, il suo utilizzo però è più laborioso della precedente ed è attualmente meno mantenuta.
+ **Funzioni di gestione run-time**
+
+- ```void os_init()``` Inizializza il sistema operativo chiamando os_init_ex(NULL).
+- void os_init_ex (const void * pHalData) Per facilitare l'uso di questa libreria su più piattaforme, la routine os_init_ex() prende un puntatore arbitrario ai dati della piattaforma. L'implementazione HAL predefinita di Arduino LMIC prevede che questo puntatore sia un riferimento a un oggetto C++ struct lmic_pinmap. Vedere README.md per ulteriori informazioni.
+- ```void os_setCallback (osjob_t* job, osjobcb_t cb)``` Prepara un job immediatamente eseguibile. Questa funzione può essere chiamata in qualsiasi momento, anche dai contesti del gestore di interrupt (ad es. se è diventato disponibile un nuovo valore del sensore).
+- ```void os_setTimedCallback (osjob_t* job, ostime_t time, osjobcb_t cb)``` Pianifica un lavoro a tempo da eseguire con il timestamp specificato (ora di sistema assoluta). Questa funzione può essere chiamata in qualsiasi momento, anche dai contesti del gestore di interrupt.
+- ```void os_clearCallback (osjob_t* job)``` Annulla un processo di runtime. Un processo di runtime pianificato in precedenza viene rimosso dal timer e dalle code di esecuzione. Il lavoro è identificato dall'indirizzo della struttura del lavoro. La funzione non ha effetto se il lavoro specificato non è ancora pianificato.
+- ```void os_runloop()``` Esegue i lavori di runtime dal timer e dalle code di esecuzione. Questa funzione è il principale distributore di azioni. Non ritorna e deve essere eseguito sul thread principale. Questa routine non viene normalmente utilizzata in
+Ambienti Arduino, in quanto disabilita la normale chiamata della funzione Arduino loop().
+- ```void os_runloop_once()``` Esegue i lavori di runtime dal timer e dalle code di esecuzione. Questa funzione è proprio come os_runloop(), tranne per il fatto che ritorna dopo aver inviato il primo lavoro disponibile.
+- ```ostime_t os_getTime()``` Interroga l'ora di sistema assoluta (in tick).
+- ```ostime_t us2osticks(s4_t us)``` Restituisce i tick corrispondenti al valore intero us. Questa potrebbe essere una macro simile a una funzione, quindi potrebbe essere valutata più di una volta. Qualsiasi parte frazionaria del calcolo viene scartata.
+ostime_t us2osticksCeil(s4_t us) Restituisce i tick corrispondenti al valore intero us. Questa potrebbe essere una macro simile a una funzione, quindi potrebbe essere valutata più di una volta. Se la parte frazionaria del calcolo è diversa da zero, il risultato viene aumentato verso l'infinito positivo.
+- ```ostime_t us2osticksRound(s4_t us)``` Restituisce i tick corrispondenti al valore intero us. Questa potrebbe essere una macro simile a una funzione, quindi potrebbe essere valutata più di una volta. Il risultato viene arrotondato al segno di spunta più vicino.
+- ```ostime_t ms2osticks(s4_t ms)``` Restituisce i tick corrispondenti al valore intero in millisecondi ms. Questa potrebbe essere una macro simile a una funzione, quindi ms può essere valutato più di una volta. Se la parte frazionaria del calcolo è diversa da zero, il risultato viene aumentato verso l'infinito positivo.
+- ```ostime_t ms2osticksCeil(s4_t ms)``` Restituisce i tick corrispondenti al valore intero in millisecondi ms. Questa potrebbe essere una macro simile a una funzione, quindi ms può essere valutato più di una volta.
+- ```ostime_t ms2osticksRound(s4_t ms)``` Restituisce i tick corrispondenti al valore intero in millisecondi ms. Questa potrebbe essere una macro simile a una funzione, quindi ms può essere valutato più di una volta. Il risultato viene arrotondato al segno di spunta più vicino.
+- ```ostime_t us2osticks(s4_t sec)``` Restituisce i tick corrispondenti al secondo valore intero sec. Questa potrebbe essere una macro simile a una funzione, quindi sec può essere valutato più di una volta.
+- ```S4_t osticks2ms(ostime_t os)``` Restituisce i millisecondi corrispondenti al valore di tick os. Questa potrebbe essere una macro simile a una funzione, quindi os può essere valutato più di una volta.
+- ```S4_t osticks2us(ostime_t os)``` Restituisce i microsecondi corrispondenti al valore di tick os. Questa potrebbe essere una macro simile a una funzione, quindi os può essere valutato più di una volta.
+- int LMIC_setTxData2 (porta u1_t, dati xref2u1_t, u1_t dlen, u1_t confermato) Prepara la trasmissione dei dati in uplink per il primo momento successivo possibile. Funzione più conveniente di LMIC_setTxData(). Se i dati sono NULL, verranno utilizzati i dati in LMIC.pendTxData[].
+
+**Callbacks dell'applicazione**
+
+Oltre la ```void onEvent (ev_t ev)```, la libreria LMIC richiede che l'applicazione implementi alcune funzioni di callback. Queste funzioni verranno chiamate dal motore di stato per eseguire query su informazioni specifiche dell'applicazione e per fornire eventi di stato all'applicazione.
+- ```void os_getDevEui (u1_t* buf)``` L'implementazione di questa funzione di callback deve fornire l'EUI del dispositivo e copiarlo nel buffer specificato. L'EUI del dispositivo ha una lunghezza di 8 byte ed è memorizzato in formato little-endian, ovvero il primo byte meno significativo (LSBF).
+- ```void os_getDevKey (u1_t* buf)``` L'implementazione di questa funzione di callback deve fornire la chiave dell'applicazione crittografica specifica del dispositivo e copiarla nel buffer specificato. La chiave dell'applicazione specifica del dispositivo è una chiave AES a 128 bit (16 byte di lunghezza). Modello di programmazione e API Arduino LoRaWAN MAC in C (LMIC) Specifiche tecniche 11
+- ```void os_getArtEui (u1_t* buf)``` L'implementazione di questa funzione di callback deve fornire l'applicazione EUI e copiarla nel dato
+respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzata in formato little-endian, ovvero lesssignificant-byte-first (LSBF).
+
+
+### **Sitografia:**
+
+- https://redmine.laas.fr/attachments/download/1505/LMIC-v2.3.pdf
+- https://randomnerdtutorials.com/esp32-lora-rfm95-transceiver-arduino-ide/
+- https://jackgruber.github.io/2020-04-13-ESP32-DeepSleep-and-LoraWAN-OTAA-join/
+- https://gitmemory.com/issue/JackGruber/Arduino-Pro-Mini-LoRa-Sensor-Node/2/678644527
 
 >[Torna all'indice generale](index.md)
 
