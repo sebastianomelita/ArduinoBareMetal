@@ -2,13 +2,6 @@
 
 >[Torna a gateway digitale](gateway.md)
 
-## **Gateway mondo cablato - Client LoraWan**
-
-**Gateway LoRaWan con modem RN2483:**
-- [Gateway DS18B20-LoRaWan](lorawandallas.md)
-- [Gateway BME280-LoRaWan](lorawanbme280.md)
-- [Gateway MPU6050-LoRaWan](lorawanmpu6050.md)
-
 ### **La scheda LoRa RN2483**
 
 <img src="RN2483.png" alt="alt text" width="1000">
