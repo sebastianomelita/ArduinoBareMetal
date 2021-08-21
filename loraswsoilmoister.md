@@ -36,8 +36,6 @@ Dal **punto di vista SW** non servono librerie particolari tranne quelle per la 
 
 ### **Gateway LoRaWan LMIC per la lettura di un solo sensore di umidità del suolo**
 
-La libreria MQTT è asincrona per cui non bloccante. E' adoperabile sia per **ESP8266** che per **ESP32**.
-
 ```C++
 /*******************************************************************************
  * Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
