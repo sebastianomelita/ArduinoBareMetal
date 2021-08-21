@@ -34,7 +34,7 @@ Per il sensore di umidità del suolo capacitivo si vede anche dalla tabella che 
 
 Dal **punto di vista SW** non servono librerie particolari tranne quelle per la pubblicazione dei valorri traite MQTT. Una parte del codice va comunque dedicata al condizionamento dei valori misurati dal sensore per tradurli ai valori di interesse di umidità.
 
-### **Gateway MQTT per la lettura di un solo sensore di umidità del suolo**
+### **Gateway LoRaWan LMIC per la lettura di un solo sensore di umidità del suolo**
 
 La libreria MQTT è asincrona per cui non bloccante. E' adoperabile sia per **ESP8266** che per **ESP32**.
 
