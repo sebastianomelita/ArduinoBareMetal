@@ -4,10 +4,9 @@
 
 ## **Gateway mondo cablato - Client LoraWan**
 
-### **Schema di principio**
-
-<img src="lora-topologies.png" alt="alt text" width="500">
-
+- [Gateway DS18B20-LoRaWan](lorawandallas.md)
+- [Gateway BME280-LoRaWan](lorawanbme280.md)
+- [Gateway MPU6050-LoRaWan](lorawanmpu6050.md)
 
 ### **La scheda LoRa RMF95/W**
 
