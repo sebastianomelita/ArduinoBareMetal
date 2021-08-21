@@ -223,8 +223,8 @@ void loop()
         String received = myLora.getRx();
         received = myLora.base16decode(received);
         Serial.print("Received downlink: " + received);
-		digitalWrite(cmdport, received.toInt());
-		readSensorsAndTx();
+	digitalWrite(cmdport, received.toInt());
+	readSensorsAndTx();
         break;
       }
       default:
