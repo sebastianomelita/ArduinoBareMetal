@@ -1,4 +1,4 @@
->[Torna a gateway LoraWan con modem RN2483](lorawanhw.md)
+>[Torna a gateway LoraWan con modem RN2483](gatewayi2clorahw.md)
 
 ## **Gateway per BUS I2C (TwoWire)**
 
@@ -231,4 +231,4 @@ void led_off()
 - https://randomnerdtutorials.com/esp32-mpu-6050-web-server/
 
 
->[Torna a gateway LoraWan con modem RN2483](lorawanhw.md)
+>[Torna a gateway LoraWan con modem RN2483](gatewayi2clorahw.md)
