@@ -17,10 +17,6 @@ Radio punto-punto:
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
-
-
->[Torna a gateway digitale](gateway.md)
-
 ### **La scheda LoRa RN2483**
 
 <img src="RN2483.png" alt="alt text" width="1000">
