@@ -47,7 +47,6 @@ Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cart
  */
 #include <rn2xx3.h>
 #include <SoftwareSerial.h>
-#include <OneWire.h>
 #include <Adafruit_BME280.h>
 
 #define RESET 15
