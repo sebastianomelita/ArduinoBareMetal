@@ -1,4 +1,4 @@
->[Torna a gateway LoraWan con modem RN2483](gatewayi2clorasw.md)
+>[Torna a gateway LoraWan con modem LMIC](gatewayi2clorasw.md)
 
 ## **Gateway per BUS I2C (TwoWire)**
 
@@ -25,44 +25,98 @@ Dal **punto di vista SW** seve **una libreria** da scaricare dentro la solita ca
 La libreria MQTT è asincrona per cui non bloccante. E' adoperabile sia per **ESP8266** che per **ESP32**.
 
 ```C++
-/*
- * Author: JP Meijers
- * Date: 2016-10-20
+/*******************************************************************************
+ * Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
+ * Copyright (c) 2018 Terry Moore, MCCI
  *
- * Transmit a one byte packet via TTN. This happens as fast as possible, while still keeping to
- * the 1% duty cycle rules enforced by the RN2483's built in LoRaWAN stack. Even though this is
- * allowed by the radio regulations of the 868MHz band, the fair use policy of TTN may prohibit this.
+ * Permission is hereby granted, free of charge, to anyone
+ * obtaining a copy of this document and accompanying files,
+ * to do whatever they want with them without any restriction,
+ * including, but not limited to, copying, modification and redistribution.
+ * NO WARRANTY OF ANY KIND IS PROVIDED.
  *
- * CHECK THE RULES BEFORE USING THIS PROGRAM!
+ * This example sends a valid LoRaWAN packet with payload "Hello,
+ * world!", using frequency and encryption settings matching those of
+ * the The Things Network.
  *
- * CHANGE ADDRESS!
- * Change the device address, network (session) key, and app (session) key to the values
- * that are registered via the TTN dashboard.
- * The appropriate line is "myLora.initABP(XXX);" or "myLora.initOTAA(XXX);"
- * When using ABP, it is advised to enable "relax frame count".
+ * This uses OTAA (Over-the-air activation), where where a DevEUI and
+ * application key is configured, which are used in an over-the-air
+ * activation procedure where a DevAddr and session keys are
+ * assigned/generated for use with all further communication.
  *
- * Connect the RN2xx3 as follows:
- * RN2xx3 -- ESP8266
- * Uart TX -- GPIO4
- * Uart RX -- GPIO5
- * Reset -- GPIO15
- * Vcc -- 3.3V
- * Gnd -- Gnd
+ * Note: LoRaWAN per sub-band duty-cycle limitation is enforced (1% in
+ * g1, 0.1% in g2), but not the TTN fair usage policy (which is probably
+ * violated by this sketch when left running for longer)!
+
+ * To use this sketch, first register your application and device with
+ * the things network, to set or generate an AppEUI, DevEUI and AppKey.
+ * Multiple devices can use the same AppEUI, but each device has its own
+ * DevEUI and AppKey.
  *
- */
-#include <rn2xx3.h>
-#include <SoftwareSerial.h>
+ * Do not forget to define the radio type correctly in
+ * arduino-lmic/project_config/lmic_project_config.h or from your BOARDS.txt.
+ *
+ *******************************************************************************/
+
+#include <lmic.h>
+#include <hal/hal.h>
+#include <SPI.h>
+
+// include the MPU6050 Sensor Library
 #include <I2Cdev.h>
 #include <Wire.h>
 #include <MPU6050.h>
 
-#define RESET 15
-//sensors defines
-SoftwareSerial mySerial(4, 5); // RX, TX !! labels on relay board is swapped !!
-//create an instance of the rn2xx3 library,
-//giving the software UART as stream to use,
-//and using LoRa WAN
-rn2xx3 myLora(mySerial);
+//
+// For normal use, we require that you edit the sketch to replace FILLMEIN
+// with values assigned by the TTN console. However, for regression tests,
+// we want to be able to compile these scripts. The regression tests define
+// COMPILE_REGRESSION_TEST, and in that case we define FILLMEIN to a non-
+// working but innocuous value.
+//
+#define FILLMEIN 1
+/*
+#ifdef COMPILE_REGRESSION_TEST
+#define FILLMEIN 0
+#else
+#warning "You must replace the values marked FILLMEIN with real values from the TTN control panel!"
+#define FILLMEIN (#dont edit this, edit the lines that use FILLMEIN)
+#endif
+*/
+// This EUI must be in little-endian format, so least-significant-byte
+// first. When copying an EUI from ttnctl output, this means to reverse
+// the bytes. For TTN issued EUIs the last bytes should be 0xD5, 0xB3,
+// 0x70.
+static const u1_t PROGMEM APPEUI[8]={ FILLMEIN };
+void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);}
+
+// This should also be in little endian format, see above.
+static const u1_t PROGMEM DEVEUI[8]={ FILLMEIN };
+void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
+
+// This key should be in big endian format (or, since it is not really a
+// number but a block of memory, endianness does not really apply). In
+// practice, a key taken from ttnctl can be copied as-is.
+static const u1_t PROGMEM APPKEY[16] = { FILLMEIN };
+void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
+
+// payload to send to TTN gateway
+static uint8_t payload[5];
+static osjob_t sendjob;
+bool flag_TXCOMPLETE = false;
+
+// Schedule TX every this many seconds (might become longer due to duty
+// cycle limitations).
+const unsigned TX_INTERVAL = 60;
+
+// Pin mapping
+const lmic_pinmap lmic_pins = {
+    .nss = 6,
+    .rxtx = LMIC_UNUSED_PIN,
+    .rst = 5,
+    .dio = {2, 3, 4},
+};
+
 // class default I2C address is 0x68
 // specific I2C addresses may be passed as a parameter here
 // AD0 low = 0x68 (default for InvenSense evaluation board)
@@ -94,7 +148,116 @@ void set_sensor_offset() {
     Serial.print("\n");
 }
 
-void inline sensorsInit() {
+void printHex2(unsigned v) {
+    v &= 0xff;
+    if (v < 16)
+        Serial.print('0');
+    Serial.print(v, HEX);
+}
+
+void onEvent (ev_t ev) {
+    Serial.print(os_getTime());
+    Serial.print(": ");
+    switch(ev) {
+        case EV_JOINED:
+            Serial.println(F("EV_JOINED"));
+            {
+              u4_t netid = 0;
+              devaddr_t devaddr = 0;
+              u1_t nwkKey[16];
+              u1_t artKey[16];
+              LMIC_getSessionKeys(&netid, &devaddr, nwkKey, artKey);
+              Serial.print("netid: ");
+              Serial.println(netid, DEC);
+              Serial.print("devaddr: ");
+              Serial.println(devaddr, HEX);
+              Serial.print("AppSKey: ");
+              for (size_t i=0; i<sizeof(artKey); ++i) {
+                if (i != 0)
+                  Serial.print("-");
+                printHex2(artKey[i]);
+              }
+              Serial.println("");
+              Serial.print("NwkSKey: ");
+              for (size_t i=0; i<sizeof(nwkKey); ++i) {
+                      if (i != 0)
+                              Serial.print("-");
+                      printHex2(nwkKey[i]);
+              }
+              Serial.println();
+            }
+            // Disable link check validation (automatically enabled
+            // during join, but because slow data rates change max TX
+	        // size, we don't use it in this example.
+            LMIC_setLinkCheckMode(0);
+            break;
+        case EV_TXCOMPLETE:
+            Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
+            if (LMIC.txrxFlags & TXRX_ACK)
+              Serial.println(F("Received ack"));
+            if (LMIC.dataLen) {
+              Serial.print(F("Received "));
+              Serial.print(LMIC.dataLen);
+              Serial.println(F(" bytes of payload"));
+            }
+            // Schedule next transmission
+            os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
+	        flag_TXCOMPLETE = true;
+            break;
+	case EV_LINK_DEAD:
+            initLoRaWAN();
+	    break;
+        default:
+            Serial.print(F("Unknown event: "));
+            Serial.println((unsigned) ev);
+            break;
+    }
+}
+
+void do_send(osjob_t* j){
+	// Split both words (16 bits) into 2 bytes of 8
+	byte payload[12];
+
+	accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+
+	payload[0] = highByte(ax);
+	payload[1] = lowByte(ax);
+	payload[2] = highByte(ay);
+	payload[3] = lowByte(ay);
+	payload[4] = highByte(az);
+	payload[5] = lowByte(az);
+	payload[6] = highByte(gx);
+	payload[7] = lowByte(gx);
+	payload[8] = highByte(gy);
+	payload[9] = lowByte(gy);
+	payload[10] = highByte(gz);
+	payload[11] = lowByte(gz);
+
+	LMIC_setTxData2(1, payload, sizeof(payload)-1, 0);
+	Serial.println(F("Packet queued"));
+}
+
+void initLoRaWAN() {
+	// LMIC init
+	os_init();
+
+	// Reset the MAC state. Session and pending data transfers will be discarded.
+	LMIC_reset();
+
+	// by joining the network, precomputed session parameters are be provided.
+	//LMIC_setSession(0x1, DevAddr, (uint8_t*)NwkSkey, (uint8_t*)AppSkey);
+
+	// Enabled data rate adaptation
+	LMIC_setAdrMode(1);
+
+	// Enable link check validation
+	LMIC_setLinkCheckMode(0);
+
+	// Set data rate and transmit power
+	LMIC_setDrTxpow(DR_SF7, 21);
+}
+
+void sensorInit(){
 	// join I2C bus (I2Cdev library doesn't do this automatically)
 	Wire.begin();
 	// initialize device
@@ -110,120 +273,36 @@ void inline sensorsInit() {
 	set_sensor_offset();
 }
 
-void inline readSensorsAndTx() {
-	// Split both words (16 bits) into 2 bytes of 8
-	byte payload[12];
-	
-	accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
-	
-	payload[0] = highByte(ax);
-	payload[1] = lowByte(ax);
-	payload[2] = highByte(ay);
-	payload[3] = lowByte(ay);
-	payload[4] = highByte(az);
-	payload[5] = lowByte(az);
-	payload[6] = highByte(gx);
-	payload[7] = lowByte(gx);
-	payload[8] = highByte(gy);
-	payload[9] = lowByte(gy);
-	payload[10] = highByte(gz);
-	payload[11] = lowByte(gz);
-	
-	//myLora.tx("!"); //send String, blocking function
-	myLora.txBytes(payload, sizeof(payload)); // blocking function
-}
-
-// the setup routine runs once when you press reset:
 void setup() {
-  // LED pin is GPIO2 which is the ESP8266's built in LED
-  pinMode(2, OUTPUT);
-  led_on();
+    Serial.begin(9600);
+    Serial.println(F("Starting"));
 
-  // Open serial communications and wait for port to open:
-  Serial.begin(57600);
-  mySerial.begin(57600);
-  
-  sensorsInit();
-  
-  delay(1000); //wait for the arduino ide's serial console to open
+    #ifdef VCC_ENABLE
+    // For Pinoccio Scout boards
+    pinMode(VCC_ENABLE, OUTPUT);
+    digitalWrite(VCC_ENABLE, HIGH);
+    delay(1000);
+    #endif
 
-  Serial.println("Startup");
-
-  initialize_radio();
-
-  //transmit a startup message
-  myLora.tx("TTN Mapper on ESP8266 node");
-
-  led_off();
-
-  delay(2000);
-}
-
-void initialize_radio()
-{
-  //reset RN2xx3
-  pinMode(RESET, OUTPUT);
-  digitalWrite(RESET, LOW);
-  delay(100);
-  digitalWrite(RESET, HIGH);
-
-  delay(100); //wait for the RN2xx3's startup message
-  mySerial.flush();
-
-  //check communication with radio
-  String hweui = myLora.hweui();
-  while(hweui.length() != 16)
-  {
-    Serial.println("Communication with RN2xx3 unsuccessful. Power cycle the board.");
-    Serial.println(hweui);
-    delay(10000);
-    hweui = myLora.hweui();
-  }
-
-  //print out the HWEUI so that we can register it via ttnctl
-  Serial.println("When using OTAA, register this DevEUI: ");
-  Serial.println(hweui);
-  Serial.println("RN2xx3 firmware version:");
-  Serial.println(myLora.sysver());
-
-  //configure your keys and join the network
-  Serial.println("Trying to join TTN");
-  bool join_result = false;
-
-  //ABP: initABP(String addr, String AppSKey, String NwkSKey);
-  join_result = myLora.initABP("02017201", "8D7FFEF938589D95AAD928C2E2E7E48F", "AE17E567AECC8787F749A62F5541D522");
-
-  //OTAA: initOTAA(String AppEUI, String AppKey);
-  //join_result = myLora.initOTAA("70B3D57ED00001A6", "A23C96EE13804963F8C2BD6285448198");
-
-  while(!join_result)
-  {
-    Serial.println("Unable to join. Are your keys correct, and do you have TTN coverage?");
-    delay(60000); //delay a minute before retry
-    join_result = myLora.init();
-  }
-  Serial.println("Successfully joined TTN");
-
-}
-
-// the loop routine runs over and over again forever:
-void loop() {
-    led_on();
-    
-    readSensorsAndTx();
+   // Setup LoRaWAN state
+	initLoRaWAN();
 	
-    led_off();
-    delay(200);
+	sensorInit();
+
+    // Start job (sending automatically starts OTAA too)
+    do_send(&sendjob);
 }
 
-void led_on()
-{
-  digitalWrite(2, 1);
-}
-
-void led_off()
-{
-  digitalWrite(2, 0);
+void loop() {
+	os_runloop_once();
+	/* In caso di instabilità
+	//Run LMIC loop until he as finish
+	while(flag_TXCOMPLETE == false)
+	{
+		os_runloop_once();
+	}
+	flag_TXCOMPLETE = false;
+	*/
 }
 ```
 
