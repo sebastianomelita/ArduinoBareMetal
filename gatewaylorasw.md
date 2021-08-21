@@ -1,7 +1,7 @@
 >[Torna all'indice generale](index.md)
 ## **Gateways per reti di sensori**
 BUS cablato:
-1. [Dallas](gatewaydallas.md)
+1. [Dallas](lorawanswdallas.md)
 2. [I2C](gatewayi2c.md)
 3. [SPI](gatewayspi.md)
 4. [Modbus](gatewaymodbus.md)
@@ -22,15 +22,7 @@ Radio mezzo comune (BUS):
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
-
-
 >[Torna a gateway digitale](gateway.md)
-
-## **Gateway mondo cablato - Client LoraWan**
-
-- [Gateway DS18B20-LoRaWan con modem SW](lorawanswdallas.md)
-- [Gateway BME280-LoRaWan con modem SW](lorawanswbme280.md)
-- [Gateway MPU6050-LoRaWan con modem SW](lorawanswmpu6050.md)
 
 ### **La scheda LoRa RMF95/W**
 
