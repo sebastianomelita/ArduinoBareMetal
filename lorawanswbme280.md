@@ -285,4 +285,4 @@ void loop() {
 - https://learn.adafruit.com/i2c-addresses
 
 
->[Torna a gateway LoraWan con modemSW](lorawan.md)
+>[Torna a gateway LoraWan con modem SW](lorawan.md)
