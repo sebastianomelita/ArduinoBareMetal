@@ -94,7 +94,6 @@ Poiché ogni pin I/O digitale dell'ESP32, che non viene utilizzato per un'interf
 */
 //#define SensorPin A0  // used for Arduino and ESP8266
 #define SensorPin 4     // used for ESP32
-#define SENSOR_VCC_PIN  5     // used for ESP32
 
 // This EUI must be in little-endian format, so least-significant-byte
 // first. When copying an EUI from ttnctl output, this means to reverse
@@ -203,9 +202,7 @@ void do_send(osjob_t* j){
 	byte payload[2];
 
 	Serial.print("Requesting data...");
-	digitalWrite(SENSOR_VCC_PIN, HIGH);
 	h1 = analogRead(SensorPin);
-	digitalWrite(SENSOR_VCC_PIN, LOW);
 	Serial.println("DONE");
 
 	payload[0] = highByte(h1);
@@ -246,7 +243,6 @@ void setup() {
     #ifdef VCC_ENABLE
     // For Pinoccio Scout boards
     pinMode(VCC_ENABLE, OUTPUT);
-	pinMode(SENSOR_VCC_PIN, OUTPUT);
     digitalWrite(VCC_ENABLE, HIGH);
     delay(1000);
     #endif
