@@ -430,5 +430,6 @@ void loop() {
 
 - https://microcontrollerslab.com/esp32-web-server-control-relay-220-volt-lamp/
 - https://www.monicoimpianti.net/rele-passo-passo/
+- https://diyi0t.com/control-dc-motor-without-ic-motor-driver/
 
 >[Torna a gateway digitale](gateway.md)
