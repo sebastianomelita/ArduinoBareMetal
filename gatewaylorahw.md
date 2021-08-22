@@ -95,7 +95,7 @@ Il **middleware** in genere è composto da **librerie di terze parti** da **comp
 
 ### **Librerie del progetto**
 
-In questo caso gran parte delle funzioni del middleware, quelle relative alla comunicazione via stack LoRaWan, è implementato all'interno del chip del modem. Il middleware nel sistema a microprocessore (MCU) stavolta svolge ben poche funzioni. 
+In questo caso gran parte delle funzioni del middleware, quelle relative alla comunicazione via stack LoRaWan, è implementato all'interno del chip del modem. Il middleware nel sistema a microprocessore (MCU) stavolta svolge ben poche funzioni di comunicazione. 
 
 <img src="RN2483stack.png" alt="alt text" width="1000">
 
