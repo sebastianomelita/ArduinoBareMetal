@@ -16,7 +16,7 @@ Radio punto-punto:
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
-### **Archiitettura di riferimentoT**
+### **Architettura di riferimento per IoT**
 
 L'architettura tipica del SW a bordo di un dispositivo IoT è riassumibile:
 
