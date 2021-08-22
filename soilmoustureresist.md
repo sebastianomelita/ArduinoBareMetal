@@ -69,7 +69,8 @@ Poiché ogni pin I/O digitale dell'ESP32, che non viene utilizzato per un'interf
 //Temperature MQTT Topic
 #define MQTT_PUB "esp/umiditasuolo/"
 //#define SensorPin A0  // used for Arduino and ESP8266
-#define SensorPin 4     // used for ESP32
+#define SensorPin 4     		// used for ESP32
+#define SENSOR_VCC_PIN  5     // used for ESP32
 
 Ticker mqttReconnectTimer;
 Ticker wifiReconnectTimer;
@@ -138,6 +139,7 @@ void setup() {
   Serial.begin(115200);
   Serial.println();
   Serial.println();
+  pinMode(SENSOR_VCC_PIN, OUTPUT);
 
   WiFi.onEvent(WiFiEvent);
 
@@ -168,21 +170,22 @@ void loop() {
           previousMillis = currentMillis;
 	  
 	  Serial.print("Requesting data...");
+	  digitalWrite(SENSOR_VCC_PIN, HIGH);
 	  h1 = analogRead(SensorPin);
+	  digitalWrite(SENSOR_VCC_PIN, LOW);
 	  Serial.println("DONE");
 	  
 	  packData(datastr);
 	    
           // Publish an MQTT message on topic esp32/ds18b20/temperature    
 	  uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, datastr.c_str(), datastr.length());                        
-          Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
+      Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
 	  Serial.println(MQTT_PUB);
-          Serial.println(packetIdPub1);
+      Serial.println(packetIdPub1);
 	  Serial.print("Messaggio inviato: ");
 	  Serial.println(datastr); 
   }
 }
-
 ```
 ### **Gateway MQTT per la lettura periodica di un sensore di umidità del suolo alimentato a batteria**
 
