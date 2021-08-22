@@ -1,6 +1,6 @@
 
 
->[Torna a gateway digitale](loraswgatewaydigitale.md)
+>[Torna a gateway digitale](lorahwgatewaydigitale.md)
 
 ## **Gateway per scheda relè digitale**
 
@@ -86,4 +86,4 @@ Dal **punto di vista SW** non servono librerie particolari tranne quelle per la 
 - https://www.monicoimpianti.net/rele-passo-passo/
 - https://diyi0t.com/control-dc-motor-without-ic-motor-driver/
 
->[Torna a gateway digitale](loraswgatewaydigitale.md)
+>[Torna a gateway digitale](lorahwgatewaydigitale.md)
