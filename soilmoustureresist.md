@@ -226,7 +226,8 @@ Nel codice seguente vengono effettuati alcuni tentativi di riconnessione in caso
 //Temperature MQTT Topic
 #define MQTT_PUB "esp/umiditasuolo/"
 //#define SensorPin A0  // used for Arduino and ESP8266
-#define SensorPin 4     // used for ESP32
+#define SensorPin 4     		// used for ESP32
+#define SENSOR_VCC_PIN  5     // used for ESP32
 //deep sleep
 #define uS_TO_S_FACTOR 1000000  /* Conversion factor for micro seconds to seconds */
 #define TIME_TO_SLEEP  30        /* Time ESP32 will go to sleep (in seconds) */
@@ -280,7 +281,9 @@ void packData(String &str){
 
 void loop_once() {  
 	  Serial.print("Requesting data...");
+	  digitalWrite(SENSOR_VCC_PIN, HIGH);
 	  h1 = analogRead(SensorPin);
+	  digitalWrite(SENSOR_VCC_PIN, LOW);
 	  Serial.println("DONE");
 	  
 	  packData(datastr);
@@ -298,6 +301,7 @@ void setup() {
   Serial.begin(115200);
   Serial.println();
   Serial.println();
+  pinMode(SENSOR_VCC_PIN, OUTPUT);
   mqttClient.setServer(MQTT_HOST, MQTT_PORT);
   // If your broker requires authentication (username and password), set them below
   //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
@@ -355,7 +359,6 @@ void setup() {
 }
 
 void loop(){}
-
 ```
 
 
