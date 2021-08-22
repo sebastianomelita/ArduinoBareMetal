@@ -50,144 +50,169 @@ Utilizziamo il pin digitale per abilitare il flusso di corrente sul gate del MOS
 Poiché ogni pin I/O digitale dell'ESP32, che non viene utilizzato per un'interfaccia di comunicazione, può essere un ingresso analogico, dobbiamo scegliere un pin qualsiasi come ingresso analogico.
 
 ```C++
-//#include <WiFiClientSecure.h>
+/*
+ * Author: JP Meijers
+ * Date: 2016-10-20
+ *
+ * Transmit a one byte packet via TTN. This happens as fast as possible, while still keeping to
+ * the 1% duty cycle rules enforced by the RN2483's built in LoRaWAN stack. Even though this is
+ * allowed by the radio regulations of the 868MHz band, the fair use policy of TTN may prohibit this.
+ *
+ * CHECK THE RULES BEFORE USING THIS PROGRAM!
+ *
+ * CHANGE ADDRESS!
+ * Change the device address, network (session) key, and app (session) key to the values
+ * that are registered via the TTN dashboard.
+ * The appropriate line is "myLora.initABP(XXX);" or "myLora.initOTAA(XXX);"
+ * When using ABP, it is advised to enable "relax frame count".
+ *
+ * Connect the RN2xx3 as follows:
+ * RN2xx3 -- ESP8266
+ * Uart TX -- GPIO4
+ * Uart RX -- GPIO5
+ * Reset -- GPIO15
+ * Vcc -- 3.3V
+ * Gnd -- Gnd
+ *
+ */
+#include <rn2xx3.h>
+#include <SoftwareSerial.h>
 
-//#include <ESP8266WiFi.h> per ESP8266
-#include <AsyncMqttClient.h>
-#include <Ticker.h>
-#include <WiFi.h>       // per ESP32
-
-// Raspberry Pi Mosquitto MQTT Broker
-//#define MQTT_HOST IPAddress(192, 168, 1, 254)
-#define MQTT_HOST "test.mosquitto.org"
-// For a cloud MQTT broker, type the domain name
-//#define MQTT_HOST "example.com"
-#define MQTT_PORT 1883
-
-#define WIFI_SSID "myssid"
-#define WIFI_PASSWORD "mypsw"
-
-//Temperature MQTT Topic
-#define MQTT_PUB "esp/umiditasuolo/"
+#define RESET 15
+// Interval between send in seconds, so 300s = 5min
+#define CONFIG_INTERVAL ((uint32_t) 300)
+//sensors defines
 //#define SensorPin A0  // used for Arduino and ESP8266
-#define SensorPin 4     		// used for ESP32
+#define SensorPin 4     // used for ESP32
 #define SENSOR_VCC_PIN  5     // used for ESP32
 
-Ticker mqttReconnectTimer;
-Ticker wifiReconnectTimer;
+SoftwareSerial mySerial(4, 5); // RX, TX !! labels on relay board is swapped !!
 
-String datastr = "";
+//create an instance of the rn2xx3 library,
+//giving the software UART as stream to use,
+//and using LoRa WAN
+rn2xx3 myLora(mySerial);
 
-AsyncMqttClient mqttClient;
+int16_t h1;
 
-unsigned long previousMillis = 0;   // Stores last time temperature was published
-const long interval = 2000;        // Interval at which to publish sensor readings
-byte count = 0;
+void inline sensorsInit() {
 
-unsigned long previusMillis = 0;
-bool sensor1 = false;
-float t1, h1;
-
-void connectToWifi() {
-  Serial.println("Connecting to Wi-Fi...");
-  WiFi.mode(WIFI_STA);
-  //WiFi.disconnect();
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 }
 
-void connectToMqtt() {
-  Serial.println("Connecting to MQTT...");
-  mqttClient.connect();
+void inline readSensorsAndTx() {
+// Split both words (16 bits) into 2 bytes of 8
+	byte payload[2];
+
+	Serial.print("Requesting data...");
+	digitalWrite(SENSOR_VCC_PIN, HIGH);
+	h1 = analogRead(SensorPin);
+	digitalWrite(SENSOR_VCC_PIN, LOW);
+	Serial.println("DONE");
+
+	payload[0] = highByte(h1);
+	payload[1] = lowByte(h1);
+	
+	Serial.println(F("Packet queued"));
+  
+	//myLora.tx("!"); //send String, blocking function
+	myLora.txBytes(payload, sizeof(payload)); // blocking function
 }
 
-void WiFiEvent(WiFiEvent_t event) {
-  Serial.printf("[WiFi-event] event: %d\n", event);
-  switch(event) {
-    case SYSTEM_EVENT_STA_GOT_IP:
-      Serial.println("WiFi connected");
-      Serial.println("IP address: ");
-      Serial.println(WiFi.localIP());
-      connectToMqtt();
-      break;
-    case SYSTEM_EVENT_STA_DISCONNECTED:
-      Serial.println("WiFi lost connection");
-      mqttReconnectTimer.detach(); // ensure we don't reconnect to MQTT while reconnecting to Wi-Fi
-      wifiReconnectTimer.once_ms(2000, connectToWifi);
-      break;
-  }
-}
-
-void onMqttConnect(bool sessionPresent) {
-  Serial.println("Connected to MQTT.");
-  Serial.print("Session present: ");
-  Serial.println(sessionPresent);
-}
-
-void onMqttDisconnect(AsyncMqttClientDisconnectReason reason) {
-  Serial.println("Disconnected from MQTT.");
-  if (WiFi.isConnected()) {
-    mqttReconnectTimer.once_ms(2000, connectToMqtt);
-  }
-}
-
-void onMqttPublish(uint16_t packetId) {
-  Serial.println("Publish acknowledged.");
-  Serial.print("  packetId: ");
-  Serial.println(packetId);
-}
-
+// the setup routine runs once when you press reset:
 void setup() {
-  Serial.begin(115200);
-  Serial.println();
-  Serial.println();
+  // LED pin is GPIO2 which is the ESP8266's built in LED
+  pinMode(2, OUTPUT);
   pinMode(SENSOR_VCC_PIN, OUTPUT);
+  led_on();
 
-  WiFi.onEvent(WiFiEvent);
+  // Open serial communications and wait for port to open:
+  Serial.begin(57600);
+  mySerial.begin(57600);
+  
+  sensorsInit();
+  
+  delay(1000); //wait for the arduino ide's serial console to open
 
-  mqttClient.onConnect(onMqttConnect);
-  mqttClient.onDisconnect(onMqttDisconnect);
-  mqttClient.onPublish(onMqttPublish);
-  mqttClient.setServer(MQTT_HOST, MQTT_PORT);
-  // If your broker requires authentication (username and password), set them below
-  //mqttClient.setCredentials("REPlACE_WITH_YOUR_USER", "REPLACE_WITH_YOUR_PASSWORD");
-  connectToWifi();
-  count = 0;
-  while (WiFi.status() != WL_CONNECTED && count < 10) {
-    delay(500);
-    count++;
-    Serial.print(".");
+  Serial.println("Startup");
+
+  initialize_radio();
+
+  //transmit a startup message
+  myLora.tx("TTN Mapper on ESP8266 node");
+
+  led_off();
+
+  delay(2000);
+}
+
+void initialize_radio()
+{
+  //reset RN2xx3
+  pinMode(RESET, OUTPUT);
+  digitalWrite(RESET, LOW);
+  delay(100);
+  digitalWrite(RESET, HIGH);
+
+  delay(100); //wait for the RN2xx3's startup message
+  mySerial.flush();
+
+  //check communication with radio
+  String hweui = myLora.hweui();
+  while(hweui.length() != 16)
+  {
+    Serial.println("Communication with RN2xx3 unsuccessful. Power cycle the board.");
+    Serial.println(hweui);
+    delay(10000);
+    hweui = myLora.hweui();
   }
+
+  //print out the HWEUI so that we can register it via ttnctl
+  Serial.println("When using OTAA, register this DevEUI: ");
+  Serial.println(hweui);
+  Serial.println("RN2xx3 firmware version:");
+  Serial.println(myLora.sysver());
+
+  //configure your keys and join the network
+  Serial.println("Trying to join TTN");
+  bool join_result = false;
+
+  //ABP: initABP(String addr, String AppSKey, String NwkSKey);
+  join_result = myLora.initABP("02017201", "8D7FFEF938589D95AAD928C2E2E7E48F", "AE17E567AECC8787F749A62F5541D522");
+
+  //OTAA: initOTAA(String AppEUI, String AppKey);
+  //join_result = myLora.initOTAA("70B3D57ED00001A6", "A23C96EE13804963F8C2BD6285448198");
+
+  while(!join_result)
+  {
+    Serial.println("Unable to join. Are your keys correct, and do you have TTN coverage?");
+    delay(60000); //delay a minute before retry
+    join_result = myLora.init();
+  }
+  Serial.println("Successfully joined TTN");
+
 }
 
-void packData(String &str){    
-	str = "{\"humidity1\":\"";
-	str += h1;
-	str += "\"}";
-}
-
+// the loop routine runs over and over again forever:
 void loop() {
-  unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= interval) {
-          previousMillis = currentMillis;
-	  
-	  Serial.print("Requesting data...");
-	  digitalWrite(SENSOR_VCC_PIN, HIGH);
-	  h1 = analogRead(SensorPin);
-	  digitalWrite(SENSOR_VCC_PIN, LOW);
-	  Serial.println("DONE");
-	  
-	  packData(datastr);
-	    
-          // Publish an MQTT message on topic esp32/ds18b20/temperature    
-	  uint16_t packetIdPub1 = mqttClient.publish(MQTT_PUB, 1, true, datastr.c_str(), datastr.length());                        
-      Serial.print("Pubblicato sul topic %s at QoS 1, packetId: ");
-	  Serial.println(MQTT_PUB);
-      Serial.println(packetIdPub1);
-	  Serial.print("Messaggio inviato: ");
-	  Serial.println(datastr); 
-  }
+    led_on();
+    
+    readSensorsAndTx();
+	
+    led_off();
+    delay(2000);
+}
+
+void led_on()
+{
+  digitalWrite(2, 1);
+}
+
+void led_off()
+{
+  digitalWrite(2, 0);
 }
 ```
+
 ### **Gateway MQTT per la lettura periodica di un sensore di umidità del suolo alimentato a batteria**
 
 Il codice seguente utilizza la modalità di sleep profondo del microcontrollore ESP32 che consiste nello spegnimento dei due core della CPU e di tutte le periferiche fatta eccezione per un timer HW che viene impostato ad un timeout allo scadere del quale avviene il risveglio della CPU. Lo sleep profondo consente un drastico risparmio di energia nei periodi di inattività che allunga la durata di una eventuale alimentazione a batterie.
