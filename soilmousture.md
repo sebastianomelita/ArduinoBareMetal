@@ -38,6 +38,8 @@ Dal **punto di vista SW** non servono librerie particolari tranne quelle per la 
 
 La libreria MQTT è asincrona per cui non bloccante. E' adoperabile sia per **ESP8266** che per **ESP32**.
 
+Poiché ogni pin I/O digitale dell'ESP32, che non viene utilizzato per un'interfaccia di comunicazione, può essere un ingresso analogico, dobbiamo scegliere un pin qualsiasi come ingresso analogico.
+
 ```C++
 //#include <WiFiClientSecure.h>
 
