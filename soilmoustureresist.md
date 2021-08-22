@@ -8,9 +8,9 @@ Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontroll
 
 <img src="star.png" alt="alt text" width="200">
 
-### **Il sensore di livello capacitivo**
+### **Il sensore di livello resistivo**
 
-<img src="httpsstatics3.seeedstudio.comseeedfile2018-07bazaar881132_3.jpg" alt="alt text" width="400">
+<img src="httpsstatics3.seeedstudio.comseeedfile2018-07bazaar881132_3.jpg" alt="alt text" width="600">
 
 ### **Schema cablaggio**
 
