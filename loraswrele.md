@@ -52,7 +52,7 @@ Alcuni moduli relè hanno transistor che funzionano con logica invertita. Logica
 
 ### **Librerie del progetto**
 
-Dal **punto di vista SW** non servono librerie particolari tranne quelle per la pubblicazione dei valori tramite MQTT. 
+Dal **punto di vista SW** non servono librerie particolari tranne quelle per la pubblicazione dei valori tramite LoRaWan. 
 
 ### **Gateway GPIO-LoRaWan con modem SW per il comando di una scheda relè**
 
