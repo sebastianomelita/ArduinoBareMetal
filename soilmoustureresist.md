@@ -10,11 +10,11 @@ Notare i **collegamenti punto-punto** tra tutti i dispositivi e il microcontroll
 
 ### **Il sensore di livello capacitivo**
 
-<img src="httpsstatics3.seeedstudio.comseeedfile2018-07bazaar881132_3.jpg" alt="alt text" width="200">
+<img src="httpsstatics3.seeedstudio.comseeedfile2018-07bazaar881132_3.jpg" alt="alt text" width="400">
 
 ### **Schema cablaggio**
 
-<img src="Arduino_MOSFET_Steckplatine.png" alt="alt text" width="400">
+<img src="Arduino_MOSFET_Steckplatine.png" alt="alt text" width="600">
 
 ### **Condizionamento digitale**
 
