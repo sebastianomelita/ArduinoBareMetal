@@ -459,6 +459,9 @@ void loop() {
 Esiste per **esp8266** anche un'altra libreria **non bloccante** basata su librerie de **SO Contiki**: https://github.com/i-n-g-o/esp-mqtt-arduino.
 Pur occupando meno memoria, il suo utilizzo però è più laborioso della precedente ed è attualmente meno mantenuta.
 
+Sitografia:
+- https://www.semiconductorstore.com/pdf/Migrating-Sensor-Design-LoRaWAN-WhitePaper_FINAL.pdf
+
 >[Torna all'indice generale](index.md)
 
 
