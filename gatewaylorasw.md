@@ -72,6 +72,14 @@ In caso di perdita del collegamento, procedere come segue:
 
 I dispositivi dovrebbero salvare i parametri di rete tra i cicli di alimentazione regolari. Ciò include parametri di sessione come DevAddr, chiavi di sessione, FCnt e nonces. Ciò consente al dispositivo di unirsi facilmente, poiché chiavi e contatori rimangono sincronizzati.
 
+### **Architettura di riferimento per IoT**
+
+L'**architettura tipica del SW** a bordo di un dispositivo IoT è riassumibile:
+
+<img src="iotarchitecture.png" alt="alt text" width="600">
+
+Il **middleware** in genere è composto da **librerie di terze parti** da **compilare** all'interno di un **IDE** (ad es. Arduino) o all'interno di un **SDK** cioè un pacchetto di sviluppo per applicazioni che fornisce vari strumenti per compilazione, debug e documentazione (ad es. AWS IoT, Azure IoT, ESP-IDF). Oppure esistono **framework** specifici per IoT Open Source come RIOT che, una volta compilati su una macchina Linux, forniscono veri e propri **SO per IoT** con esattamente ciò che serve per la **comunicazione** di un certo dispositivo.
+
 ### **Librerie del progetto**
 
 Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cartella **libraries**:
