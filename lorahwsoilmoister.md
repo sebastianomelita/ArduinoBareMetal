@@ -36,6 +36,8 @@ Dal **punto di vista SW** non servono librerie particolari tranne quelle per la 
 
 ### **Gateway LoRaWan HW per la lettura di un solo sensore di umidità del suolo**
 
+Poiché ogni pin I/O digitale dell'ESP32, che non viene utilizzato per un'interfaccia di comunicazione, può essere un ingresso analogico, dobbiamo scegliere un pin qualsiasi come ingresso analogico.
+
 ```C++
 /*
  * Author: JP Meijers
