@@ -38,7 +38,7 @@ Per il nostro modulo dobbiamo utilizzare un filo da 86,3 mm saldato direttamente
 
 ### **Classi di servizio**
 
-<img src="classilorawan.png" alt="alt text" width="800">
+<img src="classilorawan.png" alt="alt text" width="1000">
 
 ### **Modi di autenticazione**
 
