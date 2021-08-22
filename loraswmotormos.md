@@ -1,6 +1,6 @@
 
 
->[Torna a gateway digitale](gatewaydigitale.md)
+>[Torna a gateway digitale](loraswgatewaydigitale.md)
 
 ## **Gateway per scheda relè digitale**
 
@@ -352,4 +352,4 @@ void loop() {
 - https://www.monicoimpianti.net/rele-passo-passo/
 - https://diyi0t.com/control-dc-motor-without-ic-motor-driver/
 
->[Torna a gateway digitale](gatewaydigitale.md)
+>[Torna a gateway digitale](loraswgatewaydigitale.md)
