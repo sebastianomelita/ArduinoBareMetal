@@ -36,6 +36,10 @@ La lunghezza del filo dipende dalla frequenza:
 
 Per il nostro modulo dobbiamo utilizzare un filo da 86,3 mm saldato direttamente al pin ANA del ricetrasmettitore. Si noti che l'utilizzo di un'antenna adeguata estenderà il raggio di comunicazione.
 
+### **Classi di servizio**
+
+<img src="classilorawan.png" alt="alt text" width="500">
+
 ### **Modi di autenticazione**
 
 **Attivazione via etere (OTAA)**
