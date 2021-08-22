@@ -30,7 +30,7 @@ L'RN2483 è un **modem integrato LoRa™** con:
 
 ### **Schema cablaggio**
 
-<img src="LoRa_ESP32_Wiring.png" alt="alt text" width="500">
+<img src="LoRa_ESP32_Wiring.png" alt="alt text" width="1000">
 
 ```
 RN2483 pin name <--> Arduino pin number
