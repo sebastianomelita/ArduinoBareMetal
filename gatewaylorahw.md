@@ -377,8 +377,8 @@ void loop_once() {
     led_on();
     readSensorsAndTx();
     led_off();
-	// mando il modem in deep sleep
-	myLora.sleep(TX_INTERVAL * 1000);
+    // mando il modem in deep sleep
+    myLora.sleep(TX_INTERVAL * 1000);
 }
 
 void initialize_radio()
