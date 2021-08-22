@@ -467,6 +467,7 @@ void led_off()
 - https://sites.google.com/site/connecttottn/
 - https://www.disk91.com/2015/technology/networks/first-step-in-lora-land-microchip-rn2483-test/
 - http://ww1.microchip.com/downloads/en/devicedoc/70005219a.pdf
+- https://www.semiconductorstore.com/pdf/Migrating-Sensor-Design-LoRaWAN-WhitePaper_FINAL.pdf
 
 >[Torna all'indice generale](index.md)
 
