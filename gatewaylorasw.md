@@ -19,7 +19,7 @@ Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista
 
 ### **La scheda LoRa RMF95/W**
 
-<img src="hwiotacrchitecturerfm95.png" alt="alt text" width="300">
+<img src="hwiotacrchitecturerfm95.png" alt="alt text" width="1000">
 
 E' un modem Lora che implementa esclusivamente il **livello fisico** dello stack LoraWan spesso indicato semplicemente come **LoRa**. Sopra di esso può essere utilizzato lo **stack applicativo LoRawan** oppure un qualsiasi altro stack (ad es. **6LowPan e REPL**). 
 
@@ -27,7 +27,7 @@ In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello
 
 ### **Schema cablaggio**
 
-<img src="LoRa_ESP32_Wiring.png" alt="alt text" width="1000">
+<img src="LoRa_ESP32_Wiring.png" alt="alt text" width="500">
 
 La lunghezza del filo dipende dalla frequenza:
 - 868 MHz: 86,3 mm 
