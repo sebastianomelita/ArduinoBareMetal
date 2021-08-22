@@ -44,7 +44,8 @@ Dal **punto di vista SW** non servono librerie particolari tranne quelle per la 
 
 ### **Gateway MQTT per la lettura di un solo sensore di umidità del suolo**
 
-La libreria MQTT è asincrona per cui non bloccante. E' adoperabile sia per **ESP8266** che per **ESP32**.
+Utilizziamo il pin digitale per abilitare il flusso di corrente sul gate del MOSFET. Questo chiude il circuito del sensore di umidità del suolo e leggiamo il valore del sensore analogico dopo un breve ritardo di 1 secondo. Dopo che il valore del sensore è stato stampato sul monitor seriale, aspettiamo 1 secondo e disabilitiamo il flusso di corrente attraverso il sensore tirando il Gate del MOSFET LOW.
+Apri in Google Traduttore
 
 ```C++
 //#include <WiFiClientSecure.h>
