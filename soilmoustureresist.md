@@ -1,6 +1,6 @@
 >[Torna a gateway analogico](gatewayanalogico.md)
 
-## **Gateway per sensore capacitivo di umidità del suolo**
+## **Gateway per sensore resistivo di umidità del suolo**
 
 ### **Schema di principio del collegamento a stella**
 
