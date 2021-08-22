@@ -27,7 +27,7 @@ In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello
 
 ### **Schema cablaggio**
 
-<img src="LoRa_ESP32_Wiring.png" alt="alt text" width="500">
+<img src="LoRa_ESP32_Wiring2.png" alt="alt text" width="500">
 
 La lunghezza del filo dipende dalla frequenza:
 - 868 MHz: 86,3 mm 
