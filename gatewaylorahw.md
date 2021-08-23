@@ -123,7 +123,7 @@ Dal **punto di vista SW** serve **1 libreria** da scaricare dentro la solita car
 - **RN2483-Arduino-Library**. Si scarica da https://github.com/jpmeijers/RN2483-Arduino-Library come RN2483-Arduino-Library-master.zip da scompattare e rinominare semplicemente come **RN2483-Arduino-Library**
 - **EspSoftwareSerial**. Si scarica da https://github.com/plerup/espsoftwareserial/ come espsoftwareserial-master.zip da scompattare e rinominare semplicemente come **espsoftwareserial**
 
-La ibrreria dovrebbero supportare solamente le classi di servizio A e B (C esclusa).
+La iibreria dovrebbero supportare solamente le classi di servizio A e B (C esclusa).
 
 ### **Gateway LoraWan con OTAA join**
 
