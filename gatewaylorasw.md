@@ -942,6 +942,7 @@ respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzat
 - https://www.ictpower.it/tecnologia/lora-nozioni-di-base-e-approfondimenti.htm
 - https://github.com/RAKWireless/WisNode-Arduino-Library
 - https://github.com/stm32duino
+- https://www.arduinolibraries.info/architectures/stm32
 
 >[Torna all'indice generale](index.md)
 
