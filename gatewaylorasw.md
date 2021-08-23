@@ -126,7 +126,7 @@ a 32768 tick al secondo, ma può essere configurato in fase di compilazione su q
 Tutto ciò che un'applicazione deve fare è inizializzare l'ambiente di runtime utilizzando **os_init()** o
 **os_init_ex()** e quindi chiama periodicamente la funzione di pianificazione dei lavori (schedulatore) **os_runloop_once()**. Per avviare le azioni del protocollo e generare eventi, è necessario impostare un lavoro iniziale. Pertanto, un job di avvio (startup job) è schedulato (pianificato) utilizzando la funzione **os_setCallback()**.
 
-La iibreria dovrebbero supportare solamente le classi di servizio A e B (C esclusa).
+La libreria dovrebbero supportare solamente le classi di servizio A e B (C esclusa).
 
 ```C++
 osjob_t initjob;
