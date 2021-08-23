@@ -51,7 +51,7 @@ La ricezione è affetta da una **latenza** piuttosto variabile e potenzialmente 
 
 **Classe C**
 
-La finestra di ricezione è sempre aperta per cui la trasmissione in downlink da parte del network server può avvenire, in maniera completamente asincrona, in qualsiasi momento. In questa modalità la latenza è minima ma il consumo è massimo per cui si tratta di un modo di funzionamento adatto a dispositivi perennemente connessi ad una fonte di alimentazione persistente (rete elettrica, panneli solari).
+La **finestra** di ricezione è **sempre aperta** per cui la trasmissione in downlink da parte del network server può avvenire, in maniera completamente **asincrona**, in qualsiasi momento. In questa modalità la **latenza** è minima ma il **consumo** è massimo per cui si tratta di un modo di funzionamento adatto a dispositivi perennemente connessi ad una fonte di **alimentazione persistente** (rete elettrica, panneli solari).
 
 <img src="classilorawan.png" alt="alt text" width="1000">
 
@@ -929,6 +929,7 @@ respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzat
 - https://lora-developers.semtech.com/library/tech-papers-and-guides/lorawan-class-b-devices/
 - https://cpp.hotexamples.com/it/examples/-/-/LMIC_sendAlive/cpp-lmic_sendalive-function-examples.html
 - https://www.semiconductorstore.com/pdf/Migrating-Sensor-Design-LoRaWAN-WhitePaper_FINAL.pdf
+- https://www.ictpower.it/tecnologia/lora-nozioni-di-base-e-approfondimenti.htm
 
 >[Torna all'indice generale](index.md)
 
