@@ -93,7 +93,10 @@ Queste prese in considerazione sono generalmente tutte funzioni di **livello app
 
 Il **network server** è comune in alcune tipologie di **reti wireless** ed è una componente di **back-end** responsabile dello **smistamento** verso gli utenti (routing applicativo) dei dati provenienti dai vari **gateway**  e dello svolgimento di alcuni **processi** di **controllo** e **gestione** della rete: 
 - fondamentale è il **filtraggio** ed eliminazione di eventuali **pacchetti duplicati**. 
-- implementa la funzionalità di **controllo remoto** dei terminali remoti tra le quali fondamentale è l'impostazione dell'**adaptive data rate (ADR)**. Il network server assegna a ogni end node che si vuole connettere alla rete, un data rate e una potenza di uscita diversa a seconda della esigenza e della situazione :
+- si connette a **più gateway** tramite una connessione TCP/IP protetta 
+- decide **quale gateway** dovrebbe rispondere a un messaggio di un nodo terminale
+- altra funzione fondamentale è il **filtraggio** ed eliminazione di eventuali **pacchetti duplicati**. 
+- implementa la funzionalità di **controllo remoto** dei terminali remoti tra le quali fondamentale è la gestione della loro velocità mediante **adaptive data rate (ADR)**. Il network server assegna a ogni end node che si vuole connettere alla rete, un data rate e una potenza di uscita diversa a seconda della esigenza e della situazione:
     - un data rate maggiore e una potenza di uscita minore ai nodi terminali piu`vicini al  gateway  in  quanto meno suscettibili alle interferenze (trasmissione rapida e a bassa potenza). 
     - un data rate piu`basso (minore suscettibilità ai rumori) e una maggiore potenza di uscita solo ai nodi che si trovano a distanze notevoli dal gateway (trasmissione lunga e a alta potenza). 
 
