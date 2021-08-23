@@ -52,15 +52,17 @@ Per il nostro modulo dobbiamo utilizzare un filo da 86,3 mm saldato direttamente
 ### **Classi di servizio**
 
 **Classe A**
-La trasmissione del nodo in uplink è asincrona cioè i messaggi, dal nodo al gateway, possono essere inviati in qualsiasi momento. 
+La **trasmissione** del nodo in uplink è **asincrona** cioè i messaggi, dal nodo al gateway, possono essere inviati in qualsiasi momento. 
 
-Dopo la trasmissione il nodo apre due finestre di ricezione. Il Network server può rispondere tramite un gateway con un messaggio in Downlink in una delle due finestre. Solitamente la prima finestra è aperta sullo stesso canale utilizzato nella trasmissione in Uplink, mentre la seconda finestra viene aperta su un canale differente, accordato in precedenza con il Network Server, per migliorare la resistenza alle interferenze.
+Dopo la trasmissione il nodo apre **due finestre di ricezione**. Il Network server **può rispondere** tramite un gateway con un messaggio in Downlink in una delle due finestre. Solitamente **la prima** finestra è aperta sullo stesso canale utilizzato nella trasmissione in Uplink, mentre **la seconda** finestra viene aperta su un canale differente, accordato in precedenza con il Network Server, per migliorare la resistenza alle interferenze.
 
 **Classe B**
 
-Ogni 128 secondi il nodo riceve dal gateway un beacon di sincronizzazione. Un pacchetto beacon contiene uno specifico tempo di riferimento in cui far aprire ai nodi della rete una **finestra di ricezione extra**, chiamata **ping slot**. In pratica è una multiplazione TDMA con cui, ad ogni beacon, il network server riserva uno slot temporale ai vari nodi afferenti ad un certo gateway. La posizione dello slot, nella trama tra un beacon e l'altro, viene ricalcolata ad ogni nuovo beacon per evitare errori di ricezione sistematici. 
+Ogni 128 secondi il nodo riceve dal gateway un beacon di sincronizzazione. Un **pacchetto beacon** contiene uno specifico tempo di riferimento in cui far aprire ai nodi della rete una **finestra di ricezione extra**, chiamata **ping slot**. In pratica è una multiplazione TDMA con cui, ad ogni beacon, il network server riserva uno slot temporale ai vari nodi afferenti ad un certo gateway. La posizione dello slot, nella trama tra un beacon e l'altro, viene ricalcolata ad ogni nuovo beacon per evitare errori di ricezione sistematici. 
 
 La ricezione è affetta da una **latenza** piuttosto variabile e potenzialmente elevata. In compenso, il **consumo** è ancora puttosto ridotto perchè, ad ogni trama, la finestra di ricezione è una sola e molto breve.
+
+La **trasmissione** in uplink, analogamente alla classe A, è ancora asincrona.
 
 **Classe C**
 
