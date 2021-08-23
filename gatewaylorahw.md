@@ -480,12 +480,6 @@ void led_off()
 }
 
 ```
-### **APPENDICE DI CONSULTAZIONE**
-
- 
-
-**Callbacks dell'applicazione**
-
 
 ### **Sitografia:**
 
