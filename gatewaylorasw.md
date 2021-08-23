@@ -940,6 +940,8 @@ respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzat
 - https://cpp.hotexamples.com/it/examples/-/-/LMIC_sendAlive/cpp-lmic_sendalive-function-examples.html
 - https://www.semiconductorstore.com/pdf/Migrating-Sensor-Design-LoRaWAN-WhitePaper_FINAL.pdf
 - https://www.ictpower.it/tecnologia/lora-nozioni-di-base-e-approfondimenti.htm
+- https://github.com/RAKWireless/WisNode-Arduino-Library
+- https://github.com/stm32duino
 
 >[Torna all'indice generale](index.md)
 
