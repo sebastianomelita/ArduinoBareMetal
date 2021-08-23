@@ -56,6 +56,8 @@ La **trasmissione** in uplink, analogamente alla classe A, è ancora asincrona.
 
 La **finestra** di ricezione, quando il nodo non trasmette, è **sempre aperta**per cui la trasmissione in downlink da parte del network server può avvenire, in maniera completamente **asincrona**, in qualsiasi momento. La finestra di ricezione è **chiusa** soltanto durante la trasmissione. In questa modalità la **latenza** è minima ma il **consumo** è massimo per cui si tratta di un modo di funzionamento adatto a dispositivi perennemente connessi ad una fonte di **alimentazione persistente** (rete elettrica, panneli solari).
 
+In tutte le classi l'**accesso multiplo** al canale in **uplink** è un TDM a contesa random di tipo **ALOHA**.
+
 <img src="classilorawan.png" alt="alt text" width="900">
 
 ### **Modi di autenticazione**
