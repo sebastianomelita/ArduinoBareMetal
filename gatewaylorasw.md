@@ -53,7 +53,7 @@ La ricezione è affetta da una **latenza** piuttosto variabile e potenzialmente 
 
 La **finestra** di ricezione è **sempre aperta** per cui la trasmissione in downlink da parte del network server può avvenire, in maniera completamente **asincrona**, in qualsiasi momento. In questa modalità la **latenza** è minima ma il **consumo** è massimo per cui si tratta di un modo di funzionamento adatto a dispositivi perennemente connessi ad una fonte di **alimentazione persistente** (rete elettrica, panneli solari).
 
-<img src="classilorawan.png" alt="alt text" width="1000">
+<img src="classilorawan.png" alt="alt text" width="900">
 
 ### **Modi di autenticazione**
 
