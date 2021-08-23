@@ -92,7 +92,6 @@ Queste prese in considerazione sono generalmente tutte funzioni di **livello app
 ## **Server di rete**
 
 Il **network server** è comune in alcune tipologie di **reti wireless** ed è una componente di **back-end** responsabile dello **smistamento** verso gli utenti (routing applicativo) dei dati provenienti dai vari **gateway**  e dello svolgimento di alcuni **processi** di **controllo** e **gestione** della rete: 
-- fondamentale è il **filtraggio** ed eliminazione di eventuali **pacchetti duplicati**. 
 - si connette a **più gateway** tramite una connessione TCP/IP protetta 
 - decide **quale gateway** dovrebbe rispondere a un messaggio di un nodo terminale
 - altra funzione fondamentale è il **filtraggio** ed eliminazione di eventuali **pacchetti duplicati**. 
