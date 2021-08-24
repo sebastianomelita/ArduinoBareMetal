@@ -139,6 +139,8 @@ https://github.com/stm32duino/Arduino_Core_STM32. Per far ciò bisogna aggiungre
 5. Scaricare e installare STM32CubeIDE. Per poter utilizzare un STM32 con l'ambiente Arduino, si deve installare lo strumento STM32CubeIDE, che è disponibile al link https://www.st.com/en/development-tools/stm32cubeide.html.
 6. In Strumenti > Metodo di caricamento: scegliere S**TM32CubeProgrammer (SWD)**
 
+<img src="selectcube.png" alt="alt text" width="700">
+
 **Jobs di un'applicazione**
 
 In questo modello tutto il codice dell'applicazione viene eseguito nei cosiddetti job che vengono eseguiti sul thread principale dallo **schedulatore** dei task run-time **os_runloop()**. Questi lavori di applicazione sono codificati come normali funzioni C e possono essere gestiti a run-time utilizzando apposite funzioni.
