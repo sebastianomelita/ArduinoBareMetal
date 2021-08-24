@@ -19,7 +19,7 @@ Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista
 
 ### **La scheda LoRa RAK811**
 
-<img src="hwiotacrchitecturerak811.png" alt="alt text" width="500">
+<img src="hwiotacrchitecturerak811.png" alt="alt text" width="1000">
 
 E' un **modem** che implementa **in HW** tutto lo **stack LoraWan** ed è configurabile via seriale mediante i comandi AT.
 
