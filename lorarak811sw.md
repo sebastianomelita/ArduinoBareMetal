@@ -42,7 +42,7 @@ La lunghezza del filo dipende dalla frequenza:
 
 In realtà il cablaggio serve a collegare sensori e alimentazione. Transceiver e MCU sono entrambi contenuti in un unico chip. Il problema principale adesso è collegare la UART alla presa USB di un PC per consentire il caricamento del FW compilato dall'IDE Arduino.
 
-<img src="rak811-serial.png" alt="alt text" width="500">
+<img src="rak811-serial.png" alt="alt text" width="800">
 
 
 ### **Classi di servizio**
