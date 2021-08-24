@@ -29,6 +29,8 @@ E' utilizzabile:
 - come **modem HW** accessibile via UART tramite ccomandi AT gestibili anche tramite una libreria per Arduino. Sia i comandi AT che la libreria permettono l'accesso ai GPIO di cui è dotata tramite un'intestazione aggiuntiva ai messaggi.
 - come **MCU** su cui caricare il FW con lo **stack** LoRaWan **completo** (**LMIC**) oppure un FW con uno **stack** di comunicazione **minimale** per la modalità **P2P** tra **coppie** di dispositivi. Il vantaggio di questa configurazione è che un nodo **non ha** bisogno di **MCU aggiuntive** per gestire la **logica** dell'applicazione.
 
+In questa scheda vedremo la versione **standalone** in cui si programma la MCU per inserire sia lo stack LoRaWAn LMIC che la logica dell'applicazione che governa l'accesso alle porte.
+
 ### **Schema cablaggio**
 
 <img src="EMPaUn3XkAA6bUY.jfif" alt="alt text" width="700">
