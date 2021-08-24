@@ -243,8 +243,6 @@ void loop() {
 
 ### **Gateway LoraWan con OTAA join e deepSleep**
 
-<img src="deepsleep.png" alt="alt text" width="1000">
-
 
 ```C++
 
