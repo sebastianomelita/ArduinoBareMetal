@@ -21,9 +21,11 @@ Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista
 
 <img src="hwiotacrchitecturerak811.png" alt="alt text" width="500">
 
-E' un modem Lora che implementa esclusivamente il **livello fisico** dello stack LoraWan spesso indicato semplicemente come **LoRa**. Sopra di esso può essere utilizzato lo **stack applicativo LoRawan** oppure un qualsiasi altro stack (ad es. **6LowPan e REPL**). 
+E' un **modem** che implementa **in HW** tutto lo **stack LoraWan** ed è configurabile via seriale mediante i comandi AT.
 
-In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello fisico, con il **chip RMF95/W**M vanno implementate in SW mediante apposite **librerie**. Se si vuole un **modem** che implementi **in HW** tutto lo **stack LoraWan** si guardi il modulo **Microchip RN2483**.
+Il modulo di breakout LPWAN RAK811 è una combinazione del chipset RAK811 e della scheda di breakout RAK811. Basato sul transceiver Semtech SX1276 permette l'accesso ai GPIO di cui è dotata tramite un'intestazione dei messaggi.
+
+Il nodo può funzionare in una serie variegata di modalità, con diverse velocità di trasmissione dati e leggere i i valori dai sensori collegati. Tutto questo è configurabile tramite i comandi AT.
 
 ### **Schema cablaggio**
 
