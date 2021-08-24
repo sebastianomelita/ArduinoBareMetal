@@ -276,6 +276,19 @@ Il file imposta:
 - Disabilitare i Beacon
 - Abilitazione del supporto orario di rete
 - altre variabili più raramente usate
+
+All'interno del codice del programma vanno impostati i pin del transceiver. In RAK811 sono interni al chip e non devono mai cambiare:
+
+```C++
+/ Pin mapping
+const lmic_pinmap lmic_pins = {
+    .nss = 26,
+    .rxtx = 32,
+    .rst = 21,
+    .dio = {27, 28, 29},
+};
+```
+
 ### **Gateway LoraWan con OTAA join**
 
 ```C++
