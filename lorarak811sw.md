@@ -375,12 +375,12 @@ bool flag_TXCOMPLETE = false;
 // cycle limitations).
 const unsigned TX_INTERVAL = 60;
 
-// Pin mapping
+/ Pin mapping
 const lmic_pinmap lmic_pins = {
-    .nss = 6,
-    .rxtx = LMIC_UNUSED_PIN,
-    .rst = 5,
-    .dio = {2, 3, 4},
+    .nss = 26,
+    .rxtx = 32,
+    .rst = 21,
+    .dio = {27, 28, 29},
 };
 
 // init. DHT
@@ -621,12 +621,12 @@ RTC_DATA_ATTR lmic_t RTC_LMIC;
 #define PIN_LMIC_DIO1 33
 #define PIN_LMIC_DIO2 32
 
-// Pin mapping
+/ Pin mapping
 const lmic_pinmap lmic_pins = {
-    .nss = PIN_LMIC_NSS,
-    .rxtx = LMIC_UNUSED_PIN,
-    .rst = PIN_LMIC_RST,
-    .dio = {PIN_LMIC_DIO0, PIN_LMIC_DIO1, PIN_LMIC_DIO2},
+    .nss = 26,
+    .rxtx = 32,
+    .rst = 21,
+    .dio = {27, 28, 29},
 };
 
 // init. DHT
