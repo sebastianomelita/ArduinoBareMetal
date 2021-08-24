@@ -117,30 +117,11 @@ La libreria dovrebbero supportare solamente le classi di servizio A e B (C esclu
 
 **Gestione della ricezione**
 
-Per ricevere LMIC si unisce alla rete tramite un **join** e **ascolta ripetutamente** i dati in **downlink**. Questo è ottenuto abilitando la **modalità ping**. La chiamata a **LMIC_setPingable()** imposta la modalità ping localmente e avvia la **scansione dei beacon**. Una volta che il primo beacon è stato trovato, è necessario inviare in uplink un frame di configurazione (in questo caso un frame vuoto tramite LMIC_sendAlive()) per trasportare le **opzioni MAC** e per notificare al server la **modalità ping** e il suo **intervallo**. Ogni volta che il server invia, in uno degli slot di ricezione, un dato in downlink, l'evento **EV_RXCOMPLETE** viene attivato e i dati ricevuti possono essere valutati nel campo **frame** del **struttura LMIC**. Il codice di esempio registra i dati ricevuti sulla console e, nel caso speciale quando viene ricevuto esattamente un byte, pilota il LED in base al valore ricevuto.
-
 <img src="Beacon.png" alt="alt text" width="800">
 
 Quando viene ricevuto EV_TXCOMPLETE o EV_RXCOMPLETE, il codice di elaborazione dell'evento dovrebbe controllare se ci sono dati in ricezione (downlink) ed eventualmente passarli all'applicazione. Per fare ciò, si usa un codice come il seguente:
 
 ### **Gateway LoraWan con OTAA join**
-
-Si trova, assieme ad altri esempi, nella cartella al link https://github.com/oktavianabd/arduino-lmic/tree/master/examples
-
-Al termine di una trasmissione, indicato dall'evento ```EV_TXCOMPLETE```viene pianficata una nuova trasmissione tramite```os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send)``` dopo un tempo ```TX_INTERVAL```.
-
-La funzione ```os_runloop_once()``` riserva un quanto di tempo allo scheduler dei job della connessione LoRaWan. Una trasmissione LoraWan però potrebbe non essere completata in un solo quanto per cui potrebbero essere necessari parecchi loop() per completarla. Quest'ultima considerazione chiarisce che è importante non inserire delay() o istruzioni molto lente dopo una chiamata a ```os_runloop_once()``` perchè una lunga interruzione del processo di trasmissione potrebbe portare ad una perdita di dati.
-
-Tuttavia, durante la trasmissione di un messaggio, è fondamentale assicurarsi che ```os_runloop_once()``` venga chiamato frequentemente prima delle scadenze rigide. L'API ```os_queryTimeCriticalJobs()``` può essere utilizzata per verificare se sono previste scadenze a breve. Prima di eseguire un job che richiede n millisecondi, si può chiamare ```os_queryTimeCriticalJobs(ms2osticks(n))``` e saltare il job se l'API indica che LMIC richiede attenzione.
-
-```C++
-
-```
-
-### **Gateway LoraWan con OTAA join e deepSleep**
-
-<img src="deepsleep.png" alt="alt text" width="1000">
-
 
 ```C++
 /********************************************************
@@ -255,6 +236,15 @@ void loop() {
     }
   }
 }
+
+```
+
+### **Gateway LoraWan con OTAA join e deepSleep**
+
+<img src="deepsleep.png" alt="alt text" width="1000">
+
+
+```C++
 
 ```
 
