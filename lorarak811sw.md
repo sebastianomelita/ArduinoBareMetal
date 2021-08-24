@@ -114,8 +114,23 @@ Il **middleware** in genere è composto da **librerie di terze parti** da **comp
 
 In questo caso gran parte delle funzioni del middleware, quelle relative alla comunicazione via stack LoRaWan, è implementato all'interno del sistema a microprocessore (MCU). Nello specifico, le funzioni di livello applicativo, che in ambito IoT, sono tutte quelle comprese tra il livello 2 e il livello 7 ISO/OSI sono compito della MCU mentre il livello fisico è realizzato in HW dal chip del modem.
 
-Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cartella **libraries**:
-- **Arduino-RAK811-Library**. Si scarica da https://github.com/RAKWireless/WisNode-Arduino-Library come WisNode-Arduino-Library-master.zip, poi si  scompatta in una cartella sul desktop da cui si copia la cartella **Arduino-RAK811-Librarye** che va messa nela libraries dell'IDE di Arduino.
+L'installazione di SDK, loader e librerie in Arduino si può fare seguendo, nell'ordine, le seguenti fasi:
+1. RAK811 è basato su STM32L151. Pertanto va installato SDK **Arduino Core per Arduino_Core_STM32**.
+https://github.com/stm32duino/Arduino_Core_STM32. Per far ciò bisogna aggiungre alla fine della lista su url aggiuntive per il gestore schede: "https://github.com/stm32duino/BoardManagerFiles/raw/master/STM32/package_stm_index.json"
+
+<img src="gestoreschede.png" alt="alt text" width="700">
+
+2. Andare su **strumenti/gestione** librerie e installare la libreria **STM32 Core**:
+
+<img src="gestorelib.png" alt="alt text" width="700">
+
+3. Selezionare la scheda **Lora Board**:
+
+<img src="selezscheda.png" alt="alt text" width="700">
+
+3. Andare su **strumenti/Board part number** librerie e selezionare il BSP (Arduino Board Support) **RAK811 Lora Tracker** 
+4. Dal **punto di vista SW** serve la **libreria** (da scaricare dentro la solita cartella **libraries**)
+**Arduino-RAK811-Library**. Si scarica da https://github.com/RAKWireless/WisNode-Arduino-Library come WisNode-Arduino-Library-master.zip, poi si  scompatta in una cartella sul desktop da cui si copia la cartella **Arduino-RAK811-Librarye** che va messa nela libraries dell'IDE di Arduino.
 
 La libreria dovrebbero supportare solamente le classi di servizio A e B (C esclusa).
 
