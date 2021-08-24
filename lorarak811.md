@@ -38,8 +38,6 @@ La lunghezza del filo dipende dalla frequenza:
 - 915 MHz: 81,9 mm
 - 433 MHz: 173,1 mm
 
-Per il nostro modulo dobbiamo utilizzare un filo da 86,3 mm saldato direttamente al pin ANA del ricetrasmettitore. Si noti che l'utilizzo di un'antenna adeguata estenderà il raggio di comunicazione.
-
 ### **Classi di servizio**
 
 **Classe A**
