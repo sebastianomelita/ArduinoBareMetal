@@ -23,9 +23,11 @@ Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista
 
 E' un **modem** che implementa **in HW** tutto lo **stack LoraWan** ed è configurabile via seriale mediante i comandi AT.
 
-Il modulo di breakout LPWAN RAK811 è una combinazione del chipset RAK811 e della scheda di breakout RAK811. Basato sul transceiver Semtech SX1276 permette l'accesso ai GPIO di cui è dotata tramite un'intestazione dei messaggi.
+Il modulo di breakout LPWAN RAK811 fornisce scheda + transceiver Semtech SX1276 + MCU STM32L.  
 
-Il nodo può funzionare in una serie variegata di modalità, con diverse velocità di trasmissione dati e leggere i i valori dai sensori collegati. Tutto questo è configurabile tramite i comandi AT.
+E' utilizzabile:
+- come **modem HW** accessibile via UART tramite ccomandi AT gestibili anche tramite una libreria per Arduino. Sia i comandi AT che la libreria permettono l'accesso ai GPIO di cui è dotata tramite un'intestazione aggiuntiva ai messaggi.
+- come **MCU** su cui caricare il FW con lo **stack** LoRaWan **completo** (**LMIC**) oppure un FW con uno **stack** di comunicazione **minimale** per la modalità **P2P** tra **coppie** di dispositivi. Il vantaggio di questa configurazione è che un nodo **non ha** bisogno di **MCU aggiuntive** per gestire la **logica** dell'applicazione.
 
 ### **Schema cablaggio**
 
