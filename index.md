@@ -13,7 +13,7 @@
 10. [Gateway MQTT reti di sensori](gateway.md)
 11. [Gateway LoRaWan LMIC reti di sensori](gatewaylorasw.md)
 12. [Gateway LoRaWan HW reti di sensori](gatewaylorahw.md)lorarak811.md
-13. [Gateway LoRaWan HW /RAK811) reti di sensori](lorarak811.md)
+13. [Gateway LoRaWan HW (RAK811) reti di sensori](lorarak811.md)
 14. [Esercizi](esercizi.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTk1MTYzNTI1NV19
