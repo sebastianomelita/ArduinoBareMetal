@@ -132,139 +132,805 @@ https://github.com/stm32duino/Arduino_Core_STM32. Per far ciò bisogna aggiungre
 4. Dal **punto di vista SW** serve la **libreria** (da scaricare dentro la solita cartella **libraries**)
 **Arduino-RAK811-Library**. Si scarica da https://github.com/RAKWireless/WisNode-Arduino-Library come WisNode-Arduino-Library-master.zip, poi si  scompatta in una cartella sul desktop da cui si copia la cartella **Arduino-RAK811-Librarye** che va messa nela libraries dell'IDE di Arduino. La libreria dovrebbero supportare solamente le classi di servizio A e B (C esclusa).
 
+**Jobs di un'applicazione**
+
+In questo modello tutto il codice dell'applicazione viene eseguito nei cosiddetti job che vengono eseguiti sul thread principale dallo **schedulatore** dei task run-time **os_runloop()**. Questi lavori di applicazione sono codificati come normali funzioni C e possono essere gestiti a run-time utilizzando apposite funzioni.
+
+Per la **gestione dei jobs** è necessario un **descrittore** del job **osjob_t** che identifica il job e
+memorizza le informazioni di **contesto**. I lavori **non** devono essere di **lunga durata** per garantire un funzionamento **senza interruzioni**. Dovrebbero solo **aggiornare lo stato** e **pianificare le azioni**, che attiveranno nuovi **job** o **callback** di eventi.
+
+**Tempi del sistema operativo**
+
+**LMIC** utilizza valori del tipo **```ostime_t```** per rappresentare il tempo in **tick**. Il **rate** di questi tick è predefinito
+a 32768 tick al secondo, ma può essere configurato in fase di compilazione su qualsiasi valore compreso tra 10000 tick al secondo e 64516 tic al secondo.
+
+**Loop di eventi principale**
+
+Tutto ciò che un'applicazione deve fare è inizializzare l'ambiente di runtime utilizzando **os_init()** o
+**os_init_ex()** e quindi chiama periodicamente la funzione di pianificazione dei lavori (schedulatore) **os_runloop_once()**. Per avviare le azioni del protocollo e generare eventi, è necessario impostare un lavoro iniziale. Pertanto, un job di avvio (startup job) è schedulato (pianificato) utilizzando la funzione **os_setCallback()**.
+
+La libreria dovrebbero supportare solamente le classi di servizio A e B (C esclusa).
+
+```C++
+osjob_t initjob;
+void setup () {
+ // initialize run-time env
+ os_init();
+ // setup initial job
+ os_setCallback(&initjob, initfunc);
+}
+void loop () {
+ // execute scheduled jobs and events
+ os_runloop_once();
+}
+```
+Il codice di avvio mostrato nella funzione **```initfunc()```** di seguito inizializza il MAC ed esegue il Join alla
+rete LoraWan:
+```C++
+// initial job
+static void initfunc (osjob_t* j) {
+ // reset MAC state
+ LMIC_reset();
+ // start joining
+ LMIC_startJoining();
+ // init done - onEvent() callback will be invoked...
+}
+```
+La funzione **```initfunc()```** non è bloccante ma ritorna immediatamente e lo stato della connessione verrà notificato quando verrà chiamata la funzione di callback **```onEvent()```**. La notifica avviene tramite gli eventi: ```EV_JOINING**```, ```EV_JOINED``` o ```EV_JOIN_FAILED```.
+
+
+**Callback onEvent()**
+
+Questa funzione di callback può reagire a determinati eventi e attivare nuove azioni in base all'**evento** e allo **stato** della connessione. Tipicamente, un'applicazione non elabora tutti gli eventi ma solo quelli a cui è interessata e pianifica (schedula) ulteriori azioni del protocollo utilizzando le API di LMIC. 
+
+Gli eventi possibili sono:
+- EV_JOINING
+Il nodo ha iniziato a unirsi alla rete.
+- EV_JOINED
+Il nodo si è unito con successo alla rete ed è ora pronto per gli scambi di dati.
+- EV_JOIN_FAILED
+Il nodo non è stato in grado di unirsi alla rete (dopo aver riprovato).
+- EV_REJOIN_FAILED
+Il nodo non si è unito a una nuova rete ma è ancora connesso alla vecchia rete.
+- EV_TXCOMPLETE
+I dati preparati tramite LMIC_setTxData() sono stati inviati e la finestra di ricezione per
+il downlink è completa. Se era stata richiesta una conferma, allora questa è stata
+ricevuta. Durante la gestione di questo evento, il codice dovrebbe anche verificare la ricezione dei dati. 
+- EV_RXCOMPLETE Solo classe B: è stato ricevuto un downlink in uno slot ping. Il codice dovrebbe controllare i dati di ricezione. 
+- EV_SCAN_TIMEOUT Dopo una chiamata a LMIC_enableTracking() non è stato ricevuto alcun beacon entro l'intervallo di beacon.
+Il monitoraggio deve essere riavviato.
+- EV_BEACON_FOUND Dopo una chiamata a LMIC_enableTracking() il primo beacon è stato ricevuto all'interno dell'intervallo di beacon .
+- EV_BEACON_TRACKED Il prossimo segnale è stato ricevuto all'ora prevista.
+- EV_BEACON_MISSED Nessun segnale è stato ricevuto all'ora prevista.
+- EV_LOST_TSYNC Il segnale è stato perso ripetutamente e la sincronizzazione dell'ora è andata persa. Il onitoraggio o ping deve essere riavviato.
+- EV_RESET Ripristino della sessione a causa del rollover dei contatori di sequenza. La rete verrà riconnessa automaticamente a acquisire nuova sessione.
+- EV_LINK_DEAD Nessuna conferma è stata ricevuta dal server di rete per un lungo periodo di tempo.
+Le trasmissioni sono ancora possibili ma la loro ricezione è incerta.
+- EV_LINK_ALIVE Il collegamento era morto, ma ora è di nuovo vivo.
+- EV_LINK_DEAD Nessuna conferma è stata ricevuta dal server di rete per un lungo periodo di tempo.
+Le trasmissioni sono ancora possibili, ma la loro ricezione è incerta.
+- EV_TXSTART Questo evento viene segnalato appena prima di dire al driver radio di iniziare la trasmissione.
+- EV_SCAN_FOUND Questo evento è riservato per uso futuro e non viene mai segnalato.
+
 **Gestione della ricezione**
+
+Per ricevere LMIC si unisce alla rete tramite un **join** e **ascolta ripetutamente** i dati in **downlink**. Questo è ottenuto abilitando la **modalità ping**. La chiamata a **LMIC_setPingable()** imposta la modalità ping localmente e avvia la **scansione dei beacon**. Una volta che il primo beacon è stato trovato, è necessario inviare in uplink un frame di configurazione (in questo caso un frame vuoto tramite LMIC_sendAlive()) per trasportare le **opzioni MAC** e per notificare al server la **modalità ping** e il suo **intervallo**. Ogni volta che il server invia, in uno degli slot di ricezione, un dato in downlink, l'evento **EV_RXCOMPLETE** viene attivato e i dati ricevuti possono essere valutati nel campo **frame** del **struttura LMIC**. Il codice di esempio registra i dati ricevuti sulla console e, nel caso speciale quando viene ricevuto esattamente un byte, pilota il LED in base al valore ricevuto.
 
 <img src="Beacon.png" alt="alt text" width="800">
 
+Quando viene ricevuto EV_TXCOMPLETE o EV_RXCOMPLETE, il codice di elaborazione dell'evento dovrebbe controllare se ci sono dati in ricezione (downlink) ed eventualmente passarli all'applicazione. Per fare ciò, si usa un codice come il seguente:
+
+```C++
+void do_recv(uint8_t  bPort, uint8_t *msg, uint8_t len){
+	
+}
+
+void onEvent (ev_t ev) {
+    switch(ev) {
+      // network joined, session established
+      case EV_JOINED:
+          // enable pinging mode, start scanning...
+          // (set local ping interval configuration to 2^1 == 2 sec)
+          LMIC_setPingable(1);
+          Serial.println("SCANNING...\r\n");
+          break;
+
+      // beacon found by scanning
+      case EV_BEACON_FOUND:
+          // send empty frame up to notify server of ping mode and interval!
+          LMIC_sendAlive();
+          break;
+
+      // data frame received in ping slot
+      case EV_RXCOMPLETE:
+          // Any data to be received?
+	  if (LMIC.dataLen != 0 || LMIC.dataBeg != 0) {
+		 // Data was received. Extract port number if any.
+		 u1_t bPort = 0;
+		 if (LMIC.txrxFlags & TXRX_PORT)
+			bPort = LMIC.frame[LMIC.dataBeg – 1];
+		 // Call user-supplied function with port #, pMessage, nMessage;
+		 // nMessage might be zero.
+		 do_recv(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
+	  }
+      break;    
+    }
+}
+```
+
+### **File di configurazione**
+
+In questo porting LMIC, a differenza di  altri simili,  non va modificato il file src/lmic/config.h per configurare il FW. La configurazione è spostata sul file project_config/lmic_project_config.h. 
+
+Il file imposta:
+- selezionare la versione di LoRaWAN 
+- Selezione della configurazione della regione LoRaWAN
+- Selezione del ricetrasmettitore radio 
+- Controllo dell'uso degli interrupt
+- Disabilitare PING
+- Disabilitare i Beacon
+- Abilitazione del supporto orario di rete
+- altre variabili più raramente usate
 ### **Gateway LoraWan con OTAA join**
 
 ```C++
-/********************************************************
- * This demo is only supported after RUI firmware version 3.0.0.13.X on RAK811
- * Master Board Uart Receive buffer size at least 128 bytes. 
- ********************************************************/
+/*******************************************************************************
+ * Copyright (c) 2015 Thomas Telkamp and Matthijs Kooijman
+ * Copyright (c) 2018 Terry Moore, MCCI
+ *
+ * Permission is hereby granted, free of charge, to anyone
+ * obtaining a copy of this document and accompanying files,
+ * to do whatever they want with them without any restriction,
+ * including, but not limited to, copying, modification and redistribution.
+ * NO WARRANTY OF ANY KIND IS PROVIDED.
+ *
+ * This example sends a valid LoRaWAN packet with payload "Hello,
+ * world!", using frequency and encryption settings matching those of
+ * the The Things Network.
+ *
+ * This uses OTAA (Over-the-air activation), where where a DevEUI and
+ * application key is configured, which are used in an over-the-air
+ * activation procedure where a DevAddr and session keys are
+ * assigned/generated for use with all further communication.
+ *
+ * Note: LoRaWAN per sub-band duty-cycle limitation is enforced (1% in
+ * g1, 0.1% in g2), but not the TTN fair usage policy (which is probably
+ * violated by this sketch when left running for longer)!
 
-#include "RAK811.h"
-#include "SoftwareSerial.h"
-#define WORK_MODE LoRaWAN   //  LoRaWAN or LoRaP2P
-#define JOIN_MODE OTAA    //  OTAA or ABP
-#if JOIN_MODE == OTAA
-String DevEui = "8680000000000001";
-String AppEui = "70B3D57ED00285A7";
-String AppKey = "DDDFB1023885FBFF74D3A55202EDF2B1";
-#else JOIN_MODE == ABP
-String NwkSKey = "69AF20AEA26C01B243945A28C9172B42";
-String AppSKey = "841986913ACD00BBC2BE2479D70F3228";
-String DevAddr = "260125D7";
+ * To use this sketch, first register your application and device with
+ * the things network, to set or generate an AppEUI, DevEUI and AppKey.
+ * Multiple devices can use the same AppEUI, but each device has its own
+ * DevEUI and AppKey.
+ *
+ * Do not forget to define the radio type correctly in
+ * arduino-lmic/project_config/lmic_project_config.h or from your BOARDS.txt.
+ *
+ *******************************************************************************/
+
+#include <lmic.h>
+#include <hal/hal.h>
+#include <SPI.h>
+
+// include the DHT22 Sensor Library
+#include "DHT.h"
+// DHT digital pin and sensor type
+#define DHTPIN 10
+#define DHTTYPE DHT22
+//
+// For normal use, we require that you edit the sketch to replace FILLMEIN
+// with values assigned by the TTN console. However, for regression tests,
+// we want to be able to compile these scripts. The regression tests define
+// COMPILE_REGRESSION_TEST, and in that case we define FILLMEIN to a non-
+// working but innocuous value.
+//
+
+#ifdef COMPILE_REGRESSION_TEST
+#define FILLMEIN 0
+#else
+#warning "You must replace the values marked FILLMEIN with real values from the TTN control panel!"
+#define FILLMEIN (#dont edit this, edit the lines that use FILLMEIN)
 #endif
-#define TXpin 11   // Set the virtual serial port pins
-#define RXpin 10
-#define DebugSerial Serial
-SoftwareSerial ATSerial(RXpin,TXpin);    // Declare a virtual serial port
-char buffer[]= "72616B776972656C657373";
 
-bool InitLoRaWAN(void);
-RAK811 RAKLoRa(ATSerial,DebugSerial);
+// This EUI must be in little-endian format, so least-significant-byte
+// first. When copying an EUI from ttnctl output, this means to reverse
+// the bytes. For TTN issued EUIs the last bytes should be 0xD5, 0xB3,
+// 0x70.
+static const u1_t PROGMEM APPEUI[8]={ FILLMEIN };
+void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);}
 
+// This should also be in little endian format, see above.
+static const u1_t PROGMEM DEVEUI[8]={ FILLMEIN };
+void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
 
-void setup() {
-  DebugSerial.begin(115200);
-  while(DebugSerial.available())
-  {
-    DebugSerial.read(); 
-  }
-  
-  ATSerial.begin(9600); //set ATSerial baudrate:This baud rate has to be consistent with  the baud rate of the WisNode device.
-  while(ATSerial.available())
-  {
-    ATSerial.read(); 
-  }
+// This key should be in big endian format (or, since it is not really a
+// number but a block of memory, endianness does not really apply). In
+// practice, a key taken from ttnctl can be copied as-is.
+static const u1_t PROGMEM APPKEY[16] = { FILLMEIN };
+void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 
-  if(!RAKLoRa.rk_setWorkingMode(0))  //set WisNode work_mode to LoRaWAN.
-  {
-    DebugSerial.println(F("set work_mode failed, please reset module."));
-    while(1);
-  }
-  
-  RAKLoRa.rk_getVersion();  //get RAK811 firmware version
-  DebugSerial.println(RAKLoRa.rk_recvData());  //print version number
+// payload to send to TTN gateway
+static uint8_t payload[5];
+static osjob_t sendjob;
+bool flag_TXCOMPLETE = false;
 
-  DebugSerial.println(F("Start init RAK811 parameters..."));
- 
-  if (!InitLoRaWAN())  //init LoRaWAN
-  {
-    DebugSerial.println(F("Init error,please reset module.")); 
-    while(1);
-  }
+// Schedule TX every this many seconds (might become longer due to duty
+// cycle limitations).
+const unsigned TX_INTERVAL = 60;
 
-  DebugSerial.println(F("Start to join LoRaWAN..."));
-  while(!RAKLoRa.rk_joinLoRaNetwork(60))  //Joining LoRaNetwork timeout 60s
-  {
-    DebugSerial.println();
-    DebugSerial.println(F("Rejoin again after 5s..."));
-    delay(5000);
-  }
-  DebugSerial.println(F("Join LoRaWAN success"));
+// Pin mapping
+const lmic_pinmap lmic_pins = {
+    .nss = 6,
+    .rxtx = LMIC_UNUSED_PIN,
+    .rst = 5,
+    .dio = {2, 3, 4},
+};
 
-  if(!RAKLoRa.rk_isConfirm(0))  //set LoRa data send package type:0->unconfirm, 1->confirm
-  {
-    DebugSerial.println(F("LoRa data send package set error,please reset module.")); 
-    while(1);    
-  }
+// init. DHT
+DHT dht(DHTPIN, DHTTYPE);
+
+void printHex2(unsigned v) {
+    v &= 0xff;
+    if (v < 16)
+        Serial.print('0');
+    Serial.print(v, HEX);
 }
 
-bool InitLoRaWAN(void)
-{
-  if(RAKLoRa.rk_setJoinMode(JOIN_MODE))  //set join_mode:OTAA
-  {
-    if(RAKLoRa.rk_setRegion(5))  //set region EU868
-    {
-      if (RAKLoRa.rk_initOTAA(DevEui, AppEui, AppKey))
-      {
-        DebugSerial.println(F("RAK811 init OK!"));  
-        return true;    
-      }
+void onEvent (ev_t ev) {
+    Serial.print(os_getTime());
+    Serial.print(": ");
+    switch(ev) {
+        case EV_JOINED:
+            Serial.println(F("EV_JOINED"));
+            {
+              u4_t netid = 0;
+              devaddr_t devaddr = 0;
+              u1_t nwkKey[16];
+              u1_t artKey[16];
+              LMIC_getSessionKeys(&netid, &devaddr, nwkKey, artKey);
+              Serial.print("netid: ");
+              Serial.println(netid, DEC);
+              Serial.print("devaddr: ");
+              Serial.println(devaddr, HEX);
+              Serial.print("AppSKey: ");
+              for (size_t i=0; i<sizeof(artKey); ++i) {
+                if (i != 0)
+                  Serial.print("-");
+                printHex2(artKey[i]);
+              }
+              Serial.println("");
+              Serial.print("NwkSKey: ");
+              for (size_t i=0; i<sizeof(nwkKey); ++i) {
+                      if (i != 0)
+                              Serial.print("-");
+                      printHex2(nwkKey[i]);
+              }
+              Serial.println();
+            }
+            // Disable link check validation (automatically enabled
+            // during join, but because slow data rates change max TX
+	        // size, we don't use it in this example.
+            LMIC_setLinkCheckMode(0);
+            break;
+        case EV_TXCOMPLETE:
+            Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
+            if (LMIC.txrxFlags & TXRX_ACK)
+              Serial.println(F("Received ack"));
+            if (LMIC.dataLen) {
+              Serial.print(F("Received "));
+              Serial.print(LMIC.dataLen);
+              Serial.println(F(" bytes of payload"));
+            }
+            // Schedule next transmission
+            os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
+	        flag_TXCOMPLETE = true;
+            break;
+	case EV_LINK_DEAD:
+            initLoRaWAN();
+	    break;
+        default:
+            Serial.print(F("Unknown event: "));
+            Serial.println((unsigned) ev);
+            break;
     }
-  }
-  return false;
+}
+
+void do_send(osjob_t* j){
+    // Check if there is not a current TX/RX job running
+    if (LMIC.opmode & OP_TXRXPEND) {
+        Serial.println(F("OP_TXRXPEND, not sending"));
+    } else {
+        // Prepare upstream data transmission at the next possible time.
+        // read the temperature from the DHT22
+        float temperature = dht.readTemperature();
+        Serial.print("Temperature: "); Serial.print(temperature);
+        Serial.println(" *C");
+        // adjust for the f2sflt16 range (-1 to 1)
+        temperature = temperature / 100;
+        // float -> int
+        // note: this uses the sflt16 datum (https://github.com/mcci-catena/arduino-lmic#sflt16)
+        uint16_t payloadTemp = LMIC_f2sflt16(temperature);
+        // int -> bytes
+        byte tempLow = lowByte(payloadTemp);
+        byte tempHigh = highByte(payloadTemp);
+        // place the bytes into the payload
+        payload[0] = tempLow;
+        payload[1] = tempHigh;   
+
+        // prepare upstream data transmission at the next possible time.
+        // transmit on port 1 (the first parameter); you can use any value from 1 to 223 (others are reserved).
+        // don't request an ack (the last parameter, if not zero, requests an ack from the network).
+        // Remember, acks consume a lot of network resources; don't ask for an ack unless you really need it.
+        LMIC_setTxData2(1, payload, sizeof(payload)-1, 0);
+        Serial.println(F("Packet queued"));
+    }
+    // Next TX is scheduled after TX_COMPLETE event.
+}
+
+void initLoRaWAN() {
+	// LMIC init
+	os_init();
+
+	// Reset the MAC state. Session and pending data transfers will be discarded.
+	LMIC_reset();
+
+	// by joining the network, precomputed session parameters are be provided.
+	//LMIC_setSession(0x1, DevAddr, (uint8_t*)NwkSkey, (uint8_t*)AppSkey);
+
+	// Enabled data rate adaptation
+	LMIC_setAdrMode(1);
+
+	// Enable link check validation
+	LMIC_setLinkCheckMode(0);
+
+	// Set data rate and transmit power
+	LMIC_setDrTxpow(DR_SF7, 21);
+}
+
+void sensorInit(){
+	// Initialize the DHT sensor.
+	dht.begin();
+}
+
+void setup() {
+    Serial.begin(9600);
+    Serial.println(F("Starting"));
+
+    #ifdef VCC_ENABLE
+    // For Pinoccio Scout boards
+    pinMode(VCC_ENABLE, OUTPUT);
+    digitalWrite(VCC_ENABLE, HIGH);
+    delay(1000);
+    #endif
+
+   // Setup LoRaWAN state
+	initLoRaWAN();
+	
+	sensorInit();
+
+    // Start job (sending automatically starts OTAA too)
+    do_send(&sendjob);
 }
 
 void loop() {
-  DebugSerial.println(F("Start send data..."));
-  if (RAKLoRa.rk_sendData(1, buffer))
-  {    
-    for (unsigned long start = millis(); millis() - start < 90000L;)
-    {
-      String ret = RAKLoRa.rk_recvData();
-      if(ret != NULL)
-      { 
-        DebugSerial.println(ret);
-      }
-      if((ret.indexOf("OK")>0)||(ret.indexOf("ERROR")>0))
-      {
-        DebugSerial.println(F("Go to Sleep."));
-        RAKLoRa.rk_sleep(1);  //Set RAK811 enter sleep mode
-        delay(10000);  //delay 10s
-        RAKLoRa.rk_sleep(0);  //Wakeup RAK811 from sleep mode
-        break;
-      }
-    }
-  }
+	os_runloop_once();
+	/* In caso di instabilità
+	//Run LMIC loop until he as finish
+	while(flag_TXCOMPLETE == false)
+	{
+		os_runloop_once();
+	}
+	flag_TXCOMPLETE = false;
+	*/
 }
-
 ```
 
 ### **Gateway LoraWan con OTAA join e deepSleep**
 
 <img src="deepsleep.png" alt="alt text" width="1000">
 
+Dopo la segnalazione dell'evento trasmissione completata EV_TXCOMPLETE viene settato il flag GOTO_DEEPSLEEP che comunica al loop il momento buono per andare in deep sleep. 
+
+Nel loop() un if di check controlla se non ci sono operazioni interne di servizio dello schedulatore pendenti. Se esistono operazioni pendenti si pianifica un nuovo check dopo 2 sec, se queste non ci stanno si comanda la discesa del sistema in deep sleep mediante la funzione GoDeepSleep(). Le operazioni (job) ancora pendenti, prima di eseguire un nuovo job che richiede n millisecondi (nello specifico, un deep sleeep), si controllano con ```os_queryTimeCriticalJobs(ms2osticks(n))```.
 
 ```C++
+void GoDeepSleep()
+{
+    Serial.println(F("Go DeepSleep"));
+    PrintRuntime();
+    Serial.flush();
+    esp_sleep_enable_timer_wakeup(TX_INTERVAL * 1000000);
+    esp_deep_sleep_start();
+}
+```
+
+Il sistema però, dopo un wakeup (risveglio) non riparte dall'ultima istruzione eseguita ma dall'inizio del setup per cui è praticamente smemorato riguardo i parametri di una eventuale connessione precedentemente stabilita. Costringere il sistema a rinegoziare una join ad ogni risveglio è uno spreco di tempo e di risorse preziose di batterie per cui sarebbe opportuno trovare un modo di tenere traccia dei dati salienti di una connessione.
+
+Dichiarazione della variabile che contiene la sessione:
+```C++
+RTC_DATA_ATTR lmic_t RTC_LMIC;
+```
+
+La lettura viene fatta alla fine del sutup(). Il salvataggio viene fatto dopo la segnalazione del flag GOTO_DEEPSLEEP.
+
+```C++
+#include <arduino.h>
+#include <lmic.h>
+#include <hal/hal.h>
+#include <SPI.h>
+
+// include the DHT22 Sensor Library
+#include "DHT.h"
+// DHT digital pin and sensor type
+#define DHTPIN 10
+#define DHTTYPE DHT22
+
+//#include <ttn_credentials.h>
+#define TTN_APPEUI {0}
+#define TTN_DEVEUI {0}
+#define TTN_APPKEY {0}
+#define MAX_BANDS 4
+//#define CFG_LMIC_EU_like 0
+
+bool GOTO_DEEPSLEEP = false;
+
+// rename ttn_credentials.h.example to ttn_credentials.h and add you keys
+static const u1_t PROGMEM APPEUI[8] = TTN_APPEUI;
+static const u1_t PROGMEM DEVEUI[8] = TTN_DEVEUI;
+static const u1_t PROGMEM APPKEY[16] = TTN_APPKEY;
+void os_getArtEui(u1_t *buf) { memcpy_P(buf, APPEUI, 8); }
+void os_getDevEui(u1_t *buf) { memcpy_P(buf, DEVEUI, 8); }
+void os_getDevKey(u1_t *buf) { memcpy_P(buf, APPKEY, 16); }
+
+static uint8_t payload[5];
+static osjob_t sendjob;
+bool flag_TXCOMPLETE = false;
+
+// Schedule TX every this many seconds
+// Respect Fair Access Policy and Maximum Duty Cycle!
+// https://www.thethingsnetwork.org/docs/lorawan/duty-cycle.html
+// https://www.loratools.nl/#/airtime
+const unsigned TX_INTERVAL = 30;
+
+// payload to send to TTN gateway
+
+
+// Saves the LMIC structure during DeepSleep
+RTC_DATA_ATTR lmic_t RTC_LMIC;
+
+#define PIN_LMIC_NSS 18
+#define PIN_LMIC_RST 14
+#define PIN_LMIC_DIO0 26
+#define PIN_LMIC_DIO1 33
+#define PIN_LMIC_DIO2 32
+
+// Pin mapping
+const lmic_pinmap lmic_pins = {
+    .nss = PIN_LMIC_NSS,
+    .rxtx = LMIC_UNUSED_PIN,
+    .rst = PIN_LMIC_RST,
+    .dio = {PIN_LMIC_DIO0, PIN_LMIC_DIO1, PIN_LMIC_DIO2},
+};
+
+// init. DHT
+DHT dht(DHTPIN, DHTTYPE);
+
+// https://github.com/mcci-catena/arduino-lmic/blob/89c28c5888338f8fc851851bb64968f2a493462f/src/lmic/lmic.h#L233
+
+void PrintRuntime()
+{
+    long seconds = millis() / 1000;
+    Serial.print("Runtime: ");
+    Serial.print(seconds);
+    Serial.println(" seconds");
+}
+
+void PrintLMICVersion()
+{
+    Serial.print(F("LMIC: "));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_MAJOR(ARDUINO_LMIC_VERSION));
+    Serial.print(F("."));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_MINOR(ARDUINO_LMIC_VERSION));
+    Serial.print(F("."));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_PATCH(ARDUINO_LMIC_VERSION));
+    Serial.print(F("."));
+    Serial.println(ARDUINO_LMIC_VERSION_GET_LOCAL(ARDUINO_LMIC_VERSION));
+}
+
+void onEvent(ev_t ev)
+{
+    Serial.print(os_getTime());
+    Serial.print(": ");
+    switch (ev)
+    {
+    case EV_SCAN_TIMEOUT:
+        Serial.println(F("EV_SCAN_TIMEOUT"));
+        break;
+    case EV_BEACON_FOUND:
+        Serial.println(F("EV_BEACON_FOUND"));
+        break;
+    case EV_BEACON_MISSED:
+        Serial.println(F("EV_BEACON_MISSED"));
+        break;
+    case EV_BEACON_TRACKED:
+        Serial.println(F("EV_BEACON_TRACKED"));
+        break;
+    case EV_JOINING:
+        Serial.println(F("EV_JOINING"));
+        break;
+    case EV_JOINED:
+        Serial.println(F("EV_JOINED"));
+        {
+            u4_t netid = 0;
+            devaddr_t devaddr = 0;
+            u1_t nwkKey[16];
+            u1_t artKey[16];
+            LMIC_getSessionKeys(&netid, &devaddr, nwkKey, artKey);
+            Serial.print("netid: ");
+            Serial.println(netid, DEC);
+            Serial.print("devaddr: ");
+            Serial.println(devaddr, HEX);
+            Serial.print("artKey: ");
+            for (size_t i = 0; i < sizeof(artKey); ++i)
+            {
+                Serial.print(artKey[i], HEX);
+            }
+            Serial.println("");
+            Serial.print("nwkKey: ");
+            for (size_t i = 0; i < sizeof(nwkKey); ++i)
+            {
+                Serial.print(nwkKey[i], HEX);
+            }
+            Serial.println("");
+        }
+        // Disable link check validation (automatically enabled
+        // during join, but because slow data rates change max TX
+        // size, we don't use it in this example.
+        LMIC_setLinkCheckMode(0);
+        break;
+    /*
+        || This event is defined but not used in the code. No
+        || point in wasting codespace on it.
+        ||
+        || case EV_RFU1:
+        ||     Serial.println(F("EV_RFU1"));
+        ||     break;
+        */
+    case EV_JOIN_FAILED:
+        Serial.println(F("EV_JOIN_FAILED"));
+        break;
+    case EV_REJOIN_FAILED:
+        Serial.println(F("EV_REJOIN_FAILED"));
+        break;
+    case EV_TXCOMPLETE:
+        Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
+        if (LMIC.txrxFlags & TXRX_ACK)
+            Serial.println(F("Received ack"));
+        if (LMIC.dataLen)
+        {
+            Serial.print(F("Received "));
+            Serial.print(LMIC.dataLen);
+            Serial.println(F(" bytes of payload"));
+        }
+        GOTO_DEEPSLEEP = true;
+        break;
+    case EV_LOST_TSYNC:
+        Serial.println(F("EV_LOST_TSYNC"));
+        break;
+    case EV_RESET:
+        Serial.println(F("EV_RESET"));
+        break;
+    case EV_RXCOMPLETE:
+        // data received in ping slot
+        Serial.println(F("EV_RXCOMPLETE"));
+        break;
+    case EV_LINK_DEAD:
+        Serial.println(F("EV_LINK_DEAD"));
+        break;
+    case EV_LINK_ALIVE:
+        Serial.println(F("EV_LINK_ALIVE"));
+        break;
+    /*
+        || This event is defined but not used in the code. No
+        || point in wasting codespace on it.
+        ||
+        || case EV_SCAN_FOUND:
+        ||    Serial.println(F("EV_SCAN_FOUND"));
+        ||    break;
+        */
+    case EV_TXSTART:
+        Serial.println(F("EV_TXSTART"));
+        break;
+    case EV_TXCANCELED:
+        Serial.println(F("EV_TXCANCELED"));
+        break;
+    case EV_RXSTART:
+        /* do not print anything -- it wrecks timing */
+        break;
+    case EV_JOIN_TXCOMPLETE:
+        Serial.println(F("EV_JOIN_TXCOMPLETE: no JoinAccept"));
+        break;
+    default:
+        Serial.print(F("Unknown event: "));
+        Serial.println((unsigned)ev);
+        break;
+    }
+}
+
+void do_send(osjob_t *j)
+{
+    // Check if there is not a current TX/RX job running
+    if (LMIC.opmode & OP_TXRXPEND)
+    {
+        Serial.println(F("OP_TXRXPEND, not sending"));
+    }
+    else
+    {
+        // Prepare upstream data transmission at the next possible time.
+        // read the temperature from the DHT22
+        float temperature = dht.readTemperature();
+        Serial.print("Temperature: "); Serial.print(temperature);
+        Serial.println(" *C");
+        // adjust for the f2sflt16 range (-1 to 1)
+        temperature = temperature / 100;
+        // float -> int
+        // note: this uses the sflt16 datum (https://github.com/mcci-catena/arduino-lmic#sflt16)
+        uint16_t payloadTemp = LMIC_f2sflt16(temperature);
+        // int -> bytes
+        byte tempLow = lowByte(payloadTemp);
+        byte tempHigh = highByte(payloadTemp);
+        // place the bytes into the payload
+        payload[0] = tempLow;
+        payload[1] = tempHigh;   
+
+        // prepare upstream data transmission at the next possible time.
+        // transmit on port 1 (the first parameter); you can use any value from 1 to 223 (others are reserved).
+        // don't request an ack (the last parameter, if not zero, requests an ack from the network).
+        // Remember, acks consume a lot of network resources; don't ask for an ack unless you really need it.
+        LMIC_setTxData2(1, payload, sizeof(payload)-1, 0);
+        Serial.println(F("Packet queued"));
+    }
+    // Next TX is scheduled after TX_COMPLETE event.
+}
+
+void SaveLMICToRTC(int deepsleep_sec)
+{
+    Serial.println(F("Save LMIC to RTC"));
+    RTC_LMIC = LMIC;
+
+    // ESP32 can't track millis during DeepSleep and no option to advanced millis after DeepSleep.
+    // Therefore reset DutyCyles
+
+    unsigned long now = millis();
+
+    // EU Like Bands
+#if defined(CFG_LMIC_EU_like2)//era CFG_LMIC_EU_like ma non funziona
+    Serial.println(F("Reset CFG_LMIC_EU_like band avail"));
+    for (int i = 0; i < MAX_BANDS; i++)
+    {
+        ostime_t correctedAvail = RTC_LMIC.bands[i].avail - ((now / 1000.0 + deepsleep_sec) * OSTICKS_PER_SEC);
+        if (correctedAvail < 0)
+        {
+            correctedAvail = 0;
+        }
+        RTC_LMIC.bands[i].avail = correctedAvail;
+    }
+
+    RTC_LMIC.globalDutyAvail = RTC_LMIC.globalDutyAvail - ((now / 1000.0 + deepsleep_sec) * OSTICKS_PER_SEC);
+    if (RTC_LMIC.globalDutyAvail < 0)
+    {
+        RTC_LMIC.globalDutyAvail = 0;
+    }
+#else
+    Serial.println(F("No DutyCycle recalculation function!"));
+#endif
+}
+
+void LoadLMICFromRTC()
+{
+    Serial.println(F("Load LMIC from RTC"));
+    LMIC = RTC_LMIC;
+}
+
+void GoDeepSleep()
+{
+    Serial.println(F("Go DeepSleep"));
+    PrintRuntime();
+    Serial.flush();
+    esp_sleep_enable_timer_wakeup(TX_INTERVAL * 1000000);
+    esp_deep_sleep_start();
+}
+
+void setup()
+{
+    Serial.begin(115200);
+
+    Serial.println(F("Starting DeepSleep test"));
+    PrintLMICVersion();
+
+    // LMIC init
+    os_init();
+
+    // Reset the MAC state. Session and pending data transfers will be discarded.
+    LMIC_reset();
+
+    if (RTC_LMIC.seqnoUp != 0)
+    {
+        LoadLMICFromRTC();
+    }
+
+    // Start job (sending automatically starts OTAA too)
+    do_send(&sendjob);
+}
+
+void loop()
+{
+    static unsigned long lastPrintTime = 0;
+
+    os_runloop_once();
+
+    const bool timeCriticalJobs = os_queryTimeCriticalJobs(ms2osticksRound((TX_INTERVAL * 1000)));
+    if (!timeCriticalJobs && GOTO_DEEPSLEEP == true && !(LMIC.opmode & OP_TXRXPEND))
+    {
+        Serial.print(F("Can go sleep "));
+        SaveLMICToRTC(TX_INTERVAL);
+        GoDeepSleep();
+    }
+    else if (millis() - lastPrintTime > 2000)
+    {
+        Serial.print(F("Cannot sleep "));
+        Serial.print(F("TimeCriticalJobs: "));
+        Serial.print(timeCriticalJobs);
+        Serial.print(" ");
+
+        PrintRuntime();
+        lastPrintTime = millis();
+    }
+}
 
 ```
+### **APPENDICE DI CONSULTAZIONE**
+
+ **Funzioni di gestione run-time**
+
+- ```void os_init()``` Inizializza il sistema operativo chiamando os_init_ex(NULL).
+- void os_init_ex (const void * pHalData) Per facilitare l'uso di questa libreria su più piattaforme, la routine os_init_ex() prende un puntatore arbitrario ai dati della piattaforma. L'implementazione HAL predefinita di Arduino LMIC prevede che questo puntatore sia un riferimento a un oggetto C++ struct lmic_pinmap. Vedere README.md per ulteriori informazioni.
+- ```void os_setCallback (osjob_t* job, osjobcb_t cb)``` Prepara un job immediatamente eseguibile. Questa funzione può essere chiamata in qualsiasi momento, anche dai contesti del gestore di interrupt (ad es. se è diventato disponibile un nuovo valore del sensore).
+- ```void os_setTimedCallback (osjob_t* job, ostime_t time, osjobcb_t cb)``` Pianifica un lavoro a tempo da eseguire con il timestamp specificato (ora di sistema assoluta). Questa funzione può essere chiamata in qualsiasi momento, anche dai contesti del gestore di interrupt.
+- ```void os_clearCallback (osjob_t* job)``` Annulla un processo di runtime. Un processo di runtime pianificato in precedenza viene rimosso dal timer e dalle code di esecuzione. Il lavoro è identificato dall'indirizzo della struttura del lavoro. La funzione non ha effetto se il lavoro specificato non è ancora pianificato.
+- ```void os_runloop()``` Esegue i lavori di runtime dal timer e dalle code di esecuzione. Questa funzione è il principale distributore di azioni. Non ritorna e deve essere eseguito sul thread principale. Questa routine non viene normalmente utilizzata in
+Ambienti Arduino, in quanto disabilita la normale chiamata della funzione Arduino loop().
+- ```void os_runloop_once()``` Esegue i lavori di runtime dal timer e dalle code di esecuzione. Questa funzione è proprio come os_runloop(), tranne per il fatto che ritorna dopo aver inviato il primo lavoro disponibile.
+- ```ostime_t os_getTime()``` Interroga l'ora di sistema assoluta (in tick).
+- ```ostime_t us2osticks(s4_t us)``` Restituisce i tick corrispondenti al valore intero us. Questa potrebbe essere una macro simile a una funzione, quindi potrebbe essere valutata più di una volta. Qualsiasi parte frazionaria del calcolo viene scartata.
+ostime_t us2osticksCeil(s4_t us) Restituisce i tick corrispondenti al valore intero us. Questa potrebbe essere una macro simile a una funzione, quindi potrebbe essere valutata più di una volta. Se la parte frazionaria del calcolo è diversa da zero, il risultato viene aumentato verso l'infinito positivo.
+- ```ostime_t us2osticksRound(s4_t us)``` Restituisce i tick corrispondenti al valore intero us. Questa potrebbe essere una macro simile a una funzione, quindi potrebbe essere valutata più di una volta. Il risultato viene arrotondato al segno di spunta più vicino.
+- ```ostime_t ms2osticks(s4_t ms)``` Restituisce i tick corrispondenti al valore intero in millisecondi ms. Questa potrebbe essere una macro simile a una funzione, quindi ms può essere valutato più di una volta. Se la parte frazionaria del calcolo è diversa da zero, il risultato viene aumentato verso l'infinito positivo.
+- ```ostime_t ms2osticksCeil(s4_t ms)``` Restituisce i tick corrispondenti al valore intero in millisecondi ms. Questa potrebbe essere una macro simile a una funzione, quindi ms può essere valutato più di una volta.
+- ```ostime_t ms2osticksRound(s4_t ms)``` Restituisce i tick corrispondenti al valore intero in millisecondi ms. Questa potrebbe essere una macro simile a una funzione, quindi ms può essere valutato più di una volta. Il risultato viene arrotondato al segno di spunta più vicino.
+- ```ostime_t us2osticks(s4_t sec)``` Restituisce i tick corrispondenti al secondo valore intero sec. Questa potrebbe essere una macro simile a una funzione, quindi sec può essere valutato più di una volta.
+- ```S4_t osticks2ms(ostime_t os)``` Restituisce i millisecondi corrispondenti al valore di tick os. Questa potrebbe essere una macro simile a una funzione, quindi os può essere valutato più di una volta.
+- ```S4_t osticks2us(ostime_t os)``` Restituisce i microsecondi corrispondenti al valore di tick os. Questa potrebbe essere una macro simile a una funzione, quindi os può essere valutato più di una volta.
+- int LMIC_setTxData2 (porta u1_t, dati xref2u1_t, u1_t dlen, u1_t confermato) Prepara la trasmissione dei dati in uplink per il primo momento successivo possibile. Funzione più conveniente di LMIC_setTxData(). Se i dati sono NULL, verranno utilizzati i dati in LMIC.pendTxData[].
+
+**Callbacks dell'applicazione**
+
+Oltre la ```void onEvent (ev_t ev)```, la libreria LMIC richiede che l'applicazione implementi alcune funzioni di callback. Queste funzioni verranno chiamate dal motore di stato per eseguire query su informazioni specifiche dell'applicazione e per fornire eventi di stato all'applicazione.
+- ```void os_getDevEui (u1_t* buf)``` L'implementazione di questa funzione di callback deve fornire l'EUI del dispositivo e copiarlo nel buffer specificato. L'EUI del dispositivo ha una lunghezza di 8 byte ed è memorizzato in formato little-endian, ovvero il primo byte meno significativo (LSBF).
+- ```void os_getDevKey (u1_t* buf)``` L'implementazione di questa funzione di callback deve fornire la chiave dell'applicazione crittografica specifica del dispositivo e copiarla nel buffer specificato. La chiave dell'applicazione specifica del dispositivo è una chiave AES a 128 bit (16 byte di lunghezza). Modello di programmazione e API Arduino LoRaWAN MAC in C (LMIC) Specifiche tecniche 11
+- ```void os_getArtEui (u1_t* buf)``` L'implementazione di questa funzione di callback deve fornire l'applicazione EUI e copiarla nel dato
+respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzata in formato little-endian, ovvero lesssignificant-byte-first (LSBF).
 
 ### **Sitografia:**
 
+- https://redmine.laas.fr/attachments/download/1505/LMIC-v2.3.pdf
+- https://github.com/matthijskooijman/arduino-lmic/blob/master/doc/LMiC-v1.5.pdf
+- https://randomnerdtutorials.com/esp32-lora-rfm95-transceiver-arduino-ide/
+- https://jackgruber.github.io/2020-04-13-ESP32-DeepSleep-and-LoraWAN-OTAA-join/
+- https://gitmemory.com/issue/JackGruber/Arduino-Pro-Mini-LoRa-Sensor-Node/2/678644527
+- https://lora-developers.semtech.com/library/tech-papers-and-guides/lorawan-class-b-devices/
+- https://cpp.hotexamples.com/it/examples/-/-/LMIC_sendAlive/cpp-lmic_sendalive-function-examples.html
+- https://www.semiconductorstore.com/pdf/Migrating-Sensor-Design-LoRaWAN-WhitePaper_FINAL.pdf
+- https://www.ictpower.it/tecnologia/lora-nozioni-di-base-e-approfondimenti.htm
 - https://www.semiconductorstore.com/pdf/Migrating-Sensor-Design-LoRaWAN-WhitePaper_FINAL.pdf
 - https://www.ictpower.it/tecnologia/lora-nozioni-di-base-e-approfondimenti.htm
 - https://github.com/RAKWireless/WisNode-Arduino-Library
