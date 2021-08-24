@@ -12,7 +12,7 @@
 9. [Reti di sensori](sensornetworkshort.md)
 10. [Gateway MQTT reti di sensori](gateway.md)
 11. [Gateway LoRaWan LMIC reti di sensori](gatewaylorasw.md)
-12. [Gateway LoRaWan HW reti di sensori](gatewaylorahw.md)
+12. [Gateway LoRaWan HW (RN2483) reti di sensori](gatewaylorahw.md)
 13. [Gateway LoRaWan HW (RAK811) reti di sensori](lorarak811.md)
 14. [Gateway LoRaWan SW (RAK811) reti di sensori](lorarak811sw.md)
 15. [Esercizi](esercizi.md)
