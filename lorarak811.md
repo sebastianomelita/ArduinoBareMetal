@@ -31,7 +31,7 @@ E' utilizzabile:
 
 ### **Schema cablaggio**
 
-<img src="hwiotacrchitecturerak811.png" alt="alt text" width="500">
+<img src="EMPaUn3XkAA6bUY.jfif" alt="alt text" width="700">
 
 La lunghezza del filo dipende dalla frequenza:
 - 868 MHz: 86,3 mm 
