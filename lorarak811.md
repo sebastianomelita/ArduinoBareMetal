@@ -257,6 +257,7 @@ void loop() {
 - https://github.com/stm32duino
 - https://www.arduinolibraries.info/architectures/stm32
 - https://docs.rakwireless.com/Product-Categories/WisDuo/RAK811-Module/Datasheet/#certification
+- https://githubmemory.com/repo/stm32duino/Arduino_Core_STM32/issues/1395
 
 
 >[Torna all'indice generale](index.md)
