@@ -27,7 +27,7 @@ In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello
 
 ### **Schema cablaggio**
 
-<img src="LoRa_ESP32_Wiring2.png" alt="alt text" width="500">
+<img src="hwiotacrchitecturerak811.png" alt="alt text" width="500">
 
 La lunghezza del filo dipende dalla frequenza:
 - 868 MHz: 86,3 mm 
@@ -112,9 +112,6 @@ In questo caso gran parte delle funzioni del middleware, quelle relative alla co
 
 Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cartella **libraries**:
 - **Arduino-RAK811-Library**. Si scarica da https://github.com/RAKWireless/WisNode-Arduino-Library come WisNode-Arduino-Library-master.zip, poi si  scompatta in una cartella sul desktop da cui si copia la cartella **Arduino-RAK811-Librarye** che va messa nela libraries dell'IDE di Arduino.
-
-
-
 
 La libreria dovrebbero supportare solamente le classi di servizio A e B (C esclusa).
 
