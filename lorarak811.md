@@ -119,8 +119,6 @@ La libreria dovrebbero supportare solamente le classi di servizio A e B (C esclu
 
 <img src="Beacon.png" alt="alt text" width="800">
 
-Quando viene ricevuto EV_TXCOMPLETE o EV_RXCOMPLETE, il codice di elaborazione dell'evento dovrebbe controllare se ci sono dati in ricezione (downlink) ed eventualmente passarli all'applicazione. Per fare ciò, si usa un codice come il seguente:
-
 ### **Gateway LoraWan con OTAA join**
 
 ```C++
