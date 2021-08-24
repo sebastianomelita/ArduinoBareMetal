@@ -238,7 +238,6 @@ void loop() {
     }
   }
 }
-
 ```
 
 ### **Gateway LoraWan con OTAA join e deepSleep**
