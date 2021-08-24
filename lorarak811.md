@@ -258,6 +258,9 @@ void loop() {
 - https://www.arduinolibraries.info/architectures/stm32
 - https://docs.rakwireless.com/Product-Categories/WisDuo/RAK811-Module/Datasheet/#certification
 - https://githubmemory.com/repo/stm32duino/Arduino_Core_STM32/issues/1395
+- https://forum.rakwireless.com/t/rak4200-and-rak811-breakout-board/2676/11
+- https://downloads.rakwireless.com/LoRa/RAK811-BreakoutBoard/
+- https://github.com/RAKWireless/RAK811_LoRaWAN_Arduino
 
 
 >[Torna all'indice generale](index.md)
