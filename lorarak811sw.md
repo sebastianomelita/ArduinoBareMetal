@@ -33,7 +33,7 @@ In questa scheda vedremo la versione **standalone** in cui si programma la MCU p
 
 ### **Schema cablaggio**
 
-<img src="EMPaUn3XkAA6bUY.jfif" alt="alt text" width="700">
+<img src="casual_RAK811-1024x758.png" alt="alt text" width="700">
 
 La lunghezza del filo dipende dalla frequenza:
 - 868 MHz: 86,3 mm 
