@@ -256,6 +256,7 @@ void loop() {
 - https://github.com/RAKWireless/WisNode-Arduino-Library
 - https://github.com/stm32duino
 - https://www.arduinolibraries.info/architectures/stm32
+- https://docs.rakwireless.com/Product-Categories/WisDuo/RAK811-Module/Datasheet/#certification
 
 
 >[Torna all'indice generale](index.md)
