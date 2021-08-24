@@ -280,7 +280,7 @@ Il file imposta:
 All'interno del codice del programma vanno impostati i pin del transceiver. In RAK811 sono interni al chip e non devono mai cambiare:
 
 ```C++
-/ Pin mapping
+// Pin mapping
 const lmic_pinmap lmic_pins = {
     .nss = 26,
     .rxtx = 32,
@@ -375,7 +375,7 @@ bool flag_TXCOMPLETE = false;
 // cycle limitations).
 const unsigned TX_INTERVAL = 60;
 
-/ Pin mapping
+// Pin mapping
 const lmic_pinmap lmic_pins = {
     .nss = 26,
     .rxtx = 32,
