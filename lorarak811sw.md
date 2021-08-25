@@ -556,7 +556,7 @@ Potrebbe essere sufficiente la descrizione di base della libreria github:
 - **modalità di sospensione profonda (deep sleep mode)**: latenza media (intervallo ms), gli orologi sono ridotti. Le memorie e le alimentazioni di tensione vengono mantenute. Se supportato, è possibile il risveglio delle periferiche (UART, I2C ...).
 - **modalità di spegnimento (shutdown mode)**: latenza di riattivazione elevata (possibili centinaia di ms o un secondo intervallo di tempo), l'alimentazione di tensione viene interrotta tranne il dominio sempre attivo, il contenuto della memoria viene perso e il sistema si riavvia sostanzialmente.
 
-Conviene usare il **deep sleep** quando si ha bisogno di **mantenere la RAM** e lo **spegnimento** se ho bisogno **solo di RTC** e/o pochi dati salvati nei registri.
+Conviene usare il **deep sleep** quando si ha bisogno di **mantenere la RAM** e lo **spegnimento** se si ha bisogno **solo di RTC** e/o pochi dati salvati nei registri.
 
 
 ### **Gateway LoraWan con OTAA join e deepSleep**
