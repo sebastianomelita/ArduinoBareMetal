@@ -546,6 +546,19 @@ void loop() {
 }
 ```
 
+### **In che modo le modalità a basso consumo della libreria si traducono in modalità MCU**
+
+Per conoscerlo esattamente dovresti passare attraverso il **codice della libreria**.
+
+Potrebbe essere sufficiente la descrizione di base della libreria github:
+- **Modalità inattiva (Idle mode)**: bassa latenza di riattivazione (intervallo µs) (es. ARM WFI). Le memorie e le alimentazioni di tensione vengono mantenute. Risparmio energetico minimo principalmente sul core stesso.
+- **modalità di sospensione (sleep mode)**: bassa latenza di riattivazione (intervallo di µs) (ad es. ARM WFI), le memorie e le alimentazioni di tensione vengono mantenute. Risparmio energetico minimo principalmente sul core stesso, ma superiore alla modalità inattiva.
+- **modalità di sospensione profonda (deep sleep mode)**: latenza media (intervallo ms), gli orologi sono ridotti. Le memorie e le alimentazioni di tensione vengono mantenute. Se supportato, è possibile il risveglio delle periferiche (UART, I2C ...).
+- **modalità di spegnimento (shutdown mode)**: latenza di riattivazione elevata (possibili centinaia di ms o un secondo intervallo di tempo), l'alimentazione di tensione viene interrotta tranne il dominio sempre attivo, il contenuto della memoria viene perso e il sistema si riavvia sostanzialmente.
+
+Conviene usare il **deep sleep** quando si ha bisogno di **mantenere la RAM** e lo **spegnimento** se ho bisogno **solo di RTC** e/o pochi dati salvati nei registri.
+
+
 ### **Gateway LoraWan con OTAA join e deepSleep**
 
 <img src="deepsleep.png" alt="alt text" width="1000">
@@ -553,6 +566,7 @@ void loop() {
 Dopo la segnalazione dell'evento trasmissione completata EV_TXCOMPLETE viene settato il flag GOTO_DEEPSLEEP che comunica al loop il momento buono per andare in deep sleep. 
 
 Nel loop() un if di check controlla se non ci sono operazioni interne di servizio dello schedulatore pendenti. Se esistono operazioni pendenti si pianifica un nuovo check dopo 2 sec, se queste non ci stanno si comanda la discesa del sistema in deep sleep mediante la funzione GoDeepSleep(). Le operazioni (job) ancora pendenti, prima di eseguire un nuovo job che richiede n millisecondi (nello specifico, un deep sleeep), si controllano con ```os_queryTimeCriticalJobs(ms2osticks(n))```.
+
 
 ```C++
 void GoDeepSleep()
