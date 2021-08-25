@@ -658,6 +658,7 @@ respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzat
 - https://forum.rakwireless.com/t/rak4200-and-rak811-breakout-board/2676/11
 - https://downloads.rakwireless.com/LoRa/RAK811-BreakoutBoard/
 - https://github.com/RAKWireless/RAK811_LoRaWAN_Arduino
+- https://www.disk91.com/2018/technology/hardware/stm32-and-low-power-mode/
 
 
 >[Torna all'indice generale](index.md)
