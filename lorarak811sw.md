@@ -590,7 +590,7 @@ void GoDeepSleep()
     PrintRuntime();
     Serial.flush();
     requestModuleActive(0)
-    LowPower.deepSleep((int)TX_INTERVAL * 1000000);
+    LowPower.deepSleep((int)TX_INTERVAL * 1000);
 }
 
 static void requestModuleActive(bit_t state) {
@@ -845,7 +845,7 @@ void GoDeepSleep()
     PrintRuntime();
     Serial.flush();
     requestModuleActive(0);
-    LowPower.deepSleep((int)TX_INTERVAL * 1000000);
+    LowPower.deepSleep((int)TX_INTERVAL * 1000);
 }
 
 static void requestModuleActive(bit_t state) {
