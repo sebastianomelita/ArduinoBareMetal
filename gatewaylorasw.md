@@ -957,6 +957,7 @@ respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzat
 - https://www.semiconductorstore.com/pdf/Migrating-Sensor-Design-LoRaWAN-WhitePaper_FINAL.pdf
 - https://www.ictpower.it/tecnologia/lora-nozioni-di-base-e-approfondimenti.htm
 - https://github.com/RAKWireless/WisNode-Arduino-Library
+- https://wikifactory.com/@prusalab/prusahive/v/7f51dd4/file/Firmware/PrusaHiveV0.2/lib/TheThingsNetwork_esp32-master/src/lmic/lmic/radio.c
 
 >[Torna all'indice generale](index.md)
 
