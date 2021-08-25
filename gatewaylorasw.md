@@ -510,10 +510,9 @@ void setup() {
     delay(1000);
     #endif
 
-   // Setup LoRaWAN state
-	initLoRaWAN();
-	
-	sensorInit();
+    // Setup LoRaWAN state
+    initLoRaWAN();
+    sensorInit();
 
     // Start job (sending automatically starts OTAA too)
     do_send(&sendjob);
@@ -852,7 +851,7 @@ void GoDeepSleep()
     Serial.println(F("Go DeepSleep"));
     PrintRuntime();
     Serial.flush();
-	requestModuleActive(0);
+    requestModuleActive(0);
     esp_sleep_enable_timer_wakeup(TX_INTERVAL * 1000000);
     esp_deep_sleep_start();
 }
