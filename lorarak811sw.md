@@ -589,9 +589,18 @@ void GoDeepSleep()
     Serial.println(F("Go DeepSleep"));
     PrintRuntime();
     Serial.flush();
+    requestModuleActive(0)
     LowPower.deepSleep((int)TX_INTERVAL * 1000000);
 }
+
+static void requestModuleActive(bit_t state) {
+    ostime_t const ticks = hal_setModuleActive(state);
+
+    if (ticks)
+        hal_waitUntil(os_getTime() + ticks);;
+}
 ```
+La funzione ```requestModuleActive``` ha il compito di attivare o disattivare il transceiver LoRa a seconda se il parametro fornito vale 1 o 0. La ```requestModuleActive```, usata insieme alla ```LowPower.deepSleep(sec)``` che si occupa di mandare in deep sleep la CPU, contribuisce a minimizzare il consumo di energia del nodo LoraWan a vantaggio della durata della carica di eventuali batterie di alimentazione.
 
 Il sistema però, dopo un wakeup riparte dall'ultima istruzione eseguita, infatti la RAM nel seep sleep dello STM32L rimane accesa per cui i parametri di una eventuale connessione precedentemente stabilita rimangono conservati. Quindi al risveglio non è necessario eseguire nuovamente una join e neppure eseguire salvataggi in memoria RTC delle informazioni di sessione.
 
@@ -835,8 +844,17 @@ void GoDeepSleep()
     Serial.println(F("Go DeepSleep"));
     PrintRuntime();
     Serial.flush();
+	requestModuleActive(0);
 	LowPower.deepSleep((int)TX_INTERVAL * 1000000);
 }
+
+static void requestModuleActive(bit_t state) {
+    ostime_t const ticks = hal_setModuleActive(state);
+
+    if (ticks)
+        hal_waitUntil(os_getTime() + ticks);;
+}
+
 
 void setup()
 {
@@ -849,6 +867,7 @@ void setup()
 
     // LMIC init
     os_init();
+	requestModuleActive(1);
 
     // Reset the MAC state. Session and pending data transfers will be discarded.
     LMIC_reset();
@@ -880,7 +899,6 @@ void loop()
         lastPrintTime = millis();
     }
 }
-
 ```
 ### **APPENDICE DI CONSULTAZIONE**
 
