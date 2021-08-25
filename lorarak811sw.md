@@ -548,6 +548,8 @@ void loop() {
 
 ### **Sleep mode del STM32L in ambiente Arduino**
 
+Le **funzoni di risparmio energetico** della MCU STM32L si possono classificare:
+
 - **Low Power Run**: passa la CPU all'orologio a 131 KHz per risparmiare energia. La corrente è scesa a 6,5uA
 - **Modalità di sospensione**: la CPU viene arrestata, la memoria e il registro vengono mantenuti, alcune periferiche rimangono attive.
      - **Modalità di sospensione (Sleep Mode)**: la CPU è ferma ma può essere riattivata da una qualsiasi delle periferiche attive. La corrente è scesa a 400uA @ 16 Mhz a 1 mAh
@@ -559,9 +561,9 @@ void loop() {
     - **Standby con RTC**: Wake-up è esterno o RTC... La corrente è scesa a 0,57uA @ 3V
     - **Standby senza RTC**: Anche l'RTC viene arrestato. La corrente è scesa a 0,26uA @ 3V
 
-Le librerie da integrare nell'IDE di Arduino per la gestione del deep sleep sono:
-- Si scarica la libreria **STM32LowPower** da https://github.com/stm32duino/STM32LowPower come STM32LowPower-master.zip, poi si scompatta nela libraries dell'IDE di Arduino come STM32LowPower-master e si rinomina come **STM32LowPower** per completare l'installazione. 
-- Si scarica la libreria **STM32RTC** da https://github.com/stm32duino/STM32RTC come STM32RTC-master.zip, poi si scompatta nela libraries dell'IDE di Arduino come STM32RTC-master e si rinomina come **STM32RTC** per completare l'installazione. 
+Le librerie da integrare nell'IDE di Arduino per includere la gestione del deep sleep sono:
+- la libreria **STM32LowPower**. Si scarica da https://github.com/stm32duino/STM32LowPower come STM32LowPower-master.zip, poi si scompatta nela libraries dell'IDE di Arduino come STM32LowPower-master e si rinomina come **STM32LowPower** per completare l'installazione. 
+- la libreria **STM32RTC**. Si scarica da https://github.com/stm32duino/STM32RTC come STM32RTC-master.zip, poi si scompatta nela libraries dell'IDE di Arduino come STM32RTC-master e si rinomina come **STM32RTC** per completare l'installazione. 
 
 In che modo le modalità a basso consumo della libreria si traducono in modalità MCU? Per saperlo esattamente dovresti passare attraverso il **codice della libreria**.
 
