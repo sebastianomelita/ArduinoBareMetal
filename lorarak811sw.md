@@ -589,19 +589,11 @@ void GoDeepSleep()
     Serial.println(F("Go DeepSleep"));
     PrintRuntime();
     Serial.flush();
-    esp_sleep_enable_timer_wakeup(TX_INTERVAL * 1000000);
-    esp_deep_sleep_start();
+    LowPower.deepSleep((int)TX_INTERVAL * 1000000);
 }
 ```
 
-Il sistema però, dopo un wakeup (risveglio) non riparte dall'ultima istruzione eseguita ma dall'inizio del setup per cui è praticamente smemorato riguardo i parametri di una eventuale connessione precedentemente stabilita. Costringere il sistema a rinegoziare una join ad ogni risveglio è uno spreco di tempo e di risorse preziose di batterie per cui sarebbe opportuno trovare un modo di tenere traccia dei dati salienti di una connessione.
-
-Dichiarazione della variabile che contiene la sessione:
-```C++
-RTC_DATA_ATTR lmic_t RTC_LMIC;
-```
-
-La lettura viene fatta alla fine del sutup(). Il salvataggio viene fatto dopo la segnalazione del flag GOTO_DEEPSLEEP.
+Il sistema però, dopo un wakeup riparte dall'ultima istruzione eseguita, infatti la RAM nel seep sleep dello STM32L rimane accesa per cui i parametri di una eventuale connessione precedentemente stabilita rimangono conservati. Quindi al risveglio non è necessario eseguire nuovamente una join e neppure eseguire salvataggi in memoria RTC delle informazioni di sessione.
 
 ```C++
 #include <arduino.h>
