@@ -559,7 +559,9 @@ void loop() {
     - **Standby con RTC**: Wake-up è esterno o RTC... La corrente è scesa a 0,57uA @ 3V
     - **Standby senza RTC**: Anche l'RTC viene arrestato. La corrente è scesa a 0,26uA @ 3V
 
-Si scarica la libreria **STM32LowPower** da https://github.com/stm32duino/STM32LowPower come STM32LowPower-master.zip, poi si scompatta nela libraries dell'IDE di Arduino come STM32LowPower-master e si rinomina come **STM32LowPower** per completare l'installazione. 
+Le librerie da integrare nell'IDE di Arduino per la gestione del deep sleep sono:
+- Si scarica la libreria **STM32LowPower** da https://github.com/stm32duino/STM32LowPower come STM32LowPower-master.zip, poi si scompatta nela libraries dell'IDE di Arduino come STM32LowPower-master e si rinomina come **STM32LowPower** per completare l'installazione. 
+- Si scarica la libreria **STM32RTC** da https://github.com/stm32duino/STM32RTC come STM32RTC-master.zip, poi si scompatta nela libraries dell'IDE di Arduino come STM32RTC-master e si rinomina come **STM32RTC** per completare l'installazione. 
 
 In che modo le modalità a basso consumo della libreria si traducono in modalità MCU? Per saperlo esattamente dovresti passare attraverso il **codice della libreria**.
 
