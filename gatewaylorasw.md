@@ -546,10 +546,18 @@ void GoDeepSleep()
     Serial.println(F("Go DeepSleep"));
     PrintRuntime();
     Serial.flush();
-    esp_sleep_enable_timer_wakeup(TX_INTERVAL * 1000000);
-    esp_deep_sleep_start();
+    requestModuleActive(0)
+    LowPower.deepSleep((int)TX_INTERVAL * 1000000);
+}
+
+static void requestModuleActive(bit_t state) {
+    ostime_t const ticks = hal_setModuleActive(state);
+
+    if (ticks)
+        hal_waitUntil(os_getTime() + ticks);;
 }
 ```
+La funzione ```requestModuleActive``` ha il compito di attivare o disattivare il transceiver LoRa a seconda se il parametro fornito vale 1 o 0. La ```requestModuleActive```, usata insieme alla ```LowPower.deepSleep(sec)``` che si occupa di mandare in deep sleep la CPU, contribuisce a minimizzare il consumo di energia del nodo LoraWan a vantaggio della durata della carica di eventuali batterie di alimentazione.
 
 Il sistema però, dopo un wakeup (risveglio) non riparte dall'ultima istruzione eseguita ma dall'inizio del setup per cui è praticamente smemorato riguardo i parametri di una eventuale connessione precedentemente stabilita. Costringere il sistema a rinegoziare una join ad ogni risveglio è uno spreco di tempo e di risorse preziose di batterie per cui sarebbe opportuno trovare un modo di tenere traccia dei dati salienti di una connessione.
 
