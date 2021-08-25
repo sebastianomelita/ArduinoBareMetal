@@ -565,7 +565,7 @@ Le librerie da integrare nell'IDE di Arduino per includere la gestione del deep 
 - la libreria **STM32LowPower**. Si scarica da https://github.com/stm32duino/STM32LowPower come STM32LowPower-master.zip, poi si scompatta nela libraries dell'IDE di Arduino come STM32LowPower-master e si rinomina come **STM32LowPower** per completare l'installazione. 
 - la libreria **STM32RTC**. Si scarica da https://github.com/stm32duino/STM32RTC come STM32RTC-master.zip, poi si scompatta nela libraries dell'IDE di Arduino come STM32RTC-master e si rinomina come **STM32RTC** per completare l'installazione. 
 
-In che modo le modalità a basso consumo della libreria si traducono in modalità MCU? Per saperlo esattamente dovresti passare attraverso il **codice della libreria**.
+In che modo le modalità a basso consumo native della MCU si traducono nelle modalità deep sleep della libreria per Arduino si può comprendere esattamente dando uno sguardo al **codice della libreria**.
 
 Potrebbe essere sufficiente la descrizione di base della libreria github:
 - **Modalità inattiva (Idle mode)**: bassa latenza di riattivazione (intervallo µs) (es. ARM WFI). Le memorie e le alimentazioni di tensione vengono mantenute. Risparmio energetico minimo principalmente sul core stesso.
