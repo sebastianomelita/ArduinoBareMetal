@@ -546,9 +546,11 @@ void loop() {
 }
 ```
 
-### **In che modo le modalità a basso consumo della libreria si traducono in modalità MCU**
+### **Sleep mode del STM32L in ambiente Arduino**
 
-Per conoscerlo esattamente dovresti passare attraverso il **codice della libreria**.
+Si scarica la libreria **STM32LowPower** da https://github.com/stm32duino/STM32LowPower come STM32LowPower-master.zip, poi si scompatta nela libraries dell'IDE di Arduino come STM32LowPower-master e si rinomina come **STM32LowPower** per completare l'installazione. 
+
+In che modo le modalità a basso consumo della libreria si traducono in modalità MCU? Per saperlo esattamente dovresti passare attraverso il **codice della libreria**.
 
 Potrebbe essere sufficiente la descrizione di base della libreria github:
 - **Modalità inattiva (Idle mode)**: bassa latenza di riattivazione (intervallo µs) (es. ARM WFI). Le memorie e le alimentazioni di tensione vengono mantenute. Risparmio energetico minimo principalmente sul core stesso.
