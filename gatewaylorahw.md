@@ -26,7 +26,7 @@ L'RN2483 è un **modem integrato LoRa™** con:
 - capacità di utilizzo a bassa potenza per una durata della batteria superiore a 10 anni
 - alta sensibilità e immunità aòòe interferenze. E' in grado di demodulare segnali con potenze fino a 20 dB al di sotto del livello di rumore.
 - opera sui 433 e 868 MHz frequenza industriale scientifica e medica (ISM) senza licenza e funge da nodo finale (End System) nella rete di una infrastruttura LoRa.
-- possiede, caricato sul modem, l'intero stack protocollare LoRaWAN™ per cui è facile da configurare tramite semplici comandi ASCII inviati via UART, riducendo notevolmente il tempo di sviluppo. L'RN2483 è aderente alla certificazione europea R&TTE.
+- possiede, caricato sul modem, l'intero stack protocollare LoRaWAN™. La scheda risulta facile da configurare tramite semplici comandi ASCII inviati via UART, riducendo così  notevolmente il tempo di sviluppo. L'RN2483 è aderente alla certificazione europea R&TTE.
 
 ### **Schema cablaggio**
 
