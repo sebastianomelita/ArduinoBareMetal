@@ -867,7 +867,7 @@ void setup()
 
     // LMIC init
     os_init();
-	requestModuleActive(1);
+    requestModuleActive(1);
 
     // Reset the MAC state. Session and pending data transfers will be discarded.
     LMIC_reset();
