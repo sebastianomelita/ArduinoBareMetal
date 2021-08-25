@@ -844,8 +844,16 @@ void GoDeepSleep()
     Serial.println(F("Go DeepSleep"));
     PrintRuntime();
     Serial.flush();
+	requestModuleActive(0);
     esp_sleep_enable_timer_wakeup(TX_INTERVAL * 1000000);
     esp_deep_sleep_start();
+}
+
+static void requestModuleActive(bit_t state) {
+    ostime_t const ticks = hal_setModuleActive(state);
+
+    if (ticks)
+        hal_waitUntil(os_getTime() + ticks);;
 }
 
 void setup()
@@ -857,7 +865,8 @@ void setup()
 
     // LMIC init
     os_init();
-
+	requestModuleActive(1);
+	
     // Reset the MAC state. Session and pending data transfers will be discarded.
     LMIC_reset();
 
@@ -894,7 +903,6 @@ void loop()
         lastPrintTime = millis();
     }
 }
-
 ```
 ### **APPENDICE DI CONSULTAZIONE**
 
