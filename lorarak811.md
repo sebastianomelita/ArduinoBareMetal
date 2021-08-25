@@ -31,6 +31,8 @@ E' utilizzabile:
 
 ### **Schema cablaggio**
 
+Collegamento di una scheda modem RAK811 con una scheda MCU **ESP32**.
+
 <img src="EMPaUn3XkAA6bUY.jfif" alt="alt text" width="700">
 
 La lunghezza del filo dipende dalla frequenza:
