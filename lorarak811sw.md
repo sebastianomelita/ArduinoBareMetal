@@ -548,6 +548,17 @@ void loop() {
 
 ### **Sleep mode del STM32L in ambiente Arduino**
 
+- **Low Power Run**: passa la CPU all'orologio a 131 KHz per risparmiare energia. La corrente è scesa a 6,5uA
+- **Modalità di sospensione**: la CPU viene arrestata, la memoria e il registro vengono mantenuti, alcune periferiche rimangono attive.
+     - **Modalità di sospensione (Sleep Mode)**: la CPU è ferma ma può essere riattivata da una qualsiasi delle periferiche attive. La corrente è scesa a 400uA @ 16 Mhz a 1 mAh
+    - **Modalità di sospensione  a basso consumo (Low Power Sleep Mode)**: la CPU è ferma e le periferiche attive sono limitate e lavorano a frequenza ridotta. Fondamentalmente puoi programmare una sveglia a 32KHz in questa modalità. La corrente è scesa a 3,2uA
+- **Modalità di arresto (Stop Mode)**: in modalità di arresto il core della CPU viene arrestato ma la RAM e il registro vengono mantenuti. La maggior parte delle periferiche viene interrotta. Tempo di sveglia: 5uS.
+    - **Modalità di arresto con RTC Stop Mode with RTC**: La riattivazione è un segnale esterno o RTC... La corrente è scesa a 0,8uA @ 3V
+    - **Modalità di arresto senza RTC (Stop mode w/o RTC)**: Confronta con la modalità precedente l'RTC è fermo. La corrente è scesa a 0,38uA @ 3V
+- **Modalità standby**: in modalità standby il core della CPU viene arrestato, i registri e la RAM vengono arrestati. Vengono conservati solo i Registri nel circuito Standby.
+    - **Standby con RTC**: Wake-up è esterno o RTC... La corrente è scesa a 0,57uA @ 3V
+    - **Standby senza RTC**: Anche l'RTC viene arrestato. La corrente è scesa a 0,26uA @ 3V
+
 Si scarica la libreria **STM32LowPower** da https://github.com/stm32duino/STM32LowPower come STM32LowPower-master.zip, poi si scompatta nela libraries dell'IDE di Arduino come STM32LowPower-master e si rinomina come **STM32LowPower** per completare l'installazione. 
 
 In che modo le modalità a basso consumo della libreria si traducono in modalità MCU? Per saperlo esattamente dovresti passare attraverso il **codice della libreria**.
