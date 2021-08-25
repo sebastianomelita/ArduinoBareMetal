@@ -395,7 +395,7 @@ void loop() {
         RAKLoRa.rk_sleep(1);  //Set RAK811 enter sleep mode
         delay(10000);  //delay 10s
         RAKLoRa.rk_sleep(0);  //Wakeup RAK811 from sleep mode
-		goDeepSleep();
+	goDeepSleep();
         break;
       }
     }
