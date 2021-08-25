@@ -846,6 +846,7 @@ void GoDeepSleep()
     Serial.flush();
     requestModuleActive(0);
     LowPower.deepSleep((int)TX_INTERVAL * 1000);
+    requestModuleActive(1);
 }
 
 static void requestModuleActive(bit_t state) {
