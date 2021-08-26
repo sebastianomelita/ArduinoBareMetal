@@ -31,6 +31,38 @@ Il transxeiver LoRa RMF95/W deve essere interfacciato con una scheda MCU a parte
 
 <img src="LoRa_ESP32_Wiring2.png" alt="alt text" width="1000">
 
+In questo caso transceiver Semtech SX1276 e MCU ESP32 sono già cablate insieme sulla stessa scheda. Di seguito è riportato il mappaggio del pinout del transceiver Lora su quello della MCU ESP32:
+```
+SX1276 pin name <--> ESP32 pin number
+	ANA: 	Antenna
+	GND: 	GND
+	DIO3: 	don’t connect
+	DIO4: 	don’t connect
+	3.3V: 	3.3V
+	DIO0: 	GPIO 2
+	DIO1: 	don’t connect
+	DIO2: 	don’t connect
+	GND: 	don’t connect
+	DIO5: 	don’t connect
+	RESET: 	GPIO 14
+	NSS: 	GPIO 5
+	SCK: 	GPIO 18
+	MOSI: 	GPIO 23
+	MISO: 	GPIO 19
+	GND: 	don’t connect
+```
+
+La configurazione della libreria LMIC coerente con il mappaggio esposto sopra è:
+```
+// Pin mapping
+const lmic_pinmap lmic_pins = {
+  .nss = 5, 
+  .rxtx = LMIC_UNUSED_PIN,
+  .rst = 14,
+  .dio = {/*dio0*/ 2, /*dio1*/ LMIC_UNUSED_PIN, /*dio2*/ LMIC_UNUSED_PIN}
+};
+```
+
 La lunghezza del filo dipende dalla frequenza:
 - 868 MHz: 86,3 mm 
 - 915 MHz: 81,9 mm
