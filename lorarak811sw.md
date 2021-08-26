@@ -35,13 +35,6 @@ In questa scheda vedremo la versione **standalone** in cui si programma la MCU p
 
 <img src="casual_RAK811-1024x758.png" alt="alt text" width="600">
 
-La lunghezza del filo dipende dalla frequenza:
-- 868 MHz: 86,3 mm 
-- 915 MHz: 81,9 mm
-- 433 MHz: 173,1 mm
-
-In realtà il cablaggio serve a collegare sensori e alimentazione. Transceiver e MCU sono entrambi contenuti in un unico chip. Il problema principale adesso è collegare la UART alla presa USB di un PC per consentire il caricamento del FW compilato dall'IDE Arduino.
-
 All'interno del codice del programma vanno impostati i pin del transceiver. In RAK811 sono interni al chip e non devono mai cambiare:
 
 ```C++
@@ -53,6 +46,8 @@ const lmic_pinmap lmic_pins = {
     .dio = {27, 28, 29},
 };
 ```
+
+In realtà il cablaggio serve a collegare sensori e alimentazione. Transceiver e MCU sono entrambi contenuti in un unico chip. Il problema principale adesso è collegare la UART alla presa USB di un PC per consentire il caricamento del FW compilato dall'IDE Arduino.
 
 <img src="rak811-serial.png" alt="alt text" width="500">
 
