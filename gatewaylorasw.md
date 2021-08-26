@@ -1053,6 +1053,9 @@ respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzat
 - https://www.ictpower.it/tecnologia/lora-nozioni-di-base-e-approfondimenti.htm
 - https://github.com/RAKWireless/WisNode-Arduino-Library
 - https://wikifactory.com/@prusalab/prusahive/v/7f51dd4/file/Firmware/PrusaHiveV0.2/lib/TheThingsNetwork_esp32-master/src/lmic/lmic/radio.c
+- https://docs.pycom.io/gitbook/assets/lopy-pinout.pdf
+- https://docs.pycom.io/datasheets/development/sipy/
+- https://www.thethingsnetwork.org/labs/story/program-your-lopy-from-the-arduino-ide-using-lmic
 
 >[Torna all'indice generale](index.md)
 
