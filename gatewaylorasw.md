@@ -46,6 +46,7 @@ In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello
 
 ### **Schema cablaggio**
 
+Mappaggio del pinout del transceiver Lora su quello della MCU ESP32:
 ```
 SX1276 pin name <--> ESP32 pin number
 	MISO		GPIO 19
@@ -54,6 +55,17 @@ SX1276 pin name <--> ESP32 pin number
 	CS		GPIO 18
 	IRQ		GPIO 26
 	RST		GPIO 14
+```
+
+La configurazione della libreria LMIC coerente con il mappaggio esposto sopra è:
+```
+// Pin mapping
+const lmic_pinmap lmic_pins = {
+  .nss = 18, 
+  .rxtx = LMIC_UNUSED_PIN,
+  .rst = 14,
+  .dio = {/*dio0*/ 26, /*dio1*/ 33, /*dio2*/ 32}
+};
 ```
 
 ### **Classi di servizio**
