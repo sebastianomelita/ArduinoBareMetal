@@ -17,7 +17,7 @@ Radio punto-punto:
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
-### **La scheda LoRa RMF95/W**
+### **1) La scheda LoRa RMF95/W**
 
 <img src="hwiotacrchitecturerfm95.png" alt="alt text" width="1000">
 
@@ -70,7 +70,7 @@ La lunghezza del filo dipende dalla frequenza:
 
 Per il nostro modulo dobbiamo utilizzare un filo da 86,3 mm saldato direttamente al pin ANA del ricetrasmettitore. Si noti che l'utilizzo di un'antenna adeguata estenderà il raggio di comunicazione.
 
-### **La scheda TTGO LoRa32 SX1276 OLED**
+### **2) La scheda TTGO LoRa32 SX1276 OLED**
 
 <img src="TTGO-LoRa32-OLED-SX1276-p.jpg" alt="alt text" width="1000">
 
@@ -102,7 +102,7 @@ const lmic_pinmap lmic_pins = {
 };
 ```
 
-### **La scheda LoPy**
+### **3) La scheda LoPy**
 
 <img src="Screen-Shot-2018-08-04-at-10.01.26-PM-1024x381.png" alt="alt text" width="1000">
 
