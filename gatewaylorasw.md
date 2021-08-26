@@ -102,7 +102,7 @@ const lmic_pinmap lmic_pins = {
 };
 ```
 
-### **3) La scheda LoPy**
+### **3) La scheda Pycom LoPy**
 
 <img src="Screen-Shot-2018-08-04-at-10.01.26-PM-1024x381.png" alt="alt text" width="1000">
 
