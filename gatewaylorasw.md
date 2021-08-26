@@ -102,6 +102,34 @@ const lmic_pinmap lmic_pins = {
 };
 ```
 
+### **La scheda LoPy**
+
+<img src="Screen-Shot-2018-08-04-at-10.01.26-PM-1024x381.png" alt="alt text" width="1000">
+
+E' una scheda che integra in un unico modulo **porte GPIO** + **transceiver SX1276** + **OLED SSD1306** da 0.96'' + **MCU ESP32**. Il  transceiver SX1276 implementa esclusivamente il **livello fisico** dello stack LoraWan spesso indicato semplicemente come **LoRa**. Sopra di esso può essere utilizzato lo **stack applicativo LoRawan** oppure un qualsiasi altro stack (ad es. **6LowPan e REPL**). 
+
+In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello fisico, con il **SX1276** vanno implementate in SW sulla MCU mediante apposite **librerie**. Se si vuole un **modem** che implementi **in HW** tutto lo **stack LoraWan** si guardi il modulo **Microchip RN2483**.
+
+### **Schema cablaggio**
+
+In questo caso transceiver Semtech SX1276 e MCU ESP32 sono già cablate insieme sulla stessa scheda. Di seguito è riportato il mappaggio del pinout del transceiver Lora su quello della MCU ESP32:
+
+<img src="lopy.png" alt="alt text" width="1000">
+
+La configurazione della libreria LMIC coerente con il mappaggio esposto sopra è:
+```
+// Pin mapping
+const lmic_pinmap lmic_pins = {
+    .mosi = 27,
+    .miso = 19,
+    .sck = 5,
+    .nss = 17,
+    .rxtx = LMIC_UNUSED_PIN,
+    .rst = 18,
+    .dio = {23, 23, 23}, //workaround to use 1 pin for all 3 radio dio pins
+};
+```
+
 ### **Classi di servizio**
 
 **Classe A**
