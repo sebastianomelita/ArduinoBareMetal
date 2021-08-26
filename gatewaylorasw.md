@@ -46,7 +46,15 @@ In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello
 
 ### **Schema cablaggio**
 
-<img src="Lss_ESP32_Wiring2.png" alt="alt text" width="500">
+```
+RN2483 pin name <--> Arduino pin number
+	MISO		GPIO 19
+	MOSI		GPIO 27
+	SCK		GPIO 5
+	CS		GPIO 18
+	IRQ		GPIO 26
+	RST		GPIO 14
+```
 
 ### **Classi di servizio**
 
