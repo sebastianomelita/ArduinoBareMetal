@@ -46,7 +46,7 @@ In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello
 
 ### **Schema cablaggio**
 
-<img src="LoRa_ESP32_Wiring2.png" alt="alt text" width="500">
+<img src="Lss_ESP32_Wiring2.png" alt="alt text" width="500">
 
 ### **Classi di servizio**
 
