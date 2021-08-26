@@ -59,7 +59,7 @@ const lmic_pinmap lmic_pins = {
   .nss = 5, 
   .rxtx = LMIC_UNUSED_PIN,
   .rst = 14,
-  .dio = {/*dio0*/ 2, /*dio1*/ LMIC_UNUSED_PIN, /*dio2*/ LMIC_UNUSED_PIN}
+  .dio = {/*dio0*/ 2, /*dio1*/ 2, /*dio2*/ 2}
 };
 ```
 
