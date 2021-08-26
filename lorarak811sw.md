@@ -42,6 +42,18 @@ La lunghezza del filo dipende dalla frequenza:
 
 In realtà il cablaggio serve a collegare sensori e alimentazione. Transceiver e MCU sono entrambi contenuti in un unico chip. Il problema principale adesso è collegare la UART alla presa USB di un PC per consentire il caricamento del FW compilato dall'IDE Arduino.
 
+All'interno del codice del programma vanno impostati i pin del transceiver. In RAK811 sono interni al chip e non devono mai cambiare:
+
+```C++
+// Pin mapping
+const lmic_pinmap lmic_pins = {
+    .nss = 26,
+    .rxtx = 32,
+    .rst = 21,
+    .dio = {27, 28, 29},
+};
+```
+
 <img src="rak811-serial.png" alt="alt text" width="500">
 
 
