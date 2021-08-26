@@ -36,6 +36,18 @@ La lunghezza del filo dipende dalla frequenza:
 
 Per il nostro modulo dobbiamo utilizzare un filo da 86,3 mm saldato direttamente al pin ANA del ricetrasmettitore. Si noti che l'utilizzo di un'antenna adeguata estenderà il raggio di comunicazione.
 
+### **La scheda TTGO LoRa32 SX1276 OLED**
+
+<img src="TTGO-LoRa32-OLED-SX1276-p.jpg" alt="alt text" width="1000">
+
+E' un modem Lora che implementa esclusivamente il **livello fisico** dello stack LoraWan spesso indicato semplicemente come **LoRa**. Sopra di esso può essere utilizzato lo **stack applicativo LoRawan** oppure un qualsiasi altro stack (ad es. **6LowPan e REPL**). 
+
+In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello fisico, con il **chip RMF95/W**M vanno implementate in SW mediante apposite **librerie**. Se si vuole un **modem** che implementi **in HW** tutto lo **stack LoraWan** si guardi il modulo **Microchip RN2483**.
+
+### **Schema cablaggio**
+
+<img src="LoRa_ESP32_Wiring2.png" alt="alt text" width="500">
+
 ### **Classi di servizio**
 
 **Classe A**
