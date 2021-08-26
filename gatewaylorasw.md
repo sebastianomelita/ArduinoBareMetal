@@ -1056,6 +1056,7 @@ respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzat
 - https://docs.pycom.io/gitbook/assets/lopy-pinout.pdf
 - https://docs.pycom.io/datasheets/development/sipy/
 - https://www.thethingsnetwork.org/labs/story/program-your-lopy-from-the-arduino-ide-using-lmic
+- https://www.studiopieters.nl/esp32-pinout/
 
 >[Torna all'indice generale](index.md)
 
