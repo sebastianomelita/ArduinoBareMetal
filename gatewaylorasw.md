@@ -47,7 +47,7 @@ In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello
 ### **Schema cablaggio**
 
 ```
-RN2483 pin name <--> Arduino pin number
+RN2483 pin name <--> ESP32 pin number
 	MISO		GPIO 19
 	MOSI		GPIO 27
 	SCK		GPIO 5
