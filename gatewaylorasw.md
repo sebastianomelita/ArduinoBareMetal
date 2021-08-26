@@ -29,7 +29,7 @@ In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello
 
 Il transxeiver LoRa RMF95/W deve essere interfacciato con una scheda MCU a parte. Sotto L'IDE di Arduino si possono utilizzare tutte le schede della famiglia Arduino più le schede ESP8266 e ESP32 di Espressif dotate di modulo WiFi integrato. Di seguito proponiamo un esempio con la scheda ESP32.
 
-<img src="LoRa_ESP32_Wiring2.png" alt="alt text" width="500">
+<img src="LoRa_ESP32_Wiring2.png" alt="alt text" width="1000">
 
 La lunghezza del filo dipende dalla frequenza:
 - 868 MHz: 86,3 mm 
