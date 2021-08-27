@@ -17,9 +17,9 @@ Radio punto-punto:
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
-### **La scheda LoRa RAK811**
+### **La scheda LoRa Lora E5 mini**
 
-<img src="hwiotacrchitecturerak811.png" alt="alt text" width="1000">
+<img src="4041615358935_.pic_hd.jpg" alt="alt text" width="1000">
 
 E' un **modem** che implementa **in HW** tutto lo **stack LoraWan** ed è configurabile via seriale mediante i comandi AT.
 
