@@ -17,14 +17,14 @@ Radio punto-punto:
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
-### **La scheda LoRa Lora E5 mini**
+### **La scheda LoRa E5 Mini**
 
 <img src="4041615358935_.pic_hd.jpg" alt="alt text" width="1000">
 <img src="cq5dam.web.1280.1280.jpeg" alt="alt text" width="1000">
 
 E' un **modem** che implementa **in HW** tutto lo **stack LoraWan** ed è configurabile via seriale mediante i comandi AT.
 
-Il modulo di breakout LPWAN RAK811 fornisce: scheda con terminali + transceiver Semtech SX1276 + MCU STM32L151.  
+Il modulo LoRa E5 Mini fornisce: scheda con terminali + transceiver Semtech SX1276X + MCU STM32L4 + interfaccia seriale.  
 
 E' utilizzabile:
 - come **modem HW** accessibile via UART tramite ccomandi AT gestibili anche tramite una libreria per Arduino. Sia i comandi AT che la libreria permettono l'accesso ai GPIO di cui è dotata tramite un'intestazione aggiuntiva ai messaggi. Il vantaggio di questa configurazione è che il codice della MCU risulta non appesatito dall'implementazione dell'intero stack protocollare LoRaWan e quindi con più risorse disponibili da dedicare alla logica dell'applicazione.
