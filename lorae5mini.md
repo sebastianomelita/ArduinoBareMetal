@@ -20,6 +20,7 @@ Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista
 ### **La scheda LoRa Lora E5 mini**
 
 <img src="4041615358935_.pic_hd.jpg" alt="alt text" width="1000">
+<img src="cq5dam.web.1280.1280.jpeg" alt="alt text" width="500">
 
 E' un **modem** che implementa **in HW** tutto lo **stack LoraWan** ed è configurabile via seriale mediante i comandi AT.
 
