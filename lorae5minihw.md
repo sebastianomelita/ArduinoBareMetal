@@ -128,10 +128,11 @@ La libreria dovrebbero supportare solamente le classi di servizio A e B (C esclu
 
 ```C++
 #include <Arduino.h>
-#include <U8x8lib.h>
+#include <SoftwareSerial.h>
 #include "DHT.h"
  
 #define DHTPIN 0 // what pin we're connected to
+#define LED_BUILTIN  1
 
 //https://wiki.seeedstudio.com/Grove_LoRa_E5_New_Version/#download-library
  
@@ -141,9 +142,6 @@ La libreria dovrebbero supportare solamente le classi di servizio A e B (C esclu
 //#define DHTTYPE DHT21   // DHT 21 (AM2301)
  
 DHT dht(DHTPIN, DHTTYPE);
- 
-U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(/* reset=*/U8X8_PIN_NONE);
-// U8X8_SSD1306_128X64_NONAME_SW_I2C u8x8(/* clock=*/ SCL, /* data=*/ SDA, /* reset=*/ U8X8_PIN_NONE);   // OLEDs without Reset of the Display
  
 static char recv_buf[512];
 static bool is_exist = false;
@@ -204,10 +202,9 @@ static void recv_prase(char *p_msg)
     if (p_start && (1 == sscanf(p_start, "RX: \"%d\"\r\n", &data)))
     {
         Serial.println(data);
-        u8x8.setCursor(2, 4);
-        u8x8.print("led :");
+        Serial.print("led :");
         led = !!data;
-        u8x8.print(led);
+        Serial.println(led);
         if (led)
         {
             digitalWrite(LED_BUILTIN, LOW);
@@ -221,36 +218,27 @@ static void recv_prase(char *p_msg)
     p_start = strstr(p_msg, "RSSI");
     if (p_start && (1 == sscanf(p_start, "RSSI %d,", &rssi)))
     {
-        u8x8.setCursor(0, 6);
-        u8x8.print("                ");
-        u8x8.setCursor(2, 6);
-        u8x8.print("rssi:");
-        u8x8.print(rssi);
+        Serial.print("                ");
+        Serial.print("rssi:");
+        Serial.println(rssi);
     }
     p_start = strstr(p_msg, "SNR");
     if (p_start && (1 == sscanf(p_start, "SNR %d", &snr)))
     {
-        u8x8.setCursor(0, 7);
-        u8x8.print("                ");
-        u8x8.setCursor(2, 7);
-        u8x8.print("snr :");
-        u8x8.print(snr);
+        Serial.print("                ");
+        Serial.print("snr :");
+        Serial.println(snr);
     }
 }
  
 void setup(void)
 {
-    u8x8.begin();
-    u8x8.setFlipMode(1);
-    u8x8.setFont(u8x8_font_chroma48medium8_r);
- 
     Serial.begin(115200);
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, HIGH);
  
     Serial1.begin(9600);
     Serial.print("E5 LORAWAN TEST\r\n");
-    u8x8.setCursor(0, 0);
  
     if (at_send_check_response("+AT: OK", 100, "AT\r\n"))
     {
@@ -263,30 +251,24 @@ void setup(void)
         at_send_check_response("+CLASS: C", 1000, "AT+CLASS=A\r\n");
         at_send_check_response("+PORT: 8", 1000, "AT+PORT=8\r\n");
         delay(200);
-        u8x8.setCursor(5, 0);
-        u8x8.print("LoRaWAN");
+        Serial.print("LoRaWAN");
         is_join = true;
     }
     else
     {
         is_exist = false;
         Serial.print("No E5 module found.\r\n");
-        u8x8.setCursor(0, 1);
-        u8x8.print("unfound E5 !");
+        Serial.print("unfound E5 !");
     }
  
     dht.begin();
- 
-    u8x8.setCursor(0, 2);
-    u8x8.setCursor(2, 2);
-    u8x8.print("temp:");
- 
-    u8x8.setCursor(2, 3);
-    u8x8.print("humi:");
- 
-    u8x8.setCursor(2, 4);
-    u8x8.print("led :");
-    u8x8.print(led);
+
+    Serial.print("temp:");
+
+    Serial.print("humi:");
+
+    Serial.print("led :");
+    Serial.println(led);
 }
  
 void loop(void)
@@ -303,15 +285,6 @@ void loop(void)
     Serial.print("Temperature: ");
     Serial.print(temp);
     Serial.println(" *C");
- 
-    u8x8.setCursor(0, 2);
-    u8x8.print("      ");
-    u8x8.setCursor(2, 2);
-    u8x8.print("temp:");
-    u8x8.print(temp);
-    u8x8.setCursor(2, 3);
-    u8x8.print("humi:");
-    u8x8.print(humi);
  
     if (is_exist)
     {
@@ -352,7 +325,6 @@ void loop(void)
         delay(1000);
     }
 }
-
 ```
 
 ### **Gateway LoraWan con OTAA join e deepSleep**
