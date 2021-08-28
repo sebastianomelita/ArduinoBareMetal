@@ -127,118 +127,232 @@ La libreria dovrebbero supportare solamente le classi di servizio A e B (C esclu
 ### **Gateway LoraWan con OTAA join**
 
 ```C++
-/********************************************************
- * This demo is only supported after RUI firmware version 3.0.0.13.X on RAK811
- * Master Board Uart Receive buffer size at least 128 bytes. 
- ********************************************************/
-
-#include "RAK811.h"
-#include "SoftwareSerial.h"
-#define WORK_MODE LoRaWAN   //  LoRaWAN or LoRaP2P
-#define JOIN_MODE OTAA    //  OTAA or ABP
-#if JOIN_MODE == OTAA
-String DevEui = "8680000000000001";
-String AppEui = "70B3D57ED00285A7";
-String AppKey = "DDDFB1023885FBFF74D3A55202EDF2B1";
-#else JOIN_MODE == ABP
-String NwkSKey = "69AF20AEA26C01B243945A28C9172B42";
-String AppSKey = "841986913ACD00BBC2BE2479D70F3228";
-String DevAddr = "260125D7";
-#endif
-#define TXpin 11   // Set the virtual serial port pins
-#define RXpin 10
-#define DebugSerial Serial
-SoftwareSerial ATSerial(RXpin,TXpin);    // Declare a virtual serial port
-char buffer[]= "72616B776972656C657373";
-
-bool InitLoRaWAN(void);
-RAK811 RAKLoRa(ATSerial,DebugSerial);
-
-
-void setup() {
-  DebugSerial.begin(115200);
-  while(DebugSerial.available())
-  {
-    DebugSerial.read(); 
-  }
-  
-  ATSerial.begin(9600); //set ATSerial baudrate:This baud rate has to be consistent with  the baud rate of the WisNode device.
-  while(ATSerial.available())
-  {
-    ATSerial.read(); 
-  }
-
-  if(!RAKLoRa.rk_setWorkingMode(0))  //set WisNode work_mode to LoRaWAN.
-  {
-    DebugSerial.println(F("set work_mode failed, please reset module."));
-    while(1);
-  }
-  
-  RAKLoRa.rk_getVersion();  //get RAK811 firmware version
-  DebugSerial.println(RAKLoRa.rk_recvData());  //print version number
-
-  DebugSerial.println(F("Start init RAK811 parameters..."));
+#include <Arduino.h>
+#include <U8x8lib.h>
+#include "DHT.h"
  
-  if (!InitLoRaWAN())  //init LoRaWAN
-  {
-    DebugSerial.println(F("Init error,please reset module.")); 
-    while(1);
-  }
+#define DHTPIN 0 // what pin we're connected to
 
-  DebugSerial.println(F("Start to join LoRaWAN..."));
-  while(!RAKLoRa.rk_joinLoRaNetwork(60))  //Joining LoRaNetwork timeout 60s
-  {
-    DebugSerial.println();
-    DebugSerial.println(F("Rejoin again after 5s..."));
-    delay(5000);
-  }
-  DebugSerial.println(F("Join LoRaWAN success"));
-
-  if(!RAKLoRa.rk_isConfirm(0))  //set LoRa data send package type:0->unconfirm, 1->confirm
-  {
-    DebugSerial.println(F("LoRa data send package set error,please reset module.")); 
-    while(1);    
-  }
-}
-
-bool InitLoRaWAN(void)
+//https://wiki.seeedstudio.com/Grove_LoRa_E5_New_Version/#download-library
+ 
+// Uncomment whatever type you're using!
+#define DHTTYPE DHT11 // DHT 11
+// #define DHTTYPE DHT22   // DHT 22  (AM2302)
+//#define DHTTYPE DHT21   // DHT 21 (AM2301)
+ 
+DHT dht(DHTPIN, DHTTYPE);
+ 
+U8X8_SSD1306_128X64_NONAME_HW_I2C u8x8(/* reset=*/U8X8_PIN_NONE);
+// U8X8_SSD1306_128X64_NONAME_SW_I2C u8x8(/* clock=*/ SCL, /* data=*/ SDA, /* reset=*/ U8X8_PIN_NONE);   // OLEDs without Reset of the Display
+ 
+static char recv_buf[512];
+static bool is_exist = false;
+static bool is_join = false;
+static int led = 0;
+ 
+static int at_send_check_response(char *p_ack, int timeout_ms, char *p_cmd, ...)
 {
-  if(RAKLoRa.rk_setJoinMode(JOIN_MODE))  //set join_mode:OTAA
-  {
-    if(RAKLoRa.rk_setRegion(5))  //set region EU868
+    int ch;
+    int num = 0;
+    int index = 0;
+    int startMillis = 0;
+    va_list args;
+    memset(recv_buf, 0, sizeof(recv_buf));
+    va_start(args, p_cmd);
+    Serial1.printf(p_cmd, args);
+    Serial.printf(p_cmd, args);
+    va_end(args);
+    delay(200);
+    startMillis = millis();
+ 
+    if (p_ack == NULL)
     {
-      if (RAKLoRa.rk_initOTAA(DevEui, AppEui, AppKey))
-      {
-        DebugSerial.println(F("RAK811 init OK!"));  
-        return true;    
-      }
+        return 0;
     }
-  }
-  return false;
+ 
+    do
+    {
+        while (Serial1.available() > 0)
+        {
+            ch = Serial1.read();
+            recv_buf[index++] = ch;
+            Serial.print((char)ch);
+            delay(2);
+        }
+ 
+        if (strstr(recv_buf, p_ack) != NULL)
+        {
+            return 1;
+        }
+ 
+    } while (millis() - startMillis < timeout_ms);
+    return 0;
+}
+ 
+static void recv_prase(char *p_msg)
+{
+    if (p_msg == NULL)
+    {
+        return;
+    }
+    char *p_start = NULL;
+    int data = 0;
+    int rssi = 0;
+    int snr = 0;
+ 
+    p_start = strstr(p_msg, "RX");
+    if (p_start && (1 == sscanf(p_start, "RX: \"%d\"\r\n", &data)))
+    {
+        Serial.println(data);
+        u8x8.setCursor(2, 4);
+        u8x8.print("led :");
+        led = !!data;
+        u8x8.print(led);
+        if (led)
+        {
+            digitalWrite(LED_BUILTIN, LOW);
+        }
+        else
+        {
+            digitalWrite(LED_BUILTIN, HIGH);
+        }
+    }
+ 
+    p_start = strstr(p_msg, "RSSI");
+    if (p_start && (1 == sscanf(p_start, "RSSI %d,", &rssi)))
+    {
+        u8x8.setCursor(0, 6);
+        u8x8.print("                ");
+        u8x8.setCursor(2, 6);
+        u8x8.print("rssi:");
+        u8x8.print(rssi);
+    }
+    p_start = strstr(p_msg, "SNR");
+    if (p_start && (1 == sscanf(p_start, "SNR %d", &snr)))
+    {
+        u8x8.setCursor(0, 7);
+        u8x8.print("                ");
+        u8x8.setCursor(2, 7);
+        u8x8.print("snr :");
+        u8x8.print(snr);
+    }
+}
+ 
+void setup(void)
+{
+    u8x8.begin();
+    u8x8.setFlipMode(1);
+    u8x8.setFont(u8x8_font_chroma48medium8_r);
+ 
+    Serial.begin(115200);
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH);
+ 
+    Serial1.begin(9600);
+    Serial.print("E5 LORAWAN TEST\r\n");
+    u8x8.setCursor(0, 0);
+ 
+    if (at_send_check_response("+AT: OK", 100, "AT\r\n"))
+    {
+        is_exist = true;
+        at_send_check_response("+ID: AppEui", 1000, "AT+ID\r\n");
+        at_send_check_response("+MODE: LWOTAA", 1000, "AT+MODE=LWOTAA\r\n");
+        at_send_check_response("+DR: EU868", 1000, "AT+DR=EU868\r\n");
+        at_send_check_response("+CH: NUM", 1000, "AT+CH=NUM,0-2\r\n");
+        at_send_check_response("+KEY: APPKEY", 1000, "AT+KEY=APPKEY,\"2B7E151628AED2A6ABF7158809CF4F3C\"\r\n");
+        at_send_check_response("+CLASS: C", 1000, "AT+CLASS=A\r\n");
+        at_send_check_response("+PORT: 8", 1000, "AT+PORT=8\r\n");
+        delay(200);
+        u8x8.setCursor(5, 0);
+        u8x8.print("LoRaWAN");
+        is_join = true;
+    }
+    else
+    {
+        is_exist = false;
+        Serial.print("No E5 module found.\r\n");
+        u8x8.setCursor(0, 1);
+        u8x8.print("unfound E5 !");
+    }
+ 
+    dht.begin();
+ 
+    u8x8.setCursor(0, 2);
+    u8x8.setCursor(2, 2);
+    u8x8.print("temp:");
+ 
+    u8x8.setCursor(2, 3);
+    u8x8.print("humi:");
+ 
+    u8x8.setCursor(2, 4);
+    u8x8.print("led :");
+    u8x8.print(led);
+}
+ 
+void loop(void)
+{
+    float temp = 0;
+    float humi = 0;
+ 
+    temp = dht.readTemperature();
+    humi = dht.readHumidity();
+ 
+    Serial.print("Humidity: ");
+    Serial.print(humi);
+    Serial.print(" %\t");
+    Serial.print("Temperature: ");
+    Serial.print(temp);
+    Serial.println(" *C");
+ 
+    u8x8.setCursor(0, 2);
+    u8x8.print("      ");
+    u8x8.setCursor(2, 2);
+    u8x8.print("temp:");
+    u8x8.print(temp);
+    u8x8.setCursor(2, 3);
+    u8x8.print("humi:");
+    u8x8.print(humi);
+ 
+    if (is_exist)
+    {
+        int ret = 0;
+        if (is_join)
+        {
+ 
+            ret = at_send_check_response("+JOIN: Network joined", 12000, "AT+JOIN\r\n");
+            if (ret)
+            {
+                is_join = false;
+            }
+            else
+            {
+                at_send_check_response("+ID: AppEui", 1000, "AT+ID\r\n");
+                Serial.print("JOIN failed!\r\n\r\n");
+                delay(5000);
+            }
+        }
+        else
+        {
+            char cmd[128];
+            sprintf(cmd, "AT+CMSGHEX=\"%04X%04X\"\r\n", (int)temp, (int)humi);
+            ret = at_send_check_response("Done", 5000, cmd);
+            if (ret)
+            {
+                recv_prase(recv_buf);
+            }
+            else
+            {
+                Serial.print("Send failed!\r\n\r\n");
+            }
+            delay(5000);
+        }
+    }
+    else
+    {
+        delay(1000);
+    }
 }
 
-void loop() {
-  DebugSerial.println(F("Start send data..."));
-  if (RAKLoRa.rk_sendData(1, buffer))
-  {    
-    for (unsigned long start = millis(); millis() - start < 90000L;)
-    {
-      String ret = RAKLoRa.rk_recvData();
-      if(ret != NULL)
-      { 
-        DebugSerial.println(ret);
-      }
-      if((ret.indexOf("OK")>0)||(ret.indexOf("ERROR")>0))
-      {
-        DebugSerial.println(F("Go to Sleep."));
-        RAKLoRa.rk_sleep(1);  //Set RAK811 enter sleep mode
-        delay(10000);  //delay 10s
-        RAKLoRa.rk_sleep(0);  //Wakeup RAK811 from sleep mode
-        break;
-      }
-    }
-  }
-}
 ```
 
 ### **Gateway LoraWan con OTAA join e deepSleep**
@@ -246,162 +360,7 @@ void loop() {
 La **memoria RTC** (Real Time Clock) è un'area della SRAM del processore che rimane alimentata e accessibile alle funzioni RTC del microcontrollore ESP32 e del coprocessore ULP anche quando è attivato lo standby. Nell'esempio sottostante la memoria RTC viene utilizzata per memorizzare un flag di avvenuta conessione. I parametri della connessione (chiave di sessione) vengono recuperati dal modem se questo era stato precedentemente associata (join) al gateway LoRaWan con successo.
 
 ```C++
-/********************************************************
- * This demo is only supported after RUI firmware version 3.0.0.13.X on RAK811
- * Master Board Uart Receive buffer size at least 128 bytes. 
- ********************************************************/
 
-#include "RAK811.h"
-#include "SoftwareSerial.h"
-#define WORK_MODE LoRaWAN   //  LoRaWAN or LoRaP2P
-#define JOIN_MODE OTAA    //  OTAA or ABP
-#if JOIN_MODE == OTAA
-String DevEui = "8680000000000001";
-String AppEui = "70B3D57ED00285A7";
-String AppKey = "DDDFB1023885FBFF74D3A55202EDF2B1";
-#else JOIN_MODE == ABP
-String NwkSKey = "69AF20AEA26C01B243945A28C9172B42";
-String AppSKey = "841986913ACD00BBC2BE2479D70F3228";
-String DevAddr = "260125D7";
-#endif
-//#define SensorPin A0  // used for Arduino and ESP8266
-#define SensorPin 4     // used for ESP32
-#define TXpin 11   // Set the virtual serial port pins
-#define RXpin 10
-#define TX_INTERVAL ((uint32_t) 300)
-SoftwareSerial ATSerial(RXpin,TXpin);    // Declare a virtual serial port
-char buffer[]= "72616B776972656C657373";
-
-bool InitLoRaWAN(void);
-RAK811 RAKLoRa(ATSerial,Serial);
-
-// Saves the LMIC structure during DeepSleep
-RTC_DATA_ATTR bool joined = false;
-
-int16_t h1;
-
-void inline sensorsInit() {
-
-}
-
-bool readSensorsAndTx() {
-// Split both words (16 bits) into 2 bytes of 8
-	char payload[2];
-
-	Serial.print("Requesting data...");
-	h1 = analogRead(SensorPin);
-	Serial.println("DONE");
-
-	payload[0] = highByte(h1);
-	payload[1] = lowByte(h1);
-	
-	Serial.println(F("Packet queued"));
-  
-	return RAKLoRa.rk_sendData(1, payload);
-}
-
-void goDeepSleep()
-{
-    Serial.println(F("Go DeepSleep"));
-    Serial.flush();
-    esp_sleep_enable_timer_wakeup(TX_INTERVAL * 1000000);
-    esp_deep_sleep_start();
-}
-
-void setup() {
-  sensorsInit();
-  delay(1000); //wait for the arduino ide's serial console to open
-  
-  Serial.begin(115200);
-  while(Serial.available())
-  {
-    Serial.read(); 
-  }
-  
-  ATSerial.begin(9600); //set ATSerial baudrate:This baud rate has to be consistent with  the baud rate of the WisNode device.
-  while(ATSerial.available())
-  {
-    ATSerial.read(); 
-  }
-
-  if(!RAKLoRa.rk_setWorkingMode(0))  //set WisNode work_mode to LoRaWAN.
-  {
-    Serial.println(F("set work_mode failed, please reset module."));
-    while(1);
-  }
-  
-  RAKLoRa.rk_getVersion();  //get RAK811 firmware version
-  Serial.println(RAKLoRa.rk_recvData());  //print version number
-
-  Serial.println(F("Start init RAK811 parameters..."));
- 
-  if(!joined){
-	  if (!InitLoRaWAN())  //init LoRaWAN
-	  {
-		Serial.println(F("Init error,please reset module.")); 
-		while(1);
-	  }
-  }
-
-  Serial.println(F("Start to join LoRaWAN..."));
-  while(!RAKLoRa.rk_joinLoRaNetwork(60))  //Joining LoRaNetwork timeout 60s
-  {
-    Serial.println();
-    Serial.println(F("Rejoin again after 5s..."));
-    delay(5000);
-  }
-  
-  if(!joined){
-	  joined = true;
-  }
-  Serial.println(F("Join LoRaWAN success"));
-
-  if(!RAKLoRa.rk_isConfirm(0))  //set LoRa data send package type:0->unconfirm, 1->confirm
-  {
-    Serial.println(F("LoRa data send package set error,please reset module.")); 
-    while(1);    
-  }
-}
-
-bool InitLoRaWAN(void)
-{
-  if(RAKLoRa.rk_setJoinMode(JOIN_MODE))  //set join_mode:OTAA
-  {
-    if(RAKLoRa.rk_setRegion(5))  //set region EU868
-    {
-      if (RAKLoRa.rk_initOTAA(DevEui, AppEui, AppKey))
-      {
-        Serial.println(F("RAK811 init OK!"));  
-        return true;    
-      }
-    }
-  }
-  return false;
-}
-
-void loop() {
-  Serial.println(F("Start send data..."));
-  if (readSensorsAndTx())
-  {    
-    for (unsigned long start = millis(); millis() - start < 90000L;)
-    {
-      String ret = RAKLoRa.rk_recvData();
-      if(ret != NULL)
-      { 
-        Serial.println(ret);
-      }
-      if((ret.indexOf("OK")>0)||(ret.indexOf("ERROR")>0))
-      {
-        Serial.println(F("Go to Sleep."));
-        RAKLoRa.rk_sleep(1);  //Set RAK811 enter sleep mode
-        delay(10000);  //delay 10s
-        RAKLoRa.rk_sleep(0);  //Wakeup RAK811 from sleep mode
-	goDeepSleep();
-        break;
-      }
-    }
-  }
-}
 ```
 
 ### **Sitografia:**
