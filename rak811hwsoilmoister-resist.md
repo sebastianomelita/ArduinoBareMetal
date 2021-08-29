@@ -1,4 +1,4 @@
->[Torna a gateway analogico](loraswgatewayanalogico.md)
+>[Torna a gateway analogico](ak811hwgatewayanalogico.md)
 
 
 ## **Gateway per sensore resistivo di umidità del suolo**
@@ -571,4 +571,4 @@ void loop()
 - https://randomnerdtutorials.com/esp32-deep-sleep-arduino-ide-wake-up-sources/
 - https://randomnerdtutorials.com/esp32-timer-wake-up-deep-sleep/
 
->[Torna a gateway analogico](loraswgatewayanalogico.md)
+>[Torna a gateway analogico](ak811hwgatewayanalogico.md)
