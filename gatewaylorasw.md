@@ -105,7 +105,7 @@ const lmic_pinmap lmic_pins = {
 ### **3) Adafruit Feather M0 con RFM95** 
 
 
-<img src="81YhTtZZ8LL._AC_SL1200_.jpg" alt="alt text" width="1000">
+<img src="feather_Feather_M0_RFM95_v1.2-1.png" alt="alt text" width="1000">
 
 E' un modem Lora che implementa esclusivamente il **livello fisico** dello stack LoraWan spesso indicato semplicemente come **LoRa**. Sopra di esso può essere utilizzato lo **stack applicativo LoRawan** oppure un qualsiasi altro stack (ad es. **6LowPan e REPL**). 
 
