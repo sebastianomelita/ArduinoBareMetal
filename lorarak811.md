@@ -8,7 +8,7 @@ BUS cablato:
 
 Stella cablato (punto-punto):
 1. [Analogico](ak811hwgatewayanalogico.md)
-2. [Digitale](loraswgatewaydigitale.md)
+2. [Digitale](ak811hwgatewaydigitale.md)
 
 Radio punto-punto:
 1. [Analogico](gatewayradioa.md)
