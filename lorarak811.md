@@ -424,8 +424,9 @@ void loop() {
 ```
 
 
-```
+
 **AT Command**						**Description**
+```
 at+version						Get the current firmware version number.
 at+get_config=device:status				Get all information about the device’s hardware components and their current status.
 at+set_config=device:restart				After set, the device will restart.
