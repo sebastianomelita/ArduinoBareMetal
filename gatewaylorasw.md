@@ -102,7 +102,20 @@ const lmic_pinmap lmic_pins = {
 };
 ```
 
-### **3) La scheda Pycom LoPy**
+### **3) Adafruit Feather M0 con RFM95** 
+
+
+<img src="81YhTtZZ8LL._AC_SL1200_.jpg" alt="alt text" width="1000">
+
+E' un modem Lora che implementa esclusivamente il **livello fisico** dello stack LoraWan spesso indicato semplicemente come **LoRa**. Sopra di esso può essere utilizzato lo **stack applicativo LoRawan** oppure un qualsiasi altro stack (ad es. **6LowPan e REPL**). 
+
+In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello fisico, con il **chip RMF95/W**M vanno implementate in SW mediante apposite **librerie**. Se si vuole un **modem** che implementi **in HW** tutto lo **stack LoraWan** si guardi il modulo **Microchip RN2483**.
+
+### **Schema cablaggio**
+
+
+
+### **4) La scheda Pycom LoPy**
 
 <img src="Screen-Shot-2018-08-04-at-10.01.26-PM-1024x381.png" alt="alt text" width="1000">
 
