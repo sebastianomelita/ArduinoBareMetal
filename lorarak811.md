@@ -149,6 +149,7 @@ String DevAddr = "260125D7";
 //#define SensorPin A0  // used for Arduino and ESP8266
 #define SensorPin 4     // used for ESP32
 #define DebugSerial Serial
+#define TX_INTERVAL ((uint32_t) 300)
 SoftwareSerial ATSerial(RXpin,TXpin);    // Declare a virtual serial port
 char buffer[]= "72616B776972656C657373";
 
@@ -250,7 +251,7 @@ void loop() {
       {
         DebugSerial.println(F("Go to Sleep."));
         RAKLoRa.rk_sleep(1);  //Set RAK811 enter sleep mode
-        delay(10000);  //delay 10s
+        delay(TX_INTERVAL * 1000);  //delay 10s
         RAKLoRa.rk_sleep(0);  //Wakeup RAK811 from sleep mode
         break;
       }
