@@ -7,7 +7,7 @@ BUS cablato:
 4. [Modbus](gatewaymodbus.md)
 
 Stella cablato (punto-punto):
-1. [Analogico](loraswgatewayanalogico.md)
+1. [Analogico](ak811hwgatewayanalogico.md)
 2. [Digitale](loraswgatewaydigitale.md)
 
 Radio punto-punto:
