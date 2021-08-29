@@ -394,8 +394,8 @@ void loop() {
       {
         Serial.println(F("Go to Sleep."));
         RAKLoRa.rk_sleep(1);  //Set RAK811 enter sleep mode
-		goDeepSleep();
-		RAKLoRa.rk_sleep(0);  //Wakeup RAK811 from sleep mode
+	goDeepSleep();
+	RAKLoRa.rk_sleep(0);  //Wakeup RAK811 from sleep mode
         break;
       }
     }
