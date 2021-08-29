@@ -39,56 +39,102 @@ Dal **punto di vista SW** non servono librerie particolari tranne quelle per la 
 Poiché ogni pin I/O digitale dell'ESP32, che non viene utilizzato per un'interfaccia di comunicazione, può essere un ingresso analogico, dobbiamo scegliere un pin qualsiasi come ingresso analogico.
 
 ```C++
-/*
- * Author: JP Meijers
- * Date: 2016-10-20
- *
- * Transmit a one byte packet via TTN. This happens as fast as possible, while still keeping to
- * the 1% duty cycle rules enforced by the RN2483's built in LoRaWAN stack. Even though this is
- * allowed by the radio regulations of the 868MHz band, the fair use policy of TTN may prohibit this.
- *
- * CHECK THE RULES BEFORE USING THIS PROGRAM!
- *
- * CHANGE ADDRESS!
- * Change the device address, network (session) key, and app (session) key to the values
- * that are registered via the TTN dashboard.
- * The appropriate line is "myLora.initABP(XXX);" or "myLora.initOTAA(XXX);"
- * When using ABP, it is advised to enable "relax frame count".
- *
- * Connect the RN2xx3 as follows:
- * RN2xx3 -- ESP8266
- * Uart TX -- GPIO4
- * Uart RX -- GPIO5
- * Reset -- GPIO15
- * Vcc -- 3.3V
- * Gnd -- Gnd
- *
- */
-#include <rn2xx3.h>
-#include <SoftwareSerial.h>
-#include <DHT.h>
+/********************************************************
+ * This demo is only supported after RUI firmware version 3.0.0.13.X on RAK811
+ * Master Board Uart Receive buffer size at least 128 bytes. 
+ ********************************************************/
 
-#define RESET 15
-//sensors defines
+#include "RAK811.h"
+#include "SoftwareSerial.h"
+#define WORK_MODE LoRaWAN   //  LoRaWAN or LoRaP2P
+#define JOIN_MODE OTAA    //  OTAA or ABP
+#if JOIN_MODE == OTAA
+String DevEui = "8680000000000001";
+String AppEui = "70B3D57ED00285A7";
+String AppKey = "DDDFB1023885FBFF74D3A55202EDF2B1";
+#else JOIN_MODE == ABP
+String NwkSKey = "69AF20AEA26C01B243945A28C9172B42";
+String AppSKey = "841986913ACD00BBC2BE2479D70F3228";
+String DevAddr = "260125D7";
+#endif
+#define TXpin 11   // Set the virtual serial port pins
+#define RXpin 10
 //#define SensorPin A0  // used for Arduino and ESP8266
 #define SensorPin 4     // used for ESP32
+#define DebugSerial Serial
+SoftwareSerial ATSerial(RXpin,TXpin);    // Declare a virtual serial port
+char buffer[]= "72616B776972656C657373";
 
-SoftwareSerial mySerial(4, 5); // RX, TX !! labels on relay board is swapped !!
-
-//create an instance of the rn2xx3 library,
-//giving the software UART as stream to use,
-//and using LoRa WAN
-rn2xx3 myLora(mySerial);
+bool InitLoRaWAN(void);
+RAK811 RAKLoRa(ATSerial,DebugSerial);
 
 int16_t h1;
 
-void inline sensorsInit() {
+void setup() {
+  DebugSerial.begin(115200);
+  while(DebugSerial.available())
+  {
+    DebugSerial.read(); 
+  }
+  
+  ATSerial.begin(9600); //set ATSerial baudrate:This baud rate has to be consistent with  the baud rate of the WisNode device.
+  while(ATSerial.available())
+  {
+    ATSerial.read(); 
+  }
 
+  if(!RAKLoRa.rk_setWorkingMode(0))  //set WisNode work_mode to LoRaWAN.
+  {
+    DebugSerial.println(F("set work_mode failed, please reset module."));
+    while(1);
+  }
+  
+  RAKLoRa.rk_getVersion();  //get RAK811 firmware version
+  DebugSerial.println(RAKLoRa.rk_recvData());  //print version number
+
+  DebugSerial.println(F("Start init RAK811 parameters..."));
+ 
+  if (!InitLoRaWAN())  //init LoRaWAN
+  {
+    DebugSerial.println(F("Init error,please reset module.")); 
+    while(1);
+  }
+
+  DebugSerial.println(F("Start to join LoRaWAN..."));
+  while(!RAKLoRa.rk_joinLoRaNetwork(60))  //Joining LoRaNetwork timeout 60s
+  {
+    DebugSerial.println();
+    DebugSerial.println(F("Rejoin again after 5s..."));
+    delay(5000);
+  }
+  DebugSerial.println(F("Join LoRaWAN success"));
+
+  if(!RAKLoRa.rk_isConfirm(0))  //set LoRa data send package type:0->unconfirm, 1->confirm
+  {
+    DebugSerial.println(F("LoRa data send package set error,please reset module.")); 
+    while(1);    
+  }
 }
 
-void inline readSensorsAndTx() {
+bool InitLoRaWAN(void)
+{
+  if(RAKLoRa.rk_setJoinMode(JOIN_MODE))  //set join_mode:OTAA
+  {
+    if(RAKLoRa.rk_setRegion(5))  //set region EU868
+    {
+      if (RAKLoRa.rk_initOTAA(DevEui, AppEui, AppKey))
+      {
+        DebugSerial.println(F("RAK811 init OK!"));  
+        return true;    
+      }
+    }
+  }
+  return false;
+}
+
+bool readSensorsAndTx() {
 // Split both words (16 bits) into 2 bytes of 8
-	byte payload[2];
+	char payload[2];
 
 	Serial.print("Requesting data...");
 	h1 = analogRead(SensorPin);
@@ -99,103 +145,31 @@ void inline readSensorsAndTx() {
 	
 	Serial.println(F("Packet queued"));
   
-	//myLora.tx("!"); //send String, blocking function
-	myLora.txBytes(payload, sizeof(payload)); // blocking function
+	return RAKLoRa.rk_sendData(1, payload);
 }
 
-// the setup routine runs once when you press reset:
-void setup() {
-  // LED pin is GPIO2 which is the ESP8266's built in LED
-  pinMode(2, OUTPUT);
-  led_on();
-
-  // Open serial communications and wait for port to open:
-  Serial.begin(57600);
-  mySerial.begin(57600);
-  
-  sensorsInit();
-  
-  delay(1000); //wait for the arduino ide's serial console to open
-
-  Serial.println("Startup");
-
-  initialize_radio();
-
-  //transmit a startup message
-  myLora.tx("TTN Mapper on ESP8266 node");
-
-  led_off();
-
-  delay(2000);
-}
-
-void initialize_radio()
-{
-  //reset RN2xx3
-  pinMode(RESET, OUTPUT);
-  digitalWrite(RESET, LOW);
-  delay(100);
-  digitalWrite(RESET, HIGH);
-
-  delay(100); //wait for the RN2xx3's startup message
-  mySerial.flush();
-
-  //check communication with radio
-  String hweui = myLora.hweui();
-  while(hweui.length() != 16)
-  {
-    Serial.println("Communication with RN2xx3 unsuccessful. Power cycle the board.");
-    Serial.println(hweui);
-    delay(10000);
-    hweui = myLora.hweui();
-  }
-
-  //print out the HWEUI so that we can register it via ttnctl
-  Serial.println("When using OTAA, register this DevEUI: ");
-  Serial.println(hweui);
-  Serial.println("RN2xx3 firmware version:");
-  Serial.println(myLora.sysver());
-
-  //configure your keys and join the network
-  Serial.println("Trying to join TTN");
-  bool join_result = false;
-
-  //ABP: initABP(String addr, String AppSKey, String NwkSKey);
-  join_result = myLora.initABP("02017201", "8D7FFEF938589D95AAD928C2E2E7E48F", "AE17E567AECC8787F749A62F5541D522");
-
-  //OTAA: initOTAA(String AppEUI, String AppKey);
-  //join_result = myLora.initOTAA("70B3D57ED00001A6", "A23C96EE13804963F8C2BD6285448198");
-
-  while(!join_result)
-  {
-    Serial.println("Unable to join. Are your keys correct, and do you have TTN coverage?");
-    delay(60000); //delay a minute before retry
-    join_result = myLora.init();
-  }
-  Serial.println("Successfully joined TTN");
-
-}
-
-// the loop routine runs over and over again forever:
 void loop() {
-    led_on();
-    
-    readSensorsAndTx();
-	
-    led_off();
-    delay(200);
+  DebugSerial.println(F("Start send data..."));
+  if (readSensorsAndTx())
+  {    
+    for (unsigned long start = millis(); millis() - start < 90000L;)
+    {
+      String ret = RAKLoRa.rk_recvData();
+      if(ret != NULL)
+      { 
+        DebugSerial.println(ret);
+      }
+      if((ret.indexOf("OK")>0)||(ret.indexOf("ERROR")>0))
+      {
+        DebugSerial.println(F("Go to Sleep."));
+        RAKLoRa.rk_sleep(1);  //Set RAK811 enter sleep mode
+        delay(10000);  //delay 10s
+        RAKLoRa.rk_sleep(0);  //Wakeup RAK811 from sleep mode
+        break;
+      }
+    }
+  }
 }
-
-void led_on()
-{
-  digitalWrite(2, 1);
-}
-
-void led_off()
-{
-  digitalWrite(2, 0);
-}
-
 ```
 ### **Gateway LoraWan per la lettura periodica di un sensore di umidità del suolo alimentato a batteria**
 
