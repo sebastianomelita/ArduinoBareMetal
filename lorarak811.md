@@ -423,7 +423,9 @@ void loop() {
 }
 ```
 
+## **Appendice**
 
+### **Comandi AT**
 
 ```
 AT Command						Description
