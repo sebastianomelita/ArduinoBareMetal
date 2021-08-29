@@ -146,6 +146,8 @@ String DevAddr = "260125D7";
 #endif
 #define TXpin 11   // Set the virtual serial port pins
 #define RXpin 10
+//#define SensorPin A0  // used for Arduino and ESP8266
+#define SensorPin 4     // used for ESP32
 #define DebugSerial Serial
 SoftwareSerial ATSerial(RXpin,TXpin);    // Declare a virtual serial port
 char buffer[]= "72616B776972656C657373";
@@ -153,6 +155,7 @@ char buffer[]= "72616B776972656C657373";
 bool InitLoRaWAN(void);
 RAK811 RAKLoRa(ATSerial,DebugSerial);
 
+int16_t h1;
 
 void setup() {
   DebugSerial.begin(115200);
@@ -216,9 +219,25 @@ bool InitLoRaWAN(void)
   return false;
 }
 
+bool readSensorsAndTx() {
+// Split both words (16 bits) into 2 bytes of 8
+	char payload[2];
+
+	Serial.print("Requesting data...");
+	h1 = analogRead(SensorPin);
+	Serial.println("DONE");
+
+	payload[0] = highByte(h1);
+	payload[1] = lowByte(h1);
+	
+	Serial.println(F("Packet queued"));
+  
+	return RAKLoRa.rk_sendData(1, payload);
+}
+
 void loop() {
   DebugSerial.println(F("Start send data..."));
-  if (RAKLoRa.rk_sendData(1, buffer))
+  if (readSensorsAndTx())
   {    
     for (unsigned long start = millis(); millis() - start < 90000L;)
     {
