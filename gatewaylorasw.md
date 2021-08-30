@@ -111,7 +111,7 @@ E' un modem Lora che implementa esclusivamente il **livello fisico** dello stack
 
 In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello fisico, con il **chip RMF95/W**M vanno implementate in SW mediante apposite **librerie**. Se si vuole un **modem** che implementi **in HW** tutto lo **stack LoraWan** si guardi il modulo **Microchip RN2483**. Si programma sotto **Arduino IDE** come un **Arduino Zero**.
 
-### **Installazione librerie** 
+### **Installazione librerie MCU** 
 
 **Installazione del supporto SAMD**
 
