@@ -141,8 +141,6 @@ Ecco una breve descrizione di ciascuno dei pacchetti forniti da Adafruit che sar
 - Schede Adafruit SAMD - Include il supporto per Feather M0 e M4, Metro M0 e M4, ItsyBitsy M0 e M4, Circuit Playground Express, Gemma M0 e Trinket M0
 - Arduino Leonardo e Micro MIDI-USB - Aggiunge il supporto MIDI su USB per Flora, Feather 32u4, Micro e Leonardo utilizzando il progetto arcore.
 
-<img src="adafruitboard.png" alt="alt text" width="700">
-
 <img src="adafruitboard2.png" alt="alt text" width="700">
 
 <img src="adafruitboard3.png" alt="alt text" width="700">
