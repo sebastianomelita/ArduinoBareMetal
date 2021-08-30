@@ -641,8 +641,9 @@ void GoDeepSleep()
     Serial.println(F("Go DeepSleep"));
     PrintRuntime();
     Serial.flush();
-    requestModuleActive(0)
-    LowPower.deepSleep((int)TX_INTERVAL * 1000000);
+    requestModuleActive(0);
+    esp_sleep_enable_timer_wakeup(TX_INTERVAL * 1000000);
+    esp_deep_sleep_start();
 }
 
 static void requestModuleActive(bit_t state) {
