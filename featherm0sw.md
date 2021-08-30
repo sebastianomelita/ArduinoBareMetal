@@ -119,16 +119,16 @@ L'installazione di SDK, loader e librerie in Arduino si può fare seguendo, nell
 1. RAK811 è basato su STM32L151. Pertanto va installato SDK **Arduino Core per Arduino_Core_STM32**.
 https://github.com/adafruit/Adafruit_Arduino_Boards. Per far ciò bisogna aggiungre alla fine della lista su url aggiuntive per il gestore schede: "https://adafruit.github.io/arduino-board-index/package_adafruit_index.json"
 
-<img src="adafruitjson.png" alt="alt text" width="700">
+	<img src="adafruitjson.png" alt="alt text" width="700">
 
 Ecco una breve descrizione di ciascuno dei pacchetti forniti da Adafruit che saranno disponibili in Board Manager quando aggiungi l'URL:
 - Schede Adafruit AVR - Include il supporto per Flora, Gemma, Feather 32u4, ItsyBitsy 32u4, Trinket e Trinket Pro.
 - Schede Adafruit SAMD - Include il supporto per Feather M0 e M4, Metro M0 e M4, ItsyBitsy M0 e M4, Circuit Playground Express, Gemma M0 e Trinket M0
 - Arduino Leonardo e Micro MIDI-USB - Aggiunge il supporto MIDI su USB per Flora, Feather 32u4, Micro e Leonardo utilizzando il progetto arcore.
 
-<img src="adafruitboard2.png" alt="alt text" width="700">
+	<img src="adafruitboard2.png" alt="alt text" width="700">
 
-<img src="adafruitboard3.png" alt="alt text" width="700">
+	<img src="adafruitboard3.png" alt="alt text" width="700">
 
 2. Andare su **strumenti/gestione** librerie e installare le ultime schede Arduino SAMD (versione 1.6.11 o successive). Digitare Arduino SAMD nella barra di ricerca in alto, quindi alla voce, fare clic su Installa.
 
