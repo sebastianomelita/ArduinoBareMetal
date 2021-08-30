@@ -116,7 +116,8 @@ Il **middleware** in genere è composto da **librerie di terze parti** da **comp
 In questo caso gran parte delle funzioni del middleware, quelle relative alla comunicazione via stack LoRaWan, è implementato all'interno del sistema a microprocessore (MCU). Nello specifico, le funzioni di livello applicativo, che in ambito IoT, sono tutte quelle comprese tra il livello 2 e il livello 7 ISO/OSI sono compito della MCU mentre il livello fisico è realizzato in HW dal chip del modem.
 
 L'installazione di SDK, loader e librerie in Arduino si può fare seguendo, nell'ordine, le seguenti fasi:
-1. RAK811 è basato su STM32L151. Pertanto va installato l'SDK di Adafruit.
+
+1. Feather M0 è basato su ATSAMD21 Cortex M0. Pertanto va installato l'SDK di Adafruit.
 https://github.com/adafruit/Adafruit_Arduino_Boards. Per far ciò bisogna aggiungre alla fine della lista su url aggiuntive per il gestore schede: "https://adafruit.github.io/arduino-board-index/package_adafruit_index.json"
 
 	<img src="adafruitjson.png" alt="alt text" width="700">
