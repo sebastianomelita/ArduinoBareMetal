@@ -145,30 +145,16 @@ Ecco una breve descrizione di ciascuno dei pacchetti forniti da Adafruit che sar
 
 <img src="adafruitboard3.png" alt="alt text" width="700">
 
-Per prima cosa, installare le ultime schede Arduino SAMD (versione 1.6.11 o successive). Digitare Arduino SAMD nella barra di ricerca in alto, quindi alla voce, fare clic su Installa.
+2. Andare su **strumenti/gestione** librerie e installare le ultime schede Arduino SAMD (versione 1.6.11 o successive). Digitare Arduino SAMD nella barra di ricerca in alto, quindi alla voce, fare clic su Installa.
 
 <img src="adafruitboard5.png" alt="alt text" width="700">
-Successivamente puoi installare il pacchetto Adafruit SAMD per aggiungere le definizioni dei file della scheda. 
+
+3. Successivamente installare il pacchetto Adafruit SAMD per aggiungere le definizioni dei file della scheda. 
 Assicurarsi di aver selezionato Tipo tutto a sinistra della casella Filtra la tua ricerca...
 
 Digitare Adafruit SAMD nella barra di ricerca in alto, quindi alla voce corrispondente, fare clic su Installa.
 
 <img src="adafruitboard4.png" alt="alt text" width="700">
-
-2. Andare su **strumenti/gestione** librerie e installare la libreria **STM32 Core**:
-
-<img src="gestorelib.png" alt="alt text" width="700">
-
-3. Selezionare la scheda **Lora Board**:
-
-<img src="selezscheda.png" alt="alt text" width="700">
-
-4. Andare su **strumenti/Board part number** librerie e selezionare il BSP (Arduino Board Support) **RAK811 Lora Tracker** 
-
-5. Scaricare e installare STM32CubeIDE. Per poter utilizzare un STM32 con l'ambiente Arduino, si deve installare lo strumento STM32CubeIDE, che è disponibile al link https://www.st.com/en/development-tools/stm32cubeide.html.
-6. In Strumenti > Metodo di caricamento: scegliere **STM32CubeProgrammer (SWD)**
-
-<img src="selectcube.png" alt="alt text" width="700">
 
 **Jobs di un'applicazione**
 
