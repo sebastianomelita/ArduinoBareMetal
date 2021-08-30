@@ -30,7 +30,7 @@ In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello
 
 **Installazione del supporto SAMD**
 
-Per prima cosa, installare le ultime schede Arduino SAMD (versione 1.6.11 o successive).
+Per prima cosa, installare le ultime schede Arduino SAMD (versione 1.6.11 o successive). Digitare Arduino SAMD nella barra di ricerca in alto, quindi alla voce, fare clic su Installa.
 
 **Installazione delle librerie Adafruit SAMD**
 
@@ -40,7 +40,7 @@ Assicurarsi di aver selezionato Tipo tutto a sinistra della casella Filtra la tu
 
 Digitare Adafruit SAMD nella barra di ricerca in alto, quindi alla voce corrispondente, fare clic su Installa.
 
-Digitare Arduino SAMD nella barra di ricerca in alto, quindi alla voce, fare clic su Installa.
+
 
 ### **Schema cablaggio**
 ```
@@ -145,7 +145,15 @@ Ecco una breve descrizione di ciascuno dei pacchetti forniti da Adafruit che sar
 
 <img src="adafruitboard3.png" alt="alt text" width="700">
 
+Per prima cosa, installare le ultime schede Arduino SAMD (versione 1.6.11 o successive). Digitare Arduino SAMD nella barra di ricerca in alto, quindi alla voce, fare clic su Installa.
+
 <img src="adafruitboard4.png" alt="alt text" width="700">
+Successivamente puoi installare il pacchetto Adafruit SAMD per aggiungere le definizioni dei file della scheda. 
+Assicurarsi di aver selezionato Tipo tutto a sinistra della casella Filtra la tua ricerca...
+
+Digitare Adafruit SAMD nella barra di ricerca in alto, quindi alla voce corrispondente, fare clic su Installa.
+
+<img src="adafruitboard5.png" alt="alt text" width="700">
 
 2. Andare su **strumenti/gestione** librerie e installare la libreria **STM32 Core**:
 
