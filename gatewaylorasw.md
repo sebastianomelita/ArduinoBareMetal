@@ -102,46 +102,7 @@ const lmic_pinmap lmic_pins = {
 };
 ```
 
-### **3) Adafruit Feather M0 con RFM95** 
-
-
-<img src="feather_Feather_M0_RFM95_v1.2-1.png" alt="alt text" width="1000">
-
-E' un modem Lora che implementa esclusivamente il **livello fisico** dello stack LoraWan spesso indicato semplicemente come **LoRa**. Sopra di esso può essere utilizzato lo **stack applicativo LoRawan** oppure un qualsiasi altro stack (ad es. **6LowPan e REPL**). 
-
-In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello fisico, con il **chip RMF95/W**M vanno implementate in SW mediante apposite **librerie**. Se si vuole un **modem** che implementi **in HW** tutto lo **stack LoraWan** si guardi il modulo **Microchip RN2483**. Si programma sotto **Arduino IDE** come un **Arduino Zero**.
-
-### **Installazione librerie MCU** 
-
-**Installazione del supporto SAMD**
-
-Per prima cosa, installare le ultime schede Arduino SAMD (versione 1.6.11 o successive).
-
-**Installazione delle librerie Adafruit SAMD**
-
-Successivamente puoi installare il pacchetto Adafruit SAMD per aggiungere le definizioni dei file della scheda
-
-Assicurarsi di aver selezionato Tipo tutto a sinistra della casella Filtra la tua ricerca...
-
-Digitare Adafruit SAMD nella barra di ricerca in alto, quindi alla voce corrispondente, fare clic su Installa.
-
-Digitare Arduino SAMD nella barra di ricerca in alto, quindi alla voce, fare clic su Installa.
-
-### **Schema cablaggio**
-```
-const lmic_pinmap lmic_pins = {
-  .nss = 8,
-  .rxtx = LMIC_UNUSED_PIN,
-  //.rst = 4,
-  .rst = LMIC_UNUSED_PIN,
-  .dio = {3, 6, LMIC_UNUSED_PIN},
-  .rxtx_rx_active = 0,
-  .rssi_cal = 8,              // LBT cal for the Adafruit Feather M0 LoRa, in dB
-  .spi_freq = 8000000,
-};
-```
-
-### **4) La scheda Pycom LoPy**
+### **3) La scheda Pycom LoPy**
 
 <img src="Screen-Shot-2018-08-04-at-10.01.26-PM-1024x381.png" alt="alt text" width="1000">
 
