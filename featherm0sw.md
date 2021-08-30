@@ -141,7 +141,7 @@ Assicurarsi di aver selezionato Tipo tutto a sinistra della casella Filtra la tu
 	
 4. Selezionare la scheda Adafruit Feather M0:
 
-	<img src="scheda.png" alt="alt text" width="700">
+	<img src="schedam0.png" alt="alt text" width="700">
 	
 **Jobs di un'applicazione**
 
