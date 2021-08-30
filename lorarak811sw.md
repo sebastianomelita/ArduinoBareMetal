@@ -141,10 +141,9 @@ https://github.com/stm32duino/Arduino_Core_STM32. Per far ciò bisogna aggiungre
 <img src="selezscheda.png" alt="alt text" width="700">
 
 3. Andare su **strumenti/Board part number** librerie e selezionare il BSP (Arduino Board Support) **RAK811 Lora Tracker** 
-4. Dal **punto di vista SW** serve la **libreria** (da scaricare dentro la solita cartella **libraries**)
-**Arduino-RAK811-Library**. Si scarica da https://github.com/RAKWireless/WisNode-Arduino-Library come WisNode-Arduino-Library-master.zip, poi si  scompatta in una cartella sul desktop da cui si copia la cartella **Arduino-RAK811-Librarye** che va messa nela libraries dell'IDE di Arduino. La libreria dovrebbero supportare solamente le classi di servizio A e B (C esclusa).
+
 5. Scaricare e installare STM32CubeIDE. Per poter utilizzare un STM32 con l'ambiente Arduino, si deve installare lo strumento STM32CubeIDE, che è disponibile al link https://www.st.com/en/development-tools/stm32cubeide.html.
-6. In Strumenti > Metodo di caricamento: scegliere S**TM32CubeProgrammer (SWD)**
+6. In Strumenti > Metodo di caricamento: scegliere **STM32CubeProgrammer (SWD)**
 
 <img src="selectcube.png" alt="alt text" width="700">
 
