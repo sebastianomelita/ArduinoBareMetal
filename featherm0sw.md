@@ -138,7 +138,11 @@ Ecco una breve descrizione di ciascuno dei pacchetti forniti da Adafruit che sar
 Assicurarsi di aver selezionato Tipo tutto a sinistra della casella Filtra la tua ricerca...Digitare Adafruit SAMD nella barra di ricerca in alto, quindi alla voce corrispondente, fare clic su Installa.
 
 	<img src="adafruitboard4.png" alt="alt text" width="700">
+	
+4. Selezionare la scheda Adafruit Feather M0:
 
+	<img src="scheda.png" alt="alt text" width="700">
+	
 **Jobs di un'applicazione**
 
 In questo modello tutto il codice dell'applicazione viene eseguito nei cosiddetti job che vengono eseguiti sul thread principale dallo **schedulatore** dei task run-time **os_runloop()**. Questi lavori di applicazione sono codificati come normali funzioni C e possono essere gestiti a run-time utilizzando apposite funzioni.
