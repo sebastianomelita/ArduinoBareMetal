@@ -26,21 +26,6 @@ E' un modem Lora che implementa esclusivamente il **livello fisico** dello stack
 
 In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello fisico, con il **chip RMF95/W**M vanno implementate in SW mediante apposite **librerie**. Se si vuole un **modem** che implementi **in HW** tutto lo **stack LoraWan** si guardi il modulo **Microchip RN2483**. Si programma sotto **Arduino IDE** come un **Arduino Zero**.
 
-### **Installazione librerie MCU** 
-
-**Installazione del supporto SAMD**
-
-Per prima cosa, installare le ultime schede Arduino SAMD (versione 1.6.11 o successive). Digitare Arduino SAMD nella barra di ricerca in alto, quindi alla voce, fare clic su Installa.
-
-**Installazione delle librerie Adafruit SAMD**
-
-Successivamente puoi installare il pacchetto Adafruit SAMD per aggiungere le definizioni dei file della scheda
-
-Assicurarsi di aver selezionato Tipo tutto a sinistra della casella Filtra la tua ricerca...
-
-Digitare Adafruit SAMD nella barra di ricerca in alto, quindi alla voce corrispondente, fare clic su Installa.
-
-
 
 ### **Schema cablaggio**
 ```
@@ -147,14 +132,12 @@ Ecco una breve descrizione di ciascuno dei pacchetti forniti da Adafruit che sar
 
 2. Andare su **strumenti/gestione** librerie e installare le ultime schede Arduino SAMD (versione 1.6.11 o successive). Digitare Arduino SAMD nella barra di ricerca in alto, quindi alla voce, fare clic su Installa.
 
-<img src="adafruitboard5.png" alt="alt text" width="700">
+	<img src="adafruitboard5.png" alt="alt text" width="700">
 
 3. Successivamente installare il pacchetto Adafruit SAMD per aggiungere le definizioni dei file della scheda. 
-Assicurarsi di aver selezionato Tipo tutto a sinistra della casella Filtra la tua ricerca...
+Assicurarsi di aver selezionato Tipo tutto a sinistra della casella Filtra la tua ricerca...Digitare Adafruit SAMD nella barra di ricerca in alto, quindi alla voce corrispondente, fare clic su Installa.
 
-Digitare Adafruit SAMD nella barra di ricerca in alto, quindi alla voce corrispondente, fare clic su Installa.
-
-<img src="adafruitboard4.png" alt="alt text" width="700">
+	<img src="adafruitboard4.png" alt="alt text" width="700">
 
 **Jobs di un'applicazione**
 
