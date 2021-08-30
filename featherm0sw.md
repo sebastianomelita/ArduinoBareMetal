@@ -17,40 +17,44 @@ Radio punto-punto:
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
-### **La scheda LoRa RAK811**
+### **Adafruit Feather M0 con RFM95** 
 
-<img src="hwiotacrchitecturerak811.png" alt="alt text" width="1000">
 
-E' un **modem** che implementa **in HW** tutto lo **stack LoraWan** ed è configurabile via seriale mediante i comandi AT.
+<img src="feather_Feather_M0_RFM95_v1.2-1.png" alt="alt text" width="1000">
 
-Il modulo di breakout LPWAN RAK811 fornisce: scheda con terminali + transceiver Semtech SX1276 + MCU STM32L151.  
+E' un modem Lora che implementa esclusivamente il **livello fisico** dello stack LoraWan spesso indicato semplicemente come **LoRa**. Sopra di esso può essere utilizzato lo **stack applicativo LoRawan** oppure un qualsiasi altro stack (ad es. **6LowPan e REPL**). 
 
-E' utilizzabile:
-- come **modem HW** accessibile via UART tramite ccomandi AT gestibili anche tramite una libreria per Arduino. Sia i comandi AT che la libreria permettono l'accesso ai GPIO di cui è dotata tramite un'intestazione aggiuntiva ai messaggi. Il vantaggio di questa configurazione è che il codice della MCU risulta non appesatito dall'implementazione dell'intero stack protocollare LoRaWan e quindi con più risorse disponibili da dedicare alla logica dell'applicazione.
-- come **MCU** su cui caricare il FW con lo **stack** LoRaWan **completo** (**LMIC**) oppure un FW con uno **stack** di comunicazione **minimale** per la modalità **P2P** tra **coppie** di dispositivi. Il vantaggio di questa configurazione è che un nodo **non ha** bisogno di **MCU aggiuntive** per gestire la **logica** dell'applicazione con conseguente risparmio di dimensioni e consumi.
+In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello fisico, con il **chip RMF95/W**M vanno implementate in SW mediante apposite **librerie**. Se si vuole un **modem** che implementi **in HW** tutto lo **stack LoraWan** si guardi il modulo **Microchip RN2483**. Si programma sotto **Arduino IDE** come un **Arduino Zero**.
 
-In questa scheda vedremo la versione **standalone** in cui si programma la MCU per inserire sia lo stack LoRaWAn LMIC che la logica dell'applicazione che governa l'accesso alle porte.
+### **Installazione librerie MCU** 
+
+**Installazione del supporto SAMD**
+
+Per prima cosa, installare le ultime schede Arduino SAMD (versione 1.6.11 o successive).
+
+**Installazione delle librerie Adafruit SAMD**
+
+Successivamente puoi installare il pacchetto Adafruit SAMD per aggiungere le definizioni dei file della scheda
+
+Assicurarsi di aver selezionato Tipo tutto a sinistra della casella Filtra la tua ricerca...
+
+Digitare Adafruit SAMD nella barra di ricerca in alto, quindi alla voce corrispondente, fare clic su Installa.
+
+Digitare Arduino SAMD nella barra di ricerca in alto, quindi alla voce, fare clic su Installa.
 
 ### **Schema cablaggio**
-
-<img src="casual_RAK811-1024x758.png" alt="alt text" width="600">
-
-All'interno del codice del programma vanno impostati i pin del transceiver. In RAK811 sono interni al chip e non devono mai cambiare:
-
-```C++
-// Pin mapping
+```
 const lmic_pinmap lmic_pins = {
-    .nss = 26,
-    .rxtx = 32,
-    .rst = 21,
-    .dio = {27, 28, 29},
+  .nss = 8,
+  .rxtx = LMIC_UNUSED_PIN,
+  //.rst = 4,
+  .rst = LMIC_UNUSED_PIN,
+  .dio = {3, 6, LMIC_UNUSED_PIN},
+  .rxtx_rx_active = 0,
+  .rssi_cal = 8,              // LBT cal for the Adafruit Feather M0 LoRa, in dB
+  .spi_freq = 8000000,
 };
 ```
-
-In realtà il cablaggio serve a collegare sensori e alimentazione. Transceiver e MCU sono entrambi contenuti in un unico chip. Il problema principale adesso è collegare la UART alla presa USB di un PC per consentire il caricamento del FW compilato dall'IDE Arduino.
-
-<img src="rak811-serial.png" alt="alt text" width="500">
-
 
 ### **Classi di servizio**
 
