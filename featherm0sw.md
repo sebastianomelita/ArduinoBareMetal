@@ -145,6 +145,8 @@ Ecco una breve descrizione di ciascuno dei pacchetti forniti da Adafruit che sar
 
 <img src="adafruitboard3.png" alt="alt text" width="700">
 
+<img src="adafruitboard4.png" alt="alt text" width="700">
+
 2. Andare su **strumenti/gestione** librerie e installare la libreria **STM32 Core**:
 
 <img src="gestorelib.png" alt="alt text" width="700">
