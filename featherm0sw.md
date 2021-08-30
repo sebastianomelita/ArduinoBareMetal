@@ -353,7 +353,7 @@ const lmic_pinmap lmic_pins = {
 #define FILLMEIN 0
 #else
 #warning "You must replace the values marked FILLMEIN with real values from the TTN control panel!"
-#define FILLMEIN (#dont edit this, edit the lines that use FILLMEIN)
+//#define FILLMEIN (#dont edit this, edit the lines that use FILLMEIN)
 #endif
 
 // This EUI must be in little-endian format, so least-significant-byte
@@ -592,7 +592,302 @@ La funzione ```requestModuleActive``` ha il compito di attivare o disattivare il
 Il sistema però, dopo un wakeup riparte dall'ultima istruzione eseguita, infatti la RAM nel seep sleep dello STM32L rimane accesa per cui i parametri di una eventuale connessione precedentemente stabilita rimangono conservati. Quindi al risveglio non è necessario eseguire nuovamente una join e neppure eseguire salvataggi in memoria RTC delle informazioni di sessione.
 
 ```C++
+#include <arduino.h>
+#include <lmic.h>
+#include <hal/hal.h>
+#include <SPI.h>
+#include <ArduinoLowPower.h>
 
+// include the DHT22 Sensor Library
+#include "DHT.h"
+// DHT digital pin and sensor type
+#define DHTPIN 10
+#define DHTTYPE DHT22
+
+//#include <ttn_credentials.h>
+#define TTN_APPEUI {0}
+#define TTN_DEVEUI {0}
+#define TTN_APPKEY {0}
+#define MAX_BANDS 4
+//#define CFG_LMIC_EU_like 0
+
+bool GOTO_DEEPSLEEP = false;
+
+// rename ttn_credentials.h.example to ttn_credentials.h and add you keys
+static const u1_t PROGMEM APPEUI[8] = TTN_APPEUI;
+static const u1_t PROGMEM DEVEUI[8] = TTN_DEVEUI;
+static const u1_t PROGMEM APPKEY[16] = TTN_APPKEY;
+void os_getArtEui(u1_t *buf) { memcpy_P(buf, APPEUI, 8); }
+void os_getDevEui(u1_t *buf) { memcpy_P(buf, DEVEUI, 8); }
+void os_getDevKey(u1_t *buf) { memcpy_P(buf, APPKEY, 16); }
+
+static uint8_t payload[5];
+static osjob_t sendjob;
+bool flag_TXCOMPLETE = false;
+
+// Schedule TX every this many seconds
+// Respect Fair Access Policy and Maximum Duty Cycle!
+// https://www.thethingsnetwork.org/docs/lorawan/duty-cycle.html
+// https://www.loratools.nl/#/airtime
+const unsigned TX_INTERVAL = 30;
+
+#define PIN_LMIC_NSS 18
+#define PIN_LMIC_RST 14
+#define PIN_LMIC_DIO0 26
+#define PIN_LMIC_DIO1 33
+#define PIN_LMIC_DIO2 32
+
+const lmic_pinmap lmic_pins = {
+  .nss = 8,
+  .rxtx = LMIC_UNUSED_PIN,
+  //.rst = 4,
+  .rst = LMIC_UNUSED_PIN,
+  .dio = {3, 6, LMIC_UNUSED_PIN},
+  .rxtx_rx_active = 0,
+  .rssi_cal = 8,              // LBT cal for the Adafruit Feather M0 LoRa, in dB
+  .spi_freq = 8000000,
+};
+
+// init. DHT
+DHT dht(DHTPIN, DHTTYPE);
+
+// https://github.com/mcci-catena/arduino-lmic/blob/89c28c5888338f8fc851851bb64968f2a493462f/src/lmic/lmic.h#L233
+
+void PrintRuntime()
+{
+    long seconds = millis() / 1000;
+    Serial.print("Runtime: ");
+    Serial.print(seconds);
+    Serial.println(" seconds");
+}
+
+void PrintLMICVersion()
+{
+    Serial.print(F("LMIC: "));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_MAJOR(ARDUINO_LMIC_VERSION));
+    Serial.print(F("."));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_MINOR(ARDUINO_LMIC_VERSION));
+    Serial.print(F("."));
+    Serial.print(ARDUINO_LMIC_VERSION_GET_PATCH(ARDUINO_LMIC_VERSION));
+    Serial.print(F("."));
+    Serial.println(ARDUINO_LMIC_VERSION_GET_LOCAL(ARDUINO_LMIC_VERSION));
+}
+
+void onEvent(ev_t ev)
+{
+    Serial.print(os_getTime());
+    Serial.print(": ");
+    switch (ev)
+    {
+    case EV_SCAN_TIMEOUT:
+        Serial.println(F("EV_SCAN_TIMEOUT"));
+        break;
+    case EV_BEACON_FOUND:
+        Serial.println(F("EV_BEACON_FOUND"));
+        break;
+    case EV_BEACON_MISSED:
+        Serial.println(F("EV_BEACON_MISSED"));
+        break;
+    case EV_BEACON_TRACKED:
+        Serial.println(F("EV_BEACON_TRACKED"));
+        break;
+    case EV_JOINING:
+        Serial.println(F("EV_JOINING"));
+        break;
+    case EV_JOINED:
+        Serial.println(F("EV_JOINED"));
+        {
+            u4_t netid = 0;
+            devaddr_t devaddr = 0;
+            u1_t nwkKey[16];
+            u1_t artKey[16];
+            LMIC_getSessionKeys(&netid, &devaddr, nwkKey, artKey);
+            Serial.print("netid: ");
+            Serial.println(netid, DEC);
+            Serial.print("devaddr: ");
+            Serial.println(devaddr, HEX);
+            Serial.print("artKey: ");
+            for (size_t i = 0; i < sizeof(artKey); ++i)
+            {
+                Serial.print(artKey[i], HEX);
+            }
+            Serial.println("");
+            Serial.print("nwkKey: ");
+            for (size_t i = 0; i < sizeof(nwkKey); ++i)
+            {
+                Serial.print(nwkKey[i], HEX);
+            }
+            Serial.println("");
+        }
+        // Disable link check validation (automatically enabled
+        // during join, but because slow data rates change max TX
+        // size, we don't use it in this example.
+        LMIC_setLinkCheckMode(0);
+        break;
+    /*
+        || This event is defined but not used in the code. No
+        || point in wasting codespace on it.
+        ||
+        || case EV_RFU1:
+        ||     Serial.println(F("EV_RFU1"));
+        ||     break;
+        */
+    case EV_JOIN_FAILED:
+        Serial.println(F("EV_JOIN_FAILED"));
+        break;
+    case EV_REJOIN_FAILED:
+        Serial.println(F("EV_REJOIN_FAILED"));
+        break;
+    case EV_TXCOMPLETE:
+        Serial.println(F("EV_TXCOMPLETE (includes waiting for RX windows)"));
+        if (LMIC.txrxFlags & TXRX_ACK)
+            Serial.println(F("Received ack"));
+        if (LMIC.dataLen)
+        {
+            Serial.print(F("Received "));
+            Serial.print(LMIC.dataLen);
+            Serial.println(F(" bytes of payload"));
+        }
+        GOTO_DEEPSLEEP = true;
+        break;
+    case EV_LOST_TSYNC:
+        Serial.println(F("EV_LOST_TSYNC"));
+        break;
+    case EV_RESET:
+        Serial.println(F("EV_RESET"));
+        break;
+    case EV_RXCOMPLETE:
+        // data received in ping slot
+        Serial.println(F("EV_RXCOMPLETE"));
+        break;
+    case EV_LINK_DEAD:
+        Serial.println(F("EV_LINK_DEAD"));
+        break;
+    case EV_LINK_ALIVE:
+        Serial.println(F("EV_LINK_ALIVE"));
+        break;
+    /*
+        || This event is defined but not used in the code. No
+        || point in wasting codespace on it.
+        ||
+        || case EV_SCAN_FOUND:
+        ||    Serial.println(F("EV_SCAN_FOUND"));
+        ||    break;
+        */
+    case EV_TXSTART:
+        Serial.println(F("EV_TXSTART"));
+        break;
+    case EV_TXCANCELED:
+        Serial.println(F("EV_TXCANCELED"));
+        break;
+    case EV_RXSTART:
+        /* do not print anything -- it wrecks timing */
+        break;
+    case EV_JOIN_TXCOMPLETE:
+        Serial.println(F("EV_JOIN_TXCOMPLETE: no JoinAccept"));
+        break;
+    default:
+        Serial.print(F("Unknown event: "));
+        Serial.println((unsigned)ev);
+        break;
+    }
+}
+
+void do_send(osjob_t *j)
+{
+    // Check if there is not a current TX/RX job running
+    if (LMIC.opmode & OP_TXRXPEND)
+    {
+        Serial.println(F("OP_TXRXPEND, not sending"));
+    }
+    else
+    {
+        // Prepare upstream data transmission at the next possible time.
+        // read the temperature from the DHT22
+        float temperature = dht.readTemperature();
+        Serial.print("Temperature: "); Serial.print(temperature);
+        Serial.println(" *C");
+        // adjust for the f2sflt16 range (-1 to 1)
+        temperature = temperature / 100;
+        // float -> int
+        // note: this uses the sflt16 datum (https://github.com/mcci-catena/arduino-lmic#sflt16)
+        uint16_t payloadTemp = LMIC_f2sflt16(temperature);
+        // int -> bytes
+        byte tempLow = lowByte(payloadTemp);
+        byte tempHigh = highByte(payloadTemp);
+        // place the bytes into the payload
+        payload[0] = tempLow;
+        payload[1] = tempHigh;   
+
+        // prepare upstream data transmission at the next possible time.
+        // transmit on port 1 (the first parameter); you can use any value from 1 to 223 (others are reserved).
+        // don't request an ack (the last parameter, if not zero, requests an ack from the network).
+        // Remember, acks consume a lot of network resources; don't ask for an ack unless you really need it.
+        LMIC_setTxData2(1, payload, sizeof(payload)-1, 0);
+        Serial.println(F("Packet queued"));
+    }
+    // Next TX is scheduled after TX_COMPLETE event.
+}
+
+void GoDeepSleep()
+{
+    Serial.println(F("Go DeepSleep"));
+    PrintRuntime();
+    Serial.flush();
+    requestModuleActive(0);
+    LowPower.deepSleep((int)TX_INTERVAL * 1000);
+    requestModuleActive(1);
+}
+
+static void requestModuleActive(bit_t state) {
+    ostime_t const ticks = hal_setModuleActive(state);
+
+    if (ticks)
+        hal_waitUntil(os_getTime() + ticks);;
+}
+
+
+void setup()
+{
+    Serial.begin(115200);
+
+    Serial.println(F("Starting DeepSleep test"));
+    PrintLMICVersion();
+
+    // LMIC init
+    os_init();
+    requestModuleActive(1);
+
+    // Reset the MAC state. Session and pending data transfers will be discarded.
+    LMIC_reset();
+
+    // Start job (sending automatically starts OTAA too)
+    do_send(&sendjob);
+}
+
+void loop()
+{
+    static unsigned long lastPrintTime = 0;
+
+    os_runloop_once();
+
+    const bool timeCriticalJobs = os_queryTimeCriticalJobs(ms2osticksRound((TX_INTERVAL * 1000)));
+    if (!timeCriticalJobs && GOTO_DEEPSLEEP == true && !(LMIC.opmode & OP_TXRXPEND))
+    {
+        Serial.print(F("Can go sleep "));
+        GoDeepSleep();
+    }
+    else if (millis() - lastPrintTime > 2000)
+    {
+        Serial.print(F("Cannot sleep "));
+        Serial.print(F("TimeCriticalJobs: "));
+        Serial.print(timeCriticalJobs);
+        Serial.print(" ");
+
+        PrintRuntime();
+        lastPrintTime = millis();
+    }
+}
 ```
 ### **APPENDICE DI CONSULTAZIONE**
 
