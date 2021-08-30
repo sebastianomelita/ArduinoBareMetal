@@ -382,12 +382,15 @@ bool flag_TXCOMPLETE = false;
 // cycle limitations).
 const unsigned TX_INTERVAL = 60;
 
-// Pin mapping
 const lmic_pinmap lmic_pins = {
-    .nss = 26,
-    .rxtx = 32,
-    .rst = 21,
-    .dio = {27, 28, 29},
+  .nss = 8,
+  .rxtx = LMIC_UNUSED_PIN,
+  //.rst = 4,
+  .rst = LMIC_UNUSED_PIN,
+  .dio = {3, 6, LMIC_UNUSED_PIN},
+  .rxtx_rx_active = 0,
+  .rssi_cal = 8,              // LBT cal for the Adafruit Feather M0 LoRa, in dB
+  .spi_freq = 8000000,
 };
 
 // init. DHT
@@ -655,12 +658,15 @@ const unsigned TX_INTERVAL = 30;
 #define PIN_LMIC_DIO1 33
 #define PIN_LMIC_DIO2 32
 
-// Pin mapping
 const lmic_pinmap lmic_pins = {
-    .nss = 26,
-    .rxtx = 32,
-    .rst = 21,
-    .dio = {27, 28, 29}
+  .nss = 8,
+  .rxtx = LMIC_UNUSED_PIN,
+  //.rst = 4,
+  .rst = LMIC_UNUSED_PIN,
+  .dio = {3, 6, LMIC_UNUSED_PIN},
+  .rxtx_rx_active = 0,
+  .rssi_cal = 8,              // LBT cal for the Adafruit Feather M0 LoRa, in dB
+  .spi_freq = 8000000,
 };
 
 // init. DHT
