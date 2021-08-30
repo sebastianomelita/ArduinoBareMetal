@@ -556,7 +556,7 @@ void loop() {
 
 Le librerie da integrare nell'IDE di Arduino per includere la gestione del deep sleep sono:
 - la libreria **Arduino Low Power library**. Si scarica da https://github.com/arduino-libraries/ArduinoLowPower come ArduinoLowPower-master.zip, poi si scompatta nela libraries dell'IDE di Arduino come ArduinoLowPower-master e si rinomina come **ArduinoLowPower** per completare l'installazione. 
-
+- la libreria **RTCZero** consente a una scheda Arduino Zero o MKR1000 di assumere il controllo dell'RTC interno. Si scarica da https://github.com/arduino-libraries/RTCZero come RTCZero-master.zip, poi si scompatta nela libraries dell'IDE di Arduino come RTCZero-master e si rinomina come **RTCZero** per completare l'installazione. 
 
 Conviene usare il **deep sleep** quando si ha bisogno di **mantenere la RAM** e lo **spegnimento** se si ha bisogno **solo di RTC** e/o pochi dati salvati nei registri.
 
