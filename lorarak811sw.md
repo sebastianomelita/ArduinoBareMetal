@@ -140,7 +140,7 @@ https://github.com/stm32duino/Arduino_Core_STM32. Per far ciò bisogna aggiungre
 
 <img src="selezscheda.png" alt="alt text" width="700">
 
-3. Andare su **strumenti/Board part number** librerie e selezionare il BSP (Arduino Board Support) **RAK811 Lora Tracker** 
+4. Andare su **strumenti/Board part number** librerie e selezionare il BSP (Arduino Board Support) **RAK811 Lora Tracker** 
 
 5. Scaricare e installare STM32CubeIDE. Per poter utilizzare un STM32 con l'ambiente Arduino, si deve installare lo strumento STM32CubeIDE, che è disponibile al link https://www.st.com/en/development-tools/stm32cubeide.html.
 6. In Strumenti > Metodo di caricamento: scegliere **STM32CubeProgrammer (SWD)**
