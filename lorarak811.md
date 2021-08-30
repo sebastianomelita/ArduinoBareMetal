@@ -1,5 +1,5 @@
 >[Torna all'indice generale](index.md)
-## **Gateways per reti di sensori con modem LoRaWan HW con il modulo RAK811** !!! NON ANCORA FINITO !!!
+## **Gateways per reti di sensori con modem LoRaWan HW con il modulo RAK811**
 BUS cablato:
 1. [Dallas](rak811hwlorawandallas.md)
 2. [I2C](gatewayi2crak811hw.md)
