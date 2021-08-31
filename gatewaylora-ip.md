@@ -167,6 +167,31 @@ In questo caso gran parte delle funzioni del middleware, quelle relative alla co
 Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cartella **libraries**:
 - **Arduino-LMIC library**. Si scarica da https://github.com/things4u/ESP-1ch-Gateway come ESP-1ch-Gateway-master.zip da scompattare e rinominare semplicemente come **ESP-1ch-Gateway**
 
+### **File di configurazione**
+
+Prima di caricare lo schetch **ESP-1ch-Gateway.ino** sulla tua scheda, dovrai apportare alcune modifiche a un paio di file. Ecco una rapida panoramica:
+
+**ESP-sc-gway.h**
+
+Questo file è la principale fonte di configurazione per lo sketch del gateway. Le definizioni che probabilmente dovrai modificare sono:
+
+- **Radio**. 
+	- _LFREQ -- Imposta la gamma di frequenza su cui comunicherà la radio. Impostalo su 433 (Asia), 868 (UE) o 915 (USA)
+    - _SPREADING -- Imposta il fattore di diffusione LoRa. È possibile utilizzare SF7, SF8, SF9, SF10, SF11 o SF12. Tieni presente che ciò influirà sui dispositivi con cui il tuo gateway può comunicare.
+    - _CAD -- Rilevamento dell'attività del canale. Se abilitato (impostato a 1) CAD consentirà al gateway di monitorare i messaggi inviati a qualsiasi fattore di diffusione. Il compromesso se abilitato: i segnali molto deboli potrebbero non essere captati dalla radio.
+- **Hardware**
+	- OLED: questa scheda non include un OLED, impostalo su 0.
+	- _PIN_OUT: configura l'SPI e altre impostazioni hardware. Impostalo su 6, aggiungeremo una definizione hardware personalizzata in seguito.
+	- CFG_sx1276_radio: assicurati che sia definito e che CFG_sx1272_radio non lo sia. Questo configura la radio LoRa collegata a ESP32.
+- **La rete delle cose (TTN)**
+	- _TTNSERVER -- Il server per il tuo router LoRa. Per esempio. "router.eu.thethings.network" o "us-west.thethings.network"
+	- _TTNPORT -- 1700 è la porta standard per TTN
+	- _DESCRIPTION -- Personalizza il nome del tuo gateway
+	- _EMAIL -- Il tuo indirizzo email, o quello del proprietario del gateway
+	- _LAT e _LON -- Coordinate GPS del tuo gateway
+- **Wifi**
+	- Aggiungi almeno una rete WiFi all'array wpas wpa[], ma lascia vuota la prima voce. Per esempio:
+
 Per vedere un codice di esempio, aprire il file **ESP-sc-gway.ino**:
 
 ```C++
