@@ -43,6 +43,14 @@ La lunghezza del filo dipende dalla frequenza:
 
 ### **Classi di servizio**
 
+### **Bande di frequenza e potenza**
+```
+				Lower EU	Upper EU	US (FCC)
+Intervallo di frequenze		865 – 868 MHz	915 – 921 MHz	902 – 928 MHz
+Potenza irradiata		2 watt		4 watt		4 watt
+Canale di banda			200 kHz		400 kHz		400 kHz
+```
+
 **Classe A**
 
 La **trasmissione** del nodo in uplink è **asincrona** cioè i messaggi, dal nodo al gateway, possono essere inviati in qualsiasi momento. 
