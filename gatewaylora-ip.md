@@ -224,7 +224,7 @@ struct pins {
 
 L'array ```int freqs[]``` può essere impostato, se si desidera utilizzare sottobande diverse, ma, oltre a ciò, non c'è molto altro qui che consigliamo di modificare.
 
-**Caricamento dello scketch**
+### **Caricamento dello scketch**
 
 Con le modifiche apportate, prova a compilare e caricare lo schetch sul tuo ESP32. Dopo che è stato caricato, apri il tuo monitor seriale e imposta la velocità di trasmissione su 115200. I messaggi di debug qui possono essere molto utili e trovare l'**indirizzo IP del tuo gateway** è fondamentale se vuoi monitorare il server web.
 
@@ -240,7 +240,7 @@ Può anche essere utilizzata per modificare al volo la **configurazione del gate
 
 Ovviamente, per vedere i messaggi passare avrai bisogno di un dispositivo LoRa (o device_s_) configurato per comunicare con il tuo gateway. 
 
-**Codice di esempio**
+### **Codice di esempio**
 
 Per vedere un codice di esempio, aprire il file **ESP-sc-gway.ino**:
 
