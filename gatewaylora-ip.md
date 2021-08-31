@@ -167,6 +167,8 @@ In questo caso gran parte delle funzioni del middleware, quelle relative alla co
 Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cartella **libraries**:
 - **Arduino-LMIC library**. Si scarica da https://github.com/things4u/ESP-1ch-Gateway come ESP-1ch-Gateway-master.zip da scompattare e rinominare semplicemente come **ESP-1ch-Gateway**
 
+Per vedere un codice di esempio, aprire il file **ESP-sc-gway.ino**:
+
 ```C++
 // 1-channel LoRa Gateway for ESP8266 and ESP32
 // Copyright (c) 2016-2021 Maarten Westenberg
