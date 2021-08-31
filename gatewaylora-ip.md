@@ -190,7 +190,7 @@ Questo file è la principale fonte di configurazione per lo sketch del gateway. 
 	- **_EMAIL** -- Il tuo indirizzo email, o quello del proprietario del gateway
 	- **_LAT** e **_LON** -- Coordinate GPS del tuo gateway
 - **Wifi**
-	- Aggiungi almeno una rete WiFi all'array wpas wpa[], ma lascia vuota la prima voce. Per esempio:
+	- Aggiungi almeno una rete WiFi all'array ```wpas wpa[]```, ma lascia vuota la prima voce. Per esempio:
 	
 ```C++
 	wpas wpa[] = {
