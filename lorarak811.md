@@ -40,6 +40,14 @@ La lunghezza del filo dipende dalla frequenza:
 - 915 MHz: 81,9 mm
 - 433 MHz: 173,1 mm
 
+### **Bande di frequenza e potenza**
+```
+				Lower EU	Upper EU	US (FCC)
+Intervallo di frequenze		865 – 868 MHz	915 – 921 MHz	902 – 928 MHz
+Potenza irradiata		2 watt		4 watt		4 watt
+Canale di banda			200 kHz		400 kHz		400 kHz
+```
+
 ### **Classi di servizio**
 
 **Classe A**
