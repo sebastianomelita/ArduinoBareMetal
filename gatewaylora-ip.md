@@ -199,6 +199,33 @@ Questo file è la principale fonte di configurazione per lo sketch del gateway. 
 	};
 ```
 
+**loramodem.h**
+
+Questo file definisce come è configurato il modem LoRa, inclusi quali canali di frequenza può utilizzare e quali pin utilizza ESP32 per comunicare con esso. 
+
+Introdurre eventuali modifiche sapendo bene cosa si sta facendo, in ogni caso, una sezione che va modificata obbligatoriamente è la dichiarazione **_PIN_OUT**.
+
+Innanzitutto, trova la riga che dice ```#error "Pin Definitions _PIN_OUT deve essere 1(HALLARD) o 2 (COMRESULT)"``` ed eliminala. Quindi copia e incolla queste righe al suo posto (tra ```#else e #endif```):
+
+```C++
+struct pins {
+  uint8_t dio0 = 26;
+  uint8_t dio1 = 33;
+  uint8_t dio2 = 32;
+  uint8_t ss = 16;
+  uint8_t rst = 27; // Reset not used
+} pins;
+#define SCK  14
+#define MISO 12
+#define MOSI 13
+#define SS  16
+#define DIO0 26
+```
+
+L'array ```int freqs[]``` può essere impostato, se si desidera utilizzare sottobande diverse, ma, oltre a ciò, non c'è molto altro qui che consigliamo di modificare.
+
+**Codice di esempio**
+
 Per vedere un codice di esempio, aprire il file **ESP-sc-gway.ino**:
 
 ```C++
