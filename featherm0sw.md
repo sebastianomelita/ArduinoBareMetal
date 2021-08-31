@@ -40,6 +40,13 @@ const lmic_pinmap lmic_pins = {
   .spi_freq = 8000000,
 };
 ```
+### **Bande di frequenza e potenza**
+```
+				Lower EU	Upper EU	US (FCC)
+Intervallo di frequenze		865 – 868 MHz	915 – 921 MHz	902 – 928 MHz
+Potenza irradiata		2 watt		4 watt		4 watt
+Canale di banda			200 kHz		400 kHz		400 kHz
+```
 
 ### **Classi di servizio**
 
