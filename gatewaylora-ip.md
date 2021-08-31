@@ -192,14 +192,12 @@ Questo file è la principale fonte di configurazione per lo sketch del gateway. 
 - **Wifi**
 	- Aggiungi almeno una rete WiFi all'array wpas wpa[], ma lascia vuota la prima voce. Per esempio:
 	
-        ```C++
-	
+```C++
 	wpas wpa[] = {
-	  { "" , "" },                          // Reserved for WiFi Manager
+	  { "" , "" },  // Reserved for WiFi Manager
 	  { "my_wifi_network", "my_wifi_password" }
 	};
-	
-        ```
+```
 
 Per vedere un codice di esempio, aprire il file **ESP-sc-gway.ino**:
 
