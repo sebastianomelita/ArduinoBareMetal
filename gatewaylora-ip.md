@@ -170,7 +170,7 @@ Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cart
 - **ArduinoJson**. Si scarica da https://github.com/bblanchon/ArduinoJson come ArduinoJson-6.x.zip da scompattare e rinominare semplicemente come **ArduinoJson-6.x**
 - **arduino-base64**. Si scarica da https://github.com/adamvr/arduino-base64 come arduino-base64-master.zip da scompattare e rinominare semplicemente come **arduino-base64**
 - **RFM95W_Nexus**. Si scarica da https://github.com/Ideetron/RFM95W_Nexus come RFM95W_Nexus-master.zip da scompattare e rinominare semplicemente come **RFM95W_Nexus**
-- **Streaming**. Si scarica dahttp://arduiniana.org/libraries/streaming/ come Streaming5.zip da scompattare e rinominare semplicemente come **Streaming5**
+- **Streaming**. Si scarica dahttp://arduiniana.org/libraries/streaming/ come Streaming5.zip da scompattare e rinominare semplicemente come **Streaming**. Attenzione che dentro la cartella Streaming5 ci ata la cartella Streaming da scompattare.
 
 ### **File di configurazione**
 
