@@ -232,7 +232,7 @@ Lo schetch potrebbe richiedere molto tempo per la configurazione iniziale: **for
 
 Dopo che ESP32 si è connesso, cercalo per stampare un indirizzo IP. Apri il browser web del tuo computer e metti l'IP della scheda sulla barra degli indirizzi. Dovresti essere accolto dal portale web ESP Gateway Config:
 
-<img src="esp-gateway-config-web.png" alt="alt text" width="600">
+<img src="esp-gateway-config-web.png" alt="alt text" width="800">
 
 Questa pagina Web può essere utilizzata per **monitorare** i messaggi in arrivo e su quali **frequenze** e **fattori di diffusione** sono arrivati. 
 
@@ -1174,6 +1174,7 @@ void loop ()
 
 ### **Sitografia:**
 
+- https://learn.sparkfun.com/tutorials/esp32-lora-1-ch-gateway-lorawan-and-the-things-network/all#single-channel-lorawan-gateway-code
 - https://redmine.laas.fr/attachments/download/1505/LMIC-v2.3.pdf
 - https://github.com/matthijskooijman/arduino-lmic/blob/master/doc/LMiC-v1.5.pdf
 - https://randomnerdtutorials.com/esp32-lora-rfm95-transceiver-arduino-ide/
