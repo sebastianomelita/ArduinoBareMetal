@@ -1194,6 +1194,7 @@ void loop ()
 - https://docs.pycom.io/datasheets/development/sipy/
 - https://www.thethingsnetwork.org/labs/story/program-your-lopy-from-the-arduino-ide-using-lmic
 - https://www.studiopieters.nl/esp32-pinout/
+- https://github.com/beegee-tokyo/SX126x-Arduino/
 
 >[Torna all'indice generale](index.md)
 
