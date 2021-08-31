@@ -276,6 +276,10 @@ Per vedere un codice di esempio, aprire il file **ESP-sc-gway.ino**:
 // - Only call yield() in main stream (not for background NTP sync). 
 //
 // ----------------------------------------------------------------------------------------
+#define ARDUINO_ARCH_ESP32 1
+#define  _OLED 0
+#define _GATEWAYNODE 0
+
 
 #if defined (ARDUINO_ARCH_ESP32) || defined(ESP32)
 #	define ESP32_ARCH 1
@@ -288,12 +292,11 @@ Per vedere un codice di esempio, aprire il file **ESP-sc-gway.ino**:
 #	error "Architecture unknown and not supported"
 #endif
 
-
 // The followion file contains most of the definitions
 // used in other files. It should be the first file.
 #include "configGway.h"										// contains the configuration data of GWay
 #include "configNode.h"										// Contains the personal data of Wifi etc.
-
+/*
 #include <Esp.h>											// ESP8266 specific IDE functions
 #include <string.h>
 #include <stdio.h>
@@ -304,25 +307,26 @@ Per vedere un codice di esempio, aprire il file **ESP-sc-gway.ino**:
 #include <sys/time.h>
 #include <cstring>
 #include <string>											// C++ specific string functions
-
+*/
 #include <SPI.h>											// For the RFM95 bus
 #include <TimeLib.h>										// http://playground.arduino.cc/code/time
 #include <ArduinoJson.h>
-#include <FS.h>												// ESP8266 Specific
+//#include <FS.h>												// ESP8266 Specific
 #include <WiFiUdp.h>
 #include <pins_arduino.h>
-#include <gBase64.h>										// https://github.com/adamvr/arduino-base64 (changed the name)
+//#include <gBase64.h>										// https://github.com/adamvr/arduino-base64 (changed the name)
+#include <Base64.h>	
 
 // Local include files
 #include "loraModem.h"
 #include "loraFiles.h"
 #include "oLED.h"
-
+/*
 extern "C" {
 #	include "lwip/err.h"
 #	include "lwip/dns.h"
 }
-
+*/
 #if (_GATEWAYNODE==1) || (_LOCALSERVER>=1)
 #	include "AES-128_V10.h"
 #endif
@@ -332,7 +336,7 @@ extern "C" {
 #	include <WiFi.h>
 #	include <ESPmDNS.h>
 #	include <SPIFFS.h>
-#	include <WiFiManager.h>									// Standard lib for ESP WiFi config through an AP
+//#	include <WiFiManager.h>									// Standard lib for ESP WiFi config through an AP
 
 #	define ESP_getChipId()   ((uint32_t)ESP.getEfuseMac())
 
@@ -508,11 +512,15 @@ int initMonitor(struct moniLine *monitor);								// _loraFiles.ino
 void initConfig(struct espGwayConfig *c);								// _loraFiles.ino
 int printSeen(const char *fn, struct nodeSeen *listSeen);				// _loraFiles.ino
 int readGwayCfg(const char *fn, struct espGwayConfig *c);				// _loraFiles.ino
+int readSeen(const char *fn, struct nodeSeen *listSeen);
+int writeConfig(const char *fn, struct espGwayConfig *c);
+int writeGwayCfg(const char *fn, struct espGwayConfig *c);
 
 void init_oLED();														// _oLED.ino
 void acti_oLED();														// _oLED.ino
 void addr_oLED();														// _oLED.ino
 void msg_oLED(String mesg);												// _oLED.ino
+void msg_lLED(String mesg, String mesg2);
 
 void setupOta(char *hostname);											// _otaServer.ino
 
@@ -521,6 +529,8 @@ void rxLoraModem();														// _loraModem.ino
 void writeRegister(uint8_t addr, uint8_t value);						// _loraModem.ino
 void cadScanner();														// _loraModem.ino
 void startReceiver();													// _loraModem.ino
+void initDown(struct LoraDown *LoraDown);
+uint8_t readRegister(uint8_t addr);
 
 void stateMachine();													// _stateMachine.ino
 
@@ -529,6 +539,8 @@ int readUdp(int packetSize);											// _udpSemtech.ino
 int sendUdp(IPAddress server, int port, uint8_t *msg, uint16_t length);	// _udpSemtech.ino
 void sendStat();														// _udpSemtech.ino
 void pullData();														// _udpSemtech.ino
+IPAddress resolveHost(String svrName, int maxTry);
+int WlanConnect(int maxTry);
 
 #if _MUTEX==1
 	void ICACHE_FLASH_ATTR CreateMutux(int *mutex);
