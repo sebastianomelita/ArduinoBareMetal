@@ -167,6 +167,7 @@ In questo caso gran parte delle funzioni del middleware, quelle relative alla co
 Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cartella **libraries**:
 - **Arduino-LMIC library**. Si scarica da https://github.com/things4u/ESP-1ch-Gateway come ESP-1ch-Gateway-master.zip da scompattare e rinominare semplicemente come **ESP-1ch-Gateway**
 - **Arduino Time Library**. Si scarica da https://github.com/PaulStoffregen/Time come Time-master.zip da scompattare e rinominare semplicemente come **Time**
+- **ArduinoJson**. Si scarica da https://github.com/bblanchon/ArduinoJson come ArduinoJson-6.x.zip da scompattare e rinominare semplicemente come **ArduinoJson-6.x**
 
 ### **File di configurazione**
 
