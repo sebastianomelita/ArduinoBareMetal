@@ -169,6 +169,7 @@ Dal **punto di vista SW** seve **4 librerie** da scaricare dentro la solita cart
 - **Arduino Time Library**. Si scarica da https://github.com/PaulStoffregen/Time come Time-master.zip da scompattare e rinominare semplicemente come **Time**
 - **ArduinoJson**. Si scarica da https://github.com/bblanchon/ArduinoJson come ArduinoJson-6.x.zip da scompattare e rinominare semplicemente come **ArduinoJson-6.x**
 - **arduino-base64**. Si scarica da https://github.com/adamvr/arduino-base64 come arduino-base64-master.zip da scompattare e rinominare semplicemente come **arduino-base64**
+- **RFM95W_Nexus**. Si scarica da https://github.com/Ideetron/RFM95W_Nexus come RFM95W_Nexus-master.zip da scompattare e rinominare semplicemente come **RFM95W_Nexus**
 
 ### **File di configurazione**
 
