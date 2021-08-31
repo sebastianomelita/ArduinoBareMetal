@@ -16,8 +16,9 @@
 14. [Gateway LoRaWan LMIC su Feather M0 reti di sensori](featherm0sw.md)
 13. [Gateway LoRaWan HW (RN2483) reti di sensori](gatewaylorahw.md)
 14. [Gateway LoRaWan HW (RAK811) reti di sensori](lorarak811.md)
-15. [Gateway LoRaWan HW (LoRa-E5 mini) reti di sensori](lorae5minihw.md)
-16. [Esercizi](esercizi.md)
+15. [Gateway LoRaWan HW (LoRa-E5 mini) reti di sensori](lorae5minihw.md)gatewaylora-ip.md
+16. [Gateway LoRaWan IP](gatewaylora-ip.md)
+17. [Esercizi](esercizi.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTk1MTYzNTI1NV19
 -->
