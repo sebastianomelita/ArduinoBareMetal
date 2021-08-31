@@ -224,6 +224,22 @@ struct pins {
 
 L'array ```int freqs[]``` può essere impostato, se si desidera utilizzare sottobande diverse, ma, oltre a ciò, non c'è molto altro qui che consigliamo di modificare.
 
+**Caricamento dello scketch**
+
+Con le modifiche apportate, prova a compilare e caricare lo schetch sul tuo ESP32. Dopo che è stato caricato, apri il tuo monitor seriale e imposta la velocità di trasmissione su 115200. I messaggi di debug qui possono essere molto utili e trovare l'**indirizzo IP del tuo gateway** è fondamentale se vuoi monitorare il server web.
+
+Lo schetch potrebbe richiedere molto tempo per la configurazione iniziale: **formatterà** il file **system SPIFFS** e creerà un **file di configurazione** non volatile. Una volta completato, dovresti vedere il tentativo di ESP32 di connettersi alla tua rete WiFi, quindi potrai inizializzare la radio.
+
+Dopo che ESP32 si è connesso, cercalo per stampare un indirizzo IP. Apri il browser web del tuo computer e metti l'IP della scheda sulla barra degli indirizzi. Dovresti essere accolto dal portale web ESP Gateway Config:
+
+<img src="esp-gateway-config-web.png" alt="alt text" width="600">
+
+Questa pagina Web può essere utilizzata per **monitorare** i messaggi in arrivo e su quali **frequenze** e **fattori di diffusione** sono arrivati. 
+
+Può anche essere utilizzata per modificare al volo la **configurazione del gateway**. È possibile regolare il **canale** o il **fattore di diffusione**, o attivare/disattivare **CAD**, o anche attivare il **salto di frequenza**.
+
+Ovviamente, per vedere i messaggi passare avrai bisogno di un dispositivo LoRa (o device_s_) configurato per comunicare con il tuo gateway. 
+
 **Codice di esempio**
 
 Per vedere un codice di esempio, aprire il file **ESP-sc-gway.ino**:
