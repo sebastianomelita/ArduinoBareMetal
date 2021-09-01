@@ -14,7 +14,7 @@
 
 ### **Server di rete (Network Server)**
 
-Il **network server** è una componente di **back-end** responsabile della ricezione dei dati provenienti dai vari gateway e dello svolgimento dei **processi di gestione** della rete: 
+Il **network server** è una componente di **back-end** della rete responsabile della ricezione dei dati provenienti dai vari gateway e dello svolgimento dei **processi di gestione** della rete: 
 - si connette a più gateway tramite una connessione TCP/IP protetta 
 - decide quale gateway dovrebbe rispondere a un messaggio di un nodo terminale
 - Funzione fondamentale è il filtraggio ed eliminazione di eventuali pacchetti duplicati. 
