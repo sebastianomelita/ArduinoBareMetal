@@ -134,7 +134,7 @@ const lmic_pinmap lmic_pins = {
 
 ### **4) La scheda Heltech Wireless Stick Lite**
 
-<img src="heltec.png" alt="alt text" width="900">
+<img src="heltec.png" alt="alt text" width="1000">
 
 ### **Bande di frequenza e potenza**
 ```
