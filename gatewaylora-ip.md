@@ -1,6 +1,8 @@
 >[Torna all'indice generale](index.md)
 ## **Gateways LoRa-IP**
 
+<img src="lpwan.png" alt="alt text" width="700">
+
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
 ### **1) La scheda LoRa RMF95/W**
