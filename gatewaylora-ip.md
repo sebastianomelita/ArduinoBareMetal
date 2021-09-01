@@ -7,7 +7,7 @@
 
 **“Ponte trasparente”** che  trasporta i dati bidirezionali tra i **nodi finali** e il **network server** a monte:
 - inserisce nei messaggi informazioni sulla qualità di ricezione dei dati (potenza, bit rate, ecc):
-- A livello logico è trasparente in quanto ha solo il ruolo di instradamento senza fare alcuna elaborazione.
+- A livello logico è **trasparente** in quanto ha solo il ruolo di **instradamento** senza fare alcuna elaborazione. E' il **centro stella** che raccoglie un ""grappolo"" di nodi LoRaWan.
 - I sensori possono inviare messaggi a **più gateway** e quindi a fronte di uno stesso messaggio potrebbe arrivare **messaggi duplicati** al server
 - Per poter supportare una **rete a stella** di ampie dimensioni, il gateway deve disporre di buone **capacità di ricezione**, ed essere capace di gestire un **elevato numero di messaggi** provenienti da svariati end device (anche sull’ordine delle **migliaia**). 
 - Il gateway è in grado di ascoltare le trasmissioni anche su **più canali** e di decodificare pacchetti inviati con un **differenti spreading factor** contemporaneamente.
