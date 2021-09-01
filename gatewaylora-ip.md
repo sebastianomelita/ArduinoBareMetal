@@ -3,6 +3,28 @@
 
 <img src="lpwan.png" alt="alt text" width="700">
 
+### **Gateway/concentratore nodi**
+
+“ponte trasparente” trasporta i dati bidirezionali tra i nodi finali e i server a monte. ha inserisce informazioni sulla qualità di ricezione dei dati (potenza, bit rate, ecc). 
+A livello logico è trasparente in quanto ha solo il ruolo di instradamento senza fare alcuna elaborazione.
+I sensori possono inviare messaggi a più gateway e questi possono pertanto arrivare duplicati al server
+Per poter supportare una rete a stella di ampie dimensioni, il gateway deve disporre di buone capacità di ricezione, ed essere capace di gestire un alto numero di messaggi provenienti da svariati end device (anche sull’ordine delle migliaia). 
+Il gateway è in grado di ascoltare le trasmissioni anche su più canali e di decodificare pacchetti inviati con un differente spreading factor contemporaneamente.
+
+### **Server di rete (Network Server)**
+
+Il **network server** è una componente di **back-end** responsabile della ricezione dei dati provenienti dai vari gateway e dello svolgimento dei **processi di gestione** della rete: 
+- si connette a più gateway tramite una connessione TCP/IP protetta 
+- decide quale gateway dovrebbe rispondere a un messaggio di un nodo terminale
+- Funzione fondamentale è il filtraggio ed eliminazione di eventuali pacchetti duplicati. 
+- gestisce le velocità dei dati del nodo finale con l’adaptive data rate (ADR) allo scopo di massimizzare la vita delle batterie dei dispositivi e la capacità totale della rete. Il linea generale, un minor tempo di trasmissione e minore potenza di uscita si traducono in un ovvio risparmio energetico. Il network server assegna a ogni end node che si vuole connettere alla rete, un data rate e una potenza di uscita diversa a seconda della esigenza e della situazione (da 300bps fino a 50kbps). :
+	- un data rate maggiore e una potenza di uscita minore ai nodi terminali piu`vicini  al  gateway  in  quanto meno suscettibili alle interferenze (trasmissione rapida e a bassa potenza). 
+	- un data rate piu`basso (minore suscettibilità ai rumori) e una maggiore potenza di uscita solo ai nodi che si trovano a distanze notevoli dal gateway (trasmissione lunga e a alta potenza). 
+- I dati ricevuti possono essere inviati agli **application server** per le elaborazioni successive oppure è possibile inviare eventuali notifiche agli end device per far attuare un’azione.
+- Non ci sono interfacce standard di trasmissione dei dati tra network server ed application server (webservice, websocket, webhook, MQTT sono variamente implementati).
+
+
+
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
 ### **1) La scheda LoRa RMF95/W**
