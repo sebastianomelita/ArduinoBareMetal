@@ -236,13 +236,14 @@ Questo file è la principale fonte di configurazione per lo sketch del gateway. 
 	};
 ```
 
-**loramodem.h**
+
+
+
+### **loramodem.h**
 
 Questo file definisce come è configurato il modem LoRa, inclusi quali canali di frequenza può utilizzare e quali pin utilizza ESP32 per comunicare con esso. 
 
-Introdurre eventuali modifiche sapendo bene cosa si sta facendo, in ogni caso, una sezione che va modificata obbligatoriamente è la dichiarazione **_PIN_OUT**.
-
-Innanzitutto, trova la riga che dice ```#error "Pin Definitions _PIN_OUT deve essere 1(HALLARD) o 2 (COMRESULT)"``` ed eliminala. Quindi copia e incolla queste righe al suo posto (tra ```#else e #endif```):
+Se il dispositivo non è nella lista delle configurazioni standard va modificata di conseguenza una di quelle predefinite, ad es:
 
 ```C++
 struct pins {
@@ -261,9 +262,86 @@ struct pins {
 
 L'array ```int freqs[]``` può essere impostato, se si desidera utilizzare sottobande diverse, ma, oltre a ciò, non c'è molto altro qui che consigliamo di modificare.
 
-**configGway.h**
+### **configGway.h**
 
-E' il file di configurazione del dispositivo quando è adoperato come gateway (no nodo).
+**Selezione del pin-out standard**
+
+Supportiamo cinque configurazioni di pin out out-of-the-box, vedi sotto. Se usi uno di questi, imposta il parametro sul valore corretto. Se le definizioni dei pin sono diverse, aggiorna i file loraModem.he oLED.h per riflettere queste impostazioni. 
+
+Le configurazioni predefinite di pin sono 5 e si impostano con ```#define _PIN_OUT x``` dove x può essere:
+1. HALLARD 
+2. pin out COMRESULT 
+3. scheda basata su ESP32/Wemos 
+4. scheda ESP32 basata su ESP32/TTGO 
+5. ESP32/Heltec Wifi LoRA 32 (V2)
+
+**Selezione della classe di servizio**
+
+Definire la classe di operazione supportata dal gateway. La **classe A** è supportata e contiene le operazioni di base per i sensori della batteria.
+
+La **classe B** prevede la modalità di funzionamento beacon. Il gateway invierà un segnale ai sensori collegati che consente loro di sincronizzare i messaggi di downlink.
+
+La modalità di funzionamento di **classe C** (continua) contiene il supporto per i dispositivi che probabilmente NON funzionano a batteria e ascolteranno sempre la rete. Di conseguenza, anche la latenza di questi dispositivi è inferiore rispetto ai dispositivi di classe A. I dispositivi di classe C non dipendono dall'alimentazione della batteria e estenderanno le finestre di ricezione fino alla successiva finestra di trasmissione. Infatti, solo le trasmissioni determinano l'interruzione dell'ascolto del canale fintanto che dura una trasmissione. I dispositivi di classe C non possono eseguire operazioni di classe B.
+
+```#define _CLASS "A"```
+
+Tutti i dispositivi inizieranno come dispositivi di classe A e potrebbero decidere di "aggiornarsi" alla classe B o C. Inoltre il gateway può supportare o meno la classe B, che è un superset della classe A. NOTA: è supportata solo la classe A
+
+**Rilevamento dell'attività del canale**
+
+**Channel Activity Detection (CAD)** è una funzione del chip LoRa RFM95 per rilevare i messaggi in arrivo (attività). Questi messaggi in arrivo potrebbero arrivare su uno dei noti fattori di diffusione SF7-SF12. Abilitando CAD, il gateway può ricevere messaggi di qualsiasi fattore di diffusione.
+
+In realtà è usato nel normale funzionamento per dire al ricevitore che un altro segnale sta già utilizzando il canale.
+
+La funzionalità CAD si adopera a fronte di un (piccolo) prezzo da pagare: il chip non sarà in grado di ricevere segnali molto deboli poiché la funzione CAD utilizzerà l'impostazione del registro RSSI del chip per determinare se ha ricevuto o meno un segnale (o solo rumore). Di conseguenza, non vengono ricevuti segnali molto deboli, il che significa che la portata del gateway sarà ridotta in modalità CAD.
+
+#define _CAD 1
+
+**Abilitazione del server web**
+
+Questa impostazione abilita il server web. Sebbene il server web stesso richieda molta memoria, è di grande aiuto per configurare il gateway in fase di esecuzione e ne controlla il comportamento. Fornisce inoltre le statistiche degli ultimi messaggi ricevuti. Il parametro A_REFRESH definisce se il server web deve rinnovarsi ogni X secondi.
+
+```C++
+#define A_SERVER 1 // Definisce il WebServer locale solo se questo define è impostato
+#define A_REFRESH 1 // il server web è abilitato all'aggiornamento sì/no? (sì va bene) #define A_SERVERPORT 80 // porta del server web locale
+#define A_MAXBUFSIZE 192 // Deve essere maggiore di 128, ma abbastanza piccolo per funzionare
+```
+
+Il parametro ```A_REFRESH``` definisce se è possibile o meno impostare l'impostazione di aggiornamento sì/no nel browser web. L'impostazione nel browser web è normalmente impostata su "no" come impostazione predefinita, ma possiamo lasciare la definizione su "1" per abilitare quell'impostazione nel browser web.
+
+**Impostazione del server TTN (The Thing Network)**
+
+Il gateway consente di connettersi a 2 server contemporaneamente (come fanno la maggior parte dei gateway LoRa). Devi connetterti ad almeno un router LoRa standard, nel caso in cui utilizzi The Things Network (TTN) assicurati di impostare:
+
+```C++
+#define _TTNSERVER "router.eu.thethings.network"
+#define _TTNPORT 1700
+``
+
+Nel caso in cui imposti il tuo server **on premise**, puoi specificare quanto segue utilizzando l'URL del tuo router e la tua porta:
+```C++
+#define _THINGSERVER "your_server.com" // URL del server del programma server LoRa udp.js
+#define _THINGPORT 1701 // Il tuo server UDP dovrebbe ascoltare questa porta
+```
+
+**Identità del gateway**
+Imposta i parametri di identità per il tuo gateway:
+```C++
+#define _DESCRIPTION "Gateway ESP"
+#define _EMAIL "tua.email@provider.com"
+#define _PIATTAFORMA "ESP8266"
+#define _LAT 52.00
+#define _LON 5.00
+#define _ALT 0
+```
+
+**Utilizzo del gateway come nodo sensore**
+
+È possibile utilizzare il gateway come nodo. In questo modo vengono riportati i valori del sensore locale/interno. Questa è una funzione che richiede molta memoria e CPU poiché la creazione di un messaggio del sensore coinvolge le funzioni EAS e CMAC.
+
+```#define GATEWAYNODE 0```
+
+Più sotto, nel file di configurazione configNode.h, è possibile impostare l'indirizzo e altre informazioni LoRa del nodo gateway.
 
 ```C++
 // 1-channel LoRa Gateway for ESP32 and ESP8266
