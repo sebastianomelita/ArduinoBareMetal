@@ -295,7 +295,8 @@ Per vedere un codice di esempio, aprire il file **ESP-sc-gway.ino**:
 // The followion file contains most of the definitions
 // used in other files. It should be the first file.
 #include "configGway.h"										// contains the configuration data of GWay
-#include "configNode.h"										// Contains the personal data of Wifi etc.
+#include "configNode.h"		
+#include "ESP-sc-gway.h"								// Contains the personal data of Wifi etc.
 /*
 #include <Esp.h>											// ESP8266 specific IDE functions
 #include <string.h>
@@ -314,15 +315,14 @@ Per vedere un codice di esempio, aprire il file **ESP-sc-gway.ino**:
 //#include <FS.h>												// ESP8266 Specific
 #include <WiFiUdp.h>
 #include <pins_arduino.h>
-//#include <gBase64.h>										// https://github.com/adamvr/arduino-base64 (changed the name)
-#include <Base64.h>	
+#include <gBase64.h>										// https://github.com/adamvr/arduino-base64 (changed the name)
 
 // Local include files
 #include "loraModem.h"
 #include "loraFiles.h"
 #include "oLED.h"
 /*
-extern "C" {
+"C" {
 #	include "lwip/err.h"
 #	include "lwip/dns.h"
 }
@@ -354,7 +354,7 @@ extern "C" {
 
 // ----------- Specific ESP8266 stuff --------------
 #elif defined(ARDUINO_ARCH_ESP8266)
-	extern "C" {
+	"C" {
 #		include "user_interface.h"
 #		include "c_types.h"
 	}
@@ -492,55 +492,7 @@ unsigned int remotePortNo;
 // Solution can also be to specify less STRICT compile options in Makefile
 // ----------------------------------------------------------------------------
 
-void ICACHE_RAM_ATTR Interrupt_0();
-void ICACHE_RAM_ATTR Interrupt_1();
 
-int sendPacket(uint8_t *buf, uint8_t len);								// _txRx.ino forward
-
-void printIP(IPAddress ipa, const char sep, String & response);			// _wwwServer.ino
-void setupWWW();														// _wwwServer.ino forward
-
-void mPrint(String txt);												// _utils.ino
-int getNtpTime(time_t *t);												// _utils.ino
-int mStat(uint8_t intr, String & response);								// _utils.ino
-void SerialStat(uint8_t intr);											// _utils.ino
-void printHexDigit(uint8_t digit, String & response);					// _utils.ino
-int inDecodes(char * id);												// _utils.ino
-static void stringTime(time_t t, String & response);					// _utils.ino
-
-int initMonitor(struct moniLine *monitor);								// _loraFiles.ino
-void initConfig(struct espGwayConfig *c);								// _loraFiles.ino
-int printSeen(const char *fn, struct nodeSeen *listSeen);				// _loraFiles.ino
-int readGwayCfg(const char *fn, struct espGwayConfig *c);				// _loraFiles.ino
-int readSeen(const char *fn, struct nodeSeen *listSeen);
-int writeConfig(const char *fn, struct espGwayConfig *c);
-int writeGwayCfg(const char *fn, struct espGwayConfig *c);
-
-void init_oLED();														// _oLED.ino
-void acti_oLED();														// _oLED.ino
-void addr_oLED();														// _oLED.ino
-void msg_oLED(String mesg);												// _oLED.ino
-void msg_lLED(String mesg, String mesg2);
-
-void setupOta(char *hostname);											// _otaServer.ino
-
-void initLoraModem();													// _loraModem.ino
-void rxLoraModem();														// _loraModem.ino
-void writeRegister(uint8_t addr, uint8_t value);						// _loraModem.ino
-void cadScanner();														// _loraModem.ino
-void startReceiver();													// _loraModem.ino
-void initDown(struct LoraDown *LoraDown);
-uint8_t readRegister(uint8_t addr);
-
-void stateMachine();													// _stateMachine.ino
-
-bool connectUdp();														// _udpSemtech.ino
-int readUdp(int packetSize);											// _udpSemtech.ino
-int sendUdp(IPAddress server, int port, uint8_t *msg, uint16_t length);	// _udpSemtech.ino
-void sendStat();														// _udpSemtech.ino
-void pullData();														// _udpSemtech.ino
-IPAddress resolveHost(String svrName, int maxTry);
-int WlanConnect(int maxTry);
 
 #if _MUTEX==1
 	void ICACHE_FLASH_ATTR CreateMutux(int *mutex);
@@ -1188,7 +1140,82 @@ void loop ()
 }//loop
 
 ```
+** ESP-sc-gway.h**
 
+```C++
+void ICACHE_RAM_ATTR Interrupt_0();
+void ICACHE_RAM_ATTR Interrupt_1();
+
+int sendPacket(uint8_t *buf, uint8_t len);								// _txRx.ino forward
+
+void printIP(IPAddress ipa, const char sep, String & response);			// _wwwServer.ino
+void setupWWW();														// _wwwServer.ino forward
+
+void mPrint(String txt);												// _utils.ino
+int getNtpTime(time_t *t);												// _utils.ino
+int mStat(uint8_t intr, String & response);								// _utils.ino
+void SerialStat(uint8_t intr);											// _utils.ino
+void printHexDigit(uint8_t digit, String & response);					// _utils.ino
+int inDecodes(char * id);												// _utils.ino
+static void stringTime(time_t t, String & response);					// _utils.ino
+
+int initMonitor(struct moniLine *monitor);								// _loraFiles.ino
+void initConfig(struct espGwayConfig *c);								// _loraFiles.ino
+int printSeen(const char *fn, struct nodeSeen *listSeen);				// _loraFiles.ino
+int readGwayCfg(const char *fn, struct espGwayConfig *c);				// _loraFiles.ino
+int readSeen(const char *fn, struct nodeSeen *listSeen);
+int writeConfig(const char *fn, struct espGwayConfig *c);
+int writeGwayCfg(const char *fn, struct espGwayConfig *c);
+int addSeen(struct nodeSeen *listSeen, struct stat_t stat);
+int initSeen(struct nodeSeen *listSeen);
+
+void init_oLED();														// _oLED.ino
+void acti_oLED();														// _oLED.ino
+void addr_oLED();														// _oLED.ino
+void msg_oLED(String mesg);												// _oLED.ino
+void msg_lLED(String mesg, String mesg2);
+
+void setupOta(char *hostname);											// _otaServer.ino
+
+void initLoraModem();													// _loraModem.ino
+void rxLoraModem();														// _loraModem.ino
+void writeRegister(uint8_t addr, uint8_t value);						// _loraModem.ino
+void cadScanner();														// _loraModem.ino
+void startReceiver();													// _loraModem.ino
+void initDown(struct LoraDown *LoraDown);
+uint8_t readRegister(uint8_t addr);
+
+void stateMachine();													// _stateMachine.ino
+
+bool connectUdp();														// _udpSemtech.ino
+int readUdp(int packetSize);											// _udpSemtech.ino
+int sendUdp(IPAddress server, int port, uint8_t *msg, uint16_t length);	// _udpSemtech.ino
+void sendStat();														// _udpSemtech.ino
+void pullData();														// _udpSemtech.ino
+IPAddress resolveHost(String svrName, int maxTry);
+int WlanConnect(int maxTry);
+
+void hop();
+void opmode(uint8_t mode);
+void  setFreq(uint32_t freq);
+void setRate(uint8_t sf, uint8_t crc);
+uint8_t receivePkt(uint8_t *payload);
+void writeRegister(uint8_t addr, uint8_t value);
+uint8_t readRegister(uint8_t addr);
+void rxLoraModem();
+ 
+int loraWait(struct LoraDown *LoraDown);
+void txLoraModem(struct LoraDown *LoraDown);
+ 
+void updateOtaa();
+
+int base64_decode(char * output, char * input, int inputLen);
+int base64_dec_len(char * input, int inputLen);
+int base64_enc_len(int plainLen);
+int base64_encode(char *output, char *input, int inputLen);
+uint8_t encodePacket(uint8_t *Data, uint8_t DataLength, uint16_t FrameCount, uint8_t *DevAddr, uint8_t *AppSKey, uint8_t Direction);
+ 
+```
 
 ### **Sitografia:**
 
