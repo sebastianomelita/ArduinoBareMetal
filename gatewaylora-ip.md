@@ -6,9 +6,13 @@
 ### **Gateway/concentratore nodi**
 
 “ponte trasparente” trasporta i dati bidirezionali tra i nodi finali e i server a monte. ha inserisce informazioni sulla qualità di ricezione dei dati (potenza, bit rate, ecc). 
+
 A livello logico è trasparente in quanto ha solo il ruolo di instradamento senza fare alcuna elaborazione.
+
 I sensori possono inviare messaggi a più gateway e questi possono pertanto arrivare duplicati al server
+
 Per poter supportare una rete a stella di ampie dimensioni, il gateway deve disporre di buone capacità di ricezione, ed essere capace di gestire un alto numero di messaggi provenienti da svariati end device (anche sull’ordine delle migliaia). 
+
 Il gateway è in grado di ascoltare le trasmissioni anche su più canali e di decodificare pacchetti inviati con un differente spreading factor contemporaneamente.
 
 ### **Server di rete (Network Server)**
