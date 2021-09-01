@@ -1140,7 +1140,7 @@ void loop ()
 }//loop
 
 ```
-** ESP-sc-gway.h**
+**ESP-sc-gway.h**
 
 ```C++
 void ICACHE_RAM_ATTR Interrupt_0();
