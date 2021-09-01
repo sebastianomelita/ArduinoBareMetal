@@ -190,7 +190,7 @@ Potenza irradiata		2 watt		4 watt		4 watt
 Canale di banda			200 kHz		400 kHz		400 kHz
 ```
 
-## **Implementazione de SW di un gateway/concentratore LoRaWan a basso costo**
+## **Implementazione del SW di un gateway/concentratore LoRaWan a basso costo**
 
 ### **Librerie del progetto**
 
