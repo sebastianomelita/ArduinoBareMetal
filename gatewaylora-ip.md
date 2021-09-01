@@ -1,7 +1,7 @@
 >[Torna all'indice generale](index.md)
 ## **Gateways LoRa-IP**
 
-<img src="lpwan.png" alt="alt text" width="700">
+<img src="lpwan.png" alt="alt text" width="800">
 
 ### **Gateway/concentratore nodi**
 
