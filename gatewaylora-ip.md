@@ -288,7 +288,7 @@ Con:
 
 Tutti i dispositivi inizieranno come dispositivi di classe A e potrebbero decidere di "aggiornarsi" alla classe B o C. Inoltre il gateway può supportare o meno la classe B, che è un superset della classe A. 
 
-NOTA: è supportata solo la classe A
+**NOTA:** è supportata solo la classe A
 
 **Rilevamento dell'attività del canale**
 
