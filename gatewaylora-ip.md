@@ -277,15 +277,18 @@ Le configurazioni predefinite di pin sono 5 e si impostano con ```#define _PIN_O
 
 **Selezione della classe di servizio**
 
-Definire la classe di operazione supportata dal gateway. La **classe A** è supportata e contiene le operazioni di base per i sensori della batteria.
+Bisogna definire la **classe di servizio** supportata dal gateway. 
+- La **classe A** è supportata e contiene le operazioni di base per i sensori della batteria.
+- La **classe B** prevede la modalità di funzionamento beacon. Il gateway invierà un segnale ai sensori collegati che consente loro di sincronizzare i messaggi di downlink.
+- La modalità di funzionamento di **classe C** (continua) contiene il supporto per i dispositivi che probabilmente NON funzionano a batteria e ascolteranno sempre la rete. Di conseguenza, anche la latenza di questi dispositivi è inferiore rispetto ai dispositivi di classe A. I dispositivi di classe C non dipendono dall'alimentazione della batteria e estenderanno le finestre di ricezione fino alla successiva finestra di trasmissione. Infatti, solo le trasmissioni determinano l'interruzione dell'ascolto del canale fintanto che dura una trasmissione. I dispositivi di classe C non possono eseguire operazioni di classe B.
 
-La **classe B** prevede la modalità di funzionamento beacon. Il gateway invierà un segnale ai sensori collegati che consente loro di sincronizzare i messaggi di downlink.
-
-La modalità di funzionamento di **classe C** (continua) contiene il supporto per i dispositivi che probabilmente NON funzionano a batteria e ascolteranno sempre la rete. Di conseguenza, anche la latenza di questi dispositivi è inferiore rispetto ai dispositivi di classe A. I dispositivi di classe C non dipendono dall'alimentazione della batteria e estenderanno le finestre di ricezione fino alla successiva finestra di trasmissione. Infatti, solo le trasmissioni determinano l'interruzione dell'ascolto del canale fintanto che dura una trasmissione. I dispositivi di classe C non possono eseguire operazioni di classe B.
+Con:
 
 ```#define _CLASS "A"```
 
-Tutti i dispositivi inizieranno come dispositivi di classe A e potrebbero decidere di "aggiornarsi" alla classe B o C. Inoltre il gateway può supportare o meno la classe B, che è un superset della classe A. NOTA: è supportata solo la classe A
+Tutti i dispositivi inizieranno come dispositivi di classe A e potrebbero decidere di "aggiornarsi" alla classe B o C. Inoltre il gateway può supportare o meno la classe B, che è un superset della classe A. 
+
+NOTA: è supportata solo la classe A
 
 **Rilevamento dell'attività del canale**
 
