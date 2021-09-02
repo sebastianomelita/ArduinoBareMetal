@@ -243,7 +243,7 @@ Questo file è la principale fonte di configurazione per lo sketch del gateway. 
 
 Questo file definisce come è configurato il modem LoRa, inclusi quali canali di frequenza può utilizzare e quali pin utilizza ESP32 per comunicare con esso. 
 
-Se il dispositivo non è nella lista delle configurazioni standard va modificata di conseguenza una di quelle predefinite, ad es:
+Se il dispositivo non è nella lista delle configurazioni standard va modificata di conseguenza una di quelle predefinite o, in alternativa, aggiunta un'ulteriore configurazione, ad es:
 
 ```C++
 struct pins {
