@@ -202,7 +202,7 @@ Dal **punto di vista SW** servono delle **librerie** da scaricare dentro la soli
 - **arduino-base64**. Si scarica da https://github.com/adamvr/arduino-base64 come arduino-base64-master.zip da scompattare e rinominare semplicemente come **arduino-base64**
 - **Streaming**. Si scarica dahttp://arduiniana.org/libraries/streaming/ come Streaming5.zip da scompattare e rinominare semplicemente come **Streaming**. Attenzione che dentro la cartella Streaming5 ci ata la cartella Streaming da scompattare.
 
-Le librerie esposte sopra possono essere recuperate e copiate nella libraries prendendole da: \ESP-1ch-Gateway\lib
+Le librerie esposte sopra possono essere recuperate e copiate nella libraries prendendole da: **\ESP-1ch-Gateway\lib**
 
 ### **File di configurazione**
 
@@ -266,7 +266,7 @@ L'array ```int freqs[]``` può essere impostato, se si desidera utilizzare sotto
 
 **Selezione del pin-out standard**
 
-Supportiamo cinque configurazioni di pin out out-of-the-box, vedi sotto. Se usi uno di questi, imposta il parametro sul valore corretto. Se le definizioni dei pin sono diverse, aggiorna i file loraModem.he oLED.h per riflettere queste impostazioni. 
+La libreria supporta 5 configurazioni di pin out out-of-the-box (vedi sotto). Se usi uno di questi, imposta il parametro sul valore corretto. Se le definizioni dei pin sono diverse, aggiorna i file loraModem.h e oLED.h per riflettere queste impostazioni (ad esempio, aggiungendo un campo 6). 
 
 Le configurazioni predefinite di pin sono 5 e si impostano con ```#define _PIN_OUT x``` dove x può essere:
 1. HALLARD 
@@ -303,7 +303,8 @@ Questa impostazione abilita il server web. Sebbene il server web stesso richieda
 
 ```C++
 #define A_SERVER 1 // Definisce il WebServer locale solo se questo define è impostato
-#define A_REFRESH 1 // il server web è abilitato all'aggiornamento sì/no? (sì va bene) #define A_SERVERPORT 80 // porta del server web locale
+#define A_REFRESH 1 // il server web è abilitato all'aggiornamento sì/no? (sì va bene) 
+#define A_SERVERPORT 80 // porta del server web locale
 #define A_MAXBUFSIZE 192 // Deve essere maggiore di 128, ma abbastanza piccolo per funzionare
 ```
 
