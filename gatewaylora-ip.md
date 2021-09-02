@@ -208,7 +208,7 @@ Le librerie esposte sopra possono essere recuperate e copiate nella libraries pr
 
 Prima di caricare lo schetch **ESP-1ch-Gateway.ino** sulla tua scheda, dovrai apportare alcune modifiche a un paio di file. Ecco una rapida panoramica:
 
-**ESP-sc-gway.h**
+**configGway.h**
 
 Questo file è la principale fonte di configurazione per lo sketch del gateway. Le definizioni che probabilmente dovrai modificare sono:
 
