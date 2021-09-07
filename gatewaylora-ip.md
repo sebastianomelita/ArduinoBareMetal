@@ -359,11 +359,11 @@ Nel caso in cui imposti il tuo server **on premise**, puoi specificare quanto se
 #define EU863_870 1
 ```
 
-Più sotto, nel file di configurazione configNode.h, è possibile impostare l'indirizzo e altre informazioni LoRa del nodo gateway.
-
 **Impostazioni aggiuntive**
 
 Impostazioni ulteriori molto utili possono essere trovate nel file di documentazione del progetto https://github.com/things4u/ESP-1ch-Gateway
+
+Più sotto, nel file di configurazione configNode.h, è possibile impostare l'indirizzo e altre informazioni LoRa del nodo gateway.
 
 ```C++
 // 1-channel LoRa Gateway for ESP32 and ESP8266
