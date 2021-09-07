@@ -215,7 +215,7 @@ Questo file è la principale fonte di configurazione per lo sketch del gateway. 
 - **Radio**. 
 	- **_LFREQ** -- Imposta la gamma di frequenza su cui comunicherà la radio. Impostalo su 433 (Asia), 868 (UE) o 915 (USA)
     	- **_SPREADING** -- Imposta il fattore di diffusione LoRa. È possibile utilizzare SF7, SF8, SF9, SF10, SF11 o SF12. Tieni presente che ciò influirà sui dispositivi con cui il tuo gateway può comunicare.
-    - **_CAD** -- Rilevamento dell'attività del canale. Se abilitato (impostato a 1) CAD consentirà al gateway di monitorare i messaggi inviati a qualsiasi fattore di diffusione. Il compromesso se abilitato: i segnali molto deboli potrebbero non essere captati dalla radio.
+    - **_CAD** -- Rilevamento dell'attività del canale. Se abilitato (impostato a 1) CAD consentirà al gateway di monitorare i messaggi inviati a qualsiasi fattore di diffusione (spreading). Se abilitato è un valore di compromesso: i segnali molto deboli potrebbero non essere captati dalla radio.
 - **Hardware**
 	- **OLED:** se la scheda non include un OLED, impostalo su 0.
 	- **_PIN_OUT**: configura l'SPI e altre impostazioni hardware. Impostalo su 6, aggiungeremo una definizione hardware personalizzata in seguito.
@@ -226,6 +226,16 @@ Questo file è la principale fonte di configurazione per lo sketch del gateway. 
 	- **_DESCRIPTION** -- Personalizza il nome del tuo gateway
 	- **_EMAIL** -- Il tuo indirizzo email, o quello del proprietario del gateway
 	- **_LAT** e **_LON** -- Coordinate GPS del tuo gateway
+	
+	Imposta i parametri di identità per il tuo gateway:
+	```C++
+	#define _DESCRIPTION "Gateway ESP"
+	#define _EMAIL "tua.email@provider.com"
+	#define _PIATTAFORMA "ESP8266"
+	#define _LAT 52.00
+	#define _LON 5.00
+	#define _ALT 0
+	```
 - **Wifi**
 	- Aggiungi almeno una rete WiFi all'array ```wpas wpa[]```, ma lascia vuota la prima voce. Per esempio:
 	
@@ -326,17 +336,6 @@ Nel caso in cui imposti il tuo server **on premise**, puoi specificare quanto se
 ```C++
 #define _THINGSERVER "your_server.com" // URL del server del programma server LoRa udp.js
 #define _THINGPORT 1701 // Il tuo server UDP dovrebbe ascoltare questa porta
-```
-
-**Identità del gateway**
-Imposta i parametri di identità per il tuo gateway:
-```C++
-#define _DESCRIPTION "Gateway ESP"
-#define _EMAIL "tua.email@provider.com"
-#define _PIATTAFORMA "ESP8266"
-#define _LAT 52.00
-#define _LON 5.00
-#define _ALT 0
 ```
 
 **Utilizzo del gateway come nodo sensore**
