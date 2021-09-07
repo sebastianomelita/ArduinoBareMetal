@@ -341,6 +341,24 @@ Nel caso in cui imposti il tuo server **on premise**, puoi specificare quanto se
 
 ```#define GATEWAYNODE 0```
 
+**Impostazione frequenze in base all'area geografica**
+
+```C++
+// Define the frequency band the gateway will listen on. Valid options are
+// EU863_870	Europe 
+// US902_928	North America
+// AU925_928	Australia
+// CN470_510	China
+// IN865_867	India
+// CN779-787	(Not Used)
+// EU433		Europe
+// KR920    	South Korea
+// AS923		(Not Used)
+// You can find the definitions in "loraModem.h" and frequencies in
+// See https://www.thethingsnetwork.org/docs/lorawan/frequency-plans.html
+#define EU863_870 1
+```
+
 Più sotto, nel file di configurazione configNode.h, è possibile impostare l'indirizzo e altre informazioni LoRa del nodo gateway.
 
 **Impostazioni aggiuntive**
