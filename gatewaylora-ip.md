@@ -215,6 +215,19 @@ Questo file è la principale fonte di configurazione per lo sketch del gateway. 
 - **Radio**. 
 	- **_LFREQ** -- Imposta la gamma di frequenza su cui comunicherà la radio. Impostalo su 433 (Asia), 868 (UE) o 915 (USA)
     	- **_SPREADING** -- Imposta il fattore di diffusione LoRa. È possibile utilizzare SF7, SF8, SF9, SF10, SF11 o SF12. Tieni presente che ciò influirà sui dispositivi con cui il tuo gateway può comunicare.
+
+		```C++
+		// The spreading factor is the most important parameter to set for a single channel
+		// gateway. It specifies the speed/datarate in which the gateway and node communicate.
+		// As the name says, in principle the single channel gateway listens to one channel/frequency
+		// and to one spreading factor only.
+		// This parameters contains the default value of SF, the actual version can be set with
+		// the webserver and it will be stored in SPIFF
+		// NOTE: The frequency is set in the loraModem.h file and is default 868100000 Hz.
+		#if !defined _SPREADING
+		#	define _SPREADING SF9
+		#endif
+		```
     - **_CAD** -- Rilevamento dell'attività del canale. Se abilitato (impostato a 1) CAD consentirà al gateway di monitorare i messaggi inviati a qualsiasi fattore di diffusione (spreading). Se abilitato è un valore di compromesso: i segnali molto deboli potrebbero non essere captati dalla radio.
 - **Hardware**
 	- **OLED:** se la scheda non include un OLED, impostalo su 0.
