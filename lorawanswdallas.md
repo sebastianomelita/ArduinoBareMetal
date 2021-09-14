@@ -130,14 +130,14 @@ const unsigned TX_INTERVAL = 60;
 
 // Pin mapping
 const lmic_pinmap lmic_pins = {
-    .nss = 6,
-    .rxtx = LMIC_UNUSED_PIN,
-    .rst = 5,
-    .dio = {2, 3, 4},
+  .nss = 5, 
+  .rxtx = LMIC_UNUSED_PIN,
+  .rst = 14,
+  .dio = {/*dio0*/ 2, /*dio1*/ 2, /*dio2*/ 2}
 };
 
 // Setup the one wire connection on pin 10
-OneWire oneWire(ONWIREPORT);
+OneWire oneWire(ONEWIREPORT);
 DallasTemperature sensors(&oneWire);
 DeviceAddress thermometer;
 
@@ -257,8 +257,7 @@ void initLoRaWAN() {
 }
 
 void sensorInit(){
-	// Initialize the DHT sensor.
-	dht.begin();
+	sensors.begin();
 }
 
 void setup() {
@@ -292,6 +291,7 @@ void loop() {
 	flag_TXCOMPLETE = false;
 	*/
 }
+
 ```
 
 **Sitografia:**
