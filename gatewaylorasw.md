@@ -23,7 +23,7 @@ Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista
 
 Potresti anche non aver selezionato la scheda ESP32 corretta nel tuo IDE Arduino (o PlatformIO). 
 
-La **definizione della scheda** nell'IDE Arduino definisce anche il **mappaggio** dei pin **MISO**, **MOSI**, **SCK** e **(N)SS** del BUS **SPI** ed è **diversa** per ogni scheda.
+La **selezione della scheda** nell'IDE Arduino definisce anche il **mappaggio** dei pin **MISO**, **MOSI**, **SCK** e **(N)SS** del BUS **SPI** ed è **diversa** per ogni scheda.
 
 ### **1) La scheda LoRa RMF95/W**
 
