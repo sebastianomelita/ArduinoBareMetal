@@ -290,10 +290,10 @@ La funzione **```initfunc()```** non è bloccante ma ritorna immediatamente e lo
 Questa funzione di callback può reagire a determinati eventi e attivare nuove azioni in base all'**evento** e allo **stato** della connessione. Tipicamente, un'applicazione non elabora tutti gli eventi ma solo quelli a cui è interessata e pianifica (schedula) ulteriori azioni del protocollo utilizzando le API di LMIC. 
 
 Gli eventi possibili sono:
-.5 EV_JOINING. Il nodo ha iniziato a unirsi alla rete.
-.6 EV_JOINED. Il nodo si è unito con successo alla rete ed è ora pronto per gli scambi di dati.
-.8 EV_JOIN_FAILED. Il nodo non è stato in grado di unirsi alla rete (dopo aver riprovato).
-.9 EV_REJOIN_FAILED. Il nodo non si è unito a una nuova rete ma è ancora connesso alla vecchia rete.
+.5 	EV_JOINING. Il nodo ha iniziato a unirsi alla rete.
+.6 	EV_JOINED. Il nodo si è unito con successo alla rete ed è ora pronto per gli scambi di dati.
+.8 	EV_JOIN_FAILED. Il nodo non è stato in grado di unirsi alla rete (dopo aver riprovato).
+.9 	EV_REJOIN_FAILED. Il nodo non si è unito a una nuova rete ma è ancora connesso alla vecchia rete.
 .10 EV_TXCOMPLETE I dati preparati tramite LMIC_setTxData() sono stati inviati e la finestra di ricezione per
 il downlink è completa. Se era stata richiesta una conferma, allora questa è stata
 ricevuta. Durante la gestione di questo evento, il codice dovrebbe anche verificare la ricezione dei dati. 
