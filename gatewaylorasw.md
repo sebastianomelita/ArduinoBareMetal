@@ -953,7 +953,7 @@ void onEvent(ev_t ev)
         case EV_LINK_ALIVE:
             Serial.println(F("EV_LINK_ALIVE"));
             break;	
-		case EV_TXSTART:
+	case EV_TXSTART:
             Serial.println(F("EV_TXSTART"));
             break;
         case EV_TXCANCELED:
