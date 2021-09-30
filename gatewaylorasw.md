@@ -88,6 +88,9 @@ In ogni caso, le funzioni di **rete** ed **applicative** al di sopra del livello
 
 ### **Schema cablaggio**
 
+La selezione della scheda **Heltech Wireless Stick Lite**:
+<img src="ttgocmosi.png" alt="alt text" width="1000">
+
 In questo caso transceiver Semtech SX1276 e MCU ESP32 sono già cablate insieme sulla stessa scheda. Di seguito è riportato il mappaggio del pinout del transceiver Lora su quello della MCU ESP32:
 ```
 SX1276 pin name <--> ESP32 pin number
@@ -145,7 +148,7 @@ const lmic_pinmap lmic_pins = {
 <img src="heltec.png" alt="alt text" width="1000">
 
 La selezione della scheda **Heltech Wireless Stick Lite**:
-<img src="heltecmosi.png" alt="alt text" width="800">
+<img src="heltecmosi.png" alt="alt text" width="1000">
 
 La configurazione della libreria LMIC coerente con il mappaggio esposto sopra è:
 ```
