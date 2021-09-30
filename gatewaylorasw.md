@@ -144,6 +144,9 @@ const lmic_pinmap lmic_pins = {
 
 <img src="heltec.png" alt="alt text" width="1000">
 
+La selezione della scheda **Heltech Wireless Stick Lite**:
+<img src="heltecmosi.png" alt="alt text" width="800">
+
 La configurazione della libreria LMIC coerente con il mappaggio esposto sopra è:
 ```
 // Pin mapping for Heltec ESP32 and Wireless Stick Lite
