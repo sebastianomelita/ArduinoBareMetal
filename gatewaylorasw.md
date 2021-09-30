@@ -290,22 +290,22 @@ La funzione **```initfunc()```** non è bloccante ma ritorna immediatamente e lo
 Questa funzione di callback può reagire a determinati eventi e attivare nuove azioni in base all'**evento** e allo **stato** della connessione. Tipicamente, un'applicazione non elabora tutti gli eventi ma solo quelli a cui è interessata e pianifica (schedula) ulteriori azioni del protocollo utilizzando le API di LMIC. 
 
 Gli eventi possibili sono:
-     1. EV_SCAN_TIMEOUT Dopo una chiamata a LMIC_enableTracking() non è stato ricevuto alcun beacon entro l'intervallo di beacon. Il monitoraggio deve essere riavviato.
-     2. EV_BEACON_FOUND Dopo una chiamata a LMIC_enableTracking() il primo beacon è stato ricevuto all'interno dell'intervallo di beacon .
-     3. EV_BEACON_MISSED Nessun segnale è stato ricevuto all'ora prevista.
-     4. EV_BEACON_TRACKED Il prossimo segnale è stato ricevuto all'ora prevista.
-     5. EV_JOINING. Il nodo ha iniziato a unirsi alla rete.
-     6. EV_JOINED. Il nodo si è unito con successo alla rete ed è ora pronto per gli scambi di dati.
-     8. EV_JOIN_FAILED. Il nodo non è stato in grado di unirsi alla rete (dopo aver riprovato).
-     9. EV_REJOIN_FAILED. Il nodo non si è unito a una nuova rete ma è ancora connesso alla vecchia rete.
-     10. EV_TXCOMPLETE I dati preparati tramite LMIC_setTxData() sono stati inviati e la finestra di ricezione per il downlink è completa. Se era stata richiesta una conferma, allora questa è stata ricevuta. Durante la gestione di questo evento, il codice dovrebbe anche verificare la ricezione dei dati. 
-     11. EV_LOST_TSYNC Il segnale è stato perso ripetutamente e la sincronizzazione dell'ora è andata persa. Il onitoraggio o ping deve essere riavviato.
-     12. EV_RESET Ripristino della sessione a causa del rollover dei contatori di sequenza. La rete verrà riconnessa automaticamente a acquisire nuova sessione.
-     13. EV_RXCOMPLETE Solo classe B: è stato ricevuto un downlink in uno slot ping. Il codice dovrebbe controllare i dati di ricezione. 
-     14. EV_LINK_DEAD Nessuna conferma è stata ricevuta dal server di rete per un lungo periodo di tempo. Le trasmissioni sono ancora possibili, ma la loro ricezione è incerta.
-     15. EV_LINK_ALIVE Il collegamento era morto, ma ora è di nuovo vivo.
-     16. EV_SCAN_FOUND Questo evento è riservato per uso futuro e non viene mai segnalato.
-     17. EV_TXSTART Questo evento viene segnalato appena prima di dire al driver radio di iniziare la trasmissione.
+1. EV_SCAN_TIMEOUT Dopo una chiamata a LMIC_enableTracking() non è stato ricevuto alcun beacon entro l'intervallo di beacon. Il monitoraggio deve essere riavviato.
+2. EV_BEACON_FOUND Dopo una chiamata a LMIC_enableTracking() il primo beacon è stato ricevuto all'interno dell'intervallo di beacon .
+3. EV_BEACON_MISSED Nessun segnale è stato ricevuto all'ora prevista.
+4. EV_BEACON_TRACKED Il prossimo segnale è stato ricevuto all'ora prevista.
+5. EV_JOINING. Il nodo ha iniziato a unirsi alla rete.
+6. EV_JOINED. Il nodo si è unito con successo alla rete ed è ora pronto per gli scambi di dati.
+7. EV_JOIN_FAILED. Il nodo non è stato in grado di unirsi alla rete (dopo aver riprovato).
+8. EV_REJOIN_FAILED. Il nodo non si è unito a una nuova rete ma è ancora connesso alla vecchia rete.
+9. EV_TXCOMPLETE I dati preparati tramite LMIC_setTxData() sono stati inviati e la finestra di ricezione per il downlink è completa. Se era stata richiesta una conferma, allora questa è stata ricevuta. Durante la gestione di questo evento, il codice dovrebbe anche verificare la ricezione dei dati. 
+10. EV_LOST_TSYNC Il segnale è stato perso ripetutamente e la sincronizzazione dell'ora è andata persa. Il onitoraggio o ping deve essere riavviato.
+11. EV_RESET Ripristino della sessione a causa del rollover dei contatori di sequenza. La rete verrà riconnessa automaticamente a acquisire nuova sessione.
+12. EV_RXCOMPLETE Solo classe B: è stato ricevuto un downlink in uno slot ping. Il codice dovrebbe controllare i dati di ricezione. 
+13. EV_LINK_DEAD Nessuna conferma è stata ricevuta dal server di rete per un lungo periodo di tempo. Le trasmissioni sono ancora possibili, ma la loro ricezione è incerta.
+14. EV_LINK_ALIVE Il collegamento era morto, ma ora è di nuovo vivo.
+15. EV_SCAN_FOUND Questo evento è riservato per uso futuro e non viene mai segnalato.
+16. EV_TXSTART Questo evento viene segnalato appena prima di dire al driver radio di iniziare la trasmissione.
 
 **Gestione della ricezione**
 
