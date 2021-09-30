@@ -17,6 +17,12 @@ Radio punto-punto:
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
+**Attenzione** che la definizione del cablaggio dei pin SPI potrebbe non essere corretta.
+
+Potresti anche non aver selezionato la scheda ESP32 corretta nel tuo IDE Arduino (o PlatformIO). 
+
+La **definizione della scheda** nell'IDE Arduino definisce anche il **mappaggio** dei pin **MISO**, **MOSI**, **SCK** e **(N)SS** del BUS **SPI** ed è **diversa** per ogni scheda.
+
 ### **1) La scheda LoRa RMF95/W**
 
 <img src="hwiotacrchitecturerfm95.png" alt="alt text" width="1000">
