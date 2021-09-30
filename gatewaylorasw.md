@@ -309,7 +309,7 @@ Gli **eventi possibili** sono:
 17. **EV_TXSTART** Questo evento viene segnalato appena prima di dire al driver radio di iniziare la trasmissione.
 18. **EV_TXCANCELED**
 19. **EV_RXSTART**.
-20. **EV_JOIN_TXCOMPLETE**
+20. **EV_JOIN_TXCOMPLETE**.  Non è stato acettato alcun join.
 
 **Gestione della ricezione**
 
