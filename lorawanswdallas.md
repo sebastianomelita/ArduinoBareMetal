@@ -77,6 +77,7 @@ Anche in questo caso sono possibili entrambi i collegamenti, **normal mode** e *
  *
  *******************************************************************************/
 
+#define ARDUINO_HELTEC_WIRELESS_STICK 1
 #include <lmic.h>
 #include <hal/hal.h>
 #include <SPI.h>
@@ -84,8 +85,14 @@ Anche in questo caso sono possibili entrambi i collegamenti, **normal mode** e *
 // include the DS18B20 Sensor Library
 #include <OneWire.h>
 #include <DallasTemperature.h>
+
 //sensors defines
-#define ONEWIREPORT 10
+#define ONEWIREPORT 1
+#define RADIO_MOSI_PORT 27
+#define RADIO_MISO_PORT 19
+#define RADIO_SCLK_PORT 5
+#define RADIO_NSS_PORT  18
+
 //
 // For normal use, we require that you edit the sketch to replace FILLMEIN
 // with values assigned by the TTN console. However, for regression tests,
@@ -126,15 +133,25 @@ bool flag_TXCOMPLETE = false;
 
 // Schedule TX every this many seconds (might become longer due to duty
 // cycle limitations).
-const unsigned TX_INTERVAL = 60;
+const unsigned TX_INTERVAL = 5;
 
-// Pin mapping
-const lmic_pinmap lmic_pins = {
-  .nss = 5, 
+// Declared in hal.h, to be defined and initialized by the application.
+// Use os_init_ex() if you want not to use a const table, or if
+// you need to define a derived type (so you can override methods).
+//extern const lmic_pinmap lmic_pins;
+
+// Pin mapping for Heltec ESP32 and Wireless Stick Lite
+const lmic_pinmap lmic_pins = { // deve avere questo nome se globale!
+  .nss = 18,  //CS pin
   .rxtx = LMIC_UNUSED_PIN,
-  .rst = 14,
-  .dio = {/*dio0*/ 2, /*dio1*/ 2, /*dio2*/ 2}
+  .rst = 14, //RST PIN
+  .dio = {26, 35, 34},  //DIO 0, 1, 2
+  //.mosi = 27,
+  //.miso = 19,
+  //.sck = 5,
 };
+
+//const lmic_pinmap *pPinMap = Arduino_LMIC::GetPinmap_ThisBoard();
 
 // Setup the one wire connection on pin 10
 OneWire oneWire(ONEWIREPORT);
@@ -197,14 +214,60 @@ void onEvent (ev_t ev) {
             os_setTimedCallback(&sendjob, os_getTime()+sec2osticks(TX_INTERVAL), do_send);
 	        flag_TXCOMPLETE = true;
             break;
-	case EV_LINK_DEAD:
-            initLoRaWAN();
-	    break;
-        default:
-            Serial.print(F("Unknown event: "));
-            Serial.println((unsigned) ev);
+		case EV_SCAN_TIMEOUT:
+			Serial.println(F("EV_SCAN_TIMEOUT"));
+			break;
+		case EV_BEACON_FOUND:
+			Serial.println(F("EV_BEACON_FOUND"));
+			break;
+		case EV_BEACON_MISSED:
+			Serial.println(F("EV_BEACON_MISSED"));
+			break;
+		case EV_BEACON_TRACKED:
+			Serial.println(F("EV_BEACON_TRACKED"));
+			break;
+		case EV_JOINING:
+			Serial.println(F("EV_JOINING"));
+			break;
+		case EV_JOIN_FAILED:
+            Serial.println(F("EV_JOIN_FAILED"));
             break;
-    }
+        case EV_REJOIN_FAILED:
+            Serial.println(F("EV_REJOIN_FAILED"));
+            break;
+		case EV_LOST_TSYNC:
+            Serial.println(F("EV_LOST_TSYNC"));
+            break;
+        case EV_RESET:
+            Serial.println(F("EV_RESET"));
+            break;
+        case EV_RXCOMPLETE:
+            // data received in ping slot
+            Serial.println(F("EV_RXCOMPLETE"));
+            break;
+        case EV_LINK_DEAD:
+            Serial.println(F("EV_LINK_DEAD"));
+            break;
+        case EV_LINK_ALIVE:
+            Serial.println(F("EV_LINK_ALIVE"));
+            break;	
+		case EV_TXSTART:
+            Serial.println(F("EV_TXSTART"));
+            break;
+        case EV_TXCANCELED:
+            Serial.println(F("EV_TXCANCELED"));
+            break;
+        case EV_RXSTART:
+            /* do not print anything -- it wrecks timing */
+            break;
+        case EV_JOIN_TXCOMPLETE:
+            Serial.println(F("EV_JOIN_TXCOMPLETE: no JoinAccept"));
+            break;
+		default:
+			Serial.print(F("Unknown event: "));
+			Serial.println((unsigned) ev);
+			break;
+		}
 }
 
 void do_send(osjob_t* j){
@@ -237,7 +300,12 @@ void do_send(osjob_t* j){
 }
 
 void initLoRaWAN() {
-	// LMIC init
+	Serial.println(F("LoraWan init"));
+	 // LMIC init using the computed target
+    //const lmic_pinmap *lmic_pins = Arduino_LMIC::GetPinmap_ThisBoard();
+
+    // don't die mysteriously; die noisily.
+    //os_init_ex((const void *)&lmic_pins);
 	os_init();
 
 	// Reset the MAC state. Session and pending data transfers will be discarded.
@@ -254,15 +322,19 @@ void initLoRaWAN() {
 
 	// Set data rate and transmit power
 	LMIC_setDrTxpow(DR_SF7, 21);
+	
+	LMIC_selectSubBand(1);
 }
 
 void sensorInit(){
+	Serial.println(F("Dallas init"));
 	sensors.begin();
 }
 
 void setup() {
-    Serial.begin(9600);
-    Serial.println(F("Starting"));
+    Serial.begin(115200);
+	delay(10000);
+    Serial.println(F("ESP Starting"));
 
     #ifdef VCC_ENABLE
     // For Pinoccio Scout boards
@@ -270,11 +342,13 @@ void setup() {
     digitalWrite(VCC_ENABLE, HIGH);
     delay(1000);
     #endif
-
-   // Setup LoRaWAN state
-	initLoRaWAN();
 	
 	sensorInit();
+
+    // Setup LoRaWAN state
+	initLoRaWAN();
+	
+	//sensorInit();
 
     // Start job (sending automatically starts OTAA too)
     do_send(&sendjob);
@@ -282,7 +356,7 @@ void setup() {
 
 void loop() {
 	os_runloop_once();
-	/* In caso di instabilità
+	/* In caso di instabilit�
 	//Run LMIC loop until he as finish
 	while(flag_TXCOMPLETE == false)
 	{
