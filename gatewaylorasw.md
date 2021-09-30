@@ -136,6 +136,20 @@ const lmic_pinmap lmic_pins = {
 
 <img src="heltec.png" alt="alt text" width="1000">
 
+La configurazione della libreria LMIC coerente con il mappaggio esposto sopra è:
+```
+// Pin mapping for Heltec ESP32 and Wireless Stick Lite
+const lmic_pinmap lmic_pins = {
+  .nss = 18,  //CS pin
+  .rxtx = LMIC_UNUSED_PIN,
+  .rst = 14, //RST PIN
+  .dio = {26, 35, 34},  //DIO 0, 1, 2
+  .mosi = 27,
+  .miso = 19,
+  .sck = 5,
+};
+```
+
 ### **Bande di frequenza e potenza**
 ```
 				Lower EU	Upper EU	US (FCC)
