@@ -17,6 +17,8 @@ Radio punto-punto:
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
+## **Configurazioni per schede note**
+
 **Attenzione** che la definizione del cablaggio dei pin SPI potrebbe non essere corretta.
 
 Potresti anche non aver selezionato la scheda ESP32 corretta nel tuo IDE Arduino (o PlatformIO). 
