@@ -96,9 +96,7 @@ void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}void os_getDevKey (u
 const unsigned TX_INTERVAL = 150;
 ```
 
-6. Il **duty cicle**, la quantità di tempo in cui un dispositivo può trasmettere nello spettro LoRaWAN, è **regolato dal governo**. Un limite del duty cicle dell' **1%** significa che per un dato periodo di tempo il dispositivo può trasmettere solo per l'1% di quel tempo, ad es. 864 secondi in un periodo di 24 ore. Inoltre, TTN ha una politica di utilizzo corretto che limita il tempo di uplink per nodo a 30 secondi al giorno.
-
-Il seguente calcolo può quindi essere utilizzato per calcolare il tempo minimo tra gli uplink:
+6. Il **duty cicle**, la quantità di tempo in cui un dispositivo può trasmettere nello spettro LoRaWAN, è **regolato dal governo**. Un limite del duty cicle dell' **1%** significa che per un dato periodo di tempo il dispositivo può trasmettere solo per l'1% di quel tempo, ad es. 864 secondi in un periodo di 24 ore. Inoltre, TTN ha una politica di utilizzo corretto che limita il tempo di uplink per nodo a 30 secondi al giorno. Il seguente calcolo può quindi essere utilizzato per calcolare il tempo minimo tra gli uplink:
 
 <img src="Delay_Formula.png" alt="alt text" width="600">
 
