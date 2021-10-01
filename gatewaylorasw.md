@@ -98,7 +98,9 @@ const unsigned TX_INTERVAL = 150;
 
 6. Il **duty cicle**, la quantità di tempo in cui un dispositivo può trasmettere nello spettro LoRaWAN, è **regolato dal governo**. Un limite del duty cicle dell' **1%** significa che per un dato periodo di tempo il dispositivo può trasmettere solo per l'1% di quel tempo, ad es. 864 secondi in un periodo di 24 ore. Inoltre, TTN ha una politica di utilizzo corretto che limita il tempo di uplink per nodo a 30 secondi al giorno.
 
-Esistono calcolatori, come questo di terze parti su GitHub, che ci consentono di stimare il nostro tempo di trasmissione per un messaggio di uplink. Una volta completato questo tutorial, saremo anche in grado di vedere il tempo di trasmissione stimato nella console TTN nella pagina delle applicazioni della console TTN > seleziona la nostra applicazione > "Dispositivi" > seleziona il nostro dispositivo > scheda "Dati" > seleziona un uplink > "Stima sezione del tempo di trasmissione. Il seguente calcolo può quindi essere utilizzato per calcolare il tempo minimo tra gli uplink:
+Il seguente calcolo può quindi essere utilizzato per calcolare il tempo minimo tra gli uplink:
+
+<img src="Delay_Formula.png" alt="alt text" width="1000">
 
 ### **1) La scheda LoRa RMF95/W**
 
