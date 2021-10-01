@@ -36,17 +36,11 @@ Ad esempio, per utilizzare la **frequenza UE**, commentare e decommentare come s
 
 ```C++
 	#define CFG_eu868 1
-
 	//#define CFG_us915 1
-
 	//#define CFG_au915 1
-
 	//#define CFG_as923 1
-
 	// #define LMIC_COUNTRY_CODE LMIC_COUNTRY_CODE_JP /* per as923-JP */
-
 	//#define CFG_kr920 1
-
 	//#define CFG_in866 1
 ```
 
