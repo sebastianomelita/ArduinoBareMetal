@@ -96,7 +96,7 @@ void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}void os_getDevKey (u
 const unsigned TX_INTERVAL = 150;
 ```
 
-Il ritardo è legato al **duty cicle**, cioè la quantità di tempo in cui un dispositivo può trasmettere nello spettro LoRaWAN, che è **regolato dal governo**. Il **limite in Europa** del duty cicle è dell' **1%**, ciò significa che per un dato periodo di tempo il dispositivo può trasmettere solo per l'1% di quel tempo, ad es. 864 secondi in un periodo di 24 ore. Inoltre, TTN ha una politica di utilizzo corretto che limita il tempo di uplink per nodo a 30 secondi al giorno. Il **seguente calcolo** potrebbe quindi essere utilizzato per calcolare il **tempo minimo tra trasmissioni successive** in uplink:
+Il **ritardo** è legato al **duty cicle**, cioè la quantità di tempo in cui un dispositivo può trasmettere nello spettro LoRaWAN, che è **regolato dal governo**. Il **limite in Europa** del duty cicle è dell' **1%**, ciò significa che per un dato periodo di tempo il dispositivo può trasmettere solo per l'1% di quel tempo, ad es. 864 secondi in un periodo di 24 ore. Inoltre, TTN ha una politica di utilizzo corretto che limita il tempo di uplink per nodo a 30 secondi al giorno. Il **seguente calcolo** potrebbe quindi essere utilizzato per calcolare il **tempo minimo tra trasmissioni successive** in uplink:
 
 <img src="Delay_Formula.png" alt="alt text" width="600">
 
