@@ -50,6 +50,43 @@ Ad esempio, per utilizzare la **frequenza UE**, commentare e decommentare come s
 	- **.rxtx**, per controllare l'interruttore dell'antenna, non utilizzato da questo software quindi impostare su LMIC_UNUSED_PIN
 	- **.rst**, pin di reset, usato per resettare il ricetrasmettitore
 	- **.dio**, pin I/O digitali per ottenere informazioni sullo stato dallo shield, ad esempio quando una trasmissione inizia o è completata.
+	- 
+4. Aggiungere le linee seguenti impostare le variabili per l'attivazione del dispositivo Over-the-Air (OTAA):
+
+```C++
+// Insert Device EUI here
+static const u1_t PROGMEM DEVEUI[8] = ;
+void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8); 
+
+// Insert Application EUI here
+static const u1_t PROGMEM APPEUI[8] = ;
+void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);}
+
+// Insert App Key here
+static const u1_t PROGMEM APPKEY[16] = ;
+void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
+```
+DEVEUI, APPEUI e APPKEY devono essere forniti dl gestore del server e inseriti in forma esadecimale in una maniera analoga a quanto sotto:
+
+```C++
+// Insert Device EUI here
+static const u1_t PROGMEM DEVEUI[8] = { 0x6B, 0x1E, 0x77, 0xEB, 0xDF, 0x69, 0x20, 0x00 };
+void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
+
+// Insert Application EUI here
+static const u1_t PROGMEM APPEUI[8] = { 0x9E, 0x03, 0x03, 0xD0, 0x7E, 0xD5, 0xB3, 0x70 };
+void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8); 
+
+// Insert App Key here
+static const u1_t PROGMEM APPKEY[16] = { 0x69, 0x21, 0xFB, 0x85, 0xE4, 0x49, 0x05, 0x97, 0x4D, 0xCF, 0x8D, 0x33, 0x9C, 0xB1, 0x37, 0x9D };
+void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
+```
+6. Per impostare la frequenza di trasmissione, aggiungere le linee sottostanti con cui, ad esempio, è stato scelto di trasmettere una volta ogni 150 secondi.
+
+```C++
+// Schedule uplink to send every TX_INTERVAL seconds
+const unsigned TX_INTERVAL = 150;
+```
 
 ### **1) La scheda LoRa RMF95/W**
 
