@@ -100,7 +100,7 @@ Il **ritardo** è legato al **duty cicle**, cioè la quantità di tempo in cui u
 
 <img src="Delay_Formula.png" alt="alt text" width="600">
 
-6. **Sottobande**. La seguente tabella riassume le 2 restrizioni della banda 868MHz secondo la normativa Europea ERC-REC-70-3E:
+6. Definizione delle **Sottobande**. La seguente tabella riassume le 2 restrizioni della banda 868MHz secondo la normativa Europea ERC-REC-70-3E:
 
 	|   | Sottobande | Frequenza (MHz) | Potenza | Duty Cycle | Note             |
 	|---|------------|-----------------|---------|------------|------------------|
@@ -111,6 +111,17 @@ Il **ritardo** è legato al **duty cicle**, cioè la quantità di tempo in cui u
 	|   | g4         | 869.70 - 870.00 | 25mW    | 1%         |                  |
 	
 La zona più interessante è la seconda, 868,00 – 868,60. Su questi 600kHz abbiamo i 2000 canali Sigfox e i 3 canali LoRaWAN standard.
+
+In LMIC la definizione delle sottoande si fa con del codice nel setup():
+```C++
+LMIC_selectSubBand(1);
+``` 
+
+7. Impostazione della **data rate** e dello **spreading factor** (sono vincolate insieme). L'impostazione si fa con il seguente spezzone di codice all'interno del setup():
+```C++
+// Set data rate to Spreading Factor 7 and transmit power to 14 dBi for uplinks
+LMIC_setDrTxpow(DR_SF7,14);
+```
 
 ### **1) La scheda LoRa RMF95/W**
 
