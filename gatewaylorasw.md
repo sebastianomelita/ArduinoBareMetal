@@ -32,6 +32,7 @@ Le frequenze sono:
       - CFG_kr920 – Corea del Sud
       
 Ad esempio, per utilizzare la **frequenza UE**, commentare e decommentare come segue:
+
 ```C++
 	#define CFG_eu868 1
 
@@ -50,10 +51,10 @@ Ad esempio, per utilizzare la **frequenza UE**, commentare e decommentare come s
 
 3. Impostare la variabile **lmic_pinmap** per indicare alla libreria LMIC quali pin Arduino utilizza il nostro shield. Dovrà essere usata una struttura diversa per ogni scheda. Fare riferimento alla documentazione dell'hardware per le mappature dei pin corrette. Le impostazioni più comuni da definire sono:
 
-                - **.nss**, per la connessione 'slave select',
-                - **.rxtx**, per controllare l'interruttore dell'antenna, non utilizzato da questo software quindi impostare su LMIC_UNUSED_PIN
-                - **.rst, pin di reset, usato per resettare il ricetrasmettitore
-                - **.dio**, pin I/O digitali per ottenere informazioni sullo stato dallo shield, ad esempio quando una trasmissione inizia o è completata.
+	- **.nss**, per la connessione 'slave select',
+	- **.rxtx**, per controllare l'interruttore dell'antenna, non utilizzato da questo software quindi impostare su LMIC_UNUSED_PIN
+	- **.rst, pin di reset, usato per resettare il ricetrasmettitore
+	- **.dio**, pin I/O digitali per ottenere informazioni sullo stato dallo shield, ad esempio quando una trasmissione inizia o è completata.
 
 ### **1) La scheda LoRa RMF95/W**
 
