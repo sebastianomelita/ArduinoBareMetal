@@ -35,13 +35,13 @@ Le **frequenze** sono:
 Ad esempio, per utilizzare la **frequenza UE**, commentare e decommentare come segue:
 
 ```C++
-	#define CFG_eu868 1
-	//#define CFG_us915 1
-	//#define CFG_au915 1
-	//#define CFG_as923 1
-	// #define LMIC_COUNTRY_CODE LMIC_COUNTRY_CODE_JP /* per as923-JP */
-	//#define CFG_kr920 1
-	//#define CFG_in866 1
+#define CFG_eu868 1
+//#define CFG_us915 1
+//#define CFG_au915 1
+//#define CFG_as923 1
+// #define LMIC_COUNTRY_CODE LMIC_COUNTRY_CODE_JP /* per as923-JP */
+//#define CFG_kr920 1
+//#define CFG_in866 1
 ```
 
 3. Impostare la variabile **lmic_pinmap** per indicare alla libreria LMIC quali pin Arduino utilizza il nostro shield. Dovrà essere usata una struttura diversa per ogni scheda. Fare riferimento alla documentazione dell'hardware per le mappature dei pin corrette. Le impostazioni più comuni da definire sono:
