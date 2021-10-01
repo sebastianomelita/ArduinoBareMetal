@@ -102,13 +102,13 @@ Il **ritardo** è legato al **duty cicle**, cioè la quantità di tempo in cui u
 
 6. Definizione delle **Sottobande**. La seguente tabella riassume le 2 restrizioni della banda 868MHz secondo la normativa Europea ERC-REC-70-3E:
 
-	|   | Sottobande | Frequenza (MHz) | Potenza | Duty Cycle | Note             |
-	|---|------------|-----------------|---------|------------|------------------|
-	|   | g          | 863,00 - 868,00 | 25mW    | 1%         |                  |
-	|   | g1         | 868,00 - 868,60 | 25mW    | 1%         | LoRaWAN / Sigfox |
-	|   | g2         | 868,70 - 869,20 | 25mW    | 0,1%       |                  |
-	|   | g3         | 869,40 - 869,65 | 500mW   | 10%        | Downlink LoRaWAN |
-	|   | g4         | 869.70 - 870.00 | 25mW    | 1%         |                  |
+	|   | Sottobande | Frequenza (MHz) |    Potenza     | Duty Cycle | Note             |
+	|---|------------|-----------------|----------------|------------|------------------|
+	|   | g          | 863,00 - 868,00 | 25mW  (14dbm)  | 1%         |                  |
+	|   | g1         | 868,00 - 868,60 | 25mW  (14dbm)  | 1%         | LoRaWAN / Sigfox |
+	|   | g2         | 868,70 - 869,20 | 25mW  (14dbm)  | 0,1%       |                  |
+	|   | g3         | 869,40 - 869,65 | 500mW (27dbm)  | 10%        | Downlink LoRaWAN |
+	|   | g4         | 869.70 - 870.00 | 25mW  (14dbm)  | 1%         |                  |
 	
 La zona più interessante è la seconda, 868,00 – 868,60. Su questi 600kHz abbiamo i 2000 canali Sigfox e i 3 canali LoRaWAN standard.
 
