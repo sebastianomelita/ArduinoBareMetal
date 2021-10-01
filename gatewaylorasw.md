@@ -24,12 +24,13 @@ Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista
 2. Apri il file /libraries/MCCI_LoRaWAN_LMIC_library/project_config/**lmic_project_config.h**. Questo file contiene le impostazioni per la libreria LMIC. Modificare lmic_project_config.h per commentare la riga #define CFG_us915 1 e decommentare la frequenza per il tuo paese/regione.
 
 Le **frequenze** sono:
-    - CFG_eu868 – EU
-    - CFG_us915 – Stati Uniti
-    - CFG_au915 – Australia
-    - CFG_as923 – Asia
-    - CFG_in866 – India
-    - CFG_kr920 – Corea del Sud
+
+     - CFG_eu868 – EU
+     - CFG_us915 – Stati Uniti
+     - CFG_au915 – Australia
+     - CFG_as923 – Asia
+     - CFG_in866 – India
+     - CFG_kr920 – Corea del Sud
       
 Ad esempio, per utilizzare la **frequenza UE**, commentare e decommentare come segue:
 
