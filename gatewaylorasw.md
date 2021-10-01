@@ -100,7 +100,7 @@ const unsigned TX_INTERVAL = 150;
 
 Il seguente calcolo può quindi essere utilizzato per calcolare il tempo minimo tra gli uplink:
 
-<img src="Delay_Formula.png" alt="alt text" width="1000">
+<img src="Delay_Formula.png" alt="alt text" width="600">
 
 ### **1) La scheda LoRa RMF95/W**
 
