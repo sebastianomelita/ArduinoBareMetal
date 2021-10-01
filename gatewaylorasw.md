@@ -19,11 +19,11 @@ Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista
 
 ## **Configurazioni per schede note**
 
-1. **Selezione scheda**. **Attenzione** che la definizione del cablaggio dei pin SPI potrebbe non essere corretta.cLa **selezione della scheda** nell'IDE Arduino definisce anche il **mappaggio** dei pin **MISO**, **MOSI**, **SCK** e **(N)SS** del BUS **SPI** ed è **diversa** per ogni scheda.
+1. **Selezione scheda**. **Attenzione** che la definizione del cablaggio dei pin SPI potrebbe non essere corretta. La **selezione della scheda** nell'IDE Arduino è importante perchè definisce anche il **mappaggio** dei pin **MISO**, **MOSI**, **SCK** e **(N)SS** del BUS **SPI** che è **diverso** per ogni scheda.
 
 2. Apri il file /libraries/MCCI_LoRaWAN_LMIC_library/project_config/**lmic_project_config.h**. Questo file contiene le impostazioni per la libreria LMIC. Modificare lmic_project_config.h per commentare la riga #define CFG_us915 1 e decommentare la frequenza per il tuo paese/regione.
 
-Le frequenze sono:
+Le **frequenz** sono:
       - CFG_eu868 – EU
       - CFG_us915 – Stati Uniti
       - CFG_au915 – Australia
@@ -53,7 +53,7 @@ Ad esempio, per utilizzare la **frequenza UE**, commentare e decommentare come s
 
 	- **.nss**, per la connessione 'slave select',
 	- **.rxtx**, per controllare l'interruttore dell'antenna, non utilizzato da questo software quindi impostare su LMIC_UNUSED_PIN
-	- **.rst, pin di reset, usato per resettare il ricetrasmettitore
+	- **.rst**, pin di reset, usato per resettare il ricetrasmettitore
 	- **.dio**, pin I/O digitali per ottenere informazioni sullo stato dallo shield, ad esempio quando una trasmissione inizia o è completata.
 
 ### **1) La scheda LoRa RMF95/W**
