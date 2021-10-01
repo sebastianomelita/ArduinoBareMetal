@@ -100,9 +100,7 @@ Il **ritardo** è legato al **duty cicle**, cioè la quantità di tempo in cui u
 
 <img src="Delay_Formula.png" alt="alt text" width="600">
 
-6. **Sottobande**. 
-
-uropea ERC-REC-70-3E
+6. **Sottobande**. La seguente tabella riassume le 2 restrizioni della banda 868MHz secondo la normativa Europea ERC-REC-70-3E:
 
 	|   | Sottobande | Frequenza (MHz) | Potenza | Duty Cycle | Note             |
 	|---|------------|-----------------|---------|------------|------------------|
