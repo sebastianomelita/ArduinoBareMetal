@@ -17,7 +17,7 @@ Radio punto-punto:
 
 Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista generale si rimanda a [Cablati semplici](cablatisemplici.md ).
 
-## **Configurazioni per schede note**
+## **Impostazioni LMIC comuni**
 
 1. **Selezione scheda**. **Attenzione** che la definizione del cablaggio dei pin SPI potrebbe non essere corretta. La **selezione della scheda** nell'IDE Arduino è importante perchè definisce anche il **mappaggio** dei pin **MISO**, **MOSI**, **SCK** e **(N)SS** del BUS **SPI** che è **diverso** per ogni scheda.
 
@@ -128,6 +128,7 @@ L'impostazione si fa con il seguente spezzone di codice all'interno del setup():
 // Set data rate to Spreading Factor 7 and transmit power to 14 dBi for uplinks
 LMIC_setDrTxpow(DR_SF7,14);
 ```
+## **Configurazioni per schede note**
 
 ### **1) La scheda LoRa RMF95/W**
 
