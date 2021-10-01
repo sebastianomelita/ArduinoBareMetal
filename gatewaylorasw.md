@@ -81,7 +81,7 @@ void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);
 static const u1_t PROGMEM APPKEY[16] = { 0x69, 0x21, 0xFB, 0x85, 0xE4, 0x49, 0x05, 0x97, 0x4D, 0xCF, 0x8D, 0x33, 0x9C, 0xB1, 0x37, 0x9D };
 void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 ```
-6. Per impostare la frequenza di trasmissione, aggiungere le linee sottostanti con cui, ad esempio, è stato scelto di trasmettere una volta ogni 150 secondi.
+5. Per impostare la frequenza di trasmissione, aggiungere le linee sottostanti con cui, ad esempio, è stato scelto di trasmettere una volta ogni 150 secondi.
 
 ```C++
 // Schedule uplink to send every TX_INTERVAL seconds
