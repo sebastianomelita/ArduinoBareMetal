@@ -89,6 +89,8 @@ void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}void os_getDevKey (u
 
 <img src="lorajs.png" alt="alt text" width="600">
 
+Dopo che il server di accesso (**Join Server**) ha autenticato il dispositivo che richiede di unirsi alla rete, questi, attraverso il **Network Server**, restituisce un messaggio di accettazione dell'accesso al dispositivo.
+
 5. Per impostare il **ritardo di trasmissione**, aggiungere le linee sottostanti con cui, ad esempio, è stato scelto di trasmettere una volta ogni 150 secondi.
 
 ```C++
@@ -117,7 +119,11 @@ In LMIC la definizione delle sottoande si fa con del codice nel setup():
 LMIC_selectSubBand(1);
 ``` 
 
-7. Impostazione della **data rate** e dello **spreading factor** (sono vincolate insieme). L'impostazione si fa con il seguente spezzone di codice all'interno del setup():
+7. Impostazione della **data rate** e dello **spreading factor** (sono vincolate insieme). 
+
+<img src="Spreading_Factors.png" alt="alt text" width="600">
+
+L'impostazione si fa con il seguente spezzone di codice all'interno del setup():
 ```C++
 // Set data rate to Spreading Factor 7 and transmit power to 14 dBi for uplinks
 LMIC_setDrTxpow(DR_SF7,14);
