@@ -21,7 +21,7 @@ Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista
 
 1. **Selezione scheda**. **Attenzione** che la definizione del cablaggio dei pin SPI potrebbe non essere corretta. La **selezione della scheda** nell'IDE Arduino è importante perchè definisce anche il **mappaggio** dei pin **MISO**, **MOSI**, **SCK** e **(N)SS** del BUS **SPI** che è **diverso** per ogni scheda.
 
-2. Apri il file /libraries/MCCI_LoRaWAN_LMIC_library/project_config/**lmic_project_config.h**. Questo file contiene le impostazioni per la libreria LMIC. Modificare lmic_project_config.h per commentare la riga #define CFG_us915 1 e decommentare la frequenza per il tuo paese/regione.
+2. **Impostazione banda di frequenze**. Aprire il file /libraries/MCCI_LoRaWAN_LMIC_library/project_config/**lmic_project_config.h**. Questo file contiene le impostazioni per la libreria LMIC. Modificare lmic_project_config.h per commentare la riga #define CFG_us915 1 e decommentare la frequenza per il tuo paese/regione.
 
 Le **frequenze** sono:
 
