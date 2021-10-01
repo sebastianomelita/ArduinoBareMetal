@@ -51,7 +51,7 @@ Ad esempio, per utilizzare la **frequenza UE**, commentare e decommentare come s
 	- **.rst**, pin di reset, usato per resettare il ricetrasmettitore
 	- **.dio**, pin I/O digitali per ottenere informazioni sullo stato dallo shield, ad esempio quando una trasmissione inizia o è completata.
  
-4. Aggiungere le linee seguenti impostare le variabili per l'attivazione del dispositivo Over-the-Air (OTAA):
+4. **Impostare l'autenticazione OTAA**. Aggiungere le linee seguenti impostare le variabili per l'attivazione del dispositivo Over-the-Air (OTAA):
 
 ```C++
 // Insert Device EUI here
