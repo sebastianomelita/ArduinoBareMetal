@@ -19,11 +19,41 @@ Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista
 
 ## **Configurazioni per schede note**
 
-**Attenzione** che la definizione del cablaggio dei pin SPI potrebbe non essere corretta.
+1. **Selezione scheda**. **Attenzione** che la definizione del cablaggio dei pin SPI potrebbe non essere corretta.cLa **selezione della scheda** nell'IDE Arduino definisce anche il **mappaggio** dei pin **MISO**, **MOSI**, **SCK** e **(N)SS** del BUS **SPI** ed è **diversa** per ogni scheda.
 
-Potresti anche non aver selezionato la scheda ESP32 corretta nel tuo IDE Arduino (o PlatformIO). 
+2. Apri il file /libraries/MCCI_LoRaWAN_LMIC_library/project_config/**lmic_project_config.h**. Questo file contiene le impostazioni per la libreria LMIC. Modificare lmic_project_config.h per commentare la riga #define CFG_us915 1 e decommentare la frequenza per il tuo paese/regione.
 
-La **selezione della scheda** nell'IDE Arduino definisce anche il **mappaggio** dei pin **MISO**, **MOSI**, **SCK** e **(N)SS** del BUS **SPI** ed è **diversa** per ogni scheda.
+Le frequenze sono:
+      - CFG_eu868 – EU
+      - CFG_us915 – Stati Uniti
+      - CFG_au915 – Australia
+      - CFG_as923 – Asia
+      - CFG_in866 – India
+      - CFG_kr920 – Corea del Sud
+      
+Ad esempio, per utilizzare la **frequenza UE**, commentare e decommentare come segue:
+```C++
+	#define CFG_eu868 1
+
+	//#define CFG_us915 1
+
+	//#define CFG_au915 1
+
+	//#define CFG_as923 1
+
+	// #define LMIC_COUNTRY_CODE LMIC_COUNTRY_CODE_JP /* per as923-JP */
+
+	//#define CFG_kr920 1
+
+	//#define CFG_in866 1
+```
+
+3. Impostare la variabile **lmic_pinmap** per indicare alla libreria LMIC quali pin Arduino utilizza il nostro shield. Dovrà essere usata una struttura diversa per ogni scheda. Fare riferimento alla documentazione dell'hardware per le mappature dei pin corrette. Le impostazioni più comuni da definire sono:
+
+                - **.nss**, per la connessione 'slave select',
+                - **.rxtx**, per controllare l'interruttore dell'antenna, non utilizzato da questo software quindi impostare su LMIC_UNUSED_PIN
+                - **.rst, pin di reset, usato per resettare il ricetrasmettitore
+                - **.dio**, pin I/O digitali per ottenere informazioni sullo stato dallo shield, ad esempio quando una trasmissione inizia o è completata.
 
 ### **1) La scheda LoRa RMF95/W**
 
