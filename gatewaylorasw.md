@@ -81,12 +81,21 @@ void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);
 static const u1_t PROGMEM APPKEY[16] = { 0x69, 0x21, 0xFB, 0x85, 0xE4, 0x49, 0x05, 0x97, 0x4D, 0xCF, 0x8D, 0x33, 0x9C, 0xB1, 0x37, 0x9D };
 void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
 ```
+
+<img src="LoRaWAN-Network-Architecture-and-Network-Component-Layers-10.ppm" alt="alt text" width="1000">
+
+<img src="lorajs.png" alt="alt text" width="600">
+
 5. Per impostare la frequenza di trasmissione, aggiungere le linee sottostanti con cui, ad esempio, è stato scelto di trasmettere una volta ogni 150 secondi.
 
 ```C++
 // Schedule uplink to send every TX_INTERVAL seconds
 const unsigned TX_INTERVAL = 150;
 ```
+
+6. Il **duty cicle**, la quantità di tempo in cui un dispositivo può trasmettere nello spettro LoRaWAN, è **regolato dal governo**. Un limite del duty cicle dell' **1%** significa che per un dato periodo di tempo il dispositivo può trasmettere solo per l'1% di quel tempo, ad es. 864 secondi in un periodo di 24 ore. Inoltre, TTN ha una politica di utilizzo corretto che limita il tempo di uplink per nodo a 30 secondi al giorno.
+
+Esistono calcolatori, come questo di terze parti su GitHub, che ci consentono di stimare il nostro tempo di trasmissione per un messaggio di uplink. Una volta completato questo tutorial, saremo anche in grado di vedere il tempo di trasmissione stimato nella console TTN nella pagina delle applicazioni della console TTN > seleziona la nostra applicazione > "Dispositivi" > seleziona il nostro dispositivo > scheda "Dati" > seleziona un uplink > "Stima sezione del tempo di trasmissione. Il seguente calcolo può quindi essere utilizzato per calcolare il tempo minimo tra gli uplink:
 
 ### **1) La scheda LoRa RMF95/W**
 
