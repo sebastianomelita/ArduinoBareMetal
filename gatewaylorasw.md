@@ -1239,6 +1239,7 @@ respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzat
 - https://www.thethingsnetwork.org/labs/story/program-your-lopy-from-the-arduino-ide-using-lmic
 - https://www.studiopieters.nl/esp32-pinout/
 - https://www.rfwireless-world.com/Terminology/LoRaWAN-Interface-Types.html
+- https://lora-developers.semtech.com/documentation/tech-papers-and-guides/building-a-lora-based-device-end-to-end-with-arduino/connect-to-a-network-server/
 
 >[Torna all'indice generale](index.md)
 
