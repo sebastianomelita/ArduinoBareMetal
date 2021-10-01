@@ -84,6 +84,9 @@ void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}void os_getDevKey (u
 
 <img src="LoRaWAN-Network-Architecture-and-Network-Component-Layers-10.ppm" alt="alt text" width="1000">
 
+- L'interfaccia AS-JS serve a fornire la chiave di sessione dell'applicazione da Join server (JS) a Application server (AS).
+- L'interfaccia NS-JS è Utilizzata per la procedura di attivazione del roaming per recuperare il NetID di hNS associato al dispositivo finale.
+
 <img src="lorajs.png" alt="alt text" width="600">
 
 5. Per impostare la frequenza di trasmissione, aggiungere le linee sottostanti con cui, ad esempio, è stato scelto di trasmettere una volta ogni 150 secondi.
@@ -1235,6 +1238,7 @@ respingente. L'EUI dell'applicazione ha una lunghezza di 8 byte ed è memorizzat
 - https://docs.pycom.io/datasheets/development/sipy/
 - https://www.thethingsnetwork.org/labs/story/program-your-lopy-from-the-arduino-ide-using-lmic
 - https://www.studiopieters.nl/esp32-pinout/
+- https://www.rfwireless-world.com/Terminology/LoRaWAN-Interface-Types.html
 
 >[Torna all'indice generale](index.md)
 
