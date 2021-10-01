@@ -50,7 +50,7 @@ Ad esempio, per utilizzare la **frequenza UE**, commentare e decommentare come s
 	- **.rxtx**, per controllare l'interruttore dell'antenna, non utilizzato da questo software quindi impostare su LMIC_UNUSED_PIN
 	- **.rst**, pin di reset, usato per resettare il ricetrasmettitore
 	- **.dio**, pin I/O digitali per ottenere informazioni sullo stato dallo shield, ad esempio quando una trasmissione inizia o è completata.
-	- 
+ 
 4. Aggiungere le linee seguenti impostare le variabili per l'attivazione del dispositivo Over-the-Air (OTAA):
 
 ```C++
