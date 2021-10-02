@@ -20,8 +20,18 @@ Per una discussione sintetica di tutti i tipi di BUS semplici dal punto di vista
 ## **Impostazioni LMIC comuni**
 
 1. **Selezione scheda**. **Attenzione** che la definizione del cablaggio dei pin SPI potrebbe non essere corretta. La **selezione della scheda** nell'IDE Arduino è importante perchè definisce anche il **mappaggio** dei pin **MISO**, **MOSI**, **SCK** e **(N)SS** del BUS **SPI** che è **diverso** per ogni scheda.
+2. Selezione della **versione LoRaWAN**. Questa libreria implementa la V1.0.3 della specifica LoRaWAN. Tuttavia, può essere utilizzato anche con V1.0.2. 
+La versione LoRaWAN predefinita, se nessuna versione è selezionata esplicitamente, è V1.0.3. ```LMIC_LORAWAN_SPEC_VERSION``` è definito come un numero intero che riflette la versione specifica di destinazione. 
 
-2. **Impostazione banda di frequenze**. Aprire il file /libraries/MCCI_LoRaWAN_LMIC_library/project_config/**lmic_project_config.h**. Questo file contiene le impostazioni per la libreria LMIC. Modificare lmic_project_config.h per commentare la riga #define CFG_us915 1 e decommentare la frequenza per il tuo paese/regione.
+Per selezionare la versione in **```project_config/lmic_project_config.h```**, aggiungere:
+```C++
+// selezione versione 1.0.2
+//#define LMIC_LORAWAN_SPEC_VERSION   LMIC_LORAWAN_SPEC_VERSION_1_0_2
+// selezione versione 1.0.3
+#define LMIC_LORAWAN_SPEC_VERSION    LMIC_LORAWAN_SPEC_VERSION_1_0_3
+```
+
+3. **Impostazione banda di frequenze**. Aprire il file /libraries/MCCI_LoRaWAN_LMIC_library/project_config/**lmic_project_config.h**. Questo file contiene le impostazioni per la libreria LMIC. Modificare lmic_project_config.h per commentare la riga #define CFG_us915 1 e decommentare la frequenza per il tuo paese/regione.
 
 Le **frequenze** sono:
 
@@ -44,14 +54,14 @@ Ad esempio, per utilizzare la **frequenza UE**, commentare e decommentare come s
 //#define CFG_in866 1
 ```
 
-3. Impostare la variabile **lmic_pinmap** per indicare alla libreria LMIC quali pin Arduino utilizza il nostro shield. Dovrà essere usata una struttura diversa per ogni scheda. Fare riferimento alla documentazione dell'hardware per le mappature dei pin corrette. Le impostazioni più comuni da definire sono:
+4. Impostare la variabile **lmic_pinmap** per indicare alla libreria LMIC quali pin Arduino utilizza il nostro shield. Dovrà essere usata una struttura diversa per ogni scheda. Fare riferimento alla documentazione dell'hardware per le mappature dei pin corrette. Le impostazioni più comuni da definire sono:
 
 	- **.nss**, per la connessione 'slave select',
 	- **.rxtx**, per controllare l'interruttore dell'antenna, non utilizzato da questo software quindi impostare su LMIC_UNUSED_PIN
 	- **.rst**, pin di reset, usato per resettare il ricetrasmettitore
 	- **.dio**, pin I/O digitali per ottenere informazioni sullo stato dallo shield, ad esempio quando una trasmissione inizia o è completata.
  
-4. **Impostare l'autenticazione OTAA**. Aggiungere le linee seguenti impostare le variabili per l'attivazione del dispositivo Over-the-Air (OTAA):
+5. **Impostare l'autenticazione OTAA**. Aggiungere le linee seguenti impostare le variabili per l'attivazione del dispositivo Over-the-Air (OTAA):
 
 ```C++
 // Insert Device EUI here
@@ -91,7 +101,7 @@ void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}void os_getDevKey (u
 
 Dopo che il server di accesso (**Join Server**) ha autenticato il dispositivo che richiede di unirsi alla rete, questi, attraverso il **Network Server**, restituisce un messaggio di accettazione dell'accesso al dispositivo.
 
-5. Per impostare il **ritardo di trasmissione**, aggiungere le linee sottostanti con cui, ad esempio, è stato scelto di trasmettere una volta ogni 150 secondi.
+6. Per impostare il **ritardo di trasmissione**, aggiungere le linee sottostanti con cui, ad esempio, è stato scelto di trasmettere una volta ogni 150 secondi.
 
 ```C++
 // Schedule uplink to send every TX_INTERVAL seconds
@@ -102,7 +112,7 @@ Il **ritardo** è legato al **duty cicle**, cioè la quantità di tempo in cui u
 
 <img src="Delay_Formula.png" alt="alt text" width="600">
 
-6. Definizione delle **Sottobande**. La seguente tabella riassume le 2 restrizioni della banda 868MHz secondo la normativa Europea ERC-REC-70-3E:
+7. Definizione delle **Sottobande**. La seguente tabella riassume le 2 restrizioni della banda 868MHz secondo la normativa Europea ERC-REC-70-3E:
 
 	|   | Sottobande | Frequenza (MHz) |    Potenza     | Duty Cycle | Note             |
 	|---|------------|-----------------|----------------|------------|------------------|
@@ -120,7 +130,7 @@ bit_t LMIC_setupBand (u1_t bandidx, s1_t txpow, u2_t txcap)
 ``` 
 ma è utile solo in modo **ABP**, in modo **OTAA** è del tutto automatica e non è necessario eseguirla esplicitamente.
 
-7. Impostazione della **data rate** e dello **spreading factor** (sono vincolate insieme). 
+8. Impostazione della **data rate** e dello **spreading factor** (sono vincolate insieme). 
 
 <img src="Spreading_Factors.png" alt="alt text" width="600">
 
