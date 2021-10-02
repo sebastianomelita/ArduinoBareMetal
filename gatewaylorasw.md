@@ -114,10 +114,12 @@ Il **ritardo** è legato al **duty cicle**, cioè la quantità di tempo in cui u
 	
 La zona più interessante è la seconda, 868,00 – 868,60. Su questi 600kHz abbiamo i 2000 canali Sigfox e i 3 canali LoRaWAN standard.
 
-In LMIC la definizione delle sottoande si fa con del codice nel setup():
+In LMIC per la 868 europea la definizione delle sottobande si fa con del codice nel setup():
 ```C++
-LMIC_selectSubBand(1);
+LMIC_setupBand();
 ``` 
+
+ma è utile solo in modo **ABP**, in modo **OTAA** è del tutto automatica e non è necessario eseguirla esplicitamente.
 
 7. Impostazione della **data rate** e dello **spreading factor** (sono vincolate insieme). 
 
