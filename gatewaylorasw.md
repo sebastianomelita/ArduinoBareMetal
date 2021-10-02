@@ -115,10 +115,9 @@ Il **ritardo** è legato al **duty cicle**, cioè la quantità di tempo in cui u
 La zona più interessante è la seconda, 868,00 – 868,60. Su questi 600kHz abbiamo i 2000 canali Sigfox e i 3 canali LoRaWAN standard.
 
 In LMIC per la 868 europea la definizione delle sottobande si fa con del codice nel setup():
-```C++
-LMIC_setupBand();
+```
+bit_t LMIC_setupBand (u1_t bandidx, s1_t txpow, u2_t txcap)
 ``` 
-
 ma è utile solo in modo **ABP**, in modo **OTAA** è del tutto automatica e non è necessario eseguirla esplicitamente.
 
 7. Impostazione della **data rate** e dello **spreading factor** (sono vincolate insieme). 
@@ -127,10 +126,18 @@ ma è utile solo in modo **ABP**, in modo **OTAA** è del tutto automatica e non
 
 L'impostazione si fa con il seguente spezzone di codice all'interno del setup():
 ```C++
+// Enable/disable link check validation. 
+void LMIC_setLinkCheckMode (1);
+
+// Enable or disable data rate adaptation. Should be turned off if the device is mobile.
+void LMIC_setAdrMode (1);
+
 // Set data rate to Spreading Factor 7 and transmit power to 14 dBi for uplinks
 LMIC_setDrTxpow(DR_SF7,14);
 ```
-Imposta velocità dati e potenza di trasmissione. Dovrebbe essere utilizzato solo se l'adattamento della velocità dati automatico (data rate adaptation) è disabilitato.
+Imposta velocità dati e potenza di trasmissione. Dovrebbe essere utilizzato solo se l'adattamento della velocità dati automatico (data rate adaptation) è disabilitato. Dovrebbe essere disabilitato se il dispositivo è mobile.
+
+La modalità di controllo del collegamento è abilitata per impostazione predefinita e viene utilizzata periodicamente verificare la connettività di rete. Deve essere chiamato solo se viene stabilita una sessione.
 
 ## **Configurazioni per schede note**
 
