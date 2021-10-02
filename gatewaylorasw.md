@@ -130,6 +130,8 @@ L'impostazione si fa con il seguente spezzone di codice all'interno del setup():
 // Set data rate to Spreading Factor 7 and transmit power to 14 dBi for uplinks
 LMIC_setDrTxpow(DR_SF7,14);
 ```
+Imposta velocità dati e potenza di trasmissione. Dovrebbe essere utilizzato solo se l'adattamento della velocità dati automatico (data rate adaptation) è disabilitato.
+
 ## **Configurazioni per schede note**
 
 ### **1) La scheda LoRa RMF95/W**
