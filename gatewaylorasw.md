@@ -131,7 +131,7 @@ bit_t LMIC_setupBand (u1_t bandidx, s1_t txpow, u2_t txcap)
 ma è utile solo in modo **ABP**, in modo **OTAA** è del tutto automatica e non è necessario eseguirla esplicitamente.
 
 8. Questo è un elenco di definizioni di piani di frequenza utilizzate in The Things Network. Questi piani di frequenza si basano su quanto specificato nel documento dei parametri regionali LoRaWAN.
-- Uplink:
+- **Uplink*:
 
 1. 868.1 - SF7BW125 to SF12BW125
 2. 868.3 - SF7BW125 to SF12BW125 and SF7BW250
@@ -141,8 +141,9 @@ ma è utile solo in modo **ABP**, in modo **OTAA** è del tutto automatica e non
 6. 867.5 - SF7BW125 to SF12BW125
 7. 867.7 - SF7BW125 to SF12BW125
 8. 867.9 - SF7BW125 to SF12BW125
-	9. 868.8 - FSK
-- Downlink:
+9. 868.8 - FSK
+	
+- **ownlink**:
 
 1. Uplink channels 1-9 (RX1)
 2. 869.525 - SF9BW125 (RX2
