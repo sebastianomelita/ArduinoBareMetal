@@ -143,6 +143,7 @@ ma è utile solo in modo **ABP**, in modo **OTAA** è del tutto automatica e non
 8. 867.9 - SF7BW125 to SF12BW125
 	9. 868.8 - FSK
 - Downlink:
+
 1. Uplink channels 1-9 (RX1)
 2. 869.525 - SF9BW125 (RX2
 
