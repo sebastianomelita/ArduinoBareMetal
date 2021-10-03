@@ -148,6 +148,8 @@ ma è utile solo in modo **ABP**, in modo **OTAA** è del tutto automatica e non
 1. Uplink channels 1-9 (RX1)
 2. 869.525 - SF9BW125 (RX2
 
+Queste informazioni sono utili solo in modo **ABP**, in modo **OTAA** la loro impostazione + del tutto automatica e non è necessario eseguirla esplicitamente.
+
 9. Impostazione della **data rate** e dello **spreading factor** (sono vincolate insieme). 
 
 <img src="Spreading_Factors.png" alt="alt text" width="600">
