@@ -11,7 +11,9 @@ Normalmente una **istruzione delay(x)** fa attendere per x secondi non solo l'es
 
 Se però due o più task vengono eseguiti su thread differenti è possibile **bloccarne soltanto uno** con un delay impedendo temporaneamente ad uno dei suoi task di andare avanti, ma **lasciando liberi tutti gli altri** task sugli altri thread di proseguire la loro esecuzione. Questo perchè thread differenti sono assimilabili a flussi di esecuzione differenti eseguiti su CPU (logiche) differenti. In realtà le diverse CPU logichr condividono un'unica CPU fisica.
 
-Ma come è possibile che thread diversi possano essere mandati in esecuzione contemporaneamente su un'unica CPU fisica. In realtà ad essere eseguiti **contemporaneamente** sono soltanto i **task**, cioè i programmi ed i relativi algoritmi, le **istruzioni** in linguaggio macchina che li compongono vengono in realtà eseguite a turno, a blocchi di istruzioni. Un blocco viene stabilito soltanto in base al tempo, un timer scandisce la durata della finestra temporale di ogni blocco detta **quanto di tempo**. Terminato il quanto di tempo di un thread si passa ad eseguire le istruzioni di un altro thread nel quanto di tempo successivo.
+Ma come è possibile che thread diversi possano essere mandati in esecuzione contemporaneamente su un'unica CPU fisica?
+
+In realtà ad essere eseguiti **contemporaneamente** sono soltanto i **task**, cioè i programmi ed i relativi algoritmi, le **istruzioni** in linguaggio macchina che li compongono vengono in realtà eseguite a turno, a blocchi di istruzioni. Un blocco viene stabilito soltanto in base al tempo, un timer scandisce la durata della finestra temporale di ogni blocco detta **quanto di tempo**. Terminato il quanto di tempo di un thread si passa ad eseguire le istruzioni di un altro thread nel quanto di tempo successivo.
 Ciò accade a patto che i thread siano **"preemptive"** cioè supportino il **prerilascio** della risorsa CPU prima del termine naturale del task (il comando return o il completamento del task). 
 
 Normalmente i thread possono lavorare in due **modalità operative**:
