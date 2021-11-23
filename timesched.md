@@ -118,6 +118,8 @@ Scopo dello schedulatore è gestire il **multitasking**, cioè l'esecuzione **pa
 
 Una applicazione in genere non è programmata per essere altruista per cui non cede spontaneamente la CPU. Il **ruolo del timer HW** è proprio quello di **contare** il tempo assegnato ad una applicazione e di **sottrargli la CPU** quando questo è scaduto. Un segnale di interrupt interrompe l'esecuzione del programma corrente e fa partire la ISR() dello schedulatore dei thread che assegna la CPU ad un altro programma. L'operazione viene ripetuta **a turno** per tutti i programmi in esecuzione. Questa tecnica è detta **multi-threading** ed è gestita e coordinata da un modulo software detto schedulatore dei thread. Uno **schedulatore dei thread** può essere **integrato nel SO** oppure inserito in una **libreria a parte**. 
 
+### **Considerazioni finali**
+
 **Riassumendo**, la schedulazione dei task mediante **timers** comporta:
 
 - vantaggio. l'applicazione non deve gestire la logica dello schedulatore
