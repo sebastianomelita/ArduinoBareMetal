@@ -110,7 +110,7 @@ void loop()
   // your program here...
 }
 ```
-##**Timer impostato da uno schedulatore**
+### **Timer impostato da uno schedulatore**
 
 Spesso la gestione del timer è affidata ad modulo SW esterno ai task per cui l'intervento del timer **non è deciso** dal programmatore ma è deciso da un modulo detto **schedulatore dei thread** che agisce in **maniera trasparente** al di fuori del controllo del programmatore. 
 
