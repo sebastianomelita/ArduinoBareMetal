@@ -2,7 +2,7 @@
 
 ## **ESEMPI DI SCHEDULATORI**
 
-**SCHEDULATORE CON DELAY()**
+### **SCHEDULATORE CON DELAY()**
 ```C++
 	byte led = 13;
 	byte pulsante = 2;
@@ -29,7 +29,7 @@ Riassumendo, la **schedulazione mediante delay** comporta:
 
  
  
-**SCHEDULATORE CON MILLIS()**
+### **SCHEDULATORE CON MILLIS()**
 
 Il **tempo base** è la base dei tempi di tutte le schedulazioni, viene calcolato **periodicamente** all'accadere di un **evento** (superamento di una soglia di tempo) che viene detto **tick** (scatto, in analogia con il metronomo per la musica).
 
@@ -68,7 +68,7 @@ Riassumendo, la **schedulazione mediante millis** comporta:
 - **svantaggio**. l'applicazione deve gestire la logica dello schedulatore
  
  
-**SCHEDULATORE CON TIMER HARDWARE**
+### **SCHEDULATORE CON TIMER HARDWARE**
 
 Dopo la tecnica basata sulla **pianificazione dei ritardi** delay() e quella basata sul **polling periodico della funzione millis()** per generare una catena di tick esiste un terzo modo di generare con precisione dei tempi per il quale però è necessario impostare un **HW esterno detto Timer**.
 
@@ -110,7 +110,7 @@ void loop()
   // your program here...
 }
 ```
-**TIMER HW IMPOSTATO AUTOMATICAMENTE (THREAD)**
+### **TIMER HW IMPOSTATO AUTOMATICAMENTE (THREAD)**
 
 Spesso la gestione del timer è affidata ad modulo SW esterno ai task per cui l'intervento del timer **non è deciso** dal programmatore ma è deciso da un modulo detto **schedulatore dei thread** che agisce in **maniera trasparente** al di fuori del controllo del programmatore. 
 
