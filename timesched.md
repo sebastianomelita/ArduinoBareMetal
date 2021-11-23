@@ -29,7 +29,7 @@ Riassumendo, la **schedulazione mediante delay** comporta:
 
  
  
-### **SCHEDULATORE CON MILLIS()**
+### **SCHEDULATORE CON TIMER TICK GENERATI DA MILLIS()**
 
 Il **tempo base** è la base dei tempi di tutte le schedulazioni, viene calcolato **periodicamente** all'accadere di un **evento** (superamento di una soglia di tempo) che viene detto **tick** (scatto, in analogia con il metronomo per la musica).
 
