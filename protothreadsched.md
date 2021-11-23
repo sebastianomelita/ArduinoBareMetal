@@ -121,10 +121,10 @@ int blinkThread1(struct pt* pt) {
 
   // Loop secondario protothread
   for(;;) {
-		digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
-		PT_SLEEP(pt, 500);			// delay non bloccanti
-		digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
-		PT_SLEEP(pt, 500);			// delay non bloccanti
+	digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
+	PT_SLEEP(pt, 500);			// delay non bloccanti
+	digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
+	PT_SLEEP(pt, 500);			// delay non bloccanti
   }
   PT_END(pt);
 }
