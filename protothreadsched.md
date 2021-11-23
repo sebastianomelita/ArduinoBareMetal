@@ -104,4 +104,52 @@ attenzione. In caso di dubbio, non utilizzare variabili locali all'interno di un
 - Un protothread è guidato da ripetute chiamate alla funzione in cui il protothread è in esecuzione. Ogni volta che viene chiamata la funzione, il 
 protothread verrà eseguito fino a quando non si blocca o esce. Pertanto la schedulazione dei protothreads viene eseguito dall'applicazione che utilizza i protothreads.
 
+Di seguito è riportato un esempio su scheda **Arduino Uno**, con **IDE Arduino** e  con la libreria **protothread.h** di un **blink sequenziale** in esecuzione su **un thread** e di gestione del pulsante sul loop principale. I ritardi sleep agscono sul thread secondario ma non bloccano la letura dello stato del pulsante che rimane responsivo nell'accendere il secondo led durante le entrambe le fasi del blink del primo led.
+
+```C++
+#include "protothreads.h"
+
+bool blink1_running = true;
+int led1 = 13;
+int led2 = 12;
+byte pulsante=2;
+
+// definizione protothread del lampeggio
+pt ptBlink1;
+int blinkThread1(struct pt* pt) {
+  PT_BEGIN(pt);
+
+  // Loop secondario protothread
+  for(;;) {
+		digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
+		PT_SLEEP(pt, 500);			// delay non bloccanti
+		digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
+		PT_SLEEP(pt, 500);			// delay non bloccanti
+  }
+  PT_END(pt);
+}
+
+// the setup function runs once when you press reset or power the board
+void setup() {
+  PT_INIT(&ptBlink1);
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() { // loop principale
+	PT_SCHEDULE(blinkThread1(&ptBlink1)); // esecuzione schedulatore protothreads
+    
+	// gestione pulsante
+	if (digitalRead(pulsante) == HIGH) {
+		// turn LED on:
+		digitalWrite(led2, HIGH);
+	}else{
+		// turn LED off:
+		digitalWrite(led2, LOW);
+	}
+}
+```
+
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
