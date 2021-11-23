@@ -110,6 +110,8 @@ void loop()
   // your program here...
 }
 ```
+###**Timer impostato da uno schedulatore**
+
 Spesso la gestione del timer è affidata ad modulo SW esterno ai task per cui l'intervento del timer **non è deciso** dal programmatore ma è deciso da un modulo detto **schedulatore dei thread** che agisce in **maniera trasparente** al di fuori del controllo del programmatore. 
 
 Scopo dello schedulatore è gestire il **multitasking**, cioè l'esecuzione **parallela** di più programmi su un unica CPU. Ciò si ottiene togliendo periodicamente la risorsa CPU ad un programma per darla ad un'altro. L'esecuzione dei task, in questo caso, può essere programmata come al solito, ordinando le istruzioni in **maniera sequenziale**, non badando al fatto che queste possano essere interrotte dallo schedulatore.
