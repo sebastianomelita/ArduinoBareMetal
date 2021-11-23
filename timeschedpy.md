@@ -109,7 +109,7 @@ def toggle_led(t) :
 tim = machine.Timer(-1)
 tim.init(period=500, callback = toggle_led)
 ```
-**TIMER HW IMPOSTATO AUTOMATICAMENTE**
+**TIMER HW IMPOSTATO AUTOMATICAMENTE (THREAD)**
 
 Spesso la gestione del timer è affidata ad modulo SW esterno ai task per cui l'intervento del timer **non è deciso** dal programmatore ma è deciso da un modulo detto **schedulatore dei thread** che agisce in **maniera trasparente** al di fuori del controllo del programmatore. 
 
