@@ -18,7 +18,7 @@
 		in = digitalRead(pulsante);  //pulsante collegato in pulldown
 		// Inserire qui la logica di comando
 		//……………………………………
-		delay(100);  // ritarda del tempo necessario ad evitare un rimbslzo
+		delay(100);  // ritarda del tempo necessario ad evitare un rimbalzo
 	}
 ```
 La generazione di più task in tempi diversi risulta **molto semplice** se eseguita con la funzione delay() soprattutto per la natura **lineare** della programmazione che permette di scrivere il codice dei task con lo **stesso ordine** con cui questi verranno effettivamente eseguiti **nel tempo**. Lo svantaggio di questa realizzazione è una sostanziale **inefficienza** perchè il **blocco di un task** comporta anche il blocco di **tutti gli altri**, compreso il programma principale (**main**). 
