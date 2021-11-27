@@ -54,7 +54,7 @@ Se un rilevatore si limita a segnalare un **generico fronte**, allora per stabil
 
 Il **secondo problema** è costituito dal fenomeno dei **rimbalzi**. Si palesano come una sequenza di rapide oscillazioni che hanno sia fronti di salita che di discesa. Se l’accensione di un led è associata ad un fronte e il suo spegnimento a quello successivo, allora la pressione di un pulsante realizza, di fatto, la solita slot machine…è necessario un algoritmo di debouncing.
 
-Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo:
+Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo realizzato con una **schedulazione ad eventi (time tick)**:
 ```C++
 #define tbase  100  // periodo base in milliseconds
 unsigned long precm;
@@ -90,6 +90,71 @@ void loop()
 	}
 }
 ```
+Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati tramite **protothreads**:
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include "protothreads.h"
+byte precval, val;
+byte led = 13;
+byte pulsante =2;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+// utilizzare variabili globali è una maniera per ottenere
+// che il valore di una variabile persista tra chiamate di funzione successive
+// situazione che si verifica se la funzione è richiamata dentro il loop()
+
+// definizione protothread del pulsante
+pt ptBtn;
+int btnThread(struct pt* pt) {
+  PT_BEGIN(pt);
+
+  // Loop secondario protothread
+  for(;;) {
+		val = digitalRead(pulsante);	// lettura ingressi
+		if(precval==LOW && val==HIGH){ 	// rivelatore di fronte di salita
+			stato = !(stato); 			// impostazione dello stato del toggle
+		}
+		precval=val;  					//memorizzazione livello loop precedente
+		PT_SLEEP(pt, 500);				// delay non bloccanti
+  }
+  PT_END(pt);
+}
+
+// definizione protothread del lampeggio
+pt ptBlink;
+int blinkThread(struct pt* pt) {
+  PT_BEGIN(pt);
+
+  // Loop secondario protothread
+  for(;;) {
+	if (stato) {
+		digitalWrite(led, HIGH);   	// turn the LED on (HIGH is the voltage level)
+		PT_SLEEP(pt, 1000);
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+		PT_SLEEP(pt, 1000);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+		PT_YIELD(pt);
+	}
+  }
+  PT_END(pt);
+}
+
+void setup()
+{
+	PT_INIT(&ptBtn);
+	PT_INIT(&ptBlink);
+	pinMode(led, OUTPUT);
+	pinMode(pulsante, INPUT);
+	precval=LOW;
+}
+
+void loop()
+{
+	PT_SCHEDULE(btnThread(&ptBtn)); 	// esecuzione schedulatore protothreads
+	PT_SCHEDULE(blinkThread(&ptBlink)); // esecuzione schedulatore protothreads
+}
+```
+
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](togglepy.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbLTE1NTkxOTA3OTIsLTk1MzQ1NDY2NV19
