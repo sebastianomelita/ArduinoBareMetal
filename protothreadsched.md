@@ -156,5 +156,6 @@ void loop() { // loop principale
 - http://dunkels.com/adam/pt/examples.html
 - https://gitlab.com/airbornemint/arduino-protothreads
 - http://dunkels.com/adam/pt/expansion.html
+- https://roboticsbackend.com/arduino-protothreads-tutorial/
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
