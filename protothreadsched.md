@@ -153,7 +153,7 @@ void loop() { // loop principale
 ```
 
 ### **Sitografia:**
-http://dunkels.com/adam/pt/examples.html
-https://gitlab.com/airbornemint/arduino-protothreads
+- http://dunkels.com/adam/pt/examples.html
+- https://gitlab.com/airbornemint/arduino-protothreads
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
