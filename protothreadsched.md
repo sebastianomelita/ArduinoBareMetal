@@ -152,4 +152,7 @@ void loop() { // loop principale
 }
 ```
 
+### **Sitografia:**
+http://dunkels.com/adam/pt/examples.html
+
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
