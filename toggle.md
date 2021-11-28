@@ -80,7 +80,7 @@ void loop()
 {
 	//schedulatore ad eventi con funzione di antirimbalzo
 	if((millis()-precm) >= tbase){  	//se è passato un periodo tbase dal precedente periodo	
-		precm = millis();             	//preparo il tic successivo azzerando ilconteggio del tempo ad adesso
+		precm = millis();             	//preparo il tic successivo azzerando il conteggio del tempo ad adesso
 
 		//codice eseguito al tempo stabilito
 		val = digitalRead(pulsante);  // lettura ingressi
