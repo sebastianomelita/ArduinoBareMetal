@@ -119,36 +119,30 @@ int led2 = 12;
  
 void blink1(void * parameter){
 	String taskMessage = "Task running on core ";
-    	taskMessage = taskMessage + xPortGetCoreID();
+    taskMessage = taskMessage + xPortGetCoreID();
 	
-	while(true){
-		if(blink1_running == true) {
+	while(blink1_running){
 			digitalWrite(led1, HIGH);
 			delay(500);
 			digitalWrite(led1, LOW);
 			delay(500);
 			Serial.println(taskMessage);
-		}else{
-			digitalWrite(led1, LOW);
-		}
 	}
+	digitalWrite(led1, LOW);	
 }
 
 void blink2(void * parameter){
 	String taskMessage = "Task running on core ";
-    	taskMessage = taskMessage + xPortGetCoreID();
+    taskMessage = taskMessage + xPortGetCoreID();
 	
-	while(true){
-		if (blink2_running == true) {
+	while(blink2_running){
 			digitalWrite(led2, HIGH);
 			delay(1000);
 			digitalWrite(led2, LOW);
 			delay(1000);
 			Serial.println(taskMessage);
-		}else{
-			digitalWrite(led2, LOW);
-		}
 	}
+	digitalWrite(led2, LOW);
 }
  
 void setup() {
