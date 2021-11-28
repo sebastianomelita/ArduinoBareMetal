@@ -90,6 +90,8 @@ void loop()
 	}
 }
 ```
+### **Esempi di blink insieme ad antirimbalzo** realizzati con tecniche di schedulazione diverse
+
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi (time tick)**:
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
@@ -103,9 +105,9 @@ byte precval;
 byte pulsante=2;
 byte led = 13;
 byte stato= LOW;	// variabile globale che memorizza lo stato del pulsante
-					// utilizzare variabili globali è una maniera per ottenere
-				    // che il valore di una variabile persista tra chiamate di funzione successive
-					// situazione che si verifica se la funzione è richiamata dentro il loop()
+			// utilizzare variabili globali è una maniera per ottenere
+			// che il valore di una variabile persista tra chiamate di funzione successive
+			// situazione che si verifica se la funzione è richiamata dentro il loop()
 
 void setup()
 {
@@ -125,18 +127,18 @@ void loop()
 	
 	// schedulazione degli eventi con periodicità tbase (funzione di antibounce per il digitalread a seguire)
 	val = digitalRead(pulsante);		//pulsante collegato in pulldown
-	//val = digitalRead(!pulsante);	//pulsante collegato in pullup
-	if(precval==LOW && val==HIGH){ 	//rivelatore di fronte di salita
-		stato = !(stato); 			//impostazione dello stato del toggle	
+	//val = digitalRead(!pulsante);		//pulsante collegato in pullup
+	if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
+		stato = !(stato); 		//impostazione dello stato del toggle	
 	}
 	precval=val;	
 
 	// schedulazione degli eventi con periodicità 1 sec
-	if(!(step%10)){     //ogni secondo (vero ad ogni multiplo di 10)
+	if(!(step%10)){     	//ogni secondo (vero ad ogni multiplo di 10)
 		if(stato){      // valutazione dello stato del toggle
 			digitalWrite(led,!digitalRead(led)); //stato alto: led blink
 		}else{
-			digitalWrite(led,LOW);				 //stato basso: led spento
+			digitalWrite(led,LOW);		 //stato basso: led spento
 		}
 	}
   }
@@ -162,12 +164,12 @@ int btnThread(struct pt* pt) {
 
   // Loop secondario protothread
   for(;;) {
-	val = digitalRead(pulsante);	// lettura ingressi
-	if(precval==LOW && val==HIGH){ 	// rivelatore di fronte di salita
-		stato = !(stato); 			// impostazione dello stato del toggle
+	val = digitalRead(pulsante);		// lettura ingressi
+	if(precval==LOW && val==HIGH){ 		// rivelatore di fronte di salita
+		stato = !(stato); 		// impostazione dello stato del toggle
 	}
-	precval=val;  					//memorizzazione livello loop precedente
-	PT_SLEEP(pt, 500);				// delay non bloccanti
+	precval=val;  				//memorizzazione livello loop precedente
+	PT_SLEEP(pt, 500);			// delay non bloccanti
   }
   PT_END(pt);
 }
@@ -204,7 +206,7 @@ void setup()
 void loop()
 {
 	PT_SCHEDULE(btnThread(&ptBtn)); 	// esecuzione schedulatore protothreads
-	PT_SCHEDULE(blinkThread(&ptBlink)); // esecuzione schedulatore protothreads
+	PT_SCHEDULE(blinkThread(&ptBlink)); 	// esecuzione schedulatore protothreads
 }
 ```
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** diversi:
@@ -226,13 +228,13 @@ void btnThread(void * d){
     	taskMessage = taskMessage + xPortGetCoreID();
 	
 	while(true){
-		val = digitalRead(pulsante);	// lettura ingressi
-		if(precval==LOW && val==HIGH){ 	// rivelatore di fronte di salita
-			stato = !(stato); 			// impostazione dello stato del toggle
+		val = digitalRead(pulsante);		// lettura ingressi
+		if(precval==LOW && val==HIGH){ 		// rivelatore di fronte di salita
+			stato = !(stato); 		// impostazione dello stato del toggle
 		}
-		precval=val;  					//memorizzazione livello loop precedente
+		precval=val;  				//memorizzazione livello loop precedente
 		Serial.println(taskMessage);
-		delay(500);						// delay bloccanti
+		delay(500);				// delay bloccanti
 	}
 }
 
