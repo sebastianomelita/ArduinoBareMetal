@@ -50,7 +50,7 @@ int blinkThread2(struct pt* pt) {
   PT_BEGIN(pt);
 
   // Loop forever
-  for(;;) {
+  while(true) {
 	if (blink2_running == true) {
 		digitalWrite(led2, HIGH);   // turn the LED on (HIGH is the voltage level)
 		PT_SLEEP(pt, 1000);
