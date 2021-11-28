@@ -162,12 +162,12 @@ int btnThread(struct pt* pt) {
 
   // Loop secondario protothread
   for(;;) {
-		val = digitalRead(pulsante);	// lettura ingressi
-		if(precval==LOW && val==HIGH){ 	// rivelatore di fronte di salita
-			stato = !(stato); 			// impostazione dello stato del toggle
-		}
-		precval=val;  					//memorizzazione livello loop precedente
-		PT_SLEEP(pt, 500);				// delay non bloccanti
+	val = digitalRead(pulsante);	// lettura ingressi
+	if(precval==LOW && val==HIGH){ 	// rivelatore di fronte di salita
+		stato = !(stato); 			// impostazione dello stato del toggle
+	}
+	precval=val;  					//memorizzazione livello loop precedente
+	PT_SLEEP(pt, 500);				// delay non bloccanti
   }
   PT_END(pt);
 }
