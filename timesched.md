@@ -6,6 +6,7 @@
 ```C++
 	byte led = 13;
 	byte pulsante = 2;
+	
 	void setup()
 	{
 		pinMode(led, OUTPUT);
