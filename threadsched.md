@@ -122,11 +122,11 @@ void blink1(void * parameter){
     	taskMessage = taskMessage + xPortGetCoreID();
 	
 	while(blink1_running){
-			digitalWrite(led1, HIGH);
-			delay(500);
-			digitalWrite(led1, LOW);
-			delay(500);
-			Serial.println(taskMessage);
+		digitalWrite(led1, HIGH);
+		delay(500);
+		digitalWrite(led1, LOW);
+		delay(500);
+		Serial.println(taskMessage);
 	}
 	digitalWrite(led1, LOW);	
 }
@@ -136,11 +136,11 @@ void blink2(void * parameter){
     	taskMessage = taskMessage + xPortGetCoreID();
 	
 	while(blink2_running){
-			digitalWrite(led2, HIGH);
-			delay(1000);
-			digitalWrite(led2, LOW);
-			delay(1000);
-			Serial.println(taskMessage);
+		digitalWrite(led2, HIGH);
+		delay(1000);
+		digitalWrite(led2, LOW);
+		delay(1000);
+		Serial.println(taskMessage);
 	}
 	digitalWrite(led2, LOW);
 }
