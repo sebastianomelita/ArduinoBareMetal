@@ -27,20 +27,21 @@ void setup()
 
 void loop()
 {
-	// polling della millis() alla ricerca del tempo stabilito
-	if((millis()-precm) >= (unsigned long) tbase){ // lo eseguo se è il tempo stabilito
-		precm = millis();  // preparo il tic successivo al tempo stabilito
-		step = (step + 1) % nstep;  // conteggio circolare arriva al massimo a nstep-1
+	// polling della millis() alla ricerca del tempo in cui scade ogni periodo
+	if((millis()-precm) >= (unsigned long) tbase){ 	//se è passato un periodo tbase dal precedente periodo
+		precm = millis();  			//preparo il tic successivo azzerando ilconteggio del tempo ad adesso
+		
+		step = (step + 1) % nstep; 		 // conteggio circolare (arriva al massimo a nstep-1)
 
 		// task 1
-		if(!(step%2)){  // schedulo eventi al multiplo del tempo stabilito (2 sec)
+		if(!(step%2)){  // schedulo eventi al multiplo del periodo (2 sec = 2 periodi)
 			digitalWrite(led1,!digitalRead(led1)); // stato alto: led blink
 		}
 		// task 2
-		if(!(step%3)){  // schedulo eventi al multiplo del tempo stabilito (3 sec)
+		if(!(step%3)){  // schedulo eventi al multiplo del periodo (3 sec = 3 periodi)
 			digitalWrite(led2,!digitalRead(led2)); // stato alto: led blink
 		}
-		// il codice eseguito al tempo del metronomo va quì
+		// il codice eseguito al tempo del metronomo (esattamente un periodo) va quì
 	}
 	// il codice eseguito al tempo massimo della CPU va qui
 }
