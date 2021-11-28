@@ -118,6 +118,7 @@ void setup()
   precval=LOW;
 }
 
+// loop principale
 void loop()
 {
   if((millis()-precm) >= tbase){  //metronomo
@@ -203,6 +204,7 @@ void setup()
 	precval=LOW;
 }
 
+// loop principale
 void loop()
 {
 	PT_SCHEDULE(btnThread(&ptBtn)); 	// esecuzione schedulatore protothreads
@@ -287,7 +289,8 @@ void setup() {
 		taskCore1);  /* Core where the task should run */
   Serial.println("Task created...");
 }
- 
+
+// loop principale
 void loop() {
 	
 }
