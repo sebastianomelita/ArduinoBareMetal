@@ -90,7 +90,7 @@ void loop()
 	}
 }
 ```
-Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi**:
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi (time tick)**:
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 #define tbase    100       // periodo base in milliseconds
@@ -119,9 +119,9 @@ void setup()
 void loop()
 {
   if((millis()-precm) >= tbase){  //metronomo
-    precm = millis();             //preparo il tic successivo
-	
-    step = (step + 1) % nstep;  //conteggio circolare arriva al massimo a nstep-1
+	precm = millis();             //preparo il tic successivo
+
+	step = (step + 1) % nstep;  //conteggio circolare arriva al massimo a nstep-1
 	
 	// schedulazione degli eventi con periodicità tbase (funzione di antibounce per il digitalread a seguire)
 	val = digitalRead(pulsante);		//pulsante collegato in pulldown
@@ -132,13 +132,13 @@ void loop()
 	precval=val;	
 
 	// schedulazione degli eventi con periodicità 1 sec
-    if(!(step%10)){     //ogni secondo (vero ad ogni multiplo di 10)
+	if(!(step%10)){     //ogni secondo (vero ad ogni multiplo di 10)
 		if(stato){      // valutazione dello stato del toggle
 			digitalWrite(led,!digitalRead(led)); //stato alto: led blink
 		}else{
 			digitalWrite(led,LOW);				 //stato basso: led spento
 		}
-    }
+	}
   }
 }
 ```
