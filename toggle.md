@@ -154,6 +154,87 @@ void loop()
 	PT_SCHEDULE(blinkThread(&ptBlink)); // esecuzione schedulatore protothreads
 }
 ```
+Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **hreads** diversi:
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+static uint8_t taskCore0 = 0;
+static uint8_t taskCore1 = 1;
+int led = 13;
+byte pulsante =2;
+byte precval, val;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+// utilizzare variabili globali è una maniera per ottenere
+// che il valore di una variabile persista tra chiamate di funzione successive
+// situazione che si verifica se la funzione è richiamata dentro il loop()
+ 
+void btnThread(void * d){
+	String taskMessage = "Task running on core ";
+    	taskMessage = taskMessage + xPortGetCoreID();
+	
+	while(true){
+		val = digitalRead(pulsante);	// lettura ingressi
+		if(precval==LOW && val==HIGH){ 	// rivelatore di fronte di salita
+			stato = !(stato); 			// impostazione dello stato del toggle
+		}
+		precval=val;  					//memorizzazione livello loop precedente
+		Serial.println(taskMessage);
+		delay(500);						// delay bloccanti
+	}
+}
+
+void blinkThread(void * d){
+	String taskMessage = "Task running on core ";
+    	taskMessage = taskMessage + xPortGetCoreID();
+	
+	while(true){
+		if (stato) {
+			digitalWrite(led, HIGH);   	// turn the LED on (HIGH is the voltage level)
+			delay(1000);
+			digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+			delay(1000);
+		} else {
+			digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+			delay(0); 					// equivale a yeld()
+		}
+	}
+}
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  precval=LOW;
+  
+  Serial.print("Starting to create task on core ");
+  Serial.println(taskCore0);
+  xTaskCreatePinnedToCore(
+				blinkThread,   /* Function to implement the task */
+				"blinkThread", /* Name of the task */
+				10000,      /* Stack size in words */
+				NULL,       /* Task input parameter */
+				0,          /* Priority of the task */
+				NULL,       /* Task handle. */
+				taskCore0);  /* Core where the task should run */
+   Serial.println("Task created...");
+   delay(500);
+   Serial.print("Starting to create task on core ");
+   Serial.println(taskCore1);
+   xTaskCreatePinnedToCore(
+				btnThread,   /* Function to implement the task */
+				"btnThread", /* Name of the task */
+				10000,      /* Stack size in words */
+				NULL,       /* Task input parameter */
+				0,          /* Priority of the task */
+				NULL,       /* Task handle. */
+				taskCore1);  /* Core where the task should run */
+  Serial.println("Task created...");
+}
+ 
+void loop() {
+	
+}
+```
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](togglepy.md)
 <!--stackedit_data:
