@@ -125,7 +125,7 @@ void loop()
 {
   //metronomo
   if((millis()-precm) >= tbase){  	//se è passato un periodo tbase dal precedente periodo	
-	precm = millis();             	//preparo il tic successivo azzerando ilconteggio del tempo ad adesso
+	precm = millis();             	//preparo il tic successivo azzerando il conteggio del tempo ad adesso
 
 	step = (step + 1) % nstep;  	//conteggio circolare arriva al massimo a nstep-1
 	
