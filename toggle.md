@@ -90,7 +90,60 @@ void loop()
 	}
 }
 ```
-Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati tramite **protothreads**:
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi**:
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#define tbase    100       // periodo base in milliseconds
+#define nstep    1000      // numero di fasi massimo di un periodo generico
+
+unsigned long precm;
+unsigned long step;
+byte pari, val;
+byte precval;
+byte pulsante=2;
+byte led = 13;
+byte stato= LOW;	// variabile globale che memorizza lo stato del pulsante
+					// utilizzare variabili globali è una maniera per ottenere
+				    // che il valore di una variabile persista tra chiamate di funzione successive
+					// situazione che si verifica se la funzione è richiamata dentro il loop()
+
+void setup()
+{
+  precm=0;
+  step=0;
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  precval=LOW;
+}
+
+void loop()
+{
+  if((millis()-precm) >= tbase){  //metronomo
+    precm = millis();             //preparo il tic successivo
+	
+    step = (step + 1) % nstep;  //conteggio circolare arriva al massimo a nstep-1
+	
+	// schedulazione degli eventi con periodicità tbase (funzione di antibounce per il digitalread a seguire)
+	val = digitalRead(pulsante);		//pulsante collegato in pulldown
+	//val = digitalRead(!pulsante);	//pulsante collegato in pullup
+	if(precval==LOW && val==HIGH){ 	//rivelatore di fronte di salita
+		stato = !(stato); 			//impostazione dello stato del toggle	
+	}
+	precval=val;	
+
+	// schedulazione degli eventi con periodicità 1 sec
+    if(!(step%10)){     //ogni secondo (vero ad ogni multiplo di 10)
+		if(stato){      // valutazione dello stato del toggle
+			digitalWrite(led,!digitalRead(led)); //stato alto: led blink
+		}else{
+			digitalWrite(led,LOW);				 //stato basso: led spento
+		}
+    }
+  }
+}
+```
+
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati tramite **protothreads**:
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 #include "protothreads.h"
@@ -154,7 +207,7 @@ void loop()
 	PT_SCHEDULE(blinkThread(&ptBlink)); // esecuzione schedulatore protothreads
 }
 ```
-Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** diversi:
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** diversi:
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
