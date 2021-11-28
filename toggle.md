@@ -154,7 +154,7 @@ void loop()
 	PT_SCHEDULE(blinkThread(&ptBlink)); // esecuzione schedulatore protothreads
 }
 ```
-Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **hreads** diversi:
+Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** diversi:
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
