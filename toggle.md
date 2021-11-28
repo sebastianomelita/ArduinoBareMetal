@@ -78,8 +78,10 @@ void setup()
 
 void loop()
 {
-	if((millis()-precm) >= tbase){  // schedulatore (e anche antirimbalzo)
-		precm = millis();  // preparo il tic successivo
+	//schedulatore ad eventi con funzione di antirimbalzo
+	if((millis()-precm) >= tbase){  	//se è passato un periodo tbase dal precedente periodo	
+		precm = millis();             	//preparo il tic successivo azzerando ilconteggio del tempo ad adesso
+
 		//codice eseguito al tempo stabilito
 		val = digitalRead(pulsante);  // lettura ingressi
 		if(precval==LOW && val==HIGH){ // rivelatore di fronte di salita
@@ -121,10 +123,11 @@ void setup()
 // loop principale
 void loop()
 {
-  if((millis()-precm) >= tbase){  //metronomo
-	precm = millis();             //preparo il tic successivo
+  //metronomo
+  if((millis()-precm) >= tbase){  	//se è passato un periodo tbase dal precedente periodo	
+	precm = millis();             	//preparo il tic successivo azzerando ilconteggio del tempo ad adesso
 
-	step = (step + 1) % nstep;  //conteggio circolare arriva al massimo a nstep-1
+	step = (step + 1) % nstep;  	//conteggio circolare arriva al massimo a nstep-1
 	
 	// schedulazione degli eventi con periodicità tbase (funzione di antibounce per il digitalread a seguire)
 	val = digitalRead(pulsante);		//pulsante collegato in pulldown
