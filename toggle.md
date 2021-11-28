@@ -164,7 +164,7 @@ int btnThread(struct pt* pt) {
   PT_BEGIN(pt);
 
   // Loop del protothread
-  for(;;) {
+  while(true) {
 	val = digitalRead(pulsante);		// lettura ingressi
 	if(precval==LOW && val==HIGH){ 		// rivelatore di fronte di salita
 		stato = !(stato); 		// impostazione dello stato del toggle
@@ -181,7 +181,7 @@ int blinkThread(struct pt* pt) {
   PT_BEGIN(pt);
 
   // Loop del protothread
-  for(;;) {
+  while(true) {
 	if (stato) {
 		digitalWrite(led, HIGH);   	// turn the LED on (HIGH is the voltage level)
 		PT_SLEEP(pt, 1000);
