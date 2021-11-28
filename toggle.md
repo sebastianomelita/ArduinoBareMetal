@@ -209,25 +209,25 @@ void setup() {
   Serial.print("Starting to create task on core ");
   Serial.println(taskCore0);
   xTaskCreatePinnedToCore(
-				blinkThread,   /* Function to implement the task */
-				"blinkThread", /* Name of the task */
-				10000,      /* Stack size in words */
-				NULL,       /* Task input parameter */
-				0,          /* Priority of the task */
-				NULL,       /* Task handle. */
-				taskCore0);  /* Core where the task should run */
+		blinkThread,   /* Function to implement the task */
+		"blinkThread", /* Name of the task */
+		10000,      /* Stack size in words */
+		NULL,       /* Task input parameter */
+		0,          /* Priority of the task */
+		NULL,       /* Task handle. */
+		taskCore0);  /* Core where the task should run */
    Serial.println("Task created...");
    delay(500);
    Serial.print("Starting to create task on core ");
    Serial.println(taskCore1);
    xTaskCreatePinnedToCore(
-				btnThread,   /* Function to implement the task */
-				"btnThread", /* Name of the task */
-				10000,      /* Stack size in words */
-				NULL,       /* Task input parameter */
-				0,          /* Priority of the task */
-				NULL,       /* Task handle. */
-				taskCore1);  /* Core where the task should run */
+		btnThread,   /* Function to implement the task */
+		"btnThread", /* Name of the task */
+		10000,      /* Stack size in words */
+		NULL,       /* Task input parameter */
+		0,          /* Priority of the task */
+		NULL,       /* Task handle. */
+		taskCore1);  /* Core where the task should run */
   Serial.println("Task created...");
 }
  
