@@ -162,7 +162,7 @@ pt ptBtn;
 int btnThread(struct pt* pt) {
   PT_BEGIN(pt);
 
-  // Loop secondario protothread
+  // Loop del protothread
   for(;;) {
 	val = digitalRead(pulsante);		// lettura ingressi
 	if(precval==LOW && val==HIGH){ 		// rivelatore di fronte di salita
@@ -179,7 +179,7 @@ pt ptBlink;
 int blinkThread(struct pt* pt) {
   PT_BEGIN(pt);
 
-  // Loop secondario protothread
+  // Loop del protothread
   for(;;) {
 	if (stato) {
 		digitalWrite(led, HIGH);   	// turn the LED on (HIGH is the voltage level)
@@ -227,6 +227,7 @@ void btnThread(void * d){
 	String taskMessage = "Task running on core ";
     	taskMessage = taskMessage + xPortGetCoreID();
 	
+	// Loop del thread
 	while(true){
 		val = digitalRead(pulsante);		// lettura ingressi
 		if(precval==LOW && val==HIGH){ 		// rivelatore di fronte di salita
@@ -242,6 +243,7 @@ void blinkThread(void * d){
 	String taskMessage = "Task running on core ";
     	taskMessage = taskMessage + xPortGetCoreID();
 	
+	// Loop del thread
 	while(true){
 		if (stato) {
 			digitalWrite(led, HIGH);   	// turn the LED on (HIGH is the voltage level)
