@@ -319,7 +319,7 @@ void * btnThread(void * d)
 {
     int time;
     time = (int) d;
-    while(true){
+    while(true){   			// Loop del thread
 	val = digitalRead(pulsante);	// lettura ingressi
 	if(precval==LOW && val==HIGH){ 	// rivelatore di fronte di salita
 		stato = !(stato); 			// impostazione dello stato del toggle
@@ -333,7 +333,7 @@ void * blinkThread(void * d)
 {
     int time;
     time = (int) d;
-    while(true){
+    while(true){    				// Loop del thread	
 	if (stato) {
 		digitalWrite(led, !digitalRead(led));
 		delay(time);
