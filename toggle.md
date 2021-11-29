@@ -214,7 +214,7 @@ void loop()
 	PT_SCHEDULE(blinkThread(&ptBlink)); 	// esecuzione schedulatore protothreads
 }
 ```
-Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** diversi:
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** su **core diversi**. La libreria usata è quella nativa dello ESP32 che implementa dalla fabbrica un **middleware RTOS**:
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
