@@ -214,7 +214,7 @@ void loop()
 	PT_SCHEDULE(blinkThread(&ptBlink)); 	// esecuzione schedulatore protothreads
 }
 ```
-Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** su **core diversi**. La libreria usata è quella nativa dello ESP32 che implementa dalla fabbrica un **middleware RTOS**:
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** su **core diversi**. La libreria usata è quella nativa dello ESP32 che implementa dalla fabbrica un **middleware RTOS** per cui non è necessario **includere** nessuna libreria esterna:
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
@@ -296,6 +296,69 @@ void setup() {
 // loop principale
 void loop() {
 	
+}
+```
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads**. La libreria usata è quella standard **phthread** che non è supportata nativamente da ESP32 ma solo tramite l'**inclusione** di una libreria esterna:
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include <pthread.h> //libreria di tipo preemptive
+pthread_t t1;
+pthread_t t2;
+int delayTime ;
+int led = 13;
+byte pulsante =2;
+byte precval, val;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+// utilizzare variabili globali è una maniera per ottenere
+// che il valore di una variabile persista tra chiamate di funzione successive
+// situazione che si verifica se la funzione è richiamata dentro il loop()
+
+void * btnThread(void * d)
+{
+    int time;
+    time = (int) d;
+    while(true){
+		val = digitalRead(pulsante);	// lettura ingressi
+		if(precval==LOW && val==HIGH){ 	// rivelatore di fronte di salita
+			stato = !(stato); 			// impostazione dello stato del toggle
+		}
+		precval=val;  					//memorizzazione livello loop precedente
+		delay(time);					// delay bloccanti
+	}
+}
+
+void * blinkThread(void * d)
+{
+    int time;
+    time = (int) d;
+    while(true){
+		if (stato) {
+			digitalWrite(led, !digitalRead(led));
+			delay(time);
+		} else {
+			digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+			delay(0); 					// equivale a yeld()
+		}
+    }
+    return NULL;
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  delayTime = 500;
+  if (pthread_create(&t1, NULL, btnThread, (void *)delay)) {
+         Serial.println("Errore crezione thread 1");
+  }
+  delayTime = 1000;
+  if (pthread_create(&t2, NULL, blinkThread, (void *)delay)) {
+         Serial.println("Errore crezione thread 2");
+  } 
+}
+
+void loop() {
+
 }
 ```
 
