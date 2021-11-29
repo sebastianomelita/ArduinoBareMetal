@@ -298,7 +298,8 @@ void loop() {
 	
 }
 ```
-Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads**. La libreria usata è quella standard **phthread** che non è supportata nativamente da ESP32 ma solo tramite l'**inclusione** di una libreria esterna:
+**FreeRTOS** è un **SO per sistemi embedded** molto usato e dalle buone prestazioni però, per l'utilizzo dei tjread, espone delle **API proprietarie** che non possono essere usate su sistemi diversi da FreeRTOS. Per i thread è stato sviluppato già da anni lo **standard POSIX** detto **phthread** che definisce in maniera **uniforme**, per i **sistemi** e per i **linguaggi** ad esso aderenti, una serie di APIche rendono il codice che contiene la programmazione dei thread molto più portabile.
+Dè riportata la gestione di un pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads**. La libreria usata è quella standard **phthread** che non è supportata nativamente da ESP32 ma solo tramite l'**inclusione** di una libreria esterna:
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 #include <pthread.h> //libreria di tipo preemptive
@@ -318,13 +319,13 @@ void * btnThread(void * d)
     int time;
     time = (int) d;
     while(true){
-		val = digitalRead(pulsante);	// lettura ingressi
-		if(precval==LOW && val==HIGH){ 	// rivelatore di fronte di salita
-			stato = !(stato); 			// impostazione dello stato del toggle
-		}
-		precval=val;  					//memorizzazione livello loop precedente
-		delay(time);					// delay bloccanti
+	val = digitalRead(pulsante);	// lettura ingressi
+	if(precval==LOW && val==HIGH){ 	// rivelatore di fronte di salita
+		stato = !(stato); 			// impostazione dello stato del toggle
 	}
+	precval=val;  					//memorizzazione livello loop precedente
+	delay(time);					// delay bloccanti
+    }
 }
 
 void * blinkThread(void * d)
@@ -332,13 +333,13 @@ void * blinkThread(void * d)
     int time;
     time = (int) d;
     while(true){
-		if (stato) {
-			digitalWrite(led, !digitalRead(led));
-			delay(time);
-		} else {
-			digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-			delay(0); 					// equivale a yeld()
-		}
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));
+		delay(time);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+		delay(0); 					// equivale a yeld()
+	}
     }
     return NULL;
 }
