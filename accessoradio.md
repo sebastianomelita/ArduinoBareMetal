@@ -69,8 +69,10 @@ E' adoperato dal **WiFi 5** e dalla telefonia mobile **4G**. Ha la proprietà di
 
 ### **OFDMA**
 
-Realizza una **parallelizzazione** dell'accesso al canale radio da parte di **più sorgenti** tramite **FDM**. Infatti, nell’ OFDM, Benché venga effettuato un **TDM**, può accadere che le **bitrate** delle sorgenti siano **molto diverse**, e generino **brevi messaggi** che occupano **tutte** le sottoportanti **uno slot** temporale alla volta, alla massima bitrate del canale. L'**analogia del canale** è quella dei **TIR** che in **giorni diversi** portano poco carico quando il **carico complessivo** dei tre giorni avrebbe potuto benissimo essere accomodato su **un unico TIR**, direttamente al primo giorno, **riducendo** i **tempi di attesa**. 
+Realizza una **parallelizzazione** dell'accesso al canale radio da parte di **più sorgenti** abbinando alla multiplazione nel tempo anche una multiplazione nella frequenza **FDM**. 
+Infatti, nell'OFDM può accadere che la multiplazione TDM applicata a sorgenti di velocità molto diverse determini che le sorgenti più lente vengano trasmesse con brevi messaggi che, avendo i bit spalmati su tutte le sottoportanti, sono inviati sul canale radio alla massima velocità da questo consentita. L'effetto è quella di una trasmissione di brevi burst inviati, con forte ritardo, su slot molto lontani nel tempo (il tempo di accumulo di un numero sufficiente di bit). Se non si volesse aspettare, per diminuire il ritardo, si dovrebbe accettare di trasmettere ogni slot lasciandolo sempre mezzo vuoto.
 
+L'**analogia del canale** è quella dei **TIR** che in **giorni diversi** portano poco carico quando il **carico complessivo** dei tre giorni avrebbe potuto benissimo essere accomodato su **un unico TIR**, direttamente al primo giorno, **riducendo** i **tempi di attesa**. 
 **Servono** per far ciò: 
 - la possibilità di inviare, nello **stesso slot** temporale, messaggi di **sorgenti diverse** su **sottoportanti diverse** dello stesso canale (multiplazione FDM)
 - una **schedulazione efficace** che sappia **riordinare** i messaggi sulle sottoportanti (slot FDM) cercando di rispettare le **richieste di servizio** in termini di **latenza** che erano state **prenotate** per ogni sorgente in fase di **setup** della connessione. 
