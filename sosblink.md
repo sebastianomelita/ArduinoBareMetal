@@ -135,7 +135,6 @@ int SOSThread(struct pt* pt) {
 	PT_SLEEP(pt, PDELAY);
 	digitalWrite(led1, LOW);
 	PT_SLEEP(pt, PDELAY);
-	PT_SLEEP(pt, 0);
 	// 1 linea
 	digitalWrite(led1, HIGH); // 1 linea
 	PT_SLEEP(pt, LDELAY);
