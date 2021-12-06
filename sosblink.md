@@ -135,7 +135,6 @@ int SOSThread(struct pt* pt) {
 	PT_SLEEP(pt, PDELAY);
 	digitalWrite(led1, LOW);
 	PT_SLEEP(pt, PDELAY);
-	digitalWrite(led2, HIGH); // led 2 blink on
 	PT_SLEEP(pt, 0);
 	// 1 linea
 	digitalWrite(led1, HIGH); // 1 linea
@@ -181,10 +180,6 @@ void loop()
 	PT_SCHEDULE(SOSThread(&ptSos)); 		// esecuzione schedulatore protothreads
 	PT_SCHEDULE(blinkThread(&ptBlink)); 	// esecuzione schedulatore protothreads
 }
-
-
-
-
 
 ```
 
