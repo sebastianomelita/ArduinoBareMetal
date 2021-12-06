@@ -66,9 +66,13 @@ void loop()
 	delay(1000);											
 	digitalWrite(led2, HIGH); // *
 }	
-	
-	
-	
+
+```
+
+## **SCHEDULAZIONE CON I TICK**
+
+```C++
+
 ```
 
 ## **SCHEDULAZIONE CON I PROTOTHREAD**
