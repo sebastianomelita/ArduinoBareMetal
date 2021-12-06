@@ -75,6 +75,63 @@ void loop()
 ## **SCHEDULAZIONE CON I TICK**
 
 ```C++
+/* 
+Genera un blink periodico su un led e una segnalazione di SOS periodica su un altro
+*/
+#define tbase  100  // periodo base in milliseconds
+#define nstep  1000  // numero di fasi massimo di un periodo generico
+#define PDELAY  500
+#define LDELAY  1500
+#define BLINKDELAY  300
+
+unsigned long precm = 0;
+unsigned long step = 0;
+byte led1 = 10;
+byte led2 = 11;
+byte led3 = 12;
+byte led4 = 13;
+byte count = 0;
+
+
+void setup()
+{
+	pinMode(led1, OUTPUT);
+	pinMode(led2, OUTPUT);
+	pinMode(led3, OUTPUT);
+	pinMode(led4, OUTPUT);
+}
+
+void loop()
+{
+	// polling della millis() alla ricerca del tempo in cui scade ogni periodo
+	if((millis()-precm) >= (unsigned long) tbase){ 		//se è passato un periodo tbase dal precedente periodo
+		precm = millis();  				//preparo il tic successivo azzerando il conteggio del tempo ad adesso
+		
+		step = (step + 1) % nstep; 			// conteggio circolare (arriva al massimo a nstep-1)
+
+		// task blink
+		if(!(step%3)){  // schedulo eventi al multiplo del periodo (300 msec = 3 periodi)
+			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+		}
+		// task 2
+		if(!(step%5)){  // schedulo eventi al multiplo del periodo (500 msec = 5 periodi)
+			if(count < 6){
+				digitalWrite(led1,!digitalRead(led1)); 	// led blink
+			}else if(count < 9){
+				digitalWrite(led1,HIGH); 				// linea
+			}else if(count < 16){
+				digitalWrite(led1,!digitalRead(led1)); 	// led blink
+			}else if(count < 19){
+				digitalWrite(led1,LOW); 				// spento
+			}else{
+				count = -1;
+			}
+			count++;
+		}
+		// il codice eseguito al tempo del metronomo (esattamente un periodo) va quì
+	}
+	// il codice eseguito al tempo massimo della CPU va qui
+}
 
 ```
 
