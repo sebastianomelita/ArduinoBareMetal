@@ -116,11 +116,11 @@ void loop()
 		// task 2
 		if(!(step%5)){  // schedulo eventi al multiplo del periodo (500 msec = 5 periodi)
 			if(count < 6){
-				digitalWrite(led1,!digitalRead(led1)); 	// led blink
+				digitalWrite(led1,!digitalRead(led1)); 			// led blink
 			}else if(count < 9){
 				digitalWrite(led1,HIGH); 				// linea
 			}else if(count < 16){
-				digitalWrite(led1,!digitalRead(led1)); 	// led blink
+				digitalWrite(led1,!digitalRead(led1)); 			// led blink
 			}else if(count < 19){
 				digitalWrite(led1,LOW); 				// spento
 			}else{
