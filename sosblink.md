@@ -3,6 +3,9 @@
 ## **SCHEDULAZIONE CON I DELAY**
 
 ```C++
+/* 
+Genera un blink periodico su un led e una segnalazione di SOS periodica su un altro
+*/
 // definizione dei pin di ciascun segmento RX
 #define PDELAY  500
 #define LDELAY  1500
@@ -100,6 +103,9 @@ struct pt { unsigned short lc; };
 // se si usa questa libreria al posto delle macro sopra, togliere il commento iniziale all'include 
 // e commentare le macro sopra
 //#include "protothreads.h"
+/* 
+Genera un blink periodico su un led e una segnalazione di SOS periodica su un altro
+*/
 #define PDELAY  500
 #define LDELAY  1500
 #define BLINKDELAY  300
