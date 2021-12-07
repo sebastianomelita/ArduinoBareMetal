@@ -336,4 +336,7 @@ void loop() {
 }
 ```
 
+**Sitografia:**
+- https://9g.lt/blog/protothreads-on-tinkercad
+
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
