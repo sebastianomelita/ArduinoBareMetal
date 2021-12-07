@@ -1,4 +1,6 @@
 
+>[Torna all'indice](indexstatifiniti.md)
+## **MACCHINA A STATI GENERICA PER ARDUINO**
 
 #include <Arduino.h>
 
@@ -62,3 +64,8 @@ void loop() {
 
   }
 }
+
+**sITOGRAFIA:**
+- https://9g.lt/blog/arduino-state-machine-with-millis-instead-of-delay
+
+>[Torna all'indice](indexstatifiniti.md)
