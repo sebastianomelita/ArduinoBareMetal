@@ -270,38 +270,38 @@ void * sosThread(void * d)
     int time;
     time = (int) d;
     while(true){   			// Loop del thread
-		// 3 punti
-		digitalWrite(led1, HIGH); // 1
-		delay(PDELAY);
-		digitalWrite(led1, LOW);
-		delay(PDELAY);
-		digitalWrite(led1, HIGH); // 2
-		delay(PDELAY);
-		digitalWrite(led1, LOW);
-		delay(PDELAY);
-		digitalWrite(led1, HIGH); // 3
-		delay(PDELAY);
-		digitalWrite(led1, LOW);
-		delay(PDELAY);
-		// 1 linea
-		digitalWrite(led1, HIGH); // 1 linea
-		delay(LDELAY);
-		digitalWrite(led1, LOW);
-		delay(PDELAY);
-		// 3 punti
-		digitalWrite(led1, HIGH); // 1
-		delay(PDELAY);
-		digitalWrite(led1, LOW);
-		delay(PDELAY);
-		digitalWrite(led1, HIGH); // 2
-		delay(PDELAY);
-		digitalWrite(led1, LOW);
-		delay(PDELAY);
-		digitalWrite(led1, HIGH); // 3
-		delay(PDELAY);
-		digitalWrite(led1, LOW);
-		delay(PDELAY);
-		delay(LDELAY);						// delay bloccanti		
+	// 3 punti
+	digitalWrite(led1, HIGH); // 1
+	delay(PDELAY);
+	digitalWrite(led1, LOW);
+	delay(PDELAY);
+	digitalWrite(led1, HIGH); // 2
+	delay(PDELAY);
+	digitalWrite(led1, LOW);
+	delay(PDELAY);
+	digitalWrite(led1, HIGH); // 3
+	delay(PDELAY);
+	digitalWrite(led1, LOW);
+	delay(PDELAY);
+	// 1 linea
+	digitalWrite(led1, HIGH); // 1 linea
+	delay(LDELAY);
+	digitalWrite(led1, LOW);
+	delay(PDELAY);
+	// 3 punti
+	digitalWrite(led1, HIGH); // 1
+	delay(PDELAY);
+	digitalWrite(led1, LOW);
+	delay(PDELAY);
+	digitalWrite(led1, HIGH); // 2
+	delay(PDELAY);
+	digitalWrite(led1, LOW);
+	delay(PDELAY);
+	digitalWrite(led1, HIGH); // 3
+	delay(PDELAY);
+	digitalWrite(led1, LOW);
+	delay(PDELAY);
+	delay(LDELAY);						// delay bloccanti		
     }
 }
 
@@ -309,9 +309,9 @@ void * blinkThread(void * d)
 {
     int time;
     time = (int) d;
-    while(true){    				// Loop del thread	
-		digitalWrite(led2, !digitalRead(led2));
-		delay(time);
+    while(true){    						// Loop del thread	
+	digitalWrite(led2, !digitalRead(led2));
+	delay(time);
     }
     return NULL;
 }
