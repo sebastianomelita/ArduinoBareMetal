@@ -2,6 +2,7 @@
 >[Torna all'indice](indexstatifiniti.md)
 ## **MACCHINA A STATI GENERICA PER ARDUINO**
 
+```C++
 #include <Arduino.h>
 
 enum class State :uint8_t {
@@ -65,7 +66,9 @@ void loop() {
   }
 }
 
-**sITOGRAFIA:**
+```
+
+**Sitografia:**
 - https://9g.lt/blog/arduino-state-machine-with-millis-instead-of-delay
 
 >[Torna all'indice](indexstatifiniti.md)
