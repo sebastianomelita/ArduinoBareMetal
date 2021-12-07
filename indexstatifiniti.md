@@ -7,5 +7,5 @@
 3. [Linee guida sviluppo](statifinitisviluppo.md)
 4. [Esempio protocollo](statifinitiesempio.md)
 5. [Esempio protocollo confermato](statifiniticonfermato.md)
-6. [macchina a stati generrica r Arduino](ardustate.md)
+6. [macchina a stati generrica per Arduino](ardustate.md)
 7. [Sitografia](statifinitisitografia.md)
