@@ -244,5 +244,93 @@ void loop()
 }
 
 ```
+## **SCHEDULAZIONE CON I THREAD**
+
+```C++
+/* 
+Genera un blink periodico su un led e una segnalazione di SOS periodica su un altro
+*/
+#include <pthread.h> //libreria di tipo preemptive
+pthread_t t1;
+pthread_t t2;
+int delayTime ;
+#define PDELAY  500
+#define LDELAY  1500
+#define BLINKDELAY  300
+byte led1 = 10;
+byte led2 = 11;
+byte led3 = 12;
+byte led4 = 13;
+
+void * sosThread(void * d)
+{
+    int time;
+    time = (int) d;
+    while(true){   			// Loop del thread
+		// 3 punti
+		digitalWrite(led1, HIGH); // 1
+		delay(PDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		digitalWrite(led1, HIGH); // 2
+		delay(PDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		digitalWrite(led1, HIGH); // 3
+		delay(PDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		// 1 linea
+		digitalWrite(led1, HIGH); // 1 linea
+		delay(LDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		// 3 punti
+		digitalWrite(led1, HIGH); // 1
+		delay(PDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		digitalWrite(led1, HIGH); // 2
+		delay(PDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		digitalWrite(led1, HIGH); // 3
+		delay(PDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		delay(LDELAY);						// delay bloccanti		
+    }
+}
+
+void * blinkThread(void * d)
+{
+    int time;
+    time = (int) d;
+    while(true){    				// Loop del thread	
+		digitalWrite(led2, !digitalRead(led2));
+		delay(time);
+    }
+    return NULL;
+}
+
+void setup() {
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+  pinMode(led4, OUTPUT);
+  delayTime = PDELAY;
+  if (pthread_create(&t1, NULL, sosThread, (void *)delay)) {
+         Serial.println("Errore crezione thread 1");
+  }
+  delayTime = BLINKDELAY;
+  if (pthread_create(&t2, NULL, blinkThread, (void *)delay)) {
+         Serial.println("Errore crezione thread 2");
+  } 
+}
+
+void loop() {
+
+}
+```
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
