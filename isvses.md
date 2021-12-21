@@ -28,7 +28,7 @@ La **comunicazione diretta ES-ES** è un collegamento **logico (o virtuale)** ch
 Il collegamento logico tra ES si scompone in **più collegamenti fisici** tenuti insieme da nodi IS
 I **collegamenti tra nodi IS** sono **risorse comuni** a molte comunicazioni.
 
-I nodi di IS di commutazione (switch o router) partecipano attivamente nel realizzare la **privacy** dell'utente perchè, nell'ultimo smistamento, quello verso un ES, inoltrano i dati solo a quel nodo ES a cui sono destinati, questo perchè il link tra un nodo e il suo IS è sempre **dedicato** (punto-punto). La stessa cosa non accade quando il collegamento tra un nodo IS e un ES avviene con mezzi broadcast come i BUS dove un unico filo collega molti ES.
+I nodi di IS di commutazione (switch o router) partecipano attivamente nel realizzare la **privacy** dell'utente perchè, nell'ultimo smistamento, quello verso un ES, inoltrano i dati solo a quel nodo ES a cui sono destinati, questo perchè il link tra un nodo e il suo IS è sempre **dedicato** (punto-punto). La stessa cosa non accade quando il collegamento tra un nodo IS e un ES avviene con **mezzi broadcast** come i **BUS** dove un unico filo collega molti ES.
 
 
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
