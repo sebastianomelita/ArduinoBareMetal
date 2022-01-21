@@ -48,11 +48,11 @@ Esempio di realizzazione di due task che eseguono un blink mediante delay() insi
 
 pthread_t t1;
 pthread_t t2;
-int delay ;
+int delayt ;
 bool blink1_running = true;
 bool blink2_running = true;
-led1 = 13;
-led2 = 12;
+int led1 = 13;
+int led2 = 12;
 
 void * blink1(void * d)
 {
@@ -82,11 +82,11 @@ void setup() {
   Serial.begin(115200);
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
-  delay = 500;
+  delayt = 500;
   if (pthread_create(&t1, NULL, blink1, (void *)delay)) {
          Serial.println("Errore crezione thread 1");
   }
-  delay = 1000;
+  delayt = 1000;
   if (pthread_create(&t2, NULL, blink2, (void *)delay)) {
          Serial.println("Errore crezione thread 2");
   } 
