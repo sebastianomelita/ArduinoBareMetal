@@ -17,6 +17,7 @@ Ogni protothread realizza un flusso di esecuzione **parallelo** a quello degli a
 while(true) {
 }
 ```
+Alla fine del ciclo deve sempre essere inserita la chiamata a PT_END(pt).
 Le fasi di lavoro del loop possono essere schedulate dai delay() non bloccanti PT_SLEEP(pt) che permettono la progettazione **lineare** di un algoritmo nel tempo.
 
 All'interno del loop del protothread ogni ramo di esecuzione va reso **non bloccante** inserendo, la funzione PT_SLEEP(pt) se il flusso di esecuzione deve essere bloccato per un certo tempo, oppure la funzione PT_YIELD(pt) se questo non deve aspettare.
