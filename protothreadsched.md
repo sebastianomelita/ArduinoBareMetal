@@ -19,7 +19,7 @@ while(true) {
 ```
 Le fasi di lavoro del loop possono essere schedulate dai delay() non bloccanti PT_SLEEP(pt) che permettono la progettazione **lineare** di un algoritmo nel tempo.
 
-All'interno del loop del protothread ogni ramo di esecuzione va reso **non bloccante** inserendo, la funzione PT_SLEEP(pt) se il flusso di esecuzione deve essere bloccato per un certo tempo, oppure la funzione PT_YIELD(pt) se non deve aspettare.
+All'interno del loop del protothread ogni ramo di esecuzione va reso **non bloccante** inserendo, la funzione PT_SLEEP(pt) se il flusso di esecuzione deve essere bloccato per un certo tempo, oppure la funzione PT_YIELD(pt) se questo non deve aspettare.
 
 Sia PT_YIELD(pt) che PT_SLEEP(pt) cedono il controllo della CPU allo schedulatore che lo assegna agli altri protothread che eventualmente in quel momento sono in attesa per una esecuzione.
 
