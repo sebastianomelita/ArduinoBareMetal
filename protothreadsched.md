@@ -12,6 +12,17 @@ In altre parole, la **gestione dei task** è **ad eventi** all'interno di un **s
 
 Di seguito è riportato un esempio di **blink sequenziale** in esecuzione su **due thread** separati su scheda **Arduino Uno**, con **IDE Arduino** e  con la libreria **protothread.h**  (https://gitlab.com/airbornemint/arduino-protothreads). I thread sono senza stack e **non preemptive** (solo collaborativi). La **programmazione sequenziale** del blink del led è **emulata** tramite una funzione delay() **non bloccante** ``` PT_SLEEP(pt, 200) ``` fornita dalla libreria ``` protothreads.h ```.
 
+Ogni protothread realizza un flusso di esecuzione **parallelo** a quello degli altri thread, inoltre ognuno possiede un proprio loop() principale di esecuzione in cui realizzare le fasi di lettura degli ingressi, calcolo delle uscite e scrittura delle uscite. 
+```C++
+while(true) {
+}
+```
+Le fasi di lavoro del loop possono essere schedulate nel tempo dai delay() non bloccanti PT_SLEEP(pt) che permettono la progettazione **lineare** di un algoritmo nel tempo.
+
+All'interno del loop del protothread ogni ramo di esecuzione va reso **non bloccante** inserendo, la funzione PT_SLEEP(pt) se il flusso di esecuzione deve essere bloccato per un certo tempo, oppure la funzione PT_YIELD(pt) se non deve aspettare.
+
+Sia PT_YIELD(pt) che PT_SLEEP(pt) cedono il controllo della CPU allo schedulatore che lo assegna agli altri protothread che eventualmente in quel momento sono in attesa per una esecuzione.
+
 ```C++
 /*
   Blink
