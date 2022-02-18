@@ -178,7 +178,6 @@ struct pt { unsigned short lc; };
 // e commentare le macro sopra
 //#include "protothreads.h"
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-//#include "protothreads.h"
 byte precval, val;
 byte led = 13;
 byte pulsante =2;
