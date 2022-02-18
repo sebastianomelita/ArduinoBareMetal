@@ -151,8 +151,34 @@ void loop()
 
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati tramite **protothreads**:
 ```C++
+/*
+Realizzare il blink di un led insieme al lampeggio di un'altro led che codifica il messaggio morse dell'SOS.
+*/
+#define LC_INIT(lc)
+struct pt { unsigned short lc; };
+#define PT_THREAD(name_args)  char name_args
+#define PT_BEGIN(pt)          switch(pt->lc) { case 0:
+#define PT_WAIT_UNTIL(pt, c)  pt->lc = __LINE__; case __LINE__: \
+                              if(!(c)) return 0
+#define PT_END(pt)            } pt->lc = 0; return 2
+#define PT_INIT(pt)   LC_INIT((pt)->lc)
+#define PT_SLEEP(pt, delay) \
+{ \
+  do { \
+    static unsigned long protothreads_sleep; \
+    protothreads_sleep = millis(); \
+    PT_WAIT_UNTIL(pt, millis() - protothreads_sleep > delay); \
+  } while(false); \
+}
+#define PT_EXITED  2
+#define PT_SCHEDULE(f) ((f) < PT_EXITED)
+#define PT_YIELD(pt) PT_SLEEP(pt, 0)
+//-----------------------------------------------------------------------------------------------------------
+// se si usa questa libreria al posto delle macro sopra, togliere il commento iniziale all'include 
+// e commentare le macro sopra
+//#include "protothreads.h"
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-#include "protothreads.h"
+//#include "protothreads.h"
 byte precval, val;
 byte led = 13;
 byte pulsante =2;
