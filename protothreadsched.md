@@ -53,7 +53,6 @@ int blinkThread1(struct pt* pt) {
 		PT_YIELD(pt);
 	}
   }
-
   PT_END(pt);
 }
 
@@ -73,7 +72,6 @@ int blinkThread2(struct pt* pt) {
 		PT_YIELD(pt);
 	}
   }
-
   PT_END(pt);
 }
 
