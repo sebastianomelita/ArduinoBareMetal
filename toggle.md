@@ -151,9 +151,6 @@ void loop()
 
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati tramite **protothreads**:
 ```C++
-/*
-Realizzare il blink di un led insieme al lampeggio di un'altro led che codifica il messaggio morse dell'SOS.
-*/
 #define LC_INIT(lc)
 struct pt { unsigned short lc; };
 #define PT_THREAD(name_args)  char name_args
