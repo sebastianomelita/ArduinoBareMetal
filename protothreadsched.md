@@ -175,6 +175,7 @@ struct pt { unsigned short lc; };
 }
 #define PT_EXITED  2
 #define PT_SCHEDULE(f) ((f) < PT_EXITED)
+#define PT_YIELD(pt) PT_SLEEP(pt, 0)
 //-----------------------------------------------------------------------------------------------------------
 // se si usa questa libreria al posto delle macro sopra, togliere il commento iniziale all'include 
 // e commentare le macro sopra
