@@ -59,11 +59,11 @@ void * blink1(void * d)
     time = (int) d;
 	// loop del thread 1
     while(true){
-		digitalWrite(led1, !digitalRead(led1));
-		delay(time);
+	digitalWrite(led1, !digitalRead(led1));
+	delay(time);
     }
     // non arriva mai quà
-	// questo thread non termina mai
+    // questo thread non termina mai
     return NULL;
 }
 
@@ -73,10 +73,10 @@ void * blink2(void * d)
     time = (int) d;
 	// loop del thread 2
     while(blink2_running){
-		digitalWrite(led2, !digitalRead(led2));
-		delay(time);
+	digitalWrite(led2, !digitalRead(led2));
+	delay(time);
     }
-	//se il flag è negato arriva quà
+    //se il flag è negato arriva quà
     digitalWrite(led2, LOW);
 	// spegne il led e poi termina (su comando del loop())
     return NULL;
@@ -178,15 +178,13 @@ void setup() {
  
 void loop() {
 	int count = 0;
-	while(true){
-		Serial.print("Doing stuff... ");
+	while(count < 10){
+		Serial.print("Faccio qualcosa... ");
 		Serial.println(count);
 		count += 1;
-		if(count >= 10)
-			break;
 		delay(1000);
 	}
-	Serial.print("Ending threads...");
+	Serial.print("Termino il threads...");
 	blink1_running = false;
 	blink2_running = false;
 }
