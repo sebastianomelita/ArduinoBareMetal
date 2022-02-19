@@ -49,7 +49,6 @@ Esempio di realizzazione di due task che eseguono un blink mediante delay() insi
 pthread_t t1;
 pthread_t t2;
 int delayt ;
-bool blink1_running = true;
 bool blink2_running = true;
 int led1 = 13;
 int led2 = 12;
@@ -58,11 +57,13 @@ void * blink1(void * d)
 {
     int time;
     time = (int) d;
-    while(blink1_running){
-	digitalWrite(led1, !digitalRead(led1));
-	delay(time);
+	// loop del thread 1
+    while(true){
+		digitalWrite(led1, !digitalRead(led1));
+		delay(time);
     }
-    digitalWrite(led1, LOW);
+    // non arriva mai quà
+	// questo thread non termina mai
     return NULL;
 }
 
@@ -70,11 +71,14 @@ void * blink2(void * d)
 {
     int time;
     time = (int) d;
+	// loop del thread 2
     while(blink2_running){
-	digitalWrite(led2, !digitalRead(led2));
-	delay(time);
+		digitalWrite(led2, !digitalRead(led2));
+		delay(time);
     }
+	//se il flag è negato arriva quà
     digitalWrite(led2, LOW);
+	// spegne il led e poi termina (su comando del loop())
     return NULL;
 }
 
@@ -94,16 +98,13 @@ void setup() {
 
 void loop() {
 	int count = 0;
-	while(true){
-		Serial.print("Doing stuff... ");
+	while(count < 10){
+		Serial.print("Faccio qualcosa... ");
 		Serial.println(count);
 		count += 1;
-		if(count >= 10)
-			break;
 		delay(1000);
 	}
-	Serial.print("Ending threads...");
-	blink1_running = false;
+	Serial.print("termino il threads 2");
 	blink2_running = false;
 }
 ```
