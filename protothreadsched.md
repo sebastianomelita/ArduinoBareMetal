@@ -16,7 +16,7 @@ Ogni protothread realizza un flusso di esecuzione **parallelo** a quello degli a
 
 Ogni protothread è definito da un **descrittore** che è una variabile di tipo struct cioè il tipo record del C che rappresenta il protothread. Il nome del descrittore è arbitrario a discrezione del programmatore. Il descrittore deve essere passato come **argomento** ad ogni funzione che lavora su un certo protothread. 
 
-Ogni protothread è inizializzato nel setup() tramite la funzione PT_INIT(&pt), il passaggio del descrittore è per riferimento perchè questo viene modificato al momento della inizializzazione.
+Ogni protothread è **inizializzato** nel setup() tramite la funzione **PT_INIT(&pt)**, il passaggio del descrittore è per riferimento perchè questo viene modificato al momento della inizializzazione.
 
 Nel loop() ogni protothrad viene schedulato tramite il comando PT_SCHEDULE(func(&pt)) che ha per argomento la funzione che racchiude il protothread definendolo.
 
@@ -28,9 +28,9 @@ Alla fine del ciclo deve sempre essere inserita la chiamata a PT_END(pt).
 Le fasi di lavoro del loop possono essere schedulate dai delay() non bloccanti PT_SLEEP(pt) che permettono la progettazione **lineare** di un algoritmo nel tempo.
 
 All'interno del loop del protothread ogni **ramo** di esecuzione va reso **non bloccante** inserendo, la funzione PT_SLEEP(pt) se il flusso di esecuzione deve essere bloccato per un certo tempo, oppure la funzione PT_YIELD(pt) se questo non deve aspettare.
-Sia PT_YIELD(pt) che PT_SLEEP(pt) cedono il controllo della CPU allo schedulatore che lo assegna agli altri protothread che eventualmente in quel momento hanno scaduto il tempo di attesa di un loro delay.
+Sia **PT_YIELD(pt)** che **PT_SLEEP(pt)** cedono il controllo della CPU allo schedulatore che lo assegna agli altri protothread che eventualmente in quel momento hanno scaduto il tempo di attesa di un loro delay.
 
-il flusso di esecuzione di un thrad è definito all'interno di una funzione e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro dell stessa. In sostanza la funzione serve al programmatore per definire il protothread e allo schedulatore per poterlo richiamare. All'interno della funzione il protothread deve sempre cominciare con il comando PT_BEGIN(pt) e deve sempre terminare con il comando  PT_END(pt).
+il flusso di esecuzione di un protothread è definito all'interno di una funzione e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro dell stessa. In sostanza la funzione serve al programmatore per definire il protothread e allo schedulatore per poterlo richiamare. All'interno della funzione il protothread deve sempre cominciare con il comando **PT_BEGIN(pt)** e deve sempre terminare con il comando  **PT_END(pt)**.
 
 ```C++
 /*
