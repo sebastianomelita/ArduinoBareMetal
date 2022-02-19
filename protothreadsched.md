@@ -31,7 +31,8 @@ int mio_scopoThread(struct pt* pt) {
 	.........................
   }
   PT_END(pt);
-}```
+}
+```
 
 Ogni protothread è **inizializzato** nel **setup()** tramite la funzione **```PT_INIT(&pt)```**, il passaggio del descrittore è per **riferimento** perchè questo deve poter essere **modificato** al momento della inizializzazione.
 
