@@ -83,11 +83,11 @@ void setup() {
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
   delayt = 500;
-  if (pthread_create(&t1, NULL, blink1, (void *)delay)) {
+  if (pthread_create(&t1, NULL, blink1, (void *)delayt)) {
          Serial.println("Errore crezione thread 1");
   }
   delayt = 1000;
-  if (pthread_create(&t2, NULL, blink2, (void *)delay)) {
+  if (pthread_create(&t2, NULL, blink2, (void *)delayt)) {
          Serial.println("Errore crezione thread 2");
   } 
 }
