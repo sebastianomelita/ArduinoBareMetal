@@ -83,7 +83,7 @@ void * mioScopoThread(void * d){
 }
 ```
 
-Ogni thread è **inizializzato** nel **setup()** tramite la funzione **``pthread_create()```**, il passaggio del descrittore è per **riferimento** perchè questo deve poter essere **modificato** al momento della inizializzazione.
+Ogni thread è **inizializzato** nel **setup()** tramite la funzione **```pthread_create()```**, il passaggio del descrittore è per **riferimento** perchè questo deve poter essere **modificato** al momento della inizializzazione.
 ```C++
 void setup() {
   pthread_create(&thMioScopo, NULL, blink1, (void *)param);
