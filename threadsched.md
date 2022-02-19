@@ -71,7 +71,7 @@ void * blink2(void * d)
 {
     int time;
     time = (int) d;
-    // loop del thread 2
+    // loop del thread 2 (interrompibile dal loop principale)
     while(blink2_running){
 	digitalWrite(led2, !digitalRead(led2));
 	delay(time);
