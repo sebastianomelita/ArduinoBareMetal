@@ -43,7 +43,7 @@ L'ultimo svantaggio è **particolarmente critico** e può comportare l'introduzi
 
 Esempio di realizzazione di due task che eseguono un blink mediante delay() insieme ad altre generiche operazioni svolte nel main (piattaforma **Espress if ESP32**, **IDE Arduino** e librerie thread **preemptive**).
 
-**Ogni thread** realizza un **flusso** di esecuzione **parallelo** a quello degli altri thread, inoltre ognuno possiede un proprio **loop() principale** di esecuzione in cui realizzare le operazioni che tipicamente riguardano le **tre fasi** di lettura degli ingressi, calcolo dello stato del sistema e della sua risposta e la fase finale di scrittura della risposta sulle uscite. Il loop principale può definito sotto forma di **ciclo infinito** come ad esempio:
+**Ogni thread** realizza un **flusso** di esecuzione **parallelo** a quello degli altri thread, inoltre ognuno possiede un proprio **loop() principale** di esecuzione in cui realizzare le operazioni che tipicamente riguardano le **tre fasi** di lettura degli ingressi, calcolo dello stato del sistema e della sua risposta e la fase finale di scrittura della risposta sulle uscite. Il loop principale può essere definito sotto forma di **ciclo infinito** come ad esempio:
 
 ```C++
 // loop del thread (eseguito all'infinito)
@@ -52,7 +52,7 @@ while(true) {
     .........................
 }
 ```
-oppure sotto la forma di loop condizionato dal valore di una variabile globale, ad es. ```isrun```, che può interrompere il thread, facendolo terminare, una volta che questa viene negata nel loop() principale:
+oppure sotto la forma di **loop condizionato** dal valore di una variabile globale, ad es. ```isrun```, che può interrompere il thread, facendolo terminare, una volta che questa viene negata nel loop() principale:
 ```C++
 // loop del thread
 while(isrun){
