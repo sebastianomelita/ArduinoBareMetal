@@ -20,6 +20,7 @@ while(true) {
     .........................
 }
 ```
+Le fasi di lavoro del loop possono essere schedulate dai delay() non bloccanti ```PT_SLEEP(pt)``` e dal rilascio spontaneo ```PT_YIELD(pt)```che permettono la progettazione **lineare** di un algoritmo nel tempo.
 
 **Ogni protothread** è definito da un **descrittore** che è una variabile di tipo struct, cioè il tipo record del C, che rappresenta il protothread. Il **nome** del descrittore è arbitrario a discrezione del programmatore. Il descrittore deve essere passato come **argomento** ad ogni **comando** (macro) della libreria protothread. Il descrittore può essere definito **esattamente prima** della definizione della funzione del protothread tramite la dichiarazione **```pt ptNome_descr```**;
 
@@ -42,11 +43,21 @@ int mioScopoThread(struct pt* pt) {
 ```
 
 Ogni protothread è **inizializzato** nel **setup()** tramite la funzione **```PT_INIT(&ptMioScopo)```**, il passaggio del descrittore è per **riferimento** perchè questo deve poter essere **modificato** al momento della inizializzazione.
+```C++
+void setup() {
+  PT_INIT(&ptMioScopo1);
+  PT_INIT(&ptMioScopo2);
+}
+```
 
 Ogni protothrad viene **schedulato** cioè, valutato periodicamente per stabilire se deve essere eseguito o meno, all'interno del **```loop()```** tramite il comando **```PT_SCHEDULE(mioScopoThread(&ptMioScopo))```** che ha per argomento la funzione che definisce il protothread.
 
-Alla fine del ciclo deve sempre essere inserita la chiamata a PT_END(pt).
-Le fasi di lavoro del loop possono essere schedulate dai delay() non bloccanti ```PT_SLEEP(pt)``` che permettono la progettazione **lineare** di un algoritmo nel tempo.
+```C++
+void loop() {
+	PT_SCHEDULE(mioScopo1Thread(&ptMioScopo1));
+	PT_SCHEDULE(mioScopo2Thread(&ptMioScopo2));
+}
+```
 
 Per quanto riguarda la **definizione** di un protothread va ricordato che ll'interno del loop del protothread ogni **ramo** di esecuzione va reso **non bloccante** inserendo, la funzione **```PT_SLEEP(pt)```** (mai la normale delay()) se il flusso di esecuzione deve essere **bloccato temporaneamente** per un certo tempo fissato, oppure la funzione **```PT_YIELD(pt)```** se questo **non deve essere bloccato**. Ciò serve a richiamare lo schedulatore **almeno una volta** qualunque **direzione** di  esecuzione prenda il codice in modo da cedere **"spontaneamente"** il controllo ad un altro prothread al termine del loop() del prothread corrente. La **cessione del controllo** dello schedulatore ad ogni ramo di esecuzione **è necessario** altrimenti gli altri protothread non verrebbero mai eseguiti (il sistema **non è preemptive**).
 Sia ```PT_YIELD(pt)``` che ```PT_SLEEP(pt)``` cedono il controllo della CPU allo schedulatore che lo assegna agli altri protothread che eventualmente in quel momento hanno scaduto il tempo di attesa di un loro delay.
