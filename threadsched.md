@@ -57,7 +57,7 @@ void * blink1(void * d)
 {
     int time;
     time = (int) d;
-	// loop del thread 1
+    // loop del thread 1
     while(true){
 	digitalWrite(led1, !digitalRead(led1));
 	delay(time);
@@ -71,7 +71,7 @@ void * blink2(void * d)
 {
     int time;
     time = (int) d;
-	// loop del thread 2
+    // loop del thread 2
     while(blink2_running){
 	digitalWrite(led2, !digitalRead(led2));
 	delay(time);
@@ -105,6 +105,7 @@ void loop() {
 		delay(1000);
 	}
 	Serial.print("termino il threads 2");
+	// interrompe il loop del secondo thread
 	blink2_running = false;
 }
 ```
@@ -121,7 +122,7 @@ int led2 = 12;
 void blink1(void * parameter){
 	String taskMessage = "Task running on core ";
     	taskMessage = taskMessage + xPortGetCoreID();
-	
+	//loop del thread (interrompibile dal loop principale)
 	while(blink1_running){
 		digitalWrite(led1, HIGH);
 		delay(500);
@@ -135,7 +136,7 @@ void blink1(void * parameter){
 void blink2(void * parameter){
 	String taskMessage = "Task running on core ";
     	taskMessage = taskMessage + xPortGetCoreID();
-	
+	//loop del thread (interrompibile dal loop principale)
 	while(blink2_running){
 		digitalWrite(led2, HIGH);
 		delay(1000);
@@ -185,6 +186,7 @@ void loop() {
 		delay(1000);
 	}
 	Serial.print("Termino il threads...");
+	// interrompe i loop di tutti i thread
 	blink1_running = false;
 	blink2_running = false;
 }
