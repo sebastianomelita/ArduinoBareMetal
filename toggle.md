@@ -149,7 +149,7 @@ void loop()
 }
 ```
 
-Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati tramite **protothreads** (per una spiegazione dettagliata dei protothread si rimanda a protothreadsched.md):
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati tramite **protothreads** (per una spiegazione dettagliata dei protothread si rimanda a [Schedulazione con i protothread](protothreadsched.md)):
 ```C++
 #define LC_INIT(lc)
 struct pt { unsigned short lc; };
