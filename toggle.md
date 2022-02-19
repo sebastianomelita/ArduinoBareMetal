@@ -54,7 +54,8 @@ Se un rilevatore si limita a segnalare un **generico fronte**, allora per stabil
 
 Il **secondo problema** è costituito dal fenomeno dei **rimbalzi**. Si palesano come una sequenza di rapide oscillazioni che hanno sia fronti di salita che di discesa. Se l’accensione di un led è associata ad un fronte e il suo spegnimento a quello successivo, allora la pressione di un pulsante realizza, di fatto, la solita slot machine…è necessario un algoritmo di debouncing.
 
-Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo realizzato con una **schedulazione ad eventi (time tick)**:
+Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo realizzato con una **schedulazione ad eventi (time tick)**  (per una spiegazione dettagliata dei time tick si rimanda a [Schedulatore di compiti basato sui time tick](tasksched.md)):
+
 ```C++
 #define tbase  100  // periodo base in milliseconds
 unsigned long precm;
@@ -236,7 +237,7 @@ void loop()
 	PT_SCHEDULE(blinkThread(&ptBlink)); 	// esecuzione schedulatore protothreads
 }
 ```
-Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** su **core diversi**. La libreria usata è quella nativa dello ESP32 che implementa dalla fabbrica un **middleware RTOS** per cui non è necessario **includere** nessuna libreria esterna:
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** su **core diversi**. La libreria usata è quella nativa dello ESP32 che implementa dalla fabbrica un **middleware RTOS** per cui non è necessario **includere** nessuna libreria esterna (per una spiegazione dettagliata dei thread si rimanda a [Schedulatore di compiti basato sui thread](threadsched.md):
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
