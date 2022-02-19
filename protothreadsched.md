@@ -16,7 +16,22 @@ Di seguito è riportato un esempio di **blink sequenziale** in esecuzione su **d
 
 **Ogni protothread** è definito da un **descrittore** che è una variabile di tipo struct, cioè il tipo record del C, che rappresenta il protothread. Il **nome** del descrittore è arbitrario a discrezione del programmatore. Il descrittore deve essere passato come **argomento** ad ogni **comando** (macro) della libreria protothread. Il descrittore può essere definito **esattamente prima** della definizione della funzione del protothread tramite la dichiarazione **```pt ptNome_descr```**;
 
-Il **flusso di esecuzione** di un protothread è **definito** all'interno di una **funzione** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il protothread e allo schedulatore per poterlo richiamare. All'interno della funzione il protothread deve sempre cominciare con il comando **```PT_BEGIN(pt)```** e deve sempre terminare con il comando  **```PT_END(pt)```**.
+Il **flusso di esecuzione** di un protothread è **definito** all'interno di una **funzione** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il protothread e allo schedulatore per poterlo richiamare. All'interno della funzione il protothread deve sempre cominciare con il comando **```PT_BEGIN(pt)```** e deve sempre terminare con il comando  **```PT_END(pt)```**. 
+
+In definitiva la **dichiarazione e definizione** di **descrittore e funzione** del protothread può assumere la forma:
+
+```C++
+pt ptMio_scopo;
+int mio_scopoThread(struct pt* pt) {
+  PT_BEGIN(pt);
+
+  // Loop forever
+  while(true) {
+	// codice del protothread
+	.........................
+  }
+  PT_END(pt);
+}```
 
 Ogni protothread è **inizializzato** nel **setup()** tramite la funzione **```PT_INIT(&pt)```**, il passaggio del descrittore è per **riferimento** perchè questo deve poter essere **modificato** al momento della inizializzazione.
 
