@@ -66,7 +66,7 @@ Le **fasi di lavoro** del loop possono essere **schedulate** (pianificate nel te
 
 **Ogni thread** è definito da un **descrittore** che è una variabile di tipo ```pthread_t```, cioè il tipo thread definito dallo standard POSIX del C (https://it.wikipedia.org/wiki/POSIX), che rappresenta il thread. Il **nome** del descrittore è arbitrario a discrezione del programmatore. Il descrittore deve essere passato come **argomento** ad ogni chiamata della funzione dello schedulatore che lancia il thread in esecuzione, cioè la ```pthread_create()```.
 
-Il **flusso di esecuzione** di un thread è **definito** all'interno di una **funzione** e può essere avviato passando ```pthread_create()``` il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il thread e allo schedulatore per poterlo richiamare. 
+Il **flusso di esecuzione** di un thread è **definito** all'interno di una **funzione** e può essere avviato passando a ```pthread_create()``` il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il thread e allo schedulatore per poterlo richiamare. 
 
 In definitiva la **dichiarazione e definizione** di **descrittore e funzione** del thread possono assumere la forma:
 
