@@ -41,8 +41,6 @@ Riassumendo, la **schedulazione mediante thread** comporta:
 
 L'ultimo svantaggio è **particolarmente critico** e può comportare l'introduzione di errori difficilmente rilevabili, anche dopo innumerevoli prove sistematiche. La progettazione della gestione delle **risorse condivise**, e della gestione della **comunicazione tra i thread** in generale, deve essere molto accurata e ben ponderata. Vari strumenti SW e metodologie ad hoc permettono di affrontare più o meno efficacemente il problema.
 
-### **Thread POSIX**
-
 **Ogni thread** realizza un **flusso** di esecuzione **parallelo** a quello degli altri thread, inoltre ognuno possiede un proprio **loop() principale** di esecuzione in cui realizzare le operazioni che tipicamente riguardano le **tre fasi** di lettura degli ingressi, calcolo dello stato del sistema e della sua risposta e la fase finale di scrittura della risposta sulle uscite. Il loop principale può essere definito sotto forma di **ciclo infinito** come ad esempio:
 
 ```C++
@@ -63,6 +61,8 @@ while(isrun){
 ```
 
 Le **fasi di lavoro** del loop possono essere **schedulate** (pianificate nel tempo) dagli usuali delay()  bloccanti che permettono la progettazione **lineare** di un algoritmo nel tempo. In realtà, una volta che il thread che ha in uso la CPU entra in un delay(), lo schedulatore, che adesso è di tipo preemptive, sottrae il controllo della CPU al thread corrente e lo assegna ad un altro thread che è in attesa di esecuzione.
+
+### **Thread POSIX**
 
 **Ogni thread** è definito da un **descrittore** che è una variabile di tipo ```pthread_t```, cioè il tipo thread definito dallo standard POSIX del C (https://it.wikipedia.org/wiki/POSIX), che rappresenta il thread. Il **nome** del descrittore è arbitrario a discrezione del programmatore. Il descrittore deve essere passato come **argomento** ad ogni chiamata della funzione dello schedulatore che lancia il thread in esecuzione, cioè la ```pthread_create()```.
 
