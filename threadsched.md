@@ -78,7 +78,7 @@ void * blink2(void * d)
     }
     //se il flag è negato arriva quà
     digitalWrite(led2, LOW);
-	// spegne il led e poi termina (su comando del loop())
+    // spegne il led e poi termina (su comando del loop())
     return NULL;
 }
 
@@ -130,7 +130,9 @@ void blink1(void * parameter){
 		delay(500);
 		Serial.println(taskMessage);
 	}
-	digitalWrite(led1, LOW);	
+	//se il flag è negato arriva quà
+        digitalWrite(led1, LOW);
+        // spegne il led e poi termina (su comando del loop())
 }
 
 void blink2(void * parameter){
@@ -144,7 +146,9 @@ void blink2(void * parameter){
 		delay(1000);
 		Serial.println(taskMessage);
 	}
-	digitalWrite(led2, LOW);
+	//se il flag è negato arriva quà
+        digitalWrite(led2, LOW);
+        // spegne il led e poi termina (su comando del loop())
 }
  
 void setup() {
