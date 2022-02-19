@@ -16,7 +16,7 @@ Ogni protothread realizza un flusso di esecuzione **parallelo** a quello degli a
 
 Ogni protothread è definito da un **descrittore** che è una variabile di tipo struct cioè il tipo record del C che rappresenta il protothread. Il **nome** del descrittore è arbitrario a discrezione del programmatore. Il descrittore deve essere passato come **argomento** ad ogni funzione che lavora su un certo protothread. 
 
-Il **flusso di esecuzione** di un protothread è **definito** all'interno di una **funzione** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro dell stessa. In sostanza la funzione **serve** al programmatore per definire il protothread e allo schedulatore per poterlo richiamare. All'interno della funzione il protothread deve sempre cominciare con il comando **PT_BEGIN(pt)** e deve sempre terminare con il comando  **PT_END(pt)**.
+Il **flusso di esecuzione** di un protothread è **definito** all'interno di una **funzione** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il protothread e allo schedulatore per poterlo richiamare. All'interno della funzione il protothread deve sempre cominciare con il comando **PT_BEGIN(pt)** e deve sempre terminare con il comando  **PT_END(pt)**.
 
 Ogni protothread è **inizializzato** nel **setup()** tramite la funzione **PT_INIT(&pt)**, il passaggio del descrittore è per **riferimento** perchè questo deve poter essere modificato al momento della inizializzazione.
 
