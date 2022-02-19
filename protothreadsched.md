@@ -25,7 +25,7 @@ while(true) {
 
 Il **flusso di esecuzione** di un protothread è **definito** all'interno di una **funzione** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il protothread e allo schedulatore per poterlo richiamare. All'interno della funzione il protothread deve sempre cominciare con il comando **```PT_BEGIN(pt)```** e deve sempre terminare con il comando  **```PT_END(pt)```**. 
 
-In definitiva la **dichiarazione e definizione** di **descrittore e funzione** del protothread può assumere la forma:
+In definitiva la **dichiarazione e definizione** di **descrittore e funzione** del protothread possono assumere la forma:
 
 ```C++
 pt ptMioScopo;
