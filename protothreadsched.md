@@ -14,7 +14,7 @@ Di seguito è riportato un esempio di **blink sequenziale** in esecuzione su **d
 
 Ogni protothread realizza un flusso di esecuzione **parallelo** a quello degli altri thread, inoltre ognuno possiede un proprio **loop() principale** di esecuzione in cui realizzare le operazioni che tipicamente riguardano le **tre fasi** di lettura degli ingressi, calcolo dello stato del sistema e della sua risposta e la fase finale di scrittura della risposta sulle uscite. 
 
-Ogni protothread è definito da un **descrittore** che è una variabile di tipo struct cioè il tipo record del C che rappresenta il protothread. Il nome del descrittore è arbitrario a discrezione del programmatore. Il descrittore deve essere passato come **argomento** ad ogni funzione che lavora su un certo protothread. 
+Ogni protothread è definito da un **descrittore** che è una variabile di tipo struct cioè il tipo record del C che rappresenta il protothread. Il **nome** del descrittore è arbitrario a discrezione del programmatore. Il descrittore deve essere passato come **argomento** ad ogni funzione che lavora su un certo protothread. 
 
 Il **flusso di esecuzione** di un protothread è **definito** all'interno di una **funzione** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro dell stessa. In sostanza la funzione **serve** al programmatore per definire il protothread e allo schedulatore per poterlo richiamare. All'interno della funzione il protothread deve sempre cominciare con il comando **PT_BEGIN(pt)** e deve sempre terminare con il comando  **PT_END(pt)**.
 
