@@ -16,6 +16,8 @@ Di seguito è riportato un esempio di **blink sequenziale** in esecuzione su **d
 
 ```C++
 while(true) {
+	// codice del protothread
+	.........................
 }
 ```
 
