@@ -21,7 +21,7 @@ Il **flusso di esecuzione** di un protothread è **definito** all'interno di una
 In definitiva la **dichiarazione e definizione** di **descrittore e funzione** del protothread può assumere la forma:
 
 ```C++
-pt ptMio_scopo;
+pt ptMioScopo;
 int mioScopoThread(struct pt* pt) {
   PT_BEGIN(pt);
 
@@ -34,9 +34,9 @@ int mioScopoThread(struct pt* pt) {
 }
 ```
 
-Ogni protothread è **inizializzato** nel **setup()** tramite la funzione **```PT_INIT(&pt)```**, il passaggio del descrittore è per **riferimento** perchè questo deve poter essere **modificato** al momento della inizializzazione.
+Ogni protothread è **inizializzato** nel **setup()** tramite la funzione **```PT_INIT(&ptMioScopo)```**, il passaggio del descrittore è per **riferimento** perchè questo deve poter essere **modificato** al momento della inizializzazione.
 
-Ogni protothrad viene **schedulato** cioè, valutato periodicamente per stabilire se deve essere eseguito o meno, all'interno del **```loop()```** tramite il comando **```PT_SCHEDULE(mioScopoThread(&pt))```** che ha per argomento la funzione che definisce il protothread.
+Ogni protothrad viene **schedulato** cioè, valutato periodicamente per stabilire se deve essere eseguito o meno, all'interno del **```loop()```** tramite il comando **```PT_SCHEDULE(mioScopoThread(&ptMioScopo))```** che ha per argomento la funzione che definisce il protothread.
 
 ```C++
 while(true) {
