@@ -150,7 +150,7 @@ Osservazioni:
 - il codice non è specifico di alcuna macchina, è realizzato in C puro ed è altamente portabile.
 - Un protothread viene eseguito all'interno di una singola funzione C e non può estendersi ad altre funzioni. Un protothread può chiamare normali funzioni C, ma non può bloccore all'interno di una funzione chiamata da altre funzioni. Il blocco all'interno di chiamate di funzioni annidate
 è invece ottenuto generando un protothread separato per ciascuna funzione potenzialmente bloccante. Il vantaggio di questo approccio è che
-il blocco è esplicito: il programmatore sa esattamente quali funzioni un protothread blocca ciò e quali invece non blocca mai.
+il blocco è esplicito: il programmatore sa esattamente quali funzioni un protothread blocca e quali invece non blocca mai.
 - poichè i protothread non salvano il contesto dello stack durante la chiamata di una funzione bloccante, ad es. una delay(), le variabili locali non vengono conservate quando protothread blocca un task. Ciò significa che le variabili locali dovrebbero essere usate con la massima
 attenzione. In caso di dubbio, non utilizzare variabili locali all'interno di un protothread!
 - Un protothread è guidato da ripetute chiamate alla funzione in cui il protothread è in esecuzione. Ogni volta che viene chiamata la funzione, il 
