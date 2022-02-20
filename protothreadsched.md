@@ -154,7 +154,7 @@ il blocco è esplicito: il programmatore sa esattamente quali funzioni un protot
 - poichè i protothread non salvano il contesto dello stack durante la chiamata di una funzione bloccante, ad es. una delay(), le variabili locali non vengono conservate quando protothread blocca un task. Ciò significa che le variabili locali dovrebbero essere usate con la massima
 attenzione. In caso di dubbio, non utilizzare variabili locali all'interno di un protothread!
 - Un protothread è guidato da ripetute chiamate alla funzione in cui il protothread è in esecuzione. Ogni volta che viene chiamata la funzione, il 
-protothread verrà eseguito fino a quando non si blocca o esce. Pertanto la schedulazione dei protothreads viene eseguito dall'applicazione che utilizza i protothreads.
+protothread verrà eseguito fino a quando non si blocca o esce. Pertanto la schedulazione dei protothreads viene eseguita dall'applicazione che utilizza i protothreads.
 
 Di seguito è riportato un esempio su scheda **Arduino Uno**, con **IDE Arduino** e  con la libreria **protothread.h** di un **blink sequenziale** in esecuzione su **un thread** e di gestione del pulsante sul **loop principale**. I ritardi **sleep** agiscono sul thread secondario ma non bloccano la lettura dello stato del pulsante che rimane responsivo nell'accendere il secondo led durante entrambe le fasi del blink del primo led.
 
