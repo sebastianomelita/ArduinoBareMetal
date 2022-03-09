@@ -79,7 +79,7 @@ void loop() {
 		    	Serial.read();    // leggi il carattere speciale e saltalo
 			count++; // passa all’operando successivo
 		}else if(p == '='){ //carichi il secondo operando
-			Serial.read();    // leggi il carattere speciale e ignoralo, senza salvarlo da essuna parte
+			Serial.read();    // leggi il carattere speciale e ignoralo, senza salvarlo da nessuna parte
 		   	count = 0;        // torna al primo operando
 			
 			Serial.print("La somma di ");
@@ -124,12 +124,12 @@ void loop() {
 		
 		if(p == '+'){ //carichi il primo operando
 		   	buf[count] = '\0'; 
-		    	Serial.read();    // leggi il carattere e ignoralo, senza salvarlo da essuna parte
+		    	Serial.read();    // leggi il carattere e ignoralo, senza salvarlo da nessuna parte
 			vals[0] = atoi(buf); // trasformi la stringa in un numero
 			count = 0;
 		}else if(p == '='){ //carichi il secondo operando
 		    	buf[count] = '\0'; 
-			Serial.read();    // leggi il carattere e ignoralo, senza salvarlo da essuna parte
+			Serial.read();    // leggi il carattere e ignoralo, senza salvarlo da nessuna parte
 		    	vals[1] = atoi(buf);
 			count = 0;
 			
