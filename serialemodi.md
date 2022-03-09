@@ -76,7 +76,7 @@ void loop() {
 		p = Serial.peek(); // leggi un carattere ma non devi prelevarlo dal buffer di RX
 		
 		if(p == '+'){ //carichi il primo operando
-		    	Serial.read();    // leggi il carattere speciale e saltalo
+		    	Serial.read();    // leggi il carattere speciale e ignoralo, senza salvarlo da nessuna parte
 			count++; // passa all’operando successivo
 		}else if(p == '='){ //carichi il secondo operando
 			Serial.read();    // leggi il carattere speciale e ignoralo, senza salvarlo da nessuna parte
@@ -87,10 +87,10 @@ void loop() {
 			Serial.print(" con ");
 			Serial.print(vals[1]); 
 			Serial.print(" vale: ");
-			vals[2] = vals[0] + vals[1]; // calcoli la somma
+			vals[2] = vals[0] + vals[1]; 	    // calcoli la somma
 			Serial.println(vals[2]); 	    // stampi il risultato (println stampa sia numeri, che caratteri)	
 		}else{
-			vals[count] = Serial.parseInt(); //lettura del messaggio (valore operando) 
+			vals[count] = Serial.parseInt();   //lettura del messaggio (valore operando) 
 			// blocca finchè non arriva un messaggio o, alternativamente, scade un timeout
 		}
     }
@@ -124,12 +124,12 @@ void loop() {
 		
 		if(p == '+'){ //carichi il primo operando
 		   	buf[count] = '\0'; 
-		    	Serial.read();    // leggi il carattere e ignoralo, senza salvarlo da nessuna parte
+		    	Serial.read();       // leggi il carattere e ignoralo, senza salvarlo da nessuna parte
 			vals[0] = atoi(buf); // trasformi la stringa in un numero
 			count = 0;
 		}else if(p == '='){ //carichi il secondo operando
 		    	buf[count] = '\0'; 
-			Serial.read();    // leggi il carattere e ignoralo, senza salvarlo da nessuna parte
+			Serial.read();       // leggi il carattere e ignoralo, senza salvarlo da nessuna parte
 		    	vals[1] = atoi(buf);
 			count = 0;
 			
@@ -138,7 +138,7 @@ void loop() {
 			Serial.print(" con ");
 			Serial.print(vals[1]); 
 			Serial.print(" vale: ");
-			vals[2] = vals[0] + vals[1]; // calcoli la somma
+			vals[2] = vals[0] + vals[1];        // calcoli la somma
 			Serial.println(vals[2]); 	    // stampi il risultato (println stampa sia numeri, che caratteri)	
 		}else{
 			// caricamento dei caratteri delle cifre del numero sul buffer (non bloccante)
