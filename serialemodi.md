@@ -90,7 +90,8 @@ void loop() {
 			vals[2] = vals[0] + vals[1]; // calcoli la somma
 			Serial.println(vals[2]); 	    // stampi il risultato (println stampa sia numeri, che caratteri)	
 		}else{
-			vals[count] = Serial.parseInt(); //lettura del messaggio (valore operando)
+			vals[count] = Serial.parseInt(); //lettura del messaggio (valore operando) 
+			// blocca finchè non arriva un messaggio o, alternativamente, scade un timeout
 		}
     }
 }	
