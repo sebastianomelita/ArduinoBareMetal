@@ -20,7 +20,7 @@ Per **evitare** le collisioni servono i **protocolli di arbitraggio** che sostan
 
 ### Protocolli di arbitraggio
 
-Nei protocolli di arbitraggio  **master slave** esiste una stazione centrale di livello gerarchico superiore detta master che, per conto delle stazioni slave,chi deve parlare e quando deve parlare evitando sovrapposizioni.  
+Nei protocolli di arbitraggio  **master slave** esiste una stazione centrale di livello gerarchico superiore detta master che, per conto delle stazioni slave, decide **chi** deve parlare e **quando** deve parlare evitando sovrapposizioni nel tempo dei messaggi.  
 
 Nei protocolli di arbitraggio  **peer to peer**, o distribuiti, le stazioni sono tutte di pari livello e sono programmate per interpretare continuamente la situazione del canale in modo da parlare sempre una alla volta. 
 
