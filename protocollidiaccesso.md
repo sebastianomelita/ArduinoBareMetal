@@ -40,7 +40,7 @@ Quelli **statistici** o **a contesa** realizzano una **competizione** per l'acce
 
 ### Come reagire a fronte di una collisione?
 
-Se tutte le stazioni ritrasmettono nello stesso istante collidono immediatamente
+Se tutte le stazioni ritrasmettono nello stesso istante collidono immediatamente e il messaggio viene perso.
 
 Soluzione: **Backoff**
 - È un tempo **casuale**
