@@ -1,5 +1,15 @@
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
+### Come reagire a fronte di una collisione?
+
+Se tutte le stazioni ritrasmettono nello stesso istante collidono immediatamente
+
+Soluzione: **Backoff**
+- È un tempo **casuale**
+- È calcolato in maniera indipendente, l’una dall’altra, da tutte le stazioni
+- Serve a determinare la stazione che deve trasmettere **per prima** minimizzando il rischio di trasmissioni contemporanee
+- È calcolato all’interno di un intervallo detto **finestra di contesa**
+
 ## **ALOHA**
 
 ### **Fasi ALOHA**
