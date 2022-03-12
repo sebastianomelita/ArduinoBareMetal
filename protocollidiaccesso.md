@@ -1,5 +1,27 @@
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
+### Mezzi a BUS
+
+Un **mezzo trasmissivo** si dice a **BUS** quando più periferiche condividono lo stesso collegamento. Si può realizzare sia con un un unico filo in rame che collega tutti i dispositivi, che con un mezzo radio su cui tutti i dispositivi condividono lo stessa frequenza (canale) di trasmissione.
+
+I mezzi a BUS posseggono la **proprietà** che se un interlocutore parla **tutti** gli altri ascoltano perchè un messaggio inviato da uno **passa** comunque per tutti gli altri.
+
+I mezzi a BUS sono afflitti dal **fenomeno** delle **collisioni**.
+
+Una **collisione** è l'evento di **sovrapposizione distruttiva** di due o più messaggi su un canale. E'un evento **catastrofico** irreversibile perchè non permette il recupero dell'informazione trasportata originariamente dai singoli messaggi.
+
+Una collisione su un mezzo a BUS **accade** quando due o più interlocutori **parlano contemporaneamente**. Nascono adesso due problemi: rilevare una collisione, evitare una collisione. Per **evitare** le collisioni servono i **protocolli di arbitraggio** che sostanzialmente cercano di far parlare gli interlocutori sempre **uno alla volta**. I protocolli di arbitraggio si dividono in **maser/slave** o centralizzati e in **peer to peer** o distribuiti. 
+
+Nei protocolli di arbitraggio  **master slave** esiste una stazione centrale di livello gerarchico superiore detta master che, per conto delle stazioni slave,chi deve parlare e quando deve parlare evitando sovrapposizioni.  
+
+Nei protocolli di arbitraggio  **peer to peer**, o distribuiti, le stazioni sono tutte di pari livello e sono programmate per interpretare continuamente la situazione del canale in modo da parlare sempre una alla volta. 
+
+I protocolli di arbitraggio distribuiti si dividono ulteriormente in **deterministici** e in **a contesa**. 
+
+Quelli **deterministici** eliminano alla radice la possibilità di collisioni tramite un meccanismo di **cooperazione** tra le stazioni tramite un canale con cui esse comunicano sia l'**intenzione** di trasmettere che il **diritto** di accesso al canale. Il **diritto** si acquisisce o si cede mediante il trasferimento di una informazione particolare detta **token**. Il token può essere **posseduto** rigorosamente da una stazione alla volta quando si ha la necessità di trasmettere e deve essere  immediatamente **ceduto** quando una stazione ha finito di trasmettere. 
+
+Quelli **statistici** o **a contesa** realizzano una competizione per l'accesso al mezzo che deve essere regolata semplucemente osservando il canale in maniera indipendente senza coordinamento alcuno. Per quanto statisticamente ridotto, questa categoria di protocolli non annulla il problema delle collisioni che quindi necessitano ancora di essere rilevate.
+
 ### Come rilevare una collisione?
 
 - Si ricorre all’utilizzo di un protocollo di trasmissione confermato
