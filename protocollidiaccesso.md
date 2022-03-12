@@ -28,7 +28,7 @@ I protocolli di arbitraggio distribuiti si dividono ulteriormente in **determini
 
 Quelli **deterministici** eliminano alla radice la possibilità di collisioni realizzando un meccanismo di **cooperazione** tra le stazioni tramite messaggi di controllo con cui esse comunicano sia l'**intenzione** di trasmettere che il **diritto** di accesso al canale. Il **diritto** si acquisisce o si cede mediante il trasferimento di una informazione particolare detta **token**. Il token può essere **posseduto** quando si ha la necessità di trasmettere, ma solo da una stazione alla volta, e deve essere immediatamente **ceduto** quando una stazione ha poi finito di trasmettere. 
 
-Quelli **statistici** o **a contesa** realizzano una competizione per l'accesso al mezzo che deve essere regolata, dalle singole stazioni, semplicemente osservando il canale in maniera indipendente l'una dall'altra, senza coordinamento alcuno. Questa categoria di protocolli **limitano statisticamente** il problema delle collisioni ma **non lo annullano** completamente, per cui le collisioni necessitano ancora di **essere rilevate** dalle singole stazioni.
+Quelli **statistici** o **a contesa** realizzano una competizione per l'accesso al mezzo che deve essere regolata dalle singole stazioni semplicemente osservando il canale in maniera indipendente l'una dall'altra, senza coordinamento alcuno. Questa categoria di protocolli **limitano statisticamente** il problema delle collisioni ma **non lo annullano** completamente, per cui le collisioni necessitano ancora di **essere rilevate** dalle singole stazioni.
 
 ### Come rilevare una collisione?
 
