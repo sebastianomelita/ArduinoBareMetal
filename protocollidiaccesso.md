@@ -8,7 +8,7 @@ Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo c
 
 Una **stazione trasmittente**:
 - al momento che ha una trama pronta, la invia senza aspettare.
-- Dopo l’invio aspetta per un certo tempo tramite un timer (detto timer di trasmissione).
+- Dopo l’invio aspetta per un certo tempo (detto **timeout**) lo scadere di un timer (detto **timer di trasmissione**).
 - Se essa riceve il messaggio di ack allora la trasmissione è avvenuta con successo.
 - Altrimenti la stazione usa una strategia di backoff e invia nuovamente il pachetto.
 - Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
