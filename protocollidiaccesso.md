@@ -10,7 +10,7 @@ I mezzi a BUS posseggono la **proprietà** che se un interlocutore parla **tutti
 
 I mezzi a BUS sono afflitti dal **fenomeno** delle **collisioni**.
 
-Una **collisione** è l'evento di **sovrapposizione distruttiva** di due o più messaggi su un canale. E'un evento **catastrofico** irreversibile perchè non permette il recupero dell'informazione trasportata originariamente dai singoli messaggi.
+Una **collisione** è l'evento di **sovrapposizione distruttiva** di due o più messaggi su un canale. E' un evento **catastrofico** irreversibile perchè non permette il recupero dell'informazione trasportata originariamente dai singoli messaggi.
 
 Una collisione su un mezzo a BUS **accade** quando due o più interlocutori **parlano contemporaneamente**. 
 
