@@ -12,7 +12,11 @@ I mezzi a BUS sono afflitti dal **fenomeno** delle **collisioni**.
 
 Una **collisione** è l'evento di **sovrapposizione distruttiva** di due o più messaggi su un canale. E'un evento **catastrofico** irreversibile perchè non permette il recupero dell'informazione trasportata originariamente dai singoli messaggi.
 
-Una collisione su un mezzo a BUS **accade** quando due o più interlocutori **parlano contemporaneamente**. Nascono adesso due problemi: rilevare una collisione, evitare una collisione. Per **evitare** le collisioni servono i **protocolli di arbitraggio** che sostanzialmente cercano di far parlare gli interlocutori sempre **uno alla volta**. I protocolli di arbitraggio si dividono in **maser/slave** o centralizzati e in **peer to peer** o distribuiti. 
+Una collisione su un mezzo a BUS **accade** quando due o più interlocutori **parlano contemporaneamente**. 
+
+Nascono adesso due problemi: rilevare una collisione, evitare una collisione. 
+
+Per **evitare** le collisioni servono i **protocolli di arbitraggio** che sostanzialmente cercano di far parlare gli interlocutori sempre **uno alla volta**. I protocolli di arbitraggio si dividono in **maser/slave** o centralizzati e in **peer to peer** o distribuiti. 
 
 ### Protocolli di arbitraggio
 
