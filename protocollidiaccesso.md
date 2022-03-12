@@ -1,5 +1,13 @@
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
+### Come rilevare una collisione?
+
+- Si ricorre all’utilizzo di un protocollo di trasmissione confermato
+- I protocolli confermati sono protocolli in cui il mittente possiede un timer, detto timer di ritrasmissione, impostato ad un valore massimo di conteggio detto timeout.
+- Il timer viene avviato al momento esatto dell'invio di un messaggio e viene resettato al momento della ricezione di un messaggio di conferma di corretto arrivo a destinazione.
+- Il messaggio di conferma viene detto ack (acknowledgement) e viene inviato dal ricevente in direzione del mittente. Un ack è sempre inviato dal ricevente di un precedente messaggio, mai dal mittente di quel messaggio.
+- Se il timer di trasmissione è resettato prima dello scadere del timeout la trasmissione è considerata avvenuta con successo. Se invece allo scadere del timeout ancora non si ricevono ack allora il messaggio viene dato per perso ed è, dal mittente, ritrasmesso.
+
 ### Come reagire a fronte di una collisione?
 
 Se tutte le stazioni ritrasmettono nello stesso istante collidono immediatamente
