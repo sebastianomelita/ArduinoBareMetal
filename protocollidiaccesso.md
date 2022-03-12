@@ -26,7 +26,7 @@ Nei protocolli di arbitraggio  **peer to peer**, o distribuiti, le stazioni sono
 
 I protocolli di arbitraggio distribuiti si dividono ulteriormente in **deterministici** e in **a contesa**. 
 
-Quelli **deterministici** eliminano alla radice la possibilità di collisioni tramite un meccanismo di **cooperazione** tra le stazioni tramite un canale con cui esse comunicano sia l'**intenzione** di trasmettere che il **diritto** di accesso al canale. Il **diritto** si acquisisce o si cede mediante il trasferimento di una informazione particolare detta **token**. Il token può essere **posseduto** rigorosamente da una stazione alla volta quando si ha la necessità di trasmettere e deve essere  immediatamente **ceduto** quando una stazione ha finito di trasmettere. 
+Quelli **deterministici** eliminano alla radice la possibilità di collisioni realizzando un meccanismo di **cooperazione** tra le stazioni tramite un canale con cui esse comunicano sia l'**intenzione** di trasmettere che il **diritto** di accesso al canale. Il **diritto** si acquisisce o si cede mediante il trasferimento di una informazione particolare detta **token**. Il token può essere **posseduto** rigorosamente da una stazione alla volta quando si ha la necessità di trasmettere e deve essere  immediatamente **ceduto** quando una stazione ha finito di trasmettere. 
 
 Quelli **statistici** o **a contesa** realizzano una competizione per l'accesso al mezzo che deve essere regolata semplucemente osservando il canale in maniera indipendente senza coordinamento alcuno. Per quanto statisticamente ridotto, questa categoria di protocolli non annulla il problema delle collisioni che quindi necessitano ancora di essere rilevate.
 
