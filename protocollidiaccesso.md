@@ -6,14 +6,12 @@
 
 Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione)
 
-Una stazione trasmittente:
+Una **stazione trasmittente**:
 - al momento che ha una trama pronta, la invia senza aspettare.
 - Dopo l’invio aspetta per un certo tempo tramite un timer (detto timer di trasmissione).
 - Se essa riceve il messaggio di ack allora la trasmissione è avvenuta con successo.
 - Altrimenti la stazione usa una strategia di backoff e invia nuovamente il pachetto.
 - Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
-![image](https://user-images.githubusercontent.com/18554803/158024433-64c2f7a1-19db-446c-a772-9ca48f0e2b3e.png)
-
 
 **Le collisioni graficamente:**
 
