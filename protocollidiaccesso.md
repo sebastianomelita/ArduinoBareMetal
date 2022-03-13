@@ -87,12 +87,12 @@ while(N <= max){
 **Protocollo ALOHA in ricezione pseudocodice:**
 
 ```C++
-While (true){
-WaitUntil(dataFrameArrived());
+While(true){
+	WaitUntil(dataFrameArrived());
 	if(!duplicate()){ 
 		deliver(frame) 
 	}
- send(ack_frame);
+	send(ack_frame);
 }
 
 ```
