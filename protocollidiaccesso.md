@@ -65,7 +65,7 @@ Una **stazione trasmittente**:
 
 <img src="alohacollisioni.jpg" alt="alt text" width="600">
 
-**Protocollo ALOHA in pseudocodice:**
+**Protocollo ALOHA in trasmissione pseudocodice:**
 
 ```C++
 
@@ -84,7 +84,20 @@ while(N <= max){
 /* troppi tentativi: rinuncio a trasmette
 
 ```
+**Protocollo ALOHA in ricezione pseudocodice:**
 
+```C++
+While (true)
+{
+ WaitUntil(dataFrameArrived());
+	if(!duplicate())
+	{ 
+	deliver(frame) 
+	}
+ send(ack_frame);
+}
+
+```
 <img src="alohaflow.png" alt="alt text" width="400">
 
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
