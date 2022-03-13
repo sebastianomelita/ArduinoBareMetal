@@ -92,7 +92,7 @@ While (true)
  WaitUntil(dataFrameArrived());
 	if(!duplicate())
 	{ 
-	deliver(frame) 
+		deliver(frame) 
 	}
  send(ack_frame);
 }
