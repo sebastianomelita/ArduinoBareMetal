@@ -515,16 +515,16 @@ Il valore contenuto nel CTS rappresenta il tempo prenotato dalla stazione autori
 
 ### **Prenotazione del canale**
 
-Il trasmettitore prenota dei time slot tramite un messaggio di controllo RTS (Request To Send) avente per argomento il tempo di trasmissione necessario per inviare i suoi dati . 
+Il **trasmettitore** prenota dei **time slot** tramite un messaggio di controllo **RTS** (Request To Send) avente per **argomento** il tempo di trasmissione necessario per inviare i suoi dati . 
 
-Il ricevente conferma la prenotazione tramite il messaggio di controllo CTS (Clear To Send) avente per argomento il tempo prenotato dal trasmettitore.
-Il messaggio CTS è ricevuto da tutte le stazioni che, col tempo in esso riportato, impostano il proprio contantore di Carrier Sensing detto NAV con il quale tengono conto della prenotazione.
+Il **ricevente** conferma la prenotazione tramite il messaggio di controllo **CTS** (Clear To Send) avente per **argomento** il tempo prenotato dal trasmettitore.
+Il messaggio **CTS** è ricevuto da **tutte le stazioni** che, col tempo in esso riportato, impostano il proprio contantore di Carrier Sensing detto **NAV** con il quale tengono conto della prenotazione.
 
 Il NAV viene decrementato nel tempo, fino a 0; quando il NAV è diverso da zero, vuol dire che una trasmissione è in atto nelle vicinanze e quindi la stazione si astiene dal trasmettere.
 
-La stazione che ha prenotato il canale durante il NAV può effettuare in sicurezza la trasmissione dei suoi dati perchè il tempo di NAV è, di fatto, al riparo dalle collisioni.
+La stazione che ha prenotato il canale durante il NAV può effettuare in sicurezza la trasmissione dei suoi dati perchè il tempo di NAV è, di fatto,**al riparo** dalle collisioni.
 
-Le collisioni in pratica non possono colpire i messaggi di ack e i dati, gli unici messaggi soggetti a collisione sono le trame di controllo RTS e CTS che però sono molto corte.
+Le collisioni in pratica **non possono** colpire i messaggi di **ack** e i **dati**, gli unici messaggi soggetti a collisione sono le trame di controllo RTS e CTS che però sono **molto corte**.
 
 <img src="prenotazione.png" alt="alt # **text" width="600">
 
