@@ -501,7 +501,7 @@ La stazione B è visibile da tutti per cui sia dalla stazione A che ha prenotato
 
 ### **CCA Reale e CCA Virtuale**
 
-**CCA Reale:** è il Clear Channel Assesment realizzato mediante l’ascolto effettivo del canale fisico prima della trasmissione. Presuppone che la stazione sia in stato di ricezione e che un dispositivo a soglia sia pronto a rilevare eventuale energia trasmessa da altre stazioni. 
+**CCA Reale:** è il Clear Channel Assesment realizzato mediante l’ascolto effettivo del canale fisico prima della trasmissione. Presuppone che la stazione sia in stato di ricezione e che un **dispositivo a soglia** sia pronto a rilevare eventuale energia trasmessa da altre stazioni. 
 
 **CCA Virtuale: il Clear Channel Assesment virtuale** è invece realizzato mediante l’osservazione della variabile di conteggio NAV. Il NAV è decrementato ad intervalli di tempo fissi e in ciascuno di essi può accadere:
 - Il NAV > 0 allora il canale virtuale è considerato occupato
