@@ -1,5 +1,5 @@
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
-
+FV
 ### Mezzi a BUS
 
 Un **mezzo trasmissivo** si dice a **BUS** quando più periferiche condividono lo stesso collegamento. Si può realizzare sia con un un **unico filo** in rame che collega tutti i dispositivi, che con un mezzo radio su cui tutti i dispositivi condividono lo **stessa frequenza** (canale) di trasmissione.
@@ -415,7 +415,7 @@ EIFS  = SIFS + DIFS + ACK_Tx_Time
 
 ### **Backoff**
 
-Se due stazioni, dopo averlo ascoltato, trovano il canale libero potrebbero iniziare a trasmettere contemporaneamente (o quasi a meno di tempi di propagazione) 
+Se due stazioni, dopo averlo ascoltato, trovano il canale libero potrebbero iniziare a trasmettere contemporaneamente (o quasi, a meno del tempo di propagazione) 
 Ciò causa una collisione che determina la ricezione di trame corrotte da parte delle stazioni destinatarie che, a sua volta, causa il mancato invio di un ack alle stazioni trasmittenti che avviano, appena possono, la ritrasmissione
 
 La ritrasmissione avviene dopo uno stesso ritardo DIFS dal momento in cui entrambe le stazioni sentono il canale libero
