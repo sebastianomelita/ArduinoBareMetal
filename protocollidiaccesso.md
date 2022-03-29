@@ -489,7 +489,7 @@ Un accesso senza contesa non vuol dire un accesso senza collisioni, queste sono 
 <img src="hidden.png" alt="alt # **text" width="600">
 
 **Soluzione:**
-- Il trasmettitore prenota dei time slot tramite ll messaggio di controllo RTS (Request To Send) avente per argomento il tempo di trasmissione richiesto, adatto alla lunghezza del messaggio dati.
+- Il trasmettitore prenota dei time slot tramite ll messaggio di controllo RTS (Request To Send) avente per **argomento** il tempo di trasmissione richiesto, adatto alla lunghezza del messaggio dati.
 - Il ricevente conferma la prenotazione tramite il messaggio di controllo CTS (Clear To Send) avente per argomento il tempo prenotato al trasmettitore
 La stazione B è visibile da tutti per cui sia dalla stazione A che ha prenotato il canale sia dalle altre, come la C, che potenzialmente potrebbero trasmettere di li a poco
 - Il messagio CTS dichiara l’avvenuta assegnazione del canale ad A per cui tutti gli altri, come B e C, si asterranno dal trasmettere per tutta la durata del tempo dichiarato nel CTS.
