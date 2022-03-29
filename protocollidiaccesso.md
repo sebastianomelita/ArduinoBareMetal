@@ -139,7 +139,7 @@ Il ritardo di propagazione di un segnale è il **tempo finito** con cui esso via
 - Nel **vuoto** essa è pari alla **velocità della luce** cioè **300.000Km/sec**
 - In un **conduttore metallico** ha un valore **inferiore** pari a circa **200.000Km/sec**
 
-se **due stazioni** A e B trasmettonouna di seguito all'altra separate di un tempo Δt e il tempo di propagazione tra A a B è maggiore di Δt allora, ascoltando la portante, B sente il canale libero e inizia a trasmettere il suo messaggio mentre c’è quello di A che sta per arrivare.
+se **due stazioni** A e B trasmettono una di seguito all'altra separate di un tempo Δt e il tempo di propagazione tra A a B è maggiore di Δt allora, ascoltando la portante, B sente il canale libero e inizia a trasmettere il suo messaggio mentre c’è quello di A che sta per arrivare.
 ciascuna stazione riterrà di essere l’unica a trasmettere sul canale fino a che la trama (corrotta dalla collisione) di A, che ha trasmesso prima, non arriverrà all’altra stazione B dopo il tempo di propagazione Δt corrispondente alla distanza tra A e B.
 
 La **rilevazione reale**, da parte di una stazione, di **una collisione** può avvenire solo **dopo l’inizio** della trasmissione (o **durante** o **alla fine**).
@@ -415,7 +415,7 @@ EIFS  = SIFS + DIFS + ACK_Tx_Time
 
 ### **Backoff**
 
-Se due stazioni, dopo averlo ascoltato, trovano il canale libero potrebbero comunque **collidere** perchè, a causa del **ritardo di propagazione**, potrebbero non rendersi conto che un'altra stazione ha già cominciato a trasmettere occupando il canale.
+Se **due stazioni**, dopo averlo **ascoltato**, trovano il **canale libero** potrebbero comunque **collidere** perchè, a causa del **ritardo di propagazione**, potrebbero non rendersi conto che un'altra stazione ha già cominciato a trasmettere occupando il canale.
 La collisione dei messaggi che ne deriva determina la ricezione di trame corrotte da parte delle stazioni destinatarie che, a sua volta, causa il mancato invio di un ack alle stazioni trasmittenti che, allo scadere del timout di trasmissione, pianificano la **ritrasmissione** del messaggio non ancora confermato.
 
 Se la **ritrasmissione** avvenisse dopo uno stesso **ritardo DIFS** dal momento in cui entrambe le stazioni sentono il **canale libero**,
