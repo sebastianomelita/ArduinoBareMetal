@@ -139,7 +139,7 @@ Il ritardo di propagazione di un segnale è il **tempo finito** con cui esso via
 - Nel **vuoto** essa è pari alla **velocità della luce** cioè **300.000Km/sec**
 - In un **conduttore metallico** ha un valore **inferiore** pari a circa **200.000Km/sec**
 
-se due stazioni A e B trasmettonouna di seguito all'altra separate di un tempo Δt e il tempo di propagazione tra A a B è maggiore di Δt allora, ascoltando la portante, B sente il canale libero e inizia a trasmettere il suo messaggio mentre c’è quello di A che sta per arrivare.
+se **due stazioni** A e B trasmettonouna di seguito all'altra separate di un tempo Δt e il tempo di propagazione tra A a B è maggiore di Δt allora, ascoltando la portante, B sente il canale libero e inizia a trasmettere il suo messaggio mentre c’è quello di A che sta per arrivare.
 ciascuna stazione riterrà di essere l’unica a trasmettere sul canale fino a che la trama (corrotta dalla collisione) di A, che ha trasmesso prima, non arriverrà all’altra stazione B dopo il tempo di propagazione Δt corrispondente alla distanza tra A e B.
 
 La **rilevazione reale**, da parte di una stazione, di **una collisione** può avvenire solo **dopo l’inizio** della trasmissione (o **durante** o **alla fine**).
