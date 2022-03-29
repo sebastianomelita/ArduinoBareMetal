@@ -427,7 +427,7 @@ La **soluzione** è ritrasmettere sempre dopo un **tempo casuale (backoff)** all
 
 <img src="backoff.png" alt="alt # **text" width="800">
 
-Nel caso del WiFi in figura, è illustrato un backoff **con prenotazione** che ha la proprietà di non azzerare, sprecandolo, il tempo di attesa **già trascorso** da una stazione nel caso che il canale diventi nuovamente occupato durante il backoff a causa della trasmissione di un'altra stazione con backoff più corto. Al termine di questo, la stazione interrotta ricomincia dal **backoff residuo** calcolato in precedenza non perdendo così la **priorità acquisita**. E' una ottimizzazione per garantire una maggiore **equità (fairness)** nell'accesso alla risorsa canale che non sempre è implementata in protocolli diversi dal WiFi.
+Nel caso del WiFi in figura, è illustrato un backoff **con prenotazione** che ha la proprietà di non azzerare, sprecandolo, il tempo di attesa **già trascorso** da una stazione nel caso che il canale diventi nuovamente occupato durante il proprio backoff a causa della trasmissione di un'altra stazione con backoff più corto. Al termine di questo, la stazione interrotta ricomincia dal **backoff residuo** calcolato in precedenza non perdendo così la **priorità acquisita**. E' una ottimizzazione per garantire una maggiore **equità (fairness)** nell'accesso alla risorsa canale che non sempre è implementata in protocolli diversi dal WiFi.
 
 **Pseudocodice protocollo CSMA/CA sul trasmettitore con backoff:**
 
