@@ -416,7 +416,7 @@ EIFS  = SIFS + DIFS + ACK_Tx_Time
 ### **Backoff**
 
 Se **due stazioni**, dopo averlo **ascoltato**, trovano il **canale libero** potrebbero comunque **collidere** perchè, a causa del **ritardo di propagazione**, potrebbero non rendersi conto che un'altra stazione ha già cominciato a trasmettere occupando il canale.
-La collisione dei messaggi che ne deriva determina la ricezione di trame corrotte da parte delle stazioni destinatarie che, a sua volta, causa il mancato invio di un ack alle stazioni trasmittenti che, allo scadere del timout di trasmissione, pianificano la **ritrasmissione** del messaggio non ancora confermato.
+La collisione dei messaggi che ne deriva determina la ricezione di trame corrotte da parte delle stazioni destinatarie che, a sua volta, causa il mancato invio di un ack alle stazioni trasmittenti che, una volta scaduto il timout di trasmissione, pianificano la **ritrasmissione** del messaggio non ancora confermato.
 
 Se la **ritrasmissione** avvenisse dopo uno stesso **ritardo DIFS** dal momento in cui entrambe le stazioni sentono il **canale libero**,
 ciò determinerebbe presumibilmente una **trasmissione simultanea** delle due stazioni e quindi una nuova collisione.
