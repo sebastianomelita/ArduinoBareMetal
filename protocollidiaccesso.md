@@ -394,7 +394,7 @@ DIFS =  SIFS  + (2 * Slot time)
 ```
 
 - **SIFS** dovrebbe essere più breve di DIFS in modo che sia possibile inviare un frame di ACK **prima** che le altre stazioni riprendano il loro backoff
-- Il **DIFS** dura quanto basta affinchè una qualunque stazione si possa accorgere che il canale è occupato a seguito della trasmissione di un ack. Per fare in modo di essere sicuri che dopo di esso un ack non posssa più arrivare, il DIFS viene calcolato nel caso peggiore  ```(2 * Slot time )```, cioè ipotizzando che le stazioni interessate siano poste agli **estremi** della cella radio che sono **reciprocamente più distanti**.
+- Il **DIFS** dura quanto basta affinchè una qualunque stazione si possa accorgere che il canale **è occupato** a seguito della trasmissione di un ack. Per fare in modo di essere sicuri che dopo di esso un ack non posssa più arrivare, il DIFS viene calcolato nel caso peggiore  ```(2 * Slot time )```, cioè ipotizzando che le stazioni interessate siano poste agli **estremi** della cella radio che sono **reciprocamente più distanti**.
 
 Nel grafico, DATA e ACK sono **tempi di trasmissione** (non di propagazione)
 
