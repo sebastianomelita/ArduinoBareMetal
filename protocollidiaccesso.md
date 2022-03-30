@@ -386,7 +386,7 @@ Anche se C, sfortunatamente, valutasse il canale libero ascoltandolo durante il 
 
 ### **Significato di DIFS**
 
-È il **tempo**che aspettano tutte le stazioni per trasmettere a partire dalla fine dell’ultima trasmissione valida (**invio ack** messaggio precedente)
+È il **tempo** che aspettano tutte le stazioni per trasmettere a partire dalla fine dell’ultima trasmissione valida (**invio ack** messaggio precedente)
 
 Serve a **proteggere** la **trasmissione di un ack** da eventuali  **collisioni**, è sempre:       
 ```C++
