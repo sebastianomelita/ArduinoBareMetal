@@ -430,7 +430,7 @@ La **soluzione** è ritrasmettere sempre dopo un **tempo casuale (backoff)** all
 
 Il **backoff** casuale di una stazione inizia sempre dopo un tempo di attesa fisso **DIFS**. La stazione ascolta sempre il canale prima di tramettere e lo fa anche durante il backoff. Ci sono quindi due possibilità:
 - il backoff **scade** e quindi subito dopo la stazione comincia a trasmettere
-- il backoff viene **interrotto** dall'ascolto del canale occupato (da una stazione con backoff più corto) e **riprende** una volta che ritorna libero.
+- il backoff viene **interrotto** dall'ascolto del canale occupato (da una stazione con backoff più corto) e **riprende** una volta che il canale ritorna libero.
 
 Nel caso del WiFi in figura, è illustrato un backoff **con prenotazione** che ha la proprietà di non azzerare, sprecandolo, il tempo di attesa **già trascorso** da una stazione sul proprio backoff. Nel momento in cui il canale **è libero**, la stazione interrotta sul proprio backoff aspetta il **tempo di backoff residuo** che manca a quello già cosumato per raggiungere quello calcolato prima dell'interruzione. E' una maniera per non perdere la **priorità acquisita** ricalcolando il backoff da zero. E' una **ottimizzazione** per garantire una maggiore **equità (fairness)** nell'accesso alla risorsa canale che non sempre è implementata in protocolli CSMA/CA diversi dal WiFi.
 
