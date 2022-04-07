@@ -20,10 +20,10 @@ void loop(){
 		//parsing di una stringa dal flusso di dati 
 		String str = Serial.readString();
 		//parsing di un comando (sottostringa) all'interno di una stringa	
-		if(str.indexOf("accendi")){
+		if(str.indexOf("accendi")>=0){
 			digitalWrite(LED, HIGH);
 		}
-		if(str.indexOf("spegni")){
+		if(str.indexOf("spegni")>=){
 			digitalWrite(LED, LOW);
 		}
 	}
