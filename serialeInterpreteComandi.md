@@ -23,7 +23,7 @@ void loop(){
 		if(str.indexOf("accendi")>=0){
 			digitalWrite(LED, HIGH);
 		}
-		if(str.indexOf("spegni")>=){
+		if(str.indexOf("spegni")>=0){
 			digitalWrite(LED, LOW);
 		}
 	}
