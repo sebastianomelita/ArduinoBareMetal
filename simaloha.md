@@ -19,6 +19,16 @@ L'algoritmo è realizzato in maniera **sequenziale** nel tempo pianificando il *
 
 In **entrambi i casi** il flusso di esecuzione rimane **in attesa** della valutazione periodica (**polling**) di un **flag** che rappresenta l'accadere di un evento, un timer preimpostato nel caso del ```Wait(t)``` l'arrivo di un messaggio nel caso del ```WaitUntil(pollingInput)```. 
 
+### **Eventi di input**
+
+Gli eventi di input rilevanti che potrebbero essere valutati durante lo svolgimento dell'algoritomo sono:
+
+- ```bool dataFrameArrived()```. Controlla se è arrivato un messaggio dati
+- ```bool ack_received()```. Controlla se è arrivato un messaggio di controllo di conferma (ack) di trasmissione avvenuta con successo.
+- ```bool ackOrTimeout()```. Controlla se i trasmettitore è in attesa della ricezione di un ack o se non lo è più perchè è scaduto il timeout del timer di trasmissione di un messaggio.
+- ```bool isMsgWaitState()```. Controlla se il ricevitore è nello stato di attesa di un messaggio 
+- ```bool isAckWaitState()```. Controlla se il trasmettitore è nello stato di attesa di un ack 
+
 **Protocollo ALOHA in ricezione pseudocodice:**
 
 ```C++
