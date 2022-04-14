@@ -3,7 +3,7 @@
 
 
 
-### RICEVITORE
+### **Codice completo del ricvitore**
 
 ```C++
 #define LC_INIT(lc)
@@ -410,7 +410,7 @@ void loop() // run over and over
 ```
 
 
-### TRASMETTITORE
+### **Codice completo del trasmettitore**
 
 ```C++
 #define LC_INIT(lc)
