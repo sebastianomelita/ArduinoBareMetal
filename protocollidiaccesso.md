@@ -51,9 +51,6 @@ Soluzione: **Backoff**
 ## **ALOHA**
 
 ### **Fasi ALOHA**
-
-Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione)
-
 Una **stazione trasmittente**:
 - al momento che ha una trama pronta, la invia senza aspettare.
 - Dopo l’invio aspetta per un certo tempo (detto **timeout**) lo scadere di un timer (detto **timer di trasmissione**).
