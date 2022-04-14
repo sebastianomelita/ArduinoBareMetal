@@ -45,6 +45,8 @@ La ```poll()``` modifica delle **variabili globali** con funzione di indicazione
 
 I **thread** rappresentano blocchi di codice la cui esecuzione si svolge in maniera **parallela** ed **indipendente** e, per uno stesso dispositivo fisico, sono essenzialmente **due**: un thread di **ricezione** ed un thread di **trasmissione**.
 
+**Arduino** non possiede capacità di multithreading reale di **tipo preemptive** (competitvo con prerilascio) realizzato in HW ciononostante è possibile realizzare in SW una schedulazione di **tipo non preemptive** (collaborativa senza prerilascio) utilizzando i **protothread**.
+
 ## **Ricevitore**
 
 **Protocollo ALOHA in ricezione pseudocodice:**
