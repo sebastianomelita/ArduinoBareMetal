@@ -3,7 +3,44 @@
 
 ![Alohasim](alohasim.jpg)
 
+### **Fasi ALOHA**
+
+Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione)
+
+Una **stazione trasmittente**:
+- al momento che ha una trama pronta, la invia senza aspettare.
+- Dopo l’invio aspetta per un certo tempo (detto **timeout**) lo scadere di un timer (detto **timer di trasmissione**).
+- Se essa riceve il messaggio di ack allora la trasmissione è avvenuta con successo.
+- Altrimenti la stazione usa una strategia di backoff e invia nuovamente il pachetto.
+- Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
+
+**Protocollo ALOHA in ricezione pseudocodice:**
+
+```C++
+While(true){
+	WaitUntil(dataFrameArrived());
+	if(!duplicate()){ 
+		deliver(frame) 
+	}
+	send(ack_frame);
+}
+
+```
+
 ## **Ricevitore**
+
+**Protocollo ALOHA in ricezione pseudocodice:**
+
+```C++
+While(true){
+	WaitUntil(dataFrameArrived());
+	if(!duplicate()){ 
+		deliver(frame) 
+	}
+	send(ack_frame);
+}
+
+```
 
 ### **Definizione del thread di ricezione messaggio**
 
@@ -27,6 +64,23 @@ int rcvThread(struct pt* pt) {
 ```
 
 ## **Trasmettitore**
+
+**Protocollo ALOHA in trasmissione in pseudocodice:**
+```C++
+N=1;
+while(N <= max){
+	send(data_frame);
+	waitUntil(ackOrTimeout());
+	if(ack_received){
+		exit while;
+	}else{
+		/* timeout scaduto: ritrasmissione*/
+		t=random();
+		wait(t);
+		N=N+1;
+}
+/* troppi tentativi: rinuncio a trasmette
+```
 
 ### **Definizione del thread di trasmissione messaggio**
 
