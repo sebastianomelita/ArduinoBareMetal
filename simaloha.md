@@ -1,6 +1,8 @@
 >[Torna all'indice](indexstatifiniti.md)
 ## **SIMULATORE PROTOCOLLO ALOHA PER ARDUINO E TINKERCAD**
 
+![Alohasim](alohasim.jpg)
+
 ## **Ricevitore**
 
 ### **Definizione del thread di ricezione messaggio**
