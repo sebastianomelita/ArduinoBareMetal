@@ -31,7 +31,7 @@ Gli eventi di input rilevanti che potrebbero essere valutati durante lo svolgime
 
 ### **Thread di ricezione e trasmissione**
 
-In realtà il pololling degli eventi è fatto all'interno di **un'unica funzione** chiamata ```poll()``` che viene periodicamente richiamata all'interno del **loop principale** del sistema:
+In realtà il **polling** degli eventi è fatto all'interno di **un'unica funzione** chiamata ```poll()``` che viene periodicamente richiamata all'interno del **loop principale** del sistema:
 
 ```C++
 void loop() 
