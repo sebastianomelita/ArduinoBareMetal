@@ -1,6 +1,83 @@
 >[Torna all'indice](indexstatifiniti.md)
 ## **SIMULATORE PROTOCOLLO ALOHA PER ARDUINO E TINKERCAD**
 
+## **Ricevitore**
+
+### **Definizione del thread di ricezione messaggio**
+
+```C++
+pt ptRcv;
+int rcvThread(struct pt* pt) {
+  PT_BEGIN(pt);
+  // Loop forever
+  while(true) {
+	digitalWrite(led, HIGH);
+	PT_SLEEP(pt, 50);
+	digitalWrite(led, LOW);
+	PT_SLEEP(pt, 50);	
+	PT_WAIT_UNTIL(pt, dataFrameArrived());
+	rcvEventCallback();
+	Serial.println("Premi il tasto per trasmettere un ack.");
+	PT_WAIT_UNTIL(pt, digitalRead(ackBtn));
+	sendAck();  
+  }
+  PT_END(pt);
+```
+
+## **Trasmettitore**
+
+### **Definizione del thread di ricezione ack**
+
+```C++
+pt ptRcv;
+int rcvThread(struct pt* pt) {
+  PT_BEGIN(pt);
+  // Loop forever
+  while(true) {
+	PT_WAIT_UNTIL(pt, dataFrameArrived());
+	rcvEventCallback();
+	sendAck();  
+  }
+  PT_END(pt);
+}
+```
+
+### **Definizione del thread di trasmissione messaggio**
+
+```C++
+pt ptSend;
+int sendThread(struct pt* pt) {
+  PT_BEGIN(pt);
+  // Loop forever
+  while(true) {
+	while(n < MAXATTEMPTS){
+		sendData(&txobj);
+		Serial.println("Attendo ack o timeout: ");
+		PT_WAIT_UNTIL(pt, ackOrTimeout());
+		if(ack_received()){
+			n = MAXATTEMPTS;
+			Serial.println("Ricevuto ack: ");
+		}else{
+			Serial.print("Timeout n: ");
+			Serial.print(n);
+			Serial.print(": ritrasmissione tra: ");
+			tt = getBackoff();
+			Serial.print((float) tt/1000);
+			Serial.println(" secondi");
+			/* timeout scaduto: ritrasmissione*/
+			PT_SLEEP(pt, tt);
+			Serial.print(" Ritrasmesso.");
+			n++;			
+		}
+	 }
+	 Serial.println("Premi il tasto per trasmettere un messaggio.");
+	 PT_WAIT_UNTIL(pt, digitalRead(txBtn));
+	 n = 0;
+  }
+  PT_END(pt);
+}
+
+```
 
 
 ### **Codice completo del ricevitore**
