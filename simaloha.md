@@ -3,7 +3,7 @@
 
 
 
-### **Codice completo del ricvitore**
+### **Codice completo del ricevitore**
 
 ```C++
 #define LC_INIT(lc)
