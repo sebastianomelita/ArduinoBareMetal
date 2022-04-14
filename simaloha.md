@@ -371,7 +371,6 @@ void printRxBuffer(uint8_t u8BufferSize)
 		Serial.flush();
         i ++;
     }
-    Serial.println();
 }
 
 void resetRxBuffer(uint8_t u8BufferSize)
@@ -670,7 +669,6 @@ void printRxBuffer(uint8_t u8BufferSize)
 		Serial.print("),");
         i ++;
     }
-    Serial.println();
 }
 
 // carica i campi della struct nella giusta posizione nel buffer 
