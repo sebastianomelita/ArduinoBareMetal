@@ -29,6 +29,22 @@ Gli eventi di input rilevanti che potrebbero essere valutati durante lo svolgime
 - ```bool isMsgWaitState()```. Controlla se il ricevitore è nello stato di attesa di un messaggio 
 - ```bool isAckWaitState()```. Controlla se il trasmettitore è nello stato di attesa di un ack 
 
+### **Thread di ricezione e trasmissione**
+
+In realtà il pololling degli eventi è fatto all'interno di **un'unica funzione** chiamata ```poll()``` che viene periodicamente richiamata all'interno del **loop principale** del sistema:
+
+```C++
+void loop() 
+{
+	poll(&rxobj);
+	.............
+}
+```
+
+La ```poll()``` modifica delle variabili globali con funzione di indicazione di evento dette flag (bandierine) specifiche per ogni evento che vengono valutate all'interno di ogni thread del sistema (i thread condividono sempre le variabili globali).
+
+I **thread** rappresentano blocchi di codice la cui esecuzione si svolge in maniera **parallela** ed **indipendente** e, per uno stesso dispositivo fisico, sono essenzialmente **due**: un thread di **ricezione** ed un thread di **trasmissione**.
+
 **Protocollo ALOHA in ricezione pseudocodice:**
 
 ```C++
