@@ -11,6 +11,12 @@ Una **stazione trasmittente**:
 - Altrimenti la stazione usa una strategia di backoff e invia nuovamente il pachetto.
 - Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
 
+### **Programmazione sequenziale**
+
+L'algoritmo è realizzato in maniera **sequenziale** nel tempo pianificando il **blocco** del flusso di esecuzione di parti del codice per un certo **tempo di attesa**. Il tempo di attesa potrebbe essere:
+- una quantità **stabilita a priori** dal valore di una costante, di una variabile o dal valore di una espressione e si può rappresentare, in linea di principio con l'istruzione Wait(t) che, nel caso di Arduino diventa delay(t) oppure nel caso dei protothread diventa PT_SLEEP(t). 
+- una **quantità non nota in anticipo** collegata al verificarsi di un **evento di input** proveniente dall'esterno come l'arrivo di un certo messaggio di controllo
+
 **Protocollo ALOHA in ricezione pseudocodice:**
 
 ```C++
@@ -115,6 +121,7 @@ int sendThread(struct pt* pt) {
 }
 
 ```
+
 
 
 ### **Codice completo del ricevitore**
