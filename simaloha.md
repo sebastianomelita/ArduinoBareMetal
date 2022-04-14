@@ -26,22 +26,6 @@ int rcvThread(struct pt* pt) {
 
 ## **Trasmettitore**
 
-### **Definizione del thread di ricezione ack**
-
-```C++
-pt ptRcv;
-int rcvThread(struct pt* pt) {
-  PT_BEGIN(pt);
-  // Loop forever
-  while(true) {
-	PT_WAIT_UNTIL(pt, dataFrameArrived());
-	rcvEventCallback();
-	sendAck();  
-  }
-  PT_END(pt);
-}
-```
-
 ### **Definizione del thread di trasmissione messaggio**
 
 ```C++
