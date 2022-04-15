@@ -8,7 +8,8 @@
 1) Premere il tasto codice in alto a destra per aprire la finestra del codice
 2) Premere il tasto monitor seriale in basso sulla finestra del codice
 3) Selezionare dal menu a tendina in alto a destra il dispositivo di cui si vuole vsualizzare il codice
-4) Osservare i messaggi di log nella finestra del monitor serial in basso a destra
+4) Avviare la simulazione con il tasto apposito in alto a destra
+5) Osservare i messaggi di log nella finestra del monitor serial in basso a destra
 
 <iframe width="725" height="453" src="https://www.tinkercad.com/embed/56c7MiYw2mc?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
 
