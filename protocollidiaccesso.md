@@ -121,7 +121,9 @@ while(N <= max){
 	if(ack_received){ 
 		exit while;
 	}else{
-		/* timeout scaduto: ritrasmissione*/ 	 		
+		/* timeout scaduto: ritrasmissione*/ 	
+		t=random()*WNDW*2^n;
+		wait(t);
 		N=N+1;
 	}
 }
