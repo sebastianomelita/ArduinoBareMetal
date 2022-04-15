@@ -15,7 +15,7 @@
 	- Se si osserva il **monitor dell'arduino N.2** si ritrova in output il log del **trasmettitore** che informa sull'arrivo di un nuovo messaggio dati e l'nvito a premere il pulsante **msgBtn** per inviare un **messaggio dati** al ricevitore.
 
 	 
-<iframe width="725" height="453" src="https://www.tinkercad.com/embed/56c7MiYw2mc?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+<iframe width="725" height="453" src="https://www.tinkercad.com/embed/56c7MiYw2mc?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="yes"></iframe>
 
 
 ### **Descrizione schema**
