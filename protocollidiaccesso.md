@@ -134,7 +134,6 @@ while(N <= max){
 /* troppi tentativi: rinuncio a trasmette
 /* troppi tentativi: rinuncio a trasmettere*/	
 ```
-```
 
 ### **Ritardo di propagazione**
 
