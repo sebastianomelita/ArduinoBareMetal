@@ -1,7 +1,7 @@
 >[Torna all'indice](indexstatifiniti.md)
 ## **SIMULATORE PROTOCOLLO ALOHA PER ARDUINO E TINKERCAD**
 
-![Alohasim](alohasim.jpg)
+![Alohasim](aloha.png)
 
 <iframe width="725" height="453" src="https://www.tinkercad.com/embed/56c7MiYw2mc?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
 
