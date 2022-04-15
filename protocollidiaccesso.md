@@ -131,7 +131,6 @@ while(N <= max){
 		N=N+1;
 	}
 }
-/* troppi tentativi: rinuncio a trasmette
 /* troppi tentativi: rinuncio a trasmettere*/	
 ```
 
