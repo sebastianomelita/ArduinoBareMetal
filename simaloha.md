@@ -11,8 +11,8 @@
 3) Selezionare dal menu a tendina in alto a destra il dispositivo di cui si vuole vsualizzare il codice
 4) Avviare la simulazione con il tasto apposito in alto a destra
 5) Osservare i messaggi di log nella finestra del monitor serial in basso a destra
-	- Se si osserva il **monitor dell'arduino N.1** si ritrova in output il log del **ricevitore** che informa sull'arrivo di un nuovo messaggio dati e l'nvito a premere il pulsante **ackBtn** per inviare un **messaggio di controllo di ack** al trasmettitore.
-	- Se si osserva il **monitor dell'arduino N.2** si ritrova in output il log del **trasmettitore** che informa sull'arrivo di un nuovo messaggio dati e l'nvito a premere il pulsante **msgBtn** per inviare un **messaggio dati** al ricevitore.
+	- Se si osserva il **monitor dell'arduino N.1** si ritrova in output il log del **ricevitore** che informa sull'arrivo di un nuovo messaggio dati e l'nvito a premere il pulsante **ackBtn** per inviare un nuovo **messaggio di controllo di ack** al trasmettitore.
+	- Se si osserva il **monitor dell'arduino N.2** si ritrova in output il log del **trasmettitore** che informa sull'arrivo di un nuovo messaggio dati e l'nvito a premere il pulsante **msgBtn** per inviare un nuovo **messaggio dati** al ricevitore.
 
 	 
 <iframe width="1000" height="625" src="https://www.tinkercad.com/embed/56c7MiYw2mc?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="yes"></iframe>
