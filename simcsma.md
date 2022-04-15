@@ -65,7 +65,7 @@ pay: 6-11 indica che il TX 2 ha inviato al RX 1 del gruppo 1 un messaggio 55 (da
 
 I **messaggi di controllo ack** hanno nel campo I il valore ACK (129) e hanno un BYTE_CNT sempre di 5. Il log Arrived: (:1),(:2),(:1),(:129),(:5),Ricevuto ack: indica che il TX 1 ha inviato al RX 2 del gruppo 1 un messaggio 129 (ack) di 5 byte complessivi sempre fissi.
 
-### **Fasi ALOHA**
+### **Fasi CSMA**
 Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione)
 Una stazione trasmittente: 
 - al momento che ha una trama pronta, aspetta finchè non “sente” il canale libero (cioè nessuno trasmette).
@@ -83,7 +83,7 @@ L'algoritmo è realizzato in maniera **sequenziale nel tempo**  pianificando il 
 
 In **entrambi i casi** il flusso di esecuzione rimane **in attesa** della valutazione periodica (**polling**) di un **flag** che rappresenta l'accadere di un evento, un timer preimpostato nel caso del ```Wait(t)```, l'arrivo di un messaggio nel caso del ```WaitUntil(pollingInput)```. 
 
-### **Eventi di input**
+### **Eventi di input** 
 
 Gli eventi di input rilevanti che potrebbero essere valutati durante lo svolgimento dell'algoritomo sono:
 
@@ -113,7 +113,7 @@ I **thread** rappresentano blocchi di codice la cui esecuzione si svolge in mani
 
 ## **Ricevitore**
 
-**Protocollo ALOHA in ricezione pseudocodice:**
+**Protocollo CSMA in ricezione pseudocodice:**
 
 ```C++
 While(true){
@@ -149,7 +149,7 @@ int rcvThread(struct pt* pt) {
 
 ## **Trasmettitore**
 
-**Protocollo ALOHA in trasmissione in pseudocodice:**
+**Protocollo CSMA in trasmissione in pseudocodice:**
 ```C++
 N=1;
 while(N <= max){
@@ -166,7 +166,6 @@ while(N <= max){
 	}
 }
 /* troppi tentativi: rinuncio a trasmettere*/	
-
 ```
 
 ### **Definizione del thread di trasmissione messaggio**
