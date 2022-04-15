@@ -3,6 +3,18 @@
 
 ![Alohasim](alohasim.jpg)
 
+### **Descrizione schema**
+
+Il **collegamento** tra i due dispositivi in realtà non avviene tramite un mezzo a BUS ma tramite un collegamento full duplex realizzato con i due link di una porta seriale.
+
+Però Aarduino Uno possiede **una sola** porta seriale UART che è utilizzata in genere per il **monitoring** del dispositivo cioè per l'invio di messaggi dal PC al dispositivo e per la ricezione sul PC di messaggi provenienti dal dispositivo.
+
+Si è quindi usata la libreria **SoftwareSerial** per **emulare** un collegamento seriale impiegando due **porte digitali** per la trasmissione nei due versi **uplink** e **downlink**.
+
+Un tasto **(Msg TxBtn)** sul trasmettitore abilita la **trasmissione di un messaggio** verso il ricevitore. 
+
+Un tasto **(Ack TxBtn)** sul ricevitore abilita la **trasmissione di un ack** verso il trasmettitore. La mancata ricezione dell'ack è interpretata dal trasmettitore come una valutazioe indiretta di collisione e quindi causa la ripetizione della trasmissione del messaggio.
+
 ### **Fasi ALOHA**
 Una **stazione trasmittente**:
 - al momento che ha una trama pronta, la invia senza aspettare.
