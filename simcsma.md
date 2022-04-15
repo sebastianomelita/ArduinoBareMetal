@@ -165,7 +165,7 @@ while(N <= max){
 		N=N+1;
 	}
 }
-/* troppi tentativi: rinuncio a trasmettere*/	
+/* troppi tentativi: rinuncio a trasmettere*/		
 ```
 
 ### **Definizione del thread di trasmissione messaggio**
