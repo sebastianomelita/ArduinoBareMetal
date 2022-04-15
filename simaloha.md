@@ -15,6 +15,8 @@ Un tasto **(Msg TxBtn)** sul trasmettitore abilita la **trasmissione di un messa
 
 Un tasto **(Ack TxBtn)** sul ricevitore abilita la **trasmissione di un ack** verso il trasmettitore. La mancata ricezione dell'ack è interpretata dal trasmettitore come una valutazioe indiretta di collisione e quindi causa la ripetizione della trasmissione del messaggio.
 
+Un **blink** su **un led** per ogni scheda indica l'avvenuta trasmissione del messaggio o dell'ack.
+
 ### **Fasi ALOHA**
 Una **stazione trasmittente**:
 - al momento che ha una trama pronta, la invia senza aspettare.
