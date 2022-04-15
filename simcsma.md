@@ -729,7 +729,7 @@ bool flags[3];// flags[ACKARRIVED], flags[MSGARRIVED], flags[TIMEOUTEVNT]
 char* rcvdata;
 telegram_t txobj, rxobj, ackobj;
 unsigned long prec=0;
-byte txBtn = 5;
+byte txBtn = 4;
 byte led=9; 
 long tt;
 
@@ -861,13 +861,18 @@ int8_t poll(telegram_t *rt)
 	// RECEIVE EVENT DETECTOR. Polling che controlla quanti caratteri del messaggio sono arrivati
 	// sulla coda di ricezione
 	u8current = port->available();
-	if(u8state == ACKWAIT){
+	
+	if (u8current == 0){ // nessun messaggio 
+		//allora valuta lo scadere del timer
+		if(u8state == ACKWAIT){
 			if(millis()-precAck > timeoutTime){
 				flags[TIMEOUTEVNT] = true;
-				//Serial.println("Timeout");
 			}
 		}
-	// ACK TIMER TIMEOUT DETECTOR
+		// rendi mutuamente esclusivo il blocco di codice
+		return 0;  // se non è arrivato nulla ricontrolla al prossimo giro
+	}
+	
 	if (u8current == 0){ // nessun messaggio 
 		//allora valuta lo scadere del timer
 		
