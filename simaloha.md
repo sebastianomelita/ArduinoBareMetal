@@ -3,6 +3,8 @@
 
 ![Alohasim](alohasim.jpg)
 
+<iframe width="725" height="453" src="https://www.tinkercad.com/embed/56c7MiYw2mc?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+
 ### **Descrizione schema**
 
 Il **collegamento** tra i due dispositivi in realtà non avviene tramite un mezzo a BUS ma tramite un collegamento full duplex realizzato con i due link di una porta seriale.
