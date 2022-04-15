@@ -157,7 +157,7 @@ while(N <= max){
 		exit while;
 	}else{
 		/* timeout scaduto: ritrasmissione*/
-		t=random();
+		t=random()*WNDW^n;
 		wait(t);
 		N=N+1;
 }
@@ -205,8 +205,15 @@ int sendThread(struct pt* pt) {
 }
 
 ```
+### **Backoff a finestra variabile**
 
+L'algoritmo ALOHA proposto utilizza un backoff a **finestra variabile** in cui la **finestra di trasmissione** aumenta esponenzialmente (con la potenza del 2) ad ogni incremento del **numero di tentativi** andati a vuoto. La finetra di trasmissione è detta anche **finestra di contesa** e rappresenta l'intervallo temporale in cui ogni stazione calcola individualmente un **tempo random** di accesso a partire dal quale cominciare a trasmettere.
 
+```C++
+long getBackoff(){
+	return random(0, WNDW*pow(2,n));
+}
+```
 
 ### **Codice completo del ricevitore**
 
