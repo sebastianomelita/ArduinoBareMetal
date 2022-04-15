@@ -974,7 +974,11 @@ int sendThread(struct pt* pt) {
 	 }
 	 Serial.println("Premi il tasto per trasmettere un messaggio.");
 	 PT_WAIT_UNTIL(pt, digitalRead(txBtn));
-	 n = 0;
+	 digitalWrite(led, HIGH);
+	 PT_SLEEP(pt, 50);
+	 digitalWrite(led, LOW);
+	 PT_SLEEP(pt, 50);	
+	 n = 0;  //azzera conteggio
   }
   PT_END(pt);
 }
