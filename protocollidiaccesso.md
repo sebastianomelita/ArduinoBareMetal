@@ -115,9 +115,6 @@ Una stazione trasmittente:
 ```C++
 N=1;
 while(N <= max){
-	send(data_frame);
-	waitUntil(ackOrTimeout());
-	if(ack_received){
 	waitUntil(channelFree()); 
 	send(data_frame); 	
 	waitUntil(ackOrTimeout()); 
