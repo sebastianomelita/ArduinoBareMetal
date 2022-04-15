@@ -179,6 +179,8 @@ int sendThread(struct pt* pt) {
   // Loop forever
   while(true) {
 	while(n < MAXATTEMPTS){
+		Serial.println("Attendo che si liberi il canale: ");
+		PT_WAIT_UNTIL(pt, channelFree()); 
 		sendData(&txobj);
 		Serial.println("Attendo ack o timeout: ");
 		PT_WAIT_UNTIL(pt, ackOrTimeout());
@@ -195,17 +197,16 @@ int sendThread(struct pt* pt) {
 			/* timeout scaduto: ritrasmissione*/
 			PT_SLEEP(pt, tt);
 			Serial.print(" Ritrasmesso.");
-			PT_WAIT_UNTIL(pt, digitalRead(txBtn));
-			digitalWrite(led, HIGH);
-			PT_SLEEP(pt, 50);
-			digitalWrite(led, LOW);
-			PT_SLEEP(pt, 50);	
-			n = 0;  //azzera conteggio			
+			n++;			
 		}
 	 }
 	 Serial.println("Premi il tasto per trasmettere un messaggio.");
 	 PT_WAIT_UNTIL(pt, digitalRead(txBtn));
-	 n = 0;
+	 digitalWrite(led, HIGH);
+	 PT_SLEEP(pt, 50);
+	 digitalWrite(led, LOW);
+	 PT_SLEEP(pt, 50);	
+	 n = 0;  //azzera conteggio
   }
   PT_END(pt);
 }
