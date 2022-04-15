@@ -17,6 +17,31 @@ Un tasto **(Ack TxBtn)** sul ricevitore abilita la **trasmissione di un ack** ve
 
 Un **blink** su **un led** per ogni scheda indica l'avvenuta trasmissione del messaggio o dell'ack.
 
+### **Formato dei messaggi**
+
+Il formato del messaggio è uniforme per messaggi di ack o dati ed è composto da 5 campi di lunghezza fissa di un byte più un sesto campo finale di lunghezza variabile che contiene il data da trasmettere.
+
+Il messaggio da trasmettere è memorizzato in una **coda di trasmissione** di 64 byte che viene svuotata e riutilizzata per ogni nuovo messaggio da trasmettere.
+
+Il messaggio ricevuto è memorizzato in una **coda di ricezione** di 64 byte che viene svuotata e riutilizzata per ogni nuovo messaggio ricevuto.
+
+Nella presente implementazione del protocollo Aloha le due code **coincidono** per non si possono ricevere un messaggio mentre se ne trasmette un'altro.
+
+I campi del messaggio sono:
+- DA   destination address position
+- SA  source address position
+- GROUP function code position
+- I, service identifier position
+- BYTE_CNT byte counter position
+- PAYLOAD 	start of data position
+
+I **messaggi dati** hanno nel campo I il valore MSG (55) e hanno un BYTE_CNT variabile maggiore di 5. 
+il log Arrived: (:2),(:1),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),
+pay: 6-11 indica che il TX 2 ha inviato al RX 1 del gruppo 1 un messaggio 55 (dati) che contiene la stringa "ciaop" ed avente 11 byte complessivi di cui 6 fissi.
+
+I **messaggi di controllo ack** hanno nel campo I il valore MSG (129) e hanno un BYTE_CNT sempre di 5. Il log Arrived: (:1),(:2),(:1),(:129),(:5),Ricevuto ack: indica che il TX 1 ha inviato al RX 2 del gruppo 1 un messaggio 129 (ack) di 5 byte complessivi sempre fissi.
+
+
 ### **Fasi ALOHA**
 Una **stazione trasmittente**:
 - al momento che ha una trama pronta, la invia senza aspettare.
