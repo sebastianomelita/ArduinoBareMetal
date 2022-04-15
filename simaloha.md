@@ -157,7 +157,7 @@ while(N <= max){
 		exit while;
 	}else{
 		/* timeout scaduto: ritrasmissione*/
-		t=random()*WNDW^n;
+		t=random()*WNDW*2^n;
 		wait(t);
 		N=N+1;
 }
