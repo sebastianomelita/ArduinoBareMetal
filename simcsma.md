@@ -153,19 +153,23 @@ int rcvThread(struct pt* pt) {
 ```C++
 N=1;
 while(N <= max){
+	send(data_frame);
+	waitUntil(ackOrTimeout());
+	if(ack_received){
 	waitUntil(channelFree()); 
 	send(data_frame); 	
 	waitUntil(ackOrTimeout()); 
 	if(ack_received){ 
 		exit while;
 	}else{
+		/* timeout scaduto: ritrasmissione*/
 		/* timeout scaduto: ritrasmissione*/ 	
 		t=random()*WNDW*2^n;
 		wait(t);
 		N=N+1;
 	}
 }
-/* troppi tentativi: rinuncio a trasmettere*/		
+/* troppi tentativi: rinuncio a trasmette	
 ```
 
 ### **Definizione del thread di trasmissione messaggio**
