@@ -66,11 +66,13 @@ pay: 6-11 indica che il TX 2 ha inviato al RX 1 del gruppo 1 un messaggio 55 (da
 I **messaggi di controllo ack** hanno nel campo I il valore ACK (129) e hanno un BYTE_CNT sempre di 5. Il log Arrived: (:1),(:2),(:1),(:129),(:5),Ricevuto ack: indica che il TX 1 ha inviato al RX 2 del gruppo 1 un messaggio 129 (ack) di 5 byte complessivi sempre fissi.
 
 ### **Fasi ALOHA**
-Una **stazione trasmittente**:
-- al momento che ha una trama pronta, la invia senza aspettare.
-- Dopo l’invio aspetta per un certo tempo (detto **timeout**) lo scadere di un timer (detto **timer di trasmissione**).
+Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione)
+Una stazione trasmittente: 
+- al momento che ha una trama pronta, aspetta finchè non “sente” il canale libero (cioè nessuno trasmette).
+- Appena essa rileva il canale libero invia immediatamente la trama.
+- Dopo l’invio aspetta per un certo tempo.
 - Se essa riceve il messaggio di ack allora la trasmissione è avvenuta con successo.
-- Altrimenti la stazione usa una strategia di backoff e invia nuovamente il pachetto.
+- Altrimenti la stazione usa una strategia di backoff e invia nuovamente il pachetto dopo un tempo casuale.
 - Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
 
 ### **Programmazione sequenziale**
@@ -151,17 +153,20 @@ int rcvThread(struct pt* pt) {
 ```C++
 N=1;
 while(N <= max){
-	send(data_frame);
-	waitUntil(ackOrTimeout());
-	if(ack_received){
+	waitUntil(channelFree()); 
+	send(data_frame); 	
+	waitUntil(ackOrTimeout()); 
+	if(ack_received){ 
 		exit while;
 	}else{
-		/* timeout scaduto: ritrasmissione*/
+		/* timeout scaduto: ritrasmissione*/ 	
 		t=random()*WNDW*2^n;
 		wait(t);
 		N=N+1;
+	}
 }
-/* troppi tentativi: rinuncio a trasmette
+/* troppi tentativi: rinuncio a trasmettere*/	
+
 ```
 
 ### **Definizione del thread di trasmissione messaggio**
