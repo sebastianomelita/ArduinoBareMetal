@@ -176,7 +176,12 @@ int sendThread(struct pt* pt) {
 			/* timeout scaduto: ritrasmissione*/
 			PT_SLEEP(pt, tt);
 			Serial.print(" Ritrasmesso.");
-			n++;			
+			PT_WAIT_UNTIL(pt, digitalRead(txBtn));
+			digitalWrite(led, HIGH);
+			PT_SLEEP(pt, 50);
+			digitalWrite(led, LOW);
+			PT_SLEEP(pt, 50);	
+			n = 0;  //azzera conteggio			
 		}
 	 }
 	 Serial.println("Premi il tasto per trasmettere un messaggio.");
