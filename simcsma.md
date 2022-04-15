@@ -150,12 +150,10 @@ int rcvThread(struct pt* pt) {
 ## **Trasmettitore**
 
 **Protocollo CSMA in trasmissione in pseudocodice:**
+
 ```C++
 N=1;
 while(N <= max){
-	send(data_frame);
-	waitUntil(ackOrTimeout());
-	if(ack_received){
 	waitUntil(channelFree()); 
 	send(data_frame); 	
 	waitUntil(ackOrTimeout()); 
@@ -169,7 +167,7 @@ while(N <= max){
 		N=N+1;
 	}
 }
-/* troppi tentativi: rinuncio a trasmette	
+/* troppi tentativi: rinuncio a trasmettere*/	
 ```
 
 ### **Definizione del thread di trasmissione messaggio**
