@@ -27,13 +27,13 @@ Il messaggio ricevuto è memorizzato in una **coda di ricezione** di 64 byte che
 
 Nella presente implementazione del protocollo Aloha le due code **coincidono** per non si possono ricevere un messaggio mentre se ne trasmette un'altro.
 
-I campi del messaggio sono:
-- DA   destination address position
-- SA  source address position
-- GROUP function code position
-- I, service identifier position
-- BYTE_CNT byte counter position
-- PAYLOAD 	start of data position
+I **campi** del messaggio sono:
+- ```DA```   destination address position
+- ```SA```  source address position
+- ```GROUP``` function code position
+- ```I``` service identifier position
+- ```BYTE_CNT``` byte counter position
+- ```PAYLOAD``` 	start of data position
 
 I **messaggi dati** hanno nel campo I il valore MSG (55) e hanno un BYTE_CNT variabile maggiore di 5. 
 il log Arrived: (:2),(:1),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),
