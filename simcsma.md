@@ -33,26 +33,24 @@ Si è quindi usata la libreria **SoftwareSerial** per **emulare** un collegament
 Premendo, in rapida succesione, entrambi i tasti **Tx1 Btn o Tx2 Btn** sui trasmettitori si abilita la **trasmissione di un messaggio** verso il ricevitore. Nella finestra di log si legge la catena di eventi innescata
 ```
 Premi il tasto per trasmettere un messaggio.
-Received: 
-(:1),(:2),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),
-msg destinato a me
-DA: 1
-SA mio: 1
-SI: 55
-Ricevuto:ciaop
+Attendo che si liberi il canale: 
 Transmitted: 
-(:2),(:1),(:1),(:129),(:5),(­:173),(¯:175),
-rcv:ack sent 
+(:1),(:2),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),(	:9),(Ë:203),
+Sent data: Attendo ack o timeout: 
+Received: 
+(:2),(:1),(:1),(:129),(:5),
+msg destinato a me
+DA: 2
+SA mio: 2
+SI: 129
+Ricevuto ack: 
+Premi il tasto per trasmettere un messaggio.
 Received: 
 (:1),(:3),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),
-msg destinato a me
-DA: 1
-SA mio: 1
-SI: 55
-Ricevuto:ciaop
-Transmitted: 
-(:3),(:1),(:1),(:129),(:5),(:144),(o:111),
-rcv:ack sent 
+msg NON destinato a me
+Received: 
+(:3),(:1),(:1),(:129),(:5),
+msg NON destinato a me
 ```
 
 ```
