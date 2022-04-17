@@ -161,6 +161,7 @@ In **entrambi i casi** il flusso di esecuzione rimane **in attesa** della valuta
 
 Gli eventi di input rilevanti che potrebbero essere valutati durante lo svolgimento dell'algoritomo sono:
 
+- ```bool channelFree()```. Controlla se il canale è occupato da un messaggio.
 - ```bool dataFrameArrived()```. Controlla se è arrivato un messaggio dati
 - ```bool ack_received()```. Controlla se è arrivato un messaggio di controllo di conferma (ack) di trasmissione avvenuta con successo.
 - ```bool ackOrTimeout()```. Controlla se i trasmettitore è in attesa della ricezione di un ack o se non lo è più perchè è scaduto il timeout del timer di trasmissione di un messaggio.
