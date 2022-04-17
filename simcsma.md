@@ -447,7 +447,7 @@ void sendAck(){
 	flags[MSGARRIVED] = false;
 	ackobj.u8si = ACK;
 	sendMsg(&ackobj); 
-	Serial.println("rcv:ack sent ");
+	Serial.println("receiver ack sent ");
 }
 
 bool sendData(telegram_t *tosend){
