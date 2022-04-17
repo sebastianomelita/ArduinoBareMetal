@@ -134,17 +134,12 @@ int rcvThread(struct pt* pt) {
   PT_BEGIN(pt);
   // Loop forever
   while(true) {
-	digitalWrite(led, HIGH);
-	PT_SLEEP(pt, 50);
-	digitalWrite(led, LOW);
-	PT_SLEEP(pt, 50);	
 	PT_WAIT_UNTIL(pt, dataFrameArrived());
 	rcvEventCallback();
-	Serial.println("Premi il tasto per trasmettere un ack.");
-	PT_WAIT_UNTIL(pt, digitalRead(ackBtn));
 	sendAck();  
   }
   PT_END(pt);
+}
 ```
 
 ## **Trasmettitore**
@@ -178,7 +173,14 @@ int sendThread(struct pt* pt) {
   PT_BEGIN(pt);
   // Loop forever
   while(true) {
-	while(n < MAXATTEMPTS){
+	 Serial.println("Premi il tasto per trasmettere un messaggio.");
+	 PT_WAIT_UNTIL(pt, digitalRead(txBtn));
+	 digitalWrite(led, HIGH);
+	 PT_SLEEP(pt, 50);
+	 digitalWrite(led, LOW);
+	 PT_SLEEP(pt, 50);	
+	 n = 0;  //azzera conteggio
+	 while(n < MAXATTEMPTS){
 		Serial.println("Attendo che si liberi il canale: ");
 		PT_WAIT_UNTIL(pt, channelFree()); 
 		sendData(&txobj);
@@ -200,17 +202,9 @@ int sendThread(struct pt* pt) {
 			n++;			
 		}
 	 }
-	 Serial.println("Premi il tasto per trasmettere un messaggio.");
-	 PT_WAIT_UNTIL(pt, digitalRead(txBtn));
-	 digitalWrite(led, HIGH);
-	 PT_SLEEP(pt, 50);
-	 digitalWrite(led, LOW);
-	 PT_SLEEP(pt, 50);	
-	 n = 0;  //azzera conteggio
   }
   PT_END(pt);
 }
-
 ```
 ### **Backoff a finestra variabile**
 
