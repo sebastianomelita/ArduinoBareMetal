@@ -557,7 +557,8 @@ int8_t poll(telegram_t *rt)
 	// alllora vuol dire che la trama è completa allora bufferizza
    	int8_t i8state = getRxBuffer();  
 	printRxBuffer(u8Buffer[ BYTE_CNT ]);
-    // INCOMPLETE MESSAGES DETECTOR. Se è palesemente incompleta scartala!
+        
+	// INCOMPLETE MESSAGES DETECTOR. Se è palesemente incompleta scartala!
    	if (i8state < PAYLOAD) 
 	{
 		// rendi mutuamente esclusivo il blocco di codice
@@ -568,7 +569,7 @@ int8_t poll(telegram_t *rt)
 		return i8state;
 	}
 	
-	 if (((u8Buffer[ DA ] == mysa) || ((u8Buffer[ GROUP ] == mygroup)) && (u8Buffer[ DA ] == 255))){	
+	if (((u8Buffer[ DA ] == mysa) || ((u8Buffer[ GROUP ] == mygroup)) && (u8Buffer[ DA ] == 255))){	
 		Serial.println("msg destinato a me");
 		Serial.print("DA: ");
 		Serial.println((uint8_t)u8Buffer[ DA ]);
@@ -582,7 +583,7 @@ int8_t poll(telegram_t *rt)
 	}
 	
 	// MSSAGE SELECTOR.
-    if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
+        if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
 		// prendi l'indirizzo di sorgente del messaggio ricevuto
 		// e fallo diventare indirizzo di destinazione del messaggio di ack
 		ackobj.u8da = u8Buffer[ SA ]; 
