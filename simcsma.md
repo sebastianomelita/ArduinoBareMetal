@@ -17,6 +17,7 @@
 
 Il **log** di un **generico dispositivo** informa sulla **presenza** sul BUS di eventuali messaggi e li mostra evidenziando i **valori dei campi** che lo costituiscono: Ciò accade a prescindere dal fatto che un messaggio sia destinato a quel dispositivo o meno, se è destinato a lui evidenzia l'evento con il log ```"msg destinato a me"```.
 
+
 	 
 <iframe width="1000" height="625" src="https://www.tinkercad.com/embed/6e029OFG4e4?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
 
