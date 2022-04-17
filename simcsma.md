@@ -23,10 +23,7 @@ Il **collegamento** tra i due dispositivi in avviene attraverso un mezzo a BUS r
 
 Il protocollo è il classico seriale RS232 realizzato in SW sulla stessa porta digitale di ogni dispositivo tramite la libreria **SoftwareSerial**. La libreria di base realizza un canale **full duplex** con due link su due porte, una di TX ed una di RX ma, in questo progetto, è stata adattata a funzionare in half duplex su un'unico link. La soluzione scelta per ottenere ciò è abbastanza semplice e consiste nel mantenere uno **stato di default** del link, che è quello di ricezione attivo quando nessuno trasmette, e nel commutare lo stato di quella stazione che deve trasmettere da RX a TX solo per il tempo necessario a completare la trasmissione del suo messaggio, subito dopo questa viene rimessa nella condizione di default.
 
-```C++
-#define rxPin 2
-#define txPin 3
-```
+### **Messaggi di log**
 
 Premendo, in rapida succesione, entrambi i tasti **Tx1 Btn o Tx2 Btn** sui trasmettitori si abilita la **trasmissione di un messaggio** verso il ricevitore. Nella finestra di log si legge la catena di eventi innescata
 ```
