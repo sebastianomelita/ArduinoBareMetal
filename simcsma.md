@@ -88,7 +88,7 @@ Il messaggio da trasmettere è memorizzato in una **coda di trasmissione** di 64
 
 Il messaggio ricevuto è memorizzato in una **coda di ricezione** di 64 byte che viene svuotata e riutilizzata per ogni nuovo messaggio ricevuto.
 
-Nella presente implementazione del protocollo Aloha le due code **coincidono** per non si possono ricevere un messaggio mentre se ne trasmette un'altro.
+Nella presente implementazione del protocollo CSMA le due code **coincidono** per non si possono ricevere un messaggio mentre se ne trasmette un'altro.
 
 I **campi** del messaggio sono:
 - ```DA```   destination address position
