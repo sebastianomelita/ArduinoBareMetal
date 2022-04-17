@@ -74,7 +74,7 @@ Transmitted:
 receiver ack sent 
 ```
 
-Un **blink** su **un led** per ogni scheda indica l'avvenuta trasmissione del messaggio o dell'ack.
+Un **blink** su **un led** per ogni scheda indica l'avvenuta trasmissione di un messaggio.
 
 ### **Formato dei messaggi**
 
