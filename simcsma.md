@@ -56,25 +56,27 @@ rcv:ack sent
 ```
 
 ```
-:1),(:2),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),
+Premi il tasto per trasmettere un messaggio.
+Received: 
+(:1),(:2),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),
 msg destinato a me
 DA: 1
 SA mio: 1
 SI: 55
 Ricevuto:ciaop
-
+Transmitted: 
 (:2),(:1),(:1),(:129),(:5),(­:173),(¯:175),
-rcv:ack sent 
-
+receiver ack sent 
+Received: 
 (:1),(:3),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),
 msg destinato a me
 DA: 1
 SA mio: 1
 SI: 55
 Ricevuto:ciaop
-
+Transmitted: 
 (:3),(:1),(:1),(:129),(:5),(:144),(o:111),
-rcv:ack sent 
+receiver ack sent 
 ```
 
 ![rxlog.png](rxlog.png)
