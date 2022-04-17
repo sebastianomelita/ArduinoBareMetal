@@ -217,6 +217,25 @@ long getBackoff(){
 
 ### **Codice completo di tutte le stazioni collegate al BUS**
 
+Il codice di seguito è comune a tutte le stazioni e possiede entrambe le funzioni di trasmissione e ricezione. Le stazioni sono dotate di indirizzo univoco che deve essere quindi diverso per tutte e deve essere impostato nel bloccao setup() del dispositivo
+
+**Ricevitore**
+
+```C++
+init(mySerial, dirPin, 1, 1, 0); // port485, txpin, mysa, mygroup4, speed=9600
+```
+**Trasmettitore 1**
+
+```C++
+init(mySerial, dirPin, 2, 1, 0); // port485, txpin, mysa, mygroup4, speed=9600
+```
+
+**Trasmettitore 2**
+
+```C++
+init(mySerial, dirPin, 3, 1, 0); // port485, txpin, mysa, mygroup4, speed=9600
+```
+
 ```C++
 #define LC_INIT(lc)
 struct pt { unsigned short lc; };
