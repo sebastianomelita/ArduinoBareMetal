@@ -110,7 +110,7 @@ Il **protocollo** di trasmisione utilizzato è di tipo **confermato** per cui pr
 
 La **corretta ricezione** è verificata **dal ricevitore** valutando il messaggio ricevuto **confrontando** una sua impronta (riassunto), calcolata **sul trasmettitore**, con un'improta analoga calcolata **nel ricevitore** a partire dalla copia ricevuta. Se le impronte **coincidono** la trasmissione è andata a buon fine e si invia l'ack al trasmetitore, se **non coincidono** l'ack non viene inviato e si aspetta una nuova copia.
 
-L'impronta viene inserita in un **campo particolare** del messaggio detto **FCS** (Frame Check Sequence) ed è calcolata genericamente con degli algoritmi di rilevazione e correzione di errore ciclici o **CRC** (Cyclic Redundancy Check). Normalmente il campo FCS è in coda al messaggio. Nel nostro caso è in **coda** e ha una **lunghezza di 2 byte**. La funzione che lo calcola è ripprtata di seguito:
+L'impronta viene inserita in un **campo particolare** del messaggio detto **FCS** (Frame Check Sequence) ed è calcolata genericamente con degli algoritmi di rilevazione e correzione di errore ciclici o **CRC** (Cyclic Redundancy Check). Normalmente il campo FCS è in coda al messaggio. Nel nostro caso è in **coda** e ha una **lunghezza di 2 byte**. La funzione che lo calcola è riportata di seguito:
 
 ```C++
 //lo calcola dal primo byte del messaggio (header compreso)
