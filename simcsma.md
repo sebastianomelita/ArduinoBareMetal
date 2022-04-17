@@ -77,8 +77,6 @@ Transmitted:
 receiver ack sent 
 ```
 
-![rxlog.png](rxlog.png)
-
 Un **blink** su **un led** per ogni scheda indica l'avvenuta trasmissione del messaggio o dell'ack.
 
 ### **Formato dei messaggi**
