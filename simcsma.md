@@ -1,7 +1,7 @@
 >[Torna all'indice](indexstatifiniti.md)
 ## **SIMULATORE PROTOCOLLO CSMA PER ARDUINO E TINKERCAD**
 
-![Aloha](Aloha.png)
+![csma](csma.png)
 
 ### **Utilizzo**
 
