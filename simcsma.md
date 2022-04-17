@@ -19,7 +19,7 @@
 
 ### **Descrizione schema**
 
-Il **collegamento** tra i due dispositivi in avviene attraverso un mezzo a BUS reale costituito da un collegamento di tipo **half duplex** realizzato dai 3 fili marroni che convergono sul nodo con etichetta **BUS node**. I 3 fili sono assimilabili ad **un'unico filo** che collega la porta 3 di ogni dispositivo. Tutti i dispositivi sono collegati elettricamente **in parallelo** con piedini corrispondenti (di porta e di GND) collegati insieme. 
+Il **collegamento** tra i due dispositivi in avviene attraverso un **mezzo a BUS reale** costituito da un collegamento di tipo **half duplex** realizzato dai 3 fili marroni che convergono sul nodo con etichetta **BUS node**. I 3 fili sono assimilabili ad **un'unico filo** che collega la porta 3 di ogni dispositivo. Tutti i dispositivi sono collegati elettricamente **in parallelo** con piedini corrispondenti (di porta e di GND) collegati insieme. 
 
 Il protocollo è il classico seriale RS232 realizzato in SW sulla stessa porta digitale di ogni dispositivo tramite la libreria **SoftwareSerial**. La libreria di base realizza un canale **full duplex** con due link su due porte, una di TX ed una di RX ma, in questo progetto, è stata adattata a funzionare in **half duplex su un'unico link**. La soluzione scelta per ottenere ciò è abbastanza semplice e consiste nel mantenere uno **stato di default** del link, che è quello di ricezione attivo quando nessuno trasmette, e nel commutare lo stato di quella stazione che deve trasmettere da RX a TX solo per il tempo necessario a completare la trasmissione del suo messaggio, subito dopo questa viene rimessa nella condizione di default.
 
