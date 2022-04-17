@@ -597,7 +597,7 @@ int8_t poll(telegram_t *rt)
    	int8_t i8state = getRxBuffer();
 	Serial.print("Received: ");
 	printRxBuffer(u8Buffer[ BYTE_CNT ]);
-    // INCOMPLETE MESSAGES DETECTOR. Se è palesemente incompleta scartala!
+        // INCOMPLETE MESSAGES DETECTOR. Se è palesemente incompleta scartala!
    	if (i8state < PAYLOAD) 
 	{
 		// rendi mutuamente esclusivo il blocco di codice
@@ -622,7 +622,7 @@ int8_t poll(telegram_t *rt)
 	}
 	
 	// MSSAGE SELECTOR.
-    if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
+        if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
 		// prendi l'indirizzo di sorgente del messaggio ricevuto
 		// e fallo diventare indirizzo di destinazione del messaggio di ack
 		ackobj.u8da = u8Buffer[ SA ]; 
