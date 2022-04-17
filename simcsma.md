@@ -30,11 +30,51 @@ Si è quindi usata la libreria **SoftwareSerial** per **emulare** un collegament
 #define txPin 3
 ```
 
-Un tasto **(Msg TxBtn)** sul trasmettitore abilita la **trasmissione di un messaggio** verso il ricevitore. 
+Du tasti **(Tx2 Btn)** sul trasmettitore abilita la **trasmissione di un messaggio** verso il ricevitore. 
 
-![txlog.png](txlog.png)
+Premi il tasto per trasmettere un messaggio.
 
-Un tasto **(Ack TxBtn)** sul ricevitore abilita la **trasmissione di un ack** verso il trasmettitore. La mancata ricezione dell'ack è interpretata dal trasmettitore come una valutazioe indiretta di collisione e quindi causa la ripetizione della trasmissione del messaggio.
+```
+(:1),(:2),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),
+msg NON destinato a me
+
+(:2),(:1),(:1),(:129),(:5),
+msg NON destinato a me
+Attendo che si liberi il canale: 
+
+(:1),(:3),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),(X:88),(:14),
+Sent data: Attendo ack o timeout: 
+
+(:3),(:1),(:1),(:129),(:5),
+msg destinato a me
+DA: 3
+SA mio: 3
+SI: 129
+Ricevuto ack: 
+Premi il tasto per trasmettere un messaggio.
+```
+
+```
+:1),(:2),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),
+msg destinato a me
+DA: 1
+SA mio: 1
+SI: 55
+Ricevuto:ciaop
+
+(:2),(:1),(:1),(:129),(:5),(­:173),(¯:175),
+rcv:ack sent 
+
+(:1),(:3),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),
+msg destinato a me
+DA: 1
+SA mio: 1
+SI: 55
+Ricevuto:ciaop
+
+(:3),(:1),(:1),(:129),(:5),(:144),(o:111),
+rcv:ack sent 
+```
 
 ![rxlog.png](rxlog.png)
 
