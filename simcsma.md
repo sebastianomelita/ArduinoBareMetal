@@ -654,8 +654,6 @@ int8_t getRxBuffer()
 			return ERR_BAD_CRC;
 		}
 	}
-	Serial.print("Size: ");
-	Serial.println((uint8_t)u8BufferSize);
     return app;
 }
 
