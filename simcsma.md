@@ -30,10 +30,7 @@ Si è quindi usata la libreria **SoftwareSerial** per **emulare** un collegament
 #define txPin 3
 ```
 
-Du tasti **(Tx2 Btn)** sul trasmettitore abilita la **trasmissione di un messaggio** verso il ricevitore. 
-
-Premi il tasto per trasmettere un messaggio.
-
+Premendo, in rapida succesione, entrambi i tasti **Tx1 Btn o Tx2 Btn** sui trasmettitori si abilita la **trasmissione di un messaggio** verso il ricevitore. Nella finestra di log si legge la catena di eventi innescata
 ```
 (:1),(:2),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),
 msg NON destinato a me
@@ -595,10 +592,10 @@ int8_t poll(telegram_t *rt)
 	}
 	// COPY TO RECEIVE BUFFER. Se non arrivano nuovi caratteri ma è passato il tempo di interframe
 	// alllora vuol dire che la trama è completa allora bufferizza
-   	int8_t i8state = getRxBuffer();  
+   	int8_t i8state = getRxBuffer();
+	Serial.print("Received: ");
 	printRxBuffer(u8Buffer[ BYTE_CNT ]);
-        
-	// INCOMPLETE MESSAGES DETECTOR. Se è palesemente incompleta scartala!
+    // INCOMPLETE MESSAGES DETECTOR. Se è palesemente incompleta scartala!
    	if (i8state < PAYLOAD) 
 	{
 		// rendi mutuamente esclusivo il blocco di codice
@@ -609,7 +606,7 @@ int8_t poll(telegram_t *rt)
 		return i8state;
 	}
 	
-	if (((u8Buffer[ DA ] == mysa) || ((u8Buffer[ GROUP ] == mygroup)) && (u8Buffer[ DA ] == 255))){	
+	 if (((u8Buffer[ DA ] == mysa) || ((u8Buffer[ GROUP ] == mygroup)) && (u8Buffer[ DA ] == 255))){	
 		Serial.println("msg destinato a me");
 		Serial.print("DA: ");
 		Serial.println((uint8_t)u8Buffer[ DA ]);
@@ -623,7 +620,7 @@ int8_t poll(telegram_t *rt)
 	}
 	
 	// MSSAGE SELECTOR.
-        if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
+    if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
 		// prendi l'indirizzo di sorgente del messaggio ricevuto
 		// e fallo diventare indirizzo di destinazione del messaggio di ack
 		ackobj.u8da = u8Buffer[ SA ]; 
@@ -651,10 +648,10 @@ void sendTxBuffer(uint8_t u8BufferSize){
 	mySerial = new SoftwareSerial( -1, swPin);  // does -1 disable the RX ? I'm not sure.
 	mySerial->begin(swSpeed);
 	uint16_t u16crc = calcCRC( u8BufferSize );
-    	u8Buffer[ u8BufferSize ] = u16crc >> 8;  //seleziona il byte più significativo
-    	u8BufferSize++;
-    	u8Buffer[ u8BufferSize ] = u16crc & 0x00ff; //seleziona il byte meno significativo
-    	u8BufferSize++;
+    u8Buffer[ u8BufferSize ] = u16crc >> 8;  //seleziona il byte più significativo
+    u8BufferSize++;
+    u8Buffer[ u8BufferSize ] = u16crc & 0x00ff; //seleziona il byte meno significativo
+    u8BufferSize++;
 	// transfer buffer to serial line
 	port->write( u8Buffer, u8BufferSize );
 	port->flush();
@@ -664,6 +661,7 @@ void sendTxBuffer(uint8_t u8BufferSize){
 	delete mySerial;    // remove the object
 	mySerial = new SoftwareSerial( swPin, -1);  // does -1 disable the RX ? I'm not sure.
 	mySerial->begin(swSpeed);
+	Serial.print("Transmitted: ");
 	printRxBuffer(u8BufferSize);
 }
 
