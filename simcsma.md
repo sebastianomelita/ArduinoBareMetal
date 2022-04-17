@@ -104,6 +104,41 @@ pay: 6-11 indica che il TX 2 ha inviato al RX 1 del gruppo 1 un messaggio 55 (da
 
 I **messaggi di controllo ack** hanno nel campo I il valore ACK (129) e hanno un BYTE_CNT sempre di 5. Il log Arrived: (:1),(:2),(:1),(:129),(:5),Ricevuto ack: indica che il TX 1 ha inviato al RX 2 del gruppo 1 un messaggio 129 (ack) di 5 byte complessivi sempre fissi.
 
+### **Calcolo CRC**
+
+Il **protocollo** di trasmisione utilizzato è di tipo **confermato** per cui prevede che un TX, contestualmente alla trasmissione di un messaggio, attivi un **timer di trasmissione** che misuri il tempo di arrivo del **messaggio di conferma** (ack) che deve essere inviato **dal ricevitore** del messaggio per certificare la sua **corretta ricezione**. Allo scadere di un tempo massimo impostato sul timer (timeout) il trasmettitore è costretto ad effettuare la **ritrasmissione** del messaggio non confremato, e lo farà per tutte le volte in cui scadrà il timeout del time di trasmissione fino ad un numero massimo di tentativi prestabilito (solitamente tra 7 e 10).
+
+La **corretta ricezione** è verificata **dal ricevitore** valutando il messaggio ricevuto **confrontando** una sua impronta (riassunto) calcolata **sul trasmettitore** con un'improta analoga calcolata **nel ricevitore** a partire dalla copia ricevuta. Se le impronte **coincidono** la trasmissione è andata a buon fine e si invia l'ack al trasmetitore, se **non coincidono** l'ack non viene inviato e si aspetta una nuova copia.
+
+L'impronta viene inserita in un **campo particolare** del messaggio detto **FCS** (Frame Check Sequence) ed è calcolata genericamente con degli algoritmi di rilevazione e correzione di errore ciclici o **CRC** (Cyclic Redundancy Check). Normalmente l campo è in coda al messaggio. Nel nostro caso è in **coda** e ha una **lunghezza di 2 byte**. La funzione che lo calcola è ripprtata di seguito:
+
+```C++
+//lo calcola dal primo byte del messaggio (header compreso)
+uint16_t calcCRC(uint8_t u8length)
+{
+    unsigned int temp, temp2, flag;
+    temp = 0xFFFF;
+    for (unsigned char i = 0; i < u8length; i++)
+    {
+        temp = temp ^ u8Buffer[i];
+        for (unsigned char j = 1; j <= 8; j++)
+        {
+            flag = temp & 0x0001;
+            temp >>=1;
+            if (flag)
+                temp ^= 0xA001;
+        }
+    }
+    // Reverse byte order.
+    temp2 = temp >> 8;
+    temp = (temp << 8) | temp2;
+    temp &= 0xFFFF;
+    // the returned value is already swapped
+    // crcLo byte is first & crcHi byte is last
+    return temp;
+}
+```
+
 ### **Fasi CSMA**
 Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione)
 Una stazione trasmittente: 
