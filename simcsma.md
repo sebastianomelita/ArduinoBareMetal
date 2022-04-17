@@ -650,10 +650,10 @@ void sendTxBuffer(uint8_t u8BufferSize){
 	mySerial = new SoftwareSerial( -1, swPin);  // does -1 disable the RX ? I'm not sure.
 	mySerial->begin(swSpeed);
 	uint16_t u16crc = calcCRC( u8BufferSize );
-    u8Buffer[ u8BufferSize ] = u16crc >> 8;  //seleziona il byte più significativo
-    u8BufferSize++;
-    u8Buffer[ u8BufferSize ] = u16crc & 0x00ff; //seleziona il byte meno significativo
-    u8BufferSize++;
+    	u8Buffer[ u8BufferSize ] = u16crc >> 8;  //seleziona il byte più significativo
+    	u8BufferSize++;
+   	u8Buffer[ u8BufferSize ] = u16crc & 0x00ff; //seleziona il byte meno significativo
+   	u8BufferSize++;
 	// transfer buffer to serial line
 	port->write( u8Buffer, u8BufferSize );
 	port->flush();
