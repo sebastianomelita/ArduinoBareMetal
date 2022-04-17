@@ -11,8 +11,11 @@
 3) Selezionare dal menu a tendina in alto a destra il dispositivo di cui si vuole vsualizzare il codice
 4) Avviare la simulazione con il tasto apposito in alto a destra
 5) Osservare i messaggi di log nella finestra del monitor serial in basso a destra
-	- Se si osserva il **monitor dell'arduino N.1** si ritrova in output il log del **ricevitore** che informa sull'arrivo di un nuovo messaggio dati e l'nvito a premere il pulsante **ackBtn** per inviare un nuovo **messaggio di controllo di ack** al trasmettitore.
-	- Se si osserva il **monitor dell'arduino N.2** si ritrova in output il log del **trasmettitore** che informa sull'arrivo di un nuovo messaggio dati e l'nvito a premere il pulsante **msgBtn** per inviare un nuovo **messaggio dati** al ricevitore.
+	- Se si osserva il **monitor dell'arduino N.1** si ritrova in output il log del **ricevitore** che informa sull'arrivo di un nuovo messaggio dati e l'nvio automatico di un nuovo **messaggio di controllo di ack** al trasmettitore.
+	- Se si osserva il **monitor dell'arduino N.2** si ritrova in output il log del **trasmettitore N1** che informa sull'arrivo di un nuovo messaggio dati e l'nvito a premere il pulsante **msgBtn** per inviare un nuovo **messaggio dati** al ricevitore.
+	- Se si osserva il **monitor dell'arduino N.3** si ritrova in output il log del **trasmettitore N2** che informa sull'arrivo di un nuovo messaggio dati e l'nvito a premere il pulsante **msgBtn** per inviare un nuovo **messaggio dati** al ricevitore.
+
+Il **log** di un **generico dispositivo** informa sulla **presenza** sul BUS di eventuali messaggi e li mostra evidenziando i **valori dei campi** che lo costituiscono: Ciò accade a prescindere dal fatto che un messaggio sia destinato a quel dispositivo o meno, se è destinato a lui evidenzia l'evento con il log ```"msg destinato a me"```.
 
 	 
 <iframe width="1000" height="625" src="https://www.tinkercad.com/embed/6e029OFG4e4?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
@@ -27,7 +30,8 @@ Il **collegamento** a BUS half duplex **realizzato** tramite un unico filo e la 
 
 ### **Messaggi di log**
 
-Premendo, in rapida succesione, entrambi i tasti **Tx1 Btn o Tx2 Btn** sui trasmettitori si abilita la **trasmissione di un messaggio** verso il ricevitore. Nella finestra di log si legge la catena di eventi innescata
+Premendo, in rapida succesione, entrambi i tasti **Tx1 Btn o Tx2 Btn** sui trasmettitori si abilita la **trasmissione di un messaggio** verso il ricevitore. Nella finestra di log si legge la catena di eventi innescata:
+
 ```
 Premi il tasto per trasmettere un messaggio.
 Attendo che si liberi il canale: 
