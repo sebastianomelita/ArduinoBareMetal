@@ -23,10 +23,6 @@ Il **collegamento** tra i due dispositivi in avviene attraverso un mezzo a BUS r
 
 Il protocollo è il classico seriale RS232 realizzato in SW sulla stessa porta digitale di ogni dispositivo tramite la libreria **SoftwareSerial**. La libreria di base realizza un canale **full duplex** con due link su due porte, una di TX ed una di RX ma, in questo progetto, è stata adattata a funzionare in half duplex su un'unico link. La soluzione scelta per ottenere ciò è abbastanza semplice e consiste nel mantenere uno **stato di default** del link, che è quello di ricezione attivo quando nessuno trasmette, e nel commutare lo stato di quella stazione che deve trasmettere da RX a TX solo per il tempo necessario a completare la trasmissione del suo messaggio, subito dopo questa viene rimessa nella condizione di default.
 
-Arduino Uno però possiede **una sola** porta seriale UART che è utilizzata in genere per il **monitoring** del dispositivo cioè per l'invio di messaggi dal PC al dispositivo e per la ricezione sul PC di messaggi provenienti dal dispositivo.
-
-Si è quindi usata la libreria **SoftwareSerial** per **emulare** un collegamento seriale tra **due dispositivi**  impiegando due **porte digitali** per la trasmissione nei due versi **uplink** e **downlink** impostate tramite:
-
 ```C++
 #define rxPin 2
 #define txPin 3
