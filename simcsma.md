@@ -33,6 +33,7 @@ Il **collegamento** a BUS half duplex **realizzato** tramite un unico filo e la 
 
 Premendo, in rapida succesione, entrambi i tasti **Tx1 Btn o Tx2 Btn** sui trasmettitori si abilita la **trasmissione di un messaggio** verso il ricevitore. Nella finestra di log si legge la catena di eventi innescata:
 
+**Log ad un trasmettitore**
 ```
 Premi il tasto per trasmettere un messaggio.
 Attendo che si liberi il canale: 
@@ -55,6 +56,7 @@ Received:
 msg NON destinato a me
 ```
 
+**Log al ricevitore**
 ```
 Premi il tasto per trasmettere un messaggio.
 Received: 
