@@ -259,22 +259,23 @@ int sendThread(struct pt* pt) {
 	 while(n < MAXATTEMPTS){
 		Serial.println("Attendo che si liberi il canale: ");
 		PT_WAIT_UNTIL(pt, channelFree()); 
+		PT_SLEEP(pt, DIFS);	
+		Serial.print("Timeout n: ");
+		Serial.print(n);
+		Serial.print(": ritrasmissione tra: ");
+		tt = getBackoff();
+		Serial.print((float) tt/1000);
+		Serial.println(" secondi");
+		PT_WAIT_UNTIL(pt, channelFreeDuringBackoff());
 		sendData(&txobj);
+		Serial.print(" Ritrasmesso.");
 		Serial.println("Attendo ack o timeout: ");
 		PT_WAIT_UNTIL(pt, ackOrTimeout());
 		if(ack_received()){
 			n = MAXATTEMPTS;
 			Serial.println("Ricevuto ack: ");
 		}else{
-			Serial.print("Timeout n: ");
-			Serial.print(n);
-			Serial.print(": ritrasmissione tra: ");
-			tt = getBackoff();
-			Serial.print((float) tt/1000);
-			Serial.println(" secondi");
-			/* timeout scaduto: ritrasmissione*/
-			PT_SLEEP(pt, tt);
-			Serial.print(" Ritrasmesso.");
+			/* timeout scaduto: si ritrasmette*/
 			n++;			
 		}
 	 }
