@@ -35,6 +35,7 @@ Il **collegamento** a BUS half duplex **realizzato** tramite un unico filo e la 
 Premendo, in rapida succesione, entrambi i tasti **Tx1 Btn o Tx2 Btn** sui trasmettitori si abilita la **trasmissione di un messaggio** verso il ricevitore. Nella finestra di log si legge la catena di eventi innescata:
 
 ** Log al dispositivo trasmettitore**
+
 ```
 Attendo che si liberi il canale: 
 Timeout n: 0: ritrasmissione tra: 1.36 secondi
@@ -56,7 +57,9 @@ SI: 129
 Ricevuto ack: 
 Premi il tasto per trasmettere un messaggio.
 ```
+
 ** Log al dispositivo ricevitore**
+
 ```
 Premi il tasto per trasmettere un messaggio.
 Received: 
