@@ -154,6 +154,7 @@ SIFS < DIFS < EIFS
 Nelle applicazioni su filo il tempo EIFS non ha molto senso perchè è altamente improbabile che una stazione riceva corettamente un messaggio mentre un'altra no (non esiste il fenomeno della stazione nascosta). Nel nostro algoritmo implementeremo esplicitamente **solamente il DIFS** e, implicitamente, il SIFS.
 
 ### **Fasi CSMA**
+
 Una **stazione ricevente**:
 1. Aspetta l’arrivo di una nuova trama
 2. Controlla se è una trama duplicate, cioè gia ricevuta
@@ -162,6 +163,11 @@ se non lo è la consegna al livello superiore e **non esegue** i passi successiv
 4. Aspetta un SIFS
 5. Invia una trama di ack
 
+Una **stazione trasmittente**:
+- Se la trama precedentemente ricevuta era corrotta prima di trasmettere, aspetta un tempo EIFS 
+- Altrimenti se la stazione sente il canale occupato aspetta **finchè è libero**, da quel momento in poi, **aspetta un tempo DIFS** 
+- Trascorso il DIFS invia immediatamente la trama
+- Aspetta l’**arrivo di un ack**, se non arriva in tempo, allo s**cadere di un timeout**, avvia la **ritrasmissione** della stessa trama.
 
 ### **Programmazione sequenziale**
 
