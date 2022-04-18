@@ -1,5 +1,5 @@
 >[Torna all'indice](indexstatifiniti.md)
-## **SIMULATORE PROTOCOLLO CSMA PER ARDUINO E TINKERCAD**
+## **SIMULATORE PROTOCOLLO CSMA/CA PER ARDUINO E TINKERCAD**
 
 ![csma](csma.png)
 
