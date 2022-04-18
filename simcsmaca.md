@@ -140,6 +140,19 @@ uint16_t calcCRC(uint8_t u8length)
 }
 ```
 
+### **CSMA**
+Miglioramento del CSMA grazie all’introduzione degli **IFS (interframe space)**:
+- Ritardo iniziale di trasmissione (**EIFS**). Usato al posto di DIFS dalle stazioni che hanno ricevuto un frame incomprensibile.
+- Short Inter Frame Space (**SIFS**): ritardo tra una trama e l’invio del suo ack. È il tempo minimo per consentire ai dispositivi HW di commutare dallo stato di ricezione a qello di trasmissione.
+- Distributed Inter Frame Space (**DIFS**): **ritardo minimo tra due trame successive** in trasmissione. ```DIFS =  SIFS  + (2 * Slot time)```. Serve a proteggere la trasmissione di un ack da eventuali  collisioni
+- ```SlotTime è il tempo per percorrere il tragitto tra due stazioni poste agli estremi più remoti della cella radio.
+
+Vale la disuguaglianza:   
+```C++
+SIFS < DIFS < EIFS
+```
+Nelle applicazioni su filo il tempo EIFS non ha molto senso perchè è altamente improbabile che una stazione riceva corettamente un messaggio mentre un'altra no (non esiste il fenomeno della stazione nascosta). Nel nostro algoritmo implemeteremo **solamente il DIFS** e, implicitamente, il SIFS.
+
 ### **Fasi CSMA**
 Una **stazione ricevente**:
 1. Aspetta l’arrivo di una nuova trama
@@ -148,6 +161,7 @@ Una **stazione ricevente**:
 se non lo è la consegna al livello superiore e **non esegue** i passi successivi
 4. Aspetta un SIFS
 5. Invia una trama di ack
+
 
 ### **Programmazione sequenziale**
 
@@ -225,20 +239,26 @@ int rcvThread(struct pt* pt) {
 ```C++
 N=1;
 while(N <= max){
-	waitUntil(channelFree()); 
-	send(data_frame); 	
-	waitUntil(ackOrTimeout()); 
-	if(ack_received){ 
-		exit while;
-	}else{
-		/* timeout scaduto: ritrasmissione*/
-		/* timeout scaduto: ritrasmissione*/ 	
-		t=random()*WNDW*2^n;
-		wait(t);
-		N=N+1;
+	waitUntil(channelFree());
+	if(receivedCorruped())
+	{ 
+	 	wait(EIFS);
+	}else
+	{ 
+	 	wait(DIFS);
+	}
+	backoff_time = int(random[0,min(255,7*2N-1)])*T;
+        waitUntil(channelFreeDuringBackoff());
+	send(data_frame);
+        waitUntil(ackOrTimeout());
+	if(ack_received){
+		 exit while;
+	}else{ 
+		 /* timeout scaduto: si ritrasmette*/
+		 N=N+1; 
 	}
 }
-/* troppi tentativi: rinuncio a trasmettere*/	
+/* troppi tentativi: rinuncio!*/ 
 ```
 
 ### **Definizione del thread di trasmissione messaggio**
