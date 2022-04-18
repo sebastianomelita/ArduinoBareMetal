@@ -141,14 +141,13 @@ uint16_t calcCRC(uint8_t u8length)
 ```
 
 ### **Fasi CSMA**
-Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione)
-Una stazione trasmittente: 
-- al momento che ha una trama pronta, aspetta finchè non “sente” il canale libero (cioè nessuno trasmette).
-- Appena essa rileva il canale libero invia immediatamente la trama.
-- Dopo l’invio aspetta per un certo tempo.
-- Se essa riceve il messaggio di ack allora la trasmissione è avvenuta con successo.
-- Altrimenti la stazione usa una strategia di backoff e invia nuovamente il pachetto dopo un tempo casuale.
-- Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
+Una **stazione ricevente**:
+1. Aspetta l’arrivo di una nuova trama
+2. Controlla se è una trama duplicate, cioè gia ricevuta
+3. Controlla il **CRC della trama** per verificare se è stata **ricevuta correttamente**
+se non lo è la consegna al livello superiore e **non esegue** i passi successivi
+4. Aspetta un SIFS
+5. Invia una trama di ack
 
 ### **Programmazione sequenziale**
 
