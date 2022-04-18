@@ -20,6 +20,8 @@ Il **log** di un **generico dispositivo** informa sulla **presenza** sul BUS di 
 
 	 
 <iframe width="1000" height="625" src="https://www.tinkercad.com/embed/gNK4e4BLEjp?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+
+
 ### **Descrizione schema**
 
 Il **collegamento** tra i due dispositivi in avviene attraverso un **mezzo a BUS reale** costituito da un collegamento di tipo **half duplex** realizzato dai 3 fili marroni che convergono sul nodo con etichetta **BUS node**. I 3 fili sono assimilabili ad **un'unico filo** che collega la porta 3 di ogni dispositivo. Tutti i dispositivi sono collegati elettricamente **in parallelo** con piedini corrispondenti (di porta e di GND) collegati insieme. 
