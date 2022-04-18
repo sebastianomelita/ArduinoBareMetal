@@ -34,28 +34,29 @@ Il **collegamento** a BUS half duplex **realizzato** tramite un unico filo e la 
 
 Premendo, in rapida succesione, entrambi i tasti **Tx1 Btn o Tx2 Btn** sui trasmettitori si abilita la **trasmissione di un messaggio** verso il ricevitore. Nella finestra di log si legge la catena di eventi innescata:
 
+** Log al dispositivo trasmettitore**
 ```
-Premi il tasto per trasmettere un messaggio.
 Attendo che si liberi il canale: 
-Transmitted: 
-(:1),(:2),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),(	:9),(Ë:203),
-Sent data: Attendo ack o timeout: 
+Timeout n: 0: ritrasmissione tra: 1.36 secondi
+Received: 
+(:1),(:2),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),
+msg NON destinato a me
 Received: 
 (:2),(:1),(:1),(:129),(:5),
+msg NON destinato a me
+Transmitted: 
+(:1),(:3),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),(X:88),(:14),
+Sent data:  Ritrasmesso.Attendo ack o timeout: 
+Received: 
+(:3),(:1),(:1),(:129),(:5),
 msg destinato a me
-DA: 2
-SA mio: 2
+DA: 3
+SA mio: 3
 SI: 129
 Ricevuto ack: 
 Premi il tasto per trasmettere un messaggio.
-Received: 
-(:1),(:3),(:1),(7:55),(:11),(c:99),(i:105),(a:97),(o:111),(p:112),(:0),
-msg NON destinato a me
-Received: 
-(:3),(:1),(:1),(:129),(:5),
-msg NON destinato a me
 ```
-
+** Log al dispositivo ricevitore**
 ```
 Premi il tasto per trasmettere un messaggio.
 Received: 
