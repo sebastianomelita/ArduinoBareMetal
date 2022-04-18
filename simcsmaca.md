@@ -169,6 +169,8 @@ Una **stazione trasmittente**:
 - Trascorso il DIFS invia immediatamente la trama
 - Aspetta l’**arrivo di un ack**, se non arriva in tempo, allo s**cadere di un timeout**, avvia la **ritrasmissione** della stessa trama.
 
+<img src="esempio.png" alt="alt # **text" width="800">
+
 ### **Programmazione sequenziale**
 
 L'algoritmo è realizzato in maniera **sequenziale nel tempo**  pianificando il **blocco** del flusso di esecuzione di parti del codice per un certo **tempo di attesa**. Il tempo di attesa potrebbe essere:
