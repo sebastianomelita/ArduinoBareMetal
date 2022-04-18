@@ -139,7 +139,7 @@ uint16_t calcCRC(uint8_t u8length)
 }
 ```
 
-### **CSMA**
+### **CSMA/CA**
 Miglioramento del CSMA grazie all’introduzione degli **IFS (interframe space)**:
 - Ritardo iniziale di trasmissione (**EIFS**). Usato al posto di DIFS dalle stazioni che hanno ricevuto un frame incomprensibile.
 - Short Inter Frame Space (**SIFS**): ritardo tra una trama e l’invio del suo ack. È il tempo minimo per consentire ai dispositivi HW di commutare dallo stato di ricezione a qello di trasmissione.
