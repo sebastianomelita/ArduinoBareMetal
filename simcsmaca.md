@@ -151,7 +151,7 @@ Vale la disuguaglianza:
 ```C++
 SIFS < DIFS < EIFS
 ```
-Nelle applicazioni su filo il tempo EIFS non ha molto senso perchè è altamente improbabile che una stazione riceva corettamente un messaggio mentre un'altra no (non esiste il fenomeno della stazione nascosta). Nel nostro algoritmo implemeteremo **solamente il DIFS** e, implicitamente, il SIFS.
+Nelle applicazioni su filo il tempo EIFS non ha molto senso perchè è altamente improbabile che una stazione riceva corettamente un messaggio mentre un'altra no (non esiste il fenomeno della stazione nascosta). Nel nostro algoritmo implementeremo esplicitamente **solamente il DIFS** e, implicitamente, il SIFS.
 
 ### **Fasi CSMA**
 Una **stazione ricevente**:
