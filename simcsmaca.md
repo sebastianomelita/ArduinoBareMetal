@@ -378,6 +378,8 @@ struct pt { unsigned short lc; };
 #define MAXATTEMPTS  	5
 #define WNDW    		2000
 #define TXTIMEOUT 		2000
+#define DIFS 			20
+#define EIFS 			40
 
 #include <SoftwareSerial.h>
 #define swPin 3
@@ -429,7 +431,8 @@ enum FLAGS
     ACKARRIVED             	= 0,
     MSGARRIVED              = 1,
 	TIMEOUTEVNT             = 2,
-	CHANNELFREE             = 3
+	CHANNELFREE             = 3,
+	BACKELAPSED             = 4
 };
 
 enum ERR_LIST
@@ -447,9 +450,12 @@ uint8_t mysa;
 uint8_t mygroup;
 uint8_t u8state = MSGWAIT;
 unsigned long precAck=0;
+unsigned long precBack=0;
 unsigned long timeoutTime=TXTIMEOUT;
 Stream *port;
-bool flags[4];// flags[ACKARRIVED], flags[MSGARRIVED], flags[TIMEOUTEVNT]
+bool flags[5];// flags[ACKARRIVED], flags[MSGARRIVED], flags[CHANNELFREE], flags[TIMEOUTEVNT], flags[BACKELAPSED]
+bool isbackoff = false;
+bool backFreezed = false;
 
 char* rcvdata;
 telegram_t txobj, rxobj, ackobj;
@@ -492,7 +498,13 @@ bool channelFree(){
 	return flags[CHANNELFREE];
 }
 
+bool channelFreeDuringBackoff(){
+	return flags[BACKELAPSED];
+}
+
 long getBackoff(){
+	precBack = millis();
+	isbackoff = true;
 	return random(0, WNDW*pow(2,n));
 }
 
@@ -530,6 +542,7 @@ bool sendData(telegram_t *tosend){
 	precAck = millis();
 	flags[ACKARRIVED] = false;
 	flags[TIMEOUTEVNT] = false;
+	flags[BACKELAPSED] = false;
 	Serial.print("Sent data: ");
 	return sent;
 }
@@ -633,7 +646,7 @@ int8_t poll(telegram_t *rt)
 	// sulla coda di ricezione
 	u8current = port->available();
 
-	if (u8current == 0){ // nessun messaggio 
+	if (u8current == 0){ // nessun messaggio (canale libero)
 		flags[CHANNELFREE]=true;
 		//allora valuta lo scadere del timer
 		if(u8state == ACKWAIT){
@@ -641,10 +654,22 @@ int8_t poll(telegram_t *rt)
 				flags[TIMEOUTEVNT] = true;
 			}
 		}
+		if(isbackoff == true){
+			if(backFreezed){
+				precBack = millis();
+				backFreezed = false;
+			}
+			if(millis()-precBack > tt){
+				flags[BACKELAPSED] = true;
+				isbackoff = false;
+			}
+		}
+		//la trasmissione di un'altra stazione potrebbe anche essere destinata alla stazione stessa per cui il backoff potrebbe anche essere interrotto dalla ricezione di un messaggio.
 		// rendi mutuamente esclusivo il blocco di codice
 		return 0;  // se non è arrivato nulla ricontrolla al prossimo giro
 	}
-
+	
+	backFreezed = true;
 	flags[CHANNELFREE]=false;
 	
 	// RESET STOP BIT TIMER. Se arrivano nuovi caratteri rimani in ascolto
@@ -668,7 +693,7 @@ int8_t poll(telegram_t *rt)
    	int8_t i8state = getRxBuffer();
 	Serial.print("Received: ");
 	printRxBuffer(u8Buffer[ BYTE_CNT ]);
-        // INCOMPLETE MESSAGES DETECTOR. Se è palesemente incompleta scartala!
+    // INCOMPLETE MESSAGES DETECTOR. Se è palesemente incompleta scartala!
    	if (i8state < PAYLOAD) 
 	{
 		// rendi mutuamente esclusivo il blocco di codice
@@ -693,7 +718,7 @@ int8_t poll(telegram_t *rt)
 	}
 	
 	// MSSAGE SELECTOR.
-        if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
+    if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
 		// prendi l'indirizzo di sorgente del messaggio ricevuto
 		// e fallo diventare indirizzo di destinazione del messaggio di ack
 		ackobj.u8da = u8Buffer[ SA ]; 
@@ -721,10 +746,10 @@ void sendTxBuffer(uint8_t u8BufferSize){
 	mySerial = new SoftwareSerial( -1, swPin);  // does -1 disable the RX ? I'm not sure.
 	mySerial->begin(swSpeed);
 	uint16_t u16crc = calcCRC( u8BufferSize );
-    	u8Buffer[ u8BufferSize ] = u16crc >> 8;  //seleziona il byte più significativo
-    	u8BufferSize++;
-   	u8Buffer[ u8BufferSize ] = u16crc & 0x00ff; //seleziona il byte meno significativo
-   	u8BufferSize++;
+    u8Buffer[ u8BufferSize ] = u16crc >> 8;  //seleziona il byte più significativo
+    u8BufferSize++;
+    u8Buffer[ u8BufferSize ] = u16crc & 0x00ff; //seleziona il byte meno significativo
+    u8BufferSize++;
 	// transfer buffer to serial line
 	port->write( u8Buffer, u8BufferSize );
 	port->flush();
@@ -811,22 +836,23 @@ int sendThread(struct pt* pt) {
 	 while(n < MAXATTEMPTS){
 		Serial.println("Attendo che si liberi il canale: ");
 		PT_WAIT_UNTIL(pt, channelFree()); 
+		PT_SLEEP(pt, DIFS);	
+		Serial.print("Timeout n: ");
+		Serial.print(n);
+		Serial.print(": ritrasmissione tra: ");
+		tt = getBackoff();
+		Serial.print((float) tt/1000);
+		Serial.println(" secondi");
+		PT_WAIT_UNTIL(pt, channelFreeDuringBackoff());
 		sendData(&txobj);
+		Serial.print(" Ritrasmesso.");
 		Serial.println("Attendo ack o timeout: ");
 		PT_WAIT_UNTIL(pt, ackOrTimeout());
 		if(ack_received()){
 			n = MAXATTEMPTS;
 			Serial.println("Ricevuto ack: ");
 		}else{
-			Serial.print("Timeout n: ");
-			Serial.print(n);
-			Serial.print(": ritrasmissione tra: ");
-			tt = getBackoff();
-			Serial.print((float) tt/1000);
-			Serial.println(" secondi");
-			/* timeout scaduto: ritrasmissione*/
-			PT_SLEEP(pt, tt);
-			Serial.print(" Ritrasmesso.");
+			/* timeout scaduto: si ritrasmette*/
 			n++;			
 		}
 	 }
