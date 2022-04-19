@@ -428,11 +428,11 @@ enum PROTO_STATE
 };
 enum FLAGS
 {
-    ACKARRIVED             	= 0,
+    ACKARRIVED              = 0,
     MSGARRIVED              = 1,
-	TIMEOUTEVNT             = 2,
-	CHANNELFREE             = 3,
-	BACKELAPSED             = 4
+    TIMEOUTEVNT             = 2,
+    CHANNELFREE             = 3,
+    BACKELAPSED             = 4
 };
 
 enum ERR_LIST
