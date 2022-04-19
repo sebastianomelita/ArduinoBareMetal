@@ -613,10 +613,10 @@ uint16_t calcCRC(uint8_t u8length)
 }
 
 bool checkCRC(uint8_t u8BufferSize){
-	bool ok = true;
+    bool ok = true;
 	
-	// gli ultimi due byte del messaggio sono il CRC calcolato dal Tx
-	// confonta il CRC ricevuto dal Tx con quello calcolato in locale
+    // gli ultimi due byte del messaggio sono il CRC calcolato dal Tx
+    // confonta il CRC ricevuto dal Tx con quello calcolato in locale
     uint16_t u16MsgCRC = // etraggo il CRC del Tx dal messaggio
         ((u8Buffer[u8BufferSize - 2] << 8)
          | u8Buffer[u8BufferSize - 1]); // combine the crc Low & High bytes
