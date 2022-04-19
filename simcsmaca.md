@@ -546,6 +546,7 @@ bool sendData(telegram_t *tosend){
 	Serial.print("Sent data: ");
 	return sent;
 }
+
 //invia un messaggio in formato "parallelo" sotto forma di struct 
 // sull'uscita seriale
 void sendMsg(telegram_t *tosend){
