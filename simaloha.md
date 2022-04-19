@@ -296,9 +296,9 @@ enum PROTO_STATE
 };
 enum FLAGS
 {
-    ACKARRIVED             	= 0,
+    ACKARRIVED              = 0,
     MSGARRIVED              = 1,
-	TIMEOUTEVNT             = 2
+    TIMEOUTEVNT             = 2
 };
 
 uint8_t u8Buffer[MAX_BUFFER]; // buffer unico condiviso per TX e RX (da usare alternativamente)
@@ -499,35 +499,35 @@ int8_t poll(telegram_t *rt)
 }
 
 void sendTxBuffer(uint8_t u8BufferSize){
-	 // transfer buffer to serial line
+    // transfer buffer to serial line
     port->write( u8Buffer, u8BufferSize );
-	port->flush();
-	while(port->read() >= 0);
+    port->flush();
+    while(port->read() >= 0);
 }
 
 void printRxBuffer(uint8_t u8BufferSize)
 {
-	uint8_t i=0;
-	Serial.println();
-	Serial.print("Arrived: ");
+    uint8_t i=0;
+    Serial.println();
+    Serial.print("Arrived: ");
     while ( i < u8BufferSize ) // finchè ce ne sono, leggi i caratteri && u8Buffer[ i ]!=0
     {					  // e mettili sul buffer di ricezione
-		Serial.print("(");
-		Serial.print((char) u8Buffer[ i ]);
-		Serial.print(":");
-		Serial.print((uint8_t) u8Buffer[ i ],DEC);
-		Serial.print("),");
-		Serial.flush();
+	Serial.print("(");
+	Serial.print((char) u8Buffer[ i ]);
+	Serial.print(":");
+	Serial.print((uint8_t) u8Buffer[ i ],DEC);
+	Serial.print("),");
+	Serial.flush();
         i ++;
     }
 }
 
 void resetRxBuffer(uint8_t u8BufferSize)
 {
-	uint8_t i=0;
+   uint8_t i=0;
     while ( i < u8BufferSize ) // finchè ce ne sono, leggi i caratteri
     {					  // e mettili sul buffer di ricezione
-		u8Buffer[ i ] = 0;
+	u8Buffer[ i ] = 0;
         i ++;
     }
 }
@@ -536,23 +536,23 @@ int8_t getRxBuffer()
 {
     boolean bBuffOverflow = false;
     uint8_t u8BufferSize = 0;
-	uint8_t i = 0;
+    uint8_t i = 0;
 
     while ( port->available() && i<=BYTE_CNT) // finchè ce ne sono, leggi i caratteri
     {					  // e mettili sul buffer di ricezione
         u8Buffer[ u8BufferSize ] = port->read();
         u8BufferSize ++;
-		i++;
+	i++;
     }
-	while ( port->available() && i<u8Buffer[ BYTE_CNT ]) // finchè ce ne sono, leggi i caratteri
+    while ( port->available() && i<u8Buffer[ BYTE_CNT ]) // finchè ce ne sono, leggi i caratteri
     {					  // e mettili sul buffer di ricezione
         u8Buffer[ u8BufferSize ] = port->read();
         u8BufferSize ++;
 		// segnala evento di buffer overflow (un attacco hacker?)
         if (u8BufferSize >= MAX_BUFFER){
-			return ERR_BUFF_OVERFLOW;
-		}
-		i++;
+		return ERR_BUFF_OVERFLOW;
+	}
+	i++;
     }
     return u8BufferSize;
 }
@@ -700,9 +700,9 @@ enum PROTO_STATE
 };
 enum FLAGS
 {
-    ACKARRIVED             	= 0,
+    ACKARRIVED              = 0,
     MSGARRIVED              = 1,
-	TIMEOUTEVNT             = 2
+    TIMEOUTEVNT             = 2
 };
 
 uint8_t u8Buffer[MAX_BUFFER]; // buffer unico condiviso per TX e RX (da usare alternativamente)
@@ -806,16 +806,16 @@ void sendMsg(telegram_t *tosend){
 
 void printRxBuffer(uint8_t u8BufferSize)
 {
-	uint8_t i=0;
-	Serial.println();
-	Serial.print("Arrived: ");
+    uint8_t i=0;
+    Serial.println();
+    Serial.print("Arrived: ");
     while ( i < u8BufferSize ) // finchè ce ne sono, leggi i caratteri && u8Buffer[ i ]!=0
     {					  // e mettili sul buffer di ricezione
-		Serial.print("(");
-		Serial.print((char) u8Buffer[ i ]);
-		Serial.print(":");
-		Serial.print((uint8_t) u8Buffer[ i ],DEC);
-		Serial.print("),");
+	Serial.print("(");
+	Serial.print((char) u8Buffer[ i ]);
+	Serial.print(":");
+	Serial.print((uint8_t) u8Buffer[ i ],DEC);
+	Serial.print("),");
         i ++;
     }
 }
@@ -854,11 +854,11 @@ int8_t poll(telegram_t *rt)
 	// sulla coda di ricezione
 	u8current = port->available();
 	if(u8state == ACKWAIT){
-			if(millis()-precAck > timeoutTime){
-				flags[TIMEOUTEVNT] = true;
-				//Serial.println("Timeout");
-			}
+		if(millis()-precAck > timeoutTime){
+			flags[TIMEOUTEVNT] = true;
+			//Serial.println("Timeout");
 		}
+	}
 	// ACK TIMER TIMEOUT DETECTOR
 	if (u8current == 0){ // nessun messaggio 
 		//allora valuta lo scadere del timer
@@ -884,14 +884,14 @@ int8_t poll(telegram_t *rt)
 	// alllora vuol dire che la trama è completa allora bufferizza
    	int8_t i8state = getRxBuffer();  
 	printRxBuffer(u8Buffer[ BYTE_CNT ]);
-    // INCOMPLETE MESSAGES DETECTOR. Se è palesemente incompleta scartala!
+        // INCOMPLETE MESSAGES DETECTOR. Se è palesemente incompleta scartala!
    	if (i8state < PAYLOAD) 
 	{
 		// rendi mutuamente esclusivo il blocco di codice
 		return i8state;
 	}
 	// MSSAGE SELECTOR.
-    if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
+        if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
 		// prendi l'indirizzo di sorgente del messaggio ricevuto
 		// e fallo diventare indirizzo di destinazione del messaggio di ack
 		ackobj.u8da = u8Buffer[ SA ]; 
@@ -929,17 +929,17 @@ int8_t getRxBuffer()
     {					  // e mettili sul buffer di ricezione
         u8Buffer[ u8BufferSize ] = port->read();
         u8BufferSize ++;
-		i++;
+	i++;
     }
-	while ( port->available() && i<u8Buffer[ BYTE_CNT ]) // finchè ce ne sono, leggi i caratteri
+   while ( port->available() && i<u8Buffer[ BYTE_CNT ]) // finchè ce ne sono, leggi i caratteri
     {					  // e mettili sul buffer di ricezione
         u8Buffer[ u8BufferSize ] = port->read();
         u8BufferSize ++;
 		// segnala evento di buffer overflow (un attacco hacker?)
         if (u8BufferSize >= MAX_BUFFER){
-			return ERR_BUFF_OVERFLOW;
-		}
-		i++;
+		return ERR_BUFF_OVERFLOW;
+	}
+	i++;
     }
     return u8BufferSize;
 }
