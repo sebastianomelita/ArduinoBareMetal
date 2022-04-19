@@ -395,10 +395,10 @@ enum PROTO_STATE
 };
 enum FLAGS
 {
-    ACKARRIVED             	= 0,
+    ACKARRIVED              = 0,
     MSGARRIVED              = 1,
-	TIMEOUTEVNT             = 2,
-	CHANNELFREE             = 3
+    TIMEOUTEVNT             = 2,
+    CHANNELFREE             = 3
 };
 
 enum ERR_LIST
@@ -502,6 +502,7 @@ bool sendData(telegram_t *tosend){
 	Serial.print("Sent data: ");
 	return sent;
 }
+
 //invia un messaggio in formato "parallelo" sotto forma di struct 
 // sull'uscita seriale
 void sendMsg(telegram_t *tosend){
@@ -513,8 +514,8 @@ void sendMsg(telegram_t *tosend){
 
 void printRxBuffer(uint8_t u8BufferSize)
 {
-	uint8_t i=0;
-	Serial.println();
+    uint8_t i=0;
+    Serial.println();
     while ( i < u8BufferSize ) // finchè ce ne sono, leggi i caratteri && u8Buffer[ i ]!=0
     {					  // e mettili sul buffer di ricezione
 		Serial.print("(");
@@ -522,9 +523,9 @@ void printRxBuffer(uint8_t u8BufferSize)
 		Serial.print(":");
 		Serial.print((uint8_t) u8Buffer[ i ],DEC);
 		Serial.print("),");
-        i ++;
+                i ++;
     }
-	Serial.println();
+    Serial.println();
 }
 
 // carica i campi della struct nella giusta posizione nel buffer 
@@ -570,8 +571,8 @@ uint16_t calcCRC(uint8_t u8length)
 bool checkCRC(uint8_t u8BufferSize){
 	bool ok = true;
 	
-	// gli ultimi due byte del messaggio sono il CRC calcolato dal Tx
-	// confonta il CRC ricevuto dal Tx con quello calcolato in locale
+    // gli ultimi due byte del messaggio sono il CRC calcolato dal Tx
+    // confonta il CRC ricevuto dal Tx con quello calcolato in locale
     uint16_t u16MsgCRC = // etraggo il CRC del Tx dal messaggio
         ((u8Buffer[u8BufferSize - 2] << 8)
          | u8Buffer[u8BufferSize - 1]); // combine the crc Low & High bytes
@@ -580,7 +581,7 @@ bool checkCRC(uint8_t u8BufferSize){
     {
             ok = false;
     }
-	return ok;
+    return ok;
 }
 
 // ascolta in polling l'ingresso seriale
@@ -722,10 +723,10 @@ int8_t getRxBuffer()
     {					  // e mettili sul buffer di ricezione
         u8Buffer[ u8BufferSize ] = port->read();
         u8BufferSize ++;
-		// segnala evento di buffer overflow (un attacco hacker?)
+	// segnala evento di buffer overflow (un attacco hacker?)
         if (u8BufferSize >= MAX_BUFFER){
-			return ERR_BUFF_OVERFLOW;
-		}
+		return ERR_BUFF_OVERFLOW;
+	}
     }
 	if(u8BufferSize == u8Buffer[ BYTE_CNT ]+2){
 		app = u8BufferSize;
