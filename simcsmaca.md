@@ -559,15 +559,15 @@ void printRxBuffer(uint8_t u8BufferSize)
 {
 	uint8_t i=0;
 	Serial.println();
-    while ( i < u8BufferSize ) // finchè ce ne sono, leggi i caratteri && u8Buffer[ i ]!=0
-    {					  // e mettili sul buffer di ricezione
+	while ( i < u8BufferSize ) // finchè ce ne sono, leggi i caratteri && u8Buffer[ i ]!=0
+	{					  // e mettili sul buffer di ricezione
 		Serial.print("(");
 		Serial.print((char) u8Buffer[ i ]);
 		Serial.print(":");
 		Serial.print((uint8_t) u8Buffer[ i ],DEC);
 		Serial.print("),");
-        i ++;
-    }
+	i ++;
+	}
 	Serial.println();
 }
 
@@ -624,7 +624,7 @@ bool checkCRC(uint8_t u8BufferSize){
     {
             ok = false;
     }
-	return ok;
+    return ok;
 }
 
 // ascolta in polling l'ingresso seriale
@@ -693,7 +693,7 @@ int8_t poll(telegram_t *rt)
    	int8_t i8state = getRxBuffer();
 	Serial.print("Received: ");
 	printRxBuffer(u8Buffer[ BYTE_CNT ]);
-    // INCOMPLETE MESSAGES DETECTOR. Se è palesemente incompleta scartala!
+        // INCOMPLETE MESSAGES DETECTOR. Se è palesemente incompleta scartala!
    	if (i8state < PAYLOAD) 
 	{
 		// rendi mutuamente esclusivo il blocco di codice
@@ -718,7 +718,7 @@ int8_t poll(telegram_t *rt)
 	}
 	
 	// MSSAGE SELECTOR.
-    if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
+        if (u8Buffer[ SI ] == MSG){ // se ricevo un messaggio
 		// prendi l'indirizzo di sorgente del messaggio ricevuto
 		// e fallo diventare indirizzo di destinazione del messaggio di ack
 		ackobj.u8da = u8Buffer[ SA ]; 
@@ -746,10 +746,10 @@ void sendTxBuffer(uint8_t u8BufferSize){
 	mySerial = new SoftwareSerial( -1, swPin);  // does -1 disable the RX ? I'm not sure.
 	mySerial->begin(swSpeed);
 	uint16_t u16crc = calcCRC( u8BufferSize );
-    u8Buffer[ u8BufferSize ] = u16crc >> 8;  //seleziona il byte più significativo
-    u8BufferSize++;
-    u8Buffer[ u8BufferSize ] = u16crc & 0x00ff; //seleziona il byte meno significativo
-    u8BufferSize++;
+	u8Buffer[ u8BufferSize ] = u16crc >> 8;  //seleziona il byte più significativo
+	u8BufferSize++;
+	u8Buffer[ u8BufferSize ] = u16crc & 0x00ff; //seleziona il byte meno significativo
+	u8BufferSize++;
 	// transfer buffer to serial line
 	port->write( u8Buffer, u8BufferSize );
 	port->flush();
@@ -765,24 +765,24 @@ void sendTxBuffer(uint8_t u8BufferSize){
 
 int8_t getRxBuffer()
 {
-    //uint8_t u8BufferSize = 0;
+	//uint8_t u8BufferSize = 0;
 	uint8_t app;
 
-    while ( port->available() && u8BufferSize <= BYTE_CNT) // finchè ce ne sono, leggi i caratteri
-    {					  // e mettili sul buffer di ricezione
-        u8Buffer[ u8BufferSize ] = port->read();
-        u8BufferSize ++;
-    }
+	while ( port->available() && u8BufferSize <= BYTE_CNT) // finchè ce ne sono, leggi i caratteri
+	{					  // e mettili sul buffer di ricezione
+		u8Buffer[ u8BufferSize ] = port->read();
+		u8BufferSize ++;
+	}
 	//leggi il messaggio più i due byte di CRC
 	while ( port->available() && u8BufferSize < u8Buffer[ BYTE_CNT ]+2) // finchè ce ne sono, leggi i caratteri
-    {					  // e mettili sul buffer di ricezione
-        u8Buffer[ u8BufferSize ] = port->read();
-        u8BufferSize ++;
+	{					  // e mettili sul buffer di ricezione
+		u8Buffer[ u8BufferSize ] = port->read();
+		u8BufferSize ++;
 		// segnala evento di buffer overflow (un attacco hacker?)
-        if (u8BufferSize >= MAX_BUFFER){
+		if (u8BufferSize >= MAX_BUFFER){
 			return ERR_BUFF_OVERFLOW;
 		}
-    }
+	}
 	if(u8BufferSize == u8Buffer[ BYTE_CNT ]+2){
 		app = u8BufferSize;
 		u8BufferSize = 0;
@@ -790,13 +790,13 @@ int8_t getRxBuffer()
 			return ERR_BAD_CRC;
 		}
 	}
-    return app;
+    	return app;
 }
 
 // deserializzzazione in ricezione
 void rcvEvent(telegram_t* rcvd, uint8_t msglen){
-// converti da formato seriale (array di char) in formato parallelo   
-//(non serializzato)
+	// converti da formato seriale (array di char) in formato parallelo   
+	//(non serializzato)
 	// header
 	rcvd->u8da = u8Buffer[ SA ];
 	rcvd->u8group = u8Buffer[ GROUP ];
