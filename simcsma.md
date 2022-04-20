@@ -298,7 +298,7 @@ long getBackoff(){
 
 ### **Codice completo di tutte le stazioni collegate al BUS**
 
-Il codice di seguito è comune a tutte le stazioni e possiede **entrambe le funzioni** di trasmissione e ricezione. **Tutte le stazioni** sono dotate di **indirizzo univoco**che deve essere quindi diverso per tutte e deve essere impostato nel blocco ```setup()``` del dispositivo modificando il parametro attuale ```mysa``` della funzione ```init()```..
+Il codice di seguito è comune a tutte le stazioni e possiede **entrambe le funzioni** di trasmissione e ricezione. **Tutte le stazioni** sono dotate di **indirizzo univoco** che deve essere quindi diverso per tutte e deve essere impostato nel blocco ```setup()``` del dispositivo modificando il parametro attuale ```mysa``` della funzione ```init()```..
 
 **Ricevitore**
 
