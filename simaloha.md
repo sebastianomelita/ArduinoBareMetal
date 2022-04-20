@@ -651,7 +651,7 @@ struct pt { unsigned short lc; };
 #define ACK  			129 //(100000001)  il primo (MSB) bit è un ack bit
 #define NACK  			128 //(100000001)  il primo (MSB) bit è un ack bit
 #define TBASE			3000
-#define MAXATTEMPTS  	5
+#define MAXATTEMPTS  		5
 #define WNDW    		2000
 #define TXTIMEOUT 		2000
 #define ERR_BUFF_OVERFLOW   -1
