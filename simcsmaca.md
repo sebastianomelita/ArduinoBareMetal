@@ -171,7 +171,7 @@ Una **stazione trasmittente**:
 - Se la trama precedentemente ricevuta era corrotta prima di trasmettere, aspetta un tempo EIFS 
 - Altrimenti se la stazione sente il canale occupato aspetta **finchè è libero**, da quel momento in poi, **aspetta un tempo DIFS** 
 - Trascorso il DIFS invia immediatamente la trama
-- Aspetta l’**arrivo di un ack**, se non arriva in tempo, allo s**cadere di un timeout**, avvia la **ritrasmissione** della stessa trama.
+- Aspetta l’**arrivo di un ack**, se non arriva in tempo, allo **scadere di un timeout**, avvia la **ritrasmissione** della stessa trama.
 
 <img src="esempio.png" alt="alt # **text" width="800">
 
