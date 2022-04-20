@@ -567,7 +567,7 @@ void printRxBuffer(uint8_t u8BufferSize)
 		Serial.print(":");
 		Serial.print((uint8_t) u8Buffer[ i ],DEC);
 		Serial.print("),");
-	i ++;
+		i ++;
 	}
 	Serial.println();
 }
