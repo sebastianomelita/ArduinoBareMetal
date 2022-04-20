@@ -107,6 +107,9 @@ pay: 6-11 indica che il TX 2 ha inviato al RX 1 del gruppo 1 un messaggio 55 (da
 
 I **messaggi di controllo ack** hanno nel campo I il valore ACK (129) e hanno un BYTE_CNT sempre di 5. Il log Arrived: (:1),(:2),(:1),(:129),(:5),Ricevuto ack: indica che il TX 1 ha inviato al RX 2 del gruppo 1 un messaggio 129 (ack) di 5 byte complessivi sempre fissi.
 
+
+### **Calcolo CRC**
+
 Il **protocollo** di trasmisione utilizzato è di tipo **confermato** per cui prevede che un TX, contestualmente alla trasmissione di un messaggio, attivi un **timer di trasmissione** che ha lo **scopo** di misurare il tempo di arrivo del **messaggio di conferma** (ack) che deve essere inviato **dal ricevitore** per certificare la **corretta ricezione** del messaggio trasmesso. Allo scadere di un **tempo massimo di attesa** impostato sul timer, detto **timeout**, il trasmettitore è costretto ad effettuare la **ritrasmissione** del messaggio che non è stato ancora confermato, e farà ciò per tutte le volte in cui il timeout del timer di trasmissione scadrà, fino ad un numero massimo di tentativi prestabilito (solitamente tra 7 e 10).
 
 La **corretta ricezione** è verificata **dal ricevitore** confrontando l'impronta **del messaggio trasmesso** (calcolata **sul trasmettitore**) con l'impronta **del messaggio ricevuto** calcolata **sul ricevitore** a partire dalla copia ricevuta. Se le impronte **coincidono** la trasmissione è andata a buon fine e **il ricevitore** invia l'ack al trasmetitore, se **non coincidono** l'ack **non** viene inviato e si aspetta una nuova copia.
