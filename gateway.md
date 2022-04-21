@@ -24,6 +24,36 @@ L'**architettura tipica del SW** a bordo di un dispositivo IoT è riassumibile:
 
 Il **middleware** in genere è composto da **librerie di terze parti** da **compilare** all'interno di un **IDE** (ad es. Arduino) o all'interno di un **SDK** cioè un pacchetto di sviluppo per applicazioni che fornisce vari strumenti per compilazione, debug e documentazione (ad es. AWS IoT, Azure IoT, ESP-IDF). Oppure esistono **framework** specifici per IoT Open Source come RIOT che, una volta compilati su una macchina Linux, forniscono veri e propri **SO per IoT** con esattamente ciò che serve per la **comunicazione** di un certo dispositivo.
 
+### **Architettura di riferimento per IoT**
+
+L'**architettura tipica del SW** a bordo di un dispositivo IoT è riassumibile:
+
+<img src="iotarchitecture.png" alt="alt text" width="600">
+
+Il **middleware** in genere è composto da **librerie di terze parti** da **compilare** all'interno di un **IDE** (ad es. Arduino) o all'interno di un **SDK** cioè un pacchetto di sviluppo per applicazioni che fornisce vari strumenti per compilazione, debug e documentazione (ad es. AWS IoT, Azure IoT, ESP-IDF). Oppure esistono **framework** specifici per IoT Open Source come RIOT che, una volta compilati su una macchina Linux, forniscono veri e propri **SO per IoT** con esattamente ciò che serve per la **comunicazione** di un certo dispositivo.
+
+### **Librerie del progetto**
+
+In questo caso gran parte delle funzioni del middleware, quelle relative alla comunicazione via stack WiFi, è implementato all'interno del sistema a microprocessore (MCU). Nello specifico, le funzioni di livello applicativo, che in ambito IoT, sono tutte quelle comprese tra il livello 2 e il livello 7 ISO/OSI sono compito della MCU mentre il livello fisico è realizzato in HW dal chip del modem.
+
+L'installazione di SDK, loader e librerie in Arduino si può fare seguendo, nell'ordine, le seguenti fasi:
+	1. installareo SDK **Arduino Core per ESP32**. https://github.com/espressif/arduino-esp32. Per far ciò bisogna aggiungre alla fine della lista presente **"su url aggiuntive per il gestore schede"**: "https://dl.espressif.com/dl/package_esp32_index.json" che sitrova sul menu **File>Impostazioni**:
+
+<img src="gestoreschede.png" alt="alt text" width="700">
+
+2. Andare su **strumenti>scheda/Arduino/Genuino Uno** librerie e installare la scheda  **ESP32**:
+
+<img src="gestoreschede2.png" alt="alt text" width="1000">
+
+<img src="gestoreschede3.webp" alt="alt text" width="700">
+
+<img src="gestoreschede4.png" alt="alt text" width="700">
+
+3. Selezionare la scheda ESP32 dalla lista di schede disponibili:
+
+<img src="gestoreschede5.png" alt="alt text" width="1000">
+
+
 ### **Client MQTT per ESP32, ESP8266 e Arduino con metodo di connessione bloccante**
 
 In questo caso le librerie che realizzano lo stack TCP/IP e il livello fisico del WiFi sono implementati all'interno del chip che svolge le funzioni di modem, oppure, come nel caso delle MCU ESP8266 e ESP32, sono librerie SW eseguite su un sottosistema HW della stessa MCU con funzioni specifiche di comunicazione. Nel caso della MCU ESP8266 lo stack TCP/IP è eseguito dallo stesso core e all'interno dello stesso thread dell'applicazione principale. Nel caso della MCU ESP832 lo stack TCP/IP è eseguito in un core a parte e in un thread privilegiato rispetto a quello dell'applicazione principale. Il core applicativo è comunque responsabile della comunicazione di livello applicativo realizzata dal protocollo MQTT.  
