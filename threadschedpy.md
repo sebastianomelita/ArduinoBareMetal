@@ -34,7 +34,7 @@ Di seguito è riportata una possibile rappresentazione della **macchina a stati*
 
 Ogni singolo **stato** in realtà può rappresentare una situazione comune a molti thread per cui è opportuno associare a ciascuno un elenco di thread organizzati in una **coda**. Se più thread posseggono i requisiti per uscire da un certo stato, la politica più semplice per farlo è la FIFO (First in First out), cioè tra i thread **abilitati a farlo**, esce dalla coda quello che vi era **entrato per primo**.
 
-La **transizione** da uno stato all'altro avviene in seguito ad un evento che può essere sia interno che esterno al thread. In genere si va in stato di **attesa** (WAIT) per:
+La **transizione** da uno stato all'altro avviene in seguito ad un **evento** che può essere sia interno che esterno al thread. In genere si va in stato di **attesa** (WAIT) per:
 - attesa di un evento di input esterno
 - attesa dello scadere del tempo di uno sleep del thread (istruzione **delay()**)
 - istruzione yeld() eseguita nel codice del thread
