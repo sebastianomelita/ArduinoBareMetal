@@ -42,3 +42,7 @@ Come le attività che si trovano nello stato Bloccato, le attività nello stato 
 ### **Sitografia**:
 - https://www.freertos.org/implementation/a00005.html
 - https://www.freertos.org/RTOS-task-states.html
+- https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/pthread.html
+- http://www.cs.fsu.edu/~baker/opsys/notes/threads.html
+- https://faculty.cc.gatech.edu/~rama/CS2200-External/projects/p4/prj4.html
+- https://www.embedded.com/effective-use-of-pthreads-in-embedded-linux-designs-part-1-the-multitasking-paradigm/
