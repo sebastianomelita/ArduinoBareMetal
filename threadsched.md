@@ -252,8 +252,10 @@ void loop() {
 	blink2_running = false;
 }
 ```
+### **Sitografia**
+- https://www.freertos.org/implementation/a00004.html
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](threadschedpy.md)
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbMTEwNDI2NDY0N119
+
+
 -->
