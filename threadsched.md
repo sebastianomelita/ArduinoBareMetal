@@ -270,6 +270,3 @@ void loop() {
 - https://www.freertos.org/implementation/a00004.html
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](threadschedpy.md)
-
-
--->
