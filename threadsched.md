@@ -19,7 +19,7 @@ Anche i **processi** sono flussi di esecuzione indipendenti che procedono in par
 - nei **processi** sia input/output, che area dati globale che area dati locale (stack) sono indipendenti e separate in zone deverse della emoria RAM.
 - nei **thread**  input/output e area dati globale sono **in comune** nella stessa posizione in RAM mentre soltanto l'area dati locale (stack) sono indipendenti e separate in zone deverse della emoria RAM.
 
-<img src="datathread.webp" alt="alt text" width="500">
+<img src="datathread.webp" alt="alt text" width="300">
 
 Ma come è possibile che thread diversi possano essere mandati in esecuzione contemporaneamente su un'unica CPU fisica?
 
