@@ -23,4 +23,5 @@ Come le attività che si trovano nello stato Bloccato, le attività nello stato 
 
 
 
-
+### **Sitografia**:
+- https://www.freertos.org/RTOS-task-states.html
