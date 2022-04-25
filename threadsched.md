@@ -35,6 +35,8 @@ Di seguito è riportata una possibile rappresentazione della **macchina a stati*
 
 <img src="states.gif" alt="alt text" width="700">
 
+Ogni singolo **stato** in realtà può rappresentare una situazione comune a molti thread per cui è opportuno associare a ciascuno un elenco di thread organizzati in una **coda**. Se più thread posseggono i requisiti per uscire da un certo stato, la politica più semplice per farlo è la FIFO (First in First out), cioè tra i thread **abilitati a farlo**, esce dalla coda quello che vi era **entrato per primo**.
+
 In figura sono indicate alcune funzioni tipiche:
 - **schedule()** viene richiamata dallo **schedulatore** ogni volta che una **CPU diventa disponibile** per l'esecuzione di un thread. **schedule()** deve scorrere la coda dei thread nello **stato ready**, selezionare il prossimo thread da eseguire secondo un dato **algoritmo di scheduling** ed eseguire il **cambio di contesto** dal thread corrente al nuovo thread su quella CPU.
 - **preempt()** a seguito dell'**interruzione** del thread corrente da parte del **timer HW**, questa funzione esegue il **cambio di contesto** dal thread corrente a quello dello schedulatore.
