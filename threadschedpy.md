@@ -26,7 +26,7 @@ Normalmente i thread possono lavorare in due **modalità operative**:
 
 In figura sono indicate due funzioni tipiche dello **scheduler**:
 - **schedule()** viene richiamata dallo scheduler ogni volta che una **CPU diventa disponibile** per l'esecuzione di un thread. **schedule()** deve cercare nella coda dei thread nello **stato ready**, selezionare un thread eseguibile secondo un certo **algoritmo di scheduling** e chiamare la funzione di **cambio di contesto** dal thread corrente al nuovo thread su quella CPU.
-- **preempt()** rappresenta l'interruzione del thread corrente da parte del timer HW. Questa azione libera la risorsa CPU per l'esecuzione di un nuovo thread.
+- **preempt()** rappresenta l'**interruzione** del thread corrente da parte del **timer HW**. Questa azione libera la risorsa CPU per l'esecuzione di un nuovo thread.
 
 Abbiamo visto che **usare i delay** per progettare i tempi di un task **è più semplice** perchè la programmazione rimane quella **lineare** a cui è solito ricorrere un programmatore per pensare gli algoritmi ma, in questo caso, **è anche molto meno costosa** in termini di efficienza che in un programma a singolo thread dato che la CPU può sempre servire tutti i task nello stesso momento (in maniera reale o simulata). 
 
