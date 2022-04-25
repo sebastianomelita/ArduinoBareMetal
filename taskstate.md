@@ -47,3 +47,4 @@ Come le attività che si trovano nello stato Bloccato, le attività nello stato 
 - https://faculty.cc.gatech.edu/~rama/CS2200-External/projects/p4/prj4.html
 - https://www.embedded.com/effective-use-of-pthreads-in-embedded-linux-designs-part-1-the-multitasking-paradigm/
 - https://superuser.com/questions/1068315/thread-states-linux-vs-windows
+- https://docs.espressif.com/projects/esp-idf/en/v4.3-beta2/esp32/api-reference/system/esp_pthread.html
