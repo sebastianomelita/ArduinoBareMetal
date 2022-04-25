@@ -15,6 +15,12 @@ Se però due o più task vengono eseguiti su thread differenti è possibile **bl
 
 Avere più **flussi di esecuzione paralleli** fornisce quindi il **vantaggio** di poter realizzare gli algoritmi in **maniera lineare** suddividendoli in **fasi successive** la cui **tempistica** può essere stabilita in **maniera semplice** ed intuitiva impostando dei **ritardi**, cioè dei delay, tra una fase e l'altra. La **separazione** dei flussi permette una **progettazione indipendente** degli algoritmi eccetto che per i **dati comuni** a più flussi (thread), per i quali deve essere **sincronizzato l'accesso** con opportuni meccanismi. 
 
+Anche i **processi** sono lussi di esecuzione indipendenti che procedono in parallelo su una o più CPU, esiste però una differenza pratica notevole con i thread:
+- nei **processi** sia input/output, che area dati globale che area dati locale (stack) sono indipendenti e separate in zone deverse della emoria RAM.
+- nei **thread**  input/output e area dati globale sono **in comune** nella stessa posizione in RAM mentre soltanto l'area dati locale (stack) sono indipendenti e separate in zone deverse della emoria RAM.
+
+<img src="datathread.webp" alt="alt text" width="500">
+
 Ma come è possibile che thread diversi possano essere mandati in esecuzione contemporaneamente su un'unica CPU fisica?
 
 In realtà ad essere eseguiti **contemporaneamente** sono soltanto i **task**, cioè i programmi ed i relativi algoritmi, le **istruzioni** in linguaggio macchina che li compongono vengono invece eseguite **a turno**, un blocco di istruzioni alla volta. La durata del turno viene detta **quanto di tempo**. Terminato il quanto di tempo di un thread si passa ad eseguire le istruzioni di un altro thread nel quanto di tempo successivo. Ciò accade a patto che i thread siano **"preemptive"** cioè supportino il **prerilascio** della risorsa CPU **prima** del termine naturale del task (il comando return o il completamento del task). Le istruzioni accorpate in un quanto potrebbero non coincidere esattamente con un multiplo intero delle istruzioni ad alto livello, ci potrebbe essere, ad esempio, metà di un'assegnazione in un quanto e l'altra metà in un'altro. Le istruzioni **atomiche**, cioè indivisibili, sono soltanto quelle in **linguaggio macchina**.
