@@ -2,9 +2,25 @@
 
 ## **GESTIONE DEI TASK/THREAD**
 
-
+### **Diagramma temporale dei task/thread**
 
 <img src="suspending.gif" alt="alt text" width="700">
+
+Facendo riferimento ai numeri nel diagramma sopra:
+
+- A (1) l'attività 1 è in esecuzione.
+- In (2) il kernel sospende (scambia) l'attività 1 ...
+- ... e in (3) riprende l'attività 2.
+- Mentre l'attività 2 è in esecuzione (4), blocca una periferica del processore per il proprio accesso esclusivo.
+- In (5) il kernel sospende l'attività 2 ...
+- ... e in (6) riprende l'attività 3.
+- L'attività 3 tenta di accedere alla stessa periferica del processore, trovandola bloccata, l'attività 3 non può continuare, quindi si sospende in (7).
+- In (8) il kernel riprende l'attività 1.
+- Eccetera.
+- La prossima volta che l'attività 2 viene eseguita (9), termina con la periferica del processore e la sblocca.
+- La prossima volta che l'attività 3 viene eseguita (10) scopre che ora può accedere alla periferica del processore e questa volta viene eseguita fino alla sospensione dal kernel.
+
+### **Diagramma di stato dei task/thread**
 
 Un'attività può esistere in uno dei seguenti stati:
 
@@ -24,4 +40,5 @@ Come le attività che si trovano nello stato Bloccato, le attività nello stato 
 
 
 ### **Sitografia**:
+- https://www.freertos.org/implementation/a00005.html
 - https://www.freertos.org/RTOS-task-states.html
