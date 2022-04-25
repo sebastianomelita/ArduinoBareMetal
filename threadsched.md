@@ -38,6 +38,7 @@ Di seguito è riportata una possibile rappresentazione della **macchina a stati*
 In figura sono indicate due funzioni tipiche dello **schedulatore**:
 - **schedule()** viene richiamata dallo **schedulatore** ogni volta che una **CPU diventa disponibile** per l'esecuzione di un thread. **schedule()** deve scorrere la coda dei thread nello **stato ready**, selezionare il prossimo thread da eseguire secondo un dato **algoritmo di scheduling** ed eseguire il **cambio di contesto** dal thread corrente al nuovo thread su quella CPU.
 - **preempt()** a seguito dell'**interruzione** del thread corrente da parte del **timer HW**, questa funzione esegue il **cambio di contesto** dal thread corrente a quello dello schedulatore.
+- **wake_up()
 
 Abbiamo visto che **usare i delay** per progettare i tempi di un task **è più semplice** perchè la programmazione rimane quella **lineare** a cui è solito ricorrere un programmatore per pensare gli algoritmi ma, in questo caso, **è anche molto meno costosa** in termini di efficienza che in un programma a singolo thread dato che la CPU può sempre servire tutti i task nello stesso momento (in maniera reale o simulata). 
 
