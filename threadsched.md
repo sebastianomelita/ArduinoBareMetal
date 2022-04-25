@@ -17,7 +17,7 @@ Avere più **flussi di esecuzione paralleli** fornisce quindi il **vantaggio** d
 
 Anche i **processi** sono flussi di esecuzione indipendenti che procedono in parallelo su una o più CPU, esiste però una **differenza pratica** notevole con i thread:
 - nei **processi** sia input/output, che area dati globale che area dati locale (stack) sono indipendenti e separate in zone deverse della memoria RAM.
-- nei **thread**  input/output e area dati globale sono **in comune** nella stessa posizione in RAM mentre soltanto l'area dati locale (stack) sono indipendenti e separate in zone deverse della emoria RAM.
+- nei **thread**  input/output e area dati globale sono **in comune** nella stessa posizione in RAM mentre soltanto le aree dati locali (stack) sono indipendenti e separate in zone deverse della memoria RAM.
 
 <img src="datathread.webp" alt="alt text" width="300">
 
