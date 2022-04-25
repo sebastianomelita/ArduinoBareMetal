@@ -13,8 +13,8 @@ Se però due o più task vengono eseguiti su thread differenti è possibile **bl
 Avere più **flussi di esecuzione paralleli** fornisce quindi il **vantaggio** di poter realizzare gli algoritmi in **maniera lineare** suddividendoli in **fasi successive** la cui **tempistica** può essere stabilita in **maniera semplice** ed intuitiva impostando dei **ritardi**, cioè dei delay, tra una fase e l'altra. La **separazione** dei flussi permette una **progettazione indipendente** degli algoritmi eccetto che per i **dati comuni** a più flussi (thread), per i quali deve essere **sincronizzato l'accesso** con opportuni meccanismi. 
 
 Anche i **processi** sono flussi di esecuzione indipendenti che procedono in parallelo su una o più CPU, esiste però una **differenza pratica** notevole con i thread:
-- nei **processi** sia input/output, che area dati globale che area dati locale (stack) sono indipendenti e separate in zone diverse della memoria RAM.
-- nei **thread**  input/output e area dati globale sono **in comune** nella stessa posizione in RAM mentre soltanto le aree dati locali (stack) sono indipendenti e separate in zone diverse della memoria RAM.
+- nei **processi** sia input/output, che **area dati globale** che **area dati locale** (stack) sono indipendenti e separate in zone diverse della memoria RAM.
+- nei **thread**  input/output e **area dati globale** sono **in comune** nella stessa posizione in RAM mentre soltanto le **aree dati locali** (stack) sono indipendenti e separate in zone diverse della memoria RAM.
 
 <img src="datathread.webp" alt="alt text" width="300">
 
