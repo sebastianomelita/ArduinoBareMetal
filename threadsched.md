@@ -48,6 +48,8 @@ In figura sono indicate alcune funzioni tipiche:
 - **preempt()** a seguito dell'**interruzione** del thread corrente da parte del **timer HW**, questa funzione esegue il **cambio di contesto** dal thread corrente a quello dello schedulatore.
 - **wake_up()** è una funzione che, richiamata allo scadere di un **evento esterno** al thread interrotto, lo "risveglia" mettendolo nella coda dei processi pronti (ready) per essere eseguiti. Può essere richiamata da un **evento** che avviene in un **altro thread** (ad es. una condizione su una variabile che si avvera) oppure può essere collegata allo **scadere del tempo** di un ritardo **delay()**, che è la situazione che esploreremo nei prossimi esempi.
 
+### **Vantaggi e svantaggi dei thread**
+
 Abbiamo visto che **usare i delay** per progettare i tempi di un task **è più semplice** perchè la programmazione rimane quella **lineare** a cui è solito ricorrere un programmatore per pensare gli algoritmi ma, in questo caso, **è anche molto meno costosa** in termini di efficienza che in un programma a singolo thread dato che la CPU può sempre servire tutti i task nello stesso momento (in maniera reale o simulata). 
 
 Può capitare, specie in **dispositivi con risorse HW molto ristrette**, che i thread non siano interrompibili ma possano lavorare solo in modo "cooperativo", allora, in questo caso, alcune librerie forniscono una funzione delay() alternativa che contiene al suo interno il comando yeld() di rilascio "spontaneo" della CPU. In questo modo **è preservata**, anche su quei dispositivi, la possibilità di adottare uno stile di **programmazione sequenziale** degli algoritmi.
@@ -118,6 +120,8 @@ void setup() {
   pthread_create(&thMioScopo, NULL, blink1, (void *)param);
 }
 ```
+
+### **Esempi**
 
 Esempio di realizzazione di due task che eseguono un blink mediante delay() insieme ad altre generiche operazioni svolte nel main (piattaforma **Espress if ESP32**, **IDE Arduino** e librerie thread **preemptive**).
 
