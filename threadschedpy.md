@@ -24,6 +24,10 @@ Normalmente i thread possono lavorare in due **modalità operative**:
 
 <img src="states.gif" alt="alt text" width="700">
 
+In figura sono indicate due funzioni tipiche dello **scheduler**:
+- **schedule()** viene richiamata dallo scheduler ogni volta che una **CPU diventa disponibile** per l'esecuzione di un thread. **schedule()** deve cercare nella coda dei thread nello **stato ready**, selezionare un thread eseguibile secondo un certo **algoritmo di scheduling** e chiamare la funzione di **cambio di contesto** dal thread corrente al nuovo thread su quella CPU.
+- **preempt()** rappresenta l'interruzione del thread corrente da parte del timer HW. questa azione libera la risorsa CPU per l'esecuzione di un nuovo thread.
+
 Abbiamo visto che **usare i delay** per progettare i tempi di un task **è più semplice** perchè la programmazione rimane quella **lineare** a cui è solito ricorrere un programmatore per pensare gli algoritmi ma, in questo caso, **è anche molto meno costosa** in termini di efficienza che in un programma a singolo thread dato che la CPU può sempre servire tutti i task nello stesso momento (in maniera reale o simulata). 
 
 Può capitare, specie in **dispositivi con risorse HW molto ristrette**, che i thread non siano interrompibili ma possano lavorare solo in modo "cooperativo", allora, in questo caso, alcune librerie forniscono una funzione delay() alternativa che contiene al suo interno il comando yeld() di rilascio "spontaneo" della CPU. In questo modo **è preservata**, anche su quei dispositivi, la possibilità di adottare uno stile di **programmazione sequenziale** degli algoritmi.
