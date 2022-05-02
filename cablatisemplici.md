@@ -107,6 +107,7 @@ Molti di questi forniscono una **definizione elaborata**, **standard** ed **esau
 - https://www.microchip.com/en-us/product/MCP2518FD
 - https://www.beyondlogic.org/adding-can-controller-area-network-to-the-raspberry-pi/
 - https://www.hackster.io/youness/how-to-connect-raspberry-pi-to-can-bus-b60235
+- https://www.amazon.it/ARACELI-Electronics-Ricevitore-sviluppo-controller/dp/B07MY2D7TW/ref=asc_df_B07MY2D7TW/?tag=googshopit-21&linkCode=df0&hvadid=575035016065&hvpos=&hvnetw=g&hvrand=14339607445270056898&hvpone=&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1008727&hvtargid=pla-1115833342224&psc=1
 
 >[Torna a reti di sensori](sensornetworkshort.md#topologia-delle-reti-di-sensori-cablata)
 
