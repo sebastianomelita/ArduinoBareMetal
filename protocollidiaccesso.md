@@ -548,7 +548,7 @@ Il protocollo CSMA/CA (Carrier Sense Medium Access with Collision Avoidance) fun
 5. Quando B riceve l’RTS, risponde con un CTS.
 6. Ricevuto il CTS, A può cominciare a trasmettere il frame contenente i dati veri e propri.
 7. Se entro un intervallo di tempo ben definito, A non riceve un ACK da B, vuol dire che il frame dati non è stato ricevuto correttamente, e quindi A deve ritrasmetterlo ripetendo tutta la procedura.
-8 Una volta che B ha ricevuto correttamente il frame Dati, risponde con un ACK concludendo il protocollo.
+8. Una volta che B ha ricevuto correttamente il frame Dati, risponde con un ACK concludendo il protocollo.
 
 
 Sitografia:
