@@ -553,7 +553,7 @@ Il protocollo CSMA/CA (Carrier Sense Medium Access with Collision Avoidance) fun
 8. Una volta che B ha ricevuto correttamente il frame Dati, risponde con un ACK concludendo il protocollo.
 
 
-Sitografia:
+**Sitografia**:
 - https://teoriadeisegnali.it/story/802.11/on_desk/accesso.html
 - http://ecomputernotes.com/computernetworkingnotes/communication-networks/what-is-aloha
 - https://it.pinterest.com/pin/368943394449072984/
