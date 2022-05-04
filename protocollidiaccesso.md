@@ -554,18 +554,18 @@ Il protocollo CSMA/CA (Carrier Sense Medium Access with Collision Avoidance) fun
 
 
 Sitografia:
-
-http://ecomputernotes.com/computernetworkingnotes/communication-networks/what-is-aloha
-https://it.pinterest.com/pin/368943394449072984/
-http://www.mathcs.emory.edu/~cheung/Courses/558/Syllabus/00/CSMA/csmacd.html
-http://www.benve.org/Download/Wireless.pdf
-http://infocom.uniroma1.it/alef/802.11/on_desk/accesso.html#Distributed_Coordination_Function_
-https://www.saylor.org/site/wp-content/uploads/2011/10/SAYLOR.ORG-CS402-CSMACOLLISIONAVOIDANCE.pdf
-https://www.slideshare.net/obonaventure/5-sharingapp
-http://www.opentextbooks.org.hk/ditatopic/3611
-https://mrncciew.com/2014/10/12/cwap-802-11-medium-contention/
-https://en.wikipedia.org/wiki/Extended_interframe_space
-https://www.hamilton.ie/publications/Thesis_tianji.pdf
+- https://teoriadeisegnali.it/story/802.11/on_desk/accesso.html
+- http://ecomputernotes.com/computernetworkingnotes/communication-networks/what-is-aloha
+- https://it.pinterest.com/pin/368943394449072984/
+- http://www.mathcs.emory.edu/~cheung/Courses/558/Syllabus/00/CSMA/csmacd.html
+- http://www.benve.org/Download/Wireless.pdf
+- http://infocom.uniroma1.it/alef/802.11/on_desk/accesso.html#Distributed_Coordination_Function_
+- https://www.saylor.org/site/wp-content/uploads/2011/10/SAYLOR.ORG-CS402-CSMACOLLISIONAVOIDANCE.pdf
+- https://www.slideshare.net/obonaventure/5-sharingapp
+- http://www.opentextbooks.org.hk/ditatopic/3611
+- https://mrncciew.com/2014/10/12/cwap-802-11-medium-contention/
+- https://en.wikipedia.org/wiki/Extended_interframe_space
+- https://www.hamilton.ie/publications/Thesis_tianji.pdf
 
 
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
