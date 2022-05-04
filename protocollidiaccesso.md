@@ -178,7 +178,7 @@ Una stazione **trasmittente**:
 - Appena essa rileva il canale libero invia immediatamente la trama ma ascolta anche durante la trasmissione.
 - L’**ascolto durante la trasmissione** serve a stabilire se sul canale è avvenuta o meno una collisione. 
 - Se non vengono rilevati **segnali di collisione** allora la trasmissione è avvenuta con successo.
-- un **segnale di collisione** può essere considerato il **misurare** sul canale più energia di quanta la stazione stessa non se ne aspetti a causa della sua trasmissione. Ciò può essere rilevato mefiante un dispositivo a soglia che scatti oltre un certo **valore di riferimento**.
+- un **segnale di collisione** può essere considerato il **misurare** sul canale più energia di quanta la stazione stessa non se ne aspetti a causa della sua trasmissione. Ciò può essere rilevato mediante un dispositivo a soglia che scatti oltre un certo **valore di riferimento**.
 - Altrimenti la stazione arresta la trasmissione corrente e ricomincia da zero la trasmissione della trama dopo un **tempo casuale**.
 - Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
 
