@@ -291,7 +291,7 @@ while(N<= max){
 
 ### **Fasi CSMA/CD completo**
 
-a stazione **trasmittente**:
+La stazione **trasmittente**:
 - al momento che ha una trama pronta, **ascolta il canale prima** di trasmettere per stabilire se esso è libero o meno.
 - Appena essa rileva il canale libero invia immediatamente la trama ma ascolta anche durante la trasmissione.
 - L’**ascolto durante la trasmissione** serve a stabilire se sul canale è avvenuta o meno una collisione. 
