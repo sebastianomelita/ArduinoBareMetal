@@ -61,6 +61,7 @@ Una **stazione trasmittente**:
 **Le collisioni graficamente:**
 
 <img src="alohacollisioni.jpg" alt="alt text" width="600">
+Fig 1
 
 **Protocollo ALOHA in trasmissione pseudocodice:**
 
@@ -94,6 +95,7 @@ While(true){
 
 ```
 <img src="alohaflow.png" alt="alt text" width="400">
+Fig 2
 
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 >
@@ -147,12 +149,14 @@ Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segn
 **BUS senza collisioni:**
 
 <img src="busnocollisioni.png" alt="alt text" width="700">
+Fig 3
 
 **BUS con collisioni:**
 
 Una stazione non può rilevare istantaneamente l’occupazione del BUS da parte di una stazione remota a causa di un fenomeno fisico detto ritardo di propagazione.
 
 <img src="buscollisioni.png" alt="alt text" width="700">
+Fig 4
 
 ### **Riassumendo ALOHA e CSMA**
 
@@ -206,6 +210,7 @@ while(N <= max){
 ```
 
 <img src="csmacdflow.jpg" alt="alt text" width="500">
+Fig 5
 
 ### **Possiamo determinare tutte le collisioni?**
 
@@ -213,6 +218,7 @@ while(N <= max){
 - Ma nel CSMA/CD si ascolta solo **finchè si trasmette**….
 
 <img src="nolisten.png" alt="alt text" width="700">
+Fig 6
 
 ### **Soluzione: trasmissione abbastanza lunga**
 
@@ -220,6 +226,7 @@ while(N <= max){
 - Per ricevere l’eco della collisione A deve continuare ad ascoltare (cioè a trasmettere) finchè la trama corrotta non si propaga da B fino a lei.
 
 <img src="listen.png" alt="alt text" width="700">
+Fig 7
 
 ### **Come rilevare tutte le collisioni?**
 
@@ -306,6 +313,7 @@ Le altre stazioni, quando ricevono la **sequenza di jamming**, sono **avvisate**
 - Se **trasmettevano**, **arrestano immediatamente la trasmissione** e fanno partire l’**algoritmo di backoff** che stabilisce il ritardo casuale prima della ritrasmissione del messaggio interrotto.
 
 <img src="csmacdflow2.png" alt="alt text" width="350">
+Fig 8
 
 ### **Riassumendo CSMA e CSMA/CD**
 
@@ -393,6 +401,7 @@ Una **stazione trasmittente**:
 Anche se C, sfortunatamente, valutasse il canale libero ascoltandolo durante il SIFS di B poichè DIFS>SIFS accadrebbe che C ritroverebbe il canale occupato durante la seguente trasmissione dell’ack di B e quindi si **fermerebbe**:
 
 <img src="esempio.png" alt="alt # **text" width="800">
+Fig 9
 
 ### **Significato di DIFS**
 
@@ -415,6 +424,7 @@ Il **tempo di attesa DIFS** non elimina in assoluto la possibilità di una **eve
 Il tempo di attesa DIFS è **uguale** per tutte le stazioni e **dopo** di esso inizia una finestra di **trasmissione**, detta **finestra di contesa** (CW), in cui tutte le stazioni **competono** per l'accesso al canale avendo solo l'accortezza di **ascoltare prima di tramettere**, cautela che limita ma non annulla le probabilità di collisioni (per via del ritardo di propagazione).
 
 <img src="difs.png" alt="alt # **text" width="600">
+Fig 10
 
 ### **Significato di EIFS**
 ```C++
@@ -425,6 +435,7 @@ EIFS  = SIFS + DIFS + ACK_Tx_Time
 - Se ciò accade, il destinatario dovrebbe avere l'opportunità di restituire un frame di ack; il ritardo EIFS garantisce che la trasmissione del frame di Ack possa procedere senza l'introduzione di eventuali interferenze da parte di chi non è stato in grado di decodificare il frame.
 
 <img src="eifs.png" alt="alt # **text" width="600">
+Fig 11
 
 ### **Backoff**
 
@@ -434,10 +445,12 @@ Una eventuale **collisione** dei messaggi determina la ricezione di **trame corr
 Se la **ritrasmissione** avvenisse per tutte le stazioni dopo un ugual **ritardo DIFS** dal momento in cui entrambe le stazioni sentono il **canale libero**, ciò determinerebbe presumibilmente una **trasmissione simultanea** delle due stazioni e quindi una nuova collisione.
 
 <img src="collisionicsma.png" alt="alt # **text" width="800">
+Fig 12
 
 La **soluzione** è ritrasmettere sempre dopo un **tempo casuale (backoff)** all’interno di una **finestra di contesa**
 
 <img src="backoff.png" alt="alt # **text" width="800">
+Fig 13
 
 Il **backoff** casuale di una stazione inizia sempre dopo un tempo di attesa fisso **DIFS**. La stazione **ascolta** sempre il canale prima di tramettere e lo fa anche **durante il backoff**. Ci sono quindi due possibilità:
 - il backoff **scade** e quindi subito dopo la stazione comincia a trasmettere
@@ -481,6 +494,7 @@ Ad ogni collisione, prima di ritentare la trasmissione, la stazione **raddoppia 
 Lo scopo di tale raddoppio è quello di **adattare** la dimensione della finestra al **numero di contendenti**, in considerazione del fatto che le **collisioni** sono un **indice di “affollamento”**.
 
 <img src="finestra.png" alt="alt # **text" width="600">
+Fig 14
 
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
@@ -495,6 +509,7 @@ In alcune implementazioni (802.11) il DIFS può creare un accesso senza contesa:
 Un accesso senza contesa non vuol dire un accesso senza collisioni, queste sono sempre possibili se, dopo un DIFS, due stazioni iniziano a parlare contemporaneamente.
 
 <img src="immediato.png" alt="alt # **text" width="600">
+Fig 115
 
 ## **Problema della stazione nascosta**
 
@@ -504,6 +519,7 @@ Un accesso senza contesa non vuol dire un accesso senza collisioni, queste sono 
 - B riceverà i messaggi provenienti da entrambe le stazioni che, a seguito della collisione, saranno inintelleggibili.
 
 <img src="hidden.png" alt="alt # **text" width="600">
+Fig 16
 
 **Soluzione:**
 - Il trasmettitore prenota dei time slot tramite ll messaggio di controllo RTS (Request To Send) avente per **argomento** il tempo di trasmissione richiesto, adatto alla lunghezza del messaggio dati.
@@ -513,6 +529,7 @@ La stazione B è visibile da tutti per cui sia dalla stazione A che ha prenotato
 - Spesso la gestione delle prenotazioni è centralizzata ed è effettuata dallo stesso AP che in genere è in una **posizione baricentrica** rispetto a tutte le stazioni ed è pertanto da queste sempre visibile.
 
 <img src="rtscts.png" alt="alt # **text" width="800">
+Fig 17
 
 ## **Prenotazione del canale mediante NAV**
 
@@ -544,10 +561,12 @@ La stazione che ha prenotato il canale durante il NAV può effettuare in sicurez
 Le collisioni in pratica **non possono** colpire i messaggi di **ack** e i **dati**, gli unici messaggi soggetti a collisione sono le trame di controllo RTS e CTS che però sono **molto corte**.
 
 <img src="prenotazione.png" alt="alt # **text" width="600">
+Fig 18
 
  ### **802.11 CSMA/CA: flowchart**
  
  <img src="802.11flow.png" alt="alt # **text" width="600">
+ Fig 19
  
  ### **802.11 CSMA/CA: fasi**
  
