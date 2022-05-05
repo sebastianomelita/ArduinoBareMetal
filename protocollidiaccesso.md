@@ -577,6 +577,7 @@ Il protocollo CSMA/CA (Carrier Sense Medium Access with Collision Avoidance) fun
 - https://mrncciew.com/2014/10/12/cwap-802-11-medium-contention/
 - https://en.wikipedia.org/wiki/Extended_interframe_space
 - https://www.hamilton.ie/publications/Thesis_tianji.pdf
+- https://networkengineering.stackexchange.com/questions/64340/whats-the-usage-of-jamming-signal-in-csma-cd
 
 
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
