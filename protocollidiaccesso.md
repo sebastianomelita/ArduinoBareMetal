@@ -30,6 +30,8 @@ Quelli **deterministici** eliminano alla radice la possibilità di collisioni re
 
 Quelli **statistici** o **a contesa** realizzano una **competizione** per l'accesso al mezzo che deve essere regolata dalle singole stazioni semplicemente osservando il canale in maniera indipendente l'una dall'altra, senza coordinamento alcuno. Questa categoria di protocolli **limitano statisticamente** il problema delle collisioni ma **non lo annullano** completamente, per cui le collisioni necessitano ancora di **essere rilevate** dalle singole stazioni.
 
+I mezzi a BUS sono **bidirezionali**, nel senso che la comunicazione può avvenire nelle due direzioni possibili tra coppie di stazioni, ma solo in modalità **half duplex**, cioè trasmette sempre una stazione alla volta, anche quando a parlare sono solo in due. Stazioni **diverse** parlano sempre in **momenti** differenti, **regolati** dal protocollo.
+
 ### Come rilevare una collisione?
 
 - Si ricorre all’utilizzo di un protocollo di trasmissione confermato
