@@ -524,6 +524,7 @@ Fig 15
 <img src="hidden.png" alt="alt # **text" width="600">
 Fig 16
 
+
 **Soluzione:**
 - Il trasmettitore prenota dei time slot tramite ll messaggio di controllo RTS (Request To Send) avente per **argomento** il tempo di trasmissione richiesto, adatto alla lunghezza del messaggio dati.
 - Il ricevente conferma la prenotazione tramite il messaggio di controllo CTS (Clear To Send) avente per **argomento** il tempo prenotato al trasmettitore
