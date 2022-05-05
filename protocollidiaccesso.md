@@ -449,6 +449,7 @@ Se la **ritrasmissione** avvenisse per tutte le stazioni dopo un ugual **ritardo
 <img src="collisionicsma.png" alt="alt # **text" width="800">
 Fig 12
 
+
 La **soluzione** è ritrasmettere sempre dopo un **tempo casuale (backoff)** all’interno di una **finestra di contesa**
 
 <img src="backoff.png" alt="alt # **text" width="800">
