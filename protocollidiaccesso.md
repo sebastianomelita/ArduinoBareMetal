@@ -505,6 +505,7 @@ Lo scopo di tale raddoppio è quello di **adattare** la dimensione della finestr
 Fig 14
 
 > [Simulatore csma/ca](simcsmaca.md)
+
 > [Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
 ## **Ottimizzazioni**
