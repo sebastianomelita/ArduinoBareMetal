@@ -454,6 +454,7 @@ La **soluzione** è ritrasmettere sempre dopo un **tempo casuale (backoff)** all
 <img src="backoff.png" alt="alt # **text" width="800">
 Fig 13
 
+
 Il **backoff** casuale di una stazione inizia sempre dopo un tempo di attesa fisso **DIFS**. La stazione **ascolta** sempre il canale prima di tramettere e lo fa anche **durante il backoff**. Ci sono quindi due possibilità:
 - il backoff **scade** e quindi subito dopo la stazione comincia a trasmettere
 - il backoff viene **interrotto** dall'ascolto del canale occupato (da una stazione con backoff più corto) e **riprende** una volta che il canale ritorna libero.
