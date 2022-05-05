@@ -498,6 +498,7 @@ Lo scopo di tale raddoppio è quello di **adattare** la dimensione della finestr
 <img src="finestra.png" alt="alt # **text" width="600">
 Fig 14
 
+
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
 ## **Ottimizzazioni**
@@ -511,7 +512,7 @@ In alcune implementazioni (802.11) il DIFS può creare un accesso senza contesa:
 Un accesso senza contesa non vuol dire un accesso senza collisioni, queste sono sempre possibili se, dopo un DIFS, due stazioni iniziano a parlare contemporaneamente.
 
 <img src="immediato.png" alt="alt # **text" width="600">
-Fig 115
+Fig 15
 
 ## **Problema della stazione nascosta**
 
