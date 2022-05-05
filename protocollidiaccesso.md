@@ -18,6 +18,8 @@ Nascono adesso due problemi: rilevare una collisione, evitare una collisione.
 
 Per **evitare** le collisioni servono i **protocolli di arbitraggio** che sostanzialmente cercano di far parlare gli interlocutori sempre **uno alla volta**. I protocolli di arbitraggio si dividono in **master/slave** o centralizzati e in **peer to peer** o distribuiti. 
 
+I mezzi a BUS sono **bidirezionali**, nel senso che la comunicazione può avvenire nelle due direzioni possibili tra coppie di stazioni, ma solo in modalità **half duplex**, cioè trasmette sempre una stazione alla volta, anche quando a parlare sono solo in due. Stazioni **diverse** parlano sempre in **momenti** differenti, **regolati** dal protocollo.
+
 ### Protocolli di arbitraggio
 
 Nei protocolli di arbitraggio  **master slave** esiste una stazione centrale di livello gerarchico superiore detta master che, per conto delle stazioni slave, decide **chi** deve parlare e **quando** deve parlare evitando sovrapposizioni nel tempo dei messaggi.  
@@ -29,8 +31,6 @@ I protocolli di arbitraggio distribuiti si dividono ulteriormente in **determini
 Quelli **deterministici** eliminano alla radice la possibilità di collisioni realizzando un meccanismo di **cooperazione** tra le stazioni tramite messaggi di controllo con cui esse comunicano sia l'**intenzione** di trasmettere che il **diritto** di accesso al canale. Il **diritto** si acquisisce o si cede mediante il trasferimento di una informazione particolare detta **token**. Il token può essere **posseduto** quando si ha la necessità di trasmettere, ma solo da una stazione alla volta, e deve essere immediatamente **ceduto** ad un'altra stazione quando la stazione che lo deteneva ha finito di trasmettere. 
 
 Quelli **statistici** o **a contesa** realizzano una **competizione** per l'accesso al mezzo che deve essere regolata dalle singole stazioni semplicemente osservando il canale in maniera indipendente l'una dall'altra, senza coordinamento alcuno. Questa categoria di protocolli **limitano statisticamente** il problema delle collisioni ma **non lo annullano** completamente, per cui le collisioni necessitano ancora di **essere rilevate** dalle singole stazioni.
-
-I mezzi a BUS sono **bidirezionali**, nel senso che la comunicazione può avvenire nelle due direzioni possibili tra coppie di stazioni, ma solo in modalità **half duplex**, cioè trasmette sempre una stazione alla volta, anche quando a parlare sono solo in due. Stazioni **diverse** parlano sempre in **momenti** differenti, **regolati** dal protocollo.
 
 ### Come rilevare una collisione?
 
