@@ -99,8 +99,9 @@ While(true){
 <img src="alohaflow.png" alt="alt text" width="400">
 Fig 2
 
+>[Simulatore aloha](simaloha.md)
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
->
+
 ## **CSMA**
 
 ### **Fasi CSMA**
@@ -171,6 +172,7 @@ Fig 4
 - CSMA **trasmette solo se “sente”** il canale **libero**.
 - CSMA deve implementare un meccanismo di **ascolto** del canale **prima** della** trasmissione** (**CCA: Clear Channel Assesment**).
 
+>[Simulatore csma](simcsma.md)
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
 ## **CSMA/CD**
@@ -500,7 +502,7 @@ Lo scopo di tale raddoppio è quello di **adattare** la dimensione della finestr
 <img src="finestra.png" alt="alt # **text" width="600">
 Fig 14
 
-
+>[Simulatore csma/ca](simcsmaca.md)
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
 ## **Ottimizzazioni**
