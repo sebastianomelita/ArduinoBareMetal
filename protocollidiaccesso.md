@@ -543,7 +543,7 @@ La stazione B è visibile da tutti per cui sia dalla stazione A che ha prenotato
 <img src="rtscts.png" alt="alt # **text" width="800">
 Fig 17
 
-## **Prenotazione del canale mediante NAV**
+## **Gestione centralizzata delle prenotazioni**
 
 ### **CCA Reale e CCA Virtuale**
 
@@ -561,7 +561,7 @@ Il valore contenuto nel CTS rappresenta il tempo prenotato dalla stazione autori
 
 ### **Prenotazione del canale**
 
-Il **trasmettitore** prenota dei **time slot** tramite un messaggio di controllo **RTS** (Request To Send) avente per **argomento** il tempo di trasmissione necessario per inviare i suoi dati . 
+Il **trasmettitore** prenota, presso l'AP, dei **time slot** tramite un messaggio di controllo **RTS** (Request To Send) avente per **argomento** il tempo di trasmissione necessario per inviare i suoi dati . 
 
 Il **ricevente** conferma la prenotazione tramite il messaggio di controllo **CTS** (Clear To Send) avente per **argomento** il tempo prenotato dal trasmettitore.
 Il messaggio **CTS** è ricevuto da **tutte le stazioni** che, col tempo in esso riportato, impostano il proprio contantore di Carrier Sensing detto **NAV** con il quale tengono conto della prenotazione.
