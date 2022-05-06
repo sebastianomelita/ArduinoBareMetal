@@ -155,6 +155,7 @@ Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segn
 <img src="busnocollisioni.png" alt="alt text" width="700">
 Fig 3
 
+
 **BUS con collisioni:**
 
 Una stazione non può rilevare istantaneamente l’occupazione del BUS da parte di una stazione remota a causa di un fenomeno fisico detto ritardo di propagazione.
