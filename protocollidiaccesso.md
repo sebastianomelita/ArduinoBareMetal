@@ -534,11 +534,11 @@ Fig 16
 
 
 **Soluzione:**
-- Il trasmettitore prenota dei time slot tramite ll messaggio di controllo RTS (Request To Send) avente per **argomento** il tempo di trasmissione richiesto, adatto alla lunghezza del messaggio dati.
-- Il ricevente conferma la prenotazione tramite il messaggio di controllo CTS (Clear To Send) avente per **argomento** il tempo prenotato al trasmettitore
-La stazione B è visibile da tutti per cui sia dalla stazione A che ha prenotato il canale sia dalle altre, come la C, che potenzialmente potrebbero trasmettere di li a poco
-- Il messagio CTS dichiara l’avvenuta assegnazione del canale ad A per cui tutti gli altri, come B e C, si asterranno dal trasmettere per tutta la durata del tempo dichiarato nel CTS.
-- Spesso la gestione delle prenotazioni è **centralizzata** ed è effettuata dallo **stesso AP** che in genere è in una **posizione baricentrica** rispetto a tutte le stazioni ed è pertanto da queste **sempre visibile**.
+- Il **trasmettitore** prenota dei **time slot** tramite ll messaggio di controllo **RTS** (Request To Send) avente per **argomento** il tempo di trasmissione richiesto, adatto alla lunghezza del messaggio dati.
+- Il **ricevente** conferma la prenotazione tramite il messaggio di controllo **CTS** (Clear To Send) avente per **argomento** il tempo prenotato al trasmettitore
+La stazione **ricevente** B è **visibile da tutti** per cui sia dalla stazione A che ha prenotato il canale sia dalle altre, come la C, che potenzialmente potrebbero trasmettere di li a poco
+- Il **messagio CTS** dichiara l’avvenuta assegnazione del canale ad A per cui tutti gli altri, come B e C, si asterranno dal trasmettere per tutta la durata del tempo dichiarato nel CTS.
+- Spesso la **gestione** delle prenotazioni è **centralizzata** ed è effettuata dallo **stesso AP** che in genere è in una **posizione baricentrica** rispetto a tutte le stazioni ed è pertanto da queste **sempre visibile**.
 
 <img src="rtscts.png" alt="alt # **text" width="800">
 Fig 17
@@ -551,11 +551,11 @@ Fig 17
 - Il NAV > 0 allora il canale virtuale è considerato occupato
 - Il NAV = 0 allora il canale virtuale è considerato libero
 
-I due CCA sono del tutto indipendenti e possono portare a risultati diversi.  Lo stato del canale è stabilito dalla lettura di entrambi.
-- Quando entrambi rilevano che il canale è libero allora il trasmettitore inizia effettivamente la trasmissione.
-- Il contatore NAV viene impostato da tutte le stazioni al momento in cui queste ricevono un messaggio CTS con il valore di tempo in esso contenuto.
+I due CCA sono del tutto **indipendenti** e possono portare a risultati diversi.  Lo **stato del canale** è stabilito dalla lettura di entrambi.
+- Quando **entrambi** (AND logico) rilevano che il canale è libero allora il trasmettitore inizia effettivamente la trasmissione.
+- Il **contatore NAV** viene **impostato** da tutte le stazioni al momento in cui queste ricevono un messaggio CTS con il **valore del tempo** in esso contenuto.
 
-Il valore contenuto nel CTS rappresenta il tempo prenotato dalla stazione autorizzata a trasmettere ed è il tempo che essa ritiene necessario per trasmettere il suo messaggio alla velocità corrente del sistema.
+Il **valore contenuto** nel CTS rappresenta il **tempo prenotato** dalla stazione autorizzata a trasmettere ed è il tempo che essa ritiene necessario per trasmettere il suo messaggio alla velocità corrente del sistema.
 
 ### **Prenotazione del canale**
 
@@ -564,7 +564,7 @@ Il **trasmettitore** prenota, presso il **ricevitore** (generalmente un **AP**),
 Il **ricevente** conferma la prenotazione tramite il messaggio di controllo **CTS** (Clear To Send) avente per **argomento** il tempo prenotato dal trasmettitore.
 Il messaggio **CTS** è ricevuto da **tutte le stazioni** che, col tempo in esso riportato, impostano il proprio contantore di Carrier Sensing detto **NAV** con il quale tengono conto della prenotazione.
 
-Il NAV viene decrementato nel tempo, fino a 0; quando il NAV è diverso da zero, vuol dire che una trasmissione è in atto nelle vicinanze e quindi la stazione si astiene dal trasmettere.
+Il NAV viene **decrementato** periodicamente nel tempo, fino a 0; quando il NAV è **diverso da zero**, vuol dire che una trasmissione è in atto nelle vicinanze e quindi la stazione si astiene dal trasmettere.
 
 La stazione che ha prenotato il canale durante il NAV può effettuare in sicurezza la trasmissione dei suoi dati perchè il tempo di NAV è, di fatto, **al riparo** dalle collisioni.
 
