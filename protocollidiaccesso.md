@@ -601,11 +601,12 @@ Un AP può assumere un controllo ancor più rigoroso sull'andamento delle trasmi
 - il **NAV CFP** (Ciontention Free Period) inibisce tutte le stazioni dal prendere l'**iniziativa di cominciare** una trasmissione. Finchè è valido le stazioni comunicheranno in modalità **master/slave**, cioè **risponderanno** solo **se interrogate**.
 
 <img src="CFP1.png" alt="alt # **text" width="600">
+Fig 20
 
 **Durante il CFP**, il PC invia messaggi di Polling a rotazione verso le stazioni, interrogandole a riguardo della **disponibilità** di dati da trasmettere. Questà modalità offre il vantaggio di adattarsi meglio alle **sorgenti** dati di tipo **real time** caratterizzate da trasmissioni di tipo **sincrono**. Sorgenti sincrone tipicamente sono: **sensori**, telefonia **VOIP**, **videoconferenza**, **streaming**, ecc.
 
 <img src="CFP2.png" alt="alt # **text" width="600">
-
+Fig 21
 
 **Sitografia**:
 - https://teoriadeisegnali.it/story/802.11/on_desk/accesso.html
