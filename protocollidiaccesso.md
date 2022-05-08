@@ -277,7 +277,7 @@ Il tempo di backoff è un numero casuale calcolato tra un valore minimo ed un va
 Nel caso del CSMA/CD:
 ```C++
 	        k = min(10, N); //numero di tentativi
-		r = random(0, 2k – 1)*RTT; //tempo di backoff
+		r = random(0, 2x<sup>k</sup> – 1)*RTT; //tempo di backoff
 ```
 ### **Procollo CSMA/CD completo in pseudocodice**
 
