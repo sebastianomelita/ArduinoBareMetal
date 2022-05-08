@@ -33,12 +33,13 @@ Quelli **deterministici** eliminano alla radice la possibilità di collisioni re
 
 Quelli **statistici** o **a contesa** realizzano una **competizione** per l'accesso al mezzo che deve essere regolata dalle singole stazioni semplicemente osservando il canale in maniera indipendente l'una dall'altra, senza coordinamento alcuno. Questa categoria di protocolli **limitano statisticamente** il problema delle collisioni ma **non lo annullano** completamente, per cui le collisioni necessitano ancora di **essere rilevate** dalle singole stazioni.
 
-### Come rilevare una collisione?
+### Come rilevare una collisione
 
-- Si ricorre all’utilizzo di un protocollo di trasmissione confermato
-- I **protocolli confermati** sono protocolli in cui **il mittente** possiede un timer, detto **timer di ritrasmissione**, impostato ad un valore massimo di conteggio detto **timeout**.
+Si ricorre di base ad una rilevazione **indiretta** di una collisione sul canale mediante l’utilizzo di un protocollo di trasmissione confermato.
+
+I **protocolli confermati** sono protocolli in cui **il mittente** possiede un timer, detto **timer di ritrasmissione**, impostato ad un valore massimo di conteggio detto **timeout**:
 - Il timer viene **avviato** al momento esatto dell'invio di un messaggio e viene **resettato** al momento della ricezione di un messaggio di conferma di corretto arrivo a destinazione.
-- Il messaggio di conferma viene detto **ack** (acknowledgement) ed un messaggio di **controllo** (non dati) che viene inviato **dal ricevente** in direzione del mittente. Un ack è sempre inviato dal ricevente di un precedente messaggio, mai dal mittente di quel messaggio.
+- Il messaggio di conferma viene detto **ack** (acknowledgement) ed è un messaggio di **controllo** (non dati) che viene inviato **dal ricevente** in direzione del mittente. Un ack è sempre inviato dal ricevente di un precedente messaggio, mai dal mittente di quel messaggio.
 - Se il timer di trasmissione è resettato **prima dello scadere** del timeout la trasmissione è considerata avvenuta con **successo**. Se invece allo scadere del timeout ancora non si ricevono ack allora il messaggio viene dato per perso ed è, dal mittente, **ritrasmesso**.
 
 ### Come reagire a fronte di una collisione?
@@ -110,7 +111,7 @@ Fig 2
 
 Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione).
 
-**Ascolto della Portante** può essere considerato il **misurare** una quantità di energia sul canale significativamente maggiore di quella che c'è normalmente su un canale a riposo (idle). Ciò può essere rilevato mediante un dispositivo a **soglia** che scatti oltre un certo valore di riferimento.
+**Ascolto della Portante** può essere considerato il **misurare** una quantità di energia sul canale significativamente maggiore di quella che c'è normalmente su un canale a riposo (idle). Ciò può essere rilevato mediante un dispositivo a **soglia** che scatti oltre un certo valore di riferimento. Si tratta di una rilevazione **diretta** di una collisione sul canale.
 
 Una stazione trasmittente: 
 - al momento che ha una trama pronta, aspetta finchè non “sente” il canale libero (cioè nessuno trasmette).
