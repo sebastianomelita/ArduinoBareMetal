@@ -469,7 +469,7 @@ Il **backoff** casuale di una stazione inizia sempre dopo un tempo di attesa fis
 
 Nel caso del WiFi in figura, è illustrato un backoff **con prenotazione** che ha la proprietà di non azzerare, sprecandolo, il tempo di attesa **già trascorso** da una stazione sul proprio backoff:
 - Una stazione fa partire il bckoff quando sente il canale libero
-- nel frattempo, la stazione in attesa del bacoff continua a sentire il canale (CCA)
+- nel frattempo, la stazione in attesa del backoff continua a sentire il canale (CCA)
 - se il canale diventa occupato la stazione in attesa del backoff lo "congela" interrompendolo sul valore di tempo già trascorso, senza azzerarlo.
 - Nel momento in cui il canale **ritorna libero** la stazione doppiamente in attesa, per il canale libero e per il  backoff, ricomincia il **conteggio iniziale** dal tempo in cui questo era stato interrotto, senza ricalcolarlo daccapo. 
 
