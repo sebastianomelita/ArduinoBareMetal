@@ -598,7 +598,7 @@ Il protocollo CSMA/CA (Carrier Sense Medium Access with Collision Avoidance) fun
 
 Un AP può assumere un controllo ancor più rigoroso sull'andamento delle trasmissioni, se svolge un ruolo di Point Coordinator (PC), supportando la Point Coordination Function (PCF). In tal caso, in occasione delle trame Beacon può dare inizio ad un periodo libero da contesa (CFP, Contention Free Period), in cui annuncia un NAV tale da inibire la trasmissione di tutte le altre stazioni:
 - il **beacon** è una particolare sequenza di bit che serve a **sincronizzare** gli orologi dell'AP con quello di tutte le stazioni e viene trasmessa **periodicamente** ad intervalli di tempo **regolari**. La trasmissione regolare del beacon, può però essere **posticipata** a causa della occupazione del mezzo trasmissivo, ed in tal caso ha luogo dopo che è trascorso un **PIFS** (PCF IFS) dal momento in cui il mezzo è libero.
-- il **NAV CFP** (Ciontention Free Period) inibisce tutte le stazioni dal prendere l'**iniziativa di cominciare** una trasmissione, finchè è valido le stazioni comunicheranno in modalità **master/slave**, cioè **risponderanno** solo **se interrogate**.
+- il **NAV CFP** (Ciontention Free Period) inibisce tutte le stazioni dal prendere l'**iniziativa di cominciare** una trasmissione. Finchè è valido le stazioni comunicheranno in modalità **master/slave**, cioè **risponderanno** solo **se interrogate**.
 
 <img src="CFP1.png" alt="alt # **text" width="600">
 
