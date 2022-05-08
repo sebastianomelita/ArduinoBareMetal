@@ -108,7 +108,10 @@ Fig 2
 
 ### **Fasi CSMA**
 
-Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione)
+Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione).
+
+**Ascolto della Portante** può essere considerato il **misurare** una quantità di energia sul canale significativamente maggiore di quella che c'è su un canale a riposo (idle). Ciò può essere rilevato mediante un dispositivo a **soglia** che scatti oltre un certo valore di riferimento.
+
 Una stazione trasmittente: 
 - al momento che ha una trama pronta, aspetta finchè non “sente” il canale libero (cioè nessuno trasmette).
 - Appena essa rileva il canale libero invia immediatamente la trama.
