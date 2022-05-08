@@ -596,9 +596,13 @@ Il protocollo CSMA/CA (Carrier Sense Medium Access with Collision Avoidance) fun
 
 ## **PCF e Contention Free Period**
 
-Un AP può assumere un controllo ancor più rigoroso sull'andamento delle trasmissioni, se svolge un ruolo di Point Coordinator (PC), supportando la Point Coordination Function (PCF). In tal caso, in occasione delle trame Beacon può dare inizio ad un periodo libero da contesa (CFP, Contention Free Period), in cui annuncia un NAV tale da inibire la trasmissione di tutte le altre stazioni.
+Un AP può assumere un controllo ancor più rigoroso sull'andamento delle trasmissioni, se svolge un ruolo di Point Coordinator (PC), supportando la Point Coordination Function (PCF). In tal caso, in occasione delle trame Beacon può dare inizio ad un periodo libero da contesa (CFP, Contention Free Period), in cui annuncia un NAV tale da inibire la trasmissione di tutte le altre stazioni:
+- il **beacon** è una particolare sequenza di bit che serve a **sincronizzare** gli orologi dell'AP con quello di tutte le stazioni e viene trasmessa **periodicamente** ad intervalli di tempo **regolari**. La trasmissione regolare del beacon, può però essere **posticipata** a causa della occupazione del mezzo trasmissivo, ed in tal caso ha luogo dopo che è trascorso un **PIFS** (PCF IFS) dal momento in cui il mezzo è libero.
+- il **NAV CFP** (Ciontention Free Period) inibisce tutte le stazioni dal prendere l'**iniziativa di cominciare** una trasmissione, finchè è valido le stazioni comunicheranno in modalità **master/slave**, cioè **risponderanno** solo **se interrogate**.
 
 <img src="CFP1.png" alt="alt # **text" width="600">
+
+**Durante il CFP**, il PC invia messaggi di Polling a rotazione verso le stazioni, interrogandole a riguardo della **disponibilità** di dati da trasmettere. Questà modalità offre il vantaggio di adattarsi meglio alle **sorgenti** dati di tipo **real time** caratterizzate da trasmissioni di tipo **sincrono**. Tipicamente sono: **sensori**, telefonia **VOIP**, **videoconferenza**, **streaming**, ecc.
 
 <img src="CFP2.png" alt="alt # **text" width="600">
 
@@ -617,6 +621,5 @@ Un AP può assumere un controllo ancor più rigoroso sull'andamento delle trasmi
 - https://en.wikipedia.org/wiki/Extended_interframe_space
 - https://www.hamilton.ie/publications/Thesis_tianji.pdf
 - https://networkengineering.stackexchange.com/questions/64340/whats-the-usage-of-jamming-signal-in-csma-cd
-
 
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
