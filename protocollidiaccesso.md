@@ -22,9 +22,10 @@ I mezzi a BUS sono **bidirezionali**, nel senso che la comunicazione può avveni
 
 ### Protocolli di arbitraggio
 
-Nei protocolli di arbitraggio  **master slave** esiste una stazione centrale di livello gerarchico superiore detta master che, per conto delle stazioni slave, decide **chi** deve parlare e **quando** deve parlare evitando sovrapposizioni nel tempo dei messaggi.  
+Nei protocolli di arbitraggio  **master slave** esiste una stazione centrale di livello gerarchico superiore detta master che, per conto delle stazioni slave, decide **chi** deve parlare e **quando** deve parlare evitando sovrapposizioni nel tempo dei messaggi. Questo tipo di politica è adatta alle trasmissioni **sincrone** da parte di **sorgenti regolari** di dati, quali i **sensori**.
 
-Nei protocolli di arbitraggio  **peer to peer**, o distribuiti, le stazioni sono tutte di pari livello e sono programmate per interpretare continuamente la situazione del canale in modo da parlare sempre una alla volta. 
+Nei protocolli di arbitraggio  **peer to peer**, o distribuiti, le stazioni sono tutte di pari livello e sono programmate per interpretare continuamente la situazione del canale in modo da parlare sempre una alla volta. Qesto tipo di politica è adatta alle trasmissioni **asincrone** da parte di **sorgenti intermittanri** di dati, quali **comandi**, allarmi, ecc.
+
 
 I protocolli di arbitraggio distribuiti si dividono ulteriormente in **deterministici** e in **a contesa**. 
 
@@ -607,6 +608,8 @@ Fig 20
 
 <img src="CFP2.png" alt="alt # **text" width="600">
 Fig 21
+
+Normalmente i dispositivi AP lavorano in **modalità ibrida** DCF e PCF. Vengono trasmessi periodicamente dei beacon e l'intervallo temporale tra un beacon e l'altro viene suddiviso in **due zone**, una soggetta a trasmissioni di tipo **PCF** e quindi **intrinsecamente** al riparo dalle collisioni adatta a trasmissioni **sincrone** e un'altra di tipo **DCF** soggetta a collisioni sugli RTS dedicata alle trasmissioni **asincrone**.
 
 **Sitografia**:
 - https://teoriadeisegnali.it/story/802.11/on_desk/accesso.html
