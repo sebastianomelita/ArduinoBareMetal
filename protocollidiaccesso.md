@@ -57,7 +57,7 @@ Soluzione: **Backoff**
 - È calcolato all’interno di un intervallo detto **finestra di contesa**
 
 ## **ALOHA**
-E' il protocollo peer to peer **peggiore** cioè con **probabilità** di collisione **più alta** ma è anche quello con l'**implementazione più semplice**. E' adatto per la trasmissione di **messaggi brevi** ed è appropriato per dispostivi con **ridotta capacità di calcolo** e con esigenze di **basso consumo** energetico.
+E' il protocollo peer to peer per certi versi **peggiore**, infatti è quello con la **probabilità** di collisione **più alta** ma è anche quello con l'**implementazione più semplice**. E' adatto per la trasmissione di **messaggi brevi** ed è appropriato per dispostivi con **ridotta capacità di calcolo** e con esigenze di **basso consumo** energetico.
 
 ### **Fasi ALOHA**
 Una **stazione trasmittente**:
