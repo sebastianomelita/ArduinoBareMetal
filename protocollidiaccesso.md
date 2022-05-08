@@ -168,7 +168,7 @@ Fig 3
 
 **BUS con collisioni:**
 
-Una stazione non può rilevare istantaneamente l’occupazione del BUS da parte di una stazione remota a causa di un fenomeno fisico detto ritardo di propagazione. Per questo motivo l'ascolto del canale prima della trasmissione, benchè **riduca drasticamente** la probabilità di collisioni, **non è sufficiente** ad **azzerarla**.
+Una stazione non può rilevare istantaneamente l’occupazione del BUS da parte di una stazione remota a causa di un fenomeno fisico detto ritardo di propagazione. Per questo motivo l'**ascolto del canale** prima della trasmissione, benchè **riduca drasticamente** la probabilità di collisioni, **non è sufficiente** ad **azzerarla**.
 
 <img src="buscollisioni.png" alt="alt text" width="700">
 Fig 4
