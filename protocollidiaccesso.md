@@ -57,6 +57,7 @@ Soluzione: **Backoff**
 - È calcolato all’interno di un intervallo detto **finestra di contesa**
 
 ## **ALOHA**
+E' il protocollo peer to peer **peggiore** cioè con **probabilità** di collisione **più alta** ma è anche quello con l'implementazione più semplice. E' adatto per la trasmissione di brevi messaggi ed è appropriato per dispostivi con ridotta capacità di calcolo e /o basso consumo energetico.
 
 ### **Fasi ALOHA**
 Una **stazione trasmittente**:
@@ -113,7 +114,7 @@ Fig 2
 
 ### **Fasi CSMA**
 
-Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione).
+Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione). E' una **miglioria** sostanziale dell'Aloha perchè l'ascolto del canale prima della trasmissione **riduce** la **probabilità** di collisione ma è anche quello con l'implementazione **più complessa**. E' adatto per la trasmissione di messaggi più lunghi ed è appropriato per dispostivi con migliore capacità di calcolo quando si è in assenza di problemi di consumo energetico.
 
 **Ascolto della Portante** può essere considerato il **misurare** una quantità di energia sul canale significativamente maggiore di quella che c'è normalmente su un canale **a riposo** (idle). Ciò può essere rilevato mediante un dispositivo a **soglia** che scatti oltre un certo valore di riferimento. Si tratta di una rilevazione **diretta** di **canale occupato**.
 
@@ -167,7 +168,7 @@ Fig 3
 
 **BUS con collisioni:**
 
-Una stazione non può rilevare istantaneamente l’occupazione del BUS da parte di una stazione remota a causa di un fenomeno fisico detto ritardo di propagazione.
+Una stazione non può rilevare istantaneamente l’occupazione del BUS da parte di una stazione remota a causa di un fenomeno fisico detto ritardo di propagazione. Per questo motivo l'ascolto del canale prima della trasmissione, benchè **riduca drasticamente** la probabilità di collisioni, **non è sufficiente** ad **azzerarla**.
 
 <img src="buscollisioni.png" alt="alt text" width="700">
 Fig 4
@@ -177,10 +178,11 @@ Fig 4
 **Similitudini:**
 - Sia ALOHA che CSMA devono implementare un meccanismo di rilevazione della collisione basato su ack
 - Sia ALOHA che CSMA rilevano la collisione a seguito dell’evento mancata ricezione del messaggio di ack (allo scadere di un timeout). 
+- entrambi soffrono del fenomeno delle collisioni
 
 **Differenze:**
-- ALOHA **trasmette senza verificare** se il canale è **occupato** o meno.
-- CSMA **trasmette solo se “sente”** il canale **libero**.
+- ALOHA **trasmette senza verificare** se il canale è **occupato** o meno, ciò determina **maggiore** probabiltà di collisione rispetto al CSMA.
+- CSMA **trasmette solo se “sente”** il canale **libero**, ciò determina **minore** probabiltà di collisione rispetto ad Aloha.
 - CSMA deve implementare un meccanismo di **ascolto** del canale **prima** della** trasmissione** (**CCA: Clear Channel Assesment**).
 
 > [Simulatore csma](simcsma.md)
@@ -191,7 +193,7 @@ Fig 4
 
 ### **Fasi CSMA/CD basico**
 
-Significa **Carrier Sensing Multiple Access Collision Detection** cioè protocollo di Accesso Multiplo con **Ascolto della Portante** (**prima** della trasmissione) e **rilevazione della Collisione** (**durante** la trasmissione).
+Significa **Carrier Sensing Multiple Access Collision Detection** cioè protocollo di Accesso Multiplo con **Ascolto della Portante** (**prima** della trasmissione) e **rilevazione della Collisione** (**durante** la trasmissione). E' una **miglioria** del CSMA standard che permette un rapido recupero della trasmissione a fronte di una collisione.
 
 Una stazione **trasmittente**:
 - al momento che ha una trama pronta, **ascolta il canale prima** di trasmettere per stabilire se esso è libero o meno.
@@ -337,8 +339,8 @@ Similitudini:
 - CSMA e CSMA/CD devono implementare un meccanismo di ascolto del canale prima della trasmissione per stabilire se esso è libero o meno. 
 
 Differenze:
-- il CSMA **rileva la collisione indirettamente** dopo la trasmissione **in fase di ricezione**, a seguito del **mancato arrivo del messaggio di ack** (allo scadere di un timeout), Si tratta di una tecnica SW. Trasmissione e ricezione non devono essere contemporanee.
-- Il CSMA/CD durante la trasmissione mantiene attiva anche la funzione di  ricezione che può rilevare una collisione perchè:
+- il CSMA **rileva la collisione indirettamente** (più lentamente) dopo la trasmissione **in fase di ricezione**, a seguito del **mancato arrivo del messaggio di ack** (allo scadere di un timeout), Si tratta di una tecnica SW. Trasmissione e ricezione non devono essere contemporanee.
+- Il CSMA/CD durante la trasmissione mantiene attiva anche la funzione di  ricezione che può rilevare **direttamente** (istantaneamente quando avviene) una collisione perchè:
     - Il segnale “ascoltato” durante la trasmissione ha una potenza più elevata di quello effettivamente trasmesso. É una **tecnica HW**.
     - Il segnale “ascoltato” e decodificato durante la trasmissione ha un valore in bit diverso da quello trasmesso. É una **tecnica SW**.
 
@@ -346,7 +348,7 @@ Differenze:
 
 ## **CSMA/CA**
 
-Non è possibile sempre rilevare le collisioni **durante la trasmissione (mezzo radio)**
+Non è sempre possibile rilevare le collisioni **durante la trasmissione** perchè l'ascolto diretto del canale sarebbe impossibile o inefficace (mezzo radio). In queste situazione la **rilevazione della collisione** può essere soltanto indiretta osservando la **mancata ricezione** di un ack. Per **velocizzare** il processo di recupero della trasmissione a fronte di una collisione, nel CSMA/CA i messaggi di ack vengono posti ad un **livello di priorità più elevato** rispetto agli altri messaggi mettendoli **al riparo** dalle collisioni. Le collisioni **non** possono intaccare i messaggi di ack.
 
 Miglioramento del CSMA grazie all’introduzione degli **IFS (interframe space)**:
 - Ritardo iniziale di trasmissione (**EIFS**) 
