@@ -437,7 +437,7 @@ Durante il **tempo di attesa DIFS** l’ack ha il tempo di propagarsi fino alla 
 
 Il **tempo di attesa DIFS** non elimina in assoluto la possibilità di una **eventuale collisione** perchè può sempre accadere che qualcuno inizi a trasmettere un **messaggio** un **attimo dopo** dello scadere del DIFS senza che la stazione in attesa possa rendersene conto a causa del fenomeno del **ritardo di propagazione**. Ma la collisione può riguardare solo un **nuovo messaggio** non la trasmissione dell'ack di quello appena inviato.
 
-Il tempo di attesa DIFS è **uguale** per tutte le stazioni e **dopo** di esso inizia una finestra di **trasmissione**, detta **finestra di contesa** (CW), in cui tutte le stazioni **competono** per l'accesso al canale avendo solo l'accortezza di **ascoltare prima di tramettere**, cautela che limita ma non annulla le probabilità di collisioni (per via del ritardo di propagazione).
+Il tempo di attesa DIFS è **uguale** per tutte le stazioni e **dopo** di esso inizia una finestra di **trasmissione**, detta **finestra di contesa** (CW), in cui tutte le stazioni **competono** per l'accesso al canale avendo solo l'accortezza di **ascoltare prima di tramettere**, cautela che **limita ma non annulla** le probabilità di collisioni (per via del ritardo di propagazione).
 
 <img src="difs.png" alt="alt # **text" width="600">
 Fig 10
