@@ -150,7 +150,7 @@ while(N <= max){
 ### **Ritardo di propagazione**
 
 Una stazione non può rilevare l’occupazione del BUS da parte di una stazione remota semplicemente ascoltando prima di trasmettere a causa di un fenomeno fisico detto **ritardo di propagazione** del segnale.
-Il ritardo di propagazione di un segnale è il **tempo finito** con cui esso viaggia da una parte all’altra di un mezzo trasmissivo ed è dovuto al fatto che esso si propaga nello spazio con una **velocità finita**:
+Il **ritardo di propagazione** di un segnale è il **tempo finito** con cui esso viaggia da una parte all’altra di un mezzo trasmissivo ed è dovuto al fatto che esso si propaga nello spazio con una **velocità finita**:
 - Nel **vuoto** essa è pari alla **velocità della luce** cioè **300.000Km/sec**
 - In un **conduttore metallico** ha un valore **inferiore** pari a circa **200.000Km/sec**
 
