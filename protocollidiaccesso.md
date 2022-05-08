@@ -467,7 +467,7 @@ Il **backoff** casuale di una stazione inizia sempre dopo un tempo di attesa fis
 - il backoff viene **interrotto** dall'ascolto del canale occupato (da una stazione con backoff più corto) e **riprende** una volta che il canale ritorna libero.
 - la trasmissione di un'altra stazione potrebbe anche essere destinata alla stazione stessa per cui il backoff potrebbe anche essere interrotto dalla ricezione di un messaggio.
 
-Nel caso del WiFi in figura, è illustrato un backoff **con prenotazione** che ha la proprietà di non azzerare, sprecandolo, il tempo di attesa **già trascorso** da una stazione sul proprio backoff. 
+Nel caso del WiFi in figura, è illustrato un backoff **con prenotazione** che ha la proprietà di non azzerare, sprecandolo, il tempo di attesa **già trascorso** da una stazione sul proprio backoff:
 - Una stazione fa partire il bckoff quando sente il canale libero
 - nel frattempo, la stazione in attesa del bacoff continua a sentire il canale (CCA)
 - se il canale diventa occupato la stazione in attesa del backoff lo "congela" interrompendolo sul valore di tempo già trascorso, senza azzerarlo.
