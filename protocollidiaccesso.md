@@ -602,7 +602,7 @@ Un AP può assumere un controllo ancor più rigoroso sull'andamento delle trasmi
 
 <img src="CFP1.png" alt="alt # **text" width="600">
 
-**Durante il CFP**, il PC invia messaggi di Polling a rotazione verso le stazioni, interrogandole a riguardo della **disponibilità** di dati da trasmettere. Questà modalità offre il vantaggio di adattarsi meglio alle **sorgenti** dati di tipo **real time** caratterizzate da trasmissioni di tipo **sincrono**. Tipicamente sono: **sensori**, telefonia **VOIP**, **videoconferenza**, **streaming**, ecc.
+**Durante il CFP**, il PC invia messaggi di Polling a rotazione verso le stazioni, interrogandole a riguardo della **disponibilità** di dati da trasmettere. Questà modalità offre il vantaggio di adattarsi meglio alle **sorgenti** dati di tipo **real time** caratterizzate da trasmissioni di tipo **sincrono**. Sorgenti sincrone tipicamente sono: **sensori**, telefonia **VOIP**, **videoconferenza**, **streaming**, ecc.
 
 <img src="CFP2.png" alt="alt # **text" width="600">
 
