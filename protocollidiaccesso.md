@@ -14,7 +14,7 @@ Una **collisione** è l'evento di **sovrapposizione distruttiva** di due o più 
 
 Una collisione su un mezzo a BUS **accade** quando due o più interlocutori **parlano contemporaneamente**. 
 
-Nascono adesso due problemi: 
+Nascono adesso due **problemi**: 
 - rilevare una collisione
 - evitare una collisione. 
 
