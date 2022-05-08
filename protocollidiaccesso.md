@@ -35,7 +35,7 @@ Quelli **statistici** o **a contesa** realizzano una **competizione** per l'acce
 
 ### Come rilevare una collisione
 
-Si ricorre di base ad una rilevazione **indiretta** di una collisione sul canale mediante l’utilizzo di un protocollo di trasmissione confermato.
+Si ricorre di base ad un meccanismo di rilevazione **indiretta** di una collisione sul canale mediante l’utilizzo di un **protocollo** di trasmissione **confermato**.
 
 I **protocolli confermati** sono protocolli in cui **il mittente** possiede un timer, detto **timer di ritrasmissione**, impostato ad un valore massimo di conteggio detto **timeout**:
 - Il timer viene **avviato** al momento esatto dell'invio di un messaggio e viene **resettato** al momento della ricezione di un messaggio di conferma di corretto arrivo a destinazione.
