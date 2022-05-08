@@ -149,13 +149,16 @@ while(N <= max){
 
 ### **Ritardo di propagazione**
 
-Una stazione non può rilevare l’occupazione del BUS da parte di una stazione remota semplicemente ascoltando prima di trasmettere a causa di un fenomeno fisico detto **ritardo di propagazione** del segnale.
+Una stazione **non può** rilevare l’occupazione del BUS da parte di una stazione remota **semplicemente ascoltando prima** di trasmettere a causa di un fenomeno fisico detto **ritardo di propagazione** del segnale.
 Il **ritardo di propagazione** di un segnale è il **tempo finito** con cui esso viaggia da una parte all’altra di un mezzo trasmissivo ed è dovuto al fatto che esso si propaga nello spazio con una **velocità finita**:
 - Nel **vuoto** essa è pari alla **velocità della luce** cioè **300.000Km/sec**
 - In un **conduttore metallico** ha un valore **inferiore** pari a circa **200.000Km/sec**
 
-se **due stazioni** A e B trasmettono una di seguito all'altra separate di un tempo Δt e il tempo di propagazione tra A a B è maggiore di Δt allora, ascoltando la portante, B sente il canale libero e inizia a trasmettere il suo messaggio mentre c’è quello di A che sta per arrivare.
-ciascuna stazione riterrà di essere l’unica a trasmettere sul canale fino a che la trama (corrotta dalla collisione) di A, che ha trasmesso prima, non arriverrà all’altra stazione B dopo il tempo di propagazione Δt corrispondente alla distanza tra A e B.
+La **collisione** accade nonostante che due sorgenti, che trasmettono **quasi simultaneamente**, sentano entrambe il canale libero. Chiaramente una delle sorgenti ha cominciato **per prima** la trasmissione ma, nonostante ciò, **la seconda** sente ugualmente il canale libero perchè il messaggio della prima non è **ancora arrivato** quando questa decide di trasmettere:
+
+- se **due stazioni** A e B trasmettono una di seguito all'altra separate di un tempo Δt e il tempo di propagazione tra A a B è maggiore di Δt allora, ascoltando la portante:
+- B sente il canale libero e inizia a trasmettere il suo messaggio mentre c’è quello di A che sta per arrivare.
+- ciascuna stazione riterrà di essere l’unica a trasmettere sul canale fino a che la trama (corrotta dalla collisione) di A, che ha trasmesso prima, non arriverrà all’altra stazione B dopo il tempo di propagazione Δt corrispondente alla distanza tra A e B.
 
 La **rilevazione reale**, da parte di una stazione, di **una collisione** può avvenire solo **dopo l’inizio** della trasmissione (o **durante** o **alla fine**).
 Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segnale si propaga dall’una all’altra:   td = d/vP
