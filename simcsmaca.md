@@ -12,8 +12,8 @@
 4) Avviare la simulazione con il tasto apposito in alto a destra
 5) Osservare i messaggi di log nella finestra del monitor serial in basso a destra
 	- Se si osserva il **monitor dell'arduino N.1** si ritrova in output il log del **ricevitore** che informa sull'arrivo di un nuovo messaggio dati e l'nvio automatico di un nuovo **messaggio di controllo di ack** al trasmettitore.
-	- Se si osserva il **monitor dell'arduino N.2** si ritrova in output il log del **trasmettitore N1** che informa sull'arrivo di un nuovo messaggio dati e l'nvito a premere il pulsante **msgBtn** per inviare un nuovo **messaggio dati** al ricevitore.
-	- Se si osserva il **monitor dell'arduino N.3** si ritrova in output il log del **trasmettitore N2** che informa sull'arrivo di un nuovo messaggio dati e l'nvito a premere il pulsante **msgBtn** per inviare un nuovo **messaggio dati** al ricevitore.
+	- Se si osserva il **monitor dell'arduino N.2** si ritrova in output il log del **trasmettitore N2** che informa sull'arrivo di un nuovo messaggio dati e l'nvito a premere il pulsante **msgBtn** per inviare un nuovo **messaggio dati** al ricevitore.
+	- Se si osserva il **monitor dell'arduino N.3** si ritrova in output il log del **trasmettitore N3** che informa sull'arrivo di un nuovo messaggio dati e l'nvito a premere il pulsante **msgBtn** per inviare un nuovo **messaggio dati** al ricevitore.
 
 Il **log** di un **generico dispositivo** informa sulla **presenza** sul BUS di eventuali messaggi e li mostra evidenziando i **valori dei campi** che lo costituiscono: Ciò accade a prescindere dal fatto che un messaggio sia destinato a quel dispositivo o meno, se è destinato a lui evidenzia l'evento con il log ```"msg destinato a me"```.
 
