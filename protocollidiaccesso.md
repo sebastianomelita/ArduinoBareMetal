@@ -465,13 +465,14 @@ Fig 13
 Il **backoff** casuale di una stazione inizia sempre dopo un tempo di attesa fisso **DIFS**. La stazione **ascolta** sempre il canale prima di tramettere e lo fa anche **durante il backoff**. Ci sono quindi due possibilità:
 - il backoff **scade** e quindi subito dopo la stazione comincia a trasmettere
 - il backoff viene **interrotto** dall'ascolto del canale occupato (da una stazione con backoff più corto) e **riprende** una volta che il canale ritorna libero.
-- la trasmissione di un'altra stazione potrebbe anche essere destinata alla stazione stessa per cui il backoff potrebbe anche essere interrotto dalla ricezione di un messaggio.
+
+La trasmissione di un'altra stazione potrebbe anche essere destinata alla stazione stessa per cui il backoff potrebbe anche essere interrotto dalla **ricezione** di un messaggio.
 
 Nel caso del WiFi in figura, è illustrato un backoff **con prenotazione** che ha la proprietà di non azzerare, sprecandolo, il tempo di attesa **già trascorso** da una stazione sul proprio backoff:
-- Una stazione fa partire il bckoff quando sente il canale libero
-- nel frattempo, la stazione in attesa del backoff continua a sentire il canale (CCA)
-- se il canale diventa occupato la stazione in attesa del backoff lo "congela" interrompendolo sul valore di tempo già trascorso, senza azzerarlo.
-- Nel momento in cui il canale **ritorna libero** la stazione doppiamente in attesa, per il canale libero e per il  backoff, ricomincia il **conteggio iniziale** dal tempo in cui questo era stato interrotto, senza ricalcolarlo daccapo. 
+- Una stazione fa partire il backoff quando sente il **canale libero**
+- nel frattempo, la stazione in attesa del backoff continua a **sentire** il canale (CCA)
+- se il canale **diventa occupato** prima che il backoff scada allora la stazione lo "**congela**" interrompendolo sul valore di tempo già trascorso, senza azzerarlo.
+- Nel momento in cui il canale **ritorna libero** la stazione che era doppiamente in attesa, per il canale libero e per il  backoff, adesso **rimane in attesa** solo per il backoff, ricominciando il **conteggio iniziale** dal tempo in cui questo era stato interrotto, senza ricalcolarlo daccapo. 
 
 E' una maniera per non perdere la **priorità acquisita** ricalcolando il backoff da zero. E' una **ottimizzazione** per garantire una maggiore **equità (fairness)** nell'accesso alla risorsa canale che non sempre è implementata in protocolli CSMA/CA diversi dal WiFi.
 
