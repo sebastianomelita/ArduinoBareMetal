@@ -24,7 +24,7 @@ I mezzi a BUS sono **bidirezionali**, nel senso che la comunicazione può avveni
 
 Nei protocolli di arbitraggio  **master slave** esiste una stazione centrale di livello gerarchico superiore detta master che, per conto delle stazioni slave, decide **chi** deve parlare e **quando** deve parlare evitando sovrapposizioni nel tempo dei messaggi. Questo tipo di politica è adatta alle trasmissioni **sincrone** da parte di **sorgenti regolari** di dati, quali i **sensori**.
 
-Nei protocolli di arbitraggio  **peer to peer**, o distribuiti, le stazioni sono tutte di pari livello e sono programmate per interpretare continuamente la situazione del canale in modo da parlare sempre una alla volta. Qesto tipo di politica è adatta alle trasmissioni **asincrone** da parte di **sorgenti intermittanri** di dati, quali **comandi**, allarmi, ecc.
+Nei protocolli di arbitraggio  **peer to peer**, o distribuiti, le stazioni sono tutte di pari livello e sono programmate per interpretare continuamente la situazione del canale in modo da parlare sempre una alla volta. Qesto tipo di politica è adatta alle trasmissioni **asincrone** da parte di **sorgenti intermittenti** di dati, quali **comandi**, allarmi, ecc.
 
 
 I protocolli di arbitraggio distribuiti si dividono ulteriormente in **deterministici** e in **a contesa**. 
