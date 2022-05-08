@@ -538,7 +538,8 @@ Fig 16
 - Il **ricevente** conferma la prenotazione tramite il messaggio di controllo **CTS** (Clear To Send) avente per **argomento** il tempo prenotato al trasmettitore
 La stazione **ricevente** B è **visibile da tutti** per cui sia dalla stazione A che ha prenotato il canale sia dalle altre, come la C, che potenzialmente potrebbero trasmettere di li a poco
 - Il **messagio CTS** dichiara l’avvenuta assegnazione del canale ad A per cui tutti gli altri, come B e C, si asterranno dal trasmettere per tutta la durata del tempo dichiarato nel CTS.
-- Spesso la **gestione** delle prenotazioni è **centralizzata** ed è effettuata dallo **stesso AP** che in genere è in una **posizione baricentrica** rispetto a tutte le stazioni ed è pertanto da queste **sempre visibile**.
+- la gestione è ancora distribuita e la decisione in merito alla trasmissione è presa dalla singola stazione, indipendentemente dalle altre, ossevando un intervallo IFS (Inter Frame Space), durante il quale nessun altro sta trasmettendo. Questa modo di procedere si chiama **modalità DCF** (Distributed Coordination Function) e **non** prevede l'esistenza di un **controllo centralizzato** delle trasmissioni
+- esiste una seconda modalità, detta **PCF** ( Point Coordination Function) in cui la **gestione** delle prenotazioni è **centralizzata** ed è effettuata dallo **stesso AP** che in genere è in una **posizione baricentrica** rispetto a tutte le stazioni ed è pertanto da queste **sempre visibile**.
 
 <img src="rtscts.png" alt="alt # **text" width="800">
 Fig 17
@@ -559,7 +560,7 @@ Il **valore contenuto** nel CTS rappresenta il **tempo prenotato** dalla stazion
 
 ### **Prenotazione del canale**
 
-Il **trasmettitore** prenota, presso il **ricevitore** (generalmente un **AP**), dei **time slot** tramite un messaggio di controllo **RTS** (Request To Send) avente per **argomento** il tempo di trasmissione necessario per inviare i suoi dati . 
+Il **trasmettitore** prenota, presso il **ricevitore**, dei **time slot** tramite un messaggio di controllo **RTS** (Request To Send) avente per **argomento** il tempo di trasmissione necessario per inviare i suoi dati . 
 
 Il **ricevente** conferma la prenotazione tramite il messaggio di controllo **CTS** (Clear To Send) avente per **argomento** il tempo prenotato dal trasmettitore.
 Il messaggio **CTS** è ricevuto da **tutte le stazioni** che, col tempo in esso riportato, impostano il proprio contantore di Carrier Sensing detto **NAV** con il quale tengono conto della prenotazione.
