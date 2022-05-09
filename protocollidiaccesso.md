@@ -186,7 +186,7 @@ Fig 4
 **Differenze:**
 - ALOHA **trasmette senza verificare** se il canale è **occupato** o meno, ciò determina **maggiore** probabiltà di collisione rispetto al CSMA.
 - CSMA **trasmette solo se “sente”** il canale **libero**, ciò determina **minore** probabiltà di collisione rispetto ad Aloha.
-- CSMA deve implementare un meccanismo di **ascolto** del canale **prima** della** trasmissione** (**CCA: Clear Channel Assesment**).
+- CSMA deve implementare un meccanismo di **ascolto** del canale **prima** della **trasmissione** (**CCA: Clear Channel Assesment**).
 
 > [Simulatore csma](simcsma.md)
 
