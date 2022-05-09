@@ -259,7 +259,7 @@ while(N <= max){
 	{ 
 	 	wait(DIFS);
 	}
-	backoff_time = int(random[0,min(255,7*2N-1)])*T;
+	backoff_time = int(random[0,min(255,7*2^(N-1))])*T;
         waitUntil(channelFreeDuringBackoff());
 	send(data_frame);
         waitUntil(ackOrTimeout());
