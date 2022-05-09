@@ -596,7 +596,7 @@ Il NAV viene **decrementato** periodicamente nel tempo, fino a 0; quando il NAV 
 
 La stazione che ha prenotato il canale durante il NAV può effettuare in sicurezza la **trasmissione** dei suoi **dati** perchè **il tempo di NAV** è, di fatto, **al riparo** dalle collisioni. 
 
-Le collisioni in pratica **non possono** colpire i messaggi di **ack** e i **dati**, gli unici messaggi soggetti a collisione sono le trame di controllo RTS e CTS che però sono **molto corte**.
+Le collisioni in pratica **non possono** colpire i messaggi di **ack** e i **dati**, gli unici messaggi **soggetti a collisione** sono le trame di controllo RTS e CTS che però sono **molto corte**.
 
 <img src="prenotazione.png" alt="alt # **text" width="600">
 Fig 18
