@@ -576,8 +576,8 @@ Viene introdotto un **contatore** di nome **NAV** che viene valutato per stabili
 **CCA Reale o fisico:** è il Clear Channel Assesment realizzato mediante l’ascolto effettivo del canale fisico prima della trasmissione. Presuppone che la stazione sia in stato di ricezione e che un **dispositivo a soglia** sia pronto a rilevare eventuale energia trasmessa da altre stazioni. 
 
 **CCA Virtuale: il Clear Channel Assesment virtuale** è invece realizzato mediante l’osservazione del **contatore** NAV. Il NAV è decrementato ad intervalli di tempo fissi e in ciascuno di essi può accadere:
-- Il NAV > 0 allora il canale virtuale è considerato occupato
-- Il NAV = 0 allora il canale virtuale è considerato libero
+- Il **NAV > 0** allora il canale virtuale è considerato **occupato**
+- Il **NAV = 0** allora il canale virtuale è considerato **libero**
 
 I due CCA sono del tutto **indipendenti** e possono portare a risultati diversi.  Lo **stato del canale** è stabilito dalla lettura di entrambi.
 - Quando **entrambi** (AND logico) rilevano che il canale è libero allora il trasmettitore inizia effettivamente la trasmissione.
