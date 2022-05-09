@@ -571,7 +571,7 @@ Fig 17
 
 ### **CCA Reale e CCA Virtuale**
 
-Viene introdotto un **contatore** di nome **NAV** che viene valutato per stabilire l'occupazione **logica** del canale, detta anche **CCA virtuale**. 
+Insieme ad i messaggi di controllo **RTS** e **CTS**, viene introdotto un **contatore** di nome **NAV** che viene valutato per stabilire l'occupazione **logica** del canale, detta anche **CCA virtuale**. 
 
 **CCA Reale o fisico:** è il Clear Channel Assesment realizzato mediante l’ascolto effettivo del canale fisico prima della trasmissione. Presuppone che la stazione sia in stato di ricezione e che un **dispositivo a soglia** sia pronto a rilevare eventuale energia trasmessa da altre stazioni. 
 
