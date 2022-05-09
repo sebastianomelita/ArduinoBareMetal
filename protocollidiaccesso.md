@@ -20,7 +20,7 @@ Nascono adesso due **problemi**:
 
 Per **rilevare** le collisioni ci sono tecniche dirette come l'**ascolto** del canale e indirette come la **mancata ricezione** di un messaggio di conferma.
 
-Per **evitare** le collisioni servono i **protocolli di arbitraggio** che sostanzialmente cercano di far parlare gli interlocutori sempre **uno alla volta**. I protocolli di arbitraggio si dividono in **master/slave** o centralizzati e in **peer to peer** o distribuiti. 
+Per **evitare** le collisioni servono i **protocolli di arbitraggio** che sostanzialmente cercano di far parlare gli interlocutori sempre **uno alla volta**. I protocolli di arbitraggio si dividono in **master/slave** (o centralizzati) e in **peer to peer** (o distribuiti). 
 
 I mezzi a BUS sono **bidirezionali**, nel senso che la comunicazione può avvenire nelle due direzioni possibili tra coppie di stazioni, ma solo in modalità **half duplex**, cioè trasmette sempre una stazione alla volta, anche quando a parlare sono solo in due. Stazioni **diverse** parlano sempre in **momenti** differenti, **regolati** dal protocollo di arbitraggio.
 
