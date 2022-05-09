@@ -594,7 +594,7 @@ Il messaggio **CTS** è ricevuto da **tutte le stazioni** che, col tempo in esso
 
 Il NAV viene **decrementato** periodicamente nel tempo, fino a 0; quando il NAV è **diverso da zero**, vuol dire che una trasmissione è in atto nelle vicinanze e quindi la stazione si astiene dal trasmettere.
 
-La stazione che ha prenotato il canale durante il NAV può effettuare in sicurezza la trasmissione dei suoi dati perchè il tempo di NAV è, di fatto, **al riparo** dalle collisioni.
+La stazione che ha prenotato il canale durante il NAV può effettuare in sicurezza la trasmissione dei suoi dati perchè **il tempo di NAV** è, di fatto, **al riparo** dalle collisioni.
 
 Le collisioni in pratica **non possono** colpire i messaggi di **ack** e i **dati**, gli unici messaggi soggetti a collisione sono le trame di controllo RTS e CTS che però sono **molto corte**.
 
