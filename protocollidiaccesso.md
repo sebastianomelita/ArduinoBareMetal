@@ -238,7 +238,7 @@ Fig 5
 - Se non si ascolta il canale evidentemente no.
 - Ma nel CSMA/CD si ascolta solo **finchè si trasmette**….
 
-<img src="nolisten.png" alt="alt text" width="700">
+<img src="listen.png" alt="alt text" width="700">
 Fig 6
 
 In altre parole, se la **trasmissione** di un messaggio da parte di una stazione non **dura abbastanza a lungo** potrebbe succedere che una eventuale collisione si propaghi fino ad essa solo **dopo** che la trasmissione si è **conclusa**. Ma se non **si trasmette** neppure **si ascolta** il canale, per cui, scaduta la possibilità di rilevare la collisione, la stazione trasmittente deduce, **erroneamente**, di aver completato la trasmissione del messaggio **con successo**.
@@ -248,7 +248,7 @@ In altre parole, se la **trasmissione** di un messaggio da parte di una stazione
 - **Caso peggiore**: il tramittente A è ad un capo e la collisione avviene all’altro capo quando trasmette pure B.
 - Per ricevere l’eco della collisione A deve continuare ad ascoltare (cioè a trasmettere) finchè la trama corrotta non si propaga da B fino a lei.
 
-<img src="listen.png" alt="alt text" width="700">
+<img src="nolisten.png" alt="alt text" width="700">
 Fig 7
 
 ### **Come rilevare tutte le collisioni?**
