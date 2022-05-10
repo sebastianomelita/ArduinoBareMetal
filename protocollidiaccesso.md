@@ -241,6 +241,8 @@ Fig 5
 <img src="nolisten.png" alt="alt text" width="700">
 Fig 6
 
+In altre parole, se la **trasmissione** di un messaggio da parte di una stazione non **dura abbastanza a lungo** potrebbe succedere che una eventuale collisione si propaghi fino ad essa solo **dopo** che la trasmissione si è **conclusa**. Ma se non **si trasmette** neppure **si ascolta** il canale, per cui, scaduta la possibilità di rilevare la collisione, la stazione trasmittente deduce, **erroneamente**, di aver completato la trasmissione del messaggio **con successo**.
+
 ### **Soluzione: trasmissione abbastanza lunga**
 
 - **Caso peggiore**: il tramittente A è ad un capo e la collisione avviene all’altro capo quando trasmette pure B.
