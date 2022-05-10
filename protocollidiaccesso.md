@@ -582,7 +582,7 @@ Insieme ad i messaggi di controllo **RTS** e **CTS**, viene introdotto un **cont
 - Il **NAV = 0** allora il canale virtuale è considerato **libero**
 
 I due CCA sono del tutto **indipendenti** e possono portare a risultati diversi.  Lo **stato del canale** è stabilito dalla lettura di entrambi.
-- Quando **entrambi** (AND logico) rilevano che il canale è libero, solo allora accade che il trasmettitore **inizia a trasmettere**.
+- Quando **entrambi** (AND logico) rilevano che il canale è **libero**, solo allora può accadere che il trasmettitore **inizi a trasmettere**, o subito dopo avere atteso un DIFS o dopo l'attesa di un backoff.
 - Il **contatore NAV** viene **impostato** da tutte le stazioni al momento in cui queste ricevono un messaggio CTS con il **valore del tempo** in esso contenuto.
 
 Il **valore contenuto** nel CTS rappresenta il **tempo prenotato** dalla stazione autorizzata a trasmettere ed è il tempo che essa ritiene necessario per trasmettere il suo messaggio alla velocità corrente del sistema.
@@ -614,7 +614,7 @@ Il protocollo CSMA/CA (Carrier Sense Medium Access with Collision Avoidance) fun
 1. La stazione trasmittente A cerca di determinare lo stato del mezzo valutando il contenuto di NAV (CCA Virtuale) ed ascoltando il mezzo (CCA Reale). Il canale è considerato libero, quando sia il CCA Virtuale che il CCA Reale non rilevano attività (operazione di AND logico tra i due valori). I casi sono due:
     1. Se il canale rimane libero per un intervallo di tempo DIFS, salta al punto 3.
     2. Se invece il canale è occupato (o viene occupato durante l’intervallo DIFS), prosegue al punto 2.
-2. A avvia la procedura di backoff.
+2. A avvia la procedura di backoff che scade solo quando il canale è libero (CCA fisico e CCA logico soddisfatti entrambi).
 3. A emette un RTS.
 4. Se entro un intervallo di tempo ben definito, A non riceve il CTS da B, vuol dire, molto probabilmente, che l’RTS ha colliso con un altro frame; 
 5. Quando B riceve l’RTS, risponde con un CTS.
