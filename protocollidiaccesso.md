@@ -281,15 +281,15 @@ r = random(0, 2^k – 1)*RTT
 
 ### **Finestra di contesa**
 
-La finestra di collisione o di contesa (contention Window o CW) è l’intervallo di valori all’interno del quale viene calcolato il tempo casuale di backoff
+La finestra di collisione o di contesa (contention Window o CW) è l’**intervallo di valori** all’interno del quale viene calcolato il tempo casuale di backoff
 
-La finestra di collisione è **deterministica** (cioè ha un valore non casuale) e può essere fissa o variabile, ad es:``` [0  2k – 1]``` è variabile e dipende dal **numero k di tentativi andati a vuoto**.
+La finestra di collisione è **deterministica** (cioè ha un valore non casuale) e può essere **fissa** o **variabile**, ad es:``` [0,  (2k – 1)]``` è variabile e dipende dal **numero k di tentativi andati a vuoto**.
 
 Una finestra di collisione **grande** minimizza la **probabilità** di una collisione ma aumenta il **ritardo medio** prima della trasmissione che, a sua volta, diminuisce la **velocità media** di trasmissione.
 
 Una finestra di collisione **variabile** realizza un buon compromesso tecnico: quando **non ci sono collisioni** è piccola e il ritardo è minimo, in presenza di collisioni essa si **allarga gradatamente** per diminuirne la probabilità ad ogni successivo tentativo.
 
-Il tempo di backoff è un numero casuale calcolato tra un valore minimo ed un valore massimo che  rappresentano la finestra di collisione.
+Il **tempo di backoff** è un numero **casuale** calcolato tra un valore **minimo** ed un valore **massimo** che  rappresentano la **finestra di collisione**.
 Nel caso del CSMA/CD:
 ```C++
 	        k = min(10, N); //numero di tentativi
@@ -636,7 +636,7 @@ Fig 20
 <img src="CFP2.png" alt="alt # **text" width="600">
 Fig 21
 
-Normalmente i dispositivi AP lavorano in **modalità ibrida** DCF e PCF. Vengono trasmessi periodicamente dei beacon e l'intervallo temporale tra un beacon e l'altro viene suddiviso in **due zone**, una soggetta a trasmissioni di tipo **PCF** e quindi **intrinsecamente** al riparo dalle collisioni adatta a trasmissioni **sincrone** e un'altra di tipo **DCF** soggetta a collisioni sugli RTS dedicata alle trasmissioni **asincrone**.
+Normalmente i dispositivi AP lavorano in **modalità ibrida** DCF e PCF. Vengono trasmessi periodicamente dei beacon e l'intervallo temporale tra un beacon e l'altro viene suddiviso in **due zone**, una soggetta a trasmissioni di tipo **PCF** e quindi **intrinsecamente** al riparo dalle collisioni adatta a trasmissioni **sincrone** e un'altra di tipo **DCF**, soggetta a collisioni sugli RTS, dedicata alle trasmissioni **asincrone**.
 
 **Sitografia**:
 - https://teoriadeisegnali.it/story/802.11/on_desk/accesso.html
