@@ -34,7 +34,7 @@ Un **multiplatore** è realizzato da una **coda** che accumula i pacchetti che *
 
 Il **tempo di riempimento** delle code di ingresso non è istantaneo ma dipende dalla **velocità della sorgente** che è al multiplatore statistico del tutto **ignota**. Potrebbero arrivare **contemporaneamente** o **separatamente** o anche insieme ma **parzialmente sovrapposte** cioè sfalsate temporalmente l'una dall'atra cosìchè il caricamento di una per un po' si sovrappone con quello di un'altra.
 
-I pacchetti in arrivo vengono ospitati sulle **di ingresso**.
+I pacchetti in arrivo vengono ospitati sulle code **di ingresso**.
 Non appena un pacchetto completa il suo arrivo viene trasferito dalla sua coda di ingresso su quella di uscita per risolvere il problema della contesa del canale.
 
 La **coda di ingresso** contiene esattamente un pacchetto, mentre **la coda di uscita** può ospitare molti pacchetti. L'**accumulo** dei pacchetti sulla coda di uscita può essere dovuto:
