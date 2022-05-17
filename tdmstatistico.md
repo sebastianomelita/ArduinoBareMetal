@@ -57,6 +57,13 @@ Vincolo operativo: la velocità di trasmissione sul canale di un singolo pacchet
 - Le sorgenti negli istanti in cui non trasmettono non impegnano il canale.
 - Ciascuna sorgente trasmette il suo pacchetto con una velocità indipendente da quella di ciascun altra e poi lo invia nella coda 
 
+### **Ritardi**
+
+Completato l’arrivo sulle code di ingresso, i messaggi vengono trasmessi secondo un ordine casuale aperiodico.
+Il ritardo di trasmissione è variabile ed è pari al tempo di attesa in coda che è non prevedibile se non in maniera statistica
+
+Ritardi si trasmissione variabili rendono la multiplazione statica adatta a quelle sorgenti che non sono sensibili alle variazioni del tempo di consegna dei dati: file, chat, sorgenti intermittenti in genere
+Le variazioni del ritardo oltre certi limiti danneggiano le comunicazioni multimediali in modo tale da rendere non più fruibile il servizio da esse fornito.
 
 ### **Caratteristiche del TDM statico**
 
