@@ -106,9 +106,10 @@ Il canale è impegnato in maniera esclusiva da una sorgente fintantochè questa 
 
 ### **Riepilogo**
 
-L’accesso al mezzo è risolta nel dominio del tempo  mediante allocazione dinamica (le risorse sono allocate solo quando servono) in fase di trasmissione di un pacchetto.
-ogni pacchetto usa tutta la capacità (banda) del canale (il canale è impegnato per intero da un solo pacchetto alla volta)
-I pacchetti hanno un ritardo di trasferimento variabile dipendente dal tempo di attesa in coda.
+- L’accesso al mezzo è risolta nel dominio del tempo  mediante allocazione dinamica (le risorse sono allocate solo quando servono)
+in fase di trasmissione di un pacchetto.
+- ogni pacchetto usa tutta la capacità (banda) del canale (il canale è impegnato per intero da un solo pacchetto alla volta)
+- I pacchetti hanno un ritardo di trasferimento variabile dipendente dal tempo di attesa in coda.
 
 ### **Caratteristiche del TDM statico**
 
