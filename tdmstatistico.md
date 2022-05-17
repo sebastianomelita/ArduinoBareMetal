@@ -47,6 +47,11 @@ Vincolo operativo: la velocità di trasmissione sul canale di un singolo pacchet
 
 
 
+La  contesa del canale si risolve mediante accodamento dei pacchetti delle varie sorgenti al suo ingresso.
+le sorgenti impegnano il canale solamente quando hanno dei pacchetti pronti per la trasmissione (allocazione dinamica) 
+Non esiste una trama dato che l’ordine di trasmissione non identifica la sorgente: necessità di una  etichetta
+Le sorgenti negli istanti in cui non trasmettono non impegnano il canale.
+Ciascuna sorgente trasmette il suo pacchetto con una velocità indipendente da quella di ciascun altra e poi lo invia nella coda 
 
 
 ### **Caratteristiche del TDM statico**
