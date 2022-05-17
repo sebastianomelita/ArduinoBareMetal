@@ -104,6 +104,10 @@ I pacchetti hanno un ritardo di trasferimento variabile dipendente dal tempo di 
 
 ### **TDM statico: riepilogo**
 
+### **Sitografia**
+
+- http://www.myreadingroom.co.in/notes-and-studymaterial/68-dcn/777-time-division-multiplexing.html
+
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
 
