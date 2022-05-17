@@ -43,7 +43,7 @@ Il **momento** della trasmissione di un messaggio non è prevedibile a priori pe
 
 La **multiplazione statistica** richiede che ogni messaggio lungo (ad es. stream o file) venga suddiviso in una **catena di messaggi brevi** capaci di essere riconoscibili a **se stante**, indipendentemente gli uni dagli altri, detti **frame** o **pacchetti** a seconda delle circostanze. Per viaggiare a se stante un pacchetto deve contenere un **riferimento univoco** alla sorgente che ha emesso il messaggio originale detto **etichetta**. L'etichetta permette di **individuare**, per ogni pacchetto, la **sorgente** che lo ha emesso.
 
-<img src="segments.png" alt="alt text" width="700">
+<img src="segments.png" alt="alt text" width="400">
 
 Ogni **messaggio** lungo (stream o file) è diviso **dalla sorgente** in unità dati più corte dette **pacchetti** (packets) mediante un processo detto **segmentazione**. La **lunghezza** in bit dei pacchetti è **variabile** (entro un valore massimo) e non è nota in anticipo al multiplatore.
 
