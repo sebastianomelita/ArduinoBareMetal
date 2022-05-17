@@ -13,6 +13,17 @@ Idea per migliorare la situazione:
 
 La commutazione di pacchetto prevede di allocare dinamicamente delle risorse a diverse comunicazioni, sempre su base richiesta, ma effettuata in fase di trasmissione sul canale: efficienza molto elevata perchè impegno il canale solo quando devo dire qualcosa.
 
+### **Metafora**
+Allo stesso check-in di un aeroporto arrivano i viaggiatori che devono andare in tre diverse destinazioni, tutti si accodano in un unica fila che termina all’ingresso del check-in
+
+Ipotesi:
+- I viaggiatori per Milano sono molti e arrivano a gruppi numerosi circa ogni 5 min
+- I viaggiatori per Venezia sono un po’ di meno e arrivano a piccoli gruppi circa ogni 10 min 
+- I viaggiatori per Catania sono pochissimi e arrivano singolarmente circa ogni 15 min
+
+Al check in non è possibile stabilire nessuna periodicità fissa: non posso stabilire la provenienza in base all’ordine di arrivo nella coda
+Mi serve un indirizzo di provenienza esplicito: devo guardare il documento di identità
+
 **TDM dinamico**
 
 E' un **TDM**, per cui i messaggi di comunicazioni diverse:
