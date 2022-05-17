@@ -23,6 +23,8 @@ la maniera di realizzare il **duplexer** può essere statica o dinamica sempre c
 
 [Dettaglio TDM statico](tdmstatico.md) 
 
+[Dettaglio TDM statistico](tdmstatistico.md) 
+
 [Dettaglio ALOHA](protocollidiaccesso.md#aloha)
 
 [Dettaglio CSMA](protocollidiaccesso.md#csma)
