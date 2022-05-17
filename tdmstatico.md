@@ -1,5 +1,6 @@
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
+<img src="multiplexer.png" alt="alt text" width="700">
 
 ## **Metafore**
 
