@@ -18,8 +18,14 @@ Normalmente si usa allo scopo il **tempo** con tecniche TDM, cioè **due interlo
 
 Il meccanismo dell'**alternanza nel tempo** può anche essere esteso ad un **numero arbitrario** di interlocutori che parlano **uno alla volta** senza accavallarsi.
 
-La partizione **TDM** nel tempo del canale può essere statica o dinamica. Quella **statica** utilizza la tecnica di multiplazione **TDMA**. Quella **dinamica** utilizza un **protocollo di arbitraggio** che, con un meccanismo di **ack**, permette di realizzare **l'alternanza nel tempo** delle comunicazioni. Si basa essenzialmente sui protocolli **ALOHA** o **CSMA/CA**. Anche la 
-la maniera di realizzare il **duplexer** può essere statica o dinamica sempre con **TDMA** oppure **ALOHA** o **CSMA/CA**
+La partizione **TDM** nel tempo del canale può essere:
+- **statica**.  Realizzata tramite la tecnica di multiplazione **TDMA** e può essere adoperata sia su collegamenti **punto-punto** che su collegamenti **broadcast** (mezzi radio o BUS a filo).
+- **dinamica**. Può esseere:
+     - **mezzi punto-punto** si realizza mediante **protocolli di arbitraggio** che possono essere:
+          - **centralizzati** di tipo master/slave quali MODBUS, Profibus, ecc.
+          - **distribuiti** che di dividono in:
+               - **deterministici**, aoperati prevalentemente nelle **reti industriali** quali token ring o DQDB
+               - **statistici**, di gran lubga i più adoperati nelle **reti di ufficio** sono ALOHA, CSMA/CD, CSMA/CA.   
 
 [Dettaglio TDM statico](tdmstatico.md) 
 
