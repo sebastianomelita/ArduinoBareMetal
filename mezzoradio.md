@@ -21,7 +21,7 @@ Il meccanismo dell'**alternanza nel tempo** può anche essere esteso ad un **num
 La partizione **TDM** nel tempo del canale può essere:
 - **statica**.  Realizzata tramite la tecnica di multiplazione **TDMA** e può essere adoperata sia su collegamenti **punto-punto** che su collegamenti **broadcast** (mezzi radio o BUS a filo).
 - **dinamica**. Può essere utilizzata su:
-     - **mezzi punto-punto** si realizza mediante la **multiplazione statistica**.
+     - **mezzi punto-punto** si realizza mediante la **multiplazione TDM statistica**.
      - **mezzi broadcast**, si realizza mediante **protocolli di arbitraggio** che possono essere:
           - **centralizzati** di tipo master/slave quali MODBUS, Profibus, ecc.
           - **distribuiti (o peer-to-peer)** che di dividono in:
