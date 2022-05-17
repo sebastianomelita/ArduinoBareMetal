@@ -32,7 +32,7 @@ La partizione **TDM** nel tempo del canale può essere:
 
 [Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) 
 
-[Dettaglio TDM dinamico con protocolli peer-to-peer](protocollidiaccesso.md)
+[Dettaglio TDM statistico su mezzi broadcast (BUS e radio)](protocollidiaccesso.md)
 
 ### **Multiplazione statica TDMA**
 
