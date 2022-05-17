@@ -45,6 +45,9 @@ l’ordine di trasmissione è uguale all’ordine di arrivo nella coda
 Una volta arrivato il loro turno, i pacchetti vengono spediti alla massima velocità consentita dal canale
 Vincolo operativo: la velocità di trasmissione sul canale di un singolo pacchetto deve essere (a regime) almeno la somma delle velocità di tutte le sorgenti
 
+### **Definizione**
+
+É una multiplazione (perché lo stesso canale è condiviso da più utenti) a divisione di tempo (i pacchetti sono trasmessi in intervalli di tempo diversi) non fissa, ma casuale (statistica), in quanto i pacchetti, tutti di lunghezza diversa, sono ordinati non in base a chi trasmette ma solo in base all’ordine di arrivo nella coda di ingresso al canale.
 
 ### **Proprietà**
 
