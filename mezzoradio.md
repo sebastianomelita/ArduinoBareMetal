@@ -32,15 +32,7 @@ La partizione **TDM** nel tempo del canale può essere:
 
 [Dettaglio TDM statistico](tdmstatistico.md) 
 
-[Dettaglio ALOHA](protocollidiaccesso.md#aloha)
-
-[Dettaglio CSMA](protocollidiaccesso.md#csma)
-
-[Dettaglio CSMA/CD](protocollidiaccesso.md#fasi-csmacd-basico)
-
-[Dettaglio CSMA/CA](protocollidiaccesso.md#csmaca)
-
-[Dettaglio ottimizzazioni 802.11](protocollidiaccesso.md#ottimizzazioni)
+[Dettaglio TDM dinamico su mezzi broadcast](protocollidiaccesso.md)
 
 ### **Multiplazione statica TDMA**
 
