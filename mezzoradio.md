@@ -28,9 +28,9 @@ La partizione **TDM** nel tempo del canale può essere:
                - **deterministici**, aoperati prevalentemente nelle **reti industriali** quali token ring o DQDB
                - **statistici**, di gran lubga i più adoperati nelle **reti di ufficio** sono ALOHA, CSMA/CD, CSMA/CA.   
 
-[Dettaglio TDM statico](tdmstatico.md) 
+[Dettaglio TDM statico su mezzi punto-punto](tdmstatico.md) 
 
-[Dettaglio TDM statistico](tdmstatistico.md) 
+[Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) 
 
 [Dettaglio TDM dinamico con protocolli peer-to-peer](protocollidiaccesso.md)
 
