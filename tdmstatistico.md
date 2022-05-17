@@ -28,9 +28,9 @@ Il **momento** della trasmissione di un messaggio non è prevedibile a priori pe
 
 ### **Struttura**
 
-Un **multiplatore** è realizzato da una **coda** che accumula i messaggi che **attendono la trasmissione** sul canale.
+Ogni **messaggio** lungo (stream o file) è diviso **dalla sorgente** in unità dati più corte dette **pacchetti** (packets) mediante un processo detto **segmentazione**. 
 
-Ogni messaggio lungo (stream o file) è diviso dalla sorgente in unità dati più corte dette **pacchetti** (packets) mediante un processo detto **segmentazione**. 
+Un **multiplatore** è realizzato da una **coda** che accumula i pacchetti che **attendono la trasmissione** sul canale.
 
 Il **tempo di riempimento** delle code di ingresso non è istantaneo ma dipende dalla **velocità della sorgente** che è al multiplatore statistico del tutto **ignota**. Potrebbero arrivare **contemporaneamente** o **separatamente** o anche insieme ma **parzialmente sovrapposte** cioè sfalsate temporalmente l'una dall'atra cosìchè il caricamento di una per un po' si sovrappone con quello di un'altra.
 
