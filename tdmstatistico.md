@@ -50,6 +50,8 @@ Il **tempo di riempimento** delle code di ingresso non è istantaneo ma dipende 
 I pacchetti in arrivo vengono ospitati sulle code **di ingresso**.
 Non appena un pacchetto completa il suo arrivo viene trasferito dalla sua coda di ingresso su quella di uscita per risolvere il problema della contesa del canale.
 
+<img src="multiplatoresincronismo.png" alt="alt text" width="700">
+
 La **coda di ingresso** contiene esattamente un pacchetto, mentre **la coda di uscita** può ospitare molti pacchetti. L'**accumulo** dei pacchetti sulla coda di uscita può essere dovuto:
 - all'**arrivo simultaneo** di un pacchetto per ogni porta di ingresso
 - **picco di velocità** su una porta di **ingresso** che, essendo eccessivo, **satura** la velocità di smaltimento della porta di uscita che pertanto è costretta ad accumulare pacchetti sulla coda antistante ad essa. La coda in questo caso fa da ammortizzatore che assorbe il picco momentaneo in attesa che questo si estingua nei momenti in cui arriveranno meno pacchetti.
