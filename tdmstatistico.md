@@ -13,8 +13,6 @@ Idea per migliorare la situazione:
 
 La commutazione di pacchetto prevede di allocare dinamicamente delle risorse a diverse comunicazioni, sempre su base richiesta, ma effettuata in fase di trasmissione sul canale: efficienza molto elevata perchè impegno il canale solo quando devo dire qualcosa.
 
-
-
 **TDM dinamico**
 
 E' un **TDM**, per cui i messaggi di comunicazioni diverse:
@@ -29,6 +27,26 @@ L’**allocazione** delle comunicazioni nel tempo è:
 Il **momento** della trasmissione di un messaggio non è prevedibile a priori perchè dipende dal tempo di arrivo del messaggio stesso e da quanti messaggi ci stanno prima di lui nella coda di trasmissione. In generale, il tempo di coda è un evento prevedibile solo in termini statistici.
 
 ### **Struttura**
+
+Un **multiplatore** è realizzato da una **coda** che accumula i messaggi che **attendono la trasmissione** sul canale.
+
+Ogni messaggio lungo (stream o file) è diviso dalla sorgente in unità dati più corte dette **pacchetti** (packets) mediante un processo detto **segmentazione**. 
+
+Il **tempo di riempimento** delle code di ingresso non è istantaneo ma dipende dalla **velocità della sorgente** che è al multiplatore statistico del tutto **ignota**. Potrebbero arrivare **contemporaneamente** o **separatamente** o anche insieme ma **parzialmente sovrapposte** cioè sfalsate temporalmente l'una dalla'tra cosìchè il caricamento di una per un po' si sovrappone con quello di un'altra.
+
+I pacchetti in arrivo vengono ospitati sulle **di ingresso**.
+Non appena un pacchetto completa il suo arrivo viene trasferito dalla sua coda di ingresso su quella di uscita per risolvere il problema della contesa del canale.
+
+La **coda di ingresso** contiene esattamente un pacchetto, mentre **la coda di uscita** può ospitare molti pacchetti. L'**accumulo** dei pacchetti sulla coda di uscita può essere dovuto:
+- all'**arrivo simultaneo** di un pacchetto per ogni porta di ingresso
+- **picco di velocità** su una porta di **ingresso** che, essendo eccessivo, **satura** la velocità di smaltimento della porta di uscita che pertanto è costretta ad accumulare pacchetti sulla coda antistante ad essa. La coda in questo caso fa da ammortizzatore che assorbe il picco momentaneo in attesa che questo si estingua nei momenti in cui arriveranno meno pacchetti.
+
+l’ordine di trasmissione è uguale all’ordine di arrivo nella coda
+Una volta arrivato il loro turno, i pacchetti vengono spediti alla massima velocità consentita dal canale
+Vincolo operativo: la velocità di trasmissione sul canale di un singolo pacchetto deve essere (a regime) almeno la somma delle velocità di tutte le sorgenti
+![image](https://user-images.githubusercontent.com/18554803/168870812-8dcca7e1-f13d-4558-ae3d-c6b15ec1977a.png)
+
+
 
 
 ### **Caratteristiche del TDM statico**
