@@ -100,13 +100,13 @@ Nulla vieta di utilizzare protocolli di tipo connesso per scopi diversi dalla mu
 
 <img src="confrontotdm.png" alt="alt text" width="700">
 
-L'efficienza del DM statistico è in genere molto più elevata di quella del TDM statico, soprattutto per le trasmissioni intermittenti, perchè permette di sfruttare al meglio il canale in quanto questo è impiegato solo dalle sorgenti che, istante per istante, hanno messaggi da trasmettere. se una sorgente è inattiva non occuperà mai il canale in quanto non esiste una prenotazione in anticipo dello stesso prima dell'inizio di una comunicazione. 
+L'efficienza del TDM statistico è in genere molto più elevata di quella del TDM statico, soprattutto per le trasmissioni intermittenti, perchè permette di sfruttare al meglio il canale in quanto questo è impiegato solo dalle sorgenti che, istante per istante, hanno messaggi da trasmettere. se una sorgente è inattiva non occuperà mai il canale in quanto non esiste una prenotazione in anticipo dello stesso prima dell'inizio di una comunicazione. 
 
 Il canale è impegnato in maniera esclusiva da una sorgente fintantochè questa non completa la trasmissione di un pacchetto. L'allocazione rimane esclusiva ma limitatamente l tempo strettamente necessario a spedire un pacchetto sul canale.
 
 ### **Riepilogo**
 
-l’accesso al mezzo è risolta nel dominio del tempo  mediante allocazione dinamica (le risorse sono allocate solo quando servono) in fase di trasmissione di un pacchetto.
+L’accesso al mezzo è risolta nel dominio del tempo  mediante allocazione dinamica (le risorse sono allocate solo quando servono) in fase di trasmissione di un pacchetto.
 ogni pacchetto usa tutta la capacità (banda) del canale (il canale è impegnato per intero da un solo pacchetto alla volta)
 I pacchetti hanno un ritardo di trasferimento variabile dipendente dal tempo di attesa in coda.
 
