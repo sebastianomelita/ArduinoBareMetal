@@ -88,6 +88,9 @@ I pacchetti sono identificati esplicitamente come appartenenti ad una certa sorg
 I protocolli possono essere di tipo non connesso (connectionless) perchè non è necessaria una fase di setup
 Nulla vieta di utilizzare protocolli di tipo connesso per scopi diversi dalla multiplazione
 
+### **Efficienza**
+
+<img src="confrontotdm.png" alt="alt text" width="700">
 
 ### **Riepilogo**
 
