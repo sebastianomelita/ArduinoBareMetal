@@ -39,6 +39,8 @@ Il **momento** della trasmissione di un messaggio non è prevedibile a priori pe
 
 ### **Struttura**
 
+<img src="multiplatore.png" alt="alt text" width="700">
+
 Ogni **messaggio** lungo (stream o file) è diviso **dalla sorgente** in unità dati più corte dette **pacchetti** (packets) mediante un processo detto **segmentazione**. La **lunghezza** in bit dei pacchetti è **variabile** (entro un valore massimo) e non è nota in anticipo al multiplatore.
 
 Un **multiplatore** è realizzato da una **coda** che accumula i pacchetti che **attendono la trasmissione** sul canale.
