@@ -3,7 +3,7 @@
 
 ## **Commutazione di pacchetto**
 
-**Idea di base**
+### **Idea di base**
 
 La commutazione di circuito prevede di allocare rigidamente delle risorse ad una comunicazione su base richiesta effettuata in fase di set-up (apertura) del canale: l’efficienza può essere bassa dato che impegno il canale anche quando non dico niente.
 
