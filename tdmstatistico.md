@@ -74,10 +74,14 @@ I protocolli possono essere di tipo non connesso (connectionless) perchè non è
 Nulla vieta di utilizzare protocolli di tipo connesso per scopi diversi dalla multiplazione
 
 
+### **Riepilogo**
+
+l’accesso al mezzo è risolta nel dominio del tempo  mediante allocazione dinamica (le risorse sono allocate solo quando servono) in fase di trasmissione di un pacchetto.
+ogni pacchetto usa tutta la capacità (banda) del canale (il canale è impegnato per intero da un solo pacchetto alla volta)
+I pacchetti hanno un ritardo di trasferimento variabile dipendente dal tempo di attesa in coda.
+
 ### **Caratteristiche del TDM statico**
 
-
-### **Ritardi**
 
 
 ### **TDM statico: riepilogo**
