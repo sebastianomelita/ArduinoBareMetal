@@ -24,7 +24,7 @@ Ipotesi:
 Al check in non è possibile stabilire nessuna periodicità fissa: non posso stabilire la provenienza in base all’ordine di arrivo nella coda
 Mi serve un indirizzo di provenienza esplicito: devo guardare il documento di identità
 
-**TDM dinamico**
+### **TDM dinamico**
 
 E' un **TDM**, per cui i messaggi di comunicazioni diverse:
 - arrivano in **ingresso** tutte nello stesso tempo ma su **porte diverse** (SDM)
