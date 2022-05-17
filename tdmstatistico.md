@@ -111,12 +111,6 @@ in fase di trasmissione di un pacchetto.
 - ogni pacchetto usa tutta la capacità (banda) del canale (il canale è impegnato per intero da un solo pacchetto alla volta)
 - I pacchetti hanno un ritardo di trasferimento variabile dipendente dal tempo di attesa in coda.
 
-### **Caratteristiche del TDM statico**
-
-
-
-### **TDM statico: riepilogo**
-
 ### **Sitografia**
 
 - http://www.myreadingroom.co.in/notes-and-studymaterial/68-dcn/777-time-division-multiplexing.html
