@@ -44,7 +44,7 @@ La **coda di ingresso** contiene esattamente un pacchetto, mentre **la coda di u
 l’ordine di trasmissione è uguale all’ordine di arrivo nella coda
 Una volta arrivato il loro turno, i pacchetti vengono spediti alla massima velocità consentita dal canale
 Vincolo operativo: la velocità di trasmissione sul canale di un singolo pacchetto deve essere (a regime) almeno la somma delle velocità di tutte le sorgenti
-![image](https://user-images.githubusercontent.com/18554803/168870812-8dcca7e1-f13d-4558-ae3d-c6b15ec1977a.png)
+
 
 
 
