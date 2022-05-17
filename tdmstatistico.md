@@ -65,6 +65,15 @@ Il ritardo di trasmissione è variabile ed è pari al tempo di attesa in coda ch
 Ritardi si trasmissione variabili rendono la multiplazione statica adatta a quelle sorgenti che non sono sensibili alle variazioni del tempo di consegna dei dati: file, chat, sorgenti intermittenti in genere
 Le variazioni del ritardo oltre certi limiti danneggiano le comunicazioni multimediali in modo tale da rendere non più fruibile il servizio da esse fornito.
 
+### **Identificazione della sorgente**
+
+Le risorse sono allocate on demand al momento della trasmissione del messaggio (allocazione dinamica).
+Non è necessario stabilire nulla preventivamente cioè prima dell’inizio della trasmissione
+I pacchetti sono identificati esplicitamente come appartenenti ad una certa sorgente in base ad una etichetta (un ID della connessione oppure l’indirizzo della sorgente) che li accompagna.
+I protocolli possono essere di tipo non connesso (connectionless) perchè non è necessaria una fase di setup
+Nulla vieta di utilizzare protocolli di tipo connesso per scopi diversi dalla multiplazione
+
+
 ### **Caratteristiche del TDM statico**
 
 
