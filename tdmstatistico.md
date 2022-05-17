@@ -109,6 +109,7 @@ I pacchetti hanno un ritardo di trasferimento variabile dipendente dal tempo di 
 ### **Sitografia**
 
 - http://www.myreadingroom.co.in/notes-and-studymaterial/68-dcn/777-time-division-multiplexing.html
+- http://www.programmiamo.altervista.org/internet/3/3f.html
 
 >[Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
