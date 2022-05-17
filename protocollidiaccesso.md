@@ -526,7 +526,7 @@ while(N <= max){
 
 Se accade una collisione durante il backoff spesso ciò significa che due stazioni hanno scelto lo stesso slot nella finestra di backoff.
 Ad ogni collisione, prima di ritentare la trasmissione, la stazione **raddoppia la dimensione** della finestra di backoff CW (Content Window o finestra di contesa).
-Lo scopo di tale raddoppio è quello di **adattare** la dimensione della finestra al **numero di contendenti**, in considerazione del fatto che le **collisioni** sono un **indice di “affollamento”**.
+Lo scopo di tale raddoppio è quello di **adattare** la dimensione della finestra al **numero di contendenti**, in considerazione del fatto che le **collisioni** sono un **indice di “affollamento”** del mezzo broadcast (BUS o radio).
 
 <img src="finestra.png" alt="alt # **text" width="600">
 Fig 14
