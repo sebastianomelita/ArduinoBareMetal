@@ -5,9 +5,17 @@
 
 ## **Commutazione di pacchetto**
 
+### **Obiettivo**
+
+Come tutte le multiplazioni, è una tecnica che serve a migliorare l'**efficienza** di utilizzo di un canale attraverso la **condivisione** dello stesso tra più sorgenti. 
+
+Nella forma che vedremo di seguito, è la tecnica di multiplazione principalmente adoperata nei **link punto-punto** che fanno capo ai dispositivi che realizzano le moderne reti di ufficio (**switch** e **router**).
+
+La**grandezza fisica** che viene condivisa tra più sorgenti è il **tempo**.
+
 ### **Idea di base**
 
-La commutazione di circuito prevede di allocare rigidamente delle risorse ad una comunicazione su base richiesta effettuata in fase di set-up (apertura) del canale: l’efficienza può essere bassa dato che impegno il canale anche quando non dico niente.
+La commutazione di circuito utilizza il **TDM statico** che prevede di allocare rigidamente delle risorse ad una comunicazione su base richiesta (**prenotazione**) effettuata in fase di **set-up** (apertura) della comunicazione: l’**efficienza** può essere bassa dato che impegno il canale anche quando **non dico niente**.
 
 Idea per migliorare la situazione:
 - Spezzo l’informazione in più segmenti
@@ -64,9 +72,17 @@ La **coda di ingresso** contiene esattamente un pacchetto, mentre **la coda di u
 - all'**arrivo simultaneo** di un pacchetto per ogni porta di ingresso
 - **picco di velocità** su una porta di **ingresso** che, essendo eccessivo, **satura** la velocità di smaltimento della porta di uscita che pertanto è costretta ad accumulare pacchetti sulla coda antistante ad essa. La coda in questo caso fa da ammortizzatore che assorbe il picco momentaneo in attesa che questo si estingua nei momenti in cui arriveranno meno pacchetti.
 
-l’ordine di trasmissione è uguale all’ordine di arrivo nella coda
-Una volta arrivato il loro turno, i pacchetti vengono spediti alla massima velocità consentita dal canale
-Vincolo operativo: la velocità di trasmissione sul canale di un singolo pacchetto deve essere (a regime) almeno la somma delle velocità di tutte le sorgenti
+L’**ordine di trasmissione** è uguale all’ordine di arrivo nella coda.
+
+### **Vincoli operativi**
+
+Una volta arrivato il loro turno, i pacchetti vengono spediti **in uscita** alla **massima velocità consentita** dal canale. Vale a dire che non c'è nessun vincolo prestabilito tra le velocità in ingresso e quelle in uscita che possono essere quindi del tutto **indipendenti**. 
+
+Anche i **tempi** di arrivo dei pacchetti possono essere **indipendenti**. Le sorgenti **non** devono essere **sicnronizzate** nè tra di loro e neppure con il dispositivo multiplatore dato che per lui ogni istante è buono per ricevere pacchetti. Le rilassate esigenze sui tempi rende l'utilizzo di questa tecnica molto più agevole rispetto alla multiplazione statica.
+
+L'**unico vincolo** è che la **somma** delle velcità medie **in ingresso** di tutte le porte sia **inferiore** a quella media **in uscita** di una singola porta altrimenti il dispositivo perde dei pacchetti.
+
+**Vincolo operativo**: la **velocità** di trasmissione **in uscita** sul canale  di un singolo pacchetto deve essere (a regime) almeno la **somma** delle velocità di tutte le sorgenti presenti sulle porte di **ingresso**.
 
 ### **Definizione**
 
@@ -90,26 +106,27 @@ Le variazioni del ritardo oltre certi limiti danneggiano le comunicazioni multim
 
 ### **Identificazione della sorgente**
 
-Le risorse sono allocate on demand al momento della trasmissione del messaggio (allocazione dinamica).
-Non è necessario stabilire nulla preventivamente cioè prima dell’inizio della trasmissione
-I pacchetti sono identificati esplicitamente come appartenenti ad una certa sorgente in base ad una etichetta (un ID della connessione oppure l’indirizzo della sorgente) che li accompagna.
-I protocolli possono essere di tipo non connesso (connectionless) perchè non è necessaria una fase di setup
+Le risorse sono allocate on demand al momento della **trasmissione** del messaggio (allocazione dinamica). Non è necessario stabilire nulla preventivamente cioè prima dell’inizio della trasmissione.
+
+I pacchetti sono **identificati esplicitamente** come appartenenti ad una certa sorgente in base ad una **etichetta** (un ID della connessione oppure l’indirizzo della sorgente) che li accompagna.
+
+I **protocolli** possono essere di tipo **non connesso** (connectionless) perchè non è necessaria una fase di setup
 Nulla vieta di utilizzare protocolli di tipo connesso per scopi diversi dalla multiplazione
 
 ### **Efficienza**
 
 <img src="confrontotdm.png" alt="alt text" width="700">
 
-L'efficienza del TDM statistico è in genere molto più elevata di quella del TDM statico, soprattutto per le trasmissioni intermittenti, perchè permette di sfruttare al meglio il canale in quanto questo è impiegato solo dalle sorgenti che, istante per istante, hanno messaggi da trasmettere. Se una sorgente è inattiva non occuperà mai il canale in quanto non esiste una prenotazione in anticipo dello stesso prima dell'inizio di una comunicazione. 
+L'**efficienza** del TDM statistico è in genere molto più elevata di quella del TDM statico, soprattutto per le sorgenti di **trasmissioni intermittenti**, perchè permette di sfruttare al meglio il canale in quanto questo è impiegato solo dalle sorgenti che, istante per istante, hanno messaggi da trasmettere. Se una sorgente è inattiva non occuperà mai il canale dato che non esiste una prenotazione anticipata dello stesso effettuata prima dell'inizio di una comunicazione. 
 
-Il canale è impegnato in maniera esclusiva da una sorgente fintantochè questa non completa la trasmissione di un pacchetto. In questo caso l'allocazione della risorsa trasmissiva rimane esclusiva ma solo limitatamente al tempo strettamente necessario a spedire un pacchetto sul canale.
+Il canale è **impegnato** in maniera **esclusiva** da una sorgente fintantochè questa non completa la trasmissione di un pacchetto. In questo caso l'allocazione della risorsa trasmissiva rimane esclusiva per una sola sorgente ma solo limitatamente al tempo strettamente necessario a spedire un pacchetto sul canale.
 
 ### **Riepilogo**
 
-- L’accesso al mezzo è risolta nel dominio del tempo  mediante allocazione dinamica (le risorse sono allocate solo quando servono)
+- L’**accesso** al mezzo è risolta nel dominio del tempo  mediante allocazione dinamica (le risorse sono allocate solo quando servono)
 in fase di trasmissione di un pacchetto.
-- ogni pacchetto usa tutta la capacità (banda) del canale (il canale è impegnato per intero da un solo pacchetto alla volta)
-- I pacchetti hanno un ritardo di trasferimento variabile dipendente dal tempo di attesa in coda.
+- ogni pacchetto usa **tutta la capacità** (banda) del canale (il canale è impegnato per intero da un solo pacchetto alla volta)
+- I pacchetti hanno un **ritardo** di trasferimento **variabile** dipendente dal tempo di attesa in coda.
 
 ### **Sitografia**
 
