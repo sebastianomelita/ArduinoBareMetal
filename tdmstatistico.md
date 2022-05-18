@@ -11,7 +11,7 @@ Come tutte le multiplazioni, è una tecnica che serve a migliorare l'**efficienz
 
 Nella forma che vedremo di seguito, è la tecnica di multiplazione **principalmente adoperata** nei **link punto-punto** che fanno capo ai dispositivi che realizzano le moderne reti di ufficio (**switch** e **router**).
 
-La **grandezza fisica** che viene condivisa tra più sorgenti, quella in base alla quale è **diferenziato** e ripartito l'**accesso** al canale tra le diverse sorgenti, è il **tempo**.
+La **grandezza fisica** che viene condivisa tra più sorgenti, quella in base alla quale è **differenziato** e ripartito l'**accesso** al canale tra le diverse sorgenti, è il **tempo**.
 
 ### **Idea di base**
 
