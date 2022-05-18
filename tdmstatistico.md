@@ -53,7 +53,9 @@ La **multiplazione statistica** richiede che ogni messaggio lungo (ad es. stream
 
 <img src="segments.png" alt="alt text" width="400">
 
-Ogni **messaggio** lungo (stream o file) è diviso **dalla sorgente** in unità dati più corte dette **pacchetti** (packets) mediante un processo detto **segmentazione**. La **lunghezza** in bit dei pacchetti è **variabile** (entro un valore massimo) e non è nota in anticipo al multiplatore.
+Ogni **messaggio** lungo (stream o file) è diviso **dalla sorgente** in unità dati più corte dette **pacchetti** (packets) mediante un processo detto **segmentazione**. La **lunghezza** in bit dei pacchetti è **variabile** (entro un valore massimo) e non è nota in anticipo al multiplatore:
+- **sorgenti diverse** possono inviare pacchetti di **dimensione diversa**
+- **pacchetti diversi** della stessa sorgente possono avere **dimensione diversa**
 
 ### **Struttura**
 
