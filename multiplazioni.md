@@ -63,4 +63,11 @@ L’antenna **dirige il fascio** in modo da concentrarlo sul **target** per:
 - **Evitare** di ricevere **interferenze RFI** da altri dispositivi diversi dal target.
 - Si realizza un **SDM** se si inviano **simultaneamente** comunicazioni diverse **su fasci separati**.
 
+[Dettaglio TDM statico su mezzi punto-punto](tdmstatico.md) 
+
+[Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) 
+
+[Dettaglio TDM statistico su mezzi broadcast (BUS e radio)](protocollidiaccesso.md)
+
+
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)
