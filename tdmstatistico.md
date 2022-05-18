@@ -61,7 +61,7 @@ Ogni **messaggio** lungo (stream o file) è diviso **dalla sorgente** in unità 
 
 Un **multiplatore** è realizzato fisicamente in HW o in SW da una **coda** che accumula i pacchetti che **attendono la trasmissione** sul canale.
 
-Il **tempo di riempimento** delle code di ingresso non è istantaneo ma dipende dalla **velocità della sorgente** che è al multiplatore statistico del tutto **ignota**. Potrebbero arrivare **contemporaneamente** o **separatamente** o anche insieme ma **parzialmente sovrapposte** cioè sfalsate temporalmente l'una dall'atra cosìchè il caricamento di una per un po' si sovrappone con quello di un'altra.
+Il **tempo di riempimento** delle code di ingresso non è istantaneo ma dipende dalla **velocità della sorgente** che è al multiplatore statistico del tutto **ignota**. Potrebbero arrivare **contemporaneamente** o **separatamente** o anche insieme ma **parzialmente sovrapposte**, cioè sfalsate temporalmente l'una dall'altra, cosìcchè il caricamento di una per un po' si sovrappone con quello di un'altra.
 
 I pacchetti in arrivo vengono ospitati sulle code **di ingresso**.
 Non appena un pacchetto completa il suo arrivo viene trasferito dalla sua coda di ingresso su quella di uscita per risolvere il problema della contesa del canale.
