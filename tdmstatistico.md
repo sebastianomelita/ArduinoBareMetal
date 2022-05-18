@@ -80,7 +80,7 @@ Una volta arrivato il loro turno, i pacchetti vengono spediti **in uscita** alla
 
 Anche i **tempi** di arrivo dei pacchetti possono essere **indipendenti**. Le sorgenti **non** devono essere **sicnronizzate** nè tra di loro e neppure con il dispositivo multiplatore dato che per lui ogni istante è buono per ricevere pacchetti. Le rilassate esigenze sui tempi rende l'utilizzo di questa tecnica molto più agevole rispetto alla multiplazione statica.
 
-L'**unico vincolo** è che la **somma** delle velcità medie **in ingresso** di tutte le porte sia **inferiore** a quella media **in uscita** di una singola porta altrimenti il dispositivo perde dei pacchetti.
+L'**unico vincolo** è che la **somma** delle velocità medie **in ingresso** di tutte le porte sia **inferiore** a quella media **in uscita** di una singola porta altrimenti il dispositivo perde dei pacchetti.
 
 **Vincolo operativo**: la **velocità** di trasmissione **in uscita** sul canale  di un singolo pacchetto deve essere (a regime) almeno la **somma** delle velocità di tutte le sorgenti presenti sulle porte di **ingresso**.
 
