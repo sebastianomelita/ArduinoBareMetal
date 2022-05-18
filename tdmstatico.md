@@ -6,7 +6,7 @@
 
 Come tutte le multiplazioni, è una tecnica che serve a migliorare l'**efficienza** di utilizzo di un canale attraverso la **condivisione** dello stesso tra più sorgenti. 
 
-Nella forma che vedremo di seguito, è la tecnica di multiplazione **principalmente adoperata** nei **link punto-punto** che fanno capo ai dispositivi che realizzano le moderne reti di ufficio (**switch** e **router**).
+Nella forma che vedremo di seguito, è diventata obsoleta per la realizzazione delle grandi reti dati magliate, nelle quali si preferisce ormai la multiplazione statistica.  E' ancora la tecnica di multiplazione **principalmente adoperata** nei **link punto-punto** che fanno capo ai dispositivi che realizzano la rete telefonica cablata plesiocrona, nelle interfacce di accesso radio alla rete cellulare GSM e, in parte, UMTS e WiFi, nell'accesso al broadcast televisivo sia terrestre che satellitare, nelle portanti radio tra i nodi telefonici (backhaul).
 
 La **grandezza fisica** che viene condivisa tra più sorgenti, quella in base alla quale è **diferenziato** e ripartito l'**accesso** al canale tra le diverse sorgenti, è il **tempo**.
 
