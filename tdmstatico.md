@@ -8,7 +8,7 @@ Come tutte le multiplazioni, è una tecnica che serve a migliorare l'**efficienz
 
 Nella forma che vedremo di seguito, è diventata obsoleta per la realizzazione delle grandi reti dati magliate, nelle quali si preferisce ormai la multiplazione statistica.  E' ancora la tecnica di multiplazione **principalmente adoperata** nei **link punto-punto** che fanno capo ai dispositivi che realizzano la rete telefonica cablata plesiocrona, nelle interfacce di accesso radio alla rete cellulare GSM e, in parte, UMTS e WiFi, nell'accesso al broadcast televisivo sia terrestre che satellitare, nelle portanti radio tra i nodi telefonici (backhaul).
 
-La **grandezza fisica** che viene condivisa tra più sorgenti, quella in base alla quale è **diferenziato** e ripartito l'**accesso** al canale tra le diverse sorgenti, è il **tempo**.
+La **grandezza fisica** che viene condivisa tra più sorgenti, quella in base alla quale è **differenziato** e ripartito l'**accesso** al canale tra le diverse sorgenti, è il **tempo**.
 
 ### **Metafore**
 
