@@ -2,6 +2,8 @@
 
 ### Mezzi a BUS
 
+<img src="bus.png" alt="alt text" width="600">
+
 Un **mezzo trasmissivo** si dice a **BUS** (o brodcast) quando più periferiche condividono lo stesso collegamento. Si può realizzare sia con un un **unico filo** in rame che collega tutti i dispositivi, che con un mezzo radio su cui tutti i dispositivi condividono lo **stessa frequenza** (canale) di trasmissione.
 
 I mezzi a BUS posseggono la **proprietà** che se un interlocutore parla **tutti** gli altri ascoltano perchè un messaggio inviato da uno **passa** comunque **per tutti** gli altri.
