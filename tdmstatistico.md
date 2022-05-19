@@ -80,7 +80,7 @@ L’**ordine di trasmissione** è uguale all’ordine di arrivo nella coda.
 
 Una volta arrivato il loro turno, i pacchetti vengono spediti **in uscita** alla **massima velocità consentita** dal canale. Vale a dire che non c'è nessun vincolo prestabilito tra le velocità in ingresso e quelle in uscita che possono essere quindi del tutto **indipendenti**. 
 
-Anche i **tempi** di arrivo dei pacchetti possono essere **indipendenti**. Le sorgenti **non** devono essere **sicnronizzate** nè tra di loro e neppure con il dispositivo multiplatore dato che per lui ogni istante è buono per ricevere pacchetti. Le rilassate esigenze sui tempi rende l'utilizzo di questa tecnica molto più agevole rispetto alla multiplazione statica.
+Anche i **tempi** di arrivo dei pacchetti possono essere **indipendenti**. Le sorgenti **non** devono essere **sincronizzate** nè tra di loro e neppure con il dispositivo multiplatore dato che per lui ogni istante è buono per ricevere pacchetti. Le rilassate esigenze sui tempi rende l'utilizzo di questa tecnica molto più agevole rispetto alla multiplazione statica.
 
 L'**unico vincolo** è che la **somma** delle velocità medie **in ingresso** di tutte le porte sia **inferiore** a quella media **in uscita** di una singola porta altrimenti il dispositivo perde dei pacchetti.
 
