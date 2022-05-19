@@ -7,7 +7,7 @@
 
 ### **Obiettivo**
 
-Come tutte le multiplazioni, è una tecnica che serve a migliorare l'**efficienza** di utilizzo di un canale attraverso la **condivisione** dello stesso tra **più sorgenti**. 
+Come tutte le multiplazioni, è una **tecnica** che serve a migliorare l'**efficienza** di utilizzo di un canale attraverso la **condivisione** dello stesso tra **più sorgenti**. 
 
 Nella forma che vedremo di seguito, è la tecnica di multiplazione **principalmente adoperata** nei **link punto-punto** che fanno capo ai dispositivi che realizzano le moderne **reti dati** di ufficio (**switch** e **router**) e le **reti dati** attualmente adoperate dagli **ISP** (Internet Service Provider) per realizzare la connettività ad Internet. Di anno in anno è sempre più utilizzata anche in **ambito telefonico** per la realizazione della **parte voce** delle comunicazioni.
 
