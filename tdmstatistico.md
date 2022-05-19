@@ -66,7 +66,7 @@ Un **multiplatore** è realizzato fisicamente in HW o in SW da una **coda** che 
 Il **tempo di riempimento** delle code di ingresso non è istantaneo ma dipende dalla **velocità della sorgente** che è al multiplatore statistico del tutto **ignota**. Potrebbero arrivare **contemporaneamente** o **separatamente** o anche insieme ma **parzialmente sovrapposte**, cioè sfalsate temporalmente l'una dall'altra, cosìcchè il caricamento di una per un po' si sovrappone con quello di un'altra.
 
 I **pacchetti in arrivo** vengono ospitati sulle code **di ingresso** che in genere ospitano esattamente **un sol** pacchetto.
-Non appena un pacchetto **completa il suo arrivo** viene trasferito da una coda di ingresso su una di uscita posta dinanzi al canale che è capace di ospitare **molti pacchetti**. Il **ruolo** della coda di uscita è principalmente quello di risolvere il problema della **contesa del canale** da parte di pacchetti che vengano eventualmente **smistati simultaneamente** da più porte di ingresso sulla **stessa porta** di uscita.
+Non appena un pacchetto **completa il suo arrivo** viene trasferito da una coda di ingresso su una di uscita posta dinanzi al canale che è invece capace di ospitare **molti pacchetti**. Il **ruolo** della coda di uscita è principalmente quello di risolvere il problema della **contesa del canale** da parte di pacchetti che vengano eventualmente **smistati simultaneamente** da più porte di ingresso sulla **stessa porta** di uscita.
 
 <img src="multiplatoresincronismo.png" alt="alt text" width="700">
 
