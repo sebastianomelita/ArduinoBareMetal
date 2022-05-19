@@ -49,7 +49,7 @@ Il **nodo master** stabilisce la **composizione** della "tavola rotonda" (cioè 
 
 I messaggi **arrivano simultaneamente** ma su N porte di ingresso diverse (SDM) e si caricano sul buffer a valle di ciascuna dopo un tempo T.
 
-Una volta finito il caricamento, gli N messaggi vengono inviati, in **momenti diversi** (TDM), nell’unica porta di uscita e con **velocità maggiore** di quella di arrivo in modo che la trasmissione di tutti avvenga sempre nel tempo T di arrivo di uno solo. 
+Una volta finito il caricamento, gli N messaggi vengono inviati, in **momenti diversi** (TDM), nell’unica porta di uscita e con **velocità maggiore** di quella di arrivo in modo che la trasmissione di tutti avvenga sempre nel **tempo T di arrivo** di uno solo. 
 
 La potenziale **contesa del canale**, da parte di quelle sorgenti che tentano di accedervi **simultaneamente**, è risolta nel dominio del tempo **comprimendo** la trasmissione dei messaggi in finestre temporali **separate**, prestabilite per ciascuna sorgente, dette **slot**.
 
