@@ -53,7 +53,7 @@ Una volta finito il caricamento, gli N messaggi vengono inviati, in **momenti di
 
 La potenziale **contesa del canale**, da parte di quelle sorgenti che tentano di accedervi **simultaneamente**, è risolta nel dominio del tempo **comprimendo** la trasmissione dei messaggi in finestre temporali **separate**, prestabilite per ciascuna sorgente, dette **slot**.
 
-Il **tempo T** viene detto **tempo di trama** o **periodo**:
+Il **tempo T**, uguale al tempo di arrivo completo di un messaggio di una generica sorgente (tempo di ricezione uguale per tutte), viene detto **tempo di trama** o **periodo**:
 è suddiviso in **slot** numerati di ugual durata sui quali è **allocata** la trasmissione di tutte le sorgenti in successione, una dopo l’altra. 
 - Ogni slot ha la **durata** di T/N ed è **assegnato** sempre alla stessa sorgente che lo ha **prenotato** in fase di setup del canale.
 - La **trama** si ripete all’infinito sempre con lo **stesso ordine** di trasmissione delle sorgenti e con **ugual durata** T (ripetizione periodica).
