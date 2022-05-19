@@ -66,7 +66,7 @@ I messaggi **arrivano** ad **ondate successive** assimilabili a **round periodic
 Il **multiplatore** è composto da:
 - **Code di ingresso** dove i messaggi delle varie sorgenti arrivano contemporaneamente capaci di ospitare **un solo** messaggio.
 - Un **deviatore** che commuta, quasi istantaneamente, da una sorgente all’altra per cui l'unico **tempo impegnato** da una sorgente è soltanto quello speso **per trasmettere** un messaggio.
-- Una **coda di uscita**, capace di tenere in attesa **più messaggi**, su cui è collegato **il canale** da condividere tra le sorgenti
+- Una **porta di uscita** su cui è collegato **il canale** da condividere tra le sorgenti
 
 Il **processo di multiplazione** è una conversione parallelo-seriale:
 - messaggi ricevuti in ugual tempo **su porte diverse** in ingresso diventano, in uscita,  messaggi trasmessi **sulla stessa porta** ma in tempi diversi detti slot.
