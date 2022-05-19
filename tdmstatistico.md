@@ -88,7 +88,7 @@ L'**unico vincolo** è che la **somma** delle velocità medie **in ingresso** di
 
 ### **Definizione**
 
-É una multiplazione (perché lo stesso canale è condiviso da più utenti) a divisione di tempo (i pacchetti sono trasmessi in intervalli di tempo diversi) non fissa, ma casuale (statistica), in quanto i pacchetti, tutti di lunghezza diversa, sono ordinati non in base a chi trasmette ma solo in base all’ordine di arrivo nella coda di ingresso al canale.
+É una **multiplazione** (perché lo stesso canale è condiviso da più utenti) a **divisione di tempo** (i pacchetti sono trasmessi in intervalli di tempo diversi) non fissa, ma **statistica**, in quanto i pacchetti, tutti di **lunghezza diversa**, sono **ordinati in trasmissione** non in base a chi trasmette ma solo in base all’**ordine di arrivo** nella coda davanti al canale.
 
 ### **Proprietà**
 
