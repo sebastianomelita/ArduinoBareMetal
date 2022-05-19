@@ -75,7 +75,7 @@ Il **processo di multiplazione** è una conversione parallelo-seriale:
 
 **Vincolo operativo:** 
 - nel tempo in cui **arriva un messaggio** in ingresso ne devono essere spediti **N in uscita**. Questo tempo si chiama periodo di frame.
-- le sorgenti devono essere **sincronizzate tra loro**, cioè devono inviare messaggi di ugual durata nello stesso tempo e devono essere sincronizzate con i tempi di **trasmissione** del canale in uscita.
+- le sorgenti devono essere **sincronizzate tra loro**, cioè devono inviare messaggi di ugual durata nello stesso tempo e devono essere sincronizzate anche con i tempi di **trasmissione** del canale in uscita.
 
 ### **Caratteristiche del TDM statico**
 
