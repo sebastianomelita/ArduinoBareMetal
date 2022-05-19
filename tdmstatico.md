@@ -47,14 +47,14 @@ Il **nodo master** stabilisce la **composizione** della "tavola rotonda" (cioè 
 
 <img src="tdmfisso.png" alt="alt text" width="700">
 
-I messaggi arrivano simultaneamente ma su N porte di ingresso diverse (SDM) e si caricano sul buffer a valle di ciascuna dopo un tempo T.
+I messaggi **arrivano simultaneamente** ma su N porte di ingresso diverse (SDM) e si caricano sul buffer a valle di ciascuna dopo un tempo T.
 
-Una volta finito il caricamento, gli N messaggi vengono inviati, in momenti diversi (TDM), nell’unica porta di uscita e con velocità maggiore di quella di arrivo in modo che la trasmissione di tutti avvenga sempre nel tempo T di arrivo di uno solo. 
+Una volta finito il caricamento, gli N messaggi vengono inviati, in **momenti diversi** (TDM), nell’unica porta di uscita e con **velocità maggiore** di quella di arrivo in modo che la trasmissione di tutti avvenga sempre nel tempo T di arrivo di uno solo. 
 
-Il tempo T viene detto tempo di trama o periodo:
-è suddiviso in slot numerati di ugual durata sui quali è allocata la trasmissione di tutte le sorgenti in successione, una dopo l’altra. 
-- Ogni slot ha la durata di T/N ed è assegnato sempre alla stessa sorgente che lo ha prenotato in fase di setup del canale.
-- La trama si ripete all’infinito sempre con lo stesso ordine di trasmissione delle sorgenti e con ugual durata T.
+Il **tempo T** viene detto **tempo di trama** o **periodo**:
+è suddiviso in **slot** numerati di ugual durata sui quali è **allocata** la trasmissione di tutte le sorgenti in successione, una dopo l’altra. 
+- Ogni slot ha la **durata** di T/N ed è **assegnato** sempre alla stessa sorgente che lo ha **prenotato** in fase di setup del canale.
+- La **trama** si ripete all’infinito sempre con lo **stesso ordine** di trasmissione delle sorgenti e con **ugual durata** T (ripetizione periodica).
 
 I messaggi **arrivano** ad **ondate successive** assimilabili a **round periodici**. Mentre si **trasmette** quella appena **ricevuta** si **riceve** l'ondata **successiva**. Il **ritardo** tra il momento della ricezione di un messaggio e quello della sua trasmissione è esattamente **T**.
 
