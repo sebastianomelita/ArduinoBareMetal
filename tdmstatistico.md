@@ -69,7 +69,7 @@ I **pacchetti in arrivo** vengono ospitati sulle code **di ingresso** che in gen
 
 I **pacchetti in uscita** vengono ospitati sulle code **di uscita** che invece ospitano **molti** pacchetti.
 
-Non appena un pacchetto **completa il suo arrivo** viene trasferito da una coda di ingresso su una **coda di uscita** posta dinanzi al canale. Il **ruolo** della coda di uscita è principalmente quello di risolvere il problema della **contesa del canale** da parte di pacchetti che vengano eventualmente **smistati simultaneamente** da più porte di ingresso sulla **stessa porta** di uscita.
+Non appena un pacchetto **completa il suo arrivo**, viene trasferito da una coda di ingresso su una **coda di uscita** posta dinanzi al canale. Il **ruolo** della coda di uscita è principalmente quello di risolvere il problema della **contesa del canale** da parte di pacchetti che vengano eventualmente **smistati simultaneamente** da più porte di ingresso sulla **stessa porta** di uscita.
 
 <img src="multiplatoresincronismo.png" alt="alt text" width="700">
 
