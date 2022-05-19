@@ -119,9 +119,9 @@ Nulla vieta di utilizzare protocolli di tipo connesso per scopi diversi dalla mu
 
 <img src="confrontotdm.png" alt="alt text" width="700">
 
-L'**efficienza** del TDM statistico è in genere molto più elevata di quella del TDM statico, soprattutto per le sorgenti di **trasmissioni intermittenti**, perchè permette di sfruttare al meglio il canale in quanto questo è impiegato solo dalle sorgenti che, istante per istante, hanno messaggi da trasmettere. Se una sorgente è inattiva non occuperà mai il canale dato che non esiste una prenotazione anticipata dello stesso effettuata prima dell'inizio di una comunicazione. 
+L'**efficienza** del TDM statistico è in genere **molto più elevata** di quella del TDM statico, soprattutto per le **sorgenti dati intermittenti**, perchè permette di sfruttare al meglio il canale in quanto questo è impiegato soltanto dalle sorgenti che, istante per istante, hanno messaggi da trasmettere. Se una sorgente è inattiva non occuperà mai il canale dato che non esiste una prenotazione anticipata dello stesso effettuata prima dell'inizio di una comunicazione. 
 
-Il canale è **impegnato** in maniera **esclusiva** da una sorgente fintantochè questa non completa la trasmissione di un pacchetto. In questo caso l'allocazione della risorsa trasmissiva rimane esclusiva per una sola sorgente ma solo limitatamente al tempo strettamente necessario a spedire un pacchetto sul canale.
+Il canale è **impegnato** in maniera **esclusiva** da una sorgente solo fino a quando questa non **completa la trasmissione** di un **pacchetto**. In questo caso l'**allocazione** della risorsa trasmissiva rimane **esclusiva** per una sola sorgente ma solo limitatamente al tempo strettamente necessario a **spedire** un pacchetto sul canale.
 
 ### **Riepilogo**
 
