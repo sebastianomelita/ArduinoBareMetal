@@ -64,21 +64,23 @@ I messaggi **arrivano** ad **ondate successive** assimilabili a **round periodic
 
 ### **Struttura**
 
-Il multiplatore è composto da:
-- Code di ingresso dove i messaggi delle varie sorgenti arrivano contemporaneamente
-- Un deviatore che commuta, quasi istantaneamente, da una sorgente all’altra
-- Una porta di uscita su cui è collegato il canale da condividere tra le sorgenti
+Il **multiplatore** è composto da:
+- **Code di ingresso** dove i messaggi delle varie sorgenti arrivano contemporaneamente capaci di ospitare **un solo** messaggio.
+- Un **deviatore** che commuta, quasi istantaneamente, da una sorgente all’altra per cui l'unico **tempo impegnato** da una sorgente è soltanto quello speso **per trasmettere** un messaggio.
+- Una **coda di uscita**, capace di tenere in attesa **più messaggi**, su cui è collegato **il canale** da condividere tra le sorgenti
 
-Il processo di multiplazione è una conversione parallelo-seriale:
-- messaggi ricevuti in ugual tempo su porte diverse in ingresso diventano, in uscita,  messaggi trasmessi sulla stessa porta ma in tempi diversi detti slot.
-- I messaggi di sorgenti diverse vengono ripartiti, in successione, sugli slot seguendo una turnazione delle sorgenti che si ripete uguale ogni N slot
+Il **processo di multiplazione** è una conversione parallelo-seriale:
+- messaggi ricevuti in ugual tempo **su porte diverse** in ingresso diventano, in uscita,  messaggi trasmessi **sulla stessa porta** ma in tempi diversi detti slot.
+- I messaggi di sorgenti diverse vengono ripartiti, in successione, sugli slot seguendo una **turnazione delle sorgenti** che si ripete uguale ogni N slot
 
-**Vincolo operativo:** nel tempo in cui arriva un messaggio in ingresso ne devono essere spediti N in uscita. Questo tempo si chiama periodo di frame.
+**Vincolo operativo:** 
+- nel tempo in cui **arriva un messaggio** in ingresso ne devono essere spediti **N in uscita**. Questo tempo si chiama periodo di frame.
+- le sorgenti devono essere **sincronizzate tra loro**, cioè devono inviare messaggi di ugual durata nello stesso tempo e devono essere sincronizzate con i tempi di **trasmissione** del canale in uscita.
 
 ### **Caratteristiche del TDM statico**
 
-I messaggi di comunicazioni diverse arrivano in ingresso tutte nello stesso tempo ma su porte diverse (SDM).
-I messaggi di comunicazioni diverse vengono trasmessi in uscita sulla stessa porta ma in tempi diversi (TDM).
+I messaggi di comunicazioni diverse arrivano in ingresso **tutte nello stesso tempo** ma su porte diverse (SDM).
+I messaggi di comunicazioni diverse vengono trasmessi in uscita sulla stessa porta ma **in tempi diversi** (TDM).
 
 L’**allocazione** delle comunicazioni nel tempo è:
 - **prestabilita** e **non cambia** mai per tutta la **durata della comunicazione** (TDM statico). E’ **prenotata** in **fase di setup** della comunicazione.
