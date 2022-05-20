@@ -61,7 +61,7 @@ Ogni **messaggio** lungo (stream o file) è diviso **dalla sorgente** in unità 
 
 <img src="multiplatore.png" alt="alt text" width="700">
 
-Un **multiplatore** è realizzato fisicamente in HW o in SW da una **coda** che accumula i pacchetti che **attendono la trasmissione** sul canale.
+Un **multiplatore** è una **memoria temporanea** realizzata fisicamente in HW o in SW che realizza una la **coda** che accumula i pacchetti che **attendono la trasmissione** sul canale.
 
 Il **tempo di riempimento** delle code di ingresso non è istantaneo ma dipende dalla **velocità della sorgente** che è al multiplatore statistico del tutto **ignota**. Potrebbero arrivare **contemporaneamente** o **separatamente** o anche insieme ma **parzialmente sovrapposte**, cioè sfalsate temporalmente l'una dall'altra, cosìcchè il caricamento di una per un po' si sovrappone con quello di un'altra.
 
