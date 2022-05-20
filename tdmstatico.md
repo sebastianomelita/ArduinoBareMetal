@@ -79,6 +79,7 @@ Il **processo di multiplazione** è una conversione parallelo-seriale:
 ### **Caratteristiche del TDM statico**
 
 I messaggi di comunicazioni diverse arrivano in ingresso **tutte nello stesso tempo** ma su porte diverse (SDM).
+
 I messaggi di comunicazioni diverse vengono trasmessi in uscita sulla stessa porta ma **in tempi diversi** (TDM).
 
 L’**allocazione** delle comunicazioni nel tempo è:
