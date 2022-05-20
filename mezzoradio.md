@@ -25,7 +25,7 @@ La partizione **TDM** nel tempo del canale può essere:
      - **mezzi broadcast**, si realizza mediante **protocolli di arbitraggio** che possono essere:
           - **centralizzati** di tipo master/slave quali MODBUS, Profibus, ecc.
           - **distribuiti (o peer-to-peer)** che di dividono in:
-               - **deterministici**, aoperati prevalentemente nelle **reti industriali** quali token ring o DQDB
+               - **deterministici**, adoperati prevalentemente nelle **reti industriali** quali token ring o DQDB
                - **statistici**, di gran lubga i più adoperati nelle **reti di ufficio** sono ALOHA, CSMA/CD, CSMA/CA.   
 
 [Dettaglio TDM statico su mezzi punto-punto](tdmstatico.md) 
