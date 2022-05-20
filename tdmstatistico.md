@@ -63,7 +63,7 @@ Ogni **messaggio** lungo (stream o file) è diviso **dalla sorgente** in unità 
 
 Un **multiplatore** è una **memoria temporanea** realizzata fisicamente in HW o in SW che realizza la **coda** che accumula i pacchetti che **attendono la trasmissione** sul canale.
 
-Il **tempo di riempimento** delle code di ingresso non è istantaneo ma dipende dalla **velocità della sorgente** che è al multiplatore statistico del tutto **ignota**. Potrebbero arrivare **contemporaneamente** o **separatamente** o anche insieme ma **parzialmente sovrapposte**, cioè sfalsate temporalmente l'una dall'altra, cosìcchè il caricamento di una per un po' si sovrappone con quello di un'altra.
+Il **tempo di riempimento** delle code di ingresso non è istantaneo ma dipende dalla **velocità della sorgente** che al multiplatore statistico è del tutto **ignota**. Potrebbero arrivare **contemporaneamente** o **separatamente** o anche insieme ma **parzialmente sovrapposte**, cioè sfalsate temporalmente l'una dall'altra, cosìcchè il caricamento di una per un po' si sovrappone con quello di un'altra.
 
 I **pacchetti in arrivo** vengono ospitati sulle code **di ingresso** che in genere ospitano esattamente **un sol** pacchetto.
 
