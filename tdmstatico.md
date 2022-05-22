@@ -53,7 +53,7 @@ Una volta finito il caricamento, gli N messaggi vengono inviati, in **momenti di
 
 La potenziale **contesa del canale**, da parte di quelle sorgenti che tentano di accedervi **simultaneamente**, è risolta nel dominio del tempo **comprimendo** la trasmissione dei messaggi di ciascuna in finestre temporali **separate** e di **ugual durata**, prestabilite per ciascuna sorgente, dette **slot**. 
 
-Gli slot sono **numerati** e l'abbinamento di ciascuno ad una sorgente è stabilito in fase di **setup** della comunicazione. La totalità degli abbinamenti stabilisce la composizione della **trama**, cioè la composizione del multimessaggio contenente i messaggi di tutte le sorgenti. 
+Gli slot sono **numerati** e l'**abbinamento** di ciascuno ad una sorgente è stabilito in fase di **setup** della comunicazione. La totalità degli abbinamenti stabilisce la composizione della **trama**, cioè la composizione del multimessaggio contenente i messaggi di tutte le sorgenti. 
 
 La **composizione** della trama deve essere nota **a valle del canale** per poter ripristinare i **flussi originali** su linee separate **estraendo** i messaggi dalle **trame in arrivo**.
 
