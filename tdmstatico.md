@@ -55,7 +55,7 @@ La potenziale **contesa del canale**, da parte di quelle sorgenti che tentano di
 
 Gli slot sono **numerati** e l'**abbinamento** di ciascuno ad una sorgente è stabilito in fase di **setup** della comunicazione. La totalità degli abbinamenti stabilisce la composizione della **trama**, cioè la composizione del multimessaggio contenente i messaggi di tutte le sorgenti. 
 
-La **composizione** della trama deve essere nota **a valle del canale** per poter ripristinare i **flussi originali** su linee separate **estraendo** i messaggi dalle **trame in arrivo**.
+La **composizione** della trama deve essere nota **a valle del canale** per consentire l'eventuale ripristino dei **flussi originali** su linee separate **estraendo** i messaggi dalle **trame in arrivo**.
 
 Il **tempo T**, uguale al **tempo di arrivo** completo di un messaggio di una generica sorgente (**tempo di ricezione** uguale per tutte), viene detto **tempo di trama** o **periodo**. E' suddiviso in **slot** numerati di ugual durata sui quali è **allocata** la trasmissione di tutte le sorgenti in successione, una dopo l’altra:
 - Ogni slot ha la **durata** di T/N ed è **assegnato** sempre alla stessa sorgente che lo ha **prenotato** in fase di setup del canale.
