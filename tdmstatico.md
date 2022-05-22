@@ -57,13 +57,14 @@ Il **tempo T**, uguale al **tempo di arrivo** completo di un messaggio di una ge
 - Ogni slot ha la **durata** di T/N ed è **assegnato** sempre alla stessa sorgente che lo ha **prenotato** in fase di setup del canale.
 - La **trama** si ripete all’infinito sempre con lo **stesso ordine** di trasmissione delle sorgenti e con **ugual durata** T (ripetizione periodica).
 
+I messaggi **arrivano** ad **ondate successive** assimilabili a **round periodici**. Mentre si **trasmette** quella appena **ricevuta** si **riceve** l'ondata **successiva**. Il **ritardo** tra il momento della ricezione di un messaggio e quello della sua trasmissione è esattamente **T**.
+
+**T** è anche l’intervallo di tempo che intercorre tra **slot allocati** alla **stessa sorgente** cioè slot consecutivi in cui si trasmettono i messaggi di una stessa sorgente.
+
 Gli slot sono **numerati** e l'**abbinamento** di ciascuno ad una sorgente è stabilito in fase di **setup** della comunicazione. La totalità degli abbinamenti stabilisce la composizione della **trama**, cioè la composizione del multimessaggio contenente i messaggi di tutte le sorgenti. 
 
 La **composizione** della trama deve essere nota **a valle del canale** per consentire l'eventuale ripristino dei **flussi originali** su linee separate **estraendo** i messaggi dalle **trame in arrivo**.
 
-I messaggi **arrivano** ad **ondate successive** assimilabili a **round periodici**. Mentre si **trasmette** quella appena **ricevuta** si **riceve** l'ondata **successiva**. Il **ritardo** tra il momento della ricezione di un messaggio e quello della sua trasmissione è esattamente **T**.
-
-**T** è anche l’intervallo di tempo che intercorre tra **slot allocati** alla **stessa sorgente** cioè slot consecutivi in cui si trasmettono i messaggi di una stessa sorgente.
 
 ### **Struttura**
 
