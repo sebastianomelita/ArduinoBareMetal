@@ -66,7 +66,7 @@ Gli slot sono **numerati** e l'**abbinamento** di ciascuno ad una sorgente è st
 La **composizione** della trama deve essere nota **a valle del canale** per consentire l'eventuale ripristino dei **flussi originali** su linee fisicamente separate **estraendo** i messaggi dalle **trame in arrivo** (demultiplexing).
 
 
-### **Struttura**
+## **Struttura**
 
 Il **multiplatore** è composto da:
 - **Code di ingresso** dove i messaggi delle varie sorgenti arrivano contemporaneamente capaci di ospitare **un solo** messaggio.
@@ -81,7 +81,7 @@ Il **processo di multiplazione** è una conversione parallelo-seriale:
 - nel tempo in cui **arriva un messaggio** in ingresso ne devono essere spediti **N in uscita**. Questo tempo si chiama periodo di frame.
 - le sorgenti devono essere **sincronizzate tra loro**, cioè devono inviare messaggi di ugual durata nello stesso tempo e devono essere sincronizzate anche con i tempi di **trasmissione** del canale in uscita. Se più multiplatori sono **in cascata** tra loro, tutti i dispositivi della gerarchia devono essere sincronizzati in maniera accurata su una **base dei tempi comune**  che spesso viene realizzata utilizzando quella molto precisa fornita da dispositivi **GPS**.
 
-### **Caratteristiche del TDM statico**
+## **Caratteristiche del TDM statico**
 
 I messaggi di comunicazioni diverse arrivano in ingresso **tutte nello stesso tempo** ma su porte diverse (SDM).
 
@@ -94,7 +94,7 @@ L’**allocazione** delle comunicazioni nel tempo è:
 
 Il **periodo** della trama coincide col tempo di **arrivo previsto** di un messaggio sulle **porte di ingresso**.
 
-### **Identificazione della sorgente**
+## **Identificazione della sorgente**
 
 Le risorse sono allocate on demand all’apertura della comunicazione (allocazione statica)
 
@@ -113,13 +113,13 @@ Il **ritardo** di trasmissione **è fisso** ed è pari al **tempo di trama**, ci
 
 Ritardi si trasmissione fissi rendono la multiplazione statica adatta a quelle sorgenti che sono **sensibili alle variazioni** del **tempo di consegna** dei dati: audio, video, e sorgenti multimediali in genere.
 
-### **Inefficienza intrinseca**
+## **Inefficienza intrinseca**
 
 <img src="tdmineffi.png" alt="alt text" width="700">
 
 La sorgente B non sta trasmettendo, l’intervallo di trasmissione sul canale (slot) ad essa assegnato appare periodicamente vuoto e, per tutta la sua durata, la risorsa fisica (il canale) è di fatto inutilizzata. 
 
-### **TDM statico: riepilogo**
+## **TDM statico: riepilogo**
 
 I messaggi di piu’ utenti diversi **condividono** le stesse risorse trasmissive (multiplazione dei **canali fisici**).
 La **contesa per l’accesso** al mezzo è risolta nel **dominio del tempo**  mediante **allocazione statica** (le risorse sono allocate all’inizio) in fase di setup della comunicazione.
