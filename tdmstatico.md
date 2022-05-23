@@ -51,7 +51,7 @@ I messaggi **arrivano simultaneamente** ma su N porte di ingresso diverse (SDM) 
 
 Una volta finito il caricamento, gli N messaggi vengono inviati, in **momenti diversi** (TDM), nell’unica porta di uscita e con **velocità maggiore** di quella di arrivo in modo che la **trasmissione di tutti** avvenga sempre nel **tempo T di arrivo** di uno solo. 
 
-La potenziale **contesa del canale**, da parte di quelle sorgenti che tentano di accedervi **simultaneamente**, è risolta nel dominio del tempo **comprimendo** la trasmissione dei messaggi in finestre temporali **separate** e di **ugual durata** dette **slot** che sono **assegnate** univocamente a ciascuna sorgente all'interno dell'intervallo che intercorre tra l'arrivo di due **messaggi consecutivi** (simultaneo per tutte le sorgenti). 
+La potenziale **contesa del canale**, da parte di quelle sorgenti che tentano di accedervi **simultaneamente**, è risolta nel dominio del tempo **comprimendo** la trasmissione dei messaggi in finestre temporali **separate** e di **ugual durata** dette **slot** che sono **assegnate** univocamente a ciascuna sorgente all'interno dell'intervallo che intercorre tra l'arrivo di due **messaggi consecutivi** (lo stesso per tutte le sorgenti). 
 
 Il **tempo T**, uguale al **tempo di arrivo** completo di un messaggio di una generica sorgente (**tempo di ricezione** uguale per tutte), viene detto **tempo di trama** o **periodo**. E' suddiviso in **slot** numerati di ugual durata sui quali è **allocata** la trasmissione delle sorgenti, in successione, uno slot dopo l'altro:
 - Ogni slot ha la **durata** di T/N ed è **assegnato** sempre alla stessa sorgente che lo ha **prenotato** in fase di setup del canale.
