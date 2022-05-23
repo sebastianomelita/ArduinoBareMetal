@@ -105,7 +105,7 @@ I messaggi sono **identificati** come appartenenti ad una certa sorgente **impli
 
 I **protocolli** che adoperano il TDM statico possono essere solamente di **tipo connesso (connectionful)** perchè deve esistere una **fase di setup**
 
-### **Ritardi**
+## **Ritardi**
 
 Completato l’arrivo sulle code di ingresso, i messaggi vengono trasmessi secondo un ordine prestabilito che si ripete periodicamente
 
