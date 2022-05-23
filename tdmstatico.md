@@ -63,7 +63,7 @@ I messaggi **arrivano** ad **ondate successive** assimilabili a **round periodic
 
 Gli slot sono **numerati** e l'**abbinamento** di ciascuno ad una sorgente è stabilito in fase di **setup** della comunicazione. La totalità degli abbinamenti stabilisce la composizione della **trama**, cioè la composizione del multimessaggio contenente i messaggi di tutte le sorgenti. 
 
-La **composizione** della trama deve essere nota **a valle del canale** per consentire l'eventuale ripristino dei **flussi originali** su linee separate **estraendo** i messaggi dalle **trame in arrivo**.
+La **composizione** della trama deve essere nota **a valle del canale** per consentire l'eventuale ripristino dei **flussi originali** su linee fisicamente separate **estraendo** i messaggi dalle **trame in arrivo**.
 
 
 ### **Struttura**
