@@ -75,7 +75,7 @@ Normalmente le **multiplazioni** sono gestite a **livello fisico** in HW utilizz
 
 A seconda della tecnologia adoperata si possono realizzare comunicazioni **punto-punto** o **multipunto**, ma di base il mezzo radio è pur sempre **intrinsecamente broadcast**. 
 
-L'**isolamento punto punto** nei mezzi a BUS con **arbitraggio a contesa** (ALOHA e CSMA/CA) è in genere **logico** e non si può ottenere **in trasmissione** scegliendo un **link isolato** verso la destinazione ma si ottiene **in ricezione**, a **livello di scheda** di rete, facendo in modo che una stazione radio che non riconosca il **proprio indirizzo** nella destinazione dei messaggi **ignori** le comunicazioni non proprie. Diventa più effettivo con la **cifratura** delle informazioni.
+L'**isolamento punto punto** nei mezzi a BUS con **arbitraggio a contesa** (ALOHA e CSMA/CA) è in genere **logico** e non si può ottenere **in trasmissione** scegliendo un **link isolato** verso la destinazione ma si ottiene **in ricezione**, a **livello di scheda** di rete, facendo in modo che una stazione radio che non riconosca il **proprio indirizzo** nel campo destinazione dei messaggi **ignori** le comunicazioni non proprie. Diventa più effettivo con la **cifratura** delle informazioni.
 
 ### **Multiplazioni non TDM**
 
