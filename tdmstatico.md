@@ -111,7 +111,7 @@ Completato l’arrivo sulle code di ingresso, i messaggi vengono trasmessi secon
 
 Il **ritardo** di trasmissione **è fisso** ed è pari al **tempo di trama**, cioè al periodo tra una trasmissione e l’altra dello stessa sorgente.
 
-Ritardi si trasmissione fissi rendono la multiplazione statica adatta a quelle sorgenti che sono **sensibili alle variazioni** del **tempo di consegna** dei dati: audio, video, e sorgenti multimediali in genere.
+Ritardi di trasmissione fissi rendono la multiplazione statica adatta a quelle sorgenti che sono **sensibili alle variazioni** del **tempo di consegna** dei dati: audio, video, e sorgenti multimediali in genere.
 
 ## **Inefficienza intrinseca**
 
