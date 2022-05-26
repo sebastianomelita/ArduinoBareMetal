@@ -195,6 +195,8 @@ Abbiamo visto che l'**interfaccia radio** si accede **allocando per primo** un *
 
 [Dettaglio multiplazioni statiche](multiplazioni.md)
 
+[Dettaglio TDM statico](tdmstatico.md) 
+
 [Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) 
 
 [Dettaglio TDM statistico su mezzi broadcast (BUS e radio)](protocollidiaccesso.md)
