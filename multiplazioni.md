@@ -2,6 +2,8 @@
 
 ## **Le multiplazioni statiche**
 
+Le multiplazioni sono **tecniche** per aumentare l'**efficienza** di un canale introducendo un certo grado di **condivisione** dello stesso tra più sorgenti.
+
 ### **Modalità di allocazione di una risorsa**
 
 L’**assegnazione (allocazione)** della risorsa canale fisico ad una comunicazione avviene in genere con una modalità detta **on demand (cioè su richiesta)**.
