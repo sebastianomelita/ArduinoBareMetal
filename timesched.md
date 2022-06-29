@@ -59,7 +59,7 @@ Per ovviare a questo problema basta misurare la **durata** dell'esecuzione di un
 	}
 ```
 
-La durata del'esecuzione viene sottratta solamente se rimane tempoi eccesso.
+La durata del'esecuzione viene sottratta solamente se rimane tempo in eccesso.
  
 ### **SCHEDULATORE CON TIMER TICK GENERATI DA MILLIS()**
 
