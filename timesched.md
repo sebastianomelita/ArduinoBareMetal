@@ -28,6 +28,7 @@ Riassumendo, la **schedulazione mediante delay** comporta:
 - **vantaggio**. Programmazione lineare molto semplice secondo una **logica strettamente sequenziale**
 - **svantaggio**. Inefficienza intrinseca nell'esecuzione dei programmi.
 
+
 ### **SCHEDULATORE CON DELAY() PIU' PRECISO**
  
 Se il codice da eseguire prima dell'attesa ha un tempo di esecuzione non trascurabile questo può sommarsi all'attesa programmata generando un'errore nella schedulazione dell'iterazione successiva. L'errore è proprio uguale al tempo di esecuzione del codice di una singola iterazione.
