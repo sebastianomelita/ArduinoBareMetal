@@ -43,18 +43,22 @@ def main():
 	led = 1
 	pinMode(led, OUT)
 	pinMode(pulsante, IN)
+	dt = 100
 
 	while True:
+		start = time.time() 
 		#codice eseguito al tempo stabilito
-		val = digitalRead(pulsante)    # lettura ingressi
-		# Inserire qui la logica di comando
 		# ...........
-		time.sleep(100)  # ritarda del tempo necessario
+		end = time.time()
+		duration = end - start
+		if duration < dt:
+			time.sleep(dt - duration)
 			
 
 if __name__ == "__main__":
 	main()
 ```
+La durata del'esecuzione viene sottratta solamente se rimane tempo in eccesso.
 
 ### **SCHEDULATORE CON TIMER TICK**
 
