@@ -28,7 +28,37 @@ Riassumendo, la **schedulazione mediante delay** comporta:
 - **vantaggio**. Programmazione lineare molto semplice secondo una **logica strettamente sequenziale**
 - **svantaggio**. Inefficienza intrinseca nell'esecuzione dei programmi.
 
+ ### **SCHEDULATORE CON DELAY() più preciso**
  
+ Se il codice da eseguire prima dell'attesa ha un tempo di esecuzione non trascurabile questo può sommarsi all'attesa programmata generando un'errore nella schedulazione dell'terazione successiva. L'errore è proprio il tempo di esecuzione del codice di una singola iterazione.
+
+Per ovviare a questo problema basta misurare la **durata** dell'esecuzione di un ciclo e sottrarla al tempo pianificato per l'esecuzione del ciclo sucessivo. Allo scopo si adopera la funzione **millis()**.
+
+```C++
+	byte led = 13;
+	byte pulsante = 2;
+	unsigned long start, end, duration;
+	unsigned long dt = 100;
+	
+	void setup()
+	{
+		pinMode(led, OUTPUT);
+		pinMode(pulsante, INPUT);
+	}
+
+	void loop()
+	{
+		start = millis();
+		//codice eseguito al tempo stabilito
+		//……………………………………
+		end = millis();
+		duration = end - start
+	        if(duration < dt)
+			delay(dt - duration)
+	}
+```
+
+La durata del'esecuzione viene sottratta solamente se rimane tempoi eccesso.
  
 ### **SCHEDULATORE CON TIMER TICK GENERATI DA MILLIS()**
 
