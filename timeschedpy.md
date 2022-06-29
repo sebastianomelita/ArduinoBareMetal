@@ -14,11 +14,10 @@ def main():
 
 	while True:
 		#codice eseguito al tempo stabilito
-		precm = uptime()  			   # preparo il tic successivo	
 		val = digitalRead(pulsante)    # lettura ingressi
 		# Inserire qui la logica di comando
 		# ...........
-		delay(100)  # ritarda del tempo necessario
+		time.sleep(100)  # ritarda del tempo necessario
 			
 
 if __name__ == "__main__":
@@ -28,6 +27,29 @@ La generazione di più task in tempi diversi risulta **molto semplice** se esegu
 - **vantaggio**. Programmazione lineare molto semplice secondo una logica strettamente sequenziale
 - **svantaggio**. Inefficienza intrinseca nell'esecuzione dei programmi.
 
+
+### **SCHEDULATORE CON DELAY()**
+```Python
+from gpio import *
+from time import *
+
+def main():
+	pulsante = 0
+	led = 1
+	pinMode(led, OUT)
+	pinMode(pulsante, IN)
+
+	while True:
+		#codice eseguito al tempo stabilito
+		val = digitalRead(pulsante)    # lettura ingressi
+		# Inserire qui la logica di comando
+		# ...........
+		time.sleep(100)  # ritarda del tempo necessario
+			
+
+if __name__ == "__main__":
+	main()
+```
 
 ### **SCHEDULATORE CON TIMER TICK**
 
