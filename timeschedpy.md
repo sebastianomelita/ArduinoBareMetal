@@ -32,7 +32,7 @@ La generazione di più task in tempi diversi risulta **molto semplice** se esegu
  
 Se il codice da eseguire prima dell'attesa ha un tempo di esecuzione non trascurabile questo può sommarsi all'attesa programmata generando un'errore nella schedulazione dell'iterazione successiva. L'errore è proprio uguale al tempo di esecuzione del codice di una singola iterazione.
 
-Per ovviare a questo problema basta misurare la **durata** dell'esecuzione di un ciclo e sottrarla al tempo pianificato per l'esecuzione del ciclo sucessivo. Allo scopo si adopera la funzione **millis()**.
+Per ovviare a questo problema basta misurare la **durata** dell'esecuzione di un ciclo e sottrarla al tempo pianificato per l'esecuzione del ciclo sucessivo. Allo scopo si adopera la funzione **time.time()** o **uptime()** in Packet Tracer.
 
 ```Python
 from gpio import *
