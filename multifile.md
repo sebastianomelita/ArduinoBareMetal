@@ -99,7 +99,7 @@ void handleRoot();
 #include "webmanager.h"
 #define webserver (*serveru)
 
-ESP8266WebServer *serveru; 
+WebServer *serveru; 
 
 const char favicon[] = {
   0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x10, 0x10, 0x00, 0x00, 0x01, 0x00,
