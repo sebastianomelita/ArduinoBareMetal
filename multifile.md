@@ -74,6 +74,7 @@ Si noti che l'inclusione, così come è stata realizzata, avviene in un **solo v
 
 Se volessimo uno scambio di valori nel verso opposto, ad esempio esportare nel file della libreria una variabile globale definita nel file del progetto una maniera è riorrere ad una istruzione di **assegnazione** che modfichi il valore di una variabile globale **dichiarata nel file della libreria** con il valore di una variabile istanziata **nel file del progetto**. Il **posto giusto** per effettuare questa assegnazione è la funzione di ```**setup()**``` del ```loop()``` principale. Può avvenire in maniera esplicita all'interno del file principale del progetto o all'interno di una funzione di inizializzazione della libreria (definita a sua volta nella libreria.
 
+**file webmanager.h**
 ```C++
 # webmanager.h
 
@@ -90,7 +91,7 @@ void handleRoot();
 #endif
 ```
 
-
+**file webmanager.cpp**
 ```C++
 # webmanager.cpp
 #include "webmanager.h"
@@ -132,6 +133,7 @@ void handleRoot() {
 }
 ```
 
+**file mioprogetto.ino**
 ```C++
 #include "webmanager.h"
 WebServer webserver(80);
@@ -140,6 +142,6 @@ void setup(){
 initWebmanager(&webserver);
 .....
 }
-```C
+```
 
 >[Torna all'indice generale](index.md)
