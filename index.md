@@ -18,5 +18,6 @@
 14. [Nodo LoRaWan HW (RAK811) - rete di sensori](lorarak811.md)
 15. [Nodo LoRaWan HW (LoRa-E5 mini) - rete di sensori](lorae5minihw.md)
 16. [Gateway LoRaWan - rete IP](gatewaylora-ip.md)
-17. [Esercizi](esercizi.md)
+17. [Gestione di più file](multifile.md)
+18. [Esercizi](esercizi.md)
 
