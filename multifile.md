@@ -66,7 +66,7 @@ void handleRoot() {
 ```
 Si noti che il file definisce e rende **pubbliche** (cioè **globali**), cioè accessibili al file ```mioprogetto.ino``` e a tutti gli altri file di definizione di librerie di funzioni (quelli con estensione .c o .c++):
 - le sue **variabili globali**, nell'esempio l'array ```favicon``` e l'oggetto ```webserver```
-- le sue **funzioni**, nell'esempio ```handleFavicon()```, ```handleNotFound()```, ```handleNotFound()```.
+- le sue **funzioni**, nell'esempio ```handleFavicon()```, ```handleNotFound()```, ```handleRoot()```.
 
 
 >[Torna all'indice generale](index.md)
