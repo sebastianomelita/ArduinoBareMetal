@@ -25,7 +25,7 @@ void handleNotFound();
 void handleRoot();
 #endif
 ```
-Una **direttiva**, eseguita in fase di compilazione prima di includere il file header,  verifica se esso non è già stato incluso in precedenza controllando una **costante flag** (bandierina) che viene definita al momento della prima inclusione.
+Una **direttiva**, eseguita in **fase di compilazione** prima di includere il file header,  verifica se esso non è già stato incluso in precedenza controllando una **costante flag** (bandierina) che viene definita al momento della prima inclusione.
 
 Di seguito è riportato il file delle definizioni corrispondente al file delle intestazioni (header file) precedente:
 
