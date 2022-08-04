@@ -1,6 +1,6 @@
 >[Torna all'indice generale](index.md)
 
-##**Modo C/C++
+## **Modo C/C++
 
 Nella maniera tradizionale di gestire i progetti in C/C++ una possibilità è quella di creare librerie di funzioni ed, eventualmente, di variabili globali pubbliche organizzate in due file aventi lo stesso nome (quello che identifica la libreria) ma estensioni diverse:
 - **mialibreria.cpp (o mialibreria.c)** che contiene la definizione del corpo delle funzioni pubbliche e la dichiarazione delle variabili globali pubbliche. 
