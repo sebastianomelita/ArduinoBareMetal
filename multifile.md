@@ -32,7 +32,7 @@ Di seguito è riportato il file delle definizioni corrispondente al file delle i
 ```C++
 # mialibreria.cpp
 
-#include "common.h"
+#include "mialibreria.h"
 WebServer webserver(80);
 
 const char favicon[] = {
@@ -67,6 +67,13 @@ void handleRoot() {
 Si noti che il file definisce e rende **pubbliche** (cioè **globali**), cioè accessibili al file ```mioprogetto.ino``` e a tutti gli altri file di definizione di librerie di funzioni (quelli con estensione .c o .c++):
 - le sue **variabili globali**, nell'esempio l'array ```favicon``` e l'oggetto ```webserver```
 - le sue **funzioni**, nell'esempio ```handleFavicon()```, ```handleNotFound()```, ```handleRoot()```.
+
+Nel file ```mioprogetto.ino``` verrà inserita la riga #include ```"mialibreria.h"```.
+
+Si noti che l'inclusione, così come è stata realizzata, avviene in un **solo verso**, dal file della libreria a quello principale del progetto, cioè dal file ```mialibreria.cpp``` a quello in cui è incluso il file header corrispondente, cioè ```mialibreria.h```. Nel nostro caso, quindi, le funzioni e le variabili globali verranno esportate dal file ```mialibreria.cpp``` al file ```mioprogetto.ino```. Il risultato è evidentemente quello voluto nel momento che siamo interessati ad utilizzare nel file principale del progetto, ```mioprogetto.ino```, le **variabili globali** e le **funzioni** definite nella libreria .
+
+Se volessimo uno scambio di valori nel verso opposto, ad esempio esportare nel file della libreria una variabile globale definita nel file del progetto è possibile riorrere ad una istruzione di assegnazione che modfichi il valore di una variabile globale definita nel file della libreria con un valore di una variabile istanziata nel file del progetto. Il posto giusto per effettuare questa assegnazione è la funzione di setup() del loop() principale. Può avvenire in maniera esplicita all'interno del file principale del progetto o all'interno di una funzione di inizializzazione della libreria (definita a sua volta nella libreria.
+
 
 
 >[Torna all'indice generale](index.md)
