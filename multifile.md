@@ -72,9 +72,11 @@ Nel file ```mioprogetto.ino``` verrà inserita la riga #include ```"mialibreria.
 
 Si noti che l'inclusione, così come è stata realizzata, avviene in un **solo verso**, dal file della libreria a quello principale del progetto, cioè dal file ```mialibreria.cpp``` a quello in cui è incluso il file header corrispondente, cioè ```mialibreria.h```. Nel nostro caso, quindi, le funzioni e le variabili globali verranno esportate dal file ```mialibreria.cpp``` al file ```mioprogetto.ino```. Il risultato è evidentemente quello voluto nel momento che siamo interessati ad utilizzare nel file principale del progetto, ```mioprogetto.ino```, le **variabili globali** e le **funzioni** definite nella libreria .
 
+### **Esportazione in due direzioni**
+
 Se volessimo uno scambio di valori nel verso opposto, ad esempio esportare nel file della libreria una variabile globale definita nel file del progetto una maniera è ricorrere ad una istruzione di **assegnazione** che modfichi il valore di una variabile globale **dichiarata nel file della libreria** con il valore di una variabile istanziata **nel file del progetto**. Il **posto giusto** per effettuare questa assegnazione è la funzione di **```setup()```** del ```loop()``` principale. La copia può avvenire in maniera esplicita all'interno del file principale del progetto o all'interno di una funzione di inizializzazione della libreria (definita a sua volta nella libreria).
 
-**file webmanager.h**
+**File webmanager.h**
 ```C++
 # webmanager.h
 
@@ -91,7 +93,7 @@ void handleRoot();
 #endif
 ```
 
-**file webmanager.cpp**
+**File webmanager.cpp**
 ```C++
 # webmanager.cpp
 #include "webmanager.h"
@@ -133,7 +135,7 @@ void handleRoot() {
 }
 ```
 
-**file mioprogetto.ino**
+**File mioprogetto.ino**
 ```C++
 #include "webmanager.h"
 WebServer webserver(80);
