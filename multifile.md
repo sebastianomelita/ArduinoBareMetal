@@ -12,10 +12,10 @@ nel file principale del progetto, ad esempio ```mioprogetto.ino``` in cima a tut
 Inoltre, per evitare **inclusioni multiple** dello stesso file (fenomeno che causa spreco di spazio e potenziali errori) si fa in modo che nel file ```mialibreria.h``` tutto il codice sia racchiuso tra opportune **direttive** di compilazione (istruzioni per il compilatore) come illustrato nell'esempio di seguito: 
 
 ```C++
-# mialibreria.h
+# webmanager.h
 
-#ifndef __COMMON_H__
-#define __COMMON_H__
+#ifndef __WEBMANAGER_H__
+#define __WEBMANAGER_H__
 
 #include <WebServer.h>
 #include <ESPmDNS.h>
@@ -30,9 +30,9 @@ Una opportuna **direttiva**, prima di includere il file header, in fase di compi
 Di seguito è riportato il file delle definizioni corrispondente al file delle intestazioni (header file) precedente:
 
 ```C++
-# mialibreria.cpp
+# webmanager.cpp
 
-#include "mialibreria.h"
+#include "webmanager.h"
 WebServer webserver(80);
 
 const char favicon[] = {
@@ -72,8 +72,74 @@ Nel file ```mioprogetto.ino``` verrà inserita la riga #include ```"mialibreria.
 
 Si noti che l'inclusione, così come è stata realizzata, avviene in un **solo verso**, dal file della libreria a quello principale del progetto, cioè dal file ```mialibreria.cpp``` a quello in cui è incluso il file header corrispondente, cioè ```mialibreria.h```. Nel nostro caso, quindi, le funzioni e le variabili globali verranno esportate dal file ```mialibreria.cpp``` al file ```mioprogetto.ino```. Il risultato è evidentemente quello voluto nel momento che siamo interessati ad utilizzare nel file principale del progetto, ```mioprogetto.ino```, le **variabili globali** e le **funzioni** definite nella libreria .
 
-Se volessimo uno scambio di valori nel verso opposto, ad esempio esportare nel file della libreria una variabile globale definita nel file del progetto è possibile riorrere ad una istruzione di assegnazione che modfichi il valore di una variabile globale definita nel file della libreria con un valore di una variabile istanziata nel file del progetto. Il posto giusto per effettuare questa assegnazione è la funzione di setup() del loop() principale. Può avvenire in maniera esplicita all'interno del file principale del progetto o all'interno di una funzione di inizializzazione della libreria (definita a sua volta nella libreria.
+Se volessimo uno scambio di valori nel verso opposto, ad esempio esportare nel file della libreria una variabile globale definita nel file del progetto una maniera è riorrere ad una istruzione di **assegnazione** che modfichi il valore di una variabile globale **dichiarata nel file della libreria** con il valore di una variabile istanziata **nel file del progetto**. Il **posto giusto** per effettuare questa assegnazione è la funzione di ```**setup()**``` del ```loop()``` principale. Può avvenire in maniera esplicita all'interno del file principale del progetto o all'interno di una funzione di inizializzazione della libreria (definita a sua volta nella libreria.
+
+```C++
+# webmanager.h
+
+#ifndef __WEBMANAGER_H__
+#define __WEBMANAGER_H__
+
+#include <WebServer.h>
+#include <ESPmDNS.h>
+
+void initCommon(WebServer *);
+void handleFavicon();
+void handleNotFound();
+void handleRoot();
+#endif
+```
 
 
+```C++
+# webmanager.cpp
+#include "webmanager.h"
+#define webserver (*serveru)
+
+ESP8266WebServer *serveru; 
+
+const char favicon[] = {
+  0x00, 0x00, 0x01, 0x00, 0x01, 0x00, 0x10, 0x10, 0x00, 0x00, 0x01, 0x00,
+  0x18, 0x00, 0x68, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+};
+
+void initWebmanager(WebServer *serveri){
+	serveru=serveri; 
+}
+
+void handleFavicon(){
+	webserver.sendHeader("Cache-Control", "max-age=31536000");
+	webserver.send_P(200, "image/x-icon", favicon, sizeof(favicon));
+}
+
+void handleNotFound() {
+  String message = "File webserverNot Found\n\n";
+  message += "URI: ";
+  message += webserver.uri();
+  message += "\nMethod: ";
+  message += (webserver.method() == HTTP_GET) ? "GET" : "POST";
+  message += "\nArguments: ";
+  message += webserver.args();
+  message += "\n";
+  for (uint8_t i = 0; i < webserver.args(); i++) {
+    message += " " + webserver.argName(i) + ": " + webserver.arg(i) + "\n";
+  }
+  webserver.send(404, "text/plain", message);
+}
+
+void handleRoot() {
+  webserver.send(200, "text/plain", "hello from esp32!");
+}
+```
+
+```C++
+#include "webmanager.h"
+WebServer webserver(80);
+
+void setup(){
+initWebmanager(&webserver);
+.....
+}
+```C
 
 >[Torna all'indice generale](index.md)
