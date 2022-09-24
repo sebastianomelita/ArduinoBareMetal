@@ -48,6 +48,10 @@ I **protocolli connessi** sono sempre composti da **tre fasi**:
 I **protocolli non connessi** sono sempre composti da **una sola fase**: 
 - **Dialogo o trasmissione**: vengono scambiati i messaggi (PDU) seguendo le regole del protocollo
 
+I **protocolli connessi** realizzano connessioni intrinsecamente più affidabili perchp presuppongono che dall'altro **capo della comunicazione** ci sia sempre un interlocutore **pronto a ricevere** i messaggi dato che essa è stata da questo esplicitamente accettata in **fase di apertura**. I protocolli connessi pongono in genere l'**enfasi** sulla **affidabilità** e sulla **correttezza** dei messaggi.
+
+I **protocolli non orientati alla connessione** (o semplicemente detti non connessi) realizzano comunicazioni in cui il mittente si cura semplicemente di spedire il messaggio senza curarrsi se all'atro  **capo della comunicazione** ci sia effettivamente un interlocutore pronto a riceverli. I protocolli non connessi pongono in genere l'**enfasi** sulle **prestazioni** di velocità e sulla **puntualità** della consegna dei messaggi.
+
 ### **Protocolli confermati e non**
 
 I **protocolli confermati** sono protocolli in cui il **mittente** possiede un timer, detto **timer di ritrasmissione**, impostato ad un valore massimo di conteggio detto **timeout**. Il timer viene **avviato** al momento esatto dell'invio di un messaggio e viene **resettato** al momento della ricezione di un messaggio di conferma  di corretto arrivo a destinazione.
