@@ -50,7 +50,7 @@ I **protocolli non connessi** sono sempre composti da **una sola fase**:
 
 I **protocolli connessi** realizzano connessioni intrinsecamente più affidabili perchè presuppongono che all'altro **capo della comunicazione** ci sia sempre un interlocutore **pronto a ricevere** i messaggi, dato che essa è stata da questo esplicitamente accettata in **fase di apertura**. I protocolli connessi pongono in genere l'**enfasi** sulla **affidabilità** e sulla **correttezza** dei messaggi.
 
-I **protocolli non orientati alla connessione** (o semplicemente detti non connessi) realizzano comunicazioni in cui il mittente si limita semplicemente a spedire il messaggio senza curarsi affatto se all'atro **capo della comunicazione** ci sia effettivamente un interlocutore pronto a riceverli. I protocolli non connessi pongono in genere l'**enfasi** sulle **prestazioni** di velocità e sulla **puntualità** della consegna dei messaggi.
+I **protocolli non orientati alla connessione** (o semplicemente detti non connessi) realizzano comunicazioni in cui il mittente si limita semplicemente a spedire i messaggi senza curarsi affatto se all'atro **capo della comunicazione** ci sia effettivamente un interlocutore pronto a riceverli. I protocolli non connessi pongono in genere l'**enfasi** sulle **prestazioni** di velocità e sulla **puntualità** della consegna dei messaggi.
 
 ### **Protocolli confermati e non**
 
