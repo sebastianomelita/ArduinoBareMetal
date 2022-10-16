@@ -186,7 +186,7 @@ void loop() {
 		count += 1;
 		delay(1000);
 	}
-	Serial.print("termino il threads 2");
+	Serial.println("Termino il threads 2");
 	// interrompe il loop del secondo thread
 	blink2_running = false;
 }
@@ -273,7 +273,7 @@ void loop() {
 		count += 1;
 		delay(1000);
 	}
-	Serial.print("Termino il threads...");
+	Serial.println("Termino il threads...");
 	// interrompe i loop di tutti i thread
 	blink1_running = false;
 	blink2_running = false;
