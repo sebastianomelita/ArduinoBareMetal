@@ -30,7 +30,7 @@ Per **cablare** un pulsante ad un ingresso digitale di un microcontrollore sono 
 
 - **“tirare" come?”** Il piedino di ingresso del microcontrollore non è **mai** collegato direttamente in su alla Vcc o in giù al GND ma indirettamente **tramite una resistenza** di valore opportuno (1-10K Ohm).
 
-**porte digitali di ingresso**
+**Porte digitali di ingresso**
 
 Ogni **porta** di ingresso del microcontrollore possiede internamente un circuito in grado di "leggere" la **tensione** in ingresso e **interpretarla**, cioè tradurla in un **valore digitale** in base al superamento o meno di una certa **soglia**. La soglia è posta a circa **metà** della tensione di alimentazione. Se la tensione è **sotto** la soglia l'ingresso viene interpretato come uno **0 (LOW)**, altrimenti, se è **sopra** la soglia, esso vale digitalmente un **1 (HIGH)**.
 
