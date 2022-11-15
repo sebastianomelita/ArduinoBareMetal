@@ -32,13 +32,15 @@ Per **cablare** un pulsante ad un ingresso digitale di un microcontrollore sono 
 
 **Ruolo del pulsante**, serve:
 
--  a **pulsante aperto**, lasciare l’ingresso polarizzato al suo valore di default, Vcc nel caso del **pullup** o GND nel caso del **pulldown**. Internamente questi valori sono codificati rispettivamente, con lo stato logico alto **HIGH** (normalmente vale1) e **LOW** (di solito 0)
+-  a **pulsante aperto**, lasciare l’ingresso al suo valore di default (Vcc nel caso del **pullup** o GND nel caso del **pulldown**) polarizzato mediante la **resistenza**. Internamente questi valori sono codificati rispettivamente, con lo stato logico alto **HIGH** (normalmente vale1) e **LOW** (di solito 0)
 
 -  a **pulsante chiuso**, cortocircuitare, cioè polarizzare, l’ingresso del microcontrollore a potenziale GND nel caso della polarizzazione **pullup**, o a potenziale **Vcc** nel caso di quella **pulldown**. L’effetto è evidentemente quello di invertire lo stato logico di default che, nella situazione di **pulsante premuto**, si codifica con **LOW** nel caso del collegamento **pullup** e con **HIGH** nel caso di quello **pulldown**
 
-In definitiva, in entrambi i casi, sia pull up che pull down, la polarizzazione della porta di ingresso digitale è realizzata:
-- a pulasnte aperto dalla resistenza
-- a pulsante chiuso dal pulsante
+La **porta** di ingresso possiede internamente un circuito in grado di "leggere" la **tensione** in ingresso e **interpretarla**, cioè tradurla in un **valore digitale** in base al superamento o meno di una certa **soglia**. La soglia è posta a circa **metà** della tensione di alimentazione. Se la tensione è **sotto** la soglia l'ingresso viene interpretato come uno **0**, altrimenti, se è **sopra** la soglia, esso vale digitalmente un **1**.
+
+In **definitiva**, sia pull up che pull down, la **polarizzazione** in tensione della porta di ingresso digitale è realizzata:
+- a pulsante aperto, dalla resistenza
+- a pulsante chiuso, dal pulsante
 
 ![elettrico](pullupelectric.png)
 
