@@ -32,12 +32,16 @@ Per **cablare** un pulsante ad un ingresso digitale di un microcontrollore sono 
 
 Ogni **porta** di ingresso del microcontrollore possiede internamente un circuito in grado di "leggere" la **tensione** in ingresso e **interpretarla**, cioè tradurla in un **valore digitale** in base al superamento o meno di una certa **soglia**. La soglia è posta a circa **metà** della tensione di alimentazione. Se la tensione è **sotto** la soglia l'ingresso viene interpretato come uno **0 (LOW)**, altrimenti, se è **sopra** la soglia, esso vale digitalmente un **1 (HIGH)**.
 
+**Situazione di pulsante aperto**
 
-**Ruolo del pulsante**, serve:
+- **Ruolo della resistenza** è quello di polarizzare la **tensione** sulla porta digitale che è **l'unico percorso** possibile per la corrente. Poiché il micro in prima approssimazione non consuma corrente (in realtà e trascurabile) la caduta di tensione sulla resistenza è nulla e pertanto il potenziale ai suoi capi è lo stesso. In altre parole, la resistenza è assimilabile ad un pezzo di **filo** che collega l’ingresso del micro **in alto a Vcc (pullup)** o **in basso a GND (pulldown).**
 
--  a **pulsante aperto**, lasciare l’ingresso al suo valore di default (Vcc nel caso del **pullup** o GND nel caso del **pulldown**) polarizzato mediante la **resistenza**. Internamente questi valori sono codificati rispettivamente, con lo stato logico alto **HIGH** (normalmente vale1) e **LOW** (di solito 0)
+- **Ruolo del pulsante** è lasciare l’ingresso al suo valore di default (Vcc nel caso del **pullup** o GND nel caso del **pulldown**) polarizzato mediante la **resistenza**. Internamente questi valori sono codificati rispettivamente, con lo stato logico alto **HIGH** (normalmente vale1) e **LOW** (di solito 0)
 
--  a **pulsante chiuso**, cortocircuitare, cioè polarizzare, l’ingresso del microcontrollore a potenziale GND nel caso della polarizzazione **pullup**, o a potenziale **Vcc** nel caso di quella **pulldown**. L’effetto è evidentemente quello di invertire lo stato logico di default che, nella situazione di **pulsante premuto**, si codifica con **LOW** nel caso del collegamento **pullup** e con **HIGH** nel caso di quello **pulldown**
+**Situazione di pulsante chiuso**
+
+- **Ruolo della resistenza** è quello di limitare la **corrente** che scorre nel pulsante quando questo viene chiuso. Infatti, per effetto del cortocircuito ai suoi capi, su di esso scorre la corrente generata dalla tensione che si viene a determinare **ai capi** della resistenza pari in genere a **Vcc**. Se la resistenza fosse stata semplicemente **un filo** (resistenza nulla) la corrente sarebbe quella di **cortocircuito** (teoricamente infinita). Se la resistenza fosse stata semplicemente un **circuito aperto** l’ingresso non sarebbe stato **preventivamente tirato** al suo valore di default.
+- **Ruolo del pulsante** è quello di cortocircuitare, cioè polarizzare, l’ingresso del microcontrollore a potenziale GND nel caso della polarizzazione **pullup**, o a potenziale **Vcc** nel caso di quella **pulldown**. L’effetto è evidentemente quello di invertire lo stato logico di defaul
 
 In **definitiva**, sia pull up che pull down, la **polarizzazione** in tensione della porta di ingresso digitale è realizzata:
 - a pulsante aperto, dalla resistenza
@@ -45,11 +49,8 @@ In **definitiva**, sia pull up che pull down, la **polarizzazione** in tensione 
 
 ![elettrico](pullupelectric.png)
 
-**Ruolo della resistenza** è quello di **polarizzare** (forzare tensione e corrente) adeguatamente **l’ingresso** nelle due **situazioni** possibili:
 
-- **A pulsante aperto**, a polarizzare la **tensione** sulla porta digitale che è **l'unico percorso** possibile per la corrente. Poiché il micro in prima approssimazione non consuma corrente (in realtà e trascurabile) la caduta di tensione sulla resistenza è nulla e pertanto il potenziale ai suoi capi è lo stesso. In altre parole, la resistenza è assimilabile ad un pezzo di **filo** che collega l’ingresso del micro **in alto a Vcc (pullup)** o **in basso a GND (pulldown).**
-
-- **A pulsante chiuso**, a limitare la **corrente** che scorre nel pulsante quando questo viene chiuso. Infatti, per effetto del cortocircuito ai suoi capi, su di esso scorre la corrente generata dalla tensione che si viene a determinare **ai capi** della resistenza pari in genere a **Vcc**. Se la resistenza fosse stata semplicemente **un filo** (resistenza nulla) la corrente sarebbe quella di **cortocircuito** (teoricamente infinita). Se la resistenza fosse stata semplicemente un **circuito aperto** l’ingresso non sarebbe stato **preventivamente tirato** al suo valore di default.
+- **A pulsante chiuso**, 
 
 **Valori della resistenza** troppo bassi o troppo alti determinano vantaggi e svantaggi:
 
