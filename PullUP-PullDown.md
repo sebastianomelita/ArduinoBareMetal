@@ -71,7 +71,10 @@ Di seguito è riportato lo schema di un **possibile collegamento** di due pulsan
 
 ![pulsantiboard](pulsantiboard.png)
 
-Il pulsante a sinistra è collegato in configurazione Pull Down mentre quello a destra in configurazione Pull Up. 
+Il pulsante a sinistra è collegato in configurazione Pull Down mentre quello a destra in configurazione Pull Up.
+
+I pulsanti sono **disposti** orientando i terminali già uniti internamente a circuito aperto (a-b) e (c-d) a cavallo del **solco** grande tra le due zone della basetta.
+
 
 
 
