@@ -176,7 +176,6 @@ struct pt { unsigned short lc; };
 // e commentare le macro sopra
 //#include "protothreads.h"
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-byte precval, val;
 byte led = 13;
 byte pulsante =2;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
@@ -192,11 +191,10 @@ int btnThread(struct pt* pt) {
   // Loop del protothread
   while(true) {
 	val = digitalRead(pulsante);		// lettura ingressi
-	if(precval==LOW && val==HIGH){ 		// rivelatore di fronte di salita
-		stato = !(stato); 		// impostazione dello stato del toggle
-	}
-	precval=val;  				//memorizzazione livello loop precedente
-	PT_SLEEP(pt, 500);			// delay non bloccanti
+	if(val==HIGH)			// se è alto c'è stato un fronte di salita
+		stato = !(stato); 	// impostazione dello stato del toggle
+	PT_SLEEP(pt, 500);		// antirimbalzo
+	PT_WAIT_UNTIL(pt, val==LOW)	// attendi fino al prossimo fronte di discesa
   }
   PT_END(pt);
 }
@@ -397,7 +395,6 @@ pthread_t t2;
 int delayTime ;
 int led = 13;
 byte pulsante =2;
-byte precval, val;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 // utilizzare variabili globali è una maniera per ottenere
 // che il valore di una variabile persista tra chiamate di funzione successive
