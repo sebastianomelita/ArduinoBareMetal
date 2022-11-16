@@ -12,7 +12,7 @@ Il pulsante è **senza stato** nel senso che non “ricorda” né elettricament
 
 Il **contatto** che si chiude alla pressione del pulsante è in realtà **uno solo** e unisce **due terminali** indicati in figura con a-b e c-d (le due striscette verdi in figura):
 
-- A **circuito aperto** i terminali sono collegati a coppie. **Visivamente** le “gambine” che si guardano l’una con l’altra **di faccia** (a-b e c-d)sono quelle **già collegate** internamente anche a circuito aperto (strisce verdi), quelle che sono **affiancate di taglio** (a-d e b-c) sono quelle **sempre scollegate** a circuito aperto.
+- A **circuito aperto** i terminali sono collegati a coppie. **Visivamente** le “gambine” che si guardano l’una con l’altra **di faccia** (a-b e c-d) sono quelle **già collegate** internamente anche a circuito aperto (strisce verdi), quelle che sono **affiancate di taglio** (a-d e b-c) sono quelle **sempre scollegate** a circuito aperto.
 
 - A **circuito chiuso** i terminali sono collegati tutti insieme. I **terminali** a-b e c-d sono **cortocircuitati** **all’interno** del pulsante, in pratica sono uno **stesso terminale**.
 
