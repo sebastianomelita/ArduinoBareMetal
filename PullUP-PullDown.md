@@ -71,6 +71,8 @@ Di seguito è riportato lo schema di un **possibile collegamento** di due pulsan
 
 ![pulsantiboard](pulsantiboard.png)
 
+Il pulsante a sinistra è collegato in configurazione Pull Down mentre quello a destra in configurazione Pull Up.
+
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbLTEwNzE0MzIzOTldfQ==
