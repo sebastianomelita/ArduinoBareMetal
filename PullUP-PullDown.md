@@ -12,7 +12,7 @@ Il pulsante è **senza stato** nel senso che non “ricorda” né elettricament
 
 Il **contatto** che si chiude alla pressione del pulsante è in realtà **uno solo** e unisce **due terminali** indicati in figura con a-b e c-d.
 
-I **terminali** **esternamente** sono 4 ma in realtà sono **elettricamente solo due** poiché i terminali a-b e c-d sono **cortocircuitati** **all’interno** del pulsante, in pratica due terminali terminali normalmente aperti.
+I **terminali** **esternamente** sono 4 ma in realtà sono **elettricamente solo due** poiché i terminali a-b e c-d sono **cortocircuitati** **all’interno** del pulsante, in pratica due terminali normalmente aperti.
 
 **Visivamente** le “gambine” che si guardano l’una con l’altra **di faccia** sono quelle **cortocircuitate**, quelle che sono **affiancate di taglio** sono quelle **scollegate** a circuito aperto.
 
