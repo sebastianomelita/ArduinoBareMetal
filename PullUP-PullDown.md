@@ -77,7 +77,9 @@ Il pulsante a sinistra è collegato in configurazione Pull Down mentre quello a 
 
 I pulsanti sono **disposti** orientando i terminali già uniti internamente a circuito aperto (a-b) e (c-d) a cavallo del **solco** grande tra le due zone della basetta.
 
-Ad ciascuna porta digitale di ingresso corrisponde il suo pulsante. Una porta va collegata (tramite un filo) ad uno di quei terminali che in un pulsante sono posti in alto. Il terminale corrispondente posto in basso si collega alla resistenza di pull (UP o down).
+Ad ciascuna porta digitale di ingresso corrisponde il suo pulsante. Una porta va collegata (tramite un filo) ad uno di quei terminali che in un pulsante sono posti in alto. Il terminale corrispondente posto in basso si collega alla resistenza di **pull** (UP o down).
+
+La resistenza di pull nel disegno ha quindi un primo  terminale sempre verso la porta e dun secondo terminale sempre verso una delle alimentazioni (positiva pulla up, negativa in cadso di pull down).
 
 
 
