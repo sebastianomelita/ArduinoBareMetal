@@ -14,7 +14,7 @@ Il **contatto** che si chiude alla pressione del pulsante è in realtà **uno so
 
 A **circuito aperto** i terminali sono collegati a coppie. **Visivamente** le “gambine” che si guardano l’una con l’altra **di faccia** sono quelle **già collegate** internamente anche a circuito aperto (strisce verdi), quelle che sono **affiancate di taglio** sono quelle **sempre scollegate** a circuito aperto.
 
-A **circuito chiuso** i terminali sono collegati tutti insieme. I **terminali** a-b e c-d sono **cortocircuitati** **all’interno** del pulsante, in pratica sono lo **stesso terminale**.
+A **circuito chiuso** i terminali sono collegati tutti insieme. I **terminali** a-b e c-d sono **cortocircuitati** **all’interno** del pulsante, in pratica sono uno **stesso terminale**.
 
 Per **cablare** un pulsante ad un ingresso digitale di un microcontrollore sono possibili due schemi (topologie) di collegamento: **pullup** e **pulldown**.
 
