@@ -388,6 +388,77 @@ void loop() {
 }
 ```
 
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include <pthread.h> //libreria di tipo preemptive
+pthread_t t1;
+pthread_t t2;
+int delayTime ;
+int led = 13;
+byte pulsante =2;
+byte precval, val;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+// utilizzare variabili globali è una maniera per ottenere
+// che il valore di una variabile persista tra chiamate di funzione successive
+// situazione che si verifica se la funzione è richiamata dentro il loop()
+
+// attesa evento con tempo minimo di attesa
+void waitUntil(bool c, unsigned t)
+{
+    while(!c){
+	    delay(t);
+    }
+}
+
+void * btnThread(void * d)
+{
+    int time;
+    time = (int) d;
+    while(true){   			// Loop del thread
+	val = digitalRead(pulsante);	// lettura ingressi
+	if(val==HIGH)			// se è alto c'è stato un fronte di salita
+		stato = !(stato); 	// impostazione dello stato del toggle
+	waitUntil(val==LOW,50);		// attendi finchè non c'è fronte di discesa
+    }
+}
+
+void * blinkThread(void * d)
+{
+    int time;
+    time = (int) d;
+    while(true){    				// Loop del thread	
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));
+		delay(time);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+		delay(0); 					// equivale a yeld()
+	}
+    }
+    return NULL;
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  delayTime = 500;
+  if (pthread_create(&t1, NULL, btnThread, (void *)delay)) {
+         Serial.println("Errore crezione thread 1");
+  }
+  delayTime = 1000;
+  if (pthread_create(&t2, NULL, blinkThread, (void *)delay)) {
+         Serial.println("Errore crezione thread 2");
+  } 
+}
+
+void loop() {
+
+}
+```
+
+
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](togglepy.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbLTE1NTkxOTA3OTIsLTk1MzQ1NDY2NV19
