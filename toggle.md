@@ -243,11 +243,18 @@ static uint8_t taskCore0 = 0;
 static uint8_t taskCore1 = 1;
 int led = 13;
 byte pulsante =2;
-byte precval, val;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 // utilizzare variabili globali è una maniera per ottenere
 // che il valore di una variabile persista tra chiamate di funzione successive
 // situazione che si verifica se la funzione è richiamata dentro il loop()
+
+// attesa evento con tempo minimo di attesa
+void waitUntil(bool c, unsigned t)
+{
+    while(!c){
+	    delay(t);
+    }
+}
  
 void btnThread(void * d){
 	String taskMessage = "Task running on core ";
@@ -255,13 +262,10 @@ void btnThread(void * d){
 	
 	// Loop del thread
 	while(true){
-		val = digitalRead(pulsante);		// lettura ingressi
-		if(precval==LOW && val==HIGH){ 		// rivelatore di fronte di salita
-			stato = !(stato); 		// impostazione dello stato del toggle
-		}
-		precval=val;  				//memorizzazione livello loop precedente
-		Serial.println(taskMessage);
-		delay(500);				// delay bloccanti
+		val = digitalRead(pulsante);	// lettura ingressi
+		if(val==HIGH)			// se è alto c'è stato un fronte di salita
+			stato = !(stato); 	// impostazione dello stato del toggle
+		waitUntil(val==LOW,50);		// attendi finchè non c'è fronte di discesa
 	}
 }
 
@@ -322,70 +326,6 @@ void loop() {
 **FreeRTOS** è un **SO per sistemi embedded** molto usato e dalle buone prestazioni che però, per l'utilizzo dei thread, espone delle **API proprietarie** che non possono essere usate su sistemi diversi da FreeRTOS. Per i thread è stato sviluppato da anni lo **standard POSIX** detto **phthread** che definisce in maniera **uniforme**, per **i sistemi** (Linux, Microsoft) e per i **linguaggi** (C, C++) ad esso aderenti, una serie di API che rendono il codice che contiene la programmazione dei thread molto **più portabile**.
 
 Di seguito è riportata la gestione di un pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads**. La libreria usata è quella standard **phthread** che non è supportata nativamente da ESP32 ma solo indirettamente tramite l'**inclusione** di una libreria di **terze parti** che implementa pthreads **sopra** le API FreeRTOS esistenti:
-
-```C++
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-#include <pthread.h> //libreria di tipo preemptive
-pthread_t t1;
-pthread_t t2;
-int delayTime ;
-int led = 13;
-byte pulsante =2;
-byte precval, val;
-byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
-// utilizzare variabili globali è una maniera per ottenere
-// che il valore di una variabile persista tra chiamate di funzione successive
-// situazione che si verifica se la funzione è richiamata dentro il loop()
-
-void * btnThread(void * d)
-{
-    int time;
-    time = (int) d;
-    while(true){   			// Loop del thread
-	val = digitalRead(pulsante);	// lettura ingressi
-	if(precval==LOW && val==HIGH){ 	// rivelatore di fronte di salita
-		stato = !(stato); 			// impostazione dello stato del toggle
-	}
-	precval=val;  					//memorizzazione livello loop precedente
-	delay(time);					// delay bloccanti
-    }
-}
-
-void * blinkThread(void * d)
-{
-    int time;
-    time = (int) d;
-    while(true){    				// Loop del thread	
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));
-		delay(time);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-		delay(0); 					// equivale a yeld()
-	}
-    }
-    return NULL;
-}
-
-void setup() {
-  Serial.begin(115200);
-  pinMode(led, OUTPUT);
-  pinMode(pulsante, INPUT);
-  delayTime = 500;
-  if (pthread_create(&t1, NULL, btnThread, (void *)delay)) {
-         Serial.println("Errore crezione thread 1");
-  }
-  delayTime = 1000;
-  if (pthread_create(&t2, NULL, blinkThread, (void *)delay)) {
-         Serial.println("Errore crezione thread 2");
-  } 
-}
-
-void loop() {
-
-}
-```
-
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
