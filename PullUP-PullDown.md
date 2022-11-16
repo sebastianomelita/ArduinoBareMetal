@@ -16,7 +16,7 @@ I **terminali** **esternamente** sono 4 ma in realtà sono **elettricamente solo
 
 **Visivamente** le “gambine” che si guardano l’una con l’altra **di faccia** sono quelle **cortocircuitate**, quelle che sono **affiancate di taglio** sono quelle **scollegate** a circuito aperto.
 
-Quando si preme il pulsante, i terminali a,b,c,d vengono tutti uniti tra loro e vanno allo stesso potenziale.
+Quando **si preme** il pulsante, i terminali a,b,c,d vengono tutti uniti tra loro e vanno allo **stesso potenziale**.
 
 Per **cablare** un pulsante ad un ingresso digitale di un microcontrollore sono possibili due schemi (topologie) di collegamento: **pullup** e **pulldown**.
 
