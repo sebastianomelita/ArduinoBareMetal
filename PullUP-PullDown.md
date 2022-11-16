@@ -10,7 +10,7 @@ Il pulsante è **senza stato** nel senso che non “ricorda” né elettricament
 ![pulsante](pulsante.png)
 
 
-Il **contatto** che si chiude alla pressione del pulsante è in realtà **uno solo** e unisce **due terminali** indicati in figura con a-b e c-d.
+Il **contatto** che si chiude alla pressione del pulsante è in realtà **uno solo** e unisce **due terminali** indicati in figura con a-b e c-d (le due striscette verdi in figura).
 
 I **terminali** **esternamente** sono 4 ma in realtà sono **elettricamente solo due** poiché i terminali a-b e c-d sono **cortocircuitati** **all’interno** del pulsante, in pratica sono lo stesso terminale.
 
