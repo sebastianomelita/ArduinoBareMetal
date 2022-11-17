@@ -195,7 +195,7 @@ int btnThread(struct pt* pt) {
 	if(val==HIGH)			// se è alto c'è stato un fronte di salita
 		stato = !(stato); 	// impostazione dello stato del toggle
 	PT_SLEEP(pt, 500);		// antirimbalzo
-	PT_WAIT_UNTIL(pt, val==LOW)	// attendi fino al prossimo fronte di discesa
+	PT_WAIT_UNTIL(pt, val==LOW);	// attendi fino al prossimo fronte di discesa
   }
   PT_END(pt);
 }
