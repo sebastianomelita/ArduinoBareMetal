@@ -190,10 +190,11 @@ int btnThread(struct pt* pt) {
 
   // Loop del protothread
   while(true) {
-	if(digitalRead(pulsante)==HIGH)			// se è alto c'è stato un fronte di salita
+	if(digitalRead(pulsante)==HIGH){		// se è alto c'è stato un fronte di salita
 		stato = !(stato); 	// impostazione dello stato del toggle
-	PT_SLEEP(pt, 500);		// antirimbalzo
-	PT_WAIT_UNTIL(pt, digitalRead(pulsante)==LOW);	// attendi fino al prossimo fronte di discesa
+		PT_SLEEP(pt, 500);		// antirimbalzo
+		PT_WAIT_UNTIL(pt, digitalRead(pulsante)==LOW);	// attendi fino al prossimo fronte di discesa
+	}
   }
   PT_END(pt);
 }
@@ -261,9 +262,10 @@ void btnThread(void * d){
 	// Loop del thread
 	while(true){
 		val = digitalRead(pulsante);	// lettura ingressi
-		if(digitalRead(pulsante)==HIGH)			// se è alto c'è stato un fronte di salita
+		if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
 			stato = !(stato); 	// impostazione dello stato del toggle
-		waitUntil(digitalRead(pulsante)==LOW,50);		// attendi finchè non c'è fronte di discesa
+			waitUntil(digitalRead(pulsante)==LOW,50);		// attendi finchè non c'è fronte di discesa
+		}
 	}
 }
 
