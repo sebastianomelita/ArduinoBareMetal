@@ -266,6 +266,7 @@ void btnThread(void * d){
 			stato = !(stato); 	// impostazione dello stato del toggle
 			waitUntil(digitalRead(pulsante)==LOW,50);		// attendi finchè non c'è fronte di discesa
 		}
+		delay(0); 
 	}
 }
 
@@ -356,6 +357,7 @@ void * btnThread(void * d)
 		stato = !(stato); 	// impostazione dello stato del toggle
 		waitUntil(digitalRead(pulsante)==LOW,50);		// attendi finchè non c'è fronte di discesa
 	}
+	delay(0); 
     }
 }
 
