@@ -261,7 +261,6 @@ void btnThread(void * d){
 	
 	// Loop del thread
 	while(true){
-		val = digitalRead(pulsante);	// lettura ingressi
 		if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
 			stato = !(stato); 	// impostazione dello stato del toggle
 			waitUntil(digitalRead(pulsante)==LOW,50);		// attendi finchè non c'è fronte di discesa
