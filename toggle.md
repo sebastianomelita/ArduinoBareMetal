@@ -195,6 +195,7 @@ int btnThread(struct pt* pt) {
 		PT_SLEEP(pt, 50);		// antirimbalzo
 		PT_WAIT_UNTIL(pt, digitalRead(pulsante)==LOW);	// attendi fino al prossimo fronte di discesa
 	}
+	PT_YIELD(pt);
   }
   PT_END(pt);
 }
