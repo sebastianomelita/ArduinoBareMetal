@@ -225,7 +225,6 @@ void setup()
 	PT_INIT(&ptBlink);
 	pinMode(led, OUTPUT);
 	pinMode(pulsante, INPUT);
-	precval=LOW;
 }
 
 // loop principale
@@ -291,7 +290,6 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  precval=LOW;
   
   Serial.print("Starting to create task on core ");
   Serial.println(taskCore0);
