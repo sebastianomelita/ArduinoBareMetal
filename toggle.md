@@ -178,7 +178,6 @@ struct pt { unsigned short lc; };
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 byte led = 13;
 byte pulsante =2;
-byte val;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 // utilizzare variabili globali è una maniera per ottenere
 // che il valore di una variabile persista tra chiamate di funzione successive
@@ -191,11 +190,10 @@ int btnThread(struct pt* pt) {
 
   // Loop del protothread
   while(true) {
-	val = digitalRead(pulsante);		// lettura ingressi
-	if(val==HIGH)			// se è alto c'è stato un fronte di salita
+	if(digitalRead(pulsante)==HIGH)			// se è alto c'è stato un fronte di salita
 		stato = !(stato); 	// impostazione dello stato del toggle
 	PT_SLEEP(pt, 500);		// antirimbalzo
-	PT_WAIT_UNTIL(pt, val==LOW);	// attendi fino al prossimo fronte di discesa
+	PT_WAIT_UNTIL(pt, digitalRead(pulsante)==LOW);	// attendi fino al prossimo fronte di discesa
   }
   PT_END(pt);
 }
@@ -243,7 +241,6 @@ static uint8_t taskCore0 = 0;
 static uint8_t taskCore1 = 1;
 int led = 13;
 byte pulsante =2;
-byte val;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 // utilizzare variabili globali è una maniera per ottenere
 // che il valore di una variabile persista tra chiamate di funzione successive
@@ -264,9 +261,9 @@ void btnThread(void * d){
 	// Loop del thread
 	while(true){
 		val = digitalRead(pulsante);	// lettura ingressi
-		if(val==HIGH)			// se è alto c'è stato un fronte di salita
+		if(digitalRead(pulsante)==HIGH)			// se è alto c'è stato un fronte di salita
 			stato = !(stato); 	// impostazione dello stato del toggle
-		waitUntil(val==LOW,50);		// attendi finchè non c'è fronte di discesa
+		waitUntil(digitalRead(pulsante)==LOW,50);		// attendi finchè non c'è fronte di discesa
 	}
 }
 
@@ -335,7 +332,6 @@ pthread_t t2;
 int delayTime ;
 int led = 13;
 byte pulsante =2;
-byte val;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 // utilizzare variabili globali è una maniera per ottenere
 // che il valore di una variabile persista tra chiamate di funzione successive
@@ -354,10 +350,10 @@ void * btnThread(void * d)
     int time;
     time = (int) d;
     while(true){   			// Loop del thread
-	val = digitalRead(pulsante);	// lettura ingressi
-	if(val==HIGH)			// se è alto c'è stato un fronte di salita
+	if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
 		stato = !(stato); 	// impostazione dello stato del toggle
-	waitUntil(val==LOW,50);		// attendi finchè non c'è fronte di discesa
+		waitUntil(digitalRead(pulsante)==LOW,50);		// attendi finchè non c'è fronte di discesa
+	}
     }
 }
 
