@@ -178,6 +178,7 @@ struct pt { unsigned short lc; };
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 byte led = 13;
 byte pulsante =2;
+byte val;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 // utilizzare variabili globali è una maniera per ottenere
 // che il valore di una variabile persista tra chiamate di funzione successive
@@ -242,6 +243,7 @@ static uint8_t taskCore0 = 0;
 static uint8_t taskCore1 = 1;
 int led = 13;
 byte pulsante =2;
+byte val;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 // utilizzare variabili globali è una maniera per ottenere
 // che il valore di una variabile persista tra chiamate di funzione successive
@@ -333,6 +335,7 @@ pthread_t t2;
 int delayTime ;
 int led = 13;
 byte pulsante =2;
+byte val;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 // utilizzare variabili globali è una maniera per ottenere
 // che il valore di una variabile persista tra chiamate di funzione successive
