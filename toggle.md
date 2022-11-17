@@ -192,7 +192,7 @@ int btnThread(struct pt* pt) {
   while(true) {
 	if(digitalRead(pulsante)==HIGH){		// se è alto c'è stato un fronte di salita
 		stato = !(stato); 	// impostazione dello stato del toggle
-		PT_SLEEP(pt, 500);		// antirimbalzo
+		PT_SLEEP(pt, 50);		// antirimbalzo
 		PT_WAIT_UNTIL(pt, digitalRead(pulsante)==LOW);	// attendi fino al prossimo fronte di discesa
 	}
   }
