@@ -212,6 +212,7 @@ void loop() { // loop principale
 }
 ```
 Lo schedulatore dei protothred può essere utilizzato pure su piattaforme di emulazione (ad es. Tinkercad) senza la necessità di includere librerie, basta inserire in cima al codice la definizione delle macro dello schedularore.
+Simulatore: https://wokwi.com/projects/348709819084964435
 
 ```C++
 /*
@@ -243,17 +244,13 @@ struct pt { unsigned short lc; };
 #define PDELAY  500
 #define LDELAY  1500
 #define BLINKDELAY  100
-byte led1 = 10;
-byte led2 = 11;
-byte led3 = 12;
-byte led4 = 13;
+byte led1 = 12;
+byte led2 = 13;
 
 void setup()
 {
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
-  pinMode(led3, OUTPUT);
-  pinMode(led4, OUTPUT);
   PT_INIT(&ptSos);
   PT_INIT(&ptBlink);
 }
