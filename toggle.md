@@ -396,7 +396,7 @@ void loop() {
 	
 }
 ```
-
+Simulazione online del codice precedente https://wokwi.com/projects/348523574025257556
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](togglepy.md)
 <!--stackedit_data:
