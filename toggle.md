@@ -334,16 +334,16 @@ pthread_t t1;
 pthread_t t2;
 int delayTime ;
 int led = 13;
-byte pulsante =2;
+byte pulsante =12;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 // utilizzare variabili globali è una maniera per ottenere
 // che il valore di una variabile persista tra chiamate di funzione successive
 // situazione che si verifica se la funzione è richiamata dentro il loop()
 
 // attesa evento con tempo minimo di attesa
-void waitUntil(bool c, unsigned t)
+void waitUntilInputLow(int btn, unsigned t)
 {
-    while(!c){
+    while(!digitalRead(btn)==LOW){
 	    delay(t);
     }
 }
@@ -352,12 +352,12 @@ void * btnThread(void * d)
 {
     int time;
     time = (int) d;
-    while(true){   			// Loop del thread
-	if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
-		stato = !(stato); 	// impostazione dello stato del toggle
-		waitUntil(digitalRead(pulsante)==LOW,50);		// attendi finchè non c'è fronte di discesa
-	}
-	delay(0); 
+    while(true){   			                                // Loop del thread
+        if(digitalRead(pulsante)==HIGH){			        // se è alto c'è stato un fronte di salita
+            stato = !stato; 	                            // impostazione dello stato del toggle
+            waitUntilInputLow(pulsante,time);		// attendi finchè non c'è fronte di discesa
+        }
+        delay(10); 
     }
 }
 
@@ -371,7 +371,7 @@ void * blinkThread(void * d)
 		delay(time);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-		delay(0); 					// equivale a yeld()
+		delay(10); 					// equivale a yeld()
 	}
     }
     return NULL;
@@ -381,18 +381,19 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  delayTime = 500;
-  if (pthread_create(&t1, NULL, btnThread, (void *)delay)) {
-         Serial.println("Errore crezione thread 1");
+  delayTime = 50;
+  if (pthread_create(&t1, NULL, btnThread, (void *)delayTime)) {
+         Serial.println("Errore crezione btnThread");
   }
-  delayTime = 1000;
-  if (pthread_create(&t2, NULL, blinkThread, (void *)delay)) {
-         Serial.println("Errore crezione thread 2");
+  delayTime = 500;
+  if (pthread_create(&t2, NULL, blinkThread, (void *)delayTime)) {
+         Serial.println("Errore crezione blinkThread");
   } 
 }
 
 void loop() {
-
+ delay(10); // this speeds up the simulation
+	
 }
 ```
 
