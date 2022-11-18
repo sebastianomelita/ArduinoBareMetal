@@ -242,16 +242,16 @@ Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedula
 static uint8_t taskCore0 = 0;
 static uint8_t taskCore1 = 1;
 int led = 13;
-byte pulsante =2;
+byte pulsante =12;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 // utilizzare variabili globali è una maniera per ottenere
 // che il valore di una variabile persista tra chiamate di funzione successive
 // situazione che si verifica se la funzione è richiamata dentro il loop()
 
 // attesa evento con tempo minimo di attesa
-void waitUntil(bool c, unsigned t)
+void waitUntilInputLow(int btn, unsigned t)
 {
-    while(!c){
+    while(!digitalRead(btn)==LOW){
 	    delay(t);
     }
 }
@@ -263,10 +263,10 @@ void btnThread(void * d){
 	// Loop del thread
 	while(true){
 		if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
-			stato = !(stato); 	// impostazione dello stato del toggle
-			waitUntil(digitalRead(pulsante)==LOW,50);		// attendi finchè non c'è fronte di discesa
+			stato = !stato; 									// impostazione dello stato del toggle
+			waitUntilInputLow(pulsante,50);			// attendi finchè non c'è fronte di discesa
 		}
-		delay(0); 
+		delay(10); 
 	}
 }
 
@@ -278,12 +278,12 @@ void blinkThread(void * d){
 	while(true){
 		if (stato) {
 			digitalWrite(led, HIGH);   	// turn the LED on (HIGH is the voltage level)
-			delay(1000);
+			delay(500);
 			digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-			delay(1000);
+			delay(500);
 		} else {
 			digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-			delay(0); 					// equivale a yeld()
+			delay(10); 									// equivale a yeld()
 		}
 	}
 }
@@ -320,9 +320,11 @@ void setup() {
 
 // loop principale
 void loop() {
-	
+	delay(10);
 }
 ```
+Simulazione online del codice precedente https://wokwi.com/projects/348705487464694356
+
 **FreeRTOS** è un **SO per sistemi embedded** molto usato e dalle buone prestazioni che però, per l'utilizzo dei thread, espone delle **API proprietarie** che non possono essere usate su sistemi diversi da FreeRTOS. Per i thread è stato sviluppato da anni lo **standard POSIX** detto **phthread** che definisce in maniera **uniforme**, per **i sistemi** (Linux, Microsoft) e per i **linguaggi** (C, C++) ad esso aderenti, una serie di API che rendono il codice che contiene la programmazione dei thread molto **più portabile**.
 
 Di seguito è riportata la gestione di un pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads**. La libreria usata è quella standard **phthread** che non è supportata nativamente da ESP32 ma solo indirettamente tramite l'**inclusione** di una libreria di **terze parti** che implementa pthreads **sopra** le API FreeRTOS esistenti:
