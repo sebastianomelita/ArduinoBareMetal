@@ -263,7 +263,7 @@ void btnThread(void * d){
 	// Loop del thread
 	while(true){
 		if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
-			stato = !stato; 									// impostazione dello stato del toggle
+			stato = !stato; 				// impostazione dello stato del toggle
 			waitUntilInputLow(pulsante,50);			// attendi finchè non c'è fronte di discesa
 		}
 		delay(10); 
@@ -283,7 +283,7 @@ void blinkThread(void * d){
 			delay(500);
 		} else {
 			digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-			delay(10); 									// equivale a yeld()
+			delay(10); 			// equivale a yeld()
 		}
 	}
 }
