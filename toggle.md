@@ -105,7 +105,7 @@ unsigned long precm;
 unsigned long step;
 byte pari, val;
 byte precval;
-byte pulsante=2;
+byte pulsante=12;
 byte led = 13;
 byte stato= LOW;	// variabile globale che memorizza lo stato del pulsante
 			// utilizzare variabili globali è una maniera per ottenere
@@ -134,7 +134,7 @@ void loop()
 	val = digitalRead(pulsante);		//pulsante collegato in pulldown
 	//val = digitalRead(!pulsante);		//pulsante collegato in pullup
 	if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
-		stato = !(stato); 		//impostazione dello stato del toggle	
+		stato = !stato; 		//impostazione dello stato del toggle	
 	}
 	precval=val;	
 
@@ -149,6 +149,7 @@ void loop()
   }
 }
 ```
+Simulazione online del codice precedente https://wokwi.com/projects/348707844567073364
 
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati tramite **protothreads** (per una spiegazione dettagliata dei protothread si rimanda a [schedulazione con i protothread](protothreadsched.md)):
 ```C++
