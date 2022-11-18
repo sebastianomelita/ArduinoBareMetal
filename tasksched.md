@@ -22,7 +22,8 @@ byte led2 = 12;
 
 void setup()
 {
-	pinMode(led, OUTPUT);
+	pinMode(led1, OUTPUT);
+    pinMode(led2, OUTPUT);
 }
 
 void loop()
@@ -46,6 +47,7 @@ void loop()
 	// il codice eseguito al tempo massimo della CPU va qui
 }
 ```
+Di seguito il link della simulazione online: https://wokwi.com/projects/348709453878526548
 
 E’ buona norma evitare l’esecuzione frequente di operazioni lente quando queste non sono strettamente necessarie in modo da lasciare spazio ad altre operazioni, quali ad esempio gestione degli eventi di input, che richiedono una velocità maggiore per usufruirne in modo più interattivo.
 
