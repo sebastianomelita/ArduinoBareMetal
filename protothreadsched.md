@@ -79,13 +79,37 @@ Di seguito è riportato un esempio di **blink sequenziale** in esecuzione su **d
   Blink
   Turns an LED on for one second, then off for one second, repeatedly. Rewritten with Protothreads.
 */
-
+/*
+#define LC_INIT(lc)
+struct pt { unsigned short lc; };
+#define PT_THREAD(name_args)  char name_args
+#define PT_BEGIN(pt)          switch(pt->lc) { case 0:
+#define PT_WAIT_UNTIL(pt, c)  pt->lc = __LINE__; case __LINE__: \
+                              if(!(c)) return 0
+#define PT_END(pt)            } pt->lc = 0; return 2
+#define PT_INIT(pt)   LC_INIT((pt)->lc)
+#define PT_SLEEP(pt, delay) \
+{ \
+  do { \
+    static unsigned long protothreads_sleep; \
+    protothreads_sleep = millis(); \
+    PT_WAIT_UNTIL(pt, millis() - protothreads_sleep > delay); \
+  } while(false); \
+}
+#define PT_EXITED  2
+#define PT_SCHEDULE(f) ((f) < PT_EXITED)
+#define PT_YIELD(pt) PT_SLEEP(pt, 0)
+//-----------------------------------------------------------------------------------------------------------
+// se si usa questa libreria al posto delle macro sopra, togliere il commento iniziale all'include 
+// e commentare le macro sopra
+*/
 #include "protothreads.h"
 
 bool blink1_running = true;
 bool blink2_running = true;
 int led1 = 13;
 int led2 = 12;
+int count = 0;
 
 pt ptBlink1;
 int blinkThread1(struct pt* pt) {
@@ -98,6 +122,8 @@ int blinkThread1(struct pt* pt) {
 		PT_SLEEP(pt, 500);
 		digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
 		PT_SLEEP(pt, 500);
+		count += 1;
+		Serial.println(count);
 	} else {
 		digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
 		PT_YIELD(pt);
@@ -133,6 +159,7 @@ void setup() {
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
+	int count = 0;
 }
 
 // the loop function runs over and over again forever
@@ -140,20 +167,15 @@ void loop() {
 	PT_SCHEDULE(blinkThread1(&ptBlink1));
 	PT_SCHEDULE(blinkThread2(&ptBlink2));
   
-	int count = 0;
-	while(true){
-		Serial.print("Doing stuff... ");
-		Serial.println(count);
-		count += 1;
-		if(count >= 10)
-			break;
-		delay(1000);
+	if(count >= 10){
+		Serial.println("Ending threads...");
+		blink1_running = false;
+		blink2_running = false;
 	}
-	Serial.print("Ending threads...");
-	blink1_running = false;
-	blink2_running = false;
 }
 ```
+Link simulazione online: https://wokwi.com/projects/348712126874911315
+
 Osservazioni:
 - il codice non è specifico di alcuna macchina, è realizzato in C puro ed è altamente portabile.
 - Un protothread viene eseguito all'interno di una singola funzione C e non può estendersi ad altre funzioni. Un protothread può chiamare normali funzioni C, ma non può bloccore all'interno di una funzione chiamata da altre funzioni. Il blocco all'interno di chiamate di funzioni annidate
