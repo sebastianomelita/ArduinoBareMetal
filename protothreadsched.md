@@ -159,7 +159,7 @@ void setup() {
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
-	int count = 0;
+  int count = 0;
 }
 
 // the loop function runs over and over again forever
