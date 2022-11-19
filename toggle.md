@@ -95,6 +95,8 @@ void loop()
 ```
 ### Esempi di blink insieme ad antirimbalzo realizzati con tecniche di schedulazione diverse
 
+**Schedulatore basato su time tickes**
+
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi (time tick)**:
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
@@ -152,6 +154,8 @@ void loop()
 Simulazione online su Arduino con Tinkercad del codice precedente: https://www.tinkercad.com/embed/2wo4e7wLqr0?editbtn=1
 
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/348707844567073364
+
+**Schedulatore basato su protothreads**
 
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati tramite **protothreads** (per una spiegazione dettagliata dei protothread si rimanda a [schedulazione con i protothread](protothreadsched.md)):
 ```C++
@@ -242,6 +246,8 @@ void loop()
 Simulazione online su Arduino con Tinkercad del codice precedente: https://www.tinkercad.com/embed/0cAN5RGK8cB?editbtn=1
 
 Simulazione online su Esp32 con Wowki del codice precedente [https://wokwi.com/projects/348705487464694356](https://www.tinkercad.com/things/cPVToRzRLgI-copy-of-accensione-led-modo-toggle2-con-memoria-/editel)
+
+**Schedulatore basato su threads**
 
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** su **core diversi**. La libreria usata è quella nativa dello ESP32 che implementa dalla fabbrica un **middleware RTOS** per cui non è necessario **includere** nessuna libreria esterna (per una spiegazione dettagliata dei thread si rimanda a [schedulatore di compiti basato sui thread](threadsched.md)):
 
