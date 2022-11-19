@@ -254,6 +254,8 @@ void loop()
 ```
 ## **SCHEDULAZIONE CON I THREAD**
 
+Simulazione online con wowki: https://wokwi.com/projects/348755366576652882
+
 ```C++
 /* 
 Genera un blink periodico su un led e una segnalazione di SOS periodica su un altro
