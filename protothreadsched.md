@@ -345,6 +345,7 @@ void loop()
 ```
 
 **Lampeggi multipli**
+
 LInk simulazione in Tinkercad: https://www.tinkercad.com/embed/gCkCBuwlY8E?editbtn=1
 
 ```C++
