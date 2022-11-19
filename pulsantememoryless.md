@@ -11,7 +11,9 @@ L’operazione non ha particolari controindicazioni nell’essere eseguita perio
 
 Se il numero di compiti è grande, in relazione alla limitata potenza di calcolo della CPU, allora è opportuno tenere conto del fatto che le operazioni di lettura e scrittura delle periferiche (in questo caso due porte digitali) è sempre abbastanza più lenta di analoghe operazioni su dati in memoria (almeno un ordine di grandezza). In questo caso una **schedulazione** delle operazioni lente per dare spazio all’esecuzione di quelle più veloci potrebbe essere una soluzione opportuna.
 
-Simulazion su Arduino con Tinkercad: https://www.tinkercad.com/embed/idptZ93lZ92?editbtn=1
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/idptZ93lZ92?editbtn=1
+
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348779417449792082
 
 ```C++	
 	int led=13;
