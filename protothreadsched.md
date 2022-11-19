@@ -344,6 +344,111 @@ void loop()
 }
 ```
 
+**Lampeggi multipli**
+LInk simulazione in Tinkercad: https://www.tinkercad.com/embed/gCkCBuwlY8E?editbtn=1
+
+```C++
+/*
+Realizzare il blink di un led insieme al lampeggio di un'altro led che codifica il messaggio morse dell'SOS.
+*/
+#define LC_INIT(lc)
+struct pt { unsigned short lc; };
+#define PT_THREAD(name_args)  char name_args
+#define PT_BEGIN(pt)          switch(pt->lc) { case 0:
+#define PT_WAIT_UNTIL(pt, c)  pt->lc = __LINE__; case __LINE__: \
+                              if(!(c)) return 0
+#define PT_END(pt)            } pt->lc = 0; return 2
+#define PT_INIT(pt)   LC_INIT((pt)->lc)
+#define PT_SLEEP(pt, delay) \
+{ \
+  do { \
+    static unsigned long protothreads_sleep; \
+    protothreads_sleep = millis(); \
+    PT_WAIT_UNTIL(pt, millis() - protothreads_sleep > delay); \
+  } while(false); \
+}
+#define PT_EXITED  2
+#define PT_SCHEDULE(f) ((f) < PT_EXITED)
+//-----------------------------------------------------------------------------------------------------------
+// se si usa questa libreria al posto delle macro sopra, togliere il commento iniziale all'include 
+// e commentare le macro sopra
+//#include "protothreads.h"
+#define DELAY1  1000
+#define DELAY2  500
+#define DELAY3  300
+byte led1 = 10;
+byte led2 = 11;
+byte led3 = 12;
+byte led4 = 13;
+
+void setup()
+{
+  pinMode(led1, OUTPUT);
+  
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+  pinMode(led4, OUTPUT);
+  PT_INIT(&ptBlink2);
+  PT_INIT(&ptBlink1);
+}
+ 
+
+// definizione protothread del pulsante
+pt ptBlink1;
+int blink1Thread(struct pt* pt) {
+  PT_BEGIN(pt);
+
+  // Loop del protothread
+  while(true) {//for(;;)
+	// 3 punti
+	digitalWrite(led1, HIGH);   	// turn the LED on (HIGH is the voltage level)
+	PT_SLEEP(pt, DELAY1);
+	digitalWrite(led1, LOW);    	// turn the LED off by making the voltage LOW
+	PT_SLEEP(pt, DELAY1);
+  }
+  PT_END(pt);
+}
+
+// definizione protothread del lampeggio
+pt ptBlink2;
+int blink2Thread(struct pt* pt) {
+  PT_BEGIN(pt);
+
+  // Loop del protothread
+  while(true) {
+	digitalWrite(led2, HIGH);   	// turn the LED on (HIGH is the voltage level)
+	PT_SLEEP(pt, DELAY2);
+	digitalWrite(led2, LOW);    	// turn the LED off by making the voltage LOW
+	PT_SLEEP(pt, DELAY2);
+  }
+  PT_END(pt);
+}
+
+// definizione protothread del pulsante
+pt ptBlink3;
+int blink3Thread(struct pt* pt) {
+  PT_BEGIN(pt);
+
+  // Loop del protothread
+  while(true) {//for(;;)
+	// 3 punti
+	digitalWrite(led3, HIGH);   	// turn the LED on (HIGH is the voltage level)
+	PT_SLEEP(pt, DELAY3);
+	digitalWrite(led3, LOW);    	// turn the LED off by making the voltage LOW
+	PT_SLEEP(pt, DELAY3);
+  }
+  PT_END(pt);
+}
+
+// loop principale
+void loop()
+{
+	PT_SCHEDULE(blink1Thread(&ptBlink1)); 		// esecuzione schedulatore protothreads
+	PT_SCHEDULE(blink2Thread(&ptBlink2)); 	// esecuzione schedulatore protothreads
+	PT_SCHEDULE(blink3Thread(&ptBlink3)); 	// esecuzione schedulatore protothreads
+}
+```
+
 ### **Sitografia:**
 - http://dunkels.com/adam/pt/examples.html
 - https://gitlab.com/airbornemint/arduino-protothreads
