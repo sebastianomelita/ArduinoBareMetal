@@ -265,79 +265,76 @@ int delayTime ;
 #define PDELAY  500
 #define LDELAY  1500
 #define BLINKDELAY  300
-byte led1 = 10;
-byte led2 = 11;
-byte led3 = 12;
-byte led4 = 13;
+byte led1 = 12;
+byte led2 = 13;
 
 void * sosThread(void * d)
 {
-    int time;
-    time = (int) d;
-    while(true){   			// Loop del thread
-	// 3 punti
-	digitalWrite(led1, HIGH); // 1
-	delay(PDELAY);
-	digitalWrite(led1, LOW);
-	delay(PDELAY);
-	digitalWrite(led1, HIGH); // 2
-	delay(PDELAY);
-	digitalWrite(led1, LOW);
-	delay(PDELAY);
-	digitalWrite(led1, HIGH); // 3
-	delay(PDELAY);
-	digitalWrite(led1, LOW);
-	delay(PDELAY);
-	// 1 linea
-	digitalWrite(led1, HIGH); // 1 linea
-	delay(LDELAY);
-	digitalWrite(led1, LOW);
-	delay(PDELAY);
-	// 3 punti
-	digitalWrite(led1, HIGH); // 1
-	delay(PDELAY);
-	digitalWrite(led1, LOW);
-	delay(PDELAY);
-	digitalWrite(led1, HIGH); // 2
-	delay(PDELAY);
-	digitalWrite(led1, LOW);
-	delay(PDELAY);
-	digitalWrite(led1, HIGH); // 3
-	delay(PDELAY);
-	digitalWrite(led1, LOW);
-	delay(PDELAY);
-	delay(LDELAY);						// delay bloccanti		
-    }
+  int time;
+  time = (int) d;
+  while(true){   			// Loop del thread
+		// 3 punti
+		digitalWrite(led1, HIGH); // 1
+		delay(PDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		digitalWrite(led1, HIGH); // 2
+		delay(PDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		digitalWrite(led1, HIGH); // 3
+		delay(PDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		// 1 linea
+		digitalWrite(led1, HIGH); // 1 linea
+		delay(LDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		// 3 punti
+		digitalWrite(led1, HIGH); // 1
+		delay(PDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		digitalWrite(led1, HIGH); // 2
+		delay(PDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		digitalWrite(led1, HIGH); // 3
+		delay(PDELAY);
+		digitalWrite(led1, LOW);
+		delay(PDELAY);
+		delay(LDELAY);						// delay bloccanti		
+  }
 }
 
 void * blinkThread(void * d)
 {
-    int time;
-    time = (int) d;
-    while(true){    						// Loop del thread	
-	digitalWrite(led2, !digitalRead(led2));
-	delay(time);
-    }
-    return NULL;
+  int time;
+  time = (int) d;
+  while(true){    						// Loop del thread	
+		digitalWrite(led2, !digitalRead(led2));
+		delay(time);
+  }
+  return NULL;
 }
 
 void setup() {
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
-  pinMode(led3, OUTPUT);
-  pinMode(led4, OUTPUT);
+
   delayTime = PDELAY;
-  if (pthread_create(&t1, NULL, sosThread, (void *)delay)) {
+  if (pthread_create(&t1, NULL, sosThread, (void *)delayTime)) {
          Serial.println("Errore crezione thread 1");
   }
   delayTime = BLINKDELAY;
-  if (pthread_create(&t2, NULL, blinkThread, (void *)delay)) {
+  if (pthread_create(&t2, NULL, blinkThread, (void *)delayTime)) {
          Serial.println("Errore crezione thread 2");
   } 
 }
 
 void loop() {
-
+	delay(10);
 }
 ```
 
