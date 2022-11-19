@@ -312,7 +312,7 @@ void btnThread(void * d){
 			stato = !stato; 				// impostazione dello stato del toggle
 			waitUntilInputLow(pulsante,50);			// attendi finchè non c'è fronte di discesa
 		}
-		delay(10); 
+		delay(10); 						// equivale a yeld() (10 per le simulazioni 0 in HW)
 	}
 }
 
@@ -329,7 +329,7 @@ void blinkThread(void * d){
 			delay(500);
 		} else {
 			digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-			delay(10); 			// equivale a yeld()
+			delay(10); 			// equivale a yeld() (10 per le simulazioni 0 in HW)
 		}
 	}
 }
@@ -405,7 +405,7 @@ void * btnThread(void * d)
             stato = !stato; 	                            // impostazione dello stato del toggle
             waitUntilInputLow(pulsante,time);		// attendi finchè non c'è fronte di discesa
         }
-        delay(10); 
+        delay(10); 					// equivale a yeld() (10 per le simulazioni 0 in HW)
     }
 }
 
@@ -419,7 +419,7 @@ void * blinkThread(void * d)
 		delay(time);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-		delay(10); 					// equivale a yeld()
+		delay(10); 			// equivale a yeld() (10 per le simulazioni 0 in HW)
 	}
     }
     return NULL;
