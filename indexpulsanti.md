@@ -6,7 +6,7 @@
 <li><a href="PullUP-PullDown.md">Pull Up e Pull Down</a></li>
 <li><a href="rimbalzi.md">Rimbalzi</a></li>
 <li><a href="pulsantememoryless.md">Pulsanti senza memoria</a></li>
-<li><a href="toggle.md">Pulsanti con memoria (toggle)</a></li>
+<li><a href="toggle.md">Pulsanti con memoria (toggle) e rilevatori di transito</a></li>
 <li><a href="gruppipulsanti.md">Gruppi di pulsanti</a></li>
 <li><a href="domande.md">Domande e sitografia</a></li>
 </ol>
