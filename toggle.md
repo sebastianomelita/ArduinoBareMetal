@@ -277,7 +277,7 @@ void waitUntilInputLow(int btn, unsigned t)
     }
 }
 ```
-realizza una funzione di **wait su condizione** che ritarda il thread corrente di un delay() prefissato al  termine del quale ricalcola l'ingresso. L'operazione viene ripetuta fin tanto che la condizione attesa non è asserita. Si tratta di una funzione utile per due scopi:
+realizza una funzione di **wait su condizione** che ritarda il thread corrente di un delay() prefissato al  termine del quale ricalcola l'ingresso. L'operazione viene ripetuta fin tanto che la condizione attesa non è asserita. Si tratta di una funzione utile per due **scopi**:
 - debouncing software dell'ingresso digitale
 - determinazione del fronte di salita di un ingreso digitale
 
