@@ -5,7 +5,7 @@ Di seguito è riportato un esempio di pulsante con antirimbalzo realizzato con i
 
 Può leggere sia fronti di salita che di discesa in maniera immune ai rimbalzi. Il tipo di fronte si seleziona valutando la variabile lastState.
 
-Da seriale si può vedere il numero di eventi di interrupt spuri che sono stati generati a causa dei rimbalzi e che sono stati filtrati dal timer.
+Da seriale si può vedere il numero di eventi di interrupt spuri che sono stati generati a causa dei rimbalzi e che sono stati filtrati dal timer (solo nella simulazione su Esp32 mettendo la spunta al flag debounce del tasto).
 
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/jWma7uWoY7T?editbtn=1
 
