@@ -109,6 +109,8 @@ void loop()
 
 **Schedulatore basato su time ticks**
 
+In questo esempio, il rilevatore dei fronti è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
+
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi (time tick)**:
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
