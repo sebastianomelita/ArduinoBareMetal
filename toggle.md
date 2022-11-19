@@ -149,7 +149,9 @@ void loop()
   }
 }
 ```
-Simulazione online del codice precedente https://wokwi.com/projects/348707844567073364
+Simulazione online su Arduino con Tinkercad del codice precedente: https://www.tinkercad.com/embed/2wo4e7wLqr0?editbtn=1
+
+Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/348707844567073364
 
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati tramite **protothreads** (per una spiegazione dettagliata dei protothread si rimanda a [schedulazione con i protothread](protothreadsched.md)):
 ```C++
