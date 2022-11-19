@@ -95,7 +95,7 @@ void loop()
 ```
 ### Esempi di blink insieme ad antirimbalzo realizzati con tecniche di schedulazione diverse
 
-**Schedulatore basato su time tickes**
+**Schedulatore basato su time ticks**
 
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi (time tick)**:
 ```C++
