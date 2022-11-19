@@ -7,6 +7,8 @@ Può leggere sia fronti di salita che di discesa in maniera immune ai rimbalzi. 
 
 Da seriale si può vedere il numero di eventi di interrupt spuri che sono stati generati a causa dei rimbalzi e che sono stati filtrati dal timer.
 
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/jWma7uWoY7T?editbtn=1
+
 ```C++
 const unsigned long DEBOUNCETIME = 50;
 const byte LED = 7;
