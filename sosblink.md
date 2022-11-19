@@ -140,6 +140,8 @@ void loop()
 
 ## **SCHEDULAZIONE CON I PROTOTHREAD**
 
+Link simulazione in Tinkercad: https://www.tinkercad.com/embed/2duYFwQzJgf?editbtn=1
+
 ```C++
 #define LC_INIT(lc)
 struct pt { unsigned short lc; };
