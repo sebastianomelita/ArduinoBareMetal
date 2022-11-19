@@ -235,7 +235,9 @@ void loop() { // loop principale
 }
 ```
 Lo schedulatore dei protothred può essere utilizzato pure su piattaforme di emulazione (ad es. Tinkercad) senza la necessità di includere librerie, basta inserire in cima al codice la definizione delle macro dello schedularore.
-Simulatore: https://wokwi.com/projects/348709819084964435
+
+Link simulazione su Arduino in Tinkercad: https://www.tinkercad.com/embed/2duYFwQzJgf?editbtn=1
+Simulazione su Esp32 in Wowki: https://wokwi.com/projects/348709819084964435
 
 ```C++
 /*
