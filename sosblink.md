@@ -2,7 +2,7 @@
 
 ## **SCHEDULAZIONE CON I DELAY**
 
-Link simulazione Tinkercad: https://www.tinkercad.com/things/81ioQDDGQOG
+Link simulazione Tinkercad: https://www.tinkercad.com/embed/7AsMjhD1Mk9?editbtn=1
 
 ```C++
 /* 
