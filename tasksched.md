@@ -49,7 +49,7 @@ void loop()
 ```
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/81ioQDDGQOG?editbtn=1
 
-Di seguito il link della simulazione online con wowki su esp32: https://wokwi.com/projects/348709453878526548
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/348709453878526548
 
 
 E’ buona norma evitare l’esecuzione frequente di operazioni lente quando queste non sono strettamente necessarie in modo da lasciare spazio ad altre operazioni, quali ad esempio gestione degli eventi di input, che richiedono una velocità maggiore per usufruirne in modo più interattivo.
