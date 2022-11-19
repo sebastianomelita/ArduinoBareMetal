@@ -76,7 +76,10 @@ void loop()
 
 ## **SCHEDULAZIONE CON I TICK**
 
-Link simulazione Tinkercad: https://www.tinkercad.com/embed/81ioQDDGQOG?editbtn=1
+Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/81ioQDDGQOG?editbtn=1
+
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/348709453878526548
+
 ```C++
 /* 
 Genera un blink periodico su un led e una segnalazione di SOS periodica su un altro
