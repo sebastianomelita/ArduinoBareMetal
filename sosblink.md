@@ -76,6 +76,8 @@ void loop()
 
 ## **SCHEDULAZIONE CON I TICK**
 
+Link simulazione Tinkercad: https://www.tinkercad.com/things/81ioQDDGQOG
+
 ```C++
 /* 
 Genera un blink periodico su un led e una segnalazione di SOS periodica su un altro
