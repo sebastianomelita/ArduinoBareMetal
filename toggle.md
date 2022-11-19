@@ -236,7 +236,10 @@ void loop()
 	PT_SCHEDULE(blinkThread(&ptBlink)); 	// esecuzione schedulatore protothreads
 }
 ```
-Simulazione online del codice precedente [https://wokwi.com/projects/348705487464694356](https://www.tinkercad.com/things/cPVToRzRLgI-copy-of-accensione-led-modo-toggle2-con-memoria-/editel)
+
+Simulazione online su Arduino con Tinkercad del codice precedente: https://www.tinkercad.com/embed/0cAN5RGK8cB?editbtn=1
+
+Simulazione online su Esp32 con Wowki del codice precedente [https://wokwi.com/projects/348705487464694356](https://www.tinkercad.com/things/cPVToRzRLgI-copy-of-accensione-led-modo-toggle2-con-memoria-/editel)
 
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** su **core diversi**. La libreria usata è quella nativa dello ESP32 che implementa dalla fabbrica un **middleware RTOS** per cui non è necessario **includere** nessuna libreria esterna (per una spiegazione dettagliata dei thread si rimanda a [schedulatore di compiti basato sui thread](threadsched.md)):
 
