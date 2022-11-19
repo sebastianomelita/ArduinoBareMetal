@@ -3,7 +3,7 @@
 
 ## **PULSANTI CON LETTURA DI UN FRONTE**
 
-**PULSANTE TOGGLE**
+###  **PULSANTE TOGGLE**
 
 Si vuole realizzare un pulsante con una memoria dello stato che possa essere modificata ad ogni pressione. Pressioni successive in sequenza accendono e spengono un led. Quindi, a seconda da quando si comincia, pressioni in numero pari accendono mentre quelle in numero dispari spengono, oppure al contrario, pressioni in numero pari spengono mentre quelle in numero dispari accendono.
 
@@ -30,7 +30,7 @@ Purtroppo questa soluzione ha un paio di **problemi** che ne pregiudicano il **f
 
 **Il primo** è relativo alla **selezione del tipo di evento in ingresso**. In questa soluzione viene rilevata la pressione del pulsante **sul livello** dell’ingresso. Il problema è che il livello viene rilevato per tutto il tempo che il tasto è premuto mediante una lettura per ogni loop(). Il numero di queste letture è imprevedibile sia perché sono moltissime al secondo e sia perché la durata della pressione dipende dall’utente. In più, ad ogni lettura viene modificato lo stato del pulsante con l’istruzione closed=!closed, ne consegue che lo stato finale del pulsante è il risultato di una catena di commutazioni che termina dopo un tempo casuale: abbiamo realizzato una slot machine!.
 
-**RILEVATORE DI TRANSITO**
+###  **RILEVATORE DI TRANSITO**
 
 Si vuole realizzare un rilevatore del transito di un oggetto su una fotocellula. Poichè la fotocellula legge l'assenza del fascio luminoso di titorno questa è ripetutamernte vera fino a che l'oggetto non ha completato il suo passaggio. Un passaggio temporalmente lungo genera molte letture vere del transito segnalando più oggetti in corrispondenza di uno solo
 
