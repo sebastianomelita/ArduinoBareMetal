@@ -53,7 +53,7 @@
 24. Come si realizza uno schedulatore di compiti a basso livello? A cosa serve la variabile step? Come si sceglie il tbase? Come si sceglie il limite di rotazione di step? Come si realizza un rivelatore di multipli interi?
 
 25. Come si fanno le misure di tempo assolute?
-26. Come si può realizzare un rilevatore di transito con i hread? 
+26. Come si può realizzare un rilevatore di transito con i thread? 
 27. Come si può realizzare un pulsante toggle con i protothread? 
 
 ## **Sitografia:**
