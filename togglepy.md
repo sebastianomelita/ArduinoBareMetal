@@ -1,36 +1,40 @@
 >[Torna all'indice generale](index.md) >[versione in C++](toggle.md)
 
 
-## **PULSANTE TOGGLE**
+## **PULSANTI CON LETTURA DI UN FRONTE**
+
+###  **PULSANTE TOGGLE**
 
 Si vuole realizzare un pulsante con una memoria dello stato che possa essere modificata ad ogni pressione. Pressioni successive in sequenza accendono e spengono un led. Quindi, a seconda da quando si comincia, pressioni in numero pari accendono mentre quelle in numero dispari spengono, oppure al contrario, pressioni in numero pari spengono mentre quelle in numero dispari accendono.
 
 Inizialmente si potrebbe essere tentati di provare seguente soluzione, adattando la strategia del pulsante precedente introducendo una variabile che conservi lo stato del pulsante che chiameremo _closed_.
-```Python
-from gpio import *
-from time import *
+```C++
+byte in;
+byte pulsante =2;
+boolean closed=false; // stato pulsante
+void setup()
+{
+	pinMode(pulsante, INPUT);
+}
 
-def main():
-	pulsante = 0
-	led = 1
-	pinMode(led, OUT)
-	pinMode(pulsante, IN)
-	stato = 0
-
-	while True:
-		val = digitalRead(pulsante)    # lettura ingressi
-		if val == HIGH:      # rivelatore di fronte di salita
-			stato = (stato + 1)%2        # impostazione dello stato del toggle
-			digitalWrite(led,stato*1023)   # scrittura uscite
-			print(stato)
-
-if __name__ == "__main__":
-	main()
-
+void loop()
+{
+	in = digitalRead(pulsante);
+	if(in==HIGH){ // selezione del livello alto (logica di comando)
+		closed = !closed;
+		digitalWrite(led,closed);  //scrittura uscita
+	}
+}
 ```
 Purtroppo questa soluzione ha un paio di **problemi** che ne pregiudicano il **funzionamento corretto**.
 
-**Il primo** è relativo alla **selezione del tipo di evento in ingresso**. In questa soluzione viene rilevata la pressione del pulsante **sul livello** dell’ingresso. Il problema è che il livello viene rilevato per tutto il tempo che il tasto è premuto mediante una lettura per ogni loop(). Il numero di queste letture è imprevedibile sia perché sono moltissime al secondo e sia perché la durata della pressione dipende dall’utente. In più, ad ogni lettura viene modificato lo stato del pulsante con l’istruzione closed=!closed, ne consegue che lo stato finale del pulsante è il risultato di una catena di commutazioni che termina dopo un tempo casuale: abbiamo realizzato una slot machine!
+**Il primo** è relativo alla **selezione del tipo di evento in ingresso**. In questa soluzione viene rilevata la pressione del pulsante **sul livello** dell’ingresso. Il problema è che il livello viene rilevato per tutto il tempo che il tasto è premuto mediante una lettura per ogni loop(). Il numero di queste letture è imprevedibile sia perché sono moltissime al secondo e sia perché la durata della pressione dipende dall’utente. In più, ad ogni lettura viene modificato lo stato del pulsante con l’istruzione closed=!closed, ne consegue che lo stato finale del pulsante è il risultato di una catena di commutazioni che termina dopo un tempo casuale: abbiamo realizzato una slot machine!.
+
+###  **RILEVATORE DI TRANSITO**
+
+Si vuole realizzare un rilevatore del transito di un oggetto su una fotocellula. Poichè la fotocellula legge l'assenza del fascio luminoso di ritorno, la sua uscita è ripetutamernte vera fino a che l'oggetto non ha completato il suo passaggio. Un passaggio temporalmente lungo genera letture ripetute del transito segnalando più oggetti in corrispondenza di uno solo.
+
+## **SOLUZIONE**
 
 La **soluzione** è **modificare il tipo di selezione** **dell’evento** in ingresso, che deve stavolta avvenire sui **fronti** piuttosto che sui livelli. I fronti sono due, **salita** o **discesa**. Se si rileva il fronte di **salita** si cattura l’evento di **pressione** del pulsante, se si rileva il fronte di **discesa** si cattura l’evento di **rilascio** del pulsante. Ma come facciamo a capire quando siamo in presenza di un **evento di fronte**? Di salita o di discesa?
 
@@ -58,6 +62,11 @@ Se un rilevatore si limita a segnalare un **generico fronte**, allora per stabil
 
 Il **secondo problema** è costituito dal fenomeno dei **rimbalzi**. Si palesano come una sequenza di rapide oscillazioni che hanno sia fronti di salita che di discesa. Se l’accensione di un led è associata ad un fronte e il suo spegnimento a quello successivo, allora la pressione di un pulsante realizza, di fatto, la solita slot machine…è necessario un algoritmo di debouncing.
 
+Gli esempi successivi sono stati esposti relativamente al problema del **pulsante toggle** premendo il quale, ad ogni lettura di un fornte, si genera la modifica di una opportuna **variabile di stato** (```stato``` negli esempi).
+
+A ben vedere, le soluzioni proposte di seguito possono essere tutte facilmente adattate alla realizzazione di un **sensore di transito** sostituendo la pressione del pulsante con la lettura del sensore e interpretando la variabile ```stato``` con la **variabile di stato** che deve tenere traccia del passaggio rilevato.
+
+Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo realizzato con una **schedulazione ad eventi (time tick)**  (per una spiegazione dettagliata dei time tick si rimanda a [schedulatore di compiti basato sui time tick](tasksched.md)):
 Pulsante toggle con rilevazione del fronte di salita (pressione) e con antirimbalzo:
 ```Python
 from gpio import *
