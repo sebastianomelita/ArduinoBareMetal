@@ -109,7 +109,7 @@ void loop()
 
 **Schedulatore basato su time ticks**
 
-In questo esempio, il rilevatore dei fronti è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
+In questo caso, il rilevatore dei fronti è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
 
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi (time tick)**:
 ```C++
@@ -170,6 +170,8 @@ Simulazione online su Arduino con Tinkercad del codice precedente: https://www.t
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/348707844567073364
 
 **Schedulatore basato su protothreads**
+
+In questo caso, il rilevatore dei fronti è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **nello stesso loop** ma in un momento diverso stabilito mediante un istruzione ```WAIT_UNTIL()``` in grado di bloccare il loop fino a quando non si verifica la verità di una certa condizione. La funzione, di fatto, esegue un blocco del protothread corrente in "attesa"  di una certa condizione senza bloccare l'esecuzione degli altri protothread. L'attesa è spesa campionando continuamente l'ingresso fino a che questo non diventa LOW. Quando accade la transizione cercata vuol dire che si è rilevato un fronte di discesa per cui, qualora in futuro un loop successivo determinasse un valore HIGH, allora si può essere certi di essere in presenza di un **fronte di salita**.  
 
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati tramite **protothreads** (per una spiegazione dettagliata dei protothread si rimanda a [schedulazione con i protothread](protothreadsched.md)):
 ```C++
