@@ -10,9 +10,9 @@ Mette in pausa il programma per la quantità di tempo (in millisecondi) specific
 
 **Millis()**
 
-Restituisce il numero di millisecondi trascorsi da quando la scheda Arduino ha iniziato a eseguire il programma corrente. Questo numero supererà (tornerà a zero), dopo circa 50 giorni (overflow).
+Restituisce il numero di **millisecondi** trascorsi da quando la scheda Arduino ha iniziato a eseguire il programma corrente (**accensione** del sistema). Questo tempo è rappresentato con un unsigned long che è un tipo **codificato** con 32 bit. Una variabile **unsigned long** può quindi contare fino a **2^32** (circa 4 miliardi) millisecondi,  oltrepassato quel valore il conteggio trabocca (fenomeno dell'overflow) e ripartirà da **zero**. L'**overflow** della funzione millis() avviene a circa **50 giorni** dall'accesnsione del dispositivo.
 
-Il tipo di dato ritornato dalla funzione è unsigned long.
+Il tipo di dato ritornato dalla funzione è **unsigned long**.
 
 ![Unigned overfow](unsignedOverflow.png)
 
