@@ -78,7 +78,7 @@ resta in attesa di un **tempo minimo** ```t``` al termine del quale viene valuta
 
 Con il blocco in **attesa di un ingresso** l'esecuzione resta bloccata indefinitivamente fino a quando un certo evento su un certo ingresso non si verifica (in questo caso il valore LOW), facendo ripartire il programma dall'istruzione successiva.
 
-Il blocco in **attesa di una variabile** l'esecuzione resta bloccata indefinitivamente fino a quando un certo evento su un altro task (thread o ISR) non si verifica facendo ripartire il programma dall'istruzione successiva. Si noti il passaggio per riferimento del parametro condizione.
+Il blocco in **attesa di una variabile** l'esecuzione resta bloccata indefinitivamente fino a quando un certo evento su un altro task (thread o ISR) non si verifica facendo ripartire il programma dall'istruzione successiva. Si noti il passaggio per **riferimento** del parametro condizione.
 
 ```C++
 // attesa evento con tempo minimo di attesa
