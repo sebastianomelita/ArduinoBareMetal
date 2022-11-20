@@ -76,9 +76,9 @@ void waitUntilInputLow(int btn, unsigned t)
 
 resta in attesa di un **tempo minimo** ```t``` al termine del quale viene valutato se il valore dell'ingresso è basso (LOW). Se questa condizione è **vera** si prosegue all'esecuzione dell'**istruzione successiva**.  Se invece è **falsa** (ingtresso HIGH) si continua ad attendere per un ulteriore tempo ```t```, al termine del quale si ritorna a valutare la condizione ripetendo il test ed, eventualmente, proseguendo uletriormente l'attesa.
 
-Con il blocco in **attesa di un ingresso** l'esecuzione resta bloccata indefinitivamente fino a quando un certo evento su un certo ingresso non si verifica (in questo caso il valore LOW), facendo ripartire il programma dall'istruzione successiva.
+Con il blocco in **attesa di un ingresso** l'esecuzione resta bloccata indefinitivamente fino a quando un certo evento su un certo ingresso non lo **modfica** (in questo caso il valore LOW), facendo ripartire il programma dall'istruzione successiva.
 
-Il blocco in **attesa di una variabile** l'esecuzione resta bloccata indefinitivamente fino a quando un certo evento su un altro task (thread o ISR) non si verifica facendo ripartire il programma dall'istruzione successiva. Si noti il passaggio per **riferimento** del parametro condizione.
+Il blocco in **attesa di una variabile** l'esecuzione resta bloccata indefinitivamente fino a quando un certo evento su un altro task (thread o ISR) non la **modifica** facendo ripartire il programma dall'istruzione successiva. Si noti il passaggio per **riferimento** del parametro condizione.
 
 ```C++
 // attesa evento con tempo minimo di attesa
