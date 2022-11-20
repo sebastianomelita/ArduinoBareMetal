@@ -28,7 +28,7 @@ Si consideri la differenza:
 ```C++
 	millis()-precm
 ```
-se ```precm``` è dello stesso tipo di ```millis()```, cioè è di tipo unsigned long, allora sia l’una che l’altra andranno in overflowma in **tempi diversi**. Per effetto di un evento di overflow i valori assoluti delle variabili perderanno di significato mentre quelli relativi continueranno a mantenerlo. Infatti, nonostante le due variabili vadano in overflow in momenti diversi, la **differenza relativa** si mantiene ugualmente **corretta**. 
+se ```precm``` è dello stesso tipo di ```millis()```, cioè è di tipo unsigned long, allora sia l’una che l’altra andranno in overflowma in **tempi diversi**. Per effetto di un evento di overflow i **valori assoluti** delle variabili perderanno di significato mentre i **valori relativi** continueranno a mantenerlo. Infatti, nonostante le due variabili vadano in overflow in momenti diversi, la **differenza relativa** si mantiene ugualmente **corretta**. 
 
 Ciò accade perché l’operazione di **sottrazione** delle variabili **senza segno** nei computer avviene **modulo il valore massimo** di conteggio della variabile.
 
