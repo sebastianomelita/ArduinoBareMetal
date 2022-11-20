@@ -57,4 +57,20 @@ Esempio di **ricampionamento periodico** del tempo corrente dopo una differenza 
 		}
 	}
 ```
+
+**waitUntil()**
+
+Alcuni linguaggi hanno una istruzione di **attesa attiva**, cioè di blocco del programma in un certo punto del codice fino a che il valore di una contizione non diventa vero. La funzione è analoga ad un delay() solo che l'argomento può essere una condizione valutata, a scelta del programmatore, su un ingresso o su una variabile. Il C++ di Arduino purtroppo non fornisce questo tipo di delay ma solo quello di attesa in base al tempo.
+
+Nonostante questa limitazione del linguaggio è però possibile emulare un'istruzione con quella caratteristica realizzandola con una funzione. La funzione
+
+```C++
+// attesa evento con tempo minimo di attesa
+void waitUntil(bool condiz, unsigned t)
+{
+    while(!condiz){
+	    delay(t);
+    }
+}
+```
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in Python](timefuncpy.md)
