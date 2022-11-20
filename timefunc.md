@@ -4,7 +4,7 @@
 
 ## **DELAY(), MILLIS() e WAITUNTIL**
 
-**Delay()**
+### **Delay()**
 
 Mette in **pausa** il programma per la quantità di tempo (in millisecondi) specificata come parametro. (Ci sono 1000 millisecondi in un secondo).
 
@@ -36,7 +36,7 @@ Esempio:
 	}
 ```
 
-**Millis()**
+### **Millis()**
 
 Restituisce il numero di **millisecondi** trascorsi da quando la scheda Arduino ha iniziato a eseguire il programma corrente (**accensione** del sistema). Questo tempo è rappresentato con un **unsigned long** che è un tipo **codificato** con 32 bit. Una variabile **unsigned long** può quindi contare fino a **2^32** (circa 4 miliardi) millisecondi,  oltrepassato quel valore il conteggio trabocca (fenomeno dell'overflow) e ripartirà da **zero**. L'**overflow** della funzione millis() avviene a circa **50 giorni** dall'accensione del dispositivo.
 
@@ -90,7 +90,7 @@ Esempio di **ricampionamento periodico** del tempo corrente dopo una differenza 
 	}
 ```
 
-**waitUntil()**
+### **waitUntil()**
 
 Alcuni linguaggi hanno una istruzione di **attesa attiva**, cioè di blocco del programma in un certo punto del codice fino a che il valore di una **condizione** non diventa vero. La funzione è analoga ad un ```delay()``` solo che l'argomento, oltre ad un **tempo**, può essere anche una **condizione** valutata, a scelta del programmatore, su un **ingresso** o su una **variabile**. Il **C++ di Arduino** purtroppo **non** fornisce questo tipo di delay ma solo quello di **attesa in base al tempo**.
 
