@@ -10,23 +10,21 @@ Mette in pausa il programma per la quantità di tempo (in millisecondi) specific
 
 **Millis()**
 
-Restituisce il numero di **millisecondi** trascorsi da quando la scheda Arduino ha iniziato a eseguire il programma corrente (**accensione** del sistema). Questo tempo è rappresentato con un unsigned long che è un tipo **codificato** con 32 bit. Una variabile **unsigned long** può quindi contare fino a **2^32** (circa 4 miliardi) millisecondi,  oltrepassato quel valore il conteggio trabocca (fenomeno dell'overflow) e ripartirà da **zero**. L'**overflow** della funzione millis() avviene a circa **50 giorni** dall'accesnsione del dispositivo.
-
-Il tipo di dato ritornato dalla funzione è **unsigned long**.
+Restituisce il numero di **millisecondi** trascorsi da quando la scheda Arduino ha iniziato a eseguire il programma corrente (**accensione** del sistema). Questo tempo è rappresentato con un **unsigned long** che è un tipo **codificato** con 32 bit. Una variabile **unsigned long** può quindi contare fino a **2^32** (circa 4 miliardi) millisecondi,  oltrepassato quel valore il conteggio trabocca (fenomeno dell'overflow) e ripartirà da **zero**. L'**overflow** della funzione millis() avviene a circa **50 giorni** dall'accesnsione del dispositivo.
 
 ![Unigned overfow](unsignedOverflow.png)
 
-Bisogna prestare attenzione alle **operazioni aritmetiche** con **espressioni** che comprendono, oltre a millis() anche altre variabili aventi tipi più piccoli, come ad esempio int. Infatti la capacità di conteggio di variabili di dimensione inferiore ad unsigned long è minore di quella di millis() per cui potrebbero andare in overflow in un momento differente rispetto a millis() generando risultati scorretti.
+Bisogna prestare attenzione alle **operazioni aritmetiche** con **espressioni** che comprendono, oltre a millis() anche altre variabili aventi tipi più piccoli, come ad esempio int. Infatti la capacità di conteggio di variabili di dimensione inferiore ad unsigned long è minore di quella di millis() per cui potrebbero andare in overflow in un **momento differente** rispetto a millis() generando risultati scorretti.
 
-Le misure di tempo devono sempre tenere conto del problema dell’overflow.  Sulle misure di tempo assolute (misurate a partire dall’accensione della macchina) si può fare poco, quelle andranno in overflow comunque, su quelle relative tra istanti campionati (e conservati su una variabile) e quelli misurati con la millis(), è possibile renderlo non dannoso. Il segreto è lavorare sempre **su differenze di tempo** che non superano mai il valore di overflow, ciò si ottiene assicurandosi di **ricampionare il valore del riferimento**, a partire da cui si misura la differenza, prima che l'evento di overflow accada. 
+Le misure di tempo devono sempre tenere conto del problema dell’overflow.  Sulle **misure assolute** di tempo (misurate a partire dall’accensione della macchina) si può fare poco, quelle andranno in overflow comunque. Sulle **misure relative**, cio tra le **differenze di tempo**  tra istanti campionati (e conservati su una variabile) e quelli misurati con la millis(), è possibile rendere il fenomeno dell'overflow **non dannoso**. Il segreto è lavorare sempre **su differenze di tempo** che **non vadano mai** in overflow, ciò si ottiene assicurandosi di **ricampionare il valore del riferimento**, a partire da cui si misura la differenza, prima che l'evento di overflow accada. 
 
 Se si considera la differenza:
 ```C++
 	millis()-precm
 ```
-se precm è dello stesso tipo di millis(), cioè è di tipo unsigned long, allora sia l’una che l’altra andranno in overflow e in istanti di tempo diversi. Per effetto di un evento di overflow i valori assoluti delle variabili perderanno di significato mentre quelli relativi continueranno a mantenerlo infatti, nonostante le due variabili vadano in overflow in momenti diversi, la differenza relativa si mantiene ugualmente corretta. 
+se ```precm``` è dello stesso tipo di ```millis()```, cioè è di tipo unsigned long, allora sia l’una che l’altra andranno in overflowma in **tempi diversi**. Per effetto di un evento di overflow i valori assoluti delle variabili perderanno di significato mentre quelli relativi continueranno a mantenerlo. Infatti, nonostante le due variabili vadano in overflow in momenti diversi, la **differenza relativa** si mantiene ugualmente **corretta**. 
 
-Ciò accade perché l’operazione di sottrazione delle variabili senza segno nei computer avviene modulo il valore massimo di conteggio della variabile.
+Ciò accade perché l’operazione di **sottrazione** delle variabili **senza segno** nei computer avviene **modulo il valore massimo** di conteggio della variabile.
 
 Infatti si può verificare che il programma seguente restituisce il valore 2.
 ```C++
