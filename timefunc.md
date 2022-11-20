@@ -65,17 +65,18 @@ Alcuni linguaggi hanno una istruzione di **attesa attiva**, cioè di blocco del 
 Nonostante questa limitazione del linguaggio è però possibile **emulare** un'istruzione con quella caratteristica realizzandola con una **funzione**. La funzione ```waitUntil```
 
 ```C++
+```C++
 // attesa evento con tempo minimo di attesa
-void waitUntil(bool cond, unsigned t)
+void waitUntilInputLow(int btn, unsigned t)
 {
-    while(!cond){
+    while(!digitalRead(btn)==LOW){
 	    delay(t);
     }
 }
 ```
 
-resta in attesa di un **tempo minimo** ```t``` al termine del quale viene valutata la ondizione ```cond```. Se essa è **vera** si prosegue all'esecuzione dell'**istruzione successiva**.  Se invece è **falsa** si continua ad attendere per un ulteriore tempo ```t```, al termine del quale si ritorna a valutare la condizione ripetendo il test ed, eventualmente, proseguendo uletriormente l'attesa.
+resta in attesa di un **tempo minimo** ```t``` al termine del quale viene valutato se il valore dell'ingresso è basso (LOW). Se questa condizione è **vera** si prosegue all'esecuzione dell'**istruzione successiva**.  Se invece è **falsa** (ingtresso HIGH) si continua ad attendere per un ulteriore tempo ```t```, al termine del quale si ritorna a valutare la condizione ripetendo il test ed, eventualmente, proseguendo uletriormente l'attesa.
 
-Si noti che la funzione precedente è in grado di attendere solo l'asserzione di una **variabile** passata come **parametro attuale** della funzione al momento della sua **invocazione**. La funzione implementata sopra **non** permette di rimanere in **attesa di un ingresso**. Vedremo una implementazione in grado di fare ciò quando tratteremo i pulsanti con memoria.
+In questo modo l'esecuzione resta bloccata indefinitavamente fino a quando un certo evento su un certo ingresso non si verifica (in questo caso il valore LOW), facendo ripartire il programma dall'istruzione successiva.
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in Python](timefuncpy.md)
