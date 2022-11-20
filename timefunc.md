@@ -16,13 +16,15 @@ Questo perchè l'orizzonte dei valori in cui si sviluppa il conteggio in un nume
 
 ![Unigned overfow](unsignedOverflow.png)
 
-Bisogna prestare attenzione alle **operazioni aritmetiche** con **espressioni** che comprendono, oltre a millis() anche altre variabili aventi tipi più piccoli, come ad esempio int. Infatti la capacità di conteggio di variabili di dimensione inferiore ad unsigned long è minore di quella di millis() per cui potrebbero andare in overflow in un **momento differente** rispetto a millis() generando risultati scorretti.
+Bisogna prestare attenzione alle **operazioni aritmetiche** con **espressioni** che comprendono, oltre a ```millis()``` anche altre variabili aventi tipi più piccoli, come ad esempio ```int```. Infatti la capacità di conteggio di variabili di dimensione inferiore ad ```unsigned long``` è minore di quella di ```millis()``` per cui potrebbero andare in overflow in un **momento differente** rispetto a ```millis()``` generando **risultati scorretti**.
 
-Le misure di tempo devono sempre tenere conto del problema dell’overflow.  Sulle **misure assolute** di tempo (misurate a partire dall’accensione della macchina) si può fare poco, quelle andranno in overflow comunque. 
+Le **misure di tempo** devono sempre tenere conto del problema dell’**overflow**:  
 
-Sulle **misure relative**, cio tra le **differenze di tempo**  tra istanti campionati (e conservati su una variabile) e quelli misurati con la millis(), è possibile rendere il fenomeno dell'overflow **non dannoso**. Il segreto è lavorare sempre **su differenze di tempo** che **non vadano mai** in overflow, ciò si ottiene assicurandosi di **ricampionare il valore del riferimento**, a partire da cui si misura la differenza, prima che l'evento di overflow accada. 
+- Sulle **misure assolute** di tempo (misurate a partire dall’accensione della macchina) si può fare poco, quelle andranno in overflow comunque. 
 
-Se si considera la differenza:
+- Sulle **misure relative**, cio tra le **differenze di tempo**  tra istanti campionati (e conservati su una variabile) e quelli misurati con la millis(), è possibile rendere il fenomeno dell'overflow **non dannoso**. Il segreto è lavorare sempre **su differenze di tempo** che **non vadano mai** in overflow, ciò si ottiene assicurandosi di **ricampionare il valore del riferimento**, a partire da cui si misura la differenza, prima che l'evento di overflow accada. 
+
+Si consideri la differenza:
 ```C++
 	millis()-precm
 ```
