@@ -18,18 +18,21 @@ Valgono due **considerazioni**:
 - il tempo è un blocco dell'esecuzione corrente che dura tot millisecondi tra la fine di un blocco di istruzioni e l'inizio di un altro
 - il momento dell'esecuzione di un blocco di istruzioni deve tenere conto, oltre che dell'intervallo misurato con millis() tra l'uno e l'eltro, anche del tempo di esecuzione di ciscun blocco che normalmente non è prevedibile.
 
+Esempio:
+
 ```C++
 	void setup() {
 		Serial.begin(115200);
 	}
 
 	void loop() {
-		Serial.println("il loop è iniziato e...");
-		Serial.println("sono passati 0 secondi...");
+		Serial.println("il loop è iniziato");
 		delay(2000);
-		Serial.println("Sono passati 2 secondi...");
+		Serial.println("Sono passati 2 secondi dall'ultima istruzione esguita");
+		Serial.println("Sono passati circa 2 secondi dall'inizio del loop");
 		delay(4000);
-		Serial.println("Sono passati 4 secondi");
+		Serial.println("Sono passati 2 secondi dall'ultima istruzione esguita");
+		Serial.println("Sono passati circa 4 secondi dall'inizio del loop");
 	}
 ```
 
