@@ -8,14 +8,14 @@
 
 Mette in **pausa** il programma per la quantità di tempo (in millisecondi) specificata come parametro. (Ci sono 1000 millisecondi in un secondo).
 
-Con la funzione ```millis()``` si può pianificare con precisione l'esecuzione delle istruzioni all'interno del ```loop()``` stabilendo, in maniera **sequenziale**, l'intervallo di tempo tra ciascuna e la precedente. 
+Con la funzione ```delay()``` si può pianificare con precisione l'esecuzione delle istruzioni all'interno del ```loop()``` stabilendo, in maniera **sequenziale**, l'intervallo di tempo tra ciascuna e la precedente. 
 
 Lo sviluppo di un programma in un linguaggio di tipo imperativo è di tipo **sequenziale** per cui rimane stabilito l'**ordine** di esecuzione di ciascuna istruzione.
 
-Inserendo la funzione ```millis()``` tra una istruzione e l'altra è possibile stabilire, oltre che l'ordine dell'istruzione, anche il **momento** in cui l'esecuzione dell'istruzione deve accadere. 
+Inserendo la funzione ```delay()``` tra una istruzione e l'altra è possibile stabilire, oltre che l'ordine dell'istruzione, anche il **momento** in cui l'esecuzione dell'istruzione deve accadere. 
 
 Valgono due **considerazioni**:
-- il tempo è un blocco dell'esecuzione corrente che dura tot millisecondi tra la fine di un blocco di istruzioni e l'inizio di un altro
+- il tempo stabilito da una ```delay()``` è un blocco dell'esecuzione corrente che dura tot millisecondi tra la fine di un blocco di istruzioni e l'inizio di un altro
 - il momento dell'esecuzione di un blocco di istruzioni deve tenere conto, oltre che dell'intervallo misurato con millis() tra l'uno e l'eltro, anche del tempo di esecuzione di ciscun blocco che normalmente non è prevedibile.
 
 Esempio:
