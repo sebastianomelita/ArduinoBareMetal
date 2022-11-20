@@ -15,8 +15,8 @@ Lo sviluppo di un programma in un linguaggio di tipo imperativo è di tipo **seq
 Inserendo la funzione ```delay()``` tra una istruzione e l'altra è possibile stabilire, oltre che l'ordine dell'istruzione, anche il **momento** in cui l'esecuzione dell'istruzione deve accadere. 
 
 Valgono due **considerazioni**:
-- il tempo stabilito da una ```delay()``` è un blocco dell'esecuzione corrente che dura tot millisecondi tra la fine di un blocco di istruzioni e l'inizio di un altro
-- il momento dell'esecuzione di un blocco di istruzioni deve tenere conto, oltre che dell'intervallo misurato con millis() tra l'uno e l'eltro, anche del tempo di esecuzione di ciscun blocco che normalmente non è prevedibile.
+- il tempo stabilito da una ```delay()``` è uno **stop** dell'esecuzione corrente che dura tot millisecondi tra la **fine** di un blocco di istruzioni e l**'inizio** di un altro
+- il **momento effettivo** dell'esecuzione di un blocco di istruzioni deve tenere conto, oltre che dell'intervallo stabilito con un ```delay()``` tra l'uno e l'eltro, anche del tempo di esecuzione di ciascun blocco che normalmente non è prevedibile.
 
 Esempio:
 
