@@ -16,7 +16,7 @@ Inserendo la funzione ```delay()``` tra una istruzione e l'altra è possibile st
 
 Valgono due **considerazioni**:
 - il tempo stabilito da una ```delay()``` è uno **stop** dell'esecuzione corrente che dura tot millisecondi tra la **fine** di un blocco di istruzioni e l'**inizio** di un altro
-- il **momento effettivo** dell'esecuzione di un blocco di istruzioni deve tenere conto, oltre che dell'intervallo stabilito con un ```delay()``` tra l'uno e l'eltro, anche del tempo di esecuzione di ciascun blocco che normalmente non è prevedibile.
+- il **momento effettivo** dell'esecuzione di un blocco di istruzioni deve tenere conto, oltre che dell'intervallo stabilito con un ```delay()``` tra l'uno e l'eltro, anche del **tempo di esecuzione** di ciascun blocco che normalmente non è prevedibile.
 
 Esempio:
 
