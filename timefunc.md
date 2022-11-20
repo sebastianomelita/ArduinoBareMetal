@@ -22,7 +22,7 @@ Le **misure di tempo** devono sempre tenere conto del problema dell’**overflow
 
 - Sulle **misure assolute** di tempo (misurate a partire dall’accensione della macchina) si può fare poco, quelle andranno in overflow comunque. 
 
-- Sulle **misure relative**, cio tra le **differenze di tempo**  tra istanti campionati (e conservati su una variabile) e quelli misurati con la millis(), è possibile rendere il fenomeno dell'overflow **non dannoso**. Il segreto è lavorare sempre **su differenze di tempo** che **non vadano mai** in overflow, ciò si ottiene assicurandosi di **ricampionare il valore del riferimento**, a partire da cui si misura la differenza, prima che l'evento di overflow accada. 
+- Sulle **misure relative**, cioè tra le **differenze di tempo**  tra istanti campionati (e conservati su una variabile) e quelli misurati con la millis(), è possibile rendere il fenomeno dell'overflow **non dannoso**. Il segreto è lavorare sempre **su differenze di tempo** che **non vadano mai** in overflow, ciò si ottiene assicurandosi di **ricampionare il valore del riferimento**, a partire da cui si misura la differenza, prima che l'evento di overflow accada. 
 
 Si consideri la differenza:
 ```C++
