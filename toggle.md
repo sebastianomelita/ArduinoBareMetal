@@ -259,9 +259,9 @@ void loop()
 }
 ```
 
-Simulazione online su Arduino con Tinkercad del codice precedente: https://www.tinkercad.com/embed/0cAN5RGK8cB?editbtn=1
+Simulazione online su Arduino con Tinkercad del codice precedente: [https://www.tinkercad.com/embed/0cAN5RGK8cB?editbtn=1](https://wokwi.com/projects/348713258463527506)
 
-Simulazione online su Esp32 con Wowki del codice precedente https://wokwi.com/projects/348705487464694356
+Simulazione online su Esp32 con Wowki del codice precedente https://wokwi.com/projects/348713258463527506
 
 **Schedulatore basato su threads**
 
