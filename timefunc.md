@@ -65,18 +65,29 @@ Alcuni linguaggi hanno una istruzione di **attesa attiva**, cioè di blocco del 
 Nonostante questa limitazione del linguaggio è però possibile **emulare** un'istruzione con quella caratteristica realizzandola con una **funzione**. La funzione ```waitUntil```
 
 ```C++
-```C++
 // attesa evento con tempo minimo di attesa
 void waitUntilInputLow(int btn, unsigned t)
 {
     while(!digitalRead(btn)==LOW){
-	    delay(t);
+	 delay(t);
     }
 }
 ```
 
 resta in attesa di un **tempo minimo** ```t``` al termine del quale viene valutato se il valore dell'ingresso è basso (LOW). Se questa condizione è **vera** si prosegue all'esecuzione dell'**istruzione successiva**.  Se invece è **falsa** (ingtresso HIGH) si continua ad attendere per un ulteriore tempo ```t```, al termine del quale si ritorna a valutare la condizione ripetendo il test ed, eventualmente, proseguendo uletriormente l'attesa.
 
-In questo modo l'esecuzione resta bloccata indefinitivamente fino a quando un certo evento su un certo ingresso non si verifica (in questo caso il valore LOW), facendo ripartire il programma dall'istruzione successiva.
+Con il blocco in **attesa di un ingresso** l'esecuzione resta bloccata indefinitivamente fino a quando un certo evento su un certo ingresso non si verifica (in questo caso il valore LOW), facendo ripartire il programma dall'istruzione successiva.
+
+Il blocco in **attesa di una variabile** l'esecuzione resta bloccata indefinitivamente fino a quando un certo evento su un altro task (thread o ISR) non si verifica facendo ripartire il programma dall'istruzione successiva. Si noti il passaggio per riferimento del parametro condizione.
+
+```C++
+// attesa evento con tempo minimo di attesa
+void waitUntil(bool &c, unsigned t)
+{
+    while(!c){
+	delay(t);
+    }
+}
+```
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in Python](timefuncpy.md)
