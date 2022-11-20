@@ -76,6 +76,6 @@ void waitUntil(bool cond, unsigned t)
 
 resta in attesa di un **tempo minimo** ```t``` al termine del quale viene valutata la ondizione ```cond```. Se essa è **vera** si prosegue all'esecuzione dell'**istruzione successiva**.  Se invece è **falsa** si continua ad attendere per un ulteriore tempo ```t```, al termine del quale si ritorna a valutare la condizione ripetendo il test ed, eventualmente, proseguendo uletriormente l'attesa.
 
-Si noti che la funzione precedente è in grado di attendere solo l'asserzione di una **variabile** passata come **parametro attuale** della funzione al momento della sua **invocazione**. La funzione implementata sopra non permette di rimanere in **attesa di un ingresso**. Vedremo una implementazione in grado di fare ciò quando tratteremo i pulsanti con memoria.
+Si noti che la funzione precedente è in grado di attendere solo l'asserzione di una **variabile** passata come **parametro attuale** della funzione al momento della sua **invocazione**. La funzione implementata sopra **non** permette di rimanere in **attesa di un ingresso**. Vedremo una implementazione in grado di fare ciò quando tratteremo i pulsanti con memoria.
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in Python](timefuncpy.md)
