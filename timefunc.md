@@ -10,7 +10,7 @@ Mette in **pausa** il programma per la quantità di tempo (in millisecondi) spec
 
 Con la funzione ```millis()``` si può pianificare con precisione l'esecuzione delle istruzioni all'interno del ```loop()``` stabilendo, in maniera **sequenziale**, l'intervallo di tempo tra ciascuna e la precedente. 
 
-Lo sviluppo di un programma in un linguaggio di tipo imperativo è di tipo **sequenziale** per cui rimane stabilito l'ordine di esecuzione di ciascuna istruzione.
+Lo sviluppo di un programma in un linguaggio di tipo imperativo è di tipo **sequenziale** per cui rimane stabilito l'**ordine** di esecuzione di ciascuna istruzione.
 
 Inserendo la funzione ```millis()``` tra una istruzione e l'altra è possibile stabilire, oltre che l'ordine di esecuzione, anche il **momento** in cui l'esecuzione deve accadere. 
 
