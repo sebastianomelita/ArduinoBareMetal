@@ -31,7 +31,7 @@ Esempio:
 		Serial.println("Sono passati 2 secondi dall'ultima istruzione esguita");
 		Serial.println("Sono passati circa 2 secondi dall'inizio del loop");
 		delay(4000);
-		Serial.println("Sono passati 2 secondi dall'ultima istruzione esguita");
+		Serial.println("Sono passati 2 secondi dall'ultima istruzione eseguita");
 		Serial.println("Sono passati circa 4 secondi dall'inizio del loop");
 	}
 ```
