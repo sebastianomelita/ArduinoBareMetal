@@ -261,7 +261,7 @@ void loop()
 
 Simulazione online su Arduino con Tinkercad del codice precedente: https://www.tinkercad.com/embed/0cAN5RGK8cB?editbtn=1
 
-Simulazione online su Esp32 con Wowki del codice precedente [https://wokwi.com/projects/348705487464694356](https://www.tinkercad.com/things/cPVToRzRLgI-copy-of-accensione-led-modo-toggle2-con-memoria-/editel)
+Simulazione online su Esp32 con Wowki del codice precedente https://wokwi.com/projects/348705487464694356
 
 **Schedulatore basato su threads**
 
