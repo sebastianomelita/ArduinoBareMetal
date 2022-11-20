@@ -8,7 +8,7 @@
 
 Mette in **pausa** il programma per la quantità di tempo (in millisecondi) specificata come parametro. (Ci sono 1000 millisecondi in un secondo).
 
-Con la funzione ```millis()``` si può pianificare con precisione l'esecuzione delle istruzioni all'interno del ```loop()``` stabilendo, in maniera sequelziale, l'intervallo di tempo tra ciascuna e la precedente. 
+Con la funzione ```millis()``` si può pianificare con precisione l'esecuzione delle istruzioni all'interno del ```loop()``` stabilendo, in maniera **sequenziale**, l'intervallo di tempo tra ciascuna e la precedente. 
 
 Lo sviluppo di un programma in un linguaggio di tipo imperativo è di tipo **sequenziale** per cui rimane stabilito l'ordine di esecuzione di ciascuna istruzione.
 
