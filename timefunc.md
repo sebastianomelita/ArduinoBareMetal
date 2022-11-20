@@ -6,7 +6,32 @@
 
 **Delay()**
 
-Mette in pausa il programma per la quantità di tempo (in millisecondi) specificata come parametro. (Ci sono 1000 millisecondi in un secondo).
+Mette in **pausa** il programma per la quantità di tempo (in millisecondi) specificata come parametro. (Ci sono 1000 millisecondi in un secondo).
+
+Con la funzione ```millis()``` si può pianificare con precisione l'esecuzione delle istruzioni all'interno del ```loop()``` stabilendo, in maniera sequelziale, l'intervallo di tempo tra ciascuna e la precedente. 
+
+Lo sviluppo di un programma in un linguaggio di tipo imperativo è di tipo **sequenziale** per cui rimane stabilito l'ordine di esecuzione di ciascuna istruzione.
+
+Inserendo la funzione ```millis()``` tra una istruzione e l'altra è possibile stabilire, oltre che l'ordine di esecuzione, anche il **momento** in cui l'esecuzione deve accadere. 
+
+Valgono due **considerazioni**:
+- il tempo è un blocco dell'esecuzione corrente che dura tot millisecondi tra la fine di un blocco di istruzioni e l'inizio di un altro
+- il momento dell'esecuzione di un blocco di istruzioni deve tenere conto, oltre che dell'intervallo misurato con millis() tra l'uno e l'eltro, anche del tempo di esecuzione di ciscun blocco che normalmente non è prevedibile.
+
+```C++
+	void setup() {
+		Serial.begin(115200);
+	}
+
+	void loop() {
+		Serial.println("il loop è iniziato e...");
+		Serial.println("sono passati 0 secondi...");
+		delay(2000);
+		Serial.println("Sono passati 2 secondi...");
+		delay(4000);
+		Serial.println("Sono passati 4 secondi");
+	}
+```
 
 **Millis()**
 
