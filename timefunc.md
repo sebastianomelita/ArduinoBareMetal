@@ -12,7 +12,7 @@ Con la funzione ```millis()``` si può pianificare con precisione l'esecuzione d
 
 Lo sviluppo di un programma in un linguaggio di tipo imperativo è di tipo **sequenziale** per cui rimane stabilito l'**ordine** di esecuzione di ciascuna istruzione.
 
-Inserendo la funzione ```millis()``` tra una istruzione e l'altra è possibile stabilire, oltre che l'ordine di esecuzione, anche il **momento** in cui l'esecuzione deve accadere. 
+Inserendo la funzione ```millis()``` tra una istruzione e l'altra è possibile stabilire, oltre che l'ordine dell'istruzione, anche il **momento** in cui l'esecuzione dell'istruzione deve accadere. 
 
 Valgono due **considerazioni**:
 - il tempo è un blocco dell'esecuzione corrente che dura tot millisecondi tra la fine di un blocco di istruzioni e l'inizio di un altro
