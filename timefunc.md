@@ -77,6 +77,6 @@ void waitUntilInputLow(int btn, unsigned t)
 
 resta in attesa di un **tempo minimo** ```t``` al termine del quale viene valutato se il valore dell'ingresso è basso (LOW). Se questa condizione è **vera** si prosegue all'esecuzione dell'**istruzione successiva**.  Se invece è **falsa** (ingtresso HIGH) si continua ad attendere per un ulteriore tempo ```t```, al termine del quale si ritorna a valutare la condizione ripetendo il test ed, eventualmente, proseguendo uletriormente l'attesa.
 
-In questo modo l'esecuzione resta bloccata indefinitavamente fino a quando un certo evento su un certo ingresso non si verifica (in questo caso il valore LOW), facendo ripartire il programma dall'istruzione successiva.
+In questo modo l'esecuzione resta bloccata indefinitivamente fino a quando un certo evento su un certo ingresso non si verifica (in questo caso il valore LOW), facendo ripartire il programma dall'istruzione successiva.
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in Python](timefuncpy.md)
