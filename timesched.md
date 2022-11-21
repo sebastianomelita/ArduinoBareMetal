@@ -37,25 +37,29 @@ Per ovviare a questo problema basta misurare la **durata** dell'esecuzione di un
 
 ```C++
 	byte led = 13;
-	byte pulsante = 2;
 	unsigned long start, end, duration;
-	unsigned long dt = 100;
+	unsigned long dt = 1000;
+    	long randomNumber;
 	
 	void setup()
 	{
-		pinMode(led, OUTPUT);
-		pinMode(pulsante, INPUT);
+		Serial.begin(115200);
+       	 	pinMode(led, OUTPUT);
+        	randomSeed(analogRead(A0));   
 	}
 
 	void loop()
 	{
 		start = millis();
 		//codice eseguito al tempo stabilito
-		//……………………………………
+    		digitalWrite(led,!digitalRead(led));
+		randomNumber = random(200,700);
+    		Serial.println(randomNumber);
+    		delay(randomNumber);            //emula un blocco di istruzioni
 		end = millis();
-		duration = end - start
+		duration = end - start;
 	        if(duration < dt)
-			delay(dt - duration)
+			delay(dt - duration);
 	}
 ```
 
