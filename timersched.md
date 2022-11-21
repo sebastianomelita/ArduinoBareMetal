@@ -91,6 +91,6 @@ void loop() {
 }
 ```
 
-Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348708804037182034
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
