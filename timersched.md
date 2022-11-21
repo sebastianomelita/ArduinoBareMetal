@@ -35,7 +35,8 @@ void periodicPrint(int maxExecutionsCount) {
  
 void setup() {
   Serial.begin(115200);
- 
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
   int maxExecutionsCount=10;
    
   periodicTicker.attach_ms(5000, periodicPrint, maxExecutionsCount);
@@ -43,6 +44,8 @@ void setup() {
  
 void loop() {}
 ```
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348968576484377172
+
 L'esp_timer è un set di APIs che fornisce timer one-shot e periodici, con risoluzione di tempo dei microsecondo e 64-bit di range di conteggio. In ogni caso è bene tenere presente che:
 - la libreria Ticker fornisce però la precisione del millisecondo quindi se si ha bisogno di qualcosa di più granulare, è utile sapere che le funzioni sottostanti sono più flessibili.
 - le funzioni di callback non è detto che vengano eseguite immediatamente quando si attiva il timer hardware. L'effettiva implementazione dell'API IDF esegue la chiamata annidata di una funzione ausiliaria che potrebbe ritornare con un certo ritardo.
