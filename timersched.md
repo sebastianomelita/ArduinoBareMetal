@@ -65,6 +65,8 @@ void periodicBlink(int led) {
 }
  
 void setup() {
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
   Serial.begin(115200); 
   periodicTicker1.attach_ms(500, periodicBlink, led1);
   periodicTicker2.attach_ms(1000, periodicBlink, led2);
