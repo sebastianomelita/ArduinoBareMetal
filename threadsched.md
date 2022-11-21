@@ -127,7 +127,7 @@ void setup() {
 
 Esempio di realizzazione di due task che eseguono un blink mediante delay() insieme ad altre generiche operazioni svolte nel main (piattaforma **Espress if ESP32**, **IDE Arduino** e librerie thread **preemptive**). (Link simulatore online https://wokwi.com/projects/345668178687296083)
 
-I blink sono due e si svolgono in maniera indipendente su due **thread separati**. Uno dei due blink viene interrotto dalla **terminazione** del loop di un thread **comandata nel main** impostando una **variabile globale**.
+I blink sono due e si svolgono in maniera indipendente su due **thread separati**. Uno dei due blink viene interrotto dalla **terminazione** del loop di un thread **comandata nel main** impostando una **variabile globale**. Per terminare correttamente un thread RTOS è necessario mettere come sua ultima istruzione la funzione ```vTaskDelete(NULL)```.
 
 ```C++
 #include <pthread.h> //libreria di tipo preemptive
