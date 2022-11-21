@@ -212,7 +212,7 @@ int led2 = 12;
  
 void blink1(void * parameter){
 	String taskMessage = "Task running on core ";
-    	taskMessage = taskMessage + xPortGetCoreID();
+  taskMessage = taskMessage + xPortGetCoreID();
 	//loop del thread (interrompibile dal loop principale)
 	while(blink1_running){
 		digitalWrite(led1, HIGH);
@@ -222,13 +222,14 @@ void blink1(void * parameter){
 		Serial.println(taskMessage);
 	}
 	//se il flag è negato arriva quà
-        digitalWrite(led1, LOW);
-        // spegne il led e poi termina (su comando del loop())
+  digitalWrite(led1, LOW);
+  // spegne il led e poi termina (su comando del loop())
+	vTaskDelete(NULL);
 }
 
 void blink2(void * parameter){
 	String taskMessage = "Task running on core ";
-    	taskMessage = taskMessage + xPortGetCoreID();
+  taskMessage = taskMessage + xPortGetCoreID();
 	//loop del thread (interrompibile dal loop principale)
 	while(blink2_running){
 		digitalWrite(led2, HIGH);
@@ -238,8 +239,9 @@ void blink2(void * parameter){
 		Serial.println(taskMessage);
 	}
 	//se il flag è negato arriva quà
-        digitalWrite(led2, LOW);
-        // spegne il led e poi termina (su comando del loop())
+  digitalWrite(led2, LOW);
+  // spegne il led e poi termina (su comando del loop())
+	vTaskDelete(NULL);
 }
  
 void setup() {
@@ -281,6 +283,7 @@ void loop() {
 		delay(1000);
 	}
 	Serial.println("Termino il threads...");
+	delay(1000);
 	// interrompe i loop di tutti i thread
 	blink1_running = false;
 	blink2_running = false;
