@@ -65,6 +65,8 @@ Per ovviare a questo problema basta misurare la **durata** dell'esecuzione di un
 
 La durata del'esecuzione viene sottratta solamente se rimane tempo in eccesso.
 
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/2ZpoOZ28vAd?editbtn=1
+
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348974627603612242
  
 ### **SCHEDULATORE CON TIMER TICK GENERATI DA MILLIS()**
