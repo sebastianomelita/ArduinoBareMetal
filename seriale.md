@@ -103,7 +103,7 @@ Nell’esempio seguente viene adoperata la ISR **serialEvent()**che risponde all
 
 Quando il loop principale si accorge del flag attivo ristampa in uscita la parola ottenuta tramite l’istruzione **Serial.println**.
 ```C++
-string inputString = "";  // a String to hold incoming data
+String inputString = "";  // a String to hold incoming data
 
 boolean volatile stringComplete = false;  // whether the string is complete
 byte byteRead;
