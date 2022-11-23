@@ -112,7 +112,7 @@ void setup() {
 	inputString.reserve(200);
 }
 
-loop(){
+void loop(){
 	// il polling su una variabile è meno lento di quello su una porta seriale
 	if (stringComplete) {
 		stringComplete = false; //reset della bandierina (flag)
