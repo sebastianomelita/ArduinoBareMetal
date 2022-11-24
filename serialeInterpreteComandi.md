@@ -29,6 +29,8 @@ void loop(){
 	}
 }
 ```
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/lBusINuSRWT?editbtn=1
+
 I comandi possono anche essere inviati in maniera meno ambigua utilizzando un formato preventivamente concordato tra mittente e destinatario. In questo caso comandi diversi in genere condividono per lo meno un formato comune. 
 I formati dei messaggi più utilizzati in genere sono:
  - Testo formattato con separatori di campo (spazi, virgole, ecc.) e separatori di riga (\0, \n,\r)
