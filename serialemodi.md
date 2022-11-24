@@ -99,6 +99,8 @@ void loop() {
 }	
 ```
 
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/8Z5TziTzkHH?editbtn=1
+
 Viene considerato un messaggio tutta la parte numerica terminata dai caratteri speciali + e =
 
 La funzione Serial.parseInt() internamente chiama la Serial.available() per effettuare il parsing dei caratteri in arrivo aggiornando di uno la posizione della testa della coda di ricezione.
