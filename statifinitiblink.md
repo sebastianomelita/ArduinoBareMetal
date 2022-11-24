@@ -11,16 +11,16 @@ unsigned long timeLastTransition =0;
 
 void setup()
 {
-  pinMode(LED, OUTPUT);   
+  	pinMode(LED, OUTPUT);   
 }
 
 void loop()
 {
-blink();
+	blink();
 }
 
 void blink(){
-if(millis()-precm >= (unsigned long) LED_DELAY){  
+	if(millis()-precm >= (unsigned long) LED_DELAY){  
 		timeLastTransition = millis();        
 		digitalWrite(LED, !digitalRead(LED));		
 	}
