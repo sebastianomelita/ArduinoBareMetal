@@ -5,13 +5,17 @@ Si possono realizzare timer anche a partire dalla base dei tempi misurata da uno
 
 Il codice di seguito accende un led alla pressione di un pulsante solo se questo è stato premuto per un tempo minimo, oppure lo spegne solo se questo è rilasciato per almeno un tempo minimo, in tutti gli altri casi non fa nulla (filtra i comandi)
 ```C++
+#define TBASE 10
+#define NSTEP 1000
 unsigned long lastTime = 0;  
 unsigned long timerDelay = TBASE;  // send readings timer
 unsigned step = 0;  
+unsigned btntime = 0;
+unsigned txtime = 100;
 bool start=false;
 unsigned short  val;
 byte precval=0; //switchdf e toggle
-byte cmdin=2;
+byte cmdin, led;
 
 //switch per un solo pulsante attivo su entrambi i fronti
 bool transizione(byte val){
@@ -21,9 +25,9 @@ bool transizione(byte val){
 	return changed;		// rivelatore di fronte (salita o discesa)
 }
 
-setup(){
-	cmdin = 0;
-	led = 2;
+void setup(){
+	cmdin = 3;
+	led = 10;
 	pinMode(cmdin, INPUT);
 	pinMode(led, OUTPUT);
 	Serial.begin(115200);
@@ -35,7 +39,7 @@ void loop() {
 		step = (step + 1) % NSTEP;
 		btntime = (btntime + 1) % NSTEP;
 		
-		val = digitalRead(cmdin)); 
+		val = digitalRead(cmdin); 
 		
 		if(transizione(val)){ 	//rivelatore di fronte (salita e discesa)
 			Serial.println("Ho una transizione dell'ingresso");
@@ -52,9 +56,10 @@ void loop() {
 		// se premo il pulsante sufficientemente a lungo accendo il led
 		// se rilascio il pulsante sufficientemente a lungo spengo il led
 		if(start && (btntime >= txtime)){
-			digitalWrite(led, val));
+			digitalWrite(led, val);
 			start = false;
 		}
+	}
 }
 ```
 >[Torna all'indice](indextimers.md) >[versione in Python](timersschedulatipy.md)
