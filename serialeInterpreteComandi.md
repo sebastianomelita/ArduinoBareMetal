@@ -120,6 +120,8 @@ void loop(){
 }
 	
 ```
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/eCHdjZz0JB0?editbtn=1
+
 Nell'esempio seguente utilizzeremo la funzione cmdParser(instr, "parametro", 10) per realizzare un parser che restituisce il valore ricevuto del parametro inserito come argomento. Un valore negativo significa parametro non trovato, uno positivo parametro trovato con il valore restituito. L'utilizzo di questa funzione permette di risparmiare qualche riga di codice ed eventualmente la gestione dinamica dei parametri mediante un ciclo che scorrendo un vettore di parametri li cerca nel messaggio ricevuto e, se esistono, ne restituisce il valore.
 	
 ```C++
