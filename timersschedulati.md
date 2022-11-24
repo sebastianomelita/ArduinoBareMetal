@@ -58,7 +58,7 @@ void loop() {
 		// se rilascio il pulsante sufficientemente a lungo spengo il led
 		if(start && (btntime >= txtime)){
 			digitalWrite(led, val);
-			start = false;
+			start = false; //consento l'abilitazione del comando opposto
 		}
 	}
 }
