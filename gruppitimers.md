@@ -123,41 +123,41 @@ void loop(){
     //polling pulsante SCALA
     in=digitalRead(CMDSCALA);
     if(transizione(in,SCALA)){
-		if(in==HIGH){ //se fronte di salita (pressione)
-			startTimer(TSCALA, TMRSCALA); 
-			stato[SCALA] = !stato[SCALA];
-			digitalWrite(LEDSCALA,stato[SCALA]);
-			Serial.print("Scala: ");
-			Serial.println(stato[SCALA]);
-		}
+	if(in==HIGH){ //se fronte di salita (pressione)
+		startTimer(TSCALA, TMRSCALA); 
+		stato[SCALA] = !stato[SCALA];
+		digitalWrite(LEDSCALA,stato[SCALA]);
+		Serial.print("Scala: ");
+		Serial.println(stato[SCALA]);
+	}
     }
     
     //polling pulsante SALA
     in=digitalRead(CMDSALA);
     if(transizione(in,SALA)){
         if(in==HIGH){ //se fronte di salita (pressione)
-			startTimer(TSPEGNI, TMRSPEGNI);
-			stato[SALA] = !stato[SALA];
-			digitalWrite(LEDSALA,stato[SALA]);
-			Serial.print("Sala: ");
-			Serial.println(stato[SALA]);
-		}else{ // rilascio
-			stopTimer(TMRSPEGNI);
-		}
+		startTimer(TSPEGNI, TMRSPEGNI);
+		stato[SALA] = !stato[SALA];
+		digitalWrite(LEDSALA,stato[SALA]);
+		Serial.print("Sala: ");
+		Serial.println(stato[SALA]);
+	}else{ // rilascio
+		stopTimer(TMRSPEGNI);
+	}
     }    
 
     // polling pulsante INGRESSO
     in=digitalRead(CMDINGRESSO);
     if(transizione(in,INGRESSO)){
         if(in==HIGH){ //se fronte di salita
-			startTimer(TSPEGNI, TMRSPEGNI);
-			stato[INGRESSO] = !stato[INGRESSO];
-			digitalWrite(LEDINGRESSO,stato[INGRESSO]);
-			Serial.print("Ingresso: ");
-			Serial.println(stato[INGRESSO]);
-		}else{ // rilascio
-			stopTimer(TMRSPEGNI);
-		}
+		startTimer(TSPEGNI, TMRSPEGNI);
+		stato[INGRESSO] = !stato[INGRESSO];
+		digitalWrite(LEDINGRESSO,stato[INGRESSO]);
+		Serial.print("Ingresso: ");
+		Serial.println(stato[INGRESSO]);
+	}else{ // rilascio
+		stopTimer(TMRSPEGNI);
+	}
     }
   } //chiudi schedulatore 
   
@@ -166,8 +166,8 @@ void loop(){
     String instr = Serial.readString();
 	
     if(instr.indexOf("\"sensore\":\"on\"") >= 0){
-		stopTimer(TMRSICUREZZA);
-		digitalWrite(LEDSPIA, LOW);
+	stopTimer(TMRSICUREZZA);
+	digitalWrite(LEDSPIA, LOW);
     }
   }
 }
