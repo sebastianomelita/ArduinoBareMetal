@@ -139,7 +139,7 @@ void serialEvent(){
 }
 ```
 
-Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/lERKq5P0sXm?editbtn=1" frameborder="0" 
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/lERKq5P0sXm?editbtn=1
 
 >[Torna all'indice](indexseriale.md) >[versione in Python](serialepy.md)
 
