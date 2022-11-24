@@ -138,8 +138,9 @@ void loop(){
   }
 }
 
-Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/9Etp4cBur47?editbtn=1
 ```	
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/9Etp4cBur47?editbtn=1
+
 >[Torna all'indice](indexseriale.md) >[versione in Python](serialegenerazionecmdpy.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMjA4MTI3NTg5Ml19
