@@ -1,5 +1,5 @@
 
-
+```C++
 /*
 Scrivere un programma che realizzi l'accensione di un led tramite un pulsante temporizzato che spegne il led 
 dopo un numero di ms impostati da setup. La logica del tasto deve essere senza stato e deve essere sensibile 
@@ -69,4 +69,4 @@ void loop(){
 		}
 	}
 }
-	
+```	
