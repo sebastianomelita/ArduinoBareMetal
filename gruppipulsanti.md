@@ -73,6 +73,8 @@ void loop(){
 	} //chiudi schedulatore
 }
 ```
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/1lJ0BJp3fWB?editbtn=1
+
 Si noti l’uso delle due **costanti enum** CUCINA e SOGGIORNO per gestire in maniera **automatica** gli **indici** dei due array paralleli
 ```C++
 byte stato[2];
