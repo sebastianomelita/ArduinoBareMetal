@@ -164,4 +164,6 @@ void loop(){
   }
 }
 ```
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/foKpKs08UBQ?editbtn=1
+
 >[Torna all'indice](indextimers.md) >[versione in Python](gruppitimerspy.md)
