@@ -15,20 +15,20 @@ La differenza tra i vari modi di gestione consiste in come si memorizzano stati,
 1) Scrivere un programma Arduino che accenda tre led (ingresso, sala, scala). Accenderli con tre pulsanti toggle separati. Lo stato dei led deve essere scritto sulla seriale all'avvenire (occorrenza) di ogni comando.
 3) Realizzare, con un timer, l funzione di spegnimento automatico, dopo 10 secondi, della luce della scala. (dispensa timer.doc)
 4) Utilizzare un altro timer per gestire lo spegnimento delle luci delle due sale alla pressione prolungata di uno dei loro pulsanti.
-5) Realizzare, con un timer, la funzione "lampada viva" che accende (o fa lampeggiare) due led di segnalazione, uno per ogni sala, se non riceve via seriale il il comando "sala":"alive" e "ingresso":"alive" entro 10 secondi. 
-   Se lo riceve non segnala, se non lo riceve segnala. Al massimo aspetta 10 secondi per segnalare.
+5) Realizzare, con un timer, la funzione "antincendio" che accende un led di segnalazione se non riceve via seriale il il comando "sensore":"on" entro 10 secondi.
+Se lo riceve non segnala, se non lo riceve segnala. Al massimo aspetta 10 secondi per segnalare.
 */
 #define TBASE 100
 #define NSTEP 100
 #define CMDSCALA 2
 #define CMDSALA 3
 #define CMDINGRESSO 4
-#define LEDINGRESSO 11
-#define LEDSALA 12
-#define LEDSCALA 13
+#define LEDINGRESSO 8
+#define LEDSALA 9
+#define LEDSCALA 10
 #define LEDSPIA 11
 #define TSCALA 10000
-#define TSPEGNI 10000
+#define TSPEGNI 1000
 #define TSICUREZZA 10000
 
 enum btn
@@ -54,6 +54,7 @@ bool timerState[3]={false,false,false};
 
 
 void setup(){
+  Serial.begin(115200);
   pinMode(CMDSCALA, INPUT);
   pinMode(CMDSALA, INPUT);
   pinMode(CMDINGRESSO, INPUT);
@@ -65,6 +66,7 @@ void setup(){
   stopTimer(TMRSCALA);
   stopTimer(TMRSPEGNI);
   stopTimer(TMRSICUREZZA);
+  startTimer(TSICUREZZA, TMRSICUREZZA);
 }
 
 void startTimer(unsigned long duration, unsigned short n){
@@ -91,7 +93,7 @@ void onElapse(unsigned short n){
 		stato[SCALA] = LOW;
 		digitalWrite(LEDSCALA, stato[SCALA]);
 	}else if(n==TMRSPEGNI){
-		stato[SCALA] = LOW;
+		stato[SALA] = LOW;
 		digitalWrite(LEDSALA, stato[SALA]);
 		stato[INGRESSO] = LOW;
 		digitalWrite(LEDINGRESSO, stato[INGRESSO]);
@@ -101,10 +103,10 @@ void onElapse(unsigned short n){
 }
 
 bool transizione(byte val,byte n){  //transizione di un pulsante
-  bool cambiato=false;
-  cambiato = (precval[n] != val);
-  precval[n] = val;  
-  return cambiato; 
+	bool cambiato=false;
+	cambiato = (precval[n] != val);
+	precval[n] = val;  
+	return cambiato; 
 }
 
 void loop(){
@@ -121,35 +123,41 @@ void loop(){
     //polling pulsante SCALA
     in=digitalRead(CMDSCALA);
     if(transizione(in,SCALA)){
-      if(in==HIGH){ //se fronte di salita (pressione)
-        startTimer(TSCALA, TMRSCALA); 
-        stato[SCALA] = !stato[SCALA];
-        digitalWrite(LEDSCALA,stato[SCALA]);
-      }
+		if(in==HIGH){ //se fronte di salita (pressione)
+			startTimer(TSCALA, TMRSCALA); 
+			stato[SCALA] = !stato[SCALA];
+			digitalWrite(LEDSCALA,stato[SCALA]);
+			Serial.print("Scala: ");
+			Serial.println(stato[SCALA]);
+		}
     }
     
     //polling pulsante SALA
     in=digitalRead(CMDSALA);
-      if(transizione(in,SALA)){
+    if(transizione(in,SALA)){
         if(in==HIGH){ //se fronte di salita (pressione)
-	  startTimer(TSPEGNI, TMRSPEGNI);
-          stato[SALA] = !stato[SALA];
-          digitalWrite(LEDSALA,stato[SALA]);
-	}else{ // rilascio
-	  stopTimer(TMRSPEGNI);
-	}
+			startTimer(TSPEGNI, TMRSPEGNI);
+			stato[SALA] = !stato[SALA];
+			digitalWrite(LEDSALA,stato[SALA]);
+			Serial.print("Sala: ");
+			Serial.println(stato[SALA]);
+		}else{ // rilascio
+			stopTimer(TMRSPEGNI);
+		}
     }    
 
     // polling pulsante INGRESSO
     in=digitalRead(CMDINGRESSO);
-      if(transizione(in,INGRESSO)){
+    if(transizione(in,INGRESSO)){
         if(in==HIGH){ //se fronte di salita
-          startTimer(TSPEGNI, TMRSPEGNI);
-          stato[INGRESSO] = !stato[INGRESSO];
-          digitalWrite(LEDINGRESSO,stato[INGRESSO]);
-	}else{ // rilascio
-	  stopTimer(TMRSPEGNI);
-	}
+			startTimer(TSPEGNI, TMRSPEGNI);
+			stato[INGRESSO] = !stato[INGRESSO];
+			digitalWrite(LEDINGRESSO,stato[INGRESSO]);
+			Serial.print("Ingresso: ");
+			Serial.println(stato[INGRESSO]);
+		}else{ // rilascio
+			stopTimer(TMRSPEGNI);
+		}
     }
   } //chiudi schedulatore 
   
@@ -157,9 +165,9 @@ void loop(){
     short val;
     String instr = Serial.readString();
 	
-    if(instr.indexOf("\"statosala\":\"on\"") >= 0){
-	startTimer(TSICUREZZA, TMRSICUREZZA);
-	digitalWrite(LEDSPIA, LOW);
+    if(instr.indexOf("\"sensore\":\"on\"") >= 0){
+		stopTimer(TMRSICUREZZA);
+		digitalWrite(LEDSPIA, LOW);
     }
   }
 }
