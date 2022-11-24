@@ -51,7 +51,7 @@ void loop() {
 				start = true;
 				Serial.println("Ho abilitato un comando");
 			}
-		    btntime = 0;
+		    	btntime = 0;
 		}
 		
 		// se premo il pulsante sufficientemente a lungo accendo il led
