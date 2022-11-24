@@ -12,7 +12,7 @@ unsigned long timerDelay = TBASE;  // send readings timer
 unsigned step = 0;  
 unsigned btntime = 0;
 unsigned txtime = 100;
-bool start=false;
+bool start;
 unsigned short  val;
 byte precval=0; //switchdf e toggle
 byte cmdin, led;
@@ -28,6 +28,7 @@ bool transizione(byte val){
 void setup(){
 	cmdin = 3;
 	led = 10;
+	start=false;
 	pinMode(cmdin, INPUT);
 	pinMode(led, OUTPUT);
 	Serial.begin(115200);
@@ -50,7 +51,7 @@ void loop() {
 				start = true;
 				Serial.println("Ho abilitato un comando");
 			}
-		    	btntime = 0;
+		    btntime = 0;
 		}
 		
 		// se premo il pulsante sufficientemente a lungo accendo il led
