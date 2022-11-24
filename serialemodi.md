@@ -57,6 +57,8 @@ void loop() {
 }
 ```
 
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/d3IXwCqI0iN?editbtn=1
+
 **Esempio di caricamento in modalità buffering**			
 ```C++			
 int vals[3];
