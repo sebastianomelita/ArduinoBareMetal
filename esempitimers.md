@@ -1,3 +1,4 @@
+>[Torna all'indice](indextimers.md) >[versione in Python](catenetimerspy.md)
 
 ```C++
 /*
@@ -70,3 +71,5 @@ void loop(){
 	}
 }
 ```	
+
+>[Torna all'indice](indextimers.md) >[versione in Python](catenetimerspy.md)
