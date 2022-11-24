@@ -239,6 +239,7 @@ void loop(){
 	} 	//chiudi schedulatore	
 }
 ```
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/4fA6Vu7riZV?editbtn=1
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](gruppipulsantipy.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTc1MzU3MTYzXX0=
