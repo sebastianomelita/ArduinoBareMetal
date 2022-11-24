@@ -133,7 +133,7 @@ Ricevere dalla seriale il comando di accensione nel formato
 */
 #define TBASE 100
 #define NSTEP 100
-#define CMDCUCINA 3
+#define CMDCUCINA 2
 #define LEDCUCINA 13
 byte precval=0;
 byte stato=0;
@@ -152,6 +152,7 @@ bool toggleH(byte val) { //transizione di un pulsante
 		cambiato = true;
 		stato = !stato;
 	}
+  	precval = val;
 	return cambiato;
 }
 
@@ -203,6 +204,8 @@ void loop(){
 	}
 }
 ```
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/fpcjVFzj4O4?editbtn=1
+
 >[Torna all'indice](indexseriale.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMzAzNTA5ODc2XX0=
