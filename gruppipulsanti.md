@@ -106,10 +106,10 @@ Scrivere un programma Arduino che accenda due led (cucina, soggiorno).
 Accenderli con due pulsanti toggle separati.
 */
 #define TBASE 100
-#define CMDSOGGIORNO 2
+#define CMDSOGGIORNO 4
 #define CMDCUCINA 3
-#define LEDSOGGIORNO 12
-#define LEDCUCINA 13
+#define LEDSOGGIORNO 9
+#define LEDCUCINA 10
 struct Toggle
 {
 	uint8_t precval;
@@ -130,6 +130,7 @@ bool toggleH(byte val, struct Toggle &btn) { 		//transizione di un pulsante
 		cambiato = true;
 		btn.stato = !btn.stato;
 	}
+  	btn.precval = val;
 	return cambiato;
 }
 
@@ -151,6 +152,8 @@ void loop(){
 	} //chiudi schedulatore
 }
 ```
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/hgItzgLxFsx?editbtn=1
+
 **Esempio di due pulsanti toggle gestiti con due oggetti**
 ```C++
 /*
