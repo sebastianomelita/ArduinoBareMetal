@@ -158,6 +158,6 @@ void loop() {
     }
 }
 ```
-Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/8Z5TziTzkHH?editbtn=1
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/1ScNVsfRbnt?editbtn=1
 
 >[Torna all'indice](indexseriale.md)
