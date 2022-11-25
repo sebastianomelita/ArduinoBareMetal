@@ -57,4 +57,50 @@ E’ buona norma evitare l’esecuzione frequente di operazioni lente quando que
 **In particolare**, all'interno di un task, andrebbe accuratamente evitata l'introduzione di ritardi prolungati tramite **delay()**. Possono esserci per **breve tempo** (qualche mSec) ma, in ogni caso, non dovrebbero mai far parte della maniera (**algoritmo**) con cui la logica di comando **pianifica i suoi eventi**.
 
 Utilizzando la tecnica della **schedulazione esplicita dei task** nel loop(), la **realizzazione di un algoritmo** non dovrebbe essere pensata in **maniera sequenziale (o lineare)** ma, piuttosto, come una **successione di eventi** a cui corrispondono dei **compiti** (task) che **comunicano** con le periferiche di input/output ed, eventualmente, dialogano tra loro in qualche modo (ad es. variabili globali, buffer, ecc.).
+
+
+
+
+```C++
+/*
+Realizzzare un programma che fa blinkare un led per 10 sec poi lo fa stare sempre acceso per un altri 10 sec, poi lo fa blinkare di nuovo per altri 10 sec e così via.
+*/
+#define tbase  1000  // periodo base in milliseconds
+#define nstep  1000  // numero di fasi massimo di un periodo generico
+unsigned long precm = 0;
+unsigned long step = 0;
+byte pari, in;
+byte led1 = 13;
+byte led2 = 12;
+
+void setup()
+{
+	pinMode(led1, OUTPUT);
+    pinMode(led2, OUTPUT);
+}
+
+void loop()
+{
+	// polling della millis() alla ricerca del tempo in cui scade ogni periodo
+	if((millis()-precm) >= (unsigned long) tbase){ 		//se è passato un periodo tbase dal precedente periodo
+		precm = millis();  				//preparo il tic successivo azzerando il conteggio del tempo ad adesso
+		
+		step = (step + 1) % nstep; 			// conteggio circolare (arriva al massimo a nstep-1)
+
+		// task 1
+		if(!(step%2)){  // schedulo eventi al multiplo del periodo (2 sec = 2 periodi)
+			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+		}
+		// task 2
+		if(!(step%3)){  // schedulo eventi al multiplo del periodo (3 sec = 3 periodi)
+			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+		}
+		// il codice eseguito al tempo del metronomo (esattamente un periodo) va quì
+	}
+	// il codice eseguito al tempo massimo della CPU va qui
+}
+```
+Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/81ioQDDGQOG?editbtn=1
+
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/348709453878526548
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in Python](taskschedpy.md)
