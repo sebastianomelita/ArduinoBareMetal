@@ -135,16 +135,14 @@ void setup() {
 // loop principale
 void loop() {
 	if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
-		stato = !stato; 									// impostazione dello stato del toggle
+		stato = !stato; 				// impostazione dello stato del toggle
 		waitUntilInputLow(pulsante,0);			// attendi finchè non c'è fronte di discesa
 	}
 	if (stato) {
 		digitalWrite(led, !digitalRead(led));   	// turn the LED on (HIGH is the voltage level)
 		delay(500);
 	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW								// equivale a yeld()
-	}
-	delay(10);
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
 }
 ```
 
