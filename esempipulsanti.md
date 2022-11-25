@@ -7,9 +7,10 @@ Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/1EjA2PYVNZ
 
 ###  **PULSANTE TOGGLE**
 
-Si vuole realizzare un pulsante con una memoria dello stato che possa essere modificata ad ogni pressione. Pressioni successive in sequenza accendono e spengono un led. Quindi, a seconda da quando si comincia, pressioni in numero pari accendono mentre quelle in numero dispari spengono, oppure al contrario, pressioni in numero pari spengono mentre quelle in numero dispari accendono.
+Realizzare un programma Arduino che dati 4 led (led1, led2, led3, led4) realizza un indicatore di curva pericolosa 
+che accende i led in sequenza con un incremento circolare. Usare un tasto che può essere premuto in successione 
+per accendere o spegnere l’indicatore (toggleH). Supponiamo che il tasto è collegato secondo lo schema pull down.
 
-Inizialmente si potrebbe essere tentati di provare seguente soluzione, adattando la strategia del pulsante precedente introducendo una variabile che conservi lo stato del pulsante che chiameremo _closed_.
 ```C++
 bool button_state; 					//stato del pulsante
 int led1, led2, led3, led4, led5;	//pin dei led
