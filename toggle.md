@@ -136,7 +136,7 @@ void setup() {
 void loop() {
 	if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
 		stato = !stato; 				// impostazione dello stato del toggle
-		waitUntilInputLow(pulsante,0);			// attendi finchè non c'è fronte di discesa
+		waitUntilInputLow(pulsante,50);			// attendi finchè non c'è fronte di discesa
 	}
 	if (stato) {
 		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
