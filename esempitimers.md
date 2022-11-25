@@ -200,4 +200,127 @@ void loop(){
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/f0o52ZDqqcL?editbtn=1
 
+### **Un pulsante per tre lampade 2**
+
+```C++
+/*
+ Scrivere un programma che realizzi l'accensione del led1, oppure del led2 oppure del led3 led 
+ tramite la pressione consecutiva di un pulsante una, due o tre volte all'interno di 
+ un intervallo temporale di un secondo. Col la pressione per almeno un secondo, ma meno di due, dello stesso pulsante si 
+ accendono tutti i led, con la pressione dello stesso tasto per più di due secondi si spengono tutti i led.
+ (Realizzazione del timer senza schedulatore, tast)
+*/
+
+//inizio variabili e costanti dello schedulatore (antirimbalzo)
+#define tbase    	50        // periodo base in millisecondi
+unsigned long precm=0;
+//fine variabili e costanti dello schedulatore
+
+//inizio variabili timer
+//inizio variabili timer
+unsigned long startTime[3];
+unsigned long timelapse[3];
+byte timerState[3];
+//fine variabili timer
+//variabili switch2
+int precval;
+//fine variabili switch2
+
+int led1=13;
+int led2=12;
+int led3=11;
+int tasto1=2;
+int count=0;
+int in, out;
+
+void startTimer(unsigned long duration, int n){
+	timerState[n]=1;
+	timelapse[n]=duration;
+	startTime[n]=millis();
+}
+
+//verifica se è arrivato il tempo di far scattare il timer
+void aggiornaTimer(int n){
+	if((millis()-startTime[n] > timelapse[n]) && timerState[n]==1){
+		timerState[n]=0;
+		onElapse(n);
+	}
+}
+
+void stopTimer(int n){
+	timerState[n]=0;
+}
+
+//switch per un solo pulsante attivo su entrambi i fronti
+bool switchdf(byte val){
+	bool changed = false;
+	changed = (val != precval); 	// campiona tutte le transizioni
+	precval = val;              	// valore di val campionato al loop precedente 
+	return changed;					// rivelatore di fronte (salita o discesa)
+}
+
+//azione da compiere allo scadere del timer	
+void onElapse(int n){
+	//se c'è un conteggio di accensione attivo accendi il led corrispondente al numero raggiunto
+	if(n==0){	
+		if(count>0){
+			digitalWrite(14-count,HIGH);
+			count=0;
+		}
+	}else if(n==1){
+		//dall'ultima pressione (startTimer(1)) al rilascio corrente è passato più di un secondo ma meno di due
+		digitalWrite(led1,HIGH);
+		digitalWrite(led2,HIGH);
+		digitalWrite(led3,HIGH);
+	}else if(n==2){
+		//dall'ultima pressione (startTimer(1)) al rilascio corrente sono passati più di due secondi
+		digitalWrite(led1,LOW);
+		digitalWrite(led2,LOW);
+		digitalWrite(led3,LOW);
+	}
+}
+
+void setup(){
+	pinMode(tasto1,INPUT);
+	pinMode(led1,OUTPUT);
+	pinMode(led2,OUTPUT);
+	pinMode(led3,OUTPUT);
+	digitalWrite(led1,LOW);
+	digitalWrite(led2,LOW);
+	digitalWrite(led3,LOW);
+}
+
+void loop(){
+	aggiornaTimer(0);
+	aggiornaTimer(1);
+    aggiornaTimer(2);
+	
+	if((millis()-precm) > tbase) //schedulatore con funzione di antirimbalzo (legge ogni 50 mSec)
+	{
+		precm = millis(); 
+		
+		//ad ogni pressione del tasto entro il tempo prefissato aggiorna il contatore di quel tasto (pressione)
+		in=digitalRead(tasto1);
+		out=switchdf(in);
+		if(out==HIGH){
+			if(in==HIGH){//fronte di salita
+				//ad ogni pressione fai partire i timers di rilascio
+				count++;
+				startTimer(1000,1);
+				startTimer(2000,2);
+				//se il tasto di accensione è premuto la prima volta fai partire il timer di conteggio
+				if(count==1){
+					startTimer(1000,0);
+				}
+			}else{ //fronte di discesa
+				stopTimer(1);
+				stopTimer(2);
+			}
+		}
+	}
+}
+```
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/e55nCkLiALh?editbtn=1
+
+
 >[Torna all'indice](indextimers.md) >[versione in Python](catenetimerspy.md)
