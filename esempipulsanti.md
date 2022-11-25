@@ -1,7 +1,7 @@
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](gruppipulsantipy.md)
 
-###  **Curva pericolosa1 **
+###  **Curva pericolosa1**
 
 Realizzare un programma Arduino che dati 4 led (led1, led2, led3, led4) realizza un indicatore di curva pericolosa 
 che accende i led in sequenza con un incremento circolare. Usare un tasto che può essere premuto in successione 
