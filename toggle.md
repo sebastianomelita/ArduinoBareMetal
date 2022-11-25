@@ -105,12 +105,52 @@ void loop()
 	}
 }
 ```
-### Esempi di blink insieme ad antirimbalzo realizzati con tecniche di schedulazione diverse
+## Esempi di blink insieme ad antirimbalzo realizzati con tecniche di schedulazione diverse
 
+### **Schedulatore basato sui delay**
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+// utilizzare variabili globali è una maniera per ottenere
+// che il valore di una variabile persista tra chiamate di funzione successive
+// situazione che si verifica se la funzione è richiamata dentro il loop()
+
+// attesa evento con tempo minimo di attesa
+void waitUntilInputLow(int btn, unsigned t)
+{
+    while(!digitalRead(btn)==LOW){
+	    delay(t);
+    }
+}
+  
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+}
+
+// loop principale
+void loop() {
+	if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
+		stato = !stato; 									// impostazione dello stato del toggle
+		waitUntilInputLow(pulsante,0);			// attendi finchè non c'è fronte di discesa
+	}
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// turn the LED on (HIGH is the voltage level)
+		delay(500);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW								// equivale a yeld()
+	}
+	delay(10);
+}
+```
 
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/349322438385861202
 
-**Schedulatore basato su time ticks**
+### ***Schedulatore basato su time ticks**
 
 In questo caso, il rilevatore dei fronti è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
 
@@ -172,7 +212,7 @@ Simulazione online su Arduino con Tinkercad del codice precedente: https://www.t
 
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/348707844567073364
 
-**Schedulatore basato su protothreads**
+### ***Schedulatore basato su protothreads**
 
 In questo caso, il rilevatore dei fronti è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato **nello stesso loop** ma in un momento diverso stabilito mediante un istruzione ```WAIT_UNTIL()```. La funzione, di fatto, esegue un **blocco** del protothread corrente in **"attesa"**  di una certa **condizione**, senza bloccare l'esecuzione degli altri protothread. L'**attesa** è spesa campionando continuamente un **ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, in un loop successivo, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un **fronte di salita**.  
 
@@ -266,7 +306,7 @@ Simulazione online su Arduino con Tinkercad del codice precedente: https://www.t
 
 Simulazione online su Esp32 con Wowki del codice precedente https://wokwi.com/projects/348833702098240083
 
-**Schedulatore basato su threads**
+### ***Schedulatore basato su threads**
 
 In questo caso, il rilevatore dei fronti è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato **nello stesso loop** ma in un momento diverso stabilito mediante un istruzione ```waitUntilInputLow()```. La funzione, di fatto, esegue un **blocco** del **thread** corrente in **"attesa"**  di una certa **condizione**, senza bloccare l'esecuzione degli altri thread. L'**attesa** è spesa campionando continuamente un **ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, in un loop successivo, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un **fronte di salita**. 
 
