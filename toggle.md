@@ -105,7 +105,7 @@ void loop()
 	}
 }
 ```
-## Esempi di blink insieme ad antirimbalzo realizzati con tecniche di schedulazione diverse
+## Esempi di blink insieme a pulsanti toggle antirimbalzo realizzati con tecniche di schedulazione diverse
 
 ### **Schedulatore basato sui delay**
 
