@@ -63,20 +63,19 @@ Utilizzando la tecnica della **schedulazione esplicita dei task** nel loop(), la
 
 ```C++
 /*
-Realizzzare un programma che fa blinkare un led per 10 sec poi lo fa stare sempre acceso per un altri 10 sec, poi lo fa blinkare di nuovo per altri 10 sec e così via.
+Realizzzare un programma che fa blinkare un led per 5 sec poi lo fa stare sempre acceso per un altri 5 sec, poi lo fa blinkare di nuovo per altri 5 sec e così via.
 */
-#define tbase  1000  // periodo base in milliseconds
+#define tbase  500 // periodo base in milliseconds
 #define nstep  1000  // numero di fasi massimo di un periodo generico
 unsigned long precm = 0;
 unsigned long step = 0;
-byte pari, in;
-byte led1 = 13;
-byte led2 = 12;
+byte led1 = 12;
+bool stato;
 
 void setup()
 {
 	pinMode(led1, OUTPUT);
-    pinMode(led2, OUTPUT);
+	stato = true;
 }
 
 void loop()
@@ -88,19 +87,21 @@ void loop()
 		step = (step + 1) % nstep; 			// conteggio circolare (arriva al massimo a nstep-1)
 
 		// task 1
-		if(!(step%2)){  // schedulo eventi al multiplo del periodo (2 sec = 2 periodi)
-			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+		if(!(step%1)){  // schedulo eventi al multiplo del periodo (2 sec = 2 periodi)
+			if(stato)
+				digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+			else
+				digitalWrite(led1,LOW);
 		}
 		// task 2
-		if(!(step%3)){  // schedulo eventi al multiplo del periodo (3 sec = 3 periodi)
-			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+		if(!(step%10)){  // schedulo eventi al multiplo del periodo (3 sec = 3 periodi)
+			stato = !stato;
 		}
 		// il codice eseguito al tempo del metronomo (esattamente un periodo) va quì
 	}
 	// il codice eseguito al tempo massimo della CPU va qui
 }
 ```
-Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/81ioQDDGQOG?editbtn=1
-
-Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/348709453878526548
+Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/0vP4WlJGycZ?editbtn=1
+				      
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in Python](taskschedpy.md)
