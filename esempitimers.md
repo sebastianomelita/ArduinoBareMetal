@@ -203,9 +203,6 @@ Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/f0o52ZDqqc
 ### **Scegli chi on/off**
 
 ```C++
-### **Scegli chi on/off un tasto**
-
-```C++
 /*
  Scrivere un programma che realizzi l'accensione del led1, oppure del led2 oppure del led3 led 
  tramite la pressione consecutiva di un pulsante una, due o tre volte all'interno di 
@@ -324,10 +321,6 @@ void loop(){
 }
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/jCV9olOVsBk?editbtn=1
-
-```
-Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/e55nCkLiALh?editbtn=1
-
 
 ### **Scegli chi on/off un tasto**
 
