@@ -107,6 +107,9 @@ void loop()
 ```
 ### Esempi di blink insieme ad antirimbalzo realizzati con tecniche di schedulazione diverse
 
+
+Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/349322438385861202
+
 **Schedulatore basato su time ticks**
 
 In questo caso, il rilevatore dei fronti è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
