@@ -149,7 +149,7 @@ void loop() {
 
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/349322438385861202
 
-### ***Schedulatore basato su time ticks**
+### **Schedulatore basato su time ticks**
 
 In questo caso, il rilevatore dei fronti è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
 
@@ -211,7 +211,7 @@ Simulazione online su Arduino con Tinkercad del codice precedente: https://www.t
 
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/348707844567073364
 
-### ***Schedulatore basato su protothreads**
+### **Schedulatore basato su protothreads**
 
 In questo caso, il rilevatore dei fronti è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato **nello stesso loop** ma in un momento diverso stabilito mediante un istruzione ```WAIT_UNTIL()```. La funzione, di fatto, esegue un **blocco** del protothread corrente in **"attesa"**  di una certa **condizione**, senza bloccare l'esecuzione degli altri protothread. L'**attesa** è spesa campionando continuamente un **ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, in un loop successivo, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un **fronte di salita**.  
 
@@ -305,7 +305,7 @@ Simulazione online su Arduino con Tinkercad del codice precedente: https://www.t
 
 Simulazione online su Esp32 con Wowki del codice precedente https://wokwi.com/projects/348833702098240083
 
-### ***Schedulatore basato su threads**
+### **Schedulatore basato su threads**
 
 In questo caso, il rilevatore dei fronti è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato **nello stesso loop** ma in un momento diverso stabilito mediante un istruzione ```waitUntilInputLow()```. La funzione, di fatto, esegue un **blocco** del **thread** corrente in **"attesa"**  di una certa **condizione**, senza bloccare l'esecuzione degli altri thread. L'**attesa** è spesa campionando continuamente un **ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, in un loop successivo, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un **fronte di salita**. 
 
