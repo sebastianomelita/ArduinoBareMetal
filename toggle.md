@@ -151,6 +151,7 @@ void loop() {
 }
 ```
 Simulazione online su Arduino con Tinkercad del codice precedente: https://www.tinkercad.com/embed/cFhsDE3pyeH?editbtn=1
+
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/349322438385861202
 
 ### **Schedulatore basato su time ticks**
