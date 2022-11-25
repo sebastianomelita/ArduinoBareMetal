@@ -2,7 +2,7 @@
 
 ## **ESEMPI TIMERS**
 
-### **Accesnsione monostabile**
+### **Accensione monostabile**
 
 ```C++
 /*
