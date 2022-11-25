@@ -139,7 +139,7 @@ void loop() {
 		waitUntilInputLow(pulsante,0);			// attendi finchè non c'è fronte di discesa
 	}
 	if (stato) {
-		digitalWrite(led, !digitalRead(led));   	// turn the LED on (HIGH is the voltage level)
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
 		delay(500);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
