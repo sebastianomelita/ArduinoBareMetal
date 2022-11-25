@@ -517,6 +517,7 @@ void loop()
 		}
 	}
 }
+```
 
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/3qFE4pEpy8V?editbtn=1
 
