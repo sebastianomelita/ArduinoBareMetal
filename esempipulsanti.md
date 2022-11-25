@@ -1,10 +1,6 @@
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](gruppipulsantipy.md)
 
-
-Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/1EjA2PYVNZl?editbtn=1
-
-
 ###  **PULSANTE TOGGLE**
 
 Realizzare un programma Arduino che dati 4 led (led1, led2, led3, led4) realizza un indicatore di curva pericolosa 
@@ -103,5 +99,7 @@ void loop()
   
 }
 ```
+
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/1EjA2PYVNZl?editbtn=1
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](gruppipulsantipy.md)
