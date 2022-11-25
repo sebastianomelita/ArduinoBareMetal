@@ -115,25 +115,23 @@ per accendere o spegnere l’indicatore (toggleH). Supponiamo che il tasto è co
 */
 int led1=13; // led associato alle porte
 int led2=12;
-int led3=11;
-int led4=10;
-int led5=9;
+int led3=8;
+int led4=7;
+int led5=4;
 int tasto=2;
 int count, ledCount; // indica quale led si spegne e poi il successivo che si accende quando lo incrementiamo
 bool stato=0;// sono le variabili globali del toggleH stato indica lo stato del toggleH se acceso o spento che poi viene copiato sul led con digitalwrite
 int precval=0;//  e precval indica il valore precedente del tasto se premuto è 1 altrimenti 0
-
-bool toggleH(int val)
+int v[5]={4,7,8,12,13};
+  
+// attesa evento con tempo minimo di attesa
+void waitUntilInputLow(int btn, unsigned t)
 {
-	bool changed = false;
-	if(precval==LOW && val==HIGH){
-		stato = !(stato);
-		changed=true;
-	}
-	precval=val;
-	return changed;
+    while(!digitalRead(btn)==LOW){
+	    delay(t);
+    }
 }
-
+  
 void setup() 
 { 
   pinMode(led1,OUTPUT);
@@ -152,16 +150,18 @@ void setup()
 
 void loop() 
 {
-	digitalWrite(ledCount,LOW); // il led corrente viene spento
+	digitalWrite(v[count],LOW); // il led corrente viene spento
 	count=(count+1)%5; 		 // contatore circolare
-	ledCount=count+9;
-	toggleH(digitalRead(tasto));// richiamo la funzione toggleH nel loop, essa serve per fare il pulsante toggleH che accende 
+	if(digitalRead(tasto)==HIGH){			// se è alto c'è stato un fronte di salita
+		stato = !stato; 				// impostazi50one dello stato del toggle
+		waitUntilInputLow(tasto,0);			// attendi finchè non c'è fronte di discesa
+	}
 	// e spegne con memoria
-	digitalWrite(ledCount,stato);// copia lo stato del toggleH sul led successivo
+	digitalWrite(v[count],stato);// copia lo stato del toggleH sul led successivo
 	delay(200);
 }
 ```
 
-Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/1EjA2PYVNZl?editbtn=1
+Simulazione su Arduino con Tinkercad:https://www.tinkercad.com/embed/fypoZVpvuSa?editbtn=1
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](gruppipulsantipy.md)
