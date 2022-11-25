@@ -77,4 +77,127 @@ void loop(){
 ```	
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/fCpauVnNUZh?editbtn=1
 
+### **Un pulsante per tre lampade**
+
+```C++
+/*
+Scrivere un programma che realizzi l'accensione di un led, due led o tre led tramite la pressione consecutiva di un pulsante 
+una, due o tre volte all'interno di un intervallo temporale di un secondo.
+Col la pressione prolungata dello stesso pulsante si spengono tutti e tre contemporaneamente.
+(Realizzazione del timer senza schedulatore)
+*/
+
+//inizio variabili e costanti dello schedulatore (antirimbalzo)
+#define tbase    	50        // periodo base in millisecondi
+unsigned long prec=0;
+//fine variabili e costanti dello schedulatore
+
+//inizio variabili timer
+//da impostare con dimensione pari al numero di timer previsti (ad es. 2)
+unsigned long startTimeN[2];
+unsigned long timelapseN[2]; 
+byte timerStateN[2];
+byte in;
+//fine variabili timer
+
+//inizio variabili switch
+byte precval=0;
+//fine variabili switch
+int led1=13;
+int led2=12;
+int led3=11;
+int tasto1=2;
+
+int count=0;
+
+//fissa l'istante iniziale da cui far partire il timer
+void stopTimer(int n){
+	//n: numero del timer
+	timerStateN[n]=0;
+}
+
+//fissa l'istante iniziale da cui far partire il timer
+void startTimer(unsigned long duration, byte n){
+	timerStateN[n]=1;
+	timelapseN[n]=duration;
+	startTimeN[n]=millis();
+}
+
+//verifica se è arrivato il tempo di far scattare il timer
+void aggiornaTimer(int n){
+	//n: numero del timer
+	if((millis()-startTimeN[n] >= timelapseN[n]) && timerStateN[n]==1){
+		timerStateN[n]=0;
+		onElapse(n);
+	}
+}	
+
+byte getTimerState(int n){
+	return timerStateN[n];
+}
+	
+bool switchdf(byte val){
+	bool changed=false;
+	if (val != precval){ //campiona tutte le transizioni
+		changed=true;
+	}   
+	precval = val;            // valore di val campionato al loop precedente 
+	return changed;
+}
+
+	
+void setup(){
+	pinMode(tasto1,INPUT);
+	pinMode(led1,OUTPUT);
+	pinMode(led2,OUTPUT);
+	pinMode(led3,OUTPUT);
+	digitalWrite(led1,LOW);
+	digitalWrite(led2,LOW);
+	digitalWrite(led3,LOW);
+}
+
+//azione da compiere allo scadere del timer
+void onElapse(int n){
+	if(n==0){ //timer di conteggio
+		if(count>0){
+			digitalWrite(14-count,HIGH);
+			count=0;
+		}
+	}else if(n==1){ //timer di spegnimento
+		//dall'ultima pressione al rilascio corrente è passato più di un secondo
+		//spengo tutto
+		digitalWrite(led1,LOW);
+		digitalWrite(led2,LOW);
+		digitalWrite(led3,LOW);
+		count=0;
+	}
+}
+
+void loop(){
+	aggiornaTimer(0);  //timer di conteggio pressioni
+	aggiornaTimer(1);  //timer di spegnimento
+	
+	if((millis()-prec) > tbase) //schedulatore con funzione di antirimbalzo (legge ogni 50 mSec)
+	{
+		prec = millis(); 
+		
+		//legge valore attuale dell'ingresso
+		in=digitalRead(tasto1);
+		//valuto se con il valore attuale si è su un fronte qualsiasi (saita o discesa)
+		if(switchdf(in)==HIGH){
+			if(in>0){//fronte di salita
+				startTimer(1000,1); //parte il timer di spegnimento
+				count++;
+				if(count==1)
+					startTimer(1000,0); //timer di conteggio pressioni
+			}else{//fronte di discesa
+				//azzero timer di spegnimento
+				stopTimer(1);
+			}
+		}
+	}
+}
+```
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/f0o52ZDqqcL?editbtn=1
+
 >[Torna all'indice](indextimers.md) >[versione in Python](catenetimerspy.md)
