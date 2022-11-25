@@ -58,6 +58,7 @@ E’ buona norma evitare l’esecuzione frequente di operazioni lente quando que
 
 Utilizzando la tecnica della **schedulazione esplicita dei task** nel loop(), la **realizzazione di un algoritmo** non dovrebbe essere pensata in **maniera sequenziale (o lineare)** ma, piuttosto, come una **successione di eventi** a cui corrispondono dei **compiti** (task) che **comunicano** con le periferiche di input/output ed, eventualmente, dialogano tra loro in qualche modo (ad es. variabili globali, buffer, ecc.).
 
+## **Esempi**
 
 **Blink a fasi**
 
