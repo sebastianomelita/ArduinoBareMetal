@@ -75,5 +75,6 @@ void loop(){
 	}
 }
 ```	
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/fCpauVnNUZh?editbtn=1
 
 >[Torna all'indice](indextimers.md) >[versione in Python](catenetimerspy.md)
