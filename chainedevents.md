@@ -4,8 +4,8 @@
 
 ```C++
 /*
-Realizzzare un programma che fa blinkare un led con periodo mezzo secondo per 5 sec e poi lo fa lo blinkare con periodo 300 msec per 3 sec, 
-poi ricomincia d'accapo.
+Realizzzare un programma che fa blinkare un led con periodo mezzo secondo per 5 sec e poi lo fa lo blinkare 
+con periodo 300 msec per 3 sec, poi ricomincia d'accapo.
 */
 byte led1 = 13;
 
