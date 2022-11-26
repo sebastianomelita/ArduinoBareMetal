@@ -18,13 +18,13 @@ void loop()
 {
 	// task 1
 	for(int i=0; i<10; i++){ //5000/500-->10
-			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-			delay(500);
+		digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+		delay(500);
 	}
 	// task 2
 	for(int i=0; i<10; i++){ //3000/300-->10
-			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-			delay(300);
+		digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+		delay(300);
 	}
 }
 
