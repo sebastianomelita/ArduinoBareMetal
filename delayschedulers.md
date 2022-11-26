@@ -83,7 +83,6 @@ void loop()
 }
 ```
 
-
-
+Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/5difrFBglzj?editbtn=1
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in Python](taskschedpy.md)
