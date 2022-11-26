@@ -23,7 +23,80 @@ void loop() {
 
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/h6If6Mbz0NB?editbtn=1
 
-### **Lampeggi insieme ad azioni schedulate da conteggi**
+### **Lampeggi insieme ad azioni schedulate modo1**
+
+```C++
+byte led1 = 13;
+byte led2 = 12;
+byte led3 = 11;
+byte led4 = 10;
+bool uno;
+
+void setup()
+{
+  Serial.begin(115200);
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+  pinMode(led4, OUTPUT);
+  uno = true;
+  setLed();
+  delay(1000);
+  resetLed();
+}
+
+void resetLed(){
+  digitalWrite(led1, LOW);
+  digitalWrite(led2, LOW);
+  digitalWrite(led3, LOW);
+  digitalWrite(led4, LOW);
+}
+
+void setLed(){
+  digitalWrite(led1, HIGH);
+  digitalWrite(led2, HIGH);
+  digitalWrite(led3, HIGH);
+  digitalWrite(led4, HIGH);
+}
+
+void blink(int led){
+	digitalWrite(led, HIGH);
+	delay(500);
+	digitalWrite(led, LOW);
+	delay(500);
+}
+
+void loop()
+{
+  if(uno){
+	for(int i=0; i<10; i++)
+		blink(led1);
+	digitalWrite(led2, HIGH);
+	for(int i=0; i<10; i++)
+		blink(led1);
+	digitalWrite(led3, HIGH);	
+	for(int i=0; i<10; i++)
+		blink(led1);
+	resetLed();
+	uno = false;
+  }else{
+	for(int i=0; i<10; i++)
+		blink(led4);
+	digitalWrite(led3, HIGH);
+	for(int i=0; i<10; i++)
+		blink(led4);
+	digitalWrite(led2, HIGH);	
+	for(int i=0; i<10; i++)
+		blink(led4);
+	resetLed();
+	uno = true;
+   }
+}
+```
+
+Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/3u5b3IxqsIY?editbtn=1
+
+## **Lampeggi insieme ad azioni schedulate modo2**
 
 ```C++
 /*
