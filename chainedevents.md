@@ -11,7 +11,7 @@
 
 ```C++
 /*
-Realizzzare un programma che fa blinkare un led per 5 sec poi lo fa stare sempre acceso per un altri 5 sec, poi lo fa blinkare di nuovo per altri 5 sec e così via.
+Realizzzare un programma che fa blinkare un led con periodo mezzo secondo per 5 sec e poi lo fa lo blinkare con periodo 100 msec per 3 sec, poi ricomincia d'accapo.
 */
 #define tbase  500 // periodo base in milliseconds
 #define nstep  1000  // numero di fasi massimo di un periodo generico
