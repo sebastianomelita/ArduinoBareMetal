@@ -23,7 +23,10 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://ww
 
 ```C++
 /*
-dati 4 led, facendo lampeggiare continuamente per mezzo secondo il primo, accendere il secondo dopo 10 lampeggi, il terzo dopo 20  e fermare il lampeggio del primo dopo che ha raggiunto 30 lampeggi. A questo punto il meccanismo ricomincia ribamtaltato.  mentre lampeggia il quarto led, si accendonno via via il terzo a 10 lampeggi, il secondo a 20 e il primo riparte a lampeggiare a 40, momento in cui il quarto smette di lampeggiare. Il processo continua così indefinitivamente.
+dati 4 led, facendo lampeggiare continuamente per mezzo secondo il primo, accendere il secondo dopo 10 lampeggi, 
+il terzo dopo 20  e fermare il lampeggio del primo dopo che ha raggiunto 30 lampeggi. 
+A questo punto il meccanismo ricomincia ribamtaltato.  mentre lampeggia il quarto led, si accendonno via via il terzo a 10 lampeggi, il secondo a 20 e 
+il primo riparte a lampeggiare a 40, momento in cui il quarto smette di lampeggiare. Il processo continua così indefinitivamente.
 */
 byte led1 = 13;
 byte led2 = 12;
