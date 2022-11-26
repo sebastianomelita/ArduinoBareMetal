@@ -29,7 +29,7 @@ void loop()
 }
 
 ```
-Link simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/fn66P9O8oJG?editbtn=1
+Link simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/2GGetlCbg5R?editbtn=1
 
 Link simulazione su ESP32 con Wowki: https://wokwi.com/projects/349386232933909076
 
