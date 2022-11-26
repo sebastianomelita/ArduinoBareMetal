@@ -2,6 +2,8 @@
 
 ## **SCHEDULATORE COMPITI BASATO SUI DELAY**
 
+### **Blink**
+
 ```C++
 // the setup function runs once when you press reset or power the board
 void setup() {
@@ -20,6 +22,8 @@ void loop() {
 ```
 
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/h6If6Mbz0NB?editbtn=1
+
+### **Lampeggi insieme ad azioni di conteggio**
 
 ```C++
 /*
