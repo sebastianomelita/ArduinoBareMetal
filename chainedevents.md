@@ -206,4 +206,89 @@ void loop() {
 Link simulazione su ESP32 con Wowki: https://wokwi.com/projects/349388989705224787
 
 
+### **SCHEDULAZIONE CON I THREAD 2 (CON DELAY)**
+
+```C++
+/* 
+Realizzzare un programma che fa blinkare un led con periodo mezzo secondo per 5 sec e poi lo fa 
+lo blinkare con periodo 300 msec per 3 sec, poi ricomincia d'accapo. 
+Prevedere l'accensione e lo spegnimento della funzione mediante un tasto.
+*/
+#include <pthread.h> //libreria di tipo preemptive
+pthread_t t1;
+pthread_t t2;
+int delayTime ;
+byte led1 = 13;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+byte pulsante =12;
+
+// attesa evento con tempo minimo di attesa
+void waitUntilInputLow(int btn, unsigned t)
+{
+    while(!digitalRead(btn)==LOW){
+	    delay(t);
+    }
+}
+
+void * blinkThread1(void * d)
+{
+  int time;
+  time = (int) d;
+  while(true){    						// Loop del thread	
+		if(stato){
+			// task 1
+			for(int i=0; i<10; i++){ //5000/500-->10
+				digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+				delay(500);
+			}
+			// task 2
+			for(int i=0; i<10; i++){ //3000/300-->10
+				digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+				delay(300);
+			}
+		}else{
+				digitalWrite(led1,LOW); 
+				delay(10);
+		}
+}	
+  return NULL;
+}
+
+void * btnThread(void * d){
+	// Loop del thread
+	while(true){
+		if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
+			stato = !stato; 				// impostazione dello stato del toggle
+			waitUntilInputLow(pulsante,50);			// attendi finchè non c'è fronte di discesa
+			if(stato)
+				Serial.println("stato ON");
+			else
+				Serial.println("stato OFF");
+		}
+		delay(10); 						// equivale a yeld() (10 per le simulazioni 0 in HW)
+	}
+}
+
+void setup() {
+	Serial.begin(115200);
+  pinMode(led1, OUTPUT);
+  pinMode(pulsante, INPUT);
+  delayTime = 500;
+  if (pthread_create(&t1, NULL, blinkThread1, (void *)delayTime)) {
+         Serial.println("Errore crezione blinkThread1");
+  }
+  delayTime = 300;
+  if (pthread_create(&t2, NULL, btnThread, (void *)delayTime)) {
+         Serial.println("Errore crezione btnThread");
+  } 
+}
+
+void loop() {
+	delay(10);
+}
+```
+
+Link simulazione su ESP32 con Wowki: https://wokwi.com/projects/349402186520724050
+
+
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
