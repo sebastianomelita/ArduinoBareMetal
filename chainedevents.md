@@ -33,12 +33,47 @@ Link simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/2GGet
 
 Link simulazione su ESP32 con Wowki: https://wokwi.com/projects/349386232933909076
 
-### **SCHEDULAZIONE CON I TIME TICK**
+Variante che usa la capacità di iterare intrinseca della funzione loop():
 
 ```C++
 /*
-Realizzzare un programma che fa blinkare un led con periodo mezzo secondo per 5 sec e poi lo fa lo blinkare con periodo 100 msec per 3 sec, poi ricomincia d'accapo.
+Realizzzare un programma che fa blinkare un led con periodo mezzo secondo per 5 sec e poi lo fa lo blinkare con periodo 300 msec per 3 sec, poi ricomincia d'accapo.
 */
+byte led1 = 13;
+int i;
+
+void setup()
+{
+	pinMode(led1, OUTPUT);
+	i=0;
+}
+
+void loop()
+{
+	// task 1
+	if(i<10){
+			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+			delay(500);
+			i++;
+	}
+	// task 2
+	else if(i<20){
+			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+			delay(300);
+			i++;
+	}else{
+		i=0;
+	}
+}
+```
+
+Link simulazione su Arduino con Tinkercad:https://www.tinkercad.com/embed/apuBTacgbFs?editbtn=1
+
+Link simulazione su ESP32 con Wowki: https://wokwi.com/projects/349386232933909076
+
+### **SCHEDULAZIONE CON I TIME TICK**
+
+```C++
 /*
 Realizzzare un programma che fa blinkare un led con periodo mezzo secondo per 5 sec e poi lo fa lo blinkare con periodo 300 msec per 3 sec, poi ricomincia d'accapo.
 */
