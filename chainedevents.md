@@ -1,5 +1,7 @@
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
 
+## **EVENTI PERIODICI CONSECUTIVI**
+
 ### **SCHEDULAZIONE CON I DELAY**
 
 ```C++
