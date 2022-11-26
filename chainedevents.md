@@ -179,8 +179,8 @@ void * blinkThread2(void * d)
 
 void setup() {
   pinMode(led1, OUTPUT);
-	blink1 = true;
-	blink2 = false;
+  blink1 = true;
+  blink2 = false;
 
   delayTime = 500;
   if (pthread_create(&t1, NULL, blinkThread1, (void *)delayTime)) {
