@@ -60,41 +60,41 @@ void setLed(){
 void loop()
 {
   if(uno){
-		digitalWrite(led1, HIGH);
-		delay(500);
-		digitalWrite(led1, LOW);
-		delay(500);
-		if(count==10){
-			digitalWrite(led2, HIGH);
-		}
-		if(count==20){
-			digitalWrite(led3, HIGH);	
-		}
-		if(count==30){
-			resetLed();
-			uno = false;
-			count = 1;
-		}else{
-			count++;
-		}
+	digitalWrite(led1, HIGH);
+	delay(500);
+	digitalWrite(led1, LOW);
+	delay(500);
+	if(count==10){
+		digitalWrite(led2, HIGH);
+	}
+	if(count==20){
+		digitalWrite(led3, HIGH);	
+	}
+	if(count==30){
+		resetLed();
+		uno = false;
+		count = 1;
+	}else{
+		count++;
+	}
   }else{
-		digitalWrite(led4, HIGH);
-		delay(500);
-		digitalWrite(led4, LOW);
-		delay(500);
-		if(count==10){
-			digitalWrite(led3, HIGH);
-		}
-		if(count==20){
-			digitalWrite(led2, HIGH);	
-		}
-		if(count==30){
-			resetLed();
-			uno = true;
-			count = 1;
-		}else{
-			count++;
-		}
+	digitalWrite(led4, HIGH);
+	delay(500);
+	digitalWrite(led4, LOW);
+	delay(500);
+	if(count==10){
+		digitalWrite(led3, HIGH);
+	}
+	if(count==20){
+		digitalWrite(led2, HIGH);	
+	}
+	if(count==30){
+		resetLed();
+		uno = true;
+		count = 1;
+	}else{
+		count++;
+	}
    }
 }
 ```
