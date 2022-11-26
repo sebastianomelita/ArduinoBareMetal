@@ -6,4 +6,4 @@
 5. [Schedulatore di compiti basato sui thread](threadsched.md)
 6. [Schedulatore di compiti basato sui protothread](protothreadsched.md)
 7. [Schedulatore di compiti basato su timers HW](timersched.md)
-8. [Esempio di SOS + blink realizzato con varie tecniche di schedulazione](sosblink.md)
+8. [Eventi periodici conemporanei: esempio di SOS + blink](sosblink.md)
