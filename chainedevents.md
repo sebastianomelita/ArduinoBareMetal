@@ -152,13 +152,13 @@ void * blinkThread1(void * d)
   int time;
   time = (int) d;
   while(true){    						// Loop del thread	
-		if(blink1){
-			digitalWrite(led1, !digitalRead(led1));
-			delay(time);
-		}else{
-			delay(10);
-		}
+	if(blink1){
+		digitalWrite(led1, !digitalRead(led1));
+		delay(time);
+	}else{
+		delay(10);
 	}
+}
   return NULL;
 }
 
@@ -167,12 +167,12 @@ void * blinkThread2(void * d)
   int time;
   time = (int) d;
   while(true){    	
-		if(blink2){
-			digitalWrite(led1, !digitalRead(led1));
-			delay(time);
-		}else{
-			delay(10);
-		}
+	if(blink2){
+		digitalWrite(led1, !digitalRead(led1));
+		delay(time);
+	}else{
+		delay(10);
+	}
   }
   return NULL;
 }
