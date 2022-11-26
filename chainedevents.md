@@ -53,15 +53,15 @@ void loop()
 {
 	// task 1
 	if(i<10){
-			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-			delay(500);
-			i++;
+		digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+		delay(500);
+		i++;
 	}
 	// task 2
 	else if(i<20){
-			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-			delay(300);
-			i++;
+		digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+		delay(300);
+		i++;
 	}else{
 		i=0;
 	}
