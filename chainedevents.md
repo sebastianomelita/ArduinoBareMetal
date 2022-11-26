@@ -7,7 +7,7 @@
 ```
 
 
-### **SCHEDULAZIONE CON I time tick**
+### **SCHEDULAZIONE CON I TIME TICK**
 
 ```C++
 /*
