@@ -17,6 +17,8 @@ void loop() {
 
 ```
 
+Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/h6If6Mbz0NB?editbtn=
+
 ```C++
 byte led1 = 13;
 byte led2 = 12;
