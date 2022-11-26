@@ -7,3 +7,4 @@
 6. [Schedulatore di compiti basato sui protothread](protothreadsched.md)
 7. [Schedulatore di compiti basato su timers HW](timersched.md)
 8. [Eventi periodici contemporanei: esempio di SOS + blink](sosblink.md)
+9. [Eventi periodici consecutivi: esempio con i blink ](chainedevents.md)
