@@ -3,9 +3,34 @@
 ### **SCHEDULAZIONE CON I DELAY**
 
 ```C++
+/*
+Realizzzare un programma che fa blinkare un led con periodo mezzo secondo per 5 sec e poi lo fa lo blinkare con periodo 300 msec per 3 sec, poi ricomincia d'accapo.
+*/
+byte led1 = 13;
+
+void setup()
+{
+	pinMode(led1, OUTPUT);
+}
+
+void loop()
+{
+		// task 1
+		for(int i=0; i<10; i++){ //5000/500-->10
+				digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+				delay(500);
+		}
+		// task 2
+		for(int i=0; i<10; i++){ //3000/300-->10
+				digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+				delay(300);
+		}
+}
 
 ```
+Link simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/fn66P9O8oJG?editbtn=1
 
+Link simulazione su ESP32 con Wowki: https://wokwi.com/projects/349386232933909076
 
 ### **SCHEDULAZIONE CON I TIME TICK**
 
