@@ -76,7 +76,8 @@ Link simulazione su ESP32 con Wowki: https://wokwi.com/projects/3493862329339090
 
 ```C++
 /*
-Realizzzare un programma che fa blinkare un led con periodo mezzo secondo per 5 sec e poi lo fa lo blinkare con periodo 300 msec per 3 sec, poi ricomincia d'accapo.
+Realizzzare un programma che fa blinkare un led con periodo mezzo secondo per 5 sec e poi lo fa 
+lo blinkare con periodo 300 msec per 3 sec, poi ricomincia d'accapo.
 */
 #define TBASE  100 // periodo base in milliseconds
 #define NSTEP  1000  // numero di fasi massimo di un periodo generico
@@ -130,6 +131,79 @@ void loop()
 Link simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/fn66P9O8oJG?editbtn=1
 
 Link simulazione su ESP32 con Wowki: https://wokwi.com/projects/349383452039053908
+
+
+### **SCHEDULAZIONE CON I THREAD**
+
+```C++
+/* 
+Realizzzare un programma che fa blinkare un led con periodo mezzo secondo per 5 sec e poi lo fa 
+lo blinkare con periodo 300 msec per 3 sec, poi ricomincia d'accapo.
+*/
+#include <pthread.h> //libreria di tipo preemptive
+pthread_t t1;
+pthread_t t2;
+int delayTime ;
+byte led1 = 13;
+bool blink1, blink2;
+
+void * blinkThread1(void * d)
+{
+  int time;
+  time = (int) d;
+  while(true){    						// Loop del thread	
+		if(blink1){
+			digitalWrite(led1, !digitalRead(led1));
+			delay(time);
+		}else{
+			delay(10);
+		}
+	}
+  return NULL;
+}
+
+void * blinkThread2(void * d)
+{
+  int time;
+  time = (int) d;
+  while(true){    	
+		if(blink2){
+			digitalWrite(led1, !digitalRead(led1));
+			delay(time);
+		}else{
+			delay(10);
+		}
+  }
+  return NULL;
+}
+
+void setup() {
+  pinMode(led1, OUTPUT);
+	blink1 = true;
+	blink2 = false;
+
+  delayTime = 500;
+  if (pthread_create(&t1, NULL, blinkThread1, (void *)delayTime)) {
+         Serial.println("Errore crezione thread 1");
+  }
+  delayTime = 300;
+  if (pthread_create(&t2, NULL, blinkThread2, (void *)delayTime)) {
+         Serial.println("Errore crezione thread 2");
+  } 
+}
+
+void loop() {
+	digitalWrite(led1, LOW); //evita un difetto al primo loop
+	delay(5000);
+	blink1 = false;
+	blink2 = true;
+	delay(3000);
+	blink1 = true;
+	blink2 = false;
+}
+```
+
+Link simulazione su ESP32 con Wowki: https://wokwi.com/projects/349388989705224787
 
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
