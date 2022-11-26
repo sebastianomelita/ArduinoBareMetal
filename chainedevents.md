@@ -226,7 +226,7 @@ byte pulsante =12;
 void waitUntilInputLow(int btn, unsigned t)
 {
     while(!digitalRead(btn)==LOW){
-	    delay(t);
+    	delay(t);
     }
 }
 
@@ -235,21 +235,21 @@ void * blinkThread1(void * d)
   int time;
   time = (int) d;
   while(true){    						// Loop del thread	
-		if(stato){
-			// task 1
-			for(int i=0; i<10; i++){ //5000/500-->10
-				digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-				delay(500);
-			}
-			// task 2
-			for(int i=0; i<10; i++){ //3000/300-->10
-				digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-				delay(300);
-			}
-		}else{
-				digitalWrite(led1,LOW); 
-				delay(10);
+	if(stato){
+		// task 1
+		for(int i=0; i<10; i++){ //5000/500-->10
+			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+			delay(500);
 		}
+		// task 2
+		for(int i=0; i<10; i++){ //3000/300-->10
+			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+			delay(300);
+		}
+	}else{
+		digitalWrite(led1,LOW); 
+		delay(10);
+	}
 }	
   return NULL;
 }
