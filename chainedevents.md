@@ -1,6 +1,15 @@
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
 
+### **SCHEDULAZIONE CON I DELAY**
 
+```C++
+
+```
+
+
+### **SCHEDULAZIONE CON I time tick**
+
+```C++
 /*
 Realizzzare un programma che fa blinkare un led per 5 sec poi lo fa stare sempre acceso per un altri 5 sec, poi lo fa blinkare di nuovo per altri 5 sec e così via.
 */
@@ -40,6 +49,8 @@ void loop()
 	}
 	// il codice eseguito al tempo massimo della CPU va qui
 }
+```
 
+Link simulazione Tinkercad: https://www.tinkercad.com/embed/7AsMjhD1Mk9?editbtn=1
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
