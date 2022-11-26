@@ -23,7 +23,7 @@ void loop() {
 
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/h6If6Mbz0NB?editbtn=1
 
-### **Lampeggi insieme ad azioni di conteggio**
+### **Lampeggi insieme ad azioni schedulate da conteggi**
 
 ```C++
 /*
