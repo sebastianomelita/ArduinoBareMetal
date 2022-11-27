@@ -4,6 +4,9 @@
 ##  **NASTRO TRASPORTATORE**
 
 ###  **Gestione di un solo nastro**
+
+Programma per la gestione di un nastro trasportatore realizzato con un timer basato sul polling della funzione ```millis()``` e su rilevatori di transito toggle basati su ```delay()```.
+
 ```C++
 /*
 Scrivere un programma che realizzi la gestione di un nastro traportatore attraverso la lettura di tre sensori di transito e il comando di un motore.
