@@ -105,7 +105,7 @@ void loop() {
 		startTimer(flyTime); 						// se c'è un pezzo in transito arriverà prima dello scadere
 		Serial.println("Timer di volo attivato");
 	} else {
-		//digitalWrite(led, LOW);    	
+		
 	}
 }
 ```
