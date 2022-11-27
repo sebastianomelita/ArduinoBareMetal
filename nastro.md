@@ -5,7 +5,13 @@
 
 ###  **Gestione di un solo nastro**
 ```C++
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+/*
+Scrivere un programma che realizzi la gestione di un nastro traportatore attraverso la lettura di tre sensori di transito e il comando di un motore.
+I sensori permangono al livello alto finchè un oggetto ingombra l'area del sensore, dopodichè vanno a livello basso. I sensori sono due all'inizio del nastro (uno per i pezzi bassi ed un'altro per quelli alti) ed uno alla fine del nastro che rileva il pezzo pronto per essere prelevato.
+All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta (blocca) il timer di volo.
+All'attivazione del sensore di uscita si blocca il nastro, alla sua disattivazione riparte il nastro e parte il timer di volo.
+Allo scadere del timer di volo si spegne il motore.
+*/
 byte startSensorHigh = 4;
 byte startSensorLow = 3;
 byte stopSensor = 2;
