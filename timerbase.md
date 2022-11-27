@@ -121,7 +121,7 @@ void startTimer(unsigned long duration){
 	startTime=millis();
 }
 
-// funzione di attivazione
+// funzione di disattivazione
 void stopTimer(){
 	timerState=0;
 }
