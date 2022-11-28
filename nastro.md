@@ -209,11 +209,11 @@ void waitUntilInputLow(int btn, unsigned t)
 }
 
 void stopEngine(Nastro *n){ 
-		String id = "Nastro "+String(n->id) + ": ";	 
-		n->engineon = false; 
-		digitalWrite(n->engineLed, LOW);
-		Serial.println(id+"Timer di volo scaduto");
-		fly[n->id].detach();
+	String id = "Nastro "+String(n->id) + ": ";	 
+	n->engineon = false; 
+	digitalWrite(n->engineLed, LOW);
+	Serial.println(id+"Timer di volo scaduto");
+	fly[n->id].detach();
 };
 
 void * beltThread(void * d)
@@ -221,45 +221,45 @@ void * beltThread(void * d)
 		Nastro *n;
     n = (Nastro *) d;
     while(true){    	
-			String id = "Nastro "+String(n->id) + ": ";			
-			if(digitalRead(n->startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
-				n->engineon = true && isrun; 	
-				digitalWrite(n->engineLed, HIGH && isrun);
-				digitalWrite(n->lowStartLed, HIGH);
-				fly[n->id].detach();									// c'è almeno un pezzo in transito
-				Serial.println(id+"Pezzo basso in ingresso");
-				Serial.println(id+"Timer di volo disattivato");
-				waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
-				Serial.println(id+"Pezzo basso transitato in ingresso");
-				digitalWrite(n->lowStartLed, LOW);
-			}if(digitalRead(n->startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
-				n->engineon = true && isrun; 	
-				digitalWrite(n->engineLed, HIGH && isrun);
-				digitalWrite(n->highStartLed, HIGH);
-				fly[n->id].detach();									// c'è almeno un pezzo in transito
-				Serial.println(id+"Pezzo alto in ingresso");
-				Serial.println(id+"Timer di volo disattivato");
-				waitUntilInputLow(n->startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
-				Serial.println(id+"Pezzo alto transitato in ingresso");
-				digitalWrite(n->highStartLed, LOW);
-			}else if(digitalRead(n->stopSensor)==HIGH) {
-				n->engineon = false; 		
-				digitalWrite(n->engineLed, LOW);
-				digitalWrite(n->stopLed, HIGH);
-				Serial.println(id+"Pezzo in uscita");
-				waitUntilInputLow(n->stopSensor,50);
-				Serial.println(id+"Pezzo prelevato dall'uscita");
-				n->engineon = true && isrun; 
-				digitalWrite(n->stopLed, LOW);
-				digitalWrite(n->engineLed, HIGH && isrun);
-				fly[n->id].attach_ms(n->flyTime,stopEngine,n);
-				Serial.println(id+"Timer di volo attivato");
-			} else {
-				//digitalWrite(led, LOW);    
-				delay(10);	
-			}
-			delay(10);
-		}
+	String id = "Nastro "+String(n->id) + ": ";			
+	if(digitalRead(n->startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
+		n->engineon = true && isrun; 	
+		digitalWrite(n->engineLed, HIGH && isrun);
+		digitalWrite(n->lowStartLed, HIGH);
+		fly[n->id].detach();									// c'è almeno un pezzo in transito
+		Serial.println(id+"Pezzo basso in ingresso");
+		Serial.println(id+"Timer di volo disattivato");
+		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
+		Serial.println(id+"Pezzo basso transitato in ingresso");
+		digitalWrite(n->lowStartLed, LOW);
+	}if(digitalRead(n->startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
+		n->engineon = true && isrun; 	
+		digitalWrite(n->engineLed, HIGH && isrun);
+		digitalWrite(n->highStartLed, HIGH);
+		fly[n->id].detach();									// c'è almeno un pezzo in transito
+		Serial.println(id+"Pezzo alto in ingresso");
+		Serial.println(id+"Timer di volo disattivato");
+		waitUntilInputLow(n->startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
+		Serial.println(id+"Pezzo alto transitato in ingresso");
+		digitalWrite(n->highStartLed, LOW);
+	}else if(digitalRead(n->stopSensor)==HIGH) {
+		n->engineon = false; 		
+		digitalWrite(n->engineLed, LOW);
+		digitalWrite(n->stopLed, HIGH);
+		Serial.println(id+"Pezzo in uscita");
+		waitUntilInputLow(n->stopSensor,50);
+		Serial.println(id+"Pezzo prelevato dall'uscita");
+		n->engineon = true && isrun; 
+		digitalWrite(n->stopLed, LOW);
+		digitalWrite(n->engineLed, HIGH && isrun);
+		fly[n->id].attach_ms(n->flyTime,stopEngine,n);
+		Serial.println(id+"Timer di volo attivato");
+	} else {
+		//digitalWrite(led, LOW);    
+		delay(10);	
+	}
+	delay(10);
+    }
     return NULL;
 }
 
