@@ -295,6 +295,6 @@ void loop() {
 	delay(10); 							// equivale a yeld() (10 per le simulazioni 0 in HW)
 }
 ```
-Simulazione su Arduino con Tinkercad: https://wokwi.com/projects/349524035968696915
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349524035968696915
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](gruppipulsantipy.md)
