@@ -226,17 +226,17 @@ void * beltThread(void * d)
 		n->engineon = true && isrun; 	
 		digitalWrite(n->engineLed, HIGH && isrun);
 		digitalWrite(n->lowStartLed, HIGH);
-		fly[n->id].detach();									// c'è almeno un pezzo in transito
+		fly[n->id].detach();						// c'è almeno un pezzo in transito
 		Serial.println(id+"Pezzo basso in ingresso");
 		Serial.println(id+"Timer di volo disattivato");
 		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
 		Serial.println(id+"Pezzo basso transitato in ingresso");
 		digitalWrite(n->lowStartLed, LOW);
-	}if(digitalRead(n->startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
+	}if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
 		n->engineon = true && isrun; 	
 		digitalWrite(n->engineLed, HIGH && isrun);
 		digitalWrite(n->highStartLed, HIGH);
-		fly[n->id].detach();									// c'è almeno un pezzo in transito
+		fly[n->id].detach();						// c'è almeno un pezzo in transito
 		Serial.println(id+"Pezzo alto in ingresso");
 		Serial.println(id+"Timer di volo disattivato");
 		waitUntilInputLow(n->startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
