@@ -271,7 +271,7 @@ void * beltThread(void * d)
 
 void setup() {
   Serial.begin(115200);
-  safetystop = 22;
+  safetystop = 32;
   pinMode(safetystop, INPUT);
   engineon= false;
   isrun = false;
