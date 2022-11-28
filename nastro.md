@@ -277,10 +277,10 @@ void setup() {
   isrun = false;
   initNastri();
   if (pthread_create(&t1, NULL, beltThread, (void *)&nastro1)) {
-         Serial.println("Errore crezione btnThread");
+         Serial.println("Errore creazione btnThread");
   }
   if (pthread_create(&t2, NULL, beltThread, (void *)&nastro2)) {
-         Serial.println("Errore crezione blinkThread");
+         Serial.println("Errore creazione blinkThread");
   } 
 }
 
