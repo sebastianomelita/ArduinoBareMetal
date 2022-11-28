@@ -123,6 +123,12 @@ void loop() {
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/8UKvLNjeLEQ?editbtn=1
 
+###  **Gestione di due nastri**
+
+Programma per la gestione di un nastro trasportatore realizzato con un **timer** basato sul polling della funzione ```millis()``` e su **rilevatori di transito** toggle basati su ```delay()```. Il **timer** lavora con gli **interrupt** che attivano **callback** che sono sostanzialmente invocate **sequenzialmente**, per cui al loro interno sarebbe opportuno perdere poco tempo (**no delay()**). I **rilevatori di transito** riguardano due nastri e la loro definizione è indipendente per ciascuno di essi perchè è realizzata all'interno di due **thread** separati.
+
+Nel loop() principale è gestito lo **switch** di un pulsante generale di sicurezza che **disabilità** la marcia dei motori di entrambi i nastri. La gestione è **non bloccante** e inibisce l'attivazione dei motori anche se i thread ancora non hanno completato il loro flusso di esecuzione arrivando fino all'ultima istruzione. Infatti l'istruzione ```digitalWrite(n->engineLed, HIGH && isrun)``` accende il motore solo se lka variabile gloabale ```isrun``` è asserita dallo switch nel **loop** principale del programma.
+
 ```C++
 /*
 Scrivere un programma che realizzi la gestione di un nastro traportatore attraverso la lettura di tre sensori 
