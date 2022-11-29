@@ -301,33 +301,182 @@ Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349524035968696915
 
 
 ```C++
-const unsigned long DEBOUNCETIME = 50;
-const byte LED = 7;
-const byte BUTTONPIN = 3;
+/*
+Scrivere un programma che realizzi la gestione di un nastro traportatore attraverso la lettura di tre sensori 
+di transito e il comando di un motore.
+I sensori permangono al livello alto finchè un oggetto ingombra l'area del sensore, dopodichè vanno a livello basso. 
+I sensori sono due all'inizio del nastro (uno per i pezzi bassi ed un'altro per quelli alti) ed uno alla fine del nastro 
+che rileva il pezzo pronto per essere prelevato.
+All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta (blocca) il timer di volo.
+All'attivazione del sensore di uscita si blocca il nastro, alla sua disattivazione riparte il nastro e parte il timer di volo.
+Allo scadere del timer di volo si spegne il motore.
+*/
+#include <pthread.h> //libreria di tipo preemptive
+#include <Ticker.h>
+#define DEBOUNCETIME 50
+pthread_t t1;
+pthread_t t2;
+bool engineon;  // variabile globale che memorizza lo stato del motore
+Ticker fly[2];
+uint8_t safetystop;
+bool isrun;
+//gestione interrupt
 volatile unsigned long previousMillis = 0;
 volatile unsigned short numberOfButtonInterrupts = 0;
 volatile bool lastState;
 bool prevState;
+//fine gestione interrupt
+
+typedef struct
+{
+	uint8_t id;
+	uint8_t startSensorHigh;
+	uint8_t startSensorLow;
+	uint8_t stopSensor;
+	uint8_t engineLed;
+	uint8_t lowStartLed;
+	uint8_t highStartLed;
+	uint8_t stopLed;
+	unsigned flyTime;
+	bool engineon;
+} Nastro;
+
+Nastro nastro1, nastro2;
+
+void initNastri(){
+	// porte nastro 1
+	nastro1.id = 0;
+	nastro1.startSensorHigh=14;
+	nastro1.startSensorLow=12;
+	nastro1.stopSensor=13;
+	nastro1.engineLed=33;
+	nastro1.lowStartLed=26;
+	nastro1.highStartLed=25;
+	nastro1.stopLed=27;
+	nastro1.flyTime=4000;
+	// porte nastro 2
+	nastro2.id = 1;
+	nastro2.startSensorHigh=4;
+	nastro2.startSensorLow=2;
+	nastro2.stopSensor=15;
+	nastro2.engineLed=21;
+	nastro2.lowStartLed=18;
+	nastro2.highStartLed=19;
+	nastro2.stopLed=5;
+	nastro2.flyTime=8000;
+	// set porte nastro 1
+	pinMode(nastro1.engineLed, OUTPUT);
+	pinMode(nastro1.lowStartLed, OUTPUT);
+	pinMode(nastro1.highStartLed, OUTPUT);
+	pinMode(nastro1.stopLed, OUTPUT);
+	//pinMode(nastro1.motorCmd, OUTPUT);
+	pinMode(nastro1.startSensorHigh, INPUT);
+	pinMode(nastro1.startSensorLow, INPUT);
+	pinMode(nastro1.stopSensor, INPUT); 
+	// set porte nastro 2
+	pinMode(nastro2.engineLed, OUTPUT);
+	pinMode(nastro2.lowStartLed, OUTPUT);
+	pinMode(nastro2.highStartLed, OUTPUT);
+	pinMode(nastro2.stopLed, OUTPUT);
+	//pinMode(nastro2.motorCmd, OUTPUT);
+	pinMode(nastro2.startSensorHigh, INPUT);
+	pinMode(nastro2.startSensorLow, INPUT);
+	pinMode(nastro2.stopSensor, INPUT); 
+}
+
+// attesa evento con tempo minimo di attesa
+void waitUntilInputLow(int btn, unsigned t)
+{
+    while(!digitalRead(btn)==LOW){
+	    delay(t);
+    }
+}
+
+void stopEngine(Nastro *n){ 
+	String id = "Nastro "+String(n->id) + ": ";	 
+	n->engineon = false; 
+	digitalWrite(n->engineLed, LOW);
+	Serial.println(id+"Timer di volo scaduto");
+	fly[n->id].detach();
+};
+
+void * beltThread(void * d)
+{
+		Nastro *n;
+    n = (Nastro *) d;
+    while(true){    	
+	String id = "Nastro "+String(n->id) + ": ";			
+	if(digitalRead(n->startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
+		n->engineon = true && isrun; 	
+		digitalWrite(n->engineLed, HIGH && isrun);
+		digitalWrite(n->lowStartLed, HIGH);
+		fly[n->id].detach();						// c'è almeno un pezzo in transito
+		Serial.println(id+"Pezzo basso in ingresso");
+		Serial.println(id+"Timer di volo disattivato");
+		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
+		Serial.println(id+"Pezzo basso transitato in ingresso");
+		digitalWrite(n->lowStartLed, LOW);
+	}if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
+		n->engineon = true && isrun; 	
+		digitalWrite(n->engineLed, HIGH && isrun);
+		digitalWrite(n->highStartLed, HIGH);
+		fly[n->id].detach();						// c'è almeno un pezzo in transito
+		Serial.println(id+"Pezzo alto in ingresso");
+		Serial.println(id+"Timer di volo disattivato");
+		waitUntilInputLow(n->startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
+		Serial.println(id+"Pezzo alto transitato in ingresso");
+		digitalWrite(n->highStartLed, LOW);
+	}else if(digitalRead(n->stopSensor)==HIGH) {
+		n->engineon = false; 		
+		digitalWrite(n->engineLed, LOW);
+		digitalWrite(n->stopLed, HIGH);
+		Serial.println(id+"Pezzo in uscita");
+		waitUntilInputLow(n->stopSensor,50);
+		Serial.println(id+"Pezzo prelevato dall'uscita");
+		n->engineon = true && isrun; 
+		digitalWrite(n->stopLed, LOW);
+		digitalWrite(n->engineLed, HIGH && isrun);
+		fly[n->id].attach_ms(n->flyTime,stopEngine,n);
+		Serial.println(id+"Timer di volo attivato");
+	} else {
+		//digitalWrite(led, LOW);    
+		delay(10);	
+	}
+	delay(10);
+    }
+    return NULL;
+}
+
+void setup() {
+  Serial.begin(115200);
+  safetystop = 32;
+  pinMode(safetystop, INPUT);
+	attachInterrupt(digitalPinToInterrupt(safetystop), switchPressed, CHANGE );  
+  engineon= false;
+  isrun = true;
+  initNastri();
+  if (pthread_create(&t1, NULL, beltThread, (void *)&nastro1)) {
+         Serial.println("Errore creazione btnThread");
+  }
+  if (pthread_create(&t2, NULL, beltThread, (void *)&nastro2)) {
+         Serial.println("Errore creazione blinkThread");
+  } 
+}
 
 // Interrupt Service Routine (ISR)
 void switchPressed ()
 {
   numberOfButtonInterrupts++; // contatore rimbalzi
-  lastState = digitalRead(BUTTONPIN); // lettura stato pulsante
+  lastState = digitalRead(safetystop); // lettura stato pulsante
   previousMillis = millis(); // tempo evento
+	if(lastState==HIGH){
+		isrun = false;
+		digitalWrite(nastro1.engineLed, LOW);	                // impostazione dello stato del toggle
+		digitalWrite(nastro2.engineLed, LOW);
+	}
 }  // end of switchPressed
 
-void setup ()
-{
-  Serial.begin(115200);
-  pinMode(LED, OUTPUT);  	  // so we can update the LED
-  digitalWrite(BUTTONPIN, HIGH);  // internal pull-up resistor
-  // attach interrupt handler
-  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), switchPressed, CHANGE );  
-  
-}  // end of setup
-
-void loop ()
+void rearmPoll()
 {
    // sezione critica
    // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
@@ -339,23 +488,29 @@ void loop ()
    
    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
         && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
-	&& prevState != lastState // elimina transizioni anomale LL o HH 
-	&& digitalRead(BUTTONPIN) == lastState)//se coincide con il valore di un polling
-    { 
-	  Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
-	  numberOfButtonInterrupts = 0; // reset del flag
-	  
-	  prevState = lastState;
-	  if(lastState){ // fronte di salita
-	    Serial.println(" in SALITA");
-		digitalWrite(LED, !digitalRead(LED));
-	  }else{
-		Serial.println(" in DISCESA");
-	  }
-     }
+				&& prevState != lastState // elimina transizioni anomale LL o HH 
+				&& digitalRead(safetystop) == lastState)//se coincide con il valore di un polling
+		{ 
+			Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
+			numberOfButtonInterrupts = 0; // reset del flag
+			
+			prevState = lastState;
+			if(lastState){ // fronte di salita
+				Serial.println(" in SALITA");
+			}else{
+				Serial.println(" in DISCESA");
+				Serial.println(" Riattivo il nastro dopo blocco sicurezza");
+				isrun = true;
+			}
+  	}
+}
+
+void loop() {
+	rearmPoll();
+	delay(10); 							// equivale a yeld() (10 per le simulazioni 0 in HW)
 }
 ```
 
-Simulazione su Esp32 con Wowki: 
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349645533881565780
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](gruppipulsantipy.md)
