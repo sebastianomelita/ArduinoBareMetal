@@ -3,7 +3,7 @@
 
 Di seguito è riportato un esempio di pulsante con antirimbalzo realizzato con interrupt, polling di un flag e la generazione di un evento pressione/rilascio debounced (senza rimbalzi) grazie ad un timer polled. 
 
-L'operazione avviene in **due fasi**, una nella **ISR** e l'altra in un **polling nel loop()**. Nella **ISR** viene rilevato prontamente un **fronte**(di salita o di discesa), viene campionato il livello successivo e viene settato il **flag di segnalazione** ```numberOfButtonInterrupts```. Nel **```loop()```** viene eseguito il polling del flag ed eseguito il codice dell'**antirimbalzo** se esso risulta asserito.
+L'operazione avviene in **due fasi**, una nella **ISR** e l'altra in un **polling nel loop()**. Nella **ISR** viene rilevato prontamente un **fronte** (di salita o di discesa), viene campionato il livello successivo e viene settato il **flag di segnalazione** ```numberOfButtonInterrupts```. Nel **```loop()```** viene eseguito il polling del flag ed eseguito il codice dell'**antirimbalzo** se esso risulta asserito.
 
 Può leggere sia fronti di salita che di discesa in maniera immune ai rimbalzi. Il tipo di fronte si seleziona valutando la variabile lastState.
 
