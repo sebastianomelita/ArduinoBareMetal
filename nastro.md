@@ -488,21 +488,21 @@ void rearmPoll()
    
    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
         && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
-				&& prevState != lastState // elimina transizioni anomale LL o HH 
-				&& digitalRead(safetystop) == lastState)//se coincide con il valore di un polling
-		{ 
-			Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
-			numberOfButtonInterrupts = 0; // reset del flag
-			
-			prevState = lastState;
-			if(lastState){ // fronte di salita
-				Serial.println(" in SALITA");
-			}else{
-				Serial.println(" in DISCESA");
-				Serial.println(" Riattivo il nastro dopo blocco sicurezza");
-				isrun = true;
-			}
-  	}
+	&& prevState != lastState // elimina transizioni anomale LL o HH 
+	&& digitalRead(safetystop) == lastState)//se coincide con il valore di un polling
+   { 
+	Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
+	numberOfButtonInterrupts = 0; // reset del flag
+
+	prevState = lastState;
+	if(lastState){ // fronte di salita
+		Serial.println(" in SALITA");
+	}else{
+		Serial.println(" in DISCESA");
+		Serial.println(" Riattivo il nastro dopo blocco sicurezza");
+		isrun = true;
+	}
+    }
 }
 
 void loop() {
