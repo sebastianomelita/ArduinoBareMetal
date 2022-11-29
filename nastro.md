@@ -499,7 +499,7 @@ void rearmPoll()
 		Serial.println(" in SALITA");
 	}else{
 		Serial.println(" in DISCESA");
-		Serial.println(" Riattivo il nastro dopo blocco sicurezza");
+		Serial.println(" Riattivo il nastro dopo blocco di sicurezza");
 		isrun = true;
 	}
     }
