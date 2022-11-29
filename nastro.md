@@ -469,11 +469,11 @@ void switchPressed ()
   numberOfButtonInterrupts++; // contatore rimbalzi
   lastState = digitalRead(safetystop); // lettura stato pulsante
   previousMillis = millis(); // tempo evento
-	if(lastState==HIGH){
-		isrun = false;
-		digitalWrite(nastro1.engineLed, LOW);	                // impostazione dello stato del toggle
-		digitalWrite(nastro2.engineLed, LOW);
-	}
+  if(lastState==HIGH){ // fronte di salita
+	isrun = false; 				// impostazione dello stato dei nastri
+	digitalWrite(nastro1.engineLed, LOW);	               
+	digitalWrite(nastro2.engineLed, LOW);
+  }
 }  // end of switchPressed
 
 void rearmPoll()
