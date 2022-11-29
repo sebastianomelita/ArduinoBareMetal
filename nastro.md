@@ -451,7 +451,7 @@ void setup() {
   Serial.begin(115200);
   safetystop = 32;
   pinMode(safetystop, INPUT);
-	attachInterrupt(digitalPinToInterrupt(safetystop), switchPressed, CHANGE );  
+  attachInterrupt(digitalPinToInterrupt(safetystop), switchPressed, CHANGE );  
   engineon= false;
   isrun = true;
   initNastri();
