@@ -136,6 +136,6 @@ void loop ()
 }
 ```
 
-Simulazione su Esp32 con Wowki: 
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348783670266430034
 
 >[Torna all'indice](indexinterrupts.md)
