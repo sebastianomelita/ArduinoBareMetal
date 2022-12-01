@@ -1,7 +1,7 @@
 >[Torna all'indice](indexinterrupts.md)
 ## **PULSANTE CON INTERRUPT**
 
-## **PULSANTE TOGGLE**
+### **PULSANTE TOGGLE**
 
 Di seguito è riportato un esempio di pulsante con antirimbalzo realizzato con interrupt, polling di un flag e la generazione di un evento pressione/rilascio debounced (senza rimbalzi) grazie ad un timer polled. 
 
@@ -79,7 +79,7 @@ Valgono le proprietà che:
 -	le condizioni a destra sono valutate solo se quelle a sinistra sono vere (la lenta digitalRead() non si fa se non necessario)
 
 
-## **PULSANTE DI SICUREZZA**
+### **PULSANTE DI SICUREZZA**
 
 Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita cusato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti ed uno ritardato sull'altro.
 
