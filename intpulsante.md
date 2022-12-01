@@ -68,7 +68,6 @@ void loop ()
      }
 }
 ```
-
 Vale il **“corto circuito”** degli operatori, cioè nel valutare l’espressione
 ```C++
 (numberOfButtonInterrupts != 0) && (millis() - lastintTime > DEBOUNCETIME ) && digitalRead(BUTTONPIN) == lastState)
@@ -76,4 +75,67 @@ Vale il **“corto circuito”** degli operatori, cioè nel valutare l’espress
 Valgono le proprietà che:
 -	è vera se le tre condizioni sono contemporaneamente vere
 -	le condizioni a destra sono valutate solo se quelle a sinistra sono vere (la lenta digitalRead() non si fa se non necessario)
+
+
+```C++
+const unsigned long DEBOUNCETIME = 50;
+const byte ENGINE = 7;
+const byte BUTTONPIN = 3;
+volatile unsigned long previousMillis = 0;
+volatile unsigned short numberOfButtonInterrupts = 0;
+volatile bool lastState;
+bool prevState;
+
+// Interrupt Service Routine (ISR)
+void stopEngine ()
+{
+  numberOfButtonInterrupts++; // contatore rimbalzi
+  lastState = digitalRead(BUTTONPIN); // lettura stato pulsante
+  previousMillis = millis(); // tempo evento
+  if(lastState==HIGH){ // fronte di salita
+  	digitalWrite(ENGINE, LOW); // blocco subito il motore
+  }
+}  
+
+void setup ()
+{
+  Serial.begin(115200);
+  pinMode(LED, OUTPUT);  	  // so we can update the LED
+  digitalWrite(BUTTONPIN, HIGH);  // internal pull-up resistor
+  // attach interrupt handler
+  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), stopEngine, CHANGE );  
+  
+}  // end of setup
+
+void loop ()
+{
+   // sezione critica
+   // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
+   // numberOfButtonInterrupts è 8bit e non è danneggiabile ne in lettura ne in scrittura
+   noInterrupts();
+   // il valore lastintTime potrà essere in seguito letto interrotto ma non danneggiato
+   unsigned long lastintTime = previousMillis;
+   interrupts();
+   
+   if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
+        && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
+	&& prevState != lastState // elimina transizioni anomale LL o HH 
+	&& digitalRead(BUTTONPIN) == lastState)//se coincide con il valore di un polling
+    { 
+	  Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
+	  numberOfButtonInterrupts = 0; // reset del flag
+	  
+	  prevState = lastState;
+	  if(lastState){ // fronte di salita
+	    Serial.println(" in SALITA");
+	  }else{
+		Serial.println(" in DISCESA");
+		digitalWrite(ENGINE, HIGH); // riattivo il motore
+	  }
+     }
+}
+```
+
+Simulazione su Esp32 con Wowki: 
+
 >[Torna all'indice](indexinterrupts.md)
