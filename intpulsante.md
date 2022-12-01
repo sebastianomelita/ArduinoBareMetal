@@ -1,6 +1,8 @@
 >[Torna all'indice](indexinterrupts.md)
 ## **PULSANTE CON INTERRUPT**
 
+Gli ingressi rilevati **tramite un interrupt** vengono sicuramente serviti in maniera **più rapida** rispetto ad altre soluzioni (delay, polling della millis(), thread), questo perchè l'arrivo di un segnale di interrupt blocca immediatamente l'esecuzione di un task direttamente sull'**istruzione correntemente in esecuzione** al momento dell'arrivo dell'interrupt. **In definitiva**, tra le tecniche più responsive, quella dell'interrupt è sicuramente la **più veloce** e quindi la più adatta per il comando di **dispositivi di sicurezza**.
+
 ### **PULSANTE TOGGLE**
 
 Di seguito è riportato un esempio di pulsante con antirimbalzo realizzato con interrupt, polling di un flag e la generazione di un evento pressione/rilascio debounced (senza rimbalzi) grazie ad un timer polled. 
