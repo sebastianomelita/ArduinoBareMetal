@@ -77,6 +77,8 @@ Valgono le proprietà che:
 -	le condizioni a destra sono valutate solo se quelle a sinistra sono vere (la lenta digitalRead() non si fa se non necessario)
 
 
+Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita cusato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti ed uno ritardato sull'altro.
+
 ```C++
 const unsigned long DEBOUNCETIME = 50;
 const byte ENGINE = 7;
