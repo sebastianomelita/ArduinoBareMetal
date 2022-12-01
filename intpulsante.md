@@ -3,7 +3,7 @@
 
 Gli ingressi rilevati **tramite un interrupt** vengono sicuramente serviti in maniera **più rapida** rispetto ad altre soluzioni (delay, polling della millis(), thread), questo perchè l'arrivo di un segnale di interrupt blocca immediatamente l'esecuzione di un task direttamente sull'**istruzione che è attualmente in esecuzione** al momento dell'arrivo dell'interrupt. Mantiene la complessità (tutto sommato non elevata) di una normale chiamata di funzione ed è attivato a ridosso di un qualunque evento asincrono, del quale, per definizione, non è mai possibile prevedere in anticipo l'accadere. 
 
-**In definitiva**, tra le tecniche più responsive, quella dell'interrupt è certamente la **più veloce** e quindi non solo garantisce una adeguata responsività ai comandi ma anche la massima velocità possibile necessaria per il comando efficace dei **dispositivi di sicurezza**, cioè quei dispositivi critici che devono proteggere beni e persone da danni irreparabili.
+**In definitiva**, tra le tecniche più responsive, quella dell'interrupt è certamente la **più veloce** e quindi non solo garantisce una adeguata responsività ai comandi ma anche la massima velocità possibile che è un oprerequisito necessario per il comando efficace dei **dispositivi di sicurezza**, cioè quei dispositivi critici che devono proteggere beni e persone da danni irreparabili.
 
 ### **PULSANTE TOGGLE**
 
