@@ -11,7 +11,7 @@ Da seriale si può vedere il numero di eventi di interrupt spuri che sono stati 
 
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/jWma7uWoY7T?editbtn=1
 
-Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348783670266430034
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349402186520724050
 
 ```C++
 const unsigned long DEBOUNCETIME = 50;
