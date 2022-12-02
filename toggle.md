@@ -115,9 +115,9 @@ La lettura di un fronte (di salita o di discesa) può essere effettuata con tutt
 
 - Se si usano i **protothread** o i **thread** viene mantenuta la proprietà di intrinseca **semplicità** della programmazione **lineare** basata su attese di tempo (**delay**) o attese su ingressi (**waitUntil**) garantendo la sostanziale **responsività** degli ingressi di ogni task dato che ognuno mantiene periodicamente il controllo della CPU grazie al **prerilascio** forzato delle risorse dopo un certo **quanto** di tempo. 
 
-- Se si usano gli **interrupt** gli ingressi vengono trattati con la **massima priorità** possibile e vengono serviti **in cima** a quelli gestiti con tutte le altre tecniche di schedulazione. Questa circostanza, oltre a garantire la massima responsività, garantisce anche la **massima sicurezza** nella gestione di eleborazioni di segnali **critici** (guasti, allarmi, soglie di sicurezza). L'unica accortezza che potrebbe essere necessaria è non mettere```delay()``` o troppo codice troppo lento in una ISR che serve un interrupt, non tanto perchè questa potrebbe non essere a sua volta intrerrotta (cosa in genere possibile), ma soprattutto perchè molti timer HW realizzano le chiamate successive in sequenza per cui una routine di servizio non piuò cominciare se prima n on termina la precedente.
+- Se si usano gli **interrupt** gli ingressi vengono trattati con la **massima priorità** possibile e vengono serviti **in cima** a quelli gestiti con tutte le altre tecniche di schedulazione. Questa circostanza, oltre a garantire la massima responsività, garantisce anche la **massima sicurezza** nella gestione di eleborazioni di segnali **critici** (guasti, allarmi, soglie di sicurezza). 
 
-
+Non è consigliabile mettere```delay()``` o comunque codice lento, in una ISR che serve un interrupt di una porta, perchè anche altri dispositivi, come i timer HW,  utilizzano gli interrupt e le chiamate successive di più ISR in genere si pongono in sequenza, una in attesa della fine dell'altra (non è detto siano abilitate le interruzioni annidate).
 
 ### **Schedulatore basato sui delay**
 
