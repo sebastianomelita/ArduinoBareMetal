@@ -2,7 +2,7 @@
 
 Breadboard è una basetta forata dove i componenti si incastrano meccanicamente e per cui i collegamenti elettrici sono realizzati senza bisogno di saldatura. È divisa in zone caratterizzata da specifici collegamenti elettrici interni alla basetta stessa. Questi collegamenti uniscono i fori della basetta secondo certe direzioni escludendole altre.
 
-<img src="Immagine1.png" alt="alt text" width="900">
+<img src="Immagine1.png" alt="alt text" width="500">
  
  La basetta è divisa da un solco centrale in una zona superiore e zona   inferiore che sono uguali specularmente rispetto al solco, per i discorsi00 che faremo per una valgono per altri.
 Concentriamoci sulla parte superiore.  Un solco orizzontale più sottile separa la zona di alimentazione dalla zona degli input e output:
