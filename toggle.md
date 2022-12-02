@@ -113,7 +113,7 @@ La lettura di un fronte (di salita o di discesa) può essere effettuata con tutt
 
 - Se i task in esecuzione nel ```loop()``` sono **più di due** la tecnica dei **delay** nel loop è sicuramente la **meno responsiva** dato che un task per cominciare a processare i suoi ingressi deve prima attendere la fine del processamento del task precedente.
 
-- Se si usano i **protothread** o i **thread** viene mantenuta la proprietà di intrinseca **semplicità** della programmazione **lineare** basata su attese di tempo (**delay**) o attese su ingressi (**waitUntil**) garantendo la sostanziale **responsività** agli ingressi di ogni task dato che ognuno mantiene periodicamente il controllo della CPU grazie al **prerilascio** forzato delle risorse dopo un certo **quanto** di tempo. 
+- Se si usano i **protothread** o i **thread** viene mantenuta la proprietà di intrinseca **semplicità** della programmazione **lineare** basata su attese di tempo (**delay**) o attese su ingressi (**waitUntil**) garantendo la sostanziale **responsività** degli ingressi di ogni task dato che ognuno mantiene periodicamente il controllo della CPU grazie al **prerilascio** forzato delle risorse dopo un certo **quanto** di tempo. 
 
 - Se si usano gli **interrupt** gli ingressi vengono trattati con la **massima priorità** possibile e vengono serviti **in cima** a quelli gestiti con tutte le altre teecniche di schedulazione. Questa circostanza, oltre a garantire la massima responsività, garantisce anche la **massima sicurezza** nella gestione di eleborazioni di segnali **critici** (guasti, allarmi, soglie di sicurezza).
 
