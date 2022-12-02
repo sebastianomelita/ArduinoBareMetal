@@ -117,7 +117,7 @@ La lettura di un fronte (di salita o di discesa) può essere effettuata con tutt
 
 - Se si usano gli **interrupt** gli ingressi vengono trattati con la **massima priorità** possibile e vengono serviti **in cima** a quelli gestiti con tutte le altre tecniche di schedulazione. Questa circostanza, oltre a garantire la massima responsività (non si attende nessun quanto temporale), garantisce anche la **massima sicurezza** nella gestione di eleborazioni di segnali **critici** (guasti, allarmi, soglie di sicurezza). 
 
-Non è consigliabile mettere```delay()``` o comunque codice lento, in una ISR che serve un interrupt di una porta, perchè anche altri dispositivi, come i timer HW,  utilizzano gli interrupt e le chiamate successive di più ISR in genere si pongono in sequenza, una in attesa della fine dell'altra (non è detto siano abilitate le interruzioni annidate).
+Non è consigliabile mettere```delay()``` o comunque codice lento, in una ISR che serve un interrupt di una porta, perchè tutti gli altri dispositivi (le altre porte come anche i timer HW) che utilizzano gli interrupt normalmente mettono le chiamate delle rispettive ISR una in coda all'altra, in attesa cge venga il loro turno di essere servite dalla CPU (non è detto che siano abilitate le interruzioni annidate).
 
 ### **Schedulatore basato sui delay**
 
