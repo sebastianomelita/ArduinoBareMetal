@@ -1,6 +1,6 @@
 >[Torna all'indice generale](index.md)
 
-##**LA BREADBOARD**
+## **LA BREADBOARD**
 
 La **breadboard** è una basetta forata dove i componenti si incastrano meccanicamente e per cui i collegamenti elettrici sono realizzati senza bisogno di saldatura. È divisa in zone caratterizzata da specifici collegamenti elettrici interni alla basetta stessa. Questi collegamenti uniscono i fori della basetta secondo certe direzioni escludendole altre.
 
