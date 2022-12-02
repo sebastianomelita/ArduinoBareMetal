@@ -11,7 +11,7 @@ Il valore con cui viene **codificato** lo stato di una **porta digitale** può e
 - se la porta è in **HIGH** la tensione vale immancabilmente **Vcc Volt** (5 V per Arduino, 3.3 volt per ESP32 o ESP 8266) **indipendentemente** dalla quantità e dal verso della corrente che vi scorre attraverso.
 - se la porta è in **LOW** la tensione vale immancabilmente **GND**, cioè **0 Volt** **indipendentemente** dalla quantità e dal verso della corrente che vi scorre attraverso.
 
-Per quanto riguarda la determinazione del **verso** della corrente su una **porta** o su un qualsiasi **dispositivo** esterno ad essa, vale la regola che la corrente va sempre dal punto a potenziale (voltaggio) più alto a quello a potenziale più basso. In altre parole, il **verso** della corrente tra due punti è dato dal **segno** della differenza di pootenziale tra quyei punti. 
+Per quanto riguarda la determinazione del **verso** della corrente su una **porta** o su un qualsiasi **dispositivo** esterno ad essa, vale la regola che la corrente va sempre dal punto a potenziale (voltaggio) più alto a quello a potenziale più basso. In altre parole, il **verso** della corrente tra due punti è dato dal **segno** della differenza di pootenziale tra quei punti. 
 
 Per quanto riguarda il calcolo del **valore** esatto della corrente **ai capi** di un dispositivo basta rifarsi alla **caratteristica tensione-corrente** dello stesso che è riconducibile alla **legge di Ohm** per le **resistenze** ma ha leggi più complesse per i dispositivi **non lineari** come i **diodi**.
 
