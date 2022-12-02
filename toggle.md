@@ -541,10 +541,8 @@ void loop() {
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
 	}
-}```
-
+}
+```
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](togglepy.md)
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE1NTkxOTA3OTIsLTk1MzQ1NDY2NV19
--->
+
