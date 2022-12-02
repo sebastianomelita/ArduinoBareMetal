@@ -107,7 +107,7 @@ void loop()
 ```
 ## Esempi di blink insieme a pulsanti toggle antirimbalzo realizzati con tecniche di schedulazione diverse
 
-La lettura di un fronte (di salita o di discesa) può essere effettuata con tutte le tecniche di schedulazione a disposizione (delay, protothread, thread, polling della millis e interrupts) ma non tutte hanno uguali caratteristiche di velocità ed efficienza. L'appropriatezze dell'una o dell'altra deriva dal **contesto di utilizzo**.
+La lettura di un fronte (di salita o di discesa) può essere effettuata con tutte le tecniche di schedulazione a disposizione (delay, protothread, thread, polling della millis e interrupts) ma non tutte hanno uguali caratteristiche di velocità ed efficienza. L'**appropriatezza** dell'una o dell'altra deriva dal **contesto di utilizzo**.
 
 - Se il task in esecuzione nel ```loop()``` è **uno solo**, una **qualsiasi** delle tecniche precedenti garantisce una **adeguata responsività** ed inoltre **tutte** (comprese time tick e thread) possono essere interrotte, all'occorenza, da un **segnale di interrupt** per cui è preservata la possibilità di far intervenire processamenti a più **alta priorità** come quelli riconducibili a **dispositivi di sicurezza**.
 
