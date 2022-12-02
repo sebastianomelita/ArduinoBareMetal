@@ -7,7 +7,7 @@
 
 Un LED si accende quando in esso **scorre la corrente** sufficiente per illuminarlo. La corrente necessaria è compresa tipicamente tra 10 e 20mA, il **valore** di questa corrente può essere **controllato** impostando il valore della **resistenza di polarizzazione**: resistenze più piccole determinano maggiore corrente (e maggiore luminosità), resistenze più grandi determinano minore corrente (e minore luminosità).
 
-Il valore con cui viene **codificato** lo stato di una **porta digitale** può essere HIGH (vale di solito 1) o LOW (vale di solito 0). L'impostazione del bit della porta ha un signicato fisico che influenza tutte le grandezze elettriche di un circuito ad esse collegato (in particolare tensione e corrente) ma imposta, forzandolo ad un valore ben preciso, solo una di queste: la **tensione** della porta rispetto a GND.
+Il valore con cui viene **codificato** lo stato di una **porta digitale** può essere HIGH (vale di solito 1) o LOW (vale di solito 0). L'impostazione del bit della porta ha un signicato fisico che influenza tutte le grandezze elettriche di un circuito ad esse collegato (in particolare tensione e corrente) ma imposta, **forzandolo** ad un valore ben preciso, solo una di queste: la **tensione** della porta rispetto a GND.
 - se la porta è in **HIGH** la tensione vale immancabilmente **Vcc Volt** (5 V per Arduino, 3.3 volt per ESP32 o ESP 8266) **indipendentemente** dalla quantità e dal verso della corrente che vi scorre attraverso.
 - se la porta è in **LOW** la tensione vale immancabilmente **GND**, cioè **0 Volt** **indipendentemente** dalla quantità e dal verso della corrente che vi scorre attraverso.
 
