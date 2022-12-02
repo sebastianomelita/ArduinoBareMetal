@@ -505,6 +505,45 @@ void loop() {
 ```
 Simulazione online del codice precedente https://wokwi.com/projects/348523574025257556
 
+### **Schedulatore basato su interrupts**
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+// utilizzare variabili globali è una maniera per ottenere
+// che il valore di una variabile persista tra chiamate di funzione successive
+// situazione che si verifica se la funzione è richiamata dentro il loop()
+
+// attesa evento con tempo minimo di attesa
+void waitUntilInputLow(int btn, unsigned t)
+{
+    while(!digitalRead(btn)==LOW){
+	    delay(t);
+    }
+}
+  
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+}
+
+// loop principale
+void loop() {
+	if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
+		stato = !stato; 				// impostazione dello stato del toggle
+		waitUntilInputLow(pulsante,50);			// attendi finchè non c'è fronte di discesa
+	}
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(500);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+	}
+}```
+
+
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](togglepy.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbLTE1NTkxOTA3OTIsLTk1MzQ1NDY2NV19
