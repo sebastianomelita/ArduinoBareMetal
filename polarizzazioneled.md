@@ -7,6 +7,10 @@
 
 Un LED si accende quando in esso **scorre la corrente** sufficiente per illuminarlo. La corrente necessaria è compresa tipicamente tra 10 e 20mA, il **valore** di questa corrente può essere **controllato** impostando il valore della **resistenza di polarizzazione**: resistenze più piccole determinano maggiore corrente (e maggiore luminosità), resistenze più grandi determinano minore corrente (e minore luminosità).
 
+Il valore con cui viene **codificato** lo stato di una **porta digitale** può essere HIGH (vale di solito 1) o LOW (vale di solito 0). L'impostazione del bit della porta ha un signicato fisico che influenza tutte le grandezze elettriche di un circuito ad esse collegato (in particolare tensione e corrente) ma imposta, forzandolo ad un valore preciso, solo una di queste: la **tensione** della porta rispetto a GND.
+- se la porta è in **HIGH** la tensione vale immancabilmente **Vcc Volt** (5 V per Arduino, 3.3 volt per ESP32 o ESP 8266) indipendentemente dalla quantità e dal verso della corrente che vi scorre attraverso.
+- se la porta è in **LOW** la tensione vale immancabilmente **GND**, cioè **0 Volt** indipendentemente dalla quantità e dal verso della corrente che vi scorre attraverso.
+
 Mai in ogni caso andrebbe collegato un led **direttamente** alla porta, senza una resistenza di polarizzazione perché, in questo caso, la resistenza sarebbe quella di CC (corto circuito). La **resistenza di CC** è interna alla porta ed è di valore **molto basso**, così basso da poter lasciar passare una corrente tanto elevata da **danneggiare il led** (nel migliore dei casi) o la **porta** stessa (nel peggiore dei casi).
 
 La corrente in un LED però scorre solo se questo è **opportunamente polarizzato in tensione**. In generale:
@@ -19,11 +23,11 @@ Per **accendere** un led con un microcontrollore:
 
 - le **porte** del microcontrollore collegate ad un led devono essere impostate in **modo OUTPUT**.
 
-- le **porte** del microcontrollore possono essere o **sorgente** della corrente o **pozzo** della corrente:
+- le **porte** del microcontrollore possono essere o **sorgente** della corrente o **drain** (scarico) della corrente:
 
     - In caso di **sorgente**, la porta è analoga ad un generatore di tensione **interno** alla porta pari a Vcc (5V) e la corrente generata dalla porta **scorre** verso il led e si **scarica** su una massa (GND) **esterna**. **L’anodo** del led è collegato alla **porta** mentre il **catodo** è collegato a **GND**. E' la modalità più comune.
 
-    - In caso di **pozzo**, stavolta la porta è connessa a GND e la corrente **scorre** da un generatore di tensione **esterno** verso la porta dove si **scarica** su una massa **interna** alla porta. Il **catodo** del led è collegato alla **porta** mentre **l’anodo** è collegato a al generatore **Vcc**. E' una modlaità meno usuale.
+    - In caso di **drain**, stavolta la porta è connessa a GND e la corrente **scorre** da un generatore di tensione **esterno** verso la porta dove si **scarica** su una massa **interna** alla porta. Il **catodo** del led è collegato alla **porta** mentre **l’anodo** è collegato a al generatore **Vcc**. E' una modlaità meno usuale.
 
 Di conseguenza, i **valori delle attivazioni** dei segmenti (mediante i livelli HIGH o LOW) sono:
 
