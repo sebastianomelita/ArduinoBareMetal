@@ -511,37 +511,66 @@ Simulazione online del codice precedente https://wokwi.com/projects/348523574025
 int led = 13;
 byte pulsante =12;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
-// utilizzare variabili globali è una maniera per ottenere
-// che il valore di una variabile persista tra chiamate di funzione successive
-// situazione che si verifica se la funzione è richiamata dentro il loop()
-
-// attesa evento con tempo minimo di attesa
-void waitUntilInputLow(int btn, unsigned t)
-{
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
-}
-  
+volatile unsigned long previousMillis = 0;
+volatile unsigned short numberOfButtonInterrupts = 0;
+volatile bool lastState;
+bool prevState;
+#define DEBOUNCETIME 50
+ 
 void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
 }
 
+// Interrupt Service Routine (ISR)
+void switchPressed ()
+{
+  numberOfButtonInterrupts++; // contatore rimbalzi
+  lastState = digitalRead(pulsante); // lettura stato pulsante
+  previousMillis = millis(); // tempo evento
+}  // end of switchPressed
+
+void debouncePoll()
+{
+    // sezione critica
+    // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
+    // numberOfButtonInterrupts è 8bit e non è danneggiabile ne in lettura ne in scrittura
+    noInterrupts();
+    // il valore lastintTime potrà essere in seguito letto interrotto ma non danneggiato
+    unsigned long lastintTime = previousMillis;
+    interrupts();
+
+    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
+        && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
+        && prevState != lastState // elimina transizioni anomale LL o HH 
+        && digitalRead(pulsante) == lastState)//se coincide con il valore di un polling
+    { 
+        Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
+        numberOfButtonInterrupts = 0; // reset del flag
+
+        prevState = lastState;
+        if(lastState){ // fronte di salita
+            stato = !stato; 	    
+            Serial.println(" in SALITA debounced");
+        }else{
+            Serial.println(" in DISCESA debounced");
+        }
+    }
+}
 // loop principale
 void loop() {
-	if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
-		stato = !stato; 				// impostazione dello stato del toggle
-		waitUntilInputLow(pulsante,50);			// attendi finchè non c'è fronte di discesa
-	}
+	debouncePoll();
 	if (stato) {
 		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
 		delay(500);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+        delay(10);
 	}
 }
+
 ```
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350016534055223891
