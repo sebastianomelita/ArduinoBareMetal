@@ -505,7 +505,7 @@ void loop() {
 ```
 Simulazione online del codice precedente https://wokwi.com/projects/348523574025257556
 
-### **Schedulatore basato su interrupts**
+### **Schedulatore basato su interrupts e polling**
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 int led = 13;
