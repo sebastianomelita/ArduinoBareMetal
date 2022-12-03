@@ -575,7 +575,73 @@ void loop() {
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350016534055223891
 
-https://wokwi.com/projects/350052113369268819
+
+### **Schedulatore basato su interrupts e timer HW**
+
+```C++
+#include <Ticker.h>
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+int led = 13;
+byte pulsante =12;
+volatile unsigned short numberOfButtonInterrupts = 0;
+volatile bool pressed;
+volatile bool stato;
+#define DEBOUNCETIME 50
+Ticker debounceTicker;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );
+  numberOfButtonInterrupts = 0;
+  pressed = false;
+  stato = false;
+}
+
+void switchPressed ()
+{
+  numberOfButtonInterrupts++; // contatore rimbalzi
+  bool val = digitalRead(pulsante); // lettura stato pulsante
+  if(val && !pressed){ // fronte di salita
+    pressed = true; // disarmo il pulsante
+    debounceTicker.once_ms(50, debouncePoll);  
+    Serial.println("SALITA disarmo pulsante");
+    stato = !stato; 	    
+  }
+}  // end of switchPressed
+
+void debouncePoll()
+{
+    // sezione critica
+    if (digitalRead(pulsante) == HIGH)//se coincide con il valore di un polling
+    { 
+        Serial.print("Aspetto");
+        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
+        debounceTicker.once_ms(50, debouncePoll);  
+    }else{
+        Serial.print("DISCESA riarmo pulsante\n");
+        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
+        numberOfButtonInterrupts = 0; // reset del flag
+        pressed = false; // riarmo il pulsante
+    }
+}
+
+// loop principale
+void loop() {
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(500);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+    delay(10);
+	}
+}
+
+
+```
+
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350052113369268819
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](togglepy.md)
 
