@@ -146,6 +146,8 @@ void loop ()
 }
 ```
 
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348783670266430034
+
 ### **Schedulatore basato su interrupts e timer HW**
 
 ```C++
@@ -208,6 +210,6 @@ void loop() {
 	}
 }
 ```
-Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348783670266430034
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/350052113369268819
 
 >[Torna all'indice](indexinterrupts.md)
