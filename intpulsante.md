@@ -114,7 +114,7 @@ void setup ()
   digitalWrite(BUTTONPIN, HIGH);  // internal pull-up resistor
   // attach interrupt handler
   attachInterrupt(digitalPinToInterrupt(BUTTONPIN), stopEngine, CHANGE);  
-  
+  numberOfButtonInterrupts = 0;
 }  // end of setup
 
 void loop ()
