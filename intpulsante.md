@@ -186,7 +186,7 @@ void switchPressed ()
 void debouncePoll()
 {
     // sezione critica
-    if (digitalRead(pulsante) == HIGH)//se coincide con il valore di un polling
+    if (digitalRead(pulsante) == HIGH)// se il pulsante è ancora premuto
     { 
         Serial.print("Aspetto");
         Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
