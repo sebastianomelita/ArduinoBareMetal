@@ -607,7 +607,7 @@ void switchPressed ()
     pressed = true; // disarmo il pulsante
     debounceTicker.once_ms(50, debouncePoll);  
     Serial.println("SALITA disarmo pulsante");
-    stato = !stato; 	    
+    stato = !stato; 	  // logica toggle  
   }
 }  // end of switchPressed
 
