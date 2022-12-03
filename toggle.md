@@ -544,5 +544,7 @@ void loop() {
 }
 ```
 
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350016534055223891
+
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](togglepy.md)
 
