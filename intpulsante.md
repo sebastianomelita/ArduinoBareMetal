@@ -42,7 +42,7 @@ void setup ()
   pinMode(LED, OUTPUT);  	  // so we can update the LED
   digitalWrite(BUTTONPIN, HIGH);  // internal pull-up resistor
   // attach interrupt handler
-  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), switchPressed, CHANGE );  
+  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), switchPressed, CHANGE);  
   
 }  // end of setup
 
@@ -113,7 +113,7 @@ void setup ()
   pinMode(LED, OUTPUT);  	  // so we can update the LED
   digitalWrite(BUTTONPIN, HIGH);  // internal pull-up resistor
   // attach interrupt handler
-  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), stopEngine, CHANGE );  
+  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), stopEngine, CHANGE);  
   
 }  // end of setup
 
@@ -142,7 +142,7 @@ void loop ()
 		Serial.println(" in DISCESA");
 		digitalWrite(ENGINE, HIGH); // riattivo il motore
 	  }
-     }
+    }
 }
 ```
 
