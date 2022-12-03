@@ -593,7 +593,7 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE);
   numberOfButtonInterrupts = 0;
   pressed = false;
   stato = false;
@@ -614,7 +614,7 @@ void switchPressed ()
 void debouncePoll()
 {
     // sezione critica
-    if (digitalRead(pulsante) == HIGH)//se coincide con il valore di un polling
+    if (digitalRead(pulsante) == HIGH)// se il pulsante è ancora premuto
     { 
         Serial.print("Aspetto");
         Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
