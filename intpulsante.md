@@ -5,7 +5,7 @@ Gli ingressi rilevati **tramite un interrupt** vengono sicuramente serviti in ma
 
 **In definitiva**, tra le tecniche più responsive, quella dell'interrupt è certamente la **più veloce** e quindi non solo garantisce una adeguata responsività ai comandi ma anche la massima velocità di risposta possibile che è un prerequisito necessario per il comando efficace dei **dispositivi di sicurezza**, cioè di quei dispositivi critici deputati alla protezione di beni e persone da danni irreparabili.
 
-### **PULSANTE TOGGLE**
+### **PULSANTE TOGGLE CON DEBOUNCER BASATO SU POLLING**
 
 Di seguito è riportato un esempio di pulsante con antirimbalzo realizzato con interrupt, polling di un flag e la generazione di un evento pressione/rilascio debounced (senza rimbalzi) grazie ad un timer polled. 
 
@@ -148,7 +148,7 @@ void loop ()
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348783670266430034
 
-### **Schedulatore basato su interrupts e timer HW**
+### **PULSANTE TOGGLE CON DEBOUNCER BASATO SU TIMER HW**
 
 ```C++
 #include <Ticker.h>
