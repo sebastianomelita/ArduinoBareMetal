@@ -578,7 +578,7 @@ Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/p
 
 ### **Schedulatore basato su interrupts e timer HW**
 
-All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) e **tempestiva** (più rapida possibile) su del solo **fronte di salita** è stata usata la combinazione due tecniche di schedulazione:
+All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) e **tempestiva** (più rapida possibile) del solo **fronte di salita** è stata usata la combinazione due tecniche di schedulazione:
 - una **asincrona**, non governata dal sistema, ma da un segnale **di ingresso** provenbiente dall'**esterno**, per la determinazione istantaea (o quasi) del fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
 - una **sincrona**, gestita dal sistema tramite un **timer HW**, per la realizzazione della funzione di debouncing (antirimbalzo) del segnale in ingresso.
 
