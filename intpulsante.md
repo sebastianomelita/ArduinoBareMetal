@@ -207,7 +207,7 @@ void loop() {
     		delay(10);
 	}
 }
-
+```
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348783670266430034
 
 >[Torna all'indice](indexinterrupts.md)
