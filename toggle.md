@@ -578,6 +578,13 @@ Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/p
 
 ### **Schedulatore basato su interrupts e timer HW**
 
+All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) e **tempestiva** (più rapida possibile) su del solo **fronte di salita** è stata usata la combinazione due tecniche di schedulazione:
+- una **asincrona**, non governata dal sistema, ma da un segnale **di ingresso** provenbiente dall'**esterno**, per la determinazione istantaea (o quasi) del fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
+- una **sincrona**, gestita dal sistema tramite un **timer HW**, per la realizzazione della funzione di debouncing (antirimbalzo) del segnale in ingresso.
+
+
+Il rilevatore dei fronti è realizzato **campionando** il valore del livello al momento dell'arrivo del segnale di interrupt e **confrontandolo** con il valore del livello campionato in istanti periodici successivi a quello schedulati tramite un timer HW che chiama l'istruzione ```waitUntilInputLow()```. La funzione, di fatto, esegue un **blocco** del pulsante in **"attesa"**  di una certa **condizione**, L'**attesa** è spesa campionando continuamente un **ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, in un loop successivo, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un **fronte di salita**.  
+
 ```C++
 #include <Ticker.h>
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
@@ -605,13 +612,13 @@ void switchPressed ()
   bool val = digitalRead(pulsante); // lettura stato pulsante
   if(val && !pressed){ // fronte di salita
     pressed = true; // disarmo il pulsante
-    debounceTicker.once_ms(50, debouncePoll);  
+    debounceTicker.once_ms(50, waitUntilInputLow);  
     Serial.println("SALITA disarmo pulsante");
     stato = !stato; 	  // logica toggle  
   }
 }  // end of switchPressed
 
-void debouncePoll()
+void waitUntilInputLow()
 {
     // sezione critica
     if (digitalRead(pulsante) == HIGH)// se il pulsante è ancora premuto
