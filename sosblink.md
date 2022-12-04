@@ -150,7 +150,7 @@ Nel codice possiamo isolare:
 -  i **segnaposto delle fasi** di un singolo task (come ```count < 9```) che, non potendo più essere sviluppate in sequenza nel codice con lo stesso ordine che hanno nel tempo, adesso devono essere:
 	- sincronizzate sul tempo base (con i rilevatori di multiplo)
 	- riconosciute e trattate come eventi a cui assegnare una risposta appropriata (con il contatore ```count```)
-- i **segnaposro** si possono sincronizzare su **contatori ausiliari** (variabili globali) o su **ingressi** o sul **risultato** di altre fasi.
+- i **segnaposto** si possono sincronizzare su **contatori ausiliari** (variabili globali) o su **ingressi** o sul **risultato** di altre fasi.
 
 
 ## **SCHEDULAZIONE CON I PROTOTHREAD**
