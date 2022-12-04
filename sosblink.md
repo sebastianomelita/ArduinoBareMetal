@@ -348,6 +348,15 @@ void loop() {
 }
 ```
 
+## **Considerazioni finali**
+
+Da una analisi comparativa degli esempi proposti si possono trarre alcune considerazioni pratiche di ordine generale. 
+- **eventi periodici contemporanei** si programmano difficilmente con i delay() che, essendo bloccanti, non possono permetter l'esecuzione parallela di altri task all'interno dello stesso loop. I task con compiti diversi devono essere pensati come un unico task in cui le fasi di un compito si alternnano a quelle dell'altro nello stesso codice. In altre parole, bisogna spezzettare i due task in un certo numero di fasi elementari (una sorta di minimo comune multiplo dei compiti) che, una volta eseguite in sequenza tramite i delay(), realizzino contemporaneamente i compoiti di entrambi i task, interlacciandosi tra loro. Questa soluzione è praticabile per pochi task non eccessivamente complessi.
+- una soluzione alternativa efficace potrebbe essere mettere i vari compiti in thread separati che pur essendo ancora programmabili in maniera sequnziale hanno almeno due grandi vantaggi:
+     - non monopolizzano la risorsa CPU permettendo l'esecuzione parallela sia del loop() che di altri threads.
+     - permettono la programmazione sequenziale dei task pensandoli isolati l'uno dall'altro, cioè si possono programmare in maniera indipendente conme se girassero a solo nel loop() principale.
+     - un'altra soluzione potrebbe essere programmare il solo thread del loop() principale utilizzando una schedulazione basata sui time tick. Questa soluzione, nel contesto di queta categoria di problemi (task contemporanei), appare vantaggiosa perchè una programmazione basata sull'esecuzione di una serie di compiti in istanti fissati e pianificati senza delay permette di poterli trattare in maniera indipendente con più semplicità. Rimane il problema della maggiore complessità della gestione della comunicazione tra i vari task che non è più sequenziale.
+
 **Sitografia:**
 - https://9g.lt/blog/protothreads-on-tinkercad
 
