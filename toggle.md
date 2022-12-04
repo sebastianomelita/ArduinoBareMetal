@@ -545,7 +545,7 @@ void waitUntilInputChange()
 {
     // sezione critica
     // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
-    // numberOfButtonInterrupts è 8bit e non è danneggiabile ne in lettura ne in scrittura
+    // numberOfButtonInterrupts è 8 bit e non è danneggiabile ne in lettura ne in scrittura
     noInterrupts();
     // il valore lastintTime potrà essere in seguito letto interrotto ma non danneggiato
     unsigned long lastintTime = previousMillis;
@@ -589,6 +589,10 @@ Gli **accessi paralleli** non sono un problema quando le **istruzioni** sono **a
 Nei microcontrollori attuali, in genere **nessuna istruzione** gode della proprietà di essere **atomica** con una sola eccezione per la lettura e scrittura delle **variabili ad 8 bit**. Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio macchina) è intrinsecamente garantito essere **atomico**. Per queste variabili rimane comunque la necessita dell'uso del qualificatore ```volatile```.
 
 Le modifiche a valori con codifiche **maggiori di 8 bit** sono in genere **non atomiche**, pertanto le variabili a 16 o 32 bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati di default durante una routine di servizio di interrupt, quindi non si verificherà il danneggiamento di una variabile multibyte nell'ISR per cui le **sezioni critiche** vanno inserite soltanto nel ```loop()```.
+
+Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```numberOfButtonInterrupts```, ```prevState``` e ```lastState``` che sono stata semplicemente dichiarate come ```volatile``` senza sezioni critiche su di essa.
+
+L'unica variabile **condivisa** tra ISR e loop() e **16 0 32 bit** sono ```previousMillis``` che è stata dichiarata come ```volatile``` e ha nel loop() una **sezione critica** intorno all'accesso in lettura su di essa.
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350016534055223891
 
@@ -669,7 +673,7 @@ Gli **accessi paralleli** non sono un problema quando le **istruzioni** sono **a
 
 Nei microcontrollori attuali, in genere **nessuna istruzione** gode della proprietà di essere **atomica** con una sola eccezione per la lettura e scrittura delle **variabili ad 8 bit**. Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio macchina) è intrinsecamente garantito essere **atomico**. Per queste variabili rimane comunque la necessita dell'uso del qualificatore ```volatile```.
 
-Le modifiche a valori con codifiche **maggiori di 8 bit** sono in genere **non atomiche**, pertanto le variabili a 16 o 32 bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati di default durante una routine di servizio di interrupt, quindi non si verificherà il danneggiamento di una variabile multibyte nell'ISR per cui le **sezioni critiche** vanno inserite soltanto nel ```loop()```.
+L'unica variabile **condivisa** tra ISR e loop() nel progetto è ```stato``` che è ad 8bit ed è stata dichiarata come ```volatile```.
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350052113369268819
 
