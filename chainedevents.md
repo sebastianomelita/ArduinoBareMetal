@@ -291,7 +291,7 @@ void loop() {
 ```
 Link simulazione su ESP32 con Wowki: https://wokwi.com/projects/349402186520724050
 
-## **Considerazioni finali**
+### **Considerazioni finali**
 
 Da una analisi comparativa degli esempi proposti si possono trarre alcune considerazioni pratiche di ordine generale. 
 - **eventi periodici consecutivi** si programmano più semplicmente con i delay() che, pur essendo bloccanti, godono della proprietà di poter pensare gli algoritmi in maniera più intuitiva e lineare (programmazione sequenziale).
