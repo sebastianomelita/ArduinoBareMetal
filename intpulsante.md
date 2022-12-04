@@ -119,7 +119,7 @@ void waitUntilInputLOW()
    
    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
       && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
-      && digitalRead(BUTTONPIN) == HIGH)//se il pulsante è ancora premuto
+      && digitalRead(BUTTONPIN) == LOW)//se il pulsante non è ancora premuto
     { 
       Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
       numberOfButtonInterrupts = 0; // reset del flag
