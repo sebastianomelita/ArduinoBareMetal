@@ -93,8 +93,6 @@ const byte ENGINE = 13;
 const byte BUTTONPIN = 12;
 volatile unsigned long previousMillis = 0;
 volatile unsigned short numberOfButtonInterrupts = 0;
-volatile bool lastState;
-bool prevState;
 
 // Interrupt Service Routine (ISR)
 void stopEngine ()
