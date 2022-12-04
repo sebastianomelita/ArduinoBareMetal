@@ -190,7 +190,7 @@ void waitUntilInputLow()
     { 
         Serial.print("Aspetto");
         Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
-        debounceTicker.once_ms(50, debouncePoll);  
+        debounceTicker.once_ms(50, waitUntilInputLow);  
     }else{
         Serial.print("DISCESA riarmo pulsante\n");
         Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
