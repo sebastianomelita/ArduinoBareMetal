@@ -507,7 +507,7 @@ Simulazione online del codice precedente https://wokwi.com/projects/348523574025
 
 ### **Schedulatore basato su interrupts e polling**
 
-Per una discussione generale sugli interrupt si rimanda a ![interrupt]([transizioni.png](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/indexinterrupts.md)).
+Per una discussione generale sugli interrupt si rimanda a [interrupt]([transizioni.png](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/indexinterrupts.md)).
 
 All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) del solo **fronte di salita** è stata usata la **combinazione** di due tecniche di schedulazione:
 - una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
@@ -601,7 +601,7 @@ Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/p
 
 ### **Schedulatore basato su interrupts e timer HW**
 
-Per una discussione generale sugli interrupt si rimanda a ![interrupt]([transizioni.png](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/indexinterrupts.md)).
+Per una discussione generale sugli interrupt si rimanda a [interrupt]([transizioni.png](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/indexinterrupts.md)).
 
 All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) ma anche **tempestiva** (più rapida possibile) del solo **fronte di salita** è stata usata la **combinazione** di due tecniche di schedulazione:
 - una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
