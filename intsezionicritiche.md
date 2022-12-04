@@ -59,10 +59,11 @@ Per evitare questo tipo di **anomalie in lettura**, le soluzioni si potrebbero r
 
 **Quale codice proteggere?**
 
-Il codice **da racchiudere** in una **sezione critica** dovrebbe includere tutte le istruzioni che, se vengono svolte in maniera **non atomica**, diventano **incosistenti**. Alcune, però in Arduino sono, per loro natura, atomiche e non è necessario proteggerle: sono quelle che accedono (in lettura o scrittura) a **variabili ad 8bit**. 
+Il codice **da racchiudere** in una **sezione critica** dovrebbe includere tutte le istruzioni che, se vengono svolte in maniera **non atomica**, diventano **incosistenti**. Alcune, però in Arduino (e in tutti i microcontrollori in genere) sono, per loro natura, atomiche e non è necessario proteggerle: sono quelle che accedono (in lettura o scrittura) a **variabili ad 8bit**. 
 
 Una modifica (scrittura)a una **variabile a 8 bit** è atomica. Può essere usata in maniera safe sia dentro che fuori un ISR.
-A maggior ragione, **le variabili ad 8bit** in Arduino sono sicure anche in lettura pur se condivise con una ISR.
+A maggior ragione, **le variabili ad 8bit** in Arduino sono sicure anche in lettura pur se condivise con una ISR. L'unica accortezza necessaria è dichiararla sempre con il qualificatore ```volatile```.
+
 Le modifiche a valori maggiori non lo sono, pertanto le variabili a 16 o 32bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati durante una routine di servizio di interrupt, quindi non si verificherà il danneggiamento di una variabile multibyte nell'ISR. 
 
 Quindi, riassumendo, per **variabili multibyte**:
