@@ -85,7 +85,7 @@ Valgono le proprietà che:
 
 ### **PULSANTE DI SICUREZZA**
 
-Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo).
+Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo).  
 
 ```C++
 const unsigned long DEBOUNCETIME = 50;
@@ -107,17 +107,7 @@ void stopEngine ()
   }
 }  
 
-void setup ()
-{
-  Serial.begin(115200);
-  pinMode(LED, OUTPUT);  	  // so we can update the LED
-  digitalWrite(BUTTONPIN, HIGH);  // internal pull-up resistor
-  // attach interrupt handler
-  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), stopEngine, CHANGE);  
-  numberOfButtonInterrupts = 0;
-}  // end of setup
-
-void loop ()
+void waitUntilInputChange()
 {
    // sezione critica
    // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
@@ -144,6 +134,21 @@ void loop ()
 	  }
     }
 }
+
+void setup ()
+{
+  Serial.begin(115200);
+  pinMode(LED, OUTPUT);  	  // so we can update the LED
+  digitalWrite(BUTTONPIN, HIGH);  // internal pull-up resistor
+  // attach interrupt handler
+  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), stopEngine, CHANGE);  
+  numberOfButtonInterrupts = 0;
+}  // end of setup
+
+void loop ()
+{
+   waitUntilInputChange();
+}
 ```
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348783670266430034
@@ -156,7 +161,8 @@ All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura
 
 Il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al momento dell'arrivo del segnale di interrupt e **confrontandolo** con il valore del livello campionato in istanti **periodici** successivi a quello, pianificati (schedulati) tramite un timer HW, allo scadere del quale viene chiamata l'istruzione ```waitUntilInputLow()```. La funzione, di fatto, esegue una **disabilitazione** della rilevazione dei fronti (per evitare letture duplicate dello stesso) in **"attesa"** che si verifichi una certa **condizione**, L'**attesa** è spesa campionando continuamente l'**ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, all'arrivo di un **nuovo interrupt**, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un nuovo **fronte di salita**. Alla rilevazione del fronte **di discesa** il pulsante viene riabilitato per permettere la rilevazione del prossimo fronte di salita. La funzione di **debouncing** è garantita introducendo un tempo minimo di attesa tra un campionamento e l'altro.
 
-Le attese sono tutte **non bloccanti** e realizzate tramite un timer HW che adopera esso stesso gli **interrupt** per richiamare la funzione di servizio (callback) da eseguire allo scadere del **timeout** del timer. Il timer, utilizzando gli interrupt, è in grado di intervenire in tempo in tutte le situazioni, eventualmente interrompendo l'esecuzione di codice che impegna intensamente il loop().
+Le attese sono tutte **non bloccanti** e realizzate tramite un timer HW che adopera esso stesso gli **interrupt** per richiamare la funzione di servizio (callback) da eseguire allo scadere del **timeout** del timer. Il timer, utilizzando gli interrupt, è in grado di intervenire in tempo in tutte le situazioni, eventualmente interrompendo l'esecuzione di quel codice che impegna intensamente il loop(). Si tratta sicuramente di una realizzazione che, avendo la massima efficacia possibile in tutte le situazioni, si presta alla realizzazione di **dispositivi di sicurezza**.
+
 
 ```C++
 #include <Ticker.h>
