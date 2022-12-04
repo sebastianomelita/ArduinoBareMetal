@@ -177,13 +177,13 @@ void switchPressed ()
   bool val = digitalRead(pulsante); // lettura stato pulsante
   if(val && !pressed){ // fronte di salita
     pressed = true; // disarmo il pulsante
-    debounceTicker.once_ms(50, debouncePoll);  
+    debounceTicker.once_ms(50, waitUntilInputLow);  
     Serial.println("SALITA disarmo pulsante");
     stato = !stato; 	  // logica toggle  
   }
 }  // end of switchPressed
 
-void debouncePoll()
+void waitUntilInputLow()
 {
     // sezione critica
     if (digitalRead(pulsante) == HIGH)// se il pulsante è ancora premuto
