@@ -323,8 +323,6 @@ bool isrun;
 //gestione interrupt
 volatile unsigned long previousMillis = 0;
 volatile unsigned short numberOfButtonInterrupts = 0;
-volatile bool lastState;
-bool prevState;
 //fine gestione interrupt
 
 typedef struct
@@ -467,16 +465,16 @@ void setup() {
 void switchPressed ()
 {
   numberOfButtonInterrupts++; // contatore rimbalzi
-  lastState = digitalRead(safetystop); // lettura stato pulsante
+  byte val = digitalRead(safetystop); // lettura stato pulsante
   previousMillis = millis(); // tempo evento
-  if(lastState==HIGH){ // fronte di salita
+  if(val==HIGH){ // fronte di salita
 	isrun = false; 				// impostazione dello stato dei nastri
 	digitalWrite(nastro1.engineLed, LOW);	               
 	digitalWrite(nastro2.engineLed, LOW);
   }
 }  // end of switchPressed
 
-void rearmPoll()
+void waitUntilInputLow()
 {
    // sezione critica
    // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
@@ -488,25 +486,19 @@ void rearmPoll()
    
    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
         && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
-	&& prevState != lastState // elimina transizioni anomale LL o HH 
-	&& digitalRead(safetystop) == lastState)//se coincide con il valore di un polling
+	&& digitalRead(safetystop) == LOW)//se coincide con il valore di un polling
    { 
 	Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
 	numberOfButtonInterrupts = 0; // reset del flag
 
-	prevState = lastState;
-	if(lastState){ // fronte di salita
-		Serial.println(" in SALITA");
-	}else{
-		Serial.println(" in DISCESA");
-		Serial.println(" Riattivo il nastro dopo blocco di sicurezza");
-		isrun = true;
-	}
+	Serial.println(" in DISCESA");
+	Serial.println(" Riattivo il nastro dopo blocco di sicurezza");
+	isrun = true;
     }
 }
 
 void loop() {
-	rearmPoll();
+	waitUntilInputLow();
 	delay(10); 							// equivale a yeld() (10 per le simulazioni 0 in HW)
 }
 ```
