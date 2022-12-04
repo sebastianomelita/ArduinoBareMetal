@@ -145,7 +145,7 @@ void loop()
 
 Nel codice possiamo isolare:
 - **il timer polled** com il quale viene calcolato il tempo base di riferimento dei vari task Iminimo comune multiplo del tempo minimo di ciascuno)
-- il **contatore dei tick** ```step``` che realizza un metronomo su cui si sincronizzano i vari task
+- il **contatore dei tick** ```step``` che realizza un metronomo su cui si sincronizzano i vari task: ```if((millis()-precm) >= (unsigned long) tbase){```
 - le etichette dei **rilevatori di multiplo** come ```step%3``` che sincronizzano i vari task su un multiplo intero del tempo base prefissato
 -  i **segnaposto delle fasi** di un singolo task (come ```count < 9```) che, non potendo più essere sviluppate in sequenza nel codice con lo stesso ordine che hanno nel tempo, adesso devono essere:
 	- sincronizzate sul tempo base (con i rilevatori di multiplo)
