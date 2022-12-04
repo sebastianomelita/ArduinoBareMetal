@@ -7,7 +7,7 @@ Il **vantaggio** di questa modalità di dialogo con le periferiche è che il pro
 
 Il **segnale**, inviato dalla periferica, viene indicato con il termine **interruzione** (interrupt), perché, di norma, la sua ricezione interrompe l’esecuzione del programma da parte della CPU, che comincia ad occuparsi della periferica che lo ha inviato.
 
-La ricezione di una richiesta di interruzione genera una **sequenza di eventi** nella CPU che comportano:
+La **ricezione** di una richiesta di interruzione genera una **sequenza di eventi** nella CPU che comportano:
 1.	completamento dell’istruzione corrente
 2.	salvataggio del contesto;
 3.	attivazione, se possibile, di una routine di servizio per l’interruzione;
