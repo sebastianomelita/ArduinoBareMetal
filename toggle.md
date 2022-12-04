@@ -506,6 +506,11 @@ void loop() {
 Simulazione online del codice precedente https://wokwi.com/projects/348523574025257556
 
 ### **Schedulatore basato su interrupts e polling**
+
+All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) e **tempestiva** (più rapida possibile) del solo **fronte di salita** è stata usata la combinazione di due tecniche di schedulazione:
+- una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
+- una **sincrona** (un polling), gestita dal sistema tramite un il polling della funzione millis(), per la realizzazione della funzione di debouncing (antirimbalzo) del segnale in ingresso.
+
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 int led = 13;
@@ -532,7 +537,7 @@ void switchPressed ()
   previousMillis = millis(); // tempo evento
 }  // end of switchPressed
 
-void debouncePoll()
+void waitUntilInputChange()
 {
     // sezione critica
     // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
@@ -561,7 +566,7 @@ void debouncePoll()
 }
 // loop principale
 void loop() {
-	debouncePoll();
+	waitUntilInputChange();
 	if (stato) {
 		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
 		delay(500);
