@@ -23,6 +23,26 @@ Polling e interrupt **a confronto** nell’esecuzione di un programma nel ciclo 
 
 ![polling vs interrupt](poll-int.png)
 
+
+### **PROBLEMI DELL'INTERRUPT**
+
+Tnendo presente i concetti di: **Interrupt** (=Interruzioni) e **Polling** (=interrogare ciclicamente) **Round Robin** = interrogare con ordine possiamo chiederci quali siano i **problemi della gestione di un interrupt**. Sono tre: 
+1.	**Riconoscimento** della periferica interrompente. 
+2.	gestione di **richieste simultanee**. Si risolve impostando una priorità per ogni linea.
+3.	gestione delle **interruzioni annidate**, cioè delle interruzioni delle interruzioni, ovvero delle interruzioni che interrompono una ISR.
+
+Per ogni problema degli interrupt sono possibili **due tipi** di soluzione, una **HW** e una **SW**. Le soluzioni possibili in letteratura sono **polled interrupt**, **interrupt vettorizzato** e **PIC**.
+
+### **Polled interrupt**é
+
+Il **polled interrupt** permette di risolvere tutti e tre i problemi di cui sopra in maniera software.
+
+1. Il riconoscimento della periferica interrompente viene fatto eseguendo il polling delle periferiche eseguito, però, una sola volta. 
+2. La gestione delle richieste simultanee si risolve interrogando secondo un ordine di priorità stabilito dal programmatore: viene servito per primo chi viene per primo, per ultimo chi viene per ultimo in base all’ordine stabilito.
+3. L'ultimo problema è gestire le interruzioni di interruzioni; la routine di servizio, infatti, può essere interrotta. Come è gestita la interruzione di un'altra interruzione? Con le istruzioni STI (Setting interrupt) e CLI (Clear Interrupt). Se le interruzioni sono abilitate e arriva un'altra interruzione, si interrompe a propria volta. Se questa modalità però non mi piace, la posso disabilitare. Metto CLI all’inizio della ISR, che così non può essere interrotto, metto poi STI alla fine della ISR in modo da riattivare le interruzioni per le ISR che verranno chiamate successivamente.
+
+### **ISR IN ARDUINO**
+
 Cosa tenere a mente quando si scrive una ISR():
 -	Tenerla breve
 -	Non usare al suo interno l’istruzione delay()
