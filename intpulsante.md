@@ -89,8 +89,8 @@ Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare
 
 ```C++
 const unsigned long DEBOUNCETIME = 50;
-const byte ENGINE = 7;
-const byte BUTTONPIN = 3;
+const byte ENGINE = 13;
+const byte BUTTONPIN = 12;
 volatile unsigned long previousMillis = 0;
 volatile unsigned short numberOfButtonInterrupts = 0;
 volatile bool lastState;
@@ -100,14 +100,14 @@ bool prevState;
 void stopEngine ()
 {
   numberOfButtonInterrupts++; // contatore rimbalzi
-  lastState = digitalRead(BUTTONPIN); // lettura stato pulsante
+  byte val = digitalRead(BUTTONPIN); // lettura stato pulsante
   previousMillis = millis(); // tempo evento
-  if(lastState==HIGH){ // fronte di salita
+  if(val==HIGH){ // fronte di salita
   	digitalWrite(ENGINE, LOW); // blocco subito il motore
   }
 }  
 
-void waitUntilInputChange()
+void waitUntilInputLOW()
 {
    // sezione critica
    // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
@@ -118,28 +118,22 @@ void waitUntilInputChange()
    interrupts();
    
    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
-        && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
-	&& prevState != lastState // elimina transizioni anomale LL o HH 
-	&& digitalRead(BUTTONPIN) == lastState)//se coincide con il valore di un polling
+      && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
+      && digitalRead(BUTTONPIN) == HIGH)//se il pulsante è ancora premuto
     { 
-	  Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
-	  numberOfButtonInterrupts = 0; // reset del flag
-	  
-	  prevState = lastState;
-	  if(lastState){ // fronte di salita
-	    Serial.println(" in SALITA");
-	  }else{
-		Serial.println(" in DISCESA");
-		digitalWrite(ENGINE, HIGH); // riattivo il motore
-	  }
+      Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
+      numberOfButtonInterrupts = 0; // reset del flag
+      Serial.println(" in DISCESA riarmo pulsante");
+      digitalWrite(ENGINE, HIGH); // riattivo il motore
     }
 }
 
 void setup ()
 {
   Serial.begin(115200);
-  pinMode(LED, OUTPUT);  	  // so we can update the LED
-  digitalWrite(BUTTONPIN, HIGH);  // internal pull-up resistor
+  pinMode(ENGINE, OUTPUT);  	  // so we can update the LED
+  digitalWrite(ENGINE, HIGH);
+  digitalWrite(BUTTONPIN, LOW); 
   // attach interrupt handler
   attachInterrupt(digitalPinToInterrupt(BUTTONPIN), stopEngine, CHANGE);  
   numberOfButtonInterrupts = 0;
@@ -147,7 +141,8 @@ void setup ()
 
 void loop ()
 {
-   waitUntilInputChange();
+   waitUntilInputLOW();
+   delay(10);
 }
 ```
 
