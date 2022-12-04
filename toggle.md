@@ -655,7 +655,7 @@ void loop() {
 }
 ```
 
-Le variabili condivise tra una ISR e il loop() andrebbero protette da accessi **paralleli** da parte delle due funzioni tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono essere dichiarate con il qualificatore ```volatile``` per forzarene la modifica istantanea anche sui registri della CPU. 
+Le variabili condivise tra una ISR e il loop() andrebbero protette da accessi **paralleli** da parte delle due funzioni tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono sempre essere dichiarate con il qualificatore ```volatile``` per forzarne la modifica istantanea anche sui registri della CPU. 
 
 Gli **accessi paralleli** sono un problema quando le istruzioni non sono **atomiche**, cioè non interrompibili. Le istruzioni atomiche o sono eseguite per intero o non sono eseguite affatto. In questo caso gli **accessi**, sia in lettura che in scrittura, è bene che siano **strettamente sequenziali**.
 
