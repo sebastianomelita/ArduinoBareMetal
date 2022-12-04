@@ -11,7 +11,7 @@ Di seguito è riportato un esempio di pulsante con antirimbalzo realizzato con i
 
 L'operazione avviene in **due fasi**, una nella **ISR** e l'altra in un **polling nel loop()**. Nella **ISR** viene rilevato prontamente un **fronte** (di salita o di discesa), viene campionato il livello successivo e viene settato il **flag di segnalazione** ```numberOfButtonInterrupts```. Nel **```loop()```** viene eseguito il polling del flag ed eseguito il codice dell'**antirimbalzo** se esso risulta asserito.
 
-Può leggere sia fronti di salita che di discesa in maniera immune ai rimbalzi. Il tipo di fronte si seleziona valutando la variabile lastState.
+Può leggere sia fronti di salita che di discesa in maniera immune ai rimbalzi. Il tipo di fronte si seleziona valutando la variabile ```lastState```.
 
 Da seriale si può vedere il numero di eventi di interrupt spuri che sono stati generati a causa dei rimbalzi e che sono stati filtrati dal timer (solo nella simulazione su Esp32 mettendo la spunta al flag debounce del tasto).
 
