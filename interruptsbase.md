@@ -1,6 +1,28 @@
 >[Torna all'indice](indexinterrupts.md)
 ## **INTERRUPT IN ARDUINO**
 
+E’ un’altra tecnica con cui può essere realizzato il dialogo tra CPU e periferiche. Nella gestione mediante Interrupt è la periferica stessa a richiedere un servizio mediante un apposito segnale. Il segnale viaggia sul BUS controlli nella direzione che va dalla periferica alla CPU. Quando una periferica necessita della CPU, ad esempio perché ha appena prodotto un dato o ricevuto un segnale dall’esterno, invia alla CPU un segnale con cui richiede il suo intervento. 
+
+Il vantaggio di questa modalità di dialogo con le periferiche è che il processore non deve interrogare periodicamente le periferiche (polling). La gestione delle periferiche è ASINCRONA al programma nel senso che il programmatore non deve prevedere quando ci sarà una richiesta di servizio ne è tenuto ad interrogare periodicamente le periferiche per sapere se ne hanno bisogno. E’ una tecnica adatta quando si devono gestire operazioni asincrone che magari capitano raramente o in maniera imprevedibile, quali allarmi o comandi provenienti dall’utente.
+
+Il segnale, inviato dalla periferica, viene indicato con il termine interruzione (interrupt), perché, di norma, la sua ricezione interrompe l’esecuzione del programma da parte della CPU, che comincia ad occuparsi della periferica che lo ha inviato.
+
+La ricezione di una richiesta di interruzione genera una sequenza di eventi nella CPU che comportano:
+1.	completamento dell’istruzione corrente
+2.	salvataggio del contesto;
+3.	attivazione, se possibile, di una routine di servizio per l’interruzione;
+4.	recupero del contesto e continuazione del programma originario.
+
+Una ISR è la routine di servizio (funzione) che la CPU esegue per gestire la comunicazione con la periferica. 
+Il salvataggio del contesto è essenziale in quanto permette alla CPU di tornare allo stato precedente l’interruzione, una volta che questa è stata servita. L’interruzione è analoga ad una chiamata di funzione ed utilizza le stesse modalità di utilizzo dello stack e delle istruzioni assembly CALL e RET (adesso detta IRET) già viste a suo tempo per le funzioni. 
+
+- Le funzioni tradizionali sono dette sincrone e si attivano a seguito di una invocazione inserita in una parte ben precisa del codice della quale si può prevedere la tempistica della sua esecuzione. 
+- Le funzioni di risposta ad un interrupt sono dette ISR (Interrupt Service Routines) e sono chiamate di funzione asincrone in quanto la loro attivazione avviene a seguito dell’arrivo di un segnale elettrico proveniente da un HW esterno del quale non è possibile prevedere l’istante in cui capiterà.
+
+Polling e interrupt a confronto nell’esecuzione di un programma nel ciclo loop di un microcontrollore:
+
+![polling vs interrupt](poll-int.png)
+
 Cosa tenere a mente quando si scrive una ISR():
 -	Tenerla breve
 -	Non usare al suo interno l’istruzione delay()
@@ -45,7 +67,7 @@ void loop ()
   // loop doing nothing 
 } 
 ``` 
-![polling vs interrupt](poll-int.png)
+
 
 La struttura del codice ricalca lo schema di principio (modello a destra) tipico di una invocazione ISR che avviene tutta all’esterno del loop e in maniera indipendente da questo (che può anche non fare nulla). 
 Il modello a sinistra è invece il tipo schema di gestione della periferica mediante polling puro, cioè la gestione delle periferiche avviene tutta all’interno del loop col programma principale, a margine del task principale.
