@@ -673,7 +673,7 @@ Gli **accessi paralleli** non sono un problema quando le **istruzioni** sono **a
 
 Nei microcontrollori attuali, in genere **nessuna istruzione** gode della proprietà di essere **atomica** con una sola eccezione per la lettura e scrittura delle **variabili ad 8 bit**. Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio macchina) è intrinsecamente garantito essere **atomico**. Per queste variabili rimane comunque la necessita dell'uso del qualificatore ```volatile```.
 
-L'unica variabile **condivisa** tra ISR e loop() nel progetto è ```stato``` che è ad 8bit ed è stata dichiarata come ```volatile```.
+L'unica variabile **condivisa** tra ISR e loop() nel progetto è ```stato``` che è ad 8 bit ed è stata dichiarata come ```volatile```.
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350052113369268819
 
