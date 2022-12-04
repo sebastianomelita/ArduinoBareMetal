@@ -141,8 +141,17 @@ void loop()
 	}
 	// il codice eseguito al tempo massimo della CPU va qui
 }
-
 ```
+
+Nel codice possiamo isolare:
+- **il timer polled** com il quale viene calcolato il tempo base di riferimento dei vari task Iminimo comune multiplo del tempo minimo di ciascuno)
+- il **contatore dei tick** ```step``` che realizza un metronomo su cui si sincronizzano i vari task
+- le etichette dei **rilevatori di multiplo** come ```step%3``` che sincronizzano i vari task su un multiplo intero del tempo base prefissato
+-  i **segnaposto delle fasi** di un singolo task (come ```count < 9```) che, non potendo più essere sviluppate in sequenza nel codice con lo stesso ordine che hanno nel tempo, adesso devono essere:
+	- sincronizzate sul tempo base (con i rilevatori di multiplo)
+	- riconosciute e trattate come eventi a cui assegnare una risposta appropriata (con il contatore ```count```)
+- i **segnaposro** si possono sincronizzare su **contatori ausiliari** (variabili globali) o su **ingressi** o sul **risultato** di altre fasi.
+
 
 ## **SCHEDULAZIONE CON I PROTOTHREAD**
 
