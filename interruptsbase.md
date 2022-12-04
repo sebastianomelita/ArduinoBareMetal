@@ -21,7 +21,7 @@ Il **salvataggio del contesto** è essenziale in quanto permette alla CPU di tor
 
 Polling e interrupt **a confronto** nell’esecuzione di un programma nel ciclo loop di un microcontrollore:
 
-<img src="poll-int.png" alt="alt text" width="600">
+<img src="poll-int.png" alt="alt text" width="700">
 
 
 ### **PROBLEMI DELL'INTERRUPT**
