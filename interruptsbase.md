@@ -33,7 +33,7 @@ Tnendo presente i concetti di: **Interrupt** (=Interruzioni) e **Polling** (=int
 
 Per ogni problema degli interrupt sono possibili **due tipi** di soluzione, una **HW** e una **SW**. Le soluzioni possibili in letteratura sono **polled interrupt**, **interrupt vettorizzato** e **PIC**.
 
-### **Polled interrupt**é
+### **POLLED INTERRUPT**
 
 Il **polled interrupt** permette di risolvere tutti e tre i problemi di cui sopra in maniera software.
 
