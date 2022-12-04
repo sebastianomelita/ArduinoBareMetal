@@ -64,7 +64,7 @@ Il codice **da racchiudere** in una **sezione critica** dovrebbe includere tutte
 Una modifica (scrittura)a una **variabile a 8 bit** è atomica. Può essere usata in maniera safe sia dentro che fuori un ISR.
 A maggior ragione, **le variabili ad 8bit** in Arduino sono sicure anche in lettura pur se condivise con una ISR. L'unica accortezza necessaria è dichiararla sempre con il qualificatore ```volatile```.
 
-Le modifiche a valori con codifiche **maggiori di 8 bit** sono in genere **non atomiche**, pertanto le variabili a 16 o 32 bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati di default durante una routine di servizio di interrupt, quindi non si verificherà il danneggiamento di una variabile multibyte nell'ISR per cui le **sezioni critiche** vanno inserite soltanto nel ```loop()```.
+Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **non atomiche**, pertanto le variabili a 16 o 32 bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati di default durante una routine di servizio di interrupt, quindi, non potendo verificarsi il danneggiamento di una variabile multibyte in una ISR, le **sezioni critiche** vanno inserite soltanto nel ```loop()```.
 
 Quindi, riassumendo, per **variabili multibyte**:
 -	**dentro l’ISR**. il valore di una variabile multibyte non può cambiare perché di default gli interrupt sono disabilitati. Non è necessario usare un blocco noInterrupts()-interrupts().
