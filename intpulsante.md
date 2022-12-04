@@ -83,7 +83,7 @@ Valgono le proprietà che:
 -	le condizioni a destra sono valutate solo se quelle a sinistra sono vere (la lenta digitalRead() non si fa se non necessario)
 
 
-### **PULSANTE DI SICUREZZA**
+### **PULSANTE DI SICUREZZA BASATO SU TIMER sw (POLLING)**
 
 Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo).  
 
