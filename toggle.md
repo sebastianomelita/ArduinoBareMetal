@@ -621,7 +621,6 @@ void switchPressed ()
 
 void waitUntilInputLow()
 {
-    // sezione critica
     if (digitalRead(pulsante) == HIGH)// se il pulsante è ancora premuto
     { 
         Serial.print("Aspetto");
