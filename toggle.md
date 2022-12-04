@@ -653,9 +653,15 @@ void loop() {
     		delay(10);
 	}
 }
-
-
 ```
+
+Le variabili condivise tra una ISR e il loop() andrebbero protette da accessi **paralleli** da parte delle due funzioni tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono essere dichiarate con il qualificatore ```volatile``` per forzarene la modifica istantanea anche sui registri della CPU. 
+
+Gli **accessi paralleli** sono un problema quando le istruzioni non sono **atomiche**, cioè non interrompibili. Le istruzioni atomiche o sono eseguite per intero o non sono eseguite affatto. In questo caso gli **accessi**, sia in lettura che in scrittura, è bene che siano **strettamente sequenziali**.
+
+Nei microcontrollori attuali quanto detto prima ha una sola eccezione per le variabili ad **8 bit** il cui accesso a basso livello (linguaggio macchina) è intrinsecamente garantito essere **atomico**. Per queste variabili rimane la necessita dell'uso del qualificatore ```volatile```.
+
+Le modifiche a valori con codifiche **maggiori di 8 bit** sono in genere **non atomiche**, pertanto le variabili a 16 o 32bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati durante una routine di servizio di interrupt, quindi non si verificherà il danneggiamento di una variabile multibyte nell'ISR.
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350052113369268819
 
