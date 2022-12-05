@@ -140,10 +140,13 @@ Nel codice possiamo isolare:
 - **il timer polled** com il quale viene calcolato il tempo base di riferimento dei vari task Iminimo comune multiplo del tempo minimo di ciascuno)
 - il **contatore dei tick** ```step``` che realizza un metronomo su cui si sincronizzano i vari task: ```if((millis()-precm) >= (unsigned long) tbase){```
 - le etichette dei **rilevatori di multiplo** come ```step%3``` che sincronizzano i vari task su un multiplo intero del tempo base prefissato
--  i **segnaposto delle fasi** di un singolo task (come ```count < 9```) che, non potendo più essere sviluppate in sequenza nel codice con lo stesso ordine che hanno nel tempo, adesso devono essere:
+-  i **segnaposto delle fasi** in cui si sviluppa la vita di un singolo task (come ```step < 50```) che, non potendo più essere sviluppate in sequenza nel codice con lo stesso ordine che hanno nel tempo, adesso devono essere:
 	- sincronizzate sul tempo base (con i rilevatori di multiplo)
 	- riconosciute e trattate come eventi a cui assegnare una risposta appropriata (con il contatore ```count```)
 - i **segnaposto** si possono sincronizzare su **contatori ausiliari** (variabili globali) o su **ingressi** o sul **risultato** di altre fasi.
+- si noti il conteggio dello sviluppo delle epoche dei singoli task che risulta più elaborato da pensare che nel caso dello sviluppo sequenziale con i delay perchè richiede l'introduzione di:
+     - un **contatore** di **epoche** ```step``` che racchiude un **elenco di fasi** caratterizzate da un certo **stato** xhe ne influenza il **le azioni** correlate.
+     - una **variabile di stato** ```stato``` che stabilisce il comportamento delle medesime **fasi** della vita di un task in **epoche** diverse.
 
 Link simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/fn66P9O8oJG?editbtn=1
 
