@@ -5,7 +5,7 @@ E’ una delle **due tecniche** (l'altra è il polling) con cui può essere real
 
 Il **vantaggio** di questa modalità di dialogo con le periferiche è che il processore non deve interrogare **periodicamente** le periferiche (polling). La gestione delle periferiche è **ASINCRONA** al programma nel senso che il programmatore non deve prevedere quando ci sarà una richiesta di servizio ne è tenuto ad interrogare periodicamente le periferiche per sapere se ne hanno bisogno. E’ una tecnica adatta quando si devono gestire **operazioni asincrone** che magari capitano raramente o in maniera imprevedibile, quali **allarmi** o **comandi** di attivazione provenienti dall’utente.
 
-Il **segnale**, inviato dalla periferica, viene indicato con il termine **interruzione** (interrupt), perché, di norma, la sua ricezione interrompe l’esecuzione del programma da parte della CPU, che, da quel momento in poi,  comincia ad occuparsi della periferica che lo ha inviato.
+Il **segnale**, inviato dalla periferica, viene indicato con il termine **interruzione** (interrupt), perché, di norma, ala sua ricezione la CPU interrompe l’esecuzione del programma corrente e comincia ad occuparsi della periferica che lo ha inviato.
 
 La **ricezione** di una richiesta di interruzione genera una **sequenza di eventi** nella CPU che comportano:
 1.	completamento dell’istruzione corrente
