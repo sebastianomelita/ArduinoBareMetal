@@ -35,6 +35,11 @@ Link simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/2GGet
 
 Link simulazione su ESP32 con Wowki: https://wokwi.com/projects/349386232933909076
 
+Nel codice possiamo isolare:
+- i ```delay(500)```, tutti impostati sull tesso ritardo corrispondente al **tempo comune** tra le varie fasi dei due task, cioè il minimo comune multiplo tra il tempo della fase elementare del primo task e di quella corrispondente del secondo task. Si tratta di **momenti speciali** di grazia in cui entrambi i task si incontrano e svolgono le loro operazioni **contemporaneamente**.
+- le **operazioni** di ogni task da svolgere insieme, perchè nello stesso istante, in ogni fase come ```digitalWrite(led2, HIGH)```. Non sempre devono essere presenti per entrambi i task dato che magari uno potrebbe rimanere inattivo in una fase elementare in cui è attivo l'altro. 
+- una **trama temporale** che racchiude tutti i **tempi elementari** in un **periodo** che può essere **ripetuto uguale** tra un loop e l'altro. E' una **raccolta di fasi** in cui si danno appuntamento le varie operazioni elementari che compongono l'algoritmo all'interno di un loop().
+
 Variante che usa la capacità di iterare intrinseca della funzione loop():
 
 ```C++
@@ -129,6 +134,15 @@ void loop()
 }
 
 ```
+
+Nel codice possiamo isolare:
+- **il timer polled** com il quale viene calcolato il tempo base di riferimento dei vari task Iminimo comune multiplo del tempo minimo di ciascuno)
+- il **contatore dei tick** ```step``` che realizza un metronomo su cui si sincronizzano i vari task: ```if((millis()-precm) >= (unsigned long) tbase){```
+- le etichette dei **rilevatori di multiplo** come ```step%3``` che sincronizzano i vari task su un multiplo intero del tempo base prefissato
+-  i **segnaposto delle fasi** di un singolo task (come ```count < 9```) che, non potendo più essere sviluppate in sequenza nel codice con lo stesso ordine che hanno nel tempo, adesso devono essere:
+	- sincronizzate sul tempo base (con i rilevatori di multiplo)
+	- riconosciute e trattate come eventi a cui assegnare una risposta appropriata (con il contatore ```count```)
+- i **segnaposto** si possono sincronizzare su **contatori ausiliari** (variabili globali) o su **ingressi** o sul **risultato** di altre fasi.
 
 Link simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/fn66P9O8oJG?editbtn=1
 
