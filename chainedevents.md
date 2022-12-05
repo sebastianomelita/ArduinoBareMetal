@@ -145,7 +145,7 @@ Nel codice possiamo isolare:
 	- riconosciute e trattate come eventi a cui assegnare una risposta appropriata (con il contatore ```count```)
 - i **segnaposto** si possono sincronizzare su **contatori ausiliari** (variabili globali) o su **ingressi** o sul **risultato** di altre fasi.
 - si noti il conteggio dello **sviluppo ad eventi** delle **fasi** dei singoli task che risulta più elaborato da pensare che nel caso dello **sviluppo sequenziale** con i delay perchè richiede l'introduzione di:
-     - un **contatore** di **epoche** ```step``` che isola un **elenco di fasi** caratterizzate da un certo **stato** xhe ne influenza il **le azioni** correlate.
+     - un **contatore** di **epoche** ```step``` che isola un **elenco di fasi** caratterizzate da un certo **stato** che ne influenza **le azioni** ad esse correlate.
      - una **variabile di stato** ```stato``` che stabilisce il comportamento delle medesime **fasi** della vita di un task in **epoche** diverse.
 
 Link simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/fn66P9O8oJG?editbtn=1
