@@ -104,6 +104,7 @@ const byte ENGINE = 13;
 const byte BUTTONPIN = 12;
 volatile unsigned long previousMillis = 0;
 volatile unsigned short numberOfButtonInterrupts = 0;
+bool pressed;
 
 // Interrupt Service Routine (ISR)
 void stopEngine ()
@@ -112,6 +113,7 @@ void stopEngine ()
   byte val = digitalRead(BUTTONPIN); // lettura stato pulsante
   previousMillis = millis(); // tempo evento
   if(val==HIGH){ // fronte di salita
+    pressed = true; // disarmo il pulsante
   	digitalWrite(ENGINE, LOW); // blocco subito il motore
   }
 }  
@@ -128,11 +130,12 @@ void waitUntilInputLOW()
    
    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
       && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
-      && digitalRead(BUTTONPIN) == LOW)//se il pulsante non è ancora premuto
+      && digitalRead(BUTTONPIN) == LOW)//se il pulsante è ancora premuto
     { 
       Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
       numberOfButtonInterrupts = 0; // reset del flag
       Serial.println(" in DISCESA riarmo pulsante");
+      pressed = false; // riarmo il pulsante
       digitalWrite(ENGINE, HIGH); // riattivo il motore
     }
 }
@@ -146,6 +149,7 @@ void setup ()
   // attach interrupt handler
   attachInterrupt(digitalPinToInterrupt(BUTTONPIN), stopEngine, CHANGE);  
   numberOfButtonInterrupts = 0;
+  pressed = false;
 }  // end of setup
 
 void loop ()
