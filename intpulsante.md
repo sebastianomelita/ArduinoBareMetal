@@ -113,7 +113,7 @@ void stopEngine ()
   byte val = digitalRead(BUTTONPIN); // lettura stato pulsante
   previousMillis = millis(); // tempo evento
   if(val==HIGH){ // fronte di salita
-    pressed = true; // disarmo il pulsante
+    	pressed = true; // disarmo il pulsante
   	digitalWrite(ENGINE, LOW); // blocco subito il motore
   }
 }  
