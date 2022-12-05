@@ -80,7 +80,7 @@ void loop()
 Nel codice possiamo isolare:
 - i ```delay(500)```, tutti impostati sull tesso ritardo corrispondente al **tempo comune** tra le varie fasi dei due task, cioè il minimo comune multiplo tra il tempo della fase elementare del primo task e di quella corrispondente del secondo task. Si tratta di **momenti speciali** di grazia in cui entrambi i task si incontrano e svolgono le loro operazioni **contemporaneamente**.
 - le **operazioni** di ogni task da svolgere insieme, perchè nello stesso istante, in ogni fase come ```digitalWrite(led2, HIGH)```. Non sempre devono essere presenti per entrambi i task dato che magari uno potrebbe rimanere inattivo in una fase elementare in cui è attivo l'altro. 
-- una **trama temporale** che racchiude tutti i **tempi elementari** in un periodo che può essere ripetuto uguale tra un loop e l'altro. E' una **raccolta di fasi** in cui si danno appuntamento le varie operazioni elementari che compongono l'algoritmo all'interno di un loop().
+- una **trama temporale** che racchiude tutti i **tempi elementari** in un **periodo** che può essere **ripetuto uguale** tra un loop e l'altro. E' una **raccolta di fasi** in cui si danno appuntamento le varie operazioni elementari che compongono l'algoritmo all'interno di un loop().
 
 ## **SCHEDULAZIONE CON I TICK**
 
