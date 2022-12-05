@@ -375,6 +375,7 @@ Da una analisi comparativa degli esempi proposti si possono trarre alcune consid
 - Rimane il problema della maggiore complessità della gestione della **comunicazione** tra le varie **fasi** di uno stesso algoritmo che non è più sequenziale lungo il codice ma **a salti** secondo un **ordine** stabilito da etichette:
      - **etichette temporali** (tick multipli del tempo base) 
      - da **etichette di sorgente** dei dati associate a certi **ingressi** (callback).
+     - **contatori ausiliari** e **variabili di stato** che definiscono rispettivamente **gruppi di fasi** (epoche) e il loro **comportamento**
 
 **Sitografia:**
 - https://9g.lt/blog/protothreads-on-tinkercad
