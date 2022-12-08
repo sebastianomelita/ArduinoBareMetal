@@ -76,7 +76,7 @@ if(in==HIGH){
 	- Il loop() è anche l'**ambito di visibilità** (scope) delle variabili locali, cioè dichiarate al suo interno, perchè solo all'interno del loop possono essere accessibili sia in lettura che in scrittura. Al di fuori del loop() variabili con lo stesso nome sono ammesse ma sono considerate variabili diverse. Questo è il motivo per cui variabili locali al loop() non hanno proprietà di **persistenza** tra un loop e l'altro, sono sempre, ad ogni ciclo, nuovi dati che occupano le stesse posizioni di memoria.
 - all'**esterno** del loop() e allora si dicono esterne alla funzione loop(), se poi queste sono dichiarate pure esterne ad ogni funzione del progetto (loop compreso) allora si dicono **globali**. 
      - Le **variabili globali** hanno il loro **ciclo di vita** che dura per tutta l'esecuzione del programma: sono **dichiarate** al di fuori del loop(), **inizializzate** nel setup() e **lette e modificate** all'interno del loop().
-     - Le **variabili globali** hanno la loro visibilità in tutte le funzioni del progetto, cioè sono accessibili, in lettura e in scrittura, da parte del codice inserito nel loop() e in tutte le altre funzioni dichiarate altrove nel progetto.
+     - Le **variabili globali** hanno la loro visibilità in tutte le funzioni del progetto, cioè sono accessibili, in lettura e in scrittura, da parte del codice inserito nel loop() o inserito altrove, in qualunque altra funzione dichiarata nel progetto.
    
 
 - Tenere **memoria** degli **ingressi** al loop precedente fino al loop **successivo**. Cioè conservare il valore corrente di uno o più ingressi in una variabile per poi poterlo “consumare” cioè leggere ed utilizzarlo durante l’esecuzione del loop successivo.
