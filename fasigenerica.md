@@ -70,13 +70,20 @@ if(in==HIGH){
 	digitalWrite(led,closed);  //scrittura uscita
 }
 ```
-**Persistenza** di una **variabile** tra **più loop()**. In genere si fanno frequentemente due cose:
+**Persistenza** di una **variabile** tra **più loop()**. Le variabili in un microcontrollore possono essere **dichiarate**:
+- all'**interno** del loop() e allora si dicono locali alla funzione loop()
+      - all'interno della quale svolgono per in tero il lorto **ciclo di vita**, cioè nascono (vengono dichiarate e quindi allocate), evolvono (vengono lette e modificate) e muoiono (vengono deallocate) all'interno della funzione loop(). 
+      - Il loop() è anche l'**ambito di visibilità** (scope) delle variabili locali, cioè dichiarate al suo interno, perchè solo all'interno del loop possono essere accessibili sia in lettura che in scrittura. Al di fuori del loop() variabili con lo stesso nome sono ammesse ma sono considerate variabili diverse. Questo è il motivo per cui variabili locali al loop() non hanno proprietà di **persistenza** tra un loop e l'altro, sono sempre, ad ogni ciclo, nuovi dati che occupano le stesse posizioni di memoria.
+- all'**esterno** del loop() e allora si dicono esterne alla funzione loop(), se poi queste sono pure dichiarate esterne ad ogni funzione del progetto (loop comprteso) allora si dicono **globali**. 
+     - Le **variabili globali** hanno il loro **ciclo di vita** che dura per tutta l'esecuzione del programma, sono dichiarate al di fuori del looop(), inizializzate nel setup() e lette e modificate all'interno del loop().
+     - Le **variabili globali** hanno la loro visibilità in tutte le funzioni del progetto, cioè sono accessibili, in lettura e in scrittura, da parte del codice inserito nel loop() e in tutte le altre funzioni dichiarate altrove nel progetto.
+   
 
-- Tenere **memoria** degli **ingressi** al loop precedente. Cioè conservare il valore corrente di uno o più ingressi in una variabile per poi poterlo “consumare” cioè leggere ed utilizzarlo durante l’esecuzione del loop successivo.
+- Tenere **memoria** degli **ingressi** al loop precedente fino al loop **successivo**. Cioè conservare il valore corrente di uno o più ingressi in una variabile per poi poterlo “consumare” cioè leggere ed utilizzarlo durante l’esecuzione del loop successivo.
 	```C++
 	pval = val; // ultima istruzione che chiude loop()
 	```
-- Tenere traccia dello **stato** del mio algoritmo, cioè memoria di informazioni importanti (dedotte dalla storia di ingressi e da quella di altre variabili di stato) conservandole all’interno di una variabile di stato. Ad esempio se
+- Tenere **memoria** dello **stato** del mio algoritmo, cioè traccia di informazioni importanti (dedotte dalla storia di ingressi e da quella di altre variabili di stato) conservandole all’interno di una **variabile di stato** che viene **letta ed aggiornata** ad ogni loop. Ad esempio se
  deduco il nuovo stato da quello precedente:
 	```C++
 	stato = !stato 
