@@ -6,6 +6,8 @@
 
 ![accensioneled](accensioneled.png)
 
+### **Eventi di input**
+
 Un **microcontrollore** possiede la specificità di avere integrate nello stesso chip un gran numero di periferiche con le quali una generica applicazione in qualche modo deve colloquiare.
 
 il **colloquio** si può realizzare sostanzialmente usando due **tecniche di gestione**:
@@ -19,6 +21,8 @@ Una **ISR()** è una funzione a parte, **esterna al loop()** che viene richiamat
 Sia che venga notificato con un interrupt, sia che venga rilevato dall'appplicazione, in qualche modo si genera un **evento di input** che deve essere gestito. 
 
 **Eventi di input** possono essere di varia natura: l'input di un pulsante, l'input da una seriale, l'input da una porta digitale in genere. Qualunque sia il tipo di dispositivo, nello sviluppo del ragionamento che faremo adesso, lo possiamo assimilare ad un generico **sensore**.
+
+### **Fasi di un  algoritmo di controllo**
 
 In definitiva, se il nostro **"sensore"** è un pulsante, dovremmo vedere la pressione del pulsante come un generico **evento di input** al quale il microcontrollore **risponde** generando un **output** dopo avere **elaborato una logica di comando**. Possiamo interpretare **la logica di comando** come l’algoritmo che genera la risposta all’evento.
 
