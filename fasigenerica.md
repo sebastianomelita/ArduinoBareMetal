@@ -70,7 +70,9 @@ if(in==HIGH){
 	digitalWrite(led,closed);  //scrittura uscita
 }
 ```
-**Persistenza** di una **variabile** tra **più loop()**. Le variabili in un microcontrollore possono essere **dichiarate**:
+### **Persistenza di una variabile tra più loop()**. 
+
+Le variabili in un microcontrollore possono essere **dichiarate**:
 - all'**interno** del loop() e allora si dicono **locali** alla funzione loop(). Le variabili locali hanno:
 	- il loro **ciclo di vita**, cioè l'intervallo temporale tra la loro **allocazione** e la loro **deallocazione** in RAM, tutto all'interno di un singolo ciclo di loop(). Esse nascono (vengono dichiarate e quindi allocate), evolvono (vengono lette e modificate) e muoiono (vengono deallocate) all'interno della funzione loop().
 	- Il loop() è anche l'**ambito di visibilità** (scope) delle variabili locali, cioè dichiarate al suo interno, perchè solo all'interno del loop possono essere accessibili sia in lettura che in scrittura. Al di fuori del loop() variabili con lo stesso nome sono ammesse ma sono considerate variabili diverse. Questo è il motivo per cui variabili locali al loop() non hanno proprietà di **persistenza** tra un loop e l'altro, sono sempre, ad ogni ciclo, nuovi dati che occupano le stesse posizioni di memoria.
