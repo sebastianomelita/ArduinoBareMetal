@@ -57,14 +57,14 @@ Questo fatto impone alcune riflessioni:
 
 - Se le metto **“direttamente”** dentro il blocco loop() vengono eseguite molto spesso, anzi più spesso che si può. La **periodicità**, cioè il numero di volte al secondo, dipende dalla velocità della CPU e dalla velocità delle singole operazioni e non è possibile stabilirla con precisione.
 
-- Se le metto **nel loop()** ma dentro un **blocco di codice condizionale** la cui esecuzione avviene periodicamente in certi istanti prestabiliti (ad esempio ogni 10 secondi) allora possono essere eseguite **meno frequentemente**. La **periodicità** dell’esecuzione è controllabile **con precisione** mediante algoritmi di **scheduling** (pianificazione nel tempo) che possono essere realizzati in vario modo. In genere, **a basso livello**, i modi sono tre:
+- Se le metto **nel loop()** ma dentro un **blocco di codice condizionale** la cui esecuzione avviene periodicamente in certi istanti prestabiliti (ad esempio ogni 10 secondi) allora possono essere eseguite **meno frequentemente**. La **periodicità** dell’esecuzione è controllabile **con precisione** mediante algoritmi di **scheduling** (pianificazione nel tempo) che possono essere realizzati in vario modo. In genere, **a basso livello**, i modi **periodici** (o **sincroni**) sono tre:
 
   -  **Ritardo** dell’esecuzione mediante funzione delay() impostabile ad un tempo di millisecondi prefissato.
 
   -  **Polling della funzione millis()** nel loop che permette di scegliere l’istante di tempo adatto per eseguire un certo blocco di codice posto all’interno del loop (tipicamente dentro un blocco if-then-else con una condizione che valuta millis())
 
    - **Interrupt** generato da un timer HW che permette di eseguire una ISR(), definita al di fuori dal loop(), allo scadere del timer.
-- se le metto dentro una **ISR()** saranno eseguite in maniera **asincrona** ma, se solo una fase sta dentro la ISR(), va gestita opportunamente la **comunicazione** con le altre fasi che sono dentro il loop().
+- se le metto dentro una **ISR()** saranno eseguite in maniera aperiodica **asincrona** ma, se solo una fase sta dentro la ISR(), va gestita opportunamente la **comunicazione** con le altre fasi che sono dentro il loop().
 
 
 Ovviamente blocchi di codice possono essere filtrati tramite **istruzioni di selezione**, quindi inserendoli nel blocco then o in quello else di un **costrutto if-then-else**. La condizione di selezione può valutare il **tempo** (la faccio durare fino ad un certo tempo) oppure altri **ingressi** (confronto il valore attuale di un ingresso con quello di altri ingressi), oppure lo **stato** del sistema (se il motore è in movimento faccio una certa cosa se no non la faccio). Di seguito la fase di scrittura delle uscite non viene eseguita ad ogni loop ma solo se un certo ingresso ha un determinato valore:
