@@ -78,7 +78,7 @@ if(in==HIGH){
      - Le **variabili globali** hanno il loro **ciclo di vita** che dura per tutta l'esecuzione del programma: sono **dichiarate** al di fuori del loop(), **inizializzate** nel setup() e **lette e modificate** all'interno del loop().
      - Le **variabili globali** hanno la loro visibilità in tutte le funzioni del progetto, cioè sono accessibili, in lettura e in scrittura, da parte del codice inserito nel loop() o inserito altrove, in qualunque altra funzione dichiarata nel progetto.
    
-
+La **persistenza** di una variabile globale nel loop() potrebbe **servire a**:
 - Tenere **memoria** degli **ingressi** al loop precedente fino al loop **successivo**. Cioè conservare il valore corrente di uno o più ingressi in una variabile per poi poterlo “consumare” cioè leggere ed utilizzarlo durante l’esecuzione del loop successivo.
 	```C++
 	pval = val; // ultima istruzione che chiude loop()
