@@ -70,9 +70,9 @@ if(in==HIGH){
 	digitalWrite(led,closed);  //scrittura uscita
 }
 ```
-**Memoria**. In genere si fanno frequentemente due cose:
+**Persistenza di un valore tra più loop()**. In genere si fanno frequentemente due cose:
 
-- Tenere memoria degli **ingressi** al loop precedente. Cioè conservare il valore corrente di uno o più ingressi in una variabile per poi poterlo “consumare” cioè leggere ed utilizzarlo durante l’esecuzione del loop successivo.
+- Tenere **memoria** degli **ingressi** al loop precedente. Cioè conservare il valore corrente di uno o più ingressi in una variabile per poi poterlo “consumare” cioè leggere ed utilizzarlo durante l’esecuzione del loop successivo.
 	```C++
 	pval = val; // ultima istruzione che chiude loop()
 	```
