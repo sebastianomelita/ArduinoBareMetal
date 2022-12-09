@@ -61,7 +61,7 @@ Questo fatto impone alcune riflessioni:
 
 - Se le metto **“direttamente”** dentro il blocco loop() vengono eseguite molto spesso, anzi più spesso che si può. La **periodicità**, cioè il numero di volte al secondo, dipende dalla velocità della CPU e dalla velocità delle singole operazioni e non è possibile stabilirla con precisione.
 
-- Se le metto **nel loop()** ma dentro un **blocco di codice condizionale** la cui esecuzione avviene periodicamente in certi istanti prestabiliti (ad esempio ogni 10 secondi) allora possono essere eseguite **meno frequentemente**. La **periodicità** dell’esecuzione è controllabile **con precisione** mediante algoritmi di **scheduling** (pianificazione nel tempo) che possono essere realizzati in vario modo. In genere, **a basso livello**, i modi **periodici** (o **sincroni**) sono tre:
+- Se le metto **nel loop()** ma dentro un **blocco di codice condizionale** la cui esecuzione avviene **periodicamente** in certi istanti prestabiliti (ad esempio ogni 10 secondi) allora possono essere eseguite **meno frequentemente**. La **periodicità** dell’esecuzione è controllabile **con precisione** mediante algoritmi di **scheduling** (pianificazione nel tempo) che possono essere realizzati in vario modo. In genere, **a basso livello**, i modi **periodici** (o **sincroni**) sono tre:
 
   -  **Ritardo** dell’esecuzione mediante funzione delay() impostabile ad un tempo di millisecondi prefissato.
 
