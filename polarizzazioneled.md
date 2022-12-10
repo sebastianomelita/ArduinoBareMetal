@@ -56,6 +56,9 @@ In genere la **corrente massima** assorbibile in modo DRAIN **è minore** di que
 **Polarizzazione con anodo a massa.**
 ![Pulsanti](led2bis.png)
 
+### **Sitografia:**
+- https://it.wikipedia.org/wiki/LED
+
 >[Torna all'indice generale](index.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTM3NzYzOTU4NF19
