@@ -5,7 +5,7 @@
 
 Si vuole accendere un led alla pressione del pulsante e spegnerlo al suo rilascio.
 
-La logica di comando consiste nel fare il **polling** di una porta di ingresso, nel **selezionare il livello** letto e nel generare l’uscita corrispondente.
+La **logica di comando** consiste nel fare il **polling** di una porta di ingresso, nel **selezionare il livello** letto e nel generare (**scrivere**) l’uscita corrispondente.
 
 L’operazione non ha particolari controindicazioni nell’essere eseguita periodicamente alla **massima velocità** consentita dalla CPU, almeno per un programma con un numero limitato di compiti da eseguire (task). Motivo per cui le fasi di azionamento vengono gestite direttamente dentro il loop() senza alcun filtro.
 
