@@ -7,6 +7,6 @@ Nel controllo da programma (polling), la CPU interroga periodicamente la porta d
 
 Riassumendo. La tecnica del polling consiste nell’interrogazione periodica delle periferiche da svolgere a margine (dopo di) di ogni attività, compito o programma principale svolto dalla CPU. Grosso svantaggio, il programma principale deve occuparsi di interrogare direttamente le periferiche, oltre a svolgere i compiti a lui assegnati.
 
-<img src="polling.png" alt="alt text" width="200">
+<img src="polling.png" alt="alt text" width="300">
 
 >[Torna all'indice generale](index.md)
