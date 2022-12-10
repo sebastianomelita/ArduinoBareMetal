@@ -3,13 +3,16 @@
 
 >[Torna all'indice generale](index.md)
 
-**ACCENSIONE DI UN LED CON UN MICROCONTROLLORE**
+## **ACCENSIONE DI UN LED CON UN MICROCONTROLLORE**
 
+### **LED**
 Un LED è un dispositivo **optoelettronico** che sfrutta la capacità di alcuni materiali semiconduttori di produrre fotoni attraverso un fenomeno di emissione spontanea quando attraversati da una corrente elettrica.
 
 Un LED si accende quando in esso **scorre la corrente** sufficiente per illuminarlo (detta anche corrente di **"ginocchio"**). La corrente necessaria è compresa tipicamente tra 10 e 20mA, il **valore** di questa corrente può essere **controllato** impostando il valore della **resistenza di polarizzazione**: resistenze più piccole determinano maggiore corrente (e maggiore luminosità), resistenze più grandi determinano minore corrente (e minore luminosità).
 
-Il valore con cui viene **codificato** lo stato di una **porta digitale** può essere HIGH (vale di solito 1) o LOW (vale di solito 0). L'impostazione del bit della porta ha un signicato fisico che influenza tutte le grandezze elettriche di un circuito ad esse collegato (in particolare tensione e corrente) ma imposta, **forzandola** ad un valore ben preciso, solo una di queste: la **tensione** della porta rispetto a GND.
+### **Porta digitale di uscita**
+
+Il valore con cui viene **codificato** lo stato di una **porta digitale di uscita** può essere HIGH (vale di solito 1) o LOW (vale di solito 0). L'impostazione del bit della porta ha un signicato fisico che influenza tutte le grandezze elettriche di un circuito ad esse collegato (in particolare tensione e corrente) ma imposta, **forzandola** ad un valore ben preciso, solo una di queste: la **tensione** della porta rispetto a GND.
 - se la porta è in **HIGH** la tensione vale immancabilmente **Vcc Volt** (5 V per Arduino, 3.3 volt per ESP32 o ESP 8266) **indipendentemente** dalla quantità e dal verso della corrente che vi scorre attraverso.
 - se la porta è in **LOW** la tensione vale immancabilmente **GND**, cioè **0 Volt** **indipendentemente** dalla quantità e dal verso della corrente che vi scorre attraverso.
 
