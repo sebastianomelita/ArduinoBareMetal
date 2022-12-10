@@ -22,6 +22,8 @@ Per quanto riguarda il calcolo del **valore** esatto della **corrente ai capi** 
 
 Mai in ogni caso andrebbe collegato un led **direttamente** alla porta, senza una resistenza di polarizzazione perché, in questo caso, la resistenza sarebbe quella di CC (corto circuito). La **resistenza di CC** è interna alla porta ed è di valore **molto basso**, così basso da poter lasciar passare una corrente tanto elevata da **danneggiare il led** (nel migliore dei casi) o la **porta** stessa (nel peggiore dei casi).
 
+### **Tipi di collegamento di un LED**
+
 La corrente in un LED però scorre solo se questo è **opportunamente polarizzato in tensione**. In generale:
 
 - **tensioni uguali** ai suoi capi (entrambe GND o entrambe 5V) **non** fanno scorrere la corrente
