@@ -71,10 +71,10 @@ Questo fatto impone alcune riflessioni:
 - se le metto dentro una **ISR()** saranno eseguite in maniera aperiodica **asincrona** ma, se solo una fase sta dentro la ISR(), va gestita opportunamente la **comunicazione** con le altre fasi che sono dentro il loop().
 
 
-Ovviamente blocchi di codice possono essere filtrati tramite **istruzioni di selezione**, quindi inserendoli nel blocco then o in quello else di un **costrutto if-then-else**. La condizione di selezione può valutare:
-- il **tempo** (la faccio durare fino ad un certo tempo) 
-- altri **ingressi** (confronto il valore attuale di un ingresso con quello di altri ingressi)
-- lo **stato** del sistema (se il motore è in movimento faccio una certa cosa se no non la faccio). 
+**In definitiva**, i blocchi di codice possono essere filtrati tramite **istruzioni di selezione**, quindi inserendoli nel blocco then o in quello else di un **costrutto if-then-else**. La condizione di selezione può valutare:
+- il **tempo**. Lo faccio durare un certo tempo, o lo faccio accadere in un certo tempo.
+- altri **ingressi**. Confronto il valore attuale di un ingresso con quello di altri ingressi.
+- lo **stato** del sistema. Se il motore è in movimento faccio una certa cosa se no non la faccio. 
 
 Di seguito la fase di scrittura delle uscite non viene eseguita ad ogni loop ma solo se un certo ingresso ha un determinato valore:
 ```C++
