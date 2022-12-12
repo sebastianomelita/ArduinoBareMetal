@@ -72,7 +72,7 @@ Questo fatto impone alcune riflessioni:
 ### **Azioni eseguite non sempre (azioni asincrone)**.
 
 Le azioni da eseguire in base al verificarsi di certe **condizioni** non periodiche possono essere filtrate tramite **istruzioni di selezione**, quindi inserendole nel blocco then o in quello else di un **costrutto if-then-else**. La condizione di selezione può valutare:
-- il **tempo**. Lo faccio durare un certo tempo, o lo faccio accadere in un certo tempo. Se le metto dentro una **ISR()** saranno eseguite in maniera aperiodica **asincrona** ma, se solo una fase sta dentro la ISR(), va gestita opportunamente la **comunicazione** con le altre fasi che sono dentro il loop().
+- il **tempo**. Lo faccio durare un certo tempo, o lo faccio accadere in un certo tempo. 
 - altri **ingressi**. Confronto il valore attuale di un ingresso con quello di altri ingressi.
 - lo **stato** del sistema. Se il motore è in movimento faccio una certa cosa se no non la faccio. 
 
