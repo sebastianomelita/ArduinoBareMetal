@@ -69,7 +69,7 @@ Questo fatto impone alcune riflessioni:
 
    - **Interrupt** generato da un timer HW che permette di eseguire una ISR(), definita al di fuori dal loop(), allo scadere del timer.
 
-### **Azioni eseguite non sempre (azioni asincrone)**.
+### **Azioni eseguite non sempre (azioni aperiodiche)**.
 
 Le azioni da eseguire in base al verificarsi di certe **condizioni** non periodiche possono essere filtrate tramite **istruzioni di selezione**, quindi inserendole nel blocco then o in quello else di un **costrutto if-then-else**. La condizione di selezione può valutare:
 - il **tempo**. Lo faccio durare un certo tempo, o lo faccio accadere in un certo tempo. 
