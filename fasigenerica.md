@@ -73,7 +73,7 @@ Questo fatto impone alcune riflessioni:
 
 Le azioni da eseguire in base al verificarsi di certe **condizioni** non periodiche possono essere filtrate tramite **istruzioni di selezione**, quindi inserendole nel blocco then o in quello else di un **costrutto if-then-else**. La condizione di selezione può valutare:
 - il **tempo**. Lo faccio durare un certo tempo, o lo faccio accadere in un certo tempo. 
-- altri **ingressi**. Confronto il valore attuale di un ingresso con quello di altri ingressi.
+- altri **input**. Confronto il valore attuale di un ingresso con quello di altri ingressi.
 - lo **stato** del sistema. Se il motore è in movimento faccio una certa cosa se no non la faccio. 
 
 Di seguito la fase di scrittura delle uscite non viene eseguita ad ogni loop ma solo se un certo ingresso ha un determinato valore:
