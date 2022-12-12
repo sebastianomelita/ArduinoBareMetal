@@ -243,6 +243,8 @@ Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio 
 L'unica variabile **condivisa** tra ISR e loop() nel progetto è ```stato``` che è ad 8 bit ed è stata dichiarata come ```volatile```.
 In questo caso gli **accessi**, sia in lettura che in scrittura, sono quindi, a basso livello, **intrinsecamente sequenziali**.
 
+Simulazione su Arduino con Tinkercad: 
+
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/350052113369268819
 
 >[Torna all'indice](indexinterrupts.md)
