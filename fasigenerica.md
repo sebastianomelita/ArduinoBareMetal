@@ -57,7 +57,7 @@ Questo fatto impone alcune riflessioni:
 
 - **Sono con memoria**? Cioè posso legare il risultato di una fase a quello delle fasi eseguite in precedenza?
 
-**Quanto spesso**.
+**Quanto spesso (azioni periodiche)**.
 
 - Se le metto **“direttamente”** dentro il blocco loop() vengono eseguite molto spesso, anzi più spesso che si può. La **periodicità**, cioè il numero di volte al secondo, dipende dalla velocità della CPU e dalla velocità delle singole operazioni e non è possibile stabilirla con precisione.
 
@@ -70,9 +70,9 @@ Questo fatto impone alcune riflessioni:
    - **Interrupt** generato da un timer HW che permette di eseguire una ISR(), definita al di fuori dal loop(), allo scadere del timer.
 - se le metto dentro una **ISR()** saranno eseguite in maniera aperiodica **asincrona** ma, se solo una fase sta dentro la ISR(), va gestita opportunamente la **comunicazione** con le altre fasi che sono dentro il loop().
 
-**Selezione delle azioni da eseguire**.
+**Azioni eseguite non sempre (azioni asincrone)**.
 
-**In definitiva**, i blocchi di codice possono essere filtrati tramite **istruzioni di selezione**, quindi inserendoli nel blocco then o in quello else di un **costrutto if-then-else**. La condizione di selezione può valutare:
+Le azioni da eseguire in base al verificarsi di certe **condizioni** non periodiche possono essere filtrate tramite **istruzioni di selezione**, quindi inserendole nel blocco then o in quello else di un **costrutto if-then-else**. La condizione di selezione può valutare:
 - il **tempo**. Lo faccio durare un certo tempo, o lo faccio accadere in un certo tempo.
 - altri **ingressi**. Confronto il valore attuale di un ingresso con quello di altri ingressi.
 - lo **stato** del sistema. Se il motore è in movimento faccio una certa cosa se no non la faccio. 
@@ -83,7 +83,7 @@ if(in==HIGH){
 	digitalWrite(led,closed);  //scrittura uscita
 }
 ```
-### **Persistenza di una variabile tra più loop()**. 
+### **Azioni con memoria (persistenza di una variabile)**. 
 
 Le variabili in un microcontrollore possono essere **dichiarate**:
 - all'**interno** del loop() e allora si dicono **locali** alla funzione loop(). Le variabili locali hanno:
