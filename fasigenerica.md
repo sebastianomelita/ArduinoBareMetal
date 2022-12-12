@@ -75,7 +75,7 @@ Ovviamente blocchi di codice possono essere filtrati tramite **istruzioni di sel
 - il **tempo** (la faccio durare fino ad un certo tempo) 
 - altri **ingressi** (confronto il valore attuale di un ingresso con quello di altri ingressi)
 - lo **stato** del sistema (se il motore è in movimento faccio una certa cosa se no non la faccio). 
-- 
+
 Di seguito la fase di scrittura delle uscite non viene eseguita ad ogni loop ma solo se un certo ingresso ha un determinato valore:
 ```C++
 if(in==HIGH){
