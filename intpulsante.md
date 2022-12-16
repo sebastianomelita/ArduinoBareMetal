@@ -365,6 +365,6 @@ void loop() {
 }
 ```
 
-Simulazione su Arduino con Tinkercad: 
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/iui5Fd9MYtU?editbtn=1
 
 >[Torna all'indice](indexinterrupts.md)
