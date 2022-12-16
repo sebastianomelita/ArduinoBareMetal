@@ -364,7 +364,7 @@ void loop() {
 	}
 }
 ```
-
+Simulazione su Arduino con Wowki:  https://wokwi.com/projects/351242718844813912
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/iui5Fd9MYtU?editbtn=1
 
 >[Torna all'indice](indexinterrupts.md)
