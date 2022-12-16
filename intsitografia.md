@@ -22,4 +22,6 @@ https://www.gammon.com.au/adc
 
 https://electronoobs.com/eng_arduino_tut128.php
 
+https://www.youtube.com/watch?v=5vnxm5PY8Lo
+
 >[Torna all'indice](indexinterrupts.md)
