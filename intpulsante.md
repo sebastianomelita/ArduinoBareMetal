@@ -311,7 +311,7 @@ void switchPressed ()
   bool val = digitalRead(pulsante); // lettura stato pulsante
   if(val && !pressed){ // fronte di salita
     pressed = true; // disarmo il pulsante
-	knockMeAfter(DEBOUNCETIME);
+    knockMeAfter(DEBOUNCETIME);
     Serial.println("SALITA disarmo pulsante");
     stato = !stato; 	  // logica toggle  
   }
@@ -324,7 +324,7 @@ ISR(TIMER2_COMPA_vect)
   if (timer2Counter >= TIMER2_POSTSCALER) {
     timer2Counter = 0;
     TIMSK2 = 0b00000000;   // resetto il timer inibendo ulteriori interrupt
-	waitUntilInputLow();
+    waitUntilInputLow();
   }
 }
 
