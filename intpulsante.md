@@ -247,4 +247,124 @@ Simulazione su Arduino con Tinkercad:
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/350052113369268819
 
+
+### **PULSANTE TOGGLE CON DEBOUNCER BASATO SU TIMER HW SENZA **
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+int led = 13;
+byte pulsante =2;
+volatile unsigned short numberOfButtonInterrupts = 0;
+volatile bool pressed;
+volatile bool stato;
+#define DEBOUNCETIME 500
+volatile bool knockKnock = false;
+volatile int timer2Counter = 0;
+#define WATCH 0
+#define TIMER 1
+#define TIMER2_POSTSCALER 1000
+
+bool knockMeAfter(int t);  // t is the time in ms
+void switchPressed ();
+void waitUntilInputLow();
+
+// impostazione prescaler timer HW monostabile
+bool knockMeAfter(int t)       // t is the time in ms
+{
+  static int t_prev = 0;
+  byte prescaler = 0;
+  if (TIMSK2 == 0b00000010)
+    return false;              // Timer2 is busy now
+  TCNT2 = 0;                 // Reset counter
+  if (t_prev != t) {           // Find the appropriate prescaler taking t in us
+    if (t > 16320)
+      t = 16320;
+    if (t > 4080)
+      prescaler = 0b00000111;  // f_cpu / 1024
+    else if (t > 2040)
+      prescaler = 0b00000110;  // f_cpu / 256
+    else if (t > 1020)
+      prescaler = 0b00000101;  // f_cpu / 128
+    else if (t > 510)
+      prescaler = 0b00000100;  // f_cpu / 64
+    else if (t > 127)
+      prescaler = 0b00000011;  // f_cpu / 32
+    else if (t > 15)
+      prescaler = 0b00000010;  // f_cpu / 8
+    else
+      prescaler = 0b00000001;  // No prescaling
+
+    TCCR2A = 0b00000010;       // Mode 2: CTC Mode
+    TCCR2B = prescaler;
+    OCR2A = (float)t / ((float)(prescaler == 0b00000111 ? 1024 : prescaler == 0b00000110 ? 256 : prescaler == 0b00000101 ? 128 : prescaler == 0b00000100 ? 64 : prescaler == 0b00000011 ? 32 : prescaler == 0b00000010 ? 8 : 1) * 0.0625);
+    t_prev = t;
+  }
+  TIMSK2 = 0b00000010;         // Interrupt on overflow
+  sei();                       // Enable global interrupts
+  return true;
+}
+
+// ISR interrupt tasto
+void switchPressed ()
+{
+  numberOfButtonInterrupts++; // contatore rimbalzi
+  bool val = digitalRead(pulsante); // lettura stato pulsante
+  if(val && !pressed){ // fronte di salita
+    pressed = true; // disarmo il pulsante
+	knockMeAfter(DEBOUNCETIME);
+    Serial.println("SALITA disarmo pulsante");
+    stato = !stato; 	  // logica toggle  
+  }
+}  // end of switchPressed
+
+// ISR interrupt timer HW
+ISR(TIMER2_COMPA_vect)
+{
+  timer2Counter++;
+  if (timer2Counter >= TIMER2_POSTSCALER) {
+    timer2Counter = 0;
+    TIMSK2 = 0b00000000;   // resetto il timer inibendo ulteriori interrupt
+	waitUntilInputLow();
+  }
+}
+
+void waitUntilInputLow()
+{
+    if (digitalRead(pulsante) == HIGH)// se il pulsante è ancora premuto
+    { 
+        Serial.print("Aspetto");
+        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
+        knockMeAfter(DEBOUNCETIME);
+    }else{
+        Serial.print("DISCESA riarmo pulsante\n");
+        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
+        numberOfButtonInterrupts = 0; // reset del flag
+        pressed = false; // riarmo il pulsante
+    }
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );
+  numberOfButtonInterrupts = 0;
+  pressed = false;
+  stato = false;
+}
+
+// loop principale
+void loop() {
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(500);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+    	delay(10);
+	}
+}
+```
+
+Simulazione su Arduino con Tinkercad: 
+
 >[Torna all'indice](indexinterrupts.md)
