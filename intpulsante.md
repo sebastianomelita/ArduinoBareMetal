@@ -247,8 +247,75 @@ Simulazione su Arduino con Tinkercad:
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/350052113369268819
 
-
 ### **PULSANTE TOGGLE CON DEBOUNCER BASATO SU TIMER HW PER ARDUINO**
+
+```C++
+#include <TimerOne.h>
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+int led = 13;
+byte pulsante =2;
+volatile unsigned short numberOfButtonInterrupts = 0;
+volatile bool pressed;
+volatile bool stato;
+#define DEBOUNCETIME 50
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );
+  Timer1.initialize(50000);
+  Timer1.attachInterrupt(waitUntilInputLow); 
+  numberOfButtonInterrupts = 0;
+  pressed = false;
+  stato = false;
+}
+
+void switchPressed ()
+{
+  numberOfButtonInterrupts++; // contatore rimbalzi
+  bool val = digitalRead(pulsante); // lettura stato pulsante
+  if(val && !pressed){ // fronte di salita
+    pressed = true; // disarmo il pulsante
+    Timer1.start(); 
+    Timer1.attachInterrupt(waitUntilInputLow);
+    Serial.println("SALITA disarmo pulsante");
+    stato = !stato; 	  // logica toggle  
+  }
+}  // end of switchPressed
+
+void waitUntilInputLow()
+{
+    // sezione critica
+    if (digitalRead(pulsante) == HIGH)// se il pulsante è ancora premuto
+    { 
+        Serial.print("Aspetto");
+        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
+    }else{
+        Timer1.stop(); 
+        Timer1.detachInterrupt();
+        Serial.print("DISCESA riarmo pulsante\n");
+        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
+        numberOfButtonInterrupts = 0; // reset del flag
+        pressed = false; // riarmo il pulsante
+    }
+}
+
+// loop principale
+void loop() {
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(500);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+    delay(10);
+	}
+}
+```
+Simulazione su Arduino con Wowki:  https://wokwi.com/projects/351244710765920855
+
+
+### **PULSANTE TOGGLE CON DEBOUNCER BASATO SU TIMER HW PER ARDUINO 2**
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
