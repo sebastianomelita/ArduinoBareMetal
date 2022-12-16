@@ -265,7 +265,6 @@ void setup() {
   pinMode(pulsante, INPUT);
   attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );
   Timer1.initialize(50000);
-  Timer1.attachInterrupt(waitUntilInputLow); 
   numberOfButtonInterrupts = 0;
   pressed = false;
   stato = false;
