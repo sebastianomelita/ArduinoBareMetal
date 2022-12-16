@@ -316,6 +316,8 @@ Simulazione su Arduino con Wowki:  https://wokwi.com/projects/351244710765920855
 
 ### **PULSANTE TOGGLE CON DEBOUNCER BASATO SU TIMER HW PER ARDUINO 2**
 
+Versione eseguibile senza l'ausilio di librerie adatta per il simulatore Tinkercad:
+
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 int led = 13;
