@@ -61,7 +61,7 @@ Questo fatto impone alcune riflessioni:
 
 - Se le metto **“direttamente”** dentro il blocco loop() vengono eseguite molto spesso, anzi più spesso che si può. La **periodicità**, cioè il numero di volte al secondo, dipende dalla velocità della CPU e dalla velocità delle singole operazioni e non è possibile stabilirla con precisione.
 
-- Se le metto **nel loop()** ma dentro un **blocco di codice condizionale** la cui esecuzione avviene **periodicamente** in certi istanti prestabiliti (ad esempio ogni 10 secondi) allora possono essere eseguite **meno frequentemente**. La **periodicità** dell’esecuzione è controllabile **con precisione** mediante algoritmi di **scheduling** (pianificazione nel tempo) che possono essere realizzati in vario modo. In genere, **a basso livello**, i modi **periodici** (o **sincroni**) sono tre:
+- Se le metto **nel loop()** ma dentro un **blocco di codice condizionale** la cui esecuzione avviene **periodicamente** in certi istanti prestabiliti (ad esempio ogni 10 secondi) allora possono essere eseguite **meno frequentemente**. Ho realizzato così un **filtraggio** degli **eventi periodici** da eseguire **nel futuro**. La **periodicità** dell’esecuzione è controllabile **con precisione** mediante algoritmi di **scheduling** (pianificazione nel tempo) che possono essere realizzati in vario modo. In genere, **a basso livello**, i modi **periodici** (o **sincroni**) sono tre:
 
   -  **Ritardo** dell’esecuzione mediante funzione delay() impostabile ad un tempo di millisecondi prefissato.
 
@@ -72,7 +72,7 @@ Questo fatto impone alcune riflessioni:
 ### **Azioni eseguite non sempre (azioni aperiodiche)**.
 
 Le azioni da eseguire in base al verificarsi di certe **condizioni** non periodiche possono essere filtrate tramite **istruzioni di selezione**, quindi inserendole nel blocco then o in quello else di un **costrutto if-then-else**. La condizione di selezione può valutare:
-- il **tempo**. Lo faccio durare un certo tempo, o lo faccio accadere in un certo tempo. 
+- il **tempo**. Lo faccio durare un certo tempo, o lo faccio accadere in un certo tempo, realizzando così un **filtraggio** degli **eventi aperiodici** da eseguire **nel futuro**.
 - altri **input**. Confronto il valore attuale di un ingresso con quello di altri ingressi.
 - lo **stato** del sistema. Se il motore è in movimento faccio una certa cosa se no non la faccio. 
 
