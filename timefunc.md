@@ -2,7 +2,7 @@
 
 # **GENERAZIONE DI TEMPI**
 
-## **DELAY(), MILLIS() e WAITUNTIL**
+## **DELAY(), MILLIS() e WAITUNTIL()**
 
 ### **Delay()**
 
