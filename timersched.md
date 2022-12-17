@@ -1,8 +1,8 @@
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
 
-# **SCHEDULAZIONE CON I TIMERS HW**
+## **SCHEDULAZIONE CON I TIMERS HW**
 
-## **I TIMERS HW DI ESP32**
+### **I TIMERS HW DI ESP32**
 
 Il microcontrollore **esp32** ha 4 **timer HW**. Tutti i timer sono divisi in **2 gruppi**, 2 timer in ciascun gruppo. **Ogni timer** HW può avere una propria **configurazione indipendente**.
 
@@ -115,7 +115,7 @@ void loop() {
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
 
-## **I TIMERS HW DI ARDUINO**
+### **I TIMERS HW DI ARDUINO**
 
 Arduino con la libreria TimerInterrupt https://github.com/khoih-prog/TimerInterrupt
 
