@@ -4,11 +4,11 @@
 
 Il microcontrollore **esp32** ha 4 **timer HW**. Tutti i timer sono divisi in **2 gruppi**, 2 timer in ciascun gruppo. **Ogni timer** HW può avere una propria **configurazione indipendente**.
 
-Sebbene FreeRTOS (il sistema operativo di ESP32) fornisca timer software, questi timer presentano alcune limitazioni:
-- La risoluzione massima è uguale al periodo di tick di RTOS
-- I callback del timer vengono inviati da untask a bassa priorità
+Sebbene siano disponibili **timer software** di FreeRTOS (il sistema operativo di ESP32) questi timer presentano alcune limitazioni:
+- La **risoluzione massima** è uguale al periodo di tick di RTOS
+- Le **callback** del timer vengono lanciate da un task a **bassa priorità**
 
-I **timer hardware** sono liberi da entrambe le limitazioni, ma spesso sono **meno convenienti** da usare. Ad esempio, i componenti dell'applicazione potrebbero richiedere che gli eventi del timer si attivino in determinati **momenti nel futuro**, ma il timer hardware contiene un **unico** valore di "confronto" utilizzato per la generazione di un interrupt. 
+I **timer hardware** invece sono liberi da entrambe le limitazioni, ma spesso sono **meno convenienti** da usare. Ad esempio, i componenti dell'applicazione potrebbero richiedere che gli eventi del timer si attivino in determinati **momenti nel futuro**, ma il timer hardware contiene un **unico** valore di "confronto" utilizzato per la generazione di un interrupt. 
 
 Ciò significa che è necessario costruire una **astrazione** in cima al timer hardware che implementi le  **funzionalità** per gestire l'**elenco** degli **eventi in sospeso** e inviare i **callback** per questi eventi man mano che si verificano le interruzioni hardware corrispondenti.
 
