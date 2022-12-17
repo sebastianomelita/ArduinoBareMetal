@@ -35,7 +35,11 @@ La **logica di utilizzo** è simile a quella di una **usuale ISR**. Una **funzio
 
 In genere, in molte implementazioni, callback di timer diverse vengono eseguite **in sequenza** e non su thread paralleli per cui operazioni bloccanti come le ```delay()```, oltre a causare possibili **instabilità** (sono ISR basate su interrupt), **ritardano** l'esecuzione delle callback **a seguire**.
 
-Esempio delle due modalità:
+Dichiarazione e instanziazione di un **oggetto timer**:
+```C++
+Ticker periodicTicker;
+```
+Esempio delle due modalità di impostazione:
 ```C++
 periodicTicker.attach_ms(5000, periodicPrint);
 onceTicker.once_ms(5000, oncePrint);
