@@ -131,7 +131,7 @@ Similmente ad Arduino, ESP32 permette l'accesso diretto ai timer HW in almeno **
 
 Le librerie utilizzate di seguito però non permettono la realizzazione di timer logici ciascuno con una loro callback e tutti associati ad uno stesso timer HW, per cui è necessario associare un task alla volta per ogni timer HW utilizzabile nel sistema in uso (ad esempio, 2 in Arduino Uno e 4 in Arduino Mega). Queste limitazioni rendono l'utilizzo esteso dei timer HW come schedulatori di compiti abbastanza problematico.
 
-Una soluzione potrebbe essere inserire all'interno della callback di un timner HW uno schedulatore di compiti basato sui time tick con cui poter realizzare il filtraggio degli eventi da eseguire nel futuro.
+Una **soluzione** potrebbe essere inserire all'interno della **callback** di un timer HW uno schedulatore di compiti basato sui **time tick** con cui poter realizzare il **filtraggio** degli **eventi** da eseguire **nel futuro**.
 
 Arduino con la libreria TimerInterrupt https://github.com/khoih-prog/TimerInterrupt
 
