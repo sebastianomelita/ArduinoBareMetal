@@ -97,7 +97,7 @@ La **persistenza** di una variabile globale nel loop() potrebbe **servire a**:
 	```C++
 	pval = val; // ultima istruzione che chiude loop()
 	```
-- Tenere **memoria** dello **stato** del mio algoritmo, cioè traccia di quelle informazioni **fondamentali** che ne determinano il **comportamento** nel tempo (dedotte dalla **storia** di **ingressi** e da quella di altre **variabili di stato**) conservandole all’interno di una **variabile di stato** che viene **letta ed aggiornata** ad **ogni loop**. La variabile di stato divide l'evoluzione futura del sistema in un insieme di epoche in cui gli stessi ingressi del sistema possono generare uscite differenti (una sorta di umore del sistema).
+- Tenere **memoria** dello **stato** del mio algoritmo, cioè traccia di quelle informazioni **fondamentali** che ne determinano il **comportamento** nel tempo (dedotte dalla **storia** di **ingressi** e da quella di altre **variabili di stato**) conservandole all’interno di una **variabile di stato** che viene **letta ed aggiornata** ad **ogni loop**. La variabile di stato divide l'evoluzione futura del sistema in un insieme di **epoche** in cui **stessi ingressi** del sistema potrebbero generare uscite differenti a seconda dello **stato del sistema**. Lo stato del sistema è assimilabile ad una sorta di **"umore"** del sistema che lo porta a reagire in maniera differente alle stesse **sollecitazioni** a seconda del particolare valore che assume in un certo **momento**.
 
 Ad esempio se deduco il nuovo stato da quello precedente:
 	```C++
