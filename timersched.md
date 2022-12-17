@@ -6,7 +6,7 @@ La **schedulazione dei task** normalmente riguarda quei compiti che devono esser
 
 Ma un **timer** si può impostare per **generare**:
 - **eventi sincroni** cioè **periodici** dopo intervalli fissi e programmabili
-- **eventi asincroni** cioè **aperiodici** da eseguire una sola volta (monostabili o one-shot) dopo un certo tempo calcolato **nel futuro** a partire dal **momento** del comando di **attivazione** (start).
+- **eventi asincroni** cioè **aperiodici** da eseguire una sola volta (monostabili o one-shot) dopo un certo tempo calcolato **nel futuro** a partire dal **momento** in cui avviene il comando di **attivazione** (start).
 
 Per cui un **timer HW** offre una versatilità in più se, nello stesso progetto, si vogliono **combinare insieme** eventi periodici con eventi aperiodici triggerati dal valare di un **ingresso** da altri **eventi** (timeouto o contatori).
 
