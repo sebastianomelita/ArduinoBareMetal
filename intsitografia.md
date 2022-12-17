@@ -32,6 +32,7 @@ https://openlabpro.com/guide/timer-on-esp32/#:~:text=ESP32%20has%20two%20timer%2
 
 https://docs.espressif.com/projects/esp-idf/en/v4.3/esp32/api-reference/peripherals/timer.html#_CPPv410timer_init13timer_group_t11timer_idx_tPK14timer_config_t
 
+https://www.pjrc.com/teensy/td_libs_TimerOne.html
 
 
 >[Torna all'indice](indexinterrupts.md)
