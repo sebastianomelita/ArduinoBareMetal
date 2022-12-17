@@ -24,4 +24,12 @@ https://electronoobs.com/eng_arduino_tut128.php
 
 https://www.youtube.com/watch?v=5vnxm5PY8Lo
 
+https://techtutorialsx.com/2021/08/07/esp32-ticker-library/
+
+https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/esp_timer.html
+
+https://docs.espressif.com/projects/esp-idf/en/v4.3/esp32/api-reference/peripherals/timer.html#_CPPv410timer_init13timer_group_t11timer_idx_tPK14timer_config_t
+
+
+
 >[Torna all'indice](indexinterrupts.md)
