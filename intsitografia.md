@@ -34,5 +34,8 @@ https://docs.espressif.com/projects/esp-idf/en/v4.3/esp32/api-reference/peripher
 
 https://www.pjrc.com/teensy/td_libs_TimerOne.html
 
+https://github.com/PaulStoffregen/TimerOne
+
+https://github.com/PaulStoffregen/TimerThree
 
 >[Torna all'indice](indexinterrupts.md)
