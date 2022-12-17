@@ -151,4 +151,10 @@ void loop() {
 
 Simulazione su Arduino con Wowki: https://wokwi.com/projects/351250406794330712
 
+### **Sitografia**
+
+- https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/esp_timer.html
+- https://docs.espressif.com/projects/esp-idf/en/v4.3/esp32/api-reference/peripherals/timer.html#_CPPv410timer_init13timer_group_t11timer_idx_tPK14timer_config_t
+- https://github.com/PaulStoffregen/TimerOne
+
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
