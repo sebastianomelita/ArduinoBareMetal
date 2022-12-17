@@ -125,7 +125,7 @@ Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
 
 ### **I TIMERS HW DI ARDUINO**
 
-Similmente ad Arduino, ESP32 permette l'accesso diretto ai timer HW in almeno **due modi**:
+Arduino permette l'accesso diretto ai timer HW in almeno **due modi**:
 - accesso ai registri HW del timer per impostare il prescaler
 - attraverso librerie di terza parti
 
