@@ -125,12 +125,12 @@ void setup() {
   pinMode(led2, OUTPUT);
   Serial.begin(115200); 
   // Select Timer 1-2 for UNO, 0-5 for MEGA
-	// Timer 2 is 8-bit timer, only for higher frequency
-	ITimer1.init();
+  // Timer 2 is 8-bit timer, only for higher frequency
+  ITimer1.init();
   ITimer1.attachInterruptInterval(500, periodicBlink,led1);
   // Select Timer 1-2 for UNO, 0-5 for MEGA
-	// Timer 2 is 8-bit timer, only for higher frequency
-	ITimer2.init();
+  // Timer 2 is 8-bit timer, only for higher frequency
+  ITimer2.init();
   ITimer2.attachInterruptInterval(1000, periodicBlink,led2);
 }
  
