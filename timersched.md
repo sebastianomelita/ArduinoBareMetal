@@ -98,10 +98,9 @@ Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
 
 
 ```C++
-#include <Ticker.h>
+#include <TimerOne.h>
+#include <TimerThree.h>
 
-Ticker periodicTicker1;
-Ticker periodicTicker2;
 int led1 = 13;
 int led2 = 12;
  
@@ -116,8 +115,10 @@ void setup() {
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
   Serial.begin(115200); 
-  periodicTicker1.attach_ms(500, periodicBlink, led1);
-  periodicTicker2.attach_ms(1000, periodicBlink, led2);
+  Timer1.initialize(500000);
+  Timer1.attachInterrupt(periodicBlink, led1); 
+  Timer3.initialize(1000000);
+  Timer3.attachInterrupt(periodicBlink, led2); 
 }
  
 void loop() {
@@ -131,8 +132,8 @@ void loop() {
 		delay(1000);
 	}
 	Serial.print("Ending timers...");
-	periodicTicker1.detach();
-	periodicTicker2.detach();
+	Timer1.detachInterrupt(); 
+	Timer3.detachInterrupt();
 }
 ```
 
