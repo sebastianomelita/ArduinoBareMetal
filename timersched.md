@@ -65,7 +65,6 @@ int led2 = 12;
 void periodicBlink(int led) {
   Serial.print("printing periodic blink led ");
   Serial.println(led);
-
   digitalWrite(led, !digitalRead(led));
 }
  
@@ -84,7 +83,7 @@ void loop() {
 		Serial.println(count);
 		count += 1;
 		if(count >= 10)
-			break;
+		    break;
 		delay(1000);
 	}
 	Serial.print("Ending timers...");
@@ -141,7 +140,7 @@ void loop() {
 		Serial.println(count);
 		count += 1;
 		if(count >= 10)
-			break;
+		    break;
 		delay(1000);
 	}
 	Serial.print("Ending timers...");
