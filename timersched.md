@@ -8,7 +8,12 @@ Sebbene siano disponibili **timer software** di FreeRTOS (il sistema operativo d
 - La **risoluzione massima** è uguale al periodo di tick di RTOS
 - Le **callback** del timer vengono lanciate da un task a **bassa priorità**
 
-I **timer hardware** invece sono liberi da entrambe le limitazioni, ma spesso sono **meno convenienti** da usare. Ad esempio, i componenti dell'applicazione potrebbero richiedere che gli eventi del timer si attivino in determinati **momenti nel futuro**, ma il timer hardware contiene un **unico** valore di "confronto" utilizzato per la generazione di un interrupt. 
+Similmente ad Arduino, ESP32 permette l'accesso diretto ai timer HW in almeno tre modi:
+- accesso ai registri HW del timer per impostare il prescaler
+- utilizzo di una libreria di sistema che astrae e semplifica le operazioni del punto precedente
+- attraverso librerie di terza parti
+
+I **timer hardware** invece sono liberi da entrambe le limitazioni precedenti, ma spesso sono **meno convenienti** da usare. Ad esempio, i componenti dell'applicazione potrebbero richiedere che gli eventi del timer si attivino in determinati **momenti nel futuro**, ma il timer hardware contiene un **unico** valore di "confronto" utilizzato per la generazione di un interrupt. 
 
 Ciò significa che è necessario costruire una **astrazione** in cima ai timer hardware che, nonostante utilizzi ancora il meccanismo delle interruzioni, implementi anche le  **funzionalità** per gestire l'**elenco** degli **eventi in sospeso** e per richiamare le **callback** per questi eventi man mano che si verificano le interruzioni hardware corrispondenti.
 
