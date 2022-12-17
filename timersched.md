@@ -4,6 +4,12 @@
 
 Il microcontrollore **esp32** ha 4 **timer HW**. Tutti i timer sono divisi in **2 gruppi**, 2 timer in ciascun gruppo. **Ogni timer** HW può avere una propria **configurazione indipendente**.
 
+Sebbene FreeRTOS (il sistema operativo di ESP32) fornisca timer software, questi timer presentano alcune limitazioni:
+- La risoluzione massima è uguale al periodo di tick di RTOS
+- I callback del timer vengono inviati da untask a bassa priorità
+
+I **timer hardware** sono liberi da entrambe le limitazioni, ma spesso sono **meno convenienti** da usare. Ad esempio, i componenti dell'applicazione potrebbero richiedere che gli eventi del timer si attivino in determinati **momenti nel futuro**, ma il timer hardware contiene un **unico** valore di "confronto" utilizzato per la generazione di un interrupt. Ciò significa che è necessario costruire alcune **funzionalità** in cima al timer hardware per gestire l'**elenco** degli **eventi in sospeso** e inviare i **callback** per questi eventi man mano che si verificano le interruzioni hardware corrispondenti.
+
 La **libreria Ticker** è un **wrapper (involucro)** di un'**API** del framework che si **interfaccia direttamente** con l'**HW**. Si adopera con gli **stessi metodi** su due piattaforme molto diverse (**ESP8266** e **ESP32**) ma entrambe dotate di interfaccia WiFi. Il FW di bordo nel caso di ESP8266 è LWIP ed è essenzialmente uno stack TCP/IP minimale per sistemi embedded. Il FW in uso su ESP32 si chiama IDF. Entrambi forniscono librerie per la gestione di timer HW. Nel caso di **ESP8266** si chiama **os_timer**, nel caso di **ESP32** il nome della libreria è **esp_timer**. 
 
 Il motivo dell'**interfaccia comune** è che si tratta di prodotti molto diffusi della stessa casa produttrice ai quali si vuole fornire una interfaccia di utilizzo uniforme per la gestione dei timer. **Funzioni simili** sono implementate in quasi tutti i **sistemi embedded**, Arduino compreso, o tramite **librerie di terze parti** o direttamente all'interno del **core** del framework di gestione dell'HW (librerie o OS). 
