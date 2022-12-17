@@ -157,6 +157,8 @@ Simulazione su Arduino con Wowki: https://wokwi.com/projects/351250406794330712
 
 https://techtutorialsx.com/2021/08/07/esp32-ticker-library/
 
+https://github.com/espressif/arduino-esp32/tree/master/libraries/Ticker
+
 https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/esp_timer.html
 
 https://openlabpro.com/guide/timer-on-esp32/#:~:text=ESP32%20has%20two%20timer%20groups,counters%20and%2016%2Dbit%20prescalers.
