@@ -94,7 +94,7 @@ void loop() {
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
 
-
+Arduino con la libreria TimerInterrupt https://github.com/khoih-prog/TimerInterrupt
 
 ```C++
 #define TIMER_INTERRUPT_DEBUG         0
