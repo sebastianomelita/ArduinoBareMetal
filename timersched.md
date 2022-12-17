@@ -98,8 +98,17 @@ Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
 
 
 ```C++
-#include <TimerOne.h>
-#include <TimerThree.h>
+#define TIMER_INTERRUPT_DEBUG         0
+#define USING_16MHZ     true
+#define USING_8MHZ      false
+#define USING_250KHZ    false
+
+#define USE_TIMER_0     false
+#define USE_TIMER_1     true
+#define USE_TIMER_2     true
+#define USE_TIMER_3     false
+
+#include "TimerInterrupt.h"
 
 int led1 = 13;
 int led2 = 12;
@@ -115,10 +124,14 @@ void setup() {
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
   Serial.begin(115200); 
-  Timer1.initialize(500000);
-  Timer1.attachInterrupt(periodicBlink, led1); 
-  Timer3.initialize(1000000);
-  Timer3.attachInterrupt(periodicBlink, led2); 
+  // Select Timer 1-2 for UNO, 0-5 for MEGA
+	// Timer 2 is 8-bit timer, only for higher frequency
+	ITimer1.init();
+  ITimer1.attachInterruptInterval(500, periodicBlink,led1);
+  // Select Timer 1-2 for UNO, 0-5 for MEGA
+	// Timer 2 is 8-bit timer, only for higher frequency
+	ITimer2.init();
+  ITimer2.attachInterruptInterval(1000, periodicBlink,led2);
 }
  
 void loop() {
@@ -132,11 +145,11 @@ void loop() {
 		delay(1000);
 	}
 	Serial.print("Ending timers...");
-	Timer1.detachInterrupt(); 
-	Timer3.detachInterrupt();
+	ITimer1.detachInterrupt();
+	ITimer2.detachInterrupt();
 }
 ```
 
-Simulazione su Arduino con Wowki: 
+Simulazione su Arduino con Wowki: https://wokwi.com/projects/351250406794330712
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
