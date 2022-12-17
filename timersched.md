@@ -2,6 +2,8 @@
 
 # **SCHEDULAZIONE CON I TIMERS HW**
 
+## **I TIMERS HW DI ESP32**
+
 Il microcontrollore **esp32** ha 4 **timer HW**. Tutti i timer sono divisi in **2 gruppi**, 2 timer in ciascun gruppo. **Ogni timer** HW può avere una propria **configurazione indipendente**.
 
 Sebbene siano disponibili **timer software** di FreeRTOS (il sistema operativo di ESP32) questi timer presentano alcune limitazioni:
@@ -112,6 +114,8 @@ void loop() {
 ```
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
+
+## **I TIMERS HW DI ARDUINO**
 
 Arduino con la libreria TimerInterrupt https://github.com/khoih-prog/TimerInterrupt
 
