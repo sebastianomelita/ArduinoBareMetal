@@ -167,6 +167,8 @@ https://github.com/PaulStoffregen/TimerOne
 
 https://github.com/PaulStoffregen/TimerThree
 
+https://github.com/khoih-prog/TimerInterrupt
+
 https://github.com/khoih-prog/ESP32TimerInterrupt
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
