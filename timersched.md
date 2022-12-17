@@ -192,26 +192,26 @@ Simulazione su Arduino con Wowki: https://wokwi.com/projects/351250406794330712
 
 ### **Sitografia**
 
-https://techtutorialsx.com/2021/08/07/esp32-ticker-library/
+- https://techtutorialsx.com/2021/08/07/esp32-ticker-library/
 
-https://github.com/espressif/arduino-esp32/tree/master/libraries/Ticker
+- https://github.com/espressif/arduino-esp32/tree/master/libraries/Ticker
 
-https://github.com/espressif/esp-idf/tree/8131d6f46d690e9cb60cc5cd457863cc5479351f/components/esp_timer
+- https://github.com/espressif/esp-idf/tree/8131d6f46d690e9cb60cc5cd457863cc5479351f/components/esp_timer
 
-https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/esp_timer.html
+- https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/system/esp_timer.html
 
-https://openlabpro.com/guide/timer-on-esp32/#:~:text=ESP32%20has%20two%20timer%20groups,counters%20and%2016%2Dbit%20prescalers.
+- https://openlabpro.com/guide/timer-on-esp32/#:~:text=ESP32%20has%20two%20timer%20groups,counters%20and%2016%2Dbit%20prescalers.
 
-https://docs.espressif.com/projects/esp-idf/en/v4.3/esp32/api-reference/peripherals/timer.html
+- https://docs.espressif.com/projects/esp-idf/en/v4.3/esp32/api-reference/peripherals/timer.html
 
-https://www.pjrc.com/teensy/td_libs_TimerOne.html
+- https://www.pjrc.com/teensy/td_libs_TimerOne.html
 
-https://github.com/PaulStoffregen/TimerOne
+- https://github.com/PaulStoffregen/TimerOne
 
-https://github.com/PaulStoffregen/TimerThree
+- https://github.com/PaulStoffregen/TimerThree
 
-https://github.com/khoih-prog/TimerInterrupt
+- https://github.com/khoih-prog/TimerInterrupt
 
-https://github.com/khoih-prog/ESP32TimerInterrupt
+- https://github.com/khoih-prog/ESP32TimerInterrupt
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
