@@ -125,11 +125,11 @@ Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
 
 ### **I TIMERS HW DI ARDUINO**
 
-Arduino permette l'accesso diretto ai timer HW in almeno **due modi**:
+Arduino permette l'accesso diretto ai suoi **timer HW** in almeno **due modi**:
 - accesso ai registri HW del timer per impostare il prescaler
 - attraverso librerie di terza parti
 
-Le librerie utilizzate di seguito però non permettono la realizzazione di timer logici ciascuno con una loro callback e tutti associati ad uno stesso timer HW, per cui è necessario associare un task alla volta per ogni timer HW utilizzabile nel sistema in uso (ad esempio, 2 in Arduino Uno e 4 in Arduino Mega). Queste limitazioni rendono l'utilizzo esteso dei timer HW come schedulatori di compiti abbastanza problematico.
+Le librerie utilizzate di seguito però **non** permettono la realizzazione di **timer logici** ciascuno con una **prpopria callback** e tutti **associati** ad uno stesso **timer HW**, per cui è necessario associare **un task alla volta** ad ogni timer HW utilizzabile nel sistema in uso (ad esempio, 2 in Arduino Uno e 4 in Arduino Mega). Queste limitazioni rendono l'utilizzo esteso dei timer HW come schedulatori di compiti abbastanza problematico.
 
 Una **soluzione** potrebbe essere inserire all'interno della **callback** di un timer HW uno schedulatore di compiti basato sui **time tick** con cui poter realizzare il **filtraggio** degli **eventi** da eseguire **nel futuro** come quelli visti nelle sezioni [Schedulatore di compiti basato sui time tick](tasksched.md) e [Polled timers](indextimers.md) oppure utilizzando librerie di **terze parti** come [SimpleTimer](https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer) (https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer).
 
