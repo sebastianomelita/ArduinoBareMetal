@@ -42,4 +42,6 @@ https://github.com/khoih-prog/TimerInterrupt
 
 https://github.com/khoih-prog/ESP32TimerInterrupt
 
+https://itecnotes.com/electrical/electronic-arduino-how-to-create-a-timer-interrupt-with-arduino/
+
 >[Torna all'indice](indexinterrupts.md)
