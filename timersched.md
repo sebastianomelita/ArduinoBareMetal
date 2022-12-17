@@ -2,6 +2,14 @@
 
 ## **SCHEDULAZIONE CON I TIMERS HW**
 
+La schedulazione dei task normalmente riguarda quei compiti che devono essere ripetuti in **maniera periodica**, infatti si parla di loop() principale e di loop secondari eventualmente sullo stesso thread (protothread) o su altri thread. Lo stesso scopo può essere ottenuto con dei timer HW che realizzano un loop su base evento. L'evento è l'interrupt di un timer HW, il **loop** è rappresentato dalla **calback** associata al timer che viene viene **richiamata periodicamente** dal timer.
+
+Ma un **timer** si può impostare per **generare**:
+- **eventi sincroni** cioè **periodici** dopo intervalli fissi e programmabili
+- **eventi asincroni** cioè **aperiodici** da eseguire una sola volta (monostabili o one-shot) dopo un certo tempo calcolato **nel futuro** a partire dal **momento** del comando di **attivazione** (start).
+
+Per cui un **timer HW** offre una versatilità in più se, nello stesso progetto, sono **combinati** insieme eventi periodici con eventi aperiodici triggerati dal valare di un **ingresso** da altri **eventi** (timeouto o contatori).
+
 ### **I TIMERS HW DI ESP32**
 
 Il microcontrollore **esp32** ha 4 **timer HW**. Tutti i timer sono divisi in **2 gruppi**, 2 timer in ciascun gruppo. **Ogni timer** HW può avere una propria **configurazione indipendente**.
