@@ -15,6 +15,8 @@ Può leggere sia fronti di salita che di discesa in maniera immune ai rimbalzi. 
 
 Da seriale si può vedere il numero di eventi di interrupt spuri che sono stati generati a causa dei rimbalzi e che sono stati filtrati dal timer (solo nella simulazione su Esp32 mettendo la spunta al flag debounce del tasto).
 
+Un debouncer come questo, basato su timer SW, benchè potenzialmente possa costringere il tasto a tempi di riarmo più lunghi, potrebbe essere **preferibile** alla controparte basata su un timer HW perchè non impegna affatto una risorsa così preziosa come un timer HW, soprattutto quando non ne esiste sul sistema una **versione logica** anch'essa basata su interrupt (ad esempio quelli forniti dalla libreria Ticker).
+
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/jWma7uWoY7T?editbtn=1
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349402186520724050
