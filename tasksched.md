@@ -107,7 +107,8 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://ww
 
 ### **Blink a fasi con libreria di terze parti**
 
-L'esempio è basato su una libreria esterna che realizza uno schedulatore ad eventi basato su time ticks https://github.com/sebastianomelita/time-tick-scheduler
+L'esempio è basato su una libreria esterna che realizza uno schedulatore ad eventi basato su time ticks (https://github.com/sebastianomelita/time-tick-scheduler).
+
 ```C++
 #include "Scheduler2.h"
 #define ON0MSEC		0
