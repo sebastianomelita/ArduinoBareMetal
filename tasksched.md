@@ -60,7 +60,7 @@ Utilizzando la tecnica della **schedulazione esplicita dei task** nel loop(), la
 
 ## **Esempi**
 
-###**Blink a fasi**
+### **Blink a fasi**
 
 ```C++
 /*
@@ -105,7 +105,7 @@ void loop()
 ```
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/0vP4WlJGycZ?editbtn=1
 
-###**Blink a fasi con libreria di terze parti**
+### **Blink a fasi con libreria di terze parti**
 
 L'esempio è basato su una libreria esterna che realizza uno schedulatore ad eventi basato su time ticks https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer
 
