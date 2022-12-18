@@ -10,7 +10,7 @@ Ma un **timer** si può impostare per **generare**:
 
 Per cui un **timer HW** offre una versatilità in più se, nello stesso progetto, si vogliono **combinare insieme** eventi periodici con eventi aperiodici triggerati da eventi su un **ingresso** o da altri **eventi** (scadenza di timeout o contatori).
 
-La **stessa cosa** è in realtà possibile realizzarla anche con i **timer SW** basati sul polling nel loop principale della funzione millis(). La **versatilità** è uguale se non **superiore** ma sono soggetti ad alcune limitazioni che potrebbero renderli non adatti in certi contesti. Il contesto che **penalizza** di più i timer SW è quello delle applicazioni **mission-critical** (o **critical-time**) in cui si deve prevedere con certezza della puntualità l'esecuzione di certi compiti pena **instabilità** del sistema o una sua **perdita di sicurezza**.
+La **stessa cosa** è in realtà possibile realizzarla anche con i **timer SW** basati sul polling nel loop principale della funzione millis(). La loro **versatilità** è uguale se non **superiore**, ma sono soggetti ad alcune limitazioni che potrebbero renderli non adatti in certi contesti. Il contesto che **penalizza** di più i timer SW è quello delle applicazioni **mission-critical** (o **critical-time**) in cui si deve prevedere con certezza della puntualità l'esecuzione di certi compiti pena **instabilità** del sistema o una sua **perdita di sicurezza**.
 
 
 ### **I TIMERS HW DI ESP32**
