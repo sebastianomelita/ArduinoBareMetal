@@ -165,9 +165,9 @@ void onSecondEvents(){
 }
  
 void setup() {
-  pinMode(led1, OUTPUT);
-  pinMode(led2, OUTPUT);
-  Serial.begin(115200); 
+	pinMode(led1, OUTPUT);
+	pinMode(led2, OUTPUT);
+	Serial.begin(115200); 
 	Serial.println(F("Scheduler init"));
 	Serial.print(F("Time base: "));
 	Serial.println(scheduler.getTimebase());
