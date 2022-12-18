@@ -184,6 +184,4 @@ void loop() {
 ```
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/351319080732459608
 				      
->[Torna all'indice generazione tempi](indexgenerazionetempi.md)      
-
->[Versione in Python](taskschedpy.md)
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)>[Versione in Python](taskschedpy.md)
