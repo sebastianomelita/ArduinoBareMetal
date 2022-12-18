@@ -22,7 +22,7 @@ byte led2 = 12;
 
 void setup()
 {
-	pinMode(led1, OUTPUT);
+    pinMode(led1, OUTPUT);
     pinMode(led2, OUTPUT);
 }
 
