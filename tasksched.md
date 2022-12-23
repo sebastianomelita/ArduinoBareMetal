@@ -64,7 +64,7 @@ Utilizzando la tecnica della **schedulazione esplicita dei task** nel loop(), la
 
 ```C++
 /*
-Realizzzare un programma che fa blinkare un led per 5 sec poi lo fa stare sempre acceso per un altri 5 sec, poi lo fa blinkare di nuovo per altri 5 sec e così via.
+Realizzzare un programma che fa blinkare un led per 5 sec poi lo fa stare sempre spento per un altri 5 sec, poi lo fa blinkare di nuovo per altri 5 sec e così via.
 */
 #define tbase  500 // periodo base in milliseconds
 #define nstep  1000  // numero di fasi massimo di un periodo generico
