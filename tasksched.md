@@ -119,7 +119,7 @@ I blink sono comandati dallo schedulatore esterno ma sono abilitati e disabilita
 int led1 = 13;
 int led2 = 12;
 unsigned long list[] = {500,1000};
-Scheduler scheduler(list,2);
+Scheduler scheduler(list,2,25000);
 int count = 0;
 
 void onMaxSpeedEvents();
@@ -156,7 +156,7 @@ void epochScheduler(){
 		Serial.println("Starting timers...");
 		count = -1;
 	}
-  	count++;
+  count++;
 }
 
 void onHalfSecondEvents(){
@@ -167,9 +167,9 @@ void onSecondEvents(){
 }
  
 void setup() {
-	pinMode(led1, OUTPUT);
-	pinMode(led2, OUTPUT);
-	Serial.begin(115200); 
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  Serial.begin(115200); 
 	Serial.println(F("Scheduler init"));
 	Serial.print(F("Time base: "));
 	Serial.println(scheduler.getTimebase());
