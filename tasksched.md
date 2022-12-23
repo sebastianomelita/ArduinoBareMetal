@@ -109,6 +109,8 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://ww
 
 L'esempio è basato su una libreria esterna che realizza uno schedulatore ad eventi basato su time ticks (https://github.com/sebastianomelita/time-tick-scheduler).
 
+I blink sono comandati dallo schedulatore esterno ma sono abilitati e disabilitati valutando una variabile di conteggio ausiliaria nella funzione ```epochScheduler()``` che realizza in pratica uno schedulatore ausiliario.
+
 ```C++
 #include "Scheduler2.h"
 #define ON0MSEC		0
@@ -154,7 +156,7 @@ void epochScheduler(){
 		Serial.println("Starting timers...");
 		count = -1;
 	}
-  count++;
+  	count++;
 }
 
 void onHalfSecondEvents(){
@@ -187,7 +189,7 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://wo
 
 ### **Blink a fasi con libreria di terze parti 2**
 
-L'esempio è basato su una libreria esterna che realizza uno schedulatore ad eventi basato su time ticks (https://github.com/sebastianomelita/time-tick-scheduler).
+Stesso esempio precedente in cui tutti gli eventi periodici sono realizzati con lo schedulatore fornito dalla libreria, compresi gli eventi che abilitano e disabilitano parte delle funzioni di schedulazione tramite i comandi ```enableEvent()``` e ```disableEvent()```.
 
 ```C++
 #include "Scheduler2.h"
