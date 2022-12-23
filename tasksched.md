@@ -201,7 +201,7 @@ Stesso esempio precedente in cui tutti gli eventi periodici sono realizzati con 
 int led1 = 13;
 int led2 = 12;
 unsigned long list[] = {500,1000,10000,20000};
-Scheduler scheduler(list,4);
+Scheduler scheduler(list,4,25000);
 int count = 0;
 
 void onMaxSpeedEvents();
