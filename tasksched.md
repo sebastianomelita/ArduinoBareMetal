@@ -48,6 +48,7 @@ void loop()
 }
 ```
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/b7Fj3hCPAwi?editbtn=1
+
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/348709453878526548
 
 
