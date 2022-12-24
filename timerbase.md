@@ -37,7 +37,7 @@ void loop()
 }
 ```
 
-Un **timer periodico** più preciso, adatto a cumulare lunghi intervalli di tempo, potrebbe apparire così:
+Un **timer periodico** più preciso, adatto a cumulare **lunghe cadenze periodiche** con la maggior precisione possibile, potrebbe apparire così:
 
 ```C++
 //Timer periodico
