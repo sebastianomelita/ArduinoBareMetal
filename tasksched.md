@@ -273,6 +273,8 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://wo
 
 - https://github.com/Koepel/Fun_with_millis#fun_with_millis
 - http://arduino.cc/forum/index.php/topic,124048.msg932592.html#msg932592
+- https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer
+- https://github.com/sebastianomelita/time-tick-scheduler
 
 				      
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)>[Versione in Python](taskschedpy.md)
