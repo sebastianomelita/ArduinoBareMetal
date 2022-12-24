@@ -105,6 +105,7 @@ Si noti che:
 - il timer SW con il polling viene eseguito ad ogni ciclo di ```loop()```
 - i timer SW sono N (uno per ogni tempo futuro)
 - il calcolo degli N tempi futuri è eseguito N volte (una per ogni tempo) **ad ogni ciclo** di ```loop()```
+- il calcolo può essere reso estremamente **preciso** e in maniera indipendente tra un tempo e l'altro.
 
 Di seguito il link della simulazione online con Tinkercad su Arduino: 
 
