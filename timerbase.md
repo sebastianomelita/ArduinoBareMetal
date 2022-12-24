@@ -37,7 +37,7 @@ void loop()
 }
 ```
 
-Un **timer periodico** più preciso, adatto a cumulare **lunghe cadenze periodiche** esegue il ricampionamento  con la maggior precisione possibile res possibile evitando il ritardo dovuto alla chiamata della funzione ```millis()```. Un esempio potrebbe apparire così:
+Un **timer periodico** più preciso, adatto a cumulare **lunghe cadenze periodiche** esegue il ricampionamento  con la maggior precisione possibile ottenuta evitando il **ritardo** dovuto alla chiamata della funzione ```millis()```. Un esempio potrebbe apparire così:
 
 ```C++
 //Timer periodico
