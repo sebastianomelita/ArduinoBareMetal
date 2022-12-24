@@ -6,7 +6,9 @@ Di seguito è riportato un esempio di schedulatore che pianifica nel tempo **l�
 
 Il **tempo base** è la base dei tempi di tutte le schedulazioni, viene calcolato **periodicamente** all'accadere di un **evento** (superamento di una soglia di tempo) che viene detto **tick** (analogia con il metronomo per la musica).
 
-Le varie schedulazioni **sono calcolate** a partire da un **multiplo intero** del tempo base, ne segue che il tempo base dovrebbe essere calcolato come il massimo comune divisore (**MCD**) di tutti i tempi che devono essere generati.
+La **soglia di tempo** corrisponde al **timeout** di un **timer SW** realizzato all'interno del ```loop()``` mediante il **polling** della funzione ```millis()```. Ad ogni ```loop()```, viene **campionato** il valore del **tempo attuale** per vedere **quando** raggiunge un **tempo futuro** prestabilito, quando ciò accade viene calcolato il **nuovo tick**.
+
+Ad **ogni timeout** del **tempo base** vengono **calcolate** le varie schedulazioni future a partire da un suo **multiplo intero**, ne segue che **il tempo base** dovrebbe essere calcolato come il massimo comune divisore (**MCD**) di tutti i **tempi futuri** che devono essere generati.
 
 Il conteggio dei multipli del tempo base è tenuto da un **contatore circolare** (step) che deve essere **ruotato** dopo aver effettuato un numero di conteggi superiori al **massimo dei multipli** del tempo base necessari.
 
@@ -60,6 +62,8 @@ Utilizzando la tecnica della **schedulazione esplicita dei task** nel loop(), la
 
 ## **SCHEDULATORE COMPITI BASATO SU TIMER PERIODICI**
 
+Uno schedulatore di compiti (task) si può realizzare anche utilizzando **più timers** basati sul polling della funzione millis(). 
+
 ```C++
 unsigned long current_millis = 0;
 byte led1 = 13;
@@ -93,6 +97,7 @@ void loop()
 	// il codice eseguito al tempo massimo della CPU va qui
 }
 ```
+Qu
 Di seguito il link della simulazione online con Tinkercad su Arduino: 
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/351933794966569551
