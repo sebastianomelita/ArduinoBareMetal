@@ -18,7 +18,6 @@ Se ci sono **pulsanti** da gestire insieme ad altri task il tempo base può esse
 #define nstep  1000  // numero di fasi massimo di un periodo generico
 unsigned long precm = 0;
 unsigned long step = 0;
-byte pari, in;
 byte led1 = 13;
 byte led2 = 12;
 
