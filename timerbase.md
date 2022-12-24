@@ -37,6 +37,27 @@ void loop()
 }
 ```
 
+Un **timer periodico** più preciso, adatto a cumulare lunghi intervalli di tempo, potrebbe apparire così:
+
+```C++
+//Timer periodico
+#define PERIODO  1000
+unsigned long ptimer1;
+bool timerState = false; // stato del timer
+unsigned long periodo = PERIODO;
+
+void loop()
+{
+	if ((timerState) && (millis() - ptimer1) >= periodo)
+	{
+		ptimer1 += periodo;
+		//....
+		// istruzioni eseguite periodicamente, se attivo…
+	}
+
+}
+```
+
 Di seguito è un esempio di **timer aperiodico** che misura il tempo a partire dal verificarsi di una certa condizione fino a che, al superamento di un tempo limite, si decide di fare qualcosa ma solo **dopo** lo scadere del timer:
 
 ```C++
