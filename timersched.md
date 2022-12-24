@@ -199,7 +199,84 @@ void loop() {
 }
 ```
 
-Simulazione su Arduino con Wowki: https://wokwi.com/projects/351250406794330712
+### **I TIMERS HW DI ARDUINO SCHEDULATI**
+
+```C++
+#define TIMER_INTERRUPT_DEBUG         0
+#define USING_16MHZ     true
+#define USING_8MHZ      false
+#define USING_250KHZ    false
+
+#define USE_TIMER_0     false
+#define USE_TIMER_1     true
+#define USE_TIMER_2     true
+#define USE_TIMER_3     false
+
+#include "TimerInterrupt.h"
+int led1 = 13;
+int led2 = 12;
+int led3 = 11;
+int led4 = 10;
+unsigned long period[2];
+volatile unsigned long precs[2];
+
+void periodicBlink(int led);
+void schedule();
+
+void schedule()
+{
+	unsigned long current_millis = millis();
+	// task 1
+	if ((current_millis - precs[0]) >= period[0]) {
+		precs[0] += period[0]; 
+        	digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+	}	
+	// task 2
+	if ((current_millis - precs[1]) >= period[1]) {
+		precs[1] += period[1]; 
+        	digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+	}
+	// il codice eseguito al tempo massimo della CPU va qui
+}
+ 
+void periodicBlink(int led) {
+  Serial.print("printing periodic blink led ");
+  Serial.println(led);
+
+  digitalWrite(led, !digitalRead(led));
+}
+ 
+void setup() {
+	//randomSeed(millis());
+	randomSeed(analogRead(0));
+	precs[0]=0;
+	precs[1]=0;
+	period[0] = 300;
+	period[1] = 500;
+	pinMode(led1, OUTPUT);
+	pinMode(led2, OUTPUT);
+	pinMode(led3, OUTPUT);
+	pinMode(led4, OUTPUT);
+	Serial.begin(115200); 
+	// Select Timer 1-2 for UNO, 0-5 for MEGA
+	// Timer 2 is 8-bit timer, only for higher frequency
+	ITimer1.init();
+	ITimer1.attachInterruptInterval(100, schedule);
+	// Select Timer 1-2 for UNO, 0-5 for MEGA
+	// Timer 2 is 8-bit timer, only for higher frequency
+	ITimer2.init();
+	ITimer2.attachInterruptInterval(1000, periodicBlink,led3);
+}
+ 
+void loop() {
+	unsigned randomDelay = random(10, 2000);
+	Serial.print("delay: ");Serial.println(randomDelay);
+	delay(randomDelay);
+	digitalWrite(led4, !digitalRead(led4));
+}
+```
+
+Simulazione su Arduino con Wowki: https://wokwi.com/projects/351946247063470669
 
 ### **Sitografia**
 
