@@ -54,7 +54,7 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 Si noti che:
 - il timer SW con il polling viene eseguito ad ogni ciclo di ```loop()```
-- il timer SW è uno solo per cui il suo codice viene eseguito una sola volta
+- il timer SW è **uno solo** per cui il suo codice viene eseguito una sola volta
 - il calcolo degli N tempi futuri è eseguito N volte (una per ogni tempo) ma **non ad ogni** ciclo di ```loop()``` bensì, in maniera più rada, ad **ogni tick**
 
 E’ buona norma evitare l’esecuzione frequente di operazioni lente quando queste non sono strettamente necessarie in modo da lasciare spazio ad altre operazioni, quali ad esempio gestione degli eventi di input, che richiedono una velocità maggiore per usufruirne in modo più interattivo.
