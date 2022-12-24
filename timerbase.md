@@ -29,7 +29,7 @@ void loop()
 {
 	if ((timerState) && (millis() - ptimer1) >= (unsigned long) PERIODO)
 	{
-		ptimer1 = millis();
+		ptimer1 = millis(); // ricampionamento del tempo attuale 
 		//....
 		// istruzioni eseguite periodicamente, se attivo…
 	}
@@ -50,7 +50,7 @@ void loop()
 {
 	if ((timerState) && (millis() - ptimer1) >= periodo)
 	{
-		ptimer1 += periodo;
+		ptimer1 += periodo; // calcolo esatto del tempo attuale
 		//....
 		// istruzioni eseguite periodicamente, se attivo…
 	}
