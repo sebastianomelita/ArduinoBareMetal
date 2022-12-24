@@ -90,7 +90,7 @@ void loop()
 		// task 1
 		if(!(step%1)){  // schedulo eventi al multiplo del periodo (2 sec = 2 periodi)
 			if(stato)
-				digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+				digitalWrite(led1,!d.igitalRead(led1)); 	// stato alto: led blink
 			else
 				digitalWrite(led1,LOW);
 		}
@@ -107,7 +107,9 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://ww
 
 ### **Blink a fasi con libreria di terze parti**
 
-L'esempio è basato su una libreria esterna che realizza uno schedulatore ad eventi basato su time ticks (https://github.com/sebastianomelita/time-tick-scheduler).
+Una libreria molto precisa basata su timer assoluti è https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer.
+
+L'esempio di seguito è basato su una libreria esterna che realizza uno schedulatore ad eventi basato su time ticks (https://github.com/sebastianomelita/time-tick-scheduler).
 
 I blink sono comandati dallo schedulatore esterno ma sono abilitati e disabilitati valutando una variabile di conteggio ausiliaria nella funzione ```epochScheduler()``` che realizza in pratica un timer che **attiva o disattiva** gli eventi periodici dello schedulatore.
 
