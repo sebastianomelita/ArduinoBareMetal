@@ -13,6 +13,7 @@ if ((millis() - tassoluto) >= periodo)
 ```
 Invece la forma seguente è **errata**. La condizione viene valutata **in ritardo** rispetto al **momento ideale**, “reimpostando” la variabile ```tassoluto``` al tempo attuale, questo ritardo si aggiunge a tutti i ritardi precedenti. Con questa forma ci si può aspettare un errore di diversi secondi al minuto o anche peggiore.
 ```C++
+unsigned long tassoluto = 0;
 if ((millis() - tassoluto) >= periodo)
 {
 	tassoluto = millis();
