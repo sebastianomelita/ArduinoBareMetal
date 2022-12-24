@@ -6,7 +6,7 @@ Di seguito è riportato un esempio di schedulatore che pianifica nel tempo **l�
 
 Il **tempo base** è la base dei tempi di tutte le schedulazioni, viene calcolato **periodicamente** all'accadere di un **evento** (superamento di una soglia di tempo) che viene detto **tick** (analogia con il metronomo per la musica).
 
-La **soglia di tempo** corrisponde al **timeout** di un **timer SW** realizzato all'interno del ```loop()``` mediante il **polling** della funzione ```millis()```. Ad ogni ```loop()```, viene **campionato** il valore del **tempo attuale** per vedere **quando** raggiunge un **tempo futuro** prestabilito, quando ciò accade viene calcolato il **nuovo tick**.
+La **soglia di tempo** corrisponde al **timeout** di un **timer SW** realizzato all'interno del ```loop()``` mediante il **polling** della funzione ```millis()```. Ad ogni ```loop()```, viene **campionato** il valore del **tempo attuale** per vedere **quando** esso raggiunge un **tempo futuro** prestabilito. Quando ciò **accade** viene calcolato il **nuovo tick**.
 
 Ad **ogni timeout** del **tempo base** vengono **calcolate** le varie schedulazioni future a partire da un suo **multiplo intero**, ne segue che **il tempo base** dovrebbe essere calcolato come il massimo comune divisore (**MCD**) di tutti i **tempi futuri** che devono essere generati.
 
@@ -53,6 +53,10 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://ww
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/348709453878526548
 
+Si noti che:
+- il timer SW con il polling viene eseguito ad ogni ciclo di ```loop()```
+- il timer SW è uno solo per cui il suo codice viene eseguito una sola volta
+- il calcolo degli N tempi futuri è eseguito N volte (una per ogni tempo) ma **non ad ogni** ciclo di ```loop()``` bensì, in maniera più rada, ad **ogni tick**
 
 E’ buona norma evitare l’esecuzione frequente di operazioni lente quando queste non sono strettamente necessarie in modo da lasciare spazio ad altre operazioni, quali ad esempio gestione degli eventi di input, che richiedono una velocità maggiore per usufruirne in modo più interattivo.
 
@@ -97,7 +101,11 @@ void loop()
 	// il codice eseguito al tempo massimo della CPU va qui
 }
 ```
-Qu
+Si noti che:
+- il timer SW con il polling viene eseguito ad ogni ciclo di ```loop()```
+- i timer SW sono N (uno per ogni tempo futuro)
+- il calcolo degli N tempi futuri è eseguito N volte (una per ogni tempo) **ad ogni ciclo** di ```loop()```
+
 Di seguito il link della simulazione online con Tinkercad su Arduino: 
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/351933794966569551
