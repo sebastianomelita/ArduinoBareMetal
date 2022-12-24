@@ -58,6 +58,46 @@ E’ buona norma evitare l’esecuzione frequente di operazioni lente quando que
 
 Utilizzando la tecnica della **schedulazione esplicita dei task** nel loop(), la **realizzazione di un algoritmo** non dovrebbe essere pensata in **maniera sequenziale (o lineare)** ma, piuttosto, come una **successione di eventi** a cui corrispondono dei **compiti** (task) che **comunicano** con le periferiche di input/output ed, eventualmente, dialogano tra loro in qualche modo (ad es. variabili globali, buffer, ecc.).
 
+## **SCHEDULATORE COMPITI BASATO SU TIMER PERIODICI**
+
+```C++
+unsigned long current_millis = 0;
+byte led1 = 13;
+byte led2 = 12;
+unsigned long period[2];
+unsigned long precs[2];
+
+void setup()
+{
+	pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+	precs[0]=0;
+	precs[1]=0;
+	period[0] = 500;
+	period[1] = 1000;
+}
+
+void loop()
+{
+	current_millis = millis();
+	// task 1
+	if ((current_millis - precs[0]) >= period[0]) {
+		precs[0] += period[0]; 
+        digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+	}	
+	// task 2
+	if ((current_millis - precs[1]) >= period[1]) {
+		precs[1] += period[1]; 
+        digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+	}
+	// il codice eseguito al tempo massimo della CPU va qui
+}
+```
+Di seguito il link della simulazione online con Tinkercad su Arduino: 
+
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/351933794966569551
+
+
 ## **Esempi**
 
 ### **Blink a fasi**
