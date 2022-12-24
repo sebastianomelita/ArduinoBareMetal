@@ -17,7 +17,7 @@ I timers possono essere **periodici**, ed uno di questi era proprio lo schedulat
 
 - (opzionale) la **variabile stato** del timer che **abilita** il timer quando serve e lo **disabilita** quando non serve per evitare **attivazioni spurie** accidentali.
 
-Un esempio di **timer periodico** (del tutto analogo ad un o schedulatore) potrebbe apparire così:
+Un **timer periodico** è del tutto analogo ad un o schedulatore e, ad ogni timeout, necessita del **ricampionamento** del **tempo attuale** per poter di nuovo calcolare il **tempo futuro** del nuovo **timeout**.  Un esempio di **timer periodico** potrebbe apparire così:
 
 ```C++
 //Timer periodico
@@ -37,7 +37,7 @@ void loop()
 }
 ```
 
-Un **timer periodico** più preciso, adatto a cumulare **lunghe cadenze periodiche** con la maggior precisione possibile, potrebbe apparire così:
+Un **timer periodico** più preciso, adatto a cumulare **lunghe cadenze periodiche** esegue il ricampionamento  con la maggior precisione possibile res possibile evitando il ritardo dovuto alla chiamata della funzione ```millis()```. Un esempio potrebbe apparire così:
 
 ```C++
 //Timer periodico
