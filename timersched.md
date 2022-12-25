@@ -357,7 +357,7 @@ void loop() {
 }
 ```
 
-Simulazione su Arduino con Wowki: https://wokwi.com/projects/351946247063470669
+Simulazione su Arduino con Wowki: https://wokwi.com/projects/352009022804591183
 
 ### **Sitografia**
 
