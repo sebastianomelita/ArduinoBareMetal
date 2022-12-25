@@ -47,9 +47,9 @@ void loop()
 {
 	// polling della millis() alla ricerca del tempo in cui scade ogni periodo
 	unsigned long currTime = millis();
-	if(currTime-precm >= (unsigned long) tbase){ 		//se è passato un periodo tbase dal precedente periodo
-		precm = currTime;  				//preparo il tic successivo azzerando il conteggio del tempo ad adesso
-		step = (step + 1) % nstep; 			// conteggio circolare (arriva al massimo a nstep-1)
+	if(currTime-precm >= (unsigned long) tbase){ 	//se è passato un periodo tbase dal precedente periodo
+		precm = currTime;  			//preparo il tic successivo azzerando il conteggio del tempo ad adesso
+		step = (step + 1) % nstep; 		// conteggio circolare (arriva al massimo a nstep-1)
 
 		// task 1
 		if(!(step%2)){  // schedulo eventi al multiplo del periodo (2 sec = 2 periodi)
