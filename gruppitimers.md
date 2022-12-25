@@ -8,7 +8,7 @@ La differenza tra i vari modi di gestione consiste in come si memorizzano stati,
 - **Struct**. Una sola funzione gestisce la logica di più timer, stato e ingressi passati sono memorizzati su una struct separata per ogni timer. Al limite le struct possono essere organizzate in un array, soprattutto in presenza di molti timer.
 - **Oggetti**. Stato, istante iniziale, durata sono memorizzati su un oggetto separato per ogni timer. Ogni oggetto possiede anche la funzione per manipolare i dati contenuti al suo interno (metodo). I metodi sono accessibili, a partire dalla variabile oggetto, usando la “dot” notation cioè, il nome della variabile, un punto, ed il nome del metodo. Anche in questo caso, volendo, per molti tasti gli oggetti potrebbero essere organizzati in un array o in una matrice.
 
-
+Timer ottimizzati per molti task si possono realizzare utilizzando **librerie di terze parti** come SimpleTimer, una libreria molto precisa basata su timer periodici assoluti https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer oppure una libreria esterna che realizza uno schedulatore ad eventi basato su time ticks (https://github.com/sebastianomelita/time-tick-scheduler).
 
 ```C++
 /*
