@@ -199,7 +199,7 @@ void loop() {
 }
 ```
 
-### **I TIMERS HW DI ARDUINO SCHEDULATI**
+### **TIMERS HW DI ARDUINO SCHEDULATO CON IL POLLING DEI MILLIS**
 
 ```C++
 #define TIMER_INTERRUPT_DEBUG         0
@@ -253,6 +253,87 @@ void setup() {
 	precs[1]=0;
 	period[0] = 300;
 	period[1] = 500;
+	pinMode(led1, OUTPUT);
+	pinMode(led2, OUTPUT);
+	pinMode(led3, OUTPUT);
+	pinMode(led4, OUTPUT);
+	Serial.begin(115200); 
+	// Select Timer 1-2 for UNO, 0-5 for MEGA
+	// Timer 2 is 8-bit timer, only for higher frequency
+	ITimer1.init();
+	ITimer1.attachInterruptInterval(100, schedule);
+	// Select Timer 1-2 for UNO, 0-5 for MEGA
+	// Timer 2 is 8-bit timer, only for higher frequency
+	ITimer2.init();
+	ITimer2.attachInterruptInterval(1000, periodicBlink,led3);
+}
+ 
+void loop() {
+	unsigned randomDelay = random(10, 2000);
+	Serial.print("delay: ");Serial.println(randomDelay);
+	delay(randomDelay);
+	digitalWrite(led4, !digitalRead(led4));
+}
+```
+
+### **TIMERS HW DI ARDUINO SCHEDULATO CON TIMES TICK**
+
+```C++
+#define TIMER_INTERRUPT_DEBUG         0
+#define USING_16MHZ     true
+#define USING_8MHZ      false
+#define USING_250KHZ    false
+
+#define USE_TIMER_0     false
+#define USE_TIMER_1     true
+#define USE_TIMER_2     true
+#define USE_TIMER_3     false
+
+#include "TimerInterrupt.h"
+int led1 = 13;
+int led2 = 12;
+int led3 = 11;
+int led4 = 10;
+unsigned long period, step, nstep;
+volatile unsigned long prec;
+
+void periodicBlink(int led);
+void schedule();
+
+void schedule()
+{
+	// polling della millis() alla ricerca del tempo in cui scade ogni periodo
+	if((millis()-prec) >= period){ 		//se è passato un periodo tbase dal precedente periodo
+		prec += period;  				//preparo il tic successivo azzerando il conteggio del tempo ad adesso
+		step = (step + 1) % nstep; 			// conteggio circolare (arriva al massimo a nstep-1)
+
+		// task 1
+		if(!(step%2)){  // schedulo eventi al multiplo del periodo (2 sec = 2 periodi)
+			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+		}
+		// task 2
+		if(!(step%3)){  // schedulo eventi al multiplo del periodo (3 sec = 3 periodi)
+			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+		}
+		// il codice eseguito al tempo del metronomo (esattamente un periodo) va quì
+	}
+	// il codice eseguito al tempo massimo della CPU va qui
+}
+ 
+void periodicBlink(int led) {
+  Serial.print("printing periodic blink led ");
+  Serial.println(led);
+
+  digitalWrite(led, !digitalRead(led));
+}
+ 
+void setup() {
+	//randomSeed(millis());
+	randomSeed(analogRead(0));
+	prec=0;
+	period = 100;
+  step = 0;
+	nstep = 100;
 	pinMode(led1, OUTPUT);
 	pinMode(led2, OUTPUT);
 	pinMode(led3, OUTPUT);
