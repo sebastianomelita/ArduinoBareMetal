@@ -10,7 +10,7 @@ Gli **schedulatori** di questo tipo sono **periodici** e si possono realizzare s
 - mediante ripetizione di una **sequenza di tick** periodici che fissano il **tempo base**. Un seccessivo **conteggio** dei tick discrimina il **momento** in cui deve essere eseguito **un task** piuttosto che un altro.
 - mediante **timer periodici** che, per **ogni task**, stabiliscono un **timeout** oltre il quale il **polling** della funzione millis() **segnala** il momento buono per **eseguire** quel task.
 
-E’ buona norma evitare l’esecuzione frequente di operazioni lente quando queste non sono strettamente necessarie in modo da lasciare spazio ad altre operazioni, quali ad esempio gestione degli eventi di input, che richiedono una velocità maggiore per usufruirne in modo più interattivo.
+E’ buona norma evitare l’esecuzione frequente di **operazioni lente** quando queste non sono strettamente necessarie in modo da lasciare spazio ad altre operazioni, quali ad esempio gestione degli eventi di input, che richiedono una velocità maggiore per usufruirne in modo più interattivo.
 
 **In particolare**, all'interno di un task, andrebbe accuratamente evitata l'introduzione di ritardi prolungati tramite **delay()**. Possono esserci per **breve tempo** (qualche mSec) ma, in ogni caso, non dovrebbero mai far parte della maniera (**algoritmo**) con cui la logica di comando **pianifica i suoi eventi**.
 
