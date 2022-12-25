@@ -285,7 +285,7 @@ void loop() {
 
 ### **TIMERS HW DI ARDUINO SCHEDULATO CON TIMES TICK**
 
-Si tratta della stessa situazione dell'esempio precedente in cui ci stanno 3 task da eseguire con precisione e soltanto due timer HW per farlo. I **task** complessivamente in esecuzione sono **quattro**:
+Si tratta della stessa situazione dell'esempio precedente in cui ci stanno **tre task** da eseguire con precisione e soltanto **due timer HW** per farlo. I **task** complessivamente in esecuzione sono **quattro**:
 - **uno** in esecuzione **nel loop** schedulato da un delay() casuale che simula task pesanti dalla durata impredicibile
 - **uno** affidato ad un **proprio timer HW** che ne programma l'esecuzione ad intervalli precisi, eventualmente sottraendo l'esecuzione al task nel loop mediante un segnale di interrupt
 - **due** affidati ad un **unico timer HW** condiviso che esegue ad intervalli di tempo precisi uno schedulatore SW basato sul polling della funzione millis. Lo schedulatore viene richiamato in intervalli di tempo **comuni** ai due task che poi vengono **filtrati** mediante conteggio e selezione dei **times tick**.
