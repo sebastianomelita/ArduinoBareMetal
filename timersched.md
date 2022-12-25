@@ -144,6 +144,8 @@ Le librerie utilizzate di seguito però **non** permettono la realizzazione di *
 
 Una **soluzione** potrebbe essere inserire all'interno della **callback** di un timer HW uno schedulatore di compiti con cui poter realizzare il **filtraggio** degli **eventi** da eseguire **nel futuro** come quelli visti nelle sezioni [Schedulatore di compiti basato sul polling della millis()](tasksched.md) oppure utilizzando librerie di **terze parti** come [SimpleTimer](https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer) (https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer) oppure quella presentata nell'esempio proposto nel paragrafo sugli scheduler [time tick scheduler](tasksched.md)
 
+Di seguito è riportato un esempio in cui due task che realizzano un blink sono affidati a due timers HW diversi che realizzano una schedulazione la cui tempistica non è per nulla influenzata dai delay nel loop (interrotti da interrupt) ma è li regolata dai comandi di disabilitazione ```detachInterrupt()```.
+
 Arduino con la libreria TimerInterrupt https://github.com/khoih-prog/TimerInterrupt
 
 ```C++
