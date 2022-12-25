@@ -1,6 +1,6 @@
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in Python](taskschedpy.md)
 
-## **SCHEDULATORE DI COMPITI BASATO SUL POLLING DELLA MILLIS**
+## **SCHEDULATORE DI COMPITI BASATO SUL POLLING DELLA FUNZIONE MILLIS**
 
 Una categoria di **schedulatori di compiti** che, a differenza di quelli basati sulla ```delay()```, possiede la peculiare proprietà di **non bloccare** l'esecuzione degli atri task del ```loop()``` si può ottenere realizzando,  all'interno del ```loop()```, il **polling periodico** della funzione ```millis()```.
 
