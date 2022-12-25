@@ -39,17 +39,17 @@ byte led2 = 12;
 
 void setup()
 {
-    pinMode(led1, OUTPUT);
+	pinMode(led1, OUTPUT);
     pinMode(led2, OUTPUT);
 }
 
 void loop()
 {
 	// polling della millis() alla ricerca del tempo in cui scade ogni periodo
-	if((millis()-precm) >= (unsigned long) tbase){ 	//se è passato un periodo tbase dal precedente periodo
-		precm = millis();  			//preparo il tic successivo azzerando il conteggio del tempo 
-		
-		step = (step + 1) % nstep; 		// conteggio circolare (arriva al massimo a nstep-1)
+	unsigned long currTime = millis();
+	if(currTime-precm >= (unsigned long) tbase){ 		//se è passato un periodo tbase dal precedente periodo
+		precm = currTime;  				//preparo il tic successivo azzerando il conteggio del tempo ad adesso
+		step = (step + 1) % nstep; 			// conteggio circolare (arriva al massimo a nstep-1)
 
 		// task 1
 		if(!(step%2)){  // schedulo eventi al multiplo del periodo (2 sec = 2 periodi)
