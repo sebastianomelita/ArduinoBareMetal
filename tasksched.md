@@ -24,7 +24,7 @@ Il **tempo base** è la base dei tempi di tutte le schedulazioni, viene calcolat
 
 La **soglia di tempo** corrisponde al **timeout** di un **timer SW** realizzato all'interno del ```loop()``` mediante il **polling** della funzione ```millis()```. Ad ogni ```loop()```, viene **campionato** il valore del **tempo attuale** per vedere **quando** esso raggiunge un **tempo futuro** prestabilito. Quando ciò **accade** viene calcolato il **nuovo tick**.
 
-Le **schedulazioni** nel futuro dei diversi **task** vengono calcolate in corrispondenza di **ogni timeout** a partire da un **multiplo intero** del **tempo base**, ne segue che **il tempo base** dovrebbe essere calcolato come il massimo comune divisore (**MCD**) di tutti i **tempi futuri** che devono essere generati.
+Le **schedulazioni** nel futuro dei diversi **task** vengono calcolate in corrispondenza di **ogni timeout** conteggiando un certo **multiplo intero** del **tempo base**, ne segue che **il tempo base** dovrebbe essere calcolato come il massimo comune divisore (**MCD**) di tutti i **tempi futuri** che devono essere generati.
 
 Il conteggio dei multipli del tempo base è tenuto da un **contatore circolare** (step) che deve essere **ruotato** dopo aver effettuato un numero di conteggi superiori al **massimo dei multipli** del tempo base necessari.
 
