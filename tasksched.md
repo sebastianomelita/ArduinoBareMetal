@@ -29,7 +29,8 @@ Le **schedulazioni** nel futuro dei diversi **task** vengono calcolate in corris
 Il **conteggio** dei multipli interi del tempo base è tenuto da un **contatore circolare** (step) che deve essere **ruotato** dopo aver effettuato un numero di conteggi superiore al **massimo dei multipli** del tempo base necessari.
 
 Se ci sono **pulsanti** da gestire insieme ad altri task il tempo base può essere impostato tra 50 e 200 mSec in maniera da poterlo utilizzare per effettuare un **polling degli ingressi** immune dal fenomeno dei rimbalzi (**antibounce SW**). Per una descrizione dettagliata dell'uso della millis() per generare i time tick si rimanda a [tecniche di schedulazione](timesched.md#SCHEDULATORE-CON-TIMER-TICK-GENERATI-DA-MILLIS())).
-```C++
+
+'''C++
 #define tbase  1000  // periodo base in milliseconds
 #define nstep  1000  // numero di fasi massimo di un periodo generico
 unsigned long precm = 0;
@@ -63,7 +64,7 @@ void loop()
 	}
 	// il codice eseguito al tempo massimo della CPU va qui
 }
-```
+'''
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/b7Fj3hCPAwi?editbtn=1
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/348709453878526548
@@ -77,7 +78,7 @@ Si noti che:
 
 Uno schedulatore di compiti (task) si può realizzare anche utilizzando **più timers** basati sul polling della funzione millis(). 
 
-```C++
+'''C++
 byte led1 = 13;
 byte led2 = 12;
 unsigned long period[2];
@@ -108,7 +109,7 @@ void loop()
 	}
 	// il codice eseguito al tempo massimo della CPU va qui
 }
-```
+'''
 Si noti che:
 - il timer SW con il polling viene eseguito ad ogni ciclo di ```loop()```
 - i timer SW sono N (uno per ogni tempo futuro)
@@ -124,7 +125,7 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 ### **Blink a fasi**
 
-```C++
+'''C++
 /*
 Realizzzare un programma che fa blinkare un led per 5 sec poi lo fa stare sempre spento per un altri 5 sec, 
 poi lo fa blinkare di nuovo per altri 5 sec e così via.
@@ -165,7 +166,7 @@ void loop()
 	}
 	// il codice eseguito al tempo massimo della CPU va qui
 }
-```
+'''
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/0vP4WlJGycZ?editbtn=1
 
 ### **Blink a fasi con libreria di terze parti**
@@ -176,7 +177,7 @@ L'esempio di seguito è basato su una libreria esterna che realizza uno schedula
 
 I blink sono comandati dallo schedulatore esterno ma sono abilitati e disabilitati valutando una variabile di conteggio ausiliaria nella funzione ```epochScheduler()``` che realizza in pratica un timer che **attiva o disattiva** gli eventi periodici dello schedulatore.
 
-```C++
+'''C++
 #include "Scheduler2.h"
 int led1 = 13;
 int led2 = 12;
@@ -246,7 +247,7 @@ void loop() {
 	scheduler.scheduleAll();
 	delay(10);
 }
-```
+'''
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/351319080732459608
 
 
@@ -254,7 +255,7 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://wo
 
 Stesso esempio precedente in cui tutti gli eventi periodici sono realizzati con lo schedulatore fornito dalla libreria, compresi gli eventi che abilitano e disabilitano parte delle funzioni di schedulazione tramite i comandi ```enableEvent()``` e ```disableEvent()```.
 
-```C++
+'''C++
 #include "Scheduler2.h"
 int led1 = 13;
 int led2 = 12;
@@ -320,7 +321,7 @@ void loop() {
 	scheduler.scheduleAll();
 	delay(10);
 }
-```
+'''
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/352057010320512001
 
 ### **Sitografia:**
