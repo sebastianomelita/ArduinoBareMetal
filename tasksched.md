@@ -183,8 +183,9 @@ I blink sono comandati dallo schedulatore esterno ma sono abilitati e disabilita
 #include "Scheduler2.h"
 int led1 = 13;
 int led2 = 12;
-Scheduler scheduler;
 int count = 0;
+
+Scheduler scheduler;
 
 void onMaxSpeedEvents();
 void onHalfSecondEvents();
