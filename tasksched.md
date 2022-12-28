@@ -178,13 +178,9 @@ I blink sono comandati dallo schedulatore esterno ma sono abilitati e disabilita
 
 ```C++
 #include "Scheduler2.h"
-#define ON0MSEC		0
-#define ON500MS		1
-#define ON1000MS	2
 int led1 = 13;
 int led2 = 12;
-unsigned long list[] = {500,1000};
-Scheduler scheduler(list,2);
+Scheduler scheduler;
 int count = 0;
 
 void onMaxSpeedEvents();
@@ -205,8 +201,8 @@ void epochScheduler(){
 		Serial.println(count);
 	}else if(count == 10){
 		Serial.println("Disable all... ");
-		scheduler.disableEvent(1,ON1000MS);
-		scheduler.disableEvent(1,ON500MS);
+		scheduler.disableEvent(1,1000);
+		scheduler.disableEvent(1,500);
 		digitalWrite(led1, LOW);
 		digitalWrite(led2, LOW);
 		Serial.println("Ending timers...");
@@ -216,8 +212,8 @@ void epochScheduler(){
 	}else if(count >= 20){
 		Serial.print("Enable all... ");
 		Serial.println(count);
-		scheduler.enableEvent(1,ON1000MS);
-		scheduler.enableEvent(1,ON500MS);
+		scheduler.enableEvent(1,1000);
+		scheduler.enableEvent(1,500);
 		Serial.println("Starting timers...");
 		count = -1;
 	}
@@ -241,9 +237,9 @@ void setup() {
 	Serial.print(F("Nsteps: "));
 	Serial.println(scheduler.getNsteps());
 	//scheduler.addEvent(onMaxSpeedEvents, 1, ON0MSEC);
-	scheduler.addEvent(onHalfSecondEvents, 1, ON500MS);
-	scheduler.addEvent(onSecondEvents, 1, ON1000MS);
-	scheduler.addEvent(epochScheduler, 2, ON1000MS);
+	scheduler.addPeriodicEvent(onHalfSecondEvents, 1, 500);
+	scheduler.addPeriodicEvent(onSecondEvents, 1, 1000);
+	scheduler.addPeriodicEvent(epochScheduler, 2, 1000);
 }
  
 void loop() {
