@@ -260,15 +260,10 @@ Stesso esempio precedente in cui tutti gli eventi periodici sono realizzati con 
 
 ```C++
 #include "Scheduler2.h"
-#define ON0MSEC		0
-#define ON500MS		1
-#define ON1000MS	2
-#define ON10000MS	3
-#define ON20000MS	4
 int led1 = 13;
 int led2 = 12;
-unsigned long list[] = {500,1000,10000,20000};
-Scheduler scheduler(list,4);
+
+Scheduler scheduler;
 int count = 0;
 
 void onMaxSpeedEvents();
@@ -286,8 +281,8 @@ void periodicBlink(int led) {
 }
 
 void epoch10sec(){
-	scheduler.disableEvent(1,ON1000MS);
-	scheduler.disableEvent(1,ON500MS);
+	scheduler.disableEvent(1,1000);
+	scheduler.disableEvent(1,500);
 	digitalWrite(led1, LOW);
 	digitalWrite(led2, LOW);
 	Serial.println("Ending timers...");
@@ -297,8 +292,8 @@ void epoch10sec(){
 void epoch20sec(){
 	Serial.print("Enable all... ");
 	Serial.println(count);
-	scheduler.enableEvent(1,ON1000MS);
-	scheduler.enableEvent(1,ON500MS);
+	scheduler.enableEvent(1,1000);
+	scheduler.enableEvent(1,500);
 	Serial.println("Starting timers...");
 }
 
@@ -313,16 +308,16 @@ void setup() {
 	pinMode(led1, OUTPUT);
 	pinMode(led2, OUTPUT);
 	Serial.begin(115200); 
+	//scheduler.addEvent(onMaxSpeedEvents, 1, 0);
+	scheduler.addPeriodicEvent(onHalfSecondEvents, 1, 500);
+	scheduler.addPeriodicEvent(epoch10sec, 1, 10000);
+	scheduler.addPeriodicEvent(epoch20sec, 1, 20000);
+	scheduler.addPeriodicEvent(onSecondEvents, 1, 1000);
 	Serial.println(F("Scheduler init"));
 	Serial.print(F("Time base: "));
 	Serial.println(scheduler.getTimebase());
 	Serial.print(F("Nsteps: "));
 	Serial.println(scheduler.getNsteps());
-	//scheduler.addEvent(onMaxSpeedEvents, 1, ON0MSEC);
-	scheduler.addEvent(onHalfSecondEvents, 1, ON500MS);
-	scheduler.addEvent(onSecondEvents, 1, ON1000MS);
-	scheduler.addEvent(epoch10sec, 1, ON10000MS);
-	scheduler.addEvent(epoch20sec, 1, ON20000MS);
 }
  
 void loop() {
@@ -330,7 +325,7 @@ void loop() {
 	delay(10);
 }
 ```
-Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/351862608644538965
+Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/352057010320512001
 
 ### **Sitografia:**
 
