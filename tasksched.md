@@ -26,7 +26,7 @@ La **soglia di tempo** corrisponde al **timeout** di un **timer SW** realizzato 
 
 Le **schedulazioni** nel futuro dei diversi **task** vengono calcolate in corrispondenza di **ogni timeout** conteggiando un certo **multiplo intero** del **tempo base**, ne segue che **il tempo base** dovrebbe essere calcolato come il massimo comune divisore (**MCD**) di tutti i **tempi futuri** che devono essere generati.
 
-Il **conteggio** dei multipli interi del tempo base è tenuto da un **contatore circolare** (step) che deve essere **ruotato** dopo aver effettuato un numero di conteggi superiore al **massimo dei multipli** del tempo base ma che sia comunque un **multiplo** del **tempo base**.
+Il **conteggio** dei multipli interi del tempo base è tenuto da un **contatore circolare** (step) che deve essere **ruotato** dopo aver effettuato un numero di conteggi pari al **minimo comune multiplo** di **tutti** i tempi in gioco, cioè i tempi di attivazione dei task.
 
 Se ci sono **pulsanti** da gestire insieme ad altri task il tempo base può essere impostato tra 50 e 200 mSec in maniera da poterlo utilizzare per effettuare un **polling degli ingressi** immune dal fenomeno dei rimbalzi (**antibounce SW**). Per una descrizione dettagliata dell'uso della millis() per generare i time tick si rimanda a [tecniche di schedulazione](timesched.md#SCHEDULATORE-CON-TIMER-TICK-GENERATI-DA-MILLIS())).
 
