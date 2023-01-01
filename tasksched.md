@@ -7,7 +7,7 @@ Una categoria di **schedulatori di compiti** che, a differenza di quelli basati 
 Il **polling** serve a stabilire in **quale ciclo** di loop la funzione millis() assume il valore di **tempo limite** oltre il quale **eseguire** un certo compito.
 
 Gli **schedulatori** di questo tipo sono **periodici** e si possono realizzare sostanzialmente in **due modi**:
-- mediante ripetizione di una **sequenza di tick** periodici che fissano il **tempo base**. Un seccessivo **conteggio** dei tick discrimina il **momento** in cui deve essere eseguito **un task** piuttosto che un altro.
+- mediante ripetizione di una **sequenza di tick** periodici che fissano il **tempo base**. Un seccessivo **conteggio** o **filtraggio** dei tick discrimina il **momento** in cui deve essere eseguito **un task** piuttosto che un altro.
 - mediante **timer periodici** che, per **ogni task**, stabiliscono un **timeout** oltre il quale il **polling** della funzione millis() **segnala** il momento buono per **eseguire** quel task.
 
 E’ buona norma evitare l’esecuzione frequente di **operazioni lente** quando queste non sono strettamente necessarie in modo da lasciare spazio ad altre operazioni, quali ad esempio gestione degli eventi di input, che richiedono una velocità maggiore per usufruirne in modo più interattivo.
