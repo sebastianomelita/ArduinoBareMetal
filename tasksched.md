@@ -121,6 +121,50 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://ww
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/351933794966569551
 
+### **SCHEDULATORE DI COMPITI BASATO SU FILTRAGGIO DEI TIME TICK**
+
+Uno schedulatore di compiti (task) si può realizzare anche utilizzando **più timers** basati sul polling della funzione millis(). 
+
+```C++
+byte led1 = 13;
+byte led2 = 12;
+unsigned long period[2];
+unsigned long precs[2];
+unsigned long precm;
+unsigned long tbase;
+
+void setup()
+{
+	pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+	precs[0] = 0;
+	precs[1] = 0;
+	period[0] = 500;
+	period[1] = 1000;
+	precm = 0;
+}
+
+void loop()
+{
+	unsigned long currTime = millis();
+	if(currTime-precm >= tbase){ 	
+		precm += tbase;  			
+		// task 1
+		if ((currTime - precs[0]) >= period[0]) {
+			precs[0] += period[0]; 
+				digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+		}	
+		// task 2
+		if ((currTime - precs[1]) >= period[1]) {
+			precs[1] += period[1]; 
+				digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+		}
+	}
+	// il codice eseguito al tempo massimo della CPU va qui
+}
+```
+
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352691213474403329
 
 ## **Esempi**
 
