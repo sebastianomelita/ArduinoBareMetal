@@ -87,7 +87,7 @@ unsigned long precs[2];
 void setup()
 {
 	pinMode(led1, OUTPUT);
-  pinMode(led2, OUTPUT);
+  	pinMode(led2, OUTPUT);
 	precs[0]=0;
 	precs[1]=0;
 	period[0] = 500;
@@ -136,7 +136,7 @@ unsigned long tbase;
 void setup()
 {
 	pinMode(led1, OUTPUT);
-  pinMode(led2, OUTPUT);
+  	pinMode(led2, OUTPUT);
 	precs[0] = 0;
 	precs[1] = 0;
 	period[0] = 500;
