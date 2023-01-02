@@ -182,7 +182,7 @@ byte led1 = 13;
 byte led2 = 12;
 unsigned long period[2];
 unsigned long elapsedTime[2];
-bool processingRdyTasks;
+voltatile bool processingRdyTasks;
 unsigned long tbase;
 
 void setup()
