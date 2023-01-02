@@ -171,45 +171,65 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 E' possibile realizzare uno schedulatore di task che non necessita di alcuna funzione di misura del tempo (delay() o millis()). Esso si basa sull'**invocazione periodica** di una funzione ad un **tempo base** comune a tutti i task, calcolato col **massimo comune divisore** (M.C.D. o G.C.D) di tutti i tempi dei vari task. Un **contatore** di tempi base determina, per ogni task, il momento buono in cui questo deve essere eseguito **resettando** il proprio contatore subito dopo.
 
 ```C++
+#include <Ticker.h>
+
+Ticker periodicTicker1;
 byte led1 = 13;
 byte led2 = 12;
 unsigned long period[2];
-unsigned long precs[2];
-unsigned long precm;
+unsigned long elapsedTime[2];
+bool processingRdyTasks;
 unsigned long tbase;
 
 void setup()
 {
 	pinMode(led1, OUTPUT);
-  	pinMode(led2, OUTPUT);
-	precs[0] = 0;
-	precs[1] = 0;
+	pinMode(led2, OUTPUT);
+	Serial.begin(115200); 
+	periodicTicker1.attach_ms(500, scheduleAll);
+	elapsedTime[0] = 0;
+	elapsedTime[1] = 0;
 	period[0] = 500;
 	period[1] = 1000;
-	precm = 0;
+	tbase = 500;
+	// task time init
+	processingRdyTasks = false;
+	for(int i=0; i<2; i++){
+		elapsedTime[i] = period[i];
+	}
+}
+
+void scheduleAll(){
+	if(processingRdyTasks){ 	
+		Serial.println("Timer ticked before task processing done");
+	}else{  	
+		processingRdyTasks = true;		
+		// task 1
+		if (elapsedTime[0] >= period[0]) {
+			elapsedTime[0] += period[0]; 
+			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+			elapsedTime[0] = 0;
+		}
+		elapsedTime[0] += tbase;
+		// task 2
+		if (elapsedTime[1] >= period[1]) {
+			elapsedTime[1] += period[1]; 
+			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+			elapsedTime[1] = 0;
+		}
+		elapsedTime[1] += tbase;
+		processingRdyTasks = false;
+	}
 }
 
 void loop()
 {
-	unsigned long currTime = millis();
-	if(currTime-precm >= tbase){ 	
-		precm += tbase;  			
-		// task 1
-		if ((currTime - precs[0]) >= period[0]) {
-			precs[0] += period[0]; 
-				digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-		}	
-		// task 2
-		if ((currTime - precs[1]) >= period[1]) {
-			precs[1] += period[1]; 
-				digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
-		}
-	}
+	delay(10);
 	// il codice eseguito al tempo massimo della CPU va qui
 }
 ```
 
-Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352691213474403329
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352766239477208065
 
 ## **Esempi**
 
