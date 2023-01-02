@@ -172,6 +172,8 @@ E' possibile realizzare uno schedulatore di task che non necessita di alcuna fun
 
 La **base dei tempi** comune può essere realizzata mediante qualunque tecnica di **generazione di tempi periodici**, ma la particolarità dell'assenza di misure di **tempo corrente** (millis()) rendono la realizzazione particolarmente adatta ad essere adoperata su base dei tempi generata mediata **interrupt**. 
 
+La **versione originale** più completa dello schedulatore insieme ad una dettagliata discussione teorica si trova in: https://www.ics.uci.edu/~givargis/pubs/C50.pdf.
+
 ```C++
 #include <Ticker.h>
 
