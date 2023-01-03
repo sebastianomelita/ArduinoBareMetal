@@ -476,7 +476,6 @@ void on50msEvents(){
 }
 
 void setup(){
-	randomSeed(analogRead(0));
 	pinMode(led1, OUTPUT);
 	pinMode(led2, OUTPUT);
 	Serial.begin(115200); 
