@@ -73,7 +73,7 @@ Si noti che:
 - il timer SW con il polling viene eseguito ad ogni ciclo di ```loop()```
 - il timer SW è **uno solo** per cui il suo codice viene eseguito una sola volta
 - il calcolo degli N tempi futuri è eseguito N volte (una per ogni tempo) ma **non ad ogni** ciclo di ```loop()``` bensì, in maniera temporalmente più rada, ad **ogni tick**
-- la schedulazione è sensibile a **ritardi** di esecuzione di un task che durino più di un tempo base (```delay > tbase```) che causano uno ritardo dell'incremento del contatore ```step```. Il ritardo del **contatore** comporta un ritardo conseguente di tutti i task dato che questi misurano il tempo a partire dal suo **conteggio**.
+- la schedulazione è sensibile a **ritardi** di esecuzione di un task che durino più di due tempi base (```delay > 2*tbase```) che causano uno ritardo dell'incremento del contatore ```step```. Il ritardo del **contatore** comporta un ritardo conseguente di tutti i task dato che questi misurano il tempo a partire dal suo **conteggio**.
 
 ### **SCHEDULATORE DI COMPITI BASATO SU TIMER PERIODICI**
 
