@@ -230,6 +230,7 @@ void loop()
 	// il codice eseguito al tempo massimo della CPU va qui
 }
 ```
+Il **flag** ```processingRdyTasks``` servirebbe ad evitare l'interruzione della ISR sopra un'altra ISR dovuta ad un eventuale ritardo di completamento di un task precedente. Questa circostanza nei microcontrollori come Arduino o ESP32 in genere non accade perchè le **interruzioni annidate** sono **di base** (default) **disabilitate**.
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352766239477208065
 
