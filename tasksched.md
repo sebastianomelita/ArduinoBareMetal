@@ -447,7 +447,7 @@ In questo esempio si utilizza un unico **timer HW** come **base dei tempi** per 
 - uno per la relizzazione di un **tasto toggle** con proprietà di antirimbalzo
 - un'altra per la realizzazione del **blink periodico** di un led
 
-Le operazioni benchè semplici vengono considerate come prototipi di task più complessi e magari soggetti a **ritardi** considerevoli. In questa circostanza la loro esecuzione all'interno di una ISR è **sconsigliata** per cui essi vengono eseguiti nel ```loop()``` principale su segnalazione di un **flag** asserito dentro la ISR del timer.
+Le operazioni benchè semplici vengono considerate come prototipi di task più complessi e magari soggetti a **ritardi** considerevoli. In questa circostanza la loro esecuzione all'interno di una ISR è **sconsigliata** per cui essi vengono eseguiti nel ```loop()``` principale su **segnalazione** di un **flag** asserito dentro la ISR del timer.
 
 ```C++
 #include <Ticker.h>
