@@ -443,7 +443,11 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://wo
 
 ### **Pulsante toggle con atirimbalzo insieme a blink**
 
-Stesso esempio precedente in cui tutti gli eventi periodici sono realizzati con lo schedulatore fornito dalla libreria, compresi gli eventi che abilitano e disabilitano parte delle funzioni di schedulazione tramite i comandi ```enableEvent()``` e ```disableEvent()```.
+In questo esempio si utilizza un unico **timer HW** come **base dei tempi** per uno **schedulatore SW** che gestisce la tempistica di **due task: 
+- uno per la relizzazione di un **tasto toggle** con proprietà di antirimbalzo
+- un'altra per la realizzazione del **blink periodico** di un led
+
+Le operazioni benchè semplici vengono considerate come prototipi di task più complessi e magari soggetti a **ritardi** considerevoli. In questa circostanza la loro esecuzione all'interno di una ISR è **sconsigliata** per cui essi vengono eseguiti nel ```loop()``` principale su segnalazione di un **flag** asserito dentro la ISR del timer.
 
 ```C++
 #include <Ticker.h>
@@ -526,8 +530,9 @@ void loop()
 }
 ```
 
-Il **flag** ```timerFlag``` serve ad evitare l'interruzione dello schedulatore ```scheduleAll()``` sopra un'altra chiamata non terminata della stessa funzione dovuta ad un eventuale ritardo di completamento di un task precedente. Questa circostanza, che in una ISR normalmente non accade, è invece sempre possibile nel loop dove le funzioni sono eseguite tutte in maniera **non atomica** e quindi sono tutte potenzialmente **interrompibili**.
-
+Il **flag** ```timerFlag``` serve a:
+- **segnalare** nel ```loop()``` il momento buono per eseguire lo schedulatore, cioè lo scadere di un tempo base
+- evitare l'interruzione dello schedulatore ```scheduleAll()``` sopra un'altra chiamata non terminata della stessa funzione dovuta ad un eventuale ritardo di completamento di un task precedente. Questa circostanza, che in una ISR normalmente non accade, è invece sempre possibile nel loop dove le funzioni sono eseguite tutte in maniera **non atomica** e quindi sono tutte potenzialmente **interrompibili**. Il controllo si effettua **testando** il flag di schedulazione all'interno della **ISR**. 
 
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/352790112505422849
 
