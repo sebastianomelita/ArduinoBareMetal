@@ -532,7 +532,7 @@ void loop()
 
 Il **flag** ```timerFlag``` serve a:
 - **segnalare** nel ```loop()``` il momento buono per eseguire lo schedulatore, cioè lo scadere di un tempo base
-- **evitare l'interruzione** dello schedulatore ```scheduleAll()``` sopra un'altra chiamata non terminata della stessa funzione dovuta ad un eventuale ritardo di completamento di un task precedente. Questa circostanza, che in una ISR normalmente non accade, è invece sempre possibile nel loop dove le funzioni sono eseguite tutte in maniera **non atomica** e quindi sono tutte potenzialmente **interrompibili**. Il controllo si effettua **testando** il flag di schedulazione all'interno della **ISR**. 
+- **evitare l'interruzione** dello schedulatore ```scheduleAll()``` sopra un'altra chiamata non terminata della stessa funzione dovuta ad un eventuale ritardo di completamento di un task precedente. Questa circostanza, che in una ISR normalmente non accade, è invece sempre possibile nel loop dove le funzioni sono eseguite in maniera **non atomica** e quindi sono tutte potenzialmente **interrompibili**. Il controllo si effettua **testando** il flag di schedulazione all'interno della **ISR**. 
 
 La **versione originale** più completa dello schedulatore insieme ad una dettagliata discussione teorica si trova in: https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
 
