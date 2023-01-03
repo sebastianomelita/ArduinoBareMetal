@@ -443,7 +443,7 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://wo
 
 ### **Pulsante toggle con atirimbalzo insieme a blink**
 
-In questo esempio si utilizza un unico **timer HW** come **base dei tempi** per uno **schedulatore SW** che gestisce la tempistica di **due task: 
+In questo esempio si utilizza un unico **timer HW** come **base dei tempi** per uno **schedulatore SW** che gestisce la tempistica di **due task**: 
 - uno per la relizzazione di un **tasto toggle** con proprietà di antirimbalzo
 - un'altra per la realizzazione del **blink periodico** di un led
 
