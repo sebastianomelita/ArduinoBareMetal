@@ -182,6 +182,7 @@ byte led1 = 13;
 byte led2 = 12;
 unsigned long period[2];
 unsigned long elapsedTime[2];
+volatile bool processingRdyTasks;
 unsigned long tbase;
 
 void setup()
@@ -196,13 +197,17 @@ void setup()
 	period[1] = 1000;
 	tbase = 500;
 	// task time init
-	timerFlag = false;
+	processingRdyTasks = false;
 	for(int i=0; i<2; i++){
 		elapsedTime[i] = period[i];
 	}
 }
 
 void scheduleAll(){
+	if(processingRdyTasks){ 	
+		Serial.println("Timer ticked before task processing done");
+	}else{  	
+		processingRdyTasks = true;		
 		// task 1
 		if (elapsedTime[0] >= period[0]) {
 			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
@@ -215,6 +220,7 @@ void scheduleAll(){
 			elapsedTime[1] = 0;
 		}
 		elapsedTime[1] += tbase;
+		processingRdyTasks = false;
 	}
 }
 
