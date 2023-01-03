@@ -526,6 +526,9 @@ void loop()
 }
 ```
 
+Il **flag** ```timerFlag``` serve ad evitare l'interruzione dello schedulatore ```scheduleAll()``` sopra un'altra chiamata non terminata della stessa funzione dovuta ad un eventuale ritardo di completamento di un task precedente. Questa circostanza, che in una ISR normalmente non accade, è invece sempre possibile nel loop dove le funzioni sono eseguite tutte in maniera **non atomica** e quindi sono tutte potenzialmente **interrompibili**.
+
+
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/352790112505422849
 
 
