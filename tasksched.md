@@ -556,6 +556,7 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://wo
 - https://github.com/sebastianomelita/time-tick-scheduler
 - https://www.ics.uci.edu/~givargis/pubs/C50.pdf
 - https://www.cs.ucr.edu/~vahid/rios/
+- https://wokwi.com/projects/352929647651521537
 
 				      
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)>[Versione in Python](taskschedpy.md)
