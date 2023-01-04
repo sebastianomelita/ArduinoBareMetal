@@ -124,7 +124,7 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://ww
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/351933794966569551
 
-Succede però che l'increme nto ```precs[0] += period[0]``` è fisso per cui, in fase di recupero del ritardo, potrebbe alla fine non compensarlo esattamente. In altre parole, ```precs[0]``` è si un multiplo del tempo ```period[0]``` ma potrebbe non esserlo del tempo del task sommato al ritardo ```period[0] + delay```, anzi normalmente non lo è per cui il tempo, in caso di ritardi oltre un ``period[0]```, potrebbe non essere calcolato con precisione.
+Succede però che l'**incremento** ```precs[0] += period[0]``` è fisso per cui, in fase di recupero del ritardo, questo potrebbe alla fine non essere compensato esattamente. In altre parole, ```precs[0]``` è si un multiplo del tempo ```period[0]``` ma potrebbe non esserlo del tempo del task sommato al ritardo ```period[0] + delay```, anzi normalmente non lo è per cui il tempo, in caso di ritardi oltre un ``period[0]```, potrebbe non essere calcolato con precisione.
 
 ```C++
 byte led1 = 13;
