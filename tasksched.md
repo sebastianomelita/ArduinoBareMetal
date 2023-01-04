@@ -124,7 +124,9 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 ### **SCHEDULATORE DI COMPITI BASATO SU FILTRAGGIO DEI TIME TICK**
 
-Uno schedulatore di compiti (task) si può realizzare anche utilizzando **più timers** basati sul polling della funzione millis(). Quest
+Uno schedulatore di compiti (task) si può realizzare anche utilizzando **più timers** basati sul polling della funzione millis(). 
+
+In questo caso il **ritardo** di un **task** maggiore di un **tempo base** è compensato. Infatti se dopo un tempo ```t``` pari a ```x``` multipli di ```tbase``` lo scedulatore ricampiona il tempo con la funzione ```millis()```, allora la condizione ```if(millis()-precm >= tbase``` sarà valutata alla massima velocità del clock e sarà vera per ```x``` volte, ciò causerà un rapido recupero di ```precm``` fino a che la diferenza non sarà minore di ```tbase```. Da questo momento in poi i tick procederanno senza ritardo fino allo scatto della condizione dei vari task.
 
 ```C++
 byte led1 = 13;
@@ -173,6 +175,9 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 E' possibile realizzare uno schedulatore di task che non necessita di alcuna funzione di misura del tempo (delay() o millis()). Esso si basa sull'**invocazione periodica** di una funzione ad un **tempo base** comune a tutti i task, calcolato col **massimo comune divisore** (M.C.D. o G.C.D) di tutti i tempi dei vari task. Un **contatore** di tempi base determina, per ogni task, il momento buono in cui questo deve essere eseguito **resettando** il proprio contatore subito dopo.
 
 La **base dei tempi** comune può essere realizzata mediante qualunque tecnica di **generazione di tempi periodici**, ma la particolarità dell'assenza di misure di **tempo corrente** (millis()) rendono la realizzazione particolarmente adatta ad essere adoperata su una base dei tempi generata mediante **interrupt**. 
+
+Anche in questo caso il **ritardo** di un **task** maggiore di un **tempo base** potrebbe essere compensato. Infatti se dopo un tempo ```t``` pari a ```x``` multipli di ```tbase``` lo scedulatore esegue rapidamente tutti i tick che erano in attesa in una coda, questi vengono contati tutti in una volta fino a recupoerare il ritardo.  Da questo momento in poi i tick procederanno senza ritardo fino allo scatto della condizione dei vari task.
+
 
 La **versione originale** più completa dello schedulatore insieme ad una dettagliata discussione teorica si trova in: https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
 
