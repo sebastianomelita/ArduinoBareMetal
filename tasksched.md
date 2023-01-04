@@ -275,7 +275,7 @@ void loop()
 	delay(1);
 }
 ```
-Il risultato non è particolarmente esatto perchè rimane non comoensato l'effetto di un eventuale ritardo di un task sul calcolo del tempo base.
+Il risultato non è particolarmente esatto perchè rimane non compensato l'effetto di un eventuale ritardo di un task sul calcolo del tempo base.
 
 ### **SCHEDULATORE DI COMPITI GENERICO SENZA MILLIS**
 
