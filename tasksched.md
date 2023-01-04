@@ -126,7 +126,7 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 Succede però che l'**incremento** ```precs[0] += period[0]``` è fisso per cui, in fase di recupero del ritardo, questo potrebbe alla fine non essere compensato esattamente. In altre parole, ```precs[0]``` è si un multiplo del tempo ```period[0]``` ma potrebbe non esserlo del tempo del task sommato al ritardo ```period[0] + delay```, anzi normalmente non lo è per cui il tempo, in caso di ritardi oltre un ```period[0]```, potrebbe non essere calcolato con precisione.
 
-Una soluzione  aquanto sopra potrebbe essere:
+Una soluzione  a quanto descritto sopra potrebbe essere:
 
 ```C++
 byte led1 = 13;
@@ -219,8 +219,62 @@ void loop()
 	delay(1);
 }
 ```
-
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352691213474403329
+
+Anche in questo caso può accadere che l'**incremento** ```precs[0] += period[0]``` sia fisso per cui, in fase di recupero del ritardo, questo potrebbe alla fine non essere compensato esattamente. In altre parole, ```precs[0]``` è si un multiplo del tempo ```period[0]``` ma potrebbe non esserlo del tempo del task sommato al ritardo ```period[0] + delay```, anzi normalmente non lo è per cui il tempo, in caso di ritardi oltre un ```period[0]```, potrebbe non essere calcolato con precisione. Un problema analogo potrebbe accadere all'incremento ```precm += tbase```.
+
+Una soluzione  a quanto descritto sopra potrebbe essere:
+
+```C++
+byte led1 = 13;
+byte led2 = 12;
+unsigned long period[2];
+unsigned long precs[2];
+unsigned long precm;
+unsigned long tbase;
+unsigned long prevMillis = 0;
+
+void setup()
+{
+	Serial.begin(115200); 
+	pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+	precs[0] = 0;
+	precs[1] = 0;
+	period[0] = 500;
+	period[1] = 2000;
+	precm = 0;
+	tbase = 50;
+}
+
+void loop()
+{
+	unsigned  long current_millis = millis();
+	if(current_millis-precm >= tbase){ 	
+		precm = current_millis;  			
+		// task 1
+		if ((precm - precs[0]) >= period[0]) {
+			precs[0] = precm; 
+			unsigned randomDelay = random(1, 200);
+			Serial.print("delay: ");Serial.println(randomDelay);
+			delay(randomDelay);
+			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+		}	
+		// task 2
+		if ((precm - precs[1]) >= period[1]) {
+			precs[1] = precm; 
+			unsigned long now = millis();
+			unsigned long diff = now-prevMillis;
+			//diff = diff%50;
+			Serial.print("ontwosec: ");Serial.println(diff);
+			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+			prevMillis = now;
+		}
+	}
+	// il codice eseguito al tempo massimo della CPU va qui
+	delay(1);
+}
+```
 
 ### **SCHEDULATORE DI COMPITI GENERICO SENZA MILLIS**
 
