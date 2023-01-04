@@ -137,31 +137,32 @@ unsigned long tbase;
 void setup()
 {
 	pinMode(led1, OUTPUT);
-  	pinMode(led2, OUTPUT);
+  pinMode(led2, OUTPUT);
 	precs[0] = 0;
 	precs[1] = 0;
 	period[0] = 500;
 	period[1] = 1000;
 	precm = 0;
+	tbase = 500;
 }
 
 void loop()
 {
-	unsigned long currTime = millis();
-	if(currTime-precm >= tbase){ 	
+	if(millis()-precm >= tbase){ 	
 		precm += tbase;  			
 		// task 1
-		if ((currTime - precs[0]) >= period[0]) {
+		if ((precm - precs[0]) >= period[0]) {
 			precs[0] += period[0]; 
-			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+				digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
 		}	
 		// task 2
-		if ((currTime - precs[1]) >= period[1]) {
+		if ((precm - precs[1]) >= period[1]) {
 			precs[1] += period[1]; 
-			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+				digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
 		}
 	}
 	// il codice eseguito al tempo massimo della CPU va qui
+	delay(1);
 }
 ```
 
