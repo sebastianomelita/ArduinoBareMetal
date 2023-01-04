@@ -223,7 +223,7 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 Anche in questo caso può accadere che l'**incremento** ```precs[0] += period[0]``` sia fisso per cui, in fase di recupero del ritardo, questo potrebbe alla fine non essere compensato esattamente. In altre parole, ```precs[0]``` è si un multiplo del tempo ```period[0]``` ma potrebbe non esserlo del tempo del task sommato al ritardo ```period[0] + delay```, anzi normalmente non lo è per cui il tempo, in caso di ritardi oltre un ```period[0]```, potrebbe non essere calcolato con precisione. Un problema analogo potrebbe accadere all'incremento ```precm += tbase```.
 
-Una soluzione  a quanto descritto sopra potrebbe essere:
+Una soluzione  parziale a quanto descritto sopra potrebbe essere:
 
 ```C++
 byte led1 = 13;
@@ -275,6 +275,7 @@ void loop()
 	delay(1);
 }
 ```
+Il risultato non è particolarmente esatto perchè rimane non comoensato l'effetto di un eventuale ritardo di un task sul calcolo del tempo base.
 
 ### **SCHEDULATORE DI COMPITI GENERICO SENZA MILLIS**
 
