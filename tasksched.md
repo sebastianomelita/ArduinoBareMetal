@@ -207,12 +207,12 @@ void loop()
 		// task 1
 		if ((precm - precs[0]) >= period[0]) {
 			precs[0] += period[0]; 
-				digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
 		}	
 		// task 2
 		if ((precm - precs[1]) >= period[1]) {
 			precs[1] += period[1]; 
-				digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
 		}
 	}
 	// il codice eseguito al tempo massimo della CPU va qui
@@ -369,18 +369,18 @@ unsigned long prevMillis = 0;
 
 void periodicBlink500() {
   	unsigned randomDelay = random(1, 200);
-			Serial.print("delay: ");Serial.println(randomDelay);
-			delay(randomDelay);
-			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+	Serial.print("delay: ");Serial.println(randomDelay);
+	delay(randomDelay);
+	digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
 }
 
 void periodicBlink2000(){
 	unsigned long now = millis();
-			unsigned long diff = now-prevMillis;
-			//diff = diff%50;
-			Serial.print("ontwosec: ");Serial.println(diff);
-			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
-			prevMillis = now;
+	unsigned long diff = now-prevMillis;
+	//diff = diff%50;
+	Serial.print("ontwosec: ");Serial.println(diff);
+	digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+	prevMillis = now;
 }
 
 void setup(){
@@ -405,10 +405,10 @@ void setup(){
 
 void timerISR(void) {
    if (timerFlag) {
-		//Serial.println("Timer ticked before task processing done");
-		for(int i=0; i<tasknum; i++){
-			elapsedTime[i] += tbase;
-		}
+	//Serial.println("Timer ticked before task processing done");
+	for(int i=0; i<tasknum; i++){
+		elapsedTime[i] += tbase;
+	}
    }
    else {
       timerFlag = true;
