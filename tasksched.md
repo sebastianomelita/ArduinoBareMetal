@@ -662,6 +662,7 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://wo
 - https://www.ics.uci.edu/~givargis/pubs/C50.pdf
 - https://www.cs.ucr.edu/~vahid/rios/
 - https://wokwi.com/projects/352691213474403329
+- https://wokwi.com/projects/352976196236642305
 
 				      
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)>[Versione in Python](taskschedpy.md)
