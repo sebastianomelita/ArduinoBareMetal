@@ -348,6 +348,98 @@ Il **flag** ```processingRdyTasks``` servirebbe ad evitare l'interruzione della 
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352766239477208065
 
+Una soluzione  parziale a quanto descritto sopra potrebbe essere:
+
+```C++
+#include <Ticker.h>
+// Inspired from https://www.cs.ucr.edu/~vahid/rios/
+Ticker periodicTicker1;
+int led1 = 13;
+int led2 = 12;
+int pulsante=27;
+byte precval;
+byte stato= LOW;
+unsigned long period[2];
+unsigned long elapsedTime[2];
+void (*tickFct[2])(void); 
+volatile bool timerFlag;
+unsigned long tbase;
+uint8_t tasknum = 2;
+unsigned long prevMillis = 0;
+
+void periodicBlink500() {
+  	unsigned randomDelay = random(1, 200);
+			Serial.print("delay: ");Serial.println(randomDelay);
+			delay(randomDelay);
+			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+}
+
+void periodicBlink2000(){
+	unsigned long now = millis();
+			unsigned long diff = now-prevMillis;
+			//diff = diff%50;
+			Serial.print("ontwosec: ");Serial.println(diff);
+			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+			prevMillis = now;
+}
+
+void setup(){
+	randomSeed(analogRead(0));
+	pinMode(led1, OUTPUT);
+	pinMode(led2, OUTPUT);
+	Serial.begin(115200); 
+	periodicTicker1.attach_ms(50, timerISR);
+	elapsedTime[0] = 0;
+	elapsedTime[1] = 0;
+	period[0] = 500;
+	period[1] = 2000;
+	tickFct[0] = periodicBlink500;
+	tickFct[1] = periodicBlink2000;
+	tbase = 50;
+	// task time init
+	timerFlag = false;
+	for(int i=0; i<tasknum; i++){
+		elapsedTime[i] = period[i];
+	}
+}
+
+void timerISR(void) {
+   if (timerFlag) {
+		//Serial.println("Timer ticked before task processing done");
+		for(int i=0; i<tasknum; i++){
+			elapsedTime[i] += tbase;
+		}
+   }
+   else {
+      timerFlag = true;
+   }
+   return;
+}
+
+void scheduleAll(){		
+	for(int i=0; i<tasknum; i++){
+		if(elapsedTime[i] >= period[i]) {
+			(*tickFct[i])();
+			//Serial.print("Ticked: ");Serial.println(elapsedTime[i]);
+			elapsedTime[i] = 0;
+		}
+		elapsedTime[i] += tbase;
+	}
+}
+
+void loop()
+{
+	if(timerFlag){
+		scheduleAll();
+		timerFlag = false;
+	}
+	delay(1);
+	// il codice eseguito al tempo massimo della CPU va qui
+}
+```
+
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352976196236642305
+
 ## **Esempi**
 
 ### **Blink a fasi**
