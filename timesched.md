@@ -86,8 +86,9 @@ Il **tempo base** è la base dei tempi di tutte le schedulazioni, viene calcolat
 	void loop()
 	{
 		// polling della millis() alla ricerca del tempo in cui scade ogni periodo
-		if((millis()-precm) >= (unsigned long) tbase){ 	//se è passato un periodo tbase dal precedente periodo
-			precm = millis();  	//preparo il tic successivo azzerando il conteggio del tempo ad adesso	
+		unsigned long current_millis = millis();
+		if((current_millis-precm) >= (unsigned long) tbase){ 	//se è passato un periodo tbase dal precedente periodo
+			precm = current_millis;  	//preparo il tic successivo azzerando il conteggio del tempo ad adesso	
 			
 			// codice eseguito esattamente ad ogni periodo 
 			in = digitalRead(pulsante);  // lettura ingresso
