@@ -137,6 +137,7 @@ unsigned long prevMillis = 0;
 
 void setup()
 {
+	randomSeed(analogRead(0));
 	Serial.begin(115200); 
 	pinMode(led1, OUTPUT);
   	pinMode(led2, OUTPUT);
