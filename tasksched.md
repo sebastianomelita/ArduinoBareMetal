@@ -228,7 +228,9 @@ void loop()
 ```
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352691213474403329
 
-Anche in questo caso può accadere che l'**incremento** ```precs[0] += period[0]``` sia fisso per cui, in fase di recupero del ritardo, questo potrebbe alla fine non essere compensato esattamente. In altre parole, ```precs[0]``` è si un multiplo del tempo ```period[0]``` ma potrebbe non esserlo del tempo del task sommato al ritardo ```period[0] + delay```, anzi normalmente non lo è per cui il tempo, in caso di ritardi oltre un ```period[0]```, potrebbe non essere calcolato con precisione. Un problema analogo potrebbe accadere all'incremento ```precm += tbase```.
+Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), conviene dare **priorità maggiore** a quelli **più lenti** dimodochè se un eventuale **ritardo** di un **task veloce** dovesse spalmarsi su più tick rapidi, l'**errore di tempo** introdotto coinvolgerebbe solo il **primo tick breve** successivo e non avrebbe effetto sui **tick lenti** (di periodicità più grande) dato che sono sempre **serviti prima**.
+
+In questo caso **non è possibile ricampionare** i task in maniera indipendente l'uno dall'altro perchè quelli con **tempo uguale** devono avvenire nello **stesso tick**.
 
 Una soluzione  parziale a quanto descritto sopra potrebbe essere:
 
@@ -357,6 +359,10 @@ void loop()
 ```
 Il **flag** ```processingRdyTasks``` servirebbe ad evitare l'interruzione della ISR sopra un'altra ISR dovuta ad un eventuale ritardo di completamento di un task precedente. Questa circostanza nei microcontrollori come Arduino o ESP32 in genere non accade perchè le **interruzioni annidate** sono **di base** (default) **disabilitate**.
 
+Anche in questo caso **non è possibile ricampionare** i task in maniera indipendente l'uno dall'altro perchè quelli con **tempo uguale** devono avvenire nello **stesso tick**.
+
+Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), conviene dare **priorità maggiore** a quelli **più lenti** dimodochè se un eventuale **ritardo** di un **task veloce** dovesse spalmarsi su più tick rapidi, l'**errore di tempo** introdotto coinvolgerebbe solo il **primo tick breve** successivo e non avrebbe effetto sui **tick lenti** (di periodicità più grande) dato che sono sempre **serviti prima**.
+
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352766239477208065
 
 Una soluzione  parziale a quanto descritto sopra potrebbe essere:
@@ -427,6 +433,8 @@ void loop()
 }
 
 ```
+
+Un'alternativa al ricampionamento nel loop() per compensare i ritardi di un task potrebbe essere sfruttare la proprietà di prerilascio forzato di un task che possiedono gli interrupt. Se i tick sono **interrupt based** allora essi accadono sempre e comunque nel tempo esatto a loro deputato anche in presenza di un task che ritarda la sua esecuzione. Questo perchè un tick che occorresse ripetutamente su uno stesso task molto lento causerebbe la sua interruzione e l'esecuzione della **ISR** che, pur **non** potendo servire un **nuovo task**, può far partire un algoritmo che **compensi il conteggio** dei tick dei task successivi in maniera da farli accadere al **tempo giusto**.
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/353034389606720513
 
