@@ -248,7 +248,7 @@ void setup()
 	randomSeed(analogRead(0));
 	Serial.begin(115200); 
 	pinMode(led1, OUTPUT);
- 	 pinMode(led2, OUTPUT);
+ 	pinMode(led2, OUTPUT);
 	precs[0] = 0;
 	precs[1] = 0;
 	period[0] = 500;
