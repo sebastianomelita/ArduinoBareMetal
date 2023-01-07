@@ -280,7 +280,7 @@ void loop()
 ```
 Il risultato non è particolarmente esatto perchè rimane non compensato l'effetto di un eventuale ritardo di un task sul calcolo del tempo base.
 
-Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352941830854439937
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/353186425425809409
 
 ### **SCHEDULATORE DI COMPITI GENERICO SENZA MILLIS**
 
