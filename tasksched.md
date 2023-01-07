@@ -434,7 +434,7 @@ void loop()
 
 ```
 
-Un'alternativa al ricampionamento nel loop() per compensare i ritardi di un task potrebbe essere sfruttare la proprietà di prerilascio forzato di un task che possiedono gli interrupt. Se i tick sono **interrupt based** allora essi accadono sempre e comunque nel tempo esatto a loro deputato anche in presenza di un task che ritarda la sua esecuzione. Questo perchè un tick che occorresse ripetutamente su uno stesso task molto lento causerebbe la sua interruzione e l'esecuzione della **ISR** che, pur **non** potendo servire un **nuovo task**, può far partire un algoritmo che **compensi il conteggio** dei tick dei task successivi in maniera da farli accadere al **tempo giusto**.
+Un'**alternativa** al **ricampionamento nel loop(**) per compensare i **ritardi** di un task potrebbe essere sfruttare la proprietà di **prerilascio** forzato di un task che possiedono gli interrupt. Se i tick sono **interrupt based** allora essi accadono sempre e comunque nel tempo esatto a loro deputato anche in presenza di un task che ritarda la sua esecuzione. Questo perchè un tick che occorresse ripetutamente su uno stesso task molto lento causerebbe la sua interruzione e l'esecuzione della **ISR** che, pur **non** potendo servire un **nuovo task**, può far partire un algoritmo che **compensi il conteggio** dei tick dei task successivi in maniera da farli accadere al **tempo giusto**.
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/353034389606720513
 
