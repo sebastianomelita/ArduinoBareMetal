@@ -232,7 +232,7 @@ Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), c
 
 In questo caso **non è possibile ricampionare** i task in maniera indipendente l'uno dall'altro perchè quelli con **tempo uguale** devono avvenire nello **stesso tick**.
 
-Una soluzione  parziale a quanto descritto sopra potrebbe essere:
+Una soluzione  a quanto descritto sopra potrebbe essere:
 
 ```C++
 byte led1 = 13;
@@ -286,8 +286,6 @@ void loop()
 	delay(1);
 }
 ```
-Il risultato non è particolarmente esatto perchè rimane non compensato l'effetto di un eventuale ritardo di un task sul calcolo del tempo base.
-
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/353186425425809409
 
 ### **SCHEDULATORE DI COMPITI GENERICO SENZA MILLIS**
