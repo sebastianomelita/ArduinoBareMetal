@@ -355,6 +355,75 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 Una soluzione  parziale a quanto descritto sopra potrebbe essere:
 
 ```C++
+byte led1 = 13;
+byte led2 = 12;
+unsigned long period[2];
+unsigned long precs[2];
+unsigned long elapsedTime[2];
+unsigned long precm;
+unsigned long precm2;
+unsigned long tbase, k;
+unsigned long prevMillis = 0;
+bool shift = false;
+
+void setup()
+{
+	randomSeed(analogRead(0));
+	Serial.begin(115200); 
+	pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+	precs[0] = 0;
+	precs[1] = 0;
+	period[0] = 500;
+	period[1] = 2000;
+	elapsedTime[0] = 0;
+	elapsedTime[1] = 0;
+	precm = 0;
+	precm2 = 0;
+	tbase = 50;
+}
+
+void loop()
+{
+	unsigned long current_millis = millis();
+	if(current_millis - precm >= tbase){ 		
+		precm += tbase;
+		/*
+		Serial.print("r-: ");Serial.println(precm % tbase);
+		sync(current_millis-precm );
+		Serial.print("r: ");Serial.println(precm % tbase);
+    */
+		// task 2
+		if (elapsedTime[1] >= period[1]) {
+			unsigned long now = millis();
+			unsigned long diff = now-prevMillis;
+			//diff = diff%50;
+			Serial.print("ontwosec: ");Serial.println(diff);
+			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+			prevMillis = now;
+			elapsedTime[1] = 0;
+		}
+		elapsedTime[1] += tbase;
+		// task 1
+		if (elapsedTime[0] >= period[0]) {
+			unsigned randomDelay = random(1, 200);
+			Serial.print("delay: ");Serial.println(randomDelay);
+			delay(randomDelay);
+			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+			elapsedTime[0] = 0;
+			shift = true;
+		}	
+		elapsedTime[0] += tbase;		
+	}
+	// il codice eseguito al tempo massimo della CPU va qui
+	delay(1);
+}
+
+```
+
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/353034389606720513
+
+```C++
 #include <Ticker.h>
 // Inspired from https://www.cs.ucr.edu/~vahid/rios/
 Ticker periodicTicker1;
