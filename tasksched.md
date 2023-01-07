@@ -240,7 +240,7 @@ void setup()
 	randomSeed(analogRead(0));
 	Serial.begin(115200); 
 	pinMode(led1, OUTPUT);
-  	pinMode(led2, OUTPUT);
+  pinMode(led2, OUTPUT);
 	precs[0] = 0;
 	precs[1] = 0;
 	period[0] = 500;
@@ -253,25 +253,26 @@ void loop()
 {
 	unsigned  long current_millis = millis();
 	if(current_millis-precm >= tbase){ 	
-		precm = current_millis;  			
-		// task 1
-		if ((precm - precs[0]) >= period[0]) {
-			precs[0] = precm; 
-			unsigned randomDelay = random(1, 200);
-			Serial.print("delay: ");Serial.println(randomDelay);
-			delay(randomDelay);
-			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-		}	
+		precm += tbase;  		
+
 		// task 2
 		if ((precm - precs[1]) >= period[1]) {
-			precs[1] = precm; 
+			precs[1] +=  period[1]; 
 			unsigned long now = millis();
 			unsigned long diff = now-prevMillis;
 			//diff = diff%50;
 			Serial.print("ontwosec: ");Serial.println(diff);
 			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
 			prevMillis = now;
-		}
+		}	
+		// task 1
+		if ((precm - precs[0]) >= period[0]) {
+			precs[0] +=  period[0]; 
+			unsigned randomDelay = random(1, 200);
+			Serial.print("delay: ");Serial.println(randomDelay);
+			delay(randomDelay);
+			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+		}	
 	}
 	// il codice eseguito al tempo massimo della CPU va qui
 	delay(1);
