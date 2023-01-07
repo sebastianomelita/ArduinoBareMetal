@@ -124,7 +124,9 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://ww
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/351933794966569551
 
-Succede però che l'**incremento** ```precs[0] += period[0]``` è fisso per cui, in fase di recupero del ritardo, questo potrebbe alla fine non essere compensato esattamente. In altre parole, ```precs[0]``` è si un multiplo del tempo ```period[0]``` ma potrebbe non esserlo del tempo del task sommato al ritardo ```period[0] + delay```, anzi normalmente non lo è per cui il tempo, in caso di ritardi oltre un ```period[0]```, potrebbe non essere calcolato con precisione.
+Se il primo task veloce è affetto da ritardi casuali può accadere che questi possono ritardare anche il task che occorrono nello stesso ```loop()``` a seguire.Questo accade se più task con **periodicità diversa** occorrono nello stesso tempo (tick).
+
+Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), conviene dare **priorità maggiore** a quelli **più lenti** dimodochè se un eventuale **ritardo** di un **task veloce** dovesse spalmarsi su più tick rapidi, l'**errore di tempo** introdotto coinvolgerebbe solo il **primo tick breve** successivo e non avrebbe effetto sui **tick lenti** (di periodicità più grande) dato che sono sempre **serviti prima**.
 
 Una soluzione  a quanto descritto sopra potrebbe essere:
 
