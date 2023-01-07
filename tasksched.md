@@ -132,7 +132,7 @@ Un'**alternativa** praticabile in questa categoria di schedulatori  potrebbe ess
 - recuperare il ritardo di un task che potrebbe ripercuotersi sui task dei **tick successivi**
 - recuperare il ritardo di un task facendo in modo che quello successivo, in esecuzione sullo **stesso tick**, parta al tempo giusto
 
-Una soluzione  a quanto descritto sopra potrebbe essere:
+Una soluzione basata sul ricampionamento potrebbe essere:
 
 ```C++
 byte led1 = 13;
