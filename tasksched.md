@@ -474,10 +474,10 @@ void setup(){
 	periodicTicker1.attach_ms(50, timerISR);
 	elapsedTime[0] = 0;
 	elapsedTime[1] = 0;
-	period[0] = 500;
-	period[1] = 2000;
-	tickFct[0] = periodicBlink500;
-	tickFct[1] = periodicBlink2000;
+	period[0] = 2000;
+	period[1] = 500;
+	tickFct[0] = periodicBlink2000;
+	tickFct[1] = periodicBlink500;
 	tbase = 50;
 	// task time init
 	timerFlag = false;
