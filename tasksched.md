@@ -232,7 +232,7 @@ Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), c
 
 In questo caso **non è possibile ricampionare** i task in maniera indipendente l'uno dall'altro perchè quelli con **tempo uguale** devono avvenire nello **stesso tick**.
 
-Una soluzione  a quanto descritto sopra potrebbe essere:
+Una soluzione in base a quanto descritto sopra potrebbe essere:
 
 ```C++
 byte led1 = 13;
@@ -363,7 +363,7 @@ Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), c
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352766239477208065
 
-Una soluzione  parziale a quanto descritto sopra potrebbe essere:
+Una soluzione parziale in base a quanto descritto sopra potrebbe essere:
 
 ```C++
 byte led1 = 13;
