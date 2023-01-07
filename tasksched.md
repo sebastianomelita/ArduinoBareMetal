@@ -399,11 +399,6 @@ void loop()
 	unsigned long current_millis = millis();
 	if(current_millis - precm >= tbase){ 		
 		precm += tbase;
-		/*
-		Serial.print("r-: ");Serial.println(precm % tbase);
-		sync(current_millis-precm );
-		Serial.print("r: ");Serial.println(precm % tbase);
-    */
 		// task 2
 		if (elapsedTime[1] >= period[1]) {
 			unsigned long now = millis();
