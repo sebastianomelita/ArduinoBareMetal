@@ -55,10 +55,10 @@ La situazione delle porte del microcontrollore in caso di led collegato ad **ano
 Si tratta di una modalità di funzionamento speciale non sempre pienamente supportata da tutti i dispositivi che è detta **modo DRAIN** (scarico). 
 In genere la **corrente massima** assorbibile in modo DRAIN **è minore** di quella massima erogabile quando la porta è posta in modo generatore di tensione.
 
-**Polarizzazione con catodo a massa.**
+**Polarizzazione con anodo sulla porta.**
 ![Pulsanti](led1bis.png)
 
-**Polarizzazione con anodo a massa.**
+**Polarizzazione con catodo sulla porta.**
 ![Pulsanti](led2bis.png)
 
 ### **Sitografia:**
