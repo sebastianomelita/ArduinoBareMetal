@@ -42,11 +42,11 @@ Per **accendere** un led con un microcontrollore:
 
 Di conseguenza, i **valori delle attivazioni** dei segmenti (mediante i livelli HIGH o LOW) sono:
 
-- **Catodo a GND (porta sorgente)**:
+- **Anodo sulla porta (porta sorgente)**:
 
     - le **porte** del microcontrollore **spengono** un led se poste a livello **LOW** e lo **accendono** se poste a livello **HIGH** e in questa condizione erogano corrente (pin di sorgente)
 
-- **Anodo a GND (porta scarico)**:
+- **Catodo sulla porta (porta scarico)**:
 
     - le **porte** del microcontrollore **spengono** un led se poste a livello **HIGH** e lo **accendono** se poste a livello **LOW** in questa condizione assorbono corrente (pin di pozzo o drain).
 
