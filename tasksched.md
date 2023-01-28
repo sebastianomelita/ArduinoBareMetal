@@ -128,7 +128,7 @@ Se il primo task veloce è affetto da ritardi casuali può accadere che questi p
 
 Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), conviene dare **priorità maggiore** a quelli **più lenti** dimodochè se un eventuale **ritardo** di un **task veloce** dovesse spalmarsi su più tick rapidi, l'**errore di tempo** introdotto coinvolgerebbe solo il **primo tick breve** successivo e non avrebbe effetto sui **tick lenti** (di periodicità più grande) dato che sarebbero sempre **serviti prima**.
 
-Un'**alternativa** praticabile in questa categoria di schedulatori  potrebbe essere **ricampionare** il tempo **corrente** sia ad ogni ```loop()``` e, all'internno di questo, tra ogni task. Il ricampionamente avrebbe due obiettivi:
+Un'**alternativa** praticabile in questa categoria di schedulatori  potrebbe essere **ricampionare** il tempo **corrente** sia ad ogni ```loop()``` e, all'interno di questo, tra ogni task. Il ricampionamente avrebbe due obiettivi:
 - recuperare il ritardo di un task che potrebbe ripercuotersi sui task dei **tick successivi**
 - recuperare il ritardo di un task facendo in modo che quello successivo, in esecuzione sullo **stesso tick**, parta al tempo giusto
 
