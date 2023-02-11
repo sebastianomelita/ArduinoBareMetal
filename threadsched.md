@@ -291,5 +291,6 @@ void loop() {
 ```
 ### **Sitografia**
 - https://www.freertos.org/implementation/a00004.html
+- https://www.cs.unibo.it/~ghini/didattica/sistop/pthreads_tutorial/POSIX_Threads_Programming.htm
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](threadschedpy.md)
