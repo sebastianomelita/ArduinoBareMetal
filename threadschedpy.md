@@ -117,6 +117,32 @@ blink1_running = False
 blink2_running = False
 ```
 
+**Blinks a tempo con una sola funzione**
+
+Esempio di realizzazione di due task che eseguono un blink mediante delay() insieme ad altre generiche operazioni svolte nel main (piattaforma **Espress if ESP32**, **IDE Arduino** e librerie thread **preemptive**). (Link simulatore online https://wokwi.com/projects/356371886501703681)
+
+I blink sono due e si svolgono in maniera indipendente su due **thread separati**. La funzione di blink è unica con due parametri (potenzialmente anche di tipo diverso) passati alla funzione 
+```pthread_create()``` con un parametro array.
+
+```Python
+import _thread
+import time
+from machine import Pin
+
+def blink(led, t):
+    while True:
+        newLedValue = 0 if led.value() == 1 else 1        
+        led.value(newLedValue)
+        time.sleep(t)
+
+
+led1 = Pin(12,Pin.OUT)
+led2 = Pin(18,Pin.OUT)
+
+_thread.start_new_thread(blink, (led1,1))
+_thread.start_new_thread(blink, (led2,2))
+```
+
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in C++](threadsched.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMTEwNDI2NDY0N119
