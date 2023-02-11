@@ -200,7 +200,7 @@ void loop() {
 
 Esempio di realizzazione di due task che eseguono un blink mediante delay() insieme ad altre generiche operazioni svolte nel main (piattaforma **Espress if ESP32**, **IDE Arduino** e librerie thread **preemptive**). (Link simulatore online https://wokwi.com/projects/356371886501703681)
 
-I blink sono due e si svolgono in maniera indipendente su due **thread separati**. La funzione di blink è unica con due parametri passati alla funzione 
+I blink sono due e si svolgono in maniera indipendente su due **thread separati**. La funzione di blink è unica con due parametri (dello stesso tipo) passati alla funzione 
 ```pthread_create()``` con un parametro array.
 
 ```C++
