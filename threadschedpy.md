@@ -119,7 +119,7 @@ blink2_running = False
 
 **Blinks a tempo con una sola funzione**
 
-Esempio di realizzazione di due task che eseguono un blink mediante delay() insieme ad altre generiche operazioni svolte nel main (piattaforma **Espress if ESP32**, **IDE Arduino** e librerie thread **preemptive**). (Link simulatore online https://wokwi.com/projects/356371886501703681)
+Esempio di realizzazione di due task che eseguono un blink mediante delay() insieme ad altre generiche operazioni svolte nel main (piattaforma **Espress if ESP32**, **IDE Arduino** e librerie thread **preemptive**). (Link simulatore online https://wokwi.com/projects/356375056713025537)
 
 I blink sono due e si svolgono in maniera indipendente su due **thread separati**. La funzione di blink è unica con due parametri (potenzialmente anche di tipo diverso) passati alla funzione ```pthread_create()``` con un parametro array.
 
