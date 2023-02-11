@@ -223,6 +223,7 @@ void * blink(void* arg) {
 void setup() {
   Serial.begin(115200);
   Serial.println("Hello, ESP32!");
+  
   pinMode(led_pin_1,OUTPUT);
   int tdata1[] = {led_pin_1, 1000};
   if (pthread_create(&t1_led,NULL,blink,(void*)tdata1)) {
