@@ -195,6 +195,53 @@ void loop() {
 	blink2_running = false;
 }
 ```
+
+**Blinks a tempo con una sola funzione**
+
+Esempio di realizzazione di due task che eseguono un blink mediante delay() insieme ad altre generiche operazioni svolte nel main (piattaforma **Espress if ESP32**, **IDE Arduino** e librerie thread **preemptive**). (Link simulatore online https://wokwi.com/projects/356371886501703681)
+
+I blink sono due e si svolgono in maniera indipendente su due **thread separati**. La funzione di blink è unica con due parametri passati alla funzione 
+```pthread_create()``` con un parametro array.
+
+```C++
+#include <pthread.h>
+int led_pin_1 = 12;
+int led_pin_2 = 18;
+pthread_t t1_led, t2_led;
+
+void * blink(void* arg) {
+  int *p = (int *) arg;
+  int pin = p[0];
+  int time = p[1];
+  while (true) { 
+    digitalWrite(pin,!digitalRead(pin));
+    delay(time); // this speeds up the simulation
+  }
+  return NULL;
+}
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println("Hello, ESP32!");
+  pinMode(led_pin_1,OUTPUT);
+  int tdata1[] = {led_pin_1, 1000};
+  if (pthread_create(&t1_led,NULL,blink,(void*)tdata1)) {
+    Serial.println("ERRORE CREAZIONE THREAD!!");
+  }
+
+  pinMode(led_pin_2,OUTPUT);
+  int tdata2[] = {led_pin_2, 2000};
+  if (pthread_create(&t2_led,NULL,blink,(void*)tdata2)) {
+    Serial.println("ERRORE CREAZIONE THREAD!!");
+  }
+}
+
+void loop() {
+  delay(1000); // this speeds up the simulation
+}
+
+```
+
 ### **Thread RTOS**
 
 In realtà nella piattaforma **Espress if ESP32** i phtread sono una libreria eseguita al di sopra una implementazione nativa basata sui thread del sistema operativo FreeRTOS, pertando si potrebbe evitare di includere la libreria phtread.h e si potrebbe utilizzare direttamente l'implementazione nativa. Questa è anch'essa **preeenptive** per cui la funzione **delay()** causa la sospensione del thread chiamante e l'assegnazione della CPU al primo thread libero in attesa. Inoltre il codice seguente è un esempio di **parallelismo reale** dei thread in quanto sono allocati su **due core diversi** della medesima CPU:
