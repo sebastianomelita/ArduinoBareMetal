@@ -81,102 +81,78 @@ Di seguito è riportato un esempio di **blink sequenziale** in esecuzione su **d
   Blink
   Turns an LED on for one second, then off for one second, repeatedly. Rewritten with Protothreads.
 */
-/*
-#define LC_INIT(lc)
-struct pt { unsigned short lc; };
-#define PT_THREAD(name_args)  char name_args
-#define PT_BEGIN(pt)          switch(pt->lc) { case 0:
-#define PT_WAIT_UNTIL(pt, c)  pt->lc = __LINE__; case __LINE__: \
-                              if(!(c)) return 0
-#define PT_END(pt)            } pt->lc = 0; return 2
-#define PT_INIT(pt)   LC_INIT((pt)->lc)
-#define PT_SLEEP(pt, delay) \
+#include <limits.h>
+typedef enum ASYNC_EVT { ASYNC_INIT = 0, ASYNC_CONT = ASYNC_INIT, ASYNC_DONE = 1 } async2;
+#define async_state unsigned _async_k
+struct async { async_state; };
+#define async_begin(k) unsigned *_async_k = &(k)->_async_k; switch(*_async_k) { default:
+#define async_end *_async_k=ASYNC_DONE; case ASYNC_DONE: return ASYNC_DONE; }
+#define await(cond) await_while(!(cond))
+#define await_while(cond) *_async_k = __LINE__; case __LINE__: if (cond) return ASYNC_CONT
+#define async_yield *_async_k = __LINE__; return ASYNC_CONT; case __LINE__:
+#define async_exit *_async_k = ASYNC_DONE; return ASYNC_DONE
+#define async_init(state) (state)->_async_k=ASYNC_INIT
+#define async_done(state) (state)->_async_k==ASYNC_DONE
+#define async_call(f, state) (async_done(state) || (f)(state))
+#define PT_SLEEP(delay) \
 { \
   do { \
     static unsigned long protothreads_sleep; \
     protothreads_sleep = millis(); \
-    PT_WAIT_UNTIL(pt, millis() - protothreads_sleep > delay); \
+    await( millis() - protothreads_sleep > delay); \
   } while(false); \
 }
-#define PT_EXITED  2
-#define PT_SCHEDULE(f) ((f) < PT_EXITED)
-#define PT_YIELD(pt) PT_SLEEP(pt, 0)
 //-----------------------------------------------------------------------------------------------------------
 // se si usa questa libreria al posto delle macro sopra, togliere il commento iniziale all'include 
 // e commentare le macro sopra
-*/
-#include "protothreads.h"
-
-bool blink1_running = true;
-bool blink2_running = true;
+//#include "async.h"
 int led1 = 13;
 int led2 = 12;
-int count = 0;
 
-pt ptBlink1;
-int blinkThread1(struct pt* pt) {
-  PT_BEGIN(pt);
+async ptBlink1;
+int blinkThread1(struct async* pt) {
+  async_begin(pt);
 
   // Loop forever
   while(true) {
-	if (blink1_running == true) {
-		digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
-		PT_SLEEP(pt, 500);
-		digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
-		PT_SLEEP(pt, 500);
-		count += 1;
-		Serial.println(count);
-	} else {
-		digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
-		PT_YIELD(pt);
-	}
+			digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
+			PT_SLEEP(500);
+			digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
+			PT_SLEEP(500);
   }
-  PT_END(pt);
+  async_end;
 }
 
-pt ptBlink2;
-int blinkThread2(struct pt* pt) {
-  PT_BEGIN(pt);
+async ptBlink2;
+int blinkThread2(struct async* pt) {
+  async_begin(pt);
 
   // Loop forever
   while(true) {
-	if (blink2_running == true) {
-		digitalWrite(led2, HIGH);   // turn the LED on (HIGH is the voltage level)
-		PT_SLEEP(pt, 1000);
-		digitalWrite(led2, LOW);    // turn the LED off by making the voltage LOW
-		PT_SLEEP(pt, 1000);
-	} else {
-		digitalWrite(led2, LOW);    // turn the LED off by making the voltage LOW
-		PT_YIELD(pt);
-	}
+			digitalWrite(led2, HIGH);   // turn the LED on (HIGH is the voltage level)
+			PT_SLEEP(1000);
+			digitalWrite(led2, LOW);    // turn the LED off by making the voltage LOW
+			PT_SLEEP(1000);
   }
-  PT_END(pt);
+  async_end;
 }
 
 // the setup function runs once when you press reset or power the board
 void setup() {
-  Serial.begin(115200);
-  PT_INIT(&ptBlink1);
-  PT_INIT(&ptBlink2);
+  async_init(&ptBlink1);
+  async_init(&ptBlink2);
   // initialize digital pin LED_BUILTIN as an output.
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
-  int count = 0;
 }
 
 // the loop function runs over and over again forever
 void loop() {
-	PT_SCHEDULE(blinkThread1(&ptBlink1));
-	PT_SCHEDULE(blinkThread2(&ptBlink2));
-  
-	if(count >= 10){
-		Serial.println("Ending threads...");
-		blink1_running = false;
-		blink2_running = false;
-	}
+	blinkThread1(&ptBlink1);
+	blinkThread2(&ptBlink2);
 }
 ```
-Link simulazione online: https://wokwi.com/projects/348712126874911315
+Link simulazione online: https://wokwi.com/projects/361706464813053953
 
 Osservazioni:
 - il codice non è specifico di alcuna macchina, è realizzato in C puro ed è altamente portabile.
@@ -253,112 +229,113 @@ Simulazione su Esp32 in Wowki: https://wokwi.com/projects/348709819084964435
 /*
 Realizzare il blink di un led insieme al lampeggio di un'altro led che codifica il messaggio morse dell'SOS.
 */
-#define LC_INIT(lc)
-struct pt { unsigned short lc; };
-#define PT_THREAD(name_args)  char name_args
-#define PT_BEGIN(pt)          switch(pt->lc) { case 0:
-#define PT_WAIT_UNTIL(pt, c)  pt->lc = __LINE__; case __LINE__: \
-                              if(!(c)) return 0
-#define PT_END(pt)            } pt->lc = 0; return 2
-#define PT_INIT(pt)   LC_INIT((pt)->lc)
-#define PT_SLEEP(pt, delay) \
+#include <limits.h>
+typedef enum ASYNC_EVT { ASYNC_INIT = 0, ASYNC_CONT = ASYNC_INIT, ASYNC_DONE = 1 } async2;
+#define async_state unsigned _async_k
+struct async { async_state; };
+#define async_begin(k) unsigned *_async_k = &(k)->_async_k; switch(*_async_k) { default:
+#define async_end *_async_k=ASYNC_DONE; case ASYNC_DONE: return ASYNC_DONE; }
+#define await(cond) await_while(!(cond))
+#define await_while(cond) *_async_k = __LINE__; case __LINE__: if (cond) return ASYNC_CONT
+#define async_yield *_async_k = __LINE__; return ASYNC_CONT; case __LINE__:
+#define async_exit *_async_k = ASYNC_DONE; return ASYNC_DONE
+#define async_init(state) (state)->_async_k=ASYNC_INIT
+#define async_done(state) (state)->_async_k==ASYNC_DONE
+#define async_call(f, state) (async_done(state) || (f)(state))
+#define PT_SLEEP(delay) \
 { \
   do { \
     static unsigned long protothreads_sleep; \
     protothreads_sleep = millis(); \
-    PT_WAIT_UNTIL(pt, millis() - protothreads_sleep > delay); \
+    await( millis() - protothreads_sleep > delay); \
   } while(false); \
 }
-#define PT_EXITED  2
-#define PT_SCHEDULE(f) ((f) < PT_EXITED)
-#define PT_YIELD(pt) PT_SLEEP(pt, 0)
 //-----------------------------------------------------------------------------------------------------------
 // se si usa questa libreria al posto delle macro sopra, togliere il commento iniziale all'include 
 // e commentare le macro sopra
 //#include "protothreads.h"
 #define PDELAY  500
 #define LDELAY  1500
-#define BLINKDELAY  100
+#define BLINKDELAY  300
 byte led1 = 12;
 byte led2 = 13;
+
+// definizione protothread del pulsante
+async ptSos;
+async2 SOSThread(struct async *pt) {
+  async_begin(pt);
+
+  // Loop del protothread
+  while(true) {
+		// 3 punti
+		digitalWrite(led1, HIGH); // 1
+		PT_SLEEP(PDELAY);
+		digitalWrite(led1, LOW);
+		PT_SLEEP(PDELAY);
+		digitalWrite(led1, HIGH); // 2
+		PT_SLEEP(PDELAY);
+		digitalWrite(led1, LOW);
+		PT_SLEEP(PDELAY);
+		digitalWrite(led1, HIGH); // 3
+		PT_SLEEP(PDELAY);
+		digitalWrite(led1, LOW);
+		PT_SLEEP(PDELAY);
+		// 1 linea
+		digitalWrite(led1, HIGH); // 1 linea
+		PT_SLEEP(LDELAY);
+		digitalWrite(led1, LOW);
+		PT_SLEEP(PDELAY);
+		// 3 punti
+		digitalWrite(led1, HIGH); // 1
+		PT_SLEEP(PDELAY);
+		digitalWrite(led1, LOW);
+		PT_SLEEP(PDELAY);
+		digitalWrite(led1, HIGH); // 2
+		PT_SLEEP(PDELAY);
+		digitalWrite(led1, LOW);
+		PT_SLEEP(PDELAY);
+		digitalWrite(led1, HIGH); // 3
+		PT_SLEEP(PDELAY);
+		digitalWrite(led1, LOW);
+		PT_SLEEP(LDELAY);
+  }
+  async_end;
+}
+
+// definizione protothread del lampeggio
+async ptBlink;
+async2 blinkThread(struct async *pt) {
+  async_begin(pt);
+
+  // Loop del protothread
+  while(true) {
+		digitalWrite(led2, HIGH);   	// turn the LED on (HIGH is the voltage level)
+		PT_SLEEP(BLINKDELAY);
+		digitalWrite(led2, LOW);    	// turn the LED off by making the voltage LOW
+		PT_SLEEP(BLINKDELAY);
+  }
+  async_end;
+}
 
 void setup()
 {
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
-  PT_INIT(&ptSos);
-  PT_INIT(&ptBlink);
-}
- 
-
-// definizione protothread del pulsante
-pt ptSos;
-int SOSThread(struct pt* pt) {
-  PT_BEGIN(pt);
-
-  // Loop del protothread
-  while(true) {
-	// 3 punti
-	digitalWrite(led1, HIGH); // 1
-	PT_SLEEP(pt, PDELAY);
-	digitalWrite(led1, LOW);
-	PT_SLEEP(pt, PDELAY);
-	digitalWrite(led1, HIGH); // 2
-	PT_SLEEP(pt, PDELAY);
-	digitalWrite(led1, LOW);
-	PT_SLEEP(pt, PDELAY);
-	digitalWrite(led1, HIGH); // 3
-	PT_SLEEP(pt, PDELAY);
-	digitalWrite(led1, LOW);
-	PT_SLEEP(pt, PDELAY);
-	// 1 linea
-	digitalWrite(led1, HIGH); // 1 linea
-	PT_SLEEP(pt, LDELAY);
-	digitalWrite(led1, LOW);
-	PT_SLEEP(pt, PDELAY);
-	// 3 punti
-	digitalWrite(led1, HIGH); // 1
-	PT_SLEEP(pt, PDELAY);
-	digitalWrite(led1, LOW);
-	PT_SLEEP(pt, PDELAY);
-	digitalWrite(led1, HIGH); // 2
-	PT_SLEEP(pt, PDELAY);
-	digitalWrite(led1, LOW);
-	PT_SLEEP(pt, PDELAY);
-	digitalWrite(led1, HIGH); // 3
-	PT_SLEEP(pt, PDELAY);
-	digitalWrite(led1, LOW);
-	PT_SLEEP(pt, LDELAY);
-  }
-  PT_END(pt);
-}
-
-// definizione protothread del lampeggio
-pt ptBlink;
-int blinkThread(struct pt* pt) {
-  PT_BEGIN(pt);
-
-  // Loop del protothread
-  while(true) {
-	digitalWrite(led2, HIGH);   	// turn the LED on (HIGH is the voltage level)
-	PT_SLEEP(pt, BLINKDELAY);
-	digitalWrite(led2, LOW);    	// turn the LED off by making the voltage LOW
-	PT_SLEEP(pt, BLINKDELAY);
-  }
-  PT_END(pt);
+  async_init(&ptSos);
+  async_init(&ptBlink);
 }
 
 // loop principale
 void loop()
 {
-	PT_SCHEDULE(SOSThread(&ptSos)); 		// esecuzione schedulatore protothreads
-	PT_SCHEDULE(blinkThread(&ptBlink)); 	// esecuzione schedulatore protothreads
+	SOSThread(&ptSos); 	// esecuzione schedulatore protothreads
+	blinkThread(&ptBlink); 	// esecuzione schedulatore protothreads
 }
 ```
 
 **Lampeggi multipli**
 
-LInk simulazione in Tinkercad: https://www.tinkercad.com/embed/gCkCBuwlY8E?editbtn=1
+LInk simulazione in Tinkercad: https://wokwi.com/projects/361667447263659009
 
 ```C++
 /*
