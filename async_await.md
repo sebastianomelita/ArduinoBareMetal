@@ -64,7 +64,7 @@ Ogni protothrad viene **schedulato** cioè, valutato periodicamente per stabilir
 ```C++
 void loop() {
 	mioScopo1Thread(&ptMioScopo1);
-	(mioScopo2Thread(&ptMioScopo2);
+	mioScopo2Thread(&ptMioScopo2);
 }
 ```
 
