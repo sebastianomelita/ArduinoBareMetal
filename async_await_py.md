@@ -76,88 +76,31 @@ void loop() {
 Per quanto riguarda la **definizione** di un protothread va ricordato che ll'interno del loop del protothread ogni **ramo** di esecuzione va reso **non bloccante** inserendo, la funzione **```PT_SLEEP(pt)```** (mai la normale delay()) se il flusso di esecuzione deve essere **bloccato temporaneamente** per un certo tempo fissato, oppure la funzione **```async_yield```** se questo **non deve essere bloccato**. Ciò serve a richiamare lo schedulatore **almeno una volta**, qualunque **direzione** di  esecuzione prenda il codice, in modo da cedere **"spontaneamente"** il controllo ad un altro prothread al termine del loop() del prothread corrente. La **cessione del controllo** dello schedulatore ad ogni ramo di esecuzione **è necessario** altrimenti gli altri protothread non verrebbero mai eseguiti (il sistema **non è preemptive**).
 Sia ```PT_YIELD(pt)``` che ```PT_SLEEP(pt)``` cedono il controllo della CPU allo schedulatore che lo assegna agli altri protothread che eventualmente in quel momento hanno scaduto il tempo di attesa di un loro delay.
 
-**Blink sequenziali interagenti**
+**Blink sequenziali indipendenti**
 
-Di seguito è riportato un esempio di **blink sequenziale** in esecuzione su **due thread** separati su scheda **Arduino Uno**, con **IDE Arduino** e  con la libreria **protothread.h**  (https://gitlab.com/airbornemint/arduino-protothreads). I thread sono senza stack e **non preemptive** (solo collaborativi). La **programmazione sequenziale** del blink del led è **emulata** tramite una funzione delay() **non bloccante** ``` PT_SLEEP(pt, 200) ``` fornita dalla libreria ``` protothreads.h ```.
-
-
-```C++
+```python
 /*
   Blink
   Turns an LED on for one second, then off for one second, repeatedly. Rewritten with Protothreads.
 */
-#include <limits.h>
-typedef enum ASYNC_EVT { ASYNC_INIT = 0, ASYNC_CONT = ASYNC_INIT, ASYNC_DONE = 1 } async2;
-#define async_state unsigned _async_k
-struct async { async_state; };
-#define async_begin(k) unsigned *_async_k = &(k)->_async_k; switch(*_async_k) { default:
-#define async_end *_async_k=ASYNC_DONE; case ASYNC_DONE: return ASYNC_DONE; }
-#define await(cond) await_while(!(cond))
-#define await_while(cond) *_async_k = __LINE__; case __LINE__: if (cond) return ASYNC_CONT
-#define async_yield *_async_k = __LINE__; return ASYNC_CONT; case __LINE__:
-#define async_exit *_async_k = ASYNC_DONE; return ASYNC_DONE
-#define async_init(state) (state)->_async_k=ASYNC_INIT
-#define async_done(state) (state)->_async_k==ASYNC_DONE
-#define async_call(f, state) (async_done(state) || (f)(state))
-#define PT_SLEEP(delay) \
-{ \
-  do { \
-    static unsigned long protothreads_sleep; \
-    protothreads_sleep = millis(); \
-    await( millis() - protothreads_sleep > delay); \
-  } while(false); \
-}
-//-----------------------------------------------------------------------------------------------------------
-// se si usa questa libreria al posto delle macro sopra, togliere il commento iniziale all'include 
-// e commentare le macro sopra
-//#include "async.h"
-int led1 = 13;
-int led2 = 12;
+import uasyncio
+from machine import Pin
 
-async ptBlink1;
-int blinkThread1(struct async* pt) {
-  async_begin(pt);
+async def blink(led, period_ms):
+    while True:
+        led.value(not led.value())
+        await uasyncio.sleep_ms(period_ms)
 
-  // Loop forever
-  while(true) {
-	digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
-	PT_SLEEP(500);
-	digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
-	PT_SLEEP(500);
-  }
-  async_end;
-}
+led1 = Pin(12,Pin.OUT)
+led2 = Pin(13,Pin.OUT)
 
-async ptBlink2;
-int blinkThread2(struct async* pt) {
-  async_begin(pt);
+event_loop = uasyncio.get_event_loop()
+event_loop.create_task(blink(led1, 700))
+event_loop.create_task(blink(led2, 400))
+event_loop.run_forever()
 
-  // Loop forever
-  while(true) {
-	digitalWrite(led2, HIGH);   // turn the LED on (HIGH is the voltage level)
-	PT_SLEEP(1000);
-	digitalWrite(led2, LOW);    // turn the LED off by making the voltage LOW
-	PT_SLEEP(1000);
-  }
-  async_end;
-}
-
-// the setup function runs once when you press reset or power the board
-void setup() {
-  async_init(&ptBlink1);
-  async_init(&ptBlink2);
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(led1, OUTPUT);
-  pinMode(led2, OUTPUT);
-}
-
-// the loop function runs over and over again forever
-void loop() {
-	blinkThread1(&ptBlink1);
-	blinkThread2(&ptBlink2);
-}
 ```
-Link simulazione online: https://wokwi.com/projects/361706464813053953
+Link simulazione online: https://wokwi.com/projects/361715047715438593
 
 Osservazioni:
 - il codice non è specifico di alcuna macchina, è realizzato in C puro ed è altamente portabile.
