@@ -126,7 +126,7 @@ Realizzare il blink di un led insieme al lampeggio di un'altro led che codifica 
 import uasyncio
 from machine import Pin
 
-async def sos(led, pdelay, ldelay):
+async def sosBlink(led, pdelay, ldelay):
     while True:
     	# 3 punti
 	digitalWrite(led1, HIGH); # 1
@@ -172,8 +172,8 @@ led1 = Pin(12,Pin.OUT)
 led2 = Pin(13,Pin.OUT)
 
 event_loop = uasyncio.get_event_loop()
-event_loop.create_task(blink(led1, 700))
-event_loop.create_task(blink(led2, 400))
+event_loop.create_task(sosBlink(led1, 500, 1500))
+event_loop.create_task(blink(led2, 300))
 event_loop.run_forever()
 ```
 
