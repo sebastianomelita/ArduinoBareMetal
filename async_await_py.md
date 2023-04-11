@@ -118,112 +118,63 @@ protothread verrà eseguito fino a quando non si blocca o esce. Pertanto la sche
 
 Simulazione su Esp32 in Wowki: : https://wokwi.com/projects/361667447263659009
 
-```C++
+```python
 /*
 Realizzare il blink di un led insieme al lampeggio di un'altro led che codifica il messaggio morse dell'SOS.
 */
-#include <limits.h>
-typedef enum ASYNC_EVT { ASYNC_INIT = 0, ASYNC_CONT = ASYNC_INIT, ASYNC_DONE = 1 } async2;
-#define async_state unsigned _async_k
-struct async { async_state; };
-#define async_begin(k) unsigned *_async_k = &(k)->_async_k; switch(*_async_k) { default:
-#define async_end *_async_k=ASYNC_DONE; case ASYNC_DONE: return ASYNC_DONE; }
-#define await(cond) await_while(!(cond))
-#define await_while(cond) *_async_k = __LINE__; case __LINE__: if (cond) return ASYNC_CONT
-#define async_yield *_async_k = __LINE__; return ASYNC_CONT; case __LINE__:
-#define async_exit *_async_k = ASYNC_DONE; return ASYNC_DONE
-#define async_init(state) (state)->_async_k=ASYNC_INIT
-#define async_done(state) (state)->_async_k==ASYNC_DONE
-#define async_call(f, state) (async_done(state) || (f)(state))
-#define PT_SLEEP(delay) \
-{ \
-  do { \
-    static unsigned long protothreads_sleep; \
-    protothreads_sleep = millis(); \
-    await( millis() - protothreads_sleep > delay); \
-  } while(false); \
-}
-//-----------------------------------------------------------------------------------------------------------
-// se si usa questa libreria al posto delle macro sopra, togliere il commento iniziale all'include 
-// e commentare le macro sopra
-//#include "protothreads.h"
-#define PDELAY  500
-#define LDELAY  1500
-#define BLINKDELAY  300
-byte led1 = 12;
-byte led2 = 13;
 
-// definizione protothread del pulsante
-async ptSos;
-int SOSThread(struct async *pt) {
-  async_begin(pt);
+import uasyncio
+from machine import Pin
 
-  // Loop del protothread
-  while(true) {
-		// 3 punti
-		digitalWrite(led1, HIGH); // 1
-		PT_SLEEP(PDELAY);
-		digitalWrite(led1, LOW);
-		PT_SLEEP(PDELAY);
-		digitalWrite(led1, HIGH); // 2
-		PT_SLEEP(PDELAY);
-		digitalWrite(led1, LOW);
-		PT_SLEEP(PDELAY);
-		digitalWrite(led1, HIGH); // 3
-		PT_SLEEP(PDELAY);
-		digitalWrite(led1, LOW);
-		PT_SLEEP(PDELAY);
-		// 1 linea
-		digitalWrite(led1, HIGH); // 1 linea
-		PT_SLEEP(LDELAY);
-		digitalWrite(led1, LOW);
-		PT_SLEEP(PDELAY);
-		// 3 punti
-		digitalWrite(led1, HIGH); // 1
-		PT_SLEEP(PDELAY);
-		digitalWrite(led1, LOW);
-		PT_SLEEP(PDELAY);
-		digitalWrite(led1, HIGH); // 2
-		PT_SLEEP(PDELAY);
-		digitalWrite(led1, LOW);
-		PT_SLEEP(PDELAY);
-		digitalWrite(led1, HIGH); // 3
-		PT_SLEEP(PDELAY);
-		digitalWrite(led1, LOW);
-		PT_SLEEP(LDELAY);
-  }
-  async_end;
-}
+async def sos(led, pdelay, ldelay):
+    while True:
+    	# 3 punti
+	digitalWrite(led1, HIGH); # 1
+	led.on
+	await uasyncio.sleep_ms(pdelay)
+	led.off
+	await uasyncio.sleep_ms(pdelay)
+	digitalWrite(led1, HIGH); # 2
+	await uasyncio.sleep_ms(pdelay)
+	digitalWrite(led1, LOW);
+	await uasyncio.sleep_ms(pdelay)
+	digitalWrite(led1, HIGH); # 3
+	await uasyncio.sleep_ms(pdelay)
+	digitalWrite(led1, LOW);
+	await uasyncio.sleep_ms(pdelay)
+	# 1 linea
+	led.on
+	await uasyncio.sleep_ms(ldelay)
+	led.off
+	await uasyncio.sleep_ms(pdelay)
+	# 3 punti
+	digitalWrite(led1, HIGH); # 1
+	await uasyncio.sleep_ms(pdelay)
+	led.off
+	await uasyncio.sleep_ms(pdelay)
+	led.on
+	await uasyncio.sleep_ms(pdelay)
+	led.off
+	await uasyncio.sleep_ms(pdelay)
+	led.on
+	await uasyncio.sleep_ms(pdelay)
+	led.off
+	await uasyncio.sleep_ms(ldelay)
+	
+async def blink(led, delay):
+    while True:
+	led.on
+	await uasyncio.sleep_ms(delay)
+	led.off
+	await uasyncio.sleep_ms(ldelay)
+		
+led1 = Pin(12,Pin.OUT)
+led2 = Pin(13,Pin.OUT)
 
-// definizione protothread del lampeggio
-async ptBlink;
-int blinkThread(struct async *pt) {
-  async_begin(pt);
-
-  // Loop del protothread
-  while(true) {
-		digitalWrite(led2, HIGH);   	// turn the LED on (HIGH is the voltage level)
-		PT_SLEEP(BLINKDELAY);
-		digitalWrite(led2, LOW);    	// turn the LED off by making the voltage LOW
-		PT_SLEEP(BLINKDELAY);
-  }
-  async_end;
-}
-
-void setup()
-{
-  pinMode(led1, OUTPUT);
-  pinMode(led2, OUTPUT);
-  async_init(&ptSos);
-  async_init(&ptBlink);
-}
-
-// loop principale
-void loop()
-{
-	SOSThread(&ptSos); 	// esecuzione schedulatore protothreads
-	blinkThread(&ptBlink); 	// esecuzione schedulatore protothreads
-}
+event_loop = uasyncio.get_event_loop()
+event_loop.create_task(blink(led1, 700))
+event_loop.create_task(blink(led2, 400))
+event_loop.run_forever()
 ```
 
 ### **Sitografia:**
