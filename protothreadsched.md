@@ -465,6 +465,7 @@ void loop()
 - https://gitlab.com/airbornemint/arduino-protothreads
 - http://dunkels.com/adam/pt/expansion.html
 - https://roboticsbackend.com/arduino-protothreads-tutorial/
+- https://news.ycombinator.com/item?id=4772229
 - https://github.com/naasking/async.h
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
