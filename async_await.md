@@ -223,7 +223,7 @@ Lo schedulatore dei protothred può essere utilizzato pure su piattaforme di emu
 
 Link simulazione su Arduino in Tinkercad: https://www.tinkercad.com/embed/2duYFwQzJgf?editbtn=1
 
-Simulazione su Esp32 in Wowki: https://wokwi.com/projects/348709819084964435
+Simulazione su Esp32 in Wowki: : https://wokwi.com/projects/361667447263659009
 
 ```C++
 /*
