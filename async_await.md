@@ -115,10 +115,10 @@ int blinkThread1(struct async* pt) {
 
   // Loop forever
   while(true) {
-			digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
-			PT_SLEEP(500);
-			digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
-			PT_SLEEP(500);
+	digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
+	PT_SLEEP(500);
+	digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
+	PT_SLEEP(500);
   }
   async_end;
 }
@@ -129,10 +129,10 @@ int blinkThread2(struct async* pt) {
 
   // Loop forever
   while(true) {
-			digitalWrite(led2, HIGH);   // turn the LED on (HIGH is the voltage level)
-			PT_SLEEP(1000);
-			digitalWrite(led2, LOW);    // turn the LED off by making the voltage LOW
-			PT_SLEEP(1000);
+	digitalWrite(led2, HIGH);   // turn the LED on (HIGH is the voltage level)
+	PT_SLEEP(1000);
+	digitalWrite(led2, LOW);    // turn the LED off by making the voltage LOW
+	PT_SLEEP(1000);
   }
   async_end;
 }
@@ -207,7 +207,7 @@ byte led2 = 13;
 
 // definizione protothread del pulsante
 async ptSos;
-async2 SOSThread(struct async *pt) {
+int SOSThread(struct async *pt) {
   async_begin(pt);
 
   // Loop del protothread
@@ -249,7 +249,7 @@ async2 SOSThread(struct async *pt) {
 
 // definizione protothread del lampeggio
 async ptBlink;
-async2 blinkThread(struct async *pt) {
+int blinkThread(struct async *pt) {
   async_begin(pt);
 
   // Loop del protothread
