@@ -5,19 +5,24 @@
 
 ### **Base teorica**
 
-I protothread sono un tipo di thread leggeri senza stack progettati per sistemi con vincoli di memoria severi come sottosistemi embedded o
-nodi di reti di sensori. I protothreads possono essere usati con o senza un RTOS. 
+Le funzioni asincrone async sono un tipo di thread leggeri senza stack progettati per sistemi con vincoli di memoria severi come sottosistemi embedded o
+nodi di reti di sensori.
 
-I **protothread** forniscono un meccanismo di **blocco dei task** (compiti) in cima a un **sistema ad eventi**, senza l'overhead di uno stack per ogni thread. Lo **scopo** dei protothread è quello di implementare un **flusso sequenziale di controllo** senza utilizzare complesse macchine a stati finiti ed evitando l'overhead di un multi-threading completo, cioè quello dotato anche del **modo preemptive**.  I protothread forniscono la sola **modalità cooperativa** e il **rilascio anticipato** delle risorse è realizzato **senza l'utilizzo di interrupt** che generino il **cambio di contesto** dei thread. 
+- Le funzioni asincrone sono un’alternativa alle catene di promesse e rendono il lavoro con queste molto più intuitivo.
+- Nonostante il nome, Il blocco di codice async diventa per tutte le funzioni che restituiscono una promise, sincrono e bloccante nel senso che ciascuna funzione con await davanti rimane bloccata e non può passare all’istruzione successiva fino a che la sua promise non viene risolta.
+- Await va usato soltanto dentro un blocco di codice async e davanti a funzioni che restituiscono una promise.
+- Possiamo usare un blocco try...catch per la gestione degli errori, esattamente come si farebbe se il codice fosse sincrono.
+- le funzioni dichiarate asincrone con async restituiscono sempre una promise e quindi, per accedervi bisogna usare la funzione then. 
+- Hanno la stessa utilità di una catena di promesse, cioè await forza il completamento in serie delle operazioni asincrone quando il risultato dell'operazione successiva dipende dal risultato dell'ultima, in caso contrario qualcosa come Promise.all() potrebbe essere più appropriato.
 
-In altre parole, la **gestione dei task** è **ad eventi** all'interno di un **singolo thread reale** ma, tramite delle **macro**, un algoritmo si può programmare in **maniera sequenziale** all'interno di funzioni che girano su dei **thread logici**, cioè emulati. La **concorrenza** dei task è gestita da uno **schedulatore** che, invocato durante il periodo di **sleep** di un task, o tramite il comando **yeld**, assegna la risorsa CPU a quei task che, in quell'intervallo, ne fanno richiesta.
+
 
 ### **Confronto con le altre tecniche**
 
 Anche i **processi** e i **thread** sono flussi di esecuzione indipendenti che procedono in parallelo su una o più CPU, esiste però una **differenza pratica** notevole tra di essi:
 - nei **processi** sia input/output, che **area dati globale** che **area dati locale** (stack) sono indipendenti e separate in zone diverse della memoria RAM.
 - nei **thread**  input/output e **area dati globale** sono **in comune** nella stessa posizione in RAM mentre soltanto le **aree dati locali** (stack) sono indipendenti e separate in zone diverse della memoria RAM.
-- nei **protothread** sia input/output che l'**area dati globale** ma anche le **aree dati locali** (stack) sono **in comune** nella stessa posizione in RAM. Pertanto le **variabili locali** non sono isolate in thread diversi (presenza di possibili ambiguità).
+- nei **async/await** sia input/output che l'**area dati globale** ma anche le **aree dati locali** (stack) sono **in comune** nella stessa posizione in RAM. Pertanto le **variabili locali** non sono isolate in thread diversi (presenza di possibili ambiguità).
 
 ### **Utilizzo in pratica**
 
