@@ -221,8 +221,6 @@ Lo schedulatore dei protothred può essere utilizzato pure su piattaforme di emu
 
 **SOS + blink**
 
-Link simulazione su Arduino in Tinkercad: https://www.tinkercad.com/embed/2duYFwQzJgf?editbtn=1
-
 Simulazione su Esp32 in Wowki: : https://wokwi.com/projects/361667447263659009
 
 ```C++
@@ -335,7 +333,7 @@ void loop()
 
 **Lampeggi multipli**
 
-LInk simulazione in Tinkercad: https://wokwi.com/projects/361667447263659009
+LInk simulazione in Wokwi: https://wokwi.com/projects/361667447263659009
 
 ```C++
 /*
