@@ -133,7 +133,7 @@ async def sosBlink(led, pdelay, ldelay):
         await uasyncio.sleep_ms(pdelay)
         led.off
         await uasyncio.sleep_ms(pdelay)
-        digitalWrite(led1, HIGH); # 2
+        led.on # 2
         await uasyncio.sleep_ms(pdelay)
         led.off
         await uasyncio.sleep_ms(pdelay)
