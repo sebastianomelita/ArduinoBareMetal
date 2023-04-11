@@ -187,6 +187,8 @@ il blocco è esplicito: il programmatore sa esattamente quali funzioni un protot
 attenzione**. In caso di dubbio, non utilizzare variabili locali all'interno di un protothread!
 - Un protothread è guidato da ripetute chiamate alla funzione in cui il protothread è in esecuzione. Ogni volta che viene chiamata la funzione, il 
 protothread verrà eseguito fino a quando non si blocca o esce. Pertanto la schedulazione dei protothreads viene eseguita dall'applicazione che utilizza i protothreads.
+- Porre attenzione con le istruzioni switch all'interno di un protothread. Regola empirica: posiziona tutte le istruzioni switch in una loro funzione.
+- non è possibile effettuare chiamate di sistema bloccanti e preservare la semantica asincrona. Questi devono essere cambiati in chiamate non bloccanti che testano una condizione.
 
 **Pulsante responsivo + blink**
 
