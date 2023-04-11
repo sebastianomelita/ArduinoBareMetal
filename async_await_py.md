@@ -116,7 +116,7 @@ protothread verrà eseguito fino a quando non si blocca o esce. Pertanto la sche
 
 **SOS + blink**
 
-Simulazione su Esp32 in Wowki: : https://wokwi.com/projects/361667447263659009
+Simulazione su Esp32 in Wowki: https://wokwi.com/projects/361724935729229825
 
 ```python
 /*
@@ -129,44 +129,43 @@ from machine import Pin
 async def sosBlink(led, pdelay, ldelay):
     while True:
     	# 3 punti
-	digitalWrite(led1, HIGH); # 1
-	led.on
-	await uasyncio.sleep_ms(pdelay)
-	led.off
-	await uasyncio.sleep_ms(pdelay)
-	digitalWrite(led1, HIGH); # 2
-	await uasyncio.sleep_ms(pdelay)
-	digitalWrite(led1, LOW);
-	await uasyncio.sleep_ms(pdelay)
-	digitalWrite(led1, HIGH); # 3
-	await uasyncio.sleep_ms(pdelay)
-	digitalWrite(led1, LOW);
-	await uasyncio.sleep_ms(pdelay)
-	# 1 linea
-	led.on
-	await uasyncio.sleep_ms(ldelay)
-	led.off
-	await uasyncio.sleep_ms(pdelay)
-	# 3 punti
-	digitalWrite(led1, HIGH); # 1
-	await uasyncio.sleep_ms(pdelay)
-	led.off
-	await uasyncio.sleep_ms(pdelay)
-	led.on
-	await uasyncio.sleep_ms(pdelay)
-	led.off
-	await uasyncio.sleep_ms(pdelay)
-	led.on
-	await uasyncio.sleep_ms(pdelay)
-	led.off
-	await uasyncio.sleep_ms(ldelay)
+        led.on
+        await uasyncio.sleep_ms(pdelay)
+        led.off
+        await uasyncio.sleep_ms(pdelay)
+        digitalWrite(led1, HIGH); # 2
+        await uasyncio.sleep_ms(pdelay)
+        led.off
+        await uasyncio.sleep_ms(pdelay)
+        led.on
+        await uasyncio.sleep_ms(pdelay)
+        led.off
+        await uasyncio.sleep_ms(pdelay)
+        # 1 linea
+        led.on
+        await uasyncio.sleep_ms(ldelay)
+        led.off
+        await uasyncio.sleep_ms(pdelay)
+        # 3 punti
+        led.on
+        await uasyncio.sleep_ms(pdelay)
+        led.off
+        await uasyncio.sleep_ms(pdelay)
+        led.on
+        await uasyncio.sleep_ms(pdelay)
+        led.off
+        await uasyncio.sleep_ms(pdelay)
+        led.on
+        await uasyncio.sleep_ms(pdelay)
+        led.off
+        await uasyncio.sleep_ms(ldelay)
 	
 async def blink(led, delay):
     while True:
-	led.on
-	await uasyncio.sleep_ms(delay)
-	led.off
-	await uasyncio.sleep_ms(ldelay)
+        led.on
+        await uasyncio.sleep_ms(delay)
+        led.off
+        await uasyncio.sleep_ms(delay)
 		
 led1 = Pin(12,Pin.OUT)
 led2 = Pin(13,Pin.OUT)
