@@ -1,7 +1,7 @@
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
 
-# **SCHEDULAZIONE CON I PROTOTHREAD**
+# **SCHEDULAZIONE CON ASYNC/AWAIT**
 
 ### **Base teorica**
 
