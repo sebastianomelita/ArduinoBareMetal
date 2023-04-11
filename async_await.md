@@ -1,5 +1,5 @@
 
->[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](async_await_py.md)
 
 # **SCHEDULAZIONE CON ASYNC/AWAIT**
 
@@ -286,4 +286,4 @@ void loop()
 - https://news.ycombinator.com/item?id=4772229
 - https://github.com/naasking/async.h
 
->[Torna all'indice generazione tempi](indexgenerazionetempi.md)  
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](async_await_py.md)
