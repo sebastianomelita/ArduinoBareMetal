@@ -64,7 +64,7 @@ I protocolli **non confermati** non necessitano di conferme mediate ricevute di 
 
 ### **Protocolli con stato e non**
 
-Un protocollo si dice **stateful** cioè **con stato** quando vale una dele due situazioni che rappresentano due facce diverse di una stessa medaglia:
+Un protocollo si dice **stateful** cioè **con stato** quando vale una delle due situazioni che rappresentano due facce diverse di una stessa medaglia:
 - un messaggio scambiato in un certo momento **è correlato** con gli altri messaggi scambiati in **precedenza**
 - all'arrivo di ogni messaggio viene aggiornato **un elemento di memoria** (variabile) che **riassume** la **storia dell'evoluzione** del protocollo **nel tempo**.
 
