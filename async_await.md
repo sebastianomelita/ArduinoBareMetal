@@ -185,7 +185,7 @@ asyncio.run(main())
 
 **Una tipica app firmware**
 
-La maggior parte delle applicazioni firmware funziona ininterottamente per sempre. Ciò richiede che il coro sia passato a asyncio.run() per attendere un coro non terminato.
+La maggior parte delle applicazioni firmware funziona ininterottamente per sempre. Ciò richiede che la coroutine del task sia passata a asyncio.run() per attendere con una await su una funzione non terminante (con una future soddisfatta).
 
 Per facilitare il debug e per la compatibilità con CPython, nell'esempio seguente viene suggerito del codice "boilerplate".
 
