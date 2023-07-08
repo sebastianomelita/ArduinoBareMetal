@@ -64,9 +64,9 @@ Uno svantaggio di questo modello è che se un messaggio richiede troppo tempo pe
 
 ### **Aggiunta di un messaggio**
 
-**Ascoltatore:** nei sistemi di I/O asincroni, i **messaggi** vengono aggiunti alla coda dei messaggi ogni volta che si verifica un **evento**. Ad ogni evento è collegato un **listener** (ascoltatore) di eventi. Se non c'è un ascoltatore, l'evento è perso. 
+- **Ascoltatore:** nei sistemi di I/O asincroni, i **messaggi** vengono aggiunti alla coda dei messaggi ogni volta che si verifica un **evento**. Ad ogni evento è collegato un **listener** (ascoltatore) di eventi. Se non c'è un ascoltatore, l'evento è perso. 
 
-**Delay zero apparente:** l'argomento della funzione di ritardo ```asyncio.sleep(t_sec)```, il valore del tempo timeout rappresenta il ritardo (minimo) dopo il quale il messaggio verrà inserito nella coda. 
+- **Delay zero apparente:** l'argomento della funzione di ritardo ```asyncio.sleep(t_sec)```, il valore del tempo timeout rappresenta il ritardo (minimo) dopo il quale il messaggio verrà inserito nella coda. 
 Se non ci sono altri messaggi nella coda e lo stack è vuoto, il messaggio viene elaborato subito dopo il ritardo. 
 Tuttavia, se sono presenti altri messaggi, il messaggio ```asyncio.sleep()``` dovrà **attendere** la loro elaborazione. Per questo motivo, l'argomento indica un **tempo minimo**, non un **tempo garantito**. Si potrebbe attendere sia perchè in coda ci stanno task pesanti oppure perchè ci stanno molti task piccoli ma con delay settato a zero e quindi non interlacciabili con lo sleep del task in esame. Questo problema nasce a causa del fatto che la gestione degli eventi è si parallela ma quella dei tasck in coda è pur sempre sequenziale. Di questo fatto si deve tenere nella realizzazione di un eventuale del **polling delle periferiche**.
 
