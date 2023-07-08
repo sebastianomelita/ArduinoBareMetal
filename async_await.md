@@ -152,8 +152,33 @@ Link simulazione online: https://wokwi.com/projects/369680006454647809
 Di seguito è riportato un esempio di un blink sequenziale in esecuzione su un task e di gestione del pulsante sul loop principale. I ritardi sleep agiscono sul task secondario ma non bloccano la lettura dello stato del pulsante che rimane responsivo nell'accendere il secondo led durante entrambe le fasi del blink del primo led. 
 
 ```python
+import uasyncio
+from machine import Pin
 
+async def blink(led, period_ms):
+    while True:
+        led.on()
+        await uasyncio.sleep_ms(period_ms)
+        led.off()
+        await uasyncio.sleep_ms(period_ms)
+
+async def main(btn, led1, led2):
+    uasyncio.create_task(blink(led2, 1000))
+    while True:
+        if btn.value():
+            led1.on()
+        else:
+            led1.off()
+        
+        await uasyncio.sleep_ms(50)
+
+btn = Pin(12,Pin.IN)
+led1 = Pin(13,Pin.OUT)
+led2 = Pin(18,Pin.OUT)
+
+uasyncio.run(main(btn, led1, led2))
 ```
+Link simulazione online: https://wokwi.com/projects/369680948206974977
 
 Osservazioni:
 - il codice non è specifico di alcuna macchina, è realizzato in C puro ed è altamente portabile.
