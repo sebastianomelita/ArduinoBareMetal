@@ -94,6 +94,10 @@ asyncio.run(main())
 ```
 Link simulazione online: https://wokwi.com/projects/369675288427672577
 
+Link simulazione online: https://wokwi.com/projects/369678530188573697
+
+Link simulazione online: https://wokwi.com/projects/369680006454647809
+
 Osservazioni:
 - il codice non è specifico di alcuna macchina, è realizzato in C puro ed è altamente portabile.
 - Un protothread viene eseguito all'interno di una singola funzione C e non può estendersi ad altre funzioni. Un protothread può chiamare normali funzioni C, ma non può bloccore all'interno di una funzione chiamata da altre funzioni. Il blocco all'interno di chiamate di funzioni annidate
