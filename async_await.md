@@ -15,17 +15,17 @@ Il modello di gestione della CPU in ambienti server come node JS e client come l
 - Un singolo task in esecuzione alla volta (esecuzione seriale dei task)
 - Più input in elaborazione contemporaneamente (esecuzione parallela degli input)
 
-###**modello ad eventi**
+### **modello ad eventi**
 
-async,io ha un modello di runtime basato su un ciclo di eventi (event loop), che è responsabile:
+La libreria async.io ha un modello di runtime basato su un ciclo di eventi (event loop), che è responsabile:
 - dell'esecuzione del codice
 - della raccolta e dell'elaborazione degli eventi
 - dell'esecuzione delle dei sotto task (sub-tasks) in coda.
-- 
+   
 Questo modello è abbastanza diverso dai modelli in altri linguaggi come C e Java basati su processi e thread.
-Una proprietà molto interessante del modello del ciclo di eventi è che un **linguaggio ad eventi**, a differenza di molti altri linguaggi, **non blocca** mai gli altri task quando si è in attesa di un input sul task corrente.
+Una proprietà molto interessante è che un **linguaggio ad eventi**, a differenza di molti altri linguaggi, **non blocca** mai gli altri task quando si è in attesa di un input sul task corrente.
 
-La gestione dell'I/O viene in genere eseguita tramite **eventi** e **callback**:
+La **gestione dell'I/O** viene in genere eseguita tramite **eventi** e **callback**:
 - ad un evento sono associate una o più callback.
 - Un evento è un’azione eseguita sulla GUI dall’utente. 
 - Una callback è una funzione che viene richiamata quando viene servito l’evento ad essa associata.
