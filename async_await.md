@@ -119,22 +119,27 @@ async def nome_task(x):
         await asyncio.sleep_ms(delay_ms)
 ```
 
-Il **flusso di esecuzione** di un task è **definito** all'interno di una **funzione asincrona** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il task e allo schedulatore per poterlo richiamare. Allo scopo si usa la funzione ```asyncio.create_task(nome_task)``` 
+Il **flusso di esecuzione** di un task è **definito** all'interno di una **funzione asincrona** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il task e allo schedulatore per poterlo richiamare. Allo scopo si usa la funzione ```asyncio.create_task(nome_task)``` che apparentemente blocca il task in cui è inserita ma non impedisce la schedulazione parallela degli altri task.
+
+E' importante notare che anche la funzione **main** deve essere resa asincrona con la parola chiave async se si desidera eseguirla in parallelo con gli altri task seguendo una modalità cooperativa. In sostanza, anche la funzione **main deve** diventare un **task asincrono**. Se così non fosse, una funzione di ritardo delay() oppure una qualunque funzione di I/O bloccante monopolizzarebbero l'unico thread a disposizione impedendo la schedulazione degli altri task.
 
 In definitiva la **dichiarazione e definizione** di **descrittore e funzione** del protothread possono assumere la forma:
 
 ```python
-async ptMioScopo;
-int mioScopoThread(struct async* pt) {
-  async_begin(pt);
+import uasyncio as asyncio
+async def bar(x):
+    count = 0
+    while True:
+        count += 1
+        print('Instance: {} count: {}'.format(x, count))
+        await asyncio.sleep(1)  # Pause 1s
 
-  // Loop forever
-  while(true) {
-	// codice del protothread
-	.........................
-  }
-  async_end;
-}
+async def main():
+    for x in range(3):
+        asyncio.create_task(bar(x))
+    await asyncio.sleep(10)
+
+asyncio.run(main())
 ```
 
 Ogni protothread è **inizializzato** nel **setup()** tramite la funzione **```PT_INIT(&ptMioScopo)```**, il passaggio del descrittore è per **riferimento** perchè questo deve poter essere **modificato** al momento della inizializzazione.
