@@ -66,6 +66,16 @@ Una **promessa** è un oggetto restituito da una funzione **asincrona**, che rap
 - Una promessa è un oggetto JavaScript che collega il momento della produzione di codice asincrono con quello del suo consumo.
 - Le promise sono in genere restituite da funzioni di I/O.
 
+### **Async/await**
+
+Le funzioni asincrone sono tecnica che rende molto più intuitiva la gestione delle promesse svincolandola dall'esigenza di definire per ciascuna due callback.
+
+Nonostante il nome, Il blocco di codice async diventa per tutte le funzioni che restituiscono una promise, sincrono e bloccante nel senso che ciascuna funzione con await davanti rimane bloccata e non può passare all’istruzione successiva fino a che la sua promise non viene risolta.
+- Await va usato soltanto dentro un blocco di codice async e davanti a funzioni che restituiscono una promise.
+- Possiamo usare un blocco try...catch per la gestione degli errori, esattamente come si farebbe se il codice fosse sincrono.
+- le funzioni dichiarate asincrone con async restituiscono sempre una promise e quindi, per accedervi bisogna usare la funzione then. 
+Hanno la stessa utilità di una catena di promesse, cioè await forza il completamento in serie delle operazioni asincrone quando il risultato dell'operazione successiva dipende dal risultato dell'ultima, in caso contrario qualcosa come Promise.all() potrebbe essere più appropriato.
+
 
 
 
