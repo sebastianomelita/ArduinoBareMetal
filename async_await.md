@@ -68,17 +68,17 @@ Una **future** è un oggetto restituito da una funzione **asincrona**, che rappr
 - Nel momento in cui la future viene restituita al chiamante, l'operazione spesso non è terminata (pending). L'oggetto future fornisce **due funzioni** sotto forma di callbacks per gestire l'eventuale **successo (fulfilled)** o **fallimento (rejected)** dell'operazione.
 - I metodi verranno richiamati in un **tempo successivo** (non noto in anticipo) allorquando la future si dice che verrà **risolta**.
 - Una future è un oggetto Python che collega il momento della produzione di codice asincrono con quello del suo consumo. In pratica, sono oggetti usati per collegare codice a basso livello **ad eventi** (basato sulle callback) con codice ad alto livello **sequenziale** (basato su async/await).
-- Le promise sono in genere **restituite** da funzioni di **I/O** predisposte per questo.
+- Le future sono in genere **restituite** da funzioni di **I/O** predisposte per questo.
 
 ### **Async/await**
 
 Le funzioni asincrone sono tecnica che rende molto più intuitiva la gestione delle promesse svincolandola dall'esigenza di definire per ciascuna due callback.
 
-Nonostante il nome, Il blocco di codice async diventa per tutte le funzioni che restituiscono una promise, sincrono e bloccante nel senso che, ciascuna funzione con **await davanti**, rimane bloccata e non può passare all’istruzione successiva fino a che la **sua future** non viene **risolta**. Il blocco dell'esecuzione è in realtà solamente **apparente** perchè è sostanzialmente **emulato** con una istruzione che potremmo immaginare analoga ad una ```continue``` ma, nonostante tutto, **efficace** nell'**impedire** l'esecuzione le **istruzioni seguenti** all'interno dello stesso task.
-- **Await** va usato soltanto **dentro** un blocco di codice **async** e **davanti** a funzioni che **restituiscono una promise**.
+Nonostante il nome, Il blocco di codice async diventa per tutte le funzioni che restituiscono una future, sincrono e bloccante nel senso che, ciascuna funzione con **await davanti**, rimane bloccata e non può passare all’istruzione successiva fino a che la **sua future** non viene **risolta**. Il blocco dell'esecuzione è in realtà solamente **apparente** perchè è sostanzialmente **emulato** con una istruzione che potremmo immaginare analoga ad una ```continue``` ma, nonostante tutto, **efficace** nell'**impedire** l'esecuzione le **istruzioni seguenti** all'interno dello stesso task.
+- **Await** va usato soltanto **dentro** un blocco di codice **async** e **davanti** a funzioni che **restituiscono una future**.
 - Possiamo usare un blocco try...catch per la gestione degli errori, esattamente come si farebbe se il codice fosse sincrono.
-- le funzioni dichiarate **asincrone** con async davanti **restituiscono** sempre una **promise** e quindi, per accedervi bisogna usare la funzione then. 
-Hanno la stessa utilità di una catena di promesse, cioè await forza il completamento in serie delle operazioni asincrone quando il risultato dell'operazione successiva dipende dal risultato dell'ultima, in caso contrario qualcosa come Promise.all() potrebbe essere più appropriato.
+- le funzioni dichiarate **asincrone** con async davanti **restituiscono** sempre una **future** e quindi, per accedervi bisogna usare la funzione then. 
+Hanno la stessa utilità di una catena di promesse, cioè await forza il completamento in serie delle operazioni asincrone quando il risultato dell'operazione successiva dipende dal risultato dell'ultima, in caso contrario qualcosa come future.all() potrebbe essere più appropriato.
 
 I **async/await** fornise un meccanismo di **blocco dei task** (compiti) in cima a un **sistema ad eventi**, senza l'overhead di uno stack per ogni thread. Lo **scopo** del modello è quello di implementare un **flusso sequenziale di controllo** senza utilizzare complesse macchine a stati finiti ed evitando l'overhead di un multi-threading completo, cioè quello dotato anche del **modo preemptive**.  L'asynchronous I/O scheduler fornisce la sola **modalità cooperativa** e il **rilascio anticipato** delle risorse è realizzato **senza l'utilizzo di interrupt** che generino il **cambio di contesto** dei thread. 
 
@@ -99,12 +99,12 @@ while True:
     #.........................
 
 ```
-Le **fasi di lavoro** del loop possono essere **schedulate** (pianificate nel tempo) dal delay() ```asyncio.sleep(t_sec)``` che restituiscono un oggetto **promise** (future) che, pur essendo non bloccante, fa **ritornare in anticipo** la funzione, **prima** che possa eseguire altre istruzioni **emulando** quindi, in tutto e per tutto, una **funzione bloccante**. Questa proprietà permette la progettazione sostanzialmente **lineare** e **sequenziale** di un algoritmo nel tempo.
+Le **fasi di lavoro** del loop possono essere **schedulate** (pianificate nel tempo) dal delay() ```asyncio.sleep(t_sec)``` che restituiscono un oggetto **future** (future) che, pur essendo non bloccante, fa **ritornare in anticipo** la funzione, **prima** che possa eseguire altre istruzioni **emulando** quindi, in tutto e per tutto, una **funzione bloccante**. Questa proprietà permette la progettazione sostanzialmente **lineare** e **sequenziale** di un algoritmo nel tempo.
 
 - **Ogni task** è definito da una **funzione asincrona**, dichiarata come tale attraverso la parola chiave async.
 - Ogni task ha una parte di **setup** in cui vengono iniziate le variabili di servizio del loop del task.
 - ogni task possiede una porzioe di **loop infinito** in cui vengono eseguite le operazioni del task, in maniera del tutto indipendente da quelle definite all'interno degli altri task.
-- ogni task può essere **"bloccato"** da qualunque funzione che, nel contemnpo, sia preceduta dalla parola chiave **await** e restitisca una **promise**. Queste funzioni sono in genere o delle funzioni di I/O oppure dei delay che restituiscono oggetti promise come ```asyncio.sleep_ms```.
+- ogni task può essere **"bloccato"** da qualunque funzione che, nel contemnpo, sia preceduta dalla parola chiave **await** e restitisca una **future**. Queste funzioni sono in genere o delle funzioni di I/O oppure dei delay che restituiscono oggetti future come ```asyncio.sleep_ms```.
 
 ```python
 async def nome_task(x):
