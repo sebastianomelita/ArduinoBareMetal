@@ -182,6 +182,39 @@ async def main():
 
 asyncio.run(main())
 ```
+La maggior parte delle applicazioni firmware funziona ininterottamente per sempre. Ciò richiede che il coro sia passato a asyncio.run() per attendere un coro non terminato.
+
+Per facilitare il debug e per la compatibilità con CPython, nell'esempio seguente viene suggerito del codice "boilerplate".
+
+Per impostazione predefinita, un'eccezione in un'attività non interromperà l'esecuzione dell'intera applicazione. Questo può rendere difficile il debug. 
+
+È una cattiva pratica creare un'attività prima di eseguire asyncio.run(). CPython genererà un'eccezione in questo caso. MicroPython no, ma è saggio evitare di farlo.
+
+Infine, uasyncio mantiene lo stato. Ciò significa che, per impostazione predefinita, è necessario riavviare tra le esecuzioni di un'applicazione. Questo può essere risolto con il metodo new_event_loop.
+
+```python
+import uasyncio as asyncio
+from my_app import MyClass
+
+def set_global_exception():
+    def handle_exception(loop, context):
+        import sys
+        sys.print_exception(context["exception"])
+        sys.exit()
+    loop = asyncio.get_event_loop()
+    loop.set_exception_handler(handle_exception)
+
+async def main():
+    set_global_exception()  # Debug aid
+    my_class = MyClass()  # Constructor might create tasks
+    asyncio.create_task(my_class.foo())  # Or you might do this
+    await my_class.run_forever()  # Non-terminating method
+try:
+    asyncio.run(main())
+finally:
+    asyncio.new_event_loop()  # Clear retained state
+```
+
 **Blink sequenziali interagenti**
 
 Di seguito è riportato un esempio di **blink sequenziale** in esecuzione su **due thread** separati su scheda **Arduino Uno**, con **IDE Arduino** e  con la libreria **protothread.h**  (https://gitlab.com/airbornemint/arduino-protothreads). I thread sono senza stack e **non preemptive** (solo collaborativi). La **programmazione sequenziale** del blink del led è **emulata** tramite una funzione delay() **non bloccante** ``` PT_SLEEP(pt, 200) ``` fornita dalla libreria ``` protothreads.h ```.
