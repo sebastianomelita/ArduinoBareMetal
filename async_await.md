@@ -33,7 +33,7 @@ La **gestione dell'I/O** viene in genere eseguita tramite **eventi** e **callbac
 
 Il primo messaggio in coda viene di volta in volta estratto e processato inserendo la sua callback, e tutte le funzioni ad essa annidate, in altrettanti frame sullo stack. La callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
 
-### **Modello di esecuzione**
+### **Meccanismo di esecuzione**
 
 Ad un certo punto durante il ciclo di eventi, il processo runtime inizia a gestire i messaggi sulla coda, a partire da quello più vecchio. Per fare ciò:
 - Il messaggio viene rimosso dalla coda
