@@ -219,11 +219,7 @@ void loop()
 ```
 
 ### **Sitografia:**
-- http://dunkels.com/adam/pt/examples.html
-- https://gitlab.com/airbornemint/arduino-protothreads
-- http://dunkels.com/adam/pt/expansion.html
-- https://roboticsbackend.com/arduino-protothreads-tutorial/
-- https://news.ycombinator.com/item?id=4772229
-- https://github.com/naasking/async.h
+- https://docs.micropython.org/en/v1.15/library/uasyncio.html
+- https://github.com/peterhinch/micropython-async/blob/master/v3/docs/TUTORIAL.md
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](async_await_py.md)
