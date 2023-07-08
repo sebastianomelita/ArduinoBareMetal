@@ -5,7 +5,7 @@
 
 ### **Base teorica**
 
-<img src="asyn-noasync.png" alt="alt text" width="1500">
+<img src="asyn-noasync.png" alt="alt text" width="2000">
 
 ### **Eventi vs thread**
 Il modello di gestione della CPU nei SO normalmente è di tipo **multithreading  preemptive**, cioè con interruzione anticipata del task in esecuzione con riassegnazione della risorsa CPU ad un altro task, per almeno due motivi:
