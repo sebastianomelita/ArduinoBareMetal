@@ -5,6 +5,7 @@
 
 ### **Base teorica**
 
+###**Eventi vs thread**
 Il modello di gestione della CPU nei SO normalmente è di tipo **multithreading  preemptive**, cioè con interruzione anticipata del task in esecuzione con riassegnazione della risorsa CPU ad un altro task, per almeno due motivi:
 - Evitare lo spreco della risorsa CPU in attesa di un input bloccante che tarda la sua risposta di un tempo non prevedibile
 - per realizzare un multitasking equo (fair) tramite l’esecuzione concorrente di più task in tempi uguali
@@ -14,6 +15,23 @@ Il modello di gestione della CPU in ambienti server come node JS e client come l
 - Un singolo task in esecuzione alla volta (esecuzione seriale dei task)
 - Più input in elaborazione contemporaneamente (esecuzione parallela degli input)
 
+###**modello ad eventi**
+
+async,io ha un modello di runtime basato su un ciclo di eventi (event loop), che è responsabile:
+- dell'esecuzione del codice
+- della raccolta e dell'elaborazione degli eventi
+- dell'esecuzione delle dei sotto task (sub-tasks) in coda.
+- 
+Questo modello è abbastanza diverso dai modelli in altri linguaggi come C e Java basati su processi e thread.
+Una proprietà molto interessante del modello del ciclo di eventi è che un **linguaggio ad eventi**, a differenza di molti altri linguaggi, **non blocca** mai gli altri task quando si è in attesa di un input sul task corrente.
+
+La gestione dell'I/O viene in genere eseguita tramite **eventi** e **callback**:
+- ad un evento sono associate una o più callback.
+- Un evento è un’azione eseguita sulla GUI dall’utente. 
+- Una callback è una funzione che viene richiamata quando viene servito l’evento ad essa associata.
+- Gli eventi che occorrono (accadono) contemporaneamente e che sono pronti per essere processati dalla CPU vengono ospitati in una coda di messaggi. In questa attesa il sistema può ancora elaborare altri eventi immagazzinandoli in coda rimanendo così responsivo. 
+- Il primo messaggio in coda viene di volta in volta estratto e processato inserendo la sua callback, e tutte le funzioni ad essa annidate, in altrettanti frame sullo stack 
+- la callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
 
 
 I **async/await** fornise un meccanismo di **blocco dei task** (compiti) in cima a un **sistema ad eventi**, senza l'overhead di uno stack per ogni thread. Lo **scopo** del modello è quello di implementare un **flusso sequenziale di controllo** senza utilizzare complesse macchine a stati finiti ed evitando l'overhead di un multi-threading completo, cioè quello dotato anche del **modo preemptive**.  L'asynchronous I/O scheduler fornisce la sola **modalità cooperativa** e il **rilascio anticipato** delle risorse è realizzato **senza l'utilizzo di interrupt** che generino il **cambio di contesto** dei thread. 
