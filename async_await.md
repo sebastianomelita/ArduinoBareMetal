@@ -15,7 +15,7 @@ Il modello di gestione della CPU in ambienti server come node JS e client come l
 - Un singolo task in esecuzione alla volta (esecuzione seriale dei task)
 - Più input in elaborazione contemporaneamente (esecuzione parallela degli input)
 
-### **modello ad eventi**
+### **Modello ad eventi**
 
 La libreria async.io ha un modello di runtime basato su un ciclo di eventi (event loop), che è responsabile:
 - dell'esecuzione del codice
@@ -32,6 +32,15 @@ La **gestione dell'I/O** viene in genere eseguita tramite **eventi** e **callbac
 - Gli eventi che occorrono (accadono) contemporaneamente e che sono pronti per essere processati dalla CPU vengono ospitati in una coda di messaggi. In questa attesa il sistema può ancora elaborare altri eventi immagazzinandoli in coda rimanendo così responsivo. 
 
 Il primo messaggio in coda viene di volta in volta estratto e processato inserendo la sua callback, e tutte le funzioni ad essa annidate, in altrettanti frame sullo stack. La callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
+
+### **Modello di esecuzione**
+
+Ad un certo punto durante il ciclo di eventi, il processo runtime inizia a gestire i messaggi sulla coda, a partire da quello più vecchio. Per fare ciò:
+- Il messaggio viene rimosso dalla coda
+- la sua funzione corrispondente (callback listener) viene chiamata con il messaggio come parametro di input. 
+- come sempre, la chiamata di una funzione crea un nuovo stack frame per l'uso di quella funzione.
+
+L'elaborazione delle funzioni continua finché lo stack non è nuovamente vuoto. Quindi, il ciclo di eventi elaborerà il messaggio successivo nella coda (se ce n'è uno).
 
 ### **Run to completition**
 
