@@ -62,7 +62,7 @@ Questo comportamento induce alcune proprietà desiderabili sui programmi, inclus
 
 Uno svantaggio di questo modello è che se un messaggio richiede troppo tempo per essere completato, l'applicazione Web non è in grado di elaborare le interazioni dell'utente come il clic di un pulsante.  Una buona pratica da seguire è rendere breve l'elaborazione dei messaggi e, se possibile, scomporre un messaggio in più messaggi.
 
-### **Aggiunta di un messaggio**
+### **Aggiunta di un messaggio in coda**
 
 - **Ascoltatore:** nei sistemi di I/O asincroni, i **messaggi** vengono aggiunti alla coda dei messaggi ogni volta che si verifica un **evento**. Ad ogni evento è collegato un **listener** (ascoltatore) di eventi. Se non c'è un ascoltatore, l'evento è perso. 
 
