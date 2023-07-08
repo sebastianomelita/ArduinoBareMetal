@@ -62,6 +62,18 @@ Questo comportamento induce alcune proprietà desiderabili sui programmi, inclus
 
 Uno svantaggio di questo modello è che se un messaggio richiede troppo tempo per essere completato, l'applicazione Web non è in grado di elaborare le interazioni dell'utente come il clic di un pulsante.  Una buona pratica da seguire è rendere breve l'elaborazione dei messaggi e, se possibile, scomporre un messaggio in più messaggi.
 
+### **Callback**
+Un callback è una funzione che:
+- viene passata ad un’altra funzione (via riferimento) con l'aspettativa che venga chiamata al momento opportuno
+- Poiché la chiamata di queste funzioni spesso è legata alla notifica di un evento esterno al sistema (I/O dell’utente o l’arrivo di un messaggio da internet) di cui non si è in grado di prevedere in anticipo il tempo in cui accadrà, esse vengono dette asincrone (analogia con gli interrupt).
+- Il parametro della chiamata è un messaggio che contiene le proprietà correnti dell’evento
+
+Le callback sono il modo principale in cui vengono implementate in un modello ad eventi le azioni di risposta ad un evento, spesso mediante funzioni definite una sola volta nel codice in forma anonima.
+
+Le callback possono essere:
+- Disgiunte (separate) se relative ad eventi slegati tra loro che accadono in maniera indipendente
+- Annidate una dentro l’altra se ogni callback è associata ad un evento attivato proprio dentro un’altra callback mediante una richiesta di I/O. Sono particolarmente difficili da approcciare in maniera chiara.
+
 ### **Future**
 
 Una **future** è un oggetto restituito da una funzione **asincrona**, che rappresenta lo stato corrente dell'operazione di recupero di una informazione (da I/O o da un timer HW). 
