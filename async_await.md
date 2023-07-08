@@ -33,6 +33,15 @@ La **gestione dell'I/O** viene in genere eseguita tramite **eventi** e **callbac
 
 Il primo messaggio in coda viene di volta in volta estratto e processato inserendo la sua callback, e tutte le funzioni ad essa annidate, in altrettanti frame sullo stack. La callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
 
+### **Run to completition**
+
+Ogni messaggio viene elaborato completamente prima che venga elaborato qualsiasi altro messaggio.
+
+Questo comportamento induce alcune proprietà desiderabili sui programmi, incluso il fatto che, ogni volta che una funzione viene eseguita, non può essere terminata in anticipo e verrà eseguita interamente prima dell'esecuzione di qualsiasi altro codice (chee potrebbe alterare i dati manipolati dalla funzione). Ciò differisce da C, ad esempio, dove se una funzione viene eseguita in un thread, può essere interrotta in qualsiasi momento dal sistema di runtime (un timer HW) per eseguire altro codice in un altro thread.
+
+Uno svantaggio di questo modello è che se un messaggio richiede troppo tempo per essere completato, l'applicazione Web non è in grado di elaborare le interazioni dell'utente come il clic di un pulsante.  Una buona pratica da seguire è rendere breve l'elaborazione dei messaggi e, se possibile, scomporre un messaggio in più messaggi.
+
+![image](https://github.com/sebastianomelita/ArduinoBareMetal/assets/18554803/507d1da9-94fa-49e3-ac0a-f3caafae09f5)
 
 I **async/await** fornise un meccanismo di **blocco dei task** (compiti) in cima a un **sistema ad eventi**, senza l'overhead di uno stack per ogni thread. Lo **scopo** del modello è quello di implementare un **flusso sequenziale di controllo** senza utilizzare complesse macchine a stati finiti ed evitando l'overhead di un multi-threading completo, cioè quello dotato anche del **modo preemptive**.  L'asynchronous I/O scheduler fornisce la sola **modalità cooperativa** e il **rilascio anticipato** delle risorse è realizzato **senza l'utilizzo di interrupt** che generino il **cambio di contesto** dei thread. 
 
