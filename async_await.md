@@ -42,6 +42,14 @@ Ad un certo punto durante il ciclo di eventi, il processo runtime inizia a gesti
 
 L'elaborazione delle funzioni continua finché lo stack non è nuovamente vuoto. Quindi, il ciclo di eventi elaborerà il messaggio successivo nella coda (se ce n'è uno).
 
+Loop di gestione degli eventi:
+```python
+while (queue.waitForMessage()) {
+  queue.processNextMessage();
+}
+```
+Il metodoe queue.waitForMessage() attende in modo sincrono l'arrivo di un messaggio (se uno non è già disponibile e in attesa di essere gestito).
+
 ### **Run to completition**
 
 Ogni messaggio viene elaborato completamente prima che venga elaborato qualsiasi altro messaggio.
