@@ -104,7 +104,7 @@ Le **fasi di lavoro** del loop possono essere **schedulate** (pianificate nel te
 - **Ogni task** è definito da una **funzione asincrona**, dichiarata come tale attraverso la parola chiave async.
 - Ogni task ha una parte di **setup** in cui vengono iniziate le variabili di servizio del loop del task.
 - ogni task possiede una porzioe di loop infinito in cui vengono eseguite le operazioni del task, in maniera del tutto indipendente da quelle definite all'interno degli altri task.
-- ogni task può essere "bloccato" da qualunque funzione che, nel contemnpo, sia preceduta dalla parola chiave **await** e restitisca una **promise**. Queste funzioni sono in genere o delle funzioni di I/O oppure dei delay che restituiscono oggetti promise come ```asyncio.sleep_ms'''.
+- ogni task può essere "bloccato" da qualunque funzione che, nel contemnpo, sia preceduta dalla parola chiave **await** e restitisca una **promise**. Queste funzioni sono in genere o delle funzioni di I/O oppure dei delay che restituiscono oggetti promise come ```asyncio.sleep_ms```.
 
 ```python
 async def nome_task(x):
