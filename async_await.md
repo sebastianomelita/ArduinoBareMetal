@@ -62,12 +62,12 @@ Questo comportamento induce alcune proprietà desiderabili sui programmi, inclus
 
 Uno svantaggio di questo modello è che se un messaggio richiede troppo tempo per essere completato, l'applicazione Web non è in grado di elaborare le interazioni dell'utente come il clic di un pulsante.  Una buona pratica da seguire è rendere breve l'elaborazione dei messaggi e, se possibile, scomporre un messaggio in più messaggi.
 
-### **Promesse**
+### **Future**
 
-Una **promessa** è un oggetto restituito da una funzione **asincrona**, che rappresenta lo stato corrente dell'operazione di recupero di una informazione (da I/O o da un timer HW). 
+Una **future** è un oggetto restituito da una funzione **asincrona**, che rappresenta lo stato corrente dell'operazione di recupero di una informazione (da I/O o da un timer HW). 
 - Nel momento in cui la promessa viene restituita al chiamante, l'operazione spesso non è terminata (pending). L'oggetto promessa fornisce **due funzioni** sotto forma di callbacks per gestire l'eventuale **successo (fulfilled)** o **fallimento (rejected)** dell'operazione.
-- I metodi verranno richiamati in un **tempo successivo** (non noto in anticipo) allorquando la promessa si dice che verrà **risolta**.
-- Una promessa è un oggetto Python che collega il momento della produzione di codice asincrono con quello del suo consumo.
+- I metodi verranno richiamati in un **tempo successivo** (non noto in anticipo) allorquando la future si dice che verrà **risolta**.
+- Una future è un oggetto Python che collega il momento della produzione di codice asincrono con quello del suo consumo. In pratica, sono oggetti usati per collegare codice a basso livello **ad eventi** (basato sulle callback) con codice ad alto livello **sequenziale** (basato su async/await).
 - Le promise sono in genere **restituite** da funzioni di **I/O** predisposte per questo.
 
 ### **Async/await**
@@ -95,7 +95,7 @@ Anche i **processi** e i **thread** sono flussi di esecuzione indipendenti che p
 
 ```python
 while True:
-    # codice del protothread
+    # codice del task
     #.........................
 
 ```
@@ -103,8 +103,8 @@ Le **fasi di lavoro** del loop possono essere **schedulate** (pianificate nel te
 
 - **Ogni task** è definito da una **funzione asincrona**, dichiarata come tale attraverso la parola chiave async.
 - Ogni task ha una parte di **setup** in cui vengono iniziate le variabili di servizio del loop del task.
-- ogni task possiede una porzioe di loop infinito in cui vengono eseguite le operazioni del task, in maniera del tutto indipendente da quelle definite all'interno degli altri task.
-- ogni task può essere "bloccato" da qualunque funzione che, nel contemnpo, sia preceduta dalla parola chiave **await** e restitisca una **promise**. Queste funzioni sono in genere o delle funzioni di I/O oppure dei delay che restituiscono oggetti promise come ```asyncio.sleep_ms```.
+- ogni task possiede una porzioe di **loop infinito** in cui vengono eseguite le operazioni del task, in maniera del tutto indipendente da quelle definite all'interno degli altri task.
+- ogni task può essere **"bloccato"** da qualunque funzione che, nel contemnpo, sia preceduta dalla parola chiave **await** e restitisca una **promise**. Queste funzioni sono in genere o delle funzioni di I/O oppure dei delay che restituiscono oggetti promise come ```asyncio.sleep_ms```.
 
 ```python
 async def nome_task(x):
@@ -119,7 +119,7 @@ async def nome_task(x):
         await asyncio.sleep_ms(delay_ms)
 ```
 
-Il **flusso di esecuzione** di un protothread è **definito** all'interno di una **funzione** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il protothread e allo schedulatore per poterlo richiamare. All'interno della funzione il protothread deve sempre cominciare con il comando **```PT_BEGIN(pt)```** e deve sempre terminare con il comando  **```PT_END(pt)```**. 
+Il **flusso di esecuzione** di un task è **definito** all'interno di una **funzione asincrona** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il task e allo schedulatore per poterlo richiamare. Allo scopo si usa la funzione ```asyncio.create_task(nome_task)``` 
 
 In definitiva la **dichiarazione e definizione** di **descrittore e funzione** del protothread possono assumere la forma:
 
