@@ -58,6 +58,16 @@ Questo comportamento induce alcune proprietà desiderabili sui programmi, inclus
 
 Uno svantaggio di questo modello è che se un messaggio richiede troppo tempo per essere completato, l'applicazione Web non è in grado di elaborare le interazioni dell'utente come il clic di un pulsante.  Una buona pratica da seguire è rendere breve l'elaborazione dei messaggi e, se possibile, scomporre un messaggio in più messaggi.
 
+### **Promesse**
+
+Una **promessa** è un oggetto restituito da una funzione **asincrona**, che rappresenta lo stato corrente dell'operazione di recupero di una informazione (da I/O o da un timer HW). 
+- Nel momento in cui la promessa viene restituita al chiamante, l'operazione spesso non è terminata (pending). L'oggetto promessa fornisce **due funzioni** sotto forma di callbacks per gestire l'eventuale **successo (fulfilled)** o **fallimento (rejected)** dell'operazione.
+- I metodi verranno richiamati in un **tempo successivo** (non noto in anticipo) allorquando la promessa si dice che verrà **risolta**.
+- Una promessa è un oggetto JavaScript che collega il momento della produzione di codice asincrono con quello del suo consumo.
+- Le promise sono in genere restituite da funzioni di I/O.
+
+
+
 
 I **async/await** fornise un meccanismo di **blocco dei task** (compiti) in cima a un **sistema ad eventi**, senza l'overhead di uno stack per ogni thread. Lo **scopo** del modello è quello di implementare un **flusso sequenziale di controllo** senza utilizzare complesse macchine a stati finiti ed evitando l'overhead di un multi-threading completo, cioè quello dotato anche del **modo preemptive**.  L'asynchronous I/O scheduler fornisce la sola **modalità cooperativa** e il **rilascio anticipato** delle risorse è realizzato **senza l'utilizzo di interrupt** che generino il **cambio di contesto** dei thread. 
 
