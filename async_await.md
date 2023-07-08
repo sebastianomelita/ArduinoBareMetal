@@ -147,7 +147,7 @@ uasyncio.run(main(led1, led2))
 Link simulazione online: https://wokwi.com/projects/369680006454647809
 
 
-Pulsante responsivo + blink
+**Pulsante responsivo + blink**
 
 Di seguito è riportato un esempio di un blink sequenziale in esecuzione su un task e di gestione del pulsante sul loop principale. I ritardi sleep agiscono sul task secondario ma non bloccano la lettura dello stato del pulsante che rimane responsivo nell'accendere il secondo led durante entrambe le fasi del blink del primo led. 
 
