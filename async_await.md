@@ -101,7 +101,23 @@ while True:
 ```
 Le **fasi di lavoro** del loop possono essere **schedulate** (pianificate nel tempo) dal delay() ```asyncio.sleep(t_sec)``` che restituiscono un oggetto **promise** (promessa) che, pur essendo non bloccante, fa **ritornare in anticipo** la funzione, **prima** che possa eseguire altre istruzioni **emulando** quindi, in tutto e per tutto, una **funzione bloccante**. Questa proprietà permette la progettazione sostanzialmente **lineare** e **sequenziale** di un algoritmo nel tempo.
 
-**Ogni protothread** è definito da un **descrittore** che è una variabile di tipo struct, cioè il tipo record del C, che rappresenta il protothread. Il **nome** del descrittore è arbitrario a discrezione del programmatore. Il descrittore deve essere passato come **argomento** ad ogni **comando** (macro) della libreria protothread. Il descrittore può essere definito **esattamente prima** della definizione della funzione del protothread tramite la dichiarazione **```pt ptNome_descr```**;
+- **Ogni task** è definito da una **funzione asincrona**, dichiarata come tale attraverso la parola chiave async.
+- Ogni task ha una parte di **setup** in cui vengono iniziate le variabili di servizio del loop del task.
+- ogni task possiede una porzioe di loop infinito in cui vengono eseguite le operazioni del task, in maniera del tutto indipendente da quelle definite all'interno degli altri task.
+- ogni task può essere "bloccato" da qualunque funzione che, nel contemnpo, sia preceduta dalla parola chiave **await** e restitisca una **promise**. Queste funzioni sono in genere o delle funzioni di I/O oppure dei delay che restituiscono oggetti promise come ```asyncio.sleep_ms'''.
+
+```python
+async def nome_task(x):
+    # setup del tasl
+    count = 0
+    # loop del tasl
+    while True: 
+        count += 1
+        print('Instance: {} count: {}'.format(x, count))
+        await asyncio.sleep(delay_secs)
+        print('Hello')
+        await asyncio.sleep_ms(delay_ms)
+```
 
 Il **flusso di esecuzione** di un protothread è **definito** all'interno di una **funzione** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il protothread e allo schedulatore per poterlo richiamare. All'interno della funzione il protothread deve sempre cominciare con il comando **```PT_BEGIN(pt)```** e deve sempre terminare con il comando  **```PT_END(pt)```**. 
 
