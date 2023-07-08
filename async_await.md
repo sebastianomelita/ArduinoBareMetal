@@ -48,9 +48,9 @@ L'elaborazione delle funzioni continua finché lo stack non è nuovamente vuoto.
 
 Loop di gestione degli eventi:
 ```python
-while (queue.waitForMessage()) {
-  queue.processNextMessage();
-}
+while queue.waitForMessage():
+	queue.processNextMessage()
+
 ```
 La funzione queue.waitForMessage() attende in modo sincrono l'arrivo di un messaggio (se uno non è già disponibile e in attesa di essere gestito).
 
