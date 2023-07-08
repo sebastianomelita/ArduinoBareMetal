@@ -48,7 +48,7 @@ while (queue.waitForMessage()) {
   queue.processNextMessage();
 }
 ```
-Il metodoe queue.waitForMessage() attende in modo sincrono l'arrivo di un messaggio (se uno non è già disponibile e in attesa di essere gestito).
+La funzione queue.waitForMessage() attende in modo sincrono l'arrivo di un messaggio (se uno non è già disponibile e in attesa di essere gestito).
 
 ### **Run to completition**
 
