@@ -252,17 +252,17 @@ uasyncio.run(main(btn, led1, led2))
 ```
 Link simulazione online: https://wokwi.com/projects/369680948206974977
 
-Osservazioni:
-- il codice non è specifico di alcuna macchina, è realizzato in C puro ed è altamente portabile.
-- Un protothread viene eseguito all'interno di una singola funzione C e non può estendersi ad altre funzioni. Un protothread può chiamare normali funzioni C, ma non può bloccore all'interno di una funzione chiamata da altre funzioni. Il blocco all'interno di chiamate di funzioni annidate
-è invece ottenuto generando un protothread separato per ciascuna funzione potenzialmente bloccante. Il vantaggio di questo approccio è che
-il blocco è esplicito: il programmatore sa esattamente quali funzioni un protothread blocca e quali invece non blocca mai.
-- poichè i protothread non salvano il contesto dello stack durante la chiamata di una funzione bloccante, ad es. una delay(), le **variabili locali** non vengono conservate quando protothread blocca un task. Ciò significa che le variabili locali dovrebbero essere **usate con la massima
-attenzione**. In caso di dubbio, non utilizzare variabili locali all'interno di un protothread!
-- Un protothread è guidato da ripetute chiamate alla funzione in cui il protothread è in esecuzione. Ogni volta che viene chiamata la funzione, il 
-protothread verrà eseguito fino a quando non si blocca o esce. Pertanto la schedulazione dei protothreads viene eseguita dall'applicazione che utilizza i protothreads.
-- Porre attenzione con le istruzioni switch all'interno di un protothread. Regola empirica: posiziona tutte le istruzioni switch in una loro funzione.
-- non è possibile effettuare chiamate di sistema bloccanti e preservare la semantica asincrona. Questi devono essere cambiati in chiamate non bloccanti che testano una condizione.
+### **Osservazioni**:
+
+Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantaggi. 
+- Innanzitutto, è leggero. È possibile avere un numero elevato di attività perché, a differenza dei thread annullati, le attività in pausa contengono poco stato.
+- In secondo luogo evita alcuni degli insidiosi problemi associati alla programmazione con prerilascio forzato delle risorse. In pratica, il multitasking cooperativo è ampiamente utilizzato, in particolare nelle applicazioni che gestiscono interfacce utente.
+- d'altronde, se si realizzano task molto pesanti, cioè di tipo CPU inensive quale il seguente:
+					```pythonfor x in range(1000000):
+					    # do something time consuming
+					```
+  accade che gli altri task rimangono bloccati in attesa del completamento di questo.
+
 
 ### **Sitografia:**
 - https://docs.micropython.org/en/v1.15/library/uasyncio.html
