@@ -94,7 +94,55 @@ asyncio.run(main())
 ```
 Link simulazione online: https://wokwi.com/projects/369675288427672577
 
+```python
+import uasyncio
+from machine import Pin
+
+async def blink(led, period_ms):
+    while True:
+        led.on()
+        await uasyncio.sleep_ms(period_ms)
+        led.off()
+        await uasyncio.sleep_ms(period_ms)
+
+async def main(led1, led2):
+    uasyncio.create_task(blink(led1, 1000))
+    uasyncio.create_task(blink(led2, 2000))
+    await uasyncio.sleep_ms(10000)
+    print('Ending all tasks')
+    led1.off()
+    led2.off()
+    
+led1 = Pin(12,Pin.OUT)
+led2 = Pin(18,Pin.OUT)
+
+uasyncio.run(main(led1, led2))
+```
+
 Link simulazione online: https://wokwi.com/projects/369678530188573697
+
+```python
+import uasyncio
+from machine import Pin
+
+async def blink(led, period_ms):
+    while True:
+        led.on()
+        await uasyncio.sleep_ms(period_ms)
+        led.off()
+        await uasyncio.sleep_ms(period_ms)
+
+async def main(led1, led2):
+    uasyncio.create_task(blink(led1, 1000))
+    uasyncio.create_task(blink(led2, 2000))
+    while True:
+        await uasyncio.sleep_ms(500)
+
+led1 = Pin(12,Pin.OUT)
+led2 = Pin(18,Pin.OUT)
+
+uasyncio.run(main(led1, led2))
+```
 
 Link simulazione online: https://wokwi.com/projects/369680006454647809
 
