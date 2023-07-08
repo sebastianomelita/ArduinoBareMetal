@@ -5,6 +5,8 @@
 
 ### **Base teorica**
 
+Gestione con I/O sincrono bloccante in figura a sinistra. Gestione con I/O asincrono e non bloccante nella stessa figura ma a destra.
+
 <img src="asyn-noasync.png" alt="alt text" width="2000">
 
 ### **Eventi vs thread**
@@ -265,5 +267,6 @@ protothread verrà eseguito fino a quando non si blocca o esce. Pertanto la sche
 ### **Sitografia:**
 - https://docs.micropython.org/en/v1.15/library/uasyncio.html
 - https://github.com/peterhinch/micropython-async/blob/master/v3/docs/TUTORIAL.md
+- https://medium.com/martinomburajr/rxjava2-schedulers-2-breaking-down-the-i-o-scheduler-7e83160df2ed
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](async_await_py.md)
