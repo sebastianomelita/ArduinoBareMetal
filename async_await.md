@@ -30,8 +30,8 @@ La gestione dell'I/O viene in genere eseguita tramite **eventi** e **callback**:
 - Un evento è un’azione eseguita sulla GUI dall’utente. 
 - Una callback è una funzione che viene richiamata quando viene servito l’evento ad essa associata.
 - Gli eventi che occorrono (accadono) contemporaneamente e che sono pronti per essere processati dalla CPU vengono ospitati in una coda di messaggi. In questa attesa il sistema può ancora elaborare altri eventi immagazzinandoli in coda rimanendo così responsivo. 
-- Il primo messaggio in coda viene di volta in volta estratto e processato inserendo la sua callback, e tutte le funzioni ad essa annidate, in altrettanti frame sullo stack 
-- la callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
+
+Il primo messaggio in coda viene di volta in volta estratto e processato inserendo la sua callback, e tutte le funzioni ad essa annidate, in altrettanti frame sullo stack. La callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
 
 
 I **async/await** fornise un meccanismo di **blocco dei task** (compiti) in cima a un **sistema ad eventi**, senza l'overhead di uno stack per ogni thread. Lo **scopo** del modello è quello di implementare un **flusso sequenziale di controllo** senza utilizzare complesse macchine a stati finiti ed evitando l'overhead di un multi-threading completo, cioè quello dotato anche del **modo preemptive**.  L'asynchronous I/O scheduler fornisce la sola **modalità cooperativa** e il **rilascio anticipato** delle risorse è realizzato **senza l'utilizzo di interrupt** che generino il **cambio di contesto** dei thread. 
