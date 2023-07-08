@@ -1,5 +1,5 @@
 
->[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](async_await_py.md)
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)   >[Versione in Python](async_await_py.md)
 
 # **SCHEDULAZIONE CON ASYNC/AWAIT**
 
