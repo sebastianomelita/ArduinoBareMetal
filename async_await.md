@@ -27,7 +27,7 @@ Una proprietà molto interessante è che un **linguaggio ad eventi**, a differen
 
 La **gestione dell'I/O** viene in genere eseguita tramite **eventi** e **callback**:
 - ad un evento sono associate una o più callback.
-- Un evento è un’azione eseguita sulla GUI dall’utente. 
+- Un evento è un’azione eseguita in qualche I/O. 
 - Una callback è una funzione che viene richiamata quando viene servito l’evento ad essa associata.
 - Gli eventi che occorrono (accadono) contemporaneamente e che sono pronti per essere processati dalla CPU vengono ospitati in una coda di messaggi. In questa attesa il sistema può ancora elaborare altri eventi immagazzinandoli in coda rimanendo così responsivo. 
 
