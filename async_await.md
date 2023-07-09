@@ -16,8 +16,8 @@ Il modello di gestione della CPU nei SO normalmente è di tipo **multithreading 
 
 Il modello di gestione della CPU in ambienti server come node JS e client come l’ambiente javascript di un browser web, invece, è normalmente a **singolo thread** dove il **multitasking** è generato non utilizzando il multithreading ma un modello di esecuzione **ad eventi (event driven runtime)** composto da:
 - Un singolo thread
-- Un singolo task in esecuzione alla volta (esecuzione °°seriale°° dei °°task°°)
-- Più input in elaborazione contemporaneamente (esecuzione °°parallela°° degli °°input°°)
+- Un singolo task in esecuzione alla volta (esecuzione **seriale** dei **task**)
+- Più input in elaborazione contemporaneamente (esecuzione **parallela** degli **input**)
 
 ### **Modello ad eventi**
 
