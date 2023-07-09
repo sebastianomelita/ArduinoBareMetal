@@ -21,7 +21,7 @@ Il modello di gestione della CPU in ambienti server come node JS e client come l
 
 ### **Modello ad eventi**
 
-
+<img src="img/async_eventloop.jpg" alt="alt text" width="700">
 
 La libreria async.io ha un modello di runtime basato su un ciclo di eventi (event loop), che è responsabile:
 - dell'esecuzione del codice
@@ -41,6 +41,7 @@ Il primo messaggio in coda viene di volta in volta estratto e processato inseren
 
 ### **Allocazione della RAM**
 <img src="img/stackasync.png" alt="alt text" width="400">
+
 Gli oggetti sono allocati nella heap che è un’ampia regione di memoria per lo più non strutturata.
 Gli eventi sono immagazzinati in una coda di messaggi. 
 Ogni messaggio ha una funzione associata (listener) che viene chiamata per gestire il messaggio.
