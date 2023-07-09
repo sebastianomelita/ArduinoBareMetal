@@ -21,7 +21,7 @@ Il modello di gestione della CPU in ambienti server come node JS e client come l
 
 ### **Modello ad eventi**
 
-<img src="img/stackasync.png" alt="alt text" width="400">
+
 
 La libreria async.io ha un modello di runtime basato su un ciclo di eventi (event loop), che è responsabile:
 - dell'esecuzione del codice
@@ -38,6 +38,13 @@ La **gestione dell'I/O** viene in genere eseguita tramite **eventi** e **callbac
 - Gli eventi che occorrono (accadono) contemporaneamente e che sono pronti per essere processati dalla CPU vengono ospitati in una coda di messaggi. In questa attesa il sistema può ancora elaborare altri eventi immagazzinandoli in coda rimanendo così responsivo. 
 
 Il primo messaggio in coda viene di volta in volta estratto e processato inserendo la sua callback, e tutte le funzioni ad essa annidate, in altrettanti frame sullo stack. La callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
+
+### **Allocazione della RAM**
+<img src="img/stackasync.png" alt="alt text" width="400">
+Gli oggetti sono allocati nella heap che è un’ampia regione di memoria per lo più non strutturata.
+Gli eventi sono immagazzinati in una coda di messaggi. 
+Ogni messaggio ha una funzione associata (listener) che viene chiamata per gestire il messaggio.
+
 
 ### **Meccanismo di esecuzione**
 
