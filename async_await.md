@@ -356,5 +356,8 @@ Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantag
 - https://docs.micropython.org/en/v1.15/library/uasyncio.html
 - https://github.com/peterhinch/micropython-async/blob/master/v3/docs/TUTORIAL.md
 - https://medium.com/martinomburajr/rxjava2-schedulers-2-breaking-down-the-i-o-scheduler-7e83160df2ed
+- https://www.sobyte.net/post/2022-08/py-coroutine/
+- https://medium.com/@nooraldinahmed/getting-started-with-python-asyncio-part-1-9eee7944f9f7
+- https://hackersandslackers.com/python-concurrency-asyncio/
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](async_await_py.md)
