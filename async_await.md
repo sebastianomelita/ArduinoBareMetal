@@ -39,6 +39,8 @@ Il primo messaggio in coda viene di volta in volta estratto e processato inseren
 
 ### **Meccanismo di esecuzione**
 
+<img src="img/async.png" alt="alt text" width="700">
+
 Ad un certo punto durante il ciclo di eventi, il processo runtime inizia a gestire i messaggi sulla coda, a partire da quello più vecchio. Per fare ciò:
 - Il messaggio viene rimosso dalla coda
 - la sua funzione corrispondente (callback listener) viene chiamata con il messaggio come parametro di input. 
