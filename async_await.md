@@ -21,7 +21,7 @@ Il modello di gestione della CPU in ambienti server come node JS e client come l
 
 ### **Modello ad eventi**
 
-<img src="img/stackasync.png" alt="alt text" width="200">
+<img src="img/stackasync.png" alt="alt text" width="400">
 
 La libreria async.io ha un modello di runtime basato su un ciclo di eventi (event loop), che è responsabile:
 - dell'esecuzione del codice
