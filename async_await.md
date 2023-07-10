@@ -120,7 +120,7 @@ async def main():
     uasyncio.create_task(c()) # inserisce il task nel loop
     await uasyncio.sleep_ms(0) # permette di cominciare l'altro task prima che termini il corrente
     print('3')
-    await uasyncio.sleep_ms(10000) # viene ritardato il main che altrimenti ritornerebbe subito
+    await uasyncio.sleep_ms(10000) # Crea un nuovo task dalla coroutine specificata e lo esegue fino al completamento.
 
 uasyncio.run(main()) # crea un loop di eventi e lo manda in esecuzione
 ```
