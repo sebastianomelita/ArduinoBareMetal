@@ -110,16 +110,21 @@ Una **future** è un oggetto restituito da una funzione **asincrona**, che rappr
 import uasyncio
 async def c():
     print('2')
-    await uasyncio.sleep_ms(period_ms)
+    await uasyncio.sleep_ms(2000)
     print('4')
-    await uasyncio.sleep_ms(period_ms)
+    await uasyncio.sleep_ms(5000)
     print('5')
 
-async def main(led1, led2):
+async def main():
     print('1')
-    uasyncio.create_task(c)
+    uasyncio.create_task(c())
     print('3')
+    await uasyncio.sleep_ms(10000)
+
+uasyncio.run(main())
 ```
+
+Link simulazione online: https://wokwi.com/projects/369865863273101313
 
 Le funzioni asincrone sono tecnica che rende molto più intuitiva la gestione delle promesse svincolandola dall'esigenza di definire per ciascuna due callback.
 
