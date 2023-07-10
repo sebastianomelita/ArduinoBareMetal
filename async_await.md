@@ -138,7 +138,7 @@ Nonostante il nome, Il blocco di codice async diventa per tutte le funzioni che 
 - Possiamo usare un blocco try...catch per la gestione degli errori, esattamente come si farebbe se il codice fosse sincrono.
 - le funzioni dichiarate **asincrone** con async davanti **restituiscono** sempre una **future** per cui await forza il completamento in serie delle operazioni asincrone quando il risultato dell'operazione successiva dipende dal risultato della precedente. 
 
-Esisono delle differenze implemnetative nella realizzazione delle coroutine neii vari linguaggi. 
+Esisono delle differenze implementative nella realizzazione delle coroutine neii vari linguaggi. 
 - In Javascript, ad esempio, una funzione **normale** che chiama una funzione asincrona (coroutine) **ritorna sempre** dopo essere stata eseguita **per intero** mentre, la **coroutine** ritornerà successivamente alla funzione chiamante (non asincrona), seguendo un percorso **a tappe**, man mano che gli eventi che essa, di volta in volta, attende verranno, uno dopo l'altro, **risolti tutti**. Rimane la particolarità del JS di trattare il main come un task come un altro, anzi è proprio il primo task che viene inserito nella coda dei messaggi.
 - in Python il meccanismo è del tutto analogo ma, in questo caso, il main non è nativamente gestito con un loop di messaggi che deve pertanto essere attivato con una istruzione a parte, ad esempio,  ```asyncio.run(main())```.
 
