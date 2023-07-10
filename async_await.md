@@ -117,12 +117,12 @@ async def c():
 
 async def main():
     print('1')
-    uasyncio.create_task(c()) # viene inserito il task nel loop
+    uasyncio.create_task(c()) # inserisce il task nel loop
     await uasyncio.sleep_ms(0) # permette di cominciare l'altro task prima che termini il corrente
     print('3')
     await uasyncio.sleep_ms(10000) # viene ritardato il main che altrimenti ritornerebbe subito
 
-uasyncio.run(main())
+uasyncio.run(main()) # crea un loop di eventi e lo manda in esecuzione
 ```
 
 Link simulazione online: https://wokwi.com/projects/369865863273101313
