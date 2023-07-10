@@ -361,5 +361,6 @@ Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantag
 - https://medium.com/@nooraldinahmed/getting-started-with-python-asyncio-part-1-9eee7944f9f7
 - https://hackersandslackers.com/python-concurrency-asyncio/
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop
+- https://superfastpython.com/python-asyncio/
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](async_await_py.md)
