@@ -365,5 +365,6 @@ Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantag
 - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop
 - https://superfastpython.com/python-asyncio/
 - https://stackoverflow.com/questions/68139555/difference-between-async-await-in-python-vs-javascript
+- http://dmitrykandalov.com/async-await 
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](async_await_py.md)
