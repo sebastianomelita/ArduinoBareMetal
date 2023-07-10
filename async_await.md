@@ -129,7 +129,7 @@ Link simulazione online: https://wokwi.com/projects/369865863273101313
 
 Le funzioni asincrone sono tecnica che rende molto più intuitiva la gestione delle promesse svincolandola dall'esigenza di definire per ciascuna due callback.
 
-Ciò avviene in Python tramite le cosidette **"coroutine"**. Una coroutine è una subroutine (funzione) che può essere **sospesa** e **ripresa**. Viene **sospesa** dall'espressione di **await** e ripresa una volta **risolta** la await. 
+Ciò avviene in Python tramite le cosidette **"coroutine"**. Una coroutine è una subroutine (funzione) che può essere **sospesa** e **ripresa**. Viene **sospesa** dall'espressione di **await** e ripresa una volta **risolta** la await. La ripresa dal punto di sospensione avviene mantenendo gli argomenti e le variabili locali della funzione sospesa.
 
 Ad ogni **sospensione pendente** corrisponde l'**attesa** di un **evento** che **risolve** la Future (o la Promise) che la sblocca. Una volta risolta viene inserita nella **coda** di esecuzione il **microtask** associato a quella Future risolta positivamente. Potrebbe esserci pure un micritask alternativo associato ad una future non risolta (alla scadenza di un timeout).
 
