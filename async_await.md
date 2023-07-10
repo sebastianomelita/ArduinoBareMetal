@@ -141,7 +141,7 @@ Nonostante il nome, Il blocco di codice async diventa per tutte le funzioni che 
 Esisono delle differenze implementative nella realizzazione delle coroutine neii vari linguaggi. 
 - In Javascript, ad esempio, una funzione **normale** che chiama una funzione asincrona (coroutine) **ritorna sempre** dopo essere stata eseguita **per intero** mentre, la **coroutine** ritornerà successivamente alla funzione chiamante (non asincrona), seguendo un percorso **a tappe**, man mano che gli eventi che essa, di volta in volta, attende verranno, uno dopo l'altro, **risolti tutti**. Rimane la particolarità del JS di trattare il main che, pur essendo una funzione sincrona, viene considerata come un task come un altro, anzi è proprio il primo task che viene inserito nella coda dei messaggi.
 - in Python il meccanismo è del tutto analogo ma, in questo caso, il loop dei messaggi non è nativamente gestito ma deve essere attivato esplicitamente, ad esempio, con ```asyncio.run(main())```. Inoltre il main non è un task gestito dal loop dei messaggi ma dalla schedulatore dei thread del SO sottostante.
-- 
+  
 I **async/await** fornise un meccanismo di **blocco dei task** (compiti) in cima a un **sistema ad eventi**, senza l'overhead di uno stack per ogni thread. Lo **scopo** del modello è quello di implementare un **flusso sequenziale di controllo** senza utilizzare complesse macchine a stati finiti ed evitando l'overhead di un multi-threading completo, cioè quello dotato anche del **modo preemptive**.  L'asynchronous I/O scheduler fornisce la sola **modalità cooperativa** e il **rilascio anticipato** delle risorse è realizzato **senza l'utilizzo di interrupt** che generino il **cambio di contesto** dei thread. 
 
 ### **Confronto con le altre tecniche**
@@ -227,7 +227,7 @@ asyncio.run(main())
 
 **Una tipica app firmware**
 
-La maggior parte delle applicazioni firmware funziona ininterottamente per sempre. Ciò richiede che la coroutine del task sia passata a asyncio.run() e che dopo il mmain attendae una await su una funzione non terminante (che giri per sempre).
+La maggior parte delle applicazioni firmware funziona ininterottamente per sempre. Ciò richiede che la coroutine del task sia passata a asyncio.run() e che dopo il main attende una await su una funzione non terminante (che giri per sempre).
 
 Per facilitare il debug e per la compatibilità con CPython, nell'esempio seguente viene suggerito del codice "boilerplate".
 
