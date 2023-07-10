@@ -1,4 +1,3 @@
-
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)   >[Versione in Python](async_await_py.md)
 
 # **SCHEDULAZIONE CON ASYNC/AWAIT**
@@ -160,9 +159,9 @@ Il modello **async/await** fornise un meccanismo di **blocco dei task** (compiti
 ### **Confronto con le altre tecniche**
 
 Anche i **processi** e i **thread** sono flussi di esecuzione indipendenti che procedono in parallelo su una o più CPU, esiste però una **differenza pratica** notevole tra di essi:
-- nei **processi** sia input/output, che **area dati globale** che **area dati locale** (stack) sono indipendenti e separate in zone diverse della memoria RAM.
-- nei **thread**  input/output e **area dati globale** sono **in comune** nella stessa posizione in RAM mentre soltanto le **aree dati locali** (stack) sono indipendenti e separate in zone diverse della memoria RAM.
-- nei **modello ad eventi** sia input/output che l'**area dati globale** ma anche le **aree dati locali** (stack) sono **in comune** nella stessa posizione in RAM. Pertanto le **variabili locali** non sono isolate in thread diversi (presenza di possibili ambiguità).
+- nei **processi** sia input/output, che **area dati globale** che **area dati locale** (stack) sono indipendenti e separate in zone diverse della memoria RAM. Il **parallelismo** è **reale** sia per gli **eventi** che per i **task**.
+- nei **thread**  input/output e **area dati globale** sono **in comune** nella stessa posizione in RAM mentre soltanto le **aree dati locali** (stack) sono indipendenti e separate in zone diverse della memoria RAM secondo una logica a divisione di spazio (SDM). Anche in questo caso il **parallelismo** è **reale** sia per gli **eventi** che per i **task**.
+- nei **modello ad eventi** sia input/output che l'**area dati globale** ma anche se le **aree dati locali** (stack) sono **in comune**, queste occupano tutta la RAM ma in istanti diversi secondo una logica a divisione di tempo (TDM). Pertanto le **variabili locali** sono isolate perchè utilizzate in momenti diversi. In questo caso il **parallelismo** per gli **eventi** è reale mentre i **task** la gestione rimane **sequenziale** e realizzata mediante una **coda di messaggi**.
 
 ### **Utilizzo in pratica**
 
