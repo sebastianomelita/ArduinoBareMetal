@@ -218,7 +218,7 @@ E' importante notare che anche la funzione **main** deve essere resa asincrona c
 
 Il task principale che contine il main può essere mandato in esecuzione con la funzione ```asyncio.run(main()))``` .
 
-In definitiva la **dichiarazione e definizione** di **descrittore e funzione** del protothread possono assumere la forma:
+In definitiva la **dichiarazione e definizione** di **descrittore e funzione** del pattern async/await possono assumere la forma:
 
 ```python
 import uasyncio as asyncio
