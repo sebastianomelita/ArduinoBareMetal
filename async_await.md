@@ -108,7 +108,9 @@ Una **future** è un oggetto restituito da una funzione **asincrona**, che rappr
 
 Le funzioni asincrone sono tecnica che rende molto più intuitiva la gestione delle promesse svincolandola dall'esigenza di definire per ciascuna due callback.
 
-Ciò avviene in Python tramite le cosidette **"coroutine"**. Una coroutine è una subroutine (funzione) che può essere **sospesa** e **ripresa**. Viene **sospesa** dall'espressione di **await** e ripresa una volta **risolta** la await. Ad ogni **sospensione pendente** corrisponde l'**attesa** di un **evento** che **risolve** la Future (o la Promise) che la sblocca. Una volta risolta viene inserita nella **coda** di esecuzione il **microtask** associato a quella Future risolta positivamente. Potrebbe esserci pure un micritask alternativo associato ad una future non risolta (alla scadenza di un timeout).
+Ciò avviene in Python tramite le cosidette **"coroutine"**. Una coroutine è una subroutine (funzione) che può essere **sospesa** e **ripresa**. Viene **sospesa** dall'espressione di **await** e ripresa una volta **risolta** la await. 
+
+Ad ogni **sospensione pendente** corrisponde l'**attesa** di un **evento** che **risolve** la Future (o la Promise) che la sblocca. Una volta risolta viene inserita nella **coda** di esecuzione il **microtask** associato a quella Future risolta positivamente. Potrebbe esserci pure un micritask alternativo associato ad una future non risolta (alla scadenza di un timeout).
 
 Nonostante il nome, Il blocco di codice async diventa per tutte le funzioni che restituiscono una future, sincrono e bloccante nel senso che, ciascuna funzione con **await davanti**, rimane bloccata e non può passare all’istruzione successiva fino a che la **sua future** non viene **risolta**. Il blocco dell'esecuzione è in realtà solamente **apparente** perchè è sostanzialmente **emulato** ma, nonostante tutto, **efficace** nell'**impedire** l'esecuzione le **istruzioni seguenti** all'interno dello stesso task.
 - **Await** va usato soltanto **dentro** un blocco di codice **async** e **davanti** a funzioni che **restituiscono una future**.
