@@ -32,12 +32,12 @@ Questo modello è abbastanza diverso dai modelli in altri linguaggi come C e Jav
 Una proprietà molto interessante è che un **linguaggio ad eventi**, a differenza di molti altri linguaggi, **non blocca** mai gli altri task quando si è in attesa di un input sul task corrente.
 
 La **gestione dell'I/O** viene in genere eseguita tramite **eventi** e **callback**:
-- ad un evento sono associate una o più callback.
-- Un evento è un’azione eseguita in qualche I/O. 
-- Una callback è una funzione che viene richiamata quando viene servito l’evento ad essa associata.
-- Gli eventi che occorrono (accadono) contemporaneamente e che sono pronti per essere processati dalla CPU vengono ospitati in una coda di messaggi. In questa attesa il sistema può ancora elaborare altri eventi immagazzinandoli in coda rimanendo così responsivo. 
+- ad un **evento** sono associate una o più **callback**.
+- Un **evento** è un’**azione** eseguita in qualche **I/O**. 
+- Una **callback** è una **funzione** che viene richiamata quando viene **servito** l’evento ad essa **associato**.
+- Gli eventi che occorrono (accadono) **contemporaneamente** e che sono pronti per essere processati dalla CPU vengono ospitati in una **coda** di messaggi. In questa attesa il sistema può ancora **elaborare** altri eventi immagazzinandoli in coda rimanendo così **responsivo**. 
 
-Il primo messaggio in coda viene di volta in volta estratto e processato inserendo la sua callback, e tutte le funzioni ad essa annidate, in altrettanti frame sullo stack. La callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
+Il primo messaggio in coda viene di volta in volta estratto e processato per essere **eseguito** inserendo la sua **callback**, e tutte le funzioni ad essa annidate, in altrettanti **frame** sullo stack. La callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
 
 ### **Allocazione della RAM**
 <img src="img/stackasync.png" alt="alt text" width="400">
@@ -91,8 +91,8 @@ Un callback è una funzione che:
 Le callback sono il modo principale in cui vengono implementate in un modello ad eventi le azioni di risposta ad un evento, spesso mediante funzioni definite una sola volta nel codice in forma anonima.
 
 Le callback possono essere:
-- Disgiunte (separate) se relative ad eventi slegati tra loro che accadono in maniera indipendente
-- Annidate una dentro l’altra se ogni callback è associata ad un evento attivato proprio dentro un’altra callback mediante una richiesta di I/O. Sono particolarmente difficili da approcciare in maniera chiara.
+- **Disgiunte** (separate) se relative ad eventi slegati tra loro che accadono in maniera indipendente
+- **Annidate** una dentro l’altra se ogni callback è associata ad un evento attivato proprio dentro un’altra callback mediante una richiesta di I/O. Sono particolarmente difficili da approcciare in maniera chiara.
 
 ### **Future**
 
@@ -108,13 +108,12 @@ Una **future** è un oggetto restituito da una funzione **asincrona**, che rappr
 
 Le funzioni asincrone sono tecnica che rende molto più intuitiva la gestione delle promesse svincolandola dall'esigenza di definire per ciascuna due callback.
 
-Ciò avviene in Python tramite le cosidette **"coriutine"**. Una coroutine è una subroutine (funzione) che può essere **sospesa** e **ripresa**. Viene **sospesa** dall'espressione di **await** e ripresa una volta **risolta** la await.
+Ciò avviene in Python tramite le cosidette **"coroutine"**. Una coroutine è una subroutine (funzione) che può essere **sospesa** e **ripresa**. Viene **sospesa** dall'espressione di **await** e ripresa una volta **risolta** la await. 
 
 Nonostante il nome, Il blocco di codice async diventa per tutte le funzioni che restituiscono una future, sincrono e bloccante nel senso che, ciascuna funzione con **await davanti**, rimane bloccata e non può passare all’istruzione successiva fino a che la **sua future** non viene **risolta**. Il blocco dell'esecuzione è in realtà solamente **apparente** perchè è sostanzialmente **emulato** ma, nonostante tutto, **efficace** nell'**impedire** l'esecuzione le **istruzioni seguenti** all'interno dello stesso task.
 - **Await** va usato soltanto **dentro** un blocco di codice **async** e **davanti** a funzioni che **restituiscono una future**.
 - Possiamo usare un blocco try...catch per la gestione degli errori, esattamente come si farebbe se il codice fosse sincrono.
-- le funzioni dichiarate **asincrone** con async davanti **restituiscono** sempre una **future** e quindi, per accedervi bisogna usare la funzione then. 
-Hanno la stessa utilità di una catena di promesse, cioè await forza il completamento in serie delle operazioni asincrone quando il risultato dell'operazione successiva dipende dal risultato dell'ultima, in caso contrario qualcosa come future.all() potrebbe essere più appropriato.
+- le funzioni dichiarate **asincrone** con async davanti **restituiscono** sempre una **future** per cui await forza il completamento in serie delle operazioni asincrone quando il risultato dell'operazione successiva dipende dal risultato dell'ultima. In altre parole, una funzione normale che chiama una funzione asincrona (coroutine) **ritorna sempre** dopo essere stata eseguita **per intero** mentre, la **coroutine** ritornerà successivamente, **a tappe**, man mano che gli eventi che essa attendeva verrano **risolti tutti**.
 
 I **async/await** fornise un meccanismo di **blocco dei task** (compiti) in cima a un **sistema ad eventi**, senza l'overhead di uno stack per ogni thread. Lo **scopo** del modello è quello di implementare un **flusso sequenziale di controllo** senza utilizzare complesse macchine a stati finiti ed evitando l'overhead di un multi-threading completo, cioè quello dotato anche del **modo preemptive**.  L'asynchronous I/O scheduler fornisce la sola **modalità cooperativa** e il **rilascio anticipato** delle risorse è realizzato **senza l'utilizzo di interrupt** che generino il **cambio di contesto** dei thread. 
 
