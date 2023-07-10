@@ -104,6 +104,8 @@ Una **future** è un oggetto restituito da una funzione **asincrona**, che rappr
 
 ### **Async/await**
 
+<img src="img/coroutine.png" alt="alt text" width="700">
+
 Le funzioni asincrone sono tecnica che rende molto più intuitiva la gestione delle promesse svincolandola dall'esigenza di definire per ciascuna due callback.
 
 Ciò avviene in Python tramite le cosidette **"coriutine"**. Una coroutine è una subroutine (funzione) che può essere **sospesa** e **ripresa**. Viene **sospesa** dall'espressione di **await** e ripresa una volta **risolta** la await.
