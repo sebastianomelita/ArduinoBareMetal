@@ -28,7 +28,7 @@ I **casi d'uso** che potrebbero beneficiare di un modello a thread singolo ad ev
 
 Gli **svantaggi** sono ascrivibili a:
 - una **certa complessità** rispetto alla getione del multitasking con i thread che, nonostante tutto, rimane al programmatore più trasparente e più semplice.
-- una **gestione meno accurata dei tempi**, la cui schedulazione, come vedremo più avanti, risente della pesantezza dei task precedenti a quello correntemente eseguito
+- una **gestione meno accurata dei tempi**, la cui schedulazione, come vedremo più avanti (delay zero apparente), risente della pesantezza dei task precedenti a quello correntemente eseguito
 - una **efficacia ridotta** a trattare quelle **risorse** che si interfaccciano esclusivamente in maniera **sincrona e bloccante** per le quali rimane  sepre possibile la gestione asincrona spostandone l'esecuzione su un altro thread, ma ciò va a scapito della semplicità che si cercava con questa soluzione, in più serve di nuovo un SO che gestisca la schedulazione dei thread.
 
 <img src="img/async_eventloop.jpg" alt="alt text" width="700">
