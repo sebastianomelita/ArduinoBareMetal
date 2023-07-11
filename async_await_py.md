@@ -241,8 +241,22 @@ async def main():
 
 asyncio.run(main())
 ```
+**Generazione di un event loop**
+In genere, viene realizzata completamente con una singola istruzione:
+
+```python
+asyncio.run(main())  # Python 3.7+
+```
+ecco un modo più prolisso di gestire il ciclo di eventi asyncio, con get_event_loop(). Il modello tipico è simile a questo:
+```python
+loop = asyncio.get_event_loop()
+try:
+    loop.run_until_complete(main())
+finally:
+    loop.close()
 
 **Una tipica app firmware**
+```
 
 La maggior parte delle applicazioni firmware funziona ininterottamente per sempre. Ciò richiede che la coroutine del task sia passata a asyncio.run() e che dopo il main attende una await su una funzione non terminante (che giri per sempre).
 
@@ -403,6 +417,8 @@ Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantag
 ### **Sitografia:**
 - https://docs.micropython.org/en/v1.15/library/uasyncio.html
 - https://github.com/peterhinch/micropython-async/blob/master/v3/docs/TUTORIAL.md
+- https://realpython.com/async-io-python/#chaining-coroutines
+- https://docs.python.org/3/library/asyncio-task.html
 - https://medium.com/martinomburajr/rxjava2-schedulers-2-breaking-down-the-i-o-scheduler-7e83160df2ed
 - https://www.sobyte.net/post/2022-08/py-coroutine/
 - https://medium.com/@nooraldinahmed/getting-started-with-python-asyncio-part-1-9eee7944f9f7
