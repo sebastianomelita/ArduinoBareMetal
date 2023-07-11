@@ -9,6 +9,9 @@ Gestione con I/O sincrono bloccante in figura a sinistra. Gestione con I/O asinc
 <img src="asyn-noasync.png" alt="alt text" width="2000">
 
 ### **Eventi vs thread**
+
+<img src="multitasking.png" alt="alt text" width="1000">
+
 Il modello di gestione della CPU nei SO normalmente è di tipo **multithreading  preemptive**, cioè con interruzione anticipata del task in esecuzione con riassegnazione della risorsa CPU ad un altro task, per almeno due motivi:
 - Evitare lo spreco della risorsa CPU in attesa di un input bloccante che tarda la sua risposta di un tempo non prevedibile
 - per realizzare un multitasking equo (fair) tramite l’esecuzione concorrente di più task in tempi uguali
