@@ -15,11 +15,24 @@ Il modello di gestione della CPU nei SO normalmente è di tipo **multithreading 
 - per realizzare un multitasking equo (fair) tramite l’esecuzione concorrente di più task in tempi uguali
 
 Il modello di gestione della CPU in ambienti server come node JS e client come l’ambiente javascript di un browser web, invece, è normalmente a **singolo thread** dove il **multitasking** è generato non utilizzando il multithreading ma un modello di esecuzione **ad eventi (event driven runtime)** composto da:
-- Un singolo thread
-- Un singolo task in esecuzione alla volta (esecuzione seriale dei task)
-- Più input in elaborazione contemporaneamente (esecuzione parallela degli input)
+- Un **singolo thread**
+- Un singolo task in esecuzione alla volta (esecuzione **seriale** dei **task**)
+- Più input in elaborazione contemporaneamente (esecuzione **parallela** degli **input**)
 
 ### **Modello ad eventi**
+
+I **casi d'uso** che potrebbero beneficiare di un modello a thread singolo ad eventi potrebbero essere:
+- **Concorrenza in un ambiente a thread singolo**. Alcuni linguaggi/ambienti di programmazione hanno un solo thread. Un altro esempio è un microcontrollore con risorse limitate che esegue un sistema operativo senza thread. In tutti questi casi, se si ha bisogno di **concorrenza**, le coroutine sono l'unica scelta.
+- **Per semplificare il codice**. Può essere fatto usando la parola chiave **yield**, usando **async/await** per **"appiattire"**, cioè ridurre ad un **unico livello di annidamento** il codice asincrono evitando **l'inferno delle callback** o scrivendo codice asincrono in **stile imperativo** cioè lineare e **sequenziale**, molto più naturale da **scrivere** e **mantenere** rispetto ad un groviglio disordinato di callback che non seguono un filo temporale preciso.
+- Maggiore **efficienza** e maggiore **scalabilità** delle risorse del sistema operativo e dell'hardware. In presenza di applicazioni che consumano molti thread, si può trarre vantaggio dalle coroutine risparmiando sull'allocazione della memoria, il tempo necessario per eseguire il cambio di contesto e, in definitiva, trarre vantaggio dall'utilizzo più efficiente dell'hardware che, a **parità di risorse**, adesso può **eseguire più task**. Un esempio è l'utilizzo dell'IO non bloccante con molti utenti simultanei. Poiché in generale i thread sono più costosi dei socket, i thread disponibili del sistema operativo si possono esaurire più rapidamente dei socket. Per evitare questo problema è possibile utilizzare l'IO non bloccante con le coroutine.
+- **riduzione dei rischi** connessi all'**accesso** di **risorse condivise** tra vari task che con **eventi** e **coda di messaggi** sono accedute in maniera rigorosamente **sequenziale** e con la **atomicità di una transazione** realizzata a livello di **microtask** piuttosto che di una **singola istruzione macchina**.
+
+Gli **svantaggi** sono ascrivibili a:
+- una **certa complessità** rispetto alla getione del multitasking con i thread che, nonostante tutto, rimane al programmatore più trasparente e più semplice.
+- una **gestione meno accurata dei tempi**, la cui schedulazione, come vedremo più avanti (delay zero apparente), risente della pesantezza dei task precedenti a quello correntemente eseguito
+- una **efficacia ridotta** a trattare quelle **risorse** che si interfaccciano esclusivamente in maniera **sincrona e bloccante** per le quali rimane  sepre possibile la gestione asincrona spostandone l'esecuzione su un altro thread, ma ciò va a scapito della semplicità che si cercava con questa soluzione, in più serve di nuovo un SO che gestisca la schedulazione dei thread.
+
+<img src="img/async_eventloop.jpg" alt="alt text" width="700">
 
 La libreria async.io ha un modello di runtime basato su un ciclo di eventi (event loop), che è responsabile:
 - dell'esecuzione del codice
@@ -30,14 +43,24 @@ Questo modello è abbastanza diverso dai modelli in altri linguaggi come C e Jav
 Una proprietà molto interessante è che un **linguaggio ad eventi**, a differenza di molti altri linguaggi, **non blocca** mai gli altri task quando si è in attesa di un input sul task corrente.
 
 La **gestione dell'I/O** viene in genere eseguita tramite **eventi** e **callback**:
-- ad un evento sono associate una o più callback.
-- Un evento è un’azione eseguita in qualche I/O. 
-- Una callback è una funzione che viene richiamata quando viene servito l’evento ad essa associata.
-- Gli eventi che occorrono (accadono) contemporaneamente e che sono pronti per essere processati dalla CPU vengono ospitati in una coda di messaggi. In questa attesa il sistema può ancora elaborare altri eventi immagazzinandoli in coda rimanendo così responsivo. 
+- ad un **evento** sono associate una o più **callback**.
+- Un **evento** è un’**azione** eseguita in qualche **I/O**. 
+- Una **callback** è una **funzione** che viene richiamata quando viene **servito** l’evento ad essa **associato**.
+- Gli eventi che occorrono (accadono) **contemporaneamente** e che sono pronti per essere processati dalla CPU vengono ospitati in una **coda** di messaggi. In questa attesa il sistema può ancora **elaborare** altri eventi immagazzinandoli in coda rimanendo così **responsivo**. 
 
-Il primo messaggio in coda viene di volta in volta estratto e processato inserendo la sua callback, e tutte le funzioni ad essa annidate, in altrettanti frame sullo stack. La callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
+Il primo messaggio in coda viene di volta in volta estratto e processato per essere **eseguito** inserendo la sua **callback**, e tutte le funzioni ad essa annidate, in altrettanti **frame** sullo stack. La callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
+
+### **Allocazione della RAM**
+<img src="img/stackasync.png" alt="alt text" width="400">
+
+Gli oggetti sono allocati nella heap che è un’ampia regione di memoria per lo più non strutturata.
+Gli eventi sono immagazzinati in una coda di messaggi. 
+Ogni messaggio ha una funzione associata (listener) che viene chiamata per gestire il messaggio.
+
 
 ### **Meccanismo di esecuzione**
+
+<img src="img/async.png" alt="alt text" width="700">
 
 Ad un certo punto durante il ciclo di eventi, il processo runtime inizia a gestire i messaggi sulla coda, a partire da quello più vecchio. Per fare ciò:
 - Il messaggio viene rimosso dalla coda
@@ -79,8 +102,8 @@ Un callback è una funzione che:
 Le callback sono il modo principale in cui vengono implementate in un modello ad eventi le azioni di risposta ad un evento, spesso mediante funzioni definite una sola volta nel codice in forma anonima.
 
 Le callback possono essere:
-- Disgiunte (separate) se relative ad eventi slegati tra loro che accadono in maniera indipendente
-- Annidate una dentro l’altra se ogni callback è associata ad un evento attivato proprio dentro un’altra callback mediante una richiesta di I/O. Sono particolarmente difficili da approcciare in maniera chiara.
+- **Disgiunte** (separate) se relative ad eventi slegati tra loro che accadono in maniera indipendente
+- **Annidate** una dentro l’altra se ogni callback è associata ad un evento attivato proprio dentro un’altra callback mediante una richiesta di I/O. Sono particolarmente difficili da approcciare in maniera chiara.
 
 ### **Future**
 
@@ -92,22 +115,58 @@ Una **future** è un oggetto restituito da una funzione **asincrona**, che rappr
 
 ### **Async/await**
 
+Il **caso d'uso** principale per **async/await** è rendere più **semplice** la scrittura di **codice asincrono** o, in generale, qualsiasi codice che utilizzi molte callback o futures/promesse. In particolare, async/await può aiutare a evitare **l'inferno delle callback** annidate (callback hell noto anche come piramide del destino) scrivendo programmi in **stile imperativo** invece che **ad eventi**. L'obiettivo è **ristrutturare** il programma in modo che sia **più facile** da **scrivere** e **mantenere** per gli umani. Anche se i programmi asincroni sono il caso d'uso più comune, async/await non richiede che il codice sia effettivamente asincrono o utilizzi IO non bloccanti. Fondamentalmente, si tratta solo di trasformazione strutturale di un programma.
+
+<img src="img/coroutine.png" alt="alt text" width="700">
+
+```python
+import uasyncio
+async def c():
+    print('2')
+    await uasyncio.sleep_ms(2000)
+    print('4')
+    await uasyncio.sleep_ms(5000)
+    print('5')
+
+async def main():
+    print('1')
+    uasyncio.create_task(c()) # inserisce il task nel loop
+    await uasyncio.sleep_ms(0) # permette di cominciare l'altro task prima che termini il corrente
+    print('3')
+    await uasyncio.sleep_ms(10000) # attende il tempo necessario per completare gli altri task
+
+uasyncio.run(main()) # Crea un nuovo task dalla coroutine specificata e lo esegue fino al completamento.
+```
+
+Link simulazione online: https://wokwi.com/projects/369865863273101313
+
 Le funzioni asincrone sono tecnica che rende molto più intuitiva la gestione delle promesse svincolandola dall'esigenza di definire per ciascuna due callback.
 
-Nonostante il nome, Il blocco di codice async diventa per tutte le funzioni che restituiscono una future, sincrono e bloccante nel senso che, ciascuna funzione con **await davanti**, rimane bloccata e non può passare all’istruzione successiva fino a che la **sua future** non viene **risolta**. Il blocco dell'esecuzione è in realtà solamente **apparente** perchè è sostanzialmente **emulato** con una istruzione che potremmo immaginare analoga ad una ```continue``` ma, nonostante tutto, **efficace** nell'**impedire** l'esecuzione le **istruzioni seguenti** all'interno dello stesso task.
+Ciò avviene in Python tramite le cosidette **"coroutine"**. Una coroutine è una subroutine (funzione) che può essere **sospesa** e **ripresa**. Viene **sospesa** dall'espressione di **await** e ripresa una volta **risolta** la await. La ripresa dal punto di sospensione avviene mantenendo gli argomenti e le variabili locali della funzione sospesa. 
+
+La sospensione del flusso di controllo di un task avviene spontaneamente normalmente per due motivi:
+- attesa di un timer HW (funzione sleep)
+- attesa della risposta differita di un I/O
+
+Ad ogni **sospensione pendente** corrisponde l'**attesa** di un **evento** che **risolve** la Future (o la Promise) che la sblocca. Una volta risolta viene inserita nella **coda** di esecuzione il **microtask** associato a quella Future risolta positivamente. Potrebbe esserci pure un microtask alternativo associato ad una future non risolta (alla scadenza di un timeout).
+
+Nonostante il nome, Il blocco di codice async diventa per tutte le funzioni che restituiscono una future, sincrono e bloccante nel senso che, ciascuna funzione con **await davanti**, rimane bloccata e non può passare all’istruzione successiva fino a che la **sua future** non viene **risolta**. Il blocco dell'esecuzione è in realtà solamente **apparente** perchè è sostanzialmente **emulato** ma, nonostante tutto, **efficace** nell'**impedire** l'esecuzione le **istruzioni seguenti** all'interno dello stesso task.
 - **Await** va usato soltanto **dentro** un blocco di codice **async** e **davanti** a funzioni che **restituiscono una future**.
 - Possiamo usare un blocco try...catch per la gestione degli errori, esattamente come si farebbe se il codice fosse sincrono.
-- le funzioni dichiarate **asincrone** con async davanti **restituiscono** sempre una **future** e quindi, per accedervi bisogna usare la funzione then. 
-Hanno la stessa utilità di una catena di promesse, cioè await forza il completamento in serie delle operazioni asincrone quando il risultato dell'operazione successiva dipende dal risultato dell'ultima, in caso contrario qualcosa come future.all() potrebbe essere più appropriato.
+- le funzioni dichiarate **asincrone** con async davanti **restituiscono** sempre una **future** per cui await forza il completamento in serie delle operazioni asincrone quando il risultato dell'operazione successiva dipende dal risultato della precedente. 
 
-I **async/await** fornise un meccanismo di **blocco dei task** (compiti) in cima a un **sistema ad eventi**, senza l'overhead di uno stack per ogni thread. Lo **scopo** del modello è quello di implementare un **flusso sequenziale di controllo** senza utilizzare complesse macchine a stati finiti ed evitando l'overhead di un multi-threading completo, cioè quello dotato anche del **modo preemptive**.  L'asynchronous I/O scheduler fornisce la sola **modalità cooperativa** e il **rilascio anticipato** delle risorse è realizzato **senza l'utilizzo di interrupt** che generino il **cambio di contesto** dei thread. 
+Esisono delle **differenze implementative** nella realizzazione delle coroutine neii vari **linguaggi**. Il **comportamento comune** a tutti è che una **coroutine**, una volta invocata, non ritornerà subito alla funzione chiamante (sincrona) ma solo successivamente, seguendo un percorso **a tappe**, man mano che gli eventi che essa, di volta in volta, **attende** verranno, **risolti tutti**. La **differenza** risiede essenzialmente nel comportamento della **funzione chiamante**:  
+- In **Javascript**, ad esempio, una funzione **normale sincrona** che chiama una funzione asincrona (coroutine) **ritorna sempre** dopo essere stata eseguita **per intero**. Rimane la particolarità del JS di trattare il main che, pur essendo una funzione sincrona, viene considerata alla stregua di un task come un altro, anzi è proprio il **primo task** che viene inserito nella coda dei messaggi.
+- in **Python**, il meccanismo è del tutto analogo ma, in questo caso, il loop dei messaggi non è nativamente gestito dal linguaggio come in JS, ma deve essere attivato esplicitamente dal programmatore, ad esempio, con ```asyncio.run(main())```. Inoltre il main non è di base un task gestito dal loop dei messaggi ma dalla schedulatore dei thread del SO sottostante.
+  
+Il modello **async/await** fornise un meccanismo di **blocco dei task** (compiti) in cima a un **sistema ad eventi**, senza l'overhead di uno stack per ogni thread. Lo **scopo** del modello è quello di implementare un **flusso sequenziale di controllo** senza utilizzare complesse macchine a stati finiti ed evitando l'overhead di un multi-threading completo, cioè quello dotato anche del **modo preemptive**.  L'asynchronous I/O scheduler fornisce la sola **modalità cooperativa** e il **rilascio anticipato** delle risorse è realizzato in maniera cooperativa **senza l'utilizzo di interrupt** che generino il **cambio di contesto** dei thread forzato da parte di uno schedulatore del SO. 
 
 ### **Confronto con le altre tecniche**
 
 Anche i **processi** e i **thread** sono flussi di esecuzione indipendenti che procedono in parallelo su una o più CPU, esiste però una **differenza pratica** notevole tra di essi:
-- nei **processi** sia input/output, che **area dati globale** che **area dati locale** (stack) sono indipendenti e separate in zone diverse della memoria RAM.
-- nei **thread**  input/output e **area dati globale** sono **in comune** nella stessa posizione in RAM mentre soltanto le **aree dati locali** (stack) sono indipendenti e separate in zone diverse della memoria RAM.
-- nei **modello ad eventi** sia input/output che l'**area dati globale** ma anche le **aree dati locali** (stack) sono **in comune** nella stessa posizione in RAM. Pertanto le **variabili locali** non sono isolate in thread diversi (presenza di possibili ambiguità).
+- nei **processi** sia input/output, che **area dati globale** che **area dati locale** (stack) sono indipendenti e utilizzate nello **stesso tempo** ma in zone diverse della memoria RAM. Il **parallelismo** è **reale** sia per gli **eventi** che per i **task**.
+- nei **thread**  input/output e **area dati globale** sono **in comune** nella **stessa posizione** in RAM mentre soltanto le **aree dati locali** (stack) sono indipendenti e utilizzate nello **stesso tempo** ma in **zone diverse** della memoria RAM secondo una logica a divisione di spazio (SDM). Anche in questo caso il **parallelismo** è **reale** sia per gli **eventi** che per i **task**.
+- nei **modello ad eventi** sia input/output che l'**area dati globale** ma anche se le **aree dati locali** (stack) sono **in comune**, queste occupano tutta la RAM ma in **istanti diversi** secondo una logica a divisione di tempo (TDM). Pertanto le **variabili locali** sono isolate perchè utilizzate in momenti diversi. In questo caso il **parallelismo** per gli **eventi** è reale mentre per i **task** la gestione rimane **sequenziale** e realizzata mediante una **coda di messaggi**.
 
 ### **Utilizzo in pratica**
 
@@ -164,7 +223,7 @@ E' importante notare che anche la funzione **main** deve essere resa asincrona c
 
 Il task principale che contine il main può essere mandato in esecuzione con la funzione ```asyncio.run(main()))``` .
 
-In definitiva la **dichiarazione e definizione** di **descrittore e funzione** del protothread possono assumere la forma:
+In definitiva la **dichiarazione e definizione** di **descrittore e funzione** del pattern async/await possono assumere la forma:
 
 ```python
 import uasyncio as asyncio
@@ -185,7 +244,7 @@ asyncio.run(main())
 
 **Una tipica app firmware**
 
-La maggior parte delle applicazioni firmware funziona ininterottamente per sempre. Ciò richiede che la coroutine del task sia passata a asyncio.run() e che dopo il mmain attendae una await su una funzione non terminante (che giri per sempre).
+La maggior parte delle applicazioni firmware funziona ininterottamente per sempre. Ciò richiede che la coroutine del task sia passata a asyncio.run() e che dopo il main attende una await su una funzione non terminante (che giri per sempre).
 
 Per facilitare il debug e per la compatibilità con CPython, nell'esempio seguente viene suggerito del codice "boilerplate".
 
@@ -345,5 +404,14 @@ Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantag
 - https://docs.micropython.org/en/v1.15/library/uasyncio.html
 - https://github.com/peterhinch/micropython-async/blob/master/v3/docs/TUTORIAL.md
 - https://medium.com/martinomburajr/rxjava2-schedulers-2-breaking-down-the-i-o-scheduler-7e83160df2ed
+- https://www.sobyte.net/post/2022-08/py-coroutine/
+- https://medium.com/@nooraldinahmed/getting-started-with-python-asyncio-part-1-9eee7944f9f7
+- https://hackersandslackers.com/python-concurrency-asyncio/
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Event_loop
+- https://superfastpython.com/python-asyncio/
+- https://stackoverflow.com/questions/68139555/difference-between-async-await-in-python-vs-javascript
+- http://dmitrykandalov.com/async-await
+- https://stackoverflow.com/questions/48993459/python-calling-coroutine-from-normal-function
+
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)   >[Versione in C++](async_await.md)
