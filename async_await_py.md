@@ -242,6 +242,7 @@ async def main():
 asyncio.run(main())
 ```
 **Generazione di un event loop**
+
 In genere, viene realizzata completamente con una singola istruzione:
 
 ```python
