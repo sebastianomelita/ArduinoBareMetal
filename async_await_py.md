@@ -255,9 +255,9 @@ try:
     loop.run_until_complete(main())
 finally:
     loop.close()
+```
 
 **Una tipica app firmware**
-```
 
 La maggior parte delle applicazioni firmware funziona ininterottamente per sempre. Ciò richiede che la coroutine del task sia passata a asyncio.run() e che dopo il main attende una await su una funzione non terminante (che giri per sempre).
 
