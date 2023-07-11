@@ -31,7 +31,7 @@ Gli **svantaggi** sono ascrivibili a:
 - una **gestione meno accurata dei tempi**, la cui schedulazione, come vedremo più avanti (delay zero apparente), risente della pesantezza dei task precedenti a quello correntemente eseguito
 - una **efficacia ridotta** a trattare quelle **risorse** che si interfaccciano esclusivamente in maniera **sincrona e bloccante** per le quali rimane  sempre possibile la gestione asincrona spostandone l'esecuzione su un altro thread, ma ciò va a scapito della semplicità che si cercava con questa soluzione, in più serve di nuovo un SO che gestisca la schedulazione dei thread.
 
-<img src="img/eventloop.png.jpg" alt="alt text" width="700">
+<img src="img/eventloop.png" alt="alt text" width="700">
 
 La libreria async.io ha un modello di runtime basato su un ciclo di eventi (event loop), che è responsabile:
 - dell'esecuzione del codice
