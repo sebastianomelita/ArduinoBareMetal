@@ -22,11 +22,15 @@ Il modello di gestione della CPU in ambienti server come node JS e client come l
 
 I **casi d'uso** che potrebbero beneficiare di un modello a thread singolo ad eventi potrebbero essere:
 - **Concorrenza in un ambiente a thread singolo**. Alcuni linguaggi/ambienti di programmazione hanno un solo thread. Un altro esempio è un microcontrollore con risorse limitate che esegue un sistema operativo senza thread. In tutti questi casi, se si ha bisogno di **concorrenza**, le coroutine sono l'unica scelta.
-
 - **Per semplificare il codice**. Può essere fatto usando la parola chiave **yield**, usando **async/await** per **"appiattire"**, cioè ridurre ad un **unico livello di annidamento** il codice asincrono evitando **l'inferno delle callback** o scrivendo codice asincrono in **stile imperativo** cioè lineare e **sequenziale**, molto più naturale da **scrivere** e **mantenere** rispetto ad un groviglio disordinato di callback che non seguono un filo temporale preciso.
-
 - Maggiore **efficienza** e maggiore **scalabilità** delle risorse del sistema operativo e dell'hardware. In presenza di applicazioni che consumano molti thread, si può trarre vantaggio dalle coroutine risparmiando sull'allocazione della memoria, il tempo necessario per eseguire il cambio di contesto e, in definitiva, trarre vantaggio dall'utilizzo più efficiente dell'hardware che, a **parità di risorse**, adesso può **eseguire più task**. Un esempio è l'utilizzo dell'IO non bloccante con molti utenti simultanei. Poiché in generale i thread sono più costosi dei socket, i thread disponibili del sistema operativo si possono esaurire più rapidamente dei socket. Per evitare questo problema è possibile utilizzare l'IO non bloccante con le coroutine.
+- **riduzione dei rischi** connessi all'**accesso** di **risorse condivise** tra vari task che con **eventi** e **coda di messaggi** sono accedute in maniera rigorosamente **sequenziale** e con la **atomicità di una transazione** realizzata a livello di **microtask** piuttosto che di una **singola istruzione macchina**.
 
+Gli **svantaggi** sono ascrivibili a:
+- una **certa complessità** rispetto alla getione del multitasking con i thread che, nonostante tutto, rimane al programmatore più trasparente e semplice.
+- una **gestione meno accurata dei tempi**, la cui schedulazione, come vedremo più avanti, risente della pesantezza dei task precedenti a quello correntemente eseguito
+- una **efficacia ridotta** a trattare quelle **risorse** che si interfaccciano esclusivamente in maniera **sincrona e bloccante** per le quali è possibile la gestione asincrona spostandone l'esecuzione su un altro thread, ma ciò va a scapito della semplicità che si cercava con queste soluzioni, in più serve di nuovo un SO che gestisca la schedulazione dei thread.
+- 
 <img src="img/async_eventloop.jpg" alt="alt text" width="700">
 
 La libreria async.io ha un modello di runtime basato su un ciclo di eventi (event loop), che è responsabile:
