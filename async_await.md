@@ -466,5 +466,6 @@ Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantag
 - https://stackoverflow.com/questions/68139555/difference-between-async-await-in-python-vs-javascript
 - http://dmitrykandalov.com/async-await
 - https://stackoverflow.com/questions/48993459/python-calling-coroutine-from-normal-function
+- https://tasktools.readthedocs.io/en/latest/content/bigfaq.html
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](async_await_py.md)
