@@ -52,6 +52,8 @@ La **gestione dell'I/O** viene in genere eseguita tramite **eventi** e **callbac
 
 Il primo messaggio in coda viene di volta in volta estratto e processato per essere **eseguito** inserendo la sua **callback**, e tutte le funzioni ad essa annidate, in altrettanti **frame** sullo stack. La callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
 
+Se le operazioni da svolgere nei task sono CPU intensive è buona norma **delegarle** a fornitori di servizi **esterni** al thread corrente, questi possono essere servizi in rete oppure servizi in esecuzione su altri thread. Una volta completata l'operazione delegata (può oassare un certo tempo), viene risvegliata una callback sul thread del oop degli eventi con cui si notificano i risultati.
+
 ### **Allocazione della RAM**
 <img src="img/stackasync.png" alt="alt text" width="400">
 
@@ -470,5 +472,6 @@ Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantag
 - http://dmitrykandalov.com/async-await
 - https://stackoverflow.com/questions/48993459/python-calling-coroutine-from-normal-function
 - https://tasktools.readthedocs.io/en/latest/content/bigfaq.html
+- https://devopedia.org/asynchronous-programming-in-python
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](async_await_py.md)
