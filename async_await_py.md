@@ -10,6 +10,9 @@ Gestione con I/O sincrono bloccante in figura a sinistra. Gestione con I/O asinc
 <img src="asyn-noasync.png" alt="alt text" width="2000">
 
 ### **Eventi vs thread**
+
+<img src="img/multitasking.png" alt="alt text" width="800">
+
 Il modello di gestione della CPU nei SO normalmente è di tipo **multithreading  preemptive**, cioè con interruzione anticipata del task in esecuzione con riassegnazione della risorsa CPU ad un altro task, per almeno due motivi:
 - Evitare lo spreco della risorsa CPU in attesa di un input bloccante che tarda la sua risposta di un tempo non prevedibile
 - per realizzare un multitasking equo (fair) tramite l’esecuzione concorrente di più task in tempi uguali
@@ -32,7 +35,7 @@ Gli **svantaggi** sono ascrivibili a:
 - una **gestione meno accurata dei tempi**, la cui schedulazione, come vedremo più avanti (delay zero apparente), risente della pesantezza dei task precedenti a quello correntemente eseguito
 - una **efficacia ridotta** a trattare quelle **risorse** che si interfaccciano esclusivamente in maniera **sincrona e bloccante** per le quali rimane  sempre possibile la gestione asincrona spostandone l'esecuzione su un altro thread, ma ciò va a scapito della semplicità che si cercava con questa soluzione, in più serve di nuovo un SO che gestisca la schedulazione dei thread.
 
-<img src="img/async_eventloop.jpg" alt="alt text" width="700">
+<img src="img/eventloop.png" alt="alt text" width="700">
 
 La libreria async.io ha un modello di runtime basato su un ciclo di eventi (event loop), che è responsabile:
 - dell'esecuzione del codice
@@ -49,6 +52,8 @@ La **gestione dell'I/O** viene in genere eseguita tramite **eventi** e **callbac
 - Gli eventi che occorrono (accadono) **contemporaneamente** e che sono pronti per essere processati dalla CPU vengono ospitati in una **coda** di messaggi. In questa attesa il sistema può ancora **elaborare** altri eventi immagazzinandoli in coda rimanendo così **responsivo**. 
 
 Il primo messaggio in coda viene di volta in volta estratto e processato per essere **eseguito** inserendo la sua **callback**, e tutte le funzioni ad essa annidate, in altrettanti **frame** sullo stack. La callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
+
+Se le operazioni da svolgere nei task sono CPU intensive è buona norma **delegarle** a fornitori di servizi **esterni** al thread corrente, questi possono essere servizi in rete oppure servizi in esecuzione su altri thread. Una volta completata l'operazione delegata (può trascorrere un certo tempo), viene risvegliata una callback sul thread del oop degli eventi con cui si notificano i risultati.
 
 ### **Allocazione della RAM**
 <img src="img/stackasync.png" alt="alt text" width="400">
@@ -256,7 +261,6 @@ try:
 finally:
     loop.close()
 ```
-
 **Task concorrenti correlati**
 
 È possibile attendere il completamento di una serie di più attività in esecuzione in modo asincrono, accedendo al valore restituito di ognuna. Se qualsiasi waitable nella lista è una coroutine, viene automaticamente pianificata come task. Se tutti gli elementi in attesa vengono completati correttamente, il risultato è un elenco aggregato di valori restituiti. L'ordine dei valori dei risultati corrisponde all'ordine degli elementi attendibili nella lista fornoita come parametro.
@@ -297,7 +301,6 @@ asyncio.run(main())
 #     Task C: factorial(4) = 24
 #     [2, 6, 24]
 ```
-
 
 **Una tipica app firmware**
 
@@ -460,8 +463,6 @@ Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantag
 ### **Sitografia:**
 - https://docs.micropython.org/en/v1.15/library/uasyncio.html
 - https://github.com/peterhinch/micropython-async/blob/master/v3/docs/TUTORIAL.md
-- https://realpython.com/async-io-python/#chaining-coroutines
-- https://docs.python.org/3/library/asyncio-task.html
 - https://medium.com/martinomburajr/rxjava2-schedulers-2-breaking-down-the-i-o-scheduler-7e83160df2ed
 - https://www.sobyte.net/post/2022-08/py-coroutine/
 - https://medium.com/@nooraldinahmed/getting-started-with-python-asyncio-part-1-9eee7944f9f7
@@ -471,6 +472,7 @@ Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantag
 - https://stackoverflow.com/questions/68139555/difference-between-async-await-in-python-vs-javascript
 - http://dmitrykandalov.com/async-await
 - https://stackoverflow.com/questions/48993459/python-calling-coroutine-from-normal-function
-
+- https://tasktools.readthedocs.io/en/latest/content/bigfaq.html
+- https://devopedia.org/asynchronous-programming-in-python
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)   >[Versione in C++](async_await.md)
