@@ -4,7 +4,7 @@
 
 ### **Base teorica**
 
-Gestione con I/O sincrono bloccante in figura a sinistra. Gestione con I/O asincrono e non bloccante nella stessa figura ma a destra.
+Gestione con **I/O sincrono bloccante** in figura a sinistra. Gestione con **I/O asincrono e non bloccante** nella stessa figura ma a destra.
 
 <img src="asyn-noasync.png" alt="alt text" width="2000">
 
