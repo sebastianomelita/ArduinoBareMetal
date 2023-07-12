@@ -27,7 +27,7 @@ Un callback è una funzione che:
 - Poiché la chiamata di queste funzioni spesso è legata alla notifica di un **evento esterno** al sistema (I/O dell’utente o l’arrivo di un messaggio da internet) di cui non si è in grado di prevedere **in anticipo** il tempo in cui accadrà, esse vengono dette **asincrone** (analogia con gli interrupt).
 - Il **parametro** della chiamata è un messaggio che contiene le **proprietà** correnti dell’evento
 
-Le **callback** sono il modo principale in cui vengono implementate in un modello ad eventi le **azioni** di risposta ad un evento, spesso mediante funzioni definite una **sola volta** nel codice, tipicamente in **forma anonima**.
+Le **callback** sono il modo principale in cui vengono implementate in un **modello ad eventi** le **azioni** di risposta ad un evento, spesso mediante funzioni definite una **sola volta** nel codice, tipicamente in **forma anonima**.
 
 Le callback possono essere:
 - **Disgiunte** (separate) se relative ad eventi slegati tra loro che accadono in maniera indipendente
