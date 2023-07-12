@@ -144,7 +144,7 @@ uasyncio.run(main()) # Crea un nuovo task dalla coroutine specificata e lo esegu
 
 Link simulazione online: https://wokwi.com/projects/369865863273101313
 
-Le funzioni asincrone sono tecnica che rende molto più intuitiva la gestione delle promesse svincolandola dall'esigenza di definire per ciascuna due callback.
+Le funzioni asincrone sono una tecnica che rende molto più intuitiva la gestione delle promesse svincolandola dall'esigenza di definire per ciascuna due callback.
 
 Ciò avviene in Python tramite le cosidette **"coroutine"**. Una coroutine è una subroutine (funzione) che può essere **sospesa** e **ripresa**. Viene **sospesa** dall'espressione di **await** e ripresa una volta **risolta** la await. La ripresa dal punto di sospensione avviene mantenendo gli argomenti e le variabili locali della funzione sospesa. 
 
