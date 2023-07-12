@@ -22,6 +22,26 @@ Il modello di gestione della CPU in ambienti server come node JS e client come l
 - Un singolo task in esecuzione alla volta (esecuzione **seriale** dei **task**)
 - Più input in elaborazione contemporaneamente (esecuzione **parallela** degli **input**)
 
+### **Callback**
+Un callback è una funzione che:
+- viene passata ad un’altra funzione (via riferimento) con l'aspettativa che venga chiamata al momento opportuno
+- Poiché la chiamata di queste funzioni spesso è legata alla notifica di un evento esterno al sistema (I/O dell’utente o l’arrivo di un messaggio da internet) di cui non si è in grado di prevedere in anticipo il tempo in cui accadrà, esse vengono dette asincrone (analogia con gli interrupt).
+- Il parametro della chiamata è un messaggio che contiene le proprietà correnti dell’evento
+
+Le callback sono il modo principale in cui vengono implementate in un modello ad eventi le azioni di risposta ad un evento, spesso mediante funzioni definite una sola volta nel codice in forma anonima.
+
+Le callback possono essere:
+- **Disgiunte** (separate) se relative ad eventi slegati tra loro che accadono in maniera indipendente
+- **Annidate** una dentro l’altra se ogni callback è associata ad un evento attivato proprio dentro un’altra callback mediante una richiesta di I/O. Sono particolarmente difficili da approcciare in maniera chiara.
+
+### **Future**
+
+Una **future** è un oggetto restituito da una funzione **asincrona**, che rappresenta lo stato corrente dell'operazione di recupero di una informazione (da I/O o da un timer HW). 
+- Nel momento in cui la future viene restituita al chiamante, l'operazione spesso non è terminata (pending). L'oggetto future fornisce **due funzioni** sotto forma di callbacks per gestire l'eventuale **successo (fulfilled)** o **fallimento (rejected)** dell'operazione.
+- I metodi verranno richiamati in un **tempo successivo** (non noto in anticipo) allorquando la future si dice che verrà **risolta**.
+- Una future è un oggetto Python che collega il momento della produzione di codice asincrono con quello del suo consumo. In pratica, sono oggetti usati per collegare codice a basso livello **ad eventi** (basato sulle callback) con codice ad alto livello **sequenziale** (basato su async/await).
+- Le future sono in genere **restituite** da funzioni di **I/O** predisposte per questo.
+
 ### **Modello ad eventi**
 
 I **casi d'uso** che potrebbero beneficiare di un modello a thread singolo ad eventi potrebbero essere:
@@ -97,26 +117,6 @@ Uno svantaggio di questo modello è che se un messaggio richiede troppo tempo pe
 - **Delay zero apparente:** l'argomento della funzione di ritardo ```asyncio.sleep(t_sec)```, il valore del tempo timeout rappresenta il ritardo (minimo) dopo il quale il messaggio verrà inserito nella coda. 
 Se non ci sono altri messaggi nella coda e lo stack è vuoto, il messaggio viene elaborato subito dopo il ritardo. 
 Tuttavia, se sono presenti altri messaggi, il messaggio ```asyncio.sleep()``` dovrà **attendere** la loro elaborazione. Per questo motivo, l'argomento indica un **tempo minimo**, non un **tempo garantito**. Si potrebbe attendere sia perchè in coda ci stanno task pesanti oppure perchè ci stanno molti task piccoli ma tutti con **delay zero** e quindi non interlacciabili con lo sleep del task in esame. Questo problema nasce a causa del fatto che la gestione degli eventi è si parallela ma quella dei tasck in coda è pur sempre sequenziale. Di questo fatto si deve tenere nella realizzazione di un eventuale del **polling delle periferiche**.
-
-### **Callback**
-Un callback è una funzione che:
-- viene passata ad un’altra funzione (via riferimento) con l'aspettativa che venga chiamata al momento opportuno
-- Poiché la chiamata di queste funzioni spesso è legata alla notifica di un evento esterno al sistema (I/O dell’utente o l’arrivo di un messaggio da internet) di cui non si è in grado di prevedere in anticipo il tempo in cui accadrà, esse vengono dette asincrone (analogia con gli interrupt).
-- Il parametro della chiamata è un messaggio che contiene le proprietà correnti dell’evento
-
-Le callback sono il modo principale in cui vengono implementate in un modello ad eventi le azioni di risposta ad un evento, spesso mediante funzioni definite una sola volta nel codice in forma anonima.
-
-Le callback possono essere:
-- **Disgiunte** (separate) se relative ad eventi slegati tra loro che accadono in maniera indipendente
-- **Annidate** una dentro l’altra se ogni callback è associata ad un evento attivato proprio dentro un’altra callback mediante una richiesta di I/O. Sono particolarmente difficili da approcciare in maniera chiara.
-
-### **Future**
-
-Una **future** è un oggetto restituito da una funzione **asincrona**, che rappresenta lo stato corrente dell'operazione di recupero di una informazione (da I/O o da un timer HW). 
-- Nel momento in cui la future viene restituita al chiamante, l'operazione spesso non è terminata (pending). L'oggetto future fornisce **due funzioni** sotto forma di callbacks per gestire l'eventuale **successo (fulfilled)** o **fallimento (rejected)** dell'operazione.
-- I metodi verranno richiamati in un **tempo successivo** (non noto in anticipo) allorquando la future si dice che verrà **risolta**.
-- Una future è un oggetto Python che collega il momento della produzione di codice asincrono con quello del suo consumo. In pratica, sono oggetti usati per collegare codice a basso livello **ad eventi** (basato sulle callback) con codice ad alto livello **sequenziale** (basato su async/await).
-- Le future sono in genere **restituite** da funzioni di **I/O** predisposte per questo.
 
 ### **Async/await**
 
