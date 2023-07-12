@@ -222,7 +222,7 @@ ma piuttosto il seguente:
 
 ```
 
-Il **flusso di esecuzione** di un task è **definito** all'interno di una **funzione asincrona** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il task e allo schedulatore per poterlo richiamare. Allo scopo si usa la funzione ```asyncio.create_task(nome_task)``` che apparentemente blocca il task in cui è inserita ma non impedisce la schedulazione parallela degli altri task.
+Il **flusso di esecuzione** di un task è **definito** all'interno di una **funzione asincrona** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il task e allo schedulatore per poterlo richiamare. Allo scopo si usa la funzione ```asyncio.create_task(nome_task)```.
 
 E' importante notare che anche la funzione **main** deve essere resa asincrona con la parola chiave async se si desidera eseguirla in parallelo con gli altri task seguendo una modalità cooperativa. In sostanza, anche la funzione **main deve** diventare un **task asincrono**. Se così non fosse, una funzione di ritardo delay() oppure una qualunque funzione di I/O bloccante monopolizzarebbero l'unico thread a disposizione impedendo la schedulazione degli altri task.
 
