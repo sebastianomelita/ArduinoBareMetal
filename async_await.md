@@ -8,6 +8,19 @@ Gestione con **I/O sincrono bloccante** in figura a sinistra. Gestione con **I/O
 
 <img src="asyn-noasync.png" alt="alt text" width="2000">
 
+### **Eventi vs thread**
+
+<img src="img/multitasking.png" alt="alt text" width="800">
+
+Il modello di gestione della CPU nei SO normalmente è di tipo **multithreading  preemptive**, cioè con interruzione anticipata del task in esecuzione con riassegnazione della risorsa CPU ad un altro task, per almeno due motivi:
+- Evitare lo spreco della risorsa CPU in attesa di un input bloccante che tarda la sua risposta di un tempo non prevedibile
+- per realizzare un multitasking equo (fair) tramite l’esecuzione concorrente di più task in tempi uguali
+
+Il modello di gestione della CPU in ambienti server come node JS e client come l’ambiente javascript di un browser web, invece, è normalmente a **singolo thread** dove il **multitasking** è generato non utilizzando il multithreading ma un modello di esecuzione **ad eventi (event driven runtime)** composto da:
+- Un **singolo thread**
+- Un singolo task in esecuzione alla volta (esecuzione **seriale** dei **task**)
+- Più input in elaborazione contemporaneamente (esecuzione **parallela** degli **input**)
+
 ### **Callback**
 Un callback è una funzione che:
 - viene passata ad un’altra funzione (via riferimento) con l'aspettativa che venga chiamata al momento opportuno
@@ -27,19 +40,6 @@ Una **future** è un oggetto restituito da una funzione **asincrona**, che rappr
 - I metodi verranno richiamati in un **tempo successivo** (non noto in anticipo) allorquando la future si dice che verrà **risolta**.
 - Una future è un oggetto Python che collega il momento della produzione di codice asincrono con quello del suo consumo. In pratica, sono oggetti usati per collegare codice a basso livello **ad eventi** (basato sulle callback) con codice ad alto livello **sequenziale** (basato su async/await).
 - Le future sono in genere **restituite** da funzioni di **I/O** predisposte per questo.
-
-### **Eventi vs thread**
-
-<img src="img/multitasking.png" alt="alt text" width="800">
-
-Il modello di gestione della CPU nei SO normalmente è di tipo **multithreading  preemptive**, cioè con interruzione anticipata del task in esecuzione con riassegnazione della risorsa CPU ad un altro task, per almeno due motivi:
-- Evitare lo spreco della risorsa CPU in attesa di un input bloccante che tarda la sua risposta di un tempo non prevedibile
-- per realizzare un multitasking equo (fair) tramite l’esecuzione concorrente di più task in tempi uguali
-
-Il modello di gestione della CPU in ambienti server come node JS e client come l’ambiente javascript di un browser web, invece, è normalmente a **singolo thread** dove il **multitasking** è generato non utilizzando il multithreading ma un modello di esecuzione **ad eventi (event driven runtime)** composto da:
-- Un **singolo thread**
-- Un singolo task in esecuzione alla volta (esecuzione **seriale** dei **task**)
-- Più input in elaborazione contemporaneamente (esecuzione **parallela** degli **input**)
 
 ### **Modello ad eventi**
 
