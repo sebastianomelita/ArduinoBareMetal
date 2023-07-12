@@ -99,7 +99,7 @@ Ogni **messaggio** viene elaborato **completamente** prima che venga elaborato q
 
 Questo comportamento induce alcune proprietà desiderabili sui programmi, incluso il fatto che, ogni volta che una funzione viene eseguita, **non** può essere **terminata in anticipo** e verrà **eseguita interamente** prima dell'esecuzione di qualsiasi altro codice (che potrebbe alterare i dati manipolati dalla funzione). Ciò differisce da C, ad esempio, dove se una funzione viene eseguita in un thread, può essere interrotta in qualsiasi momento dal sistema di runtime (un timer HW) per eseguire altro codice in un altro thread.
 
-Uno **svantaggio** di questo modello è che se un messaggio richiede troppo tempo per essere completato, l'applicazione non è in grado di elaborare le **interazioni dell'utente** come il clic di un pulsante.  Una buona pratica da seguire è **rendere breve** l'elaborazione dei messaggi e, se possibile, **scomporre** un messaggio in più messaggi. Incaso contrario si può utilizzare un meccanismo di **delega asincrona** delle operazioni pesanti a **servizi in rete** o **worker** su altri thread.
+Uno **svantaggio** di questo modello è che se un messaggio richiede troppo tempo per essere completato, l'applicazione non è in grado di elaborare le **interazioni dell'utente** come il clic di un pulsante.  Una buona pratica da seguire è **rendere breve** l'elaborazione dei messaggi e, se possibile, **scomporre** un messaggio in più messaggi. Incaso contrario si può utilizzare un meccanismo di **delega asincrona** delle operazioni pesanti a **servizi in rete** o a **worker** su altri thread.
 
 ### **Aggiunta di un messaggio in coda**
 
