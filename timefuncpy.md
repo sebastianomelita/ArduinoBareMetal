@@ -72,14 +72,19 @@ resta in attesa di un **tempo minimo** ```t``` al termine del quale viene valuta
 
 Con il blocco in **attesa di un ingresso** l'esecuzione resta bloccata indefinitivamente su un certo ingresso fino a quando un certo evento non lo **modfica** (in questo caso il valore LOW), facendo ripartire il programma dall'istruzione successiva.
 
-Il blocco in **attesa di una variabile** l'esecuzione resta bloccata indefinitivamente su quella variabile fino a quando un certo evento su un altro task (thread o ISR) non la **modifica** facendo ripartire il programma dall'istruzione successiva. Si noti il passaggio per **riferimento** del parametro condizione.
+Il blocco in **attesa di una variabile** l'esecuzione resta bloccata indefinitivamente su quella variabile fino a quando un certo evento su un altro task (thread o ISR) non la **modifica** facendo ripartire il programma dall'istruzione successiva. Si noti il passaggio per **riferimento** del parametro condizione ottenuto trasferendo la variabile locale ```c``` nel **global scope**.
 
 ```python
 // attesa evento con tempo minimo di attesa
 void waitUntil(c, t)
+global c
     while not c:
 	 time.sleep(t)
 ```
+Sitografia:
+- https://medium.com/swlh/a-deep-dive-into-variables-in-python-8f55f69c3653
+- https://pythonhow.com/how/pass-a-variable-by-reference/
+- https://www.pythontutorial.net/advanced-python/python-references/
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)     >[Versione in C++](timefunc.md)
 
