@@ -222,13 +222,15 @@ ma piuttosto il seguente:
 
 ```
 
-Il **flusso di esecuzione** di un task è **definito** all'interno di una **funzione asincrona** e può essere avviato passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il task e allo schedulatore per poterlo richiamare. Allo scopo si usa la funzione ```asyncio.create_task(nome_task)```.
+Il **flusso di esecuzione** di un task è **definito** all'interno di una **funzione asincrona** e può essere **avviato** passando allo schedulatore il riferimento a questa funzione sotto la forma di parametro. In sostanza la funzione **serve** al programmatore per definire il task e allo schedulatore per poterlo **richiamare**. Il task quindi si **avvia** e viene **registrato** presso lo schedulatore tramite la funzione ```asyncio.create_task(nome_task)```.
 
 E' importante notare che anche la funzione **main** deve essere resa asincrona con la parola chiave async se si desidera eseguirla in parallelo con gli altri task seguendo una modalità cooperativa. In sostanza, anche la funzione **main deve** diventare un **task asincrono**. Se così non fosse, una funzione di ritardo delay() oppure una qualunque funzione di I/O bloccante monopolizzarebbero l'unico thread a disposizione impedendo la schedulazione degli altri task.
 
-Il task principale che contine il main può essere mandato in esecuzione con la funzione ```asyncio.run(main()))``` .
+Il **task principale** che contine il **main** può essere mandato in esecuzione con la funzione ```asyncio.run(main()))``` .
 
 In definitiva la **dichiarazione e definizione** di **descrittore e funzione** del pattern async/await possono assumere la forma:
+
+Nell'esempio seguente, nel main vengono avviati tre task in parallello tramite la funzione ```asyncio.create_task(nome_task)```. Il **tempo di vita** dei task è legato a quello della loro **funzione chiamante**, cioè il main. Se questo **termina** anche i **task** creati al suo interno **terminano**.
 
 ```python
 import uasyncio as asyncio
@@ -242,10 +244,12 @@ async def bar(x):
 async def main():
     for x in range(3):
         asyncio.create_task(bar(x))
-    await asyncio.sleep(10)
+    await asyncio.sleep(10) # il main e i task correllati cesseranno dopo 10 sec
 
 asyncio.run(main())
 ```
+Link simulazione online: https://wokwi.com/projects/369675288427672577
+
 **Generazione di un event loop**
 
 In genere, viene realizzata completamente con una singola istruzione:
@@ -340,26 +344,7 @@ finally:
 
 **Blink sequenziali interagenti**
 
-Di seguito è riportato un esempio di **blink sequenziale** in esecuzione su **due thread** separati su scheda **Arduino Uno**, con **IDE Arduino** e  con la libreria **protothread.h**  (https://gitlab.com/airbornemint/arduino-protothreads). I thread sono senza stack e **non preemptive** (solo collaborativi). La **programmazione sequenziale** del blink del led è **emulata** tramite una funzione delay() **non bloccante** ``` PT_SLEEP(pt, 200) ``` fornita dalla libreria ``` protothreads.h ```.
-
-
-```python
-import uasyncio as asyncio
-async def bar(x):
-    count = 0
-    while True:
-        count += 1
-        print('Instance: {} count: {}'.format(x, count))
-        await asyncio.sleep(1)  # Pause 1s
-
-async def main():
-    for x in range(3):
-        asyncio.create_task(bar(x))
-    await asyncio.sleep(10)
-
-asyncio.run(main())
-```
-Link simulazione online: https://wokwi.com/projects/369675288427672577
+Di seguito è riportato un esempio di **blink sequenziale** in esecuzione su **due task** separati su scheda **ESP32**, con **IDE Wokwi** e  con la libreria **uasync.io**  (https://gitlab.com/airbornemint/arduino-protothreads). La **programmazione sequenziale** del blink del led è **emulata** tramite una funzione delay() **non bloccante** ```asyncio.sleep()``` fornita dalla libreria ```uasync.io ```.
 
 ```python
 import uasyncio
@@ -385,8 +370,9 @@ led2 = Pin(18,Pin.OUT)
 
 uasyncio.run(main(led1, led2))
 ```
-
 Link simulazione online: https://wokwi.com/projects/369678530188573697
+
+Stesso codice di prima ma con un **loop infinito** nella funzione main che garantisce la **non terminazione** del main. Inoltre nel loop principale si potrebbero eseguire altri task in parallelo al blink come la gestione di un input (ad es.un pulsante).
 
 ```python
 import uasyncio
