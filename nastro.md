@@ -226,8 +226,8 @@ void loop() {
 		volo.start(); 						// se c'è un pezzo in transito arriverà prima dello scadere
 		Serial.println("Timer di volo attivato");
 	} else if(volo.get() > flyTime){
-        volo.stop();
-        volo.reset();
+        	volo.stop();
+        	volo.reset();
 		engineon = false; 
 		digitalWrite(engineLed, LOW);
 		Serial.println("Timer di volo scaduto");	
