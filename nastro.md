@@ -123,6 +123,119 @@ void loop() {
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/8UKvLNjeLEQ?editbtn=1
 
+Variante con timer realizzato non ad eventi ma in logica sequenziale più intuitiva:
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+byte startSensorHigh = 4;
+byte startSensorLow = 3;
+byte stopSensor = 2;
+byte engineLed = 10;
+byte lowStartLed = 9;
+byte highStartLed = 8;
+byte stopLed = 11;
+unsigned flyTime = 4000; //tempo di volo di un pezzo sul nastro
+bool engineon;  // variabile globale che memorizza lo stato del motore
+//inizio variabili timer
+unsigned long startTime;
+unsigned long timelapse;
+byte timerState=0;
+//fine variabili timer
+
+struct DiffTimer {
+	unsigned long elapsed, last;
+	bool timerState=false;
+	void reset(){
+		elapsed = 0;
+		last = millis();
+	}
+	void stop(){
+		timerState = false;
+	}
+	void start(){
+		timerState = true;
+		last = millis();
+	}
+	unsigned long get(){
+		if(timerState){
+			unsigned long curr = millis();
+			elapsed += curr - last;
+			last = curr;
+		}
+		return elapsed;
+	}
+	void set(unsigned long e){
+		reset();
+		elapsed = e;
+	}
+} volo;
+
+// attesa evento con tempo minimo di attesa
+void waitUntilInputLow(int btn, unsigned t)
+{
+    while(!digitalRead(btn)==LOW){
+	    delay(t);
+    }
+}
+  
+void setup() {
+  Serial.begin(115200);
+  pinMode(engineLed, OUTPUT);
+  pinMode(lowStartLed, OUTPUT);
+  pinMode(highStartLed, OUTPUT);
+  pinMode(stopLed, OUTPUT);
+  pinMode(startSensorHigh, INPUT);
+  pinMode(startSensorLow, INPUT);
+  pinMode(stopSensor, INPUT); 
+  engineon= false;
+  volo.stop();
+}
+
+// loop principale
+void loop() {
+	if(digitalRead(startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
+		engineon = true; 	
+		digitalWrite(engineLed, HIGH);
+		digitalWrite(lowStartLed, HIGH);
+		volo.stop();									// c'è almeno un pezzo in transito
+		Serial.println("Pezzo basso in ingresso");
+		Serial.println("Timer di volo disattivato");
+		waitUntilInputLow(startSensorLow,50);			// attendi finchè non c'è fronte di discesa
+		Serial.println("Pezzo basso transitato in ingresso");
+		digitalWrite(lowStartLed, LOW);
+	}if(digitalRead(startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
+		engineon = true; 	
+		digitalWrite(engineLed, HIGH);
+		digitalWrite(highStartLed, HIGH);
+		volo.stop();									// c'è almeno un pezzo in transito
+		Serial.println("Pezzo alto in ingresso");
+		Serial.println("Timer di volo disattivato");
+		waitUntilInputLow(startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
+		Serial.println("Pezzo alto transitato in ingresso");
+		digitalWrite(highStartLed, LOW);
+	}else if(digitalRead(stopSensor)==HIGH) {
+		engineon = false; 		
+		digitalWrite(engineLed, LOW);
+		digitalWrite(stopLed, HIGH);
+		Serial.println("Pezzo in uscita");
+		waitUntilInputLow(stopSensor,50);
+		Serial.println("Pezzo prelevato dall'uscita");
+		engineon = true; 
+		digitalWrite(stopLed, LOW);
+		digitalWrite(engineLed, HIGH);
+		volo.start(); 						// se c'è un pezzo in transito arriverà prima dello scadere
+		Serial.println("Timer di volo attivato");
+	} else if(volo.get() > flyTime){
+        volo.stop();
+        volo.reset();
+		engineon = false; 
+		digitalWrite(engineLed, LOW);
+		Serial.println("Timer di volo scaduto");	
+	}
+}
+```
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/bKP671nY2MU-copy-of-nastrouno/editel?tenant=circuits
+
 ###  **Gestione di due nastri**
 
 Programma per la gestione di **due** nastri trasportatori realizzato con un **timer HW** gestito dalla libreria ```Ticker``` e con **rilevatori di transito** toggle basati su istruzioni ```delay()```. Il **timer** di sistema lavora con segnali di **interrupt** che attivano **callback** invocate **in sequenza**, per cui al loro interno sarebbe opportuno perdere poco tempo evitando di usare istruzioni lente (**no delay()**). I **rilevatori di transito** riguardano due nastri e la loro definizione è **indipendente** per ciascuno di essi perchè è realizzata all'interno di due **thread** separati.
