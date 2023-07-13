@@ -114,7 +114,7 @@ Il blocco in **attesa di una variabile** l'esecuzione resta bloccata indefinitiv
 
 ```C++
 // attesa evento con tempo minimo di attesa
-void waitUntil(bool &c, unsigned t)
+void waitUntilFalse(bool &c, unsigned t)
 {
     while(!c){
 	delay(t);
