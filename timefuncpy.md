@@ -77,7 +77,7 @@ Il blocco in **attesa di una variabile** l'esecuzione resta bloccata indefinitiv
 ```python
 // attesa evento con tempo minimo di attesa
 void waitUntil(c, t)
-global c
+    global c
     while not c:
 	 time.sleep(t)
 ```
