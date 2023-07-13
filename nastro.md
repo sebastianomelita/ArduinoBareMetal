@@ -94,7 +94,7 @@ void loop() {
 		waitUntilInputLow(startSensorLow,50);			// attendi finchè non c'è fronte di discesa
 		Serial.println("Pezzo basso transitato in ingresso");
 		digitalWrite(lowStartLed, LOW);
-	}if(digitalRead(startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
+	}else if(digitalRead(startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
 		engineon = true; 	
 		digitalWrite(engineLed, HIGH);
 		digitalWrite(highStartLed, HIGH);
@@ -238,7 +238,7 @@ void * beltThread(void * d)
 		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
 		Serial.println(id+"Pezzo basso transitato in ingresso");
 		digitalWrite(n->lowStartLed, LOW);
-	}if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
+	}else if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
 		n->engineon = true && isrun; 	
 		digitalWrite(n->engineLed, HIGH && isrun);
 		digitalWrite(n->highStartLed, HIGH);
@@ -414,7 +414,7 @@ void * beltThread(void * d)
 		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
 		Serial.println(id+"Pezzo basso transitato in ingresso");
 		digitalWrite(n->lowStartLed, LOW);
-	}if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
+	}else if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
 		n->engineon = true && isrun; 	
 		digitalWrite(n->engineLed, HIGH && isrun);
 		digitalWrite(n->highStartLed, HIGH);
