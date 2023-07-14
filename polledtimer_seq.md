@@ -3,8 +3,6 @@
 
 E’ possibile realizzare dei timers, con cui programmare **nel futuro** lo stesso evento o una catena di eventi diversi, eseguendo il **polling della funzione millis()**. Il polling serve per verificare, ad ogni loop(), che la **millis()** abbia raggiunto il **valore finale** stabilito come target (obiettivo o timeout). Quando ciò accade possiamo far eseguire il blocco di istruzioni **associato** a questo evento utilizzando il **test** periodico di una funzione get() che, all'interno del loop(), restituisce il **tempo di conteggio** (elapsed). Se è vera allora il blocco di istruzioni associato all'evento di timeout viene eseguito.
 
-I timers possono essere **periodici**, ed uno di questi era proprio lo schedulatore adoperato per generare la base degli eventi di sistema, oppure possono essere **aperiodici** (detti anche monostabili), cioè devono essere attivati, con una istruzione apposita, solamente quando serve.
-
 **In** **generale**, possiamo individuare alcune **componenti del timer**:
 
 - **reset** del timer. Accade al verificarsi di una certa **condizione**.
