@@ -5,17 +5,17 @@ E’ possibile realizzare dei timers, con cui programmare **nel futuro** lo stes
 
 I **timer sequenziali** sono più **intuitivi** e **semplici** da usare rispetto ad i **timer ad eventi** perchè possono essere adoperati usando la stessa logica **sequenziale** e **lineare** che si usa in un normale algoritmo sincrono. Un'**algoritmo sincrono** pianifica le azioni in base alla **posizione** della istruzioni che le determinano nel codice e in base ai tempi stabiliti da eventuali **ritardi bloccanti** (l'esecuzione non va avanti) posti tra un'azione e l'altra o dal **polling di un timer** (test di avvenuto timeout).
 
-Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto comune** nella programmazione di **bracci robotici** per uso industriale (vedi bracci Universal Robots) che si adatta bene ad essere impiegato in un contesto in cui la logica dell'algoritmo è realizzata interamente in maniera sequenziale e lineare.
+Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto comune** nella programmazione di **bracci robotici** per uso industriale (vedi bracci Universal Robots) che si adatta bene ad essere impiegato sia in un contesto in cui la logica dell'algoritmo è realizzata in maniera sequenziale sia in quello in cui gli input sono gestiti con un modello ad eventi.
 
 **In** **generale**, possiamo individuare alcune **componenti del timer**:
 
-- **reset** del timer. Accade al verificarsi di una certa **condizione**. Determina sia l'azzeramento del **tempo di conteggio** (```elapsed = 0```).che l'azzeramento della misura del ritardo dall'ultimo riavvio (```last = millis()```).
+- **reset** del timer. Accade al verificarsi di una certa **condizione**. Determina sia l'azzeramento del **tempo di conteggio** (```elapsed = 0```) che l'azzeramento della misura del ritardo dall'ultimo riavvio (```last = millis()```). L'azzeramento **non** è mai automatico ed è necessario impostarlo prima del riutilizzo del timer, tipicamente al momento della valutazione della condizione di timeout.  
 - **start**. Avvia o riavvia il timer quando si avvera la **condizione di attivazione** posta in punto qualsiasi del loop. Imposta il flag di stato ```timerState```. 
 - **stop** del timer. Accade al verificarsi di una certa **condizione** di sospensione del timer posta in punto qualsiasi del loop. In questa occasione il timer **campiona** il ritardo accumulato dall'ultimo riavvio e lo somma al **tempo di conteggio** cumulato all'ultima sospensione tramite ```elapsed += millis() - last```.
 - **get** del tempo **tempo di conteggio** (elapsed) dal momento del **primo avvio** del timer. Viene fatto ad ogni ciclo di **loop** (meno se filtrato) e serve a realizzare il confronto con un tempo di timeout mediante un operatore relazionale (```var.get() > timeout```). Il valore restituito dipende dallo stato del timer:
      - se **```timerState == false```** allora restituisce l'ultimo **tempo di conteggio** misurato e memorizzato al momento della chiamata a stop() tramite ```elapsed += millis() - last```.
      - se **```timerState == true```** allora calcola il **tempo di conteggio** corrente campionando il ritardo attuale dall'ultimo riavvio e sommandolo ai ritardo cumulato prima dell'ultima sospensione (```millis() - last + elapsed```).
-- **istruzioni triggerate** (scatenate) dal timer. Vengono eseguite in base al **tempo di conteggio misurato** dal timer. Vengono eseguite in maniera sequenziale in un punto stabilito del loop (istruzioni sincrone) in corrispondenza della verità di una certa condizione che coinvolge la funzione ```get()``` come operando.
+- **istruzioni triggerate** (scatenate) dal timer. Vengono eseguite in base al **tempo di conteggio misurato** dal timer. Vengono eseguite in maniera sequenziale in un punto stabilito del loop (istruzioni sincrone) in corrispondenza della **verità** di una certa **condizione** sul tempo di conteggio che coinvolge la funzione ```get()``` come operando. In corrispondenza si potrebbe azzerare il timer con ```reset()``` per prepararlo per il prossimo utilizzo.
 
 
 ```C++
