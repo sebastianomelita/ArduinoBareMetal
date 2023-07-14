@@ -9,7 +9,7 @@ Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto
 
 **In** **generale**, possiamo individuare alcune **componenti del timer**:
 
-- **reset** del timer. Accade al verificarsi di una certa **condizione**. Determina sia l'azzeramento del **tempo di conteggio** (```elapsed = 0```) che l'azzeramento della misura del ritardo dall'ultimo riavvio (```last = millis()```). L'azzeramento **non** è mai automatico ed è necessario impostarlo prima del riutilizzo del timer, tipicamente al momento della valutazione della condizione di timeout.  
+- **reset** del timer. Accade al verificarsi di una certa **condizione**. Determina sia l'azzeramento del **tempo di conteggio** (```elapsed = 0```) che l'azzeramento della misura del ritardo dall'ultimo riavvio (```last = millis()```). L'azzeramento **non** è mai automatico ed è necessario impostarlo prima del riutilizzo del timer dopo uno o più comandi ``stop()`` (tipicamente al momento della valutazione della condizione di timeout) altrimenti è sufficiente richiamare la funzione ```start()```.  
 - **start**. Avvia o riavvia il timer quando si avvera la **condizione di attivazione** posta in punto qualsiasi del loop. Imposta il flag di stato ```timerState```. 
 - **stop** del timer. Accade al verificarsi di una certa **condizione** di sospensione del timer posta in punto qualsiasi del loop. In questa occasione il timer **campiona** il ritardo accumulato dall'ultimo riavvio e lo somma al **tempo di conteggio** cumulato all'ultima sospensione tramite ```elapsed += millis() - last```.
 - **get** del tempo **tempo di conteggio** (elapsed) dal momento del **primo avvio** del timer. Viene fatto ad ogni ciclo di **loop** (meno se filtrato) e serve a realizzare il confronto con un tempo di timeout mediante un operatore relazionale (```var.get() > timeout```). Il valore restituito dipende dallo stato del timer:
@@ -112,7 +112,7 @@ void loop(){
         waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
       	acceso.start();
     }else if(acceso.get() > 5000){
-	acceso.reset();
+	//non necessario il reset() perchè mai eseguito uno stop()
      	digitalWrite(led,LOW);
     }
 }
