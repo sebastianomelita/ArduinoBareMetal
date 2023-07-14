@@ -213,4 +213,103 @@ void loop(){
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/1EIcEp5BkZt-copy-of-selezione-luci-e-spegnimento-con-un-solo-tasto/editel?tenant=circuits
 
+```C++
+/*
+ Scrivere un programma che realizzi l'accensione del led1, oppure del led2 oppure del led3 led 
+ tramite la pressione consecutiva di un pulsante una, due o tre volte all'interno di 
+ un intervallo temporale di un secondo. Col la pressione per almeno un secondo, ma meno di due, dello stesso pulsante si 
+ accendono tutti i led, con la pressione dello stesso tasto per più di due secondi si spengono tutti i led.
+*/
+typedef struct 
+{
+	unsigned long elapsed, last;
+	bool timerState=false;
+	void reset(){
+		elapsed = 0;
+		last = millis();
+	}
+	void stop(){
+		timerState = false;
+    		elapsed += millis() - last;
+	}
+	void start(){
+		timerState = true;
+		last = millis();
+	}
+	unsigned long get(){
+		if(timerState){
+			return millis() - last + elapsed;
+		}
+		return elapsed;
+	}
+	void set(unsigned long e){
+		reset();
+		elapsed = e;
+	}
+} DiffTimer;
+
+// attesa evento con tempo minimo di attesa
+void waitUntilInputLow(int btn, unsigned t)
+{
+    while(!digitalRead(btn)==LOW){
+	    delay(t);
+    }
+}
+
+DiffTimer conteggio, spegnimento;
+
+int led1=13;
+int led2=12;
+int led3=11;
+int tasto=2;
+int count=0;
+int in, out;
+
+void setup(){
+	pinMode(tasto,INPUT);
+	pinMode(led1,OUTPUT);
+	pinMode(led2,OUTPUT);
+	pinMode(led3,OUTPUT);
+	digitalWrite(led1,LOW);
+	digitalWrite(led2,LOW);
+	digitalWrite(led3,LOW);
+}
+
+void loop(){			
+	//ad ogni pressione del tasto entro il tempo prefissato aggiorna il contatore di quel tasto (pressione)
+	if(digitalRead(tasto)==HIGH){
+		//fronte di salita
+		spegnimento.start();
+		waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
+		//fronte di discesa
+		spegnimento.stop();
+		//parte alla prima pressione
+		count++;
+		if(count == 1)
+			conteggio.start();
+	}else if(conteggio.get() > 1000){
+        conteggio.stop();
+		conteggio.reset();
+		if(count>0){
+			digitalWrite(14-count,HIGH);
+			count=0;
+		}
+    }else if(spegnimento.get() > 1000 && spegnimento.get() < 2000){
+		spegnimento.reset();
+        digitalWrite(led1,HIGH);
+		digitalWrite(led2,HIGH);
+		digitalWrite(led3,HIGH);
+        count=0;
+    }else if(spegnimento.get() > 2000){
+		spegnimento.reset();
+        digitalWrite(led1,LOW);
+        digitalWrite(led2,LOW);
+        digitalWrite(led3,LOW);
+        count=0;
+    }
+}
+```
+
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/92WnWXH0OvB-copy-of-scegli-chi-onoff-con-un-tasto/editel?tenant=circuits
+
 >[Torna all'indice](timerbase.md) >[versione in Python](polledtimer_seq_py.md)
