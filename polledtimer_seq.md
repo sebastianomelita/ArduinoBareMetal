@@ -20,21 +20,33 @@ I timers possono essere **periodici**, ed uno di questi era proprio lo schedulat
 Un **timer periodico** è del tutto analogo ad un o schedulatore e, ad ogni timeout, necessita del **ricampionamento** del **tempo attuale** per poter di nuovo calcolare il **tempo futuro** del nuovo **timeout**.  Un esempio di **timer periodico** potrebbe apparire così:
 
 ```C++
-//Timer periodico
-#define PERIODO  1000
-unsigned long ptimer1;
-bool timerState = false; // stato del timer
-
-void loop()
+typedef struct 
 {
-	if ((timerState) && (millis() - ptimer1) >= (unsigned long) PERIODO)
-	{
-		ptimer1 = millis(); // ricampionamento del tempo attuale 
-		//....
-		// istruzioni eseguite periodicamente, se attivo…
+	unsigned long elapsed, last;
+	bool timerState=false;
+	void reset(){
+		elapsed = 0;
+		last = millis();
 	}
-
-}
+	void stop(){
+		timerState = false;
+    		elapsed += millis() - last;
+	}
+	void start(){
+		timerState = true;
+		last = millis();
+	}
+	unsigned long get(){
+		if(timerState){
+			return millis() - last + elapsed;
+		}
+		return elapsed;
+	}
+	void set(unsigned long e){
+		reset();
+		elapsed = e;
+	}
+} DiffTimer;
 ```
 
 Un **timer periodico** più preciso, adatto a cumulare **lunghe cadenze periodiche** esegue il ricampionamento  con la maggior precisione possibile ottenuta evitando il **ritardo** dovuto alla chiamata della funzione ```millis()```. Un esempio potrebbe apparire così:
