@@ -611,7 +611,7 @@ void switchPressed ()
   }
 }  // end of switchPressed
 
-void waitUntilInputLow()
+void waitUntilInputLow2()
 {
    // sezione critica
    // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
@@ -620,11 +620,10 @@ void waitUntilInputLow()
    // il valore lastintTime potrà essere in seguito letto interrotto ma non danneggiato
    unsigned long lastintTime = previousMillis;
    interrupts();
-   
    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
         && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
 				&& digitalRead(safetystop) == LOW)//se coincide con il valore di un polling
-					{ 
+		{ 
 				Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
 				numberOfButtonInterrupts = 0; // reset del flag
 
@@ -635,6 +634,7 @@ void waitUntilInputLow()
 }
 
 void loop() {
+	waitUntilInputLow2();
 	delay(10); 							// equivale a yeld() (10 per le simulazioni 0 in HW)
 }
 ```
