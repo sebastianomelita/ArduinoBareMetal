@@ -151,7 +151,7 @@ struct DiffTimer {
 	}
 	void stop(){
 		timerState = false;
-    elapsed += millis() - last;
+    		elapsed += millis() - last;
 	}
 	void start(){
 		timerState = true;
@@ -272,7 +272,7 @@ typedef struct
 	}
 	void stop(){
 		timerState = false;
-    elapsed += millis() - last;
+    		elapsed += millis() - last;
 	}
 	void start(){
 		timerState = true;
@@ -474,7 +474,7 @@ typedef struct
 	}
 	void stop(){
 		timerState = false;
-    elapsed += millis() - last;
+		elapsed += millis() - last;
 	}
 	void start(){
 		timerState = true;
