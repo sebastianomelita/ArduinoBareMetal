@@ -86,7 +86,7 @@ void loop() {
 		waitUntilInputLow(startSensorLow,50);			// attendi finchè non c'è fronte di discesa
 		Serial.println("Pezzo basso transitato in ingresso");
 		digitalWrite(lowStartLed, LOW);
-	}if(digitalRead(startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
+	}else if(digitalRead(startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
 		engineon = true; 	
 		digitalWrite(engineLed, HIGH);
 		digitalWrite(highStartLed, HIGH);
