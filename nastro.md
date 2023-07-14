@@ -639,14 +639,14 @@ void waitUntilInputLow2()
    interrupts();
    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
         && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
-				&& digitalRead(safetystop) == LOW)//se coincide con il valore di un polling
-		{ 
-				Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
-				numberOfButtonInterrupts = 0; // reset del flag
-
-				Serial.println(" in DISCESA");
-				Serial.println(" Riattivo il nastro dopo blocco di sicurezza");
-				isrun = true;
+        && digitalRead(safetystop) == LOW)//se coincide con il valore di un polling
+    { 
+		Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
+		numberOfButtonInterrupts = 0; // reset del flag
+	
+		Serial.println(" in DISCESA");
+		Serial.println(" Riattivo il nastro dopo blocco di sicurezza");
+		isrun = true;
     }
 }
 
