@@ -288,25 +288,25 @@ void loop(){
 		if(count == 1)
 			conteggio.start();
 	}else if(conteggio.get() > 1000){
-        conteggio.stop();
+                conteggio.stop();
 		conteggio.reset();
 		if(count>0){
 			digitalWrite(14-count,HIGH);
 			count=0;
 		}
-    }else if(spegnimento.get() > 1000 && spegnimento.get() < 2000){
+	}else if(spegnimento.get() > 1000 && spegnimento.get() < 2000){
 		spegnimento.reset();
-        digitalWrite(led1,HIGH);
+		digitalWrite(led1,HIGH);
 		digitalWrite(led2,HIGH);
 		digitalWrite(led3,HIGH);
-        count=0;
-    }else if(spegnimento.get() > 2000){
+		count=0;
+	}else if(spegnimento.get() > 2000){
 		spegnimento.reset();
-        digitalWrite(led1,LOW);
-        digitalWrite(led2,LOW);
-        digitalWrite(led3,LOW);
-        count=0;
-    }
+		digitalWrite(led1,LOW);
+		digitalWrite(led2,LOW);
+		digitalWrite(led3,LOW);
+		count=0;
+	}
 }
 ```
 
