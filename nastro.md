@@ -425,12 +425,10 @@ All'attivazione del sensore di uscita si blocca il nastro, alla sua disattivazio
 Allo scadere del timer di volo si spegne il motore.
 */
 #include <pthread.h> //libreria di tipo preemptive
-#include <Ticker.h>
 #define DEBOUNCETIME 50
 pthread_t t1;
 pthread_t t2;
 bool engineon;  // variabile globale che memorizza lo stato del motore
-Ticker fly[2];
 uint8_t safetystop;
 bool isrun;
 //gestione interrupt
@@ -452,7 +450,37 @@ typedef struct
 	bool engineon;
 } Nastro;
 
+typedef struct 
+{
+	unsigned long elapsed, last;
+	bool timerState=false;
+	void reset(){
+		elapsed = 0;
+		last = millis();
+	}
+	void stop(){
+		timerState = false;
+	}
+	void start(){
+		timerState = true;
+		last = millis();
+	}
+	unsigned long get(){
+		if(timerState){
+			unsigned long curr = millis();
+			elapsed += curr - last;
+			last = curr;
+		}
+		return elapsed;
+	}
+	void set(unsigned long e){
+		reset();
+		elapsed = e;
+	}
+} DiffTimer;
+
 Nastro nastro1, nastro2;
+DiffTimer fly[2];
 
 void initNastri(){
 	// porte nastro 1
@@ -503,58 +531,54 @@ void waitUntilInputLow(int btn, unsigned t)
     }
 }
 
-void stopEngine(Nastro *n){ 
-	String id = "Nastro "+String(n->id) + ": ";	 
-	n->engineon = false; 
-	digitalWrite(n->engineLed, LOW);
-	Serial.println(id+"Timer di volo scaduto");
-	fly[n->id].detach();
-};
-
 void * beltThread(void * d)
 {
 		Nastro *n;
     n = (Nastro *) d;
     while(true){    	
-	String id = "Nastro "+String(n->id) + ": ";			
-	if(digitalRead(n->startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
-		n->engineon = true && isrun; 	
-		digitalWrite(n->engineLed, HIGH && isrun);
-		digitalWrite(n->lowStartLed, HIGH);
-		fly[n->id].detach();						// c'è almeno un pezzo in transito
-		Serial.println(id+"Pezzo basso in ingresso");
-		Serial.println(id+"Timer di volo disattivato");
-		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
-		Serial.println(id+"Pezzo basso transitato in ingresso");
-		digitalWrite(n->lowStartLed, LOW);
-	}else if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
-		n->engineon = true && isrun; 	
-		digitalWrite(n->engineLed, HIGH && isrun);
-		digitalWrite(n->highStartLed, HIGH);
-		fly[n->id].detach();						// c'è almeno un pezzo in transito
-		Serial.println(id+"Pezzo alto in ingresso");
-		Serial.println(id+"Timer di volo disattivato");
-		waitUntilInputLow(n->startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
-		Serial.println(id+"Pezzo alto transitato in ingresso");
-		digitalWrite(n->highStartLed, LOW);
-	}else if(digitalRead(n->stopSensor)==HIGH) {
-		n->engineon = false; 		
-		digitalWrite(n->engineLed, LOW);
-		digitalWrite(n->stopLed, HIGH);
-		Serial.println(id+"Pezzo in uscita");
-		waitUntilInputLow(n->stopSensor,50);
-		Serial.println(id+"Pezzo prelevato dall'uscita");
-		n->engineon = true && isrun; 
-		digitalWrite(n->stopLed, LOW);
-		digitalWrite(n->engineLed, HIGH && isrun);
-		fly[n->id].attach_ms(n->flyTime,stopEngine,n);
-		Serial.println(id+"Timer di volo attivato");
-	} else {
-		//digitalWrite(led, LOW);    
-		delay(10);	
-	}
-	delay(10);
-    }
+			String id = "Nastro "+String(n->id) + ": ";			
+			if(digitalRead(n->startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
+				n->engineon = true && isrun; 	
+				digitalWrite(n->engineLed, HIGH && isrun);
+				digitalWrite(n->lowStartLed, HIGH);
+				fly[n->id].stop();						// c'è almeno un pezzo in transito
+				Serial.println(id+"Pezzo basso in ingresso");
+				Serial.println(id+"Timer di volo disattivato");
+				waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
+				Serial.println(id+"Pezzo basso transitato in ingresso");
+				digitalWrite(n->lowStartLed, LOW);
+			}else if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
+				n->engineon = true && isrun; 	
+				digitalWrite(n->engineLed, HIGH && isrun);
+				digitalWrite(n->highStartLed, HIGH);
+				fly[n->id].stop();						 // c'è almeno un pezzo in transito
+				Serial.println(id+"Pezzo alto in ingresso");
+				Serial.println(id+"Timer di volo disattivato");
+				waitUntilInputLow(n->startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
+				Serial.println(id+"Pezzo alto transitato in ingresso");
+				digitalWrite(n->highStartLed, LOW);
+			}else if(digitalRead(n->stopSensor)==HIGH) {
+				n->engineon = false; 		
+				digitalWrite(n->engineLed, LOW);
+				digitalWrite(n->stopLed, HIGH);
+				Serial.println(id+"Pezzo in uscita");
+				waitUntilInputLow(n->stopSensor,50);
+				Serial.println(id+"Pezzo prelevato dall'uscita");
+				n->engineon = true && isrun; 
+				digitalWrite(n->stopLed, LOW);
+				digitalWrite(n->engineLed, HIGH && isrun);
+				fly[n->id].start();
+				Serial.println(id+"Timer di volo attivato");
+			}else if(fly[n->id].get() > n->flyTime){
+				String id = "Nastro "+String(n->id) + ": ";	 
+				n->engineon = false; 
+				digitalWrite(n->engineLed, LOW);
+				Serial.println(id+"Timer di volo scaduto");
+				fly[n->id].stop();
+				fly[n->id].reset();
+			}
+			delay(10);
+		}
     return NULL;
 }
 
@@ -581,9 +605,9 @@ void switchPressed ()
   byte val = digitalRead(safetystop); // lettura stato pulsante
   previousMillis = millis(); // tempo evento
   if(val==HIGH){ // fronte di salita
-	isrun = false; 				// impostazione dello stato dei nastri
-	digitalWrite(nastro1.engineLed, LOW);	               
-	digitalWrite(nastro2.engineLed, LOW);
+		isrun = false; 				// impostazione dello stato dei nastri
+		digitalWrite(nastro1.engineLed, LOW);	               
+		digitalWrite(nastro2.engineLed, LOW);
   }
 }  // end of switchPressed
 
@@ -599,19 +623,18 @@ void waitUntilInputLow()
    
    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
         && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
-	&& digitalRead(safetystop) == LOW)//se coincide con il valore di un polling
-   { 
-	Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
-	numberOfButtonInterrupts = 0; // reset del flag
+				&& digitalRead(safetystop) == LOW)//se coincide con il valore di un polling
+					{ 
+				Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
+				numberOfButtonInterrupts = 0; // reset del flag
 
-	Serial.println(" in DISCESA");
-	Serial.println(" Riattivo il nastro dopo blocco di sicurezza");
-	isrun = true;
+				Serial.println(" in DISCESA");
+				Serial.println(" Riattivo il nastro dopo blocco di sicurezza");
+				isrun = true;
     }
 }
 
 void loop() {
-	waitUntilInputLow();
 	delay(10); 							// equivale a yeld() (10 per le simulazioni 0 in HW)
 }
 ```
