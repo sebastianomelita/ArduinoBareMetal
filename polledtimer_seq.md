@@ -5,7 +5,7 @@ E’ possibile realizzare dei timers, con cui programmare **nel futuro** lo stes
 
 I **timer sequenziali** sono più **intuitivi** e **semplici** da usare rispetto ad i **timer ad eventi** perchè possono essere adoperati usando la stessa logica **sequenziale** e **lineare** che si usa in un normale algoritmo sincrono, cioè un'algoritmo che pianifica le azioni in base alla **posizione** della istruzioni che le determinano nel codice e in base ai tempi determinati da **ritardi bloccanti** (l'esecuzione non va avanti) o dal **polling di un timer** (test di avvenuto timeout).
 
-Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto comune** nella programmazione di **bracci robotici** per uso industriale (vedi bracci Universal Robot).
+Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto comune** nella programmazione di **bracci robotici** per uso industriale (vedi bracci Universal Robots).
 
 **In** **generale**, possiamo individuare alcune **componenti del timer**:
 
