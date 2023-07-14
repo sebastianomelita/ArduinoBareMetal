@@ -215,7 +215,7 @@ void loop(){
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/1EIcEp5BkZt-copy-of-selezione-luci-e-spegnimento-con-un-solo-tasto/editel?tenant=circuits
 
-### **Scegli chi**
+### **Scegli chi ON/OFF un tasto**
 
 ```C++
 /*
