@@ -3,6 +3,10 @@
 
 E’ possibile realizzare dei timers, con cui programmare **nel futuro** lo stesso evento o una catena di eventi diversi, eseguendo il **polling della funzione millis()**. Il polling serve per verificare, ad ogni loop(), che la **millis()** abbia raggiunto il **valore finale** stabilito come target (obiettivo o timeout). Quando ciò accade possiamo far eseguire il blocco di istruzioni **associato** a questo evento utilizzando il **test** periodico di una funzione get() che, all'interno del loop(), restituisce il **tempo di conteggio** (elapsed). Se è vera allora il blocco di istruzioni associato all'evento di timeout viene eseguito.
 
+I **timer sequenziali** sono più **intuitivi** e **semplici** da usare rispetto ad i **timer ad eventi** perchè possono essere adoperati usando la stessa logica **sequenziale** e **lineare** che si usa in un normale algoritmo sincrono, cioè un'algoritmo che pianifica le azioni in base alla **posizione** della istruzioni che le determinano nel codice e in base ai tempi determinati da **ritardi bloccanti** (l'esecuzione non va avanti) o dal **polling di un timer** (test di avvenuto timeout).
+
+Si tratta di un **pattern** per la realizzazione di timers **molto comune** nella programmazione di **bracci robotici** per uso industriale.
+
 **In** **generale**, possiamo individuare alcune **componenti del timer**:
 
 - **reset** del timer. Accade al verificarsi di una certa **condizione**. Determina sia l'azzeramento del **tempo di conteggio** (```elapsed = 0```).che l'azzeramento della misura del ritardo dall'ultimo riavvio (```last = millis()```).
