@@ -549,52 +549,52 @@ void * beltThread(void * d)
 		Nastro *n;
     n = (Nastro *) d;
     while(true){    	
-			String id = "Nastro "+String(n->id) + ": ";			
-			if(digitalRead(n->startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
-				n->engineon = true && isrun; 	
-				digitalWrite(n->engineLed, HIGH && isrun);
-				digitalWrite(n->lowStartLed, HIGH);
-				fly[n->id].stop();						// c'è almeno un pezzo in transito
-				Serial.println(id+"Pezzo basso in ingresso");
-				Serial.println(id+"Timer di volo disattivato");
-				waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
-				Serial.println(id+"Pezzo basso transitato in ingresso");
-				digitalWrite(n->lowStartLed, LOW);
-			}else if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
-				n->engineon = true && isrun; 	
-				digitalWrite(n->engineLed, HIGH && isrun);
-				digitalWrite(n->highStartLed, HIGH);
-				fly[n->id].stop();						 // c'è almeno un pezzo in transito
-				Serial.println(id+"Pezzo alto in ingresso");
-				Serial.println(id+"Timer di volo disattivato");
-				waitUntilInputLow(n->startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
-				Serial.println(id+"Pezzo alto transitato in ingresso");
-				digitalWrite(n->highStartLed, LOW);
-			}else if(digitalRead(n->stopSensor)==HIGH) {
-				n->engineon = false; 		
-				digitalWrite(n->engineLed, LOW);
-				digitalWrite(n->stopLed, HIGH);
-				Serial.println(id+"Pezzo in uscita");
-				waitUntilInputLow(n->stopSensor,50);
-				Serial.println(id+"Pezzo prelevato dall'uscita");
-				n->engineon = true && isrun; 
-				digitalWrite(n->stopLed, LOW);
-				digitalWrite(n->engineLed, HIGH && isrun);
-				fly[n->id].start();
-				Serial.println(id+"Timer di volo attivato");
-			}else if(fly[n->id].get() > n->flyTime){
-				String id = "Nastro "+String(n->id) + ": ";	 
-				n->engineon = false; 
-				digitalWrite(n->engineLed, LOW);
-				Serial.println(id+"Timer di volo scaduto");
-				fly[n->id].stop();
-				fly[n->id].reset();
-			}else if(!isrun){
-				fly[n->id].stop();
-				fly[n->id].reset();
-			}
-			delay(10);
-		}
+	String id = "Nastro "+String(n->id) + ": ";			
+	if(digitalRead(n->startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
+		n->engineon = true && isrun; 	
+		digitalWrite(n->engineLed, HIGH && isrun);
+		digitalWrite(n->lowStartLed, HIGH);
+		fly[n->id].stop();						// c'è almeno un pezzo in transito
+		Serial.println(id+"Pezzo basso in ingresso");
+		Serial.println(id+"Timer di volo disattivato");
+		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
+		Serial.println(id+"Pezzo basso transitato in ingresso");
+		digitalWrite(n->lowStartLed, LOW);
+	}else if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
+		n->engineon = true && isrun; 	
+		digitalWrite(n->engineLed, HIGH && isrun);
+		digitalWrite(n->highStartLed, HIGH);
+		fly[n->id].stop();						 // c'è almeno un pezzo in transito
+		Serial.println(id+"Pezzo alto in ingresso");
+		Serial.println(id+"Timer di volo disattivato");
+		waitUntilInputLow(n->startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
+		Serial.println(id+"Pezzo alto transitato in ingresso");
+		digitalWrite(n->highStartLed, LOW);
+	}else if(digitalRead(n->stopSensor)==HIGH) {
+		n->engineon = false; 		
+		digitalWrite(n->engineLed, LOW);
+		digitalWrite(n->stopLed, HIGH);
+		Serial.println(id+"Pezzo in uscita");
+		waitUntilInputLow(n->stopSensor,50);
+		Serial.println(id+"Pezzo prelevato dall'uscita");
+		n->engineon = true && isrun; 
+		digitalWrite(n->stopLed, LOW);
+		digitalWrite(n->engineLed, HIGH && isrun);
+		fly[n->id].start();
+		Serial.println(id+"Timer di volo attivato");
+	}else if(fly[n->id].get() > n->flyTime){
+		String id = "Nastro "+String(n->id) + ": ";	 
+		n->engineon = false; 
+		digitalWrite(n->engineLed, LOW);
+		Serial.println(id+"Timer di volo scaduto");
+		fly[n->id].stop();
+		fly[n->id].reset();
+	}else if(!isrun){
+		fly[n->id].stop();
+		fly[n->id].reset();
+	}
+	delay(10);
+    }
     return NULL;
 }
 
