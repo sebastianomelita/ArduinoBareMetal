@@ -262,6 +262,7 @@ typedef struct
 	unsigned flyTime;
 	bool engineon;
 } Nastro;
+
 typedef struct 
 {
 	unsigned long elapsed, last;
