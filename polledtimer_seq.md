@@ -195,11 +195,11 @@ void loop(){
 		conteggio.start();
     }else if(conteggio.get() > 1000){
         conteggio.stop();
-		conteggio.reset();
-		if(count>0){
-			digitalWrite(14-count,HIGH);
-			count=0;
-		}
+	conteggio.reset();
+	if(count>0){
+		digitalWrite(14-count,HIGH);
+		count=0;
+	}
     }else if(spegnimento.get() > 3000){
         spegnimento.reset();
         digitalWrite(led1,LOW);
