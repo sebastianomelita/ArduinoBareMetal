@@ -184,15 +184,15 @@ void setup(){
 void loop(){	
     //legge valore attuale dell'ingresso
     if(digitalRead(tasto)==HIGH){
-		//fronte di salita
+	//fronte di salita
         spegnimento.start();
         waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
-		//fronte di discesa
+        //fronte di discesa
         spegnimento.stop();
-		//parte alla prima pressione
-		count++;
-		if(count == 1)
-			conteggio.start();
+	//parte alla prima pressione
+	count++;
+	if(count == 1)
+		conteggio.start();
     }else if(conteggio.get() > 1000){
         conteggio.stop();
 		conteggio.reset();
@@ -201,7 +201,7 @@ void loop(){
 			count=0;
 		}
     }else if(spegnimento.get() > 3000){
-		spegnimento.reset();
+        spegnimento.reset();
         digitalWrite(led1,LOW);
         digitalWrite(led2,LOW);
         digitalWrite(led3,LOW);
