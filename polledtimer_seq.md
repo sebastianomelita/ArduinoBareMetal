@@ -120,6 +120,8 @@ void loop(){
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/fCpauVnNUZh-accensione-led-monostabile/editel
 
+### **Selezione luci**
+
 ```C++
 /*
 Scrivere un programma che realizzi l'accensione di un led, due led o tre led tramite la pressione consecutiva di un pulsante 
@@ -212,6 +214,8 @@ void loop(){
 }
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/1EIcEp5BkZt-copy-of-selezione-luci-e-spegnimento-con-un-solo-tasto/editel?tenant=circuits
+
+### **Scegli chi**
 
 ```C++
 /*
