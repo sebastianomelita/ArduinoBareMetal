@@ -387,6 +387,9 @@ void * beltThread(void * d)
 				Serial.println(id+"Timer di volo scaduto");
 				fly[n->id].stop();
 				fly[n->id].reset();
+			}else if(!isrun){
+				fly[n->id].stop();
+				fly[n->id].reset();
 			}
 			delay(10);
 		}
