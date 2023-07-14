@@ -151,7 +151,7 @@ struct DiffTimer {
 	}
 	void stop(){
 		timerState = false;
-        	elapsed = millis() - last;
+    elapsed += millis() - last;
 	}
 	void start(){
 		timerState = true;
@@ -159,7 +159,7 @@ struct DiffTimer {
 	}
 	unsigned long get(){
 		if(timerState){
-			elapsed = millis() - last;
+			return millis() - last + elapsed;
 		}
 		return elapsed;
 	}
@@ -272,7 +272,7 @@ typedef struct
 	}
 	void stop(){
 		timerState = false;
-        	elapsed = millis() - last;
+    elapsed += millis() - last;
 	}
 	void start(){
 		timerState = true;
@@ -280,7 +280,7 @@ typedef struct
 	}
 	unsigned long get(){
 		if(timerState){
-			elapsed = millis() - last;
+			return millis() - last + elapsed;
 		}
 		return elapsed;
 	}
@@ -474,7 +474,7 @@ typedef struct
 	}
 	void stop(){
 		timerState = false;
-        	elapsed = millis() - last;
+    elapsed += millis() - last;
 	}
 	void start(){
 		timerState = true;
@@ -482,7 +482,7 @@ typedef struct
 	}
 	unsigned long get(){
 		if(timerState){
-			elapsed = millis() - last;
+			return millis() - last + elapsed;
 		}
 		return elapsed;
 	}
