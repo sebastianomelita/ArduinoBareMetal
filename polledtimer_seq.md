@@ -171,13 +171,13 @@ int tasto=2;
 int count=0;
 
 void setup(){
-	pinMode(tasto,INPUT);
-	pinMode(led1,OUTPUT);
-	pinMode(led2,OUTPUT);
-	pinMode(led3,OUTPUT);
-	digitalWrite(led1,LOW);
-	digitalWrite(led2,LOW);
-	digitalWrite(led3,LOW);
+    pinMode(tasto,INPUT);
+    pinMode(led1,OUTPUT);
+    pinMode(led2,OUTPUT);
+    pinMode(led3,OUTPUT);
+    digitalWrite(led1,LOW);
+    digitalWrite(led2,LOW);
+    digitalWrite(led3,LOW);
     Serial.begin(115200);
 }
 
