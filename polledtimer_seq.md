@@ -48,142 +48,75 @@ typedef struct
 } DiffTimer;
 ```
 
-Un **timer periodico** più preciso, adatto a cumulare **lunghe cadenze periodiche** esegue il ricampionamento  con la maggior precisione possibile ottenuta evitando il **ritardo** dovuto alla chiamata della funzione ```millis()```. Un esempio potrebbe apparire così:
+### **Esempi**
 
 ```C++
-//Timer periodico
-#define PERIODO  1000
-unsigned long ptimer1;
-bool timerState = false; // stato del timer
-unsigned long periodo = PERIODO;
+/*
+Scrivere un programma che realizzi l'accensione di un led tramite un pulsante temporizzato che spegne il led 
+dopo un numero di ms impostati da setup. La logica del tasto deve essere senza stato e deve essere sensibile 
+al fronte di salita del segnale. Immaginare un collegamento pull down del tasto.
+*/
+//inizio variabili per un solo pulsante
+int led=13;
+int tasto=2;
+int in, out;
 
-void loop()
+// attesa evento con tempo minimo di attesa
+void waitUntilInputLow(int btn, unsigned t)
 {
-	if ((timerState) && (millis() - ptimer1) >= periodo)
-	{
-		ptimer1 += periodo; // calcolo esatto del tempo attuale
-		//....
-		// istruzioni eseguite periodicamente, se attivo…
-	}
-
+    while(!digitalRead(btn)==LOW){
+	    delay(t);
+    }
 }
-```
 
-Di seguito è un esempio di **timer aperiodico** che misura il tempo a partire dal verificarsi di una certa condizione fino a che, al superamento di un tempo limite, si decide di fare qualcosa ma solo **dopo** lo scadere del timer:
-
-```C++
-//Timer aperiodico 1
-#define TLIMITE1  1000
-unsigned long atimer1;
-
-void loop()
+typedef struct 
 {
-	// blocco condizione di attivazione
-	if(condA){
-		atimer1 = millis();
+	unsigned long elapsed, last;
+	bool timerState=false;
+	void reset(){
+		elapsed = 0;
+		last = millis();
 	}
-        
-	//blocco polling
-	if (millis() - atimer1 >= (unsigned long) TLIMITE1)
-	{
-		// istruzioni eseguite allo scadere del timer 1
+	void stop(){
+		timerState = false;
+    		elapsed += millis() - last;
 	}
-}
-```
-La **condizione**, in realtà, può essere collocata in un punto qualsiasi del loop() (può essere ad esempio attivata dalla pressione di un pulsante):
+	void start(){
+		timerState = true;
+		last = millis();
+	}
+	unsigned long get(){
+		if(timerState){
+			return millis() - last + elapsed;
+		}
+		return elapsed;
+	}
+	void set(unsigned long e){
+		reset();
+		elapsed = e;
+	}
+} DiffTimer;
 
-```C++
-//Timer aperiodico 1
-#define TLIMITE1  1000
-unsigned long atimer1;
+DiffTimer acceso;
 
-void loop()
-{
-	//blocco polling
-	if (millis() - atimer1 >= (unsigned long) TLIMITE1)
-	{
-		// istruzioni eseguite allo scadere del timer 1
-	}
-	
-	// blocco condizione di attivazione
-	if(condA){
-		atimer1 = millis();
-	}
-}
-```
-Le istruzioni eseguite allo scadere del timer possono essere inserite in una **callback**, funzione dal nome sempre uguale, che, di volta in volta, è invocata dal timer con un diverso corpo di istruzioni:
-```C++
-//Timer aperiodico 1
-#define TLIMITE1  1000
-unsigned long atimer1;
-
-void onElapse(){
-	// istruzioni eseguite allo scadere del timer 1
+void setup(){
+	pinMode(led,OUTPUT);
+	pinMode(tasto,INPUT);
+	digitalWrite(led,LOW);
+	digitalWrite(tasto,LOW);
 }
 
-void loop()
-{
-	//blocco polling 
-	if (millis() - atimer1 >= (unsigned long) TLIMITE1)
-	{
-		onElapse();
-	}
-	
-	// blocco condizione di attivazione
-	if(condA){
-		atimer1 = millis();
-	}
-}
-```
-
-Reset del timer, polling del tempo trascorso e istruzioni triggerate (scatenate) dal timer potrebbero anche essere **rinchiuse** in altrettante **funzioni**. 
-Inoltre viene introdotta una **variabile di stato** che potrebbe essere adoperata sia per **bloccare** il timer in un certo momento come per **riattivarlo** in un momento successivo, per il tempo rimanente prima del timeout:
-
-```C++
-//inizio variabili timer
-unsigned long startTime;
-unsigned long timelapse;
-byte timerState=0;
-//fine variabili timer
-.
-// funzione di attivazione
-void startTimer(unsigned long duration){
-	timerState=1;
-	timelapse=duration;
-	startTime=millis();
-}
-
-// funzione di disattivazione
-void stopTimer(){
-	timerState=0;
-}
-
-// polling: verifica se è arrivato il tempo di far scattare il timer
-void aggiornaTimer(){
-	if((timerState == 1) && (millis() - startTime >= timelapse)){
-		timerState=0;
-		onElapse();
-	}
-}	
-
-// callback: azione standard da compiere allo scadere del timer, definita fuori dal loop
-void onElapse(){
-	//azione da compiere
-	//.......
-}
-	
 void loop(){
-	//blocco polling
-	aggiornaTimer();  //aggiorna il primo timer
-		
-	// blocco condizione di attivazione
-	if(A){
-		startTimer(1000);
-	}
-
-	if(B){ blocco condizione di disattivazione
-		stopTimer();   
-	}
+  	if(digitalRead(tasto)==HIGH){
+      digitalWrite(led,HIGH);
+      waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
+      acceso.start();
+    }else if(acceso.get() > 5000){
+      digitalWrite(led,LOW);
+    }
 }
+	
 ```
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/fCpauVnNUZh-accensione-led-monostabile/editel
+
 >[Torna all'indice](timerbase.md) >[versione in Python](polledtimer_seq_py.md)
