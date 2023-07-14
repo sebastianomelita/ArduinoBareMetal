@@ -20,11 +20,6 @@ byte highStartLed = 8;
 byte stopLed = 11;
 unsigned flyTime = 4000; //tempo di volo di un pezzo sul nastro
 bool engineon;  // variabile globale che memorizza lo stato del motore
-//inizio variabili timer
-unsigned long startTime;
-unsigned long timelapse;
-byte timerState=0;
-//fine variabili timer
 
 struct DiffTimer {
 	unsigned long elapsed, last;
