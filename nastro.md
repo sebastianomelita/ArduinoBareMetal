@@ -123,7 +123,7 @@ void loop() {
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/8UKvLNjeLEQ?editbtn=1
 
-Variante con timer realizzato non ad eventi ma in logica sequenziale più intuitiva:
+**Variante** con **timer** realizzato non ad eventi ma in **logica sequenziale** più intuitiva:
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
