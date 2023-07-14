@@ -311,6 +311,9 @@ Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349524035968696915
 
 ###  **Gestione di due nastri e tasto emergenza con interrupt**
 
+E' normalmente la soluzione più affidabile per la realizzazione di un pulsante di emergenza dato che il **disarmo** del sistema avviene in un flusso di esecuzione **diretto** ed **indipendente** (parallelo) al flusso di esecuzione principale del programma.
+
+Il **riarmo** del pulsante di arresto, essendo meno problematico ai fini della sicurezza, invece avviene tramite una **funzione** nel **loop principale** che esegue il **debouncing SW** del tasto e la **selezione** del **fronte di discesa** dello stesso. 
 
 ```C++
 /*
