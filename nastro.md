@@ -243,22 +243,10 @@ Programma per la gestione di **due** nastri trasportatori realizzato con un **ti
 Nel ```loop()``` principale è gestito lo **switch** di un **pulsante generale** di sicurezza che **disabilità** la marcia dei motori di entrambi i nastri. La gestione è **non bloccante** e inibisce l'attivazione dei motori anche se i thread ancora non hanno completato il loro flusso di esecuzione arrivando fino all'ultima istruzione. Infatti, l'istruzione ```digitalWrite(n->engineLed, HIGH && isrun)``` accende il motore solo se la variabile globale ```isrun``` è asserita dallo switch nel **loop** principale del programma.
 
 ```C++
-/*
-Scrivere un programma che realizzi la gestione di un nastro traportatore attraverso la lettura di tre sensori 
-di transito e il comando di un motore.
-I sensori permangono al livello alto finchè un oggetto ingombra l'area del sensore, dopodichè vanno a livello basso. 
-I sensori sono due all'inizio del nastro (uno per i pezzi bassi ed un'altro per quelli alti) ed uno alla fine del nastro 
-che rileva il pezzo pronto per essere prelevato.
-All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta (blocca) il timer di volo.
-All'attivazione del sensore di uscita si blocca il nastro, alla sua disattivazione riparte il nastro e parte il timer di volo.
-Allo scadere del timer di volo si spegne il motore.
-*/
 #include <pthread.h> //libreria di tipo preemptive
-#include <Ticker.h>
 pthread_t t1;
 pthread_t t2;
 bool engineon;  // variabile globale che memorizza lo stato del motore
-Ticker fly[2];
 uint8_t safetystop;
 bool isrun;
 
@@ -275,8 +263,37 @@ typedef struct
 	unsigned flyTime;
 	bool engineon;
 } Nastro;
+typedef struct 
+{
+	unsigned long elapsed, last;
+	bool timerState=false;
+	void reset(){
+		elapsed = 0;
+		last = millis();
+	}
+	void stop(){
+		timerState = false;
+	}
+	void start(){
+		timerState = true;
+		last = millis();
+	}
+	unsigned long get(){
+		if(timerState){
+			unsigned long curr = millis();
+			elapsed += curr - last;
+			last = curr;
+		}
+		return elapsed;
+	}
+	void set(unsigned long e){
+		reset();
+		elapsed = e;
+	}
+} DiffTimer;
 
 Nastro nastro1, nastro2;
+DiffTimer fly[2];
 
 void initNastri(){
 	// porte nastro 1
@@ -327,73 +344,69 @@ void waitUntilInputLow(int btn, unsigned t)
     }
 }
 
-void stopEngine(Nastro *n){ 
-	String id = "Nastro "+String(n->id) + ": ";	 
-	n->engineon = false; 
-	digitalWrite(n->engineLed, LOW);
-	Serial.println(id+"Timer di volo scaduto");
-	fly[n->id].detach();
-};
-
 void * beltThread(void * d)
 {
 		Nastro *n;
     n = (Nastro *) d;
     while(true){    	
-	String id = "Nastro "+String(n->id) + ": ";			
-	if(digitalRead(n->startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
-		n->engineon = true && isrun; 	
-		digitalWrite(n->engineLed, HIGH && isrun);
-		digitalWrite(n->lowStartLed, HIGH);
-		fly[n->id].detach();						// c'è almeno un pezzo in transito
-		Serial.println(id+"Pezzo basso in ingresso");
-		Serial.println(id+"Timer di volo disattivato");
-		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
-		Serial.println(id+"Pezzo basso transitato in ingresso");
-		digitalWrite(n->lowStartLed, LOW);
-	}else if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
-		n->engineon = true && isrun; 	
-		digitalWrite(n->engineLed, HIGH && isrun);
-		digitalWrite(n->highStartLed, HIGH);
-		fly[n->id].detach();						// c'è almeno un pezzo in transito
-		Serial.println(id+"Pezzo alto in ingresso");
-		Serial.println(id+"Timer di volo disattivato");
-		waitUntilInputLow(n->startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
-		Serial.println(id+"Pezzo alto transitato in ingresso");
-		digitalWrite(n->highStartLed, LOW);
-	}else if(digitalRead(n->stopSensor)==HIGH) {
-		n->engineon = false; 		
-		digitalWrite(n->engineLed, LOW);
-		digitalWrite(n->stopLed, HIGH);
-		Serial.println(id+"Pezzo in uscita");
-		waitUntilInputLow(n->stopSensor,50);
-		Serial.println(id+"Pezzo prelevato dall'uscita");
-		n->engineon = true && isrun; 
-		digitalWrite(n->stopLed, LOW);
-		digitalWrite(n->engineLed, HIGH && isrun);
-		fly[n->id].attach_ms(n->flyTime,stopEngine,n);
-		Serial.println(id+"Timer di volo attivato");
-	} else {
-		//digitalWrite(led, LOW);    
-		delay(10);	
-	}
-	delay(10);
-    }
+			String id = "Nastro "+String(n->id) + ": ";			
+			if(digitalRead(n->startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
+				n->engineon = true && isrun; 	
+				digitalWrite(n->engineLed, HIGH && isrun);
+				digitalWrite(n->lowStartLed, HIGH);
+				fly[n->id].stop();						// c'è almeno un pezzo in transito
+				Serial.println(id+"Pezzo basso in ingresso");
+				Serial.println(id+"Timer di volo disattivato");
+				waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
+				Serial.println(id+"Pezzo basso transitato in ingresso");
+				digitalWrite(n->lowStartLed, LOW);
+			}else if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
+				n->engineon = true && isrun; 	
+				digitalWrite(n->engineLed, HIGH && isrun);
+				digitalWrite(n->highStartLed, HIGH);
+				fly[n->id].stop();						 // c'è almeno un pezzo in transito
+				Serial.println(id+"Pezzo alto in ingresso");
+				Serial.println(id+"Timer di volo disattivato");
+				waitUntilInputLow(n->startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
+				Serial.println(id+"Pezzo alto transitato in ingresso");
+				digitalWrite(n->highStartLed, LOW);
+			}else if(digitalRead(n->stopSensor)==HIGH) {
+				n->engineon = false; 		
+				digitalWrite(n->engineLed, LOW);
+				digitalWrite(n->stopLed, HIGH);
+				Serial.println(id+"Pezzo in uscita");
+				waitUntilInputLow(n->stopSensor,50);
+				Serial.println(id+"Pezzo prelevato dall'uscita");
+				n->engineon = true && isrun; 
+				digitalWrite(n->stopLed, LOW);
+				digitalWrite(n->engineLed, HIGH && isrun);
+				fly[n->id].start();
+				Serial.println(id+"Timer di volo attivato");
+			}else if(fly[n->id].get() > n->flyTime){
+				String id = "Nastro "+String(n->id) + ": ";	 
+				n->engineon = false; 
+				digitalWrite(n->engineLed, LOW);
+				Serial.println(id+"Timer di volo scaduto");
+				fly[n->id].stop();
+				fly[n->id].reset();
+			}
+			delay(10);
+		}
     return NULL;
 }
 
 void setup() {
   Serial.begin(115200);
-  safetystop = 32;
-  pinMode(safetystop, INPUT);
+	safetystop = 32;
+	pinMode(safetystop, INPUT);
   engineon= false;
   isrun = false;
   initNastri();
   if (pthread_create(&t1, NULL, beltThread, (void *)&nastro1)) {
-         Serial.println("Errore creazione btnThread");
+         Serial.println("Errore crezione btnThread");
   }
   if (pthread_create(&t2, NULL, beltThread, (void *)&nastro2)) {
-         Serial.println("Errore creazione blinkThread");
+         Serial.println("Errore crezione blinkThread");
   } 
 }
 
@@ -405,7 +418,7 @@ void loop() {
 	}else{
 		isrun = true;
 	}
-	delay(10); 							// equivale a yeld() (10 per le simulazioni 0 in HW)
+	delay(10); 											// equivale a yeld() (10 per le simulazioni 0 in HW)
 }
 ```
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349524035968696915
