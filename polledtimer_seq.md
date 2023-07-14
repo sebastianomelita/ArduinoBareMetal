@@ -119,4 +119,97 @@ void loop(){
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/fCpauVnNUZh-accensione-led-monostabile/editel
 
+```C++
+/*
+Scrivere un programma che realizzi l'accensione di un led, due led o tre led tramite la pressione consecutiva di un pulsante 
+una, due o tre volte all'interno di un intervallo temporale di un secondo.
+Col la pressione prolungata dello stesso pulsante si spengono tutti e tre contemporaneamente.
+(Realizzazione del timer senza schedulatore)
+*/
+
+// attesa evento con tempo minimo di attesa
+void waitUntilInputLow(int btn, unsigned t)
+{
+    while(!digitalRead(btn)==LOW){
+	    delay(t);
+    }
+}
+
+typedef struct 
+{
+	unsigned long elapsed, last;
+	bool timerState=false;
+	void reset(){
+		elapsed = 0;
+		last = millis();
+	}
+	void stop(){
+		timerState = false;
+    		elapsed += millis() - last;
+	}
+	void start(){
+		timerState = true;
+		last = millis();
+	}
+	unsigned long get(){
+		if(timerState){
+			return millis() - last + elapsed;
+		}
+		return elapsed;
+	}
+	void set(unsigned long e){
+		reset();
+		elapsed = e;
+	}
+} DiffTimer;
+
+DiffTimer conteggio, spegnimento;
+int led1=13;
+int led2=12;
+int led3=11;
+int tasto=2;
+int count=0;
+
+void setup(){
+	pinMode(tasto,INPUT);
+	pinMode(led1,OUTPUT);
+	pinMode(led2,OUTPUT);
+	pinMode(led3,OUTPUT);
+	digitalWrite(led1,LOW);
+	digitalWrite(led2,LOW);
+	digitalWrite(led3,LOW);
+    Serial.begin(115200);
+}
+
+void loop(){	
+    //legge valore attuale dell'ingresso
+    if(digitalRead(tasto)==HIGH){
+		//fronte di salita
+        spegnimento.start();
+        waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
+		//fronte di discesa
+        spegnimento.stop();
+		//parte alla prima pressione
+		count++;
+		if(count == 1)
+			conteggio.start();
+    }else if(conteggio.get() > 1000){
+        conteggio.stop();
+		conteggio.reset();
+		if(count>0){
+			digitalWrite(14-count,HIGH);
+			count=0;
+		}
+    }else if(spegnimento.get() > 3000){
+		spegnimento.reset();
+        digitalWrite(led1,LOW);
+        digitalWrite(led2,LOW);
+        digitalWrite(led3,LOW);
+        count=0;
+    }
+    delay(10);
+}
+```
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/1EIcEp5BkZt-copy-of-selezione-luci-e-spegnimento-con-un-solo-tasto/editel?tenant=circuits
+
 >[Torna all'indice](timerbase.md) >[versione in Python](polledtimer_seq_py.md)
