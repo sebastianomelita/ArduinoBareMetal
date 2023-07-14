@@ -100,19 +100,19 @@ typedef struct
 DiffTimer acceso;
 
 void setup(){
-	pinMode(led,OUTPUT);
-	pinMode(tasto,INPUT);
-	digitalWrite(led,LOW);
-	digitalWrite(tasto,LOW);
+    pinMode(led,OUTPUT);
+    pinMode(tasto,INPUT);
+    digitalWrite(led,LOW);
+    digitalWrite(tasto,LOW);
 }
 
 void loop(){
-  	if(digitalRead(tasto)==HIGH){
-      digitalWrite(led,HIGH);
-      waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
-      acceso.start();
+    if(digitalRead(tasto)==HIGH){
+        digitalWrite(led,HIGH);
+        waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
+      	acceso.start();
     }else if(acceso.get() > 5000){
-      digitalWrite(led,LOW);
+     	digitalWrite(led,LOW);
     }
 }
 	
