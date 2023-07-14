@@ -112,6 +112,7 @@ void loop(){
         waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
       	acceso.start();
     }else if(acceso.get() > 5000){
+	acceso.reset();
      	digitalWrite(led,LOW);
     }
 }
