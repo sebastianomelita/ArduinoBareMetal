@@ -8,16 +8,13 @@ I timers possono essere **periodici**, ed uno di questi era proprio lo schedulat
 **In** **generale**, possiamo individuare alcune **componenti del timer**:
 
 - **reset** del timer. Accade al verificarsi di una certa **condizione**.
+- **start**. Avvia o riavvia il timer quando si avvera la **condizione di attivazione** posta in punto qualsiasi del loop. Imposta il flag di stato ```timerState```. 
+- **stop** del timer. Accade al verificarsi di una certa **condizione** di sospensione del timer posta in punto qualsiasi del loop. In questa occasione il timer **campiona** il ritardo accumulato dall'ultimo riavvio e lo somma al **tempo di conteggio** cumulato all'ultima sospensione tramite ```elapsed += millis() - last```.
+- **get** del tempo **tempo di conteggio** (elapsed) dal momento del **primo avvio** del timer. Viene fatto ad ogni ciclo di **loop** (meno se filtrato) e serve a realizzare il confronto con un tempo di timeout confrontato con un operatore relazionale (```var.get() > timeout```). Il valore restituito dipende dallo stao del timer:
+     - se **```timerState == false```** allora restituisce l'ultimo **tempo di conteggio** misurato e memorizzato al momento della chiamata a stop() tramite ```elapsed += millis() - last```.
+     - se **```timerState == true```** allora calcola il **tempo di conteggio** corrente campionando il ritardo attuale dall'ultimo riavvio e sommandolo ai ritardo cumulato prima dell'ultima sospensione (```millis() - last + elapsed```).
+- **istruzioni triggerate** (scatenate) dal timer. Vengono eseguite (o non eseguite) in base al **tempo di conteggio misurato** dal timer. Vengono eseguite in maniera sequenziale in un punto stabilito del loop (istruzioni sincrone) in corrispondenza della verità di una certa condizione che coinvolge la funzione ```get()``` come operando.
 
-- **polling** del tempo trascorso. Viene fatto ad ogni ciclo di **loop** (talvolta meno).
-
-- **istruzioni triggerate** (scatenate) dal timer. Vengono eseguite (o non eseguite) in base al **tempo** **misurato** dal timer
-
-- **condizione di attivazione** posta in punto qualsiasi del loop determina, quando è vera, la partenza del timer
-
-- (opzionale) la **variabile stato** del timer che **abilita** il timer quando serve e lo **disabilita** quando non serve per evitare **attivazioni spurie** accidentali.
-
-Un **timer periodico** è del tutto analogo ad un o schedulatore e, ad ogni timeout, necessita del **ricampionamento** del **tempo attuale** per poter di nuovo calcolare il **tempo futuro** del nuovo **timeout**.  Un esempio di **timer periodico** potrebbe apparire così:
 
 ```C++
 typedef struct 
