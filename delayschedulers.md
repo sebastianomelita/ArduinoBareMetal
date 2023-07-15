@@ -60,24 +60,24 @@ void loop()
 	if(digitalRead(tasto)==HIGH){
 	//fronte di salita
         waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
-		//fronte di discesa
-		//parte alla prima pressione
-		count++;
-		if(count==10)
-		{
-			digitalWrite(led1,HIGH);
-		}
-		else if(count==20)
-		{
-			digitalWrite(led1,LOW);
-			digitalWrite(led2,HIGH);
-		}
-		else if(count==30)
-		{
-			digitalWrite(led1,LOW);
-			digitalWrite(led2,LOW);
-			count=0;
-		}
+	//fronte di discesa
+	//parte alla prima pressione
+	count++;
+	if(count==10)
+	{
+		digitalWrite(led1,HIGH);
+	}
+	else if(count==20)
+	{
+		digitalWrite(led1,LOW);
+		digitalWrite(led2,HIGH);
+	}
+	else if(count==30)
+	{
+		digitalWrite(led1,LOW);
+		digitalWrite(led2,LOW);
+		count=0;
+	}
     }
 	delay(10);
 }
