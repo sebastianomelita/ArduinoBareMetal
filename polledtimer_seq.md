@@ -197,8 +197,6 @@ void loop(){
 	if(count == 1)
 		conteggio.start();
     }else if(conteggio.get() > 1000){
-        conteggio.stop();
-	conteggio.reset();
 	if(count>0){
 		digitalWrite(14-count,HIGH);
 		count=0;
@@ -292,8 +290,6 @@ void loop(){
 		if(count == 1)
 			conteggio.start();
 	}else if(conteggio.get() > 1000){
-                conteggio.stop();
-		conteggio.reset();
 		if(count>0){
 			digitalWrite(14-count,HIGH);
 			count=0;
@@ -419,15 +415,11 @@ void loop(){
 		if(count2 == 1)
 			conteggio2.start();
 	}else if(conteggio1.get() > 1000){
-        	conteggio1.stop();
-		conteggio1.reset();
 		if(count1>0){
 			digitalWrite(14-count1,HIGH);
 			count1=0;
 		}
 	}else if(conteggio2.get() > 1000){
-        	conteggio2.stop();
-		conteggio2.reset();
 		if(count2>0){
 			digitalWrite(14-count2,LOW);
 			count2=0;
