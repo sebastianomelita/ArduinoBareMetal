@@ -56,10 +56,9 @@ void setup()
 
 void loop() 
 {
-		
 	//legge valore attuale dell'ingresso
 	if(digitalRead(tasto)==HIGH){
-		//fronte di salita
+	//fronte di salita
         waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
 		//fronte di discesa
 		//parte alla prima pressione
