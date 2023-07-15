@@ -316,4 +316,123 @@ void loop(){
 
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/92WnWXH0OvB-copy-of-scegli-chi-onoff-con-un-tasto/editel?tenant=circuits
 
+### **Scegli chi ON/OFF due tasti**
+
+```C++
+/*
+ Scrivere un programma che realizzi l'accensione del led1, oppure del led2 oppure del led3 led 
+ tramite la pressione consecutiva di un pulsante una, due o tre volte all'interno di 
+ un intervallo temporale di un secondo. Col la pressione di un altro pulsante si fa una cosa analoga per spegnerli.
+*/
+typedef struct 
+{
+	unsigned long elapsed, last;
+	bool timerState=false;
+	void reset(){
+		elapsed = 0;
+		last = millis();
+	}
+	void stop(){
+		timerState = false;
+    		elapsed += millis() - last;
+	}
+	void start(){
+		timerState = true;
+		last = millis();
+	}
+	unsigned long get(){
+		if(timerState){
+			return millis() - last + elapsed;
+		}
+		return elapsed;
+	}
+	void set(unsigned long e){
+		reset();
+		elapsed = e;
+	}
+} DiffTimer;
+
+// attesa evento con tempo minimo di attesa
+void waitUntilInputLow(int btn, unsigned t)
+{
+    while(!digitalRead(btn)==LOW){
+	    delay(t);
+    }
+}
+
+DiffTimer conteggio1, conteggio2;
+//fine variabili timer
+int led1=13;
+int led2=12;
+int led3=11;
+int tasto1=2;
+int tasto2=3;
+int count1=0;
+int count2=0;
+
+//azione da compiere allo scadere del timer	
+void onElapse(){
+	//se c'è un conteggio di accensione attivo accendi il led corrispondente al numero raggiunto
+	if(count1>0){
+		digitalWrite(14-count1,HIGH);
+		count1=0;
+	}
+	//se c'è un conteggio di spegnimento attivo spegni il led corrispondente al numero raggiunto
+	if(count2>0){
+		digitalWrite(14-count2,LOW);
+		count2=0;
+	}
+}
+
+void setup(){
+	pinMode(tasto1,INPUT);
+	pinMode(tasto2,INPUT);
+	pinMode(led1,OUTPUT);
+	pinMode(led2,OUTPUT);
+	pinMode(led3,OUTPUT);
+	digitalWrite(led1,LOW);
+	digitalWrite(led2,LOW);
+	digitalWrite(led3,LOW);
+	//startTimer(1000);
+	count1=0;
+	count2=0;
+}
+
+void loop(){
+	if(digitalRead(tasto1)==HIGH){
+		//fronte di salita
+		waitUntilInputLow(tasto1,50);			// attendi finchè non c'è fronte di discesa
+		//fronte di discesa
+		//parte alla prima pressione
+		count1++;
+		if(count1 == 1)
+			conteggio1.start();
+	}else if(digitalRead(tasto2)==HIGH){
+		//fronte di salita
+		waitUntilInputLow(tasto2,50);			// attendi finchè non c'è fronte di discesa
+		//fronte di discesa
+		//parte alla prima pressione
+		count2++;
+		if(count2 == 1)
+			conteggio2.start();
+	}else if(conteggio1.get() > 1000){
+        conteggio1.stop();
+		conteggio1.reset();
+		if(count1>0){
+			digitalWrite(14-count1,HIGH);
+			count1=0;
+		}
+	}else if(conteggio2.get() > 1000){
+        conteggio2.stop();
+		conteggio2.reset();
+		if(count2>0){
+			digitalWrite(14-count2,LOW);
+			count2=0;
+		}
+	}
+	delay(10);
+}
+```
+Simulazione su Arduino con Tinkercad: [tenant=circuits](https://www.tinkercad.com/things/1eJwTOD7t8K-copy-of-scegli-chi-onoff/editel?tenant=circuits)https://www.tinkercad.com/things/1eJwTOD7t8K-copy-of-scegli-chi-onoff/editel?tenant=circuits
+
 >[Torna all'indice](timerbase.md) >[versione in Python](polledtimer_seq_py.md)
