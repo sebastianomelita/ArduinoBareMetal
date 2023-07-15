@@ -175,4 +175,7 @@ void loop(){
 	}
 }
 ```
+
+ [Esempi timers ad eventi](esempitimers.md)
+ 
 >[Torna all'indice](timerbase.md) >[versione in Python](polledtimer_event_py.md)
