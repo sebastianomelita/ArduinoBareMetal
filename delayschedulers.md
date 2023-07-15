@@ -58,28 +58,28 @@ void loop()
 {
 	//legge valore attuale dell'ingresso
 	if(digitalRead(tasto)==HIGH){
-	//fronte di salita
-        waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
-	//fronte di discesa
-	//parte alla prima pressione
-	count++;
-	if(count==10)
-	{
-		digitalWrite(led1,HIGH);
-	}
-	else if(count==20)
-	{
-		digitalWrite(led1,LOW);
-		digitalWrite(led2,HIGH);
-	}
-	else if(count==30)
-	{
-		digitalWrite(led1,LOW);
-		digitalWrite(led2,LOW);
-		count=0;
-	}
-    }
-	delay(10);
+		//fronte di salita
+	        waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
+		//fronte di discesa
+		//parte alla prima pressione
+		count++;
+		if(count==10)
+		{
+			digitalWrite(led1,HIGH);
+		}
+		else if(count==20)
+		{
+			digitalWrite(led1,LOW);
+			digitalWrite(led2,HIGH);
+		}
+		else if(count==30)
+		{
+			digitalWrite(led1,LOW);
+			digitalWrite(led2,LOW);
+			count=0;
+		}
+      }
+      delay(10);
 }
 ```
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/things/6toP0Dc3v0x-copy-of-conta-numeri-schedulato/editel?tenant=circuits
