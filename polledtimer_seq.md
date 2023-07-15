@@ -360,7 +360,6 @@ void waitUntilInputLow(int btn, unsigned t)
 }
 
 DiffTimer conteggio1, conteggio2;
-//fine variabili timer
 int led1=13;
 int led2=12;
 int led3=11;
@@ -400,12 +399,14 @@ void loop(){
 		count2++;
 		if(count2 == 1)
 			conteggio2.start();
-	}else if(conteggio1.get() > 1000){
+	}
+        if(conteggio1.get() > 1000){
 		if(count1>0){
 			digitalWrite(14-count1,HIGH);
 			count1=0;
 		}
-	}else if(conteggio2.get() > 1000){
+	}
+        if(conteggio2.get() > 1000){
 		if(count2>0){
 			digitalWrite(14-count2,LOW);
 			count2=0;
@@ -413,6 +414,8 @@ void loop(){
 	}
 	delay(10);
 }
+
+
 ```
 Simulazione su Arduino con Tinkercad: [tenant=circuits](https://www.tinkercad.com/things/1eJwTOD7t8K-copy-of-scegli-chi-onoff/editel?tenant=circuits)https://www.tinkercad.com/things/1eJwTOD7t8K-copy-of-scegli-chi-onoff/editel?tenant=circuits
 
