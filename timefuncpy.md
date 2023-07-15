@@ -68,7 +68,7 @@ Nonostante questa limitazione del linguaggio è però possibile **emulare** un'i
 ```python
 // attesa evento con tempo minimo di attesa
 def waitUntilInLow(btn,t):
-    while not btn.value()):
+    while btn.value()):
 	 time.sleep(t)
 ```
 
