@@ -221,8 +221,8 @@ Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/1EIcEp5Bk
 /*
  Scrivere un programma che realizzi l'accensione del led1, oppure del led2 oppure del led3 led 
  tramite la pressione consecutiva di un pulsante una, due o tre volte all'interno di 
- un intervallo temporale di un secondo. Col la pressione per almeno un secondo, ma meno di due, dello stesso pulsante si 
- accendono tutti i led, con la pressione dello stesso tasto per più di due secondi si spengono tutti i led.
+ un intervallo temporale di un secondo. Col la pressione per almeno un secondo, ma meno di tre, dello stesso pulsante si 
+ accendono tutti i led, con la pressione dello stesso tasto per più di tre secondi si spengono tutti i led.
 */
 typedef struct 
 {
