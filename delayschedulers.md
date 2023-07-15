@@ -61,7 +61,6 @@ void loop()
 		//fronte di salita
 	        waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
 		//fronte di discesa
-		//parte alla prima pressione
 		count++;
 		if(count==10)
 		{
