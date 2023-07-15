@@ -19,107 +19,100 @@ Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto
 - **istruzioni triggerate** (scatenate) dal timer. Vengono eseguite in base al **tempo di conteggio misurato** dal timer. Vengono eseguite in maniera sequenziale in un punto stabilito del loop (istruzioni sincrone) in corrispondenza della **verità** di una certa **condizione** sul tempo di conteggio che coinvolge la funzione ```get()``` come operando. In corrispondenza si potrebbe azzerare il timer con ```reset()``` per prepararlo per il prossimo utilizzo.
 
 
-```C++
-typedef struct 
-{
-	unsigned long elapsed, last;
-	bool timerState=false;
-	void reset(){
-		elapsed = 0;
-		last = millis();
-	}
-	void stop(){
-		timerState = false;
-    		elapsed += millis() - last;
-	}
-	void start(){
-		timerState = true;
-		last = millis();
-	}
-	unsigned long get(){
-		if(timerState){
-			return millis() - last + elapsed;
-		}
-		return elapsed;
-	}
-	void set(unsigned long e){
-		reset();
-		elapsed = e;
-	}
-} DiffTimer;
+```python
+class DiffTimer(object):
+    def __init__(self,elapsed):
+        self.elapsed = elapsed
+        self.timerState = False
+
+    def __init__(self):
+        self.elapsed = 0
+        self.timerState = False
+
+    def reset(self): # transizione di un pulsante
+        self.elapsed = 0
+        self.last = time.time()
+
+    def stop(self):
+        self.timerState = False
+        self.elapsed = self.elapsed + time.time() - last
+
+    def start(self):
+        self.timerState = True
+        self.last = time.time()
+
+    def get(self):
+        if self.timerState:
+            return time.time() - self.last + self.elapsed
+        return self.elapsed
+
+    def set(self, e):
+        reset()
+        self.elapsed = e
 ```
 
 ### **Esempi**
 
 ```C++
-/*
-Scrivere un programma che realizzi l'accensione di un led tramite un pulsante temporizzato che spegne il led 
-dopo un numero di ms impostati da setup. La logica del tasto deve essere senza stato e deve essere sensibile 
-al fronte di salita del segnale. Immaginare un collegamento pull down del tasto.
-*/
-//inizio variabili per un solo pulsante
-int led=13;
-int tasto=2;
-int in, out;
+#Scrivere un programma che realizzi l'accensione di un led tramite un pulsante temporizzato che spegne il led 
+#dopo un numero di ms impostati da setup. La logica del tasto deve essere senza stato e deve essere sensibile 
+#al fronte di salita del segnale. Immaginare un collegamento pull down del tasto.
+import time
+from machine import Pin
 
-// attesa evento con tempo minimo di attesa
-void waitUntilInputLow(int btn, unsigned t)
-{
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
-}
+# attesa evento con tempo minimo di attesa
+def waitUntilInLow(btn,t):
+    while btn.value():
+	 time.sleep(t)
 
-typedef struct 
-{
-	unsigned long elapsed, last;
-	bool timerState=false;
-	void reset(){
-		elapsed = 0;
-		last = millis();
-	}
-	void stop(){
-		timerState = false;
-    		elapsed += millis() - last;
-	}
-	void start(){
-		timerState = true;
-		last = millis();
-	}
-	unsigned long get(){
-		if(timerState){
-			return millis() - last + elapsed;
-		}
-		return elapsed;
-	}
-	void set(unsigned long e){
-		reset();
-		elapsed = e;
-	}
-} DiffTimer;
+class DiffTimer(object):
+    def __init__(self,elapsed):
+        self.elapsed = elapsed
+        self.timerState = False
 
-DiffTimer acceso;
+    def __init__(self):
+        self.elapsed = 0
+        self.timerState = False
 
-void setup(){
-    pinMode(led,OUTPUT);
-    pinMode(tasto,INPUT);
-    digitalWrite(led,LOW);
-    digitalWrite(tasto,LOW);
-}
+    def reset(self): # transizione di un pulsante
+        self.elapsed = 0
+        self.last = time.time()
 
-void loop(){
-    if(digitalRead(tasto)==HIGH){
-        digitalWrite(led,HIGH);
-        waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
-      	acceso.start();
-    }else if(acceso.get() > 5000){
-	//non necessario il reset() perchè mai eseguito uno stop()
-     	digitalWrite(led,LOW);
-    }
-}
+    def stop(self):
+        self.timerState = False
+        self.elapsed = self.elapsed + time.time() - last
+
+    def start(self):
+        self.timerState = True
+        self.last = time.time()
+
+    def get(self):
+        if self.timerState:
+            return time.time() - self.last + self.elapsed
+        return self.elapsed
+
+    def set(self, e):
+        reset()
+        self.elapsed = e
 	
+tasto = Pin(12,Pin.IN)
+led = Pin(13,Pin.OUT)
+acceso = DiffTimer()
+
+while True:
+    if tasto.value() == 1:
+        print("on")
+        led.on()
+        waitUntilInLow(tasto, .005); # attendi finchè non c'è fronte di discesa
+        print("off")
+        acceso.start()
+    elif acceso.get() > 5:
+        #non necessario il reset() perchè mai eseguito uno stop()
+        led.off()
+    time.sleep(0.01)
+
 ```
-Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/fCpauVnNUZh-accensione-led-monostabile/editel
+Simulazione su Arduino con Wokwi: https://wokwi.com/projects/370308771487427585
 
 ### **Selezione luci**
 
