@@ -1,4 +1,4 @@
->[Torna all'indice](indextimers.md) >[versione in Python](catenetimerspy.md)
+>[Torna a polled timers](polledtimer_event.md) >[versione in Python](catenetimerspy.md)
 
 ## **ESEMPI TIMERS**
 
@@ -521,4 +521,4 @@ void loop()
 
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/3qFE4pEpy8V?editbtn=1
 
->[Torna all'indice](indextimers.md) >[versione in Python](catenetimerspy.md)
+>[Torna a polled timers](polledtimer_event.md) >[versione in Python](catenetimerspy.md)
