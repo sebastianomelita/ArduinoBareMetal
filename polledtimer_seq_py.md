@@ -178,104 +178,85 @@ Simulazione su Arduino con Wokwi: https://wokwi.com/projects/370317625079361537
 
 ### **Scegli chi ON/OFF un tasto**
 
-```C++
-/*
- Scrivere un programma che realizzi l'accensione del led1, oppure del led2 oppure del led3 led 
- tramite la pressione consecutiva di un pulsante una, due o tre volte all'interno di 
- un intervallo temporale di un secondo. Col la pressione per almeno un secondo, ma meno di due, dello stesso pulsante si 
- accendono tutti i led, con la pressione dello stesso tasto per più di due secondi si spengono tutti i led.
-*/
-typedef struct 
-{
-	unsigned long elapsed, last;
-	bool timerState=false;
-	void reset(){
-		elapsed = 0;
-		last = millis();
-	}
-	void stop(){
-		timerState = false;
-    		elapsed += millis() - last;
-	}
-	void start(){
-		timerState = true;
-		last = millis();
-	}
-	unsigned long get(){
-		if(timerState){
-			return millis() - last + elapsed;
-		}
-		return elapsed;
-	}
-	void set(unsigned long e){
-		reset();
-		elapsed = e;
-	}
-} DiffTimer;
+```python
+#Scrivere un programma che realizzi l'accensione del led1, oppure del led2 oppure del led3 led 
+#tramite la pressione consecutiva di un pulsante una, due o tre volte all'interno di 
+#un intervallo temporale di un secondo. Col la pressione per almeno un secondo, ma meno di tre, dello stesso pulsante si 
+#accendono tutti i led, con la pressione dello stesso tasto per più di tre secondi si spengono tutti i led.
+import time
+from machine import Pin
 
-// attesa evento con tempo minimo di attesa
-void waitUntilInputLow(int btn, unsigned t)
-{
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
-}
+# attesa evento con tempo minimo di attesa
+def waitUntilInLow(btn,t):
+    while btn.value():
+	 time.sleep(t)
 
-DiffTimer conteggio, spegnimento;
+class DiffTimer(object):
+    def __init__(self,elapsed):
+        self.elapsed = elapsed
+        self.timerState = False
+    def __init__(self):
+        self.elapsed = 0
+        self.timerState = False
+    def reset(self): # transizione di un pulsante
+        self.elapsed = 0
+        self.last = time.time()
+    def stop(self):
+        self.timerState = False
+        self.elapsed = self.elapsed + time.time() - self.last
+    def start(self):
+        self.timerState = True
+        self.last = time.time()
+    def get(self):
+        if self.timerState:
+            return time.time() - self.last + self.elapsed
+        return self.elapsed
+    def set(self, e):
+        reset()
+        self.elapsed = e
+	
+tasto = Pin(12,Pin.IN)
+led1 = Pin(13,Pin.OUT)
+led2 = Pin(14,Pin.OUT)
+led3 = Pin(18,Pin.OUT)
+conteggio = DiffTimer()
+spegnimento = DiffTimer()
+count = 0
+leds = [led1,led2,led3]
 
-int led1=13;
-int led2=12;
-int led3=11;
-int tasto=2;
-int count=0;
-int in, out;
-
-void setup(){
-	pinMode(tasto,INPUT);
-	pinMode(led1,OUTPUT);
-	pinMode(led2,OUTPUT);
-	pinMode(led3,OUTPUT);
-	digitalWrite(led1,LOW);
-	digitalWrite(led2,LOW);
-	digitalWrite(led3,LOW);
-}
-
-void loop(){			
-	//ad ogni pressione del tasto entro il tempo prefissato aggiorna il contatore di quel tasto (pressione)
-	if(digitalRead(tasto)==HIGH){
-		//fronte di salita
-		spegnimento.start();
-		waitUntilInputLow(tasto,50);			// attendi finchè non c'è fronte di discesa
-		//fronte di discesa
-		spegnimento.stop();
-		//parte alla prima pressione
-		count++;
-		if(count == 1)
-			conteggio.start();
-	}else if(conteggio.get() > 1000){
-                conteggio.stop();
-		conteggio.reset();
-		if(count>0){
-			digitalWrite(14-count,HIGH);
-			count=0;
-		}
-	}else if(spegnimento.get() > 1000 && spegnimento.get() < 2000){
-		spegnimento.reset();
-		digitalWrite(led1,HIGH);
-		digitalWrite(led2,HIGH);
-		digitalWrite(led3,HIGH);
-		count=0;
-	}else if(spegnimento.get() > 2000){
-		spegnimento.reset();
-		digitalWrite(led1,LOW);
-		digitalWrite(led2,LOW);
-		digitalWrite(led3,LOW);
-		count=0;
-	}
-}
+while True:
+    if tasto.value() == 1:
+        print("salita")
+        spegnimento.start()
+        waitUntilInLow(tasto, .005); # attendi finchè non c'è fronte di discesa
+        print("discesa")
+        spegnimento.stop()
+        # parte alla prima pressione
+        count = count + 1
+        if count == 1:
+            conteggio.start()
+    elif conteggio.get() > 1:
+        conteggio.stop()
+        conteggio.reset()
+        if(count>0 and count < 4):
+            leds[count-1].on()
+            count=0
+    if spegnimento.get() > 1 and spegnimento.get() < 3:
+        spegnimento.reset()
+        count=0
+        leds[0].on()
+        leds[1].on()
+        leds[2].on()
+    elif spegnimento.get() > 2:
+        spegnimento.reset()
+        count=0
+        leds[0].off()
+        leds[1].off()
+        leds[2].off()
+    time.sleep(0.01)
 ```
 
-Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/92WnWXH0OvB-copy-of-scegli-chi-onoff-con-un-tasto/editel?tenant=circuits
+Simulazione su Arduino con Wokwi: https://wokwi.com/projects/370321961849316353
 
 ### **Scegli chi ON/OFF due tasti**
 
