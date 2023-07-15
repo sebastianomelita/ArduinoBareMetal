@@ -369,20 +369,6 @@ int tasto2=3;
 int count1=0;
 int count2=0;
 
-//azione da compiere allo scadere del timer	
-void onElapse(){
-	//se c'è un conteggio di accensione attivo accendi il led corrispondente al numero raggiunto
-	if(count1>0){
-		digitalWrite(14-count1,HIGH);
-		count1=0;
-	}
-	//se c'è un conteggio di spegnimento attivo spegni il led corrispondente al numero raggiunto
-	if(count2>0){
-		digitalWrite(14-count2,LOW);
-		count2=0;
-	}
-}
-
 void setup(){
 	pinMode(tasto1,INPUT);
 	pinMode(tasto2,INPUT);
