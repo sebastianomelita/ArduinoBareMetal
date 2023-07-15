@@ -67,7 +67,7 @@ Nonostante questa limitazione del linguaggio è però possibile **emulare** un'i
 
 ```python
 // attesa evento con tempo minimo di attesa
-void waitUntilInLow(btn,t):
+def waitUntilInLow(btn,t):
     while not btn.value()):
 	 time.sleep(t)
 ```
@@ -80,7 +80,7 @@ Il blocco in **attesa di una variabile** l'esecuzione resta bloccata indefinitiv
 
 ```python
 // attesa evento con tempo minimo di attesa
-void waitUntil(c, t)
+def waitUntil(c, t)
     global c
     while not c:
 	 time.sleep(t)
