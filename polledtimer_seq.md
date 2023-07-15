@@ -318,6 +318,8 @@ Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/92WnWXH0O
 
 ### **Scegli chi ON/OFF due tasti**
 
+In questo esempio vengono gestiti due input con i delay in un unico loop(). Questo comporta che possono essere utilizzati entrambi i pulsanti ma in momenti diversi essendo il loop() per 50 msec monopolizzato dal task dell'antirimbalzo di ciascun pulsante. Nel tempo di guardia dell'antirimbalzo nessun task in più può essere svolto in parallelo.  
+
 ```C++
 /*
  Scrivere un programma che realizzi l'accensione del led1, oppure del led2 oppure del led3 led 
