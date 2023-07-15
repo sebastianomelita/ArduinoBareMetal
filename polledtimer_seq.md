@@ -298,7 +298,8 @@ void loop(){
 			digitalWrite(14-count,HIGH);
 			count=0;
 		}
-	}else if(spegnimento.get() > 1000 && spegnimento.get() < 2000){
+	}
+	if(spegnimento.get() > 1000 && spegnimento.get() < 2000){
 		spegnimento.reset();
 		digitalWrite(led1,HIGH);
 		digitalWrite(led2,HIGH);
