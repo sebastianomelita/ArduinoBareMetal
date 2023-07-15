@@ -161,8 +161,6 @@ while True:
         if count == 1:
             conteggio.start()
     elif conteggio.get() > 1:
-        conteggio.stop()
-        conteggio.reset()
         if(count>0 and count < 4):
             leds[count-1].on()
             count=0
@@ -236,8 +234,6 @@ while True:
         if count == 1:
             conteggio.start()
     elif conteggio.get() > 1:
-        conteggio.stop()
-        conteggio.reset()
         if(count>0 and count < 4):
             leds[count-1].on()
             count=0
