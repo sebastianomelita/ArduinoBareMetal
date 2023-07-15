@@ -24,28 +24,22 @@ class DiffTimer(object):
     def __init__(self,elapsed):
         self.elapsed = elapsed
         self.timerState = False
-
     def __init__(self):
         self.elapsed = 0
         self.timerState = False
-
     def reset(self): # transizione di un pulsante
         self.elapsed = 0
         self.last = time.time()
-
     def stop(self):
         self.timerState = False
-        self.elapsed = self.elapsed + time.time() - last
-
+        self.elapsed = self.elapsed + time.time() - self.last
     def start(self):
         self.timerState = True
         self.last = time.time()
-
     def get(self):
         if self.timerState:
             return time.time() - self.last + self.elapsed
         return self.elapsed
-
     def set(self, e):
         reset()
         self.elapsed = e
@@ -69,28 +63,22 @@ class DiffTimer(object):
     def __init__(self,elapsed):
         self.elapsed = elapsed
         self.timerState = False
-
     def __init__(self):
         self.elapsed = 0
         self.timerState = False
-
     def reset(self): # transizione di un pulsante
         self.elapsed = 0
         self.last = time.time()
-
     def stop(self):
         self.timerState = False
-        self.elapsed = self.elapsed + time.time() - last
-
+        self.elapsed = self.elapsed + time.time() - self.last
     def start(self):
         self.timerState = True
         self.last = time.time()
-
     def get(self):
         if self.timerState:
             return time.time() - self.last + self.elapsed
         return self.elapsed
-
     def set(self, e):
         reset()
         self.elapsed = e
