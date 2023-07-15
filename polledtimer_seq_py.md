@@ -53,7 +53,7 @@ class DiffTimer(object):
 
 ### **Esempi**
 
-```C++
+```python
 #Scrivere un programma che realizzi l'accensione di un led tramite un pulsante temporizzato che spegne il led 
 #dopo un numero di ms impostati da setup. La logica del tasto deve essere senza stato e deve essere sensibile 
 #al fronte di salita del segnale. Immaginare un collegamento pull down del tasto.
