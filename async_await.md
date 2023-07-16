@@ -252,10 +252,13 @@ Link simulazione online: https://wokwi.com/projects/369675288427672577
 
 **Coroutines annidate**
 
-Per eseguire effettivamente una coroutine, asyncio fornisce **due** meccanismi principali:
+Per eseguire effettivamente una coroutine, asyncio fornisce **tre** meccanismi principali:
 
 - La funzione ```asyncio.run()``` per eseguire la funzione asincrona ```main()``` come punto di ingresso di primo livello.
-- In **attesa dentro** una coroutine con ```wait```. Il seguente frammento di codice stamperà "hello" dopo aver atteso 1 secondo, quindi stamperà "world" dopo aver atteso altri 2 secondi:
+- in **parallelo** alle altre coroutine mediante ```asyncio.create_task(task1)```per eseguire la funzione asincrona ```task1()``` dentro una qualsiasi atra funzione asincrona
+- In **attesa dentro** una coroutine con ```wait```.
+
+Il seguente frammento di codice illustra meglio l'ultimo caso. Verrà stampato "hello" dopo aver atteso 1 secondo, quindi stamperà "world" dopo aver atteso altri 2 secondi:
 
 ```python
 import asyncio
