@@ -147,14 +147,14 @@ while True:
         pulsante.toggle()
         
         # task 1
-        if not (step % 20):      # schedulo eventi al multiplo del tempo stabilito (2 sec)
+        if not (step % 20):      # schedulo eventi al multiplo del tempo stabilito (1 sec)
             if pulsante.getState():
                 blink(led1)
             else:
                 led1.off()
                             
         # task 2
-        if not (step % 10):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
+        if not (step % 10):      # schedulo eventi al multiplo del tempo stabilito (0.5 sec)
             if pulsante.getState():
                 blink(led2)
             else:
@@ -165,7 +165,6 @@ while True:
             
     # il codice eseguito al tempo massimo della CPU va qui	
     # ........
-
 ```
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/370407560534851585
 
