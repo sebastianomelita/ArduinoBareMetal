@@ -113,7 +113,7 @@ realizza una funzione di **wait su condizione** che ritarda il thread corrente d
 - **debouncing** software dell'ingresso digitale
 - determinazione del **fronte di discesa** di un ingresso digitale
 
-Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** su **core diversi**. La libreria usata è quella nativa dello ESP32 che implementa dalla fabbrica un **middleware RTOS** per cui non è necessario **includere** nessuna libreria esterna (per una spiegazione dettagliata dei thread si rimanda a [schedulatore di compiti basato sui thread](threadsched.md)):
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati all'interno di **task** diversi su **uno stesso thread**. La libreria usata è quella nativa dello ESP32 uasync.io:
 
 ```python
 #Alla pressione del pulsante si attiva o disattiva il lampeggo di un led 
