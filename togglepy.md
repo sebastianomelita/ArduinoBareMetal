@@ -96,6 +96,88 @@ def main():
 if __name__ == "__main__":
 	main()
 ```
+
+### **Schedulatore basato su async/await**
+
+In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato **nello stesso loop** ma in un momento diverso stabilito mediante un istruzione ```waitUntilInputLow()```. La funzione, di fatto, esegue un **blocco** del **task** corrente in **"attesa"**  della soddisfazione di una certa **condizione**, senza bloccare l'esecuzione degli altri task. L'**attesa** è spesa campionando continuamente un **ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, in un loop successivo, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un **fronte di salita**. 
+
+La funzione 
+```python
+// attesa evento con tempo minimo di attesa
+async def waitUntilInLow(btn,t):
+    while btn.value()):
+	 await asyncio.sleep(t)
+ 
+```
+realizza una funzione di **wait su condizione** che ritarda il thread corrente di un delay() prefissato al  termine del quale ricalcola l'ingresso. L'operazione viene ripetuta fin tanto che la condizione attesa non è asserita. Si tratta di una funzione utile per due **scopi**:
+- **debouncing** software dell'ingresso digitale
+- determinazione del **fronte di discesa** di un ingresso digitale
+
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** su **core diversi**. La libreria usata è quella nativa dello ESP32 che implementa dalla fabbrica un **middleware RTOS** per cui non è necessario **includere** nessuna libreria esterna (per una spiegazione dettagliata dei thread si rimanda a [schedulatore di compiti basato sui thread](threadsched.md)):
+
+```python
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+
+
+// attesa evento con tempo minimo di attesa
+async def waitUntilInLow(btn,t):
+    while btn.value()):
+	 await asyncio.sleep(t)
+ 
+void btnThread(void * d){
+	String taskMessage = "Task running on core ";
+    	taskMessage = taskMessage + xPortGetCoreID();
+	
+	// Loop del thread
+	while(true){
+		if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
+			stato = !stato; 				// impostazione dello stato del toggle
+			waitUntilInputLow(pulsante,50);			// attendi finchè non c'è fronte di discesa
+		}
+		delay(10); 						// equivale a yeld() (10 per le simulazioni 0 in HW)
+	}
+}
+
+ 
+import uasyncio
+from machine import Pin
+
+async def toggle(btn, st):
+    global st
+    while True:
+    	if btn.value():
+            st = not st
+            await waitUntilInLow(btn,50)
+
+async def blink(led, period_ms):
+    while True:
+	if stato:
+	        led.on()
+	        await uasyncio.sleep_ms(period_ms)
+	        led.off()
+	        await uasyncio.sleep_ms(period_ms)
+        else:
+		led.off()
+
+async def main(btn, led1, led2):
+    uasyncio.create_task(blink(led2, 1000))
+    uasyncio.create_task(toggle(btn, stato))
+
+    while True:
+        if btn.value():
+            led1.on()
+        else:
+            led1.off()
+        
+        await uasyncio.sleep_ms(50)
+
+btn = Pin(12,Pin.IN)
+led1 = Pin(13,Pin.OUT)
+stato = 0;  // variabile globale che memorizza lo stato del pulsante
+uasyncio.run(main(btn, led1, led2))
+  
+
+```
 >[Torna all'indice](indexpulsanti.md) >[versione in C++](toggle.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbLTE1NTkxOTA3OTIsLTk1MzQ1NDY2NV19
