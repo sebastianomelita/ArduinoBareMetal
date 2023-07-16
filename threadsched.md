@@ -93,6 +93,13 @@ while(isrun){
 
 Le **fasi di lavoro** del loop possono essere **schedulate** (pianificate nel tempo) dagli usuali delay()  bloccanti che permettono la progettazione **lineare** di un algoritmo nel tempo. In realtà, una volta che il thread che ha in uso la CPU entra in un delay(), lo schedulatore, che adesso è di tipo preemptive, sottrae il controllo della CPU al thread corrente e lo assegna ad un altro thread che, in quel momento, è in attesa di esecuzione.
 
+**Modalità cooperativa**
+
+Per quanto riguarda la **definizione** di un task va ricordato che l'interno del loop del task **ogni ramo** di esecuzione **potrebbe** essere reso **non bloccante** inserendo, la funzione **```delay(10)```** se il flusso di esecuzione deve essere **bloccato temporaneamente** per un certo tempo fissato, oppure la funzione **```delay(0)```** se questo **non deve essere bloccato**. Ciò serve a richiamare lo schedulatore **almeno una volta**, qualunque **direzione** di  esecuzione prenda il codice, in modo da cedere **"spontaneamente"** il controllo ad un altro task al termine del loop() del task corrente. La **cessione del controllo** dello schedulatore ad ogni ramo di esecuzione **è facoltativa** perchè comunque gli altri task verrebbero eseguiti (il sistema **è preemptive**).
+
+Sia ```delay(0)``` che ```delay(10)``` cedono il controllo della CPU allo schedulatore che lo assegna agli altri task che eventualmente in quel momento hanno scaduto il tempo di attesa di un loro delay.
+
+
 ### **Thread POSIX**
 
 **Ogni thread** è definito da un **descrittore** che è una variabile di tipo ```pthread_t```, cioè il tipo thread definito dallo **standard POSIX** del C (https://it.wikipedia.org/wiki/POSIX), che rappresenta il thread. Il **nome** del descrittore è arbitrario a discrezione del programmatore. Il descrittore deve essere passato come **argomento** ad ogni chiamata della funzione dello schedulatore che lancia il thread in esecuzione, cioè la ```pthread_create()```.
