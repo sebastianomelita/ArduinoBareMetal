@@ -158,7 +158,7 @@ while True:
             if pulsante.getState():
                 blink(led2)
             else:
-                led1.off()
+                led2.off()
                             
         # il codice eseguito al tempo base va quì	
         # ..........
