@@ -467,6 +467,71 @@ uasyncio.run(main(btn, led1, led2))
 ```
 Link simulazione online: https://wokwi.com/projects/369680948206974977
 
+### **toggle + blink**
+
+In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato **nello stesso loop** ma in un momento diverso stabilito mediante un istruzione ```waitUntilInputLow()```. La funzione, di fatto, esegue un **blocco** del **task** corrente in **"attesa"**  della soddisfazione di una certa **condizione**, senza bloccare l'esecuzione degli altri task. L'**attesa** è spesa campionando continuamente un **ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, in un loop successivo, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un **fronte di salita**. 
+
+La funzione 
+```python
+// attesa evento con tempo minimo di attesa
+async def waitUntilInLow(btn,t):
+    while btn.value()):
+	 await asyncio.sleep(t)
+ 
+```
+realizza una funzione di **wait su condizione** che ritarda il thread corrente di un delay() prefissato al  termine del quale ricalcola l'ingresso. L'operazione viene ripetuta fin tanto che la condizione attesa non è asserita. Si tratta di una funzione utile per due **scopi**:
+- **debouncing** software dell'ingresso digitale
+- determinazione del **fronte di discesa** di un ingresso digitale
+
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati all'interno di **task** diversi su **uno stesso thread**. La libreria usata è quella nativa dello ESP32 uasync.io:
+
+```python
+#Alla pressione del pulsante si attiva o disattiva il lampeggo di un led 
+import uasyncio
+from machine import Pin
+
+#attesa evento con tempo minimo di attesa
+async def waitUntilInLow(btn,t):
+    while btn.value():
+	    await uasyncio.sleep_ms(t)
+
+async def toggle(index, btn, states):
+    while True:
+    	if btn.value():
+            states[index] = not states[index]
+            print(states[index])
+            await waitUntilInLow(btn,50)
+        else:
+            await uasyncio.sleep_ms(10)
+
+async def blink(led, period_ms):
+    while True:
+        if stati[0]:
+            #print("on")
+            led.on()
+            await uasyncio.sleep_ms(period_ms)
+            #print("off")
+            led.off()
+            await uasyncio.sleep_ms(period_ms)
+        else:
+            led.off()
+            await uasyncio.sleep_ms(10)
+
+async def main(btn, led, states):
+    uasyncio.create_task(toggle(0, btn, states))
+    uasyncio.create_task(blink(led, 1000))
+    
+    while True:       
+        await uasyncio.sleep_ms(50)
+
+btn1 = Pin(12,Pin.IN)
+led1 = Pin(13,Pin.OUT)
+stati = [False]  # variabile globale che memorizza lo stato del pulsante
+
+uasyncio.run(main(btn1, led1, stati))
+```
+Link simulazione online: https://wokwi.com/projects/370370343319005185
+
 ### **Osservazioni**:
 
 Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantaggi. 
