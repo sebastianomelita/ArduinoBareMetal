@@ -374,9 +374,9 @@ try:
 finally:
     asyncio.new_event_loop()  # Clear retained state
 ```
-### **Esempi**
+## **Esempi**
 
-**Blink sequenziali interagenti**
+### **Blink sequenziali interagenti**
 
 Di seguito è riportato un esempio di **blink sequenziale** in esecuzione su **due task** separati su scheda **ESP32**, con **IDE Wokwi** e  con la libreria **uasync.io**. La **programmazione sequenziale** del blink del led è **emulata** tramite una funzione delay() **non bloccante** ```asyncio.sleep()``` fornita dalla libreria ```uasync.io ```.
 
@@ -434,7 +434,7 @@ uasyncio.run(main(led1, led2))
 Link simulazione online: https://wokwi.com/projects/369680006454647809
 
 
-**Pulsante responsivo + blink**
+### **Pulsante responsivo + blink**
 
 Di seguito è riportato un esempio di un blink sequenziale in esecuzione su un task e di gestione del pulsante sul loop principale. I ritardi sleep agiscono sul task secondario ma non bloccano la lettura dello stato del pulsante che rimane responsivo nell'accendere il secondo led durante entrambe le fasi del blink del primo led. 
 
