@@ -86,7 +86,6 @@ oppure sotto la forma di **loop condizionato** dal valore di una variabile globa
 while isrun:
     # codice del thread (eseguito più volte)
     # .........................
-}
 # istruzioni eseguite  (una sola volta) alla chiusura del thread
 ```
 
