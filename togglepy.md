@@ -123,7 +123,7 @@ from machine import Pin
 #attesa evento con tempo minimo di attesa
 async def waitUntilInLow(btn,t):
     while btn.value()):
-	 await asyncio.sleep(t)
+	 await asyncio.sleep_ms(t)
 
 async def toggle(btn, st):
     global st
@@ -146,21 +146,15 @@ async def main(btn, led1, led2):
     uasyncio.create_task(blink(led2, 1000))
     uasyncio.create_task(toggle(btn, stato))
 
-    while True:
-        if btn.value():
-            led1.on()
-        else:
-            led1.off()
-        
+    while True:       
         await uasyncio.sleep_ms(50)
 
 btn = Pin(12,Pin.IN)
 led1 = Pin(13,Pin.OUT)
 stato = 0;  # variabile globale che memorizza lo stato del pulsante
 uasyncio.run(main(btn, led1, led2))
-  
-
 ```
+
 >[Torna all'indice](indexpulsanti.md) >[versione in C++](toggle.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbLTE1NTkxOTA3OTIsLTk1MzQ1NDY2NV19
