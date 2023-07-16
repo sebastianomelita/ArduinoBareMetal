@@ -114,8 +114,9 @@ realizza una funzione di **wait su condizione** che ritarda il thread corrente d
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati all'interno di **thread** diversi  La libreria usata è quella nativa dello ESP32 _thread:
 
 ```python
-#Alla pressione del pulsante si attiva o disattiva il lampeggo di un led 
-import uasyncio
+#Alla pressione del pulsante si attiva o disattiva il lampeggo di un led
+import time
+import _thread
 from machine import Pin
 
 #attesa evento con tempo minimo di attesa
@@ -123,42 +124,39 @@ async def waitUntilInLow(btn,t):
     while btn.value():
 	    await uasyncio.sleep_ms(t)
 
-async def toggle(index, btn, states):
+def toggle(index, btn, states):
     while True:
     	if btn.value():
             states[index] = not states[index]
             print(states[index])
-            await waitUntilInLow(btn,50)
+            waitUntilInLow(btn,50)
         else:
-            await uasyncio.sleep_ms(10)
+            time.sleep_ms(10)
 
-async def blink(led, period_ms):
+def blink(led, period_ms):
     while True:
         if stati[0]:
             #print("on")
             led.on()
-            await uasyncio.sleep_ms(period_ms)
+            time.sleep_ms(period_ms)
             #print("off")
             led.off()
-            await uasyncio.sleep_ms(period_ms)
+            time.sleep_ms(period_ms)
         else:
             led.off()
-            await uasyncio.sleep_ms(10)
-
-async def main(btn, led, states):
-    uasyncio.create_task(toggle(0, btn, states))
-    uasyncio.create_task(blink(led, 1000))
-    
-    while True:       
-        await uasyncio.sleep_ms(50)
-
+            time.sleep_ms(10)
+   
 btn1 = Pin(12,Pin.IN)
 led1 = Pin(13,Pin.OUT)
 stati = [False]  # variabile globale che memorizza lo stato del pulsante
+_thread.start_new_thread(blink, (0, toggle, stati))
+_thread.start_new_thread(blink, (led1,1000)
 
-uasyncio.run(main(btn1, led1, stati))
+while True:       
+    time.sleep_ms(50)
 ```
-Link simulazione online: https://wokwi.com/projects/370370343319005185
+Link simulazione online: 
+
 ### **Schedulatore basato su async/await**
 
 In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato **nello stesso loop** ma in un momento diverso stabilito mediante un istruzione ```waitUntilInputLow()```. La funzione, di fatto, esegue un **blocco** del **task** corrente in **"attesa"**  della soddisfazione di una certa **condizione**, senza bloccare l'esecuzione degli altri task. L'**attesa** è spesa campionando continuamente un **ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, in un loop successivo, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un **fronte di salita**. 
