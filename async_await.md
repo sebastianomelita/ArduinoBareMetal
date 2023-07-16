@@ -260,7 +260,7 @@ Per eseguire effettivamente una coroutine, asyncio fornisce **tre** meccanismi p
 
 - La funzione ```asyncio.run()``` per eseguire la funzione asincrona ```main()``` come punto di ingresso di **primo livello**.
 - in **parallelo** alle altre coroutine mediante ```asyncio.create_task(task1)```per eseguire la funzione asincrona ```task1()``` dentro una qualsiasi atra funzione asincrona
-- In **attesa dentro** una coroutine con ```wait```.
+- In **serie** ad altre coroutines **dentro** un'altra coroutine **richiamandola** in attesa con ```await``` davanti. In questa modalità, le istruzioni **in attesa** nella funzione asincrona **chiamata** vanno **in serie** a quelle in **attessa** nella funzione asincrona **chiamante**.
 
 Il seguente frammento di codice illustra meglio l'ultimo caso. Verrà stampato "hello" dopo aver atteso 1 secondo, quindi stamperà "world" dopo aver atteso altri 2 secondi:
 
