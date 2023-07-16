@@ -116,13 +116,13 @@ Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedula
 ```python
 #Alla pressione del pulsante si attiva o disattiva il lampeggo di un led
 import time
-import _thread
+import _thread as th
 from machine import Pin
 
 #attesa evento con tempo minimo di attesa
-async def waitUntilInLow(btn,t):
+def waitUntilInLow(btn,t):
     while btn.value():
-	    await uasyncio.sleep_ms(t)
+	    time.sleep_ms(t)
 
 def toggle(index, btn, states):
     while True:
@@ -149,13 +149,13 @@ def blink(led, period_ms):
 btn1 = Pin(12,Pin.IN)
 led1 = Pin(13,Pin.OUT)
 stati = [False]  # variabile globale che memorizza lo stato del pulsante
-_thread.start_new_thread(blink, (0, toggle, stati))
-_thread.start_new_thread(blink, (led1,1000)
+th.start_new_thread(toggle, (0, btn1, stati))
+th.start_new_thread(blink, (led1, 1000))
 
-while True:       
+while True:
     time.sleep_ms(50)
 ```
-Link simulazione online: 
+Link simulazione online: https://wokwi.com/projects/370403155318077441
 
 ### **Schedulatore basato su async/await**
 
