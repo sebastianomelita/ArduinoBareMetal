@@ -340,70 +340,8 @@ Pur utilizzando gli interrupt, l'efficacia del codice precedente in termini di v
 
 Una realizzazione di interrupt con debouncing SW che garantisce un intervento immediato è riportata in: [interruttore di sicurezza SW](intpulsante.md#**PULSANTE-DI-SICUREZZA-CON-DEBOUNCER-BASATO-SU-TIMER-SW-(POLLING)**)
 
-```C++
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-int led = 13;
-byte pulsante =12;
-byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
-volatile unsigned long previousMillis = 0;
-volatile unsigned short numberOfButtonInterrupts = 0;
-volatile bool lastState;
-bool prevState;
-#define DEBOUNCETIME 50
- 
-void setup() {
-  Serial.begin(115200);
-  pinMode(led, OUTPUT);
-  pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
-}
+```python
 
-// Interrupt Service Routine (ISR)
-void switchPressed ()
-{
-  numberOfButtonInterrupts++; // contatore rimbalzi
-  lastState = digitalRead(pulsante); // lettura stato pulsante
-  previousMillis = millis(); // tempo evento
-}  // end of switchPressed
-
-void waitUntilInputChange()
-{
-    // sezione critica
-    // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
-    // numberOfButtonInterrupts è 8 bit e non è danneggiabile ne in lettura ne in scrittura
-    noInterrupts();
-    // il valore lastintTime potrà essere in seguito letto interrotto ma non danneggiato
-    unsigned long lastintTime = previousMillis;
-    interrupts();
-
-    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
-        && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
-        && prevState != lastState // elimina transizioni anomale LL o HH 
-        && digitalRead(pulsante) == lastState)//se coincide con il valore di un polling
-    { 
-        Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
-        numberOfButtonInterrupts = 0; // reset del flag
-
-        prevState = lastState;
-        if(lastState){ // fronte di salita
-            stato = !stato; 	    
-            Serial.println(" in SALITA debounced");
-        }else{
-            Serial.println(" in DISCESA debounced");
-        }
-    }
-}
-// loop principale
-void loop() {
-	waitUntilInputChange();
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
-		delay(500);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-        	delay(10);			//delay(0); nel dispositivo reale
-	}
-}
 
 ```
 
@@ -419,7 +357,7 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```numberOfButtonIn
 
 L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previousMillis``` che è stata dichiarata come ```volatile``` e ha nel loop() una **sezione critica** intorno all'accesso in lettura su di essa.
 
-Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350016534055223891
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/370450749905971201
 
 
 ### **Schedulatore basato su interrupts e timer HW**
