@@ -99,6 +99,65 @@ if __name__ == "__main__":
 
 ### **Pulsante toggle + blink basato su eventi**
 
+In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
+
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi (time tick)**:
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#define tbase    100       // periodo base in milliseconds
+#define nstep    1000      // numero di fasi massimo di un periodo generico
+
+unsigned long precm;
+unsigned long step;
+byte pari, val;
+byte precval;
+byte pulsante=12;
+byte led = 13;
+byte stato= LOW;	// variabile globale che memorizza lo stato del pulsante
+			// utilizzare variabili globali è una maniera per ottenere
+			// che il valore di una variabile persista tra chiamate di funzione successive
+			// situazione che si verifica se la funzione è richiamata dentro il loop()
+
+void setup()
+{
+  precm=0;
+  step=0;
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  precval=LOW;
+}
+
+// loop principale
+void loop()
+{
+  //metronomo
+  if((millis()-precm) >= tbase){  	//se è passato un periodo tbase dal precedente periodo	
+	precm = millis();             	//preparo il tic successivo azzerando il conteggio del tempo ad adesso
+
+	step = (step + 1) % nstep;  	//conteggio circolare arriva al massimo a nstep-1
+	
+	// schedulazione degli eventi con periodicità tbase (funzione di antibounce per il digitalread a seguire)
+	val = digitalRead(pulsante);		//pulsante collegato in pulldown
+	//val = digitalRead(!pulsante);		//pulsante collegato in pullup
+	if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
+		stato = !stato; 		//impostazione dello stato del toggle	
+	}
+	precval=val;	
+
+	// schedulazione degli eventi con periodicità 1 sec
+	if(!(step%10)){     	//ogni secondo (vero ad ogni multiplo di 10)
+		if(stato){      // valutazione dello stato del toggle
+			digitalWrite(led,!digitalRead(led)); //stato alto: led blink
+		}else{
+			digitalWrite(led,LOW);		 //stato basso: led spento
+		}
+	}
+  }
+}
+```
+Simulazione online su Arduino con Tinkercad del codice precedente: https://www.tinkercad.com/embed/2wo4e7wLqr0?editbtn=1
+
+Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/348707844567073364
 
 ### **Pulsante toggle + blink basato sui thread**
 
