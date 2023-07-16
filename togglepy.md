@@ -103,57 +103,69 @@ In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il va
 
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi (time tick)**:
 ```python
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-#define tbase    100       // periodo base in milliseconds
-#define nstep    1000      // numero di fasi massimo di un periodo generico
+#Alla pressione del pulsante si attiva o disattiva il lampeggo di un led
+import time
+from machine import Pin
 
-unsigned long precm;
-unsigned long step;
-byte pari, val;
-byte precval;
-byte pulsante=12;
-byte led = 13;
-byte stato= LOW;	// variabile globale che memorizza lo stato del pulsante
-			// utilizzare variabili globali è una maniera per ottenere
-			// che il valore di una variabile persista tra chiamate di funzione successive
-			// situazione che si verifica se la funzione è richiamata dentro il loop()
+class Toggle(object):
+    def __init__(self, btn, state = False):
+        self.btn = btn
+        self.state = state
+        self.precval = 0
+    def toggle(self):
+        val = self.btn.value()
+        if self.precval == 0 and val == 1: 
+            self.state = not self.state
+            print(self.state)
+        self.precval = val 
+    def getState(self):
+        return self.state
+    def setState(self,state):
+        self.state = state
 
-void setup()
-{
-  precm=0;
-  step=0;
-  pinMode(led, OUTPUT);
-  pinMode(pulsante, INPUT);
-  precval=LOW;
-}
+def blink(led):
+    led.value(not led.value())
 
-// loop principale
-void loop()
-{
-  //metronomo
-  if((millis()-precm) >= tbase){  	//se è passato un periodo tbase dal precedente periodo	
-	precm = millis();             	//preparo il tic successivo azzerando il conteggio del tempo ad adesso
+   
+btn1 = Pin(12,Pin.IN)
+led1 = Pin(13,Pin.OUT)
+led2 = Pin(2,Pin.OUT)
+pulsante = Toggle(btn1)
+precm = 0
+tbase = 50
+step = 0
+nstep = 100
 
-	step = (step + 1) % nstep;  	//conteggio circolare arriva al massimo a nstep-1
-	
-	// schedulazione degli eventi con periodicità tbase (funzione di antibounce per il digitalread a seguire)
-	val = digitalRead(pulsante);		//pulsante collegato in pulldown
-	//val = digitalRead(!pulsante);		//pulsante collegato in pullup
-	if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
-		stato = !stato; 		//impostazione dello stato del toggle	
-	}
-	precval=val;	
+while True:
+    # il codice eseguito al tempo massimo della CPU va qui	
+    # .........
+    if (time.ticks_ms() - precm) >= tbase:  	   # schedulatore (e anche antirimbalzo)
+        precm = time.ticks_ms()  			   # preparo il tic successivo	
+        step = (step + 1) % nstep      # conteggio circolare arriva al massimo a nstep-1
+        # il codice eseguito al tempo base va quì	
+        # ..........
+        pulsante.toggle()
+        
+        # task 1
+        if not (step % 20):      # schedulo eventi al multiplo del tempo stabilito (2 sec)
+            if pulsante.getState():
+                blink(led1)
+            else:
+                led1.off()
+                            
+        # task 2
+        if not (step % 10):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
+            if pulsante.getState():
+                blink(led2)
+            else:
+                led1.off()
+                            
+        # il codice eseguito al tempo base va quì	
+        # ..........
+            
+    # il codice eseguito al tempo massimo della CPU va qui	
+    # ........
 
-	// schedulazione degli eventi con periodicità 1 sec
-	if(!(step%10)){     	//ogni secondo (vero ad ogni multiplo di 10)
-		if(stato){      // valutazione dello stato del toggle
-			digitalWrite(led,!digitalRead(led)); //stato alto: led blink
-		}else{
-			digitalWrite(led,LOW);		 //stato basso: led spento
-		}
-	}
-  }
-}
 ```
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/370407560534851585
 
