@@ -97,6 +97,51 @@ if __name__ == "__main__":
 	main()
 ```
 
+### **Schedulatore basato sui delay**
+
+In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato **nello stesso loop** ma in un momento diverso stabilito mediante un istruzione ```waitUntilInputLow()``. La funzione, di fatto, esegue un **blocco** del **loop** corrente in **"attesa"**  della verità di una certa **condizione**, bloccando l'esecuzione degli altri **task** dello stesso loop. L'**attesa** è spesa campionando continuamente un **ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, in un loop successivo, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un **fronte di salita**.  
+
+Questa tecnica ha lo svantaggio presentare un certa dose di **interferenza temporale** nell'esecuzione dei vari task separarti per mezzo del ritardo ```delay()```. I task devono essere eseguiti **in sequenza** e inoltre sono concatenati, per cui l'esecuzione del task successivo non può cominciare se prima non termina quella del task corrente. Di fatto un task può rimanere **bloccato** e quindi non essere **responsivo** per un input da parte dell'utente, oppure può **non elaborare prontamente** l'uscita richiesta in un dato momento.
+
+```python
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+// utilizzare variabili globali è una maniera per ottenere
+// che il valore di una variabile persista tra chiamate di funzione successive
+// situazione che si verifica se la funzione è richiamata dentro il loop()
+
+// attesa evento con tempo minimo di attesa
+void waitUntilInputLow(int btn, unsigned t)
+{
+    while(!digitalRead(btn)==LOW){
+	    delay(t);
+    }
+}
+  
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+}
+
+// loop principale
+void loop() {
+	if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
+		stato = !stato; 				// impostazione dello stato del toggle
+		waitUntilInputLow(pulsante,50);			// attendi finchè non c'è fronte di discesa
+	}
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(500);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+	}
+}
+```
+Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/349322438385861202
+
 ### **Pulsante toggle + blink basato su eventi**
 
 In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
