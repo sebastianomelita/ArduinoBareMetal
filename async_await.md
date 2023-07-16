@@ -254,7 +254,7 @@ Link simulazione online: https://wokwi.com/projects/369675288427672577
 
 Per eseguire effettivamente una coroutine, asyncio fornisce **tre** meccanismi principali:
 
-- La funzione ```asyncio.run()``` per eseguire la funzione asincrona ```main()``` come punto di ingresso di primo livello.
+- La funzione ```asyncio.run()``` per eseguire la funzione asincrona ```main()``` come punto di ingresso di **primo livello**.
 - in **parallelo** alle altre coroutine mediante ```asyncio.create_task(task1)```per eseguire la funzione asincrona ```task1()``` dentro una qualsiasi atra funzione asincrona
 - In **attesa dentro** una coroutine con ```wait```.
 
