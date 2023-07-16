@@ -122,38 +122,45 @@ from machine import Pin
 
 #attesa evento con tempo minimo di attesa
 async def waitUntilInLow(btn,t):
-    while btn.value()):
-	 await asyncio.sleep_ms(t)
+    while btn.value():
+	    await uasyncio.sleep_ms(t)
 
-async def toggle(btn, st):
-    global st
+async def toggle(index, btn, states):
     while True:
     	if btn.value():
-            st = not st
+            states[index] = not states[index]
+            print(states[index])
             await waitUntilInLow(btn,50)
+        else:
+            await uasyncio.sleep_ms(10)
 
 async def blink(led, period_ms):
     while True:
-	if stato:
-	        led.on()
-	        await uasyncio.sleep_ms(period_ms)
-	        led.off()
-	        await uasyncio.sleep_ms(period_ms)
+        if stati[0]:
+            #print("on")
+            led.on()
+            await uasyncio.sleep_ms(period_ms)
+            #print("off")
+            led.off()
+            await uasyncio.sleep_ms(period_ms)
         else:
-		led.off()
+            led.off()
+            await uasyncio.sleep_ms(10)
 
-async def main(btn, led1, led2):
-    uasyncio.create_task(blink(led2, 1000))
-    uasyncio.create_task(toggle(btn, stato))
-
+async def main(btn, led, states):
+    uasyncio.create_task(toggle(0, btn, states))
+    uasyncio.create_task(blink(led, 1000))
+    
     while True:       
         await uasyncio.sleep_ms(50)
 
-btn = Pin(12,Pin.IN)
+btn1 = Pin(12,Pin.IN)
 led1 = Pin(13,Pin.OUT)
-stato = 0;  # variabile globale che memorizza lo stato del pulsante
-uasyncio.run(main(btn, led1, led2))
+stati = [False]  # variabile globale che memorizza lo stato del pulsante
+
+uasyncio.run(main(btn1, led1, stati))
 ```
+Link simulazione online: https://wokwi.com/projects/370370343319005185
 
 >[Torna all'indice](indexpulsanti.md) >[versione in C++](toggle.md)
 <!--stackedit_data:
