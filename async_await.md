@@ -250,6 +250,33 @@ asyncio.run(main())
 ```
 Link simulazione online: https://wokwi.com/projects/369675288427672577
 
+**Coroutines annidate**
+
+Per eseguire effettivamente una coroutine, asyncio fornisce **due** meccanismi principali:
+
+- La funzione ```asyncio.run()``` per eseguire la funzione asincrona ```main()``` come punto di ingresso di primo livello.
+- In **attesa dentro** una coroutine con ```wait```. Il seguente frammento di codice stamperà "hello" dopo aver atteso 1 secondo, quindi stamperà "world" dopo aver atteso altri 2 secondi:
+
+```python
+import asyncio
+import time
+
+async def say_after(delay, what):
+    await asyncio.sleep(delay)
+    print(what)
+
+async def main():
+    print(f"started at {time.strftime('%X')}")
+
+    await say_after(1, 'hello')
+    await say_after(2, 'world')
+
+    print(f"finished at {time.strftime('%X')}")
+
+asyncio.run(main())
+```  
+
+
 **Generazione di un event loop**
 
 In genere, viene realizzata completamente con una singola istruzione:
@@ -305,31 +332,6 @@ asyncio.run(main())
 #     Task C: factorial(4) = 24
 #     [2, 6, 24]
 ```
-**Coroutines annidate**
-
-Per eseguire effettivamente una coroutine, asyncio fornisce tre meccanismi principali:
-
-- La funzione ```asyncio.run()``` per eseguire la funzione asincrona ```main()``` come punto di ingresso di primo livello.
-- In attesa di una coroutine con ```wait```. Il seguente frammento di codice stamperà "hello" dopo aver atteso 1 secondo, quindi stamperà "world" dopo aver atteso altri 2 secondi:
-
-```python
-import asyncio
-import time
-
-async def say_after(delay, what):
-    await asyncio.sleep(delay)
-    print(what)
-
-async def main():
-    print(f"started at {time.strftime('%X')}")
-
-    await say_after(1, 'hello')
-    await say_after(2, 'world')
-
-    print(f"finished at {time.strftime('%X')}")
-
-asyncio.run(main())
-```  
 
 **Una tipica app firmware**
 
