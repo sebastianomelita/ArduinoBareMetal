@@ -116,30 +116,14 @@ realizza una funzione di **wait su condizione** che ritarda il thread corrente d
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** su **core diversi**. La libreria usata è quella nativa dello ESP32 che implementa dalla fabbrica un **middleware RTOS** per cui non è necessario **includere** nessuna libreria esterna (per una spiegazione dettagliata dei thread si rimanda a [schedulatore di compiti basato sui thread](threadsched.md)):
 
 ```python
-#Alla pressione del pulsante si attiva o disattiva il lampeggo di un led
+#Alla pressione del pulsante si attiva o disattiva il lampeggo di un led 
+import uasyncio
+from machine import Pin
 
 #attesa evento con tempo minimo di attesa
 async def waitUntilInLow(btn,t):
     while btn.value()):
 	 await asyncio.sleep(t)
- 
-void btnThread(void * d){
-	String taskMessage = "Task running on core ";
-    	taskMessage = taskMessage + xPortGetCoreID();
-	
-	// Loop del thread
-	while(true){
-		if(digitalRead(pulsante)==HIGH){			# se è alto c'è stato un fronte di salita
-			stato = !stato; 				# impostazione dello stato del toggle
-			waitUntilInputLow(pulsante,50);			# attendi finchè non c'è fronte di discesa
-		}
-		delay(10); 						# equivale a yeld() (10 per le simulazioni 0 in HW)
-	}
-}
-
- 
-import uasyncio
-from machine import Pin
 
 async def toggle(btn, st):
     global st
