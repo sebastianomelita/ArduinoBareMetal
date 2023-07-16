@@ -140,7 +140,7 @@ void loop() {
 	}
 }
 ```
-Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/349322438385861202
+Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/370421058897117185
 
 ### **Pulsante toggle + blink basato su eventi**
 
