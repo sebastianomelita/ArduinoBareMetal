@@ -69,10 +69,34 @@ Riassumendo, la **schedulazione mediante thread** comporta:
 
 L'ultimo svantaggio è **particolarmente critico** e può comportare l'introduzione di errori difficilmente rilevabili, anche dopo innumerevoli prove sistematiche. La progettazione della gestione delle **risorse condivise**, e della gestione della **comunicazione tra i thread** in generale, deve essere molto accurata e ben ponderata. Vari strumenti SW e metodologie ad hoc permettono di affrontare più o meno efficacemente il problema.
 
+### **Utilizzo in pratica**
 
-Per quanto riguarda la **definizione** di un task va ricordato che ll'interno del loop del task **ogni ramo** di esecuzione va reso **non bloccante** inserendo, la funzione **```asyncio.sleep(10)```** (mai la normale delay()) se il flusso di esecuzione deve essere **bloccato temporaneamente** per un certo tempo fissato, oppure la funzione **```asyncio.sleep(0)```** se questo **non deve essere bloccato**. Ciò serve a richiamare lo schedulatore **almeno una volta**, qualunque **direzione** di  esecuzione prenda il codice, in modo da cedere **"spontaneamente"** il controllo ad un altro task al termine del loop() del task corrente. La **cessione del controllo** dello schedulatore ad ogni ramo di esecuzione **è necessario** altrimenti gli altri task non verrebbero mai eseguiti (il sistema **non è preemptive**).
+**Ogni thread** realizza un **flusso** di esecuzione **parallelo** a quello degli altri thread, inoltre ognuno possiede un proprio **loop() principale** di esecuzione in cui realizzare le operazioni che tipicamente riguardano le **tre fasi** di lettura degli ingressi, calcolo dello stato del sistema e della sua risposta e la fase finale di scrittura della risposta sulle uscite. Il loop principale può essere definito sotto forma di **ciclo infinito** come ad esempio:
 
-Sia ```asyncio.sleep(0)``` che ```asyncio.sleep(10)``` cedono il controllo della CPU allo schedulatore che lo assegna agli altri task che eventualmente in quel momento hanno scaduto il tempo di attesa di un loro delay.
+```python
+# loop del thread (eseguito all'infinito)
+while True:
+    # codice del thread
+    # .........................
+```
+oppure sotto la forma di **loop condizionato** dal valore di una variabile globale, ad es. ```isrun```, che può interrompere il thread, facendolo terminare, una volta che questa viene negata nel loop() principale:
+
+```python
+# loop del thread
+while isrun:
+    # codice del thread (eseguito più volte)
+    # .........................
+}
+# istruzioni eseguite  (una sola volta) alla chiusura del thread
+```
+
+Le **fasi di lavoro** del loop possono essere **schedulate** (pianificate nel tempo) dagli usuali delay()  bloccanti che permettono la progettazione **lineare** di un algoritmo nel tempo. In realtà, una volta che il thread che ha in uso la CPU entra in un delay(), lo schedulatore, che adesso è di tipo preemptive, sottrae il controllo della CPU al thread corrente e lo assegna ad un altro thread che, in quel momento, è in attesa di esecuzione.
+
+**Modalità cooperativa**
+
+Per quanto riguarda la **definizione** di un task va ricordato che l'interno del loop del task **ogni ramo** di esecuzione **potrebbe** essere reso **non bloccante** inserendo, la funzione **```time.sleep(10)```** se il flusso di esecuzione deve essere **bloccato temporaneamente** per un certo tempo fissato, oppure la funzione **```time.sleep(0)```** se questo **non deve essere bloccato**. Ciò serve a richiamare lo schedulatore **almeno una volta**, qualunque **direzione** di  esecuzione prenda il codice, in modo da cedere **"spontaneamente"** il controllo ad un altro task al termine del loop() del task corrente. La **cessione del controllo** dello schedulatore ad ogni ramo di esecuzione **è facoltativa** perchè comunque gli altri task verrebbero eseguiti (il sistema **è preemptive**).
+
+Sia ```time.sleep(0)``` che ```time.sleep(10)``` cedono il controllo della CPU allo schedulatore che lo assegna agli altri task che eventualmente in quel momento hanno scaduto il tempo di attesa di un loro delay.
 
 ### **Esempio**
 
