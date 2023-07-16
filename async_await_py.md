@@ -229,6 +229,10 @@ Il **flusso di esecuzione** di un task è **definito** all'interno di una **funz
 
 E' importante notare che anche la funzione **main** deve essere resa asincrona con la parola chiave async se si desidera eseguirla in parallelo con gli altri task seguendo una modalità cooperativa. In sostanza, anche la funzione **main deve** diventare un **task asincrono**. Se così non fosse, una funzione di ritardo delay() oppure una qualunque funzione di I/O bloccante monopolizzarebbero l'unico thread a disposizione impedendo la schedulazione degli altri task.
 
+Per quanto riguarda la **definizione** di un task va ricordato che ll'interno del loop del task **ogni ramo** di esecuzione va reso **non bloccante** inserendo, la funzione **```asyncio.sleep(10)```** (mai la normale delay()) se il flusso di esecuzione deve essere **bloccato temporaneamente** per un certo tempo fissato, oppure la funzione **```asyncio.sleep(0)```** se questo **non deve essere bloccato**. Ciò serve a richiamare lo schedulatore **almeno una volta**, qualunque **direzione** di  esecuzione prenda il codice, in modo da cedere **"spontaneamente"** il controllo ad un altro task al termine del loop() del task corrente. La **cessione del controllo** dello schedulatore ad ogni ramo di esecuzione **è necessario** altrimenti gli altri task non verrebbero mai eseguiti (il sistema **non è preemptive**).
+
+Sia ```asyncio.sleep(0)``` che ```asyncio.sleep(10)``` cedono il controllo della CPU allo schedulatore che lo assegna agli altri task che eventualmente in quel momento hanno scaduto il tempo di attesa di un loro delay.
+
 Come già detto, il **task principale** che contine il **main** può essere mandato in esecuzione con la funzione ```asyncio.run(main()))``` .
 
 Nell'esempio seguente, nel main vengono avviati tre task in parallello tramite la funzione ```asyncio.create_task(nome_task)```. Il **tempo di vita** dei task è legato a quello della loro **funzione chiamante**, cioè il main. Se questo **termina** anche i **task** creati al suo interno **terminano**.
@@ -250,6 +254,36 @@ async def main():
 asyncio.run(main())
 ```
 Link simulazione online: https://wokwi.com/projects/369675288427672577
+
+**Coroutines annidate**
+
+Per eseguire effettivamente una coroutine, asyncio fornisce **tre** meccanismi principali:
+
+- La funzione ```asyncio.run()``` per eseguire la funzione asincrona ```main()``` come punto di ingresso di **primo livello**.
+- in **parallelo** alle altre coroutine mediante ```asyncio.create_task(task1)```per eseguire la funzione asincrona ```task1()``` dentro una qualsiasi atra funzione asincrona
+- In **serie** ad altre coroutines **dentro** un'altra coroutine **richiamandola** in attesa con ```await``` davanti. In questa modalità, le istruzioni **in attesa** nella funzione asincrona **chiamata** vanno **in serie** a quelle in **attessa** nella funzione asincrona **chiamante**.
+
+Il seguente frammento di codice illustra meglio l'ultimo caso. Verrà stampato "hello" dopo aver atteso 1 secondo, quindi stamperà "world" dopo aver atteso altri 2 secondi:
+
+```python
+import asyncio
+import time
+
+async def say_after(delay, what):
+    await asyncio.sleep(delay)
+    print(what)
+
+async def main():
+    print(f"started at {time.strftime('%X')}")
+
+    await say_after(1, 'hello')
+    await say_after(2, 'world')
+
+    print(f"finished at {time.strftime('%X')}")
+
+asyncio.run(main())
+```  
+
 
 **Generazione di un event loop**
 
@@ -341,9 +375,9 @@ try:
 finally:
     asyncio.new_event_loop()  # Clear retained state
 ```
-### **Esempi**
+## **Esempi**
 
-**Blink sequenziali interagenti**
+### **Blink sequenziali interagenti**
 
 Di seguito è riportato un esempio di **blink sequenziale** in esecuzione su **due task** separati su scheda **ESP32**, con **IDE Wokwi** e  con la libreria **uasync.io**. La **programmazione sequenziale** del blink del led è **emulata** tramite una funzione delay() **non bloccante** ```asyncio.sleep()``` fornita dalla libreria ```uasync.io ```.
 
@@ -401,7 +435,7 @@ uasyncio.run(main(led1, led2))
 Link simulazione online: https://wokwi.com/projects/369680006454647809
 
 
-**Pulsante responsivo + blink**
+### **Pulsante responsivo + blink**
 
 Di seguito è riportato un esempio di un blink sequenziale in esecuzione su un task e di gestione del pulsante sul loop principale. I ritardi sleep agiscono sul task secondario ma non bloccano la lettura dello stato del pulsante che rimane responsivo nell'accendere il secondo led durante entrambe le fasi del blink del primo led. 
 
@@ -434,6 +468,71 @@ uasyncio.run(main(btn, led1, led2))
 ```
 Link simulazione online: https://wokwi.com/projects/369680948206974977
 
+### **Pulsante toggle + blink**
+
+In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato **nello stesso loop** ma in un momento diverso stabilito mediante un istruzione ```waitUntilInputLow()```. La funzione, di fatto, esegue un **blocco** del **task** corrente in **"attesa"**  della soddisfazione di una certa **condizione**, senza bloccare l'esecuzione degli altri task. L'**attesa** è spesa campionando continuamente un **ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, in un loop successivo, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un **fronte di salita**. 
+
+La funzione 
+```python
+// attesa evento con tempo minimo di attesa
+async def waitUntilInLow(btn,t):
+    while btn.value()):
+	 await asyncio.sleep(t)
+ 
+```
+realizza una funzione di **wait su condizione** che ritarda il thread corrente di un delay() prefissato al  termine del quale ricalcola l'ingresso. L'operazione viene ripetuta fin tanto che la condizione attesa non è asserita. Si tratta di una funzione utile per due **scopi**:
+- **debouncing** software dell'ingresso digitale
+- determinazione del **fronte di discesa** di un ingresso digitale
+
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati all'interno di **task** diversi su **uno stesso thread**. La libreria usata è quella nativa dello ESP32 uasync.io:
+
+```python
+#Alla pressione del pulsante si attiva o disattiva il lampeggo di un led 
+import uasyncio
+from machine import Pin
+
+#attesa evento con tempo minimo di attesa
+async def waitUntilInLow(btn,t):
+    while btn.value():
+	    await uasyncio.sleep_ms(t)
+
+async def toggle(index, btn, states):
+    while True:
+    	if btn.value():
+            states[index] = not states[index]
+            print(states[index])
+            await waitUntilInLow(btn,50)
+        else:
+            await uasyncio.sleep_ms(10)
+
+async def blink(led, period_ms):
+    while True:
+        if stati[0]:
+            #print("on")
+            led.on()
+            await uasyncio.sleep_ms(period_ms)
+            #print("off")
+            led.off()
+            await uasyncio.sleep_ms(period_ms)
+        else:
+            led.off()
+            await uasyncio.sleep_ms(10)
+
+async def main(btn, led, states):
+    uasyncio.create_task(toggle(0, btn, states))
+    uasyncio.create_task(blink(led, 1000))
+    
+    while True:       
+        await uasyncio.sleep_ms(50)
+
+btn1 = Pin(12,Pin.IN)
+led1 = Pin(13,Pin.OUT)
+stati = [False]  # variabile globale che memorizza lo stato del pulsante
+
+uasyncio.run(main(btn1, led1, stati))
+```
+Link simulazione online: https://wokwi.com/projects/370370343319005185
+
 ### **Osservazioni**:
 
 Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantaggi. 
@@ -461,5 +560,6 @@ Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantag
 - https://stackoverflow.com/questions/48993459/python-calling-coroutine-from-normal-function
 - https://tasktools.readthedocs.io/en/latest/content/bigfaq.html
 - https://devopedia.org/asynchronous-programming-in-python
+- https://stackoverflow.com/questions/66492098/how-can-i-use-await-in-a-non-async-function
   
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)   >[Versione in C++](async_await.md)
