@@ -104,41 +104,32 @@ In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il va
 Questa tecnica ha lo svantaggio presentare un certa dose di **interferenza temporale** nell'esecuzione dei vari task separarti per mezzo del ritardo ```delay()```. I task devono essere eseguiti **in sequenza** e inoltre sono concatenati, per cui l'esecuzione del task successivo non può cominciare se prima non termina quella del task corrente. Di fatto un task può rimanere **bloccato** e quindi non essere **responsivo** per un input da parte dell'utente, oppure può **non elaborare prontamente** l'uscita richiesta in un dato momento.
 
 ```python
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-int led = 13;
-byte pulsante =12;
-byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
-// utilizzare variabili globali è una maniera per ottenere
-// che il valore di una variabile persista tra chiamate di funzione successive
-// situazione che si verifica se la funzione è richiamata dentro il loop()
+#Alla pressione del pulsante si attiva o disattiva il lampeggo di un led
+import time
+from machine import Pin
 
-// attesa evento con tempo minimo di attesa
-void waitUntilInputLow(int btn, unsigned t)
-{
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
-}
-  
-void setup() {
-  Serial.begin(115200);
-  pinMode(led, OUTPUT);
-  pinMode(pulsante, INPUT);
-}
+#attesa evento con tempo minimo di attesa
+def waitUntilInLow(btn,t):
+    while btn.value():
+	    time.sleep_ms(t)
 
-// loop principale
-void loop() {
-	if(digitalRead(pulsante)==HIGH){			// se è alto c'è stato un fronte di salita
-		stato = !stato; 				// impostazione dello stato del toggle
-		waitUntilInputLow(pulsante,50);			// attendi finchè non c'è fronte di discesa
-	}
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
-		delay(500);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-	}
-}
+def blink(led,t):
+    led.value(not led.value())
+    time.sleep_ms(t)
+   
+btn1 = Pin(12,Pin.IN)
+led1 = Pin(13,Pin.OUT)
+led2 = Pin(2,Pin.OUT)
+stato = False
+
+while True:
+    if btn1.value():			 # se è alto c'è stato un fronte di salita
+		stato = not stato			 # impostazione dello stato del toggle
+		waitUntilInLow(btn1,50)		 # attendi finchè non c'è fronte di discesa
+    if stato:
+        blink(led1,500)
+    else:
+        led1.off()
 ```
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/370421058897117185
 
