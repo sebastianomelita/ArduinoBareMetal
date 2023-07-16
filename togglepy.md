@@ -326,6 +326,185 @@ uasyncio.run(main(btn1, led1, stati))
 ```
 Link simulazione online: https://wokwi.com/projects/370370343319005185
 
+### **Schedulatore basato su interrupts e polling**
+
+Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
+
+All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) del solo **fronte di salita** è stata usata la **combinazione** di due tecniche di schedulazione:
+- una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
+- una **sincrona** (un polling), gestita dal sistema tramite un il polling della funzione millis(), per la realizzazione della funzione di debouncing (antirimbalzo) del segnale in ingresso.
+
+Il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al momento dell'arrivo del segnale di interrupt e **confrontandolo** con il valore del livello campionato in istanti **periodici** successivi a quello, pianificati (schedulati) tramite un timer HW, allo scadere del quale viene chiamata l'istruzione ```waitUntilInputChange()```. La funzione, di fatto esegue il **filtraggio** delle segnalazioni di un flag (```numberOfButtonInterrupts```) impostato dalla ISR chiamata dagli interrupt sulla porta digitale. Le segnalazioni vengono filtrate se troppo in anticipo (funzione di debouncing) e se si riferiscono a letture dello stesso livello (non transizioni). La funzione di **debouncing** è garantita introducendo un **tempo minimo** di attesa tra un campionamento e l'altro.
+
+Pur utilizzando gli interrupt, l'efficacia del codice precedente in termini di velocità e responsività è limitata dalla **componente nel loop()** del meccanismo che purtroppo è sensibile ai ritardi di esecuzione. I **ritardi** possono essere introdotti da istruzioni delay() o da blocchi di istruzioni troppo lente. E'probabilmente una realizzazione **poco pratica**, soprattutto per **dispositivi di sicurezza**, perchè **la velocità** degli interrupts potrebbe essere vanificata dalla potenziale **lentezza** del polling del flag. 
+
+Una realizzazione di interrupt con debouncing SW che garantisce un intervento immediato è riportata in: [interruttore di sicurezza SW](intpulsante.md#**PULSANTE-DI-SICUREZZA-CON-DEBOUNCER-BASATO-SU-TIMER-SW-(POLLING)**)
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+volatile unsigned long previousMillis = 0;
+volatile unsigned short numberOfButtonInterrupts = 0;
+volatile bool lastState;
+bool prevState;
+#define DEBOUNCETIME 50
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
+}
+
+// Interrupt Service Routine (ISR)
+void switchPressed ()
+{
+  numberOfButtonInterrupts++; // contatore rimbalzi
+  lastState = digitalRead(pulsante); // lettura stato pulsante
+  previousMillis = millis(); // tempo evento
+}  // end of switchPressed
+
+void waitUntilInputChange()
+{
+    // sezione critica
+    // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
+    // numberOfButtonInterrupts è 8 bit e non è danneggiabile ne in lettura ne in scrittura
+    noInterrupts();
+    // il valore lastintTime potrà essere in seguito letto interrotto ma non danneggiato
+    unsigned long lastintTime = previousMillis;
+    interrupts();
+
+    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
+        && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
+        && prevState != lastState // elimina transizioni anomale LL o HH 
+        && digitalRead(pulsante) == lastState)//se coincide con il valore di un polling
+    { 
+        Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
+        numberOfButtonInterrupts = 0; // reset del flag
+
+        prevState = lastState;
+        if(lastState){ // fronte di salita
+            stato = !stato; 	    
+            Serial.println(" in SALITA debounced");
+        }else{
+            Serial.println(" in DISCESA debounced");
+        }
+    }
+}
+// loop principale
+void loop() {
+	waitUntilInputChange();
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(500);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+        	delay(10);			//delay(0); nel dispositivo reale
+	}
+}
+
+```
+
+Le variabili **condivise** tra una ISR e il loop() andrebbero protette da accessi **paralleli** da parte di quellew due funzioni tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono sempre essere dichiarate con il qualificatore ```volatile``` per forzarne la modifica istantanea anche sui registri della CPU. 
+
+Gli **accessi paralleli** non sono un problema quando le **istruzioni** sono **atomiche**, cioè non interrompibili. Le istruzioni atomiche o sono eseguite per intero o non sono eseguite affatto. In questo caso gli **accessi**, sia in lettura che in scrittura, sono in realtà, a basso livello, **intrinsecamente sequenziali**.
+
+Nei microcontrollori attuali, in genere **nessuna istruzione** gode della proprietà di essere **atomica** con una sola eccezione per la lettura e scrittura delle **variabili ad 8 bit**. Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio macchina) è intrinsecamente garantito essere **atomico**. Per queste variabili rimane comunque la necessita dell'uso del qualificatore ```volatile```.
+
+Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **non atomiche**, pertanto le variabili a 16 o 32 bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati di default durante una routine di servizio di interrupt, quindi, non potendo verificarsi il danneggiamento di una variabile multibyte in una ISR, le **sezioni critiche** vanno inserite soltanto nel ```loop()```.
+
+Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```numberOfButtonInterrupts```, ```prevState``` e ```lastState``` che sono stata semplicemente dichiarate come ```volatile``` senza sezioni critiche su di essa.
+
+L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previousMillis``` che è stata dichiarata come ```volatile``` e ha nel loop() una **sezione critica** intorno all'accesso in lettura su di essa.
+
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350016534055223891
+
+
+### **Schedulatore basato su interrupts e timer HW**
+
+Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
+
+All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) ma anche **tempestiva** (più rapida possibile) del solo **fronte di salita** è stata usata la **combinazione** di due tecniche di schedulazione:
+- una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
+- una **sincrona** (una callback), gestita dal sistema tramite un **timer HW**, per la realizzazione della funzione di debouncing (antirimbalzo) del segnale in ingresso.
+
+Il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al momento dell'arrivo del segnale di interrupt e **confrontandolo** con il valore del livello campionato in istanti **periodici** successivi a quello, pianificati (schedulati) tramite un timer HW, allo scadere del quale viene chiamata l'istruzione ```waitUntilInputLow()```. La funzione, di fatto, esegue una **disabilitazione** della rilevazione dei fronti (per evitare letture duplicate dello stesso) in **"attesa"** che si verifichi una certa **condizione**, L'**attesa** è spesa campionando continuamente l'**ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, all'arrivo di un **nuovo interrupt**, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un nuovo **fronte di salita**. Alla rilevazione del fronte **di discesa** il pulsante viene **riabilitato** per permettere la rilevazione del prossimo fronte di salita. La funzione di **debouncing** è garantita introducendo un **tempo minimo** di attesa tra un campionamento e l'altro.
+
+Le attese sono tutte **non bloccanti** e realizzate tramite un timer HW che adopera esso stesso gli **interrupt** per richiamare la funzione di servizio (callback) da eseguire allo scadere del **timeout**. Il timer, utilizzando gli interrupt, è in grado di intervenire in tempo in **tutte le situazioni**, eventualmente anche interrompendo l'esecuzione di eventuale codice che impegnasse intensamente il loop(). Si tratta sicuramente di una realizzazione che, avendo la massima efficacia possibile in tutte le situazioni, si presta alla realizzazione di **dispositivi di sicurezza**.
+
+```C++
+#include <Ticker.h>
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+int led = 13;
+byte pulsante =12;
+volatile unsigned short numberOfButtonInterrupts = 0;
+volatile bool pressed;
+volatile bool stato;
+#define DEBOUNCETIME 50
+Ticker debounceTicker;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE);
+  numberOfButtonInterrupts = 0;
+  pressed = false;
+  stato = false;
+}
+
+void switchPressed ()
+{
+  numberOfButtonInterrupts++; // contatore rimbalzi
+  bool val = digitalRead(pulsante); // lettura stato pulsante
+  if(val && !pressed){ // fronte di salita
+    pressed = true; // disarmo il pulsante
+    debounceTicker.once_ms(50, waitUntilInputLow);  
+    Serial.println("SALITA disarmo pulsante");
+    stato = !stato; 	  // logica toggle  
+  }
+}  // end of switchPressed
+
+void waitUntilInputLow()
+{
+    if (digitalRead(pulsante) == HIGH)// se il pulsante è ancora premuto
+    { 
+        Serial.print("Aspetto");
+        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
+        debounceTicker.once_ms(50, waitUntilInputLow);  
+    }else{
+        Serial.print("DISCESA riarmo pulsante\n");
+        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
+        numberOfButtonInterrupts = 0; // reset del flag
+        pressed = false; // riarmo il pulsante
+    }
+}
+
+// loop principale
+void loop() {
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(500);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+    		delay(10);
+	}
+}
+```
+
+Le variabili **condivise** tra una ISR e il loop() andrebbero protette da accessi **paralleli** da parte di entrambe le funzioni tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono sempre essere dichiarate con il qualificatore ```volatile``` per forzarne la modifica istantanea anche sui registri della CPU. 
+
+Gli **accessi paralleli** non sono un problema quando le **istruzioni** sono **atomiche**, cioè non interrompibili. Le istruzioni atomiche o sono eseguite per intero o non sono eseguite affatto. Nei microcontrollori attuali, in genere **nessuna istruzione** gode della proprietà di essere **atomica** con una sola eccezione per la lettura e scrittura delle **variabili ad 8 bit**.
+
+Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio macchina) è intrinsecamente garantito essere **atomico**. Per queste variabili rimane comunque la necessita dell'uso del qualificatore ```volatile```.
+
+L'unica variabile **condivisa** tra ISR e loop() nel progetto è ```stato``` che è ad 8 bit ed è stata dichiarata come ```volatile```.
+In questo caso gli **accessi**, sia in lettura che in scrittura, sono quindi, a basso livello, **intrinsecamente sequenziali**.
+
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350052113369268819
+
 >[Torna all'indice](indexpulsanti.md) >[versione in C++](toggle.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbLTE1NTkxOTA3OTIsLTk1MzQ1NDY2NV19
