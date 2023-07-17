@@ -59,29 +59,29 @@ from machine import Pin
 # attesa evento con tempo minimo di attesa
 def waitUntilInLow(btn,t):
     while btn.value():
-	 time.sleep(t)
+	 time.sleep_ms(t)
 
 class DiffTimer(object):
     def __init__(self,elapsed):
         self.elapsed = elapsed
         self.timerState = False
-	self.last = 0
+        self.last = 0
     def __init__(self):
         self.elapsed = 0
         self.timerState = False
-	self.last = 0
+        self.last = 0
     def reset(self): # transizione di un pulsante
         self.elapsed = 0
-        self.last = time.time()
+        self.last = time.ticks_ms()
     def stop(self):
         self.timerState = False
-        self.elapsed = self.elapsed + time.time() - self.last
+        self.elapsed = self.elapsed + time.ticks_ms() - self.last
     def start(self):
         self.timerState = True
-        self.last = time.time()
+        self.last = time.ticks_ms()
     def get(self):
         if self.timerState:
-            return time.time() - self.last + self.elapsed
+            return time.ticks_ms() - self.last + self.elapsed
         return self.elapsed
     def set(self, e):
         reset()
@@ -95,14 +95,13 @@ while True:
     if tasto.value() == 1:
         print("on")
         led.on()
-        waitUntilInLow(tasto, .005); # attendi finchè non c'è fronte di discesa
+        waitUntilInLow(tasto, 50); # attendi finchè non c'è fronte di discesa
         print("off")
         acceso.start()
-    elif acceso.get() > 5:
+    elif acceso.get() > 5000:
         #non necessario il reset() perchè mai eseguito uno stop()
         led.off()
-    time.sleep(0.01)
-
+    time.sleep_ms(10)
 ```
 Simulazione su Arduino con Wokwi: https://wokwi.com/projects/370308771487427585
 ### **Selezione luci**
