@@ -341,8 +341,63 @@ Pur utilizzando gli interrupt, l'efficacia del codice precedente in termini di v
 Una realizzazione di interrupt con debouncing SW che garantisce un intervento immediato è riportata in: [interruttore di sicurezza SW](intpulsante.md#**PULSANTE-DI-SICUREZZA-CON-DEBOUNCER-BASATO-SU-TIMER-SW-(POLLING)**)
 
 ```python
+#Alla pressione del pulsante si attiva o disattiva il lampeggo di un led
+import time
+from machine import Pin
+import machine
 
+def blink(led,t):
+    led.value(not led.value())
+    time.sleep_ms(t)
+   
+# Interrupt Service Routine (ISR)
+def btn1_pressed(pin):
+    global previousMillis
+    global numberOfButtonInterrupts
+    global interrupt_pin
+    global stato
+    if numberOfButtonInterrupts == 0:
+         stato = not stato
+    interrupt_pin = pin 
+    numberOfButtonInterrupts += 1      # contatore rimbalzi
+    previousMillis = time.ticks_ms()   # tempo evento
 
+def waitUntilInputChange():
+    global previousMillis
+    global numberOfButtonInterrupts
+    global stato
+    # sezione critica
+    # protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
+    # numberOfButtonInterrupts è 8 bit e non è danneggiabile ne in lettura ne in scrittura
+    irq_state = machine.disable_irq() # Start of critical section
+    # il valore lastintTime potrà essere in seguito letto interrotto ma non danneggiato
+    lastintTime = previousMillis
+    machine.enable_irq(irq_state) # End of critical section
+
+    c = (numberOfButtonInterrupts != 0 and time.ticks_ms() - lastintTime > debtime and btn1.value() == 0)
+    if c:
+        print("HIT: ")
+        print(numberOfButtonInterrupts)
+        numberOfButtonInterrupts = 0   # reset del flag (riarmo pulsante)
+        print(" in DISCESA debounced")
+
+btn1 = Pin(12,Pin.IN)
+led1 = Pin(13,Pin.OUT)
+stato = False
+previousMillis = 0
+numberOfButtonInterrupts = 0
+debtime = 50 
+interrupt_pin = 0
+c = False
+btn1.irq(handler=btn1_pressed, trigger=Pin.IRQ_RISING)
+
+while True:
+    waitUntilInputChange()
+    if stato:
+        blink(led1,1000)
+    else:
+        led1.off()
+        time.sleep_ms(10)
 ```
 
 Le variabili **condivise** tra una ISR e il loop() andrebbero protette da accessi **paralleli** da parte di quellew due funzioni tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono sempre essere dichiarate con il qualificatore ```volatile``` per forzarne la modifica istantanea anche sui registri della CPU. 
