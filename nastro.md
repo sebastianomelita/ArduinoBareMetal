@@ -1,5 +1,5 @@
 
->[Torna all'indice](indexpulsanti.md) >[versione in Python](gruppipulsantipy.md)
+>[Torna all'indice](indexpulsanti.md) >[versione in Python](nastro_py.md)
 
 ##  **NASTRO TRASPORTATORE**
 
@@ -540,4 +540,4 @@ void loop() {
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349645533881565780
 
->[Torna all'indice](indexpulsanti.md) >[versione in Python](gruppipulsantipy.md)
+>[Torna all'indice](indexpulsanti.md) >[versione in Python](nastro_py.md)
