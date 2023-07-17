@@ -113,7 +113,7 @@ void loop() {
 	}
 }
 ```
-Simulazione su Arduino con Tinkercad: 
+Simulazione su ESP32 con Wokwi: https://wokwi.com/projects/370490081136438273
 
 ###  **Gestione di due nastri**
 
