@@ -697,7 +697,7 @@ void waitUntilInputChange()
 
     if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
         && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
-        && digitalRead(pulsante) == LOW)//se coincide con il valore di un polling
+        && digitalRead(pulsante) == LOW)//se è sul fronte di discesa
     { 
         Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
         numberOfButtonInterrupts = 0; // reset del flag (riarmo pulsante differito sul fronte di discesa)
