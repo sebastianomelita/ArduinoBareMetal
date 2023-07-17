@@ -113,7 +113,7 @@ void loop() {
 	}
 }
 ```
-Simulazione su ESP32 con Wokwi: https://wokwi.com/projects/370490081136438273
+Simulazione su ESP32 con Wokwi: https://wokwi.com/projects/370497523363061761
 
 ###  **Gestione di due nastri**
 
