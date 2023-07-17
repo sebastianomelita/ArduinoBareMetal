@@ -65,6 +65,7 @@
 [**https://mitxela.com/projects/faster_than_a_fft**](https://mitxela.com/projects/faster_than_a_fft)
 
 **http://stor.altervista.org/millis/millis.php**
+**https://my.eng.utah.edu/~cs5780/debouncing.pdf**
 
 >[Torna all'indice](indexpulsanti.md)
 <!--stackedit_data:
