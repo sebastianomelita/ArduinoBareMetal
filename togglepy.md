@@ -427,64 +427,69 @@ Il **rilevatore dei fronti** è realizzato **campionando** il valore del livello
 
 Le attese sono tutte **non bloccanti** e realizzate tramite un timer HW che adopera esso stesso gli **interrupt** per richiamare la funzione di servizio (callback) da eseguire allo scadere del **timeout**. Il timer, utilizzando gli interrupt, è in grado di intervenire in tempo in **tutte le situazioni**, eventualmente anche interrompendo l'esecuzione di eventuale codice che impegnasse intensamente il loop(). Si tratta sicuramente di una realizzazione che, avendo la massima efficacia possibile in tutte le situazioni, si presta alla realizzazione di **dispositivi di sicurezza**.
 
-```C++
-#include <Ticker.h>
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-int led = 13;
-byte pulsante =12;
-volatile unsigned short numberOfButtonInterrupts = 0;
-volatile bool pressed;
-volatile bool stato;
-#define DEBOUNCETIME 50
-Ticker debounceTicker;
- 
-void setup() {
-  Serial.begin(115200);
-  pinMode(led, OUTPUT);
-  pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE);
-  numberOfButtonInterrupts = 0;
-  pressed = false;
-  stato = false;
-}
+```python
+#Alla pressione del pulsante si attiva o disattiva il lampeggo di un led
+import time
+from machine import Pin, Timer
+import machine
 
-void switchPressed ()
-{
-  numberOfButtonInterrupts++; // contatore rimbalzi
-  bool val = digitalRead(pulsante); // lettura stato pulsante
-  if(val && !pressed){ // fronte di salita
-    pressed = true; // disarmo il pulsante
-    debounceTicker.once_ms(50, waitUntilInputLow);  
-    Serial.println("SALITA disarmo pulsante");
-    stato = !stato; 	  // logica toggle  
-  }
-}  // end of switchPressed
+def blink(led,t):
+    led.value(not led.value())
+    time.sleep_ms(t)
+   
+# Interrupt Service Routine (ISR)
+def btn1_pressed(pin):
+    global previousMillis
+    global numberOfButtonInterrupts
+    global interrupt_pin
+    global stato
+    if numberOfButtonInterrupts == 0:
+         stato = not stato             # intervento immediato sul fronte di salita
+    interrupt_pin = pin 
+    numberOfButtonInterrupts += 1      # contatore rimbalzi
+    previousMillis = time.ticks_ms()   # tempo evento
+    tim.init(mode=Timer.ONE_SHOT, period=50, callback=waitUntilInputChange)   # one shot firing after 50ms
 
-void waitUntilInputLow()
-{
-    if (digitalRead(pulsante) == HIGH)// se il pulsante è ancora premuto
-    { 
-        Serial.print("Aspetto");
-        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
-        debounceTicker.once_ms(50, waitUntilInputLow);  
-    }else{
-        Serial.print("DISCESA riarmo pulsante\n");
-        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
-        numberOfButtonInterrupts = 0; // reset del flag
-        pressed = false; // riarmo il pulsante
-    }
-}
+def waitUntilInputChange(t):
+    global previousMillis
+    global numberOfButtonInterrupts
+    global stato
+    # sezione critica
+    # protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
+    # numberOfButtonInterrupts è 8 bit e non è danneggiabile ne in lettura ne in scrittura
+    irq_state = machine.disable_irq() # Start of critical section
+    # il valore lastintTime potrà essere in seguito letto interrotto ma non danneggiato
+    lastintTime = previousMillis
+    machine.enable_irq(irq_state) # End of critical section
 
-// loop principale
-void loop() {
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
-		delay(500);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    		delay(10);
-	}
-}
+    if btn1.value() == 1:
+        print("Salita aspetto. ")
+        print("HIT: ")
+        print(numberOfButtonInterrupts)
+        tim.init(mode=Timer.ONE_SHOT, period=50, callback=waitUntilInputChange)   # one shot firing after 50ms
+    else:
+        print("DISCESA riarmo pulsante\n")
+        print("HIT: ")
+        print(numberOfButtonInterrupts)
+        numberOfButtonInterrupts = 0   # reset del flag (riarmo differito sul fronte di discesa)
+        
+btn1 = Pin(12,Pin.IN)
+led1 = Pin(13,Pin.OUT)
+stato = False
+previousMillis = 0
+numberOfButtonInterrupts = 0
+debtime = 50 
+interrupt_pin = 0
+c = False
+btn1.irq(handler=btn1_pressed, trigger=Pin.IRQ_RISING)
+tim = Timer(1)
+
+while True:
+    if stato:
+        blink(led1,1000)
+    else:
+        led1.off()
+        time.sleep_ms(10)
 ```
 
 Le variabili **condivise** tra una ISR e il loop() andrebbero protette da accessi **paralleli** da parte di entrambe le funzioni tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono sempre essere dichiarate con il qualificatore ```volatile``` per forzarne la modifica istantanea anche sui registri della CPU. 
@@ -496,7 +501,7 @@ Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio 
 L'unica variabile **condivisa** tra ISR e loop() nel progetto è ```stato``` che è ad 8 bit ed è stata dichiarata come ```volatile```.
 In questo caso gli **accessi**, sia in lettura che in scrittura, sono quindi, a basso livello, **intrinsecamente sequenziali**.
 
-Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350052113369268819
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/370458164426802177
 
 >[Torna all'indice](indexpulsanti.md) >[versione in C++](toggle.md)
 <!--stackedit_data:
