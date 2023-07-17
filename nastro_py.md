@@ -374,7 +374,6 @@ def safety_pressed(pin):
     global previousMillis
     global numberOfButtonInterrupts
     global interrupt_pin
-    global stato
     if numberOfButtonInterrupts == 0:
     # intervento immediato sul fronte di salita
         nastro1.block()
@@ -437,7 +436,7 @@ nastro2.unBlock()
 
 while True:
     waitUntilInputChange()   
-    time.sleep_ms(10)										
+    time.sleep_ms(10)														
 ```
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/370533168086483969
