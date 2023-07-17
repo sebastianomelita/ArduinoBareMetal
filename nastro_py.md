@@ -10,7 +10,7 @@ Programma per la gestione di un nastro trasportatore realizzato con un **timer**
 
 IL timer **timer** è realizzato non ad eventi ma in **logica sequenziale** più intuitiva e più **in armonia** con la **logica sequenziale** delle **altre parti** dell'algoritmo risolutivo:
 
-```C++
+```python
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 byte startSensorHigh = 4;
 byte startSensorLow = 3;
@@ -113,7 +113,7 @@ void loop() {
 	}
 }
 ```
-Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/bKP671nY2MU-copy-of-nastrouno/editel?tenant=circuits
+Simulazione su Arduino con Tinkercad: 
 
 ###  **Gestione di due nastri**
 
