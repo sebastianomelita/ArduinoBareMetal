@@ -20,58 +20,67 @@ Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/jWma7uWoY7
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349402186520724050
 
 ```C++
-const unsigned long DEBOUNCETIME = 50;
-const byte LED = 7;
-const byte BUTTONPIN = 3;
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 volatile unsigned long previousMillis = 0;
 volatile unsigned short numberOfButtonInterrupts = 0;
-volatile bool lastState;
-bool prevState;
+volatile bool pressed;
+#define DEBOUNCETIME 50
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
+  pressed = false;
+}
 
 // Interrupt Service Routine (ISR)
 void switchPressed ()
 {
-  numberOfButtonInterrupts++; // contatore rimbalzi
-  lastState = digitalRead(BUTTONPIN); // lettura stato pulsante
-  previousMillis = millis(); // tempo evento
+  byte val = digitalRead(pulsante);
+  if(val == HIGH){
+    if(!pressed){ // intervento immediato sul fronte di salita
+        pressed = true;
+        stato = !stato; 
+    }
+    numberOfButtonInterrupts++; // contatore rimbalzi
+    previousMillis = millis(); // tempo evento
+  }
 }  // end of switchPressed
 
-void setup ()
+void waitUntilInputChange()
 {
-  Serial.begin(115200);
-  pinMode(LED, OUTPUT);  	  // so we can update the LED
-  digitalWrite(BUTTONPIN, HIGH);  // internal pull-up resistor
-  // attach interrupt handler
-  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), switchPressed, CHANGE);  
-  numberOfButtonInterrupts = 0;
-}  // end of setup
+    // sezione critica
+    // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
+    // numberOfButtonInterrupts è 8bit e non è danneggiabile ne in lettura ne in scrittura
+    noInterrupts();
+    // il valore lastintTime potrà essere in seguito letto interrotto ma non danneggiato
+    unsigned long lastintTime = previousMillis;
+    interrupts();
 
-void loop ()
-{
-   // sezione critica
-   // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
-   // numberOfButtonInterrupts è 8bit e non è danneggiabile ne in lettura ne in scrittura
-   noInterrupts();
-   // il valore lastintTime potrà essere in seguito letto interrotto ma non danneggiato
-   unsigned long lastintTime = previousMillis;
-   interrupts();
-   
-   if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
+    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
         && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
-	&& prevState != lastState // elimina transizioni anomale LL o HH 
-	&& digitalRead(BUTTONPIN) == lastState)//se coincide con il valore di un polling
+        && digitalRead(pulsante) == LOW)//se è sul fronte di discesa
     { 
-	  Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
-	  numberOfButtonInterrupts = 0; // reset del flag
-	  
-	  prevState = lastState;
-	  if(lastState){ // fronte di salita
-	    Serial.println(" in SALITA");
-		digitalWrite(LED, !digitalRead(LED));
-	  }else{
-		Serial.println(" in DISCESA");
-	  }
-     }
+        Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
+        pressed = false;
+        numberOfButtonInterrupts = 0; // reset del flag (riarmo pulsante differito sul fronte di discesa)
+        Serial.println(" in DISCESA debounced");            
+    }
+}
+// loop principale
+void loop() {
+	waitUntilInputChange();
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(1000);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+        delay(10);
+	}
 }
 ```
 Vale il **“corto circuito”** degli operatori, cioè nel valutare l’espressione
