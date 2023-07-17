@@ -326,7 +326,7 @@ uasyncio.run(main(btn1, led1, stati))
 ```
 Link simulazione online: https://wokwi.com/projects/370370343319005185
 
-### **Schedulatore basato su interrupts e polling**
+### **Schedulatore basato su interrupts e timer SW**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
 
