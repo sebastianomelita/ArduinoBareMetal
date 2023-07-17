@@ -251,7 +251,7 @@ while True:
     time.sleep_ms(10)		
 								
 ```
-Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349524035968696915
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/370504281602332673
 
 ###  **Gestione di due nastri e tasto emergenza con interrupt**
 
