@@ -101,6 +101,8 @@ Sia ```time.sleep(0)``` che ```time.sleep(10)``` cedono il controllo della CPU a
 
 Esempio di realizzazione di due task che eseguono un blink mediante delay() insieme ad altre generiche operazioni svolte nel main (piattaforma **Espress if ESP32**, **IDE Arduino** e librerie thread **preemptive**):
 
+https://wokwi.com/projects/370506201490571265
+
 ```Python
 #
 # example ESP32 multitasking
