@@ -439,7 +439,6 @@ def blink(led,t):
    
 # Interrupt Service Routine (ISR)
 def btn1_pressed(pin):
-    global previousMillis
     global numberOfButtonInterrupts
     global interrupt_pin
     global stato
@@ -447,20 +446,11 @@ def btn1_pressed(pin):
          stato = not stato             # intervento immediato sul fronte di salita
     interrupt_pin = pin 
     numberOfButtonInterrupts += 1      # contatore rimbalzi
-    previousMillis = time.ticks_ms()   # tempo evento
     tim.init(mode=Timer.ONE_SHOT, period=50, callback=waitUntilInputChange)   # one shot firing after 50ms
 
 def waitUntilInputChange(t):
     global previousMillis
     global numberOfButtonInterrupts
-    global stato
-    # sezione critica
-    # protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
-    # numberOfButtonInterrupts è 8 bit e non è danneggiabile ne in lettura ne in scrittura
-    irq_state = machine.disable_irq() # Start of critical section
-    # il valore lastintTime potrà essere in seguito letto interrotto ma non danneggiato
-    lastintTime = previousMillis
-    machine.enable_irq(irq_state) # End of critical section
 
     if btn1.value() == 1:
         print("Salita aspetto. ")
@@ -476,11 +466,9 @@ def waitUntilInputChange(t):
 btn1 = Pin(12,Pin.IN)
 led1 = Pin(13,Pin.OUT)
 stato = False
-previousMillis = 0
 numberOfButtonInterrupts = 0
 debtime = 50 
 interrupt_pin = 0
-c = False
 btn1.irq(handler=btn1_pressed, trigger=Pin.IRQ_RISING)
 tim = Timer(1)
 
