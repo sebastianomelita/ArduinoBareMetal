@@ -24,9 +24,11 @@ class DiffTimer(object):
     def __init__(self,elapsed):
         self.elapsed = elapsed
         self.timerState = False
+	self.last = 0
     def __init__(self):
         self.elapsed = 0
         self.timerState = False
+	self.last = 0
     def reset(self): # transizione di un pulsante
         self.elapsed = 0
         self.last = time.time()
@@ -63,9 +65,11 @@ class DiffTimer(object):
     def __init__(self,elapsed):
         self.elapsed = elapsed
         self.timerState = False
+	self.last = 0
     def __init__(self):
         self.elapsed = 0
         self.timerState = False
+	self.last = 0
     def reset(self): # transizione di un pulsante
         self.elapsed = 0
         self.last = time.time()
@@ -119,9 +123,11 @@ class DiffTimer(object):
     def __init__(self,elapsed):
         self.elapsed = elapsed
         self.timerState = False
+	self.last = 0
     def __init__(self):
         self.elapsed = 0
         self.timerState = False
+	self.last = 0
     def reset(self): # transizione di un pulsante
         self.elapsed = 0
         self.last = time.time()
@@ -192,9 +198,11 @@ class DiffTimer(object):
     def __init__(self,elapsed):
         self.elapsed = elapsed
         self.timerState = False
+	self.last = 0
     def __init__(self):
         self.elapsed = 0
         self.timerState = False
+	self.last = 0
     def reset(self): # transizione di un pulsante
         self.elapsed = 0
         self.last = time.time()
@@ -272,9 +280,11 @@ class DiffTimer(object):
     def __init__(self,elapsed):
         self.elapsed = elapsed
         self.timerState = False
+	self.last = 0
     def __init__(self):
         self.elapsed = 0
         self.timerState = False
+	self.last = 0
     def reset(self): # transizione di un pulsante
         self.elapsed = 0
         self.last = time.time()
