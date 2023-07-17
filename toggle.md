@@ -663,6 +663,7 @@ byte pulsante =12;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 volatile unsigned long previousMillis = 0;
 volatile unsigned short numberOfButtonInterrupts = 0;
+volatile bool pressed;
 #define DEBOUNCETIME 50
  
 void setup() {
@@ -670,6 +671,7 @@ void setup() {
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
   attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
+  pressed = false;
 }
 
 // Interrupt Service Routine (ISR)
@@ -677,7 +679,8 @@ void switchPressed ()
 {
   byte val = digitalRead(pulsante);
   if(val == HIGH){
-    if(numberOfButtonInterrupts == 0){ // intervento immediato sul fronte di salita
+    if(!pressed){ // intervento immediato sul fronte di salita
+        pressed = true;
         stato = !stato; 
     }
     numberOfButtonInterrupts++; // contatore rimbalzi
@@ -700,6 +703,7 @@ void waitUntilInputChange()
         && digitalRead(pulsante) == LOW)//se è sul fronte di discesa
     { 
         Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
+        pressed = false;
         numberOfButtonInterrupts = 0; // reset del flag (riarmo pulsante differito sul fronte di discesa)
         Serial.println(" in DISCESA debounced");            
     }
@@ -712,7 +716,7 @@ void loop() {
 		delay(1000);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-        	delay(10);
+        delay(10);
 	}
 }
 ```
