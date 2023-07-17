@@ -387,7 +387,6 @@ previousMillis = 0
 numberOfButtonInterrupts = 0
 debtime = 50 
 interrupt_pin = 0
-c = False
 btn1.irq(handler=btn1_pressed, trigger=Pin.IRQ_RISING)
 
 while True:
