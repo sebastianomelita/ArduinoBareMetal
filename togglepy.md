@@ -365,7 +365,6 @@ def btn1_pressed(pin):
 def waitUntilInputChange():
     global previousMillis
     global numberOfButtonInterrupts
-    global stato
     # sezione critica
     # protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
     # numberOfButtonInterrupts è 8 bit e non è danneggiabile ne in lettura ne in scrittura
