@@ -275,29 +275,29 @@ import time
 
 def waitUntilInLow(btn,t):
     while btn.value():
-	 time.sleep(t)
+	 time.sleep_ms(t)
 
 class DiffTimer(object):
     def __init__(self,elapsed):
         self.elapsed = elapsed
         self.timerState = False
-	self.last = 0
+        self.last = 0
     def __init__(self):
         self.elapsed = 0
         self.timerState = False
-	self.last = 0
+        self.last = 0
     def reset(self): # transizione di un pulsante
         self.elapsed = 0
-        self.last = time.time()
+        self.last = time.ticks_ms()
     def stop(self):
         self.timerState = False
-        self.elapsed = self.elapsed + time.time() - self.last
+        self.elapsed = self.elapsed + time.ticks_ms() - self.last
     def start(self):
         self.timerState = True
-        self.last = time.time()
+        self.last = time.ticks_ms()
     def get(self):
         if self.timerState:
-            return time.time() - self.last + self.elapsed
+            return time.ticks_ms() - self.last + self.elapsed
         return self.elapsed
     def set(self, e):
         reset()
@@ -317,7 +317,7 @@ leds = [led1,led2,led3]
 while True:
     if tasto1.value() == 1:
         print("salita")
-        waitUntilInLow(tasto1, .005); # attendi finchè non c'è fronte di discesa
+        waitUntilInLow(tasto1, 50); # attendi finchè non c'è fronte di discesa
         print("discesa")
         # parte alla prima pressione
         count1 = count1 + 1
@@ -325,23 +325,23 @@ while True:
             conteggio1.start()
     elif tasto2.value() == 1:
         print("salita2")
-        waitUntilInLow(tasto2, .005); # attendi finchè non c'è fronte di discesa
+        waitUntilInLow(tasto2, 50); # attendi finchè non c'è fronte di discesa
         print("discesa2")
         # parte alla prima pressione
         count2 = count2 + 1
         if count2 == 1:
             conteggio2.start() 
-    if conteggio1.get() > 1:
+    if conteggio1.get() > 1000:
         if(count1>0 and count1 < 4):
             print(count1)
             leds[count1-1].on()
             count1=0
-    if conteggio2.get() > 1:
+    if conteggio2.get() > 1000:
         if(count2>0 and count2 < 4):
             print(count2)
             leds[count2-1].off()
             count2=0
-    time.sleep(0.01)
+    time.sleep_ms(10)
 ```
 Simulazione su Arduino con Tinkercad: https://wokwi.com/projects/370335687978017793
 >[Torna all'indice](timerbase.md) >[versione in C++](polledtimer_seq.md)
