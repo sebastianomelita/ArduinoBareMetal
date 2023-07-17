@@ -357,7 +357,7 @@ def btn1_pressed(pin):
     global interrupt_pin
     global stato
     if numberOfButtonInterrupts == 0:
-         stato = not stato
+         stato = not stato # intervento immediato sul fronte di salita
     interrupt_pin = pin 
     numberOfButtonInterrupts += 1      # contatore rimbalzi
     previousMillis = time.ticks_ms()   # tempo evento
@@ -378,7 +378,7 @@ def waitUntilInputChange():
     if c:
         print("HIT: ")
         print(numberOfButtonInterrupts)
-        numberOfButtonInterrupts = 0   # reset del flag (riarmo pulsante)
+        numberOfButtonInterrupts = 0   # reset del flag (riarmo differito sul fronte di discesa)
         print(" in DISCESA debounced")
 
 btn1 = Pin(12,Pin.IN)
