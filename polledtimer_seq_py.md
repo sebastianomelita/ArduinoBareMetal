@@ -100,8 +100,7 @@ while True:
     time.sleep(0.01)
 
 ```
-Simulazione su Arduino con Wokwi: https://wokwi.com/projects/370497523363061761
-
+Simulazione su Arduino con Wokwi: https://wokwi.com/projects/370308771487427585
 ### **Selezione luci**
 
 ```python
