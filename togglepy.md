@@ -357,7 +357,7 @@ def btn1_pressed(pin):
     global interrupt_pin
     global stato
     if numberOfButtonInterrupts == 0:
-         stato = not stato # intervento immediato sul fronte di salita
+         stato = not stato             # intervento immediato sul fronte di salita
     interrupt_pin = pin 
     numberOfButtonInterrupts += 1      # contatore rimbalzi
     previousMillis = time.ticks_ms()   # tempo evento
