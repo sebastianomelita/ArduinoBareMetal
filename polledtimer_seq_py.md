@@ -193,29 +193,29 @@ from machine import Pin
 # attesa evento con tempo minimo di attesa
 def waitUntilInLow(btn,t):
     while btn.value():
-	 time.sleep(t)
+	 time.sleep_ms(t)
 
 class DiffTimer(object):
     def __init__(self,elapsed):
         self.elapsed = elapsed
         self.timerState = False
-	self.last = 0
+        self.last = 0
     def __init__(self):
         self.elapsed = 0
         self.timerState = False
-	self.last = 0
+        self.last = 0
     def reset(self): # transizione di un pulsante
         self.elapsed = 0
-        self.last = time.time()
+        self.last = time.ticks_ms()
     def stop(self):
         self.timerState = False
-        self.elapsed = self.elapsed + time.time() - self.last
+        self.elapsed = self.elapsed + time.ticks_ms() - self.last
     def start(self):
         self.timerState = True
-        self.last = time.time()
+        self.last = time.ticks_ms()
     def get(self):
         if self.timerState:
-            return time.time() - self.last + self.elapsed
+            return time.ticks_ms() - self.last + self.elapsed
         return self.elapsed
     def set(self, e):
         reset()
@@ -234,30 +234,30 @@ while True:
     if tasto.value() == 1:
         print("salita")
         spegnimento.start()
-        waitUntilInLow(tasto, .005); # attendi finchè non c'è fronte di discesa
+        waitUntilInLow(tasto, 50); # attendi finchè non c'è fronte di discesa
         print("discesa")
         spegnimento.stop()
         # parte alla prima pressione
         count = count + 1
         if count == 1:
             conteggio.start()
-    elif conteggio.get() > 1:
+    elif conteggio.get() > 1000:
         if(count>0 and count < 4):
             leds[count-1].on()
             count=0
-    if spegnimento.get() > 1 and spegnimento.get() < 3:
+    if spegnimento.get() > 1000 and spegnimento.get() < 3000:
         spegnimento.reset()
         count=0
         leds[0].on()
         leds[1].on()
         leds[2].on()
-    elif spegnimento.get() > 2:
+    elif spegnimento.get() > 3000:
         spegnimento.reset()
         count=0
         leds[0].off()
         leds[1].off()
         leds[2].off()
-    time.sleep(0.01)
+    time.sleep_ms(10)
 ```
 
 Simulazione su Arduino con Wokwi: https://wokwi.com/projects/370321961849316353
