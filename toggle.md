@@ -642,7 +642,7 @@ void loop() {
 ```
 Simulazione online del codice precedente https://wokwi.com/projects/348523574025257556
 
-### **Schedulatore basato su interrupts e polling**
+### **Schedulatore basato su interrupts e timer SW**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
 
