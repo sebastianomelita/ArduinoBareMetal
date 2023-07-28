@@ -248,13 +248,15 @@ void setup()
 	randomSeed(analogRead(0));
 	Serial.begin(115200); 
 	pinMode(led1, OUTPUT);
- 	pinMode(led2, OUTPUT);
-	precs[0] = 0;
-	precs[1] = 0;
+  pinMode(led2, OUTPUT);
 	period[0] = 500;
 	period[1] = 2000;
 	precm = 0;
 	tbase = 50;
+	//Inizializzazione dei task
+	for(int i=0; i<2; i++){
+		precs[i] = -period[i];
+	}
 }
 
 void loop()
