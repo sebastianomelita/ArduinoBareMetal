@@ -228,6 +228,16 @@ void loop()
 ```
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352691213474403329
 
+**Inizializzazione dei task**
+
+Per ottenere la partenza sincronizzata di tutti i task al primo tick del sistema bisogna prima inizializzare il tempo trascorso (elapsed) di ogni task al valore del suo intervallo di esecuzione (periodo):
+
+```C++
+for(int i=0; i<2; i++){
+	elapsedTime[i] = period[i];
+}
+```
+
 Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), conviene dare **priorità maggiore** a quelli **più lenti** dimodochè se un eventuale **ritardo** di un **task veloce** dovesse spalmarsi su più tick rapidi, l'**errore di tempo** introdotto coinvolgerebbe solo il **primo tick breve** successivo e non avrebbe effetto sui **tick lenti** (di periodicità più grande) dato che sono sempre **serviti prima**. In **pratica**, all'interno del ```loop()``` è necessario effettuare un **riordinamento** per tempi **decrescenti**.
 
 In questo caso **non è possibile ricampionare** i task in maniera indipendente l'uno dall'altro perchè quelli con **tempo uguale** devono avvenire nello **stesso tick**.
