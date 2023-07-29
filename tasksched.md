@@ -79,8 +79,8 @@ Si noti che:
 
 Uno schedulatore di compiti (task) si può realizzare anche utilizzando **più timers** basati sul polling della funzione millis(). 
 
-```python
-[byte led1 = 13;
+```C++
+byte led1 = 13;
 byte led2 = 12;
 unsigned long period[2];
 unsigned long precs[2];
@@ -109,7 +109,7 @@ void loop()
         	digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
 	}
 	// il codice eseguito al tempo massimo della CPU va qui
-}](https://wokwi.com/projects/371606123442169857)
+}
 ```
 
 Si noti che:
