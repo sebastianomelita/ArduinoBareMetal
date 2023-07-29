@@ -67,7 +67,7 @@ Utilizzando la tecnica della **schedulazione esplicita dei task** nel loop(), la
 
 Uno schedulatore di compiti (task) si può realizzare anche utilizzando **più timers** basati sul polling della funzione millis(). 
 
-```C++
+```python
 byte led1 = 13;
 byte led2 = 12;
 unsigned long period[2];
@@ -106,9 +106,7 @@ Si noti che:
 - il calcolo degli N tempi futuri è eseguito N volte (una per ogni tempo) **ad ogni ciclo** di ```loop()```
 - il calcolo può essere reso estremamente **preciso** e realizzato in maniera indipendente tra un tempo e l'altro.
 
-Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/fcbmLkC10ms?editbtn=1
-
-Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/351933794966569551
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371606123442169857
 
 **Recupero dei tick persi in un task lento**
 
