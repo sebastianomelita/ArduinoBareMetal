@@ -233,58 +233,15 @@ In questo caso **non è possibile ricampionare** i task in maniera indipendente 
 Una soluzione in base a quanto descritto sopra potrebbe essere:
 
 ```C++
-byte led1 = 13;
-byte led2 = 12;
-unsigned long period[2];
-unsigned long precs[2];
-unsigned long precm;
-unsigned long tbase;
-unsigned long prevMillis = 0;
+periodicTimerTickFilteringDelayTest
+Docs
+main.py
+diagram.json
 
-void setup()
-{
-	randomSeed(analogRead(0));
-	Serial.begin(115200); 
-	pinMode(led1, OUTPUT);
-	pinMode(led2, OUTPUT);
-	period[0] = 500;
-	period[1] = 2000;
-	precm = 0;
-	tbase = 50;
-	//Inizializzazione dei task
-	for(int i=0; i<2; i++){
-		precs[i] = precm -period[i];
-	}
-}
-
-void loop()
-{
-	unsigned  long current_millis = millis();
-	if(current_millis-precm >= tbase){ 	
-		precm += tbase;  		
-
-		// task 2
-		if ((precm - precs[1]) >= period[1]) {
-			precs[1] +=  period[1]; 
-			unsigned long now = millis();
-			unsigned long diff = now-prevMillis;
-			//diff = diff%50;
-			Serial.print("ontwosec: ");Serial.println(diff);
-			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
-			prevMillis = now;
-		}	
-		// task 1
-		if ((precm - precs[0]) >= period[0]) {
-			precs[0] +=  period[0]; 
-			unsigned randomDelay = random(1, 200);
-			Serial.print("delay: ");Serial.println(randomDelay);
-			delay(randomDelay);
-			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-		}	
-	}
-	// il codice eseguito al tempo massimo della CPU va qui
-	delay(1);
-}
+3738394041323334353627282930312122232425261617181920111213141567891012345
+     # il codice eseguito al tempo massimo della CPU va quì 
+Simulation
+periodicTimerTickFilteringDelayTest - Wokwi ESP32, STM32, Arduino Simulator
 ```
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/353186425425809409
@@ -297,7 +254,7 @@ La **base dei tempi** comune può essere realizzata mediante qualunque tecnica d
 
 La **versione originale** più completa dello schedulatore insieme ad una dettagliata discussione teorica si trova in: https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
 
-```C++
+```python
 #include <Ticker.h>
 
 Ticker periodicTicker1;
@@ -377,11 +334,11 @@ Se il primo task veloce è affetto da ritardi casuali può accadere che questi p
 Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), conviene dare **priorità maggiore** a quelli **con periodicità più lunga** perchè un eventuale **ritardo** di un **task veloce** determinerebbe un **errore di tempo** che coinvolgerebbe solo il **primo task breve** a seguire (rimanendo confinato nel tick corrente) e non avrebbe effetto  sui **tick lenti** (di periodicità più grande che agiscono su più tick) dato che questi sarebbero sempre **serviti prima**. In altre parole, si cerca, in questo modo, di **limitare** l'effetto di eventuali ritardi di un task sul minor numero possibile di tick consecutivi.
 
 
-Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352766239477208065
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371621129877850113
 
 Una soluzione parziale in base a quanto descritto sopra potrebbe essere:
 
-```C++
+```python+
 byte led1 = 13;
 byte led2 = 12;
 unsigned long period[2];
