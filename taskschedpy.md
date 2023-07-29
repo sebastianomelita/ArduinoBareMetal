@@ -152,10 +152,11 @@ while True:
           precs[1] += period[1]
           now = time.ticks_ms()
           diff = now-prevMillis
+          print("ontwosec: ", diff);
           blink(led[1])
           prevMillis = now
 
-     # il codice eseguito al tempo massimo della CPU va quì 
+     # il codice eseguito al tempo massimo della CPU va quì  
 ```
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371607502633180161
 
