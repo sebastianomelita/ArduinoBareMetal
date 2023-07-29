@@ -189,7 +189,7 @@ precm = 0
 tbase = 500
 #inizializzazione dei task
 for i in range(2):
-     precs[i] = precm -period[i];
+     precs[i] = precm -period[i]
 
 while True:
      if time.ticks_ms() - precm >= tbase:
@@ -215,7 +215,7 @@ Per ottenere la partenza sincronizzata di tutti i task al primo tick del sistema
 ```python
 #inizializzazione dei task
 for i in range(2):
-     precs[i] = precm -period[i];
+     precs[i] = precm -period[i]
 ```
 
 **Recupero dei tick persi in un task lento**
@@ -364,7 +364,7 @@ Per ottenere la partenza sincronizzata di tutti i task al primo tick del sistema
 ```python
 #inizializzazione dei task
 for i in range(2):
-     precs[i] = precm -period[i];
+     precs[i] = precm -period[i]
 ```
 **Recupero dei tick persi in un task lento**
 
