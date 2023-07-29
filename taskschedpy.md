@@ -232,16 +232,48 @@ In questo caso **non è possibile ricampionare** i task in maniera indipendente 
 
 Una soluzione in base a quanto descritto sopra potrebbe essere:
 
-```C++
-periodicTimerTickFilteringDelayTest
-Docs
-main.py
-diagram.json
+```python
+import time
+from machine import Pin
+import random
 
-3738394041323334353627282930312122232425261617181920111213141567891012345
+def blink(led):
+     led.value(not led.value())
+
+led = [0, 0]
+led[0] = Pin(12, Pin.OUT)
+led[1] = Pin(18, Pin.OUT)
+period = [500, 1000]
+precs = [0, 0]
+currTime = 0;
+prevMillis = 0
+precm = 0
+tbase = 500
+#inizializzazione dei task
+for i in range(2):
+     precs[i] = precm -period[i];
+
+while True:
+     if time.ticks_ms() - precm >= tbase:
+          precm += tbase
+          #task1
+          if currTime - precs[0] >= period[0]:
+               precs[0] += period[0]
+               randomDelay = random.randint(1,200)
+               print("delay: ", randomDelay)
+               time.sleep_ms(randomDelay)
+               blink(led[0])
+          #task2
+          currTime = time.ticks_ms()
+          if currTime - precs[1] >= period[1]:
+               precs[1] += period[1]
+               now = time.ticks_ms()
+               diff = now-prevMillis
+               print("ontwosec: ", diff);
+               blink(led[1])
+               prevMillis = now
+
      # il codice eseguito al tempo massimo della CPU va quì 
-Simulation
-periodicTimerTickFilteringDelayTest - Wokwi ESP32, STM32, Arduino Simulator
 ```
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/353186425425809409
