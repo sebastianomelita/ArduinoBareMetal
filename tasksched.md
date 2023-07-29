@@ -196,7 +196,7 @@ for(int i=0; i<2; i++){
 }
 ```
 
-**Recupero dei tick mancati a causa di un task lento**
+**Recupero dei tick persi in un task lento**
 
 In questo caso il **ritardo** di un **task** maggiore di un **tempo base** è compensato. Infatti se dopo un tempo ```t``` pari a ```x``` multipli di ```tbase``` lo scedulatore ricampiona il tempo con la funzione ```millis()```, allora la condizione ```if(millis()-precm >= tbase``` sarà valutata alla massima velocità del clock e sarà vera per ```x``` volte, ciò causerà un rapido recupero di ```precm``` fino a che la diferenza non sarà minore di ```tbase```. Da questo momento in poi i tick procederanno senza ritardo fino allo scatto della condizione dei vari task.
 
@@ -323,7 +323,7 @@ for(int i=0; i<2; i++){
 	elapsedTime[i] = period[i];
 }
 ```
-**Task molto lenti**
+**Recupero dei tick persi in un task lento**
 
 Anche in questo caso il **ritardo** di un **task** maggiore di un **tempo base** potrebbe essere compensato. Infatti se dopo un tempo ```t``` pari a ```x``` multipli di ```tbase``` lo scedulatore esegue rapidamente tutti i tick che potrebbero essere mancati durante l'esecuzione di un  task precedente molto lento. I tick mancanti vengono contati tutti **in una volta** fino a recuperare il ritardo.  Da questo momento in poi i tick procederanno senza ritardo fino allo scatto della condizione dei vari task.
 
