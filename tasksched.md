@@ -126,7 +126,7 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://ww
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/351933794966569551
 
-Se il primo task veloce è affetto da ritardi casuali può accadere che questi possono ritardare anche il task che occorrono nello stesso ```loop()``` a seguire. Questo accade se più task con **periodicità diversa** occorrono nello stesso tempo (tick).
+Se il primo task veloce è affetto da ritardi casuali può accadere che questi possono ritardare anche il task che occorrono a seguire nello stesso ```loop()```. Questo accade se più task con **periodicità diversa** occorrono nello stesso tempo (tick).
 
 Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), conviene dare **priorità maggiore** a quelli **più lenti** dimodochè se un eventuale **ritardo** di un **task veloce** dovesse spalmarsi su più tick rapidi, l'**errore di tempo** introdotto coinvolgerebbe solo il **primo tick breve** successivo e non avrebbe effetto sui **tick lenti** (di periodicità più grande) dato che sarebbero sempre **serviti prima**.
 
