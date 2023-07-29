@@ -198,7 +198,7 @@ Per ottenere la partenza sincronizzata di tutti i task al primo tick del sistema
 ```C++
 //Inizializzazione dei task
 for(int i=0; i<2; i++){
-	precs[i] = -period[i];
+	precs[i] = precm -period[i];
 }
 ```
 
@@ -226,7 +226,7 @@ void setup()
 	tbase = 500;
 	// inizializzazione dei task
 	for(int i=0; i<2; i++){
-		precs[i] = -period[i];
+		precs[i] = precm -period[i];
 	}
 }
 
@@ -283,7 +283,7 @@ void setup()
 	tbase = 50;
 	//Inizializzazione dei task
 	for(int i=0; i<2; i++){
-		precs[i] = -period[i];
+		precs[i] = precm -period[i];
 	}
 }
 
