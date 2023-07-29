@@ -185,7 +185,22 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 Uno schedulatore di compiti (task) si può realizzare anche utilizzando **più timers** basati sul polling della funzione millis(). 
 
+**Inizializzazione dei task**
+
+Per ottenere la partenza sincronizzata di tutti i task al primo tick del sistema bisogna prima inizializzare il tempo trascorso (```precs[i]```) di ogni task al valore del suo intervallo di esecuzione (``period[i]``):
+
+```C++
+//Inizializzazione dei task
+for(int i=0; i<2; i++){
+	precs[i] = -period[i];
+}
+```
+
+**Recupero dei tick mancati a causa di un task lento**
+
 In questo caso il **ritardo** di un **task** maggiore di un **tempo base** è compensato. Infatti se dopo un tempo ```t``` pari a ```x``` multipli di ```tbase``` lo scedulatore ricampiona il tempo con la funzione ```millis()```, allora la condizione ```if(millis()-precm >= tbase``` sarà valutata alla massima velocità del clock e sarà vera per ```x``` volte, ciò causerà un rapido recupero di ```precm``` fino a che la diferenza non sarà minore di ```tbase```. Da questo momento in poi i tick procederanno senza ritardo fino allo scatto della condizione dei vari task.
+
+
 
 ```C++
 byte led1 = 13;
@@ -288,17 +303,6 @@ void loop()
 	}
 	// il codice eseguito al tempo massimo della CPU va qui
 	delay(1);
-}
-```
-
-**Inizializzazione dei task**
-
-Per ottenere la partenza sincronizzata di tutti i task al primo tick del sistema bisogna prima inizializzare il tempo trascorso (```precs[i]```) di ogni task al valore del suo intervallo di esecuzione (``period[i]``):
-
-```C++
-//Inizializzazione dei task
-for(int i=0; i<2; i++){
-	precs[i] = -period[i];
 }
 ```
 
