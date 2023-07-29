@@ -126,6 +126,8 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://ww
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/351933794966569551
 
+**Riordinamento dei task**
+
 Se il primo task veloce è affetto da ritardi casuali può accadere che questi possono ritardare anche il task che occorrono a seguire nello stesso ```loop()```. Questo accade se più task con **periodicità diversa** occorrono nello stesso tempo (tick).
 
 Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), conviene dare **priorità maggiore** a quelli **più lenti** dimodochè se un eventuale **ritardo** di un **task veloce** dovesse spalmarsi su più tick rapidi, l'**errore di tempo** introdotto coinvolgerebbe solo il **primo tick breve** successivo e non avrebbe effetto sui **tick lenti** (di periodicità più grande) dato che sarebbero sempre **serviti prima**.
@@ -246,6 +248,8 @@ void loop()
 }
 ```
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352691213474403329
+
+**Riordinamento dei task**
 
 Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), conviene dare **priorità maggiore** a quelli **più lenti** dimodochè se un eventuale **ritardo** di un **task veloce** dovesse spalmarsi su più tick rapidi, l'**errore di tempo** introdotto coinvolgerebbe solo il **primo tick breve** successivo e non avrebbe effetto sui **tick lenti** (di periodicità più grande) dato che sono sempre **serviti prima**. In **pratica**, all'interno del ```loop()``` è necessario effettuare un **riordinamento** per tempi **decrescenti**.
 
@@ -391,6 +395,8 @@ void loop()
 Il **flag** ```processingRdyTasks``` servirebbe ad evitare l'interruzione della ISR sopra un'altra ISR dovuta ad un eventuale ritardo di completamento di un task precedente. Questa circostanza nei microcontrollori come Arduino o ESP32 in genere non accade perchè le **interruzioni annidate** sono **di base** (default) **disabilitate**.
 
 Anche in questo caso **non è possibile ricampionare** i task in maniera indipendente l'uno dall'altro perchè quelli con **tempo uguale** devono avvenire nello **stesso tick**.
+
+**Riordinamento dei task**
 
 Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), conviene dare **priorità maggiore** a quelli **più lenti** dimodochè se un eventuale **ritardo** di un **task veloce** dovesse spalmarsi su più tick rapidi, l'**errore di tempo** introdotto coinvolgerebbe solo il **primo tick breve** successivo e non avrebbe effetto sui **tick lenti** (di periodicità più grande) dato che sono sempre **serviti prima**. In **pratica**, all'interno del ```loop()``` è necessario effettuare un **riordinamento** per tempi **decrescenti**.
 
