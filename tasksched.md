@@ -322,20 +322,6 @@ E' possibile realizzare uno schedulatore di task che non necessita di alcuna fun
 
 La **base dei tempi** comune può essere realizzata mediante qualunque tecnica di **generazione di tempi periodici**, ma la particolarità dell'assenza di misure di **tempo corrente** (millis()) rendono la realizzazione particolarmente adatta ad essere adoperata su una base dei tempi generata mediante **interrupt**. 
 
-**Inizializzazione dei task**
-
-Per ottenere la partenza sincronizzata di tutti i task al primo tick del sistema bisogna prima inizializzare il tempo trascorso (elapsed) di ogni task al valore del suo intervallo di esecuzione (periodo):
-
-```C++
-for(int i=0; i<2; i++){
-	elapsedTime[i] = period[i];
-}
-```
-**Recupero dei tick persi in un task lento**
-
-Anche in questo caso il **ritardo** di un **task** maggiore di un **tempo base** potrebbe essere compensato. Infatti se dopo un tempo ```t``` pari a ```x``` multipli di ```tbase``` lo scedulatore esegue rapidamente tutti i tick che potrebbero essere mancati durante l'esecuzione di un  task precedente molto lento. I tick mancanti vengono contati tutti **in una volta** fino a recuperare il ritardo.  Da questo momento in poi i tick procederanno senza ritardo fino allo scatto della condizione dei vari task.
-
-
 La **versione originale** più completa dello schedulatore insieme ad una dettagliata discussione teorica si trova in: https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
 
 ```C++
@@ -397,6 +383,19 @@ void loop()
 Il **flag** ```processingRdyTasks``` servirebbe ad evitare l'interruzione della ISR sopra un'altra ISR dovuta ad un eventuale ritardo di completamento di un task precedente. Questa circostanza nei microcontrollori come Arduino o ESP32 in genere non accade perchè le **interruzioni annidate** sono **di base** (default) **disabilitate**.
 
 Anche in questo caso **non è possibile ricampionare** i task in maniera indipendente l'uno dall'altro perchè quelli con **tempo uguale** devono avvenire nello **stesso tick**.
+
+**Inizializzazione dei task**
+
+Per ottenere la partenza sincronizzata di tutti i task al primo tick del sistema bisogna prima inizializzare il tempo trascorso (elapsed) di ogni task al valore del suo intervallo di esecuzione (periodo):
+
+```C++
+for(int i=0; i<2; i++){
+	elapsedTime[i] = period[i];
+}
+```
+**Recupero dei tick persi in un task lento**
+
+Anche in questo caso il **ritardo** di un **task** maggiore di un **tempo base** potrebbe essere compensato. Infatti se dopo un tempo ```t``` pari a ```x``` multipli di ```tbase``` lo scedulatore esegue rapidamente tutti i tick che potrebbero essere mancati durante l'esecuzione di un  task precedente molto lento. I tick mancanti vengono contati tutti **in una volta** fino a recuperare il ritardo.  Da questo momento in poi i tick procederanno senza ritardo fino allo scatto della condizione dei vari task.
 
 **Riordinamento dei task**
 
