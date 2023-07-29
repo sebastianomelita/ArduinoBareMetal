@@ -191,6 +191,13 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 Uno schedulatore di compiti (task) si può realizzare anche utilizzando **più timers** basati sul polling della funzione millis(). 
 
+E' possibile realizzare uno schedulatore di più task che agiscono con periodicità diversa in tempi diversi a ppartire da un timer che realizza esegue periodicamente un task comune si sincronizzazione che agisce su un tempo base sottomultiplo del tempo di ciascun altro task. In sostanza, il **periodo** di ciascun task è un **multiplo intero** del periodo base di sincronizzazione comune:
+
+- Il **tempo base** comune a tutti i task, si èuò calcolare col **massimo comune divisore** (M.C.D. o G.C.D) di tutti i tempi dei singoli task.
+- ad ogni tick del tempo base viene valutato se è maturato il tick del tempo di ciascun task valutando la condizione ```(precm - precs[i]) >= period[i]```
+- se la condizione del tick di un task è vera allora viene calcolato il tempo del tick futuro del task corrente aggiornando il tempo del tick corrente con la periodicità del task mediante la somma ```precs[i] += period[i]```
+
+
 ```C++
 byte led1 = 13;
 byte led2 = 12;
