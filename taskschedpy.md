@@ -68,36 +68,31 @@ Utilizzando la tecnica della **schedulazione esplicita dei task** nel loop(), la
 Uno schedulatore di compiti (task) si può realizzare anche utilizzando **più timers** basati sul polling della funzione millis(). 
 
 ```python
-byte led1 = 13;
-byte led2 = 12;
-unsigned long period[2];
-unsigned long precs[2];
+import time
+from machine import Pin
 
-void setup()
-{
-	pinMode(led1, OUTPUT);
-  	pinMode(led2, OUTPUT);
-	precs[0]=0;
-	precs[1]=0;
-	period[0] = 500;
-	period[1] = 1000;
-}
+def blink(led):
+     led.value(not led.value())
 
-void loop()
-{
-	unsigned long current_millis = millis();
-	// task 1
-	if ((current_millis - precs[0]) >= period[0]) {
-		precs[0] += period[0]; 
-        	digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-	}	
-	// task 2
-	if ((current_millis - precs[1]) >= period[1]) {
-		precs[1] += period[1]; 
-        	digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
-	}
-	// il codice eseguito al tempo massimo della CPU va qui
-}
+led = [0, 0]
+led[0] = Pin(12, Pin.OUT)
+led[1] = Pin(18, Pin.OUT)
+period = [500, 1000]
+precs = [0, 0]
+currTime = 0;
+
+while True:
+     currTime = time.ticks_ms()
+     #task1
+     if currTime - precs[0] >= period[0]:
+          precs[0] += period[0]
+          blink(led[0])
+     #task2
+     if currTime - precs[1] >= period[1]:
+          precs[1] += period[1]
+          blink(led[1])
+
+     # il codice eseguito al tempo massimo della CPU va quì 
 ```
 
 Si noti che:
