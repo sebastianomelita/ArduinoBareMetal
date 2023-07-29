@@ -121,52 +121,43 @@ Un'**alternativa** praticabile in questa categoria di schedulatori  potrebbe ess
 
 Una soluzione basata sul **ricampionamento** tra un task e l'altro potrebbe farsi così:
 
-```C++
-byte led1 = 13;
-byte led2 = 12;
-unsigned long period[2];
-unsigned long precs[2];
-unsigned long prevMillis = 0;
+```python
+import time
+from machine import Pin
+import random
 
-void setup()
-{
-	randomSeed(analogRead(0));
-	Serial.begin(115200); 
-	pinMode(led1, OUTPUT);
-  	pinMode(led2, OUTPUT);
-	precs[0]=0;
-	precs[1]=0;
-	period[0] = 500;
-	period[1] = 2000;
-}
+def blink(led):
+     led.value(not led.value())
 
-void loop()
-{
-	// task 1
-	unsigned long current_millis = millis();
-	if ((current_millis - precs[0]) >= period[0]) {
-		precs[0] = current_millis; 
-		unsigned randomDelay = random(1, 200);
-		Serial.print("delay: ");Serial.println(randomDelay);
-		delay(randomDelay);
-    		digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-	}	
-	// task 2
-	current_millis = millis();
-	if ((current_millis - precs[1]) >= period[1]) {
-		precs[1] =  current_millis; 
-      		unsigned long now = millis();
-		unsigned long diff = now-prevMillis;
-		//diff = diff%50;
-		Serial.print("ontwosec: ");Serial.println(diff);
-		digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
-		prevMillis = now;
-	}
-	// il codice eseguito al tempo massimo della CPU va qui
-	delay(1);
-}
+led = [0, 0]
+led[0] = Pin(12, Pin.OUT)
+led[1] = Pin(18, Pin.OUT)
+period = [500, 1000]
+precs = [0, 0]
+currTime = 0;
+prevMillis = 0
+
+while True:
+     currTime = time.ticks_ms()
+     #task1
+     if currTime - precs[0] >= period[0]:
+          precs[0] += period[0]
+          randomDelay = random.randint(1,200)
+          print("delay: ", randomDelay)
+          time.sleep_ms(randomDelay)
+          blink(led[0])
+     #task2
+     currTime = time.ticks_ms()
+     if currTime - precs[1] >= period[1]:
+          precs[1] += period[1]
+          now = time.ticks_ms()
+          diff = now-prevMillis
+          blink(led[1])
+          prevMillis = now
+
+     # il codice eseguito al tempo massimo della CPU va quì 
 ```
-Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352929647651521537
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371607502633180161
 
 ### **SCHEDULATORE DI COMPITI BASATO SU FILTRAGGIO DEI TIME TICK**
 
