@@ -212,11 +212,10 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 Per ottenere la partenza sincronizzata di tutti i task al primo tick del sistema bisogna prima inizializzare il tempo trascorso (```precs[i]```) di ogni task al valore del suo intervallo di esecuzione (``period[i]``):
 
-```C++
-//Inizializzazione dei task
-for(int i=0; i<2; i++){
-	precs[i] = precm -period[i];
-}
+```python
+#inizializzazione dei task
+for i in range(2):
+     precs[i] = precm -period[i];
 ```
 
 **Recupero dei tick persi in un task lento**
@@ -362,10 +361,10 @@ Anche in questo caso **non è possibile ricampionare** i task in maniera indipen
 
 Per ottenere la partenza sincronizzata di tutti i task al primo tick del sistema bisogna prima inizializzare il tempo trascorso (elapsed) di ogni task al valore del suo intervallo di esecuzione (periodo):
 
-```C++
-for(int i=0; i<2; i++){
-	elapsedTime[i] = period[i];
-}
+```python
+#inizializzazione dei task
+for i in range(2):
+     precs[i] = precm -period[i];
 ```
 **Recupero dei tick persi in un task lento**
 
