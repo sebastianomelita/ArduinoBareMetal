@@ -189,7 +189,7 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 ### **SCHEDULATORE DI COMPITI BASATO SU FILTRAGGIO DEI TIME TICK**
 
-E' possibile realizzare uno schedulatore di **più task** che agiscono con periodicità **diverse** in tempi diversi a partire da un timer che esegue periodicamente un **task comune** si sincronizzazione che agisce su un **tempo** base **sottomultiplo** del tempo di ciascun altro task. In sostanza, il **periodo** di ciascun task è un **multiplo intero** del periodo base di sincronizzazione comune:
+E' possibile realizzare uno schedulatore di **più task** che agiscono con periodicità **diverse** in tempi diversi a partire da un timer che esegue periodicamente un **task comune** si sincronizzazione che agisce su un **tempo** base comune **sottomultiplo** del tempo di ciascun altro task. In sostanza, il **periodo** di ciascun task è un **multiplo intero** del periodo base di sincronizzazione comune:
 - il **tick** del **tempo base** viene ottenuto mediante il polling della funzione ```millis()``` eseguito ad **ogni ```loop()```**
 - ad ogni **tick** del **tempo base** viene aggiornato il momento del prossimo tick mediante l'espressione ```precm += tbase```
 - Il **tempo base** comune a tutti i task, si può calcolare col **massimo comune divisore** (M.C.D. o G.C.D) di tutti i tempi dei singoli task.
