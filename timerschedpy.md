@@ -53,6 +53,10 @@ tim3 = Timer(3, mode=Timer.ONE_SHOT)
 tim = Timer(-1)
 tim.init(period=500, callback = mycallback)
 ```
+
+La funzione ```Timer.deinit()``` può essere utilizzata per rimuovere un timer dal sistema. Ciò è utile se si desidera arrestare un timer attualmente in esecuzione. Se ci sono molti timer che utilizzano ciascuno la memoria, è una buona pratica rimuoverli quando il loro compito è terminato.
+
+
 Esempio completo:
 ```python
 #include <Ticker.h>
