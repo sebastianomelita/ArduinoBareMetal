@@ -509,50 +509,48 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 ### **Blink a fasi**
 
-```C++
-/*
-Realizzzare un programma che fa blinkare un led per 5 sec poi lo fa stare sempre spento per un altri 5 sec, 
-poi lo fa blinkare di nuovo per altri 5 sec e così via.
-*/
-#define tbase  500 // periodo base in milliseconds
-#define nstep  1000  // numero di fasi massimo di un periodo generico
-unsigned long precm = 0;
-unsigned long step = 0;
-byte led1 = 12;
-bool stato;
+```python
+#Realizzzare un programma che fa blinkare un led per 5 sec poi lo fa stare
+#sempre spento per altri 5 sec, poi lo fa blinkare di nuovo per altri 5 sec e così via.
+import time
+from machine import Pin
 
-void setup()
-{
-	pinMode(led1, OUTPUT);
-	stato = true;
-}
-
-void loop()
-{
-	// polling della millis() alla ricerca del tempo in cui scade ogni periodo
-	if((millis()-precm) >= (unsigned long) tbase){ 	//se è passato un periodo tbase dal precedente periodo
-		precm = millis();  		//preparo il tic successivo azzerando il conteggio del tempo ad adesso
-		
-		step = (step + 1) % nstep; 	// conteggio circolare (arriva al massimo a nstep-1)
-
-		// task 1
-		if(!(step%1)){  // schedulo eventi al multiplo del periodo (2 sec = 2 periodi)
-			if(stato)
-				digitalWrite(led1,!d.igitalRead(led1)); 	// stato alto: led blink
-			else
-				digitalWrite(led1,LOW);
-		}
-		// task 2
-		if(!(step%10)){  // schedulo eventi al multiplo del periodo (3 sec = 3 periodi)
-			stato = !stato;
-		}
-		// il codice eseguito al tempo del metronomo (esattamente un periodo) va quì
-	}
-	// il codice eseguito al tempo massimo della CPU va qui
-}
+led1 = Pin(13, Pin.OUT)
+pulsante = 0
+stato = True
+precm = 0
+precval = 0
+step = 0
+tbase = 500
+nstep = 1000
+	
+while True:
+    # il codice eseguito al tempo massimo della CPU va qui	
+    # .........
+    if time.ticks_ms() - precm >= tbase:  	   # schedulatore (e anche antirimbalzo)
+        precm = time.ticks_ms()  			   # preparo il tic successivo	
+        step = (step + 1) % nstep      # conteggio circolare arriva al massimo a nstep-1
+        # il codice eseguito al tempo base va quì	
+        # ..........
+        
+        # task 1
+        if not(step % 1):      # schedulo eventi al multiplo del tempo stabilito (2 sec)
+            if stato:
+                led1.value(not led1.value())  # stato alto: led blink
+            else:
+                led1.off()
+                            
+        # task 2
+        if not(step % 10):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
+            stato = not stato                           
+        # il codice eseguito al tempo base va quì	
+        # ..........
+            
+    # il codice eseguito al tempo massimo della CPU va qui	
+    # ........
 ```
 
-Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/0vP4WlJGycZ?editbtn=1
+Di seguito il link della simulazione online con Wokwi: https://wokwi.com/projects/371688251759396865
 
 ### **Pulsante toggle con antirimbalzo insieme a blink**
 
