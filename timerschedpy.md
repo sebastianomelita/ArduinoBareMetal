@@ -1,4 +1,4 @@
->[Torna all'indice generazione tempi](indexgenerazionetempi.md)>[versione in C++](timersched.md)
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md) >[versione in C++](timersched.md)
 
 ## **SCHEDULAZIONE CON I TIMERS HW**
 
@@ -387,4 +387,4 @@ Simulazione su Arduino con Wowki: https://wokwi.com/projects/352009022804591183
 - https://github.com/khoih-prog/ESP32TimerInterrupt
 - https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer
 
->[Torna all'indice generazione tempi](indexgenerazionetempi.md)>[versione in C++](timersched.md) 
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md) >[versione in C++](timersched.md) 
