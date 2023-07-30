@@ -287,60 +287,47 @@ La **base dei tempi** comune può essere realizzata mediante qualunque tecnica d
 La **versione originale** più completa dello schedulatore insieme ad una dettagliata discussione teorica si trova in: https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
 
 ```python
-#include <Ticker.h>
+import time
+from machine import Pin, Timer
 
-Ticker periodicTicker1;
-byte led1 = 13;
-byte led2 = 12;
-unsigned long period[2];
-unsigned long elapsedTime[2];
-volatile bool processingRdyTasks;
-unsigned long tbase;
+def blink(led):
+     led.value(not led.value())
 
-void setup()
-{
-	pinMode(led1, OUTPUT);
-	pinMode(led2, OUTPUT);
-	Serial.begin(115200); 
-	periodicTicker1.attach_ms(500, scheduleAll);
-	elapsedTime[0] = 0;
-	elapsedTime[1] = 0;
-	period[0] = 500;
-	period[1] = 1000;
-	tbase = 500;
-	// task time init
-	processingRdyTasks = false;
-	for(int i=0; i<2; i++){
-		elapsedTime[i] = period[i];
-	}
-}
+def scheduleAll(timer):
+     global processingRdyTasks
+     global elapsedTime
+     if processingRdyTasks:
+          print("Timer ticked before task processing done")
+     else:
+          processingRdyTasks = True
+          #task1
+          if elapsedTime[0] >= period[0]:
+               blink(led[0])
+               elapsedTime[0] = 0
+          elapsedTime[0] += tbase
+          #task2
+          if elapsedTime[1] >= period[1]:
+               blink(led[1])
+               elapsedTime[1] = 0
+          elapsedTime[1] += tbase
+          processingRdyTasks = False
 
-void scheduleAll(){
-	if(processingRdyTasks){ 	
-		Serial.println("Timer ticked before task processing done");
-	}else{  	
-		processingRdyTasks = true;		
-		// task 1
-		if (elapsedTime[0] >= period[0]) {
-			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-			elapsedTime[0] = 0;
-		}
-		elapsedTime[0] += tbase;
-		// task 2
-		if (elapsedTime[1] >= period[1]) {
-			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
-			elapsedTime[1] = 0;
-		}
-		elapsedTime[1] += tbase;
-		processingRdyTasks = false;
-	}
-}
+led = [0, 0]
+led[0] = Pin(12, Pin.OUT)
+led[1] = Pin(18, Pin.OUT)
+period = [500, 1000]
+elapsedTime = [0, 0]
+tbase = 500
+myPerTimer = Timer(3)
+myPerTimer.init(period=tbase, mode=Timer.PERIODIC, callback=scheduleAll)
+processingRdyTasks = False
+#inizializzazione dei task
+for i in range(2):
+     elapsedTime[i] = period[i]
 
-void loop()
-{
-	delay(10);
-	// il codice eseguito al tempo massimo della CPU va qui
-}
+while True:
+     time.sleep_ms(1)
+     # il codice eseguito al tempo massimo della CPU va quì 
 ```
 Il **flag** ```processingRdyTasks``` servirebbe ad evitare l'interruzione della ISR sopra un'altra ISR dovuta ad un eventuale ritardo di completamento di un task precedente. Questa circostanza nei microcontrollori come Arduino o ESP32 in genere non accade perchè le **interruzioni annidate** sono **di base** (default) **disabilitate**.
 
@@ -366,7 +353,7 @@ Se il primo task veloce è affetto da ritardi casuali può accadere che questi p
 Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), conviene dare **priorità maggiore** a quelli **con periodicità più lunga** perchè un eventuale **ritardo** di un **task veloce** determinerebbe un **errore di tempo** che coinvolgerebbe solo il **primo task breve** a seguire (rimanendo confinato nel tick corrente) e non avrebbe effetto  sui **tick lenti** (di periodicità più grande che agiscono su più tick) dato che questi sarebbero sempre **serviti prima**. In altre parole, si cerca, in questo modo, di **limitare** l'effetto di eventuali ritardi di un task sul minor numero possibile di tick consecutivi.
 
 
-Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371621129877850113
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371622016301018113
 
 Una soluzione parziale in base a quanto descritto sopra potrebbe essere:
 
