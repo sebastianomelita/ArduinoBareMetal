@@ -789,7 +789,7 @@ void loop() {
 
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/352057010320512001
 
-### **Pulsante toggle con atirimbalzo insieme a blink**
+### **Pulsante toggle con antirimbalzo insieme a blink**
 
 In questo esempio si utilizza un unico **timer HW** come **base dei tempi** per uno **schedulatore SW** che gestisce la tempistica di **due task**: 
 - uno per la relizzazione di un **tasto toggle** con proprietà di antirimbalzo
