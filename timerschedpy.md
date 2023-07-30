@@ -92,45 +92,34 @@ L'esp_timer è un set di APIs che fornisce timer one-shot e periodici, con risol
 -  se si registrano callback multiple per uno stesso timer, maggiore sarà il ritardo per le callback che verranno chiamate dopo, dato che per essere eseguite loro devono necessariamente ritornare le precedenti.
 - le callback sono chiamate da funzioni ISR lanciate da segnali di interrupt provenienti dai timer. Le ISR di norma dovrebbero essere molto brevi e, in ogni caso, **mai bloccanti**, per evitare instabilità del sistema. Invece di eseguire operazioni bloccanti nella callback del ticker è consigliabile impostare li un **flag**  e **controllare** quel flag all'interno della funzione **loop**.
 
-```C++
-#include <Ticker.h>
+```python
+import time
+from machine import Pin, Timer
 
-Ticker periodicTicker1;
-Ticker periodicTicker2;
-int led1 = 13;
-int led2 = 12;
- 
-void periodicBlink(int led) {
-  Serial.print("printing periodic blink led ");
-  Serial.println(led);
-  digitalWrite(led, !digitalRead(led));
-}
- 
-void setup() {
-  pinMode(led1, OUTPUT);
-  pinMode(led2, OUTPUT);
-  Serial.begin(115200); 
-  periodicTicker1.attach_ms(500, periodicBlink, led1);
-  periodicTicker2.attach_ms(1000, periodicBlink, led2);
-}
- 
-void loop() {
-	int count = 0;
-	while(true){
-		Serial.print("Doing stuff... ");
-		Serial.println(count);
-		count += 1;
-		if(count >= 10)
-		    break;
-		delay(1000);
-	}
-	Serial.print("Ending timers...");
-	periodicTicker1.detach();
-	periodicTicker2.detach();
-}
+def blink(led):
+    led.value(not led.value())
+
+led1 = Pin(12, Pin.OUT)
+led2 = Pin(18, Pin.OUT)
+tim1 = Timer(2)
+tim1.init(period=500, callback = lambda t: blink(led1))	
+tim2 = Timer(3)
+tim2.init(period=1000, callback = lambda t: blink(led2))	
+count = 0
+
+while True:
+    print("Doing stuff... ", count)
+    count += 1
+    if count >= 10:
+        break
+    time.sleep_ms(1000)
+
+print("Ending timers...")
+tim1.deinit()
+tim2.deinit()
 ```
 
-Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/371695217789720577
 
 ### **I TIMERS HW DI ARDUINO**
 
