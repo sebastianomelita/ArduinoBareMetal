@@ -452,6 +452,8 @@ def  timerISR(timer):
     global timerFlag
     global count
     if timerFlag:
+        # recupero dei tick saltati a causa di 
+        # un eventuale ritardo di un task
         for i in range(taskNum):
             elapsedTime[i] += tbase
     else:
