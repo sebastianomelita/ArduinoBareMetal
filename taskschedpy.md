@@ -372,15 +372,7 @@ def scheduleAll(timer):
           print("Timer ticked before task processing done")
      else:
           processingRdyTasks = True
-          #task1
-          if elapsedTime[0] >= period[0]:
-               randomDelay = random.randint(1,200)
-               print("delay: ", randomDelay)
-               time.sleep_ms(randomDelay)
-               blink(led[0])
-               elapsedTime[0] = 0
-          elapsedTime[0] += tbase
-          #task2
+          #task2 (task periodicità maggiore prima)
           if elapsedTime[1] >= period[1]:
                now = time.ticks_ms()
                diff = now-prevMillis
@@ -390,6 +382,15 @@ def scheduleAll(timer):
                elapsedTime[1] = 0
           elapsedTime[1] += tbase
           processingRdyTasks = False
+          #task1
+          if elapsedTime[0] >= period[0]:
+               randomDelay = random.randint(1,200)
+               print("delay: ", randomDelay)
+               time.sleep_ms(randomDelay)
+               blink(led[0])
+               elapsedTime[0] = 0
+          elapsedTime[0] += tbase
+          
 
 led = [0, 0]
 led[0] = Pin(12, Pin.OUT)
