@@ -256,14 +256,7 @@ for i in range(2):
 while True:
      if time.ticks_ms() - precm >= tbase:
           precm += tbase
-          #task1
-          if currTime - precs[0] >= period[0]:
-               precs[0] += period[0]
-               randomDelay = random.randint(1,200)
-               print("delay: ", randomDelay)
-               time.sleep_ms(randomDelay)
-               blink(led[0])
-          #task2
+          #task2 (con periodicità maggiore prima)
           currTime = time.ticks_ms()
           if currTime - precs[1] >= period[1]:
                precs[1] += period[1]
@@ -272,11 +265,18 @@ while True:
                print("ontwosec: ", diff);
                blink(led[1])
                prevMillis = now
+          #task1
+          if currTime - precs[0] >= period[0]:
+               precs[0] += period[0]
+               randomDelay = random.randint(1,200)
+               print("delay: ", randomDelay)
+               time.sleep_ms(randomDelay)
+               blink(led[0])
 
      # il codice eseguito al tempo massimo della CPU va quì 
 ```
 
-Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/353186425425809409
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371659893418077185
 
 ### **SCHEDULATORE DI COMPITI GENERICO SENZA MILLIS**
 
