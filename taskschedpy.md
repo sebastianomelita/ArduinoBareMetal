@@ -344,7 +344,7 @@ for i in range(2):
 ```
 **Recupero dei tick persi in un task lento**
 
-Anche in questo caso il **ritardo** di un **task** maggiore di un **tempo base** potrebbe essere compensato. Infatti se dopo un tempo ```t``` pari a ```x``` multipli di ```tbase``` lo scedulatore esegue rapidamente tutti i tick che potrebbero essere mancati durante l'esecuzione di un  task precedente molto lento. I tick mancanti vengono contati tutti **in una volta** fino a recuperare il ritardo.  Da questo momento in poi i tick procederanno senza ritardo fino allo scatto della condizione dei vari task.
+In questo caso il **ritardo** di un **task** maggiore di un **tempo base** non potrebbe essere compensato dato che **da un lato** la funzione ```scheduleAll()``` non è interrompibile per cui un suo ritardo ritarda anche il task successivo, **dall'altro** ```elapsedTime[0] += tbase``` viene incrementata ad ogni tick sempre una sola volta, per cui se il ritardo di un task ha superato più tick, il task successivo **non** è in grado di recuperarli nel suo conteggio del tempo trascorso.
 
 **Riordinamento dei task**
 
