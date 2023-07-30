@@ -601,13 +601,14 @@ def blink(led):
 
 def press(p):
     p.toggle()
-    time.sleep_ms(200)
+    time.sleep_ms(200)# emulazione ritardo del task
 
 def toggleLogic(led):
     global pulsante
     if pulsante.getState():
         blink(led)
         print("Stato ",pulsante.getState())
+        time.sleep_ms(100)# emulazione ritardo del task
     else:
         led.off()
          
