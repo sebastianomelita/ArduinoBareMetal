@@ -132,7 +132,7 @@ def blink(led):
 led = [0, 0]
 led[0] = Pin(12, Pin.OUT)
 led[1] = Pin(18, Pin.OUT)
-period = [500, 1000]
+period = [500, 2000]
 precs = [0, 0]
 currTime = 0;
 prevMillis = 0
@@ -243,7 +243,7 @@ def blink(led):
 led = [0, 0]
 led[0] = Pin(12, Pin.OUT)
 led[1] = Pin(18, Pin.OUT)
-period = [500, 1000]
+period = [500, 2000]
 precs = [0, 0]
 currTime = 0;
 prevMillis = 0
