@@ -565,168 +565,6 @@ void loop()
 
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/0vP4WlJGycZ?editbtn=1
 
-### **Blink a fasi con libreria di terze parti**
-
-Una libreria molto precisa basata su timer assoluti è https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer.
-
-L'esempio di seguito è basato su una libreria esterna che realizza uno schedulatore ad eventi basato su time ticks (https://github.com/sebastianomelita/time-tick-scheduler).
-
-I blink sono comandati dallo schedulatore esterno ma sono abilitati e disabilitati valutando una variabile di conteggio ausiliaria nella funzione ```epochScheduler()``` che realizza in pratica un timer che **attiva o disattiva** gli eventi periodici dello schedulatore.
-
-```C++
-#include "Scheduler2.h"
-int led1 = 13;
-int led2 = 12;
-int count = 0;
-
-Scheduler scheduler;
-
-void onMaxSpeedEvents();
-void onHalfSecondEvents();
-void onSecondEvents();
-void epochScheduler();
- 
-void periodicBlink(int led) {
-  Serial.print("printing periodic blink led ");
-  Serial.println(led);
-
-  digitalWrite(led, !digitalRead(led));
-}
-
-void epochScheduler(){
-	if(count < 10){
-		Serial.print("Doing stuff... ");
-		Serial.println(count);
-	}else if(count == 10){
-		Serial.println("Disable all... ");
-		scheduler.disableEvent(1,1000);
-		scheduler.disableEvent(1,500);
-		digitalWrite(led1, LOW);
-		digitalWrite(led2, LOW);
-		Serial.println("Ending timers...");
-	}else if(count < 20){
-		Serial.print("Frized... ");
-		Serial.println(count);
-	}else if(count >= 20){
-		Serial.print("Enable all... ");
-		Serial.println(count);
-		scheduler.enableEvent(1,1000);
-		scheduler.enableEvent(1,500);
-		Serial.println("Starting timers...");
-		count = -1;
-	}
-  count++;
-}
-
-void onHalfSecondEvents(){
-	periodicBlink(led1);
-}
-void onSecondEvents(){
-	periodicBlink(led2);
-}
- 
-void setup() {
-  pinMode(led1, OUTPUT);
-  pinMode(led2, OUTPUT);
-  Serial.begin(115200); 
-	Serial.println(F("Scheduler init"));
-	Serial.print(F("Time base: "));
-	Serial.println(scheduler.getTimebase());
-	Serial.print(F("Nsteps: "));
-	Serial.println(scheduler.getNsteps());
-	//scheduler.addEvent(onMaxSpeedEvents, 1, ON0MSEC);
-	scheduler.addPeriodicEvent(onHalfSecondEvents, 1, 500);
-	scheduler.addPeriodicEvent(onSecondEvents, 1, 1000);
-	scheduler.addPeriodicEvent(epochScheduler, 2, 1000);
-}
- 
-void loop() {
-	scheduler.scheduleAll();
-	delay(10);
-}
-```
-
-Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/351319080732459608
-
-
-### **Blink a fasi con libreria di terze parti 2**
-
-Stesso esempio precedente in cui tutti gli eventi periodici sono realizzati con lo schedulatore fornito dalla libreria, compresi gli eventi che abilitano e disabilitano parte delle funzioni di schedulazione tramite i comandi ```enableEvent()``` e ```disableEvent()```.
-
-```C++
-#include "Scheduler2.h"
-int led1 = 13;
-int led2 = 12;
-
-Scheduler scheduler;
-int count = 0;
-
-void onMaxSpeedEvents();
-void onHalfSecondEvents();
-void onSecondEvents();
-void epochScheduler();
-void epoch10sec();
-void epoch20sec();
- 
-void periodicBlink(int led) {
-  Serial.print("printing periodic blink led ");
-  Serial.println(led);
-
-  digitalWrite(led, !digitalRead(led));
-}
-
-void epoch10secDisable(){
-	scheduler.disableEvent(1,1000);
-	scheduler.disableEvent(1,500);
-	scheduler.enableEvent(1,10000);
-	scheduler.disableEvent(2,10000);
-	digitalWrite(led1, LOW);
-	digitalWrite(led2, LOW);
-	Serial.println("Ending timers...");
-	Serial.print("Frized... ");
-}
-
-void epoch10secEnable(){
-	Serial.print("Enable all... ");
-	Serial.println(count);
-	scheduler.enableEvent(1,1000);
-	scheduler.enableEvent(1,500);
-	scheduler.disableEvent(1,10000);
-	scheduler.enableEvent(2,10000);
-	Serial.println("Starting timers...");
-}
-
-void onHalfSecondEvents(){
-	periodicBlink(led1);
-}
-void onSecondEvents(){
-	periodicBlink(led2);
-}
- 
-void setup() {
-	pinMode(led1, OUTPUT);
-	pinMode(led2, OUTPUT);
-	Serial.begin(115200); 
-	//scheduler.addEvent(onMaxSpeedEvents, 1, 0);
-	scheduler.addPeriodicEvent(onHalfSecondEvents, 1, 500);
-	scheduler.addPeriodicEvent(epoch10secEnable, 1, 10000, false);
-	scheduler.addPeriodicEvent(epoch10secDisable, 2, 10000);
-	scheduler.addPeriodicEvent(onSecondEvents, 1, 1000);
-	Serial.println(F("Scheduler init"));
-	Serial.print(F("Time base: "));
-	Serial.println(scheduler.getTimebase());
-	//scheduler.addPeriodicEvent(onSecondEvents, 1, 0);
-	//scheduler.deletePeriodicEvent(1, 0);
-}
- 
-void loop() {
-	scheduler.scheduleAll();
-	delay(10);
-}
-```
-
-Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/352057010320512001
-
 ### **Pulsante toggle con atirimbalzo insieme a blink**
 
 In questo esempio si utilizza un unico **timer HW** come **base dei tempi** per uno **schedulatore SW** che gestisce la tempistica di **due task**: 
@@ -735,88 +573,98 @@ In questo esempio si utilizza un unico **timer HW** come **base dei tempi** per 
 
 Le operazioni benchè semplici vengono considerate come prototipi di task più complessi e magari soggetti a **ritardi** considerevoli. In questa circostanza la loro esecuzione all'interno di una ISR è **sconsigliata** per cui essi vengono eseguiti nel ```loop()``` principale su **segnalazione** di un **flag** asserito dentro la ISR del timer.
 
-```C++
-#include <Ticker.h>
-// Inspired from https://www.cs.ucr.edu/~vahid/rios/
-Ticker periodicTicker1;
-int led1 = 13;
-int led2 = 12;
-int pulsante=27;
-byte precval;
-byte stato= LOW;
-unsigned long period[2];
-unsigned long elapsedTime[2];
-void (*tickFct[2])(void); 
-volatile bool timerFlag;
-unsigned long tbase;
-uint8_t tasknum = 2;
+```python
+import time
+from machine import Pin, Timer
 
-void periodicBlink500() {
-  digitalWrite(led1, !digitalRead(led1));
-}
+class Toggle(object):
+    def __init__(self, btn, state = False):
+        self.btn = btn
+        self.state = state
+        self.precval = 0
+    def toggle(self):
+        changed = False
+        val = self.btn.value()
+        if self.precval == 0 and val == 1: 
+            changed = True
+            self.state = not self.state
+            print(self.state)
+        self.precval = val 
+        return changed
+    def getState(self):
+        return self.state
+    def setState(self,state):
+        self.state = state
 
-void on50msEvents(){
-	byte val = digitalRead(pulsante);		//pulsante collegato in pulldown
-	//val = digitalRead(!pulsante);	//pulsante collegato in pullup
-	if(precval==LOW && val==HIGH){ 	//rivelatore di fronte di salita
-		stato = !stato; 							//impostazione dello stato del toggle	
-		//Serial.println(stato);
-		digitalWrite(led2, stato);
-	}
-	precval=val;	
-}
+def blink(led):
+    led.value(not led.value())
 
-void setup(){
-	pinMode(led1, OUTPUT);
-	pinMode(led2, OUTPUT);
-	Serial.begin(115200); 
-	periodicTicker1.attach_ms(50, timerISR);
-	elapsedTime[0] = 0;
-	elapsedTime[1] = 0;
-	period[0] = 50;
-	period[1] = 500;
-	tickFct[0] = on50msEvents;
-	tickFct[1] = periodicBlink500;
-	tbase = 50;
-	// task time init
-	timerFlag = false;
-	for(int i=0; i<tasknum; i++){
-		elapsedTime[i] = period[i];
-	}
-}
+def press(p):
+    p.toggle()
+    time.sleep_ms(200)
 
-void timerISR(void) {
-   if (timerFlag) {
-      Serial.println("Timer ticked before task processing done");
-   }
-   else {
-      timerFlag = true;
-   }
-   return;
-}
+def toggleLogic(led):
+    global pulsante
+    if pulsante.getState():
+        blink(led)
+        print("Stato ",pulsante.getState())
+    else:
+        led.off()
+         
+def  timerISR(timer):
+    global timerFlag
+    global count
+    if timerFlag:
+        for i in range(taskNum):
+            elapsedTime[i] += tbase
+            count[i] +=1
+    else:
+        timerFlag = True
+        for i in range(taskNum):
+            if count[i] > 0:
+                print("Recuperati ", count[i], " ticks del task ", i)
+        for i in range(taskNum):
+             count[i] = 0
 
-void scheduleAll(){		
-	for(int i=0; i<tasknum; i++){
-		if(elapsedTime[i] >= period[i]) {
-			(*tickFct[i])();
-			elapsedTime[i] = 0;
-		}
-		elapsedTime[i] += tbase;
-	}
-}
+def scheduleAll():
+    global elapsedTime
+    global tickFct
+    global elapsedTime
+    global taskNum
+    for i in range(taskNum):
+        if elapsedTime[i] >= period[i]:
+            tickFct[i](pin[i])
+            elapsedTime[i] = 0			
+        elapsedTime[i] += tbase
 
-void loop()
-{
-	if(timerFlag){
-		scheduleAll();
-		timerFlag = false;
-	}
-	delay(1);
-	// il codice eseguito al tempo massimo della CPU va qui
-}
+btn1 = Pin(12,Pin.IN)
+led1 = Pin(13,Pin.OUT)
+led2 = Pin(2,Pin.OUT)
+pulsante = Toggle(btn1)
+pin = [led1, led2, pulsante]
+timerFlag = False
+tickFct = [toggleLogic, blink, press]
+period = [1000, 500, 50]
+elapsedTime = [0, 0, 0]
+taskNum = len(period)
+tbase = 50
+count = [0, 0, 0]
+myPerTimer = Timer(3)
+myPerTimer.init(period=tbase, mode=Timer.PERIODIC, callback=timerISR)
+#inizializzazione dei task
+for i in range(taskNum):
+     elapsedTime[i] = period[i]
+
+while True:
+    if timerFlag:
+        scheduleAll()
+        #time.sleep_ms(200)
+        timerFlag = False
+    time.sleep_ms(1)
+    # il codice eseguito al tempo massimo della CPU va quì 
 ```
 
-Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/352790112505422849
+Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/371662961899688961
 
 
 ### **Sitografia:**
