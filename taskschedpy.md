@@ -357,7 +357,7 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 Una soluzione parziale in base a quanto descritto sopra potrebbe essere:
 
-```python+
+```python
 import time
 from machine import Pin, Timer
 import random
