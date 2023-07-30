@@ -430,6 +430,7 @@ class Toggle(object):
         changed = False
         val = self.btn.value()
         if self.precval == 0 and val == 1: 
+            changed = True
             self.state = not self.state
             print(self.state)
         self.precval = val 
@@ -444,6 +445,7 @@ def blink(led):
 
 def press(p):
     p.toggle()
+    time.sleep_ms(200)
 
 def toggleLogic(led):
     global pulsante
@@ -453,14 +455,22 @@ def toggleLogic(led):
     else:
         led.off()
          
-def  timerISR():
+def  timerISR(timer):
     global timerFlag
+    global count
     if timerFlag:
-        print("Timer ticked before task processing done")
+        for i in range(taskNum):
+            elapsedTime[i] += tbase
+            count[i] +=1
     else:
-        timerFlag = true
+        timerFlag = True
+        for i in range(taskNum):
+            if count[i] > 0:
+                print("Recuperati ", count[i], " ticks del task ", i)
+        for i in range(taskNum):
+             count[i] = 0
 
-def scheduleAll(timer):
+def scheduleAll():
     global elapsedTime
     global tickFct
     global elapsedTime
@@ -482,18 +492,20 @@ period = [1000, 500, 50]
 elapsedTime = [0, 0, 0]
 taskNum = len(period)
 tbase = 50
+count = [0, 0, 0]
 myPerTimer = Timer(3)
-myPerTimer.init(period=tbase, mode=Timer.PERIODIC, callback=scheduleAll)
+myPerTimer.init(period=tbase, mode=Timer.PERIODIC, callback=timerISR)
 #inizializzazione dei task
 for i in range(taskNum):
      elapsedTime[i] = period[i]
 
 while True:
-     if timerFlag:
-		scheduleAll()
-		timerFlag = false
-     time.sleep_ms(1)
-     # il codice eseguito al tempo massimo della CPU va quì 
+    if timerFlag:
+        scheduleAll()
+        #time.sleep_ms(200)
+        timerFlag = False
+    time.sleep_ms(1)
+    # il codice eseguito al tempo massimo della CPU va quì 
 ```
 
 Il **flag** ```timerFlag``` serve a:
