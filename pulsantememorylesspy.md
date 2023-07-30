@@ -1,6 +1,7 @@
 
 
 >[Torna all'indice](indexpulsanti.md)   >[versione in C++](pulsantememoryless.md)
+>
 ## **PULSANTE SEMPLICE**
 
 Si vuole accendere un led alla pressione del pulsante e spegnerlo al suo rilascio.
