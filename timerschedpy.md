@@ -45,7 +45,7 @@ from machine import Timer
 Esempio delle due modalità di impostazione:
 ```python
 # Create physical timers 
-tim = Timer(1)
+tim1 = Timer(1)
 tim1.init(mode=Timer.PERIODIC, period=100, callback=mycallback)
 tim2 = Timer(2, mode=Timer.PERIODIC, period=500, callback=mycallback)
 tim3 = Timer(3, mode=Timer.ONE_SHOT)
