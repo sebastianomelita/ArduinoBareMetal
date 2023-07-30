@@ -443,33 +443,20 @@ class Toggle(object):
 def blink(led):
     led.value(not led.value())
 
-def press(p):
-    p.toggle()
-    time.sleep_ms(200)
-
-def toggleLogic(led):
+def press(led):
     global pulsante
-    if pulsante.getState():
-        blink(led)
-        print("Stato ",pulsante.getState())
-    else:
-        led.off()
-         
+    pulsante.toggle()
+    led.value(pulsante.getState())
+            
 def  timerISR(timer):
     global timerFlag
     global count
     if timerFlag:
         for i in range(taskNum):
             elapsedTime[i] += tbase
-            count[i] +=1
     else:
         timerFlag = True
-        for i in range(taskNum):
-            if count[i] > 0:
-                print("Recuperati ", count[i], " ticks del task ", i)
-        for i in range(taskNum):
-             count[i] = 0
-
+       
 def scheduleAll():
     global elapsedTime
     global tickFct
@@ -485,14 +472,14 @@ btn1 = Pin(12,Pin.IN)
 led1 = Pin(13,Pin.OUT)
 led2 = Pin(2,Pin.OUT)
 pulsante = Toggle(btn1)
-pin = [led1, led2, pulsante]
+pin = [led2, led1]
 timerFlag = False
-tickFct = [toggleLogic, blink, press]
-period = [1000, 500, 50]
-elapsedTime = [0, 0, 0]
+tickFct = [blink, press]
+period = [500, 50]
+elapsedTime = [0, 0]
 taskNum = len(period)
 tbase = 50
-count = [0, 0, 0]
+count = [0, 0]
 myPerTimer = Timer(3)
 myPerTimer.init(period=tbase, mode=Timer.PERIODIC, callback=timerISR)
 #inizializzazione dei task
