@@ -417,92 +417,83 @@ Anche se task di tick successivi non si interferiscono, rimane sempre l'influenz
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371634262353906689
 
-```C++
-#include <Ticker.h>
-// Inspired from https://www.cs.ucr.edu/~vahid/rios/
-Ticker periodicTicker1;
-int led1 = 13;
-int led2 = 12;
-int pulsante=27;
-byte precval;
-byte stato= LOW;
-unsigned long period[2];
-unsigned long elapsedTime[2];
-void (*tickFct[2])(void); 
-volatile bool timerFlag;
-unsigned long tbase;
-uint8_t tasknum = 2;
-unsigned long prevMillis = 0;
+```python
+import time
+from machine import Pin, Timer
 
-void periodicBlink500() {
-  	unsigned randomDelay = random(1, 200);
-	Serial.print("delay: ");Serial.println(randomDelay);
-	delay(randomDelay);
-	digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-}
+class Toggle(object):
+    def __init__(self, btn, state = False):
+        self.btn = btn
+        self.state = state
+        self.precval = 0
+    def toggle(self):
+        changed = False
+        val = self.btn.value()
+        if self.precval == 0 and val == 1: 
+            self.state = not self.state
+            print(self.state)
+        self.precval = val 
+        return changed
+    def getState(self):
+        return self.state
+    def setState(self,state):
+        self.state = state
 
-void periodicBlink2000(){
-	unsigned long now = millis();
-	unsigned long diff = now-prevMillis;
-	//diff = diff%50;
-	Serial.print("ontwosec: ");Serial.println(diff);
-	digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
-	prevMillis = now;
-}
+def blink(led):
+    led.value(not led.value())
 
-void setup(){
-	randomSeed(analogRead(0));
-	pinMode(led1, OUTPUT);
-	pinMode(led2, OUTPUT);
-	Serial.begin(115200); 
-	periodicTicker1.attach_ms(50, timerISR);
-	elapsedTime[0] = 0;
-	elapsedTime[1] = 0;
-	period[0] = 2000;
-	period[1] = 500;
-	tickFct[0] = periodicBlink2000;
-	tickFct[1] = periodicBlink500;
-	tbase = 50;
-	// task time init
-	timerFlag = false;
-	for(int i=0; i<tasknum; i++){
-		elapsedTime[i] = period[i];
-	}
-}
+def press(p):
+    p.toggle()
 
-void timerISR(void) {
-   if (timerFlag) {
-	//Serial.println("Timer ticked before task processing done");
-	for(int i=0; i<tasknum; i++){
-		elapsedTime[i] += tbase;
-	}
-   }
-   else {
-      timerFlag = true;
-   }
-   return;
-}
+def toggleLogic(led):
+    global pulsante
+    if pulsante.getState():
+        blink(led)
+        print("Stato ",pulsante.getState())
+    else:
+        led.off()
+         
+def  timerISR():
+    global timerFlag
+    if timerFlag:
+        print("Timer ticked before task processing done")
+    else:
+        timerFlag = true
 
-void scheduleAll(){		
-	for(int i=0; i<tasknum; i++){
-		if(elapsedTime[i] >= period[i]) {
-			(*tickFct[i])();
-			//Serial.print("Ticked: ");Serial.println(elapsedTime[i]);
-			elapsedTime[i] = 0;
-		}
-		elapsedTime[i] += tbase;
-	}
-}
+def scheduleAll(timer):
+    global elapsedTime
+    global tickFct
+    global elapsedTime
+    global taskNum
+    for i in range(taskNum):
+        if elapsedTime[i] >= period[i]:
+            tickFct[i](pin[i])
+            elapsedTime[i] = 0			
+        elapsedTime[i] += tbase
 
-void loop()
-{
-	if(timerFlag){
-		scheduleAll();
-		timerFlag = false;
-	}
-	delay(1);
-	// il codice eseguito al tempo massimo della CPU va qui
-}
+btn1 = Pin(12,Pin.IN)
+led1 = Pin(13,Pin.OUT)
+led2 = Pin(2,Pin.OUT)
+pulsante = Toggle(btn1)
+pin = [led1, led2, pulsante]
+timerFlag = False
+tickFct = [toggleLogic, blink, press]
+period = [1000, 500, 50]
+elapsedTime = [0, 0, 0]
+taskNum = len(period)
+tbase = 50
+myPerTimer = Timer(3)
+myPerTimer.init(period=tbase, mode=Timer.PERIODIC, callback=scheduleAll)
+#inizializzazione dei task
+for i in range(taskNum):
+     elapsedTime[i] = period[i]
+
+while True:
+     if timerFlag:
+		scheduleAll()
+		timerFlag = false
+     time.sleep_ms(1)
+     # il codice eseguito al tempo massimo della CPU va quì 
 ```
 
 Il **flag** ```timerFlag``` serve a:
@@ -511,7 +502,7 @@ Il **flag** ```timerFlag``` serve a:
 
 La **versione originale** più completa dello schedulatore insieme ad una dettagliata discussione teorica si trova in: https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
 
-Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371660299440342017
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371662961899688961
 
 ## **Esempi**
 
