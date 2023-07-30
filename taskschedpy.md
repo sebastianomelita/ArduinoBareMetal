@@ -411,7 +411,7 @@ while True:
      # il codice eseguito al tempo massimo della CPU va quì 
 ```
 
-Per compensare i **ritardi** di un task, potrebbe essere sfruttare la proprietà di **prerilascio** forzato di un task che possiedono gli interrupt. Se i tick sono **interrupt based** allora essi accadono sempre e comunque nel tempo esatto a loro deputato anche in presenza di un task che ritarda la sua esecuzione. Questo perchè un tick che occorresse ripetutamente su uno stesso task molto lento causa comunque la sua **interruzione** e l'esecuzione di una **ISR** che, pur **non** potendo servire un **nuovo task**, può far partire un algoritmo che **compensi il conteggio** dei tick dei task successivi a quello che si prolunga troppo in maniera da farli accadere al **tempo giusto**. 
+Per compensare i **ritardi** di un task, potrebbe essere sfruttata la proprietà di **prerilascio** forzato di un task che possiedono gli interrupt. Se i tick sono **interrupt based** allora essi accadono sempre e comunque nel tempo esatto a loro deputato anche in presenza di un task che ritarda la sua esecuzione. Questo perchè un tick che occorresse ripetutamente su uno stesso task molto lento causa comunque la sua **interruzione** e l'esecuzione di una **ISR** che, pur **non** potendo servire un **nuovo task**, può far partire un algoritmo che **compensi il conteggio** dei tick dei task successivi a quello che si prolunga troppo in maniera da farli accadere al **tempo giusto**. 
 
 Anche se task di tick successivi non si interferiscono, rimane sempre l'influenza che un task **lento a terminarsi** può avere sui task del suo stesso tick che potrebbe essere ridotta grazie all'espediente del **riordinamento** per tempi decrescenti dei task.
 
