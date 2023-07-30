@@ -59,34 +59,32 @@ La funzione ```Timer.deinit()``` può essere utilizzata per rimuovere un timer d
 
 Esempio completo:
 ```python
-#include <Ticker.h>
- 
-Ticker periodicTicker;
-int executionsCount = 0;
- 
-void periodicPrint(int maxExecutionsCount) {
-  Serial.print("printing in periodic function. Exec nr: ");
-  Serial.println(executionsCount+1);
- 
-  executionsCount++;
- 
-  if(executionsCount>=maxExecutionsCount){
-    periodicTicker.detach();
-  }
-}
- 
-void setup() {
-  Serial.begin(115200);
-  pinMode(led1, OUTPUT);
-  pinMode(led2, OUTPUT);
-  int maxExecutionsCount=10;
-   
-  periodicTicker.attach_ms(5000, periodicPrint, maxExecutionsCount);
-}
- 
-void loop() {}
+import time
+from machine import Pin, Timer
+
+def blink(led):
+     led.value(not led.value())
+
+def periodicPrint(t):
+    global executionsCount
+    global led
+    print("printing in periodic function. Exec nr: ", (executionsCount+1));
+    executionsCount += 1
+    blink(led)
+
+    if executionsCount >= maxExecutionsCount:
+        tim.deinit()
+
+led = Pin(13, Pin.OUT)
+tim = Timer(-1)
+tim.init(period=500, callback = periodicPrint)	
+maxExecutionsCount = 10
+executionsCount = 0
+
+while True:
+    time.sleep_ms(1)
 ```
-Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348968576484377172
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/371694109619973121
 
 L'esp_timer è un set di APIs che fornisce timer one-shot e periodici, con risoluzione di tempo dei microsecondo e 64-bit di range di conteggio. In ogni caso è bene tenere presente che:
 - la libreria Ticker fornisce però la precisione del millisecondo quindi se si ha bisogno di qualcosa di più granulare, è utile sapere che le funzioni sottostanti sono più flessibili.
