@@ -514,7 +514,7 @@ Il **flag** ```timerFlag``` serve a:
 
 La **versione originale** più completa dello schedulatore insieme ad una dettagliata discussione teorica si trova in: https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
 
-Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371662961899688961
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371675699190786049
 
 ## **Esempi**
 
