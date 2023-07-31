@@ -277,15 +277,15 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 Si osservi che, prendendo solo la parte:
 ```python
-  precm += tbase
-  #task1
-  if precm - precs[0] >= period[0]:
-       precs[0] += period[0]
-       blink(led[0])
-  #task2
-  if precm - precs[1] >= period[1]:
-       precs[1] += period[1]
-       blink(led[1])
+precm += tbase
+#task1
+if precm - precs[0] >= period[0]:
+	precs[0] += period[0]
+	blink(led[0])
+#task2
+if precm - precs[1] >= period[1]:
+	precs[1] += period[1]
+	blink(led[1])
 ```
 lo schedulatore potrebbe essere adoperato a partire da una base dei tempi qualsiasi come delay e interrupt, non soltanto generata mediante la funzione millis().
 
