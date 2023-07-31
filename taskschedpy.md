@@ -342,6 +342,9 @@ Per ottenere la partenza sincronizzata di tutti i task al primo tick del sistema
 for i in range(2):
      precs[i] = precm - period[i]
 ```
+
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371622016301018113
+
 **Recupero dei tick persi in un task lento**
 
 In questo caso il **ritardo** di un **task** maggiore di un **tempo base** non potrebbe essere compensato dato che **da un lato** la funzione ```scheduleAll()``` non è interrompibile per cui ritardo di un task ritarda anche il task successivo, **dall'altro** ```elapsedTime[0] += tbase``` viene incrementata ad ogni tick sempre una sola volta. Due scenari possibili:
@@ -355,8 +358,6 @@ Nello ESP32 sembra che sia effettivo il secondo scenario per cui il repero dei t
 Se il primo task veloce è affetto da ritardi casuali può accadere che questi possono ritardare anche i task che occorrono a seguire nello stesso ```loop()```. Questo accade se più task con **periodicità diversa** occorrono nello stesso tempo (tick).
 
 Se più task con **periodicità diversa** occorrono nello stesso tempo (tick), conviene dare **priorità maggiore** a quelli **con periodicità più lunga** perchè un eventuale **ritardo** di un **task veloce** determinerebbe un **errore di tempo** che coinvolgerebbe solo il **primo task breve** a seguire (rimanendo confinato nel tick corrente) e non avrebbe effetto  sui **tick lenti** (di periodicità più grande che agiscono su più tick) dato che questi sarebbero sempre **serviti prima**. In altre parole, si cerca, in questo modo, di **limitare** l'effetto di eventuali ritardi di un task sul minor numero possibile di tick consecutivi.
-
-Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371622016301018113
 
 Una soluzione parziale in base a quanto descritto sopra potrebbe essere:
 
