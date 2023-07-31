@@ -254,8 +254,7 @@ while True:
      if time.ticks_ms() - precm >= tbase:
           precm += tbase
           #task2 (con periodicità maggiore prima)
-          currTime = time.ticks_ms()
-          if currTime - precs[1] >= period[1]:
+          if precm - precs[1] >= period[1]:
                precs[1] += period[1]
                now = time.ticks_ms()
                diff = now-prevMillis
@@ -263,7 +262,7 @@ while True:
                blink(led[1])
                prevMillis = now
           #task1
-          if currTime - precs[0] >= period[0]:
+          if precm - precs[0] >= period[0]:
                precs[0] += period[0]
                randomDelay = random.randint(1,200)
                print("delay: ", randomDelay)
