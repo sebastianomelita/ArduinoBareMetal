@@ -67,6 +67,8 @@ Utilizzando la tecnica della **schedulazione esplicita dei task** nel loop(), la
 
 Uno schedulatore di compiti (task) si può realizzare anche utilizzando **più timers** basati sul polling della funzione millis(). 
 
+Un esempio popolare in internet di questa implementazione è su https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer
+
 ```python
 import time
 from machine import Pin
@@ -168,8 +170,6 @@ E' possibile realizzare uno schedulatore di **più task** che agiscono con perio
 - Il **tempo base** comune a tutti i task, si può calcolare col **massimo comune divisore** (M.C.D. o G.C.D) di tutti i tempi dei singoli task.
 - **ad ogni tick** del tempo base viene misurato se è maturato il tick del tempo di ciascun task valutando il valore del tempo base fino a quel momento mediante ```(precm - precs[i]) >= period[i]```
 - se la **condizione di scatto** del tick di un task è verificata allora viene calcolato il **tempo** del tick **successivo** sommando al tempo del tick corrente la periodicità del task: ```precs[i] += period[i]```
-
-Un esempio in internet di questa implementazione è su https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer
 
 ```python
 import time
