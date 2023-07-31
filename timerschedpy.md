@@ -318,16 +318,16 @@ def scheduleAll(leds):
     # il codice eseguito al tempo base va quì	
     # ..........
     # task 1
-    if not(step % 2):      # schedulo eventi al multiplo del tempo stabilito (2 sec)
+    if not(step % 2):      # schedulo eventi al multiplo del tempo stabilito (1 sec)
         blink(leds[0])                       
     # task 2
-    if not(step % 3):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
+    if not(step % 3):      # schedulo eventi al multiplo del tempo stabilito (1,5 sec)
         blink(leds[1])      
     # task 3
-    if not(step % 4):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
+    if not(step % 4):      # schedulo eventi al multiplo del tempo stabilito (2 sec)
         blink(leds[2])      
     # task 4
-    if not(step % 5):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
+    if not(step % 6):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
         blink(leds[3])      
     # il codice eseguito al tempo base va quì	
     # ..........
