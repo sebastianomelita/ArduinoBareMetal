@@ -158,9 +158,9 @@ Una **soluzione** potrebbe essere inserire all'interno della **callback** di un 
 
 Di seguito è riportato un esempio in cui due task che realizzano un blink sono affidati a due timers HW diversi che realizzano una schedulazione la cui tempistica non è per nulla influenzata dai delay nel loop (interrotti da interrupt) ma è li regolata dai comandi di disabilitazione ```detachInterrupt()```.
 
-Arduino con la libreria TimerInterrupt https://github.com/khoih-prog/TimerInterrupt
 
-```C++
+
+```python
 #define TIMER_INTERRUPT_DEBUG         0
 #define USING_16MHZ     true
 #define USING_8MHZ      false
@@ -212,6 +212,8 @@ void loop() {
 	ITimer2.detachInterrupt();
 }
 ```
+Simulazione su ESP32 con Wokwi https://wokwi.com/projects/371769605396662273
+
 
 ### **TIMERS HW DI ARDUINO SCHEDULATO CON IL POLLING DEI MILLIS**
 
