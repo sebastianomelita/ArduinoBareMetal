@@ -219,7 +219,7 @@ Gli schedulatori utilizzati sono **due**:
 - basato su https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
 - basato su https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer
 
-Entrambi possono essere utilizzati a partire da una generazione di tempi costante (delay, millis(), timer HW).
+Entrambi possono essere utilizzati a partire da una generazione di tempi costante (delay, millis(), timer HW). Per una dissertazione più accurata sul loro utilizzo vedi [Schedulatore di compiti basato sul polling della millis()](taskschedpy.md) 
 
 ```python
 import time
