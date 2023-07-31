@@ -161,56 +161,55 @@ Di seguito è riportato un esempio in cui due task che realizzano un blink sono 
 
 
 ```python
-#define TIMER_INTERRUPT_DEBUG         0
-#define USING_16MHZ     true
-#define USING_8MHZ      false
-#define USING_250KHZ    false
+import time
+from machine import Pin, Timer
+import random
 
-#define USE_TIMER_0     false
-#define USE_TIMER_1     true
-#define USE_TIMER_2     true
-#define USE_TIMER_3     false
+def blink(led):
+    led.value(not led.value())
 
-#include "TimerInterrupt.h"
+def scheduleAll(leds):
+    global step
+    step = (step + 1) % nstep      # conteggio circolare arriva al massimo a nstep-1
+    # il codice eseguito al tempo base va quì	
+    # ..........
+    # task 1
+    if not(step % 2):      # schedulo eventi al multiplo del tempo stabilito (2 sec)
+        blink(leds[0])                       
+    # task 2
+    if not(step % 3):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
+        blink(leds[1])      
+    # task 3
+    if not(step % 4):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
+        blink(leds[2])      
+    # task 4
+    if not(step % 5):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
+        blink(leds[3])      
+    # il codice eseguito al tempo base va quì	
+    # ..........
 
-int led1 = 13;
-int led2 = 12;
- 
-void periodicBlink(int led) {
-  Serial.print("printing periodic blink led ");
-  Serial.println(led);
+led1 = Pin(12, Pin.OUT)
+led2 = Pin(14, Pin.OUT)
+led3 = Pin(27, Pin.OUT)
+led4 = Pin(5, Pin.OUT)
+led5 = Pin(4, Pin.OUT)
+led6 = Pin(2, Pin.OUT)
+leds1 = [led1, led2, led3, led4]
+leds2 = [led5, led6]
+tim1 = Timer(3)
+tim1.init(period=500, callback = lambda t: scheduleAll(leds1))	
+tim2 = Timer(4)
+tim2.init(period=1000, callback = lambda t: blink(led5))	
+step = 0
+nstep = 1000
 
-  digitalWrite(led, !digitalRead(led));
-}
- 
-void setup() {
-  pinMode(led1, OUTPUT);
-  pinMode(led2, OUTPUT);
-  Serial.begin(115200); 
-  // Select Timer 1-2 for UNO, 0-5 for MEGA
-  // Timer 2 is 8-bit timer, only for higher frequency
-  ITimer1.init();
-  ITimer1.attachInterruptInterval(500, periodicBlink,led1);
-  // Select Timer 1-2 for UNO, 0-5 for MEGA
-  // Timer 2 is 8-bit timer, only for higher frequency
-  ITimer2.init();
-  ITimer2.attachInterruptInterval(1000, periodicBlink,led2);
-}
- 
-void loop() {
-	int count = 0;
-	while(true){
-		Serial.print("Doing stuff... ");
-		Serial.println(count);
-		count += 1;
-		if(count >= 10)
-		    break;
-		delay(1000);
-	}
-	Serial.print("Ending timers...");
-	ITimer1.detachInterrupt();
-	ITimer2.detachInterrupt();
-}
+while True:
+    print("task 6 pesante nel loop")
+    blink(led6)
+    randomDelay = random.randint(500,800)
+    print("delay: ", randomDelay)
+    time.sleep_ms(randomDelay)
+    #time.sleep_ms(500)
 ```
 Simulazione su ESP32 con Wokwi https://wokwi.com/projects/371769605396662273
 
