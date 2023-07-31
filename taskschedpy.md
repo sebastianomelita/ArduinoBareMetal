@@ -169,6 +169,7 @@ E' possibile realizzare uno schedulatore di **più task** che agiscono con perio
 - **ad ogni tick** del tempo base viene misurato se è maturato il tick del tempo di ciascun task valutando il valore del tempo base fino a quel momento mediante ```(precm - precs[i]) >= period[i]```
 - se la **condizione di scatto** del tick di un task è verificata allora viene calcolato il **tempo** del tick **successivo** sommando al tempo del tick corrente la periodicità del task: ```precs[i] += period[i]```
 
+Un esempio in internet di questa implementazione è su https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer
 
 ```python
 import time
