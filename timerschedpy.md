@@ -146,156 +146,6 @@ tim2.deinit()
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/371695217789720577
 
-### **I TIMERS HW DI ARDUINO**
-
-Arduino permette l'accesso diretto ai suoi **timer HW** in almeno **due modi**:
-- accesso ai registri HW del timer per impostare il prescaler
-- attraverso librerie di terza parti
-
-Le librerie utilizzate di seguito però **non** permettono la realizzazione di **timer logici** ciascuno con una **prpopria callback** e tutti **associati** ad uno stesso **timer HW**, per cui è necessario associare **un task alla volta** ad ogni timer HW utilizzabile nel sistema in uso (ad esempio, 2 in Arduino Uno e 4 in Arduino Mega). Queste limitazioni rendono l'utilizzo esteso dei timer HW come schedulatori di compiti abbastanza problematico.
-
-Una **soluzione** potrebbe essere inserire all'interno della **callback** di un timer HW uno schedulatore di compiti con cui poter realizzare il **filtraggio** degli **eventi** da eseguire **nel futuro** come quelli visti nelle sezioni [Schedulatore di compiti basato sul polling della millis()](tasksched.md) oppure utilizzando librerie di **terze parti** come [SimpleTimer](https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer) (https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer) oppure quella presentata nell'esempio proposto nel paragrafo sugli scheduler [time tick scheduler](tasksched.md)
-
-Di seguito è riportato un esempio in cui due task che realizzano un blink sono affidati a due timers HW diversi che realizzano una schedulazione la cui tempistica non è per nulla influenzata dai delay nel loop (interrotti da interrupt) ma è li regolata dai comandi di disabilitazione ```detachInterrupt()```.
-
-
-
-```python
-import time
-from machine import Pin, Timer
-import random
-
-def blink(led):
-    led.value(not led.value())
-
-def scheduleAll(leds):
-    global step
-    step = (step + 1) % nstep      # conteggio circolare arriva al massimo a nstep-1
-    # il codice eseguito al tempo base va quì	
-    # ..........
-    # task 1
-    if not(step % 2):      # schedulo eventi al multiplo del tempo stabilito (2 sec)
-        blink(leds[0])                       
-    # task 2
-    if not(step % 3):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
-        blink(leds[1])      
-    # task 3
-    if not(step % 4):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
-        blink(leds[2])      
-    # task 4
-    if not(step % 5):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
-        blink(leds[3])      
-    # il codice eseguito al tempo base va quì	
-    # ..........
-
-led1 = Pin(12, Pin.OUT)
-led2 = Pin(14, Pin.OUT)
-led3 = Pin(27, Pin.OUT)
-led4 = Pin(5, Pin.OUT)
-led5 = Pin(4, Pin.OUT)
-led6 = Pin(2, Pin.OUT)
-leds1 = [led1, led2, led3, led4]
-leds2 = [led5, led6]
-tim1 = Timer(3)
-tim1.init(period=500, callback = lambda t: scheduleAll(leds1))	
-tim2 = Timer(4)
-tim2.init(period=1000, callback = lambda t: blink(led5))	
-step = 0
-nstep = 1000
-
-while True:
-    print("task 6 pesante nel loop")
-    blink(led6)
-    randomDelay = random.randint(500,800)
-    print("delay: ", randomDelay)
-    time.sleep_ms(randomDelay)
-    #time.sleep_ms(500)
-```
-Simulazione su ESP32 con Wokwi https://wokwi.com/projects/371769605396662273
-
-
-### **TIMERS HW DI ARDUINO SCHEDULATO CON IL POLLING DEI MILLIS**
-
-Si tratta della stessa situazione dell'esempio precedente soltanto che adesso c'è un task in più mentre i timer HW a disposizione sono ancora soltanto due. I task complessivamente in esecuzione sono quattro:
-- **uno** in esecuzione **nel loop** schedulato da un delay() casuale che simula task pesanti dalla durata impredicibile
-- **uno** affidato ad un **proprio timer HW** che ne programma l'esecuzione ad intervalli precisi, eventualmente sottraendo l'esecuzione al task nel loop mediante un segnale di interrupt
-- **due** affidati ad un **unico timer HW** condiviso che esegue ad intervalli di tempo precisi uno schedulatore SW basato sul polling della funzione millis. Lo schedulatore viene richiamato in intervalli di tempo **comuni** ai due task che poi vengono **filtrati** mediante dei **timer SW**.
-
-```C++
-#define TIMER_INTERRUPT_DEBUG         0
-#define USING_16MHZ     true
-#define USING_8MHZ      false
-#define USING_250KHZ    false
-
-#define USE_TIMER_0     false
-#define USE_TIMER_1     true
-#define USE_TIMER_2     true
-#define USE_TIMER_3     false
-
-#include "TimerInterrupt.h"
-int led1 = 13;
-int led2 = 12;
-int led3 = 11;
-int led4 = 10;
-unsigned long period[2];
-volatile unsigned long precs[2];
-
-void periodicBlink(int led);
-void schedule();
-
-void schedule()
-{
-	unsigned long current_millis = millis();
-	// task 1
-	if ((current_millis - precs[0]) >= period[0]) {
-		precs[0] += period[0]; 
-        	digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-	}	
-	// task 2
-	if ((current_millis - precs[1]) >= period[1]) {
-		precs[1] += period[1]; 
-        	digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
-	}
-	// il codice eseguito al tempo massimo della CPU va qui
-}
- 
-void periodicBlink(int led) {
-  Serial.print("printing periodic blink led ");
-  Serial.println(led);
-
-  digitalWrite(led, !digitalRead(led));
-}
- 
-void setup() {
-	//randomSeed(millis());
-	randomSeed(analogRead(0));
-	precs[0]=0;
-	precs[1]=0;
-	period[0] = 300;
-	period[1] = 500;
-	pinMode(led1, OUTPUT);
-	pinMode(led2, OUTPUT);
-	pinMode(led3, OUTPUT);
-	pinMode(led4, OUTPUT);
-	Serial.begin(115200); 
-	// Select Timer 1-2 for UNO, 0-5 for MEGA
-	// Timer 2 is 8-bit timer, only for higher frequency
-	ITimer1.init();
-	ITimer1.attachInterruptInterval(100, schedule);
-	// Select Timer 1-2 for UNO, 0-5 for MEGA
-	// Timer 2 is 8-bit timer, only for higher frequency
-	ITimer2.init();
-	ITimer2.attachInterruptInterval(1000, periodicBlink,led3);
-}
- 
-void loop() {
-	unsigned randomDelay = random(10, 2000);
-	Serial.print("delay: ");Serial.println(randomDelay);
-	delay(randomDelay);
-	digitalWrite(led4, !digitalRead(led4));
-}
-```
-
 ### **TIMERS HW DI ARDUINO SCHEDULATO CON TIMES TICK**
 
 Si tratta della stessa situazione dell'esempio precedente in cui ci stanno **tre task** da eseguire con precisione e soltanto **due timer HW** per farlo. I **task** complessivamente in esecuzione sono **quattro**:
@@ -357,6 +207,82 @@ while True:
 ```
 
 Simulazione su Arduino con Wowki: https://wokwi.com/projects/371769605396662273
+
+### **TIMERS HW CHEDULATI TRAMITE AGGIORNAMENTO DEL TEMPO BASE**
+
+Si tratta della stessa situazione dell'esempio precedente soltanto che adesso c'è un task in più mentre i timer HW a disposizione sono ancora soltanto due. I task complessivamente in esecuzione sono quattro:
+- **uno** in esecuzione **nel loop** schedulato da un delay() casuale che simula task pesanti dalla durata impredicibile
+- **uno** affidato ad un **proprio timer HW** che ne programma l'esecuzione ad intervalli precisi, eventualmente sottraendo l'esecuzione al task nel loop mediante un segnale di interrupt
+- **due** affidati ad un **unico timer HW** condiviso che esegue ad intervalli di tempo precisi uno schedulatore SW basato sul polling della funzione millis. Lo schedulatore viene richiamato in intervalli di tempo **comuni** ai due task che poi vengono **filtrati** mediante dei **timer SW**.
+
+```python
+import time
+from machine import Pin, Timer
+
+def blink(led):
+    led.value(not led.value())
+
+def scheduleAll(leds):
+    global tbase
+    global elapsedTime
+    global period
+    #task3
+    if elapsedTime[0] >= period[0]:
+        blink(leds[0])
+        elapsedTime[0] = 0
+    elapsedTime[0] += tbase
+    #task4
+    if elapsedTime[1] >= period[1]:
+        blink(leds[1])
+        elapsedTime[1] = 0
+    elapsedTime[1] += tbase
+    #task5
+    if elapsedTime[2] >= period[2]:
+        blink(leds[2])
+        elapsedTime[2] = 0
+    elapsedTime[2] += tbase
+
+led1 = Pin(12, Pin.OUT)
+led2 = Pin(14, Pin.OUT)
+led3 = Pin(27, Pin.OUT)
+led4 = Pin(5, Pin.OUT)
+led5 = Pin(4, Pin.OUT)
+led6 = Pin(2, Pin.OUT)
+leds1 = [led1, led2, led3]
+leds2 = [led4, led5]
+#parametri dello sheduler 1
+period2 = [1500, 6000]
+precs= [0, 0]
+precm = 0
+#inizializzazione dello scheduler 1
+for i in range(2):
+    precs[i] = precm -period2[i];
+#parametri dello sheduler 2
+period = [500, 1000, 2000]
+elapsedTime = [0, 0, 0]
+tbase = 1000
+#inizializzazione dello scheduler 2
+for i in range(2):
+     elapsedTime[i] = period[i]
+#configurazione timers HW
+tim1 = Timer(3)
+tim1.init(period=500, callback = lambda t: scheduleAll(leds1))	
+tim2 = Timer(4)
+tim2.init(period=1000, callback = lambda t: blink(led6))	
+
+while True:
+    time.sleep_ms(500)
+    precm += tbase
+    #task1
+    if precm - precs[0] >= period[0]:
+        precs[0] += period[0]
+        blink(leds2[0])
+    #task2
+    if precm - precs[1] >= period[1]:
+        precs[1] += period[1]
+        blink(leds2[1])
+```
+Simulazione su Arduino con Wowki: https://wokwi.com/projects/371783717482539009
 
 ### **Sitografia**
 
