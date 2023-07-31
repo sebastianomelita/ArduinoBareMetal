@@ -46,10 +46,6 @@ La **modalità di utilizzo** è simile a quella di una **usuale ISR**. Una **fun
 
 La possibilità di poter **instanziare** un **timer logico** per **ogni task**, a sua volta definito all'interno di una certa **callback**, rende la **libreria Ticker** (e la sottostante implentazione ```esp_timer```) una strada **effettivamente percorribile** per la realizzazione di uno **schedulatore di compiti** sia periodici che one shot (esecuzione singola non ripetuta). La **schedulazione** dei compiti inoltre rimane **molto precisa** perchè collegata a ISR eseguite da segnali di interrupt lanciati da **timer fisici**.
 
-In genere, in molte implementazioni, callback di timer diverse vengono eseguite **in sequenza** e non su thread paralleli per cui operazioni bloccanti come le ```delay()```, oltre a causare possibili **instabilità** (sono ISR basate su interrupt), **ritardano** l'esecuzione delle callback **a seguire**.
-
-
-
 ### **Modalità di utilizzo**
 
 La **modalità di utilizzo** è simile a quella di una **usuale ISR**. Una **funzione di callback** viene associata ad un evento di un timer tramite un metodo **init()**. La dissociazione si fa con il metodo contrario **deinit()**. Gli **eventi possibili** sono:
