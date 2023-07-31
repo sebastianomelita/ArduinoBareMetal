@@ -390,6 +390,89 @@ void loop() {
 
 Simulazione su Arduino con Wowki: https://wokwi.com/projects/352009022804591183
 
+### **TIMERS HW SCHEDULATI TRAMITE AGGIORNAMENTO DEL TEMPO BASE**
+
+Si tratta della stessa situazione dell'esempio precedente soltanto che adesso c'è un task in più mentre i timer HW a disposizione sono ancora soltanto due. I task complessivamente in esecuzione sono quattro:
+- **uno** in esecuzione **nel loop** schedulato da un delay() casuale che simula task pesanti dalla durata impredicibile
+- **uno** affidato ad un **proprio timer HW** che ne programma l'esecuzione ad intervalli precisi, eventualmente sottraendo l'esecuzione al task nel loop mediante un segnale di interrupt
+- **due** affidati ad un **unico timer HW** condiviso che esegue ad intervalli di tempo precisi uno schedulatore SW basato sul polling della funzione millis. Lo schedulatore viene richiamato in intervalli di tempo **comuni** ai due task che poi vengono **filtrati** mediante dei **timer SW**.
+
+Gli schedulatori utilizzati sono **due**:
+- basato su https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
+- basato su https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer
+
+Entrambi possono essere utilizzati a partire da una generazione di tempi costante (delay, millis(), timer HW). Per una dissertazione più accurata sul loro utilizzo vedi [Schedulatore di compiti basato sul polling della millis()](taskschedpy.md) 
+
+```C++
+import time
+from machine import Pin, Timer
+
+def blink(led):
+    led.value(not led.value())
+
+def scheduleAll(leds):
+    global tbase1
+    global elapsedTime
+    global period
+    #task3
+    if elapsedTime[0] >= period[0]:
+        blink(leds[0])
+        elapsedTime[0] = 0
+    elapsedTime[0] += tbase1
+    #task4
+    if elapsedTime[1] >= period[1]:
+        blink(leds[1])
+        elapsedTime[1] = 0
+    elapsedTime[1] += tbase1
+    #task5
+    if elapsedTime[2] >= period[2]:
+        blink(leds[2])
+        elapsedTime[2] = 0
+    elapsedTime[2] += tbase1
+
+led1 = Pin(12, Pin.OUT)
+led2 = Pin(14, Pin.OUT)
+led3 = Pin(27, Pin.OUT)
+led4 = Pin(5, Pin.OUT)
+led5 = Pin(4, Pin.OUT)
+led6 = Pin(2, Pin.OUT)
+leds1 = [led1, led2, led3]
+leds2 = [led4, led5]
+#parametri dello sheduler 1
+period2 = [500, 3000]
+precs= [0, 0]
+precm = 0
+#inizializzazione dello scheduler 1
+for i in range(2):
+    precs[i] = precm -period2[i];
+#parametri dello sheduler 2
+period = [500, 1000, 2000]
+elapsedTime = [0, 0, 0]
+tbase1 = 500
+#inizializzazione dello scheduler 2
+tbase2 = 500
+for i in range(2):
+     elapsedTime[i] = period[i]
+#configurazione timers HW
+tim1 = Timer(3)
+tim1.init(period=500, callback = lambda t: scheduleAll(leds1))	
+tim2 = Timer(4)
+tim2.init(period=1000, callback = lambda t: blink(led6))	
+
+while True:
+    time.sleep_ms(500)
+    precm += tbase2
+    #task1
+    if precm - precs[0] >= period2[0]:
+        precs[0] += period2[0]
+        blink(leds2[0])
+    #task2
+    if precm - precs[1] >= period2[1]:
+        precs[1] += period2[1]
+        blink(leds2[1])
+```
+Simulazione su Arduino con Wowki: https://wokwi.com/projects/371783717482539009
+
 ### **Sitografia**
 
 - https://techtutorialsx.com/2021/08/07/esp32-ticker-library/
