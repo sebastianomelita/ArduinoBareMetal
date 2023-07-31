@@ -183,27 +183,24 @@ led[0] = Pin(12, Pin.OUT)
 led[1] = Pin(18, Pin.OUT)
 period = [500, 1000]
 precs = [0, 0]
-currTime = 0;
 prevMillis = 0
 precm = 0
 tbase = 500
 #inizializzazione dei task
 for i in range(2):
-     precs[i] = precm -period[i]
+     precs[i] = precm -period[i];
 
 while True:
      if time.ticks_ms() - precm >= tbase:
           precm += tbase
           #task1
-          if currTime - precs[0] >= period[0]:
+          if precm - precs[0] >= period[0]:
                precs[0] += period[0]
                blink(led[0])
           #task2
-          currTime = time.ticks_ms()
-          if currTime - precs[1] >= period[1]:
+          if precm - precs[1] >= period[1]:
                precs[1] += period[1]
                blink(led[1])
-
      # il codice eseguito al tempo massimo della CPU va quì 
 ```
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371608560910636033
