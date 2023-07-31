@@ -275,6 +275,21 @@ while True:
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371659893418077185
 
+Si osservi che, prendendo solo la parte:
+```python
+  precm += tbase
+  #task1
+  if precm - precs[0] >= period[0]:
+       precs[0] += period[0]
+       blink(led[0])
+  #task2
+  if precm - precs[1] >= period[1]:
+       precs[1] += period[1]
+       blink(led[1])
+```
+lo schedulatore potrebbe essere adoperato a partire da una base dei tempi qualsiasi come delay e interrupt, non soltanto generata mediante la funzione millis().
+
+
 ### **SCHEDULATORE DI COMPITI SU BASE DEI TEMPI GENERICA**
 
 E' possibile realizzare uno schedulatore di task che non necessita di alcuna funzione di misura del tempo (delay() o millis()). L'unico **prerequisito** è che avvenga l'**invocazione periodica** di una funzione ad un certo **tempo base** comune a tutti i task, calcolato col **massimo comune divisore** (M.C.D. o G.C.D) di tutti i tempi dei singoli task. Un **contatore** di tempi base determina, per ogni task, il momento buono in cui questo deve essere eseguito **resettando** il proprio contatore subito dopo.
