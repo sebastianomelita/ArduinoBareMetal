@@ -401,7 +401,7 @@ for(int i=0; i<2; i++){
 ```
 **Recupero dei tick persi in un task lento**
 
-In questo caso il **ritardo** di un **task** maggiore di un **tempo base** non potrebbe essere compensato dato che **da un lato** la funzione ```scheduleAll()``` non è interrompibile per cui un suo ritardo ritarda anche il task successivo, **dall'altro** ```elapsedTime[0] += tbase``` viene incrementata ad ogni tick sempre una sola volta, per cui se il ritardo di un task ha superato più tick, il task successivo **non** è in grado di recuperarli nel suo conteggio del tempo trascorso.
+In questo caso il **ritardo** di un **task** maggiore di un **tempo base** non potrebbe essere compensato dato che **da un lato** la funzione ```scheduleAll()``` non è interrompibile per cui ritardo di un task ritarda anche il task successivo, **dall'altro** ```elapsedTime[0] += tbase``` viene incrementata ad ogni tick sempre una sola volta, per cui se il ritardo di un task ha superato più tick, il task successivo **non** è in grado di recuperarli nel suo conteggio del tempo trascorso.
 
 **Riordinamento dei task**
 
