@@ -304,86 +304,59 @@ Si tratta della stessa situazione dell'esempio precedente in cui ci stanno **tre
 - **due** affidati ad un **unico timer HW** condiviso che esegue ad intervalli di tempo precisi uno schedulatore SW basato sul polling della funzione millis. Lo schedulatore viene richiamato in intervalli di tempo **comuni** ai due task che poi vengono **filtrati** mediante conteggio e selezione dei **times tick**.
 
 
-```C++
-#define TIMER_INTERRUPT_DEBUG         0
-#define USING_16MHZ     true
-#define USING_8MHZ      false
-#define USING_250KHZ    false
+```python
+import time
+from machine import Pin, Timer
+import random
 
-#define USE_TIMER_0     false
-#define USE_TIMER_1     true
-#define USE_TIMER_2     true
-#define USE_TIMER_3     false
+def blink(led):
+    led.value(not led.value())
 
-#include "TimerInterrupt.h"
-int led1 = 13;
-int led2 = 12;
-int led3 = 11;
-int led4 = 10;
-unsigned long period, step, nstep;
-volatile unsigned long prec;
+def scheduleAll(leds):
+    global step
+    step = (step + 1) % nstep      # conteggio circolare arriva al massimo a nstep-1
+    # il codice eseguito al tempo base va quì	
+    # ..........
+    # task 1
+    if not(step % 2):      # schedulo eventi al multiplo del tempo stabilito (2 sec)
+        blink(leds[0])                       
+    # task 2
+    if not(step % 3):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
+        blink(leds[1])      
+    # task 3
+    if not(step % 4):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
+        blink(leds[2])      
+    # task 4
+    if not(step % 5):      # schedulo eventi al multiplo del tempo stabilito (3 sec)
+        blink(leds[3])      
+    # il codice eseguito al tempo base va quì	
+    # ..........
 
-void periodicBlink(int led);
-void schedule();
+led1 = Pin(12, Pin.OUT)
+led2 = Pin(14, Pin.OUT)
+led3 = Pin(27, Pin.OUT)
+led4 = Pin(5, Pin.OUT)
+led5 = Pin(4, Pin.OUT)
+led6 = Pin(2, Pin.OUT)
+leds1 = [led1, led2, led3, led4]
+leds2 = [led5, led6]
+tim1 = Timer(3)
+tim1.init(period=500, callback = lambda t: scheduleAll(leds1))	
+tim2 = Timer(4)
+tim2.init(period=1000, callback = lambda t: blink(led5))	
+step = 0
+nstep = 1000
 
-void schedule()
-{
-	// polling della millis() alla ricerca del tempo in cui scade ogni periodo
-	if((millis()-prec) >= period){ 		//se è passato un periodo tbase dal precedente periodo
-		prec += period;  		//preparo il tic successivo azzerando il conteggio del tempo ad adesso
-		step = (step + 1) % nstep; 	// conteggio circolare (arriva al massimo a nstep-1)
-
-		// task 1
-		if(!(step%2)){  // schedulo eventi al multiplo del periodo (2 sec = 2 periodi)
-			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-		}
-		// task 2
-		if(!(step%3)){  // schedulo eventi al multiplo del periodo (3 sec = 3 periodi)
-			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
-		}
-		// il codice eseguito al tempo del metronomo (esattamente un periodo) va quì
-	}
-	// il codice eseguito al tempo massimo della CPU va qui
-}
- 
-void periodicBlink(int led) {
-  Serial.print("printing periodic blink led ");
-  Serial.println(led);
-
-  digitalWrite(led, !digitalRead(led));
-}
- 
-void setup() {
-	//randomSeed(millis());
-	randomSeed(analogRead(0));
-	prec=0;
-	period = 100;
-  step = 0;
-	nstep = 100;
-	pinMode(led1, OUTPUT);
-	pinMode(led2, OUTPUT);
-	pinMode(led3, OUTPUT);
-	pinMode(led4, OUTPUT);
-	Serial.begin(115200); 
-	// Select Timer 1-2 for UNO, 0-5 for MEGA
-	// Timer 2 is 8-bit timer, only for higher frequency
-	ITimer1.init();
-	ITimer1.attachInterruptInterval(100, schedule);
-	// Select Timer 1-2 for UNO, 0-5 for MEGA
-	// Timer 2 is 8-bit timer, only for higher frequency
-	ITimer2.init();
-	ITimer2.attachInterruptInterval(1000, periodicBlink,led3);
-}
- 
-void loop() {
-	unsigned randomDelay = random(10, 2000);
-	Serial.print("delay: ");Serial.println(randomDelay);
-	delay(randomDelay);
-	digitalWrite(led4, !digitalRead(led4));
-}
+while True:
+    print("task 6 pesante nel loop")
+    blink(led6)
+    randomDelay = random.randint(500,800)
+    print("delay: ", randomDelay)
+    time.sleep_ms(randomDelay)
+    #time.sleep_ms(500)
 ```
 
-Simulazione su Arduino con Wowki: https://wokwi.com/projects/352009022804591183
+Simulazione su Arduino con Wowki: https://wokwi.com/projects/371769605396662273
 
 ### **Sitografia**
 
