@@ -294,5 +294,7 @@ Simulazione su Arduino con Wowki: https://wokwi.com/projects/371783717482539009
 
 - https://www.coderdojotc.org/micropython/advanced-labs/13-timers/
 - https://docs.micropython.org/en/latest/library/machine.Timer.html
+- https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
+- https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md) >[versione in C++](timersched.md) 
