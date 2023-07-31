@@ -215,7 +215,7 @@ Si tratta della stessa situazione dell'esempio precedente soltanto che adesso c'
 - **uno** affidato ad un **proprio timer HW** che ne programma l'esecuzione ad intervalli precisi, eventualmente sottraendo l'esecuzione al task nel loop mediante un segnale di interrupt
 - **due** affidati ad un **unico timer HW** condiviso che esegue ad intervalli di tempo precisi uno schedulatore SW basato sul polling della funzione millis. Lo schedulatore viene richiamato in intervalli di tempo **comuni** ai due task che poi vengono **filtrati** mediante dei **timer SW**.
 
-Gli schdulatori utilizzati sono **due**:
+Gli schedulatori utilizzati sono **due**:
 - basato su https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
 - basato su https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer
 
