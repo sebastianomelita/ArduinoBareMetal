@@ -291,6 +291,108 @@ while True:
 ```
 Simulazione su Arduino con Wowki: https://wokwi.com/projects/371783717482539009
 
+### **Pulsante toggle con antirimbalzo insieme a blink**
+
+In questo esempio si utilizza un unico **timer HW** come **base dei tempi** per uno **schedulatore SW** che gestisce la tempistica di **due task**: 
+- uno per la relizzazione di un **tasto toggle** con proprietà di antirimbalzo
+- un'altra per la realizzazione del **blink periodico** di un led
+
+Le operazioni benchè semplici vengono considerate come prototipi di task più complessi e magari soggetti a **ritardi** considerevoli. In questa circostanza la loro esecuzione all'interno di una ISR è **sconsigliata** per cui essi vengono eseguiti nel ```loop()``` principale su **segnalazione** di un **flag** asserito dentro la ISR del timer.
+
+```python
+import time
+from machine import Pin, Timer
+
+class Toggle(object):
+    def __init__(self, btn, state = False):
+        self.btn = btn
+        self.state = state
+        self.precval = 0
+    def toggle(self):
+        changed = False
+        val = self.btn.value()
+        if self.precval == 0 and val == 1: 
+            changed = True
+            self.state = not self.state
+            print(self.state)
+        self.precval = val 
+        return changed
+    def getState(self):
+        return self.state
+    def setState(self,state):
+        self.state = state
+
+def blink(led):
+    led.value(not led.value())
+
+def press(p):
+    p.toggle()
+    time.sleep_ms(200)# emulazione ritardo del task
+
+def toggleLogic(led):
+    global pulsante
+    if pulsante.getState():
+        blink(led)
+        print("Stato ",pulsante.getState())
+        time.sleep_ms(100)# emulazione ritardo del task
+    else:
+        led.off()
+         
+def  timerISR(timer):
+    global timerFlag
+    global count
+    if timerFlag:
+        for i in range(taskNum):
+            elapsedTime[i] += tbase
+            count[i] +=1
+    else:
+        timerFlag = True
+        for i in range(taskNum):
+            if count[i] > 0:
+                print("Recuperati ", count[i], " ticks del task ", i)
+        for i in range(taskNum):
+             count[i] = 0
+
+def scheduleAll():
+    global elapsedTime
+    global tickFct
+    global elapsedTime
+    global taskNum
+    for i in range(taskNum):
+        if elapsedTime[i] >= period[i]:
+            tickFct[i](pin[i])
+            elapsedTime[i] = 0			
+        elapsedTime[i] += tbase
+
+btn1 = Pin(12,Pin.IN)
+led1 = Pin(13,Pin.OUT)
+led2 = Pin(2,Pin.OUT)
+pulsante = Toggle(btn1)
+pin = [led1, led2, pulsante]
+timerFlag = False
+tickFct = [toggleLogic, blink, press]
+period = [1000, 500, 50]
+elapsedTime = [0, 0, 0]
+taskNum = len(period)
+tbase = 50
+count = [0, 0, 0]
+myPerTimer = Timer(3)
+myPerTimer.init(period=tbase, mode=Timer.PERIODIC, callback=timerISR)
+#inizializzazione dei task
+for i in range(taskNum):
+     elapsedTime[i] = period[i]
+
+while True:
+    if timerFlag:
+        scheduleAll()
+        #time.sleep_ms(200)
+        timerFlag = False
+    time.sleep_ms(1)
+    # il codice eseguito al tempo massimo della CPU va quì 
+```
+
+Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/371662961899688961
+
 ### **Sitografia**
 
 - https://www.coderdojotc.org/micropython/advanced-labs/13-timers/
