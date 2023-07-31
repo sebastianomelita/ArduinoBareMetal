@@ -404,74 +404,90 @@ Gli schedulatori utilizzati sono **due**:
 Entrambi possono essere utilizzati a partire da una generazione di tempi costante (delay, millis(), timer HW). Per una dissertazione più accurata sul loro utilizzo vedi [Schedulatore di compiti basato sul polling della millis()](taskschedpy.md) 
 
 ```C++
-import time
-from machine import Pin, Timer
+#include <Ticker.h>
 
-def blink(led):
-    led.value(not led.value())
+Ticker periodicTicker1;
+Ticker periodicTicker2;
+int led1 = 12;
+int led2 = 14;
+int led3 = 27;
+int led4 = 5;
+int led5 = 4;
+int led6 = 2;
+int leds1[] = {led1, led2, led3};
+int leds2[] = {led4, led5};
+//parametri dello sheduler 1
+unsigned long  precm = 0;
+unsigned long  tbase1 = 500;
+unsigned long precs[]= {0, 0};
+unsigned long period1[] = {1500, 6000};
+//parametri dello sheduler 2
+unsigned long elapsedTime[] = {0, 0, 0};
+unsigned long period2[] = {500, 2000, 3000};
+int tbase2 = 500;
 
-def scheduleAll(leds):
-    global tbase1
-    global elapsedTime
-    global period
-    #task3
-    if elapsedTime[0] >= period[0]:
-        blink(leds[0])
-        elapsedTime[0] = 0
-    elapsedTime[0] += tbase1
-    #task4
-    if elapsedTime[1] >= period[1]:
-        blink(leds[1])
-        elapsedTime[1] = 0
-    elapsedTime[1] += tbase1
-    #task5
-    if elapsedTime[2] >= period[2]:
-        blink(leds[2])
-        elapsedTime[2] = 0
-    elapsedTime[2] += tbase1
+void periodicBlink(int led) {
+  digitalWrite(led, !digitalRead(led));
+}
 
-led1 = Pin(12, Pin.OUT)
-led2 = Pin(14, Pin.OUT)
-led3 = Pin(27, Pin.OUT)
-led4 = Pin(5, Pin.OUT)
-led5 = Pin(4, Pin.OUT)
-led6 = Pin(2, Pin.OUT)
-leds1 = [led1, led2, led3]
-leds2 = [led4, led5]
-#parametri dello sheduler 1
-period2 = [500, 3000]
-precs= [0, 0]
-precm = 0
-#inizializzazione dello scheduler 1
-for i in range(2):
-    precs[i] = precm -period2[i];
-#parametri dello sheduler 2
-period = [500, 1000, 2000]
-elapsedTime = [0, 0, 0]
-tbase1 = 500
-#inizializzazione dello scheduler 2
-tbase2 = 500
-for i in range(2):
-     elapsedTime[i] = period[i]
-#configurazione timers HW
-tim1 = Timer(3)
-tim1.init(period=500, callback = lambda t: scheduleAll(leds1))	
-tim2 = Timer(4)
-tim2.init(period=1000, callback = lambda t: blink(led6))	
+void scheduleAll(int *leds){
+		// task 1
+		if (elapsedTime[0] >= period2[0]) {
+			periodicBlink(leds[0]);
+			elapsedTime[0] = 0;
+		}
+		elapsedTime[0] += tbase2;
+		// task 2
+		if (elapsedTime[1] >= period2[1]) {
+			periodicBlink(leds[1]);
+			elapsedTime[1] = 0;
+		}
+		elapsedTime[1] += tbase2;
+		// task 3
+		if (elapsedTime[2] >= period2[2]) {
+			periodicBlink(leds[2]);
+			elapsedTime[2] = 0;
+		}
+		elapsedTime[2] += tbase2;
+}
 
-while True:
-    time.sleep_ms(500)
-    precm += tbase2
-    #task1
-    if precm - precs[0] >= period2[0]:
-        precs[0] += period2[0]
-        blink(leds2[0])
-    #task2
-    if precm - precs[1] >= period2[1]:
-        precs[1] += period2[1]
-        blink(leds2[1])
+void setup() {
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+	pinMode(led3, OUTPUT);
+  pinMode(led4, OUTPUT);
+	pinMode(led5, OUTPUT);
+  pinMode(led6, OUTPUT);
+  Serial.begin(115200); 
+	//Inizializzazione dei task
+	for(int i=0; i<2; i++){
+		precs[i] = precm -period1[i];
+	}
+	//inizializzazione dello scheduler 2
+	for(int i=0; i<3; i++){
+		elapsedTime[i] = period2[i];
+	}
+  //configurazione timers HW
+  periodicTicker1.attach_ms(500, scheduleAll, leds1);
+  periodicTicker2.attach_ms(1000, periodicBlink, led6);
+}
+ 
+void loop() {
+	delay(500);
+	precm += tbase1;
+	// task 1
+	if ((precm - precs[0]) >= period1[0]) {
+		precs[0] += period1[0]; 
+    periodicBlink(leds2[0]);
+	}	
+	// task 2
+	if ((precm - precs[1]) >= period1[1]) {
+		precs[1] += period1[1]; 
+    periodicBlink(leds2[1]);
+	}
+}
 ```
-Simulazione su Arduino con Wowki: https://wokwi.com/projects/371783717482539009
+Simulazione su Arduino con Wowki: https://wokwi.com/projects/371810634603304961
 
 ### **Sitografia**
 
