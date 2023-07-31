@@ -344,7 +344,11 @@ for i in range(2):
 ```
 **Recupero dei tick persi in un task lento**
 
-In questo caso il **ritardo** di un **task** maggiore di un **tempo base** non potrebbe essere compensato dato che **da un lato** la funzione ```scheduleAll()``` non è interrompibile per cui ritardo di un task ritarda anche il task successivo, **dall'altro** ```elapsedTime[0] += tbase``` viene incrementata ad ogni tick sempre una sola volta, per cui se il ritardo di un task ha superato più tick, il task successivo **non** è in grado di recuperarli nel suo conteggio del tempo trascorso.
+In questo caso il **ritardo** di un **task** maggiore di un **tempo base** non potrebbe essere compensato dato che **da un lato** la funzione ```scheduleAll()``` non è interrompibile per cui ritardo di un task ritarda anche il task successivo, **dall'altro** ```elapsedTime[0] += tbase``` viene incrementata ad ogni tick sempre una sola volta. Due scenari possibili:
+-  se il ritardo di un task ha superato più tick, e quelli non eseguiti (perchè il task in corso non era interrompibile) **non vengono recuperati**, allora il task successivo **non** è in grado di recuperare (con un solo tick) il suo conteggio del tempo trascorso.
+-  se il ritardo di un task ha superato più tick, e quelli non eseguiti (perchè il task in corso non era interrompibile) **vengono recuperati**, allora il task successivo **non** è in grado di recuperare (con un solo tick) il suo conteggio del tempo trascorso. Il recupero dei tick mancanti è possibile se le ISR di ogni interrupt non vengono perse ma messe in una **coda di esecuzione**, in attesa che le ISR chiamate dagl interrupt **avvenuti prima** vengano servite.
+
+Nello ESP32 sembra che sia effettivo il secondo scenario per cui il repero dei tick persi in un task lento è sempre possibile. 
 
 **Riordinamento dei task**
 
