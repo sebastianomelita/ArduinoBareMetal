@@ -146,7 +146,7 @@ tim2.deinit()
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/371695217789720577
 
-### **TIMERS HW DI ARDUINO SCHEDULATO CON TIMES TICK**
+### **TIMERS HW SCHEDULATO TRAMITE CONTEGGIO DEI TIMES TICK**
 
 Si tratta della stessa situazione dell'esempio precedente in cui ci stanno **tre task** da eseguire con precisione e soltanto **due timer HW** per farlo. I **task** complessivamente in esecuzione sono **quattro**:
 - **uno** in esecuzione **nel loop** schedulato da un delay() casuale che simula task pesanti dalla durata impredicibile
