@@ -216,7 +216,7 @@ Si tratta della stessa situazione dell'esempio precedente soltanto che adesso c'
 - **due** affidati ad un **unico timer HW** condiviso che esegue ad intervalli di tempo precisi uno schedulatore SW basato sul polling della funzione millis. Lo schedulatore viene richiamato in intervalli di tempo **comuni** ai due task che poi vengono **filtrati** mediante dei **timer SW**.
 
 Gli schedulatori utilizzati sono **due**:
-- basato su https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
+- basato su https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/ e su [Generazione di tempi assoluti](absolutetimepy.md)
 - basato su https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer
 
 Entrambi possono essere utilizzati a partire da una generazione di tempi costante (delay, millis(), timer HW). Per una dissertazione più accurata sul loro utilizzo vedi [Schedulatore di compiti basato sul polling della millis()](taskschedpy.md) 
