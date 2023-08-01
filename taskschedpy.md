@@ -531,56 +531,49 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 Basato su https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer e su [Generazione di tempi assoluti](absolutetimepy.md)
 
 ```python
-#include <Ticker.h>
+import time
+from machine import Pin, Timer
 
-Ticker periodicTicker1;
-byte led1 = 13;
-byte led2 = 12;
-volatile unsigned long  precm = 0;
-unsigned long  tbase1 = 500;
-volatile unsigned long precs[]= {0, 0};
-unsigned long period1[] = {1500, 6000};
-int leds1[] = {led1, led2};
+def blink(led):
+     led.value(not led.value())
 
-void periodicBlink(int led) {
-  digitalWrite(led, !digitalRead(led));
-}
+def scheduleAll(leds):
+     global precm
+     global precs
+     global period
+    
+     precm += tbase
+     #task1
+     if precm - precs[0] >= period[0]:
+          precs[0] += period[0]
+          blink(leds[0])
+     #task2
+     if precm - precs[1] >= period[1]:
+          precs[1] += period[1]
+          blink(leds[1])
+     # il codice eseguito al tempo massimo della CPU va quì 
 
-void scheduleAll(int *leds){
-	precm += tbase1;
-	// task 1
-	if ((precm - precs[0]) >= period1[0]) {
-		precs[0] += period1[0]; 
-    		periodicBlink(leds[0]);
-	}	
-	// task 2
-	if ((precm - precs[1]) >= period1[1]) {
-		precs[1] += period1[1]; 
-    		periodicBlink(leds[1]);
-	}
-}
+leds = [0, 0]
+leds[0] = Pin(12, Pin.OUT)
+leds[1] = Pin(18, Pin.OUT)
+period = [500, 1000]
+precs = [0, 0]
+precm = 0
+tbase = 500
+#inizializzazione dei task
+for i in range(2):
+     precs[i] = precm -period[i];
+#configurazione timers HW
+tim1 = Timer(3)
+tim1.init(period=500, callback = lambda t: scheduleAll(leds))	
 
-void setup(){
-	pinMode(led1, OUTPUT);
-	pinMode(led2, OUTPUT);
-	Serial.begin(115200); 
-	periodicTicker1.attach_ms(500, scheduleAll, leds1);
-	// task time init
-	for(int i=0; i<2; i++){
-		precs[i] = precm -period1[i];
-	}
-}
-
-void loop()
-{
-	delay(10);
-	// il codice eseguito al tempo massimo della CPU va qui
-}
+while True:
+     time.sleep_ms(10)
 ```
 
 Sui dettagli relativi alla generazione del **tempo assoluto**, sul **recupero dei tick persi in un task lento**, sul **riordinamento dei task** valgono le stesse considerazioni già fatte sopra per lo **SCHEDULATORE DI COMPITI BASATO SU FILTRAGGIO DEI TIME TICK**.
 
-Simulazione su Arduino con Wowki: https://wokwi.com/projects/371852832413769729
+Simulazione su Arduino con Wowki: https://wokwi.com/projects/371864186511608833
 
 ## **Esempi**
 
