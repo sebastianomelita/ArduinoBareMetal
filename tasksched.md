@@ -337,7 +337,7 @@ Ticker periodicTicker1;
 byte led1 = 13;
 byte led2 = 12;
 unsigned long period[2];
-unsigned long elapsedTime[2];
+volatile unsigned long elapsedTime[2];
 volatile bool processingRdyTasks;
 unsigned long tbase;
 
