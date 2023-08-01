@@ -577,6 +577,7 @@ void loop()
 	// il codice eseguito al tempo massimo della CPU va qui
 }
 ```
+Simulazione su Arduino con Wowki: https://wokwi.com/projects/371852832413769729
 
 ## **Esempi**
 
