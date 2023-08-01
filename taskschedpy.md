@@ -577,6 +577,9 @@ void loop()
 	// il codice eseguito al tempo massimo della CPU va qui
 }
 ```
+
+Sui dettagli relativi alla generazione del **tempo assoluto**, sul **recupero dei tick persi in un task lento**, sul **riordinamento dei task** valgono le stesse considerazioni già fatte sopra per lo **SCHEDULATORE DI COMPITI BASATO SU FILTRAGGIO DEI TIME TICK**.
+
 Simulazione su Arduino con Wowki: https://wokwi.com/projects/371852832413769729
 
 ## **Esempi**
