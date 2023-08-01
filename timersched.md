@@ -431,24 +431,24 @@ void periodicBlink(int led) {
 }
 
 void scheduleAll(int *leds){
-		// task 1
-		if (elapsedTime[0] >= period2[0]) {
-			periodicBlink(leds[0]);
-			elapsedTime[0] = 0;
-		}
-		elapsedTime[0] += tbase2;
-		// task 2
-		if (elapsedTime[1] >= period2[1]) {
-			periodicBlink(leds[1]);
-			elapsedTime[1] = 0;
-		}
-		elapsedTime[1] += tbase2;
-		// task 3
-		if (elapsedTime[2] >= period2[2]) {
-			periodicBlink(leds[2]);
-			elapsedTime[2] = 0;
-		}
-		elapsedTime[2] += tbase2;
+	// task 1
+	if (elapsedTime[0] >= period2[0]) {
+		periodicBlink(leds[0]);
+		elapsedTime[0] = 0;
+	}
+	elapsedTime[0] += tbase2;
+	// task 2
+	if (elapsedTime[1] >= period2[1]) {
+		periodicBlink(leds[1]);
+		elapsedTime[1] = 0;
+	}
+	elapsedTime[1] += tbase2;
+	// task 3
+	if (elapsedTime[2] >= period2[2]) {
+		periodicBlink(leds[2]);
+		elapsedTime[2] = 0;
+	}
+	elapsedTime[2] += tbase2;
 }
 
 void setup() {
