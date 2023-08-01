@@ -489,6 +489,97 @@ void loop() {
 ```
 Simulazione su Arduino con Wowki: https://wokwi.com/projects/371810634603304961
 
+### **Pulsante toggle con antirimbalzo insieme a blink**
+
+In questo esempio si utilizza un unico **timer HW** come **base dei tempi** per uno **schedulatore SW** che gestisce la tempistica di **due task**: 
+- uno per la relizzazione di un **tasto toggle** con proprietà di antirimbalzo
+- un'altra per la realizzazione del **blink periodico** di un led
+
+Le operazioni benchè semplici vengono considerate come prototipi di task più complessi e magari soggetti a **ritardi** considerevoli. In questa circostanza la loro esecuzione all'interno di una ISR è **sconsigliata** per cui essi vengono eseguiti nel ```loop()``` principale su **segnalazione** di un **flag** asserito dentro la ISR del timer.
+
+```C++
+#include <Ticker.h>
+// Inspired from https://www.cs.ucr.edu/~vahid/rios/
+Ticker periodicTicker1;
+int led1 = 13;
+int led2 = 12;
+int pulsante=27;
+byte precval;
+byte stato= LOW;
+unsigned long period[2];
+unsigned long elapsedTime[2];
+void (*tickFct[2])(void); 
+volatile bool timerFlag;
+unsigned long tbase;
+uint8_t tasknum = 2;
+
+void periodicBlink500() {
+  digitalWrite(led1, !digitalRead(led1));
+}
+
+void on50msEvents(){
+	byte val = digitalRead(pulsante);		//pulsante collegato in pulldown
+	//val = digitalRead(!pulsante);	//pulsante collegato in pullup
+	if(precval==LOW && val==HIGH){ 	//rivelatore di fronte di salita
+		stato = !stato; 							//impostazione dello stato del toggle	
+		//Serial.println(stato);
+		digitalWrite(led2, stato);
+	}
+	precval=val;	
+}
+
+void setup(){
+	pinMode(led1, OUTPUT);
+	pinMode(led2, OUTPUT);
+	Serial.begin(115200); 
+	periodicTicker1.attach_ms(50, timerISR);
+	elapsedTime[0] = 0;
+	elapsedTime[1] = 0;
+	period[0] = 50;
+	period[1] = 500;
+	tickFct[0] = on50msEvents;
+	tickFct[1] = periodicBlink500;
+	tbase = 50;
+	// task time init
+	timerFlag = false;
+	for(int i=0; i<tasknum; i++){
+		elapsedTime[i] = period[i];
+	}
+}
+
+void timerISR(void) {
+   if (timerFlag) {
+      Serial.println("Timer ticked before task processing done");
+   }
+   else {
+      timerFlag = true;
+   }
+   return;
+}
+
+void scheduleAll(){		
+	for(int i=0; i<tasknum; i++){
+		if(elapsedTime[i] >= period[i]) {
+			(*tickFct[i])();
+			elapsedTime[i] = 0;
+		}
+		elapsedTime[i] += tbase;
+	}
+}
+
+void loop()
+{
+	if(timerFlag){
+		scheduleAll();
+		timerFlag = false;
+	}
+	delay(1);
+	// il codice eseguito al tempo massimo della CPU va qui
+}
+```
+
+Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/352790112505422849
+
 ### **Sitografia**
 
 - https://techtutorialsx.com/2021/08/07/esp32-ticker-library/
