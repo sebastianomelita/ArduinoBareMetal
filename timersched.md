@@ -179,9 +179,9 @@ int led6 = 2;
 int leds1[] = {led1, led2, led3};
 int leds2[] = {led4, led5};
 //parametri dello sheduler 1
-unsigned long  precm = 0;
+volatile unsigned long  precm = 0;
 unsigned long  tbase1 = 500;
-unsigned long precs[]= {0, 0};
+volatile unsigned long precs[]= {0, 0};
 unsigned long period1[] = {1500, 6000};
 //parametri dello sheduler 2
 unsigned long elapsedTime[] = {0, 0, 0};
@@ -193,42 +193,42 @@ void periodicBlink(int led) {
 }
 
 void scheduleAll(int *leds){
-	// task 1
-	if (elapsedTime[0] >= period2[0]) {
-		periodicBlink(leds[0]);
-		elapsedTime[0] = 0;
-	}
-	elapsedTime[0] += tbase2;
-	// task 2
-	if (elapsedTime[1] >= period2[1]) {
-		periodicBlink(leds[1]);
-		elapsedTime[1] = 0;
-	}
-	elapsedTime[1] += tbase2;
-	// task 3
-	if (elapsedTime[2] >= period2[2]) {
-		periodicBlink(leds[2]);
-		elapsedTime[2] = 0;
-	}
-	elapsedTime[2] += tbase2;
+		// task 1
+		if (elapsedTime[0] >= period2[0]) {
+			periodicBlink(leds[0]);
+			elapsedTime[0] = 0;
+		}
+		elapsedTime[0] += tbase2;
+		// task 2
+		if (elapsedTime[1] >= period2[1]) {
+			periodicBlink(leds[1]);
+			elapsedTime[1] = 0;
+		}
+		elapsedTime[1] += tbase2;
+		// task 3
+		if (elapsedTime[2] >= period2[2]) {
+			periodicBlink(leds[2]);
+			elapsedTime[2] = 0;
+		}
+		elapsedTime[2] += tbase2;
 }
 
 void setup() {
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
-  pinMode(led3, OUTPUT);
+	pinMode(led3, OUTPUT);
   pinMode(led4, OUTPUT);
-  pinMode(led5, OUTPUT);
+	pinMode(led5, OUTPUT);
   pinMode(led6, OUTPUT);
   Serial.begin(115200); 
-  //Inizializzazione dei task
-  for(int i=0; i<2; i++){
-	precs[i] = precm -period1[i];
-  }
-  //inizializzazione dello scheduler 2
-  for(int i=0; i<3; i++){
-	elapsedTime[i] = period2[i];
-  }
+	//Inizializzazione dei task
+	for(int i=0; i<2; i++){
+		precs[i] = precm -period1[i];
+	}
+	//inizializzazione dello scheduler 2
+	for(int i=0; i<3; i++){
+		elapsedTime[i] = period2[i];
+	}
   //configurazione timers HW
   periodicTicker1.attach_ms(500, scheduleAll, leds1);
   periodicTicker2.attach_ms(1000, periodicBlink, led6);
@@ -240,12 +240,12 @@ void loop() {
 	// task 1
 	if ((precm - precs[0]) >= period1[0]) {
 		precs[0] += period1[0]; 
-    		periodicBlink(leds2[0]);
+    periodicBlink(leds2[0]);
 	}	
 	// task 2
 	if ((precm - precs[1]) >= period1[1]) {
 		precs[1] += period1[1]; 
-    		periodicBlink(leds2[1]);
+    periodicBlink(leds2[1]);
 	}
 }
 ```
