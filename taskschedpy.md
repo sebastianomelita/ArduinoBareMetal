@@ -528,7 +528,7 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 ### **Versione alternativa di schedulatore generico**
 
-basato su https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer e su [Generazione di tempi assoluti](absolutetimepy.md)
+Basato su https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer e su [Generazione di tempi assoluti](absolutetimepy.md)
 
 ```python
 #include <Ticker.h>
