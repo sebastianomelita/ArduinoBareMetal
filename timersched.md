@@ -242,12 +242,12 @@ void loop() {
 	// task 1
 	if ((precm - precs[0]) >= period1[0]) {
 		precs[0] += period1[0]; 
-    periodicBlink(leds2[0]);
+    		periodicBlink(leds2[0]);
 	}	
 	// task 2
 	if ((precm - precs[1]) >= period1[1]) {
 		precs[1] += period1[1]; 
-    periodicBlink(leds2[1]);
+    		periodicBlink(leds2[1]);
 	}
 }
 ```
