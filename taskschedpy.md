@@ -208,7 +208,7 @@ Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.co
 
 **Tempo assoluto**
 
-La generazione del tempo assoluto di riferimento mediante```precm += tbase``` è basata su consideerazioni riportate in [Generazione di tempi assoluti](absolutetimepy.md)
+La generazione del tempo assoluto di riferimento mediante```precm += tbase``` è basata su considerazioni riportate in [Generazione di tempi assoluti](absolutetimepy.md)
 
 **Inizializzazione dei task**
 
