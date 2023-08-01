@@ -300,6 +300,7 @@ void loop() {
 	digitalWrite(led4, !digitalRead(led4));
 }
 ```
+Simulazione su Arduino con Wowki: https://wokwi.com/projects/371840713313082369
 
 ### **TIMERS HW DI ARDUINO SCHEDULATO CON TIMES TICK**
 
