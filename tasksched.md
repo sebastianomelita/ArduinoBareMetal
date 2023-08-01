@@ -322,7 +322,7 @@ void loop()
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/353186425425809409
 
-### **SCHEDULATORE DI COMPITI GENERICO SENZA MILLIS**
+### **SCHEDULATORE DI COMPITI SU BASE DEI TEMPI GENERICA**
 
 E' possibile realizzare uno schedulatore di task che non necessita di alcuna funzione di misura del tempo (delay() o millis()). L'unico **prerequisito** è che avvenga l'**invocazione periodica** di una funzione ad un certo **tempo base** comune a tutti i task, calcolato col **massimo comune divisore** (M.C.D. o G.C.D) di tutti i tempi dei singoli task. Un **contatore** di tempi base determina, per ogni task, il momento buono in cui questo deve essere eseguito **resettando** il proprio contatore subito dopo.
 
