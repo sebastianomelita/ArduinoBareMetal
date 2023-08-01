@@ -529,28 +529,20 @@ void schedule();
 
 void schedule()
 {
-	// polling della millis() alla ricerca del tempo in cui scade ogni periodo
-	if((millis()-prec) >= period){ 		//se è passato un periodo tbase dal precedente periodo
-		prec += period;  		//preparo il tic successivo azzerando il conteggio del tempo ad adesso
-		step = (step + 1) % nstep; 	// conteggio circolare (arriva al massimo a nstep-1)
-
-		// task 1
-		if(!(step%2)){  // schedulo eventi al multiplo del periodo (2 sec = 2 periodi)
-			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
-		}
-		// task 2
-		if(!(step%3)){  // schedulo eventi al multiplo del periodo (3 sec = 3 periodi)
-			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
-		}
-		// il codice eseguito al tempo del metronomo (esattamente un periodo) va quì
+	prec += period;  				//preparo il tic successivo azzerando il conteggio del tempo ad adesso
+	step = (step + 1) % nstep; 			// conteggio circolare (arriva al massimo a nstep-1)
+  // task 2
+	if(!(step%3)){  // schedulo eventi al multiplo del periodo (3 sec = 3 periodi)
+		periodicBlink(led2); 	// stato alto: led blink
 	}
-	// il codice eseguito al tempo massimo della CPU va qui
+	// task 1
+	if(!(step%2)){  // schedulo eventi al multiplo del periodo (2 sec = 2 periodi)
+		periodicBlink(led1); 	// stato alto: led blink
+	}
+	// il codice eseguito al tempo del metronomo (esattamente un periodo) va quì
 }
  
 void periodicBlink(int led) {
-  Serial.print("printing periodic blink led ");
-  Serial.println(led);
-
   digitalWrite(led, !digitalRead(led));
 }
  
@@ -558,7 +550,6 @@ void setup() {
 	//randomSeed(millis());
 	randomSeed(analogRead(0));
 	prec=0;
-	period = 100;
   step = 0;
 	nstep = 100;
 	pinMode(led1, OUTPUT);
@@ -569,7 +560,7 @@ void setup() {
 	// Select Timer 1-2 for UNO, 0-5 for MEGA
 	// Timer 2 is 8-bit timer, only for higher frequency
 	ITimer1.init();
-	ITimer1.attachInterruptInterval(100, schedule);
+	ITimer1.attachInterruptInterval(500, schedule);
 	// Select Timer 1-2 for UNO, 0-5 for MEGA
 	// Timer 2 is 8-bit timer, only for higher frequency
 	ITimer2.init();
@@ -579,8 +570,8 @@ void setup() {
 void loop() {
 	unsigned randomDelay = random(10, 2000);
 	Serial.print("delay: ");Serial.println(randomDelay);
-	delay(randomDelay);
-	digitalWrite(led4, !digitalRead(led4));
+	delay(500);
+	periodicBlink(led4);
 }
 ```
 
