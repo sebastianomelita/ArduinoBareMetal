@@ -531,7 +531,7 @@ void schedule()
 {
 	prec += period;  				//preparo il tic successivo azzerando il conteggio del tempo ad adesso
 	step = (step + 1) % nstep; 			// conteggio circolare (arriva al massimo a nstep-1)
-  // task 2
+  	// task 2
 	if(!(step%3)){  // schedulo eventi al multiplo del periodo (3 sec = 3 periodi)
 		periodicBlink(led2); 	// stato alto: led blink
 	}
