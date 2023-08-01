@@ -332,6 +332,8 @@ E' possibile realizzare uno schedulatore di task che non necessita di alcuna fun
 
 La **base dei tempi** comune può essere realizzata mediante qualunque tecnica di **generazione di tempi periodici**, ma la particolarità dell'assenza di misure di **tempo corrente** (millis()) rendono la realizzazione particolarmente adatta per essere adoperata su una base dei tempi generata mediante **interrupt**. 
 
+Si ricorda che in C e in C++ le variabili globali a comune tra ISR e loop() principale e suscettibili di modifiche da parte di entrambi andrebbero dichiarate tutte con il qualificatore ```volatile```.
+
 La **versione originale** più completa dello schedulatore insieme ad una dettagliata discussione teorica si trova in: https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
 
 ```C++
