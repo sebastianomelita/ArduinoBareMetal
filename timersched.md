@@ -157,7 +157,7 @@ void loop() {
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
 
-### **TIMERS HW SCHEDULATI TRAMITE AGGIORNAMENTO DEL TEMPO BASE**
+### **TIMERS HW SCHEDULATI TRAMITE AGGIORNAMENTO DEL PPERIODO DEL TASK**
 
 Si tratta della stessa situazione dell'esempio precedente soltanto che adesso c'è un task in più mentre i timer HW a disposizione sono ancora soltanto due. I task complessivamente in esecuzione sono quattro:
 - **uno** in esecuzione **nel loop** schedulato da un delay() casuale che simula task pesanti dalla durata impredicibile
