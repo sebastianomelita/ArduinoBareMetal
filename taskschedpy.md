@@ -206,6 +206,10 @@ while True:
 ```
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371608560910636033
 
+**Tempo assoluto**
+
+La generazione del tempo assoluto di riferimento mediante```precm += tbase``` è basata su consideerazioni riportate in [Generazione di tempi assoluti](absolutetimepy.md)
+
 **Inizializzazione dei task**
 
 Per ottenere la partenza sincronizzata di tutti i task al primo tick del sistema bisogna prima inizializzare il tempo trascorso (```precs[i]```) di ogni task al valore del suo intervallo di esecuzione (``period[i]``):
