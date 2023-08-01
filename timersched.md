@@ -152,6 +152,196 @@ void loop() {
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
 
+### **TIMERS HW SCHEDULATI TRAMITE AGGIORNAMENTO DEL TEMPO BASE**
+
+Si tratta della stessa situazione dell'esempio precedente soltanto che adesso c'è un task in più mentre i timer HW a disposizione sono ancora soltanto due. I task complessivamente in esecuzione sono quattro:
+- **uno** in esecuzione **nel loop** schedulato da un delay() casuale che simula task pesanti dalla durata impredicibile
+- **uno** affidato ad un **proprio timer HW** che ne programma l'esecuzione ad intervalli precisi, eventualmente sottraendo l'esecuzione al task nel loop mediante un segnale di interrupt
+- **due** affidati ad un **unico timer HW** condiviso che esegue ad intervalli di tempo precisi uno schedulatore SW basato sul polling della funzione millis. Lo schedulatore viene richiamato in intervalli di tempo **comuni** ai due task che poi vengono **filtrati** mediante dei **timer SW**.
+
+Gli schedulatori utilizzati sono **due**:
+- basato su https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
+- basato su https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer
+
+Entrambi possono essere utilizzati a partire da una generazione di tempi costante (delay, millis(), timer HW). Per una dissertazione più accurata sul loro utilizzo vedi [Schedulatore di compiti basato sul polling della millis()](taskschedpy.md) 
+
+```C++
+#include <Ticker.h>
+
+Ticker periodicTicker1;
+Ticker periodicTicker2;
+int led1 = 12;
+int led2 = 14;
+int led3 = 27;
+int led4 = 5;
+int led5 = 4;
+int led6 = 2;
+int leds1[] = {led1, led2, led3};
+int leds2[] = {led4, led5};
+//parametri dello sheduler 1
+unsigned long  precm = 0;
+unsigned long  tbase1 = 500;
+unsigned long precs[]= {0, 0};
+unsigned long period1[] = {1500, 6000};
+//parametri dello sheduler 2
+unsigned long elapsedTime[] = {0, 0, 0};
+unsigned long period2[] = {500, 2000, 3000};
+int tbase2 = 500;
+
+void periodicBlink(int led) {
+  digitalWrite(led, !digitalRead(led));
+}
+
+void scheduleAll(int *leds){
+	// task 1
+	if (elapsedTime[0] >= period2[0]) {
+		periodicBlink(leds[0]);
+		elapsedTime[0] = 0;
+	}
+	elapsedTime[0] += tbase2;
+	// task 2
+	if (elapsedTime[1] >= period2[1]) {
+		periodicBlink(leds[1]);
+		elapsedTime[1] = 0;
+	}
+	elapsedTime[1] += tbase2;
+	// task 3
+	if (elapsedTime[2] >= period2[2]) {
+		periodicBlink(leds[2]);
+		elapsedTime[2] = 0;
+	}
+	elapsedTime[2] += tbase2;
+}
+
+void setup() {
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(led3, OUTPUT);
+  pinMode(led4, OUTPUT);
+  pinMode(led5, OUTPUT);
+  pinMode(led6, OUTPUT);
+  Serial.begin(115200); 
+  //Inizializzazione dei task
+  for(int i=0; i<2; i++){
+	precs[i] = precm -period1[i];
+  }
+  //inizializzazione dello scheduler 2
+  for(int i=0; i<3; i++){
+	elapsedTime[i] = period2[i];
+  }
+  //configurazione timers HW
+  periodicTicker1.attach_ms(500, scheduleAll, leds1);
+  periodicTicker2.attach_ms(1000, periodicBlink, led6);
+}
+ 
+void loop() {
+	delay(500);
+	precm += tbase1;
+	// task 1
+	if ((precm - precs[0]) >= period1[0]) {
+		precs[0] += period1[0]; 
+    		periodicBlink(leds2[0]);
+	}	
+	// task 2
+	if ((precm - precs[1]) >= period1[1]) {
+		precs[1] += period1[1]; 
+    		periodicBlink(leds2[1]);
+	}
+}
+```
+Simulazione su Arduino con Wowki: https://wokwi.com/projects/371810634603304961
+
+### **Pulsante toggle con antirimbalzo insieme a blink**
+
+In questo esempio si utilizza un unico **timer HW** come **base dei tempi** per uno **schedulatore SW** che gestisce la tempistica di **due task**: 
+- uno per la relizzazione di un **tasto toggle** con proprietà di antirimbalzo
+- un'altra per la realizzazione del **blink periodico** di un led
+
+Le operazioni benchè semplici vengono considerate come prototipi di task più complessi e magari soggetti a **ritardi** considerevoli. In questa circostanza la loro esecuzione all'interno di una ISR è **sconsigliata** per cui essi vengono eseguiti nel ```loop()``` principale su **segnalazione** di un **flag** asserito dentro la ISR del timer.
+
+```C++
+#include <Ticker.h>
+// Inspired from https://www.cs.ucr.edu/~vahid/rios/
+Ticker periodicTicker1;
+int led1 = 13;
+int led2 = 12;
+int pulsante=27;
+byte precval;
+byte stato= LOW;
+unsigned long period[2];
+unsigned long elapsedTime[2];
+void (*tickFct[2])(void); 
+volatile bool timerFlag;
+unsigned long tbase;
+uint8_t tasknum = 2;
+
+void periodicBlink500() {
+  digitalWrite(led1, !digitalRead(led1));
+}
+
+void on50msEvents(){
+	byte val = digitalRead(pulsante);		//pulsante collegato in pulldown
+	//val = digitalRead(!pulsante);	//pulsante collegato in pullup
+	if(precval==LOW && val==HIGH){ 	//rivelatore di fronte di salita
+		stato = !stato; 							//impostazione dello stato del toggle	
+		//Serial.println(stato);
+		digitalWrite(led2, stato);
+	}
+	precval=val;	
+}
+
+void setup(){
+	pinMode(led1, OUTPUT);
+	pinMode(led2, OUTPUT);
+	Serial.begin(115200); 
+	periodicTicker1.attach_ms(50, timerISR);
+	elapsedTime[0] = 0;
+	elapsedTime[1] = 0;
+	period[0] = 50;
+	period[1] = 500;
+	tickFct[0] = on50msEvents;
+	tickFct[1] = periodicBlink500;
+	tbase = 50;
+	// task time init
+	timerFlag = false;
+	for(int i=0; i<tasknum; i++){
+		elapsedTime[i] = period[i];
+	}
+}
+
+void timerISR(void) {
+   if (timerFlag) {
+      Serial.println("Timer ticked before task processing done");
+   }
+   else {
+      timerFlag = true;
+   }
+   return;
+}
+
+void scheduleAll(){		
+	for(int i=0; i<tasknum; i++){
+		if(elapsedTime[i] >= period[i]) {
+			(*tickFct[i])();
+			elapsedTime[i] = 0;
+		}
+		elapsedTime[i] += tbase;
+	}
+}
+
+void loop()
+{
+	if(timerFlag){
+		scheduleAll();
+		timerFlag = false;
+	}
+	delay(1);
+	// il codice eseguito al tempo massimo della CPU va qui
+}
+```
+
+Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/352790112505422849
+
 ### **I TIMERS HW DI ARDUINO**
 
 Arduino permette l'accesso diretto ai suoi **timer HW** in almeno **due modi**:
@@ -393,196 +583,6 @@ void loop() {
 ```
 
 Simulazione su Arduino con Wowki: https://wokwi.com/projects/352009022804591183
-
-### **TIMERS HW SCHEDULATI TRAMITE AGGIORNAMENTO DEL TEMPO BASE**
-
-Si tratta della stessa situazione dell'esempio precedente soltanto che adesso c'è un task in più mentre i timer HW a disposizione sono ancora soltanto due. I task complessivamente in esecuzione sono quattro:
-- **uno** in esecuzione **nel loop** schedulato da un delay() casuale che simula task pesanti dalla durata impredicibile
-- **uno** affidato ad un **proprio timer HW** che ne programma l'esecuzione ad intervalli precisi, eventualmente sottraendo l'esecuzione al task nel loop mediante un segnale di interrupt
-- **due** affidati ad un **unico timer HW** condiviso che esegue ad intervalli di tempo precisi uno schedulatore SW basato sul polling della funzione millis. Lo schedulatore viene richiamato in intervalli di tempo **comuni** ai due task che poi vengono **filtrati** mediante dei **timer SW**.
-
-Gli schedulatori utilizzati sono **due**:
-- basato su https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/.
-- basato su https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer
-
-Entrambi possono essere utilizzati a partire da una generazione di tempi costante (delay, millis(), timer HW). Per una dissertazione più accurata sul loro utilizzo vedi [Schedulatore di compiti basato sul polling della millis()](taskschedpy.md) 
-
-```C++
-#include <Ticker.h>
-
-Ticker periodicTicker1;
-Ticker periodicTicker2;
-int led1 = 12;
-int led2 = 14;
-int led3 = 27;
-int led4 = 5;
-int led5 = 4;
-int led6 = 2;
-int leds1[] = {led1, led2, led3};
-int leds2[] = {led4, led5};
-//parametri dello sheduler 1
-unsigned long  precm = 0;
-unsigned long  tbase1 = 500;
-unsigned long precs[]= {0, 0};
-unsigned long period1[] = {1500, 6000};
-//parametri dello sheduler 2
-unsigned long elapsedTime[] = {0, 0, 0};
-unsigned long period2[] = {500, 2000, 3000};
-int tbase2 = 500;
-
-void periodicBlink(int led) {
-  digitalWrite(led, !digitalRead(led));
-}
-
-void scheduleAll(int *leds){
-	// task 1
-	if (elapsedTime[0] >= period2[0]) {
-		periodicBlink(leds[0]);
-		elapsedTime[0] = 0;
-	}
-	elapsedTime[0] += tbase2;
-	// task 2
-	if (elapsedTime[1] >= period2[1]) {
-		periodicBlink(leds[1]);
-		elapsedTime[1] = 0;
-	}
-	elapsedTime[1] += tbase2;
-	// task 3
-	if (elapsedTime[2] >= period2[2]) {
-		periodicBlink(leds[2]);
-		elapsedTime[2] = 0;
-	}
-	elapsedTime[2] += tbase2;
-}
-
-void setup() {
-  pinMode(led1, OUTPUT);
-  pinMode(led2, OUTPUT);
-  pinMode(led3, OUTPUT);
-  pinMode(led4, OUTPUT);
-  pinMode(led5, OUTPUT);
-  pinMode(led6, OUTPUT);
-  Serial.begin(115200); 
-  //Inizializzazione dei task
-  for(int i=0; i<2; i++){
-	precs[i] = precm -period1[i];
-  }
-  //inizializzazione dello scheduler 2
-  for(int i=0; i<3; i++){
-	elapsedTime[i] = period2[i];
-  }
-  //configurazione timers HW
-  periodicTicker1.attach_ms(500, scheduleAll, leds1);
-  periodicTicker2.attach_ms(1000, periodicBlink, led6);
-}
- 
-void loop() {
-	delay(500);
-	precm += tbase1;
-	// task 1
-	if ((precm - precs[0]) >= period1[0]) {
-		precs[0] += period1[0]; 
-    		periodicBlink(leds2[0]);
-	}	
-	// task 2
-	if ((precm - precs[1]) >= period1[1]) {
-		precs[1] += period1[1]; 
-    		periodicBlink(leds2[1]);
-	}
-}
-```
-Simulazione su Arduino con Wowki: https://wokwi.com/projects/371810634603304961
-
-### **Pulsante toggle con antirimbalzo insieme a blink**
-
-In questo esempio si utilizza un unico **timer HW** come **base dei tempi** per uno **schedulatore SW** che gestisce la tempistica di **due task**: 
-- uno per la relizzazione di un **tasto toggle** con proprietà di antirimbalzo
-- un'altra per la realizzazione del **blink periodico** di un led
-
-Le operazioni benchè semplici vengono considerate come prototipi di task più complessi e magari soggetti a **ritardi** considerevoli. In questa circostanza la loro esecuzione all'interno di una ISR è **sconsigliata** per cui essi vengono eseguiti nel ```loop()``` principale su **segnalazione** di un **flag** asserito dentro la ISR del timer.
-
-```C++
-#include <Ticker.h>
-// Inspired from https://www.cs.ucr.edu/~vahid/rios/
-Ticker periodicTicker1;
-int led1 = 13;
-int led2 = 12;
-int pulsante=27;
-byte precval;
-byte stato= LOW;
-unsigned long period[2];
-unsigned long elapsedTime[2];
-void (*tickFct[2])(void); 
-volatile bool timerFlag;
-unsigned long tbase;
-uint8_t tasknum = 2;
-
-void periodicBlink500() {
-  digitalWrite(led1, !digitalRead(led1));
-}
-
-void on50msEvents(){
-	byte val = digitalRead(pulsante);		//pulsante collegato in pulldown
-	//val = digitalRead(!pulsante);	//pulsante collegato in pullup
-	if(precval==LOW && val==HIGH){ 	//rivelatore di fronte di salita
-		stato = !stato; 							//impostazione dello stato del toggle	
-		//Serial.println(stato);
-		digitalWrite(led2, stato);
-	}
-	precval=val;	
-}
-
-void setup(){
-	pinMode(led1, OUTPUT);
-	pinMode(led2, OUTPUT);
-	Serial.begin(115200); 
-	periodicTicker1.attach_ms(50, timerISR);
-	elapsedTime[0] = 0;
-	elapsedTime[1] = 0;
-	period[0] = 50;
-	period[1] = 500;
-	tickFct[0] = on50msEvents;
-	tickFct[1] = periodicBlink500;
-	tbase = 50;
-	// task time init
-	timerFlag = false;
-	for(int i=0; i<tasknum; i++){
-		elapsedTime[i] = period[i];
-	}
-}
-
-void timerISR(void) {
-   if (timerFlag) {
-      Serial.println("Timer ticked before task processing done");
-   }
-   else {
-      timerFlag = true;
-   }
-   return;
-}
-
-void scheduleAll(){		
-	for(int i=0; i<tasknum; i++){
-		if(elapsedTime[i] >= period[i]) {
-			(*tickFct[i])();
-			elapsedTime[i] = 0;
-		}
-		elapsedTime[i] += tbase;
-	}
-}
-
-void loop()
-{
-	if(timerFlag){
-		scheduleAll();
-		timerFlag = false;
-	}
-	delay(1);
-	// il codice eseguito al tempo massimo della CPU va qui
-}
-```
-
-Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/352790112505422849
 
 ### **Sitografia**
 
