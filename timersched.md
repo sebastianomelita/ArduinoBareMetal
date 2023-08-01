@@ -219,7 +219,7 @@ void loop() {
 }
 ```
 
-### **TIMERS HW DI ARDUINO SCHEDULATO CON IL POLLING DEI MILLIS**
+### **TIMERS HW DI ARDUINO SCHEDULATO CON AGGIORNAMENTO DEL TEMPO BASE**
 
 Si tratta della stessa situazione dell'esempio precedente soltanto che adesso c'è un task in più mentre i timer HW a disposizione sono ancora soltanto due. I task complessivamente in esecuzione sono quattro:
 - **uno** in esecuzione **nel loop** schedulato da un delay() casuale che simula task pesanti dalla durata impredicibile
@@ -244,20 +244,22 @@ int led3 = 11;
 int led4 = 10;
 unsigned long period[2];
 volatile unsigned long precs[2];
+volatile unsigned long precm;
+unsigned long tbase = 100;
 
 void periodicBlink(int led);
 void schedule();
 
 void schedule()
 {
-	unsigned long current_millis = millis();
+  	precm += tbase;
 	// task 1
-	if ((current_millis - precs[0]) >= period[0]) {
+	if ((precm - precs[0]) >= period[0]) {
 		precs[0] += period[0]; 
         	digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
 	}	
 	// task 2
-	if ((current_millis - precs[1]) >= period[1]) {
+	if ((precm - precs[1]) >= period[1]) {
 		precs[1] += period[1]; 
         	digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
 	}
@@ -298,6 +300,7 @@ void loop() {
 	Serial.print("delay: ");Serial.println(randomDelay);
 	delay(randomDelay);
 	digitalWrite(led4, !digitalRead(led4));
+}
 }
 ```
 Simulazione su Arduino con Wowki: https://wokwi.com/projects/371840713313082369
