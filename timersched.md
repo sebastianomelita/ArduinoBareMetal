@@ -218,19 +218,19 @@ void scheduleAll(int *leds){
 void setup() {
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
-	pinMode(led3, OUTPUT);
+  pinMode(led3, OUTPUT);
   pinMode(led4, OUTPUT);
-	pinMode(led5, OUTPUT);
+  pinMode(led5, OUTPUT);
   pinMode(led6, OUTPUT);
   Serial.begin(115200); 
-	//Inizializzazione dei task
-	for(int i=0; i<2; i++){
-		precs[i] = precm -period1[i];
-	}
-	//inizializzazione dello scheduler 2
-	for(int i=0; i<3; i++){
-		elapsedTime[i] = period2[i];
-	}
+  //Inizializzazione dei task
+  for(int i=0; i<2; i++){
+	precs[i] = precm -period1[i];
+  }
+  //inizializzazione dello scheduler 2
+  for(int i=0; i<3; i++){
+	elapsedTime[i] = period2[i];
+  }
   //configurazione timers HW
   periodicTicker1.attach_ms(500, scheduleAll, leds1);
   periodicTicker2.attach_ms(1000, periodicBlink, led6);
