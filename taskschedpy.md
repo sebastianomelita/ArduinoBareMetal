@@ -526,6 +526,58 @@ La **versione originale** più completa dello schedulatore insieme ad una dettag
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/371675699190786049
 
+### **Versione alternativa di schedulatore generico**
+
+basato su https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer e su [Generazione di tempi assoluti](absolutetimepy.md)
+
+```python
+#include <Ticker.h>
+
+Ticker periodicTicker1;
+byte led1 = 13;
+byte led2 = 12;
+volatile unsigned long  precm = 0;
+unsigned long  tbase1 = 500;
+volatile unsigned long precs[]= {0, 0};
+unsigned long period1[] = {1500, 6000};
+int leds1[] = {led1, led2};
+
+void periodicBlink(int led) {
+  digitalWrite(led, !digitalRead(led));
+}
+
+void scheduleAll(int *leds){
+	precm += tbase1;
+	// task 1
+	if ((precm - precs[0]) >= period1[0]) {
+		precs[0] += period1[0]; 
+    		periodicBlink(leds[0]);
+	}	
+	// task 2
+	if ((precm - precs[1]) >= period1[1]) {
+		precs[1] += period1[1]; 
+    		periodicBlink(leds[1]);
+	}
+}
+
+void setup(){
+	pinMode(led1, OUTPUT);
+	pinMode(led2, OUTPUT);
+	Serial.begin(115200); 
+	periodicTicker1.attach_ms(500, scheduleAll, leds1);
+	// task time init
+	for(int i=0; i<2; i++){
+		precs[i] = precm -period1[i];
+	}
+}
+
+void loop()
+{
+	delay(10);
+	// il codice eseguito al tempo massimo della CPU va qui
+}
+```
+
 ## **Esempi**
 
 ### **Blink a fasi**
