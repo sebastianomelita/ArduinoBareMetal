@@ -65,7 +65,7 @@ I timer SW basati sul polling possono essere realizzati in due forme:
 
 Una volta stabilito ad ogni loop() il valore del tempo corrente, ci sono molti modi per determininare da esso i tempi dei vari task. Ognuna di queste tecniche, in realtà, è adoperabile a prescindere dal campionamento della millis(), tutte richiedono soltanto che lo schedulatore venga chiamato al tempo "giusto", detto **tempo base**. 
 
-
+<img src="schdulatore_generico.jpg" alt="alt text" width="800">
 
 Il **tempo base** è un tempo fisso comune a tutti i task, la loro **periodicità** deve quindi essere un **multiplo intero** del tempo base.
 ## **SCHEDULATORE COMPITI BASATO SUL CONTEGGIO DEI TICK**
