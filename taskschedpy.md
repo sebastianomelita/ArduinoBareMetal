@@ -24,7 +24,6 @@ I timer SW basati sul polling possono essere realizzati in due forme:
 	if (time.ticks_ms() - tass) >= periodo:  	  
 		tass += periodo 			   
 		# ..........
- 
 	```
         E' più preciso sulle lunghe corse se si è interessati anche al tempo assoluto (deriva dopo parecchie ore)
 
