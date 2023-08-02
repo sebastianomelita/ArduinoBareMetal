@@ -21,7 +21,8 @@ if ((currMillis - precs[0]) >= period[0]) {
 if (((currMillis - precs[1]) >= period[1]) {
 	precs[1] += period[1]; 
 	//................
-} 
+}
+```
 - all'**inizio di ogni task** in modo da **compensare**, nella valutazione precedente del tempo del task, anche di un eventuale **ritardo** cumulato dai task precedentemente eseguiti. 
   E' una variante **più precisa** della precedente anche se **più costosa computazionalmente** (eccessivi polling della millis() quando ci sono molti task).
   ```C++
