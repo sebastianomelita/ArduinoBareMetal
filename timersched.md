@@ -2,10 +2,8 @@
 
 ## **SCHEDULAZIONE CON I TIMERS HW**
 
-<img src="schdulatore_generico.jpg" alt="alt text" width="900">
 
-
-La **schedulazione dei task** normalmente riguarda quei compiti che devono essere ripetuti in **maniera periodica**, infatti si parla di **loop() principale** e di **loop secondari** eventualmente sullo stesso thread (**protothread**) o su altri **thread**. Lo stesso scopo può essere ottenuto con dei timer HW che realizzano un loop su **base evento**. L'**evento** è l'**interrupt** di un timer HW, il **loop** è rappresentato dalla **calback** associata al timer e che viene viene da esso **periodicamente richiamata**.
+La **schedulazione dei task** normalmente riguarda quei compiti che devono essere ripetuti in **maniera periodica**, infatti si parla di **loop() principale** e di **loop secondari** eventualmente sullo stesso thread (**protothread** o mediante costrutti **async/await**) o su altri **thread**. Lo stesso risultato può essere ottenuto con dei timer HW che realizzano un loop su **base evento**. L'**evento** è l'**interrupt** di un timer HW, il **loop** è rappresentato dalla **calback** associata al timer e che viene viene da esso **periodicamente richiamata**.
 
 Ma un **timer** si può impostare per **generare**:
 - **eventi sincroni** cioè **periodici** dopo intervalli fissi e programmabili
@@ -16,7 +14,6 @@ Per cui un **timer HW** offre una versatilità in più se, nello stesso progetto
 La **stessa cosa** è in realtà possibile realizzarla anche con i **timer SW** basati sul polling nel loop principale della funzione millis(). La loro **versatilità** è uguale se non **superiore**, ma sono soggetti ad alcune limitazioni che potrebbero renderli non adatti in certi contesti. L'ambito che **penalizza** di più i timer SW è quello delle applicazioni **mission-critical** (o **critical-time**) in cui si deve prevedere con certezza della puntualità l'esecuzione di certi compiti pena l'**instabilità** del sistema o una sua **perdita di sicurezza**.
 
 Rispetto agli altri metodi di creazione di base dei tempi (polling della millis(), thread e protothread), è tendenzialmente più legato ad uno specifico vendor di HW e ad una specifica linea di prodotti. Le **API dei timer**, pur esendo **molto simili** tra loro, **non sono standardizzate** e la **portabilità** del SW nel tempo potrebbe non essere garantita. In ogni caso **semplificano** parecchio la **gestione delle ISR** associate a timer HW che altrimenti, eseguita a basso livello, richiede una impostazione di **registri interni** della CPU che necessita di conoscenze di dettaglio molto specifiche.
-
 
 ### **I TIMERS HW DI ESP32**
 
@@ -69,8 +66,8 @@ Esistono **limitazioni speciali** su ciò che può e non può essere fatto all'i
 - Ad esempio, non è consentito allocare **memoria dinamica** all'interno di una ISR. 
 - una ISR che esegue una **logica complessa** potrebbe essere eseguita così lentamente da creare instabilità del sistema dovuta al fatto che altre interruzioni, che gestiscono servizi essenziali del sistema, non sono state prontamente soddisfatte. Un gestore di interrupt dovrebbe essere sempre una funzione **breve** che esegue il **lavoro minimo** necessario per **modificare** delle **variabili esterne**.
 - In genere, in molte implementazioni, callback diverse di uno stesso timer vengono eseguite **in sequenza** e non su thread paralleli per cui operazioni bloccanti come le ```delay()```, oltre a causare possibili **instabilità** (sono ISR basate su interrupt), **ritardano** l'esecuzione delle callback **a seguire**.
-- eseguire con un timer una **logica complessa** è sempre possibile a patto di renderla interrompibile senza problemi e ciò si può ottenere eseguendola in un **altro thread** o nel **loop principale**. Nel **loop principale** un **task complesso** può sempre essere immediatamente attivato da una ISR che asserisce un opportuno **flag di avvio**.
-
+- eseguire a **task complessi** con un timer è sempre possibile a patto di renderli interrompibili senza problemi e ciò si può ottenere eseguendoli in un **altro thread** o nel **loop principale**. Nel **loop principale** un **task complesso** può sempre essere immediatamente attivato da una ISR che asserisce un opportuno **flag di avvio**.
+  
 Esempio di dichiarazione e instanziazione di un **oggetto timer**:
 ```C++
 Ticker periodicTicker;
@@ -157,7 +154,16 @@ void loop() {
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
 
-### **TIMERS HW SCHEDULATI TRAMITE AGGIORNAMENTO DEL PPERIODO DEL TASK**
+### **NUMERO LIMITATO DI TIME HW**
+
+Esistono dei limiti nel **numero dei timer HW** a bordo di un sistema a microcontrollore. ESP32, ad esempio ne ha solo 4, virtualizzabili in un numero indefinito in C++, non virtualizzabili in python. Arduino, nelle varie versioni (come prortotipo di microcontrollori più semplici) ne ha un numero ridotto e non virtualizzabile.
+
+Se i **task** da mandare in esecuzione **in parallelo** sono in numero maggiore dei **timer allocabili** (HW o virtuali) allora bisogna condividere un timer tra più task e per questo scopo si possono usare le solite tecniche di schedulazione che permettono, a fronte di un tempo comune (tempo base), di generare i **tempi propri** di più task differenti. invocandoli In corrispondenza del momento dello **scadere (elapsed)** di questi tempi viene invocata la funzione (o il blocco di codice) del task.
+
+
+
+
+### **TIMERS HW SCHEDULATI TRAMITE AGGIORNAMENTO DEL PERIODO DEL TASK**
 
 Si tratta della stessa situazione dell'esempio precedente soltanto che adesso c'è un task in più mentre i timer HW a disposizione sono ancora soltanto due. I task complessivamente in esecuzione sono quattro:
 - **uno** in esecuzione **nel loop** schedulato da un delay() casuale che simula task pesanti dalla durata impredicibile
