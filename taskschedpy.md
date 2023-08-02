@@ -1,5 +1,9 @@
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in C++](tasksched.md)
 
+il **polling** (o campionamento periodico) della millis() può essere fatto:
+- all'**inizio di ogni ```loop()```** e serve a stabilire in quale particolare ciclo il tempo misurato supera il rimeout oltre il quale deve andare in esecuzione un certo task.
+- all'**inizio di ogni task** in modo da tenere conto, nella valutazione precedente del tempo del task, anche di un eventuale ritardo cumulato dai task precedentemente eseguiti.
+  
 ## **SCHEDULATORE COMPITI BASATO SUL CONTEGGIO DEI TICK**
 
 Di seguito è riportato un esempio di schedulatore che pianifica nel tempo **l’esecuzione periodica** di una serie di **compiti** (task) da eseguire con **cadenza diversa**.
