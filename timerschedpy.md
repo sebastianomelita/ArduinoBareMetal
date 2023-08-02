@@ -146,7 +146,7 @@ tim2.deinit()
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/371695217789720577
 
-### **NUMERO LIMITATO DI TIMER HW**
+### **PROBLEMA DEL NUMERO LIMITATO DI TIMER HW**
 
 Esistono dei limiti nel **numero dei timer HW** a bordo di un sistema a microcontrollore. ESP32, ad esempio ne ha solo 4, virtualizzabili in un numero indefinito in C++, non virtualizzabili in python. Arduino, nelle varie versioni (come prortotipo di microcontrollori più semplici) ne ha un numero ridotto e non virtualizzabile.
 
