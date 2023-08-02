@@ -12,7 +12,7 @@ Il **polling** (o campionamento periodico) della millis() può essere fatto:
 
 I timer SW basati sul polling possono essere realizzati in due forme:
 - senza compensazione del ritardo di esecuzione della millis():
-	```python
+	```Python
 	if (time.ticks_ms() - tass) >= periodo:  	  
 		tass += time.ticks_ms() 			   
 		# ..........	
@@ -20,7 +20,7 @@ I timer SW basati sul polling possono essere realizzati in due forme:
  	E' poco preciso sulle lunghe corse se si è interessati anche al tempo assoluto (deriva dopo pochi minuti)
   
  - Con compensazione del ritrado di esecuzione della assegnazione che coinvolge la millis():
-	```python
+	```Python
 	if (time.ticks_ms() - tass) >= periodo:  	  
 		tass += periodo 			   
 		# ..........
