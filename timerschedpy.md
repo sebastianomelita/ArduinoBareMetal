@@ -216,7 +216,7 @@ while True:
 
 Simulazione su Arduino con Wowki: https://wokwi.com/projects/371769605396662273
 
-### **TIMERS HW SCHEDULATI TRAMITE AGGIORNAMENTO DEL PPERIODO DEL TASK**
+### **TIMERS HW SCHEDULATI TRAMITE AGGIORNAMENTO DEL PERIODO DEL TASK**
 
 Gli schedulatori utilizzati sono **due**:
 - basato su https://www.ics.uci.edu/~givargis/pubs/C50.pdf e in https://www.cs.ucr.edu/~vahid/rios/
