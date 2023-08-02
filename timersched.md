@@ -67,7 +67,12 @@ Esistono **limitazioni speciali** su ciò che può e non può essere fatto all'i
 - una ISR che esegue una **logica complessa** potrebbe essere eseguita così lentamente da creare instabilità del sistema dovuta al fatto che altre interruzioni, che gestiscono servizi essenziali del sistema, non sono state prontamente soddisfatte. Un gestore di interrupt dovrebbe essere sempre una funzione **breve** che esegue il **lavoro minimo** necessario per **modificare** delle **variabili esterne**.
 - In genere, in molte implementazioni, callback diverse di uno stesso timer vengono eseguite **in sequenza** e non su thread paralleli per cui operazioni bloccanti come le ```delay()```, oltre a causare possibili **instabilità** (sono ISR basate su interrupt), **ritardano** l'esecuzione delle callback **a seguire**.
 - eseguire a **task complessi** con un timer è sempre possibile a patto di renderli interrompibili senza problemi e ciò si può ottenere eseguendoli in un **altro thread** o nel **loop principale**. Nel **loop principale** un **task complesso** può sempre essere immediatamente attivato da una ISR che asserisce un opportuno **flag di avvio**.
-  
+
+
+### **Libreria Ticker di ESP 32**
+
+E' una libreira che permette di allocare un numero arbitrario di timers virtuali a partire dal numero presente nelle varie versioni di ESP32 (tipicamente sono 4 timer).
+
 Esempio di dichiarazione e instanziazione di un **oggetto timer**:
 ```C++
 Ticker periodicTicker;
