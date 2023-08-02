@@ -795,7 +795,7 @@ while True:
     # il codice eseguito al tempo massimo della CPU va quì 
 ```
 
-Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/371662961899688961
+Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/371662961899688961
 
 
 ### **Sitografia:**
