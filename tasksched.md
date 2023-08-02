@@ -71,6 +71,12 @@ I timer SW basati sul polling possono essere realizzati in due forme:
 	```
 	E' più preciso sulle lunghe corse se si è interessati anche al tempo assoluto (deriva dopo parecchie ore)
 
+### **Tipi di schedulazione**
+
+Una volta stabilito ad ogni loop() il valore del tempo corrente, ci sono molti modi per determininare da esso i tempi dei vari task. Ognuna di queste tecniche, in realtà, è adoperabile a prescindere dal campionamento della millis(), tutte richiedono soltanto che lo schedulatore venga chiamato al tempo "giusto", detto **tempo base**. 
+
+Il **tempo base** è un tempo fisso comune a tutti i task, la loro **periodicità** deve quindi essere un **multiplo intero** del tempo base.
+
 
 Gli **schedulatori** di questo tipo sono **periodici** e si possono realizzare sostanzialmente in **due modi**:
 - mediante ripetizione di una **sequenza di tick** periodici che fissano il **tempo base**. Un seccessivo **conteggio** o **filtraggio** dei tick discrimina il **momento** in cui deve essere eseguito **un task** piuttosto che un altro.
