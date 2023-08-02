@@ -2,8 +2,6 @@
 
 ## **SCHEDULAZIONE CON I TIMERS HW**
 
-<img src="schdulatore_generico.jpg" alt="alt text" width="900">
-
 La **schedulazione dei task** normalmente riguarda quei compiti che devono essere ripetuti in **maniera periodica**, infatti si parla di **loop() principale** e di **loop secondari** eventualmente sullo stesso thread (**protothread**) o su altri **thread**. Lo stesso scopo può essere ottenuto con dei timer HW che realizzano un loop su **base evento**. L'**evento** è l'**interrupt** di un timer HW, il **loop** è rappresentato dalla **calback** associata al timer e che viene viene da esso **periodicamente richiamata**.
 
 Ma un **timer** si può impostare per **generare**:
@@ -147,6 +145,14 @@ tim2.deinit()
 ```
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/371695217789720577
+
+### **NUMERO LIMITATO DI TIMER HW**
+
+Esistono dei limiti nel **numero dei timer HW** a bordo di un sistema a microcontrollore. ESP32, ad esempio ne ha solo 4, virtualizzabili in un numero indefinito in C++, non virtualizzabili in python. Arduino, nelle varie versioni (come prortotipo di microcontrollori più semplici) ne ha un numero ridotto e non virtualizzabile.
+
+Se i **task** da mandare in esecuzione **in parallelo** sono in numero maggiore dei **timer allocabili** (HW o virtuali) allora bisogna condividere un timer tra più task e per questo scopo si possono usare le solite tecniche di schedulazione che permettono, a fronte di un tempo comune (tempo base), di generare i **tempi propri** di più task differenti. invocandoli In corrispondenza del momento dello **scadere (elapsed)** di questi tempi viene invocata la funzione (o il blocco di codice) del task.
+
+<img src="schdulatore_generico.jpg" alt="alt text" width="800">
 
 ### **TIMERS HW SCHEDULATO TRAMITE CONTEGGIO DEI TIMES TICK**
 
