@@ -6,7 +6,7 @@ Una categoria di **schedulatori di compiti** che, a differenza di quelli basati 
 
 Il **polling** (o campionamento periodico) della millis() può essere fatto:
 - all'**inizio di ogni ```loop()```** e serve a stabilire in quale particolare ciclo il tempo misurato supera il rimeout oltre il quale deve andare in esecuzione un certo task.
-- all'**inizio di ogni task** in modo da tenere conto, nella valutazione precedente del tempo del task, anche di un eventuale ritardo cumulato dai task precedentemente eseguiti.
+- all'**inizio di ogni task** in modo da tenere conto, nella valutazione precedente del tempo del task, anche di un eventuale **ritardo** cumulato dai task precedentemente eseguiti. E' una variante più precisa della precedente anche se più costosa computazionalmente (eccessivi polling della millis() per molti task).
 
 
   
