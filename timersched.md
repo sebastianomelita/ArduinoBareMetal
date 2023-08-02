@@ -154,6 +154,73 @@ void loop() {
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
 
+### **I TIMERS HW DI ARDUINO**
+
+Arduino permette l'accesso diretto ai suoi **timer HW** in almeno **due modi**:
+- accesso ai registri HW del timer per impostare il prescaler
+- attraverso librerie di terza parti
+
+Le librerie utilizzate di seguito però **non** permettono la realizzazione di **timer logici** ciascuno con una **prpopria callback** e tutti **associati** ad uno stesso **timer HW**, per cui è necessario associare **un task alla volta** ad ogni timer HW utilizzabile nel sistema in uso (ad esempio, 2 in Arduino Uno e 4 in Arduino Mega). Queste limitazioni rendono l'utilizzo esteso dei timer HW come schedulatori di compiti abbastanza problematico.
+
+Una **soluzione** potrebbe essere inserire all'interno della **callback** di un timer HW uno schedulatore di compiti con cui poter realizzare il **filtraggio** degli **eventi** da eseguire **nel futuro** come quelli visti nelle sezioni [Schedulatore di compiti basato sul polling della millis()](tasksched.md) oppure utilizzando librerie di **terze parti** come [SimpleTimer](https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer) (https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer) oppure quella presentata nell'esempio proposto nel paragrafo sugli scheduler [time tick scheduler](tasksched.md)
+
+Di seguito è riportato un esempio in cui due task che realizzano un blink sono affidati a due timers HW diversi che realizzano una schedulazione la cui tempistica non è per nulla influenzata dai delay nel loop (interrotti da interrupt) ma è li regolata dai comandi di disabilitazione ```detachInterrupt()```.
+
+Arduino con la libreria TimerInterrupt https://github.com/khoih-prog/TimerInterrupt
+
+```C++
+#define TIMER_INTERRUPT_DEBUG         0
+#define USING_16MHZ     true
+#define USING_8MHZ      false
+#define USING_250KHZ    false
+
+#define USE_TIMER_0     false
+#define USE_TIMER_1     true
+#define USE_TIMER_2     true
+#define USE_TIMER_3     false
+
+#include "TimerInterrupt.h"
+
+int led1 = 13;
+int led2 = 12;
+ 
+void periodicBlink(int led) {
+  Serial.print("printing periodic blink led ");
+  Serial.println(led);
+
+  digitalWrite(led, !digitalRead(led));
+}
+ 
+void setup() {
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  Serial.begin(115200); 
+  // Select Timer 1-2 for UNO, 0-5 for MEGA
+  // Timer 2 is 8-bit timer, only for higher frequency
+  ITimer1.init();
+  ITimer1.attachInterruptInterval(500, periodicBlink,led1);
+  // Select Timer 1-2 for UNO, 0-5 for MEGA
+  // Timer 2 is 8-bit timer, only for higher frequency
+  ITimer2.init();
+  ITimer2.attachInterruptInterval(1000, periodicBlink,led2);
+}
+ 
+void loop() {
+	int count = 0;
+	while(true){
+		Serial.print("Doing stuff... ");
+		Serial.println(count);
+		count += 1;
+		if(count >= 10)
+		    break;
+		delay(1000);
+	}
+	Serial.print("Ending timers...");
+	ITimer1.detachInterrupt();
+	ITimer2.detachInterrupt();
+}
+```
+
 ### **NUMERO LIMITATO DI TIMER HW**
 
 Esistono dei limiti nel **numero dei timer HW** a bordo di un sistema a microcontrollore. ESP32, ad esempio ne ha solo 4, virtualizzabili in un numero indefinito in C++, non virtualizzabili in python. Arduino, nelle varie versioni (come prortotipo di microcontrollori più semplici) ne ha un numero ridotto e non virtualizzabile.
@@ -352,73 +419,6 @@ void loop()
 ```
 
 Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/352790112505422849
-
-### **I TIMERS HW DI ARDUINO**
-
-Arduino permette l'accesso diretto ai suoi **timer HW** in almeno **due modi**:
-- accesso ai registri HW del timer per impostare il prescaler
-- attraverso librerie di terza parti
-
-Le librerie utilizzate di seguito però **non** permettono la realizzazione di **timer logici** ciascuno con una **prpopria callback** e tutti **associati** ad uno stesso **timer HW**, per cui è necessario associare **un task alla volta** ad ogni timer HW utilizzabile nel sistema in uso (ad esempio, 2 in Arduino Uno e 4 in Arduino Mega). Queste limitazioni rendono l'utilizzo esteso dei timer HW come schedulatori di compiti abbastanza problematico.
-
-Una **soluzione** potrebbe essere inserire all'interno della **callback** di un timer HW uno schedulatore di compiti con cui poter realizzare il **filtraggio** degli **eventi** da eseguire **nel futuro** come quelli visti nelle sezioni [Schedulatore di compiti basato sul polling della millis()](tasksched.md) oppure utilizzando librerie di **terze parti** come [SimpleTimer](https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer) (https://github.com/marcelloromani/Arduino-SimpleTimer/tree/master/SimpleTimer) oppure quella presentata nell'esempio proposto nel paragrafo sugli scheduler [time tick scheduler](tasksched.md)
-
-Di seguito è riportato un esempio in cui due task che realizzano un blink sono affidati a due timers HW diversi che realizzano una schedulazione la cui tempistica non è per nulla influenzata dai delay nel loop (interrotti da interrupt) ma è li regolata dai comandi di disabilitazione ```detachInterrupt()```.
-
-Arduino con la libreria TimerInterrupt https://github.com/khoih-prog/TimerInterrupt
-
-```C++
-#define TIMER_INTERRUPT_DEBUG         0
-#define USING_16MHZ     true
-#define USING_8MHZ      false
-#define USING_250KHZ    false
-
-#define USE_TIMER_0     false
-#define USE_TIMER_1     true
-#define USE_TIMER_2     true
-#define USE_TIMER_3     false
-
-#include "TimerInterrupt.h"
-
-int led1 = 13;
-int led2 = 12;
- 
-void periodicBlink(int led) {
-  Serial.print("printing periodic blink led ");
-  Serial.println(led);
-
-  digitalWrite(led, !digitalRead(led));
-}
- 
-void setup() {
-  pinMode(led1, OUTPUT);
-  pinMode(led2, OUTPUT);
-  Serial.begin(115200); 
-  // Select Timer 1-2 for UNO, 0-5 for MEGA
-  // Timer 2 is 8-bit timer, only for higher frequency
-  ITimer1.init();
-  ITimer1.attachInterruptInterval(500, periodicBlink,led1);
-  // Select Timer 1-2 for UNO, 0-5 for MEGA
-  // Timer 2 is 8-bit timer, only for higher frequency
-  ITimer2.init();
-  ITimer2.attachInterruptInterval(1000, periodicBlink,led2);
-}
- 
-void loop() {
-	int count = 0;
-	while(true){
-		Serial.print("Doing stuff... ");
-		Serial.println(count);
-		count += 1;
-		if(count >= 10)
-		    break;
-		delay(1000);
-	}
-	Serial.print("Ending timers...");
-	ITimer1.detachInterrupt();
-	ITimer2.detachInterrupt();
-}
-```
 
 ### **TIMERS HW DI ARDUINO SCHEDULATO CON AGGIORNAMENTO DEL TEMPO BASE**
 
