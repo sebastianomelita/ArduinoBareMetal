@@ -15,8 +15,8 @@ Il **polling** (o campionamento periodico) della millis() può essere fatto:
      currTime = time.ticks_ms()
      #task1
      if currTime - precs[0] >= period[0]:
-  		precs[0] += period[0]
-	    	blink(led[0])
+     	      precs[0] += period[0]
+	      blink(led[0])
      #task2
      if currTime - precs[1] >= period[1]:
 	    	precs[1] += period[1]
