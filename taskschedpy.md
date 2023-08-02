@@ -25,6 +25,7 @@ I timer SW basati sul polling possono essere realizzati in due forme:
 		tass += periodo 			   
 		# ..........
 	```
+ 
         E' più preciso sulle lunghe corse se si è interessati anche al tempo assoluto (deriva dopo parecchie ore)
 
   
