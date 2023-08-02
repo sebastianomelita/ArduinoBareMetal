@@ -230,7 +230,7 @@ void loop() {
 
 Esistono dei limiti nel **numero dei timer HW** a bordo di un sistema a microcontrollore. ESP32, ad esempio ne ha solo 4, virtualizzabili in un numero indefinito in C++, non virtualizzabili in python. Arduino, nelle varie versioni (come prortotipo di microcontrollori più semplici) ne ha un numero ridotto e non virtualizzabile.
 
-Se i **task** da mandare in esecuzione **in parallelo** sono in numero maggiore dei **timer allocabili** (HW o virtuali) allora bisogna condividere un timer tra più task e per questo scopo si possono usare le solite tecniche di schedulazione che permettono, a fronte di un tempo comune (tempo base), di generare i vari **tempi propri** di ciascun task. Invocando lo schedulatore in corrispondenza del momento dello **scadere (elapsed)** di questi tempi, viene invocata la funzione (o il blocco di codice) del task.
+Se i **task** da mandare in esecuzione **in parallelo** sono in numero maggiore dei **timer allocabili** (HW o virtuali) allora bisogna condividere un timer tra più task e per questo scopo si possono usare le solite tecniche di schedulazione che permettono, a fronte di un tempo comune (tempo base), di generare i **tempi propri** di ciascun task. Invocando lo schedulatore in corrispondenza del momento dello **scadere (elapsed)** di questi tempi, viene invocata la funzione (o il blocco di codice) del task.
 
 <img src="schdulatore_generico.jpg" alt="alt text" width="800">
 
