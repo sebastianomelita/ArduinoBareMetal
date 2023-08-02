@@ -69,7 +69,7 @@ Esistono **limitazioni speciali** su ciò che può e non può essere fatto all'i
 - eseguire a **task complessi** con un timer è sempre possibile a patto di renderli interrompibili senza problemi e ciò si può ottenere eseguendoli in un **altro thread** o nel **loop principale**. Nel **loop principale** un **task complesso** può sempre essere immediatamente attivato da una ISR che asserisce un opportuno **flag di avvio**.
 
 
-### **Libreria Ticker di ESP 32**
+### **I TIMERS VIRTUALI DI ESP32**
 
 E' una libreira che permette di allocare un numero arbitrario di timers virtuali a partire dal numero presente nelle varie versioni di ESP32 (tipicamente sono 4 timer).
 
