@@ -10,8 +10,30 @@ Il **polling** serve a stabilire in **quale ciclo** di loop la funzione millis()
 
 Il **polling** (o campionamento periodico) della millis() può essere fatto:
 - all'**inizio di ogni ```loop()```** per cui la misura del tempo attuale è **la stessa** per tutti i task e con questa, task per task, ci si regola per stabilire il ciclo di loop() in cui un determinato task diventa "maturo", cioè, quello in cui per lui il tempo misurato supera il **timeout** oltre il quale deve andare in esecuzione.
-- all'**inizio di ogni task** in modo da **compensare**, nella valutazione precedente del tempo del task, anche di un eventuale **ritardo** cumulato dai task precedentemente eseguiti. E' una variante **più precisa** della precedente anche se **più costosa computazionalmente** (eccessivi polling della millis() quando ci sono molti task).
-
+```Python
+     currTime = time.ticks_ms()
+     #task1
+     if currTime - precs[0] >= period[0]:
+	  precs[0] += period[0]
+	  blink(led[0])
+     #task2
+     if currTime - precs[1] >= period[1]:
+	  precs[1] += period[1]
+	  blink(led[1])
+```
+- all'**inizio di ogni task** in modo da **compensare**, nella valutazione precedente del tempo del task, anche di un eventuale **ritardo** cumulato dai task precedentemente eseguiti. 
+  E' una variante **più precisa** della precedente anche se **più costosa computazionalmente** (eccessivi polling della millis() quando ci sono molti task).
+  ```Python
+     #task1
+     if time.ticks_ms() - precs[0] >= period[0]:
+	  precs[0] += period[0]
+	  blink(led[0])
+     #task2
+     if time.ticks_ms() - precs[1] >= period[1]:
+	  precs[1] += period[1]
+	  blink(led[1])
+  ```
+  
 ### **Precisione del timer SW**
 
 I timer SW basati sul polling possono essere realizzati in due forme:
