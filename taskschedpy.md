@@ -15,24 +15,24 @@ Il **polling** (o campionamento periodico) della millis() può essere fatto:
      currTime = time.ticks_ms()
      #task1
      if currTime - precs[0] >= period[0]:
-	  precs[0] += period[0]
-	  blink(led[0])
+	   precs[0] += period[0]
+	   blink(led[0])
      #task2
      if currTime - precs[1] >= period[1]:
-	  precs[1] += period[1]
-	  blink(led[1])
+	   precs[1] += period[1]
+	   blink(led[1])
   ```
 - all'**inizio di ogni task** in modo da **compensare**, nella valutazione precedente del tempo del task, anche di un eventuale **ritardo** cumulato dai task precedentemente eseguiti. 
   E' una variante **più precisa** della precedente anche se **più costosa computazionalmente** (eccessivi polling della millis() quando ci sono molti task).
   ```Python
      #task1
      if time.ticks_ms() - precs[0] >= period[0]:
-	  precs[0] += period[0]
-	  blink(led[0])
+	   precs[0] += period[0]
+	   blink(led[0])
      #task2
      if time.ticks_ms() - precs[1] >= period[1]:
-	  precs[1] += period[1]
-	  blink(led[1])
+	   precs[1] += period[1]
+	   blink(led[1])
   ```
   
 ### **Precisione del timer SW**
