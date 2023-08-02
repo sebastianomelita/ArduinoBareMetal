@@ -8,7 +8,7 @@ Il **polling** serve a stabilire in **quale ciclo** di loop la funzione millis()
 
 Il **polling** (o campionamento periodico) della millis() può essere fatto:
 - all'**inizio di ogni ```loop()```** per cui la misura del tempo attuale è **la stessa** per tutti i task e con questa, task per task, ci si regola per stabilire il ciclo di loop() in cui un determinato task diventa "maturo", cioè, quello in cui per lui il tempo misurato supera il **timeout** oltre il quale deve andare in esecuzione.
-- all'**inizio di ogni task** in modo da **compensare**, nella valutazione precedente del tempo del task, anche di un eventuale **ritardo** cumulato dai task precedentemente eseguiti. E' una variante **più precisa** della precedente anche se **più costosa computazionalmente** (eccessivi polling della millis() per molti task).
+- all'**inizio di ogni task** in modo da **compensare**, nella valutazione precedente del tempo del task, anche di un eventuale **ritardo** cumulato dai task precedentemente eseguiti. E' una variante **più precisa** della precedente anche se **più costosa computazionalmente** (eccessivi polling della millis() quando ci sono molti task).
 
 
 Gli **schedulatori** di questo tipo sono **periodici** e si possono realizzare sostanzialmente in **due modi**:
