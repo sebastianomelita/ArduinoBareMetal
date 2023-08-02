@@ -1012,7 +1012,7 @@ void loop()
 }
 ```
 
-Di seguito il link della simulazione online con Tinkercad su Arduino: https://wokwi.com/projects/352790112505422849
+Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/352790112505422849
 
 
 ### **Sitografia:**
