@@ -254,7 +254,7 @@ void loop()
 ```
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352929647651521537
 
-## **SCHEDULATORE DI COMPITI BASATO SU FILTRAGGIO DEL TEMPO BASE**
+### **SCHEDULATORE DI COMPITI BASATO SU FILTRAGGIO DEL TEMPO BASE**
 
 E' possibile realizzare uno schedulatore di **più task** che agiscono con periodicità **diverse** in tempi diversi a partire da un timer che esegue periodicamente un **task comune** si sincronizzazione che agisce su un **tempo** base comune **sottomultiplo** del tempo di tutti gli altri task. In altre parole, il **periodo** di ciascun task è un **multiplo intero** del periodo base di sincronizzazione comune:
 - il **tick** del **tempo base** viene ottenuto mediante il polling della funzione ```millis()``` eseguito ad **ogni ```loop()```**
