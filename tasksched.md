@@ -19,6 +19,7 @@ I timer SW basati sul polling possono essere realizzati in due forme:
 		tassoluto = millis();
 		....
 	}
+	 ```
  	E' poco preciso sulle lunghe corse se si è interessati anche al tempo assoluto (deriva dopo pochi minuti)
   - con compensazione del ritrado di esecuzione della assegnazione che coinvolge la millis():
 	```C++
