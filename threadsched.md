@@ -136,78 +136,52 @@ Esempio di realizzazione di due task che eseguono un blink mediante delay() insi
 
 I blink sono due e si svolgono in maniera indipendente su due **thread separati**. Uno dei due blink viene interrotto dalla **terminazione** del loop di un thread **comandata nel main** impostando una **variabile globale**. 
 
-```C++
-#include <pthread.h> //libreria di tipo preemptive
+int led1 = 25;
+int led2 = 18;
+int led3 = 33;
+pthread_t t_led1, t_led2, t_led3;// descrittori dei threads
 
-pthread_t t1;
-pthread_t t2;
-int delayt ;
-bool blink2_running = true;
-int led1 = 13;
-int led2 = 12;
-
-void * blink1(void * d)
-{
-    int time;
-    time = (int) d;
-    // loop del thread 1
-    while(true){
-	digitalWrite(led1, !digitalRead(led1));
-	delay(time);
-    }
-    // non arriva mai quà
-    // questo thread non termina mai
-    return NULL;
+// TASK 1
+void *blink1(void*){
+  int a = 2000;
+  while (true) { // loop task 1
+    digitalWrite(led1,!digitalRead(led1));
+    delay(a); 
+  }
 }
-
-void * blink2(void * d)
-{
-    int time;
-    time = (int) d;
-    // loop del thread 2 (interrompibile dal loop principale)
-    while(blink2_running){
-	digitalWrite(led2, !digitalRead(led2));
-	delay(time);
-    }
-    //se il flag è negato arriva quà
-    digitalWrite(led2, LOW);
-    // spegne il led e poi termina (su comando del loop())
-    return NULL;
+// TASK 2
+void *blink2(void*){
+  int a = 1000;
+  while (true) { // loop task 2
+    digitalWrite(led2,!digitalRead(led2));
+    delay(a); 
+  }
+}
+// TASK 3
+void *blink3(void*){
+  int a = 500;
+  while (true) { // loop task 2
+    digitalWrite(led3,!digitalRead(led3));
+    delay(a); 
+  }
 }
 
 void setup() {
-  Serial.begin(115200);
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
-  delayt = 500;
-  if (pthread_create(&t1, NULL, blink1, (void *)delayt)) {
-         Serial.println("Errore crezione thread 1");
-  }
-  delayt = 1000;
-  if (pthread_create(&t2, NULL, blink2, (void *)delayt)) {
-         Serial.println("Errore crezione thread 2");
-  } 
+  pinMode(led3, OUTPUT);
+  pthread_create(&t_led1,NULL,blink1,NULL);
+  pthread_create(&t_led2,NULL,blink2,NULL);
+  pthread_create(&t_led3,NULL,blink3,NULL);
 }
 
 void loop() {
-	int count = 0;
-	while(count < 10){
-		Serial.print("Faccio qualcosa... ");
-		Serial.println(count);
-		count += 1;
-		delay(1000);
-	}
-	Serial.println("Termino il threads 2");
-	// interrompe il loop del secondo thread
-	blink2_running = false;
+  // put your main code here, to run repeatedly:
+  delay(10); // this speeds up the simulation
 }
-```
-**Blinks a tempo **
 
-Esempio di realizzazione di due task che eseguono un blink mediante delay() insieme ad altre generiche operazioni svolte nel main (piattaforma **Espress if ESP32**, **IDE Arduino** e librerie thread **preemptive**). (Link simulatore online https://wokwi.com/projects/345668178687296083)
 
-I blink sono due e si svolgono in maniera indipendente su due **thread separati**. Uno dei due blink viene interrotto dalla **terminazione** del loop di un thread **comandata nel main** impostando una **variabile globale**. 
-Link simulatore online https://wokwi.com/projects/378817246047694849
+https://wokwi.com/projects/378817246047694849
 
 **Blinks a tempo con una sola funzione**
 
