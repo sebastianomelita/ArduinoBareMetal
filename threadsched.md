@@ -130,9 +130,9 @@ void setup() {
 
 ### **Esempi**
 
-**Blinks a tempo**
+**Blinks a tempo con due funzioni**
 
-Esempio di realizzazione di due task che eseguono un blink mediante delay() insieme ad altre generiche operazioni svolte nel main (piattaforma **Espress if ESP32**, **IDE Arduino** e librerie thread **preemptive**). (Link simulatore online https://wokwi.com/projects/345668178687296083)
+Esempio di realizzazione di due task che eseguono un blink mediante delay() insieme ad altre generiche operazioni svolte nel main (piattaforma **Espress if ESP32**, **IDE Arduino** e librerie thread **preemptive**).
 
 I blink sono due e si svolgono in maniera indipendente su due **thread separati**. Uno dei due blink viene interrotto dalla **terminazione** del loop di un thread **comandata nel main** impostando una **variabile globale**. 
 
