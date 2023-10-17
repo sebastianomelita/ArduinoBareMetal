@@ -136,6 +136,7 @@ Esempio di realizzazione di due task che eseguono un blink mediante delay() insi
 
 I blink sono due e si svolgono in maniera indipendente su due **thread separati**. Uno dei due blink viene interrotto dalla **terminazione** del loop di un thread **comandata nel main** impostando una **variabile globale**. 
 
+```C++
 int led1 = 25;
 int led2 = 18;
 int led3 = 33;
@@ -179,8 +180,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   delay(10); // this speeds up the simulation
 }
-
-
+```
 https://wokwi.com/projects/378817246047694849
 
 **Blinks a tempo con una sola funzione**
