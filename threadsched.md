@@ -181,7 +181,7 @@ void loop() {
   delay(10); // this speeds up the simulation
 }
 ```
-https://wokwi.com/projects/378817246047694849
+Link simulatore online: https://wokwi.com/projects/378817246047694849
 
 **Blinks a tempo con una sola funzione**
 
