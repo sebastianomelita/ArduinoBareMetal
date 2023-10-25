@@ -73,7 +73,7 @@ void loop() {
   delay(1000);
 }
 ```
-Simulazione su Esp32 con Wowki: https://wokwi.com/projects/379544645145091073
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/379577438032393217
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](pulsantememorylesspy.md)
 <!--stackedit_data:
