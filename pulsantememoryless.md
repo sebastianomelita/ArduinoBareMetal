@@ -51,9 +51,6 @@ void setup() {
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
   pinMode(tasto, OUTPUT);
-  digitalWrite(led1, LOW);
-  digitalWrite(led2, LOW);
-  digitalWrite(tasto, LOW);
   pthread_create(&t_tasto,NULL,taskTasto,NULL);
 }
 
