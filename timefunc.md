@@ -109,7 +109,7 @@ void waitUntilInLow(int btn, unsigned t)
 }
 ```
 
-resta in attesa di un **tempo minimo** ```t``` al termine del quale viene valutato se il valore dell'ingresso è basso (LOW). Se questa condizione è **vera** si prosegue all'esecuzione dell'**istruzione successiva**.  Se invece è **falsa** (ingtresso HIGH) si continua ad attendere per un ulteriore tempo ```t```, al termine del quale si ritorna a valutare la condizione ripetendo il test ed, eventualmente, proseguendo uletriormente l'attesa.
+resta in attesa di un **tempo minimo** ```t``` al termine del quale viene valutato se il valore dell'ingresso è basso (LOW). Se questa condizione è **vera** si prosegue all'esecuzione dell'**istruzione successiva**.  Se invece è **falsa** (ingtresso HIGH) si continua ad attendere per un ulteriore tempo ```t```, al termine del quale si ritorna a valutare la condizione ripetendo il test ed, eventualmente, proseguendo ulteriormente l'attesa.
 
 Con il blocco in **attesa di un ingresso** l'esecuzione resta bloccata indefinitivamente su un certo ingresso fino a quando un certo evento non lo **modfica** (in questo caso il valore LOW), facendo ripartire il programma dall'istruzione successiva.
 
