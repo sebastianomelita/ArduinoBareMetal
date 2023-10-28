@@ -477,6 +477,79 @@ realizza una funzione di **wait su condizione** che ritarda il thread corrente d
 - **debouncing** software dell'ingresso digitale
 - determinazione del **fronte di discesa** di un ingresso digitale
 
+Di seguito è riportata la gestione di un pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads**. La libreria usata è quella standard **phthread** che non è supportata nativamente da ESP32 ma solo indirettamente tramite l'**inclusione** di una libreria di **terze parti** che implementa pthreads **sopra** le API FreeRTOS esistenti:
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include <pthread.h> //libreria di tipo preemptive
+pthread_t t1;
+pthread_t t2;
+int delayTime ;
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+// utilizzare variabili globali è una maniera per ottenere
+// che il valore di una variabile persista tra chiamate di funzione successive
+// situazione che si verifica se la funzione è richiamata dentro il loop()
+
+// attesa evento con tempo minimo di attesa
+void waitUntilInputLow(int btn, unsigned t)
+{
+    while(!digitalRead(btn)==LOW){
+	    delay(t);
+    }
+}
+
+void * btnThread(void * d)
+{
+    int time;
+    time = (int) d;
+    while(true){   			                                // Loop del thread
+        if(digitalRead(pulsante)==HIGH){			        // se è alto c'è stato un fronte di salita
+            stato = !stato; 	                            // impostazione dello stato del toggle
+            waitUntilInputLow(pulsante,time);		// attendi finchè non c'è fronte di discesa
+        }
+        delay(10); 					// equivale a yeld() (10 per le simulazioni 0 in HW)
+    }
+}
+
+void * blinkThread(void * d)
+{
+    int time;
+    time = (int) d;
+    while(true){    				// Loop del thread	
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));
+		delay(time);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+		delay(10); 			// equivale a yeld() (10 per le simulazioni 0 in HW)
+	}
+    }
+    return NULL;
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  delayTime = 50;
+  if (pthread_create(&t1, NULL, btnThread, (void *)delayTime)) {
+         Serial.println("Errore crezione btnThread");
+  }
+  delayTime = 500;
+  if (pthread_create(&t2, NULL, blinkThread, (void *)delayTime)) {
+         Serial.println("Errore crezione blinkThread");
+  } 
+}
+
+void loop() {
+ delay(10); // this speeds up the simulation
+	
+}
+```
+Simulazione online del codice precedente https://wokwi.com/projects/348523574025257556
+
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads** su **core diversi**. La libreria usata è quella nativa dello ESP32 che implementa dalla fabbrica un **middleware RTOS** per cui non è necessario **includere** nessuna libreria esterna (per una spiegazione dettagliata dei thread si rimanda a [schedulatore di compiti basato sui thread](threadsched.md)):
 
 ```C++
@@ -568,79 +641,6 @@ void loop() {
 Simulazione online del codice precedente https://wokwi.com/projects/348705487464694356
 
 **FreeRTOS** è un **SO per sistemi embedded** molto usato e dalle buone prestazioni che però, per l'utilizzo dei thread, espone delle **API proprietarie** che non possono essere usate su sistemi diversi da FreeRTOS. Per i thread è stato sviluppato da anni lo **standard POSIX** detto **phthread** che definisce in maniera **uniforme**, per **i sistemi** (Linux, Microsoft) e per i **linguaggi** (C, C++) ad esso aderenti, una serie di API che rendono il codice che contiene la programmazione dei thread molto **più portabile**.
-
-Di seguito è riportata la gestione di un pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** reali all'interno di **threads**. La libreria usata è quella standard **phthread** che non è supportata nativamente da ESP32 ma solo indirettamente tramite l'**inclusione** di una libreria di **terze parti** che implementa pthreads **sopra** le API FreeRTOS esistenti:
-
-```C++
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-#include <pthread.h> //libreria di tipo preemptive
-pthread_t t1;
-pthread_t t2;
-int delayTime ;
-int led = 13;
-byte pulsante =12;
-byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
-// utilizzare variabili globali è una maniera per ottenere
-// che il valore di una variabile persista tra chiamate di funzione successive
-// situazione che si verifica se la funzione è richiamata dentro il loop()
-
-// attesa evento con tempo minimo di attesa
-void waitUntilInputLow(int btn, unsigned t)
-{
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
-}
-
-void * btnThread(void * d)
-{
-    int time;
-    time = (int) d;
-    while(true){   			                                // Loop del thread
-        if(digitalRead(pulsante)==HIGH){			        // se è alto c'è stato un fronte di salita
-            stato = !stato; 	                            // impostazione dello stato del toggle
-            waitUntilInputLow(pulsante,time);		// attendi finchè non c'è fronte di discesa
-        }
-        delay(10); 					// equivale a yeld() (10 per le simulazioni 0 in HW)
-    }
-}
-
-void * blinkThread(void * d)
-{
-    int time;
-    time = (int) d;
-    while(true){    				// Loop del thread	
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));
-		delay(time);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-		delay(10); 			// equivale a yeld() (10 per le simulazioni 0 in HW)
-	}
-    }
-    return NULL;
-}
-
-void setup() {
-  Serial.begin(115200);
-  pinMode(led, OUTPUT);
-  pinMode(pulsante, INPUT);
-  delayTime = 50;
-  if (pthread_create(&t1, NULL, btnThread, (void *)delayTime)) {
-         Serial.println("Errore crezione btnThread");
-  }
-  delayTime = 500;
-  if (pthread_create(&t2, NULL, blinkThread, (void *)delayTime)) {
-         Serial.println("Errore crezione blinkThread");
-  } 
-}
-
-void loop() {
- delay(10); // this speeds up the simulation
-	
-}
-```
-Simulazione online del codice precedente https://wokwi.com/projects/348523574025257556
 
 ### **Schedulatore basato su interrupts e timer SW**
 
