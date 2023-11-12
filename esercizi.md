@@ -24,8 +24,7 @@ Nel secondo caso, task indipendenti vengono mandati in esecuzione su loop indipe
 
 Questo risultato è possibile ottenerlo se il microcontrollore ha la capacità di eseguire più flussi paralleli di codice e ciò è sempre possibile se a bordo è installato un sistema operativo. Il microcontrollore ESP32 ha un su SO mentre Arduino no, per cui si possono usare le API dei thread nel codice di un programma solo su ESP32 e non su Arduino.
 
-In definitiva:
-- per adesso **non** usiamo tecniche di programmazione **ad eventi**.
+In **definitiva**, per adesso **non** usiamo tecniche di programmazione **ad eventi** e le **linee guida** per mantenere uno stile di programmazione lineare potrebbero essere:
 - se i task procedono in **maniera sequenziale**, cioè, uno dopo l'altro, allora si possono pianificare **indipendentemente** mettendoli uno di seguito all'altro all'**interno di uno stesso loop**.
 - se i task procedono in maniera **parallela** e indipendente allora possono pianificare in modo **indipendente** soltanto se si mandano in esecuzione su thread separati, all'inteno di un loop() assegnato solamente a loro.
 - se i task procedono in maniera **parallela** ma non del tutto indipendente perchè capita che uno rimane in attesa del risultato dell'altro prima di andare avanti, allora bisogna trovare il modo di **sincronizzarli** con delle istruzioni di attesa non fisse ma dinamiche e legate all'accadere di un certo evento segnalato dalla verità di una certa condizione valutabile da una istruzione come ```waitUntil(c)```, dove ```c``` è la condizione.
