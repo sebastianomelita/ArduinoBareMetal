@@ -23,4 +23,5 @@
 19. [Nodo LoRaWan HW (LoRa-E5 mini) - rete di sensori](lorae5minihw.md)
 20. [Gateway LoRaWan - rete IP](gatewaylora-ip.md)
 21. [Esercizi](esercizi.md)
+22. [Esercizi riassuntivi](es_riassuntivi.md)
 
