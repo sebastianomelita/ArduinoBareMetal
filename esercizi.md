@@ -81,7 +81,7 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
 4.  Al codice precedente aggiungere che il toggle inibisca completamente l'effetto del primo tasto, lasciando tutto spento, quando lo stato del toggle è false mentre lo riabilita quando lo stato del toggle è true.
   - https://wokwi.com/projects/381145527357009921
 
-## **esercizi riassuntivi**
+## **ESERCIZI RIASSUNTIVI**
 
 **FILA A**
 1) Scrivere un programma Arduino che gestisca un sensore di transito di due sale che ospitano eventi artistici. Il sensore si attiva alla pressione di un pulsante sotto il pavimento. Il gradimento viene valutato contando i calpestii (pressioni). 
