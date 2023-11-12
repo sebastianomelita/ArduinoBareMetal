@@ -1,5 +1,7 @@
 >[Torna all'indice generale](index.md)
 
+## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
+
 ### **Es1**
 1) Creare un programma che realizzi l'accesione di due led. Uno ogni mezzo secondo in modalità "normale" ed uno ogni scendo in modalità "drain".
 2) Svolgere lo stesso esercizio di cui sopra ma fare in modo che il blink di uno dei led duri soltanto 10 lampeggi.
