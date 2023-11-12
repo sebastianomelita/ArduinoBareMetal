@@ -1,6 +1,14 @@
 #ifndef __URUTILS_H__
 #define __URUTILS_H__
 
+// attesa evento con tempo minimo di attesa
+void waitUntil(bool &c, unsigned t)
+{
+    while(!c){
+		delay(t);
+    }
+}
+
 void waitUntilInputLow(int btn, unsigned t)
 {
     while(!digitalRead(btn)==LOW){
