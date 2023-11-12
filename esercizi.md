@@ -10,11 +10,15 @@ Infatti, in un listato sorgente, le istruzioni che spazialmente vengono dopo ven
 
 Finchè un programma è consiste in un **unico task** con un flusso temporale unico va tutto bene, il modello lineare di programmazione è chiaro, intuitivo ed adeguato. Quando però in un algoritmo coesistono più task separati ciascuno composto da un proprio filo temporale che si interseca con quello degli altri, allora il problema di codificarlo in un programma si complica. In questo caso, è quindi dirimente sapere se i task di cui si compone l'algoritmo sono sequenziali o procedono in maniera parallela, e se si, stabilire se, quando si incrociano, un task deve aspettarne qualcun altro prima di proseguire.
 
-In linea di principio se i task sono sequenziali nulla osta a metterli tutti nello stesso loop principale eseguendoli uno diseguito all'altro, dato che il loro sviluppo fisico nel codice è anche il loro sviluppo temporale.
+In linea di principio se i task sono sequenziali nulla osta a metterli tutti nello stesso loop principale eseguendoli uno di seguito all'altro, dato che il loro sviluppo fisico nel codice è anche il loro sviluppo temporale.
 
 Se, invece, più task sono paralleli allora sviluppare la loro codifica in un unico flusso di esecuzione necessita il coordinamento dei ritardi di tutti. Per ottenere ciò una strategia potrebbe essere stabilire il massimo comune divisore dei tempi che compaiono nei delay(). Se questo MCD esiste diventa il **tempo base** di tutti i task mediante il quale è possibile programmare i tempi dei vari task incastrandoli l'uno nell'altro. 
 
 Ad esempio, posso far accadere ogni 2 tempi base il blink di un led rosso e ogni 3 quello di un led verde semplicemente dividendo il tempo in slot tramite il delay di un tempo base e scrivendo, per ogni slot, l'istruzione che compete ad ogni task. Se un task in uno slot non fa nulla allora li non compare (vedi Es2).
+
+Quando, però, i task concorrenti diventano tanti od oppure sono complicati allora potrebbe risultare tedioso progettarli e realizzarli tutti insieme interlacciandoli nel tempo. un algoritmo è ancora più difficile da realizzare quando uno o più task in realtà sono completamente indipendenti. In questo le opzioni sono: o cambiare radicalmente approccio adoperando uno stile di programmazione ad eventi, perdendo il benefit della intuitività della programmazione sequenziale, oppure mantenere lo stile lineare e sequnziale del programma rendendo i task **indipendenti** non solo concettualmente ma anche nel loro **flusso di esecuzione** del codice: task indipendenti vengono mandati in esecuzione su loop indipendenti che procedono separatamente ma contemporaneamente, **in parallelo** l'uno con l'altro. I flussi di esecuzione paralleli ed indipendenti vengono chiamati **thread** o **processi**, a seconda dei casi. Noi useremo **solamente thread**. Per una trattazione più completa della teoria dei thread e di come questi possono essere adoperati nel codice vedi [thread](threadsched.md)
+
+Questo risultato è possibile ottenerlo se il microcontrollore ha la capacità di eseguire più flussi paralleli di codice e ciò è sempre possibile se a bordo è installato un sistema operativo. Il microcontrollore ESP32 ha un su SO mentre Arduino no, per cui si possono usare le API dei thread nel codice di un programma solo su ESP32 e non su Arduino.
 
 
 
