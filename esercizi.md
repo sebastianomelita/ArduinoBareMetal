@@ -2,6 +2,21 @@
 
 ## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
+La logica degli algoritmi può essere pensata essenzialmente in due maniere: ad **eventi** e in modo **sequenziale**. 
+
+Nei microcontrollori il tempo è un elemento portante della maggiorparte degli algoritmi. Il modo sequenziale di pensare il tempo in un algoritmo è sicuramente quello più intuitivo ed ha una sua naturale **corrispondenza** con le istruzioni di un programma. 
+
+Infatti, in un listato sorgente, le istruzioni che spazialmente vengono dopo vengono sempre eseguite dopo anche temporalmente (se non ci sono stati salti). Quantificare il dopo nel tempo tra una istruzione e l'altra è proprio il compito assegnato all'istruzione delay(x) che non fa altro che bloccare l'esecuzione del loop principale (come di un qualsiasi loop secondario basato sui thread) per x millisecondi.
+
+Finchè un programma è consiste in un **unico task** con un flusso temporale unico va tutto bene, il modello lineare di programmazione è chiaro, intuitivo ed adeguato. Quando però in un algoritmo coesistono più task separati ciascuno composto da un proprio filo temporale che si interseca con quello degli altri, allora il problema di codificarlo in un programma si complica. In questo caso, è quindi dirimente sapere se i task di cui si compone l'algoritmo sono sequenziali o procedono in maniera parallela, e se si, stabilire se, quando si incrociano, un task deve aspettarne qualcun altro prima di proseguire.
+
+In linea di principio se i task sono sequenziali nulla osta a metterli tutti nello stesso loop principale eseguendoli uno diseguito all'altro, dato che il loro sviluppo fisico nel codice è anche il loro sviluppo temporale.
+
+Se, invece, più task sono paralleli allora sviluppare la loro codifica in un unico flusso di esecuzione necessita il coordinamento dei ritardi di tutti. Per ottenere ciò una strategia potrebbe essere stabilire il massimo comune divisore dei tempi che compaiono nei delay(). Se questo MCD esiste diventa il **tempo base** di tutti i task mediante il quale è possibile programmare i tempi dei vari task incastrandoli l'uno nell'altro. Ad esempio, posso far accadere ogni 2 tempi base il blink di un led rosso e ogni 3 quello di un led verde semplicemente dividendo il tempo in slot tramite il delay di un tempo base e scrivendo, per ogni slot, l'istruzione che compete ad ogni task. Se un task in uno slot non fa nulla allora li non compare.
+
+
+
+
 ### **Es1**
 1) Creare un programma che realizzi l'accesione di due led. Uno ogni mezzo secondo in modalità "normale" ed uno ogni scendo in modalità "drain".
 2) Svolgere lo stesso esercizio di cui sopra ma fare in modo che il blink di uno dei led duri soltanto 10 lampeggi.
