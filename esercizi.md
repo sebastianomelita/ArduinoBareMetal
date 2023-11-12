@@ -1,6 +1,6 @@
 >[Torna all'indice generale](index.md)
 
-## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
+## **CONSIDERAZIONI GENERALI**
 
 La logica degli algoritmi può essere pensata essenzialmente in due maniere: ad **eventi** e in modo **sequenziale**. 
 
@@ -30,6 +30,7 @@ In **definitiva**, **non** adoperando, per adesso, tecniche di programmazione **
 - se i task procedono in maniera **parallela** ma non del tutto indipendente, perchè capita che uno rimane in attesa del risultato dell'altro prima di andare avanti, allora bisogna trovare il modo di **sincronizzarli** con delle istruzioni di **attesa**, non fisse come le ```delay()```, ma dinamiche e legate all'accadere di un certo evento, segnalato dalla verità di una certa condizione, valutabile da una istruzione come ```waitUntil(c)```, dove ```c``` è la condizione.
 
 
+## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
 ### **Es1**
 1) Creare un programma che realizzi l'accesione di due led. Uno ogni mezzo secondo in modalità "normale" ed uno ogni scendo in modalità "drain".
