@@ -96,9 +96,9 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
 - https://wokwi.com/projects/381146888228329473
 
 ### **Es14**
-1.Scrivere un programma in esp32 che realizzi un pulsante che accende un led solo finchè esso è premuto (pulsante senza memoria). 
-    - https://wokwi.com/projects/348779417449792082
+1. Scrivere un programma in esp32 che realizzi un pulsante che accende un led solo finchè esso è premuto (pulsante senza memoria). 
+        - https://wokwi.com/projects/348779417449792082
 2. Al codice precedente aggiungere che alla pressione del tasto, oltre ad accendere un led, venga anche mantenuto il blink (lampeggio) continuo di un secondo led. Sia accensione continua del primo led che il blink del secondo, ovviamente, si interrompono non appena si rilascia il pulsante.
-    - https://wokwi.com/projects/348779417449792082
+        - https://wokwi.com/projects/348779417449792082
   
   
