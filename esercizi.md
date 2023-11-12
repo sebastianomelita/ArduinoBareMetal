@@ -1,6 +1,6 @@
 >[Torna all'indice generale](index.md)
 
-## **CONSIDERAZIONI GENERALI**
+## **CONSIDERAZIONI GENERALI SUI PROBLEMI**
 
 La logica degli algoritmi può essere pensata essenzialmente in due maniere: ad **eventi** e in modo **sequenziale**. 
 
