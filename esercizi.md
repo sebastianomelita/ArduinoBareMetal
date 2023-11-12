@@ -72,14 +72,14 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
 
 ### **Es14**
 1. Scrivere un programma in esp32 che realizzi un pulsante che accende un led solo finchè esso è premuto (pulsante senza memoria). 
-        -- https://wokwi.com/projects/348779417449792082
+    - https://wokwi.com/projects/348779417449792082
 2. Al codice precedente aggiungere che alla pressione del tasto, oltre ad accendere un led, venga anche mantenuto il blink (lampeggio) continuo di un secondo led. Sia accensione continua del primo led che il blink del secondo, ovviamente, si interrompono non appena si rilascia il pulsante.
-  - https://wokwi.com/projects/348779417449792082
+    - https://wokwi.com/projects/348779417449792082
 3.  Al codice di cui sopra, aggiungere un secondo tasto che realizzi, in modo toggle (tasto con memoria), l'accensione di un terzo led.
-  - https://wokwi.com/projects/381144987021586433
-  - https://wokwi.com/projects/381122295298210817
+    - https://wokwi.com/projects/381144987021586433
+    - https://wokwi.com/projects/381122295298210817
 4.  Al codice precedente aggiungere che il toggle inibisca completamente l'effetto del primo tasto, lasciando tutto spento, quando lo stato del toggle è false mentre lo riabilita quando lo stato del toggle è true.
-  - https://wokwi.com/projects/381145527357009921
+    - https://wokwi.com/projects/381145527357009921
 
 ## **ESERCIZI RIASSUNTIVI**
 
