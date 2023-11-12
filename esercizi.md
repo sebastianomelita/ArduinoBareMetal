@@ -4,7 +4,7 @@
 
 La logica degli algoritmi può essere pensata essenzialmente in due maniere: ad **eventi** e in modo **sequenziale**. 
 
-Nei microcontrollori il **tempo** è un elemento portante della maggiorparte degli algoritmi. Il modo sequenziale di pensare il tempo in un algoritmo è sicuramente quello più intuitivo ed ha una sua naturale **corrispondenza** con le istruzioni di un programma. 
+Nei microcontrollori il **tempo** è un elemento portante della maggiorparte degli algoritmi. Il modo **sequenziale** di pensare il tempo in un algoritmo è sicuramente quello più intuitivo ed ha una sua naturale **corrispondenza** con le istruzioni di un programma. 
 
 Infatti, in un listato sorgente, le istruzioni che spazialmente vengono dopo vengono sempre eseguite dopo anche temporalmente (se non ci sono stati salti). Quantificare il dopo nel tempo tra una istruzione e l'altra è proprio il compito assegnato all'istruzione delay(x) che non fa altro che bloccare l'esecuzione del loop principale (come di un qualsiasi loop secondario basato sui thread) per x millisecondi.
 
