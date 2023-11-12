@@ -32,19 +32,28 @@
 - https://wokwi.com/projects/378093455257452545
 
 ### **Es2**
-1. Creare un programma che gestisca l'accensione di due led (uno in modo drain e l'altro normale) in maniera tale che:
+Creare un programma che gestisca l'accensione di due led (uno in modo drain e l'altro normale) in maniera tale che:
     - led1 blinki mezzo secondo per 5 volte dopo di che blinki ogni secondo
     - led2 blinki un secondo per 5 volte dopo di che blinki ogni mezzo secondo
   
   https://wokwi.com/projects/381214153548600321
-2.Creare un programma che gestisca l'accensione di due led (uno in modo drain e l'altro normale) in maniera tale che:
+
+### **Es3**  
+Creare un programma che gestisca l'accensione di due led (uno in modo drain e l'altro normale) in maniera tale che:
   - il led1 blinki ogni mezzo secondo
   - il led2 blinki ogni secondo
   - il led2 parta dopo che il led1 abbia blinkato per 3 volte e si sia spento
   - il led1 si riaccenda dopo che il led2 abbia blinkato per due volte e si sia spento
 https://wokwi.com/projects/381214508523057153
 
-### **Es3**
-
+### **Es4**
+Realizzare un programma arduino che faccia lampeggiare un led mentre un altri tre led (rosso, verde e giallo) realizzano la tempistica di un semaforo.
+- https://wokwi.com/projects/379451315100484609
+- https://wokwi.com/projects/379449185988576257
+- https://wokwi.com/projects/379393885414092801
+  
+### **Es5**
+Scrivere e simulare un programma (arduino o esp32) che realizzi l'accensione di ul led funchè si preme un pulsante e contemporaneamente il blink di un'altro.
+https://wokwi.com/projects/379577438032393217
 
 
