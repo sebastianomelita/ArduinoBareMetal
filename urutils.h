@@ -5,14 +5,14 @@
 void waitUntil(bool &c, unsigned t)
 {
     while(!c){
-		delay(t);
+	delay(t);
     }
 }
 
 void waitUntilInputLow(int btn, unsigned t)
 {
     while(!digitalRead(btn)==LOW){
-	    delay(t);
+	delay(t);
     }
 }
 
