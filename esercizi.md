@@ -57,4 +57,36 @@ Realizzare un programma arduino che faccia lampeggiare un led mentre un altri tr
 Scrivere e simulare un programma (arduino o esp32) che realizzi l'accensione di ul led funchè si preme un pulsante e contemporaneamente il blink di un'altro.
 - https://wokwi.com/projects/379577438032393217
 
+### **Es6**
+Scrivere un programma (arduino o esp32) che realizzi un blink di un led giallo fino a che si tiene premuto un pulsante e realizzi pure il blink di un led verde quando viene premuto un altro pulsante.
+- https://wokwi.com/projects/381194244081573889
+- https://wokwi.com/projects/381194871814782977
 
+### **Es7**
+Scrivere e simulare un programma (arduino o esp32) che realizzi l'accensione di un led finchè si preme un pulsante e, contemporaneamente, il blink di un altro led.
+- https://wokwi.com/projects/379577438032393217
+- https://wokwi.com/projects/381114962105698305
+
+### **Es8**
+Compilare un progetto con esp32 che realizzi il comando di accensione/spegnimento di un led in modo toggle con una pressione sullo stesso tasto (una pressione accende, la successiva spegne).
+- https://wokwi.com/projects/381115546873501697
+  
+### **Es9**
+Come sopra, ma con la variante che, solo quando il primo led è accesso, la pressione di un secondo pulsante accende/spegne in modo toggle il blink di un secondo led. Se il primo led è spento il secondo pulsante non fa nulla.
+- https://wokwi.com/projects/381120076068796417
+- https://wokwi.com/projects/381116393250548737
+
+I prossimi esercizi somo realizzati adoperando la libreria [urtils](urtils.h)
+
+### **Es10**
+Creare un programma per esp32 che realizzi con 4 led l'effetto supercar inserbile e disinseribile in modo toggle con un pulsante.
+- https://wokwi.com/projects/381192229624334337
+  
+### **Es11**
+Lo stesso di prima ma con un blink di un led a parte che deve rimanere insensibile ai comandi che agiscono sui led supercar (nessun ritardo).
+- https://wokwi.com/projects/381192787395509249
+  
+### **Es12**
+Fare un toggle che accende un led dopo 4 volte che si preme un pulsante e lo spegne dopo 2 (suggerimento: prevedere un tempo massimo complessivo per le pressioni di 1 sec).
+- https://wokwi.com/projects/381191721792664577
+  
