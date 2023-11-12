@@ -44,6 +44,7 @@ Creare un programma che gestisca l'accensione di due led (uno in modo drain e l'
   - il led2 blinki ogni secondo
   - il led2 parta dopo che il led1 abbia blinkato per 3 volte e si sia spento
   - il led1 si riaccenda dopo che il led2 abbia blinkato per due volte e si sia spento
+    
 https://wokwi.com/projects/381214508523057153
 
 ### **Es4**
@@ -54,6 +55,7 @@ Realizzare un programma arduino che faccia lampeggiare un led mentre un altri tr
   
 ### **Es5**
 Scrivere e simulare un programma (arduino o esp32) che realizzi l'accensione di ul led funchè si preme un pulsante e contemporaneamente il blink di un'altro.
+
 https://wokwi.com/projects/379577438032393217
 
 
