@@ -90,4 +90,15 @@ Lo stesso di prima ma con un blink di un led a parte che deve rimanere insensibi
 ### **Es12**
 Fare un toggle che accende un led dopo 4 volte che si preme un pulsante e lo spegne dopo 2 (suggerimento: prevedere un tempo massimo complessivo per le pressioni di 1 sec).
 - https://wokwi.com/projects/381191721792664577
+
+### **Es13**
+Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prima pressione, di un secondo led alla seconda, di un terzo alla terza. 
+- https://wokwi.com/projects/381146888228329473
+
+### **Es14**
+1.Scrivere un programma in esp32 che realizzi un pulsante che accende un led solo finchè esso è premuto (pulsante senza memoria). 
+    - https://wokwi.com/projects/348779417449792082
+2. Al codice precedente aggiungere che alla pressione del tasto, oltre ad accendere un led, venga anche mantenuto il blink (lampeggio) continuo di un secondo led. Sia accensione continua del primo led che il blink del secondo, ovviamente, si interrompono non appena si rilascia il pulsante.
+    - https://wokwi.com/projects/348779417449792082
+  
   
