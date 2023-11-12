@@ -23,5 +23,28 @@
 2) Prevedere anche il comando via seriale proveniente da un telecomando.
 3)  Creare un pulsante che comanda l'apertura della scala fintanto che è premuto. Inviare via seriale il conteggio dei metri aperti (uno ogni secondo).
 4) Un pulsante comanda l'accensione di tre pompe antincendio, avanti, destra e sinistra, contando il numero delle pressioni (1:avanti, 2:destra, 3:sinistra).
->[Torna all'indice generale](index.md)
+
+
+### **Es1**
+1) Creare un programma che realizzi l'accesione di due led. Uno ogni mezzo secondo in modalità "normale" ed uno ogni scendo in modalità "drain".
+2) Svolgere lo stesso esercizio di cui sopra ma fare in modo che il blink di uno dei led duri soltanto 10 lampeggi.
+- https://wokwi.com/projects/378094177285037057
+- https://wokwi.com/projects/378093455257452545
+
+### **Es2**
+1. Creare un programma che gestisca l'accensione di due led (uno in modo drain e l'altro normale) in maniera tale che:
+    - led1 blinki mezzo secondo per 5 volte dopo di che blinki ogni secondo
+    - led2 blinki un secondo per 5 volte dopo di che blinki ogni mezzo secondo
+  
+  https://wokwi.com/projects/381214153548600321
+2.Creare un programma che gestisca l'accensione di due led (uno in modo drain e l'altro normale) in maniera tale che:
+  - il led1 blinki ogni mezzo secondo
+  - il led2 blinki ogni secondo
+  - il led2 parta dopo che il led1 abbia blinkato per 3 volte e si sia spento
+  - il led1 si riaccenda dopo che il led2 abbia blinkato per due volte e si sia spento
+https://wokwi.com/projects/381214508523057153
+
+### **Es3**
+
+
 
