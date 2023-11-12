@@ -12,7 +12,9 @@ Finchè un programma è consiste in un **unico task** con un flusso temporale un
 
 In linea di principio se i task sono sequenziali nulla osta a metterli tutti nello stesso loop principale eseguendoli uno diseguito all'altro, dato che il loro sviluppo fisico nel codice è anche il loro sviluppo temporale.
 
-Se, invece, più task sono paralleli allora sviluppare la loro codifica in un unico flusso di esecuzione necessita il coordinamento dei ritardi di tutti. Per ottenere ciò una strategia potrebbe essere stabilire il massimo comune divisore dei tempi che compaiono nei delay(). Se questo MCD esiste diventa il **tempo base** di tutti i task mediante il quale è possibile programmare i tempi dei vari task incastrandoli l'uno nell'altro. Ad esempio, posso far accadere ogni 2 tempi base il blink di un led rosso e ogni 3 quello di un led verde semplicemente dividendo il tempo in slot tramite il delay di un tempo base e scrivendo, per ogni slot, l'istruzione che compete ad ogni task. Se un task in uno slot non fa nulla allora li non compare.
+Se, invece, più task sono paralleli allora sviluppare la loro codifica in un unico flusso di esecuzione necessita il coordinamento dei ritardi di tutti. Per ottenere ciò una strategia potrebbe essere stabilire il massimo comune divisore dei tempi che compaiono nei delay(). Se questo MCD esiste diventa il **tempo base** di tutti i task mediante il quale è possibile programmare i tempi dei vari task incastrandoli l'uno nell'altro. 
+
+Ad esempio, posso far accadere ogni 2 tempi base il blink di un led rosso e ogni 3 quello di un led verde semplicemente dividendo il tempo in slot tramite il delay di un tempo base e scrivendo, per ogni slot, l'istruzione che compete ad ogni task. Se un task in uno slot non fa nulla allora li non compare (vedi Es2).
 
 
 
