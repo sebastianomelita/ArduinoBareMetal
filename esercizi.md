@@ -143,4 +143,17 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
     - https://wokwi.com/projects/381380050178326529
     - https://wokwi.com/projects/381380815530919937
 
+### **Es16**
+Scrivere un programma che realizzi l'accensione di un led tramite un pulsante temporizzato che spegne il led 
+dopo un numero di ms impostati da setup. La logica del tasto deve essere senza stato e deve essere sensibile 
+al fronte di salita del segnale. Immaginare un collegamento pull down del tasto.
+- https://www.tinkercad.com/things/fCpauVnNUZh-accensione-led-monostabile/editel
+
+### **Es17**
+Scrivere un programma che realizzi l'accensione di un led, due led o tre led tramite la pressione consecutiva di un pulsante 
+una, due o tre volte all'interno di un intervallo temporale di un secondo.
+Col la pressione prolungata dello stesso pulsante si spengono tutti e tre contemporaneamente.
+(Realizzazione del timer senza schedulatore)
+
+
 >[Torna all'indice generale](index.md)
