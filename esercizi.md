@@ -48,6 +48,8 @@ Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto
 - **istruzioni triggerate** (scatenate) dal timer. Vengono eseguite in base al **tempo di conteggio misurato** dal timer. Vengono eseguite in maniera sequenziale in un punto stabilito del loop (istruzioni sincrone) in corrispondenza della **verità** di una certa **condizione** sul tempo di conteggio che coinvolge la funzione ```get()``` come operando. In corrispondenza si dovrebbero eseguire:
   -    **reset()**  per azzerare il timer.
   -    **stop()** per bloccare il timer.
+ 
+Per consultare dettagli sulla sua implementazione vedi [timer sequenziali](polledtimer_seq.md).
 
 ## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
