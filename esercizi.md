@@ -113,4 +113,12 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
 4.  Al codice precedente aggiungere che il toggle inibisca completamente l'effetto del primo tasto, lasciando tutto spento, quando lo stato del toggle è false mentre lo riabilita quando lo stato del toggle è true.
     - https://wokwi.com/projects/381145527357009921
 
+### **Es15**
+1. Scrivere un programma in esp32 che realizzi un pulsante che quando esso è premuto accenda un led verde e ne spenga uno rosso. Quando si rilascia deve accadere esattamente il viceversa.
+    - https://wokwi.com/projects/381379298406892545
+2. Al codice di cui sopra, aggiungere un secondo tasto che realizzi, in modo toggle (tasto con memoria), il blink di un terzo led.
+    - https://wokwi.com/projects/381379549029178369
+3. Al codice precedente aggiungere che alla pressione del primo tasto, parta pure un contatore di secondi. Dopo 10 secondi si deve attivare il toggle del terzo led.
+    - https://wokwi.com/projects/381144987021586433
+    - https://wokwi.com/projects/381122295298210817
 >[Torna all'indice generale](index.md)
