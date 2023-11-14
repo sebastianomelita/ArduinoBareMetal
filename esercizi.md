@@ -145,7 +145,7 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
 
 ### **Es16**
 1. Scrivere un programma in esp32 che realizzi un pulsante che quando esso è premuto accenda il blink alternato di due led giallo e rosso. Quando si rilascia deve rimanere attivo solo il led rosso.
-   -     https://wokwi.com/projects/381412873080576001
+   -    https://wokwi.com/projects/381412873080576001
 3. Al codice di cui sopra, aggiungere un secondo tasto che realizzi, in modo toggle (tasto con memoria), il blink di un terzo led ma solo se il pulsante precedente è rilasciato.
    -    https://wokwi.com/projects/381413194370570241
 4. Al codice precedente aggiungere che alla pressione del primo tasto, parta pure un contatore di secondi. Dopo 5 secondi si deve attivare il toggle del terzo led.
