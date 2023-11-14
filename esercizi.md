@@ -120,5 +120,6 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
     - https://wokwi.com/projects/381379835699414017
 3. Al codice precedente aggiungere che alla pressione del primo tasto, parta pure un contatore di secondi. Dopo 10 secondi si deve attivare il toggle del terzo led.
     - https://wokwi.com/projects/381380050178326529
+    - https://wokwi.com/projects/381380815530919937
 
 >[Torna all'indice generale](index.md)
