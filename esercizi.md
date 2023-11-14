@@ -143,13 +143,21 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
     - https://wokwi.com/projects/381380050178326529
     - https://wokwi.com/projects/381380815530919937
 
-### **Es16**
+### **Es17**
+1. Scrivere un programma in esp32 che realizzi un pulsante che quando esso è premuto accenda il blink alternato di due led giallo e rosso. Quando si rilascia deve rimanere attivo solo il led rosso.
+   -     https://wokwi.com/projects/381412873080576001
+3. Al codice di cui sopra, aggiungere un secondo tasto che realizzi, in modo toggle (tasto con memoria), il blink di un terzo led ma solo se il pulsante precedente è rilasciato.
+   -    https://wokwi.com/projects/381413194370570241
+4. Al codice precedente aggiungere che alla pressione del primo tasto, parta pure un contatore di secondi. Dopo 5 secondi si deve attivare il toggle del terzo led.
+   -    https://wokwi.com/projects/381413625688702977
+
+### **Es17**
 Scrivere un programma che realizzi l'accensione di un led tramite un pulsante temporizzato che spegne il led 
 dopo un numero di ms impostati da setup. La logica del tasto deve essere senza stato e deve essere sensibile 
 al fronte di salita del segnale. Immaginare un collegamento pull down del tasto.
 - https://www.tinkercad.com/things/fCpauVnNUZh-accensione-led-monostabile/editel
 
-### **Es17**
+### **Es18**
 Scrivere un programma che realizzi l'accensione di un led, due led o tre led tramite la pressione consecutiva di un pulsante 
 una, due o tre volte all'interno di un intervallo temporale di un secondo.
 Col la pressione prolungata dello stesso pulsante si spengono tutti e tre contemporaneamente.
