@@ -119,6 +119,6 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
 2. Al codice di cui sopra, aggiungere un secondo tasto che realizzi, in modo toggle (tasto con memoria), il blink di un terzo led.
     - https://wokwi.com/projects/381379835699414017
 3. Al codice precedente aggiungere che alla pressione del primo tasto, parta pure un contatore di secondi. Dopo 10 secondi si deve attivare il toggle del terzo led.
-    - https://wokwi.com/projects/381144987021586433
-    - https://wokwi.com/projects/381122295298210817
+    - https://wokwi.com/projects/381380050178326529
+
 >[Torna all'indice generale](index.md)
