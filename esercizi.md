@@ -37,7 +37,7 @@ Un **polling** è l'interrogazione periodica di una **variabile** o di un **ingr
 
 Il polling serve per verificare, ad ogni loop(), che il tempo trascorso (**elapsed**) abbia raggiunto il **valore finale** (timeout) stabilito come obiettivo (target). Ciò si può ottenere eseguendo il **test** periodico di una **condizione** su una funzione di **misura** del tempo, nello specifico una ```get()```, che, ad ogni ```loop()```, restituisce il **tempo di conteggio**. Se la **condizione di uscita** dal conteggio è **vera** allora il **blocco** di istruzioni associato al **timeout del timer** viene **eseguito**.
 
-Il **timeout** si controlla, in pratica, valutando la **condizione di uscita** sulla funzione get() mediante una istruzione **if**. 
+Il **timeout** si controlla, in definitiva, valutando la **condizione di uscita** sulla funzione get() mediante una istruzione **if**. 
 
 I **timer sequenziali** sono più **intuitivi** e **semplici** da usare rispetto ad i **timer ad eventi** perchè possono essere adoperati usando la stessa logica **sequenziale** e **lineare** che si usa in un normale algoritmo sincrono. Un'**algoritmo sincrono** pianifica le azioni in base alla **posizione** nel codice delle sue istruzioni e in base ai tempi stabiliti da eventuali **ritardi fissi** posti tra un'azione e l'altra. Ma le azioni si possono programmare anche in base ad eventuali **ritardi variabili**, cioè non prestabiliti, che bloccano l'esecuzione in attesa del termine del **polling di un timer** (test di avvenuto timeout) o del **polling di un ingresso** (test di avvenuta consegna di un dato) o, ancora, in attesa del **polling di una variabile flag** che segnali l'accadere di un qualunque altro evento.
 
