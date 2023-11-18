@@ -167,10 +167,11 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
 
 ### **Es18**
 1. Scrivere un programma che accenda due led con un tasto senza memoria. Quando il tasto è premuto, il primo  led lampeggia dieci volte dopodichè entrambi, dopodichè entrambi lampeggiano alternativamente indefinitivamente.
+    -    https://wokwi.com/projects/381756214350758913
 
-2. Dato l'esercizio al punto precedente, aggiungere un secondo tasto e un terzo led. Il nuovo tasto azionato in modo Toggle, fa lampeggiare il terzo led con il codice morse delll'SOS (tre impulsi brevi, tre lunghi e di nuovo tre brevi). Una pressione successiva del tasto lo fa blinkare normalmente.
+3. Dato l'esercizio al punto precedente, aggiungere un secondo tasto e un terzo led. Il nuovo tasto azionato in modo Toggle, fa lampeggiare il terzo led con il codice morse delll'SOS (tre impulsi brevi, tre lunghi e di nuovo tre brevi). Una pressione successiva del tasto lo fa blinkare normalmente.
 
-3. Al codice precedente aggiungere la funzione che spegne l'esecuzione dell'SOS dopo 10 secondi. Dopo 20 secondi il led SOS smette pure di blinkare (timer UR in dispensa).
+4. Al codice precedente aggiungere la funzione che spegne l'esecuzione dell'SOS dopo 10 secondi. Dopo 20 secondi il led SOS smette pure di blinkare (timer UR in dispensa).
 
 ### **Es19**
 1. Scrivere un programma che accenda due led con un tasto senza memoria.  Quando il tasto è premuto, il led lampeggiano 5 volte alternativamente in maniera rapida, dopodichè entrambi lampeggiano alternativamente in maniera più lenta per un tempo indefinito.
