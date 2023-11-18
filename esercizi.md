@@ -158,13 +158,27 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
    -    https://wokwi.com/projects/381413625688702977
 
 ### **Es17**
-1. Scrivere un programma che accenda due led con un tasto senza memoria.  Quando il tasto è premuto , il primo  led lampeggia due volte dopodichè il secondo lampeggia tre volte , dopodichè entrambi lampeggiano indefinitivamente .
+1. Scrivere un programma che accenda due led con un tasto senza memoria.  Quando il tasto è premuto, il primo  led lampeggia due volte dopodichè il secondo lampeggia tre volte, dopodichè entrambi lampeggiano indefinitivamente.
 
-2. Dato l' esercizio al punto precedente , aggiungere un secondo tasto e un terzo led . Il nuovo tasto azionato in modo Toggle, fa lampeggiare il terzo led oppure lo spegne. Fare in modo che quando i primi due led lampeggiano insieme il secondo tasto cambi stato una sola volta.
+2. Dato l'esercizio al punto precedente, aggiungere un secondo tasto e un terzo led. Il nuovo tasto azionato in modo Toggle, fa lampeggiare il terzo led oppure lo spegne. Fare in modo che quando i primi due led lampeggiano insieme il secondo tasto cambi stato una sola volta.
 
 3. Al codice precedente aggiungere la funzione che spegne il lampeggio sul terzo led dopo un tempo di 10 secondi (timer UR in dispensa).
 
 ### **Es18**
+1. Scrivere un programma che accenda due led con un tasto senza memoria. Quando il tasto è premuto, il primo  led lampeggia dieci volte dopodichè entrambi, dopodichè entrambi lampeggiano alternativamente indefinitivamente.
+
+2. Dato l'esercizio al punto precedente, aggiungere un secondo tasto e un terzo led. Il nuovo tasto azionato in modo Toggle, fa lampeggiare il terzo led con il codice morse delll'SOS (tre impulsi brevi, tre lunghi e di nuovo tre brevi). Una pressione successiva del tasto lo fa blinkare normalmente.
+
+3. Al codice precedente aggiungere la funzione che spegne l'esecuzione dell'SOS dopo 10 secondi. Dopo 20 secondi il led SOS smette pure di blinkare (timer UR in dispensa).
+
+### **Es19**
+1. Scrivere un programma che accenda due led con un tasto senza memoria.  Quando il tasto è premuto, il led lampeggiano 5 volte alternativamente in maniera rapida, dopodichè entrambi lampeggiano alternativamente in maniera più lenta per un tempo indefinito.
+
+2. Dato l'esercizio al punto precedente, aggiungere un secondo tasto e un terzo led. Il nuovo tasto azionato in modo Toggle, fa lampeggiare i primi due led in maniera alternata e rapida per un tempo indefinito. Una seconda pressione li fa lampeggiare indefinitivamente in maniera più lenta. 
+
+3. Al codice precedente aggiungere la funzione che misura il tempo x in cui si preme il tasto senza memoria e al suo rilascio fa lampeggiare periodicamente un terzo led con un perio do pari ad x  (timer UR in dispensa).
+
+### **Es20**
 Scrivere un programma che realizzi l'accensione di un led tramite un pulsante temporizzato che spegne il led 
 dopo un numero di ms impostati da setup. La logica del tasto deve essere senza stato e deve essere sensibile 
 al fronte di salita del segnale. Immaginare un collegamento pull down del tasto.
