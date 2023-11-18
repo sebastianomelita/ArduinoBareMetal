@@ -184,7 +184,7 @@ dopo un numero di ms impostati da setup. La logica del tasto deve essere senza s
 al fronte di salita del segnale. Immaginare un collegamento pull down del tasto.
 - https://www.tinkercad.com/things/fCpauVnNUZh-accensione-led-monostabile/editel
 
-### **Es19**
+### **Es21**
 Scrivere un programma che realizzi l'accensione di un led, due led o tre led tramite la pressione consecutiva di un pulsante 
 una, due o tre volte all'interno di un intervallo temporale di un secondo.
 Col la pressione prolungata dello stesso pulsante si spengono tutti e tre contemporaneamente.
