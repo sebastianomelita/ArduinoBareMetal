@@ -176,7 +176,7 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
 
 2. Dato l'esercizio al punto precedente, aggiungere un secondo tasto e un terzo led. Il nuovo tasto azionato in modo Toggle, fa lampeggiare i primi due led in maniera alternata e rapida per un tempo indefinito. Una seconda pressione li fa lampeggiare indefinitivamente in maniera più lenta. 
 
-3. Al codice precedente aggiungere la funzione che misura il tempo x in cui si preme il tasto senza memoria e al suo rilascio fa lampeggiare periodicamente un terzo led con un perio do pari ad x  (timer UR in dispensa).
+3. Al codice precedente aggiungere la funzione che misura il tempo x in cui si preme il tasto senza memoria e al suo rilascio fa lampeggiare periodicamente un terzo led con un periodo pari ad x  (timer UR in dispensa).
 
 ### **Es20**
 Scrivere un programma che realizzi l'accensione di un led tramite un pulsante temporizzato che spegne il led 
