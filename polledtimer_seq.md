@@ -27,6 +27,24 @@ Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto
 
 
 ```C++
+#ifndef __URUTILS_H__
+#define __URUTILS_H__
+
+// attesa evento con tempo minimo di attesa
+void waitUntil(bool &c, unsigned t)
+{
+    while(!c){
+		delay(t);
+    }
+}
+
+void waitUntilInputLow(int btn, unsigned t)
+{
+    while(!digitalRead(btn)==LOW){
+	    delay(t);
+    }
+}
+
 typedef struct 
 {
 	unsigned long elapsed, last;
@@ -36,8 +54,10 @@ typedef struct
 		last = millis();
 	}
 	void stop(){
-		timerState = false;
-    		elapsed += millis() - last;
+		if(timerState){
+			timerState = false;
+    	                elapsed += millis() - last;
+		}	
 	}
 	void start(){
 		timerState = true;
@@ -54,6 +74,7 @@ typedef struct
 		elapsed = e;
 	}
 } DiffTimer;
+#endif
 ```
 
 ### **Esempi**
