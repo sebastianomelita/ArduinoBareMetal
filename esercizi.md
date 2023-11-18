@@ -181,7 +181,7 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
 ### **Es20**
 1. Scrivere un programma che accenda insieme led con un tasto senza memoria.  Quando il tasto è premuto, il led lampeggiano 4 volte insieme, dopodichè entrambi lampeggiano alternativamente uno alla volta 4 volte per un tempo indefinito.
 
-2. Dato l'esercizio al punto precedente, aggiungere un secondo tasto e un terzo led. Il nuovo tasto azionato in modo Toggle, fa lampeggiare iil secondo led secondo la logica al punto 1) se lo stato è true, altrimenti sta spento.
+2. Dato l'esercizio al punto precedente, aggiungere un secondo tasto e un terzo led. Il nuovo tasto azionato in modo Toggle, fa lampeggiare il secondo led secondo la logica al punto 1) se lo stato è true, altrimenti sta spento.
 
 3. Al codice precedente aggiungere la funzione che misura il tempo x in cui si preme il primo tasto senza memoria e al suo rilascio fa accendere il terzo led dopo x secondi per mezzo secondo, poi lo spegne e lo riaccende dopo x=x/2 secondi, poi lo spegne e lo riaccende dopo x=x/2 secondi, e così via. Quando il tempo è sotto 100 ms il led rimane perennemente acceso. Il processo ricomincia ad una nuova pressione del primo tasto ed un suo nuovo rilascio (timer UR in dispensa).
 
