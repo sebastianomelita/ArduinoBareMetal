@@ -37,7 +37,7 @@ Un **polling** è l'interrogazione periodica di una **variabile** o di un **ingr
 
 Il polling serve per verificare, ad ogni loop(), che il tempo trascorso (**elapsed**) abbia raggiunto il **valore finale** (timeout) stabilito come obiettivo (target). Ciò si può ottenere eseguendo il **test** periodico di una **condizione** su una funzione di **misura** del tempo, nello specifico una ```get()```, che, ad ogni ```loop()```, restituisce il **tempo di conteggio**. Se la **condizione di uscita** dal conteggio è **vera** allora il **blocco** di istruzioni associato al **timeout del timer** viene **eseguito**.
 
-Il **timeout** si controlla, in definitiva, valutando la **condizione di uscita** sulla funzione ```get()``` mediante una istruzione di selezione **if**. 
+Il **timeout** si controlla, in definitiva, valutando la **condizione di uscita** sulla funzione ```get()``` mediante una istruzione di selezione **if**. Ad esempio, eseguendo periodicamente (**polling**) nel ```loop()``` il controllo ```if(t.get() > 10000) {....}```, si può stabilire se, dal momento dell'attivazione del timer, sono passti 10 secondi e, in caso affermativo, eseguire le instruzioni nel blocco then che segue la condizione.
 
 La funzione ```get()```  **non è bloccante** (non causa alcun ritardo) e  **non interferisce** con nessun delay del loop corrente, sia esso il loop principale o quello secondario di un thread. Essa rappresenta, quindi, un **task** che si può tranquillamente adoperare in **sequenza** ad altri task di uno stesso loop, anche se questi contengono dei ritardi ```delay()```.
 
