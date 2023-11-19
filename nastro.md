@@ -153,8 +153,10 @@ typedef struct
 		last = millis();
 	}
 	void stop(){
-		timerState = false;
-    		elapsed += millis() - last;
+		if(timerState){
+			timerState = false;
+    	                elapsed += millis() - last;
+		}	
 	}
 	void start(){
 		timerState = true;
