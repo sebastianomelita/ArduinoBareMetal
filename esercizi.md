@@ -180,7 +180,7 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
      -    https://wokwi.com/projects/381764658556760065
 3. Dato l'esercizio al punto precedente, aggiungere un secondo tasto e un terzo led. Il nuovo tasto azionato in modo Toggle, fa lampeggiare i l terzo led in maniera alternata e rapida per un tempo indefinito. Una seconda pressione lo fa lampeggiare indefinitivamente in maniera più lenta. 
      -    https://wokwi.com/projects/381767106528833537
-4. Al codice precedente aggiungere la funzione che misura il tempo x in cui si preme il tasto senza memoria e al suo rilascio fa lampeggiare periodicamente il terzo led con un periodo pari ad x  (timer UR in dispensa).
+4. Al codice precedente aggiungere la funzione che misura il tempo x in cui si preme il tasto con memoria e al suo rilascio fa lampeggiare periodicamente il terzo led con un periodo pari ad x  (timer UR in dispensa).
      -    https://wokwi.com/projects/381773540992974849
 
 ### **Es20**
@@ -188,7 +188,7 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
 
 2. Dato l'esercizio al punto precedente, aggiungere un secondo tasto e un terzo led. Il nuovo tasto azionato in modo Toggle, fa lampeggiare il secondo led secondo la logica al punto 1) se lo stato è true, altrimenti sta spento.
 
-3. Al codice precedente aggiungere la funzione che misura il tempo x in cui si preme il primo tasto senza memoria e al suo rilascio fa accendere il terzo led dopo x secondi per mezzo secondo, poi lo spegne e lo riaccende dopo x=x/2 secondi, poi lo spegne e lo riaccende dopo x=x/2 secondi, e così via. Quando il tempo è sotto 100 ms il led rimane perennemente acceso. Il processo ricomincia ad una nuova pressione del primo tasto ed un suo nuovo rilascio (timer UR in dispensa).
+3. Al codice precedente aggiungere la funzione che misura il tempo x per cui si preme il primo tasto con memoria. Questo tempo diventa la durata del blink del terzo tasto (timer UR in dispensa).
 
 ### **Es21**
 Scrivere un programma che realizzi l'accensione di un led tramite un pulsante temporizzato che spegne il led 
