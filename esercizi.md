@@ -189,7 +189,7 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
 3. Dato l'esercizio al punto precedente, aggiungere un secondo tasto e un terzo led. Il nuovo tasto azionato in modo Toggle, fa lampeggiare il secondo led secondo la logica al punto 1) se lo stato è true, altrimenti sta spento.
      -    https://wokwi.com/projects/381782303090374657
 4. Al codice precedente aggiungere la funzione che misura il tempo x per cui si preme il primo tasto con memoria. Questo tempo diventa la durata del blink del terzo tasto (timer UR in dispensa).
-     -    https://wokwi.com/projects/381773540992974849
+     -    https://wokwi.com/projects/381782735128863745
        
 ### **Es21**
 Scrivere un programma che realizzi l'accensione di un led tramite un pulsante temporizzato che spegne il led 
