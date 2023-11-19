@@ -113,7 +113,7 @@ Come sopra, ma con la variante che, solo quando il primo led è accesso, la pres
 - https://wokwi.com/projects/381116393250548737
 
 ## **URUTILS**
-I prossimi esercizi sono realizzati adoperando la libreria che si può scaricare cliccando col tasto sinistro sul link [urutils.h](https://raw.githubusercontent.com/sebastianomelita/ArduinoBareMetal/master/urutils.h). Una volta apparso il contenuto del file urutils.h, premere col tasto destro del mouse in un punto qualsiasi della pagina. Apparirà un menù a tendina dal quale occorre selezionare la voce di menu **Save as** (Salva con come) per scaricare il file sul proprio PC.
+I prossimi esercizi sono realizzati adoperando la libreria che si può scaricare cliccando col tasto sinistro sul link [urutils.h](https://raw.githubusercontent.com/sebastianomelita/ArduinoBareMetal/master/urutils.h). Una volta apparso il contenuto del file urutils.h, premere col tasto destro del mouse in un punto qualsiasi della pagina. Apparirà un menù a tendina dal quale occorre selezionare la voce di menu **Save as** (Salva come) per scaricare il file sul proprio PC.
 
 ### **Es10**
 Creare un programma per esp32 che realizzi con 4 led l'effetto supercar inserbile e disinseribile in modo toggle con un pulsante.
