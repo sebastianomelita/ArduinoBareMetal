@@ -39,7 +39,7 @@ Il polling serve per verificare, ad ogni loop(), che il tempo trascorso (**elaps
 
 Il **timeout** si controlla, in definitiva, valutando la **condizione di uscita** sulla funzione ```get()``` mediante una istruzione di selezione **if**. 
 
-La funzione ```get()```  **non è bloccante** (non causa alcun ritardo) e  **non interferisce** con nessun delay del loop corrente, sia esso il loop principale o quello secondario di un thread.
+La funzione ```get()```  **non è bloccante** (non causa alcun ritardo) e  **non interferisce** con nessun delay del loop corrente, sia esso il loop principale o quello secondario di un thread. Essa è quindi un task che si può tranquillamente adoperare in sequenza ad altri task di uno stesso loop, anche se questi contengono delay().
 
 I **timer sequenziali** sono più **intuitivi** e **semplici** da usare rispetto ad i **timer ad eventi** perchè possono essere adoperati usando la stessa logica **sequenziale** e **lineare** che si usa in un normale algoritmo sincrono. Un'**algoritmo sincrono** pianifica le azioni in base alla **posizione** nel codice delle sue istruzioni e in base ai tempi stabiliti da eventuali **ritardi fissi** posti tra un'azione e l'altra. Ma le azioni si possono programmare anche in base ad eventuali **ritardi variabili**, cioè non prestabiliti, che bloccano l'esecuzione in attesa del termine del **polling di un timer** (test di avvenuto timeout) o del **polling di un ingresso** (test di avvenuta consegna di un dato) o, ancora, in attesa del **polling di una variabile flag** che segnali l'accadere di un qualunque altro evento.
 
