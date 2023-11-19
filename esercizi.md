@@ -31,7 +31,7 @@ In **definitiva**, **non** adoperando, per adesso, tecniche di programmazione **
 
 ## **TIMER UR**
 
-E’ possibile realizzare dei timers, con cui programmare **nel futuro** lo stesso evento o una sequenza di eventi diversi, eseguendo un polling del **tempo di conteggio**. 
+E’ possibile realizzare dei timers, con cui programmare **nel futuro** lo stesso evento o una sequenza di eventi diversi, **senza attese**, cioè senza ```delay()```, eseguendo un polling del **tempo di conteggio** di un **timer**. 
 
 Un **polling** è l'interrogazione periodica di una **variabile** o di un **ingresso** per leggerne il **valore**. Se il valore è maggiore di un **tempo massimo** allora si considera avvenuto un **timeout** e si esegue il **blocco** di codice associato ad esso.
 
@@ -40,8 +40,6 @@ Il polling serve per verificare, ad ogni loop(), che il tempo trascorso (**elaps
 Il **timeout** si controlla, in definitiva, valutando la **condizione di scadenza** del timer sulla funzione ```get()``` mediante una istruzione di selezione **if**. Ad esempio, eseguendo periodicamente (**polling**) nel ```loop()``` il controllo ```if(t.get() > 10000) {....}```, si può stabilire se, dal momento dell'attivazione del timer, sono pasasti 10 secondi e, in caso affermativo, eseguire le istruzioni nel blocco then che nel codice segue la condizione di scadenza.
 
 La funzione ```get()```  **non è bloccante** (non causa alcun ritardo) e  **non interferisce** con nessun delay del loop corrente, sia esso il loop principale o quello secondario di un thread. Essa rappresenta, quindi, un **task** che si può tranquillamente adoperare in **sequenza** ad altri task di uno stesso loop, anche se questi contengono dei ritardi ```delay()```.
-
-I **timer sequenziali** sono più **intuitivi** e **semplici** da usare rispetto ad i **timer ad eventi** perchè possono essere adoperati usando la stessa logica **sequenziale** e **lineare** che si usa in un normale algoritmo sincrono. Un'**algoritmo sincrono** pianifica le azioni in base alla **posizione** nel codice delle sue istruzioni e in base ai tempi stabiliti da eventuali **ritardi fissi** posti tra un'azione e l'altra. Ma le azioni si possono programmare anche in base ad eventuali **ritardi variabili**, cioè non prestabiliti, che bloccano l'esecuzione in attesa del termine del **polling di un timer** (test di avvenuto timeout) o del **polling di un ingresso** (test di avvenuta consegna di un dato) o, ancora, in attesa del **polling di una variabile flag** che segnali l'accadere di un qualunque altro evento.
 
 Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto comune** nella programmazione di **bracci robotici** per uso industriale (vedi bracci Universal Robots) che si adatta bene ad essere impiegato sia in un contesto in cui la logica dell'algoritmo è realizzata in maniera sequenziale sia in quello in cui gli input sono gestiti con un modello ad eventi.
 
