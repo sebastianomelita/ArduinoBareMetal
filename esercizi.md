@@ -43,7 +43,7 @@ La funzione ```get()```  **non è bloccante** (non causa alcun ritardo) e  **non
 
 Il **polling** della funzione ```get()``` può essere effettuato in qualunque punto del loop, anche più volte se necessario, in genere si esegue per:
 -  se il timer **è attivo**, controllare una **scadenza**, cioè vedere se è passato il tempo necessario per compiere una certa **azione** (modificare una variabile o chiamare una funzione)
--  se il timer **non è attivo**, impostare una **cadenza**, cioè se il timer è stato **bloccato** su un certo tempo con uno ```stop()```, utilizzare quel valore **programmato** di tempo per impostare dinamicamente un **ritardo delay** oppure per confrontarlo con altri tempi che si stanno **accumulando** su una variabile all'interno del loop.  
+-  se il timer **non è attivo**, impostare una **cadenza**, cioè se il timer è stato **bloccato** su un certo tempo con uno ```stop()```, utilizzare quel valore **programmato** di tempo per impostare dinamicamente un **ritardo delay**, oppure per confrontarlo con altri tempi che si stanno **accumulando** su una variabile all'interno del loop.  
 
 Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto comune** nella programmazione di **bracci robotici** per uso industriale (vedi bracci Universal Robots) che si adatta bene ad essere impiegato sia in un contesto in cui la logica dell'algoritmo è realizzata in maniera sequenziale sia in quello in cui gli input sono gestiti con un modello ad eventi.
 
