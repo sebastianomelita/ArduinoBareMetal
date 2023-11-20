@@ -115,7 +115,7 @@ Come sopra, ma con la variante che, solo quando il primo led è accesso, la pres
 - https://wokwi.com/projects/381116393250548737
 
 ## **URUTILS**
-I prossimi esercizi sono realizzati adoperando la libreria che si può scaricare cliccando col tasto sinistro sul link [urutils.h](https://raw.githubusercontent.com/sebastianomelita/ArduinoBareMetal/master/urutils.h). 
+I prossimi esercizi sono realizzati adoperando la libreria che si può scaricare cliccando col tasto sinistro sul link [urutils.h](urutils.h). 
 
 <a href="https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/urutils.h" download>Download urutils.h</a>
 
