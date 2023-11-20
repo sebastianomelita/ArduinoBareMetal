@@ -119,9 +119,6 @@ I prossimi esercizi sono realizzati adoperando la libreria che si può scaricare
 
 Una volta aperta la pagina, per scaricarla premere la freccetta di download il alto a destra.
 
-
-Una volta apparso il contenuto del file urutils.h, premere col tasto destro del mouse in un punto qualsiasi della pagina. Apparirà un menù a tendina dal quale occorre selezionare la voce di menu **Save as** (Salva con nome) per scaricare il file sul proprio PC.
-
 ### **Es10**
 Creare un programma per esp32 che realizzi con 4 led l'effetto supercar inserbile e disinseribile in modo toggle con un pulsante.
 - https://wokwi.com/projects/381192229624334337
