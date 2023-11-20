@@ -117,7 +117,7 @@ Come sopra, ma con la variante che, solo quando il primo led è accesso, la pres
 ## **URUTILS**
 I prossimi esercizi sono realizzati adoperando la libreria che si può scaricare cliccando col tasto sinistro sul link [urutils.h](https://raw.githubusercontent.com/sebastianomelita/ArduinoBareMetal/master/urutils.h). 
 
-<a href="raw.githubusercontent.com/sebastianomelita/ArduinoBareMetal/master/urutils.h" download>Download urutils.h</a>
+<a href="https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/urutils.h" download>Download urutils.h</a>
 
 
 Una volta apparso il contenuto del file urutils.h, premere col tasto destro del mouse in un punto qualsiasi della pagina. Apparirà un menù a tendina dal quale occorre selezionare la voce di menu **Save as** (Salva con nome) per scaricare il file sul proprio PC.
