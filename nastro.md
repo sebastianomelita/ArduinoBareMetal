@@ -35,8 +35,10 @@ struct DiffTimer {
 		}	
 	}
 	void start(){
-		timerState = true;
-		last = millis();
+		if(!timerState){
+			timerState = true;
+			last = millis();
+		}
 	}
 	unsigned long get(){
 		if(timerState){
@@ -159,8 +161,10 @@ typedef struct
 		}	
 	}
 	void start(){
-		timerState = true;
-		last = millis();
+		if(!timerState){
+			timerState = true;
+			last = millis();
+		}
 	}
 	unsigned long get(){
 		if(timerState){
@@ -366,8 +370,10 @@ typedef struct
 		}	
 	}
 	void start(){
-		timerState = true;
-		last = millis();
+		if(!timerState){
+			timerState = true;
+			last = millis();
+		}
 	}
 	unsigned long get(){
 		if(timerState){
