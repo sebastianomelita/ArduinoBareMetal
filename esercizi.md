@@ -117,7 +117,7 @@ Come sopra, ma con la variante che, solo quando il primo led è accesso, la pres
 ## **URUTILS**
 I prossimi esercizi sono realizzati adoperando la libreria che si può scaricare cliccando col tasto sinistro sul link [urutils.h](urutils.h). 
 
-Una volta aperta la pagina, per scaricarla premere la freccetta di download il alto a destra.
+Una volta aperta la pagina, per scaricarla premere la freccetta di download in alto a destra.
 
 ### **Es10**
 Creare un programma per esp32 che realizzi con 4 led l'effetto supercar inserbile e disinseribile in modo toggle con un pulsante.
