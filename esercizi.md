@@ -226,7 +226,7 @@ accendono tutti i led, con la pressione dello stesso tasto per più di tre secon
 Scrivere un programma che realizzi l'accensione del led1, oppure del led2 oppure del led3 led 
 tramite la pressione consecutiva di un pulsante una, due o tre volte all'interno di 
 un intervallo temporale di un secondo. Col la pressione di un altro pulsante si fa una cosa analoga per spegnerli.
-- tenant=circuitshttps://www.tinkercad.com/things/1eJwTOD7t8K-copy-of-scegli-chi-onoff/editel?tenant=circuits
+- [tenant=circuits](https://www.tinkercad.com/things/1eJwTOD7t8K-copy-of-scegli-chi-onoff/editel?tenant=circuits)https://www.tinkercad.com/things/1eJwTOD7t8K-copy-of-scegli-chi-onoff/editel?tenant=circuits
   
 ### **Es26**
 1) Scrivere un programma che realizzi la gestione di un nastro traportatore attraverso la lettura di tre sensori di transito e il comando di un motore.
