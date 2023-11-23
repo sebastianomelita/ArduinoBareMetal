@@ -242,6 +242,6 @@ Scrivere un programma che realizzi l'accensione di un led, due led o tre led tra
 una, due o tre volte all'interno di un intervallo temporale di un secondo.
 Col la pressione prolungata dello stesso pulsante si spengono tutti e tre contemporaneamente.
 (Realizzazione del timer senza schedulatore)
-
+- https://www.tinkercad.com/things/1EIcEp5BkZt-copy-of-selezione-luci-e-spegnimento-con-un-solo-tasto/editel?tenant=circuits
 
 >[Torna all'indice generale](index.md)
