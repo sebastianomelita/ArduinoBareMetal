@@ -206,6 +206,7 @@ al fronte di salita del segnale. Immaginare un collegamento pull down del tasto.
 Realizzare un programma Arduino che dati 4 led (led1, led2, led3, led4) realizza un indicatore di curva pericolosa 
 che accende i led in sequenza con un incremento circolare. Usare un tasto che può essere premuto in successione 
 per accendere o spegnere l’indicatore (toggleH). Supponiamo che il tasto è collegato secondo lo schema pull down.
+- https://www.tinkercad.com/embed/fypoZVpvuSa?editbtn=1
 
 ###  **Es23. Selezione luci**
 
@@ -244,4 +245,12 @@ Col la pressione prolungata dello stesso pulsante si spengono tutti e tre contem
 (Realizzazione del timer senza schedulatore)
 - https://www.tinkercad.com/things/1EIcEp5BkZt-copy-of-selezione-luci-e-spegnimento-con-un-solo-tasto/editel?tenant=circuits
 
+### **Es27. Conta numeri**
+Realizzare un programma Arduino che dati due led, led1 e led2 ed un tasto, conta il numero di volte che 
+si preme il tasto e si accende il led1 quando si raggiungono 10 pressioni e quando si raggiungono le 20 
+si accende il led2, mentre quando si raggiungono le 30 si spegne tutto e si ricomincia da 0. Se è possibile, 
+rendere, in qualche modo, le pressioni insensibili ai rimbalzi del tasto.
+- https://www.tinkercad.com/things/6toP0Dc3v0x-copy-of-conta-numeri-schedulato/editel?tenant=circuits
+
+Conta numeri ad eventi
 >[Torna all'indice generale](index.md)
