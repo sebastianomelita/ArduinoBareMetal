@@ -195,7 +195,7 @@ Creare un programma per esp32 che realizzi l'accensione di un led su 4 alla prim
 4. Al codice precedente aggiungere la funzione che misura il tempo x per cui si preme il primo tasto con memoria. Questo tempo diventa la durata complessiva del blink del terzo tasto (timer UR in dispensa).
      -    https://wokwi.com/projects/381782735128863745
 
-### **Es21**
+### **Es21. Timer monostabile**
 Scrivere un programma che realizzi l'accensione di un led tramite un pulsante temporizzato che spegne il led 
 dopo un numero di ms impostati da setup. La logica del tasto deve essere senza stato e deve essere sensibile 
 al fronte di salita del segnale. Immaginare un collegamento pull down del tasto.
