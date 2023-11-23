@@ -37,14 +37,14 @@ Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto
 void waitUntil(bool &c, unsigned t)
 {
     while(!c){
-		delay(t);
+	delay(t);
     }
 }
 
 void waitUntilInputLow(int btn, unsigned t)
 {
     while(!digitalRead(btn)==LOW){
-	    delay(t);
+	delay(t);
     }
 }
 
@@ -63,8 +63,10 @@ typedef struct
 		}	
 	}
 	void start(){
-		timerState = true;
-		last = millis();
+		if(!timerState){
+			timerState = true;
+			last = millis();
+		}
 	}
 	unsigned long get(){
 		if(timerState){
@@ -80,6 +82,8 @@ typedef struct
 #endif
 ```
 
+I prossimi esercizi sono realizzati adoperando la libreria che si può scaricare cliccando col tasto sinistro sul link [urutils.h](urutils.h). 
+
 ### **Esempi**
 
 ```C++
@@ -88,49 +92,11 @@ Scrivere un programma che realizzi l'accensione di un led tramite un pulsante te
 dopo un numero di ms impostati da setup. La logica del tasto deve essere senza stato e deve essere sensibile 
 al fronte di salita del segnale. Immaginare un collegamento pull down del tasto.
 */
+#include "urutils.h"
 //inizio variabili per un solo pulsante
 int led=13;
 int tasto=2;
 int in, out;
-
-// attesa evento con tempo minimo di attesa
-void waitUntilInputLow(int btn, unsigned t)
-{
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
-}
-
-typedef struct 
-{
-	unsigned long elapsed, last;
-	bool timerState=false;
-	void reset(){
-		elapsed = 0;
-		last = millis();
-	}
-	void stop(){
-		if(timerState){
-			timerState = false;
-    	                elapsed += millis() - last;
-		}	
-	}
-	void start(){
-		timerState = true;
-		last = millis();
-	}
-	unsigned long get(){
-		if(timerState){
-			return millis() - last + elapsed;
-		}
-		return elapsed;
-	}
-	void set(unsigned long e){
-		reset();
-		elapsed = e;
-	}
-} DiffTimer;
-
 DiffTimer acceso;
 
 void setup(){
@@ -163,45 +129,7 @@ una, due o tre volte all'interno di un intervallo temporale di un secondo.
 Col la pressione prolungata dello stesso pulsante si spengono tutti e tre contemporaneamente.
 (Realizzazione del timer senza schedulatore)
 */
-
-// attesa evento con tempo minimo di attesa
-void waitUntilInputLow(int btn, unsigned t)
-{
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
-}
-
-typedef struct 
-{
-	unsigned long elapsed, last;
-	bool timerState=false;
-	void reset(){
-		elapsed = 0;
-		last = millis();
-	}
-	void stop(){
-		if(timerState){
-			timerState = false;
-    	                elapsed += millis() - last;
-		}	
-	}
-	void start(){
-		timerState = true;
-		last = millis();
-	}
-	unsigned long get(){
-		if(timerState){
-			return millis() - last + elapsed;
-		}
-		return elapsed;
-	}
-	void set(unsigned long e){
-		reset();
-		elapsed = e;
-	}
-} DiffTimer;
-
+#include "urutils.h"
 DiffTimer conteggio, spegnimento;
 int led1=13;
 int led2=12;
@@ -258,44 +186,7 @@ Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/1EIcEp5Bk
  un intervallo temporale di un secondo. Col la pressione per almeno un secondo, ma meno di tre, dello stesso pulsante si 
  accendono tutti i led, con la pressione dello stesso tasto per più di tre secondi si spengono tutti i led.
 */
-typedef struct 
-{
-	unsigned long elapsed, last;
-	bool timerState=false;
-	void reset(){
-		elapsed = 0;
-		last = millis();
-	}
-	void stop(){
-		if(timerState){
-			timerState = false;
-    	                elapsed += millis() - last;
-		}	
-	}
-	void start(){
-		timerState = true;
-		last = millis();
-	}
-	unsigned long get(){
-		if(timerState){
-			return millis() - last + elapsed;
-		}
-		return elapsed;
-	}
-	void set(unsigned long e){
-		reset();
-		elapsed = e;
-	}
-} DiffTimer;
-
-// attesa evento con tempo minimo di attesa
-void waitUntilInputLow(int btn, unsigned t)
-{
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
-}
-
+#include "urutils.h"
 DiffTimer conteggio, spegnimento;
 
 int led1=13;
@@ -361,45 +252,7 @@ In questo esempio vengono gestiti due input con i delay in un unico loop(). Ques
  tramite la pressione consecutiva di un pulsante una, due o tre volte all'interno di 
  un intervallo temporale di un secondo. Col la pressione di un altro pulsante si fa una cosa analoga per spegnerli.
 */
-typedef struct 
-{
-	unsigned long elapsed, last;
-	bool timerState=false;
-	void reset(){
-		elapsed = 0;
-		last = millis();
-	}
-	void stop(){
-		if(timerState){
-			timerState = false;
-    	                elapsed += millis() - last;
-		}	
-	}
-	void start(){
-		timerState = true;
-		last = millis();
-	}
-	unsigned long get(){
-		if(timerState){
-			return millis() - last + elapsed;
-		}
-		return elapsed;
-	}
-	void set(unsigned long e){
-		reset();
-		elapsed = e;
-	}
-} DiffTimer;
-
-// attesa evento con tempo minimo di attesa
-void waitUntilInputLow(int btn, unsigned t)
-{
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
-}
-
-DiffTimer conteggio1, conteggio2;
+#include "urutils.h"
 int led1=13;
 int led2=12;
 int led3=11;
