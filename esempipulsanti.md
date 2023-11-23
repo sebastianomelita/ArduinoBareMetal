@@ -162,7 +162,7 @@ void loop()
 }
 ```
 
-Simulazione su Arduino con Tinkercad:https://www.tinkercad.com/embed/fypoZVpvuSa?editbtn=1
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/fypoZVpvuSa?editbtn=1
 
 ###  **Curva pericolosa con time ticks**
 
