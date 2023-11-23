@@ -201,7 +201,34 @@ dopo un numero di ms impostati da setup. La logica del tasto deve essere senza s
 al fronte di salita del segnale. Immaginare un collegamento pull down del tasto.
 - https://www.tinkercad.com/things/fCpauVnNUZh-accensione-led-monostabile/editel
   
-### **Es22**
+###  **Es22. Curva pericolosa1**
+
+Realizzare un programma Arduino che dati 4 led (led1, led2, led3, led4) realizza un indicatore di curva pericolosa 
+che accende i led in sequenza con un incremento circolare. Usare un tasto che può essere premuto in successione 
+per accendere o spegnere l’indicatore (toggleH). Supponiamo che il tasto è collegato secondo lo schema pull down.
+
+###  **Es23. Selezione luci**
+
+Scrivere un programma che realizzi l'accensione di un led, due led o tre led tramite la pressione consecutiva di un pulsante 
+una, due o tre volte all'interno di un intervallo temporale di un secondo.
+Col la pressione prolungata dello stesso pulsante si spengono tutti e tre contemporaneamente.
+(Realizzazione del timer senza schedulatore)
+-  https://www.tinkercad.com/things/1EIcEp5BkZt-copy-of-selezione-luci-e-spegnimento-con-un-solo-tasto/editel?tenant=circuits
+
+###  **Es24. Scegli chi con un tasto**
+Scrivere un programma che realizzi l'accensione del led1, oppure del led2 oppure del led3 led 
+tramite la pressione consecutiva di un pulsante una, due o tre volte all'interno di 
+un intervallo temporale di un secondo. Col la pressione per almeno un secondo, ma meno di tre, dello stesso pulsante si 
+accendono tutti i led, con la pressione dello stesso tasto per più di tre secondi si spengono tutti i led.
+- https://www.tinkercad.com/things/92WnWXH0OvB-copy-of-scegli-chi-onoff-con-un-tasto/editel?tenant=circuits
+  
+###  **Es25. Scegli chi con due tasti**
+Scrivere un programma che realizzi l'accensione del led1, oppure del led2 oppure del led3 led 
+tramite la pressione consecutiva di un pulsante una, due o tre volte all'interno di 
+un intervallo temporale di un secondo. Col la pressione di un altro pulsante si fa una cosa analoga per spegnerli.
+- tenant=circuitshttps://www.tinkercad.com/things/1eJwTOD7t8K-copy-of-scegli-chi-onoff/editel?tenant=circuits
+  
+### **Es26**
 1) Scrivere un programma che realizzi la gestione di un nastro traportatore attraverso la lettura di tre sensori di transito e il comando di un motore.
 I sensori permangono al livello alto finchè un oggetto ingombra l'area del sensore, dopodichè vanno a livello basso. I sensori sono due all'inizio del nastro (uno per i pezzi bassi ed un'altro per quelli alti) ed uno alla fine del nastro che rileva il pezzo pronto per essere prelevato.
 All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta (blocca) il timer di volo.
@@ -210,7 +237,7 @@ Allo scadere del timer di volo si spegne il motore.
 2) Aggiungere la funzione di blink di un led quando il nastro trasportatore è in movimento.
 - https://www.tinkercad.com/things/bKP671nY2MU-copy-of-nastrouno/editel?tenant=circuits
 
-### **Es23**
+### **Es27**
 Scrivere un programma che realizzi l'accensione di un led, due led o tre led tramite la pressione consecutiva di un pulsante 
 una, due o tre volte all'interno di un intervallo temporale di un secondo.
 Col la pressione prolungata dello stesso pulsante si spengono tutti e tre contemporaneamente.
