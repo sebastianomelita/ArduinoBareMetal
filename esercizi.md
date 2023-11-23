@@ -238,13 +238,6 @@ Allo scadere del timer di volo si spegne il motore.
 2) Aggiungere la funzione di blink di un led quando il nastro trasportatore è in movimento.
 - https://www.tinkercad.com/things/bKP671nY2MU-copy-of-nastrouno/editel?tenant=circuits
 
-### **Es27**
-Scrivere un programma che realizzi l'accensione di un led, due led o tre led tramite la pressione consecutiva di un pulsante 
-una, due o tre volte all'interno di un intervallo temporale di un secondo.
-Col la pressione prolungata dello stesso pulsante si spengono tutti e tre contemporaneamente.
-(Realizzazione del timer senza schedulatore)
-- https://www.tinkercad.com/things/1EIcEp5BkZt-copy-of-selezione-luci-e-spegnimento-con-un-solo-tasto/editel?tenant=circuits
-
 ### **Es27. Conta numeri**
 Realizzare un programma Arduino che dati due led, led1 e led2 ed un tasto, conta il numero di volte che 
 si preme il tasto e si accende il led1 quando si raggiungono 10 pressioni e quando si raggiungono le 20 
