@@ -246,5 +246,4 @@ si accende il led2, mentre quando si raggiungono le 30 si spegne tutto e si rico
 rendere, in qualche modo, le pressioni insensibili ai rimbalzi del tasto.
 - https://www.tinkercad.com/things/6toP0Dc3v0x-copy-of-conta-numeri-schedulato/editel?tenant=circuits
 
-Conta numeri ad eventi
 >[Torna all'indice generale](index.md)
