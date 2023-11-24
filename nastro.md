@@ -7,7 +7,39 @@
 
 Programma per la gestione di un nastro trasportatore realizzato con un **timer** basato sul polling della funzione ```millis()``` e su **rilevatori di transito** toggle basati su ```delay()```.
 
-IL timer **timer** è realizzato non ad eventi ma in **logica sequenziale** più intuitiva e più **in armonia** con la **logica sequenziale** delle **altre parti** dell'algoritmo risolutivo:
+L'algoritmo proposto per la gestione di un nastro trasportatore fa uso delle primitive UR: 
+- ```waitUntilInputLow()``` per la realizzazione della logica di barriera (pulsante toggle)
+-  ```stop()```, ```reset()``` e ```get()``` per la realizzazione di un timer
+  
+```C++
+// loop principale
+void loop() {
+	if(digitalRead(startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
+		engineon = true; 	
+		volo.stop();	
+		volo.reset();					// c'è almeno un pezzo in transito
+		waitUntilInputLow(startSensorLow,50);			// attendi finchè non c'è fronte di discesa
+	}else if(digitalRead(startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
+		engineon = true; 	
+		volo.stop();	
+		volo.reset();									// c'è almeno un pezzo in transito
+		waitUntilInputLow(startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
+	}else if(digitalRead(stopSensor)==HIGH) {
+		engineon = false; 
+		volo.stop();
+		ready = true;
+		waitUntilInputLow(stopSensor,50);
+		engineon = true; 
+		volo.start(); 						// se c'è un pezzo in transito arriverà prima dello scadere
+		volo.reset();
+	}
+	if(volo.get() > 10000){
+        volo.stop();
+        volo.reset();
+		engineon = false; 
+	}
+}
+```
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
