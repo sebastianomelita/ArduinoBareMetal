@@ -130,7 +130,7 @@ Nel ```loop()``` principale è gestito lo **switch** di un **pulsante generale**
 
 ```C++
 #include <pthread.h> //libreria di tipo preemptive
-#include <urutils.h> //libreria di utilità like Universal Robots
+#include "urutils.h" //libreria di utilità like Universal Robots
 pthread_t t1;
 pthread_t t2;
 bool engineon;  // variabile globale che memorizza lo stato del motore
@@ -298,6 +298,7 @@ All'attivazione del sensore di uscita si blocca il nastro, alla sua disattivazio
 Allo scadere del timer di volo si spegne il motore.
 */
 #include <pthread.h> //libreria di tipo preemptive
+#include "urutils.h"
 #define DEBOUNCETIME 50
 pthread_t t1;
 pthread_t t2;
@@ -322,38 +323,6 @@ typedef struct
 	unsigned flyTime;
 	bool engineon;
 } Nastro;
-
-typedef struct 
-{
-	unsigned long elapsed, last;
-	bool timerState=false;
-	void reset(){
-		elapsed = 0;
-		last = millis();
-	}
-	void stop(){
-		if(timerState){
-			timerState = false;
-    	                elapsed += millis() - last;
-		}	
-	}
-	void start(){
-		if(!timerState){
-			timerState = true;
-			last = millis();
-		}
-	}
-	unsigned long get(){
-		if(timerState){
-			return millis() - last + elapsed;
-		}
-		return elapsed;
-	}
-	void set(unsigned long e){
-		reset();
-		elapsed = e;
-	}
-} DiffTimer;
 
 Nastro nastro1, nastro2;
 DiffTimer fly[2];
@@ -397,14 +366,6 @@ void initNastri(){
 	pinMode(nastro2.startSensorHigh, INPUT);
 	pinMode(nastro2.startSensorLow, INPUT);
 	pinMode(nastro2.stopSensor, INPUT); 
-}
-
-// attesa evento con tempo minimo di attesa
-void waitUntilInputLow(int btn, unsigned t)
-{
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
 }
 
 void * beltThread(void * d)
