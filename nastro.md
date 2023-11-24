@@ -513,6 +513,7 @@ void switchPressed ()
 }  // end of switchPressed
 
 void loop() {
+	// riarmo tasto dopo il debouncing
 	waitUntilInputLow(safetystop, 50);
 	isrun = true;
 	delay(10); 							// equivale a yeld() (10 per le simulazioni 0 in HW)
