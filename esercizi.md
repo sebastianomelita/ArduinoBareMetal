@@ -238,6 +238,7 @@ All'attivazione del sensore di uscita si blocca il nastro, alla sua disattivazio
 Allo scadere del timer di volo si spegne il motore.
 3) Aggiungere la funzione di blink di un led quando il nastro trasportatore è in movimento.
 - https://www.tinkercad.com/things/bKP671nY2MU-copy-of-nastrouno/editel?tenant=circuits
+- algoritmo nastro trasposrtatore [nastro](nastro.md)
 
 ### **Es27. Conta numeri**
 Realizzare un programma Arduino che dati due led, led1 e led2 ed un tasto, conta il numero di volte che 
