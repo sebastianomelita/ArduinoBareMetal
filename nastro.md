@@ -125,7 +125,7 @@ Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/bKP671nY2
 ## **URUTILS**
 I prossimi esercizi sono realizzati adoperando la libreria che si può scaricare cliccando col tasto sinistro sul link [urutils.h](urutils.h). 
 
-Una volta aperta la pagina, per scaricarla premere la freccetta di download in alto a destra.
+Una volta aperta la pagina, per scaricarla sul proprio PC, premere la freccetta di download in alto a destra.
 
 ###  **Gestione di due nastri**
 
