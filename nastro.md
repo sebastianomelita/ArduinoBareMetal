@@ -9,7 +9,7 @@ Programma per la gestione di un nastro trasportatore realizzato con un **timer**
 
 L'algoritmo proposto per la gestione di un nastro trasportatore fa uso: 
 - della **primitiva** ```waitUntilInputLow()``` per la realizzazione della logica di barriera (pulsante toggle)
-- delle **funzioni** ```stop()```, ```reset()``` e ```get()``` per la realizzazione di un timer
+- delle **funzioni** ```stop()```, ```reset()``` e ```get()``` per la gestione di un timer
 - della **variabile globale** ```ready``` per segnalare agli altri thread (o al loop principale) la presenza di un **pezzo pronto** per essere prelevato.
 
 L'algoritmo gestisce **tre sensori** di barriera (rilevatori di transito):
