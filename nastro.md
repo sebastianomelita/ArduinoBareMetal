@@ -366,8 +366,7 @@ bool engineon;  // variabile globale che memorizza lo stato del motore
 uint8_t safetystop;
 bool isrun;
 //gestione interrupt
-volatile unsigned long previousMillis = 0;
-volatile unsigned short numberOfButtonInterrupts = 0;
+volatile bool pressed = false;
 //fine gestione interrupt
 
 typedef struct
@@ -504,18 +503,21 @@ void setup() {
 // Interrupt Service Routine (ISR)
 void switchPressed ()
 {
+	pressed = true;
   byte val = digitalRead(safetystop); // lettura stato pulsante
-  if(val==HIGH){ // fronte di salita
-	isrun = false; 				// impostazione dello stato dei nastri
-	digitalWrite(nastro1.engineLed, LOW);	               
-	digitalWrite(nastro2.engineLed, LOW);
+	if(val==HIGH){ // fronte di salita
+		isrun = false; 				// impostazione dello stato dei nastri
+		digitalWrite(nastro1.engineLed, LOW);	               
+		digitalWrite(nastro2.engineLed, LOW);
   }
 }  // end of switchPressed
 
 void loop() {
-	// riarmo tasto dopo il debouncing
-	waitUntilInputLow(safetystop, 50);
-	isrun = true;
+	if(pressed){
+		pressed = false;
+		waitUntilInputLow(safetystop, 50);
+		isrun = true;
+	}
 	delay(10); 							// equivale a yeld() (10 per le simulazioni 0 in HW)
 }
 ```
