@@ -130,6 +130,7 @@ Nel ```loop()``` principale è gestito lo **switch** di un **pulsante generale**
 
 ```C++
 #include <pthread.h> //libreria di tipo preemptive
+#include <urutils.h> //libreria di utilità like Universal Robots
 pthread_t t1;
 pthread_t t2;
 bool engineon;  // variabile globale che memorizza lo stato del motore
@@ -149,39 +150,6 @@ typedef struct
 	unsigned flyTime;
 	bool engineon;
 } Nastro;
-
-typedef struct 
-{
-	unsigned long elapsed, last;
-	bool timerState=false;
-	void reset(){
-		elapsed = 0;
-		last = millis();
-	}
-	void stop(){
-		if(timerState){
-			timerState = false;
-    	                elapsed += millis() - last;
-		}	
-	}
-	void start(){
-		if(!timerState){
-			timerState = true;
-			last = millis();
-		}
-	}
-	unsigned long get(){
-		if(timerState){
-			return millis() - last + elapsed;
-		}
-		return elapsed;
-	}
-	void set(unsigned long e){
-		reset();
-		elapsed = e;
-	}
-} DiffTimer;
-
 Nastro nastro1, nastro2;
 DiffTimer fly[2];
 
