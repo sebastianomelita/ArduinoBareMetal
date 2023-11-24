@@ -194,14 +194,6 @@ void initNastri(){
 	pinMode(nastro2.stopSensor, INPUT); 
 }
 
-// attesa evento con tempo minimo di attesa
-void waitUntilInputLow(int btn, unsigned t)
-{
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
-}
-
 void * beltThread(void * d)
 {
 		Nastro *n;
