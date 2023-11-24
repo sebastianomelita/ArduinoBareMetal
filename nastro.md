@@ -505,10 +505,10 @@ void setup() {
 void switchPressed ()
 {
   byte val = digitalRead(safetystop); // lettura stato pulsante
-	if(val==HIGH){ // fronte di salita
-		isrun = false; 				// impostazione dello stato dei nastri
-		digitalWrite(nastro1.engineLed, LOW);	               
-		digitalWrite(nastro2.engineLed, LOW);
+  if(val==HIGH){ // fronte di salita
+	isrun = false; 				// impostazione dello stato dei nastri
+	digitalWrite(nastro1.engineLed, LOW);	               
+	digitalWrite(nastro2.engineLed, LOW);
   }
 }  // end of switchPressed
 
