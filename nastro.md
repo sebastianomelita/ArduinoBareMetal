@@ -7,12 +7,18 @@
 
 Programma per la gestione di un nastro trasportatore realizzato con un **timer** basato sul polling della funzione ```millis()``` e su **rilevatori di transito** toggle basati su ```delay()```.
 
-L'algoritmo proposto per la gestione di un nastro trasportatore fa uso delle primitive UR: 
-- ```waitUntilInputLow()``` per la realizzazione della logica di barriera (pulsante toggle)
--  ```stop()```, ```reset()``` e ```get()``` per la realizzazione di un timer
-  
+L'algoritmo proposto per la gestione di un nastro trasportatore fa uso: 
+- della **primitiva** ```waitUntilInputLow()``` per la realizzazione della logica di barriera (pulsante toggle)
+- delle **funzioni** ```stop()```, ```reset()``` e ```get()``` per la realizzazione di un timer
+- della **variabile globale** ```ready``` per segnalare agli altri thread (o al loop principale) la presenza di un **pezzo pronto** per essere prelevato.
+
 ```C++
-// loop principale
+bool ready = false;
+
+void setup() {
+  ready = false;
+}
+
 void loop() {
 	if(digitalRead(startSensorLow)==HIGH){			// se è alto c'è stato un fronte di salita
 		engineon = true; 	
@@ -29,6 +35,7 @@ void loop() {
 		volo.stop();
 		ready = true;
 		waitUntilInputLow(stopSensor,50);
+		ready = false;
 		engineon = true; 
 		volo.start(); 					// se c'è un pezzo in transito arriverà prima dello scadere
 		volo.reset();
