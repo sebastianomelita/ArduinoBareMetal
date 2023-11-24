@@ -13,9 +13,9 @@ L'algoritmo proposto per la gestione di un nastro trasportatore fa uso:
 - della **variabile globale** ```ready``` per segnalare agli altri thread (o al loop principale) la presenza di un **pezzo pronto** per essere prelevato.
 
 L'algoritmo gestisce **tre sensori** di barriera (rilevatori di transito):
-- uno in barriera di ingresso per i pezzi alti appena inseriti sul nastro
-- uno in barriera di ingresso per i pezzi bassi appena inseriti sul nastro
-- uno in barriera di uscita per i pezzi pronti per essere prelevati
+- uno in barriera di ingresso per i **pezzi alti** appena inseriti sul nastro
+- uno in barriera di ingresso per i **pezzi bassi** appena inseriti sul nastro
+- uno in barriera di uscita per i **pezzi pronti** per essere prelevati
   
 ```C++
 bool ready = false;
