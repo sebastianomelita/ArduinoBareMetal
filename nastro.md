@@ -14,23 +14,23 @@ L'algoritmo proposto per la gestione di un nastro trasportatore fa uso delle pri
 ```C++
 // loop principale
 void loop() {
-	if(digitalRead(startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
+	if(digitalRead(startSensorLow)==HIGH){			// se è alto c'è stato un fronte di salita
 		engineon = true; 	
 		volo.stop();	
 		volo.reset();					// c'è almeno un pezzo in transito
-		waitUntilInputLow(startSensorLow,50);			// attendi finchè non c'è fronte di discesa
-	}else if(digitalRead(startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
+		waitUntilInputLow(startSensorLow,50);		// attendi finchè non c'è fronte di discesa
+	}else if(digitalRead(startSensorHigh)==HIGH){		// se è alto c'è stato un fronte di salita
 		engineon = true; 	
 		volo.stop();	
-		volo.reset();									// c'è almeno un pezzo in transito
-		waitUntilInputLow(startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
+		volo.reset();					// c'è almeno un pezzo in transito
+		waitUntilInputLow(startSensorHigh,50);		// attendi finchè non c'è fronte di discesa
 	}else if(digitalRead(stopSensor)==HIGH) {
 		engineon = false; 
 		volo.stop();
 		ready = true;
 		waitUntilInputLow(stopSensor,50);
 		engineon = true; 
-		volo.start(); 						// se c'è un pezzo in transito arriverà prima dello scadere
+		volo.start(); 					// se c'è un pezzo in transito arriverà prima dello scadere
 		volo.reset();
 	}
 	if(volo.get() > 10000){
