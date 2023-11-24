@@ -344,6 +344,185 @@ E' normalmente la soluzione più affidabile per la realizzazione di un pulsante 
 
 Il **riarmo** del pulsante di arresto, essendo meno problematico ai fini della sicurezza, invece avviene tramite una **funzione** nel **loop principale** che esegue il **debouncing SW** del tasto e la **selezione** del **fronte di discesa** dello stesso. 
 
+Versione con debouncing blocccante basato su delay:
+
+```C++
+/*
+Scrivere un programma che realizzi la gestione di un nastro traportatore attraverso la lettura di tre sensori 
+di transito e il comando di un motore.
+I sensori permangono al livello alto finchè un oggetto ingombra l'area del sensore, dopodichè vanno a livello basso. 
+I sensori sono due all'inizio del nastro (uno per i pezzi bassi ed un'altro per quelli alti) ed uno alla fine del nastro 
+che rileva il pezzo pronto per essere prelevato.
+All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta (blocca) il timer di volo.
+All'attivazione del sensore di uscita si blocca il nastro, alla sua disattivazione riparte il nastro e parte il timer di volo.
+Allo scadere del timer di volo si spegne il motore.
+*/
+#include <pthread.h> //libreria di tipo preemptive
+#include "urutils.h"
+#define DEBOUNCETIME 50
+pthread_t t1;
+pthread_t t2;
+bool engineon;  // variabile globale che memorizza lo stato del motore
+uint8_t safetystop;
+bool isrun;
+//gestione interrupt
+volatile unsigned long previousMillis = 0;
+volatile unsigned short numberOfButtonInterrupts = 0;
+//fine gestione interrupt
+
+typedef struct
+{
+	uint8_t id;
+	uint8_t startSensorHigh;
+	uint8_t startSensorLow;
+	uint8_t stopSensor;
+	uint8_t engineLed;
+	uint8_t lowStartLed;
+	uint8_t highStartLed;
+	uint8_t stopLed;
+	unsigned flyTime;
+	bool engineon;
+} Nastro;
+
+Nastro nastro1, nastro2;
+DiffTimer fly[2];
+
+void initNastri(){
+	// porte nastro 1
+	nastro1.id = 0;
+	nastro1.startSensorHigh=14;
+	nastro1.startSensorLow=12;
+	nastro1.stopSensor=13;
+	nastro1.engineLed=33;
+	nastro1.lowStartLed=26;
+	nastro1.highStartLed=25;
+	nastro1.stopLed=27;
+	nastro1.flyTime=4000;
+	// porte nastro 2
+	nastro2.id = 1;
+	nastro2.startSensorHigh=4;
+	nastro2.startSensorLow=2;
+	nastro2.stopSensor=15;
+	nastro2.engineLed=21;
+	nastro2.lowStartLed=18;
+	nastro2.highStartLed=19;
+	nastro2.stopLed=5;
+	nastro2.flyTime=8000;
+	// set porte nastro 1
+	pinMode(nastro1.engineLed, OUTPUT);
+	pinMode(nastro1.lowStartLed, OUTPUT);
+	pinMode(nastro1.highStartLed, OUTPUT);
+	pinMode(nastro1.stopLed, OUTPUT);
+	//pinMode(nastro1.motorCmd, OUTPUT);
+	pinMode(nastro1.startSensorHigh, INPUT);
+	pinMode(nastro1.startSensorLow, INPUT);
+	pinMode(nastro1.stopSensor, INPUT); 
+	// set porte nastro 2
+	pinMode(nastro2.engineLed, OUTPUT);
+	pinMode(nastro2.lowStartLed, OUTPUT);
+	pinMode(nastro2.highStartLed, OUTPUT);
+	pinMode(nastro2.stopLed, OUTPUT);
+	//pinMode(nastro2.motorCmd, OUTPUT);
+	pinMode(nastro2.startSensorHigh, INPUT);
+	pinMode(nastro2.startSensorLow, INPUT);
+	pinMode(nastro2.stopSensor, INPUT); 
+}
+
+void * beltThread(void * d)
+{
+		Nastro *n;
+    n = (Nastro *) d;
+    while(true){    	
+	String id = "Nastro "+String(n->id) + ": ";			
+	if(digitalRead(n->startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
+		n->engineon = true && isrun; 	
+		digitalWrite(n->engineLed, HIGH && isrun);
+		digitalWrite(n->lowStartLed, HIGH);
+		fly[n->id].stop();						// c'è almeno un pezzo in transito
+		fly[n->id].reset();
+		Serial.println(id+"Pezzo basso in ingresso");
+		Serial.println(id+"Timer di volo disattivato");
+		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
+		Serial.println(id+"Pezzo basso transitato in ingresso");
+		digitalWrite(n->lowStartLed, LOW);
+	}else if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
+		n->engineon = true && isrun; 	
+		digitalWrite(n->engineLed, HIGH && isrun);
+		digitalWrite(n->highStartLed, HIGH);
+		fly[n->id].stop();						 // c'è almeno un pezzo in transito
+		fly[n->id].reset();
+		Serial.println(id+"Pezzo alto in ingresso");
+		Serial.println(id+"Timer di volo disattivato");
+		waitUntilInputLow(n->startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
+		Serial.println(id+"Pezzo alto transitato in ingresso");
+		digitalWrite(n->highStartLed, LOW);
+	}else if(digitalRead(n->stopSensor)==HIGH) {
+		n->engineon = false; 		
+		digitalWrite(n->engineLed, LOW);
+		digitalWrite(n->stopLed, HIGH);
+		Serial.println(id+"Pezzo in uscita");
+		waitUntilInputLow(n->stopSensor,50);
+		Serial.println(id+"Pezzo prelevato dall'uscita");
+		n->engineon = true && isrun; 
+		digitalWrite(n->stopLed, LOW);
+		digitalWrite(n->engineLed, HIGH && isrun);
+		fly[n->id].reset();
+		fly[n->id].start();
+		Serial.println(id+"Timer di volo attivato");
+	}else if(fly[n->id].get() > n->flyTime){
+		String id = "Nastro "+String(n->id) + ": ";	 
+		n->engineon = false; 
+		digitalWrite(n->engineLed, LOW);
+		Serial.println(id+"Timer di volo scaduto");
+		fly[n->id].stop();
+		fly[n->id].reset();
+	}else if(!isrun){
+		fly[n->id].stop();
+		fly[n->id].reset();
+	}
+	delay(10);
+    }
+    return NULL;
+}
+
+void setup() {
+  Serial.begin(115200);
+  safetystop = 32;
+  pinMode(safetystop, INPUT);
+  attachInterrupt(digitalPinToInterrupt(safetystop), switchPressed, CHANGE );  
+  engineon= false;
+  isrun = true;
+  initNastri();
+  if (pthread_create(&t1, NULL, beltThread, (void *)&nastro1)) {
+         Serial.println("Errore creazione btnThread");
+  }
+  if (pthread_create(&t2, NULL, beltThread, (void *)&nastro2)) {
+         Serial.println("Errore creazione blinkThread");
+  } 
+}
+
+// Interrupt Service Routine (ISR)
+void switchPressed ()
+{
+  byte val = digitalRead(safetystop); // lettura stato pulsante
+	if(val==HIGH){ // fronte di salita
+		isrun = false; 				// impostazione dello stato dei nastri
+		digitalWrite(nastro1.engineLed, LOW);	               
+		digitalWrite(nastro2.engineLed, LOW);
+  }
+}  // end of switchPressed
+
+void loop() {
+	waitUntilInputLow(safetystop, 50);
+	isrun = true;
+	delay(10); 							// equivale a yeld() (10 per le simulazioni 0 in HW)
+}
+```
+
+https://wokwi.com/projects/382319808340761601
+
+Versione con debouncing non blocccante basato su polling:
+
 ```C++
 /*
 Scrivere un programma che realizzi la gestione di un nastro traportatore attraverso la lettura di tre sensori 
