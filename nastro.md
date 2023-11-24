@@ -79,7 +79,8 @@ void loop() {
 		engineon = true; 	
 		digitalWrite(engineLed, HIGH);
 		digitalWrite(lowStartLed, HIGH);
-		volo.stop();									// c'è almeno un pezzo in transito
+		volo.stop();
+		volo.reset();									// c'è almeno un pezzo in transito
 		Serial.println("Pezzo basso in ingresso");
 		Serial.println("Timer di volo disattivato");
 		waitUntilInputLow(startSensorLow,50);			// attendi finchè non c'è fronte di discesa
@@ -90,13 +91,15 @@ void loop() {
 		digitalWrite(engineLed, HIGH);
 		digitalWrite(highStartLed, HIGH);
 		volo.stop();									// c'è almeno un pezzo in transito
+		volo.reset();
 		Serial.println("Pezzo alto in ingresso");
 		Serial.println("Timer di volo disattivato");
 		waitUntilInputLow(startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
 		Serial.println("Pezzo alto transitato in ingresso");
 		digitalWrite(highStartLed, LOW);
 	}else if(digitalRead(stopSensor)==HIGH) {
-		engineon = false; 		
+		engineon = false;
+		volo.stop();	
 		digitalWrite(engineLed, LOW);
 		digitalWrite(stopLed, HIGH);
 		Serial.println("Pezzo in uscita");
@@ -106,7 +109,8 @@ void loop() {
 		digitalWrite(stopLed, LOW);
 		digitalWrite(engineLed, HIGH);
 		volo.start(); 						// se c'è un pezzo in transito arriverà prima dello scadere
-		Serial.println("Timer di volo attivato");
+		volo.reset();
+                Serial.println("Timer di volo attivato");
 	} else if(volo.get() > flyTime){
         	volo.stop();
         	volo.reset();
@@ -241,6 +245,7 @@ void * beltThread(void * d)
 		digitalWrite(n->engineLed, HIGH && isrun);
 		digitalWrite(n->lowStartLed, HIGH);
 		fly[n->id].stop();						// c'è almeno un pezzo in transito
+		fly[n->id].reset();
 		Serial.println(id+"Pezzo basso in ingresso");
 		Serial.println(id+"Timer di volo disattivato");
 		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
@@ -251,13 +256,15 @@ void * beltThread(void * d)
 		digitalWrite(n->engineLed, HIGH && isrun);
 		digitalWrite(n->highStartLed, HIGH);
 		fly[n->id].stop();						 // c'è almeno un pezzo in transito
+		fly[n->id].reset();
 		Serial.println(id+"Pezzo alto in ingresso");
 		Serial.println(id+"Timer di volo disattivato");
 		waitUntilInputLow(n->startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
 		Serial.println(id+"Pezzo alto transitato in ingresso");
 		digitalWrite(n->highStartLed, LOW);
 	}else if(digitalRead(n->stopSensor)==HIGH) {
-		n->engineon = false; 		
+		n->engineon = false;
+		fly[n->id].stop();	
 		digitalWrite(n->engineLed, LOW);
 		digitalWrite(n->stopLed, HIGH);
 		Serial.println(id+"Pezzo in uscita");
@@ -267,6 +274,7 @@ void * beltThread(void * d)
 		digitalWrite(n->stopLed, LOW);
 		digitalWrite(n->engineLed, HIGH && isrun);
 		fly[n->id].start();
+		fly[n->id].reset();
 		Serial.println(id+"Timer di volo attivato");
 	}else if(fly[n->id].get() > n->flyTime){
 		String id = "Nastro "+String(n->id) + ": ";	 
@@ -450,6 +458,7 @@ void * beltThread(void * d)
 		digitalWrite(n->engineLed, HIGH && isrun);
 		digitalWrite(n->lowStartLed, HIGH);
 		fly[n->id].stop();						// c'è almeno un pezzo in transito
+		fly[n->id].reset();
 		Serial.println(id+"Pezzo basso in ingresso");
 		Serial.println(id+"Timer di volo disattivato");
 		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
@@ -460,6 +469,7 @@ void * beltThread(void * d)
 		digitalWrite(n->engineLed, HIGH && isrun);
 		digitalWrite(n->highStartLed, HIGH);
 		fly[n->id].stop();						 // c'è almeno un pezzo in transito
+		fly[n->id].reset();
 		Serial.println(id+"Pezzo alto in ingresso");
 		Serial.println(id+"Timer di volo disattivato");
 		waitUntilInputLow(n->startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
@@ -475,6 +485,7 @@ void * beltThread(void * d)
 		n->engineon = true && isrun; 
 		digitalWrite(n->stopLed, LOW);
 		digitalWrite(n->engineLed, HIGH && isrun);
+		fly[n->id].reset();
 		fly[n->id].start();
 		Serial.println(id+"Timer di volo attivato");
 	}else if(fly[n->id].get() > n->flyTime){
