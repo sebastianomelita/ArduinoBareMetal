@@ -122,9 +122,10 @@ void loop() {
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/bKP671nY2MU-copy-of-nastrouno/editel?tenant=circuits
 
-I prossimi esempi sono realizzati adoperando la libreria che si può scaricare cliccando col tasto sinistro sul link urutils.h.
+## **URUTILS**
+I prossimi esercizi sono realizzati adoperando la libreria che si può scaricare cliccando col tasto sinistro sul link [urutils.h](urutils.h). 
 
-Una volta aperta la pagina, per scaricarla, premere la freccetta di download in alto a destra.
+Una volta aperta la pagina, per scaricarla premere la freccetta di download in alto a destra.
 
 ###  **Gestione di due nastri**
 
