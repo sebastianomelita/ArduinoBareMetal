@@ -52,6 +52,7 @@ void loop() {
 	}
 }
 ```
+Un esempio completo di elementi di segnalazione (led) e messaggistica di debug potrebbe essere:
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
