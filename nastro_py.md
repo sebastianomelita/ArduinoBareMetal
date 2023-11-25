@@ -32,6 +32,30 @@ L'algoritmo si divide in due **fasi** in cui vengono svolti due compiti (**task*
 - il polling dello **stato del timer** per stabilire se non ci sono più pezzi sul nastro e quindi **spegnere il motore**.
 
 ```python
+    if startSensorLow.value():
+        engineon = True
+        volo.stop()
+        volo.reset()
+        waitUntilInLow(startSensorLow,50)
+    elif startSensorHigh.value():
+        engineon = True
+        volo.stop()
+        volo.reset()
+        waitUntilInLow(startSensorHigh,50)
+    elif stopSensor.value():
+	volo.stop()
+        engineon = False
+        waitUntilInLow(startSensorHigh,50)
+        engineon = True
+        volo.start()
+	volo.reset()
+    elif volo.get() > flyTime:
+        volo.stop()
+        volo.reset()
+```
+
+
+```python
 #Alla pressione del pulsante si attiva o disattiva il lampeggo di un led
 import time
 from machine import Pin
