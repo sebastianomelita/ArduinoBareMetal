@@ -54,6 +54,7 @@ L'algoritmo si divide in due **fasi** in cui vengono svolti due compiti (**task*
         volo.reset()
 ```
 
+Un **esempio completo** per la gestione di un singolo nastro, corredato di elementi di segnalazione (led) e messaggistica di debug potrebbe essere:
 
 ```python
 #Alla pressione del pulsante si attiva o disattiva il lampeggo di un led
