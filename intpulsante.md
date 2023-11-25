@@ -169,7 +169,7 @@ void switchPressed ()
   byte val = digitalRead(safetystop); // lettura stato pulsante
   if(val==HIGH){ // fronte di salita
     pressed = true; // disarmo il pulsante
-  	digitalWrite(ENGINE, LOW); // blocco subito il motore
+    digitalWrite(ENGINE, LOW); // blocco subito il motore
   }
 }  
 void * taskDebounce(void *)
