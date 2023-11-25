@@ -85,6 +85,71 @@ Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/jWfXle1Us2
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348783670266430034
 
+### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SU DELAY**
+
+Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
+
+Il **ritardo** per il debouncing è realizzato con la ```waitUntilInputLow()``` nel loop principale, che utilizza internamente i ```delay()```. Il ritardo, utilizzando i ```delay()```, è un'operazione bloccante e quindi potenzialmente potrebbe interferire negativamente con tutti i task, all'interno del loop che hanno bisogno di essere eseguiti in parallelo al task del debouncer.
+
+```C++
+#include "urutils.h"
+const unsigned long DEBOUNCETIME = 50;
+const byte ENGINE = 13;
+const byte safetystop = 12;
+volatile unsigned short numberOfButtonInterrupts = 0;
+bool pressed;
+
+// Interrupt Service Routine (ISR)
+void switchPressed ()
+{
+  numberOfButtonInterrupts++; // contatore rimbalzi
+  byte val = digitalRead(safetystop); // lettura stato pulsante
+  if(val==HIGH){ // fronte di salita
+    pressed = true; // disarmo il pulsante
+  	digitalWrite(ENGINE, LOW); // blocco subito il motore
+  }
+}  
+
+bool waitUntilInterruptLOW(int pin)
+{   
+  if (pressed)//se il pulsante è ancora premuto
+  { 
+    waitUntilInputLow(pin, 50);
+    pressed = false; // riarmo il pulsante
+    Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
+    numberOfButtonInterrupts = 0; // reset del flag
+    Serial.println(" in DISCESA riarmo pulsante");
+    return true;
+  }
+  return false;
+}
+
+void setup ()
+{
+  Serial.begin(115200);
+  pinMode(ENGINE, OUTPUT);  	  // so we can update the LED
+  digitalWrite(ENGINE, HIGH);
+  digitalWrite(safetystop, LOW); 
+  // attach interrupt handler
+  attachInterrupt(digitalPinToInterrupt(safetystop), switchPressed, CHANGE);  
+  numberOfButtonInterrupts = 0;
+  pressed = false;
+}  // end of setup
+
+void loop ()
+{
+  if(waitUntilInterruptLOW(safetystop)){
+	digitalWrite(ENGINE, HIGH); // riattivo il motore
+  }
+  delay(10);
+}
+```
+
+Un debouncer come questo, basato su timer SW, benchè potenzialmente possa costringere il tasto a **tempi di riarmo** più **lunghi**, potrebbe essere **preferibile** alla controparte HW perchè non impegna affatto una risorsa così preziosa come un timer HW, soprattutto quando non ne esiste sul sistema una sua **versione logica** anch'essa **basata su interrupt** (ad esempio quelli forniti dalla **libreria Ticker**).
+
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/382390727185717249
+
+
 ### **PULSANTE TOGGLE CON DEBOUNCER BASATO SU TIMER HW**
 
 All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) ma anche **tempestiva** (più rapida possibile) del solo **fronte di salita** è stata usata la **combinazione** di due tecniche di schedulazione:
