@@ -85,7 +85,7 @@ Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/jWfXle1Us2
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348783670266430034
 
-### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SU DELAY**
+### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SUI DELAY**
 
 Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
 
