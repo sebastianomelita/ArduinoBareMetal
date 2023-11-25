@@ -14,7 +14,9 @@ Le **tecniche individuate** nella presente dispensa sono sostanzialmente **le st
 
 ### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SU TIMER SW (POLLING)**
 
-Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). Il **ritardo** per il debouncing è realizzatto senza delay() utilizzando un timer SW basato sul **polling** della funzione millis() nel loop principale. Il polling è un'operazione non bloccante e quindi non interferirebbe con nessun task all'interno del loop dove essa venisse eseguita.
+Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
+
+Il **ritardo** per il debouncing è realizzato senza delay() utilizzando un timer SW basato sul **polling** della funzione millis() nel loop principale. Il polling è un'operazione non bloccante e quindi non interferirebbe con nessun task all'interno del loop dove essa venisse eseguita.
 
 ```C++
 const unsigned long DEBOUNCETIME = 50;
