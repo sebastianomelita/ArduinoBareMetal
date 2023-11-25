@@ -162,7 +162,7 @@ void loop() {
 		engineon = true; 
 		digitalWrite(stopLed, LOW);
 		digitalWrite(engineLed, HIGH);
-		volo.start(); 						// se c'è un pezzo in transito arriverà prima dello scadere
+		volo.start(); 					// se c'è un pezzo in transito arriverà prima dello scadere
 		volo.reset();
                 Serial.println("Timer di volo attivato");
 	} else if(volo.get() > flyTime){
