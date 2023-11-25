@@ -523,7 +523,7 @@ void loop() {
 		waitUntilInputLow(safetystop, 50);
 		isrun = true;
 	}
-	delay(10); 					// equivale a yeld() (10 per le simulazioni 0 in HW)
+	delay(10); 				// equivale a yeld() (10 per le simulazioni 0 in HW)
 }
 ```
 
