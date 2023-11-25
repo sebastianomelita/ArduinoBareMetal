@@ -150,7 +150,7 @@ Simulazione su Esp32 con Wowki: https://wokwi.com/projects/382390727185717249
 
 Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
 
-Il **ritardo** per il debouncing è realizzato con la ```waitUntilInputLow()``` nel loop principale, che utilizza internamente i ```delay()```. Il ritardo, utilizzando i ```delay()```, è un'operazione bloccante e quindi potenzialmente potrebbe interferire negativamente con tutti i task, all'interno del loop che hanno bisogno di essere eseguiti in parallelo al task del debouncer.
+Il **ritardo** per il debouncing è realizzato con la ```waitUntilInputLow()``` ma stavolta non nel loop principale. Il ritardo, utilizza i ```delay()```,in un thrad separato che non può interferire con altri task.
 
 ```C++
 #include "urutils.h"
@@ -206,7 +206,7 @@ void loop ()
 	}
   delay(10);
 }
-
+```
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/382393152775960577
 
 ### **PULSANTE TOGGLE CON DEBOUNCER BASATO SU TIMER HW**
