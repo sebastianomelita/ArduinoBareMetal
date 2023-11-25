@@ -4,7 +4,7 @@
 
 ##  **NASTRO TRASPORTATORE**
 
-###  **Gestione di un singolo nastro**
+###  **Gestione di un nastro**
 
 Programma per la gestione di un nastro trasportatore realizzato con un **timer** basato sul polling della funzione ```millis()``` e su **rilevatori di transito** toggle basati su ```delay()```:
 
