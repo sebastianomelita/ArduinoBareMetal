@@ -334,7 +334,7 @@ void loop() {
 	}else{
 		isrun = true;
 	}
-	delay(10); 							// equivale a yeld() (10 per le simulazioni 0 in HW)
+	delay(10); 						// equivale a yeld() (10 per le simulazioni 0 in HW)
 }
 ```
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349524035968696915
