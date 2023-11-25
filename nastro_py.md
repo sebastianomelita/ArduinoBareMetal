@@ -94,6 +94,7 @@ while True:
         stopLed.off()
         engineLed.on()
         volo.start()
+	volo.reset()
         print("Timer di volo attivato")
     elif volo.get() > flyTime:
         volo.stop()
@@ -196,6 +197,7 @@ class Nastro(object):
                 print("Nastro", self.id, "Pezzo alto transitato in ingresso")
                 self.highStartLed.off()
             elif self.stopSensor.value():
+		self.volo.stop()
                 self.engineon = False
                 self.engineLed.off()
                 self.stopLed.on()
@@ -206,6 +208,7 @@ class Nastro(object):
                 self.stopLed.off()
                 self.engineLed.value(self.isRun)
                 self.volo.start()
+		volo.reset()
                 print("Nastro", self.id, "Timer di volo attivato")
     def checkTimer(self):
         if self.isRun and self.volo.get() > self.flyTime:
@@ -351,6 +354,7 @@ class Nastro(object):
                 print("Nastro", self.id, "Pezzo alto transitato in ingresso")
                 self.highStartLed.off()
             elif self.stopSensor.value():
+		self.volo.stop()
                 self.engineon = False
                 self.engineLed.off()
                 self.stopLed.on()
@@ -361,6 +365,7 @@ class Nastro(object):
                 self.stopLed.off()
                 self.engineLed.value(self.isRun)
                 self.volo.start()
+		self.volo.reset()
                 print("Nastro", self.id, "Timer di volo attivato")
     def checkTimer(self):
         if self.isRun and self.volo.get() > self.flyTime:
