@@ -51,7 +51,7 @@ void loop() {
 		waitUntilInputLow(stopSensor,50);
 		ready = false;
 		engineon = true; 
-		volo.start(); 					// se c'è un pezzo in transito arriverà prima dello scadere
+		volo.start(); 			// se c'è un pezzo in transito arriverà prima dello scadere
 		volo.reset();
 	}
 	if(volo.get() > 10000){
