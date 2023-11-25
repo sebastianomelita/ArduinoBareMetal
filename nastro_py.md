@@ -53,7 +53,7 @@ while True:
         engineon = True
         volo.start()
 	volo.reset()
-    elif volo.get() > flyTime:
+    volo.get() > flyTime:
         volo.stop()
         volo.reset()
 ```
