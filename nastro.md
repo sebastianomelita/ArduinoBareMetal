@@ -344,7 +344,9 @@ E' normalmente la soluzione più affidabile per la realizzazione di un pulsante 
 
 Il **riarmo** del pulsante di arresto, essendo meno problematico ai fini della sicurezza, invece avviene tramite una **funzione** nel **loop principale** che esegue il **debouncing SW** del tasto e la **selezione** del **fronte di discesa** dello stesso. 
 
-Per una discussione più completa sugli interrupt vedi [interrupt](nastro.md).
+Per una discussione più completa sugli interrupt vedi [interrupt](interruptsbase.md).
+
+Per una discussione più completa su pulsanti e interrupt vedi [interrupt pulsanti](intpulsante.md).
 
 Versione con debouncing blocccante basato su delay:
 
@@ -528,7 +530,9 @@ https://wokwi.com/projects/382319808340761601
 
 ###  **Gestione di due nastri e tasto emergenza con interrupt (debouncing non bloccante con polling)**
 
-Per una discussione più completa sugli interrupt vedi [interrupt](nastro.md).
+Per una discussione più completa sugli interrupt vedi [interrupt](interruptsbase.md).
+
+Per una discussione più completa su pulsanti e interrupt vedi [interrupt pulsanti](intpulsante.md).
 
 Versione con debouncing non blocccante basato su polling:
 
