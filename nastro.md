@@ -25,7 +25,11 @@ L'algoritmo gestisce **tre sensori** di barriera (rilevatori di transito):
 - uno in barriera di ingresso per i **pezzi alti** appena inseriti sul nastro
 - uno in barriera di ingresso per i **pezzi bassi** appena inseriti sul nastro
 - uno in barriera di uscita per i **pezzi pronti** per essere prelevati
-  
+
+L'algoritmo si divide in due **fasi** in cui vengono svolti due compiti (task) diversi:
+- la **lettura degli ingressi**, ovvero il controllo dello stato dei **sensori di transito**, sia quello dei **pezzi in ingresso** che quello dei **pezzi in uscita**
+- il polling dello **stato del timer** per stabilire se non ci sono più pezzi sul nastro e quindi **spegnere il motore**.
+
 ```C++
 bool ready = false;
 
