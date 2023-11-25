@@ -201,9 +201,9 @@ void setup ()
 
 void loop ()
 {
-  if(!pressed){// riavvio senza fretta il motore nel loop()
-		digitalWrite(ENGINE, HIGH); // riattivo il motore
-	}
+  if(!pressed){// riavvio, senza fretta, il motore nel loop()
+	digitalWrite(ENGINE, HIGH); // riattivo il motore
+  }
   delay(10);
 }
 ```
