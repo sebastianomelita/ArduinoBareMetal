@@ -11,6 +11,7 @@ La **gestione** di un **pulsante** mediante gli **interrupts** passa sostanzialm
 
 Le **tecniche individuate** nella presente dispensa sono sostanzialmente **le stesse** per quanto riguarda la prima fase di attivazione mentre **differiscono** nel modo con cui viene realizzato il **ritardo** necessario per il **debouncing**.
 
+Per una discussione più completa sugli interrupt vedi [interrupt](interruptsbase.md).
 
 ### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SU TIMER SW (POLLING)**
 
