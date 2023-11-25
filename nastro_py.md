@@ -83,6 +83,7 @@ while True:
         print("Pezzo alto transitato in ingresso")
         highStartLed.off()
     elif stopSensor.value():
+	volo.stop()
         engineon = False
         engineLed.off()
         stopLed.on()
