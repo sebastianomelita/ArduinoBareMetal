@@ -38,6 +38,7 @@ void setup() {
 }
 
 void loop() {
+	// lettura degli ingressi
 	if(digitalRead(startSensorLow)==HIGH){		// se è alto c'è stato un fronte di salita
 		engineon = true; 	
 		volo.stop();	
@@ -58,6 +59,7 @@ void loop() {
 		volo.start(); 		// se c'è un pezzo in transito arriverà prima dello scadere
 		volo.reset();
 	}
+	// polling del timer di volo
 	if(volo.get() > 10000){
         	volo.stop();
         	volo.reset();
