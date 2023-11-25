@@ -32,6 +32,10 @@ L'algoritmo si divide in due **fasi** in cui vengono svolti due compiti (**task*
 - il polling dello **stato del timer** per stabilire se non ci sono più pezzi sul nastro e quindi **spegnere il motore**.
 
 ```python
+
+ready = false
+
+while True:
     if startSensorLow.value():
         engineon = True
         volo.stop()
