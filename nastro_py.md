@@ -25,9 +25,8 @@ class DiffTimer(object):
         self.timerState = False
         self.last = 0
     def reset(self): # transizione di un pulsante
-	if self.timerState:
-	        self.elapsed = 0
-	        self.last = time.ticks_ms()
+	self.elapsed = 0
+	self.last = time.ticks_ms()
     def stop(self):
 	if self.timerState:
 	        self.timerState = False
