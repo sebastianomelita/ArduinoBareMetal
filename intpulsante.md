@@ -79,7 +79,7 @@ void loop ()
 }
 ```
 
-Un debouncer come questo, basato su timer SW, benchè potenzialmente possa costringere il tasto a **tempi di riarmo** più **lunghi**, potrebbe essere **preferibile** alla controparte HW perchè non impegna affatto una risorsa così preziosa come un timer HW, soprattutto quando non ne esiste sul sistema una sua **versione logica** anch'essa **basata su interrupt** (ad esempio quelli forniti dalla **libreria Ticker**).
+Un debouncer come questo, basato su timer SW, potrebbe essere **preferibile** alla controparte HW perchè non impegna affatto una risorsa così preziosa come un timer HW, soprattutto quando non ne esiste sul sistema una sua **versione logica** anch'essa **basata su interrupt** (ad esempio quelli forniti dalla **libreria Ticker**).
 
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/embed/jWfXle1Us2E?editbtn=1
 
@@ -145,9 +145,8 @@ void loop ()
 }
 ```
 
-Un debouncer come questo, basato su timer SW, benchè potenzialmente possa costringere il tasto a **tempi di riarmo** più **lunghi**, potrebbe essere **preferibile** alla controparte HW perchè non impegna affatto una risorsa così preziosa come un timer HW, soprattutto quando non ne esiste sul sistema una sua **versione logica** anch'essa **basata su interrupt** (ad esempio quelli forniti dalla **libreria Ticker**).
-
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/382390727185717249
+
 
 
 ### **PULSANTE TOGGLE CON DEBOUNCER BASATO SU TIMER HW**
