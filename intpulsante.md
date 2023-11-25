@@ -144,10 +144,70 @@ void loop ()
   delay(10);
 }
 ```
-
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/382390727185717249
 
+### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SUI DELAY IN UN THREAD A PARTE**
 
+Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
+
+Il **ritardo** per il debouncing è realizzato con la ```waitUntilInputLow()``` nel loop principale, che utilizza internamente i ```delay()```. Il ritardo, utilizzando i ```delay()```, è un'operazione bloccante e quindi potenzialmente potrebbe interferire negativamente con tutti i task, all'interno del loop che hanno bisogno di essere eseguiti in parallelo al task del debouncer.
+
+```C++
+#include "urutils.h"
+#include <pthread.h> //libreria di tipo preemptive
+const unsigned long DEBOUNCETIME = 50;
+const byte ENGINE = 13;
+const byte safetystop = 12;
+volatile unsigned short numberOfButtonInterrupts = 0;
+bool volatile pressed;
+pthread_t t_debounce;
+
+// Interrupt Service Routine (ISR)
+void switchPressed ()
+{
+  numberOfButtonInterrupts++; // contatore rimbalzi
+  byte val = digitalRead(safetystop); // lettura stato pulsante
+  if(val==HIGH){ // fronte di salita
+    pressed = true; // disarmo il pulsante
+  	digitalWrite(ENGINE, LOW); // blocco subito il motore
+  }
+}  
+void * taskDebounce(void *)
+{
+  while(true){    
+    if (pressed)//se il pulsante è ancora premuto
+    { 
+      waitUntilInputLow(safetystop, 50);
+      pressed = false; // riarmo il pulsante
+      Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
+      numberOfButtonInterrupts = 0; // reset del flag
+      Serial.println(" in DISCESA riarmo pulsante");
+    }
+  }
+}
+
+void setup ()
+{
+  Serial.begin(115200);
+  pinMode(ENGINE, OUTPUT);  	  // so we can update the LED
+  digitalWrite(ENGINE, HIGH);
+  digitalWrite(safetystop, LOW); 
+  // attach interrupt handler
+  attachInterrupt(digitalPinToInterrupt(safetystop), switchPressed, CHANGE);  
+  numberOfButtonInterrupts = 0;
+  pressed = false;
+  pthread_create(&t_debounce, NULL, taskDebounce, NULL);
+}  // end of setup
+
+void loop ()
+{
+  if(!pressed){// riavvio senza fretta il motore nel loop()
+		digitalWrite(ENGINE, HIGH); // riattivo il motore
+	}
+  delay(10);
+}
+
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/382393152775960577
 
 ### **PULSANTE TOGGLE CON DEBOUNCER BASATO SU TIMER HW**
 
