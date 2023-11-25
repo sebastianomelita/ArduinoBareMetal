@@ -7,7 +7,7 @@ Gli ingressi rilevati **tramite un interrupt** vengono sicuramente serviti in ma
 
 La **gestione** di un **pulsante** mediante gli **interrupts** passa sostanzialmente per **due fasi**:
 - l'**attivazione** asincrona e immediata su un fronte del valore della prota digitale di ingresso (di salita o di discesa)
-- **l'impostazione** del pulsante per una nuova attivazione (riarmo) che non è immediata, perchè prima del **tempo** va speso per lasciare **estinguere i rimbalzi** elettrici causati dai rimbalzi meccanici del pulsante.
+- **l'impostazione** del pulsante per una nuova attivazione (riarmo) che non è immediata, perchè, prima di consentire nuove pressioni, va speso del **tempo** per lasciare **estinguere i rimbalzi** elettrici causati dai rimbalzi meccanici del pulsante.
 
 Le **tecniche individuate** nella presente dispensa sono sostanzialmente **le stesse** per quanto riguarda la prima fase di attivazione mentre **differiscono** nel modo con cui viene realizzato il **ritardo** necessario per il **debouncing**.
 
