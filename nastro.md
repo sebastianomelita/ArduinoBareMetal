@@ -338,7 +338,7 @@ void loop() {
 ```
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349524035968696915
 
-###  **Gestione di due nastri e tasto emergenza con interrupt (debouncing con i delay)**
+###  **Gestione di due nastri e tasto emergenza con interrupt (debouncing bloccante con i delay)**
 
 E' normalmente la soluzione più affidabile per la realizzazione di un pulsante di emergenza dato che il **disarmo** del sistema avviene in un flusso di esecuzione **diretto** ed **indipendente** (parallelo) al flusso di esecuzione principale del programma.
 
@@ -524,7 +524,7 @@ void loop() {
 
 https://wokwi.com/projects/382319808340761601
 
-###  **Gestione di due nastri e tasto emergenza con interrupt (debouncing con polling)**
+###  **Gestione di due nastri e tasto emergenza con interrupt (debouncing non bloccante con polling)**
 
 Versione con debouncing non blocccante basato su polling:
 
