@@ -133,7 +133,7 @@ void loop() {
 		digitalWrite(engineLed, HIGH);
 		digitalWrite(lowStartLed, HIGH);
 		volo.stop();
-		volo.reset();									// c'è almeno un pezzo in transito
+		volo.reset();						// c'è almeno un pezzo in transito
 		Serial.println("Pezzo basso in ingresso");
 		Serial.println("Timer di volo disattivato");
 		waitUntilInputLow(startSensorLow,50);			// attendi finchè non c'è fronte di discesa
@@ -143,7 +143,7 @@ void loop() {
 		engineon = true; 	
 		digitalWrite(engineLed, HIGH);
 		digitalWrite(highStartLed, HIGH);
-		volo.stop();									// c'è almeno un pezzo in transito
+		volo.stop();						// c'è almeno un pezzo in transito
 		volo.reset();
 		Serial.println("Pezzo alto in ingresso");
 		Serial.println("Timer di volo disattivato");
@@ -269,7 +269,7 @@ void * beltThread(void * d)
 		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
 		Serial.println(id+"Pezzo basso transitato in ingresso");
 		digitalWrite(n->lowStartLed, LOW);
-	}else if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
+	}else if(digitalRead(n->startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
 		n->engineon = true && isrun; 	
 		digitalWrite(n->engineLed, HIGH && isrun);
 		digitalWrite(n->highStartLed, HIGH);
@@ -333,7 +333,7 @@ void loop() {
 	}else{
 		isrun = true;
 	}
-	delay(10); 											// equivale a yeld() (10 per le simulazioni 0 in HW)
+	delay(10); 							// equivale a yeld() (10 per le simulazioni 0 in HW)
 }
 ```
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349524035968696915
@@ -446,7 +446,7 @@ void * beltThread(void * d)
 		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
 		Serial.println(id+"Pezzo basso transitato in ingresso");
 		digitalWrite(n->lowStartLed, LOW);
-	}else if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
+	}else if(digitalRead(n->startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
 		n->engineon = true && isrun; 	
 		digitalWrite(n->engineLed, HIGH && isrun);
 		digitalWrite(n->highStartLed, HIGH);
@@ -508,7 +508,7 @@ void switchPressed ()
   pressed = true;
   byte val = digitalRead(safetystop); // lettura stato pulsante
   if(val==HIGH){ // fronte di salita
-	isrun = false; 				// impostazione dello stato dei nastri
+	isrun = false; 					// impostazione dello stato dei nastri
 	digitalWrite(nastro1.engineLed, LOW);	               
 	digitalWrite(nastro2.engineLed, LOW);
   }
@@ -520,7 +520,7 @@ void loop() {
 		waitUntilInputLow(safetystop, 50);
 		isrun = true;
 	}
-	delay(10); 							// equivale a yeld() (10 per le simulazioni 0 in HW)
+	delay(10); 					// equivale a yeld() (10 per le simulazioni 0 in HW)
 }
 ```
 
@@ -631,7 +631,7 @@ void * beltThread(void * d)
 		waitUntilInputLow(n->startSensorLow,50);			// attendi finchè non c'è fronte di discesa
 		Serial.println(id+"Pezzo basso transitato in ingresso");
 		digitalWrite(n->lowStartLed, LOW);
-	}else if(digitalRead(n->startSensorHigh)==HIGH){				// se è alto c'è stato un fronte di salita
+	}else if(digitalRead(n->startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
 		n->engineon = true && isrun; 	
 		digitalWrite(n->engineLed, HIGH && isrun);
 		digitalWrite(n->highStartLed, HIGH);
