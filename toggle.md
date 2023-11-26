@@ -8,8 +8,8 @@
 Si vuole realizzare un pulsante con una memoria dello stato che possa essere modificata ad ogni pressione. Pressionfche è stata dichiarata i successive in sequenza accendono e spengono un led. Quindi, a seconda da quando si comincia, pressioni in numero pari accendono mentre quelle in numero dispari spengono, oppure al contrario, pressioni in numero pari spengono mentre quelle in numero dispari accendono.
 
 Inizialmente si potrebbe essere tentati di provare seguente soluzione, adattando la strategia del pulsante precedente introducendo una variabile che conservi lo stato del pulsante che chiameremo _closed_.
-```C++
-byte in;
+	```C++
+	byte in;\
 byte pulsante =2;
 boolean closed=false; // stato pulsante
 void setup()
@@ -645,6 +645,8 @@ Simulazione online del codice precedente https://wokwi.com/projects/348705487464
 ### **Schedulatore basato su interrupts e debounce nella ISR**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
+
+**NON SI PUO' FARE!!!!!!!!!!!!!**
 
 All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) del solo **fronte di salita** è stata usata la **combinazione** di due tecniche di schedulazione:
 - una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
