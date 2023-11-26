@@ -657,7 +657,15 @@ Il **funzionamento** è comprensibile alla luce delle seguenti considerazioni:
 
 Pur utilizzando gli interrupt, l'efficacia del codice precedente in termini di velocità e responsività è limitata dalla **componente nel loop()** del meccanismo che purtroppo è sensibile ai ritardi di esecuzione. I **ritardi** possono essere introdotti da istruzioni delay() o da blocchi di istruzioni troppo lente. E'probabilmente una realizzazione **poco pratica**, soprattutto per **dispositivi di sicurezza**, perchè **la velocità** degli interrupts potrebbe essere vanificata dalla potenziale **lentezza** del polling del flag. 
 
-Una realizzazione di interrupt con debouncing SW che garantisce un intervento immediato è riportata in: [interruttore di sicurezza SW](intpulsante.md#**PULSANTE-DI-SICUREZZA-CON-DEBOUNCER-BASATO-SU-TIMER-SW-(POLLING)**)
+Per eliminare questo problema basta inserire l'**attuazione del toggle**
+```C++
+  if(stato){
+    digitalWrite(ENGINE, HIGH);
+  }else{
+    digitalWrite(ENGINE, LOW);
+  }
+```
+all'interno della ISR
 
 ```C++
 const unsigned long DEBOUNCETIME = 50;
