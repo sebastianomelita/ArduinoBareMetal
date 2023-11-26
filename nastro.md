@@ -719,7 +719,7 @@ void loop() {
 }
 ```
 
-Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349645533881565780
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/382475819352545281
 
 ###  **Gestione di due nastri e tasto emergenza con interrupt (debouncing non bloccante con polling nel loop)**
 
