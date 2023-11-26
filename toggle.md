@@ -650,7 +650,7 @@ All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura
 - una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
 - una **sincrona** (un polling), gestita dal sistema tramite un il polling della funzione millis(), per la realizzazione della funzione di debouncing (antirimbalzo) del segnale in ingresso.
 
-Il **funzionamento** è comprensibile alla luce delle seguenti considerazioni:
+Il **funzionamento** è agevolmente comprensibile alla luce delle seguenti considerazioni:
 - L'**interrupt** è attivo su **entrambi** i fronti. 
 - Al **momento della pressione** del pulsante si genera almeno un fronte di salita che attiva la ISR portando lo **stato del pulsante** da ```pressed=false``` a ```pressed=true```. Nello stesso momento, lo **stato del toggle** commuta facendo accendere il led se era spento o il contrario se era acceso. Successivi rimbalzi vengono filtrati dal debouncer sulla ISR e pertanto non generano commutazioni dello stato del toggle.
 - Al **momento del rilascio** del pulsante si genera almeno un fronte di discesa che attiva la ISR portando lo **stato del pulsante** da ```pressed=true``` a ```pressed=false```. In questa transizione non è prevista alcuna commutazione dello stato del toggle che, pertanto, rimane **immutato** al rilascio del pulsante. Successivi rimbalzi vengono filtrati dal debouncer sulla ISR e pertanto non generano commutazioni dello stato del toggle.
