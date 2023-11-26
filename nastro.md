@@ -683,21 +683,6 @@ void * beltThread(void * d)
     return NULL;
 }
 
-void setup() {
-  Serial.begin(115200);
-  safetystop = 32;
-  pinMode(safetystop, INPUT);
-  attachInterrupt(digitalPinToInterrupt(safetystop), switchPressed, CHANGE );  
-  engineon= false;
-  isrun = true;
-  initNastri();
-  if (pthread_create(&t1, NULL, beltThread, (void *)&nastro1)) {
-         Serial.println("Errore creazione btnThread");
-  }
-  if (pthread_create(&t2, NULL, beltThread, (void *)&nastro2)) {
-         Serial.println("Errore creazione blinkThread");
-  }
-
 // Interrupt Service Routine (ISR)
 void switchPressed () {
   if ((unsigned long)(millis() - previousMillis) > 50) {
@@ -714,7 +699,31 @@ void switchPressed () {
   }
 } // end of switchPressed
 
+void setup() {
+  Serial.begin(115200);
+  safetystop = 32;
+  pinMode(safetystop, INPUT);
+  attachInterrupt(digitalPinToInterrupt(safetystop), switchPressed, CHANGE );  
+  engineon= false;
+  isrun = true;
+  initNastri();
+  if (pthread_create(&t1, NULL, beltThread, (void *)&nastro1)) {
+         Serial.println("Errore creazione btnThread");
+  }
+  if (pthread_create(&t2, NULL, beltThread, (void *)&nastro2)) {
+         Serial.println("Errore creazione blinkThread");
+  }
+}
+
 void loop() {
+	//Serial.println(pressed);
+  if(!stato){
+    isrun = true; 	// impostazione dello stato dei nastri
+  }else{
+		//isrun = false; 	// impostazione dello stato dei nastri
+    //digitalWrite(nastro1.engineLed, LOW);	               
+    //digitalWrite(nastro2.engineLed, LOW);
+  }
    delay(1); 	   // equivale a yeld() (10 per le simulazioni 0 in HW)
 }
 ```
