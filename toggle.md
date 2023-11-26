@@ -686,7 +686,6 @@ void debounce() {
     }else{
        pressed = false;
     }
-
     previousMillis = millis();
   }
 }
