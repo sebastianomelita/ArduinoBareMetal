@@ -17,48 +17,77 @@ Per una discussione più completa sugli interrupt vedi [interrupt](interruptsbas
 
 Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
 
-Il **ritardo** per il debouncing è realizzato senza delay() utilizzando un timer SW basato sul **polling** della funzione millis() nella ISR (Interrupt Service Routine) dell'interrupt. Il polling è un'operazione non bloccante e quindi non interferisce con nessun task, ne all'interno dell'interrupt, tantomeno all'interno del loop().
+All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) del solo **fronte di salita** è stata usata la **combinazione** di due tecniche di schedulazione:
+- una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
+- una **sincrona** (un polling), gestita dal sistema tramite un il polling della funzione millis(), per la realizzazione della funzione di debouncing (antirimbalzo) del segnale in ingresso.
 
-Il codice precedente, nonostante il ritardo potenzialmente introdotto dal debouncing è ancora adatto a realizzare un **blocco di sicurezza** perchè l'attivazione sul fronte di salita è immediata dato che, al **primo hit** sul fronte di salita, la **condizione** per effettuare l'azione dell'interrupt è sempre rispettata. 
+Il **funzionamento** è agevolmente comprensibile alla luce delle seguenti considerazioni:
+- L'**interrupt** è attivo su **entrambi** i fronti. 
+- Al **momento della pressione** del pulsante si genera almeno un fronte di salita che, valutato nel ramo ```pressed==false``` delll'if, attiva la ISR portando lo **stato del pulsante** da ```pressed=false``` a ```pressed=true```. Nello stesso momento, lo **stato del toggle** commuta facendo accendere il led se era spento o il contrario se era acceso. Successivi rimbalzi vengono filtrati dal debouncer sulla ISR e pertanto non generano commutazioni dello stato del toggle.
+- Al **momento del rilascio** del pulsante si genera almeno un fronte di discesa che, valutato nel ramo ```pressed==true``` delll'if, attiva la ISR portando lo **stato del pulsante** da ```pressed=true``` a ```pressed=false```. In questa transizione non è prevista alcuna commutazione dello stato del toggle che, pertanto, rimane **immutato** al rilascio del pulsante. Successivi rimbalzi vengono filtrati dal debouncer sulla ISR e pertanto non generano commutazioni dello stato del toggle.
 
-La riattivazione del pulsante (riarmo) è invece effettuata nel loop principale mediante il polling del **flag pressed ** 
+Pur utilizzando gli interrupt, l'efficacia del codice precedente in termini di velocità e responsività è limitata dalla **componente nel loop()** del meccanismo che purtroppo è sensibile ai ritardi di esecuzione. I **ritardi** possono essere introdotti da istruzioni delay() o da blocchi di istruzioni troppo lente. E'probabilmente una realizzazione **poco pratica**, soprattutto per **dispositivi di sicurezza**, perchè **la velocità** degli interrupts potrebbe essere vanificata dalla potenziale **lentezza** del polling del flag. 
 
+Per eliminare questo problema basta inserire l'**attuazione del toggle**
+```C++
+  if(stato){
+    digitalWrite(ENGINE, HIGH);
+  }else{
+    digitalWrite(ENGINE, LOW);
+  }
+```
+all'interno della ISR.
+
+Un esempio con l'**attuazione nel loop** potrebbe essere:
 
 ```C++
 const unsigned long DEBOUNCETIME = 50;
 const byte ENGINE = 13;
 const byte BUTTONPIN = 12;
 volatile unsigned long previousMillis = 0;
+volatile bool stato = false;
 volatile bool pressed = false;
 
-void debounce() {
+// Interrupt Service Routine (ISR)
+void switchPressed () {
   if ((unsigned long)(millis() - previousMillis) > 50) {
-    digitalWrite(ENGINE, LOW);
+    if (!pressed) {
+      pressed = true;
+    } else {
+      pressed = false;
+    }
+    stato = !stato;
+    //Serial.println(pressed);
+    if (stato) {
+      digitalWrite(ENGINE, HIGH);
+    } else {
+      digitalWrite(ENGINE, LOW);
+    }
     previousMillis = millis();
-    pressed = true;
   }
-}
+} // end of switchPressed
 
 void setup ()
 {
   Serial.begin(115200);
   pinMode(BUTTONPIN, INPUT);
   pinMode(ENGINE, OUTPUT);  	  // so we can update the LED
-  digitalWrite(ENGINE, HIGH);
+  digitalWrite(ENGINE, LOW);
   // attach interrupt handler
-  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, RISING);
+  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), switchPressed, CHANGE);
 }  // end of setup
 
 void loop ()
 {
-  if (pressed) {
-    int val = digitalRead(BUTTONPIN);
-    if (val == LOW) {
-      pressed = false;
-      digitalWrite(ENGINE, HIGH);
+  //Serial.println(pressed);
+  /*
+    if(stato){
+    digitalWrite(ENGINE, HIGH);
+    }else{
+    digitalWrite(ENGINE, LOW);
     }
-  }
-  delay(10);
+  */
+  delay(1);
 }
 ```
 
