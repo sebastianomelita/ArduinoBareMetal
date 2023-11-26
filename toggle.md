@@ -676,7 +676,6 @@ const byte BUTTONPIN = 12;
 volatile unsigned long previousMillis = 0;
 volatile bool stato = false;
 volatile bool pressed = false;
-volatile unsigned short numberOfButtonInterrupts = 0;
 
 void debounce() {
   if ((unsigned long)(millis() - previousMillis) > 50) {
