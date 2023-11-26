@@ -694,7 +694,7 @@ void switchPressed () {
       digitalWrite(nastro2.engineLed, LOW);
     }else{
        pressed = false;   
-			 isrun = true; 	// impostazione dello stato dei nastri
+       isrun = true; 	// impostazione dello stato dei nastri
     }
     stato = !stato;
     previousMillis = millis();
