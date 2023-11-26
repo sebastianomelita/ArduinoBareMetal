@@ -642,7 +642,7 @@ Simulazione online del codice precedente https://wokwi.com/projects/348705487464
 
 **FreeRTOS** è un **SO per sistemi embedded** molto usato e dalle buone prestazioni che però, per l'utilizzo dei thread, espone delle **API proprietarie** che non possono essere usate su sistemi diversi da FreeRTOS. Per i thread è stato sviluppato da anni lo **standard POSIX** detto **phthread** che definisce in maniera **uniforme**, per **i sistemi** (Linux, Microsoft) e per i **linguaggi** (C, C++) ad esso aderenti, una serie di API che rendono il codice che contiene la programmazione dei thread molto **più portabile**.
 
-### **Schedulatore basato su interrupts e timer SW**
+### **Schedulatore basato su interrupts e debounce sulla ISR**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
 
@@ -734,6 +734,81 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```numberOfButtonIn
 L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previousMillis``` che è stata dichiarata come ```volatile``` e ha nel loop() una **sezione critica** intorno all'accesso in lettura su di essa.
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350016534055223891
+
+### **Schedulatore basato su interrupts e debounce sul loop*
+
+Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
+
+All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) del solo **fronte di salita** è stata usata la **combinazione** di due tecniche di schedulazione:
+- una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
+- una **sincrona** (un polling), gestita dal sistema tramite un il polling della funzione millis(), per la realizzazione della funzione di debouncing (antirimbalzo) del segnale in ingresso.
+
+Il **funzionamento** è comprensibile alla luce delle seguenti considerazioni:
+- L'**interrupt** è attivo su **entrambi** i fronti. 
+- Al **momento della pressione** del pulsante si genera almeno un fronte di salita che attiva la ISR portando lo **stato del pulsante** da ```pressed = false``` a ```pressed = true```. Nello stesso momento, lo **stato del toggle** commuta facendo accendere il led se era spento o il contrario se era acceso. Successivi rimbalzi vengono filtrati dal deouncer sulla ISR e pertanto non generano commutazioni dello stato del toggle.
+- Al **momento del rilascio** del pulsante si genera almeno un fronte di discesa che attiva la ISR portando lo **stato del pulsante** da ```pressed = true``` a ```pressed = false```. In questa transizione non è prevista alcuna commutazione dello stato del toggle che, pertanto, rimane immutato al rilascio del pulsante.
+
+Pur utilizzando gli interrupt, l'efficacia del codice precedente in termini di velocità e responsività è limitata dalla **componente nel loop()** del meccanismo che purtroppo è sensibile ai ritardi di esecuzione. I **ritardi** possono essere introdotti da istruzioni delay() o da blocchi di istruzioni troppo lente. E'probabilmente una realizzazione **poco pratica**, soprattutto per **dispositivi di sicurezza**, perchè **la velocità** degli interrupts potrebbe essere vanificata dalla potenziale **lentezza** del polling del flag. 
+
+Una realizzazione di interrupt con debouncing SW che garantisce un intervento immediato è riportata in: [interruttore di sicurezza SW](intpulsante.md#**PULSANTE-DI-SICUREZZA-CON-DEBOUNCER-BASATO-SU-TIMER-SW-(POLLING)**)
+
+```C++
+const unsigned long DEBOUNCETIME = 50;
+const byte ENGINE = 13;
+const byte BUTTONPIN = 12;
+volatile unsigned long previousMillis = 0;
+volatile bool stato = false;
+volatile bool pressed = false;
+volatile unsigned short numberOfButtonInterrupts = 0;
+
+void debounce() {
+  if ((unsigned long)(millis() - previousMillis) > 50) {
+    if(!pressed){
+      stato = !stato;
+      pressed = true;
+    }else{
+       pressed = false;
+    }
+
+    previousMillis = millis();
+  }
+}
+
+void setup ()
+{
+  Serial.begin(115200);
+  pinMode(BUTTONPIN, INPUT);
+  pinMode(ENGINE, OUTPUT);  	  // so we can update the LED
+  digitalWrite(ENGINE, LOW);
+  // attach interrupt handler
+  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, CHANGE);
+}  // end of setup
+
+void loop ()
+{
+  //Serial.println(pressed);
+  if(stato){
+    digitalWrite(ENGINE, HIGH);
+  }else{
+    digitalWrite(ENGINE, LOW);
+  }
+  delay(1);
+}
+```
+
+Le variabili **condivise** tra una ISR e il loop() andrebbero protette da accessi **paralleli** da parte di quellew due funzioni tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono sempre essere dichiarate con il qualificatore ```volatile``` per forzarne la modifica istantanea anche sui registri della CPU. 
+
+Gli **accessi paralleli** non sono un problema quando le **istruzioni** sono **atomiche**, cioè non interrompibili. Le istruzioni atomiche o sono eseguite per intero o non sono eseguite affatto. In questo caso gli **accessi**, sia in lettura che in scrittura, sono in realtà, a basso livello, **intrinsecamente sequenziali**.
+
+Nei microcontrollori attuali, in genere **nessuna istruzione** gode della proprietà di essere **atomica** con una sola eccezione per la lettura e scrittura delle **variabili ad 8 bit**. Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio macchina) è intrinsecamente garantito essere **atomico**. Per queste variabili rimane comunque la necessita dell'uso del qualificatore ```volatile```.
+
+Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **non atomiche**, pertanto le variabili a 16 o 32 bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati di default durante una routine di servizio di interrupt, quindi, non potendo verificarsi il danneggiamento di una variabile multibyte in una ISR, le **sezioni critiche** vanno inserite soltanto nel ```loop()```.
+
+Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```numberOfButtonInterrupts```, ```prevState``` e ```lastState``` che sono stata semplicemente dichiarate come ```volatile``` senza sezioni critiche su di essa.
+
+L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previousMillis``` che è stata dichiarata come ```volatile``` e ha nel loop() una **sezione critica** intorno all'accesso in lettura su di essa.
+
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/382412230893414401
 
 
 ### **Schedulatore basato su interrupts e timer HW**
