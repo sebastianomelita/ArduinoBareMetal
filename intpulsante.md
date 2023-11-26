@@ -13,7 +13,57 @@ Le **tecniche individuate** nella presente dispensa sono sostanzialmente **le st
 
 Per una discussione più completa sugli interrupt vedi [interrupt](interruptsbase.md).
 
-### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SU TIMER SW (POLLING)**
+### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SU POLLING NELLA ISR**
+
+Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
+
+Il **ritardo** per il debouncing è realizzato senza delay() utilizzando un timer SW basato sul **polling** della funzione millis() nella ISR (Interrupt Service Routine) dell'interrupt. Il polling è un'operazione non bloccante e quindi non interferisce con nessun task, ne all'interno dell'interrupt, tantomeno all'interno del loop().
+
+Il codice precedente, nonostante il ritardo potenzialmente introdotto dal debuncong è ancora adatto a realizzare un **blocco di sicurezza** perchè l'attivazione sul fronte di salita è immediata dato che al **primo hit** sul fronte di salita la **condizione** per effettuare l'azione dell'interrupt è sempre rispettata. 
+
+```C++
+const unsigned long DEBOUNCETIME = 50;
+const byte ENGINE = 13;
+const byte BUTTONPIN = 12;
+volatile unsigned long previousMillis = 0;
+volatile bool pressed = false;
+
+void debounce() {
+  if ((unsigned long)(millis() - previousMillis) > 50) {
+    digitalWrite(ENGINE, LOW);
+    previousMillis = millis();
+    pressed = true;
+  }
+}
+
+void setup ()
+{
+  Serial.begin(115200);
+  pinMode(BUTTONPIN, INPUT);
+  pinMode(ENGINE, OUTPUT);  	  // so we can update the LED
+  digitalWrite(ENGINE, HIGH);
+  // attach interrupt handler
+  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, RISING);
+}  // end of setup
+
+void loop ()
+{
+  if (pressed) {
+    int val = digitalRead(BUTTONPIN);
+    if (val == LOW) {
+      pressed = false;
+      digitalWrite(ENGINE, HIGH);
+    }
+  }
+  delay(10);
+}
+```
+
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/3QmVpaduHFP-copy-of-interruttore-di-sicurezza-con-riarmo-con-polling/editel?tenant=circuits
+
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/382412230893414401
+
+### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SU POLLING NEL LOOP**
 
 Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
 
