@@ -665,7 +665,9 @@ Per eliminare questo problema basta inserire l'**attuazione del toggle**
     digitalWrite(ENGINE, LOW);
   }
 ```
-all'interno della ISR
+all'interno della ISR.
+
+Un esempio con l'**attuazione nel loop** potrebbe essere:
 
 ```C++
 const unsigned long DEBOUNCETIME = 50;
