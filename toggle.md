@@ -646,8 +646,6 @@ Simulazione online del codice precedente https://wokwi.com/projects/348705487464
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
 
-**NON SI PUO' FARE!!!!!!!!!!!!!**
-
 All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) del solo **fronte di salita** è stata usata la **combinazione** di due tecniche di schedulazione:
 - una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
 - una **sincrona** (un polling), gestita dal sistema tramite un il polling della funzione millis(), per la realizzazione della funzione di debouncing (antirimbalzo) del segnale in ingresso.
