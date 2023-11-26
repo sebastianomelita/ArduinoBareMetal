@@ -545,6 +545,7 @@ Versione con debouncing non blocccante basato su polling all'interno della ISR (
 
 ```C++
 /*
+/*
 Scrivere un programma che realizzi la gestione di un nastro traportatore attraverso la lettura di tre sensori 
 di transito e il comando di un motore.
 I sensori permangono al livello alto finchè un oggetto ingombra l'area del sensore, dopodichè vanno a livello basso. 
@@ -693,6 +694,7 @@ void switchPressed () {
       digitalWrite(nastro2.engineLed, LOW);
     }else{
        pressed = false;   
+			 isrun = true; 	// impostazione dello stato dei nastri
     }
     stato = !stato;
     previousMillis = millis();
@@ -717,14 +719,14 @@ void setup() {
 
 void loop() {
 	//Serial.println(pressed);
-  if(!stato){
-    isrun = true; 	// impostazione dello stato dei nastri
-  }else{
+  //if(!stato){
+  //  isrun = true; 	// impostazione dello stato dei nastri
+  //}else{
 		//isrun = false; 	// impostazione dello stato dei nastri
     //digitalWrite(nastro1.engineLed, LOW);	               
     //digitalWrite(nastro2.engineLed, LOW);
-  }
-   delay(1); 	   // equivale a yeld() (10 per le simulazioni 0 in HW)
+  //}
+  delay(1); 	   // equivale a yeld() (10 per le simulazioni 0 in HW)
 }
 ```
 
