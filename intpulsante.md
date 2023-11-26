@@ -19,7 +19,10 @@ Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare
 
 Il **ritardo** per il debouncing è realizzato senza delay() utilizzando un timer SW basato sul **polling** della funzione millis() nella ISR (Interrupt Service Routine) dell'interrupt. Il polling è un'operazione non bloccante e quindi non interferisce con nessun task, ne all'interno dell'interrupt, tantomeno all'interno del loop().
 
-Il codice precedente, nonostante il ritardo potenzialmente introdotto dal debuncong è ancora adatto a realizzare un **blocco di sicurezza** perchè l'attivazione sul fronte di salita è immediata dato che al **primo hit** sul fronte di salita la **condizione** per effettuare l'azione dell'interrupt è sempre rispettata. 
+Il codice precedente, nonostante il ritardo potenzialmente introdotto dal debouncing è ancora adatto a realizzare un **blocco di sicurezza** perchè l'attivazione sul fronte di salita è immediata dato che, al **primo hit** sul fronte di salita, la **condizione** per effettuare l'azione dell'interrupt è sempre rispettata. 
+
+La riattivazione del pulsante (riarmo) è invece effettuata nel loop principale mediante il polling del **flag pressed ** 
+
 
 ```C++
 const unsigned long DEBOUNCETIME = 50;
