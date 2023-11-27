@@ -19,6 +19,10 @@ Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare
 
 Il **ritardo** per il debouncing è realizzato senza delay() utilizzando un timer SW basato sul **polling** della funzione millis() nella ISR. Il polling è un'operazione non bloccante e quindi non rallenta la ISR e neppure interferisce con altri task, ne all'interno della ISR dove essa viene eseguita, ne all'interno del loop() principale.
 
+Alla **prima commutazione**, cioè una **pressione** del pulsante, un **qualunque fronte** (sia di salita che di discesa) genera la **commutazione** dello stato (da acceso a spento in questo caso).
+
+Alla **seconda commutazione**, cioè un **rilascio** del pulsante, un **qualunque fronte** (sia di salita che di discesa) genera la **commutazione** dello stato (da spento ad acceso in questo caso).
+
 ```C++
 const unsigned long DEBOUNCETIME = 50;
 const byte ENGINE = 13;
@@ -31,9 +35,9 @@ void debounce() {
   if ((unsigned long)(millis() - previousMillis) > 50) {
     stato = !stato;
     if (stato) {
-      digitalWrite(ENGINE, HIGH);
-    } else {
       digitalWrite(ENGINE, LOW);
+    } else {
+      digitalWrite(ENGINE, HIGH);
     }
     previousMillis = millis();
   }
