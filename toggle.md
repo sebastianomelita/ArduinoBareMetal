@@ -680,11 +680,6 @@ volatile bool prevpressed = false;
 
 void debounce() {
   if ((unsigned long)(millis() - previousMillis) > 50) {
-    if(digitalRead(BUTTONPIN)){
-      pressed = false;
-    }else{
-      pressed = true;
-    }
     // elimina i valori 11 o 00 (non generano commutazioni di stato)
     if(prevpressed == pressed)
       pressed = !pressed;
