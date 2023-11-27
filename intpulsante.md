@@ -51,8 +51,6 @@ void setup ()
 
 void loop ()
 {
-  //Serial.println(pressed);
-
   delay(10);
 }
 ```
