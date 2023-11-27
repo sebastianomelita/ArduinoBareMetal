@@ -13,6 +13,53 @@ Le **tecniche individuate** nella presente dispensa sono sostanzialmente **le st
 
 Per una discussione più completa sugli interrupt vedi [interrupt](interruptsbase.md).
 
+### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SU POLLING NELLA ISR**
+
+Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
+
+Il **ritardo** per il debouncing è realizzato senza delay() utilizzando un timer SW basato sul **polling** della funzione millis() nella ISR. Il polling è un'operazione non bloccante e quindi non rallenta la ISR e neppure interferisce con altri task, ne all'interno della ISR dove essa viene eseguita, ne all'interno del loop() principale.
+
+```C++
+const unsigned long DEBOUNCETIME = 50;
+const byte ENGINE = 13;
+const byte BUTTONPIN = 12;
+volatile unsigned long previousMillis = 0;
+volatile bool stato = false;
+volatile bool pressed = false;
+volatile bool prevpressed = false;
+
+void debounce() {
+  if ((unsigned long)(millis() - previousMillis) > 50) {
+    stato = !stato;
+    if (stato) {
+      digitalWrite(ENGINE, HIGH);
+    } else {
+      digitalWrite(ENGINE, LOW);
+    }
+    previousMillis = millis();
+  }
+}
+
+void setup ()
+{
+  Serial.begin(115200);
+  pinMode(BUTTONPIN, INPUT);
+  pinMode(ENGINE, OUTPUT);  	  // so we can update the LED
+  digitalWrite(ENGINE, LOW);
+  // attach interrupt handler
+  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, CHANGE);
+}  // end of setup
+
+void loop ()
+{
+  //Serial.println(pressed);
+
+  delay(10);
+}
+```
+
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/382587985839264769
+
 ### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SU POLLING NEL LOOP**
 
 Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
