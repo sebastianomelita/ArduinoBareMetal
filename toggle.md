@@ -692,7 +692,7 @@ void debounce() {
     prevpressed = pressed;
 
     Serial.println("pressed: "+String(pressed));
-    if(!pressed){
+    if(pressed){
       stato = !stato;
       pressed = true;
     }else{
