@@ -71,6 +71,7 @@ Un **esempio completo** per la gestione di un singolo nastro, corredato di eleme
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include "urutils"
 byte startSensorHigh = 4;
 byte startSensorLow = 3;
 byte stopSensor = 2;
@@ -80,46 +81,7 @@ byte highStartLed = 8;
 byte stopLed = 11;
 unsigned flyTime = 4000; //tempo di volo di un pezzo sul nastro
 bool engineon;  // variabile globale che memorizza lo stato del motore
-
-struct DiffTimer {
-	unsigned long elapsed, last;
-	bool timerState=false;
-	void reset(){
-		elapsed = 0;
-		last = millis();
-	}
-	void stop(){
-		if(timerState){
-			timerState = false;
-    	                elapsed += millis() - last;
-		}	
-	}
-	void start(){
-		if(!timerState){
-			timerState = true;
-			last = millis();
-		}
-	}
-	unsigned long get(){
-		if(timerState){
-			return millis() - last + elapsed;
-		}
-		return elapsed;
-	}
-	void set(unsigned long e){
-		reset();
-		elapsed = e;
-	}
-} volo;
-
-// attesa evento con tempo minimo di attesa
-void waitUntilInputLow(int btn, unsigned t)
-{
-    while(!digitalRead(btn)==LOW){
-	    delay(t);
-    }
-}
-  
+ 
 void setup() {
   Serial.begin(115200);
   pinMode(engineLed, OUTPUT);
