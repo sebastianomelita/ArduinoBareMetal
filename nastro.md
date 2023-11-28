@@ -71,7 +71,7 @@ Un **esempio completo** per la gestione di un singolo nastro, corredato di eleme
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-#include "urutils"
+#include "urutils.h"
 byte startSensorHigh = 4;
 byte startSensorLow = 3;
 byte stopSensor = 2;
