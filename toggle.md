@@ -731,8 +731,8 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```numberOfButtonIn
 
 L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previousMillis``` che è stata dichiarata come ```volatile``` e ha nel loop() una **sezione critica** intorno all'accesso in lettura su di essa.
 
-Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/382412230893414401
-Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/382412230893414401
+- Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/382412230893414401
+- Simulazione online su ESP32 di una variante del codice precedente con Wowki: https://wokwi.com/projects/382412230893414401
 
 ### **Schedulatore basato su interrupts e debounce nel loop**
 
