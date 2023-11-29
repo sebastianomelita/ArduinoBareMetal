@@ -649,7 +649,7 @@ Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinter
 
 All'**ingresso** di una **porta digitale**, per ottenere la rilevazione **sicura** (senza rimbalzi) del solo **fronte di salita** è stata usata la **combinazione** di due tecniche di schedulazione:
 - una **asincrona** (una ISR), non governata dal sistema, ma da un segnale di **interrupt** in ingresso proveniente dall'**esterno**, per la determinazione istantanea (o quasi) del suo fronte di salita per poter elaborare la risposta il più vicino possibile all'evento che la ha causata.
-- una **sincrona** (un polling), gestita dal sistema tramite un il polling della funzione millis(), per la realizzazione della funzione di debouncing (antirimbalzo) del segnale in ingresso.
+
 
 Il **funzionamento** è agevolmente comprensibile alla luce delle seguenti considerazioni:
 - L'**interrupt** è attivo su **entrambi** i fronti. 
@@ -731,6 +731,7 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```numberOfButtonIn
 
 L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previousMillis``` che è stata dichiarata come ```volatile``` e ha nel loop() una **sezione critica** intorno all'accesso in lettura su di essa.
 
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/382412230893414401
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/382412230893414401
 
 ### **Schedulatore basato su interrupts e debounce nel loop**
