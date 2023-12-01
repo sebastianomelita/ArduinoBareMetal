@@ -679,23 +679,25 @@ volatile unsigned long previousMillis = 0;
 volatile bool stato = false;
 volatile bool pressed = false;
 volatile bool prevpressed = false;
+volatile int count1 = 0;
+volatile int count2 = 0;
 
 void debounce() {
   if ((unsigned long)(millis() - previousMillis) > 50) {
-    // elimina i valori 11 o 00 (non generano commutazioni di stato)
-    if(prevpressed == pressed)
-      pressed = !pressed;
-
-    prevpressed = pressed;
-
-    Serial.println("pressed: "+String(pressed));
-    if(pressed){
+     Serial.println(count1);
+     count1=0;
+    if(!pressed){
       stato = !stato;
       pressed = true;
+      attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, FALLING);
     }else{
       pressed = false;
+      attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, RISING);
     }
     previousMillis = millis();
+    Serial.println("pressed: "+String(pressed));
+  }else{
+    count1++;
   }
 }
 
@@ -706,7 +708,7 @@ void setup ()
   pinMode(ENGINE, OUTPUT);  	  // so we can update the LED
   digitalWrite(ENGINE, LOW);
   // attach interrupt handler
-  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, RISING);
 }  // end of setup
 
 void loop ()
@@ -717,7 +719,7 @@ void loop ()
   }else{
     digitalWrite(ENGINE, LOW);
   }
-  delay(1);
+  delay(10);
 }
 ```
 
