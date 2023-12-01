@@ -684,8 +684,8 @@ volatile int count2 = 0;
 
 void debounce() {
   if ((unsigned long)(millis() - previousMillis) > 50) {
-     Serial.println(count1);
-     count1=0;
+    Serial.println(count1);
+    count1=0;
     if(!pressed){
       stato = !stato;
       pressed = true;
