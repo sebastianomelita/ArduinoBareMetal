@@ -116,7 +116,6 @@ void loop() {
 		digitalWrite(highStartLed, LOW);
 	}else if(digitalRead(stopSensor)==HIGH) {
 		engineon = false;
-		volo.stop();	
 		digitalWrite(engineLed, LOW);
 		digitalWrite(stopLed, HIGH);
 		Serial.println("Pezzo in uscita");
