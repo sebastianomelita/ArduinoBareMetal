@@ -49,7 +49,6 @@ void loop() {
 		waitUntilInputLow(startSensorLow,50);	// attendi finchè non c'è fronte di discesa
 	}else if(digitalRead(stopSensor)==HIGH) {
 		engineon = false; 
-		volo.stop();
 		ready = true;
 		waitUntilInputLow(stopSensor,50);
 		ready = false;
