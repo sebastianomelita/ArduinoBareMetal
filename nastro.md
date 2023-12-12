@@ -99,8 +99,7 @@ void loop() {
 		engineon = true; 	
 		digitalWrite(engineLed, HIGH);
 		digitalWrite(lowStartLed, HIGH);
-		volo.stop();
-		volo.reset();						// c'è almeno un pezzo in transito
+		volo.stop();						// c'è almeno un pezzo in transito				
 		Serial.println("Pezzo basso in ingresso");
 		Serial.println("Timer di volo disattivato");
 		waitUntilInputLow(startSensorLow,50);			// attendi finchè non c'è fronte di discesa
@@ -111,7 +110,6 @@ void loop() {
 		digitalWrite(engineLed, HIGH);
 		digitalWrite(highStartLed, HIGH);
 		volo.stop();						// c'è almeno un pezzo in transito
-		volo.reset();
 		Serial.println("Pezzo alto in ingresso");
 		Serial.println("Timer di volo disattivato");
 		waitUntilInputLow(startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
