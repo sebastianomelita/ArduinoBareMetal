@@ -41,13 +41,11 @@ void loop() {
 	// lettura degli ingressi
 	if(digitalRead(startSensorHigh)==HIGH){		// se è alto c'è stato un fronte di salita
 		engineon = true; 	
-		volo.stop();	
-		volo.reset();				// c'è almeno un pezzo in transito
+		volo.stop();				// c'è almeno un pezzo in transito			
 		waitUntilInputLow(startSensorHigh,50);	// attendi finchè non c'è fronte di discesa
 	}else if(digitalRead(startSensorLow)==HIGH){	// se è alto c'è stato un fronte di salita
 		engineon = true; 	
-		volo.stop();	
-		volo.reset();				// c'è almeno un pezzo in transito
+		volo.stop();				// c'è almeno un pezzo in transito				
 		waitUntilInputLow(startSensorLow,50);	// attendi finchè non c'è fronte di discesa
 	}else if(digitalRead(stopSensor)==HIGH) {
 		engineon = false; 
