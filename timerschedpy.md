@@ -152,7 +152,7 @@ Esistono dei limiti nel **numero dei timer HW** a bordo di un sistema a microcon
 
 Se i **task** da mandare in esecuzione **in parallelo** sono in numero maggiore dei **timer allocabili** (HW o virtuali) allora bisogna condividere un timer tra più task e per questo scopo si possono usare le solite tecniche di schedulazione che permettono, a fronte di un tempo comune (tempo base), di generare i **tempi propri** di ciascun task. Invocando lo schedulatore in corrispondenza del momento dello **scadere (elapsed)** di questi tempi, viene invocata la funzione (o il blocco di codice) del task.
 
-<img src="schdulatore_generico.jpg" alt="alt text" width="800">
+<img src="schdulatore_generico.jpg" alt="alt text" width="1000">
 
 ### **TIMERS HW SCHEDULATO TRAMITE CONTEGGIO DEI TIMES TICK**
 
