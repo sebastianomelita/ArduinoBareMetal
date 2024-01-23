@@ -70,11 +70,13 @@ Esistono **limitazioni speciali** su ciò che può e non può essere fatto all'i
 
 ### **Timers SW vs Timer HW**
 
-S e si desidera controllare una **scadenza**, cioè vedere se è passato il tempo necessario per compiere una certa **azione** (modificare una variabile o chiamare una funzione)
-- 
+Se con la funzione ```get()``` di un **timer SW** si desiderasse controllare una **scadenza**, cioè vedere se è passato il tempo necessario per compiere una certa **azione** (modificare una variabile o chiamare una funzione) si deve:
+- valutare il confronto ```get() > timeout``` ed eseguire l'azione prevista al timeout (scadenza) del timer
+- eseguire la valutazione periodicamente
 
+Le due condizioni precedenti si traducono nell'azione di eseguire il polling della funzione ```get()``` nel ```loop()```. ALla massima velocità o ogni tot millisecondi. 
 
-I timer SW possono essere utilizzati per
+Se volessimo fare la stessa cosa con un **timer HW** allora ci si rende conto che il polling non è più necessario perchè, al timeout, è adesso un segnale HW che chiama l'ISR del timer che, a sua volta, comanda l'esecuzione di una callback.
 
 ### **I TIMERS VIRTUALI DI ESP32**
 
