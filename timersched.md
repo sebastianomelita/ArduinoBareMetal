@@ -195,7 +195,7 @@ void setup() {
   pinMode(led_rosso, OUTPUT);
   pinMode(led_giallo, OUTPUT);
   digitalWrite(led_verde, HIGH);
-  onceTicker.once_ms(6000, verde_giallo );
+  onceTicker.once_ms(tverde, verde_giallo );
 }
  
 void loop() {
