@@ -70,6 +70,10 @@ Esistono **limitazioni speciali** su ciò che può e non può essere fatto all'i
 
 ### **Timers SW vs Timer HW**
 
+S e si desidera controllare una **scadenza**, cioè vedere se è passato il tempo necessario per compiere una certa **azione** (modificare una variabile o chiamare una funzione)
+- 
+
+
 I timer SW possono essere utilizzati per
 
 ### **I TIMERS VIRTUALI DI ESP32**
