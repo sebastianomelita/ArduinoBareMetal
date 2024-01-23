@@ -199,8 +199,8 @@ void setup() {
 }
  
 void loop() {
-	//int count = 0;
-	delay(10);
+  //int count = 0;
+  delay(10);
 }
 ```
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/387700784888357889
