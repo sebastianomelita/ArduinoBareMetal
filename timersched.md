@@ -68,6 +68,9 @@ Esistono **limitazioni speciali** su ciò che può e non può essere fatto all'i
 - In genere, in molte implementazioni, callback diverse di uno stesso timer vengono eseguite **in sequenza** e non su thread paralleli per cui operazioni bloccanti come le ```delay()```, oltre a causare possibili **instabilità** (sono ISR basate su interrupt), **ritardano** l'esecuzione delle callback **a seguire**.
 - eseguire **task complessi** con un timer HW è possibile a patto che questi vengano resi interrompibili senza creare problemi, e ciò si può ottenere eseguendoli in un **altro thread** o nel **loop principale**. Nel **loop principale**, un **task complesso** può sempre essere immediatamente attivato da una ISR che asserisce un opportuno **flag di avvio**.
 
+### **Timers SW vs Timer HW**
+
+I timer SW possono essere utilizzati per
 
 ### **I TIMERS VIRTUALI DI ESP32**
 
