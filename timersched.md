@@ -72,7 +72,7 @@ Esistono **limitazioni speciali** su ciò che può e non può essere fatto all'i
 
 Se con la funzione ```get()``` di un **timer SW** si desiderasse controllare una **scadenza**, cioè vedere se è passato il tempo necessario per compiere una certa **azione** (modificare una variabile o chiamare una funzione), allora si dovrebbero soddisfare **due esigenze**:
 - verificare la verità della condizione ```get() > timeout``` ed eseguire, eventualmente, l'azione prevista al timeout (scadenza) del timer.
-- eseguire la valutazione al punto precedente **periodicamente**, finchè non accade.
+- eseguire la valutazione al punto precedente **periodicamente**, finchè essa non accade.
 
 I **due requisiti** precedenti si traducono nell'azione di eseguire il **polling** della funzione ```get()``` nel ```loop()```, aLla massima velocità o, più lentamente, ogni tot millisecondi. Nella vita reale, si può assimilare ad un polling l'**osservazione periodica** di un orologio a muro in attesa del momento esatto in cui deve essere eseguita una certa azione, ad esempio, l'estrazione dal forno di un ciambella.
 
