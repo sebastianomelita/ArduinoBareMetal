@@ -70,17 +70,17 @@ Esistono **limitazioni speciali** su ciò che può e non può essere fatto all'i
 
 ### **Timers SW vs Timer HW**
 
-Se con la funzione ```get()``` di un **timer SW** si desiderasse controllare una **scadenza**, cioè vedere se è passato il tempo necessario per compiere una certa **azione** (modificare una variabile o chiamare una funzione) si deve:
-- valutare il confronto ```get() > timeout``` ed eseguire l'azione prevista al timeout (scadenza) del timer
-- eseguire la valutazione periodicamente
+Se con la funzione ```get()``` di un **timer SW** si desiderasse controllare una **scadenza**, cioè vedere se è passato il tempo necessario per compiere una certa **azione** (modificare una variabile o chiamare una funzione), allora si dovrebbero soddisfare **due esigenze**:
+- verificare la verità della condizione ```get() > timeout``` ed eseguire, eventualmente, l'azione prevista al timeout (scadenza) del timer.
+- eseguire la valutazione al punto precedente **periodicamente**, finchè non accade.
 
-Le due condizioni precedenti si traducono nell'azione di eseguire il polling della funzione ```get()``` nel ```loop()```. ALla massima velocità o ogni tot millisecondi. 
+I **due requisiti** precedenti si traducono nell'azione di eseguire il **polling** della funzione ```get()``` nel ```loop()```, aLla massima velocità o, più lentamente, ogni tot millisecondi. Nella vita reale, si può assimilare ad un polling l'**osservazione periodica** di un orologio a muro in attesa del momento esatto in cui deve essere eseguita una certa azione, ad esempio, l'estrazione dal forno di un ciambella.
 
-Se volessimo fare la stessa cosa con un **timer HW** allora ci si rende conto che il polling non è più necessario perchè, al timeout, è adesso un segnale HW che chiama l'ISR del timer che, a sua volta, comanda l'esecuzione di una callback.
+Se si volesse fare la stessa cosa con un **timer HW** allora ci si renderebbe conto che il polling non è più necessario perchè, **al timeout**, attraverso, un **segnale** proveniente dal timer HW,  viene attivato l'**ISR** associata a quel segnale che, a sua volta, comanda l'esecuzione di una **callback** definita al suo interno. Per rimanere alla metafora precedente, adesso non è più necessario osservare periodicamente l'orologio alla parete, perchè un timer, impostato ad inizio cottura, avviserà, con un segnale acustico, il pasticciere quando sarà il momento di togliere il dolce dal forno. 
 
 ### **I TIMERS VIRTUALI DI ESP32**
 
-E' una libreira che permette di allocare un numero arbitrario di timers virtuali a partire dal numero presente nelle varie versioni di ESP32 (tipicamente sono 4 timer).
+E' una libreria che permette di allocare un numero arbitrario di timers virtuali a partire dal numero presente nelle varie versioni di ESP32 (tipicamente sono 4 timer).
 
 Esempio di dichiarazione e instanziazione di un **oggetto timer**:
 ```C++
