@@ -159,6 +159,51 @@ void loop() {
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
 
+### **Semaforo con un timer HW**
+
+```C++
+#include <Ticker.h>
+
+Ticker onceTicker;
+int led_verde = 13;
+int led_rosso = 14;
+int led_giallo = 12;
+int tverde = 5000;
+int tgiallo = 2000;
+int trosso = 10000;
+ 
+void verde_giallo() {
+  digitalWrite(led_verde, LOW);
+  digitalWrite(led_giallo, HIGH);
+  onceTicker.once_ms(tgiallo, giallo_rossa);
+}
+
+void giallo_rossa() {
+  digitalWrite(led_giallo, LOW);
+  digitalWrite(led_rosso, HIGH);
+  onceTicker.once_ms(trosso, rossa_verde);
+}
+
+void rossa_verde() {
+  digitalWrite(led_rosso, LOW);
+  digitalWrite(led_verde, HIGH);
+  onceTicker.once_ms(tverde, verde_giallo);
+}
+ 
+void setup() {
+  pinMode(led_verde, OUTPUT);
+  pinMode(led_rosso, OUTPUT);
+  pinMode(led_giallo, OUTPUT);
+  digitalWrite(led_verde, HIGH);
+  onceTicker.once_ms(6000, verde_giallo );
+}
+ 
+void loop() {
+	//int count = 0;
+	delay(10);
+}
+```
+
 ### **I TIMERS HW DI ARDUINO**
 
 Arduino permette l'accesso diretto ai suoi **timer HW** in almeno **due modi**:
