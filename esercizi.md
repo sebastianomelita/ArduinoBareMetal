@@ -59,6 +59,10 @@ Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto
   -    **reset()**  per azzerare il timer.
   -    **stop()** per bloccare il timer.
 
+Per consultare dettagli sulla sua implementazione vedi [timer sequenziali](polledtimer_seq.md).
+
+
+
  ### **Modalità di utilizzo**
 
 La **modalità di utilizzo** è simile a quella di una **usuale ISR**. Una **funzione di callback** viene associata ad un evento di un timer tramite un metodo **attach()**. La dissociazione si fa con il metodo contrario **detach()**. Gli **eventi possibili** sono una chiamata una tantum (**one shot** o timer monostabile) o una chiamata **periodica** o timer bistabile. Nella definizione dell'attach() viene anche impostato il **tempo di scadenza** del timer.  Gli **eventi possibili** sono:
@@ -94,7 +98,7 @@ Se con la funzione ```get()``` di un **timer SW** si desiderasse controllare una
 I **due requisiti** precedenti si traducono nell'azione di eseguire il **polling** della funzione ```get()``` nel ```loop()```, aLla massima velocità o, più lentamente, ogni tot millisecondi. Nella vita reale, si può assimilare ad un polling l'**osservazione periodica** di un orologio a muro effettuata con lo scopo di individuare il momento esatto in cui deve essere eseguita una certa azione, ad esempio, l'estrazione dal forno di un ciambella.
 
 Se si volesse fare la stessa cosa con un **timer HW** allora ci si renderebbe conto che il polling non è più necessario perchè, **al timeout**, attraverso, un **segnale** proveniente dal timer HW,  viene attivato l'**ISR** associata a quel segnale che, a sua volta, comanda l'esecuzione di una **callback** definita al suo interno. Per rimanere alla metafora precedente, adesso non è più necessario osservare periodicamente l'orologio alla parete, perchè un timer, impostato ad inizio cottura, avviserà con un segnale acustico il pasticciere quando il momento di togliere il dolce dal forno sarà arrivato . 
-Per consultare dettagli sulla sua implementazione vedi [timer sequenziali](polledtimer_seq.md).
+
 
 ## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
