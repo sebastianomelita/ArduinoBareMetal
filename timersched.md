@@ -170,7 +170,7 @@ Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348969741870694996
 
 ### **Semaforo con un timer HW**
 
-Può essere realizzato efficacemente con **un solo timer** perchè ad una **transizione di colore** scade il timer della transizione corrente ma, nello stesso momento, si attiva quello della transizione di colore **successiva**, per cui i tempi di attivazione dei timer coinvolti sono sempre consecutivi e quindi mai sovrapposti.
+Può essere realizzato efficacemente con **un solo timer** in quanto accade che ad ogni **transizione di colore** scade il timer della transizione corrente e, subito dopo, si attiva quello della transizione di colore **successiva**, per cui i tempi di attivazione dei timer coinvolti sono sempre consecutivi e quindi mai sovrapposti.
 
 ```C++
 #include <Ticker.h>
