@@ -249,8 +249,10 @@ rendere, in qualche modo, le pressioni insensibili ai rimbalzi del tasto.
 
 ### **Es28. Timers HW 1**
 1) Concepire un SW per ESP32 che realizzi un blink di due led con tempi diversi e l'accensione di un led dopo 5 secondi dalla pressione di un pulsante e il suo automatico spegnimento dopo 10 secondi dalla sua accensione.
+2) 
    https://wokwi.com/projects/387795448199864321
-3) Concepire un SW per ESP32 che realizzi un blink periodico di un led fino a che l'utente non preme un pulsante di spento. Con uno di acceso riprende. Realizzarlo in due modi:
+   
+4) Concepire un SW per ESP32 che realizzi un blink periodico di un led fino a che l'utente non preme un pulsante di spento. Con uno di acceso riprende. Realizzarlo in due modi:
 usando solo .once_ms
 usando solo .attach_ms
 
