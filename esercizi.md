@@ -256,4 +256,9 @@ rendere, in qualche modo, le pressioni insensibili ai rimbalzi del tasto.
 usando solo .once_ms
 usando solo .attach_ms
 
+### **Es29. Semaforo**
+Realizzare un semaforo utilizzando soltanto timer HW.
+
+https://wokwi.com/projects/387790093070138369
+
 >[Torna all'indice generale](index.md)
