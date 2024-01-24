@@ -61,7 +61,19 @@ Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto
 
 Per consultare dettagli sulla sua implementazione vedi [timer sequenziali](polledtimer_seq.md).
 
+## **SCHEDULAZIONE CON I TIMERS HW**
 
+La **schedulazione dei task** normalmente riguarda quei compiti che devono essere ripetuti in **maniera periodica**, infatti si parla di **loop() principale** e di **loop secondari** eventualmente sullo stesso thread (**protothread** o mediante costrutti **async/await**) o su altri **thread**. Lo stesso risultato può essere ottenuto con dei timer HW che realizzano un loop su **base evento**. L'**evento** è l'**interrupt** di un timer HW, il **loop** è rappresentato dalla **calback** associata al timer e che viene viene da esso **periodicamente richiamata**.
+
+Ma un **timer** si può impostare per **generare**:
+- **eventi sincroni** cioè **periodici** dopo intervalli fissi e programmabili
+- **eventi asincroni** cioè **aperiodici** da eseguire una sola volta (monostabili o one-shot) dopo un certo tempo calcolato **nel futuro** a partire dal **momento** in cui avviene il comando di **attivazione** (start).
+
+Per cui un **timer HW** offre una versatilità in più se, nello stesso progetto, si vogliono **combinare insieme** eventi periodici con eventi aperiodici triggerati da eventi su un **ingresso** o da altri **eventi** (scadenza di timeout o contatori).
+
+La **stessa cosa** è in realtà possibile realizzarla anche con i **timer SW** basati sul polling nel loop principale della funzione millis(). La loro **versatilità** è uguale se non **superiore**, ma sono soggetti ad alcune limitazioni che potrebbero renderli non adatti in certi contesti. L'ambito che **penalizza** di più i timer SW è quello delle applicazioni **mission-critical** (o **critical-time**). In questo tipo di applicazioni si deve prevedere che l'esecuzione di certi compiti avvenga in maniera estremamente puntuale, pena l'introduzione di **instabilità** nel sistema o di **perdita di sicurezza** per chi lo adopera.
+
+Rispetto agli altri metodi di creazione di base dei tempi (polling della millis(), thread e protothread), è tendenzialmente più legato ad uno specifico vendor di HW e ad una specifica linea di prodotti. Le **API dei timer**, pur esendo **molto simili** tra loro, **non sono standardizzate** e la **portabilità** del SW nel tempo potrebbe non essere garantita. In ogni caso **semplificano** parecchio la **gestione delle ISR** associate a timer HW che altrimenti, eseguita a basso livello, richiede una impostazione di **registri interni** della CPU che necessita di conoscenze di dettaglio molto specifiche.
 
  ### **Modalità di utilizzo**
 
