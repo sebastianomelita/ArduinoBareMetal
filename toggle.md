@@ -10,7 +10,7 @@ Si vuole realizzare un pulsante con una memoria dello stato che possa essere mod
 Inizialmente si potrebbe essere tentati di provare seguente soluzione, adattando la strategia del pulsante precedente introducendo una variabile che conservi lo stato del pulsante che chiameremo **closed**.
 
 ```C++
-	byte in;\
+byte in;
 byte pulsante =2;
 boolean closed=false; // stato pulsante
 void setup()
