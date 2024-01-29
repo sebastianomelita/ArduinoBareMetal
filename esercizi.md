@@ -111,6 +111,49 @@ I **due requisiti** precedenti si traducono nell'azione di eseguire il **polling
 
 Se si volesse fare la stessa cosa con un **timer HW** allora ci si renderebbe conto che il polling non è più necessario perchè, **al timeout**, attraverso, un **segnale** proveniente dal timer HW,  viene attivato l'**ISR** associata a quel segnale che, a sua volta, comanda l'esecuzione di una **callback** definita al suo interno. Per rimanere alla metafora precedente, adesso non è più necessario osservare periodicamente l'orologio alla parete, perchè un timer, impostato ad inizio cottura, avviserà con un segnale acustico il pasticciere quando il momento di togliere il dolce dal forno sarà arrivato . 
 
+### **Toggle basato sul polling del tempo corrente get()**
+
+In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
+
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi (time tick)**:
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include "urutils.h"
+int led = 13;
+byte pulsante =12;
+#define DEBOUNCETIME 50
+byte precval, val;
+DiffTimer tmrblink;
+DiffTimer tmrdebounce;
+ 
+void setup() {
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  precval=LOW;
+  tmrdebounce.start(); 
+}
+
+// loop principale
+void loop() {
+  if(tmrdebounce.get() > DEBOUNCETIME){  	
+    tmrdebounce.reset();   
+
+    val = digitalRead(pulsante);		
+    if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
+      tmrblink.toggle();		
+    }
+    precval=val;	
+  }
+  if (tmrblink.get() > 500) {
+    digitalWrite(led, !digitalRead(led));
+    tmrblink.reset();
+  } 
+  delay(10);
+}
+
+```
+Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/388292295134772225
+
 
 ## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
