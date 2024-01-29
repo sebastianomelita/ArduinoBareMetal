@@ -378,17 +378,12 @@ Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedula
 #include "urutils.h"
 int led = 13;
 byte pulsante =12;
-byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
-volatile unsigned long previousMillis = 0;
-volatile unsigned short numberOfButtonInterrupts = 0;
-volatile bool pressed;
 #define DEBOUNCETIME 50
 byte precval, val;
 DiffTimer tmrblink;
 DiffTimer tmrdebounce;
  
 void setup() {
-  Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
   precval=LOW;
