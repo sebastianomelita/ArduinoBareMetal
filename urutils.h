@@ -24,10 +24,17 @@ typedef struct
 		elapsed = 0;
 		last = millis();
 	}
+	void toggle(){
+		if(timerState){
+    	    stop();
+		}else{
+			start();
+		}	
+	}
 	void stop(){
 		if(timerState){
 			timerState = false;
-    	                elapsed += millis() - last;
+    	    elapsed += millis() - last;
 		}	
 	}
 	void start(){
