@@ -58,7 +58,7 @@ typedef struct
 	}
 	void toggle(){
 		if(timerState){
-    	    	stop();
+    	    		stop();
 		}else{
 			start();
 		}	
