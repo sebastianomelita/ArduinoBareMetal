@@ -401,10 +401,10 @@ void loop() {
     }
     precval=val;	
   }
-	if (tmrblink.get() > 500) {
-		digitalWrite(led, !digitalRead(led));
+  if (tmrblink.get() > 500) {
+    digitalWrite(led, !digitalRead(led));
     tmrblink.reset();
-	} 
+  } 
   delay(10);
 }
 
