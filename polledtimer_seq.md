@@ -30,7 +30,7 @@ Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto
   -    **stop()** per bloccare il timer.
 
 ```C++
-#ifndef __URUTILS_H__
+[#ifndef __URUTILS_H__
 #define __URUTILS_H__
 
 // attesa evento con tempo minimo di attesa
@@ -79,7 +79,6 @@ typedef struct
 		elapsed = e;
 	}
 } DiffTimer;
-#endif
 ```
 
 I prossimi esercizi sono realizzati adoperando la libreria che si può scaricare cliccando col tasto sinistro sul link [urutils.h](urutils.h). 
