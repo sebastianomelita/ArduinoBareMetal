@@ -392,7 +392,7 @@ void setup() {
 
 // loop principale
 void loop() {
-  if(tmrdebounce.get() > 50){  	
+  if(tmrdebounce.get() > DEBOUNCETIME){  	
     tmrdebounce.reset();   
 
     val = digitalRead(pulsante);		
