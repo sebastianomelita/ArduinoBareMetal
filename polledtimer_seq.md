@@ -58,7 +58,7 @@ typedef struct
 	}
 	void toggle(){
 		if(timerState){
-    	    stop();
+    	    	stop();
 		}else{
 			start();
 		}	
@@ -66,7 +66,7 @@ typedef struct
 	void stop(){
 		if(timerState){
 			timerState = false;
-    	    elapsed += millis() - last;
+    	    		elapsed += millis() - last;
 		}	
 	}
 	void start(){
