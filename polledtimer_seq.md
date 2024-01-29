@@ -1,5 +1,5 @@
 >[Torna all'indice](timerbase.md) >[versione in Python](polledtimer_seq_py.md)
-## **POLLED TIMERS SEQUENZIALI**
+## **TIMER BASATO SUL POLLING DEL TEMPO CORRENTE GET()**
 
 E’ possibile realizzare dei timers, con cui programmare **nel futuro** lo stesso evento o una sequenza di eventi diversi, **senza attese**, cioè senza ```delay()```, eseguendo un polling del **tempo di conteggio** di un **timer**. 
 
