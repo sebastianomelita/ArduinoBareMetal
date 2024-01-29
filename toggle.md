@@ -368,6 +368,54 @@ Simulazione online su Arduino con Tinkercad del codice precedente: https://www.t
 
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/348707844567073364
 
+### **Schedulatore basato sul polling del tempo corrente get()**
+
+In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
+
+Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi (time tick)**:
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include "urutils.h"
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+volatile unsigned long previousMillis = 0;
+volatile unsigned short numberOfButtonInterrupts = 0;
+volatile bool pressed;
+#define DEBOUNCETIME 50
+byte precval, val;
+DiffTimer tmrblink;
+DiffTimer tmrdebounce;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  precval=LOW;
+  tmrdebounce.start(); 
+}
+
+// loop principale
+void loop() {
+  if(tmrdebounce.get() > 50){  	
+    tmrdebounce.reset();   
+
+    val = digitalRead(pulsante);		
+    if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
+      tmrblink.toggle();		
+    }
+    precval=val;	
+  }
+	if (tmrblink.get() > 500) {
+		digitalWrite(led, !digitalRead(led));
+    tmrblink.reset();
+	} 
+  delay(10);
+}
+
+```
+Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/388292295134772225
+
 ### **Schedulatore basato su protothreads**
 
 In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato **nello stesso loop** ma in un momento diverso stabilito mediante un istruzione ```WAIT_UNTIL()```. La funzione, di fatto, esegue un **blocco** del protothread corrente in **"attesa"** della asserzione di una certa **condizione**, senza bloccare l'esecuzione degli altri protothread. L'**attesa** è spesa campionando continuamente un **ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, in un loop successivo, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un **fronte di salita**.  
