@@ -162,9 +162,9 @@ E' di aiuto in questo caso l'utilizzo di uno **schedulatore** dei compiti, ovver
 
 Il **timer schedulatore** è realizzato utilizzando una variante ```DiffTimer2``` del timer della libreria [urutils.h](urutils.h) in cui, ad ogni chiamata della funzione ```get()```, viene incrementato il tempo corrente di ciascun timer (elapsed) di una quantità fissa pari al **tempo base**. Il momento dell'incremento è contestuale a quello della chiamata a ```get()``` che, quindi, deve avvenire **ogni tempo base**. Il tempo base è il **M.C.D.** dei tempi **in gioco** nei vari task.
 
-Il **timer schedulatore** è diverso per ciascun task ma tutti i timer di questo tipo hanno a comune lo stesso tempo base in base al quale incrementano il proprio metronomo interno.
+Il **timer schedulatore** è diverso per ciascun task, ma tutti i timer di questo tipo hanno a comune lo stesso tempo base in base al quale incrementano il proprio metronomo interno.
 
-Il **tempo base** viene generato utilizzando il timer ```DiffTimer1``` che realizza, mediante il polling della sua funzione ```get()``` il polling della funzione ```millis()``` che restituisce il tempo corrente del sistema. 
+Il **tempo base** viene generato utilizzando il timer ```DiffTimer1``` che realizza, mediante il polling della sua funzione ```get()```, il polling della funzione ```millis()``` che restituisce il tempo corrente del sistema. 
 
 Il **tempo base** viene **comunicato** a ciascun timer schedulatore attraverso un **argomento** della funzione ```get()```.
 
