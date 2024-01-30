@@ -1,12 +1,12 @@
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)       >[Versione in Python](taskschedpy.md)
 
-## **SCHEDULATORE DI COMPITI BASATO SUL POLLING DELLA FUNZIONE MILLIS**
+## **SCHEDULATORE DI COMPITI BASATO SUL POLLING DEL TEMPO CORRENTE**
 
-Una categoria di **schedulatori di compiti** che, a differenza di quelli basati sulla ```delay()```, possiede la peculiare proprietà di **non bloccare** l'esecuzione degli atri task del ```loop()``` si può ottenere realizzando,  all'interno del ```loop()```, il **polling periodico** della funzione ```millis()```.
+Una categoria di **schedulatori di compiti** che, a differenza di quelli basati sulla ```delay()```, possiede la peculiare proprietà di **non bloccare** l'esecuzione degli atri task del ```loop()``` si può ottenere realizzando,  all'interno del ```loop()```, il **polling periodico** della funzione ```millis()```. 
 
-Il **polling** serve a stabilire in **quale ciclo** di loop la funzione millis() assume il valore di **tempo limite** oltre il quale **eseguire** un certo compito.
+Il **polling** della funzione ```millis()``` serve a stabilire in **quale ciclo** di loop il **tempo corrente** assume il valore di **tempo limite** (timeout) oltre il quale **eseguire** un certo **compito**.
 
-E’ buona norma evitare l’esecuzione frequente di **operazioni lente** quando queste non sono strettamente necessarie in modo da lasciare spazio ad altre operazioni, quali ad esempio gestione degli eventi di input, che richiedono una velocità maggiore per usufruirne in modo più interattivo.
+E’ buona norma evitare, all'interno dei task, l’esecuzione frequente di **operazioni lente** quando queste non sono strettamente necessarie, in modo da lasciare spazio ad altre operazioni, quali ad esempio gestione degli eventi di input, che richiedono una velocità elevata per essere usufruite in modo più interattivo.
 
 **In particolare**, all'interno di un task, andrebbe accuratamente evitata l'introduzione di ritardi prolungati tramite **delay()**. Possono esserci per **breve tempo** (qualche mSec) ma, in ogni caso, non dovrebbero mai far parte della maniera (**algoritmo**) con cui la logica di comando **pianifica i suoi eventi**.
 
