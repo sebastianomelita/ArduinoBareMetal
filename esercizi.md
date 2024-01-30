@@ -221,7 +221,7 @@ void loop() {
 ```
 Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/388359604541585409
 
-Questo esempio conclude tutte le **tecniche** possibili per programmare eventi nel tempo in un sistema a microprocessore che quindi potrebbero essere riassunte in : **delay** nel loop(), delay nei **thread**, **timer SW** nel loop(), **timer HW**, timer schedulatori per progettare complessivamente uno **scheduler** che realizzi la tecnica del multitasking a partire da un **riferimento** temporale certo scelto tra millis(), delay(), interrupts di timer HW.
+Questo esempio conclude tutte le **tecniche** possibili per programmare eventi nel tempo in un sistema a microprocessore che quindi potrebbero essere riassunte in : **delay** nel loop(), delay nei **thread**, **timer SW** nel loop(), **timer HW**, timer schedulatori per progettare complessivamente uno **scheduler** che realizzi la tecnica del multitasking a partire da un **riferimento** temporale **esterno** scelto tra millis(), delay(), interrupts di timer HW.
 
 ## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
