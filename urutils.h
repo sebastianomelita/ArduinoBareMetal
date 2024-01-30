@@ -86,7 +86,6 @@ typedef struct
 		return elapsed;
 	}
 	void set(unsigned long e){
-		reset();
 		elapsed = e;
 	}
 } DiffTimer2;
