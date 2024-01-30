@@ -1017,7 +1017,7 @@ Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.co
 
 ### **Schedulatore generico realizzato con funzione get()**
 
-Schedulatore realizzato utilizzando una variante ```DiffTimer2``` del timer della libreria [urutils.h](urutils.h) in cui, ad ogni chiamata della funzione ```get()```, viene incrementato il tempo corrente di ciascun timer (elapsed) di una quantità fissa pari al **tempo base**. Il momento dell'incremento è contestuale a quello della chiamata a ```get()``` che, quindi, deve avvenire ogni tempo base. Il tempo base è il M.C.D. dei tempi in gioco nei vari task.
+Schedulatore realizzato utilizzando una variante ```DiffTimer2``` del timer della libreria [urutils.h](urutils.h) in cui, ad ogni chiamata della funzione ```get()```, viene incrementato il tempo corrente di ciascun timer (elapsed) di una quantità fissa pari al **tempo base**. Il momento dell'incremento è contestuale a quello della chiamata a ```get()``` che, quindi, deve avvenire esattamente ogni tempo base. Il tempo base è il M.C.D. dei tempi in gioco nei vari task.
 
 Il **tempo base** viene generato utilizzando il timer ```DiffTimer1``` che realizza, mediante il polling della sua funzione ```get()``` il polling della funzione ```millis()``` che restituisce il tempo corrente del sistema. 
 
