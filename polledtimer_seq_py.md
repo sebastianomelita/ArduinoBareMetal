@@ -1,6 +1,6 @@
 >[Torna all'indice](timerbase.md) >[versione in C++](polledtimer_seq.md)
 
-## **POLLED TIMERS SEQUENZIALI**
+## **TIMER BASATO SUL POLLING DEL TEMPO CORRENTE GET()**
 
 E’ possibile realizzare dei timers, con cui programmare **nel futuro** lo stesso evento o una catena di eventi diversi, eseguendo il **tempo di conteggio**. Il polling serve per verificare, ad ogni loop(), che il tempo trascorso (**elpased**) abbia raggiunto il **valore finale** (timeout) stabilito come obiettivo (target). Ciò si può ottenere utilizzando il **test** periodico di una **condizione** sulla funzione ```get()``` che, all'interno del ```loop()```, restituisce il **tempo di conteggio** (elapsed). Se la **condizione** è vera allora il **blocco** di istruzioni associato all'evento di timeout viene **eseguito**.
 
