@@ -166,7 +166,7 @@ Il **timer schedulatore** è diverso per ciascun task, ma tutti i timer di quest
 
 La **periodicità** è stabilita dalla **condizione** sulla funzione ```get()``` che valuta l'avvenuto scadere del **timeout**. Il **polling** sulla condizione di timeout non avviene alla massima velocità del microprocessore (variabile da pezzo a pezzo) ma, in maniera più precisa e, soprattutto, più rada, ogni **tempo base**.
 
-Il **timer schedulatore** non possedendo una base dei tempi interna ad esso, deve essere richiamato da una funzione esterna esattamente allo scoccare di ogni tempo base.
+Il **timer schedulatore** non possedendo un riferimento che tiene il tempo internamente ad esso (ad es. una millis()), deve essere richiamato da una funzione esterna esattamente allo scoccare di ogni **tempo base**.
 
 Il **tempo base** viene generato utilizzando il timer ```DiffTimer1``` che realizza, mediante il polling della sua funzione ```get()```, il polling della funzione ```millis()``` che restituisce il **tempo corrente** del sistema. 
 
