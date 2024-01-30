@@ -1,5 +1,5 @@
 >[Torna all'indice](timerbase.md) >[versione in Python](polledtimer_event_py.md)
-## **POLLED TIMERS AD EVENTI**
+## **TIMERS BASATI SUL POLLING DELLA MILLIS()**
 
 E’ possibile realizzare dei timers, con cui programmare **nel futuro** lo stesso evento o una catena di eventi diversi, eseguendo il **polling della funzione millis()**. Il polling serve per verificare, ad ogni loop(), che la **millis()** abbia raggiunto il **valore finale** stabilito come target (obiettivo), quando ciò accade possiamo far eseguire il blocco di istruzioni **associato** a questo evento utilizzando una funzione di **callback**.
 
