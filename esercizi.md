@@ -164,7 +164,7 @@ Il **timer schedulatore** è realizzato utilizzando una variante ```DiffTimer2``
 
 Il **timer schedulatore** è diverso per ciascun task, ma tutti i timer di questo tipo hanno a comune lo stesso tempo base in base al quale incrementano il proprio metronomo interno.
 
-Il **tempo base** viene generato utilizzando il timer ```DiffTimer1``` che realizza, mediante il polling della sua funzione ```get()```, il polling della funzione ```millis()``` che restituisce il tempo corrente del sistema. 
+Il **tempo base** viene generato utilizzando il timer ```DiffTimer1``` che realizza, mediante il polling della sua funzione ```get()```, il polling della funzione ```millis()``` che restituisce il **tempo corrente** del sistema. 
 
 Il **tempo base** viene **comunicato** a ciascun timer schedulatore attraverso un **argomento** della funzione ```get()```.
 
