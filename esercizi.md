@@ -156,7 +156,7 @@ Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/p
 
 ### **Schedulatore generico realizzato con funzione get()**
 
-Il codice precedente è basato su due timers SW indipendenti nel senso che ognuno realizza il polling del tempo corrente separatamente ad ogni ciclo di loop(), cioè, alla massima velocità consentita dal sistema. Se i polling sono in numero limitato questa soluzione non crea grossi problemi ma, se invece il timers sono parecchi, allora potrebbe capitare che il carico computazionale del polling possa diventare comparabile al peso dei vari task eseguiti.
+Il codice precedente è basato su due timers SW indipendenti nel senso che ognuno realizza il polling del tempo corrente separatamente ad ogni ciclo di loop(), cioè, alla massima velocità consentita dal sistema. Se i polling sono in numero limitato questa soluzione non crea grossi problemi ma se, invece, i timers sono parecchi, allora, potrebbe capitare che il carico computazionale del polling possa diventare comparabile al peso dei vari task eseguiti.
 
 E' di aiuto in questo caso l'utilizzo di uno **schedulatore** dei compiti, ovvero di un codice che, a partire da un **tempo base comune**, sappia **programmare nel tempo** (schedulare) i vari compiti (task) affinchè vengano **eseguiti** esattamente nel tempo **assegnato** a ciascuno.
 
