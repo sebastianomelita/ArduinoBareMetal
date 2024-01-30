@@ -21,37 +21,37 @@ typedef struct
 	unsigned long elapsed, last;
 	bool timerState=false;
 	void reset(){
-		elapsed = 0;
-		last = millis();
+	    elapsed = 0;
+	    last = millis();
 	}
 	void toggle(){
-		if(timerState){
-    	    stop();
-		}else{
-			start();
-		}	
+	    if(timerState){
+    	        stop();
+	    }else{
+		start();
+	    }	
 	}
 	void stop(){
-		if(timerState){
-			timerState = false;
-    	    elapsed += millis() - last;
-		}	
+	    if(timerState){
+		timerState = false;
+    	        elapsed += millis() - last;
+	    }	
 	}
 	void start(){
-		if(!timerState){
-			timerState = true;
-			last = millis();
-		}
+	    if(!timerState){
+		timerState = true;
+		last = millis();
+	    }
 	}
 	unsigned long get(){
-		if(timerState){
-			return millis() - last + elapsed;
-		}
-		return elapsed;
+	    if(timerState){
+		return millis() - last + elapsed;
+	    }
+	    return elapsed;
 	}
 	void set(unsigned long e){
-		reset();
-		elapsed = e;
+	    reset();
+	    elapsed = e;
 	}
 } DiffTimer;
 
