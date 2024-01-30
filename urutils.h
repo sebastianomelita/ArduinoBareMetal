@@ -54,4 +54,40 @@ typedef struct
 		elapsed = e;
 	}
 } DiffTimer;
+
+typedef struct 
+{
+	unsigned long elapsed, last;
+	bool timerState=false;
+	void reset(){
+		elapsed = 0;
+	}
+	void toggle(){
+		if(timerState){
+    	stop();
+		}else{
+			start();
+		}	
+	}
+	void stop(){
+		if(timerState){
+			timerState = false;
+		}	
+	}
+	void start(){
+		if(!timerState){
+			timerState = true;
+		}
+	}
+	unsigned long get(unsigned long tbase){
+		if(timerState){
+			elapsed += tbase;
+		}
+		return elapsed;
+	}
+	void set(unsigned long e){
+		reset();
+		elapsed = e;
+	}
+} DiffTimer2;
 #endif
