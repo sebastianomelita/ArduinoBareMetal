@@ -1015,6 +1015,63 @@ void loop()
 Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/352790112505422849
 
 
+### **Schedulatore generico realizzato con funzione get()**
+
+Schedulatore realizzato utilizzando una variante ```DiffTimer2``` del timer della libreria urutils.h in cui, ad ogni chiamata della funzione ```get()```, viene incrementato il tempo corrente di ciascun timer (elapsed) di una quantità fissa pari al **tempo base**. Il momento dell'incremento è contestuale a quello della chiamata a ```get()``` che, quindi, deve avvenire ogni tempo base. Il tempo base è il M.C.D. dei tempi in gioco nei vari task.
+
+Il **tempo base** viene generato utilizzando il timer ```DiffTimer1``` che realizza, mediante il polling della sua funzione ```get()``` il polling della funzione ```millis()``` che restituisce il tempo corrente del sistema. 
+
+```C++
+/*
+Alla pressione del pulsante si attiva o disattiva il lampeggo di un led, mentre un
+altro led lampeggia indisturbato.
+*/
+#include "urutils.h"
+int led = 13;
+int led2 = 14;
+byte pulsante =12;
+byte precval, val;
+unsigned long tbase = 50;
+DiffTimer tmrdeb;
+DiffTimer2 tmrblink1, tmrblink2;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(pulsante, INPUT);
+  precval=LOW;
+  tmrdeb.start();
+  tmrblink2.start();
+}
+
+// loop principale
+void loop() {
+  if(tmrdeb.get() > tbase){  	
+    tmrdeb.reset();   
+    //task_toggle
+    val = digitalRead(pulsante);		
+    if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
+      tmrblink1.toggle();		
+    }
+    precval=val;	
+    //task_blink1
+    if (tmrblink1.get(tbase) > 500) {
+      digitalWrite(led, !digitalRead(led));
+      tmrblink1.reset();
+    } 
+    //task_blink2
+    if (tmrblink2.get(tbase) > 1000) {
+      digitalWrite(led2, !digitalRead(led2));
+      tmrblink2.reset();
+    } 
+  }
+  delay(10);
+}
+
+```
+Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/388359604541585409
+
 ### **Sitografia:**
 
 - https://github.com/Koepel/Fun_with_millis#fun_with_millis
