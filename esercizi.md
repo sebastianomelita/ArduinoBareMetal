@@ -280,9 +280,9 @@ void waitUntilInputLow()
 {
     if (digitalRead(pulsante) == HIGH)//se coincide con il valore di un polling
     { 
-      debounceTicker.once_ms(50, waitUntilInputLow);  
+        debounceTicker.once_ms(50, waitUntilInputLow);  
     }else{
-      pressed = false; // riarmo il pulsante
+        pressed = false; // riarmo il pulsante
     }
 }
 
