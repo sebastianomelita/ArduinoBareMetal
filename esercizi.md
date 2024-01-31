@@ -231,7 +231,7 @@ Si noti che l'**ordine di apparizione** dei task all'interno del codice del loop
 
 Questo esempio conclude tutte le **tecniche** possibili per programmare eventi nel tempo in un sistema a microprocessore che quindi potrebbero essere riassunte in: **delay** nel loop(), delay nei **thread**, **timer SW** nel loop(), **timer HW**, timer schedulatori per progettare complessivamente uno **scheduler** che realizzi la tecnica del multitasking a partire da un **riferimento** temporale **esterno** scelto tra millis(), delay(), interrupts di timer HW.
 
-### **Schedulatore basato su interrupts e timer HW**
+### **Pulsante toggle basato su interrupts e timer HW**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
 
