@@ -800,7 +800,8 @@ int led = 13;
 byte pulsante =12;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 volatile unsigned long previousMillis = 0;
-volatile unsigned short numberOfButtonInterrupts = 0;
+volatile unsigned long lastintTime = 0;
+volatile bool hit = false;
 volatile bool pressed;
 #define DEBOUNCETIME 50
  
@@ -819,31 +820,24 @@ void switchPressed ()
   if(val == HIGH){
     if(!pressed){ // intervento immediato sul fronte di salita
         pressed = true;
+        hit = true;
         stato = !stato; 
     }
-    numberOfButtonInterrupts++; // contatore rimbalzi
-    previousMillis = millis(); // tempo evento
   }
 }  // end of switchPressed
 
 void waitUntilInputChange()
 {
-    // sezione critica
-    // protegge previousMillis che, essendo a 16it, potrebbe essere danneggiata se interrotta da un interrupt
-    // numberOfButtonInterrupts è 8bit e non è danneggiabile ne in lettura ne in scrittura
-    noInterrupts();
-    // il valore lastintTime potrà essere in seguito letto interrotto ma non danneggiato
-    unsigned long lastintTime = previousMillis;
-    interrupts();
-
-    if ((numberOfButtonInterrupts != 0) //flag interrupt! Rimbalzo o valore sicuro? 
-        && (millis() - lastintTime > DEBOUNCETIME )//se è passato il transitorio 
-        && digitalRead(pulsante) == LOW)//se è sul fronte di discesa
+    if (!pressed)
     { 
-        Serial.print("HIT: "); Serial.print(numberOfButtonInterrupts);
-        pressed = false;
-        numberOfButtonInterrupts = 0; // reset del flag (riarmo pulsante differito sul fronte di discesa)
-        Serial.println(" in DISCESA debounced");            
+      if(hit){
+        hit =false;// azzeramento del flag di segnalazione pressione
+        lastintTime = millis();
+      }
+    }else{
+      if((millis() - lastintTime > DEBOUNCETIME ) && digitalRead(pulsante) == LOW){
+        pressed = false; // riarmo del pulsante
+      }
     }
 }
 // loop principale
@@ -854,7 +848,7 @@ void loop() {
 		delay(1000);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-        delay(10);
+    delay(10);
 	}
 }
 ```
@@ -870,6 +864,8 @@ Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **n
 Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```numberOfButtonInterrupts```, ```prevState``` e ```lastState``` che sono stata semplicemente dichiarate come ```volatile``` senza sezioni critiche su di essa.
 
 L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previousMillis``` che è stata dichiarata come ```volatile``` e ha nel loop() una **sezione critica** intorno all'accesso in lettura su di essa.
+
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/388450490165203969
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350016534055223891
 
