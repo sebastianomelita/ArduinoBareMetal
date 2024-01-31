@@ -780,7 +780,7 @@ L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previ
 
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/382727697232370689
 
-### **Schedulatore basato su interrupts e debounce nel loop**
+### **Schedulatore basato su interrupts e timer debouce SW**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
 
@@ -850,6 +850,60 @@ void loop() {
 	}
 }
 ```
+
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include "urutils.h"
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+volatile unsigned long previousMillis = 0;
+volatile unsigned long lastintTime = 0;
+volatile bool pressed;
+#define DEBOUNCETIME 50
+DiffTimer debounce;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
+  pressed = false;
+}
+
+// Interrupt Service Routine (ISR)
+void switchPressed ()
+{
+  byte val = digitalRead(pulsante);
+  if(val == HIGH){
+    if(!pressed){ // intervento immediato sul fronte di salita
+        pressed = true;
+        stato = !stato; 
+    }
+  }
+}  // end of switchPressed
+
+void waitUntilInputChange()
+{
+    if (pressed){ 
+      debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
+      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){
+        pressed = false; // riarmo del pulsante
+        debounce.stop();
+      }
+    }
+}
+// loop principale
+void loop() {
+	waitUntilInputChange();
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(1000);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+    delay(10);
+	}
+}
+
 
 Le variabili **condivise** tra una ISR e il loop() andrebbero protette da accessi **paralleli** da parte di quellew due funzioni tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono sempre essere dichiarate con il qualificatore ```volatile``` per forzarne la modifica istantanea anche sui registri della CPU. 
 
