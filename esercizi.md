@@ -101,7 +101,7 @@ Esistono **limitazioni speciali** su ciò che può e non può essere fatto all'i
 - In genere, in molte implementazioni, callback diverse di uno stesso timer vengono eseguite **in sequenza** e non su thread paralleli per cui operazioni bloccanti come le ```delay()```, oltre a causare possibili **instabilità** (sono ISR basate su interrupt), **ritardano** l'esecuzione delle callback **a seguire**.
 - eseguire **task complessi** con un timer HW è possibile a patto che questi vengano resi interrompibili senza creare problemi, e ciò si può ottenere eseguendoli in un **altro thread** o nel **loop principale**. Nel **loop principale**, un **task complesso** può sempre essere immediatamente attivato da una ISR che asserisce un opportuno **flag di avvio**.
 - nel **multitasking** con i **timer** il parallelismo degli **eventi** è garantito mentre il parallelismo percepito dei **task** è tanto maggiore quanto più questi sono veloci (dato che in realtà questi sono memorizzati in una coda da dove vengono estratti e mandati in esecuzione uno ad uno in sequenza).
-- nel **multitasking** con i **thread** sia il parallelismo degli eventi che quello dei task è completo perchè nella coda di esecuzione stavolta in sequenza non vengono eseguiti interi task ma, a turno, le singole istruzioni macchina di ciascun task (meccanismo dell'interleaving). 
+- nel **multitasking** con i **thread** sia il parallelismo degli **eventi** che quello dei **task** è **completo** perchè nella coda di esecuzione stavolta in sequenza non vengono eseguiti interi task ma, a turno, le singole istruzioni macchina di ciascun task (meccanismo dell'interleaving). 
 
 ### **Timers SW vs Timer HW**
 
