@@ -297,6 +297,7 @@ void loop() {
 	}
 }
 ```
+Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/388438685024222209
 
 ## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
