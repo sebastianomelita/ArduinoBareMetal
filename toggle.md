@@ -828,13 +828,11 @@ void switchPressed ()
 
 void waitUntilInputChange()
 {
-    if (!pressed)
-    { 
+    if(pressed){ 
       if(hit){
         hit =false;// azzeramento del flag di segnalazione pressione
         lastintTime = millis();
       }
-    }else{
       if((millis() - lastintTime > DEBOUNCETIME ) && digitalRead(pulsante) == LOW){
         pressed = false; // riarmo del pulsante
       }
