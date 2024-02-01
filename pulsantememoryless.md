@@ -23,8 +23,6 @@ Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348779417449792082
 	void setup(){
 		pinMode(led,OUTPUT);
 		pinMode(tasto,INPUT);
-		digitalWrite(led,LOW);
-		digitalWrite(tasto,LOW);
 	}
 
 	void loop(){
