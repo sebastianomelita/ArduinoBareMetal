@@ -780,7 +780,7 @@ L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previ
 
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/382727697232370689
 
-### **Schedulatore basato su interrupts e timer debouce SW**
+### **Schedulatore basato su interrupts e timer debounce SW**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
 
@@ -801,7 +801,7 @@ byte pulsante =12;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 volatile unsigned long previousMillis = 0;
 volatile unsigned long lastintTime = 0;
-volatile bool hit = false;
+bool started = false;
 volatile bool pressed;
 #define DEBOUNCETIME 50
  
@@ -820,7 +820,6 @@ void switchPressed ()
   if(val == HIGH){
     if(!pressed){ // intervento immediato sul fronte di salita
         pressed = true;
-        hit = true;
         stato = !stato; 
     }
   }
@@ -829,12 +828,13 @@ void switchPressed ()
 void waitUntilInputChange()
 {
     if(pressed){ 
-      if(hit){
-        hit =false;// azzeramento del flag di segnalazione pressione
+      if(!started){
+        started =true;// azzeramento del flag di segnalazione pressione
         lastintTime = millis();
       }
       if((millis() - lastintTime > DEBOUNCETIME ) && digitalRead(pulsante) == LOW){
         pressed = false; // riarmo del pulsante
+        started = false;
       }
     }
 }
@@ -846,11 +846,30 @@ void loop() {
 		delay(1000);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    		delay(10);
+    delay(10);
 	}
 }
 ```
 
+Le variabili **condivise** tra una ISR e il loop() andrebbero protette da accessi **paralleli** da parte di quellew due funzioni tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono sempre essere dichiarate con il qualificatore ```volatile``` per forzarne la modifica istantanea anche sui registri della CPU. 
+
+Gli **accessi paralleli** non sono un problema quando le **istruzioni** sono **atomiche**, cioè non interrompibili. Le istruzioni atomiche o sono eseguite per intero o non sono eseguite affatto. In questo caso gli **accessi**, sia in lettura che in scrittura, sono in realtà, a basso livello, **intrinsecamente sequenziali**.
+
+Nei microcontrollori attuali, in genere **nessuna istruzione** gode della proprietà di essere **atomica** con una sola eccezione per la lettura e scrittura delle **variabili ad 8 bit**. Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio macchina) è intrinsecamente garantito essere **atomico**. Per queste variabili rimane comunque la necessita dell'uso del qualificatore ```volatile```.
+
+Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **non atomiche**, pertanto le variabili a 16 o 32 bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati di default durante una routine di servizio di interrupt, quindi, non potendo verificarsi il danneggiamento di una variabile multibyte in una ISR, le **sezioni critiche** vanno inserite soltanto nel ```loop()```.
+
+Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```numberOfButtonInterrupts```, ```prevState``` e ```lastState``` che sono stata semplicemente dichiarate come ```volatile``` senza sezioni critiche su di essa.
+
+L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previousMillis``` che è stata dichiarata come ```volatile``` e ha nel loop() una **sezione critica** intorno all'accesso in lettura su di essa.
+
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/388450490165203969
+
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350016534055223891
+
+### **Schedulatore basato su interrupts e timer debounce SW get()**
+
+```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 #include "urutils.h"
 int led = 13;
@@ -903,23 +922,9 @@ void loop() {
     delay(10);
 	}
 }
+```
 
-
-Le variabili **condivise** tra una ISR e il loop() andrebbero protette da accessi **paralleli** da parte di quellew due funzioni tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono sempre essere dichiarate con il qualificatore ```volatile``` per forzarne la modifica istantanea anche sui registri della CPU. 
-
-Gli **accessi paralleli** non sono un problema quando le **istruzioni** sono **atomiche**, cioè non interrompibili. Le istruzioni atomiche o sono eseguite per intero o non sono eseguite affatto. In questo caso gli **accessi**, sia in lettura che in scrittura, sono in realtà, a basso livello, **intrinsecamente sequenziali**.
-
-Nei microcontrollori attuali, in genere **nessuna istruzione** gode della proprietà di essere **atomica** con una sola eccezione per la lettura e scrittura delle **variabili ad 8 bit**. Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio macchina) è intrinsecamente garantito essere **atomico**. Per queste variabili rimane comunque la necessita dell'uso del qualificatore ```volatile```.
-
-Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **non atomiche**, pertanto le variabili a 16 o 32 bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati di default durante una routine di servizio di interrupt, quindi, non potendo verificarsi il danneggiamento di una variabile multibyte in una ISR, le **sezioni critiche** vanno inserite soltanto nel ```loop()```.
-
-Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```numberOfButtonInterrupts```, ```prevState``` e ```lastState``` che sono stata semplicemente dichiarate come ```volatile``` senza sezioni critiche su di essa.
-
-L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previousMillis``` che è stata dichiarata come ```volatile``` e ha nel loop() una **sezione critica** intorno all'accesso in lettura su di essa.
-
-Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/388450490165203969
-
-Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350016534055223891
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/388481409829351425
 
 ### **Pulsante toggle basato su interrupts e timer HW**
 
