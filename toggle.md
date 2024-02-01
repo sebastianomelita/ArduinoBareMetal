@@ -846,7 +846,7 @@ void loop() {
 		delay(1000);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    delay(10);
+    		delay(10);
 	}
 }
 ```
@@ -919,7 +919,7 @@ void loop() {
 		delay(1000);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    delay(10);
+   		 delay(10);
 	}
 }
 ```
