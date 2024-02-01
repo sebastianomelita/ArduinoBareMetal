@@ -688,7 +688,7 @@ Simulazione online del codice precedente https://wokwi.com/projects/348705487464
 
 **FreeRTOS** è un **SO per sistemi embedded** molto usato e dalle buone prestazioni che però, per l'utilizzo dei thread, espone delle **API proprietarie** che non possono essere usate su sistemi diversi da FreeRTOS. Per i thread è stato sviluppato da anni lo **standard POSIX** detto **phthread** che definisce in maniera **uniforme**, per **i sistemi** (Linux, Microsoft) e per i **linguaggi** (C, C++) ad esso aderenti, una serie di API che rendono il codice che contiene la programmazione dei thread molto **più portabile**.
 
-### **Schedulatore basato su interrupts e debounce nella ISR**
+### **Pulsante toggle basato su interrupts e debounce nella ISR**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
 
@@ -780,7 +780,7 @@ L'unica variabile **condivisa** tra ISR e loop() e **16 o 32 bit** sono ```previ
 
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/382727697232370689
 
-### **Schedulatore basato su interrupts e timer debounce SW**
+### **Pulsante toggle basato su interrupts e timer debounce SW**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
 
@@ -867,7 +867,7 @@ Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/p
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350016534055223891
 
-### **Schedulatore basato su interrupts e timer debounce SW get()**
+### **Schedulatore toggle basato su interrupts e timer debounce SW get()**
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
