@@ -829,7 +829,7 @@ void waitUntilInputChange()
 {
     if(pressed){ 
       if(!started){
-        started =true;// azzeramento del flag di segnalazione pressione
+        started =true;// aggiorna il millis() solo alla prima di molte chiamate consecutive
         lastintTime = millis();
       }
       if((millis() - lastintTime > DEBOUNCETIME ) && digitalRead(pulsante) == LOW){
