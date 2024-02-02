@@ -229,6 +229,8 @@ Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.co
 
 Si noti che l'**ordine di apparizione** dei task all'interno del codice del loop potrebbe non rispecchiare l'**ordine** con cui gli stessi vengono **eseguiti**, cioè l'ordine di esecuzione avviene in maniera **asincrona** rispetto al codice, secondo il principio della cosidetta programmazione ad eventi. Eventi possono attivare o disattivare altri eventi in base ad input esterni oppure in base al valore raggiunto da certe variabili di stato.
 
+Questo esempio conclude tutte le **tecniche** possibili per programmare eventi nel tempo in un sistema a microprocessore che quindi potrebbero essere riassunte in: **delay** nel loop(), delay nei **thread**, **timer SW** nel loop(), **timer HW**, timer schedulatori per progettare complessivamente uno **scheduler** che realizzi la tecnica del multitasking a partire da un **riferimento** temporale **esterno** scelto tra millis(), delay(), interrupts di timer HW.
+
 ### **Pulsante toggle basato su interrupts e timer HW**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
@@ -357,7 +359,7 @@ void loop() {
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/388481409829351425
 
-Questo esempio conclude tutte le **tecniche** possibili per programmare eventi nel tempo in un sistema a microprocessore che quindi potrebbero essere riassunte in: **delay** nel loop(), delay nei **thread**, **timer SW** nel loop(), **timer HW**, timer schedulatori per progettare complessivamente uno **scheduler** che realizzi la tecnica del multitasking a partire da un **riferimento** temporale **esterno** scelto tra millis(), delay(), interrupts di timer HW.
+
 ### **Pulsante toggle basato su interrupts e debounce nella ISR**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
