@@ -739,7 +739,7 @@ void debounce() {
       pressed = false;
       attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, RISING);
     }
-    debtimer.reset();
+    debtimer.reset();// ogni tipo di fronte resetta il timer
     Serial.println("pressed: "+String(pressed));
   }else{
     count1++;
