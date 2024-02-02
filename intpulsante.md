@@ -96,7 +96,7 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```co
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/382727697232370689
 
 
-### **Pulsante toggle basato su interrupts e timer debounce get()**
+### **Pulsante toggle basato su interrupts e timer SW get() nel loop**
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
