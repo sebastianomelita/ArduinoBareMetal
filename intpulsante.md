@@ -95,6 +95,67 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```co
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/388638737495929857
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/382727697232370689
 
+
+### **Pulsante toggle basato su interrupts e timer debounce get()**
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include "urutils.h"
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+volatile unsigned long previousMillis = 0;
+volatile unsigned long lastintTime = 0;
+volatile bool pressed;
+#define DEBOUNCETIME 50
+DiffTimer debounce;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
+  pressed = false;
+}
+
+// Interrupt Service Routine (ISR)
+void switchPressed ()
+{
+  byte val = digitalRead(pulsante);
+  if(val == HIGH){
+    if(!pressed){ // intervento immediato sul fronte di salita
+        pressed = true;
+        stato = !stato; 
+    }
+  }
+}  // end of switchPressed
+
+void waitUntilInputChange()
+{
+    if (pressed){ 
+      debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
+      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){
+        pressed = false; // riarmo del pulsante
+        debounce.stop();
+	debounce.reset();
+      }
+    }
+}
+// loop principale
+void loop() {
+	waitUntilInputChange();
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(1000);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+   		 delay(10);
+	}
+}
+```
+
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/388481409829351425
+
 ### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SUI DELAY NEL LOOP**
 
 Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
