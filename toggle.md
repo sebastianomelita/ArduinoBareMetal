@@ -715,6 +715,7 @@ all'interno della ISR.
 Un esempio con l'**attuazione nel loop** potrebbe essere:
 
 ```C++
+#include "urutils.h"
 const unsigned long DEBOUNCETIME = 50;
 const byte ENGINE = 13;
 const byte BUTTONPIN = 12;
@@ -724,11 +725,12 @@ volatile bool pressed = false;
 volatile bool prevpressed = false;
 volatile int count1 = 0;
 volatile int count2 = 0;
+DiffTimer debtimer;
 
 void debounce() {
-  if ((unsigned long)(millis() - previousMillis) > 50) {
-    Serial.println(count1);
-    count1=0;
+  if (debtimer.get() > 50) {
+     Serial.println(count1);
+     count1=0;
     if(!pressed){
       stato = !stato;
       pressed = true;
@@ -737,7 +739,7 @@ void debounce() {
       pressed = false;
       attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, RISING);
     }
-    previousMillis = millis();
+    debtimer.reset();
     Serial.println("pressed: "+String(pressed));
   }else{
     count1++;
@@ -751,6 +753,7 @@ void setup ()
   pinMode(ENGINE, OUTPUT);  	  // so we can update the LED
   digitalWrite(ENGINE, LOW);
   // attach interrupt handler
+  debtimer.start();
   attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, RISING);
 }  // end of setup
 
