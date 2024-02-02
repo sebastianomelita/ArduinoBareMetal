@@ -715,59 +715,60 @@ all'interno della ISR.
 Un esempio con l'**attuazione nel loop** potrebbe essere:
 
 ```C++
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-int led = 13;
-byte pulsante =12;
-byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
-volatile unsigned long previousMillis = 0;
-volatile unsigned long lastintTime = 0;
-bool started = false;
-volatile bool pressed;
-#define DEBOUNCETIME 50
- 
-void setup() {
-  Serial.begin(115200);
-  pinMode(led, OUTPUT);
-  pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
-  pressed = false;
-}
+#include "urutils.h"
+const unsigned long DEBOUNCETIMERISE = 50;
+const unsigned long DEBOUNCETIMEFALL = 50;
+const byte ENGINE = 13;
+const byte BUTTONPIN = 12;
+volatile bool stato = false;
+volatile int count1 = 0;
+DiffTimer debtimer;
 
-// Interrupt Service Routine (ISR)
-void switchPressed ()
-{
-  byte val = digitalRead(pulsante);
-  if(val == HIGH){
-    if(!pressed){ // intervento immediato sul fronte di salita
-        pressed = true;
-        stato = !stato; 
-    }
+void debounceRise() {
+  if (debtimer.get() > DEBOUNCETIMERISE) {// al primo bounce (in rise o in fall) è sempre vero!
+    Serial.println(count1);
+    count1 = 0;
+    stato = !stato;
+    Serial.println("I have catched a RISE");
+    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceFall, FALLING);
+    debtimer.reset();// ogni tipo di fronte resetta il timer
+  } else {
+    count1++;
   }
-}  // end of switchPressed
-
-void waitUntilInputChange()
-{
-    if(pressed){ 
-      if(!started){
-        started =true;// aggiorna il millis() solo alla prima di molte chiamate consecutive
-        lastintTime = millis();
-      }
-      if((millis() - lastintTime > DEBOUNCETIME ) && digitalRead(pulsante) == LOW){
-        pressed = false; // riarmo del pulsante
-        started = false;
-      }
-    }
 }
-// loop principale
-void loop() {
-	waitUntilInputChange();
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
-		delay(1000);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    		delay(10);
-	}
+
+void debounceFall() {
+  if (debtimer.get() > DEBOUNCETIMEFALL) {// al primo bounce (in rise o in fall) è sempre vero!
+    Serial.println(count1);
+    count1 = 0;
+    Serial.println("I have catched a FALL");
+    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceRise, RISING);
+    debtimer.reset();// ogni tipo di fronte resetta il timer
+  } else {
+    count1++;
+  }
+}
+
+void setup ()
+{
+  Serial.begin(115200);
+  pinMode(BUTTONPIN, INPUT);
+  pinMode(ENGINE, OUTPUT);  	  // so we can update the LED
+  digitalWrite(ENGINE, LOW);
+  // attach interrupt handler
+  debtimer.start();
+  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceRise, RISING);
+}  // end of setup
+
+void loop ()
+{
+  //Serial.println(pressed);
+  if (stato) {
+    digitalWrite(ENGINE, HIGH);
+  } else {
+    digitalWrite(ENGINE, LOW);
+  }
+  delay(10);
 }
 ```
 
