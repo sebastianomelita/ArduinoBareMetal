@@ -340,6 +340,7 @@ void waitUntilInputChange()
       if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){
         pressed = false; // riarmo del pulsante
         debounce.stop();
+	debounce.reset();
       }
     }
 }
