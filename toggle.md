@@ -715,59 +715,59 @@ all'interno della ISR.
 Un esempio con l'**attuazione nel loop** potrebbe essere:
 
 ```C++
-#include "urutils.h"
-const unsigned long DEBOUNCETIME = 50;
-const byte ENGINE = 13;
-const byte BUTTONPIN = 12;
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 volatile unsigned long previousMillis = 0;
-volatile bool stato = false;
-volatile bool pressed = false;
-volatile bool prevpressed = false;
-volatile int count1 = 0;
-volatile int count2 = 0;
-DiffTimer debtimer;
-
-void debounce() {
-  if (debtimer.get() > 50) {// al primo bounce (in rise o in fall) è sempre vero!
-     Serial.println(count1);
-     count1=0;
-    if(!pressed){
-      stato = !stato;
-      pressed = true;
-      Serial.println("I have catched a RISE");
-      attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, FALLING);
-    }else{
-      pressed = false;
-      Serial.println("I have catched a FALL");
-      attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, RISING);
-    }
-    debtimer.reset();// ogni tipo di fronte resetta il timer
-    Serial.println("pressed: "+String(pressed));
-  }else{
-    count1++;
-  }
+volatile unsigned long lastintTime = 0;
+bool started = false;
+volatile bool pressed;
+#define DEBOUNCETIME 50
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
+  pressed = false;
 }
 
-void setup ()
+// Interrupt Service Routine (ISR)
+void switchPressed ()
 {
-  Serial.begin(115200);
-  pinMode(BUTTONPIN, INPUT);
-  pinMode(ENGINE, OUTPUT);  	  // so we can update the LED
-  digitalWrite(ENGINE, LOW);
-  // attach interrupt handler
-  debtimer.start();
-  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, RISING);
-}  // end of setup
-
-void loop ()
-{
-  //Serial.println(pressed);
-  if(stato){
-    digitalWrite(ENGINE, HIGH);
-  }else{
-    digitalWrite(ENGINE, LOW);
+  byte val = digitalRead(pulsante);
+  if(val == HIGH){
+    if(!pressed){ // intervento immediato sul fronte di salita
+        pressed = true;
+        stato = !stato; 
+    }
   }
-  delay(10);
+}  // end of switchPressed
+
+void waitUntilInputChange()
+{
+    if(pressed){ 
+      if(!started){
+        started =true;// aggiorna il millis() solo alla prima di molte chiamate consecutive
+        lastintTime = millis();
+      }
+      if((millis() - lastintTime > DEBOUNCETIME ) && digitalRead(pulsante) == LOW){
+        pressed = false; // riarmo del pulsante
+        started = false;
+      }
+    }
+}
+// loop principale
+void loop() {
+	waitUntilInputChange();
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(1000);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+    		delay(10);
+	}
 }
 ```
 
