@@ -734,9 +734,11 @@ void debounce() {
     if(!pressed){
       stato = !stato;
       pressed = true;
+      Serial.println("I have catched a RISE");
       attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, FALLING);
     }else{
       pressed = false;
+      Serial.println("I have catched a FALL");
       attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounce, RISING);
     }
     debtimer.reset();// ogni tipo di fronte resetta il timer
