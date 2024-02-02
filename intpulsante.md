@@ -95,7 +95,7 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```co
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/388638737495929857
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/382727697232370689
 
-### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SUI DELAY**
+### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SUI DELAY NEL LOOP**
 
 Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
 
@@ -156,7 +156,7 @@ void loop ()
 ```
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/382390727185717249
 
-### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SUI DELAY IN UN THREAD A PARTE**
+### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SUI DELAY SU UN THREAD A PARTE**
 
 Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
 
