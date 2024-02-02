@@ -728,7 +728,7 @@ volatile int count2 = 0;
 DiffTimer debtimer;
 
 void debounce() {
-  if (debtimer.get() > 50) {
+  if (debtimer.get() > 50) {// al primo bounce è sempre vero!
      Serial.println(count1);
      count1=0;
     if(!pressed){
