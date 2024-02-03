@@ -135,7 +135,7 @@ void switchPressed ()
   byte val = digitalRead(pulsante);
   if(val == HIGH){
     if(!pressed){ // intervento immediato sul fronte di salita
-        pressed = true;
+        pressed = true; // disarmo del pulsante e riarmo del timer
         stato = !stato; 
     }
   }
@@ -145,12 +145,12 @@ void waitUntilInputChange()
 {
     if(pressed){ 
       if(!started){
-        started =true;// aggiorna il millis() solo alla prima di molte chiamate consecutive
+        started = true;// aggiorna il millis() solo alla prima di molte chiamate consecutive
         lastintTime = millis();
       }
       if((millis() - lastintTime > DEBOUNCETIME ) && digitalRead(pulsante) == LOW){
         pressed = false; // riarmo del pulsante
-        started = false;
+        started = false; // disarmo del timer
       }
     }
 }
@@ -162,7 +162,7 @@ void loop() {
 		delay(1000);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    		delay(10);
+    delay(10);
 	}
 }
 ```
