@@ -288,7 +288,7 @@ void switchPressed ()
   bool val = digitalRead(pulsante); // se il pulsante è ancora premuto
   if(val && !pressed){ // fronte di salita
     pressed = true; // disarmo il pulsante
-    debounceTicker.once_ms(50, waitUntilInputLow);  
+    debounceTicker.once_ms(50, waitUntilInputLow);  // riarmo del timer
     stato = !stato; 	 // logica toggle  
   }
 }  // end of switchPressed
@@ -297,9 +297,9 @@ void waitUntilInputLow()
 {
     if (digitalRead(pulsante) == HIGH)//se coincide con il valore di un polling
     { 
-        debounceTicker.once_ms(50, waitUntilInputLow);  
+      debounceTicker.once_ms(50, waitUntilInputLow);  // riarmo del timer
     }else{
-        pressed = false; // riarmo il pulsante
+      pressed = false; // riarmo del pulsante e disarmo (automatico) del timer
     }
 }
 
@@ -310,7 +310,7 @@ void loop() {
 		delay(500);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    		delay(10);
+    delay(10);
 	}
 }
 ```
