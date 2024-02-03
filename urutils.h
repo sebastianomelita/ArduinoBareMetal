@@ -19,7 +19,7 @@ void waitUntilInputLow(int btn, unsigned t)
 typedef struct 
 {
 	volatile unsigned long elapsed, last;
-	bool timerState=false;
+	volatile bool timerState=false;
 	void reset(){
 	    elapsed = 0;
 	    last = millis();
@@ -58,7 +58,7 @@ typedef struct
 typedef struct 
 {
 	volatile unsigned long elapsed, last;
-	bool timerState=false;
+	volatile bool timerState=false;
 	void reset(){
 		elapsed = 0;
 	}
