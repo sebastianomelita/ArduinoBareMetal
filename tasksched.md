@@ -81,7 +81,7 @@ Gli **schedulatori** di questo tipo sono **periodici** e si possono realizzare s
 - mediante ripetizione di una **sequenza di tick** periodici che fissano il **tempo base**. Un successivo **conteggio** o **filtraggio** dei tick discrimina il **momento** in cui deve essere eseguito **un task** piuttosto che un altro.
 - mediante **timer periodici** che, per **ogni task**, stabiliscono un **timeout** oltre il quale il **polling** della funzione millis() **segnala** il momento buono per **eseguire** quel task.
 
-<img src="schdulatore_generico.jpg" alt="alt text" width="800">
+<img src="schdulatore_generico.jpg" alt="alt text" width="1000">
 
 ### **SCHEDULATORE DI COMPITI BASATO SUL CONTEGGIO DEI TICK**
 
