@@ -194,53 +194,57 @@ Il **tempo base** viene generato utilizzando il timer ```DiffTimer1``` che reali
 Il **tempo base** viene **comunicato** a ciascun timer schedulatore attraverso un **argomento** della funzione ```get()```.
 
 ```C++
-/*
-Alla pressione del pulsante si attiva o disattiva il lampeggo di un led, mentre un
-altro led lampeggia indisturbato.
-*/
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 #include "urutils.h"
 int led = 13;
-int led2 = 14;
 byte pulsante =12;
-byte precval, val;
-unsigned long tbase = 50;
-DiffTimer tmrdeb;
-DiffTimer2 tmrblink1, tmrblink2;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+volatile bool pressed;
+#define DEBOUNCETIME 50
+DiffTimer debounce;
  
 void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
-  pinMode(led2, OUTPUT);
   pinMode(pulsante, INPUT);
-  precval=LOW;
-  tmrdeb.start();
-  tmrblink2.start();
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
+  pressed = false;
 }
 
+// Interrupt Service Routine (ISR)
+void switchPressed ()
+{
+  byte val = digitalRead(pulsante);
+  if(val == HIGH){
+    if(!pressed){ // intervento immediato sul fronte di salita
+        pressed = true; // disarmo del pulsante e riarmo del timer
+        stato = !stato; 
+    }
+  }
+}  // end of switchPressed
+
+void waitUntilInputChange()
+{
+    if (pressed){ 
+      debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
+      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){
+        pressed = false; // riarmo del pulsante
+        debounce.stop(); // disarmo del timer
+        debounce.reset();
+      }
+    }
+}
 // loop principale
 void loop() {
-  if(tmrdeb.get() > tbase){  	
-    tmrdeb.reset();   
-    //task_toggle
-    val = digitalRead(pulsante);		
-    if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
-      tmrblink1.toggle();		
-    }
-    precval=val;	
-    //task_blink1
-    if (tmrblink1.get(tbase) > 500) {
-      digitalWrite(led, !digitalRead(led));
-      tmrblink1.reset();
-    } 
-    //task_blink2
-    if (tmrblink2.get(tbase) > 1000) {
-      digitalWrite(led2, !digitalRead(led2));
-      tmrblink2.reset();
-    } 
-  }
-  delay(10);
+	waitUntilInputChange();
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(1000);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+    delay(10);
+	}
 }
-
 ```
 Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/388359604541585409
 
