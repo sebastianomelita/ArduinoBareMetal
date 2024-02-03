@@ -710,6 +710,8 @@ void loop()
 
 Sui dettagli relativi alla generazione del **tempo assoluto**, sul **recupero dei tick persi in un task lento**, sul **riordinamento dei task** valgono le stesse considerazioni già fatte sopra per lo 
 
+Simulazione su Arduino con Wowki: https://wokwi.com/projects/371852832413769729
+
 
 ### **Schedulatore generico realizzato con funzione get()**
 
@@ -767,58 +769,8 @@ void loop() {
 ```
 Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/388359604541585409
 
-**SCHEDULATORE DI COMPITI BASATO SU FILTRAGGIO DEI TIME TICK**.
 
-```C++
-#include <Ticker.h>
-
-Ticker periodicTicker1;
-byte led1 = 13;
-byte led2 = 12;
-volatile unsigned long  precm = 0;
-unsigned long  tbase1 = 500;
-volatile unsigned long precs[]= {0, 0};
-unsigned long period1[] = {1500, 6000};
-int leds1[] = {led1, led2};
-
-void periodicBlink(int led) {
-  digitalWrite(led, !digitalRead(led));
-}
-
-void scheduleAll(int *leds){
-	precm += tbase1;
-	// task 1
-	if ((precm - precs[0]) >= period1[0]) {
-		precs[0] += period1[0]; 
-    		periodicBlink(leds[0]);
-	}	
-	// task 2
-	if ((precm - precs[1]) >= period1[1]) {
-		precs[1] += period1[1]; 
-    		periodicBlink(leds[1]);
-	}
-}
-
-void setup(){
-	pinMode(led1, OUTPUT);
-	pinMode(led2, OUTPUT);
-	Serial.begin(115200); 
-	periodicTicker1.attach_ms(500, scheduleAll, leds1);
-	// task time init
-	for(int i=0; i<2; i++){
-		precs[i] = precm -period1[i];
-	}
-}
-
-void loop()
-{
-	delay(10);
-	// il codice eseguito al tempo massimo della CPU va qui
-}
-```
-Simulazione su Arduino con Wowki: https://wokwi.com/projects/371852832413769729
-
-## **Esempi**
+## **ESEMPI**
 
 ### **Blink a fasi**
 
