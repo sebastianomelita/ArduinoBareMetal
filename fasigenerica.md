@@ -104,14 +104,14 @@ La **persistenza** di una variabile globale nel loop() potrebbe **servire a**:
 - Tenere **memoria** dello **stato** del mio algoritmo, cioè traccia di quelle informazioni **fondamentali** che ne determinano il **comportamento** nel tempo (dedotte dalla **storia** di **ingressi** e da quella di altre **variabili di stato**) mediante la loro conservazione all’interno di una o più **variabili di stato** che vengono **lette ed aggiornate** ad **ogni loop**. Una variabile di stato divide l'evoluzione futura del sistema in un insieme di **epoche** in cui **stessi ingressi** del sistema potrebbero potenzialmente generare uscite differenti a seconda dello **stato del sistema**. Lo stato del sistema, in questo senso, è assimilabile ad una sorta di **"umore"** (mood) del sistema che lo porta a reagire in maniera differente alle stesse **sollecitazioni** a seconda del particolare valore che esso assume in un certo **momento**.
 
 Ad esempio se deduco il nuovo stato da quello precedente:
-	```C++
-	stato = !stato 
-	```
-	oppure, se deduco il nuovo stato da un ingresso e dallo stato precedente:
- 
-	```C++
-	if(in == HIGH && stato == 0) 	stato = 1; 
-	```
+```C++
+stato = !stato 
+```
+oppure, se deduco il nuovo stato da un ingresso e dallo stato precedente:
+
+```C++
+if(in == HIGH && stato == 0) 	stato = 1; 
+```
  
 In **entrambi** i casi precedenti le informazioni devono “**sopravvivere**” tra un **loop e l’altro**, cioè il loro valore non deve essere cancellato al termine dell’esecuzione della funzione loop() e ciò può essere ottenuto dichiarando le **variabili di memoria globali**, cioè dichiarandole **all’esterno** di tutte le funzioni del sistema, compresa la funzione loop().
 
