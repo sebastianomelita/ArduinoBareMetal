@@ -658,4 +658,20 @@ Realizzare un semaforo utilizzando soltanto timer HW.
 
 https://wokwi.com/projects/387790093070138369
 
+### **Es30. Orchestra**
+
+Scrivere un programma per esp32 che realizzi la gestione di 4 led:
+uno che fa 100 bpm (battiti per munuto) 
+uno che fa 25 bpm 
+uno ogni tre battiti del primo led
+Realizzare il tutto con la schedulazione generica basata sui get (no delay, no timer HW, no thread).
+
+https://wokwi.com/projects/388980248362009601
+
+### **Es31. Simulazione vita**
+
+Scrivere un programma per esp32 che realizzi la gestione di un led che fa dieci blink da mezzo secondo e poi 5 da uno e ricomincia. Realizzare il tutto con la schedulazione basata sui get (no delay, no timer HW, no thread).
+
+https://wokwi.com/projects/388978976877511681
+
 >[Torna all'indice generale](index.md)
