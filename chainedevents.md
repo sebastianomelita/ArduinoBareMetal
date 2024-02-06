@@ -312,7 +312,7 @@ Link simulazione su ESP32 con Wowki: https://wokwi.com/projects/3494021865207240
 ### **Considerazioni finali**
 
 Da una **analisi comparativa** degli esempi proposti si possono trarre alcune considerazioni pratiche di ordine generale. 
-- **eventi periodici consecutivi** si programmano **più semplicmente** con i **delay()** che, pur essendo bloccanti, godono della proprietà di poter pensare gli algoritmi in maniera **più intuitiva** e lineare una programmazione che, nello specifico di questa categoria di problemi, è **intrinsecamente sequenziale**.
+- **eventi periodici consecutivi** si programmano **più semplicemente** con i **delay()** che, pur essendo bloccanti, godono della proprietà di poter pensare gli algoritmi in maniera **più intuitiva** e lineare una programmazione che, nello specifico di questa categoria di problemi, è **intrinsecamente sequenziale**.
 - se gli eventi periodici in questione sono da eseguire in parallelo ad altro codice che deve essere responsivo, allora:
      - una soluzione potrebbe essere metterli in **thread separati** che pur essendo ancora programmabili in **maniera sequenziale** non monopolizzano la risorsa CPU permettendo l'**esecuzione parallela** sia del loop() che degli altri threads.
      - un'altra soluzione potrebbe essere programmare il solo **thread del loop()** principale utilizzando una schedulazione basata sui **time tick**. Il **difetto** di questa soluzione è che per, questa categoria di problemi, sembra effettivamente un tantino **più difficile** da concepire.
