@@ -50,33 +50,52 @@ Questo fatto impone alcune riflessioni:
 
 - **Sono con memoria**? Cioè posso legare il risultato di una fase a quello delle fasi eseguite in precedenza?
 
-**Quanto spesso**.
+### **Quanto spesso (azioni periodiche)**.
 
 - Se le metto **“direttamente”** dentro il blocco loop() vengono eseguite molto spesso, anzi più spesso che si può. La **periodicità**, cioè il numero di volte al secondo, dipende dalla velocità della CPU e dalla velocità delle singole operazioni e non è possibile stabilirla con precisione.
 
-- Se le metto **nel loop()** ma dentro un **blocco di codice condizionale** la cui esecuzione avviene periodicamente in certi istanti prestabiliti (ad esempio ogni 10 secondi) allora possono essere eseguite **meno frequentemente**. La **periodicità** dell’esecuzione è controllabile **con precisione** mediante algoritmi di **scheduling** (pianificazione nel tempo) che possono essere realizzati in vario modo. In genere, **a basso livello**, i modi sono tre:
+- Se le metto **nel loop()** ma dentro un **blocco di codice condizionale** la cui esecuzione avviene **periodicamente** in certi istanti prestabiliti (ad esempio ogni 10 secondi) allora possono essere eseguite **meno frequentemente**. Ho realizzato così un **filtraggio** degli **eventi periodici** da eseguire **nel futuro**. La **periodicità** dell’esecuzione è controllabile **con precisione** mediante algoritmi di **scheduling** (pianificazione nel tempo) che possono essere realizzati in vario modo. In genere, **a basso livello**, i modi **periodici** (o **sincroni**) sono tre:
 
   -  **Ritardo** dell’esecuzione mediante funzione delay() impostabile ad un tempo di millisecondi prefissato.
 
   -  **Polling della funzione millis()** nel loop che permette di scegliere l’istante di tempo adatto per eseguire un certo blocco di codice posto all’interno del loop (tipicamente dentro un blocco if-then-else con una condizione che valuta millis())
 
    - **Interrupt** generato da un timer HW che permette di eseguire una ISR(), definita al di fuori dal loop(), allo scadere del timer.
-- se le metto dentro una **ISR()** saranno eseguite in maniera **asincrona** ma, se solo una fase sta dentro la ISR(), va gestita opportunamente la **comunicazione** con le altre fasi che sono dentro il loop().
 
+### **Azioni eseguite non sempre (azioni aperiodiche)**.
 
-**Filtro delle esecuzioni**. Ovviamente blocchi di codice possono essere filtrati tramite **istruzioni di selezione**, quindi inserendoli nel blocco then o in quello else di un **costrutto if-then-else**. La condizione di selezione può valutare il **tempo** (la faccio durare fino ad un certo tempo) oppure altri **ingressi** (confronto il valore attuale di un ingresso con quello di altri ingressi), oppure lo **stato** del sistema (se il motore è in movimento faccio una certa cosa se no non la faccio). Di seguito la fase di scrittura delle uscite non viene eseguita ad ogni loop ma solo se un certo ingresso ha un determinato valore:
+Le azioni da eseguire in base al verificarsi di certe **condizioni** non periodiche. Se il loro **accadere** non è il frutto di **nessun algoritmo** in esecuzione nel sistema perchè sostanzialmente dipende da **fattori esterni** al sistema e quindi **non prevedibili**, quali valori degli ingressi o segnali di interrupt, allora si possono definire come **eventi asincroni**.  
+
+Gli eventi **aperiodici** possono essere gestiti:
+- **fuori dal loop()** grazie alla chiamata di una corrispondente **callback** attivata da un segnale di **interrupt**.
+- **dentro il loop()** tramite il **polling** di una condizione di test dell'evento valutata all'interno di una **istruzione di selezione**. L'istruzione di selezione prende delle **decisioni alternative** in merito all'evento stesso eseguendo il blocco then o quello else di un **costrutto if-then-else**. La **condizione** di selezione potrebbe valutare:
+	- il **tempo**. Lo faccio durare un certo tempo, o lo faccio accadere in un certo tempo, realizzando così nel loop() un **filtraggio** degli **eventi aperiodici** da eseguire **nel futuro**.
+	- altri **input**. Confronto il valore attuale di un ingresso con quello di altri ingressi.
+	- lo **stato** del sistema. Se il motore è in movimento faccio una certa cosa se no non la faccio. 
+
+Di seguito la fase di scrittura delle uscite non viene eseguita ad ogni loop ma solo se un certo ingresso ha un determinato valore:
 ```Python
 if in == HIGH:
 	digitalWrite(led,closed)	  #scrittura uscita
 ```
-**Memoria**. In genere si fanno frequentemente due cose:
+### **Azioni con memoria (persistenza di una variabile)**. 
 
-- Tenere memoria degli **ingressi** al loop precedente. Cioè conservare il valore corrente di uno o più ingressi in una variabile per poi poterlo “consumare” cioè leggere ed utilizzarlo durante l’esecuzione del loop successivo.
+Le variabili in un microcontrollore possono essere **dichiarate**:
+- all'**interno** del loop() e allora si dicono **locali** alla funzione loop(). Le variabili locali hanno:
+	- il loro **ciclo di vita**, cioè l'intervallo temporale tra la loro **allocazione** e la loro **deallocazione** in RAM, tutto all'interno di un **singolo ciclo di loop()**. Esse nascono (vengono dichiarate e quindi **allocate**), evolvono (vengono lette e **modificate**) e muoiono (vengono **deallocate**) all'interno della funzione loop(). Questo è il motivo per cui le variabili **locali** al loop(), non godendo della proprietà di **persistenza** tra un loop e l'altro, diventano immancabilmente, ad ogni nuovo ciclo, **nuovi** dati che occupano le stesse **posizioni** in memoria che avevano i **vecchi** al ciclo **precedente**.
+	- Il loop() è anche l'**ambito di visibilità** (scope) delle variabili locali, cioè dichiarate al suo interno, perchè solo all'interno del loop possono essere accessibili in lettura o in scrittura. Al di fuori del loop() variabili con lo **stesso nome** sono ancora ammesse ma sono sempre considerate **variabili diverse**. 
+- all'**esterno** del loop() e allora si dicono esterne alla funzione loop(), se poi queste sono dichiarate pure esterne ad ogni funzione del progetto (loop compreso) allora si dicono **globali**. 
+     - Le **variabili globali** hanno il loro **ciclo di vita** che dura per tutta l'esecuzione del programma: sono **dichiarate** al di fuori del loop(), **inizializzate** nel setup() e **lette e modificate** all'interno del loop().
+     - Le **variabili globali** hanno la loro visibilità in tutte le funzioni del progetto, cioè sono accessibili, in lettura e in scrittura, sia da parte del codice inserito nel loop() che da quello che sta altrove, inserito all'interno di qualunque altra funzione definita nel progetto.
+   
+La **persistenza** di una variabile globale nel loop() potrebbe **servire a**:
+- Tenere **memoria** degli **ingressi** al loop precedente fino al loop **successivo**. Cioè conservare il valore corrente di uno o più ingressi in una variabile per poi poterlo “consumare” cioè leggere ed utilizzarlo durante l’esecuzione del loop successivo.
 ```Python
 	pval = val    # ultima istruzione che chiude loop()
 ```
-- Tenere traccia dello **stato** del mio algoritmo, cioè memoria di informazioni importanti (dedotte dalla storia di ingressi e da quella di altre variabili di stato) conservandole all’interno di una variabile di stato. Ad esempio se
- deduco il nuovo stato da quello precedente:
+- Tenere **memoria** dello **stato** del mio algoritmo, cioè traccia di quelle informazioni **fondamentali** che ne determinano il **comportamento** nel tempo (dedotte dalla **storia** di **ingressi** e da quella di altre **variabili di stato**) mediante la loro conservazione all’interno di una o più **variabili di stato** che vengono **lette ed aggiornate** ad **ogni loop**. Una variabile di stato divide l'evoluzione futura del sistema in un insieme di **epoche** in cui **stessi ingressi** del sistema potrebbero potenzialmente generare uscite differenti a seconda dello **stato del sistema**. Lo stato del sistema, in questo senso, è assimilabile ad una sorta di **"umore"** (mood) del sistema che lo porta a reagire in maniera differente alle stesse **sollecitazioni** a seconda del particolare valore che esso assume in un certo **momento**.
+
+Ad esempio se deduco il nuovo stato da quello precedente:
 ```Python
 stato = not stato 
 ```
@@ -86,8 +105,6 @@ if in == HIGH and stato == 0:
 	stato = 1 
 ```
 In **entrambi** i casi precedenti le informazioni devono “**sopravvivere**” tra un **loop e l’altro**, cioè il loro valore non deve essere cancellato al termine dell’esecuzione della funzione loop() e ciò può essere ottenuto dichiarando le **variabili di memoria globali**, cioè dichiarandole **all’esterno** di tutte le funzioni del sistema, compresa la funzione loop().
-
-**In conclusione,** quando vogliamo gestire **l’evento di un pulsante** dobbiamo chiederci che **caratteristiche** ha l’evento alla luce delle considerazioni precedenti per capire quale è la **maniera più appropriata** per gestirlo.
 
 >[Torna all'indice generale](index.md) >[versione in C++](fasigenerica.md)
 <!--stackedit_data:
