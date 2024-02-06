@@ -53,7 +53,7 @@ Questo fatto impone alcune riflessioni:
 
 - **Quanto spesso** vengono eseguite queste fasi? Posso controllare la loro periodicità/frequenza?
 
-- **Devono** **essere eseguite** **sempre**? Posso filtrare la loro esecuzione in base al tempo o altr condizioni su ingressi o stato del sistema?
+- **Devono** **essere eseguite** **sempre**? Posso filtrare la loro esecuzione in base al tempo o altre condizioni su ingressi o stato del sistema?
 
 - **Sono con memoria**? Cioè posso legare il risultato di una fase a quello delle fasi eseguite in precedenza?
 
