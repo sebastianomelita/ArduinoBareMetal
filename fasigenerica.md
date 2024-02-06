@@ -113,8 +113,6 @@ Ad esempio se deduco il nuovo stato da quello precedente:
 	```
 In **entrambi** i casi precedenti le informazioni devono “**sopravvivere**” tra un **loop e l’altro**, cioè il loro valore non deve essere cancellato al termine dell’esecuzione della funzione loop() e ciò può essere ottenuto dichiarando le **variabili di memoria globali**, cioè dichiarandole **all’esterno** di tutte le funzioni del sistema, compresa la funzione loop().
 
-**In conclusione,** quando vogliamo gestire **l’evento di un pulsante** dobbiamo chiederci che **caratteristiche** ha l’evento alla luce delle considerazioni precedenti per capire quale è la **maniera più appropriata** per gestirlo.
-
 >[Torna all'indice generale](index.md) >[versione in Python](fasigenericapy.md)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbMjc5MDE0MzUzXX0=
