@@ -71,7 +71,7 @@ Questo fatto impone alcune riflessioni:
 
 ### **Azioni eseguite non sempre (azioni aperiodiche)**.
 
-Le azioni da eseguire in base al verificarsi di certe **condizioni** non periodiche. Se il loro **accadere** non è il frutto di **nessun algoritmo** in esecuzione nel sistema perchè sostanzialmente dipende da **fattori esterni** al sistema, quali valori degli ingressi o segnali di interrupt, allora si possono definire come **eventi asincroni**.  
+Le azioni da eseguire in base al verificarsi di certe **condizioni** non periodiche. Se il loro **accadere** non è il frutto di **nessun algoritmo** in esecuzione nel sistema perchè sostanzialmente dipende da **fattori esterni** al sistema e quindi **non prevedibili**, quali valori degli ingressi o segnali di interrupt, allora si possono definire come **eventi asincroni**.  
 
 Gli eventi **aperiodici** possono essere gestiti:
 - **fuori dal loop()** grazie alla chiamata di una corrispondente **callback** attivata da un segnale di **interrupt**.
