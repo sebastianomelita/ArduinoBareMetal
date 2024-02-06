@@ -71,7 +71,9 @@ Questo fatto impone alcune riflessioni:
 
 ### **Azioni eseguite non sempre (azioni aperiodiche)**.
 
-Le azioni da eseguire in base al verificarsi di certe **condizioni** non periodiche possono essere filtrate tramite **istruzioni di selezione**, quindi inserendole nel blocco then o in quello else di un **costrutto if-then-else**. La condizione di selezione può valutare:
+Le azioni da eseguire in base al verificarsi di certe **condizioni** non periodiche. Se il loro **accadere** non è il frutto di nessun algoritmo in esecuzione nel sistema perchè sostanzialmente dipende da **fattori esterni** al sistema, quali valori degli ingressi o segnali di interrupt, allora si possono definire come **eventi asincroni**.  Gli eventi asincroni possono essere gestiti:
+- **fuori dal loop()** grazie alla chiamata di una corrispondente callback attivata da un segnale di interrupt.
+- **dentro il loop()** tramite il polling di una condizione di test dell'evento valutata all'interno di una **istruzione di selezione**. L'istruzione di selezione prende delle decisioni alternative in merito all'evento stesso eseguendo il blocco then o quello else di un **costrutto if-then-else**. La condizione di selezione può valutare:
 - il **tempo**. Lo faccio durare un certo tempo, o lo faccio accadere in un certo tempo, realizzando così un **filtraggio** degli **eventi aperiodici** da eseguire **nel futuro**.
 - altri **input**. Confronto il valore attuale di un ingresso con quello di altri ingressi.
 - lo **stato** del sistema. Se il motore è in movimento faccio una certa cosa se no non la faccio. 
