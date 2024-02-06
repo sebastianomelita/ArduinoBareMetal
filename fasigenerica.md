@@ -51,7 +51,7 @@ In un microcontrollore le **tre fasi** sono eseguite in quell’ordine ma, se in
 
 Questo fatto impone alcune riflessioni:
 
-- **Quanto spesso** vengono eseguite queste fasi? Posso controllare la loro periodicità?
+- **Quanto spesso** vengono eseguite queste fasi? Posso controllare la loro periodicità/frequenza?
 
 - **Devono** **essere eseguite** **sempre**? Posso filtrare la loro esecuzione?
 
