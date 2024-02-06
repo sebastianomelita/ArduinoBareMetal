@@ -108,9 +108,11 @@ Ad esempio se deduco il nuovo stato da quello precedente:
 	stato = !stato 
 	```
 	oppure, se deduco il nuovo stato da un ingresso e dallo stato precedente:
+ 
 	```C++
 	if(in == HIGH && stato == 0) 	stato = 1; 
 	```
+ 
 In **entrambi** i casi precedenti le informazioni devono “**sopravvivere**” tra un **loop e l’altro**, cioè il loro valore non deve essere cancellato al termine dell’esecuzione della funzione loop() e ciò può essere ottenuto dichiarando le **variabili di memoria globali**, cioè dichiarandole **all’esterno** di tutte le funzioni del sistema, compresa la funzione loop().
 
 >[Torna all'indice generale](index.md) >[versione in Python](fasigenericapy.md)
