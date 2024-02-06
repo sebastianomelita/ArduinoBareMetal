@@ -668,7 +668,7 @@ uno che fa 25 bpm
 uno ogni tre battiti del primo led
 Realizzare il tutto con la schedulazione generica basata sui get (no delay, no timer HW, no thread).
 
-https://wokwi.com/projects/388978976877511681
+https://wokwi.com/projects/388980248362009601
 
 ### **Es31. Simulazione vita**
 
