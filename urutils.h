@@ -60,6 +60,7 @@ typedef struct
 	unsigned long elapsed, last, tbase;
 	bool timerState=false;
 	byte state = 0;
+	byte count = 0;
 	void reset(){
 		elapsed = 0;
 	}
@@ -95,12 +96,6 @@ typedef struct
 	}
 	void setBase(unsigned long e){
 		tbase = e;
-	}
-	void setState(byte e){
-		state = e;
-	}
-	byte getState(){
-		return state;
 	}
 } DiffTimer2;
 #endif
