@@ -135,21 +135,18 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
   pressed = false;
 }
 
 // Interrupt Service Routine (ISR)
 void switchPressed ()
 {
-  byte val = digitalRead(pulsante);
-  if(val == HIGH){
     if(!pressed){ // intervento immediato ma sul primo fronte di salita soltanto (causa disarmo pulsante)
         pressed = true; // disarmo del pulsante e riarmo del timer di debouncing
         stato = !stato; 
     }
-  }
-}  // end of switchPressed
+}   // end of switchPressed
 
 void waitUntilInputChange()
 {
@@ -174,7 +171,7 @@ void loop() {
 	}
 }
 ```
-Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/388292295134772225
+Simulazione online su Esp32 con Wowki del codice precedente: xxxx
 
 ### **Schedulatore generico realizzato con funzione get()**
 
@@ -280,15 +277,14 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
   pressed = false;
   stato = false;
 }
 
 void switchPressed ()
 {
-  bool val = digitalRead(pulsante); // se il pulsante è ancora premuto
-  if(val && !pressed){ // fronte di salita
+  if(!pressed){ // fronte di salita
     pressed = true; // disarmo il pulsante
     debounceTicker.once_ms(50, waitUntilInputLow);  // riarmo del timer
     stato = !stato; 	 // logica toggle  
@@ -336,21 +332,18 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
   pressed = false;
 }
 
 // Interrupt Service Routine (ISR)
 void switchPressed ()
 {
-  byte val = digitalRead(pulsante);
-  if(val == HIGH){
     if(!pressed){ // intervento immediato ma sul primo fronte di salita soltanto (causa disarmo pulsante)
         pressed = true; // disarmo del pulsante e riarmo del timer di debouncing
         stato = !stato; 
     }
-  }
-}  // end of switchPressed
+}   // end of switchPressed
 
 void waitUntilInputChange()
 {
