@@ -799,20 +799,17 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
   pressed = false;
 }
 
 // Interrupt Service Routine (ISR)
-void switchPressed ()
+void switchPressed ()// si attiva sul fronte di salita
 {
-  byte val = digitalRead(pulsante);
-  if(val == HIGH){
     if(!pressed){ // intervento immediato ma sul primo fronte di salita soltanto (causa disarmo pulsante)
         pressed = true;// disarmo del pulsante e riarmo del timer di debouncing
         stato = !stato; 
     }
-  }
 }  // end of switchPressed
 
 void waitUntilInputChange()
@@ -873,20 +870,17 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
   pressed = false;
 }
 
 // Interrupt Service Routine (ISR)
-void switchPressed ()
+void switchPressed ()// si attiva sul fronte di salita
 {
-  byte val = digitalRead(pulsante);
-  if(val == HIGH){
     if(!pressed){ // intervento immediato ma sul primo fronte di salita soltanto (causa disarmo pulsante)
         pressed = true;// disarmo del pulsante e riarmo del timer di debouncing
         stato = !stato; 
     }
-  }
 }  // end of switchPressed
 
 void waitUntilInputChange()
@@ -946,17 +940,16 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING);
   numberOfButtonInterrupts = 0;
   pressed = false;
   stato = false;
 }
 
-void switchPressed ()
+void switchPressed ()// si attiva sul fronte di salita
 {
   numberOfButtonInterrupts++; // contatore rimbalzi
-  bool val = digitalRead(pulsante); // lettura stato pulsante
-  if(val && !pressed){ // fronte di salita
+  if(!pressed){ // legge immediatamente il primo fronte ma poi si disarma il pulsante
     pressed = true; // disarmo del pulsante e riarmo del timer di debouncing
     debounceTicker.once_ms(50, waitUntilInputLow);  
     Serial.println("SALITA disarmo pulsante");
