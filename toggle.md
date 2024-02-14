@@ -809,7 +809,7 @@ void switchPressed ()
   byte val = digitalRead(pulsante);
   if(val == HIGH){
     if(!pressed){ // intervento immediato sul primo fronte di salita
-        pressed = true;// disarmo il pulsante e riarmo il timer di debouncing
+        pressed = true;// disarmo del pulsante e riarmo il timer di debouncing
         stato = !stato; 
     }
   }
@@ -883,7 +883,7 @@ void switchPressed ()
   byte val = digitalRead(pulsante);
   if(val == HIGH){
     if(!pressed){ // intervento immediato sul primo fronte di salita
-        pressed = true;// disarmo il pulsante e riarmo del timer di debouncing
+        pressed = true;// disarmo del pulsante e riarmo del timer di debouncing
         stato = !stato; 
     }
   }
@@ -957,7 +957,7 @@ void switchPressed ()
   numberOfButtonInterrupts++; // contatore rimbalzi
   bool val = digitalRead(pulsante); // lettura stato pulsante
   if(val && !pressed){ // fronte di salita
-    pressed = true; // disarmo il pulsante e riarmo il timer di debouncing
+    pressed = true; // disarmo del pulsante e riarmo il timer di debouncing
     debounceTicker.once_ms(50, waitUntilInputLow);  
     Serial.println("SALITA disarmo pulsante");
     stato = !stato; 	  // logica toggle  
