@@ -167,11 +167,11 @@ void loop() {
 		delay(1000);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    delay(10);
+    		delay(10);
 	}
 }
 ```
-Simulazione online su Esp32 con Wowki del codice precedente: xxxx
+Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/388481409829351425
 
 ### **Schedulatore generico realizzato con funzione get()**
 
