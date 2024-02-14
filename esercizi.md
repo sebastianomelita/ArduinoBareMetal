@@ -376,8 +376,8 @@ Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinter
 
 Il **funzionamento** è agevolmente comprensibile alla luce delle seguenti considerazioni:
 - L'**interrupt** è attivo su **un solo fronte**. 
-- Al momento del **primo bounce in rising** del pulsante la condizione ```debtimer.get() > DEBOUNCETIMERISE``` è **sempre vera** (per cui il flag ```stato``` commuta immediatamente) perchè, dato che la funzione reset() del timer era stata eseguita molto tempo prima (al momento del rilascio del pulsante da parte dell'utente), il tempo attuale misurato dalla ```get()``` è molto più grande di un timeout. I bounce successivi al primo, se in rising sono filtrati dal timer impostato nella callback ```debounceRise()```, se in falling sono filtrati dal timer impostato nella callback ```debounceFall()``` che, sebbene diversa, viene chiamata temporalmente molto vicina al ```reset()``` di quella in rising precedente.
-- Al momento del **primo bounce in falling** del pulsante la condizione ```debtimer.get() > DEBOUNCETIMEFALL``` è **sempre vera** (per cui il flag ```stato``` commuta immediatamente) perchè, dato che la funzione reset() del timer era stata eseguita molto tempo prima (al momento della pressione del pulsante da parte dell'utente), il tempo attuale misurato dalla ```get()``` è molto più grande di un timeout. I bounce successivi al primo, se in rising sono filtrati dal timer impostato nella callback ```debounceFall()```, se in falling sono filtrati dal timer impostato nella callback ```debounceRise()``` che, sebbene diversa, viene chiamata temporalmente molto vicina al ```reset()``` di quella in falling precedente.
+- Al momento del **primo bounce in rising** del pulsante la condizione ```debtimer.get() > DEBOUNCETIMERISE``` è **sempre vera** (per cui il flag ```stato``` commuta immediatamente) perchè, dato che la funzione reset() del timer era stata eseguita molto tempo prima (al momento del rilascio del pulsante da parte dell'utente), il tempo attuale misurato dalla ```get()``` è molto più grande di un timeout. I bounce successivi al primo, in rising non possono più accadere (pulsante disarmato) dato che adesso l'attachInterrupt è impostata in FALLING, se in falling sono filtrati dal timer impostato nella callback ```debounceFall()``` che, sebbene diversa, viene chiamata temporalmente molto vicina al ```reset()``` di quella in rising precedente.
+- Al momento del **primo bounce in falling** del pulsante la condizione ```debtimer.get() > DEBOUNCETIMEFALL``` è **sempre vera** (per cui il flag ```stato``` commuta immediatamente) perchè, dato che la funzione reset() del timer era stata eseguita molto tempo prima (al momento della pressione del pulsante da parte dell'utente), il tempo attuale misurato dalla ```get()``` è molto più grande di un timeout. I bounce successivi al primo, in falling non possono più accadere dato che adesso l'attachInterrupt è impostata in RISING (pulsante riarmato), se in rising sono filtrati dal timer impostato nella callback ```debounceRise()``` che, sebbene diversa, viene chiamata temporalmente molto vicina al ```reset()``` di quella in falling precedente.
   
 Un esempio con l'**attuazione nel loop** del task di accenesione/spegnimento potrebbe essere:
 
@@ -397,7 +397,7 @@ void debounceRise() {
     count1 = 0;
     stato = !stato; // logica da attivare sul fronte (toggle)
     Serial.println("I have catched a RISE");
-    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceFall, FALLING);
+    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceFall, FALLING);// pulsante disarmato!
     debtimer.reset();// ogni tipo di fronte resetta il timer
   } else {
     count1++;
@@ -409,7 +409,7 @@ void debounceFall() {
     Serial.println(count1);
     count1 = 0;
     Serial.println("I have catched a FALL");
-    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceRise, RISING);
+    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceRise, RISING);// pulsante riarmato!
     debtimer.reset();// ogni tipo di fronte resetta il timer
   } else {
     count1++;
