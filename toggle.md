@@ -808,7 +808,7 @@ void switchPressed ()
 {
   byte val = digitalRead(pulsante);
   if(val == HIGH){
-    if(!pressed){ // intervento immediato sul primo fronte di salita soltanto (causa disarmo pulsante)
+    if(!pressed){ // intervento immediato ma sul primo fronte di salita soltanto (causa disarmo pulsante)
         pressed = true;// disarmo del pulsante e riarmo del timer di debouncing
         stato = !stato; 
     }
@@ -882,7 +882,7 @@ void switchPressed ()
 {
   byte val = digitalRead(pulsante);
   if(val == HIGH){
-    if(!pressed){ // intervento immediato sul primo fronte di salita soltanto (causa disarmo pulsante)
+    if(!pressed){ // intervento immediato ma sul primo fronte di salita soltanto (causa disarmo pulsante)
         pressed = true;// disarmo del pulsante e riarmo del timer di debouncing
         stato = !stato; 
     }
