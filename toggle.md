@@ -808,8 +808,8 @@ void switchPressed ()
 {
   byte val = digitalRead(pulsante);
   if(val == HIGH){
-    if(!pressed){ // intervento immediato sul fronte di salita
-        pressed = true;
+    if(!pressed){ // intervento immediato sul primo fronte di salita
+        pressed = true;// disarmo il pulsante
         stato = !stato; 
     }
   }
@@ -882,8 +882,8 @@ void switchPressed ()
 {
   byte val = digitalRead(pulsante);
   if(val == HIGH){
-    if(!pressed){ // intervento immediato sul fronte di salita
-        pressed = true;
+    if(!pressed){ // intervento immediato sul primo fronte di salita
+        pressed = true;// disarmo il pulsante
         stato = !stato; 
     }
   }
