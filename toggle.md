@@ -809,7 +809,7 @@ void switchPressed ()
   byte val = digitalRead(pulsante);
   if(val == HIGH){
     if(!pressed){ // intervento immediato sul primo fronte di salita
-        pressed = true;// disarmo il pulsante
+        pressed = true;// disarmo il pulsante e riarmo il timer di debouncing
         stato = !stato; 
     }
   }
@@ -823,7 +823,7 @@ void waitUntilInputChange()
         lastintTime = millis();
       }
       if((millis() - lastintTime > DEBOUNCETIME ) && digitalRead(pulsante) == LOW){
-        pressed = false; // riarmo del pulsante
+        pressed = false; // riarmo del pulsante e disarmo del timer di debouncing
         started = false;
       }
     }
@@ -883,7 +883,7 @@ void switchPressed ()
   byte val = digitalRead(pulsante);
   if(val == HIGH){
     if(!pressed){ // intervento immediato sul primo fronte di salita
-        pressed = true;// disarmo il pulsante
+        pressed = true;// disarmo il pulsante e riarmo del timer di debouncing
         stato = !stato; 
     }
   }
@@ -894,7 +894,7 @@ void waitUntilInputChange()
     if (pressed){ 
       debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
       if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){
-        pressed = false; // riarmo del pulsante
+        pressed = false; // riarmo del pulsante e disarmo del timer di debouncing
         debounce.stop();
 	debounce.reset();
       }
@@ -957,7 +957,7 @@ void switchPressed ()
   numberOfButtonInterrupts++; // contatore rimbalzi
   bool val = digitalRead(pulsante); // lettura stato pulsante
   if(val && !pressed){ // fronte di salita
-    pressed = true; // disarmo il pulsante
+    pressed = true; // disarmo il pulsante e riarmo il timer di debouncing
     debounceTicker.once_ms(50, waitUntilInputLow);  
     Serial.println("SALITA disarmo pulsante");
     stato = !stato; 	  // logica toggle  
@@ -975,7 +975,7 @@ void waitUntilInputLow()
         Serial.print("DISCESA riarmo pulsante\n");
         Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
         numberOfButtonInterrupts = 0; // reset del flag
-        pressed = false; // riarmo il pulsante
+        pressed = false; // riarmo il pulsante e disarmo automatico del timer di debouncing (nessun nuovo once)
     }
 }
 
