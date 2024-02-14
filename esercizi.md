@@ -349,7 +349,7 @@ void waitUntilInputChange()
 {
     if (pressed){ 
       debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
-      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){
+      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){// disarmo del timer al timeout
         pressed = false; // riarmo del pulsante
         debounce.stop();
 	debounce.reset();
