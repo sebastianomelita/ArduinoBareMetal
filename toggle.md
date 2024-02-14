@@ -688,6 +688,8 @@ Simulazione online del codice precedente https://wokwi.com/projects/348705487464
 
 **FreeRTOS** è un **SO per sistemi embedded** molto usato e dalle buone prestazioni che però, per l'utilizzo dei thread, espone delle **API proprietarie** che non possono essere usate su sistemi diversi da FreeRTOS. Per i thread è stato sviluppato da anni lo **standard POSIX** detto **phthread** che definisce in maniera **uniforme**, per **i sistemi** (Linux, Microsoft) e per i **linguaggi** (C, C++) ad esso aderenti, una serie di API che rendono il codice che contiene la programmazione dei thread molto **più portabile**.
 
+<img src="img\interruptPulsante.jpg" alt="alt text" width="1000">
+
 ### **Pulsante toggle basato su interrupts e debounce nella ISR**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
