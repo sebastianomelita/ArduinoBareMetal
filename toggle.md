@@ -713,7 +713,7 @@ void debounceRise() {
   if (debtimer.get() > DEBOUNCETIMERISE) {// al primo bounce (in rise o in fall) è sempre vero!
     Serial.println(count1);
     count1 = 0;
-    stato = !stato;
+    stato = !stato; // logica da attivare sul fronte 
     Serial.println("I have catched a RISE");
     attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceFall, FALLING);
     debtimer.reset();// ogni tipo di fronte resetta il timer
@@ -808,7 +808,7 @@ void switchPressed ()// si attiva sul fronte di salita
 {
     if(!pressed){ // intervento immediato ma sul primo fronte di salita soltanto (causa disarmo pulsante)
         pressed = true;// disarmo del pulsante e riarmo del timer di debouncing
-        stato = !stato; 
+        stato = !stato;// logica da attivare sul fronte
     }
 }  // end of switchPressed
 
@@ -879,7 +879,7 @@ void switchPressed ()// si attiva sul fronte di salita
 {
     if(!pressed){ // intervento immediato ma sul primo fronte di salita soltanto (causa disarmo pulsante)
         pressed = true;// disarmo del pulsante e riarmo del timer di debouncing
-        stato = !stato; 
+        stato = !stato;// logica da attivare sul fronte 
     }
 }  // end of switchPressed
 
