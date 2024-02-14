@@ -715,7 +715,7 @@ void debounceRise() {
     count1 = 0;
     stato = !stato; // logica da attivare sul fronte (toggle)
     Serial.println("I have catched a RISE");
-    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceFall, FALLING);
+    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceFall, FALLING);// disarmo il pulsante!
     debtimer.reset();// ogni tipo di fronte resetta il timer
   } else {
     count1++;
@@ -727,7 +727,7 @@ void debounceFall() {
     Serial.println(count1);
     count1 = 0;
     Serial.println("I have catched a FALL");
-    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceRise, RISING);
+    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceRise, RISING);// riarmo il pulsante!
     debtimer.reset();// ogni tipo di fronte resetta il timer
   } else {
     count1++;
