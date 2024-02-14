@@ -322,8 +322,6 @@ Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.co
 int led = 13;
 byte pulsante =12;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
-volatile unsigned long previousMillis = 0;
-volatile unsigned long lastintTime = 0;
 volatile bool pressed;
 #define DEBOUNCETIME 50
 DiffTimer debounce;
