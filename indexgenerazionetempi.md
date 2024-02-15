@@ -1,4 +1,7 @@
 >[Torna all'indice generale](index.md)
+
+<img src="img\task.jpg" alt="alt text" width="1000">
+
 1. [Funzioni di tempo](timefunc.md)
 2. [Tecniche di schedulazione](timesched.md)
 4. [Generazione di tempi assoluti](absolutetime.md)
