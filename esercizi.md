@@ -31,6 +31,8 @@ In **definitiva**, **non** adoperando, per adesso, tecniche di programmazione **
 - se i task procedono in maniera **parallela** e indipendente allora si possono pianificare in modo **indipendente** soltanto se si mandano in esecuzione su **thread separati**, all'interno di un **loop() dedicato**, assegnato solamente a loro.
 - se i task procedono in maniera **parallela** ma non del tutto indipendente, perchè capita che uno rimane in attesa del risultato dell'altro prima di andare avanti, allora bisogna trovare il modo di **sincronizzarli** con delle istruzioni di **attesa**, non fisse come le ```delay()```, ma dinamiche e legate all'accadere di un certo evento. Un evento è sempre segnalato dalla verità di una certa **condizione**, valutabile da una istruzione come ```waitUntil(c)```, dove ```c``` è la condizione.
 
+<img src="img\task.jpg" alt="alt text" width="1000">
+
 ## **TIMER UR**
 
 E’ possibile realizzare dei timers, con cui programmare **nel futuro** lo stesso evento o una sequenza di eventi diversi, **senza attese**, cioè senza ```delay()```, eseguendo un polling del **tempo di conteggio** di un **timer**. 
