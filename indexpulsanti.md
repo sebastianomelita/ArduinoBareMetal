@@ -2,6 +2,8 @@
 <p><a href="index.md">Torna all’indice generale</a></p>
 </blockquote>
 <h2 id="pulsanti">Pulsanti</h2>
+
+<img src="img\pulsanti.jpg" alt="alt text" width="1000">
 <ol>
 <li><a href="PullUP-PullDown.md">Pull Up e Pull Down</a></li>
 <li><a href="rimbalzi.md">Rimbalzi</a></li>
