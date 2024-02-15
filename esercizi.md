@@ -116,6 +116,8 @@ Se si volesse fare la stessa cosa con un **timer HW** allora ci si renderebbe co
 
 Si noti che, sia per timer HW che per timers SW, l'**ordine di apparizione** dei task all'interno del codice del loop potrebbe non rispecchiare l'**ordine** con cui gli stessi vengono **eseguiti**, cioè l'ordine di esecuzione avviene in maniera **asincrona** rispetto al codice, secondo il principio della cosidetta **programmazione ad eventi**. Eventi possono attivare o disattivare altri eventi in base ad input esterni oppure in base al valore raggiunto da certe variabili di stato.
 
+<img src="img\pulsanti.jpg" alt="alt text" width="1000">
+
 ### **Toggle basato sul polling del tempo corrente get()**
 
 In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
