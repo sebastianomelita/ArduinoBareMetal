@@ -37,7 +37,7 @@ Simulazione su Esp32 con Wowki: https://wokwi.com/projects/348779417449792082
 
 ## **PULSANTE SEMPLICE RESPONSIVO**
 
-Scrivere e simulare un programma (arduino o esp32) che realizzi l'accensione di ul led funchè si preme un pulsante e contemporaneamente il blink di un'altro.
+Scrivere e simulare un programma (arduino o esp32) che realizzi l'accensione di un led finchè si preme un pulsante e contemporaneamente il blink di un'altro.
 
 ```C++	
 int led1=13;
