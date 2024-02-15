@@ -24,6 +24,8 @@ Sia che venga notificato con un interrupt, sia che venga rilevato dall'appplicaz
 
 ### **Fasi di un  algoritmo di controllo**
 
+<img src="img\applicazMicro.jpg" alt="alt text" width="1000">
+
 In definitiva, se il nostro **"sensore"** è un pulsante, dovremmo vedere la pressione del pulsante come un generico **evento di input** al quale il microcontrollore **risponde** generando un **output** dopo avere **elaborato una logica di comando**. Possiamo interpretare **la logica di comando** come l’algoritmo che genera la risposta all’evento.
 
 Il discorso è del tutto generale e non vale solo per i pulsanti ma per qualunque **ingresso** e per qualunque **applicazione** eseguita da un microcontrollore, che, non a caso, in ambito industriale è spesso indicato come **Logic Solver**.
