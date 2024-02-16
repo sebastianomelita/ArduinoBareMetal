@@ -9,6 +9,7 @@
 <li><a href="rimbalzi.md">Rimbalzi</a></li>
 <li><a href="pulsantememoryless.md">Pulsanti senza memoria</a></li>
 <li><a href="toggle.md">Toggle e rilevatori di transito</a></li>
+<li><a href="encoder.md">Encoder rotativo</a></li>
 <li><a href="gruppipulsanti.md">Gruppi di pulsanti</a></li>
 <li><a href="esempipulsanti.md">Esempio curva pericolosa</a></li>
 <li><a href="nastro.md">Esempio nastro trasportatore</a></li>
