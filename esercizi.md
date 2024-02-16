@@ -459,7 +459,13 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```co
 
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/388638737495929857
 
+### **Encoder rotativo**
+
 ```C++
+// KY-040 Rotary Encoder Example
+// Taken from: https://docs.wokwi.com/parts/wokwi-ky-040
+// Copyright (C) 2021, Uri Shaked
+
 #define ENCODER_CLK 2
 #define ENCODER_DT  3
 int prevClk = HIGH;
@@ -471,7 +477,7 @@ void setup() {
 }
 
 void loop() {
-  int clk = digitalRead(ENCODER_CLK); // polling di CK
+  int clk = digitalRead(ENCODER_CLK); // polling di CK attuale
   if (prevClk == HIGH && clk == LOW) { // selezione del FALLING di CK
     int dtValue = digitalRead(ENCODER_DT);// polling di DT
     if (dtValue == HIGH) { // se DT non è ancora andato in FALLING
@@ -481,7 +487,7 @@ void loop() {
       Serial.println("Rotated counterclockwise ⏪");
     }
   }
-  prevClk = clk; // aggiorna il precedente CK con quello attuale
+  prevClk = clk; // polling del CK attuale diventa il polling del CK precedente
 }
 ```
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389913527165282305
