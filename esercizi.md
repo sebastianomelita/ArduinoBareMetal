@@ -492,6 +492,7 @@ Ogni volta che l'utente ruota la manopola, viene prodotto un segnale LOW sui pin
 - La rotazione in **senso orario** fa sì che il pin **CLK** si abbassi **prima**, quindi anche il pin DT si abbassi.
 - La rotazione in **senso antiorario** fa sì che il pin **DT** si abbassi **prima**, quindi il pin CLK si abbassi.
 
+
 ### **Encoder rotativo mediante polling del segnale CK**
 
 ```C++
@@ -561,10 +562,10 @@ void setup() {
 
 void readEncoder() {
   int dtValue = digitalRead(ENCODER_DT);
-  if (dtValue == HIGH) {
+  if (dtValue == HIGH) { // DT dopo
     counter++; // Clockwise
   }
-  if (dtValue == LOW) {
+  if (dtValue == LOW) { // DT prima
     counter--; // Counterclockwise
   }
 }
