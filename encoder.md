@@ -159,6 +159,22 @@ Le variabile **condivisa** tra ISR e loop() e **8 bit** è ```stato``` ed è sta
 
 Per quanto riguarda le sezioni critiche si può approfondire in [sezioni critiche](intsezionicritiche.md)
 
+<img src="img\rotary_2.png" alt="alt text" width="600">
+
+In realtà, i decoder rotativi, essendo realizzati con interruttori, sono soggetti al fenomeno dei rimbalzi tipici di tutti gli interruttori. 
+
+I debouncer èpossono essere realizzati utilizzando dei filtri:
+- basati sul tempo (timers)
+- macchine a stati finiti
+
+Il più grande vantaggio dell'utilizzo di una macchina a stati rispetto ad altri algoritmi è che questo ha un antirimbalzo intrinseco integrato. Altri algoritmi emettono output spuri con rimbalzo dell'interruttore, ma questo passerà semplicemente da uno stato all'altro finché il rimbalzo non si stabilizza, quindi continuerà lungo la macchina a stati .
+
+Un effetto collaterale del rimbalzo è che le rotazioni veloci possono far saltare i passaggi. Non richiedendo ritardi, è possibile misurare con precisione le rotazioni veloci.
+
+Un altro vantaggio è la capacità di gestire correttamente stati errati, come quelli dovuti a EMI, ecc.
+
+https://github.com/buxtronix/arduino/tree/master/libraries/Rotary
+
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
