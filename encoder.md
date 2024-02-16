@@ -159,7 +159,7 @@ Le variabile **condivisa** tra ISR e loop() e **8 bit** è ```stato``` ed è sta
 
 Per quanto riguarda le sezioni critiche si può approfondire in [sezioni critiche](intsezionicritiche.md)
 
-<img src="img\rotary_2.png" alt="alt text" width="600">
+<img src="img\rotary_2.png" alt="alt text" width="1000">
 
 In realtà, i decoder rotativi, essendo realizzati con interruttori, sono soggetti al fenomeno dei rimbalzi tipici di tutti gli interruttori. 
 
