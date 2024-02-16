@@ -466,11 +466,18 @@ I più comuni ed economici reperibili in giro, come quello che ho io ad esempio,
 
 <img src="img\encoder2.jpg" alt="alt text" width="300">
 
-L’ordine con il quale questi switch vengono interessati, quindi chi si apre prima o dopo rispetto a chi dei due, determina il senso di rotazione.
+L’ordine con il quale questi switch vengono aperti o chiusi, cioè chi si apre prima o dopo, determina il senso di rotazione.
 
 Un esempio di encoder rotativo potrebbe essere la rotellina del mouse, o la manopola del volume di alcuni impianti HiFi digitali.
 
 <img src="img\encoder.svg" alt="alt text" width="300">
+
+Pins:
+- **CLK**	Pin che utilizzeremo per conteggiare le **variazioni di stato**
+- **DT**	Pin che utilizzeremo per calcolare la **direzione**
+- **SW**	Switch interno attivabile alla **pressione** del pomello
+- **+**	5V di Arduino
+- **GND**	GND di Arduino
 
 Il modulo KY-040 include due **resistori pull-up** interni che collegano i pin CLK e DT a VCC. La simulazione solleva sempre questi pin, anche se si lascia fluttuante il pin VCC.
 
