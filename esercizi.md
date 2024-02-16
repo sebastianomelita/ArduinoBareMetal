@@ -562,10 +562,10 @@ void setup() {
 
 void readEncoder() {
   int dtValue = digitalRead(ENCODER_DT);
-  if (dtValue == HIGH) { // DT dopo
+  if (dtValue == HIGH) {// DT dopo
     counter++; // Clockwise
   }
-  if (dtValue == LOW) { // DT prima
+  if (dtValue == LOW) {// DT prima
     counter--; // Counterclockwise
   }
 }
@@ -575,16 +575,16 @@ void readEncoder() {
 // while we're reading it.
 int getCounter() {
   int result;
-  noInterrupts();
+  noInterrupts(); // inizio corsa critica
   result = counter;
   interrupts();
-  return result;
+  return result;  // fine corsa critica
 }
 
 void resetCounter() {
-  noInterrupts();
+  noInterrupts(); // inizio corsa critica
   counter = 0;
-  interrupts();
+  interrupts();   // fine corsa critica
 }
 
 void loop() {
