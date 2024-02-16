@@ -464,6 +464,15 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```co
 
 <img src="img\wokwi-ky-040-timing-cd6fe446378352c1416ef8817f1e5abf.webp" alt="alt text" width="600">
 
+L'encoder rotativo offre due modalità di interazione:
+- Rotazione: è possibile ruotare la manopola facendo clic sulle frecce. La freccia superiore lo ruota di un passo in senso orario, mentre la freccia inferiore lo ruota di un passo in senso antiorario. La rotazione della manopola produrrà segnali digitali sui pin DT e CLK, come spiegato di seguito.
+- Pulsante: fare clic sulla manopola per premere il pulsante. Mentre è premuto, il pulsante collega il pin SW con il pin GND.
+Ogni volta che l'utente ruota la manopola, viene prodotto un segnale LOW sui pin DT e CLK:
+
+Verso di rotazione:
+- La rotazione in senso orario fa sì che il pin CLK si abbassi prima, quindi anche il pin DT si abbassi.
+- La rotazione in senso antiorario fa sì che il pin DT si abbassi prima, quindi il pin CLK si abbassi.
+
 ### **Encoder rotativo mediante polling del segnale CK**
 
 ```C++
@@ -788,4 +797,8 @@ Scrivere un programma per esp32 che realizzi la gestione di un led che fa dieci 
 
 https://wokwi.com/projects/388978976877511681
 
+
+Sitografia:
+- https://docs.wokwi.com/parts/wokwi-ky-040
+  
 >[Torna all'indice generale](index.md)
