@@ -461,6 +461,13 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```co
 
 ## **ENCODER ROTATIVO**
 
+Esistono varie tipologie di encoder con numeri di step variabili e meccanismi interni differenti.
+I più comuni ed economici reperibili in giro, come quello che ho io ad esempio, basano il loro funzionamento su due switch interni che mutano il loro stato sulla base di una ruota dentata.
+
+L’ordine con il quale questi switch vengono interessati, quindi chi si apre prima o dopo rispetto a chi dei due, determina il senso di rotazione.
+
+Un esempio di encoder rotativo potrebbe essere la rotellina del mouse, o la manopola del volume di alcuni impianti HiFi digitali.
+
 <img src="img\encoder.svg" alt="alt text" width="300">
 
 Il modulo KY-040 include due **resistori pull-up** interni che collegano i pin CLK e DT a VCC. La simulazione solleva sempre questi pin, anche se si lascia fluttuante il pin VCC.
@@ -803,5 +810,6 @@ https://wokwi.com/projects/388978976877511681
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
+- https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
   
 >[Torna all'indice generale](index.md)
