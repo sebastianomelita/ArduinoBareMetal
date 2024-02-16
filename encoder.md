@@ -1,4 +1,4 @@
-
+>[Torna all'indice](indexpulsanti.md)
 
 ## **ENCODER ROTATIVO**
 
@@ -163,4 +163,5 @@ Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
 
-  
+>[Torna all'indice](indexpulsanti.md)
+
