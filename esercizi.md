@@ -495,6 +495,8 @@ Ogni volta che l'utente ruota la manopola, viene prodotto un segnale LOW sui pin
 
 ### **Encoder rotativo mediante polling del segnale CK**
 
+In questo esempio, l'encoder rotativo è stato getito con l'algoritmo con cui tipicamente si possono discriminare i fronti di un interruttore a partire dal polling dei livelli dei segnali da questo generato. In questo caso il **fronte** che viene rilevato **direttamente** è quello di **discesa** del piedino **CK**. L'avvenuto passaggio del fronte sul segnale **DT** è valutato **indirettamente** osservando il **livello** letto sul piedino corrisposndente tramite l'istruzione ```digitalRead(ENCODER_DT)```.
+
 ```C++
 // KY-040 Rotary Encoder Example
 // Taken from: https://docs.wokwi.com/parts/wokwi-ky-040
