@@ -476,7 +476,7 @@ Pins:
 - **CLK**	Pin che utilizzeremo per conteggiare le **variazioni di stato**
 - **DT**	Pin che utilizzeremo per calcolare la **direzione**
 - **SW**	Switch interno attivabile alla **pressione** del pomello
-- **+**	5V di Arduino
+- **+5V** di Arduino
 - **GND**	GND di Arduino
 
 Il modulo KY-040 include due **resistori pull-up** interni che collegano i pin CLK e DT a VCC. La simulazione solleva sempre questi pin, anche se si lascia fluttuante il pin VCC.
