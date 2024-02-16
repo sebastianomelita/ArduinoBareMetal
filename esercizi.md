@@ -459,6 +459,33 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```co
 
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/388638737495929857
 
+```C++
+#define ENCODER_CLK 2
+#define ENCODER_DT  3
+int prevClk = HIGH;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(ENCODER_CLK, INPUT);
+  pinMode(ENCODER_DT, INPUT);
+}
+
+void loop() {
+  int clk = digitalRead(ENCODER_CLK); // polling di CK
+  if (prevClk == HIGH && clk == LOW) { // selezione del FALLING di CK
+    int dtValue = digitalRead(ENCODER_DT);// polling di DT
+    if (dtValue == HIGH) { // se DT non è ancora andato in FALLING
+      Serial.println("Rotated clockwise ⏩");
+    }
+    if (dtValue == LOW) { // se DT è già andato in FALLING
+      Serial.println("Rotated counterclockwise ⏪");
+    }
+  }
+  prevClk = clk; // aggiorna il precedente CK con quello attuale
+}
+```
+- Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389913527165282305
+  
 ## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
 ### **Es1**
