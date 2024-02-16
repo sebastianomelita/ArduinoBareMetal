@@ -599,7 +599,7 @@ void loop() {
   }
 }
 ```
-- Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/304184909747978816
+- Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389923052943921153
   
 ## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
