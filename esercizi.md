@@ -460,7 +460,7 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```co
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/388638737495929857
 
 
-<img src="img\wokwi-ky-040-timing-cd6fe446378352c1416ef8817f1e5abf.webp" alt="alt text" width="1000">
+<img src="img\wokwi-ky-040-timing-cd6fe446378352c1416ef8817f1e5abf.webp" alt="alt text" width="500">
 
 ### **Encoder rotativo mediante polling del segnale CK**
 
