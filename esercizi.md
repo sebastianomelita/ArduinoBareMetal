@@ -462,7 +462,7 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```co
 ## **ENCODER ROTATIVO**
 
 Esistono varie tipologie di encoder con numeri di step variabili e meccanismi interni differenti.
-I più comuni ed economici reperibili in giro, come quello che ho io ad esempio, basano il loro funzionamento su due switch interni che mutano il loro stato sulla base di una ruota dentata.
+I più comuni ed economici reperibili in giro, basano il loro funzionamento su due switch interni che mutano il loro stato sulla base di una ruota dentata.
 
 <img src="img\encoder2.jpg" alt="alt text" width="300">
 
