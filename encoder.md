@@ -164,7 +164,7 @@ Per quanto riguarda le sezioni critiche si può approfondire in [sezioni critich
 In realtà, i decoder rotativi, essendo realizzati con interruttori, sono soggetti al fenomeno dei rimbalzi tipici di tutti gli interruttori. 
 
 I debouncer èpossono essere realizzati utilizzando dei filtri:
-- basati sul tempo (timers)
+- basati sul tempo (timers) analoghi a quanto già visto per i normali pulsanti
 - macchine a stati finiti
 
 Il più grande vantaggio dell'utilizzo di una macchina a stati rispetto ad altri algoritmi è che questo ha un antirimbalzo intrinseco integrato. Altri algoritmi emettono output spuri con rimbalzo dell'interruttore, ma questo passerà semplicemente da uno stato all'altro finché il rimbalzo non si stabilizza, quindi continuerà lungo la macchina a stati .
@@ -178,6 +178,8 @@ https://github.com/buxtronix/arduino/tree/master/libraries/Rotary
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
+- https://www.pinteric.com/rotary.html
+- 
 
 >[Torna all'indice](indexpulsanti.md)
 
