@@ -487,7 +487,7 @@ void loop() {
       Serial.println("Rotated counterclockwise ⏪");
     }
   }
-  prevClk = clk; // polling del CK attuale diventa il polling del CK precedente
+  prevClk = clk; // il polling del CK attuale diventa il polling del CK precedente
 }
 ```
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389913527165282305
