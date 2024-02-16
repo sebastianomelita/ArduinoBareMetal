@@ -158,3 +158,9 @@ Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **n
 Le variabile **condivisa** tra ISR e loop() e **8 bit** è ```stato``` ed è stata dichiarata come ```volatile``` e ogni suo accesso (in lettura e scrittura) è  stato racchiuso in una  **sezione critica** dove l'acccesso parallelo è stato disabilitato in favore di uno **strettamente sequenziale** che garantisce l'atomicità delle istruzioni in essa racchiuse.
 
 Per quanto riguarda le sezioni critiche si può approfondire in [sezioni critiche](intsezionicritiche.md)
+
+Sitografia:
+- https://docs.wokwi.com/parts/wokwi-ky-040
+- https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
+
+  
