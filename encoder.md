@@ -181,7 +181,7 @@ Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
 - https://www.pinteric.com/rotary.html
-- 
+- http://www.technoblogy.com/show?1YHJ
 
 >[Torna all'indice](indexpulsanti.md)
 
