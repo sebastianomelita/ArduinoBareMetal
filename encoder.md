@@ -557,6 +557,7 @@ Sitografia:
 - https://it.wikipedia.org/wiki/Codice_Gray
 - https://web.engr.oregonstate.edu/~traylor/ece473/student_projects/ReadingEncoderSwitches.pdf
 - https://www.best-microcontroller-projects.com/support-files/pec11l.pdf
+- https://www.best-microcontroller-projects.com/rotary-encoder.html
 
 >[Torna all'indice](indexpulsanti.md)
 
