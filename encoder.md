@@ -465,15 +465,20 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 
 ```C++
 // Define pins for the rotary encoder
-#define encoderPinA  2
-#define encoderPinB  3
+#define encoderPinA  3
+#define encoderPinB  2
 
 // Variables to store previous state of encoder pins
-int lastEncoded = 0;
-long encoderValue = 0;
+volatile int lastEncoded = 0;
+volatile long encoderValue = 0;
 
-// Array to convert the 2-bit code to its corresponding value
-const int8_t encoderTable[] = {0, 1, -1, 0, -1, 0, 0, 1, 1, 0, 0, -1, 0, -1, 1, 0};
+// Array to define the transition states for debouncing
+const int8_t debounceTable[16] = {
+  0,  1, -1,  0,
+ -1,  0,  0,  1,
+  1,  0,  0, -1,
+  0, -1,  1,  0
+};
 
 void setup() {
   // Set encoder pins as inputs
@@ -496,53 +501,28 @@ void loop() {
 }
 
 void updateEncoder() {
+  // Read the current state of the encoder pins
   int MSB = digitalRead(encoderPinA);
   int LSB = digitalRead(encoderPinB);
 
   // Bitwise operation to construct 2-bit code
   int encoded = (MSB << 1) | LSB;
-  
-  // Lookup the value in the table
-  int increment = encoderTable[encoded];
-  
-  // Update encoder value
-  encoderValue += increment;
 
-  // Print out direction based on both A and B pins' states
-  if ((lastEncoded == 0b00 && encoded == 0b01) || (lastEncoded == 0b11 && encoded == 0b10)) {
-    Serial.println("Clockwise");
-    Serial.println(increment);
-  } else if ((lastEncoded == 0b01 && encoded == 0b00) || (lastEncoded == 0b10 && encoded == 0b11)) {
-    Serial.println("Counter-clockwise");
-    Serial.println(increment);
+  // Compare the current state with the previous state
+  int delta = debounceTable[lastEncoded << 2 | encoded];
+  if (delta) {
+    encoderValue += delta;
+    // Print out direction based on delta value
+    if (delta > 0) {
+      Serial.println("Clockwise");
+    } else {
+      Serial.println("Counter-clockwise");
+    }
   }
-  
+
   // Store current encoded value for the next iteration
-  lastEncoded = encoded & 0b11;
+  lastEncoded = encoded;
 }
-/*
-The increment variable in the code represents the change in the encoder value based on the current state of the encoder pins A and B. It's calculated by looking up the 2-bit code formed by the states of pins A and B in the encoderTable array.
-
-The rotary encoder produces two digital signals, often referred to as A and B. These signals change as the encoder shaft is rotated. By monitoring the sequence of changes in these signals, we can determine the direction of rotation and the number of steps.
-
-Here's how the increment variable is calculated:
-
-We read the current states of pins A and B (MSB and LSB respectively).
-We combine these states into a 2-bit code to represent the current position of the encoder.
-We use this 2-bit code as an index to look up the corresponding value in the encoderTable array.
-The value retrieved from the array (increment) represents the change in the encoder value based on the current state of the encoder.
-For example:
-
-If the previous state was 00 and the current state is 01, it indicates a clockwise rotation.
-If the previous state was 01 and the current state is 00, it also indicates a clockwise rotation.
-If the previous state was 01 and the current state is 10, it indicates a counter-clockwise rotation.
-If the previous state was 10 and the current state is 01, it also indicates a counter-clockwise rotation.
-
-The increment variable only tells us whether the encoder is turning and by how much, but it doesn't inherently indicate the direction of rotation.
-
-To determine the direction of rotation, we need to consider both the current state and the previous state of the encoder pins A and B. By analyzing the transitions between these states, we can infer the direction of rotation.
-
-By chatGPT.....
 */
 ```
 
