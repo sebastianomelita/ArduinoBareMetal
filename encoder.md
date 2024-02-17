@@ -182,7 +182,7 @@ https://github.com/buxtronix/arduino/tree/master/libraries/Rotary
 ```C++
 
 ```
-Simulazione online su ESP32 di una del codice precedente con Wowki: 
+Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389969556548332545
 
 ### **Encoder rotativo mediante interrupt con debouncer basato sul tempo**
 
