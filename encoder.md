@@ -145,7 +145,7 @@ void loop() {
   }
 }
 ```
-- Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389923052943921153
+Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389923052943921153
 
 Le variabili **condivise** tra una ISR e il loop() andrebbero protette, da accessi **paralleli** e concorrenti da parte di entrambe, tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono sempre essere dichiarate con il qualificatore ```volatile``` per forzarne la modifica istantanea anche sui registri della CPU. 
 
@@ -176,6 +176,79 @@ Un effetto collaterale del rimbalzo è che le rotazioni veloci possono far salta
 Un altro vantaggio è la capacità di gestire correttamente stati errati, come quelli dovuti a EMI, ecc.
 
 https://github.com/buxtronix/arduino/tree/master/libraries/Rotary
+
+
+### **Encoder rotativo mediante interrupt sul segnale CK dbounced**
+
+```C++
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 20, 4);
+
+#define ENCODER_CLK 2
+#define ENCODER_DT  3
+#define ENCODER_SW  4
+#define DEBOUNCE_DELAY 50
+
+int counter = 0;
+volatile unsigned long lastDebounceTime = 0;
+
+void setup() {
+  // Initialize LCD
+  lcd.init();
+  lcd.backlight();
+
+  // Initialize encoder pins
+  pinMode(ENCODER_CLK, INPUT);
+  pinMode(ENCODER_DT, INPUT);
+  pinMode(ENCODER_SW, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_CLK), readEncoder, FALLING);
+}
+
+void readEncoder() {
+  // Perform debounce
+  if (millis() - lastDebounceTime > DEBOUNCE_DELAY) {
+    lastDebounceTime = millis(); // riarma il timer
+
+    int dtValue = digitalRead(ENCODER_DT);
+    if (dtValue == HIGH) {// DT dopo
+      counter++; // Clockwise
+    }
+    if (dtValue == LOW) {// DT prima
+      counter--; // Counterclockwise
+    }
+  }
+}
+
+// Get the counter value, disabling interrupts.
+// This make sure readEncoder() doesn't change the value
+// while we're reading it.
+int getCounter() {
+  int result;
+  noInterrupts(); // inizio corsa critica
+  result = counter;
+  interrupts();
+  return result;  // fine corsa critica
+}
+
+void resetCounter() {
+  noInterrupts(); // inizio corsa critica
+  counter = 0;
+  interrupts();   // fine corsa critica
+}
+
+void loop() {
+  lcd.setCursor(3, 0);
+  lcd.print("Counter:");
+  lcd.setCursor(7, 1);
+  lcd.print(getCounter());
+  lcd.print("        ");
+
+  if (digitalRead(ENCODER_SW) == LOW) {
+    resetCounter();
+  }
+}
+```
+Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389966992054192129
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
