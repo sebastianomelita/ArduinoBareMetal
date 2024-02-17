@@ -315,6 +315,8 @@ Sitografia:
 - https://www.pinteric.com/rotary.html
 - http://www.technoblogy.com/show?1YHJ
 - https://github.com/fryktoria/FR_RotaryEncoder/blob/master/src/FR_RotaryEncoder.cpp
+- https://it.wikipedia.org/wiki/Codice_Gray
+- https://web.engr.oregonstate.edu/~traylor/ece473/student_projects/ReadingEncoderSwitches.pdf
 
 >[Torna all'indice](indexpulsanti.md)
 
