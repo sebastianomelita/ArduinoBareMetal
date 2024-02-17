@@ -180,7 +180,39 @@ https://github.com/buxtronix/arduino/tree/master/libraries/Rotary
 ### **Encoder rotativo mediante polling con debouncer basato sul tempo**
 
 ```C++
+// KY-040 Rotary Encoder Example
+// Taken from: https://docs.wokwi.com/parts/wokwi-ky-040
+// Copyright (C) 2021, Uri Shaked
 
+#define ENCODER_CLK 2
+#define ENCODER_DT  3
+int prevClk = HIGH;
+unsigned long lastDebounceTime = 0;
+unsigned long debounceDelay = 10;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(ENCODER_CLK, INPUT);
+  pinMode(ENCODER_DT, INPUT);
+}
+
+void loop() {
+  int clk = digitalRead(ENCODER_CLK); // polling di CK attuale
+  if (prevClk == HIGH && clk == LOW) { // selezione del FALLING di CK
+    // If enough time has passed since the last state change
+    if ((millis() - lastDebounceTime) > debounceDelay) {
+      lastDebounceTime = millis(); // riarmo il timer
+      int dtValue = digitalRead(ENCODER_DT);// polling di DT
+      if (dtValue == HIGH) { // se DT non è ancora andato in FALLING
+        Serial.println("Rotated clockwise ⏩");
+      }
+      if (dtValue == LOW) { // se DT è già andato in FALLING
+        Serial.println("Rotated counterclockwise ⏪");
+      }
+    }
+  }
+  prevClk = clk; // il polling del CK attuale diventa il polling del CK precedente
+}
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389969556548332545
 
