@@ -174,7 +174,7 @@ La durata tipica, per questi dispositivi, del fenomeno dei rimbalzi è di circa 
 
 I rimbalzi rappresentano il limite fisico intrinseco del dispositivo per quanto riguarda la sua velocità di rotazione. Nessun sensore è immune ai rumori, la granularità della misura è sempre finita. In questo caso è data dai 10 msec della fisica dei suoi rimbalzi. Si può migliorarla sfruttando la ridondanza delle transizioni. 
 
-In altre parole, a ridosso dei 10 msec l'errore è sempre possibile ma la ridondanza di informazione presente nella tabella di verità permette di correggerne alcuni scartando le transizioni non ammissibili. Non è certezza assoluta ma probabilità, che diventa sempre maggiore quanto più indietro si vanno ad esaminare le transizioni a partire dall'istante corrente. Se il matching è sempre su valori ammissibili allora la probabilit che siano tutti frutti di un unico treno di rimbalzi diventa molto ridotta.
+In altre parole, a ridosso dei 10 msec gli errori sono sempre possibili ma la ridondanza di informazione presente nella tabella di verità permette di correggerne alcuni scartando le transizioni non ammissibili. Non è certezza assoluta ma probabilità, che diventa sempre maggiore quanto più indietro si vanno ad esaminare le transizioni a partire dall'istante corrente. Se il matching è sempre su valori ammissibili allora la probabilit che siano tutti frutti di un unico treno di rimbalzi diventa molto ridotta.
 
 Inoltre la tabella della verità delle transizioni passate ed attuali rispetta grossomodo la codifica Gray per cui un singolo errore di un bit cambia sempre cifre poco significative della codifica generando variazioni unitarie sul valore attuale di questa.
 
