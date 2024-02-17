@@ -182,6 +182,7 @@ Sitografia:
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
 - https://www.pinteric.com/rotary.html
 - http://www.technoblogy.com/show?1YHJ
+- https://github.com/fryktoria/FR_RotaryEncoder/blob/master/src/FR_RotaryEncoder.cpp
 
 >[Torna all'indice](indexpulsanti.md)
 
