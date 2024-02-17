@@ -292,6 +292,10 @@ Con tabella e polling metodo tracking
 
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389979138658609153
 
+Con tabella e interrupt metodo tracking
+
+https://wokwi.com/projects/390001300410019841
+
 Con tabella e interrupts metodo array
 
 https://wokwi.com/projects/389999046461201409
