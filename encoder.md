@@ -289,6 +289,8 @@ void loop() {
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389966992054192129
 
 
+Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389979138658609153
+
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
