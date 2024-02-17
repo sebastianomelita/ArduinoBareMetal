@@ -177,8 +177,14 @@ Un altro vantaggio è la capacità di gestire correttamente stati errati, come q
 
 https://github.com/buxtronix/arduino/tree/master/libraries/Rotary
 
+### **Encoder rotativo mediante polling con debouncer basato sul tempo**
 
-### **Encoder rotativo mediante interrupt sul segnale CK dbounced**
+```C++
+
+```
+Simulazione online su ESP32 di una del codice precedente con Wowki: 
+
+### **Encoder rotativo mediante interrupt con debouncer basato sul tempo**
 
 ```C++
 #include <LiquidCrystal_I2C.h>
@@ -249,6 +255,7 @@ void loop() {
 }
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389966992054192129
+
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
