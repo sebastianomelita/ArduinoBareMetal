@@ -457,7 +457,6 @@ void updateEncoder() {
   a_past = a_current;
   b_past = b_current;
 }
-
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390001300410019841
 
@@ -523,7 +522,6 @@ void updateEncoder() {
   // Store current encoded value for the next iteration
   lastEncoded = encoded;
 }
-*/
 ```
 
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389999046461201409
