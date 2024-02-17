@@ -297,18 +297,254 @@ void loop() {
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389966992054192129
 
-Con tabella e polling metodo tracking
+### **Encoder rotativo con tabella e polling metodo tracking**
+
 ```C++
+/*
+B A B A Direction
+0 0 0 0 NA
+0 0 0 1 CW
+0 0 1 0 CCW
+0 0 1 1 NA
+0 1 0 0 CCW
+0 1 0 1 NA
+0 1 1 0 NA
+0 1 1 1 CW
+1 0 0 0 CW
+1 0 0 1 NA
+1 0 1 0 NA
+1 0 1 1 CCW
+1 1 0 0 NA
+1 1 0 1 CCW
+1 1 1 0 CW
+1 1 1 1 NA
+*/
+#define CW 1
+#define CCW 2
+#define ENCODER_CLK 2
+#define ENCODER_DT  3
+int a_past = LOW;
+int b_past = LOW;
+int a0_past = HIGH;
+int direction = 0;
+int counter = 0;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(ENCODER_CLK, INPUT);
+  pinMode(ENCODER_DT, INPUT);
+}
+
+void loop() {
+  int a_current = digitalRead(ENCODER_CLK); // polling di CK/A attuale
+  int b_current = digitalRead(ENCODER_DT);  // polling di DT/B attuale
+  //if (a_past == a_current) { // selezione di un fronte di discesa di CK/A 
+  //int b_current = digitalRead(ENCODER_DT);  // polling di DT/B attuale
+  direction = 0;
+  /*
+  B A B A
+  0 0 0 0 NA
+  0 0 1 1 NA
+  0 1 0 1 NA
+  0 1 1 0 NA
+  1 0 0 1 NA
+  1 0 1 0 NA
+  1 1 0 0 NA
+  1 1 1 1 NA
+  */
+  if(a_past == a_current){
+    //Serial.println("Apast = Acurrent");
+    if((a_current == 1) && (b_past < b_current)){direction = CW;counter++;Serial.println("0 1 1 1 CW");}//   0 1 1 1 CW                        4
+    if((a_current == 1) && (b_past > b_current)){direction = CCW;counter--;Serial.println("1 1 0 1 CCW");}// 1 1 0 1 CCW
+    if((a_current == 0) && (b_past > b_current)){direction = CW;counter++;Serial.println("1 0 0 0 CW");}//   1 0 0 0 CW                        2
+    if((a_current == 0) && (b_past < b_current)){direction = CCW;counter--;Serial.println("0 0 1 0 CCW");}// 0 0 1 0 CCW
+  }
+  if((a_past < a_current) && (b_past == LOW && b_current == LOW)){direction = CW;counter++;Serial.println("0 0 0 1 CW");}//     0 0 0 1 CW     3
+  if((a_past < a_current) && (b_past == HIGH && b_current == HIGH)){direction = CCW;counter--;Serial.println("1 0 1 1 CCW");}// 1 0 1 1 CCW 
+  if((a_past > a_current) && (b_past == LOW && b_current == LOW)){direction = CCW;counter--;Serial.println("0 1 0 0 CCW");}//   0 1 0 0 CCW
+  if((a_past > a_current) && (b_past == HIGH && b_current == HIGH)){direction = CW;counter++;Serial.println("1 1 1 0 CW");}//   1 1 1 0 CW     1
+
+  if (counter == 4) {
+    counter = 0;
+    Serial.println("Rotated clockwise ⏩");
+  }
+  if (counter == -4) {
+    counter = 0;
+    Serial.println("Rotated counterclockwise ⏪");
+  }
+  // increment alarm count
+  // test for over/under flows
+  a_past = a_current;
+  b_past = b_current;
+}
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389979138658609153
 
-Con tabella e interrupt metodo tracking
+### **Encoder rotativo tabella e interrupt metodo tracking**
+
 ```C++
+// Define pins for the rotary encoder
+#define encoderPinA  2
+#define encoderPinB  3
+#define CW 1
+#define CCW 2
+
+int a_past = HIGH;
+int b_past = HIGH;
+int direction = 0;
+volatile short counter = 0;
+
+void setup() {
+  // Set encoder pins as inputs
+  pinMode(encoderPinA, INPUT_PULLUP);
+  pinMode(encoderPinB, INPUT_PULLUP);
+
+  // Attach interrupts to encoder pins
+  attachInterrupt(digitalPinToInterrupt(encoderPinA), updateEncoder, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(encoderPinB), updateEncoder, CHANGE);
+
+  // Initialize Serial communication
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Do whatever you need to do with the encoder value
+  // For example, you can print it out:
+  //Serial.println(encoderValue);
+  //Serial.println(counter);
+  if (counter >= 4) {
+    Serial.print("Rotated clockwise ⏩ ");Serial.println(counter);
+    counter = 0;
+  }
+  if (counter <= -4) {
+    Serial.print("Rotated counterclockwise ⏪");Serial.println(counter);
+    counter = 0;
+  }
+  delay(100); // Adjust delay as needed for your application
+}
+
+void updateEncoder() {
+  int a_current = digitalRead(encoderPinA); // polling di CK/A attuale
+  int b_current = digitalRead(encoderPinB);  // polling di DT/B attuale
+  //if (a_past == a_current) { // selezione di un fronte di discesa di CK/A 
+  //int b_current = digitalRead(ENCODER_DT);  // polling di DT/B attuale
+  direction = 0;
+  /*
+  B A B A
+  0 0 0 0 NA
+  0 0 1 1 NA
+  0 1 0 1 NA
+  0 1 1 0 NA
+  1 0 0 1 NA
+  1 0 1 0 NA
+  1 1 0 0 NA
+  1 1 1 1 NA
+  */
+  if(a_past == a_current){
+    //Serial.println("Apast = Acurrent");
+    if((a_current == 1) && (b_past < b_current)){direction = CW;counter++;Serial.println("0 1 1 1 CW");}//   0 1 1 1 CW                        4
+    if((a_current == 1) && (b_past > b_current)){direction = CCW;counter--;Serial.println("1 1 0 1 CCW");}// 1 1 0 1 CCW
+    if((a_current == 0) && (b_past > b_current)){direction = CW;counter++;Serial.println("1 0 0 0 CW");}//   1 0 0 0 CW                        2
+    if((a_current == 0) && (b_past < b_current)){direction = CCW;counter--;Serial.println("0 0 1 0 CCW");}// 0 0 1 0 CCW
+  }
+  if((a_past < a_current) && (b_past == LOW && b_current == LOW)){direction = CW;counter++;Serial.println("0 0 0 1 CW");}//     0 0 0 1 CW     3
+  if((a_past < a_current) && (b_past == HIGH && b_current == HIGH)){direction = CCW;counter--;Serial.println("1 0 1 1 CCW");}// 1 0 1 1 CCW 
+  if((a_past > a_current) && (b_past == LOW && b_current == LOW)){direction = CCW;counter--;Serial.println("0 1 0 0 CCW");}//   0 1 0 0 CCW
+  if((a_past > a_current) && (b_past == HIGH && b_current == HIGH)){direction = CW;counter++;Serial.println("1 1 1 0 CW");}//   1 1 1 0 CW     1
+
+  // increment alarm count
+  // test for over/under flows
+  a_past = a_current;
+  b_past = b_current;
+}
+
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390001300410019841
+
+### **Encoder rotativo tabella e interrupt metodo array**
+
 ```C++
+// Define pins for the rotary encoder
+#define encoderPinA  2
+#define encoderPinB  3
+
+// Variables to store previous state of encoder pins
+int lastEncoded = 0;
+long encoderValue = 0;
+
+// Array to convert the 2-bit code to its corresponding value
+const int8_t encoderTable[] = {0, 1, -1, 0, -1, 0, 0, 1, 1, 0, 0, -1, 0, -1, 1, 0};
+
+void setup() {
+  // Set encoder pins as inputs
+  pinMode(encoderPinA, INPUT_PULLUP);
+  pinMode(encoderPinB, INPUT_PULLUP);
+
+  // Attach interrupts to encoder pins
+  attachInterrupt(digitalPinToInterrupt(encoderPinA), updateEncoder, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(encoderPinB), updateEncoder, CHANGE);
+
+  // Initialize Serial communication
+  Serial.begin(9600);
+}
+
+void loop() {
+  // Do whatever you need to do with the encoder value
+  // For example, you can print it out:
+  //Serial.println(encoderValue);
+  delay(100); // Adjust delay as needed for your application
+}
+
+void updateEncoder() {
+  int MSB = digitalRead(encoderPinA);
+  int LSB = digitalRead(encoderPinB);
+
+  // Bitwise operation to construct 2-bit code
+  int encoded = (MSB << 1) | LSB;
+  
+  // Lookup the value in the table
+  int increment = encoderTable[encoded];
+  
+  // Update encoder value
+  encoderValue += increment;
+
+  // Print out direction based on both A and B pins' states
+  if ((lastEncoded == 0b00 && encoded == 0b01) || (lastEncoded == 0b11 && encoded == 0b10)) {
+    Serial.println("Clockwise");
+    Serial.println(increment);
+  } else if ((lastEncoded == 0b01 && encoded == 0b00) || (lastEncoded == 0b10 && encoded == 0b11)) {
+    Serial.println("Counter-clockwise");
+    Serial.println(increment);
+  }
+  
+  // Store current encoded value for the next iteration
+  lastEncoded = encoded & 0b11;
+}
+/*
+The increment variable in the code represents the change in the encoder value based on the current state of the encoder pins A and B. It's calculated by looking up the 2-bit code formed by the states of pins A and B in the encoderTable array.
+
+The rotary encoder produces two digital signals, often referred to as A and B. These signals change as the encoder shaft is rotated. By monitoring the sequence of changes in these signals, we can determine the direction of rotation and the number of steps.
+
+Here's how the increment variable is calculated:
+
+We read the current states of pins A and B (MSB and LSB respectively).
+We combine these states into a 2-bit code to represent the current position of the encoder.
+We use this 2-bit code as an index to look up the corresponding value in the encoderTable array.
+The value retrieved from the array (increment) represents the change in the encoder value based on the current state of the encoder.
+For example:
+
+If the previous state was 00 and the current state is 01, it indicates a clockwise rotation.
+If the previous state was 01 and the current state is 00, it also indicates a clockwise rotation.
+If the previous state was 01 and the current state is 10, it indicates a counter-clockwise rotation.
+If the previous state was 10 and the current state is 01, it also indicates a counter-clockwise rotation.
+
+The increment variable only tells us whether the encoder is turning and by how much, but it doesn't inherently indicate the direction of rotation.
+
+To determine the direction of rotation, we need to consider both the current state and the previous state of the encoder pins A and B. By analyzing the transitions between these states, we can infer the direction of rotation.
+
+By chatGPT.....
+*/
 ```
-Con tabella e interrupts metodo array
 
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389999046461201409
 
