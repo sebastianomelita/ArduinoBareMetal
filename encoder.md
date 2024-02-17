@@ -338,8 +338,6 @@ void setup() {
 void loop() {
   int a_current = digitalRead(ENCODER_CLK); // polling di CK/A attuale
   int b_current = digitalRead(ENCODER_DT);  // polling di DT/B attuale
-  //if (a_past == a_current) { // selezione di un fronte di discesa di CK/A 
-  //int b_current = digitalRead(ENCODER_DT);  // polling di DT/B attuale
   direction = 0;
   /*
   B A B A
@@ -354,24 +352,16 @@ void loop() {
   */
   if(a_past == a_current){
     //Serial.println("Apast = Acurrent");
-    if((a_current == 1) && (b_past < b_current)){direction = CW;counter++;Serial.println("0 1 1 1 CW");}//   0 1 1 1 CW                        4
-    if((a_current == 1) && (b_past > b_current)){direction = CCW;counter--;Serial.println("1 1 0 1 CCW");}// 1 1 0 1 CCW
-    if((a_current == 0) && (b_past > b_current)){direction = CW;counter++;Serial.println("1 0 0 0 CW");}//   1 0 0 0 CW                        2
-    if((a_current == 0) && (b_past < b_current)){direction = CCW;counter--;Serial.println("0 0 1 0 CCW");}// 0 0 1 0 CCW
+    if((a_current == 1) && (b_past < b_current)){direction = CW;counter++;Serial.print("0 1 1 1 CW ");Serial.println(counter);}//   0 1 1 1 CW                   4
+    if((a_current == 1) && (b_past > b_current)){direction = CCW;counter--;Serial.print("1 1 0 1 CCW ");Serial.println(counter);}// 1 1 0 1 CCW
+    if((a_current == 0) && (b_past > b_current)){direction = CW;counter++;Serial.print("1 0 0 0 CW ");Serial.println(counter);}//   1 0 0 0 CW                   2
+    if((a_current == 0) && (b_past < b_current)){direction = CCW;counter--;Serial.print("0 0 1 0 CCW ");Serial.println(counter);}// 0 0 1 0 CCW
   }
-  if((a_past < a_current) && (b_past == LOW && b_current == LOW)){direction = CW;counter++;Serial.println("0 0 0 1 CW");}//     0 0 0 1 CW     3
-  if((a_past < a_current) && (b_past == HIGH && b_current == HIGH)){direction = CCW;counter--;Serial.println("1 0 1 1 CCW");}// 1 0 1 1 CCW 
-  if((a_past > a_current) && (b_past == LOW && b_current == LOW)){direction = CCW;counter--;Serial.println("0 1 0 0 CCW");}//   0 1 0 0 CCW
-  if((a_past > a_current) && (b_past == HIGH && b_current == HIGH)){direction = CW;counter++;Serial.println("1 1 1 0 CW");}//   1 1 1 0 CW     1
+  if((a_past < a_current) && (b_past == LOW && b_current == LOW)){direction = CW;counter++;Serial.print("0 0 0 1 CW ");Serial.println(counter);}//     0 0 0 1 CW  3
+  if((a_past < a_current) && (b_past == HIGH && b_current == HIGH)){direction = CCW;counter--;Serial.print("1 0 1 1 CCW ");Serial.println(counter);}// 1 0 1 1 CCW 
+  if((a_past > a_current) && (b_past == LOW && b_current == LOW)){direction = CCW;counter--;Serial.print("0 1 0 0 CCW ");Serial.println(counter);}//   0 1 0 0 CCW
+  if((a_past > a_current) && (b_past == HIGH && b_current == HIGH)){direction = CW;counter++;Serial.print("1 1 1 0 CW ");Serial.println(counter);}//   1 1 1 0 CW   1
 
-  if (counter == 4) {
-    counter = 0;
-    Serial.println("Rotated clockwise ⏩");
-  }
-  if (counter == -4) {
-    counter = 0;
-    Serial.println("Rotated counterclockwise ⏪");
-  }
   // increment alarm count
   // test for over/under flows
   a_past = a_current;
