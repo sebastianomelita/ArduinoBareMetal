@@ -288,8 +288,11 @@ void loop() {
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389966992054192129
 
-
+Con tabella e polling metodo tracking
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389979138658609153
+
+Con tabella e interrupts metodo array
+https://wokwi.com/projects/389999046461201409
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
