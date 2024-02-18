@@ -442,7 +442,77 @@ void updateEncoder() {
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390001300410019841
 
+### **Encoder rotativo tabella e polling metodo array**
+
+Con "transizioni non ammesse" ci riferiamo a quei casi in cui lo stato corrente degli ingressi dell'encoder non corrisponde a nessuna transizione valida nell'array encoderTable. Questo potrebbe accadere a causa di un rumore o di un rimbalzo dell'encoder.
+
+Nel codice fornito, le transizioni non ammesse vengono gestite in modo implicito. Quando si verifica una transizione non ammessa, l'array encoderTable restituisce un valore 0, il che significa che l'encoder non ha cambiato posizione. Di conseguenza, l'encoderValue rimane invariato e non viene stampata alcuna direzione di rotazione.
+
+Ecco un esempio di transizione non ammessa e come viene gestita nel codice:
+
+- Supponiamo che l'ultimo stato dell'encoder sia 0b01 e il nuovo stato sia 0b11. In questo caso, non c'è una transizione valida nell'array ```rot_enc_table``` che corrisponda a questa sequenza. Quindi, la funzione  ```read_rotary()``` restituirà un valore di incremento pari a 0. Di conseguenza, l'encoderValue non verrà modificato e non verrà stampata alcuna direzione di rotazione.
+
+Questo approccio implicito assume che le transizioni non ammesse siano rare e che l'encoder produca principalmente transizioni valide. Se le transizioni non ammesse diventano un problema significativo, potrebbe essere necessario implementare un meccanismo più sofisticato per gestirle, ad esempio introducendo un conteggio dei tentativi o una logica di correzione degli errori nell'aggiornamento dell'encoderValue.
+
+```C++
+#define CLK 2
+#define DATA 3
+#define BUTTON 4
+#define YLED A2
+
+void setup() {
+  pinMode(CLK, INPUT);
+  pinMode(CLK, INPUT_PULLUP);
+  pinMode(DATA, INPUT);
+  pinMode(DATA, INPUT_PULLUP);
+  pinMode(BUTTON, INPUT);
+  pinMode(BUTTON, INPUT_PULLUP);
+  pinMode(YLED,OUTPUT);
+
+  Serial.begin (115200);
+  Serial.println("KY-040 Quality test:");
+}
+
+static uint8_t prevNextCode = 0;
+
+void loop() {
+uint32_t pwas=0;
+
+   if( read_rotary() ) {
+
+      Serial.print(prevNextCode&0xf,HEX);Serial.print(" ");
+
+      if ( (prevNextCode&0x0f)==0x0b) Serial.println("eleven ");
+      if ( (prevNextCode&0x0f)==0x07) Serial.println("seven ");
+   }
+
+   if (digitalRead(BUTTON)==0) {
+
+      delay(10);
+      if (digitalRead(BUTTON)==0) {
+          Serial.println("Next Detent");
+          while(digitalRead(BUTTON)==0);
+      }
+   }
+}
+
+// A vald CW or CCW move returns 1, invalid returns 0.
+int8_t read_rotary() {
+  static int8_t rot_enc_table[] = {0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0};
+
+  prevNextCode <<= 2;
+  if (digitalRead(DATA)) prevNextCode |= 0x02;
+  if (digitalRead(CLK)) prevNextCode |= 0x01;
+  prevNextCode &= 0x0f;
+
+  return ( rot_enc_table[( prevNextCode & 0x0f )]);
+}
+```
+Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390057874113238017
+
 ### **Encoder rotativo tabella e interrupt metodo array**
+
+
 
 ```C++
 // Define pins for the rotary encoder
