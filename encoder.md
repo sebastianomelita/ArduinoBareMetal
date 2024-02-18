@@ -683,6 +683,7 @@ Sitografia:
 - https://web.engr.oregonstate.edu/~traylor/ece473/student_projects/ReadingEncoderSwitches.pdf
 - https://www.best-microcontroller-projects.com/support-files/pec11l.pdf
 - https://www.best-microcontroller-projects.com/rotary-encoder.html
+- https://wokwi.com/projects/390078908878152705
 
 >[Torna all'indice](indexpulsanti.md)
 
