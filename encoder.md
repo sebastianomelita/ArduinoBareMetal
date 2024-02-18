@@ -29,7 +29,7 @@ Ogni volta che l'utente ruota la manopola, viene prodotto un serie di segnali su
 
 <img src="img\tansitions.jpg" alt="alt text" width="1000">
 
-La fisica interna del dispositivo fa si che i segnali si distribuiscano complessivamente su 5 valori e 4 fronti in una sequenza **BABA** di valori sui corrispondenti piedini.
+La **fisica interna** del dispositivo fa si che i segnali si distribuiscano complessivamente su 5 valori e 4 fronti in una sequenza **BABA** di valori sui corrispondenti piedini.
 
 Alla luce di ciò, la valutazione di  numero di **scatti** e **verso** delle rotazioni si può ottnere essenzialmente con tre tecniche:
 - Attendere il verificarsi di una **transizione pilota** su di un piedino (ad esempio A) e valutare, in corrispondenza di questa, quale valore assume l'altro piedino (in questo caso B), il valore che identifica una rotazione oraria (CW) o quello che identifica quella antioraria (CCW).
