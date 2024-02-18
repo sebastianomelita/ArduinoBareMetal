@@ -27,8 +27,11 @@ Il modulo KY-040 include due **resistori pull-up** interni che collegano i pin C
 L'encoder rotativo offre due **modalità di interazione**:
 - **Rotazione**: è possibile ruotare la manopola facendo clic sulle frecce. La freccia superiore lo ruota di un passo in senso orario, mentre la freccia inferiore lo ruota di un passo in senso antiorario. La rotazione della manopola produrrà segnali digitali sui pin DT e CLK, come spiegato di seguito.
 - **Pulsante**: fare clic sulla manopola per premere il pulsante. Mentre è premuto, il pulsante collega il pin SW con il pin GND.
-Ogni volta che l'utente ruota la manopola, viene prodotto un segnale LOW sui pin DT e CLK:
+Ogni volta che l'utente ruota la manopola, viene prodotto un serie di segnali sui pin DT e CLK.
 
+<img src="img\tansitions.jpg" alt="alt text" width="1000">
+
+I segnali si distribuiscono su 4 valori e 4 fronti
 **Verso** di rotazione:
 - La rotazione in **senso orario** fa sì che il pin **CLK** si abbassi **prima**, quindi anche il pin DT si abbassi.
 - La rotazione in **senso antiorario** fa sì che il pin **DT** si abbassi **prima**, quindi il pin CLK si abbassi.
@@ -299,7 +302,6 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 
 <img src="img\babatable.png" alt="alt text" width="1400">
 
-<img src="img\tansitions.jpg" alt="alt text" width="1000">
 
 ### **Encoder rotativo con tabella e polling metodo tracking**
 
