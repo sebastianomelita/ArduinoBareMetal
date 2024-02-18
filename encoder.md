@@ -605,12 +605,13 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 ### **Encoder rotativo tabella e polling metodo array migliorato**
 
 ```C++
+
 // Robust Rotary encoder reading
 //
 // Copyright John Main - best-microcontroller-projects.com
 //
-#define CLK 2
-#define DATA 3
+#define CLK 3
+#define DATA 2
 
 uint8_t baba = 0;
 uint16_t store=0;
@@ -635,16 +636,14 @@ void loop() {
 //static int8_t c,val;
 
     if( val=read_rotary() ) {
-      if (baba==0xb) {// seleziona 1011 (fine scatto)
-        c += val;
+       c += val;
+      if (val == -1) {// seleziona 1011 (fine scatto)
         Serial.print(c);Serial.print(" ");
-        Serial.println("Vedo undici ⏪");
+        Serial.println("Vedo 59415 ⏪");
       }
-
-      if (baba==0x7) {// seleziona 0111  (fine scatto)
-        c += val;
+      if (val == 1) {// seleziona 0111  (fine scatto)
         Serial.print(c);Serial.print(" ");
-        Serial.println("Vedo sette ⏩");
+        Serial.println("Vedo 54315 ⏩");
       }
    }
  }
@@ -664,8 +663,8 @@ int8_t read_rotary() {
       store |= baba;      // inserimento in coda di BABA
       
       Serial.print("BAx8: ");printBin(store); Serial.print(" DEC: ");Serial.println(store);
-      if (store==0xd42b) return -1;  // 1101 0100 0010 1011 controllo sequenza su 16 bit
-      if (store==0xe817) return 1; // 1110 1000 0001 0111 controllo sequenza su 16 bit
+      if (store==0xd42b) return 1;// 1101 0100 0010 1011 (54315) controllo sequenza su 16 bit
+      if (store==0xe817) return -1;// 1110 1000 0001 0111 (59415) controllo sequenza su 16 bit
       //if ((store&0xff)==0x2b) return -1;// 00101011 controllo sequenza su 8 bit
       //if ((store&0xff)==0x17) return 1;//  00010111 controllo sequenza su 8 bit
    }
