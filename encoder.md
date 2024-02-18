@@ -42,6 +42,7 @@ Per cominciare, ed essere subito operativi, usiamo la tecnica della **transizion
 - La rotazione in **senso orario** fa sì che il pin **CLK** si abbassi **prima**, quindi anche il pin DT si abbassi.
 - La rotazione in **senso antiorario** fa sì che il pin **DT** si abbassi **prima**, quindi il pin CLK si abbassi.
 
+## **TECNICA DELLA TRANSIZIONE PILOTA**
 
 ### **Encoder rotativo mediante polling del segnale CK**
 
