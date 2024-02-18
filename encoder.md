@@ -352,15 +352,16 @@ void loop() {
   */
   if(a_past == a_current){
     //Serial.println("Apast = Acurrent");
-    if((a_current == 1) && (b_past < b_current)){direction = CW;counter++;Serial.print("0 1 1 1 CW ");Serial.println(counter);}//   0 1 1 1 CW                   4
-    if((a_current == 1) && (b_past > b_current)){direction = CCW;counter--;Serial.print("1 1 0 1 CCW ");Serial.println(counter);}// 1 1 0 1 CCW
-    if((a_current == 0) && (b_past > b_current)){direction = CW;counter++;Serial.print("1 0 0 0 CW ");Serial.println(counter);}//   1 0 0 0 CW                   2
-    if((a_current == 0) && (b_past < b_current)){direction = CCW;counter--;Serial.print("0 0 1 0 CCW ");Serial.println(counter);}// 0 0 1 0 CCW
+    if((a_current == 1) && (b_past < b_current)){direction = CW;counter++;Serial.print("0 1 1 1 CW ⏩ ");Serial.println(counter);}//   0 1 1 1 CW  fine dente              
+    if((a_current == 1) && (b_past > b_current)){direction = CCW;Serial.println("1 1 0 1 CCW ");}// 1 1 0 1 CCW
+    if((a_current == 0) && (b_past > b_current)){direction = CW;Serial.println("1 0 0 0 CW ");}//   1 0 0 0 CW                   
+    if((a_current == 0) && (b_past < b_current)){direction = CCW;Serial.println("0 0 1 0 CCW ");}// 0 0 1 0 CCW
   }
-  if((a_past < a_current) && (b_past == LOW && b_current == LOW)){direction = CW;counter++;Serial.print("0 0 0 1 CW ");Serial.println(counter);}//     0 0 0 1 CW  3
-  if((a_past < a_current) && (b_past == HIGH && b_current == HIGH)){direction = CCW;counter--;Serial.print("1 0 1 1 CCW ");Serial.println(counter);}// 1 0 1 1 CCW 
-  if((a_past > a_current) && (b_past == LOW && b_current == LOW)){direction = CCW;counter--;Serial.print("0 1 0 0 CCW ");Serial.println(counter);}//   0 1 0 0 CCW
-  if((a_past > a_current) && (b_past == HIGH && b_current == HIGH)){direction = CW;counter++;Serial.print("1 1 1 0 CW ");Serial.println(counter);}//   1 1 1 0 CW   1
+  if((a_past < a_current) && (b_past == LOW && b_current == LOW)){direction = CW;Serial.println("0 0 0 1 CW ");}//     0 0 0 1 CW  
+  if((a_past < a_current) && (b_past == HIGH && b_current == HIGH)){direction = CCW;counter--;Serial.print("1 0 1 1 CCW ⏪ ");Serial.println(counter);}// 1 0 1 1 CCW fine dente
+  if((a_past > a_current) && (b_past == LOW && b_current == LOW)){direction = CCW;Serial.println("0 1 0 0 CCW ");}//   0 1 0 0 CCW
+  if((a_past > a_current) && (b_past == HIGH && b_current == HIGH)){direction = CW;Serial.println("1 1 1 0 CW ");}//   1 1 1 0 CW   
+  
 
   // increment alarm count
   // test for over/under flows
