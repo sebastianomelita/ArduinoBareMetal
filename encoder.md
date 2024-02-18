@@ -543,8 +543,8 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 
 ```C++
 // Define pins for the rotary encoder
-#define encoderPinA  3
-#define encoderPinB  2
+#define encoderPinA  2
+#define encoderPinB  3
 
 // Variables to store previous state of encoder pins
 volatile int lastEncoded = 0;
@@ -586,8 +586,8 @@ void loop() {
 
 void updateEncoder() {
   // Read the current state of the encoder pins
-  int MSB = digitalRead(encoderPinA);
-  int LSB = digitalRead(encoderPinB);
+  int MSB = digitalRead(encoderPinB);
+  int LSB = digitalRead(encoderPinA);
 
   // Bitwise operation to construct 2-bit code
   int encoded = (MSB << 1) | LSB;
@@ -615,8 +615,8 @@ void updateEncoder() {
   // Store current encoded value for the next iteration
   lastEncoded = encoded;
 }
-
 ```
+
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389999046461201409
 
 ### **Encoder rotativo tabella e polling metodo array migliorato**
