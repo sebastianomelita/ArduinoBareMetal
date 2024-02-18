@@ -524,8 +524,6 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 
 ### **Encoder rotativo tabella e interrupt metodo array**
 
-
-
 ```C++
 // Define pins for the rotary encoder
 #define encoderPinA  3
@@ -602,8 +600,80 @@ void updateEncoder() {
 }
 
 ```
-
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389999046461201409
+
+### **Encoder rotativo tabella e polling metodo array migliorato**
+
+```C++
+
+// Robust Rotary encoder reading
+//
+// Copyright John Main - best-microcontroller-projects.com
+//
+#define CLK 2
+#define DATA 3
+
+uint8_t baba = 0;
+uint16_t store=0;
+int8_t c,val;
+
+
+void printBin(uint16_t aByte) {
+  for (int8_t aBit = 15; aBit >= 0; aBit--)
+    Serial.write(bitRead(aByte, aBit) ? '1' : '0');
+}
+
+void setup() {
+  pinMode(CLK, INPUT);
+  pinMode(CLK, INPUT_PULLUP);
+  pinMode(DATA, INPUT);
+  pinMode(DATA, INPUT_PULLUP);
+  Serial.begin (115200);
+  Serial.println("KY-040 Start:");
+}
+
+void loop() {
+//static int8_t c,val;
+
+    if( val=read_rotary() ) {
+      Serial.println(store, BIN);
+      Serial.print("BAx8: ");printBin(store); Serial.print(" DEC: ");Serial.println(store);
+      if (baba==0xb) {// seleziona 1011 (fine scatto)
+        c += val;
+        Serial.print(c);Serial.print(" ");
+        Serial.println("Vedo undici ⏪");
+      }
+
+      if (baba==0x7) {// seleziona 0111  (fine scatto)
+        c += val;
+        Serial.print(c);Serial.print(" ");
+        Serial.println("Vedo sette ⏩");
+      }
+   }
+ }
+
+// A vald CW or  CCW move returns 1, invalid returns 0.
+int8_t read_rotary() {
+  static int8_t rot_enc_table[] = {0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0};
+
+  baba <<= 2;
+  if (digitalRead(DATA)) baba |= 0x02;
+  if (digitalRead(CLK)) baba |= 0x01;
+  baba &= 0x0f;
+
+   // If valid then store as 16 bit data.
+   if  (rot_enc_table[baba] ) {
+      store <<= 4;        // shift dell'ultimo valore in coda
+      store |= baba;      // inserimento in coda di BABA
+      if (store==0xd42b) return -1;  // 1101 0100 0010 1011 controllo sequenza su 16 bit
+      if (store==0xe817) return 1; // 1110 1000 0001 0111 controllo sequenza su 16 bit
+      //if ((store&0xff)==0x2b) return -1;// 00101011 controllo sequenza su 8 bit
+      //if ((store&0xff)==0x17) return 1;//  00010111 controllo sequenza su 8 bit
+   }
+   return 0;
+}
+```
+Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390014530229883905
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
@@ -615,7 +685,6 @@ Sitografia:
 - https://web.engr.oregonstate.edu/~traylor/ece473/student_projects/ReadingEncoderSwitches.pdf
 - https://www.best-microcontroller-projects.com/support-files/pec11l.pdf
 - https://www.best-microcontroller-projects.com/rotary-encoder.html
-- https://wokwi.com/projects/390014530229883905
 
 >[Torna all'indice](indexpulsanti.md)
 
