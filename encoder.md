@@ -31,8 +31,14 @@ Ogni volta che l'utente ruota la manopola, viene prodotto un serie di segnali su
 
 <img src="img\tansitions.jpg" alt="alt text" width="1000">
 
-I segnali si distribuiscono su 4 valori e 4 fronti
-**Verso** di rotazione:
+La fisica interna del dispositivo fa si che i segnali si distribuiscano complessivamente su 5 valori e 4 fronti in una sequenza **BABA** di valori sui corrispondenti piedini.
+
+Alla luce di ciò, la valutazione di  numero di **scatti** e **verso** delle rotazioni si può ottnere essenzialmente con tre tecniche:
+- Attendere il verificarsi di una **transizione pilota** su di un piedino (ad esempio A) e valutare, in corrispondenza di questa, quale valore assume l'altro piedino (in questo caso B), il valore che identifica una rotazione oraria (CW) o quello che identifica quella antioraria (CCW).
+- Tabella delle transizioni. leggere ogni due loop consecutivi una sequenza BABA, e decidere se accettarla o meno. Una volta accettata una sequenza è possibile usarla per stabilire se la rotazione ha il verso CW o quello CCW. Le sequenze BABA ammissibili sono complessivamente 4 e si può stabilire la politica per convalidare il risultato: controllarne se ne arriva corretta una in particolare, se ne arrivano alcune o se devono arrivare proprio tutte prima di validare il risultato.
+- Macchina a stati finiti. E' una tecnica che per adesso non tratteremo.
+
+Per cominciare usiamo la tecniuca della transizione pilota, e tra tutte scegliamo la transizione in FALLING del piedino A per stabilire il **verso** della rotazione:
 - La rotazione in **senso orario** fa sì che il pin **CLK** si abbassi **prima**, quindi anche il pin DT si abbassi.
 - La rotazione in **senso antiorario** fa sì che il pin **DT** si abbassi **prima**, quindi il pin CLK si abbassi.
 
