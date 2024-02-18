@@ -490,13 +490,13 @@ uint32_t pwas=0;
       if ( prevNextCode==0x0b) {// seleziona 1011 (fine dente)
         c -= val;
         Serial.print(c);Serial.print(" ");
-        Serial.println("eleven ");
+        Serial.println("Vedo undici ⏪");
       }
 
       if ( prevNextCode==0x07) {// seleziona 0111  (fine dente)
         c += val;
         Serial.print(c);Serial.print(" ");
-        Serial.println("seven ");
+        Serial.println("Vedo sette ⏩");
       }
    }
 
