@@ -487,13 +487,13 @@ uint32_t pwas=0;
 
    if( val=read_rotary() ) {
       Serial.print("BABA: ");printBin(prevNextCode);Serial.println();
-      if ( prevNextCode==0x0b) {// seleziona 1011 (fine dente)
+      if ( prevNextCode==0x0b) {// seleziona 1011 (fine scatto)
         c -= val;
         Serial.print(c);Serial.print(" ");
         Serial.println("Vedo undici ⏪");
       }
 
-      if ( prevNextCode==0x07) {// seleziona 0111  (fine dente)
+      if ( prevNextCode==0x07) {// seleziona 0111  (fine scatto)
         c += val;
         Serial.print(c);Serial.print(" ");
         Serial.println("Vedo sette ⏩");
