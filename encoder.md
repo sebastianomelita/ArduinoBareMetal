@@ -299,6 +299,8 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 
 <img src="img\babatable.png" alt="alt text" width="1400">
 
+<img src="img\transitions.jpg" alt="alt text" width="1000">
+
 ### **Encoder rotativo con tabella e polling metodo tracking**
 
 ```C++
