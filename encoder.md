@@ -306,6 +306,8 @@ void loop() {
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389966992054192129
 
+## **TECNICA DELLA TABELLA DI TRANSIZIONE**
+
 <img src="img\babatable.png" alt="alt text" width="1400">
 
 
