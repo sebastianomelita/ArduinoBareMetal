@@ -534,6 +534,7 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 // Variables to store previous state of encoder pins
 volatile int lastEncoded = 0;
 volatile long encoderValue = 0;
+volatile uint8_t baba = 0;
 
 // Array to define the transition states for debouncing
 const int8_t debounceTable[16] = {
@@ -542,6 +543,11 @@ const int8_t debounceTable[16] = {
   1,  0,  0, -1,
   0, -1,  1,  0
 };
+
+void printBin(byte aByte) {
+  for (int8_t aBit = 3; aBit >= 0; aBit--)
+    Serial.write(bitRead(aByte, aBit) ? '1' : '0');
+}
 
 void setup() {
   // Set encoder pins as inputs
@@ -572,20 +578,29 @@ void updateEncoder() {
   int encoded = (MSB << 1) | LSB;
 
   // Compare the current state with the previous state
-  int delta = debounceTable[lastEncoded << 2 | encoded];
+  baba = lastEncoded << 2 | encoded;
+  int delta = debounceTable[baba];
   if (delta) {
-    encoderValue += delta;
     // Print out direction based on delta value
     if (delta > 0) {
-      Serial.println("Clockwise");
+      printBin(baba);Serial.println(" CW ");
+      if (baba==0x07) {// seleziona 1011 (fine scatto)
+        encoderValue += delta;
+        Serial.print("Ho visto sette ⏩ "); Serial.println (encoderValue);
+      }
     } else {
-      Serial.println("Counter-clockwise");
+      printBin(baba);Serial.println(" CCW ");
+      if (baba==0x0b) {// seleziona 1011 (fine scatto)
+        encoderValue += delta;
+        Serial.print("Ho visto undici ⏪ "); Serial.println (encoderValue);
+      }
     }
   }
 
   // Store current encoded value for the next iteration
   lastEncoded = encoded;
 }
+
 ```
 
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389999046461201409
