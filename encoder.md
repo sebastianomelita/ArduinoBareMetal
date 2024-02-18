@@ -636,7 +636,6 @@ void loop() {
 //static int8_t c,val;
 
     if( val=read_rotary() ) {
-      Serial.println(store, BIN);
       Serial.print("BAx8: ");printBin(store); Serial.print(" DEC: ");Serial.println(store);
       if (baba==0xb) {// seleziona 1011 (fine scatto)
         c += val;
