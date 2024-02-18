@@ -22,8 +22,6 @@ Pins:
 
 Il modulo KY-040 include due **resistori pull-up** interni che collegano i pin CLK e DT a VCC. La simulazione solleva sempre questi pin, anche se si lascia fluttuante il pin VCC.
 
-<img src="img\wokwi-ky-040-timing-cd6fe446378352c1416ef8817f1e5abf.webp" alt="alt text" width="600">
-
 L'encoder rotativo offre due **modalità di interazione**:
 - **Rotazione**: è possibile ruotare la manopola facendo clic sulle frecce. La freccia superiore lo ruota di un passo in senso orario, mentre la freccia inferiore lo ruota di un passo in senso antiorario. La rotazione della manopola produrrà segnali digitali sui pin DT e CLK, come spiegato di seguito.
 - **Pulsante**: fare clic sulla manopola per premere il pulsante. Mentre è premuto, il pulsante collega il pin SW con il pin GND.
@@ -37,6 +35,8 @@ Alla luce di ciò, la valutazione di  numero di **scatti** e **verso** delle rot
 - Attendere il verificarsi di una **transizione pilota** su di un piedino (ad esempio A) e valutare, in corrispondenza di questa, quale valore assume l'altro piedino (in questo caso B), il valore che identifica una rotazione oraria (CW) o quello che identifica quella antioraria (CCW).
 - **Tabella delle transizioni**. leggere ogni due loop consecutivi una sequenza BABA, e decidere se accettarla o meno. Una volta accettata una sequenza è possibile usarla per stabilire se la rotazione ha il verso CW o quello CCW. Le sequenze BABA ammissibili sono complessivamente 4 e si può, a questo punto, stabilire la politica per convalidare il risultato: controllarne se ne arriva corretta una in particolare, se ne arrivano alcune o se devono arrivare proprio tutte prima di validare il risultato.
 - **Macchina a stati finiti**. E' una tecnica che per adesso non tratteremo.
+
+<img src="img\wokwi-ky-040-timing-cd6fe446378352c1416ef8817f1e5abf.webp" alt="alt text" width="600">
 
 Per cominciare, ed essere subito operativi, usiamo la tecnica della **transizione pilota**, e tra tutte scegliamo la transizione in FALLING del piedino A per selezionare la ransizione e il valore del piedino B per stabilire il **verso** della rotazione:
 - La rotazione in **senso orario** fa sì che il pin **CLK** si abbassi **prima**, quindi anche il pin DT si abbassi.
