@@ -29,9 +29,9 @@ Ogni volta che l'utente ruota la manopola, viene prodotto un serie di segnali su
 
 <img src="img\tansitions.jpg" alt="alt text" width="1000">
 
-La **fisica interna** del dispositivo fa si che, per stabilire il verso di rotazione dall'osservazione dei due ingressi A e B, bisogna esaminare almeno due sequenze di valori consecutivi al fine di isolare almeno il fronte di un piedino e il valore di un altro.
+La **fisica interna** del dispositivo fa si che, per stabilire il verso di rotazione dall'osservazione dei due ingressi A e B, bisogna esaminare almeno due sequenze di valori consecutivi al fine di isolare **almeno** il **fronte** di un piedino e il **valore** di un altro.
 
-Alla luce di ciò, la valutazione di  numero di **scatti** e **verso** delle rotazioni si può ottnere essenzialmente con tre tecniche:
+Alla luce di ciò, la valutazione di  numero di **scatti** e **verso** delle rotazioni si può ottnere essenzialmente con **tre tecniche**:
 - Attendere il verificarsi di una **transizione pilota** su di un piedino (ad esempio A) e valutare, in corrispondenza di questa, quale valore assume l'altro piedino (in questo caso B), il valore che identifica una rotazione oraria (CW) o quello che identifica quella antioraria (CCW). Questa modalità non filtra le transizioni spurie.
 - **Tabella delle transizioni**. leggere, grazie a 2 due loop consecutivi, una sequenza BABA, e decidere se accettarla o considerarla una transizione scorretta (spuria). Una volta accettata, è possibile usare una sequenza per stabilire se la rotazione ha il verso CW o quello CCW. Le sequenze BABA ammissibili sono complessivamente 4 e si può, a questo punto, stabilire la politica per convalidare il risultato: controllare se ne arriva corretta una in particolare, se ne arrivano alcune o se devono arrivare proprio tutte prima di convalidare il risultato. E' possibile anche decidere di accorpare più di 4 transizioni, ad esempio 8 transizioni BABABABA, per ridurre ulteriormente la probabilità di errore nel fare l'analisi delle sequenze corrette .
    
