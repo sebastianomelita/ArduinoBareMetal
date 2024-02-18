@@ -36,7 +36,7 @@ Alla luce di ciò, la valutazione di  numero di **scatti** e **verso** delle rot
 - **Tabella delle transizioni**. leggere ogni due loop consecutivi una sequenza BABA, e decidere se accettarla o meno. Una volta accettata una sequenza è possibile usarla per stabilire se la rotazione ha il verso CW o quello CCW. Le sequenze BABA ammissibili sono complessivamente 4 e si può, a questo punto, stabilire la politica per convalidare il risultato: controllarne se ne arriva corretta una in particolare, se ne arrivano alcune o se devono arrivare proprio tutte prima di validare il risultato.
 - **Macchina a stati finiti**. E' una tecnica che per adesso non tratteremo.
 
-<img src="img\wokwi-ky-040-timing-cd6fe446378352c1416ef8817f1e5abf.webp" alt="alt text" width="600">
+<img src="img\wokwi-ky-040-timing-cd6fe446378352c1416ef8817f1e5abf.webp" alt="alt text" width="800">
 
 Per cominciare, ed essere subito operativi, usiamo la tecnica della **transizione pilota**, e tra tutte scegliamo la transizione in FALLING del piedino A per selezionare la ransizione e il valore del piedino B per stabilire il **verso** della rotazione:
 - La rotazione in **senso orario** fa sì che il pin **CLK** si abbassi **prima**, quindi anche il pin DT si abbassi.
