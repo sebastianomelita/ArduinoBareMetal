@@ -605,7 +605,6 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 ### **Encoder rotativo tabella e polling metodo array migliorato**
 
 ```C++
-
 // Robust Rotary encoder reading
 //
 // Copyright John Main - best-microcontroller-projects.com
@@ -636,7 +635,6 @@ void loop() {
 //static int8_t c,val;
 
     if( val=read_rotary() ) {
-      Serial.print("BAx8: ");printBin(store); Serial.print(" DEC: ");Serial.println(store);
       if (baba==0xb) {// seleziona 1011 (fine scatto)
         c += val;
         Serial.print(c);Serial.print(" ");
@@ -664,6 +662,8 @@ int8_t read_rotary() {
    if  (rot_enc_table[baba] ) {
       store <<= 4;        // shift dell'ultimo valore in coda
       store |= baba;      // inserimento in coda di BABA
+      
+      Serial.print("BAx8: ");printBin(store); Serial.print(" DEC: ");Serial.println(store);
       if (store==0xd42b) return -1;  // 1101 0100 0010 1011 controllo sequenza su 16 bit
       if (store==0xe817) return 1; // 1110 1000 0001 0111 controllo sequenza su 16 bit
       //if ((store&0xff)==0x2b) return -1;// 00101011 controllo sequenza su 8 bit
