@@ -39,7 +39,7 @@ Alla luce di ciò, la valutazione di  numero di **scatti** e **verso** delle rot
 
 <img src="img\wokwi-ky-040-timing-cd6fe446378352c1416ef8817f1e5abf.webp" alt="alt text" width="800">
 
-Per cominciare, ed essere subito operativi, usiamo la tecnica della **transizione pilota**, e tra tutte scegliamo la transizione in FALLING del piedino A per selezionare la ransizione e il valore del piedino B per stabilire il **verso** della rotazione:
+Per cominciare, ed essere subito operativi, usiamo la tecnica della **transizione pilota**, e tra tutte scegliamo la transizione in FALLING del piedino A per selezionare la **transizione** che indica lo **scatto** e il valore del piedino B per stabilire il **verso** della rotazione:
 - La rotazione in **senso orario** fa sì che il pin **CLK** si abbassi **prima**, quindi anche il pin DT si abbassi.
 - La rotazione in **senso antiorario** fa sì che il pin **DT** si abbassi **prima**, quindi il pin CLK si abbassi.
 
