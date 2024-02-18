@@ -459,6 +459,12 @@ Questo approccio implicito assume che le transizioni non ammesse siano rare e ch
 #define DATA 3
 #define BUTTON 4
 #define YLED A2
+volatile long encoderValue = 0;
+
+void printBin(byte aByte) {
+  for (int8_t aBit = 3; aBit >= 0; aBit--)
+    Serial.write(bitRead(aByte, aBit) ? '1' : '0');
+}
 
 void setup() {
   pinMode(CLK, INPUT);
@@ -473,17 +479,25 @@ void setup() {
   Serial.println("KY-040 Quality test:");
 }
 
-static uint8_t prevNextCode = 0;
+uint8_t prevNextCode = 0;
+int8_t c,val;
 
 void loop() {
 uint32_t pwas=0;
 
-   if( read_rotary() ) {
+   if( val=read_rotary() ) {
+      Serial.print("BABA: ");printBin(prevNextCode);Serial.println();
+      if ( prevNextCode==0x0b) {// seleziona 1011 (fine dente)
+        c -= val;
+        Serial.print(c);Serial.print(" ");
+        Serial.println("eleven ");
+      }
 
-      Serial.print(prevNextCode&0xf,HEX);Serial.print(" ");
-
-      if ( (prevNextCode&0x0f)==0x0b) Serial.println("eleven ");
-      if ( (prevNextCode&0x0f)==0x07) Serial.println("seven ");
+      if ( prevNextCode==0x07) {// seleziona 0111  (fine dente)
+        c += val;
+        Serial.print(c);Serial.print(" ");
+        Serial.println("seven ");
+      }
    }
 
    if (digitalRead(BUTTON)==0) {
@@ -499,12 +513,10 @@ uint32_t pwas=0;
 // A vald CW or CCW move returns 1, invalid returns 0.
 int8_t read_rotary() {
   static int8_t rot_enc_table[] = {0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0};
-
   prevNextCode <<= 2;
   if (digitalRead(DATA)) prevNextCode |= 0x02;
   if (digitalRead(CLK)) prevNextCode |= 0x01;
   prevNextCode &= 0x0f;
-
   return ( rot_enc_table[( prevNextCode & 0x0f )]);
 }
 ```
