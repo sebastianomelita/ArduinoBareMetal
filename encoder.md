@@ -479,21 +479,21 @@ void setup() {
   Serial.println("KY-040 Quality test:");
 }
 
-uint8_t prevNextCode = 0;
+uint8_t baba = 0;
 int8_t c,val;
 
 void loop() {
 uint32_t pwas=0;
 
    if( val=read_rotary() ) {
-      Serial.print("BABA: ");printBin(prevNextCode);Serial.println();
-      if ( prevNextCode==0x0b) {// seleziona 1011 (fine scatto)
+      Serial.print("BABA: ");printBin(baba);Serial.println();
+      if (baba==0x0b) {// seleziona 1011 (fine scatto)
         c -= val;
         Serial.print(c);Serial.print(" ");
         Serial.println("Vedo undici ⏪");
       }
 
-      if ( prevNextCode==0x07) {// seleziona 0111  (fine scatto)
+      if (baba==0x07) {// seleziona 0111  (fine scatto)
         c += val;
         Serial.print(c);Serial.print(" ");
         Serial.println("Vedo sette ⏩");
@@ -513,11 +513,11 @@ uint32_t pwas=0;
 // A vald CW or CCW move returns 1, invalid returns 0.
 int8_t read_rotary() {
   static int8_t rot_enc_table[] = {0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0};
-  prevNextCode <<= 2;
-  if (digitalRead(DATA)) prevNextCode |= 0x02;
-  if (digitalRead(CLK)) prevNextCode |= 0x01;
-  prevNextCode &= 0x0f;
-  return ( rot_enc_table[( prevNextCode & 0x0f )]);
+  baba <<= 2;
+  if (digitalRead(DATA)) baba |= 0x02;
+  if (digitalRead(CLK)) baba |= 0x01;
+  baba &= 0x0f;
+  return ( rot_enc_table[( baba & 0x0f )]);
 }
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390057874113238017
