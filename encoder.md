@@ -409,23 +409,19 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 
 ```C++
 /*
-B A B A Direction
-0 0 0 0 NA
-0 0 0 1 CW
-0 0 1 0 CCW
-0 0 1 1 NA
-0 1 0 0 CCW
-0 1 0 1 NA
-0 1 1 0 NA
-0 1 1 1 CW
-1 0 0 0 CW
-1 0 0 1 NA
-1 0 1 0 NA
-1 0 1 1 CCW
-1 1 0 0 NA
-1 1 0 1 CCW
-1 1 1 0 CW
-1 1 1 1 NA
+---------------------
+| Sequenze ammesse  |
+---------------------
+| 0 1 1 1 CW  first |
+| 0 0 0 1 CW        |
+| 1 0 0 0 CW        |
+| 1 1 1 0 CW  last  |
+|-------------------|
+| 1 0 1 1 CCW first |
+| 0 0 1 0 CCW       |
+| 0 1 0 0 CCW       |
+| 1 1 0 1 CCW last  |
+---------------------
 */
 #define CW 1
 #define CCW 2
@@ -447,17 +443,7 @@ void loop() {
   int a_current = digitalRead(ENCODER_CLK); // polling di CK/A attuale
   int b_current = digitalRead(ENCODER_DT);  // polling di DT/B attuale
   direction = 0;
-  /*
-  B A B A
-  0 0 0 0 NA
-  0 0 1 1 NA
-  0 1 0 1 NA
-  0 1 1 0 NA
-  1 0 0 1 NA
-  1 0 1 0 NA
-  1 1 0 0 NA
-  1 1 1 1 NA
-  */
+
   if(a_past == a_current){
     //Serial.println("Apast = Acurrent");
     if((a_current == 1) && (b_past < b_current)){direction = CW;counter++;Serial.print("0 1 1 1 CW ⏩ ");Serial.println(counter);}//   0 1 1 1 CW  fine scatto              
@@ -482,6 +468,21 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 ### **Encoder rotativo tabella e interrupt metodo tracking**
 
 ```C++
+/*
+---------------------
+| Sequenze ammesse  |
+---------------------
+| 0 1 1 1 CW  first |
+| 0 0 0 1 CW        |
+| 1 0 0 0 CW        |
+| 1 1 1 0 CW  last  |
+|-------------------|
+| 1 0 1 1 CCW first |
+| 0 0 1 0 CCW       |
+| 0 1 0 0 CCW       |
+| 1 1 0 1 CCW last  |
+---------------------
+*/
 // Define pins for the rotary encoder
 #define encoderPinA  2
 #define encoderPinB  3
@@ -519,17 +520,7 @@ void updateEncoder() {
   //if (a_past == a_current) { // selezione di un fronte di discesa di CK/A 
   //int b_current = digitalRead(ENCODER_DT);  // polling di DT/B attuale
   direction = 0;
-  /*
-  B A B A
-  0 0 0 0 NA
-  0 0 1 1 NA
-  0 1 0 1 NA
-  0 1 1 0 NA
-  1 0 0 1 NA
-  1 0 1 0 NA
-  1 1 0 0 NA
-  1 1 1 1 NA
-  */
+
   if(a_past == a_current){
     //Serial.println("Apast = Acurrent");
     if((a_current == 1) && (b_past < b_current)){direction = CW;counter++;Serial.print("0 1 1 1 CW ⏩ ");Serial.println(counter);}//   0 1 1 1 CW  fine scatto              
@@ -563,6 +554,21 @@ Ecco un esempio di transizione non ammessa e come viene gestita nel codice:
 Questo approccio implicito assume che le transizioni non ammesse siano rare e che l'encoder produca principalmente transizioni valide. Se le transizioni non ammesse diventano un problema significativo, potrebbe essere necessario implementare un meccanismo più sofisticato per gestirle, ad esempio introducendo un conteggio dei tentativi o una logica di correzione degli errori nell'aggiornamento dell'encoderValue.
 
 ```C++
+/*
+---------------------
+| Sequenze ammesse  |
+---------------------
+| 0 1 1 1 CW  first |
+| 0 0 0 1 CW        |
+| 1 0 0 0 CW        |
+| 1 1 1 0 CW  last  |
+|-------------------|
+| 1 0 1 1 CCW first |
+| 0 0 1 0 CCW       |
+| 0 1 0 0 CCW       |
+| 1 1 0 1 CCW last  |
+---------------------
+*/
 #define CLK 2
 #define DATA 3
 #define BUTTON 4
@@ -633,6 +639,21 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 ### **Encoder rotativo tabella e interrupt metodo array**
 
 ```C++
+/*
+---------------------
+| Sequenze ammesse  |
+---------------------
+| 0 1 1 1 CW  first |
+| 0 0 0 1 CW        |
+| 1 0 0 0 CW        |
+| 1 1 1 0 CW  last  |
+|-------------------|
+| 1 0 1 1 CCW first |
+| 0 0 1 0 CCW       |
+| 0 1 0 0 CCW       |
+| 1 1 0 1 CCW last  |
+---------------------
+*/
 // Define pins for the rotary encoder
 #define encoderPinA  2
 #define encoderPinB  3
@@ -731,7 +752,21 @@ Il vantaggio, in questo caso, è la possibilità di tarare la granularità della
 
 
 ```C++
-
+/*
+---------------------
+| Sequenze ammesse  |
+---------------------
+| 0 1 1 1 CW  first |
+| 0 0 0 1 CW        |
+| 1 0 0 0 CW        |
+| 1 1 1 0 CW  last  |
+|-------------------|
+| 1 0 1 1 CCW first |
+| 0 0 1 0 CCW       |
+| 0 1 0 0 CCW       |
+| 1 1 0 1 CCW last  |
+---------------------
+*/
 // Robust Rotary encoder reading
 //
 // Copyright John Main - best-microcontroller-projects.com
