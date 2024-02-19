@@ -310,7 +310,7 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 
 ### **Encoder rotativo mediante interrupt con debouncer non basato sul tempo**
 
-<img src="img\staticdebounce.png" alt="alt text" width="300">
+<img src="img\staticdebounce.png" alt="alt text" width="500">
 
 ```C++
 #include <LiquidCrystal_I2C.h>
