@@ -724,7 +724,7 @@ Si noti la necessità di **due misure** per la rilevazione di uno scatto, una co
 
 In ogni caso, esiste un limite inferiore alla risoluzione temporale del dispositivo data dal contributo di molti parametri fisici diversi. Uno dei più limitanti è sicuramente il fenomeno dei **rimbalzi** che normalmente hanno una durata che è tipica per una certo modello di encoder ma può nel contempo variare a seconda della bontà della manifattura del singolo pezzo e, soprattutto, a seconda del suo stato di usura. L'usura, in particolare fa si che il tempo medio del fenomeno si allunghi fino al punto da rendere il dispositivo inutilizzabile.
 
-I debauncer basati sui timer hanno la necessità di essere impostati una volta per sempre sul valore medio di un dispositivo discretamente usurato. A prescindere da altre differenze individuali, il limite inferiore delle prestazioni di velocità dell'encoder è adesso fissato una volta per tutte dal timer.
+I debouncer basati sui timer hanno la necessità di essere impostati una volta per sempre sul valore medio di un dispositivo discretamente usurato. A prescindere da altre differenze individuali, il limite inferiore delle prestazioni di velocità dell'encoder è adesso fissato una volta per tutte dal timer.
 
 Nel caso dei debouncer basati sul filtro delle transizioni il limite è adesso tarato dalla reazione dell'algoritmo alle sequenze errate che verranno scartate lasciando immutata l'ultima impostazione valida misurata (il dispositivo reagisce con incremento nullo).
 
