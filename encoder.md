@@ -315,7 +315,29 @@ Tratto da http://www.technoblogy.com/show?1YHJ
 
 <img src="img\staticdebounce.png" alt="alt text" width="500">
 
+La figura si riferisce ad una rotazione antioraria in cui ad ogni transizione di A viene copiato in C il valore corrente di B. Eventuali rimbalzi non modificano il valore di C perchè questo rimane influenzato solo dal valore raggiunto dal primo fronte del treno di rimbalzi di A perchè per i successivi B ha lo stesso valore di C e la condizione falsa sull'if è efficace a filtrarli. In questo caso si può notare che A e B assumono sempre lo **stesso valore** e il pattern corrispondente prima  1 0 1 1 CCW e poi 
+0 1 0 0 CCW.
+
+Si potrebbe ricostruire pure la figura relativa ad una rotazione oraria in cui ad ogni transizione di A viene copiato in C il valore corrente di B. Eventuali rimbalzi non modificano il valore di C perchè questo rimane influenzato solo dal valore raggiunto dal primo fronte del treno di rimbalzi di A perchè per i successivi B ha lo stesso valore di C e la condizione falsa sull'if è efficace a filtrarli. In questo caso si può notare che A e B assumono sempre lo **valori diversi** e il pattern corrispondente prima  | 1 1 1 0 CW  e poi 0 0 0 1 CW.
+
+Le coppie di sequenze vengono catturate entrambe e quindi vanno poi contate una volta sola per ciascuna coppia.
+
 ```C++
+/*
+---------------------
+| Sequenze ammesse  |
+---------------------
+| 0 1 1 1 CW  last  |
+| 0 0 0 1 CW        |
+| 1 0 0 0 CW        |
+| 1 1 1 0 CW  first |
+|-------------------|
+| 1 0 1 1 CCW last  |
+| 0 0 1 0 CCW       |
+| 0 1 0 0 CCW       |
+| 1 1 0 1 CCW first |
+---------------------
+*/
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 
