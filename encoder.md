@@ -720,7 +720,7 @@ Si può riceverne una terza migliorando ancora l'affidabilità (a scapito della 
 
 In definitiva, con una parola di 16 bit che contiene tutte le sequenze ammissibili di uno scatto, si rileva uno scatto ogni 4. Con una parola di 8 bit uno scatto ogni 2. Con una parola di 4 bit, corrispondente alla sequenza BABA contente i 2 bit attuali delle porte più i 2 della misura passata, si ottiene la misura tempestiva di tutti gli scatti.
 
-Si noti la necessità di **due misure** per la rilevazione di uno scatto, una corrispondente alla BA attuale e una a quella passata. Sono il minimo necessario per la rilevazione di una transizione che, fisicamente, corrisponde alla discontinuità alto-basso del dente dell'ingranaggio che è, in un dato istante, sotto misura.
+Si noti la necessità di **due misure** per la rilevazione di uno scatto, una corrispondente alla BA attuale e una a quella passata. Sono il minimo necessario per la rilevazione di una transizione che, fisicamente, corrisponde alla discontinuità alto-basso del dente dell'ingranaggio che è, in quell'istante, sotto misura.
 
 In ogni caso, esiste un limite inferiore alla risoluzione temporale del dispositivo data dal contributo di molti parametri fisici diversi. Uno dei più limitanti è sicuramente il fenomeno dei **rimbalzi** che normalmente hanno una durata che è tipica per una certo modello di encoder ma può nel contempo variare a seconda della bontà della manifattura del singolo pezzo e, soprattutto, a seconda del suo stato di usura. L'usura, in particolare fa si che il tempo medio del fenomeno si allunghi fino al punto da rendere il dispositivo inutilizzabile.
 
