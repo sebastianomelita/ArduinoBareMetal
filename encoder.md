@@ -495,8 +495,8 @@ volatile short counter = 0;
 
 void setup() {
   // Set encoder pins as inputs
-  pinMode(encoderPinA, INPUT_PULLUP);
-  pinMode(encoderPinB, INPUT_PULLUP);
+  pinMode(encoderPinA, INPUT);
+  pinMode(encoderPinB, INPUT);
 
   // Attach interrupts to encoder pins
   attachInterrupt(digitalPinToInterrupt(encoderPinA), updateEncoder, CHANGE);
