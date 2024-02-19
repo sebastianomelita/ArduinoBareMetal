@@ -712,7 +712,7 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 
 ### **Encoder rotativo tabella e polling metodo array migliorato**
 
-La miglioria consiste nel potenziare la capacità di debouncing dell'algoritmo mettendolo in grado di discriminare più efficacemente le sequenze non ammesse dell'encoder in quanto ciascuna è considerata una traccia con cui è possibile riconoscere gli effetti sia dei rimbalzi dell'interruttore che di eventuali disturbi elettromagnetici (RFI).
+La miglioria consiste nel potenziare la capacità di debouncing dell'algoritmo mettendolo in grado di discriminare più efficacemente le sequenze non ammesse dall'encoder. In corrispondenza di queste l'encoder non fa nulla e non sposta nessun conteggio in quanto ciascuna è considerata dall'encoder come un valore spurio, cioè non voluto, dovuto ad una qualche sorgente di rumore, tipicamente i rimbalzi dell'interruttore o eventuali disturbi elettromagnetici (RFI).
 
 Le sequenze BABA di 4 bit sono normalmente la base su cui si testano le sequenze misurate. Man mano che si ricevono i bit nel loop, se questi non sono affetti da errori, viene ricevuta una sequenza corretta ogni 4 bit. La sequenza ricevuta prima è quella della transizione a ridosso dello scatto. Quindi se si vuole un riconoscimento più tempestivo possibile dello scatto bisogna accontentarsi soltanto di questa. Se si aspettano altri 4 bit se ne riceve completamente un'altra che, unita a quella precedente, fornisce una base di test più affidabile (benchè più lenta).
 
