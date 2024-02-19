@@ -720,7 +720,7 @@ Si può riceverne una terza migliorando ancora l'affidabilità (a scapito della 
 
 In definitiva, con una parola di 16 bit che contiene tutte le sequenze ammissibili di uno scatto, si rileva uno scatto ogni 4. Con una parola di 8 bit uno scatto ogni 2. Con una parola di 4 bit, corrispondente alla sequenza BABA contente i 2 bit attuali delle porte più i 2 della misura passata, si ottiene la misura tempestiva di tutti gli scatti.
 
-Si noti la necessità di due misure per la rilevazione di uno scatto, una corrispondente alla BA attuale e una a quella passata. Sono il minimo necessario per la rilevazione di una transizione che, fisicamente, corrisponde alla discontinuità alto-basso del dente dell'ingranaggio che è, in un certo momento, sotto misura.
+Si noti la necessità di due misure per la rilevazione di uno scatto, una corrispondente alla BA attuale e una a quella passata. Sono il minimo necessario per la rilevazione di una transizione che, fisicamente, corrisponde alla discontinuità alto-basso del dente dell'ingranaggio che è, in un dato istante, sotto misura.
 
 
 
