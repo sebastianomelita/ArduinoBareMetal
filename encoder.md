@@ -516,12 +516,9 @@ void loop() {
 void updateEncoder() {
   int a_current = digitalRead(encoderPinA); // polling di CK/A attuale
   int b_current = digitalRead(encoderPinB);  // polling di DT/B attuale
-  //if (a_past == a_current) { // selezione di un fronte di discesa di CK/A 
-  //int b_current = digitalRead(ENCODER_DT);  // polling di DT/B attuale
   direction = 0;
 
   if(a_past == a_current){
-    //Serial.println("Apast = Acurrent");
     if((a_current == 1) && (b_past < b_current)){direction = CW;counter++;Serial.print("0 1 1 1 CW ⏩ ");Serial.println(counter);}//   0 1 1 1 CW  fine scatto              
     if((a_current == 1) && (b_past > b_current)){direction = CCW;Serial.println("1 1 0 1 CCW ");}// 1 1 0 1 CCW
     if((a_current == 0) && (b_past > b_current)){direction = CW;Serial.println("1 0 0 0 CW ");}//   1 0 0 0 CW                   
