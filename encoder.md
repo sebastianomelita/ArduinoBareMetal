@@ -712,8 +712,17 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 
 ### **Encoder rotativo tabella e polling metodo array migliorato**
 
-```C++
+La miglioria consiste nel potenziare la capacità di debouncing dell'algoritmo mettendolo in grado di discriminare più efficacemente le sequenze non ammesse dell'encoder in quanto considerate una traccia con cui è possibile riconoscere gli effetti sia dei rimbalzi dell'interruttore che di eventuali disturbi elettromagnetici (RFI).
 
+Le sequenze BABA di 4 bit sono normalmente la base su cui si testano le sequenze misurate. Man mano che si ricevono i bit nel loop, se questi non sono affetti da errori, viene ricevuta una sequenza corretta ogni 4 bit. La sequenza ricevuta primna è quella della transizione a ridosso dello scatto. Quindi se si vuole un riconoscimento più tempestivo possibile dello scatto bisogna accontentarsi soltanto di questa. Se si aspettano altri 4 bit se ne ricecve completamente un'altra che, unita a quella precedente, fornisce una base di test più affidabile (benchè più lenta).
+
+Si può riceverne una terza migliorando ancora l'affidabilità (a scapito della velocità), fino a ricevere tutti i 16 bit che ospitano le 4 sequenze ammissibili a seguito di uno scatto. In quest'ultino caso l'affidabilità sull'interpretazione di uno scatto, statisticamente è massima ma è ottenuta al prezzo della rilevazione ritardata dei 3 scatti successivi a quello sotto test. In definitiva, con una parola di 16 bit che contiene tutte le sequenze ammissibili di uno scatto, si rileva uno scatto ogni 4. Con una parola di 8 bit uno scatto ogni 2. Con una parola di 4 bit, corrispondente alla sequenza BABA contente i 2 bit attuali delle porte più i 2 della misura passata, si ottiene la misura tempestiva di tutti gli scatti.
+
+Si noti la necessità di due misure per la rilevazione di uno scatto, una corrispondente alla BA attuale e una a quella passata. Sono il minimo necessario per la rilevazione di una transizione che, fisicamente, corrisponde alla discontinuità alto-basso del dente dell'ingranaggio che è, in un certo momento, sotto misura.
+
+
+
+```C++
 // Robust Rotary encoder reading
 //
 // Copyright John Main - best-microcontroller-projects.com
