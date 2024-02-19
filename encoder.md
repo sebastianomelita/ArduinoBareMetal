@@ -412,15 +412,15 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 ---------------------
 | Sequenze ammesse  |
 ---------------------
-| 0 1 1 1 CW  first |
+| 0 1 1 1 CW  last  |
 | 0 0 0 1 CW        |
 | 1 0 0 0 CW        |
-| 1 1 1 0 CW  last  |
+| 1 1 1 0 CW  first |
 |-------------------|
-| 1 0 1 1 CCW first |
+| 1 0 1 1 CCW last  |
 | 0 0 1 0 CCW       |
 | 0 1 0 0 CCW       |
-| 1 1 0 1 CCW last  |
+| 1 1 0 1 CCW first |
 ---------------------
 */
 #define CW 1
@@ -472,15 +472,15 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 ---------------------
 | Sequenze ammesse  |
 ---------------------
-| 0 1 1 1 CW  first |
+| 0 1 1 1 CW  last  |
 | 0 0 0 1 CW        |
 | 1 0 0 0 CW        |
-| 1 1 1 0 CW  last  |
+| 1 1 1 0 CW  first |
 |-------------------|
-| 1 0 1 1 CCW first |
+| 1 0 1 1 CCW last  |
 | 0 0 1 0 CCW       |
 | 0 1 0 0 CCW       |
-| 1 1 0 1 CCW last  |
+| 1 1 0 1 CCW first |
 ---------------------
 */
 // Define pins for the rotary encoder
@@ -558,15 +558,15 @@ Questo approccio implicito assume che le transizioni non ammesse siano rare e ch
 ---------------------
 | Sequenze ammesse  |
 ---------------------
-| 0 1 1 1 CW  first |
+| 0 1 1 1 CW  last  |
 | 0 0 0 1 CW        |
 | 1 0 0 0 CW        |
-| 1 1 1 0 CW  last  |
+| 1 1 1 0 CW  first |
 |-------------------|
-| 1 0 1 1 CCW first |
+| 1 0 1 1 CCW last  |
 | 0 0 1 0 CCW       |
 | 0 1 0 0 CCW       |
-| 1 1 0 1 CCW last  |
+| 1 1 0 1 CCW first |
 ---------------------
 */
 #define CLK 2
@@ -643,15 +643,15 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 ---------------------
 | Sequenze ammesse  |
 ---------------------
-| 0 1 1 1 CW  first |
+| 0 1 1 1 CW  last  |
 | 0 0 0 1 CW        |
 | 1 0 0 0 CW        |
-| 1 1 1 0 CW  last  |
+| 1 1 1 0 CW  first |
 |-------------------|
-| 1 0 1 1 CCW first |
+| 1 0 1 1 CCW last  |
 | 0 0 1 0 CCW       |
 | 0 1 0 0 CCW       |
-| 1 1 0 1 CCW last  |
+| 1 1 0 1 CCW first |
 ---------------------
 */
 // Define pins for the rotary encoder
@@ -756,15 +756,15 @@ Il vantaggio, in questo caso, è la possibilità di tarare la granularità della
 ---------------------
 | Sequenze ammesse  |
 ---------------------
-| 0 1 1 1 CW  first |
+| 0 1 1 1 CW  last  |
 | 0 0 0 1 CW        |
 | 1 0 0 0 CW        |
-| 1 1 1 0 CW  last  |
+| 1 1 1 0 CW  first |
 |-------------------|
-| 1 0 1 1 CCW first |
+| 1 0 1 1 CCW last  |
 | 0 0 1 0 CCW       |
 | 0 1 0 0 CCW       |
-| 1 1 0 1 CCW last  |
+| 1 1 0 1 CCW first |
 ---------------------
 */
 // Robust Rotary encoder reading
