@@ -342,7 +342,7 @@ void setup() {
 }
 
 // Called when encoder value changes
-int changeValue (bool up) {
+int changeValue (bool up) {// conta due sequenze prima di aggiornare il risultato
   int val = 0;
   //counter = max(min((counter + (up ? 1 : -1)), 1000), 0);
   //counter = min((counter + (up ? 1 : -1)), 1000);
@@ -359,11 +359,11 @@ void readEncoder() {// ogni change di A
   int a = digitalRead(ENCODER_CLK);
   int b = digitalRead(ENCODER_DT);
   
-  //if (a != a0) {              // A changed
-    //a0 = a;
-    if (b != c0) {// genera falling di c0
-      c0 = b;
-      counter += changeValue(a != b);
+  //if (a != a0) {              // in caso di polling
+    //a0 = a;                   // aggiorna il precedente
+    if (b != c0) {              // vede se c attuale modifica il c passato
+      c0 = b;                   // c0 = c
+      counter += changeValue(a != b); // 
     }
   //}
 }
