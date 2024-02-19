@@ -308,6 +308,94 @@ void loop() {
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389966992054192129
 
+### **Encoder rotativo mediante interrupt con debouncer non basato sul tempo**
+
+<img src="img\staticdebounce.png" alt="alt text" width="1000">
+
+```C++
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 20, 4);
+
+#define ENCODER_CLK 2
+#define ENCODER_DT  3
+#define ENCODER_SW  4
+#define DEBOUNCE_DELAY 50
+
+int counter = 0;
+int count = 0;
+volatile uint8_t a0 = HIGH;
+volatile uint8_t c0 = HIGH;
+
+void setup() {
+  // Initialize LCD
+  lcd.init();
+  lcd.backlight();
+
+  // Initialize encoder pins
+  pinMode(ENCODER_CLK, INPUT);
+  pinMode(ENCODER_DT, INPUT);
+  pinMode(ENCODER_SW, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_CLK), readEncoder, CHANGE);
+}
+
+// Called when encoder value changes
+int changeValue (bool up) {
+  int val = 0;
+  //counter = max(min((counter + (up ? 1 : -1)), 1000), 0);
+  //counter = min((counter + (up ? 1 : -1)), 1000);
+  if(count >= 1){
+    count = 0;
+    val = (up ? 1 : -1);
+  }else{
+    count++;
+  }
+  return val;
+}
+
+void readEncoder() {// ogni change di A
+  int a = digitalRead(ENCODER_CLK);
+  int b = digitalRead(ENCODER_DT);
+  
+  //if (a != a0) {              // A changed
+    //a0 = a;
+    if (b != c0) {// genera falling di c0
+      c0 = b;
+      counter += changeValue(a != b);
+    }
+  //}
+}
+
+// Get the counter value, disabling interrupts.
+// This make sure readEncoder() doesn't change the value
+// while we're reading it.
+int getCounter() {
+  int result;
+  noInterrupts(); // inizio corsa critica
+  result = counter;
+  interrupts();
+  return result;  // fine corsa critica
+}
+
+void resetCounter() {
+  noInterrupts(); // inizio corsa critica
+  counter = 0;
+  interrupts();   // fine corsa critica
+}
+
+void loop() {
+  lcd.setCursor(3, 0);
+  lcd.print("Counter:");
+  lcd.setCursor(7, 1);
+  lcd.print(getCounter());
+  lcd.print("        ");
+
+  if (digitalRead(ENCODER_SW) == LOW) {
+    resetCounter();
+  }
+}
+```
+Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390109278439107585
+
 ## **TECNICA DELLA TABELLA DI TRANSIZIONE**
 
 <img src="img\babatable.png" alt="alt text" width="1400">
