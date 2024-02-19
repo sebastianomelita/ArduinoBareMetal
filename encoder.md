@@ -27,7 +27,7 @@ L'encoder rotativo offre due **modalità di interazione**:
 - **Pulsante**: fare clic sulla manopola per premere il pulsante. Mentre è premuto, il pulsante collega il pin SW con il pin GND.
 Ogni volta che l'utente ruota la manopola, viene prodotto un serie di segnali sui pin DT e CLK.
 
-<img src="img\tansitions.jpg" alt="alt text" width="1000">
+<img src="img\tansitions.jpg" alt="alt text" width="600">
 
 La **fisica interna** del dispositivo fa si che, per stabilire il numero di scatti e il verso di rotazione dall'osservazione dei due ingressi A e B, bisogna esaminare **almeno due gruppi** di valori consecutivi al fine di isolare il **fronte** di un piedino e il **valore** di un altro.
 
