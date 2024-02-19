@@ -731,12 +731,13 @@ Il vantaggio, in questo caso, è la possibilità di tarare la granularità della
 
 
 ```C++
+
 // Robust Rotary encoder reading
 //
 // Copyright John Main - best-microcontroller-projects.com
 //
-#define CLK 3
-#define DATA 2
+#define CLK 2
+#define DATA 3
 
 uint8_t baba = 0;
 uint16_t store=0;
@@ -750,9 +751,9 @@ void printBin(uint16_t aByte) {
 
 void setup() {
   pinMode(CLK, INPUT);
-  pinMode(CLK, INPUT_PULLUP);
+  pinMode(CLK, INPUT);
   pinMode(DATA, INPUT);
-  pinMode(DATA, INPUT_PULLUP);
+  pinMode(DATA, INPUT);
   Serial.begin (115200);
   Serial.println("KY-040 Start:");
 }
@@ -764,11 +765,11 @@ void loop() {
        c += val;
       if (val == -1) {// seleziona 1011 (fine scatto)
         Serial.print(c);Serial.print(" ");
-        Serial.println("Vedo 59415 ⏪");
+        Serial.println("Vedo 54315 ⏪");
       }
       if (val == 1) {// seleziona 0111  (fine scatto)
         Serial.print(c);Serial.print(" ");
-        Serial.println("Vedo 54315 ⏩");
+        Serial.println("Vedo 59415 ⏩");
       }
    }
  }
@@ -788,8 +789,8 @@ int8_t read_rotary() {
       store |= baba;      // inserimento in coda di BABA
       
       Serial.print("BAx8: ");printBin(store); Serial.print(" DEC: ");Serial.println(store);
-      if (store==0xd42b) return 1;// 1101 0100 0010 1011 (54315) controllo sequenza su 16 bit
-      if (store==0xe817) return -1;// 1110 1000 0001 0111 (59415) controllo sequenza su 16 bit
+      if (store==0xd42b) return -1;// 1101 0100 0010 1011 (54315) controllo sequenza su 16 bit
+      if (store==0xe817) return 1;// 1110 1000 0001 0111 (59415) controllo sequenza su 16 bit
       //if ((store&0xff)==0x2b) return -1;// 00101011 controllo sequenza su 8 bit
       //if ((store&0xff)==0x17) return 1;//  00010111 controllo sequenza su 8 bit
    }
