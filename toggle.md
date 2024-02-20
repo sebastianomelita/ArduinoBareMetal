@@ -1058,7 +1058,6 @@ Variante semplificata e ottimizzata per eliminare gli interrupt spuri senza cont
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 int led = 13;
 byte pulsante =12;
-volatile unsigned short numberOfButtonInterrupts = 0;
 volatile bool stato;
 #define DEBOUNCETIME 50
 Ticker debounceTicker;
@@ -1085,11 +1084,9 @@ void waitUntilInputLow()
     if (digitalRead(pulsante) == HIGH)//se coincide con il valore di un polling
     { 
         Serial.print("Aspetto");
-        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
         debounceTicker.once_ms(50, waitUntilInputLow);  
     }else{
         Serial.print("DISCESA riarmo pulsante\n");
-        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
         attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
     }
 }
@@ -1101,10 +1098,9 @@ void loop() {
 		delay(500);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    		delay(10);
+    delay(10);
 	}
 }
-
 ```
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390289622147259393
 
