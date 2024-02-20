@@ -276,7 +276,6 @@ Le attese sono tutte **non bloccanti** e realizzate tramite un timer HW che adop
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 int led = 13;
 byte pulsante =12;
-volatile bool pressed;
 volatile bool stato;
 #define DEBOUNCETIME 50
 Ticker debounceTicker;
@@ -286,26 +285,27 @@ void setup() {
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
   attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
-  pressed = false;
   stato = false;
 }
 
 void switchPressed ()
 {
-  if(!pressed){ // fronte di salita
-    pressed = true; // disarmo il pulsante
-    debounceTicker.once_ms(50, waitUntilInputLow);  // riarmo del timer
-    stato = !stato; 	 // logica da attivare sul fronte (toggle)
-  }
+  detachInterrupt(digitalPinToInterrupt(pulsante));
+  debounceTicker.once_ms(50, waitUntilInputLow);  
+  Serial.println("SALITA disarmo pulsante");
+  stato = !stato; 	 // logica da attivare sul fronte (toggle)
+
 }  // end of switchPressed
 
 void waitUntilInputLow()
 {
-    if (digitalRead(pulsante) == HIGH)//se il pulsante è ancora premuto
+    if (digitalRead(pulsante) == HIGH)//se coincide con il valore di un polling
     { 
-      debounceTicker.once_ms(50, waitUntilInputLow);  // riarmo del timer
+        Serial.print("Aspetto");
+        debounceTicker.once_ms(50, waitUntilInputLow);  
     }else{
-      pressed = false; // riarmo del pulsante e disarmo (automatico) del timer
+        Serial.print("DISCESA riarmo pulsante\n");
+        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
     }
 }
 
@@ -316,11 +316,13 @@ void loop() {
 		delay(500);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    delay(10);
+    		delay(10);
 	}
 }
+
 ```
-Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/388438685024222209
+Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/390289622147259393
+
 
 ### **Pulsante toggle basato su interrupts e timer debounce get()**
 
