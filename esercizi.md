@@ -127,6 +127,7 @@ Si noti che, sia per timer HW che per timers SW, l'**ordine di apparizione** dei
 In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
 
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi (time tick)**:
+
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 #include "urutils.h"
@@ -148,17 +149,17 @@ void setup() {
 // Interrupt Service Routine (ISR)
 void switchPressed ()
 {
-    if(!pressed){ // intervento immediato ma sul primo fronte di salita soltanto (causa disarmo pulsante)
-        pressed = true; // disarmo del pulsante e riarmo del timer di debouncing
-        stato = !stato; // logica da attivare sul fronte 
-    }
-}   // end of switchPressed
+  detachInterrupt(digitalPinToInterrupt(pulsante));
+  pressed = true; // disarmo del pulsante e riarmo del timer
+  stato = !stato; // logica da attivare sul fronte (toggle)
+}  // end of switchPressed
 
 void waitUntilInputChange()
 {
     if (pressed){ 
       debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
-      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){
+      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){// disarmo del timer al timeout
+        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING ); 
         pressed = false; // riarmo del pulsante
         debounce.stop(); // disarmo del timer
         debounce.reset();
@@ -173,11 +174,12 @@ void loop() {
 		delay(1000);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    		delay(10);
+    delay(10);
 	}
 }
+
 ```
-Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/388481409829351425
+Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/390288516762524673
 
 ### **Schedulatore generico realizzato con funzione get()**
 
