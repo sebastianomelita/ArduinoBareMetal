@@ -318,6 +318,8 @@ Complessivamente, devono essere ricevuti almeno 4 bit su due porte al fine di av
 
 <img src="img\Incremental_directional_encoder.gif" alt="alt text" width="400">
 
+<img src="img\QuadratureOscillatingShaft.png" alt="alt text" width="400">
+
 ### **Encoder rotativo con tabella e polling metodo tracking**
 
 ```C++
