@@ -617,7 +617,10 @@ Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **n
 Le variabile **condivisa** tra ISR e loop() e **8 bit** è ```stato``` ed è stata dichiarata come ```volatile``` e ogni suo accesso (in lettura e scrittura) è  stato racchiuso in una  **sezione critica** dove l'acccesso parallelo è stato disabilitato in favore di uno **strettamente sequenziale** che garantisce l'atomicità delle istruzioni in essa racchiuse.
 
 Per quanto riguarda le sezioni critiche si può approfondire in [sezioni critiche](intsezionicritiche.md)
-  
+
+Gli encoder differenziali, poichè internamente sono dei normalissimi interruttori, sono soggetti anch'essi aal fenomeno dei rimbalzi e all'usura che progressivamente accentua quel fenomeno. Per applicazioni pratiche effettive, è conveniente utilizzare delle implementazioni capaci di tenerne conto. Per questo e altro vedere <a href="encoder.md">Encoder rotativo</a>
+
+
 ## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
 ### **Es1**
