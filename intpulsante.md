@@ -242,6 +242,64 @@ void loop() {
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/388481409829351425
 
+
+Variante che disarma gli interrupt spuri fino al rilascio del pulsante: 
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include "urutils.h"
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+volatile bool pressed;
+#define DEBOUNCETIME 50
+DiffTimer debounce;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
+  pressed = false;
+}
+
+// Interrupt Service Routine (ISR)
+void switchPressed ()
+{
+  detachInterrupt(digitalPinToInterrupt(pulsante));
+  pressed = true; // disarmo del pulsante e riarmo del timer
+  stato = !stato; // logica da attivare sul fronte (toggle)
+}  // end of switchPressed
+
+void waitUntilInputChange()
+{
+    if (pressed){ 
+      debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
+      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){// disarmo del timer al timeout
+        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING ); 
+        pressed = false; // riarmo del pulsante
+        debounce.stop(); // disarmo del timer
+        debounce.reset();
+      }
+    }
+}
+// loop principale
+void loop() {
+	waitUntilInputChange();
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(1000);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+    		delay(10);
+	}
+}
+
+```
+
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
+
+
 ### **PULSANTE DI SICUREZZA CON DEBOUNCER BASATO SUI DELAY NEL LOOP**
 
 Il codice precedente, per quanto **molto reponsivo**, non è adatto a realizzare un **blocco di sicurezza** per via del **ritardo** nell'intervento di attivazione e disattivazione dell'uscita causato dalll'algoritmo di **debouncing** (antirimbalzo). Per adattarlo a quest'ultimo scopo, il codice va modificato in modo da avere un intervento **immediato** su uno dei fronti (quello che comanda lo sblocco dell'alimentazione) ed uno ritardato (per realizzare il debouncing) sull'altro (quello che comanda il riarmo). 
