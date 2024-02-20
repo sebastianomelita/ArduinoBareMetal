@@ -729,7 +729,7 @@ void updateEncoder() {
     // Print out direction based on delta value
     if (delta > 0) {
       printBin(baba);Serial.println(" CW ");
-      if (baba==0x07) {// seleziona 1011 (fine scatto)
+      if (baba==0x07) {// seleziona 0111 (fine scatto)
         encoderValue += delta;
         Serial.print("Ho visto sette ⏩ "); Serial.println (encoderValue);
       }
