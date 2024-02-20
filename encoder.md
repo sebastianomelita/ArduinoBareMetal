@@ -569,7 +569,7 @@ Ecco un esempio di transizione non ammessa e come viene gestita nel codice:
 
 - Supponiamo che l'ultimo stato dell'encoder sia 0b01 e il nuovo stato sia 0b11. In questo caso, non c'è una transizione valida nell'array ```rot_enc_table``` che corrisponda a questa sequenza. Quindi, la funzione  ```read_rotary()``` restituirà un valore di incremento pari a 0. Di conseguenza, l'encoderValue non verrà modificato e non verrà stampata alcuna direzione di rotazione.
 
-Questo approccio implicito assume che le transizioni non ammesse siano rare e che l'encoder produca principalmente transizioni valide. Se le transizioni non ammesse diventano un problema significativo, potrebbe essere necessario implementare un meccanismo più sofisticato per gestirle, ad esempio introducendo un conteggio dei tentativi o una logica di correzione degli errori nell'aggiornamento dell'encoderValue.
+Questo approccio implicito assume che le transizioni non ammesse siano rare e che l'encoder produca principalmente transizioni valide. Se le transizioni non ammesse diventano un problema significativo, potrebbe essere necessario implementare un meccanismo più sofisticato per gestirle, ad esempio introducendo un conteggio dei tentativi o una logica di correzione degli errori nell'aggiornamento della sequenza ```baba```.
 
 ```C++
 /*
