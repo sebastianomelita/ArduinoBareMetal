@@ -957,7 +957,7 @@ void loop() {
 		delay(1000);
 	} else {
 		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    delay(10);
+    		delay(10);
 	}
 }
 
@@ -1050,6 +1050,63 @@ L'unica variabile **condivisa** tra ISR e loop() nel progetto è ```stato``` che
 In questo caso gli **accessi**, sia in lettura che in scrittura, sono quindi, a basso livello, **intrinsecamente sequenziali**.
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350052113369268819
+
+Variante semplificata e ottimizzata per eliminare gli interrupt spuri senza contarli:
+
+```C++
+#include <Ticker.h>
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+int led = 13;
+byte pulsante =12;
+volatile unsigned short numberOfButtonInterrupts = 0;
+volatile bool stato;
+#define DEBOUNCETIME 50
+Ticker debounceTicker;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
+  stato = false;
+}
+
+void switchPressed ()
+{
+  detachInterrupt(digitalPinToInterrupt(pulsante));
+  debounceTicker.once_ms(50, waitUntilInputLow);  
+  Serial.println("SALITA disarmo pulsante");
+  stato = !stato; 	 // logica da attivare sul fronte (toggle)
+
+}  // end of switchPressed
+
+void waitUntilInputLow()
+{
+    if (digitalRead(pulsante) == HIGH)//se coincide con il valore di un polling
+    { 
+        Serial.print("Aspetto");
+        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
+        debounceTicker.once_ms(50, waitUntilInputLow);  
+    }else{
+        Serial.print("DISCESA riarmo pulsante\n");
+        Serial.print("HIT: "); Serial.println(numberOfButtonInterrupts);
+        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
+    }
+}
+
+// loop principale
+void loop() {
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(500);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+    delay(10);
+	}
+}
+
+```
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390289622147259393
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](togglepy.md)
 
