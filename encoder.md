@@ -316,6 +316,8 @@ Nelle tecniche a seguire, visto che si debbano ricevere 4 sequenze complete prim
 
 Complessivamente, devono essere ricevuti almeno 4 bit su due porte al fine di avere tutte le informazioni per ricostruire un ciclo completo dei due segnali AB che comprenda almeno un fronte per ogni coppia di segnali. I due contatti A e B strisciano sulla stessa ruota dentata e sono sfasati di 90 gradi. Sotto questo limite non è possibile andare.
 
+<img src="img\Incremental_directional_encoder.gif" alt="alt text" width="400">
+
 ### **Encoder rotativo con tabella e polling metodo tracking**
 
 ```C++
