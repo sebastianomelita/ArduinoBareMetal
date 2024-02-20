@@ -314,7 +314,7 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 
 Negli esempi che vedremo a seguire hanno tutti in comune il procedimento di ricevere 4 sequenze complete prima di prendere una decisione riguardo al verso dello scatto proprio sull'ultima. Sembrerebbe esserci un'attesa nella decisione, ma questa in realtà è solamente apparente perchè ogni nuova sequenza si ottiene shiftando la precedente di appena 1 bit, e non come sembra, creandone una nuova ogni 4 bit ricevuti. Alla fine, il **ritardo complessivo** è sempre di **4 bit**, corrispondenti ad una **sequenza BABA**.
 
-Complessivamente, devono essere ricevuti almeno 4 bit su due porte al fine di avere tutte le informazioni per ricostruire un ciclo completo dei due segnali AB che abbia la proprietà di comprendere almeno un fronte il segnale A e uno pure per il segnale B. I due contatti A e B strisciano sulla stessa ruota dentata e sono, a **velocità costante**, sfasati di **90°**. Sotto questo limite non è possibile andare altrimenti uno dei due parametri, velocità e verso di rotazione, rimangono incerti. 
+Complessivamente, devono essere ricevuti almeno 4 bit su due porte al fine di avere tutte le informazioni per ricostruire un ciclo completo dei due segnali AB che abbia la proprietà di comprendere almeno un fronte il segnale A e uno pure per il segnale B. I due contatti A e B strisciano sulla stessa ruota dentata e sono, a **velocità costante**, sfasati di **90°**. Sotto questo limite di numero di bit non è possibile andare altrimenti uno dei due parametri, velocità e verso di rotazione, rimangono incerti. 
 
 A **velocità costante** maggiore i fronti sono **equidistanziati** ma  più **ravvicinati** che a velocità costante minore.
 
