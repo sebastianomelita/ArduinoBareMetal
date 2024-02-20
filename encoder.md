@@ -328,7 +328,7 @@ In **direzione CW** il fronte di **discesa** di CK "vede" un **valore alto** di 
 
 <img src="img\QuadratureOscillatingShaft.png" alt="alt text" width="600">
 
-Sopra sono rappresentati i segnali in quadratura di un **albero oscillante**. Si può identificare la direzione in senso orario (CW) da 'Data (DT)' sul fronte di **discesa** del segnale 'Clock (CK)' che vede **DT basso**. Quando l'albero **cambia direzione**, allora **rallenta** e inverte, in senso antiorario (CCW)modificando l'ampiezza e la fase dell'impulso in modo che sul fronte di **discesa** del segnale 'Clock (CK)' adesso vede **DT alto**.
+Sopra sono rappresentati i segnali in quadratura di un **albero oscillante**. Si può identificare la direzione in senso orario (CW) da 'Data (DT)' sul fronte di **discesa** del segnale 'Clock (CK)' che vede **DT basso**. Quando l'albero **cambia direzione**, allora **rallenta** e inverte, in senso antiorario (CCW) modificando l'ampiezza e la fase dell'impulso in modo che sul fronte di **discesa** del segnale 'Clock (CK)' adesso vede **DT alto**.
 
 
 ### **Encoder rotativo con tabella e polling metodo tracking**
