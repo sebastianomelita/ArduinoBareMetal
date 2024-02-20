@@ -308,6 +308,10 @@ void loop() {
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389966992054192129
 
+## **TECNICA DELLA TABELLA DI TRANSIZIONE**
+
+<img src="img\babatable.png" alt="alt text" width="1400">
+
 
 ### **Encoder rotativo con tabella e polling metodo tracking**
 
@@ -554,11 +558,6 @@ void loop() {
 }
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390109278439107585
-
-## **TECNICA DELLA TABELLA DI TRANSIZIONE**
-
-<img src="img\babatable.png" alt="alt text" width="1400">
-
 
 ### **Encoder rotativo tabella e polling metodo array**
 
