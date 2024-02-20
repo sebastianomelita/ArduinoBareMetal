@@ -312,15 +312,24 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 
 <img src="img\babatable.png" alt="alt text" width="1400">
 
-Nelle tecniche a seguire, abbiamo visto che si debbano ricevere 4 sequenze complete prima di prendere una decisione sull'ultima riguardo al verso dello scatto. Sembrerebbe esserci un'attesa nella decisione ma ciò è in realtà solamente apparente perchè una nuova sequenza si ottiene shiftando la precedente di appena 1 bit, e non come sembra dalla stampa nelle simulazioni, una ogni 4 bit ricevuti. Alla fine, il **ritardo complessivo** è di 4 bit.
+Negli esempi che vedremo a seguire hanno tutti in comune il procedimento di ricevere 4 sequenze complete prima di prendere una decisione riguardo al verso dello scatto proprio sull'ultima. Sembrerebbe esserci un'attesa nella decisione, ma questa in realtà è solamente apparente perchè ogni nuova sequenza si ottiene shiftando la precedente di appena 1 bit, e non come sembra, creandone una nuova ogni 4 bit ricevuti. Alla fine, il **ritardo complessivo** è sempre di **4 bit**, corrispondenti ad una **sequenza BABA**.
 
-Complessivamente, devono essere ricevuti almeno 4 bit su due porte al fine di avere tutte le informazioni per ricostruire un ciclo completo dei due segnali AB che comprenda almeno un fronte per ogni coppia di segnali. I due contatti A e B strisciano sulla stessa ruota dentata e sono sfasati di 90 gradi. Sotto questo limite non è possibile andare.
+Complessivamente, devono essere ricevuti almeno 4 bit su due porte al fine di avere tutte le informazioni per ricostruire un ciclo completo dei due segnali AB che abbia la proprietà di comprendere almeno un fronte il segnale A e uno pure per il segnale B. I due contatti A e B strisciano sulla stessa ruota dentata e sono, a **velocità costante**, sfasati di **90°**. Sotto questo limite non è possibile andare altrimenti uno dei due parametri, velocità e verso di rotazione, rimangono incerti. 
+
+A **velocità costante** maggiore i fronti sono **equidistanziati** ma  più **ravvicinati** che a velocità costante minore.
+
+Una **variazione di velocità** causa una modifica dello sfasamento dei segnali (dovuto al cambiamento della distanza temporale tra due fronti consecutivi):
+- se la manopola **accelera** i fronti progressiìvamente diventano sempre più vicini.
+- se la manopola **rallenta** i fronti progressiìvamente diventano sempre più lontani.
+
+In **direzione CW** il fronte di **discesa** di CK "vede" un **valore alto** di DT. In **direzione CCW** il fronte di **discesa** di CK "vede" un **valore basso** di DT.
 
 <img src="img\Incremental_directional_encoder.gif" alt="alt text" width="400">
 
 <img src="img\QuadratureOscillatingShaft.png" alt="alt text" width="600">
 
-Sopra sono rappresentati i segnali in quadratura di un albero oscillante. Si può identificare la direzione in senso orario da 'Data' sul fronte di salita del segnale 'Clock'. Quando l'albero cambia direzione, rallenta e inverte, modificando l'ampiezza e la fase dell'impulso.
+Sopra sono rappresentati i segnali in quadratura di un **albero oscillante**. Si può identificare la direzione in senso orario (CW) da 'Data (DT)' sul fronte di **discesa** del segnale 'Clock (CK)' che vede **DT basso**. Quando l'albero **cambia direzione**, allora **rallenta** e inverte, in senso antiorario (CCW)modificando l'ampiezza e la fase dell'impulso in modo che sul fronte di **discesa** del segnale 'Clock (CK)' adesso vede **DT alto**.
+
 
 ### **Encoder rotativo con tabella e polling metodo tracking**
 
