@@ -320,6 +320,8 @@ Complessivamente, devono essere ricevuti almeno 4 bit su due porte al fine di av
 
 <img src="img\QuadratureOscillatingShaft.png" alt="alt text" width="400">
 
+Sopra sono rappresentati i segnali in quadratura di un albero oscillante. Si può identificare la direzione in senso orario da 'Data' sul fronte di salita del segnale 'Clock'. Quando l'albero cambia direzione, rallenta e inverte, modificando l'ampiezza e la fase dell'impulso.
+
 ### **Encoder rotativo con tabella e polling metodo tracking**
 
 ```C++
