@@ -312,6 +312,10 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 
 <img src="img\babatable.png" alt="alt text" width="1400">
 
+Nelle tecniche a seguire, visto che si debbano ricevere 4 sequenze complete prima di prendere una decisione sull'ultima riguardo al verso dello scatto. Sembrerebbe esserci un'attesa nella decisione ma ciò è in realtà solamente apparente perchè una nuova sequenza si ottiene shiftando la precedente di 1 bit, e non come sembra dalla stampa nella simulazione, una ogni 4 bit ricevuti.
+
+
+
 ### **Encoder rotativo con tabella e polling metodo tracking**
 
 ```C++
