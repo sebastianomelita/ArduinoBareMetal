@@ -312,9 +312,9 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 
 <img src="img\babatable.png" alt="alt text" width="1400">
 
-Nelle tecniche a seguire, visto che si debbano ricevere 4 sequenze complete prima di prendere una decisione sull'ultima riguardo al verso dello scatto. Sembrerebbe esserci un'attesa nella decisione ma ciò è in realtà solamente apparente perchè una nuova sequenza si ottiene shiftando la precedente di 1 bit, e non come sembra dalla stampa nella simulazione, una ogni 4 bit ricevuti.
+Nelle tecniche a seguire, visto che si debbano ricevere 4 sequenze complete prima di prendere una decisione sull'ultima riguardo al verso dello scatto. Sembrerebbe esserci un'attesa nella decisione ma ciò è in realtà solamente apparente perchè una nuova sequenza si ottiene shiftando la precedente di 1 bit, e non come sembra dalla stampa nella simulazione, una ogni 4 bit ricevuti. Alla fine, il **ritardo complessivo** è di 4 bit.
 
-
+Complessivamente, devono essere ricevuti almeno 4 bit su due porte al fine di avere tutte le informazioni per ricostruire un ciclo completo dei due segnali AB che comprenda almeno un fronte per ogni coppia di segnali. I due contatti A e B strisciano sulla stessa ruota dentata e sono sfasati di 90 gradi. Sotto questo limite non è possibile andare.
 
 ### **Encoder rotativo con tabella e polling metodo tracking**
 
