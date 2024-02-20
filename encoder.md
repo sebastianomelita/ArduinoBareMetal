@@ -319,8 +319,8 @@ Complessivamente, devono essere ricevuti almeno 4 bit su due porte al fine di av
 A **velocità costante** maggiore i fronti sono **equidistanziati** ma  più **ravvicinati** che a velocità costante minore.
 
 Una **variazione di velocità** causa una modifica dello sfasamento dei segnali (dovuto al cambiamento della distanza temporale tra due fronti consecutivi):
-- se la manopola **accelera** i fronti progressiìvamente diventano sempre più vicini.
-- se la manopola **rallenta** i fronti progressiìvamente diventano sempre più lontani.
+- se la manopola **accelera** i fronti progressivamente diventano sempre più **vicini**.
+- se la manopola **rallenta** i fronti progressivamente diventano sempre più **lontani**.
 
 In **direzione CW** il fronte di **discesa** di CK "vede" un **valore alto** di DT. In **direzione CCW** il fronte di **discesa** di CK "vede" un **valore basso** di DT.
 
