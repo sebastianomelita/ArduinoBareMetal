@@ -20,6 +20,8 @@ typedef struct
 {
 	unsigned long elapsed, last;
 	bool timerState=false;
+	byte state = 0;
+	byte count = 0;
 	void reset(){
 		elapsed = 0;
 		last = millis();
