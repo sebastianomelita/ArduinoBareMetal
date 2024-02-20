@@ -806,37 +806,34 @@ void setup() {
 }
 
 // Interrupt Service Routine (ISR)
-void switchPressed ()// si attiva sul fronte di salita
+void switchPressed ()
 {
-    if(!pressed){ // intervento immediato ma sul primo fronte di salita soltanto (causa disarmo pulsante)
-        pressed = true;// disarmo del pulsante e riarmo del timer di debouncing
-        stato = !stato;// logica da attivare sul fronte (toggle)
-    }
+    pressed = true; // disarmo del pulsante e riarmo del timer
+    detachInterrupt(digitalPinToInterrupt(pulsante));
+    stato = !stato; // logica da attivare sul fronte (toggle)
+    Serial.println("disarmo interrupts timer");
 }  // end of switchPressed
 
 void waitUntilInputChange()
 {
     if(pressed){ 
       if(!started){
-        started =true;// aggiorna il millis() solo alla prima di molte chiamate consecutive
+        started = true;// aggiorna il millis() solo alla prima di molte chiamate consecutive
         lastintTime = millis();
       }
       if((millis() - lastintTime > DEBOUNCETIME ) && digitalRead(pulsante) == LOW){
-        pressed = false; // riarmo del pulsante e disarmo del timer di debouncing
-        started = false;
+        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
+        pressed = false; // riarmo del pulsante
+        started = false; // disarmo del timer
+        Serial.println("riarmo interrupts timer");
       }
     }
 }
 // loop principale
 void loop() {
 	waitUntilInputChange();
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
-		delay(1000);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    		delay(10);
-	}
+	digitalWrite(led,stato);   	// inverti lo stato precedente del led
+  delay(10);
 }
 ```
 
