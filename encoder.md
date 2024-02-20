@@ -873,6 +873,7 @@ Sitografia:
 - https://www.best-microcontroller-projects.com/rotary-encoder.html
 - https://wokwi.com/projects/390078908878152705
 - https://wokwi.com/projects/390079895422569473
+- https://en.wikipedia.org/wiki/Incremental_encoder
 
 >[Torna all'indice](indexpulsanti.md)
 
