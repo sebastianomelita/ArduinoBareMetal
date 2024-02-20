@@ -786,7 +786,7 @@ In ogni caso, esiste un limite inferiore alla risoluzione temporale del disposit
 I debouncer basati sui timer hanno la necessità di essere impostati in fabbrica, scegliendo possibilmente un valore di sicurezza adatto anche per un dispositivo discretamente usurato. A prescindere da altre differenze individuali, il limite inferiore delle prestazioni di velocità dell'encoder è adesso fissato una volta per tutte dal timer.
 
 Nel caso dei debouncer basati sul filtro delle transizioni, il limite è invece automaticamente tarato sulla reazione dell'algoritmo alle sequenze sbagliate che verranno scartate, lasciando immutata l'ultimo valore valido del conteggio, non in base ad un ritardo teorico ma esattamente in base al limite fisico di quel particolare dispositivo.
-Il vantaggio, in questo caso, è la possibilità di tarare la granularità della risposta sul **livello corrente** delle prestazioni di un encoder. Se è nuovo e di buona qualità saranno ottime, se è scadente e molto usurato saranno notevolmente peggiori.
+Il vantaggio, in questo caso, è la possibilità di tarare la granularità della risposta sul **livello corrente** delle prestazioni di un encoder, il cui limite superiore è determinabile automaticamente alla ricezione di sequenze non ammissibili (che bloccano il conteggio). Se è nuovo e di buona qualità saranno ottime, se è scadente e molto usurato saranno notevolmente peggiori.
 
 
 ```C++
