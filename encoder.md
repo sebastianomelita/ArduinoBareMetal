@@ -777,7 +777,9 @@ Si può riceverne una terza migliorando ancora l'affidabilità (a scapito della 
 
 In definitiva, con una parola di 16 bit che contiene tutte le sequenze ammissibili di uno scatto, si rileva uno scatto ogni 4. Con una parola di 8 bit uno scatto ogni 2. Con una parola di 4 bit, corrispondente alla sequenza BABA contente i 2 bit attuali delle porte più i 2 della misura passata, si ottiene la misura tempestiva, in velocità e accelerazione, di tutti gli scatti.
 
-Una sequenza di 16 bit non ritarda granchè nella misura del numero di scatti rispetto ad una ad 8 o 4 a velocità costante (in pratica nessun ritardo). Invece, piuttosto, ritarda la lettura delle **accelerazioni** (decelerazioni) degli scatti che, con sequenze lunghe, sono campionate meno velocemente. 
+Una sequenza di 16 bit **non ritarda granchè** nella misura del numero di scatti rispetto ad una ad 8 o 4 a velocità costante (in pratica nessun ritardo). Invece, forse, potrebbe ritardare la lettura delle **accelerazioni** (decelerazioni) degli scatti che, con sequenze lunghe, magari sono campionate meno velocemente. 
+
+In generale, è sempre consigliabile condurre test empirici per valutare l'effetto di qualsiasi modifica, come l'introduzione di sequenze più lunghe, sull'accuratezza complessiva del sistema di misurazione dell'accelerazione.
 
 Si noti la necessità di **due misure** per la rilevazione di uno scatto, una corrispondente alla **BA attuale** e una a quella passata. Sono il minimo necessario per la rilevazione di una transizione che, fisicamente, corrisponde alla discontinuità alto-basso del dente dell'ingranaggio che è, in quell'istante, sotto misura.
 
