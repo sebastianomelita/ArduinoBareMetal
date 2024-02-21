@@ -20,7 +20,7 @@ Pins:
 - **+5V.** 	di Arduino
 - **GND.**	GND di Arduino
 
-Il modulo KY-040 include due **resistori pull-up** interni che collegano i pin CLK e DT a VCC. La simulazione solleva sempre questi pin, anche se si lascia fluttuante il pin VCC.
+Il modulo KY-040 include due **resistori pull-up** interni che collegano i pin a_current e DT a VCC. La simulazione solleva sempre questi pin, anche se si lascia fluttuante il pin VCC.
 
 L'encoder rotativo offre due **modalità di interazione**:
 - **Rotazione**: è possibile ruotare la manopola facendo clic sulle frecce. La freccia superiore lo ruota di un passo in senso orario, mentre la freccia inferiore lo ruota di un passo in senso antiorario. La rotazione della manopola produrrà segnali digitali sui pin DT e CLK, come spiegato di seguito.
@@ -41,7 +41,7 @@ Alla luce di ciò, la valutazione di  numero di **scatti** e **verso** delle rot
 
 Per cominciare, ed essere subito operativi, usiamo la tecnica della **transizione pilota**, e tra tutte scegliamo la transizione in FALLING del piedino A per selezionare la **transizione** che indica lo **scatto** e il valore del piedino B per stabilire il **verso** della rotazione:
 - La rotazione in **senso orario** fa sì che il pin **CLK** si abbassi **prima**, mentre il pin DT si abbassi dopo.
-- La rotazione in **senso antiorario** fa sì che il pin **DT** si abbassi **prima**, mentre il pin CLK si abbassi dopo.
+- La rotazione in **senso antiorario** fa sì che il pin **DT** si abbassi **prima**, mentre il pin a_current si abbassi dopo.
 
 ## **TECNICA DELLA TRANSIZIONE PILOTA**
 
@@ -56,7 +56,7 @@ In questo esempio, l'encoder rotativo è stato gestito con l'algoritmo con cui t
 
 #define ENCODER_CLK 2
 #define ENCODER_DT  3
-int prevClk = HIGH;
+int a_past = HIGH;
 
 void setup() {
   Serial.begin(115200);
@@ -65,17 +65,18 @@ void setup() {
 }
 
 void loop() {
-  int clk = digitalRead(ENCODER_CLK); // polling di CK attuale
-  if (prevClk == HIGH && clk == LOW) { // selezione del FALLING di CK
-    int dtValue = digitalRead(ENCODER_DT);// polling di DT
-    if (dtValue == HIGH) { // se DT non è ancora andato in FALLING
+  int a_current = digitalRead(ENCODER_CLK); // polling di CK attuale
+
+  if (a_past == HIGH && a_current == LOW) { // selezione del FALLING di CK
+    int b_current = digitalRead(ENCODER_DT);// polling di DT
+    if (b_current == HIGH) { // se DT non è ancora andato in FALLING
       Serial.println("Rotated clockwise ⏩");
     }
-    if (dtValue == LOW) { // se DT è già andato in FALLING
+    if (b_current == LOW) { // se DT è già andato in FALLING
       Serial.println("Rotated counterclockwise ⏪");
     }
   }
-  prevClk = clk; // il polling del CK attuale diventa il polling del CK precedente
+  a_past = a_current; // il polling del CK attuale diventa il polling del CK precedente
 }
 ```
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389913527165282305
@@ -87,15 +88,6 @@ In questo esempio, l'encoder rotativo è stato gestito con l'algoritmo con cui t
 
 
 ```C++
-/* KY-040 Rotary Encoder Counter
-
-   Rotate clockwise to count up, counterclockwise to counter done.
-
-   Press to reset the counter.
-
-   Copyright (C) 2021, Uri Shaked
-*/
-
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 
@@ -118,11 +110,11 @@ void setup() {
 }
 
 void readEncoder() {
-  int dtValue = digitalRead(ENCODER_DT);
-  if (dtValue == HIGH) {// DT dopo
+  int b_current = digitalRead(ENCODER_DT);
+  if (b_current == HIGH) {// DT dopo
     counter++; // Clockwise
   }
-  if (dtValue == LOW) {// DT prima
+  if (b_current == LOW) {// DT prima
     counter--; // Counterclockwise
   }
 }
@@ -200,13 +192,9 @@ https://github.com/buxtronix/arduino/tree/master/libraries/Rotary
 ### **Encoder rotativo mediante polling con debouncer basato sul tempo**
 
 ```C++
-// KY-040 Rotary Encoder Example
-// Taken from: https://docs.wokwi.com/parts/wokwi-ky-040
-// Copyright (C) 2021, Uri Shaked
-
 #define ENCODER_CLK 2
 #define ENCODER_DT  3
-int prevClk = HIGH;
+int a_past = HIGH;
 unsigned long lastDebounceTime = 0;
 unsigned long debounceDelay = 10;
 
@@ -217,21 +205,22 @@ void setup() {
 }
 
 void loop() {
-  int clk = digitalRead(ENCODER_CLK); // polling di CK attuale
-  if (prevClk == HIGH && clk == LOW) { // selezione del FALLING di CK
+  int a_current = digitalRead(ENCODER_CLK); // polling di CK attuale
+
+  if (a_past == HIGH && a_current == LOW) { // selezione del FALLING di CK
     // If enough time has passed since the last state change
     if ((millis() - lastDebounceTime) > debounceDelay) {
       lastDebounceTime = millis(); // riarmo il timer
-      int dtValue = digitalRead(ENCODER_DT);// polling di DT
-      if (dtValue == HIGH) { // se DT non è ancora andato in FALLING
+      int b_current = digitalRead(ENCODER_DT);// polling di DT
+      if (b_current == HIGH) { // se DT non è ancora andato in FALLING
         Serial.println("Rotated clockwise ⏩");
       }
-      if (dtValue == LOW) { // se DT è già andato in FALLING
+      if (b_current == LOW) { // se DT è già andato in FALLING
         Serial.println("Rotated counterclockwise ⏪");
       }
     }
   }
-  prevClk = clk; // il polling del CK attuale diventa il polling del CK precedente
+  a_past = a_current; // il polling del CK attuale diventa il polling del CK precedente
 }
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389969556548332545
@@ -267,11 +256,11 @@ void readEncoder() {
   if (millis() - lastDebounceTime > DEBOUNCE_DELAY) {
     lastDebounceTime = millis(); // riarma il timer
 
-    int dtValue = digitalRead(ENCODER_DT);
-    if (dtValue == HIGH) {// DT dopo
+    int b_current = digitalRead(ENCODER_DT);
+    if (b_current == HIGH) {// DT dopo
       counter++; // Clockwise
     }
-    if (dtValue == LOW) {// DT prima
+    if (b_current == LOW) {// DT prima
       counter--; // Counterclockwise
     }
   }
@@ -605,7 +594,7 @@ Questo approccio implicito assume che le transizioni non ammesse siano rare e ch
 | 1 1 0 1 CCW first |
 ---------------------
 */
-#define CLK 2
+#define a_current 2
 #define DATA 3
 #define BUTTON 4
 #define YLED A2
@@ -811,7 +800,7 @@ Il vantaggio, in questo caso, è la possibilità di tarare la granularità della
 //
 // Copyright John Main - best-microcontroller-projects.com
 //
-#define CLK 2
+#define a_current 2
 #define DATA 3
 
 uint8_t baba = 0;
