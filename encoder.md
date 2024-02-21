@@ -539,10 +539,10 @@ Tratto da http://www.technoblogy.com/show?1YHJ
 
 <img src="img\staticdebounce.png" alt="alt text" width="500">
 
-La figura si riferisce ad una rotazione antioraria in cui ad ogni transizione di A viene copiato in C il valore corrente di B. Eventuali rimbalzi non modificano il valore di C perchè questo rimane influenzato solo dal valore raggiunto dal primo fronte del treno di rimbalzi di A perchè per i successivi B ha lo stesso valore di C e la condizione falsa sull'if è efficace a filtrarli. In questo caso si può notare che A e B assumono sempre lo **stesso valore** e il pattern corrispondente è prima 1 0 1 1 CCW e poi 
+La figura si riferisce ad una **rotazione antioraria** in cui ad ogni transizione di A viene copiato in C il valore corrente di B. Eventuali rimbalzi non modificano il valore di C perchè questo rimane influenzato solo dal valore raggiunto dal primo fronte del treno di rimbalzi di A perchè per i successivi B ha lo stesso valore di C e la condizione falsa sull'if è efficace a filtrarli. In questo caso si può notare che A e B assumono sempre lo **stesso valore** e il pattern corrispondente è prima 1 0 1 1 CCW e poi 
 0 1 0 0 CCW.
 
-Si potrebbe ricostruire pure la figura relativa ad una rotazione oraria in cui ad ogni transizione di A viene copiato in C il valore corrente di B. Eventuali rimbalzi non modificano il valore di C perchè questo rimane influenzato solo dal valore raggiunto dal primo fronte del treno di rimbalzi di A perchè per i successivi B ha lo stesso valore di C e la condizione falsa sull'if è efficace a filtrarli. In questo caso si può notare che A e B assumono sempre lo **valori diversi** e il pattern corrispondente è prima 1 1 1 0 CW  e poi 0 0 0 1 CW.
+Si potrebbe ricostruire pure la figura relativa ad una **rotazione oraria** in cui ad ogni transizione di A viene copiato in C il valore corrente di B. Eventuali rimbalzi non modificano il valore di C perchè questo rimane influenzato solo dal valore raggiunto dal primo fronte del treno di rimbalzi di A perchè per i successivi B ha lo stesso valore di C e la condizione falsa sull'if è efficace a filtrarli. In questo caso si può notare che A e B assumono sempre lo **valori diversi** e il pattern corrispondente è prima 1 1 1 0 CW  e poi 0 0 0 1 CW.
 
 Le coppie di sequenze vengono catturate entrambe e quindi vanno poi contate una volta sola per ciascuna coppia.
 
