@@ -783,6 +783,7 @@ Il vantaggio, in questo caso, è la possibilità di tarare la granularità della
 
 
 ```C++
+
 /*
 ---------------------
 | Sequenze ammesse  |
@@ -798,17 +799,12 @@ Il vantaggio, in questo caso, è la possibilità di tarare la granularità della
 | 1 1 0 1 CCW first |
 ---------------------
 */
-// Robust Rotary encoder reading
-//
-// Copyright John Main - best-microcontroller-projects.com
-//
-#define a_current 2
+#define CLK 2
 #define DATA 3
-
 uint8_t baba = 0;
 uint16_t store=0;
 int8_t c,val;
-
+int8_t debounceTable[] = {0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0};
 
 void printBin(uint16_t aByte) {
   for (int8_t aBit = 15; aBit >= 0; aBit--)
@@ -842,25 +838,28 @@ void loop() {
 
 // A vald CW or  CCW move returns 1, invalid returns 0.
 int8_t read_rotary() {
-  static int8_t debounceTable[] = {0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0};
+  // Read the current state of the encoder pins
+  uint8_t msb = digitalRead(DATA); // B
+  uint8_t lsb = digitalRead(CLK); //  A
 
-  baba <<= 2;
-  if (digitalRead(DATA)) baba |= 0x02;
-  if (digitalRead(CLK)) baba |= 0x01;
+  // Bitwise operation to construct 2-bit code
+  uint8_t ba = (msb << 1) | lsb;
+
+  baba = baba << 2 | ba;
   baba &= 0x0f;
 
-   // If valid then store as 16 bit data.
-   if  (debounceTable[baba] ) {
-      store <<= 4;        // shift dell'ultimo valore in coda
-      store |= baba;      // inserimento in coda di BABA
-      
-      Serial.print("BAx8: ");printBin(store); Serial.print(" DEC: ");Serial.println(store);
-      if (store==0xd42b) return -1;// 1101 0100 0010 1011 (54315) controllo sequenza su 16 bit
-      if (store==0xe817) return 1;// 1110 1000 0001 0111 (59415) controllo sequenza su 16 bit
-      //if ((store&0xff)==0x2b) return -1;// 00101011 controllo sequenza su 8 bit
-      //if ((store&0xff)==0x17) return 1;//  00010111 controllo sequenza su 8 bit
-   }
-   return 0;
+  // If valid then store as 16 bit data.
+  if (debounceTable[baba]) {
+    store <<= 4;        // shift dell'ultimo valore in coda
+    store |= baba;      // inserimento in coda di BABA
+    
+    Serial.print("BAx8: ");printBin(store); Serial.print(" DEC: ");Serial.println(store);
+    if (store==0xd42b) return -1;// 1101 0100 0010 1011 (54315) controllo sequenza su 16 bit
+    if (store==0xe817) return 1;// 1110 1000 0001 0111 (59415) controllo sequenza su 16 bit
+    //if ((store&0xff)==0x2b) return -1;// 00101011 controllo sequenza su 8 bit
+    //if ((store&0xff)==0x17) return 1;//  00010111 controllo sequenza su 8 bit
+  }
+  return 0;
 }
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390014530229883905
