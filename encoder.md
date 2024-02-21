@@ -574,7 +574,7 @@ Nel codice fornito, le transizioni non ammesse vengono gestite in modo implicito
 
 Ecco un esempio di transizione non ammessa e come viene gestita nel codice:
 
-- Supponiamo che l'ultimo stato dell'encoder sia 0b01 e il nuovo stato sia 0b11. In questo caso, non c'è una transizione valida nell'array ```rot_enc_table``` che corrisponda a questa sequenza. Quindi, la funzione  ```read_rotary()``` restituirà un valore di incremento pari a 0. Di conseguenza, l'encoderValue non verrà modificato e non verrà stampata alcuna direzione di rotazione.
+- Supponiamo che l'ultimo stato dell'encoder sia 0b01 e il nuovo stato sia 0b11. In questo caso, non c'è una transizione valida nell'array ```debounceTable``` che corrisponda a questa sequenza. Quindi, la funzione  ```read_rotary()``` restituirà un valore di incremento pari a 0. Di conseguenza, l'encoderValue non verrà modificato e non verrà stampata alcuna direzione di rotazione.
 
 Questo approccio implicito assume che le transizioni non ammesse siano rare e che l'encoder produca principalmente transizioni valide. Se le transizioni non ammesse diventano un problema significativo, potrebbe essere necessario implementare un meccanismo più sofisticato per gestirle, ad esempio introducendo un conteggio dei tentativi o una logica di correzione degli errori nell'aggiornamento della sequenza ```baba```.
 
@@ -594,11 +594,16 @@ Questo approccio implicito assume che le transizioni non ammesse siano rare e ch
 | 1 1 0 1 CCW first |
 ---------------------
 */
-#define a_current 2
+#define CLK 2
 #define DATA 3
 #define BUTTON 4
 #define YLED A2
-volatile long encoderValue = 0;
+uint8_t baba = 0;
+int8_t c,val;
+uint8_t lastEncoded;
+uint8_t encoded;
+
+int8_t debounceTable[] = {0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0};
 
 void printBin(byte aByte) {
   for (int8_t aBit = 3; aBit >= 0; aBit--)
@@ -618,12 +623,7 @@ void setup() {
   Serial.println("KY-040 Quality test:");
 }
 
-uint8_t baba = 0;
-int8_t c,val;
-
 void loop() {
-uint32_t pwas=0;
-
    if( val=read_rotary() ) {
       Serial.print("BABA: ");printBin(baba);Serial.println();
       if (baba==0x0b) {// seleziona 1011 (fine scatto)
@@ -651,12 +651,16 @@ uint32_t pwas=0;
 
 // A vald CW or CCW move returns 1, invalid returns 0.
 int8_t read_rotary() {
-  static int8_t rot_enc_table[] = {0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0};
-  baba <<= 2;
-  if (digitalRead(DATA)) baba |= 0x02;
-  if (digitalRead(CLK)) baba |= 0x01;
+  // Read the current state of the encoder pins
+  uint8_t msb = digitalRead(DATA); // B
+  uint8_t lsb = digitalRead(CLK); //  A
+
+  // Bitwise operation to construct 2-bit code
+  uint8_t ba = (msb << 1) | lsb;
+
+  baba = baba << 2 | ba;
   baba &= 0x0f;
-  return ( rot_enc_table[( baba & 0x0f )]);
+  return (debounceTable[( baba )]);
 }
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390057874113238017
@@ -840,7 +844,7 @@ void loop() {
 
 // A vald CW or  CCW move returns 1, invalid returns 0.
 int8_t read_rotary() {
-  static int8_t rot_enc_table[] = {0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0};
+  static int8_t debounceTable[] = {0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0};
 
   baba <<= 2;
   if (digitalRead(DATA)) baba |= 0x02;
@@ -848,7 +852,7 @@ int8_t read_rotary() {
   baba &= 0x0f;
 
    // If valid then store as 16 bit data.
-   if  (rot_enc_table[baba] ) {
+   if  (debounceTable[baba] ) {
       store <<= 4;        // shift dell'ultimo valore in coda
       store |= baba;      // inserimento in coda di BABA
       
