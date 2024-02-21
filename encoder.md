@@ -887,6 +887,7 @@ Sitografia:
 - https://wokwi.com/projects/390078908878152705
 - https://wokwi.com/projects/390079895422569473
 - https://en.wikipedia.org/wiki/Incremental_encoder
+- https://wokwi.com/projects/390367241693177857
 
 >[Torna all'indice](indexpulsanti.md)
 
