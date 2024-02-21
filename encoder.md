@@ -379,6 +379,8 @@ void loop() {
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389979138658609153
 
+### **Encoder rotativo con tabella e polling metodo tracking migliorato**
+
 Nell'esempio precedente, benchè sono state tracciate (tracking) tutte le sequenze BABA sui due ingressi CK e DT solamente a scopo dimostrativo per stamparne i valori, in realtà solo una è stata effettivamente usata per aggiornare il contatore degli scatti. Le altre sequenza potevano benissimo essere scartate, oppure potevano essere adoperate per eseguire una validazione più accurata tenendo conto della storia passata dei campioni BABA ricevuti. 
 
 Ad esempio, sostituendo tutti gli if a cascata con un costrutto else-if è possibile eseguire una validazione ogni 16 bit ricevuti invece che ogni 4, in modo da minimizzare la probabilità di errore (probabilmente a scapito di una minore precisione nella misura delle variazioni di velocità). Oppure, per ottnere lo stesso risultato, si potrebbero contare le transizioni verificate e avalidare lo scatto solo se si raggiunge un conteggio finale di 4 transizioni.
