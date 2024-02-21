@@ -305,6 +305,8 @@ Negli esempi che vedremo a seguire hanno tutti in comune il procedimento di rice
 
 Complessivamente, devono essere ricevuti almeno 4 bit su due porte al fine di avere tutte le informazioni per ricostruire un ciclo completo dei due segnali AB che abbia la proprietà di comprendere almeno un fronte il segnale A e uno pure per il segnale B. I due contatti A e B strisciano sulla stessa ruota dentata e sono, a **velocità costante**, sfasati di **90°**. Sotto questo limite di numero di bit non è possibile andare altrimenti uno dei due parametri, velocità e verso di rotazione, rimangono incerti. 
 
+Con i **primi due bit** si rileva il fronte di una rotazione, con gli ultimi due il **verso** della stessa. La distanza temporale tra due fronti permette la misura della velocità. Per quanto riguarda la rilevazione del fronte, basterebbe il segnale CK (A) e quindi complessivamente basterebbe una sequenza ABA per determinare completamente rotazione e verso, difatti questa è stata la soluzione adottata nei primi algoritmi proposti. Nelle altre soluzioni che vedremo, il campione B della sequenza BABA fornisce una informazione di ridondanza utile a scartare sequenze affette da rimbalzi o disturbi.
+
 A **velocità costante** maggiore i fronti sono **equidistanziati** ma  più **ravvicinati** che a velocità costante minore.
 
 Una **variazione di velocità** causa una modifica dello sfasamento dei segnali (dovuto al cambiamento della distanza temporale tra due fronti consecutivi):
@@ -851,7 +853,9 @@ Una sequenza di 16 bit **non ritarda granchè** nella misura del numero di scatt
 
 In generale, è sempre consigliabile condurre test empirici per valutare l'effetto di qualsiasi modifica, come l'introduzione di sequenze più lunghe, sull'accuratezza complessiva del sistema di misurazione dell'accelerazione.
 
-Si noti la necessità di **due misure** per la rilevazione di uno scatto, una corrispondente alla **BA attuale** e una a quella passata. Sono il minimo necessario per la rilevazione di una transizione che, fisicamente, corrisponde alla discontinuità alto-basso del dente dell'ingranaggio che è, in quell'istante, sotto misura.
+Si noti la necessità di **due misure** per la rilevazione di uno scatto, una corrispondente alla **BA attuale** e una a quella passata. Sono il minimo necessario per la rilevazione di una transizione che, fisicamente, corrisponde alla discontinuità alto-basso del dente dell'ingranaggio che è, in quell'istante, sotto misura. 
+
+Con i **primi due bit** si rileva il fronte di una rotazione, con gli ultimi due il **verso** della stessa. La distanza temporale tra due fronti permette la misura della velocità. Per quanto riguarda la rilevazione del fronte, basterebbe il segnale CK (A) e quindi complessivamente basterebbe una sequenza ABA per determinare completamente rotazione e verso, difatti questa è stata la soluzione adottata nei primi algoritmi proposti. Nelle altre soluzioni, il campione B della sequenza BABA fornisce una informazione di ridondanza utile a scartare sequenze affette da rimbalzi o disturbi.
 
 In ogni caso, esiste un limite inferiore alla risoluzione temporale del dispositivo data dal contributo di molti parametri fisici diversi. Uno dei più limitanti è sicuramente il fenomeno dei **rimbalzi** che normalmente hanno una durata che, pur essendo tipica per una certo modello di encoder, può in ogni caso variare da un pezzo all'altro principalmente a causa del suo stato di **usura**. L'usura, in particolare fa si che il tempo medio dei rimbalzi si allunghi fino al punto da rendere il dispositivo **inutilizzabile**.
 
