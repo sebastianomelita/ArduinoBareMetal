@@ -371,7 +371,6 @@ void loop() {
   if((a_past > a_current) && (b_past == LOW && b_current == LOW)){direction = CCW;Serial.println("0 1 0 0 CCW ");}//   0 1 0 0 CCW
   if((a_past > a_current) && (b_past == HIGH && b_current == HIGH)){direction = CW;Serial.println("1 1 1 0 CW ");}//   1 1 1 0 CW   
   
-
   // increment alarm count
   // test for over/under flows
   a_past = a_current;
@@ -379,6 +378,81 @@ void loop() {
 }
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389979138658609153
+
+Nell'esempio precedente, benchè sono state tracciate (tracking) tutte le sequenze BABA sui due ingressi CK e DT solamente a scopo dimostrativo per stamparne i valori, in realtà solo una è stata effettivamente usata per aggiornare il contatore degli scatti. Le altre sequenza potevano benissimo essere scartate, oppure potevano essere adoperate per eseguire una validazione più accurata tenendo conto della storia passata dei campioni BABA ricevuti. 
+
+Ad esempio, sostituendo tutti gli if a cascata con un costrutto else-if è possibile eseguire una validazione ogni 16 bit ricevuti invece che ogni 4, in modo da minimizzare la probabilità di errore (probabilmente a scapito di una minore precisione nella misura delle variazioni di velocità). Il risultato è esposto nel codice sottostante
+
+```C++
+/*
+---------------------
+| Sequenze ammesse  |
+---------------------
+| 0 1 1 1 CW  last  |
+| 0 0 0 1 CW        |
+| 1 0 0 0 CW        |
+| 1 1 1 0 CW  first |
+|-------------------|
+| 1 0 1 1 CCW last  |
+| 0 0 1 0 CCW       |
+| 0 1 0 0 CCW       |
+| 1 1 0 1 CCW first |
+---------------------
+*/
+#define CW 1
+#define CCW 2
+#define ENCODER_CLK 2
+#define ENCODER_DT  3
+int a_past = LOW;
+int b_past = LOW;
+int a0_past = HIGH;
+int direction = 0;
+int counter = 0;
+int stepCount = 0;
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(ENCODER_CLK, INPUT);
+  pinMode(ENCODER_DT, INPUT);
+}
+
+void loop() {
+  int a_current = digitalRead(ENCODER_CLK); // polling di CK/A attuale
+  int b_current = digitalRead(ENCODER_DT);  // polling di DT/B attuale
+  direction = 0;
+
+  if(a_past == a_current){
+    //Serial.println("Apast = Acurrent");
+    if((a_current == 1) && (b_past < b_current)){direction = CW;counter++;Serial.println("0 1 1 1 CW");}//   0 1 1 1 CW  fine scatto              
+    if((a_current == 1) && (b_past > b_current)){direction = CCW;Serial.println("1 1 0 1 CCW");}// 1 1 0 1 CCW         inizio scatto 
+    if((a_current == 0) && (b_past > b_current)){direction = CW;counter++;Serial.println("1 0 0 0 CW ");}//   1 0 0 0 CW                   
+    if((a_current == 0) && (b_past < b_current)){direction = CCW;counter--;Serial.println("0 0 1 0 CCW ");}// 0 0 1 0 CCW
+  }
+  if((a_past < a_current) && (b_past == LOW && b_current == LOW)){direction = CW;counter++;Serial.println("0 0 0 1 CW");}//     0 0 0 1 CW  
+  if((a_past < a_current) && (b_past == HIGH && b_current == HIGH)){direction = CCW;counter--;Serial.println("1 0 1 1 CCW");}// 1 0 1 1 CCW fine scatto
+  if((a_past > a_current) && (b_past == LOW && b_current == LOW)){direction = CCW;counter--;Serial.println("0 1 0 0 CCW");}//   0 1 0 0 CCW
+  if((a_past > a_current) && (b_past == HIGH && b_current == HIGH)){direction = CW;Serial.println("1 1 1 0 CW");}//   1 1 1 0 CW          inizio scatto
+  
+  if (counter == 3){
+    stepCount++;
+    counter=0;
+    Serial.print(" ⏩ ");
+    Serial.println(stepCount);
+  }else  if (counter == -3){
+    stepCount--;
+    counter=0;
+    Serial.print(" ⏪ ");
+    Serial.println(stepCount);
+  }
+   
+  // increment alarm count
+  // test for over/under flows
+  a_past = a_current;
+  b_past = b_current;
+}
+```
+
+Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390374216487657473
 
 ### **Encoder rotativo tabella e interrupt metodo tracking**
 
