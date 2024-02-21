@@ -600,8 +600,6 @@ Questo approccio implicito assume che le transizioni non ammesse siano rare e ch
 #define YLED A2
 uint8_t baba = 0;
 int8_t c,val;
-uint8_t lastEncoded;
-uint8_t encoded;
 
 int8_t debounceTable[] = {0,1,1,0,1,0,0,1,1,0,0,1,0,1,1,0};
 
