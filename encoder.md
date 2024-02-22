@@ -482,12 +482,9 @@ Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokw
 // Define pins for the rotary encoder
 #define encoderPinA  2
 #define encoderPinB  3
-#define CW 1
-#define CCW 2
 
-int a_past = HIGH;
-int b_past = HIGH;
-int direction = 0;
+int a0 = HIGH; // A passato
+int b0 = HIGH; // B passato
 volatile short counter = 0;
 
 void setup() {
@@ -511,25 +508,24 @@ void loop() {
 }
 
 void updateEncoder() {
-  int a_current = digitalRead(encoderPinA); // polling di CK/A attuale
-  int b_current = digitalRead(encoderPinB);  // polling di DT/B attuale
-  direction = 0;
+  int a = digitalRead(encoderPinA); // polling di CK/A attuale
+  int b = digitalRead(encoderPinB);  // polling di DT/B attuale
 
-  if(a_past == a_current){
-    if((a_current == 1) && (b_past < b_current)){direction = CW;counter++;Serial.print("0 1 1 1 CW ⏩ ");Serial.println(counter);}//   0 1 1 1 CW  fine scatto              
-    if((a_current == 1) && (b_past > b_current)){direction = CCW;Serial.println("1 1 0 1 CCW ");}// 1 1 0 1 CCW
-    if((a_current == 0) && (b_past > b_current)){direction = CW;Serial.println("1 0 0 0 CW ");}//   1 0 0 0 CW                   
-    if((a_current == 0) && (b_past < b_current)){direction = CCW;Serial.println("0 0 1 0 CCW ");}// 0 0 1 0 CCW
+  if(a0 == a){
+    if((a == 1) && (b0 < b)){counter++;Serial.print("0 1 1 1 CW ⏩ ");Serial.println(counter);}//   0 1 1 1 CW  fine scatto              
+    if((a == 1) && (b0 > b)){Serial.println("1 1 0 1 CCW ");}// 1 1 0 1 CCW
+    if((a == 0) && (b0 > b)){Serial.println("1 0 0 0 CW ");}//   1 0 0 0 CW                   
+    if((a == 0) && (b0 < b)){Serial.println("0 0 1 0 CCW ");}// 0 0 1 0 CCW
   }
-  if((a_past < a_current) && (b_past == LOW && b_current == LOW)){direction = CW;Serial.println("0 0 0 1 CW ");}//     0 0 0 1 CW  
-  if((a_past < a_current) && (b_past == HIGH && b_current == HIGH)){direction = CCW;counter--;Serial.print("1 0 1 1 CCW ⏪ ");Serial.println(counter);}// 1 0 1 1 CCW fine scatto
-  if((a_past > a_current) && (b_past == LOW && b_current == LOW)){direction = CCW;Serial.println("0 1 0 0 CCW ");}//   0 1 0 0 CCW
-  if((a_past > a_current) && (b_past == HIGH && b_current == HIGH)){direction = CW;Serial.println("1 1 1 0 CW ");}//   1 1 1 0 CW   
+  if((a0 < a) && (b0 == LOW && b == LOW)){Serial.println("0 0 0 1 CW ");}//     0 0 0 1 CW  
+  if((a0 < a) && (b0 == HIGH && b == HIGH)){counter--;Serial.print("1 0 1 1 CCW ⏪ ");Serial.println(counter);}// 1 0 1 1 CCW fine scatto
+  if((a0 > a) && (b0 == LOW && b == LOW)){Serial.println("0 1 0 0 CCW ");}//   0 1 0 0 CCW
+  if((a0 > a) && (b0 == HIGH && b == HIGH)){Serial.println("1 1 1 0 CW ");}//   1 1 1 0 CW   
   
   // increment alarm count
   // test for over/under flows
-  a_past = a_current;
-  b_past = b_current;
+  a0 = a;
+  b0 = b;
 }
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390001300410019841
