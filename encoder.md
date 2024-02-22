@@ -340,14 +340,11 @@ Sopra sono rappresentati i segnali in quadratura di un **albero oscillante**. Si
 | 1 1 0 1 CCW first |
 ---------------------
 */
-#define CW 1
-#define CCW 2
+
 #define ENCODER_CLK 2
 #define ENCODER_DT  3
-int a_past = LOW;
-int b_past = LOW;
-int a0_past = HIGH;
-int direction = 0;
+int a0 = LOW;
+int b0 = LOW;
 int counter = 0;
 
 void setup() {
@@ -357,26 +354,25 @@ void setup() {
 }
 
 void loop() {
-  int a_current = digitalRead(ENCODER_CLK); // polling di CK/A attuale
-  int b_current = digitalRead(ENCODER_DT);  // polling di DT/B attuale
-  direction = 0;
+  int a = digitalRead(ENCODER_CLK); // polling di CK/A attuale
+  int b = digitalRead(ENCODER_DT);  // polling di DT/B attuale
 
-  if(a_past == a_current){
+  if(a0 == a){
     //Serial.println("Apast = Acurrent");
-    if((a_current == 1) && (b_past < b_current)){direction = CW;counter++;Serial.print("0 1 1 1 CW ⏩ ");Serial.println(counter);}//   0 1 1 1 CW  fine scatto              
-    if((a_current == 1) && (b_past > b_current)){direction = CCW;Serial.println("1 1 0 1 CCW ");}// 1 1 0 1 CCW
-    if((a_current == 0) && (b_past > b_current)){direction = CW;Serial.println("1 0 0 0 CW ");}//   1 0 0 0 CW                   
-    if((a_current == 0) && (b_past < b_current)){direction = CCW;Serial.println("0 0 1 0 CCW ");}// 0 0 1 0 CCW
+    if((a == 1) && (b0 < b)){counter++;Serial.print("0 1 1 1 CW ⏩ ");Serial.println(counter);}//   0 1 1 1 CW  fine scatto              
+    if((a == 1) && (b0 > b)){Serial.println("1 1 0 1 CCW ");}// 1 1 0 1 CCW
+    if((a == 0) && (b0 > b)){Serial.println("1 0 0 0 CW ");}//   1 0 0 0 CW                   
+    if((a == 0) && (b0 < b)){Serial.println("0 0 1 0 CCW ");}// 0 0 1 0 CCW
   }
-  if((a_past < a_current) && (b_past == LOW && b_current == LOW)){direction = CW;Serial.println("0 0 0 1 CW ");}//     0 0 0 1 CW  
-  if((a_past < a_current) && (b_past == HIGH && b_current == HIGH)){direction = CCW;counter--;Serial.print("1 0 1 1 CCW ⏪ ");Serial.println(counter);}// 1 0 1 1 CCW fine scatto
-  if((a_past > a_current) && (b_past == LOW && b_current == LOW)){direction = CCW;Serial.println("0 1 0 0 CCW ");}//   0 1 0 0 CCW
-  if((a_past > a_current) && (b_past == HIGH && b_current == HIGH)){direction = CW;Serial.println("1 1 1 0 CW ");}//   1 1 1 0 CW   
+  if((a0 < a) && (b0 == LOW && b == LOW)){Serial.println("0 0 0 1 CW ");}//     0 0 0 1 CW  
+  if((a0 < a) && (b0 == HIGH && b == HIGH)){counter--;Serial.print("1 0 1 1 CCW ⏪ ");Serial.println(counter);}// 1 0 1 1 CCW fine scatto
+  if((a0 > a) && (b0 == LOW && b == LOW)){Serial.println("0 1 0 0 CCW ");}//   0 1 0 0 CCW
+  if((a0 > a) && (b0 == HIGH && b == HIGH)){Serial.println("1 1 1 0 CW ");}//   1 1 1 0 CW   
   
   // increment alarm count
   // test for over/under flows
-  a_past = a_current;
-  b_past = b_current;
+  a0 = a;
+  b0 = b;
 }
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389979138658609153
@@ -406,14 +402,10 @@ Il risultato è esposto nel codice sottostante
 | 1 1 0 1 CCW first |
 ---------------------
 */
-#define CW 1
-#define CCW 2
 #define ENCODER_CLK 2
 #define ENCODER_DT  3
-int a_past = LOW;
-int b_past = LOW;
-int a0_past = HIGH;
-int direction = 0;
+int a0 = LOW;
+int b0 = LOW;
 int counter = 0;
 int stepCount = 0;
 
@@ -424,21 +416,20 @@ void setup() {
 }
 
 void loop() {
-  int a_current = digitalRead(ENCODER_CLK); // polling di CK/A attuale
-  int b_current = digitalRead(ENCODER_DT);  // polling di DT/B attuale
-  direction = 0;
+  int a = digitalRead(ENCODER_CLK); // polling di CK/A attuale
+  int b = digitalRead(ENCODER_DT);  // polling di DT/B attuale
 
-  if(a_past == a_current){
+  if(a0 == a){
     //Serial.println("Apast = Acurrent");
-    if((a_current == 1) && (b_past < b_current)){direction = CW;counter++;Serial.println("0 1 1 1 CW");}//   0 1 1 1 CW  fine scatto              
-    if((a_current == 1) && (b_past > b_current)){direction = CCW;Serial.println("1 1 0 1 CCW");}// 1 1 0 1 CCW         inizio scatto 
-    if((a_current == 0) && (b_past > b_current)){direction = CW;counter++;Serial.println("1 0 0 0 CW ");}//   1 0 0 0 CW                   
-    if((a_current == 0) && (b_past < b_current)){direction = CCW;counter--;Serial.println("0 0 1 0 CCW ");}// 0 0 1 0 CCW
+    if((a == 1) && (b0 < b)){counter++;Serial.println("0 1 1 1 CW");}//   0 1 1 1 CW  fine scatto              
+    if((a == 1) && (b0 > b)){Serial.println("1 1 0 1 CCW");}// 1 1 0 1 CCW         inizio scatto 
+    if((a == 0) && (b0 > b)){counter++;Serial.println("1 0 0 0 CW ");}//   1 0 0 0 CW                   
+    if((a == 0) && (b0 < b)){counter--;Serial.println("0 0 1 0 CCW ");}// 0 0 1 0 CCW
   }
-  if((a_past < a_current) && (b_past == LOW && b_current == LOW)){direction = CW;counter++;Serial.println("0 0 0 1 CW");}//     0 0 0 1 CW  
-  if((a_past < a_current) && (b_past == HIGH && b_current == HIGH)){direction = CCW;counter--;Serial.println("1 0 1 1 CCW");}// 1 0 1 1 CCW fine scatto
-  if((a_past > a_current) && (b_past == LOW && b_current == LOW)){direction = CCW;counter--;Serial.println("0 1 0 0 CCW");}//   0 1 0 0 CCW
-  if((a_past > a_current) && (b_past == HIGH && b_current == HIGH)){direction = CW;Serial.println("1 1 1 0 CW");}//   1 1 1 0 CW          inizio scatto
+  if((a0 < a) && (b0 == LOW && b == LOW)){counter++;Serial.println("0 0 0 1 CW");}//     0 0 0 1 CW  
+  if((a0 < a) && (b0 == HIGH && b == HIGH)){counter--;Serial.println("1 0 1 1 CCW");}// 1 0 1 1 CCW fine scatto
+  if((a0 > a) && (b0 == LOW && b == LOW)){counter--;Serial.println("0 1 0 0 CCW");}//   0 1 0 0 CCW
+  if((a0 > a) && (b0 == HIGH && b == HIGH)){Serial.println("1 1 1 0 CW");}//   1 1 1 0 CW          inizio scatto
   
   if (counter == 3){
     stepCount++;
@@ -454,8 +445,8 @@ void loop() {
    
   // increment alarm count
   // test for over/under flows
-  a_past = a_current;
-  b_past = b_current;
+  a0 = a;
+  b0 = b;
 }
 ```
 
