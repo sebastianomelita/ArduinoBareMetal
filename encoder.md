@@ -194,7 +194,7 @@ https://github.com/buxtronix/arduino/tree/master/libraries/Rotary
 ```C++
 #define ENCODER_CLK 2
 #define ENCODER_DT  3
-int a_past = HIGH;
+int a0 = HIGH;
 unsigned long lastDebounceTime = 0;
 unsigned long debounceDelay = 10;
 
@@ -205,22 +205,22 @@ void setup() {
 }
 
 void loop() {
-  int a_current = digitalRead(ENCODER_CLK); // polling di CK attuale
+  int a = digitalRead(ENCODER_CLK); // polling di CK attuale
 
-  if (a_past == HIGH && a_current == LOW) { // selezione del FALLING di CK
+  if (a0 == HIGH && a == LOW) { // selezione del FALLING di CK
     // If enough time has passed since the last state change
     if ((millis() - lastDebounceTime) > debounceDelay) {
       lastDebounceTime = millis(); // riarmo il timer
-      int b_current = digitalRead(ENCODER_DT);// polling di DT
-      if (b_current == HIGH) { // se DT non è ancora andato in FALLING
+      int b = digitalRead(ENCODER_DT);// polling di DT
+      if (b == HIGH) { // se DT non è ancora andato in FALLING
         Serial.println("Rotated clockwise ⏩");
       }
-      if (b_current == LOW) { // se DT è già andato in FALLING
+      if (b == LOW) { // se DT è già andato in FALLING
         Serial.println("Rotated counterclockwise ⏪");
       }
     }
   }
-  a_past = a_current; // il polling del CK attuale diventa il polling del CK precedente
+  a0 = a; // il polling del CK attuale diventa il polling del CK precedente
 }
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389969556548332545
@@ -256,11 +256,11 @@ void readEncoder() {
   if (millis() - lastDebounceTime > DEBOUNCE_DELAY) {
     lastDebounceTime = millis(); // riarma il timer
 
-    int b_current = digitalRead(ENCODER_DT);
-    if (b_current == HIGH) {// DT dopo
+    int b = digitalRead(ENCODER_DT);
+    if (b == HIGH) {// DT dopo
       counter++; // Clockwise
     }
-    if (b_current == LOW) {// DT prima
+    if (b == LOW) {// DT prima
       counter--; // Counterclockwise
     }
   }
