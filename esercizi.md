@@ -562,7 +562,7 @@ In questo esempio, l'encoder rotativo è stato gestito con l'algoritmo con cui t
 
 #define ENCODER_CLK 2
 #define ENCODER_DT  3
-int prevClk = HIGH;
+int a0 = HIGH; // A passato
 
 void setup() {
   Serial.begin(115200);
@@ -571,17 +571,18 @@ void setup() {
 }
 
 void loop() {
-  int clk = digitalRead(ENCODER_CLK); // polling di CK attuale
-  if (prevClk == HIGH && clk == LOW) { // selezione del FALLING di CK
-    int dtValue = digitalRead(ENCODER_DT);// polling di DT
-    if (dtValue == HIGH) { // se DT non è ancora andato in FALLING
+  int a = digitalRead(ENCODER_CLK); // polling di CK attuale
+  
+  if (a0 == HIGH && a == LOW) { // selezione del FALLING di CK
+    int b = digitalRead(ENCODER_DT);// polling di DT
+    if (b == HIGH) { // se DT non è ancora andato in FALLING
       Serial.println("Rotated clockwise ⏩");
     }
-    if (dtValue == LOW) { // se DT è già andato in FALLING
+    if (b == LOW) { // se DT è già andato in FALLING
       Serial.println("Rotated counterclockwise ⏪");
     }
   }
-  prevClk = clk; // il polling del CK attuale diventa il polling del CK precedente
+  a0 = a; // il polling del CK attuale diventa il polling del CK precedente
 }
 ```
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/389913527165282305
@@ -593,15 +594,6 @@ In questo esempio, l'encoder rotativo è stato gestito con l'algoritmo con cui t
 
 
 ```C++
-/* KY-040 Rotary Encoder Counter
-
-   Rotate clockwise to count up, counterclockwise to counter done.
-
-   Press to reset the counter.
-
-   Copyright (C) 2021, Uri Shaked
-*/
-
 #include <LiquidCrystal_I2C.h>
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 
@@ -624,11 +616,11 @@ void setup() {
 }
 
 void readEncoder() {
-  int dtValue = digitalRead(ENCODER_DT);
-  if (dtValue == HIGH) {// DT dopo
+  int b = digitalRead(ENCODER_DT);
+  if (b == HIGH) {// DT dopo
     counter++; // Clockwise
   }
-  if (dtValue == LOW) {// DT prima
+  if (b == LOW) {// DT prima
     counter--; // Counterclockwise
   }
 }
