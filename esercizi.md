@@ -887,6 +887,12 @@ Scrivere un programma per esp32 che realizzi la gestione di un led che fa dieci 
 
 https://wokwi.com/projects/388978976877511681
 
+### **Es32. Luminosità led**
+
+Scrivere un programma per esp32 che realizzi la regolazione della luminosità di un led attraverso la variazione degli scatti di un encoder rotativo. Fare in modo che la luminosità sia nulla a zero scatti e massima a 20 (1 giro completo).
+
+https://wokwi.com/projects/390527818943920129
+
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
