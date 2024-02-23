@@ -604,7 +604,10 @@ void loop() {
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390543783554708481
 
-Di seguito è riportata la variante dello stesso metodo però alimentata da un interrut:
+Di seguito è riportata la variante dello stesso metodo però alimentata da un interrut.
+
+Si noti che adesso l'algoritmo è tutto contenutoin una ISR che è confinante con un fronte che la comincia, per cui non è possibile vedere i valori BABA che stanno a cavallo tra il fronte chel'ha generata. Bisogna individuare altre due sequenze per segnalare la rotazione oraria e antioraria.
+
 
 ```C++
 /*
