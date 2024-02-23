@@ -540,99 +540,69 @@ Le coppie di sequenze vengono catturate entrambe e quindi vanno poi contate una 
 ---------------------
 | Sequenze ammesse  |
 ---------------------
-| 0 1 1 1 CW  last  |
+| 0 1 1 1 CW  first |
 | 0 0 0 1 CW        |
 | 1 0 0 0 CW        |
-| 1 1 1 0 CW  first |
+| 1 1 1 0 CW  last  |
 |-------------------|
-| 1 0 1 1 CCW last  |
+| 1 0 1 1 CCW first |
 | 0 0 1 0 CCW       |
 | 0 1 0 0 CCW       |
-| 1 1 0 1 CCW first |
+| 1 1 0 1 CCW last  |
 ---------------------
 */
-#include <LiquidCrystal_I2C.h>
-LiquidCrystal_I2C lcd(0x27, 20, 4);
-
 #define ENCODER_CLK 2
 #define ENCODER_DT  3
 #define ENCODER_SW  4
 #define DEBOUNCE_DELAY 50
 
 int counter = 0;
-int count = 0;
 volatile uint8_t a0 = HIGH;
 volatile uint8_t c0 = HIGH;
 
 void setup() {
-  // Initialize LCD
-  lcd.init();
-  lcd.backlight();
-
+  Serial.begin(115200);
   // Initialize encoder pins
   pinMode(ENCODER_CLK, INPUT);
   pinMode(ENCODER_DT, INPUT);
   pinMode(ENCODER_SW, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(ENCODER_CLK), readEncoder, CHANGE);
-}
-
-// Called when encoder value changes
-int changeValue (bool up) {// conta due sequenze prima di aggiornare il risultato
-  int val = 0;
-  //counter = max(min((counter + (up ? 1 : -1)), 1000), 0);
-  //counter = min((counter + (up ? 1 : -1)), 1000);
-  if(count >= 1){
-    count = 0;
-    val = (up ? 1 : -1);
-  }else{
-    count++;
-  }
-  return val;
 }
 
 void readEncoder() {// ogni change di A
   int a = digitalRead(ENCODER_CLK);
   int b = digitalRead(ENCODER_DT);
   
-  //if (a != a0) {              // in caso di polling
-    //a0 = a;                   // aggiorna il precedente
-    if (b != c0) {              // vede se c attuale modifica il c passato
-      c0 = b;                   // c0 = c
-      counter += changeValue(a != b); // 
+  if (a != a0) {// rileva transizione di A (contascatti)
+    a0 = a;// aggiorna valore passato di A
+    if (b != c0) {// rileva transizione di C (b è il nuovo c)
+      c0 = b;// aggiorna il vecchio c col nuovo c
+      if(b == HIGH){//seleziona le transizioni 1 1 1 0 CW e 1 0 1 1 CCW
+        if(a != b){// 1 1 1 0 CW
+          counter++;
+          Serial.print("CW ⏩ "); Serial.println(counter);
+        }else{// 1 0 1 1 CCW
+          counter--;
+          Serial.print("CCW ⏪ "); Serial.println(counter);
+        }
+      }
     }
-  //}
-}
-
-// Get the counter value, disabling interrupts.
-// This make sure readEncoder() doesn't change the value
-// while we're reading it.
-int getCounter() {
-  int result;
-  noInterrupts(); // inizio corsa critica
-  result = counter;
-  interrupts();
-  return result;  // fine corsa critica
+  }
+  a0 = a;
 }
 
 void resetCounter() {
-  noInterrupts(); // inizio corsa critica
   counter = 0;
-  interrupts();   // fine corsa critica
 }
 
 void loop() {
-  lcd.setCursor(3, 0);
-  lcd.print("Counter:");
-  lcd.setCursor(7, 1);
-  lcd.print(getCounter());
-  lcd.print("        ");
+  readEncoder();
 
   if (digitalRead(ENCODER_SW) == LOW) {
     resetCounter();
   }
 }
 ```
-Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390109278439107585
+Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390543783554708481
 
 ### **Encoder rotativo tabella e polling metodo array**
 
