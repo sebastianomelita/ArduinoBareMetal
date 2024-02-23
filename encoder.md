@@ -604,6 +604,74 @@ void loop() {
 ```
 Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390543783554708481
 
+Di seguito è riportata la variante dello stesso metodo però alimentata da un interrut:
+
+```C++
+/*
+  ---------------------
+  | Sequenze ammesse  |
+  ---------------------
+  | 0 1 1 1 CW  first |
+  | 0 0 0 1 CW        |
+  | 1 0 0 0 CW        |
+  | 1 1 1 0 CW  last  |
+  |-------------------|
+  | 1 0 1 1 CCW first |
+  | 0 0 1 0 CCW       |
+  | 0 1 0 0 CCW       |
+  | 1 1 0 1 CCW last  |
+  ---------------------
+*/
+#define ENCODER_CLK 2
+#define ENCODER_DT  3
+#define ENCODER_SW  4
+#define DEBOUNCE_DELAY 50
+
+int counter = 0;
+volatile uint8_t a0 = HIGH;
+volatile uint8_t c0 = HIGH;
+
+void setup() {
+  Serial.begin(115200);
+  // Initialize encoder pins
+  pinMode(ENCODER_CLK, INPUT);
+  pinMode(ENCODER_DT, INPUT);
+  pinMode(ENCODER_SW, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(ENCODER_CLK), readEncoder, CHANGE);
+}
+
+void readEncoder() {// ogni change di A
+  int a = digitalRead(ENCODER_CLK);
+  int b = digitalRead(ENCODER_DT);
+
+  if (b != c0) {// rileva transizione di C (b è il nuovo c)
+    c0 = b;// aggiorna il vecchio c col nuovo c
+    if (b == HIGH) { //seleziona le transizioni 1 1 1 0 CW e 1 0 1 1 CCW
+      if (a == b) { // 1 1 1 0 CW
+        counter++;
+        Serial.print("CW ⏩ "); Serial.println(counter);
+      } else { // 1 0 1 1 CCW
+        counter--;
+        Serial.print("CCW ⏪ "); Serial.println(counter);
+      }
+    }
+  }
+}
+
+void resetCounter() {
+  counter = 0;
+}
+
+void loop() {
+  readEncoder();
+
+  if (digitalRead(ENCODER_SW) == LOW) {
+    resetCounter();
+  }
+}
+```
+Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/390546530881665025
+
 ### **Encoder rotativo tabella e polling metodo array**
 
 Con "transizioni non ammesse" ci riferiamo a quei casi in cui lo stato corrente degli ingressi dell'encoder non corrisponde a nessuna transizione valida nell'array encoderTable. Questo potrebbe accadere a causa di un rumore o di un rimbalzo dell'encoder.
