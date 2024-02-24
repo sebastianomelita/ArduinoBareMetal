@@ -161,7 +161,7 @@ typedef struct
 ToggleBtn bt1;// pulsante con antirimbalzo incorporato
 
 void blink(byte led){
-	digitalWrite(led, !digitalRead(led)); 
+  digitalWrite(led, !digitalRead(led)); 
 }
 
 void setup() {
