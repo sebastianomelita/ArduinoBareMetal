@@ -120,22 +120,22 @@ DiffTimer t1;
 // attesa evento con tempo minimo di attesa
 typedef struct
 {
-	unsigned long debtime = 50;
+  unsigned long debtime = 50;
   byte pin;
   byte state = LOW;
   byte val0 = LOW;
-	DiffTimer _t1;// timer pulsante
+  DiffTimer _t1;// timer pulsante
 
   bool debtoggle(byte val) {
-		_t1.start(); // attiva il timer del pulsante (lo fa internamente una sola volta)
-		if(_t1.get() > debtime){ // polling timer pulsante
+	_t1.start(); // attiva il timer del pulsante (lo fa internamente una sola volta)
+	if(_t1.get() > debtime){ // polling timer pulsante
     	_t1.reset();// riarmo timer pulsante
-			if ((val == HIGH) && (val0 == LOW)){// rilevazione fronte di salita
-				state = !state; // logica toggle
-			}	
-			val0 = val;	// aggiornamento livello precedente al livello attuale
-		}
-		return val;// ritorna il valore attuale del pulsante
+		if ((val == HIGH) && (val0 == LOW)){// rilevazione fronte di salita
+			state = !state; // logica toggle
+		}	
+		val0 = val;	// aggiornamento livello precedente al livello attuale
+	}
+	return val;// ritorna il valore attuale del pulsante
   }
 } ToggleBtn;
 
@@ -149,8 +149,8 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
- t1.start();// attivazione blink
- bt1.pin = 12;
+  t1.start();// attivazione blink
+  bt1.pin = 12;
 }
 
 // loop principale
