@@ -189,62 +189,6 @@ void loop() {
 
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/390633555619516417
 
-
-Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi (time tick)**:
-
-```C++
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-#include "urutils.h"
-int led = 13;
-byte pulsante =12;
-byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
-volatile bool pressed;
-#define DEBOUNCETIME 50
-DiffTimer debounce;
- 
-void setup() {
-  Serial.begin(115200);
-  pinMode(led, OUTPUT);
-  pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
-  pressed = false;
-}
-
-// Interrupt Service Routine (ISR)
-void switchPressed ()
-{
-  detachInterrupt(digitalPinToInterrupt(pulsante));
-  pressed = true; // disarmo del pulsante e riarmo del timer
-  stato = !stato; // logica da attivare sul fronte (toggle)
-}  // end of switchPressed
-
-void waitUntilInputChange()
-{
-    if (pressed){ 
-      debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
-      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){// disarmo del timer al timeout
-        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING ); 
-        pressed = false; // riarmo del pulsante
-        debounce.stop(); // disarmo del timer
-        debounce.reset();
-      }
-    }
-}
-// loop principale
-void loop() {
-	waitUntilInputChange();
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
-		delay(1000);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    delay(10);
-	}
-}
-
-```
-Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/390288516762524673
-
 ### **Schedulatore generico realizzato con funzione get()**
 
 Il codice precedente è basato su due timers SW indipendenti nel senso che ognuno realizza il polling del tempo corrente separatamente ad ogni ciclo di loop(), cioè, alla massima velocità consentita dal sistema. Se i polling sono in numero limitato questa soluzione non crea grossi problemi ma se invece i timers sono parecchi, allora potrebbe capitare che il carico computazionale del polling possa diventare comparabile al peso dei vari task eseguiti.
