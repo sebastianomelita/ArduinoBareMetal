@@ -149,22 +149,22 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-	t1.start();// attivazione blink
-	bt1.pin = 12;
+ t1.start();// attivazione blink
+ bt1.pin = 12;
 }
 
 // loop principale
 void loop() {
   bt1.debtoggle(digitalRead(pulsante));// polling pulsante
   if(t1.get() > 500){// polling timer blink
-		t1.reset(); // riarmo timer blink
-		if(bt1.state){// polling stato del toggle
-			blink(led);
-		}else{
-			digitalWrite(led, LOW);
-		}    
-	}
-	delay(10);
+	t1.reset(); // riarmo timer blink
+	if(bt1.state){// polling stato del toggle
+		blink(led);
+	}else{
+		digitalWrite(led, LOW);
+	}    
+  }
+  delay(10);
 }
 ```
 
