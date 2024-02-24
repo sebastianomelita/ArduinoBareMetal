@@ -163,8 +163,8 @@ void loop() {
 	}else{
 		digitalWrite(led, LOW);
 	}    
-}
-delay(10);
+  }
+  delay(10);
 }
 ```
 
