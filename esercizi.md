@@ -126,6 +126,70 @@ Si noti che, sia per timer HW che per timers SW, l'**ordine di apparizione** dei
 
 In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
 
+### **Toggle con antirimbalzo incorporato**
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include "urutils.h"
+int led = 13;
+byte pulsante = 12;
+byte stato = LOW; // variabile globale che memorizza lo stato del pulsante
+DiffTimer t1;
+
+// oggetto pulsante con debouncing
+typedef struct
+{
+  unsigned long debtime = 50;
+  byte pin;
+  byte state = LOW;
+  byte val0 = LOW;
+  DiffTimer _t1;// timer pulsante
+
+  bool debtoggle(byte val) {// toggle con debouncing
+	_t1.start(); // attiva il timer del pulsante (lo fa internamente una sola volta)
+	if(_t1.get() > debtime){ // polling timer pulsante
+    	_t1.reset();// riarmo timer pulsante
+		if ((val == HIGH) && (val0 == LOW)){// rilevazione fronte di salita
+			state = !state; // logica toggle
+		}	
+		val0 = val;	// aggiornamento livello precedente al livello attuale
+	}
+	return val;// ritorna il valore attuale del pulsante
+  }
+} ToggleBtn;
+
+ToggleBtn bt1;// pulsante con antirimbalzo incorporato
+
+void blink(byte led){
+	digitalWrite(led, !digitalRead(led)); 
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  t1.start();// attivazione blink
+  bt1.pin = 12;
+}
+
+// loop principale
+void loop() {
+  bt1.debtoggle(digitalRead(pulsante));// polling pulsante
+  if(t1.get() > 500){// polling timer blink
+	t1.reset(); // riarmo timer blink
+	if(bt1.state){// polling stato del toggle
+		blink(led);
+	}else{
+		digitalWrite(led, LOW);
+	}    
+  }
+  delay(10);
+}
+```
+
+Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/390633555619516417
+
+
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione ad eventi senza ritardi (time tick)**:
 
 ```C++
