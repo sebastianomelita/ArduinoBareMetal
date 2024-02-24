@@ -117,7 +117,7 @@ byte pulsante = 12;
 byte stato = LOW; // variabile globale che memorizza lo stato del pulsante
 DiffTimer t1;
 
-// attesa evento con tempo minimo di attesa
+// oggetto pulsante con debouncing
 typedef struct
 {
   unsigned long debtime = 50;
@@ -126,7 +126,7 @@ typedef struct
   byte val0 = LOW;
   DiffTimer _t1;// timer pulsante
 
-  bool debtoggle(byte val) {
+  bool debtoggle(byte val) {// toggle con debouncing
 	_t1.start(); // attiva il timer del pulsante (lo fa internamente una sola volta)
 	if(_t1.get() > debtime){ // polling timer pulsante
     	_t1.reset();// riarmo timer pulsante
@@ -163,8 +163,8 @@ void loop() {
 	}else{
 		digitalWrite(led, LOW);
 	}    
-  }
-  delay(10);
+}
+delay(10);
 }
 ```
 
