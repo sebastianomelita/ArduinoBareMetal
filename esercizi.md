@@ -143,7 +143,6 @@ typedef struct
   byte pin;
   byte state = LOW;
   byte val0 = LOW;
-  DiffTimer _t1;// timer pulsante
 
   bool debtoggle(byte val) {// toggle con debouncing
 	if ((val == HIGH) && (val0 == LOW)){// rilevazione fronte di salita
