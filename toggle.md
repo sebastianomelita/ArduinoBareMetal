@@ -120,6 +120,7 @@ DiffTimer t1;
 // oggetto pulsante con debouncing
 typedef struct
 {
+  #include "urutils.h"
   unsigned long debtime = 50;
   byte pin;
   byte state = LOW;
