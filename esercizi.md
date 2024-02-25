@@ -153,7 +153,7 @@ typedef struct
   }
 } ToggleBtn;
 
-ToggleBtn bt1;// pulsante con antirimbalzo incorporato
+ToggleBtn bt1;// pulsante senza antirimbalzo incorporato
 
 void blink(byte led){
 	digitalWrite(led, !digitalRead(led)); 
