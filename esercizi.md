@@ -140,10 +140,8 @@ DiffTimer debt;
 // oggetto pulsante senza debouncing
 typedef struct
 {
-  byte pin;
   byte state = LOW;
   byte val0 = LOW;
-
   bool toggle(byte val) {// toggle con debouncing
 	if ((val == HIGH) && (val0 == LOW)){// rilevazione fronte di salita
 		state = !state; // logica toggle
@@ -165,7 +163,6 @@ void setup() {
   pinMode(pulsante, INPUT);
   t1.start();// attivazione blink
   debt.start();// attivazione debouncer
-  bt1.pin = 12;
 }
 
 // loop principale
