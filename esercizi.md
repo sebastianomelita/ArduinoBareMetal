@@ -143,14 +143,14 @@ typedef struct
   byte pin;
   byte state = LOW;
   byte val0 = LOW;
-	DiffTimer _t1;// timer pulsante
+  DiffTimer _t1;// timer pulsante
 
   bool debtoggle(byte val) {// toggle con debouncing
-		if ((val == HIGH) && (val0 == LOW)){// rilevazione fronte di salita
-			state = !state; // logica toggle
-		}	
-		val0 = val;	// aggiornamento livello precedente al livello attuale
-		return val;// ritorna il valore attuale del pulsante
+	if ((val == HIGH) && (val0 == LOW)){// rilevazione fronte di salita
+		state = !state; // logica toggle
+	}	
+	val0 = val;	// aggiornamento livello precedente al livello attuale
+	return val;     // ritorna il valore attuale del pulsante
   }
 } ToggleBtn;
 
@@ -164,26 +164,26 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-	t1.start();// attivazione blink
-	debt.start();// attivazione debouncer
-	bt1.pin = 12;
+  t1.start();// attivazione blink
+  debt.start();// attivazione debouncer
+  bt1.pin = 12;
 }
 
 // loop principale
 void loop() {
-	if(debt.get() > 50){
-		debt.reset();
- 	 bt1.debtoggle(digitalRead(pulsante));// polling pulsante
-	}
+  if(debt.get() > 50){
+        debt.reset();
+        bt1.debtoggle(digitalRead(pulsante));// polling pulsante
+  }
   if(t1.get() > 500){// polling timer blink
-		t1.reset(); // riarmo timer blink
-		if(bt1.state){// polling stato del toggle
-			blink(led);
-		}else{
-			digitalWrite(led, LOW);
-		}    
-	}
-	delay(10);
+	t1.reset(); // riarmo timer blink
+	if(bt1.state){// polling stato del toggle
+		blink(led);
+	}else{
+		digitalWrite(led, LOW);
+	}    
+  }
+  delay(10);
 }
 ```
 
