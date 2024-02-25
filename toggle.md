@@ -107,6 +107,69 @@ void loop()
 }
 ```
 
+### **Toggle con antirimbalzo esterno con get()**
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include "urutils.h"
+int led = 13;
+byte pulsante = 12;
+byte stato = LOW; // variabile globale che memorizza lo stato del pulsante
+DiffTimer t1;
+DiffTimer debt;
+
+// oggetto pulsante senza debouncing
+typedef struct
+{
+  byte pin;
+  byte state = LOW;
+  byte val0 = LOW;
+
+  bool debtoggle(byte val) {// toggle con debouncing
+	if ((val == HIGH) && (val0 == LOW)){// rilevazione fronte di salita
+		state = !state; // logica toggle
+	}	
+	val0 = val;	// aggiornamento livello precedente al livello attuale
+	return val;     // ritorna il valore attuale del pulsante
+  }
+} ToggleBtn;
+
+ToggleBtn bt1;// pulsante senza antirimbalzo incorporato
+
+void blink(byte led){
+	digitalWrite(led, !digitalRead(led)); 
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  t1.start();// attivazione blink
+  debt.start();// attivazione debouncer
+  bt1.pin = 12;
+}
+
+// loop principale
+void loop() {
+  if(debt.get() > 50){
+        debt.reset();
+        bt1.debtoggle(digitalRead(pulsante));// polling pulsante
+  }
+  if(t1.get() > 500){// polling timer blink
+	t1.reset(); // riarmo timer blink
+	if(bt1.state){// polling stato del toggle
+		blink(led);
+	}else{
+		digitalWrite(led, LOW);
+	}    
+  }
+  delay(10);
+}
+```
+
+Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/390695281576032257
+
+
 ### **Toggle con antirimbalzo incorporato**
 
 ```C++
