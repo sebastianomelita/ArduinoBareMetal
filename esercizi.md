@@ -398,7 +398,7 @@ void loop() {
 Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/390289622147259393
 
 
-### **Pulsante toggle basato su interrupts e timer debounce get()**
+### **Pulsante toggle basato su interrupts e timer debounce con timer SW get()**
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
