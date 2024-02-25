@@ -125,7 +125,7 @@ typedef struct
   byte state = LOW;
   byte val0 = LOW;
 
-  bool debtoggle(byte val) {// toggle con debouncing
+  bool toggle(byte val) {// toggle con debouncing
 	if ((val == HIGH) && (val0 == LOW)){// rilevazione fronte di salita
 		state = !state; // logica toggle
 	}	
@@ -153,7 +153,7 @@ void setup() {
 void loop() {
   if(debt.get() > 50){// polling timer debouncer
         debt.reset();
-        bt1.debtoggle(digitalRead(pulsante));// polling pulsante
+        bt1.toggle(digitalRead(pulsante));// polling pulsante
   }
   if(t1.get() > 500){// polling timer blink
 	t1.reset(); // riarmo timer blink
