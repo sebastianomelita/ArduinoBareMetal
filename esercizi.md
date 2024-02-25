@@ -137,7 +137,7 @@ byte stato = LOW; // variabile globale che memorizza lo stato del pulsante
 DiffTimer t1;
 DiffTimer debt;
 
-// oggetto pulsante con debouncing
+// oggetto pulsante senza debouncing
 typedef struct
 {
   byte pin;
