@@ -170,7 +170,7 @@ void setup() {
 
 // loop principale
 void loop() {
-  if(debt.get() > 50){
+  if(debt.get() > 50){// polling timer debouncer
         debt.reset();
         bt1.debtoggle(digitalRead(pulsante));// polling pulsante
   }
