@@ -121,7 +121,6 @@ DiffTimer debt;
 // oggetto pulsante senza debouncing
 typedef struct
 {
-  byte pin;
   byte state = LOW;
   byte val0 = LOW;
 
@@ -146,7 +145,6 @@ void setup() {
   pinMode(pulsante, INPUT);
   t1.start();// attivazione blink
   debt.start();// attivazione debouncer
-  bt1.pin = 12;
 }
 
 // loop principale
@@ -185,7 +183,6 @@ typedef struct
 {
   #include "urutils.h"
   unsigned long debtime = 50;
-  byte pin;
   byte state = LOW;
   byte val0 = LOW;
   DiffTimer _t1;// timer pulsante
@@ -214,7 +211,6 @@ void setup() {
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
   t1.start();// attivazione blink
-  bt1.pin = 12;
 }
 
 // loop principale
