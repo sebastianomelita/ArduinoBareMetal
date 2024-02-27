@@ -968,7 +968,7 @@ https://wokwi.com/projects/390876776704923649
 
 ### **Es34. navigazione mappa interrupt**
 
-Consegnare un esempio completo per ogni scenario possibile di gestione presente nella mappa concettuale degli interrupt utilizzandoli tutti per accendere e spegnere un led mentre conemporaneamente ne blinka un'altro. Fare presente e segnare pro e contro di ogni soluzione.
+Consegnare un esempio completo per ogni scenario possibile di gestione presente nella mappa concettuale degli interrupt utilizzandoli tutti per accendere e spegnere un led mentre contemporaneamente ne blinka un'altro. Fare presente e segnare pro e contro di ogni soluzione.
 
 - Con polling del rilascio in un loop generato con timer HW: https://wokwi.com/projects/390920656468342785
 - Con polling del rilascio in un loop generato con timer SW: https://wokwi.com/projects/390921685594360833
