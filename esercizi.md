@@ -966,9 +966,14 @@ Scrivere un programma che accenda completamente un led dopo una rotazione comple
 
 https://wokwi.com/projects/390876776704923649
 
+### **Es34. navigazione mappa interrupt**
+
+Consegnare un esempio completo per ogni scenario possibile di gestione presente nella mappa concettuale degli interrupt utilizzandoli tutti per accendere e spegnere un led mentre conemporaneamente ne blinka un'altro. Fare presente e segnare pro e contro di ogni soluzione.
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
+
+
   
 >[Torna all'indice generale](index.md)
