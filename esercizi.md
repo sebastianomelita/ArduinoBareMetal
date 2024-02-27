@@ -975,7 +975,13 @@ Interrupt:
 - Con polling del rilascio (e debouncing) in un loop generato con timer SW: https://wokwi.com/projects/390921685594360833
 - Con polling del rilascio (e debouncing) nel loop principale con le attese (delay): https://wokwi.com/projects/390922370464465921
 - Con polling del rilascio (e debouncing) nella ISR: https://wokwi.com/projects/390923700676500481
-  
+
+### **Es35. Ancora fading successivo di 3 led**
+
+Scrivere un programma che accenda completamente un led dopo due rotazioni complete di un encoder rotativo e, dopo, accenda completamente un altro led dopo 3 giri, ed accenda un terzo led dopo 5 giri. Rifare lo spegnimento con le operazioni contrarie.
+
+https://wokwi.com/projects/390925418313291777
+
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
