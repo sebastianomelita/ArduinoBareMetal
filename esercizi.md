@@ -970,9 +970,10 @@ https://wokwi.com/projects/390876776704923649
 
 Consegnare un esempio completo per ogni scenario possibile di gestione presente nella mappa concettuale degli interrupt utilizzandoli tutti per accendere e spegnere un led mentre contemporaneamente ne blinka un'altro. Fare presente e segnare pro e contro di ogni soluzione.
 
-- Con polling del rilascio in un loop generato con timer HW: https://wokwi.com/projects/390920656468342785
-- Con polling del rilascio in un loop generato con timer SW: https://wokwi.com/projects/390921685594360833
-- Interrupt con polling del rilascio in un loop generato con le attese bloccanti (delay): https://wokwi.com/projects/390922370464465921 
+- Con polling del rilascio (e debouncing) in un loop generato con timer HW: https://wokwi.com/projects/390920656468342785
+- Con polling del rilascio (e debouncing) in un loop generato con timer SW: https://wokwi.com/projects/390921685594360833
+- Interrupt con polling del rilascio (e debouncing) in un loop generato con le attese bloccanti (delay): https://wokwi.com/projects/390922370464465921
+- Con polling del rilascio (e debouncing) nella ISR: 
   
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
