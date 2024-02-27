@@ -960,6 +960,12 @@ Scrivere un programma per esp32 che realizzi la regolazione della luminosità di
 
 https://wokwi.com/projects/390527818943920129
 
+### **Es33. Fading successivo di 3 led**
+
+Scrivere un programma che accenda completamente un led dopo una rotazione completa di un encoder rotativo e, dopo, accenda completamente un altro led dopo 4 giri, ed accenda un terzo led dopo dieci giri. Rifare lo spegnimento con le operazioni contrarie.
+
+https://wokwi.com/projects/390876776704923649
+
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
