@@ -972,7 +972,7 @@ Consegnare un esempio completo per ogni scenario possibile di gestione presente 
 
 - Con polling del rilascio (e debouncing) in un loop generato con timer HW: https://wokwi.com/projects/390920656468342785
 - Con polling del rilascio (e debouncing) in un loop generato con timer SW: https://wokwi.com/projects/390921685594360833
-- Interrupt con polling del rilascio (e debouncing) in un loop generato con le attese bloccanti (delay): https://wokwi.com/projects/390922370464465921
+- Interrupt con polling del rilascio (e debouncing) in un loop generato con le attese (delay): https://wokwi.com/projects/390922370464465921
 - Con polling del rilascio (e debouncing) nella ISR: 
   
 Sitografia:
