@@ -8,7 +8,7 @@
 <img src="img\joyrange.png" alt="alt text" width="600">
 
 
-<img src="img\joyrange.png" alt="alt text" width="600">
+
 
 
 
