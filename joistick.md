@@ -4,7 +4,12 @@
 
 <img src="img\joistick3.png" alt="alt text" width="600">
 
-
+Pins:
+- **Vcc.** Alimentazione positiva
+- **VERT.**  Uscita verticale analogica
+- **HORZ.**  Uscita orizzontale analogica
+- **SEL.** 	Pulsante
+- **GND.**	Massa
 
 <img src="img\joyrange.png" alt="alt text" width="600">
 
