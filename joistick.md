@@ -1,5 +1,6 @@
 >[Torna all'indice](indexpulsanti.md)
 
+## **JOISTICK ANALOGICO**
 
 <img src="img\joistick3.png" alt="alt text" width="600">
 
