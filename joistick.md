@@ -11,7 +11,7 @@ Pins:
 - **SEL.** 	Pulsante
 - **GND.**	Massa
 
-<img src="img\A85262_Joystick-Module_3.webp" alt="alt text" width="300">
+<img src="img\joyrange.png" alt="alt text" width="300">
 
 <img src="img\ESP32 Joystick Interfacing.webp" alt="alt text" width="600">
 
