@@ -22,27 +22,26 @@ La **quantizzazione** della conversione è per la MCU ESP32 a 10 bit, circostanz
 
 <img src="img\ESP32 Joystick Interfacing.webp" alt="alt text" width="500">
 
+```C++
+#define VERT_PIN A0
+#define HORZ_PIN A1
+#define SEL_PIN  2
 
+void setup() {
+  pinMode(VERT_PIN, INPUT);
+  pinMode(HORZ_PIN, INPUT);
+  pinMode(SEL_PIN, INPUT_PULLUP);
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void loop() {
+  int vert = analogRead(VERT_PIN);
+  int horz = analogRead(HORZ_PIN);
+  bool selPressed = digitalRead(SEL_PIN) == LOW;
+  // horz goes from 0 (right) to 1023 (left)
+  // vert goes from 0 (bottom) to 1023 (top)
+  // selPressed is true is the joystick is pressed
+}
+```
 
 
 
