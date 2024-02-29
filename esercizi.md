@@ -1016,7 +1016,7 @@ Scrivere un programma che accenda completamente un led dopo una rotazione comple
 
 https://wokwi.com/projects/390876776704923649
 
-### **Es34. navigazione mappa interrupt**
+### **Es34. C
 
 Consegnare un esempio completo per ogni scenario possibile di gestione presente nella mappa concettuale degli interrupt utilizzandoli tutti per accendere e spegnere un led mentre contemporaneamente ne blinka un'altro. Valutare e segnare pro e contro di ogni soluzione.
 
@@ -1031,6 +1031,12 @@ Interrupt:
 Scrivere un programma che accenda completamente un led dopo due rotazioni complete di un encoder rotativo e, dopo, accenda completamente un altro led dopo 3 giri, ed accenda un terzo led dopo 5 giri. Rifare lo spegnimento con le operazioni contrarie.
 
 https://wokwi.com/projects/390925418313291777
+
+### **Es36. navigazione mappa pulsanti**
+
+Consegnare un esempio completo per ogni scenario possibile di gestione presente nella mappa concettuale dei pulsanti utilizzandoli tutti per accendere e spegnere un led (c9n o senza memoria)  mentre contemporaneamente ne blinka un'altro. Fare presente e segnare pro e contro di ogni soluzione.
+
+
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
