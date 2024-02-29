@@ -20,6 +20,9 @@ La tensione in uscita al partitore rappresenta la quantità della rotazione e de
 
 La **quantizzazione** della conversione per la maggior parte dell MCU, come Arduino o ESP32, è a 10 bit, circostanza che limita la risoluzione della misura a 1024 **livelli di tensione**, e quindi saranno dello stesso numero anche i diversi campioni di rotazione misurabili con una escursione da un estremo all'altro di uno dei due assi del joistick.
 
+
+Anche se sembra strano, l'ADC a 10 bit di Arduino (1024 valori) è più preciso e affidabile di quello a 12 bit dell'ESP32 (4096 valori). La quantizzazzione nella MCU ESP32 è sensibilmente non lineare, soprattutto in prossimità dei valori estremi. In sostanza, ciò significa che l'ESP32 non è in grado di distinguere un segnale di 3,2 V e 3,3 V: il valore misurato sarà lo stesso (4095). Allo stesso modo, l'ESP32 non distinguerà tra un segnale 0 V e 0,2 V per piccole tensioni. Si può provare a calibrare l'ADC per ridurre le non linearità attarverso un mappaggio SW, come decritto [quì](https://github.com/e-tinkers/esp32-adc-calibrate).
+
 <img src="img\ESP32 Joystick Interfacing.webp" alt="alt text" width="500">
 
 ```C++
