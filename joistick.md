@@ -18,7 +18,7 @@ La tensione in uscita al partitore rappresenta la quantità della rotazione e de
 
 <img src="img\joyrange.png" alt="alt text" width="900">
 
-La **quantizzazione** della conversione è per la maggior parte dell MCU, come Arduino o ESP32, è a 10 bit, circostanza che limita la risoluzione della misura a 1024 **livelli di tensione**, e quindi saranno dello stesso numero anche i diversi campioni di rotazione misurabili con una escursione che vada da un estremo a quello opposto di uno dei due assi del joistick.
+La **quantizzazione** della conversione è per la maggior parte dell MCU, come Arduino o ESP32, è a 10 bit, circostanza che limita la risoluzione della misura a 1024 **livelli di tensione**, e quindi saranno dello stesso numero anche i diversi campioni di rotazione misurabili con una escursione da un estremo all'altro di uno dei due assi del joistick.
 
 <img src="img\ESP32 Joystick Interfacing.webp" alt="alt text" width="500">
 
