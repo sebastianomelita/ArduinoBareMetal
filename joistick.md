@@ -50,6 +50,8 @@ void loop() {
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-analog-joystick
+- https://www.upesy.com/blogs/tutorials/measure-voltage-on-esp32-with-adc-with-arduino-code#ce375cca55443a8e7b5d517d45a47d
+- https://www.upesy.com/blogs/tutorials/esp32-pinout-reference-gpio-pins-ultimate-guide
 
 
 >[Torna all'indice](indexpulsanti.md)
