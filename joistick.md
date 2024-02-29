@@ -87,9 +87,9 @@ void loop() {
   Serial.print("x: ");Serial.print(x); Serial.print(" y: ");Serial.println(y);
   delay(500);
 }
-
-
 ```
+Il mappaggio dell'intervallo [0 2048] -> [0 127] serve per collegare, a valle del joistick, una periferica di attuazione come, ad esempio, un modulatore PWM da utilizzare, per esempio, per comandare un motore in CC.
+
 Simulazione di una MCU ESP32 con Wokwi: https://wokwi.com/projects/391091401329352705
 
 
