@@ -738,6 +738,56 @@ Per quanto riguarda le sezioni critiche si può approfondire in [sezioni critich
 Gli encoder differenziali, poichè internamente sono dei normalissimi interruttori, sono soggetti anch'essi aal fenomeno dei rimbalzi e all'usura che progressivamente accentua quel fenomeno. Per applicazioni pratiche effettive, è conveniente utilizzare delle implementazioni capaci di tenerne conto. Per questo e altro vedere <a href="encoder.md">Encoder rotativo</a>
 
 
+## **JOISTICK ANALOGICO**
+
+<img src="img\A85262_Joystick-Module_3.webp" alt="alt text" width="300">
+
+Pins:
+- **Vcc.** Alimentazione positiva
+- **VERT.**  Uscita verticale analogica
+- **HORZ.**  Uscita orizzontale analogica
+- **SEL.** 	Pulsante
+- **GND.**	Massa
+
+Il joistick è realizzando combinando, su due assi separati ed ortogonali, due potenziometri rotativi che realizzano due partitori di tensione. L'ingresso dei partitori è polarizzato con l'alimentazione positiva Vcc, per cui l'uscita restituisce per entrambi una tensione compresa tra Vcc e 0V, a seconda dell'ammontare della rotazione. 
+
+La tensione in uscita al partitore rappresenta la quantità della rotazione e deve misurata dal microcontrollore tramite una periferica **ADC** di conversione del segnale da analogico a digitale. L'ADC è collegato di base a tutte le porte analogiche di un microcontrollore. 
+
+
+<img src="img\joyrange.png" alt="alt text" width="900">
+
+La **quantizzazione** della conversione per la maggior parte dell MCU, come Arduino o ESP32, è a 10 bit, circostanza che limita la risoluzione della misura a 1024 **livelli di tensione**, e quindi saranno dello stesso numero anche i diversi campioni di rotazione misurabili con una escursione da un estremo all'altro di uno dei due assi del joistick.
+
+
+Anche se sembra strano, l'ADC a 10 bit di Arduino (1024 valori) è più preciso e affidabile di quello a 12 bit dell'ESP32 (4096 valori). La quantizzazzione nella MCU ESP32 è sensibilmente non lineare, soprattutto in prossimità dei valori estremi. In sostanza, ciò significa che l'ESP32 non è in grado di distinguere un segnale di 3,2 V e 3,3 V: il valore misurato sarà lo stesso (4095). Allo stesso modo, l'ESP32 non distinguerà tra un segnale 0 V e 0,2 V per piccole tensioni. Si può provare a calibrare l'ADC per ridurre le non linearità attarverso un mappaggio SW, come decritto [quì](https://github.com/e-tinkers/esp32-adc-calibrate).
+
+<img src="img\ESP32 Joystick Interfacing.webp" alt="alt text" width="500">
+
+```C++
+#define VERT_PIN A3
+#define HORZ_PIN A0
+#define SEL_PIN  2
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(VERT_PIN, INPUT);
+  pinMode(HORZ_PIN, INPUT);
+}
+
+
+void loop() {
+  int x = analogRead(VERT_PIN);
+  int y = analogRead(HORZ_PIN);
+  bool selPressed = digitalRead(SEL_PIN) == LOW;
+  
+  Serial.print("x: ");Serial.print(x); Serial.print(" y: ");Serial.println(y);
+  delay(500);
+}
+```
+Simulazione di una MCU ESP32 con Wokwi: https://wokwi.com/projects/391096564707796993
+
+Per altre informazioni sul joistick analogico va su [joistick](joistick.md)-
+
 ## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
 ### **Es1**
