@@ -104,6 +104,7 @@ Sitografia:
 - https://www.upesy.com/blogs/tutorials/measure-voltage-on-esp32-with-adc-with-arduino-code#ce375cca55443a8e7b5d517d45a47d
 - https://www.upesy.com/blogs/tutorials/esp32-pinout-reference-gpio-pins-ultimate-guide
 - https://github.com/un0038998/ESPNOW_Car/blob/main/ESPNOW_Car_Transmitter/ESPNOW_Car_Transmitter.ino
+- https://docs.sunfounder.com/projects/esp32-starter-kit/en/latest/micropython/basic_projects/py_joystick.html
 
 
 >[Torna all'indice](indexpulsanti.md)
