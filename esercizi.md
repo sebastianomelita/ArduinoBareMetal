@@ -1045,6 +1045,7 @@ Consegnare un esempio completo per ogni scenario possibile di gestione presente 
 - pulsante con memoria con delay: https://wokwi.com/projects/391108833341231105
 - pulsante con memoria con i thread: https://wokwi.com/projects/391109183918999553
 - pulsante con memoria con i timer HW: https://wokwi.com/projects/391109387683542017
+- pulsante con memoria con get2: https://wokwi.com/projects/391110569888045057
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
