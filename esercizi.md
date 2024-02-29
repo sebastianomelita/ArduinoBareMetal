@@ -1040,6 +1040,7 @@ Consegnare un esempio completo per ogni scenario possibile di gestione presente 
 - Pulsante senza memoria non responsivo https://wokwi.com/projects/391102164130146305
 - Pulsante senza memoria responsivo con get https://wokwi.com/projects/391105027631947777
 - Pulsante senza memoria responsivo con i thread https://wokwi.com/projects/391106418377249793
+- Pulsante senza memoria responsivo con i timer HW https://wokwi.com/projects/391107103111045121
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
