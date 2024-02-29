@@ -26,25 +26,28 @@ Anche se sembra strano, l'ADC a 10 bit di Arduino (1024 valori) è più preciso 
 <img src="img\ESP32 Joystick Interfacing.webp" alt="alt text" width="500">
 
 ```C++
-#define VERT_PIN A0
-#define HORZ_PIN A1
+#define VERT_PIN A3
+#define HORZ_PIN A0
 #define SEL_PIN  2
 
 void setup() {
+  Serial.begin(115200);
   pinMode(VERT_PIN, INPUT);
   pinMode(HORZ_PIN, INPUT);
-  pinMode(SEL_PIN, INPUT_PULLUP);
 }
 
+
 void loop() {
-  int vert = analogRead(VERT_PIN);
-  int horz = analogRead(HORZ_PIN);
+  int x = analogRead(VERT_PIN);
+  int y = analogRead(HORZ_PIN);
   bool selPressed = digitalRead(SEL_PIN) == LOW;
-  // horz goes from 0 (right) to 1023 (left)
-  // vert goes from 0 (bottom) to 1023 (top)
-  // selPressed is true is the joystick is pressed
+  
+  Serial.print("x: ");Serial.print(x); Serial.print(" y: ");Serial.println(y);
+  delay(500);
 }
 ```
+Simulazione di una MCU ESP32 con Wokwi: https://wokwi.com/projects/391096564707796993
+
 Nelle applicazioni pratiche il valore centrale spesso non è quello che ci si aspetta, cioè esattamente il valore centrale di 1024 nel caso di un ADC a 12 bit, per via di errori di misura dovuti alle non linearità della perifrerica ADC o imprecisione costruttiva del joistick. Una soluzione potrebbe essere la caloibrazione del joistick prima dell'uso. Un'alra soluzione potrebbe essere l'introduzione di una isteresi sui valori centrali, detta anche zona morta, in cui la lettura del joistick restituisce sempre lo stesso valore centrale in corrispondenza di un range di valori effettivamente misurati. In quest'ultima soluzione, viene scartata la misura dei valori troppo vicini alla zona di incertezza.
 
 ```C++
