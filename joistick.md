@@ -40,7 +40,6 @@ void setup() {
 void loop() {
   int x = analogRead(VERT_PIN);
   int y = analogRead(HORZ_PIN);
-  bool selPressed = digitalRead(SEL_PIN) == LOW;
   
   Serial.print("x: ");Serial.print(x); Serial.print(" y: ");Serial.println(y);
   delay(500);
