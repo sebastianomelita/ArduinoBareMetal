@@ -50,7 +50,7 @@ Simulazione di una MCU ESP32 con Wokwi: https://wokwi.com/projects/3910965647077
 
 ### *PROBLEMA DELLA MISURA CENTRALE*
 
-Nelle applicazioni pratiche il valore centrale spesso non è quello che ci si aspetta, cioè esattamente il valore centrale di 1024 nel caso di un ADC a 12 bit, per via di errori di misura dovuti alle non linearità della perifrerica ADC o imprecisione costruttiva del joistick. Una soluzione potrebbe essere la caloibrazione del joistick prima dell'uso. Un'alra soluzione potrebbe essere l'introduzione di una isteresi sui valori centrali, detta anche zona morta, in cui la lettura del joistick restituisce sempre lo stesso valore centrale in corrispondenza di un range di valori effettivamente misurati. In quest'ultima soluzione, viene scartata la misura dei valori troppo vicini alla zona di incertezza.
+Nelle applicazioni pratiche il valore centrale spesso non è quello che ci si aspetta, cioè esattamente il valore centrale di 1024 nel caso di un ADC a 12 bit, per via di errori di misura dovuti alle non linearità della perifrerica ADC o imprecisione costruttiva del joistick. Una soluzione potrebbe essere la calibrazione del joistick prima dell'uso. Un'alra soluzione potrebbe essere l'introduzione di una isteresi sui valori centrali, detta anche zona morta, in cui la lettura del joistick restituisce sempre lo stesso valore centrale in corrispondenza di un range di valori effettivamente misurati. In quest'ultima soluzione, viene scartata la misura dei valori troppo vicini alla zona di incertezza.
 
 ```C++
 #define VERT_PIN A3
