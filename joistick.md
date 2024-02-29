@@ -45,6 +45,50 @@ void loop() {
   // selPressed is true is the joystick is pressed
 }
 ```
+Nelle applicazioni pratiche il valore centrale spesso non è quello che ci si aspetta, cioè esattamente il valore centrale di 1024 nel caso di un ADC a 12 bit, per via di errori di misura dovuti alle non linearità della perifrerica ADC o imprecisione costruttiva del joistick. Una soluzione potrebbe essere la caloibrazione del joistick prima dell'uso. Un'alra soluzione potrebbe essere l'introduzione di una isteresi sui valori centrali, detta anche zona morta, in cui la lettura del joistick restituisce sempre lo stesso valore centrale in corrispondenza di un range di valori effettivamente misurati. In quest'ultima soluzione, viene scartata la misura dei valori troppo vicini alla zona di incertezza.
+
+```C++
+#define VERT_PIN A3
+#define HORZ_PIN A0
+#define SEL_PIN  2
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(VERT_PIN, INPUT);
+  pinMode(HORZ_PIN, INPUT);
+}
+
+int isteresi(int value)
+{
+  if (value >= 2200)
+  {
+    value = map(value, 2200, 4095, 127, 255);
+  }
+  else if (value <= 1800)
+  {
+    value = map(value, 1800, 0, 127, 0);  
+  }
+  else
+  {
+    value = 127;
+  }
+  
+  return value;
+}
+
+void loop() {
+  int vert = analogRead(VERT_PIN);
+  int horz = analogRead(HORZ_PIN);
+  bool selPressed = digitalRead(SEL_PIN) == LOW;
+
+  int x = isteresi(horz);
+  int y = isteresi(vert);
+  
+  Serial.print("x: ");Serial.print(x); Serial.print(" y: ");Serial.println(y);
+  delay(500);
+}
+```
+Simulazione di una MCU ESP32 con Wokwi: https://wokwi.com/projects/391091401329352705
 
 
 
