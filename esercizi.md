@@ -1037,7 +1037,8 @@ https://wokwi.com/projects/390925418313291777
 
 Consegnare un esempio completo per ogni scenario possibile di gestione presente nella mappa concettuale dei pulsanti utilizzandoli tutti per accendere e spegnere un led (con o senza memoria)  mentre contemporaneamente ne blinka un'altro. Fare presente e segnare pro e contro di ogni soluzione.
 
-
+- Pulsante senza memoria non reposnsivo https://wokwi.com/projects/391102164130146305
+- Pulsante senza memoria reposnsivo 
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
