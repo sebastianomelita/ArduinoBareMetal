@@ -84,7 +84,6 @@ int isteresi(int value)
 void loop() {
   int vert = analogRead(VERT_PIN);
   int horz = analogRead(HORZ_PIN);
-  bool selPressed = digitalRead(SEL_PIN) == LOW;
 
   int x = isteresi(horz);
   int y = isteresi(vert);
