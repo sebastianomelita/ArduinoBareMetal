@@ -786,7 +786,7 @@ void loop() {
 ```
 Simulazione di una MCU ESP32 con Wokwi: https://wokwi.com/projects/391096564707796993
 
-Per altre informazioni sul joistick analogico va su [joistick](joistick.md)-
+Per altre informazioni sul joistick analogico va su [joistick](joistick.md).
 
 ## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
