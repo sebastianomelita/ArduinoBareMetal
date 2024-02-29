@@ -87,6 +87,8 @@ void loop() {
   Serial.print("x: ");Serial.print(x); Serial.print(" y: ");Serial.println(y);
   delay(500);
 }
+
+
 ```
 Simulazione di una MCU ESP32 con Wokwi: https://wokwi.com/projects/391091401329352705
 
