@@ -1,3 +1,4 @@
+
 >[Torna all'indice generale](index.md)
 
 ## **CONSIDERAZIONI GENERALI SUI PROBLEMI**
@@ -1034,7 +1035,7 @@ https://wokwi.com/projects/390925418313291777
 
 ### **Es36. Navigazione mappa pulsanti**
 
-Consegnare un esempio completo per ogni scenario possibile di gestione presente nella mappa concettuale dei pulsanti utilizzandoli tutti per accendere e spegnere un led (c9n o senza memoria)  mentre contemporaneamente ne blinka un'altro. Fare presente e segnare pro e contro di ogni soluzione.
+Consegnare un esempio completo per ogni scenario possibile di gestione presente nella mappa concettuale dei pulsanti utilizzandoli tutti per accendere e spegnere un led (con o senza memoria)  mentre contemporaneamente ne blinka un'altro. Fare presente e segnare pro e contro di ogni soluzione.
 
 
 
