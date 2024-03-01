@@ -59,7 +59,7 @@ typedef struct
 
 typedef struct 
 {
-	unsigned long elapsed, last, tbase;
+	unsigned long elapsed, tbase;
 	bool timerState=false;
 	byte state = 0;
 	byte count = 0;
