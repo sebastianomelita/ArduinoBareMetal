@@ -187,67 +187,48 @@ void loop() {
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/390695281576032257
 
 
-### **Toggle con antirimbalzo incorporato**
+### **Toggle con polling del rilascio temporizzato con get()**
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 #include "urutils.h"
 int led = 13;
+int led2 = 27;
 byte pulsante = 12;
-byte stato = LOW; // variabile globale che memorizza lo stato del pulsante
+bool stato = LOW;
 DiffTimer t1;
+DiffTimer debt;
 
-// oggetto pulsante con debouncing
-typedef struct
-{
-  #include "urutils.h"
-  unsigned long debtime = 50;
-  byte state = LOW;
-  byte val0 = LOW;
-  DiffTimer _t1;// timer pulsante
-
-  bool debtoggle(byte val) {// toggle con debouncing
-	_t1.start(); // attiva il timer del pulsante (lo fa internamente una sola volta)
-	if(_t1.get() > debtime){ // polling timer pulsante
-    	_t1.reset();// riarmo timer pulsante
-		if ((val == HIGH) && (val0 == LOW)){// rilevazione fronte di salita
-			state = !state; // logica toggle
-		}	
-		val0 = val;	// aggiornamento livello precedente al livello attuale
-	}
-	return val;// ritorna il valore attuale del pulsante
-  }
-} ToggleBtn;
-
-ToggleBtn bt1;// pulsante con antirimbalzo incorporato
-
-void blink(byte led){
-  digitalWrite(led, !digitalRead(led)); 
+void blink(byte led) {
+  digitalWrite(led, !digitalRead(led));
 }
 
 void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
+  pinMode(led2, OUTPUT);
   pinMode(pulsante, INPUT);
   t1.start();// attivazione blink
 }
 
 // loop principale
 void loop() {
-  bt1.debtoggle(digitalRead(pulsante));// polling pulsante
-  if(t1.get() > 500){// polling timer blink
-	t1.reset(); // riarmo timer blink
-	if(bt1.state){// polling stato del toggle
-		blink(led);
-	}else{
-		digitalWrite(led, LOW);
-	}    
+  if (digitalRead(pulsante)) {// polling pulsante non premuto
+    debt.start();
+  }
+  if (debt.get() > 50  && digitalRead(pulsante) == LOW) { // disarmo del timer al timeout
+    debt.stop(); // disarmo del timer
+    debt.reset();
+    stato = !stato;
+    digitalWrite(led2, stato);
+  }
+  if (t1.get() > 1000) { // polling timer blink
+    t1.reset(); // riarmo timer blink
+    blink(led);
   }
   delay(10);
 }
 ```
-
-Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/390633555619516417
 
 ### **Schedulatore generico realizzato con funzione get()**
 
