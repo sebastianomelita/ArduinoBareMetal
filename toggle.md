@@ -167,6 +167,48 @@ void loop() {
 
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/390695281576032257
 
+### **Toggle con polling del rilascio temporizzato con get()**
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include "urutils.h"
+int led = 13;
+int led2 = 27;
+byte pulsante = 12;
+bool stato = LOW;
+DiffTimer t1;
+DiffTimer debt;
+
+void blink(byte led) {
+  digitalWrite(led, !digitalRead(led));
+}
+
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(pulsante, INPUT);
+  t1.start();// attivazione blink
+}
+
+// loop principale
+void loop() {
+  if (digitalRead(pulsante)) {// polling pulsante non premuto
+    debt.start();
+  }
+  if (debt.get() > 50  && digitalRead(pulsante) == LOW) { // disarmo del timer al timeout
+    debt.stop(); // disarmo del timer
+    debt.reset();
+    stato = !stato;
+    digitalWrite(led2, stato);
+  }
+  if (t1.get() > 1000) { // polling timer blink
+    t1.reset(); // riarmo timer blink
+    blink(led);
+  }
+  delay(10);
+}
+```
 
 ### **Toggle con antirimbalzo incorporato**
 
