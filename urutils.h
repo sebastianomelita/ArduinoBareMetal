@@ -67,11 +67,11 @@ typedef struct
 		elapsed = 0;
 	}
 	void toggle(){
-		if(timerState){
-    	stop();
-		}else{
+	      	if(timerState){
+    	        	stop();
+	      	}else{
 			start();
-		}	
+	     	 }	
 	}
 	void stop(){
 		if(timerState){
