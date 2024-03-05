@@ -1030,9 +1030,15 @@ Consegnare un esempio completo per ogni scenario possibile di gestione presente 
 
 ### **Es37. Erogatore per gatti**
 
-Automatizzare un erogatore di crocchette che vengono distribuite fa un ugello a tempo. 30 g sono eragati in 5 secondi. L'erogatore é attivato dalla pressione del musetto del gatto. Erogati il cibo l'erogatore si disattiva per un'ora (emulati con 10 secondi). Le erogazioni sono contate e non devono superare le 6. L'erogatore viene riabilitato (resettando il contatore) dal padrone una vilta al giorno premendo un pulsante
+Automatizzare un erogatore di crocchette che vengono distribuite fa un ugello a tempo. 30 g sono eragati in 5 secondi. L'erogatore é attivato dalla pressione del musetto del gatto. Erogati il cibo l'erogatore si disattiva per un'ora (emulati con 10 secondi). Le erogazioni sono contate e non devono superare le 6. L'erogatore viene riabilitato (resettando il contatore) dal padrone una vilta al giorno premendo un pulsante.
 
-https://wokwi.com/projects/391435965141575681
+### **Es38. Trappola per topi**
+
+Una scatola con una porta a scatto elettrica contiene un'esca. Quando il topo é entrato tutto la porta si chiude. Con un pulsante la porta si apre e fa uscire il topo a Topolinia.
+
+NB: Il pulsante é premuto il topo sta entrando. Ho letto il fronte di salita e so che sta entrando. Leggo dopo il fonte di discesa, dello stesso pulsante (barriera luminosa) e so che é conpletamente entrato.
+
+https://wokwi.com/projects/391462786778718209
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
