@@ -185,7 +185,7 @@ Il transxeiver LoRa RMF95/W deve essere interfacciato con una scheda MCU a parte
 
 <img src="LoRa_ESP32_Wiring2.png" alt="alt text" width="1000">
 
-<img src="img/ESP32-DEV-KIT-DevKitC-v4-pinout-mischianti.jpg" alt="alt text" width="1000">
+<img src="img/doc-esp32-pinout-reference-wroom-devkit.webpg" alt="alt text" width="1000">
 
 
 In questo caso transceiver Semtech SX1276 e MCU ESP32 sono già cablate insieme sulla stessa scheda. Di seguito è riportato il mappaggio del pinout del transceiver Lora su quello della MCU ESP32:
