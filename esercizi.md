@@ -1040,10 +1040,18 @@ NB: Il pulsante é premuto il topo sta entrando. Ho letto il fronte di salita e 
 
 https://wokwi.com/projects/391462786778718209
 
+### **Es39. Cassaforte**
+
+Scrivere un programma che verifichi la combinazione di apertura di una cassaforte con un pomello rotante. La cassaforte si apre dopo 3 sequenze esatte segnalate dall'accensione successiva di 4 led. Le sequenze di scatti sono valutate con un encoder rotativo e visualizzate con una stampa su seriale. La combinazione segreta è 4 scatti a destra, 1 giro completo a sinistra, 3 scatti a destra. All'apertura della cassaforte si accende un led. Dopo 3 tentativi sbagliati suona un allarme sotto forma di cicalino continuo.
+
+per il pulsante usare modalità INPUT_PULLUP e fare un debouncer con la funzione di urutils.h waitUntilInputHigh()
+Creare due array globali: uno per memorizzare la combinazione e uno per memorizzare la sequenza inserita dall'utente.
+Implementare la funzione controllo() che confronta i due array e rerstituisce vero se sono uguali cella per cella, falso saltrimenti (usare una variabile bandierina).
+
+https://wokwi.com/projects/392701811094769665?authuser=0
+
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
-
-
   
 >[Torna all'indice generale](index.md)
