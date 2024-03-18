@@ -16,6 +16,13 @@ void waitUntilInputLow(int btn, unsigned t)
     }
 }
 
+void waitUntilInputHigh(int btn, unsigned t)
+{
+    while(digitalRead(btn)==LOW){
+	    delay(t);
+    }
+}
+
 typedef struct 
 {
 	unsigned long elapsed, last;
