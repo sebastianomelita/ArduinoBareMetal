@@ -1040,13 +1040,27 @@ NB: Il pulsante é premuto il topo sta entrando. Ho letto il fronte di salita e 
 
 https://wokwi.com/projects/391462786778718209
 
-### **Es39. Cassaforte**
+### **Es39. Macchina del caffè**
+
+Un distributore automatico di caffè ha 4 pulsanti per erogare caffé. Se premi una volta il primo pulsante il caffè é corto, se premi la seconda volta é lungo. Il secondo pulsante sceglie lo zucchero il base al tempo della pressione (Se si vuole si può aumentare la luminosità di un led da 0 a 10 con il PWM se no si stampa con Serial.println()). Il terzo pulsante sceglie se decaffeinato oppure no. Il quarto serve caffè macchiato o meno. Ogni opzione binaria (con due valori) é segnalata dallo stato di un led. Il caffé é pronto dopo un minuto e un cicalino suona.
+
+- **NB1:** il contatore di pressioni si può fare eseguendo ad ogni pressione (o rilascio) entrambe le cose seguenti:
+il riarmo di un timer con t1.start() (tanto è attivo solo alla prima volta)
+l'incremento del contatore
+Allo scadere del timer viene eseguito il conteggio: se minore di uno, scelta A; se maggiore di 1, scelta B.
+
+- **NB2:** La quantità di zucchero si può scegliere facendo partire un timer alla pressione di un pulsante e facendolo stoppare al suo rilascio. La lettura del get() del timer mi da la misura del ritardo. Decidendo che sopra 10 secondi le misure valgono sempre 10 (tetto superiore), un valore da 0 a 10 dice la quantità di zucchero da stampare con Serial.println(). Ricordarsi che il get() deve stare in un loop non bloccato per potere contare.
+
+ https://wokwi.com/projects/391440818569488385
+
+### **Es40. Cassaforte**
 
 Scrivere un programma che verifichi la combinazione di apertura di una cassaforte con un pomello rotante. La cassaforte si apre dopo 3 sequenze esatte segnalate dall'accensione successiva di 4 led. Le sequenze di scatti sono valutate con un encoder rotativo e visualizzate con una stampa su seriale. La combinazione segreta è 4 scatti a destra, 1 giro completo a sinistra, 3 scatti a destra. All'apertura della cassaforte si accende un led. Dopo 3 tentativi sbagliati suona un allarme sotto forma di cicalino continuo.
 
-per il pulsante usare modalità INPUT_PULLUP e fare un debouncer con la funzione di urutils.h waitUntilInputHigh()
-Creare due array globali: uno per memorizzare la combinazione e uno per memorizzare la sequenza inserita dall'utente.
-Implementare la funzione controllo() che confronta i due array e rerstituisce vero se sono uguali cella per cella, falso saltrimenti (usare una variabile bandierina).
+Suggerimenti:
+- per il pulsante usare modalità INPUT_PULLUP e fare un debouncer con la funzione di urutils.h waitUntilInputHigh()
+- Creare due array globali: uno per memorizzare la combinazione e uno per memorizzare la sequenza inserita dall'utente.
+- Implementare la funzione controllo() che confronta i due array e rerstituisce vero se sono uguali cella per cella, falso saltrimenti (usare una variabile bandierina).
 
 https://wokwi.com/projects/392701811094769665?authuser=0
 
