@@ -379,59 +379,9 @@ Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.co
 
 ### **Pulsante toggle basato su interrupts e timer debounce con timer SW get()**
 
-```C++
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-#include "urutils.h"
-int led = 13;
-byte pulsante =12;
-byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
-volatile bool pressed;
-#define DEBOUNCETIME 50
-DiffTimer debounce;
- 
-void setup() {
-  Serial.begin(115200);
-  pinMode(led, OUTPUT);
-  pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
-  pressed = false;
-}
+All'**ingresso** di una **porta digitale** viene associata una callback che viene invocata alla ricezione di un segnale di interrupt attivo su entrambi i fronti. Il fronte di salita, **selezionato** prendendo solo i valori HIGH, potrebbe essere rilevato molte volte consecutivamente a causa del fenomeno dei rimbalzi. Per evitare la rilevazione dei **fronti spuri** successivi al primo, viene disabilitata, dentro la ISR, la loro rilevazione **disarmando** gli interrupt  mediante l'istruzione ```detachInterrupt(digitalPinToInterrupt(pulsante))```. Contemporaneamente viene asserito un flag di segnalazione, ```pressed```, che comunica ad un loop() di attivare il timer per il riarmo dell'interrupt per rispondere a nuove pressioni dell'utente. 
 
-// Interrupt Service Routine (ISR)
-void switchPressed ()
-{
-    if(!pressed){ // intervento immediato ma sul primo fronte di salita soltanto (causa disarmo pulsante)
-        pressed = true; // disarmo del pulsante e riarmo del timer di debouncing
-        stato = !stato; // logica da attivare sul fronte (toggle)
-    }
-}   // end of switchPressed
-
-void waitUntilInputChange()
-{
-    if (pressed){ 
-      debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
-      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){// disarmo del timer al timeout
-        pressed = false; // riarmo del pulsante
-        debounce.stop();
-	debounce.reset();
-      }
-    }
-}
-// loop principale
-void loop() {
-	waitUntilInputChange();
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
-		delay(1000);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-   		 delay(10);
-	}
-}
-```
-
-Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/388481409829351425
-
+Il tempo per la **riabilitazione** (riarmo) dell'interrupt non deve essere ne troppo presto, cioè minore di 50 msec, altrimenti si finisce per leggere dei rimbalzi ma neppure troppo tardi, altrimenti si perdono degli input dell'utente. Il momento migliore per riabilitare gli interrupt potrebbe essere il momento del rilascio del pulsante, dato che precede sempre una eventuale successiva pressione. In ogni caso, un timer impedisce quei tentativi di riabilitazione che potrebbero avvenire prima dei 50 msec utili ad evitare i rimbalzi.
 Variante che disarma gli interrupt spuri fino al rilascio del pulsante: 
 
 ```C++
@@ -486,6 +436,64 @@ void loop() {
 ```
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
+
+All'**ingresso** di una **porta digitale** viene associata una callback che viene invocata alla ricezione di un segnale di interrupt attivo su entrambi i fronti. Il fronte di salita, **selezionato** prendendo solo i valori HIGH, potrebbe essere rilevato molte volte consecutivamente a causa del fenomeno dei rimbalzi. Per evitare la rilevazione dei **fronti spuri** successivi al primo, viene disabilitata, dentro la ISR, la loro rilevazione non disabilitando gli interrupt ma disabilitando la loro gestione  mediante la condizione ```if(!pressed)``` che, dopo il primo fornte, non è più soffisfatta. Il flag di segnalazione, ```pressed```, oltre a disabilitare la gestione degli interrupt, comunica ad un loop() di attivare il timer per il riarmo dell'interrupt per rispondere a nuove pressioni dell'utente. 
+
+Il tempo per la **riabilitazione** (riarmo) dell'interrupt non deve essere ne troppo presto, cioè minore di 50 msec, altrimenti si finisce per leggere dei rimbalzi ma neppure troppo tardi, altrimenti si perdono degli input dell'utente. Il momento migliore per riabilitare gli interrupt potrebbe essere il momento del rilascio del pulsante, dato che precede sempre una eventuale successiva pressione. In ogni caso, un timer impedisce quei tentativi di riabilitazione che potrebbero avvenire prima dei 50 msec utili ad evitare i rimbalzi.
+Variante che disarma gli interrupt spuri fino al rilascio del pulsante: 
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include "urutils.h"
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+volatile bool pressed;
+#define DEBOUNCETIME 50
+DiffTimer debounce;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
+  pressed = false;
+}
+
+// Interrupt Service Routine (ISR)
+void switchPressed ()
+{
+    if(!pressed){ // intervento immediato ma sul primo fronte di salita soltanto (causa disarmo pulsante)
+        pressed = true; // disarmo del pulsante e riarmo del timer di debouncing
+        stato = !stato; // logica da attivare sul fronte (toggle)
+    }
+}   // end of switchPressed
+
+void waitUntilInputChange()
+{
+    if (pressed){ 
+      debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
+      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){// disarmo del timer al timeout
+        pressed = false; // riarmo del pulsante
+        debounce.stop();
+	debounce.reset();
+      }
+    }
+}
+// loop principale
+void loop() {
+	waitUntilInputChange();
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(1000);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+   		 delay(10);
+	}
+}
+```
+
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/388481409829351425
 
 ### **Pulsante toggle basato su interrupts e debounce nella ISR**
 
