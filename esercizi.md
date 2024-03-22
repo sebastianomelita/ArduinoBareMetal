@@ -379,9 +379,12 @@ Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.co
 
 ### **Pulsante toggle basato su interrupts e timer debounce con timer SW get()**
 
-All'**ingresso** di una **porta digitale** viene associata una callback che viene invocata alla ricezione di un segnale di interrupt attivo su entrambi i fronti. Il fronte di salita, **selezionato** prendendo solo i valori HIGH, potrebbe essere rilevato molte volte consecutivamente a causa del fenomeno dei rimbalzi. Per evitare la rilevazione dei **fronti spuri** successivi al primo, viene disabilitata, dentro la ISR, la loro rilevazione **disarmando** gli interrupt  mediante l'istruzione ```detachInterrupt(digitalPinToInterrupt(pulsante))```. Contemporaneamente viene asserito un flag di segnalazione, ```pressed```, che comunica ad un loop() di attivare il timer per il riarmo dell'interrupt per rispondere a nuove pressioni dell'utente. 
+All'**ingresso** di una **porta digitale** viene associata una callback che viene invocata alla ricezione di un segnale di interrupt attivo su entrambi i fronti. Il fronte di salita, **selezionato** prendendo solo i valori HIGH, potrebbe essere rilevato molte volte consecutivamente a causa del fenomeno dei rimbalzi. 
+
+Per evitare la rilevazione dei **fronti spuri** successivi al primo, viene disabilitata, dentro la ISR, la loro rilevazione **disarmando** gli interrupt  mediante l'istruzione ```detachInterrupt(digitalPinToInterrupt(pulsante))```. Contemporaneamente viene asserito un flag di segnalazione, ```pressed```, che comunica ad un loop() di attivare il timer per il riarmo dell'interrupt per rispondere a nuove pressioni dell'utente. 
 
 Il tempo per la **riabilitazione** (riarmo) dell'interrupt non deve essere ne troppo presto, cioè minore di 50 msec, altrimenti si finisce per leggere dei rimbalzi ma neppure troppo tardi, altrimenti si perdono degli input dell'utente. Il momento migliore per riabilitare gli interrupt potrebbe essere il momento del rilascio del pulsante, dato che precede sempre una eventuale successiva pressione. In ogni caso, un timer impedisce quei tentativi di riabilitazione che potrebbero avvenire prima dei 50 msec utili ad evitare i rimbalzi.
+
 Variante che disarma gli interrupt spuri fino al rilascio del pulsante: 
 
 ```C++
