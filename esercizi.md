@@ -378,6 +378,57 @@ void loop() {
 ```
 Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/390289622147259393
 
+### **Pulsante toggle basato su interrupts e con debounce basato sui delay()**
+
+All'**ingresso** di una **porta digitale** viene associata una callback che viene invocata alla ricezione di un segnale di interrupt attivo su entrambi i fronti. Il fronte di salita, **selezionato** prendendo solo i valori HIGH, potrebbe essere rilevato molte volte consecutivamente a causa del fenomeno dei rimbalzi. 
+
+Per evitare la rilevazione dei **fronti spuri** successivi al primo, viene disabilitata, dentro la ISR, la loro rilevazione **disarmando** gli interrupt  mediante l'istruzione ```detachInterrupt(digitalPinToInterrupt(pulsante))```. Contemporaneamente viene asserito un flag di segnalazione, ```pressed```, che comunica ad un loop() di attivare il timer per il riarmo dell'interrupt per rispondere a nuove pressioni dell'utente. 
+
+Il tempo per la **riabilitazione** (riarmo) dell'interrupt non deve essere ne troppo presto, cioè minore di 50 msec, altrimenti si finisce per leggere dei rimbalzi ma neppure troppo tardi, altrimenti si perdono degli input dell'utente. Il momento migliore per riabilitare gli interrupt potrebbe essere il momento del rilascio del pulsante, dato che precede sempre una eventuale successiva pressione. In ogni caso, un timer impedisce quei tentativi di riabilitazione che potrebbero avvenire prima dei 50 msec utili ad evitare i rimbalzi.
+
+Variante che **disabilita** gli interrupt spuri fino al rilascio del pulsante: 
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include "urutils.h"
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+volatile bool pressed;
+#define DEBOUNCETIME 50
+DiffTimer debounce;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
+  pressed = false;
+}
+
+// Interrupt Service Routine (ISR)
+void switchPressed ()
+{
+  detachInterrupt(digitalPinToInterrupt(pulsante));
+  pressed = true; // disarmo del pulsante e riarmo del timer
+  stato = !stato; // logica da attivare sul fronte (toggle)
+}  // end of switchPressed
+
+// loop principale
+void loop() {
+  if(pressed){
+    waitUntilInputLow(pulsante, 50);
+    attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
+    pressed = false;
+  }
+  digitalWrite(led, stato);   	// inverti lo stato precedente del led
+  delay(10);
+}
+```
+
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
+
 
 ### **Pulsante toggle basato su interrupts e timer debounce con timer SW get()**
 
@@ -387,7 +438,7 @@ Per evitare la rilevazione dei **fronti spuri** successivi al primo, viene disab
 
 Il tempo per la **riabilitazione** (riarmo) dell'interrupt non deve essere ne troppo presto, cioè minore di 50 msec, altrimenti si finisce per leggere dei rimbalzi ma neppure troppo tardi, altrimenti si perdono degli input dell'utente. Il momento migliore per riabilitare gli interrupt potrebbe essere il momento del rilascio del pulsante, dato che precede sempre una eventuale successiva pressione. In ogni caso, un timer impedisce quei tentativi di riabilitazione che potrebbero avvenire prima dei 50 msec utili ad evitare i rimbalzi.
 
-Variante che disarma gli interrupt spuri fino al rilascio del pulsante: 
+Variante che **disabilita** gli interrupt spuri fino al rilascio del pulsante: 
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
@@ -442,12 +493,13 @@ void loop() {
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
 
+Variante che **ignora** gli interrupt spuri fino al rilascio del pulsante: 
+
 All'**ingresso** di una **porta digitale** viene associata una callback che viene invocata alla ricezione di un segnale di interrupt attivo su entrambi i fronti. Il fronte di salita, **selezionato** prendendo solo i valori HIGH, potrebbe essere rilevato molte volte consecutivamente a causa del fenomeno dei rimbalzi. 
 
 Per evitare la rilevazione dei **fronti spuri** successivi al primo, viene disabilitata, dentro la ISR, la loro rilevazione non disabilitando gli interrupt ma disabilitando la loro gestione  mediante la condizione ```if(!pressed)``` che, dopo il primo fronte, non è più soddisfatta. Il flag di segnalazione, ```pressed```, oltre a disabilitare la gestione degli interrupt, comunica ad un loop() di attivare il timer per il riarmo dell'interrupt per rispondere a nuove pressioni dell'utente. 
 
 Il tempo per la **riabilitazione** (riarmo) dell'interrupt non deve essere ne troppo presto, cioè minore di 50 msec, altrimenti si finisce per leggere dei rimbalzi ma neppure troppo tardi, cioè dopo la pressione di un tasto, altrimenti si perdono degli input dell'utente. Il momento migliore per riabilitare gli interrupt potrebbe essere il momento del rilascio del pulsante, dato che precede sempre una eventuale successiva pressione. In ogni caso, un timer impedisce quei tentativi di riabilitazione che potrebbero avvenire prima dei 50 msec utili ad evitare i rimbalzi.
-Variante che disarma gli interrupt spuri fino al rilascio del pulsante: 
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
@@ -1068,7 +1120,7 @@ Allo scadere del timer viene eseguito il conteggio: se minore di uno, scelta A; 
 
 - **NB2:** La quantità di zucchero si può scegliere facendo partire un timer alla pressione di un pulsante e facendolo stoppare al suo rilascio. La lettura del get() del timer mi da la misura del ritardo. Decidendo che sopra 10 secondi le misure valgono sempre 10 (tetto superiore), un valore da 0 a 10 dice la quantità di zucchero da stampare con Serial.println(). Ricordarsi che il get() deve stare in un loop non bloccato per potere contare.
 
- https://wokwi.com/projects/391440818569488385
+https://wokwi.com/projects/391440818569488385
 
 ### **Es40. Cassaforte**
 
