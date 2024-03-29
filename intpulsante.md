@@ -13,7 +13,7 @@ Le **tecniche individuate** nella presente dispensa sono sostanzialmente **le st
 
 Per una discussione più completa sugli interrupt vedi [interrupt](interruptsbase.md).
 
-<img src="img\interruptPulsante.jpg" alt="alt text" width="1000">
+<img src="img\interruptPulsante.jpg" alt="alt text" width="1200">
 
 
 ### **PULSANTE TOGGLE BASATO SU INTERRUPTS E DEBOUNCE NELLA ISR**
