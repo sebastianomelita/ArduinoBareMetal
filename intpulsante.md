@@ -13,6 +13,8 @@ Le **tecniche individuate** nella presente dispensa sono sostanzialmente **le st
 
 Per una discussione più completa sugli interrupt vedi [interrupt](interruptsbase.md).
 
+<img src="img\interruptPulsante.jpg" alt="alt text" width="1000">
+
 
 ### **PULSANTE TOGGLE BASATO SU INTERRUPTS E DEBOUNCE NELLA ISR**
 
@@ -184,7 +186,7 @@ Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/p
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350016534055223891
 
 
-### **PULSANTE TOGGLE BASATO SU INTERRUPTS E E DEBOUNCE CON TIMER SW NEL LOOP 2**
+### **PULSANTE TOGGLE BASATO SU INTERRUPTS E DEBOUNCE CON TIMER SW NEL LOOP 2**
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
