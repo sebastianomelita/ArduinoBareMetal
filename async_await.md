@@ -211,12 +211,13 @@ Link simulazione online: https://wokwi.com/projects/393802635182647297
 In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato **nello stesso loop** ma in un momento diverso stabilito mediante un istruzione ```waitUntilInputLow()```. La funzione, di fatto, esegue un **blocco** del **task** corrente in **"attesa"**  della soddisfazione di una certa **condizione**, senza bloccare l'esecuzione degli altri task. L'**attesa** è spesa campionando continuamente un **ingresso** fino a che questo non **diventa LOW**. Quando ciò accade allora vuol dire che si è rilevato un **fronte di discesa** per cui, qualora **in futuro**, in un loop successivo, si determinasse sullo stesso ingresso un valore HIGH, allora si può essere certi di essere in presenza di un **fronte di salita**. 
 
 La funzione 
-```python
+```C++
 // attesa evento con tempo minimo di attesa
-async def waitUntilInLow(btn,t):
-    while btn.value()):
-	 await asyncio.sleep(t)
- 
+void waitUntilInputLow(btn,t):
+    while(digitalRead(btn)==HIGH){
+        await_delay(t);
+    }
+}
 ```
 realizza una funzione di **wait su condizione** che ritarda il thread corrente di un delay() prefissato al  termine del quale ricalcola l'ingresso. L'operazione viene ripetuta fin tanto che la condizione attesa non è asserita. Si tratta di una funzione utile per due **scopi**:
 - **debouncing** software dell'ingresso digitale
