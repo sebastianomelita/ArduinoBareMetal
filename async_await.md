@@ -91,6 +91,30 @@ Precauzioni:
 - Come con i protothread, bisogna fare attenzione alle **istruzioni switch** all'interno di una subroutine asincrona. Attenendosi a questa semplice regola non si avranno mai problemi: posizionare ogni istruzione switch all'interno di una sua funzione. Questa, in genere, è comunque una buona pratica.
 - Come con i protothread, non è possibile effettuare chiamate di **sistema bloccanti** e preservare la semantica asincrona. Queste devono essere **trasformate** in chiamate **non bloccanti** che testano una condizione.
 
+Nelle situazioni in cui non è possibile includere librerie come accade nel **simulatore Tinkercad**, allora si può inserire in cima al file la definizione delle **macro** che definiscono i costrutti **async/await**:
+
+```C++
+typedef enum ASYNC_EVT { ASYNC_INIT = 0, ASYNC_CONT = ASYNC_INIT, ASYNC_DONE = 1 } async;
+#define async_state unsigned _async_k
+struct as_state { async_state; };
+#define async_begin(k) unsigned *_async_k = &(k)->_async_k; switch(*_async_k) { default:
+#define async_end *_async_k=ASYNC_DONE; case ASYNC_DONE: return ASYNC_DONE; }
+#define await(cond) await_while(!(cond))
+#define await_while(cond) *_async_k = __LINE__; case __LINE__: if (cond) return ASYNC_CONT
+#define async_yield *_async_k = __LINE__; return ASYNC_CONT; case __LINE__:
+#define async_exit *_async_k = ASYNC_DONE; return ASYNC_DONE
+#define async_init(state) (state)->_async_k=ASYNC_INIT
+#define async_done(state) (state)->_async_k==ASYNC_DONE
+#define async_call(f, state) (async_done(state) || (f)(state))
+#define await_delay(delay) \
+{ \
+  do { \
+    static unsigned long as_sleep; \
+    as_sleep = millis(); \
+    await(millis() - as_sleep > delay); \
+  } while(false); \
+}
+```
 
 Tratto da  https://github.com/naasking/async.h
   
