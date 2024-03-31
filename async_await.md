@@ -151,58 +151,6 @@ void loop() { // loop principale
 ```
 Link simulazione online: https://wokwi.com/projects/393802635182647297
 
-Stesso codice di prima ma con un **loop infinito** nella funzione main che garantisce la **non terminazione** del main. Inoltre nel loop principale si potrebbero eseguire altri task in parallelo al blink come la gestione di un input (ad es.un pulsante).
-
-```C++
-#include "async.h"
-
-bool blink1_running = true;
-int led1 = 13;
-int led2 = 12;
-byte pulsante=2;
-as_state pt1, pt2;
-
-async asyncTask1(as_state *pt) {
-  async_begin(pt);
-  // Loop secondario protothread
-  while(true) {
-	digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
-	await_delay(500);			// delay non bloccanti
-	digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
-	await_delay(500);			// delay non bloccanti
-  }
-  async_end;
-}
-
-async asyncTask2(as_state *pt) {
-  async_begin(pt);
-  // Loop secondario protothread
-  while(true) {
-	digitalWrite(led2, HIGH);   // turn the LED on (HIGH is the voltage level)
-	await_delay(1000);			// delay non bloccanti
-	digitalWrite(led2, LOW);    // turn the LED off by making the voltage LOW
-	await_delay(1000);			// delay non bloccanti
-  }
-  async_end;
-}
-
-// the setup function runs once when you press reset or power the board
-void setup() {
-  // initialize digital pin LED_BUILTIN as an output.
-  pinMode(led1, OUTPUT);
-  pinMode(led2, OUTPUT);
-  /* Initialize the async state variables with async_init(). */
-  async_init(&pt1);
-  async_init(&pt2);
-}
-
-void loop() { // loop principale
-  asyncTask1(&pt1);
-  asyncTask2(&pt2);
-  delay(10);
-}
-```
-Link simulazione online: https://wokwi.com/projects/393802635182647297
 
 ### **Pulsante toggle + blink**
 
