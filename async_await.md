@@ -279,7 +279,7 @@ void loop() { // loop principale
   delay(10);
 }
 ```
-Link simulazione online: https://wokwi.com/projects/370370343319005185
+Link simulazione online: https://wokwi.com/projects/393860825891092481
 
 ### **Osservazioni**:
 
