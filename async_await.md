@@ -150,9 +150,10 @@ void loop() { // loop principale
 }
 ```
 Link simulazione online: https://wokwi.com/projects/393802635182647297
+
 Stesso codice di prima ma con un **loop infinito** nella funzione main che garantisce la **non terminazione** del main. Inoltre nel loop principale si potrebbero eseguire altri task in parallelo al blink come la gestione di un input (ad es.un pulsante).
 
-``C++
+```C++
 #include "async.h"
 
 bool blink1_running = true;
