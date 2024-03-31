@@ -85,6 +85,7 @@ Funzioni:
 - **async_call(func, state)** Chiama in modo asincrono func(state) e restituisce true se l'esecuzione è terminata (opzionale). Puoi anche semplicemente chiamare direttamente func(state) che restituisce true/false.
 - **async_init(state)** Inizializza lo stato della subroutine asincrona
 - **async_done(state)** Restituisce vero se la subroutine asincrona ha completato l'esecuzione, altrimenti falso
+- **await_delay(x)** Attesa non bloccante per un certo numero x di millisecondi
 
 Tratto da  https://github.com/naasking/async.h
   
