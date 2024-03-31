@@ -221,9 +221,9 @@ async asyncTask3(as_state *pt) {
   // Loop secondario protothread
   while(true) {
 	if(digitalRead(pulsante)==HIGH){		// se è alto c'è stato un fronte di salita
-		stato = !(stato); 								// impostazione dello stato del toggle
+		stato = !(stato); 			// impostazione dello stato del toggle
 		await_delay(50);
-		await_while(digitalRead(pulsante)==HIGH);	// attendi fino al prossimo fronte di discesa
+		await_while(digitalRead(pulsante)==HIGH);  // attendi fino al prossimo fronte di discesa
 	}else{
 		async_yield;
 	}
