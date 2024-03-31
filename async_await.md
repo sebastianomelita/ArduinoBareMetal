@@ -90,9 +90,9 @@ bool blink1_running = true;
 int led1 = 13;
 int led2 = 12;
 byte pulsante=2;
-async pt1, pt2;
+as_state pt1, pt2;
 
-async_res asyncTask1(async *pt) {
+async asyncTask1(as_state *pt) {
   async_begin(pt);
   // Loop secondario protothread
   while(true) {
@@ -104,7 +104,7 @@ async_res asyncTask1(async *pt) {
   async_end;
 }
 
-async_res asyncTask2(async *pt) {
+async asyncTask2(as_state *pt) {
   async_begin(pt);
   // Loop secondario protothread
   while(true) {
