@@ -75,6 +75,17 @@ Caratteristiche:
 - Non dipende da un sistema operativo.
 - È un po' più semplice da comprendere rispetto ai protothread perché lo stato asincrono viene salvato dal chiamante anziché dal chiamato.
 
+Funzioni:
+- **async_begin(state)** Segna l'inizio di una subroutine asincrona
+- **async_end** Segna la fine di una subroutine asincrona
+- **async_yield** Restituisce l'esecuzione finché non viene richiamato nuovamente
+- **wait(cond)** Blocca l'avanzamento finché la cond non diventa vera
+- **await_while(cond)** Blocca l'avanzamento mentre cond è vera
+- **async_exit** Termina la subroutine asincrona corrente
+- **async_call(func, state)** Chiama in modo asincrono func(state) e restituisce true se l'esecuzione è terminata (opzionale). Puoi anche semplicemente chiamare direttamente func(state) che restituisce true/false.
+- **async_init(state)** Inizializza lo stato della subroutine asincrona
+- **async_done(state)** Restituisce vero se la subroutine asincrona ha completato l'esecuzione, altrimenti falso
+
 Tratto da  https://github.com/naasking/async.h
   
 ## **Esempi**
