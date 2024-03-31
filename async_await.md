@@ -225,50 +225,79 @@ realizza una funzione di **wait su condizione** che ritarda il thread corrente d
 
 Pulsante toggle che realizza blink e  antirimbalzo realizzato con una **schedulazione sequenziale con i ritardi** emulati all'interno di **task** diversi su **uno stesso thread**. La libreria usata è quella nativa dello ESP32 uasync.io:
 
-```python
+```C++
 #Alla pressione del pulsante si attiva o disattiva il lampeggo di un led 
-import uasyncio
-from machine import Pin
+#include "async.h"
 
-#attesa evento con tempo minimo di attesa
-async def waitUntilInLow(btn,t):
-    while btn.value():
-	    await uasyncio.sleep_ms(t)
+bool blink1_running = true;
+int led1 = 13;
+int led2 = 12;
+byte pulsante=2;
+bool stato;
+as_state pt1, pt2, pt3;
 
-async def toggle(index, btn, states):
-    while True:
-    	if btn.value():
-            states[index] = not states[index]
-            print(states[index])
-            await waitUntilInLow(btn,50)
-        else:
-            await uasyncio.sleep_ms(10)
+async asyncTask3(as_state *pt) {
+  async_begin(pt);
+  // Loop secondario protothread
+  while(true) {
+		if(digitalRead(pulsante)==HIGH){		// se è alto c'è stato un fronte di salita
+			stato = !(stato); 								// impostazione dello stato del toggle
+			await_delay(50);
+			await_while(digitalRead(pulsante)==HIGH);	// attendi fino al prossimo fronte di discesa
+		}else{
+			async_yield;
+		}
+  }
+  async_end;
+}
 
-async def blink(led, period_ms):
-    while True:
-        if stati[0]:
-            #print("on")
-            led.on()
-            await uasyncio.sleep_ms(period_ms)
-            #print("off")
-            led.off()
-            await uasyncio.sleep_ms(period_ms)
-        else:
-            led.off()
-            await uasyncio.sleep_ms(10)
+async asyncTask1(as_state *pt) {
+  async_begin(pt);
+  // Loop secondario protothread
+  while(true) {
+		if(stato){
+			digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
+			await_delay(500);						// delay non bloccanti
+			digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
+			await_delay(500);						// delay non bloccanti
+		}else{
+			digitalWrite(led1, LOW);
+			async_yield;
+		}	
+  }
+  async_end;
+}
 
-async def main(btn, led, states):
-    uasyncio.create_task(toggle(0, btn, states))
-    uasyncio.create_task(blink(led, 1000))
-    
-    while True:       
-        await uasyncio.sleep_ms(50)
+async asyncTask2(as_state *pt) {
+  async_begin(pt);
+  // Loop secondario protothread
+  while(true) {
+		digitalWrite(led2, HIGH);   // turn the LED on (HIGH is the voltage level)
+		await_delay(1000);			// delay non bloccanti
+		digitalWrite(led2, LOW);    // turn the LED off by making the voltage LOW
+		await_delay(1000);			// delay non bloccanti
+  }
+  async_end;
+}
 
-btn1 = Pin(12,Pin.IN)
-led1 = Pin(13,Pin.OUT)
-stati = [False]  # variabile globale che memorizza lo stato del pulsante
+// the setup function runs once when you press reset or power the board
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  /* Initialize the async state variables with async_init(). */
+	async_init(&pt1);
+	async_init(&pt2);
+	async_init(&pt3);
+	stato = false;
+}
 
-uasyncio.run(main(btn1, led1, stati))
+void loop() { // loop principale
+  asyncTask1(&pt1);
+	asyncTask2(&pt2);
+  asyncTask3(&pt3);
+  delay(10);
+}
 ```
 Link simulazione online: https://wokwi.com/projects/370370343319005185
 
