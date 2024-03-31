@@ -74,29 +74,64 @@ Se le operazioni da svolgere nei task sono **CPU intensive** è buona norma **de
 
 Di seguito è riportato un esempio di **blink sequenziale** in esecuzione su **due task** separati su scheda **ESP32**, con **IDE Wokwi** e  con la libreria **uasync.io**. La **programmazione sequenziale** del blink del led è **emulata** tramite una funzione delay() **non bloccante** ```asyncio.sleep()``` fornita dalla libreria ```uasync.io ```.
 
-```python
-import uasyncio
-from machine import Pin
+```C++
+#include "async.h"
 
-async def blink(led, period_ms):
-    while True:
-        led.on()
-        await uasyncio.sleep_ms(period_ms)
-        led.off()
-        await uasyncio.sleep_ms(period_ms)
+bool blink1_running = true;
+int led1 = 13;
+int led2 = 12;
+byte pulsante=2;
+async pt1, pt2;
 
-async def main(led1, led2):
-    uasyncio.create_task(blink(led1, 1000))
-    uasyncio.create_task(blink(led2, 2000))
-    await uasyncio.sleep_ms(10000)
-    print('Ending all tasks')
-    led1.off()
-    led2.off()
-    
-led1 = Pin(12,Pin.OUT)
-led2 = Pin(18,Pin.OUT)
+async_res asyncTask1(async *pt) {
+  async_begin(pt);
+  // Loop secondario protothread
+  while(true) {
+		digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
+		await_delay(500);			// delay non bloccanti
+		digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
+		await_delay(500);			// delay non bloccanti
+  }
+  async_end;
+}
 
-uasyncio.run(main(led1, led2))
+async_res asyncTask2(async *pt) {
+  async_begin(pt);
+  // Loop secondario protothread
+  while(true) {
+		digitalWrite(led2, HIGH);   // turn the LED on (HIGH is the voltage level)
+		await_delay(1000);			// delay non bloccanti
+		digitalWrite(led2, LOW);    // turn the LED off by making the voltage LOW
+		await_delay(1000);			// delay non bloccanti
+  }
+  async_end;
+}
+
+// the setup function runs once when you press reset or power the board
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  /* Initialize the async state variables with async_init(). */
+	async_init(&pt1);
+	async_init(&pt2);
+}
+
+void loop() { // loop principale
+  asyncTask1(&pt1);
+	asyncTask2(&pt2);
+ /*   
+	// gestione pulsante
+	if (digitalRead(pulsante) == HIGH) {
+		// turn LED on:
+		digitalWrite(led2, HIGH);
+	}else{
+		// turn LED off:
+		digitalWrite(led2, LOW);
+	}
+  */
+  delay(10);
+}
 ```
 Link simulazione online: https://wokwi.com/projects/369678530188573697
 
@@ -161,7 +196,7 @@ void loop() { // loop principale
   delay(10);
 }
 ```
-Link simulazione online: https://wokwi.com/projects/369680948206974977
+Link simulazione online: https://wokwi.com/projects/393802635182647297
 
 ### **Pulsante toggle + blink**
 
