@@ -67,7 +67,7 @@
 /**
  * The async computation status
  */
-typedef enum ASYNC_EVT { ASYNC_INIT = 0, ASYNC_CONT = ASYNC_INIT, ASYNC_DONE = 1 } async_res;
+typedef enum ASYNC_EVT { ASYNC_INIT = 0, ASYNC_CONT = ASYNC_INIT, ASYNC_DONE = 1 } async;
 
 /**
  * Declare the async state
@@ -77,7 +77,7 @@ typedef enum ASYNC_EVT { ASYNC_INIT = 0, ASYNC_CONT = ASYNC_INIT, ASYNC_DONE = 1
 /**
  * Core async structure, optional to use.
  */
-struct async { async_state; };
+struct as_state { async_state; };
 
 /**
  * Mark the start of an async subroutine
