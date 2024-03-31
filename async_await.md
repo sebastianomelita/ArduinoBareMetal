@@ -122,8 +122,8 @@ void setup() {
   pinMode(led1, OUTPUT);
   pinMode(led2, OUTPUT);
   /* Initialize the async state variables with async_init(). */
-	async_init(&pt1);
-	async_init(&pt2);
+  async_init(&pt1);
+  async_init(&pt2);
 }
 
 void loop() { // loop principale
