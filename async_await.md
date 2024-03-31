@@ -96,10 +96,10 @@ async_res asyncTask1(async *pt) {
   async_begin(pt);
   // Loop secondario protothread
   while(true) {
-		digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
-		await_delay(500);			// delay non bloccanti
-		digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
-		await_delay(500);			// delay non bloccanti
+	digitalWrite(led1, HIGH);   // turn the LED on (HIGH is the voltage level)
+	await_delay(500);			// delay non bloccanti
+	digitalWrite(led1, LOW);    // turn the LED off by making the voltage LOW
+	await_delay(500);			// delay non bloccanti
   }
   async_end;
 }
@@ -108,10 +108,10 @@ async_res asyncTask2(async *pt) {
   async_begin(pt);
   // Loop secondario protothread
   while(true) {
-		digitalWrite(led2, HIGH);   // turn the LED on (HIGH is the voltage level)
-		await_delay(1000);			// delay non bloccanti
-		digitalWrite(led2, LOW);    // turn the LED off by making the voltage LOW
-		await_delay(1000);			// delay non bloccanti
+	digitalWrite(led2, HIGH);   // turn the LED on (HIGH is the voltage level)
+	await_delay(1000);			// delay non bloccanti
+	digitalWrite(led2, LOW);    // turn the LED off by making the voltage LOW
+	await_delay(1000);			// delay non bloccanti
   }
   async_end;
 }
@@ -128,7 +128,7 @@ void setup() {
 
 void loop() { // loop principale
   asyncTask1(&pt1);
-	asyncTask2(&pt2);
+asyncTask2(&pt2);
  /*   
 	// gestione pulsante
 	if (digitalRead(pulsante) == HIGH) {
