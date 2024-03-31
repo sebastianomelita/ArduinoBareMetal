@@ -67,7 +67,16 @@ Il primo messaggio in coda viene di volta in volta estratto e processato per ess
 
 Se le operazioni da svolgere nei task sono **CPU intensive** è buona norma **delegarle** a fornitori di servizi **esterni** al thread corrente, questi possono essere servizi **in rete** oppure servizi in esecuzione su **altri thread**. Una volta **completata** l'operazione delegata (può trascorrere un certo tempo), viene richiamata una **callback** (sul thread del loop degli eventi) con cui si **notificano** i **risultati** dell'operazione.
 
+Purtroppo, la libreria standard C++ di Arduino non supporta, per il momento, direttamente il costrutto async/await. Tuttavia, possiamo simulare un comportamento simile utilizzando la libreria di macro [async.h](async.h) , che fornisce un'implementazione della programmazione concorrente su Arduino basata sui **Duff's device** su cui si basano i **protothread**. 
 
+Caratteristiche:
+- È C. puro e portatile al 100%.
+- Richiede pochissimo stato (2 byte).
+- Non dipende da un sistema operativo.
+- È un po' più semplice da comprendere rispetto ai protothread perché lo stato asincrono viene salvato dal chiamante anziché dal chiamato.
+
+Tratto da  https://github.com/naasking/async.h
+  
 ## **Esempi**
 
 ### **Blink sequenziali interagenti**
