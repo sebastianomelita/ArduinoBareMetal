@@ -87,6 +87,11 @@ Funzioni:
 - **async_done(state)** Restituisce vero se la subroutine asincrona ha completato l'esecuzione, altrimenti falso
 - **await_delay(x)** Attesa non bloccante per un certo numero x di millisecondi
 
+Precauzioni:
+- Come con i protothread, devi fare attenzione alle **istruzioni switch** all'interno di una subroutine asincrona. Attenendosi a questa semplice regola non si avranno mai problemi: posizionare ogni istruzione switch all'interno di una sua funzione. Questa, in genere, è comunque una buona pratica.
+- Come con i protothread, non è possibile effettuare chiamate di **sistema bloccanti** e preservare la semantica asincrona. Queste devono essere **trasformate** in chiamate **non bloccanti** che testano una condizione.
+
+
 Tratto da  https://github.com/naasking/async.h
   
 ## **Esempi**
