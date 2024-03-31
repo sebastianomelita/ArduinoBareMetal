@@ -128,7 +128,7 @@ void setup() {
 
 void loop() { // loop principale
   asyncTask1(&pt1);
-asyncTask2(&pt2);
+  asyncTask2(&pt2);
  /*   
 	// gestione pulsante
 	if (digitalRead(pulsante) == HIGH) {
