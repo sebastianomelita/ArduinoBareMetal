@@ -91,6 +91,8 @@ Precauzioni:
 - Come con i protothread, bisogna fare attenzione alle **istruzioni switch** all'interno di una subroutine asincrona. Attenendosi a questa semplice regola non si avranno mai problemi: posizionare ogni istruzione switch all'interno di una sua funzione. Questa, in genere, è comunque una buona pratica.
 - Come con i protothread, non è possibile effettuare chiamate di **sistema bloccanti** e preservare la semantica asincrona. Queste devono essere **trasformate** in chiamate **non bloccanti** che testano una condizione.
 
+### **Definizione delle macro async/await**
+
 Nelle situazioni in cui non è possibile includere librerie come accade nel **simulatore Tinkercad**, allora si può inserire in cima al file la definizione delle **macro** che definiscono i costrutti **async/await**:
 
 ```C++
