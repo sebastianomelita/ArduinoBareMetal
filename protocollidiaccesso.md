@@ -190,7 +190,7 @@ Fig 4
 - CSMA **trasmette solo se “sente”** il canale **libero**, ciò determina **minore** probabiltà di collisione rispetto ad Aloha.
 - CSMA deve implementare un meccanismo di **ascolto** del canale **prima** della **trasmissione** (**CCA: Clear Channel Assesment**).
 
-> [Simulatore csma](simalohaasync.md)
+> [Simulatore csma](simcsmaasync.md)
 
 > [Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
