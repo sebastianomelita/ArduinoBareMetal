@@ -108,7 +108,7 @@ While(true){
 <img src="alohaflow.png" alt="alt text" width="400">
 Fig 2
 
-> [Simulatore aloha]simalohaasync.md)
+> [Simulatore aloha](simalohaasync.md)
 
 > [Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
