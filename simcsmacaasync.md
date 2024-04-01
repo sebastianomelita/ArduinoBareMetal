@@ -19,7 +19,8 @@ Il **log** di un **generico dispositivo** informa sulla **presenza** sul BUS di 
 
 
 	 
-Simulazione in Tinkercad https://www.tinkercad.com/embed/8EmEo7VmnNR=1
+Simulazione in Tinkercad https://www.tinkercad.com/embed/8EmEo7VmnNR?editbtn=1
+
 
 ### **Descrizione schema**
 
