@@ -19,7 +19,7 @@ Il **log** di un **generico dispositivo** informa sulla **presenza** sul BUS di 
 
 
 	 
-<iframe width="1000" height="625" src="https://www.tinkercad.com/embed/6e029OFG4e4?editbtn=1" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe>
+https://www.tinkercad.com/embed/fEcUAKJk01R?editbtn=1
 
 ### **Descrizione schema**
 
