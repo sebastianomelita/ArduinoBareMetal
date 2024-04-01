@@ -110,6 +110,13 @@ I **thread** rappresentano blocchi di codice la cui esecuzione si svolge in mani
 **Arduino** non possiede capacità di multithreading reale di **tipo preemptive** (competitvo con prerilascio) e realizzato in HW, ciònonostante è comunque possibile realizzare in SW una schedulazione di **tipo non preemptive** (collaborativa senza prerilascio) utilizzando i **protothread**.
 
 ## **Ricevitore**
+Definizione delle variabili con il ruolo di descrittore degli stati asincroni e prototipi delle funzioni asincrone (necessari perchè il compilatore di Tinkercad li richiede in quanto non riordina casualmente la definizione dei tipi):
+
+```C++
+as_state ptRcv, ptSend;
+async rcvTask(as_state *pt);
+async sendTask(as_state *pt);
+```
 
 **Protocollo ALOHA in ricezione pseudocodice:**
 
@@ -127,25 +134,33 @@ While(true){
 ### **Definizione del thread di ricezione messaggio**
 
 ```C++
-pt ptRcv;
-int rcvThread(struct pt* pt) {
-  PT_BEGIN(pt);
+async rcvTask(as_state *pt) {
+  async_begin(pt);
   // Loop forever
   while(true) {
 	digitalWrite(led, HIGH);
-	PT_SLEEP(pt, 50);
+	await_delay(50);
 	digitalWrite(led, LOW);
-	PT_SLEEP(pt, 50);	
-	PT_WAIT_UNTIL(pt, dataFrameArrived());
+	await_delay(50);	
+	await(dataFrameArrived());
 	rcvEventCallback();
 	Serial.println("Premi il tasto per trasmettere un ack.");
-	PT_WAIT_UNTIL(pt, digitalRead(ackBtn));
+	await(digitalRead(ackBtn));
 	sendAck();  
   }
-  PT_END(pt);
+  async_end;
+}
 ```
 
 ## **Trasmettitore**
+
+## **Ricevitore**
+Definizione delle variabili con il ruolo di descrittore degli stati asincroni e prototipi delle funzioni asincrone (necessari perchè il compilatore di Tinkercad li richiede in quanto non riordina casualmente la definizione dei tipi):
+
+```C++
+as_state ptRcv;
+async rcvTask(as_state *pt);
+```
 
 **Protocollo ALOHA in trasmissione in pseudocodice:**
 ```C++
@@ -167,15 +182,14 @@ while(N <= max){
 ### **Definizione del thread di trasmissione messaggio**
 
 ```C++
-pt ptSend;
-int sendThread(struct pt* pt) {
-  PT_BEGIN(pt);
+async sendTask(as_state *pt) {
+  async_begin(pt);
   // Loop forever
   while(true) {
 	while(n < MAXATTEMPTS){
 		sendData(&txobj);
 		Serial.println("Attendo ack o timeout: ");
-		PT_WAIT_UNTIL(pt, ackOrTimeout());
+		await(ackOrTimeout());
 		if(ack_received()){
 			n = MAXATTEMPTS;
 			Serial.println("Ricevuto ack: ");
@@ -187,23 +201,21 @@ int sendThread(struct pt* pt) {
 			Serial.print((float) tt/1000);
 			Serial.println(" secondi");
 			/* timeout scaduto: ritrasmissione*/
-			PT_SLEEP(pt, tt);
+			await_delay(tt);
 			Serial.print(" Ritrasmesso.");
-			PT_WAIT_UNTIL(pt, digitalRead(txBtn));
-			digitalWrite(led, HIGH);
-			PT_SLEEP(pt, 50);
-			digitalWrite(led, LOW);
-			PT_SLEEP(pt, 50);	
-			n = 0;  //azzera conteggio			
+			n++;			
 		}
 	 }
 	 Serial.println("Premi il tasto per trasmettere un messaggio.");
-	 PT_WAIT_UNTIL(pt, digitalRead(txBtn));
-	 n = 0;
+	 await(digitalRead(txBtn));
+	 digitalWrite(led, HIGH);
+	 await_delay(50);
+	 digitalWrite(led, LOW);
+	 await_delay(50);	
+	 n = 0;  //azzera conteggio
   }
-  PT_END(pt);
+  async_end;
 }
-
 ```
 ### **Backoff a finestra variabile**
 
