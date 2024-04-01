@@ -533,7 +533,7 @@ Lo scopo di tale raddoppio è quello di **adattare** la dimensione della finestr
 <img src="finestra.png" alt="alt # **text" width="600">
 Fig 14
 
-> [Simulatore csma/ca](simcsmaca.md)
+> [Simulatore csma/ca](simcsmacaasync.md)
 
 > [Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
 
