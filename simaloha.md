@@ -1,4 +1,4 @@
->[Torna all'indice](indexstatifiniti.md)
+>[Torna all'indice](indexstatifiniti.md)>Simulatore con async/await](simalohaasync.md)
 ## **SIMULATORE PROTOCOLLO ALOHA PER ARDUINO E TINKERCAD CON I PROTOTHREAD**
 
 ![Aloha](Aloha.png)
@@ -1033,12 +1033,4 @@ void loop() // run over and over
 
 
 
-
-
-
-
-
-
-
-
->[Torna all'indice](indexstatifiniti.md)
+>[Torna all'indice](indexstatifiniti.md)>Simulatore con async/await](simalohaasync.md)
