@@ -209,16 +209,15 @@ While(true){
 ### **Definizione del thread di ricezione messaggio**
 
 ```C++
-pt ptRcv;
-int rcvThread(struct pt* pt) {
-  PT_BEGIN(pt);
+async rcvTask(as_state *pt) {
+  async_begin(pt);
   // Loop forever
   while(true) {
-	PT_WAIT_UNTIL(pt, dataFrameArrived());
+	await(dataFrameArrived());
 	rcvEventCallback();
 	sendAck();  
   }
-  PT_END(pt);
+  async_end;
 }
 ```
 
@@ -248,24 +247,23 @@ while(N <= max){
 ### **Definizione del thread di trasmissione messaggio**
 
 ```C++
-pt ptSend;
-int sendThread(struct pt* pt) {
-  PT_BEGIN(pt);
+async sendTask(as_state *pt) {
+  async_begin(pt);
   // Loop forever
   while(true) {
 	 Serial.println("Premi il tasto per trasmettere un messaggio.");
-	 PT_WAIT_UNTIL(pt, digitalRead(txBtn));
+	 await(digitalRead(txBtn));
 	 digitalWrite(led, HIGH);
-	 PT_SLEEP(pt, 50);
+	 await_delay(50);
 	 digitalWrite(led, LOW);
-	 PT_SLEEP(pt, 50);	
+	 await_delay(50);	
 	 n = 0;  //azzera conteggio
 	 while(n < MAXATTEMPTS){
 		Serial.println("Attendo che si liberi il canale: ");
-		PT_WAIT_UNTIL(pt, channelFree()); 
+		await(channelFree()); 
 		sendData(&txobj);
 		Serial.println("Attendo ack o timeout: ");
-		PT_WAIT_UNTIL(pt, ackOrTimeout());
+		await(ackOrTimeout());
 		if(ack_received()){
 			n = MAXATTEMPTS;
 			Serial.println("Ricevuto ack: ");
@@ -277,13 +275,13 @@ int sendThread(struct pt* pt) {
 			Serial.print((float) tt/1000);
 			Serial.println(" secondi");
 			/* timeout scaduto: ritrasmissione*/
-			PT_SLEEP(pt, tt);
+			await_delay(tt);
 			Serial.print(" Ritrasmesso.");
 			n++;			
 		}
 	 }
   }
-  PT_END(pt);
+  async_end;
 }
 ```
 ### **Backoff a finestra variabile**
