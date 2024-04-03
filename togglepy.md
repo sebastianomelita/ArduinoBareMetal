@@ -1,7 +1,7 @@
 >[Torna all'indice generale](index.md) >[versione in C++](toggle.md)
 
 
-## **PULSANTI CON LETTURA DI UN FRONTE**
+## **PULSANTI ATTIVI SU UN FRONTE**
 
 ###  **PULSANTE TOGGLE**
 
