@@ -507,16 +507,14 @@ void onEvent (ev_t ev) {
 
       // data frame received in ping slot
       case EV_RXCOMPLETE:
-          // Any data to be received?
-	  if (LMIC.dataLen != 0 || LMIC.dataBeg != 0) {
-		 // Data was received. Extract port number if any.
-		 u1_t bPort = 0;
-		 if (LMIC.txrxFlags & TXRX_PORT)
-			bPort = LMIC.frame[LMIC.dataBeg – 1];
-		 // Call user-supplied function with port #, pMessage, nMessage;
-		 // nMessage might be zero.
-		 do_recv(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
-	  }
+         // data received in ping slot
+            if (LMIC.dataLen) {
+              Serial.println(F("Received downlink message:"));
+              // Stampa il payload ricevuto
+              Serial.write(LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
+              Serial.println();
+              do_recv(bPort, LMIC.frame + LMIC.dataBeg, LMIC.dataLen);
+            }
       break;    
     }
 }
