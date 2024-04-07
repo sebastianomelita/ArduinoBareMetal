@@ -1,5 +1,5 @@
 >[Torna all'indice generale](index.md)
-## **Gateways per reti di sensori con modem LoRaWan SW (LMIC)**
+## **Scheda sensori con modem LoRaWan SW (LMIC)**
 BUS cablato:
 1. [Dallas](lorawanswdallas.md)
 2. [I2C](gatewayi2clorasw.md)
