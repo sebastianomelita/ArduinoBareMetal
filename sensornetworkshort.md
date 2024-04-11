@@ -26,7 +26,7 @@ Possibilità di topologie **ridondate a doppio anello** (treni, industria)
 
 Spesso sono **reti miste** cioè composte da **sottoreti eterogenee**: 
 - **più reti di sensori** costituite da dispositivi sensori e da nodi di smistamento. Sono spesso realizzate in tecnologie non IP proprietarie.
-- **una rete centrale di distribuzione**. E' una rete IP e può essere una LAN, spesso interconessa ad Internet, oppure Internet stessa.
+- **una rete centrale di distribuzione**. E' una rete IP e può essere una LAN, spesso interconessa ad Internet, oppure è Internet stessa.
 
  <img src="sensornet1.png" alt="alt text" width="1000">
  
