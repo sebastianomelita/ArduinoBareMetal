@@ -15,8 +15,12 @@ L'ente regolatore, in Italia il Ministero dello Sviluppo Economico (MISE), fissa
 
 
 I criteri riguardano anche alcuni dettagli fisici e tecnici:
+- **canali** La banda EU863-870 MHz supporta un minimo di 24 canali e un massimo di 80 canali.
+   <img src="img/duty-cycle-multi-band.png" alt="alt text" width="600">
 - Il **Duty Cycle** fa riferimento al rapporto fra il tempo di trasmissione e il tempo di ricezione più il tempo di ricezione. Ad esempio un duty cycle dell'1% impone che a fronte della trasmissione di un pacchetto dati di un secondo, l’apparato non possa trasmettere per 99 secondi. Questo parametro, di fatto, limita a trasmissioni brevi, non frequenti ed esclude gli streaming audio e video. La durata predefinita del periodo di osservazione è di 1 ora, se non diversamente specificato per la banda di frequenza specifica. Attualmente tutte le bande di frequenza utilizzano il periodo di osservazione predefinito di 1 ora.
+  
   <img src="img/duty-cycle-multi-band.png" alt="alt text" width="600">
+  In questo caso, la stessa sorgente trasmette su due canali in due sottobande diverse con una occupazione di due unità su 10 (cioè 20 su 100) per ciascun ciascun canale. Il duty cycle totale della sorgente, in questo caso, è del 60%.
 
 - **Potenza disponibile massima**. La potenza in Watt. In genere dell’ordine dei millesimi di watt (mW) è spesso espressa in dBm.
 In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla densità di potenza, ovvero alla potenza, in milliwatt per MHz o per KHz. E’ il caso degli apparati WLAN E HiperLAN.
