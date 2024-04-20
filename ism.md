@@ -41,7 +41,7 @@ LBT (listen befor Talk) è una modalità di accesso nella quale un dispositivo c
     - o il dispositivo esegue immediatamente un nuovo CCA ma, stavolta, su un altro canale. Quest'ultima tecnica si chiama AFA. 
 
 
-  <img src="img/13638_2019_1502_Fig3_HTML.png" alt="alt text" width="600">
+<img src="img/13638_2019_1502_Fig3_HTML.png" alt="alt text" width="600">
 
 
 Quando questi 2 aspetti vengono implementati, il duty sycle viene ridotto a 100 s di tempo di trasmissione cumulativo all'ora per ogni possibile intervallo di 200 kHz, che corrisponde a un rapporto del ciclo di lavoro del 2,7%.
