@@ -15,16 +15,16 @@ L'ente regolatore, in Italia il Ministero dello Sviluppo Economico (MISE), fissa
 
 
 I **criteri** riguardano anche alcuni dettagli fisici e tecnici:
+- Il **Duty Cycle** fa riferimento al rapporto fra il tempo di trasmissione e il tempo di ricezione più il tempo di ricezione. Ad esempio un duty cycle dell'1% impone che a fronte della trasmissione di un pacchetto dati di un secondo, l’apparato non possa trasmettere per 99 secondi. Questo parametro, di fatto, limita a trasmissioni brevi, non frequenti ed esclude gli streaming audio e video. La durata predefinita del periodo di osservazione è di 1 ora, se non diversamente specificato per la banda di frequenza specifica. Attualmente tutte le bande di frequenza utilizzano il periodo di osservazione predefinito di 1 ora.
+  
+  <img src="img/duty-cycle-multi-band.png" alt="alt text" width="600">
+  In questo caso, la stessa sorgente trasmette su due canali in due sottobande diverse con una occupazione di due unità su 10 (cioè 20 su 100) per ciascun ciascun canale. Il duty cycle totale della sorgente, in questo caso, è del 60%.
+  
 - **Canali e bande**. I **canali** sono intervalli di frequenza adoperati per allocare nel dominio della frequenza la trasmissione di una certa sorgente. Un canale è caratterizzato da una frequenza centrale e da una sua ampiezza (rappresentabile anche come escursione dalla frequenza centrale. Le **bande** sono intervalli di frequenza all'interno delle quali sono allocabili un certo numero di canali. Organizzare i canali in **bande** può servire per isolare **gruppi di canali** che possono essere adoperati per gli **stessi servizi**. Organizzare i canali in **sottobande** può servire per isolare **gruppi di canali** a cui applicare le **stesse regole**. Le sottobande LoraWAN in Europa sono :  
 
 <img src="img/LoRaWAN_Sub-bands.webp" alt="alt text" width="600">
 
 >Di queste, 5 (numerate da B0 a B5) sono utilizzabili dai nodi di terminali e permettono, mediante tecnica FDM che parallelizzi il flusso di un unica sorgente su 5 canali contemporaneamente, un duty cycle complessivo del 3.2%. Il **gateway** LoRaWAN utilizza un'architettura a basso costo e basso consumo energetico che consente il posizionamento di una **coppia di radio** con larghezza di banda di **1 MHz** ovunque nella banda ISM dell'UE. Gli **otto canali** di ricezione LoRa sono posizionati all'interno di queste due bande da 1 MHz. Quindi una applicazione finale, avrà la possibilità di poter spalmare il duty cycle su **due sole sottofasce**. Nella maggior parte delle reti distribuite queste vantaggiosamente si concentreranno sulle allocazioni di uplink dell'1%. Ciò significa che ci si può ragionevolmente aspettare il **2% di duty cycle** aggregato disponibile per una **stessa sorgente**.
-
-- Il **Duty Cycle** fa riferimento al rapporto fra il tempo di trasmissione e il tempo di ricezione più il tempo di ricezione. Ad esempio un duty cycle dell'1% impone che a fronte della trasmissione di un pacchetto dati di un secondo, l’apparato non possa trasmettere per 99 secondi. Questo parametro, di fatto, limita a trasmissioni brevi, non frequenti ed esclude gli streaming audio e video. La durata predefinita del periodo di osservazione è di 1 ora, se non diversamente specificato per la banda di frequenza specifica. Attualmente tutte le bande di frequenza utilizzano il periodo di osservazione predefinito di 1 ora.
-  
-  <img src="img/duty-cycle-multi-band.png" alt="alt text" width="600">
-  In questo caso, la stessa sorgente trasmette su due canali in due sottobande diverse con una occupazione di due unità su 10 (cioè 20 su 100) per ciascun ciascun canale. Il duty cycle totale della sorgente, in questo caso, è del 60%.
 
 - **Potenza disponibile massima**. La potenza in Watt. In genere dell’ordine dei millesimi di watt (mW) è spesso espressa in dBm.
 In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla densità di potenza, ovvero alla potenza, in milliwatt per MHz o per KHz. E’ il caso degli apparati WLAN E HiperLAN.
