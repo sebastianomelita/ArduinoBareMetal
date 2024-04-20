@@ -46,6 +46,9 @@ I **parametri** e le **limitazioni** discusse sono tecniche volte a ridurre **mu
 Sitografia:
 - https://blog.semtech.com/certifying-an-end-device-for-lorawan-european-sub-bands
 - https://www.thethingsnetwork.org/docs/lorawan/regional-limitations-of-rf-use/
+- https://www.thethingsnetwork.org/docs/lorawan/regional-parameters/eu868/
+- https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/
+- https://docs.heltec.org/general/lorawan_frequency_plans.html
 - https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/
 - https://jwcn-eurasipjournals.springeropen.com/articles/10.1186/s13638-019-1502-5
   
