@@ -43,6 +43,12 @@ I **parametri** e le **limitazioni** discusse sono tecniche volte a ridurre **mu
 <img src="868.png" alt="alt text" width="800">
 <img src="2400.png" alt="alt text" width="800">
 
+Sitografia:
+- https://blog.semtech.com/certifying-an-end-device-for-lorawan-european-sub-bands
+- https://www.thethingsnetwork.org/docs/lorawan/regional-limitations-of-rf-use/
+- https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/
+- https://jwcn-eurasipjournals.springeropen.com/articles/10.1186/s13638-019-1502-5
+  
 >[Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
 
 
