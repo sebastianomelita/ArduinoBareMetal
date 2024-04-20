@@ -33,18 +33,18 @@ I **criteri** riguardano anche alcuni dettagli fisici e tecnici:
 >Di queste, 5 (numerate da B0 a B5) sono utilizzabili dai nodi di terminali e permettono, mediante tecnica FDM che parallelizzi il flusso di un unica sorgente su 5 canali contemporaneamente, un duty cycle complessivo del 3.2%. Il **gateway** LoRaWAN utilizza un'architettura a basso costo e basso consumo energetico che consente il posizionamento di una **coppia di radio** con larghezza di banda di **1 MHz** ovunque nella banda ISM dell'UE. Gli **otto canali** di ricezione LoRa sono posizionati all'interno di queste due bande da 1 MHz. Quindi una applicazione finale, avrà la possibilità di poter spalmare il duty cycle su **due sole sottofasce**. Nella maggior parte delle reti distribuite queste vantaggiosamente si concentreranno sulle allocazioni di uplink dell'1%. Ciò significa che ci si può ragionevolmente aspettare il **2% di duty cycle** aggregato disponibile per una **stessa sorgente**.
 
    Uplink:
-     -  868.1 - SF7BW125 to SF12BW125
-     -  868.3 - SF7BW125 to SF12BW125 and SF7BW250
-     -  868.5 - SF7BW125 to SF12BW125
-     -  867.1 - SF7BW125 to SF12BW125
-     -  867.3 - SF7BW125 to SF12BW125
-     -  867.5 - SF7BW125 to SF12BW125
-     -  867.7 - SF7BW125 to SF12BW125
-     -  867.9 - SF7BW125 to SF12BW125
-     -  868.8 - FSK
+      -  868.1 - SF7BW125 to SF12BW125
+      -  868.3 - SF7BW125 to SF12BW125 and SF7BW250
+      -  868.5 - SF7BW125 to SF12BW125
+      -  867.1 - SF7BW125 to SF12BW125
+      -  867.3 - SF7BW125 to SF12BW125
+      -  867.5 - SF7BW125 to SF12BW125
+      -  867.7 - SF7BW125 to SF12BW125
+      -  867.9 - SF7BW125 to SF12BW125
+      -  868.8 - FSK
     Downlink:
-     -  Uplink channels 1-9 (RX1)
-     -  869.525 - SF9BW125 (RX2)
+      -  Uplink channels 1-9 (RX1)
+      -  869.525 - SF9BW125 (RX2)
 
 
 - **Potenza disponibile massima**. La potenza in Watt. In genere dell’ordine dei millesimi di watt (mW) è spesso espressa in dBm.
