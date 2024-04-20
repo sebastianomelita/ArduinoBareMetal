@@ -24,7 +24,6 @@ I **criteri** riguardano anche alcuni dettagli fisici e tecnici:
 
 <img src="img/LoRaWAN_Sub-bands.webp" alt="alt text" width="600">
 
-> Banda EUEU863-870 MHz
     - K. (863 MHz - 865 MHz): 0.1%, 25 mW ERP       (uplink)
     - L. (865 MHz - 868 MHz): 1%, 25 mW ERP         (uplink)
     - M. (868 MHz - 868.6 MHz): 1%, 25 mW ERP       (uplink)
