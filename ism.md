@@ -75,9 +75,9 @@ I **parametri** e le **limitazioni** discusse sono tecniche volte a ridurre **mu
 ### **Allocazione bande ISM**
 Schemi riassuntivi che ilustrano la situazione normativa per le varie bande ISM:
 
-<img src="433.png" alt="alt text" width="800">
-<img src="868.png" alt="alt text" width="800">
-<img src="2400.png" alt="alt text" width="800">
+<img src="433.png" alt="alt text" width="600">
+<img src="868.png" alt="alt text" width="600">
+<img src="2400.png" alt="alt text" width="600">
 
 Sitografia:
 - https://blog.semtech.com/certifying-an-end-device-for-lorawan-european-sub-bands
