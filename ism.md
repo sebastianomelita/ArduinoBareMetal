@@ -50,7 +50,7 @@ Il controllo CCA deve avere una durata minima di 160 μs. Dopo questo controllo 
 
 ### **tecnologia LoraWAN: schema riassuntivo**
 
-<img src="img/eulorapecs.png" alt="alt text" width="600">
+<img src="img/eulorapecs.png" alt="alt text" width="200">
 
 I **parametri** e le **limitazioni** discusse sono tecniche volte a ridurre **mutui disturbi** fra i vari servizi dei vari utenti e la **monopolizzazione** di un canale da parte di un singolo utente.
 
