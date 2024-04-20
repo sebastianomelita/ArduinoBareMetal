@@ -30,9 +30,10 @@ I **criteri** riguardano anche alcuni dettagli fisici e tecnici:
     - N. (868.7 MHz - 869.2 MHz): 0.1%, 25 mW ERP   (uplink)
     - P. (869.4 MHz - 869.65 MHz): 10%, 500 mW ERP  (downlink)
     - Q. (869.7 MHz - 870 MHz): 1%, 25 mW ERP       (uplink)
->Di queste, 5 (numerate da B0 a B5) sono utilizzabili dai nodi di terminali e permettono, mediante tecnica FDM che parallelizzi il flusso di un unica sorgente su 5 canali contemporaneamente, un duty cycle complessivo del 3.2%. Il **gateway** LoRaWAN utilizza un'architettura a basso costo e basso consumo energetico che consente il posizionamento di una **coppia di radio** con larghezza di banda di **1 MHz** ovunque nella banda ISM dell'UE. Gli **otto canali** di ricezione LoRa sono posizionati all'interno di queste due bande da 1 MHz. Quindi una applicazione finale, avrà la possibilità di poter spalmare il duty cycle su **due sole sottofasce**. Nella maggior parte delle reti distribuite queste vantaggiosamente si concentreranno sulle allocazioni di uplink dell'1%. Ciò significa che ci si può ragionevolmente aspettare il **2% di duty cycle** aggregato disponibile per una **stessa sorgente**.
+    
+*Di queste, 5 (numerate da B0 a B5) sono utilizzabili dai nodi di terminali e permettono, mediante tecnica FDM che parallelizzi il flusso di un unica sorgente su 5 canali contemporaneamente, un duty cycle complessivo del 3.2%. Il **gateway** LoRaWAN utilizza un'architettura a basso costo e basso consumo energetico che consente il posizionamento di una **coppia di radio** con larghezza di banda di **1 MHz** ovunque nella banda ISM dell'UE. Gli **otto canali** di ricezione LoRa sono posizionati all'interno di queste due bande da 1 MHz. Quindi una applicazione finale, avrà la possibilità di poter spalmare il duty cycle su **due sole sottofasce**. Nella maggior parte delle reti distribuite queste vantaggiosamente si concentreranno sulle allocazioni di uplink dell'1%. Ciò significa che ci si può ragionevolmente aspettare il **2% di duty cycle** aggregato disponibile per una **stessa sorgente**.
 
->   - Uplink:
+*   - Uplink:
       -  868.1 - SF7BW125 to SF12BW125
       -  868.3 - SF7BW125 to SF12BW125 and SF7BW250
       -  868.5 - SF7BW125 to SF12BW125
@@ -42,7 +43,7 @@ I **criteri** riguardano anche alcuni dettagli fisici e tecnici:
       -  867.7 - SF7BW125 to SF12BW125
       -  867.9 - SF7BW125 to SF12BW125
       -  868.8 - FSK
->   -  Downlink:
+*   -  Downlink:
       -  Uplink channels 1-9 (RX1)
       -  869.525 - SF9BW125 (RX2)
 
