@@ -13,6 +13,7 @@ In tabella un elenco parziale con le principali limitazioni:
 
 L'ente regolatore, in Italia il Ministero dello Sviluppo Economico (MISE), fissa alcuni criteri per stabilire il diritto di accesso quali la distinzione nell’uso privato e non o la destinazione di frequenze ad uso contemporaneo a differenti servizi aventi differenti finalità. L’uso delle bande libere è destinato ad apparati denominati SRD (Short Range Devices). Curiosamente la banda 862-876 MHz (sub-GHz) molto utilizzata da dispositivi SRD, è gestita dal Ministero della Difesa e non dal MISE.  
 
+I **parametri** e le **limitazioni** che vedremo sono dei criteri di accesso al mezzo radio volti a ridurre **mutui disturbi** fra i vari servizi dei vari utenti e la **monopolizzazione** di un canale da parte di un singolo utente.
 
 I **criteri** riguardano anche alcuni dettagli fisici e tecnici:
 - Il **Duty Cycle** fa riferimento al rapporto fra il tempo di trasmissione e il tempo di ricezione più il tempo di ricezione. Ad esempio un duty cycle dell'1% impone che a fronte della trasmissione di un pacchetto dati di un secondo, l’apparato non possa trasmettere per 99 secondi. Questo parametro, di fatto, limita a trasmissioni brevi, non frequenti ed esclude gli streaming audio e video. La durata predefinita del periodo di osservazione è di 1 ora, se non diversamente specificato per la banda di frequenza specifica. Attualmente tutte le bande di frequenza utilizzano il periodo di osservazione predefinito di 1 ora.
@@ -70,7 +71,7 @@ LBT (listen befor Talk) è una modalità di accesso nella quale un dispositivo c
 
 <img src="img/eulorapecs.png" alt="alt text" width="400">
 
-I **parametri** e le **limitazioni** discusse sono tecniche volte a ridurre **mutui disturbi** fra i vari servizi dei vari utenti e la **monopolizzazione** di un canale da parte di un singolo utente.
+
 
 ### **Allocazione bande ISM**
 Schemi riassuntivi che ilustrano la situazione normativa per le varie bande ISM:
