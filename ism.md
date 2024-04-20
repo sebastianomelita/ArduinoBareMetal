@@ -72,7 +72,7 @@ LBT (listen befor Talk) è una modalità di accesso nella quale un dispositivo c
 
 I **parametri** e le **limitazioni** discusse sono tecniche volte a ridurre **mutui disturbi** fra i vari servizi dei vari utenti e la **monopolizzazione** di un canale da parte di un singolo utente.
 
-### **Situazione bande ISM**
+### **Allocazione bande ISM**
 Schemi riassuntivi che ilustrano la situazione normativa per le varie bande ISM:
 
 <img src="433.png" alt="alt text" width="800">
