@@ -57,7 +57,7 @@ Organizzare i canali in **bande** può servire per isolare **gruppi di canali** 
 LBT (listen befor Talk) è una modalità di accesso nella quale un dispositivo che deve trasmettere non occupa subito il canale ma, prima di parlare, deve ascoltare se il mezzo è già in uso attivando una funzione di CCA (Clear Channel Assessment). Se il canale è in uso, per evitare una sicura collisione, allora la successiva trasmissione deve essere spostata o nel tempo o nella frequenza:
     - o il dispositivo attende un intervallo di backoff casuale prima di ritentare il CCA sullo stesso canale
     - o il dispositivo esegue immediatamente un nuovo CCA ma, stavolta, su un altro canale. Quest'ultima tecnica si chiama AFA.
-    - Quando i 2 aspetti vengono implementati, il duty cycle viene portato a 100 s di tempo di trasmissione cumulativo all'ora per ogni possibile intervallo di 200 kHz, che corrisponde a un rapporto del ciclo di lavoro del 2,7%. 
+    - Quando i 2 aspetti vengono implementati, il duty cycle viene portato a 100 s di tempo di trasmissione cumulativo all'ora per ogni possibile intervallo di 200 kHz, che corrisponde a un rapporto del ciclo di lavoro del 2,7%.\ 
       
     <img src="img/13638_2019_1502_Fig3_HTML.png" alt="alt text" width="600">
 
