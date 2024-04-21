@@ -39,15 +39,15 @@ Organizzare i canali in **bande** può servire per isolare **gruppi di canali** 
     - Q. (869.7 MHz - 870 MHz): 1%, 25 mW ERP       (uplink)
 
     - Uplink:
-            -  868.1 - SF7BW125 to SF12BW125
-            -  868.3 - SF7BW125 to SF12BW125 and SF7BW250
-            -  868.5 - SF7BW125 to SF12BW125
-            -  867.1 - SF7BW125 to SF12BW125
-            -  867.3 - SF7BW125 to SF12BW125
-            -  867.5 - SF7BW125 to SF12BW125
-            -  867.7 - SF7BW125 to SF12BW125
-            -  867.9 - SF7BW125 to SF12BW125
-            -  868.8 - FSK
+            -  1. 868.1 - SF7BW125 to SF12BW125
+            -  2. 868.3 - SF7BW125 to SF12BW125 and SF7BW250
+            -  3. 868.5 - SF7BW125 to SF12BW125
+            -  4. 867.1 - SF7BW125 to SF12BW125
+            -  5. 867.3 - SF7BW125 to SF12BW125
+            -  6. 867.5 - SF7BW125 to SF12BW125
+            -  7. 867.7 - SF7BW125 to SF12BW125
+            -  8. 867.9 - SF7BW125 to SF12BW125
+            -  9. 868.8 - FSK
     -  Downlink:
             -  Uplink channels 1-9 (RX1)
             -  869.525 - SF9BW125 (RX2)
