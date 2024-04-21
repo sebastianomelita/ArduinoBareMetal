@@ -100,7 +100,7 @@ In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla den
         - SF12	-137 dBm
        ```
 - **Dimensione massima del messaggio**.
-    Benchè a livello La larghezza di banda ed altri fattori limitano la dimensione del messaggio ad una **dimensione massima** stabilita dal protocollo in uso sul canale. Nel caso della modulazione LoraWAN, la **velocità dei dati** dipende da alcuni fattori come il **fattore di spreading**, la **larghezza di banda** e la **velocità di codifica**. 
+    Le regole ISM non mettono esplicitamente limiti alla lunghezza del messaggio anche se talvolta ne impongono una ndurata massima (LBT). Fattori tecnici, stabiliti dal protocollo in uso sul canale, limitano la dimensione del messaggio ad una **dimensione massima**. Nel caso della modulazione LoraWAN, la **velocità dei dati** dipende da  **fattore di spreading**, la **larghezza di banda** e la **velocità di codifica**. 
 
 ```C++
 La tabella presenta le configurazioni e le velocità in bit per ciascuna velocità dati (DR0 - DR15).
