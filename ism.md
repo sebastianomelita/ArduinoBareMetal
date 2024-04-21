@@ -79,7 +79,6 @@ In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla den
      - **Link budget**. Tra trasmettitore e gateway potrebbe essere valutato il cosidetto link budget, overossia la somma dei guadagni e delle attenuazioni lungo il percorso fino al ricevitore. L'obiettivo è valutare il rispetto del **vincolo finale** sul ricevitore, cioè che la potenza ricevuta sia maggiore della **sensibilità minima** del ricevitore più un certo **margine di sicurezza** per tenere conto del fading ambientale (multipath oppure attenuazione atmosferica) variabile, più o meno rapidamente, col tempo. Per dettagli sul calcolo vedere https://www.vincenzov.net/tutorial/elettronica-di-base/Trasmissioni/link.htm. Rimane assodato che si tratta soltanto di un calcolo di massima che richiede attente e ripetute verifiche sul campo nelle condizioni di esercizio previste per l'impianto.
      - **Sensitività e Spreading Factor**. Nelle modulazioni a spettro espanso la sensitività del ricevitore varia a seconda del fattore di spreadind del segnale a banda stretta (125 KHz). Un esempio di questa variazione per i ricevitori LoraWAN della Semtech è riportata nella segiente tabella:
        ```C++
-       Spreading factor	Receiver sensitivity for bandwidth fixed at 125 kHz
         - SF7	-123 dBm
         - SF8	-126 dBm
         - SF9	-129 dBm
