@@ -117,10 +117,10 @@ La tabella seguente presenta le configurazioni e le velocità in bit per ciascun
     5	    LoRa: SF7 / 125 kHz	        5470
     6	    LoRa: SF7 / 250 kHz	        11000
     7	    FSK: 50 kbps	            50000
-    8	    LR-FHSS CR1/3: 137 kHz BW	162
-    9	    LR-FHSS CR2/3: 137 kHz BW	325
-    10	    LR-FHSS CR1/3: 336 kHz BW	162
-    11	    LR-FHSS CR2/3: 336 kHz BW	325
+    8	    LR-FHSS CR1/3: 137 kHz BW	    162
+    9	    LR-FHSS CR2/3: 137 kHz BW	    325
+    10	    LR-FHSS CR1/3: 336 kHz BW	    162
+    11	    LR-FHSS CR2/3: 336 kHz BW	    325
     12..14	RFU	-
     15	*Defined in [TS001]	-
 ``` 
