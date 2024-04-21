@@ -99,7 +99,7 @@ In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla den
         - SF11	-134.5 dBm
         - SF12	-137 dBm
        ```
-- **dimensione massima del messaggio**.
+- **Dimensione massima del messaggio**.
      Il duty cycle combinato con la larghezza di banda ed altri fattori limita la dimensione del messaggio ad una **dimensione massima**. Nel caso della modulazione LoraWAN
     Con la modulazione LoRa, la **velocità dei dati** dipende da alcuni fattori come il **fattore di spreading**, la **larghezza di banda** e la **velocità di codifica**. 
 
