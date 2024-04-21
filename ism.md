@@ -20,6 +20,7 @@ I **criteri** riguardano anche alcuni dettagli fisici e tecnici:
      
      <img src="img/duty-cycle-multi-band.png" alt="alt text" width="600">
      - Trasmissione parallela su più canali. In questo caso, la stessa sorgente trasmette su due canali in due sottobande diverse con una occupazione di due unità su 10 (cioè 20 su 100) per ciascun ciascun canale. Il duty cycle totale della sorgente, in questo caso, è del 60%. Dopo che il dispositivo ha trasmesso su un canale, non trasmetterà nuovamente su quel canale finché non sarà raggiunto il tempo minimo di disattivazione TX, che è un tempo maggiore di 100 ms. 
+     <img src="img/duty-cycle-multi-band.png" alt="alt text" width="600">
      - È utile avere molti canali nella maschera dei canali, in modo che le trasmissioni abbiano meno probabilità di subire ritardi. I requisiti europei stabiliscono inoltre che su uno spettro di 200 kHz possono verificarsi solo 100 secondi di trasmissione nell'arco di un'ora. Questo metodo semplifica e ottimizza i calcoli dell'utilizzo dello spettro nell'arco di un'ora. Lo standard afferma che più canali hai, più tempo di trasmissione hai in un periodo di un'ora. Calcolare il ciclo di lavoro effettivo in base al numero di canali disponibili abilitati come segue:
 ```Ciclo di lavoro effettivo = (numero di canali * 100)/3600```. Ad esempio, se si abilitassero due canali si avrebbe un duty cycle effettivo del 5,6%.
   
