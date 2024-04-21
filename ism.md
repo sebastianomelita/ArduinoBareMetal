@@ -108,7 +108,7 @@ La velocità dei dati è il numero di bit trasmessi per unità di tempo. Con la 
 
 La tabella seguente presenta le configurazioni e le velocità in bit per ciascuna velocità dati (DR0 - DR15).
 ```C++
-    Data rate	Configuration	    Bit rate (bit/s)     Maximum MAC payload size M (bytes)	Maximum application payload size N (bytes)
+    Data rate	Configuration	    Bit rate (bit/s)  Maximum MAC payload size M (bytes)  Maximum application payload size N (bytes)
     0	    LoRa: SF12 / 125 kHz	    250                59	                                    51            
     1	    LoRa: SF11 / 125 kHz	    440                59	                                    51   
     2	    LoRa: SF10 / 125 kHz	    980                59	                                    51
