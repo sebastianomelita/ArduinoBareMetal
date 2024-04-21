@@ -112,7 +112,7 @@ La tabella seguente presenta le configurazioni e le velocità in bit per ciascun
     0	    LoRa: SF12 / 125 kHz	    250                59	                                    51            
     1	    LoRa: SF11 / 125 kHz	    440                59	                                    51   
     2	    LoRa: SF10 / 125 kHz	    980                59	                                    51
-    3	    LoRa: SF9 / 125 kHz	            1760               123	                                    115	                                    51         
+    3	    LoRa: SF9 / 125 kHz	            1760               123	                                    115	                                             
     4	    LoRa: SF8 / 125 kHz	            3125               230	                                    222
     5	    LoRa: SF7 / 125 kHz	            5470               230	                                    222
     6	    LoRa: SF7 / 250 kHz	            11000              230	                                    222
