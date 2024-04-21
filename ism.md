@@ -52,7 +52,7 @@ Organizzare i canali in **bande** può servire per isolare **gruppi di canali** 
             -  Uplink channels 1-9 (RX1)
             -  869.525 - SF9BW125 (RX2)
 
-    - dBm to mW:  
+    -  dBm to mW:  
             - +16 dBm = 40 mW
             - +14 dBm = 25 mW
             - +27 dBm = 500 mW
