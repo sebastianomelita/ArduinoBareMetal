@@ -26,8 +26,9 @@ I **criteri** riguardano anche alcuni dettagli fisici e tecnici:
 * **Canali e bande**. I **canali** sono intervalli di frequenza adoperati per allocare nel dominio della frequenza la trasmissione di una certa sorgente. Un canale è caratterizzato da una frequenza centrale e da una sua ampiezza (rappresentabile anche come escursione dalla frequenza centrale. Le **bande** sono intervalli di frequenza all'interno delle quali sono allocabili un certo numero di canali.
 Organizzare i canali in **bande** può servire per isolare **gruppi di canali** che possono essere adoperati per gli **stessi servizi**. Organizzare i canali in **sottobande** può servire per isolare **gruppi di canali** a cui applicare le **stesse regole**. Ad esempio, le sottobande LoraWAN in Europa sono :  
 
-    <img src="img/LoRaWAN_Sub-bands.webp" alt="alt text" width="600">
-    
+  <img src="img/LoRaWAN_Sub-bands.webp" alt="alt text" width="600">
+  
+   ```C++
     - K. (863 MHz - 865 MHz): 0.1%, 25 mW ERP       (uplink)
     - L. (865 MHz - 868 MHz): 1%, 25 mW ERP         (uplink)
     - M. (868 MHz - 868.6 MHz): 1%, 25 mW ERP       (uplink)
@@ -48,7 +49,8 @@ Organizzare i canali in **bande** può servire per isolare **gruppi di canali** 
     -  Downlink:
             -  Uplink channels 1-9 (RX1)
             -  869.525 - SF9BW125 (RX2)
-
+       ```
+   
     - **Trasmissioni parallele**. Di queste, 5 (numerate da B0 a B5) sono utilizzabili dai nodi di terminali e permettono, mediante tecnica FDM che parallelizzi il flusso di un unica sorgente su 5 canali contemporaneamente, un  duty cycle complessivo del 3.2%. Il **gateway** LoRaWAN utilizza un'architettura a basso costo e basso consumo energetico che consente il posizionamento di una **coppia di radio** con larghezza  di banda di **1 MHz** ovunque nella banda ISM dell'UE. Gli **otto canali** di ricezione LoRa sono posizionati all'interno di queste due bande da 1 MHz. Quindi una applicazione su un dispositivo, avrà la  possibilità di poter spalmare il duty cycle su **due sole sottofasce**. Nella maggior parte delle reti queste vantaggiosamente si concentreranno sulle allocazioni di uplink dell'1%.  Ciò significa che ci si può ragionevolmente aspettare il **2% di duty cycle** aggregato disponibile per una **stessa sorgente**.
 
 - **Potenza disponibile massima**. La potenza in Watt. In genere dell’ordine dei millesimi di watt (mW) è spesso espressa in dBm.
