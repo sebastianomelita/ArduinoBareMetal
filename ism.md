@@ -112,15 +112,15 @@ La tabella seguente presenta le configurazioni e le velocità in bit per ciascun
     0	    LoRa: SF12 / 125 kHz	    250                59	                                    51            
     1	    LoRa: SF11 / 125 kHz	    440                59	                                    51   
     2	    LoRa: SF10 / 125 kHz	    980                59	                                    51
-    3	    LoRa: SF9 / 125 kHz	            1760           123	                                    115	                                    51         
-    4	    LoRa: SF8 / 125 kHz	            3125           230	                                    222
-    5	    LoRa: SF7 / 125 kHz	            5470           230	                                    222
-    6	    LoRa: SF7 / 250 kHz	            11000          230	                                    222
+    3	    LoRa: SF9 / 125 kHz	            1760               123	                                    115	                                    51         
+    4	    LoRa: SF8 / 125 kHz	            3125               230	                                    222
+    5	    LoRa: SF7 / 125 kHz	            5470               230	                                    222
+    6	    LoRa: SF7 / 250 kHz	            11000              230	                                    222
     7	    FSK: 50 kbps	            50000              230	                                    222
-    8	    LR-FHSS CR1/3: 137 kHz BW	    162            58	                                    50
-    9	    LR-FHSS CR2/3: 137 kHz BW	    325            123	                                    115
-    10	    LR-FHSS CR1/3: 336 kHz BW	    162            58	                                    50
-    11	    LR-FHSS CR2/3: 336 kHz BW	    325            123	                                    115
+    8	    LR-FHSS CR1/3: 137 kHz BW	    162                58	                                    50
+    9	    LR-FHSS CR2/3: 137 kHz BW	    325                123	                                    115
+    10	    LR-FHSS CR1/3: 336 kHz BW	    162                58	                                    50
+    11	    LR-FHSS CR2/3: 336 kHz BW	    325                123	                                    115
     12..14	RFU	-
     15	*Defined in [TS001]	-                              Not defined	                            Not defined
 ``` 
