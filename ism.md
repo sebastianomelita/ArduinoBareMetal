@@ -21,7 +21,7 @@ I **criteri** riguardano anche alcuni dettagli fisici e tecnici:
      <img src="img/duty-cycle-multi-band.png" alt="alt text" width="600">
      
      - **Duty cycle aggregato**. È utile avere molti canali nella maschera dei canali, in modo che le trasmissioni abbiano meno probabilità di subire ritardi. I requisiti europei stabiliscono inoltre che su uno spettro di 200 kHz possono verificarsi solo 100 secondi di trasmissione nell'arco di un'ora. Questo metodo semplifica e ottimizza i calcoli dell'utilizzo dello spettro nell'arco di un'ora. Lo standard afferma che più canali hai, più tempo di trasmissione hai in un periodo di un'ora. Si può calcolare il duty cycle effettivo in base al numero di canali disponibili abilitati come segue:
-```Duty cycle effettivo = (numero di canali * 100)/3600```. Ad esempio, se si abilitassero due canali si avrebbe un duty cycle effettivo del 5,6%.
+```Duty cycle effettivo = (numero di canali * 36)/3600```. Ad esempio, se si abilitassero due canali si avrebbe un duty cycle effettivo del 2%.
   
 * **Canali e bande**. I **canali** sono intervalli di frequenza adoperati per allocare nel dominio della frequenza la trasmissione di una certa sorgente. Un canale è caratterizzato da una frequenza centrale e da una sua ampiezza (rappresentabile anche come escursione dalla frequenza centrale. Le **bande** sono intervalli di frequenza all'interno delle quali sono allocabili un certo numero di canali.
 Organizzare i canali in **bande** può servire per isolare **gruppi di canali** che possono essere adoperati per gli **stessi servizi**. Organizzare i canali in **sottobande** può servire per isolare **gruppi di canali** a cui applicare le **stesse regole**. Ad esempio, le sottobande LoraWAN in Europa sono :  
@@ -66,7 +66,9 @@ LBT (listen befor Talk) è una modalità di accesso nella quale un dispositivo c
 <img src="img/13638_2019_1502_Fig3_HTML.png" alt="alt text" width="600">
 
 
->Quando questi 2 aspetti vengono implementati, il duty sycle viene ridotto a 100 s di tempo di trasmissione cumulativo all'ora per ogni possibile intervallo di 200 kHz, che corrisponde a un rapporto del ciclo di lavoro del 2,7%.
+Quando questi 2 aspetti vengono implementati, il duty sycle viene ridotto a 100 s di tempo di trasmissione cumulativo all'ora per ogni possibile intervallo di 200 kHz, che corrisponde a un rapporto del ciclo di lavoro del 2,7%.
+    - **Duty cycle aggregato con LBT**. È utile avere molti canali nella maschera dei canali, in modo che le trasmissioni abbiano meno probabilità di subire ritardi. I requisiti europei stabiliscono inoltre che, usando LBT, su uno spettro di 200 kHz possono verificarsi solo 100 secondi di trasmissione nell'arco di un'ora. Questo metodo semplifica e ottimizza i calcoli dell'utilizzo dello spettro nell'arco di un'ora. Lo standard afferma che più canali hai, più tempo di trasmissione hai in un periodo di un'ora. Si può calcolare il duty cycle effettivo in base al numero di canali disponibili abilitati come segue:
+```Duty cycle effettivo = (numero di canali * 100)/3600```. Ad esempio, se si abilitassero due canali si avrebbe un duty cycle effettivo del 5,6%.
 
 >Il controllo CCA deve avere una durata minima di 160 μs. Dopo questo controllo il dispositivo deve attendere un tempo morto massimo di 5 ms prima di poter iniziare la trasmissione. La trasmissione stessa ha una durata massima di 1 s o 4 s a seconda del tipo di trasmissione. Si definiscono poi essere una singola trasmissione entrambe le situazioni seguenti: una sequenza continua di bit, oppure un burst di sequenze diverse purchè separate da intervalli inferiori a 5 ms. Dopo una trasmissione, una sorgente deve attendere, prima di trasmettere nuovamente sullo stesso canale, un minimo di 100 ms senza CCA. È comunque ancora consentito utilizzare tale intervallo per il successivo controllo CCA o per trasmettere su altri canali.
 
