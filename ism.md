@@ -77,7 +77,7 @@ In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla den
      - La potenza **EIRP** di una antenna direttiva è invece la potenza con cui dovrebbe essere alimentata un'antenna isotropica per irradiare la stessa potenza che viene emessa dall'antenna direttiva nella sua direzione di massimo irraggiamento.  La potenza **EIRP** è la somma della **potenza erogata** dal trasmettittore più il **guadagno di antenna** (al netto delle perdite sul cavo sempre presenti). 
      - Un'altra grandezza considerata nella pratica è la potenza **ERP**, analoga alla precedente ma riferita alla potenza emessa da un **dipolo orientato** normalmente alla direzione di massima intensità dell'antenna direttiva (di solito è considerata un'antenna verticale con propagazione orizzontale, parallela al piano terrestre). Stavolta si valuta il guadagno dell'antenna sotto test rispetto al guadagno di un dipolo standard a mezza lunghezza d'onda. In questo caso il valore ERP dBd è leggermente più basso rispetto al valore di un'antenna istropa EIRP dBi (dBi = dBd + 2,15dB) in quanto il dipolo guadagna 2,15dB in più rispetto al radiale isotropico, anche se soltanto lungo la direzione di massima irradiazione. Un limite comune stabilito dalle regolamentazione è di fissare l'ERP proprio esattamente uguale alla massima potenza disponibile ammessa sul morsetto di antenna, ciò implica che l'antenna non debba guadagnare per nulla rispetto ad un dipolo a mezz'onda o, equivalentemente, che guadagni soltanto 2.15 dB rispetto ad una antenna isotropa alimentata con la stessa potenza disponibile.
      - **Link budget**. Tra trasmettitore e gateway potrebbe essere valutato il cosidetto link budget, overossia la somma dei guadagni e delle attenuazioni lungo il percorso fino al ricevitore. L'obiettivo è valutare il rispetto del **vincolo finale** sul ricevitore, cioè che la potenza ricevuta sia maggiore della **sensibilità minima** del ricevitore più un certo **margine di sicurezza** per tenere conto del fading ambientale (multipath oppure attenuazione atmosferica) variabile, più o meno rapidamente, col tempo. Per dettagli sul calcolo vedere https://www.vincenzov.net/tutorial/elettronica-di-base/Trasmissioni/link.htm. Rimane assodato che si tratta soltanto di un calcolo di massima che richiede attente e ripetute verifiche sul campo nelle condizioni di esercizio previste per l'impianto.
-     - **Sensitività e Spreading Factor**. Nelle modulazioni a spettro espanso la sensitività del ricevitore varia a seconda del fattore di spreadind del segnale a banda stretta (125 KHz). Un esempio di questa variazione per i ricevitori LoraWAN della Semtech è riportata nella segiente tabella:
+         - **Sensitività e Spreading Factor**. Nelle modulazioni a spettro espanso la sensitività del ricevitore varia a seconda del fattore di spreadind del segnale a banda stretta (125 KHz). Un esempio di questa variazione per i ricevitori LoraWAN della Semtech è riportata nella segiente tabella:
        ```C++
         - SF7	-123 dBm
         - SF8	-126 dBm
@@ -85,6 +85,7 @@ In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla den
         - SF10	-132 dBm
         - SF11	-134.5 dBm
         - SF12	-137 dBm
+       ```
        
 ### **Tecnologia LoraWAN: schema riassuntivo**
 
