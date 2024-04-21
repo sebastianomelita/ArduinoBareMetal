@@ -139,7 +139,10 @@ Sitografia:
 - https://docs.heltec.org/general/lorawan_frequency_plans.html
 - https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/
 - https://jwcn-eurasipjournals.springeropen.com/articles/10.1186/s13638-019-1502-5
-- chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/http://mwl.diet.uniroma1.it/IACEm/02_proprieta_antenne.pdf
+- chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/
+- http://mwl.diet.uniroma1.it/IACEm/02_proprieta_antenne.pdf
+- https://blog.semtech.com/lorawan-protocol-expands-network-capacity-with-new-long-range-frequency-hopping-spread-spectrum-technology
+- https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/
   
 >[Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
 
