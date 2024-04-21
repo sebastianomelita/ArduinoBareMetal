@@ -100,8 +100,7 @@ In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla den
         - SF12	-137 dBm
        ```
 - **Dimensione massima del messaggio**.
-     Il duty cycle combinato con la larghezza di banda ed altri fattori limita la dimensione del messaggio ad una **dimensione massima**. Nel caso della modulazione LoraWAN
-    Con la modulazione LoRa, la **velocità dei dati** dipende da alcuni fattori come il **fattore di spreading**, la **larghezza di banda** e la **velocità di codifica**. 
+    Benchè a livello La larghezza di banda ed altri fattori limitano la dimensione del messaggio ad una **dimensione massima** stabilita dal protocollo in uso sul canale. Nel caso della modulazione LoraWAN, la **velocità dei dati** dipende da alcuni fattori come il **fattore di spreading**, la **larghezza di banda** e la **velocità di codifica**. 
 
 ```C++
 La tabella presenta le configurazioni e le velocità in bit per ciascuna velocità dati (DR0 - DR15).
@@ -135,6 +134,8 @@ Schemi riassuntivi che ilustrano la situazione normativa per le varie bande ISM:
 <img src="2400.png" alt="alt text" width="600">
 
 Sitografia:
+- https://docdb.cept.org/download/3700
+- https://www.etsi.org/deliver/etsi_en/300200_300299/30022002/03.02.01_60/en_30022002v030201p.pdf
 - https://blog.semtech.com/certifying-an-end-device-for-lorawan-european-sub-bands
 - https://www.thethingsnetwork.org/docs/lorawan/regional-limitations-of-rf-use/
 - https://www.thethingsnetwork.org/docs/lorawan/regional-parameters/eu868/
