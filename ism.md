@@ -134,6 +134,7 @@ Schemi riassuntivi che ilustrano la situazione normativa per le varie bande ISM:
 <img src="2400.png" alt="alt text" width="600">
 
 Sitografia:
+- https://wirelesspi.com/understanding-lora-phy-long-range-physical-layer/
 - https://docdb.cept.org/download/3700
 - https://www.etsi.org/deliver/etsi_en/300200_300299/30022002/03.02.01_60/en_30022002v030201p.pdf
 - https://blog.semtech.com/certifying-an-end-device-for-lorawan-european-sub-bands
