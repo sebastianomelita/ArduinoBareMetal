@@ -147,7 +147,7 @@ Sitografia:
 - https://blog.semtech.com/lorawan-protocol-expands-network-capacity-with-new-long-range-frequency-hopping-spread-spectrum-technology
 - https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/
 - https://lora.readthedocs.io/en/latest/
-https://lora-alliance.org/wp-content/uploads/2020/11/lorawan_regional_parameters_v1.0.3reva_0.pdf
+- https://lora-alliance.org/wp-content/uploads/2020/11/lorawan_regional_parameters_v1.0.3reva_0.pdf
   
 >[Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
 
