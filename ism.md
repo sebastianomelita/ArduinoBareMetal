@@ -151,6 +151,7 @@ Sitografia:
 - https://dl.acm.org/doi/10.1145/3546869
 - https://static1.squarespace.com/static/54cecce7e4b054df1848b5f9/t/57489e6e07eaa0105215dc6c/1464376943218/Reversing-Lora-Knight.pdf
 - https://wirelesspi.com/understanding-lora-phy-long-range-physical-layer/
+- https://thesis.unipd.it/retrieve/d813d8b9-9d45-4158-acbc-eada172983c8/Chinta_Venkata_Rajesh.pdf
   
 >[Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
 
