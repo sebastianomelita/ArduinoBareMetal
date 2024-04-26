@@ -1,6 +1,6 @@
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
 
-Di seguito è riportata l'architettura generale di una rete Lorawan. Essa è composta, a livello fisico, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
+Di seguito è riportata l'architettura generale di una rete Lorawan. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
 
 <img src="img/lorawanArchitecture.png" alt="alt text" width="800">
 
