@@ -26,7 +26,6 @@ Il nodo terminale apre due slot di ricezione in t1 e t2 secondi dopo una trasmis
 
 
   <img src="img/classAlora.png" alt="alt text" width="800">
-  
 
 ### **Classe B**
 
@@ -65,8 +64,14 @@ La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in *
 **Downlink confermato**
 <img src="img/loraAckD.png" alt="alt text" width="800">
 
+1. Lo scambio di frame viene avviato dal dispositivo terminale che trasmette un payload dell'applicazione "non confermato" o qualsiasi altro frame sul canale A.
+2. La rete utilizza la finestra di ricezione downlink per trasmettere un frame di dati "confermato" verso il dispositivo finale sullo stesso canale A
+3. Alla ricezione di questo frame di dati che richiede una conferma, il dispositivo finale trasmette un frame con il bit ACK impostato a sua discrezione. Questo frame potrebbe anche contenere dati (piggybacking) o comandi MAC come carico utile. Questo uplink ACK viene trattato come qualsiasi uplink standard e come tale viene trasmesso su un canale casuale che potrebbe anche essere diverso dal canale A.
+   
+**Piggy backing**
 
 Per consentire ai dispositivi terminali di essere il più semplici possibile e di mantenere il minor numero di stati possibile, è possibile trasmettere un messaggio di ack puro cioè senza dati possibilmente subito dopo la ricezione di un messaggio di dati che richiede una conferma. In alternativa, il dispositivo finale può dilazionare la trasmissione di un ack per collegarlo al successivo messaggio di dati (tecnica del piggy backing).
+
 
 **Sitografia**:
 - https://lora.readthedocs.io/en/latest/#lorawan-device-classes
