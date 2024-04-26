@@ -122,7 +122,7 @@ Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e per
 
 Sono presenti in quasi tutte le **infrastrutture LPWA** a lungo raggio come **LoraWan**, **Sigfox** e **NB-IoT**.
 
-Lo **schema logico** di una rete di sensori LPWA basata su network server quindi appare:
+Lo **schema logico** di una rete di sensori LPWA basata su **network server** quindi appare:
 
 <img src="lpwan.png" alt="alt text" width="700">
 
