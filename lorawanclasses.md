@@ -48,6 +48,8 @@ Non c'è un messaggio specifico per un nodo per dire al server che è un nodo di
 
 ### **Messaggi confermati**
 
+La conferma dei messaggi è prevista per i soli messaggi in **downlink**.
+
 <img src="img/loraAck.png" alt="alt text" width="800">
 
 1. Il dispositivo finale trasmette innanzitutto un frame di dati confermato contenente il payload Data0 in un istante arbitrario e su un canale arbitrario. Il frame counter Cu è semplicemente derivato aggiungendo 1 al precedente frame counter di uplink.
