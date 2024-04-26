@@ -62,6 +62,7 @@ La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in *
 5. Se questa volta il dispositivo terminale riceve in downlink l'ACK durante la sua prima finestra di ricezione, appena il frame ACK viene demodulato, il dispositivo terminale è libero di trasmettere un nuovo frame su un nuovo canale.
 
 **Downlink confermato**
+
 <img src="img/loraAckD.png" alt="alt text" width="800">
 
 1. Lo scambio di frame viene avviato dal dispositivo terminale che trasmette un payload dell'applicazione "non confermato" o qualsiasi altro frame sul canale A.
