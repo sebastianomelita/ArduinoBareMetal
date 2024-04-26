@@ -12,19 +12,39 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
 
   <img src="img/lorawanLogicArchitecture.png" alt="alt text" width="800">
 
+  La specifica LoRaWAN definisce tre classi di dispositivi:
+
+- **A(ll)** Dispositivi alimentati a batteria. Ogni dispositivo effettua il collegamento in uplink al gateway ed è seguito da due brevi finestre di ricezione del downlink.
+- **B(eacon)** Come la classe A ma questi dispositivi aprono anche finestre di ricezione aggiuntive a orari programmati.
+- **C(continuo)** Uguale ad A ma questi dispositivi sono in ascolto continuo. Pertanto questi dispositivi consumano più energia e sono spesso alimentati dalla rete elettrica.
+
+### **Classe A**
+
+In qualsiasi momento un nodo finale può trasmettere un segnale. Dopo questa trasmissione uplink (tx) il nodo finale ascolterà una risposta dal gateway.
+
+Il nodo finale apre due slot di ricezione in t1 e t2 secondi dopo una trasmissione uplink. Il gateway può rispondere all'interno del primo slot di ricezione o del secondo slot di ricezione, ma non in entrambi. I dispositivi di classe B e C devono supportare anche la funzionalità di classe A.
 
   <img src="img/classAlora.png" alt="alt text" width="800">
 
+### **Classe B**
+
+Oltre agli slot di ricezione di Classe A, i dispositivi di classe B aprono slot di ricezione aggiuntivi a orari programmati.
+
+Il nodo finale riceve un beacon sincronizzato nel tempo dal gateway, consentendo al gateway di sapere quando il nodo è in ascolto. Un dispositivo di classe B non supporta la funzionalità del dispositivo C.
 
   <img src="img/classBlora.png" alt="alt text" width="800">
 
+### **Classe C**
+
+Oltre agli slot di ricezione di Classe A, un dispositivo di Classe C ascolterà continuamente le risposte dal gateway. Un dispositivo di classe C non supporta la funzionalità del dispositivo B.
 
   <img src="img/classClora.png" alt="alt text" width="800">
 
 
 
-
-
+**Sitografia**:
+- https://lora.readthedocs.io/en/latest/#lorawan-device-classes
+- https://lora-alliance.org/wp-content/uploads/2020/11/2015_-_lorawan_specification_1r0_611_1.pdf
 
 
 
