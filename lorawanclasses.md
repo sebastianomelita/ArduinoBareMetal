@@ -20,7 +20,7 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
 
 ### **Classe A**
 
-In qualsiasi momento un nodo finale può trasmettere un segnale. Dopo questa trasmissione uplink (tx) il nodo finale ascolterà una risposta dal gateway.
+In qualsiasi momento un nodo terminale può trasmettere un segnale. Dopo questa trasmissione uplink (tx) il nodo finale ascolterà una risposta dal gateway.
 
 Il nodo finale apre due slot di ricezione in t1 e t2 secondi dopo una trasmissione uplink. Il gateway può rispondere all'interno del primo slot di ricezione o del secondo slot di ricezione, ma non in entrambi. I dispositivi di classe B e C devono supportare anche la funzionalità di classe A.
 
@@ -30,7 +30,7 @@ Il nodo finale apre due slot di ricezione in t1 e t2 secondi dopo una trasmissio
 
 Oltre agli slot di ricezione di Classe A, i dispositivi di classe B aprono slot di ricezione aggiuntivi a orari programmati.
 
-Il nodo finale riceve un beacon sincronizzato nel tempo dal gateway, consentendo al gateway di sapere quando il nodo è in ascolto. Un dispositivo di classe B non supporta la funzionalità del dispositivo C.
+Il nodo terminale riceve un beacon sincronizzato nel tempo dal gateway, consentendo al gateway di sapere quando il nodo è in ascolto. Un dispositivo di classe B non supporta la funzionalità del dispositivo C.
 
   <img src="img/classBlora.png" alt="alt text" width="800">
 
