@@ -51,7 +51,7 @@ I **protocolli confermati** sono protocolli in cui **il mittente** possiede 
 Questo è lo scenario che daremo per scontato nel seguito ma spesso accade che le collisioni non vengano affatto rilevate perchè ritenuto poco vantaggioso. 
 
 - Una situazione comune è l'**interrogazione periodica dei sensori** con dispositivi a basso costo che utilizzano un mezzo radio molto affollato. In questo caso l'utilizzo di un ack appesantisce dispositivi che devono rimanere semplici e incrementa inutilmente il traffico in rete dato che al polling successivo il dato verrà comunque ritrasmesso.
-- nel caso dei dispositivi sensori con funzioni di comando, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di ack.
+- nel caso dei dispositivi sensori con funzioni di **comando** o **configurazione**, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di ack.
 
 
 ### Come reagire a fronte di una collisione?
