@@ -28,7 +28,7 @@ Spesso sono **reti miste** cioè composte da **sottoreti eterogenee**:
 - **più reti di sensori** costituite da dispositivi sensori e da nodi di smistamento. Sono spesso realizzate in tecnologie non IP proprietarie.
 - **una rete centrale di distribuzione**. E' una rete IP e può essere una LAN, spesso interconessa ad Internet, oppure è Internet stessa.
 
- <img src="sensornet1.png" alt="alt text" width="1000">
+ <img src="sensornet1.png" alt="alt text" width="800">
  
 Tra le due tipologie di reti ci sono dei **nodi di confine** aventi una interfaccia **nella rete di sensori** ed un'altra **nella rete principale IP**. Questi nodi **cerniera** sono detti **gateway** e devono trovare un modo di **rendere compatibili** i messaggi che circolano nelle due tipologie di reti, spesso realizzate con tecnologie **completamente diverse**.
 
