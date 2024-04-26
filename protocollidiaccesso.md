@@ -196,6 +196,9 @@ Fig 4
 - CSMA **trasmette solo se “sente”** il canale **libero**, ciò determina **minore** probabiltà di collisione rispetto ad Aloha.
 - CSMA deve implementare un meccanismo di **ascolto** del canale **prima** della **trasmissione** (**CCA: Clear Channel Assesment**).
 
+Come detto prima nel caso dll'Aloha spesso accade che le collisioni non vengano affatto rilevate perchè ritenuto poco vantaggioso. Le situazioni sono le stesse di prima cioè l'**interrogazione periodica dei sensori** con dispositivi a basso costo che utilizzano un mezzo radio molto affollato. Si usa ancora il CSMA ma senza ack che, in questo contesto, viene chiamato semplicemente LBT (Listen Before Talk)
+
+
 > [Simulatore csma](simcsmaasync.md)
 
 > [Torna a multiplazione TDM](mezzoradio.md#Multiplazione-TDM)
