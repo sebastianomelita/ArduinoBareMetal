@@ -73,6 +73,7 @@ La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in *
 
 Per consentire ai dispositivi terminali di essere il più semplici possibile e di mantenere il minor numero di stati possibile, è possibile trasmettere un messaggio di ack puro cioè senza dati possibilmente subito dopo la ricezione di un messaggio di dati che richiede una conferma. In alternativa, il dispositivo finale può dilazionare la trasmissione di un ack per collegarlo al successivo messaggio di dati (tecnica del piggy backing).
 
+### **Formato dei messaggi**
 
 <img src="img/loramsg.png" alt="alt text" width="600">
 
