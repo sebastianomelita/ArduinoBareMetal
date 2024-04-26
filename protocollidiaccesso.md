@@ -48,6 +48,12 @@ I **protocolli confermati** sono protocolli in cui **il mittente** possiede 
 - Il messaggio di conferma viene detto **ack** (acknowledgement) ed è un messaggio di **controllo** (non dati) che viene inviato **dal ricevente** in direzione del mittente. Un ack è sempre inviato dal ricevente di un precedente messaggio, mai dal mittente di quel messaggio.
 - Se il timer di trasmissione è resettato **prima dello scadere** del timeout la trasmissione è considerata avvenuta con **successo**. Se invece allo scadere del timeout ancora non si ricevono ack allora il messaggio viene dato per perso ed è, dal mittente, **ritrasmesso**.
 
+Questo è lo scenario che daremo per scontato nel seguito ma spesso accade che le collisioni non vengano affatto rilevate perchè ritenuto poco vantaggioso. 
+
+- Una situazione comune è l'**interrogazione periodica dei sensori** con dispositivi a basso costo che utilizzano un mezzo radio molto affollato. In questo caso l'utilizzo di un ack appesantisce dispositivi che devono rimanere semplici e incrementa inutilmente il traffico in rete dato che al polling successivo il dato verrà comunque ritrasmesso.
+- nel caso dei dispositivi sensori con funzioni di comando, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di ack.
+
+
 ### Come reagire a fronte di una collisione?
 
 Se tutte le stazioni ritrasmettono nello stesso istante collidono immediatamente e il messaggio viene perso.
