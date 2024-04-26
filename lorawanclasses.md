@@ -48,7 +48,7 @@ Non c'è un messaggio specifico per un nodo per dire al server che è un nodo di
 
 ### **Messaggi confermati**
 
-La conferma dei messaggi è prevista per i soli messaggi in **downlink**.
+La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in **downlink**.
 
 <img src="img/loraAck.png" alt="alt text" width="800">
 
@@ -63,6 +63,7 @@ Per consentire ai dispositivi terminali di essere il più semplici possibile e d
 **Sitografia**:
 - https://lora.readthedocs.io/en/latest/#lorawan-device-classes
 - https://lora-alliance.org/wp-content/uploads/2020/11/2015_-_lorawan_specification_1r0_611_1.pdf
+- https://medium.com/@prajzler/lorawan-confirmations-and-acks-ba784a56d2d7
 
 
 
