@@ -46,7 +46,9 @@ Non c'è un messaggio specifico per un nodo per dire al server che è un nodo di
 
   <img src="img/classClora.png" alt="alt text" width="800">
 
+### **Messaggi confermati**
 
+<img src="img/loraAck.png" alt="alt text" width="800">
 
 **Sitografia**:
 - https://lora.readthedocs.io/en/latest/#lorawan-device-classes
