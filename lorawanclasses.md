@@ -25,7 +25,7 @@ In qualsiasi momento un nodo terminale può trasmettere un segnale. Dopo questa 
 Il nodo terminale apre due slot di ricezione in t1 e t2 secondi dopo una trasmissione uplink. Il gateway può rispondere all'interno del primo slot di ricezione o del secondo slot di ricezione, ma non in entrambi. I dispositivi di classe B e C devono supportare anche la funzionalità di classe A.
 
 
-  <img src="img/classAlora.png" alt="alt text" width="800">
+  <img src="img/classAlora.png" alt="alt text" width="600">
 
 ### **Classe B**
 
@@ -37,7 +37,7 @@ Il beacon viene inviato ogni 128 secondi a partire dalle 00:00:00 Coordinated Un
 
 TBeaconDelay è un ritardo specifico della rete scelto nell'intervallo [0:50] ms. TBeaconDelay può variare da una rete all'altra ed è pensato per consentire un leggero ritardo di trasmissione dei gateway. TBeaconDelay deve essere lo stesso per tutti i gateway di una determinata rete. Tutti gli slot di ping dei dispositivi terminali utilizzano il tempo di trasmissione del beacon come riferimento temporale, pertanto il server di rete deve tenere in considerazione questo tempo quando pianifica i downlink di classe B.
 
-  <img src="img/classBlora.png" alt="alt text" width="800">
+  <img src="img/classBlora.png" alt="alt text" width="600">
 
 ### **Classe C**
 
@@ -45,7 +45,7 @@ Oltre agli slot di ricezione di Classe A, un dispositivo di Classe C ascolterà 
 
 Non c'è un messaggio specifico per un nodo per dire al server che è un nodo di Classe C. Spetta all'applicazione lato server sapere che 13 gestisce i nodi di Classe C in base al contratto passato durante la procedura di join.
 
-  <img src="img/classClora.png" alt="alt text" width="800">
+  <img src="img/classClora.png" alt="alt text" width="600">
 
 ### **Messaggi confermati**
 
@@ -53,7 +53,7 @@ La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in *
 
 **Uplink confermato**
 
-<img src="img/loraAck.png" alt="alt text" width="800">
+<img src="img/loraAck.png" alt="alt text" width="600">
 
 1. Il dispositivo finale trasmette innanzitutto un frame di dati confermato contenente il payload Data0 in un istante arbitrario e su un canale arbitrario. Il frame counter Cu è semplicemente derivato aggiungendo 1 al precedente frame counter di uplink.
 2. La rete riceve il frame, genera un frame in downlink con il bit ACK impostato, e lo invia esattamente RECEIVE_DELAY1 secondi dopo utilizzando la prima finestra di ricezione del dispositivo finale. Questo frame di downlink utilizza la stessa velocità di dati e lo stesso canale dell'uplink di Dati0. Anche il contatore del frame downlink Cd è derivato aggiungendo 1 all'ultimo downlink verso quello specifico dispositivo finale. Se non c'è alcun payload di downlink in sospeso, la rete genererà un frame senza carico utile.
