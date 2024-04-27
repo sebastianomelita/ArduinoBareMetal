@@ -49,9 +49,15 @@ Non c'è un messaggio specifico per un nodo per dire al server che è un nodo di
 
 ### **Messaggi confermati**
 
-La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in **downlink**.
+La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in **downlink**, però spesso accade che le collisioni non vengano affatto rilevate perchè ritenuto poco vantaggioso. 
+
+Una situazione comune è l'**interrogazione periodica dei sensori** con dispositivi a basso costo che utilizzano un mezzo radio molto affollato. In questo caso l'utilizzo di un ack appesantisce dispositivi che devono rimanere semplici e incrementa inutilmente il traffico in rete dato che al polling successivo il dato verrà comunque ritrasmesso.
+
+Nel caso dei dispositivi sensori con funzioni di **comando** o **configurazione**, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile, invece, un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di **ack**.
 
 **Uplink confermato**
+
+Potrebbe essere il caso di un pulsante che comanda l'accensione di un motore, oppure un pulsante di allarme, o anche un apri porta.
 
 <img src="img/loraAck.png" alt="alt text" width="800">
 
@@ -62,6 +68,8 @@ La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in *
 5. Se questa volta il dispositivo terminale riceve in downlink l'ACK durante la sua prima finestra di ricezione, appena il frame ACK viene demodulato, il dispositivo terminale è libero di trasmettere un nuovo frame su un nuovo canale.
 
 **Downlink confermato**
+
+Potrebbe essere il caso di una attuazione che è bene che sia confermata, quale un motore, oppure la riuscita di una configurazione, ecc.
 
 <img src="img/loraAckD.png" alt="alt text" width="800">
 
