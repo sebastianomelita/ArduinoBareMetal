@@ -233,6 +233,8 @@ Ulteriori **differenziazioni del servizio** distinguono tra:
 - la presenza o meno di una funzione di **conferma** dei messaggi trasmessi (protocollo confermato).
 - la presenza o meno di **classi di prestazione**, magari abbinate ad uno o più dei servizi precedenti.
     
+La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo**. Sovente si adopera il **protocollo MQTT** nella rete di distribuzione che può essere impostato in maniera tale che crei su ogni dispositivo terminale **due topic** separati, un **topic di input** (verso il dispositivo terminale) che si occupa di azionare eventuali attuazioni e un **topic di output** (dal dispositivo terminale, verso il broker) che si occupa di restituire lo stato dell'**attuazione**. In questo caso è demandato all'utente **decidere** se ripetere il comando in caso che lo stato del dispositivo non sia ancora quello voluto.
+
 Molti sistemi (wifi, zigbee, bluetooth BLE, LoRaWan, Sigfox) permettono di impostare **contemporaneamente**, sulla **stessa interfaccia** radio, un **servizio sincrono** mediante **TDMA** per le sorgenti che eseguono il **polling** di sensori e un **servizio asincrono** con **ALOHA** o **CSMA/CA** per le sorgenti che devono inoltrare il **comando** di un pulsante di accensione di un attuatore. Ciò è ottenuto **attivando** sul canale la funzionalità **beacon** con le cosiddette **superframe**.
 
 Un **beacon** contiene informazioni che **identificano** la rete e i suoi servizi nonché una sequenza di **bit di sincronizzazione**. Vengono trasmessi **periodicamente**, servono ad **annunciare** la presenza di una LAN wireless e a **sincronizzare** i membri sui suoi servizi (sincroni e asincroni).
