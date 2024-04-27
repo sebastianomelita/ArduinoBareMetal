@@ -55,6 +55,8 @@ Una situazione comune è l'**interrogazione periodica dei sensori** con disposit
 
 Nel caso dei dispositivi sensori con funzioni di **comando** o **configurazione**, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile, invece, un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di **ack**.
 
+La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo LoraWAN). Sovente si adopera il **protocollo MQTT** nella rete di distribuzione che può essere impostato in maniera tale che crei su ogni dispositivo terminale **due topic** separati, un **topic di input** (verso il dispositivo terminale) che si occupa di azionare eventuali attuazioni e un **topic di output** (dal dispositivo terminale, verso il broker) che si occupa di restituire lo stato dell'**attuazione**. In questo caso è demandato all'utente **decidere** se ripetere il comando in caso che lo stato del dispositivo non sia ancora quello voluto.
+
 **Uplink confermato**
 
 Potrebbe essere il caso di un pulsante che comanda l'accensione di un motore, oppure un pulsante di allarme, o anche un apri porta.
