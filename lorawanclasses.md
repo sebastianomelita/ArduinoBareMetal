@@ -55,7 +55,15 @@ Una situazione comune è l'**interrogazione periodica dei sensori** con disposit
 
 Nel caso dei dispositivi sensori con funzioni di **comando** o **configurazione**, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile, invece, un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di **ack**.
 
-La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo LoraWAN). Sovente si adopera il **protocollo MQTT** nella rete di distribuzione che può essere impostato in maniera tale che crei su ogni dispositivo terminale **due topic** separati, un **topic di input** (verso il dispositivo terminale) che si occupa di azionare eventuali attuazioni e un **topic di output** (dal dispositivo terminale, verso il broker) che si occupa di restituire lo stato dell'**attuazione**. In questo caso è demandato all'utente **decidere** se ripetere il comando in caso che lo stato del dispositivo non sia ancora quello voluto.
+La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo LoraWAN). Sovente si adopera un **broker MQTT** nella rete di distribuzione a cui sono associati:
+- i dispositivi di **comando** come sensorie e gli stessi dispositivi di **attuazione**  come dispositivi col ruolo di **publisher** su un **topic di output** (dal dispositivo terminale, verso il broker) che si occupa di:
+    -  inviare il comando verso l'attuatore, sul dispositivo **sensore**
+    -  inviare il feedback con lo stato sul dispositivo **attuatore**.
+- i dispositivi di **attuazione** e gli stessi dispositivi di **comando** con il ruolo di **subscriber** su un **topic di input** (verso il dispositivo terminale) che si occupa di:
+    - ricevere ed azionare eventuali attuazioni sul dispositivo **attuatore**
+    - ricevere e mostrare eventuali feedback sullo stato dell'attuatore sul dispositivo sensore che l'utente ha utilizzato per effettuare il comando.
+  
+- che può essere impostato in maniera tale che crei su ogni dispositivo terminale **due topic** separati, un **topic di input** (verso il dispositivo terminale) che si occupa di azionare eventuali attuazioni e un **topic di output** (dal dispositivo terminale, verso il broker) che si occupa di restituire lo stato dell'**attuazione**. Questo feedback viene visualizzato in qualche modo all'utente che aveva effettuato il comando. In questo caso è demandato proprio all'utente **decidere** se ripetere il comando se egli valuta che lo stato del dispositivo non sia ancora quello voluto.
 
 **Uplink confermato**
 
