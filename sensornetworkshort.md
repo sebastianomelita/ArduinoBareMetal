@@ -236,13 +236,11 @@ Ulteriori **differenziazioni del servizio** distinguono tra:
 La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo LoraWAN). Sovente si adopera un **broker MQTT** nella rete di distribuzione a cui sono associati:
 - i dispositivi di **comando** come sensorie e gli stessi dispositivi di **attuazione**  come dispositivi col ruolo di **publisher** su un **topic di output** (dal dispositivo terminale, verso il broker) che si occupa di:
     -  inviare il comando verso l'attuatore, sul dispositivo **sensore**
-    -  inviare il feedback con lo stato sul dispositivo **attuatore**.
+    -  inviare il feedback con lo stato, sul dispositivo **attuatore**.
 - i dispositivi di **attuazione** e gli stessi dispositivi di **comando** con il ruolo di **subscriber** su un **topic di input** (verso il dispositivo terminale) che si occupa di:
-    - ricevere ed azionare eventuali attuazioni sul dispositivo **attuatore**
-    - ricevere e mostrare eventuali feedback sullo stato dell'attuatore sul dispositivo sensore che l'utente ha utilizzato per effettuare il comando.
+    - ricevere ed azionare eventuali attuazioni, sul dispositivo **attuatore**
+    - ricevere e mostrare eventuali **feedback** sullo stato dell'attuatore, sul dispositivo sensore che l'utente aveva utilizzato per effettuare il comando. In questo caso è demandato proprio all'utente **decidere** se ripetere il comando se egli valuta che lo stato del dispositivo non sia ancora quello voluto.
   
-- che può essere impostato in maniera tale che crei su ogni dispositivo terminale **due topic** separati, un **topic di input** (verso il dispositivo terminale) che si occupa di azionare eventuali attuazioni e un **topic di output** (dal dispositivo terminale, verso il broker) che si occupa di restituire lo stato dell'**attuazione**. Questo feedback viene visualizzato in qualche modo all'utente che aveva effettuato il comando. In questo caso è demandato proprio all'utente **decidere** se ripetere il comando se egli valuta che lo stato del dispositivo non sia ancora quello voluto.
-
 Molti sistemi (wifi, zigbee, bluetooth BLE, LoRaWan, Sigfox) permettono di impostare **contemporaneamente**, sulla **stessa interfaccia** radio, un **servizio sincrono** mediante **TDMA** per le sorgenti che eseguono il **polling** di sensori e un **servizio asincrono** con **ALOHA** o **CSMA/CA** per le sorgenti che devono inoltrare il **comando** di un pulsante di accensione di un attuatore. Ciò è ottenuto **attivando** sul canale la funzionalità **beacon** con le cosiddette **superframe**.
 
 Un **beacon** contiene informazioni che **identificano** la rete e i suoi servizi nonché una sequenza di **bit di sincronizzazione**. Vengono trasmessi **periodicamente**, servono ad **annunciare** la presenza di una LAN wireless e a **sincronizzare** i membri sui suoi servizi (sincroni e asincroni).
