@@ -49,7 +49,7 @@ Non c'è un messaggio specifico per un nodo per dire al server che è un nodo di
 
 ### **Messaggi confermati**
 
-La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in **downlink*+funzioni di **comndo** o **configurazione**, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile, invece, un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di **ack**.
+La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in **downlink*+funzioni di **comando** o **configurazione**, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile, invece, un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di **ack**.
 
 La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo LoraWAN). Sovente, nella rete di distribuzione IP è presente un server col ruolo di **broker MQTT** a cui sono associati:
 - col ruolo di **publisher** su un **topic di output** (dal dispositivo terminale, verso il broker):
