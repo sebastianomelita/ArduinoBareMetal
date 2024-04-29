@@ -49,19 +49,15 @@ Non c'è un messaggio specifico per un nodo per dire al server che è un nodo di
 
 ### **Messaggi confermati**
 
-La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in **downlink**, però spesso accade che le collisioni non vengano affatto rilevate perchè ritenuto poco vantaggioso. 
+La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in **downlink*+funzioni di **comndo** o **configurazione**, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile, invece, un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di **ack**.
 
-Una situazione comune è l'**interrogazione periodica dei sensori** con dispositivi a basso costo che utilizzano un mezzo radio molto affollato. In questo caso l'utilizzo di un ack appesantisce dispositivi che devono rimanere semplici e incrementa inutilmente il traffico in rete dato che al polling successivo il dato verrà comunque ritrasmesso.
-
-Nel caso dei dispositivi sensori con funzioni di **comando** o **configurazione**, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile, invece, un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di **ack**.
-
-La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo LoraWAN). Sovente si adopera un **broker MQTT** nella rete di distribuzione a cui sono associati:
-- i dispositivi di **comando** come sensorie e gli stessi dispositivi di **attuazione**  come dispositivi col ruolo di **publisher** su un **topic di output** (dal dispositivo terminale, verso il broker) che si occupa di:
-    -  inviare il comando verso l'attuatore, sul dispositivo **sensore**
-    -  inviare il feedback con lo stato, sul dispositivo **attuatore**.
-- i dispositivi di **attuazione** e gli stessi dispositivi di **comando** con il ruolo di **subscriber** su un **topic di input** (verso il dispositivo terminale) che si occupa di:
-    - ricevere ed azionare eventuali attuazioni, sul dispositivo **attuatore**
-    - ricevere e mostrare eventuali **feedback** sullo stato dell'attuatore, sul dispositivo sensore che l'utente aveva utilizzato per effettuare il comando. In questo caso è demandato proprio all'utente **decidere** se ripetere il comando se egli valuta che lo stato del dispositivo non sia ancora quello voluto.
+La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo LoraWAN). Sovente, nella rete di distribuzione IP è presente un server col ruolo di broker MQTT a cui sono associati:
+- col ruolo di **publisher** su un **topic di output** (dal dispositivo terminale, verso il broker):
+    - il dispositivo **sensore** perchè vuole usarlo per **inviare il comando** verso l'attuatore, 
+    - il dispositivo **attuatore** perchè intende usarlo per **inviare il feedback** con il proprio stato.
+- con il ruolo di **subscriber** su un **topic di input** (verso il dispositivo terminale):
+    - il dispositivo **attuatore** perchè è interessato a ricevere, sotto forma di notifiche asincrone, eventuali comandi di attuazione (motori, cancelli)  
+    - il dispositivo **sensore** che l'utente aveva utilizzato per effettuare il comando, perchè è interessato a ricevere, eventuali **feedback** sullo stato dell'attuatore per mostrarli all'utente. In questo caso è demandato all'utente, e non al protocollo, **decidere** se e quante volte ripetere il comando in caso che lo stato del dispositivo non sia ancora quello voluto.
 
 **Uplink confermato**
 
