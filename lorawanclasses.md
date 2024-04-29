@@ -57,7 +57,7 @@ La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo*
     - il dispositivo **attuatore** perchè intende adoperare questo canale di output per **inviare il feedback** con il proprio stato ad un display associato al sensore di comando.
 - con il ruolo di **subscriber** su un **topic di input** (verso il dispositivo terminale):
     - il dispositivo **attuatore** perchè è interessato a ricevere, su un canale di input, eventuali comandi di attuazione (motori, cancelli)  
-    - il dispositivo **sensore** che l'utente aveva utilizzato per effettuare il comando, perchè è interessato a riceverea ricevere, su un canale di input, eventuali **feedback** sullo stato dell'attuatore per mostrarli all'utente. In questo caso è demandato all'utente, e non al protocollo, **decidere** se e quante volte ripetere il comando in caso che lo stato del dispositivo non sia ancora quello voluto.
+    - il dispositivo **sensore** che l'utente aveva utilizzato per effettuare il comando, perchè è interessato a ricevere, su un canale di input, eventuali **feedback** sullo stato dell'attuatore per mostrarli all'utente. In questo caso è demandato all'utente, e non al protocollo, **decidere** se e quante volte ripetere il comando in caso che lo stato del dispositivo non sia ancora quello voluto.
 
 **Uplink confermato**
 
