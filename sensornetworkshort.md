@@ -233,13 +233,13 @@ Ulteriori **differenziazioni del servizio** distinguono tra:
 - la presenza o meno di una funzione di **conferma** dei messaggi trasmessi (protocollo confermato).
 - la presenza o meno di **classi di prestazione**, magari abbinate ad uno o più dei servizi precedenti.
     
-La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo LoraWAN). Sovente si adopera un **broker MQTT** nella rete di distribuzione a cui sono associati:
-- i dispositivi di **comando** come sensorie e gli stessi dispositivi di **attuazione**  come dispositivi col ruolo di **publisher** su un **topic di output** (dal dispositivo terminale, verso il broker) che si occupa di:
-    -  inviare il comando verso l'attuatore, sul dispositivo **sensore**
-    -  inviare il feedback con lo stato, sul dispositivo **attuatore**.
-- i dispositivi di **attuazione** e gli stessi dispositivi di **comando** con il ruolo di **subscriber** su un **topic di input** (verso il dispositivo terminale) che si occupa di:
-    - ricevere ed azionare eventuali attuazioni, sul dispositivo **attuatore**
-    - ricevere e mostrare eventuali **feedback** sullo stato dell'attuatore, sul dispositivo sensore che l'utente aveva utilizzato per effettuare il comando. In questo caso è demandato proprio all'utente **decidere** se ripetere il comando se egli valuta che lo stato del dispositivo non sia ancora quello voluto.
+La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo LoraWAN). Sovente, nella rete di distribuzione IP è presente un server col ruolo di **broker MQTT** a cui sono associati:
+- col ruolo di **publisher** su un **topic di output** (dal dispositivo terminale, verso il broker):
+    - il dispositivo **sensore** perchè vuole usare questo canale di output per **inviare il comando** verso l'attuatore. 
+    - il dispositivo **attuatore** perchè intende adoperare questo canale di output per **inviare il feedback** con il proprio stato ad un display associato al sensore di comando.
+- con il ruolo di **subscriber** su un **topic di input** (verso il dispositivo terminale):
+    - il dispositivo **attuatore** perchè è interessato a ricevere, su un canale di input, eventuali comandi di attuazione (motori, cancelli). 
+    - il dispositivo **sensore** che l'utente aveva utilizzato per effettuare il comando, perchè è interessato a ricevere, su un canale di input, eventuali **feedback** sullo stato dell'attuatore per mostrarli all'utente. In questo caso è demandato all'utente, e non al protocollo, **decidere** se e quante volte ripetere il comando, nel caso che lo stato del dispositivo non sia ancora quello voluto.
   
 Molti sistemi (wifi, zigbee, bluetooth BLE, LoRaWan, Sigfox) permettono di impostare **contemporaneamente**, sulla **stessa interfaccia** radio, un **servizio sincrono** mediante **TDMA** per le sorgenti che eseguono il **polling** di sensori e un **servizio asincrono** con **ALOHA** o **CSMA/CA** per le sorgenti che devono inoltrare il **comando** di un pulsante di accensione di un attuatore. Ciò è ottenuto **attivando** sul canale la funzionalità **beacon** con le cosiddette **superframe**.
 
