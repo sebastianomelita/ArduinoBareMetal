@@ -82,7 +82,7 @@ CHIP RATE         |  SYMBOL RATE  |  BIT RATE  | CHIP DURATION        |  SYMBOL 
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 ![](img/bw.webp)  |  ![](img/rs.webp)   |   ![](img/rb.webp)  |  ![](img/ts.webp) |  ![](img/tc.webp)
 
-La larghezza di banda BW equivale al **chip rate**, ovvero al numero di segnali elementari al secondo, è la larghezza del canale. Un simbolo di frequenza massima si chiama **chip**. 
+La larghezza di banda B equivale al **chip rate**, ovvero al numero di segnali elementari al secondo, è la larghezza del canale. Un simbolo di frequenza massima si chiama **chip**. 
 
 Lo **Spreading Factor (SF)** in LoRa è definito come il numero di bit per simbolo e indica il numero di volte che il segnale che viene **allargato in frequenza** rispetto alla larghezza originale in banda stretta. Ad esempio, con SF7, il segnale viene allargato di 2^7/7 volte rispetto alla larghezza di banda originale, un incremento pressochè **esponenziale**.
 
