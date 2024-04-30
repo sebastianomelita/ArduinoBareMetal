@@ -43,6 +43,10 @@ E' una tecnica di accesso usata dal protocollo **Bluetooth LBE**
 
 ### **LoraWAN**
 
+<img src="img/FSKProcess.png" alt="alt text" width="600">
+
+<img src="img/loraChirp.png" alt="alt text" width="600">
+
 <img src="img/SFRate.png" alt="alt text" width="600">
 
 <img src="img/SF-band.png" alt="alt text" width="600">
