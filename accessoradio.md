@@ -49,7 +49,13 @@ FSK            |  CSS
 :-------------------------:|:-------------------------:
 ![](img/FSKProcess.png)  |  ![](img/loraChirp.png)
 
-Un chirp è un segnale che, con continuità, incrementa o decrementa la sua frequenza. Quando l'incremento è positivo si parla di **upchirp**, quando è negativo di **downchirp**.
+Un **chirp** è un segnale che, con continuità, incrementa o decrementa la sua frequenza. Quando l'incremento è positivo si parla di **upchirp**, quando è negativo di **downchirp**.
+
+Le modulazioni (digitali o analogiche) possono essere indagate separatamente nel tempo e nella frequenza o tramite particolari diagrammi che mostrano la **variazione** della frequenza nel tempo detti **spettrogrammi**. Da destra a sinistra ci stanno gli incrementi positivi di frequenza, dall'alto in basso quelli positivi del tempo.
+
+In uno spettrogramma una **variazione discreta** tra due frequenza fisse che cofificano i bit 1 e 0 (FSK) appare come una successione nel tempo di singole linee verticali che rappresentano due frequenze costanti diverse.
+
+
 
 DR         |  SF
 :-------------------------:|:-------------------------:
