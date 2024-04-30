@@ -96,7 +96,7 @@ Aumentando lo spreading factor, si aumentano le componenti di frequenza dello sp
 
 <img src="img/chirpedMsg.png" alt="alt text" width="600">
 
-La **trama Lora** è composta da un preambolo di 8 byte di sincronizzazione più un byte di SOF che indica l'inizio della trama. I primi sono codificati con 8 upchirp di seguito mentre la sequenza SOF è codificata con 2 downchirp.
+La **trama Lora** è composta da un preambolo di 8 chirp di sincronizzazione più un chirp di SOF che indica l'inizio della trama. I primi sono codificati con 8 upchirp di seguito mentre la sequenza SOF è codificata con 2 downchirp.
 
 <img src="img/dechirp.png" alt="alt text" width="600">
 
