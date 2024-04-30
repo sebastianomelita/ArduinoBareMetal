@@ -71,7 +71,7 @@ La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere
 
 L'ampiezza di banda B del canale rappresenta il chip rate. Il reciproco del chip rate rappresenta la lunghezza del chip nel tempo.
 
-L'ampiezza di banda B del canale rappresenta il chirp rate. Il reciproco del chirp rate rappresenta la lunghezza del simbolo nel tempo.
+L'ampiezza di banda B del canale rappresenta il symbol rate. Il reciproco del symbol rate rappresenta la lunghezza del simbolo nel tempo.
 
 CHIP RATE         |  SYMBOL RATE  |  BIT RATE  | CHIP DURATION        |  SYMBOL DURATION   
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
