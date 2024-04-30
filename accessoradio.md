@@ -59,6 +59,9 @@ DR         |  SF
 :-------------------------:|:-------------------------:
 ![](img/SFRate.png)  |  ![](img/SF-band.png)
 
+Il **data rate (DR)** varia da 0 a 5 ed è inversamente proporzionale allo **spreading factor (SF)** che varia da 7 a 12.
+
+
 Definizioni:
 - **Larghezza di banda**: larghezza dello spettro occupato dal chirp.
 - **Fattore di spreading (diffusione)**: numero di bit codificato per simbolo (stato RF)
