@@ -49,13 +49,30 @@ FSK            |  CSS
 :-------------------------:|:-------------------------:
 ![](img/FSKProcess.png)  |  ![](img/loraChirp.png)
 
+Un chirp è un segnale che, con continuità, incrementa o decrementa la sua frequenza. Quando l'incremento è positivo si parla di **upchirp**, quando è negativo di **downchirp**.
+▸ i.
+
 DR         |  SF
 :-------------------------:|:-------------------------:
 ![](img/SFRate.png)  |  ![](img/SF-band.png)
 
+**Telgram splitting**: questo metodo suddivide un segnale a banda ultrastretta in numerosi sottopacchetti più piccoli, trasmettendoli successivamente come brevi burst radio a varie frequenze e intervalli di tempo. Per ridurre al minimo il potenziale di collisione con altri sottopacchetti, utilizza tempi di trasmissione brevi e pseudo-casualità. Questo approccio migliora sia la robustezza che la scalabilità riducendo al contempo le interferenze
+
+Definizioni:
+- **Larghezza di banda**: larghezza dello spettro occupato dal chirp.
+- **Fattore di spreading (diffusione)**: numero di bit codificato per simbolo (stato RF)
+- **Chirp rate**: derivata prima della frequenza del chirp
+
 <img src="img/chirpedMsg.png" alt="alt text" width="600">
 
 <img src="img/dechirp.png" alt="alt text" width="600">
+
+Cratteristiche positive sono:
+- permette di realizzare collegamenti con link budget molt elevati
+- Resilienza alle interferenze
+- Prestazioni a basso consumo
+- Resistenza agli effetti multi-percorso
+- Resistenza all'effetto Doppler (applicazioni mobili)
 
 
 ### **TSCH**
