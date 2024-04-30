@@ -108,9 +108,9 @@ Altre operazioni numeriche coperte da brevetto e ricostruibili solamente mediant
 3. Interleaving. Realizza proprietà di oscuramento dei bit 
 4. Forward Error Correction, aggiunge dei bit di parità
 
-**Telgram splitting**: questo metodo suddivide un segnale a banda ultrastretta in numerosi sottopacchetti più piccoli, trasmettendoli successivamente come brevi burst radio a varie frequenze e intervalli di tempo. Per ridurre al minimo il potenziale di collisione con altri sottopacchetti, utilizza tempi di trasmissione brevi e pseudo-casualità. Questo approccio migliora sia la robustezza che la scalabilità riducendo al contempo le interferenze
+Una funzione aggiuntiva del protocollo LoraWAN è il **Telgram splitting**: questo metodo suddivide un segnale a banda ultrastretta in numerosi sottopacchetti più piccoli, trasmettendoli successivamente come brevi burst radio a varie frequenze e intervalli di tempo. Per ridurre al minimo il potenziale di collisione con altri sottopacchetti, utilizza tempi di trasmissione brevi e pseudo-casualità. Questo approccio migliora sia la robustezza che la scalabilità riducendo al contempo le interferenze
 
-Caratteristiche positive di Lora sono:
+Altre **caratteristiche positive** di Lora sono:
 - realizzazione di collegamenti con link budget molt elevati
 - Resilienza alle interferenze
 - Prestazioni a basso consumo
