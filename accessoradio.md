@@ -31,7 +31,7 @@ Nel CDM le **sorgenti** occupano e **condividono** tutta la **banda** di frequen
 
 <img src="img/DSSS_carrier.png" alt="alt text" width="600">
 
-Aumentando sufficientemente il fattore di spreading è possibile portare la sensibilità sotto la soglia di rumore di fondo dell'universo rendendo, di fatto, le comunicazioni inintercettabili. Inoltre si riesce a far lavorare il sistema con rapporti segnale rumore negativi.
+Aumentando sufficientemente il fattore di spreading è possibile portare la sensibilità sotto la soglia di rumore di fondo dell'universo rendendo, di fatto, le comunicazioni inintercettabili. Inoltre si riesce a far lavorare il sistema in ambienti molto disturbati, persino con rapporti segnale/rumore negativi.
 
 E' una tecnica di accesso usata dal protocollo **Zigbee** e **6LowPan** (IEEE 802.15.4).
 
