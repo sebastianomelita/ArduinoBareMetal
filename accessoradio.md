@@ -65,6 +65,11 @@ Le modulazioni (digitali o analogiche) possono essere indagate separatamente nel
 - una **variazione continua** di frequenza detta scivolamento o chirp appare come un **segmento inclinato** con pendenza crescente nel tempo nel caso di un upchirp o decrescente nel tempo nel caso di un downchirp.
 <img src="img/chirpdivisions.webp" alt="alt text" width="600">
 
+Definizioni:
+- **Larghezza di banda**: larghezza dello spettro occupato dal chirp.
+- **Fattore di spreading (diffusione)**: numero di bit codificato per simbolo (stato RF)
+- **Chirp rate**: derivata prima della frequenza del chirp
+
 Un segnale di **chirp** può essere suddiviso in 2^SF valori (128) che **codificano**, nella frequenza, il simbolo da trasmettere. Ad **un simbolo** corrisponde, nel tempo, una certa **sequenza lunga SF** di bit da trasmettere che può essere ricostruita **in ricezione** misurando la **lunghezza in frequenza** del chirp nello sprettogramma (mediante FFT) dove ha un valore compreso tra [0, 2^SF]. 
 
 La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere uno scivolamento di B Hertz nel tempo in cui si raccolgono SF bit, cioè un un simbolo, e questo per tutti i valori di SF. Per effetto di ciò, all'aumentare di SF nel tempo, i bit verranno diffusi di 2^SF/SF nella frequenza.
@@ -89,11 +94,6 @@ Il **data rate (DR)** varia da 0 a 5 ed è inversamente proporzionale allo **spr
 
 Aumentando lo spreading factor, si aumentano le componenti di frequenza dello spettro totale del segnale. In altre parole, l’energia del segnale totale è ora distribuita su una gamma più ampia di frequenze, consentendo al ricevitore di discernere un segnale con un rapporto segnale-rumore (SNR) più basso (cioè peggiore).
 
-Definizioni:
-- **Larghezza di banda**: larghezza dello spettro occupato dal chirp.
-- **Fattore di spreading (diffusione)**: numero di bit codificato per simbolo (stato RF)
-- **Chirp rate**: derivata prima della frequenza del chirp
-
 
 <img src="img/chirpedMsg.png" alt="alt text" width="600">
 
@@ -101,8 +101,8 @@ Definizioni:
 
 **Telgram splitting**: questo metodo suddivide un segnale a banda ultrastretta in numerosi sottopacchetti più piccoli, trasmettendoli successivamente come brevi burst radio a varie frequenze e intervalli di tempo. Per ridurre al minimo il potenziale di collisione con altri sottopacchetti, utilizza tempi di trasmissione brevi e pseudo-casualità. Questo approccio migliora sia la robustezza che la scalabilità riducendo al contempo le interferenze
 
-Cratteristiche positive sono:
-- permette di realizzare collegamenti con link budget molt elevati
+Caratteristiche positive di Lora sono:
+- realizzazione di collegamenti con link budget molt elevati
 - Resilienza alle interferenze
 - Prestazioni a basso consumo
 - Resistenza agli effetti multi-percorso
