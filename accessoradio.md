@@ -73,6 +73,8 @@ Definizioni:
 - **Fattore di spreading (diffusione)**: numero di bit codificato per simbolo (stato RF)
 - **Chirp rate**: derivata prima della frequenza del chirp
 
+<img src="img/chirpdivisions.webp" alt="alt text" width="600">
+
 <img src="img/chirpedMsg.png" alt="alt text" width="600">
 
 <img src="img/dechirp.png" alt="alt text" width="600">
