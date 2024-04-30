@@ -60,9 +60,9 @@ Le modulazioni (digitali o analogiche) possono essere indagate separatamente nel
 - una **variazione discreta** tra due frequenza fisse che codificano i bit 1 e 0 (FSK) appare come una successione nel tempo di singole linee verticali che rappresentano due frequenze costanti diverse (dette armoniche).
 - una **variazione continua** di frequenza detta scivolamento o chirp appare come un **segmento inclinato** con pendenza crescente nel tempo nel caso di un upchirp o decrescente nel tempo nel caso di un downchirp.
 
-DR         |  SF  |   DR        |  SF
+CHIP RATE         |  SYMBOL RATE  |   CHIP DURATION        |  SYMBOL DURATION
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
-![](img/SFRate.png)  |  ![](img/SF-band.png)   |   ![](img/SFRate.png)  |  ![](img/SF-band.png)
+![](img/bw.webp)  |  ![](img/rs.webp)   |   ![](img/ts.webp)  |  ![](img/tc.webp)
 
 
 
