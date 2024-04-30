@@ -67,11 +67,11 @@ Le modulazioni (digitali o analogiche) possono essere indagate separatamente nel
 
 Un segnale di **chirp** può essere suddiviso in 2^SF valori (128) che **codificano**, nella frequenza, il simbolo da trasmettere. Ad **un simbolo** corrisponde, nel tempo, una certa **sequenza lunga SF** di bit da trasmettere che può essere ricostruita **in ricezione** misurando la **lunghezza in frequenza** del chirp nello sprettogramma (mediante FFT) dove ha un valore compreso tra [0, 2^SF]. 
 
-La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere uno scivolamento di B Hertz nel tempo in cui si raccolgono SF bit, cioè un un simbolo, e questo per tutti i valori di SF. Per effetto di ciò, all'aumentare di SF nel tempo, i bit verranno diffusi di 2^(SF-1) nella frequenza.
+La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere uno scivolamento di B Hertz nel tempo in cui si raccolgono SF bit, cioè un un simbolo, e questo per tutti i valori di SF. Per effetto di ciò, all'aumentare di SF nel tempo, i bit verranno diffusi di 2^SF/SF nella frequenza.
 
 L'ampiezza di banda B del canale rappresenta il chip rate. Il reciproco del chip rate rappresenta la lunghezza del chip nel tempo.
 
-L'ampiezza di banda B del canale rappresenta il symbol rate. Il reciproco del symbol rate rappresenta la lunghezza del simbolo nel tempo.
+Il numero di simboli al secondo trasmessi rappresenta il symbol rate. Il reciproco del symbol rate rappresenta la lunghezza del simbolo nel tempo.
 
 CHIP RATE         |  SYMBOL RATE  |  BIT RATE  | CHIP DURATION        |  SYMBOL DURATION   
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
