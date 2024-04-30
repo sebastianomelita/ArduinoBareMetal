@@ -65,9 +65,9 @@ Un segnale di chirp può essere suddiviso in 2^SF valori (128) che **codificano*
 
 Il numero di chirp per canale rappresenta il symbol rate. Il reciproco del symbol rate rappresenta la lunghezza del simbolo.
 
-CHIP RATE         |  SYMBOL RATE  |   CHIP DURATION        |  SYMBOL DURATION   |   BIT RATE 
+CHIP RATE         |  SYMBOL RATE  |  BIT RATE  | CHIP DURATION        |  SYMBOL DURATION   
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
-![](img/bw.webp)  |  ![](img/rs.webp)   |   ![](img/ts.webp)  |  ![](img/tc.webp) |  ![](img/rb.webp)
+![](img/bw.webp)  |  ![](img/rs.webp)   |   ![](img/rb.webp)  |  ![](img/ts.webp) |  ![](img/tc.webp)
 
 La larghezza di banda equivale al **chip rate**, ovvero al numero di segnali elementari al secondo.
 
