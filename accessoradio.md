@@ -72,7 +72,7 @@ Definizioni:
 
 Un segnale di **chirp** può essere suddiviso in 2^SF valori (128) che **codificano**, nella frequenza, il simbolo da trasmettere. Ad **un simbolo** corrisponde, nel tempo, una certa **sequenza lunga SF** di bit da trasmettere che può essere ricostruita **in ricezione** misurando la **lunghezza in frequenza** del chirp nello sprettogramma (mediante FFT) dove ha un valore compreso tra [0, 2^SF]. 
 
-La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere uno scivolamento di B Hertz nel tempo in cui si raccolgono SF bit, cioè un un simbolo, e questo per tutti i valori di SF. Per effetto di ciò, all'aumentare di SF nel tempo, i bit verranno diffusi di 2^SF/SF nella frequenza.
+La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere uno scivolamento di B Hertz nel tempo in cui si raccolgono SF bit, cioè un un simbolo, e questo per tutti i valori di SF. Per effetto di ciò, in corrispondenza di un fattore di spreading SF, i singoli bit verranno diffusi di 2^SF/SF nella frequenza.
 
 L'ampiezza di banda B del canale rappresenta il chip rate. Il reciproco del chip rate rappresenta la lunghezza del chip nel tempo.
 
@@ -94,8 +94,9 @@ Il **data rate (DR)** varia da 0 a 5 ed è inversamente proporzionale allo **spr
 
 Aumentando lo spreading factor, si aumentano le componenti di frequenza dello spettro totale del segnale. In altre parole, l’energia del segnale totale è ora distribuita su una gamma più ampia di frequenze, consentendo al ricevitore di discernere un segnale con un rapporto segnale-rumore (SNR) più basso (cioè peggiore).
 
-
 <img src="img/chirpedMsg.png" alt="alt text" width="600">
+
+La trama Lora è composta da un preambolo di 8 byte di sincronizzazione più un byte di SOF che indica l'inizio della trama. I primi sono codificati con 8 downchirp di seguito mentre la sequenza SOF è codificata con 2 upchirp.
 
 <img src="img/dechirp.png" alt="alt text" width="600">
 
