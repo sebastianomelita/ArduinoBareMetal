@@ -47,10 +47,9 @@ FSK            |  CSS
 :-------------------------:|:-------------------------:
 ![](img/FSKProcess.png)  |  ![](img/loraChirp.png)
 
-
-<img src="img/SFRate.png" alt="alt text" width="600">
-
-<img src="img/SF-band.png" alt="alt text" width="600">
+DR         |  SF
+:-------------------------:|:-------------------------:
+![](img/SFRate.png)  |  ![](img/SF-band.png)
 
 <img src="img/chirpedMsg.png" alt="alt text" width="600">
 
