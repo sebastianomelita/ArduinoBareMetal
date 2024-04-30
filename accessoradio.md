@@ -65,13 +65,13 @@ Le modulazioni (digitali o analogiche) possono essere indagate separatamente nel
 - una **variazione continua** di frequenza detta scivolamento o chirp appare come un **segmento inclinato** con pendenza crescente nel tempo nel caso di un upchirp o decrescente nel tempo nel caso di un downchirp.
 <img src="img/chirpdivisions.webp" alt="alt text" width="600">
 
-Un segnale di **chirp** può essere suddiviso in 2^SF valori (128) che **codificano**, nella frequenza, il simbolo da trasmettere. Ad **un simbolo** corrisponde, nel tempo, una certa **sequenza lunga SF** di bit da trasmettere che può essere determinata **in ricezione** misurando la **lunghezza** del chirp nello sprettogramma (mediante FFT) che, nel dominio della frequenza, ha un valore compreso tra [0, 2^SF]. 
+Un segnale di **chirp** può essere suddiviso in 2^SF valori (128) che **codificano**, nella frequenza, il simbolo da trasmettere. Ad **un simbolo** corrisponde, nel tempo, una certa **sequenza lunga SF** di bit da trasmettere che può essere ricostruita **in ricezione** misurando la **lunghezza in frequenza** del chirp nello sprettogramma (mediante FFT) dove ha un valore compreso tra [0, 2^SF]. 
 
 La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere uno scivolamento di B Hertz nel tempo in cui si raccolgono SF bit, cioè un un simbolo, e questo per tutti i valori di SF. Per effetto di ciò, all'aumentare di SF nel tempo, i bit verranno diffusi di 2^(SF-1) nella frequenza.
 
-Il numero di chirp per canale rappresenta il symbol rate. Il reciproco del symbol rate rappresenta la lunghezza del simbolo.
+L'ampiezza di banda B del canale rappresenta il chip rate. Il reciproco del chip rate rappresenta la lunghezza del chip nel tempo.
 
-Il numero di chip per canale rappresenta . Il reciproco del symbol rate rappresenta la lunghezza del simbolo.
+L'ampiezza di banda B del canale rappresenta il chirp rate. Il reciproco del chirp rate rappresenta la lunghezza del simbolo nel tempo.
 
 CHIP RATE         |  SYMBOL RATE  |  BIT RATE  | CHIP DURATION        |  SYMBOL DURATION   
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
@@ -79,7 +79,7 @@ CHIP RATE         |  SYMBOL RATE  |  BIT RATE  | CHIP DURATION        |  SYMBOL 
 
 La larghezza di banda equivale al **chip rate**, ovvero al numero di segnali elementari al secondo, è la larghezza della banda base. Un simbolo in banda base si chiama **chip**. 
 
-Lo **Spreading Factor (SF)** in LoRa è definito come il numero di bit per simbolo e indica il numero di volte che il segnale che viene **allargato** rispetto alla larghezza di banda di base. Ad esempio, con SF7, il segnale viene allargato di 7 volte rispetto alla larghezza di banda di base.
+Lo **Spreading Factor (SF)** in LoRa è definito come il numero di bit per simbolo e indica il numero di volte che il segnale che viene **allargato in frequenza** rispetto alla larghezza in banda base. Ad esempio, con SF7, il segnale viene allargato di 2^(SF-1) volte rispetto alla larghezza di banda di base, un incremento **esponenziale**.
 
 DR         |  SF
 :-------------------------:|:-------------------------:
