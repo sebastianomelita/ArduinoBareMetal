@@ -64,7 +64,7 @@ CHIP RATE         |  SYMBOL RATE  |   CHIP DURATION        |  SYMBOL DURATION
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 ![](img/bw.webp)  |  ![](img/rs.webp)   |   ![](img/ts.webp)  |  ![](img/tc.webp)
 
-
+La larghezza di banda equivale al **chip rate**, ovvero al numero di segnali elementari al secondo.
 
 DR         |  SF
 :-------------------------:|:-------------------------:
