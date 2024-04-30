@@ -29,6 +29,10 @@ Nel CDM le **sorgenti** occupano e **condividono** tutta la **banda** di frequen
 
 **In ricezione** la moltiplicazione nel tempo di un segnale ricevuto per lo stesso chirp (o spreading code) con cui era stato espanso in trasmissione, riporta il segnale ricevuto a banda stretta, permettendone la decodifica dei bit. La moltiplicazione con quel codice avviene anche con gli altri segnali ricevuti ma, essendo questo diverso dal loro spreading code, li lascia a spettro espanso. 
 
+<img src="DSSS_carrier.png" alt="alt text" width="600">
+
+Aumentando sufficientemente il fattore di spreading è possibile portare la sensibilità sotto la soglia di rumore di fondo dell'universo rendendo, di fatto, le comunicazioni inintercettabili. Inoltre si riesce a far lavorare il sistema con rapporti segnale rumore negativi.
+
 E' una tecnica di accesso usata dal protocollo **Zigbee** e **6LowPan** (IEEE 802.15.4).
 
 ### **FHSS**
@@ -42,6 +46,7 @@ Alcune **tecnologie radio** realizzano un **accesso multiplo** al canale radio, 
 E' una tecnica di accesso usata dal protocollo **Bluetooth LBE**
 
 ### **LoraWAN**
+Uno degli svantaggi di un sistema DSSS è il fatto che richiede un orologio di riferimento altamente accurato (e costoso). La tecnologia LoRa Chirp Spread Spectrum (CSS) di Semtech offre un'alternativa DSSS a basso costo e a basso consumo, ma robusta, che non richiede un clock di riferimento altamente accurato.
 
 La tecnologia di livello fisico chiamata LoRa utilizza una forma **custom** (e non resa di dominio pubblico) di **spettro espanso** per modulare le comunicazioni nella banda ISM sub-GHz. LoRa utilizza bande **ISM** senza licenza. Per fornire la comunicazione viene utilizzata una modulazione **CSS (Chirp Spread Spectrum)**, che **espande** un segnale a **banda stretta** su un canale a larghezza di banda più ampia.
 
@@ -165,6 +170,7 @@ Sitografia:
 - https://wirelesspi.com/understanding-lora-phy-long-range-physical-layer/
 - https://thesis.unipd.it/retrieve/d813d8b9-9d45-4158-acbc-eada172983c8/Chinta_Venkata_Rajesh.pdf
 - https://interline.pl/Information-and-Tips/What-Technology-Behind-LoRa-Frequency
+- https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/
 
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN) 
 
