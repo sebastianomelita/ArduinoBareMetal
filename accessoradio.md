@@ -75,6 +75,8 @@ Definizioni:
 
 <img src="img/chirpdivisions.webp" alt="alt text" width="600">
 
+Un segnale di chirp può essere suddiviso in 2^SF valori (128).
+
 <img src="img/chirpedMsg.png" alt="alt text" width="600">
 
 <img src="img/dechirp.png" alt="alt text" width="600">
