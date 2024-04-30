@@ -10,6 +10,8 @@ Nel **CDM** la sorgente viene:
 - **traslata**: cioè portata alla frequenza centrale della banda di trasmissione
 - **espansa**: cioè trasformata da segnale a banda stretta a segnale che occupa tutta la banda di lavoro detto segnale a banda espansa.  
 
+Nei sistemi DSSS (Direct Sequence Spread Spectrum), il **fattore di spreading** è la lunghezza della sequenza di spreading che si riflette nel numero di chip per ciascun simbolo di modulazione.
+
 L’**espansione in frequenza** si ottiene trasformando artificialmente un segnale **lentamente variabile** nel tempo in uno **rapidamente variabile** nel tempo.
 Ad ogni sorgente è associato un **codice di espansione** da usare in trasmissione. Lo stesso codice, **usato in ricezione**, riporta a **banda stretta** solo lei lasciando espanse tutte le altre sorgenti.
 
@@ -41,6 +43,8 @@ Anche FHSS potrebbe essere vista come una tecnica di **modulazione numerica**.
 
 Alcune **tecnologie radio** realizzano un **accesso multiplo** al canale radio, **apparentemente** allocando **molti canali** nello **stesso istante**. In realtà la tecnica  alloca un canale alla volta ma **saltando** da uno all'altro con una **velocità** che **alla sorgente** appare **istantanea**. Questo fenomeno ha l'effetto di sparpagliare (**spreading**) l'energia di un canale su **tutta la banda** disponibile. Si tratta di una **variante di CDM** ottenuta per altra via. Infatti, la **sequenza di saltellamento** è diversa per ogni comunicazione ed è associata ad un **SSID**. Le **sequenze** sono **ortogonali** e quindi permettono la ricostruzione in ricezione della **comunicazione originale**. Anche una eventuale **multiplazione TDM** effettuata dentro il canale FDM non si accorgerebbe del saltellamento e procederebbe come al solito, assegnando **diversi slot** temporali a **comunicazioni diverse**. Un messaggio potrebbe **partire** in un canale, passare ad altri 7 e completarsi solo nell' ottavo canale, ovvero l'ultimo visitato. La tecnica si chiama **Frequency hopping** o anche detta **FHSS**. La **distribuzione** della comunicazione su una **gamma ampia** di frequenze rende questo tipo di modulazione **meno sensibile** alle **interferenze**.
 
+Nei sistemi FHSS (Frequency Hopping Spread Spectrum), il **fattore di spreading** è il numero di frequenze portanti su cui salta un simbolo di modulazione.
+
 <img src="fhss.png" alt="alt text" width="600">
 
 E' una tecnica di accesso usata dal protocollo **Bluetooth LBE**
@@ -61,11 +65,13 @@ Le modulazioni (digitali o analogiche) possono essere indagate separatamente nel
 - una **variazione continua** di frequenza detta scivolamento o chirp appare come un **segmento inclinato** con pendenza crescente nel tempo nel caso di un upchirp o decrescente nel tempo nel caso di un downchirp.
 <img src="img/chirpdivisions.webp" alt="alt text" width="600">
 
-Un segnale di **chirp** può essere suddiviso in 2^SF valori (128) che **codificano**, nella frequenza, il simbolo da trasmettere. Ad un simbolo corrisponde una certa **sequenza lunga SF bit** che può, quindi, essere determinata in ricezione misurando la **lunghezza** del chirp nello sprettogramma (mediante FFT) che, nel dominio della frequenza, ha un valore compreso tra [0  2^SF]. 
+Un segnale di **chirp** può essere suddiviso in 2^SF valori (128) che **codificano**, nella frequenza, il simbolo da trasmettere. Ad un simbolo corrisponde una certa **sequenza lunga SF bit** che può, quindi, essere determinata in ricezione misurando la **lunghezza** del chirp nello sprettogramma (mediante FFT) che, nel dominio della frequenza, ha un valore compreso tra [0, 2^SF]. 
 
-La **pendenza** (slope) del chirp nello spettrogramma è tale da ottenere uno scivolamento di B Hertz nel tempo necessario per raccogliere esattamente SF bit, e questo per tutti i valori di SF.
+La **pendenza** (slope) del chirp nello spettrogramma è tale da ottenere uno scivolamento di B Hertz nel tempo necessario per raccogliere esattamente SF bit, cioè un un simbolo, e questo per tutti i valori di SF.
 
 Il numero di chirp per canale rappresenta il symbol rate. Il reciproco del symbol rate rappresenta la lunghezza del simbolo.
+
+Il numero di chip per canale rappresenta . Il reciproco del symbol rate rappresenta la lunghezza del simbolo.
 
 CHIP RATE         |  SYMBOL RATE  |  BIT RATE  | CHIP DURATION        |  SYMBOL DURATION   
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
