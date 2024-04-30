@@ -50,7 +50,6 @@ FSK            |  CSS
 ![](img/FSKProcess.png)  |  ![](img/loraChirp.png)
 
 Un chirp è un segnale che, con continuità, incrementa o decrementa la sua frequenza. Quando l'incremento è positivo si parla di **upchirp**, quando è negativo di **downchirp**.
-▸ i.
 
 DR         |  SF
 :-------------------------:|:-------------------------:
