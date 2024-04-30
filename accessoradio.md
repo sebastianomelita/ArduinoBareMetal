@@ -66,6 +66,7 @@ DR         |  SF
 
 Il **data rate (DR)** varia da 0 a 5 ed è inversamente proporzionale allo **spreading factor (SF)** che varia da 7 a 12.
 
+Aumentando lo spreading factor, si aumentano le componenti di frequenza dello spettro totale del segnale. In altre parole, l’energia del segnale totale è ora distribuita su una gamma più ampia di frequenze, consentendo al ricevitore di discernere un segnale con un rapporto segnale-rumore (SNR) più basso (cioè peggiore).
 
 Definizioni:
 - **Larghezza di banda**: larghezza dello spettro occupato dal chirp.
