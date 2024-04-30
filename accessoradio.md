@@ -43,6 +43,8 @@ E' una tecnica di accesso usata dal protocollo **Bluetooth LBE**
 
 ### **LoraWAN**
 
+La tecnologia di livello fisico chiamata LoRa utilizza una forma **custom** (e non resa di dominio pubblico) di **spettro espanso** per modulare le comunicazioni nella banda ISM sub-GHz. LoRa utilizza bande **ISM** senza licenza. Per fornire la comunicazione viene utilizzata una modulazione **CSS (Chirp Spread Spectrum)**, che **espande** un segnale a **banda stretta** su un canale a larghezza di banda più ampia.
+
 FSK            |  CSS
 :-------------------------:|:-------------------------:
 ![](img/FSKProcess.png)  |  ![](img/loraChirp.png)
