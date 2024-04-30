@@ -59,6 +59,11 @@ Un **chirp** è un segnale che, con continuità, incrementa o decrementa la sua 
 Le modulazioni (digitali o analogiche) possono essere indagate separatamente nel tempo e nella frequenza o tramite particolari diagrammi che mostrano come la **frequenza varia** nel tempo, detti **spettrogrammi**. Da destra a sinistra ci stanno gli incrementi positivi di frequenza, dall'alto in basso quelli positivi del tempo. In uno spettrogramma:
 - una **variazione discreta** tra due frequenza fisse che codificano i bit 1 e 0 (FSK) appare come una successione nel tempo di singole linee verticali che rappresentano due frequenze costanti diverse (dette armoniche).
 - una **variazione continua** di frequenza detta scivolamento o chirp appare come un **segmento inclinato** con pendenza crescente nel tempo nel caso di un upchirp o decrescente nel tempo nel caso di un downchirp.
+<img src="img/chirpdivisions.webp" alt="alt text" width="600">
+
+Un segnale di chirp può essere suddiviso in 2^SF valori (128) che **codificano** il simbolo da trasmettere. Ad un simbolo corrisponde una certa **sequenza di bit** che può, quindi, essere determinata in ricezione misurando la **lunghezza** del chirp nel dominio della frequenza mediante tecniche numeriche (FFT).
+
+Il numero di chirp per canale rappresenta il symbol rate. Il reciproco del symbol rate rappresenta la lunghezza del simbolo.
 
 CHIP RATE         |  SYMBOL RATE  |   CHIP DURATION        |  SYMBOL DURATION
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
@@ -79,9 +84,6 @@ Definizioni:
 - **Fattore di spreading (diffusione)**: numero di bit codificato per simbolo (stato RF)
 - **Chirp rate**: derivata prima della frequenza del chirp
 
-<img src="img/chirpdivisions.webp" alt="alt text" width="600">
-
-Un segnale di chirp può essere suddiviso in 2^SF valori (128).
 
 <img src="img/chirpedMsg.png" alt="alt text" width="600">
 
