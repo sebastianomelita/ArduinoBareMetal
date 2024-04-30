@@ -53,7 +53,9 @@ Un **chirp** è un segnale che, con continuità, incrementa o decrementa la sua 
 
 Le modulazioni (digitali o analogiche) possono essere indagate separatamente nel tempo e nella frequenza o tramite particolari diagrammi che mostrano la **variazione** della frequenza nel tempo detti **spettrogrammi**. Da destra a sinistra ci stanno gli incrementi positivi di frequenza, dall'alto in basso quelli positivi del tempo.
 
-In uno spettrogramma una **variazione discreta** tra due frequenza fisse che cofificano i bit 1 e 0 (FSK) appare come una successione nel tempo di singole linee verticali che rappresentano due frequenze costanti diverse.
+In uno spettrogramma una **variazione discreta** tra due frequenza fisse che codificano i bit 1 e 0 (FSK) appare come una successione nel tempo di singole linee verticali che rappresentano due frequenze  costanti diverse (dette armoniche).
+
+In uno spettrogramma una **variazione continua** di frequenza detta scivolamento o chirp appare come un segmento inclinato con pendenza crescente nel caso di un upchirp o decresente nel caso di un downchirp.
 
 
 
