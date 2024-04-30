@@ -118,6 +118,10 @@ Nella **figura** sottostante, **4 simboli**, con **4 colori diversi**, erano **i
 
 E' adoperato dall'**uplink** di **WiFi 6**, della telefonia mobile **5G** e **NB IoT**.
 
+Sitografia:
+- https://datatracker.ietf.org/doc/html/rfc7554
+- https://en.wikipedia.org/wiki/Time_Slotted_Channel_Hopping
+
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN) 
 
 
