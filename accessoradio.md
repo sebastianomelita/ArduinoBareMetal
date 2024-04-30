@@ -61,7 +61,9 @@ Le modulazioni (digitali o analogiche) possono essere indagate separatamente nel
 - una **variazione continua** di frequenza detta scivolamento o chirp appare come un **segmento inclinato** con pendenza crescente nel tempo nel caso di un upchirp o decrescente nel tempo nel caso di un downchirp.
 <img src="img/chirpdivisions.webp" alt="alt text" width="600">
 
-Un segnale di chirp può essere suddiviso in 2^SF valori (128) che **codificano** il simbolo da trasmettere. Ad un simbolo corrisponde una certa **sequenza di bit** che può, quindi, essere determinata in ricezione misurando la **lunghezza** del chirp nel dominio della frequenza mediante tecniche numeriche (FFT).
+Un segnale di **chirp** può essere suddiviso in 2^SF valori (128) che **codificano**, nella frequenza, il simbolo da trasmettere. Ad un simbolo corrisponde una certa **sequenza lunga SF bit** che può, quindi, essere determinata in ricezione misurando la **lunghezza** del chirp nello sprettogramma (mediante FFT) che, nel dominio della frequenza, ha un valore compreso tra [0  2^SF]. 
+
+La **pendenza** (slope) del chirp nello spettrogramma è tale da ottenere uno scivolamento di B Hertz nel tempo necessario per raccogliere esattamente SF bit, e questo per tutti i valori di SF.
 
 Il numero di chirp per canale rappresenta il symbol rate. Il reciproco del symbol rate rappresenta la lunghezza del simbolo.
 
