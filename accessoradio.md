@@ -172,6 +172,7 @@ Sitografia:
 - https://thesis.unipd.it/retrieve/d813d8b9-9d45-4158-acbc-eada172983c8/Chinta_Venkata_Rajesh.pdf
 - https://interline.pl/Information-and-Tips/What-Technology-Behind-LoRa-Frequency
 - https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/
+- https://medium.com/kgxperience/what-happens-in-lora-lorawan-communication-ab32d56dfc71
 
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN) 
 
