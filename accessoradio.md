@@ -55,6 +55,8 @@ Nei sistemi FHSS (Frequency Hopping Spread Spectrum), il **fattore di spreading*
 
 <video src="img/fhss.mp4" width="320" height="240" controls></video>
 
+Video di simulazione [video FHSS](img/fhss.mp4)
+
 E' una tecnica di accesso usata dal protocollo **Bluetooth LBE**
 
 ### **LoraWAN**
