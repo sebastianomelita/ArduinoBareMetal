@@ -138,7 +138,7 @@ TSCH può essere visto come una combinazione dei meccanismi di accesso multiplo 
 
 <img src="Time-Slotted-Channel-Hopping-TSCH-slot-channel-matrix-with-a-simple-network-topology.png" alt="alt text" width="600">
 
-A causa della natura **TDM** della comunicazione in una rete TSCH, i nodi devono mantenere una **stretta sincronizzazione**. Si presuppone che tutti i nodi siano dotati di orologi per tenersi sincronizzati tra di loro. Però, perché gli orologi in nodi diversi **derivano** l'uno rispetto all'altro, i nodi adiacenti devono periodicamente **risincronizzarsi**.
+A causa della natura **TDM** della comunicazione in una rete TSCH, i nodi devono mantenere una **stretta sincronizzazione**. Si presuppone che tutti i nodi siano dotati di orologi per tenersi sincronizzati tra di loro. Però, poichè gli orologi in nodi diversi **derivano** l'uno rispetto all'altro, i nodi adiacenti devono periodicamente **risincronizzarsi**.
 
 Ogni nodo deve sincronizzare periodicamente il proprio orologio di rete con un altro nodo e fornisce anche il tempo di rete ai suoi vicini.
 Spetta all'ente che gestisce la pianificazione assegnare una sorgente di sincronizzazione vicina a ciascun nodo detta "time source neighbor". Durante l'impostazione del "time source neighbor", è importante evitare cicli nei percorsi di sincronizzazione, che potrebbero comportare la formazione di gruppi indipendenti di nodi sincronizzati.
