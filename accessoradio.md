@@ -206,7 +206,6 @@ Sitografia:
 - https://interline.pl/Information-and-Tips/What-Technology-Behind-LoRa-Frequency
 - https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/
 - https://medium.com/kgxperience/what-happens-in-lora-lorawan-communication-ab32d56dfc71
-- https://wirelesspi.com/understanding-lora-phy-long-range-physical-layer/
 
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN) 
 
