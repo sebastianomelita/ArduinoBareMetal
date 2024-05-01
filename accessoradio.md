@@ -106,13 +106,13 @@ La **trama Lora** è composta da un preambolo di 8 chirp di sincronizzazione pi�
 
 <img src="img/dechirp.png" alt="alt text" width="600">
 
-In ricezione, viene effettuato il cosidetto **dechirping** generando localmente dei segnali upchirp e downchirp con appropriato chirp rate e moltiplicandoli per i segnali con pendenza opposta ricevuti. Per effetto di ciò si ottengono dei segnali a frequenza costante nello spettrogramma che rappresentano singole righe dello spettro. Quelle del preambolo hanno frequenza sempre uguale per tutti i messaggi mentre quelle del payload hanno frequenze diverse per ogni simbolo e la loro posizione nello spettro rappresenta il valore della codifica del simbolo, da cui è possibile risalire alla sequenza di SF bit corrispondenti che sono stati trasmessi. 
+In ricezione, viene effettuato il cosidetto **dechirping** generando localmente dei segnali upchirp e downchirp con appropriato chirp rate e moltiplicandoli per i segnali ricevuti con pendenza opposta. Per effetto di ciò si ottengono nello spettrogramma dei segnali a frequenza costante che rappresentano singole righe spettrali. Quelle del **preambolo** hanno frequenza sempre uguale per tutti i messaggi mentre quelle del **payload** hanno frequenze diverse per ogni simbolo e la loro posizione nello spettro rappresenta il **valore** della codifica del simbolo, da cui è possibile risalire alla sequenza degli SF bit corrispondenti che sono stati trasmessi. 
 
-Altre operazioni numeriche coperte da brevetto e ricostruibili solamente mediante reverse ingegnering permettono di completare la decodifica effettiva dei bit. In totale sono riconducibili a 4 fasi:
-1. Symbol “gray indexing”, aggiunge tolleranza agli errori
-2. Data whitening. Introduce randomizzazione dei bit trasmessi
-3. Interleaving. Realizza proprietà di oscuramento dei bit 
-4. Forward Error Correction, aggiunge dei bit di parità
+Altre **operazioni numeriche** coperte da brevetto e ricostruibili solamente mediante reverse ingegnering permettono di completare la decodifica effettiva dei bit. In totale sono riconducibili a 4 fasi:
+1. **Symbol “gray indexing”**, aggiunge tolleranza agli errori
+2. **Data whitening**. Introduce randomizzazione dei bit trasmessi
+3. **Interleaving**. Realizza proprietà di oscuramento dei bit 
+4. **Forward Error Correction**, aggiunge dei bit di parità
 
 Una funzione aggiuntiva del protocollo LoraWAN è il **Telegram splitting**: questo metodo suddivide un segnale a banda ultrastretta in numerosi sottopacchetti più piccoli, trasmettendoli successivamente come brevi burst radio a varie frequenze e intervalli di tempo. Per ridurre al minimo il potenziale di collisione con altri sottopacchetti, utilizza tempi di trasmissione brevi e pseudo-casualità. Questo approccio migliora sia la robustezza che la scalabilità riducendo al contempo le interferenze
 
