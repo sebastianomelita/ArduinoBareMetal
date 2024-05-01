@@ -130,8 +130,6 @@ E' una tecnologia radio che realizza un **accesso al canale singolo**, nel senso
 
 TSCH può essere visto come una combinazione dei meccanismi di accesso multiplo a **divisione di tempo** e di accesso multiplo a **divisione di frequenza** poiché utilizza la **diversità** di tempo e frequenza insieme per fornire affidabilità agli strati superiori della rete. 
 
-In pratica TSCH non è una modulazione a spettro espanso ma piuttosto una implementazione della tecnica del **Telegram splitting**: questo metodo suddivide un segnale a banda ultrastretta in numerosi sottopacchetti più piccoli, trasmettendoli successivamente come brevi burst radio a varie frequenze e intervalli di tempo. Per ridurre al minimo il potenziale di collisione con altri sottopacchetti, utilizza tempi di trasmissione brevi e pseudo-casualità. Questo approccio migliora sia la robustezza che la scalabilità riducendo al contempo le interferenze
-
 <img src="Time-Slotted-Channel-Hopping-TSCH-slot-channel-matrix-with-a-simple-network-topology.png" alt="alt text" width="600">
 
 A causa della natura **TDM** della comunicazione in una rete TSCH, i nodi devono mantenere una **stretta sincronizzazione**. Si presuppone che tutti i nodi siano dotati di orologi per tenersi sincronizzati tra di loro. Però, perché gli orologi in nodi diversi **derivano** l'uno rispetto all'altro, i nodi adiacenti devono periodicamente **risincronizzarsi**.
@@ -141,6 +139,11 @@ Spetta all'ente che gestisce la pianificazione assegnare una sorgente di sincron
 
 E' usata dal protocollo IEEE 802.15.4g/e, livello fisico degli stack **RIIoT**, **OpenWSN** e dalle ultime versioni di **Zigbee** e **6LowPan**.
 
+### **TSMA**
+
+Telegram Splitting Multiple Access (TSMA) è una tecnica in cui un telegramma o un pacchetto viene suddiviso in molti sottopacchetti. Questi sottopacchetti vengono quindi distribuiti in modo pseudo-casuale sulla frequenza e sul tempo. Ciò rende la trasmissione resistente agli interferenti. Alcuni sottopacchetti potrebbero andare persi ma i dati possono ancora essere recuperati grazie alla correzione degli errori di inoltro (FEC). Telegram Splitting Ultra Narrow Band (TS-UNB) è una famiglia di protocolli che adotta TSMA.
+
+<img src="img/telegramsplitting.png" alt="alt text" width="600">
 
 ### **OFDM**
 
@@ -214,6 +217,8 @@ Sitografia:
 - https://medium.com/kgxperience/what-happens-in-lora-lorawan-communication-ab32d56dfc71
 - https://electronics.stackexchange.com/questions/278192/understanding-the-relationship-between-lora-chips-chirps-symbols-and-bits
 - https://pdos.csail.mit.edu/archive/decouto/papers/pickholtz82.pdf
+- https://devopedia.org/telegram-splitting-ultra-narrow-band
+- https://www.etsi.org/deliver/etsi_gs/LTN/001_099/002/01.01.01_60/gs_LTN002v010101p.pdf
 
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN) 
 
