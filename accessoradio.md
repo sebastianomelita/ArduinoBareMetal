@@ -106,7 +106,7 @@ La **trama Lora** è composta da un preambolo di 8 chirp di sincronizzazione pi�
 
 <img src="img/dechirp.png" alt="alt text" width="600">
 
-In ricezione, viene effettuato il cosidetto **dechirping** generando localmente dei segnali upchirp e downchirp con appropriato chirp rate e moltiplicandoli per i segnali ricevuti con pendenza opposta. Per effetto di ciò si ottengono nello spettrogramma dei segnali a frequenza costante che rappresentano singole righe spettrali. Quelle del **preambolo** hanno frequenza sempre uguale per tutti i messaggi mentre quelle del **payload** hanno frequenze diverse per ogni simbolo e la loro posizione nello spettro rappresenta il **valore** della codifica del simbolo, da cui è possibile risalire alla sequenza degli SF bit corrispondenti che sono stati trasmessi. 
+In **ricezione**, viene effettuato il cosidetto **dechirping** generando localmente dei segnali upchirp e downchirp con appropriato chirp rate e moltiplicandoli per i segnali ricevuti con pendenza opposta. Per effetto di ciò si ottengono nello spettrogramma dei segnali a frequenza costante che rappresentano singole righe spettrali. Quelle del **preambolo** hanno frequenza sempre uguale per tutti i messaggi mentre quelle del **payload** hanno frequenze diverse per ogni simbolo e la loro posizione nello spettro rappresenta il **valore** della codifica del simbolo, da cui è possibile risalire alla sequenza degli SF bit corrispondenti che sono stati trasmessi. 
 
 Altre **operazioni numeriche** coperte da brevetto e ricostruibili solamente mediante reverse ingegnering permettono di completare la decodifica effettiva dei bit. In totale sono riconducibili a 4 fasi:
 1. **Symbol “gray indexing”**, aggiunge tolleranza agli errori
