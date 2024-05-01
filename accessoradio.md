@@ -131,6 +131,7 @@ Altre **caratteristiche positive** di Lora sono:
 - Resistenza agli effetti multi-percorso
 - Resistenza all'effetto Doppler (applicazioni mobili)
 
+Può essere adoperato da solo, implementando su di esso uno **stack custom**, oppure come parte della pila **LoraWAN** mantenuta dalla Lora Alliance, purchè l'accesso radio rispetti le regolamentazioni valide per la banda **ISM** per cui è nato.
 
 ### **TSCH**
 
