@@ -209,6 +209,7 @@ Sitografia:
 - https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/
 - https://medium.com/kgxperience/what-happens-in-lora-lorawan-communication-ab32d56dfc71
 - https://electronics.stackexchange.com/questions/278192/understanding-the-relationship-between-lora-chips-chirps-symbols-and-bits
+- https://pdos.csail.mit.edu/archive/decouto/papers/pickholtz82.pdf
 
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN) 
 
