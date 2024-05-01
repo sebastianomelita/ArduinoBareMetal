@@ -158,6 +158,8 @@ Telegram Splitting Multiple Access (TSMA) è una tecnica in cui un telegramma o 
 
 <img src="img/telegramsplitting.png" alt="alt text" width="600">
 
+Mentre TSCH è noto per il suo determinismo nella pianificazione delle trasmissioni, TSMA tende ad essere più stocastico nel suo approccio, utilizzando strategie probabilistiche per coordinare l'accesso al canale radio tra i dispositivi.
+
 ### **OFDM**
 
 E' una tecnologia in cui i bit di una comunicazione, tramite una conversione seriale-parallelo, vengono inviati contemporaneamente su **più porzioni** di un canale di grande ampiezza (20 Mhz per il WiFi) dette **sottoportanti** (o anche **toni**). Le sottoportanti non solo sono vicine ma si **sovrappongono** in parte di uno spiazzamento stabilito. Lo **spiazzamento calibrato** opportunamente fornisce la proprietà di **ortogonalità** che garantisce alle sottoportanti di **non interferirsi** nonostante le sovrapposizioni reciproche. In pratica una **comunicazione veloce** viene suddivisa in più **comunicazioni lente** che hanno il pregio di poter essere gestite in maniera **meno critica** rispetto ai problemi associati ad un'unica veloce. 
