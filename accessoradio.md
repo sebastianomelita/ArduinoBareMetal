@@ -53,6 +53,8 @@ Nei sistemi FHSS (Frequency Hopping Spread Spectrum), il **fattore di spreading*
 
 <img src="fhss.png" alt="alt text" width="600">
 
+<video title="Frequency Hopping Spread Spectrum (FHSS)" src="https://www.renishaw.com/media/video/en/82d4eb96c7504aa395f4a9150190e247.mp4" style="height: 100%; width: 100%; display: block; cursor: url(&quot;data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==&quot;), pointer; -webkit-user-drag: none;"></video>
+
 <video src="img/fhss.mp4" width="320" height="240" controls></video>
 
 E' una tecnica di accesso usata dal protocollo **Bluetooth LBE**
