@@ -60,7 +60,7 @@ FSK            |  CSS
 :-------------------------:|:-------------------------:
 ![](img/FSKProcess.png)  |  ![](img/loraChirp.png)
 
-Un **chirp** è un segnale che, con continuità, incrementa o decrementa la sua frequenza. Quando l'incremento è positivo si parla di **upchirp**, quando è negativo di **downchirp**.
+Un **chirp** è un segnale in cui la frequenza aumenta (**up-chirp**) o diminuisce (**down-chirp**) con continuità. Nelle modulazioni QPSK, BPSK e in molti tipi altri di modulazione digitale, vengono usati onde sinusoidali per codificare simboli, ma il CSS usa i chirp, che sono segnali che non variano tensione/potenza nel tempo, ma cambiano la **frequenza nel tempo**.
 
 Le modulazioni (digitali o analogiche) possono essere indagate separatamente nel tempo e nella frequenza o tramite particolari diagrammi che mostrano come la **frequenza varia** nel tempo, detti **spettrogrammi**. Da destra a sinistra ci stanno gli incrementi positivi di frequenza, dall'alto in basso quelli positivi del tempo. In uno spettrogramma:
 - una **variazione discreta** tra due frequenza fisse che codificano i bit 1 e 0 (FSK) appare come una successione nel tempo di singole linee verticali che rappresentano due frequenze costanti diverse (dette armoniche).
@@ -106,7 +106,7 @@ La **trama Lora** è composta da un preambolo di 8 chirp di sincronizzazione pi�
 
 <img src="img/dechirp.png" alt="alt text" width="600">
 
-In ricezione viene effettuato il cosidetto **dechirping** generando localmente dei segnali upchirp e downchirp con appropriato chirp rate e moltiplicandoli per i segnali con pendenza opposta ricevuti. Per effetto di ciò si ottengono dei segnali a frequenza costante nello spettrogramma che rappresentano singole righe dello spettro. Quelle del preambolo hanno frequenza sempre uguale per tutti i messaggi mentre quelle del payload hanno frequenze diverse per ogni simbolo e la loro posizione nello spettro rappresenta il valore della codifica del simbolo, da cui è possibile risalire alla sequenza di SF bit corrispondenti che sono stati trasmessi. 
+In ricezione, viene effettuato il cosidetto **dechirping** generando localmente dei segnali upchirp e downchirp con appropriato chirp rate e moltiplicandoli per i segnali con pendenza opposta ricevuti. Per effetto di ciò si ottengono dei segnali a frequenza costante nello spettrogramma che rappresentano singole righe dello spettro. Quelle del preambolo hanno frequenza sempre uguale per tutti i messaggi mentre quelle del payload hanno frequenze diverse per ogni simbolo e la loro posizione nello spettro rappresenta il valore della codifica del simbolo, da cui è possibile risalire alla sequenza di SF bit corrispondenti che sono stati trasmessi. 
 
 Altre operazioni numeriche coperte da brevetto e ricostruibili solamente mediante reverse ingegnering permettono di completare la decodifica effettiva dei bit. In totale sono riconducibili a 4 fasi:
 1. Symbol “gray indexing”, aggiunge tolleranza agli errori
