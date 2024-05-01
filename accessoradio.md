@@ -88,6 +88,8 @@ La larghezza di banda B equivale al **chip rate**, ovvero al numero di segnali e
 
 Lo **Spreading Factor (SF)** in LoRa è definito come il numero di bit per simbolo e indica il numero di volte che il segnale viene **allargato in frequenza** rispetto alla larghezza originale in banda stretta. Ad esempio, con SF7, il segnale viene allargato di 2^7/7 volte rispetto alla larghezza di banda originale, un incremento pressochè **esponenziale**.
 
+In ogni momento vale la relazione Rc > Rb > Rs
+
 DR         |  SF
 :-------------------------:|:-------------------------:
 ![](img/SFRate.png)  |  ![](img/SF-band.png)
@@ -206,6 +208,7 @@ Sitografia:
 - https://interline.pl/Information-and-Tips/What-Technology-Behind-LoRa-Frequency
 - https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/
 - https://medium.com/kgxperience/what-happens-in-lora-lorawan-communication-ab32d56dfc71
+- https://electronics.stackexchange.com/questions/278192/understanding-the-relationship-between-lora-chips-chirps-symbols-and-bits
 
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN) 
 
