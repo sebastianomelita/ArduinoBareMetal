@@ -154,7 +154,7 @@ E' usata dal protocollo IEEE 802.15.4g/e, livello fisico degli stack **RIIoT**, 
 
 ### **TSMA**
 
-Telegram Splitting Multiple Access (TSMA) è una tecnica in cui un telegramma o un pacchetto viene suddiviso in molti sottopacchetti. Questi sottopacchetti vengono quindi distribuiti in modo pseudo-casuale sulla frequenza e sul tempo. Ciò rende la trasmissione resistente agli interferenti. Alcuni sottopacchetti potrebbero andare persi ma i dati possono ancora essere recuperati grazie alla correzione degli errori di inoltro (FEC). Telegram Splitting Ultra Narrow Band (TS-UNB) è una famiglia di protocolli che adotta TSMA.
+**Telegram Splitting Multiple Access** (TSMA) è una tecnica in cui un telegramma o un pacchetto viene suddiviso in molti sottopacchetti. Questi sottopacchetti vengono quindi distribuiti in modo pseudo-casuale sulla frequenza e sul tempo. Ciò rende la trasmissione resistente agli interferenti. Alcuni sottopacchetti potrebbero andare persi ma i dati possono ancora essere recuperati grazie alla correzione degli errori di inoltro (FEC). Telegram Splitting Ultra Narrow Band (TS-UNB) è una famiglia di protocolli che adotta TSMA.
 
 <img src="img/telegramsplitting.png" alt="alt text" width="600">
 
