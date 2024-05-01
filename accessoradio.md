@@ -138,6 +138,10 @@ E' una tecnologia radio che realizza un **accesso al canale singolo**, nel senso
 
 TSCH può essere visto come una combinazione dei meccanismi di accesso multiplo a **divisione di tempo** e di accesso multiplo a **divisione di frequenza** poiché utilizza la **diversità** di tempo e frequenza insieme per fornire affidabilità agli strati superiori della rete. 
 
+TSCH è progettato per fornire una pianificazione **deterministica** del tempo e delle frequenze utilizzate per la trasmissione dei dati. Questo significa che il protocollo utilizza uno schema predefinito di slot temporali e canali radio, garantendo che le trasmissioni avvengano in modo prevedibile e **senza collisioni**. Questo aspetto deterministico è importante per garantire una comunicazione affidabile e a **bassa latenza** nelle reti IoT.
+
+Benchè si possa adoperare in reti LPWA, il suo utilizzo è più comune in **reti mesh**.
+
 <img src="Time-Slotted-Channel-Hopping-TSCH-slot-channel-matrix-with-a-simple-network-topology.png" alt="alt text" width="600">
 
 A causa della natura **TDM** della comunicazione in una rete TSCH, i nodi devono mantenere una **stretta sincronizzazione**. Si presuppone che tutti i nodi siano dotati di orologi per tenersi sincronizzati tra di loro. Però, poichè gli orologi in nodi diversi **derivano** l'uno rispetto all'altro, i nodi adiacenti devono periodicamente **risincronizzarsi**.
