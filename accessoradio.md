@@ -60,7 +60,7 @@ FSK            |  CSS
 :-------------------------:|:-------------------------:
 ![](img/FSKProcess.png)  |  ![](img/loraChirp.png)
 
-Un **chirp** è un segnale in cui la frequenza aumenta (**up-chirp**) o diminuisce (**down-chirp**) con continuità. Nelle modulazioni QPSK, BPSK e in molti altri tipi di modulazione digitale, vengono usate onde sinusoidali per codificare simboli, ma il CSS usa i chirp, che sono segnali che non variano tensione/potenza nel tempo, ma cambiano la **frequenza nel tempo**.
+Un **chirp** è un segnale in cui la frequenza aumenta (**up-chirp**) o diminuisce (**down-chirp**) con continuità. Nelle modulazioni QPSK, BPSK e in molti altri tipi di modulazione digitale, vengono usate onde sinusoidali per codificare simboli, ma il **CSS** usa i chirp, che sono segnali che non variano tensione/potenza nel tempo, ma cambiano la **frequenza nel tempo**.
 
 Le modulazioni (digitali o analogiche) possono essere indagate separatamente nel tempo e nella frequenza o tramite particolari diagrammi che mostrano come la **frequenza varia** nel tempo, detti **spettrogrammi**. Da destra a sinistra ci stanno gli incrementi positivi di frequenza, dall'alto in basso quelli positivi del tempo. In uno spettrogramma:
 - una **variazione discreta** tra due frequenza fisse che codificano i bit 1 e 0 (FSK) appare come una successione nel tempo di singole linee verticali che rappresentano due frequenze costanti diverse (dette armoniche).
