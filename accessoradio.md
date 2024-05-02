@@ -238,6 +238,7 @@ Sitografia:
 - https://www.etsi.org/deliver/etsi_gs/LTN/001_099/002/01.01.01_60/gs_LTN002v010101p.pdf
 - http://www.wirelesscommunication.nl/reference/chaptr05/spreadsp/fh.htm
 - https://dl.acm.org/doi/10.1145/3546869
+- https://datatracker.ietf.org/meeting/100/materials/slides-100-lpwan-i-etsi-erm-tg28-00
 
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN) 
 
