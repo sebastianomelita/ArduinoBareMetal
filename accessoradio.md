@@ -158,7 +158,7 @@ E' usata dal protocollo IEEE 802.15.4g/e, livello fisico degli stack **RIIoT**, 
 
 <img src="img/telegramsplitting.png" alt="alt text" width="600">
 
-Mentre TSCH è noto per il suo determinismo nella pianificazione delle trasmissioni, TSMA tende ad essere più stocastico nel suo approccio, utilizzando strategie probabilistiche per coordinare l'accesso al canale radio tra i dispositivi come quelle basate su protocolli di accesso multiplo come CSMA/CA (Carrier Sense Multiple Access/Collision Avoidance) o ALOHA (con backoff).
+Mentre TSCH è noto per il suo determinismo nella pianificazione delle trasmissioni, TSMA tende ad essere più stocastico nel suo approccio, utilizzando **strategie probabilistiche** per coordinare l'accesso al canale radio tra i dispositivi come quelle basate su protocolli di accesso multiplo quali CSMA/CA (Carrier Sense Multiple Access/Collision Avoidance) o ALOHA (con backoff).
 
 In breve, la realizzazione pratica del Telegram Splitting coinvolge la suddivisione dei dati in **telegrammi più piccoli** e l'utilizzo di **protocolli di accesso multiplo** per gestire le trasmissioni **concorrenti** sui canali radio.
 
