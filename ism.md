@@ -156,6 +156,8 @@ Sitografia:
 - https://www.radartutorial.eu/06.antennas/an18.it.html
 - https://edmelectronics.editorialedelfino.it/come-leggere-un-diagramma-di-irradiazione/
 - https://www.youtube.com/watch?v=kkGavD1E2gU
+- https://www.researchgate.net/figure/Direction-dependent-gain-of-a-half-wave-dipole-antenna-Equation-1-as-compared-to-the_fig1_4278652
+- https://teletopix.org/what-is-polarization-gain-and-power-rating-in-antenna/
   
 >[Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
 
