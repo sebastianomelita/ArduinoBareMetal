@@ -154,6 +154,8 @@ Sitografia:
 - https://thesis.unipd.it/retrieve/d813d8b9-9d45-4158-acbc-eada172983c8/Chinta_Venkata_Rajesh.pdf
 - https://www.vincenzov.net/tutorial/elettronica-di-base/Trasmissioni/antenne.htm
 - https://www.radartutorial.eu/06.antennas/an18.it.html
+- https://edmelectronics.editorialedelfino.it/come-leggere-un-diagramma-di-irradiazione/
+- https://www.youtube.com/watch?v=kkGavD1E2gU
   
 >[Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
 
