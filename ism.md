@@ -158,6 +158,7 @@ Sitografia:
 - https://www.youtube.com/watch?v=kkGavD1E2gU
 - https://www.researchgate.net/figure/Direction-dependent-gain-of-a-half-wave-dipole-antenna-Equation-1-as-compared-to-the_fig1_4278652
 - https://teletopix.org/what-is-polarization-gain-and-power-rating-in-antenna/
+- https://www.everythingrf.com/community/what-is-the-difference-between-dbi-and-dbd
   
 >[Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
 
