@@ -77,7 +77,7 @@ Organizzare i canali in **bande** può servire per isolare **gruppi di canali** 
 
     - **vincoli su CCA e backoff**.
         - Il **controllo CCA** deve avere una durata minima di 160 μs.
-        - Dopo questo controllo il dispositivo deve attendere un **tempo di attesa** di 5 ms prima di poter iniziare una nuova trasmissione (DIFS).
+        - Dopo questo controllo, se il **canale è libero**, il dispositivo deve comunque aspettare un **tempo di attesa** ulteriore fisso di **5 ms** prima di poter iniziare una nuova trasmissione (nel CSMA/CA si chiama DIFS).
         - La trasmissione stessa ha una **durata** di 1 sec o 4 sec a seconda del tipo di trasmissione. Si definisce **trasmissione singola** una delle due seguenti situazioni: una **sequenza continua di bit** (senza interruzioni), oppure un **serie di sequenze** distinte purchè separate da intervalli di tempo inferiori a **5 ms**.
         - **Dopo una trasmissione**, una sorgente **deve attendere**, prima di eseguirne un'altra sullo stesso canale, un minimo di 100 ms, se **non esegue un LBT**. È però ancora consentito utilizzare tale intervallo per il controllo CCA di un eventuale LBT o, in alternativa,  per trasmettere su un canale diverso dall'ultimo utilizzato. In questo modo il **duty cycle effettivo** potrebbe pure essere maggiore del 5.6%, in condizioni di traffico non elevato.
 
