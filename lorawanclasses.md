@@ -87,6 +87,60 @@ I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che s
 }
 ```
 
+### Esempio struct sensori + attuatori
+
+```C++
+#include <iostream>
+
+const int MAX_STRING_LENGTH = 100; // Lunghezza massima per le stringhe
+
+// Definizione della struttura per il payload completo
+struct LoRaPayload {
+    char device_id[MAX_STRING_LENGTH];
+    char timestamp[MAX_STRING_LENGTH];
+    float temperature;
+    float humidity;
+    float battery_voltage;
+    char led_status[MAX_STRING_LENGTH];
+    char led_color[MAX_STRING_LENGTH];
+    char motor_status[MAX_STRING_LENGTH];
+    int motor_speed;
+    char location[MAX_STRING_LENGTH];
+    int signal_strength;
+};
+
+int main() {
+    // Esempio di utilizzo della struttura per creare un payload
+    LoRaPayload payload;
+    strcpy(payload.device_id, "1234567890ABCDEF");
+    strcpy(payload.timestamp, "2024-05-07T12:30:45Z");
+    payload.temperature = 25.5;
+    payload.humidity = 60.2;
+    payload.battery_voltage = 3.7;
+    strcpy(payload.led_status, "on");
+    strcpy(payload.led_color, "red");
+    strcpy(payload.motor_status, "off");
+    payload.motor_speed = 0;
+    strcpy(payload.location, "40.7128,-74.0060");
+    payload.signal_strength = -110;
+
+    // Output dei dati del payload
+    std::cout << "Device ID: " << payload.device_id << std::endl;
+    std::cout << "Timestamp: " << payload.timestamp << std::endl;
+    std::cout << "Temperature: " << payload.temperature << std::endl;
+    std::cout << "Humidity: " << payload.humidity << std::endl;
+    std::cout << "Battery Voltage: " << payload.battery_voltage << std::endl;
+    std::cout << "LED Status: " << payload.led_status << std::endl;
+    std::cout << "LED Color: " << payload.led_color << std::endl;
+    std::cout << "Motor Status: " << payload.motor_status << std::endl;
+    std::cout << "Motor Speed: " << payload.motor_speed << std::endl;
+    std::cout << "Location: " << payload.location << std::endl;
+    std::cout << "Signal Strength: " << payload.signal_strength << std::endl;
+
+    return 0;
+}
+```
+
 ## **Classi di dispositivi**
 
   La specifica LoRaWAN definisce tre classi di dispositivi:
