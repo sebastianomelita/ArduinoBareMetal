@@ -15,7 +15,7 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
 
 ### **Formato dei messaggi**
 
- <img src="img/messaggilora.emf" alt="alt text" width="800">
+ <img src="img/messaggilora.png" alt="alt text" width="800">
  
 I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che si mappano l’uno sull’altro:
 - **Messaggi corti**, in formato binario, tra sensore e gateway. Vengono mandati in wireless su **banda ISM** con forti limitazioni di duty cycle, per cui devono essere i più **corti** possibile, anche a discapito della chiarezza. Possono essere **definiti** sotto forma di **struct C** e poi inviati ad una **libreria di serializzazione** che si occupa di trasformali in una **sequenza compatta** di singoli bit.
