@@ -13,6 +13,13 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
 
   <img src="img/lorawanLogicArchitecture.png" alt="alt text" width="800">
 
+### **Formato dei messaggi**
+I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che si mappano l’uno sull’altro:
+- **Messaggi corti**, in formato binario, tra sensore e gateway. Vengono mandati in wireless su **banda ISM** con forti limitazioni di duty cycle, per cui devono essere i più **corti** possibile, anche a discapito della chiarezza. Possono essere definiti sotto forma di **struct C** e poi inviati ad una **libreria di serializzazione** che si occupa di trasformali in una **sequenza compatta** di singoli bit.
+- **Messaggi lunghi** tra gateway e network server. Vengono mandati **in Internet** e devono essere più che altro chiari e, se possibile, autoesplicativi. Dato che vengono inviati su un mezzo senza particolari limitazioni di banda, possono essere definiti in **formato JSON**.
+
+## **Classi di dispositivi**
+
   La specifica LoRaWAN definisce tre classi di dispositivi:
 
 - **A(ll)** Dispositivi alimentati a batteria. Ogni dispositivo effettua il collegamento in uplink al gateway ed è seguito da due brevi finestre di ricezione del downlink.
