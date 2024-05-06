@@ -108,37 +108,57 @@ struct LoRaPayload {
     char location[MAX_STRING_LENGTH];
     int signal_strength;
 };
+```
+### Esempio serializzazione sensori + attuatori con la libreria Cayenne
+
+Per la serializzazione dei dati utilizzando il formato Cayenne LPP (Low Power Payload), possiamo adattare la struttura LoRaPayload in modo che i dati siano organizzati secondo le specifiche di Cayenne LPP. Cayenne LPP è un formato compatto e standardizzato per la trasmissione di dati attraverso reti LPWAN (Low Power Wide Area Network), progettato per dispositivi a basso consumo energetico come i dispositivi IoT. Questo formato consente di rappresentare diversi tipi di dati (ad esempio, temperatura, umidità, tensione) in un formato ottimizzato per la trasmissione su reti LPWAN.
+
+Ecco un esempio di come potrebbe apparire una struttura LoRaPayload con la serializzazione Cayenne LPP:
+```C++
+#include <iostream>
+#include <vector>
+
+const int MAX_CHANNELS = 8; // Numero massimo di canali di dati supportati
+
+// Definizione della struttura per il payload Cayenne LPP
+struct CayenneLPP {
+    std::vector<uint8_t> buffer;
+};
+
+// Funzione per aggiungere un valore di tipo float al payload Cayenne LPP
+void addFloatToCayenneLPP(CayenneLPP &lpp, uint8_t channel, float value) {
+    lpp.buffer.push_back(channel);
+    lpp.buffer.push_back(0x02); // Tipo di dati (float)
+    lpp.buffer.push_back(value >> 8); // Byte più significativo del float
+    lpp.buffer.push_back(value & 0xFF); // Byte meno significativo del float
+}
+
+// Funzione per aggiungere un valore di tipo int al payload Cayenne LPP
+void addIntToCayenneLPP(CayenneLPP &lpp, uint8_t channel, int value) {
+    lpp.buffer.push_back(channel);
+    lpp.buffer.push_back(0x02); // Tipo di dati (int)
+    lpp.buffer.push_back(value >> 8); // Byte più significativo dell'intero
+    lpp.buffer.push_back(value & 0xFF); // Byte meno significativo dell'intero
+}
 
 int main() {
-    // Esempio di utilizzo della struttura per creare un payload
-    LoRaPayload payload;
-    strcpy(payload.device_id, "1234567890ABCDEF");
-    strcpy(payload.timestamp, "2024-05-07T12:30:45Z");
-    payload.temperature = 25.5;
-    payload.humidity = 60.2;
-    payload.battery_voltage = 3.7;
-    strcpy(payload.led_status, "on");
-    strcpy(payload.led_color, "red");
-    strcpy(payload.motor_status, "off");
-    payload.motor_speed = 0;
-    strcpy(payload.location, "40.7128,-74.0060");
-    payload.signal_strength = -110;
+    // Esempio di utilizzo della struttura per creare un payload Cayenne LPP
+    CayenneLPP lpp;
+    addFloatToCayenneLPP(lpp, 1, 25.5); // Canale 1: Temperatura
+    addFloatToCayenneLPP(lpp, 2, 60.2); // Canale 2: Umidità
+    addFloatToCayenneLPP(lpp, 3, 3.7);  // Canale 3: Tensione della batteria
+    addIntToCayenneLPP(lpp, 101, -110); // Canale 101: Forza del segnale
 
-    // Output dei dati del payload
-    std::cout << "Device ID: " << payload.device_id << std::endl;
-    std::cout << "Timestamp: " << payload.timestamp << std::endl;
-    std::cout << "Temperature: " << payload.temperature << std::endl;
-    std::cout << "Humidity: " << payload.humidity << std::endl;
-    std::cout << "Battery Voltage: " << payload.battery_voltage << std::endl;
-    std::cout << "LED Status: " << payload.led_status << std::endl;
-    std::cout << "LED Color: " << payload.led_color << std::endl;
-    std::cout << "Motor Status: " << payload.motor_status << std::endl;
-    std::cout << "Motor Speed: " << payload.motor_speed << std::endl;
-    std::cout << "Location: " << payload.location << std::endl;
-    std::cout << "Signal Strength: " << payload.signal_strength << std::endl;
+    // Output dei dati del payload Cayenne LPP
+    std::cout << "Cayenne LPP Payload:" << std::endl;
+    for (uint8_t data : lpp.buffer) {
+        std::cout << std::hex << static_cast<int>(data) << " ";
+    }
+    std::cout << std::endl;
 
     return 0;
 }
+
 ```
 
 ## **Classi di dispositivi**
