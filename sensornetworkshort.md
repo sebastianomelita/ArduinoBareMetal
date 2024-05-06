@@ -69,7 +69,7 @@ Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può otte
 E' il dispositivo posto a cavallo tra la rete di accesso ai sensori e la rete di distribuzione. 
 
 Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi di BUS** a cui si collega. Inoltre il **gateway** deve possedere almeno **una interfaccia** capace di traffico ethernet (cablata o wifi) che lo colleghi alla **rete di distribuzione**. Avendo più interfacce ha anche le funzioni di:
-- **routing** se la rete di distribuzione è formata da router comne lo è **Internet** e come potrebbe esserlo una **WAN privata** realizzata eventualmente con **VPN** di tipo **trusted** (MPLS) o **secure** (OpenVPN, IPSec).
+- **router** se la rete di distribuzione è formata da router comne lo è **Internet** e come potrebbe esserlo una **WAN privata** realizzata eventualmente con **VPN** di tipo **trusted** (MPLS) o **secure** (OpenVPN, IPSec).
 - **bridge** se la rete di distribuzione è semplicemente una **LAN** composta soltanto da switch
 
 <img src="jsan-02-00235-g001.webp" alt="alt text" width="700">
@@ -87,6 +87,7 @@ Questa situazione, per i **protocolli più diffusi** come Zibgee e Bluetooth, **
   - **Traduzione di formato** dei messaggi da rete a bus a rete ethernet con eventuale realizzazione del **bridge** L4 tra il livello applicativo in uso nella rete di sensori e quello in uso nella rete di distribuzione.
   - **Interrogazione periodica** (polling) dei dispositivi nella rete di sensori (master di una architettura master/slave)
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
+  - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
     
 ## **Server applicativo**
 
