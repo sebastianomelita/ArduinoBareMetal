@@ -64,7 +64,7 @@ Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può otte
 
 <img src="jsan-02-00235-g002.webp" alt="alt text" width="700">
 
-**Gateway applicativo**:
+### **Gateway applicativo**:
 
 <img src="jsan-02-00235-g001.webp" alt="alt text" width="700">
 
