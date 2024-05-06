@@ -116,34 +116,35 @@ Per la serializzazione dei dati utilizzando il formato Cayenne LPP (Low Power Pa
 Ecco un esempio di come potrebbe apparire una struttura LoRaPayload con la serializzazione Cayenne LPP:
 ```C++
 #include <iostream>
-#include <vector>
 
-const int MAX_CHANNELS = 8; // Numero massimo di canali di dati supportati
+const int MAX_PAYLOAD_SIZE = 100; // Dimensione massima del payload Cayenne LPP
 
 // Definizione della struttura per il payload Cayenne LPP
 struct CayenneLPP {
-    std::vector<uint8_t> buffer;
+    uint8_t buffer[MAX_PAYLOAD_SIZE];
+    int size; // Dimensione effettiva del payload
 };
 
 // Funzione per aggiungere un valore di tipo float al payload Cayenne LPP
 void addFloatToCayenneLPP(CayenneLPP &lpp, uint8_t channel, float value) {
-    lpp.buffer.push_back(channel);
-    lpp.buffer.push_back(0x02); // Tipo di dati (float)
-    lpp.buffer.push_back(value >> 8); // Byte più significativo del float
-    lpp.buffer.push_back(value & 0xFF); // Byte meno significativo del float
+    lpp.buffer[lpp.size++] = channel;
+    lpp.buffer[lpp.size++] = 0x02; // Tipo di dati (float)
+    lpp.buffer[lpp.size++] = value >> 8; // Byte più significativo del float
+    lpp.buffer[lpp.size++] = value & 0xFF; // Byte meno significativo del float
 }
 
 // Funzione per aggiungere un valore di tipo int al payload Cayenne LPP
 void addIntToCayenneLPP(CayenneLPP &lpp, uint8_t channel, int value) {
-    lpp.buffer.push_back(channel);
-    lpp.buffer.push_back(0x02); // Tipo di dati (int)
-    lpp.buffer.push_back(value >> 8); // Byte più significativo dell'intero
-    lpp.buffer.push_back(value & 0xFF); // Byte meno significativo dell'intero
+    lpp.buffer[lpp.size++] = channel;
+    lpp.buffer[lpp.size++] = 0x02; // Tipo di dati (int)
+    lpp.buffer[lpp.size++] = value >> 8; // Byte più significativo dell'intero
+    lpp.buffer[lpp.size++] = value & 0xFF; // Byte meno significativo dell'intero
 }
 
 int main() {
     // Esempio di utilizzo della struttura per creare un payload Cayenne LPP
     CayenneLPP lpp;
+    lpp.size = 0; // Inizializza la dimensione del payload a 0
     addFloatToCayenneLPP(lpp, 1, 25.5); // Canale 1: Temperatura
     addFloatToCayenneLPP(lpp, 2, 60.2); // Canale 2: Umidità
     addFloatToCayenneLPP(lpp, 3, 3.7);  // Canale 3: Tensione della batteria
@@ -151,14 +152,13 @@ int main() {
 
     // Output dei dati del payload Cayenne LPP
     std::cout << "Cayenne LPP Payload:" << std::endl;
-    for (uint8_t data : lpp.buffer) {
-        std::cout << std::hex << static_cast<int>(data) << " ";
+    for (int i = 0; i < lpp.size; ++i) {
+        std::cout << std::hex << static_cast<int>(lpp.buffer[i]) << " ";
     }
     std::cout << std::endl;
 
     return 0;
 }
-
 ```
 
 ## **Classi di dispositivi**
