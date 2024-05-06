@@ -119,6 +119,7 @@ Il **network server** è anche responsabile dello svolgimento di alcuni **proces
 Il **server di rete** è collegato ai **gateway dei sensori** mediante una normale **rete IP** mediante **protocollo di livello applicativo**. E' un **nodo di smistamento finale** e, in questo senso, può essere considerati come dei **router di livello applicativo**. In pratica è il **centro stella** di una **stella di gateway** (o base station) che a **loro volta** sono il **centro stella** di una **stella di sensori**. I gateway sono tutti dello stesso tipo e si collegano tramite lo stesso protocollo al network server realizzando con questo un collegamento virtuale diretto.
 
 **Formato del payload**
+
 I messaggi scambiati in una rete wireless sono complessivamente di due tipi che si mappano l’uno sull’altro:
 - **Messaggi corti**, in formato binario, tra sensore e gateway. Vengono spesso mandati in wireless su **banda ISM** con forti limitazioni di duty cycle, per cui devono essere i più **corti** possibile, anche a discapito della chiarezza. Possono essere **definiti** sotto forma di **struct C** e poi inviati ad una **libreria di serializzazione** che si occupa di trasformali in una **sequenza compatta** di singoli bit.
 - **Messaggi lunghi** tra gateway e network server. Vengono mandati **in Internet** e devono essere più che altro chiari e, se possibile, autoesplicativi. Dato che vengono inviati su un mezzo senza particolari limitazioni di banda, possono essere **definiti** in **formato JSON**.
