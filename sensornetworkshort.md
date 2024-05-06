@@ -64,13 +64,15 @@ Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può otte
 
 <img src="jsan-02-00235-g002.webp" alt="alt text" width="700">
 
-### **Gateway applicativo**:
+### **Gateway applicativo**
+
+E' il dispositivo posto a cavallo tra la rete di accesso ai sensori e la rete di distribuzione. 
+
+Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi di BUS** a cui si collega. Inoltre il **gateway** deve possedere almeno **una interfaccia** capace di traffico ethernet (cablata o wifi) che lo colleghi alla **rete di distribuzione**. Avendo più interfacce ha anche le funzioni di:
+- **routing** se la rete di distribuzione è formata da router comne lo è **Internet** e come potrebbe esserlo una **WAN privata** realizzata eventualmente con **VPN** di tipo **trusted** (MPLS) o **secure** (OpenVPN, IPSec).
+- **bridge** se la rete di distribuzione è semplicemente una **LAN** composta soltanto da switch
 
 <img src="jsan-02-00235-g001.webp" alt="alt text" width="700">
-
-
-
-Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi di BUS** a cui si collega. Il **gateway** deve possedere anche **una interfaccia** capace di traffico ethernet (cablata o wifi) che lo collega alla **rete di distribuzione** (in genere cablata).
 
 Il **gateway** ha anche la funzione di adattare il **formato dei servizi** offerti dalle varie **sottoreti di sensori** nel **formato di servizio unificato** (ad esempio un particolare messaggio JSON) con cui i sensori sono interrogati nella rete di distribuzione IP. I **protocolli di livello applicativo** utilizzati a questo scopo in genere sono **HTTPS** o **COAP** per il paradigma di interazione **Request/response** oppure **MQTT** o **Telegram** per il paradigma di interazione **Publish/Subscribe**, oppure **Websocket**, **Webhooks** e **WebRTC** per richieste asincrone, l'ultimo anche per quelle multimediali.
 
