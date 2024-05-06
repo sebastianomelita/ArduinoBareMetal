@@ -83,7 +83,9 @@ I fabbricanti spesso tendono a renderli **non bypassabili** perchè non rilascia
 Questa situazione, per i **protocolli più diffusi** come Zibgee e Bluetooth, **tende a scomparire** perchè quasi tutti i produttori si sono ormai accordati e **adottano** per le API dei servizi uno **standard comune** e pubblico, per cui non è insolito riuscire a comandare dispositivi di una marca X col gateway della marca Y. Inoltre, molti stack hanno reso pubblico il formato del payload applicativo dei loro sensori, oppure esistono bridge che eseguono la conversione di questo in corrispondenti messaggi MQTT in formato JSON.
 
 **Riassumendo**, alla **rete di distribuzione IP** si collegano, quindi, una o più **reti secondarie** che servono da **rete di accesso** per i dispositivi sensori o attuatori con **interfacce** spesso di tipo **non ethernet** che necessitano di un **gateway** di confine con possibili funzioni di:     
-  - **Inoltro**, cioè smistamento dei messaggi da un tipo di rete all'altro di tipo L3 (routing) o di tipo L2 (bridge).
+  - **Inoltro**, cioè smistamento dei messaggi da un tipo di rete all'altro di tipo L3 (routing) o di tipo L2 (bridge). L'inoltro può essere:
+       - **diretto** nella rete di distribuzione tramite link fisico verso il dispositivo di smistamento (router o switch) più vicino.
+       - **indiretto** tramite una dorsale virtuale, verso il network server o verso un router di una WAN privata, realizzata con un client di VPN.
   - **Traduzione di formato** dei messaggi da rete a bus a rete ethernet con eventuale realizzazione del **bridge** L4 tra il livello applicativo in uso nella rete di sensori e quello in uso nella rete di distribuzione.
   - **Interrogazione periodica** (polling) dei dispositivi nella rete di sensori (master di una architettura master/slave)
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
