@@ -105,7 +105,10 @@ Queste prese in considerazione sono generalmente tutte funzioni di **livello app
 
 ## **Server di rete**
 
-Il **network server** è comune in alcune tipologie di **reti wireless** LPWA ed è una componente di **back-end** responsabile dello **smistamento** verso gli utenti (routing applicativo) dei dati provenienti dai vari **gateway** configurandosi, quindi, come il **centro stella logico** di una  stella di gateway.
+Il **network server** è comune in alcune tipologie di **reti wireless** LPWA ed è una componente di **back-end** responsabile dello **smistamento** verso gli utenti (routing applicativo) dei dati provenienti dai vari **gateway** configurandosi, quindi, come il **centro stella logico** di una  stella di gateway. Lo **schema logico** di una rete di sensori LPWA basata su **network server** quindi appare:
+
+<img src="lpwan.png" alt="alt text" width="700">
+
 
 Il **network server** è anche responsabile dello svolgimento di alcuni **processi** di **controllo** e **gestione** della rete: 
 - si connette a **più gateway** tramite una connessione TCP/IP protetta 
@@ -126,11 +129,6 @@ I dati ricevuti possono essere **inviati agli application server** per le elabor
 Non ci sono interfacce standard di trasmissione dei dati tra network server ed application server (webservice, websocket, webhook, MQTT sono variamente implementati).
 
 Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e pertanto fanno esse stesse parte della **infrastruttura di rete**. Spesso sono **virtualizzate** e le loro funzioni sono offerte come **servizio** su abbonamento. Sono presenti in quasi tutte le **infrastrutture LPWA** a lungo raggio come **LoraWan**, **Sigfox** e **NB-IoT**.
-
-Lo **schema logico** di una rete di sensori LPWA basata su **network server** quindi appare:
-
-<img src="lpwan.png" alt="alt text" width="700">
-
 
 ##  **Topologia delle reti di sensori cablata** 
 
