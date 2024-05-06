@@ -35,7 +35,7 @@ I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che s
 
 ### Esempio JSON solo sensori
 
-```
+```C++
 {
   "device_id": "1234567890ABCDEF",
   "timestamp": "2024-05-07T12:30:45Z",
@@ -52,12 +52,11 @@ I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che s
     "signal_strength": -110
   }
 }
-
 ```
 
 ### Esempio JSON sensori + atttuatori
 
-```
+```C++
 {
   "device_id": "1234567890ABCDEF",
   "timestamp": "2024-05-07T12:30:45Z",
@@ -84,7 +83,6 @@ I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che s
     "signal_strength": -110
   }
 }
-
 ```
 
 ## **Classi di dispositivi**
