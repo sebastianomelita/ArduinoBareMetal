@@ -22,7 +22,9 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
   - **Interrogazione periodica** (polling) dei dispositivi nella rete di sensori (master di una architettura master/slave)
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
   - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
-    
+
+Esempio di connessione alla rete di distribuzione IP tramite gateway dotati di client VPN:
+
   <img src="img/integratedGW-LoRa.png" alt="alt text" width="1000">
 
 ### **Formato del payload**
