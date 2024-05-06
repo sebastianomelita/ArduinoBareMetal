@@ -54,7 +54,7 @@ I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che s
 }
 ```
 
-### Esempio JSON sensori + atttuatori
+### Esempio JSON sensori + attuatori
 
 ```C++
 {
