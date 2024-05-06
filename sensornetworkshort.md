@@ -121,6 +121,10 @@ Non ci sono interfacce standard di trasmissione dei dati tra network server ed a
 
 Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e pertanto fanno esse stesse parte della **infrastruttura di rete**. Spesso sono **virtualizzate** e le loro funzioni sono offerte come **servizio** su abbonamento. 
 
+I messaggi scambiati in una rete wireless sono complessivamente di due tipi che si mappano l’uno sull’altro:
+- **Messaggi corti**, in formato binario, tra sensore e gateway. Vengono spesso mandati in wireless su **banda ISM** con forti limitazioni di duty cycle, per cui devono essere i più **corti** possibile, anche a discapito della chiarezza. Possono essere **definiti** sotto forma di **struct C** e poi inviati ad una **libreria di serializzazione** che si occupa di trasformali in una **sequenza compatta** di singoli bit.
+- **Messaggi lunghi** tra gateway e network server. Vengono mandati **in Internet** e devono essere più che altro chiari e, se possibile, autoesplicativi. Dato che vengono inviati su un mezzo senza particolari limitazioni di banda, possono essere **definiti** in **formato JSON**.
+
 Sono presenti in quasi tutte le **infrastrutture LPWA** a lungo raggio come **LoraWan**, **Sigfox** e **NB-IoT**.
 
 Lo **schema logico** di una rete di sensori LPWA basata su **network server** quindi appare:
