@@ -13,7 +13,7 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
 
   <img src="img/lorawanLogicArchitecture.png" alt="alt text" width="1000">
 
-### **Formato dei messaggi**
+### **Formato del payload**
 
  <img src="img/messaggilora.png" alt="alt text" width="1000">
  
