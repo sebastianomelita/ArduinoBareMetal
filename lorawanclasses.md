@@ -33,6 +33,60 @@ I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che s
 - **Messaggi corti**, in formato binario, tra sensore e gateway. Vengono mandati in wireless su **banda ISM** con forti limitazioni di duty cycle, per cui devono essere i più **corti** possibile, anche a discapito della chiarezza. Possono essere **definiti** sotto forma di **struct C** e poi inviati ad una **libreria di serializzazione** che si occupa di trasformali in una **sequenza compatta** di singoli bit.
 - **Messaggi lunghi** tra gateway e network server. Vengono mandati **in Internet** e devono essere più che altro chiari e, se possibile, autoesplicativi. Dato che vengono inviati su un mezzo senza particolari limitazioni di banda, possono essere **definiti** in **formato JSON**.
 
+### Esempio JSON solo sensori
+
+```
+{
+  "device_id": "1234567890ABCDEF",
+  "timestamp": "2024-05-07T12:30:45Z",
+  "sensor_data": {
+    "temperature": 25.5,
+    "humidity": 60.2,
+    "battery_voltage": 3.7
+  },
+  "other_information": {
+    "location": {
+      "latitude": 40.7128,
+      "longitude": -74.0060
+    },
+    "signal_strength": -110
+  }
+}
+
+```
+
+### Esempio JSON sensori + atttuatori
+
+```
+{
+  "device_id": "1234567890ABCDEF",
+  "timestamp": "2024-05-07T12:30:45Z",
+  "sensor_data": {
+    "temperature": 25.5,
+    "humidity": 60.2,
+    "battery_voltage": 3.7
+  },
+  "actuator_data": {
+    "led": {
+      "status": "on",
+      "color": "red"
+    },
+    "motor": {
+      "status": "off",
+      "speed": 0
+    }
+  },
+  "other_information": {
+    "location": {
+      "latitude": 40.7128,
+      "longitude": -74.0060
+    },
+    "signal_strength": -110
+  }
+}
+
+```
+
 ## **Classi di dispositivi**
 
   La specifica LoRaWAN definisce tre classi di dispositivi:
