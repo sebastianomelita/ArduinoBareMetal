@@ -38,7 +38,7 @@ Nella banda 868MHz il limite massimo è di circa 14dBm (25mW). La potenza minima
 
 ### **Classi di servizio** 
 
-<img src="img/42979_2021_769_Fig1_HTML.png" alt="alt text" width="300">
+<img src="img/42979_2021_769_Fig1_HTML.png" alt="alt text" width="400">
 
 Lo slotted CSMA (Carrier Sense Multiple Access) è un protocollo di accesso al canale utilizzato in reti wireless come Zigbee. Funziona seguendo questi passaggi:
 
