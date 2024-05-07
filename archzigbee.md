@@ -43,9 +43,11 @@ Nella banda 868MHz il limite massimo è di circa 14dBm (25mW). La potenza minima
 Lo slotted CSMA (Carrier Sense Multiple Access) è un protocollo di accesso al canale utilizzato in reti wireless come Zigbee. Funziona seguendo questi passaggi:
 
 - **Divisione del tempo in slot**: Il tempo viene diviso in intervalli di tempo fissi, chiamati slot temporali. Ogni slot ha una durata predefinita e tutti i dispositivi nella rete sono sincronizzati su questi slot.
-- **Rilevamento del canale** (Carrier Sense): Prima di trasmettere dati, un dispositivo controlla se il canale è occupato o libero ascoltando l'ambiente. Se il canale è ritenuto libero, il dispositivo attende fino all'inizio del prossimo slot prima di trasmettere.
+- **Ascolto del canale** (Carrier Sense): Prima di trasmettere dati, un dispositivo controlla se il canale è occupato o libero ascoltando il mezzo trasmissivo. 
 - **Accesso al canale slotted**: Quando un dispositivo decide di trasmettere, aspetta fino all'inizio del prossimo slot temporale disponibile per inviare i dati. Questo significa che tutte le trasmissioni avvengono in momenti ben definiti, consentendo una gestione più ordinata del traffico.
 - **Evitamento delle collisioni**: Il rilevamento del canale e l'accesso al canale slotted aiutano a evitare collisioni durante la trasmissione dei dati. Se più dispositivi tentano di trasmettere nello stesso slot, solo uno di essi avrà successo, mentre gli altri rileveranno la presenza di un segnale e ritenteranno la trasmissione in un momento successivo.
+
+In genere, per reti a stella, il CSMA/CA senza slot è migliore del CSMA/CA con slot in termini di probabilità di successo del pacchetto, consumo di energia e ritardo. Mentre CSMA/CA con slot è migliore di CSMA/CA senza slot in termini di throughput, cioè capacità complessiva di traffico.
 
 La **superframe** è una trama composta di **16 slot** temporali di uguale larghezza all'interno dei quali inviare i dati di una o più **applicazioni**. E' delimitata da una **coppia di beacons** e viene spedita dal **coordinatore**. 
 
@@ -63,9 +65,12 @@ Tutte le transazioni basate su contesa saranno completate prima dell’inizio de
 
 <img src="img/IEEE-802154-superframe-structure-2.png" alt="alt text" width="600">
 
-- **Dati periodici**. Si utilizza tipicamente con sorgenti con rate definito che siano anche sincrone, cioè trasmesse regolarmente ad intervalli prestabiliti. Si utilizza una modalità di accesso senza contesa di tipo **TDM** basata sui beacon.  Ad esempio, sensori ambientali potrebbero inviare dati di temperatura ogni minuto o ogni ora in modo periodico.
+- **Dati periodici**. Si utilizza tipicamente con sorgenti con rate definito che siano anche sincrone, cioè trasmesse regolarmente ad intervalli prestabiliti. Si utilizza una modalità di accesso senza contesa di tipo **TDM** basata sulle superframe delimitate da beacon.  Ad esempio, sensori ambientali potrebbero inviare dati di temperatura ogni minuto o ogni ora in modo periodico.
 - **Dati intermittenti**. Si riferisce a dati trasmessi occasionalmente o in risposta a specifici eventi. Ad esempio, un sensore di movimento potrebbe inviare dati solo quando rileva un movimento, che può essere sporadico. La modalità di accesso al canale è a contesa basata su **CSMA/CA**.
-- **Dati ripetitivi a bassa latenza**. Applicazioni dove si richiede l’allocazione di time slot  Beacon-Enabled Mode: In questo modo, un dispositivo coordinatore invia periodicamente (ad intervalli regolari) messaggi di beacon che contengono informazioni sulla sincronizzazione temporale e sulla struttura della rete. Questi messaggi di beacon sono trasmessi a tutti i dispositivi nella rete, consentendo loro di sincronizzarsi con il coordinatore e di aspettarsi i momenti specifici per trasmettere e ricevere dati. Questo aiuta a ridurre la latenza, poiché i dispositivi conoscono i tempi in cui possono trasmettere o ricevere dati, riducendo il tempo di attesa.
+- **Dati ripetitivi a bassa latenza**. QUesto tipo di messaggi potrebbe essere efficacemente supportato durante gli slot CAP (Contend Access period) delle superframe mediante un accesso multiplo CSMA/CA slottato.
+- 
+Sitografia:
 
-
+- https://ieeexplore.ieee.org/document/7042600
+- 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
