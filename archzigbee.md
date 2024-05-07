@@ -15,7 +15,7 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
 <img src="img/image-17.png" alt="alt text" width="1000">
 
 Zigbee è uno standard di comunicazione wireless utilizzato per il controllo e l'automazione domestica, mentre MQTT è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando Zigbee2mqtt, gli utenti possono integrare facilmente dispositivi Zigbee di diversi produttori in un sistema di automazione domestica basato su MQTT, offrendo maggiore flessibilità e controllo.
-<img src="img/zigbeebridge.png" alt="alt text" width="700">
+<img src="img/zigbeebridge.png" alt="alt text" width="800">
 
 Il **bridge zigbee** è normalmente anche il **coordinatore** della rete di sensori.
 
