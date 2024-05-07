@@ -46,6 +46,8 @@ La situazione può essere riassunta nel seguente modo:
 
 La **superframe** è una trama composta di **16 slot** temporali di uguale larghezza all'interno dei quali inviare i dati di una o più **applicazioni**. E' delimitata da una **coppia di beacons** e viene spedita dal **coordinatore**. 
 
+<img src="img/IEEE-802154-superframe-structure-2.png" alt="alt text" width="600">
+
 I **beacons** sono usati per:  
  - sincronizzare i dispositivi
  - identificare il PAN coordinator
@@ -65,8 +67,6 @@ Lo slotted CSMA (Carrier Sense Multiple Access) è un protocollo di accesso al c
 - **Evitamento delle collisioni**: Il rilevamento del canale e l'accesso al canale slotted aiutano a evitare collisioni durante la trasmissione dei dati. Se più dispositivi tentano di trasmettere nello stesso slot, solo uno di essi avrà successo, mentre gli altri rileveranno la presenza di un segnale e ritenteranno la trasmissione in un momento successivo.
 
 In genere, per reti a stella, il CSMA/CA senza slot è migliore del CSMA/CA con slot in termini di probabilità di successo del pacchetto, consumo di energia e ritardo. Mentre CSMA/CA con slot è migliore di CSMA/CA senza slot in termini di throughput, cioè capacità complessiva di traffico.
-
-<img src="img/IEEE-802154-superframe-structure-2.png" alt="alt text" width="600">
 
 Le **tipologie di servizio** supportate da Zigbee sono:
 - **Dati periodici**. Si utilizza tipicamente con sorgenti con rate definito che siano anche sincrone, cioè trasmesse regolarmente ad intervalli prestabiliti. Si utilizza una modalità di accesso senza contesa di tipo **TDM** basata sulle superframe delimitate da beacon.  Ad esempio, sensori ambientali potrebbero inviare dati di temperatura ogni minuto o ogni ora in modo periodico.
