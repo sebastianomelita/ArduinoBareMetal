@@ -51,7 +51,7 @@ In ogni caso, un qualsiasi **ente di telecomunicazioni internazionale** (IEE, IE
 Riguardo all'**interoperabilità** tra reti diverse, questa è evidentemente impossibile a livello fisico e di accesso, cioè ai primi due livelli della pila OSI (L1 e L2) dato che si tratta di tecnologie molto diverse tra loro. Ma potrebbe essere realizzata a **livello di routing**, come già accade nelle LAN e in Internet col protocollo IP e, in questo caso, potrebbero essere smistati gli stessi messaggi lungo reti eterogenee a livello fisico. Oppure, potrebbe essere realizzata solo a **livello applicativo** definendo per tutte le reti una semantica uniforme per misure e comandi (lo stesso oggetto tapparella con gli stessi comandi per tutte le reti, lo stesso oggetto lampada che si comanda con on e off ovunque, ecc...). 
 
 Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può ottenere:
-- **creando un'unica rete** utilizzando livelli di rete **compatibili** o **praticamente uguali** come sono **IPV6 e 6LowPan**. Lo stesso deve accadere per i protocolli di routing usando ad es. REPL. Lo stesso deve accadere per i **livelli superiori**. In particolare nell'ultimo, il **livello applicativo**, il **payload dell'applicazione**, cioè il messaggio utente, deve poter viaggiare **direttamente** dal **client** al **sensore**, dove poi verrà elaborato e utilizzato.
+- **creando un'unica rete** utilizzando livelli di rete **compatibili** o **praticamente uguali** come sono **IPV6 e 6LowPan**. Lo stesso deve accadere per i protocolli di routing usando ad es. REPL. Lo stesso deve accadere per i **livelli superiori**. In particolare nell'ultimo, il **livello applicativo**, il **payload dell'applicazione**, cioè il messaggio utente, deve poter viaggiare **direttamente** dal **client** al **sensore**, dove poi verrà elaborato e utilizzato. Se viene inoltrato direttamente il pacchetto IPV6 (con il payload applicativo dentro) allaora il gateway è tecnicamente un router semplice (altrimenti è un router applicativo).
 - utilizzando un **gateway** per **compattare** o **tradurre** i messaggi:
      - se il routing non è compatibile ma il **livello di applicazione** nella rete di accesso **è customizzabile**, si può pensare ancora di utilizzare lo **stesso payload** in formato JSON della rete di distribuzione richiamando le **primitive di servizio** di livello applicativo in uso nella rete dei sensori (ad es. send) per inviarlo. Ma il formato potrebbe essere troppo prolisso per dispositivi di capacità ridotta e quindi potrebbe essere necessario **comprimerlo**.
      - se il livello di applicazione nella rete di accesso **non è customizzabile**, il gateway (detto talvolta **bridge**) ha funzione di **traduzione** dei messaggi tra il il formato in uso nella rete di distribuzione IP e quello in uso nella rete di accesso ai sensori. 
@@ -68,9 +68,10 @@ Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può otte
 
 E' il dispositivo posto a cavallo tra la rete di accesso ai sensori e la rete di distribuzione. 
 
-Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi di BUS** a cui si collega. Inoltre il **gateway** deve possedere almeno **una interfaccia** capace di traffico ethernet (cablata o wifi) che lo colleghi alla **rete di distribuzione**. Avendo più interfacce ha anche le funzioni di:
-- **router** se la rete di distribuzione è formata da router comne lo è **Internet** e come potrebbe esserlo una **WAN privata** realizzata eventualmente con **VPN** di tipo **trusted** (MPLS) o **secure** (OpenVPN, IPSec).
-- **bridge** se la rete di distribuzione è semplicemente una **LAN** composta soltanto da switch
+Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi di BUS** a cui si collega. Inoltre il **gateway** deve possedere almeno **una interfaccia** capace di traffico ethernet (cablata o wifi) che lo colleghi alla **rete di distribuzione**. 
+
+Avendo più interfacce su reti di tipo diverso sia in L1 che in L2, ha anche le funzioni di **router**. Se la rete di distribuzione è pubblica come **Internet** dovrebbe possedere pure le funzioni di **firewall**. Al limite potrebbe anche smistare messaggi in una **WAN privata** realizzata con **VPN** di tipo **trusted** (MPLS) o **secure** (OpenVPN, IPSec).
+
 
 <img src="jsan-02-00235-g001.webp" alt="alt text" width="700">
 
