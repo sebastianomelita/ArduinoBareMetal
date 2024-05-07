@@ -172,6 +172,23 @@ int main() {
 }
 ```
 
+## **Gestione bridge broker MQTT**
+
+Serve a realizzare un ponte tra: 
+- un broker MQTT locale al network server che colleziona tutti i messaggi del modem LoraWAN
+- il broker in uso nella rete di distribuzione che è interessato solo ad un sottoinsieme dei topic del network server (vengono filtrati i messaggi di servizio)
+
+<img src="img/brokerBridge.png" alt="alt text" width="600">
+
+## **gestione firewall**
+
+Serve a proteggere l’accesso alla rete di distribuzione che, di base, è IP con indirizzi pubblici.
+
+Può essere impostato per far passare tutto se la rete di distribuzione è sicura come accade, ad esempio, nel caso di una LAN aziendale.
+
+<img src="img/lorafirewall.png" alt="alt text" width="600">
+
+
 ## **Classi di dispositivi**
 
   La specifica LoRaWAN definisce tre classi di dispositivi:
