@@ -108,5 +108,6 @@ In generale, i protocolli Zigbee riducono al minimo il tempo di accensione della
 - https://www.zigbee2mqtt.io/advanced/zigbee/05_create_a_cc2530_router.html#result
 - https://www.zigbee2mqtt.io/guide/adapters/#recommended
 - https://www.amazipoint.com/uart%20bridge%20en%204.html
+- https://www.researchgate.net/figure/Zigbee-Gateway-architecture-It-must-be-remarked-that-Zigbee-Alliance-has-also-developed_fig4_41392302
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
