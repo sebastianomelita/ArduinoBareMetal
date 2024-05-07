@@ -36,11 +36,13 @@ La potenza in trasmissione usata nella banda a 2.4GHz è compresa tra -3dBm e 10
 Nella banda 915MHz il limite massimo è di 1000 mW (30dBm). Tuttavia, i terminali costruiti secondo la tecnologia “system-onchip” limitano la potenza intorno ai 10dBm.
 Nella banda 868MHz il limite massimo è di circa 14dBm (25mW). La potenza minima deve essere almeno di -3dBm
 
-### **Classi di servizio**
+### **Classi di servizio** 
 
-- **Dati periodici**. Si utilizza tipicamente con applicazioni con rate definito che siano anche sincrone, cioè di cui si può prevedere con esattezza il momento della trasmissione. Si utilizza una modalità di accesso senza contesa di tipo **TDM** basata sui beacon. 
-- **Dati intermittenti**. Può supportare ancora aplicazioni sincrone con rate definito ma anche quelle determinate da un comando esterno asincrono. La modalità di accesso al canale è a contesa basata su **CSMA/CA**.
-- **Dati ripetitivi a bassa latenza**. Applicazioni dove si richiede l’allocazione di time slot 
+<img src="img/42979_2021_769_Fig1_HTML.png" alt="alt text" width="1000">
+
+- **Dati periodici**. Si utilizza tipicamente con sorgenti con rate definito che siano anche sincrone, cioè trasmesse regolarmente ad intervalli prestabiliti. Si utilizza una modalità di accesso senza contesa di tipo **TDM** basata sui beacon.  Ad esempio, sensori ambientali potrebbero inviare dati di temperatura ogni minuto o ogni ora in modo periodico.
+- **Dati intermittenti**. Si riferisce a dati trasmessi occasionalmente o in risposta a specifici eventi. Ad esempio, un sensore di movimento potrebbe inviare dati solo quando rileva un movimento, che può essere sporadico. La modalità di accesso al canale è a contesa basata su **CSMA/CA**.
+- **Dati ripetitivi a bassa latenza**. Applicazioni dove si richiede l’allocazione di time slot  Beacon-Enabled Mode: In questo modo, un dispositivo coordinatore invia periodicamente (ad intervalli regolari) messaggi di beacon che contengono informazioni sulla sincronizzazione temporale e sulla struttura della rete. Questi messaggi di beacon sono trasmessi a tutti i dispositivi nella rete, consentendo loro di sincronizzarsi con il coordinatore e di aspettarsi i momenti specifici per trasmettere e ricevere dati. Questo aiuta a ridurre la latenza, poiché i dispositivi conoscono i tempi in cui possono trasmettere o ricevere dati, riducendo il tempo di attesa.
 
 
 
