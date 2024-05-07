@@ -180,7 +180,7 @@ Serve a realizzare un ponte tra:
 
 <img src="img/brokerBridge.png" alt="alt text" width="600">
 
-## **gestione firewall**
+## **Gestione firewall**
 
 Serve a proteggere l’accesso alla rete di distribuzione che, di base, è IP con indirizzi pubblici.
 
