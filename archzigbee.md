@@ -56,6 +56,8 @@ Tutte le transazioni basate su contesa saranno completate prima dell’inizio de
 
 <img src="img/IEEE-802154-superframe-structure-2.png" alt="alt text" width="600">
 
+- Accesso al canale slotted: Una volta che il canale è ritenuto libero, il dispositivo può trasmettere durante il prossimo slot temporale disponibile. Questo approccio slotted assicura che la trasmissione dei dati avvenga in momenti ben definiti, migliorando l'organizzazione e la gestione del traffico all'interno della rete.
+- Collision avoidance (evitamento delle collisioni): Lo slotted CSMA aiuta a evitare collisioni durante la trasmissione dei dati. Poiché i dispositivi controllano il canale prima di trasmettere e aspettano il prossimo slot temporale disponibile, è meno probabile che si verifichino collisioni durante la trasmissione dei dati.
 
 - **Dati periodici**. Si utilizza tipicamente con sorgenti con rate definito che siano anche sincrone, cioè trasmesse regolarmente ad intervalli prestabiliti. Si utilizza una modalità di accesso senza contesa di tipo **TDM** basata sui beacon.  Ad esempio, sensori ambientali potrebbero inviare dati di temperatura ogni minuto o ogni ora in modo periodico.
 - **Dati intermittenti**. Si riferisce a dati trasmessi occasionalmente o in risposta a specifici eventi. Ad esempio, un sensore di movimento potrebbe inviare dati solo quando rileva un movimento, che può essere sporadico. La modalità di accesso al canale è a contesa basata su **CSMA/CA**.
