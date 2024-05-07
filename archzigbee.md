@@ -18,7 +18,7 @@ Più reti possono organizzarsi in cluster con una struttura logica ad albero (sp
 
 <img src="img/archzigbee.png" alt="alt text" width="1000">
 
-### **tipologie di nodi** 
+### **Tipologie di nodi** 
 
 Le specifiche dello standard distinguono 3 tipi di dispositivi:
 - Il **coordinatore**, che ha il compito di organizzare la rete e conservare le tabelle di routing. Svolge pure il ruolo di trust center e di archivio per le chiavi di sicurezza.
