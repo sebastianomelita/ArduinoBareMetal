@@ -14,23 +14,25 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
    <img src="img/archzigbee2.png" alt="alt text" width="1000">
 
 I dispositivi ZigBee possono essere configurati in modo da realizzare diverse topologie di reti. Una topologia largamente usata è la quella mesh.
+Più reti possono organizzarsi in cluster con una struttura logica ad albero (spanning tree ottimo). Viene così realizzata una rete peerto-peer con un minimo overhead di routing.
 
 <img src="img/archzigbee.png" alt="alt text" width="1000">
+
+### **tipologie di nodi** 
 
 Le specifiche dello standard distinguono 3 tipi di dispositivi:
 - Il **coordinatore**, che ha il compito di organizzare la rete e conservare le tabelle di routing. Svolge pure il ruolo di trust center e di archivio per le chiavi di sicurezza.
 - I **router** (FFD o full function device), che possono parlare con tutti gli altri dispositivi
 - I **dispositivi finali** (Reduced function devices o RFD), hanno funzionalità ridotte e possono parlare con in router e il coordinatore, ma non direttamente tra di loro. Non essendo router, non smistano mai i dati generati da altri. Possono restare inattivi per molto tempo, garantendo così una lunga durata della batteria
 
-### **Caratteristiche fondamentali dei nodi** 
+  
+### **Consumo energetico** 
 
-Più reti possono organizzarsi in cluster con una struttura logica ad albero (spanning tree ottimo). Viene così realizzata una rete peerto-peer con un minimo overhead di routing.
+Bassissimo consumo dei **nodi di comando** dato che, per inviare un messaggio ad un nodo attuatore posto in un luogo remoto della rete, devono spendere sempre e soltanto l'energia necessaria a raggiungere il nodo router più vicino
 
-Bassissimo consumo dei nodi di comando dato che, per inviare un messaggio ad un nodo attuatore posto in un luogo remoto della rete, devono spendere sempre e soltanto l'energia necessaria a raggiungere il nodo router più vicino
+Per minimizzare il consumo di potenza, e quindi massimizzare la durata delle batterie, i **dispositivi finali** passano la maggior parte del loro tempo “addormentati” (**sleep mode**), si svegliano soltanto quando hanno bisogno di comunicare, e poi si riaddormentano immediatamente.
 
-Per minimizzare il consumo di potenza, e quindi massimizzare la durata delle batterie, i dispositivi finali passano la maggior parte del loro tempo “addormentati” (sleep mode), si svegliano soltanto quando hanno bisogno di comunicare, e poi si riaddormentano immediatamente.
-
-Lo standard prevede invece che i router ed il coordinatore siano collegati alla rete elettrica e siano sempre attivi. Non hanno quindi dei vincoli sul consumo di potenza
+Lo **standard** prevede invece che i **router** ed il **coordinatore** siano collegati alla rete elettrica e siano **sempre attivi**. Non hanno quindi dei vincoli sul consumo di potenza
 
 ### **Potenza di trasmissione**
 
