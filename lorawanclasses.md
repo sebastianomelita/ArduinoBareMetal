@@ -1,5 +1,5 @@
 
->[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
+>[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
 
 Di seguito è riportata l'architettura generale di una rete Lorawan. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
 
@@ -278,4 +278,4 @@ Per consentire ai dispositivi terminali di essere il più semplici possibile e d
 
 
 
->[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
+>[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
