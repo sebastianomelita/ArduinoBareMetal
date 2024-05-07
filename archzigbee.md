@@ -40,6 +40,24 @@ Nella banda 868MHz il limite massimo è di circa 14dBm (25mW). La potenza minima
 
 <img src="img/42979_2021_769_Fig1_HTML.png" alt="alt text" width="300">
 
+La **superframe** è una trama composta di **16 slot** temporali di uguale larghezza all'interno dei quali inviare i dati di una o più **applicazioni**. E' delimitata da una **coppia di beacons** e viene spedita dal **coordinatore**. 
+
+I **beacons** sono usati per:  
+ - sincronizzare i dispositivi
+ - identificare il PAN coordinator
+ - descrivere la struttura della superframe. 
+
+Il **PAN coordinator** può dedicare porzioni della superframe ad applicazioni a **bassa latenza** o ad applicazioni che richiedono una larghezza di banda specifica. Queste porzioni sono chiamate garanteed time slot (**GTS**) e comprendono la contesa di periodi liberi.
+
+Il PAN coordinator può allocare 7 di questi GTS, ognuno dei quali può occupare più di un periodo di slot.
+
+Ad ogni dispositivo che sta trasmettendo in un GTS viene assicurato che la sua operazione venga completata prima dell’inizio del successivo GTS.
+
+Tutte le transazioni basate su contesa saranno completate prima dell’inizio del CFP.
+
+<img src="img/IEEE-802154-superframe-structure-2.png" alt="alt text" width="600">
+
+
 - **Dati periodici**. Si utilizza tipicamente con sorgenti con rate definito che siano anche sincrone, cioè trasmesse regolarmente ad intervalli prestabiliti. Si utilizza una modalità di accesso senza contesa di tipo **TDM** basata sui beacon.  Ad esempio, sensori ambientali potrebbero inviare dati di temperatura ogni minuto o ogni ora in modo periodico.
 - **Dati intermittenti**. Si riferisce a dati trasmessi occasionalmente o in risposta a specifici eventi. Ad esempio, un sensore di movimento potrebbe inviare dati solo quando rileva un movimento, che può essere sporadico. La modalità di accesso al canale è a contesa basata su **CSMA/CA**.
 - **Dati ripetitivi a bassa latenza**. Applicazioni dove si richiede l’allocazione di time slot  Beacon-Enabled Mode: In questo modo, un dispositivo coordinatore invia periodicamente (ad intervalli regolari) messaggi di beacon che contengono informazioni sulla sincronizzazione temporale e sulla struttura della rete. Questi messaggi di beacon sono trasmessi a tutti i dispositivi nella rete, consentendo loro di sincronizzarsi con il coordinatore e di aspettarsi i momenti specifici per trasmettere e ricevere dati. Questo aiuta a ridurre la latenza, poiché i dispositivi conoscono i tempi in cui possono trasmettere o ricevere dati, riducendo il tempo di attesa.
