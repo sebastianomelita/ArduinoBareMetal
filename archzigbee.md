@@ -18,9 +18,11 @@ I dispositivi ZigBee possono essere configurati in modo da realizzare diverse to
 <img src="img/archzigbee.png" alt="alt text" width="1000">
 
 Le specifiche dello standard distinguono 3 tipi di dispositivi:
-- Il **coordinatore**, che ha il compito di organizzare la rete e conservare le tabelle di routing
+- Il **coordinatore**, che ha il compito di organizzare la rete e conservare le tabelle di routing. Svolge pure il ruolo di trust center e di archivio per le chiavi di sicurezza.
 - I **router**, che possono parlare con tutti gli altri dispositivi
-- I **dispositivi finali** (Reduced devices), che hanno funzionalità ridotte e che possono parlare con in router e il coordinatore, ma non tra di loro
+- I **dispositivi finali** (Reduced devices), hanno funzionalità ridotte e possono parlare con in router e il coordinatore, ma non direttamente tra di loro. Non essendo router, non smistano mai i dati generati da altri. Possono restare inattivi per molto tempo, garantendo così una lunga durata della batteria
+
+### **Caratteristiche fondamentali dei nodi** 
 
 Più reti possono organizzarsi in cluster con una struttura logica ad albero (spanning tree ottimo). Viene così realizzata una rete peerto-peer con un minimo overhead di routing.
 
@@ -36,7 +38,6 @@ La potenza in trasmissione usata nella banda a 2.4GHz è compresa tra -3dBm e 10
 Nella banda 915MHz il limite massimo è di 1000 mW (30dBm). Tuttavia, i terminali costruiti secondo la tecnologia “system-onchip” limitano la potenza intorno ai 10dBm.
 Nella banda 868MHz il limite massimo è di circa 14dBm (25mW). La potenza minima deve essere almeno di -3dBm
 
-### **Classi di servizio** 
 
 <img src="img/42979_2021_769_Fig1_HTML.png" alt="alt text" width="400">
 
