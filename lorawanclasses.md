@@ -27,6 +27,8 @@ Esempio di connessione alla rete di distribuzione IP tramite gateway dotati di c
 
   <img src="img/integratedGW-LoRa.png" alt="alt text" width="1000">
 
+  Il **packet forwarder** è il gateway stesso essendo la funzione di forwarding, (inoltro) dei messaggi dal sensore al network server, la funzione principale del gateway. L'inoltro dei messaggi di uno stesso sensore può essere **parallelo** se questo è associato a più di un gateway, circostanza che aumenta la ridondanza a costo della presenza di duplicati in rete. In ogni caso, i **messaggi duplicati** verranno successivamente scartati dal network server, prima dell'inoltro finale verso l'applicazione.
+
 ### **Formato del payload**
 
  <img src="img/messaggilora.png" alt="alt text" width="1000">
