@@ -24,6 +24,7 @@ Zigbee è uno standard di comunicazione wireless utilizzato per il controllo e l
 I dispositivi ZigBee possono essere configurati in modo da realizzare diverse topologie di reti. Una topologia largamente usata è la quella mesh.
 Più reti possono organizzarsi in cluster con una struttura logica ad albero (spanning tree ottimo). Viene così realizzata una rete peerto-peer con un minimo overhead di routing.
 
+<img src="img/archzigbee.png" alt="alt text" width="1000">
 
 ### **Tipologie di nodi** 
 
