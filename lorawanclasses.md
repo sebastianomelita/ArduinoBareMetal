@@ -177,6 +177,7 @@ int main() {
 Serve a realizzare un ponte tra: 
 - un broker MQTT locale al network server che colleziona tutti i messaggi del modem LoraWAN
 - il broker in uso nella rete di distribuzione che è interessato solo ad un sottoinsieme dei topic del network server (vengono filtrati i messaggi di servizio)
+- #, # è invece l’impostazione per un bridge privo di filtraggi
 
 <img src="img/brokerBridge.png" alt="alt text" width="600">
 
