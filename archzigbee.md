@@ -78,5 +78,6 @@ In generale i protocolli Zigbee riducono al minimo il tempo di accensione della 
 Sitografia:
 
 - https://ieeexplore.ieee.org/document/7042600
+- https://en.wikipedia.org/wiki/Zigbee
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
