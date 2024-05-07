@@ -45,13 +45,12 @@ La **superframe** è una trama composta di **16 slot** temporali di uguale largh
 I **beacons** sono usati per:  
  - sincronizzare i dispositivi
  - identificare il PAN coordinator
- - descrivere la struttura della superframe. 
+ - descrivere la struttura della superframe.
+   
 
 Il **PAN coordinator** può dedicare porzioni della superframe ad applicazioni a **bassa latenza** o ad applicazioni che richiedono una larghezza di banda specifica. Queste porzioni sono chiamate garanteed time slot (**GTS**) e comprendono la contesa di periodi liberi.
 
-Il PAN coordinator può allocare 7 di questi GTS, ognuno dei quali può occupare più di un periodo di slot.
-
-Ad ogni dispositivo che sta trasmettendo in un GTS viene assicurato che la sua operazione venga completata prima dell’inizio del successivo GTS.
+Il PAN coordinator può allocare fino 7 di questi GTS per una singola applicazione, ognuno dei quali può occupare più di un periodo di slot. Ad ogni dispositivo che sta trasmettendo in un GTS viene assicurato che la sua operazione venga completata prima dell’inizio del successivo GTS.
 
 Tutte le transazioni basate su contesa saranno completate prima dell’inizio del CFP.
 
