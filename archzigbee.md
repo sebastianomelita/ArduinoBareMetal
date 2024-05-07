@@ -73,5 +73,5 @@ Le **tipologie di servizio** supportate da Zigbee sono:
 Sitografia:
 
 - https://ieeexplore.ieee.org/document/7042600
-- 
+
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
