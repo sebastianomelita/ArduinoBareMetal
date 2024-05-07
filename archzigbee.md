@@ -38,6 +38,7 @@ La potenza in trasmissione usata nella banda a 2.4GHz è compresa tra -3dBm e 10
 Nella banda 915MHz il limite massimo è di 1000 mW (30dBm). Tuttavia, i terminali costruiti secondo la tecnologia “system-onchip” limitano la potenza intorno ai 10dBm.
 Nella banda 868MHz il limite massimo è di circa 14dBm (25mW). La potenza minima deve essere almeno di -3dBm
 
+### **protocolli di accesso al canale**
 
 <img src="img/42979_2021_769_Fig1_HTML.png" alt="alt text" width="400">
 
