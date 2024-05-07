@@ -30,8 +30,21 @@ Per minimizzare il consumo di potenza, e quindi massimizzare la durata delle bat
 
 Lo standard prevede invece che i router ed il coordinatore siano collegati alla rete elettrica e siano sempre attivi. Non hanno quindi dei vincoli sul consumo di potenza
 
+### **Potenza di trasmissione**
+
 La potenza in trasmissione usata nella banda a 2.4GHz è compresa tra -3dBm e 10dBm con valore tipico 0dBm
 Nella banda 915MHz il limite massimo è di 1000 mW (30dBm). Tuttavia, i terminali costruiti secondo la tecnologia “system-onchip” limitano la potenza intorno ai 10dBm.
 Nella banda 868MHz il limite massimo è di circa 14dBm (25mW). La potenza minima deve essere almeno di -3dBm
+
+### **Classi di servizio**
+
+- **Dati periodici**. Si utilizza tipicamente con applicazioni con rate definito che siano anche sincrone, cioè di cui si può prevedere con esattezza il momento della trasmissione. Si utilizza una modalità di accesso senza contesa di tipo **TDM** basata sui beacon. 
+- **Dati intermittenti**. Può supportare ancora aplicazioni sincrone con rate definito ma anche quelle determinate da un comando esterno asincrono. La modalità di accesso al canale è a contesa basata su **CSMA/CA**.
+- **Dati ripetitivi a bassa latenza**. Applicazioni dove si richiede l’allocazione di time slot 
+
+
+
+
+
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
