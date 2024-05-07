@@ -61,7 +61,7 @@ Il PAN coordinator può allocare fino 7 di questi GTS per una singola applicazio
 
 Tutte le transazioni basate su contesa saranno completate prima dell’inizio del CFP.
 
-<img src="img/IEEE-802154-superframe-structure-2.png" alt="alt text" width="700">
+<img src="img/IEEE-802154-superframe-structure-2.png" alt="alt text" width="600">
 
 - **Dati periodici**. Si utilizza tipicamente con sorgenti con rate definito che siano anche sincrone, cioè trasmesse regolarmente ad intervalli prestabiliti. Si utilizza una modalità di accesso senza contesa di tipo **TDM** basata sui beacon.  Ad esempio, sensori ambientali potrebbero inviare dati di temperatura ogni minuto o ogni ora in modo periodico.
 - **Dati intermittenti**. Si riferisce a dati trasmessi occasionalmente o in risposta a specifici eventi. Ad esempio, un sensore di movimento potrebbe inviare dati solo quando rileva un movimento, che può essere sporadico. La modalità di accesso al canale è a contesa basata su **CSMA/CA**.
