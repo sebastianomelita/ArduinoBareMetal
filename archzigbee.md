@@ -10,7 +10,7 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
 - **fisicamente** quella di più **reti di accesso** a stella tenute insieme da una **rete di distribuzione** qualsiasi purchè sia di tipo TCP/IP (LAN o Internet).
 - **logicamente** quella di una stella di reti a stella. Il **centrostella** di livello gerarchico più alto è il **network server** ed aggrega solo gateways, gli altri centrostella sono realizzati dai **gateway** che aggregano solamente **dispositivi IoT**.
 
-  <img src="img/lorawanLogicArchitecture.png" alt="alt text" width="1000">
+  <img src="img/archzigbee.png" alt="alt text" width="1000">
 
 
 
