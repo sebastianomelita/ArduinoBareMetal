@@ -12,6 +12,8 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
 
   <img src="img/archzigbee.png" alt="alt text" width="1000">
 
+   <img src="img/archzigbee2.png" alt="alt text" width="1000">
+
 
 
 
