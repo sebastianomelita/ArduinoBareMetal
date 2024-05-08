@@ -138,7 +138,7 @@ La potenza media (su 6 minuti) dipende dalle condizioni di servizio ed è influe
 - La necessità di servire più terminali mobili (diminuisce il duty cycle di ogni singolo terminale mobile)
 - Il duty cycle aumenta col volume di dati da trasferire, ma raramente ci si avvicina al 100%
 - Il duty cycle dipende dalla velocità della connessione (connessioni più veloci richiedono tempi di trasmissione inferiori)
--  Il duty cycle dipende anche dalla qualità del collegamento, a causa delle ritrasmissioni
+- Il duty cycle dipende anche dalla qualità del collegamento, a causa delle ritrasmissioni
 - La presenza di più access point sullo stesso canale determina collisioni che fanno diminuire il duty cycle di un singolo access point
 - La capacità di traffico della rete collegata influenza il duty cycle
 - Il duty cycle minimo dell’access point è fissato dai segnali di servizio (beacon signals) ed è dell’ordine di 0.01%
