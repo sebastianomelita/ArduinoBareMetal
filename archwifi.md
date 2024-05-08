@@ -30,14 +30,14 @@ Il **broker MQTT** può essere installato in cloud, in una Virtual Private netwo
 
 ### **Rete di dispositivi WiFi** 
 
-   <img src="img/ap.drawio.png" alt="alt text" width="900">
-
 Una architettura di rete wireless WiFi è può essere realizzata in tre modalità:
 - **Modalità Infrastruttura** di tipo master/slave
 - **Modalità ad hoc** di tipo peer to peer 
 - **Modalità Wifi Direct**  di tipo Punto – punto
   
 Le architetture **più diffuse** in ambito aziendale sono di **tipo infrastruttura** e sono composte di un dispositivo master centrale detto **Access Point (AP)** posto in posizione **baricentrica** rispetto a più dispositivi slave della rete wireless detti **Client**.
+
+<img src="img/ap.drawio.png" alt="alt text" width="900">
 
 Il dispositivo AP è assimilabile ad un **Hub** che realizza un BUS broadcast che collega tutti i device client. Il mezzo radio è di tipo broadcast half duplex in cui uno parla e tutti ascoltano. Per realizzare un canale percepito dalle stazioni client come full duplex l’accesso di queste necessita di essere arbitrato. L'**arbitraggio** può essere di tipo:
 - **Peer to peer**: è la soluzione più comune, l’accesso al mezzo degli interlocutori è gestita in maniera autonoma da ciascuno di essi tramite un  meccanismo di ack realizzato dal protocollo 802.11 di tipo CSMA/CA.
