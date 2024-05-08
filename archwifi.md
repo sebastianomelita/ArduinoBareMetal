@@ -82,7 +82,7 @@ Questi canali più ampi vengono creati collegando insieme i canali a 20 MHz. Rad
 
 ### **Pattern di riuso a confronto**
 
-<img src="img/reusepatterns" alt="alt text" width="1000">
+<img src="img/reusepatterns.png" alt="alt text" width="1000">
 
 
 ### **Tipologie di nodi** 
