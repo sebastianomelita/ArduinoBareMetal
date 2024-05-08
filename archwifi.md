@@ -127,11 +127,10 @@ In tabella un elenco parziale con le principali limitazioni:
 
 <img src="ismband.png" alt="alt text" width="600">
 
-L'ente regolatore, in Italia il Ministero dello Sviluppo Economico (MISE), fissa alcuni criteri per stabilire il diritto di accesso quali la distinzione nell’uso privato e non o la destinazione di frequenze ad uso contemporaneo a differenti servizi aventi differenti finalità. L’uso delle bande libere è destinato ad apparati denominati SRD (Short Range Devices). Curiosamente la banda 862-876 MHz (sub-GHz) molto utilizzata da dispositivi SRD, è gestita dal Ministero della Difesa e non dal MISE.  
+Ogni access point utilizza un singolo canale (largo 22 MHz), che viene condiviso in TDMA-TDD (CSMA/CA) da tutti gli utenti
 
-– Ogni access point utilizza un singolo canale (largo 22 MHz), che viene condiviso in TDMA-TDD (CSMA/CA) da tutti gli utenti
-– La trasmissione avviene a pacchetti con conferma di ricezione.
-– La potenza media (su 6 minuti) dipende dalle condizioni di servizio ed è influenzata dal duty cycle, a sua volta determinato da vari fattori.
+La trasmissione avviene a pacchetti con conferma di ricezione.
+La potenza media (su 6 minuti) dipende dalle condizioni di servizio ed è influenzata dal duty cycle, a sua volta determinato da vari fattori.
     - La bidirezionalità della trasmissione (attesa dell’OK di ricezione)
     - La necessità di servire più terminali mobili (diminuisce il duty cycle di ogni singolo
 terminale mobile)
