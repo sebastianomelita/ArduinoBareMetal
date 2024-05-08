@@ -66,12 +66,12 @@ Per dettagli vedi [multiplazioni statiche](multiplazioni.md)
 A 2.4GHz il WiFi adopera 11 canali FDM con sovrapposizione parziale dei vari canali. Solo tre canali di volta in volta non si sovrappongono.
 Una disposizione di celle adiacenti ottima dovrebbe utilizzare possibilmente solo tre canali non sovrapposti per minimizzare l’interferenza cocanale.
 
-<img src="img/wifichannel.png" alt="alt text" width="500">
+<img src="img/wifiband.png" alt="alt text" width="1000">
 
 Le possibilità sono: 1-6-11, 2-7-12, 3-8-13, 4-9, 5-10 ma rimangono solo 1-6-11 , 5-10 perché le frequenze 12, 13 e 14 non sono autorizzate in Europa (alcuni device supportano il canale 12).
 quindi si hanno **più frequenze** solo usando la combinazione **1-6-11**
 
-<img src="img/wifiband.png" alt="alt text" width="500">
+
 
 
 Caratteristiche distintiva di questa tecnologia di rete di sensori  è la **topologia a maglia** che comporta che:
