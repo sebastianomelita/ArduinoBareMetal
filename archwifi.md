@@ -90,13 +90,6 @@ Questi canali più ampi vengono creati collegando insieme i canali a 20 MHz. Rad
 
 <img src="img/reusepatterns.png" alt="alt text" width="800">
 
-### **Tipologie di nodi** 
-
-Le specifiche dello standard distinguono 3 tipi di dispositivi:
-- Il **coordinatore**, che ha il compito di organizzare la rete e conservare le tabelle di routing. Svolge pure il ruolo di trust center e di archivio per le chiavi di sicurezza.
-- I **router** (FFD o full function device), che possono parlare con tutti gli altri dispositivi
-- I **dispositivi finali** (Reduced function devices o RFD), hanno funzionalità ridotte e possono parlare con in router e il coordinatore, ma non direttamente tra di loro. Non essendo router, non smistano mai i dati generati da altri. Possono restare inattivi per molto tempo, garantendo così una lunga durata della batteria
-
   
 ### **Messaggi confermati**
 
