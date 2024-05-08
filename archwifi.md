@@ -127,7 +127,17 @@ in genere i dispositivi AP coinvolti in una dorsale si comportano anche come rou
 
 In bridge mode il collegamento tra due AP è assimilabile ad una dorsale L2. Nessun altro dispositivo client può entrare a far parte del bridge oltre i due AP. I dispositivi possono essere connessi in modalità WDS oppure in modalità Ad Hoc. Gli host a monte e a valle dei due dispositivi si vedono reciprocamente. Il bridge a monte si chiama root bridge.
 
-<img src="img/trenowifi.png" alt="alt text" width="900">
+<img src="img/trenowifi.png" alt="alt text" width="1000">
+
+### **Esempio sottorete privata: client mode**
+
+<img src="img/ponteaziendawifi.png" alt="alt text" width="1000">
+
+In client mode il collegamento tra due AP è assimilabile ad una dorsale L3. Altri dispositivi client possono entrare a far parte del link tra i due AP.
+
+Il dispositivo client implementa un router ed un NAT. In genere, gli host sulla LAN del client utilizzano il server DHCP del router, poiché di fatto è una rete indipendente. 
+
+Gli host del lato AP non vedono quelli del lato client ma solo un router (con indirizzo privato). Gli host del lato client vedono quelli del lato AP, ed accedono ad internet.
 
 
 **Sitografia**:
