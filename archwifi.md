@@ -110,19 +110,24 @@ La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo*
     - il dispositivo **attuatore** è registrato sul broker con il ruolo di **publisher** perchè intende adoperare questo canale di output per **inviare il feedback** con il proprio stato ad un **display** associato al sensore di comando.
     - il dispositivo **sensore** è registrato sul broker con il ruolo di **subscriber** perchè è interessato a ricevere, su un canale di input, eventuali **feedback** sullo stato dell'attuatore per **mostrarli** all'utente. In questo caso è demandato all'utente, e non al protocollo, **decidere** se e quante volte ripetere il comando, nel caso che lo stato del dispositivo non sia ancora quello voluto.
 
-### **Ponti radio WiFi**
+## **Ponti radio WiFi**
 
 Un ponte radio WiFi è una dorsale tra due tronchi di rete realizzata mediante due o più dispositivi wireless. Può essere:
 - **Punto-Punto**: un dispositivo in modo AP e collegato ad **un solo** dispositivo AP in modo Client o Bridge
 - **Punto-Multipunto**: un dispositivo in modo AP è collegato **a più** dispositivi AP configurati in modo Client  o Bridge
 
-<img src="img/pontewifi.png" alt="alt text" width="800">
+<img src="img/pontewifi.png" alt="alt text" width="1000">
 
 in genere i dispositivi AP coinvolti in una dorsale si comportano anche come router. Un ponte radio wifi è utile quando:
 - edifici di una stessa organizzazione sono separati dal suolo pubblico (ad es. una strada)
 - Vagoni di uno stesso treno non sono collegati da cavi dati
 - Si vuole realizzare un ISP regionale con dorsali wireless disponendo un AP wireless sul tetto delle case degli utenti. Alcuni di questi avranno anche funzione di router di smistamento tra dorsali wireless differenti. 
 
+### **Esempio treno: bridge mode**
+
+In bridge mode il collegamento tra due AP è assimilabile ad una dorsale L2. Nessun altro dispositivo client può entrare a far parte del bridge oltre i due AP. I dispositivi possono essere connessi in modalità WDS oppure in modalità Ad Hoc. Gli host a monte e a valle dei due dispositivi si vedono reciprocamente. Il bridge a monte si chiama root bridge.
+
+<img src="img/trenowifi.png" alt="alt text" width="900">
 
 
 **Sitografia**:
