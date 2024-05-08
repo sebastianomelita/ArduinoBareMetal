@@ -23,10 +23,11 @@ L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzion
 
 <img src="img/integratedGW-Zigbee.png" alt="alt text" width="900">
 
-Il **bridge zigbee** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori. Il collegamento tra i gateway e il server di gestione di solito avviene mediante il protocollo MQTT che può scambiare messaggi:
+Il **bridge zigbee** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori. Il collegamento tra i gateway e il server di gestione di solito avviene mediante il **protocollo MQTT** che può scambiare messaggi:
 - nella **rete pubblica**, cioè in Internet, in questo caso i gateway inoltrano direttamente su Internet.
 - in una **rete privata** (WAN privata trusted oppure un VPN), in questo caso i gateway inoltrano sulla rte privata mediante un client **VPN** o di **tunnelling**.
 
+Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di getione e controllo. 
 ### **Rete di sensori Zigbee** 
 
    <img src="img/archzigbee2.png" alt="alt text" width="1000">
