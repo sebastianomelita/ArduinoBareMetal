@@ -193,5 +193,6 @@ Gli host del lato AP non vedono quelli del lato client ma solo un router (con in
 - https://www.ekahau.com/blog/2019/04/18/channel-planning-best-practices-for-better-wi-fi/
 - https://documentation.meraki.com/Architectures_and_Best_Practices/Cisco_Meraki_Best_Practice_Design/Best_Practice_Design_-_MR_Wireless/High_Density_Wi-Fi_Deployments
 - https://7signal.com/802-11ac-migration-part-2-whats-nobodys-telling-you-about-80mhz-and-160mhz-channel-bonding/
+- https://www.elettra2000.it/phocadownload/atti-convegni/andreuccetti.pdf
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
