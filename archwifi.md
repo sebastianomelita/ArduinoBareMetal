@@ -45,6 +45,8 @@ Il dispositivo AP è assimilabile ad un **Hub** che realizza un BUS broadcast ch
 
 Per dettagli sulle tecniche di accesso al BUS in generale e per quelle utizzate dal WiFi in particolare vedi [Dettaglio mezzi a BUS](protocollidiaccesso.md)
 
+### **Rete cellulari**
+
 <img src="img/wificells.jpg" alt="alt text" width="500">
 
 Una rete wifi è organizzata nelle zone di influenza di ciascun AP dette **cella**. A causa dell'**attenuazione** del segnale radio dovuta alla distanza o agli ostacoli un client raggiunge un AP solo fino ai confini della sua cella.
