@@ -21,7 +21,7 @@ Zigbee è uno standard di comunicazione wireless utilizzato per il controllo e l
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
 
-<img src="img/integratedGW-Zigbee.png" alt="alt text" width="800">
+<img src="img/integratedGW-Zigbee.png" alt="alt text" width="900">
 
 Il **bridge zigbee** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori.
 
