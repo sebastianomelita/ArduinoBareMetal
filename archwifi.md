@@ -22,7 +22,7 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
 
-<img src="img/integratedGW-Zigbee.png" alt="alt text" width="900">
+<img src="img/integratedGW-WiFi.png" alt="alt text" width="900">
 
 Il **bridge Wifi** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori. 
 
