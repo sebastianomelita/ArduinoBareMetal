@@ -127,6 +127,8 @@ In tabella un elenco parziale con le principali limitazioni:
 
 <img src="ismband.png" alt="alt text" width="600">
 
+Per le reti Wi-Fi che operano nella banda 2.4 GHz, i **limiti di EIRP** possono variare a seconda del canale utilizzato e sono generalmente compresi tra 20 dBm (100 mW) e 24 dBm (250 mW). Per la banda 5 GHz, i limiti possono essere più elevati e variano in base al canale e alla larghezza di banda utilizzati.
+
 Ogni access point utilizza un singolo canale (largo 22 MHz), che viene condiviso in TDMA-TDD (CSMA/CA) da tutti gli utenti
 
 La trasmissione avviene a pacchetti con conferma di ricezione.
