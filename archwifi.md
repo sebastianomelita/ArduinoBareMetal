@@ -53,6 +53,9 @@ Una organizzazione ottima della rete fa in modo di minimizzare la cosidetta **in
 - Dispositivi adiacenti hanno frequenze molto diverse
 - Frequenze uguali sono condivise da dispositivi molto lontani
 
+La divisione in celle è una forma di **[SDM](multiplazioni.md#sdm-nella-telefonia-cellulare)**, infatti celle di uno stesso colore possono trasmettere senza interferirsi nella stessa frequenza e nello stesso istante purchè siano in posizioni differenti.
+
+
 
 Caratteristiche distintiva di questa tecnologia di rete di sensori  è la **topologia a maglia** che comporta che:
 - qualunque dispositivo collegato **alla rete elettrica** diventa un **router**. Cioé, insieme ad un elettrodomestico (ad es. una lampadina) o ad una macchina industriale si compra pure un dispositivo di rete. Piú se ne mettono e piú la rete é estesa e affidabile.
