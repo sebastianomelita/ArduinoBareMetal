@@ -130,18 +130,16 @@ In tabella un elenco parziale con le principali limitazioni:
 Ogni access point utilizza un singolo canale (largo 22 MHz), che viene condiviso in TDMA-TDD (CSMA/CA) da tutti gli utenti
 
 La trasmissione avviene a pacchetti con conferma di ricezione.
+
 La potenza media (su 6 minuti) dipende dalle condizioni di servizio ed è influenzata dal duty cycle, a sua volta determinato da vari fattori.
     - La bidirezionalità della trasmissione (attesa dell’OK di ricezione)
-    - La necessità di servire più terminali mobili (diminuisce il duty cycle di ogni singolo
-terminale mobile)
-    - Il duty cycle aumenta col volume di dati da trasferire, ma raramente ci si avvicina al
-100%
+    - La necessità di servire più terminali mobili (diminuisce il duty cycle di ogni singolo terminale mobile)
+    - Il duty cycle aumenta col volume di dati da trasferire, ma raramente ci si avvicina al 100%
     - Il duty cycle dipende dalla velocità della connessione (connessioni più veloci richiedono tempi di trasmissione inferiori)
     - Il duty cycle dipende anche dalla qualità del collegamento, a causa delle ritrasmissioni
     - La presenza di più access point sullo stesso canale determina collisioni che fanno diminuire il duty cycle di un singolo access point
     - La capacità di traffico della rete collegata influenza il duty cycle
-    - Il duty cycle minimo dell’access point è fissato dai segnali di servizio (beacon
-signals) ed è dell’ordine di 0.01%
+    - Il duty cycle minimo dell’access point è fissato dai segnali di servizio (beacon signals) ed è dell’ordine di 0.01%
 
 Considerata la bassa potenza di uscita di picco, il bassissimo guadagno d’antenna e la riduzione operata dal duty cycle, gli access point delle reti Wi-Fi generano livelli di densità di potenza sempre molti ordini di grandezza sotto i limiti normativi ed anche significativamente inferiori alle stazioni radio base della telefonia cellulare.
 
