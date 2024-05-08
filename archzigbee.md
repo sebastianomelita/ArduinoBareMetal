@@ -123,5 +123,6 @@ In generale, i protocolli Zigbee riducono al minimo il tempo di accensione della
 - https://www.zigbee2mqtt.io/guide/adapters/#recommended
 - https://www.amazipoint.com/uart%20bridge%20en%204.html
 - https://www.researchgate.net/figure/Zigbee-Gateway-architecture-It-must-be-remarked-that-Zigbee-Alliance-has-also-developed_fig4_41392302
+- https://www.everythingrf.com/community/zigbee-frequency-bands#:~:text=In%20general%2C%20the%20common%20frequency,due%20to%20other%20Zigbee%20devices.
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
