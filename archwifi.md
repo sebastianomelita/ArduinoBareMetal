@@ -190,7 +190,16 @@ La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo*
 
 
 **Sitografia**:
-
-
+- www.master-iot.it Master Universitario di II Livello "Internet of Things and Big Data" A.A.2018-2019 Università degli Studi di Genova
+- https://www.researchgate.net/publication/300111853_Long-Range_IoT_Technologies_The_Dawn_of_LoRa
+- https://www.researchgate.net/figure/The-Wi-Fi-trilateration-Technique_fig4_277307295
+- https://it.wikipedia.org/wiki/Trilaterazione
+- https://en.wikipedia.org/wiki/Beacon_frame
+- https://www.metageek.com/training/resources/design-dual-band-wifi.html
+- http://mce.it/index.php/airmax-5-ghz
+- https://www.semfionetworks.com/blog/co-channel-contention-ccc-explained-with-simple-drawings
+- https://www.ekahau.com/blog/2019/04/18/channel-planning-best-practices-for-better-wi-fi/
+- https://documentation.meraki.com/Architectures_and_Best_Practices/Cisco_Meraki_Best_Practice_Design/Best_Practice_Design_-_MR_Wireless/High_Density_Wi-Fi_Deployments
+- https://7signal.com/802-11ac-migration-part-2-whats-nobodys-telling-you-about-80mhz-and-160mhz-channel-bonding/
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
