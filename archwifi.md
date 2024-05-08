@@ -53,7 +53,8 @@ Una organizzazione ottima della rete fa in modo di minimizzare la cosidetta **in
 - Dispositivi adiacenti hanno frequenze molto diverse
 - Frequenze uguali sono condivise da dispositivi molto lontani
 
-La divisione in celle è una forma di **[SDM](multiplazioni.md#sdm-nella-telefonia-cellulare)**, infatti celle di uno stesso colore possono trasmettere senza interferirsi nella stessa frequenza e nello stesso istante purchè siano in posizioni differenti.
+La divisione in celle è una forma di **SDM**, infatti celle di uno stesso colore possono trasmettere senza interferirsi nella stessa frequenza e nello stesso istante purchè siano in posizioni differenti. 
+Per dettagli vedi [multiplazioni statiche](multiplazioni.md)
 
 
 
