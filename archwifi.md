@@ -30,7 +30,7 @@ Il **broker MQTT** può essere installato in cloud, in una Virtual Private netwo
 
 ### **Rete di dispositivi WiFi** 
 
-   <img src="img/ap.drawio.png" alt="alt text" width="1000">
+   <img src="img/ap.drawio.png" alt="alt text" width="900">
 
 Una architettura di rete wireless WiFi è può essere realizzata in tre modalità:
 - **Modalità Infrastruttura** di tipo master/slave
