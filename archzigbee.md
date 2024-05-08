@@ -19,6 +19,8 @@ Zigbee è uno standard di comunicazione wireless utilizzato per il controllo e l
 
 **Zigbee2mqtt** opera a livello di **applicazione** della pila OSI in quanto **traduce** un **payload zigbee** in un **payload JSON MQTT**  (gateway = router applicativo). Si tratta di un software che consente di integrare dispositivi Zigbee in un'infrastruttura di domotica basata su MQTT (Message Queuing Telemetry Transport). MQTT è un protocollo di messaggistica leggero progettato per connessioni a basso consumo energetico e a banda ridotta, ed è comunemente utilizzato per il controllo e il monitoraggio di dispositivi IoT (Internet of Things). Zigbee2mqtt funge da ponte tra la rete Zigbee e il broker MQTT, consentendo agli utenti di interagire con i dispositivi Zigbee tramite messaggi MQTT.
 
+L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
+
 <img src="img/integratedGW-Zigbee.png" alt="alt text" width="800">
 
 Il **bridge zigbee** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori.
