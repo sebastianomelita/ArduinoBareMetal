@@ -116,6 +116,10 @@ in genere i dispositivi AP coinvolti in una dorsale si comportano anche come rou
 - Vagoni di uno stesso treno non sono collegati da cavi dati
 - Si vuole realizzare un ISP regionale con dorsali wireless disponendo un AP wireless sul tetto delle case degli utenti. Alcuni di questi avranno anche funzione di router di smistamento tra dorsali wireless differenti. 
 
+### **Link budget**
+
+Link budget. Tra trasmettitore e gateway potrebbe essere valutato il cosidetto link budget, overossia la somma dei guadagni e delle attenuazioni lungo il percorso fino al ricevitore. L'obiettivo è valutare il rispetto del vincolo finale sul ricevitore, cioè che la potenza ricevuta sia maggiore della sensibilità minima del ricevitore più un certo margine di sicurezza per tenere conto del fading ambientale (multipath oppure attenuazione atmosferica) che è una quantità che varia, più o meno rapidamente, col tempo. Per dettagli sul calcolo vedere https://www.vincenzov.net/tutorial/elettronica-di-base/Trasmissioni/link.htm. Rimane assodato che si tratta soltanto di un calcolo di massima che fornisce indicazioni sulla fattibilità teorica di un collegamento che, se positiva, richiede attente e ripetute verifiche sul campo nelle condizioni di esercizio previste per l'impianto.
+
 ### **Esempio treno: bridge mode**
 
 In bridge mode il collegamento tra due AP è assimilabile ad una dorsale L2. Nessun altro dispositivo client può entrare a far parte del bridge oltre i due AP. I dispositivi possono essere connessi in modalità WDS oppure in modalità Ad Hoc. Gli host a monte e a valle dei due dispositivi si vedono reciprocamente. Il bridge a monte si chiama root bridge.
