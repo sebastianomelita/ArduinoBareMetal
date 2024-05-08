@@ -45,7 +45,7 @@ Il dispositivo AP è assimilabile ad un **Hub** che realizza un BUS broadcast ch
 
 Per dettagli sulle tecniche di accesso al BUS in generale e per quelle utizzate dal WiFi in particolare vedi [Dettaglio mezzi a BUS](protocollidiaccesso.md)
 
-### **Rete cellulari**
+### **Struttura cellulare**
 
 <img src="img/wificells.jpg" alt="alt text" width="500">
 
