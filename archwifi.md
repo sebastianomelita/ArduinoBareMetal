@@ -80,6 +80,10 @@ In questa banda è disponibile uno spettro significativamente più ampio ed anch
 802.11n fornisce la possibilità di utilizzare i canali a 40 MHz, 802.11ac consente canali larghi 80MHz e persino 160MHz. Maggiore ampiezza del canale consente, in teoria, bitrate notevolmente maggiori.
 Questi canali più ampi vengono creati collegando insieme i canali a 20 MHz. Raddoppiare l’ampiezza dei canali ha però l’inconveniente di raddoppiare la quantità di rumore e di ridurre le combinazioni di canali che non si sovrappongono, entrambe le circostanze possono di fatto ridurre la bitrate.
 
+### **Pattern di riuso a confronto**
+
+<img src="img/reusepatterns" alt="alt text" width="1000">
+
 
 ### **Tipologie di nodi** 
 
