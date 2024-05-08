@@ -58,7 +58,7 @@ Nella banda 868MHz il limite massimo è di circa 14dBm (25mW). La potenza minima
 
 In generale, la banda di frequenza comune di Zigbee è 2,4 GHz.
 
-<img src="img/zigbeeband.webp" alt="alt text" width="600">
+<img src="img/zigbeeband.webp" alt="alt text" width="800">
 
 Zigbee utilizza 16 canali (da 11 a 26) nella banda 2,4 GHz in tutto il mondo, 13 canali nella banda 915 MHz in Nord America, e un unico canale nella banda 868 MHz in Europa. Alcuni dispositivi utilizzano anche la banda 784 MHz in Cina per Zigbee.
 
