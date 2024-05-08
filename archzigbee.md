@@ -37,6 +37,10 @@ Più reti possono organizzarsi in cluster con una struttura logica ad albero (sp
 
 <img src="img/archzigbee.png" alt="alt text" width="1000">
 
+Caratteristiche distintiva di questa tecnologia di rete di sensori  è la **topologia a maglia** che comporta che:
+- qualunque dispositivo collegato **alla rete elettrica** diventa un **router**. Cioé, insieme ad un elettrodomestico (ad es. una lampadina) o ad una macchina industriale si compra pure un dispositivo di rete. Piú se ne mettono e piú la rete é estesa e affidabile.
+- un **dispositivo di comand**o non deve spendere l'energia per arrivare al gateway o all'attuatore remoto, ma solamente quella necessarian a raggiungere il **primo router** (next hop), cioè il primo elettrodomestico domotizzato nelle vicinanze.
+
 ### **Tipologie di nodi** 
 
 Le specifiche dello standard distinguono 3 tipi di dispositivi:
