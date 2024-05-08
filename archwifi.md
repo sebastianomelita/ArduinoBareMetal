@@ -161,7 +161,7 @@ Un ponte radio WiFi è una dorsale tra due tronchi di rete realizzata mediante d
 
 <img src="img/pontewifi.png" alt="alt text" width="1000">
 
-in genere i dispositivi AP coinvolti in una dorsale si comportano anche come router. Un ponte radio wifi è utile quando:
+In genere, i dispositivi AP coinvolti in una dorsale si comportano anche come router. Un ponte radio wifi è utile quando:
 - edifici di una stessa organizzazione sono separati dal suolo pubblico (ad es. una strada)
 - Vagoni di uno stesso treno non sono collegati da cavi dati
 - Si vuole realizzare un ISP regionale con dorsali wireless disponendo un AP wireless sul tetto delle case degli utenti. Alcuni di questi avranno anche funzione di router di smistamento tra dorsali wireless differenti. 
@@ -173,8 +173,8 @@ in genere i dispositivi AP coinvolti in una dorsale si comportano anche come rou
 In bridge mode il collegamento tra due AP è assimilabile ad una dorsale L2. Nessun altro dispositivo client può entrare a far parte del bridge oltre i due AP. I dispositivi possono essere connessi in modalità WDS oppure in modalità Ad Hoc. Gli host a monte e a valle dei due dispositivi si vedono reciprocamente. Il bridge a monte si chiama root bridge. 
 
 In generale, il funzionamento della modalità Bridge in un dispositivo wireless coinvolge l'intercettazione del traffico wireless proveniente da una rete e il suo **inoltro** a un'altra rete, consentendo così la comunicazione tra le due reti senza fili come se fossero collegate direttamente tra loro. Per funzionare efficacemente dovrebbe avere:
--**almeno due radio wireless**: una per la connessione alla prima rete e una per la connessione alla seconda rete. Questo consente al dispositivo di ricevere dati da una rete e trasmetterli all'altra contemporaneamente, facilitando il trasferimento di dati tra le due reti.
--**uso di due canali diversi**:È importante selezionare canali wireless non sovrapposti per evitare interferenze e garantire prestazioni ottimali.
+- **almeno due radio wireless**: una per la connessione alla prima rete e una per la connessione alla seconda rete. Questo consente al dispositivo di ricevere dati da una rete e trasmetterli all'altra contemporaneamente, facilitando il trasferimento di dati tra le due reti.
+- **uso di due canali diversi**:È importante selezionare canali wireless non sovrapposti per evitare interferenze e garantire prestazioni ottimali.
 
 <img src="img/trenowifi.png" alt="alt text" width="1000">
 
