@@ -19,28 +19,30 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
   - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
 
-**Zigbee2mqtt** è un software open-source progettato per permettere ai dispositivi Zigbee di comunicare direttamente con un server MQTT (Message Queuing Telemetry Transport) senza la necessità di un hub proprietario. 
-
-<img src="img/image-17.png" alt="alt text" width="1000">
-
-Zigbee è uno standard di comunicazione wireless utilizzato per il controllo e l'automazione domestica, mentre MQTT è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando Zigbee2mqtt, gli utenti possono integrare facilmente dispositivi Zigbee di diversi produttori in un sistema di automazione domestica basato su MQTT, offrendo maggiore flessibilità e controllo.
-<img src="img/zigbeebridge.png" alt="alt text" width="800">
-
-**Zigbee2mqtt** opera a livello di **applicazione** della pila OSI in quanto **traduce** un **payload zigbee** in un **payload JSON MQTT**  (gateway = router applicativo). Si tratta di un software che consente di integrare dispositivi Zigbee in un'infrastruttura di domotica basata su MQTT (Message Queuing Telemetry Transport). Zigbee2mqtt funge da **ponte** tra la rete Zigbee e il broker MQTT, consentendo agli utenti di interagire con i dispositivi Zigbee tramite messaggi MQTT.
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
 
 <img src="img/integratedGW-Zigbee.png" alt="alt text" width="900">
 
-Il **bridge zigbee** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori. 
+Il **bridge Wifi** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori. 
 
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di getione e controllo. 
-### **Rete di sensori Zigbee** 
 
-   <img src="img/archzigbee2.png" alt="alt text" width="1000">
+### **Rete di dispositivi WiFi** 
 
-I dispositivi ZigBee possono essere configurati in modo da realizzare diverse topologie di reti. Una topologia largamente usata è la quella mesh.
-Più reti possono organizzarsi in cluster con una struttura logica ad albero (spanning tree ottimo). Viene così realizzata una rete peerto-peer con un minimo overhead di routing.
+   <img src="imgwificells.jpg" alt="alt text" width="700">
+
+Una architettura di rete wireless WiFi è può essere realizzata in tre modalità:
+- Modalità Infrastruttura di tipo master/slave
+- Modalità ad hoc di tipo peer to peer 
+- Modalità Wifi Direct  di tipo Punto – punto
+  
+Le architetture più diffuse in ambito aziendale sono di tipo infrastruttura e sono composte di un dispositivo master centrale detto Access Point (AP) posto in posizione baricentrica rispetto a più dispositivi slave della rete wireless detti Client.
+
+Il dispositivo AP è assimilabile ad un Hub che realizza un BUS broadcast che collega tutti i device client. Il mezzo radio è di tipo broadcast half duplex in cui uno parla e tutti ascoltano. Per realizzare un canale percepito dalle stazioni client come full duplex l’accesso di queste necessita di essere arbitrato. L’arbitraggio può essere di tipo:
+- Peer to peer: è la soluzione più comune, l’accesso al mezzo degli interlocutori è gestita in maniera autonoma da ciascuno di essi tramite un  meccanismo di ack realizzato dal protocollo 802.11 di tipo CSMA/CA.
+- Master/Slave: è la soluzione realizzata sotto l’arbitraggio centralizzato del dispositivo AP, che assume il ruolo di master. L’AP assegna un tempo prestabilito a ciascuna comunicazione per parlare e lo comunica periodicamente a tutte le stazioni tramite opportune trame di segnalazione (beacon).
+
 
 <img src="img/archzigbee.png" alt="alt text" width="1000">
 
