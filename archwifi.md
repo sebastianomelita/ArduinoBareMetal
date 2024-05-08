@@ -57,6 +57,10 @@ Una organizzazione ottima della rete fa in modo di minimizzare la cosidetta **in
 La divisione in celle è una forma di **SDM**, infatti celle di uno stesso colore possono trasmettere senza interferirsi nella stessa frequenza e nello stesso istante purchè siano in posizioni differenti. 
 Per dettagli vedi [multiplazioni statiche](multiplazioni.md)
 
+### **Allocazione dei canali alle celle**
+
+<img src="img/wifichannel.png" alt="alt text" width="500">
+
 
 
 Caratteristiche distintiva di questa tecnologia di rete di sensori  è la **topologia a maglia** che comporta che:
