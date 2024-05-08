@@ -129,6 +129,23 @@ In tabella un elenco parziale con le principali limitazioni:
 
 L'ente regolatore, in Italia il Ministero dello Sviluppo Economico (MISE), fissa alcuni criteri per stabilire il diritto di accesso quali la distinzione nell’uso privato e non o la destinazione di frequenze ad uso contemporaneo a differenti servizi aventi differenti finalità. L’uso delle bande libere è destinato ad apparati denominati SRD (Short Range Devices). Curiosamente la banda 862-876 MHz (sub-GHz) molto utilizzata da dispositivi SRD, è gestita dal Ministero della Difesa e non dal MISE.  
 
+– Ogni access point utilizza un singolo canale (largo 22 MHz), che viene condiviso in TDMA-TDD (CSMA/CA) da tutti gli utenti
+– La trasmissione avviene a pacchetti con conferma di ricezione.
+– La potenza media (su 6 minuti) dipende dalle condizioni di servizio ed è influenzata dal duty cycle, a sua volta determinato da vari fattori.
+    - La bidirezionalità della trasmissione (attesa dell’OK di ricezione)
+    - La necessità di servire più terminali mobili (diminuisce il duty cycle di ogni singolo
+terminale mobile)
+    - Il duty cycle aumenta col volume di dati da trasferire, ma raramente ci si avvicina al
+100%
+    - Il duty cycle dipende dalla velocità della connessione (connessioni più veloci richiedono tempi di trasmissione inferiori)
+    - Il duty cycle dipende anche dalla qualità del collegamento, a causa delle ritrasmissioni
+    - La presenza di più access point sullo stesso canale determina collisioni che fanno diminuire il duty cycle di un singolo access point
+    - La capacità di traffico della rete collegata influenza il duty cycle
+    - Il duty cycle minimo dell’access point è fissato dai segnali di servizio (beacon
+signals) ed è dell’ordine di 0.01%
+
+Considerata la bassa potenza di uscita di picco, il bassissimo guadagno d’antenna e la riduzione operata dal duty cycle, gli access point delle reti Wi-Fi generano livelli di densità di potenza sempre molti ordini di grandezza sotto i limiti normativi ed anche significativamente inferiori alle stazioni radio base della telefonia cellulare.
+
 I **parametri** e le **limitazioni** che vedremo sono dei criteri di accesso al mezzo radio volti a ridurre **disturbi mutui** fra i vari servizi dei vari utenti e la **monopolizzazione** di un canale da parte di un singolo utente.
 - **Potenza disponibile massima**. La potenza in Watt. In genere dell’ordine dei millesimi di watt (mW) è spesso espressa in dBm.
 In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla densità di potenza, ovvero alla potenza, in milliwatt per MHz o per KHz. E’ il caso degli apparati WLAN E HiperLAN.
