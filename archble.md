@@ -85,7 +85,7 @@ Dove fn+1 è la frequenza (canale) da utilizzare al prossimo evento di connessio
 Supponiamo, ad esempio, che un dispositivo BLE si trovi a coesistere con reti Wi-Fi sui canali 1, 6 e 11. Il dispositivo BLE contrassegna i canali 0-8, 11-20 e 24-32 come canali non buoni. 
 Ciò significa che mentre i due dispositivi comunicano, rimapperanno i salti in maniera tale da evitare i canali con interferenza [Link FHSS](accessoradio.md#fhss).
 
-<img src="img/blefhss.png" alt="alt text" width="400">
+<img src="img/blefhss.png" alt="alt text" width="600">
 
 ### **Protocolli di accesso al canale**
 
