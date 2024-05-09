@@ -37,7 +37,7 @@ Il **bridge zigbee** (in realtà è un **gateway** e quindi pure un router) è n
 
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di getione e controllo. 
 
-## **Architetture basate sull'utilizzo dei beacon** 
+## **Architetture basate sull'utilizzo di iBeacon** 
 
 L'iBeacon di Apple è stata la prima tecnologia BLE Beacon a essere pubblicata, quindi la maggior parte dei beacon si ispira al formato dati iBeacon. Gli iBeacon sono abilitati in molti SDK di Apple e possono essere letti e trasmessi da qualsiasi iDevice abilitato per BLE. IBeacon è uno standard proprietario e chiuso. 
 I beacon trasmettono quattro informazioni:
@@ -52,7 +52,7 @@ Un'applicazione di scansione legge l'UUID, il numero maggiore e il numero minore
 il beacon stesso non porta informazioni descrittive, richiede che questo database esterno sia raggiungibile. 
 Il campo di potenza TX viene utilizzato con l'intensità del segnale misurata per determinare la distanza del dispositivo beacon dallo smartphone. Si noti che TxPower deve essere calibrato dall'utente per raggiungere una buona precisione.
 
-### **Scopo ibeacon** 
+### **Scopo iBeacon** 
 Questo innovativo uso della tecnologia fa principalmente leva su due concetti chiave: 
 - **Micro-location**: è noto che uno dei punti di forza dei Beacon che sfruttano Bluetooth LE è la possibilità di una localizzazione a corto raggio precisa e rapida (complementare al GPS):
      - **Posizionamento assoluto**, i GPS forniscono una posizione assoluta in termini di latitudine e longitudine ma ha difficoltà a raccogliere i segnali dei satelliti GPS all’interno degli edifici, soprattutto a più piani. Per questo il sistema di GPS è inadatto per fornire una localizzazione precisa in un raggio di 15-20 metri,
