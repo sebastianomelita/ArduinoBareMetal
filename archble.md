@@ -20,10 +20,10 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
   - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
 
-**Ble2mqtt** è un software open-source progettato per permettere ai dispositivi Zigbee di comunicare direttamente con un server MQTT (Message Queuing Telemetry Transport) senza la necessità di un hub proprietario.  [Ble2mqtt](https://github.com/devbis/ble2mqtt)
+**Ble2mqtt** è un software open-source progettato per permettere ai dispositivi BLE di comunicare direttamente con un server MQTT (Message Queuing Telemetry Transport) senza la necessità di un hub proprietario.  [Ble2mqtt](https://github.com/devbis/ble2mqtt)
 
 
-BLE è uno standard di comunicazione wireless utilizzato anche per il controllo e l'automazione domestica, mentre MQTT è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando Zigbee2mqtt, gli utenti possono integrare facilmente dispositivi Zigbee di diversi produttori in un sistema di automazione domestica basato su MQTT, offrendo maggiore flessibilità e controllo.
+BLE è uno standard di comunicazione wireless utilizzato anche per il controllo e l'automazione domestica, mentre MQTT è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando BLE2mqtt, gli utenti possono integrare facilmente dispositivi BLE di diversi produttori in un sistema di automazione domestica basato su MQTT, offrendo maggiore flessibilità e controllo.
 
 **Ble2mqtt** opera a livello di **applicazione** della pila OSI in quanto **traduce** un **payload BLE** in un **payload JSON MQTT**  (gateway = router applicativo). Si tratta di un software che consente di integrare dispositivi BLE in un'infrastruttura di domotica basata su MQTT (Message Queuing Telemetry Transport). Ble2mqtt funge da **ponte** tra la rete BLE e il broker MQTT, consentendo agli utenti di interagire con i dispositivi BLE tramite messaggi MQTT.
 
@@ -33,7 +33,7 @@ L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzion
 
 <img src="img/integratedGW-BLE.png" alt="alt text" width="900">
 
-Il **bridge zigbee** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori. 
+Il **bridge BLE** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **master o centrale** della rete di sensori. 
 
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di getione e controllo. 
 
@@ -183,7 +183,7 @@ Una **connessione** può essere stabilita solo tra un dispositivo **advertiser**
 
 La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in **downlink**+funzioni di **comando** o **configurazione**, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile, invece, un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di **ack**.
 
-La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo Zigbee). Sovente, nella rete di distribuzione IP è presente un server col ruolo di **broker MQTT** a cui sono associati:
+La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo BLE). Sovente, nella rete di distribuzione IP è presente un server col ruolo di **broker MQTT** a cui sono associati:
 - su un **topic di misura o attuazione**:
     - il dispositivo **sensore** è registrato sul broker col ruolo di **publisher** perchè vuole usare questo canale di output per **inviare il comando** verso l'attuatore 
     - il dispositivo **attuatore** è registrato sul broker con il ruolo di **subscriber** perchè è interessato a ricevere, su un canale di input, eventuali comandi di attuazione (motori, cancelli). 
@@ -242,14 +242,25 @@ Ciò significa che mentre i due dispositivi comunicano, rimapperanno i salti in 
 
 **Sitografia**:
 
-- https://ieeexplore.ieee.org/document/7042600
-- https://en.wikipedia.org/wiki/Zigbee
-- https://www.zigbee2mqtt.io/supported-devices/
-- https://www.zigbee2mqtt.io/
-- https://www.zigbee2mqtt.io/advanced/zigbee/05_create_a_cc2530_router.html#result
-- https://www.zigbee2mqtt.io/guide/adapters/#recommended
-- https://www.amazipoint.com/uart%20bridge%20en%204.html
-- https://www.researchgate.net/figure/Zigbee-Gateway-architecture-It-must-be-remarked-that-Zigbee-Alliance-has-also-developed_fig4_41392302
-- https://www.everythingrf.com/community/zigbee-frequency-bands#:~:text=In%20general%2C%20the%20common%20frequency,due%20to%20other%20Zigbee%20devices.
+(https://amslaurea.unibo.it/6599/1/fantini_enrico_tesi.pdf
+https://delgenio.jimdofree.com/app/download/6302381463/Tesi+F.DelGenio+Definitiva+30-11-2015.pdf?t=1466548571
+https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=8355905
+https://www.silabs.com/documents/public/user-guides/ug103-14-fundamentals-ble.pdf
+https://www.oreilly.com/library/view/getting-started-with/9781491900550/ch01.html
+https://www.comarch.it/iot-ecosystem/asset-tracking/
+https://microchipdeveloper.com/wireless:ble-link-layer-connections
+https://microchipdeveloper.com/wireless:ble-link-layer-connections#toc0
+https://os.mbed.com/blog/entry/BLE-Beacons-URIBeacon-AltBeacons-iBeacon/
+https://nl.mathworks.com/help/comm/examples/modeling-of-ble-devices-with-heart-rate-profile.html
+https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.researchgate.net%2Fprofile%2FJonathan_Ruiz-de-Garibay%2Fpublication%2F231212227%2Ffigure%2Ftbl1%2FAS%3A669582813581312%401536652391081%2FRFID-vs-NFC-vs-Bluetooth.png&imgrefurl=https%3A%2F%2Fwww.researchgate.net%2Ffigure%2FRFID-vs-NFC-vs-Bluetooth_tbl1_231212227&tbnid=lhIjM06RjY13PM&vet=12ahUKEwiul4etl7zpAhURMuwKHSRcCIgQMygFegUIARDcAQ..i&docid=1LDoXFeY8V2bKM&w=850&h=267&q=ble%20vs%20rfid&safe=active&ved=2ahUKEwiul4etl7zpAhURMuwKHSRcCIgQMygFegUIARDcAQ
+https://www.assetinfinity.com/blog/asset-tracking-technologies
+https://nl.mathworks.com/help/comm/ug/what-is-bluetooth.html
+https://devzone.nordicsemi.com/nordic/short-range-guides/b/bluetooth-low-energy/posts/ble-characteristics-a-beginners-tutorial
+https://stackoverflow.com/questions/23735307/understanding-the-gatt-protocol-in-ble
+http://software-dl.ti.com/lprf/simplelink_cc2640r2_latest/docs/blestack/ble_user_guide/html/ble-stack-3.x/gaprole.html
+https://apagiaro.it/bluetooth-low-energy-presentation/
+http://www.lucadentella.it/2018/02/09/esp32-31-ble-gap/
+https://www.todaysoftmag.com/article/2225/bluetooth-beacon-tracking-it-works-both-ways
+)
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
