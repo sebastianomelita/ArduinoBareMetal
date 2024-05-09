@@ -104,14 +104,14 @@ Attraverso questi canali, ogni dispositivo Zigbee utilizza una larghezza di band
 
 La situazione può essere riassunta nel seguente modo:
 
-<img src="img/bleaccess.png" alt="alt text" width="600">
+<img src="img/bleaccess.png" alt="alt text" width="1000">
 
 Ogni **piconet** ha due canali fisici: un canale ad **accesso multiplo** detto  Canale di **Advertisement** ed uno **TDMA** regolato dal master detto **Canale Dati**:
 - Nel **canale dati**, dedicato alle comunicazioni single cast, i tempi sono stabiliti dal master e più comunicazioni occupano slot temporali diversi (TDM statico), ciascuna con una propria periodicità detta connInterval di valore multiplo di 1.25 ms e compreso tra 7.5ms e 4s
-Nel canale di advertising, dedicato alle comunicazioni broadcast, i tempi sono stabiliti dagli advertiser ma questi possono essere più di uno per cui:
-l’accesso è condiviso e, per limitare le collisioni, si inizia a parlare dopo una sorta di backoff semicasuale T_advEvent = advInterval + advDelay dove advInterval è casuale compreso tra 0 e 10 ms mentre advDelay è un intero multiplo di 0.625 ms compreso tra 20 ms e 10.24 s (periodo di beacon).
-I devices che trasmettono pacchetti di advertising nei canali fisici sono detti advertisers. I devices che invece ricevono questi pacchetti, senza l'intenzione di aprire una connessione sono detti scanners. 
-Una connessione può essere stabilita solo tra un dispositivo advertiser ed un dispositivo initiator e questi dispositivi diventeranno rispettivamente slave e master della piconet appena formata e comunicheranno nel canale dati, terminando così L'Advertising Event ed iniziando un Connection Event.
+- l’**accesso** è condiviso e, per limitare le collisioni, si inizia a parlare dopo una sorta di backoff semicasuale T_advEvent = advInterval + advDelay dove advInterval è casuale compreso tra 0 e 10 ms mentre advDelay è un intero multiplo di 0.625 ms compreso tra 20 ms e 10.24 s (periodo di beacon).
+I **devices** che trasmettono pacchetti di advertising nei canali fisici sono detti advertisers. I devices che invece ricevono questi pacchetti, senza l'intenzione di aprire una connessione sono detti scanners.
+
+Una connessione può essere stabilita solo tra un dispositivo advertiser ed un dispositivo initiator e questi dispositivi diventeranno rispettivamente slave e master della piconet appena formata e comunicheranno nel canale dati, terminando così l'Advertising Event ed iniziando un Connection Event.
 
 
 ### **Slotted CSMA** 
