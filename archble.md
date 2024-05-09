@@ -29,7 +29,7 @@ I beacon trasmettono quattro informazioni:
 - Un numero minore che identifica un beacon specifico.
 - Un livello di potenza TX in complemento di 2, che indica la potenza del segnale a un metro dal dispositivo. Questo numero deve essere calibrato per ciascun dispositivo dall'utente o dal produttore.
   
-<img src="img/ibeaconframe.png" alt="alt text" width="400">
+<img src="img/ibeaconframe.png" alt="alt text" width="600">
 
 Un'applicazione di scansione legge l'UUID, il numero maggiore e il numero minore e li usa come riferimento per ottenere informazioni sul beacon da un database; 
 il beacon stesso non porta informazioni descrittive, richiede che questo database esterno sia raggiungibile. 
