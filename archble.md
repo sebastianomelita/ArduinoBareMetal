@@ -71,6 +71,11 @@ Il **beacon collegabile** (o periferica) è un dispositivo Bluetooth a bassa ene
 
 La differenza tra la scansione dei beacon effettuata da un dispositivo centrale e quella effettuata da un semplice observer sta nel fatto che la prima è una ricerca che è abilitata ad instaurare una connessione bidirezionale con i dispositivi beacon periferici, mentre la seconda è una scansione che permette l’attivazione di connessioni di sola ricezione. 
 
+### **Topologia mista**
+
+Stanno iniziando a comparire dispositivi dual-mode e single-mode più avanzati, dispositivi in ​​grado di combinare più ruoli contemporaneamente. Ciò consente loro di partecipare a più connessioni contemporaneamente, mentre usano gli advertisement per trasmettere informazioni in broadcast.
+
+<img src="img/blemisto.png" alt="alt text" width="400">
 
 ## **Protocolli di accesso al canale**
 
