@@ -188,6 +188,15 @@ Il dispositivo client implementa un router ed un NAT. In genere, gli host sulla 
 
 Gli host del lato AP non vedono quelli del lato client ma solo un router (con indirizzo privato). Gli host del lato client vedono quelli del lato AP, ed accedono ad internet.
 
+### **Esempio sottorete privata: repeater mode**
+
+Il dispositivo amplifica il segnale estendendo la dimensione nello spazio del mezzo a BUS che comunque rimane unico per tutti i dispositivi. Ne consegue che il traffico sul primo hub wireless viene riportato sul secondo e vicerversa.  Dovendo rimanere uguale il throughput complessivo, ne consegue che la banda di ciascun hub wireless non potrà essere superiore al 50% del throughput di uno solo se generano lo stesso volume di traffico.
+
+<img src="img/repeater.jpg" alt="alt text" width="1000">
+
+In sintesi, la maggior parte dei ripetitori wireless opera con una singola radio e utilizza gli stessi canali e lo stesso SSID della rete principale per estendere la sua copertura. Questo semplifica la configurazione e consente una transizione fluida tra il segnale del router principale e quello del ripetitore.
+
+Essendo parte di una unica LAN derivata dallo stesso hub esteso, tutti i dispossitivi devono possedere indirizzi IP afferenti alla medesima subnet.
 
 **Sitografia**:
 - www.master-iot.it Master Universitario di II Livello "Internet of Things and Big Data" A.A.2018-2019 Università degli Studi di Genova
