@@ -86,12 +86,15 @@ I dati di tracciamento che possono essere raccolti da ciascun dispositivo mobile
 Esempio: tour digitale in un museo, in cui ogni stanza o attrazione potrebbe avere un beacon fisso che emette un tag BLE specifico. Se una persona sceglie di installare l'app mobile del museo, il suo telefono, ogni qualvolta cammina vicino a un beacon, legge il tag e le informazioni pertinenti e mirate sull'esposizione potrebbero essere recuperate da ciascun dispositivo tramite il tag, consentendo un'esperienza più istruttiva e coinvolgente per i visitatori.
 
 **Esempio ambulatorio.**
+
 <img src="img/ambulatorio.gif" alt="alt text" width="700">
 
 **Esempio shopping.**
+
 <img src="img/shopping.jpg" alt="alt text" width="900">
 
 **Esempio ospedale.**
+
 <img src="img/ospedale.png" alt="alt text" width="900">
 
 
