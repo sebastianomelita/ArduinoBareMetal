@@ -85,7 +85,7 @@ Dove fn+1 è la frequenza (canale) da utilizzare al prossimo evento di connessio
 Supponiamo, ad esempio, che un dispositivo BLE si trovi a coesistere con reti Wi-Fi sui canali 1, 6 e 11. Il dispositivo BLE contrassegna i canali 0-8, 11-20 e 24-32 come canali non buoni. 
 Ciò significa che mentre i due dispositivi comunicano, rimapperanno i salti in maniera tale da evitare i canali con interferenza [Link FHSS](accessoradio.md#fhss).
 
-<img src="img/blefhss.png" alt="alt text" width="800">
+<img src="img/blefhss.png" alt="alt text" width="600">
 
 ## **Topologie di connessione**
 
@@ -107,7 +107,7 @@ I pacchetti di **advertisement** sono periodici e sono messaggi di beacon trasme
 
 **Periferica**: Un dispositivo che invia periodicamente pacchetti pubblicitari (advertisement beacon) connettibili in broadcast e accetta connessioni in entrata. Una volta iniziata una connessione, la periferica segue i tempi del master centrale e scambia regolarmente dati con esso, quindi, dopo la connessione, assume il ruolo di slave della comunicazione.
 
-<img src="img/linkbeacon.png" alt="alt text" width="600">
+<img src="img/linkbeacon.png" alt="alt text" width="800">
 
 La differenza tra la scansione dei beacon effettuata da un dispositivo centrale e quella effettuata da un semplice observer sta nel fatto che la prima è una ricerca che è abilitata ad instaurare una connessione bidirezionale con i dispositivi beacon periferici, mentre la seconda è una scansione che permette l’attivazione di connessioni di sola ricezione. 
 
