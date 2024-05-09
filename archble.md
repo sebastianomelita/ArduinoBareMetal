@@ -42,12 +42,6 @@ Il **broker MQTT** può essere installato in cloud, in una Virtual Private netwo
 
 E’ una architettura a stella gerarchica (albero). E’ realizzata da un solo dispositivo master. Un master può essere contemporaneamente pure slave di un’altra piconet.
 
-<img src="img/archzigbee.png" alt="alt text" width="1000">
-
-Caratteristiche distintiva di questa tecnologia di rete di sensori  è la **topologia a maglia** che comporta che:
-- qualunque dispositivo collegato **alla rete elettrica** diventa un **router**. Cioé, insieme ad un elettrodomestico (ad es. una lampadina) o ad una macchina industriale si compra pure un dispositivo di rete. Piú se ne mettono e piú la rete é estesa e affidabile.
-- un **dispositivo di comand**o non deve spendere l'energia per arrivare al gateway o all'attuatore remoto, ma solamente quella necessaria a raggiungere il **primo router** (next hop), cioè il primo elettrodomestico domotizzato nelle vicinanze.
-
 ### **Tipologie di nodi** 
 
 <img src="img/blenode.png" alt="alt text" width="800">
@@ -77,8 +71,6 @@ La **configurazione diretta** del livello GAP descrive le funzioni e i parametri
 - La possibilità di passare dallo stato attivo (**connection**) allo stato standby, permette allo slave di risparmiare energia durante gli intervalli di tempo tra una trasmissione e quella successiva. 
  Dalla figura si vede che  questo passaggio possa avvenire però solo attraverso gli stati advertising e initiating; cioè la fase di connessione deve essere sempre preceduta da una fase di ricerca.
 
- 
-
 ### **Modulazione**
 
 BLE adopera una forma di FDM in cui trasmettitore e ricevitore non usano in una connessione sempre la stessa frequenza ma saltano, ad istanti prefissati, lungo 37 canali secondo uno schema reso noto ad entrambi in fase di setup. Ogni connessione avrà uno schema di salti che, istante per istante, non si sovrappone a quello delle altre connessioni.
@@ -93,7 +85,7 @@ Dove fn+1 è la frequenza (canale) da utilizzare al prossimo evento di connessio
 Supponiamo, ad esempio, che un dispositivo BLE si trovi a coesistere con reti Wi-Fi sui canali 1, 6 e 11. Il dispositivo BLE contrassegna i canali 0-8, 11-20 e 24-32 come canali non buoni. 
 Ciò significa che mentre i due dispositivi comunicano, rimapperanno i salti in maniera tale da evitare i canali con interferenza [Link FHSS](accessoradio.md#fhss).
 
-<img src="img/blefhss.png" alt="alt text" width="800">
+<img src="img/blefhss.png" alt="alt text" width="400">
 
 ### **Protocolli di accesso al canale**
 
