@@ -182,9 +182,9 @@ Per funzionare efficacemente dovrebbe avere:
 
 ### **Esempio sottorete privata: client mode**
 
-<img src="img/ponteaziendawifi.png" alt="alt text" width="1000">
-
 In client mode il collegamento tra due AP è assimilabile ad una dorsale L3. Altri dispositivi client possono entrare a far parte del link tra i due AP.
+
+<img src="img/ponteaziendawifi.png" alt="alt text" width="1000">
 
 Il dispositivo client implementa un router ed un NAT. In genere, gli host sulla LAN del client utilizzano il server DHCP del router, poiché di fatto è una rete indipendente. 
 
