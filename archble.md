@@ -56,7 +56,7 @@ Il **beacon non collegabile** è un dispositivo Bluetooth (broadcaster) a bassa 
 - **Broadcaster**: Invia periodicamente pacchetti di advertise non connettibili a chiunque sia disposto a riceverli. 
 - **Osservatore**: Esegue ripetutamente la scansione delle frequenze predefinite per ricevere eventuali pacchetti di advertisement non connettibili attualmente trasmessi (scanning passivo).
 
-<img src="img/nolinkbeacon0.png" alt="alt text" width="1000">
+<img src="img/nolinkbeacon0.png" alt="alt text" width="1100">
 
 I pacchetti di **advertisement** sono periodici e sono messaggi di beacon trasmessi in broadcast da dispositivi broadcaster detti, per l’appunto, essi stessi beacon. Da questi l’osservatore ricava informazioni minimali (tag). A partire dalla versione 4.1 della specifica, sono possibili tutte le seguenti condizioni:
 - Un dispositivo può fungere contemporaneamente da centrale e da periferica.
@@ -67,7 +67,7 @@ Il **beacon collegabile** (o periferica) è un dispositivo Bluetooth a bassa ene
 - **Dispositivo master o centrale**: Esegue periodicamente la scansione delle frequenze predefinite alla ricerca di pacchetti pubblicitari connettibili e, se ne trova uno adatto, avvia una connessione (scanning attivo). Una volta stabilita la connessione, il dispositivo centrale gestisce i tempi e avvia gli scambi periodici di dati, diventa, cioè, il master della comunicazione.
 - **Dispositivo slave o periferica**: un dispositivo che invia periodicamente pacchetti pubblicitari (advertisement beacon) connettibili in broadcast e accetta connessioni in entrata. Una volta iniziata una connessione, la periferica segue i tempi del master centrale e scambia regolarmente dati con esso, quindi, dopo la connessione, assume il ruolo di slave della comunicazione.
 
-<img src="img/linkbeacon.png" alt="alt text" width="1000">
+<img src="img/linkbeacon.png" alt="alt text" width="1100">
 
 La differenza tra la scansione dei beacon effettuata da un dispositivo centrale e quella effettuata da un semplice observer sta nel fatto che la prima è una ricerca che è abilitata ad instaurare una connessione bidirezionale con i dispositivi beacon periferici, mentre la seconda è una scansione che permette l’attivazione di connessioni di sola ricezione. 
 
@@ -75,7 +75,7 @@ La differenza tra la scansione dei beacon effettuata da un dispositivo centrale 
 
 Stanno iniziando a comparire dispositivi dual-mode e single-mode più avanzati, dispositivi in ​​grado di combinare più ruoli contemporaneamente. Ciò consente loro di partecipare a più connessioni contemporaneamente, mentre usano gli advertisement per trasmettere informazioni in broadcast.
 
-<img src="img/blemisto.png" alt="alt text" width="400">
+<img src="img/blemisto.png" alt="alt text" width="600">
 
 ## **Protocolli di accesso al canale**
 
