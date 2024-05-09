@@ -102,10 +102,18 @@ dati di tracciamento in tempo reale non solo rispetto la posizione ma anche a qu
 solo metriche anonime quali numero presenze e analisi degli eventi in tempo reale : potrebbe anche essere utile ai partecipanti (i gestori di beacon) che, una volta in prossimità di un evento, potrebbero tramite un'app interrogare il sistema centrale per prenotare i posti e accodarsi in tempo reale senza mettersi fisicamente in fila.
 con l’esplicito accordo degli utenti, e solo nei limiti di dove sono stati collocati gli "ascoltatori", tracciare la posizione in tempo reale di specifiche persone.
 
+**Esempio ambulatorio.**
+<img src="img/ambulatorio.gif" alt="alt text" width="700">
+
+**Esempio shopping.**
+<img src="img/shopping.jpg" alt="alt text" width="900">
+
+**Esempio ospedale.**
+<img src="img/ospedale.png" alt="alt text" width="900">
 
 ### **Rete di sensori BLE** 
 
-   <img src="img/piconet.png" alt="alt text" width="1000">
+<img src="img/piconet.png" alt="alt text" width="1000">
 
 E’ una architettura a stella gerarchica (albero). E’ realizzata da un solo dispositivo master. Un master può essere contemporaneamente pure slave di un’altra piconet.
 
@@ -128,6 +136,10 @@ Il **beacon non collegabile** è un dispositivo Bluetooth (broadcaster) a bassa 
 I pacchetti di **advertisement** sono periodici e sono messaggi di beacon trasmessi in broadcast da dispositivi broadcaster detti, per l’appunto, essi stessi beacon. Da questi l’osservatore ricava informazioni minimali (tag). A partire dalla versione 4.1 della specifica, sono possibili tutte le seguenti condizioni:
 - Un dispositivo può fungere contemporaneamente da centrale e da periferica.
 - Una centrale può essere connessa a più periferiche. Una periferica può essere connessa a più dispositivi centrali.
+
+### **Esempio tracking asset industriali** 
+
+<img src="img/industrialtracking.jpg" alt="alt text" width="1000">
 
 ### **Topologia connessa**
 Il **beacon collegabile** (o periferica) è un dispositivo Bluetooth a bassa energia in **modalità periferica**, il che significa che può non solo trasmettere, ma anche ricevere e quindi potrebbe anche essere interrogato periodicamente per effettuare, ad esempio il polling, di alcuni sensori.  Ciò consente a un dispositivo centrale (ad esempio uno smartphone) di connettersi e interagire con i **servizi** implementati sul dispositivo beacon. I servizi forniscono una o più caratteristiche che potrebbero essere modificate da un dispositivo peer. Un esempio di queste caratteristiche potrebbe essere la stringa di dati che rappresenta le informazioni trasmesse dal beacon. In questo modo è possibile avere un **beacon configurabile** che può essere facilmente aggiornato via etere:
