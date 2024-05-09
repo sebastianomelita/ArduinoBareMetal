@@ -20,6 +20,18 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
   - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
 
+## **Architetture basate standard** 
+
+L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
+
+<img src="img/integratedGW-Zigbee.png" alt="alt text" width="900">
+
+Il **bridge BLE** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori. 
+
+Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di getione e controllo. 
+
+
+
 ## **Architetture basate sull'utilizzo dei beacon** 
 
 L'iBeacon di Apple è stata la prima tecnologia BLE Beacon a essere pubblicata, quindi la maggior parte dei beacon si ispira al formato dati iBeacon. Gli iBeacon sono abilitati in molti SDK di Apple e possono essere letti e trasmessi da qualsiasi iDevice abilitato per BLE. IBeacon è uno standard proprietario e chiuso. 
@@ -88,13 +100,6 @@ con l’esplicito accordo degli utenti, e solo nei limiti di dove sono stati col
 
 
 
-L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
-
-<img src="img/integratedGW-Zigbee.png" alt="alt text" width="900">
-
-Il **bridge zigbee** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori. 
-
-Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di getione e controllo. 
 
 ### **Rete di sensori BLE** 
 
@@ -228,5 +233,6 @@ Ciò significa che mentre i due dispositivi comunicano, rimapperanno i salti in 
 - https://www.amazipoint.com/uart%20bridge%20en%204.html
 - https://www.researchgate.net/figure/Zigbee-Gateway-architecture-It-must-be-remarked-that-Zigbee-Alliance-has-also-developed_fig4_41392302
 - https://www.everythingrf.com/community/zigbee-frequency-bands#:~:text=In%20general%2C%20the%20common%20frequency,due%20to%20other%20Zigbee%20devices.
+- https://github.com/devbis/ble2mqtt
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
