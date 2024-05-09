@@ -85,6 +85,16 @@ I dati di tracciamento che possono essere raccolti da ciascun dispositivo mobile
 
 Esempio: tour digitale in un museo, in cui ogni stanza o attrazione potrebbe avere un beacon fisso che emette un tag BLE specifico. Se una persona sceglie di installare l'app mobile del museo, il suo telefono, ogni qualvolta cammina vicino a un beacon, legge il tag e le informazioni pertinenti e mirate sull'esposizione potrebbero essere recuperate da ciascun dispositivo tramite il tag, consentendo un'esperienza più istruttiva e coinvolgente per i visitatori.
 
+**Esempio ambulatorio.**
+<img src="img/ambulatorio.gif" alt="alt text" width="700">
+
+**Esempio shopping.**
+<img src="img/shopping.jpg" alt="alt text" width="900">
+
+**Esempio ospedale.**
+<img src="img/ospedale.png" alt="alt text" width="900">
+
+
 ### **Schema di cablagggio a scanner fisso** 
 
 È un’approccio sempre più diffuso. Questi "ascoltatori" fissi raccolgono tutti i beacon Bluetooth nella loro portata e trasmettono le informazioni raccolte a un sistema centralizzato per l'analisi.
@@ -102,14 +112,9 @@ dati di tracciamento in tempo reale non solo rispetto la posizione ma anche a qu
 solo metriche anonime quali numero presenze e analisi degli eventi in tempo reale : potrebbe anche essere utile ai partecipanti (i gestori di beacon) che, una volta in prossimità di un evento, potrebbero tramite un'app interrogare il sistema centrale per prenotare i posti e accodarsi in tempo reale senza mettersi fisicamente in fila.
 con l’esplicito accordo degli utenti, e solo nei limiti di dove sono stati collocati gli "ascoltatori", tracciare la posizione in tempo reale di specifiche persone.
 
-**Esempio ambulatorio.**
-<img src="img/ambulatorio.gif" alt="alt text" width="700">
+**Esempio tracking assets industriali.**
 
-**Esempio shopping.**
-<img src="img/shopping.jpg" alt="alt text" width="900">
-
-**Esempio ospedale.**
-<img src="img/ospedale.png" alt="alt text" width="900">
+<img src="img/industrialtracking.jpg" alt="alt text" width="900">
 
 ### **Rete di sensori BLE** 
 
