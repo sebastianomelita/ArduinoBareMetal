@@ -192,7 +192,7 @@ Gli host del lato AP non vedono quelli del lato client ma solo un router (con in
 
 ### **Esempio sottorete privata: repeater mode**
 
-Il dispositivo amplifica il segnale estendendo la dimensione nello spazio del mezzo a BUS che comunque rimane unico per tutti i dispositivi. Ne consegue che il traffico sul primo hub wireless viene riportato sul secondo e vicerversa.  Dovendo rimanere uguale il throughput complessivo, ne consegue che la banda di ciascun hub wireless non potrà essere superiore al 50% del throughput di uno solo se generano lo stesso volume di traffico.
+Il dispositivo amplifica il segnale estendendo la dimensione nello spazio del mezzo a BUS che comunque rimane unico per tutti i dispositivi. Ne consegue che il traffico sul primo hub wireless viene riportato sul secondo e vicerversa.  Dovendo rimanere uguale il throughput complessivo, ne consegue che la banda di ciascun hub wireless non potrà essere superiore al 50% del throughput di uno solo se questi generano lo stesso volume di traffico.
 
 <img src="img/repeater.jpg" alt="alt text" width="600">
 
