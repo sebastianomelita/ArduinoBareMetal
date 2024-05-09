@@ -44,10 +44,13 @@ E’ una architettura a stella gerarchica (albero). E’ realizzata da un solo d
 
 ## **Topologie di connessione**
 
-<img src="img/blestate.png" alt="alt text" width="300">
+<img src="img/blestate.png" alt="alt text" width="200">
 
 - **Standby** è lo stato di default in cui non ci sono scambi di pacchetti.
-- Un dispositivo in stato **advertising** può avviare una ricerca tramite l’invio di pacchetti che saranno ricevuti da altri dispositivi in stato initiating o scanning. E' disponibile ad effettuare una - - - Dispositivo in stato **initiating**: passerà allo stato connection con il ruolo di master della piconet. I dispositivi in stato di advertising, scanning e initiating utilizzano i cosiddetti canali advertising per la loro comunicazione mentre i dispositivi in stato connection utilizzano i canali data.
+- Un dispositivo in stato advertising può avviare una ricerca tramite l’invio di pacchetti che saranno ricevuti da altri dispositivi in stato initiating o scanning. 
+    - Dispositivo in stato advertising: è disponibile ad effettuare una connessione e quindi passare allo stato connection prendendo il ruolo di slaves 
+    - Dispositivo in stato initiating: passerà allo stato connection con il ruolo di master della piconet.
+- Dispositivo in stato **initiating**: passerà allo stato connection con il ruolo di master della piconet. I dispositivi in stato di advertising, scanning e initiating utilizzano i cosiddetti canali advertising per la loro comunicazione mentre i dispositivi in stato connection utilizzano i canali data.
 - La possibilità di passare dallo stato di connessione attiva (**connection**) allo stato standby, permette allo slave di risparmiare energia durante gli intervalli di tempo tra una trasmissione e quella successiva. 
 Dalla figura si vede che  questo passaggio possa avvenire però solo attraverso gli stati advertising e initiating; cioè la fase di connessione deve essere sempre preceduta da una fase di ricerca.
 
