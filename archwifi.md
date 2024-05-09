@@ -215,5 +215,6 @@ Essendo parte di una unica LAN derivata dallo stesso hub esteso, tutti i disposs
 - https://www.elettra2000.it/phocadownload/atti-convegni/andreuccetti.pdf
 - https://community.cisco.com/t5/wireless/mesh-mode-vs-bridge-mode/td-p/4094691
 - https://www.cisco.com/c/en/us/support/docs/wireless-mobility/wireless-lan-wlan/68087-bridges-pt-to-pt.html
+- https://www.tp-link.com/it/support/faq/151/
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
