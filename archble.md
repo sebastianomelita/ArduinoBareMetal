@@ -37,7 +37,7 @@ Il **bridge zigbee** (in realtà è un **gateway** e quindi pure un router) è n
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di getione e controllo. 
 ### **Rete di sensori Zigbee** 
 
-   <img src="img/archzigbee2.png" alt="alt text" width="1000">
+   <img src="img/piconet.png" alt="alt text" width="1000">
 
 I dispositivi ZigBee possono essere configurati in modo da realizzare diverse topologie di reti. Una topologia largamente usata è la quella mesh.
 Più reti possono organizzarsi in cluster con una struttura logica ad albero (spanning tree ottimo). Viene così realizzata una rete peerto-peer con un minimo overhead di routing.
