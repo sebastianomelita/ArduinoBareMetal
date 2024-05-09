@@ -145,10 +145,6 @@ I pacchetti di **advertisement** sono periodici e sono messaggi di beacon trasme
 - Un dispositivo può fungere contemporaneamente da centrale e da periferica.
 - Una centrale può essere connessa a più periferiche. Una periferica può essere connessa a più dispositivi centrali.
 
-### **Esempio tracking asset industriali** 
-
-<img src="img/industrialtracking.jpg" alt="alt text" width="1000">
-
 ### **Topologia connessa**
 Il **beacon collegabile** (o periferica) è un dispositivo Bluetooth a bassa energia in **modalità periferica**, il che significa che può non solo trasmettere, ma anche ricevere e quindi potrebbe anche essere interrogato periodicamente per effettuare, ad esempio il polling, di alcuni sensori.  Ciò consente a un dispositivo centrale (ad esempio uno smartphone) di connettersi e interagire con i **servizi** implementati sul dispositivo beacon. I servizi forniscono una o più caratteristiche che potrebbero essere modificate da un dispositivo peer. Un esempio di queste caratteristiche potrebbe essere la stringa di dati che rappresenta le informazioni trasmesse dal beacon. In questo modo è possibile avere un **beacon configurabile** che può essere facilmente aggiornato via etere:
 - **Dispositivo master o centrale**: Esegue periodicamente la scansione delle frequenze predefinite alla ricerca di pacchetti pubblicitari connettibili e, se ne trova uno adatto, avvia una connessione (scanning attivo). Una volta stabilita la connessione, il dispositivo centrale gestisce i tempi e avvia gli scambi periodici di dati, diventa, cioè, il master della comunicazione.
