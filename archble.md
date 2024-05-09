@@ -56,7 +56,7 @@ Il **beacon non collegabile** è un dispositivo Bluetooth (broadcaster) a bassa 
 - **Broadcaster**: Invia periodicamente pacchetti di advertise non connettibili a chiunque sia disposto a riceverli. 
 - **Osservatore**: Esegue ripetutamente la scansione delle frequenze predefinite per ricevere eventuali pacchetti di advertisement non connettibili attualmente trasmessi (scanning passivo).
 
-<img src="img/nolinkbeacon0.png" alt="alt text" width="800">
+<img src="img/nolinkbeacon0.png" alt="alt text" width="1000">
 
 I pacchetti di **advertisement** sono periodici e sono messaggi di beacon trasmessi in broadcast da dispositivi broadcaster detti, per l’appunto, essi stessi beacon. Da questi l’osservatore ricava informazioni minimali (tag). A partire dalla versione 4.1 della specifica, sono possibili tutte le seguenti condizioni:
 - Un dispositivo può fungere contemporaneamente da centrale e da periferica.
@@ -71,7 +71,6 @@ Il **beacon collegabile** (o periferica) è un dispositivo Bluetooth a bassa ene
 
 La differenza tra la scansione dei beacon effettuata da un dispositivo centrale e quella effettuata da un semplice observer sta nel fatto che la prima è una ricerca che è abilitata ad instaurare una connessione bidirezionale con i dispositivi beacon periferici, mentre la seconda è una scansione che permette l’attivazione di connessioni di sola ricezione. 
 
-<img src="img/connbeacon.png" alt="alt text" width="1000">
 
 ## **Protocolli di accesso al canale**
 
