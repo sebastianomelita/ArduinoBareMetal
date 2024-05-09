@@ -98,6 +98,8 @@ In genere è localizzato all'interno della **rete principale** con una collocazi
 
 Tendenze sempre più diffuse portano al **trasferimento crescente di funzioni** anche sul **cloud**. Una **soluzione estrema** è quella di spostare **tutte le funzioni** sul cloud tenendo ben presente che un **guasto della connessione ad internet** causerebbe una cessazione delle **funzioni** di regolazione e controllo che sono state progettate per essere eseguite **centralizzate sul server**. Le funzioni gestite in maniera autonoma e peer to peer **completamente a bordo** dei dispositivi non dovrebbero risentire di particolari problemi.
 
+<img src="micro.png" alt="alt text" width="700">
+
 In ogni caso è necessario un **server di gestione** con funzioni di:
 - Processamento (elaborazione nuovo stato e comando attuatori)
 - Memorizzazione (storage) ed estrazione (mining) delle informazioni
