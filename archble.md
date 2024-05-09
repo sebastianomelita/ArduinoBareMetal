@@ -20,6 +20,28 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
   - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
 
+## **Architetture basate sull'utilizzo dei beacon** 
+
+L'iBeacon di Apple è stata la prima tecnologia BLE Beacon a essere pubblicata, quindi la maggior parte dei beacon si ispira al formato dati iBeacon. Gli iBeacon sono abilitati in molti SDK di Apple e possono essere letti e trasmessi da qualsiasi iDevice abilitato per BLE. IBeacon è uno standard proprietario e chiuso. 
+I beacon trasmettono quattro informazioni:
+- Un UUID che identifica il beacon.
+- Un numero maggiore che identifica un sottoinsieme di beacon all'interno di un grande gruppo.
+- Un numero minore che identifica un beacon specifico.
+- Un livello di potenza TX in complemento di 2, che indica la potenza del segnale a un metro dal dispositivo. Questo numero deve essere calibrato per ciascun dispositivo dall'utente o dal produttore.
+  
+<img src="img/ibeaconframe.png" alt="alt text" width="400">
+
+Un'applicazione di scansione legge l'UUID, il numero maggiore e il numero minore e li usa come riferimento per ottenere informazioni sul beacon da un database; 
+il beacon stesso non porta informazioni descrittive, richiede che questo database esterno sia raggiungibile. 
+Il campo di potenza TX viene utilizzato con l'intensità del segnale misurata per determinare la distanza del dispositivo beacon dallo smartphone. Si noti che TxPower deve essere calibrato dall'utente per raggiungere una buona precisione.
+
+
+
+Gli iBeacon utilizzano Bluetooth Low Energy per creare un'infrastruttura smart, orientata alla localizzazione, che i dispositivi Mobile possono utilizzare per ricavare informazioni contestuali basate sull'ambiente stesso in cui si muovono, in tempo reale. 
+
+Le applicazioni possono ora sapere esattamente dove si trovano e cosa le circonda, aprendo la strada ad un nuovo livello di interazione col mondo, senza bisogno di una connessione ad Internet.
+
+
 ### **Schema di cablagggio a beacon fisso** 
 
 È l’approccio più comune. I beacon sono posizionati in posizioni fisse e note, rispetto a una mappa interna.  
