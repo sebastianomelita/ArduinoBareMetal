@@ -70,7 +70,7 @@ La **configurazione diretta** del livello GAP descrive le funzioni e i parametri
 
 ### **Stato di un nodo**
 
-<img src="img/blestate.png" alt="alt text" width="500">
+<img src="img/blestate.png" alt="alt text" width="300">
 
 - **Standby** è lo stato di default in cui non ci sono scambi di pacchetti.
 - Un dispositivo in stato **advertising** può avviare una ricerca tramite l’invio di pacchetti che saranno ricevuti da altri dispositivi in stato initiating o scanning. E' disponibile ad effettuare una - - - Dispositivo in stato **initiating**: passerà allo stato connection con il ruolo di master della piconet. I dispositivi in stato di advertising, scanning e initiating utilizzano i cosiddetti canali advertising per la loro comunicazione mentre i dispositivi in stato connection utilizzano i canali data.
