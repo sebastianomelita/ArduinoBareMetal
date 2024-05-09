@@ -77,17 +77,10 @@ La **configurazione diretta** del livello GAP descrive le funzioni e i parametri
 - La possibilità di passare dallo stato attivo (**connection**) allo stato standby, permette allo slave di risparmiare energia durante gli intervalli di tempo tra una trasmissione e quella successiva. 
  Dalla figura si vede che  questo passaggio possa avvenire però solo attraverso gli stati advertising e initiating; cioè la fase di connessione deve essere sempre preceduta da una fase di ricerca.
 
+ 
+### **Connessioni** 
 
-
-
-  
-### **Consumo energetico** 
-
-Bassissimo consumo dei **nodi di comando** dato che, per inviare un messaggio ad un nodo attuatore posto in un luogo remoto della rete, devono spendere sempre e soltanto l'energia necessaria a raggiungere il nodo router più vicino
-
-Per minimizzare il consumo di potenza, e quindi massimizzare la durata delle batterie, i **dispositivi finali** passano la maggior parte del loro tempo “addormentati” (**sleep mode**), si svegliano soltanto quando hanno bisogno di comunicare, e poi si riaddormentano immediatamente.
-
-Lo **standard** prevede invece che i **router** ed il **coordinatore** siano collegati alla rete elettrica e siano **sempre attivi**. Non hanno quindi dei vincoli sul consumo di potenza
+![image](https://github.com/sebastianomelita/ArduinoBareMetal/assets/18554803/9ec385e2-f96b-455c-bb01-0d6c49c2c2c2)
 
 ### **Potenza e banda di trasmissione**
 
@@ -118,7 +111,16 @@ Ogni **piconet** ha due canali fisici: un canale ad **accesso multiplo** detto  
 - l’**accesso** è condiviso e, per limitare le collisioni, si inizia a parlare dopo una sorta di backoff semicasuale T_advEvent = advInterval + advDelay dove advInterval è casuale compreso tra 0 e 10 ms mentre advDelay è un intero multiplo di 0.625 ms compreso tra 20 ms e 10.24 s (periodo di beacon).
 I **devices** che trasmettono pacchetti di advertising nei canali fisici sono detti advertisers. I devices che invece ricevono questi pacchetti, senza l'intenzione di aprire una connessione sono detti scanners.
 
-Una connessione può essere stabilita solo tra un dispositivo advertiser ed un dispositivo initiator e questi dispositivi diventeranno rispettivamente slave e master della piconet appena formata e comunicheranno nel canale dati, terminando così l'Advertising Event ed iniziando un Connection Event.
+<img src="img/blefasiconn.png" alt="alt text" width="400">
+
+Una **connessione** può essere stabilita solo tra un dispositivo **advertiser** ed un dispositivo **initiator** e questi dispositivi diventeranno rispettivamente **slave** e **master** della piconet appena formata e comunicheranno nel canale dati, terminando così l'**Advertising Event** ed iniziando un **Connection Event**.
+
+Una volta che il pacchetto CONNECT_REQ viene inviato o ricevuto, i dispositivi vengono collegati e i pacchetti di dati possono essere scambiati. L'iniziator diventa il Master del livello di collegamento mentre l’advertiser diventa lo Slave del livello di collegamento (a livello applicativo l’inizietor diventa client e l’advertiser diventa server).
+
+**Connection Interval**: tempo tra connection events. Stabilisce un appuntamento regolare tra dispositive master e slave. Se non ci sono dati dell'applicazione da inviare o ricevere, i due dispositivi scambiano pacchetti di controllo per mantenere la connessione.
+**Slave Latency**: il numero di eventi connection che lo slave può «saltare» cioè nei quali lo slave non è obbligato ad “ascoltare” il master e quindi può restare nello stato standby.
+**Supervision Timeout**: tempo massimo tra due pacchetti di dati validi ricevuti prima che una connessione venga considerata "persa".
+
 
 
 ### **Slotted CSMA** 
