@@ -85,7 +85,7 @@ Dove fn+1 è la frequenza (canale) da utilizzare al prossimo evento di connessio
 Supponiamo, ad esempio, che un dispositivo BLE si trovi a coesistere con reti Wi-Fi sui canali 1, 6 e 11. Il dispositivo BLE contrassegna i canali 0-8, 11-20 e 24-32 come canali non buoni. 
 Ciò significa che mentre i due dispositivi comunicano, rimapperanno i salti in maniera tale da evitare i canali con interferenza [Link FHSS](accessoradio.md#fhss).
 
-<img src="img/blefhss.png" alt="alt text" width="600">
+<img src="img/blefhss.png" alt="alt text" width="800">
 
 ## **Topologie di connessione**
 
@@ -95,7 +95,7 @@ Ciò significa che mentre i due dispositivi comunicano, rimapperanno i salti in 
 
 **Osservatore**: Esegue ripetutamente la scansione delle frequenze predefinite per ricevere eventuali pacchetti di advertisement non connettibili attualmente trasmessi (scanning passivo).
 
-<img src="img/nolinkbeacon0.png" alt="alt text" width="600">
+<img src="img/nolinkbeacon0.png" alt="alt text" width="800">
 
 I pacchetti di **advertisement** sono periodici e sono messaggi di beacon trasmessi in broadcast da dispositivi broadcaster detti, per l’appunto, essi stessi beacon. Da questi l’osservatore ricava informazioni minimali (tag). A partire dalla versione 4.1 della specifica, sono possibili tutte le seguenti condizioni:
 - Un dispositivo può fungere contemporaneamente da centrale e da periferica.
