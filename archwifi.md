@@ -174,11 +174,11 @@ In bridge mode il collegamento tra due AP è assimilabile ad una dorsale L2. Nes
 
 In generale, il funzionamento della modalità Bridge in un dispositivo wireless coinvolge l'intercettazione del traffico wireless proveniente da una rete e il suo **inoltro** a un'altra rete, consentendo così la comunicazione tra le due reti senza fili come se fossero collegate tra loro. I dispositivi internamente realizzano un bridge SW che inoltra pacchetti tra due **hub wireless distinti**: il primo collega gli utenti mentre il secondo realizza la connessione con gli altri bridge.
 
+<img src="img/trenowifi.png" alt="alt text" width="1000">
+
 Per funzionare efficacemente dovrebbe avere:
 - **almeno due radio wireless**: una per la connessione alla prima rete e una per la connessione alla seconda rete. Questo consente al dispositivo di ricevere dati da una rete e trasmetterli all'altra contemporaneamente, facilitando il trasferimento di dati tra le due reti.
 - **uso di due canali diversi**:È importante selezionare canali wireless non sovrapposti per evitare interferenze e garantire prestazioni ottimali.
-
-<img src="img/trenowifi.png" alt="alt text" width="1000">
 
 ### **Esempio sottorete privata: client mode**
 
