@@ -86,7 +86,7 @@ In una connessione dati, viene utilizzato un algoritmo di salto di frequenza per
 
 ```C++
 fn+1=(fn+hop) mod 37
-```.
+```
 
 Dove fn+1 è la frequenza (canale) da utilizzare al prossimo evento di connessione e hop è un valore che può variare da 5-16 e viene impostato al momento del setup della connessione. Il meccanismo di salto è dinamico e può variare per adattarsi a sopraggiunte condizioni di interferenza con altri dispositivi.
 
