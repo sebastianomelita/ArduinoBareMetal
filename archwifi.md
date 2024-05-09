@@ -172,7 +172,7 @@ In genere, i dispositivi AP coinvolti in una dorsale si comportano anche come ro
 
 In bridge mode il collegamento tra due AP è assimilabile ad una dorsale L2. Nessun altro dispositivo client può entrare a far parte del bridge oltre i due AP. I dispositivi possono essere connessi in modalità WDS oppure in modalità Ad Hoc. Gli host a monte e a valle dei due dispositivi si vedono reciprocamente. Il bridge a monte si chiama root bridge. 
 
-In generale, il funzionamento della modalità Bridge in un dispositivo wireless coinvolge l'intercettazione del traffico wireless proveniente da una rete e il suo **inoltro** a un'altra rete, consentendo così la comunicazione tra le due reti senza fili come se fossero collegate tra loro. I dispositivi internamente realizzano un bridge SW che inoltra pacchetti tra due hub wireless distinti, uno collega gli utenti mentr il secondo collega gli altri bridge.
+In generale, il funzionamento della modalità Bridge in un dispositivo wireless coinvolge l'intercettazione del traffico wireless proveniente da una rete e il suo **inoltro** a un'altra rete, consentendo così la comunicazione tra le due reti senza fili come se fossero collegate tra loro. I dispositivi internamente realizzano un bridge SW che inoltra pacchetti tra due **hub wireless distinti**: il primo collega gli utenti mentre il secondo realizza la connessione con gli altri bridge.
 
 Per funzionare efficacemente dovrebbe avere:
 - **almeno due radio wireless**: una per la connessione alla prima rete e una per la connessione alla seconda rete. Questo consente al dispositivo di ricevere dati da una rete e trasmetterli all'altra contemporaneamente, facilitando il trasferimento di dati tra le due reti.
