@@ -37,17 +37,21 @@ Il campo di potenza TX viene utilizzato con l'intensità del segnale misurata pe
 
 ### **Scopo ibeacon** 
 Questo innovativo uso della tecnologia fa principalmente leva su due concetti chiave: 
-- Micro-location: è noto che uno dei punti di forza dei Beacon che sfruttano Bluetooth LE è la possibilità di una localizzazione a corto raggio precisa e rapida (complementare al GPS):
-     - Posizionamento assoluto, i GPS forniscono una posizione assoluta in termini di latitudine e longitudine ma ha difficoltà a raccogliere i segnali dei satelliti GPS all’interno degli edifici, soprattutto a più piani. Per questo il sistema di GPS è inadatto per fornire una localizzazione precisa in un raggio di 15-20 metri,
-     - Posizionamento relativo. La Micro-location lavora semplicemente con la distanza relativa del device dai punti noti dove sono posizionati i Beacon. La geolocalizzazione basata su Ibeacon è ad un alto livello di granularità ed è appunto definita convenzionalmente con il termine «Micro-location».
-     - Possibilità di tracciamento. Gli iBeacons sono traccianti, quando un device lascia l'area da loro coperta, sono capaci di monitorare la sua posizione nel tempo. Una rete di beacon può tracciare gli spostamenti di persone e manufatti in un intero edificio o sito aziendale.
-- Interaction/Engagement/Context:
+- **Micro-location**: è noto che uno dei punti di forza dei Beacon che sfruttano Bluetooth LE è la possibilità di una localizzazione a corto raggio precisa e rapida (complementare al GPS):
+     - **Posizionamento assoluto**, i GPS forniscono una posizione assoluta in termini di latitudine e longitudine ma ha difficoltà a raccogliere i segnali dei satelliti GPS all’interno degli edifici, soprattutto a più piani. Per questo il sistema di GPS è inadatto per fornire una localizzazione precisa in un raggio di 15-20 metri,
+     - **Posizionamento relativo**. La Micro-location lavora semplicemente con la distanza relativa del device dai punti noti dove sono posizionati i Beacon. La geolocalizzazione basata su Ibeacon è ad un alto livello di granularità ed è appunto definita convenzionalmente con il termine «Micro-location».
+     - **Possibilità di tracciamento**. Gli iBeacons sono traccianti, quando un device lascia l'area da loro coperta, sono capaci di monitorare la sua posizione nel tempo. Una rete di beacon può tracciare gli spostamenti di persone e manufatti in un intero edificio o sito aziendale.
+- **Interaction/Engagement/Context**:
      - I segnali degli iBeacons possono interagire con le Apps, inviando notifiche (sia al sistema che all’utente) e facendo eseguire a queste ultime azioni specifiche in un tempo ed una locazione specifica. 
      - Sostanzialmente, il servizio fornito dai Beacons è quello di fornire un contesto esterno all'applicazione, che può ora conoscere cosa realmente circonda l'utilizzatore del device. Per questo motivo viene aperta la possibilità di far interagire le applicazioni mobile con il mondo fisico circostante senza alcuno sforzo (in maniera trasparente all’utente), in modo che l'utente finale possa davvero percepire il collegamento tra la realtà ed il device che tiene tra le mani. 
 
+Importante sottolineare alcuni **dettagli pratici**: 
+- **Trasparenza dell’utente**. Ogni device con una connessione Bluetooth attiva e l'App adeguata reagirà automaticamente ai Beacon circostanti, senza la necessità che l'utente intervenga, per esempio dovendo estrarre lo smartphone dalla tasca. L’attivazione dei beacon dovrebbe essere eseguita da una app che chieda esplicitamente all’utente il consenso a che il dispositivo possa attivare questo o quel servizio alla ricezione di un certo beacon, per evitare attivazioni inconsapevoli pericolose per la privacy.
+- **Tracciamento spaziale e temporale**. Il negoziante inoltre potrà monitorare le aree di maggior interesse dei propri clienti ancora prima che questi acquistino qualcosa, in quanto i Beacon possono tracciare ogni spostamento all'interno del negozio, notificando al sistema davanti a quale scaffale i clienti si fermano di più. Inutile sottolineare come questo possa essere un'informazione utilissima in termini di marketing.
+- **Interfacce di comando universale**. Gli hardware iBeacon saranno piccoli e sempre più economici: essi potranno inoltre venir programmati non solo per essere degli Advertiser ma anche Scanner, cosìcché un semplice Smartphone, che è a tutti gli effetti un Beacon, possa inviare comandi ai dispositivi installati per esempio in casa, per accendere le luci od elettrodomestici a distanza. 
+- **Struttura autonoma**. Un altro punto fondamentale è che non è mai richiesta una connessione ad Internet: anche se poter accedere a risorse su cloud tramite la rete potrebbe ampliare ancora di più il range di attività possibili con BLE.
 
-
-Gli iBeacon utilizzano Bluetooth Low Energy per creare un'infrastruttura smart, orientata alla localizzazione, che i dispositivi Mobile possono utilizzare per ricavare informazioni contestuali basate sull'ambiente stesso in cui si muovono, in tempo reale. 
+**In definitiva**, gli iBeacon utilizzano Bluetooth Low Energy per creare un'infrastruttura smart, orientata alla localizzazione, che i dispositivi mobile possono utilizzare per ricavare informazioni contestuali basate sull'ambiente stesso in cui si muovono, in tempo reale. 
 
 Le applicazioni possono ora sapere esattamente dove si trovano e cosa le circonda, aprendo la strada ad un nuovo livello di interazione col mondo, senza bisogno di una connessione ad Internet.
 
