@@ -35,6 +35,16 @@ Un'applicazione di scansione legge l'UUID, il numero maggiore e il numero minore
 il beacon stesso non porta informazioni descrittive, richiede che questo database esterno sia raggiungibile. 
 Il campo di potenza TX viene utilizzato con l'intensità del segnale misurata per determinare la distanza del dispositivo beacon dallo smartphone. Si noti che TxPower deve essere calibrato dall'utente per raggiungere una buona precisione.
 
+### **Scopo ibeacon** 
+Questo innovativo uso della tecnologia fa principalmente leva su due concetti chiave: 
+- Micro-location: è noto che uno dei punti di forza dei Beacon che sfruttano Bluetooth LE è la possibilità di una localizzazione a corto raggio precisa e rapida (complementare al GPS):
+     - Posizionamento assoluto, i GPS forniscono una posizione assoluta in termini di latitudine e longitudine ma ha difficoltà a raccogliere i segnali dei satelliti GPS all’interno degli edifici, soprattutto a più piani. Per questo il sistema di GPS è inadatto per fornire una localizzazione precisa in un raggio di 15-20 metri,
+     - Posizionamento relativo. La Micro-location lavora semplicemente con la distanza relativa del device dai punti noti dove sono posizionati i Beacon. La geolocalizzazione basata su Ibeacon è ad un alto livello di granularità ed è appunto definita convenzionalmente con il termine «Micro-location».
+     - Possibilità di tracciamento. Gli iBeacons sono traccianti, quando un device lascia l'area da loro coperta, sono capaci di monitorare la sua posizione nel tempo. Una rete di beacon può tracciare gli spostamenti di persone e manufatti in un intero edificio o sito aziendale.
+- Interaction/Engagement/Context:
+     - I segnali degli iBeacons possono interagire con le Apps, inviando notifiche (sia al sistema che all’utente) e facendo eseguire a queste ultime azioni specifiche in un tempo ed una locazione specifica. 
+     - Sostanzialmente, il servizio fornito dai Beacons è quello di fornire un contesto esterno all'applicazione, che può ora conoscere cosa realmente circonda l'utilizzatore del device. Per questo motivo viene aperta la possibilità di far interagire le applicazioni mobile con il mondo fisico circostante senza alcuno sforzo (in maniera trasparente all’utente), in modo che l'utente finale possa davvero percepire il collegamento tra la realtà ed il device che tiene tra le mani. 
+
 
 
 Gli iBeacon utilizzano Bluetooth Low Energy per creare un'infrastruttura smart, orientata alla localizzazione, che i dispositivi Mobile possono utilizzare per ricavare informazioni contestuali basate sull'ambiente stesso in cui si muovono, in tempo reale. 
