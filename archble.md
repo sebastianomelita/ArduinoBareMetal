@@ -40,8 +40,7 @@ Il **broker MQTT** può essere installato in cloud, in una Virtual Private netwo
 
    <img src="img/piconet.png" alt="alt text" width="1000">
 
-I dispositivi ZigBee possono essere configurati in modo da realizzare diverse topologie di reti. Una topologia largamente usata è la quella mesh.
-Più reti possono organizzarsi in cluster con una struttura logica ad albero (spanning tree ottimo). Viene così realizzata una rete peerto-peer con un minimo overhead di routing.
+E’ una architettura a stella gerarchica (albero). E’ realizzata da un solo dispositivo master. Un master può essere contemporaneamente pure slave di un’altra piconet.
 
 <img src="img/archzigbee.png" alt="alt text" width="1000">
 
@@ -51,10 +50,36 @@ Caratteristiche distintiva di questa tecnologia di rete di sensori  è la **topo
 
 ### **Tipologie di nodi** 
 
+<img src="img/blenode.png" alt="alt text" width="800">
+
 Le specifiche dello standard distinguono 3 tipi di dispositivi:
-- Il **coordinatore**, che ha il compito di organizzare la rete e conservare le tabelle di routing. Svolge pure il ruolo di trust center e di archivio per le chiavi di sicurezza.
-- I **router** (FFD o full function device), che possono parlare con tutti gli altri dispositivi
-- I **dispositivi finali** (Reduced function devices o RFD), hanno funzionalità ridotte e possono parlare con in router e il coordinatore, ma non direttamente tra di loro. Non essendo router, non smistano mai i dati generati da altri. Possono restare inattivi per molto tempo, garantendo così una lunga durata della batteria
+- **Controller**: include il livello BLE PHY, il livello LL e l'interfaccia host controller interface (HCI)
+     - BLE PHY lavora nella banda di frequenza industriale, scientifica e medica (ISM) a 2,4 GHz senza licenza, la stessa del Wi-Fi®. Usa tecnologie di condivisione del mezzo FDM a salto di frequenza FHSS insieme a TDMA.
+     - LL esegue attività simili al livello di controllo di accesso medio (MAC) del modello OSI. In Bluetooth, LL si interfaccia direttamente con BLE PHY e gestisce lo stato di collegamento della radio per definire il ruolo di un dispositivo come master, slave, advertiser o scanner.
+     - HCI lato controller. Il controller side HCI gestisce l'interfaccia tra l'host e il controller. L'HCI definisce una serie di comandi ed eventi per la trasmissione e la ricezione di dati a pacchetto. Quando riceve i pacchetti dal controller, l'HCI estrae i dati grezzi dal controller da inviare all'host.
+- **Host**: L'host include l'HCI sul lato host,  L2CAP, attribute protocol (ATT), generic attribute profile (GATT), security manager protocol (SMP), and generic access profile (GAP).
+L2CAP.
+    - In trasmissione: imbusta i dati dai livelli superiori BLE nel formato pacchetto BLE standard
+    - In ricezione: estrae i dati dal pacchetto BLE LL standard in base alla configurazione del collegamento specificata nei livelli ATT e SMP.
+ATT. È un protocollo che si occupa del recupero di un singolo attributo tra client e server GATT è un protocollo che si occupa di recuperare certe caratteristiche e certi profili di un dispositivo remoto raccogliendoli come una sequenza di attributi
+- I ruoli si applicano a livello di collegamento e corrispondono in genere al master e allo slave: 
+- Dispositivo Centrale: esegue la scansione (attiva o passiva) alla ricerca di advertisement e se si connette prende il ruolo di master delle comunicazioni sul canale dettando i tempi di tutte le periferiche.
+- Dispositivo Periferica: il dispositivo nel ruolo di periferica crea e invia gli  l'annunci.  Una volta connesso, assume il ruolo di client.
+- In generale, un dispositivo può essere un client, un server o entrambi, indipendentemente dal fatto che sia un master o uno slave. 
+- Il livello GAP dello stack BLE è il responsabile della funzione di connessione. 
+Questo livello gestisce le modalità e le procedure di accesso del dispositivo, inclusi:
+rilevamento del dispositivo
+creazione del collegamento
+interruzione del collegamento
+avvio delle funzioni di sicurezza e configurazione del dispositivo
+- Standby: è lo stato initiale dopo un reset.
+Advertiser: il dispositivo fa advetising con dati specifici che consentono a tutti i dispositivi initiator di sapere se è un dispositivo connettibile (contiene l'indirizzo del dispositivo e può contenere alcuni dati aggiuntivi come il nome del dispositivo).
+Scanner: quando riceve l’advertisement, il dispositivo scanner invia una scan request. L’advertiser risponde con una scan response. Questo processo si chiama discovery del dispositivo. Il dispositivo scanner è a conoscenza del dispositivo advertiser e può avviare una connessione con esso.
+Initiator: all'avvio, deve specificare l’indirizzo del dispositivo peer a cui vuole connettersi. Se viene ricevuto un advertisement corrispondente a quell’indirizzo, il dispositivo invia quindi una richiesta per stabilire una connessione con il dispositivo advertiser definendo i parametri della connessione (Connection Interval, Slave Latency, Supervision Timeout).
+Slave/Master: quando viene stabilita una connessione, il dispositivo funziona come uno slave se è l’advertiser, come un master se è l’initiator.
+
+
+
 
   
 ### **Consumo energetico** 
