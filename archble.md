@@ -87,7 +87,7 @@ Esempio: tour digitale in un museo, in cui ogni stanza o attrazione potrebbe ave
 
 **Esempio ambulatorio.**
 
-<img src="img/ambulatorio.gif" alt="alt text" width="700">
+<img src="img/ambulatorio.gif" alt="alt text" width="900">
 
 **Esempio shopping.**
 
