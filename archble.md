@@ -8,6 +8,7 @@ La rete di sensori fisica è a stella dove il centro stella è il gateway. Un se
 
 I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento diretto **virtuale** con il network server, per cui, in definitiva, la topologia risultante è, **fisicamente**, quella di più **reti di accesso** a stella tenute insieme da una **rete di distribuzione** qualsiasi purchè sia di tipo TCP/IP (LAN o Internet).
 
+
 ### **Gateway standardizzati** 
 
 **Riassumendo**, alla **rete di distribuzione IP** si collegano, quindi, una o più **reti secondarie** che servono da **rete di accesso** per i dispositivi sensori o attuatori con **interfacce** spesso di tipo **non ethernet** che necessitano di un **gateway** di confine con possibili funzioni di:     
@@ -19,14 +20,37 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
   - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
 
-**Zigbee2mqtt** è un software open-source progettato per permettere ai dispositivi Zigbee di comunicare direttamente con un server MQTT (Message Queuing Telemetry Transport) senza la necessità di un hub proprietario. 
+### **Schema di cablagggio a beacon fisso** 
 
-<img src="img/image-17.png" alt="alt text" width="1000">
+È l’approccio più comune. I beacon sono posizionati in posizioni fisse e note, rispetto a una mappa interna.  
 
-Zigbee è uno standard di comunicazione wireless utilizzato per il controllo e l'automazione domestica, mentre MQTT è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando Zigbee2mqtt, gli utenti possono integrare facilmente dispositivi Zigbee di diversi produttori in un sistema di automazione domestica basato su MQTT, offrendo maggiore flessibilità e controllo.
-<img src="img/zigbeebridge.png" alt="alt text" width="800">
+I dispositivi mobili abilitati Bluetooth riconoscono questi beacon quando si trovano nel raggio della portata e determinano la posizione assoluta (latitudine e longitudine) del dispositivo sulla mappa, stimata la misura della distanza (usando l'intensità del segnale dei beacon) e nota la conoscenza delle posizioni assolute dei beacon.
 
-**Zigbee2mqtt** opera a livello di **applicazione** della pila OSI in quanto **traduce** un **payload zigbee** in un **payload JSON MQTT**  (gateway = router applicativo). Si tratta di un software che consente di integrare dispositivi Zigbee in un'infrastruttura di domotica basata su MQTT (Message Queuing Telemetry Transport). Zigbee2mqtt funge da **ponte** tra la rete Zigbee e il broker MQTT, consentendo agli utenti di interagire con i dispositivi Zigbee tramite messaggi MQTT.
+I dati di tracciamento che possono essere raccolti da ciascun dispositivo mobile possono quindi essere inviati, via wifi o modem UMTS, a un sistema centralizzato a scopo analitico e ad altri servizi come la mappatura delle presenze in tempo reale.
+
+<img src="img/fixedbeacon.png" alt="alt text" width="900">
+
+Esempio: tour digitale in un museo, in cui ogni stanza o attrazione potrebbe avere un beacon fisso che emette un tag BLE specifico. Se una persona sceglie di installare l'app mobile del museo, il suo telefono, ogni qualvolta cammina vicino a un beacon, legge il tag e le informazioni pertinenti e mirate sull'esposizione potrebbero essere recuperate da ciascun dispositivo tramite il tag, consentendo un'esperienza più istruttiva e coinvolgente per i visitatori.
+
+### **Schema di cablagggio a scanner fisso** 
+
+È un’approccio sempre più diffuso. Questi "ascoltatori" fissi raccolgono tutti i beacon Bluetooth nella loro portata e trasmettono le informazioni raccolte a un sistema centralizzato per l'analisi.
+
+Il sistema centrale applicherà alcuni filtri di segnale e, in base alla posizione degli ascoltatori fissi che è stata programmata nel sistema, determina la posizione dei beacon
+Utilizzando questo approccio, invece di tracciare un dispositivo mobile, si ottiene il tracciamento dei singoli beacon, che consente una serie di casi d'uso nuovi e innovativi:
+
+<img src="img/fixedscanner.png" alt="alt text" width="900">
+
+Esempi:
+- Tracciamento di risorse in una fabbrica (materie prime o prodotti) identificate da un tag univoco (trasponder):
+beacon collegati alle risorse (tag) e  listener installati lungo la linea di produzione (forniscono la posizione).
+dati di tracciamento in tempo reale non solo rispetto la posizione ma anche a quantità di tempo, ad esempio, il tempo in cui alcuni pezzi rimangono in un reparto di una fabbrica.
+- Tracciamento partecipanti di una fiera a cui sono stati dati dei piccoli beacon BLE grandi come una moneta da portare con sé, che possono interagire con gli "ascoltatori" BLE posizionati presso gli stand dimostrativi e nelle sale riunioni dell'evento. A seconda dell'occasione, del caso d'uso e dell'obiettivo aziendale, tale sistema è in grado di raccogliere:
+solo metriche anonime quali numero presenze e analisi degli eventi in tempo reale : potrebbe anche essere utile ai partecipanti (i gestori di beacon) che, una volta in prossimità di un evento, potrebbero tramite un'app interrogare il sistema centrale per prenotare i posti e accodarsi in tempo reale senza mettersi fisicamente in fila.
+con l’esplicito accordo degli utenti, e solo nei limiti di dove sono stati collocati gli "ascoltatori", tracciare la posizione in tempo reale di specifiche persone.
+
+
+
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
 
