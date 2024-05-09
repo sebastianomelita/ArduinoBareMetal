@@ -104,22 +104,15 @@ Attraverso questi canali, ogni dispositivo Zigbee utilizza una larghezza di band
 
 La situazione può essere riassunta nel seguente modo:
 
-<img src="img/42979_2021_769_Fig1_HTML.png" alt="alt text" width="400">
+<img src="img/bleaccess.png" alt="alt text" width="600">
 
-La **superframe** è una trama composta di **16 slot** temporali di uguale larghezza all'interno dei quali inviare i dati di una o più **applicazioni**. E' delimitata da una **coppia di beacons** e viene spedita dal **coordinatore**. 
+Ogni **piconet** ha due canali fisici: un canale ad **accesso multiplo** detto  Canale di **Advertisement** ed uno **TDMA** regolato dal master detto **Canale Dati**:
+- Nel **canale dati**, dedicato alle comunicazioni single cast, i tempi sono stabiliti dal master e più comunicazioni occupano slot temporali diversi (TDM statico), ciascuna con una propria periodicità detta connInterval di valore multiplo di 1.25 ms e compreso tra 7.5ms e 4s
+Nel canale di advertising, dedicato alle comunicazioni broadcast, i tempi sono stabiliti dagli advertiser ma questi possono essere più di uno per cui:
+l’accesso è condiviso e, per limitare le collisioni, si inizia a parlare dopo una sorta di backoff semicasuale T_advEvent = advInterval + advDelay dove advInterval è casuale compreso tra 0 e 10 ms mentre advDelay è un intero multiplo di 0.625 ms compreso tra 20 ms e 10.24 s (periodo di beacon).
+I devices che trasmettono pacchetti di advertising nei canali fisici sono detti advertisers. I devices che invece ricevono questi pacchetti, senza l'intenzione di aprire una connessione sono detti scanners. 
+Una connessione può essere stabilita solo tra un dispositivo advertiser ed un dispositivo initiator e questi dispositivi diventeranno rispettivamente slave e master della piconet appena formata e comunicheranno nel canale dati, terminando così L'Advertising Event ed iniziando un Connection Event.
 
-<img src="img/IEEE-802154-superframe-structure-2.png" alt="alt text" width="600">
-
-I **beacons** sono usati per:  
- - sincronizzare i dispositivi
- - identificare il PAN coordinator
- - descrivere la struttura della superframe.
-   
-Il **PAN coordinator** può dedicare porzioni della superframe ad applicazioni a **bassa latenza** quali quelle multimediali. Queste porzioni sono chiamate garanteed time slot (**GTS**) e sono regolate in maniera deterministica frazie alla multiplazione statica TDM.
-
-Il PAN coordinator può allocare fino 7 di questi GTS per una singola applicazione, ognuno dei quali può occupare più di un periodo di slot. Ad ogni dispositivo che sta trasmettendo in un GTS viene assicurato che la sua operazione venga completata prima dell’inizio del successivo GTS.
-
-Tutte le transazioni basate su contesa saranno completate prima dell’inizio del CFP.
 
 ### **Slotted CSMA** 
 
