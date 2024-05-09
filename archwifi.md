@@ -180,6 +180,8 @@ Per funzionare efficacemente dovrebbe avere:
 - **almeno due radio wireless**: una per la connessione alla prima rete e una per la connessione alla seconda rete. Questo consente al dispositivo di ricevere dati da una rete e trasmetterli all'altra contemporaneamente, facilitando il trasferimento di dati tra le due reti.
 - **uso di due canali diversi**:È importante selezionare canali wireless non sovrapposti per evitare interferenze e garantire prestazioni ottimali.
 
+Essendo parte di una unica LAN derivatadalla cascata hub1---bridge1---hub2---bridge2---hub3, tutti i dispossitivi devono possedere indirizzi IP afferenti alla medesima subnet.
+
 ### **Esempio sottorete privata: client mode**
 
 In client mode il collegamento tra due AP è assimilabile ad una dorsale L3. Altri dispositivi client possono entrare a far parte del link tra i due AP.
