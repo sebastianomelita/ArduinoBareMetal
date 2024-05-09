@@ -62,13 +62,13 @@ I pacchetti di **advertisement** sono periodici e sono messaggi di beacon trasme
 
 **Periferica**: Un dispositivo che invia periodicamente pacchetti pubblicitari (advertisement beacon) connettibili in broadcast e accetta connessioni in entrata. Una volta iniziata una connessione, la periferica segue i tempi del master centrale e scambia regolarmente dati con esso, quindi, dopo la connessione, assume il ruolo di slave della comunicazione.
 
-<img src="img/ibeacon.png" alt="alt text" width="800">
+<img src="img/linkbeacon.png" alt="alt text" width="800">
 
 La differenza tra la scansione dei beacon effettuata da un dispositivo centrale e quella effettuata da un semplice observer sta nel fatto che la prima è una ricerca che è abilitata ad instaurare una connessione bidirezionale con i dispositivi beacon periferici, mentre la seconda è una scansione che permette l’attivazione di connessioni di sola ricezione. 
 
 ## **Dispositivi Beacon**
 
-<img src="sensornet1.png" alt="alt text" width="800">
+<img src="img/ibeacon.png" alt="alt text" width="800">
 
 I beacon sono delle **sequenze di sincronizzazione** in grado sia di sincronizzare gli orologi dei dispositivi Tx e Rx che si accingono ad iniziare una comunicazione ma anche di indentificare in maniera univoca i dispositivi che li emettono. La trama dati compresa tra due beacon consecutivi viene detta **supertrama** (superframe) ed è generalmente divisa in due zone con **politiche di accesso** al canale diverse:
 - una **deterministica** al riparo dalle collisioni detta **CFP** (Contention Free period) e regolata dalla multiplazione statica TDMA.
