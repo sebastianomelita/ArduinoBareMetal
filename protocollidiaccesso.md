@@ -637,7 +637,20 @@ Il protocollo CSMA/CA (Carrier Sense Medium Access with Collision Avoidance) fun
 
 Un AP può assumere un controllo ancor più rigoroso sull'andamento delle trasmissioni, se svolge un ruolo di Point Coordinator (PC), supportando la Point Coordination Function (PCF). In tal caso, in occasione delle trame Beacon può dare inizio ad un periodo libero da contesa (CFP, Contention Free Period), in cui annuncia un NAV tale da inibire la trasmissione di tutte le altre stazioni:
 - il **beacon** è una particolare sequenza di bit che serve a **sincronizzare** gli orologi dell'AP con quello di tutte le stazioni e viene trasmessa **periodicamente** ad intervalli di tempo **regolari**. La trasmissione regolare del beacon, può però essere **posticipata** a causa della occupazione del mezzo trasmissivo, ed in tal caso ha luogo dopo che è trascorso un **PIFS** (PCF IFS) dal momento in cui il mezzo è libero.
-- il **NAV CFP** (Ciontention Free Period) inibisce tutte le stazioni dal prendere l'**iniziativa di cominciare** una trasmissione. Finchè è valido le stazioni comunicheranno in modalità **master/slave**, cioè **risponderanno** solo **se interrogate**.
+
+I beacon sono delle **sequenze di sincronizzazione** in grado sia di sincronizzare gli **orologi** dei dispositivi Tx e Rx che si accingono ad iniziare una comunicazione ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. 
+
+La **sincronizzazione** serve a fare in modo che al momento della **transizione** del clock sia il dispositivo TX che quello RX siano posizionati esattamente sul **ventre** di un bit cioè sul punto di mezzo del livello di un bit, condizione necessaria in ricezione per ottenere la massima probabilità di **campionare** (misurare) un **bit corretto**. Il momento giusto di questa misura è implicito, cioè non viene segnalato dal trasmettitore ma deve essere **estratto** dal flusso di bit dei dati e mantenuto nel tempo.
+
+Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla divisione del tempo di trasmissione tra sorgenti diverse (TDM) richiedono una sincronizzazione di bit elevata. Però, non tutte le tecniche richiedono una **sincronizzazione del messaggio** trasmesso tra TX e RX. L'RX non è tenuto a sapere l'esatto momento dell'arrivo del prossimo messaggio. 
+- Quelle **dinamiche** (TDM dinamico, ALOHA, CSMA) consentono la trasmissione di una sequenza di bit dati in qualunque momento, tanto l'inizio del messaggio è segnalato da una sequenza di bit di **SOF** (Start Of Frame).
+- Quelle **statiche** (TDM statico), **allocano** i messaggi di stazioni diverse in **differenti intervalli** temporali di dimensione **fissa** detti **slot**. Ogni slot **non** possiede identificatori espliciti dell'identità di un messaggio, che quindi può essere riconosciuto in ricezione soltanto in base alla **posizione** all'interno di un treno prestabilito di slot detto **trama** TDM.
+
+La trama dati compresa tra due beacon consecutivi viene detta **supertrama** (superframe) ed è generalmente divisa in due zone con **politiche di accesso** al canale diverse:  
+- una **deterministica** al riparo dalle collisioni detta **CFP** (Contention Free Period) e regolata dalla multiplazione statica TDMA, che viene usata per trasmettere i dati delle comunicazioni **unicast**.
+- una **probabilistica** a contesa, in cui i tentativi di accesso dei dispositivi sono soggetti al **rischio di collisione** perchè regolata da un protocollo di tipo **CSMA/CA**, che invece serve per trasmettere delle particolari informazioni **broadcast** dette **advertisement**.
+
+Nel caso del WiFi, il **NAV CFP** (Contention Free Period) inibisce tutte le stazioni dal prendere l'**iniziativa di cominciare** una trasmissione. Finchè è valido le stazioni comunicheranno in modalità **master/slave**, cioè **risponderanno** solo **se interrogate**.
 
 <img src="CFP1.png" alt="alt # **text" width="600">
 Fig 20
@@ -647,7 +660,7 @@ Fig 20
 <img src="CFP2.png" alt="alt # **text" width="600">
 Fig 21
 
-Normalmente i dispositivi AP lavorano in **modalità ibrida** DCF e PCF. Vengono trasmessi periodicamente dei beacon e l'intervallo temporale tra un beacon e l'altro viene suddiviso in **due zone**, una soggetta a trasmissioni di tipo **PCF** e quindi **intrinsecamente** al riparo dalle collisioni adatta a trasmissioni **sincrone** e un'altra di tipo **DCF**, soggetta a collisioni sugli RTS, dedicata alle trasmissioni **asincrone**.
+**Riassumendo**, Normalmente i dispositivi AP lavorano in **modalità ibrida** DCF e PCF. Vengono trasmessi periodicamente dei beacon e l'intervallo temporale tra un beacon e l'altro viene suddiviso in **due zone**, una soggetta a trasmissioni di tipo **PCF** e quindi **intrinsecamente** al riparo dalle collisioni adatta a trasmissioni **sincrone** e un'altra di tipo **DCF**, soggetta a collisioni sugli RTS, dedicata alle trasmissioni **asincrone**.
 
 **Sitografia**:
 - https://teoriadeisegnali.it/story/802.11/on_desk/accesso.html
