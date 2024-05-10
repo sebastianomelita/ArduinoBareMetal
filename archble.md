@@ -191,7 +191,9 @@ Una **connessione** può essere stabilita solo tra un dispositivo **advertiser**
 
 ### **Messaggi confermati**
 
-La conferma dei messaggi inviati da parte del ricevente normalmente non è necessaria nel caso dei sensori. Infatti, se un invio da parte di un sensore non andasse a buon fine, è inutile richiedere la ritrasmissione di un dato che comunque a breve arriva con una misura più aggiornata. La conferma, invece, è prevista per funzioni di **comando** o **configurazione**.  Ad esempio  nel caso di pulsanti, rilevatori di transito o allarmi in cui l'invio del messaggiò avviene sporadicamente e in maniera del tutto **asincrona** (cioè non prevedibile dal ricevitore), potrebbe essere auspicabile avere un feedback da parte del protocollo mediante un meccanismo di conferma basato su **ack**. Ma non sempre ciò è possibile.
+La **conferma** dei messaggi inviati da parte del ricevente normalmente non è necessaria nel caso dei **sensori**. Infatti, se un invio da parte di un sensore non andasse a buon fine, è inutile richiedere la ritrasmissione di un dato che comunque a breve arriva con una misura più aggiornata. 
+
+La conferma, invece, è prevista per funzioni di **comando** o **configurazione**.  Ad esempio  nel caso di pulsanti, rilevatori di transito o allarmi in cui l'invio del messaggiò avviene sporadicamente e in maniera del tutto **asincrona** (cioè non prevedibile dal ricevitore), potrebbe essere auspicabile avere un feedback da parte del protocollo mediante un meccanismo di conferma basato su **ack**. Ma non sempre ciò è possibile.
 
 La **conferma**, però, potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo) utilizzando un **topic di feeedback** (o stato) per inviare il valore dello stato corrente subito dopo che questo viene interessato da un comando in ingresso sul dispositivo. 
 
@@ -212,7 +214,7 @@ Sovente, nella rete di distribuzione IP è presente un server col ruolo di **bro
 
 Il **canale applicativo** su cui vengono inviati i messaggi sono quindi i **topic**. Su un certo **topic** il dispositivo con il ruolo di **output** agisce come un **publisher**, mentre quello con il ruolo di **input** agisce come un **subscriber**.
 
-l'**ID MQTT** permette di individuare un dispositivo ma non è un indirizzo di livello 3, non individua la macchina host in base al suo IP, piuttosto è un indirizzo di livello applicativo perchè è in grado di fare la stessa cosa in base ad un identificativo MQTT univoco. Un dispositivo IoT non è tenuto a conoscere l'IP di tutti gli altri dispositivi ma solamente quello del broker. Il broker soltantoe sa gli indirizzi di tutti i dispositivi, conoscenza che acquisisce al momento del recupero dell'**endpoint remoto** della connessione TCP che è stata aperta in precedenza per iniziativa dei client (cioè un dispositivo IoT) al momento della sua connessione (autenticata) al broker.
+l'**ID MQTT** è un identificativo che permette di individuare un dispositivo ma non è un indirizzo di livello 3, non individua la macchina host in base al suo IP, piuttosto è un indirizzo di livello applicativo noto solo ad un server centrale, cioè il broker. Un dispositivo IoT non è tenuto a conoscere l'IP di tutti gli altri dispositivi ma solamente quello del broker. Il broker soltanto sa gli indirizzi di tutti i dispositivi, conoscenza che acquisisce durante la fase di **connessione** di un client al broker, momento in cui avviene anche il recupero del'**socket remoto** del client.
 
 Il **broker**, dal canto suo, **associa** ogni **topic** con tutti gli **ID** che sono registrati presso di esso come **subscriber**. Questa associazione è utilizzata per smistare tutti i messaggi che arrivano con un certo topic verso tutti gli ID che ad esso sono associati. Il topic diventa così un **indirizzo di gruppo**. La particolarità di questo indirizzo è che è **gerarchico** secondo una struttura ad **albero**, cioè gruppi di dispositivi possono essere suddivisi in **sottogruppi** più piccoli estendendo il nome del path con un **ulteriore prefisso**, diverso per ciascun sottogruppo. L'operazione può essere ripetuta ulteriormente in maniera **ricorsiva**.
 
@@ -227,7 +229,7 @@ Potremmo a questo punto inserire il comando delle luci nel topic più generale d
 ### **Gestione dei topic di stato**
 
 Questo canale viene utilizzato per inviare lo stato di un dispositivo a tutti coloro che ne sono interessati. L'interesse potrebbe nascere per più motivi:
-- una volta che un sensore ha **inviato un comando** all'attuatore (ad esempio "on":"true") per notificare, all'utente o al sistema che ha effettuato l'azione, lo stato corrente in modo da verificare se il cambiamento di stato richiesto è avvenuto con successo (messaggio di **ack**).
+- una volta che un sensore ha **inviato un comando** all'attuatore (ad esempio "on":"true") per notificare, all'utente o al sistema che ha effettuato l'azione, lo stato corrente in modo da verificare se il cambiamento di stato richiesto è avvenuto con successo.
 - il server di processo potrebbe richiedere lo stato degli attuatori per **aggiornare un pannello generale** di comando.
 - un **quadro di controllo web** potrebbe richiedere periodicamente lo stato degli attuatori in seguito ad un nuovo caricamento della pagina oppure periodicamente.
 - lo stesso attuatore potrebbe **periodicamente** inviare il proprio stato a tutti coloro che ne sono interessati (server di processo o tutti i display web che lo comandano).
