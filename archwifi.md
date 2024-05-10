@@ -91,7 +91,7 @@ Questi canali più ampi vengono creati collegando insieme i canali a 20 MHz. Rad
 <img src="img/reusepatterns.png" alt="alt text" width="800">
 
   
-### **Messaggi confermati**
+## **Messaggi confermati**
 
 La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in **downlink**+funzioni di **comando** o **configurazione**, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile, invece, un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di **ack**.
 
