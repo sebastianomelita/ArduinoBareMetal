@@ -133,7 +133,7 @@ La **sincronizzazione** serve a fare in modo che al momento della **transizione*
 
 Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla divisione del tempo di trasmissione tra sorgenti diverse (TDM) richiedono una sincronizzazione di bit elevata. Però, non tutte le tecniche richiedono una **sincronizzazione del messaggio** trasmesso tra TX e RX. L'RX non è tenuto a sapere l'esatto momento dell'arrivo del prossimo messaggio. 
 - Quelle **dinamiche** (TDM dinamico, ALOHA, CSMA) consentono la trasmissione di una sequenza di bit dati in qualunque momento, tanto l'inizio del messaggio è segnalato da una sequenza di bit di **SOF** (Start Of Frame). Vedi [Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) e [Dettaglio mezzi a BUS](protocollidiaccesso.md) per approfondimenti.
-- Quelle **statiche** (TDM statico), **allocano** i messaggi di stazioni diverse in **differenti intervalli** temporali di dimensione **fissa** detti **slot**. Ogni slot **non** possiede identificatori espliciti dell'identità di un messaggio, che quindi può essere riconosciuto in ricezione soltanto in base alla **posizione** all'interno di un treno prestabilito di slot detto **trama** TDM. Vedi [Dettaglio multiplazioni statiche](multiplazioni.md) per approfondimenti.
+-Quelle **statiche** (TDM statico), **allocano** i messaggi di stazioni diverse in **differenti intervalli** temporali di dimensione **fissa** detti **slot**. Ogni slot **non** possiede identificatori espliciti nè dell'identità di un messaggio nè del suo inizio, che quindi può essere riconosciuto e correttamente letto in ricezione soltanto in base alla **posizione** all'interno di un treno prestabilito di slot detto **trama** TDM. Vedi [Dettaglio multiplazioni statiche](multiplazioni.md) per approfondimenti.
 
 La trama dati compresa tra due beacon consecutivi viene detta **supertrama** (superframe) ed è generalmente divisa in due zone con **politiche di accesso** al canale diverse:  
 - una **deterministica** al riparo dalle collisioni detta **CFP** (Contention Free Period) e regolata dalla multiplazione statica TDMA, che viene usata per trasmettere i dati delle comunicazioni **unicast**.
@@ -190,9 +190,10 @@ Una **connessione** può essere stabilita solo tra un dispositivo **advertiser**
 ## **Messaggi MQTT**
 
 ### **Messaggi confermati**
-La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in **downlink**+funzioni di **comando** o **configurazione**, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile, invece, un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di **ack**.
 
-La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo Zigbee) utilizzando un topic di feeedback (o stato) per inviare il valore dello stato corrente subito dopo che questo viene interessato da un comando in ingresso sul dispositivo. 
+La conferma dei messaggi inviati da parte del ricevente normalmente non è necessaria nel caso dei sensori. Infatti, se un invio da parte di un sensore non andasse a buon fine, è inutile richiedere la ritrasmissione di un dato che comunque a breve arriva con una misura più aggiornata. La conferma, invece, è prevista per funzioni di **comando** o **configurazione**.  Ad esempio  nel caso di pulsanti, rilevatori di transito o allarmi in cui l'invio del messaggiò avviene sporadicamente e in maniera del tutto **asincrona** (cioè non prevedibile dal ricevitore), potrebbe essere auspicabile avere un feedback da parte del protocollo mediante un meccanismo di conferma basato su **ack**. Ma non sempre ciò è possibile.
+
+La **conferma**, però, potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo) utilizzando un **topic di feeedback** (o stato) per inviare il valore dello stato corrente subito dopo che questo viene interessato da un comando in ingresso sul dispositivo. 
 
 ### **Definizione di topic e payload**
 
@@ -226,7 +227,7 @@ Potremmo a questo punto inserire il comando delle luci nel topic più generale d
 ### **Gestione dei topic di stato**
 
 Questo canale viene utilizzato per inviare lo stato di un dispositivo a tutti coloro che ne sono interessati. L'interesse potrebbe nascere per più motivi:
-- una volta che un sensore ha **inviato un comando** all'attuatore (ad esempio "on":"true") per notificare, all'utente o al sistema che ha effettuato l'azione, lo stato corrente in modo da verificare se il cambiamento di stato richiesto è avvenuto con successo.
+- una volta che un sensore ha **inviato un comando** all'attuatore (ad esempio "on":"true") per notificare, all'utente o al sistema che ha effettuato l'azione, lo stato corrente in modo da verificare se il cambiamento di stato richiesto è avvenuto con successo (messaggio di **ack**).
 - il server di processo potrebbe richiedere lo stato degli attuatori per **aggiornare un pannello generale** di comando.
 - un **quadro di controllo web** potrebbe richiedere periodicamente lo stato degli attuatori in seguito ad un nuovo caricamento della pagina oppure periodicamente.
 - lo stesso attuatore potrebbe **periodicamente** inviare il proprio stato a tutti coloro che ne sono interessati (server di processo o tutti i display web che lo comandano).
