@@ -108,7 +108,14 @@ La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo*
 
 Il **canale applicativo** su cui vengono inviati i messaggi sono quindi i **topic**. Su un certo **topic** il dispositivo con il ruolo di **output** agisce come un **publisher**, mentre quello con il ruolo di **input** agisce come un **subscriber**.
 
-Il path dei topic è esso stesso un indirizzo utile per individuare un dispositivo ma non di livello 3, non individua la macchina host in base al suo IP, ma di livello applicativo perchè è in grado di fare la stessa cosa in base ad un identificativo MQTT univoco.
+l'**ID MQTT** permette di individuare un dispositivo ma non è un indirizzo di livello 3, non individua la macchina host in base al suo IP, piuttosto è un indirizzo di livello applicativo perchè è in grado di fare la stessa cosa in base ad un identificativo MQTT univoco. Un dispositivo IoT non è tenuto a conoscere l'IP di tutti gli altri ma solo l'indirizzo Ip del broker. Il broker solamente sa gli indirizzi di tutti dopo averli acquisiti come parte dell'endpoint remoto della connessione TCP che è stata aperta per iniziativa dei client, cioè dai dispositivi IoT.
+
+Il **broker**, dal canto suo, **associa** ogni **topic** con tutti gli **ID** che sono registrati presso di esso come **subscriber**. Questa associazione è utilizzata per smistare tutti i messaggi che arrivano con un certo topic verso tutti gli ID che ad esso sono associati. Il topic diventa un dirizzo di gruppo. La particolarità di questo indirizzo di gruppo è che è **gerarchico** secondo una struttura ad **albero**, cioè gruppi di dispositivi possono essere suddivisi in **sottogruppi** più piccoli estendendo il nome del path con un **ulteriore prefisso**, diverso per ciascun sottogruppo. L'operazione può essere ripetuta ulteriormente in maniera **ricorsiva**.
+
+**Ad esempio**, posso indiviuare le lampade della casa con il path ```luci``` e accenderle e spegnerle tutte insieme, ma posso sezionarle ulteriormente con il path ```luci/soggiorno``` con il quale accendere o spegnere solo quelle del soggiorno oppure con il path ```luci/soggiorno/piantane``` con il quale fare la stessa cosa ma solo con le piantane del soggiorno.
+
+Potremmo a questo punto inserire il comando delle luci nel topic più generale delle misure ed attuazioni che chiameremo CMD e registrare i pulsanti del soggiorno al topic ```CMD/luci/soggiorno``` come pubblisher, mentre potremmo registrare le attuazioni delle lampade allo stesso topic come subscriber. Il comando potrebbe essere il JSON  ```{}```
+
 
 ## **Banda ISM**
 
