@@ -127,8 +127,16 @@ E’ una architettura a stella gerarchica (albero). E’ realizzata da un solo d
 
 ## **Topologie di connessione**
 
-I beacon sono delle **sequenze di sincronizzazione** in grado sia di sincronizzare gli orologi dei dispositivi Tx e Rx che si accingono ad iniziare una comunicazione ma anche di indentificare in maniera univoca i dispositivi che li emettono. La trama dati compresa tra due beacon consecutivi viene detta **supertrama** (superframe) ed è generalmente divisa in due zone con **politiche di accesso** al canale diverse:  
-- una **deterministica** al riparo dalle collisioni detta **CFP** (Contention Free period) e regolata dalla multiplazione statica TDMA, che viene usata per trasmettere i dati delle comunicazioni **unicast**.
+I beacon sono delle **sequenze di sincronizzazione** in grado sia di sincronizzare gli **orologi** dei dispositivi Tx e Rx che si accingono ad iniziare una comunicazione ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. 
+
+La **sincronizzazione** serve a fare in modo che al momento della **transizione** del clock sia il dispositivo TX che quello RX siano posizionati esattamente sul **ventre** di un bit cioè sul punto di mezzo del livello di un bit, condizione necessaria in ricezione per ottenere la massima probabilità di **campionare** (misurare) un **bit corretto**. Il momento corretto di questa misura è implicito, cioè non viene segnalato dal trasmettitore ma deve essere **estratto** dal flusso di bit dei dati e mantenuto nel tempo.
+
+Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla divisione del tempo di trasmissione tra sorgenti diverse (TDM) richiedono una sincronizzazione di bit elevata. Però, non tutte le tecniche richiedono una **sincronizzazione del messaggio** trasmesso tra TX e RX. L'RX non è tenuto a sapere l'esatto momento dell'arrivo del prossimo messaggio. 
+- Quelle **dinamiche** (TDM dinamico, ALOHA, CSMA) consentono la trasmissione di una sequenza di bit dati in qualunque momento, tanto l'inizio del messaggio è segnalato da una sequenza di bit di **SOF** (Start Of Frame).
+- Quelle **statiche** (TDM statico), **allocano** i messaggi di stazioni diverse in **differenti intervalli** temporali di dimensione **fissa** detti **slot**. Ogni slot **non** possiede identificatori espliciti dell'identità di un messaggio, che quindi può essere riconosciuto in ricezione soltanto in base alla **posizione** all'interno di un treno prestabilito di slot detto **trama** TDM.
+
+La trama dati compresa tra due beacon consecutivi viene detta **supertrama** (superframe) ed è generalmente divisa in due zone con **politiche di accesso** al canale diverse:  
+- una **deterministica** al riparo dalle collisioni detta **CFP** (Contention Free Period) e regolata dalla multiplazione statica TDMA, che viene usata per trasmettere i dati delle comunicazioni **unicast**.
 - una **probabilistica** a contesa, in cui i tentativi di accesso dei dispositivi sono soggetti al **rischio di collisione** perchè regolata da un protocollo di tipo **CSMA/CA**, che invece serve per trasmettere delle particolari informazioni **broadcast** dette **advertisement**.
 
 Tutti i **dispositivi BLE** emettono beacon per cui il nome di beacon alla fine è finito per identificare anche un **generico dispositivo BLE**.
