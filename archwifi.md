@@ -114,10 +114,15 @@ Il **broker**, dal canto suo, **associa** ogni **topic** con tutti gli **ID** ch
 
 **Ad esempio**, posso indiviuare le lampade della casa con il path ```luci``` e accenderle e spegnerle tutte insieme, ma posso sezionarle ulteriormente con il path ```luci/soggiorno``` con il quale accendere o spegnere solo quelle del soggiorno oppure con il path ```luci/soggiorno/piantane``` con il quale fare la stessa cosa ma solo con le piantane del soggiorno.
 
+### **Gestione dei topic di comando**
+
 Potremmo a questo punto inserire il comando delle luci nel topic più generale delle misure ed attuazioni che chiameremo ```comandi``` e registrare i pulsanti del soggiorno al topic ```luci/soggiorno/comandi``` come pubblisher, mentre potremmo registrare le attuazioni delle lampade allo stesso topic come subscriber. Il comando potrebbe essere il JSON  ```{"on":"true"}```, peer cui alla fine tutto in tero il path diventerebbe ```luci/soggiorno/comandi/{"on":"true"}```. Se volessimo selezionare un solo dispositivo sonoo possibili due strade alternative:
 - inserire il **prefisso mqtt** del dispositivo direttamente **nel path** ```luci/soggiorno/comandi/mydevice1-98F4ABF298AD/{"on":"true"}```
 - inserire un **id** del dispositivo **nel JSON** ```luci/soggiorno/comandi/{"deviceid":"01", "on":"true"}```, dove con ```01``` ci indica un indirizzo univoco solamente all'interno del sottogruppo ```luci/soggiorno```. Con questa soluzione il dispositivo deve saper gestire un secondo livello di indirizzi indipendente dal meccanismo del path dei topic. 
 
+### **Gestione dei topic di stato**
+
+### **Gestione dei topic di configurazione**
 
 ## **Banda ISM**
 
@@ -234,5 +239,7 @@ Essendo parte di una unica LAN derivata dallo stesso hub esteso, tutti i disposs
 - https://community.cisco.com/t5/wireless/mesh-mode-vs-bridge-mode/td-p/4094691
 - https://www.cisco.com/c/en/us/support/docs/wireless-mobility/wireless-lan-wlan/68087-bridges-pt-to-pt.html
 - https://www.tp-link.com/it/support/faq/151/
+- https://indomus.it/formazione/shelly-mqtt-e-http-comandi-utili/
+- https://forum.inductiveautomation.com/t/shelly-relay-1-pro-mqtt-command-for-turn-switch-on-off/81137
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
