@@ -99,7 +99,7 @@ La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo*
 - su un **topic di misura o attuazione (comando)**:
     - il dispositivo **sensore** è registrato sul broker col ruolo di **publisher** perchè vuole usare questo canale di output per **inviare il comando** verso l'attuatore 
     - il dispositivo **attuatore** è registrato sul broker con il ruolo di **subscriber** perchè è interessato a ricevere, su un canale di input, eventuali comandi di attuazione (motori, cancelli). 
--  su un **topic di feedback** (dal dispositivo terminale, verso il broker), utile al server applicativo per ricevere la conferma dell'avvenuto cambio di stato dell'attuatore ma anche utile all'utente per conoscere il nuovo stato:
+-  su un **topic di feedback (stato)** (dal dispositivo terminale, verso il broker), utile al server applicativo per ricevere la conferma dell'avvenuto cambio di stato dell'attuatore ma anche utile all'utente per conoscere il nuovo stato:
     - il dispositivo **attuatore** è registrato sul broker con il ruolo di **publisher** perchè intende adoperare questo canale di output per **inviare il feedback** con il proprio stato ad un **display** associato al sensore di comando.
     - il dispositivo **sensore**, ma meglio dire il dispositivo **display** associato al dispositivo sensore (un led o uno schermo), è registrato sul broker con il ruolo di **subscriber** perchè è interessato a ricevere, su un canale di input, eventuali  **feedback** sullo stato dell'attuatore per **mostrarli** all'utente. In questo caso è demandato all'utente, e non al protocollo, **decidere** se e quante volte ripetere il comando, nel caso che lo stato del dispositivo non sia ancora quello voluto.
 -  su un **topic di configurazione** dove può pubblicare solamente il sever applicativo mentre tutti gli altri dispositivi IoT sono dei subscriber:
@@ -121,6 +121,14 @@ Potremmo a questo punto inserire il comando delle luci nel topic più generale d
 - inserire un **id** del dispositivo **nel JSON** ```luci/soggiorno/comandi/{"deviceid":"01", "on":"true"}```, dove con ```01``` ci indica un indirizzo univoco solamente all'interno del sottogruppo ```luci/soggiorno```. Con questa soluzione il dispositivo deve saper gestire un secondo livello di indirizzi indipendente dal meccanismo del path dei topic. 
 
 ### **Gestione dei topic di stato**
+
+Questo canale viene utilizzato per inviare lo stato di un dispositivo a tutti coloro che ne sono interessati. L'interesse potrebbe nascere per più motivi:
+- una volta che un sensore ha **inviato un comando** all'attuatore (ad esempio "on":"true") per notificare, all'utente o al sistema che ha effettuato l'azione, lo stato corrente in modo da verificare se il cambiamento di stato richiesto è avvenuto con successo.
+- il server di processo potrebbe richiedere lo stato degli attuatori per **aggiornare un pannello generale** di comando.
+- un **quadro di controllo web** potrebbe richiedere periodicamente lo stato degli attuatori in seguito ad un nuovo caricamento della pagina oppure periodicamente.
+- lo stesso attuatore potrebbe **periodicamente** inviare il proprio stato a tutti coloro che ne sono interessati (server di processo o tutti i display web che lo comandano).
+
+
 
 ### **Gestione dei topic di configurazione**
 
