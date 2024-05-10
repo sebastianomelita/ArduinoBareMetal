@@ -96,7 +96,7 @@ Questi canali più ampi vengono creati collegando insieme i canali a 20 MHz. Rad
 La conferma dei messaggi è prevista per sia per messaggi in **uplink** che in **downlink**+funzioni di **comando** o **configurazione**, ad esempio pulsanti, rilevatori di transito, allarmi in cui l'invio del messaggiò avviene una tantum in maniera del tutto asincrona (cioè non prevedibile dal ricevitore) potrebbe essere auspicabile, invece, un feedback del protocollo mediante un meccanismo di conferma basato sui messaggi di **ack**.
 
 La **conferma** potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo Zigbee). Sovente, nella rete di distribuzione IP è presente un server col ruolo di **broker MQTT** a cui sono associati:
-- su un **topic di misura o attuazione**:
+- su un **topic di misura o attuazione (comando)**:
     - il dispositivo **sensore** è registrato sul broker col ruolo di **publisher** perchè vuole usare questo canale di output per **inviare il comando** verso l'attuatore 
     - il dispositivo **attuatore** è registrato sul broker con il ruolo di **subscriber** perchè è interessato a ricevere, su un canale di input, eventuali comandi di attuazione (motori, cancelli). 
 -  su un **topic di feedback** (dal dispositivo terminale, verso il broker), utile al server applicativo per ricevere la conferma dell'avvenuto cambio di stato dell'attuatore ma anche utile all'utente per conoscere il nuovo stato:
@@ -114,7 +114,9 @@ Il **broker**, dal canto suo, **associa** ogni **topic** con tutti gli **ID** ch
 
 **Ad esempio**, posso indiviuare le lampade della casa con il path ```luci``` e accenderle e spegnerle tutte insieme, ma posso sezionarle ulteriormente con il path ```luci/soggiorno``` con il quale accendere o spegnere solo quelle del soggiorno oppure con il path ```luci/soggiorno/piantane``` con il quale fare la stessa cosa ma solo con le piantane del soggiorno.
 
-Potremmo a questo punto inserire il comando delle luci nel topic più generale delle misure ed attuazioni che chiameremo CMD e registrare i pulsanti del soggiorno al topic ```CMD/luci/soggiorno``` come pubblisher, mentre potremmo registrare le attuazioni delle lampade allo stesso topic come subscriber. Il comando potrebbe essere il JSON  ```{}```
+Potremmo a questo punto inserire il comando delle luci nel topic più generale delle misure ed attuazioni che chiameremo ```comandi``` e registrare i pulsanti del soggiorno al topic ```luci/soggiorno/comandi``` come pubblisher, mentre potremmo registrare le attuazioni delle lampade allo stesso topic come subscriber. Il comando potrebbe essere il JSON  ```{"on":"true"}```, peer cui alla fine tutto in tero il path diventerebbe ```luci/soggiorno/comandi/{"on":"true"}```. Se volessimo selezionare un solo dispositivo sonoo possibili due strade alternative:
+- inserire il prefisso mqtt del dispositivo direttamente nel path ``luci/soggiorno/comandi/mydevice1-98F4ABF298AD/{"on":"true"}```
+- inserire un id del dispositivo nel JSON ``luci/soggiorno/comandi/{"deviceid":"01", "on":"true"}```, dove con ```01``` ci indica un indirizzo univoco solamente all'interno del sottogruppo ```luci/soggiorno```. Con questa soluzione il dispositivo deve saper gestire un secondo livello di indirizzi indipendente dal meccanismo del path dei topic. 
 
 
 ## **Banda ISM**
