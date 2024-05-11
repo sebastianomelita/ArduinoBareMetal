@@ -178,7 +178,7 @@ int main() {
 
 La **conferma** dei messaggi inviati da parte del ricevente normalmente non è necessaria nel caso dei **sensori**. Infatti, se un invio da parte di un sensore non andasse a buon fine, è inutile richiedere la ritrasmissione di un dato che comunque a breve arriva con una misura più aggiornata. 
 
-La conferma, invece, è prevista per funzioni di **comando** o **configurazione**.  Ad esempio  nel caso di pulsanti, rilevatori di transito o allarmi in cui l'invio del messaggiò avviene sporadicamente e in maniera del tutto **asincrona** (cioè non prevedibile dal ricevitore), potrebbe essere auspicabile avere un feedback da parte del protocollo mediante un meccanismo di conferma basato su **ack**. Ma non sempre ciò è possibile.
+La conferma, invece, è prevista per funzioni di **comando** o **configurazione**.  Ad esempio  nel caso di pulsanti, rilevatori di transito o allarmi in cui l'invio del messaggio avviene sporadicamente e in maniera del tutto **asincrona** (cioè non prevedibile dal ricevitore), potrebbe essere auspicabile avere un feedback da parte del protocollo mediante un meccanismo di conferma basato su **ack**. Ma non sempre ciò è possibile.
 
 La **conferma**, però, potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo) utilizzando un **topic di feeedback** (o stato) per inviare il valore dello stato corrente subito dopo che questo viene interessato da un comando in ingresso sul dispositivo. 
 
@@ -211,13 +211,15 @@ Potremmo a questo punto inserire il comando delle luci nel topic più generale d
 - inserire il **prefisso mqtt** del dispositivo direttamente **nel path** ```luci/soggiorno/comandi/mydevice1-98F4ABF298AD/{"toggle":"true"}```
 - inserire un **id** del dispositivo **nel JSON** ```luci/soggiorno/comandi/{"deviceid":"01", "toggle":"true"}```, dove con ```01``` ci indica un indirizzo univoco solamente all'interno del sottogruppo ```luci/soggiorno```. Con questa soluzione il dispositivo deve saper gestire un secondo livello di indirizzi indipendente dal meccanismo del path dei topic.
 
-### **Gestione dei topic di stato**
+### **Gestione dei topic di stato**  che un **sensore** ha inviato un **comando**
 
-Questo canale viene utilizzato per inviare lo stato di un dispositivo a tutti coloro che ne sono interessati. L'interesse potrebbe nascere per più motivi:
-- una volta che un sensore ha **inviato un comando** all'attuatore (ad esempio "on":"true") per notificare, all'utente o al sistema che ha effettuato l'azione, lo stato corrente in modo da verificare se il cambiamento di stato richiesto è avvenuto con successo.
-- il server di processo potrebbe richiedere lo stato degli attuatori per **aggiornare un pannello generale** di comando.
-- un **quadro di controllo web** potrebbe richiedere periodicamente lo stato degli attuatori in seguito ad un nuovo caricamento della pagina oppure periodicamente.
-- lo stesso attuatore potrebbe **periodicamente** inviare il proprio stato a tutti coloro che ne sono interessati (server di processo o tutti i display web che lo comandano).
+Questo canale viene utilizzato per inviare lo **stato** di un dispositivo a tutti coloro che ne sono interessati. L'interesse potrebbe nascere per più motivi:
+- **Conferma dell'avvenuta attuazione**, una volta l'attuatore a ricevuto un **comando** (ad esempio "on":"true"), questo potrebbe essere tenuto a **notificare** (in modalità PUSH), al **display** associato al sensore (o al **server di processo**) il proprio **stato attuale**, in modo che l'**utente** (o il server di processo) possa verificare l'effettiva **efficacia** del comando di attuazione.
+- **Richiesta del server di processo**. Il **server di processo** potrebbe richiedere (in modalità PULL) lo **stato** degli attuatori per **aggiornare un pannello generale** di comando o eseguire delle statistiche o per recuperare gli input di un algoritmo che deve eseguire.
+- **Sincronizzazione PULL** di un pannello di controllo. Un **quadro di controllo web** potrebbe richiedere (in modalità PULL) lo **stato degli attuatori**:
+    -  una **sola volta**, all'inizio, quando la pagina è stata **caricata/ricaricata** dall'utente
+    -  **periodicamente**, per essere certi di avere sempre lo **stato più aggiornato** anche a fronte di una eventuale **disconnessione** di rete che abbia impedito la registrazione dell'ultimo feedback da parte dell'attuatore.
+- **sincronizzazione PUSH**. Lo stesso attuatore potrebbe **periodicamente** inviare (in modalità PUSH) il proprio stato a tutti coloro che ne sono interessati (server di processo o tutti i display web che lo comandano). 
 
 Un esempio di **canale MQTT di stato** potrebbe essere: 
 - nel caso di **identificazione univoca** del dispositivo via  **path MQTT**: ```luci/soggiorno/stato/mydevice1-98F4ABF298AD/{"state":"on"}```
