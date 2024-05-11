@@ -639,7 +639,11 @@ Un AP può assumere un controllo ancor più rigoroso sull'andamento delle trasmi
 
 Il **beacon** è una particolare sequenza di bit che serve a **sincronizzare** gli orologi dell'AP con quello di tutte le stazioni e viene trasmessa **periodicamente** ad intervalli di tempo **regolari**. La trasmissione regolare del beacon, può però essere **posticipata** a causa della occupazione del mezzo trasmissivo, ed in tal caso ha luogo dopo che è trascorso un **PIFS** (PCF IFS) dal momento in cui il mezzo è libero. Un beacon serve anche di **indentificare** in maniera univoca i dispositivi che li emette grazi ad un id che viene in esso inserito. 
 
-La **sincronizzazione** serve a fare in modo che, al momento di una **transizione** (fronte) del clock, sia il dispositivo TX che quello RX siano posizionati esattamente sul **ventre** di un bit, cioè sul punto di mezzo del livello del bit, condizione necessaria in ricezione per ottenere la massima probabilità di **campionare** (misurare) un **bit corretto**. Il momento giusto di questa misura è implicito, cioè non viene segnalato dal trasmettitore, ma deve essere **estratto** (dal ricevitore) dal flusso di bit dei dati e mantenuto nel tempo.
+LLa **sincronizzazione** serve a fare in modo che, al momento di una **transizione** (fronte) del clock, sia il dispositivo TX che quello RX siano posizionati esattamente sul **ventre** di un bit, cioè sul punto di mezzo del livello del bit, condizione necessaria in ricezione per ottenere la massima probabilità di **campionare** (misurare) un **bit corretto**. 
+
+<img src="img/clockextract.png" alt="alt text" width="600">
+
+Il **momento giusto** di questa misura è implicito, cioè non viene segnalato dal trasmettitore, ma deve essere **estratto** (dal ricevitore) dal flusso di bit dei dati e mantenuto almeno per tutti i **campionamenti** dei bit del **messaggio** corrente. Per il **messaggio successivo** il ricevitore recupera il sincronismo leggendo un **nuovo preambolo**.
 
 L'**estrazione** del clock avviene **in banda**, cioè sullo stesso **canale dei dati**, attraverso il riconoscimento dei **fronti** dei **bit ricevuti**, fronti che sono con certezza presenti in numero **sufficiente** allo scopo solamente durante un **preambolo di sincronizzazione**.
 
