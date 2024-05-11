@@ -96,8 +96,6 @@ Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla **
 - Quelle **dinamiche** (TDM dinamico, ALOHA, CSMA) consentono la trasmissione di una sequenza di bit dati in qualunque momento, tanto l'**inizio** del messaggio è segnalato da una sequenza di bit di **SOF** (Start Of Frame). Vedi [Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) e [Dettaglio mezzi a BUS](protocollidiaccesso.md) per approfondimenti.
 - Quelle **statiche** (TDM statico), **allocano** i messaggi di stazioni trasmittenti diverse in **differenti intervalli** temporali di dimensione **fissa** detti **slot**. Ogni slot **non** possiede identificatori espliciti del messaggio (come l'indirizzo) nè del suo inizio (come lo SOF). In ricezione, un messaggio può essere riconosciuto e letto soltanto in base alla sua **posizione** all'interno di un treno prestabilito di slot, detto **trama** TDM. Vedi [Dettaglio multiplazioni statiche](multiplazioni.md) per approfondimenti. Alcune tecniche di trasmissione includono tra una trama e l'altra dei preamboli di sincronizzazione che, in questo contesto, si chiamano **beacon**.
 
-<img src="img/clockextract.png" alt="alt text" width="600">
-
 
 <img src="img/ethernet-802.webp" alt="alt text" width="600">
 
