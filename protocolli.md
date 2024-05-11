@@ -85,7 +85,24 @@ Per i protocolli in cui il messaggio è **asincrono**, cioè di cui il ricevente
 
 Il valore di SOF per IEEE 802.3 (EThernet) è 10101011. Il ricevitore esegue la **lettura continua** dei bit del canale e quando vede scorrere esattamente **quella sequenza** sa che a partire dal **bit successivo all'ultimo** dell'SOF deve cominciare a leggere un messaggio, contando i bit per identificare, isolare e leggere separatamente i **vari campi** di cui è composto il messaggio ricevuto.
 
+### **trama MAC**
+E' il messaggio 
 
+<img src="img/Ethernet_Type_II_Frame_format.svg.png" alt="alt text" width="600">
+
+Una trama Ethernet è un pacchetto di dati che viene trasmesso su una rete Ethernet. È composta da una serie di campi che contengono informazioni cruciali per la comunicazione tra i dispositivi collegati alla rete. Ecco una panoramica dei campi principali all'interno di una trama Ethernet:
+- Preambolo: È una sequenza di bit che precede il campo di "Start of Frame" (SOF) e serve a sincronizzare i dispositivi riceventi con il segnale in ingresso.
+- Start of Frame Delimiter (SFD): Segnala l'inizio della trama Ethernet. Solitamente è costituito da un singolo byte con un valore specifico, ad esempio, 0x55 seguito da 0xD5.
+- Indirizzo di Destinazione (Destination Address): Indica l'indirizzo MAC del destinatario della trama.
+- Indirizzo di Origine (Source Address): Indica l'indirizzo MAC del mittente della trama.
+- Tipo/ Lunghezza (Type/Length): Questo campo può essere utilizzato in due modi diversi:
+    - In una trama Ethernet II, questo campo specifica il tipo di protocollo dei dati (ad esempio, IPv4, IPv6, ARP).
+    - In una trama IEEE 802.3, questo campo specifica la lunghezza dei dati nel campo "Data".
+    - Dati (Data): Contiene il payload effettivo della trama, ovvero i dati trasportati.
+- Frame Check Sequence (FCS): È un campo di controllo di errore che viene calcolato sulla base dei dati della trama e utilizzato per verificare l'integrità dei dati durante la trasmissione.
+- Inter Frame Gap (IFG): È una breve pausa tra l'invio di due trame consecutive. Serve a garantire che i dispositivi riceventi abbiano il tempo di elaborare la trama ricevuta prima dell'arrivo della successiva.
+
+La struttura e il significato di questi campi possono variare leggermente a seconda dello standard Ethernet utilizzato, come ad esempio Ethernet II o IEEE 802.3.
 
 ### **Classificazione protocolli**
 
