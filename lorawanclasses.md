@@ -218,7 +218,7 @@ Questo canale viene utilizzato per inviare lo **stato** di un dispositivo a tutt
 - **Sincronizzazione PULL** del **server di processo**. Il server di processo potrebbe richiedere (in modalità PULL) lo **stato** degli attuatori per aggiornare un pannello generale di comando o eseguire delle statistiche o per recuperare gli input di un algoritmo che deve eseguire.
 - **Sincronizzazione PULL** di un **pannello di controllo**. Un **quadro di controllo web** potrebbe richiedere (in modalità PULL) lo **stato** degli attuatori:
     -  una **sola volta**, all'inizio, quando la pagina è stata **caricata/ricaricata** dall'utente
-    -  **periodicamente**, per essere certi di avere sempre lo **stato più aggiornato** anche a fronte di una eventuale **disconnessione** di rete che abbia impedito la registrazione dell'ultimo feedback da parte dell'attuatore.
+    -  **periodicamente**, per essere certi di avere sempre lo **stato più aggiornato**, anche a fronte di una eventuale **disconnessione** di rete che abbia impedito la registrazione dell'ultimo feedback da parte dell'attuatore.
 - **sincronizzazione PUSH**. Lo stesso attuatore potrebbe **periodicamente** inviare (in modalità PUSH) il proprio stato a tutti coloro che ne sono interessati (server di processo o tutti i display web che lo comandano). E' un'alternativa PUSH alla sincronizzazione PULL periodica.
 
 Un esempio di **canale MQTT di stato** potrebbe essere: 
