@@ -127,9 +127,11 @@ E’ una architettura a stella gerarchica (albero). E’ realizzata da un solo d
 
 ## **Topologie di connessione**
 
-I beacon sono delle **sequenze di sincronizzazione** in grado sia di sincronizzare gli **orologi** dei dispositivi (Tx e Rx) che si accingono ad iniziare una comunicazione, ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. 
+I beacon sono delle **sequenze di sincronizzazione** (dette preambolo) in grado sia di sincronizzare gli **orologi** dei dispositivi (Tx e Rx) che si accingono ad iniziare una comunicazione, ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. 
 
 La **sincronizzazione** serve a fare in modo che, al momento della **transizione** del clock, sia il dispositivo TX che quello RX siano posizionati esattamente sul **ventre** di un bit, cioè sul punto di mezzo del livello del bit, condizione necessaria in ricezione per ottenere la massima probabilità di **campionare** (misurare) un **bit corretto**. Il momento giusto di questa misura è implicito, cioè non viene segnalato dal trasmettitore, ma deve essere **estratto** (dal ricevitore) dal flusso di bit dei dati e mantenuto nel tempo.
+
+L'**estrazione** del clock avviene **in banda**, cioè sullo stesso **canale dei dati**, attraverso il riconoscimento dei **fronti** del flusso dati, che sono con certezza presenti in numero **sufficiente** allo scopo solamente durante il **preambolo di sincronizzazione**.
 
 Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla **ripartizione** del tempo di trasmissione tra sorgenti diverse (TDM), richiedono una sincronizzazione di bit elevata. Però, non tutte le tecniche richiedono la **sincronizzazione del messaggio** trasmesso tra TX e RX. L'RX non è normalmente tenuto a sapere l'esatto momento dell'arrivo del prossimo messaggio. 
 - Quelle **dinamiche** (TDM dinamico, ALOHA, CSMA) consentono la trasmissione di una sequenza di bit dati in qualunque momento, tanto l'**inizio** del messaggio è segnalato da una sequenza di bit di **SOF** (Start Of Frame). Vedi [Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) e [Dettaglio mezzi a BUS](protocollidiaccesso.md) per approfondimenti.
