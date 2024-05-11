@@ -2,7 +2,7 @@
 
 ## **Codifica di bit**
 
-La **codifica dei bit** si esegue in trasmissione ed è il processo di traduzione di ciascun bit di un messaggio in una certa sequenza di segnali elettrici caratterizzati da caratteristiche fisiche prestabilite da standard internazionali. Alcune di queste caratteristiche sono forma, ampiezza, periodo. In definitiva, è una traduzione da simboli (binari) in segnali elettrici.
+La **codifica dei bit** si esegue in trasmissione ed è il processo di traduzione di ciascun bit di un messaggio in una certa sequenza di segnali elettrici caratterizzati da proprietà fisiche stabilite da standard internazionali. Alcune di queste caratteristiche sono forma, ampiezza, periodo. In definitiva, è una traduzione da simboli (binari) in segnali elettrici.
 
 La **decodifica dei bit** si esegue in trasmissione ed è il processo di traduzione di ciascuna sequenza di segnali elettrici ricevuta in una certa sequenza di bit. In definitiva, è una traduzione da segnali elettrici a simboli (binari).
 
