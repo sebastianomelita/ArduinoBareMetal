@@ -26,7 +26,7 @@ L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzion
 
 Il **bridge Wifi** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori. 
 
-Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di getione e controllo. 
+Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
 
 ### **Rete di dispositivi WiFi** 
 
