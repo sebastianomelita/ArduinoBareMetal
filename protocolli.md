@@ -46,7 +46,7 @@ Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla **
 
 ### **Start of frame (SOF)**
 
-Per i protocolli in cui il messaggio è asincrono, cioè di cui il ricevente non conosce in anticipo il momento esatto della ricezione, l'inizio dello stesso deve essere segnalato in qualche modo. Nei **protocolli a carattere**, quali il **seriale RS232**, si è ricorso ad un **segnale di start** (transizione dal livello alto di idle a quello basso), nei protocolli per le reti di computer si preferisce delimitare il **bordo di inizio** di un **messaggio** con una particolare sequenza di bit detta **SOF** (Start Frame delimiter) o anche **SFD** (Start Frame Delimiter). 
+Per i protocolli in cui il messaggio è **asincrono**, cioè di cui il ricevente non conosce in anticipo il momento esatto della ricezione, l'inizio dello stesso deve essere segnalato in qualche modo. Nei **protocolli a carattere**, quali il **seriale RS232**, si è ricorso ad un **segnale di start** (transizione dal livello alto di idle a quello basso), nei protocolli per le reti di computer si preferisce delimitare il **bordo di inizio** di un **messaggio** con una particolare sequenza di bit detta **SOF** (Start Frame delimiter) o anche **SFD** (Start Frame Delimiter). 
 
 <img src="img/ethernet-802.webp" alt="alt text" width="600">
 
