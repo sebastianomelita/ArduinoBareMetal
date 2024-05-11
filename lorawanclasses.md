@@ -214,7 +214,7 @@ Potremmo a questo punto inserire il comando delle luci nel topic più generale d
 ### **Gestione dei topic di stato**
 
 Questo canale viene utilizzato per inviare lo **stato** di un dispositivo a tutti coloro che ne sono interessati. L'interesse potrebbe nascere per più motivi:
-- **Conferma dell'avvenuta attuazione**, una volta l'attuatore a ricevuto un **comando** (ad esempio "on":"true"), questo potrebbe essere tenuto a **notificare** (in modalità PUSH), al **display** associato al sensore (o al **server di processo**) il proprio **stato attuale**, in modo che l'**utente** (o il server di processo) possa verificare l'effettiva **efficacia** dell'ultimo comando di attuazione.
+- **Conferma dell'avvenuta attuazione**, una volta che l'attuatore ha ricevuto un **comando** (ad esempio "on":"true"), questo potrebbe essere tenuto a **notificare** (in modalità PUSH), al **display** associato al sensore (o al **server di processo**) il proprio **stato attuale**, in modo che l'**utente** (o il server di processo) possa verificare l'effettiva **efficacia** dell'ultimo comando di attuazione.
 - **Richiesta del server di processo**. Il **server di processo** potrebbe richiedere (in modalità PULL) lo **stato** degli attuatori per **aggiornare un pannello generale** di comando o eseguire delle statistiche o per recuperare gli input di un algoritmo che deve eseguire.
 - **Sincronizzazione PULL** di un pannello di controllo. Un **quadro di controllo web** potrebbe richiedere (in modalità PULL) lo **stato degli attuatori**:
     -  una **sola volta**, all'inizio, quando la pagina è stata **caricata/ricaricata** dall'utente
