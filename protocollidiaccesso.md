@@ -577,7 +577,7 @@ La stazione **ricevente** B è **visibile da tutti** per cui sia dalla stazione 
 - Il **messagio CTS** dichiara l’avvenuta assegnazione del canale ad A per cui tutti gli altri, come B e C, si asterranno dal trasmettere per tutta la durata del tempo dichiarato nel CTS.
 - normalmente la **stazione ricevente** che assume il ruolo di **"torre di controllo"** che gestisce le prenotazioni è l'Access Point (AP) perchè possiede il fondamentale requisito di essere in **posizione baricentrica** rispetto a tutte le stazioni.
 - la gestione **con RTS e CTS** è ancora **distribuita** e la decisione in merito alla **trasmissione di un RTS** è presa dalla singola stazione, indipendentemente dalle altre, ossevando un intervallo DIFS, durante il quale nessun altro sta trasmettendo. Questa modo di procedere si chiama **modalità DCF** (Distributed Coordination Function) e **non** prevede l'esistenza di un **controllo centralizzato** delle trasmissioni di tipo master/slave.
-- esiste una seconda modalità, detta **PCF** (Point Coordination Function), di tipo master/slave, in cui l'AP ha il ruolo di **master** che stabilisce **quale** stazione deve parlare, **quando** e **per quanto** tempo usando una politica di **turnazione** delle stazioni (**polling**).
+- esiste una **seconda modalità**, detta **PCF** (Point Coordination Function), di tipo master/slave, in cui l'AP ha il ruolo di **master** che stabilisce **quale** stazione deve parlare, **quando** e **per quanto** tempo usando una politica di **turnazione** delle stazioni (**polling**).
  
 <img src="rtscts.png" alt="alt # **text" width="800">
 Fig 17
