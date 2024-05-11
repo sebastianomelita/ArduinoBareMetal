@@ -2,6 +2,11 @@
 
 ## **Codifica di bit**
 
+La **codifica dei bit** si esegue in trasmissione ed è il processo di traduzione di ciascun bit di un messaggio in una certa sequenza di segnali elettrici caratterizzati da caratteristiche fisiche prestabilite da standard internazionali. Alcune di queste caratteristiche sono forma, ampiezza, periodo. In definitiva, è una traduzione da simboli (binari) in segnali elettrici.
+
+La **decodifica dei bit** si esegue in trasmissione ed è il processo di traduzione di ciascuna sequenza di segnali elettrici ricevuta in una certa sequenza di bit. In definitiva, è una traduzione da segnali elettrici a simboli (binari).
+
+
 ### **Codifica manchester**
 
 Nelle telecomunicazioni la codifica Manchester è una forma di comunicazione dati nella quale ogni punto viene segnalato da una transizione. La codifica Manchester è considerata una codifica **auto-sincronizzante** (non necessita di un segnale di sincronia esterno), il che significa che permette un'accurata sincronizzazione del flusso dati.
