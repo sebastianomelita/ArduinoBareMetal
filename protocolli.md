@@ -32,7 +32,6 @@ Dipendentemente dallo standard o dalle specifiche, potrebbero esserci diversi ca
 Con la codifica 4B5B vengono risolti i problemi relativi alla trasmissione di più zeri consecutivi. Le sequenze generate vengono poi trasmesse attraverso una codifica NRZI (Senza ritorno a zero invertito), che elimina anche il problema della presenza di un numero eccessivo di 1 consecutivi. Il risultato è che la codifica 4B/5B elimina ripetizioni consecutive di un numero eccessivo di valori binari tutti uguali.
 
 
-
 ## **Protocolli**
 
 I protocolli sono **regole di comunicazione** che tutti gli **interlocutori** devono seguire per **portare avanti** la **comunicazione** su di un **canale**.
@@ -85,7 +84,7 @@ Per i protocolli in cui il messaggio è **asincrono**, cioè di cui il ricevente
 
 Il valore di SOF per IEEE 802.3 (EThernet) è 10101011. Il ricevitore esegue la **lettura continua** dei bit del canale e quando vede scorrere esattamente **quella sequenza** sa che a partire dal **bit successivo all'ultimo** dell'SOF deve cominciare a leggere un messaggio, contando i bit per identificare, isolare e leggere separatamente i **vari campi** di cui è composto il messaggio ricevuto.
 
-### **trama MAC**
+### **Trama MAC**
 E' il messaggio 
 
 <img src="img/Ethernet_Type_II_Frame_format.svg.png" alt="alt text" width="600">
