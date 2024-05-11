@@ -64,7 +64,7 @@ Per **accedere** (in lettura o in scrittura) a un **determinato campo** basta so
 
 I preamboli di un messaggio sono delle **sequenze di sincronizzazione** in grado sia di sincronizzare gli **orologi** dei dispositivi (Tx e Rx) che si accingono ad iniziare una comunicazione, ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. 
 
-La **sincronizzazione** serve a fare in modo che, al momento di una **transizione** (fronte) del clock, sia il dispositivo TX che quello RX siano posizionati esattamente sul **ventre** di un bit, cioè sul punto di mezzo del livello del bit, condizione necessaria in ricezione per ottenere la massima probabilità di **campionare** (misurare) un **bit corretto**. 
+La **sincronizzazione** serve a fare in modo che, al momento di una **transizione** (fronte) del clock, sia il dispositivo TX che quello RX siano posizionati esattamente sul **ventre** di un bit, cioè sul punto di mezzo del livello del bit, condizione necessaria in ricezione per ottenere la massima probabilità di **campionare** (misurare o decidere) un **bit corretto**. 
 
 <img src="img/clockextract.png" alt="alt text" width="600">
 
