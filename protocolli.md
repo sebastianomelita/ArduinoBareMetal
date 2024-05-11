@@ -6,13 +6,13 @@
 
 Nelle telecomunicazioni la codifica Manchester è una forma di comunicazione dati nella quale ogni punto viene segnalato da una transizione. La codifica Manchester è considerata una codifica **auto-sincronizzante** (non necessita di un segnale di sincronia esterno), il che significa che permette un'accurata sincronizzazione del flusso dati.
 
-<img src="img/Manchester_code.png" alt="alt text" width="600">
+<img src="img/Manchester_code.png" alt="alt text" width="500">
 
 ### **Codifica NRZ**
 
 Nelle telecomunicazioni, un codice di linea di non ritorno a zero (NRZ) è un codice binario in cui gli uno sono rappresentati da una condizione significativa, solitamente una tensione positiva, mentre gli zeri sono rappresentati da qualche altra condizione significativa, solitamente una tensione negativa, senza altra condizione neutra o di riposo.
 
-<img src="img/NRZcode.png" alt="alt text" width="600">
+<img src="img/NRZcode.png" alt="alt text" width="500">
 
 A dispetto della codifca Manchester, la NRZ **non** è considerata una codfica autosincronizzante perchè **lunghe sequenze** di tutti **zero** o di tutti **uno** non presentano neppure **un fronte** per tutta la loro durata.
 
@@ -22,7 +22,7 @@ Nelle telecomunicazioni, 4B5B è una forma di codice per la trasmissione di dati
 
 Dipendentemente dallo standard o dalle specifiche, potrebbero esserci diversi caratteri che 4B5B non usa. La presenza di uno dei caratteri "inusati" nello stream di dati può essere usato come indice di un problema nella connessione. Infatti, i caratteri non usati vengono attualmente usati per scovare gli errori negli stream di dati.
 
-<img src="img/4b5b.jpg" alt="alt text" width="600">
+<img src="img/4b5b.jpg" alt="alt text" width="500">
 
 Con la codifica 4B5B vengono risolti i problemi relativi alla trasmissione di più zeri consecutivi. Le sequenze generate vengono poi trasmesse attraverso una codifica NRZI (Senza ritorno a zero invertito), che elimina anche il problema della presenza di un numero eccessivo di 1 consecutivi. Il risultato è che la codifica 4B/5B elimina ripetizioni consecutive di un numero eccessivo di valori binari tutti uguali.
 
