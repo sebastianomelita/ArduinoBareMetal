@@ -4,8 +4,7 @@ Di seguito è riportata l'architettura generale di una rete BLE. Essa è compost
 
 <img src="sensornet1.png" alt="alt text" width="800">
 
-La rete di sensori fisica è a stella dove il centro stella è il gateway. Un sensore può anche essere associato a più gateway ed inviare dati a tutti i gateway a cui esso è associato. I dati normalmente arrivano ad un certo dispositivo attraverso un solo gateway.
-
+La rete di sensori fisica è a stella dove il centro stella è il gateway. Un sensore può anche essere associato a più gateway ed inviare dati a tutti i gateway a cui esso è associato. I dati normalmente arrivano ad un certo dispositivo attraverso un solo gatew
 I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento diretto **virtuale** con il network server, per cui, in definitiva, la topologia risultante è, **fisicamente**, quella di più **reti di accesso** a stella tenute insieme da una **rete di distribuzione** qualsiasi purchè sia di tipo TCP/IP (LAN o Internet).
 
 
@@ -133,7 +132,7 @@ La **sincronizzazione** serve a fare in modo che, al momento di una **transizion
 
 L'**estrazione** del clock avviene **in banda**, cioè sullo stesso **canale dei dati**, attraverso il riconoscimento dei **fronti** dei **bit ricevuti**, fronti che sono con certezza presenti in numero **sufficiente** allo scopo solamente durante un **preambolo di sincronizzazione**.
 
-Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla **ripartizione** del tempo di trasmissione tra sorgenti diverse (TDM), richiedono una sincronizzazione di bit elevata. Però, non tutte le tecniche richiedono la **sincronizzazione del messaggio** trasmesso tra TX e RX. L'RX non è normalmente tenuto a sapere l'esatto momento dell'arrivo del prossimo messaggio. 
+Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla **ripartizione** del tempo di trasmissione tra sorgenti diverse (TDM), richiedono una  **sincronizzazione di bit** elevata. Però, non tutte le tecniche richiedono la **sincronizzazione del messaggio** trasmesso tra TX e RX. L'RX non è normalmente tenuto a sapere l'esatto momento dell'arrivo del prossimo messaggio. 
 - Quelle **dinamiche** (TDM dinamico, ALOHA, CSMA) consentono la trasmissione di una sequenza di bit dati in qualunque momento, tanto l'**inizio** del messaggio è segnalato da una sequenza di bit di **SOF** (Start Of Frame). Vedi [Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) e [Dettaglio mezzi a BUS](protocollidiaccesso.md) per approfondimenti.
 - Quelle **statiche** (TDM statico), **allocano** i messaggi di stazioni trasmittenti diverse in **differenti intervalli** temporali di dimensione **fissa** detti **slot**. Ogni slot **non** possiede identificatori espliciti del messaggio (come l'indirizzo) nè del suo inizio (come lo SOF). In ricezione, un messaggio può essere riconosciuto e letto soltanto in base alla sua **posizione** all'interno di un treno prestabilito di slot, detto **trama** TDM. Vedi [Dettaglio multiplazioni statiche](multiplazioni.md) per approfondimenti.
 
