@@ -1,5 +1,33 @@
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
 
+## **Codifica di bit**
+
+### **Codifica manchester**
+
+Nelle telecomunicazioni la codifica Manchester è una forma di comunicazione dati nella quale ogni punto viene segnalato da una transizione. La codifica Manchester è considerata una codifica **auto-sincronizzante** (non necessita di un segnale di sincronia esterno), il che significa che permette un'accurata sincronizzazione del flusso dati.
+
+<img src="img/Manchester_code.png" alt="alt text" width="600">
+
+### **Codifica NRZ**
+
+Nelle telecomunicazioni, un codice di linea di non ritorno a zero (NRZ) è un codice binario in cui gli uno sono rappresentati da una condizione significativa, solitamente una tensione positiva, mentre gli zeri sono rappresentati da qualche altra condizione significativa, solitamente una tensione negativa, senza altra condizione neutra o di riposo.
+
+<img src="img/NRZcode.png" alt="alt text" width="600">
+
+A dispetto della codifca Manchester, la NRZ **non** è considerata una codfica autosincronizzante perchè **lunghe sequenze** di tutti **zero** o di tutti **uno** non presentano neppure **un fronte** per tutta la loro durata.
+
+### **Codifica 4B5B**
+
+Nelle telecomunicazioni, 4B5B è una forma di codice per la trasmissione di dati. 4B5B lavora mappando gruppi di 4 bit in gruppi di 5. Siccome ci sono 32 possibili combinazioni usando 5 bit e solo 16 usandone 4, i 16 gruppi di 5 bit col maggior numero di transizioni sono usati per fornire più transizioni possibili. 4B5B garantisce almeno una transizione per blocco (ingresso di 4 bit / uscita di 5) il quale permette al segnale di essere scoperto. Sfortunatamente l'uso di 5 bit per rappresentarne 4 implica che per trasmettere i dati abbiamo bisogno di una larghezza di banda più grande del 25%.
+
+Dipendentemente dallo standard o dalle specifiche, potrebbero esserci diversi caratteri che 4B5B non usa. La presenza di uno dei caratteri "inusati" nello stream di dati può essere usato come indice di un problema nella connessione. Infatti, i caratteri non usati vengono attualmente usati per scovare gli errori negli stream di dati.
+
+<img src="img/4b5b.jpg" alt="alt text" width="600">
+
+Con la codifica 4B5B vengono risolti i problemi relativi alla trasmissione di più zeri consecutivi. Le sequenze generate vengono poi trasmesse attraverso una codifica NRZI (Senza ritorno a zero invertito), che elimina anche il problema della presenza di un numero eccessivo di 1 consecutivi. Il risultato è che la codifica 4B/5B elimina ripetizioni consecutive di un numero eccessivo di valori binari tutti uguali.
+
+
+
 ## **Protocolli**
 
 I protocolli sono **regole di comunicazione** che tutti gli **interlocutori** devono seguire per **portare avanti** la **comunicazione** su di un **canale**.
@@ -112,6 +140,9 @@ I **nodi** sono gli stati mentre gli **archi** rappresentano gli **stimoli** ai 
 Sitografia:
 - https://sierrahardwaredesign.com/tag/ethernet/
 - https://www.baeldung.com/cs/popular-network-protocols
+- https://it.wikipedia.org/wiki/Codifica_Manchester
+- https://stackoverflow.com/questions/44992151/how-can-i-encode-0000-to-11110-in-4b-5b-encoding-scheme
+- https://it.wikipedia.org/wiki/Codifica_4B/5B
 
 
 
