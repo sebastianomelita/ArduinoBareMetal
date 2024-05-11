@@ -85,9 +85,10 @@ Per i protocolli in cui il messaggio è **asincrono**, cioè di cui il ricevente
 Il valore di SOF per IEEE 802.3 (EThernet) è 10101011. Il ricevitore esegue la **lettura continua** dei bit del canale e quando vede scorrere esattamente **quella sequenza** sa che a partire dal **bit successivo all'ultimo** dell'SOF deve cominciare a leggere un messaggio, contando i bit per identificare, isolare e leggere separatamente i **vari campi** di cui è composto il messaggio ricevuto.
 
 ### **Trama MAC**
+
 E' il messaggio 
 
-<img src="img/Ethernet_Type_II_Frame_format.svg.png" alt="alt text" width="600">
+<img src="img/Ethernet_Type_II_Frame_format.svg.png" alt="alt text" width="800">
 
 Una trama Ethernet è un pacchetto di dati che viene trasmesso su una rete Ethernet. È composta da una serie di campi che contengono informazioni cruciali per la comunicazione tra i dispositivi collegati alla rete. Ecco una panoramica dei campi principali all'interno di una trama Ethernet:
 - Preambolo: È una sequenza di bit che precede il campo di "Start of Frame" (SOF) e serve a sincronizzare i dispositivi riceventi con il segnale in ingresso.
@@ -164,6 +165,8 @@ Sitografia:
 - https://it.wikipedia.org/wiki/Codifica_Manchester
 - https://stackoverflow.com/questions/44992151/how-can-i-encode-0000-to-11110-in-4b-5b-encoding-scheme
 - https://it.wikipedia.org/wiki/Codifica_4B/5B
+- https://it.wikipedia.org/wiki/Frame_Ethernet
+- chatGPT per trama MAC
 
 
 
