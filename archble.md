@@ -35,7 +35,7 @@ L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzion
 
 Il **bridge BLE** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **master o centrale** della rete di sensori. 
 
-Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di getione e controllo. 
+Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
 
 ## **Architetture basate sull'utilizzo di iBeacon** 
 
