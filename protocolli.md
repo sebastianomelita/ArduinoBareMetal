@@ -42,10 +42,15 @@ L'**estrazione** del clock avviene **in banda**, cioè sullo stesso **canale dei
 
 Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla **ripartizione** del tempo di trasmissione tra sorgenti diverse (TDM), richiedono una **sincronizzazione di bit** elevata. Però, non tutte le tecniche richiedono la **sincronizzazione del messaggio** trasmesso tra TX e RX. L'RX non è normalmente tenuto a sapere l'esatto momento dell'arrivo del prossimo messaggio. 
 - Quelle **dinamiche** (TDM dinamico, ALOHA, CSMA) consentono la trasmissione di una sequenza di bit dati in qualunque momento, tanto l'**inizio** del messaggio è segnalato da una sequenza di bit di **SOF** (Start Of Frame). Vedi [Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) e [Dettaglio mezzi a BUS](protocollidiaccesso.md) per approfondimenti.
-- Quelle **statiche** (TDM statico), **allocano** i messaggi di stazioni trasmittenti diverse in **differenti intervalli** temporali di dimensione **fissa** detti **slot**. Ogni slot **non** possiede identificatori espliciti del messaggio (come l'indirizzo) nè del suo inizio (come lo SOF). In ricezione, un messaggio può essere riconosciuto e letto soltanto in base alla sua **posizione** all'interno di un treno prestabilito di slot, detto **trama** TDM. Vedi [Dettaglio multiplazioni statiche](multiplazioni.md) per approfondimenti. Alcune tecniche di trasmissione includono tra una trama e l'altra dei preamboli di sincronizzazione che, in questo contesto, si chiamano **beacon**.
+- Quelle **statiche** (TDM statico), **allocano** i messaggi di stazioni trasmittenti diverse in **differenti intervalli** temporali di dimensione **fissa** detti **slot**. Ogni slot **non** possiede identificatori espliciti del messaggio (come l'indirizzo) nè del suo inizio (come lo SOF). In ricezione, un messaggio può essere riconosciuto e letto soltanto in base alla sua **posizione** all'interno di un treno prestabilito di slot, detto **trama** TDMA. Vedi [Dettaglio multiplazioni statiche](multiplazioni.md) per approfondimenti. Alcune tecniche di trasmissione includono tra una trama e l'altra TDMA dei preamboli di sincronizzazione che, in questo contesto, si chiamano **beacon**.
 
+Per i protocolli in cui il messaggio è asincrono, cioè di cui il ricevente non conosce in anticipo il momento esatto della ricezione, l'inizio dello stesso deve essere segnalato in qualche modo. Nei **protocolli a carattere**, quali il **seriale RS232**, si è ricorso ad un **segnale di start** (transizione dal livello alto di idle a quello basso), nei protocolli per le reti di computer si preferisce delimitare il **bordo di inizio** di un **messaggio** con una particolare sequenza di bit detta **SOF** (Start Frame delimiter) o anche **SFD** (Start Frame Delimiter). 
 
 <img src="img/ethernet-802.webp" alt="alt text" width="600">
+
+Il valore di SOF per IEEE 802.3 (EThernet) è 10101011. Il ricevitore esegue la **lettura continua** dei bit del canale e quando vede scorrere esattamente **quella sequenza** sa che a partire dal **bit successivo all'ultimo** dell'SOF deve cominciare a leggere un messaggio, contando i bit per identificare, isolare e leggere separatamente i **vari campi** di cui è composto il messaggio ricevuto.
+
+
 
 ### **Classificazione protocolli**
 
