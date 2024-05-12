@@ -92,8 +92,6 @@ La trama dati compresa tra due **beacon consecutivi** viene detta **supertrama**
 
 Nel contesto di Zigbee, un **coordinatore** può assumere un ruolo di **coordinamento**, simile a quello svolto dal PCF in una rete Wi-Fi, gestendo l'accesso al canale in modo master/slave in cui il centrale ha il ruolo di **master** che stabilisce **quale** stazione deve parlare, **quando** e **per quanto** tempo usando una politica di **turnazione** delle stazioni (**polling**).
 
-### **Protocolli di accesso al canale**
-
 La situazione può essere riassunta nel seguente modo:
 
 <img src="img/42979_2021_769_Fig1_HTML.png" alt="alt text" width="400">
