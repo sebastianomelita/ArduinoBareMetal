@@ -135,15 +135,11 @@ Potremmo a questo punto inserire il comando delle luci nel topic più generale d
 
 Questo canale viene utilizzato per inviare lo **stato** di un dispositivo a tutti coloro che ne sono interessati. L'interesse potrebbe nascere per più motivi:
 - **Conferma** dell'avvenuta **attuazione**. Alla **ricezione** di un comando (ad esempio "on":"true"), l'**attuatore** potrebbe essere tenuto a **notificare** (in modalità PUSH), al **display** associato al sensore (o al **server di processo**) trasmittente, il proprio **stato attuale**, in modo che l'**utente** (o il server di processo) possa verificare l'effettiva **efficacia** dell'ultimo comando di attuazione.
-- **Sincronizzazione PULL** del **server di processo**. Il server di processo potrebbe richiedere (in modalità PULL) lo **stato** degli attuatori per aggiornare un pannello generale di comando o eseguire delle statistiche o per recuperare gli input di un algoritmo che deve eseguire.
-- **Sincronizzazione PULL** di un **pannello di controllo**. Un **quadro di controllo web** potrebbe richiedere (in modalità PULL) lo **stato** degli attuatori:
+- **Sincronizzazione PULL** del **server di processo**. Il server di processo potrebbe **prelevare** sul topic di stato, tramite un **comando di richiesta** inviato al dispositivo terminale sul topic comandi, lo **stato** degli attuatori per aggiornare un pannello generale di comando o eseguire delle statistiche o per recuperare gli input di un algoritmo che deve eseguire.
+- **Sincronizzazione PULL** di un **pannello di controllo**. Un **quadro di controllo web** potrebbe **prelevare** sul topic di stato, tramite un **comando di richiesta** inviato al dispositivo terminale sul topic comandi, lo **stato** degli attuatori:
     -  una **sola volta**, all'inizio, quando la pagina è stata **caricata/ricaricata** dall'utente
     -  **periodicamente**, per essere certi di avere sempre lo **stato più aggiornato**, anche a fronte di una eventuale **disconnessione** di rete che abbia impedito la registrazione dell'ultimo feedback da parte dell'attuatore.
-- **Sincronizzazione PUSH**. Lo stesso attuatore potrebbe **periodicamente** inviare (in modalità PUSH) il proprio stato a tutti coloro che ne sono interessati (server di processo o tutti i display web che lo comandano). E' un'alternativa PUSH alla sincronizzazione PULL periodica.
-
-Un esempio di **canale MQTT di stato** potrebbe essere: 
-- nel caso di **identificazione univoca** del dispositivo via  **path MQTT**: ```luci/soggiorno/stato/mydevice1-98F4ABF298AD/{"state":"on"}```
-- nel caso di **identificazione univoca** del dispositivo nel **payload JSON**: ```luci/soggiorno/stato/{"deviceid":"01", "state":"on"}```
+- **Sincronizzazione PUSH**. Lo stesso attuatore potrebbe prendere l'iniziativa di **spedire periodicamente** il proprio stato a tutti coloro che ne sono interessati (server di processo o tutti i display web che lo comandano) senza che nessuno invii richieste esplicite sul topic di comando. E' un'**alternativa PUSH** alla sincronizzazione PULL periodica.
 
 ### **Gestione dei topic di configurazione**
 
