@@ -6,7 +6,9 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 - possibilità di realizzare **comandi** a distanza wireless anche molto piccoli con una **lunga durata** delle batterie (dell'ordine degli anni).
 - possibilità di realizzare **sensori** ambientali molto piccoli e alimentati con batterie che possono essere sostituite dopo anni.
 - possibilità di poter mettere **pochi gateway** verso la rete LAN, anche a grande distanza dai sensori e dai comandi che devono poter **coordinare**.
-
+- architettura a **hop multiplo** del collegamento di un dispositivo verso il router più vicino della rete Zigbee che è esso stesso un dispositivo Zigbe
+- **rete di sensori** composta **dai sensori** stessi avendo alcuni piena capacità di routing e di inoltro dei messaggi verso il gateway con la rete LAN
+  
 ### **Architettura di una rete di reti** 
 
 Di seguito è riportata l'architettura generale di una rete di reti Zigbee. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
