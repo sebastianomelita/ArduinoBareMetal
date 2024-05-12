@@ -233,7 +233,7 @@ Questo canale viene utilizzato per inviare **comandi di configurazione** al disp
 - impostare la frequenza di una misura, o l'intervallo di scatto di un allarme, ecc.
 - cambiare la sintassi dei JSON di payload o quella di un path MQTT
 
-Un esempio di **canale MQTT di stato** per, ad esempio, impostare il periodo di pubblicazione automatica dello stato potrebbe essere: 
+Un esempio di **canale MQTT di configurazione** per, ad esempio, impostare il periodo di pubblicazione automatica dello stato potrebbe essere: 
 - nel caso di **identificazione univoca** del dispositivo via  **path MQTT**: ```luci/soggiorno/config/mydevice1-98F4ABF298AD/{"stateperiod":"3000"}```
 - nel caso di **identificazione univoca** del dispositivo nel **payload JSON**: ```luci/soggiorno/config/{"deviceid":"01", "stateperiod":"3000"}```
   
