@@ -67,7 +67,7 @@ I **messaggi** si possono **classificare in**:
 
 I **messaggi** si possono **classificare in**:
 - **sincroni**. Quando il ricevente sa il momento esatto in cui comincerà a riceverli perchè già stabilito in fase di apertura della comunicazione. Sono, in genere, associati a protocolli connessi in cui si adopera proprio la fase di apertura per negoziare accordi tra TX e RX che riguardano i dettagli sulla consegna dei dati, quali, per l'appunto, il tempo di trasmissione assegnato ad una certa sorgente.
-- **asincroni**. Quando il ricevente non conosce il momento esatto in cui comincerà a riceverli perchè non esistono accordi in merito tra TX e RX, per cui l'inizio del messaggio deve essere segnalato. Normalmente si utilizza, per questo scopo, una particolare sequenza di bit stabilita dal protocollo in usao nel canale e quindi nota ad entrambi gli interlocutori.
+- **asincroni**. Quando il ricevente non conosce il momento esatto in cui comincerà a riceverli perchè non esistono accordi in merito tra TX e RX, per cui l'inizio del messaggio deve essere segnalato. Normalmente si utilizza, per questo scopo, una particolare sequenza di bit stabilita dal protocollo in uso nel canale e quindi nota ad entrambi gli interlocutori.
 
 ### **Preambolo di sincronizzazione**
 
