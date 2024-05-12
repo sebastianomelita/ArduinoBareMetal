@@ -6,7 +6,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 - possibilità di realizzare **comandi** a distanza wireless anche nediuamente piccoli con una media **durata** delle batterie (dell'ordine dei mesi).
 - possibilità di realizzare **sensori** ambientali molto piccoli e alimentati con batterie che possono essere sostituite dopo mesi.
 - nessuna necessità di **gateway** verso la rete LAN, essendo essi stessi collegati a questa.
-- archiettura a **hop singolo** verso l'AP della rete WiFi che deve essere posto in posizione baricentrica ai sensori/attuatori.
+- C
 - utilizzo di una rete pensata più per le prestazioni in bit rate che per i bassi consumi. Consumi limitati si ottengono attivando funzioni di deep sleep di processore e radio tra un turno di misura dei sensori e il successivo.
 
 ### **Architettura di una rete di reti** 
