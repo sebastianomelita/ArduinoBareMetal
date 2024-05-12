@@ -6,10 +6,10 @@
 Date le particolarità della tecnologia, i casi d'uso per la rete di sensori sono quelli tipici applicazioni IoT outdoor, dove concorre con altre tecnologie di rete: Sigfow, NB IoT e sotto certe condizioni, wifi. Punti di forza che portano a preferire Zigbee sono essenzialmente:
 - possibilità di realizzare **comandi** a distanza wireless anche molto piccoli con una **lunga durata** delle batterie (dell'ordine degli anni).
 - possibilità di realizzare **sensori** ambientali molto piccoli e alimentati con batterie che possono essere sostituite dopo anni.
-- possibilità di poter mettere **pochi gateway** verso la rete LAN, anche a grande distanza dai sensori e dai comandi che devono poter **coordinare**.
-- architettura a **hop multiplo** del collegamento di un dispositivo verso il router più vicino della rete Zigbee che è esso stesso un dispositivo Zigbee.
+- possibilità di poter mettere **pochi gateway** verso la rete LAN/WAN, anche a grande distanza dai sensori e dai comandi che devono poter **coordinare**.
+- architettura ad **hop singolo** del collegamento verso la stazione radio base costituita, in questo caso, da un **gateway LoRaWAN** che deve essere in posizione **baricentrica** rispetto ai dispositivi ad esso collegati. Il **consumo** dei dispositivi è tanto minore quanto e breve dalla distanza dai gateway ma è comunque **ottimizzato** alla sensoristica e quindi **molto basso**.
 - **rete di sensori** composta **dai sensori** stessi avendo alcuni piena capacità di routing e di inoltro dei messaggi verso il gateway con la rete LAN.
-- **affidabilità** della rete di sensori **indipendente** da quella della rete dati. Topologia predisposta alla **ridondanza** dei percorsi tra i nodi IoT aventi funzioni di routing. 
+- **affidabilità** della rete di sensori **indipendente** da quella della rete dati. Topologia predisposta alla **ridondanza** essendo possibile agganciare lo stesso dispositivo a più gateway contemporaneamente.
   
 ### **Architettura di una rete di reti** 
 
