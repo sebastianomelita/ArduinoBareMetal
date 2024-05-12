@@ -242,6 +242,7 @@ Questo canale viene utilizzato per inviare lo **stato** di un dispositivo a tutt
     -  una **sola volta**, all'inizio, quando la pagina è stata **caricata/ricaricata** dall'utente
     -  **periodicamente**, per essere certi di avere sempre lo **stato più aggiornato**, anche a fronte di una eventuale **disconnessione** di rete che abbia impedito la registrazione dell'ultimo feedback da parte dell'attuatore.
 - **Sincronizzazione PUSH**. Lo stesso attuatore potrebbe prendere l'iniziativa di **spedire periodicamente** il proprio stato a tutti coloro che ne sono interessati (server di processo o tutti i display web che lo comandano), senza che nessuno invii richieste esplicite sul topic di comando. E' un'**alternativa PUSH** alla sincronizzazione PULL periodica.
+
 ### **Gestione dei topic di configurazione**
 
 Questo canale viene utilizzato per inviare **comandi di configurazione** al dispositivo da parte del server di processo. L'interesse potrebbe nascere per più motivi:
@@ -250,7 +251,7 @@ Questo canale viene utilizzato per inviare **comandi di configurazione** al disp
 - impostare la frequenza di una misura, o l'intervallo di scatto di un allarme, ecc.
 - cambiare la sintassi dei JSON di payload o quella di un path MQTT
 
-Un esempio di **canale MQTT di stato** per, ad esempio, impostare il periodo di pubblicazione automatica dello stato potrebbe essere: 
+Un esempio di **canale MQTT di configurazione** per, ad esempio, impostare il periodo di pubblicazione automatica dello stato potrebbe essere: 
 - nel caso di **identificazione univoca** del dispositivo via  **path MQTT**: ```luci/soggiorno/config/mydevice1-98F4ABF298AD/{"stateperiod":"3000"}```
 - nel caso di **identificazione univoca** del dispositivo nel **payload JSON**: ```luci/soggiorno/config/{"deviceid":"01", "stateperiod":"3000"}```
 
