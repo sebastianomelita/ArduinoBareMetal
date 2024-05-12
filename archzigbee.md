@@ -6,8 +6,9 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 - possibilità di realizzare **comandi** a distanza wireless anche molto piccoli con una **lunga durata** delle batterie (dell'ordine degli anni).
 - possibilità di realizzare **sensori** ambientali molto piccoli e alimentati con batterie che possono essere sostituite dopo anni.
 - possibilità di poter mettere **pochi gateway** verso la rete LAN, anche a grande distanza dai sensori e dai comandi che devono poter **coordinare**.
-- architettura a **hop multiplo** del collegamento di un dispositivo verso il router più vicino della rete Zigbee che è esso stesso un dispositivo Zigbe
-- **rete di sensori** composta **dai sensori** stessi avendo alcuni piena capacità di routing e di inoltro dei messaggi verso il gateway con la rete LAN
+- architettura a **hop multiplo** del collegamento di un dispositivo verso il router più vicino della rete Zigbee che è esso stesso un dispositivo Zigbee.
+- **rete di sensori** composta **dai sensori** stessi avendo alcuni piena capacità di routing e di inoltro dei messaggi verso il gateway con la rete LAN.
+- **affidabilità** della rete di sensori **indipendente** da quella della rete dati. Topologia predisposta alla **ridondanza** dei percorsi tra i nodi IoT aventi funzioni di routing. 
   
 ### **Architettura di una rete di reti** 
 
