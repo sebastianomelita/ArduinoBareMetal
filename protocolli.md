@@ -59,6 +59,16 @@ Il **formato** è definito indicando:
 
 Per **accedere** (in lettura o in scrittura) a un **determinato campo** basta sommare la lunghezza dei campi che precedono il campo da accedere per determinare il suo **spiazzamento** dall'inizio del messaggio.
 
+### **Tipo dei messaggi**
+
+I **messaggi** si possono **classificare in**:
+- **messaggi dati**. Portano il cosidetto payload, cioè il carico utile del messaggio, ovvero l'informazione che ha valore per gli utenti utilizzano il canale (o la rete).
+- **messaggi di controllo**. Informazioni di servizio che per gli utenti del canale (o della rete) non hanno alcun significato ma che sono necessari per il funzionamento dei protocolli di comunicazione in uso su quel canale.
+
+I **messaggi** si possono **classificare in**:
+- **sincroni**. Quando il ricevente sa il momento esatto in cui comincerà a riceverli perchè già stabilito in fase di apertura della comunicazione. Sono, in genere, associati a protocolli connessi in cui si adopera proprio la fase di apertura per negoziare accordi tra TX e RX che riguardano i dettagli sulla consegna dei dati, quali, per l'appunto, il tempo di trasmissione assegnato ad una certa sorgente.
+- **asincroni**. Quando il ricevente non conosce il momento esatto in cui comincerà a riceverli perchè non esistono accordi in merito tra TX e RX, per cui l'inizio del messaggio deve essere segnalato. Normalmente si utilizza, per questo scopo, una particolare sequenza di bit stabilita dal protocollo in usao nel canale e quindi nota ad entrambi gli interlocutori.
+
 ### **Preambolo di sincronizzazione**
 
 I preamboli di un messaggio sono delle **sequenze di sincronizzazione** in grado sia di sincronizzare gli **orologi** dei dispositivi (Tx e Rx) che si accingono ad iniziare una comunicazione, ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. 
