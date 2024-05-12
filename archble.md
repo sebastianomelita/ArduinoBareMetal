@@ -1,9 +1,12 @@
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
 
-##### **Caso d'uso BLE** 
-Date le particolarità della tecnologia, i casi d'uso per la rete di sensori sono quelli tipici applicazioni IoT indoor, dove concorre con altre tecnologie di rete: WIFi, BLE e, sotto certe condizioni, LoRaWAN. Punti di forza che portano a preferire Zigbee sono essenzialmente:- possibilità di realizzare **mandi** a distanza wireless anche molto piccoli con una **lunga durata** delle batterie (dell'ordine degli anni).
-- possibilità di realizzare **sensori** ambientali molto piccoli e alimentati con batterie che possono essere sostituite dopo anni.
-- possibilità di poter mettere **pochi gateway** verso la rete LAN, anche a grande distanza dai sensori e dai comandi che devono poter **coordinare**.
+### **Caso d'uso BLE** 
+
+Date le particolarità della tecnologia, i casi d'uso per la rete di sensori sono quelli tipici applicazioni IoT indoor, dove concorre con altre tecnologie di rete: WIFi, Zigbee e, sotto certe condizioni, LoRaWAN. Per la sensoristica Indoor ha praticamente gli stessi punti di forza di Zigbee con il quale è praticamente intercambiambile (ma non interoperabile).
+
+Esiste però un ambito nel quale il BLE è attualmente **senza rivali** rispetto alle tecnologie Zigbee, WiFi e LoRaWAN: il **tracciamento indoor** degli asset aziendali e la **localizzazione indoor** degli utenti. Il meccanismo che consente queste funzioni si basa sulla trasmissione di particolari messaggi periodici detti **beacon**. 
+
+La tecnologia dei **beacon** è **comune** a quasi tutti i protocolli wireless moderni, compresi Zigbee, WiFi e LoRaWAN, che quindi sono in parte capaci anche loro delle funzioni di localizzazne suddette, ma in maniera molto **meno precisa** e versatile.
 
 ### **Architettura di una rete di reti** 
 
