@@ -3,10 +3,10 @@
 ### **Caso d'uso wiFi** 
 
 Date le particolarità della tecnologia, i casi d'uso per la rete di sensori sono quelli tipici applicazioni IoT indoor, dove concorre con altre tecnologie di rete: Zigbee, BLE e, sotto certe condizioni, LoRaWAN. Punti di forza che portano a preferire WiFi sono essenzialmente:
-- possibilità di realizzare **comandi** a distanza wireless anche nediuamente piccoli con una media **durata** delle batterie (dell'ordine dei mesi).
+- possibilità di realizzare **comandi** a distanza wireless anche relativamente piccoli con una **durata** delle batterie relativamente lunga (dell'ordine dei mesi).
 - possibilità di realizzare **sensori** ambientali molto piccoli e alimentati con batterie che possono essere sostituite dopo mesi.
-- nessuna necessità di **gateway** verso la rete LAN, essendo essi stessi collegati a questa.
-- architettura ad **hop multiplo** del collegamento verso altri dispositivi IoT 
+- **assenza di gateway** verso la rete LAN, essendo essi stessi collegati a questa.
+- architettura ad **hop singolo** del collegamento verso la stazione radio base costituita, in questo caso, da un **AP WiFi** che deve essere in posizione **baricentrica** rispetto ai dispositivi ad esso collegati. Il **consumo** dei dispositivi è tanto minore quanto e breve dalla distanza degli AP.
 - **rete di sensori** composta **dagli AP** dalla stessa rete wireless LAN utilizzata per dati. Gli unici dispositivi capaci di inoltro dei dati sono gli stessi della LAN (switch, router, bridge wifi).
 - utilizzo di una rete **non ottimizzata** per la sensoristica ma pensata più per le prestazioni in bit rate elevate che per i bassi consumi. Consumi limitati si ottengono attivando funzioni di **deep sleep** di processore e radio tra un turno di misura dei sensori e il successivo.
 - rete di sensori che ha la stessa **affidabilità** della rete wifi.
