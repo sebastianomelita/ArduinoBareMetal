@@ -59,7 +59,7 @@ Per quanto riguarda il **numero dei gateway** in una stessa **LAN**, il numero m
 
 Però, la **partizione** di una rete Zigbee potrebbe essere utile in determinate situazioni, specialmente quando si hano un **gran numero** di dispositivi o se si vogliono **separare** i dispositivi **per zone** o **per scopi** diversi. Ecco alcune **situazioni** in cui potrebbe essere **vantaggioso partizionare** una rete Zigbee:
 
-- **Grande numero** di dispositivi: Se hai un'enorme quantità di dispositivi Zigbee sulla stessa rete, potresti voler partizionare la rete in più sotto-reti per migliorare le prestazioni e la gestibilità. Questo può evitare sovraccarichi di traffico eccessivi su una singola rete.
+- **Grande numero di dispositivi**: Se hai un'enorme quantità di dispositivi Zigbee sulla stessa rete, potresti voler partizionare la rete in più sotto-reti per migliorare le prestazioni e la gestibilità. Questo può evitare sovraccarichi di traffico eccessivi su una singola rete.
 
 - **Diverse zone o edifici**: Se la tua rete Zigbee si estende su diverse aree fisiche come piani diversi di un edificio o edifici separati, la partizione della rete può essere utile per mantenere la gestione e il controllo in modo più efficiente.
 
