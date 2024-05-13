@@ -50,7 +50,7 @@ Il **bridge zigbee** (in realtà è un **gateway** e quindi pure un router) è n
 
 Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente anche un **firewall** (con funzioni di NAT se si adopera IPv4), mentre se collegato alla **LAN** (attraverso uno SW o un HUB wiereless) ha solamente la **funzioni** di:
 - **router applicativo** che **traduce** i messaggi da una rete IP (la LAN) ad una non IP (la rete di sensori).
-- **client MQTT** con funzione di **publisher** (sul topic di stato) e di **subscriber** (sui topic di comando e configurazione).
+- **client MQTT** con funzione di **publisher** (sul topic di stato e traduce **da** i dispositivi) e di **subscriber** (sui topic di comando e configurazione e traduce **verso** i dispositivi).
 
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
 ### **Rete di sensori Zigbee** 
