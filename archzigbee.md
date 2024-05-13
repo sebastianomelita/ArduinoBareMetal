@@ -55,6 +55,20 @@ Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente an
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
 ### **Rete di sensori Zigbee** 
 
+Per quanto riguarda il **numero dei gateway** in una stessa **LAN**, il numero minimo necessario è uno perchè la rete zigbee funzioni è **uno**. Un gateway avente anche funzione di coordinatore nelle rete di sensori.
+
+Però, la **partizione** di una rete Zigbee potrebbe essere utile in determinate situazioni, specialmente quando si hano un **gran numero** di dispositivi o se si vogliono **separare** i dispositivi **per zone** o **per scopi** diversi. Ecco alcune **situazioni** in cui potrebbe essere **vantaggioso partizionare** una rete Zigbee:
+
+- **Grande numero** di dispositivi: Se hai un'enorme quantità di dispositivi Zigbee sulla stessa rete, potresti voler partizionare la rete in più sotto-reti per migliorare le prestazioni e la gestibilità. Questo può evitare sovraccarichi di traffico eccessivi su una singola rete.
+
+- **Diverse zone o edifici**: Se la tua rete Zigbee si estende su diverse aree fisiche come piani diversi di un edificio o edifici separati, la partizione della rete può essere utile per mantenere la gestione e il controllo in modo più efficiente.
+
+- **Scopi diversi**: Se i dispositivi Zigbee sono utilizzati per scopi diversi, come illuminazione, sicurezza, controllo del clima, ecc., potrebbe essere utile separare i dispositivi in reti dedicate per ciascuno scopo. Questo può semplificare la gestione e consentire configurazioni e politiche di sicurezza specifiche per ogni tipo di dispositivo.
+
+Per **partizionare** una rete Zigbee, si possono utilizzare le funzionalità di configurazione e gestione fornite dal tuo **sistema Zigbee**. Ad esempio, si potrebbero creare **più coordinatori** Zigbee, ciascuno con la propria rete da gestire, e utilizzare dispositivi **router** o una **LAN** per collegare le reti tra loro. 
+
+In alternativa, si possono sfruttare le funzionalità di creazione e gestione dei gruppi e di segmentazione della rete offerte dal protocollo Zigbee, per organizzare i dispositivi in **gruppi logici** all'interno della stessa rete.
+
    <img src="img/archzigbee2.png" alt="alt text" width="1000">
 
 I dispositivi ZigBee possono essere configurati in modo da realizzare diverse topologie di reti. Una topologia largamente usata è la quella mesh.
