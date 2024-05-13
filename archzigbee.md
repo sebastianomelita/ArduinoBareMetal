@@ -249,5 +249,6 @@ Un esempio di **canale MQTT di configurazione** per, ad esempio, impostare il pe
 - https://www.amazipoint.com/uart%20bridge%20en%204.html
 - https://www.researchgate.net/figure/Zigbee-Gateway-architecture-It-must-be-remarked-that-Zigbee-Alliance-has-also-developed_fig4_41392302
 - https://www.everythingrf.com/community/zigbee-frequency-bands#:~:text=In%20general%2C%20the%20common%20frequency,due%20to%20other%20Zigbee%20devices.
+- chatGPT per il partizionamento dei una rete Zigbee
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
