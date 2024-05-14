@@ -41,18 +41,6 @@ BLE è uno standard di comunicazione wireless utilizzato anche per il controllo 
 
 **Ble2mqtt** opera a livello di **applicazione** della pila OSI in quanto **traduce** un **payload BLE** in un **payload JSON MQTT**  (gateway = router applicativo). Si tratta di un software che consente di integrare dispositivi BLE in un'infrastruttura di domotica basata su MQTT (Message Queuing Telemetry Transport). Ble2mqtt funge da **ponte** tra la rete BLE e il broker MQTT, consentendo agli utenti di interagire con i dispositivi BLE tramite messaggi MQTT.
 
-La **partizione** di una rete BLE può essere utile in determinate situazioni, specialmente se si hanno un **gran numero** di dispositivi o se si vuole **separare** i dispositivi **per zone** o **per scopi** diversi. Ecco alcune **situazioni** in cui potrebbe essere vantaggioso partizionare una rete Zigbee:
-
-- **Servizi e profili**: Nelle reti BLE, i dispositivi comunicano attraverso **servizi** e **profili** Bluetooth standardizzati. Puoi organizzare i dispositivi in **gruppi** basati su **servizi simili** o scopi simili. Ad esempio, potresti avere un gruppo di dispositivi BLE che forniscono dati di monitoraggio della salute e un altro gruppo di dispositivi che controllano i dispositivi domestici intelligenti.
-
-- **Partizionamento fisico**: Si possono dividere fisicamente le reti BLE in base alla loro **posizione** o alla loro **area di copertura**. Ad esempio, potresti avere un insieme di dispositivi BLE all'interno di un'abitazione e un altro insieme di dispositivi all'esterno. In questo caso, potresti usare **più gateway** o controller per gestire le diverse parti della rete.
-
-- **Rilevanza dei dati**: Si possono configurare i  dispositivi BLE per trasmettere solo i dati rilevanti per una particolare area o scopo. Ad esempio, in un grande magazzino, si potrebbe voler raccogliere solo i dati dai sensori nelle aree attive durante un determinato momento anziché da tutti i dispositivi nell'intero magazzino.
-
-- **Gestione del traffico**: Puoi pianificare la distribuzione dei tuoi dispositivi BLE in modo da evitare congestioni di traffico e interferenze. Ad esempio, si potrebbe evitare di sovraccaricare una specifica area con troppi dispositivi BLE che trasmettono contemporaneamente.
-
-Il partizionamento delle reti BLE può essere utile per migliorare l'efficienza, la sicurezza e la gestibilità di una infrastruttura IoT. Per **partizionare** una rete BLE, si potrebbero creare **più centrali** BLE, cioè più **gateway**, ciascuno con la propria rete di sensori da gestire, e utilizzare una **WAN** (composta da router) o una **LAN** (compoasta da switch) per collegare le reti tra loro. 
-
 ## **Architetture di gestione dei sensori BLE** 
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
@@ -66,6 +54,20 @@ Il **broker MQTT** può essere installato in cloud, in una Virtual Private netwo
 Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente anche un **firewall** (con funzioni di NAT se si adopera IPv4), mentre se collegato alla **LAN** (attraverso uno SW o un HUB wiereless) ha solamente la **funzioni** di:
 - **router applicativo** che **traduce** i messaggi da una rete IP (la LAN) ad una non IP (la rete di sensori).
 - **client MQTT** con funzione di **publisher** (sul topic di stato e traduce **da** i dispositivi) e di **subscriber** (sui topic di comando e configurazione e traduce **verso** i dispositivi).
+
+La **partizione** di una rete BLE può essere utile in determinate situazioni, specialmente se si hanno un **gran numero** di dispositivi o se si vuole **separare** i dispositivi **per zone** o **per scopi** diversi. Ecco alcune **situazioni** in cui potrebbe essere vantaggioso partizionare una rete Zigbee:
+
+- **Servizi e profili**: Nelle reti BLE, i dispositivi comunicano attraverso **servizi** e **profili** Bluetooth standardizzati. Puoi organizzare i dispositivi in **gruppi** basati su **servizi simili** o scopi simili. Ad esempio, potresti avere un gruppo di dispositivi BLE che forniscono dati di monitoraggio della salute e un altro gruppo di dispositivi che controllano i dispositivi domestici intelligenti.
+
+- **Partizionamento fisico**: Si possono dividere fisicamente le reti BLE in base alla loro **posizione** o alla loro **area di copertura**. Ad esempio, potresti avere un insieme di dispositivi BLE all'interno di un'abitazione e un altro insieme di dispositivi all'esterno. In questo caso, potresti usare **più gateway** o controller per gestire le diverse parti della rete.
+
+- **Rilevanza dei dati**: Si possono configurare i  dispositivi BLE per trasmettere solo i dati rilevanti per una particolare area o scopo. Ad esempio, in un grande magazzino, si potrebbe voler raccogliere solo i dati dai sensori nelle aree attive durante un determinato momento anziché da tutti i dispositivi nell'intero magazzino.
+
+- **Gestione del traffico**: Puoi pianificare la distribuzione dei tuoi dispositivi BLE in modo da evitare congestioni di traffico e interferenze. Ad esempio, si potrebbe evitare di sovraccaricare una specifica area con troppi dispositivi BLE che trasmettono contemporaneamente.
+
+Il partizionamento delle reti BLE può essere utile per migliorare l'efficienza, la sicurezza e la gestibilità di una infrastruttura IoT. Per **partizionare** una rete BLE, si potrebbero creare **più centrali** BLE, cioè più **gateway**, ciascuno con la propria rete di sensori da gestire, e utilizzare una **WAN** (composta da router) o una **LAN** (compoasta da switch) per collegare le reti tra loro. 
+
+<img src="img/integratedGW-BLE-LAN.png" alt="alt text" width="900">
 
 ## **Architetture basate sull'utilizzo di iBeacon** 
 
