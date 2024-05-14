@@ -57,6 +57,8 @@ Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente an
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
 ### **Rete di sensori Zigbee** 
 
+<img src="img/archzigbee2.png" alt="alt text" width="1000">
+
 Per quanto riguarda il **numero dei gateway** in una stessa **LAN**, il numero minimo necessario è uno perchè la rete zigbee funzioni è **uno**. Un gateway avente anche funzione di coordinatore nelle rete di sensori.
 
 Però, la **partizione** di una rete Zigbee potrebbe essere utile in determinate situazioni, specialmente quando si hano un **gran numero** di dispositivi o se si vogliono **separare** i dispositivi **per zone** o **per scopi** diversi. Ecco alcune **situazioni** in cui potrebbe essere **vantaggioso partizionare** una rete Zigbee:
@@ -69,11 +71,9 @@ Però, la **partizione** di una rete Zigbee potrebbe essere utile in determinate
 
 Per **partizionare** una rete Zigbee, si potrebbero creare **più coordinatori** Zigbee, cioè più **gateway**, ciascuno con la propria rete di sensori da gestire, e utilizzare una **WAN** (composta da router) o una **LAN** (compoasta da switch) per collegare le reti tra loro. 
 
-<img src="img/archzigbee2.png" alt="alt text" width="1000">
+<img src="img/integratedGW-ZigbeeLAN.png" alt="alt text" width="900">
 
 In **alternativa**, si possono sfruttare le funzionalità di creazione e gestione dei **gruppi** e di **segmentazione della rete** offerte dal protocollo Zigbee, per organizzare i dispositivi in **gruppi logici** all'interno di una **stessa rete** di sensori Zigbee.
-
-   <img src="img/integratedGW-ZigbeeLAN.png" alt="alt text" width="900">
 
 I dispositivi ZigBee possono essere configurati in modo da realizzare diverse topologie di reti. Una topologia largamente usata è la quella mesh.
 Più reti possono organizzarsi in cluster con una struttura logica ad albero (spanning tree ottimo). Viene così realizzata una rete peerto-peer con un minimo overhead di routing.
