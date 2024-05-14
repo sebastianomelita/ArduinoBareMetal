@@ -73,7 +73,7 @@ Per **partizionare** una rete Zigbee, si potrebbero creare **più coordinatori**
 
 In **alternativa**, si possono sfruttare le funzionalità di creazione e gestione dei **gruppi** e di **segmentazione della rete** offerte dal protocollo Zigbee, per organizzare i dispositivi in **gruppi logici** all'interno di una **stessa rete** di sensori Zigbee.
 
-   <img src="img/integratedGW-ZigbeeLAN.png" alt="alt text" width="1000">
+   <img src="img/integratedGW-ZigbeeLAN.png" alt="alt text" width="900">
 
 I dispositivi ZigBee possono essere configurati in modo da realizzare diverse topologie di reti. Una topologia largamente usata è la quella mesh.
 Più reti possono organizzarsi in cluster con una struttura logica ad albero (spanning tree ottimo). Viene così realizzata una rete peerto-peer con un minimo overhead di routing.
