@@ -69,11 +69,11 @@ I **messaggi** si possono **classificare in**:
 - **sincroni**. Quando il ricevente sa il momento esatto in cui comincerà a riceverli perchè già stabilito in fase di apertura della comunicazione. Sono, in genere, associati a protocolli connessi in cui si adopera proprio la fase di apertura per negoziare accordi tra TX e RX che riguardano i dettagli sulla consegna dei dati, quali, per l'appunto, il tempo di trasmissione assegnato ad una certa sorgente.
 - **asincroni**. Quando il ricevente non conosce il momento esatto in cui comincerà a riceverli perchè non esistono accordi in merito tra TX e RX, per cui l'inizio del messaggio deve essere segnalato. Normalmente si utilizza, per questo scopo, una particolare sequenza di bit stabilita dal protocollo in uso nel canale e quindi nota ad entrambi gli interlocutori.
 
-### **Preambolo di sincronizzazione**
+### **Preambolo di sincronizzazione (di bit)**
 
-I preamboli di un messaggio sono delle **sequenze di sincronizzazione** in grado sia di sincronizzare gli **orologi** dei dispositivi (Tx e Rx) che si accingono ad iniziare una comunicazione, ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. 
+I **preamboli** di un messaggio sono delle **sequenze di sincronizzazione** in grado sia di sincronizzare gli **orologi** dei dispositivi (Tx e Rx) che si accingono ad iniziare una comunicazione, ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. 
 
-La **sincronizzazione** serve a fare in modo che, al momento di una **transizione** (fronte) del **clock**, sia il dispositivo TX che quello RX siano posizionati esattamente sul **ventre** di un bit, cioè sul punto di mezzo del livello del bit, condizione necessaria in ricezione per ottenere la massima probabilità di **campionare** (misurare o decidere) un **bit corretto**. 
+La **sincronizzazione** di cui parliamo adesso è la cosidetta **sincronizzazione di bit** e serve a fare in modo che, al momento di una **transizione** (fronte) del **clock**, sia il dispositivo TX che quello RX siano posizionati esattamente sul **ventre** di un bit, cioè sul punto di mezzo del livello del bit, condizione necessaria in ricezione per ottenere la massima probabilità di **campionare** (misurare o decidere) un **bit corretto**. La sincronizzazione di bit, in sostanza, serve a fare in modo che il ricevente RX legga il bit nel punto **più stabile**, in posizione centrale rispetto ai fronti (di salita e di discesa).
 
 <img src="img/clockextract.png" alt="alt text" width="600">
 
@@ -87,7 +87,10 @@ Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla **
 
 ### **Start of frame (SOF)**
 
-Per i protocolli in cui il messaggio è **asincrono**, cioè di cui il ricevente non conosce in anticipo il momento esatto della ricezione, l'inizio dello stesso deve essere segnalato in qualche modo. Nei **protocolli a carattere**, quali il **seriale RS232**, si è ricorso ad un **segnale di start** (transizione dal livello alto di idle a quello basso), nei protocolli per le **reti di computer** si preferisce delimitare il **bordo di inizio** di un **messaggio** con una particolare sequenza di bit detta **SOF** (Start Frame delimiter) o anche **SFD** (Start Frame Delimiter). 
+Per i protocolli in cui il messaggio è **asincrono**, cioè di cui il ricevente non conosce in anticipo il momento esatto della ricezione, l'**inizio** dello stesso deve essere segnalato in qualche modo. Lo 
+ Start Of Frame (SOF) serve a realizzare il cosidetto sincronismo di trama (o di messaggio), cioè la proprietà per la quale trasmettirore TX e ricevitore RX concordano su quale sia il **bit di inizio** della **trama** (o del messaggio). Nei **protocolli a carattere**, quali il **seriale RS232**, si è ricorso ad un **segnale di start** (transizione dal livello alto di idle a quello basso), nei protocolli per le **reti di computer** si preferisce delimitare il **bordo di inizio** di un **messaggio** con una particolare sequenza di bit detta **SOF** (Start Frame delimiter) o anche **SFD** (Start Frame Delimiter). 
+
+Nei protocolli in cui il messaggio è **sincrono**, non esistono sequenze di SOF perchè sia il **sincronismo di bit** che il **sincronismo di messaggio** sono **impliciti** e sono derivati da una **sincronizzazione iniziale** del flusso di bit tra TX e RX (mediante un opportuno preambolo). A partire da quella sincronizzazione iniziale, vengono contati dei bit dei vari messaggi che solitamente hanno lughezza fissa. L'inizio di un nuovo messaggio avviene dopo un periodo di tempo prestabilito in anticipo e concordato tra TX e RX in fase di apertura della comunicazione. Avendo una fase di **apertura della comunicazione** i protocolli sincroni si dicono **connessi** (vedi Classificazione protocolli a seguire). Normalmente la sincronizzazione, in questi sistemi, viene mantenuta nel tempo grazie a sequenze di sincronizzazione inviate **periodicamente** dette **beacon**.
 
 <img src="img/ethernet-802.webp" alt="alt text" width="700">
 
