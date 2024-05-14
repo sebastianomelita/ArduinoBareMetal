@@ -43,7 +43,7 @@ BLE è uno standard di comunicazione wireless utilizzato anche per il controllo 
 
 ## **Architetture di gestione dei sensori BLE** 
 
-L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
+L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione in Internet + server di gestione e controllo potrebbe apparire:
 
 <img src="img/integratedGW-BLE.png" alt="alt text" width="900">
 
