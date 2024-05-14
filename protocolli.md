@@ -79,7 +79,7 @@ La **sincronizzazione** di cui parliamo adesso è la cosidetta **sincronizzazion
 
 Il **momento giusto** di questa misura è implicito, cioè non viene segnalato dal trasmettitore, ma deve essere **estratto** (dal ricevitore) dal flusso di bit dei dati e mantenuto almeno per tutti i **campionamenti** dei bit del **messaggio** corrente. Per il **messaggio successivo** il ricevitore recupera il sincronismo leggendo un **nuovo preambolo**.
 
-L'**estrazione** del clock avviene **in banda**, cioè sullo stesso **canale dei dati**, attraverso il riconoscimento dei **fronti** dei **bit ricevuti**, fronti che sono con certezza presenti in numero **sufficiente** allo scopo solamente durante un **preambolo di sincronizzazione**.
+L'**estrazione** del clock avviene **in banda**, cioè sullo stesso **canale dei dati**, attraverso il riconoscimento dei **fronti** dei **bit ricevuti**, fronti che sono sicuramente presenti in numero **sufficiente** allo scopo solamente durante un **preambolo di sincronizzazione**.
 
 Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla **ripartizione** del tempo di trasmissione tra sorgenti diverse (TDM), richiedono una **sincronizzazione di bit** elevata. Però, non tutte le tecniche richiedono la **sincronizzazione del messaggio** trasmesso tra TX e RX. L'RX non è normalmente tenuto a sapere l'esatto momento dell'arrivo del prossimo messaggio. 
 - Quelle **dinamiche** (TDM dinamico, ALOHA, CSMA) consentono la trasmissione di una sequenza di bit dati in qualunque momento, tanto l'**inizio** del messaggio è segnalato da una sequenza di bit di **SOF** (Start Of Frame). Vedi [Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) e [Dettaglio mezzi a BUS](protocollidiaccesso.md) per approfondimenti.
