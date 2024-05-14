@@ -103,8 +103,8 @@ E' il messaggio
 <img src="img/Ethernet_Type_II_Frame_format.svg.png" alt="alt text" width="800">
 
 Una **trama Ethernet** è un pacchetto di dati che viene trasmesso su una rete Ethernet. È composta da una serie di campi che contengono informazioni cruciali per la comunicazione tra i dispositivi collegati alla rete. Ecco una panoramica dei campi principali all'interno di una trama Ethernet:
-- **Preambolo**: 6 byte che precedono il campo di "Start of Frame" (SOF) e serve a sincronizzare i dispositivi riceventi con il segnale in ingresso.
-- **Start of Frame Delimiter (SFD)**: 2 byte che segnalano l'inizio della trama Ethernet. Solitamente è costituito da un singolo byte con un valore specifico, ad esempio, 0x55 seguito da 0xD5.
+- **Preambolo**: 7 byte che precedono il campo di "Start of Frame" (SOF) e serve a sincronizzare i dispositivi riceventi con il segnale in ingresso.
+- **Start of Frame Delimiter (SFD)**: 1 byte che segnalano l'inizio della trama Ethernet. Solitamente è costituito da un singolo byte con un valore specifico, ad esempio, 0x55 seguito da 0xD5.
 - **Indirizzo di Destinazione (Destination Address)**: 6 byte che Indica l'indirizzo MAC del destinatario della trama.
 - **Indirizzo di Sorgente (Source Address)**: 6 byte che indicano l'indirizzo MAC del mittente della trama.
 - **Tipo/ Lunghezza (Type/Length)**: 2 byte che possono essere utilizzati in due modi diversi:
