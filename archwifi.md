@@ -313,5 +313,9 @@ Essendo parte di una unica LAN derivata dallo stesso hub esteso, tutti i disposs
 - https://www.tp-link.com/it/support/faq/151/
 - https://indomus.it/formazione/shelly-mqtt-e-http-comandi-utili/
 - https://forum.inductiveautomation.com/t/shelly-relay-1-pro-mqtt-command-for-turn-switch-on-off/81137
+- https://www.zeteon.com/www/pages/wireless-mesh/
+- https://interline.pl/Information-and-Tips/Mesh-Routing-And-Wireless-Distribution-Systems-WDS
+- https://www.researchgate.net/figure/System-architecture-of-Multi-channel-Wireless-Mesh-Network-End-users-mobile-devices_fig1_2911584
+- https://www.researchgate.net/publication/324643692_SWAM_SDN-based_Wi-Fi_Small_Cells_with_Joint_Access-Backhaul_and_Multi-Tenant_Capabilities
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
