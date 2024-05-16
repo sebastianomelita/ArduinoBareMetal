@@ -213,7 +213,7 @@ Ogni **access point** utilizza un **singolo canale** (largo 22 MHz), che viene c
 
 La trasmissione avviene a **pacchetti** con **conferma** di ricezione.
 
-**Impatto ambientale**
+###  **Impatto ambientale**
 
 La **potenza media** delle emissioni ambientali dipende dalle condizioni di servizio ed è influenzata dal duty cycle, a sua volta determinato da vari **fattori**:
 - La bidirezionalità della trasmissione (attesa dell’OK di ricezione)
@@ -227,7 +227,7 @@ La **potenza media** delle emissioni ambientali dipende dalle condizioni di serv
 
 Considerata la **bassa potenza** di uscita di **picco**, il bassissimo **guadagno d’antenna** e la riduzione operata dal **duty cycle**, gli access point delle reti Wi-Fi generano livelli di **densità di potenza** sempre molti ordini di grandezza sotto i **limiti normativi** ed anche significativamente inferiori alle **stazioni radio base** della telefonia cellulare.
 
-**Gestione equa della banda**
+###  **Gestione equa della banda**
 
 I **parametri** e le **limitazioni** che vedremo sono dei criteri di accesso al mezzo radio volti a ridurre **disturbi mutui** fra i vari servizi dei vari utenti e la **monopolizzazione** di un canale da parte di un singolo utente.
 - **Potenza disponibile massima**. La potenza in Watt. In genere dell’ordine dei millesimi di watt (mW) è spesso espressa in dBm.
