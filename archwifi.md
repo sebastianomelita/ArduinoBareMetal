@@ -295,25 +295,33 @@ In sintesi, la maggior parte dei ripetitori wireless opera con una singola radio
 
 Essendo parte di una unica LAN derivata dallo stesso hub esteso, tutti i dispossitivi devono possedere indirizzi IP afferenti alla medesima subnet.
 
-
-<img src="img/mesh1.png" alt="alt text" width="1100">
-
-<img src="img/mesh_network2.png" alt="alt text" width="1100">
-
-
 ### **Tecnologia Multi-Banda**
 
 I router e i nodi mesh Wi-Fi 6 (802.11ax) spesso supportano più bande radio, tipicamente a 2.4 GHz, 5 GHz, e in alcuni casi 6 GHz (Wi-Fi 6E). Queste bande possono essere utilizzate in modo diverso per ottimizzare la rete:
-1.	2.4 GHz Band: Ha una portata più lunga ma velocità inferiore, utile per dispositivi lontani o per attraversare ostacoli come muri.
-2.	5 GHz Band: Ha una portata più corta ma velocità più alta, ideale per connessioni ad alta velocità a distanze moderate.
-3.	6 GHz Band (Wi-Fi 6E): Offre molte più canali e minore congestione, con velocità elevate e latenza ridotta, ma con una portata limitata.
+1.	**Banda 2.4 GHz**: Ha una portata più lunga ma velocità inferiore, utile per dispositivi lontani o per attraversare ostacoli come muri.
+2.	**Banda 5 GHz Band**: Ha una portata più corta ma velocità più alta, ideale per connessioni ad alta velocità a distanze moderate.
+3.	**Banda 6 GHz (Wi-Fi 6E)**: Offre molte più canali e minore congestione, con velocità elevate e latenza ridotta, ma con una portata limitata.
 
-### **Implementazione Multi-Radio**
+### **Sistemi multicanale (multiradio)**
 
-I sistemi mesh Wi-Fi 6 possono utilizzare più radio per comunicare su diverse bande. Questo approccio offre vantaggi significativi:
-1.	Backhaul Dedicato: Alcuni sistemi mesh utilizzano una radio dedicata per il backhaul (la connessione tra i nodi mesh), mantenendo le altre radio libere per il traffico dei dispositivi client. Ad esempio, il backhaul potrebbe operare sulla banda a 5 GHz o 6 GHz per sfruttare velocità elevate e bassa interferenza.
-2.	Dynamic Band Steering: La rete mesh può dirigere dinamicamente i dispositivi verso la banda più appropriata, migliorando l'efficienza della rete. I dispositivi più vicini ai nodi mesh possono essere indirizzati verso le bande a 5 GHz o 6 GHz, mentre quelli più lontani possono usare la banda a 2.4 GHz.
-3.	Tri-Band Systems: I sistemi mesh tri-band hanno tre radio: una per 2.4 GHz, una per 5 GHz, e una terza che può operare su 5 GHz o 6 GHz. Questo permette una maggiore flessibilità e prestazioni superiori, poiché una delle bande a 5 GHz o 6 GHz può essere utilizzata esclusivamente per il backhaul.
+Architettura del sistema di rete Wireless Mesh multicanale. Il numero minimo di canali necessrio è 2. Un sistema a 3 canali offre maggiore flessibilità a prezzo di un maggiore costo.
+
+<img src="img/mesh1.png" alt="alt text" width="1100">
+
+I dispositivi mobili degli utenti finali si connettono alla rete tramite nodi di aggregazione del traffico simili a punti di accesso, che formano tra loro una rete mesh wireless multicanale per inoltrare il traffico dati da/verso i dispositivi degli utenti finali. I collegamenti tra i nodi indicano la comunicazione diretta sul canale indicato dal numero sul collegamento. In questa rete, ogni nodo è dotato di 2 NIC wireless. Pertanto il numero di canali utilizzati da ciascun nodo contemporaneamente non può essere superiore a 2; la rete nel suo complesso utilizza 5 canali distinti.
+
+<img src="img/mesh_network2.png" alt="alt text" width="1100">
+
+### **Funzionalità Chiave di una implementazione multiradio**
+
+Quando si vuole **selezionare** un AP Wi-Fi per una rete mesh ad **alte prestazioni**, potrebbe esse utile tenere in considerazione le seguenti funzionalità:
+- **Tri-Band Support**: I sistemi mesh tri-band hanno tre radio: una per 2.4 GHz, una per 5 GHz, e una terza che può operare su 5 GHz o 6 GHz. Questo permette una maggiore flessibilità e prestazioni superiori, poiché una delle bande a 5 GHz o 6 GHz può essere utilizzata esclusivamente per il backhaul.
+- **Beamforming**: Verifica che il dispositivo utilizzi il beamforming per migliorare la copertura e le prestazioni dei dispositivi collegati.
+- **Wi-Fi 6/6E**: Preferire dispositivi che supportano Wi-Fi 6 o 6E per beneficiare delle tecnologie più recenti, come OFDMA, MU-MIMO, e canali a 160 MHz.
+- **Backhaul Dedicato**: alcuni sistemi mesh utilizzano una radio dedicata per il backhaul (la connessione tra i nodi mesh), mantenendo le altre radio libere per il traffico dei dispositivi client. Ad esempio, il backhaul potrebbe operare sulla banda a 5 GHz o 6 GHz per sfruttare velocità elevate e bassa interferenza.
+- **Dynamic Band Steering**: La rete mesh può dirigere dinamicamente i dispositivi verso la banda più appropriata, migliorando l'efficienza della rete. I dispositivi più vicini ai nodi mesh possono essere indirizzati verso le bande a 5 GHz o 6 GHz, mentre quelli più lontani possono usare la banda a 2.4 GHz.
+- **Facilità di Configurazione**: meglio scegliere dispositivi con app di gestione intuitive e supporto tecnico affidabile.
+
 
 **Conclusioni**
 
