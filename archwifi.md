@@ -304,15 +304,19 @@ I router e i nodi mesh Wi-Fi 6 (802.11ax) spesso supportano più bande radio, ti
 2.	**Banda 5 GHz Band**: Ha una portata più corta ma velocità più alta, ideale per connessioni ad alta velocità a distanze moderate.
 3.	**Banda 6 GHz (Wi-Fi 6E)**: Offre molte più canali e minore congestione, con velocità elevate e latenza ridotta, ma con una portata limitata.
 
+
+
+
+
+<img src="img/mesh1.png" alt="alt text" width="1100">
+
 ### **Sistemi multicanale (multiradio)**
 
 Architettura del sistema di rete Wireless Mesh multicanale. Il numero minimo di canali necessrio è 2. Un sistema a 3 canali offre maggiore flessibilità a prezzo di un maggiore costo.
 
-<img src="img/mesh1.png" alt="alt text" width="1100">
+<img src="img/mesh_network2.png" alt="alt text" width="1100">
 
 I dispositivi mobili degli utenti finali si connettono alla rete tramite nodi di aggregazione del traffico simili a punti di accesso, che formano tra loro una rete mesh wireless multicanale per inoltrare il traffico dati da/verso i dispositivi degli utenti finali. I collegamenti tra i nodi indicano la comunicazione diretta sul canale indicato dal numero sul collegamento. In questa rete, ogni nodo è dotato di 2 NIC wireless. Pertanto il numero di canali utilizzati da ciascun nodo contemporaneamente non può essere superiore a 2; la rete nel suo complesso utilizza 5 canali distinti.
-
-<img src="img/mesh_network2.png" alt="alt text" width="1100">
 
 ### **Funzionalità Chiave di una implementazione multiradio**
 
