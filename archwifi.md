@@ -300,6 +300,26 @@ Essendo parte di una unica LAN derivata dallo stesso hub esteso, tutti i disposs
 
 <img src="img/mesh_network2.png" alt="alt text" width="1100">
 
+
+### **Tecnologia Multi-Banda**
+
+I router e i nodi mesh Wi-Fi 6 (802.11ax) spesso supportano più bande radio, tipicamente a 2.4 GHz, 5 GHz, e in alcuni casi 6 GHz (Wi-Fi 6E). Queste bande possono essere utilizzate in modo diverso per ottimizzare la rete:
+1.	2.4 GHz Band: Ha una portata più lunga ma velocità inferiore, utile per dispositivi lontani o per attraversare ostacoli come muri.
+2.	5 GHz Band: Ha una portata più corta ma velocità più alta, ideale per connessioni ad alta velocità a distanze moderate.
+3.	6 GHz Band (Wi-Fi 6E): Offre molte più canali e minore congestione, con velocità elevate e latenza ridotta, ma con una portata limitata.
+
+### **Implementazione Multi-Radio**
+
+I sistemi mesh Wi-Fi 6 possono utilizzare più radio per comunicare su diverse bande. Questo approccio offre vantaggi significativi:
+1.	Backhaul Dedicato: Alcuni sistemi mesh utilizzano una radio dedicata per il backhaul (la connessione tra i nodi mesh), mantenendo le altre radio libere per il traffico dei dispositivi client. Ad esempio, il backhaul potrebbe operare sulla banda a 5 GHz o 6 GHz per sfruttare velocità elevate e bassa interferenza.
+2.	Dynamic Band Steering: La rete mesh può dirigere dinamicamente i dispositivi verso la banda più appropriata, migliorando l'efficienza della rete. I dispositivi più vicini ai nodi mesh possono essere indirizzati verso le bande a 5 GHz o 6 GHz, mentre quelli più lontani possono usare la banda a 2.4 GHz.
+3.	Tri-Band Systems: I sistemi mesh tri-band hanno tre radio: una per 2.4 GHz, una per 5 GHz, e una terza che può operare su 5 GHz o 6 GHz. Questo permette una maggiore flessibilità e prestazioni superiori, poiché una delle bande a 5 GHz o 6 GHz può essere utilizzata esclusivamente per il backhaul.
+
+**Conclusioni**
+
+Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prestazioni e la copertura, utilizzando bande diverse per i link tra nodi e per le connessioni dei dispositivi. Questa tecnologia permette di ridurre la congestione e migliorare l'efficienza della rete, offrendo una connessione più stabile e veloce per tutti i dispositivi collegati.
+
+
 **Sitografia**:
 - www.master-iot.it Master Universitario di II Livello "Internet of Things and Big Data" A.A.2018-2019 Università degli Studi di Genova
 - https://www.researchgate.net/publication/300111853_Long-Range_IoT_Technologies_The_Dawn_of_LoRa
