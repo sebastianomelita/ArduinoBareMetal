@@ -332,7 +332,7 @@ Architettura del sistema di rete Wireless Mesh multicanale. Il numero minimo di 
 
 <img src="img/mesh_network2.png" alt="alt text" width="1100">
 
-I dispositivi mobili degli utenti finali si connettono alla rete tramite nodi di aggregazione del traffico simili a punti di accesso, che formano tra loro una rete mesh wireless multicanale per inoltrare il traffico dati da/verso i dispositivi degli utenti finali. I collegamenti tra i nodi indicano la comunicazione diretta sul canale indicato dal numero sul collegamento. In questa rete, ogni nodo è dotato di **2 NIC wireless**. Pertanto il numero di canali utilizzati da ciascun nodo contemporaneamente non può essere superiore a 2; la rete nel suo complesso utilizza 5 canali distinti.
+Nello schema a destra, i dispositivi mobili degli utenti finali si connettono alla rete tramite nodi di aggregazione del traffico simili a punti di accesso, che formano tra loro una rete mesh wireless multicanale per inoltrare il traffico dati da/verso i dispositivi degli utenti finali. I collegamenti tra i nodi indicano la comunicazione diretta sul canale indicato dal numero sul collegamento. In questa rete, ogni nodo è dotato di **2 NIC wireless**. Pertanto il numero di canali utilizzati da ciascun nodo contemporaneamente non può essere superiore a 2; la rete nel suo complesso utilizza 5 canali distinti.
 
 ### **Funzionalità Chiave di una implementazione multiradio**
 
