@@ -209,11 +209,13 @@ In tabella un elenco parziale con le principali limitazioni:
 
 Per le reti Wi-Fi che operano nella banda 2.4 GHz, i **limiti di EIRP** possono variare a seconda del canale utilizzato e sono generalmente compresi tra 20 dBm (100 mW) e 24 dBm (250 mW). Per la banda 5 GHz, i limiti possono essere più elevati e variano in base al canale e alla larghezza di banda utilizzati.
 
-Ogni access point utilizza un singolo canale (largo 22 MHz), che viene condiviso in TDMA-TDD (CSMA/CA) da tutti gli utenti
+Ogni **access point** utilizza un **singolo canale** (largo 22 MHz), che viene condiviso in TDMA-TDD (**CSMA/CA**) da tutti gli utenti.
 
-La trasmissione avviene a pacchetti con conferma di ricezione.
+La trasmissione avviene a **pacchetti** con **conferma** di ricezione.
 
-La potenza media (su 6 minuti) dipende dalle condizioni di servizio ed è influenzata dal duty cycle, a sua volta determinato da vari fattori:
+**Impatto ambientale**
+
+La **potenza media** delle emissioni ambientali dipende dalle condizioni di servizio ed è influenzata dal duty cycle, a sua volta determinato da vari **fattori**:
 - La bidirezionalità della trasmissione (attesa dell’OK di ricezione)
 - La necessità di servire più terminali mobili (diminuisce il duty cycle di ogni singolo terminale mobile)
 - Il duty cycle aumenta col volume di dati da trasferire, ma raramente ci si avvicina al 100%
@@ -223,7 +225,9 @@ La potenza media (su 6 minuti) dipende dalle condizioni di servizio ed è influe
 - La capacità di traffico della rete collegata influenza il duty cycle
 - Il duty cycle minimo dell’access point è fissato dai segnali di servizio (beacon signals) ed è dell’ordine di 0.01%
 
-Considerata la bassa potenza di uscita di picco, il bassissimo guadagno d’antenna e la riduzione operata dal duty cycle, gli access point delle reti Wi-Fi generano livelli di densità di potenza sempre molti ordini di grandezza sotto i limiti normativi ed anche significativamente inferiori alle stazioni radio base della telefonia cellulare.
+Considerata la **bassa potenza** di uscita di **picco**, il bassissimo **guadagno d’antenna** e la riduzione operata dal **duty cycle**, gli access point delle reti Wi-Fi generano livelli di **densità di potenza** sempre molti ordini di grandezza sotto i **limiti normativi** ed anche significativamente inferiori alle **stazioni radio base** della telefonia cellulare.
+
+**Gestione equa della banda**
 
 I **parametri** e le **limitazioni** che vedremo sono dei criteri di accesso al mezzo radio volti a ridurre **disturbi mutui** fra i vari servizi dei vari utenti e la **monopolizzazione** di un canale da parte di un singolo utente.
 - **Potenza disponibile massima**. La potenza in Watt. In genere dell’ordine dei millesimi di watt (mW) è spesso espressa in dBm.
