@@ -15,15 +15,16 @@ Nei sistemi DSSS (Direct Sequence Spread Spectrum), il **fattore di spreading** 
 L’**espansione in frequenza** si ottiene trasformando artificialmente un segnale **lentamente variabile** nel tempo in uno **rapidamente variabile** nel tempo.
 Ad ogni sorgente è associato un **codice di espansione** da usare in trasmissione. Lo stesso codice, **usato in ricezione**, riporta a **banda stretta** solo lei lasciando espanse tutte le altre sorgenti.
 
+Il codice di espansione è composto da un treno di bit detti chip che si sovrappongono ai bit originali del messaggio
+
 <img src="spread1.png" alt="alt text" width="1000">
 
 La **proprietà** che viene **divisa** fisicamente è la **potenza** di trasmissione. La proprietà che viene suddivisa logicamente è un insieme di **codici ortogonali**
 **In TX** la sorgente viene espansa: cioè trasformata da segnale a banda stretta a segnale che occupa tutta la banda di lavoro, detto segnale a spettro espanso.  
 
 L’**espansione** in frequenza di un segnale:
-
 - mantiene **immutata l’energia** complessiva del segnale originale, cioè l’area sottesa al segnale nel diagramma potenza – frequenza rimane la stessa (si allarga la base del segnale ma, nel contempo, si diminuisce l’altezza).
-- si **ottiene nel dominio del tempo** moltiplicando il segnale di partenza per un altro segnale di frequenza molto maggiore detto **chirp (o spreading code)**. L’**energia** viene così **diffusa** su **tutte** le frequenze della banda ma con una **ampiezza** molto bassa. La **moltiplicazione** trasforma un segnale lentamente variabile in uno rapidamente variabile **sostituendo** il **bit originale** con una **sequenza di bit** veloci detti **chirp**.
+- si **ottiene nel dominio del tempo** moltiplicando il segnale di partenza per un altro segnale di frequenza molto maggiore detto **chirp (o spreading code)**. L’**energia** viene così **diffusa** su **tutte** le frequenze della banda ma con una **ampiezza** molto bassa. La **moltiplicazione** trasforma un segnale lentamente variabile in uno rapidamente variabile **sostituendo** il **bit originale** con una **sequenza di bit** veloci detti **chirp**. Un **chirp** è una sequenza che **marchia** in maniera univoca i **bit** di una certa sorgente rendendoli, in ricezione, distinguibili da quelli di qualsiasi altra.
 
 <img src="spread2.png" alt="alt text" width="1000">
 
@@ -33,7 +34,7 @@ Nel CDM le **sorgenti** occupano e **condividono** tutta la **banda** di frequen
 
 <img src="img/DSSS_carrier.png" alt="alt text" width="600">
 
-Aumentando sufficientemente il fattore di spreading è possibile portare la sensibilità sotto la soglia di rumore di fondo dell'universo rendendo, di fatto, le comunicazioni inintercettabili. Inoltre si riesce a far lavorare il sistema in ambienti molto disturbati, persino con rapporti segnale/rumore negativi.
+**Aumentando** sufficientemente il **fattore di spreading** è possibile portare la **sensibilit**à sotto la soglia di **rumore di fondo** dell'universo rendendo, di fatto, le comunicazioni inintercettabili. Inoltre si riesce a far lavorare il sistema in ambienti molto disturbati, persino con rapporti **segnale/rumore negativi**.
 
 **Riassumendo**, lo spettro espanso è un mezzo di trasmissione in cui il segnale occupa una larghezza di banda superiore al minimo necessario per inviare l'informazione; l'allargamento della banda avviene mediante un codice indipendente dai dati, e per il despreading e il successivo recupero dei dati viene utilizzata una ricezione sincronizzata con il codice del ricevitore.
 
