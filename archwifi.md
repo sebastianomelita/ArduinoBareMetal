@@ -359,7 +359,7 @@ Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prest
 - **Eero Pro 6**: Supporta Wi-Fi 6, offre alta velocità e copertura estesa, facile da configurare tramite app mobile.
 - **Ubiquiti AmpliFi HD**: Un sistema potente con una gestione avanzata delle reti, ottimo per utenti più tecnici.
 
-**Sitografia**:
+### **Sitografia**:
 - www.master-iot.it Master Universitario di II Livello "Internet of Things and Big Data" A.A.2018-2019 Università degli Studi di Genova
 - https://www.researchgate.net/publication/300111853_Long-Range_IoT_Technologies_The_Dawn_of_LoRa
 - https://www.researchgate.net/figure/The-Wi-Fi-trilateration-Technique_fig4_277307295
