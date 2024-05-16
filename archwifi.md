@@ -310,6 +310,13 @@ I router e i nodi mesh Wi-Fi 6 (802.11ax) spesso supportano più bande radio, ti
 
 <img src="img/mesh1.png" alt="alt text" width="1100">
 
+### **Applicazione del CFP in Reti Mesh**
+
+In una **rete mesh**, il controllo del tempo di trasmissione attraverso CFP o tecniche simili può essere implementato per migliorare l'**efficienza del backhaul** e delle comunicazioni client. Ecco come potrebbe funzionare:
+- **Configurazione del CFP**: Gli access point (AP) o i nodi mesh possono essere configurati per utilizzare periodi di trasmissione **senza contesa** (o CFP) per le comunicazioni **backhaul**. Durante questi periodi, **solo i nodi mesh** partecipanti possono trasmettere dati tra loro, in slot di tempo preassegnati, riducendo le interferenze e migliorando la qualità del collegamento. Si tratta, di fatto, di realizzare una multipolazione **TDM statica** solo per le dorsali.
+- **Allocazione Dinamica**: Durante i periodi di contesa, i nodi mesh possono utilizzare tecniche come **OFDMA** (introdotto a partire dal wiFi6) per allocare dinamicamente subcanali e slot di tempo ai dispositivi client, ottimizzando l'uso dello spettro e riducendo la latenza.
+- **Gestione della QoS**: Per applicazioni che richiedono alta qualità del servizio, come lo streaming video o le chiamate VoIP, i nodi mesh possono **riservare slot** di tempo specifici durante i CFP per garantire una trasmissione senza interruzioni e con bassa latenza.
+
 ### **Sistemi multicanale (multiradio)**
 
 Architettura del sistema di rete Wireless Mesh multicanale. Il numero minimo di canali necessrio è 2. Un sistema a 3 canali offre maggiore flessibilità a prezzo di un maggiore costo.
