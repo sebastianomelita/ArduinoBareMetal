@@ -298,6 +298,8 @@ Essendo parte di una unica LAN derivata dallo stesso hub esteso, tutti i disposs
 
 <img src="img/mesh1.png" alt="alt text" width="1100">
 
+<img src="img/mesh_network2.png" alt="alt text" width="1100">
+
 **Sitografia**:
 - www.master-iot.it Master Universitario di II Livello "Internet of Things and Big Data" A.A.2018-2019 Università degli Studi di Genova
 - https://www.researchgate.net/publication/300111853_Long-Range_IoT_Technologies_The_Dawn_of_LoRa
