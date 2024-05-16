@@ -258,10 +258,10 @@ Un ponte radio WiFi è una dorsale tra due tronchi di rete realizzata mediante d
 
 <img src="img/pontewifi.png" alt="alt text" width="1000">
 
-In genere, i dispositivi AP coinvolti in una dorsale si comportano anche come router. Un ponte radio wifi è utile quando:
-- edifici di una stessa organizzazione sono separati dal suolo pubblico (ad es. una strada)
-- Vagoni di uno stesso treno non sono collegati da cavi dati
-- Si vuole realizzare un ISP regionale con dorsali wireless disponendo un AP wireless sul tetto delle case degli utenti. Alcuni di questi avranno anche funzione di router di smistamento tra dorsali wireless differenti. 
+**In genere**, i **dispositivi AP** coinvolti in una dorsale si comportano anche come router. Un **ponte radio wifi** è utile quando:
+- edifici di una stessa organizzazione sono separati dal **suolo pubblico** (ad es. una strada)
+- **Vagoni** di uno stesso treno non sono collegati da cavi dati
+- Si vuole realizzare un **ISP regionale** con dorsali wireless disponendo un **AP wireless** sul tetto delle case degli utenti. Alcuni di questi avranno anche funzione di **router di smistamento** tra dorsali wireless differenti. 
 
 **Link budget**. Tra trasmettitore e gateway potrebbe essere valutato il cosidetto link budget, overossia la somma dei guadagni e delle attenuazioni lungo il percorso fino al ricevitore. L'obiettivo è valutare il rispetto del **vincolo finale** sul ricevitore, cioè che la potenza ricevuta sia maggiore della **sensibilità minima** del ricevitore più un certo **margine di sicurezza** per tenere conto del **fading** ambientale (multipath oppure attenuazione atmosferica) che è una quantità che varia, più o meno rapidamente, col **tempo**. Per dettagli sul calcolo vedere https://www.vincenzov.net/tutorial/elettronica-di-base/Trasmissioni/link.htm. Rimane assodato che si tratta soltanto di un **calcolo di massima** che fornisce indicazioni sulla fattibilità teorica di un collegamento che, se positiva, richiede attente e ripetute **verifiche sul campo** nelle condizioni di esercizio previste per l'impianto.
 
@@ -269,7 +269,7 @@ In genere, i dispositivi AP coinvolti in una dorsale si comportano anche come ro
 
 In bridge mode il collegamento tra due AP è assimilabile ad una dorsale L2. Nessun altro dispositivo client può entrare a far parte del bridge oltre i due AP. I dispositivi possono essere connessi in modalità WDS oppure in modalità Ad Hoc. Gli host a monte e a valle dei due dispositivi si vedono reciprocamente. Il bridge a monte si chiama root bridge. 
 
-In generale, il funzionamento della modalità Bridge in un dispositivo wireless coinvolge l'intercettazione del traffico wireless proveniente da una rete e il suo **inoltro** a un'altra rete, consentendo così la comunicazione tra le due reti senza fili come se fossero collegate tra loro. I dispositivi internamente realizzano un bridge SW che inoltra pacchetti tra due **hub wireless distinti**: il primo collega gli utenti mentre il secondo realizza la connessione con gli altri bridge.
+**In generale**, il funzionamento della **modalità Bridge** in un dispositivo wireless coinvolge l'intercettazione del traffico wireless proveniente da una rete e il suo **inoltro** a un'altra rete, consentendo così la comunicazione tra le due reti senza fili come se fossero collegate tra loro tramite uno **switch**. I dispositivi internamente realizzano un **bridge SW** che **inoltra** pacchetti tra due **hub wireless distinti**: il primo **collega gli utenti** mentre il secondo realizza la **dorsale L2** con gli altri bridge.
 
 <img src="img/trenowifi.png" alt="alt text" width="1000">
 
@@ -281,23 +281,23 @@ Essendo parte di una unica LAN derivata dalla cascata hub1---bridge1---hub2---br
 
 ### **Esempio sottorete privata: client mode**
 
-In client mode il collegamento tra due AP è assimilabile ad una dorsale L3. Altri dispositivi client possono entrare a far parte del link tra i due AP.
+In **client mode** il collegamento tra due AP è assimilabile ad una **dorsale L3**. Altri dispositivi client possono entrare a far parte del link tra i due AP.
 
 <img src="img/ponteaziendawifi.png" alt="alt text" width="1000">
 
-Il dispositivo client implementa un router ed un NAT. In genere, gli host sulla LAN del client utilizzano il server DHCP del router, poiché di fatto è una rete indipendente. 
+Il dispositivo client implementa un **router** ed un **NAT**. In genere, gli host sulla LAN del client utilizzano il server DHCP del router, poiché di fatto è una rete indipendente. 
 
 Gli host del lato AP non vedono quelli del lato client ma solo un router (con indirizzo privato). Gli host del lato client vedono quelli del lato AP, ed accedono ad internet.
 
 ### **Esempio sottorete privata: repeater mode**
 
-Il dispositivo amplifica il segnale estendendo la dimensione nello spazio del mezzo a BUS che comunque rimane unico per tutti i dispositivi. Ne consegue che il traffico sul primo hub wireless viene riportato sul secondo e vicerversa.  Dovendo rimanere uguale il throughput complessivo, ne consegue che la banda di ciascun hub wireless non potrà essere superiore al 50% del throughput di uno solo se questi generano lo stesso volume di traffico.
+Il dispositivo **amplifica** il segnale estendendo la dimensione nello spazio del mezzo a BUS che comunque rimane unico per tutti i dispositivi. Ne consegue che il traffico sul primo hub wireless viene riportato sul secondo e vicerversa.  Dovendo rimanere uguale il throughput complessivo, ne consegue che la banda di ciascun hub wireless **non** potrà essere **superiore al 50%** del throughput di **uno solo**, se questi generano lo stesso volume di traffico.
 
 <img src="img/repeater.jpg" alt="alt text" width="600">
 
-In sintesi, la maggior parte dei ripetitori wireless opera con una singola radio e utilizza gli stessi canali e lo stesso SSID della rete principale per estendere la sua copertura. Questo semplifica la configurazione e consente una transizione fluida tra il segnale del router principale e quello del ripetitore.
+**In sintesi**, la maggior parte dei **ripetitori wireless** opera con una **singola radio** e utilizza gli **stessi canali** e lo **stesso SSID** della rete principale per estendere la sua copertura. Questo semplifica la configurazione e consente una transizione fluida tra il segnale del router principale e quello del ripetitore, a costo di un sostanziale **dimezzamento del trhoughput** della rete principale.
 
-Essendo parte di una unica LAN derivata dallo stesso hub esteso, tutti i dispossitivi devono possedere indirizzi IP afferenti alla medesima subnet.
+Essendo parte di una unica LAN derivata dallo stesso hub esteso, tutti i dispositivi devono possedere **indirizzi IP** afferenti alla **medesima subnet**.
 
 ## **Reti Wifi Mesh**
 
