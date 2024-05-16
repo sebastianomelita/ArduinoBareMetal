@@ -295,7 +295,7 @@ In sintesi, la maggior parte dei ripetitori wireless opera con una singola radio
 
 Essendo parte di una unica LAN derivata dallo stesso hub esteso, tutti i dispossitivi devono possedere indirizzi IP afferenti alla medesima subnet.
 
-## **Reti WifI Mesh**
+## **Reti Wifi Mesh**
 
 Una rete **Wi-Fi mesh** è un sistema di rete wireless progettato per fornire una copertura Wi-Fi estesa che consiste di più AP che però non sono connessi all'infrastruttura di una LAN cablata tranne uno detto **gateway**. Una rete Wi-Fi mesh è una **soluzione avanzata** per estendere la copertura Wi-Fi e migliorare l'affidabilità della connessione in **ambienti complessi** nei quali risulta essere problematica la realizzazione di **dorsali cablate** verso gli AP. Con la capacità di **auto-configurarsi**, gestire il **roaming continuo** e fornire una **copertura scalabile**, le reti mesh rappresentano una scelta preferibile per chi necessita di una connettività robusta e senza interruzioni su aree estese.
 
