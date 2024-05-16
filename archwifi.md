@@ -295,6 +295,8 @@ In sintesi, la maggior parte dei ripetitori wireless opera con una singola radio
 
 Essendo parte di una unica LAN derivata dallo stesso hub esteso, tutti i dispossitivi devono possedere indirizzi IP afferenti alla medesima subnet.
 
+## **Reti WifI Mesh**
+
 ### **Tecnologia Multi-Banda**
 
 I router e i nodi mesh Wi-Fi 6 (802.11ax) spesso supportano più bande radio, tipicamente a 2.4 GHz, 5 GHz, e in alcuni casi 6 GHz (Wi-Fi 6E). Queste bande possono essere utilizzate in modo diverso per ottimizzare la rete:
