@@ -198,12 +198,12 @@ Un esempio di **canale MQTT di configurazione** per, ad esempio, impostare il pe
 
 ## **Banda ISM**
 
-Le bande libere sono le frequenze di uso libero, non tutelate, che non richiedono concessioni per il loro impiego. Sono spesso indicate come ISM (Industrial, Scientific and Medical)[Nota 1].
+Le **bande libere** sono le frequenze di **uso liber**o, non tutelate, che non richiedono **concessioni** per il loro impiego. Sono spesso indicate come **ISM** (Industrial, Scientific and Medical)[Nota 1].
 
-In realtà ISM è un sottogruppo di tutte le frequenze disponibili.posside 
-L’uso di tali bande è regolamentato in modo da consentirne l’impiego condiviso ed evitare che un utente o un servizio possa monopolizzare la risorsa.
+In realtà ISM è un sottogruppo di tutte le frequenze disponibili.
+L’uso di tali bande è regolamentato in modo da consentirne l’impiego **condiviso** ed evitare che un utente o un servizio possa **monopolizzare** la risorsa.
 
-In tabella un elenco parziale con le principali limitazioni:
+In tabella un elenco parziale con le principali **limitazioni** che riguardano principalmente **duty cycle**, **EIRP**, **ERP**:
 
 <img src="ismband.png" alt="alt text" width="600">
 
