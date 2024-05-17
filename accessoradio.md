@@ -26,7 +26,7 @@ L'**intero spettro radio** è diviso convenzionalmente in **bande di frequenza**
 
 <img src="img/main-qimg.jpeg" alt="alt text" width="700">
 
-#### **Demodulazione del segnale RF**
+#### **Demodulazione del segnale FDM**
 
 Tutte le tecniche di demodulazione di un segnale RF (a radiofrequenza) presuppongono in ricezione la **traslazione** (contaria a quella effettuata in trasmissione) del segnale dalla banda traslata alla **banda base**, dove poi il segnale viene campionato per ricostruire il **valore originale** dei singoli bit. Questa operazione è possibile solo se il segnale possiede un'**ampiezza sufficiente** per **discriminarlo** dal **rumore** causato:
 - dalle sorgenti di disturbo elettromagnetiche, dette EMI, sempre presenti in un mezzo trasmissivo (disturbi impulsivi, impianto elettrico).
