@@ -38,6 +38,7 @@ Un segnale in **banda base**, per essere correttamente decodificato, deve divent
 - un numero limitato di frequenze
 - un livello di energia sufficientemente alto, cioè al di sopra del rumore, in tutte le sue componenti spettrali (frequenze). In altre parole, il segnale deve avere un **rapporto segnale/rumore** complessivo (S/N ratio) sufficiente.
 
+Anche in assenza delle suddette sorgenti di rumore, esiste una sorgente di rumaore ineliminabile costituita dalla **radiazione di fondo** dell'universo avente una intensità di circa -144 dB/Hz.
 
 ### **DSSS**
 
