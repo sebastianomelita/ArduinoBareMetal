@@ -36,7 +36,7 @@ Tutte le tecniche di demodulazione di un segnale RF (a radiofrequenza) presuppon
 
 Un segnale in **banda base**, per essere correttamente decodificato, deve diventare un segnale a **banda stretta** avente:
 - un numero limitato di frequenze
-- un livello di energia sufficientemente alto, cioè al di sopra del rumore, in tutte le sue componenti spettrali (frequenze). In altre parole, il segnale deve avere un rapporto segnale/rumore complessivo (S/N ratio) sufficiente.
+- un livello di energia sufficientemente alto, cioè al di sopra del rumore, in tutte le sue componenti spettrali (frequenze). In altre parole, il segnale deve avere un **rapporto segnale/rumore** complessivo (S/N ratio) sufficiente.
 
 
 ### **DSSS**
