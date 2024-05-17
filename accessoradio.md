@@ -4,9 +4,9 @@
 
 ### **FDM**
 
-#### **Segnale in banda base**
+#### **Segnale in banda base (BB)**
 
-Il **segnale** di una qualsiasi comunicazione viene **generato** a partire da una operazione di **trasduzione** (trasformazione da **grandezza fisica** a **segnale elettrico**) a cui poi segue, nel mondo digitale, una operazione di **campionamento** e **quantizzazione** per trasformarlo, dal mondo doppiamente **infinito** del tempo e dello spazio, a quello doppiamente **discreto** (finito) dei **campioni** e dei **livelli**, questi ultimi numerati e **codificati** in **bit**. Ogni bit viene poi **codificato** in opportuni segnali aventi una forma adatta alla loro trasmissione sul mezzo radio. il segnale risultante viene detto **segnale in banda base**. Esempi di codifica in banda base sono la **Manchester** e la **NRZ**. Vedi [Codifica di bit](protocolli.md#codifica-di-bit) per dettagli.
+Il **segnale** di una qualsiasi comunicazione viene **generato** a partire da una operazione di **trasduzione** (trasformazione da **grandezza fisica** a **segnale elettrico**) a cui poi segue, nel mondo digitale, una operazione di **campionamento** e **quantizzazione** per trasformarlo, dal mondo doppiamente **infinito** del tempo e dello spazio, a quello doppiamente **discreto** (finito) dei **campioni** e dei **livelli**, questi ultimi numerati e **codificati** in **bit**. Ogni bit viene poi **codificato** in opportuni segnali aventi una forma adatta alla banda base (tipicamente la **NRZ**). Dopo il segnale digitale in banda base viene convertito in **radiofrequenza** tramite **modulazioni digitali**, che alterano un segnale RF ad alta frequenza in funzione dei valori dei bit contenuti nel segnale in banda base. Le modulazioni più note sono ASK, FSK e PSK, di cui i dettagli, però, esulano da questa trattazione (vedi corso di telecoumunicazioni).
 
 #### **Segnale FDM**
 
@@ -22,6 +22,13 @@ L'**intero spettro radio** è diviso convenzionalmente in **bande di frequenza**
 
 <img src="img/main-qimg.jpeg" alt="alt text" width="700">
 
+#### **Demodulazione del segnale RF**
+
+Tutte le tecniche di ricezione di un segnale RF (a radiofrequenza) presuppongono la traslazione del segnale dalla banda traslata alla **banda base**, dove poi il segnale viene campionato per ricostruire il **valore originale** dei singoli bit. Questa operazione è possibile solo se il segnale possiede un'**ampiezza sufficiente** per **discriminarlo** dal **rumore** causato:
+- dalle sorgenti di disturbo elettromagnetiche, dette EMI, sempre presenti in un mezzo trasmissivo (disturbi impulsivi, impianto elettrico).
+- dal rumore generato dalle interferenze di altre sorgenti detto RFI (Radio Frequency Interference).
+
+<img src="img/narrow.png" alt="alt text" width="500">
 
 ### **DSSS**
 
