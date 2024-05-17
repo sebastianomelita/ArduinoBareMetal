@@ -12,7 +12,9 @@ Un **segnale in banda base** è generato a partire dalla frequenza nulla fino ad
 
 Tutte le tecnologie di accesso al **canale radio** presuppongono la **traslazione del segnale** da trasmettere dalla sua frequenza originale (detta **banda base**), dove viene **generato**, a quella di **trasmissione** (detta banda **traslata**), dove viene **trasmesso**. L'operazione è analoga a quella prelevare dalla **finestra** di un montacarichi (la banda base) dei **libri** (il segnale) per poi disporli in diversi **scomparti** (le bande) di uno **scaffale** di una **libreria** (lo spettro). 
 
-L'**intero spettro radio** è diviso convenzionalmente in **bande di frequenza** che sono riservate ad una certa **categoria di servizi**. Ogni banda di frequenza è divisa in **canali** che sono allocati ad una certa **comunicazione** (sorgente), secondo **politiche** che possono essere **statiche** o **dinamiche**. Quelle **statiche** rimangono **fisse** per tutta la durata della comunicazione e la loro allocazione è stabilita nella fase di **apertura** di questa (protocolli connessi). Quelle **dinamiche** vengono allocate, senza impegno preordinato, al momento della **trasmissione** (protocolli non connessi).
+L'**intero spettro radio** è diviso convenzionalmente in **bande di frequenza** che sono riservate ad una certa **categoria di servizi**. Ogni banda di frequenza è divisa in **canali** che sono allocati ad una certa **comunicazione** (sorgente), secondo **politiche** che possono essere **statiche** o **dinamiche**:
+- Quelle **statiche** rimangono **fisse** per tutta la durata della comunicazione e la loro allocazione è stabilita nella fase di **apertura** di questa (protocolli connessi).
+- Quelle **dinamiche** vengono allocate, senza impegno preordinato, al momento della **trasmissione** (protocolli non connessi).
 
 <img src="img/main-qimg.jpeg" alt="alt text" width="700">
 
