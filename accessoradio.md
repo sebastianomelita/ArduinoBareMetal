@@ -17,10 +17,6 @@ L'**intero spettro radio** è diviso convenzionalmente in **bande di frequenza**
 <img src="img/main-qimg.jpeg" alt="alt text" width="700">
 
 
-
-
-Il segnale da trasme
-
 ### **DSSS**
 
 In realtà DSSS più che una tecnica di  **multiplazione** per l' **accesso al canale radio** è una vera e propria tecnica di **modulazione numerica** complementare alle tradizionali ASK, PSK, FSK, ecc.).
