@@ -10,7 +10,7 @@ Il **segnale** di una qualsiasi comunicazione viene **generato** a partire da un
 
 <img src="img/adc.png" alt="alt text" width="700">
 
-Ogni bit viene poi **codificato** in opportuni segnali aventi una forma adatta alla banda base (tipicamente la **NRZ**). Dopo il segnale digitale in banda base viene convertito in **radiofrequenza** tramite **modulazioni digitali**, che alterano un segnale RF ad alta frequenza in funzione dei valori dei bit contenuti nel segnale in banda base. Le modulazioni più note sono ASK, FSK e PSK, di cui i dettagli, però, esulano da questa trattazione (vedi corso di telecoumunicazioni).
+Ogni bit viene poi **codificato** in opportuni segnali aventi una forma adatta alla banda base (tipicamente la **NRZ**). Dopo il segnale digitale in banda base viene convertito in **radiofrequenza** tramite **modulazioni digitali**, che **alterano** un segnale RF ad alta frequenza in funzione dei valori dei bit contenuti nel segnale in banda base. Le modulazioni più note sono ASK, FSK e PSK, di cui i dettagli, però, esulano da questa trattazione (vedi corso di telecoumunicazioni).
 
 #### **Segnale FDM**
 
