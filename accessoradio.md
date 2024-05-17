@@ -4,7 +4,7 @@
 
 ### **FDM**
 
-Il **segnale** di una qualsiasi comunicazione viene **generato** a partire da una operazione di **trasduzione** (trasformazione da **grandezza fisica** a **segnale elettrico**) a cui poi segue, nel mondo digitale, una operazione di **campionamento** e **quantizzazione** per trasformarlo, dal mondo doppiamente **infinito** del tempo e dello spazio, a quello doppiamente **discreto** (finito) dei **campioni** e dei **livelli**, questi ultimi numerati e **codificati** in **bit**. Ogni bit viene poi **codificato** in opportuni segnali aventi una forma adatta alla loro trasmissione sul mezzo radio. il segnale risultante viene detto **segnale in banda base**.
+Il **segnale** di una qualsiasi comunicazione viene **generato** a partire da una operazione di **trasduzione** (trasformazione da **grandezza fisica** a **segnale elettrico**) a cui poi segue, nel mondo digitale, una operazione di **campionamento** e **quantizzazione** per trasformarlo, dal mondo doppiamente **infinito** del tempo e dello spazio, a quello doppiamente **discreto** (finito) dei **campioni** e dei **livelli**, questi ultimi numerati e **codificati** in **bit**. Ogni bit viene poi **codificato** in opportuni segnali aventi una forma adatta alla loro trasmissione sul mezzo radio. il segnale risultante viene detto **segnale in banda base**. Esempi di codifica in banda base sono la **Manchester** e la **NRZ**. Vedi [Codifica di bit](protocolli.md#codifica-di-bit) per dettagli.
 
 
 
@@ -14,7 +14,7 @@ Tutte le tecnologie di accesso al **canale radio** presuppongono la **traslazion
 
 L'**intero spettro radio** è diviso convenzionalmente in **bande di frequenza** che sono riservate ad una certa **categoria di servizi**. Ogni banda di frequenza è divisa in **canali** che sono allocati ad una certa **comunicazione** (sorgente), secondo **politiche** che possono essere **statiche** o **dinamiche**. Quelle **statiche** rimangono **fisse** per tutta la durata della comunicazione e la loro allocazione è stabilita nella fase di **apertura** di questa (protocolli connessi). Quelle **dinamiche** vengono allocate, senza impegno preordinato, al momento della **trasmissione** (protocolli non connessi).
 
-<img src="img/main-qimg.jpeg" alt="alt text" width="600">
+<img src="img/main-qimg.jpeg" alt="alt text" width="700">
 
 
 
