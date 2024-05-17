@@ -4,9 +4,11 @@
 
 ### **FDM**
 
+#### **Segnale in banda base**
+
 Il **segnale** di una qualsiasi comunicazione viene **generato** a partire da una operazione di **trasduzione** (trasformazione da **grandezza fisica** a **segnale elettrico**) a cui poi segue, nel mondo digitale, una operazione di **campionamento** e **quantizzazione** per trasformarlo, dal mondo doppiamente **infinito** del tempo e dello spazio, a quello doppiamente **discreto** (finito) dei **campioni** e dei **livelli**, questi ultimi numerati e **codificati** in **bit**. Ogni bit viene poi **codificato** in opportuni segnali aventi una forma adatta alla loro trasmissione sul mezzo radio. il segnale risultante viene detto **segnale in banda base**. Esempi di codifica in banda base sono la **Manchester** e la **NRZ**. Vedi [Codifica di bit](protocolli.md#codifica-di-bit) per dettagli.
 
-
+#### **Segnale FDM**
 
 Un **segnale in banda base** è generato a partire dalla frequenza nulla fino ad una frequenza massima finita. La frequenza massima è finita perchè tutti i sistemi fisici, senza eccezione alcuna, sono considerati **passa basso**, cioè tendono **naturalmente** ad **attenuare** il segnale generato all'**aumentare** della **frequenza**. Al **di sotto** di un certo **limite** il valore del segnale è considerato fisicamente **trascurabile** (approssimazione pratica). La frequenza in cui il segnale vale la **metà** del valore a centro banda viene detta **frequenza di taglio** o frequenza a 3dB (decibel). La **frequenza di taglio** è il limite **convenzionale** della larghezza di banda di tutti i segnali in **banda base**.
 
