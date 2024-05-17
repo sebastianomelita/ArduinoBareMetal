@@ -6,7 +6,11 @@
 
 #### **Segnale in banda base (BB)**
 
-Il **segnale** di una qualsiasi comunicazione viene **generato** a partire da una operazione di **trasduzione** (trasformazione da **grandezza fisica** a **segnale elettrico**) a cui poi segue, nel mondo digitale, una operazione di **campionamento** e **quantizzazione** per trasformarlo, dal mondo doppiamente **infinito** del tempo e dello spazio, a quello doppiamente **discreto** (finito) dei **campioni** e dei **livelli**, questi ultimi numerati e **codificati** in **bit**. Ogni bit viene poi **codificato** in opportuni segnali aventi una forma adatta alla banda base (tipicamente la **NRZ**). Dopo il segnale digitale in banda base viene convertito in **radiofrequenza** tramite **modulazioni digitali**, che alterano un segnale RF ad alta frequenza in funzione dei valori dei bit contenuti nel segnale in banda base. Le modulazioni più note sono ASK, FSK e PSK, di cui i dettagli, però, esulano da questa trattazione (vedi corso di telecoumunicazioni).
+Il **segnale** di una qualsiasi comunicazione viene **generato** a partire da una operazione di **trasduzione** (trasformazione da **grandezza fisica** a **segnale elettrico**) a cui poi segue, nel mondo digitale, una operazione di **campionamento** e **quantizzazione** per trasformarlo, dal mondo doppiamente **infinito** del tempo e dello spazio, a quello doppiamente **discreto** (finito) dei **campioni** e dei **livelli**, questi ultimi numerati e **codificati** in **bit**. 
+
+<img src="img/adc.png" alt="alt text" width="700">
+
+Ogni bit viene poi **codificato** in opportuni segnali aventi una forma adatta alla banda base (tipicamente la **NRZ**). Dopo il segnale digitale in banda base viene convertito in **radiofrequenza** tramite **modulazioni digitali**, che alterano un segnale RF ad alta frequenza in funzione dei valori dei bit contenuti nel segnale in banda base. Le modulazioni più note sono ASK, FSK e PSK, di cui i dettagli, però, esulano da questa trattazione (vedi corso di telecoumunicazioni).
 
 #### **Segnale FDM**
 
