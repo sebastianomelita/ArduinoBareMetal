@@ -7,15 +7,13 @@
 In realtà DSSS più che una tecnica di  **multiplazione** per l' **accesso al canale radio** è una vera e propria tecnica di **modulazione numerica** complementare alle tradizionali ASK, PSK, FSK, ecc.).
 
 Nel **CDM** la sorgente viene:
-- **traslata**: cioè portata alla frequenza centrale della banda di trasmissione
-- **espansa**: cioè trasformata da segnale a banda stretta a segnale che occupa tutta la banda di lavoro detto segnale a banda espansa.  
+- **traslata**: cioè portata dalla sua frequenza in **banda base** (centrata sulla frequenza nulla) alla **frequenza centrale** della **banda** di trasmissione (operazione di **conversione** in banda traslata).
+- **espansa**: cioè trasformata da segnale a **banda stretta** a segnale che occupa **tutta** la banda di lavoro detto segnale a **banda espansa** (operazione di **spreading** su tutta la banda).  
 
 Nei sistemi DSSS (Direct Sequence Spread Spectrum), il **fattore di spreading** è la lunghezza della sequenza di spreading che si riflette nel numero di chip per ciascun simbolo di modulazione.
 
-L’**espansione in frequenza** si ottiene trasformando artificialmente un segnale **lentamente variabile** nel tempo in uno **rapidamente variabile** nel tempo.
+L'**espansione in frequenza** si ottiene trasformando artificialmente un segnale **lentamente variabile** nel tempo in uno **rapidamente variabile** nel tempo.
 Ad ogni sorgente è associato un **codice di espansione** da usare in trasmissione. Lo stesso codice, **usato in ricezione**, riporta a **banda stretta** solo lei lasciando espanse tutte le altre sorgenti.
-
-Il codice di espansione è composto da un treno di bit detti chip che si sovrappongono ai bit originali del messaggio
 
 <img src="spread1.png" alt="alt text" width="1000">
 
@@ -24,7 +22,7 @@ La **proprietà** che viene **divisa** fisicamente è la **potenza** di trasmiss
 
 L’**espansione** in frequenza di un segnale:
 - mantiene **immutata l’energia** complessiva del segnale originale, cioè l’area sottesa al segnale nel diagramma potenza – frequenza rimane la stessa (si allarga la base del segnale ma, nel contempo, si diminuisce l’altezza).
-- si **ottiene nel dominio del tempo** moltiplicando il segnale di partenza per un altro segnale di frequenza molto maggiore detto **chirp (o spreading code)**. L’**energia** viene così **diffusa** su **tutte** le frequenze della banda ma con una **ampiezza** molto bassa. La **moltiplicazione** trasforma un segnale lentamente variabile in uno rapidamente variabile **sostituendo** il **bit originale** con una **sequenza di bit** veloci detti **chirp**. Un **chirp** è, quindi, una sequenza che **marchia** in maniera univoca i **bit** di una certa sorgente rendendoli, in ricezione, distinguibili da quelli di qualsiasi altra.
+- si **ottiene nel dominio del tempo** moltiplicando il segnale di partenza per un altro segnale di frequenza **molto maggiore** detto **chirp (o spreading code)**. L’**energia** viene così **diffusa** su **tutte** le frequenze della banda ma con una **ampiezza** molto bassa. La **moltiplicazione** trasforma un segnale lentamente variabile in uno rapidamente variabile **sostituendo** il **bit originale** con una **sequenza di bit** veloci detti **chirp**. Un **chirp** è, quindi, una sequenza che **marchia** in maniera univoca i **bit** di una certa sorgente rendendoli, in ricezione, distinguibili da quelli di qualsiasi altra.
 
 <img src="spread2.png" alt="alt text" width="1000">
 
