@@ -2,6 +2,25 @@
 
 ## **Tecnologie di accesso al canale radio**
 
+### **FDM**
+
+Il **segnale** di una qualsiasi comunicazione viene **generato** a partire da una operazione di **trasduzione** (trasformazione da **grandezza fisica** a **segnale elettrico**) a cui poi segue, nel mondo digitale, una operazione di **campionamento** e **quantizzazione** per trasformarlo, dal mondo doppiamente **infinito** del tempo e dello spazio, a quello doppiamente **discreto** (finito) dei **campioni** e dei **livelli**, questi ultimi numerati e **codificati** in **bit**. Ogni bit viene poi **codificato** in opportuni segnali aventi una forma adatta alla loro trasmissione sul mezzo radio. il segnale risultante viene detto **segnale in banda base**.
+
+
+
+Un **segnale in banda base** è generato a partire dalla frequenza nulla fino ad una frequenza massima finita. La frequenza massima è finita perchè tutti i sistemi fisici, senza eccezione alcuna, sono considerati **passa basso**, cioè tendono **naturalmente** ad **attenuare** il segnale generato all'**aumentare** della **frequenza**. Al **di sotto** di un certo **limite** il valore del segnale è considerato fisicamente **trascurabile** (approssimazione pratica). La frequenza in cui il segnale vale la **metà** del valore a centro banda viene detta **frequenza di taglio** o frequenza a 3dB (decibel). La **frequenza di taglio** è il limite **convenzionale** della larghezza di banda di tutti i segnali in **banda base**.
+
+Tutte le tecnologie di accesso al **canale radio** presuppongono la **traslazione del segnale** da trasmettere dalla sua frequenza originale (detta **banda base**), dove viene **generato**, a quella di **trasmissione** (detta banda **traslata**), dove viene **trasmesso**. L'operazione è analoga a quella prelevare dalla **finestra** di un montacarichi (la banda base) dei **libri** (il segnale) per poi disporli in diversi **scomparti** (le bande) di uno **scaffale** di una **libreria** (lo spettro). 
+
+L'**intero spettro radio** è diviso convenzionalmente in **bande di frequenza** che sono riservate ad una certa **categoria di servizi**. Ogni banda di frequenza è divisa in **canali** che sono allocati ad una certa **comunicazione** (sorgente), secondo **politiche** che possono essere **statiche** o **dinamiche**. Quelle **statiche** rimangono **fisse** per tutta la durata della comunicazione e la loro allocazione è stabilita nella fase di **apertura** di questa (protocolli connessi). Quelle **dinamiche** vengono allocate, senza impegno preordinato, al momento della **trasmissione** (protocolli non connessi).
+
+<img src="frequency-division-multiplexing.png" alt="alt text" width="600">
+
+
+
+
+Il segnale da trasme
+
 ### **DSSS**
 
 In realtà DSSS più che una tecnica di  **multiplazione** per l' **accesso al canale radio** è una vera e propria tecnica di **modulazione numerica** complementare alle tradizionali ASK, PSK, FSK, ecc.).
