@@ -18,7 +18,7 @@ Un **segnale in banda base** è generato a partire dalla frequenza nulla fino ad
 
 Tutte le tecnologie di accesso al **canale radio** presuppongono la **traslazione del segnale** da trasmettere dalla sua frequenza originale (detta **banda base**), dove viene **generato**, a quella di **trasmissione** (detta banda **traslata**), dove viene **trasmesso**. 
 
-L'operazione è analoga a quella di prelevare dalla **finestra** di un montacarichi (la banda base) dei **libri** (il segnale) per poi disporli in diversi **scomparti** (le bande) di uno **scaffale** di una **libreria** (lo spettro). Si noti che i libri (persino i più grandi) hanno una **numero di pagine** finito, esattamente come i segnali in banda base hanno una **larghezza di banda** (a 3dB) finita.
+L'operazione è analoga a quella di prelevare dalla **finestra** di un montacarichi (la banda base) dei **libri** (il segnale) per poi disporli in diversi **scomparti** (le bande) di uno scaffale di una **libreria** (lo spettro). Si noti che i libri (persino i più grandi) hanno una **numero di pagine** finito, esattamente come i segnali in banda base hanno una **larghezza di banda** (a 3dB) finita.
 
 L'**intero spettro radio** è diviso convenzionalmente in **bande di frequenza** che sono riservate ad una certa **categoria di servizi**. Ogni banda di frequenza è divisa in **canali** che sono allocati ad una certa **comunicazione** (sorgente), secondo **politiche** che possono essere **statiche** o **dinamiche**:
 - Quelle **statiche** rimangono **fisse** per tutta la durata della comunicazione e la loro allocazione è stabilita nella fase di **apertura** di questa (protocolli connessi).
