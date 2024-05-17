@@ -28,7 +28,12 @@ Tutte le tecniche di ricezione di un segnale RF (a radiofrequenza) presuppongono
 - dalle sorgenti di disturbo elettromagnetiche, dette EMI, sempre presenti in un mezzo trasmissivo (disturbi impulsivi, impianto elettrico).
 - dal rumore generato dalle interferenze di altre sorgenti detto RFI (Radio Frequency Interference).
 
-<img src="img/narrow.png" alt="alt text" width="500">
+<img src="img/narrow.png" alt="alt text" width="700">
+
+Un segnale in **banda base**, per essere correttamente decodificato, deve diventare un segnale a **banda stretta** avente:
+- un numero limitato di frequenze
+- un livello di energia sufficientemente alto, cioè al di sopra del rumore, in tutte le sue componenti spettrali (frequenze). In altre parole, il segnale deve avere un rapporto segnale/rumore (S/N) sufficiente.
+
 
 ### **DSSS**
 
