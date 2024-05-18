@@ -30,12 +30,12 @@ All'**imbustamento multiplo** in **trasmissione** corrisponde lo **sbustamento m
 Ogni funzione di un livello **"astrae"**, cioè riassume in un'unica funzione di alto livello **generica**, molte funzioni dei livelli sottostanti legate a dettagli HW specifici. Per cui, la particolarità di questi collegamenti è quella di realizzare una **virtualizzazione della rete** e dei suoi dispositivi che, man mano che si sale dal livello fisico a quello applicativo, si fa sempre più spinta, **nascondendo** i dettagli implementativi degli strati inferiori e rendendo **impercettibili** le loro **differenze** ai livelli sopra di essi. Nel caso di una rete IP il **livello TCP** di trasporto già non **"vede"** più le differenze tecnologiche tra reti realizzate con un HUB WiFi piuttosto che con uno switch o piuttosto con più router in cascata, essendo stati questi dispositivi tutti **"astratti"**, cioè riassunti in un **unico collegamento** di tipo **TCP** tra **due host terminali**.
 
 Astrazioni interessanti sono quelle, di tipo **topologico**, che traducono una rete con molti **link fisici** in un unico **link logico** che li riassume tutti (astrazione). Questa cosa avviene tipicamente a:
-- **livello 4**, dove una **intera rete IP**, composta da **link tra router** collegati, in genere, a maglia, viene astratta in un **link tra host** diretto.
+- **livello 4**, dove una **intera rete IP**, composta da **link tra router** collegati, in genere, a maglia, viene astratta in un **link tra host** diretto (**Link End-to-End** virtuale come servizio di livello 4).
 - In tutti gli **altri livelli** della pila OSI vengono astratti solo canali **punto-punto** posti:
     - tra due **router vicini** (adiacenti) nei primi due livelli
     - tra i dispositivi **End to End** (host) nei livelli 5, 6 e 7.
   
-Una eccezione notevole fanno le **LAN**, dove una **intera rete** LAN, composta di **link tra SW** collegati, in genere, ad albero, viene astratta dal protocollo IP (di livello 3) in tanti **link tra host** diretti. A livello logico, ne è possibile realizzare uno per ogni possibile collegamento tra coppie di host (**maglia completa** come servizio di livello 3). 
+Una eccezione notevole fanno le **LAN**, dove una **intera rete** LAN, composta di **link tra SW** collegati, in genere, ad albero, viene astratta dal protocollo IP (di livello 3) in tanti **link tra router** diretti. A livello logico, ne è possibile realizzare uno per ogni possibile collegamento tra le coppie di router collegate ad una stessa LAN (**maglia completa** di link virtuali come servizio di livello 3). 
 
 
 #### **Canale reale**
