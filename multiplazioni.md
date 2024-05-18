@@ -2,7 +2,7 @@
 
 ## **Le multiplazioni statiche**
 
-<img src="img/fullmesh.png" alt="alt text" width="500">
+<img src="img/fullmesh.png" alt="alt text" width="800">
 
 
 Le multiplazioni sono delle **tecniche** per aumentare l'**efficienza** di un canale introducendo un certo grado di **condivisione** dello stesso tra più **sorgenti**. 
