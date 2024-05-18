@@ -2,6 +2,8 @@
 
 ## **Le multiplazioni statiche**
 
+Un rete di computer potrebbe, in **linea di principio**, essere realizzata con un collegamento **fisico** e **diretto** tra un PC e **tutti** gli altri.
+
 <img src="img/fullmesh.png" alt="alt text" width="900">
 
 
