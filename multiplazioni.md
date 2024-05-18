@@ -56,7 +56,7 @@ Nel **TDM** tutta la banda di frequenza disponibile (la stessa per tutte le comu
 
 Nel **CDM** i segnali occupano e condividono la stessa frequenza lo stesso spazio e lo stesso tempo, ma, nonostante di fatto **si interferiscano**, possono ancora essere **distinti in base alla potenza** grazie ad un **codice ortogonale univoco** che permette di **filtrare** una certa comunicazione.
 
-<img src="multiplazioni2.jpg" alt="alt text" width="800">
+<img src="multiplazioni2.jpg" alt="alt text" width="1000">
 
 E’ possibile **allocare** una comunicazione su **una porzione** della **grandezza fisica** (spazio, tempo, frequenza, potenza) a cui essa **è associata**. La **grandezza fisica** è una **proprietà** del **segnale** che **codifica** sul canale i **bit** della comunicazione mediante processi di **modulazione digitale**. 
 
