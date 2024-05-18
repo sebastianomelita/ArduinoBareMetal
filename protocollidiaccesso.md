@@ -126,7 +126,7 @@ Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo c
 
 **Ascolto della Portante** può essere considerato il **misurare** una quantità di energia **sul canale** significativamente maggiore di quella che c'è normalmente su un canale **a riposo** (idle). Ciò può essere rilevato mediante un dispositivo a **soglia** che scatti oltre un certo valore di **riferimento**. Si tratta di una rilevazione **diretta** di **canale occupato**.
 
-Una stazione trasmittente: 
+Una **stazione trasmittente**: 
 - al momento che ha una trama pronta, **aspetta** finchè non “sente” il **canale libero** (cioè nessuno trasmette).
 - Appena essa rileva il canale libero **invia immediatamente** la trama.
 - Dopo l’invio **aspetta** per un certo tempo, quello impostato sul timer di trasmissione.
