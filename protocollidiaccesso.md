@@ -28,7 +28,7 @@ I mezzi a BUS sono **bidirezionali**, nel senso che la comunicazione può avveni
 
 ### Protocolli di arbitraggio
 
-Nei protocolli di arbitraggio  **master slave** esiste una stazione centrale di livello gerarchico superiore detta master che, per conto delle stazioni slave, decide **chi** deve parlare e **quando** deve parlare evitando sovrapposizioni nel tempo dei messaggi. Questo tipo di politica è adatta alle trasmissioni **sincrone** da parte di **sorgenti regolari** di dati, quali i **sensori**.
+Nei protocolli di arbitraggio  **master slave** esiste una **stazione centrale** di livello gerarchico superiore detta master che, per conto delle stazioni slave, decide **chi** deve parlare e **quando** deve parlare evitando sovrapposizioni nel tempo dei messaggi. Questo tipo di politica è adatta alle trasmissioni **sincrone** da parte di **sorgenti regolari** di dati, quali i **sensori**.
 
 Nei protocolli di arbitraggio  **peer to peer**, o distribuiti, le stazioni sono tutte di pari livello e sono programmate per interpretare continuamente la situazione del canale in modo da parlare sempre una alla volta. Qesto tipo di politica è adatta alle trasmissioni **asincrone** da parte di **sorgenti intermittenti** di dati, quali **comandi**, allarmi, ecc.
 
@@ -41,7 +41,7 @@ Quelli **statistici** o **a contesa** realizzano una **competizione** per l'acce
 
 ### Come rilevare una collisione
 
-Si ricorre **di base** ad un meccanismo di rilevazione **indiretta** di una collisione sul canale mediante l’utilizzo di un **protocollo** di trasmissione **confermato**.
+Si ricorre **di base** ad un meccanismo di rilevazione **indiretta** di una collisione **sul canale** mediante l’utilizzo di un **protocollo** di trasmissione **confermato**.
 
 I **protocolli confermati** sono protocolli in cui **il mittente** possiede un timer, detto **timer di ritrasmissione**, impostato ad un valore massimo di conteggio detto **timeout**:
 - Il timer viene **avviato** al momento esatto dell'invio di un messaggio e viene **resettato** al momento della ricezione di un messaggio di conferma di corretto arrivo a destinazione.
@@ -59,7 +59,7 @@ Questo è lo scenario che daremo per scontato nel seguito ma spesso accade che l
 Se tutte le stazioni ritrasmettono nello stesso istante collidono immediatamente e il messaggio viene perso.
 
 Soluzione: **Backoff**
-- È un tempo **casuale**
+- È un tempo di ritardo **casuale** che una stazione deve **attendere** dal momento che ha preso la decisione di trasmettere
 - È calcolato in maniera indipendente, l’una dall’altra, da tutte le stazioni
 - Serve a determinare la stazione che deve trasmettere **per prima** minimizzando il rischio di trasmissioni contemporanee
 - È calcolato all’interno di un intervallo detto **finestra di contesa**
@@ -69,11 +69,11 @@ E' il protocollo peer to peer per certi versi **peggiore**, infatti è quello co
 
 ### **Fasi ALOHA**
 Una **stazione trasmittente**:
-- al momento che ha una trama pronta, la invia senza aspettare.
+- al momento che ha una trama pronta, la invia **sul canale** senza aspettare.
 - Dopo l’invio aspetta per un certo tempo (detto **timeout**) lo scadere di un timer (detto **timer di trasmissione**).
-- Se essa riceve il messaggio di ack allora la trasmissione è avvenuta con successo.
-- Altrimenti la stazione usa una strategia di backoff e invia nuovamente il pachetto.
-- Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
+- Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo.
+- Altrimenti la stazione usa una strategia di **backoff** e invia nuovamente il pachetto dopo avere atteso un tempo casuale.
+- Dopo molte volte che **non** si ricevono conferme (acknowledgement) allora la stazione **abbandona** l’dea di trasmettere.
 
 **Le collisioni graficamente:**
 
@@ -122,16 +122,16 @@ Fig 2
 
 ### **Fasi CSMA**
 
-Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione). E' una **miglioria** sostanziale dell'Aloha perchè l'ascolto del canale prima della trasmissione **riduce** la **probabilità** di collisione ma è anche quello con l'implementazione **più complessa**. E' adatto per la trasmissione di **messaggi più lunghi** ed è appropriato per dispostivi con migliore **capacità di calcolo** e quando si è in assenza di problemi di **consumo energetico**.
+Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione). E' una **miglioria** sostanziale dell'Aloha perchè implementa l'**ascolto** del canale prima della trasmissione detto anche **LBT** (Listen before Talk) o modo **polite** che **riduce** drasticamente la **probabilità** di collisione a prezzo di una implementazione **più complessa**. E' adatto per la trasmissione di **messaggi più lunghi** ed è appropriato per dispostivi con migliore **capacità di calcolo** e quando si è in assenza di problemi di **consumo energetico**.
 
-**Ascolto della Portante** può essere considerato il **misurare** una quantità di energia sul canale significativamente maggiore di quella che c'è normalmente su un canale **a riposo** (idle). Ciò può essere rilevato mediante un dispositivo a **soglia** che scatti oltre un certo valore di riferimento. Si tratta di una rilevazione **diretta** di **canale occupato**.
+**Ascolto della Portante** può essere considerato il **misurare** una quantità di energia **sul canale** significativamente maggiore di quella che c'è normalmente su un canale **a riposo** (idle). Ciò può essere rilevato mediante un dispositivo a **soglia** che scatti oltre un certo valore di **riferimento**. Si tratta di una rilevazione **diretta** di **canale occupato**.
 
 Una stazione trasmittente: 
-- al momento che ha una trama pronta, aspetta finchè non “sente” il canale libero (cioè nessuno trasmette).
-- Appena essa rileva il canale libero invia immediatamente la trama.
-- Dopo l’invio aspetta per un certo tempo.
-- Se essa riceve il messaggio di ack allora la trasmissione è avvenuta con successo.
-- Altrimenti la stazione usa una strategia di backoff e invia nuovamente il pachetto dopo un tempo casuale.
+- al momento che ha una trama pronta, **aspetta** finchè non “sente” il **canale libero** (cioè nessuno trasmette).
+- Appena essa rileva il canale libero **invia immediatamente** la trama.
+- Dopo l’invio **aspetta** per un certo tempo, quello impostato sul timer di trasmissione.
+- Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo.
+- Altrimenti la stazione usa una strategia di **backoff** e invia nuovamente il pachetto dopo aver **aspettato** un tempo casuale.
 - Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
 
 ### **Protocollo CSMA basico in pseudocodice**
@@ -211,7 +211,7 @@ Significa **Carrier Sensing Multiple Access Collision Detection** cioè protocol
 
 Una stazione **trasmittente**:
 - al momento che ha una trama pronta, **ascolta il canale prima** di trasmettere per stabilire se esso è libero o meno.
-- Appena essa rileva il canale libero invia immediatamente la trama ma ascolta anche durante la trasmissione.
+- Appena essa rileva il canale libero invia immediatamente la trama ma continua ad ascoltare il canale anche **durante** la trasmissione.
 - L’**ascolto durante la trasmissione** serve a stabilire se sul canale è avvenuta o meno una collisione. 
 - Se non vengono rilevati **segnali di collisione** allora la trasmissione è avvenuta con successo.
 - un **segnale di collisione** può essere considerato il **misurare** sul canale più energia di quanta la stazione stessa non se ne aspetti a causa della sua trasmissione. Ciò può essere rilevato mediante un dispositivo a soglia che scatti oltre un certo **valore di riferimento**. Si tratta di una rilevazione **diretta** di una collisione sul canale.
@@ -268,7 +268,7 @@ Il tempo di propagazione da A a B per 10Mb/sec è 25.6 µsec
 Il tempo **di andata** da A a B e poi **di ritorno** ad A è detto **RTT (Round Trip Time)** e alla velocità di 10Mb/sec è 51.2 µsec
 
 **Prerequisito per rilevare tutte le collisioni**: 
-- ogni stazione **deve ascoltare (cioè trasmettere)** per un **tempo minimo** pari a **un RTT** cioè 51.2 µsec
+- ogni stazione **deve ascoltare (cioè trasmettere)** per un **tempo minimo** pari a **un RTT** cioè **51.2** µsec
 - Se la velocità di trasmissione è fissa, la **condizione sul tempo** si traduce in una **condizione sulla lunghezza minima** della trama (nel caso di Ethernet 64 byte).
 - Cioè ogni stazione deve trasmettere **trame lunghe almeno 64 byte**
 
@@ -277,7 +277,7 @@ Il tempo **di andata** da A a B e poi **di ritorno** ad A è detto **RTT (Round 
 Se tutte le stazioni ritrasmettono nello stesso istante collidono immediatamente
 
 **Soluzione**: **Backoff esponenziale**
-- È un **tempo casuale**
+- È un **tempo casuale** di **attesa** prima di iniziare una nuova trasmissione
 - È calcolato in **maniera indipendente** l’una dall’altra da tutte le stazioni
 - Serve a determinare la stazione che deve **trasmettere per prima** minimizzando il rischio di **trasmissioni contemporanee**
 - È calcolato all’interno di un **intervallo (finestra) di contesa**
@@ -344,7 +344,7 @@ La stazione **trasmittente**:
 
 Le altre stazioni, quando ricevono la **sequenza di jamming**, sono **avvisate** della avvenuta collisione e:
 - Se **ricevevano**, **scaricano dal buffer** di ricezione quanto ricevuto fino a quell momento
-- Se **trasmettevano**, **arrestano immediatamente la trasmissione** e fanno partire l’**algoritmo di backoff** che stabilisce il ritardo casuale prima della ritrasmissione del messaggio interrotto.
+- Se **trasmettevano**, **arrestano immediatamente la trasmissione** e fanno partire l’**algoritmo di backoff** che stabilisce il **ritardo casuale** prima della ritrasmissione del messaggio interrotto.
 
 <img src="csmacdflow2.png" alt="alt text" width="350">
 Fig 8
