@@ -2,12 +2,27 @@
 
 ## **Le multiplazioni statiche**
 
-Un rete di computer potrebbe, in **linea di principio**, essere realizzata con un collegamento **fisico** e **diretto** tra un PC e **tutti** gli altri.
+Un rete di computer potrebbe, in **linea di principio**, essere realizzata con un collegamento **fisico**, **diretto** e **dedicato** tra un PC e **tutti** gli altri. Un collegamento fidsico **dedicato** è un link fisico utilizzato solamente da due interlocutori e basta, che quindi possono usufruirne sempre e in qualunque momento senza aspettare.
 
 <img src="img/fullmesh.png" alt="alt text" width="900">
 
+Dalla figura, si vede chiaramente che, all'aumentare del numero dei dispositivi in numero dei collegamenti aumenta con un incremento, in proprorzione, sempre maggiore.
 
-Le multiplazioni sono delle **tecniche** per aumentare l'**efficienza** di un canale introducendo un certo grado di **condivisione** dello stesso tra più **sorgenti**. 
+La **formula** esatta sarebbe:
+```C++
+N*(N-1)/2
+```
+dato che:
+- un PC dovrebbe realizzare ```N-1``` collegamenti per tutti gli altri (escudendo se stesso)
+- la stessa cosa devono fare complessivamente N PC
+
+L'**incremento** è praticamente **quadratico** porta rapidamente all'esplosione del numero dei collegamenti. Per **un miliardo** di dispositivi sparsi per tutto il globo, il **quadrato** di connessioni dedicate darebbe un numero così grande di connessioni fisiche che avrebbe il semplice difetto di essere **economicamente insostenibile** per chi le realizzasse con costi accessibili per gli utenti. 
+
+La soluzione è **rinunciare** ai collegamenti fisici dedicati tra coppie di utenti e introdurre un certo grado di **condivisione** nell'utilizzo dei mezzi fisici di trasmissione (canali). La **condivisione** delle risorse è l'unico metodo per aumentare l'**efficienza** del loro utilizzo. 
+
+L'aumento progressivo dell'**efficienza** nell'utilizzo dei canali ha portato, nel corso dei decenni, alla progressiva diffusione delle **trasmissioni globali**, rare e costose negli anni 80' del secolo scorso, pervasive e a prezzi popolari nel mondo attuale. Anzi l'**accesso alla rete**, intesa come rete globale Internet, è considerato un **diritto primario** del cittadino  dato che su du essa si sono spostati, in maniera esclusiva, molti **servizi pubblici**.
+
+Le **multiplazioni** sono delle **tecniche** per aumentare l'**efficienza** di un canale introducendo un certo grado di **condivisione** dello stesso tra più **sorgenti**. 
 
 La **condivisione** effettiva del canale è solo **parziale**. L'**allocazione** delle sorgenti sul canale in realtà è sempre **ripartita** in base **ad una** delle grandezze fisiche che lo contraddistinguono, mentre, per le rimanenti grandezze, la condivisioe è **totale**, cioè le sorgenti, su quelle grandezze, occupano **tutto** il canale nella sua interezza.
 
