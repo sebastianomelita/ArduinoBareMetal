@@ -268,7 +268,7 @@ Il tempo di propagazione da A a B per 10Mb/sec è 25.6 µsec
 Il tempo **di andata** da A a B e poi **di ritorno** ad A è detto **RTT (Round Trip Time)** e alla velocità di 10Mb/sec è 51.2 µsec
 
 **Prerequisito per rilevare tutte le collisioni**: 
-- ogni stazione **deve ascoltare (cioè trasmettere)** per un **tempo minimo** pari a **un RTT** cioè **51.2** µsec
+- ogni stazione deve **ascoltare** il canale **durante** la **trasmissione** per un **tempo minimo** pari a **un RTT** cioè **51.2** µsec
 - Se la velocità di trasmissione è fissa, la **condizione sul tempo** si traduce in una **condizione sulla lunghezza minima** della trama (nel caso di Ethernet 64 byte).
 - Cioè ogni stazione deve trasmettere **trame lunghe almeno 64 byte**
 
