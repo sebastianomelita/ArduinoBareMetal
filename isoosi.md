@@ -35,8 +35,9 @@ Astrazioni interessanti sono quelle, di tipo **topologico**, che traducono una r
     - tra due **router vicini** (adiacenti) nei primi due livelli
     - tra i dispositivi **End to End** (host) nei livelli 5, 6 e 7.
   
-Una eccezione notevole fanno le **LAN**, dove una **intera rete** LAN, composta di **link tra SW** collegati, in genere, ad albero, viene astratta dal protocollo IP (di livello 3) in tanti **link tra router** diretti. A livello logico, ne è possibile realizzare uno per ogni possibile collegamento tra le coppie di router collegate ad una stessa LAN (**maglia completa** di link virtuali come servizio di livello 3). 
-
+Una eccezione notevole fanno le **LAN**, dove una **intera rete** LAN, composta di **link tra SW** collegati, in genere, ad albero, viene considerata come un link di livello 2 diretto tra due router. Ciò accade per una anomalia delle LAN in cui vi sono due **livelli di routing** complementari, di cui solo quello esterno è, in realtà, previsto dall'architettura ISO/OSI:
+- uno **esterno alla LAN** che si occupa della consegna dei pacchetti **tra i router di confine** delle LAN sorgenti e destinazione.
+- uno **interno alla LAN** che si occupa della consegna dei pacchetti tra l'**host sorgente** e il **router di confine** delle LAN **sorgente** e tra il **router di confine** della LAN di **destinazione** e l'**host** di destinazione.  
 
 #### **Canale reale**
 
