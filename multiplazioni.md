@@ -14,7 +14,7 @@ N*(N-1)/2
 ```
 dato che:
 - un PC dovrebbe realizzare ```N-1``` collegamenti per tutti gli altri (escudendo se stesso)
-- la stessa cosa devono fare complessivamente N PC
+- la stessa cosa dovrebbero fare complessivamente N PC
 
 L'**incremento** è praticamente **quadratico** porta rapidamente all'esplosione del numero dei collegamenti. Per **un miliardo** di dispositivi sparsi per tutto il globo, il **quadrato** di connessioni dedicate darebbe un numero così grande di connessioni fisiche che avrebbe il semplice difetto di essere **economicamente insostenibile** per chi le realizzasse con costi accessibili per gli utenti. 
 
