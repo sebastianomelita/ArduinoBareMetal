@@ -20,7 +20,7 @@ L'**incremento** è praticamente **quadratico** e ciò porta rapidamente all'esp
 
 La soluzione è **rinunciare** ai collegamenti fisici dedicati tra coppie di utenti e introdurre un certo grado di **condivisione** nell'utilizzo dei mezzi fisici di trasmissione (canali). La **condivisione** delle risorse è l'unico metodo per aumentare l'**efficienza** del loro utilizzo. 
 
-L'aumento progressivo dell'**efficienza** nell'utilizzo dei canali ha portato, nel corso dei decenni, alla progressiva diffusione delle **trasmissioni globali**, rare e costose negli anni 80' del secolo scorso, pervasive e a prezzi popolari nel mondo attuale. Anzi l'**accesso alla rete**, intesa come rete globale Internet, è considerato un **diritto primario** del cittadino  dato che su du essa si sono spostati, in maniera esclusiva, molti **servizi pubblici**.
+L'aumento progressivo dell'**efficienza** nell'utilizzo dei canali ha portato, nel corso dei decenni, alla progressiva diffusione delle **trasmissioni globali**, rare e costose negli anni 80' del secolo scorso, pervasive e a prezzi popolari nel mondo attuale. Anzi l'**accesso alla rete**, intesa come rete globale Internet, è considerato un **diritto primario** del cittadino  dato che su di essa si sono spostati, in maniera esclusiva, molti **servizi pubblici**.
 
 Le **multiplazioni** sono delle **tecniche** per aumentare l'**efficienza** di un canale introducendo un certo grado di **condivisione** dello stesso tra più **sorgenti**. 
 
