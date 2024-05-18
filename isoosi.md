@@ -31,11 +31,11 @@ Ogni funzione di un livello **"astrae"**, cioè riassume in un'unica funzione di
 
 Astrazioni interessanti sono quelle, di tipo **topologico**, che traducono una rete con molti **link fisici** in un unico **link logico** che li riassume tutti (astrazione). Questa cosa avviene tipicamente a:
 - **livello 4**, dove una **intera rete IP**, composta da router collegati, in genere, a maglia, viene astratta in tanti link diretti tra host, uno per ogni possibile collegamento reciproco tra loro (**maglia completa** come servizio a livello 4)
-- In tutti gli altri livelli della pila OSI vengono astratti solo canali punto punto posti:
-    - tra un router e l'altro nei primi due livelli
-    - tra i dispositivi End to End (host) nei livelli 5,6 e 7.
+- In tutti gli **altri livelli** della pila OSI vengono astratti solo canali **punto-punto** posti:
+    - tra due **router vicini** (adiacenti) nei primi due livelli
+    - tra i dispositivi **End to End** (host) nei livelli 5, 6 e 7.
   
-Una eccezione notevole fanno le LAN, dove il livello 2 normalmente non è di linea punto-punto ma è una LAN che è composta da un albero di SW che viene astratta, a livello 3, dal protocollo IP in un link diretto tra due host. A livello logico, ne è possibile realizzare uno per ogni possibile collegamento tra coppie di host (**maglia completa** come servizio di livello 3). 
+Una eccezione notevole fanno le **LAN**, dove il livello 2 normalmente non è di linea punto-punto ma è una **intera rete** LAN che è composta da un **albero di SW** che viene astratta, a livello 3, dal protocollo IP in un **link diretto** tra due host. A livello logico, ne è possibile realizzare uno per ogni possibile collegamento tra coppie di host (**maglia completa** come servizio di livello 3). 
 
 
 #### **Canale reale**
