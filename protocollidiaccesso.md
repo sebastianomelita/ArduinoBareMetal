@@ -524,7 +524,7 @@ Nel caso del WiFi in figura, è illustrato un backoff **con prenotazione** che h
 
 Il **backoff con prenotazione** è una maniera per non perdere la **priorità acquisita** ricalcolando il backoff da zero. E' una **ottimizzazione** per garantire una maggiore **equità (fairness)** nell'accesso alla risorsa canale che non sempre è implementata in protocolli CSMA/CA diversi dal WiFi.
 
-### **Fasi CSMA/CA al trasmettitore con backoff**
+### **Protocollo CSMA/CA al trasmettitore con backoff**
 
 #### **Pseudocodice**
 
@@ -553,7 +553,7 @@ while(N <= max){
 /* troppi tentativi: rinuncio!*/ 
 ```
 
-#### **Fasi**
+#### **Fasi in linguaggio naturale**
 
 Unendo tutto, le fasi del CSMA/CA con il backoff con prenotazione sarebbero:
 
