@@ -340,7 +340,7 @@ while(N<= max){
 La stazione **trasmittente**:
 1. Al momento che ha una trama pronta, **ascolta il canale prima** di trasmettere per stabilire se esso è libero o meno.
 2. Appena essa rileva il canale libero, invia immediatamente la trama ma ascolta anche durante la trasmissione. **Se** non vengono rilevati **segnali di collisione** allora la trasmissione è avvenuta **con successo** e non si eseguono i passi successivi
-3. **Altrimenti** la stazione **arresta** la trasmissione corrente e **trasmette** invece una particolare sequenza di **32 byte** (corrispondente a metà di un RTT), detta **sequenza di jamming**, che **avvisa** della collisione le atre stazioni sul canale, queste se, nel frattempo erano in **tstato** di:
+3. **Altrimenti** la stazione **arresta** la trasmissione corrente e **trasmette** invece una particolare sequenza di **32 byte** (corrispondente a metà di un RTT), detta **sequenza di jamming**, che **avvisa** della collisione le atre stazioni sul canale, queste se, nel frattempo, erano in **stato** di:
     - **ricezione**, scaricano dal buffer di ricezione quanto ricevuto fino a quel momento.
     - **trasmissione**, arrestano immediatamente la trasmissione e fanno partire il loro algoritmo di backoff. 
 4. Esegue il proprio backoff calcolando un tempo casuale di attesa (multiplo di RTT) e attende per il tempo di backoff prima di ritrasmettere la trama interrotta.
