@@ -132,7 +132,7 @@ Una **stazione trasmittente**:
 3. Dopo l’invio **aspetta** per un certo tempo, quello impostato sul **timer di trasmissione**, cioè il **TIMEOUT**:
 4. Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo, e non si eseguono le fasi successive.
 5. Altrimenti la stazione usa una strategia di **backoff** e invia nuovamente il pachetto dopo aver **aspettato** un tempo casuale.
-6. Dopo molte volte che **non** si ricevono **conferme** (acknowledgement) allora la stazione abbandona l’dea di trasmettere (canale in avaria).
+6. Dopo molte volte che **non** si ricevono **conferme** (acknowledgement) allora la stazione abbandona l’idea di trasmettere (canale in avaria).
 
 ### **Protocollo CSMA basico in pseudocodice**
 
@@ -221,7 +221,7 @@ Una stazione **trasmittente**:
 3. Se non vengono rilevati **segnali di collisione** per tutta la durata della trasmissione, allora la trasmissione è avvenuta con successo e non si eseguono le fasi successive.
 4. Altrimenti, si è rilevata una collisione (tramite lo scatto di un dispositivo a soglia), per cui la stazione **arresta** la trasmissione corrente, calcola un tempo casuale con l'**algoritmo di backoff** e aspetta per il tempo di backoff.
 5. Finito il backoff, la stazione ritenta la trasmissione della stessa trama, ripartendo dal punto 1.
-6. Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere (linea interrotta o guasta).
+6. Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’idea di trasmettere (linea interrotta o guasta).
 
 ### **Protocollo CSMA/CD basico in pseudocodice**
 
@@ -345,7 +345,7 @@ La stazione **trasmittente**:
     - se **trasmettevano**, arrestano immediatamente la trasmissione e fanno partire il loro algoritmo di backoff. 
 4. Esegue il proprio backoff calcolando un tempo casuale di attesa (multiplo di RTT) e attende per il tempo di backoff prima di ritrasmettere la trama interrotta.
 5. Esegue la ritrasmissione della stessa trama
-6. Dopo molte volte che si rilevano collisioni, allora la stazione abbandona l’dea di trasmettere (canale dato per interrotto).
+6. Dopo molte volte che si rilevano collisioni, allora la stazione abbandona l’idea di trasmettere (canale dato per interrotto).
 
 #### **Sequenza di jamming**
 
