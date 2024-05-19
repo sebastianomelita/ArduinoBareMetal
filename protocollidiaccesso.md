@@ -341,7 +341,9 @@ La stazione **trasmittente**:
 2. Appena essa rileva il canale libero, invia immediatamente la trama ma ascolta anche durante la trasmissione. L’**ascolto durante la trasmissione** serve a stabilire se sul canale è avvenuta o meno una collisione: 
     - **Se** non vengono rilevati **segnali di collisione** allora la trasmissione è avvenuta **con successo**. 
     - **Altrimenti** la stazione:
-        - **arresta** la trasmissione corrente e **trasmette** invece una particolare sequenza di **32 byte** (corrispondente a metà di un RTT), detta **sequenza di jamming**, che **avvisa** della collisione chi ancora **non trasmette** cioè i ricevitori. Se **ricevevano**, scaricano dal buffer di ricezione quanto ricevuto fino a quel momento. Se **trasmettevano**, arrestano immediatamente la trasmissione e fanno partire il loro algoritmo di backoff. 
+        - **arresta** la trasmissione corrente e **trasmette** invece una particolare sequenza di **32 byte** (corrispondente a metà di un RTT), detta **sequenza di jamming**, che **avvisa** della collisione cle atre stazioni sul canale:s
+            - se **ricevevano**, scaricano dal buffer di ricezione quanto ricevuto fino a quel momento.
+            - Se **trasmettevano**, arrestano immediatamente la trasmissione e fanno partire il loro algoritmo di backoff. 
         - esegue il proprio backoff calcolando un numero un tempo casuale di attesa (multiplo di RTT) prima di una successiva ritrasmissione della trama interrotta.
 
 3. Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere (canale dato per interrotto).
