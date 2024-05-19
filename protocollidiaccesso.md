@@ -493,7 +493,7 @@ EIFS  = SIFS + DIFS + ACK_Tx_Time
 <img src="eifs.png" alt="alt # **text" width="600">
 Fig 11
 
-#### **Backoff (con prenotazione)**
+#### **Backoff**
 
 Se **due stazioni**, dopo averlo **ascoltato**, trovano il **canale libero** potrebbero comunque **collidere** perchè, a causa del **ritardo di propagazione**, potrebbero non rendersi conto che un'altra stazione **ha già cominciato** a trasmettere occupando il canale.
 Una eventuale **collisione** dei messaggi determina la ricezione di **trame corrotte** da parte delle stazioni destinatarie che, a sua volta, causa il **mancato invio** di un ack alle stazioni trasmittenti che, allo scadere del timout di trasmissione, pianificheranno la **ritrasmissione** del messaggio non ancora confermato.
@@ -506,15 +506,15 @@ Fig 12
 
 La **soluzione** è ritrasmettere sempre dopo un **tempo casuale (backoff)** all’interno di una **finestra di contesa**
 
-<img src="backoff.png" alt="alt # **text" width="800">
-Fig 13
-
-
 Il **backoff** casuale di una stazione inizia sempre dopo un tempo di attesa fisso **DIFS**. La stazione **ascolta** sempre il canale prima di tramettere e lo fa anche **durante il backoff**. Ci sono quindi due possibilità:
 - il backoff **scade** e quindi subito dopo la stazione comincia a trasmettere
 - il backoff viene **interrotto** dall'ascolto del canale occupato (da una stazione con backoff più corto) e **riprende** una volta che il canale ritorna libero.
 
 La trasmissione di un'altra stazione potrebbe anche essere destinata alla stazione stessa per cui il backoff potrebbe anche essere interrotto dalla **ricezione** di un messaggio.
+
+#### **Backoff con prenotazione**
+
+<img src="backoff.png" alt="alt # **text" width="800">
 
 Nel caso del WiFi in figura, è illustrato un backoff **con prenotazione** che ha la proprietà di non azzerare, sprecandolo, il tempo di attesa **già trascorso** da una stazione sul proprio backoff:
 1. Una stazione fa partire il backoff quando sente il **canale libero**
