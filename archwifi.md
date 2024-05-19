@@ -339,9 +339,9 @@ Architettura del sistema di rete Wireless Mesh multicanale. Il **numero minim**o
 
 
 Nello schema a destra, sono presenti:
-- **nodi di aggregazione**, cioè nodi che, oltre alle **dorsali radio** verso altri nodi, hanno pure delle **interfacce radio** verso i dispositivi client. Inoltrano il traffico dati da/verso i dispositivi degli utenti finali. 
-- **nodi di transito**, cioè nodi che posseggono solamente interfacce radio dedicate alle dorsali radio e che quindi svolgono solo le funzioni di **router**. Inoltrano il traffico dati solo verso altri nodi. 
-- **un gateway**, è l'unico nodo della rete mesh che è cablato ed è il punto di accesso alla LAN aziendale attraverso la quale raggiungere il router di confine verso Internet.
+- **nodi di aggregazione**, cioè nodi che, oltre alle **dorsali radio** verso altri nodi, hanno pure delle **interfacce radio** verso i dispositivi client. **Inoltrano** il traffico dati da/verso i dispositivi degli **utenti** finali. 
+- **nodi di transito**, cioè nodi che posseggono solamente interfacce radio dedicate alle **dorsali radio** e che quindi svolgono solo le funzioni di **router**. **Inoltrano** il traffico dati solo verso altri **nodi**. 
+- **un gateway**, è l'unico nodo della rete mesh che è **cablato** ed è il **punto di accesso** alla LAN aziendale attraverso la quale raggiungere il **router** di confine verso **Internet**.
 
 Ogni **collegamento tra due nodi** rappresenta una comunicazione radio diretta e dedicata sul canale numerato con l'etichetta sul link. In questa esempio, ogni nodo è dotato di **2 NIC wireless**. Pertanto il numero di canali utilizzati da ciascun nodo contemporaneamente non può essere superiore a 2; la rete nel suo complesso utilizza **5 canali** distinti.
 
