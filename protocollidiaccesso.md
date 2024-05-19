@@ -68,12 +68,14 @@ Soluzione: **Backoff**
 E' il protocollo peer to peer per certi versi **peggiore**, infatti è quello con la **probabilità** di collisione **più alta** ma è anche quello con l'**implementazione più semplice**. E' adatto per la trasmissione di **messaggi brevi** ed è appropriato per dispostivi con **ridotta capacità di calcolo** e con esigenze di **basso consumo** energetico.
 
 ### **Fasi ALOHA**
+
 Una **stazione trasmittente**:
 1. al momento che ha una trama pronta, la invia **sul canale** senza aspettare.
 2. Dopo l’invio aspetta per un certo tempo lo scadere (**TIMEOUT**) di un timer (detto **timer di trasmissione**):
-    - Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo.
-    - Altrimenti la stazione usa una strategia di **backoff** e invia nuovamente il pachetto dopo avere atteso un tempo casuale.
-3. Dopo molte volte che **non** si ricevono conferme (acknowledgement) allora la stazione **abbandona** l’idea di trasmettere (il canale è guasto).
+3. Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo e i punti successivi al corrente non vengono eseguiti.
+4. Altrimenti la stazione usa una strategia di **backoff**, cioè genera un tempo casuale e attende per questo tempo
+5. Scaduto il backoff, la stazione ritrasmette lo stesso messaggio (trama).
+6. Dopo molte volte che **non** si ricevono conferme (acknowledgement) allora la stazione **abbandona** l’idea di trasmettere (il canale è guasto).
 
 **Le collisioni graficamente:**
 
