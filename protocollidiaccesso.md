@@ -71,10 +71,10 @@ E' il protocollo peer to peer per certi versi **peggiore**, infatti è quello co
 
 Una **stazione trasmittente**:
 1. al momento che ha una trama pronta, la invia **sul canale** senza aspettare.
-2. Dopo l’invio aspetta per un certo tempo lo scadere (**TIMEOUT**) di un timer (detto **timer di trasmissione**):
+2. Dopo l’invio **aspetta** per un certo tempo lo scadere (**TIMEOUT**) di un timer (detto **timer di trasmissione**):
 3. Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo e i punti successivi al corrente non vengono eseguiti.
 4. Altrimenti la stazione usa una strategia di **backoff**, cioè genera un tempo casuale e attende per questo tempo
-5. Scaduto il backoff, la stazione ritrasmette lo stesso messaggio (trama).
+5. Scaduto il backoff, la stazione **ritrasmette** lo stesso messaggio tornando al **punto 1**.
 6. Dopo molte volte che **non** si ricevono conferme (acknowledgement) allora la stazione **abbandona** l’idea di trasmettere (il canale è guasto).
 
 **Le collisioni graficamente:**
@@ -132,8 +132,8 @@ Una **stazione trasmittente**:
 1. al momento che ha una trama pronta, **aspetta** finchè non “sente” il **canale libero** (cioè nessuno trasmette).
 2. Appena la stazione rileva il canale libero **invia immediatamente** la trama.
 3. Dopo l’invio **aspetta** per un certo tempo, quello impostato sul **timer di trasmissione**, cioè il **TIMEOUT**:
-4. Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo, e non si eseguono le fasi successive.
-5. Altrimenti la stazione usa una strategia di **backoff** e invia nuovamente il pachetto dopo aver **aspettato** un tempo casuale.
+4. Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo, e **non** si eseguono le **fasi successive**.
+5. Altrimenti la stazione usa una strategia di **backoff** e **aspetta** un tempo casuale, prima di **tentare** la ritrasmissione tornando al **punto 1**.
 6. Dopo molte volte che **non** si ricevono **conferme** (acknowledgement) allora la stazione abbandona l’idea di trasmettere (canale in avaria).
 
 ### **Protocollo CSMA basico in pseudocodice**
@@ -220,9 +220,9 @@ E' una **miglioria** del CSMA standard che permette, a fronte di una collisione,
 Una stazione **trasmittente**:
 1. Al momento che ha una trama pronta, **ascolta il canale prima** di trasmettere per stabilire se esso è libero o meno.
 2. Appena essa rileva il **canale libero** invia immediatamente la trama (messaggio) ma continua ad **ascoltare il canale** anche **durante** la trasmissione:
-3. Se non vengono rilevati **segnali di collisione** per tutta la durata della trasmissione, allora la trasmissione è avvenuta con successo e non si eseguono le fasi successive.
-4. Altrimenti, si è rilevata una collisione (tramite lo scatto di un dispositivo a soglia), per cui la stazione **arresta** la trasmissione corrente, calcola un tempo casuale con l'**algoritmo di backoff** e aspetta per il tempo di backoff.
-5. Finito il backoff, la stazione ritenta la trasmissione della stessa trama, ripartendo dal punto 1.
+3. Se non vengono rilevati **segnali di collisione** per tutta la durata della trasmissione, allora la trasmissione è avvenuta con successo e **non** si eseguono le **fasi successive**.
+4. Altrimenti, si è rilevata una collisione (tramite lo scatto di un dispositivo a soglia), per cui la stazione **arresta** la trasmissione corrente, calcola un tempo casuale con l'**algoritmo di backoff** e **aspetta** per il tempo di backoff.
+5. Finito il backoff, la stazione **ritenta** la trasmissione della stessa trama, ripartendo **dal punto 1**.
 6. Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’idea di trasmettere (linea interrotta o guasta).
 
 ### **Protocollo CSMA/CD basico in pseudocodice**
@@ -345,8 +345,8 @@ La stazione **trasmittente**:
 3. **Altrimenti** la stazione **arresta** la trasmissione corrente e **trasmette** invece una particolare sequenza di **32 byte** (corrispondente a metà di un RTT), detta **sequenza di jamming**, che **avvisa** della collisione le atre stazioni sul canale, queste se, nel frattempo, erano in **stato** di:
     - **ricezione**, scaricano dal buffer di ricezione quanto ricevuto fino a quel momento.
     - **trasmissione**, arrestano immediatamente la trasmissione e fanno partire il loro algoritmo di backoff. 
-4. Esegue il proprio backoff calcolando un tempo casuale di attesa (multiplo di RTT) e attende per il tempo di backoff prima di ritrasmettere la trama interrotta.
-5. Esegue la ritrasmissione della stessa trama
+4. Esegue il proprio backoff calcolando un tempo casuale di attesa (multiplo di RTT) e **attende** per il tempo di backoff prima di ritrasmettere la trama interrotta.
+5. Esegue la **ritrasmissione** della stessa trama tornando al **punto 1**.
 6. Dopo molte volte che si rilevano collisioni, allora la stazione abbandona l’idea di trasmettere (canale dato per interrotto).
 
 #### **Sequenza di jamming**
@@ -567,7 +567,7 @@ Una **stazione trasmittente**:
 3. Aspetta per un tempo pari al tempo di backoff appena calcolato. Nel frattempo, la stazione in attesa del backoff continua a **sentire** il canale (CCA):
     - se il canale **diventa occupato** prima che il backoff scada allora la stazione lo "**congela**" interrompendolo sul valore di tempo già trascorso, senza azzerarlo.
     - Nel momento in cui il canale **ritorna libero** la stazione che era doppiamente in attesa, per il canale libero e per il  backoff, adesso **rimane in attesa** solo per il backoff, ricominciando il **conteggio iniziale** dal tempo in cui questo era stato interrotto, senza ricalcolarlo daccapo.
-4. Il backoff è terminato e quindi **trasmette la trama**
+4. Il backoff è terminato e quindi **trasmette la trama** senza aspettare ulteriormente.
 5. Aspetta l’**arrivo di un ack**, se non arriva in tempo, allo **scadere di un timeout**, avvia la **ritrasmissione** della stessa trama.
    
 
