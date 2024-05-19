@@ -213,7 +213,7 @@ E' una **variante** del **CSMA/CA** in cui si esegue un **doppio ascolto** del c
 
 Infatti, l'acronimo significa **Carrier Sensing Multiple Access Collision Detection** cioè protocollo di Accesso Multiplo con **Ascolto della Portante** (**prima** della trasmissione) e **rilevazione della Collisione** (**durante** la trasmissione). La rilevazione **indiretta** delle collisioni mediante l'**ack** del ricevitore adesso non è più necessaria.
 
-E' una **miglioria** del CSMA standard che permette, a fronte di una collisione, un **recupero più rapido** della trasmissione rispetto al meccanismo dell'**ack**, che è sicuramente **più lento** a rilevarla. Un **rapido recupero** porta ad una **diminuizione del ritardo** di trasmissione e quindi ad un **aumento** della **velocità media** dei messaggi. 
+E' una **miglioria** del CSMA standard che permette, a fronte di una collisione, un **recupero più rapido** della trasmissione rispetto al meccanismo dell'**ack**, dato che quest'ultimo è sicuramente **più lento** a rilevare le collisioni. Un **rapido recupero** porta ad una **diminuizione del ritardo** di trasmissione e quindi ad un **aumento** della **velocità media** dei messaggi. 
 
 Una stazione **trasmittente**:
 - al momento che ha una trama pronta, **ascolta il canale prima** di trasmettere per stabilire se esso è libero o meno.
