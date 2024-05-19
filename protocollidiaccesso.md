@@ -672,7 +672,7 @@ Il protocollo CSMA/CA (Carrier Sense Medium Access with Collision Avoidance) fun
 7. Se entro un intervallo di tempo ben definito, A non riceve un ACK da B, vuol dire che il frame dati non è stato ricevuto correttamente, e quindi A deve ritrasmetterlo ripetendo tutta la procedura.
 8. Una volta che B ha ricevuto correttamente il frame Dati, risponde con un ACK concludendo il protocollo.
 
-## **PCF e Contention Free Period**
+## **PCF e Supertrama**
 
 Un AP può assumere un controllo ancor più rigoroso sull'andamento delle trasmissioni, se svolge un ruolo di **Point Coordinator** (PC), supportando la Point Coordination Function (PCF). In tal caso, in occasione delle trame Beacon può dare inizio ad un periodo libero da contesa (CFP, Contention Free Period), in cui annuncia un NAV tale da inibire la trasmissione di tutte le altre stazioni.
 
