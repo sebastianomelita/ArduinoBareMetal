@@ -73,7 +73,7 @@ Una **stazione trasmittente**:
 2. Dopo l’invio aspetta per un certo tempo lo scadere (**TIMEOUT**) di un timer (detto **timer di trasmissione**):
     - Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo.
     - Altrimenti la stazione usa una strategia di **backoff** e invia nuovamente il pachetto dopo avere atteso un tempo casuale.
-3. Dopo molte volte che **non** si ricevono conferme (acknowledgement) allora la stazione **abbandona** l’dea di trasmettere (il canale è guasto).
+3. Dopo molte volte che **non** si ricevono conferme (acknowledgement) allora la stazione **abbandona** l’idea di trasmettere (il canale è guasto).
 
 **Le collisioni graficamente:**
 
