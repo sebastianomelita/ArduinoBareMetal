@@ -122,7 +122,7 @@ Fig 2
 
 ### **Fasi CSMA**
 
-Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione). E' una **miglioria** sostanziale dell'Aloha perchè implementa l'**ascolto del canale** prima della trasmissione detto anche **LBT** (Listen before Talk) o accesso **polite**, che **riduce** drasticamente la **probabilità** di collisione del messaggio appena trasmesso sul canale, a prezzo di una implementazione **più complessa**. E' adatto per la trasmissione di **messaggi più lunghi** ed è appropriato per dispostivi con migliore **capacità di calcolo** e quando si è in assenza di problemi di **consumo energetico**.
+Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione). E' una **miglioria** sostanziale dell'Aloha perchè implementa l'**ascolto del canale** prima della trasmissione, detto anche **LBT** (Listen before Talk) o accesso **polite**, che **riduce** drasticamente la **probabilità** di collisione del messaggio appena trasmesso sul canale, a prezzo di una implementazione **più complessa**. E' adatto per la trasmissione di **messaggi più lunghi** ed è appropriato per dispostivi con migliore **capacità di calcolo** e quando si è in assenza di problemi di **consumo energetico**.
 
 **Ascolto della Portante** può essere considerato il **misurare** una quantità di energia **sul canale** significativamente maggiore di quella che c'è normalmente su un canale **a riposo** (idle). Ciò può essere rilevato mediante un dispositivo a **soglia** che scatti oltre un certo valore di **riferimento**. Si tratta di una rilevazione **diretta** di **canale occupato**.
 
