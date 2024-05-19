@@ -73,7 +73,7 @@ Una **stazione trasmittente**:
 2. Dopo l’invio aspetta per un certo tempo lo scadere (**TIMEOUT**) di un timer (detto **timer di trasmissione**):
     - Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo.
     - Altrimenti la stazione usa una strategia di **backoff** e invia nuovamente il pachetto dopo avere atteso un tempo casuale.
-3. Dopo molte volte che **non** si ricevono conferme (acknowledgement) allora la stazione **abbandona** l’dea di trasmettere.
+3. Dopo molte volte che **non** si ricevono conferme (acknowledgement) allora la stazione **abbandona** l’dea di trasmettere (il canale è guasto).
 
 **Le collisioni graficamente:**
 
@@ -216,13 +216,11 @@ Infatti, l'acronimo significa **Carrier Sensing Multiple Access Collision Detect
 E' una **miglioria** del CSMA standard che permette, a fronte di una collisione, un **recupero più rapido** della trasmissione rispetto al meccanismo dell'**ack**, dato che quest'ultimo è sicuramente **più lento** a rilevare le collisioni. Un **rapido recupero** porta ad una **diminuizione del ritardo** di trasmissione e quindi ad un **aumento** della **velocità media** dei messaggi. 
 
 Una stazione **trasmittente**:
-- al momento che ha una trama pronta, **ascolta il canale prima** di trasmettere per stabilire se esso è libero o meno.
-- Appena essa rileva il **canale libero** invia immediatamente la trama (messaggio) ma continua ad **ascoltare il canale** anche **durante** la trasmissione.
-- L’**ascolto durante la trasmissione** serve a stabilire se sul canale è avvenuta o meno una collisione. 
-- Se non vengono rilevati **segnali di collisione** allora la trasmissione è avvenuta con successo.
-- un **segnale di collisione** può essere considerato il **misurare** sul canale più energia di quanta la stazione stessa non se ne aspetti a causa della sua trasmissione. Ciò può essere rilevato mediante un dispositivo a soglia che scatti oltre un certo **valore di riferimento**. Si tratta di una rilevazione **diretta** di una collisione sul canale.
-- Altrimenti la stazione arresta la trasmissione corrente e ricomincia da zero la trasmissione della trama dopo un **tempo casuale**.
-- Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
+1. al momento che ha una trama pronta, **ascolta il canale prima** di trasmettere per stabilire se esso è libero o meno.
+2. Appena essa rileva il **canale libero** invia immediatamente la trama (messaggio) ma continua ad **ascoltare il canale** anche **durante** la trasmissione:
+    - Se non vengono rilevati **segnali di collisione** allora la trasmissione è avvenuta con successo.
+    - Altrimenti, se un dispositivo a soglia scatta oltre un **valore di riferimento**, si è rilevata una collisione, per cui la stazione arresta la trasmissione corrente e ricomincia la trasmissione della stessa trama dopo avere aspettato un **tempo casuale** (algoritmo di backoff).
+3. Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere (linea interrotta o guasta).
 
 ### **Protocollo CSMA/CD basico in pseudocodice**
 
@@ -339,18 +337,16 @@ while(N<= max){
 ### **Fasi CSMA/CD completo**
 
 La stazione **trasmittente**:
-- al momento che ha una trama pronta, **ascolta il canale prima** di trasmettere per stabilire se esso è libero o meno.
-- Appena essa rileva il canale libero invia immediatamente la trama ma ascolta anche durante la trasmissione.
-- L’**ascolto durante la trasmissione** serve a stabilire se sul canale è avvenuta o meno una collisione. 
-- **Se** non vengono rilevati **segnali di collisione** allora la trasmissione è avvenuta con successo. Un **segnale di collisione** può essere considerato il **misurare** sul canale più energia di quanta la stazione stessa non se ne aspetti a causa della sua trasmissione. Ciò può essere rilevato mediante un dispositivo a soglia che scatti oltre un certo **valore di riferimento**.
-- **Altrimenti** la stazione **arresta** la trasmissione corrente e **trasmette** invece una particolare sequenza di **32 byte** (corrispondente a metà di un RTT), detta **sequenza di jamming**, che **avvisa** della collisione chi ancora **non trasmette** cioè i ricevitori. Per le stazioni che **stanno già trasmettendo** invece genera una **nuova collisione** più lunga che ha una **durata** tale da rendere **sempre possibile** la sua rilevazione anche da parte delle stazioni poste a grande distanza dal punto in cui essa è avvenuta. Infatti, nel caso in cui la collisione avvenga tra due stazioni **molto vicine**, questa potrebbe essere da una di loro rilevata (e quindi interrotta) troppo presto per consentirne la rilevazione anche da parte delle altre stazioni più lontane. Ciò **perchè** potrebbe succedere che due **messaggi collidenti brevi**, quindi sovrapposti e viaggianti in direzioni opposte, dopo un tempo altrettanto breve, **si separino** facendo così **svanire** la collisione per le stazioni che vengono da essi, successivamente alla separazione, attraversate (vedi Fig.6).
-- Calcola un numero intero random che moltiplica per RTT ottenendo un tempo casuale di attesa (multiplo di RTT) prima di una successiva ritrasmissione della trama interrotta.
-- Altrimenti la stazione arresta la trasmissione corrente e ricomincia da zero la trasmissione della trama dopo un **tempo casuale**.
-- Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere.
+1. Al momento che ha una trama pronta, **ascolta il canale prima** di trasmettere per stabilire se esso è libero o meno.
+2. Appena essa rileva il canale libero, invia immediatamente la trama ma ascolta anche durante la trasmissione. L’**ascolto durante la trasmissione** serve a stabilire se sul canale è avvenuta o meno una collisione: 
+    - **Se** non vengono rilevati **segnali di collisione** allora la trasmissione è avvenuta **con successo**. 
+    - **Altrimenti** la stazione:
+        - **arresta** la trasmissione corrente e **trasmette** invece una particolare sequenza di **32 byte** (corrispondente a metà di un RTT), detta **sequenza di jamming**, che **avvisa** della collisione chi ancora **non trasmette** cioè i ricevitori. Se **ricevevano**, scaricano dal buffer di ricezione quanto ricevuto fino a quel momento. Se **trasmettevano**, arrestano immediatamente la trasmissione e fanno partire il loro algoritmo di backoff. 
+        - esegue il proprio backoff calcolando un numero un tempo casuale di attesa (multiplo di RTT) prima di una successiva ritrasmissione della trama interrotta.
 
-Le altre stazioni, quando ricevono la **sequenza di jamming**, sono **avvisate** della avvenuta collisione e:
-- Se **ricevevano**, **scaricano dal buffer** di ricezione quanto ricevuto fino a quell momento
-- Se **trasmettevano**, **arrestano immediatamente la trasmissione** e fanno partire l’**algoritmo di backoff** che stabilisce il **ritardo casuale** prima della ritrasmissione del messaggio interrotto.
+3. Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere (canale dato per interrotto).
+
+La **sequenza di Jamming** è, in realtà, utile anche per le stazioni che **stanno già trasmettendo** per risolvere il problema delle collisioni che durino **troppo poco**. Infatti, nel caso in cui la collisione avvenga tra due stazioni **molto vicine**, una di loro potrebbe rilevarla (e quindi interromperla) troppo presto per consentirne la rilevazione anche da parte delle stazioni più lontane. Ciò **perchè** potrebbe succedere che due **messaggi collidenti brevi**, quindi sovrapposti e viaggianti in direzioni opposte, dopo un tempo altrettanto breve, **si separino** facendo così **svanire** la collisione per le stazioni che vengono da essi, successivamente alla separazione, attraversate (vedi Fig.6). La soluzione è gnerare, al momendo della collisione, una **nuova collisione**, più lunga di quella originale, in modo che sia **sempre possibile** la sua rilevazione anche molto lontano dal punto in cui essa è avvenuta.
 
 <img src="csmacdflow2.png" alt="alt text" width="350">
 Fig 8
