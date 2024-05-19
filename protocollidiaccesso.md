@@ -69,11 +69,11 @@ E' il protocollo peer to peer per certi versi **peggiore**, infatti è quello co
 
 ### **Fasi ALOHA**
 Una **stazione trasmittente**:
-- al momento che ha una trama pronta, la invia **sul canale** senza aspettare.
-- Dopo l’invio aspetta per un certo tempo (detto **timeout**) lo scadere di un timer (detto **timer di trasmissione**).
-- Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo.
-- Altrimenti la stazione usa una strategia di **backoff** e invia nuovamente il pachetto dopo avere atteso un tempo casuale.
-- Dopo molte volte che **non** si ricevono conferme (acknowledgement) allora la stazione **abbandona** l’dea di trasmettere.
+1. al momento che ha una trama pronta, la invia **sul canale** senza aspettare.
+2. Dopo l’invio aspetta per un certo tempo lo scadere (**TIMEOUT**) di un timer (detto **timer di trasmissione**):
+    - Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo.
+    - Altrimenti la stazione usa una strategia di **backoff** e invia nuovamente il pachetto dopo avere atteso un tempo casuale.
+3. Dopo molte volte che **non** si ricevono conferme (acknowledgement) allora la stazione **abbandona** l’dea di trasmettere.
 
 **Le collisioni graficamente:**
 
