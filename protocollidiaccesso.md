@@ -370,7 +370,7 @@ Differenze:
 
 ## **CSMA/CA**
 
-Non è sempre possibile rilevare le collisioni **durante la trasmissione** perchè l'ascolto diretto del canale sarebbe impossibile o inefficace (mezzo radio). In queste situazione la **rilevazione della collisione** può essere soltanto indiretta osservando la **mancata ricezione** di un ack. Per **velocizzare** il processo di recupero della trasmissione a fronte di una collisione, nel CSMA/CA i messaggi di ack vengono posti ad un **livello di priorità più elevato** rispetto agli altri messaggi mettendoli **al riparo** dalle collisioni. Le collisioni **non** possono intaccare i messaggi di ack.  
+Non è sempre possibile rilevare le collisioni **durante la trasmissione** perchè l'ascolto diretto del **canale** sarebbe impossibile o inefficace (**mezzo radio**). In queste situazione la **rilevazione della collisione** può essere soltanto indiretta osservando la **mancata ricezione** di un ack. Per **velocizzare** il processo di recupero della trasmissione a fronte di una collisione, nel CSMA/CA i messaggi di ack vengono posti ad un **livello di priorità più elevato** rispetto agli altri messaggi mettendoli **al riparo** dalle collisioni. Le collisioni **non** possono intaccare i messaggi di ack.  
 Anche in questo caso un **rapido recupero** della trasmissione migliora la **velocità media** del dispositivo (ritardi più bassi).
 
 E' adatto per la trasmissione di **messaggi lunghi** ed è appropriato per dispostivi con migliore capacità di calcolo quando si è in assenza di problemi di consumo energetico.
