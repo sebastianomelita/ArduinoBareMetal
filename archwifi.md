@@ -333,11 +333,17 @@ In una **rete mesh**, il controllo del tempo di trasmissione attraverso CFP o te
 
 ### **Sistemi multicanale (multiradio)**
 
-Architettura del sistema di rete Wireless Mesh multicanale. Il numero minimo di canali necessrio è 2. Un sistema a 3 canali offre maggiore flessibilità a prezzo di un maggiore costo.
+Architettura del sistema di rete Wireless Mesh multicanale. Il **numero minim**o di canali necessario **è 2**. Un sistema a **3 canali** offre maggiore **flessibilità** a prezzo di un maggiore costo.
 
 <img src="img/mesh_network2.png" alt="alt text" width="1100">
 
-Nello schema a destra, i dispositivi mobili degli utenti finali si connettono alla rete tramite nodi di aggregazione del traffico simili a punti di accesso, che formano tra loro una rete mesh wireless multicanale per inoltrare il traffico dati da/verso i dispositivi degli utenti finali. I collegamenti tra i nodi indicano la comunicazione diretta sul canale indicato dal numero sul collegamento. In questa rete, ogni nodo è dotato di **2 NIC wireless**. Pertanto il numero di canali utilizzati da ciascun nodo contemporaneamente non può essere superiore a 2; la rete nel suo complesso utilizza 5 canali distinti.
+
+Nello schema a destra, sono presenti:
+- **nodi di aggregazione**, cioè nodi che, oltre alle **dorsali radio** verso altri nodi, hanno pure delle **interfacce radio** verso i dispositivi client. Inoltrano il traffico dati da/verso i dispositivi degli utenti finali. 
+- **nodi di transito**, cioè nodi che posseggono solamente interfacce radio dedicate alle dorsali radio e che quindi svolgono solo le funzioni di **router**. Inoltrano il traffico dati solo verso altri nodi. 
+- **un gateway**, è l'unico nodo della rete mesh che è cablato ed è il punto di accesso alla LAN aziendale attraverso la quale raggiungere il router di confine verso Internet.
+
+Ogni **collegamento tra due nodi** rappresenta una comunicazione radio diretta e dedicata sul canale numerato con l'etichetta sul link. In questa esempio, ogni nodo è dotato di **2 NIC wireless**. Pertanto il numero di canali utilizzati da ciascun nodo contemporaneamente non può essere superiore a 2; la rete nel suo complesso utilizza **5 canali** distinti.
 
 ### **Funzionalità Chiave di una implementazione multiradio**
 
