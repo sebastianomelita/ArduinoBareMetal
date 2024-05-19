@@ -130,7 +130,7 @@ Una **stazione trasmittente**:
 1. al momento che ha una trama pronta, **aspetta** finchè non “sente” il **canale libero** (cioè nessuno trasmette).
 2. Appena essa rileva il canale libero **invia immediatamente** la trama.
 3. Dopo l’invio **aspetta** per un certo tempo, quello impostato sul **timer di trasmissione**, cioè il **TIMEOUT**:
-4. Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo. E non si eseguono le fasi successive.
+4. Se essa riceve il messaggio di **ack** allora la trasmissione è avvenuta con successo, e non si eseguono le fasi successive.
 5. Altrimenti la stazione usa una strategia di **backoff** e invia nuovamente il pachetto dopo aver **aspettato** un tempo casuale.
 6. Dopo molte volte che **non** si ricevono **conferme** (acknowledgement) allora la stazione abbandona l’dea di trasmettere (canale in avaria).
 
