@@ -348,7 +348,9 @@ La stazione **trasmittente**:
 
 3. Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’dea di trasmettere (canale dato per interrotto).
 
-La **sequenza di Jamming** è, in realtà, utile anche per le stazioni che **stanno già trasmettendo** per risolvere il problema delle collisioni che durino **troppo poco**. Infatti, nel caso in cui la collisione avvenga tra due stazioni **molto vicine**, una di loro potrebbe rilevarla (e quindi interromperla) troppo presto per consentirne la rilevazione anche da parte delle stazioni più lontane. Ciò **perchè** potrebbe succedere che due **messaggi collidenti brevi**, quindi sovrapposti e viaggianti in direzioni opposte, dopo un tempo altrettanto breve, **si separino** facendo così **svanire** la collisione per le stazioni che vengono da essi, successivamente alla separazione, attraversate (vedi Fig.6). 
+La **sequenza di Jamming** è, in realtà, utile anche per le stazioni che **stanno già trasmettendo** per risolvere il problema delle collisioni che durino **troppo poco**. Infatti, nel caso in cui la collisione avvenga tra due stazioni **molto vicine**, una di loro potrebbe rilevarla (e quindi interromperla) troppo presto per consentirne la rilevazione anche da parte delle stazioni più lontane. 
+
+Ciò **perchè** potrebbe succedere che due **messaggi collidenti brevi**, quindi sovrapposti e viaggianti in direzioni opposte, dopo un tempo altrettanto breve, **si separino** facendo così **svanire** la collisione per le stazioni che vengono da essi, successivamente alla separazione, attraversate (vedi Fig.6). 
 
 La **soluzione** è generare, al momendo della collisione, una **nuova collisione**, più lunga di quella originale, in modo che sia **sempre possibile** la sua rilevazione anche molto lontano dal punto in cui essa è avvenuta. Risultato ottenuto con una lunga sequenza di jamming.
 
