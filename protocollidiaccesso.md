@@ -563,10 +563,11 @@ Una **stazione trasmittente**:
     - Se la trama precedentemente ricevuta era corrotta prima di trasmettere, **aspetta un tempo EIFS** 
     - Altrimenti se la stazione sente il canale occupato aspetta **finchè è libero**, da quel momento in poi, **aspetta un tempo DIFS** 
 2. Trascorso il DIFS, una stazione fa partire il backoff quando sente il **canale libero**
-3.  nel frattempo, la stazione in attesa del backoff continua a **sentire** il canale (CCA):
+3. Aspetta per un tempo pari al tempo di backoff appena calcolato. Nel frattempo, la stazione in attesa del backoff continua a **sentire** il canale (CCA):
     - se il canale **diventa occupato** prima che il backoff scada allora la stazione lo "**congela**" interrompendolo sul valore di tempo già trascorso, senza azzerarlo.
-    - Nel momento in cui il canale **ritorna libero** la stazione che era doppiamente in attesa, per il canale libero e per il  backoff, adesso **rimane in attesa** solo per il backoff, ricominciando il **conteggio iniziale** dal tempo in cui questo era stato interrotto, senza ricalcolarlo daccapo. 
-4. Aspetta l’**arrivo di un ack**, se non arriva in tempo, allo **scadere di un timeout**, avvia la **ritrasmissione** della stessa trama.
+    - Nel momento in cui il canale **ritorna libero** la stazione che era doppiamente in attesa, per il canale libero e per il  backoff, adesso **rimane in attesa** solo per il backoff, ricominciando il **conteggio iniziale** dal tempo in cui questo era stato interrotto, senza ricalcolarlo daccapo.
+4. Il backoff è terminato e quindi **trasmette la trama**
+5. Aspetta l’**arrivo di un ack**, se non arriva in tempo, allo **scadere di un timeout**, avvia la **ritrasmissione** della stessa trama.
    
 
 
