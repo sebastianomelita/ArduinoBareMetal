@@ -516,8 +516,22 @@ Nel caso del WiFi in figura, è illustrato un backoff **con prenotazione** che h
 
 Il **backoff con prenotazione** è una maniera per non perdere la **priorità acquisita** ricalcolando il backoff da zero. E' una **ottimizzazione** per garantire una maggiore **equità (fairness)** nell'accesso alla risorsa canale che non sempre è implementata in protocolli CSMA/CA diversi dal WiFi.
 
+### **Fasi CSMA/CA al trasmettitore con backoff**
+
 **Pseudocodice protocollo CSMA/CA sul trasmettitore con backoff:**
 
+Unendo tutto, le fasi del CSMA/CA con il backoff con prenotazione sarebbero:
+
+Una **stazione trasmittente**:
+1. Valuta l'ultima trama (messaggio) ricevuto:
+    - Se la trama precedentemente ricevuta era corrotta prima di trasmettere, **aspetta un tempo EIFS** 
+    - Altrimenti se la stazione sente il canale occupato aspetta **finchè è libero**, da quel momento in poi, **aspetta un tempo DIFS** 
+2. Trascorso il DIFS, una stazione fa partire il backoff quando sente il **canale libero**
+3.  nel frattempo, la stazione in attesa del backoff continua a **sentire** il canale (CCA):
+    - se il canale **diventa occupato** prima che il backoff scada allora la stazione lo "**congela**" interrompendolo sul valore di tempo già trascorso, senza azzerarlo.
+    - Nel momento in cui il canale **ritorna libero** la stazione che era doppiamente in attesa, per il canale libero e per il  backoff, adesso **rimane in attesa** solo per il backoff, ricominciando il **conteggio iniziale** dal tempo in cui questo era stato interrotto, senza ricalcolarlo daccapo. 
+4. Aspetta l’**arrivo di un ack**, se non arriva in tempo, allo **scadere di un timeout**, avvia la **ritrasmissione** della stessa trama.
+   
 ```C++
 N=1;
 while(N <= max){
@@ -543,17 +557,6 @@ while(N <= max){
 /* troppi tentativi: rinuncio!*/ 
 
 ```
-Unendo tutto le fasi sarebbero:
-
-Una **stazione trasmittente**:
-1. Valuta l'ultima trama (messaggio) ricevuto:
-    - Se la trama precedentemente ricevuta era corrotta prima di trasmettere, **aspetta un tempo EIFS** 
-    - Altrimenti se la stazione sente il canale occupato aspetta **finchè è libero**, da quel momento in poi, **aspetta un tempo DIFS** 
-2. Trascorso il DIFS, una stazione fa partire il backoff quando sente il **canale libero**
-3.  nel frattempo, la stazione in attesa del backoff continua a **sentire** il canale (CCA):
-    - se il canale **diventa occupato** prima che il backoff scada allora la stazione lo "**congela**" interrompendolo sul valore di tempo già trascorso, senza azzerarlo.
-    - Nel momento in cui il canale **ritorna libero** la stazione che era doppiamente in attesa, per il canale libero e per il  backoff, adesso **rimane in attesa** solo per il backoff, ricominciando il **conteggio iniziale** dal tempo in cui questo era stato interrotto, senza ricalcolarlo daccapo. 
-4. Aspetta l’**arrivo di un ack**, se non arriva in tempo, allo **scadere di un timeout**, avvia la **ritrasmissione** della stessa trama.
 
 ### **Finestra di contesa variabile**
 
