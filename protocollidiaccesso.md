@@ -391,7 +391,9 @@ Vale la disuguaglianza:
 SIFS < DIFS < EIFS
 ```
 
-### **Protocollo CSMA/CA sul ricevitore in psudocodice**
+### **CSMA/CA al ricevitore**
+
+#### **Protocollo CSMA/CA sul ricevitore in pseudocodice**
 ```C++
 While (true)
 {
@@ -404,7 +406,7 @@ While (true)
 ```
 La funzione deliver() consegna la trama al livello superiore (ad un protocollo di livello superiore o alla applicazione)
 
-### **Fasi CSMA/CA al ricevitore**
+#### **Fasi CSMA/CA al ricevitore**
 
 Una **stazione ricevente**:
 1. Aspetta l’arrivo di una nuova trama
@@ -414,7 +416,9 @@ se non lo è la consegna al livello superiore e **non esegue** i passi successiv
 4. Aspetta un SIFS
 5. Invia una trama di ack
 
-### **Protocollo CSMA/CA sul trasmettitore in pseudocodice**
+### **CSMA/CA sul trasmettitore**
+
+#### **Protocollo CSMA/CA sul trasmettitore in pseudocodice**
 ```C++
 N=1;
 while(N <= max){
@@ -437,7 +441,7 @@ while(N <= max){
 }
 /* troppi tentativi: rinuncio!*/	
 ```
-### **Fasi CSMA/CA al trasmettitore senza backoff**
+#### **Fasi CSMA/CA al trasmettitore senza backoff**
 
 Una **stazione trasmittente**:
 1. Valuta l'ultima trama (messaggio) ricevuto:
@@ -451,7 +455,11 @@ Anche se C, sfortunatamente, valutasse il canale libero ascoltandolo durante il 
 <img src="esempio.png" alt="alt # **text" width="800">
 Fig 9
 
-### **Significato di DIFS**
+#### **Significato di SIFS**
+
+Tutti i dispositivi HW hanno una certa inerzia nel passare da una funzione all'altra. In questo caso, un ricevitore impiega un certo tempo per passare dalla modalità di ricezione, attiva durante l'attesa di un messaggio, a quella di trasmissione, necessaria per inviare l'ack a messaggio ricevuto. Questo tempo si può modellare (riassumere) nel **ritardo SIFS**.
+
+#### **Significato di DIFS**
 
 È il **tempo di attesa** che aspettano tutte le stazioni per trasmettere a partire dalla fine dell’ultima trasmissione valida (**invio ack** messaggio precedente).
 
@@ -474,7 +482,7 @@ Il tempo di attesa DIFS è **uguale** per tutte le stazioni e **dopo** di esso i
 <img src="difs.png" alt="alt # **text" width="600">
 Fig 10
 
-### **Significato di EIFS**
+#### **Significato di EIFS**
 ```C++
 EIFS  = SIFS + DIFS + ACK_Tx_Time
 ```
@@ -485,7 +493,7 @@ EIFS  = SIFS + DIFS + ACK_Tx_Time
 <img src="eifs.png" alt="alt # **text" width="600">
 Fig 11
 
-### **Backoff**
+#### **Backoff**
 
 Se **due stazioni**, dopo averlo **ascoltato**, trovano il **canale libero** potrebbero comunque **collidere** perchè, a causa del **ritardo di propagazione**, potrebbero non rendersi conto che un'altra stazione **ha già cominciato** a trasmettere occupando il canale.
 Una eventuale **collisione** dei messaggi determina la ricezione di **trame corrotte** da parte delle stazioni destinatarie che, a sua volta, causa il **mancato invio** di un ack alle stazioni trasmittenti che, allo scadere del timout di trasmissione, pianificheranno la **ritrasmissione** del messaggio non ancora confermato.
@@ -518,20 +526,8 @@ Il **backoff con prenotazione** è una maniera per non perdere la **priorità ac
 
 ### **Fasi CSMA/CA al trasmettitore con backoff**
 
-**Pseudocodice protocollo CSMA/CA sul trasmettitore con backoff:**
+#### **Pseudocodice**
 
-Unendo tutto, le fasi del CSMA/CA con il backoff con prenotazione sarebbero:
-
-Una **stazione trasmittente**:
-1. Valuta l'ultima trama (messaggio) ricevuto:
-    - Se la trama precedentemente ricevuta era corrotta prima di trasmettere, **aspetta un tempo EIFS** 
-    - Altrimenti se la stazione sente il canale occupato aspetta **finchè è libero**, da quel momento in poi, **aspetta un tempo DIFS** 
-2. Trascorso il DIFS, una stazione fa partire il backoff quando sente il **canale libero**
-3.  nel frattempo, la stazione in attesa del backoff continua a **sentire** il canale (CCA):
-    - se il canale **diventa occupato** prima che il backoff scada allora la stazione lo "**congela**" interrompendolo sul valore di tempo già trascorso, senza azzerarlo.
-    - Nel momento in cui il canale **ritorna libero** la stazione che era doppiamente in attesa, per il canale libero e per il  backoff, adesso **rimane in attesa** solo per il backoff, ricominciando il **conteggio iniziale** dal tempo in cui questo era stato interrotto, senza ricalcolarlo daccapo. 
-4. Aspetta l’**arrivo di un ack**, se non arriva in tempo, allo **scadere di un timeout**, avvia la **ritrasmissione** della stessa trama.
-   
 ```C++
 N=1;
 while(N <= max){
@@ -555,8 +551,23 @@ while(N <= max){
 	}
 }
 /* troppi tentativi: rinuncio!*/ 
-
 ```
+
+#### **Fasi**
+
+Unendo tutto, le fasi del CSMA/CA con il backoff con prenotazione sarebbero:
+
+Una **stazione trasmittente**:
+1. Valuta l'ultima trama (messaggio) ricevuto:
+    - Se la trama precedentemente ricevuta era corrotta prima di trasmettere, **aspetta un tempo EIFS** 
+    - Altrimenti se la stazione sente il canale occupato aspetta **finchè è libero**, da quel momento in poi, **aspetta un tempo DIFS** 
+2. Trascorso il DIFS, una stazione fa partire il backoff quando sente il **canale libero**
+3.  nel frattempo, la stazione in attesa del backoff continua a **sentire** il canale (CCA):
+    - se il canale **diventa occupato** prima che il backoff scada allora la stazione lo "**congela**" interrompendolo sul valore di tempo già trascorso, senza azzerarlo.
+    - Nel momento in cui il canale **ritorna libero** la stazione che era doppiamente in attesa, per il canale libero e per il  backoff, adesso **rimane in attesa** solo per il backoff, ricominciando il **conteggio iniziale** dal tempo in cui questo era stato interrotto, senza ricalcolarlo daccapo. 
+4. Aspetta l’**arrivo di un ack**, se non arriva in tempo, allo **scadere di un timeout**, avvia la **ritrasmissione** della stessa trama.
+   
+
 
 ### **Finestra di contesa variabile**
 
