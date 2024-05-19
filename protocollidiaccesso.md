@@ -122,7 +122,7 @@ Fig 2
 
 ### **Fasi CSMA**
 
-Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione). E' una **miglioria** sostanziale dell'Aloha perchè implementa l'**ascolto** del canale prima della trasmissione detto anche **LBT** (Listen before Talk) o modo **polite** che **riduce** drasticamente la **probabilità** di collisione a prezzo di una implementazione **più complessa**. E' adatto per la trasmissione di **messaggi più lunghi** ed è appropriato per dispostivi con migliore **capacità di calcolo** e quando si è in assenza di problemi di **consumo energetico**.
+Significa Carrier Sensing Multiple Access cioè protocollo di Accesso Multiplo con Ascolto della Portante (prima della trasmissione). E' una **miglioria** sostanziale dell'Aloha perchè implementa l'**ascolto del canale** prima della trasmissione detto anche **LBT** (Listen before Talk) o modo **polite** che **riduce** drasticamente la **probabilità** di collisione a prezzo di una implementazione **più complessa**. E' adatto per la trasmissione di **messaggi più lunghi** ed è appropriato per dispostivi con migliore **capacità di calcolo** e quando si è in assenza di problemi di **consumo energetico**.
 
 **Ascolto della Portante** può essere considerato il **misurare** una quantità di energia **sul canale** significativamente maggiore di quella che c'è normalmente su un canale **a riposo** (idle). Ciò può essere rilevato mediante un dispositivo a **soglia** che scatti oltre un certo valore di **riferimento**. Si tratta di una rilevazione **diretta** di **canale occupato**.
 
@@ -352,7 +352,7 @@ Fig 8
 ### **Riassumendo CSMA e CSMA/CD**
 
 Similitudini:
-- CSMA e CSMA/CD devono implementare un meccanismo di ascolto del canale prima della trasmissione per stabilire se esso è libero o meno. 
+- CSMA e CSMA/CD devono implementare un meccanismo di **ascolto del canale** prima della trasmissione per stabilire se esso è libero o meno. 
 
 Differenze:
 - il CSMA **rileva la collisione indirettamente** (più lentamente) dopo la trasmissione **in fase di ricezione**, a seguito del **mancato arrivo del messaggio di ack** (allo scadere di un timeout), Si tratta di una tecnica SW. Trasmissione e ricezione non devono essere contemporanee.
