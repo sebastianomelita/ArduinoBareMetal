@@ -207,11 +207,11 @@ Come detto prima nel caso dll'Aloha spesso accade che le collisioni non vengano 
 
 ### **Fasi CSMA/CD basico**
 
-Significa **Carrier Sensing Multiple Access Collision Detection** cioè protocollo di Accesso Multiplo con **Ascolto della Portante** (**prima** della trasmissione) e **rilevazione della Collisione** (**durante** la trasmissione). E' una **miglioria** del CSMA standard che permette un **rapido recupero** della trasmissione a fronte di una collisione. Un **rapido recupero** porta ad una **diminuizione del ritardo** di trasmissione e quindi ad un **aumento** della **velocità media** dei messaggi.
+E' una **variante** del **CSMA/CA** in cui si esegue un **doppio ascolto** del canale: **prima di trasmettere** per stabilire se è **libero** (accesso LBT), **durante la trasmissione** per **rilevare direttamente** eventuali **collisioni**. Infatti, l'acronimo significa **Carrier Sensing Multiple Access Collision Detection** cioè protocollo di Accesso Multiplo con **Ascolto della Portante** (**prima** della trasmissione) e **rilevazione della Collisione** (**durante** la trasmissione). E' una **miglioria** del CSMA standard che permette un **rapido recupero** della trasmissione a fronte di una collisione. Un **rapido recupero** porta ad una **diminuizione del ritardo** di trasmissione e quindi ad un **aumento** della **velocità media** dei messaggi.
 
 Una stazione **trasmittente**:
 - al momento che ha una trama pronta, **ascolta il canale prima** di trasmettere per stabilire se esso è libero o meno.
-- Appena essa rileva il canale libero invia immediatamente la trama ma continua ad ascoltare il canale anche **durante** la trasmissione.
+- Appena essa rileva il **canale libero** invia immediatamente la trama (messaggio) ma continua ad **ascoltare il canale** anche **durante** la trasmissione.
 - L’**ascolto durante la trasmissione** serve a stabilire se sul canale è avvenuta o meno una collisione. 
 - Se non vengono rilevati **segnali di collisione** allora la trasmissione è avvenuta con successo.
 - un **segnale di collisione** può essere considerato il **misurare** sul canale più energia di quanta la stazione stessa non se ne aspetti a causa della sua trasmissione. Ciò può essere rilevato mediante un dispositivo a soglia che scatti oltre un certo **valore di riferimento**. Si tratta di una rilevazione **diretta** di una collisione sul canale.
@@ -256,8 +256,8 @@ In altre parole, se la **trasmissione** di un messaggio da parte di una stazione
 
 ### **Soluzione: trasmissione abbastanza lunga**
 
-- **Caso peggiore**: il tramittente A è ad un capo e la collisione avviene all’altro capo quando trasmette pure B.
-- Per ricevere l’eco della collisione A deve continuare ad ascoltare (cioè a trasmettere) finchè la trama corrotta non si propaga da B fino a lei.
+- **Caso peggiore**: il tramittente A è ad un capo e la collisione avviene **all’altro capo** quando trasmette pure B.
+- Per ricevere l’eco della collisione A deve continuare ad ascoltare (cioè a trasmettere) finchè la trama corrotta non **si propaga** da B fino a lei.
 
 <img src="nolisten.png" alt="alt text" width="700">
 Fig 7
