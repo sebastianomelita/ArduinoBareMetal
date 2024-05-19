@@ -207,7 +207,11 @@ Come detto prima nel caso dll'Aloha spesso accade che le collisioni non vengano 
 
 ### **Fasi CSMA/CD basico**
 
-E' una **variante** del **CSMA/CA** in cui si esegue un **doppio ascolto** del canale: **prima di trasmettere** per stabilire se è **libero** (accesso LBT), **durante la trasmissione** per **rilevare direttamente** eventuali **collisioni**. Infatti, l'acronimo significa **Carrier Sensing Multiple Access Collision Detection** cioè protocollo di Accesso Multiplo con **Ascolto della Portante** (**prima** della trasmissione) e **rilevazione della Collisione** (**durante** la trasmissione). La rilevazione **indiretta** delle collisioni mediante l'**ack** del ricevitore adesso non è più necessaria.
+E' una **variante** del **CSMA/CA** in cui si esegue un **doppio ascolto** del canale: 
+- **prima di trasmettere** per stabilire se è **libero** (accesso LBT)
+- **durante la trasmissione** per **rilevare direttamente** eventuali **collisioni**.
+
+Infatti, l'acronimo significa **Carrier Sensing Multiple Access Collision Detection** cioè protocollo di Accesso Multiplo con **Ascolto della Portante** (**prima** della trasmissione) e **rilevazione della Collisione** (**durante** la trasmissione). La rilevazione **indiretta** delle collisioni mediante l'**ack** del ricevitore adesso non è più necessaria.
 
 E' una **miglioria** del CSMA standard che permette un **rapido recupero** della trasmissione a fronte di una collisione rispetto al meccanismo degli ack che è sicuramente **più lento**. Un **rapido recupero** porta ad una **diminuizione del ritardo** di trasmissione e quindi ad un **aumento** della **velocità media** dei messaggi. 
 
