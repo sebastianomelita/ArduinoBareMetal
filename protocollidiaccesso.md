@@ -219,7 +219,7 @@ E' una **miglioria** del CSMA standard che permette, a fronte di una collisione,
 
 Una stazione **trasmittente**:
 1. Al momento che ha una trama pronta, **ascolta il canale prima** di trasmettere per stabilire se esso è libero o meno.
-2. Appena essa rileva il **canale libero** invia immediatamente la trama (messaggio) ma continua ad **ascoltare il canale** anche **durante** la trasmissione:
+2. Appena essa rileva il **canale libero** invia immediatamente la trama (messaggio) ma continua ad **ascoltare il canale** anche **durante** la trasmissione.
 3. Se non vengono rilevati **segnali di collisione** per tutta la durata della trasmissione, allora la trasmissione è avvenuta con successo e **non** si eseguono le **fasi successive**.
 4. Altrimenti, si è rilevata una collisione (tramite lo scatto di un dispositivo a soglia), per cui la stazione **arresta** la trasmissione corrente, calcola un tempo casuale con l'**algoritmo di backoff** e **aspetta** per il tempo di backoff.
 5. Finito il backoff, la stazione **ritenta** la trasmissione della stessa trama, ripartendo **dal punto 1**.
