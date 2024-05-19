@@ -515,6 +515,7 @@ La trasmissione di un'altra stazione potrebbe anche essere destinata alla stazio
 #### **Backoff con prenotazione**
 
 <img src="backoff.png" alt="alt # **text" width="800">
+Fig 13
 
 Nel caso del WiFi in figura, è illustrato un backoff **con prenotazione** che ha la proprietà di non azzerare, sprecandolo, il tempo di attesa **già trascorso** da una stazione sul proprio backoff:
 1. Una stazione fa partire il backoff quando sente il **canale libero**
