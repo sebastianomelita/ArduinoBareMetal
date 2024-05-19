@@ -682,8 +682,6 @@ La trama dati compresa tra due beacon consecutivi viene detta **supertrama** (su
 - una **deterministica** al riparo dalle collisioni detta **CFP** (Contention Free Period) e regolata dalla multiplazione statica TDMA, che viene usata per trasmettere i dati delle comunicazioni **unicast**.
 - una **probabilistica** a contesa, in cui i tentativi di accesso dei dispositivi sono soggetti al **rischio di collisione** perchè regolata da un protocollo di tipo **CSMA/CA**, che invece serve per trasmettere delle particolari informazioni **broadcast** dette **advertisement**.
 
-Convenzionalmente, l'intervallo di tempo compreso tra due beacon consecutivi viene detto **supertrama**.
-
 Nel caso del WiFi, il **NAV CFP** (Contention Free Period) inibisce tutte le stazioni dal prendere l'**iniziativa di cominciare** una trasmissione. Finchè è valido le stazioni comunicheranno in modalità **master/slave**, cioè **risponderanno** solo **se interrogate**.
 
 <img src="CFP1.png" alt="alt # **text" width="600">
