@@ -493,7 +493,7 @@ EIFS  = SIFS + DIFS + ACK_Tx_Time
 <img src="eifs.png" alt="alt # **text" width="600">
 Fig 11
 
-#### **Backoff**
+#### **Backoff (con prenotazione)**
 
 Se **due stazioni**, dopo averlo **ascoltato**, trovano il **canale libero** potrebbero comunque **collidere** perchè, a causa del **ritardo di propagazione**, potrebbero non rendersi conto che un'altra stazione **ha già cominciato** a trasmettere occupando il canale.
 Una eventuale **collisione** dei messaggi determina la ricezione di **trame corrotte** da parte delle stazioni destinatarie che, a sua volta, causa il **mancato invio** di un ack alle stazioni trasmittenti che, allo scadere del timout di trasmissione, pianificheranno la **ritrasmissione** del messaggio non ancora confermato.
