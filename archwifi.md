@@ -312,7 +312,7 @@ A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di i
 
 ### **Bridge mesh network**
 
-**Bridge mesh**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio un bridge tra una radio a 2.4 GHz ed una a 5 GHz) mediante un **bridge**, cioè un IS di livello 2 della pila ISO/OSI. 
+**Bridge mesh**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio una radio a 2.4 GHz ed una a 5 GHz) mediante un **bridge**, cioè un IS di livello 2 della pila ISO/OSI. 
 
 <img src="img/integratedGW-WiFi-Bridge.png" alt="alt text" width="900">
 
@@ -322,7 +322,7 @@ In definitiva, **inoltrano** direttamente **trame MAC**, e la rete complessiva �
 
 ### **Routed ad hoc mesh network**
 
-**Routed mesh ad hoc**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio un router tra una radio a 2.4 GHz ed una a 5 GHz) mediante un **router**, cioè un IS di livello 3 della pila ISO/OSI.
+**Routed mesh ad hoc**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio una radio a 2.4 GHz ed una a 5 GHz) mediante un **router**, cioè un IS di livello 3 della pila ISO/OSI.
 
 <img src="img/integratedGW-WiFi-LAN.png" alt="alt text" width="900">
 
