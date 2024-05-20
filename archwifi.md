@@ -420,5 +420,7 @@ Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prest
 - https://www.researchgate.net/figure/System-architecture-of-Multi-channel-Wireless-Mesh-Network-End-users-mobile-devices_fig1_2911584
 - https://www.researchgate.net/publication/324643692_SWAM_SDN-based_Wi-Fi_Small_Cells_with_Joint_Access-Backhaul_and_Multi-Tenant_Capabilities
 - https://www.tp-link.com/us/blog/137/tp-link-usa-outdoor-solution-guide/
+- https://it.wikipedia.org/wiki/Ad-hoc_On-demand_Distance_Vector
+- https://it.wikipedia.org/wiki/Optimized_Link_State_Routing_Protocol
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
