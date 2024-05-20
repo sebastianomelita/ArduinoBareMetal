@@ -333,7 +333,7 @@ In una **rete mesh**, il controllo del tempo di trasmissione attraverso CFP o te
 
 ### **Sistemi multicanale (multiradio)**
 
-Architettura del sistema di rete Wireless Mesh multicanale. Il **numero minim**o di canali necessario **è 2**. Un sistema a **3 canali** offre maggiore **flessibilità** a prezzo di un maggiore costo.
+Architettura del sistema di rete Wireless Mesh multicanale. Il **numero minimo** di canali necessario **è 2**. Un sistema a **3 canali** offre maggiore **flessibilità** a prezzo di un maggiore costo.
 
 <img src="img/mesh_network2.png" alt="alt text" width="1100">
 
@@ -345,6 +345,7 @@ Nello schema a destra, sono presenti:
 
 Ogni **collegamento tra due nodi** rappresenta una comunicazione radio diretta e dedicata sul canale numerato con l'etichetta sul link. In questa esempio, ogni nodo è dotato di **2 NIC wireless**. Pertanto il numero di canali utilizzati da ciascun nodo contemporaneamente non può essere superiore a 2; la rete nel suo complesso utilizza **5 canali** distinti.
 
+
 ### **Funzionalità Chiave di una implementazione multiradio**
 
 Quando si vuole **selezionare** un AP Wi-Fi per una rete mesh ad **alte prestazioni**, potrebbe esse utile tenere in considerazione le seguenti funzionalità:
@@ -355,6 +356,10 @@ Quando si vuole **selezionare** un AP Wi-Fi per una rete mesh ad **alte prestazi
 - **Dynamic Band Steering**: La rete mesh può dirigere dinamicamente i dispositivi verso la banda più appropriata, migliorando l'efficienza della rete. I dispositivi più vicini ai nodi mesh possono essere indirizzati verso le bande a 5 GHz o 6 GHz, mentre quelli più lontani possono usare la banda a 2.4 GHz.
 - **Facilità di Configurazione**: meglio scegliere dispositivi con app di gestione intuitive e supporto tecnico affidabile.
 
+
+<img src="img/integratedGW-WiFi-Bridge.png" alt="alt text" width="1000">
+
+<img src="img/integratedGW-WiFi-LAN.png" alt="alt text" width="1000">
 
 ### **Conclusioni**
 
