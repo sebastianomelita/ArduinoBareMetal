@@ -52,7 +52,7 @@ Una architettura di rete wireless WiFi è può essere realizzata in tre modalit�
 - **Modalità ad hoc** di tipo peer to peer 
 - **Modalità Wifi Direct**  di tipo Punto – punto
   
-Le architetture **più diffuse** in ambito aziendale sono di **tipo infrastruttura** e sono composte di un dispositivo master centrale detto **Access Point (AP)** posto in posizione **baricentrica** rispetto a più dispositivi slave della rete wireless detti **Client**.
+Le architetture **più diffuse** in ambito aziendale ed **indoor** sono di **tipo infrastruttura** e sono composte di un dispositivo master centrale detto **Access Point (AP)** posto in posizione **baricentrica** rispetto a più dispositivi slave della rete wireless detti **Client**. 
 
 <img src="img/ap.drawio.png" alt="alt text" width="900">
 
