@@ -314,7 +314,7 @@ A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di i
 
 **Bridge mesh**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio un bridge tra una radio a 2.4 GHz ed una a 5 GHz) mediante un **bridge**, cioè un IS di livello 2 della pila ISO/OSI. 
 
-<img src="img/integratedGW-WiFi-Bridge.png" alt="alt text" width="1000">
+<img src="img/integratedGW-WiFi-Bridge.png" alt="alt text" width="900">
 
 In definitiva, **inoltrano** direttamente **trame MAC**, e la rete complessiva è una **LAN** gestita dal **protocollo STP** che evita i loop a livello data link (L2) mantenenedo la ridondanza al livello fisico (L1). I **vantaggi** di questa configurazione sono gli stessi di quella di una rete **wireless infrastruttura** composta da SW, cioè è **autoconfigurante** e quindi molto semplice e poi permette di creare **una sola subnet** che includa tutti i dispositivi **client**. Però, nonostante la sua semplicità, questa non è la configurazione preferita. Infatti, **pesano negativamente**:
     - il fatto di realizzare un albero di **instradamento unico** che è ottimo solo per il gateway che di questo è la **radice**, mentre per gli altri nodi non calcola realmente il percorso minimo possibile.
@@ -324,7 +324,7 @@ In definitiva, **inoltrano** direttamente **trame MAC**, e la rete complessiva �
 
 **Routed mesh ad hoc**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio un router tra una radio a 2.4 GHz ed una a 5 GHz) mediante un **router**, cioè un IS di livello 3 della pila ISO/OSI.
 
-<img src="img/integratedGW-WiFi-LAN.png" alt="alt text" width="1000">
+<img src="img/integratedGW-WiFi-LAN.png" alt="alt text" width="900">
 
 Una caratteristica delle reti ad hoc è di non essere statiche ma completamente **autoconfiguranti** nel senso che:
 - l'assegnazione degli indirizzi IP dei nodi e dei link può avvenire automaticamente attraverso diversi metodi, inclusi meccanismi di:
