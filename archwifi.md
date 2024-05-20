@@ -336,7 +336,7 @@ Queste soluzioni per la gestione degli indirizzi non rendono necessario impostar
 
 Inoltre, nelle reti mesh WiFi, il **routing** è generalmente **automatico**, utilizzando protocolli di **routing dinamico** di tio differente:
 - basati su protocolli **DV** (Distance Vector) di tipo **reattivo** poiché ricerca dei percorsi nella rete solo su richiesta, risparmiando l'energia di conoscere in anticipo il percorso verso nodi poco usati. Molto usato è **AODV** (Ad hoc On-Demand Distance Vector) o altri protocolli specifici per le reti mesh. Questi protocolli consentono ai nodi di scoprire e mantenere le rotte in modo dinamico, adattandosi ai cambiamenti nella topologia della rete e garantendo la resilienza e l'efficienza del trasferimento dei dati​. l vantaggio principale di AODV è quello di non generare traffico nel caso di percorsi già stabiliti e funzionanti, rispermiando energia.
-- basati su protocolli **LSP** (Link State Packet) di tipo **pro-attivo**, cioè che conoscono in anticipo i percorsi **prima del loro uso**. Molto usato è **OLSR** (Optimized Link State Routing), protocollo di routing IP ottimizzato per le reti mobili ad hoc, che può essere utilizzato anche su altre reti wireless ad hoc. Soluzione più veloce ma dispendiosa come calcolo ed energia.
+- basati su protocolli **LSP** (Link State Packet) di tipo **pro-attivo**, cioè che conoscono in anticipo i percorsi **prima del loro uso**. Un protocollo disponibile su molti router è **OLSR** (Optimized Link State Routing), protocollo di routing IP ottimizzato per le reti mobili ad hoc, che può essere utilizzato anche su altre reti wireless ad hoc. Soluzione più veloce ma dispendiosa come calcolo ed energia.
 
 ### **Tecnologia Multi-Banda**
 
