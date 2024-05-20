@@ -308,11 +308,21 @@ Una rete **Wi-Fi mesh** è un sistema di rete wireless progettato per fornire un
 - **Router Principale (Gateway)**: È il punto di ingresso alla rete e spesso è connesso direttamente al modem Internet. Gestisce la connessione tra la rete locale e Internet.
 - **Nodi Mesh (Satellite o Extender)**: Sono dispositivi aggiuntivi che si collegano senza fili al router principale o tra di loro. I nodi cooperano per distribuire il segnale Wi-Fi in modo uniforme in tutta l'area di copertura.
 
-A parità di architettura, le reti WiFi mesh si differenziano per il tipo di inoltro dei dati tra i vari nodi:
-- **Bridge mesh**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio un bridge tra una radio a 2.4 GHz ed una a 5 GHz) mediante un **bridge**, cioè un IS di livello 2 della pila ISO/OSI. In definitiva, **inoltrano** direttamente **trame MAC**, e la rete complessiva è una **LAN** gestita dal **protocollo STP** che evita i loop a livello data link (L2) mantenenedo la ridondanza al livello fisico (L1). I **vantaggi** di questa configurazione sono gli stessi di quella di una rete **wireless infrastruttura** composta da SW, cioè è **autoconfigurante** e quindi molto semplice e poi permette di creare **una sola subnet** che includa tutti i dispositivi **client**. Però, nonostante la sua semplicità, questa non è la configurazione preferita. Infatti, **pesano negativamente**:
+A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di inoltro** dei dati tra i vari nodi: **Bridge mesh** e **Mesh ad hoc routed**.
+
+### **Bridge mes**
+
+**Bridge mesh**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio un bridge tra una radio a 2.4 GHz ed una a 5 GHz) mediante un **bridge**, cioè un IS di livello 2 della pila ISO/OSI. 
+
+In definitiva, **inoltrano** direttamente **trame MAC**, e la rete complessiva è una **LAN** gestita dal **protocollo STP** che evita i loop a livello data link (L2) mantenenedo la ridondanza al livello fisico (L1). I **vantaggi** di questa configurazione sono gli stessi di quella di una rete **wireless infrastruttura** composta da SW, cioè è **autoconfigurante** e quindi molto semplice e poi permette di creare **una sola subnet** che includa tutti i dispositivi **client**. Però, nonostante la sua semplicità, questa non è la configurazione preferita. Infatti, **pesano negativamente**:
     - il fatto di realizzare un albero di **instradamento unico** che è ottimo solo per il gateway che di questo è la **radice**, mentre per gli altri nodi non calcola realmente il percorso minimo possibile.
-    - il fatto di non essere in grado di **partizionare la rete** in subnet presidiate da **router** impedisce di migliorare ulteriormente la **sicurezza** e il livello di **controllo** del traffico.
-- **Routed mesh ad hoc**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio un router tra una radio a 2.4 GHz ed una a 5 GHz) mediante un **router**, cioè un IS di livello 3 della pila ISO/OSI.  Una caratteristica delle reti ad hoc è di non essere statiche ma completamente **autoconfiguranti** nel senso che:
+    - il fatto di non essere in grado di **partizionare la rete** in subnet presidiate da **router** che impedisce di migliorare ulteriormente la **sicurezza** e il livello di **controllo** del traffico.
+
+### **Bridge mes**
+
+**Routed mesh ad hoc**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio un router tra una radio a 2.4 GHz ed una a 5 GHz) mediante un **router**, cioè un IS di livello 3 della pila ISO/OSI.
+
+Una caratteristica delle reti ad hoc è di non essere statiche ma completamente **autoconfiguranti** nel senso che:
 - l'assegnazione degli indirizzi IP dei nodi e dei link può avvenire automaticamente attraverso diversi metodi, inclusi meccanismi di:
      - protocolli di **auto-configurazione**. Si possono autoassegnare indirizzi **uguali** a link diversi di uno stesso **router** (semplificandone la gestione) utilizzando indirizzi di tipo **Link Local**.
      - Protocolli di Auto-configurazione Distribuita come Stateless Address Autoconfiguration (**SLAAC**), possono essere utilizzati in reti IPv6 ad hoc per permettere ai nodi di generare autonomamente i propri indirizzi IP basati su prefissi Globali Comuni (**GUA**) e su identificatori di host locali unici (**EUI64**).
