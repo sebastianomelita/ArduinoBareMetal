@@ -316,9 +316,9 @@ A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di i
 
 <img src="img/integratedGW-WiFi-Bridge.png" alt="alt text" width="900">
 
-In definitiva, **inoltrano** direttamente **trame MAC**, e la rete complessiva è una **LAN** gestita dal **protocollo STP** che evita i loop a livello data link (L2) mantenenedo la ridondanza al livello fisico (L1). I **vantaggi** di questa configurazione sono gli stessi di quella di una rete **wireless infrastruttura** composta da SW, cioè è **autoconfigurante** e quindi molto semplice e poi permette di creare **una sola subnet** che includa tutti i dispositivi **client**. Però, nonostante la sua semplicità, questa non è la configurazione preferita. Infatti, **pesano negativamente**:
-     - il fatto di realizzare un albero di **instradamento unico** che è ottimo solo per il gateway che di questo è la **radice**, mentre per gli altri nodi non calcola realmente il percorso minimo possibile.
-     - il fatto di non essere in grado di **partizionare la rete** in subnet presidiate da **router** che impedisce di migliorare ulteriormente la **sicurezza** e il livello di **controllo** del traffico.
+In definitiva, **inoltrano** direttamente **trame MAC**, e la rete complessiva è una **LAN** gestita dal **protocollo STP** che evita i loop a livello data link (L2) mantenenedo la ridondanza al livello fisico (L1). I **vantaggi** di questa configurazione sono gli stessi di quella di una rete **wireless infrastruttura** composta da SW, cioè di essere **autoconfigurante** e quindi molto semplice e poi permettere di creare **una sola subnet** che includa tutti i dispositivi **client**. Però, nonostante la sua semplicità, questa non è la configurazione preferita. Infatti, **pesano negativamente**:
+- il fatto di realizzare un albero di **instradamento unico** che è ottimo solo per il gateway che di questo è la **radice**, mentre per gli altri nodi non calcola realmente il percorso minimo possibile.
+- il fatto di non essere in grado di **partizionare la rete** in subnet presidiate da **router**, circostanza che impedisce di migliorare ulteriormente la **sicurezza** e il livello di **controllo** del traffico della rete mesh.
 
 ### **Routed ad hoc mesh network**
 
@@ -328,8 +328,8 @@ In definitiva, **inoltrano** direttamente **trame MAC**, e la rete complessiva �
 
 Una caratteristica delle reti ad hoc è di non essere statiche ma completamente **autoconfiguranti** nel senso che:
 - l'assegnazione degli indirizzi IP dei nodi e dei link può avvenire automaticamente attraverso diversi metodi, inclusi meccanismi di:
-     - protocolli di **auto-configurazione**. Si possono autoassegnare indirizzi **uguali** a link diversi di uno stesso **router** (semplificandone la gestione) utilizzando indirizzi di tipo **Link Local**.
-     - Protocolli di Auto-configurazione Distribuita come Stateless Address Autoconfiguration (**SLAAC**), possono essere utilizzati in reti IPv6 ad hoc per permettere ai nodi di generare autonomamente i propri indirizzi IP basati su prefissi Globali Comuni (**GUA**) e su identificatori di host locali unici (**EUI64**).
+      - protocolli di **auto-configurazione**. Si possono autoassegnare indirizzi **uguali** a link diversi di uno stesso **router** (semplificandone la gestione) utilizzando indirizzi di tipo **Link Local**.
+      - Protocolli di Auto-configurazione Distribuita come Stateless Address Autoconfiguration (**SLAAC**), possono essere utilizzati in reti IPv6 ad hoc per permettere ai nodi di generare autonomamente i propri indirizzi IP basati su prefissi Globali Comuni (**GUA**) e su identificatori di host locali unici (**EUI64**).
 - Indirizzamento **Basato su Algoritmi**. Alcuni algoritmi distribuiti possono essere utilizzati per assegnare indirizzi IP in modo **coordinat**o. Questi algoritmi permettono ai nodi di **negoziare** indirizzi IP univoci basati su regole predefinite, riducendo il rischio di conflitti. Un esempio è il protocollo Ad Hoc IP Address Autoconfiguration (**AAP**), che facilita la distribuzione di indirizzi IP in modo dinamico e decentralizzato.
   
 Queste soluzioni non rendono necessario impostare esplicitamente per ogni dorsale i un **subnetting statico** anche se è possibile, in quache misura, introdurlo.
