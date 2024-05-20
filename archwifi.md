@@ -308,6 +308,19 @@ Una rete **Wi-Fi mesh** è un sistema di rete wireless progettato per fornire un
 - **Router Principale (Gateway)**: È il punto di ingresso alla rete e spesso è connesso direttamente al modem Internet. Gestisce la connessione tra la rete locale e Internet.
 - **Nodi Mesh (Satellite o Extender)**: Sono dispositivi aggiuntivi che si collegano senza fili al router principale o tra di loro. I nodi cooperano per distribuire il segnale Wi-Fi in modo uniforme in tutta l'area di copertura.
 
+A parità di architettura, le reti WiFi mesh si differenziano per il tipo di inoltro dei dati tra i vari nodi:
+- **Bridge mesh**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio un bridge tra una radio a 2.4 GHz ed una a 5 GHz) mediante un **bridge**, cioè un IS di livello 2 della pila ISO/OSI. In definitiva, **inoltrano** direttamente **trame MAC**, e la rete complessiva è una **LAN** gestita dal **protocollo STP** che evita i loop a livello data link (L2) mantenenedo la ridondanza al livello fisico (L1). I **vantaggi** di questa configurazione sono gli stessi di quella di una rete **wireless infrastruttura** composta da SW, cioè è **autoconfigurante** e quindi molto semplice e poi permette di creare **una sola subnet** che includa tutti i dispositivi **client**. Però, nonostante la sua semplicità, questa non è la configurazione preferita. Infatti, **pesano negativamente**:
+    - il fatto di realizzare un albero di **instradamento unico** che è ottimo solo per il gateway che di questo è la **radice**, mentre per gli altri nodi non calcola realmente il percorso minimo possibile.
+    - il fatto di non essere in grado di **partizionare la rete** in subnet presidiate da **router** impedisce di migliorare ulteriormente la **sicurezza** e il livello di **controllo** del traffico.
+- **Routed mesh ad hoc**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio un router tra una radio a 2.4 GHz ed una a 5 GHz) mediante un **router**, cioè un IS di livello 3 della pila ISO/OSI.  Una caratteristica delle reti ad hoc è di non essere statiche ma completamente **autoconfiguranti** nel senso che:
+- l'assegnazione degli indirizzi IP dei nodi e dei link può avvenire automaticamente attraverso diversi metodi, inclusi meccanismi di:
+     - protocolli di **auto-configurazione**. Si possono autoassegnare indirizzi **uguali** a link diversi di uno stesso **router** (semplificandone la gestione) utilizzando indirizzi di tipo **Link Local**.
+     - Protocolli di Auto-configurazione Distribuita come Stateless Address Autoconfiguration (**SLAAC**), possono essere utilizzati in reti IPv6 ad hoc per permettere ai nodi di generare autonomamente i propri indirizzi IP basati su prefissi Globali Comuni (**GUA**) e su identificatori di host locali unici (**EUI64**).
+- Indirizzamento **Basato su Algoritmi**. Alcuni algoritmi distribuiti possono essere utilizzati per assegnare indirizzi IP in modo **coordinat**o. Questi algoritmi permettono ai nodi di **negoziare** indirizzi IP univoci basati su regole predefinite, riducendo il rischio di conflitti. Un esempio è il protocollo Ad Hoc IP Address Autoconfiguration (**AAP**), che facilita la distribuzione di indirizzi IP in modo dinamico e decentralizzato.
+  
+Queste soluzioni non rendono necessario impostare esplicitamente per ogni dorsale i un **subnetting statico** anche se è possibile, in quache misura, introdurlo.
+
+  
 ### **Tecnologia Multi-Banda**
 
 I router e i nodi mesh Wi-Fi 6 (802.11ax) spesso supportano più bande radio, tipicamente a 2.4 GHz, 5 GHz, e in alcuni casi 6 GHz (Wi-Fi 6E). Queste bande possono essere utilizzate in modo diverso per ottimizzare la rete:
@@ -345,6 +358,9 @@ Nello schema a destra, sono presenti:
 
 Ogni **collegamento tra due nodi** rappresenta una comunicazione radio diretta e dedicata sul canale numerato con l'etichetta sul link. In questa esempio, ogni nodo è dotato di **2 NIC wireless**. Pertanto il numero di canali utilizzati da ciascun nodo contemporaneamente non può essere superiore a 2; la rete nel suo complesso utilizza **5 canali** distinti.
 
+<img src="img/integratedGW-WiFi-Bridge.png" alt="alt text" width="1000">
+
+<img src="img/integratedGW-WiFi-LAN.png" alt="alt text" width="1000">
 
 ### **Funzionalità Chiave di una implementazione multiradio**
 
@@ -355,11 +371,6 @@ Quando si vuole **selezionare** un AP Wi-Fi per una rete mesh ad **alte prestazi
 - **Backhaul Dedicato**: alcuni sistemi mesh utilizzano una radio dedicata per il backhaul (la connessione tra i nodi mesh), mantenendo le altre radio libere per il traffico dei dispositivi client. Ad esempio, il backhaul potrebbe operare sulla banda a 5 GHz o 6 GHz per sfruttare velocità elevate e bassa interferenza.
 - **Dynamic Band Steering**: La rete mesh può dirigere dinamicamente i dispositivi verso la banda più appropriata, migliorando l'efficienza della rete. I dispositivi più vicini ai nodi mesh possono essere indirizzati verso le bande a 5 GHz o 6 GHz, mentre quelli più lontani possono usare la banda a 2.4 GHz.
 - **Facilità di Configurazione**: meglio scegliere dispositivi con app di gestione intuitive e supporto tecnico affidabile.
-
-
-<img src="img/integratedGW-WiFi-Bridge.png" alt="alt text" width="1000">
-
-<img src="img/integratedGW-WiFi-LAN.png" alt="alt text" width="1000">
 
 ### **Conclusioni**
 
