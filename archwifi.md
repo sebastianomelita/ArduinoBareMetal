@@ -310,7 +310,7 @@ Una rete **Wi-Fi mesh** è un sistema di rete wireless progettato per fornire un
 
 A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di inoltro** dei dati tra i vari nodi: **Bridge mesh** e **Mesh ad hoc routed**.
 
-### **Bridge mes**
+### **Bridge mesh network**
 
 **Bridge mesh**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio un bridge tra una radio a 2.4 GHz ed una a 5 GHz) mediante un **bridge**, cioè un IS di livello 2 della pila ISO/OSI. 
 
@@ -318,7 +318,7 @@ In definitiva, **inoltrano** direttamente **trame MAC**, e la rete complessiva �
     - il fatto di realizzare un albero di **instradamento unico** che è ottimo solo per il gateway che di questo è la **radice**, mentre per gli altri nodi non calcola realmente il percorso minimo possibile.
     - il fatto di non essere in grado di **partizionare la rete** in subnet presidiate da **router** che impedisce di migliorare ulteriormente la **sicurezza** e il livello di **controllo** del traffico.
 
-### **Bridge mes**
+### **Routed ad hoc mesh network**
 
 **Routed mesh ad hoc**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio un router tra una radio a 2.4 GHz ed una a 5 GHz) mediante un **router**, cioè un IS di livello 3 della pila ISO/OSI.
 
