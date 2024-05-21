@@ -329,11 +329,11 @@ Dalla figura si vede che  questo passaggio possa avvenire però solo attraverso 
 
 <img src="img/GATT-ESP32-BLE-Server-Client-Example.webp" alt="alt text" width="700">
 
-**Profilo**: raccolta di servizi standard per un **caso d'uso** specifico;
-**Servizio**: raccolta di informazioni correlate al servizio, come letture dei sensori, livello della batteria, frequenza cardiaca, ecc.;
-**Caratteristica**: è dove vengono salvati i dati effettivi nella gerarchia (valore);
-**Descrittore**: metadati sui dati;
-**Proprietà**: descrivono **come** è possibile interagire con il valore caratteristico. Ad esempio: **leggere**, **scrivere**, **notificare**, **trasmettere**, **indicare**, ecc.
+- **Profilo**: raccolta di servizi standard per un **caso d'uso** specifico;
+- **Servizio**: raccolta di informazioni correlate al servizio, come letture dei sensori, livello della batteria, frequenza cardiaca, ecc.;
+- **Caratteristica**: è dove vengono salvati i dati effettivi nella gerarchia (valore);
+- **Descrittore**: metadati sui dati;
+- **Proprietà**: descrivono **come** è possibile interagire con il valore caratteristico. Ad esempio: **leggere**, **scrivere**, **notificare**, **trasmettere**, **indicare**, ecc.
 
 ### **UUID**
 
