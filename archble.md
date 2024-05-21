@@ -330,6 +330,10 @@ I dispositivi BLE si dividono in dispositivi **Client** e in dispositivi **Scann
 - Un **BLE client** è un dispositivo che inizia una connessione con un BLE server e richiede informazioni o servizi da quest'ultimo. Il client invia richieste specifiche al server e riceve le risposte pertinenti. Il client è anche uno scanner, cioè **scansiona** i dispositivi nelle vicinanze per scoprire i server BLE disponibili. Una volta trovato un server desiderato, il client stabilisce una **connessione** e invia **richieste** di lettura, scrittura o notifica per i dati offerti dal server.
 - Un **BLE server** è un dispositivo che contiene dati e servizi a cui i client possono accedere. Il server fornisce le risposte alle richieste del client e può anche inviare notifiche ai client registrati. Il server **pubblicizza** la sua **presenza** e le sue **capacità** attraverso pacchetti di **advertising**. I client nelle vicinanze possono quindi scoprire questi pacchetti, stabilire una connessione e interagire con il server per accedere ai servizi offerti.
 
+**Esempi**:
+- **Ble Client**. Gli **smartphone**, i **tablet** e i **computer** sono comunemente utilizzati come BLE client, in quanto tendono a essere i dispositivi che **richiedono** informazioni da sensori, dispositivi indossabili o altri dispositivi periferici.
+- **Ble Server**. **Sensori** intelligenti o termostati agiscono come server, offrendo informazioni sullo stato della casa o accettando comandi per modificare le impostazioni, ricevuti da un'applicazione mobile client.
+
 **GATT** sta per Generic Attributes e definisce una **struttura dati** gerarchica esposta ai dispositivi BLE collegati. Ciò significa che GATT definisce il modo in cui due dispositivi BLE inviano e ricevono messaggi standard. 
 
 <img src="img/GATT-ESP32-BLE-Server-Client-Example.webp" alt="alt text" width="700">
