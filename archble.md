@@ -361,5 +361,6 @@ Ciò significa che mentre i due dispositivi comunicano, rimapperanno i salti in 
 - http://www.lucadentella.it/2018/02/09/esp32-31-ble-gap/
 - https://www.todaysoftmag.com/article/2225/bluetooth-beacon-tracking-it-works-both-ways
 - https://github.com/KMuthumala/ESP32-BLE-Beaconing
+- https://randomnerdtutorials.com/esp32-ble-server-client/
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
