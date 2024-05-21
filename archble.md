@@ -325,7 +325,30 @@ Dalla figura si vede che  questo passaggio possa avvenire però solo attraverso 
 
 ## **GATT**
 
-<img src="img/GATT-ESP32-BLE-Server-Client-Example.webp" alt="alt text" width="600">
+**GATT** sta per Generic Attributes e definisce una **struttura dati** gerarchica esposta ai dispositivi BLE collegati. Ciò significa che GATT definisce il modo in cui due dispositivi BLE inviano e ricevono messaggi standard. 
+
+<img src="img/GATT-ESP32-BLE-Server-Client-Example.webp" alt="alt text" width="700">
+
+**Profilo**: raccolta di servizi standard per un **caso d'uso** specifico;
+**Servizio**: raccolta di informazioni correlate al servizio, come letture dei sensori, livello della batteria, frequenza cardiaca, ecc.;
+**Caratteristica**: è dove vengono salvati i dati effettivi nella gerarchia (valore);
+**Descrittore**: metadati sui dati;
+**Proprietà**: descrivono **come** è possibile interagire con il valore caratteristico. Ad esempio: **leggere**, **scrivere**, **notificare**, **trasmettere**, **indicare**, ecc.
+
+### **UUID**
+
+Ogni servizio, caratteristica e descrittore ha un UUID (Universaly Unique Identifier). Un UUID è un numero univoco a 128 bit (16 byte). Per esempio:
+
+```C++
+55072829-bc9e-4c53-938a-74a6d4c78776
+```
+
+Esistono UUID abbreviati per tutti i tipi, servizi e profili specificati nel SIG [Bluetooth Special Interest Group](https://www.bluetooth.com/specifications/assigned-numbers/). 
+
+Ma se la tua applicazione necessita di un proprio UUID, è possibile generarlo utilizzando questo sito Web di generatore di UUID [UUID generator website](https://www.uuidgenerator.net/).
+
+In sintesi, l'UUID viene utilizzato per identificare in modo univoco le informazioni. Ad esempio, può identificare un particolare servizio fornito da un dispositivo Bluetooth.
+
 
 ## **Modulazione**
 
