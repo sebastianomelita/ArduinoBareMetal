@@ -10,6 +10,8 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 - **rete di sensori** composta **dai sensori** stessi avendo alcuni (in genere gli attuatori) piena capacità di **routing**, cioè di inoltro dei messaggi tra loro e verso il gateway con la rete LAN (i dispositivi oltre ad essere sensori ed attuatori sono anche infrastruttura).
 - **affidabilità** della rete di sensori **indipendente** da quella della rete dati. Topologia predisposta alla **ridondanza** dei percorsi tra i nodi IoT aventi funzioni di routing.
 - utilizzo di una modulazione **robusta** e predisposta ad una efficace **convivenza** con una rete **WiFi** presente nello stesso ambiente.
+
+<img src="img/zigbeezone.png" alt="alt text" width="800">
   
 ### **Architettura di una rete di reti** 
 
