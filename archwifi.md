@@ -45,14 +45,22 @@ Il **bridge Wifi** (in realtà è un **gateway** e quindi pure un router) è nor
 
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
 
-### **Rete di dispositivi WiFi** 
+## **Rete di dispositivi WiFi** 
 
 Una architettura di rete wireless WiFi è può essere realizzata in tre modalità:
 - **Modalità Infrastruttura** di tipo master/slave
 - **Modalità ad hoc** di tipo peer to peer 
 - **Modalità Wifi Direct**  di tipo Punto – punto
-  
+
+### **Rete in modo infrastruttura** 
+
 Le architetture **più diffuse** in ambito aziendale ed **indoor** sono di **tipo infrastruttura** e sono composte di un dispositivo master centrale detto **Access Point (AP)** posto in posizione **baricentrica** rispetto a più dispositivi slave della rete wireless detti **Client**. 
+
+Gli **elementi** di una rete in modo infrastruttura sono:
+- gli **AP (Access Point)**, sono dei dispositivi di **aggregazione** dei client della rete LAN (PC, dispositivi IoT, smartphone, tablet, ecc.) che, attraverso gli AP, ottengono un accesso alla rete LAN aziendale. In modo infrastruttura, gli AP sono in realtà assimilabili a 2 dispositivi distinti:
+    - un **HUB wireless** che realizza un **mezzo broadcast** (multipunto) dove i client accedono mediante il protocllo **CSMA/CA** e sue ottimizzazioni per il WiFi (vedi [CSMA/CA](protocollidiaccesso.md#csmaca) per dettagli)
+    - un **bridge** tra l'hub wireless e una LAN cablata. Un **bridge** è uno dispositivo di **commutazione** simile ad uno **switch** ma realizzato in **SW**, che **inoltra**, a livello L2, trame MAC dall'HUB alla LAN cablata e viceversa. Questi bridge possono essere più di uno e, in questo caso, sono tanti quante le **interfacce logiche** dell'AP e mappano ogni intefaccia su una **VLAN diversa**.
+    - un **controller** degli AP che si occupa della creazione e gestione dei bridge nei vari AP, della impostazione centralizzata di interfacce logiche e parametri radio, della assegnazione centralizzata degli indirizzi IP, dell'assegnazione automatica dei canali in modo da minimizzare le interferenze reciproche tra gli AP, dell'aggiornamento centralizzato dei FW dei vari AP, gestione dei protocolli di autenticazione, funzioni di logging, funzioni di firewall, creazione di hotspot, ecc..
 
 <img src="img/ap.drawio.png" alt="alt text" width="900">
 
