@@ -115,7 +115,7 @@ I dati di tracciamento che possono essere raccolti da ciascun dispositivo mobile
 
 <img src="img/fixedbeacon.png" alt="alt text" width="900">
 
-Esempio: tour digitale in un museo, in cui ogni stanza o attrazione potrebbe avere un beacon fisso che emette un tag BLE specifico. Se una persona sceglie di installare l'app mobile del museo, il suo telefono, ogni qualvolta cammina vicino a un beacon, legge il tag e le informazioni pertinenti e mirate sull'esposizione potrebbero essere recuperate da ciascun dispositivo tramite il tag, consentendo un'esperienza più istruttiva e coinvolgente per i visitatori.
+**Esempio**: tour digitale in un museo, in cui ogni stanza o attrazione potrebbe avere un beacon fisso che emette un tag BLE specifico. Se una persona sceglie di installare l'app mobile del museo, il suo telefono, ogni qualvolta cammina **vicino a un beacon**, legge il **tag** e le informazioni pertinenti e mirate sull'esposizione potrebbero essere recuperate da ciascun dispositivo tramite il tag, consentendo un'esperienza più istruttiva e coinvolgente per i visitatori.
 
 **Esempio ambulatorio.**
 
@@ -140,12 +140,11 @@ Utilizzando questo approccio, invece di tracciare un dispositivo mobile, si otti
 <img src="img/fixedscanner.png" alt="alt text" width="900">
 
 Esempi:
-- **Tracciamento** di risorse in una **fabbrica** (materie prime o prodotti) identificate da un tag univoco (trasponder):
-beacon collegati alle risorse (tag) e  listener installati lungo la linea di produzione (forniscono la posizione).
-dati di tracciamento in tempo reale non solo rispetto la posizione ma anche a quantità di tempo, ad esempio, il tempo in cui alcuni pezzi rimangono in un reparto di una fabbrica.
-- **Tracciamento** partecipanti di una **fiera** a cui sono stati dati dei piccoli beacon BLE grandi come una moneta da portare con sé, che possono interagire con gli "ascoltatori" BLE posizionati presso gli stand dimostrativi e nelle sale riunioni dell'evento. A seconda dell'occasione, del caso d'uso e dell'obiettivo aziendale, tale sistema è in grado di raccogliere:
-solo metriche anonime quali numero presenze e analisi degli eventi in tempo reale : potrebbe anche essere utile ai partecipanti (i gestori di beacon) che, una volta in prossimità di un evento, potrebbero tramite un'app interrogare il sistema centrale per prenotare i posti e accodarsi in tempo reale senza mettersi fisicamente in fila.
-con l’esplicito accordo degli utenti, e solo nei limiti di dove sono stati collocati gli "ascoltatori", tracciare la posizione in tempo reale di specifiche persone.
+- **Tracciamento** di risorse in una **fabbrica** (materie prime o prodotti) identificate da un **tag univoco**. **Beacon** solidali alle risorse e **listener** installati lungo la linea di produzione forniscono **dati di tracciamento** in **tempo reale** non solo rispetto alla **posizione** ma anche a **quantità di tempo** (ad esempio, il tempo in cui alcuni pezzi rimangono in un reparto di una fabbrica).
+- **Tracciamento** partecipanti di una **fiera** a cui sono stati dati dei piccoli beacon BLE grandi come una moneta da portare con sé, che possono interagire con gli **"ascoltatori"** BLE posizionati presso gli stand dimostrativi e nelle sale riunioni dell'evento. A seconda dell'occasione, del caso d'uso e dell'obiettivo aziendale, tale sistema è in grado di:
+    - raccogliere solo **metriche anonime**, quali numero presenze e analisi degli eventi in tempo reale 
+    - gestione di **code e appuntamenti**, potrebbe anche essere utile ai partecipanti (i gestori di beacon) che, una volta in prossimità di un evento, potrebbero tramite un'app interrogare il sistema centrale per prenotare i posti e accodarsi in tempo reale senza mettersi fisicamente in fila.
+    - raccogliere **informazioni puntuali** e personali. Con l’esplicito accordo degli utenti, e solo nei limiti di dove sono stati collocati gli "ascoltatori", si potrebbe tracciare in tempo reale la posizione di **specifiche persone**.
 
 **Esempio tracking assets industriali.**
 
