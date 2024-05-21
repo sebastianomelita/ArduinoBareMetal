@@ -325,11 +325,16 @@ Dalla figura si vede che  questo passaggio possa avvenire però solo attraverso 
 
 ## **GATT**
 
+I dispositivi BLE si dividono in dispositivi **Client** e in dispositivi **Scanner**:
+
+- Un **BLE client** è un dispositivo che inizia una connessione con un BLE server e richiede informazioni o servizi da quest'ultimo. Il client invia richieste specifiche al server e riceve le risposte pertinenti. Il client è anche uno scanner, cioè **scansiona** i dispositivi nelle vicinanze per scoprire i server BLE disponibili. Una volta trovato un server desiderato, il client stabilisce una **connessione** e invia **richieste** di lettura, scrittura o notifica per i dati offerti dal server.
+- Un **BLE server** è un dispositivo che contiene dati e servizi a cui i client possono accedere. Il server fornisce le risposte alle richieste del client e può anche inviare notifiche ai client registrati. Il server **pubblicizza** la sua **presenza** e le sue **capacità** attraverso pacchetti di **advertising**. I client nelle vicinanze possono quindi scoprire questi pacchetti, stabilire una connessione e interagire con il server per accedere ai servizi offerti.
+
 **GATT** sta per Generic Attributes e definisce una **struttura dati** gerarchica esposta ai dispositivi BLE collegati. Ciò significa che GATT definisce il modo in cui due dispositivi BLE inviano e ricevono messaggi standard. 
 
 <img src="img/GATT-ESP32-BLE-Server-Client-Example.webp" alt="alt text" width="700">
 
-- **Profilo**: raccolta di servizi standard per un **caso d'uso** specifico;
+- **Profilo**: BLE utilizza profili standardizzati per specifiche applicazioni, come il profilo di monitoraggio della salute, il profilo di controllo della luce, e molti altri. Questi profili definiscono i servizi e le caratteristiche specifiche che i dispositivi devono supportare per garantire l'interoperabilità.
 - **Servizio**: raccolta di informazioni correlate al servizio, come letture dei sensori, livello della batteria, frequenza cardiaca, ecc.;
 - **Caratteristica**: è dove vengono salvati i dati effettivi nella gerarchia (valore);
 - **Descrittore**: metadati sui dati;
