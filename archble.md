@@ -228,6 +228,41 @@ Una **connessione** può essere stabilita solo tra un dispositivo **advertiser**
 **Supervision Timeout**: tempo massimo tra due pacchetti di dati validi ricevuti prima che una connessione venga considerata "persa".
 
 
+## **GATT**
+
+I dispositivi BLE si dividono in dispositivi **Client** e in dispositivi **Scanner**:
+
+- Un **BLE client** è un dispositivo che inizia una connessione con un BLE server e richiede informazioni o servizi da quest'ultimo. Il client invia richieste specifiche al server e riceve le risposte pertinenti. Il client è anche uno scanner, cioè **scansiona** i dispositivi nelle vicinanze per scoprire i server BLE disponibili. Una volta trovato un server desiderato, il client stabilisce una **connessione** e invia **richieste** di lettura, scrittura o notifica per i dati offerti dal server.
+- Un **BLE server** è un dispositivo che contiene dati e servizi a cui i client possono accedere. Il server fornisce le risposte alle richieste del client e può anche inviare notifiche ai client registrati. Il server **pubblicizza** la sua **presenza** e le sue **capacità** attraverso pacchetti di **advertising**. I client nelle vicinanze possono quindi scoprire questi pacchetti, stabilire una connessione e interagire con il server per accedere ai servizi offerti.
+
+**Esempi**:
+- **Ble Client**. Gli **smartphone**, i **tablet** e i **computer** sono comunemente utilizzati come BLE client, in quanto tendono a essere i dispositivi che **richiedono** informazioni da sensori, dispositivi indossabili o altri dispositivi periferici.
+- **Ble Server**. **Sensori** intelligenti o termostati agiscono come server, offrendo informazioni sullo stato della casa o accettando comandi per modificare le impostazioni, ricevuti da un'applicazione mobile client.
+
+**GATT** sta per Generic Attributes e definisce una **struttura dati** gerarchica esposta ai dispositivi BLE collegati. Ciò significa che GATT definisce il modo in cui due dispositivi BLE inviano e ricevono messaggi standard. 
+
+<img src="img/GATT-ESP32-BLE-Server-Client-Example.webp" alt="alt text" width="700">
+
+- **Profilo**: BLE utilizza profili standardizzati per specifiche applicazioni, come il profilo di monitoraggio della salute, il profilo di controllo della luce, e molti altri. Questi profili definiscono i servizi e le caratteristiche specifiche che i dispositivi devono supportare per garantire l'interoperabilità.
+- **Servizio**: raccolta di informazioni correlate al servizio, come letture dei sensori, livello della batteria, frequenza cardiaca, ecc.;
+- **Caratteristica**: è dove vengono salvati i dati effettivi nella gerarchia (valore);
+- **Descrittore**: metadati sui dati;
+- **Proprietà**: descrivono **come** è possibile interagire con il valore caratteristico. Ad esempio: **leggere**, **scrivere**, **notificare**, **trasmettere**, **indicare**, ecc.
+
+### **UUID**
+
+Ogni servizio, caratteristica e descrittore ha un UUID (Universaly Unique Identifier). Un UUID è un numero univoco a 128 bit (16 byte). Per esempio:
+
+```C++
+55072829-bc9e-4c53-938a-74a6d4c78776
+```
+
+Esistono UUID abbreviati per tutti i tipi, servizi e profili specificati nel SIG [Bluetooth Special Interest Group](https://www.bluetooth.com/specifications/assigned-numbers/). 
+
+Ma se la tua applicazione necessita di un proprio UUID, è possibile generarlo utilizzando questo sito Web di generatore di UUID [UUID generator website](https://www.uuidgenerator.net/).
+
+In sintesi, l'UUID viene utilizzato per identificare in modo univoco le informazioni. Ad esempio, può identificare un particolare servizio fornito da un dispositivo Bluetooth.
+
 ## **Messaggi MQTT**
 
 ### **Messaggi confermati**
@@ -293,40 +328,6 @@ Un esempio di **canale MQTT di configurazione** per, ad esempio, impostare il pe
 - nel caso di **identificazione univoca** del dispositivo via  **path MQTT**: ```luci/soggiorno/config/mydevice1-98F4ABF298AD/{"stateperiod":"3000"}```
 - nel caso di **identificazione univoca** del dispositivo nel **payload JSON**: ```luci/soggiorno/config/{"deviceid":"01", "stateperiod":"3000"}```
 
-## **GATT**
-
-I dispositivi BLE si dividono in dispositivi **Client** e in dispositivi **Scanner**:
-
-- Un **BLE client** è un dispositivo che inizia una connessione con un BLE server e richiede informazioni o servizi da quest'ultimo. Il client invia richieste specifiche al server e riceve le risposte pertinenti. Il client è anche uno scanner, cioè **scansiona** i dispositivi nelle vicinanze per scoprire i server BLE disponibili. Una volta trovato un server desiderato, il client stabilisce una **connessione** e invia **richieste** di lettura, scrittura o notifica per i dati offerti dal server.
-- Un **BLE server** è un dispositivo che contiene dati e servizi a cui i client possono accedere. Il server fornisce le risposte alle richieste del client e può anche inviare notifiche ai client registrati. Il server **pubblicizza** la sua **presenza** e le sue **capacità** attraverso pacchetti di **advertising**. I client nelle vicinanze possono quindi scoprire questi pacchetti, stabilire una connessione e interagire con il server per accedere ai servizi offerti.
-
-**Esempi**:
-- **Ble Client**. Gli **smartphone**, i **tablet** e i **computer** sono comunemente utilizzati come BLE client, in quanto tendono a essere i dispositivi che **richiedono** informazioni da sensori, dispositivi indossabili o altri dispositivi periferici.
-- **Ble Server**. **Sensori** intelligenti o termostati agiscono come server, offrendo informazioni sullo stato della casa o accettando comandi per modificare le impostazioni, ricevuti da un'applicazione mobile client.
-
-**GATT** sta per Generic Attributes e definisce una **struttura dati** gerarchica esposta ai dispositivi BLE collegati. Ciò significa che GATT definisce il modo in cui due dispositivi BLE inviano e ricevono messaggi standard. 
-
-<img src="img/GATT-ESP32-BLE-Server-Client-Example.webp" alt="alt text" width="700">
-
-- **Profilo**: BLE utilizza profili standardizzati per specifiche applicazioni, come il profilo di monitoraggio della salute, il profilo di controllo della luce, e molti altri. Questi profili definiscono i servizi e le caratteristiche specifiche che i dispositivi devono supportare per garantire l'interoperabilità.
-- **Servizio**: raccolta di informazioni correlate al servizio, come letture dei sensori, livello della batteria, frequenza cardiaca, ecc.;
-- **Caratteristica**: è dove vengono salvati i dati effettivi nella gerarchia (valore);
-- **Descrittore**: metadati sui dati;
-- **Proprietà**: descrivono **come** è possibile interagire con il valore caratteristico. Ad esempio: **leggere**, **scrivere**, **notificare**, **trasmettere**, **indicare**, ecc.
-
-### **UUID**
-
-Ogni servizio, caratteristica e descrittore ha un UUID (Universaly Unique Identifier). Un UUID è un numero univoco a 128 bit (16 byte). Per esempio:
-
-```C++
-55072829-bc9e-4c53-938a-74a6d4c78776
-```
-
-Esistono UUID abbreviati per tutti i tipi, servizi e profili specificati nel SIG [Bluetooth Special Interest Group](https://www.bluetooth.com/specifications/assigned-numbers/). 
-
-Ma se la tua applicazione necessita di un proprio UUID, è possibile generarlo utilizzando questo sito Web di generatore di UUID [UUID generator website](https://www.uuidgenerator.net/).
-
-In sintesi, l'UUID viene utilizzato per identificare in modo univoco le informazioni. Ad esempio, può identificare un particolare servizio fornito da un dispositivo Bluetooth.
 
 ## **API di connessione** 
 
