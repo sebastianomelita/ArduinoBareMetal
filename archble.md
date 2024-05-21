@@ -143,7 +143,7 @@ Esempi:
 - **Tracciamento** di risorse in una **fabbrica** (materie prime o prodotti) identificate da un **tag univoco**. **Beacon** solidali alle risorse e **listener** installati lungo la linea di produzione forniscono **dati di tracciamento** in **tempo reale** non solo rispetto alla **posizione** ma anche a **quantità di tempo** (ad esempio, il tempo in cui alcuni pezzi rimangono in un reparto di una fabbrica).
 - **Tracciamento** partecipanti di una **fiera** a cui sono stati dati dei piccoli beacon BLE grandi come una moneta da portare con sé, che possono interagire con gli **"ascoltatori"** BLE posizionati presso gli stand dimostrativi e nelle sale riunioni dell'evento. A seconda dell'occasione, del caso d'uso e dell'obiettivo aziendale, tale sistema è in grado di:
     - raccogliere solo **metriche anonime**, quali numero presenze e analisi degli eventi in tempo reale 
-    - gestione di **code e appuntamenti**, potrebbe anche essere utile ai partecipanti (i gestori di beacon) che, una volta in prossimità di un evento, potrebbero tramite un'app interrogare il sistema centrale per prenotare i posti e accodarsi in tempo reale senza mettersi fisicamente in fila.
+    - gestire **code e appuntamenti**, potrebbe anche essere utile ai partecipanti (i gestori di beacon) che, una volta in prossimità di un evento, potrebbero tramite un'app interrogare il sistema centrale per prenotare i posti e accodarsi in tempo reale senza mettersi fisicamente in fila.
     - raccogliere **informazioni puntuali** e personali. Con l’esplicito accordo degli utenti, e solo nei limiti di dove sono stati collocati gli "ascoltatori", si potrebbe tracciare in tempo reale la posizione di **specifiche persone**.
 
 **Esempio tracking assets industriali.**
