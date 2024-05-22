@@ -1,8 +1,8 @@
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
 
-### **Caso d'uso wiFi** 
+### **Caso d'uso wiFi infrastruttura** 
 
-Date le particolarità della tecnologia, i casi d'uso per la rete di sensori sono quelli tipici applicazioni **IoT indoor** a **medio raggio**, dove concorre con altre tecnologie di rete: Zigbee, BLE e, sotto certe condizioni, LoRaWAN. **Caratteristiche** della rete WiFi sono essenzialmente:
+Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiFi di **tipo infrastruttura** sono quelli tipici applicazioni **IoT indoor** a **medio raggio**, dove concorre con altre tecnologie di rete: Zigbee, BLE e, sotto certe condizioni, LoRaWAN. **Caratteristiche** della rete WiFi di **tipo infrastruttura** sono essenzialmente:
 - possibilità di realizzare **comandi** a distanza wireless anche relativamente piccoli con una **durata** delle batterie relativamente lunga (dell'ordine dei mesi).
 - possibilità di realizzare **sensori** ambientali molto piccoli e alimentati con batterie che possono essere sostituite dopo mesi.
 - **assenza di gateway** verso la rete LAN, essendo essi stessi collegati a questa.
@@ -311,7 +311,11 @@ Essendo parte di una unica LAN derivata dallo stesso hub esteso, tutti i disposi
 
 ## **Reti Wifi Mesh**
 
+### **Caso d'uso rete wiFi Mesh** 
+
 Una rete **Wi-Fi mesh** è un sistema di rete wireless progettato per fornire una copertura Wi-Fi estesa che consiste di più AP che però non sono connessi all'infrastruttura di una LAN cablata tranne uno detto **gateway**. Una rete Wi-Fi mesh è una **soluzione avanzata** per estendere la copertura Wi-Fi e migliorare l'affidabilità della connessione in **ambienti complessi** nei quali risulta essere problematica la realizzazione di **dorsali cablate** verso gli AP. Con la capacità di **auto-configurarsi**, gestire il **roaming continuo** e fornire una **copertura scalabile**, le reti mesh rappresentano una scelta preferibile per chi necessita di una connettività robusta e senza interruzioni su aree estese.
+
+Peer il resto, ha le stesse caratteristiche di una rete WiFi di tipo infrastruttura tranne che per la presenza di un gateway con funzione di inoltro dei pacchetti tra la rete mesh wireless e l'infrastruttura cablata.
 
 **Componenti** di una Rete Wi-Fi Mesh sono:
 - **Router Principale (Gateway)**: È il punto di ingresso alla rete e spesso è connesso direttamente al modem Internet. Gestisce la connessione tra la rete locale e Internet.
@@ -343,13 +347,15 @@ Il **backhaul Wi-Fi** è il collegamento **wireless** tra i **nodi** che parteci
 
 In definitiva, **inoltrano** direttamente **trame MAC**, e la rete complessiva è una **LAN** gestita dal **protocollo STP** che evita i loop a livello data link (L2) pur mantenenedo la ridondanza al livello fisico (L1). I **vantaggi** di questa configurazione sono gli stessi di quella di una rete **wireless infrastruttura** composta da SW, cioè di essere **autoconfigurante** e quindi molto semplice e poi la possibilità di permettere di creare **una sola subnet** che includa tutti i dispositivi **client**. Però, nonostante la sua semplicità, questa non è la configurazione preferita. Infatti, **pesano negativamente**:
 - il fatto di realizzare un albero di **instradamento unico** che è ottimo solo per il gateway che di questo è la **radice**, mentre per gli altri nodi non calcola realmente il percorso minimo possibile.
-- il fatto di non essere in grado di **partizionare la rete** in subnet presidiate da **router**, circostanza che impedisce di migliorare ulteriormente la **sicurezza** e il livello di **controllo** del traffico della rete mesh.
+- il fatto che gli **indirizzi MAC** non siano **gerarchici** impedisce di **partizionare la rete** in subnet con **gruppi** di dispositivi dislocati in aree **delimitate** e presidiate da **router**, circostanza che impedisce di migliorare ulteriormente la **sicurezza** e il livello di **controllo** di accesso con **regole** di filtraggio basate sull'indirizzo di **sorgente**.
 
 ### **Routed ad hoc mesh network**
 
 **Routed mesh ad hoc**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio, una a 2.4 GHz ed una a 5 GHz) mediante un **router**, cioè un IS di livello 3 della pila ISO/OSI.
 
 <img src="img/integratedGW-WiFi-LAN.png" alt="alt text" width="900">
+
+Il routing è basato su **indirizzi IP** che, essendo **gerarchici** , permettono di **partizionare la rete** in subnet con **gruppi** di dispositivi dislocati in aree **delimitate** e presidiate da **router** in grado filtrare gli accessi con **regole** basate sull'indirizzo di **sorgente**.
 
 Una caratteristica delle reti ad hoc è di non essere statiche ma completamente **autoconfiguranti** nel senso che:
 - l'assegnazione degli indirizzi IP dei nodi e dei link può avvenire automaticamente attraverso diversi metodi, inclusi meccanismi di:
