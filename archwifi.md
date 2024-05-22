@@ -347,7 +347,7 @@ Il **backhaul Wi-Fi** è il collegamento **wireless** tra i **nodi** che parteci
 
 In definitiva, **inoltrano** direttamente **trame MAC**, e la rete complessiva è una **LAN** gestita dal **protocollo STP** che evita i loop a livello data link (L2) pur mantenenedo la ridondanza al livello fisico (L1). I **vantaggi** di questa configurazione sono gli stessi di quella di una rete **wireless infrastruttura** composta da SW, cioè di essere **autoconfigurante** e quindi molto semplice e poi la possibilità di permettere di creare **una sola subnet** che includa tutti i dispositivi **client**. Però, nonostante la sua semplicità, questa non è la configurazione preferita. Infatti, **pesano negativamente**:
 - il fatto di realizzare un albero di **instradamento unico** che è ottimo solo per il gateway che di questo è la **radice**, mentre per gli altri nodi non calcola realmente il percorso minimo possibile.
-- il fatto che gli **indirizzi MAC** non siano **gerarchici** impedisce di **partizionare la rete** in subnet con **gruppi** di dispositivi dislocati in aree **delimitate** e presidiate da **router**, circostanza che impedisce di migliorare ulteriormente la **sicurezza** e il livello di **controllo** di accesso con **regole** di filtraggio basate sull'indirizzo di **sorgente**.
+- il fatto che gli **indirizzi MAC** non siano **gerarchici** non permette di **partizionare la rete** in subnet con **gruppi** di dispositivi dislocati in aree **delimitate** e presidiate da **router**, circostanza che impedisce di migliorare ulteriormente la **sicurezza** e il livello di **controllo** di accesso con **regole** di filtraggio basate sull'indirizzo di **sorgente**.
 
 ### **Routed ad hoc mesh network**
 
