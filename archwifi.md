@@ -15,7 +15,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiF
 
 ### **Architettura di una rete di reti** 
 
-Di seguito è riportata l'architettura generale di una rete Zigbee. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
+Di seguito è riportata l'architettura generale di una **rete di reti** di sensori. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
 
 
 <img src="sensornet1.png" alt="alt text" width="800">
