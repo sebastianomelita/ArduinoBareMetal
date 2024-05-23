@@ -137,7 +137,7 @@ I dati di tracciamento che possono essere raccolti da ciascun dispositivo mobile
 È un’approccio sempre più diffuso. Questi "ascoltatori" fissi raccolgono tutti i beacon Bluetooth nella loro portata e trasmettono le informazioni raccolte a un sistema centralizzato per l'analisi.
 
 Il sistema centrale applicherà alcuni filtri di segnale e, in base alla posizione degli ascoltatori fissi che è stata programmata nel sistema, determina la posizione dei beacon
-Utilizzando questo approccio, invece di tracciare un dispositivo mobile, si ottiene il tracciamento dei singoli beacon, che consente una serie di casi d'uso nuovi e innovativi:
+Utilizzando questo approccio, invece di tracciare un dispositivo mobile, si ottiene il tracciamento dei singoli beacon, che consente una serie di casi d'uso nuovi e innovativi.
 
 <img src="img/fixedscanner.png" alt="alt text" width="900">
 
@@ -147,6 +147,13 @@ Esempi:
     - raccogliere solo **metriche anonime** e **aggregate**, quali numero di presenze e analisi di eventi in tempo reale 
     - gestire **code e appuntamenti**, potrebbe anche essere utile ai partecipanti (i gestori di beacon) che, una volta **in prossimità** di un evento, potrebbero tramite un'**app** interrogare il sistema centrale per **prenotare** i posti e **accodarsi** virtualmente in tempo reale senza mettersi **fisicamente** in fila.
     - raccogliere **informazioni puntuali** e personali. Con l’esplicito accordo degli utenti, e solo nei limiti di dove sono stati collocati gli "ascoltatori", si potrebbe tracciare in tempo reale la posizione di **specifiche persone**.
+ 
+Nell'architettura a scanner fissi o dispositivi BLE non possono retsre isolati ma devono comunicare le informazioni sui beacon di passaggio nelle vicinanze ad un server centrale e, per far questo, hanno necessità di una rete da utilizzare come infrastruttura di comunicazione. Esistono alcune alternative:
+- utilizzare la rete LAN cablata a cui i gateway BLE si collegano fisicamente mediante una presa Ethernet (RJ45). Il prerequisito di questa soluzione è un ambiente cablato in maniera uniforme e capillare.
+- utilizzare una rete di AP WiFi a cui collegare i gateway come client. Presuppone una rete wifi con una copertura adeguata.
+- utilizzare una rete BLE 
+
+
 
 **Esempio tracking assets industriali.**
 
