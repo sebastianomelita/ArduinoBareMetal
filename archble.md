@@ -207,7 +207,7 @@ Le **superframe BLE** sono divise principalmente in tre zone:
 
 - **Connection Events Zone** (Zona degli eventi di connessione): In questa zona avvengono gli eventi di trasmissione e ricezione di dati tra i **dispositivi connessi**. La struttura temporale di questa zona può variare in base alle necessità di trasmissione dei dati e al risparmio energetico.
 
-Queste zone sono organizzate in un ciclo temporale che si ripete periodicamente per consentire la comunicazione tra i dispositivi BLE in modo efficiente e sincronizzato.
+Queste zone sono organizzate in un **ciclo temporale** (la supertrama) che si ripete periodicamente per consentire la comunicazione tra i dispositivi BLE in modo efficiente e sincronizzato.
 
 ### **Topologia broadcast**
 
