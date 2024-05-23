@@ -228,7 +228,7 @@ Il **beacon collegabile** (o periferica) è un dispositivo Bluetooth a bassa ene
 
 <img src="img/linkbeacon.png" alt="alt text" width="1100">
 
-La differenza tra la scansione dei beacon effettuata da un dispositivo centrale e quella effettuata da un semplice observer sta nel fatto che la prima è una ricerca che è abilitata ad instaurare una connessione bidirezionale con i dispositivi beacon periferici, mentre la seconda è una scansione che permette l’attivazione di connessioni di sola ricezione. 
+La differenza tra la scansione dei beacon effettuata da un dispositivo **centrale** e quella effettuata da un semplice **observer** sta nel fatto che la prima è una ricerca che è abilitata ad instaurare una connessione **bidirezionale** con i dispositivi beacon periferici, mentre la seconda è una scansione che permette l’attivazione di connessioni di **sola ricezione**. 
 
 ### **Topologia mista**
 
