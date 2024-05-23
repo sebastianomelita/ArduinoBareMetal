@@ -25,6 +25,27 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
 - **fisicamente** quella di più **reti di accesso** a stella tenute insieme da una **rete di distribuzione** qualsiasi purchè sia di tipo TCP/IP (LAN o Internet).
 - **logicamente** quella di una stella di reti a stella. Il **centrostella** di livello gerarchico più alto è il **network server** ed aggrega solo gateways, gli altri centrostella sono realizzati dai **gateway** che aggregano solamente **dispositivi IoT**.
 
+Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture è utile perchè permette di creare interfacce web o applicazioni per smartphone o tablet per:
+- eseguire, in un'unica interfaccia (form), comandi verso attuatori posti su reti con tecnologia differente.
+- riassumere in un'unica interfaccia (report) letture di sensori provenienti da reti eterogenee per tecnologia e topologia
+
+Il **broker MQTT** è solo una delle tante soluzioni possibili per:
+- inoltro dei comandi da un **sensore di comando** su una rete di tipo A (ad es. LoRaWAN) ad un attuatore su una rete diversa di tipo B (ad es. Zigbee)
+- inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **pannello di controllo** su una rete diversa di tipo B (tipicamente IP)
+- inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **server di gestione** su una rete diversa di tipo B (tipicamente IP) per realizzare **statistiche** ed altre elaborazioni per la determinazione di **soglie** o **predizioni** per:
+    - realizzazione da remoto della **logica di comando** (processo dei comandi) degli **attuatori**
+    - **report** per l'assistenza alle decisioni
+    - generazioni di **allarmi**
+    - realizzazione di **ottimizzazioni** della gestione o del consumo di risorse, energia o materie prime
+    - contabilizzazione dei consumi (**smart metering**)
+    - controllo in tempo reale dello **stato** di impianti o macchinari
+    - segnalazione dei **guasti** o loro **analisi predittiva** prima che accadano
+    - **consapevolezza situazionale** di ambienti remoti, difficili, pericolosi o ostili (https://it.wikipedia.org/wiki/Situational_awareness)
+
+Il **vantaggio** del **broker MQTT** è quello di poter gestire in modo semplice e **standardizzato** lo **smistamento** (inoltro) delle **misure** e dei **comandi** tra i vari portatori di interesse (stakeholder) di un **cluster** di reti di sensori siano essi utenti umani, interfacce grafiche, server applicativi diversi o altri dispositivi IoT.
+
+Esistono molte altre soluzioni che magari sono più semplici e graficamente accattivanti ma che passano per portali proprietari o per servizi cloud a pagamento e nulla aggiungono di didatticamente rilevante ai nostri discorsi.
+
   <img src="img/lorawanLogicArchitecture.png" alt="alt text" width="1000">
   <img src="lpwan.png" alt="alt text" width="1000">
 
