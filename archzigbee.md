@@ -19,9 +19,25 @@ Di seguito è riportata l'architettura generale di una rete di reti Zigbee. Essa
 
 <img src="sensornet1.png" alt="alt text" width="800">
 
+I **gateway** utilizzano la **rete internet** e/o una **LAN** per realizzare un collegamento verso il **broker MQTT**, per cui, in definitiva, la topologia risultante è, **fisicamente**, quella di più **reti di accesso** con tecnologia e topologia differente (a maglia nel caso di zigbee) tenute insieme da una **rete di distribuzione** qualsiasi purchè sia di tipo TCP/IP (LAN o Internet).
 
-I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento verso il broker, per cui, in definitiva, la topologia risultante è, **fisicamente**, quella di più **reti di accesso** con tecnologia e topologia differente (a maglia nel caso di zigbee) tenute insieme da una **rete di distribuzione** qualsiasi purchè sia di tipo TCP/IP (LAN o Internet).
+Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture è utile perchè permette di creare interfacce web o applicazioni per smartphone o tablet per:
+- eseguire, in un'unica interfaccia (form), comandi verso attuatori posti su reti con tecnologia differente.
+- riassumere in un'unica interfaccia (report) letture di sensori provenienti da reti eterogenee per tecnologia e topologia
 
+Il broker MQTT è solo una delle tante soluzioni possibili per:
+- inoltro dei comandi da un **sensore di comando** su una rete di tipo A (ad es. LoRaWAN) ad un attuatore su una rete diversa di tipo B (ad es. Zigbee)
+- inoltro di una misura da un sensore ambientale su una rete di tipo A (ad es. LoRaWAN) ad un pannello di controllo su una rete diversa di tipo B (tipicamente IP)
+- inoltro di una misura da un sensore ambientale su una rete di tipo A (ad es. LoRaWAN) ad un server di gestione su una rete diversa di tipo B (tipicamente IP) per realizzare statistiche ed elaborazioni per la determinazione di soglie o predizioni per:
+    - realizzazione da remoto della logica di comando (processo dei comandi) degli attuatori
+    - report per l'assistenza alle decisioni
+    - generazioni di allarmi
+    - ottimizzazioni della gestione o del consumo di risorse o materie prime
+    - contabilizzazione dei consumi (smart metering)
+    - controllo in tempo reale dello stato di impianti o macchinari
+    - allarmistica in tempo reale dei guasti o loro analisi predittiva prima che accadano
+    - consapevolezza situazionale in ambienti remoti, difficili, pericolosi o ostili (https://it.wikipedia.org/wiki/Situational_awareness)
+  
 ### **Gateway standardizzati** 
 
 **Riassumendo**, alla **rete di distribuzione IP** si collegano, quindi, una o più **reti secondarie** che servono da **rete di accesso** per i dispositivi sensori o attuatori con **interfacce** spesso di tipo **non ethernet** che necessitano di un **gateway** di confine con possibili funzioni di:     
