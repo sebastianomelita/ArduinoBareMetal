@@ -168,12 +168,10 @@ Esempi:
     - gestire **code e appuntamenti**, potrebbe anche essere utile ai partecipanti (i gestori di beacon) che, una volta **in prossimità** di un evento, potrebbero tramite un'**app** interrogare il sistema centrale per **prenotare** i posti e **accodarsi** virtualmente in tempo reale senza mettersi **fisicamente** in fila.
     - raccogliere **informazioni puntuali** e personali. Con l’esplicito accordo degli utenti, e solo nei limiti di dove sono stati collocati gli "ascoltatori", si potrebbe tracciare in tempo reale la posizione di **specifiche persone**.
  
-Nell'architettura a scanner fissi o dispositivi BLE non possono retsre isolati ma devono comunicare le informazioni sui beacon di passaggio nelle vicinanze ad un server centrale e, per far questo, hanno necessità di una rete da utilizzare come infrastruttura di comunicazione. Esistono alcune alternative:
-- utilizzare la rete LAN cablata a cui i gateway BLE si collegano fisicamente mediante una presa Ethernet (RJ45). Il prerequisito di questa soluzione è un ambiente cablato in maniera uniforme e capillare.
-- utilizzare una rete di AP WiFi a cui collegare i gateway come client. Presuppone una rete wifi con una copertura adeguata.
-- utilizzare una rete BLE 
-
-
+Nell'architettura a **scanner fissi** i dispositivi BLE non possono restare isolati ma devono comunicare le informazioni sui beacon di passaggio nelle vicinanze ad un server centrale e, per far questo, hanno necessità di una rete da utilizzare come infrastruttura di **comunicazione**. Esistono alcune **alternative**:
+- utilizzare la **rete LAN cablata** a cui i gateway BLE si collegano fisicamente mediante una presa Ethernet (RJ45). Il **prerequisito** di questa soluzione è un **ambiente cablato** in maniera uniforme e capillare.
+- utilizzare una **rete di AP WiFi** a cui collegare i gateway come client. **Presuppone** una rete wifi con una copertura adeguata.
+- utilizzare una **rete BLE mesh** realizzata dagli scanner e da altri dispositivi eventualmente presenti nell'ambiente con altri scopi (sensori o attuatori). Il **prerequisito** è avere una rete BLE mesh distribuita in maniera **sufficientemente capillare** negli ambienti dove si intende realizzare un servizio di **tracciamento** o **localizzazione indoor**.
 
 **Esempio tracking assets industriali.**
 
