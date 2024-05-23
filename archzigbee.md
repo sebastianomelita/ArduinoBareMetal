@@ -27,16 +27,16 @@ Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture
 
 Il broker MQTT è solo una delle tante soluzioni possibili per:
 - inoltro dei comandi da un **sensore di comando** su una rete di tipo A (ad es. LoRaWAN) ad un attuatore su una rete diversa di tipo B (ad es. Zigbee)
-- inoltro di una misura da un sensore ambientale su una rete di tipo A (ad es. LoRaWAN) ad un pannello di controllo su una rete diversa di tipo B (tipicamente IP)
-- inoltro di una misura da un sensore ambientale su una rete di tipo A (ad es. LoRaWAN) ad un server di gestione su una rete diversa di tipo B (tipicamente IP) per realizzare statistiche ed elaborazioni per la determinazione di soglie o predizioni per:
-    - realizzazione da remoto della logica di comando (processo dei comandi) degli attuatori
-    - report per l'assistenza alle decisioni
-    - generazioni di allarmi
-    - ottimizzazioni della gestione o del consumo di risorse o materie prime
-    - contabilizzazione dei consumi (smart metering)
-    - controllo in tempo reale dello stato di impianti o macchinari
-    - allarmistica in tempo reale dei guasti o loro analisi predittiva prima che accadano
-    - consapevolezza situazionale in ambienti remoti, difficili, pericolosi o ostili (https://it.wikipedia.org/wiki/Situational_awareness)
+- inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **pannello di controllo** su una rete diversa di tipo B (tipicamente IP)
+- inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **server di gestione** su una rete diversa di tipo B (tipicamente IP) per realizzare **statistiche** ed altre elaborazioni per la determinazione di **soglie** o **predizioni** per:
+    - realizzazione da remoto della **logica di comando** (processo dei comandi) degli **attuatori**
+    - **report** per l'assistenza alle decisioni
+    - generazioni di **allarmi**
+    - realizzazione di **ottimizzazioni** della gestione o del consumo di risorse, energia o materie prime
+    - contabilizzazione dei consumi (**smart metering**)
+    - controllo in tempo reale dello **stato** di impianti o macchinari
+    - segnalazione dei **guasti** o loro **analisi predittiva** prima che accadano
+    - **consapevolezza situazionale** di ambienti remoti, difficili, pericolosi o ostili (https://it.wikipedia.org/wiki/Situational_awareness)
   
 ### **Gateway standardizzati** 
 
