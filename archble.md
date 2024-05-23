@@ -230,7 +230,7 @@ Il **beacon collegabile** (o periferica) è un dispositivo Bluetooth a bassa ene
 - **scritture (W)**. I servizi forniscono una o più caratteristiche che potrebbero essere modificate da un dispositivo peer. Un esempio di queste caratteristiche potrebbe essere la stringa di dati che rappresenta le informazioni trasmesse dal beacon. In questo modo è possibile avere un **beacon configurabile** che può essere facilmente aggiornato via etere proprio attraverso il bluetooth:
 
 Gli **attori** di questa modalità sono sempre **due**:
-  **Dispositivo master o centrale**: Esegue periodicamente la scansione delle frequenze predefinite alla ricerca di pacchetti pubblicitari connettibili e, se ne trova uno adatto, avvia una connessione (scanning attivo). Una volta stabilita la connessione, il **dispositivo centrale** gestisce i tempi e avvia gli scambi periodici di dati, diventa, cioè, il **master** della comunicazione.
+- **Dispositivo master o centrale**: Esegue periodicamente la scansione delle frequenze predefinite alla ricerca di pacchetti pubblicitari connettibili e, se ne trova uno adatto, avvia una connessione (scanning attivo). Una volta stabilita la connessione, il **dispositivo centrale** gestisce i tempi e avvia gli scambi periodici di dati, diventa, cioè, il **master** della comunicazione.
 - **Dispositivo slave o periferica**: un dispositivo che invia periodicamente pacchetti pubblicitari (advertisement beacon) connettibili in broadcast e **accetta** connessioni in entrata. Una volta iniziata una connessione, la periferica segue i tempi del master centrale e scambia regolarmente dati con esso, quindi, dopo la connessione, assume il ruolo di **slave** della comunicazione.
 
 <img src="img/linkbeacon.png" alt="alt text" width="1100">
