@@ -211,20 +211,27 @@ Queste zone sono organizzate in un **ciclo temporale** (la supertrama) che si ri
 
 ### **Topologia broadcast**
 
-Il **beacon non collegabile** è un dispositivo Bluetooth (broadcaster) a bassa energia in modalità di trasmissione. Trasmette semplicemente informazioni **statiche** archiviate internamente senza ricevere alcunchè da un eventuale observer. Dato che la trasmissione è non connettibile non attiva alcuna risorsa HW di ricezione per cui ha il minor consumo energetico possibile. Il dispositivo deve semplicemente svegliarsi, trasmettere (pochi) dati e tornare a dormire (radiofaro).  Ciò comporta l'inconveniente che gli unici dati **dinamici** sono limitati a ciò che è noto al dispositivo o a ciò che è disponibile tramite altri canali di cui è dotato il dispositivo quali interfacce seriali RS232 (UART), periferiche 4-wire (SPI), bus seriale universale (USB) e così via:
-- **Broadcaster**: Invia periodicamente pacchetti di advertise non connettibili a chiunque sia disposto a riceverli. 
-- **Osservatore**: Esegue ripetutamente la scansione delle frequenze predefinite per ricevere eventuali pacchetti di advertisement non connettibili attualmente trasmessi (scanning passivo).
+Il **beacon non collegabile** è un dispositivo Bluetooth (broadcaster) a bassa energia in modalità di trasmissione. Trasmette semplicemente informazioni **statiche** archiviate internamente **senza ricevere** alcunchè da un eventuale observer. Dato che la trasmissione è **non connettibile** non attiva alcuna risorsa HW di ricezione, per cui ha il **minor consumo** energetico possibile. Il dispositivo deve semplicemente svegliarsi, trasmettere (pochi) dati e tornare a dormire (modalità radiofaro).  Ciò comporta l'inconveniente che gli unici dati **dinamici** sono limitati a ciò che è noto al dispositivo o a ciò che è disponibile tramite altri canali di cui è dotato il dispositivo quali interfacce seriali RS232 (UART), periferiche 4-wire (SPI), bus seriale universale (USB) e così via.
+
+Gli **attori** di questa modalità sono quindi **due**:
+- il **Broadcaster**: Invia periodicamente pacchetti di **advertise** non connettibili a chiunque sia disposto a riceverli. 
+- l'**Osservatore** (observer): Esegue ripetutamente la **scansione** delle frequenze predefinite per ricevere eventuali pacchetti di advertisement non connettibili attualmente trasmessi (**scanning passivo**).
 
 <img src="img/nolinkbeacon0.png" alt="alt text" width="1100">
 
 I pacchetti di **advertisement** sono periodici e sono messaggi di beacon trasmessi in broadcast da dispositivi broadcaster detti, per l’appunto, essi stessi beacon. Da questi l’osservatore ricava informazioni minimali (tag). A partire dalla versione 4.1 della specifica, sono possibili tutte le seguenti condizioni:
-- Un dispositivo può fungere contemporaneamente da centrale e da periferica.
-- Una centrale può essere connessa a più periferiche. Una periferica può essere connessa a più dispositivi centrali.
+- Un dispositivo può fungere contemporaneamente da **centrale** e da **periferica**.
+- Una centrale può essere connesso a più periferiche. Una periferica può essere connessa a più dispositivi centrali.
 
 ### **Topologia connessa**
-Il **beacon collegabile** (o periferica) è un dispositivo Bluetooth a bassa energia in **modalità periferica**, il che significa che può non solo trasmettere, ma anche ricevere e quindi potrebbe anche essere interrogato periodicamente per effettuare, ad esempio il polling, di alcuni sensori.  Ciò consente a un dispositivo centrale (ad esempio uno smartphone) di connettersi e interagire con i **servizi** implementati sul dispositivo beacon. I servizi forniscono una o più caratteristiche che potrebbero essere modificate da un dispositivo peer. Un esempio di queste caratteristiche potrebbe essere la stringa di dati che rappresenta le informazioni trasmesse dal beacon. In questo modo è possibile avere un **beacon configurabile** che può essere facilmente aggiornato via etere proprio attraverso il bluetooth:
-- **Dispositivo master o centrale**: Esegue periodicamente la scansione delle frequenze predefinite alla ricerca di pacchetti pubblicitari connettibili e, se ne trova uno adatto, avvia una connessione (scanning attivo). Una volta stabilita la connessione, il dispositivo centrale gestisce i tempi e avvia gli scambi periodici di dati, diventa, cioè, il master della comunicazione.
-- **Dispositivo slave o periferica**: un dispositivo che invia periodicamente pacchetti pubblicitari (advertisement beacon) connettibili in broadcast e accetta connessioni in entrata. Una volta iniziata una connessione, la periferica segue i tempi del master centrale e scambia regolarmente dati con esso, quindi, dopo la connessione, assume il ruolo di slave della comunicazione.
+Il **beacon collegabile** (o periferica) è un dispositivo Bluetooth a bassa energia in **modalità periferica**, il che significa che può non solo trasmettere, ma anche **ricevere** e quindi potrebbe anche essere **interrogato periodicamente** per interagire con i **servizi** implementati sul dispositivo beacon effettuando:
+- **letture (R)**. Il beacon potrebbe essere interrogato per effettuare, ad esempio, il polling di alcuni sensori, o per conoscere lo stato delle sue batterie.
+- **notifiche (N)**. Il master (centrale o Client) potrebbe registrasi per ottenere la notifica di qualche evento gestito dal beacon, ad esempio un segnale quando un valore di interesse scende sotto una certa soglia.
+- **scritture**. I servizi forniscono una o più caratteristiche che potrebbero essere modificate da un dispositivo peer. Un esempio di queste caratteristiche potrebbe essere la stringa di dati che rappresenta le informazioni trasmesse dal beacon. In questo modo è possibile avere un **beacon configurabile** che può essere facilmente aggiornato via etere proprio attraverso il bluetooth:
+
+Gli **attori** di questa modalità sono sempre **due**:
+  **Dispositivo master o centrale**: Esegue periodicamente la scansione delle frequenze predefinite alla ricerca di pacchetti pubblicitari connettibili e, se ne trova uno adatto, avvia una connessione (scanning attivo). Una volta stabilita la connessione, il **dispositivo centrale** gestisce i tempi e avvia gli scambi periodici di dati, diventa, cioè, il **master** della comunicazione.
+- **Dispositivo slave o periferica**: un dispositivo che invia periodicamente pacchetti pubblicitari (advertisement beacon) connettibili in broadcast e **accetta** connessioni in entrata. Una volta iniziata una connessione, la periferica segue i tempi del master centrale e scambia regolarmente dati con esso, quindi, dopo la connessione, assume il ruolo di **slave** della comunicazione.
 
 <img src="img/linkbeacon.png" alt="alt text" width="1100">
 
