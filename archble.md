@@ -161,19 +161,21 @@ Utilizzando questo approccio, invece di tracciare un dispositivo mobile, si otti
 
 <img src="img/fixedscanner.png" alt="alt text" width="900">
 
-Esempi:
+**Esempi**:
 - **Tracciamento** di **risorse** in una **fabbrica** (materie prime o prodotti) o in un **cantiere** (utensili, macchinari spostabili, attrezzature in genere) identificate da un **tag univoco**. **Beacon** solidali alle risorse e **listener** installati lungo la linea di produzione forniscono **dati di tracciamento** in **tempo reale** non solo rispetto alla **posizione** ma anche a **quantità di tempo** (ad esempio, il tempo in cui alcuni pezzi rimangono in un reparto di una fabbrica).
 - **Tracciamento** partecipanti di una **fiera** a cui sono stati dati dei piccoli beacon BLE grandi come una moneta da portare con sé, che possono interagire con gli **"ascoltatori"** BLE posizionati presso gli stand dimostrativi e nelle sale riunioni dell'evento. A seconda dell'occasione, del caso d'uso e dell'obiettivo aziendale, tale sistema è in grado di:
     - raccogliere solo **metriche anonime** e **aggregate**, quali numero di presenze e analisi di eventi in tempo reale 
     - gestire **code e appuntamenti**, potrebbe anche essere utile ai partecipanti (i gestori di beacon) che, una volta **in prossimità** di un evento, potrebbero tramite un'**app** interrogare il sistema centrale per **prenotare** i posti e **accodarsi** virtualmente in tempo reale senza mettersi **fisicamente** in fila.
     - raccogliere **informazioni puntuali** e personali. Con l’esplicito accordo degli utenti, e solo nei limiti di dove sono stati collocati gli "ascoltatori", si potrebbe tracciare in tempo reale la posizione di **specifiche persone**.
- 
-Nell'architettura a **scanner fissi** i dispositivi BLE non possono restare isolati ma devono comunicare le informazioni sui beacon di passaggio nelle vicinanze ad un server centrale e, per far questo, hanno necessità di una rete da utilizzare come infrastruttura di **comunicazione**. Esistono alcune **alternative**:
+
+Nell'architettura a **scanner fissi** i dispositivi BLE sono analoghi ai gateway dell'infrastruttura BLE Mesh solo che adesso lo scopo è radicalmente diverso, non servono a connettere l'intera rete di sensori alla LAN, ma a mandare ad un server una informazione di tracciamento da parte del listener che la ha raccolta. Poichè il beacon si muove nello spazio, potenzialmente in tutti gli ambienti, è necessario installare un numero di scanner adeguato lungo i percorsi che si desiderano tracciare o negli ambienti che si desidera monitorare.
+
+Nell'architettura a **scanner fissi** i dispositivi BLE **non** possono restare **isolati** ma devono comunicare le informazioni sui beacon di passaggio nelle vicinanze ad un **server centrale** e, per far questo, hanno necessità di una rete da utilizzare come infrastruttura di **comunicazione**. Esistono alcune **alternative**:
 - utilizzare la **rete LAN cablata** a cui i gateway BLE si collegano fisicamente mediante una presa Ethernet (RJ45). Il **prerequisito** di questa soluzione è un **ambiente cablato** in maniera uniforme e capillare.
 - utilizzare una **rete di AP WiFi** a cui collegare i gateway come client. **Presuppone** una rete wifi con una copertura adeguata.
 - utilizzare una **rete BLE mesh** realizzata dagli scanner e da altri dispositivi eventualmente presenti nell'ambiente con altri scopi (sensori o attuatori). Il **prerequisito** è avere una rete BLE mesh distribuita in maniera **sufficientemente capillare** negli ambienti dove si intende realizzare un servizio di **tracciamento** o **localizzazione indoor**.
 
-**Esempio tracking assets industriali.**
+**Esempio tracking assets industriali**
 
 <img src="img/industrialtracking.jpg" alt="alt text" width="900">
 
@@ -181,7 +183,7 @@ Nell'architettura a **scanner fissi** i dispositivi BLE non possono restare isol
 
 <img src="img/piconet.png" alt="alt text" width="1000">
 
-E’ una architettura a stella gerarchica (albero). E’ realizzata da un solo dispositivo master. Un master può essere contemporaneamente pure slave di un’altra piconet.
+E' una architettura a stella gerarchica (albero). E' realizzata da un solo dispositivo master. Un master può essere contemporaneamente pure slave di un'altra piconet.
 
 ## **Topologie di connessione**
 
