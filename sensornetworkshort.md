@@ -80,9 +80,9 @@ Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può otte
 
 E' il dispositivo posto a cavallo tra la rete di accesso ai sensori e la rete di distribuzione. 
 
-#### **Gateway come router L7**
-
 Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi di BUS** a cui si collega. Inoltre il **gateway** deve possedere almeno **una interfaccia** capace di traffico ethernet (cablata o wifi) che lo colleghi alla **rete di distribuzione**. 
+
+#### **Gateway come router L7**
 
 Avendo più interfacce su reti di tipo diverso sia in L1 che in L2, ha anche le funzioni di **router**. Se la rete di distribuzione è pubblica come **Internet** dovrebbe possedere pure le funzioni di **firewall**. Al limite potrebbe anche smistare messaggi in una **WAN privata** realizzata con **VPN** di tipo **trusted** (MPLS) o **secure** (OpenVPN, IPSec).
 
