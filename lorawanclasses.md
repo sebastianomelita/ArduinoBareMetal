@@ -38,7 +38,7 @@ Il **broker MQTT** è solo una delle tante soluzioni possibili per:
     - generazioni di **allarmi**
     - realizzazione di **ottimizzazioni** della gestione o del consumo di risorse, energia o materie prime
     - contabilizzazione dei consumi (**smart metering**)
-    - controllo in tempo reale dello **stato** di impianti o macchinari
+    - controllo e sorveglianza in tempo reale dello **stato** di impianti o macchinari
     - segnalazione dei **guasti** o loro **analisi predittiva** prima che accadano
     - **consapevolezza situazionale** di ambienti remoti, difficili, pericolosi o ostili (https://it.wikipedia.org/wiki/Situational_awareness)
 
