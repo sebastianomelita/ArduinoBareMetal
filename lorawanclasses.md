@@ -32,7 +32,7 @@ Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture
 Il **broker MQTT** è solo una delle tante soluzioni possibili per:
 - inoltro dei comandi da un **sensore di comando** su una rete di tipo A (ad es. LoRaWAN) ad un attuatore su una rete diversa di tipo B (ad es. Zigbee)
 - inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **pannello di controllo** su una rete diversa di tipo B (tipicamente IP)
-- inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **server di gestione** su una rete diversa di tipo B (tipicamente IP) per realizzare **statistiche** ed altre elaborazioni per la determinazione di **soglie** o **predizioni** per:
+- inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **server di gestione** su una rete diversa di tipo B (tipicamente IP) per elaborare **statistiche** per per la determinazione di **soglie** o **predizioni** e per elaborare a**analisi dei dati**  per:
     - realizzazione da remoto della **logica di comando** (processo dei comandi) degli **attuatori**
     - **report** per l'assistenza alle decisioni
     - generazioni di **allarmi**
