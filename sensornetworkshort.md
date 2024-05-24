@@ -147,6 +147,8 @@ Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli
     -  L'**interfaccia sui sensori** usa un collegamento **digitale/analogico dedicato** verso **ciascun** sensore, per cui l'**architettura** risultante dei loro collegamenti è a **stella**, avente la MCU come **centro  stella**.
     -  L'**interfaccia sui sensori** usa un collegamento **digitale a BUS** verso un **gruppo** di sensori, per cui l'**architettura** risultante dei loro collegamenti è a **BUS**, avente la MCU come **master** del BUS di campo.
 
+Chiaramente, se la rete di sensori **coincide** con la **rete di distribuzione IP** (LAN o WiFi o Internet), allora il dispositivo con la MCU potrebbe anche essere visto come un **gateway** tra la rete di sensori a BUS di campo e la rete di distribuzione.
+
 ### **Esempi di collegamenti base con topologia a stella**:
 
   <img src="Star-network-1024x466.png" alt="alt text" width="700">
