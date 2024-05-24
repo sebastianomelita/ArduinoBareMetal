@@ -54,6 +54,9 @@ Riguardo all'**interoperabilità** tra reti diverse, questa è evidentemente imp
 
 Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può ottenere:
 - **creando un'unica rete** utilizzando livelli di rete **compatibili** o **praticamente uguali** come sono **IPV6 e 6LowPan**. Lo stesso deve accadere per i **protocolli di routing** usando ad es. REPL. Lo stesso deve accadere per i **livelli superiori**. In particolare nell'ultimo, il **livello applicativo**, il **payload dell'applicazione**, cioè il messaggio utente, deve poter viaggiare **direttamente** dal **client** al **sensore**, dove poi verrà elaborato e utilizzato. Se viene inoltrato direttamente il pacchetto IPV6 (con il payload applicativo dentro) allaora il gateway è tecnicamente un router semplice (altrimenti è un router applicativo).
+  
+<img src="jsan-02-00235-g002.webp" alt="alt text" width="700">
+
 - utilizzando un **gateway** per **compattare** o **tradurre** i messaggi:
      - se il routing non è compatibile ma il **livello di applicazione** nella rete di accesso **è libero**, non limitato a messaggi preordinati da uno standard,  si può pensare ancora di utilizzare lo **stesso payload** in formato JSON della rete di distribuzione richiamando le **primitive di servizio** di livello applicativo in uso nella rete dei sensori (ad es. send) per inviarlo. Ma il formato potrebbe essere troppo prolisso per dispositivi di capacità ridotta e quindi potrebbe essere necessario **comprimerlo**.
      - se il livello di applicazione nella rete di accesso **non è customizzabile**, il gateway (detto talvolta **bridge**) ha funzione di **traduzione** dei messaggi tra il il formato in uso nella rete di distribuzione IP e quello in uso nella rete di accesso ai sensori. 
@@ -61,10 +64,6 @@ Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può otte
 **Misure** e **comandi** sono attualmente definiti sotto forma di **oggetti JSON** in formato ASCII. Questo dovrebbe garantire da un lato l'interoperabilità tra reti di sensori diverse, dall'altro l'interoperabilità con sistemi terzi che si occupano della pubblicazione dei dati o della loro eleborazione statistica. Il fatto che il formato scelto sia chiaro, testuale ed autoesplicativo è sicuramente un vantaggio nella rete di **distribuzione**, diventa poco pratico, o del tutto inutilizzabile, in reti di **accesso** ai sensori che possono trasmettere soltanto messaggi radi e molto brevi, quali quelle che operano in **banda ISM**. Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in modo tale da includere la **semantica** di tutti i dispositivi IoT coinvolti nelle reti di sensori collegate, che di volta in volta, poi andrà **tradotta**:
 - nella **semantica applicativa standard** prevista nello stack della rete di accesso in uso (ad es. Zigbee o BLE)
 - in una **semantica custom** che sia una versione **più compatta** di quella in uso nella rete di distribuzione in modo da adattarla alla capacità trasmissiva molto limitata (poche decine di byte al sec) della rete di accesso ai sensori.
-
-**Unica rete con IPV6 e 6LowPan**:
-
-<img src="jsan-02-00235-g002.webp" alt="alt text" width="700">
 
 ### **Gateway applicativo**
 
