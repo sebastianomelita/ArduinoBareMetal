@@ -151,6 +151,15 @@ Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli
   
 Chiaramente, se la rete di sensori **coincide** con la **rete di distribuzione IP** (LAN o WiFi o Internet), allora il dispositivo con la MCU potrebbe anche **concettualmente** essere inteso come un **gateway** tra la rete di sensori a BUS di campo e la rete di distribuzione.
 
+### **Esempi di collegamenti base con topologia a bus:**
+
+ <img src="bus.png" alt="alt text" width="600">
+ 
+[Dettaglio su collegamenti cablati a stella e a bus basici per domotica e sensoristica](cablatisemplici.md)
+
+[Dettagli su stack cablati specifici per domotica e sensoristica](stackcablati.md)
+
+[Dettaglio mezzi a BUS](protocollidiaccesso.md)
 ### **Consumi dei nodi terminali**
 
 Un'altra funzione **potenzialmente energivora**, dopo il **routing**, è il **polling dei sensori** ovvero la loro lettura periodica con annessa **trasmissione in remoto** dei dati. In questo caso se il **primo nodo** di smistamento della catena è parecchio distante (è il caso di tecnologie outdoor come LoraWan o Sigfox) o sebbene indoor si adopera una **trasmissione** in una **tecnologia  energivora** (come è in modalità standard il WiFi) allora sono possibili almeno due **soluzioni operative** per abbattere i consumi:
@@ -164,16 +173,6 @@ Il **consumo di energia** è generalmente proporzionale alla **velocità di tras
 
   <img src="Star-network-1024x466.png" alt="alt text" width="700">
   
- 
-### **Esempi di collegamenti base con topologia a bus:**
-
- <img src="bus.png" alt="alt text" width="600">
- 
-[Dettaglio su collegamenti cablati a stella e a bus basici per domotica e sensoristica](cablatisemplici.md)
-
-[Dettagli su stack cablati specifici per domotica e sensoristica](stackcablati.md)
-
-[Dettaglio mezzi a BUS](protocollidiaccesso.md)
  
 ##  **Topologia delle reti di sensori wireless**     
  
