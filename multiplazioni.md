@@ -35,6 +35,8 @@ La metafora è quella delle strade. Si parte con l'auto da una villetta a Bad To
 
 L'aumento progressivo dell'**efficienza** nell'utilizzo dei **canali** ha portato, nel corso dei decenni, alla progressiva diffusione delle **trasmissioni globali**, rare e costose negli anni 80' del secolo scorso, pervasive e a prezzi popolari nel mondo attuale. Anzi l'**accesso alla rete** (intesa come rete globale Internet) a prezzo **calmierato**, è considerato ormai un **diritto primario** del cittadino, dato che su di essa si sono spostati, in maniera esclusiva, molti **servizi pubblici**.
 
+### **Definizione di multiplazione**
+
 Le **multiplazioni** sono delle **tecniche** per aumentare l'**efficienza** di un canale introducendo un certo grado di **condivisione** dello stesso tra più **sorgenti**. 
 
 La **condivisione** effettiva del canale è solo **parziale**. L'**allocazione** delle sorgenti sul canale in realtà è sempre **ripartita** in base **ad una** delle grandezze fisiche che lo contraddistinguono, mentre, per le rimanenti grandezze, la condivisioe rimane **totale**, cioè le sorgenti, su quelle grandezze, occupano **tutto** il canale nella sua interezza.
