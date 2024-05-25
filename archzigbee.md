@@ -84,7 +84,7 @@ Esistono molte altre soluzioni che magari sono più semplici e graficamente acca
 
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
 
-### **reti di sensori federate tramite Internet** 
+### **Reti di sensori federate tramite Internet** 
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione **in Internet** + server di gestione e controllo che potrebbe rappresentare **tre edifici** distanti domotizzati tramite **zigbeee** e federati tramite **Internet**: 
 
@@ -96,7 +96,7 @@ Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente an
 - **router applicativo** che **traduce** i messaggi da una rete IP (la LAN) ad una non IP (la rete di sensori).
 - **client MQTT** con funzione di **publisher** (sul topic di stato e traduce **da** i dispositivi) e di **subscriber** (sui topic di comando e configurazione e traduce **verso** i dispositivi).
 
-### **reti di sensori federate tramite LAN** 
+### **Reti di sensori federate tramite LAN** 
 
 #### **Partizionamento e ridondanza** 
 
