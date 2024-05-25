@@ -1,6 +1,6 @@
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
 
-### **Caso d'uso BLE** 
+## **Caso d'uso BLE** 
 
 Date le particolarità della tecnologia, i casi d'uso per la rete di sensori sono quelli tipici applicazioni **IoT indoor** a **corto/medio raggio**, dove concorre con altre tecnologie di rete: WIFi, Zigbee e, sotto certe condizioni, LoRaWAN. Per la sensoristica Indoor ha praticamente gli stessi punti di forza di Zigbee con il quale è praticamente intercambiambile (ma non interoperabile).
 
@@ -10,7 +10,7 @@ Esiste però un ambito nel quale il BLE è attualmente **senza rivali** rispetto
 
 La tecnologia dei **beacon** è **comune** a quasi tutti i protocolli wireless moderni, compresi Zigbee, WiFi e LoRaWAN, che quindi sono in parte capaci anche loro delle funzioni di localizzazne suddette, ma in maniera molto **meno precisa** e versatile.
 
-### **Architettura di una rete di reti** 
+## **Architettura di una rete di reti** 
 
 Di seguito è riportata l'architettura generale di una **rete di reti** di sensori. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
 
@@ -44,7 +44,9 @@ Il **vantaggio** del **broker MQTT** è quello di poter gestire in modo semplice
 Esistono molte altre soluzioni che magari sono più semplici e graficamente accattivanti ma che passano per portali proprietari o per servizi cloud a pagamento e nulla aggiungono di didatticamente rilevante ai nostri discorsi.
 
 
-### **Gateway standardizzati** 
+## **Gateway**
+
+### **Ruolo del gateway** 
 
 **Riassumendo**, alla **rete di distribuzione IP** si collegano, quindi, una o più **reti secondarie** che servono da **rete di accesso** per i dispositivi sensori o attuatori con **interfacce** spesso di tipo **non ethernet** che necessitano di un **gateway** di confine con possibili funzioni di:     
   - **Inoltro**, cioè smistamento dei messaggi da un tipo di rete all'altro di tipo L3 (**routing**) o di tipo L2 (**bridging**). L'inoltro del messaggio di un sensore può essere:
@@ -59,6 +61,7 @@ Esistono molte altre soluzioni che magari sono più semplici e graficamente acca
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
   - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
 
+### **Traduzione della semantica applicativa** 
 
 **Ble2mqtt** è un software open-source progettato per permettere ai dispositivi BLE di comunicare direttamente con un server MQTT (Message Queuing Telemetry Transport) senza la necessità di un hub proprietario.  [Ble2mqtt](https://github.com/devbis/ble2mqtt)
 
@@ -68,6 +71,7 @@ BLE è uno standard di comunicazione wireless utilizzato anche per il controllo 
 **Ble2mqtt** opera a livello di **applicazione** della pila OSI in quanto **traduce** un **payload BLE** in un **payload JSON MQTT**  (gateway = router applicativo). Si tratta di un software che consente di integrare dispositivi BLE in un'infrastruttura di domotica basata su MQTT (Message Queuing Telemetry Transport). Ble2mqtt funge da **ponte** tra la rete BLE e il broker MQTT, consentendo agli utenti di interagire con i dispositivi BLE tramite messaggi MQTT.
 
 ## **Architetture di gestione dei sensori BLE** 
+
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione **in Internet** + server di gestione e controllo che potrebbe rappresentare **tre edifici** distanti domotizzati tramite **BLE** e federati tramite **Internet**: 
 
