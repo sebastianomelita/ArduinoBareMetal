@@ -165,15 +165,17 @@ Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli
 - **nodo sensore di rete**. Dispositivo che in un unico **contenitore** ingloba **insieme** un certo numero di **sensori**, la **MCU**, la **scheda di rete** verso la **rete di accesso** ai sensori, la **batteria** di alimentazione. E' un nodo unico, con tutto quello che serve per misurare e comunicare nella rete di sensori.
 - **nodo MCU con scheda di rete**. In questo caso il nodo è costituito da una MCU con delle interfacce digitali verso i sensori e una interfaccia di rete verso la rete dei sensori. Il dispositivo è quindi un **gateway** tra la **il BUS di campo** (porte analogiche/digitali, BUS One Wire, BUS SPI, BUS I2C, BUS RS485, RS232, ecc.) e la rete di sensori (WiFi, Zigbee, LoraWAN, LAN, BLE, ecc.). Esistono due possibilità:
     -  L'**interfaccia sui sensori** usa un collegamento **digitale/analogico dedicato**, con un solo filo verso **ciascun** sensore, per cui l'**architettura** risultante dei loro collegamenti è a **stella**, avente la MCU come **centro  stella**.
+      <img src="bus.png" alt="alt text" width="600">
     -  L'**interfaccia sui sensori** usa un collegamento **digitale a BUS** verso un **gruppo** di sensori, usando gli stessi fili in **condivisione** per tutti, per cui l'**architettura** risultante dei loro collegamenti è a **BUS**, avente la MCU come **master** del BUS di campo.
-
+       <img src="Star-network-1024x466.png" alt="alt text" width="700">
+       
 <img src="img/sensor.png" alt="alt text" width="1100">
   
 Chiaramente, se la rete di sensori **coincide** con la **rete di distribuzione IP** (LAN o WiFi o Internet), allora il dispositivo con la MCU potrebbe anche **concettualmente** essere inteso come un **gateway** tra la rete di sensori a BUS di campo e la rete di distribuzione.
 
 ### **Esempi di collegamenti base con topologia a bus:**
 
- <img src="bus.png" alt="alt text" width="600">
+ 
  
 [Dettaglio su collegamenti cablati a stella e a bus basici per domotica e sensoristica](cablatisemplici.md)
 
@@ -183,7 +185,7 @@ Chiaramente, se la rete di sensori **coincide** con la **rete di distribuzione I
 
 ### **Esempi di collegamenti base con topologia a stella**:
 
-  <img src="Star-network-1024x466.png" alt="alt text" width="700">
+  
   
 ### **Consumi dei nodi terminali**
 
