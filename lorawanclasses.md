@@ -409,7 +409,8 @@ Per consentire ai dispositivi terminali di essere il più semplici possibile e d
 - https://lora-alliance.org/wp-content/uploads/2020/11/2015_-_lorawan_specification_1r0_611_1.pdf
 - https://medium.com/@prajzler/lorawan-confirmations-and-acks-ba784a56d2d7
 - chatGPT per struct e JSON di sensori e attuatori
-
+- https://github.com/myDevicesIoT/cayenne-docs/blob/master/docs/LORA.md
+- https://webthesis.biblio.polito.it/secure/18698/1/tesi.pdf
 
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
