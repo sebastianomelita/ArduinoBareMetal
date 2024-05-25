@@ -74,7 +74,7 @@ BLE è uno standard di comunicazione wireless utilizzato anche per il controllo 
 
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
 
-### **federazione di reti BLE in Internet** 
+### **Federazione di reti BLE in Internet** 
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione **in Internet** + server di gestione e controllo che potrebbe rappresentare **tre edifici** distanti domotizzati tramite **BLE** e federati tramite **Internet**: 
 
@@ -88,7 +88,7 @@ Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente an
 - **router applicativo** che **traduce** i messaggi da una rete IP (la LAN) ad una non IP (la rete di sensori).
 - **client MQTT** con funzione di **publisher** (sul topic di stato e traduce **da** i dispositivi) e di **subscriber** (sui topic di comando e configurazione e traduce **verso** i dispositivi).
 
-### **federazione di reti BLE su LAN** 
+### **Federazione di reti BLE su LAN** 
 
 La **partizione** di una rete BLE può essere utile in determinate situazioni, specialmente se si hanno un **gran numero** di dispositivi o se si vuole **separare** i dispositivi **per zone** o **per scopi** diversi. Ecco alcune **situazioni** in cui potrebbe essere vantaggioso partizionare una rete Zigbee:
 
