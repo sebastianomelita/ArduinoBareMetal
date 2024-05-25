@@ -163,9 +163,7 @@ Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e per
 
 Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli. Per le applicazioni di **nostro interesse** le **topologie** più adoperate sono:
 - **nodo sensore di rete**. Dispositivo che in un unico **contenitore** ingloba **insieme** un certo numero di **sensori**, la **MCU**, la **scheda di rete** verso la **rete di accesso** ai sensori, la **batteria** di alimentazione. E' un nodo unico, con tutto quello che serve per misurare e comunicare nella rete di sensori.
-- **nodo MCU con scheda di rete**. In questo caso il nodo è costituito da una MCU con delle interfacce digitali verso i sensori e una interfaccia di rete verso la rete dei sensori. Il dispositivo è quindi un **gateway** tra la **il BUS di campo** (porte analogiche/digitali, BUS One Wire, BUS SPI, BUS I2C, BUS RS485, RS232, ecc.) e la rete di sensori (WiFi, Zigbee, LoraWAN, LAN, BLE, ecc.). ([Dettaglio su bus di campo](cablatisemplici.md))
-
-- Esistono due possibilità:
+- **nodo MCU con scheda di rete**. In questo caso il nodo è costituito da una MCU con delle interfacce digitali verso i sensori e una interfaccia di rete verso la rete dei sensori. Il dispositivo è quindi un **gateway** tra la **il BUS di campo** (porte analogiche/digitali, BUS One Wire, BUS SPI, BUS I2C, BUS RS485, RS232, ecc. [Dettaglio su bus di campo](cablatisemplici.md)) e la rete di sensori (WiFi, Zigbee, LoraWAN, LAN, BLE, ecc.). Esistono due possibilità:
     -  L'**interfaccia sui sensori** usa un collegamento **digitale/analogico dedicato**, con un solo filo verso **ciascun** sensore, per cui l'**architettura** risultante dei loro collegamenti è a **stella**, avente la MCU come **centro  stella**.
       <img src="Star-network-1024x466.png" alt="alt text" width="600">
     -  L'**interfaccia sui sensori** usa un collegamento **digitale a BUS** verso un **gruppo** di sensori, usando gli stessi fili in **condivisione** per tutti, per cui l'**architettura** risultante dei loro collegamenti è a **BUS**, avente la MCU come **master** del BUS di campo. 
