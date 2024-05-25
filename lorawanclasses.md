@@ -100,7 +100,7 @@ In sintesi, la lunghezza dei messaggi LoRaWAN è strettamente correlata alle **l
 
 **Time on Air (ToA)** è a durata della trasmissione di un messaggio, dipende dalla lunghezza del messaggio e dalle impostazioni di trasmissione come il **Data Rate** e il **Spreading Factor (SF)**. Messaggi **più lunghi** o l'uso di **Spreading Factor più alti** aumentano il Time on Air. Poiché il duty cycle limita il tempo totale di trasmissione, **messaggi più lunghi** riducono la **frequenza** con cui i dispositivi possono trasmettere senza superare i limiti di duty cycle.
 
-[Dettaglio banda ISM](ism.md)
+[Dettaglio banda ISM 868 MHz](ism.md)
 
  <img src="img/messaggilora.png" alt="alt text" width="1000">
  
