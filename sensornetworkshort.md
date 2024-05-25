@@ -166,7 +166,7 @@ Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli
 - **nodo MCU con scheda di rete**. In questo caso il nodo è costituito da una MCU con delle interfacce digitali verso i sensori e una interfaccia di rete verso la rete dei sensori. Il dispositivo è quindi un **gateway** tra la **il BUS di campo** (porte analogiche/digitali, BUS One Wire, BUS SPI, BUS I2C, BUS RS485, RS232, ecc.) e la rete di sensori (WiFi, Zigbee, LoraWAN, LAN, BLE, ecc.). Esistono due possibilità ( [Dettaglio su bus di campo](cablatisemplici.md)):
     -  L'**interfaccia sui sensori** usa un collegamento **digitale/analogico dedicato**, con un solo filo verso **ciascun** sensore, per cui l'**architettura** risultante dei loro collegamenti è a **stella**, avente la MCU come **centro  stella**.
       <img src="Star-network-1024x466.png" alt="alt text" width="600">
-    -  L'**interfaccia sui sensori** usa un collegamento **digitale a BUS** verso un **gruppo** di sensori, usando gli stessi fili in **condivisione** per tutti, per cui l'**architettura** risultante dei loro collegamenti è a **BUS**, avente la MCU come **master** del BUS di campo. [Dettaglio mezzi a BUS](protocollidiaccesso.md)
+    -  L'**interfaccia sui sensori** usa un collegamento **digitale a BUS** verso un **gruppo** di sensori, usando gli stessi fili in **condivisione** per tutti, per cui l'**architettura** risultante dei loro collegamenti è a **BUS**, avente la MCU come **master** del BUS di campo. 
         <img src="bus.png" alt="alt text" width="600">
         - [Dettagli su stack cablati specifici per domotica e sensoristica](stackcablati.md)
      
