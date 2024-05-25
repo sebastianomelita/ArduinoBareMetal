@@ -175,6 +175,7 @@ Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli
  
 <img src="img/sensor.png" alt="alt text" width="1100">
  Dalla seconda figura, si vede chiaramente come, anche i dispositivi All In One, già equipaggiati con i sensori, adoperano internamente gli stessi collegamenti a BUS che adopererebbero i dispositivi senza sensore che, semplicemente, espongono il connettore del BUS all'esterno (vedi i connettori verdi delle prime due figure o il connettore ACME sensor dell'ultima figura).
+ <img src="img/sensor2.png" alt="alt text" width="700">
 
 ### **Consumi dei nodi terminali**
 
