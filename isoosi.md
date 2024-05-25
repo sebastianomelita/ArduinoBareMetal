@@ -15,7 +15,7 @@ Un **vincolo dell'architettura** è che uno strato può dialogare solo con quell
 
 ### **Canali virtuali**
 
-I canali virtuali sono dei **canali logici** che vengono creati grazie alla tecnica dell'**imbustamento multiplo**. I **canali logici** hanno delle funzioni in più che **non** sono presenti sui **canali fisici** e che permettono di risovere alcuni dei problemi che si incontrano per realizzare una comunicazione **universale** tra dispositivi **eterogenei**.
+I **canali virtuali** sono dei **canali logici** che vengono creati grazie alla tecnica dell'**imbustamento multiplo**. I **canali logici** hanno delle funzioni in più, di cui **non** godono i **canali fisici** sottostanti, che permettono di risovere quei problemi che si incontrano per realizzare una comunicazione **universale** tra dispositivi **eterogenei**.
 
 #### **Imbustamento multiplo**
 
