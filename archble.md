@@ -458,5 +458,7 @@ Ciò significa che mentre i due dispositivi comunicano, rimapperanno i salti in 
 - https://www.todaysoftmag.com/article/2225/bluetooth-beacon-tracking-it-works-both-ways
 - https://github.com/KMuthumala/ESP32-BLE-Beaconing
 - https://randomnerdtutorials.com/esp32-ble-server-client/
+- https://github.com/myDevicesIoT/cayenne-docs/blob/master/docs/LORA.md
+- https://webthesis.biblio.polito.it/secure/18698/1/tesi.pdf
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
