@@ -92,7 +92,7 @@ Il **join server**, o server di associazione,si occupa delle funzioni di autenti
 - **Gestione delle sessioni**: Il Join Server mantiene il contesto di sicurezza per i dispositivi che sono stati autorizzati a unirsi alla rete. Questo include la gestione delle chiavi di sessione e altre informazioni di sicurezza necessarie per garantire una comunicazione sicura tra il dispositivo e il Network Server.
   
     
-### **Formato del payload**
+## **Formato del payload**
 
  <img src="img/messaggilora.png" alt="alt text" width="1000">
  
