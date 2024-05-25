@@ -89,7 +89,7 @@ L'**unico vincolo** è che la **somma** delle velocità medie **in ingresso** di
 
 **Vincolo operativo**: la **velocità** di trasmissione **in uscita** sul canale  di un singolo pacchetto deve essere (a regime) almeno la **somma** delle velocità di tutte le sorgenti presenti sulle porte di **ingresso**. Se questo non accade allora, presto o tardi, le code **satureranno** e cominceranno a scartare (eliminare) i pacchetti non allocabili (condizione di **drop** dei pacchetti). Il **drop** dei pacchetti è un fenomeno impossibile nelle multiplazioni statiche in virtù del **rapporto fisso** tra le velocità in ingresso e quelle in uscita. 
 
-Nelle reti con multiplazione statistica il drop delle code va evitato tramite il controllo della velocità delle sorgenti.
+Nelle reti con multiplazione statistica, il drop delle code va evitato tramite il controllo della velocità delle sorgenti.
 
 ### **Definizione**
 
