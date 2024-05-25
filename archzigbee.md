@@ -53,7 +53,7 @@ Il **broker MQTT** può essere installato in cloud, in una Virtual Private netwo
 
 Esistono molte altre soluzioni che magari sono più semplici e graficamente accattivanti ma che passano per portali proprietari o per servizi cloud a pagamento e nulla aggiungono di didatticamente rilevante ai nostri discorsi.
   
-## **Gateway standardizzati** 
+## **Gateway** 
 
 ### **Ruolo del gateway** 
 
