@@ -110,7 +110,7 @@ Il partizionamento delle reti BLE può essere utile per migliorare l'efficienza,
 
 <img src="img/integratedGW-BLE-LAN.png" alt="alt text" width="900">
 
-## **reti BLE per tracciamento e localizzazione** 
+## **Reti BLE per tracciamento e localizzazione** 
 
 Si tratta di un utilizzo diverso da quello di una normalem rete di sensori poichè l'obiettivo finale non è creare una rete di dispositivi domotici composta da sensori e attuatori ma creare una rete di dispositivi per la **localizzazione** e il **tracciamento**, nel **tempo** e nello **spazio**, della posizione di **altri dispositivi**.
 
