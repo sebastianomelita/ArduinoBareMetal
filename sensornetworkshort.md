@@ -180,7 +180,7 @@ Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli
  
  <img src="img/sensor2.png" alt="alt text" width="1100">
 
- Il **numero** dei dispositivi **collegabili** dipende dal **più critico** di molti fattori che potrebbero essere: il **numero di porte/indirizzi** disponibili, la **lunghezza dei collegamenti**, la **lunghezza dei messaggi** trasmissibili, il **duty cycle** disponibile in trasmissione.
+ Il **numero** dei dispositivi **collegabili** dipende dal **più critico** di molti fattori che potrebbero essere: il **numero di porte/indirizzi** disponibili, la **lunghezza dei collegamenti** ammissibile, la **lunghezza dei messaggi** trasmessi, il **duty cycle** disponibile in trasmissione, la **banda** disponibile in trasmissione..
 
 ### **Consumo dei nodi terminali**
 
