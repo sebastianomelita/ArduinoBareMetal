@@ -27,7 +27,7 @@ All'**imbustamento multiplo** in **trasmissione** corrisponde lo **sbustamento m
 
 Un **protocollo** del **livello generico N**:
 - nel **processo di imbustamento**, vede e interpreta solo gli **header del suo livello** perchè gli header dei **livelli sottostanti** non sono ancora stati inseriti, mentre gli header dei **livelli superiori** sono inglobati nel **campo dati** che non sa interpretare.
-- Nel **processo di sbustamento** accade invece che un livello N vede solo l'**ultimo header affiorante**, cioè il proprio perchè quelli dei **livelli sottostanti** sono stati **rimossi** al momento del loro sbustamento, mentre quellli dei **livelli superiori** sono ancora all'interno del **campo dati** che il protocollo non può toccare.
+- Nel **processo di sbustamento** accade invece che un livello N vede solo l'**ultimo header affiorante**, cioè il proprio, perchè quelli dei **livelli sottostanti** sono stati **rimossi** al momento del loro sbustamento, mentre quellli dei **livelli superiori** sono ancora all'interno del **campo dati** che il protocollo non può toccare.
 
 #### **Astrazione funzionale**
 
