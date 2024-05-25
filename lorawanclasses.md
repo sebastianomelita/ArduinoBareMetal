@@ -71,6 +71,8 @@ Esistono molte altre soluzioni che magari sono più semplici e graficamente acca
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
   - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
 
+Il **gateway** è uno **snodo nevralgico** dei messaggi, per cui la sua posizione dovrebbe essere **ben nota** e accuratamente **riportata in planimetria** per permettere una sua rapida manutenzione/sostituzione.
+
 ### **Documentazione logica (albero degli apparati attivi)**
 
 Esempio di connessione alla rete di distribuzione IP tramite gateway dotati di client VPN:
