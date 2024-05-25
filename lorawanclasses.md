@@ -1,7 +1,7 @@
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
 
-### **Caso d'uso LoRaWan** 
+## **Caso d'uso LoRaWan** 
 
 Date le particolarità della tecnologia, i casi d'uso per la rete di sensori sono quelli tipici applicazioni **IoT outdoor** a **lungo raggio** dette **LPWA**, dove concorre con altre tecnologie di rete: Sigfow, NB IoT e sotto certe condizioni, wifi. **Caratteristiche** di LoRaWAN sono essenzialmente:
 - possibilità di realizzare **comandi** a distanza wireless anche molto piccoli con una **lunga durata** delle batterie (dell'ordine degli anni).
@@ -13,7 +13,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 
 <img src="img/lorazone.png" alt="alt text" width="800">
   
-### **Architettura di una rete di reti** 
+## **Architettura di una rete di reti** 
 
 Di seguito è riportata l'architettura generale di una rete Lorawan. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
 
@@ -28,6 +28,8 @@ I gateway utilizzano la rete internet (o una LAN) per realizzare un collegamento
 Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture è utile perchè permette di creare interfacce web o applicazioni per smartphone o tablet per:
 - eseguire, in un'unica interfaccia (form), comandi verso attuatori posti su reti con tecnologia differente.
 - riassumere in un'unica interfaccia (report) letture di sensori provenienti da reti eterogenee per tecnologia e topologia
+
+### **Ruolo del broker MQTT**
 
 Il **broker MQTT** è solo una delle tante soluzioni possibili per:
 - inoltro dei comandi da un **sensore di comando** su una rete di tipo A (ad es. LoRaWAN) ad un attuatore su una rete diversa di tipo B (ad es. Zigbee)
@@ -53,6 +55,9 @@ Esistono molte altre soluzioni che magari sono più semplici e graficamente acca
   <img src="img/lorawanLogicArchitecture.png" alt="alt text" width="1000">
   <img src="lpwan.png" alt="alt text" width="1000">
 
+
+## **Gateway**
+
 **Riassumendo**, alla **rete di distribuzione IP** si collegano, quindi, una o più **reti secondarie** che servono da **rete di accesso** per i dispositivi sensori o attuatori con **interfacce** spesso di tipo **non ethernet** che necessitano di un **gateway** di confine con possibili funzioni di:     
   - **Inoltro**, cioè smistamento dei messaggi da un tipo di rete all'altro di tipo L3 (**routing**) o di tipo L2 (**bridging**). L'inoltro del messaggio di un sensore può essere:
        - **diretto** nella rete di distribuzione tramite link fisico verso il dispositivo di smistamento (router o switch) più vicino.
@@ -65,6 +70,8 @@ Esistono molte altre soluzioni che magari sono più semplici e graficamente acca
   - **Interrogazione periodica** (polling) dei dispositivi nella rete di sensori (master di una architettura master/slave)
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
   - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
+
+### **Documentazione logica (albero degli apparati attivi)**
 
 Esempio di connessione alla rete di distribuzione IP tramite gateway dotati di client VPN:
 
