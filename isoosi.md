@@ -85,6 +85,8 @@ Attualmente, per **accedere ad Internet** e all'interno della maggior parte dell
 
 [Dettaglio tecnologie di accesso al mezzo radio](accessoradio.md)
 
+[Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) 
+
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
 
 
