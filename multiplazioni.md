@@ -25,7 +25,7 @@ L'aumento progressivo dell'**efficienza** nell'utilizzo dei **canali** ha portat
 
 Le **multiplazioni** sono delle **tecniche** per aumentare l'**efficienza** di un canale introducendo un certo grado di **condivisione** dello stesso tra più **sorgenti**. 
 
-La **condivisione** effettiva del canale è solo **parziale**. L'**allocazione** delle sorgenti sul canale in realtà è sempre **ripartita** in base **ad una** delle grandezze fisiche che lo contraddistinguono, mentre, per le rimanenti grandezze, la condivisioe è **totale**, cioè le sorgenti, su quelle grandezze, occupano **tutto** il canale nella sua interezza.
+La **condivisione** effettiva del canale è solo **parziale**. L'**allocazione** delle sorgenti sul canale in realtà è sempre **ripartita** in base **ad una** delle grandezze fisiche che lo contraddistinguono, mentre, per le rimanenti grandezze, la condivisioe rimane **totale**, cioè le sorgenti, su quelle grandezze, occupano **tutto** il canale nella sua interezza.
 
 ### **Modalità di allocazione di una risorsa**
 
