@@ -92,6 +92,4 @@ L’antenna **dirige il fascio** in modo da concentrarlo sul **target** per:
 
 [Dettaglio tecnologie di accesso al mezzo radio](accessoradio.md)
 
-https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/accessoradio.md
-
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)
