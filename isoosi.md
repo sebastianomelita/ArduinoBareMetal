@@ -57,7 +57,7 @@ I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmes
 <img src="isvses.png" alt="alt text" width="600">
 
 **I canali virtuali** si dividono in:
-- link **end to end**, chiamati così perché collegano livelli che sono presenti **soltanto** negli **host** cioè i **dispositivi terminali**, quelli su cui si **interfaccia l'utente**. I nodi **vicini** in questo collegamento virtuale soni i **nodi terminali**, in quanto la pila OSI realizza, a livello di servizio, un collegamento **virtuale dedicato e diretto** proprio tra nodi terminali.
+- link **end to end**, chiamati così perché collegano livelli che sono presenti **soltanto** negli **host** cioè i **dispositivi terminali**, quelli su cui si **interfaccia l'utente**. I nodi **vicini** in questo collegamento virtuale soni i nodi fisicamente più distanti, in quanto la pila OSI realizza, a livello di servizio, un collegamento **virtuale dedicato e diretto** proprio tra nodi terminali.
 - Più in basso (sui **primi 3** livelli), stanno i **link IS-IS** (collegamento tra  Intemediate systems), chiamati così perché collegano tra loro i **dispositivi di rete**, cioè quelli che creano la rete. Anche gli host posseggono questi livelli e pertanto sono, a tutti gli effetti, dispositivi di rete anch'essi (anche se privi di alcune funzioni importanti). I nodi **vicini** in questo collegamento virtuale soni i nodi della rete fisicamente più prossimi, in quanto la pila OSI realizza, a livello di servizio, un collegamento **virtuale dedicato e diretto** tra nodi vicini.
 
 In figura la lettera H sta per **header** cioè intestazione (ad es. AH=Application header).
