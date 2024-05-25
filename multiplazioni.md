@@ -106,4 +106,6 @@ L’antenna **dirige il fascio** in modo da concentrarlo sul **target** per:
 
 [Dettaglio tecnologie di accesso al mezzo radio](accessoradio.md)
 
+[Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) 
+
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)
