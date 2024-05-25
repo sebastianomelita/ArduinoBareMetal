@@ -174,7 +174,7 @@ Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli
  Chiaramente, se la rete di sensori **coincide** con la **rete di distribuzione IP** (LAN o WiFi o Internet), allora il dispositivo con la MCU potrebbe anche **concettualmente** essere inteso come un **gateway** tra la rete di sensori a BUS di campo e la rete di distribuzione.      
  
 <img src="img/sensor.png" alt="alt text" width="1100">
- Dalla seconda figura, si vede chiaramente come, anche nei dispositivi All In One, già equipaggiati con i sensori, adoperano internamente gli stessi collegamenti a BUS che adopererebbero i dispositivi senza sensore che, semplicemente, espongono il connettore all'esterno (vedi i connettori verdi delle prime due figure o il connettore ACME sensor dell'ultima figura).
+ Dalla seconda figura, si vede chiaramente come, anche i dispositivi All In One, già equipaggiati con i sensori, adoperano internamente gli stessi collegamenti a BUS che adopererebbero i dispositivi senza sensore che, semplicemente, espongono il connettore all'esterno (vedi i connettori verdi delle prime due figure o il connettore ACME sensor dell'ultima figura).
 
 ### **Consumi dei nodi terminali**
 
