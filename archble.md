@@ -150,9 +150,9 @@ Le applicazioni possono ora sapere esattamente dove si trovano e cosa le circond
 
 ### **Schema di cablagggio a beacon fisso** 
 
-È l’approccio più comune. I beacon sono posizionati in posizioni fisse e note, rispetto a una mappa interna.  
+È l’approccio più comune. I beacon sono posizionati in **posizioni fisse** e note, rispetto a una **mappa interna**.  
 
-I dispositivi mobili abilitati Bluetooth riconoscono questi beacon quando si trovano nel raggio della portata e determinano la posizione assoluta (latitudine e longitudine) del dispositivo sulla mappa, stimata la misura della distanza (usando l'intensità del segnale dei beacon) e nota la conoscenza delle posizioni assolute dei beacon.
+I dispositivi mobili abilitati Bluetooth **riconoscono** questi beacon quando si trovano nel raggio della portata e determinano la **posizione assoluta** (latitudine e longitudine) del dispositivo sulla mappa, stimata la misura della distanza (usando l'intensità del segnale dei beacon) e nota la conoscenza delle posizioni assolute dei beacon.
 
 I dati di tracciamento che possono essere raccolti da ciascun dispositivo mobile possono quindi essere inviati, via wifi o modem UMTS, a un sistema centralizzato a scopo analitico e ad altri servizi come la mappatura delle presenze in tempo reale.
 
@@ -177,7 +177,8 @@ I dati di tracciamento che possono essere raccolti da ciascun dispositivo mobile
 
 È un’approccio sempre più diffuso. Questi "ascoltatori" fissi raccolgono tutti i beacon Bluetooth nella loro portata e trasmettono le informazioni raccolte a un sistema centralizzato per l'analisi.
 
-Il sistema centrale applicherà alcuni filtri di segnale e, in base alla posizione degli ascoltatori fissi che è stata programmata nel sistema, determina la posizione dei beacon
+Il sistema centrale applicherà alcuni filtri di segnale e, in base alla posizione degli ascoltatori fissi che è stata programmata nel sistema, determina la posizione dei beacon. 
+
 Utilizzando questo approccio, invece di tracciare un dispositivo mobile, si ottiene il tracciamento dei singoli beacon, che consente una serie di casi d'uso nuovi e innovativi.
 
 <img src="img/fixedscanner.png" alt="alt text" width="900">
@@ -191,7 +192,7 @@ Utilizzando questo approccio, invece di tracciare un dispositivo mobile, si otti
 
 Nell'architettura a **scanner fissi** i dispositivi BLE sono analoghi ai gateway dell'infrastruttura BLE Mesh solo che adesso lo scopo è radicalmente diverso, non servono a connettere l'intera rete di sensori alla LAN, ma a mandare ad un server una **informazione di tracciamento** da parte del listener che la ha raccolta. Poichè il **beacon si muove** nello spazio, potenzialmente in tutti gli ambienti, è necessario installare **molti scanner** lungo i percorsi che si desiderano tracciare e **non pochi gateway** soltanto.
 
-### **Posizionamento listener (scanner)**
+#### **Posizionamento listener (scanner)**
 
 Nell'architettura a **scanner fissi** i dispositivi BLE **non** possono restare **isolati** ma devono comunicare le informazioni sui beacon di passaggio nelle vicinanze ad un **server centrale** e, per far questo, hanno necessità di una rete da utilizzare come infrastruttura di **comunicazione**. Esistono alcune **alternative**:
 - utilizzare la **rete LAN cablata** a cui i gateway BLE si collegano fisicamente mediante una presa Ethernet (RJ45). Il **prerequisito** di questa soluzione è un **ambiente cablato** in maniera uniforme e capillare.
