@@ -106,7 +106,7 @@ La **partizione** di una rete BLE può essere utile in determinate situazioni, s
 
 - **Gestione del traffico**: Si potrebbe pianificare la distribuzione dei dispositivi BLE in modo da evitare congestioni di traffico e interferenze. Ad esempio, si potrebbe evitare di sovraccaricare una specifica area con troppi dispositivi BLE che trasmettono contemporaneamente.
 
-Il partizionamento delle reti BLE può essere utile per migliorare l'efficienza, la sicurezza e la gestibilità di una infrastruttura IoT. Per **partizionare** una rete BLE, si potrebbero creare **più centrali** BLE, cioè più **gateway**, ciascuno con la propria rete di sensori da gestire, e utilizzare una **WAN** (composta da router) o una **LAN** (compoasta da switch) per collegare le reti tra loro. 
+Il partizionamento delle reti BLE può essere utile per migliorare l'efficienza, la sicurezza e la gestibilità di una infrastruttura IoT. Per **partizionare** una rete BLE, si potrebbero creare **più centrali** BLE, cioè più **gateway**, ciascuno con la propria rete di sensori da gestire, e utilizzare una **LAN** (compoasta da switch) per collegare le reti tra loro. 
 
 <img src="img/integratedGW-BLE-LAN.png" alt="alt text" width="900">
 
