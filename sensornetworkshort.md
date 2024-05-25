@@ -180,6 +180,8 @@ Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli
  
  <img src="img/sensor2.png" alt="alt text" width="1100">
 
+ Il **numero** dei dispositivi **collegabili** dipende dal **più critico** di molti fattori che potrebbero essere. il **numero di porte/indirizzi** disponibili, la **lunghezza dei collegamenti**, la **lunghezza dei messaggi** trasmissibili, il **duty cycle** disponibile in trasmissione.
+
 ### **Consumo dei nodi terminali**
 
 Un'altra funzione **potenzialmente energivora**, dopo il **routing**, è il **polling dei sensori** ovvero la loro lettura periodica con annessa **trasmissione in remoto** dei dati. In questo caso se il **primo nodo** di smistamento della catena è parecchio distante (è il caso di tecnologie outdoor come LoraWan o Sigfox) o sebbene indoor si adopera una **trasmissione** in una **tecnologia  energivora** (come è in modalità standard il WiFi) allora sono possibili almeno due **soluzioni operative** per abbattere i consumi:
