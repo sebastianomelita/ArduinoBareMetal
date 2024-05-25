@@ -191,6 +191,8 @@ Utilizzando questo approccio, invece di tracciare un dispositivo mobile, si otti
 
 Nell'architettura a **scanner fissi** i dispositivi BLE sono analoghi ai gateway dell'infrastruttura BLE Mesh solo che adesso lo scopo è radicalmente diverso, non servono a connettere l'intera rete di sensori alla LAN, ma a mandare ad un server una **informazione di tracciamento** da parte del listener che la ha raccolta. Poichè il **beacon si muove** nello spazio, potenzialmente in tutti gli ambienti, è necessario installare **molti scanner** lungo i percorsi che si desiderano tracciare e **non pochi gateway** soltanto.
 
+### **Posizionamento listener (scanner)**
+
 Nell'architettura a **scanner fissi** i dispositivi BLE **non** possono restare **isolati** ma devono comunicare le informazioni sui beacon di passaggio nelle vicinanze ad un **server centrale** e, per far questo, hanno necessità di una rete da utilizzare come infrastruttura di **comunicazione**. Esistono alcune **alternative**:
 - utilizzare la **rete LAN cablata** a cui i gateway BLE si collegano fisicamente mediante una presa Ethernet (RJ45). Il **prerequisito** di questa soluzione è un **ambiente cablato** in maniera uniforme e capillare.
 - utilizzare una **rete di AP WiFi** a cui collegare i gateway come client. **Presuppone** una rete wifi con una copertura adeguata.
