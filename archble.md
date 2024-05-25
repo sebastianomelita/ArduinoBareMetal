@@ -90,6 +90,12 @@ Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente an
 
 ### **Federazione di reti BLE su LAN** 
 
+#### **Partizionamento e ridondanza** 
+
+Per quanto riguarda il **numero dei gateway** in una stessa **LAN**, il numero minimo necessario perchè la rete zigbee funzioni è **uno**. Un gateway avente anche funzione di **master** nelle rete di sensori. Però, data la **criticità** di eventuali **guasti** su questo dispositivo (la rete di sensori diventa nel suo complesso **inaccessibile**), potrebbe essere opportuno prevedere:
+- localmente la **ridondanza dei gateway**. Almeno 2 gateway per ogni rete di sensori. Uno master attivo di default, e uno slave che entra in azione quando sente che il proprio master è non raggiungibile.
+- globalmente un **partizionamento della rete** di sensori in più settori con frequenze diverse e gestiti da coordinatori diversi inseriti in **più gateway sparsi** in **zone diverse** dell'impianto.
+  
 La **partizione** di una rete BLE può essere utile in determinate situazioni, specialmente se si hanno un **gran numero** di dispositivi o se si vuole **separare** i dispositivi **per zone** o **per scopi** diversi. Ecco alcune **situazioni** in cui potrebbe essere vantaggioso partizionare una rete Zigbee:
 
 - **Servizi e profili**: Nelle reti BLE, i dispositivi comunicano attraverso **servizi** e **profili** Bluetooth standardizzati. Puoi organizzare i dispositivi in **gruppi** basati su **servizi simili** o scopi simili. Ad esempio, potresti avere un gruppo di dispositivi BLE che forniscono dati di monitoraggio della salute e un altro gruppo di dispositivi che controllano i dispositivi domestici intelligenti.
