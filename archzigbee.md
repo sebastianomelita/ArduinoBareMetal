@@ -82,6 +82,10 @@ Esistono molte altre soluzioni che magari sono più semplici e graficamente acca
 
 **Zigbee2mqtt** opera a livello di **applicazione** della pila OSI in quanto **traduce** un **payload zigbee** in un **payload JSON MQTT**  (gateway = router applicativo). Si tratta di un software che consente di integrare dispositivi Zigbee in un'infrastruttura di domotica basata su MQTT (Message Queuing Telemetry Transport). Zigbee2mqtt funge da **ponte** tra la rete Zigbee e il broker MQTT, consentendo agli utenti di interagire con i dispositivi Zigbee tramite messaggi MQTT.
 
+## **Documentazione logica della rete (albero degli apparati attivi)** 
+
+### **reti di sensori federate tramite Internet** 
+
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione **in Internet** + server di gestione e controllo che potrebbe rappresentare **tre edifici** distanti domotizzati tramite **zigbeee** e federati tramite **Internet**: 
 
 <img src="img/integratedGW-Zigbee.png" alt="alt text" width="900">
@@ -92,9 +96,9 @@ Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente an
 - **router applicativo** che **traduce** i messaggi da una rete IP (la LAN) ad una non IP (la rete di sensori).
 - **client MQTT** con funzione di **publisher** (sul topic di stato e traduce **da** i dispositivi) e di **subscriber** (sui topic di comando e configurazione e traduce **verso** i dispositivi).
 
-## **Rete di sensori Zigbee** 
+### **reti di sensori federate tramite LAN** 
 
-### **Partizionamento e ridondanza** 
+#### **Partizionamento e ridondanza** 
 
 Per quanto riguarda il **numero dei gateway** in una stessa **LAN**, il numero minimo necessario perchè la rete zigbee funzioni è **uno**. Un gateway avente anche funzione di **coordinatore** nelle rete di sensori. Però, data la **criticità** di eventuali **guasti** su questo dispositivo (la rete di sensori diventa nel suo complesso **inaccessibile**), potrebbe essere opportuno prevedere:
 - localmente la **ridondanza dei gateway**. Almeno 2 gateway per ogni rete di sensori. Uno master attivo di default, e uno slave che entra in azione quando sente che il proprio master è non raggiungibile.
@@ -111,6 +115,8 @@ La **partizione** di una rete Zigbee potrebbe essere utile anche in determinate 
 Per **partizionare** una rete Zigbee, si potrebbero creare **più coordinatori** Zigbee, cioè più **gateway**, ciascuno con la propria rete di sensori da gestire, e utilizzare una **WAN** (composta da router) o una **LAN** (compoasta da switch) per collegare le reti tra loro. 
 
 <img src="img/integratedGW-ZigbeeLAN.png" alt="alt text" width="900">
+
+### **Rete di sensori Zigbee** 
 
 In **alternativa**, si possono sfruttare le funzionalità di creazione e gestione dei **gruppi** e di **segmentazione della rete** offerte dal protocollo Zigbee, per organizzare i dispositivi in **gruppi logici** all'interno di una **stessa rete** di sensori Zigbee.
 
