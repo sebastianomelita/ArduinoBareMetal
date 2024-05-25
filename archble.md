@@ -22,6 +22,8 @@ Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture
 - eseguire, in un'unica interfaccia (form), comandi verso attuatori posti su reti con tecnologia differente.
 - riassumere in un'unica interfaccia (report) letture di sensori provenienti da reti eterogenee per tecnologia e topologia
 
+### **ruolo del broker MQTT** 
+
 Il **broker MQTT** è solo una delle tante soluzioni possibili per:
 - inoltro dei comandi da un **sensore di comando** su una rete di tipo A (ad es. LoRaWAN) ad un attuatore su una rete diversa di tipo B (ad es. Zigbee)
 - inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **pannello di controllo** su una rete diversa di tipo B (tipicamente IP)
@@ -70,8 +72,9 @@ BLE è uno standard di comunicazione wireless utilizzato anche per il controllo 
 
 **Ble2mqtt** opera a livello di **applicazione** della pila OSI in quanto **traduce** un **payload BLE** in un **payload JSON MQTT**  (gateway = router applicativo). Si tratta di un software che consente di integrare dispositivi BLE in un'infrastruttura di domotica basata su MQTT (Message Queuing Telemetry Transport). Ble2mqtt funge da **ponte** tra la rete BLE e il broker MQTT, consentendo agli utenti di interagire con i dispositivi BLE tramite messaggi MQTT.
 
-## **Architetture di gestione dei sensori BLE** 
+## **Documentazione logica della rete (albero degli apparati attivi)** 
 
+### **federazione di reti BLE in Internet** 
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione **in Internet** + server di gestione e controllo che potrebbe rappresentare **tre edifici** distanti domotizzati tramite **BLE** e federati tramite **Internet**: 
 
@@ -84,6 +87,8 @@ Il **broker MQTT** può essere installato in cloud, in una Virtual Private netwo
 Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente anche un **firewall** (con funzioni di NAT se si adopera IPv4), mentre se collegato alla **LAN** (attraverso uno SW o un HUB wiereless) ha solamente la **funzioni** di:
 - **router applicativo** che **traduce** i messaggi da una rete IP (la LAN) ad una non IP (la rete di sensori).
 - **client MQTT** con funzione di **publisher** (sul topic di stato e traduce **da** i dispositivi) e di **subscriber** (sui topic di comando e configurazione e traduce **verso** i dispositivi).
+
+### **federazione di reti BLE su LAN** 
 
 La **partizione** di una rete BLE può essere utile in determinate situazioni, specialmente se si hanno un **gran numero** di dispositivi o se si vuole **separare** i dispositivi **per zone** o **per scopi** diversi. Ecco alcune **situazioni** in cui potrebbe essere vantaggioso partizionare una rete Zigbee:
 
