@@ -19,6 +19,8 @@ dato che:
 
 L'**incremento** è praticamente **quadratico** e ciò porta rapidamente all'esplosione del numero dei collegamenti. Per **un miliardo** di dispositivi sparsi per tutto il globo, il **quadrato** di connessioni dedicate darebbe un numero così grande di connessioni fisiche che avrebbe il semplice difetto di essere **economicamente insostenibile** per essere realizzata con costi di accesso bassi. 
 
+### **Un percorso tra multiplazioni**
+
 La soluzione è **rinunciare** ai collegamenti fisici dedicati tra coppie di utenti e introdurre un certo grado di **condivisione** nell'utilizzo dei mezzi fisici di trasmissione (canali). La **condivisione** delle risorse è l'unico metodo per aumentare l'**efficienza** del loro utilizzo. 
 
 <img src="isvses.png" alt="alt text" width="600">
