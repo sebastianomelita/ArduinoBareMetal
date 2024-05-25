@@ -61,6 +61,7 @@ I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmes
 - Più in basso (sui **primi 3** livelli), stanno i **link IS-IS** (collegamento tra  Intemediate systems), chiamati così perché collegano tra loro i **dispositivi di rete**, cioè quelli che creano la rete. Anche gli host posseggono questi livelli e pertanto sono, a tutti gli effetti, dispositivi di rete anch'essi (anche se privi di alcune funzioni importanti). I nodi **vicini** in questo collegamento virtuale soni i nodi della rete **fisicamente più prossimi**, in quanto la pila OSI realizza, a livello di servizio, un collegamento **virtuale dedicato e diretto** tra nodi vicini.
 
 In figura la lettera H sta per **header** cioè intestazione (ad es. AH=Application header).
+
 <img src="iso-osi.png" alt="alt text" width="1100">
 
 ### **Architettura di riferimento**
