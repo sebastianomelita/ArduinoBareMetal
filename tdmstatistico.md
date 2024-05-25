@@ -87,7 +87,9 @@ Anche i **tempi** di arrivo dei pacchetti possono essere **indipendenti**. Le so
 
 L'**unico vincolo** è che la **somma** delle velocità medie **in ingresso** di tutte le porte sia **inferiore** a quella media **in uscita** di una singola porta altrimenti il dispositivo perde dei pacchetti.
 
-**Vincolo operativo**: la **velocità** di trasmissione **in uscita** sul canale  di un singolo pacchetto deve essere (a regime) almeno la **somma** delle velocità di tutte le sorgenti presenti sulle porte di **ingresso**.
+**Vincolo operativo**: la **velocità** di trasmissione **in uscita** sul canale  di un singolo pacchetto deve essere (a regime) almeno la **somma** delle velocità di tutte le sorgenti presenti sulle porte di **ingresso**. Se questo non accade allora, presto o tardi, le code **satureranno** e cominceranno a scartare (eliminare) i pacchetti non allocabili (condizione di **drop** dei pacchetti). Il **drop** dei pacchetti è un fenomeno impossibile nelle multiplazioni statiche in virtù del **rapporto fisso** tra le velocità in ingresso e quelle in uscita. 
+
+Nelle reti con multiplazione statistica il drop delle code va evitato tramite il controllo della velocità delle sorgenti.
 
 ### **Definizione**
 
@@ -110,7 +112,6 @@ Ritardi si trasmissione variabili rendono la multiplazione statica adatta a quel
 Le **variazioni del ritardo** oltre certi limiti danneggiano le **comunicazioni multimediali** in modo tale da rendere non più fruibile il servizio da esse fornito.
 
 ### **Identificazione della sorgente**
-
 Le risorse sono allocate on demand al momento della **trasmissione** del messaggio (allocazione dinamica). Non è necessario stabilire nulla preventivamente cioè prima dell’inizio della trasmissione.
 
 I pacchetti sono **identificati esplicitamente** come appartenenti ad una certa sorgente in base ad una **etichetta** (un ID della connessione oppure l’indirizzo della sorgente) che li accompagna.
@@ -132,6 +133,7 @@ Il canale è **impegnato** in maniera **esclusiva** da una sorgente solo fino a 
 in fase di trasmissione di un pacchetto.
 - ogni pacchetto usa **tutta la capacità** (banda) del canale (il canale è impegnato per intero da un solo pacchetto alla volta)
 - I pacchetti hanno un **ritardo** di trasferimento **variabile** dipendente dal tempo di attesa in coda.
+- è possibile il fenomeno del **drop** dei pacchetti dalle code dei multiplatori che deve essere tenuto, in qualche modo, sotto controllo.
 
 ### **Sitografia**
 
