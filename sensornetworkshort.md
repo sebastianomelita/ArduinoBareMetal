@@ -180,6 +180,11 @@ Chiaramente, se la rete di sensori **coincide** con la **rete di distribuzione I
 [Dettagli su stack cablati specifici per domotica e sensoristica](stackcablati.md)
 
 [Dettaglio mezzi a BUS](protocollidiaccesso.md)
+
+### **Esempi di collegamenti base con topologia a stella**:
+
+  <img src="Star-network-1024x466.png" alt="alt text" width="700">
+  
 ### **Consumi dei nodi terminali**
 
 Un'altra funzione **potenzialmente energivora**, dopo il **routing**, è il **polling dei sensori** ovvero la loro lettura periodica con annessa **trasmissione in remoto** dei dati. In questo caso se il **primo nodo** di smistamento della catena è parecchio distante (è il caso di tecnologie outdoor come LoraWan o Sigfox) o sebbene indoor si adopera una **trasmissione** in una **tecnologia  energivora** (come è in modalità standard il WiFi) allora sono possibili almeno due **soluzioni operative** per abbattere i consumi:
@@ -189,9 +194,6 @@ Un'altra funzione **potenzialmente energivora**, dopo il **routing**, è il **po
 Quasi **tutte le tecnologie wireless** poi permettono di mettere, nell'intervallo di tempo tra una misura e l'altra, il dispositivo in modalità di **sleep** o **standby** profondo che **rallenta** di molto il clock della CPU permettendo un grande **risparmio di energia**.
 
 Il **consumo di energia** è generalmente proporzionale alla **velocità di trasmissione** e alla lunghezza dei messaggi. Tecnologie **general purpose** che sono **ottimizzate** per la trasmissione di **file o stream** più che di **brevi messaggi** in genere sono più complesse e esibiscono consumi **più elevati**.
-### **Esempi di collegamenti base con topologia a stella**:
-
-  <img src="Star-network-1024x466.png" alt="alt text" width="700">
   
  
 ##  **Topologia delle reti di sensori wireless**     
