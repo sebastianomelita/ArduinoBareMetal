@@ -22,7 +22,7 @@ Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture
 - eseguire, in un'unica interfaccia (form), comandi verso attuatori posti su reti con tecnologia differente.
 - riassumere in un'unica interfaccia (report) letture di sensori provenienti da reti eterogenee per tecnologia e topologia
 
-### **ruolo del broker MQTT** 
+### **Ruolo del broker MQTT** 
 
 Il **broker MQTT** è solo una delle tante soluzioni possibili per:
 - inoltro dei comandi da un **sensore di comando** su una rete di tipo A (ad es. LoRaWAN) ad un attuatore su una rete diversa di tipo B (ad es. Zigbee)
