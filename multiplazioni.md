@@ -23,6 +23,12 @@ La soluzione è **rinunciare** ai collegamenti fisici dedicati tra coppie di ute
 
 <img src="isvses.png" alt="alt text" width="600">
 
+Ogni link **non** è **condiviso con tutti** gli utenti, nessun link li sopporterebbe tutti, ma tutte le **coppie** gli utenti hanno la possibilità di **condividere un percorso** attraverso più link. 
+
+Un percorso si può **snodare** attraverso **molti link** e, in genere, **non** è lo stesso per pacchetti con indirizzi di destinazione **diversi**, presto o tardi le lor strade si divideranno.
+
+Poichè i pacchetti non sanno in anticipo il percorso (non lo hanno allegato ai dati), deve esserci qualcosa che, ad ogni bivio tra un link e l'altro, indichi a ciascun pacchetto la **direzione** da prendere. Questa **funzione (detta commutazione)** è svolta dai **nodi di smistamento** posti ad ogni incrocio tra dei link. QUesti nodi sanno come instradare ciascun pacchetto in base all'unica informazione utile alloscopo, l'**indirizzo di destinazione**. I nodi di smistamento, in **Internet**, si chiamano **router**.
+
 L'aumento progressivo dell'**efficienza** nell'utilizzo dei **canali** ha portato, nel corso dei decenni, alla progressiva diffusione delle **trasmissioni globali**, rare e costose negli anni 80' del secolo scorso, pervasive e a prezzi popolari nel mondo attuale. Anzi l'**accesso alla rete** (intesa come rete globale Internet) a prezzo **calmierato**, è considerato ormai un **diritto primario** del cittadino, dato che su di essa si sono spostati, in maniera esclusiva, molti **servizi pubblici**.
 
 Le **multiplazioni** sono delle **tecniche** per aumentare l'**efficienza** di un canale introducendo un certo grado di **condivisione** dello stesso tra più **sorgenti**. 
