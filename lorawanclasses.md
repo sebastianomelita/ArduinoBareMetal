@@ -79,7 +79,7 @@ Esempio di connessione alla rete di distribuzione IP tramite gateway dotati di c
 
 Si noti che l'**architettura generale** è quella di una **federazione** di reti di sensori più o meno **isolate** e **sparpagliate** sul territorio, ognuna delle quali fa capo, con topologia a stella, ad un proprio **gateway**, deputato al **coordinamento** della stella. La federazione è **amministrata** da un unico **network server** che **inoltra** i dati provenienti dai gateway verso l'**applicazione** utilizzando i servizi di trasporto offerti da una WAN. I servizi di **autenticazione** e **cifratura** (normalmente assenti in Internet) possono essere offerti dal protocollo LoRaWAN o da una VPN. 
 
-### **funzioni di una rete LoRaWAN**
+### **Funzioni di una rete LoRaWAN**
 
 Le **funzioni** dell'architettura **LoRaWAN** possono essere distinte su **3 dispositivi diversi** oppure coincidere in un **unico dispositivo** che le ingloba tutte.
 
