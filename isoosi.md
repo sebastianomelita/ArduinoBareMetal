@@ -54,11 +54,11 @@ I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmes
 
 **Riassumendo**, i **canali virtuali non esistono fisicamente** ma sono **ugualmente reali** perchè, dal punto di vista dei **messaggi scambiati**, le **entità** pari (peer entity), cioè gli interlocutori corrispondenti nei vari livelli, si comportano come se essi ci fossero davvero e attraverso questi **effettivamente dialogassero**. Sono una **visione semplificata** con cui, ad un **livello superiore**, si possono **osservare** le funzioni svolte e i messaggi scambiati dai livelli inferiori. Semplificata, ma comunque reale.
 
-<img src="isvses.png" alt="alt text" width="700">
+<img src="isvses.png" alt="alt text" width="600">
 
 **I canali virtuali** si dividono in:
-- link **end to end**, chiamati così perché collegano livelli che sono presenti **soltanto** negli **host** cioè i **dispositivi terminali**, quelli su cui si **interfaccia l'utente**
-- Più in basso (sui **primi 3** livelli), stanno i **link IS-IS** (collegamento tra  Intemediate systems), chiamati così perché collegano tra loro i **dispositivi di rete**, cioè quelli che creano la rete. Anche gli host posseggono questi livelli e pertanto sono, a tutti gli effetti, dispositivi di rete anch'essi (anche se privi di alcune funzioni importanti).
+- link **end to end**, chiamati così perché collegano livelli che sono presenti **soltanto** negli **host** cioè i **dispositivi terminali**, quelli su cui si **interfaccia l'utente**. I nodi **vicini** in questo collegamento virtuale soni i **nodi terminali**, in quanto la pila OSI realizza, a livello di servizio, un collegamento **virtuale dedicato e diretto** proprio tra nodi terminali.
+- Più in basso (sui **primi 3** livelli), stanno i **link IS-IS** (collegamento tra  Intemediate systems), chiamati così perché collegano tra loro i **dispositivi di rete**, cioè quelli che creano la rete. Anche gli host posseggono questi livelli e pertanto sono, a tutti gli effetti, dispositivi di rete anch'essi (anche se privi di alcune funzioni importanti). I nodi **vicini** in questo collegamento virtuale soni i nodi della rete più prossimi, in quanto la pila OSI realizza, a livello di servizio, un collegamento **virtuale dedicato e diretto** tra nodi vicini.
 
 In figura la lettera H sta per **header** cioè intestazione (ad es. AH=Application header).
 <img src="iso-osi.png" alt="alt text" width="1000">
