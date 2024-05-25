@@ -112,7 +112,7 @@ La **partizione** di una rete Zigbee potrebbe essere utile anche in determinate 
 
 - **Scopi diversi**: Se i dispositivi Zigbee sono utilizzati per scopi diversi, come illuminazione, sicurezza, controllo del clima, ecc., potrebbe essere utile separare i dispositivi in reti dedicate per ciascuno scopo. Questo può semplificare la gestione e consentire configurazioni e politiche di sicurezza specifiche per ogni tipo di dispositivo.
 
-Per **partizionare** una rete Zigbee, si potrebbero creare **più coordinatori** Zigbee, cioè più **gateway**, ciascuno con la propria rete di sensori da gestire, e utilizzare una **WAN** (composta da router) o una **LAN** (compoasta da switch) per collegare le reti tra loro. 
+Per **partizionare** una rete Zigbee, si potrebbero creare **più coordinatori** Zigbee, cioè più **gateway**, ciascuno con la propria rete di sensori da gestire, e utilizzare una **LAN** (composta da più switch) per collegare le reti tra loro. 
 
 <img src="img/integratedGW-ZigbeeLAN.png" alt="alt text" width="900">
 
