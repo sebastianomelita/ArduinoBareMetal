@@ -26,8 +26,12 @@ All'**imbustamento multiplo** in **trasmissione** corrisponde lo **sbustamento m
 **L'imbustamento multiplo** permette la creazione dei cosiddetti **canali virtuali** cioè dei collegamenti **apparenti** e **diretti** tra **strati corrispondenti** di dispositivi **remoti**. Un nodo può essere **logicamente** suddiviso in una serie di strati detti **"entità"**, ciascuna ha uno specifico **ruolo** nella comunicazione, caratterizzato da specifici compiti e funzioni che hanno la particolarità di dover essere svolti in **maniera distribuita** nei vari nodi attraverso lo scambio di opportuni **messaggi**. Ogni entità lascia una traccia nel messaggio finale, dato che in esso è sempre possibile isolare sia il dato trasmesso da quella entità (**payload**) che le informazioni di controllo necessarie per realizzare le funzioni di quell'entità (**header**). 
 
 Un **protocollo** del **livello generico N**:
-- nel **processo di imbustamento**, vede e interpreta solo gli **header del suo livello** perchè gli header dei **livelli sottostanti** non sono ancora stati inseriti, mentre gli header dei **livelli superiori** sono inglobati nel **campo dati** che non sa interpretare.
-- Nel **processo di sbustamento** accade invece che un livello N vede solo l'**ultimo header affiorante**, cioè il proprio, perchè quelli dei **livelli sottostanti** sono stati **rimossi** al momento del loro sbustamento, mentre quellli dei **livelli superiori** sono ancora all'interno del **campo dati** che il protocollo non può toccare.
+- nel **processo di imbustamento**, vede come ultimo header, solo gli **header del suo livello** perchè gli header dei **livelli sottostanti** non sono ancora stati inseriti.
+- Nel **processo di sbustamento** accade invece che un livello N vede solo l'**ultimo header affiorante**, cioè il proprio, perchè quelli dei **livelli sottostanti** sono stati **rimossi** al momento del loro sbustamento.
+
+In ogni caso, anche un livello vedesse gli **header di livelli diversi** dal proprio, non saprebbe cosa farsene perchè rappresentano **informazioni di servizio** di un **protocollo diverso** dal proprio (con obiettivi diversi) che non saprebbe interpretare.
+
+Il meccanismo dell'imbustamento/sbustamento fa si che, al momento in cui un pacchetto raggiunge un certo **livello N**, questo esibisca come **header più esterno** sempre un **N-PCI**, l'unico header che il protocollo di **livello N** è in grado di **interpretare**.
 
 #### **Astrazione funzionale**
 
