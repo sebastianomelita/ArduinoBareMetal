@@ -262,6 +262,13 @@ Nella **figura** sottostante, **4 simboli**, con **4 colori diversi**, erano **i
 
 E' adoperato dall'**uplink** di **WiFi 6**, della telefonia mobile **5G** e **NB IoT**.
 
+
+[Dettaglio TDM statico su mezzi punto-punto](tdmstatico.md) 
+
+[Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) 
+
+[Dettaglio ISO/OSI](isoosi.md)
+
 Sitografia:
 - https://datatracker.ietf.org/doc/html/rfc7554
 - https://en.wikipedia.org/wiki/Time_Slotted_Channel_Hopping
