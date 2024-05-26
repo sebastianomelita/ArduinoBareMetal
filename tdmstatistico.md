@@ -135,6 +135,12 @@ in fase di trasmissione di un pacchetto.
 - I pacchetti hanno un **ritardo** di trasferimento **variabile** dipendente dal tempo di attesa in coda.
 - è possibile il fenomeno del **drop** dei pacchetti dalle code dei multiplatori che deve essere tenuto, in qualche modo, sotto controllo.
 
+[Dettaglio TDM statico su mezzi punto-punto](tdmstatico.md) 
+
+[Dettaglio tecnologie di accesso al mezzo radio](accessoradio.md)
+
+[Dettaglio ISO/OSI](isoosi.md)
+
 ### **Sitografia**
 
 - http://www.myreadingroom.co.in/notes-and-studymaterial/68-dcn/777-time-division-multiplexing.html
