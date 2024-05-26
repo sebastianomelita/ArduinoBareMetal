@@ -27,7 +27,7 @@ La soluzione è **rinunciare** ai collegamenti fisici dedicati tra coppie di ute
 
 Ogni link **non** è **condiviso con tutti** gli utenti, nessun link li sopporterebbe tutti, ma tutte le **coppie** gli utenti hanno la possibilità di **condividere un percorso** attraverso più link. 
 
-Un percorso si può **snodare** attraverso **molti link** e, in genere, **non** è lo stesso per pacchetti con indirizzi di destinazione **diversi**, presto o tardi le loro strade si divideranno.
+Un percorso si può **snodare** attraverso **molti link** e, in genere, **non** è lo stesso per pacchetti con indirizzi di destinazione **diversi**. Presto o tardi le loro strade si divideranno.
 
 Poichè i pacchetti non sanno in anticipo il percorso (non lo hanno allegato ai dati), deve esserci qualcosa che, ad ogni bivio tra un link e l'altro, indichi a ciascun pacchetto la **direzione** da prendere. Questa **funzione (detta commutazione)** è svolta dai **nodi di smistamento** posti ad ogni incrocio tra dei link. Questi nodi sanno come instradare ciascun pacchetto in base all'unica informazione utile allo scopo, l'**indirizzo di destinazione**. I nodi di smistamento, in **Internet**, si chiamano **router**.
 
