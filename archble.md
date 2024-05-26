@@ -115,7 +115,7 @@ Il partizionamento delle reti BLE può essere utile per migliorare l'efficienza,
 
 ## **Reti BLE per tracciamento e localizzazione** 
 
-Si tratta di un utilizzo diverso da quello di una normalem rete di sensori poichè l'obiettivo finale non è creare una rete di dispositivi domotici composta da sensori e attuatori ma creare una rete di dispositivi per la **localizzazione** e il **tracciamento**, nel **tempo** e nello **spazio**, della posizione di **altri dispositivi**.
+Si tratta di un utilizzo diverso da quello di una normale rete di sensori poichè l'obiettivo finale non è creare una rete di dispositivi domotici composta da sensori e attuatori ma creare una rete di dispositivi per la **localizzazione** e il **tracciamento**, nel **tempo** e nello **spazio**, della posizione di **altri dispositivi**.
 
 L'**iBeacon di Apple** è stata la prima tecnologia BLE Beacon a essere pubblicata, quindi la maggior parte dei beacon si ispira al formato dati iBeacon. Gli iBeacon sono abilitati in molti SDK di Apple e possono essere letti e trasmessi da qualsiasi iDevice abilitato per BLE. IBeacon è uno standard proprietario e chiuso. 
 I beacon trasmettono quattro informazioni:
