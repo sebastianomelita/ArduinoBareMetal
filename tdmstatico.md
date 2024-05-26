@@ -129,6 +129,14 @@ I pacchetti hanno un **ritardo** di trasferimento **fisso** dipendente dal **tem
 
 Il **periodo di utilizzo esclusivo** del canale da parte di una sorgente (**slot**) è stabilito all’apertura della comunicazione, in fase di setup, e **permane** anche quando la sorgente non **trasmette nulla** (inefficienza intrinseca). 
 
+[Dettaglio TDM statico su mezzi punto-punto](tdmstatico.md) 
+
+[Dettaglio tecnologie di accesso al mezzo radio](accessoradio.md)
+
+[Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) 
+
+[Dettaglio ISO/OSI](isoosi.md)
+
 ### **Sitografia**
 
 - http://www.myreadingroom.co.in/notes-and-studymaterial/68-dcn/777-time-division-multiplexing.html
