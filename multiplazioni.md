@@ -25,7 +25,7 @@ La soluzione è **rinunciare** ai collegamenti fisici dedicati tra coppie di ute
 
 <img src="isvses.png" alt="alt text" width="600">
 
-Ogni link **non** è **condiviso con tutti** gli utenti, nessun link li sopporterebbe tutti, ma tutte le **coppie** gli utenti hanno la possibilità di **stabilire un percorso** attraverso più link, di volta in volta condiviso con altri messaggi col ruolo di occasionali compagni di viaggio. 
+Ogni link **non** è **condiviso con tutti** gli utenti, nessun link li sopporterebbe tutti. Tutte le **coppie** di utenti, però, hanno la possibilità di **stabilire un percorso** attraverso più link, di volta in volta condiviso con altri messaggi col ruolo di occasionali compagni di viaggio. 
 
 Un percorso si può **snodare** attraverso **molti link** e, in genere, **non** è lo stesso per pacchetti con indirizzi di destinazione **diversi**. Presto o tardi le loro strade si divideranno.
 
