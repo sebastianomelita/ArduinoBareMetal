@@ -21,7 +21,7 @@ Ogni **canale logico** serve a collegare tra loro le **due entità**, moduli SW 
 
 La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che non può avvenire senza lo **scambio di messaggi di servizio** che servono a coordinare il lavoro tra le **entità pari**, cioè quelle dello **stesso livello**. I messaggi di servizio (detti **messaggi di controllo**) sono quelli legati al ruolo e alle mansioni dei due interlocutori del livello corrente e trascurano gli **altri** messaggi di servizio relativi ad **altre mansioni** che, essendo sotto la responsabilità di **altri ruoli** di **livelli differenti**, vengono, dalle entità del livello attuale, completamente **ignorate**.
 
-Vale il principio di **astrazione**, che vuol dire che, man mano che **si sale**, ogni **livello** ha una visione del problema iniziale via via più **semplice e generale** che si occupa sempre meno dei **dettagli fisici** e, viceversa, sempre di più di problematiche legate alla **natura** del messaggio, del suo **significato** più che del **modo** con cui esso **viene scambiato**.
+Vale il principio di **astrazione**, che vuol dire che, man mano che **si sale**, ogni **livello** ha una visione del problema iniziale via via più **semplice e generale** che si occupa sempre meno dei **dettagli fisici** e, viceversa, sempre di più di problematiche legate alla **natura** del messaggio, del suo **significato**, più che del **modo** con cui esso **viene scambiato**.
 
 #### **Imbustamento multiplo**
 
