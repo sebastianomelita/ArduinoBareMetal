@@ -59,7 +59,7 @@ Nel caso di una rete IP il **livello TCP** di trasporto già non **"vede"** più
 
 Un **processo** è **individuabile univocamente** all'interno di una stessa macchina host tramite un **numero di porta**, riusabile uguale su macchine diverse. Un **processo** è **individuabile univocamente** nel mondo tramite la **coppia** (indirizzo **IP**, numero di **porta**) detta talvolta **socket**.
 
-La **ricostruzione sottostante** mira a rappresentare una rete OSI come una **infrastruttura** volta a realizzare la comunicazione tra due **processi remoti** in particolare, tra i tanti che girano in due **host remoti**, a loro volta scelti tra i tanti collegati ad **Internet**.
+La **ricostruzione sottostante** mira a rappresentare una rete OSI come una **infrastruttura** volta a realizzare una comunicazione (apparentemente) **dedicata** ad una particolare coppia di **processi remoti**, tra i tanti che girano in due **host remoti**, a loro volta scelti tra i tanti collegati ad **Internet**.
 
 | Livello | Nome                  | Astrazione fornita al livello superiore                                                                                                  | Funzioni svolte (riassunto incompleto)                        |
 |---------|-----------------------|-------------------------------------------------------------------------------------------------------------------------|-----------------------------|
