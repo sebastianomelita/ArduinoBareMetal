@@ -12,6 +12,8 @@ Il **segnale** di una qualsiasi comunicazione viene **generato** a partire da un
 
 Ogni bit viene poi **codificato** in opportuni segnali aventi una forma adatta alla banda base (tipicamente la **NRZ**). Dopo il segnale digitale in banda base viene convertito in **radiofrequenza** tramite **modulazioni digitali**, che **alterano** un segnale RF ad alta frequenza in funzione dei valori dei bit contenuti nel segnale in banda base. Le modulazioni più note sono ASK, FSK e PSK, di cui i dettagli, però, esulano da questa trattazione (vedi corso di telecoumunicazioni).
 
+**Riassumendo** la** banda base** è la porzione dello **spettro radio** in cui il segnale viene **generato**. E' detta **banda base** proprio perchè è la casa natia da cui parte il segnale prima di affrontare il suo viaggio nello **spazio libero** di propagazione delle **onde radio**. E' una banda perchè le informazioni sono concentrate su un intervallo di frequenza limitato e non avrebbe senso trasmettere le altre.
+
 #### **Segnale FDM**
 
 Un **segnale in banda base** è generato a partire dalla frequenza nulla fino ad una frequenza massima finita. La frequenza massima è finita perchè tutti i sistemi fisici, senza eccezione alcuna, sono considerati **passa basso**, cioè tendono **naturalmente** ad **attenuare** il segnale generato all'**aumentare** della **frequenza**. Al **di sotto** di un certo **limite** il valore del segnale è considerato fisicamente **trascurabile** (approssimazione pratica). La frequenza in cui il segnale vale la **metà** del valore a centro banda viene detta **frequenza di taglio** o frequenza a 3dB (decibel). La **frequenza di taglio** è il limite **convenzionale** della larghezza di banda di tutti i segnali in **banda base**.
