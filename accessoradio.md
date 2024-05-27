@@ -14,7 +14,7 @@ Ogni bit viene poi **codificato** in opportuni segnali aventi una forma adatta a
 
 **Riassumendo**, la **banda base** è la porzione dello **spettro radio** in cui il segnale viene **generato**. E' detta **banda base** proprio perchè è la casa natia da cui parte il segnale prima di affrontare il suo viaggio nello **spazio libero** di propagazione delle **onde radio**. E' una **banda** perchè le informazioni sono concentrate su un intervallo di frequenza **limitato** e non avrebbe senso trasmettere anche le altre frequenze. 
 
-La **banda base** di un sistema è per larga parte sovrapponibile a quella di molti altri sistemi analoghi ma questi non normalmente non si intereferiscono tra loro perchè separati grazie alla divisione di spazio (SDM), essendo confinati su dispositivi diversi con cablaggi diversi.
+La **banda base** di un sistema è per larga parte sovrapponibile a quella di molti altri sistemi analoghi ma questi normalmente non si intereferiscono tra loro perchè separati grazie alla divisione di spazio (SDM), essendo confinati su dispositivi diversi con cablaggi diversi.
 
 #### **Segnale FDM**
 
