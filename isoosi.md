@@ -29,7 +29,9 @@ I **canali logici**, però, pur agendo in **contemporanea**, non sono affatto un
 - In **trasmissione** vengono **aggiunte** ad ogni livello scendendo lungo la pila.
 - In **ricezione** vengono **rimosse** salendo di un livello alla  volta lungo la pila.   
 
-Quello che cambia, da un livello all'altro, è la **visione** che le varie entità hanno del **messaggio** che, scendendo di livello, diventa via via più **dettagliata**.
+Quello che cambia, da un livello all'altro, è:
+- la **visione** che le varie entità hanno del **messaggio** che, scendendo di livello, diventa via via più **dettagliata**.
+- l'insieme dei **messaggi di controllo** rappresentato dall'**header** del messaggio che è funzionale allo svolgimento dei compiti assegnati a quel livello.
 
 #### **Imbustamento multiplo**
 
