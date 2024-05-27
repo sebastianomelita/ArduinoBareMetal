@@ -50,7 +50,7 @@ Ogni funzione di un livello **"astrae"**, cioè riassume in un'unica funzione di
 
 La **trasparenza** dei livelli aggiunge proprietà di **flessibilità** all'architettura perchè è possibile **sostituire** uno o più livelli inferiori senza la necessità di modificare tutti quelli superiori, promuovendo così il **riuso** dei livelli più astratti. 
 
-Nel caso di una rete IP il **livello TCP** di trasporto già non **"vede"** più le differenze tecnologiche tra reti realizzate con un HUB WiFi piuttosto che con uno switch o piuttosto con più router in cascata, essendo stati questi dispositivi tutti **"astratti"**, cioè riassunti in un **unico collegamento** di tipo **TCP** tra **due host terminali** che rimane comunque valido anche modificando le tecnologie dei livelli più bassi.
+Nel caso di una rete IP il **livello TCP** di trasporto già non **"vede"** più le differenze tecnologiche tra reti realizzate con un HUB WiFi piuttosto che con uno switch o piuttosto con più router in cascata, essendo stati questi dispositivi tutti **"astratti"**, cioè riassunti in un **unico collegamento** di tipo **TCP** tra **due host terminali** che rimane comunque valido anche sostituendo le tecnologie dei livelli più bassi.
 
 | Livello | Nome                  | Astrazione fornita al livello superiore                                                                                                  | Funzioni svolte (riassunto incompleto)                        |
 |---------|-----------------------|-------------------------------------------------------------------------------------------------------------------------|-----------------------------|
