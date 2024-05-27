@@ -27,7 +27,7 @@ I **canali logici**, però, pur agendo in **contemporanea**, non sono affatto un
 - In **trasmissione** vengono **aggiunte** ad ogni livello scendendo lungo la pila.
 - In **ricezione** vengono **rimosse** salendo di un livello alla  volta lungo la pila.   
 
-Quello che cambia da un livello all'altro è la visione che le varie entità hanno del messaggio che, scendendo di livello, diventa più dettagliata
+Quello che cambia da un livello all'altro è la visione che le varie entità hanno del messaggio che, scendendo di livello, diventa via via più dettagliata
 #### **Imbustamento multiplo**
 
 Nelle **reti a pacchetto**, in fase di **trasmissione**, si usa una tecnica, detta **imbustamento multiplo**, con la quale si **incapsulano** i messaggi di un livello, le **PDU** (Protol Data Unit),  nel campo dati, detto **SDU** (Service Data Unit), del livello **immediatamente inferiore**. Questa operazione parte dal livello applicativo ed è **ripetuta** in tutti i livelli, escluso il fisico. Il **carico utile** o **payload** è il **messaggio** che la rete ha avuto in consegna, da parte dell'utente, per essere **spostato** fino alla destinazione. Ogni livello **aggiunge** al messaggio utente informazioni di controllo propriamente sue nel campo **header**. Il **livello fisico**, a seguito di tutti gli annidamenti, ha il **messaggio più lungo** perché è composto dal messaggio utente a dalla **somma di tutti gli header** aggiunti nei singoli livelli, detta, in gergo tecnico, **overhead**. 
