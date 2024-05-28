@@ -90,7 +90,7 @@ La **ricostruzione sottostante** mira a rappresentare una rete OSI come una **in
 | 1       | Fisico                | Fornisce al livello 2 un canale di bit **dedicato** tra due **nodi IS** fisicamente vicini                                | Esegue una codifica/decodifica dei bit nei segnali fisici (elettrici, radio o ottici) adatti ad un certo mezzo fisico|
 
 
-Si può osservare facilmente come alla fine, il **servizio offerto** dal livello applicativo della pila ISO/OSI, oltre a garantire l'**interoperabilità universale** tra i dispositivi, oltre ad implementare un **sistema aperto**, ha la possibilità di poter realizzare, a **livello logico** (cioè percepito), anche le qualità del servizio offerto da una **rete commutata** (commutazione di circuito.  
+Si può osservare facilmente come alla fine, il **servizio offerto** dal livello applicativo della pila ISO/OSI, oltre a garantire l'**interoperabilità universale** tra i dispositivi, oltre ad implementare un **sistema aperto**, ha la possibilità di poter realizzare, a **livello logico** (cioè percepito), anche una **qualità del servizio** analoga a quella offerta da una **rete commutata** (rete a commutazione di circuito).  
 
 Una rete a **commutazione di circuito** è realizzata soltanto con **multiplatori TDM statici** ed è assimilabile a una **cascata di slot** prenotati su **diverse tratte** (link) ed allocati ad una **sola comunicazione**.  La percezione è solo approssimata ed è tanto più realistica quanto maggiore è il numero di nodi allocati e maggiore è la banda dei canali installata in modo che la variabilità dei ritardi sulle code dei multiplatori statistici si mantenga minima. 
 
