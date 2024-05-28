@@ -90,6 +90,10 @@ La **ricostruzione sottostante** mira a rappresentare una rete OSI come una **in
 | 1       | Fisico                | Fornisce al livello 2 un canale di bit **dedicato** tra due **nodi IS** fisicamente vicini                                | Esegue una codifica/decodifica dei bit nei segnali fisici (elettrici, radio o ottici) adatti ad un certo mezzo fisico|
 
 
+Si può osservare facilmente come alla fine, il **servizio offerto** dal livello applicativo della pila ISO/OSI, oltre a garantire l'**interoperabilità universale** tra i dispositivi, oltre ad implementare un **sistema aperto**, ha la possibilità di poter realizzare, a **livello logico** (cioè percepito), anche le qualità del servizio offerto da una **rete commutata** (commutazione di circuito.  Una rete a **commutazione di circuito** è realizzata soltanto con **multiplatori TDM statici** ed è assimilabile a una **cascata di slot** prenotati su **diverse tratte** (link) ed allocati ad una **sola comunicazione**.  La percezione è solo approssimata ed è tanto più realistica quanto maggiore è il numero di nodi allocati e maggiore è la banda dei canali installata in modo che la variabilità dei ritardi sulle code dei multiplatori statistici si mantenga minima. 
+
+Il **vantaggi**, incomparabilmente **maggiori** di una rete a commutazione di pacchetto rispetto ad una a circuito (con multiplatori TDM statici) sono:  la **scalabilità** ( ottenuta facilmente aggiungendo **nuovi nodi** e **nuovi link**) e l'**efficienza** (ottenuta grazie alla multiplazione statistica).
+
 Astrazioni interessanti sono quelle, di tipo **topologico**, che traducono una rete con molti **link fisici** in un unico **link logico** che li riassume tutti (astrazione). Questa cosa avviene tipicamente a:
 - **livello 4**, dove una **intera rete IP**, composta da **link tra router** collegati, in genere, a maglia, viene astratta in un **link tra host** diretto (**Link End-to-End** virtuale come servizio di livello 4).
 - In tutti gli **altri livelli** della pila OSI, canali punto-punto vengono astratti in altri canali **punto-punto** posti:
