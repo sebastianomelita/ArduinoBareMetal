@@ -30,7 +30,7 @@ L'**intero spettro radio** è diviso convenzionalmente in **bande di frequenza**
 
 <img src="img/main-qimg.jpeg" alt="alt text" width="700">
 
-#### **Demodulazione del segnale FDM**
+### **Demodulazione del segnale FDM**
 
 Tutte le tecniche di demodulazione di un segnale RF (a radiofrequenza) presuppongono in ricezione la **traslazione** (contaria a quella effettuata in trasmissione) del segnale dalla banda traslata alla **banda base**, dove poi il segnale viene campionato per ricostruire il **valore originale** dei singoli bit. Questa operazione è possibile solo se il segnale possiede un'**ampiezza sufficiente** per **discriminarlo** dal **rumore** che può essere causato:
 - da sorgenti di disturbo elettromagnetiche, dette **EMI** (Electromagnetic Interference), sempre presenti in un mezzo trasmissivo (disturbi impulsivi, impianto elettrico).
@@ -54,7 +54,7 @@ Nel **CDM** la sorgente viene:
 
 Nei sistemi DSSS (Direct Sequence Spread Spectrum), il **fattore di spreading** è la lunghezza della sequenza di spreading che si riflette nel numero di chip per ciascun simbolo di modulazione.
 
-### **Fase di trasmissioneM**
+### **Fase di trasmissione**
 
 L'**espansione in frequenza** si ottiene trasformando artificialmente un segnale **lentamente variabile** nel tempo in uno **rapidamente variabile** nel tempo moltiplicandolo, **in trasmissione**, per un segnale ad **alta frequenza** che occupa tutta la banda del canale detto **chirp**. Ad **ogni sorgente** è associato un **codice di espansione** che caratterizza la sequenza dei **bit veloci** del chirp (quella contenuta in un **singolo bit lento** della sorgente). 
 
