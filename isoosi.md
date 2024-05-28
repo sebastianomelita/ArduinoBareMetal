@@ -25,7 +25,11 @@ Un **vincolo dell'architettura** è che uno strato può dialogare solo con quell
 
 ### **Canali virtuali**
 
-I **canali virtuali** sono dei **canali logici** che vengono creati grazie alla tecnica dell'**imbustamento multiplo**. I **canali logici** hanno delle funzioni in più, di cui **non** godono i **canali fisici** sottostanti, che permettono di risovere quei problemi che si incontrano per realizzare una comunicazione **universale** tra dispositivi **eterogenei**.
+I **canali virtuali** sono dei **canali logici** che vengono creati grazie alla tecnica dell'**imbustamento multiplo**. I **canali virtuali** rappresentano il **punto di vista** che un **generico livello** ha dell'unico canale esistente, cioè il canale reale di livello 1 (fisico). E' un punto di vista **parziale** perchè non si basa su quello che è una comunicazione nella sua **complessità** ed estensione (a livello fisico e lungo i vari nodi) ma per come a lui appare semplicemente osservando il modo (protocollo) con cui vengono **scambiati i dati** ad un certo **livello**. Infatti:
+- Molte **proprietà** del canale vengono date **per scontate** non percependo che vengono realizzate **da altri** livelli.
+- lo **schema** della rete è **semplificato** non percependo che la sua **struttura** è stata **riassunta** in un **unico link**.
+
+I **canali logici** hanno delle funzioni in più, di cui **non** godono i **canali fisici** sottostanti, che permettono di risovere quei problemi che si incontrano per realizzare una comunicazione **universale** tra dispositivi **eterogenei**.
 
 Ogni **canale logico** serve a collegare tra loro le **due entità**, moduli SW con un certo **ruolo** (analoghi a certi impiegati tra i tanti di una grande azienda), che sono deputate a risolvere solamente **certi problemi**, tutti e soli quelli che rienrano all'interno delle **mansioni** che competono loro. 
 
