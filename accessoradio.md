@@ -83,9 +83,9 @@ Nel CDM le **sorgenti** occupano e **condividono** tutta la **banda** di frequen
 
 ### **Controllo della sensibilità**
 
-<img src="img/DSSS_carrier.png" alt="alt text" width="600">
-
 **Aumentando** sufficientemente il **fattore di spreading** è possibile portare la **sensibilità** sotto la soglia di **rumore di fondo** dell'universo rendendo, di fatto, le comunicazioni inintercettabili. Inoltre si riesce a far lavorare il sistema in ambienti molto disturbati, persino con rapporti **segnale/rumore negativi**.
+
+<img src="img/DSSS_carrier.png" alt="alt text" width="600">
 
 **Riassumendo**, lo spettro espanso è un mezzo di trasmissione in cui il segnale occupa una larghezza di banda superiore al minimo necessario per inviare l'informazione; l'allargamento della banda avviene mediante un codice indipendente dai dati, e per il despreading e il successivo recupero dei dati viene utilizzata una ricezione sincronizzata con il codice del ricevitore.
 
