@@ -62,7 +62,7 @@ La trasformazione avviene **in trasmissione**, moltiplicando il segnale a banda 
 
 Rappresentazione della fase di **chipering**:
 
-<img src="spread1.png" alt="alt text" width="1000">
+<img src="spread1.png" alt="alt text" width="1100">
 
 La **proprietà** che viene **divisa** fisicamente è la **potenza** di trasmissione. La proprietà che viene suddivisa logicamente è un insieme di **codici ortogonali**
 **In TX** la sorgente viene espansa: cioè trasformata da segnale a banda stretta a segnale che occupa tutta la banda di lavoro, detto segnale a spettro espanso.  
@@ -72,7 +72,7 @@ L’**espansione** in frequenza di un segnale:
 - si **ottiene nel dominio del tempo** moltiplicando il segnale di partenza per un altro segnale di frequenza **molto maggiore** detto **chirp (o spreading code)**. L’**energia** viene così **diffusa** su **tutte** le frequenze della banda ma con una **ampiezza** molto bassa. La **moltiplicazione** trasforma un segnale lentamente variabile in uno rapidamente variabile **sostituendo** il **bit originale** con una **sequenza di bit** veloci detti **chirp**. Un **chirp** è, quindi, una sequenza che **marchia** in maniera univoca i **bit** di una certa sorgente rendendoli, in ricezione, distinguibili da quelli di qualsiasi altra.
 
 Rappresentazione della fase di **dechipering**:
-<img src="spread2.png" alt="alt text" width="1000">
+<img src="spread2.png" alt="alt text" width="1100">
 
 ### **Fase di ricezione**
 
