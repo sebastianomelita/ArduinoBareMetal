@@ -41,7 +41,7 @@ Vale il principio di **astrazione**, che vuol dire che, man mano che **si sale**
 
 In genere, grossomodo accade che la soluzione astratta viene **adattata**, mentre quella di dettaglio viene **sostituita**.
 
-I **canali logici**, però, pur agendo in **contemporanea**, non sono affatto una replica di **7 messsaggi diversi** che giungono a destinazione percorrendo **7 canali fisici paralleli**. Il canale fisico è sempre **uno solo** e il messaggio fisicamente è sempre la **stessa sequenza** di bit ai capi delle due interfacce omologhe di **livello 1** (fisico). Quello che accade è che, intorno allo stesso messaggio di partenza, le informazioni di **controllo** necessarie per svolgere le funzioni di rete vengono **aggiunte e tolte** gradatamente passando da un livello all'altro:
+I **canali logici**, però, pur agendo in **contemporanea**, non sono affatto una replica di **7 messsaggi diversi** che giungono a destinazione percorrendo **7 canali fisici paralleli**. Il canale fisico è sempre **uno solo** e il messaggio fisicamente è sempre la **stessa sequenza** di bit ai capi delle due interfacce omologhe di **livello 1** (fisico). Quello che accade è che, intorno allo stesso messaggio di partenza, le informazioni di **controllo**, necessarie per svolgere le funzioni di rete, vengono **aggiunte e tolte** gradatamente passando da un livello all'altro:
 - In **trasmissione** vengono **aggiunte** ad ogni livello scendendo lungo la pila.
 - In **ricezione** vengono **rimosse** salendo di un livello alla  volta lungo la pila.   
 
