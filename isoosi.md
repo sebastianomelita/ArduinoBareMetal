@@ -141,14 +141,14 @@ La reaponsabilità della implementazione dei protocolli OSI è ripartità tra va
 
 ### **Indirizzi e PDU**
 
-La reaponsabilità della implementazione dei protocolli OSI è ripartità tra vari moduli SW e da un livello HW:
+Ogni livello ha la sua PDU col prpoprio nome e un header con la sua coppia di indirizzi sorgente/destinazione:
 
 | Livello |Protocolli                |      Nome PDU     |    Indirizzo |
 |---------|-----------------------|-----------------------------|--------------------------------|
 | 7       | Applicazione          |  Pacchetto applicativo |      account utente, certificato di sicurezza     |
 | 6       | Presentazione         |  Pacchetto applicativo |      url web         |
 | 5       | Sessione              | Pacchetto applicativo |      id di sessione       |                                                                                           |
-| 4       | Trasporto             | Segmento |       numero di porta TCO o UDP        |                                                                                                 |
+| 4       | Trasporto             | Segmento |       numero di porta TCP o UDP        |                                                                                                 |
 | 3       | Rete                  | Pacchetto |   indirizzo IP           |                                                           |
 | 2       | Collegamento dati     | Trama |     indirizzo MAC, numero di porta di inoltro, credenziali PPP        |
 | 1       | Fisico                | Bit |       etichetta della presa        |
