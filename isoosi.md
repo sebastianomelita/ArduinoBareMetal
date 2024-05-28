@@ -25,7 +25,7 @@ Un **vincolo dell'architettura** è che uno strato può dialogare solo con quell
 
 ### **Canali virtuali**
 
-I **canali virtuali** sono dei **canali logici** che mimano un collegamento **diretto** tra entità pari dello **stesso livello**, attraverso il quale vengono scambiate le **PDU** di quel livello con le regole del **protocollo** in uso in **quel livello**. Vengono **creati** grazie alla tecnica dell'**imbustamento multiplo**. I **canali virtuali** rappresentano il **punto di vista** che un **generico livello** ha dell'unico canale esistente, cioè il canale reale di livello 1 (fisico). 
+I **canali virtuali** sono dei **canali logici** che mimano un collegamento **diretto** tra entità pari dello **stesso livello**, attraverso il quale vengono scambiate le **PDU** di quel livello con le regole del **protocollo** in uso in **quel livello**. I **canali virtuali**, vengono **creati** grazie alla tecnica dell'**imbustamento multiplo** e rappresentano il **punto di vista** che un **generico livello** ha dell'unico canale esistente, cioè il canale reale di livello 1 (fisico). 
 
 E' un punto di vista **parziale** perchè non si basa su quello che è una comunicazione nella sua **complessità** ed estensione (a livello fisico e lungo i vari nodi) ma per come a lui appare semplicemente osservando il modo (protocollo) con cui vengono **scambiati i dati** ad un certo **livello**. Infatti:
 - Molte **proprietà** del canale vengono date **per scontate** non percependo che vengono realizzate **da altri** livelli.
