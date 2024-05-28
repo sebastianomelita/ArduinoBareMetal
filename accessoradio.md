@@ -54,6 +54,8 @@ Nel **CDM** la sorgente viene:
 
 Nei sistemi DSSS (Direct Sequence Spread Spectrum), il **fattore di spreading** è la lunghezza della sequenza di spreading che si riflette nel numero di chip per ciascun simbolo di modulazione.
 
+##### **Fase di trasmissioneM**
+
 L'**espansione in frequenza** si ottiene trasformando artificialmente un segnale **lentamente variabile** nel tempo in uno **rapidamente variabile** nel tempo moltiplicandolo, **in trasmissione**, per un segnale ad **alta frequenza** che occupa tutta la banda del canale detto **chirp**. Ad **ogni sorgente** è associato un **codice di espansione** che caratterizza la sequenza dei **bit veloci** del chirp (quella contenuta in un **singolo bit lento** della sorgente). 
 
 <img src="spread1.png" alt="alt text" width="1000">
@@ -67,13 +69,17 @@ L’**espansione** in frequenza di un segnale:
 
 <img src="spread2.png" alt="alt text" width="1000">
 
+##### **Fase di ricezione**
+
 Nel CDM le **sorgenti** occupano e **condividono** tutta la **banda** di frequenza nello **stesso tempo** e in **tutto lo spazio** sovrapponendo l’energia di una con quella dell’altra (interferenza completa). Il **ricevitore** riceve i segnali di più sorgenti sotto **forma espansa** e sovrapposti tra loro (segnali interferenti) che sono, in pratica, indistinguibili.
 
 **In ricezione** la moltiplicazione nel tempo di un segnale ricevuto per lo **stesso chirp** (o spreading code) con cui era stato espanso in trasmissione, riporta il segnale ricevuto a **banda stretta**, permettendone la **decodifica dei bit**. La moltiplicazione con quel codice avviene anche con gli **altri segnali ricevuti** ma, essendo questo diverso dal loro spreading code, li lascia a spettro espanso (proprietà di **ortogonalità**). 
 
 <img src="img/DSSS_carrier.png" alt="alt text" width="600">
 
-**Aumentando** sufficientemente il **fattore di spreading** è possibile portare la **sensibilit**à sotto la soglia di **rumore di fondo** dell'universo rendendo, di fatto, le comunicazioni inintercettabili. Inoltre si riesce a far lavorare il sistema in ambienti molto disturbati, persino con rapporti **segnale/rumore negativi**.
+##### **Controllo della sensibilità**
+
+**Aumentando** sufficientemente il **fattore di spreading** è possibile portare la **sensibilità** sotto la soglia di **rumore di fondo** dell'universo rendendo, di fatto, le comunicazioni inintercettabili. Inoltre si riesce a far lavorare il sistema in ambienti molto disturbati, persino con rapporti **segnale/rumore negativi**.
 
 **Riassumendo**, lo spettro espanso è un mezzo di trasmissione in cui il segnale occupa una larghezza di banda superiore al minimo necessario per inviare l'informazione; l'allargamento della banda avviene mediante un codice indipendente dai dati, e per il despreading e il successivo recupero dei dati viene utilizzata una ricezione sincronizzata con il codice del ricevitore.
 
