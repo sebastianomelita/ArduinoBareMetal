@@ -94,7 +94,7 @@ Si può osservare facilmente come alla fine, il **servizio offerto** dal livello
 
 Una rete a **commutazione di circuito** è realizzata soltanto con **multiplatori TDM statici** ed è assimilabile a una **cascata di slot** prenotati su **diverse tratte** (link) ed allocati ad una **sola comunicazione**.  
 
-La **percezione** di trovarsi in una rete a commutazione di circuito è solo approssimata ed è tanto più realistica quanto più numerosi sono il numero dei nodi allocati e quanto maggiore è la banda dei canali installata, in modo che la **variabilità dei ritardi** (jitter) sulle **code** dei multiplatori statistici si mantenga **minima**. 
+La **percezione** di trovarsi in una rete a commutazione di circuito è solo **approssimata** ed è tanto più realistica quanto più numerosi sono il numero dei nodi allocati e quanto maggiore è la banda dei canali installata, in modo che la **variabilità dei ritardi** (jitter) sulle **code** dei multiplatori statistici si mantenga **minima**. 
 
 Il **vantaggi**, incomparabilmente **maggiori** di una rete a commutazione di pacchetto rispetto ad una a circuito (con multiplatori TDM statici) sono:  la **scalabilità** ( ottenuta facilmente aggiungendo **nuovi nodi** e **nuovi link**) e l'**efficienza** (ottenuta grazie alla multiplazione statistica).
 
