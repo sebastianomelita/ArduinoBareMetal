@@ -81,9 +81,9 @@ Nel CDM le **sorgenti** occupano e **condividono** tutta la **banda** di frequen
 
 **In ricezione**, la moltiplicazione nel tempo di un segnale ricevuto per lo **stesso chirp** (o spreading code) con cui era stato espanso in trasmissione, riporta il segnale ricevuto a **banda stretta**, permettendone la **decodifica dei bit**. La moltiplicazione con quel codice avviene anche con gli **altri segnali ricevuti** ma, essendo questo diverso dal loro spreading code, li lascia a spettro espanso (proprietà di **ortogonalità**). 
 
-<img src="img/DSSS_carrier.png" alt="alt text" width="600">
-
 ### **Controllo della sensibilità**
+
+<img src="img/DSSS_carrier.png" alt="alt text" width="600">
 
 **Aumentando** sufficientemente il **fattore di spreading** è possibile portare la **sensibilità** sotto la soglia di **rumore di fondo** dell'universo rendendo, di fatto, le comunicazioni inintercettabili. Inoltre si riesce a far lavorare il sistema in ambienti molto disturbati, persino con rapporti **segnale/rumore negativi**.
 
