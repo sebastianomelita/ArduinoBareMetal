@@ -15,7 +15,7 @@ Un **vincolo dell'architettura** è che uno strato può dialogare solo con quell
 
 | Livello | Nome                  |       Funzioni svolte                        |
 |---------|-----------------------|-----------------------------|
-| 7       | Applicazione          | 
+| 7       | Applicazione          |  Definisce il tipo di utenti della comunicazione e il tipo di sicurezza con cui dialogano| 
 | 6       | Presentazione         |  Negozia l'organizzazione complessiva di documenti o flussi di dati (ad es. XML piuttosto che JSON oppure mp3 al posto di mp4)| 
 | 5       | Sessione              |   Gestisce il ptipo di comunicazione e stabilisce le sue fasi e le regole per raggiungerle|                                                                                                       |
 | 4       | Trasporto             | Segmentazione di ciascun pacchettio in più segmenti, multiplazione di più connessioni di livello 4 (uniscono processi diversi) in una stessa connessione di livello 3 (unisce due host), controllo di errore End to End (con ritrasmissione), controllo di flusso End to End, riordina i pacchetti fuori sequenza, esegue il controllo di congestione |                                                                                                           |
