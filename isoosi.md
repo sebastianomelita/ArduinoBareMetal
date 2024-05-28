@@ -141,7 +141,7 @@ La reaponsabilità della implementazione dei protocolli OSI è ripartità tra va
 
 ### **Indirizzi e PDU**
 
-Ogni livello ha la sua PDU col prpoprio nome e un header con la sua coppia di indirizzi sorgente/destinazione:
+Ogni livello ha la sua PDU col prpoprio nome e un header con la sua coppia di indirizzi sorgente/destinazione che servono ad identificare univocamente una entità di quel livello all'interno dello stesso:
 
 | Livello |Protocolli                |      Nome PDU     |    Indirizzo |
 |---------|-----------------------|-----------------------------|--------------------------------|
