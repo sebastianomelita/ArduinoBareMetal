@@ -60,7 +60,7 @@ L'**espansione in frequenza** trasforma un segnale **lentamente variabile** nel 
 
 La trasformazione avviene **in trasmissione**, moltiplicando il segnale a banda stretta per un segnale ad **alta frequenza** che occupa tutta la banda del canale detto **chirp**. Ad **ogni sorgente** è associato un **codice di espansione** che caratterizza la sequenza dei **bit veloci** del chirp (quella contenuta in un **singolo bit lento** della sorgente).
 
-Rappresentazione delle fasi di chipering e di dechirpering:
+Rappresentazione delle fasi di chipering e di dechipering:
 
 <img src="spread1.png" alt="alt text" width="1000">
 
