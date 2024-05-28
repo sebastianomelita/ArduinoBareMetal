@@ -13,6 +13,16 @@ Un **vincolo dell'architettura** è che uno strato può dialogare solo con quell
 
 <img src="iso-osi1.png" alt="alt text" width="1000">
 
+| Livello | Nome                  |       Funzioni svolte                        |
+|---------|-----------------------|-----------------------------|
+| 7       | Applicazione          | 
+| 6       | Presentazione         |  Negozia l'organizzazione complessiva di documenti o flussi di dati (ad es. XML piuttosto che JSON oppure mp3 al posto di mp4)| 
+| 5       | Sessione              |                                                                                                           |
+| 4       | Trasporto             | Segmentazione di ciascun pacchettio in più segmenti, multiplazione di più connessioni di livello 4 (uniscono processi diversi) in una stessa connessione di livello 3 (unisce due host), controllo di errore End to End (con ritrasmissione), controllo di flusso End to End, riordina i pacchetti fuori sequenza, esegue il controllo di congestione |                                                                                                           |
+| 3       | Rete                  | Indirizzamento, cioè individua il luogo fisico in cui si trova la macchina di destinazione, stabilisce il percorso migliore per raggiungerla    |                                                                         |
+| 2       | Collegamento dati     | Segmenta i messaggi lunghi aggiungendo loro l'indirizzo del mittente, esegue la multiplazione di più connessioni di livello 2 sulla stessa connsessione di livello 1, esegue il controllo di errore (senza ritrasmissione), esegue il controllo di flusso (velocità del mittente) |
+| 1       | Fisico                | Esegue la codifica/decodifica dei bit, cioè traduce i bit in segnali elettrici in trasmissione mentre traduce i segnali elettrici in bit in ricezione. Definisci gli standard meccanici ed elettrici dei canali.|
+
 ### **Canali virtuali**
 
 I **canali virtuali** sono dei **canali logici** che vengono creati grazie alla tecnica dell'**imbustamento multiplo**. I **canali logici** hanno delle funzioni in più, di cui **non** godono i **canali fisici** sottostanti, che permettono di risovere quei problemi che si incontrano per realizzare una comunicazione **universale** tra dispositivi **eterogenei**.
