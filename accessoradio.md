@@ -60,7 +60,7 @@ L'**espansione in frequenza** trasforma un segnale **lentamente variabile** nel 
 
 La trasformazione avviene **in trasmissione**, moltiplicando il segnale a banda stretta per un segnale ad **alta frequenza** che occupa tutta la banda del canale detto **chirp**. Ad **ogni sorgente** è associato un **codice di espansione** che caratterizza la sequenza dei **bit veloci** del chirp (quella contenuta in un **singolo bit lento** della sorgente).
 
-Rappresentazione della fase di chipering:
+Rappresentazione della fase di **chipering**:
 
 <img src="spread1.png" alt="alt text" width="1000">
 
@@ -71,6 +71,7 @@ L’**espansione** in frequenza di un segnale:
 - mantiene **immutata l’energia** complessiva del segnale originale, cioè l’area sottesa al segnale nel diagramma potenza – frequenza rimane la stessa (si allarga la base del segnale ma, nel contempo, si diminuisce l’altezza).
 - si **ottiene nel dominio del tempo** moltiplicando il segnale di partenza per un altro segnale di frequenza **molto maggiore** detto **chirp (o spreading code)**. L’**energia** viene così **diffusa** su **tutte** le frequenze della banda ma con una **ampiezza** molto bassa. La **moltiplicazione** trasforma un segnale lentamente variabile in uno rapidamente variabile **sostituendo** il **bit originale** con una **sequenza di bit** veloci detti **chirp**. Un **chirp** è, quindi, una sequenza che **marchia** in maniera univoca i **bit** di una certa sorgente rendendoli, in ricezione, distinguibili da quelli di qualsiasi altra.
 
+Rappresentazione della fase di **dechipering**:
 <img src="spread2.png" alt="alt text" width="1000">
 
 ### **Fase di ricezione**
