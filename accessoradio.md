@@ -78,7 +78,7 @@ Rappresentazione della fase di **dechipering**:
 
 Nel CDM le **sorgenti** occupano e **condividono** tutta la **banda** di frequenza nello **stesso tempo** e in **tutto lo spazio** sovrapponendo l’energia di una con quella dell’altra (interferenza completa). Il **ricevitore** riceve i segnali di più sorgenti sotto **forma espansa** e sovrapposti tra loro (segnali interferenti) che sono, in pratica, indistinguibili.
 
-**In ricezione** la moltiplicazione nel tempo di un segnale ricevuto per lo **stesso chirp** (o spreading code) con cui era stato espanso in trasmissione, riporta il segnale ricevuto a **banda stretta**, permettendone la **decodifica dei bit**. La moltiplicazione con quel codice avviene anche con gli **altri segnali ricevuti** ma, essendo questo diverso dal loro spreading code, li lascia a spettro espanso (proprietà di **ortogonalità**). 
+**In ricezione**, la moltiplicazione nel tempo di un segnale ricevuto per lo **stesso chirp** (o spreading code) con cui era stato espanso in trasmissione, riporta il segnale ricevuto a **banda stretta**, permettendone la **decodifica dei bit**. La moltiplicazione con quel codice avviene anche con gli **altri segnali ricevuti** ma, essendo questo diverso dal loro spreading code, li lascia a spettro espanso (proprietà di **ortogonalità**). 
 
 <img src="img/DSSS_carrier.png" alt="alt text" width="600">
 
