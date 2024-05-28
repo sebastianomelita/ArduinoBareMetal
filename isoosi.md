@@ -133,9 +133,9 @@ La reaponsabilità della implementazione dei protocolli OSI è ripartità tra va
 |---------|-----------------------|-----------------------------|
 | 7       | Applicazione          |  Applicazione| 
 | 6       | Presentazione         |  Middleware| 
-| 5       | Sessione              |   Middleware|                                                                                                       |
-| 4       | Trasporto             | Sistema operativo|                                                                                                           |
-| 3       | Rete                  |Sistema operativo|                                                                         |
+| 5       | Sessione              |   Middleware|                                                                                                       
+| 4       | Trasporto             | Sistema operativo|                                                                                                          
+| 3       | Rete                  |Sistema operativo|                                                                         
 | 2       | Collegamento dati     | Driver di scheda di rete|
 | 1       | Fisico                |HW della scheda di rete|
 
@@ -147,9 +147,9 @@ Ogni livello ha la sua PDU col prpoprio nome e un header con la sua coppia di in
 |---------|-----------------------|-----------------------------|--------------------------------|
 | 7       | Applicazione          |  Pacchetto applicativo |      account utente, certificato di sicurezza     |
 | 6       | Presentazione         |  Pacchetto applicativo |      url web         |
-| 5       | Sessione              | Pacchetto applicativo |      id di sessione       |                                                                                           |
-| 4       | Trasporto             | Segmento |       numero di porta TCP o UDP        |                                                                                                 |
-| 3       | Rete                  | Pacchetto |   indirizzo IP           |                                                           |
+| 5       | Sessione              | Pacchetto applicativo |      id di sessione       |                                                                                        
+| 4       | Trasporto             | Segmento |       numero di porta TCP o UDP        |                                                                                                
+| 3       | Rete                  | Pacchetto |   indirizzo IP           |                                                          
 | 2       | Collegamento dati     | Trama |     indirizzo MAC, numero di porta di inoltro, credenziali PPP        |
 | 1       | Fisico                | Bit |       etichetta della presa        |
 
