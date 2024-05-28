@@ -146,13 +146,14 @@ Ogni livello ha la sua PDU col prpoprio nome e un header con la sua coppia di in
 | Livello |Protocolli                |      Nome PDU     |    Indirizzo |
 |---------|-----------------------|-----------------------------|--------------------------------|
 | 7       | Applicazione          |  Pacchetto applicativo |      Credenziali utente, certificato di sicurezza     |
-| 6       | Presentazione         |  Pacchetto applicativo |      Url web         |
+| 6       | Presentazione         |  Pacchetto applicativo |      URL web         |
 | 5       | Sessione              | Pacchetto applicativo |      Id di sessione       |                                                                                        
 | 4       | Trasporto             | Segmento |       Numero di porta TCP o UDP        |                                                                                                
 | 3       | Rete                  | Pacchetto |   Indirizzo IP           |                                                          
 | 2       | Collegamento dati     | Trama |     Indirizzo MAC, numero di porta di inoltro, credenziali L2 (PPP o EAP)       |
 | 1       | Fisico                | Bit |       Etichetta della presa        |
 
+Gli indirizzi IP e URL sono mappati 1:1 uno sull'altro. L'utente conosce solo l'URL che poi viene tradotto nel corrispondente IP dal servizio DNS (di livello applicativo).
 
 ### **Architettura di riferimento**
 
