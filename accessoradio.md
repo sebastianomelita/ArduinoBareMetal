@@ -1,10 +1,10 @@
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)
 
-## **Tecnologie di accesso al canale radio**
+# **Tecnologie di accesso al canale radio**
 
-### **FDM**
+## **FDM**
 
-#### **Segnale in banda base (BB)**
+### **Segnale in banda base (BB)**
 
 Il **segnale** di una qualsiasi comunicazione viene **generato** a partire da una operazione di **trasduzione** (trasformazione da **grandezza fisica** a **segnale elettrico**) a cui poi segue, nel mondo digitale, una operazione di **campionamento** e **quantizzazione** per trasformarlo, dal mondo doppiamente **infinito** del tempo e dello spazio, a quello doppiamente **discreto** (finito) dei **campioni** e dei **livelli**, questi ultimi numerati e **codificati** in **bit**. 
 
@@ -16,7 +16,7 @@ Ogni bit viene poi **codificato** in opportuni segnali aventi una forma adatta a
 
 La **banda base** di un sistema è per larga parte sovrapponibile a quella di molti altri sistemi analoghi ma questi normalmente non si intereferiscono tra loro perchè separati grazie alla divisione di spazio (SDM), essendo confinati su dispositivi diversi con cablaggi diversi.
 
-#### **Segnale FDM**
+### **Segnale FDM**
 
 Un **segnale in banda base** è generato a partire dalla frequenza nulla fino ad una frequenza massima finita. La frequenza massima è finita perchè tutti i sistemi fisici, senza eccezione alcuna, sono considerati **passa basso**, cioè tendono **naturalmente** ad **attenuare** il segnale generato all'**aumentare** della **frequenza**. Al **di sotto** di un certo **limite** il valore del segnale è considerato fisicamente **trascurabile** (approssimazione pratica). La frequenza in cui il segnale vale la **metà** del valore a centro banda viene detta **frequenza di taglio** o frequenza a 3dB (decibel). La **frequenza di taglio** è il limite **convenzionale** della larghezza di banda di tutti i segnali in **banda base**.
 
@@ -44,7 +44,7 @@ Un segnale in **banda base**, per essere correttamente decodificato, deve divent
 
 Anche in assenza delle suddette sorgenti di rumore, esiste una sorgente di rumore ineliminabile costituita dalla **radiazione di fondo** dell'universo avente una intensità di circa -144 dBm/Hz.
 
-### **DSSS**
+## **DSSS**
 
 In realtà DSSS più che una tecnica di  **multiplazione** per l' **accesso al canale radio** è una vera e propria tecnica di **modulazione numerica** complementare alle tradizionali ASK, PSK, FSK, ecc.).
 
@@ -54,7 +54,7 @@ Nel **CDM** la sorgente viene:
 
 Nei sistemi DSSS (Direct Sequence Spread Spectrum), il **fattore di spreading** è la lunghezza della sequenza di spreading che si riflette nel numero di chip per ciascun simbolo di modulazione.
 
-##### **Fase di trasmissioneM**
+### **Fase di trasmissioneM**
 
 L'**espansione in frequenza** si ottiene trasformando artificialmente un segnale **lentamente variabile** nel tempo in uno **rapidamente variabile** nel tempo moltiplicandolo, **in trasmissione**, per un segnale ad **alta frequenza** che occupa tutta la banda del canale detto **chirp**. Ad **ogni sorgente** è associato un **codice di espansione** che caratterizza la sequenza dei **bit veloci** del chirp (quella contenuta in un **singolo bit lento** della sorgente). 
 
@@ -69,7 +69,7 @@ L’**espansione** in frequenza di un segnale:
 
 <img src="spread2.png" alt="alt text" width="1000">
 
-##### **Fase di ricezione**
+### **Fase di ricezione**
 
 Nel CDM le **sorgenti** occupano e **condividono** tutta la **banda** di frequenza nello **stesso tempo** e in **tutto lo spazio** sovrapponendo l’energia di una con quella dell’altra (interferenza completa). Il **ricevitore** riceve i segnali di più sorgenti sotto **forma espansa** e sovrapposti tra loro (segnali interferenti) che sono, in pratica, indistinguibili.
 
@@ -77,7 +77,7 @@ Nel CDM le **sorgenti** occupano e **condividono** tutta la **banda** di frequen
 
 <img src="img/DSSS_carrier.png" alt="alt text" width="600">
 
-##### **Controllo della sensibilità**
+### **Controllo della sensibilità**
 
 **Aumentando** sufficientemente il **fattore di spreading** è possibile portare la **sensibilità** sotto la soglia di **rumore di fondo** dell'universo rendendo, di fatto, le comunicazioni inintercettabili. Inoltre si riesce a far lavorare il sistema in ambienti molto disturbati, persino con rapporti **segnale/rumore negativi**.
 
@@ -85,7 +85,7 @@ Nel CDM le **sorgenti** occupano e **condividono** tutta la **banda** di frequen
 
 E' una tecnica di accesso usata dal protocollo **Zigbee** e **6LowPan** (IEEE 802.15.4).
 
-### **FHSS**
+## **FHSS**
 
 Anche FHSS potrebbe essere vista come una tecnica di **modulazione numerica**.
 
@@ -107,7 +107,7 @@ Video di simulazione [video FHSS](https://www.renishaw.com/media/video/en/82d4eb
 
 E' una tecnica di accesso usata dal protocollo **Bluetooth LBE**
 
-### **LoRa**
+## **LoRa**
 Uno degli svantaggi di un sistema DSSS è il fatto che richiede un orologio di riferimento altamente accurato (e costoso). La tecnologia LoRa Chirp Spread Spectrum (CSS) di Semtech offre un'alternativa DSSS a basso costo e a basso consumo, ma robusta, che non richiede un clock di riferimento altamente accurato.
 
 La tecnologia di livello fisico chiamata LoRa utilizza una forma **custom** (e non resa di dominio pubblico) di **spettro espanso** per modulare le comunicazioni nella banda ISM sub-GHz. LoRa utilizza bande **ISM** senza licenza. Per realizzare fisicamente la comunicazione viene utilizzata una modulazione **CSS (Chirp Spread Spectrum)**, che **espande** un segnale a **banda stretta** su un canale a larghezza di banda più ampia.
@@ -181,7 +181,7 @@ Altre **caratteristiche positive** di Lora sono:
 
 Può essere adoperato da solo, implementando su di esso uno **stack custom**, oppure come parte della pila **LoraWAN** mantenuta dalla Lora Alliance, purchè l'accesso radio rispetti le regolamentazioni valide per la banda **ISM** per cui è nato.
 
-### **TSCH**
+## **TSCH**
 
 Il **Time Slotted Channel Hopping** è una tecnologia radio che realizza un **accesso al canale singolo**, nel senso che l sorgente invia **per intero** un messaggio **in un canale** per un tempo stabilito da una **schedulazione TDM** costante e preordinata ma, alla **trama successiva** quello **slot** temporale sarà assegnato ad **un'altra frequenza** per tutta la sua durata e così accade per tutti gli altri slot di quella trama. Così, in caso di trasmissione **non riuscita** a causa di interferenze esterne o dissolvenza multi-percorso, la sua **ritrasmissione** avviene su una frequenza diversa, spesso con una migliore probabilità di successo rispetto all'utilizzo della stessa frequenza di prima. Si noti che, identificando una comunicazione con i suoi dispositivi endpoint, allora accade che tutti questi dispositivi, per ogni trama, devono condividere lo stesso slot e lo stesso canale.  La tecnica si chiama **Time Slotted Channel Hopping** o anche detta **TSCH**. Gli hop sono **più lenti** del **segnale modulato** per cui non è considerabile come una tecnica di modulazione del segnale portante. 
 
@@ -200,7 +200,7 @@ Spetta all'ente che gestisce la pianificazione assegnare una sorgente di sincron
 
 E' usata dal protocollo IEEE 802.15.4g/e, livello fisico degli stack **RIIoT**, **OpenWSN** e dalle ultime versioni di **Zigbee** e **6LowPan**.
 
-### **TSMA**
+## **TSMA**
 
 **Telegram Splitting Multiple Access** (TSMA) è una tecnica in cui un telegramma o un pacchetto viene suddiviso in molti sottopacchetti. Questi sottopacchetti vengono quindi distribuiti in modo pseudo-casuale sulla frequenza e sul tempo. Ciò rende la trasmissione resistente agli interferenti. Alcuni sottopacchetti potrebbero andare persi ma i dati possono ancora essere recuperati grazie alla correzione degli errori di inoltro (FEC). Telegram Splitting Ultra Narrow Band (TS-UNB) è una famiglia di protocolli che adotta TSMA.
 
@@ -210,7 +210,7 @@ Mentre TSCH è noto per il suo determinismo nella pianificazione delle trasmissi
 
 In breve, la realizzazione pratica del Telegram Splitting coinvolge la suddivisione dei dati in **telegrammi più piccoli** e l'utilizzo di **protocolli di accesso multiplo** per gestire le trasmissioni **concorrenti** sui canali radio.
 
-### **OFDM**
+## **OFDM**
 
 E' una tecnologia in cui i bit di una comunicazione, tramite una conversione seriale-parallelo, vengono inviati contemporaneamente su **più porzioni** di un canale di grande ampiezza (20 Mhz per il WiFi) dette **sottoportanti** (o anche **toni**). Le sottoportanti non solo sono vicine ma si **sovrappongono** in parte di uno spiazzamento stabilito. Lo **spiazzamento calibrato** opportunamente fornisce la proprietà di **ortogonalità** che garantisce alle sottoportanti di **non interferirsi** nonostante le sovrapposizioni reciproche. In pratica una **comunicazione veloce** viene suddivisa in più **comunicazioni lente** che hanno il pregio di poter essere gestite in maniera **meno critica** rispetto ai problemi associati ad un'unica veloce. 
 
@@ -227,7 +227,7 @@ Oppure potrebbero esserci molte **trasmissioni brevi** che competono per il cana
 E' adoperato dal **WiFi 5** e dalla telefonia mobile **4G**. Ha la proprietà di trasmettere dati ad **alta velocità** in ambienti con **forti interferenze**. 
 
 
-### **OFDMA**
+## **OFDMA**
 
 Realizza una **parallelizzazione** dell'accesso al canale radio da parte di **più sorgenti** abbinando alla multiplazione nel tempo anche una multiplazione nella frequenza **FDM**. 
 Infatti, nell'OFDM può accadere che la multiplazione TDM applicata a sorgenti di velocità molto diverse determini che le sorgenti più lente vengano trasmesse con brevi messaggi che, avendo i bit spalmati su tutte le sottoportanti, sono inviati sul canale radio alla massima velocità da questo consentita. L'effetto è quella di una trasmissione di brevi burst inviati, con forte ritardo, su slot molto lontani nel tempo (il tempo necessario per accumulare il numero di bit sufficiente a riempire uno slot). Se non si volesse aspettare, per diminuire il ritardo, si dovrebbe accettare di trasmettere in ogni slot lasciandolo sempre mezzo vuoto.
@@ -259,7 +259,7 @@ Nelle trasmissioni asincrone **a contesa** (WiFi 6), l'**allocazione delle RU** 
 
 **OFDMA è adoperato** dal **downlink** di **WiFi 6**, telefonia mobile **5G** e **NB IoT**.
 
-### **SC-FDMA**
+## **SC-FDMA**
 
 **SC-FDMA** ha attirato grande attenzione come **alternativa** interessante a OFDMA, specialmente nelle **comunicazioni uplink** poiché il rapporto di potenza di picco su potenza media (**PAPR**) basso avvantaggia notevolmente **il terminale mobile** in termini di efficienza della potenza di trasmissione e costi ridotti dell'amplificatore di potenza. È stato adottato come schema di accesso multiplo del 5G e del NB-IoT.
 
