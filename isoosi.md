@@ -92,7 +92,9 @@ La **ricostruzione sottostante** mira a rappresentare una rete OSI come una **in
 
 Si può osservare facilmente come alla fine, il **servizio offerto** dal livello applicativo della pila ISO/OSI, oltre a garantire l'**interoperabilità universale** tra i dispositivi, oltre ad implementare un **sistema aperto**, ha la possibilità di poter realizzare, a **livello logico** (cioè percepito), anche una **qualità del servizio** analoga a quella offerta da una **rete commutata** (rete a commutazione di circuito).  
 
-Una rete a **commutazione di circuito** è realizzata soltanto con **multiplatori TDM statici** ed è assimilabile a una **cascata di slot** prenotati su **diverse tratte** (link) ed allocati ad una **sola comunicazione**.  La **percezione** dic trovarsi in una rete a commutazione di circuito è solo approssimata ed è tanto più realistica quanto maggiore è il numero di nodi allocati e maggiore è la banda dei canali installata in modo che la variabilità dei ritardi sulle code dei multiplatori statistici si mantenga minima. 
+Una rete a **commutazione di circuito** è realizzata soltanto con **multiplatori TDM statici** ed è assimilabile a una **cascata di slot** prenotati su **diverse tratte** (link) ed allocati ad una **sola comunicazione**.  
+
+La **percezione** di trovarsi in una rete a commutazione di circuito è solo approssimata ed è tanto più realistica quanto maggiore è il numero di nodi allocati e maggiore è la banda dei canali installata in modo che la variabilità dei ritardi sulle code dei multiplatori statistici si mantenga minima. 
 
 Il **vantaggi**, incomparabilmente **maggiori** di una rete a commutazione di pacchetto rispetto ad una a circuito (con multiplatori TDM statici) sono:  la **scalabilità** ( ottenuta facilmente aggiungendo **nuovi nodi** e **nuovi link**) e l'**efficienza** (ottenuta grazie alla multiplazione statistica).
 
