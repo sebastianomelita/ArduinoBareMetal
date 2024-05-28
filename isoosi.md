@@ -96,7 +96,7 @@ Una rete a **commutazione di circuito** è realizzata soltanto con **multiplator
 
 La **percezione** di trovarsi in una rete a commutazione di circuito è solo **approssimata** ed è tanto più realistica quanto più grande è il numero dei nodi allocati e quanto maggiore è la banda dei canali installata, in modo che la **variabilità dei ritardi** (jitter) sulle **code** dei multiplatori statistici si mantenga **minima**. 
 
-Il **vantaggi**, incomparabilmente **maggiori** di una rete a commutazione di pacchetto rispetto ad una a circuito (con multiplatori TDM statici) sono:  la **scalabilità** ( ottenuta facilmente aggiungendo **nuovi nodi** e **nuovi link**) e l'**efficienza** (ottenuta grazie alla multiplazione statistica).
+Il **vantaggi**, incomparabilmente **maggiori** di una rete a commutazione di pacchetto rispetto ad una a circuito (con multiplatori TDM statici) sono:  la **scalabilità** ( ottenuta facilmente aggiungendo **nuovi nodi** e **nuovi link**) e l'**efficienza** (ottenuta grazie alla multiplazione statistica). Per contro, i canali realizzati con **multiplazione statica** mantengono ancora un'**affidabilità** e precisione temporale nella consegna (**jitter**) tutt'ora inegualiate dalle reti a pacchetto.
 
 Astrazioni interessanti sono quelle, di tipo **topologico**, che traducono una rete con molti **link fisici** in un unico **link logico** che li riassume tutti (astrazione). Questa cosa avviene tipicamente a:
 - **livello 4**, dove una **intera rete IP**, composta da **link tra router** collegati, in genere, a maglia, viene astratta in un **link tra host** diretto (**Link End-to-End** virtuale come servizio di livello 4).
