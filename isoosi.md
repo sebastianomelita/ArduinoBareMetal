@@ -145,7 +145,7 @@ Ogni livello ha la sua PDU col prpoprio nome e un header con la sua coppia di in
 
 | Livello |Protocolli                |      Nome PDU     |    Indirizzo |
 |---------|-----------------------|-----------------------------|--------------------------------|
-| 7       | Applicazione          |  Pacchetto applicativo |      Account utente, certificato di sicurezza     |
+| 7       | Applicazione          |  Pacchetto applicativo |      Credenziali utente, certificato di sicurezza     |
 | 6       | Presentazione         |  Pacchetto applicativo |      Url web         |
 | 5       | Sessione              | Pacchetto applicativo |      Id di sessione       |                                                                                        
 | 4       | Trasporto             | Segmento |       Numero di porta TCP o UDP        |                                                                                                
