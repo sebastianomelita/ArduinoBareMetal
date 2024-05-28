@@ -56,7 +56,9 @@ Nei sistemi DSSS (Direct Sequence Spread Spectrum), il **fattore di spreading** 
 
 ### **Fase di trasmissione**
 
-L'**espansione in frequenza** trasforma un segnale **lentamente variabile** nel tempo (il segnalke a banda stretta) in uno **rapidamente variabile** nel tempo (il segnale a spettro espanso).   La trasformazione **in trasmissione**, moltiplicando il segnale a banda stretta per un segnale ad **alta frequenza** che occupa tutta la banda del canale detto **chirp**. Ad **ogni sorgente** è associato un **codice di espansione** che caratterizza la sequenza dei **bit veloci** del chirp (quella contenuta in un **singolo bit lento** della sorgente). 
+L'**espansione in frequenza** trasforma un segnale **lentamente variabile** nel tempo (il segnalke a banda stretta) in uno **rapidamente variabile** nel tempo (il segnale a spettro espanso). 
+
+La trasformazione **in trasmissione**, moltiplicando il segnale a banda stretta per un segnale ad **alta frequenza** che occupa tutta la banda del canale detto **chirp**. Ad **ogni sorgente** è associato un **codice di espansione** che caratterizza la sequenza dei **bit veloci** del chirp (quella contenuta in un **singolo bit lento** della sorgente). 
 
 <img src="spread1.png" alt="alt text" width="1000">
 
