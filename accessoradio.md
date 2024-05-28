@@ -34,7 +34,7 @@ L'**intero spettro radio** è diviso convenzionalmente in **bande di frequenza**
 
 E' una forma di **evanescenza** del segnale che alterna momenti di segnale ben ricevuto a momenti di quasi totale assenza del segnale.
 
-<img src="img/main-qimg.jpeg" alt="alt text" width="700">
+<img src="img/QSB_9640_kHz_-_20140118@2245UTC_China_Radio_International.png" alt="alt text" width="700">
 
 Il **fading selettivo** in frequenza è principalmente causato dal **multipath fading**, un fenomeno dove il segnale trasmesso raggiunge il ricevitore attraverso **diversi percorsi**. Questi percorsi multipli possono essere causati da:
 - **Riflessioni**: Il segnale rimbalza su edifici, montagne, o altre superfici.
