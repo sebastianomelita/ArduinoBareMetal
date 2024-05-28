@@ -145,13 +145,13 @@ Ogni livello ha la sua PDU col prpoprio nome e un header con la sua coppia di in
 
 | Livello |Protocolli                |      Nome PDU     |    Indirizzo |
 |---------|-----------------------|-----------------------------|--------------------------------|
-| 7       | Applicazione          |  Pacchetto applicativo |      account utente, certificato di sicurezza     |
-| 6       | Presentazione         |  Pacchetto applicativo |      url web         |
-| 5       | Sessione              | Pacchetto applicativo |      id di sessione       |                                                                                        
-| 4       | Trasporto             | Segmento |       numero di porta TCP o UDP        |                                                                                                
-| 3       | Rete                  | Pacchetto |   indirizzo IP           |                                                          
-| 2       | Collegamento dati     | Trama |     indirizzo MAC, numero di porta di inoltro, credenziali PPP        |
-| 1       | Fisico                | Bit |       etichetta della presa        |
+| 7       | Applicazione          |  Pacchetto applicativo |      Account utente, certificato di sicurezza     |
+| 6       | Presentazione         |  Pacchetto applicativo |      Url web         |
+| 5       | Sessione              | Pacchetto applicativo |      Id di sessione       |                                                                                        
+| 4       | Trasporto             | Segmento |       Numero di porta TCP o UDP        |                                                                                                
+| 3       | Rete                  | Pacchetto |   Indirizzo IP           |                                                          
+| 2       | Collegamento dati     | Trama |     Indirizzo MAC, numero di porta di inoltro, credenziali PPP        |
+| 1       | Fisico                | Bit |       Etichetta della presa        |
 
 
 ### **Architettura di riferimento**
