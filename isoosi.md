@@ -99,7 +99,7 @@ Una **eccezione** notevole fanno le **LAN**, dove una **intera rete** LAN, compo
 - uno **esterno alla LAN** che si occupa della consegna dei pacchetti **tra i router di confine** delle LAN sorgenti e destinazione. Realizza un **inoltro** di **pacchetti IP** tra **router**.
 - uno **interno alla LAN** che si occupa della consegna dei pacchetti tra l'**host sorgente** e il **router di confine** delle LAN **sorgente** e della consegna tra il **router di confine** della LAN di **destinazione** e l'**host** di destinazione. Realizza un **inoltro** di **trame MAC** tra **SW**.
   
-#### **Pacchetto vs circuito (statico vs dinamico)**
+#### **Pacchetto vs circuito (multiplazione statica vs multiplazione dinamica)**
 
 Una rete a **commutazione di circuito** è realizzata soltanto con **multiplatori TDM statici** ed è assimilabile a una **cascata di slot** prenotati su **diverse tratte** (link) ed allocati ad una **sola comunicazione**.  
 
