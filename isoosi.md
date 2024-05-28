@@ -151,6 +151,8 @@ La reaponsabilità della implementazione dei protocolli OSI è ripartità tra va
 | 2       | Collegamento dati     | Driver di scheda di rete|
 | 1       | Fisico                |HW della scheda di rete|
 
+Quando **non esiste** un **middleware installato** sul sistema che realizza i protocolli di **sessione e presentazione**, allora queste funzioni, anche se nella maiera più parziale possibile, **vengono svolte** direttamente **dall'applicazione**.
+
 ### **Indirizzi e PDU**
 
 Ogni livello ha la sua PDU col prpoprio nome e un header con la sua coppia di indirizzi sorgente/destinazione che servono ad identificare univocamente una entità di quel livello all'interno dello stesso:
