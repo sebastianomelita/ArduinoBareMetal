@@ -150,7 +150,7 @@ Ogni livello ha la sua PDU col prpoprio nome e un header con la sua coppia di in
 | 5       | Sessione              | Pacchetto applicativo |      Id di sessione       |                                                                                        
 | 4       | Trasporto             | Segmento |       Numero di porta TCP o UDP        |                                                                                                
 | 3       | Rete                  | Pacchetto |   Indirizzo IP           |                                                          
-| 2       | Collegamento dati     | Trama |     Indirizzo MAC, numero di porta di inoltro, credenziali PPP        |
+| 2       | Collegamento dati     | Trama |     Indirizzo MAC, numero di porta di inoltro, credenziali L2 (PPP o EAP)       |
 | 1       | Fisico                | Bit |       Etichetta della presa        |
 
 
