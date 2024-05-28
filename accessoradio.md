@@ -26,7 +26,7 @@ L'operazione è analoga a quella di prelevare dalla **finestra** di un montacari
 
 L'**intero spettro radio** è diviso convenzionalmente in **bande di frequenza** che sono riservate ad una certa **categoria di servizi**. Ogni banda di frequenza è divisa in **canali** che sono allocati ad una certa **comunicazione** (sorgente), secondo **politiche** che possono essere **statiche** o **dinamiche**:
 - Quelle **statiche** rimangono **fisse** per tutta la durata della comunicazione e la loro allocazione è stabilita nella fase di **apertura** di questa (protocolli connessi). **No**n viene **modificata** la frequenza della comunicazione finchè questa resta aperta.
-- Quelle **dinamiche** vengono allocate, senza impegno preordinato, al momento della **trasmissione** (protocolli non connessi). La frequenza della comunicazione potrebbe essere modificata anche durante la comunicazione (**frequency hopping**).
+- Quelle **dinamiche** vengono allocate, senza impegno preordinato, al momento della **trasmissione** (protocolli non connessi). La **frequenza centrale** del canale potrebbe essere modificata anche durante la comunicazione (**frequency hopping**).
 
 <img src="img/main-qimg.jpeg" alt="alt text" width="700">
 
