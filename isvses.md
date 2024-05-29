@@ -67,7 +67,7 @@ La migliore soluzione per evitare le collisioni è di patizionare gli Hub in seg
 ### **Dispositivi di inoltro di Livello 7**
 
 
-<img src="img/isl7.png" alt="alt text" width="700"> 
+<img src="img/isl7.png" alt="alt text" width="1000"> 
 
 
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
