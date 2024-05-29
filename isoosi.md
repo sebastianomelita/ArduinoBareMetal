@@ -141,15 +141,15 @@ In figura la lettera H sta per **header** cioè intestazione (ad es. AH=Applicat
 
 La reaponsabilità della implementazione dei protocolli OSI è ripartità tra vari moduli SW e da un livello HW:
 
-| Livello |Protocolli                |      Chi li implementa                        |
-|---------|-----------------------|-----------------------------|
-| 7       | Applicazione          |  Applicazione| 
-| 6       | Presentazione         |  Middleware| 
-| 5       | Sessione              |   Middleware|                                                                                                       
-| 4       | Trasporto             | Sistema operativo|                                                                                                          
-| 3       | Rete                  |Sistema operativo|                                                                         
-| 2       | Collegamento dati     | Driver di scheda di rete|
-| 1       | Fisico                |HW della scheda di rete|
+| Livello |Protocolli                |      Chi li implementa   | Dove girano |
+|---------|-----------------------|-----------------------------|-----------------------------|
+| 7       | Applicazione          |  Applicazione| Host |
+| 6       | Presentazione         |  Middleware|  Host  |
+| 5       | Sessione              |   Middleware|   Host     |                                                                                                
+| 4       | Trasporto             | Sistema operativo|   Host     |                                                                                                    
+| 3       | Rete                  |Sistema operativo|    Router, host      |                                                               
+| 2       | Collegamento dati     | Driver di scheda di rete| Switch, bridge, router, host|
+| 1       | Fisico                |HW della scheda di rete| | Hub, switch, bridge, router, host
 
 Quando **non esiste** un **middleware installato** sul sistema che realizza i protocolli di **sessione e presentazione**, allora queste funzioni, anche se nella maiera più parziale possibile, **vengono svolte** direttamente **dall'applicazione**.
 
