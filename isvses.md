@@ -40,8 +40,6 @@ le SDU dei livelli inferiori vengono sbustate all’ingresso del nodo fino a est
 
 Il nodo legge l’indirizzo di livello N e in base a questo sceglie l’indirizzo di livello inferiore a cui inoltrare la N-1 - PDU
 
-Dispositivi di inoltro di Livello 1![image](https://github.com/sebastianomelita/ArduinoBareMetal/assets/18554803/2b03a509-15dc-4361-ad69-3648540de275)
-
 ### **Dispositivi di inoltro di Livello 1**
 
 Non avendo un livello inferiore si limitano ad inoltrare bit da un ingresso a una o più uscite. Sono adoperati in reti geografiche commutate (WAN)  e nelle reti locali (LAN). Possono essere:
