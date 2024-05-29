@@ -57,12 +57,12 @@ La migliore soluzione per evitare le collisioni è di patizionare gli Hub in seg
 - un tentativo di trasmissione su un hub non viene visto dagli altri hub e non può interferire con le loro trasmissioni. Questo processo è chiamato “SEGMENTAZIONE”. 
 
 ### **Dispositivi di inoltro di Livello 2**
-<img src="img/isl2.png" alt="alt text" width="500">  
+<img src="img/isl2.png" alt="alt text" width="600">  
 
 ### **Dispositivi di inoltro di Livello 3**
 
 
-<img src="img/isl3.png" alt="alt text" width="500">  
+<img src="img/isl3.png" alt="alt text" width="600">  
 
 ### **Dispositivi di inoltro di Livello 7**
 
