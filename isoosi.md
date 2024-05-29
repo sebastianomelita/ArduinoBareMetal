@@ -149,7 +149,7 @@ La reaponsabilità della implementazione dei protocolli OSI è ripartità tra va
 | 4       | Trasporto             | Sistema operativo|   Host     |                                                                                                    
 | 3       | Rete                  |Sistema operativo|    Router, host      |                                                               
 | 2       | Collegamento dati     | Driver di scheda di rete| Switch, bridge, router, host|
-| 1       | Fisico                |HW della scheda di rete| | Hub, switch, bridge, router, host |
+| 1       | Fisico                |HW della scheda di rete| Hub, switch, bridge, router, host |
 
 Quando **non esiste** un **middleware installato** sul sistema che realizza i protocolli di **sessione e presentazione**, allora queste funzioni, anche se nella maiera più parziale possibile, **vengono svolte** direttamente **dall'applicazione**.
 
