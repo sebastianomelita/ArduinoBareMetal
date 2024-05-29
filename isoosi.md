@@ -155,7 +155,7 @@ Quando **non esiste** un **middleware installato** sul sistema che realizza i pr
 
 ### **Indirizzi e PDU**
 
-Ogni livello ha la sua PDU col prpoprio nome e un header con la sua coppia di indirizzi sorgente/destinazione che servono ad identificare univocamente una entità di quel livello all'interno dello stesso:
+Ogni livello ha la sua PDU col proprio nome e un header con la sua coppia di indirizzi sorgente/destinazione che servono ad identificare univocamente una entità di quel livello all'interno dello stesso:
 
 | Livello |Protocolli                |      Nome PDU     |    Indirizzo |
 |---------|-----------------------|-----------------------------|--------------------------------|
