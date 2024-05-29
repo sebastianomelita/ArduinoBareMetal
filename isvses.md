@@ -30,5 +30,36 @@ I **collegamenti tra nodi IS** sono **risorse comuni** a molte comunicazioni.
 
 I nodi di IS di commutazione (switch o router) partecipano attivamente nel realizzare la **privacy** dell'utente perchè, nell'ultimo smistamento, quello verso un ES, inoltrano i dati solo a quel nodo ES a cui sono destinati, questo perchè il link tra un nodo e il suo IS è sempre **dedicato** (punto-punto). La stessa cosa non accade quando il collegamento tra un nodo IS e un ES avviene con **mezzi broadcast** come i **BUS** dove un unico filo collega molti ES.
 
+### **Nodi di smistamento**
+
+I sistemi intermedi sono dei nodi che in genere hanno funzione di smistamento dei pacchetti (PDU) che eseguono in base agli indirizzi (header) di un solo livello che è il loro livello di lavoro.
+
+I sistemi che lavorano ad un livello N sono un argine invalicabile per le PDU dei livelli inferiori, queste non possono direttamente attraversarli. 
+
+le SDU dei livelli inferiori vengono sbustate all’ingresso del nodo fino a estrarre la N-PDU che viene esaminata, smistata e reimbustata all’uscita del nodo su nuove PDU di livello inferiore. 
+
+Il nodo legge l’indirizzo di livello N e in base a questo sceglie l’indirizzo di livello inferiore a cui inoltrare la N-1 - PDU
+
+Dispositivi di inoltro di Livello 1![image](https://github.com/sebastianomelita/ArduinoBareMetal/assets/18554803/2b03a509-15dc-4361-ad69-3648540de275)
+
+### **Dispositivi di inoltro di Livello 1**
+
+Non avendo un livello inferiore si limitano ad inoltrare bit da un ingresso a una o più uscite. Sono adoperati in reti geografiche commutate (WAN)  e nelle reti locali (LAN). Possono essere:
+- **Repeater**. Tutti i mezzi trasmissivi introducono una attenuazione e un degrado complessivo del segnale (elettrico o luminoso) proporzionale alla **distanza** da questo percorsa. Un ripetitore riceve un segnale debole (o deteriorato) e lo ritrasmette **amplificato** (o rigenerato), in modo tale da raggiungere lunghe distanze con una qualità sufficiente a renderlo **intelleggibile**. E' usato talvolta in ambito wireless. 
+- **Hub**. Un HUB, come concentratore di host,  è a tutti gli effetti un REPEATER a più porte che realizza, secondo una topologia fisica interna a stella, un collegamento logico a bus. Le schede di rete dei vari host collegati vedono l’hub come un unico mezzo trasmissivo **comune** a tutti e pertanto vi accedono usando il protocollo di condivisione del mezzo **CSMA/CD**. Gli **hub a filo** ormai sono obsoleti e introvabili commercialmente mentre sono molto comuni nelle reti wireless sotto forma di **Access Point WiFi (AP)** che ineragiscono con i client WiFi mediante il protocollo **CSMA/CA**. Rimane com une l'uso dei BUS a filo in ambito industriale e domotico, governati con protocolli a contesa o determnistici costituiti da un unico filo passante per tutti i dispositivi. Ma in questo caso non si tratta concettualmente di hub.
+
+Gli hub soffrono del problema delle collisioni per cui si dice che un hub costituisce un unico “dominio di collisione” perche’ qualsiasi coppia di stazioni che provi a trasmettere contemporaneamente genera una collisione. Due o più hub connessi insieme sullo stesso canale creano un unico dominio di collisione: il traffico intenso tra due host congestiona sempre quello di tutti gli altri. 
+
+Un hub è un dispositivo che a tutti gli effetti partecipa alla creazione di una LAN, insieme agli Switch e ai Bridge.
+
+La migliore soluzione per evitare le collisioni è di patizionare gli Hub in segmenti isolati (per le collisioni). A tale scopo è possibile dividere i segmenti broadcast con BRIDGE oppure con SWITCH o con Router. Infatti i dispositivi L2 e L3 bloccano i bit di livello 1 all’ingresso delle loro porte, pertanto:
+- non propagano tra una Hub e l’altro le trame corrotte risultanti da una collisione.
+- un tentativo di trasmissione su un hub non viene visto dagli altri hub e non può interferire con le loro trasmissioni. Questo processo è chiamato “SEGMENTAZIONE”. 
+
+
+
+
+
+
 
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
