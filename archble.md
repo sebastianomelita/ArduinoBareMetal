@@ -253,7 +253,7 @@ I pacchetti di **advertisement** sono periodici e sono messaggi di beacon trasme
 ### **Topologia connessa**
 Il **beacon collegabile** (o periferica) è un dispositivo Bluetooth a bassa energia in **modalità periferica**, il che significa che può non solo trasmettere, ma anche **ricevere** e quindi potrebbe anche essere **interrogato periodicamente** per interagire con i **servizi** implementati sul dispositivo beacon effettuando:
 - **letture (R)**. Il beacon potrebbe essere interrogato per effettuare, ad esempio, il polling di alcuni sensori, o per conoscere lo stato delle sue batterie.
-- **notifiche (N)**. Il master (centrale o Client) potrebbe **registrasi** per ottenere la notifica di qualche evento gestito dal beacon, ad esempio un segnale quando un valore di interesse scende sotto una certa soglia.
+- **notifiche (N)**. Il master (centrale o Client) potrebbe **registrarsi** per ottenere la notifica di qualche evento gestito dal beacon, ad esempio un segnale quando un valore di interesse scende sotto una certa soglia.
 - **scritture (W)**. I servizi forniscono una o più caratteristiche che potrebbero essere modificate da un dispositivo peer. Un esempio di queste caratteristiche potrebbe essere la stringa di dati che rappresenta le informazioni trasmesse dal beacon. In questo modo è possibile avere un **beacon configurabile** che può essere facilmente aggiornato via etere proprio attraverso il bluetooth.
 
 Gli **attori** di questa modalità sono sempre **due**:
