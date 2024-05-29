@@ -139,7 +139,7 @@ In figura la lettera H sta per **header** cioè intestazione (ad es. AH=Applicat
 
 ### **Implementazione dei protocolli**
 
-La reaponsabilità della implementazione dei protocolli OSI è ripartità tra vari moduli SW e da un livello HW:
+La responsabilità della implementazione dei protocolli OSI è ripartità tra vari moduli SW e da un livello HW:
 
 | Livello |Protocolli                |      Chi li implementa   | Dove girano | Chi collegano  |
 |---------|-----------------------|-----------------------------|-----------------------------|-----------------------------| 
