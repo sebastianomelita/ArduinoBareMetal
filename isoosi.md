@@ -151,7 +151,7 @@ La responsabilità della implementazione dei protocolli OSI è ripartità tra va
 | 2       | Collegamento dati     | Driver di scheda di rete| Switch, bridge, router, host| NIC |
 | 1       | Fisico                |HW della scheda di rete| Hub, switch, bridge, router, host | Prese  |
 
-Quando **non esiste** un **middleware installato** sul sistema che realizza i protocolli di **sessione e presentazione**, allora queste funzioni, anche se nella maiera più parziale possibile, **vengono svolte** direttamente **dall'applicazione**.
+Quando **non esiste** un **middleware installato** sul sistema che realizza i protocolli di **sessione e presentazione**, allora queste funzioni, anche se nella maniera più parziale possibile, **vengono svolte** direttamente **dall'applicazione**.
 
 ### **Indirizzi e PDU**
 
