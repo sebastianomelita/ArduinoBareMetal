@@ -57,6 +57,16 @@ La migliore soluzione per evitare le collisioni è di patizionare gli Hub in seg
 - un tentativo di trasmissione su un hub non viene visto dagli altri hub e non può interferire con le loro trasmissioni. Questo processo è chiamato “SEGMENTAZIONE”. 
 
 ### **Dispositivi di inoltro di Livello 2**
+I bridge sono degli IS costruiti per lavorare in modalità **store and forward**, cioè tutti **frame ethernet** vengono :
+- completamente **memorizzati** (store) per controllare la loro integrità e leggere l’**indirizzo MAC** di destinazione.
+- Elaborati per determinare in base all’indirizzo di MAC la **porta** su cui inoltrarlo (commutazione). L'elaborazione consiste nella **ricerca** (lookup)  del **MAC di destinazione** in una **tabella di commutazione** che contiene un elenco di righe con la corrispondenza [indirizzo MAC - porta di uscita]. 
+- inoltrati (forward) in uscita sulla  porta scelta. La multiplazione SDM di più trame su diverse porte di ingresso che devono andare, nello stesso istante, sulla stessa porta di uscita, si risolve con la multiplazione statistica TDM, delle stesse trame, su una coda posta davanti al canale di quella porta.
+
+Scopo dei buffer:
+- Memorizzazione completa per permettere il controllo di integrità e la lettura dell’indirizzo.
+- Accodamento trame per adattare temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
+- Risoluzione di una eventuale contesa della linea sulla porta di uscita da parte delle trame provenienti da più porte di ingresso (multiplazione statistica).
+
 <img src="img/isl2.png" alt="alt text" width="1000">  
 
 ### **Dispositivi di inoltro di Livello 3**
