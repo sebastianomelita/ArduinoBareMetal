@@ -124,7 +124,7 @@ La **topologia L2** si basa su una **rete fisica a stella** in cui uno switch ce
 
 Una **LAN** (Local Area Network) è l'infrastruttura di rete interna ad edifici di natura residenziale, commerciale ed amministrativa per realizzare l'interconnessione tra PC e servizi interni e tra PC e Internet per la fruizione di quelli esterni. Una LAN ha le seguenti proprietà basilari:
 - realizza **a L3** un **collegamento diretto** tra tutti gli Host ad essa collegati fisisicamente, cioè a L3 essa appare una **maglia completa** di **collegamenti virtuali**, a prescindere dalla **topologia fisica** formata dai dispositivi che la compongono.
-- ha i suoi confini sui link fisici che essa realizza su dei **router** che sono dei limiti invalicabili all'inoltro diretto dei messaggi IP tra gli host e vengono detti, per l'appunto, **router di confine**. 
+- ha i suoi confini su ogni link fisico che essa realizza su un **router**. I router sono dei limiti invalicabili all'inoltro diretto dei messaggi IP tra gli host e vengono detti, per l'appunto, **router di confine**. 
 - all'interno della LAN le trame MAC vengono smistate attraverso i dispositivi L2 ed L1 senza essere modificate. I pacchetti IP vengono inoltrati direttamente ai loro destinatari senza necessità che siano sbustati.
 - gli invii di pacchetti al di fuori della LAN, cioè quelli al di la di un **router di confine**, può avvenire solamente con lo sbustamento dei pacchetti IP dalla loro trama di sorgente e il loro successivo reimbustamento su nuove trame all'uscita dal router.
 - si collega ad Internet proprio mediante un **router di confine** che realizza anch'esso **ad L3** dei **collegamenti virtuali diretti** tra lui e **tutti gli Host** della LAN.
