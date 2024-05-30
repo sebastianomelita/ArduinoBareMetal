@@ -117,7 +117,7 @@ La **topologia L2** si basa su una **rete fisica a stella** in cui uno switch ce
 - Lo **switch smista** le trame L2 in maniera così veloce da far «percepire» al le connessioni tra se e tutti i PC come dirette e simultanee. Un vicino (lo switch) ad L2, diventa N vicini (i PC) ad L3.
 - Di fatto, si realizza, grazie ad un **TDM sufficientemente veloce** dello switch in L2, un **SDM virtuale** che, apparentemente, realizza in L3 una **rete magliata** di PC collegati ad un router.
 
-Quanto visto per gli Switch (e quindi i bridge) vale anche per gli Hub (sia wireless che cablati), per cui un collegamento a Bus qualsiasi con un mezzo broadcast (filo o onde radio) ha la proprietà di essere visto dai router come un **collegamento virtuale diretto** tra essi e **ciascun Host** collegato al **mezzo a Bus**. La stessa proprietà, su un mezzo a Bus, ce l'hanno i **collegamenti reciproci** tra gli host.  
+Quanto visto per gli Switch (e quindi i bridge) vale anche per gli **Hub (sia wireless che cablati)**, per cui un collegamento a Bus qualsiasi con un mezzo broadcast (filo o onde radio) ha la proprietà di essere visto dai router come un **collegamento virtuale diretto** tra essi e **ciascun Host** collegato al **mezzo a Bus**. La stessa proprietà, su un mezzo a Bus, ce l'hanno i **collegamenti reciproci** tra gli host.  
 
 ## **LAN**
 
