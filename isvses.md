@@ -60,7 +60,7 @@ La migliore soluzione per evitare le collisioni è di patizionare gli Hub in seg
 
 ### **Dispositivi di inoltro di Livello 2**
 
-I dispositivi di **livello 2** sono un **barriera** per la propagazione del flusso di bit provenienti dai dispositivi di livello 1 che viene memorizzato ed osservato per isolare, di volta in volta, le **trame** in arrivo. Ogni trama viene, a questo punto, **smistata** su una **porta di uscita** in base al suo **indirizzo di destinazione** per trovare sempre la porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. 
+I dispositivi di **livello 2** sono un **barriera** per la propagazione del flusso di bit provenienti dai dispositivi di livello 1 che viene memorizzato ed osservato per isolare, di volta in volta, le **trame** in arrivo. Ogni trama viene, a questo punto, **smistata** su una **porta di uscita** in base al suo **indirizzo di destinazione** in modo da scegliere sempre una porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. 
 
 In sostanza, si fa una **selezione** delle **trame** per decidere **dove** inviarle.
 
@@ -78,7 +78,7 @@ Scopo dei **buffer** (coda):
 
 ### **Dispositivi di inoltro di Livello 3**
 
-I dispositivi di **livello 2** sono un **barriera** per la propagazione delle trame provenienti dai dispositivi di livello 2 che vengono, di volta in volta, **sbustate** per recuperare il loro payload, cioè i pacchetti di livello 3. Ogni pacchetto viene, a questo punto, **smistato** su una **porta di uscita** in base al suo **indirizzo di destinazione IP** per trovare sempre la porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. 
+I dispositivi di **livello 2** sono un **barriera** per la propagazione delle trame provenienti dai dispositivi di livello 2 che vengono, di volta in volta, **aperte** per recuperare il loro payload, cioè per **sbustare** i pacchetti di livello 3. Ogni pacchetto viene, a questo punto, **smistato** su una **porta di uscita** in base al suo **indirizzo di destinazione IP** in modo da scegliere sempre una porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. 
 
 In sostanza, si fa uno sbustameto e una una **selezione** dei **pacchetti** per decidere **dove** inviarli. Una volta **scelta la porta** nelle direzione giusta, i pacchetti vengono **reimbustati** in una nuova trama MAC da inviare sul link in uscita.
 
@@ -96,8 +96,10 @@ Scopo dei **buffer** (coda):
 
 ### **Dispositivi di inoltro di Livello 7**
 
+I dispositivi di **livello 2** sono un **barriera** per la propagazione dei pacchetti provenienti dai dispositivi di livello inferiore al 7 che vengono, di volta in volta, **aperti** per recuperare il loro payload, cioè per **sbustare** i pacchetti di livello qualsisi. per cominciare, ogni pacchetto L3 viene **smistato** su una **porta di uscita** in base al suo **indirizzo di destinazione IP** presente sulla sua busta di **livello 3**, in modo da scegliere sempre una porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. 
+
+In sostanza, si fa uno sbustameto e una una **selezione** dei **pacchetti** per decidere **dove** inviarli. Una volta **scelta la porta** nelle direzione giusta, i pacchetti non vengono subito **reimbustati** in una nuova trama MAC da inviare sul link in uscita, ma vengono ulteriormente sbustati fino allo sbustamento finale del pacchetto applicvativo di livello 7. Lo scopo è quello, evidentemente, di inviarlo in una nuova rete che possiede, ad ogni livel,lo della pila OSI, protocolli completamente diversi. La traduzione dell'indirizzo L3 della rete di arrivo nell'indirizzo L3 della rete di destinazione è una operazione non particolarmente semplice per cui questo tipo di operazione si fa raramente. Più comune è adoperare indirizzi di levello 7 come gli Id del dispositivo e indirizzi di gruppo L7, come i topic MQTT, per individuare i destinatari.
 
 <img src="img/isl7.png" alt="alt text" width="600"> 
-
 
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
