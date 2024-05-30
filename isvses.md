@@ -60,7 +60,9 @@ La migliore soluzione per evitare le collisioni è di patizionare gli Hub in seg
 
 ### **Dispositivi di inoltro di Livello 2**
 
-I dispositivi di **livello 2** sono un **barriera** per la propagazione del flusso di bit provenienti dai dispositivi di livello 1 che viene memorizzato ed osservato per isolare, di volta in volta, le **trame** in arrivo. Ogni trama viene, a questo punto, **smistata** su una **porta di uscita** in base al suo **indirizzo di destinazione** per trovare sempre la porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. In sostanza, si fa una **selezione** delle **trame** per decidere **dove** inviarle.
+I dispositivi di **livello 2** sono un **barriera** per la propagazione del flusso di bit provenienti dai dispositivi di livello 1 che viene memorizzato ed osservato per isolare, di volta in volta, le **trame** in arrivo. Ogni trama viene, a questo punto, **smistata** su una **porta di uscita** in base al suo **indirizzo di destinazione** per trovare sempre la porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. 
+
+In sostanza, si fa una **selezione** delle **trame** per decidere **dove** inviarle.
 
 <img src="img/isl2.png" alt="alt text" width="1000">  
 
@@ -76,7 +78,9 @@ Scopo dei **buffer** (coda):
 
 ### **Dispositivi di inoltro di Livello 3**
 
-I dispositivi di **livello 2** sono un **barriera** per la propagazione delle trame provenienti dai dispositivi di livello 2 che vengono, di volta in volta, **sbustate** per recuperare il loro payload, cioè i pacchetti di livello 3. Ogni pacchetto viene, a questo punto, **smistato** su una **porta di uscita** in base al suo **indirizzo di destinazione IP** per trovare sempre la porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. In sostanza, si fa uno sbustameto e una una **selezione** dei **pacchetti** per decidere **dove** inviarli. Una volta **scelta la porta** nelle direzione giusta, i pacchetti vengono **reimbustati** in una nuova trama MAC da inviare sul link in uscita.
+I dispositivi di **livello 2** sono un **barriera** per la propagazione delle trame provenienti dai dispositivi di livello 2 che vengono, di volta in volta, **sbustate** per recuperare il loro payload, cioè i pacchetti di livello 3. Ogni pacchetto viene, a questo punto, **smistato** su una **porta di uscita** in base al suo **indirizzo di destinazione IP** per trovare sempre la porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. 
+
+In sostanza, si fa uno sbustameto e una una **selezione** dei **pacchetti** per decidere **dove** inviarli. Una volta **scelta la porta** nelle direzione giusta, i pacchetti vengono **reimbustati** in una nuova trama MAC da inviare sul link in uscita.
 
 <img src="img/isl3.png" alt="alt text" width="1000">  
 
