@@ -106,4 +106,19 @@ Oppure usare meccanismi di imbustamento **fuori ordine** come il **tunnelling** 
 
 <img src="img/isl7.png" alt="alt text" width="600"> 
 
+#### **Commutazione L2 e ISO/OSI**
+
+
+La commutazione L2 in ISO/OSI semplicemente NON esiste. Si tratta di una funzione non prevista nello stack e presente solo all’interno delle LAN.
+
+<img src="img/broadcastl3.png" alt="alt text" width="600"> 
+
+La topologia L2 si basa su una rete fisica a stella in cui uno switch centrale smista i pacchetti L3 tra i router.
+- Ciascun router, lavorando ad L3, non vede il collegamento  a stella con tutti gli altri router mediato dallo switch, ma vede N link DIRETTI tra lui e tutti gli altri router. Ciascuno degli N link però è soltanto logico (virtuale), non è fisico:
+- Lo switch smista le trame L2 in maniera così veloce da far «percepire» a ciascun router le connessioni tra se e tutti gli altri router come dirette e simultanee. Un vicino (lo switch) ad L2 diventa N vicini (i router) ad L3.
+- Di fatto, si realizza, grazie al TDM estremamente veloce dello switch in L2, un SDM virtuale che, apparentemente, realizza in L3 una rete magliata di router.
+
+
+
+
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
