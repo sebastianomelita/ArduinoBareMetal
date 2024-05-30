@@ -42,7 +42,7 @@ Il nodo legge l’indirizzo di livello N e in base a questo sceglie l’indirizz
 
 ### **Dispositivi di inoltro di Livello 1**
 
-<img src="img/isl1.png" alt="alt text" width="500">  
+<img src="img/isl1.png" alt="alt text" width="1000">  
 
 Non avendo un livello inferiore si limitano ad inoltrare bit da un ingresso a una o più uscite. Sono adoperati in reti geografiche commutate (WAN)  e nelle reti locali (LAN). Possono essere:
 - **Repeater**. Tutti i mezzi trasmissivi introducono una attenuazione e un degrado complessivo del segnale (elettrico o luminoso) proporzionale alla **distanza** da questo percorsa. Un ripetitore riceve un segnale debole (o deteriorato) e lo ritrasmette **amplificato** (o rigenerato), in modo tale da raggiungere lunghe distanze con una qualità sufficiente a renderlo **intelleggibile**. E' usato talvolta in ambito wireless. 
