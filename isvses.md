@@ -64,9 +64,9 @@ I dispositivi di **livello 2** sono un **barriera** per la propagazione del flus
 
 <img src="img/isl2.png" alt="alt text" width="1000">  
 
-I bridge sono degli IS costruiti per lavorare in modalità **store and forward**, cioè tutti **frame ethernet** vengono :
+I **bridge** sono degli **IS** costruiti per lavorare in modalità **store and forward**, cioè tutti **frame ethernet** vengono :
 - completamente **memorizzati** (store) per controllare la loro integrità e leggere l’**indirizzo MAC** di destinazione.
-- Elaborati per determinare in base all’indirizzo di MAC la **porta** su cui inoltrarlo (commutazione). L'elaborazione consiste nella **ricerca** (lookup)  del **MAC di destinazione** in una **tabella di commutazione** che contiene un elenco di righe con la corrispondenza [indirizzo MAC - porta di uscita]. 
+- Elaborati per determinare in base all’indirizzo di MAC la **porta** su cui inoltrarlo (commutazione). L'elaborazione consiste nella **ricerca** (lookup)  del **MAC di destinazione** in una **tabella di inoltro** che contiene un elenco di righe con la corrispondenza [indirizzo MAC - porta di uscita]. 
 - **inoltrati** (forward) in uscita sulla  porta scelta. La **multiplazione SDM** di più trame su diverse porte di ingresso che, nello stesso istante, devono andare sulla **stessa porta** di uscita, si trasforma nella **multiplazione statistica TDM**, delle stesse trame, sulla **coda** posta davanti al canale di quella porta.
 
 Scopo dei **buffer** (coda):
@@ -74,12 +74,21 @@ Scopo dei **buffer** (coda):
 - Accodamento trame per **adattare** temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
 - Risoluzione di una eventuale **contesa** della linea sulla porta di uscita da parte delle trame provenienti da più porte di ingresso (multiplazione statistica).
 
-
-
 ### **Dispositivi di inoltro di Livello 3**
 
+I dispositivi di **livello 2** sono un **barriera** per la propagazione delle trame provenienti dai dispositivi di livello 2 che vengono, di volta in volta, **sbustate** per recuperare il loro payload, cioè i pacchetti di livello 3. Ogni pacchetto viene, a questo punto, **smistato** su una **porta di uscita** in base al suo **indirizzo di destinazione IP** per trovare sempre la porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. In sostanza, si fa uno sbustameto e una una **selezione** dei **pacchetti** per decidere **dove** inviarli. Una volta **scelta la porta** nelle direzione giusta, i pacchetti vengono **reimbustati** in una nuova trama MAC da inviare sul link in uscita.
 
 <img src="img/isl3.png" alt="alt text" width="1000">  
+
+Anche i **router** sono degli **IS** costruiti per lavorare in modalità **store and forward**, cioè tutti **i pacchetti** vengono :
+- completamente **memorizzati** (store) per controllare la loro integrità e leggere l’**indirizzo IP** di destinazione.
+- Elaborati per determinare in base all’indirizzo di IP la **porta** su cui inoltrarlo (commutazione). L'elaborazione consiste nella **ricerca** (lookup)  dell'**IP di destinazione** in una **tabella di routing** che contiene un elenco di righe con la corrispondenza [indirizzo IP - porta di uscita]. 
+- **inoltrati** (forward) in uscita sulla  porta scelta. La **multiplazione SDM** di più trame su diverse porte di ingresso che, nello stesso istante, devono andare sulla **stessa porta** di uscita, si trasforma nella **multiplazione statistica TDM**, delle stesse trame, sulla **coda** posta davanti al canale di quella porta.
+
+Scopo dei **buffer** (coda):
+- Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo di destinazione**.
+- Accodamento trame per **adattare** temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
+- Risoluzione di una eventuale **contesa** della linea sulla porta di uscita da parte delle trame provenienti da più porte di ingresso (multiplazione statistica).
 
 ### **Dispositivi di inoltro di Livello 7**
 
