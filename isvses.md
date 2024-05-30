@@ -42,11 +42,13 @@ Il nodo legge l’indirizzo di livello N e in base a questo sceglie l’indirizz
 
 ### **Dispositivi di inoltro di Livello 1**
 
+<img src="img/isl1.png" alt="alt text" width="700">  
+
 Non avendo un livello inferiore si limitano ad inoltrare bit da un ingresso a una o più uscite. Sono adoperati in reti geografiche commutate (WAN)  e nelle reti locali (LAN). Possono essere:
 - **Repeater**. Tutti i mezzi trasmissivi introducono una attenuazione e un degrado complessivo del segnale (elettrico o luminoso) proporzionale alla **distanza** da questo percorsa. Un ripetitore riceve un segnale debole (o deteriorato) e lo ritrasmette **amplificato** (o rigenerato), in modo tale da raggiungere lunghe distanze con una qualità sufficiente a renderlo **intelleggibile**. E' usato talvolta in ambito wireless. 
 - **Hub**. Un HUB, come concentratore di host,  è a tutti gli effetti un REPEATER a più porte che realizza, secondo una topologia fisica interna a stella, un collegamento logico a bus. Le schede di rete dei vari host collegati vedono l’hub come un unico mezzo trasmissivo **comune** a tutti e pertanto vi accedono usando il protocollo di condivisione del mezzo **CSMA/CD**. Gli **hub a filo** ormai sono obsoleti e introvabili commercialmente mentre sono molto comuni nelle reti wireless sotto forma di **Access Point WiFi (AP)** che interagiscono con i client WiFi mediante il protocollo **CSMA/CA**.
 
-<img src="img/isl1.png" alt="alt text" width="700">  
+
 
 Rimane comune l'uso dei BUS a filo in ambito industriale e domotico, governati con protocolli a contesa o determnistici costituiti da un unico filo passante per tutti i dispositivi. Ma in questo caso non si tratta concettualmente di hub. Un hub è un dispositivo che a tutti gli effetti partecipa alla creazione di una LAN, insieme agli Switch e ai Bridge.
 
@@ -57,17 +59,22 @@ La migliore soluzione per evitare le collisioni è di patizionare gli Hub in seg
 - un tentativo di trasmissione su un hub non viene visto dagli altri hub e non può interferire con le loro trasmissioni. Questo processo è chiamato “SEGMENTAZIONE”. 
 
 ### **Dispositivi di inoltro di Livello 2**
+
+I dispositivi di **livello 2** sono un **barriera** per la propagazione del flusso di bit provenienti dai dispositivi di livello 1 che viene memorizzato ed osservato per isolare, di volta in volta, le **trame** in arrivo. Ogni trama vienea questo punto **smistata**su una **porta di uscita** in base al suo **indirizzo di destinazione** per trovare sempre la porta che conduce ad un link che stia nel *percosrso* (path) verso la destinazione. Cioè, si fa una **selezione** delle **trame** per decidere **dove** inviarle.
+
+<img src="img/isl2.png" alt="alt text" width="1000">  
+
 I bridge sono degli IS costruiti per lavorare in modalità **store and forward**, cioè tutti **frame ethernet** vengono :
 - completamente **memorizzati** (store) per controllare la loro integrità e leggere l’**indirizzo MAC** di destinazione.
 - Elaborati per determinare in base all’indirizzo di MAC la **porta** su cui inoltrarlo (commutazione). L'elaborazione consiste nella **ricerca** (lookup)  del **MAC di destinazione** in una **tabella di commutazione** che contiene un elenco di righe con la corrispondenza [indirizzo MAC - porta di uscita]. 
-- inoltrati (forward) in uscita sulla  porta scelta. La multiplazione SDM di più trame su diverse porte di ingresso che devono andare, nello stesso istante, sulla stessa porta di uscita, si risolve con la multiplazione statistica TDM, delle stesse trame, su una coda posta davanti al canale di quella porta.
+- **inoltrati** (forward) in uscita sulla  porta scelta. La **multiplazione SDM** di più trame su diverse porte di ingresso che, nello stesso istante, devono andare sulla **stessa porta** di uscita, si trasforma nella **multiplazione statistica TDM**, delle stesse trame, sulla **coda** posta davanti al canale di quella porta.
 
-Scopo dei buffer:
-- Memorizzazione completa per permettere il controllo di integrità e la lettura dell’indirizzo.
-- Accodamento trame per adattare temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
-- Risoluzione di una eventuale contesa della linea sulla porta di uscita da parte delle trame provenienti da più porte di ingresso (multiplazione statistica).
+Scopo dei **buffer** (coda):
+- Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo di destinazione**.
+- Accodamento trame per **adattare** temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
+- Risoluzione di una eventuale **contesa** della linea sulla porta di uscita da parte delle trame provenienti da più porte di ingresso (multiplazione statistica).
 
-<img src="img/isl2.png" alt="alt text" width="1000">  
+
 
 ### **Dispositivi di inoltro di Livello 3**
 
