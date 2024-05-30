@@ -113,7 +113,7 @@ La **commutazione L2** in ISO/OSI semplicemente **NON** esiste. Si tratta di una
 
 <img src="img/adiacenze22.png" alt="alt text" width="800"> 
 
-La **topologia L2** si basa su una **rete fisica a stell**a in cui uno switch centrale **smista** i pacchetti L3 tra i router. Ciascun router, lavorando ad L3, non vede il collegamento  a stella con tutti gli altri router mediato dallo switch, ma vede N link DIRETTI tra lui e tutti gli altri router. Ciascuno degli N link però è soltanto logico (virtuale), non è fisico:
+La **topologia L2** si basa su una **rete fisica a stella** in cui uno switch centrale **smista** i pacchetti L3 tra i PC. Ciascun PC, lavorando ad L7, non vede il collegamento  a stella con tutti gli altri PC mediato dallo switch, ma vede N link DIRETTI tra lui e tutti gli altri PC. Ma anche il router R1, lavorando ad L3, non vede il collegamento a stella con tutti gli altri PC mediato dallo switch, ma vede N link DIRETTI tra lui e tutti gli altri PC. Ciascuno degli N link però è soltanto logico (virtuale), non è fisico:
 - Lo **switch smista** le trame L2 in maniera così veloce da far «percepire» a ciascun router le connessioni tra se e tutti gli altri router come dirette e simultanee. Un vicino (lo switch) ad L2 diventa N vicini (i router) ad L3.
 - Di fatto, si realizza, grazie al **TDM estremamente veloce** (praticamente in tempo reale) dello switch in L2, un **SDM virtuale** che, apparentemente, realizza in L3 una **rete magliata** di router.
 
