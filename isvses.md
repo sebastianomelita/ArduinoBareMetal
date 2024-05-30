@@ -133,7 +133,7 @@ Il **router di confine o gateway** diventa un elemento fondamentale della LAN pe
 - può sempre **inoltrare** dei pacchetti che, provenienti dall'**esterno** (ad esempio, Internet), siano **destinati** ad un generico **host** della LAN.
 - un host della LAN, che sia sorgente di pacchetti IP destinati ad un host esterno (ad esempio, Internet), può sempre **inoltrare** i propri pacchetti al **router di confine** per farli inoltrare agli altri router sul percorso verso la destinazione.
 
-Proprio per il fatto di essere il dispositivo deputato a consentire alla LAN l'accesso **da e verso** il mondo esterno ha indotto a qualificare il **primo router** incontrato ai suoi confini come **router di confine** o **default gateway** della LAN.
+Proprio per il fatto di essere il dispositivo **deputato** a consentire alla LAN l'accesso **da e verso** il mondo esterno ha indotto a qualificare il **primo router** incontrato ai suoi confini come **router di confine** o **default gateway** della LAN.
 
 
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
