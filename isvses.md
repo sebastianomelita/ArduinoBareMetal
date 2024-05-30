@@ -96,9 +96,13 @@ Scopo dei **buffer** (coda):
 
 ### **Dispositivi di inoltro di Livello 7**
 
-I dispositivi di **livello 7** sono un **barriera** per la propagazione dei pacchetti provenienti dai dispositivi di livello inferiore al 7 che vengono, di volta in volta, **aperti** per recuperare il loro payload, cioè per **sbustare** i pacchetti di livello qualsisi. 
+#### **Gateway**
 
-In sostanza, si fa uno sbustamento e una una **selezione** dei **pacchetti** per decidere **dove** inviarli. Una volta **scelta la porta** nelle direzione giusta, i pacchetti non vengono subito **reimbustati** in una nuova trama MAC da inviare sul link in uscita, ma vengono ulteriormente sbustati fino allo sbustamento finale del pacchetto applicvativo di livello 7. Lo scopo è quello, evidentemente, di inviarlo in una nuova rete che possiede, ad ogni livello della pila OSI, protocolli completamente diversi. La traduzione dell'indirizzo L3 della rete di arrivo nell'indirizzo L3 della rete di destinazione è una operazione non particolarmente semplice per cui questo tipo di operazione si fa raramente. Più comune è adoperare indirizzi di levello 7 come gli Id del dispositivo e indirizzi di gruppo L7, come i topic MQTT, per individuare i destinatari.
+I dispositivi di **livello 7** propriamente detti sono i **gateway** che sono un **barriera** per la propagazione dei pacchetti provenienti dai dispositivi di livello inferiore al 7 che vengono, di volta in volta, **aperti** per recuperare il loro payload, cioè per **sbustare** i pacchetti di tutti  i livelli, fino ad arrivare al 7.
+
+Lo scopo è quello, evidentemente, di inviarlo in una **nuova rete** che adesso posside, per ogni livello della pila OSI, protocolli completamente **diversi**. La **traduzione dell'indirizzo L3** della rete di arrivo nell'indirizzo L3 della rete di destinazione è una operazione non particolarmente semplice per cui questo tipo di operazione si fa raramente. Più comune è adoperare indirizzi di levello 7 come gli Id del dispositivo e indirizzi di gruppo L7, come i topic MQTT, per individuare i destinatari.  
+
+Oppure usare meccanismi di imbustamento **fuori ordine** come il **tunnelling** quando alla destinazione finale ci sta una rete dello **stesso tipo** di quella della **sorgente** dei pacchetti, anche se si attraversa **una rete** di **tipo diverso**.
 
 <img src="img/isl7.png" alt="alt text" width="600"> 
 
