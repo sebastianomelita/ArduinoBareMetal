@@ -60,7 +60,7 @@ La migliore soluzione per evitare le collisioni è di patizionare gli Hub in seg
 
 ### **Dispositivi di inoltro di Livello 2**
 
-I dispositivi di **livello 2** sono un **barriera** per la propagazione del flusso di bit provenienti dai dispositivi di livello 1 che viene memorizzato ed osservato per isolare, di volta in volta, le **trame** in arrivo. Ogni trama viene, a questo punto, **smistata** su una **porta di uscita** in base al suo **indirizzo di destinazione** per trovare sempre la porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. Cioè, si fa una **selezione** delle **trame** per decidere **dove** inviarle.
+I dispositivi di **livello 2** sono un **barriera** per la propagazione del flusso di bit provenienti dai dispositivi di livello 1 che viene memorizzato ed osservato per isolare, di volta in volta, le **trame** in arrivo. Ogni trama viene, a questo punto, **smistata** su una **porta di uscita** in base al suo **indirizzo di destinazione** per trovare sempre la porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. In sostanza, si fa una **selezione** delle **trame** per decidere **dove** inviarle.
 
 <img src="img/isl2.png" alt="alt text" width="1000">  
 
