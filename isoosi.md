@@ -71,7 +71,7 @@ Il meccanismo dell'imbustamento/sbustamento fa si che, al momento in cui un pacc
 
 La **trasparenza** dei livelli nel modello OSI (Open Systems Interconnection) si riferisce al principio secondo cui ciascun livello del modello fornisce servizi al livello immediatamente superiore **senza** che quest'ultimo debba conoscere i **dettagli specifici** dell'**implementazione** del livello inferiore.
 
-Un vantaggio indotto dalla trasparenza è l'**indipendenza dei Livelli** grazie alla quale ciascun livello può  essere modificato senza influenzare gli altri livelli, a condizione che l'**interfaccia** tra di essi rimanga **invariata**. Le interfacce standardizzano i servizi forniti da un livello all'altro e permettono:
+Un vantaggio indotto dalla trasparenza è l'**indipendenza dei livelli** grazie alla quale ciascun livello può  essere modificato senza influenzare gli altri livelli, a condizione che l'**interfaccia** tra di essi rimanga **invariata**. Le interfacce standardizzano i servizi forniti da un livello all'altro e permettono:
 - **Modularità**: ogni livello può essere sviluppato e aggiornato indipendentemente, facilitando la manutenzione e l'innovazione tecnologica.
 - **Interoperabilità**: la trasparenza dei livelli permette a dispositivi e protocolli diversi di lavorare insieme, a patto che rispettino le interfacce standardizzate.
 - **Semplicità di progettazione**: gli sviluppatori possono concentrarsi sulle funzionalità specifiche di un livello senza dover comprendere l'intera stack di protocolli.
