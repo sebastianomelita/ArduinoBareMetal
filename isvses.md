@@ -130,8 +130,8 @@ Una **LAN** (Local Area Network) è l'infrastruttura di rete interna ad edifici 
 - si collega ad Internet proprio mediante un **router di confine** che realizza anch'esso **ad L3** dei **collegamenti virtuali diretti** tra lui e **tutti gli Host** della LAN.
 
 Il **router** diventa un elemento fondamentale della LAN perchè:
-    - può sempre **inoltrare** dei pacchetti che, provenienti dall'**esterno** (ad esempio, Internet), siano **destinati** ad un generico host della LAN.
-    - un Host può sempre comunicare con host esterni (ad esempio, in Internet) inoltrando dei pacchetti al **router**
+     - può sempre **inoltrare** dei pacchetti che, provenienti dall'**esterno** (ad esempio, Internet), siano **destinati** ad un generico host della LAN.
+     - un Host può sempre comunicare con host esterni (ad esempio, in Internet) inoltrando dei pacchetti al **router**
 
 Proprio per il fatto di essere il dispositivo deputato a consentire alla LAN l'accesso **da e verso** il mondo esterno ha indotto a qualificare il **primo router** incontrato ai suoi confini come **router di confine** o **default gateway** della LAN.
 
