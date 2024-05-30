@@ -111,7 +111,7 @@ Oppure usare meccanismi di imbustamento **fuori ordine** come il **tunnelling** 
 
 La commutazione L2 in ISO/OSI semplicemente NON esiste. Si tratta di una funzione non prevista nello stack e presente solo all’interno delle LAN.
 
-<img src="img/broadcastl3.png" alt="alt text" width="900"> 
+<img src="img/broadcastl3.png" alt="alt text" width="1100"> 
 
 La topologia L2 si basa su una rete fisica a stella in cui uno switch centrale smista i pacchetti L3 tra i router.
 - Ciascun router, lavorando ad L3, non vede il collegamento  a stella con tutti gli altri router mediato dallo switch, ma vede N link DIRETTI tra lui e tutti gli altri router. Ciascuno degli N link però è soltanto logico (virtuale), non è fisico:
