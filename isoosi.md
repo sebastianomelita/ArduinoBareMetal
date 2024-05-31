@@ -37,7 +37,7 @@ I **canali logici** hanno delle funzioni in più, di cui **non** godono i **cana
 
 Ogni **canale logico** serve a collegare tra loro le **due entità**, moduli SW con un certo **ruolo** (analoghe a coppie di impiegati tra i tanti di una grande azienda), che sono deputate a risolvere solamente **certi problemi**, tutti e soli quelli che rientrano all'interno delle **mansioni** che competono a quelle entità. 
 
-Esempio di analogie delle mansioni (fonte chatGPT):
+Esempio di analogie delle mansioni (fonte chatGPT. Provare a chiedere una analogia con le mansioni del personale scolastico):
 
 | Livello | Nome                  | Mansione      | Funzioni svolte                      |
 |---------|-----------------------|-------------------------------------------------------------------------------------------------------------------------|-----------------------------|
