@@ -37,6 +37,19 @@ I **canali logici** hanno delle funzioni in più, di cui **non** godono i **cana
 
 Ogni **canale logico** serve a collegare tra loro le **due entità**, moduli SW con un certo **ruolo** (analoghe a coppie di impiegati tra i tanti di una grande azienda), che sono deputate a risolvere solamente **certi problemi**, tutti e soli quelli che rientrano all'interno delle **mansioni** che competono a quelle entità. 
 
+Esempio di analogie delle mansioni (fonte chatGPT):
+
+| Livello | Nome                  | Mansione      | Funzioni svolte                      |
+|---------|-----------------------|-------------------------------------------------------------------------------------------------------------------------|-----------------------------|
+| 7       | Applicazione          | Gli impiegati del servizio clienti e delle vendite che interagiscono direttamente con i clienti, utilizzando le applicazioni per fornire supporto, rispondere a domande e vendere prodotti o servizi| Fornisce servizi di rete direttamente agli utenti finali, come la posta elettronica, il trasferimento di file e le applicazioni web |
+| 6       | Presentazione         | I designer grafici e i responsabili del branding che formattano e presentano le informazioni in modo chiaro e accattivante, garantendo che i dati siano utilizzabili e comprensibili per gli utenti finali | Traduce i dati in un formato comprensibile per il livello applicativo, gestendo la cifratura e la compressione| 
+| 5       | Sessione              | I project manager o coordinatori che organizzano e monitorano le sessioni di lavoro tra diversi dipartimenti o team, assicurandosi che le interazioni e le collaborazioni procedano senza intoppi | Gestisce e controlla le connessioni tra i computer, mantenendo e sincronizzando la comunicazione |          
+| 4       | Trasporto             | I supervisori della qualità che assicurano che i prodotti o servizi forniti siano conformi agli standard e che eventuali problemi vengano identificati e risolti | Garantisce la trasmissione affidabile dei dati e il controllo degli errori tra due nodi|                                                  
+| 3       | Rete                  |Determina il percorso che i dati devono seguire per raggiungere la loro destinazione |      Realizza la localizzazione fisica del destinatario, il calcolo del percorso per raggiungerlo attraverso i nodi della rete e l'effettivo inoltro dei pacchetti IP da una porta di ingresso ad una di uscita di ciascun nodo lungo il percorso scelto.|                            
+| 2       | Collegamento dati     | Gli amministratori di rete e gli specialisti di supporto IT che gestiscono le connessioni locali (LAN), risolvono i problemi di connessione e assicurano che i dati vengano trasmessi correttamente tra dispositivi all'interno dell'azienda | Fornisce il trasferimento dei dati tra due nodi su una rete e corregge gli errori che possono verificarsi a livello fisico.|
+| 1       | Fisico                | Trasmette i dati in forma di segnali elettrici, ottici o radio. | Gli impiegati che si occupano della manutenzione fisica dell'infrastruttura aziendale, come elettricisti e tecnici delle telecomunicazioni, che garantiscono che i cavi, i router, i server e altre apparecchiature funzionino correttamente |
+
+
 #### **Messaggi di controllo**
 
 La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che non può avvenire senza lo **scambio di messaggi di servizio** che servono a coordinare il lavoro tra le **entità pari**, cioè quelle dello **stesso livello**. I messaggi di servizio (detti **messaggi di controllo**) sono quelli legati al **ruolo** e alle **mansioni** dei due interlocutori del livello corrente e trascurano gli **altri** messaggi di servizio relativi ad **altre mansioni** che, essendo sotto la responsabilità di **altri ruoli** appartenenti ad **altri livelli**, vengono, dalle entità del livello attuale, completamente **ignorate**.
