@@ -47,7 +47,7 @@ I **canali logici**, però, pur agendo in **contemporanea**, non sono affatto un
 
 Riassumendo, quello che **cambia**, da un livello all'altro, è:
 - la **visione** che le varie entità hanno della **comunicazione** che, scendendo di livello, diventa via via più densa di **dettagli fisici**.
-- l'insieme dei **messaggi di controllo** rappresentato dall'**header** del messaggio ad un certo livello che è funzionale allo svolgimento dei compiti assegnati a quel livello.
+- l'insieme dei **messaggi di controllo**, rappresentato dall'**header** del messaggio ad un certo livello, che è funzionale allo svolgimento dei compiti assegnati a quel livello.
 
 #### **Imbustamento multiplo**
 
