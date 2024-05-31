@@ -41,6 +41,14 @@ Ogni **canale logico** serve a collegare tra loro le **due entità**, moduli SW 
 
 La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che non può avvenire senza lo **scambio di messaggi di servizio** che servono a coordinare il lavoro tra le **entità pari**, cioè quelle dello **stesso livello**. I messaggi di servizio (detti **messaggi di controllo**) sono quelli legati al **ruolo** e alle **mansioni** dei due interlocutori del livello corrente e trascurano gli **altri** messaggi di servizio relativi ad **altre mansioni** che, essendo sotto la responsabilità di **altri ruoli** appartenenti ad **altri livelli**, vengono, dalle entità del livello attuale, completamente **ignorate**.
 
+I **canali logici**, però, pur agendo in **contemporanea**, non sono affatto una replica di **7 messaggi diversi** che giungono a destinazione percorrendo **7 canali fisici paralleli**. Il canale fisico è sempre **uno solo** e il messaggio fisicamente è sempre la **stessa sequenza** di bit ai capi delle due interfacce omologhe di **livello 1** (fisico). Quello che accade è che, intorno allo stesso messaggio di partenza, le informazioni di **controllo**, necessarie per svolgere le funzioni di rete, vengono **modificate** passando da un livello all'altro:
+- In **trasmissione** vengono **aggiunte** ad ogni livello scendendo lungo la pila.
+- In **ricezione** vengono **rimosse** salendo di un livello alla  volta lungo la pila.   
+
+Quello che **cambia**, da un livello all'altro, è:
+- la **visione** che le varie entità hanno della **comunicazione** che, scendendo di livello, diventa via via più densa di **dettagli fisici**.
+- l'insieme dei **messaggi di controllo** rappresentato dall'**header** del messaggio ad un certo livello che è funzionale allo svolgimento dei compiti assegnati a quel livello.
+
 #### **Astrazione**
 
 Vale il principio di **astrazione**, che vuol dire che, man mano che **si sale**, ogni **livello** ha una visione del problema iniziale via via più **semplice e generale** che si occupa sempre meno dei **dettagli fisici** e, viceversa, sempre di più di problematiche concettuali legate alla **natura** dei messaggi, del loro **significato** più che del **modo** con cui essi vengono **scambiati**. La **soluzione astratta** di un problema ha il decisivo **vantaggio** di poter essere utilizzata uguale anche all'interno di **contesti differenti**, lì dove i **dettagli** per la sua applicazione vengono declinati in **maniera diversa**. 
@@ -50,14 +58,6 @@ In genere, grossomodo accade che la soluzione astratta viene **adattata**, mentr
 Ogni funzione di un livello **"astrae"**, cioè riassume in un'unica funzione di alto livello **generica**, molte funzioni dei livelli sottostanti legate a dettagli HW specifici. Per cui, la particolarità di questi collegamenti è quella di realizzare una **virtualizzazione della rete** e dei suoi dispositivi che, man mano che si sale dal livello fisico a quello applicativo, si fa sempre più spinta, **nascondendo** i dettagli implementativi degli strati inferiori e rendendo **ininfluenti** le loro **differenze** per i livelli sopra di essi. 
 
 Nel caso di una rete IP il **livello TCP** di trasporto già non **"vede"** più le differenze tecnologiche tra reti realizzate con un HUB WiFi piuttosto che con uno switch o piuttosto con più router in cascata, essendo stati questi dispositivi tutti **"astratti"**, cioè riassunti in un **unico collegamento** di tipo **TCP** tra **due host terminali** che rimane valido anche sostituendo le tecnologie dei livelli più bassi.
-
-I **canali logici**, però, pur agendo in **contemporanea**, non sono affatto una replica di **7 messaggi diversi** che giungono a destinazione percorrendo **7 canali fisici paralleli**. Il canale fisico è sempre **uno solo** e il messaggio fisicamente è sempre la **stessa sequenza** di bit ai capi delle due interfacce omologhe di **livello 1** (fisico). Quello che accade è che, intorno allo stesso messaggio di partenza, le informazioni di **controllo**, necessarie per svolgere le funzioni di rete, vengono **modificate** passando da un livello all'altro:
-- In **trasmissione** vengono **aggiunte** ad ogni livello scendendo lungo la pila.
-- In **ricezione** vengono **rimosse** salendo di un livello alla  volta lungo la pila.   
-
-Quello che **cambia**, da un livello all'altro, è:
-- la **visione** che le varie entità hanno della **comunicazione** che, scendendo di livello, diventa via via più densa di **dettagli fisici**.
-- l'insieme dei **messaggi di controllo** rappresentato dall'**header** del messaggio ad un certo livello che è funzionale allo svolgimento dei compiti assegnati a quel livello.
 
 #### **Imbustamento multiplo**
 
