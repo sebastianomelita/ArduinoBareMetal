@@ -87,7 +87,7 @@ In genere, grossomodo accade che la soluzione astratta viene **adattata**, mentr
 
 Ogni funzione di un livello **"astrae"**, cioè riassume in un'unica funzione di alto livello **generica**, molte funzioni dei livelli sottostanti legate a dettagli HW specifici. Per cui, la particolarità di questi collegamenti è quella di realizzare una **virtualizzazione della rete** e dei suoi dispositivi che, man mano che si sale dal livello fisico a quello applicativo, si fa sempre più spinta, **nascondendo** i dettagli implementativi degli strati inferiori e rendendo **ininfluenti** le loro **differenze** per i livelli sopra di essi. 
 
-#### **Astrazione dei livelli OSI**
+#### **Astrazione delle funzioni dei livelli OSI**
 
 Un **processo** è **individuabile univocamente** all'interno di una stessa macchina host tramite un **numero di porta**, riusabile uguale su macchine diverse. Un **processo** è **individuabile univocamente** nel mondo tramite la **coppia** (indirizzo **IP**, numero di **porta**) detta talvolta **socket**.
 
