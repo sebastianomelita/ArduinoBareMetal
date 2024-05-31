@@ -25,6 +25,8 @@ Un **vincolo dell'architettura** è che uno strato può dialogare solo con quell
 
 ### **Canali virtuali**
 
+#### **Definizione**
+
 I **canali virtuali** sono dei **canali logici** che **mimano** un collegamento **diretto** tra entità pari dello **stesso livello**, attraverso il quale vengono scambiate le **PDU** di quel livello con le regole del **protocollo** che in esso sono in uso. I **canali virtuali** vengono **creati** grazie alla tecnica dell'**imbustamento multiplo** e rappresentano il **punto di vista** che un **generico livello** ha dell'unico canale effettivamente esistente, cioè il canale reale di livello 1 (fisico). 
 
 E' un punto di vista **parziale** perchè non si basa su quello che una comunicazione realmente è nella sua **complessità** ed estensione (a livello fisico e lungo i vari nodi), ma per come, ad un **certo livello**, essa appare, semplicemente osservando il modo (protocollo) con cui si **comporta** lo scambio dei **dati** all'interno di quel **livello**. Infatti, **ad ogni livello**:
@@ -35,7 +37,11 @@ I **canali logici** hanno delle funzioni in più, di cui **non** godono i **cana
 
 Ogni **canale logico** serve a collegare tra loro le **due entità**, moduli SW con un certo **ruolo** (analoghi a certi impiegati tra i tanti di una grande azienda), che sono deputate a risolvere solamente **certi problemi**, tutti e soli quelli che rientrano all'interno delle **mansioni** che competono a quelle entità. 
 
+#### **Messaggi di controllo**
+
 La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che non può avvenire senza lo **scambio di messaggi di servizio** che servono a coordinare il lavoro tra le **entità pari**, cioè quelle dello **stesso livello**. I messaggi di servizio (detti **messaggi di controllo**) sono quelli legati al **ruolo** e alle **mansioni** dei due interlocutori del livello corrente e trascurano gli **altri** messaggi di servizio relativi ad **altre mansioni** che, essendo sotto la responsabilità di **altri ruoli** appartenenti ad **altri livelli**, vengono, dalle entità del livello attuale, completamente **ignorate**.
+
+#### **Astrazione**
 
 Vale il principio di **astrazione**, che vuol dire che, man mano che **si sale**, ogni **livello** ha una visione del problema iniziale via via più **semplice e generale** che si occupa sempre meno dei **dettagli fisici** e, viceversa, sempre di più di problematiche concettuali legate alla **natura** dei messaggi, del loro **significato** più che del **modo** con cui essi vengono **scambiati**. La **soluzione astratta** di un problema ha il decisivo **vantaggio** di poter essere utilizzata uguale anche all'interno di **contesti differenti**, lì dove i **dettagli** per la sua applicazione vengono declinati in **maniera diversa**. 
 
