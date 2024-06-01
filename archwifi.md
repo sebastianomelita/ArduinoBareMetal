@@ -427,6 +427,8 @@ Per configurare una rete con 3 router WiFi mesh, in cui ogni router ha una dorsa
 
 I Router per aggregazione dei sensori sono R2 e R3. Per le subnet possiamo usare un blocco di indirizzi privati come 192.168.0.0/16 e dividerlo come segue:
 
+##### **Subnetting**
+
 Subnet per la dorsale dei router mesh:
 - S1: 192.168.1.0/24
 - R1: 192.168.1.1
@@ -442,6 +444,8 @@ Subnet per i sensori collegati a R3.
 - S3: 192.168.3.0/24 
 - GW3 (R3): 192.168.3.254
 - RNG3: 192.168.3.1 - 192.168.3.253
+
+##### **Routing statico**
 
 Su R1 configurare:
 - S2: 192.168.2.0/24 via 192.168.1.2
