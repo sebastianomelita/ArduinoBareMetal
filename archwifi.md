@@ -383,6 +383,8 @@ In definitiva, i bridge **inoltrano** direttamente **trame MAC**, e la rete comp
 - di essere **autoconfigurante** e quindi molto semplice
 - la possibilità di permettere di creare **una sola subnet** che includa tutti i dispositivi **client**.
 - la possibilità di poter **partizionare** la rete per **gruppi di utenti** in base al **tipo di servizio** piuttosto che in base alla loro **dislocazione fisica** utilizzando la tecnologia delle **VLAN**. Le VLAN diventano la **scelta obbligata** quando i **gruppi di utenti** da separare sono **sparsi** a macchia di leopardo su tutta la rete.
+
+Se si volessero separare i **servizi di produzione** agricola con i suoi **sensori** dai **servizi di mobilità** agli impiegati dotati di tablet sui loro mezzi, consentendo anche di dedicare una gestione separata al traffico dei **servizi di videosorveglianza**, allora la **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe impossibile, mentre sarebbe **effettiva** la separazione mediante **VLAN** dislocate su una infrastruttura **bridged**.
   
 Però, nonostante la sua semplicità, questa non è la configurazione preferita. Infatti, **pesano negativamente**:
 - il fatto di realizzare un albero di **instradamento unico** che è ottimo solo per il gateway che di questo è la **radice**, mentre per gli altri nodi non calcola realmente il percorso minimo possibile.
@@ -398,6 +400,8 @@ Però, nonostante la sua semplicità, questa non è la configurazione preferita.
 Il routing è basato su **indirizzi IP** che, essendo **gerarchici** , permettono di **partizionare la rete** in subnet con **gruppi** di dispositivi dislocati in aree **delimitate** e presidiate da **router**, cioè da dispositivi in grado filtrare gli accessi con **regole** basate sull'indirizzo di **sorgente**.
 
 La **separazione** degli utenti nella soluzione **routed** può essere realizzata solamente se i **gruppi di host** da isolare sono racchiusi in **subnet IP** che fanno capo ad un certo gruppo di router di aggregazione (al limite uno solo) che coprono un'**area delimitata** della rete. Gli **host della subnet** hanno il **vincolo** di dover essere **spazialmente vicini**.
+
+Se si volessero separare un'**area di produzione** agricola con i suoi **sensori** da un'area dedicata all'**accesso agli impiegati** e da un altra ancora dedicata all'**accesso degli ospiti** esterni per le conferenze, allora la **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe efficace. 
 
 
 Una caratteristica delle reti ad hoc è di non essere statiche ma completamente **autoconfiguranti** nel senso che:
