@@ -411,7 +411,7 @@ Il routing è basato su **indirizzi IP** che, essendo **gerarchici** , permetton
 
 #### **Definizione dei gruppi mediante router**
 
-La **definizione** dei gruppi si può fare con una dislocazione **fisicamente contigua** degli host, cioè gli **host** di un **certo gruppo** sono vincolati ad effettuare l'accesso solo presso **certi router**, la loro **separazione** avviene **subito**, sul** primo router** wireless a cui **accedono**. 
+La **definizione** dei gruppi si può fare con una dislocazione **fisicamente contigua** degli host, cioè gli **host** di un **certo gruppo** sono vincolati ad effettuare l'accesso solo presso **certi router**, la loro **separazione** avviene **subito**, sul **primo router** wireless a cui **accedono**. 
 
 La **separazione** degli utenti nella soluzione **routed** può essere realizzata solamente se i **gruppi di host** da isolare sono racchiusi in **subnet IP** che fanno capo ad un certo gruppo di router di aggregazione (al limite uno solo) che coprono un'**area delimitata** della rete. Gli **host della subnet** hanno il **vincolo** di dover essere **spazialmente vicini**.
 
