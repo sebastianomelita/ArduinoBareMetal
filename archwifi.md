@@ -455,10 +455,10 @@ Su R1 configurare:
 - S3: 192.168.3.0/24 via 192.168.1.3
 
 Su R2 configurare:
-- Route per 192.168.3.0/24 via 192.168.1.3
+- S3: 192.168.3.0/24 via 192.168.1.3
 
 Su R3 configurare:
-- Route per 192.168.2.0/24 via 192.168.1.2
+- S2: 192.168.2.0/24 via 192.168.1.2
 
 #### **Vantaggi**
 
