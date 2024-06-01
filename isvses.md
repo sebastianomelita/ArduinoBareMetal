@@ -65,6 +65,8 @@ I dispositivi di **livello 2** sono un **barriera** per la propagazione del flus
 
 In sostanza, si fa una **selezione** delle **trame** per decidere **dove** inviarle.
 
+Tradizionalmente, i **link** sulle **porte** di qualunque dispositivo di **livello 2** (bridge o switch) **non** sono semplici collegamenti punto-punto ma **BUS** su cui è attivo il protocollo **CSMA/CD**.
+
 <img src="img/isl2.png" alt="alt text" width="1000">  
 
 I **bridge** sono degli **IS** costruiti per lavorare in modalità **store and forward**, cioè tutti **frame ethernet** vengono :
@@ -73,6 +75,8 @@ I **bridge** sono degli **IS** costruiti per lavorare in modalità **store and f
 - **inoltrati** (forward) in uscita sulla  porta scelta. La **multiplazione SDM** di più trame su diverse porte di ingresso che, nello stesso istante, devono andare sulla **stessa porta** di uscita, si trasforma nella **multiplazione statistica TDM**, delle stesse trame, sulla **coda** posta davanti al canale di quella porta.
 
 <img src="img/switch.png" alt="alt text" width="900">
+
+Gli Switch sono dispossitivi di commutazione che lavorano in **HW**, e quindi, mediamente a velocità molto più alte di un **Bridge**. Gli SW di **migliore qualità** posseggono una velocità di **smistamento** interna delle trame così elevata da permettere la **microsegmentazione** dei domini di collisione ethernet tra coppie di utenti. Questo processo è così veloce da apparire parallelo e contemporaneo per qualunque coppia di utenti desideri comunicare. 
 
 Scopo dei **buffer** (coda):
 - Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo di destinazione**.
