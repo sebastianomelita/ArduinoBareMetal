@@ -419,8 +419,6 @@ La **separazione** degli utenti nella soluzione **routed** può essere realizzat
 
 Esempio:
 
-<img src="img/meshvlan.png" alt="alt text" width="800">
-
 Se si volessero separare un'**area di produzione** agricola con i suoi **sensori** da un'area dedicata all'**accesso agli impiegati** e da un altra ancora dedicata all'**accesso degli ospiti** esterni per le conferenze, allora la **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe efficace. 
 
 #### **Esempio di Configurazione**
@@ -523,5 +521,7 @@ Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prest
 - https://it.wikipedia.org/wiki/Ad-hoc_On-demand_Distance_Vector
 - https://it.wikipedia.org/wiki/Optimized_Link_State_Routing_Protocol
 - https://www.draytek.com/support/knowledge-base/6002
+- https://stevessmarthomeguide.com/wi-fi-mesh-networks/
+- https://www.tp-link.com/cac/support/faq/418/
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
