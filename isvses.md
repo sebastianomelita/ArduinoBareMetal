@@ -85,7 +85,7 @@ Scopo dei **buffer** (coda):
 
 <img src="img/switch.png" alt="alt text" width="900">
 
-I **link** sulle **porte** di uno **SW**, pur essendo anch'essi dei **BUS**, raramente collegano più host con uno stesso filo, piuttosto sono, similmente a degli hub, degli **aggregatori** di collegamenti **punto-punto** verso **singoli host**. 
+I **link** sulle **porte** di uno **SW**, pur essendo anch'essi dei **BUS**, raramente collegano **molti host** con uno stesso filo, piuttosto sono, similmente a degli hub, degli **aggregatori** di collegamenti **punto-punto** verso **singoli host**. 
 
 Mentre i bridge hanno **poche porte** e collegano a livello 2 **reti**, gli **SW** hanno **molte porte** e **aggregano** potenzialmente molti **host** (specialmente se hanno la funzione di Access Switch o AS). La loro funzione principale è proprio permettere il collegamento di **coppie di host**, realizzando la cosidetta **microsegmentazione** dei **dominii di collisione** esistenti sulle loro **porte**.
 
