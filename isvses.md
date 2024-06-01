@@ -153,5 +153,7 @@ Proprio per il fatto di essere il dispositivo **deputato** a consentire alla LAN
 
 Sitografia:
 - https://www.edutecnica.it/informatica/osi/osi.htm
+- https://www.sciencedirect.com/topics/computer-science/transparent-bridge
+- https://www.cbtnuggets.com/blog/technology/networking/what-is-network-bridge
   
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
