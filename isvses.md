@@ -74,6 +74,11 @@ I **bridge** sono degli **IS** costruiti per lavorare in modalità **store and f
 - Elaborati per determinare in base all’indirizzo di MAC la **porta** su cui inoltrarlo (commutazione). L'elaborazione consiste nella **ricerca** (lookup)  del **MAC di destinazione** in una **tabella di inoltro** che contiene un elenco di righe con la corrispondenza [indirizzo MAC - porta di uscita]. 
 - **inoltrati** (forward) in uscita sulla  porta scelta. La **multiplazione SDM** di più trame su diverse porte di ingresso che, nello stesso istante, devono andare sulla **stessa porta** di uscita, si trasforma nella **multiplazione statistica TDM**, delle stesse trame, sulla **coda** posta davanti al canale di quella porta.
 
+Scopo dei **buffer** (coda):
+- Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo di destinazione**.
+- Accodamento trame per **adattare** temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
+- Risoluzione di una eventuale **contesa** in uscita della linea da parte delle trame provenienti da più porte di ingresso (multiplazione statistica).
+
 <img src="img/switch.png" alt="alt text" width="900">
 
 I **link** sulle **porte** di uno **SW**, pur essendo anch'essi dei **BUS**, raramente collegano più host con uno stesso filo, piuttosto sono, similmente a degli hub, degli **aggregatori** di collegamenti **punto-punto** verso **singoli host**. 
@@ -81,11 +86,6 @@ I **link** sulle **porte** di uno **SW**, pur essendo anch'essi dei **BUS**, rar
 In pratica, i bridge hanno **poche porte** e collegano, a livello 2, **reti** di tipo differente (wireless con cablata, bluetoot con Ethenet, ecc..) mentre gli **SW** hanno **molte porte** e **aggregano** potenzialmente molti **host** (specialmente se hanno la funzione di Access Switch o AS). La loro funzione principale è permettere il collegamento di coppie di host realizzando la cosidetta **microsegmentazione** dei **dominii di collisione** esistenti sulle loro **porte**.
 
 Gli Switch sono dispositivi di commutazione che lavorano in **HW**, e quindi, mediamente a velocità molto più alte di un **Bridge**. Gli SW di **migliore qualità** posseggono una velocità di **smistamento** interna delle trame così elevata che questo processo **potrebbe** essere così veloce da apparire **parallelo e contemporaneo** per qualunque **coppia** di utenti desideri comunicare, anche alla **velocità massima** permessa dai link. 
-
-Scopo dei **buffer** (coda):
-- Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo di destinazione**.
-- Accodamento trame per **adattare** temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
-- Risoluzione di una eventuale **contesa** in uscita della linea da parte delle trame provenienti da più porte di ingresso (multiplazione statistica).
 
 ### **Dispositivi di inoltro di Livello 3**
 
