@@ -417,6 +417,8 @@ La **separazione** degli utenti nella soluzione **routed** può essere realizzat
 
 Esempio:
 
+<img src="img/meshvlan.png" alt="alt text" width="800">
+
 Se si volessero separare un'**area di produzione** agricola con i suoi **sensori** da un'area dedicata all'**accesso agli impiegati** e da un altra ancora dedicata all'**accesso degli ospiti** esterni per le conferenze, allora la **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe efficace. 
 
 #### **Vantaggi**
