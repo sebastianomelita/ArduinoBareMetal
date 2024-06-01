@@ -392,6 +392,8 @@ La **definizione** dei gruppi si può fare con una dislocazione a **macchia di l
 
 Esempio:
 
+<img src="img/meshvlan.png" alt="alt text" width="800">
+
 Se si volessero separare i **servizi di produzione** agricola con i suoi **sensori** dai **servizi di mobilità** agli impiegati dotati di tablet sui loro mezzi, consentendo anche di dedicare una gestione separata al traffico dei **servizi di videosorveglianza**, allora la **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe impossibile, mentre sarebbe **effettiva** la separazione mediante **VLAN** dislocate su una infrastruttura **bridged**.
 
 #### **Svantaggi**
