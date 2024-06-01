@@ -89,7 +89,7 @@ I **link** sulle **porte** di uno **SW**, pur essendo anch'essi dei **BUS**, rar
 
 Mentre i bridge hanno **poche porte** e collegano a livello 2 **reti**, gli **SW** hanno **molte porte** e **aggregano** potenzialmente molti **host** (specialmente se hanno la funzione di Access Switch o AS). La loro funzione principale è proprio quella di permettere il collegamento di **coppie di host**, realizzando la cosidetta **microsegmentazione** dei **dominii di collisione** esistenti sulle loro **porte**.
 
-Gli Switch sono dispositivi di commutazione che lavorano in **HW**, e quindi, mediamente a velocità molto più alte di un **Bridge**. Gli SW di **migliore qualità** posseggono una velocità di **smistamento** interna delle trame così elevata che questo processo **potrebbe** essere così veloce da apparire **parallelo e contemporaneo** per qualunque **coppia** di host che, collegata allo switch, desideri utilizzarlo per comunicare alla **velocità massima** consentita dai suoi link. 
+Gli Switch sono dispositivi di commutazione che lavorano in **HW**, e quindi, mediamente a velocità molto più alte di un **Bridge**. Gli SW di **migliore qualità** posseggono una velocità di **smistamento** interna delle trame molto elevata. Questo processo **potrebbe** essere così veloce da apparire **parallelo e contemporaneo** per qualunque **coppia** di host che, collegata allo switch, desideri utilizzarlo per comunicare alla **velocità massima** consentita dai suoi link. 
 
 ### **Dispositivi di inoltro di Livello 3**
 
