@@ -379,7 +379,7 @@ Il **backhaul Wi-Fi** è il collegamento **wireless** tra i **nodi** che parteci
 
 <img src="img/integratedGW-WiFi-Bridge.png" alt="alt text" width="900">
 
-#### **vantaggi**
+#### **Vantaggi**
 
 In definitiva, i bridge **inoltrano** direttamente **trame MAC**, e la rete complessiva è una **LAN** gestita dal **protocollo STP** che evita i loop a livello data link (L2) pur mantenenedo la ridondanza al livello fisico (L1). I **vantaggi** di questa configurazione sono gli stessi di quella di una rete **wireless infrastruttura** composta da SW:
 - di essere **autoconfigurante** e quindi molto semplice
