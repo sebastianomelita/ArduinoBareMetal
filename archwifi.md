@@ -423,20 +423,35 @@ Se si volessero separare un'**area di produzione** agricola con i suoi **sensori
 
 #### **Esempio di Configurazione**
 
-Supponiamo di avere una rete mesh con un router principale e due nodi aggiuntivi. La configurazione potrebbe essere la seguente:
+Per configurare una rete con 3 router WiFi mesh, in cui ogni router ha una dorsale (backhaul) con canale di comunicazione dedicato e due router aggregano sensori su due subnet diverse, possiamo seguire questo schema:
 
-**Router principale**
-- IP: 192.168.1.1
-- Subnet 1: 192.168.1.0/25 (192.168.1.1 - 192.168.1.127)
-- Subnet 2: 192.168.1.128/25 (192.168.1.128 - 192.168.1.254)
+I Router per aggregazione dei sensori sono R2 e R3. Per le subnet possiamo usare un blocco di indirizzi privati come 192.168.0.0/16 e dividerlo come segue:
 
-**Nodo 1**:
-- IP: 192.168.1.2 (nella subnet 1)
-- DHCP range: 192.168.1.10 - 192.168.1.50
+Subnet per la dorsale dei router mesh:
+- S1: 192.168.1.0/24
+- R1: 192.168.1.1
+- R2: 192.168.1.2
+- R3: 192.168.1.3
 
-**Nodo 2**:
-- IP: 192.168.1.129 (nella subnet 2)
-- DHCP range: 192.168.1.130 - 192.168.1.150
+Subnet per i sensori collegati a R2.
+- S2: 192.168.2.0/24 
+- GW2 (R2): 192.168.2.254
+- RNG2: 192.168.2.1 - 192.168.2.253
+
+Subnet per i sensori collegati a R3.
+- S3: 192.168.3.0/24 
+- GW3 (R3): 192.168.3.254
+- RNG3: 192.168.3.1 - 192.168.3.253
+
+Su R1 configurare:
+- S2: 192.168.2.0/24 via 192.168.1.2
+- S3: 192.168.3.0/24 via 192.168.1.3
+
+Su R2 configurare:
+- Route per 192.168.3.0/24 via 192.168.1.3
+
+Su R3 configurare:
+- Route per 192.168.2.0/24 via 192.168.1.2
 
 #### **Vantaggi**
 
