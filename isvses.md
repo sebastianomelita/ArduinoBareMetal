@@ -139,5 +139,7 @@ Il **router di confine o gateway** diventa un elemento fondamentale della LAN pe
 
 Proprio per il fatto di essere il dispositivo **deputato** a consentire alla LAN l'accesso **da e verso** il mondo esterno ha indotto a qualificare il **primo router** incontrato ai suoi confini come **router di confine** o **default gateway** della LAN.
 
-
+Sitografia:
+- https://www.edutecnica.it/informatica/osi/osi.htm
+  
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
