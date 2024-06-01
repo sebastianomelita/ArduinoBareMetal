@@ -151,6 +151,10 @@ Il **router di confine o gateway** diventa un elemento fondamentale della LAN pe
 
 Normalmente, solo **un router**, tra tutti quelli collegati sul bordo di una LAN, è **designato** per **smistare** i pacchetti in **ingresso** o in **uscita** sulla stessa LAN. Il **router designato** diventa il **primo router** che un pacchetto uscente dalla LAN incontrerà nel suo **percorso** verso la **destinazione** ed assume, per ciascun **host** della LAN, il ruolo di **next hop**, detto anche **router di confine**, o anche **default gateway** della LAN.
 
+[Dettaglio protocolli](protocolli.md)
+
+[Dettaglio ISO/OSI](isoosi.md)
+
 Sitografia:
 - https://www.edutecnica.it/informatica/osi/osi.htm
 - https://www.sciencedirect.com/topics/computer-science/transparent-bridge
