@@ -415,8 +415,11 @@ La **definizione** dei gruppi si può fare con una dislocazione **fisicamente co
 
 La **separazione** degli utenti nella soluzione **routed** può essere realizzata solamente se i **gruppi di host** da isolare sono racchiusi in **subnet IP** che fanno capo ad un certo gruppo di router di aggregazione (al limite uno solo) che coprono un'**area delimitata** della rete. Gli **host della subnet** hanno il **vincolo** di dover essere **spazialmente vicini**.
 
+Esempio:
+
 Se si volessero separare un'**area di produzione** agricola con i suoi **sensori** da un'area dedicata all'**accesso agli impiegati** e da un altra ancora dedicata all'**accesso degli ospiti** esterni per le conferenze, allora la **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe efficace. 
 
+#### **Vantaggi**
 
 Una caratteristica delle reti ad hoc è di non essere statiche ma completamente **autoconfiguranti** nel senso che:
 - l'assegnazione degli indirizzi IP dei nodi e dei link può avvenire automaticamente attraverso diversi metodi, inclusi meccanismi di:
