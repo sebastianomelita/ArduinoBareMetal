@@ -147,7 +147,7 @@ Una **LAN** (Local Area Network) è l'infrastruttura di rete interna ad edifici 
 
 Il **router di confine o gateway** diventa un elemento fondamentale della LAN perchè:
 - può sempre **inoltrare** dei pacchetti che, provenienti dall'**esterno** (ad esempio, Internet), siano **destinati** ad un generico **host** della LAN.
-- un host della LAN, che sia sorgente di pacchetti IP destinati ad un host esterno (ad esempio, Internet), può sempre **inoltrare** i propri pacchetti al **router di confine** da dove verranno rilanciati da un router all'altro fino alla **destinazione**, che risiederà, presumibilmente, in un'altra **LAN**.
+- un **host** della LAN che invii pacchetti IP in direzione di un **host esterno** (ad esempio, Internet), può sempre **inoltrare** i propri pacchetti al **router di confine** della LAN, da dove verranno rilanciati da un router all'altro fino alla **destinazione**, che risiederà, presumibilmente, in un'altra **LAN**.
 
 Normalmente, solo **un router**, tra tutti quelli collegati sul bordo di una LAN, è **designato** per **smistare** i pacchetti in **ingresso** o in **uscita** sulla stessa LAN. Il **router designato** diventa il **primo router** che un pacchetto uscente dalla LAN incontra nel suo **percorso** verso la **destinazione** ed assume, per ciascun **host** della LAN, il ruolo di **next hop**, detto anche **router di confine**, o anche **default gateway** della stessa LAN.
 
