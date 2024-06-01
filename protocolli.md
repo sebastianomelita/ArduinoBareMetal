@@ -169,7 +169,9 @@ L'evoluzione degli stati di un protocollo può essere rappresentato in funzione 
 I **nodi** sono gli stati mentre gli **archi** rappresentano gli **stimoli** ai cambiamenti di stato, ovvero gli **ingressi**, cioè i **messaggi ricevuti**.
 
 
+[Dettaglio protocolli](protocolli.md)
 
+[Dettaglio ISO/OSI](isoosi.md)
 
 Sitografia:
 - https://sierrahardwaredesign.com/tag/ethernet/
