@@ -423,6 +423,23 @@ Esempio:
 
 Se si volessero separare un'**area di produzione** agricola con i suoi **sensori** da un'area dedicata all'**accesso agli impiegati** e da un altra ancora dedicata all'**accesso degli ospiti** esterni per le conferenze, allora la **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe efficace. 
 
+#### **Esempio di Configurazione**
+
+Supponiamo di avere una rete mesh con un router principale e due nodi aggiuntivi. La configurazione potrebbe essere la seguente:
+
+**Router principale**
+- IP: 192.168.1.1
+- Subnet 1: 192.168.1.0/25 (192.168.1.1 - 192.168.1.127)
+- Subnet 2: 192.168.1.128/25 (192.168.1.128 - 192.168.1.254)
+
+**Nodo 1**:
+- IP: 192.168.1.2 (nella subnet 1)
+- DHCP range: 192.168.1.10 - 192.168.1.50
+
+**Nodo 2**:
+- IP: 192.168.1.129 (nella subnet 2)
+- DHCP range: 192.168.1.130 - 192.168.1.150
+
 #### **Vantaggi**
 
 Una caratteristica delle reti ad hoc è di non essere statiche ma completamente **autoconfiguranti** nel senso che:
@@ -505,5 +522,6 @@ Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prest
 - https://www.tp-link.com/us/blog/137/tp-link-usa-outdoor-solution-guide/
 - https://it.wikipedia.org/wiki/Ad-hoc_On-demand_Distance_Vector
 - https://it.wikipedia.org/wiki/Optimized_Link_State_Routing_Protocol
+- https://www.draytek.com/support/knowledge-base/6002
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
