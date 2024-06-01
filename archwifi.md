@@ -388,7 +388,7 @@ In definitiva, i bridge **inoltrano** direttamente **trame MAC**, e la rete comp
 
 #### **Definizione dei gruppi mediante VLAN**
 
-La **definizione** dei gruppi si può fare con una dislocazione a **macchia di leopardo** delle **interfacce** di accesso alla diverse VLAN, aventi **ssid statici** diversi o uno unico ma **dinamico** (autenticazione 802.1X). Gli **host** possono collegarsi all'**ssid** di una certa VLAN su **ogni bridge** wireless. La loro **separazione** avviene alla fine, su un **router** di confine collegato con un **backaul** capace di creare il **trunking** dei flussi sul router (**gateway** in modo **router on a stick**). Le **dorsali** tra i vari bridge devono essere configutrate come dorsali di **trunk** (802.1Q) che portino il traffico aggregato di **tutte le VLAN**.
+La **definizione** dei gruppi si può fare con una dislocazione a **macchia di leopardo** delle **interfacce** di accesso alla diverse VLAN, aventi **ssid statici** diversi o uno unico ma **dinamico** (autenticazione 802.1X). Gli **host** possono collegarsi all'**ssid** di una certa VLAN su **ogni bridge** wireless. La loro **separazione** avviene **dopo**, alla fine, su un **router** di confine collegato con un **backaul** capace di creare il **trunking** dei flussi sul router (**gateway** in modo **router on a stick**). Le **dorsali** tra i vari bridge devono essere configutrate come dorsali di **trunk** (802.1Q) che portino il traffico aggregato di **tutte le VLAN**.
 
 Esempio:
 
@@ -411,7 +411,7 @@ Il routing è basato su **indirizzi IP** che, essendo **gerarchici** , permetton
 
 #### **Definizione dei gruppi mediante router**
 
-La **definizione** dei gruppi si può fare con una dislocazione a **fisicamente contigua** degli host che sono vincolati all'accesso a certi router, la loro **separazione** avviene subito, sul primo router wireless a cui accedono. 
+La **definizione** dei gruppi si può fare con una dislocazione **fisicamente contigua** degli host, cioè gli **host** di un **certo gruppo** sono vincolati ad effettuare l'accesso solo presso **certi router**, la loro **separazione** avviene **subito**, sul** primo router** wireless a cui **accedono**. 
 
 La **separazione** degli utenti nella soluzione **routed** può essere realizzata solamente se i **gruppi di host** da isolare sono racchiusi in **subnet IP** che fanno capo ad un certo gruppo di router di aggregazione (al limite uno solo) che coprono un'**area delimitata** della rete. Gli **host della subnet** hanno il **vincolo** di dover essere **spazialmente vicini**.
 
