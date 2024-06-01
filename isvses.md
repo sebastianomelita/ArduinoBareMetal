@@ -76,7 +76,11 @@ I **bridge** sono degli **IS** costruiti per lavorare in modalità **store and f
 
 <img src="img/switch.png" alt="alt text" width="900">
 
-Gli Switch sono dispositivi di commutazione che lavorano in **HW**, e quindi, mediamente a velocità molto più alte di un **Bridge**. Gli SW di **migliore qualità** posseggono una velocità di **smistamento** interna delle trame così elevata da permettere la **microsegmentazione** dei domini di collisione ethernet limitandoli tra **coppie** di utenti. Questo processo **potrebbe** essere così veloce da apparire **parallelo e contemporaneo** per qualunque coppia di utenti desideri comunicare, anche alla velocità massima permessa dal link. 
+I **link** sulle **porte** di uno **SW**, pur essendo anch'essi dei **BUS**, raramente collegano più host con uno stesso filo, piuttosto sono, similmente a degli hub, degli **aggregatori** di collegamenti **punto-punto** verso **singoli host**. 
+
+In pratica, i bridge hanno **poche porte** e collegano, a livello 2, **reti** di tipo differente (wireless con cablata, bluetoot con Ethenet, ecc..) mentre gli **SW** hanno **molte porte** e **aggregano** potenzialmente molti **host** (specialmente se hanno la funzione di Access Switch o AS). La loro funzione principale è permettere il collegamento di coppie di host realizzando la cosidetta **microsegmentazione** dei **dominii di collisione** esistenti sulle loro **porte**.
+
+Gli Switch sono dispositivi di commutazione che lavorano in **HW**, e quindi, mediamente a velocità molto più alte di un **Bridge**. Gli SW di **migliore qualità** posseggono una velocità di **smistamento** interna delle trame così elevata che questo processo **potrebbe** essere così veloce da apparire **parallelo e contemporaneo** per qualunque **coppia** di utenti desideri comunicare, anche alla **velocità massima** permessa dal link. 
 
 Scopo dei **buffer** (coda):
 - Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo di destinazione**.
