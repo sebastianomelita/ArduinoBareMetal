@@ -377,7 +377,7 @@ Il **backhaul Wi-Fi** è il collegamento **wireless** tra i **nodi** che parteci
 
 **Bridge mesh**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio, una a 2.4 GHz ed una a 5 GHz) mediante un **bridge**, cioè un IS di livello 2 della pila ISO/OSI. 
 
-<img src="img/integratedGW-WiFi-Bridge.png" alt="alt text" width="900">
+<img src="img/integratedGW-WiFi-Bridge.png" alt="alt text" width="1000">
 
 #### **Vantaggi**
 
