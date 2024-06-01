@@ -429,9 +429,9 @@ Subnet per i sensori collegati a R3.
 ##### **Routing statico**
 
 R1 possiede 3 indirizzi su ciascuna subnet:
-S1 (VLAN 10): 192.168.1.254  SM1: 255.255.255.0
-S2 (VLAN 20): 192.168.2.254  SM2: 255.255.255.0
-S3 (VLAN 30): 192.168.3.254  SM3: 255.255.255.0
+- S1 (VLAN 10): 192.168.1.254  SM1: 255.255.255.0
+- S2 (VLAN 20): 192.168.2.254  SM2: 255.255.255.0
+- S3 (VLAN 30): 192.168.3.254  SM3: 255.255.255.0
 
 Non è necessario impostare le tabelle di routing in quanto le subnet S1, S2, S3 sono, su R1, direttamente connesse.
 
