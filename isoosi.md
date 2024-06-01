@@ -217,6 +217,9 @@ Attualmente, per **accedere ad Internet** e all'interno della maggior parte dell
 
 [Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) 
 
+Sitorafia:
+- https://www.edutecnica.it/informatica/osi/osi.htm
+
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
 
 
