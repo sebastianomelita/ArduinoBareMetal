@@ -430,17 +430,20 @@ I Router per aggregazione dei sensori sono R2 e R3. Per le subnet possiamo usare
 ##### **Subnetting**
 
 Subnet per la dorsale dei router mesh:
+- SSID: Mesh_Backhaul
 - S1: 192.168.1.0/24
 - R1: 192.168.1.1
 - R2: 192.168.1.2
 - R3: 192.168.1.3
 
 Subnet per i sensori collegati a R2.
+- SSID: Sensors_R2
 - S2: 192.168.2.0/24 
 - GW2 (R2): 192.168.2.254
 - RNG2: 192.168.2.1 - 192.168.2.253
 
 Subnet per i sensori collegati a R3.
+- SSID: Sensors_R3
 - S3: 192.168.3.0/24 
 - GW3 (R3): 192.168.3.254
 - RNG3: 192.168.3.1 - 192.168.3.253
