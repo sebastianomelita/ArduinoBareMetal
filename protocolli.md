@@ -168,6 +168,7 @@ L'evoluzione degli stati di un protocollo può essere rappresentato in funzione 
 
 I **nodi** sono gli stati mentre gli **archi** rappresentano gli **stimoli** ai cambiamenti di stato, ovvero gli **ingressi**, cioè i **messaggi ricevuti**.
 
+[Dettaglio ES/IS](isvses.md)
 
 [Dettaglio protocolli](protocolli.md)
 
