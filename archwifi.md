@@ -415,7 +415,7 @@ Il routing è basato su **indirizzi IP** che, essendo **gerarchici** , permetton
 
 La **definizione** dei gruppi si può fare con una dislocazione **fisicamente contigua** degli host, cioè gli **host** di un **certo gruppo** sono vincolati ad effettuare l'accesso solo presso **certi router**, la loro **separazione** avviene **subito**, sul **primo router** wireless a cui **accedono** mediante l'assegnazione di indirizzi appartenenti a **subnet diverse**. Se si definisce un'**unica subnet** per **tutti** i router, chiaramente si implementa un **unico gruppo** su tutta la rete mesh.
 
-La **separazione** degli utenti nella soluzione **routed** può essere realizzata solamente se i **gruppi di host** da isolare sono racchiusi in **subnet IP** che fanno capo ad un certo gruppo di router di aggregazione (al limite uno solo) che coprono un'**area delimitata** della rete. Gli **host della subnet** hanno il **vincolo** di dover essere **spazialmente vicini**.
+La **separazione** degli utenti nella soluzione **routed** può essere realizzata solamente se i **gruppi di host** da dividere sono racchiusi in **subnet IP** che fanno capo ad un certo gruppo di router di aggregazione (al limite uno solo) che coprono un'**area delimitata** della rete. A queste subnet si accede con **ssid dedicati** a ciascun gruppo e protetti da **password** per autenticare gli utenti del gruppo. Gli **host della subnet** hanno però il **vincolo** di dover essere **spazialmente prossimi** ai router di aggregazione loro assegnati per accedere alla rete mesh.
 
 Esempio:
 
