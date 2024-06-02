@@ -564,7 +564,7 @@ Partendo dall'alto verso il basso, possiamo vedere che:
 - Anche le sottointerfacce Ethernet sono mappate ai gruppi bridge.
 - Al dispositivo viene assegnato un indirizzo IP legato al gruppo bridge 1 per renderlo raggiungibile per manutenzione.
 
-Esempio:
+Esempio di configurazione di due radio (a 2.4 GHz e 5 GHz) per gestire due SSID ciascuna associati a due VLAN diverse:
 
 #### **Configurazione globale**
 ```C++
