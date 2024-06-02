@@ -576,8 +576,7 @@ bridge irb
 
 |VLAN 10 | VLAN 20               |    
 |--------|-----------------------|
-ap# configure terminal
-ap(config)# interface 
+ap# configure terminal<br>ap(config)# interface 
 dot11radio 0
 ap(config-if)# ssid Corporate
 ap(config-ssid)# vlan 01
