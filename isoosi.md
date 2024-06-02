@@ -152,7 +152,7 @@ I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmes
 
 <img src="img/The 7 Layers of OSI.webp" alt="alt text" width="500">
 
-Ogni volta che un canale virtuale invia una PDU  direttamente in **orizzontale** ad una entità pari attraverso un **canale virtuale**, in realtà la stessa PDU passa in **verticale** attraverso un SAP (service Access Point) al **livello adiacente** dove viene da questo presa in carico per creare i **servizi** che il livello superiore utilizza per portare avanti il suo protocollo.
+Ogni volta che un canale virtuale invia una PDU  direttamente in **orizzontale** ad una entità pari attraverso un **canale virtuale**, in realtà la stessa PDU passa in **verticale** attraverso un **SAP** (service Access Point) al **livello adiacente** dove viene da questo presa in carico per creare i **servizi** che il livello superiore utilizza per portare avanti il suo protocollo.
 
 I **servizi** di un livello N, esattamente come le sue N-PDU, sono standardizzati e vengono chiamati **primitive di servizio** di livello N. tutte le implementazioni di un protocollo di quel livello devono impegnarsi a realizzarle.
 
