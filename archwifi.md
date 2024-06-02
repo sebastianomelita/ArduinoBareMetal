@@ -567,7 +567,7 @@ Partendo dall'alto verso il basso, possiamo vedere che:
 Esempio:
 
 #### **Configurazione globale**
-
+```C++
 dot11 ssid Corporate
    vlan 10
 !
@@ -575,6 +575,7 @@ dot11 ssid Guest
    vlan 20
 !
 bridge irb
+```
 
 Un **BVI (Bridge Virtual Interface)** in un Access Point WiFi è un'**interfaccia logica** del bridge utilizzata per ottenere un unico punto di gestione per l'**indirizzamento IP** e altre configurazioni di rete. Con 2 bridge accade che il Il** bridge group 1** avrà il suo **BVI1**, mentre il **bridge group 2** avrà il suo **BVI2**. 
 
