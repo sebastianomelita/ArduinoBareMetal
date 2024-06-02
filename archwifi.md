@@ -549,7 +549,22 @@ Quando si vuole **selezionare** un AP Wi-Fi per una rete mesh ad **alte prestazi
 
 ### **Bridge group**
 
+All'**interno** di ogni **AP**, in realtà, sono sempre presenti uno o più **bridge** realizzati in SW (creati  mediante il comando  bridge-group x) che hanno il compito di **associare** il traffico delle **interfacce wireless**  con le **interfacce Ethernet** della reta cablata.
+
+Le **interfacce wireless** fisiche sono divise in più **sotto interfacce** logiche, ciascuna con il proprio **SSID** (veri e propri Hub wireless separati da un ssid).
+
+Anche le interfacce ethernet fisiche sono divise in più **sotto interfacce** logiche, ciascuna con il proprio vlan id.
+
 <img src="img/ap_bridge_groups.png" alt="alt text" width="900">
+
+Partendo dall'alto verso il basso, possiamo vedere che:
+- Gli SSID sono mappati alle VLAN.
+- Le VLAN sono mappate alle sottointerfacce radio.
+- Le sottointerfacce radio sono mappate ai gruppi bridge.
+- Anche le sottointerfacce Ethernet sono mappate ai gruppi bridge.
+- Al dispositivo viene assegnato un indirizzo IP legato al gruppo bridge 1 per renderlo raggiungibile per manutenzione.
+  
+Questa configurazione mantiene il traffico wireless appartenente a un SSID isolato dal traffico appartenente all'altro mentre transita l'access point dall'interfaccia cablata all'interfaccia wireless e viceversa. Nota che poiché non c'è un'interfaccia BVI2, l'access point non ha alcun indirizzo IP raggiungibile direttamente dall'SSID Guest.
 
 ### **Conclusioni**
 
