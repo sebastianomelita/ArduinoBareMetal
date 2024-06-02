@@ -563,7 +563,64 @@ Partendo dall'alto verso il basso, possiamo vedere che:
 - Le sottointerfacce radio sono mappate ai gruppi bridge.
 - Anche le sottointerfacce Ethernet sono mappate ai gruppi bridge.
 - Al dispositivo viene assegnato un indirizzo IP legato al gruppo bridge 1 per renderlo raggiungibile per manutenzione.
-  
+
+Esempio:
+
+dot11 ssid Corporate
+   vlan 10
+!
+dot11 ssid Guest
+   vlan 20
+!
+bridge irb
+
+|VLAN 10 | VLAN 20               |    
+|---------|-----------------------
+|ap# configure terminal
+ap(config)# interface 
+dot11radio 0
+ap(config-if)# ssid boss
+ap(config-ssid)# vlan 01
+ap(config-ssid)# end      | Applicazione          |  
+
+interface Dot11Radio0
+ no ip address
+ !
+ ssid Corporate
+ !
+ ssid Guest
+ !
+ mbssid
+!
+interface Dot11Radio0.10
+ encapsulation dot1Q 10
+ bridge-group 1
+!
+interface Dot11Radio0.20
+ encapsulation dot1Q 20
+ bridge-group 2
+
+ interface Dot11Radio1
+ no ip address
+ !
+ ssid Corporate
+ !
+ ssid Guest
+ !
+ mbssid
+!
+interface Dot11Radio1.10
+ encapsulation dot1Q 10
+ bridge-group 1
+!
+interface Dot11Radio1.20
+ encapsulation dot1Q 20
+ bridge-group 2
+
+ interface BVI1
+ ip address 192.168.10.123 255.255.255.0
+ no ip route-cache
+ 
 Questa configurazione mantiene il traffico wireless appartenente a un SSID isolato dal traffico appartenente all'altro mentre transita l'access point dall'interfaccia cablata all'interfaccia wireless e viceversa. Nota che poiché non c'è un'interfaccia BVI2, l'access point non ha alcun indirizzo IP raggiungibile direttamente dall'SSID Guest.
 
 ### **Conclusioni**
