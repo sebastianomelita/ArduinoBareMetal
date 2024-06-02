@@ -581,7 +581,7 @@ Un **BVI (Bridge Virtual Interface)** in un Access Point WiFi è un'**interfacci
 Due funzioni rilevanti vengono eseguite nello snippet sopra. Innanzitutto, i nostri due SSID (Corporate e Guest) vengono definiti e associati alle VLAN. In secondo luogo, il **routing e il bridging integrati (IRB)** vengono **abilitati** con il comando bridge irb. Ciò consente di definire gruppi di bridge e un BVI.
 
 #### **Configurazione radio 0**
-
+```C++
 interface Dot11Radio0
  no ip address
  !
@@ -598,9 +598,10 @@ interface Dot11Radio0.10
 interface Dot11Radio0.20
  encapsulation dot1Q 20
  bridge-group 2
+```
 
 #### **Configurazione radio 1**
-
+```C++
  interface Dot11Radio1
  no ip address
  !
@@ -617,12 +618,14 @@ interface Dot11Radio1.10
 interface Dot11Radio1.20
  encapsulation dot1Q 20
  bridge-group 2
+```
 
 #### **Configurazione IP**
+```C++
  interface BVI1
  ip address 192.168.10.123 255.255.255.0
  no ip route-cache
- 
+```
 Questa configurazione mantiene il traffico wireless appartenente a un SSID isolato dal traffico appartenente all'altro mentre transita l'access point dall'interfaccia cablata all'interfaccia wireless e viceversa. Nota che poiché non c'è un'interfaccia BVI2, l'access point non ha alcun indirizzo IP raggiungibile direttamente dall'SSID Guest.
 
 ### **Conclusioni**
