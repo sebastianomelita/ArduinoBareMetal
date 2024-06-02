@@ -246,9 +246,7 @@ Gli **attori** di questa modalità sono quindi **due**:
 
 <img src="img/nolinkbeacon0.png" alt="alt text" width="1100">
 
-I pacchetti di **advertisement** sono periodici e sono messaggi di beacon trasmessi in broadcast da dispositivi broadcaster detti, per l’appunto, essi stessi beacon. Da questi l’osservatore ricava informazioni minimali (tag). A partire dalla versione 4.1 della specifica, sono possibili tutte le seguenti condizioni:
-- Un dispositivo può fungere contemporaneamente da **centrale** e da **periferica**.
-- Una centrale può essere connesso a più periferiche. Una periferica può essere connessa a più dispositivi centrali.
+I pacchetti di **advertisement** sono periodici e sono messaggi di beacon trasmessi in broadcast da dispositivi broadcaster detti, per l’appunto, essi stessi beacon. Da questi l’osservatore ricava informazioni minimali (tag). 
 
 ### **Topologia connessa**
 Il **beacon collegabile** (o periferica) è un dispositivo Bluetooth a bassa energia in **modalità periferica**, il che significa che può non solo trasmettere, ma anche **ricevere** e quindi potrebbe anche essere **interrogato periodicamente** per interagire con i **servizi** implementati sul dispositivo beacon effettuando:
