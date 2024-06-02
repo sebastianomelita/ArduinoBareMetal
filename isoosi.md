@@ -31,7 +31,7 @@ I **canali virtuali** sono dei **canali logici** che **emulano** un **collegamen
 
 E' un punto di vista **parziale** perchè non si basa su quello che una comunicazione realmente è nella sua **complessità** ed estensione (a livello fisico e lungo i vari nodi), ma per come, ad un **certo livello**, essa appare, semplicemente osservando il modo (protocollo) con cui si **comporta** lo scambio dei **dati** all'interno di quel **livello**. Infatti, **ad ogni livello**:
 - molte **proprietà** del canale vengono date **per scontate**, non percependo affatto che vengono realizzate **da altri** livelli.
-- lo **schema** della rete appare **semplificato**, non percependo che la sua **struttura** è molto più **articolata**, anche se è stata **riassunta** in un **unico link**. In particolare un **collegamento diretto** tra host potrebbe essere **spezzato** in più **collegamenti parziali** tra **IS**.
+- lo **schema** della rete appare **semplificato**, non percependo che la sua **struttura** è molto più **articolata**, anche se è stata **riassunta** in un **unico link**. In particolare un **collegamento diretto** tra host potrebbe essere **spezzato** in più **collegamenti di transito** tra **IS**.
 
 I **canali logici** hanno delle funzioni in più, di cui **non** godono i **canali fisici** sottostanti, che permettono di risovere quei problemi che si incontrano per realizzare una comunicazione **universale** tra dispositivi **eterogenei**.
 
