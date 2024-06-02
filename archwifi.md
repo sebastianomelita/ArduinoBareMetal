@@ -549,7 +549,7 @@ Quando si vuole **selezionare** un AP Wi-Fi per una rete mesh ad **alte prestazi
 
 ### **Bridge group**
 
-<img src="img/ap_bridge_groups.png" alt="alt text" width="500">
+<img src="img/ap_bridge_groups.png" alt="alt text" width="300">
 
 ### **Conclusioni**
 
