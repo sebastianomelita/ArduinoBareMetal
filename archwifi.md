@@ -575,13 +575,19 @@ dot11 ssid Guest
 bridge irb
 
 |VLAN 10 | VLAN 20               |    
-|---------|-----------------------
-|ap# configure terminal
+|--------|-----------------------|
+ap# configure terminal
 ap(config)# interface 
 dot11radio 0
-ap(config-if)# ssid boss
+ap(config-if)# ssid Corporate
 ap(config-ssid)# vlan 01
-ap(config-ssid)# end      | Applicazione          |  
+ap(config-ssid)# end             | 
+ap# configure terminal
+ap(config)# interface 
+dot11radio 0
+ap(config-if)# ssid Corporate
+ap(config-ssid)# vlan 01
+ap(config-ssid)# end             |  
 
 interface Dot11Radio0
  no ip address
