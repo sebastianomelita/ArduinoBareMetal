@@ -576,17 +576,8 @@ bridge irb
 
 |VLAN 10 | VLAN 20               |    
 |--------|-----------------------|
-ap# configure terminal<br>ap(config)# interface 
-dot11radio 0
-ap(config-if)# ssid Corporate
-ap(config-ssid)# vlan 01
-ap(config-ssid)# end             | 
-ap# configure terminal
-ap(config)# interface 
-dot11radio 0
-ap(config-if)# ssid Corporate
-ap(config-ssid)# vlan 01
-ap(config-ssid)# end             |  
+ap# configure terminal<br>ap(config)# interface dot11radio 0<br>ap(config-if)# ssid Corporate<br>ap(config-ssid)# vlan 01<br>ap(config-ssid)# end<br>| 
+ap# configure terminal<br>ap(config)# interface dot11radio 0<br>ap(config-if)# ssid Corporate<br>ap(config-ssid)# vlan 01<br>ap(config-ssid)# end<br> |   
 
 interface Dot11Radio0
  no ip address
