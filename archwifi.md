@@ -566,6 +566,8 @@ Partendo dall'alto verso il basso, possiamo vedere che:
 
 Esempio:
 
+#### **Configurazione globale**
+
 dot11 ssid Corporate
    vlan 10
 !
@@ -574,10 +576,11 @@ dot11 ssid Guest
 !
 bridge irb
 
-|VLAN 10 | VLAN 20               |    
-|--------|-----------------------|
-ap# configure terminal<br>ap(config)# interface dot11radio 0<br>ap(config-if)# ssid Corporate<br>ap(config-ssid)# vlan 01<br>ap(config-ssid)# end<br>| 
-ap# configure terminal<br>ap(config)# interface dot11radio 0<br>ap(config-if)# ssid Corporate<br>ap(config-ssid)# vlan 01<br>ap(config-ssid)# end<br> |   
+Un **BVI (Bridge Virtual Interface)** in un Access Point WiFi è un'**interfaccia logica** del bridge utilizzata per ottenere un unico punto di gestione per l'**indirizzamento IP** e altre configurazioni di rete. Con 2 bridge accade che il Il** bridge group 1** avrà il suo **BVI1**, mentre il **bridge group 2** avrà il suo **BVI2**. 
+
+Due funzioni rilevanti vengono eseguite nello snippet sopra. Innanzitutto, i nostri due SSID (Corporate e Guest) vengono definiti e associati alle VLAN. In secondo luogo, il **routing e il bridging integrati (IRB)** vengono **abilitati** con il comando bridge irb. Ciò consente di definire gruppi di bridge e un BVI.
+
+#### **Configurazione radio 0**
 
 interface Dot11Radio0
  no ip address
@@ -596,6 +599,8 @@ interface Dot11Radio0.20
  encapsulation dot1Q 20
  bridge-group 2
 
+#### **Configurazione radio 1**
+
  interface Dot11Radio1
  no ip address
  !
@@ -613,6 +618,7 @@ interface Dot11Radio1.20
  encapsulation dot1Q 20
  bridge-group 2
 
+#### **Configurazione IP**
  interface BVI1
  ip address 192.168.10.123 255.255.255.0
  no ip route-cache
