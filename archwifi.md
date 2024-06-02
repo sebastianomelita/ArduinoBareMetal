@@ -547,6 +547,10 @@ Quando si vuole **selezionare** un AP Wi-Fi per una rete mesh ad **alte prestazi
 - **Dynamic Band Steering**: La rete mesh può dirigere dinamicamente i dispositivi verso la banda più appropriata, migliorando l'efficienza della rete. I dispositivi più vicini ai nodi mesh possono essere indirizzati verso le bande a 5 GHz o 6 GHz, mentre quelli più lontani possono usare la banda a 2.4 GHz.
 - **Facilità di Configurazione**: meglio scegliere dispositivi con app di gestione intuitive e supporto tecnico affidabile.
 
+### **Bridge group**
+
+<img src="img/ap_bridge_groups.png" alt="alt text" width="1100">
+
 ### **Conclusioni**
 
 Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prestazioni e la copertura, utilizzando bande diverse per i link tra nodi e per le connessioni dei dispositivi. Questa tecnologia permette di ridurre la congestione e migliorare l'efficienza della rete, offrendo una connessione più stabile e veloce per tutti i dispositivi collegati.
@@ -585,5 +589,10 @@ Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prest
 - https://www.draytek.com/support/knowledge-base/6002
 - https://stevessmarthomeguide.com/wi-fi-mesh-networks/
 - https://www.tp-link.com/cac/support/faq/418/
+- https://packetlife.net/blog/2012/feb/20/aironet-aps-bridge-groups-and-bvi/
+- https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-6/config-guide/b_cg86/workgroup_bridges.html
+- https://www.cisco.com/c/en/us/td/docs/routers/access/wireless/software/guide/wireless_vlans.html
+- https://www.cisco.com/c/en/us/td/docs/internetworking/design/guide/idg4.html
+- https://www.cisco.com/c/en/us/td/docs/internetworking/design/guide/idg4.html
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
