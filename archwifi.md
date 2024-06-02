@@ -555,7 +555,7 @@ Le **interfacce wireless** fisiche sono divise in più **sotto interfacce** logi
 
 Anche le interfacce ethernet fisiche sono divise in più **sotto interfacce** logiche, ciascuna con il proprio vlan id.
 
-<img src="img/ap_bridge_groups.png" alt="alt text" width="900">
+<img src="img/ap_bridge_groups.png" alt="alt text" width="1000">
 
 Partendo dall'alto verso il basso, possiamo vedere che:
 - Gli SSID sono mappati alle VLAN.
