@@ -186,7 +186,7 @@ La particolarità di questo approccio è:
 
 ### **Schema di cablagggio a scanner fisso** 
 
-È un’approccio sempre più diffuso. Questi "**ascoltatori**" fissi raccolgono gli **identificativi** di tutti i beacon Bluetooth alla loro **portata** e sono loro che **trasmettono** le informazioni raccolte a un **sistema centralizzato** per l'analisi invece che un dispositivo mobile collegato alla rete.
+È un’approccio sempre più diffuso. Questi "**ascoltatori**" fissi raccolgono gli **identificativi** di tutti i beacon Bluetooth alla loro **portata** e sono loro stessi che **trasmettono** le informazioni raccolte a un **sistema centralizzato** per l'analisi, invece che un **dispositivo mobile** collegato alla rete.
 
 Il **sistema centrale** applicherà alcuni filtri digitali e, in base alla posizione degli ascoltatori fissi nota sistema, determinerà la posizione dei beacon mediante la **trilaterazione**. 
 
