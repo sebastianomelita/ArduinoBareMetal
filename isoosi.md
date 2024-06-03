@@ -144,9 +144,9 @@ Per contro, i canali realizzati con **multiplazione statica** mantengono ancora 
 #### **Canale reale**
 
 Il **canale reale** è il **mezzo trasmissivo** che unisce il **livello fisico** dei due interlocutori. Si sviluppa:
-1. in **verticale** lungo le interfacce tra i vari strati, **a scendere** in **trasmissione**
+1. in **verticale** lungo le interfacce tra i vari strati **a scendere**, in **trasmissione**
 2. in **orizzontale** lungo il **mezzo trasmissivo**, codificato sotto forma di segnali
-3. in verticale **a salire** in **ricezione**.
+3. in verticale **a salire**, in **ricezione**.
   
 I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmessi in un **blocco unico** lungo il **canale reale**. Ma per comodità, all'**interno dei dispositivi**, ogni **messaggio applicativo**  può essere visto **destrutturato** in una serie di messaggi **separati** lungo i 7 **canali virtuali** dei singoli livelli.  Il **messaggio parziale**, trasmesso e ricevuto lungo un livello, è inviato con il **formato** e con le **regole** di trasmissione (**protocollo**) propri di quel livello. 
 
