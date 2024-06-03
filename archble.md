@@ -295,7 +295,7 @@ I dispositivi BLE, dal punto di vista SW, si dividono in dispositivi **Client** 
 
 I **servizi BLE** sono stati nel tempo **standardizzati** e sono raggruppati per **profili**, cioè per categorie di servizi, all'interno dei quali i **tipi** di servizio hanno **comandi**, **stato** e **configurazioni** standardizzati. Questo **approccio** fa si che un **comando** inviato da un dispositivo di una marca X possono essere recepiti dall'**attuatore** di una marca Y con la garanzia che vengano **intepretati correttamente**. In sostanza viene garantita la piena **interoperabilità** tra dispositivi **analoghi** anche se di marca diversa.
 
-Nel caso particolare dei **beacon**, è però prassi comune introdurre dei **servizi custom** che possono essere diversi da un costruttore all'altro a patto, però, che il loro identificativo globale, l'**UIID** sia unico e diverso da quelli già assegnato ad altri servizi.
+Nel caso particolare dei **beacon**, è però prassi comune introdurre dei **servizi custom** che possono essere diversi da un costruttore all'altro a patto, però, che il loro identificativo globale, l'**UIID** sia unico e diverso da quello già assegnato ad altri servizi.
 
 **GATT** sta per Generic Attributes e definisce una **struttura dati** gerarchica esposta ai dispositivi BLE collegati. Ciò significa che GATT definisce il modo in cui due dispositivi BLE inviano e ricevono messaggi standard. 
 
