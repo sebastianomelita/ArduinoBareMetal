@@ -109,8 +109,8 @@ Sul **Network Server**:
 La chiave **AppKey** può essere generata online su cloud di gestione dei dispositivi LoraWAN come TTN, oppure localmente, ad esempio con il comando ```openssl rand -hex 16```.
 
 In realtà, il **server** genera automaticamente **due chiavi**:
-- **AppSKey**: utilizzata per cifrare e decifrare il payload delle applicazioni. Viene utilizzato per garantire la **privatezza** (confidenzialità9 dei messaggi.
-- NwkSKey: viene utilizzata dall'algoritmo AES-CMAC (Cipher-based Message Authentication Code), un HMAC con chiave, per generare un **hash** del frame da trasmettere, detto **MIC**, che il **trasmettitore** allega al messaggio e che il **ricevitore** ricalcola localmente in ricezione utilizzando la **stessa chiave**. Se i due MIC **coincidono** vengono provati contemporaneamente **integrità** del messaggio ed **autenticazione** del mittente.
+- **AppSKey**: utilizzata dal **protocollo** LoRaWAN per cifrare e decifrare il payload delle applicazioni. Viene utilizzato per garantire la **privatezza** (confidenzialità9 dei messaggi.
+- **NwkSKey**: utilizzata dal **protocollo** LoRaWAN in ingresso all'algoritmo AES-CMAC (Cipher-based Message Authentication Code), un HMAC con chiave con il quale viene generato un **hash del frame** da trasmettere, detto **MIC**, che il **trasmettitore** allega al messaggio e che il **ricevitore** ricalcola localmente in ricezione utilizzando la **stessa chiave**. Se i due MIC **coincidono** vengono provati contemporaneamente **integrità** del messaggio ed **autenticazione** del mittente.
   
 
 ## **Formato del payload**
