@@ -196,7 +196,7 @@ Utilizzando **questo approccio**, invece di tracciare o localizzare  un **dispos
 
 Si noti che in questo **approccio** i **dispositivi fissi** hanno il ruolo di listener e devono essere essere **collegati alla rete**, mentre i **dispositivi da localizzare** no.
 
-Questo **approccio** è però molto più **oneroso** per l'infrastruttura perchè adesso serve una **rete di distrivuzione** delle informazioni di tracciamento raccolte dai **listener** che deve essere **estesa** almeno quanto tutta l'**area da presidiare**.
+Questo **approccio** è però molto più **oneroso** per l'infrastruttura perchè adesso serve una **rete di distribuzione** delle informazioni di tracciamento raccolte dai **listener** che deve essere **estesa** almeno quanto tutta l'**area da presidiare**.
 
 <img src="img/fixedscanner.png" alt="alt text" width="900">
 
