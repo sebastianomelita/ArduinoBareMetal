@@ -155,9 +155,17 @@ Le applicazioni possono ora sapere esattamente dove si trovano e cosa le circond
 
 È l’approccio più comune. I beacon sono posizionati in **posizioni fisse** e note, rispetto a una **mappa interna**.  
 
-I dispositivi mobili abilitati Bluetooth **riconoscono** questi beacon quando si trovano nel raggio della portata e determinano la **posizione assoluta** (latitudine e longitudine) del dispositivo sulla mappa, stimata la misura della distanza (usando l'intensità del segnale dei beacon) e nota la conoscenza delle posizioni assolute dei beacon.
+I dispositivi mobili (**listener**) abilitati Bluetooth **riconoscono** i beacon quando questi si trovano all'interno del **raggio** della loro **portata** (variabile dal metro alle decine di metri) e determinano la **posizione assoluta** (latitudine e longitudine) del dispositivo sulla mappa, stimata grazie a misure di **distanza**:
+- con la **distanza** stimata da un **1 beacon** si stabilisce solo il **raggio di presenza** del beacon
+- con la **distanza** stimata da almeno **3 beacon** si stabilisce la **posizione puntuale** del beacon nel piano, è il meccanismo della **trilaterazione**
+- con la **distanza** stimata da almeno **4 beacon** si stabilisce la **posizione puntuale** del beacon nello spazio (viene introdotta l'altezza), è il meccanismo della **trilaterazione** + altezza
 
-I dati di tracciamento che possono essere raccolti da ciascun dispositivo mobile possono quindi essere inviati, via wifi o modem UMTS, a un sistema centralizzato a scopo analitico e ad altri servizi come la mappatura delle presenze in tempo reale.
+I **dati di tracciamento** raccolti da ciascun **dispositivo mobile** possono quindi essere inviati, via wifi o modem UMTS, a un **sistema centralizzato** a scopo analitico e ad altri servizi come la **mappatura** delle presenze in tempo reale, o delle **localizzazioni** in tempo reale.
+
+La particolarità di questo approccio è:
+- un **numero elevato** di beacon a basso costo installati sulle zone da presidiare
+- l'**assenza** di una infrastruttura di **rete** per i beacon che sono, a tutti gli effetti, **dispositivi isolati**.
+- la **responsabilità** dell'elaborazione e del collegamento al server **delegata** al **listener** che si **sposta**.
 
 <img src="img/fixedbeacon.png" alt="alt text" width="900">
 
