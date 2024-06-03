@@ -95,9 +95,9 @@ Le **funzioni** dell'architettura **LoRaWAN** possono essere distinte su **3 dis
 
 ## **Acesso OTAA**
 
-Per abilitare l'**accesso OTAA**, vanno configurati sia il **dispositivo** che il **network server**.
+Per abilitare l'**accesso OTAA**, vanno configurati sia il **dispositivo IoT** che il **network server**.
 
-Sul **Dispositivo** (End-Device):
+Sul **Dispositivo IoT** (End-Device) vanno impostati:
 - **DevEUI** o **identificatore del dispositivo**, è unico e normalmente si deduce dal MAC Ethernet con il processo **EUI64**.
 - **AppEUI** o **dentificatore dell'applicazione**, è unico e normalmente è fornito dall'**amministratore** della rete (è un parametro impostato sul Network Server).
 - **AppKey** o **Chiave di applicazione**, una chiave segreta precondivisa tra il dispositivo e il join server, serve per cifrare con hash con chiave HMAC la chiave OTP di sessione che verrà utilizzata dai dispositivi ad ogni nuova connessione.
