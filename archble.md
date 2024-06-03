@@ -162,7 +162,7 @@ I dispositivi mobili (**listener**) abilitati Bluetooth **riconoscono** i beacon
 
 I **dati di tracciamento** raccolti da ciascun **dispositivo mobile** possono quindi essere inviati, via wifi o modem UMTS, a un **sistema centralizzato** a scopo analitico e ad altri servizi come la **mappatura** delle presenze in tempo reale, o delle **localizzazioni** in tempo reale.
 
-Si noti che in questo **approccio** i **dispositivi mobili** hanno il ruolo di listener e devono essere essere **collegati alla rete**, mentre i **dispositivi fissi** no.
+Si noti che in questo **approccio** i **dispositivi da localizzare** hanno il ruolo di listener e devono essere essere **collegati alla rete**, mentre i **dispositivi fissi** no.
 
 La particolarità di questo approccio è:
 - un **numero elevato** di beacon a basso costo installati sulle zone da presidiare
@@ -192,9 +192,9 @@ La particolarità di questo approccio è:
 
 Il **sistema centrale** applicherà alcuni filtri digitali e, in base alla posizione degli ascoltatori fissi nota sistema, determinerà la posizione dei beacon mediante la **trilaterazione**. 
 
-Utilizzando **questo approccio**, invece di tracciare un **dispositivo mobile** costoso, si effettua il tracciamento dei **singoli beacon** che, grazie al **costo irrisorio** e alle **ridodittissime dimensioni**, consentono una serie di casi d'uso nuovi e innovativi.
+Utilizzando **questo approccio**, invece di tracciare o localizzare  un **dispositivo mobile** costoso (smartphone) , si effettua il tracciamento dei **singoli beacon** che, grazie al **costo irrisorio** e alle **ridodittissime dimensioni**, consentono una serie di casi d'uso nuovi e innovativi.
 
-Si noti che in questo **approccio** i **dispositivi fissi** hanno il ruolo di listener e devono essere essere **collegati alla rete**, mentre i **dispositivi mobili** no.
+Si noti che in questo **approccio** i **dispositivi fissi** hanno il ruolo di listener e devono essere essere **collegati alla rete**, mentre i **dispositivi da localizzare** no.
 
 Questo **approccio** è però molto più **oneroso** per l'infrastruttura perchè adesso serve una **rete di distrivuzione** delle informazioni di tracciamento raccolte dai **listener** che deve essere **estesa** almeno quanto tutta l'**area da presidiare**.
 
