@@ -30,9 +30,6 @@ I **servizi** di uno strato sono realizzati usando:
 Ciascun livello utilizza i **servizi** che sono offerti dal livello inferiore per generare servizi più complessi e potenti di livello superiore (servizi a **valore aggiunto**)
 
 
-
-<img src="iso-osi1.png" alt="alt text" width="1000">
-
 | Livello | Nome                  |       Funzioni svolte                        |      Esempi di protocollo        |
 |---------|-----------------------|-----------------------------|-----------------------------|
 | 7       | Applicazione          |  Applicazione **Client/Server** che virtualizza una risorsa Cremota** e **condivisa** facendola apparire come **locale** e **dedicata**, definisce il **tipo di utenti** e il **tipo di sicurezza** con cui dialogano| HTTP, DNS, DHCP, FTP, SFTP, scp, rsync, rclone |
