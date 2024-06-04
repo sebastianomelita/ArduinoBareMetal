@@ -667,6 +667,7 @@ Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prest
 - https://www.draytek.com/support/knowledge-base/6002
 - https://stevessmarthomeguide.com/wi-fi-mesh-networks/
 - https://www.tp-link.com/cac/support/faq/418/
+- https://www.researchgate.net/publication/277227642_Test_reports_-_Confrontation_between_experimental_and_numerical_results_Analysis_of_the_attenuation_of_the_WIFI_signals_inside_and_outside_a_railway_vehicle
 - https://packetlife.net/blog/2012/feb/20/aironet-aps-bridge-groups-and-bvi/
 - https://www.cisco.com/c/en/us/td/docs/wireless/controller/8-6/config-guide/b_cg86/workgroup_bridges.html
 - https://www.cisco.com/c/en/us/td/docs/routers/access/wireless/software/guide/wireless_vlans.html
