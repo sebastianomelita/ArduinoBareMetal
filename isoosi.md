@@ -29,6 +29,14 @@ I **servizi** di uno strato sono realizzati usando:
 
 Ciascun livello utilizza i **servizi** che sono offerti dal livello inferiore per generare servizi più complessi e potenti di livello superiore (servizi a **valore aggiunto**)
 
+### **Moello ISO/OSI**
+
+E’ composto da 7 livelli ordinati secondo una pila (stack) di protocolli dove gli elementi attivi di ogni livello, quelli che svolgono le funzioni, sono le entità.
+Entità appartenenti allo stesso livello, su sistemi diversi, sono dette entità pari (peer entities) e la comunicazione fra due peer ad un certo livello avviene: 
+- per mezzo di un insieme di regole e convenzioni chiamate** protocollo del livello**
+- tramite unità informative (pacchetti) dette **Protocol Data Unit** (PDU) 
+
+La pila di protocolli è un “contenitore” di funzioni di rete che sta all’interno di un nodo di rete (IS o ES). In **ogni nodo**, esiste una pila di protocolli per ogni **scheda di rete** (interfaccia esterna)
 
 | Livello | Nome                  |       Funzioni svolte                        |      Esempi di protocollo        |
 |---------|-----------------------|-----------------------------|-----------------------------|
