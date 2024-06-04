@@ -7,9 +7,6 @@
 
 L'**ISO/OSI** ha catalogato e organizzato in una **architettura a 7 strati** tutti i **protocolli** concepiti nel tempo organizzandoli in base alle **categorie di problemi** di rete che essi risolvono. L'architettura è normalmente rappresentata sotto forma di **stack** (pila) e, per ogni elemento dello stack, identifica una **categoria di protocolli** che deve risolvere **un determinato insieme di problemi** della comunicazione in rete. L'architettura è **modulare** nel senso che uno strato può essere sostituito senza che quelli sopra di lui se ne accorgano permettendo una grande **flessibilità**. Questa flessibilità può essere utilizzata per **adattare** un protocollo di livello superiore a **vari mezzi fisici** o per ottenere su un certo mezzo fisico una determinata **qualità del servizio**. **Obiettivo finale** è garantire l'**interoperabilità universale tra i dispositivi** da collegare, a prescindere dalle possibili differenze che possono intercorrere rispetto a marca, modello e tecnologie adoperate. 
 
-
-
-
 ### **Architettura a strati**
 
 Nell'informatica, esiste la necessità di una organizzazione adeguata delle funzioni per potere gestire la complessità. La soluzione trovata sta nel distribuire funzioni complesse secondo una architettura che segua una **organizzazione a strati** (o livelli). Un **vincolo dell'architettura** è che uno strato può dialogare solamente con quelli adiacenti, sopra o sotto di lui.
@@ -33,7 +30,7 @@ Ciascun livello utilizza i **servizi** che sono offerti dal livello inferiore pe
 
 E’ composto da 7 livelli ordinati secondo una pila (stack) di protocolli dove gli elementi attivi di ogni livello, quelli che svolgono le funzioni, sono le entità.
 Entità appartenenti allo stesso livello, su sistemi diversi, sono dette entità pari (peer entities) e la comunicazione fra due peer ad un certo livello avviene: 
-- per mezzo di un insieme di regole e convenzioni chiamate** protocollo del livello**
+- per mezzo di un insieme di regole e convenzioni chiamate **protocollo del livello**
 - tramite unità informative (pacchetti) dette **Protocol Data Unit** (PDU) 
 
 La pila di protocolli è un “contenitore” di funzioni di rete che sta all’interno di un nodo di rete (IS o ES). In **ogni nodo**, esiste una pila di protocolli per ogni **scheda di rete** (interfaccia esterna)
