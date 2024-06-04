@@ -26,7 +26,7 @@ I **servizi** di uno strato sono realizzati usando:
 
 Ciascun livello utilizza i **servizi** che sono offerti dal livello inferiore per generare servizi più complessi e potenti di livello superiore (servizi a **valore aggiunto**)
 
-### **Moello ISO/OSI**
+### **Modello ISO/OSI**
 
 E’ composto da 7 livelli ordinati secondo una pila (stack) di protocolli dove gli elementi attivi di ogni livello, quelli che svolgono le funzioni, sono le entità.
 Entità appartenenti allo stesso livello, su sistemi diversi, sono dette entità pari (peer entities) e la comunicazione fra due peer ad un certo livello avviene: 
@@ -34,6 +34,7 @@ Entità appartenenti allo stesso livello, su sistemi diversi, sono dette entità
 - tramite unità informative (pacchetti) dette **Protocol Data Unit** (PDU) 
 
 La pila di protocolli è un “contenitore” di funzioni di rete che sta all’interno di un nodo di rete (IS o ES). In **ogni nodo**, esiste una pila di protocolli per ogni **scheda di rete** (interfaccia esterna)
+
 
 | Livello | Nome                  |       Funzioni svolte                        |      Esempi di protocollo        |
 |---------|-----------------------|-----------------------------|-----------------------------|
@@ -45,6 +46,13 @@ La pila di protocolli è un “contenitore” di funzioni di rete che sta all’
 | 2       | Collegamento dati     | **Segmenta** i messaggi lunghi aggiungendo loro l'indirizzo del mittente, esegue la **multiplazione** di più connessioni di livello 2 sulla stessa connsessione di livello 1, esegue il **controllo di errore** (senza ritrasmissione), esegue il **controllo di flusso** (velocità del mittente) | Ethernet, WiFI, BLE, Zigbee, LoRa|
 | 1       | Fisico                | Esegue la **codifica/decodifica** dei bit, cioè traduce i bit in segnali elettrici in **trasmissione** mentre traduce i segnali elettrici in bit **in ricezione**. Definisce gli **standard** meccanici ed elettrici dei canali.| CCA, LBT|
 
+### **Obiettivi ISO/OSI**
+
+- Realizzare sistemi aperti cioè capaci di dialogare con qualunque altro sistema a prescindere da differenze di tecnologia, marca, modello, collocazione geografica, epoca di costruzione (interoperabilità tra dispositivi eterogenei).
+- Realizzare una struttura modulare che permetta, a fronte della sostituzione di alcuni livelli, il riutilizzo di quelli rimanenti.
+- Utilizzare standard di comunicazione open source e validi in ambito mondiale
+- Abbattere i costi di vendita dei dispositivi grazie alla economia di scala derivante dalla dimensione mondiale del mercato di riferimento.
+
 ### **Canali virtuali**
 
 #### **Definizione**
@@ -55,7 +63,16 @@ E' un punto di vista **parziale** perchè non si basa su quello che una comunica
 - molte **proprietà** del canale vengono date **per scontate**, non percependo affatto che vengono realizzate **da altri** livelli.
 - lo **schema** della rete appare **semplificato**, non percependo che la sua **struttura** è molto più **articolata**, anche se è stata **riassunta** in un **unico link**. In particolare un **collegamento diretto** tra host potrebbe essere **spezzato** in più **collegamenti di transito** tra **IS**.
 
-I **canali logici** hanno delle funzioni in più, di cui **non** godono i **canali fisici** sottostanti, che permettono di risovere quei problemi che si incontrano per realizzare una comunicazione **universale** tra dispositivi **eterogenei**.
+Al fine di realizzare servizi usati al livello N+1:
+- La comunicazione tra entità pari di livello N apparentemente si svolge come se avvenisse tramite un canale che le connette direttamente in orizzontale
+- La comunicazione (solamente simulata) avviene lungo un canale logico detto canale virtuale di livello N: 
+    - scambiandosi PDU di livello N (N-PDU)
+    - in base ad un protocollo di livello N 
+- Ciascun canale virtuale aggiunge nuovi servizi al canale virtuale sottostante
+- Fino a che non viene raggiunto il livello 1 (canale fisico), nessun dato è trasferito direttamente dal livello N del Tx al livello N del Rx: l’unico canale reale è quello fisico!
+- le entità pari in realtà comunicano trasferendo i dati lungo l’interfaccia di separazione col livello sottostante (comunicazione reale di livello N)
+
+
 
 Ogni **canale logico** serve a collegare tra loro le **due entità**, moduli SW con un certo **ruolo** (analoghe a coppie di impiegati tra i tanti di una grande azienda), che sono deputate a risolvere solamente **certi problemi**, tutti e soli quelli che rientrano all'interno delle **mansioni** che competono a quelle entità. 
 
