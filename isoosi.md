@@ -7,15 +7,35 @@
 
 L'**ISO/OSI** ha catalogato e organizzato in una **architettura a 7 strati** tutti i **protocolli** concepiti nel tempo organizzandoli in base alle **categorie di problemi** di rete che essi risolvono. L'architettura è normalmente rappresentata sotto forma di **stack** (pila) e, per ogni elemento dello stack, identifica una **categoria di protocolli** che deve risolvere **un determinato insieme di problemi** della comunicazione in rete. L'architettura è **modulare** nel senso che uno strato può essere sostituito senza che quelli sopra di lui se ne accorgano permettendo una grande **flessibilità**. Questa flessibilità può essere utilizzata per **adattare** un protocollo di livello superiore a **vari mezzi fisici** o per ottenere su un certo mezzo fisico una determinata **qualità del servizio**. **Obiettivo finale** è garantire l'**interoperabilità universale tra i dispositivi** da collegare, a prescindere dalle possibili differenze che possono intercorrere rispetto a marca, modello e tecnologie adoperate. 
 
+
+
+
 ### **Architettura a strati**
 
-Un **vincolo dell'architettura** è che uno strato può dialogare solo con quelli adiacenti, o sopra o sotto di lui.
+Nell'informatica, esiste la necessità di una organizzazione adeguata delle funzioni per potere gestire la complessità. La soluzione trovata sta nel distribuire funzioni complesse secondo una architettura che segua una **organizzazione a strati** (o livelli). Un **vincolo dell'architettura** è che uno strato può dialogare solamente con quelli adiacenti, sopra o sotto di lui.
+
+### **Funzioni**
+
+Le reti di calcolatori sono organizzate secondo un modello a strati (livelli), con ogni strato costruito su quello inferiore, che ripartisce il numero e la complessità delle funzioni di rete su più livelli.
+Ciascun livello è:
+- fornitore del servizio al livello superiore N+1 
+- utente del servizio offerto dal livello N-1
+  
+Ciascun livello fornisce delle primitive di servizio (funzioni di rete) dove una primitiva è una macrofunzione che realizza una semplificazione delle funzioni degli strati sottostanti (astrazione funzionale) che nasconde dettagli hardware e/o software della loro realizzazione (concetto di trasparenza o black-box)
+
+I **servizi** di uno strato sono realizzati usando: 
+- le proprie funzioni 
+- i servizi del livello inferiore N-1 
+
+Ciascun livello utilizza i **servizi** che sono offerti dal livello inferiore per generare servizi più complessi e potenti di livello superiore (servizi a **valore aggiunto**)
+
+
 
 <img src="iso-osi1.png" alt="alt text" width="1000">
 
 | Livello | Nome                  |       Funzioni svolte                        |      Esempi di protocollo        |
 |---------|-----------------------|-----------------------------|-----------------------------|
-| 7       | Applicazione          |  Applicazione **Client/Server** che virtualizza una risorsa **remota** e **condivisa** facendola apparire come **locale** e **dedicata**, definisce il **tipo di utenti** e il **tipo di sicurezza** con cui dialogano| HTTP, DNS, DHCP, FTP, SFTP, scp, rsync, rclone |
+| 7       | Applicazione          |  Applicazione **Client/Server** che virtualizza una risorsa Cremota** e **condivisa** facendola apparire come **locale** e **dedicata**, definisce il **tipo di utenti** e il **tipo di sicurezza** con cui dialogano| HTTP, DNS, DHCP, FTP, SFTP, scp, rsync, rclone |
 | 6       | Presentazione         |  Traduce **documenti**, **flussi di dati**, **record**, **caratteri** da un formato all'altro (ad es. XML piuttosto che JSON oppure mp3 al posto di mp4), realizza la **compressione** dei dati e la loro **cifratura**, realizza la **serializzazione** degli oggetti (ad esempio struct)| MIME, XDR, HTML, XML, SSL, TLS, zip |
 | 5       | Sessione              |   Apre, gestisce e termina conversazioni e scambio di dati (sessioni) tra due applicazioni stabilendone le **fasi**, gestisce il **tipo di comunicazione** (half duplex, full duplex) | SMB, NetBIOS  |                                                                                                   |
 | 4       | Trasporto             | **Segmentazione** di ciascun pacchetto in più segmenti, **multiplazione** di più connessioni di livello 4 (uniscono processi diversi) in una stessa connessione di livello 3 (unisce due host), **controllo di errore** End to End (con ritrasmissione), **controllo di flusso** End to End, **riordino** dei pacchetti fuori sequenza, **controllo di congestione** |   TCP, UDP      |                                                                                                  |
