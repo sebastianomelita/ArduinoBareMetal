@@ -48,14 +48,14 @@ Il **broker MQTT** è solo una delle tante soluzioni possibili per:
 - inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **pannello di controllo** su una rete diversa di tipo B (tipicamente IP)
 - inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **server di gestione** su una rete diversa di tipo B (tipicamente IP) per:
 -  elaborazioni a **breve termine** quali la generazione di **statistiche** per la determinazione di **soglie** o **predizioni** per:
-    - realizzazione da remoto della **logica di comando** (processo dei comandi) degli **attuatori**
-    - **report** per l'assistenza alle decisioni
-    - generazioni di **allarmi**
-    - realizzazione di **ottimizzazioni** della gestione o del consumo di risorse, energia o materie prime
-    - contabilizzazione dei consumi (**smart metering**)
-    - controllo e sorveglianza in tempo reale dello **stato** di impianti o macchinari
-    - segnalazione dei **guasti** o loro **analisi predittiva** prima che accadano
-    - **consapevolezza situazionale** di ambienti remoti, difficili, pericolosi o ostili (https://it.wikipedia.org/wiki/Situational_awareness)
+     - realizzazione da remoto della **logica di comando** (processo dei comandi) degli **attuatori**
+     - **report** per l'assistenza alle decisioni
+     - generazioni di **allarmi**
+     - realizzazione di **ottimizzazioni** della gestione o del consumo di risorse, energia o materie prime
+     - contabilizzazione dei consumi (**smart metering**)
+     - controllo e sorveglianza in tempo reale dello **stato** di impianti o macchinari
+     - segnalazione dei **guasti** o loro **analisi predittiva** prima che accadano
+     - **consapevolezza situazionale** di ambienti remoti, difficili, pericolosi o ostili (https://it.wikipedia.org/wiki/Situational_awareness)
 -  elaborazioni a **lungo termine** quali:
     - analisi dei dati per la realizzazione di studi scientifici
     - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
