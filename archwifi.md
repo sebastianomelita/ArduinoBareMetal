@@ -335,17 +335,17 @@ In **client mode** il collegamento tra due AP è assimilabile ad una **dorsale L
 
 <img src="img/ponteaziendawifi.png" alt="alt text" width="1000">
 
-### **Esempio sottorete privata: client mode**
+### **Esempio sottorete privata**
 
 Si ha la necessità di unire due reti LAN della stessa azienda ma poste su edifici separati da una strada pubblica che non si vuole o non si può cablare. Non si vuole ricorrere a VPN per non dover pagare un secondo abbonamento ad internet.
 
-### **Esempio sottorete privata**
+### **Soluzione in client mode**
 
 Il dispositivo client implementa un **router** ed un **NAT**. In genere, gli host sulla LAN del client utilizzano il server DHCP del router, poiché di fatto è una rete indipendente. 
 
 Gli host del lato AP non vedono quelli del lato client ma solo un router (con indirizzo privato). Gli host del lato client vedono quelli del lato AP, ed accedono ad internet.
 
-### **Esempio sottorete privata: repeater mode**
+### **Soluzione in repeater mode**
 
 Il dispositivo **amplifica** il segnale estendendo la dimensione nello spazio del mezzo a BUS che comunque rimane unico per tutti i dispositivi. Ne consegue che il traffico sul primo hub wireless viene riportato sul secondo e vicerversa.  Dovendo rimanere uguale il throughput complessivo, ne consegue che la banda di ciascun hub wireless **non** potrà essere **superiore al 50%** del throughput di **uno solo**, se questi generano lo stesso volume di traffico.
 
