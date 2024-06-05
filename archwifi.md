@@ -69,19 +69,7 @@ E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **
     - analisi dei dati per la realizzazione di studi scientifici
     - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
       
-### **Gateway standardizzati** 
-
-**Riassumendo**, alla **rete di distribuzione IP** si collegano, quindi, una o più **reti secondarie** che servono da **rete di accesso** per i dispositivi sensori o attuatori con **interfacce** spesso di tipo **non ethernet** che necessitano di un **gateway** di confine con possibili funzioni di:     
-  - **Inoltro**, cioè smistamento dei messaggi da un tipo di rete all'altro di tipo L3 (**routing**) o di tipo L2 (**bridging**). L'inoltro del messaggio di un sensore può essere:
-       - **diretto** nella rete di distribuzione tramite link fisico verso il dispositivo di smistamento (router o switch) più vicino.
-           - Nel caso di una LAN il gateway possiede un indirizzo IP privato.
-           - Nel caso di una WAN il gateway possiede un indirizzo IP pubblico.
-       - **indiretto** tramite una dorsale virtuale, cioè un **tunnel**, verso il network server o verso un router di una WAN privata, realizzato, ad esempio, in maniera cifrata tramite un **client di VPN**, oppure in maniera non cifrata tramite un client di tunnel generico **GRE**. In questo caso il gateway possiede un indirizzo IP pubblico nell'interfaccia in Internet ma anche un IP privato nell'interfaccia sul tunnel cifrato. Il tunnel cifrato, per VPN L3, è gestito con una subnet IP separata per ogni tunnel.
-  - **Traduzione di formato** dei messaggi da rete a bus a rete ethernet con eventuale realizzazione del **bridge** L4 tra il livello applicativo in uso nella rete di sensori e quello in uso nella rete di distribuzione.
-  - **Interrogazione periodica** (polling) dei dispositivi nella rete di sensori (master di una architettura master/slave)
-  - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
-  - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
-
+### **Apparati attivi** 
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
 
