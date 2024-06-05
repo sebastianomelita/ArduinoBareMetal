@@ -116,6 +116,17 @@ Questo cluster permette di controllare la luminosità della lampadina.
 
 Immaginiamo di avere un'applicazione di controllo della casa intelligente che deve interagire con una lampadina Zigbee.
 
+##### **Basic Cluster (0x0000):**
+
+Il Basic Cluster include informazioni generali sul dispositivo e alcune funzioni di configurazione di base.
+```
+Attributes:
+  ZCLVersion (0x0000): Versione del protocollo Zigbee.
+  ApplicationVersion (0x0001): Versione dell'applicazione.
+  ManufacturerName (0x0004): Nome del produttore.
+  ModelIdentifier (0x0005): Identificatore del modello.
+```
+
 ##### **Accendere la Lampadina:**
 
 ```
