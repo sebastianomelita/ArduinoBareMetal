@@ -465,11 +465,11 @@ Nelle reti Wifi **Routed mesh**, si sfrutta la **proprietà** (comune a tutti i 
 
 <img src="img/integratedGW-WiFi-LAN.png" alt="alt text" width="900">
 
-Il routing è basato su **indirizzi IP** che, essendo **gerarchici** , permettono di **partizionare la rete** in subnet con **gruppi** di dispositivi dislocati in aree **delimitate** e presidiate da **router**, cioè da dispositivi in grado filtrare gli accessi con **regole** basate sull'indirizzo di **sorgente**. Questo è un vantaggio di sicurezza perchè un firewall potre abilitare l'accesso ad **aree fisiche** corrispondenti a **gruppi logici** di indirizzi (le subnet) controllando la **subnet di appartenenza** della sorgente.
+Il routing è basato su **indirizzi IP** che, essendo **gerarchici** , permettono di **partizionare la rete** in subnet con **gruppi** di dispositivi dislocati in aree **delimitate** e presidiate da **router**, cioè da dispositivi in grado filtrare gli accessi con **regole** basate sull'indirizzo di **sorgente**. Questo è un vantaggio di sicurezza perchè una ACL sui ro potrebbe abilitare l'accesso ad **aree fisiche** corrispondenti a **gruppi logici** di indirizzi (le subnet) controllando la **subnet di appartenenza** della sorgente.
 
 ### **Esempio**
 
-Se si volessero separare un'**area di produzione** agricolacon accesso riservato solamente ai **sensori/attuatori**, da un'area dedicata all'**accesso degli impiegati** amministrativi e da un altra ancora dedicata all'**accesso degli ospiti** esterni per le conferenze, allora la **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe efficace. 
+Se si volessero separare un'**area di produzione** agricola con accesso riservato solamente ai **sensori/attuatori**, da un'area dedicata all'**accesso degli impiegati** amministrativi e da un altra ancora dedicata all'**accesso degli ospiti** esterni per le conferenze, allora la **separazione** dei gruppi di utenti in base alla **dislocazione fisica** potrebbe essere una **soluzione efficace**. 
 
 #### **Definizione dei gruppi mediante router**
 
