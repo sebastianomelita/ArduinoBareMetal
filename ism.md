@@ -72,7 +72,7 @@ Organizzare i canali in **bande** può servire per isolare **gruppi di canali** 
       
     <img src="img/13638_2019_1502_Fig3_HTML.png" alt="alt text" width="500" style="margin-top: 20px;">
 
-    - **Duty cycle aggregato con LBT**. È utile avere molti canali nella maschera dei canali, in modo che le trasmissioni abbiano meno probabilità di subire ritardi. I requisiti europei stabiliscono inoltre che, usando LBT, su uno spettro di 200 kHz possono verificarsi solo **100 secondi** di trasmissione **nell'arco di un'ora**. Questo metodo semplifica e ottimizza i calcoli dell'utilizzo dello spettro nell'arco di un'ora. Lo standard afferma che più canali hai, più tempo di trasmissione hai in un periodo di un'ora. Si può calcolare il duty cycle effettivo in base al numero di canali disponibili abilitati come segue:
+    - **Duty cycle aggregato con LBT**. È utile avere molti canali nella maschera dei canali, in modo che le trasmissioni abbiano meno probabilità di subire ritardi. I requisiti europei stabiliscono inoltre che, usando LBT, su uno spettro di 200 kHz possono verificarsi solo **100 secondi** di trasmissione **nell'arco di un'ora**. Questo metodo semplifica e ottimizza i calcoli dell'utilizzo dello spettro nell'arco di un'ora. Lo standard afferma che più canali si adoperano per trasmettere, più tempo di trasmissione si può occupare in un periodo di un'ora. Si può calcolare il duty cycle effettivo in base al numero di canali disponibili abilitati come segue:
 ```Duty cycle effettivo = (numero di canali * 100)/3600```. Ad esempio, se si abilitassero **due canali** si avrebbe un **duty cycle effettivo** del **5,6%**.
 
     - **vincoli su CCA e backoff**.
