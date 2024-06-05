@@ -107,7 +107,7 @@ Per Bluetooth Low Energy (BLE), i dispositivi sono spesso strutturati utilizzand
 
 #### **Esempio di Servizio Lampadina BLE**
 
-```Json
+```
 Service: Lampadina
 UUID: 12345678-1234-5678-1234-56789abcdef0
 
@@ -121,7 +121,7 @@ Value: Boolean (true = On, false = Off)
 
 Immaginiamo di avere un'applicazione di controllo della casa intelligente che deve interagire con una lampadina BLE.
 
-##### **Accendere la Lampadina:
+##### **Accendere la Lampadina:**
 - Scrittura del valore true alla caratteristica On/Off
 ```Json
 {
