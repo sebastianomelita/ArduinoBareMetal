@@ -57,7 +57,7 @@ Esistono molte altre soluzioni che magari sono più semplici e graficamente acca
 
 ### **Server di gestione** 
 
-E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **subscriber per:
+E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **subscriber** per:
 -  elaborazioni a **breve termine** quali la generazione di **statistiche** per la determinazione di **soglie** o **predizioni** per:
     - realizzazione da remoto della **logica di comando** (processo dei comandi) degli **attuatori**
     - **report** per l'assistenza alle decisioni
