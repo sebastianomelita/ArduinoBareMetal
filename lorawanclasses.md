@@ -69,11 +69,12 @@ Il **vantaggio** del **broker MQTT** è quello di poter gestire in modo semplice
 
 Esistono molte altre soluzioni che magari sono più semplici e graficamente accattivanti ma che passano per portali proprietari o per servizi cloud a pagamento e nulla aggiungono di didatticamente rilevante ai nostri discorsi.
 
-  <img src="img/lorawanLogicArchitecture.png" alt="alt text" width="1000">
-  <img src="lpwan.png" alt="alt text" width="1000">
 
 
 ## **Gateway**
+
+  <img src="img/lorawanLogicArchitecture.png" alt="alt text" width="700">
+  <img src="lpwan.png" alt="alt text" width="700">
 
 **Riassumendo**, alla **rete di distribuzione IP** si collegano, quindi, una o più **reti secondarie** che servono da **rete di accesso** per i dispositivi sensori o attuatori con **interfacce** spesso di tipo **non ethernet** che necessitano di un **gateway** di confine con possibili funzioni di:     
   - **Inoltro**, cioè smistamento dei messaggi da un tipo di rete all'altro di tipo L3 (**routing**) o di tipo L2 (**bridging**). L'inoltro del messaggio di un sensore può essere:
