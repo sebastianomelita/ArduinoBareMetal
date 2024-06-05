@@ -110,33 +110,60 @@ La semantica del servizio lampadina in Zigbee è progettata per essere semplice 
 
 Il Basic Cluster include informazioni generali sul dispositivo e alcune funzioni di configurazione di base.
 
-1. Basic Cluster (0x0000)
-- Attributes:
-    - ZCLVersion (0x0000): Versione del protocollo Zigbee.
-    - ApplicationVersion (0x0001): Versione dell'applicazione.
-    - ManufacturerName (0x0004): Nome del produttore.
-    - ModelIdentifier (0x0005): Identificatore del modello.
-2. On/Off Cluster (0x0006)
-Questo cluster controlla lo stato di accensione della lampadina.
+Questo cluster permette di controllare la luminosità della lampadina.
 
-- Attributes:
-     - OnOff (0x0000): Booleano che indica se la lampadina è accesa (true) o spenta (false).
-- Commands:
-    - Off (0x00): Spegne la lampadina.
-    - On (0x01): Accende la lampadina.
-    - Toggle (0x02): Inverte lo stato attuale della lampadina.
+#### **Scenario d'Uso**
 
 Immaginiamo di avere un'applicazione di controllo della casa intelligente che deve interagire con una lampadina Zigbee.
 
-- Accendere la Lampadina:
-  - Comando: On
-  - Cluster: On/Off Cluster (0x0006)
-  - Payload: 0x01
+##### **Accendere la Lampadina:
+
+```
+Comando: On
+Cluster: On/Off Cluster (0x0006)
+Payload: 0x01
+```
 
 ```Json
 {
   "Cluster": "0x0006",
   "Command": "0x01"
+}
+```
+
+##### **Impostare la Luminosità a 50%:
+
+```
+Comando: MoveToLevel
+Cluster: Level Control Cluster (0x0008)
+Payload:
+  Level: 128 (50% di 255)
+  TransitionTime: 10 (1 secondo)
+```
+
+```Json
+{
+  "Cluster": "0x0008",
+  "Command": "0x00",
+  "Payload": {
+    "Level": 128,
+    "TransitionTime": 10
+  }
+}
+```
+
+##### **Spegnere la Lampadina:
+
+```
+Comando: Off
+Cluster: On/Off Cluster (0x0006)
+Payload: 0x00
+```
+
+```Json
+{
+  "Cluster": "0x0006",
+  "Command": "0x00"
 }
 ```
 
