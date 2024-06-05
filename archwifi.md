@@ -389,7 +389,9 @@ Il **backhaul Wi-Fi** è il collegamento **wireless** tra i **nodi** che parteci
 
 ### **Bridge mesh network**
 
-**Bridge mesh**, se i nodi collegano internamente **link wireless** appartenenti ad interfacce **radio diverse** (per esempio, una a 2.4 GHz ed una a 5 GHz) mediante un **bridge**, cioè un IS di livello 2 della pila ISO/OSI. 
+Nelle reti Wifi **Bridge mesh**, si sfrutta la **proprietà** (comune a tutti i dispositivi WiFi) di possedere un **bridge interno**, realizato in SW, che collega i **link wireless** appartenenti ad interfacce **radio diverse** (per esempio, una a 2.4 GHz ed una a 5 GHz). Quindi, un **nodo WiFi** è, a tutti gli effetti, un dispositivo **IS** di **livello 2** della pila **ISO/OSI**. 
+
+I **bridge**, in una rete dati, posseggono **funzioni** analoghe a quelle di uno switch HW (inoltro trame) e **tecnologie** analoghe a quelle degli switch HW (VLAN). La **disponibilità** delle **VLAN** permette di portare a **soluzione** una **esigenza tipica** anche nelle reti wired da ufficio: la **separazione** logica degli utenti in gruppi in base al **servizio** piuttosto che alla **dislocazione** fisica. Le VLAN permettono agevolmente la gestione di **gruppi** di utenti sparsi a **macchia di leopardo** su **tutta** l'infrastruttura, **wired** o **wireless** che sia.
 
 <img src="img/integratedGW-WiFi-Bridge.png" alt="alt text" width="1000">
 
@@ -404,11 +406,13 @@ In definitiva, i bridge **inoltrano** direttamente **trame MAC**, e la rete comp
 
 La **definizione** dei gruppi si può fare con una dislocazione a **macchia di leopardo** delle **interfacce** di accesso alla diverse VLAN, aventi **ssid statici** diversi o uno unico ma **dinamico** (autenticazione 802.1X). Gli **host** possono collegarsi all'**ssid** di una certa VLAN su **ogni bridge** wireless. La loro **separazione** avviene **dopo**, su un **router** di confine collegato con un **backaul** capace di creare il **trunking** dei flussi sul router (**gateway** in modo **router on a stick**). Le **dorsali** tra i vari bridge devono essere configurate come dorsali di **trunk** (802.1Q) in modo tale che portino il traffico aggregato di **tutte le VLAN**.
 
-Esempio:
+#### **Esempio**
+
+Si vogliono separare i **servizi di produzione** agricola con i suoi **sensori** sparsi su tutto l'agro, dai **servizi di mobilità** agli impiegati dotati di tablet sui loro mezzi con i quali eseguono il controllo giornaliero degli impianti di competenza, consentendo anche di dedicare una gestione separata al traffico dei **servizi di videosorveglianza**. 
 
 <img src="img/meshvlan.png" alt="alt text" width="1000">
 
-Se si volessero separare i **servizi di produzione** agricola con i suoi **sensori** dai **servizi di mobilità** agli impiegati dotati di tablet sui loro mezzi, consentendo anche di dedicare una gestione separata al traffico dei **servizi di videosorveglianza**, allora la **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe impossibile, mentre sarebbe **effettiva** la separazione mediante **VLAN** dislocate su una infrastruttura **bridged**.
+La **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe evidentemente impossibile, mentre sarebbe **effettiva** la separazione mediante **VLAN** dislocate su una infrastruttura **bridged**.
 
 #### **Esempio di Configurazione**
 
