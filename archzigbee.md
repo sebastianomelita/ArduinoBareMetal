@@ -18,7 +18,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scelte argomentate** sono:
 - schema fisico (**planimetria**) dell'infrastruttura con etichettatura univoca di tutti gli asset tecnologici di rete.
 - tipologia di **divisione in gruppi** degli utenti.
-- definizione delle **tecnologie dei dispositivi** chiave quali sensori/attuatori ([dispositivi terminali](sensornetworkshort.md#dispositivi-terminali-sensoriattuatori)), gateway, link (dual radio, three radio), accesso radio (allocazione di servizi sincroni TDM, asincroni CSMA/CA o a basso ritardo slotted CSMA/CA) e loro dimensiona mento di  massima (quantità, numero di porte, banda, ecc.).
+- definizione delle **tecnologie dei dispositivi** chiave quali sensori/attuatori ([dispositivi terminali](sensornetworkshort.md#dispositivi-terminali-sensoriattuatori)), gateway, link (dual radio, three radio), accesso radio (allocazione di servizi sincroni TDM, asincroni CSMA/CA o a basso ritardo slotted CSMA/CA) e loro dimensionamento di  massima (quantità, numero di porte, banda, ecc.).
 - eventuali vincoli normativi sulle tecnologie in uso come potenza, EIRP, ERP e duty cycle.
 - schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro ruolo e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7)
 - dislocazione di eventuali **gateway**.
