@@ -67,16 +67,12 @@ Organizzare i canali in **bande** può servire per isolare **gruppi di canali** 
     - **Trasmissioni parallele**. Di queste, 5 (numerate da B0 a B5) sono utilizzabili dai nodi di terminali e permettono, mediante parallellizazione FDM dei flussi di bit su 5 canali diversi, un  duty cycle complessivo del 3.2%. Il **gateway** LoRaWAN utilizza un'architettura a basso costo e basso consumo energetico che consente il posizionamento di una **coppia di radio** con larghezza  di banda di **1 MHz** ovunque nella banda ISM dell'UE. Gli **otto canali** di ricezione LoRa sono posizionati all'interno di queste due bande da 1 MHz. Quindi una applicazione su un dispositivo, avrà la  possibilità di poter dividere il duty cycle su **due sole sottofasce**. Nella maggior parte delle reti, queste saranno scelte vantaggiosamente se si concentreranno sulle allocazioni di uplink dell'1%, piuttosto che in quelle allo 0.1%. Ciò significa che ci si può ragionevolmente aspettare il **2% di duty cycle** aggregato disponibile per una **stessa sorgente**.
   
 - **Modalità avanzate di accesso** al canale radio. Sono consentiti due **schemi di riferimento**: ascolto del canale prima di parlare (LBT) e Agilità di frequenza adattiva (AFA). **LBT (listen befor Talk)** è una modalità di accesso nella quale un dispositivo che deve trasmettere non occupa subito il canale ma, prima di parlare, deve ascoltare se il mezzo è già in uso attivando la funzione di **CCA** (Clear Channel Assessment).
-    - Se il canale **è libero**, allora si può procedere immediatamente con la trasmissione.
+    - Se il canale **è libero**, e sono passati 100 msec dall'ultima trasmissione allora si può procedere immediatamente con la trasmissione.
     - Se il canale **era occupato**, per evitare una collisione, la successiva trasmissione deve essere **spostata** o nel **tempo** o nella **frequenza**:
-        - **nel tempo**, il dispositivo deve **attendere** che il canale **diventi libero** e a questa attesa deve sommare un **ritardo** aggiuntivo dato da un **backoff casuale** prima di **ritentare** il **CCA** sullo **stesso canale**.
+        - **nel tempo**, il dispositivo deve **attendere** che siano vere entrambe le seguenti condizioni: che il canale **diventi libero** e che siano passati almeno 100 msec dall'ultima trasmissione. A **questa attesa** si deve sommare un **ritardo** aggiuntivo dato da un **backoff casuale** prima di **ritentare** il **CCA** sullo **stesso canale**. 
         - **nella frequenza** il dispositivo può eseguire immediatamente un nuovo CCA ma, stavolta, su un **altro canale**. Quest'ultima tecnica si chiama **AFA**.
         -  Quando uno dei due meccanismi precedenti viene implementato, il duty cycle viene portato a **100 sec** di tempo di trasmissione cumulativo **all'ora** per ogni possibile intervallo di 200 kHz, che corrisponde a un rapporto del **duty cycle** del 2,7%.
-     - Se il canale **è libero**, e **non** sono passati **100 msec** dall'ultima trasmissione avvenuta con successo, allora prima di eseguirne un'altra sullo stesso canale, una sorgente comunque **deve attendere** un **tempo minimo** di 100 ms senza LBT (ALOHA). È tuttavia ancora possibile **trasmettere immediatamente** durante questo arco di tempo:
-          - sullo **stesso canale** se il CCA di un processo di **LBT** va a buon fine (CSMA) o,
-          - in alternativa, senza nessun check ma su un **canale diverso** dall'ultimo utilizzato (AFA).
-          - In questo modo il **duty cycle effettivo** potrebbe pure essere maggiore del 5.6%, in condizioni di traffico non elevato (LBT per lo più libero).
-          - 
+        - 
 
      
     <img src="img/13638_2019_1502_Fig3_HTML.png" alt="alt text" width="500" style="margin-top: 20px;">
@@ -88,8 +84,7 @@ Organizzare i canali in **bande** può servire per isolare **gruppi di canali** 
         - Il **controllo CCA** deve avere una durata minima di 160 μs.
         - Dopo questo controllo, se il **canale è libero**, il dispositivo deve comunque aspettare un **tempo di attesa** ulteriore fisso di **5 ms** prima di poter iniziare una nuova trasmissione (nel CSMA/CA si chiama DIFS).
         - La trasmissione stessa ha una **durata massima** di 1 sec o 4 sec a seconda del tipo di trasmissione. Si definisce **trasmissione singola** una delle due seguenti situazioni: una **sequenza continua di bit** (senza interruzioni), oppure un **serie di sequenze** distinte purchè separate da intervalli di tempo inferiori a **5 ms**.
-        - **Dopo una trasmissione** avvenuta **con successo**, una sorgente **deve attendere**, prima di eseguirne un'altra sullo stesso canale, un **tempo minimo** di 100 ms. È tuttavia ancora possibile **trasmettere immediatamente** durante questo arco di tempo: sullo **stesso canale** se il CCA di un processo di **LBT** va a buon fine o, in alternativa, senza nessun check ma su un **canale diverso** dall'ultimo utilizzato. In questo modo il **duty cycle effettivo** potrebbe pure essere maggiore del 5.6%, in condizioni di traffico non elevato (LBT per lo più libero).
-
+       
 - **Potenza disponibile massima**. La potenza in Watt. In genere dell’ordine dei millesimi di watt (mW) è spesso espressa in dBm.
 In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla densità di potenza, ovvero alla potenza, in milliwatt per MHz o per KHz. E’ il caso degli apparati WLAN E HiperLAN.
 - **EIRP** e **ERP**. La potenza è generalmente riferita al **segnale irradiato** sotto forma di misura ERP o di misura EIRP. L’antenna è un componente passivo, ma possiede pur sempre una sorta di guadagno. Il guadagno quantifica la capacità dell’antenna di concentrare l’energia irradiata (o ricevuta) in una determinata direzione.
