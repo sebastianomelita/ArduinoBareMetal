@@ -79,8 +79,8 @@ Organizzare i canali in **bande** può servire per isolare **gruppi di canali** 
         - Il **controllo CCA** deve avere una durata minima di 160 μs.
         - Dopo questo controllo, se il **canale è libero**, il dispositivo deve comunque aspettare un **tempo di attesa** ulteriore fisso di **5 ms** prima di poter iniziare una nuova trasmissione (nel CSMA/CA si chiama DIFS).
         - La trasmissione stessa ha una **durata** di 1 sec o 4 sec a seconda del tipo di trasmissione. Si definisce **trasmissione singola** una delle due seguenti situazioni: una **sequenza continua di bit** (senza interruzioni), oppure un **serie di sequenze** distinte purchè separate da intervalli di tempo inferiori a **5 ms**.
-        - **Dopo una trasmissione**, una sorgente **deve attendere**, prima di eseguirne un'altra sullo stesso canale, un **tempo minimo** di 100 ms, se **non esegue un LBT**. È tuttavia ancora possibile **trasmettere immediatamente** durante questo tempo: sullo stesso canale 
- se il CCA di un processo di LBT va a buon fine o, in alternativa, senza nessun check ma su un canale diverso dall'ultimo utilizzato. In questo modo il **duty cycle effettivo** potrebbe pure essere maggiore del 5.6%, in condizioni di traffico non elevato (LBT per lo più libero).
+        - **Dopo una trasmissione**, una sorgente **deve attendere**, prima di eseguirne un'altra sullo stesso canale, un **tempo minimo** di 100 ms. È tuttavia ancora possibile **trasmettere immediatamente** durante questo arco di tempo: sullo **stesso canale** 
+ se il CCA di un processo di **LBT** va a buon fine o, in alternativa, senza nessun check ma su un **canale diverso** dall'ultimo utilizzato. In questo modo il **duty cycle effettivo** potrebbe pure essere maggiore del 5.6%, in condizioni di traffico non elevato (LBT per lo più libero).
 
 - **Potenza disponibile massima**. La potenza in Watt. In genere dell’ordine dei millesimi di watt (mW) è spesso espressa in dBm.
 In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla densità di potenza, ovvero alla potenza, in milliwatt per MHz o per KHz. E’ il caso degli apparati WLAN E HiperLAN.
