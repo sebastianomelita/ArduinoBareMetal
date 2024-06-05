@@ -338,7 +338,7 @@ Si ha la necesità di dotare un treno di **accessi wifi** per i viaggiatori  e p
 
 Se si fa la **scelta** di realizzare un **collegamento cablato** all'**interno** dei vagoni, allora si rientra nel caso d'uso di un **ponte radio wireless** tra tronchi di rete **LAN wired**. 
 
-**In particolare**, nell'esempio dei vagoni, i dispositivi Wifi internamente realizzano un **bridge SW** tra **hub wireless** e un collegamento Ethernet. Il **collegamento ethernet** va verso gli **AP** e verso l'**altro bridge**, all'altro capo dello **stesso vagone**. Il **collegamento wireless** realizzato dall'**hub** va verso il **bridge** posto nel **vagone adiacente**.
+**In particolare**, nell'esempio dei vagoni, i dispositivi Wifi internamente realizzano un **bridge SW** tra **hub wireless** e un collegamento Ethernet. Il **collegamento ethernet** va verso gli **AP** e verso l'**altro bridge** all'altro capo dello **stesso vagone**. Il **collegamento wireless** realizzato dall'**hub** va verso il **bridge** posto nel **vagone adiacente**.
 
 <img src="img/trenowifi.png" alt="alt text" width="1000">
 
