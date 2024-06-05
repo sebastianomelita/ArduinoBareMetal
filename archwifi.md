@@ -69,13 +69,11 @@ E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **
     - analisi dei dati per la realizzazione di studi scientifici
     - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
       
-### **Apparati attivi** 
+## **Rete di reti wifi** 
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
 
 <img src="img/integratedGW-WiFi.png" alt="alt text" width="1000">
-
-Il **bridge Wifi** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori. 
 
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
 
