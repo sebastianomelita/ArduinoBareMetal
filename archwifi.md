@@ -370,6 +370,16 @@ Per il resto, ha le stesse caratteristiche di una rete WiFi di tipo infrastruttu
 
 A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di inoltro** dei dati tra i vari nodi: **Bridge mesh** e **Mesh ad hoc routed**.
 
+### **Aspetti critici**
+
+Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scelte argomentate** sono:
+- schema fisico (**planimetria**) dell'infrastruttura con etichettatura univoca di tutti gli asset tecnologici di rete
+- tipologia di **divisione in gruppi** degli utenti
+- schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro ruolo e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7)
+- dislocazione di eventuali **gateway**
+- **subnetting** e definizione degli indirizzi dei vari gruppi di utenti, delle server farm, definizione degli indirizzi dei server
+- definizione del **tipo di routing** (statico o dinamico). In caso si scelga il **routing statico**, definizione delle **tabelle di routing** più significative.
+
 ### **Sistemi multicanale (multiradio)**
 
 Architettura del sistema di rete Wireless Mesh multicanale. Il **numero minimo** di canali necessario **è 2**. Un sistema a **3 canali** offre maggiore **flessibilità** a prezzo di un maggiore costo.
