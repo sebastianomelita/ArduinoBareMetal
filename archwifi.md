@@ -307,13 +307,13 @@ Un ponte radio WiFi è una dorsale tra due tronchi di rete **cablata** realizzat
 
 **Link budget**. Tra trasmettitore e gateway potrebbe essere valutato il cosidetto link budget, overossia la somma dei guadagni e delle attenuazioni lungo il percorso fino al ricevitore. L'obiettivo è valutare il rispetto del **vincolo finale** sul ricevitore, cioè che la potenza ricevuta sia maggiore della **sensibilità minima** del ricevitore più un certo **margine di sicurezza** per tenere conto del **fading** ambientale (multipath oppure attenuazione atmosferica) che è una quantità che varia, più o meno rapidamente, col **tempo**. Per dettagli sul calcolo vedere https://www.vincenzov.net/tutorial/elettronica-di-base/Trasmissioni/link.htm. Rimane assodato che si tratta soltanto di un **calcolo di massima** che fornisce indicazioni sulla fattibilità teorica di un collegamento che, se positiva, richiede attente e ripetute **verifiche sul campo** nelle condizioni di esercizio previste per l'impianto.
 
-### **Esempio treno: bridge mode**
+### **Bridge mode**
 
 In **bridge mode**, il collegamento tra due AP è assimilabile ad una **dorsale L2**. Nessun altro dispositivo client può entrare a far parte del bridge oltre i due AP. I dispositivi possono essere connessi in modalità WDS oppure in modalità Ad Hoc. Gli host a monte e a valle dei due dispositivi si vedono reciprocamente. Il **bridge a monte** si chiama root bridge, è il bridge con il ruolo di radice nell'albero di **spanning tree** (protocollo STP). 
 
 Il funzionamento della **modalità Bridge** in un dispositivo wireless coinvolge l'intercettazione del traffico wireless proveniente da una rete e il suo **inoltro** a un'altra rete, consentendo così la comunicazione tra le due reti senza fili come se fossero collegate tra loro tramite uno **switch**.
 
-#### **Problema**
+#### **Problema rete treno**
 
 Si ha la necesità di dotare un treno di **accessi wifi** per i viaggiatori  e per i controllori, con il **vincolo** di non aggiungere **cavi** ai collegamenti tra un **vagone e l'altro**. All'**interno** dei singoli vagoni la rete potrebbe pure essere **cablata**. Le **reti** per **viaggiatori** e per i **controllori** sono richieste **isolate** una dall'altra. 
 
@@ -331,11 +331,17 @@ Per funzionare efficacemente dovrebbe avere:
 
 Essendo parte di una **unica LAN** composta dalla cascata hub1---bridge1---hub2---bridge2---hub3, tutti i dispositivi devono possedere **indirizzi IP** afferenti alla **medesima subnet**.
 
-### **Esempio sottorete privata: client mode**
+### **Client mode**
 
 In **client mode** il collegamento tra due AP è assimilabile ad una **dorsale L3**. Altri dispositivi client possono entrare a far parte del link tra i due AP.
 
 <img src="img/ponteaziendawifi.png" alt="alt text" width="1000">
+
+### **Esempio sottorete privata: client mode**
+
+Si ha la necessità di unire due reti LAN della stessa azienda ma poste su edifici separati da una strada pubblica che non si vuole o non si può cablare. Non si vuole ricorrere a VPN per non dover pagare un secondo abbonamento ad internet.
+
+### **Esempio sottorete privata**
 
 Il dispositivo client implementa un **router** ed un **NAT**. In genere, gli host sulla LAN del client utilizzano il server DHCP del router, poiché di fatto è una rete indipendente. 
 
