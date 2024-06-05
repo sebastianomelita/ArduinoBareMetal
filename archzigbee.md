@@ -75,19 +75,45 @@ E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **
 
 #### **Formato dei messaggi**
 
-**Misure** e **comandi** sono attualmente definiti sotto forma di **oggetti JSON** in formato ASCII. Questo dovrebbe garantire da un lato l'interoperabilità tra reti di sensori diverse, dall'altro l'interoperabilità con sistemi terzi che si occupano della pubblicazione dei dati o della loro eleborazione statistica. Il fatto che il formato scelto sia chiaro, testuale ed autoesplicativo è sicuramente un vantaggio nella rete di **distribuzione**. Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in modo tale da includere la **semantica** di tutti i dispositivi IoT coinvolti nelle reti di sensori collegate, che di volta in volta, poi andrà **tradotta** nella **semantica applicativa standard** prevista nello stack della rete di accesso Zigbee.
+**Misure** e **comandi** sono attualmente definiti sotto forma di **oggetti JSON** in formato ASCII. Questo dovrebbe garantire da un lato l'interoperabilità tra reti di sensori diverse, dall'altro l'interoperabilità con sistemi terzi che si occupano della pubblicazione dei dati o della loro eleborazione statistica. Il fatto che il formato scelto sia chiaro, testuale ed autoesplicativo è sicuramente un vantaggio nella rete di **distribuzione**. 
+
+Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in modo tale da includere la **semantica** di tutti i dispositivi IoT coinvolti nelle reti di sensori collegate, che di volta in volta, poi andrà **tradotta** nella **semantica applicativa standard** prevista nello stack della rete di accesso Zigbee.
+
+La semantica del servizio lampadina in Zigbee è progettata per essere semplice e interoperabile. Ogni comando e attributo è definito chiaramente all'interno di cluster specifici, permettendo ai dispositivi di diversi produttori di comunicare efficacemente. Questo esempio mostra come controllare una lampadina Zigbee utilizzando i comandi base e i cluster più comuni.
+
+Il Basic Cluster include informazioni generali sul dispositivo e alcune funzioni di configurazione di base.
+
+1. Basic Cluster (0x0000)
+- Attributes:
+    - ZCLVersion (0x0000): Versione del protocollo Zigbee.
+    - ApplicationVersion (0x0001): Versione dell'applicazione.
+    - ManufacturerName (0x0004): Nome del produttore.
+    - ModelIdentifier (0x0005): Identificatore del modello.
+2. On/Off Cluster (0x0006)
+Questo cluster controlla lo stato di accensione della lampadina.
+
+- Attributes:
+     - OnOff (0x0000): Booleano che indica se la lampadina è accesa (true) o spenta (false).
+- Commands:
+    - Off (0x00): Spegne la lampadina.
+    - On (0x01): Accende la lampadina.
+    - Toggle (0x02): Inverte lo stato attuale della lampadina.
+
+Immaginiamo di avere un'applicazione di controllo della casa intelligente che deve interagire con una lampadina Zigbee.
+
+- Accendere la Lampadina:
+  - Comando: On
+  - Cluster: On/Off Cluster (0x0006)
+  - Payload: 0x01
+
+```C++
+{
+  "Cluster": "0x0006",
+  "Command": "0x01"
+}
+```
 
 ### **Gateway applicativo**
-
-E' il dispositivo posto a cavallo tra la rete di accesso ai sensori e la rete di distribuzione. 
-
-Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi di BUS** a cui si collega. Inoltre il **gateway** deve possedere almeno **una interfaccia** capace di traffico ethernet (cablata o wifi) che lo colleghi alla **rete di distribuzione**. 
-
-#### **Gateway come router L7**
-
-Avendo più interfacce su reti di tipo diverso sia in L1 che in L2, ha anche le funzioni di **router**. Se la rete di distribuzione è pubblica come **Internet** dovrebbe possedere pure le funzioni di **firewall**. Al limite potrebbe anche smistare messaggi in una **WAN privata** realizzata con **VPN** di tipo **trusted** (MPLS) o **secure** (OpenVPN, IPSec).
-
-Il **gateway** ha anche la funzione di adattare il **formato dei servizi** offerti dalle varie **sottoreti di sensori** nel **formato di servizio unificato** (ad esempio un particolare messaggio JSON) con cui i sensori sono interrogati nella rete di distribuzione IP. I **protocolli di livello applicativo** utilizzati a questo scopo in genere sono **HTTPS** o **COAP** per il paradigma di interazione **Request/response** oppure **MQTT** o **Telegram** per il paradigma di interazione **Publish/Subscribe**, oppure **Websocket**, **Webhooks** e **WebRTC** per richieste asincrone, l'ultimo anche per quelle multimediali. Noi useremo MQTT.
 
 ### **Ruolo del gateway** 
 
@@ -105,6 +131,16 @@ Il **gateway** ha anche la funzione di adattare il **formato dei servizi** offer
   - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
 
 Il **gateway** è uno **snodo nevralgico** dei messaggi, per cui la sua posizione dovrebbe essere **ben nota** e accuratamente **riportata in planimetria** per permettere una sua rapida manutenzione/sostituzione.
+
+E' il dispositivo posto a cavallo tra la rete di accesso ai sensori e la rete di distribuzione. 
+
+Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi di BUS** a cui si collega. Inoltre il **gateway** deve possedere almeno **una interfaccia** capace di traffico ethernet (cablata o wifi) che lo colleghi alla **rete di distribuzione**. 
+
+#### **Gateway come router L7**
+
+Avendo più interfacce su reti di tipo diverso sia in L1 che in L2, ha anche le funzioni di **router**. Se la rete di distribuzione è pubblica come **Internet** dovrebbe possedere pure le funzioni di **firewall**. Al limite potrebbe anche smistare messaggi in una **WAN privata** realizzata con **VPN** di tipo **trusted** (MPLS) o **secure** (OpenVPN, IPSec).
+
+Il **gateway** ha anche la funzione di adattare il **formato dei servizi** offerti dalle varie **sottoreti di sensori** nel **formato di servizio unificato** (ad esempio un particolare messaggio JSON) con cui i sensori sono interrogati nella rete di distribuzione IP. I **protocolli di livello applicativo** utilizzati a questo scopo in genere sono **HTTPS** o **COAP** per il paradigma di interazione **Request/response** oppure **MQTT** o **Telegram** per il paradigma di interazione **Publish/Subscribe**, oppure **Websocket**, **Webhooks** e **WebRTC** per richieste asincrone, l'ultimo anche per quelle multimediali. Noi useremo MQTT.
 
 ### **Traduzione della semantica applicativa** 
 
