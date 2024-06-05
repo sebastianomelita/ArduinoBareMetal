@@ -116,7 +116,7 @@ Questo cluster permette di controllare la luminosità della lampadina.
 
 Immaginiamo di avere un'applicazione di controllo della casa intelligente che deve interagire con una lampadina Zigbee.
 
-##### **Accendere la Lampadina:
+##### **Accendere la Lampadina:**
 
 ```
 Comando: On
@@ -131,7 +131,7 @@ Payload: 0x01
 }
 ```
 
-##### **Impostare la Luminosità a 50%:
+##### **Impostare la Luminosità a 50%:**
 
 ```
 Comando: MoveToLevel
@@ -152,7 +152,7 @@ Payload:
 }
 ```
 
-##### **Spegnere la Lampadina:
+##### **Spegnere la Lampadina:**
 
 ```
 Comando: Off
