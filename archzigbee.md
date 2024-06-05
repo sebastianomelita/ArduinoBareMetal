@@ -44,7 +44,7 @@ Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture
 - eseguire, in un'unica interfaccia (form), comandi verso attuatori posti su reti con tecnologia differente.
 - riassumere in un'unica interfaccia (report) letture di sensori provenienti da reti eterogenee per tecnologia e topologia
 
-### **Broker MQTT** 
+## **Broker MQTT** 
 
 Il **broker MQTT** è solo una delle tante soluzioni possibili per:
 - inoltro dei comandi da un **sensore di comando** su una rete di tipo A (ad es. LoRaWAN) ad un attuatore su una rete diversa di tipo B (ad es. Zigbee)
@@ -55,7 +55,7 @@ Il **vantaggio** del **broker MQTT** è quello di poter gestire in modo semplice
 
 Esistono molte altre soluzioni che magari sono più semplici e graficamente accattivanti ma che passano per portali proprietari o per servizi cloud a pagamento e nulla aggiungono di didatticamente rilevante ai nostri discorsi.
 
-### **Server di gestione** 
+## **Server di gestione** 
 
 E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **subscriber** per:
 -  elaborazioni a **breve termine** quali la generazione di **statistiche** per la determinazione di **soglie** o **predizioni** per:
