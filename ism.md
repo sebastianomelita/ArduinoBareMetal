@@ -76,6 +76,7 @@ Organizzare i canali in **bande** può servire per isolare **gruppi di canali** 
           - sullo **stesso canale** se il CCA di un processo di **LBT** va a buon fine (CSMA) o,
           - in alternativa, senza nessun check ma su un **canale diverso** dall'ultimo utilizzato (AFA).
           - In questo modo il **duty cycle effettivo** potrebbe pure essere maggiore del 5.6%, in condizioni di traffico non elevato (LBT per lo più libero).
+          - 
 
      
     <img src="img/13638_2019_1502_Fig3_HTML.png" alt="alt text" width="500" style="margin-top: 20px;">
