@@ -294,7 +294,7 @@ In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla den
   
 ## **Ponti radio WiFi**
 
-Un ponte radio WiFi è una dorsale tra due tronchi di rete realizzata mediante due o più dispositivi wireless. Può essere:
+Un ponte radio WiFi è una dorsale tra due tronchi di rete **cablata** realizzata mediante due o più **dispositivi wireless**. Può essere:
 - **Punto-Punto**: un dispositivo in modo AP e collegato ad **un solo** dispositivo AP in modo Client o Bridge
 - **Punto-Multipunto**: un dispositivo in modo AP è collegato **a più** dispositivi AP configurati in modo Client  o Bridge
 
@@ -309,7 +309,7 @@ Un ponte radio WiFi è una dorsale tra due tronchi di rete realizzata mediante d
 
 ### **Esempio treno: bridge mode**
 
-In bridge mode il collegamento tra due AP è assimilabile ad una dorsale L2. Nessun altro dispositivo client può entrare a far parte del bridge oltre i due AP. I dispositivi possono essere connessi in modalità WDS oppure in modalità Ad Hoc. Gli host a monte e a valle dei due dispositivi si vedono reciprocamente. Il bridge a monte si chiama root bridge. 
+Si ha la necesità di dotare un treno di accessi wifi per i viaggiatori, In bridge mode il collegamento tra due AP è assimilabile ad una dorsale L2. Nessun altro dispositivo client può entrare a far parte del bridge oltre i due AP. I dispositivi possono essere connessi in modalità WDS oppure in modalità Ad Hoc. Gli host a monte e a valle dei due dispositivi si vedono reciprocamente. Il **bridge a monte** si chiama root bridge, è il bridge con il ruolo di radice nell'albero di **spanning tree** (protocollo STP). 
 
 **In generale**, il funzionamento della **modalità Bridge** in un dispositivo wireless coinvolge l'intercettazione del traffico wireless proveniente da una rete e il suo **inoltro** a un'altra rete, consentendo così la comunicazione tra le due reti senza fili come se fossero collegate tra loro tramite uno **switch**. I dispositivi internamente realizzano un **bridge SW** che **inoltra** pacchetti tra due **hub wireless distinti**: il primo **collega gli utenti** mentre il secondo realizza la **dorsale L2** con gli altri bridge.
 
