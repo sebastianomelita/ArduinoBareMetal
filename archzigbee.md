@@ -106,7 +106,7 @@ Immaginiamo di avere un'applicazione di controllo della casa intelligente che de
   - Cluster: On/Off Cluster (0x0006)
   - Payload: 0x01
 
-```C++
+```Json
 {
   "Cluster": "0x0006",
   "Command": "0x01"
