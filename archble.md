@@ -155,10 +155,19 @@ Immaginiamo di avere un'applicazione di controllo della casa intelligente che de
 
 **Ble2mqtt** è un software open-source progettato per permettere ai dispositivi BLE di comunicare direttamente con un server MQTT (Message Queuing Telemetry Transport) senza la necessità di un hub proprietario.  [Ble2mqtt](https://github.com/devbis/ble2mqtt)
 
+BLE è uno standard di comunicazione wireless utilizzato anche per il controllo e l'automazione domestica, mentre MQTT è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando BLE2mqtt, gli utenti possono integrare facilmente dispositivi BLE di diversi produttori in un sistema di automazione domestica basato su MQTT, offrendo maggiore flessibilità e controllo. 
 
-BLE è uno standard di comunicazione wireless utilizzato anche per il controllo e l'automazione domestica, mentre MQTT è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando BLE2mqtt, gli utenti possono integrare facilmente dispositivi BLE di diversi produttori in un sistema di automazione domestica basato su MQTT, offrendo maggiore flessibilità e controllo.
+**Ble2mqtt** opera a livello di **presentazione** della pila OSI in quanto **traduce** un **payload BLE** in un **payload JSON MQTT**  (gateway = router applicativo). Si tratta di un software che consente di integrare dispositivi BLE in un'infrastruttura di domotica basata su MQTT (Message Queuing Telemetry Transport). Ble2mqtt funge da **ponte** tra la rete BLE e il broker MQTT, consentendo agli utenti di interagire con i dispositivi BLE tramite messaggi MQTT. 
 
-**Ble2mqtt** opera a livello di **applicazione** della pila OSI in quanto **traduce** un **payload BLE** in un **payload JSON MQTT**  (gateway = router applicativo). Si tratta di un software che consente di integrare dispositivi BLE in un'infrastruttura di domotica basata su MQTT (Message Queuing Telemetry Transport). Ble2mqtt funge da **ponte** tra la rete BLE e il broker MQTT, consentendo agli utenti di interagire con i dispositivi BLE tramite messaggi MQTT.
+La **traduzione** è resa possibile perchè le reti BLE definiscono per ogni dispositvo la **semantica applicativa standard** che abbiamo visto sopra (una lampadina ha gli stessi comandi, lo stesso stato e la stessa configurazione per tutte le lampadine BLE mai prodotte da chiunque). Compito del bridge **Ble2mqtt** è **tradurr** gli **oggetti standard** BLE in **JSON** e inserirli in un **messaggio MQTT**.
+
+#### **Funzionamento di ble2mqtt** 
+Ecco una descrizione di come funziona ble2mqtt:
+
+1. Scansione dei Dispositivi BLE: ble2mqtt esegue una scansione per rilevare dispositivi BLE nelle vicinanze. Questo include sensori, attuatori, lampadine, termostati, ecc.
+2. Connessione ai Dispositivi BLE: una volta individuati, ble2mqtt si connette ai dispositivi BLE per leggere e scrivere dati. Può interagire con i servizi e le caratteristiche esposte dai dispositivi.
+3. Pubblicazione su MQTT: i dati letti dai dispositivi BLE vengono convertiti in messaggi MQTT e pubblicati su un broker MQTT. Questo può includere dati di stato, misurazioni di sensori, ecc.
+4. Sottoscrizione a Comandi MQTT: ble2mqtt si iscrive anche a determinati topic MQTT per ricevere comandi. Quando un comando MQTT viene ricevuto, ble2mqtt lo traduce in un'operazione BLE e lo invia al dispositivo appropriato.
 
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
 
