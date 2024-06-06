@@ -82,7 +82,7 @@ Il **broker MQTT** è solo una delle tante soluzioni possibili per:
 - inoltro di una **misura** dal **Network Server** su una rete LoRaWAN ad un **server di gestione** su una rete IP.
 - inoltro dei comandi dal **Network Server** su una rete LoRaWAN ad un **Network Server** su una rete Lorawan diversa
 
-Dagli **esempi** si vede bene che il **client MQTT** (con il ruolo di **publisher** o di **subscriber**) è sempre il **Network Server**. Il Netwok Server è anche il **gateway** della **rete di sensor**i in teso complessivamente come **rete LoraWAN**. Il gateway dalla rete Lora alla rete IP in realtà è il **gateway LoRaWAN**. 
+Dagli **esempi** si vede bene che il **client MQTT** (con il ruolo di **publisher** o di **subscriber**) è sempre il **Network Server**. Il Netwok Server è anche il **gateway** della **rete di sensor**i inteso complessivamente come **rete LoraWAN**. Il gateway dalla rete Lora alla rete IP in realtà è il **gateway LoRaWAN**. 
 
 In **generale**, su reti **non IP**, i **client MQTT** (con il ruolo di **publisher** o di **subscriber**) sono sempre i **gateway di confine** della **rete di sensori**. Le uniche reti di sensori che non hanno bisogno di un gateway di confine che sia, nel contempo anche client MQTT, sono le reti IP. Esistono ancora i gateway nelle **reti IP** ma con **scopi diversi** da quello di **realizzare** un **client MQTT**. Nelle **reti IP**, il **client MQTT** è, normalmente, direttamente **a bordo** del **dispositivo** sensore dotato di indirizzo IP (**MCU**).
 
