@@ -447,6 +447,10 @@ Per consentire ai dispositivi terminali di essere il più semplici possibile e d
 
 <img src="img/loramsg.png" alt="alt text" width="600">
 
+- [Dettaglio architettura Zigbee](archzigbee.md)
+- [Dettaglio architettura BLE](archble.md)
+- [Dettaglio architettura WiFi](archwifi.md) 
+- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 **Sitografia**:
 - https://lora.readthedocs.io/en/latest/#lorawan-device-classes
@@ -455,10 +459,5 @@ Per consentire ai dispositivi terminali di essere il più semplici possibile e d
 - chatGPT per struct e JSON di sensori e attuatori
 - https://github.com/myDevicesIoT/cayenne-docs/blob/master/docs/LORA.md
 - https://webthesis.biblio.polito.it/secure/18698/1/tesi.pdf
-
-- [Dettaglio architettura Zigbee](archzigbee.md)
-- [Dettaglio architettura BLE](archble.md)
-- [Dettaglio architettura WiFi](archwifi.md) 
-- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
