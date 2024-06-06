@@ -239,6 +239,60 @@ Ecco una descrizione di come funziona ble2mqtt:
 3. **Pubblicazione su MQTT**: i dati letti dai dispositivi BLE vengono convertiti in messaggi MQTT e pubblicati su un broker MQTT. Questo può includere dati di stato, misurazioni di sensori, ecc.
 4. **Sottoscrizione a Comandi MQTT**: ble2mqtt si iscrive anche a determinati topic MQTT per ricevere comandi. Quando un comando MQTT viene ricevuto, ble2mqtt lo traduce in un'operazione BLE e lo invia al dispositivo appropriato.
 
+#### **Configurazione di ble2mqtt** 
+
+Per controllare tre lampadine diverse sotto lo stesso topic stanzetta usando zigbee2mqtt, è possibile configurare un approccio che permetta di inviare comandi a tutte e tre le lampadine contemporaneamente o individualmente. Un modo efficace per farlo è usare un payload JSON che includa informazioni specifiche per ciascuna lampadina.
+
+```Python
+mqtt:
+  base_topic: ble2mqtt
+  server: 'mqtt://localhost'
+  user: 'MQTT_USERNAME'
+  password: 'MQTT_PASSWORD'
+
+devices:
+  'C4:7C:8D:6A:95:BD':
+    friendly_name: lampadina1
+  'D0:52:A8:00:67:AB':
+    friendly_name: lampadina2
+  'F0:99:B6:43:55:AC':
+    friendly_name: lampadina3
+
+```
+
+Ora, configurando un singolo topic zigbee2mqtt/stanzetta/set per inviare comandi a tutte e tre le lampadine, possiamo usare un payload JSON per specificare lo stato desiderato di ogni lampadina.
+
+#### **Accendere tutte le Lampadine:**
+
+```Json
+{
+  "lampadina1": {"state": "ON"},
+  "lampadina2": {"state": "ON"},
+  "lampadina3": {"state": "ON"}
+}
+```
+
+#### **Spegnere tutte le Lampadine:**
+
+```Json
+{
+  "lampadina1": {"state": "OFF"},
+  "lampadina2": {"state": "OFF"},
+  "lampadina3": {"state": "OFF"}
+}
+```
+
+#### **Comandare le Lampadine Singolarmente:**
+
+```Json
+{
+  "lampadina1": {"state": "ON"},
+  "lampadina2": {"state": "OFF"},
+  "lampadina3": {"state": "ON"}
+}
+```
+
+
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
 
 ### **Federazione di reti BLE in Internet** 
