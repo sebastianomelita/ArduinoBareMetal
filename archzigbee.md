@@ -85,7 +85,7 @@ Il **broker**, dal canto suo, **associa** ogni **topic** con tutti gli **ID** ch
 
 ### **Alternative ad MQTT**
 
-Esistono molte altre soluzioni che magari sono più semplici e graficamente accattivanti ma che passano per portali proprietari o per servizi cloud a pagamento e nulla aggiungono di didatticamente rilevante ai nostri discorsi.
+Esistono molte altre soluzioni che magari sono più semplici e graficamente accattivanti ma che passano per portali proprietari o per servizi cloud a pagamento e nulla aggiungono di didatticamente rilevante ai nostri discorsi. Normalmente sono basate su webservices realizzati con protocolli Request/Response quali **HTTPS** e **COAP**.
 
 
 ## **Server di gestione** 
