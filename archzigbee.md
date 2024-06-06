@@ -190,6 +190,15 @@ Payload: 0x00
 
 **Zigbee2mqtt** opera a livello di **presentazione** della pila OSI in quanto **traduce** un **payload Zigbee** in un **payload JSON MQTT**  (gateway = router applicativo). Si tratta di un software che consente di integrare dispositivi BLE in un'infrastruttura di domotica basata su MQTT (Message Queuing Telemetry Transport). Ble2mqtt funge da **ponte** tra la rete BLE e il broker MQTT, consentendo agli utenti di interagire con i dispositivi BLE tramite messaggi MQTT. 
 
+La **traduzione** è resa possibile perchè le reti BLE definiscono per ogni dispositvo la **semantica applicativa standard** che abbiamo visto sopra (una lampadina ha gli stessi comandi, lo stesso stato e la stessa configurazione per tutte le lampadine BLE mai prodotte da chiunque). Compito del bridge **Ble2mqtt** è **tradurre** gli **oggetti standard** BLE in **JSON** e inserirli in un **messaggio MQTT**.
+
+#### **Funzionamento di zigbee2mqtt** 
+Ecco una descrizione di come funziona zigbee2mqtt:
+
+1. **Scansione dei Dispositivi Zigbee**: zigbee2mqtt esegue una scansione per rilevare dispositivi Zigbee nelle vicinanze e li aggiunge alla rete Zigbee.
+2. **Connessione ai Dispositivi Zigbee**: zigbee2mqtt si connette ai dispositivi Zigbee per leggere e scrivere dati. Questo include sensori, attuatori, lampadine, interruttori, ecc.
+3. **Pubblicazione su MQTT**: I dati letti dai dispositivi Zigbee vengono convertiti in messaggi MQTT e pubblicati su un broker MQTT. Questo può includere dati di stato, misurazioni di sensori, ecc.
+4. **Sottoscrizione a Comandi MQTT**: zigbee2mqtt si iscrive anche a determinati topic MQTT per ricevere comandi. Quando un comando MQTT viene ricevuto, zigbee2mqtt lo traduce in un'operazione Zigbee e lo invia al dispositivo appropriato.
 
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
 
