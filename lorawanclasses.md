@@ -362,18 +362,24 @@ Serve a realizzare un ponte tra:
 
 <img src="img/brokerBridge.png" alt="alt text" width="600">
 
-### **Gestione firewall**
-```C++
+### **Tutti i topic**
+Topic in cui recuperare tutti i **messaggi associati** ad un **gateway** avente identificativo univoco ```APP-EUI```e a un **dispositivo IoT** avente un identificativo EUI64 che vale ```APP-EUI``` 
+L'**associazione** può essere:
+- **topic** ```up``` in cui **dispositivo** è il **publisher** dei messaggi che vanno nella **direzione** dal dispositivo al gateway, mentre il **gateway** è il loro **susbcriber**
+- **topic** ```down``` in cui **gateway** è il **publisher** dei messaggi che vanno nella **direzione** dal gateway al dispositivo, mentre il **dispositivo** è il loro **susbcriber**
+```Python
 lorawan/<APP-EUI>/<DEV-EUI>/+
 lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/+
 ```
-### **Gestione firewall**
-```C++
+### **Solo topic up**
+**Topic** ```up``` in cui **dispositivo** è il **publisher** dei messaggi che vanno nella **direzione** dal dispositivo al gateway, mentre il **gateway** è il loro **susbcriber**
+```Python
 lorawan/<APP-EUI>/<DEV-EUI>/up 
 lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/up
 ```
-### **Gestione firewall**
-```C++
+### **Solo topic down**
+**Topic** ```down``` in cui **gateway** è il **publisher** dei messaggi che vanno nella **direzione** dal gateway al dispositivo, mentre il **dispositivo** è il loro **susbcriber**
+```Python
 lorawan/<APP-EUI>/<DEV-EUI>/down
 lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/down
 ```
