@@ -367,6 +367,9 @@ Topic in cui recuperare tutti i **messaggi associati** ad un **gateway** avente 
 L'**associazione** può essere:
 - **topic** ```up``` in cui **dispositivo** è il **publisher** dei messaggi che vanno nella **direzione** dal dispositivo al gateway, mentre il **gateway** è il loro **susbcriber**
 - **topic** ```down``` in cui **gateway** è il **publisher** dei messaggi che vanno nella **direzione** dal gateway al dispositivo, mentre il **dispositivo** è il loro **susbcriber**
+
+Il **payload** è un **messaggio JSON** contenente un campo **data** e varie informazioni di controllo. Il campo data è **codificato** in BASE64 e **compattato** per occupare meno spazio possibile nella tratta dal sensore al gateway.
+
 ```Python
 lorawan/<APP-EUI>/<DEV-EUI>/+
 lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/+
@@ -377,12 +380,52 @@ lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/+
 lorawan/<APP-EUI>/<DEV-EUI>/up 
 lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/up
 ```
+Questo topic può essere **letto** (come subscriber) dal **Server applicativo** per generare una **attuazione** verso un altro dispositivo o una **elaborazione statistica** o un **salvataggio persistente** in un database.
+
+Esempio di **payload**:
+```Json
+{
+  "jver": 1,
+  "tmst": 561224395,
+  "time": "2023-03-04T23:14:39.522787Z",
+  "tmms": 1362006897523,
+  "chan": 6,
+  "rfch": 1,
+  "freq": 903.5,
+  "mid": 8,
+  "stat": 1,
+  "modu": "LORA",
+  "datr": "SF9BW125",
+  "codr": "4/5",
+  "rssis": -14,
+  "lsnr": 9.2,
+  "foff": -2769,
+  "rssi": -13,
+  "opts": "03070307",
+  "size": 8,
+  "fcnt": 1,
+  "cls": 0,
+  "port": 33,
+  "mhdr": "80cb80d000840100",
+  "data": "dGVzdGRhdGE=",
+  "appeui": "8b-6c-f0-8e-ee-df-1b-b6",
+  "deveui": "00-80-00-ff-ff-00-00-03",
+  "joineui": "16-ea-76-f6-ab-66-3d-80",
+  "name": "JSR-DEBIAN-PC-DOT2",
+  "devaddr": "00d080cb",
+  "ack": false,
+  "adr": true,
+  "gweui": "00-80-00-00-d0-00-01-ff",
+  "seqn": 1
+}
+```
 ### **Solo topic down**
 **Topic** ```down``` in cui **gateway** è il **publisher** dei messaggi che vanno nella **direzione** dal gateway al dispositivo, mentre il **dispositivo** è il loro **susbcriber**
 ```Python
 lorawan/<APP-EUI>/<DEV-EUI>/down
 lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/down
 ```
+Questo topic può essere **scritto** (come publisher) dal **Server applicativo** o da un altro dispositivo IoT per generare una attuazione o una configurazione
 
 ## **Gestione firewall**
 
