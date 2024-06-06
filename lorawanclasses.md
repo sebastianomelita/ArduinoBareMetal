@@ -212,17 +212,13 @@ La **traduzione** non viene fatta normalmente direttamente sul gateway, anche se
 
 - **Server di Rete LoRaWAN (Network Server)**: Alcuni server di rete LoRaWAN, come quelli offerti da The Things Network (TTN) o ChirpStack, forniscono integrazioni che possono gestire il payload dei dispositivi. E' possibile configurare questi server per utilizzare codec specifici che codificano o decodificano i messaggi nel formato desiderato, come Cayenne LPP.
 
-- **Applicazione Custom**: E' possibile creare un'**applicazione** (sull'application server) che riceva i dati dal **server di rete** LoRaWAN e che poi gestisca la compattazione e decompressione dei dati JSON utilizzando librerie apposite (come Cayenne LPP).
-
-L'applicazione di **serializzazione** e **compattazione** è contemporaneamente:
+- **Applicazione Custom**: E' possibile creare un'**applicazione** (sull'application server) che riceva i dati dal **server di rete** LoRaWAN e che poi gestisca la compattazione e decompressione dei dati JSON utilizzando librerie apposite (come Cayenne LPP). Questa applicazione si può considerare un **middleware** che si occupa della **trasformazione dei dati** prima di passarli alla **applicazione finale**. L'applicazione di **serializzazione** e **compattazione** è contemporaneamente:
 - in **uplink**:
     - **subscriber** dei **messaggi corti** per poterli **leggere** dal **dispositivo** ed elaborare
     - **publisher** dei **messaggi lunghi** per poterli inviare all'**applicazione**
 - in **downlink**:
     - **publisher** dei **messaggi corti** per poterli inviare al **dispositivo**
     - **subscriber** dei **messaggi lunghi** per poterli leggere dall'**applicazione** e spedire
-
-Questa applicazione si può considerare un **middleware** che si occupa della **trasformazione dei dati** prima di passarli alla **applicazione finale**.
 
 - **Integrazione diretta con un cloud**: Ad esempio, Cayenne di MyDevices fornisce una piattaforma per la gestione e visualizzazione dei dati IoT che supporta nativamente il formato Cayenne LPP. Puoi configurare il tuo server di rete per inviare i dati direttamente alla piattaforma Cayenne, che si occuperà della decodifica e visualizzazione dei dati in formato JSON.
  
