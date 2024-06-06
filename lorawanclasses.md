@@ -302,7 +302,7 @@ struct LoRaPayload {
     int signal_strength;
 };
 ```
-### Esempio serializzazione sensori + attuatori con la libreria Cayenne
+#### **Esempio serializzazione sensori + attuatori con la libreria Cayenne**
 
 Per la serializzazione dei dati utilizzando il formato Cayenne LPP (Low Power Payload), possiamo adattare la struttura LoRaPayload in modo che i dati siano organizzati secondo le specifiche di Cayenne LPP. Cayenne LPP è un formato compatto e standardizzato per la trasmissione di dati attraverso reti LPWAN (Low Power Wide Area Network), progettato per dispositivi a basso consumo energetico come i dispositivi IoT. Questo formato consente di rappresentare diversi tipi di dati (ad esempio, temperatura, umidità, tensione) in un formato ottimizzato per la trasmissione su reti LPWAN.
 
