@@ -189,6 +189,7 @@ Immaginiamo di avere un'applicazione di controllo della casa intelligente che de
 ##### **Basic Cluster (0x0000):**
 
 Il Basic Cluster include informazioni generali sul dispositivo e alcune funzioni di configurazione di base.
+
 ```
 Attributes:
   ZCLVersion (0x0000): Versione del protocollo Zigbee.
@@ -234,7 +235,8 @@ Payload:
 ```
 
 ##### **Spegnere la Lampadina:**
-```Json
+
+```
 Comando: Off
 Cluster: On/Off Cluster (0x0006)
 Payload: 0x00
