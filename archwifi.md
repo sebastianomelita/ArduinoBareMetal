@@ -49,7 +49,7 @@ In questo caso non è necessario avere dei gateway con funzione di traduzione da
 
 ##  **Canali di comunicazione principali in una rete di sensori**
 
-**In sintesi**, sono necessari almeno due canali di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
+**In sintesi**, sono necessari almeno **due canali** di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
 - **tra sensori e gateway** verso la LAN realizzato dalle **sottoreti dei sensori**:
     - **A filo** con accesso:,
         - **singolo dedicato**: un filo o un canale per sensore in tecnologia SDM o TDM (multiplexer, UART, porta analogica, porta digitale)
