@@ -415,7 +415,12 @@ I link radio nel **modo non abilitato al beacon** sono regolati dal CSMA/CA e, i
 Nel caso delle reti in **beacon mode**, i **link** sono regolati in maniera probabilistica con lo slotted CSMA/CA oppure in maniera deterministica con il GTS. I **router** possono beneficiare dei lunghi periodi di inattività tra **due beacon** per risparmiare energia massimizzando la durata di una eventuale alimentazione a batteria. Questa modalità di risparmio energetico è nota come "duty cycling" o "sleeping router". 
 
 In generale, i protocolli Zigbee riducono al minimo il tempo di accensione della radio, così da ridurre il consumo energetico. Nelle reti di beacon, i nodi devono essere attivi solo durante la trasmissione di un beacon. Nelle reti non abilitate ai beacon, il consumo energetico è decisamente asimmetrico: alcuni dispositivi sono **sempre attivi** (generalmente i router) mentre altri passano la maggior parte del tempo a dormire (i nodi terminali RFD).
- 
+
+- [Dettaglio architettura Zigbee](archzigbee.md)
+- [Dettaglio architettura BLE](archble.md)
+- [Dettaglio architettura WiFi](archwifi.md) 
+- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
+
 **Sitografia**:
 
 - https://ieeexplore.ieee.org/document/7042600
@@ -428,10 +433,5 @@ In generale, i protocolli Zigbee riducono al minimo il tempo di accensione della
 - https://www.researchgate.net/figure/Zigbee-Gateway-architecture-It-must-be-remarked-that-Zigbee-Alliance-has-also-developed_fig4_41392302
 - https://www.everythingrf.com/community/zigbee-frequency-bands#:~:text=In%20general%2C%20the%20common%20frequency,due%20to%20other%20Zigbee%20devices.
 - chatGPT per il partizionamento dei una rete Zigbee
-
-- [Dettaglio architettura Zigbee](archzigbee.md)
-- [Dettaglio architettura BLE](archble.md)
-- [Dettaglio architettura WiFi](archwifi.md) 
-- [Dettaglio architettura LoraWAN](lorawanclasses.md)
-  
+ 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
