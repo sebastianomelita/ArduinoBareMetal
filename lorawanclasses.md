@@ -1,6 +1,11 @@
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
 
+- [Dettaglio architettura Zigbee](archzigbee.md)
+- [Dettaglio architettura BLE](archble.md)
+- [Dettaglio architettura WiFi](archwifi.md) 
+- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
+
 ## **Caso d'uso LoRaWan** 
 
 Date le particolarità della tecnologia, i casi d'uso per la rete di sensori sono quelli tipici applicazioni **IoT outdoor** a **lungo raggio** dette **LPWA**, dove concorre con altre tecnologie di rete: Sigfow, NB IoT e sotto certe condizioni, wifi. **Caratteristiche** di LoRaWAN sono essenzialmente:
@@ -451,5 +456,9 @@ Per consentire ai dispositivi terminali di essere il più semplici possibile e d
 - https://github.com/myDevicesIoT/cayenne-docs/blob/master/docs/LORA.md
 - https://webthesis.biblio.polito.it/secure/18698/1/tesi.pdf
 
+- [Dettaglio architettura Zigbee](archzigbee.md)
+- [Dettaglio architettura BLE](archble.md)
+- [Dettaglio architettura WiFi](archwifi.md) 
+- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
