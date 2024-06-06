@@ -87,7 +87,6 @@ Il **broker**, dal canto suo, **associa** ogni **topic** con tutti gli **ID** ch
 
 Esistono molte altre soluzioni che magari sono più semplici e graficamente accattivanti ma che passano per portali proprietari o per servizi cloud a pagamento e nulla aggiungono di didatticamente rilevante ai nostri discorsi. Normalmente sono basate su webservices realizzati con protocolli Request/Response quali **HTTPS** e **COAP**.
 
-
 ## **Server di gestione** 
 
 E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **subscriber** per:
