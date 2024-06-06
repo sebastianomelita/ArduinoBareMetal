@@ -164,10 +164,10 @@ La **traduzione** è resa possibile perchè le reti BLE definiscono per ogni dis
 #### **Funzionamento di ble2mqtt** 
 Ecco una descrizione di come funziona ble2mqtt:
 
-1. Scansione dei Dispositivi BLE: ble2mqtt esegue una scansione per rilevare dispositivi BLE nelle vicinanze. Questo include sensori, attuatori, lampadine, termostati, ecc.
-2. Connessione ai Dispositivi BLE: una volta individuati, ble2mqtt si connette ai dispositivi BLE per leggere e scrivere dati. Può interagire con i servizi e le caratteristiche esposte dai dispositivi.
-3. Pubblicazione su MQTT: i dati letti dai dispositivi BLE vengono convertiti in messaggi MQTT e pubblicati su un broker MQTT. Questo può includere dati di stato, misurazioni di sensori, ecc.
-4. Sottoscrizione a Comandi MQTT: ble2mqtt si iscrive anche a determinati topic MQTT per ricevere comandi. Quando un comando MQTT viene ricevuto, ble2mqtt lo traduce in un'operazione BLE e lo invia al dispositivo appropriato.
+1. **Scansione dei Dispositivi BLE**: ble2mqtt esegue una scansione per rilevare dispositivi BLE nelle vicinanze. Questo include sensori, attuatori, lampadine, termostati, ecc.
+2. **Connessione ai Dispositivi BLE**: una volta individuati, ble2mqtt si connette ai dispositivi BLE per leggere e scrivere dati. Può interagire con i servizi e le caratteristiche esposte dai dispositivi.
+3. **Pubblicazione su MQTT**: i dati letti dai dispositivi BLE vengono convertiti in messaggi MQTT e pubblicati su un broker MQTT. Questo può includere dati di stato, misurazioni di sensori, ecc.
+4. **Sottoscrizione a Comandi MQTT**: ble2mqtt si iscrive anche a determinati topic MQTT per ricevere comandi. Quando un comando MQTT viene ricevuto, ble2mqtt lo traduce in un'operazione BLE e lo invia al dispositivo appropriato.
 
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
 
