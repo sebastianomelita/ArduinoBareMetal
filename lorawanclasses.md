@@ -215,6 +215,7 @@ In sintesi, la lunghezza dei messaggi LoRaWAN è strettamente correlata alle **l
 
 I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che si mappano l’uno sull’altro:
 - **Messaggi corti**, in formato binario, tra sensore e gateway. Vengono mandati in wireless su **banda ISM** con forti limitazioni di duty cycle, per cui devono essere i più **corti** possibile, anche a discapito della chiarezza. Possono essere **definiti** sotto forma di **struct C** e poi inviati ad una **libreria di serializzazione** (come Cayenne LPP) che si occupa di trasformali in una **sequenza compatta** di singoli bit.
+  
   ```C++
 #include <iostream>
 
