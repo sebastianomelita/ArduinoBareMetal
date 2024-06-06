@@ -234,8 +234,7 @@ Payload:
 ```
 
 ##### **Spegnere la Lampadina:**
-
-```
+```Json
 Comando: Off
 Cluster: On/Off Cluster (0x0006)
 Payload: 0x00
@@ -296,28 +295,31 @@ devices:
 Ora, configurando un singolo topic zigbee2mqtt/stanzetta/set per inviare comandi a tutte e tre le lampadine, possiamo usare un payload JSON per specificare lo stato desiderato di ogni lampadina.
 
 #### **Accendere tutte le Lampadine:**
-
+```Json
 {
   "lampadina1": {"state": "ON"},
   "lampadina2": {"state": "ON"},
   "lampadina3": {"state": "ON"}
 }
+```
 
 #### **Spegnere tutte le Lampadine:**
+```Json
 {
   "lampadina1": {"state": "OFF"},
   "lampadina2": {"state": "OFF"},
   "lampadina3": {"state": "OFF"}
 }
+```
 
 #### **Comandare le Lampadine Singolarmente:**
-
+```Json
 {
   "lampadina1": {"state": "ON"},
   "lampadina2": {"state": "OFF"},
   "lampadina3": {"state": "ON"}
 }
-
+```
 
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
 
