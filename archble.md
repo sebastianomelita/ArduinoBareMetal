@@ -101,7 +101,7 @@ Il **gateway** ha anche la funzione di adattare il **formato dei servizi** offer
 
 **Misure** e **comandi** sono attualmente definiti sotto forma di **oggetti JSON** in formato ASCII. Questo dovrebbe garantire da un lato l'interoperabilità tra reti di sensori diverse, dall'altro l'interoperabilità con sistemi terzi che si occupano della pubblicazione dei dati o della loro eleborazione statistica. Il fatto che il formato scelto sia chiaro, testuale ed autoesplicativo è sicuramente un vantaggio nella rete di **distribuzione**. 
 
-Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in modo tale da includere la **semantica** di tutti i dispositivi IoT coinvolti nelle reti di sensori collegate, che di volta in volta, poi andrà **tradotta** nella **semantica applicativa standard** prevista nello stack della rete di accesso Zigbee.
+Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in modo tale da includere la **semantica** di tutti i dispositivi IoT coinvolti nelle reti di sensori collegate, che di volta in volta, poi andrà **tradotta** nella **semantica applicativa standard** prevista nello stack della rete di accesso BLE.
 
 Per Bluetooth Low Energy (BLE), i dispositivi sono spesso strutturati utilizzando servizi e caratteristiche (characteristics). Per una lampadina BLE, potremmo avere un servizio che consente di controllare lo stato di accensione e spegnimento della lampadina. Di seguito viene fornito un esempio di come potrebbe essere strutturato un servizio BLE per una lampadina, con le operazioni di accensione e spegnimento.
 
