@@ -199,7 +199,7 @@ Attributes:
 
 ##### **Accendere la Lampadina:**
 
-```
+```Json
 Comando: On
 Cluster: On/Off Cluster (0x0006)
 Payload: 0x01
@@ -214,7 +214,7 @@ Payload: 0x01
 
 ##### **Impostare la Luminosità a 50%:**
 
-```
+```Json
 Comando: MoveToLevel
 Cluster: Level Control Cluster (0x0008)
 Payload:
