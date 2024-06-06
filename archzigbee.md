@@ -275,7 +275,7 @@ Ecco una descrizione di come funziona zigbee2mqtt:
 
 Per controllare tre lampadine diverse sotto lo stesso topic stanzetta usando zigbee2mqtt, è possibile configurare un approccio che permetta di inviare comandi a tutte e tre le lampadine contemporaneamente o individualmente. Un modo efficace per farlo è usare un payload JSON che includa informazioni specifiche per ciascuna lampadina.
 
-```
+```Python
 homeassistant: true
 permit_join: true
 mqtt:
