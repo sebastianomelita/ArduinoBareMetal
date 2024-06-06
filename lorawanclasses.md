@@ -215,27 +215,6 @@ In sintesi, la lunghezza dei messaggi LoRaWAN è strettamente correlata alle **l
 
 I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che si mappano l’uno sull’altro:
 - **Messaggi corti**, in formato binario, tra sensore e gateway. Vengono mandati in wireless su **banda ISM** con forti limitazioni di duty cycle, per cui devono essere i più **corti** possibile, anche a discapito della chiarezza. Possono essere **definiti** sotto forma di **struct C** e poi inviati ad una **libreria di serializzazione** (come Cayenne LPP) che si occupa di trasformali in una **sequenza compatta** di singoli bit.
-  
-  ```C++
-#include <iostream>
-
-const int MAX_STRING_LENGTH = 100; // Lunghezza massima per le stringhe
-
-// Definizione della struttura per il payload completo
-struct LoRaPayload {
-    char device_id[MAX_STRING_LENGTH];
-    char timestamp[MAX_STRING_LENGTH];
-    float temperature;
-    float humidity;
-    float battery_voltage;
-    char led_status[MAX_STRING_LENGTH];
-    char led_color[MAX_STRING_LENGTH];
-    char motor_status[MAX_STRING_LENGTH];
-    int motor_speed;
-    char location[MAX_STRING_LENGTH];
-    int signal_strength;
-};
-```
 - **Messaggi lunghi** tra Network Server e server Applicativo. Vengono mandati **in Internet** e devono essere più che altro chiari e, se possibile, autoesplicativi. Dato che vengono inviati su un mezzo senza particolari limitazioni di banda, possono essere **definiti** in **formato JSON**.
 
 La **traduzione** non viene fatta normalmente direttamente sul gateway, anche se lui li traduce effettivamente in un JSON di servizio ma senza scompattare il payload applicativo (componente lora-gateway-bridge del gateway). La **trasformazione dei dati** (come la codifica e decodifica in formato Cayenne LPP) tipicamente avviene a livello di **server di rete** o di **server di applicazione**. Ecco come potrebbe essere gestita:
@@ -382,6 +361,22 @@ Serve a realizzare un ponte tra:
 - #, # è invece l’impostazione per un bridge privo di filtraggi
 
 <img src="img/brokerBridge.png" alt="alt text" width="600">
+
+### **Gestione firewall**
+```C++
+lorawan/<APP-EUI>/<DEV-EUI>/+
+lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/+
+```
+### **Gestione firewall**
+```C++
+lorawan/<APP-EUI>/<DEV-EUI>/up 
+lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/up
+```
+### **Gestione firewall**
+```C++
+lorawan/<APP-EUI>/<DEV-EUI>/down
+lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/down
+```
 
 ## **Gestione firewall**
 
