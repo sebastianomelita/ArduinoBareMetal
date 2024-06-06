@@ -295,6 +295,7 @@ devices:
 Ora, configurando un singolo topic zigbee2mqtt/stanzetta/set per inviare comandi a tutte e tre le lampadine, possiamo usare un payload JSON per specificare lo stato desiderato di ogni lampadina.
 
 #### **Accendere tutte le Lampadine:**
+
 ```Json
 {
   "lampadina1": {"state": "ON"},
@@ -304,6 +305,7 @@ Ora, configurando un singolo topic zigbee2mqtt/stanzetta/set per inviare comandi
 ```
 
 #### **Spegnere tutte le Lampadine:**
+
 ```Json
 {
   "lampadina1": {"state": "OFF"},
@@ -313,6 +315,7 @@ Ora, configurando un singolo topic zigbee2mqtt/stanzetta/set per inviare comandi
 ```
 
 #### **Comandare le Lampadine Singolarmente:**
+
 ```Json
 {
   "lampadina1": {"state": "ON"},
