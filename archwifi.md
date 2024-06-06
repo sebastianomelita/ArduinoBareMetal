@@ -683,6 +683,11 @@ Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prest
 - **Eero Pro 6**: Supporta Wi-Fi 6, offre alta velocità e copertura estesa, facile da configurare tramite app mobile.
 - **Ubiquiti AmpliFi HD**: Un sistema potente con una gestione avanzata delle reti, ottimo per utenti più tecnici.
 
+- [Dettaglio architettura Zigbee](archzigbee.md)
+- [Dettaglio architettura BLE](archble.md)
+- [Dettaglio architettura WiFi](archwifi.md) 
+- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
+
 ### **Sitografia**:
 - www.master-iot.it Master Universitario di II Livello "Internet of Things and Big Data" A.A.2018-2019 Università degli Studi di Genova
 - https://www.researchgate.net/publication/300111853_Long-Range_IoT_Technologies_The_Dawn_of_LoRa
@@ -717,10 +722,5 @@ Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prest
 - https://www.cisco.com/c/en/us/td/docs/routers/access/wireless/software/guide/wireless_vlans.html
 - https://www.cisco.com/c/en/us/td/docs/internetworking/design/guide/idg4.html
 - https://www.cisco.com/c/en/us/td/docs/internetworking/design/guide/idg4.html
-
-- [Dettaglio architettura Zigbee](archzigbee.md)
-- [Dettaglio architettura BLE](archble.md)
-- [Dettaglio architettura WiFi](archwifi.md) 
-- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
