@@ -225,9 +225,9 @@ La **traduzione** non viene fatta normalmente direttamente sul gateway, anche se
 
 - **Integrazione diretta con un cloud**: Ad esempio, Cayenne di MyDevices fornisce una piattaforma per la gestione e visualizzazione dei dati IoT che supporta nativamente il formato Cayenne LPP. Puoi configurare il tuo server di rete per inviare i dati direttamente alla piattaforma Cayenne, che si occuperà della decodifica e visualizzazione dei dati in formato JSON.
  
+### **Messaggi lunghi**
 
-
-### Esempio JSON solo sensori
+#### **Esempio JSON solo sensori**
 
 ```C++
 {
@@ -248,7 +248,7 @@ La **traduzione** non viene fatta normalmente direttamente sul gateway, anche se
 }
 ```
 
-### Esempio JSON sensori + attuatori
+#### **Esempio JSON sensori + attuatori**
 
 ```C++
 {
@@ -278,8 +278,9 @@ La **traduzione** non viene fatta normalmente direttamente sul gateway, anche se
   }
 }
 ```
+### **Messaggi corti**
 
-### Esempio struct sensori + attuatori
+#### **Esempio struct sensori + attuatori**
 
 ```C++
 #include <iostream>
