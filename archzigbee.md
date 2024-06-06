@@ -270,6 +270,55 @@ Ecco una descrizione di come funziona zigbee2mqtt:
 3. **Pubblicazione su MQTT**: I dati letti dai dispositivi Zigbee vengono convertiti in messaggi MQTT e pubblicati su un broker MQTT. Questo può includere dati di stato, misurazioni di sensori, ecc.
 4. **Sottoscrizione a Comandi MQTT**: zigbee2mqtt si iscrive anche a determinati topic MQTT per ricevere comandi. Quando un comando MQTT viene ricevuto, zigbee2mqtt lo traduce in un'operazione Zigbee e lo invia al dispositivo appropriato.
 
+#### **Configurazione di zigbee2mqtt** 
+
+Per controllare tre lampadine diverse sotto lo stesso topic stanzetta usando zigbee2mqtt, è possibile configurare un approccio che permetta di inviare comandi a tutte e tre le lampadine contemporaneamente o individualmente. Un modo efficace per farlo è usare un payload JSON che includa informazioni specifiche per ciascuna lampadina.
+
+```Json
+homeassistant: true
+permit_join: true
+mqtt:
+  base_topic: zigbee2mqtt
+  server: 'mqtt://localhost'
+  user: 'MQTT_USERNAME'
+  password: 'MQTT_PASSWORD'
+serial:
+  port: '/dev/ttyUSB0'
+devices:
+  '0x00124b0014d2b5d2':
+    friendly_name: lampadina1
+  '0x00124b0014d2b5d3':
+    friendly_name: lampadina2
+  '0x00124b0014d2b5d4':
+    friendly_name: lampadina3
+```
+
+Ora, configurando un singolo topic zigbee2mqtt/stanzetta/set per inviare comandi a tutte e tre le lampadine, possiamo usare un payload JSON per specificare lo stato desiderato di ogni lampadina.
+
+#### **Accendere tutte le Lampadine:**
+
+{
+  "lampadina1": {"state": "ON"},
+  "lampadina2": {"state": "ON"},
+  "lampadina3": {"state": "ON"}
+}
+
+#### **Spegnere tutte le Lampadine:**
+{
+  "lampadina1": {"state": "OFF"},
+  "lampadina2": {"state": "OFF"},
+  "lampadina3": {"state": "OFF"}
+}
+
+#### **Comandare le Lampadine Singolarmente:**
+
+{
+  "lampadina1": {"state": "ON"},
+  "lampadina2": {"state": "OFF"},
+  "lampadina3": {"state": "ON"}
+}
+
+
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
 
 ### **Reti di sensori federate tramite Internet** 
