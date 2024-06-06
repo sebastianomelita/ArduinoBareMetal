@@ -84,6 +84,8 @@ Il **broker MQTT** è solo una delle tante soluzioni possibili per:
 
 Dagli **esempi** si vede bene che il **client MQTT** (con il ruolo di **publisher** o di **subscriber**) è sempre il **Network Server**. Il Netwok Server è anche il **gateway** della **rete di sensor**i in teso complessivamente come **rete LoraWAN**. Il gateway dalla rete Lora alla rete IP in realtà è il **gateway LoRaWAN**. 
 
+In **generale**, su reti **non IP**, i **client MQTT** (con il ruolo di **publisher** o di **subscriber**) sono sempre i **gateway di confine** della **rete di sensori**.
+
 Il **vantaggio** del **broker MQTT** è quello di poter gestire in modo semplice e **standardizzato** lo **smistamento** (inoltro) delle **misure** e dei **comandi** tra i vari portatori di interesse (stakeholder) di un **cluster** di reti di sensori, siano essi utenti umani, interfacce grafiche, server applicativi diversi o altri dispositivi IoT.
 
 Il **canale applicativo** su cui vengono inviati i messaggi sono quindi i **topic**. Su un certo **topic** il dispositivo con il ruolo di **output** agisce come un **publisher**, mentre quello con il ruolo di **input** agisce come un **subscriber**.
