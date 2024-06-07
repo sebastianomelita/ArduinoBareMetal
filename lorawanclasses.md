@@ -3,9 +3,10 @@
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
-- [Dettaglio architettura WiFi](archwifi.md) 
-- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
-
+- [Dettaglio architettura WiFi](archwifi.md)
+- [Dettaglio architettura WiFi mesh](archmesh.md) 
+- [Dettaglio architettura LoraWAN](lorawanclasses.md)
+  
 ## **Caso d'uso LoRaWan** 
 
 Date le particolarità della tecnologia, i casi d'uso per la rete di sensori sono quelli tipici applicazioni **IoT outdoor** a **lungo raggio** dette **LPWA**, dove concorre con altre tecnologie di rete: Sigfow, NB IoT e sotto certe condizioni, wifi. **Caratteristiche** di LoRaWAN sono essenzialmente:
@@ -587,7 +588,8 @@ Un esempio di **canale MQTT di configurazione** per, ad esempio, impostare il pe
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
-- [Dettaglio architettura WiFi](archwifi.md) 
+- [Dettaglio architettura WiFi](archwifi.md)
+- [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 
