@@ -234,8 +234,8 @@ La **traduzione** non viene fatta normalmente direttamente sul gateway, anche se
         - **subscriber** dei **messaggi corti** per poterli **leggere** dal **dispositivo** ed elaborare
         - **publisher** dei **messaggi lunghi** per poterli inviare all'**applicazione**
     - in **downlink**:
-        - **publisher** dei **messaggi corti** per poterli inviare al **dispositivo**
         - **subscriber** dei **messaggi lunghi** per poterli leggere dall'**applicazione** e spedire
+        - **publisher** dei **messaggi corti** per poterli inviare al **dispositivo**        
 - **Integrazione diretta con un cloud**: Ad esempio, Cayenne di MyDevices fornisce una piattaforma per la gestione e visualizzazione dei dati IoT che supporta nativamente il formato Cayenne LPP. Puoi configurare il tuo server di rete per inviare i dati direttamente alla piattaforma Cayenne, che si occuperà della decodifica e visualizzazione dei dati in formato JSON.
  
 ### **Messaggi lunghi**
