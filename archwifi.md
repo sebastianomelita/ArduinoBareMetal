@@ -192,7 +192,7 @@ Subnet per la videosorveglienza.
 - SSID: videosorveglienza
 - S3: 10.3.0.0/24 
 - GW3 (R2): 10.3.0.1
-- RNG3: 10.2.0.3- 10.3.255.254
+- RNG3: 10.3.0.3- 10.3.255.254
 
 ##### **Routing statico**
 
