@@ -394,7 +394,7 @@ lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/+
 lorawan/<APP-EUI>/<DEV-EUI>/up 
 lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/up
 ```
-Questo topic può essere **letto** (come subscriber) dal **Server applicativo** per generare una **attuazione** verso un altro dispositivo o una **elaborazione statistica** o un **salvataggio persistente** in un database.
+Questo topic può essere **letto** (come subscriber) dal **Server applicativo** per realizzare una **attuazione** verso un altro dispositivo o una **elaborazione statistica** o un **salvataggio persistente** in un database.
 
 Esempio di **payload**:
 ```Json
@@ -439,7 +439,7 @@ Esempio di **payload**:
 lorawan/<APP-EUI>/<DEV-EUI>/down
 lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/down
 ```
-Questo topic può essere **scritto** (come publisher) dal **Server applicativo** o da un altro dispositivo IoT per generare una attuazione o una configurazione
+Questo topic può essere **scritto** (come publisher) dal **Server applicativo** o da un altro dispositivo IoT per realizzare una attuazione o una configurazione
 
 ## **Gestione firewall**
 
