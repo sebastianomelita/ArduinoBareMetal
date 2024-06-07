@@ -6,7 +6,7 @@
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
-### **Caso d'uso WiFi infrastruttura** 
+## **Caso d'uso WiFi infrastruttura** 
 
 Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiFi di **tipo infrastruttura** sono quelli tipici applicazioni **IoT indoor** a **medio raggio**, dove concorre con altre tecnologie di rete: Zigbee, BLE e, sotto certe condizioni, LoRaWAN. **Caratteristiche** della rete WiFi di **tipo infrastruttura** sono essenzialmente:
 - possibilità di realizzare **comandi** a distanza wireless anche relativamente piccoli con una **durata** delle batterie relativamente lunga (dell'ordine dei mesi).
@@ -19,7 +19,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiF
 
 <img src="img/wifizone.png" alt="alt text" width="800">
 
-### **Aspetti critici**
+## **Aspetti critici**
 
 Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scelte argomentate** sono:
 - schema fisico (**planimetria**) dell'infrastruttura con etichettatura univoca di tutti gli asset tecnologici di rete.
@@ -36,7 +36,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 
 
-### **Architettura di una rete di reti** 
+## **Architettura di una rete di reti** 
 
 Di seguito è riportata l'architettura generale di una **rete di reti** di sensori. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
 
@@ -112,14 +112,12 @@ L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzion
 
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
 
-## **Rete di dispositivi WiFi** 
+## **Rete in modo infrastruttura** 
 
 Una architettura di rete wireless WiFi è può essere realizzata in tre modalità:
 - **Modalità Infrastruttura** di tipo master/slave
 - **Modalità ad hoc** di tipo peer to peer 
 - **Modalità Wifi Direct**  di tipo Punto – punto
-
-### **Rete in modo infrastruttura** 
 
 Le architetture **più diffuse** in ambito aziendale ed **indoor** sono di **tipo infrastruttura** e sono composte di un dispositivo master centrale detto **Access Point (AP)** posto in posizione **baricentrica** rispetto a più dispositivi slave della rete wireless detti **Client**. 
 
@@ -131,7 +129,7 @@ Gli **elementi** di una rete in modo infrastruttura sono:
 
 <img src="img/ap.drawio.png" alt="alt text" width="800">
 
-### **Access point**
+## **Access point**
 
 Il dispositivo AP è assimilabile ad un **Hub** che realizza un BUS broadcast che collega tutti i device client. Il mezzo radio è di tipo broadcast half duplex in cui uno parla e tutti ascoltano. Per realizzare un canale percepito dalle stazioni client come full duplex l’accesso di queste necessita di essere arbitrato. L'**arbitraggio** può essere di tipo:
 - **Peer to peer**: è la soluzione più comune, l’accesso al mezzo degli interlocutori è gestita in maniera autonoma da ciascuno di essi tramite un  meccanismo di ack realizzato dal protocollo 802.11 di tipo CSMA/CA.
@@ -146,7 +144,7 @@ Per quanto riguarda il loro **collegamento** ai **dispositivi attivi** della ret
 - il collegamento sulle porte di uno **switch di distribuzione** (DS) condiviso con le dorsali di piano che, oltre a diramare dorsali ad alta densità di traffico verso gli AS, dedicano anche dorsali ad alta capacità verso ogni singolo AP. Soluzione dimensionalmente adeguata tenedo conto del thoughput superiore al Gbit/sec  degli AP più recenti che permettono sia collegamenti ad **alte prestazioni** (200-300 Mbps/sec) che l'aggregazione di un **elevato numero** di client (superiore a 100). Soluzione desiderabile per grandi ambienti che basano i loro servizi su Internet quali alberghi, scuole, campus universitari, ecc.
 - l'utilizzo, per entrambe le soluzioni precedenti, di **SW dedicati** solo per gli AP, soluzione che permette di dedicare una **dorsale dedicata**  (di piano o di campus) a ciascun **gruppo di AP**. Soluzione auspicabile per **servizi avanzati** ad alta **densità** di utenze (come luoghi pubblici) e alta **intensità** di traffico (come servizi multimediali avanzati).
 
-#### **Esempio**
+### **Esempio**
 
 Nel contesto di un istituto scolastico che si vuole servire con una rete WiFi, si vogliono separare i **servizi di segreteria** scolastica con i suoi **server** e i suoi **impiegati** localizzati in una subnet fisicamente dislocata in una **certa area**, dai **servizi di mobilità**, dispersi a **macchia di leopardo** in tutto il comprensorio, ai docenti dotati di supporti di loro proprietà (politica Byod) con i quali eseguono le loro attività giornaliere sul registro scolastico. Si vuole consentire anche una gestione separata al traffico dei **servizi di videosorveglianza** con propri **server**, a disposizione all'interno di una subnet separata. 
 
@@ -154,7 +152,7 @@ Nel contesto di un istituto scolastico che si vuole servire con una rete WiFi, s
 
 La **separazione** dei gruppi di utenti **solamente** in base alla **dislocazione fisica** sarebbe evidentemente impossibile, mentre sarebbe **effettiva** la separazione mediante **VLAN** dislocate su una infrastruttura **bridged**.
 
-#### **Definizione dei gruppi mediante VLAN**
+### **Definizione dei gruppi mediante VLAN**
 
 La **definizione** dei gruppi si può fare con una dislocazione a **macchia di leopardo** delle **interfacce** di accesso alla diverse VLAN, aventi **ssid statici** diversi o uno unico ma **dinamico** (autenticazione 802.1X). Gli **host** possono collegarsi all'**ssid** di una certa VLAN su **ogni AP**. La loro **separazione** avviene **dopo**, su un **router** di confine collegato al core switch con un link capace di creare il **trunking** dei flussi (**intervlan routing** in modo **router on a stick**). Le **dorsali** tra i vari bridge devono essere configurate come dorsali di **trunk** (802.1Q) in modo tale che portino il traffico aggregato di **tutte le VLAN**.
 
@@ -162,13 +160,13 @@ Si sarebbe potuto isolare in maniera ancora **più affidabile** la rete della se
 
 L'**inconveniente** viene superato adoperando le **VLAN** e la sicurezza viene mantenuta ugualmente alta (**like wire** in pratica) grazie ai **comandi**: ```allowed vlan 1, 20, 30``` e ```allowed vlan 1, 10``` che **confinano** il traffico delle **trame MAC** relative alla LAN della **segreteria** sul solo SW dove sono collegati i suoi dispositivi. Tutte le altre dorsali non possono essere interessate da questo traffico, mentre sono tutte interessate dal traffico della **subnet amministrativa** degli AP che possono così essere gestiti da un **unico controller**.
 
-#### **Esempio di Configurazione**
+### **Esempio di Configurazione**
 
 Per configurare una rete con 3 router WiFi mesh, in cui ogni router ha una dorsale (backhaul) con canale di comunicazione dedicato e due router aggregano sensori su due subnet diverse, possiamo seguire questo schema:
 
 I Router per aggregazione dei sensori sono R2 e R3. Per le subnet possiamo usare un blocco di indirizzi privati come 10.0.0.0/8 e dividerlo, con un subnetting **FLSM classful**, come segue:
 
-##### **Subnetting**
+#### **Subnetting**
 
 Subnet per la dorsale degli AP (VLAN amministrativa no ssid):
 - VLAN 1
@@ -198,7 +196,7 @@ Subnet per la videosorveglienza.
 - GW3 (R2): 10.3.0.1
 - RNG3: 10.3.0.3- 10.3.255.254
 
-##### **Routing statico**
+#### **Routing statico**
 
 R1 possiede 3 indirizzi su ciascuna subnet:
 - S0 (VLAN 1): 10.0.0.1  SM0: 255.255.0.0
@@ -208,7 +206,7 @@ R1 possiede 3 indirizzi su ciascuna subnet:
   
 Non è necessario impostare le tabelle di routing in quanto le subnet S0, S1, S2, S3 sono, su R1, direttamente connesse.
 
-### **Struttura cellulare**
+## **Struttura cellulare**
 
 Una rete wifi è organizzata nelle zone di influenza di ciascun AP dette **cella**. A causa dell'**attenuazione** del segnale radio dovuta alla distanza o agli ostacoli un client raggiunge un AP solo fino ai confini della sua cella.
 Il collegamento in **mobilità** di un client da una cella ad un’altra adiacente si chiama **roaming** e determina un passaggio della presa in carico di un utente da una cella a quella di transito vicina che viene detto in gergo **handover**. Un handover avviene generalmente, in maniera trasparente all’utente e **senza la cessazione** di eventuali connessioni in corso. 
@@ -222,7 +220,7 @@ Una organizzazione ottima della rete fa in modo di minimizzare la cosidetta **in
 La divisione in celle è una forma di **SDM** (Space Division Multiplation), infatti celle di uno stesso colore possono trasmettere senza interferirsi nella stessa frequenza e nello stesso istante purchè siano in posizioni differenti. 
 Per dettagli vedi [multiplazioni statiche](multiplazioni.md)
 
-### **Allocazione dei canali alle celle**
+## **Allocazione dei canali alle celle**
 
 <img src="img/wifichannel.png" alt="alt text" width="500">
 
@@ -253,7 +251,7 @@ Questi canali più ampi vengono creati collegando insieme i canali a 20 MHz. Rad
 
 <img src="img/reusepatterns.png" alt="alt text" width="700">
 
-### **Beacon**
+## **Beacon**
 
 I beacon sono delle **sequenze di sincronizzazione** (dette preambolo) in grado sia di sincronizzare gli **orologi** dei dispositivi (Tx e Rx) che si accingono ad iniziare una comunicazione, ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. Per dei dettagli vedi [preambolo di sincronizzazione](protocolli.md#preambolo-di-sincronizzazione).
 
@@ -294,7 +292,7 @@ Ogni **access point** utilizza un **singolo canale** (largo 22 MHz), che viene c
 
 La trasmissione avviene a **pacchetti** con **conferma** di ricezione.
 
-###  **Impatto ambientale**
+##  **Impatto ambientale**
 
 La **potenza media** delle emissioni ambientali dipende dalle condizioni di servizio ed è influenzata dal duty cycle, a sua volta determinato da vari **fattori**:
 - La bidirezionalità della trasmissione (attesa dell’OK di ricezione)
@@ -308,7 +306,7 @@ La **potenza media** delle emissioni ambientali dipende dalle condizioni di serv
 
 Considerata la **bassa potenza** di uscita di **picco**, il bassissimo **guadagno d’antenna** e la riduzione operata dal **duty cycle**, gli access point delle reti Wi-Fi generano livelli di **densità di potenza** sempre molti ordini di grandezza sotto i **limiti normativi** ed anche significativamente inferiori alle **stazioni radio base** della telefonia cellulare.
 
-###  **Gestione equa della banda**
+##  **Gestione equa della banda**
 
 I **parametri** e le **limitazioni** che vedremo sono dei criteri di accesso al mezzo radio volti a ridurre **disturbi mutui** fra i vari servizi dei vari utenti e la **monopolizzazione** di un canale da parte di un singolo utente.
 - **Potenza disponibile massima**. La potenza in Watt. In genere dell’ordine dei millesimi di watt (mW) è spesso espressa in dBm.
