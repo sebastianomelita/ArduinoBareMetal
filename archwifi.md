@@ -148,11 +148,11 @@ Per quanto riguarda il loro **collegamento** ai **dispositivi attivi** della ret
 
 #### **Esempio**
 
-Nel contesto di una istituzione scolastica, si vuole realizzare una copertura WiFi completa di tutti gli spazi ma, nel contempo, si desidera separare i **servizi di segreteria** con i suoi server, dai **servizi di mobilità** agli insegnanti dotati di tablet e PC di loro proprietà con i quali eseguono il controllo giornaliero degli impianti di competenza, consentendo anche di dedicare una gestione separata al traffico dei **servizi di videosorveglianza**. 
+Nel contesto di un istituto scolastico che si vuole servire con una rete WiFi, si vogliono separare i **servizi di segreteria** scolastica con i suoi **server** e i suoi **impiegati** localizzati in una subnet fisicamente dislocata in una **certa area**, dai **servizi di mobilità**, dispersi a **macchia di leopardo** in tutto il comprensorio, ai docenti dotati di supporti di loro proprietà (politica Byod) con i quali eseguono le loro attività giornaliere sul registro scolastico. Si vuole consentire anche una gestione separata al traffico dei **servizi di videosorveglianza** con propri **server**, a disposizione all'interno di una subnet separata. 
 
 <img src="img/meshvlan.png" alt="alt text" width="1000">
 
-La **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe evidentemente impossibile, mentre sarebbe **effettiva** la separazione mediante **VLAN** dislocate su una infrastruttura **bridged**.
+La **separazione** dei gruppi di utenti **solamente** in base alla **dislocazione fisica** sarebbe evidentemente impossibile, mentre sarebbe **effettiva** la separazione mediante **VLAN** dislocate su una infrastruttura **bridged**.
 
 #### **Definizione dei gruppi mediante VLAN**
 
@@ -162,41 +162,47 @@ La **definizione** dei gruppi si può fare con una dislocazione a **macchia di l
 
 Per configurare una rete con 3 router WiFi mesh, in cui ogni router ha una dorsale (backhaul) con canale di comunicazione dedicato e due router aggregano sensori su due subnet diverse, possiamo seguire questo schema:
 
-I Router per aggregazione dei sensori sono R2 e R3. Per le subnet possiamo usare un blocco di indirizzi privati come 192.168.0.0/16 e dividerlo come segue:
+I Router per aggregazione dei sensori sono R2 e R3. Per le subnet possiamo usare un blocco di indirizzi privati come 10.0.0.0/8 e dividerlo, con un subnetting **FLSM classful**, come segue:
 
 ##### **Subnetting**
 
-Subnet per la dorsale dei router mesh (VLAN amministrativa):
+Subnet per la dorsale degli AP (VLAN amministrativa no ssid):
+- VLAN 1
+- S0: 10.0.0.0/24
+- AP1: 10.0.0.1
+- AP2: 10.0.0.2
+- APX: 10.0.0.x
+
+Subnet per la segreteria.
 - VLAN 10
-- SSID: Mesh_Backhaul
-- S1: 192.168.1.0/24
-- R1: 192.168.1.1
-- R2: 192.168.1.2
-- R3: 192.168.1.3
+- SSID: segreteria
+- S1: 10.1.0.0/24 
+- GW1 (R2): 10.1.0.1
+- RNG1: 10.1.0.2- 10.1.255.254
 
-Subnet per i sensori collegati a R2.
+Subnet per i docenti.
 - VLAN 20
-- SSID: Sensors_R2
-- S2: 192.168.2.0/24 
-- GW2 (R2): 192.168.2.254
-- RNG2: 192.168.2.1 - 192.168.2.253
+- SSID: docenti
+- S2: 10.2.0.0/24 
+- GW2 (R2): 10.2.0.1
+- RNG2: 10.2.0.2- 10.2.255.254
 
-Subnet per i sensori collegati a R3.
+Subnet per la videosorveglienza.
 - VLAN 30
-- SSID: Sensors_R3
-- S3: 192.168.3.0/24 
-- GW3 (R3): 192.168.3.254
-- RNG3: 192.168.3.1 - 192.168.3.253
+- SSID: videosorveglienza
+- S3: 10.3.0.0/24 
+- GW3 (R2): 10.3.0.1
+- RNG3: 10.2.0.3- 10.3.255.254
 
 ##### **Routing statico**
 
 R1 possiede 3 indirizzi su ciascuna subnet:
-- S1 (VLAN 10): 192.168.1.254  SM1: 255.255.255.0
-- S2 (VLAN 20): 192.168.2.254  SM2: 255.255.255.0
-- S3 (VLAN 30): 192.168.3.254  SM3: 255.255.255.0
-
-Non è necessario impostare le tabelle di routing in quanto le subnet S1, S2, S3 sono, su R1, direttamente connesse.
-
+- S0 (VLAN 1): 10.0.0.1  SM0: 255.255.0.0
+- S1 (VLAN 10): 10.1.0.1  SM1: 255.255.0.0
+- S2 (VLAN 20): 10.2.0.1  SM2: 255.255.0.0
+- S3 (VLAN 30): 10.3.0.1  SM3: 255.255.0.0
+  
+Non è necessario impostare le tabelle di routing in quanto le subnet S0, S1, S2, S3 sono, su R1, direttamente connesse.
 
 ### **Struttura cellulare**
 
