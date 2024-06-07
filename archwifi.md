@@ -146,6 +146,58 @@ Per quanto riguarda il loro **collegamento** ai **dispositivi attivi** della ret
 - il collegamento sulle porte di uno **switch di distribuzione** (DS) condiviso con le dorsali di piano che, oltre a diramare dorsali ad alta densità di traffico verso gli AS, dedicano anche dorsali ad alta capacità verso ogni singolo AP. Soluzione dimensionalmente adeguata tenedo conto del thoughput superiore al Gbit/sec  degli AP più recenti che permettono sia collegamenti ad **alte prestazioni** (200-300 Mbps/sec) che l'aggregazione di un **elevato numero** di client (superiore a 100). Soluzione desiderabile per grandi ambienti che basano i loro servizi su Internet quali alberghi, scuole, campus universitari, ecc.
 - l'utilizzo, per entrambe le soluzioni precedenti, di **SW dedicati** solo per gli AP, soluzione che permette di dedicare una **dorsale dedicata**  (di piano o di campus) a ciascun **gruppo di AP**. Soluzione auspicabile per **servizi avanzati** ad alta **densità** di utenze (come luoghi pubblici) e alta **intensità** di traffico (come servizi multimediali avanzati).
 
+#### **Esempio**
+
+Si vogliono separare i **servizi di produzione** agricola con i suoi **sensori** sparsi su tutto l'agro, dai **servizi di mobilità** ai tecnici agronomi dotati di tablet sui loro mezzi con i quali eseguono il controllo giornaliero degli impianti di competenza, consentendo anche di dedicare una gestione separata al traffico dei **servizi di videosorveglianza**. 
+
+<img src="img/meshvlan.png" alt="alt text" width="1000">
+
+La **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe evidentemente impossibile, mentre sarebbe **effettiva** la separazione mediante **VLAN** dislocate su una infrastruttura **bridged**.
+
+#### **Definizione dei gruppi mediante VLAN**
+
+La **definizione** dei gruppi si può fare con una dislocazione a **macchia di leopardo** delle **interfacce** di accesso alla diverse VLAN, aventi **ssid statici** diversi o uno unico ma **dinamico** (autenticazione 802.1X). Gli **host** possono collegarsi all'**ssid** di una certa VLAN su **ogni bridge** wireless. La loro **separazione** avviene **dopo**, su un **router** di confine collegato con un **backaul** capace di creare il **trunking** dei flussi sul router (**gateway** in modo **router on a stick**). Le **dorsali** tra i vari bridge devono essere configurate come dorsali di **trunk** (802.1Q) in modo tale che portino il traffico aggregato di **tutte le VLAN**.
+
+#### **Esempio di Configurazione**
+
+Per configurare una rete con 3 router WiFi mesh, in cui ogni router ha una dorsale (backhaul) con canale di comunicazione dedicato e due router aggregano sensori su due subnet diverse, possiamo seguire questo schema:
+
+I Router per aggregazione dei sensori sono R2 e R3. Per le subnet possiamo usare un blocco di indirizzi privati come 192.168.0.0/16 e dividerlo come segue:
+
+##### **Subnetting**
+
+Subnet per la dorsale dei router mesh (VLAN amministrativa):
+- VLAN 10
+- SSID: Mesh_Backhaul
+- S1: 192.168.1.0/24
+- R1: 192.168.1.1
+- R2: 192.168.1.2
+- R3: 192.168.1.3
+
+Subnet per i sensori collegati a R2.
+- VLAN 20
+- SSID: Sensors_R2
+- S2: 192.168.2.0/24 
+- GW2 (R2): 192.168.2.254
+- RNG2: 192.168.2.1 - 192.168.2.253
+
+Subnet per i sensori collegati a R3.
+- VLAN 30
+- SSID: Sensors_R3
+- S3: 192.168.3.0/24 
+- GW3 (R3): 192.168.3.254
+- RNG3: 192.168.3.1 - 192.168.3.253
+
+##### **Routing statico**
+
+R1 possiede 3 indirizzi su ciascuna subnet:
+- S1 (VLAN 10): 192.168.1.254  SM1: 255.255.255.0
+- S2 (VLAN 20): 192.168.2.254  SM2: 255.255.255.0
+- S3 (VLAN 30): 192.168.3.254  SM3: 255.255.255.0
+
+Non è necessario impostare le tabelle di routing in quanto le subnet S1, S2, S3 sono, su R1, direttamente connesse.
+
+
 ### **Struttura cellulare**
 
 Una rete wifi è organizzata nelle zone di influenza di ciascun AP dette **cella**. A causa dell'**attenuazione** del segnale radio dovuta alla distanza o agli ostacoli un client raggiunge un AP solo fino ai confini della sua cella.
