@@ -150,7 +150,7 @@ Nel contesto di un istituto scolastico che si vuole servire con una rete WiFi, s
 
 <img src="img/ap.drawiovlan.drawio.png" alt="alt text" width="700">
 
-La **separazione** dei gruppi di utenti **solamente** in base alla **dislocazione fisica** sarebbe evidentemente impossibile, mentre sarebbe **effettiva** la separazione mediante **VLAN** dislocate su una infrastruttura **bridged**.
+La **separazione** dei gruppi di utenti **solamente** in base alla **dislocazione fisica** sarebbe evidentemente impossibile, mentre sarebbe **effettiva** la separazione mediante **VLAN** dislocate su una infrastruttura **switched**.
 
 ### **Definizione dei gruppi mediante VLAN**
 
