@@ -2,7 +2,8 @@
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
-- [Dettaglio architettura WiFi](archwifi.md) 
+- [Dettaglio architettura WiFi](archwifi.md)
+- [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 ### **Caso d'uso WiFi infrastruttura** 
@@ -486,7 +487,8 @@ Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prest
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
-- [Dettaglio architettura WiFi](archwifi.md) 
+- [Dettaglio architettura WiFi](archwifi.md)
+- [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 ### **Sitografia**:
