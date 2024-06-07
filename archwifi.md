@@ -148,7 +148,7 @@ Per quanto riguarda il loro **collegamento** ai **dispositivi attivi** della ret
 
 #### **Esempio**
 
-Si vogliono separare i **servizi di produzione** agricola con i suoi **sensori** sparsi su tutto l'agro, dai **servizi di mobilità** ai tecnici agronomi dotati di tablet sui loro mezzi con i quali eseguono il controllo giornaliero degli impianti di competenza, consentendo anche di dedicare una gestione separata al traffico dei **servizi di videosorveglianza**. 
+Nel contesto di una istituzione scolastica, si vuole realizzare una copertura WiFi completa di tutti gli spazi ma, nel contempo, si desidera separare i **servizi di segreteria** con i suoi server, dai **servizi di mobilità** agli insegnanti dotati di tablet e PC di loro proprietà con i quali eseguono il controllo giornaliero degli impianti di competenza, consentendo anche di dedicare una gestione separata al traffico dei **servizi di videosorveglianza**. 
 
 <img src="img/meshvlan.png" alt="alt text" width="1000">
 
