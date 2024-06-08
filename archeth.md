@@ -128,7 +128,6 @@ Gli **elementi** di una rete in modo infrastruttura sono:
 - un **controller** degli AP. E' un **server** che si occupa della creazione e gestione dei bridge nei vari AP, della impostazione centralizzata di interfacce logiche e parametri radio, della assegnazione centralizzata degli indirizzi IP, dell'assegnazione automatica dei canali in modo da minimizzare le interferenze reciproche tra gli AP, dell'aggiornamento centralizzato dei FW dei vari AP, della gestione dei protocolli di autenticazione, delle funzioni di logging, delle funzioni di firewall, della creazione di hotspot, ecc..
 
 
-
 ### **Link che generano subnet**
 
 - Il centro stella è sempre un router da cui si dirama una subnet a partire da ogni suo link fisico
@@ -146,7 +145,7 @@ Un router reibusta le trame MAC su nuovi pacchetti IP ogni volta che effettua un
 - la presenza di una rotta nella routing table del router per l'indirizzo di destinazione del pacchetto. In caso contrario, il pacchetto viene scartato.
 - la presenza di una o più ACL (Access Control List) che filtrino l'accesso da e verso alcune porte in base ad alcuni criteri. Ad ogni porta corrisponde un link e ad ogni link corrisponde univocamente una subnet. Le ACL sono pertanto liste di regole che permettono o bloccano il passaggio di un pacchetto IP da una subnet ad un'altra. Poichè le subnet tipicamente raggruppano utenti, si può dedurre che le ACL basate sugli indirizzi IP sono un metodo efficace per limitare, permettere o bloccare del tutto il traffico tra gruppi di utenti.
 
-<img src="img/lanvsvlan.png" alt="alt text" width="800">
+<img src="img/lanvsvlan.png" alt="alt text" width="700">
 
 - Una VLAN è una infrastruttura LAN speciale in grado di dividere una stessa LAN fisica in gruppi di host separati logicamente ma non fisicamente 
 - Le LAN tradizionali, per dividere gli utenti in gruppi, devono utilizzare LAN fisiche differenti
