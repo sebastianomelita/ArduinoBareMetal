@@ -588,6 +588,7 @@ Un esempio di **canale MQTT di configurazione** per, ad esempio, impostare il pe
 
 ### **Pagine correlate:**
 
+- [Dettaglio architettura Ethernet](archeth.md)
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura WiFi](archwifi.md)
