@@ -136,7 +136,7 @@ Gli **AP (Access Point)**, sono dei dispositivi di **aggregazione** dei client d
 Serve a dare una indicazione sulla destinazione d’uso degli ambienti, ovvero, le funzioni aziendali che li si svolgono da cui si potrebbero dedurre le esigenze degli utenti coinvolti (stakeholders).
 Le esigenze dell’utente diventano i requisiti del sistema HW e SW che deve essere realizzato.
 
-<img src="img/cablasenza.png" alt="alt text" width="700">
+<img src="img/cablasenza.png" alt="alt text" width="900">
 
 I requisiti del sistema si dividono in funzionali e non funzionali:
 - I requisiti funzionali definiscono il «cosa» il sistema deve fare per l’utente e grossomodo impattano principalmente nella definizione del SW.
@@ -190,7 +190,7 @@ Non sempre esiste un unico armadio BD (di secondo livello) per edificio, come no
 Il CD può avere tre ruoli perché da esso si possono diramare dorsali di campus (verso altri BD), di edificio (verso altri FD) e di piano (verso prese TO).
 Un BD può avere due ruoli perché da esso possono diramarsi dorsali di edificio (verso altri FD) e di piano (verso prese TO).
 
-<img src="img/esempiocabl.png" alt="alt text" width="700">
+<img src="img/esempiocabl.png" alt="alt text" width="900">
 
 Nell’esempio:
 - Al secondo piano vi è un unico armadio di piano FD che fa anche da BD2
