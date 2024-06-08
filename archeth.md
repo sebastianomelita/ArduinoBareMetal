@@ -136,7 +136,7 @@ Gli **AP (Access Point)**, sono dei dispositivi di **aggregazione** dei client d
 Serve a dare una indicazione sulla destinazione d’uso degli ambienti, ovvero, le funzioni aziendali che li si svolgono da cui si potrebbero dedurre le esigenze degli utenti coinvolti (stakeholders).
 Le esigenze dell’utente diventano i requisiti del sistema HW e SW che deve essere realizzato.
 
-<img src="img/cablasenza.png" alt="alt text" width="900">
+<img src="img/cablasenza.png" alt="alt text" width="800">
 
 I requisiti del sistema si dividono in funzionali e non funzionali:
 - I requisiti funzionali definiscono il «cosa» il sistema deve fare per l’utente e grossomodo impattano principalmente nella definizione del SW.
