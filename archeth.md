@@ -141,7 +141,7 @@ Gli **elementi** di una rete in modo infrastruttura sono:
 
 La **segmentazione** di una rete LAN parte sempre da un **router** che, essendo un **dispositivo L3**, è in grado di **bloccare** le trame MAC provenienti da dispositivi di livello inferiore come gli SW e i Bridge ad L2 oppure gli Hub ad L1.
 
-Un router reibusta le trame MAC su nuovi pacchetti IP ogni volta che effettua un inoltro su una porta di uscita. L'operazione di inoltro è vincolata ad alcune limitazioni che possono essere utili per la sicurezza:
+Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua un inoltro su una porta di uscita. L'operazione di inoltro è vincolata ad alcune limitazioni che possono essere utili per la sicurezza:
 - la presenza di una rotta nella routing table del router per l'indirizzo di destinazione del pacchetto. In caso contrario, il pacchetto viene scartato.
 - la presenza di una o più ACL (Access Control List) che filtrino l'accesso da e verso alcune porte in base ad alcuni criteri. Ad ogni porta corrisponde un link e ad ogni link corrisponde univocamente una subnet. Le ACL sono pertanto liste di regole che permettono o bloccano il passaggio di un pacchetto IP da una subnet ad un'altra. Poichè le subnet tipicamente raggruppano utenti, si può dedurre che le ACL basate sugli indirizzi IP sono un metodo efficace per limitare, permettere o bloccare del tutto il traffico tra gruppi di utenti.
 
