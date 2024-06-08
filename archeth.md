@@ -144,6 +144,8 @@ I requisiti del sistema si dividono in funzionali e non funzionali:
     - Essere di solito definiti dal cliente soltanto in maniera qualitativa
     - Riguardare essenzialmente le prestazioni e l’accuratezza con cui le funzioni vengono fornite. 
 
+<img src="img/requisiti.png" alt="alt text" width="800">
+
 La maggior parte dei sistemi HW e SW è composta da moduli distribuiti, cioè delocalizzati, che collaborano comunicando in rete. Per cui, i requisiti non funzionali, oltre che sul SW, impattano molto proprio sui requisiti dell’infrastruttura di rete. 
 
 ### **Planimetria con cablaggio**
