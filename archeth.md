@@ -127,7 +127,13 @@ Gli **elementi** di una rete in modo infrastruttura sono:
     - un **bridge** tra l'hub wireless e una LAN cablata. Un **bridge** è uno dispositivo di **commutazione** simile ad uno **switch** ma realizzato in **SW**, che **inoltra**, a livello L2, trame MAC dall'HUB alla LAN cablata e viceversa. Questi bridge, per ogni AP, possono essere più di uno e, in questo caso, sono tanti quante le **interfacce logiche** dell'AP e mappano ogni intefaccia su una **VLAN diversa**.
 - un **controller** degli AP. E' un **server** che si occupa della creazione e gestione dei bridge nei vari AP, della impostazione centralizzata di interfacce logiche e parametri radio, della assegnazione centralizzata degli indirizzi IP, dell'assegnazione automatica dei canali in modo da minimizzare le interferenze reciproche tra gli AP, dell'aggiornamento centralizzato dei FW dei vari AP, della gestione dei protocolli di autenticazione, delle funzioni di logging, delle funzioni di firewall, della creazione di hotspot, ecc..
 
-<img src="img/ap.drawio.png" alt="alt text" width="800">
+<img src="img/separazdislocaz.png" alt="alt text" width="800">
+
+
+<img src="img/separazserviziopng.png" alt="alt text" width="800">
+
+
+<img src="img/separazmistapng.png" alt="alt text" width="800">
 
 
 ### **Esempio**
