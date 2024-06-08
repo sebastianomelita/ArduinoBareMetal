@@ -23,6 +23,8 @@ Per il resto, ha le stesse caratteristiche di una rete WiFi di tipo infrastruttu
 
 A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di inoltro** dei dati tra i vari nodi: **Bridge mesh** e **Mesh ad hoc routed**.
 
+<img src="img/wifizone.png" alt="alt text" width="800">
+
 ### **Aspetti critici**
 
 Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scelte argomentate** sono:
