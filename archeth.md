@@ -278,6 +278,8 @@ Normalmente i dispositivi client ottengono automaticamente l’indirizzo IP tram
 
 I dispositivi server posseggono indirizzi statici per poter essere associati più facilmente all’url di dominio presso cui i client possono connettersi per raggiungere i servizi che essi pubblicano. I loro indirizzi vanno sempre segnati sull’albero.
 
+## **Divisione in gruppi di utenti o servizi**
+
 ### **Link che generano subnet**
 
 - Il centro stella è sempre un router da cui si dirama una subnet a partire da ogni suo link fisico
@@ -286,8 +288,6 @@ I dispositivi server posseggono indirizzi statici per poter essere associati pi�
 - Poiché più link virtuali possono condividere uno stesso collegamento fisico, esiste la possibilità di dislocare le subnet a «macchia di leopardo», cioè in modo che i loro dispositivi siano sparsi potenzialmente ovunque all’interno dell’infrastruttura fisica della rete (cade il vincolo di vicinanza fisica dei dispositivi di una subnet).
 
 <img src="img/subnetlink.jpg" alt="alt text" width="1000">
-
-## **Divisione in gruppi di utenti o servizi**
 
 ### **Modalità di segmentazione**
 
