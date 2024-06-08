@@ -122,12 +122,14 @@ Gli **elementi** di una rete in modo infrastruttura sono:
     - un **bridge** tra l'hub wireless e una LAN cablata. Un **bridge** è uno dispositivo di **commutazione** simile ad uno **switch** ma realizzato in **SW**, che **inoltra**, a livello L2, trame MAC dall'HUB alla LAN cablata e viceversa. Questi bridge, per ogni AP, possono essere più di uno e, in questo caso, sono tanti quante le **interfacce logiche** dell'AP e mappano ogni intefaccia su una **VLAN diversa**.
 - un **controller** degli AP. E' un **server** che si occupa della creazione e gestione dei bridge nei vari AP, della impostazione centralizzata di interfacce logiche e parametri radio, della assegnazione centralizzata degli indirizzi IP, dell'assegnazione automatica dei canali in modo da minimizzare le interferenze reciproche tra gli AP, dell'aggiornamento centralizzato dei FW dei vari AP, della gestione dei protocolli di autenticazione, delle funzioni di logging, delle funzioni di firewall, della creazione di hotspot, ecc..
 
+## **Planimetria** 
+
 ### **Planimetria senza cablaggi**
 
 Serve a dare una indicazione sulla destinazione d’uso degli ambienti, ovvero, le funzioni aziendali che li si svolgono da cui si potrebbero dedurre le esigenze degli utenti coinvolti (stakeholders).
 Le esigenze dell’utente diventano i requisiti del sistema HW e SW che deve essere realizzato.
 
-<img src="img/cablasenza.png" alt="alt text" width="600">
+<img src="img/cablasenza.png" alt="alt text" width="700">
 
 I requisiti del sistema si dividono in funzionali e non funzionali:
 - I requisiti funzionali definiscono il «cosa» il sistema deve fare per l’utente e grossomodo impattano principalmente nella definizione del SW.
@@ -178,15 +180,13 @@ Non sempre esiste un unico armadio BD (di secondo livello) per edificio, come no
 Il CD può avere tre ruoli perché da esso si possono diramare dorsali di campus (verso altri BD), di edificio (verso altri FD) e di piano (verso prese TO).
 Un BD può avere due ruoli perché da esso possono diramarsi dorsali di edificio (verso altri FD) e di piano (verso prese TO).
 
-<img src="img/esempiocabl.png" alt="alt text" width="600">
+<img src="img/esempiocabl.png" alt="alt text" width="700">
 
 Nell’esempio:
 - Al secondo piano vi è un unico armadio di piano FD che fa anche da BD2
 - Al primo piano il CD fa anche da BD1 ma anche da FD1.1 collegando delle prese TO
 - Al piano terra vi è un BD0 che fa anche da FD0.1 concentrando su di se dei TO
 - Il resto degli armadi fa soltando da FD perché da essi si diramano soltanto dorsali di piano (in blu) e nessuna dorsale di edificio (di secondo livello) verso altri armadi FD
-
-
 
 ### **Topologia cavi vs topologia canalizzazioni**
 
@@ -196,6 +196,8 @@ Nell’esempio:
     - A stella se realizzata sotto il pavimento (oppure in un controsoffitto) lungo percorsi comuni a più stanze. Talvolta si ha l’opportunità di realizzare i cavidotti a stella (mediante corrugati) prima di gettare il calcestruzzo del pavimento in fase di costruzione (o in fase di ristrutturazione) dell’edificio.
 - All’interno di una canalizzazione normalmente vi sono più cavi UTP, uno per ogni presa TO servita da quella canalizzazione.
 - Le canalizzazioni vanno etichettate e la loro molteplicità massima, cioè il numero massimo di cavi che conterranno lungo tutta la loro estensione, va stabilita in fase di progetto insieme ad una stima di massima della loro lunghezza.
+
+## **Albero degli apparati attivi**
 
 ### **Albero degli apparati attivi e armadi**
 
@@ -284,6 +286,8 @@ I dispositivi server posseggono indirizzi statici per poter essere associati pi�
 - Poiché più link virtuali possono condividere uno stesso collegamento fisico, esiste la possibilità di dislocare le subnet a «macchia di leopardo», cioè in modo che i loro dispositivi siano sparsi potenzialmente ovunque all’interno dell’infrastruttura fisica della rete (cade il vincolo di vicinanza fisica dei dispositivi di una subnet).
 
 <img src="img/subnetlink.jpg" alt="alt text" width="1000">
+
+## **Divisione in gruppi di utenti o servizi**
 
 ### **Modalità di segmentazione**
 
