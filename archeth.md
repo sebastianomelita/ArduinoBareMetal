@@ -108,7 +108,7 @@ E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
 
-<img src="img/integratedGW-WiFi.png" alt="alt text" width="1000">
+<img src="img/integratedGW-Eth.png" alt="alt text" width="1000">
 
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
 
