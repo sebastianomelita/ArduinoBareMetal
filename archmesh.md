@@ -113,6 +113,21 @@ E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **
     - analisi dei dati per la realizzazione di studi scientifici
     - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
 
+## **Rete di reti wifi** 
+
+L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
+
+<img src="img/integratedGW-WiFimesh.png" alt="alt text" width="1000">
+
+Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
+
+## **Rete in modo infrastruttura** 
+
+Una architettura di rete wireless WiFi è può essere realizzata in tre modalità:
+- **Modalità Infrastruttura** di tipo master/slave
+- **Modalità ad hoc** di tipo peer to peer 
+- **Modalità Wifi Direct**  di tipo Punto – punto
+
 ### **Sistemi multicanale (multiradio)**
 
 Architettura del sistema di rete Wireless Mesh multicanale. Il **numero minimo** di canali necessario **è 2**. Un sistema a **3 canali** offre maggiore **flessibilità** a prezzo di un maggiore costo.
