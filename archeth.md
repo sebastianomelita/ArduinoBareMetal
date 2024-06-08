@@ -127,6 +127,15 @@ Gli **elementi** di una rete in modo infrastruttura sono:
     - un **bridge** tra l'hub wireless e una LAN cablata. Un **bridge** è uno dispositivo di **commutazione** simile ad uno **switch** ma realizzato in **SW**, che **inoltra**, a livello L2, trame MAC dall'HUB alla LAN cablata e viceversa. Questi bridge, per ogni AP, possono essere più di uno e, in questo caso, sono tanti quante le **interfacce logiche** dell'AP e mappano ogni intefaccia su una **VLAN diversa**.
 - un **controller** degli AP. E' un **server** che si occupa della creazione e gestione dei bridge nei vari AP, della impostazione centralizzata di interfacce logiche e parametri radio, della assegnazione centralizzata degli indirizzi IP, dell'assegnazione automatica dei canali in modo da minimizzare le interferenze reciproche tra gli AP, dell'aggiornamento centralizzato dei FW dei vari AP, della gestione dei protocolli di autenticazione, delle funzioni di logging, delle funzioni di firewall, della creazione di hotspot, ecc..
 
+### **Link che generano subnet**
+
+- Il centro stella è sempre un router da cui si dirama una subnet a partire da ogni suo link fisico
+- La possibilità di realizzare subnet mappate su LAN (stub o transit) può essere estesa anche alle VLAN
+- La novità è che adesso da un router si può diramare una subnet anche a partire da un link virtuale
+- Poiché più link virtuali possono condividere uno stesso collegamento fisico, esiste la possibilità di dislocare le subnet a «macchia di leopardo», cioè in modo che i loro dispositivi siano sparsi potenzialmente ovunque all’interno dell’infrastruttura fisica della rete (cade il vincolo di vicinanza fisica dei dispositivi di una subnet).
+
+<img src="img/subnetlink.jpg" alt="alt text" width="1000">
+
 ### **Segmentazione fisica**
 
 - Le subnet sono generate sul router da due link fisici collegati a interfacce IP fisicamente distinte 
