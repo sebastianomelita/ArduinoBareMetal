@@ -1,5 +1,6 @@
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
 
+- [Dettaglio architettura Ethernet](archeth.md)
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
@@ -513,6 +514,7 @@ Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prest
 
 ### **Pagine correlate:**
 
+- [Dettaglio architettura Ethernet](archeth.md)
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura WiFi](archwifi.md) 
