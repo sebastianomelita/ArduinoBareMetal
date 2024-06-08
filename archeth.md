@@ -127,14 +127,48 @@ Gli **elementi** di una rete in modo infrastruttura sono:
     - un **bridge** tra l'hub wireless e una LAN cablata. Un **bridge** è uno dispositivo di **commutazione** simile ad uno **switch** ma realizzato in **SW**, che **inoltra**, a livello L2, trame MAC dall'HUB alla LAN cablata e viceversa. Questi bridge, per ogni AP, possono essere più di uno e, in questo caso, sono tanti quante le **interfacce logiche** dell'AP e mappano ogni intefaccia su una **VLAN diversa**.
 - un **controller** degli AP. E' un **server** che si occupa della creazione e gestione dei bridge nei vari AP, della impostazione centralizzata di interfacce logiche e parametri radio, della assegnazione centralizzata degli indirizzi IP, dell'assegnazione automatica dei canali in modo da minimizzare le interferenze reciproche tra gli AP, dell'aggiornamento centralizzato dei FW dei vari AP, della gestione dei protocolli di autenticazione, delle funzioni di logging, delle funzioni di firewall, della creazione di hotspot, ecc..
 
+### **Segmentazione fisica**
+
+- Le subnet sono generate sul router da due link fisici collegati a interfacce IP fisicamente distinte 
+- Sui link fisici si diramano LAN fisicamente separate
+- Subnet mappate su LAN con infrastruttura fisica distinta e quindi allocabili solo in ambienti diversi
+- Subnets spazialmente allocate che comprendono gruppi di host separati in base alla dislocazione fisica degli apparati di rete
+
 <img src="img/separazdislocaz.png" alt="alt text" width="1100">
 
+- Porte di uno stesso switch appartengono sempre allo stesso gruppo di macchine (quello della funzione F1 o F2)
+- E’ necessaria la separazione fisica degli ambienti per dividere i gruppi F1 e F2
+- Sul router ogni link fisico genera una subnet che si mappa 1:1 su una sottostante LAN fisica
+
+
+### **Segmentazione logica**
+
+- Le subnet sono generate sul router da due link virtuali collegati a interfacce IP logicamente distinte
+- Sui link virtuali si diramano LAN logicamente separate (VLAN)
+- Le VLAN condividono la stessa infrastruttura fisica e quindi sono allocabili in qualunque ambiente
+- Subnet mappate su LAN logiche
+- Subnets delocalizzate che comprendono gruppi di host separati in base alla funzione o al servizio
 
 <img src="img/separazserviziopng.png" alt="alt text" width="1000">
 
+- Porte di uno stesso switch possono appartenere a gruppi di macchine diverse, sia F1 che F2
+- è necessaria la colorazione delle porte per distinguere i gruppi
+- Sul router ogni link virtuale genera una subnet che si mappa 1:1 su una sottostante LAN logica (VLAN)
+
+### **Segmentazione fisica + logica**
+
+- Le subnet sono generate sul router da due link virtuali collegati a interfacce IP logicamente distinte
+- Sui link virtuali si diramano LAN logicamente separate (VLAN)
+- Le VLAN 10 e 20 condividono la stessa infrastruttura fisica e quindi sono allocabili in qualunque ambiente
+- La VLAN 30 si dirama CS con una sola dorsale fisica verso AS1 dove sono confinati tutti i suoi dispositivi
+- nessun’altra dorsale logica può propagare la VLAN 30 perché nessun trunk 802.1q la possiede tra le VLAN ammesse (allowed), oltre quello verso il CS.
+- Subnets delocalizzate che comprendono gruppi di host separati in base alla posizione e al servizio
 
 <img src="img/separazmistapng.png" alt="alt text" width="1000">
 
+- Porte di uno stesso switch possono appartenere a gruppi di macchine diverse, sia F1 che F2
+- è necessaria la colorazione delle porte per distinguere i gruppi
+- Sul router ogni link virtuale genera una subnet che si mappa 1:1 su una sottostante LAN logica (VLAN)
 
 ### **Esempio**
 
