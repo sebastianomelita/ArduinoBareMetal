@@ -43,7 +43,7 @@ Consiste in:
 3. [Albero degli apparati passivi](dorsaliarmadi.md#albero-degli-apparati-passivi)
 4. [Tabella delle dorsali](dorsaliarmadi.md#tabella-delle-dorsali)
 5. Albero degli apparati attivi
-6. Schema degli armadi
+6. [Schema degli armadi](dorsaliarmadi.md#schema-degli-armadi)
 
 Lo scopo è realizzare un guida univoca (priva di ambiguità) per il personale installatore per definire:
 - posa dei cavi affinchè si possa stabilire nel dettaglio posizione di armadi e prese TO e percorsi delle canalizzazioni all’interno dell’edificio
