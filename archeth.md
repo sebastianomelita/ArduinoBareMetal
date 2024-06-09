@@ -127,7 +127,7 @@ E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **
     - analisi dei dati per la realizzazione di studi scientifici
     - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
 
-## **Rete di reti wifi** 
+## **Rete di reti Ethernet** 
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
 
@@ -135,7 +135,7 @@ L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzion
 
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
 
-## **Rete in modo infrastruttura** 
+## **Rete Ethernet (LAN)** 
 
 Gli **elementi** di base di una reteLAN sono:
 - **Modem/Router** connesso all'ISP (Internet Service Provider) per l'accesso a Internet.
