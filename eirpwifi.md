@@ -1,9 +1,8 @@
->[Torna a WiFi infrastruttura](archwifi.md)
+>[Torna a WiFi infrastruttura](archwifi.md)>[Torna a WiFi mesh](archmesh.md)
 
 - [Dettaglio architettura Ethernet](archeth.md)
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
-- [Dettaglio architettura WiFi mesh](archwifi.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 
@@ -33,12 +32,11 @@ In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla den
 
 ### **Pagine correlate:**
 
->[Torna a WiFi infrastruttura](archwifi.md)
+>[Torna a WiFi infrastruttura](archwifi.md)>[Torna a WiFi mesh](archmesh.md)
 
 - [Dettaglio architettura Ethernet](archeth.md)
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
-- [Dettaglio architettura WiFi mesh](archwifi.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 
