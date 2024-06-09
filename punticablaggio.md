@@ -6,7 +6,7 @@
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
-## **APunti essenziali di un progetto di cablaggio strutturato** 
+## **Punti essenziali di un progetto di cablaggio strutturato** 
 
 1. Descrizione generale del progetto:
     - analisi dei requisiti utente (servizi chiave e loro vincoli operativi)
