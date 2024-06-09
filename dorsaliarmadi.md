@@ -22,7 +22,7 @@
 
 ## **Tabella delle dorsali** 
 
-Serve stabilire qualità e quantità dei cavi permanenti (installati nell’edificio) impiegati nel cablaggio.
+Serve stabilire qualità e quantità dei cavi permanenti (installati nell’edificio) impiegati nel cablaggio. Viene redatto subito dopo la planimetria e fornisce un quadro sinottico immediato di tutte le dorsali che è molto utile quando l'impianto è composto da parecchie dorsali.
 
 Deve definire perlomeno le seguenti proprietà:
 - Sigla del cavo, tipicamente un struttura X-Y dove X è la sigla dell’armadio di livello superiore a cui è collegato un capo del cavo, mentre Y è la sigla dell’armadio di livello inferiore (o del TO) a cui è collegato l’altro capo.
