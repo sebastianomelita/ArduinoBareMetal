@@ -137,7 +137,7 @@ Il **broker MQTT** può essere installato in cloud, in una Virtual Private netwo
 
 ## **Rete Ethernet (LAN)** 
 
-Gli **elementi** di base di una reteLAN sono:
+Gli **elementi** di base di una rete LAN sono:
 - **Modem/Router** connesso all'ISP (Internet Service Provider) per l'accesso a Internet.
 - **Router** connesso al modem per distribuire l'accesso a Internet e gestire il traffico di rete.
 - **Switch di core** connesso al router per ampliare la capacità della rete, permettendo la connessione di più dispositivi.
