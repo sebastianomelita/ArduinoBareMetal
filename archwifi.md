@@ -220,8 +220,6 @@ Una organizzazione ottima della rete fa in modo di minimizzare la cosidetta **in
 La divisione in celle è una forma di **SDM** (Space Division Multiplation), infatti celle di uno stesso colore possono trasmettere senza interferirsi nella stessa frequenza e nello stesso istante purchè siano in posizioni differenti. 
 Per dettagli vedi [multiplazioni statiche](multiplazioni.md)
 
-## **Allocazione dei canali alle celle**
-
 Si tenga conto poi che i dispositivi WiFi sono dei veri e propri **hub** e quindi dei** mezzi broadcast** assimilabili ad un **BUS a filo**:
 - Il **riutilizzo** della **stessa frequenza** tra due dispositivi **vicini** unisce i bus a livello fisico causando la **condivisione** dei rispettivi **dominii di collision**e, circostanza che **dimezza di netto la banda** disponibile di entrambi.
 - l'utilizzo di **frequenze diverse** permette di tenere gli **hub separati** e di lasciare al meccanismo del **roaming** del dispositivo la **scelta** di collegarsi ad uno piuttosto che all'altro. 
