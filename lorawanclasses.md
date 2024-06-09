@@ -6,7 +6,6 @@
 - [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
-- [Dettaglio architettura LoraWAN](lorawanclasses.md)
   
 ## **Caso d'uso LoRaWan** 
 
@@ -593,7 +592,6 @@ Un esempio di **canale MQTT di configurazione** per, ad esempio, impostare il pe
 - [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
-- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 
 **Sitografia**:
