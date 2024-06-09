@@ -222,10 +222,6 @@ Per dettagli vedi [multiplazioni statiche](multiplazioni.md)
 
 ## **Allocazione dei canali alle celle**
 
-<img src="img/reusepatterns.png" alt="alt text" width="700">
-
-L'allocazione dei canali puàò essere manuale o automatica, utilizzando dei criteri che permettono di minimizzare le interferenze che tengono conta da un lato della specificità della banda wifi (solo un **limitato numero** di canali realmente non si interferiscono), dall'altro dell'**esigenza primaria** delle **trasmissioni cellulari** che prevede l'utilizzo di **frequenze lontane** nello spettro a **breve distanza** nello spazio e il **riutilizzo** di **frequenze vicine** nello spettro (al limite le stesse) a **grande distanza** nello spazio. 
-
 Si tenga conto poi che i dispositivi WiFi sono dei veri e propri **hub** e quindi dei** mezzi broadcast** assimilabili ad un **BUS a filo**:
 - Il **riutilizzo** della **stessa frequenza** tra due dispositivi **vicini** unisce i bus a livello fisico causando la **condivisione** dei rispettivi **dominii di collision**e, circostanza che **dimezza di netto la banda** disponibile di entrambi.
 - l'utilizzo di **frequenze diverse** permette di tenere gli **hub separati** e di lasciare al meccanismo del **roaming** del dispositivo la **scelta** di collegarsi ad uno piuttosto che all'altro. 
