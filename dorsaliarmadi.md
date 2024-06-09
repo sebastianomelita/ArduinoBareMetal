@@ -48,7 +48,7 @@ In questo caso un AP ha attualmente (WiFi6 e WiFi AC) una collegamento ad 1Gbps.
 
 ### **Cablaggio di piano**
 
-<img src="img/tabepiano.png" alt="alt text" width="700">
+<img src="img/tabpiano.png" alt="alt text" width="700">
 
 >[Torna reti ethernet](archeth.md)
 
