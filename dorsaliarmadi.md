@@ -50,6 +50,51 @@ In questo caso un AP ha attualmente (WiFi6 e WiFi AC) una collegamento ad 1Gbps.
 
 <img src="img/tabpiano.png" alt="alt text" width="700">
 
+## **Schema degli armadi** 
+
+Non va definito per ogni singolo armadio ma per ogni tipo diverso di armadio. Due armadi sono da considerare diversi se hanno un numero di prese afferenti molto diverso (più di 24) e ruolo diverso.
+
+Uno schema degli armadi dovrebbe stabilire le esigenze in termini di:
+- Numero di patch panel. Si determina osservando l’albero degli apparati passivi per determinare il numero di TO e dividendo la quantità complessiva per 24 (numero standard di prese di un PP).
+- Numero di cassetti ottici. Si determina osservando l’albero degli apparati passivi per determinare il numero di dorsali in fibra entranti (provenienti da un armadio di livello superiore) ed uscenti (verso un armadio di livello inferiore)
+- Etichettatura delle prese. Se gli armadi hanno anche il ruolo di FD allora è buona norma numerare la prese TO dalla prima boccola del PP in su, mentre le dorsali andrebbero numerate dll’ultima in giù (ad es. dalla 24 in giù in caso di un solo PP, o dalla 48 in giù in caso di due PP)
+- Altezza misurata in unità U.
+- Profondità misurata in cm, tipicamente 45cm o 60 cm per FD e BD, almeno 70cm o 100cm per un CD.
+- Numero di spazi vuoti (misurati in unità) dedicati allo smaltimento del calore tramite aereazione 
+- Numero di ciabatte di alimentazione per i dispositivi attivi in esso contenuti (prese shuko) alte 1U
+- Numero di UPS (Universal Power Supply), gruppi di continuità per garantire l’alimentazione elettrica tramite batterie in caso di sbalzi di tensione o brevi blackout. Per i blackout lunghi potrebbero comandare il corretto spegnimento dei dispositivi.
+
+### **Schema CD**
+
+Se si realizza un impianto fino a 24 dorsali potrebbero servire:
+- 1 patch panel 
+- 1 cassetto ottico per ogni fibra che serve
+- spazio vuoto 
+- SW di core (CS). Alternative tipiche:
+     - 12P 10Gbps + 2P SFP 
+     - 12P 10Gbps + 12P SFP 
+     - 24P 1Gbps + 2P SFP 
+     - 24P 1Gbps + 2P 10Gbps + 2P SFP 
+- router firewall bastion Host
+- router e modem (packet filter)
+- server di sistema, server di business (web, nas, database), server di dominio 
+- spazio vuoto 
+- 1 ciabatta per ogni server 
+- 2 ups
+
+### **Schema BD/FD**
+
+- 1 patch panel ogni 24 prese 
+- cassetti ottici (solitamente 1) 
+- spazio vuoto 
+- switch (vedi [apparati attivi](archeth.md#albero-degli-apparati-attivi)). Alternative tipiche:
+    - 12P 10Gbps + 2P SFP 
+    - 24P 1Gbps + 2P SFP 
+    - 24P 1Gbps + 2P 10Gbps + 2P SFP 
+• spazio vuoto 
+• 1 ciabatta 
+• 1 ups
+
 >[Torna reti ethernet](archeth.md)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
