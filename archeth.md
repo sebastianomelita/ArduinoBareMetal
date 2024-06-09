@@ -19,7 +19,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiF
 - rete di sensori che ha la stessa **affidabilità** della rete wifi.
 
 
-## **Aspetti critici**
+### **Aspetti critici**
 
 Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scelte argomentate** sono:
 - schema fisico (**planimetria**) dell'infrastruttura con etichettatura univoca di tutti gli asset tecnologici di rete.
