@@ -40,7 +40,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 Consiste in:
 1. Planimetria senza cablaggio
 2. Planimetria con cablaggio
-3. Albero degli apparati passivi
+3. [Albero degli apparati passivi](dorsaliarmadi.md#albero-degli-apparati-passivi)
 4. Tabella delle dorsali
 5. Albero degli apparati attivi
 6. Schema degli armadi
