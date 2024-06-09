@@ -37,6 +37,8 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 Per **maggiori dettagli** vedi [Punti critici cablaggio strutturato](punticablaggio.md).
 
+Per una disamina degli errori più comuni nello sviluppo di una documentazione sul cablaggio strutturato vedi [Errori comuni cablaggio](erroricablaggio.md)
+
 ## **Documentazione**
 
 Consiste in:
