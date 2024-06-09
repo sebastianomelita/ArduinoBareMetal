@@ -179,8 +179,8 @@ Nella planimetria vanno riportate con precisione:
 - Posizione di ogni TO con relativa etichetta
 - Percorso delle canalizzazioni sia di cablaggio orizzontale che verticale indicando la posizione (soffitto, pavimenti, parete).
 - Legenda delle etichette di armadi e TO scegliendo, sostanzialmente, tra due possibili opzioni:
-- Numerazione piatta con numeri di presa che non si ripetono per tutto l’impianto
-- Numerazione gerarchica in cui il numero del TO  si può ripetere a patto che sia distinto da un diverso prefisso di FD.
+    - Numerazione piatta con numeri di presa che non si ripetono per tutto l’impianto
+    - Numerazione gerarchica in cui il numero del TO  si può ripetere a patto che sia distinto da un diverso prefisso di FD.
 - I prefissi strettamente necessari sono: quelli di FD e quelli di BD. Il prefisso del CD è non necessario essendo unico.
 - Valgono i vincoli stabiliti dallo standard riguardo a numero di postazioni, armadi e lunghezza dei cavi.
 
