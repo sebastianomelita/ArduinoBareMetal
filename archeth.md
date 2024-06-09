@@ -35,7 +35,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 
-Per **maggiori dettagli** vedi [Punti critici cablaggio strutturato[(punticablaggio.md).
+Per **maggiori dettagli** vedi [Punti critici cablaggio strutturato](punticablaggio.md).
 
 ## **Documentazione**
 
