@@ -173,26 +173,26 @@ La maggior parte dei sistemi HW e SW è composta da moduli distribuiti, cioè de
 ### **Planimetria con cablaggio**
 
 Nella planimetria vanno riportate con precisione:
-- Le dimensioni lineari (lunghezza, larghezza e altezza) degli ambienti. Per l’altezza si può considerare quella standard (3m).
-- La posizione di ogni armadio con etichetta
-- Posizione di ogni TO con relativa etichetta
-- Percorso delle canalizzazioni sia di cablaggio orizzontale che verticale indicando la posizione (soffitto, pavimenti, parete).
-- Legenda delle etichette di armadi e TO scegliendo, sostanzialmente, tra due possibili opzioni:
-    - Numerazione piatta con numeri di presa che non si ripetono per tutto l’impianto
-    - Numerazione gerarchica in cui il numero del TO  si può ripetere a patto che sia distinto da un diverso prefisso di FD.
-- I prefissi strettamente necessari sono: quelli di FD e quelli di BD. Il prefisso del CD è non necessario essendo unico.
-- Valgono i vincoli stabiliti dallo standard riguardo a numero di postazioni, armadi e lunghezza dei cavi.
+- Le **dimensioni lineari** (lunghezza, larghezza e altezza) degli ambienti. Per l’altezza si può considerare quella standard (3m).
+- La **posizione** di ogni **armadio** con etichetta
+- **Posizione** di ogni **TO** con relativa etichetta
+- **Percorso** delle **canalizzazioni** sia di cablaggio orizzontale che verticale indicando la posizione (soffitto, pavimenti, parete).
+- **Legenda** delle **etichette** di **armadi** e **TO** scegliendo, sostanzialmente, tra due possibili opzioni:
+    - **Numerazione piatta** con numeri di presa che non si ripetono per tutto l’impianto
+    - **Numerazione gerarchica** in cui il numero del TO  si può ripetere a patto che sia distinto da un diverso prefisso di FD.
+- I **prefissi** strettamente necessari sono: quelli di **FD** e quelli di **BD**. Il prefisso del CD è non necessario essendo unico.
+- Valgono i **vincoli** stabiliti dallo **standard** riguardo a numero di postazioni, armadi e lunghezza dei cavi.
 
 ### **Vincoli del cablaggio**
 
 Nella definizione quantitativa dei componenti si deve tenere conto dei seguenti vincoli obbligatori previsti dallo standard:
-- Una postazione ogni 10m2 (se non diversamente richiesto dal cliente)
-- Una postazione è composta da una placchetta con almeno due TO RJ45 (per PC e telefono)
-- Un armadio di piano FD ogni 1000m2
-- Lunghezza massima del cablaggio orizzontale (di piano) di 90m
-- Lunghezza massima del cablaggio di edificio di 500m
-- Lunghezza massima del cablaggio di campus di 1500m
-- Posizione baricentrica degli armadi (rispetto alle prese o ad altri armadi)
+- Una **postazione** ogni 10m2 (se non diversamente richiesto dal cliente)
+- Una **postazione** è composta da una **placchetta** con almeno **due TO** RJ45 (per PC e telefono)
+- Un **armadio di piano** FD ogni 1000m2
+- **Lunghezza massima** del cablaggio **orizzontale** (di piano) di 90m
+- **Lunghezza massima** del cablaggio di **edificio** di 500m
+- **Lunghezza massima** del cablaggio di **campus** di 1500m
+- **Posizione baricentrica** degli armadi (rispetto alle prese o ad altri armadi)
 
 ### **Linee guida del cablaggio in planimetria**
 
@@ -288,13 +288,13 @@ Per realizzarlo è opportuno eseguire un subnetting della rete tenendo conto:
 
 La realizzazione di un inter VLAN routing obbliga a far corrispondere (mappare) ogni VLAN ad una dorsale verso il router (virtuale o fisica) e quindi ad una corrispondente subnet.
 
-Un subnetting definisce sei proprietà di una subnet:
-- VLAN ID della vlan x (se previste le VLAN)
-- ISx: indirizzo base della subnet x
-- SMx: subnet mask della subnet x. E’ collegato a NSx (numero di indirizzi della sub. X)
-- BCx: indirizzo di broadcast della subnet x
-- GWx: indirizzo di gateway della subnet 
-- RNGx: intervallo tra il primo indirizzo e l’ultimo indirizzo assegnabile ai client della subnet x
+Un **subnetting** definisce **sei proprietà** di una **subnet**:
+- **VLAN ID** della vlan x (se previste le VLAN)
+- **ISx**: indirizzo base della subnet x
+- **SMx**: subnet mask della subnet x. E’ collegato a NSx (numero di indirizzi della sub. X)
+- **BCx**: indirizzo di broadcast della subnet x
+- **GWx**: indirizzo di gateway della subnet 
+- **RNGx**: intervallo tra il primo indirizzo e l’ultimo indirizzo assegnabile ai client della subnet x
 
 ### **Indirizzi IP di client e server**
 
