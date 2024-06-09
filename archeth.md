@@ -35,6 +35,25 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 
+## **Documentazione**
+
+Consiste:
+1. Planimetria senza cablaggio
+2. Planimetria con cablaggio
+3. Albero degli apparati passivi
+4. Tabella delle dorsali
+5. Albero degli apparati attivi
+6. Schema degli armadi
+
+Lo scopo è realizzare un guida univoca (priva di ambiguità) per il personale installatore per definire:
+- posa dei cavi affinchè si possa stabilire nel dettaglio posizione di armadi e prese TO e percorsi delle canalizzazioni all’interno dell’edificio
+- Acquisizione di qualità e quantità dei materiali coinvolti
+
+Per il personale che si occupa della ordinaria manutenzione della rete è una guida per:
+- Il trouble shooting in caso di guasti
+- Determinare l’allocazione dei dispositivi attivi nella struttura dell’impianto in quanto vengono definiti la loro posizione (nell’edificio e dentro gli armadi), la loro architettura di collegamento e i loro indirizzi IP 
+
+
 
 ## **Architettura di una rete di reti** 
 
