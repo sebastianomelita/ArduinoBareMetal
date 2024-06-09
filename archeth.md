@@ -38,26 +38,6 @@ Per **maggiori dettagli** vedi [Punti critici cablaggio strutturato](punticablag
 
 Per una disamina degli errori più comuni nello sviluppo di una documentazione sul cablaggio strutturato vedi [Errori comuni cablaggio](erroricablaggio.md)
 
-## **Documentazione**
-
-Consiste in:
-1. Planimetria senza cablaggio
-2. Planimetria con cablaggio
-3. [Albero degli apparati passivi](dorsaliarmadi.md#albero-degli-apparati-passivi)
-4. [Tabella delle dorsali](dorsaliarmadi.md#tabella-delle-dorsali)
-5. Albero degli apparati attivi
-6. [Schema degli armadi](dorsaliarmadi.md#schema-degli-armadi)
-
-Lo scopo è realizzare un guida univoca (priva di ambiguità) per il personale installatore per definire:
-- posa dei cavi affinchè si possa stabilire nel dettaglio posizione di armadi e prese TO e percorsi delle canalizzazioni all’interno dell’edificio
-- Acquisizione di qualità e quantità dei materiali coinvolti
-
-Per il personale che si occupa della ordinaria manutenzione della rete è una guida per:
-- Il trouble shooting in caso di guasti
-- Determinare l’allocazione dei dispositivi attivi nella struttura dell’impianto in quanto vengono definiti la loro posizione (nell’edificio e dentro gli armadi), la loro architettura di collegamento e i loro indirizzi IP 
-
-
-
 ## **Architettura di una rete di reti** 
 
 Di seguito è riportata l'architettura generale di una **rete di reti** di sensori. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
@@ -149,6 +129,24 @@ Gli **elementi** di base di una rete LAN sono:
 Gli **AP (Access Point)**, sono dei dispositivi di **aggregazione** dei client della rete LAN (PC, dispositivi IoT, smartphone, tablet, ecc.) che, attraverso gli AP, ottengono un accesso alla rete LAN aziendale. In modo infrastruttura, gli AP sono in realtà assimilabili a 2 dispositivi distinti:
 - un **HUB wireless** che realizza un **mezzo broadcast** (multipunto) dove i client accedono mediante il protocllo **CSMA/CA** e sue ottimizzazioni per il WiFi (vedi [CSMA/CA](protocollidiaccesso.md#csmaca) per dettagli)
 - un **bridge** tra l'hub wireless e una LAN cablata (vedi [Bridge AP](archwifi.md#bridge-group)). Un **bridge** è uno dispositivo di **commutazione** simile ad uno **switch** ma realizzato in **SW**, che **inoltra**, a livello L2, trame MAC dall'HUB alla LAN cablata e viceversa. Questi bridge, per ogni AP, possono essere più di uno e, in questo caso, sono tanti quante le **interfacce logiche** dell'AP e mappano ogni intefaccia su una **VLAN diversa**.
+
+## **Documentazione**
+
+Consiste in:
+1. Planimetria senza cablaggio
+2. Planimetria con cablaggio
+3. [Albero degli apparati passivi](dorsaliarmadi.md#albero-degli-apparati-passivi)
+4. [Tabella delle dorsali](dorsaliarmadi.md#tabella-delle-dorsali)
+5. Albero degli apparati attivi
+6. [Schema degli armadi](dorsaliarmadi.md#schema-degli-armadi)
+
+Lo scopo è realizzare un guida univoca (priva di ambiguità) per il personale installatore per definire:
+- posa dei cavi affinchè si possa stabilire nel dettaglio posizione di armadi e prese TO e percorsi delle canalizzazioni all’interno dell’edificio
+- Acquisizione di qualità e quantità dei materiali coinvolti
+
+Per il personale che si occupa della ordinaria manutenzione della rete è una guida per:
+- Il trouble shooting in caso di guasti
+- Determinare l’allocazione dei dispositivi attivi nella struttura dell’impianto in quanto vengono definiti la loro posizione (nell’edificio e dentro gli armadi), la loro architettura di collegamento e i loro indirizzi IP 
 
 
 ## **Planimetria** 
