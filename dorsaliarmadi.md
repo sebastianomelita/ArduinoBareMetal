@@ -1,4 +1,4 @@
->>[Torna reti ethernet](archeth.md)
+>>[Torna a reti ethernet](archeth.md)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
@@ -95,7 +95,7 @@ Se si realizza un impianto fino a 24 dorsali potrebbero servire:
 • 1 ciabatta 
 • 1 ups
 
->[Torna reti ethernet](archeth.md)
+>[Torna a reti ethernet](archeth.md)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
