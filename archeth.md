@@ -37,7 +37,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 ## **Documentazione**
 
-Consiste:
+Consiste in:
 1. Planimetria senza cablaggio
 2. Planimetria con cablaggio
 3. Albero degli apparati passivi
