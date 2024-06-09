@@ -34,7 +34,7 @@ Deve definire perlomeno le seguenti proprietà:
 
 ### **Cablaggio di campus** 
 
-<img src="img/tabdorsali.png" alt="alt text" width="700">
+<img src="img/tabcampus.png" alt="alt text" width="700">
 
 Nelle ultime due righe della tabella apparentemente ci sta un collegamento tra due armadi di pari livello BD, soluzione normalmente non permessa dallo standard. In realtà, si tratta di una semplice giunzione tra una delle coppie fibre che arrivano ad es su BD2 con una coppia di fibre che va verso BD9 allo scopo di prolungarla verso quell’armadio. La coppia di fibre in questione non viene permutata su BD2 ma solo su BD9. E’ una soluzione tecnica per riutilizzare su BD9 una fibra altrimenti sprecata sull’armadio BD2.
 
