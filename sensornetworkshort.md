@@ -11,7 +11,7 @@ Lo **switch** è generalmente regolato dal **protocollo STP** che, secondo lo st
 
 Il **cablaggio** può risultare **oneroso** in presenza di un elevato numero di dispositivi poichè richiederebbe l'impiego di **un cavo a parte** per ogni sensore. Per questo motivo dispositivi di commutazione e architettura **tradizionali** sono generalmente ritenuti poco adatti per la realizzazione delle **ampie reti di sensori** diffuse in ambito industriale.
 
-[cablaggio rete LAN di ufficio](archeth.md)
+[Cablaggio rete LAN di ufficio](archeth.md)
 
 ![core-access-dist-banner_1](hierarchical-internetworking-model-for-distribution-switch-vs-access-Switch-vs-core-switch.jpg)
 
@@ -38,7 +38,7 @@ Tra le due tipologie di reti ci sono dei **nodi di confine** aventi una interfac
 
 La **rete principale**, **è di tipo ethernet** con dorsali fisiche a stella cablate e collegamenti periferici cablati o wireless WiFi. Ha principalmente la funzione di **distribuzione** dei dati **dai nodi gateway** con le reti secondarie **fino al server di gestione** dei dati. Va attentamente progettata perchè sia in grado di smaltire il traffico complessivo di **tutti i sensori**. Può diventare **critica** se, oltre ai sensori, sono presenti **sorgenti multimediali** quali **microfoni** o **telecamere** di videosorveglianza.
 
-[cablaggio rete LAN di ufficio](archeth.md)
+[Cablaggio rete LAN di ufficio](archeth.md)
 
 #### **Rete di accesso ai sensori**
 
@@ -171,7 +171,7 @@ Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli
         - [Dettagli su stack cablati specifici per domotica e sensoristica](stackcablati.md)
      
           
- Chiaramente, se la rete di sensori **coincide** con la **rete di distribuzione IP** (LAN o WiFi o Internet), allora il dispositivo con la MCU potrebbe anche **concettualmente** essere inteso come un **gateway** tra la rete di sensori a BUS di campo e la rete di distribuzione. Vedi [cablaggio rete LAN di ufficio](archeth.md) per dettagli.     
+ Chiaramente, se la rete di sensori **coincide** con la **rete di distribuzione IP** (LAN o WiFi o Internet), allora il dispositivo con la MCU potrebbe anche **concettualmente** essere inteso come un **gateway** tra la rete di sensori a BUS di campo e la rete di distribuzione. Vedi [Cablaggio rete LAN di ufficio](archeth.md) per dettagli.     
  
 <img src="img/sensor.png" alt="alt text" width="1100">
  Dalla seconda figura, si vede chiaramente come, anche i dispositivi All In One, già equipaggiati con i sensori, adoperano internamente gli stessi collegamenti a BUS che adopererebbero i dispositivi senza sensore che, semplicemente, espongono il connettore del BUS all'esterno (vedi i connettori verdi delle prime due figure o il connettore ACME sensor dell'ultima figura).
