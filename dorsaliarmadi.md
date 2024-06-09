@@ -18,7 +18,7 @@
 - Vanno riportati ed etichettati tutti gli armadi. Per quanto riguarda i TO vanno riportati ed etichettati il primo e l’ultimo.
 - Ogni nodo DEVE diramare almeno verso altri due nodi di livello inferiore (se non è un ramo cioè una semplice giunzione tra due cavi)
 
-<img src="img/passivi.png" alt="alt text" width="800">
+<img src="img/passivi.png" alt="alt text" width="1000">
 
 
 
