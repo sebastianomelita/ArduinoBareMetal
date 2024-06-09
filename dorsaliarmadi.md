@@ -11,7 +11,7 @@
 
 ## **Albero degli apparati passivi** 
 
-- È una rappresentazione logica di armadi,  dorsali e TO che ha il vantaggio di riassumere sinteticamente la struttura generale del cablaggio.
+- È una rappresentazione **logica** di armadi,  dorsali e TO che ha il vantaggio di riassumere sinteticamente la struttura generale del cablaggio.
 - La topologia è ad albero avente per radice l’armadio CD, per nodi gli armadi BD e FD, per foglie le prese TO. 
 - I rami dell’albero sono le dorsali intese come singolo cavo di molteplicità base (4 per il doppino, 2 per la fibra). 
 - L’architettura ha una profondità massima di tre livelli (campus, edificio, piano).
@@ -25,12 +25,12 @@
 Serve stabilire qualità e quantità dei cavi permanenti (installati nell’edificio) impiegati nel cablaggio. Viene redatto subito dopo la planimetria e fornisce un quadro sinottico immediato di tutte le dorsali che è molto utile quando l'impianto è composto da parecchie dorsali.
 
 Deve definire perlomeno le seguenti proprietà:
-- Sigla del cavo, tipicamente un struttura X-Y dove X è la sigla dell’armadio di livello superiore a cui è collegato un capo del cavo, mentre Y è la sigla dell’armadio di livello inferiore (o del TO) a cui è collegato l’altro capo.
-- Tipo di cavo. MMF o SMF per la fibra, UTP, FTP o STP per il doppino
-- Categoria. OM1, OM2 , OM3 , OM4 , OM5 per la fibra MMF. Oppure OS1, OS2 per SMF. Cat 5e, cat 6, cat 6A, cat 7, cat 7A, cat 8 per il doppino.
-- Molteplicità. Il numero di sottocavi inseriti in divisione di spazio (SDM) dentro il cavo di dorsale. In numero pari, tipicamente 2, 4, 6, 8, 12 per la fibra. Sempre 4 doppini trecciati per un cavo UTP, FTP o STP.
-- Lunghezza. Misurata in metri e desumibile ad occhio dal percorso del cavo per come appare in planimetria. Stimata individualmente per ogni dorsale se questa è di primo o secondo livello (campus e piano), tipicamente stabilita in maniera forfettaria moltiplicando il numero di TO per una lunghezza media che può essere desunta approssimativamente dalla planimetria oppure stimata secondo un valore medio valido per l’Italia pari a 30m.
-- Ruolo. Scopo per il quale è previsto quella dorsale. 
+- **Sigla del cavo**, tipicamente un struttura X-Y dove X è la sigla dell’armadio di livello superiore a cui è collegato un capo del cavo, mentre Y è la sigla dell’armadio di livello inferiore (o del TO) a cui è collegato l’altro capo.
+- **Tipo di cavo**. MMF o SMF per la fibra, UTP, FTP o STP per il doppino
+- **Categoria**. OM1, OM2 , OM3 , OM4 , OM5 per la fibra MMF. Oppure OS1, OS2 per SMF. Cat 5e, cat 6, cat 6A, cat 7, cat 7A, cat 8 per il doppino.
+- **Molteplicità**. Il numero di sottocavi inseriti in divisione di spazio (SDM) dentro il cavo di dorsale. In numero pari, tipicamente 2, 4, 6, 8, 12 per la fibra. Sempre 4 doppini trecciati per un cavo UTP, FTP o STP.
+- **Lunghezza**. Misurata in metri e desumibile ad occhio dal percorso del cavo per come appare in planimetria. Stimata individualmente per ogni dorsale se questa è di primo o secondo livello (campus e piano), tipicamente stabilita in maniera forfettaria moltiplicando il numero di TO per una lunghezza media che può essere desunta approssimativamente dalla planimetria oppure stimata secondo un valore medio valido per l’Italia pari a 30m.
+- **Ruolo**. Scopo per il quale è previsto quella dorsale. 
 
 ### **Cablaggio di campus** 
 
@@ -55,18 +55,18 @@ In questo caso un AP ha attualmente (WiFi6 e WiFi AC) una collegamento ad 1Gbps.
 Non va definito per ogni singolo armadio ma per ogni tipo diverso di armadio. Due armadi sono da considerare diversi se hanno un numero di prese afferenti molto diverso (più di 24) e ruolo diverso.
 
 Uno schema degli armadi dovrebbe stabilire le esigenze in termini di:
-- Numero di patch panel. Si determina osservando l’albero degli apparati passivi per determinare il numero di TO e dividendo la quantità complessiva per 24 (numero standard di prese di un PP).
-- Numero di cassetti ottici. Si determina osservando l’albero degli apparati passivi per determinare il numero di dorsali in fibra entranti (provenienti da un armadio di livello superiore) ed uscenti (verso un armadio di livello inferiore)
-- Etichettatura delle prese. Se gli armadi hanno anche il ruolo di FD allora è buona norma numerare la prese TO dalla prima boccola del PP in su, mentre le dorsali andrebbero numerate dll’ultima in giù (ad es. dalla 24 in giù in caso di un solo PP, o dalla 48 in giù in caso di due PP)
-- Altezza misurata in unità U.
-- Profondità misurata in cm, tipicamente 45cm o 60 cm per FD e BD, almeno 70cm o 100cm per un CD.
-- Numero di spazi vuoti (misurati in unità) dedicati allo smaltimento del calore tramite aereazione 
-- Numero di ciabatte di alimentazione per i dispositivi attivi in esso contenuti (prese shuko) alte 1U
-- Numero di UPS (Universal Power Supply), gruppi di continuità per garantire l’alimentazione elettrica tramite batterie in caso di sbalzi di tensione o brevi blackout. Per i blackout lunghi potrebbero comandare il corretto spegnimento dei dispositivi.
+- **Numero di patch panel**. Si determina osservando l’albero degli apparati passivi per determinare il numero di TO e dividendo la quantità complessiva per 24 (numero standard di prese di un PP).
+- **Numero di cassetti ottici**. Si determina osservando l’albero degli apparati passivi per determinare il numero di dorsali in fibra entranti (provenienti da un armadio di livello superiore) ed uscenti (verso un armadio di livello inferiore)
+- **Etichettatura delle prese**. Se gli armadi hanno anche il ruolo di FD allora è buona norma numerare la prese TO dalla prima boccola del PP in su, mentre le dorsali andrebbero numerate dll’ultima in giù (ad es. dalla 24 in giù in caso di un solo PP, o dalla 48 in giù in caso di due PP)
+- **Altezza** misurata in unità U.
+- **Profondità** misurata in cm, tipicamente 45cm o 60 cm per FD e BD, almeno 70cm o 100cm per un CD.
+- **Numero di spazi** vuoti (misurati in unità) dedicati allo smaltimento del calore tramite aereazione 
+- **Numero di ciabatte** di alimentazione per i dispositivi attivi in esso contenuti (prese shuko) alte 1U
+- **Numero di UPS** (Universal Power Supply), gruppi di continuità per garantire l’alimentazione elettrica tramite batterie in caso di sbalzi di tensione o brevi blackout. Per i blackout lunghi potrebbero comandare il corretto spegnimento dei dispositivi.
 
 ### **Schema CD**
 
-Se si realizza un impianto fino a 24 dorsali potrebbero servire:
+Se si realizza un impianto fino a **24 dorsali** potrebbero servire:
 - 1 patch panel 
 - 1 cassetto ottico per ogni fibra che serve
 - spazio vuoto 
