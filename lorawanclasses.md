@@ -85,7 +85,7 @@ Il **broker MQTT** è solo una delle tante soluzioni possibili per realizzare un
 
 Il **canale applicativo** su cui vengono inviati i messaggi sono quindi i **topic**. Su un certo **topic** il dispositivo con il ruolo di **output** agisce come un **publisher**, mentre quello con il ruolo di **input** agisce come un **subscriber**.
 
-Gli utenti, in ogni caso, si comportano tutti come **client** poiché sono loro che **iniziano la connessione** con il broker e non il viceversa. Il **publisher** deve solo connettersi, decidere il topic e inviare l’informazione. Il **subscriber** deve preventivamente **registrarsi** ad uno o più topic presso il server affinchè possa ricevere l’informazione **quando** questa verrà pubblicata.
+Gli utenti, in ogni caso, si comportano tutti come **client** poiché sono loro che **iniziano la connessione** con il broker e non il viceversa. 
 
 <img src="img/fasimqtt.jpg" alt="alt text" width="600">
 
