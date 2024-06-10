@@ -241,7 +241,7 @@ La **traduzione** non viene fatta normalmente direttamente sul gateway, anche se
 
 - **Server di Rete LoRaWAN (Network Server)**: Alcuni server di rete LoRaWAN, come quelli offerti da The Things Network (TTN) o ChirpStack, forniscono integrazioni che possono gestire il payload dei dispositivi. E' possibile configurare questi server per utilizzare codec specifici che codificano o decodificano i messaggi nel formato desiderato, come Cayenne LPP.
 
-- **Applicazione Custom**: E' possibile creare un'**applicazione** (sull'application server) che riceva i dati dal **server di rete** LoRaWAN e che poi gestisca la compattazione e decompressione dei dati JSON utilizzando librerie apposite (come Cayenne LPP). Questa applicazione si può considerare un **middleware** che si occupa della **trasformazione dei dati** prima di passarli alla **applicazione finale**. L'applicazione di **serializzazione** e **compattazione** è contemporaneamente:
+- **Applicazione Custom**: E' possibile creare un'**applicazione** (sull'application server) che riceva i dati dal **server di rete** LoRaWAN e che poi gestisca la compattazione e decompressione dei dati JSON utilizzando librerie apposite (come Cayenne LPP). Questa applicazione si può considerare un **middleware** che si occupa della **trasformazione dei dati** prima di passarli alla **applicazione finale** (livello di presentazione OSI). L'applicazione di **serializzazione** e **compattazione** è contemporaneamente:
     - in **uplink**:
         - **subscriber** dei **messaggi corti** per poterli **leggere** dal **dispositivo** ed elaborare (scompattare)
         - **publisher** dei **messaggi lunghi** per poterli inviare all'**applicazione**
