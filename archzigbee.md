@@ -231,7 +231,7 @@ Il **gateway** è uno **snodo nevralgico** dei messaggi, per cui la sua posizion
 
 E' il dispositivo posto a cavallo tra la rete di accesso ai sensori e la rete di distribuzione. 
 
-Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi di BUS** a cui si collega. Inoltre il **gateway** deve possedere almeno **una interfaccia** capace di traffico ethernet (cablata o wifi) che lo colleghi alla **rete di distribuzione**. 
+Il **gateway** ha tante **schede di interfaccia** quanti sono i **tipi diversi di rete** a cui si collega. Inoltre il **gateway** deve possedere almeno **una interfaccia** capace di traffico ethernet (cablata o wifi) che lo colleghi alla **rete di distribuzione**. 
 
 ### **Gateway come Client MQTT**
 
