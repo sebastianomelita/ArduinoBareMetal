@@ -78,11 +78,10 @@ Si noti, che il canale che collega i dispositivi IoT ai gateway non supera mai i
 
 ## **Broker MQTT** 
 
-Il **broker MQTT** è solo una delle tante soluzioni possibili per:
-- inoltro dei comandi dal **Network Server** su una rete LoRaWAN ad un attuatore su una rete diversa di tipo B (ad es. Zigbee)
-- inoltro di una **misura** dal **Network Server** su una rete LoRaWAN ad un **pannello di controllo** su una rete IP.
-- inoltro di una **misura** dal **Network Server** su una rete LoRaWAN ad un **server di gestione** su una rete IP.
-- inoltro dei comandi dal **Network Server** su una rete LoRaWAN ad un **Network Server** su una rete Lorawan diversa
+Il **broker MQTT** è solo una delle tante soluzioni possibili per realizzare un **canale multicast** di livello **applicativo** tramite cui un utente col ruolo di **publisher** è in grado di notificare una **replica** dello stesso messaggio a più **subscribers**. E' utile per:
+- inoltro dei comandi da un **sensore di comando** su una rete di tipo A (ad es. LoRaWAN) ad un attuatore su una rete diversa di tipo B (ad es. Zigbee)
+- inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **pannello di controllo** su una rete diversa di tipo B (tipicamente IP)
+- inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **server di gestione** su una rete diversa di tipo B (tipicamente IP)
 
 Dagli **esempi** si vede bene che il **client MQTT** (con il ruolo di **publisher** o di **subscriber**) è sempre il **Network Server**. Il Netwok Server è anche il **gateway** della **rete di sensor**i inteso complessivamente come **rete LoraWAN**. Il gateway dalla rete Lora alla rete IP, in realtà, è il **gateway LoRaWAN**. 
 
