@@ -163,6 +163,11 @@ Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e per
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
   - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
 
+### **Comunicazione tra Gateway e Network Server**
+
+Comunemente, i gateway utilizzano il protocollo **UDP** o **MQTT** per trasmettere i pacchetti al **Network Server**.
+Il **Network Server** riceve i pacchetti, li decodifica, verifica l'integrità e l'autenticità dei messaggi e gestisce la rete (es. ADR, downlink).
+
 Il **gateway** è uno **snodo nevralgico** dei messaggi, per cui la sua posizione dovrebbe essere **ben nota** e accuratamente **riportata in planimetria** per permettere una sua rapida manutenzione/sostituzione.
 
 #### **Gateway come Client MQTT**
