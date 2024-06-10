@@ -91,7 +91,20 @@ Il **vantaggio** del **broker MQTT** è quello di poter gestire in modo semplice
 
 Il **canale applicativo** su cui vengono inviati i messaggi sono quindi i **topic**. Su un certo **topic** il dispositivo con il ruolo di **output** agisce come un **publisher**, mentre quello con il ruolo di **input** agisce come un **subscriber**.
 
-l'**ID MQTT** è un identificativo che permette di individuare un dispositivo ma non è un indirizzo di livello 3, non individua la macchina host in base al suo IP, piuttosto è un indirizzo di livello applicativo noto solo ad un server centrale, cioè il broker. Un dispositivo IoT non è tenuto a conoscere l'IP di tutti gli altri dispositivi ma solamente quello del broker. Il broker soltanto sa gli indirizzi di tutti i dispositivi, conoscenza che acquisisce durante la fase di **connessione** di un client al broker, momento in cui avviene anche il recupero del'**socket remoto** del client.
+Gli utenti si comportano tutti come client poiché sono loro che iniziano la connessione con il broker e non il viceversa, ma si dividono in due ruoli:
+- PUBLISHER coloro che inviano le informazioni
+- SUBSCRIBERS coloro che ricevono le informazioni.
+
+Il publisher deve solo connettersi, decidere il topic e inviare l’informazione. Il subscriber deve preventivamente registrarsi ad uno o più topic presso il server affinchè possa ricevere l’informazione quando questa verrà pubblicata.
+
+<img src="img/fasimqtt.jpg" alt="alt text" width="400">
+
+Fasi del protocollo:
+1. Il **Subscriber** dichiara presso il broker il proprio interesse a ricevere notifiche riguardo ad un certo argomento (topic) effettuando una chiamata **subscribe()**
+2. il **publisher** pubblica un messaggio che riguarda un **certo topic** effettuando una chiamata **publish()**
+3. Il **broker** inoltra il messaggio a tutti i subscriber interessati a **quel topic**
+
+L'**ID MQTT** è un identificativo che permette di individuare un dispositivo ma non è un indirizzo di livello 3, non individua la macchina host in base al suo IP, piuttosto è un indirizzo di livello applicativo noto solo ad un server centrale, cioè il broker. Un dispositivo IoT non è tenuto a conoscere l'IP di tutti gli altri dispositivi ma solamente quello del broker. Il broker soltanto sa gli indirizzi di tutti i dispositivi, conoscenza che acquisisce durante la fase di **connessione** di un client al broker, momento in cui avviene anche il recupero del'**socket remoto** del client.
 
 Il **broker**, dal canto suo, **associa** ogni **topic** con tutti gli **ID** che sono registrati presso di esso come **subscriber**. Questa associazione è utilizzata per smistare tutti i messaggi che arrivano con un certo topic verso tutti gli ID che ad esso sono associati. Il topic diventa così un **indirizzo di gruppo**. La particolarità di questo indirizzo è che è **gerarchico** secondo una struttura ad **albero**, cioè gruppi di dispositivi possono essere suddivisi in **sottogruppi** più piccoli estendendo il nome del path con un **ulteriore prefisso**, diverso per ciascun sottogruppo. L'operazione può essere ripetuta ulteriormente in maniera **ricorsiva**.
 
