@@ -149,103 +149,10 @@ La **semantica** delle **entità** Zigbee definisce:
 - gli **attributi** che esse posseggono
 - gli **oggetti** che possono svolvere certe **azioni** su altri oggetti
 
-### **Profili Zigbee**
-
 **Misure** e **comandi** sono attualmente definiti sotto forma di **oggetti JSON** in formato ASCII. Questo dovrebbe garantire da un lato l'interoperabilità tra reti di sensori diverse, dall'altro l'interoperabilità con sistemi terzi che si occupano della pubblicazione dei dati o della loro eleborazione statistica. Il fatto che il formato scelto sia chiaro, testuale ed autoesplicativo è sicuramente un vantaggio nella rete di **distribuzione**. 
 
-Ogni dispositivo Zigbee aderisce a un profilo di dispositivo specifico che descrive le sue funzionalità e capacità. Questi profili sono standardizzati per garantire che i dispositivi di produttori diversi possano funzionare insieme senza problemi. Alcuni esempi di profili di dispositivi sono:
-- **Home Automation (HA)**: Utilizzato per applicazioni domestiche come luci, termostati e serrature.
-- **Smart Energy (SE)**: Usato per applicazioni di gestione energetica come contatori intelligenti e dispositivi di controllo della domanda.
-- **Building Automation (BA)**: Impiegato in contesti commerciali per il controllo di illuminazione, HVAC e sicurezza.
+Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in modo tale da includere la **semantica** di tutti i dispositivi IoT coinvolti nelle reti di sensori collegate, che di volta in volta, poi andrà **tradotta** nella **semantica applicativa standard** prevista nello stack della rete di accesso Zigbee.
 
-### **Cluster Library**
-
-Zigbee utilizza un concetto chiamato "clusters", che sono gruppi di attributi e comandi legati a una funzione specifica. Ad esempio, un cluster di illuminazione potrebbe includere comandi per accendere/spegnere una luce e per regolare la luminosità. Ogni cluster ha un ID univoco e può essere riutilizzato in diversi profili di dispositivo.
-
-### **Endpoints**
-
-I dispositivi Zigbee possono avere uno o più "endpoints", che sono punti di comunicazione logici che mappano le funzionalità del dispositivo. Ogni endpoint supporta uno o più cluster e ha un proprio ID univoco. Ad esempio, un dispositivo potrebbe avere un endpoint per il controllo della luce e un altro per la gestione dell'energia.
-
-### **Attribute Reporting**
-
-Gli attributi all'interno dei cluster possono essere configurati per segnalare automaticamente i cambiamenti. Questo è essenziale per applicazioni in tempo reale come il monitoraggio dell'energia o la sicurezza domestica.
-
-### **Binding**
-
-Il binding è un processo che collega due endpoint di dispositivi diversi, consentendo loro di comunicare direttamente tra loro. Questo è utilizzato, ad esempio, per associare un interruttore a una luce specifica senza passare attraverso un hub centrale.
-
-### **Scenario d'Uso**
-
-Immaginiamo di avere un'applicazione di controllo della casa intelligente che deve interagire con una lampadina Zigbee.
-
-#### **Basic Cluster (0x0000):**
-
-Il Basic Cluster include informazioni generali sul dispositivo e alcune funzioni di configurazione di base.
-
-```
-Attributes:
-  ZCLVersion (0x0000): Versione del protocollo Zigbee.
-  ApplicationVersion (0x0001): Versione dell'applicazione.
-  ManufacturerName (0x0004): Nome del produttore.
-  ModelIdentifier (0x0005): Identificatore del modello.
-```
-
-#### **Accendere la Lampadina:**
-
-```
-Comando: On
-Cluster: On/Off Cluster (0x0006)
-Payload: 0x01
-```
-
-```Json
-{
-  "source_endpoint": 1,
-  "destination_endpoint": 1,
-  "Cluster": "0x0006",
-  "Command": "0x01"
-}
-```
-
-#### **Impostare la Luminosità a 50%:**
-
-```
-Comando: MoveToLevel
-Cluster: Level Control Cluster (0x0008)
-Payload:
-  Level: 128 (50% di 255)
-  TransitionTime: 10 (1 secondo)
-```
-
-```Json
-{
-  "source_endpoint": 1,
-  "destination_endpoint": 1,
-  "Cluster": "0x0008",
-  "Command": "0x00",
-  "Payload": {
-    "Level": 128,
-    "TransitionTime": 10
-  }
-}
-```
-
-#### **Spegnere la Lampadina:**
-
-```
-Comando: Off
-Cluster: On/Off Cluster (0x0006)
-Payload: 0x00
-```
-
-```Json
-{
-  "source_endpoint": 1,
-  "destination_endpoint": 1,
-  "Cluster": "0x0006",
-  "Command": "0x00"
-}
-```
 
 ### **Traduzione della semantica applicativa** 
 
@@ -253,7 +160,7 @@ Payload: 0x00
 
 <img src="img/image-17.png" alt="alt text" width="1000">
 
-**Zigbe** è uno **standard** di comunicazione wireless (protocollo) utilizzato per il controllo e l'automazione domestica, mentre **MQTT** è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando **Zigbee2mqtt**, gli utenti possono integrare facilmente dispositivi Zigbee di diversi produttori in un sistema di automazione domestica basato su MQTT, offrendo maggiore flessibilità e controllo.
+**Zigbee** è uno **standard** di comunicazione wireless (protocollo) utilizzato per il controllo e l'automazione domestica, mentre **MQTT** è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando **Zigbee2mqtt**, gli utenti possono integrare facilmente dispositivi Zigbee di diversi produttori in un sistema di automazione domestica basato su MQTT, offrendo maggiore flessibilità e controllo.
 
 <img src="img/zigbeebridge.png" alt="alt text" width="800">
 
