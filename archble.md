@@ -112,6 +112,8 @@ La **semantica** delle **entità** BLE definisce:
   
 ### **Esempio di Servizio Lampadina BLE**
 
+Ogni servizio, caratteristica e descrittore ha un UUID (Universaly Unique Identifier). Un UUID è un numero univoco a 128 bit (16 byte). 
+
 ```
 Service: Lampadina
 UUID: 12345678-1234-5678-1234-56789abcdef0
