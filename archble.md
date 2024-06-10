@@ -103,6 +103,58 @@ E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **
     - analisi dei dati per la realizzazione di studi scientifici
     - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
 
+## **Semantica applicativa standard**
+
+La **semantica** delle **entità** BLE definisce:
+- le **categorie** degli oggetti che le entità possono gestire (lampade piuttosto che pulsanti)
+- gli **attributi** che esse posseggono (acceso, spento, stato)
+- gli **oggetti** che possono svolvere certe **azioni** su altri oggetti (un pulsante accende una lampada)
+  
+### **Esempio di Servizio Lampadina BLE**
+
+```
+Service: Lampadina
+UUID: 12345678-1234-5678-1234-56789abcdef0
+
+Characteristic: On/Off
+UUID: 12345678-1234-5678-1234-56789abcdef1
+Properties: Read, Write, Notify
+Value: Boolean (true = On, false = Off)
+```
+
+### **Scenario d'Uso**
+
+Immaginiamo di avere un'applicazione di controllo della casa intelligente che deve interagire con una lampadina BLE.
+
+#### **Accendere la Lampadina:**
+- Scrittura del valore true alla caratteristica On/Off
+```Json
+{
+  "ServiceUUID": "12345678-1234-5678-1234-56789abcdef0",
+  "CharacteristicUUID": "12345678-1234-5678-1234-56789abcdef1",
+  "Value": true
+}
+```
+
+#### **Spegnere la Lampadina:**
+- Scrittura del valore false alla caratteristica On/Off.
+```Json
+{
+  "ServiceUUID": "12345678-1234-5678-1234-56789abcdef0",
+  "CharacteristicUUID": "12345678-1234-5678-1234-56789abcdef1",
+  "Value": false
+}
+```
+
+#### **Leggere lo Stato della Lampadina:**
+- l'applicazione può anche leggere lo stato attuale della lampadina leggendo il valore della caratteristica On/Off.
+```Json
+{
+  "ServiceUUID": "12345678-1234-5678-1234-56789abcdef0",
+  "CharacteristicUUID": "12345678-1234-5678-1234-56789abcdef1",
+  "Operation": "Read"
+}
+```
 
 ## **Gateway**
 
@@ -139,10 +191,7 @@ La **parola gateway** potrebbe talvolta portare a **fraintendimenti** dovuti al 
 Avendo più interfacce su reti di tipo diverso sia in L1 che in L2, ha anche le funzioni di **router**. Se la rete di distribuzione è pubblica come **Internet** dovrebbe possedere pure le funzioni di **firewall**. Al limite potrebbe anche smistare messaggi in una **WAN privata** realizzata con **VPN** di tipo **trusted** (MPLS) o **secure** (OpenVPN, IPSec).
 Ma la funzione **più importante** che possiede nel contesto di una rete di dispositivi IoT è la **traduzione** della **semantica**, cioè del significato degli oggetti, dalla rete **zigbee** al livello applicativo **MQTT** steso sopra la rete IP.
 
-La **semantica** delle **entità** Zigbee definisce:
-- le **categorie** di oggetti che esse possono gestire
-- gli **attributi** che esse posseggono
-- gli **oggetti** che possono svolvere certe **azioni** su altri oggetti
+ 
 #### **Formato dei messaggi**
 
 **Misure** e **comandi** sono attualmente definiti sotto forma di **oggetti JSON** in formato ASCII. Questo dovrebbe garantire da un lato l'interoperabilità tra reti di sensori diverse, dall'altro l'interoperabilità con sistemi terzi che si occupano della pubblicazione dei dati o della loro eleborazione statistica. Il fatto che il formato scelto sia chiaro, testuale ed autoesplicativo è sicuramente un vantaggio nella rete di **distribuzione**. 
@@ -150,52 +199,6 @@ La **semantica** delle **entità** Zigbee definisce:
 Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in modo tale da includere la **semantica** di tutti i dispositivi IoT coinvolti nelle reti di sensori collegate, che di volta in volta, poi andrà **tradotta** nella **semantica applicativa standard** prevista nello stack della rete di accesso BLE.
 
 Per Bluetooth Low Energy (BLE), i dispositivi sono spesso strutturati utilizzando servizi e caratteristiche (characteristics). Per una lampadina BLE, potremmo avere un servizio che consente di controllare lo stato di accensione e spegnimento della lampadina. Di seguito viene fornito un esempio di come potrebbe essere strutturato un servizio BLE per una lampadina, con le operazioni di accensione e spegnimento.
-
-#### **Esempio di Servizio Lampadina BLE**
-
-```
-Service: Lampadina
-UUID: 12345678-1234-5678-1234-56789abcdef0
-
-Characteristic: On/Off
-UUID: 12345678-1234-5678-1234-56789abcdef1
-Properties: Read, Write, Notify
-Value: Boolean (true = On, false = Off)
-```
-
-#### **Scenario d'Uso**
-
-Immaginiamo di avere un'applicazione di controllo della casa intelligente che deve interagire con una lampadina BLE.
-
-##### **Accendere la Lampadina:**
-- Scrittura del valore true alla caratteristica On/Off
-```Json
-{
-  "ServiceUUID": "12345678-1234-5678-1234-56789abcdef0",
-  "CharacteristicUUID": "12345678-1234-5678-1234-56789abcdef1",
-  "Value": true
-}
-```
-
-##### **Spegnere la Lampadina:**
-- Scrittura del valore false alla caratteristica On/Off.
-```Json
-{
-  "ServiceUUID": "12345678-1234-5678-1234-56789abcdef0",
-  "CharacteristicUUID": "12345678-1234-5678-1234-56789abcdef1",
-  "Value": false
-}
-```
-
-##### **Leggere lo Stato della Lampadina:**
-- l'applicazione può anche leggere lo stato attuale della lampadina leggendo il valore della caratteristica On/Off.
-```Json
-{
-  "ServiceUUID": "12345678-1234-5678-1234-56789abcdef0",
-  "CharacteristicUUID": "12345678-1234-5678-1234-56789abcdef1",
-  "Operation": "Read"
-}
-```
 
 ### **Traduzione della semantica applicativa** 
 
