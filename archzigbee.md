@@ -258,18 +258,18 @@ Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in m
 
 <img src="img/image-17.png" alt="alt text" width="1000">
 
-**Zigbee** è uno **standard** di comunicazione wireless (protocollo) utilizzato per il controllo e l'automazione domestica, mentre **MQTT** è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando **Zigbee2mqtt**, gli utenti possono integrare facilmente dispositivi Zigbee di diversi produttori in un sistema di automazione domestica basato su MQTT, offrendo maggiore flessibilità e controllo.
+**Zigbee** è uno **standard** di comunicazione wireless (protocollo) utilizzato per il controllo e l'automazione domestica, mentre **MQTT** è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando **Zigbee2mqtt**, gli utenti possono integrare facilmente dispositivi Zigbee di diversi produttori in un sistema di automazione domestica basato su MQTT, con elevata flessibilità e controllo.
 
 <img src="img/zigbeebridge.png" alt="alt text" width="800">
 
-**Zigbee2mqtt** opera a livello di **presentazione** della pila OSI ed esegue, nell'ordine, le seguenti **operazioni**:
+Il bridge **zigbee2mqtt** opera a livello di **presentazione** della pila OSI ed esegue, nell'ordine, le seguenti **operazioni**:
 1. **sbusta** tutti i messaggi provenienti dall'interfaccia Zigbee uno dopo l'altro, a partire dal **livello fisico** fino ad arrivare al **livello di presentazione**, dove Zigbee realizza la sua **rappresentazione semantica** dell'oggetto comandato/attuato/configurato, completa di **attributi** e corrispondenti **valori**.
 2. a questo punto **traduce** il **payload Zigbee** in un **payload JSON** che contiene gli stessi attributi con gli stessi valori. 
 3. dopo di che **smista** il **JSON** così costruito sull'**interfaccia IP** del gateway, dove viene imbustato come **payload** del protocollo **MQTT** ed **inviato** fino al **broker**.
 
-Ble2mqtt funge da **ponte** tra la rete Zigbee e il broker MQTT, consentendo agli utenti di interagire con i dispositivi Zigbee tramite messaggi MQTT. 
+Il bridge **zigbee2mqtt** funge da **ponte** tra la rete Zigbee e il broker MQTT, consentendo agli utenti di interagire con i dispositivi Zigbee tramite messaggi MQTT. 
 
-La **traduzione** è resa possibile perchè le reti Zigbee definiscono per ogni dispositvo la **semantica applicativa standard** che abbiamo visto sopra (una lampadina ha gli stessi comandi, lo stesso stato e la stessa configurazione per tutte le lampadine Zigbee mai prodotte da chiunque). Compito del bridge **Ble2mqtt** è **tradurre** gli **oggetti standard** Zigbee in **JSON** e inserirli in un **messaggio MQTT**.
+La **traduzione** è resa possibile perchè le reti Zigbee definiscono per ogni dispositvo la **semantica applicativa standard** che abbiamo visto sopra (una lampadina ha gli stessi comandi, lo stesso stato e la stessa configurazione per tutte le lampadine Zigbee mai prodotte da chiunque). Compito del bridge **zigbee2mqtt** è **tradurre** gli **oggetti standard** Zigbee in **JSON** e inserirli in un **messaggio MQTT**.
 
 #### **Funzionamento di zigbee2mqtt** 
 Ecco una descrizione di come funziona zigbee2mqtt:
