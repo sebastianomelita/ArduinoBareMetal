@@ -91,7 +91,7 @@ Gli utenti si comportano tutti come client poiché sono loro che iniziano la con
 
 Il publisher deve solo connettersi, decidere il topic e inviare l’informazione. Il subscriber deve preventivamente registrarsi ad uno o più topic presso il server affinchè possa ricevere l’informazione quando questa verrà pubblicata.
 
-<img src="img/fasimqtt.jpg" alt="alt text" width="400">
+<img src="img/fasimqtt.jpg" alt="alt text" width="600">
 
 Fasi del protocollo:
 1. Il **Subscriber** dichiara presso il broker il proprio interesse a ricevere notifiche riguardo ad un certo argomento (topic) effettuando una chiamata **subscribe()**
