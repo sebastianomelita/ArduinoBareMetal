@@ -206,9 +206,14 @@ Per Bluetooth Low Energy (BLE), i dispositivi sono spesso strutturati utilizzand
 
 **Ble2mqtt** è un software open-source progettato per permettere ai dispositivi BLE di comunicare direttamente con un server MQTT (Message Queuing Telemetry Transport) senza la necessità di un hub proprietario.  [Ble2mqtt](https://github.com/devbis/ble2mqtt)
 
-BLE è uno standard di comunicazione wireless utilizzato anche per il controllo e l'automazione domestica, mentre MQTT è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando BLE2mqtt, gli utenti possono integrare facilmente dispositivi BLE di diversi produttori in un sistema di automazione domestica basato su MQTT, offrendo maggiore flessibilità e controllo. 
+BLE è uno standard di comunicazione wireless utilizzato anche per il controllo e l'automazione domestica, mentre MQTT è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando BLE2mqtt, gli utenti possono integrare facilmente dispositivi BLE di diversi produttori in un sistema di automazione domestica basato su MQTT, con un alto livello di flessibilità e controllo. 
 
-**Ble2mqtt** opera a livello di **presentazione** della pila OSI in quanto **traduce** un **payload BLE** in un **payload JSON MQTT**  (gateway = router applicativo). Si tratta di un software che consente di integrare dispositivi BLE in un'infrastruttura di domotica basata su MQTT (Message Queuing Telemetry Transport). Ble2mqtt funge da **ponte** tra la rete BLE e il broker MQTT, consentendo agli utenti di interagire con i dispositivi BLE tramite messaggi MQTT. 
+**ble2mqtt** opera a livello di **presentazione** della pila OSI ed esegue, nell'ordine, le seguenti **operazioni**:
+1. **sbusta** tutti i messaggi provenienti dall'interfaccia Zigbee uno dopo l'altro, a partire dal **livello fisico** fino ad arrivare al **livello di presentazione**, dove BLE realizza la sua **rappresentazione semantica** dell'oggetto comandato/attuato/configurato, completa di **attributi** e corrispondenti **valori**.
+2. a questo punto **traduce** il **payload BLE** in un **payload JSON** che contiene gli stessi attributi con gli stessi valori. 
+3. dopo di che **smista** il **JSON** così costruito sull'**interfaccia IP** del gateway, dove viene imbustato come **payload** del protocollo **MQTT** ed **inviato** fino al **broker**.
+
+Ble2mqtt funge da **ponte** tra la rete Zigbee e il broker MQTT, consentendo agli utenti di interagire con i dispositivi BLE tramite messaggi MQTT. 
 
 La **traduzione** è resa possibile perchè le reti BLE definiscono per ogni dispositvo la **semantica applicativa standard** che abbiamo visto sopra (una lampadina ha gli stessi comandi, lo stesso stato e la stessa configurazione per tutte le lampadine BLE mai prodotte da chiunque). Compito del bridge **Ble2mqtt** è **tradurre** gli **oggetti standard** BLE in **JSON** e inserirli in un **messaggio MQTT**.
 
