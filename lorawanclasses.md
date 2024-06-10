@@ -85,15 +85,15 @@ Il **broker MQTT** è solo una delle tante soluzioni possibili per realizzare un
 
 Il **canale applicativo** su cui vengono inviati i messaggi sono quindi i **topic**. Su un certo **topic** il dispositivo con il ruolo di **output** agisce come un **publisher**, mentre quello con il ruolo di **input** agisce come un **subscriber**.
 
-Gli utenti si comportano tutti come client poiché sono loro che iniziano la connessione con il broker e non il viceversa, ma si dividono in due ruoli:
-- PUBLISHER coloro che inviano le informazioni
-- SUBSCRIBERS coloro che ricevono le informazioni.
+Gli utenti, in ogni caso, si comportano tutti come **client** poiché sono loro che **iniziano la connessione** con il broker e non il viceversa, ma si dividono in due **ruoli**:
+- **PUBLISHER** coloro che **inviano** le informazioni
+- **SUBSCRIBERS** coloro che **ricevono** le informazioni.
 
-Il publisher deve solo connettersi, decidere il topic e inviare l’informazione. Il subscriber deve preventivamente registrarsi ad uno o più topic presso il server affinchè possa ricevere l’informazione quando questa verrà pubblicata.
+Il **publisher** deve solo connettersi, decidere il topic e inviare l’informazione. Il **subscriber** deve preventivamente **registrarsi** ad uno o più topic presso il server affinchè possa ricevere l’informazione **quando** questa verrà pubblicata.
 
 <img src="img/fasimqtt.jpg" alt="alt text" width="600">
 
-Fasi del protocollo:
+**Fasi** del protocollo:
 1. Il **Subscriber** dichiara presso il broker il proprio interesse a ricevere notifiche riguardo ad un certo argomento (topic) effettuando una chiamata **subscribe()**
 2. il **publisher** pubblica un messaggio che riguarda un **certo topic** effettuando una chiamata **publish()**
 3. Il **broker** inoltra il messaggio a tutti i subscriber interessati a **quel topic**
