@@ -214,7 +214,7 @@ Payload:
 
 ```Json
 {
-   "source_endpoint": 1,
+  "source_endpoint": 1,
   "destination_endpoint": 1,
   "Cluster": "0x0008",
   "Command": "0x00",
