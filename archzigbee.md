@@ -144,23 +144,36 @@ Avendo più interfacce su reti di tipo diverso sia in L1 che in L2, ha anche le 
 
 Il **gateway** ha anche la funzione di adattare il **formato dei servizi** offerti dalle varie **sottoreti di sensori** nel **formato di servizio unificato** (ad esempio un particolare messaggio JSON) con cui i sensori sono interrogati nella rete di distribuzione IP. I **protocolli di livello applicativo** utilizzati a questo scopo in genere sono **HTTPS** o **COAP** per il paradigma di interazione **Request/response** oppure **MQTT** o **Telegram** per il paradigma di interazione **Publish/Subscribe**, oppure **Websocket**, **Webhooks** e **WebRTC** per richieste asincrone, l'ultimo anche per quelle multimediali. Noi useremo MQTT.
 
-#### **Formato dei messaggi**
+### **Device Profile**
 
 **Misure** e **comandi** sono attualmente definiti sotto forma di **oggetti JSON** in formato ASCII. Questo dovrebbe garantire da un lato l'interoperabilità tra reti di sensori diverse, dall'altro l'interoperabilità con sistemi terzi che si occupano della pubblicazione dei dati o della loro eleborazione statistica. Il fatto che il formato scelto sia chiaro, testuale ed autoesplicativo è sicuramente un vantaggio nella rete di **distribuzione**. 
 
-Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in modo tale da includere la **semantica** di tutti i dispositivi IoT coinvolti nelle reti di sensori collegate, che di volta in volta, poi andrà **tradotta** nella **semantica applicativa standard** prevista nello stack della rete di accesso Zigbee.
+Ogni dispositivo Zigbee aderisce a un profilo di dispositivo specifico che descrive le sue funzionalità e capacità. Questi profili sono standardizzati per garantire che i dispositivi di produttori diversi possano funzionare insieme senza problemi. Alcuni esempi di profili di dispositivi sono:
+- **Home Automation (HA)**: Utilizzato per applicazioni domestiche come luci, termostati e serrature.
+- **Smart Energy (SE)**: Usato per applicazioni di gestione energetica come contatori intelligenti e dispositivi di controllo della domanda.
+- **Building Automation (BA)**: Impiegato in contesti commerciali per il controllo di illuminazione, HVAC e sicurezza.
 
-La semantica del servizio lampadina in Zigbee è progettata per essere semplice e interoperabile. Ogni comando e attributo è definito chiaramente all'interno di cluster specifici, permettendo ai dispositivi di diversi produttori di comunicare efficacemente. Questo esempio mostra come controllare una lampadina Zigbee utilizzando i comandi base e i cluster più comuni.
+### **Cluster Library**
 
-Il Basic Cluster include informazioni generali sul dispositivo e alcune funzioni di configurazione di base.
+Zigbee utilizza un concetto chiamato "clusters", che sono gruppi di attributi e comandi legati a una funzione specifica. Ad esempio, un cluster di illuminazione potrebbe includere comandi per accendere/spegnere una luce e per regolare la luminosità. Ogni cluster ha un ID univoco e può essere riutilizzato in diversi profili di dispositivo.
 
-Questo cluster permette di controllare la luminosità della lampadina.
+### **Endpoints**
 
-#### **Scenario d'Uso**
+I dispositivi Zigbee possono avere uno o più "endpoints", che sono punti di comunicazione logici che mappano le funzionalità del dispositivo. Ogni endpoint supporta uno o più cluster e ha un proprio ID univoco. Ad esempio, un dispositivo potrebbe avere un endpoint per il controllo della luce e un altro per la gestione dell'energia.
+
+### **Attribute Reporting**
+
+Gli attributi all'interno dei cluster possono essere configurati per segnalare automaticamente i cambiamenti. Questo è essenziale per applicazioni in tempo reale come il monitoraggio dell'energia o la sicurezza domestica.
+
+### **Binding**
+
+Il binding è un processo che collega due endpoint di dispositivi diversi, consentendo loro di comunicare direttamente tra loro. Questo è utilizzato, ad esempio, per associare un interruttore a una luce specifica senza passare attraverso un hub centrale.
+
+### **Scenario d'Uso**
 
 Immaginiamo di avere un'applicazione di controllo della casa intelligente che deve interagire con una lampadina Zigbee.
 
-##### **Basic Cluster (0x0000):**
+#### **Basic Cluster (0x0000):**
 
 Il Basic Cluster include informazioni generali sul dispositivo e alcune funzioni di configurazione di base.
 
@@ -172,7 +185,7 @@ Attributes:
   ModelIdentifier (0x0005): Identificatore del modello.
 ```
 
-##### **Accendere la Lampadina:**
+#### **Accendere la Lampadina:**
 
 ```
 Comando: On
@@ -187,7 +200,7 @@ Payload: 0x01
 }
 ```
 
-##### **Impostare la Luminosità a 50%:**
+#### **Impostare la Luminosità a 50%:**
 
 ```
 Comando: MoveToLevel
@@ -208,7 +221,7 @@ Payload:
 }
 ```
 
-##### **Spegnere la Lampadina:**
+#### **Spegnere la Lampadina:**
 
 ```
 Comando: Off
