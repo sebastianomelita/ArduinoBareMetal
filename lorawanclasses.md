@@ -124,7 +124,7 @@ Il **network server** è comune in alcune tipologie di **reti wireless** LPWA ed
 
 <img src="lpwan.png" alt="alt text" width="700">
 
-#### **Funzioni essenziali**
+### **Funzioni essenziali**
 
 Il **network server** è anche responsabile dello svolgimento di alcuni **processi** di **controllo** e **gestione** della rete: 
 - si connette a **più gateway** tramite una connessione TCP/IP protetta 
@@ -135,11 +135,11 @@ Il **network server** è anche responsabile dello svolgimento di alcuni **proces
     - un data rate piu`basso (minore suscettibilità ai rumori) e una maggiore potenza di uscita solo ai nodi che si trovano a distanze notevoli dal gateway (trasmissione lunga e a alta potenza).
 - Inoltra messaggi di richiesta di adesione (join) e di accettazione di adesione tra i dispositivi finali e il server di adesione (Join Server).
 
-#### **Server di rete come IS**
+### **Server di rete come IS**
 
 Il **Server di Rete** è un dispositivo **IS** (Intermediate System) che normalmente **non** è presente nelle reti **meshed tradizionali** perchè non esiste in queste reti un server deputato a possedere **capacità di routing** (smistamento). Talvolta, invece, nelle **reti mesh** è presente un  **server controller** che, però, non è un dispositivo di smistamento IS ma solamente un server responsabile della **supervisione**, **gestione** e **configurazione** di altri dispositivi di rete intesi come **IS**. Un esempio notevole è il **controller degli AP** WiFi.
 
-#### **Server di rete come nodo radice**
+### **Server di rete come nodo radice**
 
 Il **server di rete** è collegato ai **gateway dei sensori** mediante una normale **rete IP** mediante **protocollo di livello applicativo**. E' un **nodo di smistamento finale** e, in questo senso, può essere considerati come dei **router di livello applicativo**. In pratica è il **centro stella** di una **stella di gateway** (o base station) che a **loro volta** sono il **centro stella** di una **stella di sensori**. I gateway sono tutti dello stesso tipo e si collegano, tramite lo stesso protocollo, al network server realizzando, con questo, un collegamento virtuale diretto.
 
