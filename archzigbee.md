@@ -262,8 +262,8 @@ Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in m
 
 <img src="img/zigbeebridge.png" alt="alt text" width="800">
 
-**Zigbee2mqtt** opera a livello di **presentazione** della pila OSI ed esegue, nell'ordine, le seguenti operazioni:
-1. **sbusta** tutti i messaggi provenienti dall'interfaccia Zigbee uno dopo l'altro, a partire dal **livello fisico** fino ad arrivare al **livello di presentazione** dove Zigbee realizza la sua **rappresentazione semantica** dell'oggetto comandato/attuato/configurato, completa di **attributi** e corrispondenti **valori**.
+**Zigbee2mqtt** opera a livello di **presentazione** della pila OSI ed esegue, nell'ordine, le seguenti **operazioni**:
+1. **sbusta** tutti i messaggi provenienti dall'interfaccia Zigbee uno dopo l'altro, a partire dal **livello fisico** fino ad arrivare al **livello di presentazione**, dove Zigbee realizza la sua **rappresentazione semantica** dell'oggetto comandato/attuato/configurato, completa di **attributi** e corrispondenti **valori**.
 2. a questo punto **traduce** il **payload Zigbee** in un **payload JSON** che contiene gli stessi attributi con gli stessi valori. 
 3. dopo di che **smista** il **JSON** così costruito sull'**interfaccia IP** del gateway dove viene imbustato come **payload** del protocollo **MQTT** ed **inviato** fino al **broker**.
 
