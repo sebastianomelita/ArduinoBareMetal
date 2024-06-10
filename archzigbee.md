@@ -195,6 +195,8 @@ Payload: 0x01
 
 ```Json
 {
+  "source_endpoint": 1,
+  "destination_endpoint": 1,
   "Cluster": "0x0006",
   "Command": "0x01"
 }
@@ -212,6 +214,8 @@ Payload:
 
 ```Json
 {
+   "source_endpoint": 1,
+  "destination_endpoint": 1,
   "Cluster": "0x0008",
   "Command": "0x00",
   "Payload": {
@@ -231,6 +235,8 @@ Payload: 0x00
 
 ```Json
 {
+  "source_endpoint": 1,
+  "destination_endpoint": 1,
   "Cluster": "0x0006",
   "Command": "0x00"
 }
