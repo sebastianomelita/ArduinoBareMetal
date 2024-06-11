@@ -6,13 +6,14 @@
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
-## **VPN di reti Ethernet** 
+# **VPN di reti Ethernet** 
 
-### **Esempio 1**
+### **Interfacce virtuali tun e tap**
 
 Nelle reti Informatiche, TUN e TAP sono driver che permettono la creazione di periferiche di rete virtuali. Rispetto alle comuni periferiche (ad es. eth0) che sono controllate direttamente dalle schede di rete, i pacchetti spediti da o verso dispositivi TUN/TAP sono spediti da o verso programmi software. TUN è in grado di simulare una periferica di rete di tipo punto-punto e lavora con pacchetti di tipo IP mentre TAP è in grado di simulare un dispositivo Ethernet e logicamente utilizza i frame Ethernet.
 
 <img src="img/Tun-tap-osilayers-diagram.png" alt="alt text" width="400">
+
 
 Le interfacce TAP e tun possono essere utilizzate per instradare il traffico di rete attraverso il tunnel VPN. Le **interfacce virtuali tun** compaiono nella **routing table** come **interfacce locali** verso cui inoltrare **pacchetti IP** destinati ad una **subnet direttamente connessa**.
 
