@@ -405,15 +405,16 @@ devices:
     friendly_name: lampadina3
     state_topic: 'soggiorno/lampadina3/stato'
     set_topic: 'soggiorno/lampadina3/cmd'
+```
 
 #### **Accendere Tutte le Lampadine nel Soggiorno**
 ```Bash
-mosquitto_pub -h localhost -t 'my_custom_base_topic/living_room/command' -m '{"state": "ON"}'
+mosquitto_pub -h localhost -t 'casa/soggiorno/cmd' -m '{"state": "ON"}'
 ```
 
 #### **Spegnere Tutte le Lampadine nel Soggiorno**
 ```Bash
-mosquitto_pub -h localhost -t 'my_custom_base_topic/living_room/command' -m '{"state": "OFF"}'
+mosquitto_pub -h localhost -t 'casa/soggiorno/cmd' -m '{"state": "OFF"}'
 ```
 
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
