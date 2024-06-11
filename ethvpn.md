@@ -14,7 +14,13 @@ Nelle reti Informatiche, TUN e TAP sono driver che permettono la creazione di pe
 
 <img src="img/Tun-tap-osilayers-diagram.png" alt="alt text" width="500">
 
- Le interfacce TAP possono essere utilizzate per instradare il traffico di rete attraverso il tunnel VPN.
+Le interfacce TAP e tun possono essere utilizzate per instradare il traffico di rete attraverso il tunnel VPN. Le **interfacce virtuali tun** compaiono nella **routing tabl** come **interfacce locali** verso cui inoltrare **pacchetti IP** destinati ad una **subnet direttamente connessa**.
+
+```
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         192.168.1.1     0.0.0.0         UG    0      0        0 eth0
+10.8.0.0        0.0.0.0         255.255.255.0   U     0      0        0 tun0
+```Json
  
 <img src="img/sediVPNL2.png" alt="alt text" width="1100">
 
