@@ -295,7 +295,7 @@ Ecco una descrizione di come funziona zigbee2mqtt:
 Per controllare tre lampadine diverse sotto lo stesso topic stanzetta usando zigbee2mqtt, è possibile configurare un approccio che permetta di inviare comandi a tutte e tre le lampadine contemporaneamente o individualmente. Un modo efficace per farlo è usare un payload JSON che includa informazioni specifiche per ciascuna lampadina.
 
 ```Python
-homeassistant: true
+homeassistant: false
 permit_join: true
 mqtt:
   base_topic: zigbee2mqtt
@@ -312,6 +312,7 @@ devices:
   '0x00124b0014d2b5d4':
     friendly_name: lampadina3
 ```
+Il parametro permit_join: true nella configurazione di Zigbee2MQTT permette ai nuovi dispositivi Zigbee di unirsi alla rete Zigbee. Quando questa opzione è attivata, il coordinatore Zigbee accetta nuovi dispositivi che cercano di connettersi. Mantenere permit_join attivato permanentemente non è consigliato per motivi di sicurezza, poiché potrebbe permettere a dispositivi non autorizzati di connettersi alla rete Zigbee.
 
 Per permettere ad un sensore di comando di modificare lo stato di un attuatore, in Zigbee è sempre necessario effettuare il **binding** (associazione) tra i due dispositivi (in gergo **endpoint**).
 
@@ -321,33 +322,49 @@ Ora, configurando un singolo topic zigbee2mqtt/stanzetta/cmd per inviare comandi
 
 #### **Accendere tutte le Lampadine:**
 
-```Json
-{
-  "lampadina1": {"state": "ON"},
-  "lampadina2": {"state": "ON"},
-  "lampadina3": {"state": "ON"}
-}
+```Bash
+#!/bin/bash
+
+# Accendere lampadina1
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina1/set' -m '{"state": "ON"}'
+
+# Accendere lampadina2
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina2/set' -m '{"state": "ON"}'
+
+# Accendere lampadina3
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina3/set' -m '{"state": "ON"}'
 ```
 
 #### **Spegnere tutte le Lampadine:**
 
-```Json
-{
-  "lampadina1": {"state": "OFF"},
-  "lampadina2": {"state": "OFF"},
-  "lampadina3": {"state": "OFF"}
-}
+```Bash
+#!/bin/bash
+
+# Accendere lampadina1
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina1/set' -m '{"state": "OFF"}'
+
+# Accendere lampadina2
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina2/set' -m '{"state": "OFF"}'
+
+# Accendere lampadina3
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina3/set' -m '{"state": "OFF"}'
 ```
 
 #### **Comandare le Lampadine Singolarmente:**
 
-```Json
-{
-  "lampadina1": {"state": "ON"},
-  "lampadina2": {"state": "OFF"},
-  "lampadina3": {"state": "ON"}
-}
+```Bash
+#!/bin/bash
+
+# Accendere lampadina1
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina1/set' -m '{"state": "ON"}'
+
+# Accendere lampadina2
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina2/set' -m '{"state": "OFF"}'
+
+# Accendere lampadina3
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina3/set' -m '{"state": "ON"}'
 ```
+
 
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
 
