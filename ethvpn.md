@@ -10,7 +10,11 @@
 
 ### **Esempio 1**
 
-<img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
+Nelle reti Informatiche, TUN e TAP sono driver che permettono la creazione di periferiche di rete virtuali. Rispetto alle comuni periferiche (ad es. eth0) che sono controllate direttamente dalle schede di rete, i pacchetti spediti da o verso dispositivi TUN/TAP sono spediti da o verso programmi software. TUN è in grado di simulare una periferica di rete di tipo punto-punto e lavora con pacchetti di tipo IP mentre TAP è in grado di simulare un dispositivo Ethernet e logicamente utilizza i frame Ethernet.
+
+<img src="img/sediVPNL2.png" alt="alt text" width="400">
+
+<img src="img/Tun-tap-osilayers-diagram.png" alt="alt text" width="1100">
 
 
 <img src="img/sediVPNL2.png" alt="alt text" width="1100">
@@ -35,6 +39,9 @@ Ecco come funziona una richiesta ARP tra due reti collegate da un tunnel bridged
 8. **Inoltro della risposta alla sorgente**: Il router VPN locale inoltra la risposta ARP alla sorgente originaria attraverso la sua rete locale.
 
 In questo modo, la **risoluzione degli indirizzi MAC** tra le due reti collegate da un tunnel bridged L2 OpenVPN avviene attraverso il **tunnel VPN**, consentendo la comunicazione tra dispositivi su reti distinte come se fossero sulla **stessa rete locale**.
+
+Sitografia:
+- https://it.wikipedia.org/wiki/TUN/TAP
 
 >[Torna a reti ethernet](archeth.md)
 
