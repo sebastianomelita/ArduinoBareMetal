@@ -20,7 +20,7 @@ Le interfacce TAP e tun possono essere utilizzate per instradare il traffico di 
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 0.0.0.0         192.168.1.1     0.0.0.0         UG    0      0        0 eth0
 10.8.0.0        0.0.0.0         255.255.255.0   U     0      0        0 tun0
-```Json
+```
  
 <img src="img/sediVPNL2.png" alt="alt text" width="1100">
 
