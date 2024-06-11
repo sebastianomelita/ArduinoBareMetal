@@ -12,9 +12,9 @@
 
 Nelle reti Informatiche, TUN e TAP sono driver che permettono la creazione di periferiche di rete virtuali. Rispetto alle comuni periferiche (ad es. eth0) che sono controllate direttamente dalle schede di rete, i pacchetti spediti da o verso dispositivi TUN/TAP sono spediti da o verso programmi software. TUN è in grado di simulare una periferica di rete di tipo punto-punto e lavora con pacchetti di tipo IP mentre TAP è in grado di simulare un dispositivo Ethernet e logicamente utilizza i frame Ethernet.
 
-<img src="img/Tun-tap-osilayers-diagram.png" alt="alt text" width="500">
+<img src="img/Tun-tap-osilayers-diagram.png" alt="alt text" width="400">
 
-Le interfacce TAP e tun possono essere utilizzate per instradare il traffico di rete attraverso il tunnel VPN. Le **interfacce virtuali tun** compaiono nella **routing tabl** come **interfacce locali** verso cui inoltrare **pacchetti IP** destinati ad una **subnet direttamente connessa**.
+Le interfacce TAP e tun possono essere utilizzate per instradare il traffico di rete attraverso il tunnel VPN. Le **interfacce virtuali tun** compaiono nella **routing table** come **interfacce locali** verso cui inoltrare **pacchetti IP** destinati ad una **subnet direttamente connessa**.
 
 ```
 Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
@@ -24,10 +24,8 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
  
 <img src="img/sediVPNL2.png" alt="alt text" width="1100">
 
+Le **interfacce virtuali tap** compaiono nella **tabella di inoltro** del bridge come **interfacce locali** verso cui inoltrare **trame MAC** destinate ad host raggiungibili attraverso quella interfaccia.
 
-
-
-<img src="img/sediVPNL2.png" alt="alt text" width="1100">
 Quando due reti sono collegate tramite un tunnel bridged L2 OpenVPN, la risoluzione degli indirizzi MAC (ARP - Address Resolution Protocol) attraverso il tunnel avviene in modo simile a una rete locale fisica, ma con alcune differenze dovute alla natura del tunnel VPN.
 
 Ecco come funziona una richiesta ARP tra due reti collegate da un tunnel bridged L2 OpenVPN:
@@ -49,6 +47,8 @@ Ecco come funziona una richiesta ARP tra due reti collegate da un tunnel bridged
 8. **Inoltro della risposta alla sorgente**: Il router VPN locale inoltra la risposta ARP alla sorgente originaria attraverso la sua rete locale.
 
 In questo modo, la **risoluzione degli indirizzi MAC** tra le due reti collegate da un tunnel bridged L2 OpenVPN avviene attraverso il **tunnel VPN**, consentendo la comunicazione tra dispositivi su reti distinte come se fossero sulla **stessa rete locale**.
+
+<img src="img/sediVPNL2.png" alt="alt text" width="1100">
 
 Sitografia:
 - https://it.wikipedia.org/wiki/TUN/TAP
