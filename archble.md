@@ -262,33 +262,49 @@ Ora, configurando un singolo topic zigbee2mqtt/stanzetta/set per inviare comandi
 
 #### **Accendere tutte le Lampadine:**
 
-```Json
-{
-  "lampadina1": {"state": "ON"},
-  "lampadina2": {"state": "ON"},
-  "lampadina3": {"state": "ON"}
-}
+```Bash
+#!/bin/bash
+
+# Accendere lampadina1
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina1/set' -m '{"state": "ON"}'
+
+# Accendere lampadina2
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina2/set' -m '{"state": "ON"}'
+
+# Accendere lampadina3
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina3/set' -m '{"state": "ON"}'
 ```
 
 #### **Spegnere tutte le Lampadine:**
 
-```Json
-{
-  "lampadina1": {"state": "OFF"},
-  "lampadina2": {"state": "OFF"},
-  "lampadina3": {"state": "OFF"}
-}
+```Bash
+#!/bin/bash
+
+# Accendere lampadina1
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina1/set' -m '{"state": "OFF"}'
+
+# Accendere lampadina2
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina2/set' -m '{"state": "OFF"}'
+
+# Accendere lampadina3
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina3/set' -m '{"state": "OFF"}'
 ```
 
 #### **Comandare le Lampadine Singolarmente:**
 
-```Json
-{
-  "lampadina1": {"state": "ON"},
-  "lampadina2": {"state": "OFF"},
-  "lampadina3": {"state": "ON"}
-}
+```Bash
+#!/bin/bash
+
+# Accendere lampadina1
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina1/set' -m '{"state": "ON"}'
+
+# Accendere lampadina2
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina2/set' -m '{"state": "OFF"}'
+
+# Accendere lampadina3
+mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina3/set' -m '{"state": "ON"}'
 ```
+
 
 
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
