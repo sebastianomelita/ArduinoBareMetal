@@ -365,6 +365,57 @@ mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina2/set' -m '{"state": "OFF"}'
 mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina3/set' -m '{"state": "ON"}'
 ```
 
+#### **Utilizzo dei topic**
+
+Puoi definire una gerarchia di topic MQTT per raggruppare le lampadine. Ad esempio, potresti avere un topic per ciascun ambiente della tua casa o per ciascun piano dell'edificio. Ecco un esempio di come potrebbe apparire la gerarchia dei topic:
+
+```Bash
+casa/
+  └── soggiorno/
+      ├── lampadina1/
+      │   ├── cmd
+      │   └── stato
+      ├── lampadina2/
+      │   ├── cmd
+      │   └── stato
+      └── lampadina3/
+          ├── cmd
+          └── stato
+```
+In questo esempio, ```casa``` è il prefisso di tutti i tuoi topic MQTT. All'interno di questo prefisso, hai un sotto-topic per il soggiorno chiamato ```soggiorno```, e all'interno di questo sotto-topic hai i sotto-topic per ciascuna delle tue lampadine, ciascuno dei quali ha due sotto-topic: ```cmd``` e ```stato```.
+
+```Bash
+mqtt:
+  base_topic: casa
+  server: 'mqtt://localhost'
+  user: 'MQTT_USERNAME'
+  password: 'MQTT_PASSWORD'
+serial:
+  port: '/dev/ttyUSB0'
+devices:
+  '0x00124b0014d2b5d2':
+    friendly_name: lampadina1
+    state_topic: 'soggiorno/lampadina1/stato'
+    set_topic: 'soggiorno/lampadina1/cmd'
+  '0x00124b0014d2b5d3':
+    friendly_name: lampadina2
+    state_topic: 'living_room/lampadina2/stato'
+    set_topic: 'living_room/lampadina2/cmd'
+  '0x00124b0014d2b5d4':
+    friendly_name: lampadina3
+    state_topic: 'living_room/lampadina3/stato'
+    set_topic: 'living_room/lampadina3/cmd'
+
+#### **Accendere Tutte le Lampadine nel Soggiorno**
+```Bash
+mosquitto_pub -h localhost -t 'my_custom_base_topic/living_room/command' -m '{"state": "ON"}'
+```
+
+#### **Spegnere Tutte le Lampadine nel Soggiorno**
+```Bash
+mosquitto_pub -h localhost -t 'my_custom_base_topic/living_room/command' -m '{"state": "OFF"}'
+
+```
 
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
 
