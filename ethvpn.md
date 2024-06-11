@@ -10,7 +10,7 @@
 
 ### **Esempio 1**
 
-<img src="img/integrateSediVPN2.png" alt="alt text" width="800">
+<img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
 
 
 Subnetting  rete di tre sedi (di cui una centrale) collegate tramite VPN 
