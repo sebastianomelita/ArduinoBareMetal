@@ -14,6 +14,8 @@ Nelle reti Informatiche, TUN e TAP sono driver che permettono la creazione di pe
 
 <img src="img/Tun-tap-osilayers-diagram.png" alt="alt text" width="500">
 
+ Le interfacce TAP possono essere utilizzate per instradare il traffico di rete attraverso il tunnel VPN.
+ 
 <img src="img/sediVPNL2.png" alt="alt text" width="1100">
 
 
