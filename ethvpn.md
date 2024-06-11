@@ -12,7 +12,7 @@
 
 <img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
 
-
+<img src="img/sediVPNL2.png" alt="alt text" width="1100">
 Subnetting  rete di tre sedi (di cui una centrale) collegate tramite VPN 
 
 >[Torna a reti ethernet](archeth.md)
