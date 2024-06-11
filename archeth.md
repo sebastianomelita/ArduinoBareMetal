@@ -130,7 +130,7 @@ Una rete di reti di sensori sparsi nel mondo può essere tenuta insieme tramite 
 - la possibilità di poter scambiare informazioni su un **canale cifrato** con qualunque tipo di broker MQTT (non per forza basato sui web socket o protetto con TLS).
 - la possibilità di poter adoperare **altri servizi** centralizzati oltre la messaggistica MQTT.
 
-Per il dettaglio sulle VPN pratiche vedi [VPN di reti di sensori](sensorvpn.md).
+Per il dettaglio sulle VPN pratiche vedi [VPN di reti Ethernet](ethvpn.md).
 
 ## **Rete Ethernet (LAN)** 
 
