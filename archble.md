@@ -255,7 +255,6 @@ devices:
     friendly_name: lampadina2
   'F0:99:B6:43:55:AC':
     friendly_name: lampadina3
-
 ```
 
 Ora, configurando un singolo topic zigbee2mqtt/stanzetta/set per inviare comandi a tutte e tre le lampadine, possiamo usare un payload JSON per specificare lo stato desiderato di ogni lampadina.
@@ -304,7 +303,57 @@ mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina2/set' -m '{"state": "OFF"}'
 # Accendere lampadina3
 mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina3/set' -m '{"state": "ON"}'
 ```
+#### **Utilizzo dei topic**
 
+Puoi definire una gerarchia di topic MQTT per raggruppare le lampadine. Ad esempio, potresti avere un topic per ciascun ambiente della tua casa o per ciascun piano dell'edificio. Ecco un esempio di come potrebbe apparire la gerarchia dei topic:
+
+```Bash
+casa/
+  └── soggiorno/
+      ├── lampadina1/
+      │   ├── cmd
+      │   └── stato
+      ├── lampadina2/
+      │   ├── cmd
+      │   └── stato
+      └── lampadina3/
+          ├── cmd
+          └── stato
+```
+In questo esempio, ```casa``` è il prefisso di tutti i tuoi topic MQTT. All'interno di questo prefisso, hai un sotto-topic per il soggiorno chiamato ```soggiorno```, e all'interno di questo sotto-topic hai i sotto-topic per ciascuna delle tue lampadine, ciascuno dei quali ha due sotto-topic: ```cmd``` e ```stato```.
+
+```Bash
+mqtt:
+  base_topic: casa
+  server: 'mqtt://localhost'
+  user: 'MQTT_USERNAME'
+  password: 'MQTT_PASSWORD'
+serial:
+  port: '/dev/ttyUSB0'
+devices:
+ 'F0:99:B6:43:55:AC':
+    friendly_name: lampadina1
+    state_topic: 'soggiorno/lampadina1/stato'
+    set_topic: 'soggiorno/lampadina1/cmd'
+ 'C4:7C:8D:6A:95:BD':
+    friendly_name: lampadina2
+    state_topic: 'soggiorno/lampadina2/stato'
+    set_topic: 'soggiorno/lampadina2/cmd'
+ 'D0:52:A8:00:67:AB':
+    friendly_name: lampadina3
+    state_topic: 'soggiorno/lampadina3/stato'
+    set_topic: 'soggiorno/lampadina3/cmd'
+```
+
+#### **Accendere Tutte le Lampadine nel Soggiorno**
+```Bash
+mosquitto_pub -h localhost -t 'my_custom_base_topic/living_room/command' -m '{"state": "ON"}'
+```
+
+#### **Spegnere Tutte le Lampadine nel Soggiorno**
+```Bash
+mosquitto_pub -h localhost -t 'my_custom_base_topic/living_room/command' -m '{"state": "OFF"}'
+```
 
 
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
