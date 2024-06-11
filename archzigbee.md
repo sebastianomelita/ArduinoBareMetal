@@ -50,6 +50,20 @@ Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture
 - eseguire, in un'unica interfaccia (form), comandi verso attuatori posti su reti con tecnologia differente.
 - riassumere in un'unica interfaccia (report) letture di sensori provenienti da reti eterogenee per tecnologia e topologia
 
+## **Documentazione logica della rete (albero degli apparati attivi)** 
+
+### **Reti di sensori federate tramite Internet** 
+
+L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione **in Internet** + server di gestione e controllo che potrebbe rappresentare **tre edifici** distanti domotizzati tramite **zigbeee** e federati tramite **Internet**: 
+
+<img src="img/integratedGW-Zigbee.png" alt="alt text" width="900">
+
+Il **bridge zigbee** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori. 
+
+Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente anche un **firewall** (con funzioni di NAT se si adopera IPv4), mentre se collegato alla **LAN** (attraverso uno SW o un HUB wiereless) ha solamente la **funzioni** di:
+- **router applicativo** che **traduce** i messaggi da una rete IP (la LAN) ad una non IP (la rete di sensori).
+- **client MQTT** con funzione di **publisher** (sul topic di stato e traduce **da** i dispositivi) e di **subscriber** (sui topic di comando e configurazione e traduce **verso** i dispositivi).
+
 ### **Reti di sensori federate tramite LAN** 
 
 #### **Partizionamento e ridondanza** 
@@ -437,20 +451,6 @@ mosquitto_pub -h localhost -t 'casa/soggiorno/cmd' -m '{"state": "ON"}'
 ```Bash
 mosquitto_pub -h localhost -t 'casa/soggiorno/cmd' -m '{"state": "OFF"}'
 ```
-
-## **Documentazione logica della rete (albero degli apparati attivi)** 
-
-### **Reti di sensori federate tramite Internet** 
-
-L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione **in Internet** + server di gestione e controllo che potrebbe rappresentare **tre edifici** distanti domotizzati tramite **zigbeee** e federati tramite **Internet**: 
-
-<img src="img/integratedGW-Zigbee.png" alt="alt text" width="900">
-
-Il **bridge zigbee** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori. 
-
-Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente anche un **firewall** (con funzioni di NAT se si adopera IPv4), mentre se collegato alla **LAN** (attraverso uno SW o un HUB wiereless) ha solamente la **funzioni** di:
-- **router applicativo** che **traduce** i messaggi da una rete IP (la LAN) ad una non IP (la rete di sensori).
-- **client MQTT** con funzione di **publisher** (sul topic di stato e traduce **da** i dispositivi) e di **subscriber** (sui topic di comando e configurazione e traduce **verso** i dispositivi).
 
 ## **Rete di sensori Zigbee** 
 
