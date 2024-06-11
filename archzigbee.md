@@ -399,12 +399,12 @@ devices:
     set_topic: 'soggiorno/lampadina1/cmd'
   '0x00124b0014d2b5d3':
     friendly_name: lampadina2
-    state_topic: 'living_room/lampadina2/stato'
-    set_topic: 'living_room/lampadina2/cmd'
+    state_topic: 'soggiorno/lampadina2/stato'
+    set_topic: 'soggiorno/lampadina2/cmd'
   '0x00124b0014d2b5d4':
     friendly_name: lampadina3
-    state_topic: 'living_room/lampadina3/stato'
-    set_topic: 'living_room/lampadina3/cmd'
+    state_topic: 'soggiorno/lampadina3/stato'
+    set_topic: 'soggiorno/lampadina3/cmd'
 
 #### **Accendere Tutte le Lampadine nel Soggiorno**
 ```Bash
@@ -414,7 +414,6 @@ mosquitto_pub -h localhost -t 'my_custom_base_topic/living_room/command' -m '{"s
 #### **Spegnere Tutte le Lampadine nel Soggiorno**
 ```Bash
 mosquitto_pub -h localhost -t 'my_custom_base_topic/living_room/command' -m '{"state": "OFF"}'
-
 ```
 
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
