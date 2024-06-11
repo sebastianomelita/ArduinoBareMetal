@@ -11,10 +11,11 @@
 ### **Esempio 1**
 
 Nelle reti Informatiche, TUN e TAP sono driver che permettono la creazione di periferiche di rete virtuali. Rispetto alle comuni periferiche (ad es. eth0) che sono controllate direttamente dalle schede di rete, i pacchetti spediti da o verso dispositivi TUN/TAP sono spediti da o verso programmi software. TUN è in grado di simulare una periferica di rete di tipo punto-punto e lavora con pacchetti di tipo IP mentre TAP è in grado di simulare un dispositivo Ethernet e logicamente utilizza i frame Ethernet.
+<img src="img/Tun-tap-osilayers-diagram.png" alt="alt text" width="400">
 
 <img src="img/sediVPNL2.png" alt="alt text" width="1100">
 
-<img src="img/Tun-tap-osilayers-diagram.png" alt="alt text" width="500">
+
 
 
 <img src="img/sediVPNL2.png" alt="alt text" width="1100">
