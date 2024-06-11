@@ -59,6 +59,14 @@ La **figura** sottostante riassume la rete LoRaWAN dal punto di osservazione di 
 
 Si noti, che il canale che collega i dispositivi IoT ai gateway non supera mai il **livello 2** della pila ISO/OSI. Questi link hanno **topologia** a **stella** e possono collegare lo stesso sensore/attuatore a molti gateway. I dispositivi utilizzano un meccanismo di **routing** di livello L1 e quindi basato sul **flooding**. E' il  routing **più semplice** possibile, e anche il **più affidabile** ma possiede l'**incoveniente** di generare **pacchetti duplicati** nel loro percorso verso l'**applicazione**. Questo problema è gestito dal **network server**.
 
+## **Documentazione logica (albero degli apparati attivi)**
+
+Esempio di connessione alla rete di distribuzione IP tramite gateway dotati di client VPN:
+
+  <img src="img/integratedGW-LoRa.png" alt="alt text" width="1000">
+
+Si noti che l'**architettura generale** è quella di una **federazione** di reti di sensori più o meno **isolate** e **sparpagliate** sul territorio, ognuna delle quali fa capo, con topologia a stella, ad un proprio **gateway**, deputato al **coordinamento** della stella. La federazione è **amministrata** da un unico **network server** che **inoltra** i dati provenienti dai gateway verso l'**applicazione** utilizzando i servizi di trasporto offerti da una WAN. I servizi di **autenticazione** e **cifratura** (normalmente assenti in Internet) possono essere offerti, oltre che dal protocollo LoRaWAN, anche da da una VPN. I gateway posseggono la componente lora-gateway-bridge che si occupa di inserire il messaggio LoRaWAN in un payload di servizio MQTT per il network server
+
 ##  **Canali di comunicazione principali in una rete di sensori**
 
 **In sintesi**, sono necessari almeno **due canali** di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
@@ -193,13 +201,6 @@ In **generale**, su reti **non IP**, i **client MQTT** (con il ruolo di **publis
 
 La **parola gateway** potrebbe talvolta portare a **fraintendimenti** dovuti al diverso significato nei **diversi contesti** in cui la si usa. **Spesso**, con il **termine gateway** si intente anche il **dispositivo IoT** che potrebbe essere, **a sua volta**, un **gateway** tra la il **link di campo**, porte analogiche/digitali o BUS, (vedi [bus di campo](cablatisemplici.md) per dettagli) e la **rete di sensori** (WiFi, Zigbee, LoraWAN, LAN, BLE, ecc.). In questo caso il gateway ha il compito di tradurre i messaggi dall'interfaccia a BUS su filo verso quella LoRaWAN e viceversa. Vedi ([dispositivi terminali](sensornetworkshort.md#dispositivi-terminali-sensoriattuatori)) per approfondimenti.
 
-## **Documentazione logica (albero degli apparati attivi)**
-
-Esempio di connessione alla rete di distribuzione IP tramite gateway dotati di client VPN:
-
-  <img src="img/integratedGW-LoRa.png" alt="alt text" width="1000">
-
-Si noti che l'**architettura generale** è quella di una **federazione** di reti di sensori più o meno **isolate** e **sparpagliate** sul territorio, ognuna delle quali fa capo, con topologia a stella, ad un proprio **gateway**, deputato al **coordinamento** della stella. La federazione è **amministrata** da un unico **network server** che **inoltra** i dati provenienti dai gateway verso l'**applicazione** utilizzando i servizi di trasporto offerti da una WAN. I servizi di **autenticazione** e **cifratura** (normalmente assenti in Internet) possono essere offerti, oltre che dal protocollo LoRaWAN, anche da da una VPN. I gateway posseggono la componente lora-gateway-bridge che si occupa di inserire il messaggio LoRaWAN in un payload di servizio MQTT per il network server
 ### **Funzioni di una rete LoRaWAN**
 
 Le **funzioni** dell'architettura **LoRaWAN** possono essere distinte su **3 dispositivi diversi** oppure coincidere in un **unico dispositivo** che le ingloba tutte:
