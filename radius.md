@@ -6,7 +6,7 @@
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
-# ****Autenticazione 802.1X** 
+# **Autenticazione 802.1X** 
 
 Come accennato, l’autenticazione dell’utente e degli AP (Access Point) avviene:
 - A Livello 2 della pila ISO/OSI con protocolli e dispositivi che non abbisognano di indirizzo IP, sfruttano l’incapsulamento (tunnelling) in trame di livello pari o superiori. Il protocollo più comune per il wifi è l’EAP incapsulato su trame L2 MAC (EAPoL). E’ utilizzato per trasportare le credenziali (username e password) lungo una connessione ancora priva di indirizzo IP verso un dispositivo di accesso (NAS, inteso stavolta come Network Access Server) della risorsa accesso WiFi.
