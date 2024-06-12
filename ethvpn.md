@@ -10,7 +10,7 @@
 
 ## **Ruolo del tunneling**
 
-Realizza una connessione virtuale punto-punto cifrata tra utenti remoti attraverso una rete pubblica (Internet). Trasporta pacchetti privati (trusted) incapsulati all’interno di pacchetti pubblici (untrusted). I pacchetti prima di essere incapsulati all’interno del tunnel vengono cifrati per garantire la confidenzialità dei dati in essi contenuti.
+Realizza una **connessione virtuale punto-punto cifrata** tra **utenti remoti** attraverso una rete pubblica (**Internet**). Trasporta **pacchetti privati** (trusted) incapsulati all’interno di **pacchetti pubblici** (untrusted). I pacchetti prima di essere incapsulati all’interno del tunnel vengono **cifrati** per garantire la **confidenzialità** dei dati in essi contenuti.
 
 <img src="img/tunnelvpn.png" alt="alt text" width="400">
 
