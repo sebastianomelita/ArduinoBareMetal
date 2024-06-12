@@ -360,13 +360,13 @@ Puoi definire una gerarchia di topic MQTT per raggruppare le lampadine. Ad esemp
 casa/
   └── soggiorno/
       ├── lampadina1/
-      │   ├── cmd
+      │   ├── comandi
       │   └── stato
       ├── lampadina2/
-      │   ├── cmd
+      │   ├── comandi
       │   └── stato
       └── lampadina3/
-          ├── cmd
+          ├── comandi
           └── stato
 ```
 In questo esempio, ```casa``` è il prefisso di tutti i tuoi topic MQTT. All'interno di questo prefisso, hai un sotto-topic per il soggiorno chiamato ```soggiorno```, e all'interno di questo sotto-topic hai i sotto-topic per ciascuna delle tue lampadine, ciascuno dei quali ha due sotto-topic: ```cmd``` e ```stato```.
@@ -383,26 +383,32 @@ devices:
  'F0:99:B6:43:55:AC':
     friendly_name: lampadina1
     state_topic: 'soggiorno/lampadina1/stato'
-    set_topic: 'soggiorno/lampadina1/cmd'
+    set_topic: 'soggiorno/lampadina1/comandi'
  'C4:7C:8D:6A:95:BD':
     friendly_name: lampadina2
     state_topic: 'soggiorno/lampadina2/stato'
-    set_topic: 'soggiorno/lampadina2/cmd'
+    set_topic: 'soggiorno/lampadina2/comandi'
  'D0:52:A8:00:67:AB':
     friendly_name: lampadina3
     state_topic: 'soggiorno/lampadina3/stato'
-    set_topic: 'soggiorno/lampadina3/cmd'
+    set_topic: 'soggiorno/lampadina3/comandi'
 ```
 
-#### **Accendere Tutte le Lampadine nel Soggiorno**
+#### **Accendere una lampadina del Soggiorno**
+```Bash
+mosquitto_pub -h localhost -t 'casa/soggiorno/lampadina1/cmd' -m '{"state": "ON"}'
+```
+
+#### **Accendere tutte le Lampadine nel Soggiorno**
 ```Bash
 mosquitto_pub -h localhost -t 'casa/soggiorno/cmd' -m '{"state": "ON"}'
 ```
 
-#### **Spegnere Tutte le Lampadine nel Soggiorno**
+#### **Spegnere tutte le Lampadine nel Soggiorno**
 ```Bash
 mosquitto_pub -h localhost -t 'casa/soggiorno/cmd' -m '{"state": "OFF"}'
 ```
+
 ## **Reti BLE per tracciamento e localizzazione** 
 
 Si tratta di un utilizzo diverso da quello di una normale rete di sensori poichè l'obiettivo finale non è creare una rete di dispositivi domotici composta da sensori e attuatori ma creare una rete di dispositivi per la **localizzazione** e il **tracciamento**, nel **tempo** e nello **spazio**, della posizione di **altri dispositivi**.
