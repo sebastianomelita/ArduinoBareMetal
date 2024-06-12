@@ -94,7 +94,7 @@ Tramite la rete wifi non è possibile accedere alla rete della segreteria ma sol
 
 Ciascun AP è capace di creare e gestire un certo numero di interfacce virtuali, ciascuna caratterizzata da un proprio SSID. Gli SSID in uso e quindi le interfacce  in uso sono le seguenti:
 
-<img src="img/ssid.png" alt="alt text" width="600">
+<img src="img/ssid.png" alt="alt text" width="800">
 
 Come si può notare, ogni interfaccia, di base, ha una associazione statica con una sua VLAN. Questo significa che, al momento dell’accesso, l’utente prende un indirizzo di quella VLAN, cioè, diventa, di diritto, cittadino di quella VLAN, con la raggiungibilità ai servizi di quella VLAN e con la banda eventualmente riservata per quella VLAN.
 La maggior parte degli SSID è diffuso su tutti gli AP e quindi è visibile ovunque. Un SSID, gmarconi7777 è visibile solo in un particolare laboratorio con un accesso WPA personal.
@@ -140,7 +140,7 @@ Le impostazioni correnti fanno in modo che:
 L’assegnazione al gruppo nointernet-sc1 avviene per i soli utenti appartenenti anche al gruppo schueler-sc1 (studenti), in maniera dinamica tramite la pressione di un pulsante web a disposizione dei docenti (previa autenticazione).
 
 
-<img src="img/pulsantone.png" alt="alt text" width="600">
+<img src="img/pulsantone.png" alt="alt text" width="800">
 
 ### **Controller degli AP**
 
@@ -150,7 +150,7 @@ Gli ambienti sono molti, parecchio dispersi e realizzati con opere murarie costi
 
 Schermata iniziale del controller AP
 
-<img src="img/controller.png" alt="alt text" width="600">
+<img src="img/controller.png" alt="alt text" width="800">
 
 Interfaccia di analisi dell’ambiente radio (survey):
 
@@ -158,9 +158,9 @@ Interfaccia di analisi dell’ambiente radio (survey):
 
 Interfaccia di gestione degli AP:
 
-<img src="img/gestione.png" alt="alt text" width="600">
+<img src="img/gestione.png" alt="alt text" width="800">
 
-<img src="img/captive.png" alt="alt text" width="600">
+<img src="img/captive.png" alt="alt text" width="800">
 
 Il controller degli access point ha le funzioni di:
 - gestione, configurazione e controllo dello stato degli AP
