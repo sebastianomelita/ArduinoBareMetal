@@ -136,8 +136,6 @@ Le ACL si dividono in:
 - **Standard**, valutano il solo indirizzo di sorgente e vanno poste vicino alla destinazione 
 - **Estese**, valutano anche l'indirizzo di destinazione e vanno poste vicino all’origine
 
-<img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
-
 #### **ACL per negare accesso alla rete ufficio dalle reti officina**
 
 ```C++
@@ -146,19 +144,9 @@ Le ACL si dividono in:
 (config)# access-list 101 deny 10.0.2.0 0.0.0.255
 (config)# access-list 101 deny 10.0.3.0 0.0.0.255
 (config)# access-list 101 permit any 
-! Selezione interfaccia tun0
-(config)# interface tun0 
-! Applicazione in ingress su tun0
-(config-if)# ip access-group 101 in
-(config-if)# exit
-! Selezione interfaccia tun1
-(config)# interface tun1 
-! Applicazione in ingress su tun1
-(config-if)# ip access-group 101 in
-(config-if)# exit
-! Selezione interfaccia tun2
-(config)# interface tun2 
-! Applicazione in ingress su tun2
+! Selezione interfaccia vlan 10
+(config)# interface vlan 10 
+! Applicazione in ingress su vlan 10
 (config-if)# ip access-group 101 in
 (config-if)# exit
 ```
