@@ -385,7 +385,22 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
   (config-if)# exit
   ``` 
     
-</td><td></td></tr>
+</td>
+<td>
+
+```C++     
+! Definizione lista di regole (blacklist)
+(config)# access-list 101 deny 10.0.2.0 0.0.0.255
+(config)# access-list 101 permit any 
+! Selezione interfaccia vlan 20
+(config)# interface vlan20 
+! Applicazione in ingress su vlan 20
+(config-if)# ip access-group 101 in
+(config-if)# exit
+```
+    
+</td>
+</tr>
 </table>
 
 ### **Segmentazione logica**
