@@ -41,7 +41,7 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 
 ### **Canale virtuale e canale reale**
 
-L'**interfaccia virtuale** realizza un **canale virtuale diretto** tra i due router con il ruolo di client e server della connessione VPN dove viene **inoltrato** il **pacchetto interno trasportato**. In realtà il **canale reale**, quello dove viene inoltrato il pacchetto esterno vettore, passa per il **router di confine** di ogni LAN remota che utilizza **Internet** per inoltrare ulteriormente il pacchetto esterno verso il **server VPN**. 
+L'**interfaccia virtuale** realizza un **canale virtuale diretto** tra i due router con il ruolo di client e server della connessione VPN dove viene **inoltrato** il **pacchetto interno trasportato**. In realtà il **canale reale**, quello dove viene inoltrato il **pacchetto esterno vettore**, passa per il **router di confine** di ogni LAN remota che utilizza **Internet** per inoltrare ulteriormente il pacchetto esterno verso il **server VPN**. 
 
 ### **Esempio officina 1**
 
