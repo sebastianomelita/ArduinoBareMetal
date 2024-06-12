@@ -77,7 +77,7 @@ Realizzare l'interconnessione tra una sede centrale di una officina multimarca c
 
 <img src="img/sediVPNL2.png" alt="alt text" width="1100">
 
-La **subnet network** è mappata sulla **VLAN 30** ed è la subnet dove posseggono il proprio indirizzo IP i router di confine di tutte le reti che, quindi, attraverso di essa sono raggiungibili per configurazione/manutenzione.
+La **subnet network** è mappata sulla **VLAN 30** ed è la subnet dove posseggono il proprio indirizzo IP tutti i router di confine di tutte le reti (sia centrale che remote) che, quindi, attraverso di essa sono **raggiungibili** per configurazione/manutenzione.
 
 Sitografia:
 - https://it.wikipedia.org/wiki/TUN/TAP
