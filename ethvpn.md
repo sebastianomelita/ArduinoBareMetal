@@ -37,8 +37,9 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 10.8.0.0        0.0.0.0         255.255.255.0   U     0      0        0 tun0
 ```
 
-### **Esempio**
-Realizzare l'interconnessione tra una sede centrale di una officina multimarca che ha sedi sparse in tutta la regione 
+### **Esempio officina 1**
+
+Realizzare l'interconnessione tra una sede centrale di una officina multimarca che ha sedi sparse in tutta Italia. Le officine devono poter consultare i lsistema informativo centrale per vedere la disponibilità di pezzi di ricambi da parte di altre officine e per la consultazione dei listini di lavorazioni e ricambi. 
 
 <img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
 
@@ -59,6 +60,10 @@ Quando due reti sono collegate tramite un tunnel bridged L2 OpenVPN, la risoluzi
 8. **Inoltro della risposta alla sorgente**: Il router VPN locale inoltra la risposta ARP alla sorgente originaria attraverso la sua rete locale.
 
 In questo modo, la **risoluzione degli indirizzi MAC** tra le due reti collegate da un tunnel bridged L2 OpenVPN avviene attraverso il **tunnel VPN**, consentendo la comunicazione tra dispositivi su reti distinte come se fossero sulla **stessa rete locale**.
+
+### **Esempio officina 2**
+
+Realizzare l'interconnessione tra una sede centrale di una officina multimarca che ha sedi sparse in tutta Italia. Le officine devono poter consultare i lsistema informativo centrale per vedere la disponibilità di pezzi di ricambi da parte di altre officine e per la consultazione dei listini di lavorazioni e ricambi. Inoltre le officine sono divise in due reparti, l'officina vera e propria dove si effettuano le riparazioni e l'ufficio amministrativo e contabile dove si gestiscono i rapporti con fornitori e clienti. Officina e amministrazione devono poter consultare server dedicati allo svolgimento delle rispettive funzioni che sono dislocati presso la sede centrale e ciascuna delle due funzioni non dovrebbe poter avere accesso ai server dell'altra.
 
 <img src="img/sediVPNL2.png" alt="alt text" width="1100">
 
