@@ -60,27 +60,27 @@ Le ACL si dividono in:
 
 #### **ACL per negare accesso alla rete ufficio dalle reti officina**
 
-```Python
+```C++
 ! Definizione lista di regole (blacklist)
-(config)#access-list 101 deny 10.0.1.0 0.0.0.255
-(config)#access-list 101 deny 10.0.2.0 0.0.0.255
-(config)#access-list 101 deny 10.0.3.0 0.0.0.255
-(config)#access-list 101 permit any 
+(config)# access-list 101 deny 10.0.1.0 0.0.0.255
+(config)# access-list 101 deny 10.0.2.0 0.0.0.255
+(config)# access-list 101 deny 10.0.3.0 0.0.0.255
+(config)# access-list 101 permit any 
 ! Selezione interfaccia tun0
 (config)# interface tun0 
 ! Applicazione in ingress su tun0
 (config-if)# ip access-group 101 in
-(config-if)#exit
+(config-if)# exit
 ! Selezione interfaccia tun1
 (config)# interface tun1 
 ! Applicazione in ingress su tun1
 (config-if)# ip access-group 101 in
-(config-if)#exit
+(config-if)# exit
 ! Selezione interfaccia tun2
 (config)# interface tun2 
 ! Applicazione in ingress su tun2
 (config-if)# ip access-group 101 in
-(config-if)#exit
+(config-if)# exit
 ```
 Una volta inviato inviato verso l'**interfaccia tun** con un **ip privato**, il **pacchetto** esce da un'**altra interfaccia del client VPN** imbustato dentro un pacchetto con **IP pubblico** che, per questo motivo, viene **inoltrato** verso il **default gateway** ```10.0.1.254``` oppure ```10.0.2.254``` oppure ```10.0.3.254```, a seconda della della LAN remota di appartenenza.
 
