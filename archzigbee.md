@@ -160,6 +160,12 @@ La **semantica** delle **entità** Zigbee definisce:
 - gli **attributi** che esse posseggono (acceso, spento, stato)
 - gli **oggetti** che possono svolvere certe **azioni** su altri oggetti (un pulsante accende una lampada)
 
+Si può comprendere, quindi, come una rete Zigbee non si limiti a trasmettere, tra dispositivi sensori e attuatori, dei **messaggi generici** di cui lo stack di protocolli non capisce il **significato** e non conosce la **struttura** ma,  bensì, trasmette proprio messaggi di comando e messaggi di stato ritagliati per una certa categoria di dispositivi domotici modellata dal protocollo. Essendo parte del protocollo, questi messaggi hanno la prprietà di essere **standard**, per cui sono **comuni** a dispositivi di **marca diversa** purchè siano dello **stesso tipo** previsto dallo standard.
+
+E' una differenza sostanziale con una rete **LoraWAN** o **IP**:
+- una **rete IP** e una **rete LoRaWAN** scambiano **messaggi** generici **non strutturati** arrivando fino al **livello 4** della pila **ISO/OSI**. In pratica, scambiano **sequenza di bit**.
+- **Zigbee** scambia messaggi con una **struttura** ed **significato** (semantica) entrambi **stabiliti a priori** dallo standard fino al **livello 6 (presentazione)** della pila **ISO/OSI**. In pratica, scambiano oggetti domotici strutturati, in un certo senso, analoghi a documenti quali Word, Powerpoint, XML, HTML, ecc...
+
 ### **Profili Zigbee**
 
 Ogni dispositivo Zigbee aderisce a un profilo di dispositivo specifico che descrive le sue funzionalità e capacità. Questi profili sono standardizzati per garantire che i dispositivi di produttori diversi possano funzionare insieme senza problemi. Alcuni esempi di profili di dispositivi sono:
