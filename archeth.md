@@ -370,6 +370,19 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 - E’ necessaria la separazione fisica degli ambienti per dividere i gruppi F1 e F2
 - Sul router ogni link fisico genera una subnet che si mappa 1:1 su una sottostante LAN fisica
 
+Senza VLAN      |  Con le VLAN  | 
+:-------------------------:|:-------------------------:|
+ |```                                                |
+  !Definizione lista di regole (blacklist)
+  (config)# access-list 101 deny 10.0.2.0 0.0.0.255
+  (config)# access-list 101 permit any 
+  ! Selezione interfaccia eth2
+  (config)# interface eth2 
+  !Applicazione in ingress su eth2
+  (config-if)# ip access-group 101 in
+  (config-if)# exit
+  ```
+ |  
 
 ### **Segmentazione logica**
 
