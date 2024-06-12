@@ -79,9 +79,15 @@ Realizzare l'interconnessione tra una sede centrale di una officina multimarca c
 
 La **subnet network** è mappata sulla **VLAN 30** ed è la subnet dove posseggono il proprio indirizzo IP tutti i router di confine di tutte le reti (sia centrale che remote) che, quindi, attraverso di essa sono **raggiungibili** per configurazione/manutenzione.
 
+### **Porte dei bridge**
+
 Le **porte dei bridg**e che collegano ad altri dispostivi L2 (**bridge** o **switch**) sono tutte **tagged**, cioè di **trunk**, e trasportano, in maniera isolata tra loro, tutte le VLAN della rete. Le **VLAN** sono **condivise** tra sede centrale e remote e, essendo queste **mappate** sulla **loro subnet**, accade che **dispositivi di sedi remote** possono **condividere** la **stessa subnet**.
 
 Le **porte dei bridge** che collegano ai **PC** o al **router** sono tutte **untagged**, cioè di **accesso**, e trasportano i pacchetti dell'**unica VLAN** a cui sono **associate** e a cui, quindi, i dispositivi ad esse collegati appartengono.
+
+### **Inter vlan routing**
+
+L'**inter vlan routing** è realizzato dal solo router nella **sede centrale**, l'unico che, avendo **porte di trunk**, possiede interfacce su **tutte le vlan** e, quindi, su **tutte le subnet** ed, essendo le dorsali verso il router realizzate con un **trunk** terminato su tre **interfacce virtuali** 802.1q, la configurazione dell'**inter vlan routing** è di tipo **router on a stick**.
 
 Sitografia:
 - https://it.wikipedia.org/wiki/TUN/TAP
