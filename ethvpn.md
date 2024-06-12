@@ -45,9 +45,28 @@ L'**interfaccia virtuale** realizza un **canale virtuale diretto** tra i due rou
 
 ### **Esempio officina 1**
 
-Realizzare l'interconnessione tra una sede centrale di una officina multimarca che ha sedi sparse in tutta Italia. Le officine devono poter consultare i lsistema informativo centrale per vedere la disponibilità di pezzi di ricambi da parte di altre officine e per la consultazione dei listini di lavorazioni e ricambi. 
+1. Realizzare l'interconnessione tra una sede centrale di una officina multimarca che ha sedi sparse in tutta Italia. Le officine devono poter consultare i lsistema informativo centrale per vedere la disponibilità di pezzi di ricambi da parte di altre officine e per la consultazione dei listini di lavorazioni e ricambi.
+2. Negare ad un PC della subnet officina di entrare nella subnet ufficio.
 
 <img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
+
+Per risolvere il quesito 2, cioè negare al PC della subnet officina di comnicare con un PC della subnet ufficio, si può creare una ACL nel router firewall.
+
+Le ACL si dividono in:
+- **Standard**, valutano il solo indirizzo di sorgente e vanno poste vicino alla destinazione 
+- **Estese**, valutano anche l'indirizzo di destinazione e vanno poste vicino all’origine
+
+<img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
+
+```Python
+! Definizione lista di regole (blacklist)
+(config)#access-list 101 deny host 10.0.1.2
+(config)#access-list 101 permit any 
+! Selezione interfaccia e0
+(config)# interface e0 
+! Applicazione in ingress su e0
+(config-if)# ip access-group 101 in
+```
 
 Una volta inviato inviato verso l'**interfaccia tun** con un **ip privato**, il **pacchetto** esce da un'**altra interfaccia del client VPN** imbustato dentro un pacchetto con **IP pubblico** che, per questo motivo, viene **inoltrato** verso il **default gateway** ```10.0.1.254``` oppure ```10.0.2.254``` oppure ```10.0.3.254```, a seconda della della LAN remota di appartenenza.
 
