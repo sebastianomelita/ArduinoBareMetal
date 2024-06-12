@@ -466,7 +466,7 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 - Porte di uno stesso switch possono appartenere a gruppi di macchine diverse, sia F1 che F2
 - è necessaria la colorazione delle porte per distinguere i gruppi
 - Sul router ogni link virtuale genera una subnet che si mappa 1:1 su una sottostante LAN logica (VLAN)
-- il filtraggio è realizzato direttamente a livello di linea L2 dall'impostazione ```allowed vlan 10, 20``` sulla porta di trunk che filtra le trame della vlan 30
+- il **filtraggio** è realizzato direttamente a livello di linea L2 dall'impostazione ```allowed vlan 10, 20``` sulla porta di trunk che filtra le trame della vlan 30
 
 ### **Esempio**
 
