@@ -371,8 +371,8 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 - Sul router ogni link fisico genera una subnet che si mappa 1:1 su una sottostante LAN fisica
 
 Senza VLAN      |  Con le VLAN  | 
-:-------------------------:|:-------------------------:|
- |```                      |                           |
+|:-------------------------:|:-------------------------:|
+ |```                                         |                           |
   !Definizione lista di regole (blacklist)
   (config)# access-list 101 deny 10.0.2.0 0.0.0.255
   (config)# access-list 101 permit any 
