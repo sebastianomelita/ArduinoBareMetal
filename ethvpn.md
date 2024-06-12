@@ -36,7 +36,10 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 0.0.0.0         192.168.1.1     0.0.0.0         UG    0      0        0 eth0
 10.8.0.0        0.0.0.0         255.255.255.0   U     0      0        0 tun0
 ```
- 
+
+### **Esempio**
+Realizzare l'interconnessione tra una sede centrale di una officina multimarca che ha sedi sparse in tutta la regione 
+
 <img src="img/sediVPNL2.png" alt="alt text" width="1100">
 
 ## **VPN L2**
