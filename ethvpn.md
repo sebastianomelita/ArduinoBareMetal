@@ -62,35 +62,25 @@ Le ACL si dividono in:
 ```Python
 ! Definizione lista di regole (blacklist)
 (config)#access-list 101 deny 10.0.1.0 0.0.0.255
-(config)#access-list 101 permit any 
-! Selezione interfaccia e0
-(config)# interface tun0 
-! Applicazione in ingress su e0
-(config-if)# ip access-group 101 in
-```
-
-#### **Interfaccia tun 1 del router centrale**
-```Python
-! Definizione lista di regole (blacklist)
 (config)#access-list 101 deny 10.0.2.0 0.0.0.255
-(config)#access-list 101 permit any 
-! Selezione interfaccia e0
-(config)# interface tun0 
-! Applicazione in ingress su e0
-(config-if)# ip access-group 101 in
-```
-
-#### **Interfaccia tun 2 del router centrale**
-```Python
-! Definizione lista di regole (blacklist)
 (config)#access-list 101 deny 10.0.3.0 0.0.0.255
 (config)#access-list 101 permit any 
-! Selezione interfaccia e0
+! Selezione interfaccia tun0
 (config)# interface tun0 
 ! Applicazione in ingress su e0
 (config-if)# ip access-group 101 in
+(config-if)#exit
+! Selezione interfaccia tun1
+(config)# interface tun1 
+! Applicazione in ingress su e1
+(config-if)# ip access-group 101 in
+(config-if)#exit
+! Selezione interfaccia tun2
+(config)# interface tun2 
+! Applicazione in ingress su e2
+(config-if)# ip access-group 101 in
+(config-if)#exit
 ```
-
 Una volta inviato inviato verso l'**interfaccia tun** con un **ip privato**, il **pacchetto** esce da un'**altra interfaccia del client VPN** imbustato dentro un pacchetto con **IP pubblico** che, per questo motivo, viene **inoltrato** verso il **default gateway** ```10.0.1.254``` oppure ```10.0.2.254``` oppure ```10.0.3.254```, a seconda della della LAN remota di appartenenza.
 
 ## **VPN L2**
