@@ -154,13 +154,13 @@ Schermata iniziale del controller AP
 
 Interfaccia di analisi dell’ambiente radio (survey):
 
-<img src="imgambiente.png" alt="alt text" width="600">
+<img src="img/ambiente.png" alt="alt text" width="600">
 
 Interfaccia di gestione degli AP:
 
-<img src="gestione.png" alt="alt text" width="600">
+<img src="img/gestione.png" alt="alt text" width="600">
 
-<img src="captive.png" alt="alt text" width="600">
+<img src="img/captive.png" alt="alt text" width="600">
 
 Il controller degli access point ha le funzioni di:
 - gestione, configurazione e controllo dello stato degli AP
