@@ -40,7 +40,7 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 ### **Esempio**
 Realizzare l'interconnessione tra una sede centrale di una officina multimarca che ha sedi sparse in tutta la regione 
 
-<img src="img/sediVPNL2.png" alt="alt text" width="1100">
+<img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
 
 ## **VPN L2**
 
