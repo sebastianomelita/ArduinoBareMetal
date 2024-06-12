@@ -48,15 +48,15 @@ L'**interfaccia virtuale** realizza un **canale virtuale diretto** tra i due rou
 1. Realizzare l'interconnessione tra una sede centrale di una officina multimarca che ha sedi sparse in tutta Italia. Le officine devono poter consultare i lsistema informativo centrale per vedere la disponibilità di pezzi di ricambi da parte di altre officine e per la consultazione dei listini di lavorazioni e ricambi.
 2. Negare ad un PC della subnet officina di entrare nella subnet ufficio.
 
+<img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
+
+#### **ACL per negare accesso alla rete ufficio dalle reti officina**
+
 Per risolvere il quesito 2, cioè negare ad un PC della subnet officina di comunicare con un PC della subnet ufficio, si può creare **una ACL** nel **router firewall** centrale **per ogni interfaccia tun**.
 
 Le ACL si dividono in:
 - **Standard**, valutano il solo indirizzo di sorgente e vanno poste vicino alla destinazione 
 - **Estese**, valutano anche l'indirizzo di destinazione e vanno poste vicino all’origine
-
-<img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
-
-#### **ACL per negare accesso alla rete ufficio dalle reti officina**
 
 ```C++
 ! Definizione lista di regole (blacklist)
@@ -116,25 +116,24 @@ Una volta inviato inviato verso l'**interfaccia tap**, la **trama** esce da un'*
 
 I **server** dei **due gruppi** di utenti (officina e uffici) sono collegati a **porte di accesso** associate ad una **sola vlan**, quella del gruppo di appartenenza, per cui sono visibili **direttamente** (senza intervaln routing) solo dai PC di **quella vlan**.
 
-### **Porte dei bridge**
+#### **Porte dei bridge**
 
 Le **porte dei bridge** che collegano ad altri dispostivi L2 (**bridge** o **switch**) sono tutte **tagged**, cioè di **trunk**, e trasportano, in maniera isolata tra loro, tutte le VLAN della rete. Le **VLAN** sono **condivise** tra sede centrale e remote e, essendo queste **mappate** sulla **loro subnet**, accade che **dispositivi di sedi remote** possono **condividere** la **stessa subnet**.
 
 Le **porte dei bridge** che collegano ai **PC** o al **router** sono tutte **untagged**, cioè di **accesso**, e trasportano i pacchetti dell'**unica VLAN** a cui sono **associate** e a cui, quindi, i dispositivi ad esse collegati appartengono.
 
-### **Inter vlan routing**
+#### **Inter vlan routing**
 
 L'**inter vlan routing** è realizzato dal solo router nella **sede centrale**, l'unico che, avendo **porte di trunk**, possiede interfacce su **tutte le vlan** e, quindi, su **tutte le subnet** ed, essendo le dorsali verso il router realizzate con un **trunk** terminato su tre **interfacce virtuali** 802.1q, la configurazione dell'**inter vlan routing** è di tipo **router on a stick**. Poichè l'intervlan routing di tipo router on a stick si realizza con subnet direttamente connesse ad un solo router, allora la **definizione manuale** delle **tabelle di routing** non è necessaria.
 
-Per risolvere il quesito 2, cioè negare ad un PC della subnet officina di comunicare con un PC della subnet ufficio, si può creare **una ACL** nel **router firewall** centrale **per ogni interfaccia tun**.
+#### **ACL per negare accesso alla rete ufficio dalle reti officina**
 
-Per risolvere il quesito 2, cioè negare ad un PC della subnet officina di comunicare con un PC della subnet ufficio, si può creare **una ACL** nel **router firewall** centrale **per ogni interfaccia tun**.
+Per risolvere il quesito 2, cioè negare ad un PC della subnet officina di comunicare con un PC della subnet ufficio, si può creare **una ACL** nel **router firewall** centrale **per l'interfaccia vlan 10**.
 
 Le ACL si dividono in:
 - **Standard**, valutano il solo indirizzo di sorgente e vanno poste vicino alla destinazione 
 - **Estese**, valutano anche l'indirizzo di destinazione e vanno poste vicino all’origine
 
-#### **ACL per negare accesso alla rete ufficio dalle reti officina**
 
 ```C++
 ! Definizione lista di regole (blacklist)
