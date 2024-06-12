@@ -53,6 +53,127 @@ L’AP si autentica presso il server RADIUS generalmente tramite una password ch
 
 <img src="img/supplicantconf.png" alt="alt text" width="800">
 
+### **Autenticazione del server**
+
+Un riassunto delle fasi dell’autenticazione asimmetrica forte potrebbe essere:
+1.	Il Client manda al server un messaggio contenente la sua identità è la sfida OTP che ha scelto lui, b.
+2.	Il server risponde mandando la propria identità  A e la propria firma sulla sfida b. E’ la fase di scambio delle credenziali (Credenziali = sfida firmata) in cui il server, contestualmente, invia pure la propria chiave pubblica (contenuta in un certificato utente). In definitiva il server si presenta al client con la sua sfida firmata e un certificato utente ad essa allegato. 
+3.	Il client autentica il server se:
+    1.	riesce a verificare la firma posta sulla sfida, ovvero se  decifrando la firma con la chiave pubblica del server, ritrova la sfida originale del client (Fase di verifica delle credenziali).
+    2.	Se riesce ad autenticare la chiave pubblica utilizzando il certificato CA dell’autorità che l’ha firmata. 
+
+### **Autenticazione del certificato utente**
+
+Un server si presenta con una credenziale firmata e con un certificato utente. Il controllo si basa sul presupposto che il client che controlla possegga un certificato CA che validi la firma il certificato da controllare. Il certificato di un server è valido se passa tutte le seguenti verifiche:
+- La data corrente sia all’interno del periodo di validità del certificato
+- La CA proprietaria del certificato sia fidata (trusted), cioè esista un suo certificato nella lista dei certificati attendibili nel PC
+- sia valida la firma del proprietario del certificato (issuer), cioè si verifica che la chiave pubblica della CA in questione, prelevata da un certificato CA conservato sul PC client, effettivamente decifri la firma del certificato. È il controllo principale. 
+- Che il nome di dominio (subject) dichiarato nel certificato del server da controllare coincida col nome di dominio dell’url del server
+Se il certificato è valido, la chiave pubblica in esso contenuta può decifrare la credenziale del server autenticandolo
+
+### **Gestione delle sottoreti**
+
+Una volta autenticati, gli utenti prendono automaticamente un indirizzo IP da un server DHCP posto a bordo del core switch principale (CS1). Gli indirizzi IP assegnabili fanno capo ad un certo numero di subnet, ciascuna distribuita ovunque all’interno del perimetro fisico della scuola (raggiungibile da uno switch o dal wifi) mediante la tecnologia delle Virtual LAN o VLAN. In pratica ad una VLAN corrisponde una subnet IP. E viceversa, ad una subnet IP corrisponde la sua VLAN. 
+Le VLAN sono caratterizzate da un lo VLAN ID.
+Le Subnet sono caratterizzate dalla coppia indirizzo/subnet mask
+
+<img src="img/vlanlist.png" alt="alt text" width="600">
+
+Le VLAN di base sono separate e non esiste modo di interconnetterle se non collegandole ad una porta di un router. Il router che le collega è contenuto all’interno dello SW di core e possiede un indirizzo IP per ogni interfaccia che esso possiede su una vlan ad esso collegata.
+
+<img src="img/vlanlist2.png" alt="alt text" width="600">
+
+Si noti che la VLAN 300 non è collegata al router, benchè sia gestita dallo switch. Questo vuol dire che non è connessa da lui alle altre subnet perché questa funzione è delegata al router/firewall della didattica che ha sulla sua subnet l’indirizzo 10.30.0.3 mentre l’indirizzo della subnet è 10.30.0.0/16. Il firewall sull’interfaccia DMZ ha impostate tutta una serie di filtraggi che limitano l’accesso alle risorse del sistema. In particolare l’accesso ad internet è di base inibito e la visione del resto della rete è parziale.
+
+Su questa subnet è il firewall che ha la funzione di server dhcp che assegna gli indirizzi IP ai dispositivi, ed è l’unica subnet su cui ciò accade perché per le altre ci pensa in core switch CS1.
+Le subnet sono divise in base alla funzione e tendono a separare il traffico per categorie di utenti. Il motivo è tenere l’isolamento per evitare lo spoofing MAC da parte dei dispositivi delle atre subnet ed eventuali tentativi di accesso indesiderato ai dispositivi, nonché per necessari motivi di prestazione poiché, a causa dell’elevato numero di utenti, è necessario partizionare il traffico broadcast IP.
+
+Tramite la rete wifi non è possibile accedere alla rete della segreteria ma solamente a quella della didattica. Per accedere alla rete della segreteria si può utilizzare il gateway HTTPS-RDP (VPN) Guacamole per fornire un accesso alla postazione di lavoro di un impiegato.
+
+### **Gestione statica degli SSID**
+
+Ciascun AP è capace di creare e gestire un certo numero di interfacce virtuali, ciascuna caratterizzata da un proprio SSID. Gli SSID in uso e quindi le interfacce  in uso sono le seguenti:
+
+<img src="img/ssid.png" alt="alt text" width="600">
+
+Come si può notare, ogni interfaccia, di base, ha una associazione statica con una sua VLAN. Questo significa che, al momento dell’accesso, l’utente prende un indirizzo di quella VLAN, cioè, diventa, di diritto, cittadino di quella VLAN, con la raggiungibilità ai servizi di quella VLAN e con la banda eventualmente riservata per quella VLAN.
+La maggior parte degli SSID è diffuso su tutti gli AP e quindi è visibile ovunque. Un SSID, gmarconi7777 è visibile solo in un particolare laboratorio con un accesso WPA personal.
+
+Un altro, marconi-hotspot ha un accesso libero ma vincolato alla sottomissione di un voucher. Cioè si tratta di un Captive Portal dove si autenticano i visitatori occasionali o i docenti a contratto di breve durata. Non è auspicabile l’uso prolungato di questa modalità di accesso perché non è in grado di autenticare gli AP e il server RADIUS per cui è soggetta ad attacchi MTM. Lo stesso discorso vale per l’autenticazione WPA Personal.
+Marconi-IOT è la rete dei sensori didattici e delle raspberry. La politica attuale è di far prendere a questi dispositivi un indirizzo IP statico preimpostato in base al MAC nel DHCP del firewall (sono sulla DMZ-vlan300 e quindi li serve lui).
+
+Sensori è una interfaccia per i sensori dei progetti di PCTO della scuola ee che sono installati in pianta stabile. Non dovrebbe mai autenticare PC.
+Tuveri è una sottorete che, presto diventerà nascosta, e che serve al solo accesso dei telofoni voip associandoli alla rete dei pc fissi dei professori della scuola (essi stessi potrebbero essere configurati per ospitare un client voip).
+
+L’ssid marconiopen è una rete con una password nota a tutti i professori che viene attivata solam ente in caso di emergenza a seguito di una eventuale indisponibilità del servizio centralizzato di autenticazione.
+L’accesso di gran lunga più sicuro rimane iismarconi perché autenticato su base utente e perché obbliga i PC ad autenticare pure gli AP.
+
+### **Gestione dinamica degli SSID**
+
+In realtà l’associazione statica degli ssid è solo di base (default) e può essere cambiata in qualsiasi momento impostando il campo Tunnel-Private-Group-Id nella risposta  verso l’autenticatore (RFC2868).
+Le utenze si autenticano col le loro credenziali che, dall’autenticatore in poi, sono inviate (tramite protocollo RADIUS) verso un server che cerca l’username all’interno di un database LDAP verificando la password. Ad autenticazione avvenuta con successo, viene prelevato il profilo utente che è composto da una stringa che rappresenta un DN (Distinguished Name), cioè l’insieme completo degli attributi che lo riguardano. Il DN viene conservato nella variabile d’ambiente freeradius Ldap-Group dove può essere letto ed utilizzato per un eventuale confronto.
+Nel file users di Freeradius vengono definiti eventuali criteri di assegnazione dinamica del campo Tunnel-Private-Group-Id della risposta del protocollo RADIUS in base al valore del DN prelevato dal profilo utente.
+
+```
+DEFAULT Ldap-Group == "cn=nointernet-sc1,cn=groups,ou=sc1,dc=univention,dc=marconicloud,dc=it"
+        Tunnel-Type = VLAN,
+        Tunnel-Medium-Type = IEEE-802,
+        Tunnel-Private-Group-Id = "300"
+        #Reply-Message = "You are Accepted as 300"
+DEFAULT Ldap-Group == "cn=lehrer-sc1,cn=groups,ou=sc1,dc=univention,dc=marconicloud,dc=it"
+        Tunnel-Type = VLAN,
+        Tunnel-Medium-Type = IEEE-802,
+        Tunnel-Private-Group-Id = "120"
+        #Reply-Message = "You are Accepted as 120"
+DEFAULT Ldap-Group == "cn=schueler-sc1,cn=groups,ou=sc1,dc=univention,dc=marconicloud,dc=it"
+        Tunnel-Type = VLAN,
+        Tunnel-Medium-Type = IEEE-802,
+        Tunnel-Private-Group-Id = "130"
+        #Reply-Message = "You are Accepted as 130"
+DEFAULT Auth-Type := Reject
+```
+Le impostazioni correnti fanno in modo che:
+- se l’utente appartiene al gruppo nointernet-sc1 allora questo viene associato alla VLAN 300 (quarantena o DMZ) che non è autorizzato ad andare in Internet ne ad accedere ai servizi scolastici.
+- se l’utente appartiene al gruppo lehrer-sc1 allora questo viene associato alla VLAN 120 (wireless docenti) ed è autorizzato ad accedere ad Internet e ai servizi con il privilegio di docente (può premere il pulsante che abilita internet alla classe).
+- se l’utente appartiene al gruppo schueler-sc1 allora questo viene associato alla VLAN 130 (wireless studenti) che accede ad internet solo se abilitato con il pulsante web da un docente e che può accedere ad alcuni servizi comuni con il privilegio di  studente (come partecipare ad una videoconferenza jitsi creata dal docente).
+
+L’assegnazione al gruppo nointernet-sc1 avviene per i soli utenti appartenenti anche al gruppo schueler-sc1 (studenti), in maniera dinamica tramite la pressione di un pulsante web a disposizione dei docenti (previa autenticazione).
+
+
+<img src="img/pulsantone.png" alt="alt text" width="600">
+
+### **Controller degli AP**
+
+E’ un server installato su una VM dedicata che si occupa di gestire, coordinare e controllare tutte le funzioni degli AP da un’unica postazione centralizzata configurabile da remoto tramite interfaccia web.
+E’ un componente chiave in un ambiante scolastico in cui il servizio è basato su un approccio BYOD in cui i dispositivi personali si connettono alla rete proprio tramite il WIFi.
+Gli ambienti sono molti, parecchio dispersi e realizzati con opere murarie costituite spesso di lamierino che non favorisce la propagazione radio, motivo per cui la flotta di AP è piuttosto nutrita (vicino ai 60 AP).  Si è scelto di utilizzare un criterio di acquisizione uniforme dal punto di vista del Vendor (Ubiquiti) per facilitare la gestione degli apparati.
+
+Schermata iniziale del controller AP
+
+<img src="img/controller.png" alt="alt text" width="600">
+
+Interfaccia di analisi dell’ambiente radio (survey):
+
+<img src="imgambiente.png" alt="alt text" width="600">
+
+Interfaccia di gestione degli AP:
+
+<img src="gestione.png" alt="alt text" width="600">
+
+<img src="captive.png" alt="alt text" width="600">
+
+Il controller degli access point ha le funzioni di:
+- gestione, configurazione e controllo dello stato degli AP
+- punto di scaricamento centralizzato dei pacchetti di aggiornamento degli AP e della loro distribuzione su ciascuno di essi.
+- Sorveglianza e analisi dell’ambiente radio alla ricerca di fonti di interferenza o di sospetti attacchi MTM tramite rogue AP.
+- Sorveglianza dello spoofing MAC tramite individuazione di indirizzi IP duplicati
+- Monitoraggio continuo e allerta con segnalazione di anomalie tramite log o segnalazioni su app del servizio Ubiquiti
+- Impostazione centralizzata di regole di filtraggio su singoli AP o gruppi di AP per venire incontro ad esigenze di sicurezza
+- Impostazione centralizzata delle configurazioni di sistema su singoli AP o gruppi di AP
+- Gestione centralizzata delle interfacce radio virtuali per gruppi di AP (anche tutti o uno solo)
+- Captive portal con varie modalità di accesso quali ad esempio il meccanismo dei voucher 
+
+
 >[Torna a reti ethernet](archeth.md)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
