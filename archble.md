@@ -1,20 +1,20 @@
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
 
 - [Dettaglio architettura Ethernet](archeth.md)
-- [Dettaglio architettura Zigbee](archzigbee.md)
+- [Dettaglio architettura BLE](archBLE.md)
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 ## **Caso d'uso BLE** 
 
-Date le particolarità della tecnologia, i casi d'uso per la rete di sensori sono quelli tipici applicazioni **IoT indoor** a **corto/medio raggio**, dove concorre con altre tecnologie di rete: WIFi, Zigbee e, sotto certe condizioni, LoRaWAN. Per la sensoristica Indoor ha praticamente gli stessi punti di forza di Zigbee con il quale è praticamente intercambiambile (ma non interoperabile).
+Date le particolarità della tecnologia, i casi d'uso per la rete di sensori sono quelli tipici applicazioni **IoT indoor** a **corto/medio raggio**, dove concorre con altre tecnologie di rete: WIFi, BLE e, sotto certe condizioni, LoRaWAN. Per la sensoristica Indoor ha praticamente gli stessi punti di forza di BLE con il quale è praticamente intercambiambile (ma non interoperabile).
 
 <img src="img/BLEzone.png" alt="alt text" width="800">
 
-Esiste però un ambito nel quale il BLE è attualmente **senza rivali** rispetto alle tecnologie Zigbee, WiFi e LoRaWAN: il **tracciamento indoor** degli asset aziendali e la **localizzazione indoor** degli utenti. Il meccanismo che consente queste funzioni si basa sulla trasmissione di particolari messaggi periodici detti **beacon**. 
+Esiste però un ambito nel quale il BLE è attualmente **senza rivali** rispetto alle tecnologie BLE, WiFi e LoRaWAN: il **tracciamento indoor** degli asset aziendali e la **localizzazione indoor** degli utenti. Il meccanismo che consente queste funzioni si basa sulla trasmissione di particolari messaggi periodici detti **beacon**. 
 
-La tecnologia dei **beacon** è **comune** a quasi tutti i protocolli wireless moderni, compresi Zigbee, WiFi e LoRaWAN, che quindi sono in parte capaci anche loro delle funzioni di localizzazne suddette, ma in maniera molto **meno precisa** e versatile.
+La tecnologia dei **beacon** è **comune** a quasi tutti i protocolli wireless moderni, compresi BLE, WiFi e LoRaWAN, che quindi sono in parte capaci anche loro delle funzioni di localizzazne suddette, ma in maniera molto **meno precisa** e versatile.
 
 ### **Aspetti critici**
 
@@ -40,7 +40,7 @@ Di seguito è riportata l'architettura generale di una **rete di reti** di senso
 
 ### **Rete di distribuzione** 
 
-I **gateway** utilizzano la **rete internet** e/o una **LAN** per realizzare un collegamento verso il **broker MQTT**, per cui, in definitiva, la topologia risultante è, **fisicamente**, quella di più **reti di accesso** con tecnologia e topologia differente (a maglia nel caso di zigbee) tenute insieme da una **rete di distribuzione** qualsiasi purchè sia di tipo TCP/IP (LAN o Internet).
+I **gateway** utilizzano la **rete internet** e/o una **LAN** per realizzare un collegamento verso il **broker MQTT**, per cui, in definitiva, la topologia risultante è, **fisicamente**, quella di più **reti di accesso** con tecnologia e topologia differente (a maglia nel caso di BLE) tenute insieme da una **rete di distribuzione** qualsiasi purchè sia di tipo TCP/IP (LAN o Internet).
 
 Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture è utile perchè permette di creare interfacce web o applicazioni per smartphone o tablet per:
 - eseguire, in un'unica interfaccia (form), comandi verso attuatori posti su reti con tecnologia differente.
@@ -66,11 +66,11 @@ Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente an
 
 #### **Partizionamento e ridondanza** 
 
-Per quanto riguarda il **numero dei gateway** in una stessa **LAN**, il numero minimo necessario perchè la rete zigbee funzioni è **uno**. Un gateway avente anche funzione di **master** nelle rete di sensori. Però, data la **criticità** di eventuali **guasti** su questo dispositivo (la rete di sensori diventa nel suo complesso **inaccessibile**), potrebbe essere opportuno prevedere:
+Per quanto riguarda il **numero dei gateway** in una stessa **LAN**, il numero minimo necessario perchè la rete BLE funzioni è **uno**. Un gateway avente anche funzione di **master** nelle rete di sensori. Però, data la **criticità** di eventuali **guasti** su questo dispositivo (la rete di sensori diventa nel suo complesso **inaccessibile**), potrebbe essere opportuno prevedere:
 - localmente la **ridondanza dei gateway**. Almeno 2 gateway per ogni rete di sensori. Uno master attivo di default, e uno slave che entra in azione quando sente che il proprio master è non raggiungibile.
 - globalmente un **partizionamento della rete** di sensori in più settori con frequenze diverse e gestiti da coordinatori diversi inseriti in **più gateway sparsi** in **zone diverse** dell'impianto.
   
-La **partizione** di una rete BLE può essere utile in determinate situazioni, specialmente se si hanno un **gran numero** di dispositivi o se si vuole **separare** i dispositivi **per zone** o **per scopi** diversi. Ecco alcune **situazioni** in cui potrebbe essere vantaggioso partizionare una rete Zigbee:
+La **partizione** di una rete BLE può essere utile in determinate situazioni, specialmente se si hanno un **gran numero** di dispositivi o se si vuole **separare** i dispositivi **per zone** o **per scopi** diversi. Ecco alcune **situazioni** in cui potrebbe essere vantaggioso partizionare una rete BLE:
 
 - **Servizi e profili**: Nelle reti BLE, i dispositivi comunicano attraverso **servizi** e **profili** Bluetooth standardizzati. Puoi organizzare i dispositivi in **gruppi** basati su **servizi simili** o scopi simili. Ad esempio, potresti avere un gruppo di dispositivi BLE che forniscono dati di monitoraggio della salute e un altro gruppo di dispositivi che controllano i dispositivi domestici intelligenti.
 
@@ -95,7 +95,7 @@ Il partizionamento delle reti BLE può essere utile per migliorare l'efficienza,
         
     - **Senza filo** cioè wireless con accesso:
         - **singolo dedicato**: link punto-punto analogico digitalizzato con AX25 oppure digitale con un radio modem (Yarm ACME Systems, 6LoWPAN, LoRa) resi full duplex con l'uso di multiplazioni FDM o TDM.
-        - **Multiplo e condiviso** (BUS) di tipo half duplex reso bidirezionale (full duplex) tramite tecniche asincrone CSMA/CA (Zigbee, wifi, LoRa) o sincrone TDMA (Zigbee, Bluetooth).
+        - **Multiplo e condiviso** (BUS) di tipo half duplex reso bidirezionale (full duplex) tramite tecniche asincrone CSMA/CA (BLE, wifi, LoRa) o sincrone TDMA (BLE, Bluetooth).
 - **Tra gateway e gestore** delle informazioni realizzato dalla **rete di distribuzione**:
      - Tipicamente tramite **LAN ethernet** e architettura **Client/Server**
      - Interazioni di tipo PUSH o PULL
@@ -104,7 +104,7 @@ Il partizionamento delle reti BLE può essere utile per migliorare l'efficienza,
 ## **Broker MQTT** 
 
 Il **broker MQTT** è solo una delle tante soluzioni possibili per realizzare un **canale multicast** di livello **applicativo** tramite cui un utente col ruolo di **publisher** è in grado di notificare una **replica** dello stesso messaggio a più **subscribers**. E' utile per:
-- inoltro dei comandi da un **sensore di comando** su una rete di tipo A (ad es. LoRaWAN) ad un attuatore su una rete diversa di tipo B (ad es. Zigbee)
+- inoltro dei comandi da un **sensore di comando** su una rete di tipo A (ad es. LoRaWAN) ad un attuatore su una rete diversa di tipo B (ad es. BLE)
 - inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **pannello di controllo** su una rete diversa di tipo B (tipicamente IP)
 - inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **server di gestione** su una rete diversa di tipo B (tipicamente IP)
 
@@ -237,11 +237,22 @@ In **generale**, su reti **non IP**, i **client MQTT** (con il ruolo di **publis
 
 #### **Gateway come MCU hub di sensori**
 
-La **parola gateway** potrebbe talvolta portare a **fraintendimenti** dovuti al diverso significato nei **diversi contesti** in cui la si usa. **Spesso**, con il **termine gateway** si intente anche il **dispositivo IoT** che potrebbe essere, **a sua volta**, un **gateway** tra la il **link di campo**, porte analogiche/digitali o BUS, (vedi [bus di campo](cablatisemplici.md) per dettagli) e la **rete di sensori** (WiFi, Zigbee, LoraWAN, LAN, BLE, ecc.). Vedi ([dispositivi terminali](sensornetworkshort.md#dispositivi-terminali-sensoriattuatori)) per approfondimenti.
+La **parola gateway** potrebbe talvolta portare a **fraintendimenti** dovuti al diverso significato nei **diversi contesti** in cui la si usa. **Spesso**, con il **termine gateway** si intente anche il **dispositivo IoT** che potrebbe essere, **a sua volta**, un **gateway** tra la il **link di campo**, porte analogiche/digitali o BUS, (vedi [bus di campo](cablatisemplici.md) per dettagli) e la **rete di sensori** (WiFi, BLE, LoraWAN, LAN, BLE, ecc.). Vedi ([dispositivi terminali](sensornetworkshort.md#dispositivi-terminali-sensoriattuatori)) per approfondimenti.
 #### **Gateway come router L7**
 
-Avendo più interfacce su reti di tipo diverso sia in L1 che in L2, ha anche le funzioni di **router**. Se la rete di distribuzione è pubblica come **Internet** dovrebbe possedere pure le funzioni di **firewall**. Al limite potrebbe anche smistare messaggi in una **WAN privata** realizzata con **VPN** di tipo **trusted** (MPLS) o **secure** (OpenVPN, IPSec).
-Ma la funzione **più importante** che possiede nel contesto di una rete di dispositivi IoT è la **traduzione** della **semantica**, cioè del significato degli oggetti, dalla rete **zigbee** al livello applicativo **MQTT** steso sopra la rete IP.
+### **Gateway come router L7**
+
+Avendo più interfacce su reti di tipo diverso sia in L1 che in L2, ha anche le funzioni di **router**. Se la rete di distribuzione è pubblica come **Internet** dovrebbe possedere pure le funzioni di **firewall**. 
+
+Ma la funzione **più importante** che possiede nel contesto di una rete di dispositivi IoT è la **traduzione** della **semantica**, cioè del significato degli oggetti, dalla rete **BLE** al livello applicativo **MQTT** che smista i messaggi nella rete IP. Questa funzione rende il gateway un bridge di traduzione di comandi da un ambiente all'altro.
+
+**Misure** e **comandi** sono definiti due volte:
+- nella **rete di distribuzione** sotto forma di **oggetti JSON** in formato ASCII. Questo dovrebbe garantire da un lato l'interoperabilità tra reti di sensori diverse, dall'altro l'interoperabilità con sistemi terzi che si occupano della pubblicazione dei dati o della loro eleborazione statistica. Il fatto che il formato scelto sia chiaro, testuale ed autoesplicativo è sicuramente un vantaggio nella rete di **distribuzione**.
+- nella **rete di sensori** (BLE) dove hanno una loro rappresentazione che normalmente non coincide con quella in uso nella rete di distribuzione.
+
+In ogni caso, per gli **oggetti BLE**, la semantica dei comandi e dello stato è **standardizzata**, nel senso che dispositivi di **marche diverse** si possono **comandare** allo **stesso modo**. Tutti i dispositivi di **ugual tipo** si rappresentano come uno **stesso oggetto** BLE, avente gli **stessi attributi** per tutti i dispositivi di quel tipo.
+
+Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in modo tale da includere la **semantica** di tutti i dispositivi IoT coinvolti nelle reti di sensori collegate, che di volta in volta, poi andrà **tradotta** nella **semantica applicativa standard** prevista nello stack della rete di accesso BLE.
 
  
 #### **Formato dei messaggi**
@@ -259,11 +270,11 @@ Per Bluetooth Low Energy (BLE), i dispositivi sono spesso strutturati utilizzand
 BLE è uno standard di comunicazione wireless utilizzato anche per il controllo e l'automazione domestica, mentre MQTT è un protocollo di messaggistica leggero utilizzato per il trasferimento di dati tra dispositivi. Utilizzando BLE2mqtt, gli utenti possono integrare facilmente dispositivi BLE di diversi produttori in un sistema di automazione domestica basato su MQTT, con un alto livello di flessibilità e controllo. 
 
 Il bridge **ble2mqtt** opera a livello di **presentazione** della pila OSI ed esegue, nell'ordine, le seguenti **operazioni**:
-1. **sbusta** tutti i messaggi provenienti dall'interfaccia Zigbee uno dopo l'altro, a partire dal **livello fisico** fino ad arrivare al **livello di presentazione**, dove BLE realizza la sua **rappresentazione semantica** dell'oggetto comandato/attuato/configurato, completa di **attributi** e corrispondenti **valori**.
+1. **sbusta** tutti i messaggi provenienti dall'interfaccia BLE uno dopo l'altro, a partire dal **livello fisico** fino ad arrivare al **livello di presentazione**, dove BLE realizza la sua **rappresentazione semantica** dell'oggetto comandato/attuato/configurato, completa di **attributi** e corrispondenti **valori**.
 2. a questo punto **traduce** il **payload BLE** in un **payload JSON** che contiene gli stessi attributi con gli stessi valori. 
 3. dopo di che **smista** il **JSON** così costruito sull'**interfaccia IP** del gateway, dove viene imbustato come **payload** del protocollo **MQTT** ed **inviato** fino al **broker**.
 
-Ble2mqtt funge da **ponte** tra la rete Zigbee e il broker MQTT, consentendo agli utenti di interagire con i dispositivi BLE tramite messaggi MQTT. 
+Ble2mqtt funge da **ponte** tra la rete BLE e il broker MQTT, consentendo agli utenti di interagire con i dispositivi BLE tramite messaggi MQTT. 
 
 La **traduzione** è resa possibile perchè le reti BLE definiscono per ogni dispositvo la **semantica applicativa standard** che abbiamo visto sopra (una lampadina ha gli stessi comandi, lo stesso stato e la stessa configurazione per tutte le lampadine BLE mai prodotte da chiunque). Compito del bridge **Ble2mqtt** è **tradurre** gli **oggetti standard** BLE in **JSON** e inserirli in un **messaggio MQTT**.
 
@@ -277,7 +288,7 @@ Ecco una descrizione di come funziona ble2mqtt:
 
 #### **Configurazione di ble2mqtt** 
 
-Per controllare tre lampadine diverse sotto lo stesso topic stanzetta usando zigbee2mqtt, è possibile configurare un approccio che permetta di inviare comandi a tutte e tre le lampadine contemporaneamente o individualmente. Un modo efficace per farlo è usare un payload JSON che includa informazioni specifiche per ciascuna lampadina.
+Per controllare tre lampadine diverse sotto lo stesso topic stanzetta usando BLE2mqtt, è possibile configurare un approccio che permetta di inviare comandi a tutte e tre le lampadine contemporaneamente o individualmente. Un modo efficace per farlo è usare un payload JSON che includa informazioni specifiche per ciascuna lampadina.
 
 ```Python
 mqtt:
@@ -295,7 +306,7 @@ devices:
     friendly_name: lampadina3
 ```
 
-Ora, configurando un singolo topic zigbee2mqtt/stanzetta/set per inviare comandi a tutte e tre le lampadine, possiamo usare un payload JSON per specificare lo stato desiderato di ogni lampadina.
+Ora, configurando un singolo topic BLE2mqtt/stanzetta/set per inviare comandi a tutte e tre le lampadine, possiamo usare un payload JSON per specificare lo stato desiderato di ogni lampadina.
 
 #### **Accendere tutte le Lampadine:**
 
@@ -303,13 +314,13 @@ Ora, configurando un singolo topic zigbee2mqtt/stanzetta/set per inviare comandi
 #!/bin/bash
 
 # Accendere lampadina1
-mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina1/set' -m '{"state": "ON"}'
+mosquitto_pub -h localhost -t 'BLE2mqtt/lampadina1/set' -m '{"state": "ON"}'
 
 # Accendere lampadina2
-mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina2/set' -m '{"state": "ON"}'
+mosquitto_pub -h localhost -t 'BLE2mqtt/lampadina2/set' -m '{"state": "ON"}'
 
 # Accendere lampadina3
-mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina3/set' -m '{"state": "ON"}'
+mosquitto_pub -h localhost -t 'BLE2mqtt/lampadina3/set' -m '{"state": "ON"}'
 ```
 
 #### **Spegnere tutte le Lampadine:**
@@ -318,13 +329,13 @@ mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina3/set' -m '{"state": "ON"}'
 #!/bin/bash
 
 # Accendere lampadina1
-mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina1/set' -m '{"state": "OFF"}'
+mosquitto_pub -h localhost -t 'BLE2mqtt/lampadina1/set' -m '{"state": "OFF"}'
 
 # Accendere lampadina2
-mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina2/set' -m '{"state": "OFF"}'
+mosquitto_pub -h localhost -t 'BLE2mqtt/lampadina2/set' -m '{"state": "OFF"}'
 
 # Accendere lampadina3
-mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina3/set' -m '{"state": "OFF"}'
+mosquitto_pub -h localhost -t 'BLE2mqtt/lampadina3/set' -m '{"state": "OFF"}'
 ```
 
 #### **Comandare le Lampadine Singolarmente:**
@@ -333,13 +344,13 @@ mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina3/set' -m '{"state": "OFF"}'
 #!/bin/bash
 
 # Accendere lampadina1
-mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina1/set' -m '{"state": "ON"}'
+mosquitto_pub -h localhost -t 'BLE2mqtt/lampadina1/set' -m '{"state": "ON"}'
 
 # Accendere lampadina2
-mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina2/set' -m '{"state": "OFF"}'
+mosquitto_pub -h localhost -t 'BLE2mqtt/lampadina2/set' -m '{"state": "OFF"}'
 
 # Accendere lampadina3
-mosquitto_pub -h localhost -t 'zigbee2mqtt/lampadina3/set' -m '{"state": "ON"}'
+mosquitto_pub -h localhost -t 'BLE2mqtt/lampadina3/set' -m '{"state": "ON"}'
 ```
 #### **Utilizzo dei topic**
 
@@ -725,7 +736,7 @@ Un esempio di **canale MQTT di configurazione** per, ad esempio, impostare il pe
 ### **Pagine correlate:**
 
 - [Dettaglio architettura Ethernet](archeth.md)
-- [Dettaglio architettura Zigbee](archzigbee.md)
+- [Dettaglio architettura BLE](archBLE.md)
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
