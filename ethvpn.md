@@ -79,7 +79,7 @@ Realizzare l'interconnessione tra una sede centrale di una officina multimarca c
 
 La **subnet network** è mappata sulla **VLAN 30** ed è la subnet dove posseggono il proprio indirizzo IP tutti i router di confine di tutte le reti (sia centrale che remote) che, quindi, attraverso di essa sono **raggiungibili** per configurazione/manutenzione.
 
-I **server** dei **due gruppi** di utenti (officina e uffici) sono collegati a **porte di accesso** associate ad una **sola vla**n, quella del gruppo di appartenenza, per cui sono visibili **direttamente** (senza intervaln routing) solo dai PC di **quella vlan**.
+I **server** dei **due gruppi** di utenti (officina e uffici) sono collegati a **porte di accesso** associate ad una **sola vlan**, quella del gruppo di appartenenza, per cui sono visibili **direttamente** (senza intervaln routing) solo dai PC di **quella vlan**.
 
 ### **Porte dei bridge**
 
@@ -89,7 +89,7 @@ Le **porte dei bridge** che collegano ai **PC** o al **router** sono tutte **unt
 
 ### **Inter vlan routing**
 
-L'**inter vlan routing** è realizzato dal solo router nella **sede centrale**, l'unico che, avendo **porte di trunk**, possiede interfacce su **tutte le vlan** e, quindi, su **tutte le subnet** ed, essendo le dorsali verso il router realizzate con un **trunk** terminato su tre **interfacce virtuali** 802.1q, la configurazione dell'**inter vlan routing** è di tipo **router on a stick**.
+L'**inter vlan routing** è realizzato dal solo router nella **sede centrale**, l'unico che, avendo **porte di trunk**, possiede interfacce su **tutte le vlan** e, quindi, su **tutte le subnet** ed, essendo le dorsali verso il router realizzate con un **trunk** terminato su tre **interfacce virtuali** 802.1q, la configurazione dell'**inter vlan routing** è di tipo **router on a stick**. Poichè l'intervlan routing di tipo router on a stick si realizza con subnet direttamente connesse ad un solo router, allora la **definizione manuale** delle **tabelle di routing** non è necessaria.
 
 Sitografia:
 - https://it.wikipedia.org/wiki/TUN/TAP
