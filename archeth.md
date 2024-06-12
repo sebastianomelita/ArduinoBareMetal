@@ -426,7 +426,7 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 
 #### **Soluzione**
 <table>
-<tr><td> Senza le VLAN </td></tr>
+<tr><td> Marketing --> Produzione </td></tr>
 <tr><td> 
     
 ```C++                   
