@@ -58,7 +58,8 @@ Le ACL si dividono in:
 
 <img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
 
-#### **Interfaccia tun 0 del router centrale**
+#### **ACL per negare accesso alla rete ufficio dalle reti officina**
+
 ```Python
 ! Definizione lista di regole (blacklist)
 (config)#access-list 101 deny 10.0.1.0 0.0.0.255
