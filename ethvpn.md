@@ -18,12 +18,14 @@ In genere, il **tunnelling** si può considerare un **imbustamento fuori ordine*
 
 ## **Interfacce virtuali tun e tap**
 
-Nelle reti Informatiche, TUN e TAP sono driver che permettono la creazione di periferiche di rete virtuali. Rispetto alle comuni periferiche (ad es. eth0) che sono controllate direttamente dalle schede di rete, i pacchetti spediti da o verso dispositivi TUN/TAP sono spediti da o verso programmi software. TUN è in grado di simulare una periferica di rete di tipo punto-punto e lavora con pacchetti di tipo IP mentre TAP è in grado di simulare un dispositivo Ethernet e logicamente utilizza i frame Ethernet.
+Nelle reti Informatiche, **TUN e TAP** sono **driver** che permettono la creazione di **periferiche di rete virtuali**. Rispetto alle comuni periferiche (ad es. eth0) che sono controllate direttamente dalle schede di rete, i pacchetti spediti da o verso dispositivi TUN/TAP sono spediti da o verso **programmi software** che si occupano dello **sbustamento** in ricezione e dell'**imbustamento** in trasmissione:
+- **TUN** è in grado di **simulare** una periferica di rete IP collegata ad un **link L3 punto-punto**, su cui viaggiano **pacchetti IP**, che si collega ad una periferica analoga all'**altro capo del tunnel**. 
+- **TAP** è in grado di **simulare** una NIC Ethernet che è collegata ad una **dorsale L2 punto-punto**, su cui viaggiano **trame MAC**,  che si collega ad una periferica analoga all'**altro capo del tunnel**.
 
 <img src="img/Tun-tap-osilayers-diagram.png" alt="alt text" width="400">
 
 
-Le interfacce TAP e tun possono essere utilizzate per instradare il traffico di rete attraverso il tunnel VPN. 
+Le **interfacce TAP e tun** sono quindi delle ulteriori interfacce che possono essere utilizzate tutte le volte che si desidera **instradare** il traffico di rete attraverso il **tunnel VPN**. 
 
 ## **VPN L3**
 
@@ -77,6 +79,15 @@ Realizzare l'interconnessione tra una sede centrale di una officina multimarca c
 
 Sitografia:
 - https://it.wikipedia.org/wiki/TUN/TAP
+- https://shorewall.org/OPENVPN.html
+- https://subscription.packtpub.com/book/cloud-and-networking/9781849510103/2/ch02lvl1sec27/proxy-arp
+- https://icr.advantech.com/support/faq/detail/how-to-create-openvpn-tap-interface-bridge-mode
+- https://www.cisco.com/c/en/us/td/docs/security/firepower/623/fdm/fptd-fdm-config-guide-623/fptd-fdm-s2svpn.html
+- https://www.aaflalo.me/2015/01/openvpn-tap-bridge-mode/
+- https://documentation.suse.com/sles/15-SP5/html/SLES-all/cha-security-vpnserver.html
+- https://support.industry.siemens.com/cs/document/109792357/how-do-configure-an-openvpn-tunnel-between-two-scalance-sc64x-2cs-?dti=0&lc=en-AF
+- https://support.industry.siemens.com/cs/attachments/109792357/109792357_OpenVPN_en.pdf
+- https://openmaniak.com/openvpn_bridging.php
 
 >[Torna a reti ethernet](archeth.md)
 
