@@ -382,7 +382,7 @@ Senza VLAN      |  Con le VLAN  |
   (config-if)# ip access-group 101 in
   (config-if)# exit
   ```
- |  |                                              | 
+
 
 ### **Segmentazione logica**
 
