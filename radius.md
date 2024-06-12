@@ -97,13 +97,9 @@ Ciascun AP è capace di creare e gestire un certo numero di interfacce virtuali,
 <img src="img/ssid.png" alt="alt text" width="800">
 
 Come si può notare, ogni interfaccia, di base, ha una associazione statica con una sua VLAN. Questo significa che, al momento dell’accesso, l’utente prende un indirizzo di quella VLAN, cioè, diventa, di diritto, cittadino di quella VLAN, con la raggiungibilità ai servizi di quella VLAN e con la banda eventualmente riservata per quella VLAN.
-La maggior parte degli SSID è diffuso su tutti gli AP e quindi è visibile ovunque. Un SSID, gmarconi7777 è visibile solo in un particolare laboratorio con un accesso WPA personal.
+La maggior parte degli SSID è diffuso su tutti gli AP e quindi è visibile ovunque. 
 
-Un altro, marconi-hotspot ha un accesso libero ma vincolato alla sottomissione di un voucher. Cioè si tratta di un Captive Portal dove si autenticano i visitatori occasionali o i docenti a contratto di breve durata. Non è auspicabile l’uso prolungato di questa modalità di accesso perché non è in grado di autenticare gli AP e il server RADIUS per cui è soggetta ad attacchi MTM. Lo stesso discorso vale per l’autenticazione WPA Personal.
-Marconi-IOT è la rete dei sensori didattici e delle raspberry. La politica attuale è di far prendere a questi dispositivi un indirizzo IP statico preimpostato in base al MAC nel DHCP del firewall (sono sulla DMZ-vlan300 e quindi li serve lui).
-
-Sensori è una interfaccia per i sensori dei progetti di PCTO della scuola ee che sono installati in pianta stabile. Non dovrebbe mai autenticare PC.
-Tuveri è una sottorete che, presto diventerà nascosta, e che serve al solo accesso dei telofoni voip associandoli alla rete dei pc fissi dei professori della scuola (essi stessi potrebbero essere configurati per ospitare un client voip).
+Un altro, marconi-hotspot ha un accesso libero ma vincolato alla sottomissione di un voucher. Cioè si tratta di un Captive Portal dove si autenticano i visitatori occasionali o i docenti a contratto di breve durata. 
 
 L’ssid marconiopen è una rete con una password nota a tutti i professori che viene attivata solam ente in caso di emergenza a seguito di una eventuale indisponibilità del servizio centralizzato di autenticazione.
 L’accesso di gran lunga più sicuro rimane iismarconi perché autenticato su base utente e perché obbliga i PC ad autenticare pure gli AP.
@@ -132,13 +128,13 @@ DEFAULT Ldap-Group == "cn=schueler-sc1,cn=groups,ou=sc1,dc=univention,dc=marconi
         #Reply-Message = "You are Accepted as 130"
 DEFAULT Auth-Type := Reject
 ```
+
 Le impostazioni correnti fanno in modo che:
 - se l’utente appartiene al gruppo nointernet-sc1 allora questo viene associato alla VLAN 300 (quarantena o DMZ) che non è autorizzato ad andare in Internet ne ad accedere ai servizi scolastici.
 - se l’utente appartiene al gruppo lehrer-sc1 allora questo viene associato alla VLAN 120 (wireless docenti) ed è autorizzato ad accedere ad Internet e ai servizi con il privilegio di docente (può premere il pulsante che abilita internet alla classe).
 - se l’utente appartiene al gruppo schueler-sc1 allora questo viene associato alla VLAN 130 (wireless studenti) che accede ad internet solo se abilitato con il pulsante web da un docente e che può accedere ad alcuni servizi comuni con il privilegio di  studente (come partecipare ad una videoconferenza jitsi creata dal docente).
 
 L’assegnazione al gruppo nointernet-sc1 avviene per i soli utenti appartenenti anche al gruppo schueler-sc1 (studenti), in maniera dinamica tramite la pressione di un pulsante web a disposizione dei docenti (previa autenticazione).
-
 
 <img src="img/pulsantone.png" alt="alt text" width="800">
 
