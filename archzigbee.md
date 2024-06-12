@@ -297,7 +297,7 @@ Ma la funzione **più importante** che possiede nel contesto di una rete di disp
 - nella **rete di distribuzione** sotto forma di **oggetti JSON** in formato ASCII. Questo dovrebbe garantire da un lato l'interoperabilità tra reti di sensori diverse, dall'altro l'interoperabilità con sistemi terzi che si occupano della pubblicazione dei dati o della loro eleborazione statistica. Il fatto che il formato scelto sia chiaro, testuale ed autoesplicativo è sicuramente un vantaggio nella rete di **distribuzione**.
 - nella **rete di sensori** (Zigbee) dove hanno una loro rappresentazione che normalmente non coincide con quella in uso nella rete di distribuzione.
 
-In ogni caso, per gli oggetti Zigbee, la semantica dei comandi e dello stato è standarzizzata, nele senso che dispositivi di mache diverse si possono comandare allo stesso modo. Tutti vedono lo stesso oggetto Zigbee con i medesimi attributi.
+In ogni caso, per gli **oggetti Zigbee**, la semantica dei comandi e dello stato è **standardizzata**, nel senso che dispositivi di **marche diverse** si possono **comandare** allo **stesso modo**. Tutti i dispositivi di **ugual tipo** si rappresentano come uno **stesso oggetto** Zigbee, avente gli **stessi attributi** per tutti i dispositivi di quel tipo.
 
 Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in modo tale da includere la **semantica** di tutti i dispositivi IoT coinvolti nelle reti di sensori collegate, che di volta in volta, poi andrà **tradotta** nella **semantica applicativa standard** prevista nello stack della rete di accesso Zigbee.
 
