@@ -372,7 +372,7 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 
 Senza VLAN      |  Con le VLAN  | 
 |:-------------------------:|:-------------------------:|
- |```                                         |                           |
+ |```
   !Definizione lista di regole (blacklist)
   (config)# access-list 101 deny 10.0.2.0 0.0.0.255
   (config)# access-list 101 permit any 
@@ -380,8 +380,7 @@ Senza VLAN      |  Con le VLAN  |
   (config)# interface eth2 
   !Applicazione in ingress su eth2
   (config-if)# ip access-group 101 in
-  (config-if)# exit
-  ```
+  (config-if)# exit ```  |                           |
 
 
 ### **Segmentazione logica**
