@@ -48,8 +48,6 @@ L'**interfaccia virtuale** realizza un **canale virtuale diretto** tra i due rou
 1. Realizzare l'interconnessione tra una sede centrale di una officina multimarca che ha sedi sparse in tutta Italia. Le officine devono poter consultare i lsistema informativo centrale per vedere la disponibilità di pezzi di ricambi da parte di altre officine e per la consultazione dei listini di lavorazioni e ricambi.
 2. Negare ad un PC della subnet officina di entrare nella subnet ufficio.
 
-<img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
-
 Per risolvere il quesito 2, cioè negare ad un PC della subnet officina di comunicare con un PC della subnet ufficio, si può creare **una ACL** nel **router firewall** centrale **per ogni interfaccia tun**.
 
 Le ACL si dividono in:
