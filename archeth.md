@@ -370,7 +370,7 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 - E’ necessaria la separazione fisica degli ambienti per dividere i gruppi F1 e F2
 - Sul router ogni link fisico genera una subnet che si mappa 1:1 su una sottostante LAN fisica
 
-#### **Negare ad un PC della subnet officina di entrare nella subnet ufficio**
+#### **Esigenza di filtraggio: negare ad un PC della subnet officina di entrare nella subnet ufficio**
 
 <table>
 <tr><td> Senza le VLAN </td><td> Con le VLAN </td></tr>
@@ -419,7 +419,7 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 - è necessaria la colorazione delle porte per distinguere i gruppi
 - Sul router ogni link virtuale genera una subnet che si mappa 1:1 su una sottostante LAN logica (VLAN)
 
-#### **Problema**
+#### **Esigenza di filtraggio:**
 - Si vuole consentire agli host in Marketing di avviare e stabilire una sessione TCP per gli host in Produzione.
 - solo ai pacchetti TCP di risposta e a quelli di dialogo è consentito entrare nell'interfaccia vlan 20 da Produzione verso Marketing 
 - Pertanto, gli host in Marketing possono aprire connessioni verso gli host in Produzione, ma gli host in Produzione non possono aprire alcuna connessione diretta verso la subnet Marketing
@@ -456,11 +456,17 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 - nessun’altra dorsale logica può propagare la VLAN 30 perché nessun trunk 802.1q la possiede tra le VLAN ammesse (allowed), oltre quello verso il CS.
 - Subnets delocalizzate che comprendono gruppi di host separati in base alla posizione e al servizio
 
+#### **Esigenza di filtraggio:**
+- consentire alla vlan 30 l'accesso ad Internet
+- consentire alla vlan 30 l'accesso alla server farm
+- non permettere l'accesso reciproco tra le vlan 30 e le vlan 10, 20
+  
 <img src="img/separazmistapng.png" alt="alt text" width="1000">
 
 - Porte di uno stesso switch possono appartenere a gruppi di macchine diverse, sia F1 che F2
 - è necessaria la colorazione delle porte per distinguere i gruppi
 - Sul router ogni link virtuale genera una subnet che si mappa 1:1 su una sottostante LAN logica (VLAN)
+- il filtraggio è realizzato direttamente a livello di linea L2 dall'impostazione ```allowed``` sulla porta di trunk che filtra le trame della vlan 30
 
 ### **Esempio**
 
