@@ -1,4 +1,4 @@
->[Torna a rete wifi infrastruttura](archwifi.md)
+>[Torna a rete wifi infrastruttura](archwifi.md#autenticazione-utente-presso-un-ap)
 
 - [Dettaglio architettura Ethernet](archeth.md)
 - [Dettaglio architettura Zigbee](archzigbee.md)
@@ -168,7 +168,7 @@ Il controller degli access point ha le funzioni di:
 - Captive portal con varie modalità di accesso quali ad esempio il meccanismo dei voucher 
 
 
->[Torna a rete wifi infrastruttura](archwifi.md)
+>[Torna a rete wifi infrastruttura](archwifi.md#autenticazione-utente-presso-un-ap)
 
 - [Dettaglio architettura Ethernet](archeth.md)
 - [Dettaglio architettura Zigbee](archzigbee.md)
