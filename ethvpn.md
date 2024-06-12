@@ -67,17 +67,17 @@ Le ACL si dividono in:
 (config)#access-list 101 permit any 
 ! Selezione interfaccia tun0
 (config)# interface tun0 
-! Applicazione in ingress su e0
+! Applicazione in ingress su tun0
 (config-if)# ip access-group 101 in
 (config-if)#exit
 ! Selezione interfaccia tun1
 (config)# interface tun1 
-! Applicazione in ingress su e1
+! Applicazione in ingress su tun1
 (config-if)# ip access-group 101 in
 (config-if)#exit
 ! Selezione interfaccia tun2
 (config)# interface tun2 
-! Applicazione in ingress su e2
+! Applicazione in ingress su tun2
 (config-if)# ip access-group 101 in
 (config-if)#exit
 ```
