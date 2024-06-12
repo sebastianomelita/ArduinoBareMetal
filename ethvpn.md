@@ -39,6 +39,9 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 10.8.0.0        0.0.0.0         255.255.255.0   U     0      0        0 tun0
 ```
 
+Una volta inviato inviato verso l'**interfaccia tun** con un **ip privato**, il **pacchetto** esce da un'**altra interfaccia del client VPN** imbustato dentro un pacchetto con **IP pubblico** che, per questo motivo, viene **inoltrato** verso il **default gateway** della LAN.
+
+
 ### **Canale virtuale e canale reale**
 
 L'**interfaccia virtuale** realizza un **canale virtuale diretto** tra i due router con il ruolo di client e server della connessione VPN dove viene **inoltrato** il **pacchetto interno trasportato**. In realtà il **canale reale**, quello dove viene inoltrato il **pacchetto esterno vettore**, passa per il **router di confine** di ogni LAN remota che utilizza **Internet** per inoltrare ulteriormente il pacchetto esterno verso il **server VPN**. 
@@ -71,13 +74,13 @@ In questo modo, la **risoluzione degli indirizzi MAC** tra le due reti collegate
 
 L'**interfaccia virtuale** realizza un **canale virtuale diretto** tra i due **bridge** con il ruolo di client e server della connessione VPN dove viene **inoltrata** il **la trama MAC**. In realtà il **canale reale**, quello dove viene inoltrato il pacchetto esterno vettore, passa per il **router di confine** di ogni LAN remota che utilizza **Internet** per inoltrare ulteriormente il pacchetto esterno verso il **server VPN**. 
 
+Una volta inviato inviato verso l'**interfaccia tap**, la **trama** esce da un'**altra interfaccia del client VPN** imbustata dentro un pacchetto con **IP pubblico** che, per questo motivo, viene **inoltrato** verso il **default gateway** della LAN.
+
 ### **Esempio officina 2**
 
 Realizzare l'interconnessione tra una sede centrale di una officina multimarca che ha sedi sparse in tutta Italia. Le officine devono poter consultare i lsistema informativo centrale per vedere la disponibilità di pezzi di ricambi da parte di altre officine e per la consultazione dei listini di lavorazioni e ricambi. Inoltre le officine sono divise in due reparti, l'officina vera e propria dove si effettuano le riparazioni e l'ufficio amministrativo e contabile dove si gestiscono i rapporti con fornitori e clienti. Officina e amministrazione devono poter consultare server dedicati allo svolgimento delle rispettive funzioni che sono dislocati presso la sede centrale e ciascuna delle due funzioni non dovrebbe poter avere accesso ai server dell'altra.
 
 <img src="img/sediVPNL2.png" alt="alt text" width="1100">
-
-La **subnet network** è mappata sulla **VLAN 30** ed è la subnet dove posseggono il proprio indirizzo IP tutti i router di confine di tutte le reti (sia centrale che remote) che, quindi, attraverso di essa sono **raggiungibili** per configurazione/manutenzione.
 
 I **server** dei **due gruppi** di utenti (officina e uffici) sono collegati a **porte di accesso** associate ad una **sola vlan**, quella del gruppo di appartenenza, per cui sono visibili **direttamente** (senza intervaln routing) solo dai PC di **quella vlan**.
 
