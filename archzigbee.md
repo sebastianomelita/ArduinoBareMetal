@@ -408,13 +408,13 @@ Puoi definire una gerarchia di topic MQTT per raggruppare le lampadine. Ad esemp
 casa/
   └── soggiorno/
       ├── lampadina1/
-      │   ├── cmd
+      │   ├── comandi
       │   └── stato
       ├── lampadina2/
-      │   ├── cmd
+      │   ├── comandi
       │   └── stato
       └── lampadina3/
-          ├── cmd
+          ├── comandi
           └── stato
 ```
 In questo esempio, ```casa``` è il prefisso di tutti i tuoi topic MQTT. All'interno di questo prefisso, hai un sotto-topic per il soggiorno chiamato ```soggiorno```, e all'interno di questo sotto-topic hai i sotto-topic per ciascuna delle tue lampadine, ciascuno dei quali ha due sotto-topic: ```cmd``` e ```stato```.
@@ -431,25 +431,25 @@ devices:
   '0x00124b0014d2b5d2':
     friendly_name: lampadina1
     state_topic: 'soggiorno/lampadina1/stato'
-    set_topic: 'soggiorno/lampadina1/cmd'
+    set_topic: 'soggiorno/lampadina1/comandi'
   '0x00124b0014d2b5d3':
     friendly_name: lampadina2
     state_topic: 'soggiorno/lampadina2/stato'
-    set_topic: 'soggiorno/lampadina2/cmd'
+    set_topic: 'soggiorno/lampadina2/comandi'
   '0x00124b0014d2b5d4':
     friendly_name: lampadina3
     state_topic: 'soggiorno/lampadina3/stato'
-    set_topic: 'soggiorno/lampadina3/cmd'
+    set_topic: 'soggiorno/lampadina3/comandi'
 ```
 
 #### **Accendere Tutte le Lampadine nel Soggiorno**
 ```Bash
-mosquitto_pub -h localhost -t 'casa/soggiorno/cmd' -m '{"state": "ON"}'
+mosquitto_pub -h localhost -t 'casa/soggiorno/comandi' -m '{"state": "ON"}'
 ```
 
 #### **Spegnere Tutte le Lampadine nel Soggiorno**
 ```Bash
-mosquitto_pub -h localhost -t 'casa/soggiorno/cmd' -m '{"state": "OFF"}'
+mosquitto_pub -h localhost -t 'casa/soggiorno/comandi' -m '{"state": "OFF"}'
 ```
 
 ## **Rete di sensori Zigbee** 
