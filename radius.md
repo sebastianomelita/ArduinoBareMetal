@@ -6,9 +6,7 @@
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
-# **VPN di reti Ethernet** 
-
-## **Autenticazione 802.1X**
+# ****Autenticazione 802.1X** 
 
 Come accennato, l’autenticazione dell’utente e degli AP (Access Point) avviene:
 - A Livello 2 della pila ISO/OSI con protocolli e dispositivi che non abbisognano di indirizzo IP, sfruttano l’incapsulamento (tunnelling) in trame di livello pari o superiori. Il protocollo più comune per il wifi è l’EAP incapsulato su trame L2 MAC (EAPoL). E’ utilizzato per trasportare le credenziali (username e password) lungo una connessione ancora priva di indirizzo IP verso un dispositivo di accesso (NAS, inteso stavolta come Network Access Server) della risorsa accesso WiFi.
@@ -32,7 +30,7 @@ Autorizza o meno l’apertura di una connessione di livello 2 ISO/OSI. L’auten
 
 <img src="img/porteradius.png" alt="alt text" width="500">
 
-### **Sequenza di autenticazione utente**
+## **Sequenza di autenticazione utente**
 
 La tecnica utilizzata è il PEAP: è uno standard aperto ideato da Cisco Systems, Microsoft e RSA Security, e fornisce un elevato livello di sicurezza. È molto simile a EAPTTLS, richiede solo il certificato lato server e crea un tunnel sicuro con TLS per proteggere l’autenticazione dell’utente, autenticazione effettuata utilizzando altri metodi come MS-CHAPv2 (PEAP/EAPMSCHAPv2) basati su username e password.
 Avviene solamente dopo l’autenticazione con successo del server, un sottoprodotto di questa è lo scambio di una chiave crittografica OTP di sessione tra client e server con cui realizzare un canale cifrato sicuro. All’interno di questo tunnel cifrato è possibile procedere all’autenticazione dell’utente, solitamente con autenticazioni deboli (cmq realizzate dentro un canale cifrato inaccessibile) che normalmente prevedono:
@@ -47,7 +45,7 @@ Un riassunto delle fasi dell’autenticazione CHAP potrebbe essere:
 5. Il server confronta l’hash ricevuto con quello messo da parte in precedenza e, se coincidono, autorizza il NAS a consentire l’accesso con un messaggio RADIUS Access-Accept.
 
 
-### **Autenticazione AP**
+## **Autenticazione AP**
 
 L’AP si autentica presso il server RADIUS generalmente tramite una password che è conservata nel files clients.conf di freeradius. Il server Univention lo imposta lui automaticamente dopo che l’utente lo ha inserito come parametro della configurazione dell’AP.
 
@@ -62,7 +60,7 @@ Un riassunto delle fasi dell’autenticazione asimmetrica forte potrebbe essere:
     1.	riesce a verificare la firma posta sulla sfida, ovvero se  decifrando la firma con la chiave pubblica del server, ritrova la sfida originale del client (Fase di verifica delle credenziali).
     2.	Se riesce ad autenticare la chiave pubblica utilizzando il certificato CA dell’autorità che l’ha firmata. 
 
-### **Autenticazione del certificato utente**
+## **Autenticazione del certificato utente**
 
 Un server si presenta con una credenziale firmata e con un certificato utente. Il controllo si basa sul presupposto che il client che controlla possegga un certificato CA che validi la firma il certificato da controllare. Il certificato di un server è valido se passa tutte le seguenti verifiche:
 - La data corrente sia all’interno del periodo di validità del certificato
@@ -71,7 +69,7 @@ Un server si presenta con una credenziale firmata e con un certificato utente. I
 - Che il nome di dominio (subject) dichiarato nel certificato del server da controllare coincida col nome di dominio dell’url del server
 Se il certificato è valido, la chiave pubblica in esso contenuta può decifrare la credenziale del server autenticandolo
 
-### **Gestione delle sottoreti**
+## **Gestione delle sottoreti**
 
 Una volta autenticati, gli utenti prendono automaticamente un indirizzo IP da un server DHCP posto a bordo del core switch principale (CS1). Gli indirizzi IP assegnabili fanno capo ad un certo numero di subnet, ciascuna distribuita ovunque all’interno del perimetro fisico della scuola (raggiungibile da uno switch o dal wifi) mediante la tecnologia delle Virtual LAN o VLAN. In pratica ad una VLAN corrisponde una subnet IP. E viceversa, ad una subnet IP corrisponde la sua VLAN. 
 Le VLAN sono caratterizzate da un lo VLAN ID.
@@ -90,7 +88,7 @@ Le subnet sono divise in base alla funzione e tendono a separare il traffico per
 
 Tramite la rete wifi non è possibile accedere alla rete della segreteria ma solamente a quella della didattica. Per accedere alla rete della segreteria si può utilizzare il gateway HTTPS-RDP (VPN) Guacamole per fornire un accesso alla postazione di lavoro di un impiegato.
 
-### **Gestione statica degli SSID**
+## **Gestione statica degli SSID**
 
 Ciascun AP è capace di creare e gestire un certo numero di interfacce virtuali, ciascuna caratterizzata da un proprio SSID. Gli SSID in uso e quindi le interfacce  in uso sono le seguenti:
 
@@ -104,7 +102,7 @@ Un altro, marconi-hotspot ha un accesso libero ma vincolato alla sottomissione d
 L’ssid marconiopen è una rete con una password nota a tutti i professori che viene attivata solam ente in caso di emergenza a seguito di una eventuale indisponibilità del servizio centralizzato di autenticazione.
 L’accesso di gran lunga più sicuro rimane iismarconi perché autenticato su base utente e perché obbliga i PC ad autenticare pure gli AP.
 
-### **Gestione dinamica degli SSID**
+## **Gestione dinamica degli SSID**
 
 In realtà l’associazione statica degli ssid è solo di base (default) e può essere cambiata in qualsiasi momento impostando il campo Tunnel-Private-Group-Id nella risposta  verso l’autenticatore (RFC2868).
 Le utenze si autenticano col le loro credenziali che, dall’autenticatore in poi, sono inviate (tramite protocollo RADIUS) verso un server che cerca l’username all’interno di un database LDAP verificando la password. Ad autenticazione avvenuta con successo, viene prelevato il profilo utente che è composto da una stringa che rappresenta un DN (Distinguished Name), cioè l’insieme completo degli attributi che lo riguardano. Il DN viene conservato nella variabile d’ambiente freeradius Ldap-Group dove può essere letto ed utilizzato per un eventuale confronto.
