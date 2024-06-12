@@ -1,8 +1,8 @@
->>[Torna a reti ethernet](archeth.md)
+>[Torna a rete wifi infrastruttura](archwifi.md)
 
+- [Dettaglio architettura Ethernet](archeth.md)
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
-- [Dettaglio architettura WiFi infrastruttura](archwifi.md)
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
@@ -168,11 +168,12 @@ Il controller degli access point ha le funzioni di:
 - Captive portal con varie modalità di accesso quali ad esempio il meccanismo dei voucher 
 
 
->[Torna a reti ethernet](archeth.md)
+>[Torna a rete wifi infrastruttura](archwifi.md)
 
+- [Dettaglio architettura Ethernet](archeth.md)
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
-- [Dettaglio architettura WiFi infrastruttura](archwifi.md)
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
+
 
