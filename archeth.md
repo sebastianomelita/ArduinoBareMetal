@@ -370,6 +370,8 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 - E’ necessaria la separazione fisica degli ambienti per dividere i gruppi F1 e F2
 - Sul router ogni link fisico genera una subnet che si mappa 1:1 su una sottostante LAN fisica
 
+### **Negare ad un PC della subnet officina di entrare nella subnet ufficio**
+
 <table>
 <tr><td> Senza le VLAN </td><td> Con le VLAN </td></tr>
 <tr><td> 
