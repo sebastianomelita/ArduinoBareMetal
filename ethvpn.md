@@ -130,6 +130,39 @@ L'**inter vlan routing** è realizzato dal solo router nella **sede centrale**, 
 
 Per risolvere il quesito 2, cioè negare ad un PC della subnet officina di comunicare con un PC della subnet ufficio, si può creare **una ACL** nel **router firewall** centrale **per ogni interfaccia tun**.
 
+Per risolvere il quesito 2, cioè negare ad un PC della subnet officina di comunicare con un PC della subnet ufficio, si può creare **una ACL** nel **router firewall** centrale **per ogni interfaccia tun**.
+
+Le ACL si dividono in:
+- **Standard**, valutano il solo indirizzo di sorgente e vanno poste vicino alla destinazione 
+- **Estese**, valutano anche l'indirizzo di destinazione e vanno poste vicino all’origine
+
+<img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
+
+#### **ACL per negare accesso alla rete ufficio dalle reti officina**
+
+```C++
+! Definizione lista di regole (blacklist)
+(config)# access-list 101 deny 10.0.1.0 0.0.0.255
+(config)# access-list 101 deny 10.0.2.0 0.0.0.255
+(config)# access-list 101 deny 10.0.3.0 0.0.0.255
+(config)# access-list 101 permit any 
+! Selezione interfaccia tun0
+(config)# interface tun0 
+! Applicazione in ingress su tun0
+(config-if)# ip access-group 101 in
+(config-if)# exit
+! Selezione interfaccia tun1
+(config)# interface tun1 
+! Applicazione in ingress su tun1
+(config-if)# ip access-group 101 in
+(config-if)# exit
+! Selezione interfaccia tun2
+(config)# interface tun2 
+! Applicazione in ingress su tun2
+(config-if)# ip access-group 101 in
+(config-if)# exit
+```
+
 Sitografia:
 - https://it.wikipedia.org/wiki/TUN/TAP
 - https://shorewall.org/OPENVPN.html
