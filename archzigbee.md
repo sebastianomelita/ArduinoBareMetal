@@ -446,6 +446,11 @@ devices:
     set_topic: 'soggiorno/lampadina3/comandi'
 ```
 
+#### **Accendere una lampadina del Soggiorno**
+```Bash
+mosquitto_pub -h localhost -t 'casa/soggiorno/lampadina1/cmd' -m '{"state": "ON"}'
+```
+
 #### **Accendere Tutte le Lampadine nel Soggiorno**
 ```Bash
 mosquitto_pub -h localhost -t 'casa/soggiorno/comandi' -m '{"state": "ON"}'
