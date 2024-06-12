@@ -49,7 +49,7 @@ Realizzare l'interconnessione tra una sede centrale di una officina multimarca c
 
 <img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
 
-Una volta inviato inviato verso l'**interfaccia tun** con un **ip privato**, il **pacchetto** esce da un'**altra interfaccia del client VPN** imbustato dentro un pacchetto con **IP pubblico** che, per questo motivo, viene **inoltrato** verso il **default gateway** ```10.0.1.254``` oppure ```10.0.3.254``` oppure ```10.0.3.254```, a seconda della della LAN remota di appartenenza.
+Una volta inviato inviato verso l'**interfaccia tun** con un **ip privato**, il **pacchetto** esce da un'**altra interfaccia del client VPN** imbustato dentro un pacchetto con **IP pubblico** che, per questo motivo, viene **inoltrato** verso il **default gateway** ```10.0.1.254``` oppure ```10.0.2.254``` oppure ```10.0.3.254```, a seconda della della LAN remota di appartenenza.
 
 ## **VPN L2**
 
