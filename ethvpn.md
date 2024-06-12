@@ -58,12 +58,35 @@ Le ACL si dividono in:
 
 <img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
 
+#### **Interfaccia tun 1 del router centrale**
 ```Python
 ! Definizione lista di regole (blacklist)
-(config)#access-list 101 deny host 10.0.1.2
+(config)#access-list 101 deny 10.0.1.0 0.0.0.255
 (config)#access-list 101 permit any 
 ! Selezione interfaccia e0
-(config)# interface e0 
+(config)# interface tun0 
+! Applicazione in ingress su e0
+(config-if)# ip access-group 101 in
+```
+
+#### **Interfaccia tun 2 del router centrale**
+```Python
+! Definizione lista di regole (blacklist)
+(config)#access-list 101 deny 10.0.2.0 0.0.0.255
+(config)#access-list 101 permit any 
+! Selezione interfaccia e0
+(config)# interface tun0 
+! Applicazione in ingress su e0
+(config-if)# ip access-group 101 in
+```
+
+#### **Interfaccia tun 3 del router centrale**
+```Python
+! Definizione lista di regole (blacklist)
+(config)#access-list 101 deny 10.0.3.0 0.0.0.255
+(config)#access-list 101 permit any 
+! Selezione interfaccia e0
+(config)# interface tun0 
 ! Applicazione in ingress su e0
 (config-if)# ip access-group 101 in
 ```
