@@ -374,13 +374,13 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 <tr><td> Senza le VLAN </td><td> Con le VLAN </td></tr>
 <tr><td> 
 ```Json                   
-  !Definizione lista di regole (blacklist)
-  (config)# access-list 101 deny 10.0.2.0 0.0.0.255
-  (config)# access-list 101 permit any 
-  ! Selezione interfaccia eth2
-  (config)# interface eth2 
-  !Applicazione in ingress su eth2
-  (config-if)# ip access-group 101 in
+  !Definizione lista di regole (blacklist)<br>
+  (config)# access-list 101 deny 10.0.2.0 0.0.0.255<br>
+  (config)# access-list 101 permit any<br> 
+  ! Selezione interfaccia eth2<br>
+  (config)# interface eth2<br> 
+  !Applicazione in ingress su eth2<br>
+  (config-if)# ip access-group 101 in<br>
   (config-if)# exit
   ``` 
     
