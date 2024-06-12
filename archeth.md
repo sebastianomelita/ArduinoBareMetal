@@ -373,7 +373,7 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 #### **Esigenza di filtraggio: negare ad un PC della subnet officina di entrare nella subnet ufficio**
 
 <table>
-<tr><td> Senza le VLAN </td><td> Con le VLAN </td></tr>
+<tr><td> Soluzione senza le VLAN </td><td> Soluzione con le VLAN </td></tr>
 <tr><td> 
     
 ```C++                   
