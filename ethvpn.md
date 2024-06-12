@@ -14,7 +14,7 @@ Realizza una connessione virtuale punto-punto cifrata tra utenti remoti attraver
 
 <img src="img/tunnelvpn.png" alt="alt text" width="400">
 
-In genere è un imbustamento fuori ordine che incapsula pachetti del livello N su pacchetti di livello N o superiore. 
+In genere, il **tunnelling** si può considerare un **imbustamento fuori ordine** che **incapsula** pachetti del **livello N** su pacchetti di **livello N o superiore**. 
 
 ## **Interfacce virtuali tun e tap**
 
