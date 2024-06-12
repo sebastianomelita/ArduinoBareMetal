@@ -159,6 +159,7 @@ Sitografia:
 - https://support.industry.siemens.com/cs/document/109792357/how-do-configure-an-openvpn-tunnel-between-two-scalance-sc64x-2cs-?dti=0&lc=en-AF
 - https://support.industry.siemens.com/cs/attachments/109792357/109792357_OpenVPN_en.pdf
 - https://openmaniak.com/openvpn_bridging.php
+- https://www.cisco.com/c/it_it/support/docs/smb/switches/cisco-small-business-300-series-managed-switches/smb5653-configure-port-to-vlan-interface-settings-on-a-switch-throug.html
 
 >[Torna a reti ethernet](archeth.md)
 
