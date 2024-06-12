@@ -37,6 +37,8 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 10.8.0.0        0.0.0.0         255.255.255.0   U     0      0        0 tun0
 ```
 
+### **Canale virtuale e canale reale**
+
 L'**interfaccia virtuale** realizza un **canale virtuale diretto** tra i due router con il ruolo di client e server della connessione VPN dove viene **inoltrato** il **pacchetto interno trasportato**. In realtà il **canale reale**, quello dove viene inoltrato il pacchetto esterno vettore, passa per il **router di confine** di ogni LAN remota che utilizza **Internet** per inoltrare ulteriormente il pacchetto esterno verso il **server VPN**. 
 
 ### **Esempio officina 1**
@@ -62,6 +64,8 @@ Quando due reti sono collegate tramite un tunnel bridged L2 OpenVPN, la risoluzi
 8. **Inoltro della risposta alla sorgente**: Il router VPN locale inoltra la risposta ARP alla sorgente originaria attraverso la sua rete locale.
 
 In questo modo, la **risoluzione degli indirizzi MAC** tra le due reti collegate da un tunnel bridged L2 OpenVPN avviene attraverso il **tunnel VPN**, consentendo la comunicazione tra dispositivi su reti distinte come se fossero sulla **stessa rete locale**.
+
+### **Canale virtuale e canale reale**
 
 L'**interfaccia virtuale** realizza un **canale virtuale diretto** tra i due **bridge** con il ruolo di client e server della connessione VPN dove viene **inoltrata** il **la trama MAC**. In realtà il **canale reale**, quello dove viene inoltrato il pacchetto esterno vettore, passa per il **router di confine** di ogni LAN remota che utilizza **Internet** per inoltrare ulteriormente il pacchetto esterno verso il **server VPN**. 
 
