@@ -1,4 +1,4 @@
->>[Torna a reti ethernet](archeth.md)
+>[Torna a reti ethernet](archeth.md)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
