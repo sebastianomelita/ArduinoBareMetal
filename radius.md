@@ -30,7 +30,7 @@ Per realizzare l'autenticazione 802.1 X servono 3 dispositivi:
 
 Autorizza o meno l’apertura di una connessione di livello 2 ISO/OSI. L’autenticazione di un client detto supplicant passa per il NAS (Network Access Server) a lui più vicino. Un NAS è autorizzato da un server di autenticazione centralizzato comune a tutti i NAS del sistema. Mentre i messaggi del protocollo viaggiano liberamente attraverso la uncontrolled port, quelli dati passano per la controlled port che permette il passaggio solo su autorizzazione del server RADIUS.
 
-<img src="img/porteradius.png" alt="alt text" width="1000">
+<img src="img/porteradius.png" alt="alt text" width="500">
 
 ### **Sequenza di autenticazione utente**
 
