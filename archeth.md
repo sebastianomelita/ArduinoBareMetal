@@ -371,38 +371,18 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 - Sul router ogni link fisico genera una subnet che si mappa 1:1 su una sottostante LAN fisica
 
 <table>
-<tr>
-<td> Status </td> <td> Response </td>
-</tr>
-<tr>
-<td> 200 </td>
-<td>
-
-↑ Blank line!
-```json
-json
-{
-    "id": 10,
-    "username": "alanpartridge",
-    "email": "alan@alan.com",
-    "password_hash": "$2a$10$uhUIUmVWVnrBWx9rrDWhS.CPCWCZsyqqa8./whhfzBZydX7yvahHS",
-    "password_salt": "$2a$10$uhUIUmVWVnrBWx9rrDWhS.",
-    "created_at": "2015-02-14T20:45:26.433Z",
-    "updated_at": "2015-02-14T20:45:26.540Z"
-}
-```
-↓ Blank line!
-
-</td>
-</tr>
-<tr>
-<td> 400 </td>
-<td>
-
-**Markdown** _here_. (↕︎ Blank lines above and below!)
-
-</td>
-</tr>
+<tr><td> Senza le VLAN </td><td> Con le VLAN </td></tr>
+<tr><td> ```                   
+  !Definizione lista di regole (blacklist)
+  (config)# access-list 101 deny 10.0.2.0 0.0.0.255
+  (config)# access-list 101 permit any 
+  ! Selezione interfaccia eth2
+  (config)# interface eth2 
+  !Applicazione in ingress su eth2
+  (config-if)# ip access-group 101 in
+  (config-if)# exit
+  ``` </td><td></td></tr>
+<tr><td> </td><td></td></tr>
 </table>
 
 ### **Segmentazione logica**
