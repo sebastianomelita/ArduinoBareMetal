@@ -419,6 +419,34 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 - è necessaria la colorazione delle porte per distinguere i gruppi
 - Sul router ogni link virtuale genera una subnet che si mappa 1:1 su una sottostante LAN logica (VLAN)
 
+#### **Problema**
+- Si vuole consentire agli host in NetA di avviare e stabilire una sessione TCP per gli host in NetB.
+- solo ai pacchetti TCP di risposta e a quelli di dialogo è consentito entrare nell'interfaccia Ethernet 0 da NetB verso NetA 
+- Pertanto, gli host in NetA possono aprire connessioni verso gli host in NetB, ma gli host in NetB non possono aprire alcuna connessione diretta verso NetA
+
+#### **Soluzione**
+<table>
+<tr><td> Senza le VLAN </td><td> Con le VLAN </td></tr>
+<tr><td> 
+    
+```C++                   
+! Definizione lista di regole
+(config)# access-list 102 permit tcp any any gt 1023 established
+! Selezione interfaccia vlan20
+(config)# interface ethernet0
+! Applicazione in ingress su e0
+(config-if)# ip access-group 102 in
+``` 
+    
+</td>
+</tr>
+</table>
+
+- Nota: established seleziona solo i pacchetti di risposta (solo flag ACK o flag RST settati)
+- Nota: 1023 seleziona solo porte di destinazione di client (numerazione più alta di 1000)
+- Nota: è una tecnica stateless dalla sicurezza relativa (possibile falsificazione dei flags)
+
+
 ### **Segmentazione fisica + logica**
 
 - Le subnet sono generate sul router da due link virtuali collegati a interfacce IP logicamente distinte
