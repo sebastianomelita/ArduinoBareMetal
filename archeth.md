@@ -373,6 +373,7 @@ Un router reimbusta le trame MAC su nuovi pacchetti IP ogni volta che effettua u
 <table>
 <tr><td> Senza le VLAN </td><td> Con le VLAN </td></tr>
 <tr><td> 
+    
 ```Json                   
   !Definizione lista di regole (blacklist)<br>
   (config)# access-list 101 deny 10.0.2.0 0.0.0.255<br>
