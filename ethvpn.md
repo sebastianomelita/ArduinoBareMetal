@@ -50,7 +50,7 @@ L'**interfaccia virtuale** realizza un **canale virtuale diretto** tra i due rou
 
 <img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
 
-Per risolvere il quesito 2, cioè negare al PC della subnet officina di comnicare con un PC della subnet ufficio, si può creare una ACL nel router firewall.
+Per risolvere il quesito 2, cioè negare ad un PC della subnet officina di comunicare con un PC della subnet ufficio, si può creare **una ACL** nel **router firewall** centrale **per ogni interfaccia tun**.
 
 Le ACL si dividono in:
 - **Standard**, valutano il solo indirizzo di sorgente e vanno poste vicino alla destinazione 
@@ -58,7 +58,7 @@ Le ACL si dividono in:
 
 <img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
 
-#### **Interfaccia tun 1 del router centrale**
+#### **Interfaccia tun 0 del router centrale**
 ```Python
 ! Definizione lista di regole (blacklist)
 (config)#access-list 101 deny 10.0.1.0 0.0.0.255
@@ -69,7 +69,7 @@ Le ACL si dividono in:
 (config-if)# ip access-group 101 in
 ```
 
-#### **Interfaccia tun 2 del router centrale**
+#### **Interfaccia tun 1 del router centrale**
 ```Python
 ! Definizione lista di regole (blacklist)
 (config)#access-list 101 deny 10.0.2.0 0.0.0.255
@@ -80,7 +80,7 @@ Le ACL si dividono in:
 (config-if)# ip access-group 101 in
 ```
 
-#### **Interfaccia tun 3 del router centrale**
+#### **Interfaccia tun 2 del router centrale**
 ```Python
 ! Definizione lista di regole (blacklist)
 (config)#access-list 101 deny 10.0.3.0 0.0.0.255
@@ -136,6 +136,8 @@ Le **porte dei bridge** che collegano ai **PC** o al **router** sono tutte **unt
 ### **Inter vlan routing**
 
 L'**inter vlan routing** è realizzato dal solo router nella **sede centrale**, l'unico che, avendo **porte di trunk**, possiede interfacce su **tutte le vlan** e, quindi, su **tutte le subnet** ed, essendo le dorsali verso il router realizzate con un **trunk** terminato su tre **interfacce virtuali** 802.1q, la configurazione dell'**inter vlan routing** è di tipo **router on a stick**. Poichè l'intervlan routing di tipo router on a stick si realizza con subnet direttamente connesse ad un solo router, allora la **definizione manuale** delle **tabelle di routing** non è necessaria.
+
+Per risolvere il quesito 2, cioè negare ad un PC della subnet officina di comunicare con un PC della subnet ufficio, si può creare **una ACL** nel **router firewall** centrale **per ogni interfaccia tun**.
 
 Sitografia:
 - https://it.wikipedia.org/wiki/TUN/TAP
