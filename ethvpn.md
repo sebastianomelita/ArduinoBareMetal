@@ -163,7 +163,7 @@ In dettaglio:
 
 Schermata di accesso di un utente che è autorizzato ad accedere 2 desktop remoti:
 
-<img src="img/guacamole.png" alt="alt text" width="1100">
+<img src="img/dashguacamole.png" alt="alt text" width="1100">
 
 Sitografia:
 - https://it.wikipedia.org/wiki/TUN/TAP
