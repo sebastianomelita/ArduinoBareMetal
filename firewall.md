@@ -36,9 +36,16 @@ Questa tecnica permette di superare il limite tecnico del port forwarding tradiz
 Questa tecnica può essere adoperata per realizzare il partizionamento del carico in base al tipo di servizio oppure, per uno stesso servizio, in base alla provenienza geografica della richiesta.
 Ad esempio una richiesta con l’indirizzo https://segreteria.marconicloud.it /non è utilizzabile dall’utente perché è riservato agli accessi ad un webservice https da parte dell’aministrazione remota di axios. https://segeteria.marconicloud/guacamole/ invece, pur afferendo alla stessa porta 443, viene dal modulo ALG rediretto verso il server di VPN Guacamole.
 
-### **Esempio partizionamento del carico** 
+<img src="img/ha.gif" alt="alt text" width="700">
 
-Realizzare, con il reverse proxy haproxy, il partizionamento del traffico sulle porte 80 e 443 tra i server blog_miosito e web_miosito:
+- Ridondanza dei bilanciatori di carico (proxy)
+- Scelta del bilanciatore in base alla disponibilità
+- Disponibilità valutata con healt check mediante keepalived
+
+### **Esempio di partizionamento e bilanciamento del carico** 
+
+- Realizzare, con il reverse proxy haproxy, il partizionamento del traffico sulle porte 80 e 443 tra i server blog_miosito e web_miosito.
+- Nel contempo realizzare il bilanciamento del carico tra tre server con lo stesso servizio per il traffico verso web_miosito
 
 ``` C++
 # Configurazione HAProxy
@@ -81,16 +88,11 @@ backend blog_backend
   server blog_server1 blog.miosito.com:80 check
 
 backend web_backend
+  balance roundrobin    # Bilanciamento del carico round-robin tra i server
   server web_server1 web.miosito.com:80 check
-
+  server web_server2 web.miosito.com:80 check
+  server web_server3 web.miosito.com:80 check
 ```
-
-<img src="img/ha.gif" alt="alt text" width="700">
-
-- Ridondanza dei bilanciatori di carico (proxy)
-- Scelta del bilanciatore in base alla disponibilità
-- Disponibilità valutata con healt check mediante keepalived
-
 
 ## **IPS** 
 
