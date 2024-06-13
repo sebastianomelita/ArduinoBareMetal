@@ -148,10 +148,10 @@ Le **regole floating** in un firewall sono **regole avanzate** che possono esser
 
 #### **Esempio di utilizzo**
 
-**Regole di Sicurezza Globale**: Supponiamo di voler bloccare tutto il traffico ICMP (ping) in ingresso su tutte le interfacce per motivi di sicurezza. Una regola floating può essere configurata per bloccare ICMP su tutte le interfacce in modalità inbound.
-**Regole di Quality of Service (QoS)**: Se si desidera applicare una regola di limitazione della banda a determinati tipi di traffico indipendentemente dall'interfaccia, una regola floating può essere utilizzata per taggare il traffico e applicare le restrizioni di banda necessarie.
-**Eccezioni per il Traffico VPN**: Se avete una VPN configurata e volete garantire che il traffico VPN bypassi le regole di filtro standard delle interfacce, potete usare una regola floating per permettere specifici tipi di traffico attraverso la VPN, ignorando le regole più restrittive delle interfacce LAN o WAN.
-**Regole di Logging**: Potreste voler loggare tutto il traffico HTTP (porta 80) per scopi di monitoraggio e auditing su tutte le interfacce. Una regola floating può essere configurata per loggare questo traffico su tutte le interfacce in entrambe le direzioni.
+- **Regole di Sicurezza Globale**: Supponiamo di voler bloccare tutto il traffico ICMP (ping) in ingresso su tutte le interfacce per motivi di sicurezza. Una regola floating può essere configurata per bloccare ICMP su tutte le interfacce in modalità inbound.
+- **Regole di Quality of Service (QoS)**: Se si desidera applicare una regola di limitazione della banda a determinati tipi di traffico indipendentemente dall'interfaccia, una regola floating può essere utilizzata per taggare il traffico e applicare le restrizioni di banda necessarie.
+- **Eccezioni per il Traffico VPN**: Se avete una VPN configurata e volete garantire che il traffico VPN bypassi le regole di filtro standard delle interfacce, potete usare una regola floating per permettere specifici tipi di traffico attraverso la VPN, ignorando le regole più restrittive delle interfacce LAN o WAN.
+- **Regole di Logging**: Potreste voler loggare tutto il traffico HTTP (porta 80) per scopi di monitoraggio e auditing su tutte le interfacce. Una regola floating può essere configurata per loggare questo traffico su tutte le interfacce in entrambe le direzioni.
 
 
 
