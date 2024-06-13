@@ -41,39 +41,46 @@ Ad esempio una richiesta con l’indirizzo https://segreteria.marconicloud.it /n
 Realizzare, con il reverse proxy haproxy, il partizionamento del traffico tra blog_miosito e web_miosito:
 
 ``` C++
+# Configurazione HAProxy
 global
-    log /dev/log    local0
-    log /dev/log    local1 notice
-    maxconn 4096
-    user haproxy
-    group haproxy
-    daemon
+  log /dev/log    local0
+  log /dev/log    local1 notice
+  maxconn 4096
+  user haproxy
+  group haproxy
+  daemon
 
 defaults
-    log     global
-    mode    http
-    option  httplog
-    option  dontlognull
-    timeout connect 5000
-    timeout client  50000
-    timeout server  50000
+  log     global
+  mode    http
+  option  httplog
+  option  dontlognull
+  timeout connect 5000
+  timeout client  50000
+  timeout server  50000
 
 frontend http_front
-    bind *:80
-    bind *:443 ssl crt /etc/haproxy/cert.pem  # Certificato SSL (opzionale)
-    http-request redirect scheme https unless { ssl_fc }
+  bind *:80
+  bind *:443 ssl crt /etc/haproxy/cert.pem  # Certificato SSL (opzionale)
+  
+  # Reindirizza automaticamente le richieste HTTP a HTTPS, a meno che non siano già in SSL
+  http-request redirect scheme https unless { ssl_fc }
 
-    acl is_blog hdr_end(host) -i blog.miosito.com
-    acl is_web hdr_end(host) -i web.miosito.com
+  # ACL per indirizzo del blog
+  acl is_blog hdr_end(host) -i blog.miosito.com
 
-    use_backend blog_backend if is_blog
-    use_backend web_backend if is_web
+  # ACL per indirizzo del web
+  acl is_web hdr_end(host) -i web.miosito.com
+
+  use_backend blog_backend if is_blog
+  use_backend web_backend if is_web
 
 backend blog_backend
-    server blog_server1 blog.miosito.com:80 check
+  server blog_server1 blog.miosito.com:80 check
 
 backend web_backend
-    server web_server1 web.miosito.com:80 check
+  server web_server1 web.miosito.com:80 check
+
 ```
 
 <img src="img/ha.gif" alt="alt text" width="700">
