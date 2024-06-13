@@ -94,7 +94,7 @@ Poichè la WAN è una interfaccia con una rete insicura allora la **politica di 
 - Lista di **deny** per regole di sicurezza essenziali come quelle antispoofing
 - lista di **permit** in base al servizio (porta) sulla destinazione avente l’IP pubblico del router/firewall se cattura pacchetti non tradotti dal NAT.
 - lista di **permit** in base al servizio (porta) sulla destinazione avente l’IP privato di un server interno se cattura pacchetti già tradotti dal NAT.
-- - Regola **di default** **deny All** esplicita alla fine
+- Regola **di default** **deny All** esplicita alla fine
 
 <img src="img/ruleswan.png" alt="alt text" width="1100">
 
