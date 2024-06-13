@@ -4,7 +4,10 @@
 - [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
-- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
+- [Dettaglio architettura LoraWAN](lorawanclasses.md)
+
+Servizi:
+- [Firewall](firewall.md).
 
 ## **Caso d'uso LAN Ethernet** 
 
@@ -63,6 +66,9 @@ Una rete di reti di sensori sparsi nel mondo può essere tenuta insieme tramite 
 - la possibilità di poter adoperare **altri servizi** centralizzati oltre la messaggistica MQTT.
 
 Per il dettaglio sulle VPN pratiche vedi [VPN di reti Ethernet](ethvpn.md).
+
+Per il dettaglio sulle impostazioni di un firewall [Firewall](firewall.md).
+
 
 ##  **Canali di comunicazione principali in una rete di sensori**
 
