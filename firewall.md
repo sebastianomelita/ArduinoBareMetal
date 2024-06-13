@@ -271,9 +271,12 @@ Cisco non usa il termine "floating rules", configurazioni avanzate come **policy
 - **Eccezioni per il Traffico VPN**: Se avete una VPN configurata e volete garantire che il traffico VPN bypassi le regole di filtro standard delle interfacce, potete usare una regola floating per permettere specifici tipi di traffico attraverso la VPN, ignorando le regole più restrittive delle interfacce LAN o WAN.
 - **Regole di Logging**: Potreste voler loggare tutto il traffico HTTP (porta 80) per scopi di monitoraggio e auditing su tutte le interfacce. Una regola floating può essere configurata per loggare questo traffico su tutte le interfacce in entrambe le direzioni.
 
-## **NAT** 
-
-si divide in SNAT e DNAT.
+## **NAT**
+- È posto al confine tra due reti diverse di cui una è da lui considerata interna mentre l’altra è considerata esterna.
+- Il NAT è un processo (non è un protocollo!) che esegue la traduzione di indirizzi nel passaggio di pacchetti attraverso l’interfaccia tra interno ed esterno e viceversa
+- Una funzione secondaria molto utile è quella di bloccare del tutto le connessioni iniziate dall’esterno mentre rimangono permesse quelle iniziate dall’interno.
+- Dall’esterno all’interno, rimangono permessi solo i messaggi che transitano in risposta a connessioni iniziate dall’interno (da un client)
+- Si divide in **SNAT** e **DNAT**.
 
 ### **SNAT** 
 
