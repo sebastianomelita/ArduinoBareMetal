@@ -148,6 +148,12 @@ Le ACL si dividono in:
 (config-if)# exit
 ```
 
+## **VPN commerciali**
+
+- **OpenVPN** (https://it.wikipedia.org/wiki/OpenVPN), è una delle VPN incorporate nel firewall Pfsense. Viene utilizzata per guadagnare l’accesso da remoto alla rete della segreteria. L’accesso è riservato solo ai sistemisti di rete, ciascuno con la propria utenza, e permette la manutenzione diretta di server e apparati dotati di indirizzo IP. Un altro uso importante è l’accesso diretto al firewall per operazioni di manutenzione. Il modello di VPN realizzato è quello Client to Site non permanente.
+- **Guacamole** (https://en.wikipedia.org/wiki/Apache_Guacamole), è un **gateway HTTPS-RDP** che permette di accedere ad una singola macchina dotata di desktop grafico. L’accesso amministrativo è riservato ai sistemisti della rete, quello utente è riservato individualmente agli impiegati che utilizzano, a vario titolo, una certa postazione. L’accesso è protetto da autenticazione forte 2F basata su pin OTP da inserire in un autenticatore installato sullo smartphone personale dell’utente della postazione. L’accesso è limitato al solo PC della postazione e non permette di accedere a nessuna altra risorsa che non sia già montata (fisicamente o virtualmente) sulla macchina della postazione. Il modello di riferimento è la postazione di smartworking che replica a casa la postazione di lavoro remota. Il livello di sicurezza è alto anche perché il trasferimento di file dalla macchina utente a quella remota è inibito per cui eventuali malware presenti sul PC domestico non possono infettare la macchina di lavoro remota.
+
+
 Sitografia:
 - https://it.wikipedia.org/wiki/TUN/TAP
 - https://shorewall.org/OPENVPN.html
