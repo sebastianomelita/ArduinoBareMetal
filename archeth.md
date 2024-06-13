@@ -156,7 +156,7 @@ Il **cablaggio** è articolato, come prevedono gli **standard TIA/EIA 568**B ed 
 - centro stella (armadio) di **piano** (terzo livello gerarchico), detto armadio FD o floor distributor, da cui si diramano le **dorsali di piano**, dette anche **cablaggio orizzontale**.
 - Prese, dette **TO** o telecommunication outled
 
-<img src="img/cabalggiotutto" alt="alt text" width="800">
+<img src="img/cabalggiotutto.png" alt="alt text" width="800">
 
 Tendenzialmente, per risparmiare filo, vale la regola che gli armadi devono essere tutti in **posizione baricentrica** (non sempre rispettata nel disegno come nei progetti):
 - L’**armadio di campus** deve essere al baricentro degli armadi di edificio
