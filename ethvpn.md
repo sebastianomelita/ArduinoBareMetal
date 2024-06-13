@@ -155,7 +155,7 @@ Le ACL si dividono in:
 
 In entrambe le soluzioni la comunicazione tra client VPN e macchina remota si articola in un tratto cifrato nel percorso in Internet e in un tratto in chiaro nel percorso in LAN. Il server, posto a cavallo tra i due percorsi, è in entrambi i casi, una macchina interna alla rete LAN (il firewall nel caso di OpenVPN, il gateway HTTPS-RDP nel caso di Guacamole). In nessun caso vengono inviati dati a piattaforme terze all’esterno della LAN, in particolare, neppure in cloud. 
 
-<img src="img/guacamoletopology.png" alt="alt text" width="1100">
+<img src="img/guacamoletopology.png" alt="alt text" width="400">
 
 In dettaglio:
 - **OpenVPN** realizza un canale End to End, steso tra il PC client e il server VPN, entro il quale vengono cifrati, con crittografia TLS, i segmenti UDP/TCP. Questi, una volta arrivati sul server, verranno inviati verso una macchina specifica, scelta dall’utente, utilizzando il servizio di inoltro dei pacchetti IP fornito dal router della LAN. Poichè il server utilizza il servizio di inoltro di base della LAN (router), i pacchetti del client possono raggiungere una macchina qualsiasi della LAN, senza limitazione alcuna. L’accesso a questo tipo di servizio è riservato esclusivamente ai sistemisti di rete.
@@ -163,7 +163,7 @@ In dettaglio:
 
 Schermata di accesso di un utente che è autorizzato ad accedere 2 desktop remoti:
 
-<img src="img/dashguacamole.png" alt="alt text" width="1100">
+<img src="img/dashguacamole.png" alt="alt text" width="800">
 
 Sitografia:
 - https://it.wikipedia.org/wiki/TUN/TAP
