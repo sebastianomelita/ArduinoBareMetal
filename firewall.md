@@ -141,7 +141,7 @@ Nel caso di Guacamole, sicuramente il server in DMZ ha necessità dell'accesso a
 
 <img src="img/serverfarm.jpg" alt="alt text" width="800">
 
-L'architettura del firewall deve essere adatta a quella di un servizio multitier (modello server farm), per cui nella DMZ si espongono prima le funzioni di pubblicazione blandamente protette da un furewall, poi le funzioni di business (microservizi interni usati anche dalla LAN) protetti da una firewall con regole più stringenti (può accedere solo il server in DMZ), poi alla fine il server dei dati o dei flussi multimediali che può essere acceduto solo da un ristretto numero di server di business e mai direttamente dall'utente. La logica è quella dei compartimenti stagni dove ogni intrusione causa danni di importanza via via maggiore. Il bene aziendale sicuramente più prrezioso per l'azienda sono i dati e stanno nella zona più interna protetta da più linee di difesa.
+L'architettura del firewall deve essere adatta a quella di un servizio multitier (modello server farm), per cui nella DMZ si espongono prima le funzioni di pubblicazione blandamente protette da un firewall, poi le funzioni di business (microservizi interni usati anche dalla LAN) protetti da una firewall con regole più stringenti (può accedere solo il server in DMZ), poi alla fine il server dei dati o dei flussi multimediali che può essere acceduto solo da un ristretto numero di server di business e mai direttamente dall'utente. La logica è quella dei compartimenti stagni dove ogni intrusione causa danni di importanza via via maggiore. Il bene aziendale sicuramente più prrezioso per l'azienda sono i dati e stanno nella zona più interna protetta da più linee di difesa.
 
 
 ### **Azioni di una regola**
