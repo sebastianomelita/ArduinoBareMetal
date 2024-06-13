@@ -135,7 +135,7 @@ Poichè la LAN è una interfaccia con una rete sicura allora la **politica di de
 - Regole di **tagging** per **qualificare** il traffico in uscita per poi applicare politiche di shaping sul traffico in direzione opposta (code differenti per velocità differenti)
 - Regola **di default** **permit All** esplicita alla fine
 
-### **regole floating**
+### **Regole floating**
 
 Le **regole floating** in un firewall sono **regole avanzate** che possono essere applicate in modo più flessibile rispetto alle regole standard, poiché non sono legate a una specifica interfaccia o direzione del traffico. 
 
