@@ -80,6 +80,11 @@ Benchè il firewall Pfsense consenta questo tipo di ispezione intrusiva, conside
 
 <img src="img/wildcardmask.png" alt="alt text" width="1100">
 
+
+Le ACL si dividono in:
+- **Standard**, valutano il solo indirizzo di sorgente e vanno poste vicino alla destinazione 
+- **Estese**, valutano anche l'indirizzo di destinazione e vanno poste vicino all’origine
+
 <img src="img/fasiacl.png" alt="alt text" width="1100">
 
 ### **Impostazione dei filtraggi WAN inbound**
