@@ -78,6 +78,8 @@ Benchè il firewall Pfsense consenta questo tipo di ispezione intrusiva, conside
 
 ## **Regole firewall** 
 
+<img src="img/zone.png" alt="alt text" width="800">
+
 ### **Azioni di una regola**
 
 - **ALLOW (o ACCEPT)**: permette al pacchetto di attraversare il firewall.
@@ -134,7 +136,7 @@ Poichè la LAN è una interfaccia con una rete sicura allora la **politica di de
 - Regola **di default** **permit All** esplicita alla fine
 
 
-<img src="img/ruleslan.png" alt="alt text" width="1100">
+
 
 >[Torna a reti ethernet](archeth.md)
 
