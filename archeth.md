@@ -148,6 +148,22 @@ Gli **AP (Access Point)**, sono dei dispositivi di **aggregazione** dei client d
 - un **HUB wireless** che realizza un **mezzo broadcast** (multipunto) dove i client accedono mediante il protocllo **CSMA/CA** e sue ottimizzazioni per il WiFi (vedi [CSMA/CA](protocollidiaccesso.md#csmaca) per dettagli)
 - un **bridge** tra l'hub wireless e una LAN cablata (vedi [Bridge AP](archwifi.md#bridge-group)). Un **bridge** è uno dispositivo di **commutazione** simile ad uno **switch** ma realizzato in **SW**, che **inoltra**, a livello L2, trame MAC dall'HUB alla LAN cablata e viceversa. Questi bridge, per ogni AP, possono essere più di uno e, in questo caso, sono tanti quante le **interfacce logiche** dell'AP e mappano ogni intefaccia su una **VLAN diversa**.
 
+## **Architettura cablaggio**
+
+Il **cablaggio** è articolato, come prevedono gli **standard TIA/EIA 568**B ed **ISO/IEC11801**, in: 
+- centro stella di **comprensorio** (primo livello gerarchico), detto armadio CD o campus distributor
+- centro stella di **edificio** (secondo livello gerarchico), detto armadio BD o building distributor
+- centro stella (armadio) di **piano** (terzo livello gerarchico), detto armadio FD o floor distributor
+- Prese, dette **TO** o telecommunication outled
+
+Tendenzialmente, per risparmiare filo, vale la regola che gli armadi devono essere tutti in **posizione baricentrica** (non sempre rispettata nel disegno come nei progetti):
+- L’**armadio di campus** deve essere al baricentro degli armadi di edificio
+- L’**armadio di edificio** deve essere al baricentro degli armadi di piano
+- L’**armadio di piano** deve essere al baricentro delle prese TO
+
+
+
+
 ## **Documentazione**
 
 Consiste in:
