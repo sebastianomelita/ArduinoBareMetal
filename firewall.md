@@ -54,19 +54,19 @@ IPS (Intrusion Prevention System). E’ un IDS che può anche scatenare reazioni
 - riconosce i tentativi di intrusione e, in più,  può anche applicare temporaneamente regole di filtraggio più selettive delle solite, prendendo autonomamente l’iniziativa di bloccare host ritenuti pericolosi.
 Pfsense permette di impostare entrambe le funzioni. Attualmente è impostata quella di IPS. Il modulo IPS si chiama Snort https://it.wikipedia.org/wiki/Snort). 
 
-## **Scansione dei contenuti** 
+### **Scansione dei contenuti** 
 
 Le connessioni cifrate HTTPS, essendo End to End, in realtà non sono ispezionabili per cui la funzione di deep inspection su di esse è, di fatto, inefficace.
 Connessioni cifrate end to end (HTTPS) sono ispezionabili solo in modalità proxy mediante SSL MITM Filtering.
 
-### **SSL MITM Filtering** 
+#### **SSL MITM Filtering** 
 Si può alternativamente realizzare con un proxy HTTPS (ad es Squid) + autorità di certificazione locale. Per far ciò bisogna installare su ogni client il certificato CA di una CA locale (normalmente lo stesso firewall/proxy). Il sistema guadagna in sicurezza ma può sorgere qualche problema di privacy:
 •	Consenso informato degli utenti
 •	Responsabilità sulla fedeltà e correttezza dei sistemisti
 
 <img src="img/sslmitm.png" alt="alt text" width="700">
 
-### **Fasi dell’ispezione SSL MITM Filtering** 
+#### **Fasi dell’ispezione SSL MITM Filtering** 
 
 1.	Il proxy SSL intercetta le connessioni dal client sulla porta TCP 443.
 2.	Il proxy SSL Effettua negoziazioni SSL con il server web per conto del cliente.
