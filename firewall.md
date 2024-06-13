@@ -72,7 +72,7 @@ frontend http_front
   
   # Reindirizza automaticamente le richieste HTTP a HTTPS, a meno che non siano già in SSL
   http-request redirect scheme https unless { ssl_fc }
-  # indica al backend che la connessione originale è https benchè arrivi sulla porta 80
+  # Indica al backend che è posto dietro ad un reverse proxy che termina la connessione https
   http-request add-header X-Forwarded-Proto https if { ssl_fc }
 
   # ACL per indirizzo del blog
