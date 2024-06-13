@@ -150,7 +150,7 @@ L'architettura del firewall deve essere adatta a quella di un servizio multitier
   
 La logica è quella dei compartimenti stagni dove ogni intrusione causa danni di importanza via via maggiore. I beni aziendali sicuramente più preziosi per l'azienda sono i dati e stanno nella zona più interna protetta da più linee di difesa.
 
-Non è necessario che esistano davvero degli switch che creino delle LAN su cui si attesta il firewall comune a molti server, potrebbe semplicemente esserci una cascata di server con a bordo un firewall personale (ad es. Shorewall) che filtra gli accessi a gruppi di client via via numericamente più ristretti e più fidati.
+Non è necessario che esistano davvero degli switch che creino delle LAN su cui si attesta il firewall comune a molti server. Potrebbe semplicemente esserci una cascata di server con a bordo un firewall personale (ad es. Shorewall) che filtra gli accessi a gruppi di client via via numericamente più ristretti e più fidati.
 
 
 ### **Azioni di una regola**
