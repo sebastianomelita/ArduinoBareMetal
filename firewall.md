@@ -8,7 +8,7 @@
 
 # **Firewall** 
 
-Il **firewall** è un **dispositivo** che eleva il livello di sicurezza di una rete locale mediante il **processo di filtraggio** (eliminazione selettiva) dei pacchetti in transito in base a delle **regole di controllo** predefinite che, per essere efficaci, devono tenere esaminare costantemente le principali **arterie obbligate di traffico** da e verso la LAN.
+Il **firewall** è un **dispositivo** che eleva il livello di sicurezza di una rete locale mediante il **processo di filtraggio** (eliminazione selettiva) dei pacchetti in transito in base a delle **regole di controllo** predefinite che, per essere efficaci, devono esaminare costantemente le principali **arterie obbligate di traffico** da e verso la LAN.
 
 Il firewall + un componente essenziale della rete e ne esiste sempre almeno uno al confine tra la rete LAN e Internet. Funzionalità basilari di un firewall di qualità:
 - **Stateful Firewall** con controllo granulare e possibilità di funzionare in maniera trasparente al layer 2 (in bridging)
