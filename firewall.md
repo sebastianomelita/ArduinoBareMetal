@@ -193,7 +193,6 @@ policy-map SHAPE-WEB-TRAFFIC
 interface GigabitEthernet0/1
  ip access-group 101 in
  service-policy output SHAPE-WEB-TRAFFIC
- ip access-group 102 in
 ```
 
 ### **Regole floating**
