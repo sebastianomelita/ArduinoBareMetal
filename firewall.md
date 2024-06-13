@@ -38,6 +38,11 @@ Ad esempio una richiesta con l’indirizzo https://segreteria.marconicloud.it /n
 
 <img src="img/ha.gif" alt="alt text" width="700">
 
+- Ridondanza dei bilanciatori di carico (proxy)
+- Scelta del bilanciatore in base alla disponibilità
+- Disponibilità valutata con healt check mediante keepalived
+
+
 ## **IPS** 
 
 IDS (Intrusion Detetection System): talvolta ad un firewall è associata anche la funzione rilevamento delle intrusioni:
