@@ -135,6 +135,23 @@ Poichè la LAN è una interfaccia con una rete sicura allora la **politica di de
 - Regole di **tagging** per **qualificare** il traffico in uscita per poi applicare politiche di shaping sul traffico in direzione opposta (code differenti per velocità differenti)
 - Regola **di default** **permit All** esplicita alla fine
 
+### **regole floating**
+
+Le **regole floating** in un firewall sono **regole avanzate** che possono essere applicate in modo più flessibile rispetto alle regole standard, poiché non sono legate a una specifica interfaccia o direzione del traffico. 
+
+#### **Scopo delle regole floating**
+
+- **Applicazione Globale**: Le regole floating possono essere applicate a tutte le interfacce o a una selezione di interfacce. Questo è utile quando si desidera una regola di firewall che si applichi globalmente, indipendentemente dall'interfaccia attraverso cui il traffico sta passando.
+- **Priorità e Sovrapposizione**: Le regole floating vengono valutate prima delle regole standard delle interfacce (WAN, LAN, etc.). Questo permette di creare eccezioni o regole prioritarie che possono sovrascrivere le regole specifiche delle interfacce.
+- **Direzione del Traffico**: Possono essere configurate per essere applicate al traffico in entrata (inbound), in uscita (outbound), o in entrambe le direzioni (any). Questo offre una grande flessibilità nella gestione del traffico.
+- **Condizioni Avanzate**: Permettono di utilizzare condizioni avanzate come il tagging del traffico, la limitazione della banda, il controllo dello stato delle connessioni (stateful filtering), e altre opzioni avanzate che potrebbero non essere disponibili nelle regole delle interfacce standard.
+
+#### **Esempio di utilizzo**
+
+**Regole di Sicurezza Globale**: Supponiamo di voler bloccare tutto il traffico ICMP (ping) in ingresso su tutte le interfacce per motivi di sicurezza. Una regola floating può essere configurata per bloccare ICMP su tutte le interfacce in modalità inbound.
+**Regole di Quality of Service (QoS)**: Se si desidera applicare una regola di limitazione della banda a determinati tipi di traffico indipendentemente dall'interfaccia, una regola floating può essere utilizzata per taggare il traffico e applicare le restrizioni di banda necessarie.
+**Eccezioni per il Traffico VPN**: Se avete una VPN configurata e volete garantire che il traffico VPN bypassi le regole di filtro standard delle interfacce, potete usare una regola floating per permettere specifici tipi di traffico attraverso la VPN, ignorando le regole più restrittive delle interfacce LAN o WAN.
+**Regole di Logging**: Potreste voler loggare tutto il traffico HTTP (porta 80) per scopi di monitoraggio e auditing su tutte le interfacce. Una regola floating può essere configurata per loggare questo traffico su tutte le interfacce in entrambe le direzioni.
 
 
 
