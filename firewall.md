@@ -80,6 +80,8 @@ Benchè il firewall Pfsense consenta questo tipo di ispezione intrusiva, conside
 
 <img src="img/wildcardmask.png" alt="alt text" width="1000">
 
+<img src="img/fasiacl.png" alt="alt text" width="1000">
+
 >[Torna a reti ethernet](archeth.md)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
