@@ -135,10 +135,11 @@ Poichè la LAN è una interfaccia con una rete sicura allora la **politica di de
 - Regole di **tagging** per **qualificare** il traffico in uscita per poi applicare politiche di shaping sul traffico in direzione opposta (code differenti per velocità differenti)
 - Regola **di default** **permit All** esplicita alla fine
 
-```Ios
-! L'accesso amministrativo al firewall non venga bloccato
+```cisco
+! Permetti l'accesso amministrativo al firewall
 access-list 101 permit ip host <admin-ip> any
-! Bloccare gli indirizzi che non dovrebbero mai apparire sulla WAN
+
+! Blocca gli indirizzi non validi (antispoofing)
 access-list 101 deny ip 10.0.0.0 0.255.255.255 any
 access-list 101 deny ip 172.16.0.0 0.15.255.255 any
 access-list 101 deny ip 192.168.0.0 0.0.255.255 any
@@ -146,19 +147,23 @@ access-list 101 deny ip 127.0.0.0 0.255.255.255 any
 access-list 101 deny ip 169.254.0.0 0.0.255.255 any
 access-list 101 deny ip 224.0.0.0 15.255.255.255 any
 access-list 101 deny ip 240.0.0.0 7.255.255.255 any
-! Impedire l'accesso a Internet per un gruppo specifico di indirizzi IP
+
+! Blocca il traffico da un gruppo specifico di utenti
 access-list 101 deny ip <user-group-subnet> <subnet-mask> any
-! politca di default per blacklist
+
+! Consenti tutto il traffico rimanente
 access-list 101 permit ip any any
 
-! Applicazione delle ACL
+! Crea la class map per il traffico HTTP
 class-map match-all WEB-TRAFFIC
  match protocol http
 
+! Crea la policy map per taggare il traffico HTTP
 policy-map SHAPE-WEB-TRAFFIC
  class WEB-TRAFFIC
   set dscp af21
 
+! Applica le ACL e le politiche all'interfaccia WAN
 interface GigabitEthernet0/1
  ip access-group 101 in
  service-policy output SHAPE-WEB-TRAFFIC
