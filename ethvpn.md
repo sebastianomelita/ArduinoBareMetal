@@ -165,6 +165,15 @@ Schermata di accesso di un utente che è autorizzato ad accedere 2 desktop remot
 
 <img src="img/dashguacamole.png" alt="alt text" width="800">
 
+>[Torna a reti ethernet](archeth.md)
+
+- [Dettaglio architettura Zigbee](archzigbee.md)
+- [Dettaglio architettura BLE](archble.md)
+- [Dettaglio architettura WiFi infrastruttura](archwifi.md)
+- [Dettaglio architettura WiFi mesh](archmesh.md) 
+- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
+
+
 Sitografia:
 - https://it.wikipedia.org/wiki/TUN/TAP
 - https://shorewall.org/OPENVPN.html
@@ -178,11 +187,4 @@ Sitografia:
 - https://openmaniak.com/openvpn_bridging.php
 - https://www.cisco.com/c/it_it/support/docs/smb/switches/cisco-small-business-300-series-managed-switches/smb5653-configure-port-to-vlan-interface-settings-on-a-switch-throug.html
 
->[Torna a reti ethernet](archeth.md)
-
-- [Dettaglio architettura Zigbee](archzigbee.md)
-- [Dettaglio architettura BLE](archble.md)
-- [Dettaglio architettura WiFi infrastruttura](archwifi.md)
-- [Dettaglio architettura WiFi mesh](archmesh.md) 
-- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
