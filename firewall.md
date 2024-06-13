@@ -139,7 +139,7 @@ Poichè la LAN è una interfaccia con una rete sicura allora la **politica di de
 
 Le **regole floating** in un firewall sono **regole avanzate** che possono essere applicate in modo più flessibile rispetto alle regole standard, poiché non sono legate a una specifica interfaccia o direzione del traffico, cioè, possono essere applicate a più interfacce contemporaneamente e in una o in entrambe le direzioni. 
 
-Molti firewall commerciali permettono di base solo l'impostazione di regone inbound. Le regole outbound sono di norma scoraggiate nei firewall perimetrali perche:
+Molti firewall commerciali permettono di base solo l'impostazione di regone inbound. Le regole outbound sono di norma scoraggiate nei firewall perimetrali per motivi di:
 - **Efficienza**. L'ACL inbound è più efficiente di quella in uscita perché in l'ingresso, qualsiasi pacchetto che viene risolto (match) con un "deny" viene eliminato PRIMA che il pacchetto venga instradato all'interfaccia in uscita a cui è destinato. Inoltre spesso è cpnsiderato inutile filtrare il traffico verso l'esterno perchè si da per buono il principio che il traffico proveniente dall'interno è già verificato e sicuro.
 - **Duplicazione delle Regole e complessità**: In molti casi, le regole inbound possono essere sufficienti per garantire la sicurezza, rendendo le regole outbound ridondanti e non necessarie. La ridondanza, d'sltronde, genera complessità di gestione e predisposizione ad errori, specie se non si è esperti.
 - **Efficacia**: molte normative di sicurezza e conformità richiedono un controllo rigoroso del traffico in entrata ritenendolo la soluzione più efficace.
