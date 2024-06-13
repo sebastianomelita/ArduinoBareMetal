@@ -176,12 +176,6 @@ access-list 101 permit ip host <admin-ip> any
 
 ! Blocca gli indirizzi non validi (antispoofing)
 access-list 101 deny ip 10.0.0.0 0.255.255.255 any
-access-list 101 deny ip 172.16.0.0 0.15.255.255 any
-access-list 101 deny ip 192.168.0.0 0.0.255.255 any
-access-list 101 deny ip 127.0.0.0 0.255.255.255 any
-access-list 101 deny ip 169.254.0.0 0.0.255.255 any
-access-list 101 deny ip 224.0.0.0 15.255.255.255 any
-access-list 101 deny ip 240.0.0.0 7.255.255.255 any
 
 ! Blocca il traffico da un gruppo specifico di utenti
 access-list 101 deny ip <user-group-subnet> <subnet-mask> any
@@ -229,7 +223,8 @@ Cisco non usa il termine "floating rules", configurazioni avanzate come **policy
 - **Eccezioni per il Traffico VPN**: Se avete una VPN configurata e volete garantire che il traffico VPN bypassi le regole di filtro standard delle interfacce, potete usare una regola floating per permettere specifici tipi di traffico attraverso la VPN, ignorando le regole più restrittive delle interfacce LAN o WAN.
 - **Regole di Logging**: Potreste voler loggare tutto il traffico HTTP (porta 80) per scopi di monitoraggio e auditing su tutte le interfacce. Una regola floating può essere configurata per loggare questo traffico su tutte le interfacce in entrambe le direzioni.
 
-
+Sitografia:
+- https://www.cisco.com/c/it_it/support/docs/ip/access-lists/26448-ACLsamples.html
 
 >[Torna a reti ethernet](archeth.md)
 
