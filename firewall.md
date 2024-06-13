@@ -271,6 +271,73 @@ Cisco non usa il termine "floating rules", configurazioni avanzate come **policy
 - **Eccezioni per il Traffico VPN**: Se avete una VPN configurata e volete garantire che il traffico VPN bypassi le regole di filtro standard delle interfacce, potete usare una regola floating per permettere specifici tipi di traffico attraverso la VPN, ignorando le regole più restrittive delle interfacce LAN o WAN.
 - **Regole di Logging**: Potreste voler loggare tutto il traffico HTTP (porta 80) per scopi di monitoraggio e auditing su tutte le interfacce. Una regola floating può essere configurata per loggare questo traffico su tutte le interfacce in entrambe le direzioni.
 
+## **NAT** 
+
+si divide in SNAT e DNAT.
+
+### **SNAT** 
+
+- modifica l'indirizzo sorgente dei pacchetti trasformando indirizzi sorgente interni in indirizzi sorgente esterni
+- Altera le connessioni iniziate da uno o più host interni in modo da presentare verso l'esterno uno o più indirizzi IP diversi da quelli originali. 
+- Quindi chi (all’esterno) riceve le connessioni le vede provenire da un indirizzo diverso da quello utilizzato da chi effettivamente le genera.
+- La NAT table viene aggiornata staticamente (dal sistemista) o dinamicamente, con un nuovo record IPIn-IPOut, nel momento in cui un host interno richiede l’accesso all’esterno
+- i pacchetti della stessa connessione che viaggiano in  senso opposto vengono inoltrati correttamente fino all’host iniziante grazie alle informazioni contenute nella tabella di NAT che stavolta viene letta al contrario.
+
+Si usa per:
+- Ovviare alla penuria di indirizzi IP pubblici
+- Per isolare una rete locale da accessi iniziati dall’esterno
+- Prendere un tronco di rete a valle del NAT e farlo apparire al resto della rete a monte come un unico host
+- A corredo di una VPN, per adattare tronchi di LAN remoti con piani di indirizzamento uguali o sovrapposti (Double NAT)
+
+Si divide in:
+- SNAT statico, è spesso associato ad un DNAT statico, traduce solo indirizzi IP
+- SNAT dinamico, traduce solo indirizzi IP 
+- PNAT o IP masquerading, o IP Overloading o NAPT (Network Address and Port Translation) traduce sia gli indirizzi IP che  gli indirizzi TCP/UDP
+
+### **DNAT** 
+
+- modifica l'indirizzo destinazione dei pacchetti trasformando indirizzi di destinazione esterni in indirizzi di destinazione interni
+- le connessioni iniziate da uno o più host esterni vengono alterate in modo da essere redirette dall’interfaccia esterna a quella interna verso indirizzi IP diversi da quelli originali e su porte corrispondenti  secondo le - informazioni contenute nella NAT table. 
+- Se l’indirizzo di destinazione esterno non è presente nella NAT table il pacchetto in arrivo dall’esterno viene scartato
+- Chi effettua le connessioni si collega in realtà con un indirizzo di destinazione diverso da quello che aveva scelto
+
+Si usa per:
+- Port forwarding in associazione ad un SNAT dinamico o a un PNAT
+- Realizzare la trasparenza di un proxy
+- Bilanciamento del carico di lavoro di un pool di server
+- Gestione dei fallimenti di un server principale
+
+### **Esempio si SNAT PNAT con due port forward** 
+
+``` C++
+! Configurazione dell'interfaccia WAN
+interface GigabitEthernet0/1
+ description WAN Interface
+ ip address dhcp
+ ip nat outside
+
+! Configurazione dell'interfaccia LAN
+interface GigabitEthernet0/0
+ description LAN Interface
+ ip address 192.168.1.1 255.255.255.0
+ ip nat inside
+
+! Creare un pool di indirizzi NAT (se necessario)
+ip nat pool mynatpool 203.0.113.10 203.0.113.10 netmask 255.255.255.0
+
+! Associare l'interfaccia LAN al NAT realizzando un PNAT
+ip nat inside source list 1 pool mynatpool overload
+
+! Access list per consentire il NAT per la rete interna
+access-list 1 permit 192.168.1.0 0.0.0.255
+
+! Port forwarding per HTTPS verso il server interno 192.168.1.100
+ip nat inside source static tcp 192.168.1.100 443 interface GigabitEthernet0/1 443
+
+! Port forwarding per SSH verso il server interno 192.168.1.101
+ip nat inside source static tcp 192.168.1.101 22 interface GigabitEthernet0/1 22
+```
+
 Sitografia:
 - https://www.cisco.com/c/it_it/support/docs/ip/access-lists/26448-ACLsamples.html
 
