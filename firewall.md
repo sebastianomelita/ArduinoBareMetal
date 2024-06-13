@@ -86,10 +86,7 @@ Benchè il firewall Pfsense consenta questo tipo di ispezione intrusiva, conside
 - **REJECT**: Proibisce al pacchetto di passare. Scarta con un avviso. Invia indietro all’host sorgente un messaggio ICMP di destinazione non raggiungibile (destination-unreachable)
 - **DROP (DENY, BLACKHOLE)**: Proibisce al pacchetto di passare. Lo scarta in maniera silenziosa, senza inviare risposta
 
-
 <img src="img/wildcardmask.png" alt="alt text" width="1100">
-
-
 
 Le ACL si dividono in:
 - **Standard**, valutano il solo indirizzo di sorgente e vanno poste vicino alla destinazione 
@@ -105,7 +102,8 @@ Le ACL (Access Control List ) vengono elaborate dal router secondo l’ordine co
 Le ACL devono essere:
 - **Definite** caratterizzando il loro nome e le ACE che comprendono (con una GUI o appositi comandi come access-list mia_ACL di CISCO IOS)
 - **Applicate** ad un certa interfaccia in una certa direzione (ingress od egress) scegliendola da una lista tramite una GUI oppure con comandi come ```ip access-group mia_ACL in```.
-
+    - Le regole **inbound** sono applicate al traffico che entra in un'interfaccia. Queste regole vengono valutate prima che il traffico sia inoltrato attraverso il dispositivo.
+    - Le regole **outbound** sono applicate al traffico che esce da un'interfaccia. Queste regole vengono valutate dopo che il traffico è stato inoltrato attraverso il dispositivo.
 
 ### **Impostazione dei filtraggi WAN inbound**
 
