@@ -82,6 +82,21 @@ Benchè il firewall Pfsense consenta questo tipo di ispezione intrusiva, conside
 
 <img src="img/fasiacl.png" alt="alt text" width="1100">
 
+### **Impostazione dei filtraggi WAN inbound**
+
+Nell'**interfaccia WAN** gli indirizzi di destinazione possono essere:
+- **privati** perchè le regole di filtraggio, essendo valutate dopo un eventuale DNAT, allora alcuni **indirizzi di destinazione** potrebbero essere stati già tradotti. Le regole, in questo caso, devono confermare le traduzioni di un DNAT permettendo che il traffico fluisca verso gli indirizzi **IP privati di destinazione**. Possono essere:
+        - indirizzo di un **server specifico** su cui un **port forwarding** di un **IP pubblico** redirige la connessione su un **certo servizio** (ad es. 10.13.0.30:443)
+        - indirizzo **ip virtuale** di un **reverse proxy** (ad es. haproxy) con funzione di **ALG** o **bilanciatore di carico** (ad es. 10.13.0.200:443)
+- l'**indirizzo pubblico** non tradotto dell'**interfaccia WAN** per ottenere l'accesso da remoto ai **servizi del firewall** che, normalmente, si limitano alla **VPN**. 
+
+Poichè la WAN è una interfaccia con una rete insicura allora la**politica di default** delle sue regole è la **deny all**, di conseguenza le regole sono tutte delle **white list** che permettono esplicitamente tutto ciò che non è negato. Le regole sono organizzabili in **liste** con **scopi diversi**:
+- Lista di **deny** per regole di sicurezza essenziali come quelle antispoofing
+- lista di **permit** in base al servizio (porta) sulla destinazione avente l’IP pubblico del router/firewall se cattura pacchetti non tradotti dal NAT.
+- lista di **permit** in base al servizio (porta) sulla destinazione avente l’IP privato di un server interno se cattura pacchetti già tradotti dal NAT.
+
+<img src="img/ruleswan.png" alt="alt text" width="1100">
+
 >[Torna a reti ethernet](archeth.md)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
