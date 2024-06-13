@@ -76,6 +76,9 @@ Si può alternativamente realizzare con un proxy HTTPS (ad es Squid) + autorità
 6.	Se il certificato è presente, il traffico sarà protetto. Verranno quindi applicate le protezioni dell'applicazione (ad es. antivirus, antispam, sandboxing).
 Benchè il firewall Pfsense consenta questo tipo di ispezione intrusiva, considerazioni di tipo organizzativo (oneroso installare altri certificati su un gran numero di pc) e di tipo etico ci hanno scoraggiato dall’applicarla.
 
+## **Regole firewall** 
+
+
 
 >[Torna a reti ethernet](archeth.md)
 
