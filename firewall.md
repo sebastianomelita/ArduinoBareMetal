@@ -174,9 +174,6 @@ Poichè la LAN è una interfaccia con una rete sicura allora la **politica di de
 ! Permetti l'accesso amministrativo al firewall
 access-list 101 permit ip host <admin-ip> any
 
-! Blocca gli indirizzi non validi (antispoofing)
-access-list 101 deny ip 10.0.0.0 0.255.255.255 any
-
 ! Blocca il traffico da un gruppo specifico di utenti
 access-list 101 deny ip <user-group-subnet> <subnet-mask> any
 
@@ -196,6 +193,7 @@ policy-map SHAPE-WEB-TRAFFIC
 interface GigabitEthernet0/1
  ip access-group 101 in
  service-policy output SHAPE-WEB-TRAFFIC
+ ip access-group 102 in
 ```
 
 ### **Regole floating**
