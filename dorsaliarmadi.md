@@ -11,7 +11,7 @@
 
 ## **Albero degli apparati passivi** 
 
-<img src="img/cablaggio.png" alt="alt text" width="800">
+<img src="img/cablaggio.png" alt="alt text" width="600">
 
 - È una rappresentazione **logica** di armadi,  dorsali e TO che ha il vantaggio di riassumere sinteticamente la struttura generale del cablaggio.
 - La topologia è ad albero avente per radice l’armadio CD, per nodi gli armadi BD e FD, per foglie le prese TO. 
