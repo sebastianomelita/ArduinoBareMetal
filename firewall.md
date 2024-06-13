@@ -104,8 +104,8 @@ Le ACL devono essere:
 - **Applicate** ad un certa interfaccia in una certa direzione (ingress od egress) scegliendola da una lista tramite una GUI oppure con comandi come ```ip access-group mia_ACL in```.
 
 In base alla direzione dell'interfaccia in cui sono applicate le regolepossono essere:
-- Le regole **inbound** sono applicate al traffico che entra in un'interfaccia. Queste regole vengono valutate prima che il traffico sia inoltrato attraverso il dispositivo.
-- Le regole **outbound** sono applicate al traffico che esce da un'interfaccia. Queste regole vengono valutate dopo che il traffico è stato inoltrato attraverso il dispositivo.
+- regole **inbound** sono applicate al traffico che entra in un'interfaccia. Queste regole vengono valutate prima che il traffico sia inoltrato attraverso il dispositivo.
+- regole **outbound** sono applicate al traffico che esce da un'interfaccia. Queste regole vengono valutate dopo che il traffico è stato inoltrato attraverso il dispositivo.
 
 ### **Impostazione dei filtraggi WAN inbound**
 
@@ -137,7 +137,14 @@ Poichè la LAN è una interfaccia con una rete sicura allora la **politica di de
 
 ### **Regole floating**
 
-Le **regole floating** in un firewall sono **regole avanzate** che possono essere applicate in modo più flessibile rispetto alle regole standard, poiché non sono legate a una specifica interfaccia o direzione del traffico. 
+Le **regole floating** in un firewall sono **regole avanzate** che possono essere applicate in modo più flessibile rispetto alle regole standard, poiché non sono legate a una specifica interfaccia o direzione del traffico, cioè, possono essere applicate a più interfacce contemporaneamente e in una o in entrambe le direzioni. 
+
+Molti firewall commerciali permettono di base solo l'impostazione di regone inbound. Le regole outbound sono di norma scoraggiate nei firewall perimetrali perche:
+- **Efficienza**. L'ACL inbound è più efficiente di quella in uscita perché in l'ingresso, qualsiasi pacchetto che viene risolto (match) con un "deny" viene eliminato PRIMA che il pacchetto venga instradato all'interfaccia in uscita a cui è destinato. Inoltre spesso è cpnsiderato inutile filtrare il traffico verso l'esterno perchè si da per buono il principio che il traffico proveniente dall'interno è già verificato e sicuro.
+- **Duplicazione delle Regole e complessità**: In molti casi, le regole inbound possono essere sufficienti per garantire la sicurezza, rendendo le regole outbound ridondanti e non necessarie. La ridondanza, d'sltronde, genera complessità di gestione e predisposizione ad errori, specie se non si è esperti.
+- **Efficacia**: molte normative di sicurezza e conformità richiedono un controllo rigoroso del traffico in entrata ritenendolo la soluzione più efficace.
+
+Cisco non usa il termine "floating rules", configurazioni avanzate come **policy map** e **class map** possono essere utilizzate per applicare politiche QoS o altre regole sofisticate in modo simile alle regole floating di firewall commerciali come **pfSense**.
 
 #### **Scopo delle regole floating**
 
