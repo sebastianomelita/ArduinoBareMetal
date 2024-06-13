@@ -64,7 +64,7 @@ Si può alternativamente realizzare con un proxy HTTPS (ad es Squid) + autorità
 •	Consenso informato degli utenti
 •	Responsabilità sulla fedeltà e correttezza dei sistemisti
 
-<img src="img/sslmitm.emf" alt="alt text" width="700">
+<img src="img/sslmitm.png" alt="alt text" width="700">
 
 ### **Fasi dell’ispezione SSL MITM Filtering** 
 
