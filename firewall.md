@@ -78,9 +78,9 @@ Benchè il firewall Pfsense consenta questo tipo di ispezione intrusiva, conside
 
 ## **Regole firewall** 
 
-<img src="img/wildcardmask.png" alt="alt text" width="1000">
+<img src="img/wildcardmask.png" alt="alt text" width="1100">
 
-<img src="img/fasiacl.png" alt="alt text" width="1000">
+<img src="img/fasiacl.png" alt="alt text" width="1100">
 
 >[Torna a reti ethernet](archeth.md)
 
