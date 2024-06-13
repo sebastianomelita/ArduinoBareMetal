@@ -105,7 +105,7 @@ In questa direzione i pacchetti attraversano prima le regole di firewall dell'in
 Poichè la LAN è una interfaccia con una rete sicura allora la **politica di default** delle sue regole è la **permit all**, di conseguenza le regole sono tutte delle **black list** che negano esplicitamente tutto ciò che non è già permesso. Le regole sono organizzabili in **liste** con **scopi diversi**:
 - Interfaccia LAN.  Le regole più comuni sono:
 - Regole **permit anti lockout** per non chiudersi la porta di accesso al firewall
-- Regole **deny antispoofing** indirizzi marziani, cioè gli indirizzi che sono si privati ma estranei al piano di indirizzamento in uso.
+- Regole **deny antispoofing** indirizzi marziani, cioè gli indirizzi che sono estranei al piano di indirizzamento in uso sulla rete LAN.
 - Regole **deny** per impedire l’**accesso (ad internet)** a gruppi di utenti
 - Regole di **tagging** per **qualificare** il traffico in uscita per poi applicare politiche di shaping sul traffico in direzione opposta (code differenti per velocità differenti)
 - Regola **di default** **permit All** esplicita alla fine
