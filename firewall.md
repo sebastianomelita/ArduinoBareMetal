@@ -121,7 +121,37 @@ Poichè la WAN è una interfaccia con una rete insicura allora la **politica di 
 - lista di **permit** in base al servizio (porta) sulla destinazione avente l’IP privato di un server interno se cattura pacchetti già tradotti dal NAT.
 - Regola **di default** **deny All** esplicita alla fine
 
+#### **Impostazione dei filtraggi WAN inbound su Pfsense**
+
 <img src="img/ruleswan.png" alt="alt text" width="1100">
+
+#### **Impostazione dei filtraggi WAN inbound su un router Cisco**
+
+```cisco
+! Blocca gli indirizzi non validi (antispoofing)
+access-list 101 deny ip 10.0.0.0 0.255.255.255 any
+access-list 101 deny ip 172.16.0.0 0.15.255.255 any
+access-list 101 deny ip 192.168.0.0 0.0.255.255 any
+access-list 101 deny ip 127.0.0.0 0.255.255.255 any
+access-list 101 deny ip 169.254.0.0 0.0.255.255 any
+access-list 101 deny ip 224.0.0.0 15.255.255.255 any
+access-list 101 deny ip 240.0.0.0 7.255.255.255 any
+
+! Permetti il traffico verso servizi specifici sull'IP pubblico del router/firewall
+access-list 101 permit tcp any host <public-ip> eq 80
+access-list 101 permit tcp any host <public-ip> eq 443
+
+! Permetti il traffico verso servizi specifici sull'IP privato di un server interno
+access-list 101 permit tcp any host <internal-server-ip> eq 22
+access-list 101 permit tcp any host <internal-server-ip> eq 3389
+
+! Blocca tutto il traffico rimanente
+access-list 101 deny ip any any
+
+! Applica le ACL all'interfaccia WAN
+interface GigabitEthernet0/1
+ ip access-group 101 in
+```
 
 ### **Impostazione dei filtraggi LAN inbound**
 
@@ -135,6 +165,9 @@ Poichè la LAN è una interfaccia con una rete sicura allora la **politica di de
 - Regole di **tagging** per **qualificare** il traffico in uscita per poi applicare politiche di shaping sul traffico in direzione opposta (code differenti per velocità differenti)
 - Regola **di default** **permit All** esplicita alla fine
 
+#### **Impostazione dei filtraggi LAN inbound su Pfsense**
+
+#### **Impostazione dei filtraggi LAN inbound su un router Cisco**
 ```cisco
 ! Permetti l'accesso amministrativo al firewall
 access-list 101 permit ip host <admin-ip> any
