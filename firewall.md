@@ -78,7 +78,15 @@ Benchè il firewall Pfsense consenta questo tipo di ispezione intrusiva, conside
 
 ## **Regole firewall** 
 
+### **Azioni di una regola**
+
+- **ALLOW (o ACCEPT)**: permette al pacchetto di attraversare il firewall.
+- **REJECT**: Proibisce al pacchetto di passare. Scarta con un avviso. Invia indietro all’host sorgente un messaggio ICMP di destinazione non raggiungibile (destination-unreachable)
+- **DROP (DENY, BLACKHOLE)**: Proibisce al pacchetto di passare. Lo scarta in maniera silenziosa, senza inviare risposta
+
+
 <img src="img/wildcardmask.png" alt="alt text" width="1100">
+
 
 
 Le ACL si dividono in:
@@ -86,6 +94,16 @@ Le ACL si dividono in:
 - **Estese**, valutano anche l'indirizzo di destinazione e vanno poste vicino all’origine
 
 <img src="img/fasiacl.png" alt="alt text" width="1100">
+
+Le ACL (Access Control List ) vengono elaborate dal router secondo l’ordine con cui le varie clausole compaiono (lista con priorità). Si scorre la lista fino a che non si trova il **primo match** (verifica) delle condizioni, a questo punto si **interrompe** la valutazione, viene **applicata la decisione** presa e si passa al pacchetto successivo:
+- Bisogna, pertanto, inserire **prima le entry più selettive** e poi quelle più generiche. 
+- Se nessuna regola viene soddisfatta, viene applicata una **decisione di default**, chiamata policy dell'ACL.
+- Di solito tutto quello che non è esplicitamente previsto è negato (DENY ALL)
+
+Le ACL devono essere:
+- **Definite** caratterizzando il loro nome e le ACE che comprendono (con una GUI o appositi comandi come access-list mia_ACL di CISCO IOS)
+- **Applicate** ad un certa interfaccia in una certa direzione (ingress od egress) scegliendola da una lista tramite una GUI oppure con comandi come ```ip access-group mia_ACL in```.
+
 
 ### **Impostazione dei filtraggi WAN inbound**
 
