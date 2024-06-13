@@ -156,7 +156,7 @@ Il **cablaggio** è articolato, come prevedono gli **standard TIA/EIA 568**B ed 
 - centro stella (armadio) di **piano** (terzo livello gerarchico), detto armadio FD o floor distributor, da cui si diramano le **dorsali di piano**, dette anche **cablaggio orizzontale**.
 - Prese, dette **TO** o telecommunication outled
 
-<img src="img/cabalggiotutto.png" alt="alt text" width="800">
+<img src="img/cabalggiotutto.png" alt="alt text" width="1100">
 
 Tendenzialmente, per risparmiare filo, vale la regola che gli armadi devono essere tutti in **posizione baricentrica** (non sempre rispettata nel disegno come nei progetti):
 - L’**armadio di campus** deve essere al baricentro degli armadi di edificio
@@ -191,7 +191,7 @@ Per il personale che si occupa della ordinaria manutenzione della rete è una gu
 Serve a dare una indicazione sulla destinazione d’uso degli ambienti, ovvero, le funzioni aziendali che li si svolgono da cui si potrebbero dedurre le esigenze degli utenti coinvolti (stakeholders).
 Le esigenze dell’utente diventano i requisiti del sistema HW e SW che deve essere realizzato.
 
-<img src="img/cablasenza.png" alt="alt text" width="1100">
+<img src="img/cablasenza.png" alt="alt text" width="800">
 
 I requisiti del sistema si dividono in funzionali e non funzionali:
 - I requisiti funzionali definiscono il «cosa» il sistema deve fare per l’utente e grossomodo impattano principalmente nella definizione del SW.
