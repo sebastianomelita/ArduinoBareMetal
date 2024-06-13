@@ -167,6 +167,8 @@ Poichè la LAN è una interfaccia con una rete sicura allora la **politica di de
 
 #### **Impostazione dei filtraggi LAN inbound su Pfsense**
 
+<img src="img/ruleslan.png" alt="alt text" width="1100">
+
 #### **Impostazione dei filtraggi LAN inbound su un router Cisco**
 ```cisco
 ! Permetti l'accesso amministrativo al firewall
