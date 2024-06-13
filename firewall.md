@@ -143,7 +143,12 @@ Nel caso di Guacamole, sicuramente il server in DMZ ha necessità dell'accesso a
 
 <img src="img/serverfarm.jpg" alt="alt text" width="800">
 
-L'architettura del firewall deve essere adatta a quella di un servizio multitier (modello server farm), per cui nella DMZ si espongono prima le funzioni di pubblicazione blandamente protette da un firewall, poi le funzioni di business (microservizi interni usati anche dalla LAN) protetti da una firewall con regole più stringenti (può accedere solo il server in DMZ), poi alla fine il server dei dati o dei flussi multimediali che può essere acceduto solo da un ristretto numero di server di business e mai direttamente dall'utente. La logica è quella dei compartimenti stagni dove ogni intrusione causa danni di importanza via via maggiore. I beni aziendali sicuramente più preziosi per l'azienda sono i dati e stanno nella zona più interna protetta da più linee di difesa.
+L'architettura del firewall deve essere adatta a quella di un servizio multitier (modello server farm), per cui nella DMZ si espongono:
+1. prima le funzioni di pubblicazione blandamente protette da un primo firewall.
+2. Poi si espongonole funzioni di business (microservizi interni) protetti in maniera più occhiuta da un altro firewall (può accedere solo il server in DMZ)
+3. Poi alla fine si espone il server dei dati o dei flussi multimediali che può essere acceduto solo da un ristretto numero di server di business e mai direttamente dall'utente.
+  
+La logica è quella dei compartimenti stagni dove ogni intrusione causa danni di importanza via via maggiore. I beni aziendali sicuramente più preziosi per l'azienda sono i dati e stanno nella zona più interna protetta da più linee di difesa.
 
 Non è necessario che esistano davvero degli switch che creino delle LAN su cui si attesta il firewall comune a molti server, potrebbe semplicemente esserci una cascata di server con a bordo un firewall personale (ad es. Shorewall) che filtra gli accessi a gruppi di client via via numericamente più ristretti e più fidati.
 
