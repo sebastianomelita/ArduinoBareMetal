@@ -139,9 +139,10 @@ Diverso è il discorso per servizi che pubblicano all'esterno e che utilizzano, 
 
 Nel caso di Guacamole, sicuramente il server in DMZ ha necessità dell'accesso ad un PC interno alla LAN (postazione di lavoro) e dell'accesso ad un server di autenticazione molto probabilmente attestato sul core switch (CS) o sullo switch che realizza la server farm. E' bifronte perchè è un server di un client che ha iniziato nella WAN la sua connessione verso la DMZ, ma è anche lui stesso un client, posto nella DMZ, che inizia una connessione verso un server della LAN. In sostanza è una applicazione distribuita three tier con il tier 1 nella WAN (il client utente), il tier 2 nella DMZ (il server utente + il client dei servizi interni), il tier 3 nella LAN (un server dati o multimediale).
 
+<img src="img/serverfarm.jpg" alt="alt text" width="800">
+
 L'architettura del firewall deve essere adatta a quella di un servizio multitier (modello server farm), per cui nella DMZ si espongono prima le funzioni di pubblicazione blandamente protette da un furewall, poi le funzioni di business (microservizi interni usati anche dalla LAN) protetti da una firewall con regole più stringenti (può accedere solo il server in DMZ), poi alla fine il server dei dati o dei flussi multimediali che può essere acceduto solo da un ristretto numero di server di business e mai direttamente dall'utente. La logica è quella dei compartimenti stagni dove ogni intrusione causa danni di importanza via via maggiore. Il bene aziendale sicuramente più prrezioso per l'azienda sono i dati e stanno nella zona più interna protetta da più linee di difesa.
 
-<img src="img/serverfarm.jpg" alt="alt text" width="800">
 
 ### **Azioni di una regola**
 
