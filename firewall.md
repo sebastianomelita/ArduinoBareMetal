@@ -178,7 +178,7 @@ Poichè la WAN è una interfaccia con una rete insicura allora la **politica di 
 
 #### **Impostazione dei filtraggi WAN inbound su un router Cisco**
 
-```cisco
+``` C++
 ! Blocca gli indirizzi non validi (antispoofing)
 access-list 101 deny ip 10.0.0.0 0.255.255.255 any
 access-list 101 deny ip 172.16.0.0 0.15.255.255 any
@@ -221,7 +221,7 @@ Poichè la LAN è una interfaccia con una rete sicura allora la **politica di de
 <img src="img/ruleslan.png" alt="alt text" width="1100">
 
 #### **Impostazione dei filtraggi LAN inbound su un router Cisco**
-```cisco
+``` C++
 ! Permetti l'accesso amministrativo al firewall
 access-list 101 permit ip host <admin-ip> any
 
