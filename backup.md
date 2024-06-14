@@ -167,7 +167,7 @@ rsync -av --delete /path/to/local/data/ /mnt/backup/
 
 # Smonta la condivisione Samba
 sudo umount /mnt/backup
-``` C++
+```
 
 Apri crontab:
 ``` C++
