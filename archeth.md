@@ -8,7 +8,7 @@
 
 Servizi:
 - [Firewall](firewall.md).
-
+- [Backup](backup.md).
 ## **Caso d'uso LAN Ethernet** 
 
 Date le particolarità della tecnologia, i casi d'uso per la rete di sensori Ethernet sono quelli tipici per applicazioni **IoT indoor** a **medio raggio**, dove concorre con altre tecnologie di rete: Zigbee, BLE e, sotto certe condizioni, LoRaWAN. **Caratteristiche** della rete Ethernet di **tipo ufficio** sono essenzialmente:
