@@ -160,7 +160,7 @@ Il **cablaggio** è articolato, come prevedono gli **standard TIA/EIA 568**B ed 
 - centro stella di **comprensorio** (primo livello gerarchico), detto armadio CD o campus distributor, da cui si diramano le **dorsali di comprensorio**.
 - centro stella di **edificio** (secondo livello gerarchico), detto armadio BD o building distributor, da cui si diramano le **dorsali di edificio**.
 - centro stella (armadio) di **piano** (terzo livello gerarchico), detto armadio FD o floor distributor, da cui si diramano le **dorsali di piano**, dette anche **cablaggio orizzontale**.
-- Prese, dette **TO** o telecommunication outled
+- Prese, dette **TO** o telecommunication outlet.
 
 <img src="img/cabalggiotutto.png" alt="alt text" width="1100">
 
@@ -509,6 +509,9 @@ interface GigabitEthernet0/0.10
  ip access-group BLOCK_VLAN_10_20_30 in
  exit
 interface GigabitEthernet0/0.20
+ ip access-group BLOCK_VLAN_10_20_30 in
+ exit
+interface GigabitEthernet0/0.30
  ip access-group BLOCK_VLAN_10_20_30 in
  exit
 ``` 
