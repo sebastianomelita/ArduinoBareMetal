@@ -123,10 +123,10 @@ Per i dettagli vedi:  [Backup delle VM](backupvm.md)
 
 Si rimarca che, in questo processo di backup, l’iniziativa di eseguire la copia dei dati è presa indipendentemente da **ciascun hypervisor Vmaware ESXI** che preleva i dati da locale e li conserva in remoto con **politica PUSH**. Si producono, sul NAS di backup, 3 copie aggiornate con periodicità giornaliera. Le copie, al momento, sono mantenute in chiaro. L’accesso alle copie è riservato ai soli sistemisti della rete previa autenticazione.
 
-
+<img src="img/nfsvspng.png" alt="alt text" width="600">
 
 Sitografia:
-
+- https://aws.amazon.com/it/compare/the-difference-between-nfs-smb/
 
 >[Torna a reti ethernet](archeth.md)
 
