@@ -396,7 +396,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
 #### **Esigenza di filtraggio: negare ad un PC della subnet officina di entrare nella subnet ufficio**
 
 <table>
-<tr><td> Soluzione senza le VLAN </td><td> Soluzione con le VLAN </td></tr>
+<tr><td> Router: soluzione senza le VLAN </td><td> Router: soluzione con le VLAN </td></tr>
 <tr><td> 
     
 ```C++                   
@@ -449,7 +449,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
 
 #### **Soluzione**
 <table>
-<tr><td> Marketing --> Produzione </td></tr>
+<tr><td> Router: Marketing --> Produzione </td></tr>
 <tr><td> 
     
 ```C++                   
@@ -492,7 +492,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
 - il **filtraggio** è realizzato direttamente a **sullo switch** a livello di linea L2 dall'impostazione ```allowed vlan 10, 20``` sulla porta di trunk che filtra le trame della vlan 30. Ma può anche essere realizzato sul router con una **ACL estesa**:
 
 <table>
-<tr><td> Negare il traffico reciproco tra ufficio produzione e ufficio marketing </td></tr>
+<tr><td> Router: negare il traffico reciproco tra ufficio produzione e ufficio marketing </td></tr>
 <tr><td> 
     
 ```C++                   
