@@ -71,6 +71,8 @@ Quando si attiva un task di copia di files da una sorgente remota al suo pool di
 
 Apparentemente i file sovrascritti, modificati o cancellati andrebbero così irrimediabilmente persi ad ogni copia. In realtà ciò non accade perché è sempre attivo un meccanismo di snapshots che, ad ogni nuova copia, crea dei punti di ripristino, corredati di data, della vecchia. A ben vedere, ad ogni nuova copia, non viene, in realtà, caricato nuovamente tutto il file, ma solamente la sua differenza con  la versione precedente. Gli snapshot sono, in definitiva, un meccanismo deputato al mantenimento della versione (versioning) di un file ad ogni sua successiva modifica. Il tempo di retenzione degli snapshot non è comunque infinito e può essere impostato nel menù Periodic Snapshot Task:
 
+<img src="img/periodicsnap.png" alt="alt text" width="500">
+
 
 ``` C++
 
