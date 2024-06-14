@@ -149,7 +149,7 @@ Riavvia il server NFS per applicare le modifiche:
 sudo systemctl restart nfs-kernel-server
 ```
 
-### **Esempio di script bash di backup**
+### **Esempio di script bash di backup NFS**
 
 ``` C++
 #!/bin/bash
@@ -201,7 +201,7 @@ sudo systemctl restart smbd
 sudo systemctl restart nmbd
 ```
 
-### **Esempio di script bash di backup**
+### **Esempio di script bash di backup Samba**
 
 ``` C++
 #!/bin/bash
