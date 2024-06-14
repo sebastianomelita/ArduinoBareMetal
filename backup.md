@@ -182,7 +182,7 @@ Aggiungi una linea per eseguire lo script di backup (ad esempio, ogni giorno all
 ### **Esempio di configurazione NFS**
 
 ``` C++
-udo mkdir -p /path/to/backup/folder
+sudo mkdir -p /path/to/backup/folder
 ```
 Modifica /etc/exports per condividere la directory:
 ``` C++
