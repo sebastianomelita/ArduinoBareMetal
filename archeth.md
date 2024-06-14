@@ -418,7 +418,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
 (config)# access-list 101 deny 10.0.2.0 0.0.0.255
 (config)# access-list 101 permit any 
 ! Selezione interfaccia vlan 20
-(config)# interface vlan20 
+(config)# GigabitEthernet0/0.20 
 ! Applicazione in ingress su vlan 20
 (config-if)# ip access-group 101 in
 (config-if)# exit
@@ -456,8 +456,8 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
 ! Definizione lista di regole
 (config)# access-list 102 permit tcp any any gt 1023 established
 ! Selezione interfaccia vlan20
-(config)# interface ethernet0
-! Applicazione in ingress su e0
+(config)# GigabitEthernet0/0.20
+! Applicazione in ingress su vlan20
 (config-if)# ip access-group 102 in
 ``` 
     
@@ -492,7 +492,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
 - il **filtraggio** è realizzato direttamente a livello di linea L2 dall'impostazione ```allowed vlan 10, 20``` sulla porta di trunk che filtra le trame della vlan 30
 
 <table>
-<tr><td> Marketing --> Produzione </td></tr>
+<tr><td> Negare il traffico reciproco tra ufficio produzione e ufficio marketing </td></tr>
 <tr><td> 
     
 ```C++                   
@@ -507,9 +507,10 @@ ip access-list extended BLOCK_VLAN_10_20
 ! Applicare le ACL alle interfacce VLAN
 interface GigabitEthernet0/0.10
  ip access-group BLOCK_VLAN_10_20 in
-
+ exit
 interface GigabitEthernet0/0.20
  ip access-group BLOCK_VLAN_10_20 in
+ exit
 ``` 
     
 </td>
