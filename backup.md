@@ -154,7 +154,7 @@ sudo systemctl restart smbd
 sudo systemctl restart nmbd
 ```
 
-### **Esempio di script bash**
+### **Esempio di script bash di backup**
 
 ``` C++
 #!/bin/bash
