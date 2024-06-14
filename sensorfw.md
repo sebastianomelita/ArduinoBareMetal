@@ -89,7 +89,103 @@ while True:
     time.sleep(1)  # Attendere un secondo prima della prossima iterazione
 ```
 
+## Fasi in C++
 
+``` Python
+#include <WiFi.h>
+#include <PubSubClient.h>
+
+// Parametri di connessione Wi-Fi
+const char* ssid = "your_SSID";
+const char* password = "your_PASSWORD";
+
+// Parametri di connessione MQTT
+const char* mqtt_server = "broker_address";
+const int mqtt_port = 1883;
+const char* mqtt_user = "username";
+const char* mqtt_password = "password";
+const char* mqtt_topic = "sensors/temperature";
+
+// Identificatore unico del sensore
+const char* sensor_id = "sensor_001";
+
+// Intervallo di lettura in millisecondi
+const long interval = 60000;
+unsigned long lastSentTime = 0;
+
+// Client Wi-Fi e MQTT
+WiFiClient espClient;
+PubSubClient client(espClient);
+
+void setup() {
+  Serial.begin(115200);
+  setup_wifi();
+  client.setServer(mqtt_server, mqtt_port);
+}
+
+void setup_wifi() {
+  delay(10);
+  Serial.println();
+  Serial.print("Connessione a ");
+  Serial.println(ssid);
+
+  WiFi.begin(ssid, password);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("");
+  Serial.println("WiFi connesso");
+  Serial.println("IP address: ");
+  Serial.println(WiFi.localIP());
+}
+
+void reconnect() {
+  while (!client.connected()) {
+    Serial.print("Connessione al broker MQTT...");
+    if (client.connect("ArduinoClient", mqtt_user, mqtt_password)) {
+      Serial.println("connesso");
+    } else {
+      Serial.print("fallito, rc=");
+      Serial.print(client.state());
+      Serial.println(" riprovo tra 5 secondi");
+      delay(5000);
+    }
+  }
+}
+
+float read_temperature() {
+  // Simulazione della lettura della temperatura
+  return random(200, 300) / 10.0;
+}
+
+void loop() {
+  if (!client.connected()) {
+    reconnect();
+  }
+  client.loop();
+
+  unsigned long currentTime = millis();
+
+  if (currentTime - lastSentTime >= interval) {
+    float temperature = read_temperature();
+
+    char message[100];
+    snprintf(message, sizeof(message), "{\"sensor_id\": \"%s\", \"temperature\": %.2f}", sensor_id, temperature);
+
+    if (client.publish(mqtt_topic, message)) {
+      Serial.print("Messaggio inviato: ");
+      Serial.println(message);
+    } else {
+      Serial.println("Errore nell'invio del messaggio");
+    }
+
+    lastSentTime = currentTime;
+  }
+}
+```
 
 
 
