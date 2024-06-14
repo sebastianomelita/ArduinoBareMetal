@@ -40,7 +40,7 @@ La **modalità** con cui in un NAS si possono recuperare i dati sono essenzialme
 
 Per quanto riguarda la realizzazione del **disco di storage** da aggiungere al **disco del SO** di una **VM**, si è scelta la modalità di **aggregazione indipendente**. In questo modo un eventuale backup o un eventuale snapshot della VM conserverà sul NAS solo il disco del SO e non quello del NAS. L'impostazione è necessaria perchè:
 - altrimenti si eseguirebbe un salvataggio ricorsivo
-- perchè il NAS è un disco troppo grosso per essere backuppato sulla stessa macchina (normalmente è il più grande).
+- il NAS è un disco troppo grosso per essere backuppato sulla stessa macchina (normalmente è il più grande).
 
 Nel momento in cui si fa il **backup delle VM**, il backup delle virtual machine (VM) esegue solamente il **backup del disco di servizio**.
 
