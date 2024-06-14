@@ -88,6 +88,8 @@ rsync -av root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup
 rsync -av root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup/UniventionNAS/Hourly
 ```
 
+### **Backup dei dati** 
+
 Backup delle **cartelle personali** degli alunni nella didattica
 Ogni alunno, una volta autenticatosi su una postazione qualsiasi con la propria password personale (protocollo di autenticazione Kerberos), accede al proprio desktop di windows (servizio di Active Directory), dove ha a disposizione due cartelle di rete:
 - Una personale su cui ha esclusivo accesso con i propri file di lavoro (per lo più esercitazioni) e su cui gode dei permessi di lettura e scrittura
@@ -99,6 +101,8 @@ Abbiamo individuato l’obiettivo di proteggere la risorsa dei dati personali e 
 Il servizio di TrueNAS scelto per ottenere lo scopo è il **Cron job**. Con Questo task realizziamo il backup delle cartelle personali di Active Directory mediante **tecnica PULL**, ovvero **TrueNAS** si connette, mediante **protocollo ssh** alla macchina AD, si autentica ed esegue il comando **rsync** che clona i file dalla macchina remota (modalità PULL) e dopo **sposta** la copia incrementale sulle cartelle del NAS.
 
 Si rimarca che, in questo processo di backup, l’**iniziativa** di eseguire la copia dei dati è presa dal server TrueNAS che **preleva** i dati da remoto e li conserva in locale con **politica PULL**. Ci sono 4 copie aggiornate con periodicità diversa: oraria, giornaliera, settimanale e mensile. Le copie, al momento, sono mantenute in chiaro. L’accesso alle copie è riservato ai soli sistemisti della rete previa autenticazione.
+
+### **Backup delle VM**
 
 Backup delle macchine virtuali di segreteria e didattica
 In questo caso, TrueNAS non è direttamente responsabile del processo di backup ma si limita a mettere a disposizione delle condivisioni NFS (Network File System). Ogni condivisione è specifica per una certa macchina VMWARE ESXI (hypervisor) ed è accessibile utilizzando la versione NFS4 del protocollo che richiede l’autenticazione della macchina al momento del montaggio della condivisione stessa. Le macchine, al momento, si autenticano presso il nas con la password di un utente amministratore del NAS. 
