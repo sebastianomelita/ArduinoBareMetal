@@ -58,7 +58,7 @@ FreeNAS permette di configurare ogni dettaglio tramite un'interfaccia grafica We
 
 Truenas **organizza il disco** in strutture dati chiamate **pools** simili a directory su cui è possibile impostare tutta una serie di **parametri** quali **permessi** e **quote** per singolo utente.
 
-<img src="img/poolstn.png" alt="alt text" width="500">
+<img src="img/poolstn.png" alt="alt text" width="800">
 
 Al momento sono stati creati i seguenti **contenitori di files** che in gergo TrueNAS si chiamano pools  e sono analoghi a delle **cartelle**:
 - 5 pools per far posto al backup dei 5 hypervisor attualmente in funzione, tutti basati su tecnologia VMWARE ESXI in versione freeware.
