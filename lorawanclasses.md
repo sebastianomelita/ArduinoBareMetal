@@ -629,5 +629,6 @@ Un esempio di **canale MQTT di configurazione** per, ad esempio, impostare il pe
 - chatGPT per struct e JSON di sensori e attuatori
 - https://github.com/myDevicesIoT/cayenne-docs/blob/master/docs/LORA.md
 - https://webthesis.biblio.polito.it/secure/18698/1/tesi.pdf
+- https://www.starlink.com/business/direct-to-cell
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
