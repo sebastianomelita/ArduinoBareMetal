@@ -391,6 +391,8 @@ int main() {
   
 ## **Gestione bridge broker MQTT**
 
+E' una maniera per fare diventare il network server un **client del broker MQTT** che sta nella rete di distribuzione centrale.
+
 Serve a realizzare un ponte tra: 
 - un broker MQTT locale al network server che colleziona tutti i messaggi del modem LoraWAN
 - il broker in uso nella rete di distribuzione che è interessato solo ad un sottoinsieme dei topic del network server (vengono filtrati i messaggi di servizio)
