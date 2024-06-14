@@ -71,6 +71,8 @@ Per il dettaglio sulle impostazioni di un firewall [Firewall](firewall.md).
 
 Per il dettaglio sulla realizzazione dei backup vedi [Backup](backup.md).
 
+Per il dettaglio sulla realizzazione del firmware vedi [Firmware](sensorfw.md).
+
 
 ##  **Canali di comunicazione principali in una rete di sensori**
 
