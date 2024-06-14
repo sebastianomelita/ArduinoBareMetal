@@ -491,6 +491,31 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
 - Sul router ogni link virtuale genera una subnet che si mappa 1:1 su una sottostante LAN logica (VLAN)
 - il **filtraggio** è realizzato direttamente a livello di linea L2 dall'impostazione ```allowed vlan 10, 20``` sulla porta di trunk che filtra le trame della vlan 30
 
+<table>
+<tr><td> Marketing --> Produzione </td></tr>
+<tr><td> 
+    
+```C++                   
+! Creare l'ACL per bloccare il traffico tra VLAN 30 e VLAN 10
+ip access-list extended BLOCK_VLAN_10_20
+ deny ip 10.0.10.0 0.0.0.255 10.0.30.0 0.0.0.255
+ deny ip 10.0.20.0 0.0.0.255 10.0.30.0 0.0.0.255
+ deny ip 10.0.30.0 0.0.0.255 10.0.10.0 0.0.0.255
+ deny ip 10.0.30.0 0.0.0.255 10.0.20.0 0.0.0.255
+ permit ip any any
+
+! Applicare le ACL alle interfacce VLAN
+interface GigabitEthernet0/0.10
+ ip access-group BLOCK_VLAN_10_20 in
+
+interface GigabitEthernet0/0.20
+ ip access-group BLOCK_VLAN_10_20 in
+``` 
+    
+</td>
+</tr>
+</table>
+ 
 ### **Esempio**
 
 Nel contesto di un istituto scolastico che si vuole servire con una rete WiFi, si vogliono separare i **servizi di segreteria** scolastica con i suoi **server** e i suoi **impiegati** localizzati in una subnet fisicamente dislocata in una **certa area**, dai **servizi di mobilità**, dispersi a **macchia di leopardo** in tutto il comprensorio, ai docenti dotati di supporti di loro proprietà (politica Byod) con i quali eseguono le loro attività giornaliere sul registro scolastico. Si vuole consentire anche una gestione separata al traffico dei **servizi di videosorveglianza** con propri **server**, a disposizione all'interno di una subnet separata. 
