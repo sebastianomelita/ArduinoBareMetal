@@ -46,8 +46,6 @@ Per quanto riguarda la realizzazione del **disco di storage** da aggiungere al *
 
 Nel momento in cui si fa il **backup delle VM**, questo esegue solamente il **backup del disco di servizio**, cioè quello con il **SO**.
 
-
-
 ## **True NAS** 
 
 I **dati** vengono conservati su un **disco di grande dimensione** (attualmente 4TB), virtualizzato su VMWARE ESXI e **montato** su un **sistema operativo specializzato** nella realizzazione delle funzioni tipiche di un NAS noto sotto il nome di **TrueNAS**.
@@ -80,14 +78,6 @@ Inoltre TrueNAS mette a disposizione i cosìdetti Task (compiti) che rappresenta
 - **Replication task**. E’ un task che permette la replicazione dei pool **tra macchine Truenas identiche**. Viene usata per la duplicazione di sicurezza dei dati su un NAS secondario, sempre virtualizzato ma allocato su un hypervisor diverso. E’ possibile impostare autenticazione, compressione, cifratura e periodicità.
 - **Cloud Sync Task**. Un client che Serve ad effettuare **copie di backup** su servizi remoti **in cloud**.
 
-Comandi rsync utilizzati nel CronJob:
-``` C++
-rsync -av root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup/UniventionNAS/Daily
-rsync -av root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup/UniventionNAS/Weekly
-rsync -av root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup/UniventionNAS/Montly
-rsync -av root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup/UniventionNAS/Hourly
-```
-
 ### **Backup dei dati** 
 
 Backup delle **cartelle personali** degli alunni nella didattica
@@ -100,6 +90,13 @@ Abbiamo individuato l’obiettivo di proteggere la risorsa dei dati personali e 
 
 Il servizio di TrueNAS scelto per ottenere lo scopo è il **Cron job**. Con Questo task realizziamo il backup delle cartelle personali di Active Directory mediante **tecnica PULL**, ovvero **TrueNAS** si connette, mediante **protocollo ssh** alla macchina AD, si autentica ed esegue il comando **rsync** che clona i file dalla macchina remota (modalità PULL) e dopo **sposta** la copia incrementale sulle cartelle del NAS.
 
+Comandi rsync utilizzati nel CronJob:
+``` C++
+rsync -av root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup/UniventionNAS/Daily
+rsync -av root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup/UniventionNAS/Weekly
+rsync -av root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup/UniventionNAS/Montly
+rsync -av root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup/UniventionNAS/Hourly
+```
 Si rimarca che, in questo processo di backup, l’**iniziativa** di eseguire la copia dei dati è presa dal server TrueNAS che **preleva** i dati da remoto e li conserva in locale con **politica PULL**. Ci sono 4 copie aggiornate con periodicità diversa: oraria, giornaliera, settimanale e mensile. Le copie, al momento, sono mantenute in chiaro. L’accesso alle copie è riservato ai soli sistemisti della rete previa autenticazione.
 
 ### **Backup delle VM**
