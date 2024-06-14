@@ -152,6 +152,8 @@ La logica è quella dei **compartimenti stagni** dove ogni intrusione causa dann
 
 Non è necessario che esistano davvero degli switch che creino delle LAN su cui si attesta il firewall comune a molti server. Potrebbe semplicemente esserci una **cascata di server** ciascuno con a bordo un **firewall applicativo** o **WAF** (https://www.oracle.com/it/security/cloud-security/what-is-waf/) che filtri gli accessi limitandoli a gruppi di client via via numericamente più ristretti e più fidati.
 
+<img src="img/3tier.png" alt="alt text" width="800">
+
 In questo ultimo caso la DMZ2 viene sostituita da un WAF sul server di microservizi e sul server dati.
 
 ### **Azioni di una regola**
@@ -366,6 +368,7 @@ ip nat inside source static tcp 192.168.1.101 22 interface GigabitEthernet0/1 22
 
 Sitografia:
 - https://www.cisco.com/c/it_it/support/docs/ip/access-lists/26448-ACLsamples.html
+- https://www.sweharris.org/post/2017-11-05-3tier-network/
 
 >[Torna a reti ethernet](archeth.md)
 
