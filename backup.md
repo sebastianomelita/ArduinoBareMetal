@@ -127,6 +127,33 @@ Per i dettagli sui protocolli NFS e SMB vedi:  [NFS vs SMB](https://aws.amazon.c
 
 <img src="img/nfsvssmb.png" alt="alt text" width="1000">
 
+### **Esempio di configurazione samba**
+
+``` C++
+sudo nano /etc/samba/smb.conf
+```
+Aggiungi una sezione per la condivisione dei backup:
+
+``` C++
+[Backup]
+path = /path/to/backup/folder
+valid users = @users
+read only = no
+browsable = yes
+``` 
+Creare la directory per i backup e impostare le autorizzazioni:
+``` C++
+sudo mkdir -p /path/to/backup/folder
+sudo chown -R nobody:nogroup /path/to/backup/folder
+sudo chmod -R 0777 /path/to/backup/folder
+``` C++
+Riavvia Samba per applicare le modifiche:
+```
+``` C++
+sudo systemctl restart smbd
+sudo systemctl restart nmbd
+```
+
 ### **Esempio di script bash**
 
 ``` C++
