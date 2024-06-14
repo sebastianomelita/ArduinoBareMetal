@@ -56,6 +56,8 @@ L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzion
 
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
 
+Il **gateway All-In-One** potrebbe essere un dispositivo con **doppia interfaccia**, modem **UMTS** per l'accesso alla rete di distribuzione su **Internet**, **WiFi** verso la **rete di sensori**. Può essere utile per realizzare un **AP da campo** (saponetta wifi) da adoperare in **contesti occasionali** (fiere, eventi sportivi, infrastrutture di emergenza, automezzi, mezzi mobili in genere).
+
 ##  **Canali di comunicazione principali in una rete di sensori**
 
 **In sintesi**, sono necessari almeno **due canali** di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
