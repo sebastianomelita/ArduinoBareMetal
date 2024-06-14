@@ -152,6 +152,7 @@ La logica è quella dei **compartimenti stagni** dove ogni intrusione causa dann
 
 Non è necessario che esistano davvero degli switch che creino delle LAN su cui si attesta il firewall comune a molti server. Potrebbe semplicemente esserci una **cascata di server** ciascuno con a bordo un **firewall applicativo** o **WAF** (https://www.oracle.com/it/security/cloud-security/what-is-waf/) che filtri gli accessi limitandoli a gruppi di client via via numericamente più ristretti e più fidati.
 
+In questo ultimo caso la DMZ2 viene sostituita da un WAF sul server di microservizi e sul server dati.
 
 ### **Azioni di una regola**
 
