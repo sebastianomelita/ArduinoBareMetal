@@ -127,6 +127,31 @@ Per i dettagli sui protocolli NFS e SMB vedi:  [NFS vs SMB](https://aws.amazon.c
 
 <img src="img/nfsvssmb.png" alt="alt text" width="1000">
 
+### **Esempio di script bash**
+
+``` C++
+#!/bin/bash
+
+# Monta la condivisione Samba
+sudo mount -t cifs -o username=username,password=password //server_ip/Backup /mnt/backup
+
+# Esegui il backup con rsync
+rsync -av --delete /path/to/local/data/ /mnt/backup/
+
+# Smonta la condivisione Samba
+sudo umount /mnt/backup
+``` C++
+
+Apri crontab:
+``` C++
+crontab -e
+```
+Aggiungi una linea per eseguire lo script di backup (ad esempio, ogni giorno alle 2:00 AM):
+```
+``` C++
+0 2 * * * /path/to/backup_script.sh
+```
+
 Sitografia:
 - https://aws.amazon.com/it/compare/the-difference-between-nfs-smb/
 
