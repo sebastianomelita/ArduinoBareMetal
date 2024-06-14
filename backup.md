@@ -42,10 +42,9 @@ Per quanto riguarda la realizzazione del **disco di storage** da aggiungere al *
 - altrimenti si eseguirebbe un salvataggio ricorsivo
 - il NAS è un disco troppo grosso per essere backuppato sulla stessa macchina (normalmente è il più grande).
 
-Nel momento in cui si fa il **backup delle VM**, il backup delle virtual machine (VM) esegue solamente il **backup del disco di servizio**.
-
 <img src="img/indipendentdisk.png" alt="alt text" width="500">
 
+Nel momento in cui si fa il **backup delle VM**, questo esegue solamente il **backup del disco di servizio**, cioè quello con il **SO**.
 
 
 ``` C++
