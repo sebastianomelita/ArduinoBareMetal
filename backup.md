@@ -47,6 +47,17 @@ Per quanto riguarda la realizzazione del **disco di storage** da aggiungere al *
 Nel momento in cui si fa il **backup delle VM**, questo esegue solamente il **backup del disco di servizio**, cioè quello con il **SO**.
 
 
+
+## **True NAS** 
+
+I **dati** vengono conservati su un **disco di grande dimensione** (attualmente 4TB), virtualizzato su VMWARE ESXI e **montato** su un **sistema operativo specializzato** nella realizzazione delle funzioni tipiche di un NAS noto sotto il nome di **TrueNAS**.
+
+**TrueNAS** (chiamato FreeNAS prima della versione 12.0) è un sistema operativo open source basato su FreeBSD che permette di costruire un dispositivo collegato ad una rete di computer la cui funzione principale è quella di **condividere** tra gli utenti della rete una Area di storage (o disco), cioè un **NAS** (https://it.wikipedia.org/wiki/FreeNAS).
+
+FreeNAS permette di configurare ogni dettaglio tramite un'interfaccia grafica WebGUI; ciò permette di usare un **browser** per modificare i settaggi, **montare dischi** e avere **informazioni sul sistema**. Questo rende possibile la **gestione remota** dell'hardware su cui è installato FreeNAS che non necessita perciò di mouse, tastiera e monitor. Si tratta quindi di un prodotto ideale per essere virtualizzato in un hypervisor (https://it.wikipedia.org/wiki/FreeNAS).
+
+Truenas **organizza il disco** in strutture dati chiamate **pools** simili a directory su cui è possibile impostare tutta una serie di **parametri** quali **permessi** e **quote** per singolo utente.
+
 ``` C++
 
 ```
