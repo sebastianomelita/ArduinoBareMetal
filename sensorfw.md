@@ -85,8 +85,6 @@ while True:
             print(f"Errore nell'invio del messaggio: {result.rc}")
         
         last_sent_time = current_time
-    
-    time.sleep(1)  # Attendere un secondo prima della prossima iterazione
 ```
 
 ## Fasi in C++
