@@ -497,7 +497,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
     
 ```C++                   
 ! Creare l'ACL per bloccare il traffico tra VLAN 30 e VLAN 10
-ip access-list extended BLOCK_VLAN_10_20
+ip access-list extended BLOCK_VLAN_10_20_30
  deny ip 10.0.10.0 0.0.0.255 10.0.30.0 0.0.0.255
  deny ip 10.0.20.0 0.0.0.255 10.0.30.0 0.0.0.255
  deny ip 10.0.30.0 0.0.0.255 10.0.10.0 0.0.0.255
@@ -506,10 +506,10 @@ ip access-list extended BLOCK_VLAN_10_20
 
 ! Applicare le ACL alle interfacce VLAN
 interface GigabitEthernet0/0.10
- ip access-group BLOCK_VLAN_10_20 in
+ ip access-group BLOCK_VLAN_10_20_30 in
  exit
 interface GigabitEthernet0/0.20
- ip access-group BLOCK_VLAN_10_20 in
+ ip access-group BLOCK_VLAN_10_20_30 in
  exit
 ``` 
     
