@@ -174,7 +174,7 @@ Apri crontab:
 crontab -e
 ```
 Aggiungi una linea per eseguire lo script di backup (ad esempio, ogni giorno alle 2:00 AM):
-```
+
 ``` C++
 0 2 * * * /path/to/backup_script.sh
 ```
