@@ -59,6 +59,10 @@ La **figura** sottostante riassume la rete LoRaWAN dal punto di osservazione di 
 
 Si noti, che il canale che collega i dispositivi IoT ai gateway non supera mai il **livello 2** della pila ISO/OSI. Questi link hanno **topologia** a **stella** e possono collegare lo stesso sensore/attuatore a molti gateway. I dispositivi utilizzano un meccanismo di **routing** di livello L1 e quindi basato sul **flooding**. E' il  routing **più semplice** possibile, e anche il **più affidabile** ma possiede l'**incoveniente** di generare **pacchetti duplicati** nel loro percorso verso l'**applicazione**. Questo problema è gestito dal **network server**.
 
+Il **gateway All-In-One** potrebbe essere un dispositivo con **doppia interfaccia**, modem **UMTS** per l'accesso alla rete di distribuzione su **Internet**, **LoRaWAN** verso la **rete di sensori**. Può essere utile per realizzare un **gateway Zigbee da campo** (saponetta zigbee) da adoperare:
+- in **contesti occasionali** (fiere, eventi sportivi, infrastrutture di emergenza, grandi mezzi mobili).
+- in contesti simili ma **dispersi** in aree geografiche molto distanti tra loro e coperte solo dalla **rete cellulare** terrestre della telefonia mobile o dai **satelliti in orbita bassa (LEO)**.
+
 ## **Documentazione logica (albero degli apparati attivi)**
 
 Esempio di connessione alla rete di distribuzione IP tramite gateway dotati di client VPN:
