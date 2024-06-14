@@ -29,16 +29,67 @@
    - Attendere un breve periodo (ad esempio, 1 secondo) prima di ripetere il ciclo.
 
 
-Comandi rsync utilizzati nel CronJob:
-``` C++
-rsync -av --delete root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup/UniventionNAS/Daily
-rsync -av --delete root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup/UniventionNAS/Weekly
-rsync -av --delete root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup/UniventionNAS/Montly
-rsync -av --delete root@ucs1.univention.marconicloud.it:/media/nas/ /mnt/UniventionBackup/UniventionNAS/Hourly
-```
-Si rimarca che, in questo processo di backup, l’**iniziativa** di eseguire la copia dei dati è presa dal server TrueNAS che **preleva** i dati da remoto e li conserva in locale con **politica PULL**. Ci sono 4 copie aggiornate con periodicità diversa: oraria, giornaliera, settimanale e mensile. Le copie, al momento, sono mantenute in chiaro. L’accesso alle copie è riservato ai soli sistemisti della rete previa autenticazione.
+## Fasi in Python
 
-### **Backup delle VM**
+``` Python
+import time
+import paho.mqtt.client as mqtt
+import random  # Utilizzato per simulare la lettura del sensore
+
+# Parametri di connessione MQTT
+MQTT_BROKER = "broker_address"
+MQTT_PORT = 1883
+MQTT_USERNAME = "username"
+MQTT_PASSWORD = "password"
+MQTT_TOPIC = "sensors/temperature"
+
+# Identificatore unico del sensore
+SENSOR_ID = "sensor_001"
+
+# Intervallo di lettura in secondi
+INTERVAL = 60
+
+# Inizializzazione del client MQTT
+client = mqtt.Client()
+client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
+
+def on_connect(client, userdata, flags, rc):
+    print(f"Connesso al broker MQTT con codice di risultato {rc}")
+
+def on_publish(client, userdata, mid):
+    print(f"Messaggio pubblicato con ID {mid}")
+
+client.on_connect = on_connect
+client.on_publish = on_publish
+
+client.connect(MQTT_BROKER, MQTT_PORT, 60)
+
+def read_temperature():
+    # Simulazione della lettura della temperatura
+    return round(random.uniform(20.0, 30.0), 2)
+
+last_sent_time = 0
+
+while True:
+    current_time = time.time()
+    
+    if current_time - last_sent_time >= INTERVAL:
+        temperature = read_temperature()
+        message = f'{{"sensor_id": "{SENSOR_ID}", "temperature": {temperature}}}'
+        result = client.publish(MQTT_TOPIC, message)
+        
+        # Assicurarsi che il messaggio sia stato inviato
+        if result.rc == mqtt.MQTT_ERR_SUCCESS:
+            print(f"Messaggio inviato: {message}")
+        else:
+            print(f"Errore nell'invio del messaggio: {result.rc}")
+        
+        last_sent_time = current_time
+    
+    time.sleep(1)  # Attendere un secondo prima della prossima iterazione
+```
+
+
 
 
 
