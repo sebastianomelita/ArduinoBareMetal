@@ -127,6 +127,53 @@ Per i dettagli sui protocolli NFS e SMB vedi:  [NFS vs SMB](https://aws.amazon.c
 
 <img src="img/nfsvssmb.png" alt="alt text" width="1000">
 
+### **Esempio di configurazione NFS**
+
+``` C++
+sudo mkdir -p /path/to/backup/folder
+```
+Modifica /etc/exports per condividere la directory:
+``` C++
+sudo nano /etc/exports
+```
+Aggiungi la seguente riga:
+``` C++
+/path/to/backup/folder client_ip(rw,sync,no_subtree_check)
+```
+Esporta le condivisioni:
+``` C++
+sudo exportfs -a
+```
+Riavvia il server NFS per applicare le modifiche:
+``` C++
+sudo systemctl restart nfs-kernel-server
+```
+
+### **Esempio di script bash di backup**
+
+``` C++
+#!/bin/bash
+
+# Monta la condivisione NFS
+sudo mount server_ip:/path/to/backup/folder /mnt/backup
+
+# Esegui il backup con rsync
+rsync -av --delete /path/to/local/data/ /mnt/backup/
+
+# Smonta la condivisione NFS
+sudo umount /mnt/backup
+```
+Aggiungere lo Script a cron
+Apri crontab:
+``` C++
+crontab -e
+```
+Aggiungi una linea per eseguire lo script di backup (ad esempio, ogni giorno alle 2:00 AM):
+``` C++
+0 2 * * * /path/to/backup_script.sh
+```
+
+
 ### **Esempio di configurazione Samba**
 
 ``` C++
@@ -178,53 +225,6 @@ Aggiungi una linea per eseguire lo script di backup (ad esempio, ogni giorno all
 ``` C++
 0 2 * * * /path/to/backup_script.sh
 ```
-
-### **Esempio di configurazione NFS**
-
-``` C++
-sudo mkdir -p /path/to/backup/folder
-```
-Modifica /etc/exports per condividere la directory:
-``` C++
-sudo nano /etc/exports
-```
-Aggiungi la seguente riga:
-``` C++
-/path/to/backup/folder client_ip(rw,sync,no_subtree_check)
-```
-Esporta le condivisioni:
-``` C++
-sudo exportfs -a
-```
-Riavvia il server NFS per applicare le modifiche:
-``` C++
-sudo systemctl restart nfs-kernel-server
-```
-
-### **Esempio di script bash di backup**
-
-``` C++
-#!/bin/bash
-
-# Monta la condivisione NFS
-sudo mount server_ip:/path/to/backup/folder /mnt/backup
-
-# Esegui il backup con rsync
-rsync -av --delete /path/to/local/data/ /mnt/backup/
-
-# Smonta la condivisione NFS
-sudo umount /mnt/backup
-```
-Aggiungere lo Script a cron
-Apri crontab:
-``` C++
-crontab -e
-```
-Aggiungi una linea per eseguire lo script di backup (ad esempio, ogni giorno alle 2:00 AM):
-``` C++
-0 2 * * * /path/to/backup_script.sh
-```
-
 
 Sitografia:
 - https://aws.amazon.com/it/compare/the-difference-between-nfs-smb/
