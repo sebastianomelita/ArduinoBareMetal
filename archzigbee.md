@@ -64,7 +64,7 @@ Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente an
 - **router applicativo** che **traduce** i messaggi da una rete IP (la LAN) ad una non IP (la rete di sensori).
 - **client MQTT** con funzione di **publisher** (sul topic di stato e traduce **da** i dispositivi) e di **subscriber** (sui topic di comando e configurazione e traduce **verso** i dispositivi).
 
-Il **gateway All-In-One** potrebbe essere un dispositivo con **doppia interfaccia**, modem **UMTS** per l'accesso alla rete di distribuzione su **Internet**, **Zigbee** verso la **rete di sensori**. Può essere utile per realizzare un **coordinator Zigbee da campo** da adoperare in **contesti occasionali** (fiere, eventi sportivi, infrastrutture di emergenza, mezzi mobili).
+Il **gateway All-In-One** potrebbe essere un dispositivo con **doppia interfaccia**, modem **UMTS** per l'accesso alla rete di distribuzione su **Internet**, **Zigbee** verso la **rete di sensori**. Può essere utile per realizzare un **coordinator Zigbee da campo** da adoperare in **contesti occasionali** (fiere, eventi sportivi, infrastrutture di emergenza, automezzi, mezzi mobili in genere).
 
 ### **Reti di sensori federate tramite LAN** 
 
