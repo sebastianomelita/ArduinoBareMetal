@@ -69,6 +69,8 @@ Per il dettaglio sulle VPN pratiche vedi [VPN di reti Ethernet](ethvpn.md).
 
 Per il dettaglio sulle impostazioni di un firewall [Firewall](firewall.md).
 
+Per il dettaglio sulla realizzazione dei backup vedi [Backup](backup.md).
+
 
 ##  **Canali di comunicazione principali in una rete di sensori**
 
