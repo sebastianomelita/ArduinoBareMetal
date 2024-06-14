@@ -1,4 +1,4 @@
->[Torna a reti ethernet](backup.md)
+>[Torna a backup VM](backup.md#backup-delle-vm)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
@@ -44,7 +44,7 @@ Si rimarca che, in questo processo di backup, l’iniziativa di eseguire la copi
 
 
 
->[Torna a reti ethernet](backup.md)
+>[Torna a backup VM](backup.md#backup-delle-vm)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
