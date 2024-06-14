@@ -58,6 +58,20 @@ FreeNAS permette di configurare ogni dettaglio tramite un'interfaccia grafica We
 
 Truenas **organizza il disco** in strutture dati chiamate **pools** simili a directory su cui è possibile impostare tutta una serie di **parametri** quali **permessi** e **quote** per singolo utente.
 
+<img src="img/poolstn.png" alt="alt text" width="500">
+
+Al momento sono stati creati i seguenti **contenitori di files** che in gergo TrueNAS si chiamano pools  e sono analoghi a delle **cartelle**:
+- 5 pools per far posto al backup dei 5 hypervisor attualmente in funzione, tutti basati su tecnologia VMWARE ESXI in versione freeware.
+- 4 pools per far posto a 4 backup delle condivisioni Samba del sistema di Active Directory con l'elenco degli utenti organizzato su servizio LDAP. Le **cartelle** forniscono una **serie di backup** con **granularità diversa**: oraria, giornaliera, settimanale e mensile, in maniera da poter rispondere a **diverse esigenze** di recupero dei dati a seguito di un **incidente**.
+
+Quando si attiva un task di copia di files da una sorgente remota al suo pool di backup sul NAS, l’azione svolta è sostanzialmente una sovrascrittura dei vecchi file del pool con in nuovi files prelevati dalla sorgente:
+- Se un file con un certo nome esisteva già, questo viene aggiornato
+- Se un file non esisteva, uno nuovo ne viene creato
+- E se un files adesso nella sorgente non c’è più, anche quello nel suo pool di backup viene eliminato.
+
+Apparentemente i file sovrascritti, modificati o cancellati andrebbero così irrimediabilmente persi ad ogni copia. In realtà ciò non accade perché è sempre attivo un meccanismo di snapshots che, ad ogni nuova copia, crea dei punti di ripristino, corredati di data, della vecchia. A ben vedere, ad ogni nuova copia, non viene, in realtà, caricato nuovamente tutto il file, ma solamente la sua differenza con  la versione precedente. Gli snapshot sono, in definitiva, un meccanismo deputato al mantenimento della versione (versioning) di un file ad ogni sua successiva modifica. Il tempo di retenzione degli snapshot non è comunque infinito e può essere impostato nel menù Periodic Snapshot Task:
+
+
 ``` C++
 
 ```
