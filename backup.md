@@ -127,7 +127,7 @@ Per i dettagli sui protocolli NFS e SMB vedi:  [NFS vs SMB](https://aws.amazon.c
 
 <img src="img/nfsvssmb.png" alt="alt text" width="1000">
 
-### **Esempio di configurazione samba**
+### **Esempio di configurazione Samba**
 
 ``` C++
 sudo nano /etc/samba/smb.conf
