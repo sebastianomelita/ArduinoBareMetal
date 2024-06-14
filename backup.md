@@ -36,7 +36,13 @@ La **modalità** con cui in un NAS si possono recuperare i dati sono essenzialme
 - **Politica PULL**, è il **NAS** che ha l’**iniziativa** di prelevare i dati dal server o NAS remoto attraverso un accesso tramite, ad es., un **client SSH** o un **client NFS**, o un client **SFTP**. 
 - **Politica PUSH**, è il **server remoto** (on un agente del NAS sul server) che ha l’**iniziativa di spostare** i dati dalla loro directory locale **verso il NAS**, utilizzando un **protocollo di clonazione** come **rsync** o **rclone**, oppure **copiando i files** su un **montaggio** locale delle **cartelle remote di backup** sul NAS. Il montaggio può essere ottenuto, ad esempio, tramite i protocolli **NFS** o **Samba (SMB)**.
 
-Per quanto riguarda la realizzazione del **disco di storage** da aggiungere al **disco del SO** di una **VM**, si è scelta la modalità di **aggregazione indipendente**. In questo modo un eventuale backup o un eventuale snapshot della VM conserverà sul NAS solo il disco del SO e non quello del NAS, cosa necessaria da un canto perchè altrimenti si eseguirebbe un salvataggio ricorsivo, dall'altro perchè il NAS è un disco troppo grosso per essere backuppato sulla stessa macchina (normalmente è il più grande). nel momento in cui si fa il backup delle VM. Il backup delle virtual machine (VM) esegue solamente il backup del disco di servizio.
+### **NAS virtualizzati**
+
+Per quanto riguarda la realizzazione del **disco di storage** da aggiungere al **disco del SO** di una **VM**, si è scelta la modalità di **aggregazione indipendente**. In questo modo un eventuale backup o un eventuale snapshot della VM conserverà sul NAS solo il disco del SO e non quello del NAS. L'impostazione è necessaria perchè:
+- altrimenti si eseguirebbe un salvataggio ricorsiv
+- perchè il NAS è un disco troppo grosso per essere backuppato sulla stessa macchina (normalmente è il più grande).
+
+Nel momento in cui si fa il **backup delle VM**, il backup delle virtual machine (VM) esegue solamente il **backup del disco di servizio**.
 
 <img src="img/indipendentdisk.png" alt="alt text" width="500">
 
