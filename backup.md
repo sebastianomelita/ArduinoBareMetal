@@ -195,8 +195,8 @@ Aggiungi la seguente riga:
 Esporta le condivisioni:
 ``` C++
 sudo exportfs -a
-Riavvia il server NFS per applicare le modifiche:
 ```
+Riavvia il server NFS per applicare le modifiche:
 ``` C++
 sudo systemctl restart nfs-kernel-server
 ```
