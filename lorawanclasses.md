@@ -398,10 +398,6 @@ Nel contesto di LoRaWAN, un **gateway** può assumere un ruolo di **coordinament
 
 Per il dettaglio sulla gestione delle classi di servizio vedi [Classi di servizio LoRAWAN](classilora.md).
 
-### **Formato dei messaggi**
-
-<img src="img/loramsg.png" alt="alt text" width="600">
-
 ## **Messaggi MQTT**
 
 ### **Messaggi confermati**
