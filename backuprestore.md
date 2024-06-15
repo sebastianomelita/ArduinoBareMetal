@@ -10,6 +10,8 @@
 
 ## **Script Bash di Ripristino (Pull) con NFS** 
 
+Lo script di restore viene eseguito sul server da ripristinare.
+
 ``` C++
 #!/bin/bash
 
@@ -32,6 +34,8 @@ bash /path/to/restore_script.sh
 ```
 
 ## **Script Bash di Ripristino (Pull) con Samba** 
+
+Lo script di restore viene eseguito sul server da ripristinare.
 
 ``` C++
 #!/bin/bash
