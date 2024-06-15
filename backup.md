@@ -163,6 +163,8 @@ sudo systemctl restart nfs-kernel-server
 
 ### **Esempio di script bash di backup PUSH NFS**
 
+Lo script di backup viene eseguito sul server da backuppare.
+
 ``` C++
 #!/bin/bash
 
@@ -184,7 +186,7 @@ Aggiungi una linea per eseguire lo script di backup (ad esempio, ogni giorno all
 ``` C++
 0 2 * * * /path/to/backup_script.sh
 ```
-[Ripristino PUSH con NFS](/backuprestore.md#script-bash-di-ripristino-pull-con-nfs)
+[Ripristino PULL con NFS](/backuprestore.md#script-bash-di-ripristino-pull-con-nfs)
 
 ### **Esempio di configurazione Samba**
 
@@ -215,6 +217,8 @@ sudo systemctl restart nmbd
 
 ### **Esempio di script bash di backup PUSH Samba**
 
+Lo script di backup viene eseguito sul server da backuppare.
+
 ``` C++
 #!/bin/bash
 
@@ -238,8 +242,7 @@ Aggiungi una linea per eseguire lo script di backup (ad esempio, ogni giorno all
 0 2 * * * /path/to/backup_script.sh
 ```
 
-[Ripristino PUSH con NFS](backuprestore.md#script-bash-di-ripristino-pull-con-samba)
-
+[Ripristino PULL con Samba](backuprestore.md#script-bash-di-ripristino-pull-con-samba)
 
 
 ### **Esempio completo di backup PUSH rsync**
@@ -263,7 +266,7 @@ crontab -e
 0 2 * * * /path/to/backup.sh
 ```
 
-[Ripristino PUSH con NFS](backuprestore.md#script-bash-di-ripristino-pull-con-samba)
+[Ripristino PULL con rsync](backuprestore.md#script-bash-di-ripristino-pull-con-samba)
 
 ### **Esempio completo di backup PULL rsync**
 
