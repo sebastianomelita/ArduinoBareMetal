@@ -24,17 +24,21 @@ Riguardo la **tecnica del montaggio**, in un punto del filesystem di un disco di
 - un **disco di servizio** che ospita l’**SO** e le **applicazioni** che mediano l’interazione con l’utente realizzando le **interfacce di accesso** al disco. Le **applicazioni** realizzano normalmente anche i **servizi** di **autenticazione**, **autorizzazione** e **logging** locale (**AAA**). 
 
 I **NAS** sono normalmente realizzati per due **scopi**:
-- Realizzare un **contenitore** di documenti per l’**applicazione** 
-- Realizzare un **contenitore** di documenti per il **backup** 
-
+- Realizzare un **contenitore** di documenti per il **funzionamento** dell’**applicazione** che si aggiunge al **DBMS** come **servizio centralizzato di persistenza** dei dati condivisi da **molte** applicazioni
+- Realizzare un **contenitore** di documenti per il **backup** utili per il **recovery** dei dati di funzionamento **compromessiv da un sopravvenuto **disastro**
+ 
 Il **disco di storage** potrebbe essere realizzato:
 - Un **disco fisico** separato dal disco del SO.
 - Una **partizione fisica** separata da quella del SO.
 - Un **disco virtuale** che, in un hypervisor, rimane separato dal disco (virtuale) del SO.
 
 La **modalità** con cui in un NAS si possono recuperare i dati sono essenzialmente **due**:
-- **Politica PULL**, è il **NAS** che ha l’**iniziativa** di prelevare i dati dal server o NAS remoto attraverso un accesso tramite, ad es., un **client SSH** o un **client NFS**, o un client **SFTP**. Il NAS deve possedere le **credenziali di accesso** a tutti i server che intende backappare (Username e password oppure **coppia chiave pubblica e privata**).
-- **Politica PUSH**, è il **server remoto** (on un agente del NAS sul server) che ha l’**iniziativa di spostare** i dati dalla loro directory locale **verso il NAS**, utilizzando un **protocollo di clonazione** come **rsync** o **rclone**, oppure **copiando i files** su un **montaggio** locale delle **cartelle remote di backup** sul NAS. Il montaggio può essere ottenuto, ad esempio, tramite i protocolli **NFS** o **Samba (SMB)**. Ogni server deve possedere le **credenziali di accesso** al NAS dove intende salvare i suoi dati (Username e password oppure **coppia chiave pubblica e privata**).
+- **Politica PULL**, è il **NAS** che ha l’**iniziativa** di prelevare i dati dal server o NAS remoto attraverso un accesso tramite, ad es., un **client SSH** o un **client NFS**, o un client **SFTP**. Il NAS deve possedere le **credenziali di accesso** a tutti i server che intende backappare (Username e password oppure **coppia chiave pubblica e privata**):
+    - Il NAS crea e conserva la chiave privata
+    - il server conserva la chiave pubblica
+- **Politica PUSH**, è il **server remoto** (on un agente del NAS sul server) che ha l’**iniziativa di spostare** i dati dalla loro directory locale **verso il NAS**, utilizzando un **protocollo di clonazione** come **rsync** o **rclone**, oppure **copiando i files** su un **montaggio** locale delle **cartelle remote di backup** sul NAS. Il montaggio può essere ottenuto, ad esempio, tramite i protocolli **NFS** o **Samba (SMB)**. Ogni server deve possedere le **credenziali di accesso** al NAS dove intende salvare i suoi dati (Username e password oppure **coppia chiave pubblica e privata**):
+    - Il server crea e conserva la chiave privata
+    - il NAS conserva la chiave pubblica
 
 <img src="img/pushvspull.png" alt="alt text" width="500">
 
