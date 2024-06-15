@@ -233,7 +233,7 @@ Aggiungi una linea per eseguire lo script di backup (ad esempio, ogni giorno all
 Sitografia:
 - https://aws.amazon.com/it/compare/the-difference-between-nfs-smb/
 
-### **Esempio Completo di backup PUSH rsync**
+### **Esempio completo di backup PUSH rsync**
 
 Creare la coppia di chiavi SSH e copiare la **pubblica** sul server **destinazione** (NAS)
 ``` C++
@@ -254,7 +254,7 @@ crontab -e
 0 2 * * * /path/to/backup.sh
 ```
 
-### **Esempio Completo di backup PULL rsync**
+### **Esempio completo di backup PULL rsync**
 
 Passo 1: Creare la coppia di chiavi SSH e copiare la **pubblica** sul **server sorgente** (da backuppare)
 ``` C++
