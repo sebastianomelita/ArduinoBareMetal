@@ -1,4 +1,4 @@
->[Torna a reti ethernet](archeth.md)
+>[Torna a backup](backup.md)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
@@ -99,7 +99,7 @@ Per eseguire manualmente lo script di ripristino, basta eseguire:
 bash /path/to/backup.sh
 ```
 
->[Torna a reti ethernet](archeth.md)
+>[Torna a backup](backup.md)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
