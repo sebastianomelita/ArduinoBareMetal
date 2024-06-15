@@ -42,7 +42,7 @@ La **modalità** con cui in un NAS si possono recuperare i dati sono essenzialme
 
 E’ opportuno prevedere un processo di **backup del backup** per dati e VM. Questo perchè, anche se rari, non possono escludersi **eventi irreversibili** che coinvolgano la macchina che contiene il NAS. Eventi **intenzionali** come **attacchi hacker** potrebbero cifrare (ramsonware) o comprometttere l'intero disco. Eventi **accidentali** come un incendio potrebbero distruggere l'intera sala server.
 
-Il backup potrebbe essere realizzato periodicamente, in **modalità replica**, su un altro server TrueNAS, meglio se posto in un **altro locale** o in un **altro edificio**. 
+Il backup potrebbe essere realizzato periodicamente, in **modalità replica**, su un altro server **NAS gemello**, meglio se posto in un **altro locale** o in un **altro edificio**. 
 
 E’ ormai una pratica consolidata la realizzazione di un **ulteriore backup su cloud** utilizzando un servizio di **disco remoto** (ad es. google drive).
 
