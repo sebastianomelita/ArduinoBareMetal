@@ -48,7 +48,7 @@ Per quanto riguarda la realizzazione del **disco di storage** da aggiungere al *
 
 Nel momento in cui si fa il **backup delle VM**, questo esegue solamente il **backup del disco di servizio**, cioè quello con il **SO**.
 
-## **True NAS** 
+## **Backup ad alto livello con applicativo True NAS** 
 
 I **dati** vengono conservati su un **disco di grande dimensione** (attualmente 4TB), virtualizzato su VMWARE ESXI e **montato** su un **sistema operativo specializzato** nella realizzazione delle funzioni tipiche di un NAS noto sotto il nome di **TrueNAS**.
 
@@ -128,6 +128,8 @@ Si rimarca che, in questo processo di backup, l’iniziativa di eseguire la copi
 Per i dettagli sui protocolli NFS e SMB vedi:  [NFS vs SMB](https://aws.amazon.com/it/compare/the-difference-between-nfs-smb/)
 
 <img src="img/nfsvssmb.png" alt="alt text" width="1000">
+
+## **Backup ad basso livello con rsync** 
 
 ### **Esempio di configurazione NFS**
 
