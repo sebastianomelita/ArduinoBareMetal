@@ -290,8 +290,7 @@ La **traduzione** non viene fatta normalmente direttamente sul gateway, anche se
         - **publisher** dei **messaggi corti** per poterli inviare al **dispositivo**        
 - **Integrazione diretta con un cloud**: Ad esempio, Cayenne di MyDevices fornisce una piattaforma per la gestione e visualizzazione dei dati IoT che supporta nativamente il formato Cayenne LPP. Puoi configurare il tuo server di rete per inviare i dati direttamente alla piattaforma Cayenne, che si occuperà della decodifica e visualizzazione dei dati in formato JSON.
  
-Per esempi di messagggi LoRawaN lunghi e corti vebi [Esempi messaggi LoRa](esempimessaggilora.md)
-)
+Per esempi di messagggi LoRawaN lunghi e corti vedi [Esempi messaggi LoRa](esempimessaggilora.md)
   
 ## **Gestione bridge broker MQTT**
 
