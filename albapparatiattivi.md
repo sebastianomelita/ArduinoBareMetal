@@ -1,4 +1,4 @@
->[Torna a reti ethernet](archeth.md)
+>[Torna a reti ethernet](archeth.md#documentazione)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
@@ -119,7 +119,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
 
 Per il dettaglio sulla segmentazione della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
 
->[Torna a reti ethernet](archeth.md)
+>[Torna a reti ethernet](archeth.md#documentazione)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
