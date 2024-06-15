@@ -117,7 +117,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
      - persone dello stesso dipartimento che sono dislocate su più sedi fisicamente separate (collegare logicamente host fisicamente separati)
      - Persone nello stesso luogo che devono essere selezionate per confluire in dipartimenti separati (separare logicamente host fisicamente collegati)
 
-Per il dettaglio sulla segmentazione della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
+Per esempi di **topologie di apparati attivi** e per il **dettaglio sulla segmentazione** della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
 
 >[Torna a reti ethernet](archeth.md#documentazione)
 
