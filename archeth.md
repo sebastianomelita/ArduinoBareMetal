@@ -209,7 +209,7 @@ Consiste in:
 2. Planimetria con cablaggio
 3. [Albero degli apparati passivi](dorsaliarmadi.md#albero-degli-apparati-passivi)
 4. [Tabella delle dorsali](dorsaliarmadi.md#tabella-delle-dorsali)
-5. Albero degli apparati attivi
+5. [Albero degli apparati attivi](albapparatiattivi.md)
 6. [Schema degli armadi](dorsaliarmadi.md#schema-degli-armadi)
 
 Lo scopo è realizzare un guida univoca (priva di ambiguità) per il personale installatore per definire:
