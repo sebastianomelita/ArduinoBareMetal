@@ -6,7 +6,7 @@
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
-# Fasi principali del firmware di un sensore che Utilizza MQTT
+# Fasi principali del firmware di un sensore che utilizza MQTT
 
 1. **Inizializzazione dei Parametri di Connessione**
    - Configurare i parametri del broker MQTT (indirizzo, porta, username, password).
