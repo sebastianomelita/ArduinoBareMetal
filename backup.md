@@ -229,7 +229,7 @@ Aggiungi una linea per eseguire lo script di backup (ad esempio, ogni giorno all
 Sitografia:
 - https://aws.amazon.com/it/compare/the-difference-between-nfs-smb/
 
-### **Esempio Completo di backup PULL rsync**
+### **Esempio Completo di backup PUSH rsync**
 
 Creazione della chiave SSH:
 ``` C++
@@ -247,6 +247,32 @@ Crontab:
 ``` C++
 crontab -e
 # Aggiungi la seguente linea al file crontab
+0 2 * * * /path/to/backup.sh
+```
+
+### **Esempio Completo di backup PULL rsync**
+
+Passo 1: Creare la chiave SSH e copiarla sul server sorgente
+``` C++
+ssh-keygen -t rsa
+ssh-copy-id user@sorgente_host
+```
+Passo 2: Creare lo script backup.sh
+``` C++
+#!/bin/bash
+rsync -avz --delete user@sorgente_host:/path/to/source /path/to/destination
+```
+Rendere eseguibile lo script:
+``` C++
+chmod +x /path/to/backup.sh
+```
+Passo 3: Configurare crontab
+Aprire crontab con:
+``` C++
+crontab -e
+```
+Aggiungere la riga:
+``` C++
 0 2 * * * /path/to/backup.sh
 ```
 
