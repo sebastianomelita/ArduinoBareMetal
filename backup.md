@@ -38,6 +38,14 @@ La **modalità** con cui in un NAS si possono recuperare i dati sono essenzialme
 
 <img src="img/pushvspull.png" alt="alt text" width="500">
 
+## **Backup del backup**
+
+E’ opportuno prevedere un processo di **backup del backup** per dati e VM. Questo perchè, anche se rari, non possono escludersi **eventi irreversibili** che coinvolgano la macchina che contiene il NAS. Eventi **intenzionali** come **attacchi hacker** potrebbero cifrare (ramsonware) o comprometttere l'intero disco. Eventi **accidentali** come un incendio potrebbero distruggere l'intera sala server.
+
+Il backup potrebbe essere realizzato periodicamente, in **modalità replica**, su un altro server TrueNAS su un altro server, meglio se posto in un **altro locale** o in un **altro edificio**. 
+
+E’ ormai una pratica consolidata la realizzazione di un **ulteriore backup su cloud** utilizzando un servizio di **disco remoto** (ad es. google drive).
+
 ### **NAS virtualizzati**
 
 Per quanto riguarda la realizzazione del **disco di storage** da aggiungere al **disco del SO** di una **VM**, si è scelta la modalità di **aggregazione indipendente**. In questo modo un eventuale backup o un eventuale snapshot della VM conserverà sul NAS solo il disco del SO e non quello del NAS. L'impostazione è necessaria perchè:
