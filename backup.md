@@ -20,7 +20,7 @@ Il **backup** si realizza essenzialmente per raggiungere due **obiettivi**:
 ## **Backup dei dati** 
 
 Riguardo la **tecnica del montaggio**, in un punto del filesystem di un disco di piccole dimensioni che ospita l’SO, di un disco di grandi dimensioni per lo storage dei dati, si può legittimamente ritenere che essa **realizza un NAS**. UN NAS ha essenzialmente **due componenti**:
-- il **disco storag**e che ospita i **documenti**.
+- il **disco di storage** che ospita i **documenti**.
 - un **disco di servizio** che ospita l’**SO** e le **applicazioni** che mediano l’interazione con l’utente realizzando le **interfacce di accesso** al disco. Le **applicazioni** realizzano normalmente anche i **servizi** di **autenticazione**, **autorizzazione** e **logging** locale (**AAA**). 
 
 I **NAS** sono normalmente realizzati per due **scopi**:
