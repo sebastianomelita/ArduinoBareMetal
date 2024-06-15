@@ -43,9 +43,9 @@ Ad esempio una richiesta con l’indirizzo https://segreteria.marconicloud.it /n
 
 ### **Keepalived** 
 
-<img src="img/ha.gif" alt="alt text" width="700">
-
 **keepalived** è uno strumento che fornisce funzionalità di failover e load balancing utilizzando il protocollo **VRRP (Virtual Router Redundancy Protocol)**. Viene usato per monitorare lo stato dei server e delle applicazioni, e per gestire il failover in caso di guasti. Il **bilanciatore slave** interroga periodicamente il **bilanciatore master** (principale) per sapere se è **attivo**. Se scopre che non lo è, allora entra in servizio lui al posto del bilanciatore master assumendo adesso il ruolo di **bilanciatore principale** in sostituzione di quello guasto.
+
+<img src="img/ha.gif" alt="alt text" width="700">
 
 #### **Esempio di configurazione di Keepalived (per il solo nodo master)**:
 
