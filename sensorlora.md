@@ -1,5 +1,6 @@
->[Torna a reti ethernet](archeth.md)
+>[Torna a reti LoRaWAN](lorawanclasses.md)
 
+- [Dettaglio architettura Ethernet](archeth.md)
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
@@ -144,8 +145,9 @@ void loop() {
 }
 ```
 
->[Torna a reti ethernet](archeth.md)
+>[Torna a reti LoRaWAN](lorawanclasses.md)
 
+- [Dettaglio architettura Ethernet](archeth.md)
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
