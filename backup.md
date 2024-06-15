@@ -25,7 +25,7 @@ Riguardo la **tecnica del montaggio**, in un punto del filesystem di un disco di
 
 I **NAS** sono normalmente realizzati per due **scopi**:
 - Realizzare un **contenitore** di documenti per il **funzionamento** dell’**applicazione** che si aggiunge al **DBMS** come **servizio centralizzato di persistenza** dei dati condivisi da **molte** applicazioni
-- Realizzare un **contenitore** di documenti per il **backup** utili per il **recovery** dei dati di funzionamento **compromessiv da un sopravvenuto **disastro**
+- Realizzare un **contenitore** di documenti per il **backup** utili per il **recovery** dei dati di funzionamento **dopo** la loro **compromissione** a causa di un evento distruttivo (**disaster**).
  
 Il **disco di storage** potrebbe essere realizzato:
 - Un **disco fisico** separato dal disco del SO.
