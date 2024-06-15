@@ -236,7 +236,7 @@ Creare la chiave SSH e copiarla sul server destinazione (NAS)
 ssh-keygen -t rsa
 ssh-copy-id user@sorgente_host
 ```
-Script di backup (backup.sh) che copia sul server NAS:
+Script di backup (backup.sh) eseguito dal server sorgente che copia sul server NAS:
 
 ``` C++
 #!/bin/bash
@@ -257,7 +257,7 @@ Passo 1: Creare la chiave SSH e copiarla sul server sorgente (da backuppare)
 ssh-keygen -t rsa
 ssh-copy-id user@sorgente_host
 ```
-Passo 2: Creare lo script backup.sh che copia sul server NAS
+Passo 2: Creare lo script backup.sh eseguito dal server destinazione (server NAS) che copia sul server NAS
 ``` C++
 #!/bin/bash
 rsync -avz --delete user@sorgente_host:/path/to/source /path/to/destination
