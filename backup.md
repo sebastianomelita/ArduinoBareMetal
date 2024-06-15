@@ -238,6 +238,10 @@ Aggiungi una linea per eseguire lo script di backup (ad esempio, ogni giorno all
 0 2 * * * /path/to/backup_script.sh
 ```
 
+[Ripristino PUSH con NFS](backuprestore.md#script-bash-di-ripristino-pull-con-samba)
+
+
+
 ### **Esempio completo di backup PUSH rsync**
 
 Creare la coppia di chiavi SSH e copiare la **pubblica** sul server **destinazione** (NAS)
@@ -258,6 +262,8 @@ crontab -e
 # Aggiungi la seguente linea al file crontab
 0 2 * * * /path/to/backup.sh
 ```
+
+[Ripristino PUSH con NFS](backuprestore.md#script-bash-di-ripristino-pull-con-samba)
 
 ### **Esempio completo di backup PULL rsync**
 
@@ -284,6 +290,10 @@ Aggiungere la riga:
 ``` C++
 0 2 * * * /path/to/backup.sh
 ```
+- [Ripristino PULL con rsync](backuprestore.md#script-bash-di-ripristino-pull-con-rsync)
+- [Ripristino PUSH con rsync](backuprestore.md#script-bash-di-ripristino-push-con-rsync)
+
+
 Sitografia:
 - https://aws.amazon.com/it/compare/the-difference-between-nfs-smb/
 - 
