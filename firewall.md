@@ -36,7 +36,7 @@ Ad ogni **path** corrisponde un **backend** con un proprio **pool di server**. T
 
 Questa tecnica permette di superare il limite tecnico del **port forwarding tradizionale** che impone il **vincolo** della non condivisibilità di una stessa porta esterna del router tra più server interni nella LAN.
 
-Questa tecnica può essere adoperata per realizzare il **partizionamento del carico** in base al tipo di servizio oppure, per **uno stesso servizio**, in base alla **provenienza geografica** della richiesta.
+Questa tecnica può essere adoperata per realizzare il **partizionamento del carico** in base al **tipo di servizio** oppure, per **uno stesso servizio**, in base alla **provenienza geografica** della richiesta.
 Ad esempio una richiesta con l’indirizzo https://segreteria.marconicloud.it /non è utilizzabile dall’utente perché è riservato agli accessi ad un webservice https da parte dell’aministrazione remota di axios. https://segeteria.marconicloud/guacamole/ invece, pur afferendo alla stessa porta 443, viene dal modulo ALG rediretto verso il server di VPN Guacamole.
 
 <img src="img/ha.gif" alt="alt text" width="700">
