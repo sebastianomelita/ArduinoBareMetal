@@ -49,7 +49,7 @@ Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture
 Il **gateway All-In-One** potrebbe essere un dispositivo con **doppia interfaccia**, modem **UMTS** per l'accesso alla rete di distribuzione su **Internet**, **BLE** verso la **rete di sensori**. Può essere utile per realizzare un **gateway BLE da campo** da adoperare:
 - in **contesti occasionali** (fiere, eventi sportivi, infrastrutture di emergenza, grandi mezzi mobili).
 - in contesti simili ma **dispersi** in aree geografiche molto distanti tra loro e coperte solo dalla **rete cellulare** terrestre della telefonia mobile o dai **satelliti in orbita bassa (LEO)**.
-- 
+  
 ## **Documentazione logica della rete (albero degli apparati attivi)** 
 
 ### **Federazione di reti BLE in Internet** 
