@@ -29,8 +29,10 @@ Può essere usato anche come **bilanciatore di carico** delle **connessioni WAN 
 
 ## **ALG** 
 
-E' un **reverse proxy** realizzato con un **destination NAT** che reindirizza dinamicamente le connessioni in base a criteri che valutano l’**intestazione della richiesta**. Un comportamento comune è quello di **esaminare il path** dell’**indirizzo url** cioè la parte compresa tra il **nome dell’host e la sezione della query**.
+E' un **reverse proxy** realizzato con un **destination NAT (DNAT)** che reindirizza dinamicamente le connessioni che arrivano su un **IP virtuale** in base a criteri che valutano l’**intestazione della richiesta**. Un comportamento comune è quello di **esaminare il path** dell’**indirizzo url** cioè la parte compresa tra il **nome dell’host e la sezione della query**.
 Ad ogni **path** corrisponde un **backend** con un proprio **pool di server**. Tutti i server, indipendentemente dal pool di appartenenza, possono **condividere** una stessa **porta esterna** sul router/NAT.
+
+Un **IP virtuale (VIP)** è un indirizzo IP non legato a una singola macchina fisica, ma, piuttosto, l'**IP condiviso** da un cluster di macchine, quello con cui queste sono raggiungibili come gruppo. E' assegnato, tramite **DNAT dinamico**, una o **più interfacce di rete** per scopi di **ridondanza** o **bilanciamento del carico**. Quando uno dei server che possiede l'IP virtuale **fallisce**, un altro server viene comandato dal bilanciatore (ALG) ad assumere quell'IP, senza interrompere il servizio. 
 
 <img src="img/alg.png" alt="alt text" width="700">
 
@@ -39,11 +41,81 @@ Questa tecnica permette di superare il limite tecnico del **port forwarding trad
 Questa tecnica può essere adoperata per realizzare il **partizionamento del carico** in base al **tipo di servizio** oppure, per **uno stesso servizio**, in base alla **provenienza geografica** della richiesta.
 Ad esempio una richiesta con l’indirizzo https://segreteria.marconicloud.it /non è utilizzabile dall’utente perché è riservato agli accessi ad un webservice https da parte dell’aministrazione remota di axios. https://segeteria.marconicloud/guacamole/ invece, pur afferendo alla stessa porta 443, viene dal modulo ALG rediretto verso il server di VPN Guacamole.
 
+### **Keepalived** 
+
 <img src="img/ha.gif" alt="alt text" width="700">
 
-- Ridondanza dei bilanciatori di carico (proxy)
+**keepalived** è uno strumento che fornisce funzionalità di failover e load balancing utilizzando il protocollo **VRRP (Virtual Router Redundancy Protocol)**. Viene usato per monitorare lo stato dei server e delle applicazioni, e per gestire il failover in caso di guasti. Il **bilanciatore slave** interroga periodicamente il **bilanciatore master** (principale) per sapere se è **attivo**. Se scopre che non lo è, allora entra in servizio lui al posto del bilanciatore master assumendo adesso il ruolo di **bilanciatore principale** in sostituzione di quello guasto.
+
+#### **Esempio di configurazione di Keepalived (per il solo nodo master)**:
+
+<table>
+<tr><td> Per il bilanciatore master </td><td> Per il bilanciatore slave </td></tr>
+<tr><td> 
+    
+```C++                   
+  vrrp_instance VI_1 {
+    state MASTER
+    interface eth0
+    virtual_router_id 51
+    priority 100
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1234
+    }
+    virtual_ipaddress {
+        192.168.1.100
+    }
+    track_script {
+        chk_haproxy
+    }
+}
+
+vrrp_script chk_haproxy {
+    script "pidof haproxy"
+    interval 2
+}
+  ``` 
+    
+</td>
+<td>
+
+```C++     
+vrrp_instance VI_1 {
+    state BACKUP
+    interface eth0
+    virtual_router_id 51
+    priority 90
+    advert_int 1
+    authentication {
+        auth_type PASS
+        auth_pass 1234
+    }
+    virtual_ipaddress {
+        192.168.1.100
+    }
+    track_script {
+        chk_haproxy
+    }
+}
+
+vrrp_script chk_haproxy {
+    script "pidof haproxy"
+    interval 2
+}
+
+```
+    
+</td>
+</tr>
+</table>
+
+
+Si può migliorare ulteriormente l'affidabilità con la:
+- Ridondanza dei bilanciatori di carico (proxy) ottenuta tramite il protocollo **VRRP** su due bilanciatori (uno master e uno slave)
 - Scelta del bilanciatore in base alla disponibilità
-- Disponibilità valutata con healt check mediante keepalived
+- Disponibilità valutata con healt check mediante **VRRP** sui server
 
 ### **Esempio di partizionamento e bilanciamento del carico** 
 
