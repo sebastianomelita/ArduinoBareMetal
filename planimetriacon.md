@@ -1,4 +1,4 @@
->[Torna a reti ethernet](archeth.md)
+>[Torna a reti ethernet](archeth.md#documentazione)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
@@ -68,7 +68,7 @@ Nell’esempio:
 - All’interno di una canalizzazione normalmente vi sono più cavi UTP, uno per ogni presa TO servita da quella canalizzazione.
 - Le canalizzazioni vanno etichettate e la loro molteplicità massima, cioè il numero massimo di cavi che conterranno lungo tutta la loro estensione, che va stabilita in fase di progetto insieme ad una stima di massima della loro lunghezza.
 
-- >[Torna a reti ethernet](archeth.md)
+- >[Torna a reti ethernet](archeth.md#documentazione)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
