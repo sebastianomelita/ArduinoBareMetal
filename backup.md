@@ -184,7 +184,7 @@ Aggiungi una linea per eseguire lo script di backup (ad esempio, ogni giorno all
 ``` C++
 0 2 * * * /path/to/backup_script.sh
 ```
-
+[Ripristino PUSH con NFS](/backuprestore.md#script-bash-di-ripristino-pull-con-nfs)
 
 ### **Esempio di configurazione Samba**
 
