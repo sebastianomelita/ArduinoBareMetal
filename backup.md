@@ -235,7 +235,7 @@ Sitografia:
 
 ### **Esempio Completo di backup PUSH rsync**
 
-Creare la chiave SSH e copiarla sul server destinazione (NAS)
+Creare la coppia di chiavi SSH e copiare la **pubblica** sul server **destinazione** (NAS)
 ``` C++
 ssh-keygen -t rsa
 ssh-copy-id user@sorgente_host
@@ -256,7 +256,7 @@ crontab -e
 
 ### **Esempio Completo di backup PULL rsync**
 
-Passo 1: Creare la chiave SSH e copiarla sul server sorgente (da backuppare)
+Passo 1: Creare la coppia di chiavi SSH e copiare la **pubblica** sul **server sorgente** (da backuppare)
 ``` C++
 ssh-keygen -t rsa
 ssh-copy-id user@sorgente_host
