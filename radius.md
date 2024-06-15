@@ -20,9 +20,9 @@ Anche nel caso di un solo AP vengono attivate 2 porte virtuali a valle di quella
 <img src="img/supplicant.png" alt="alt text" width="1000">
 
 Per realizzare l'autenticazione 802.1 X servono 3 dispositivi:
-- Supplicant: un client Software in esecuzione sulla workstation Wi-Fi.
-- Autenticatore (detto anche NAS): Il punto di accesso Wi-Fi.
-- Server di autenticazione: un database di autenticazione, in genere un server RADIUS, nel nostro caso Freeradius incluso nel server Univention.
+- **Supplicant**: un client Software in esecuzione sulla workstation Wi-Fi.
+- **Autenticatore (detto anche NAS)**: Il punto di accesso Wi-Fi.
+- **Server di autenticazione**: un database di autenticazione, in genere un **server RADIUS**, nel nostro caso **Freeradius** incluso nel server Univention.
 
 ## **Autenticazione di porta**
 
@@ -32,10 +32,11 @@ Autorizza o meno l’apertura di una connessione di livello 2 ISO/OSI. L’auten
 
 ## **Sequenza di autenticazione utente**
 
-La tecnica utilizzata è il PEAP: è uno standard aperto ideato da Cisco Systems, Microsoft e RSA Security, e fornisce un elevato livello di sicurezza. È molto simile a EAPTTLS, richiede solo il certificato lato server e crea un tunnel sicuro con TLS per proteggere l’autenticazione dell’utente, autenticazione effettuata utilizzando altri metodi come MS-CHAPv2 (PEAP/EAPMSCHAPv2) basati su username e password.
-Avviene solamente dopo l’autenticazione con successo del server, un sottoprodotto di questa è lo scambio di una chiave crittografica OTP di sessione tra client e server con cui realizzare un canale cifrato sicuro. All’interno di questo tunnel cifrato è possibile procedere all’autenticazione dell’utente, solitamente con autenticazioni deboli (cmq realizzate dentro un canale cifrato inaccessibile) che normalmente prevedono:
-- protocollo PAP. Scambio di password in chiaro, soggetta ad attacco replay
-- protocollo CHAP o MSCHAP con scambio dell’hash di password + sfida, non soggetto ad attacco di tipo replay.
+La tecnica utilizzata è il **PEAP**: è uno standard aperto ideato da Cisco Systems, Microsoft e RSA Security, e fornisce un elevato livello di sicurezza. È molto simile a **EAPTTLS**, richiede solo il **certificato lato server** e crea un **tunnel** sicuro con TLS per proteggere l’**autenticazione dell’utente**, autenticazione effettuata utilizzando altri metodi come MS-CHAPv2 (PEAP/EAPMSCHAPv2) basati su **username e password**.
+
+L'autenticaxione utente avviene **solamente dopo** l’autenticazione con successo del server. Un sottoprodotto di questa è lo scambio di una chiave crittografica OTP di sessione tra client e server con cui realizzare un canale cifrato sicuro. All’interno di questo tunnel cifrato è possibile procedere all’**autenticazione dell’utente**, solitamente con **autenticazioni deboli** (cmq realizzate dentro un canale cifrato inaccessibile) che normalmente prevedono:
+- protocollo **PAP**. Scambio di password in chiaro, soggetta ad attacco replay
+- protocollo **CHAP o MSCHAP** con scambio dell’hash di password + sfida, non soggetto ad attacco di tipo replay.
 
 Un riassunto delle fasi dell’autenticazione CHAP potrebbe essere:
 1. Il client invia attraversando in tunnelling il NAS la propria identità al server RADIUS
@@ -53,7 +54,7 @@ L’AP si autentica presso il server RADIUS generalmente tramite una password ch
 
 ### **Autenticazione del server**
 
-Un riassunto delle fasi dell’autenticazione asimmetrica forte potrebbe essere:
+Un riassunto delle fasi dell’**autenticazione asimmetrica forte** potrebbe essere:
 1.	Il Client manda al server un messaggio contenente la sua identità è la sfida OTP che ha scelto lui, b.
 2.	Il server risponde mandando la propria identità  A e la propria firma sulla sfida b. E’ la fase di scambio delle credenziali (Credenziali = sfida firmata) in cui il server, contestualmente, invia pure la propria chiave pubblica (contenuta in un certificato utente). In definitiva il server si presenta al client con la sua sfida firmata e un certificato utente ad essa allegato. 
 3.	Il client autentica il server se:
