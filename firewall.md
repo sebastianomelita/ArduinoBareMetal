@@ -47,7 +47,7 @@ Ad esempio una richiesta con l’indirizzo https://segreteria.marconicloud.it /n
 
 <img src="img/ha.gif" alt="alt text" width="700">
 
-#### **Esempio di configurazione di Keepalived (per il solo nodo master)**:
+#### **Esempio di configurazione di Keepalived (per due nodi bilanciatori con lo stesso IP virtuale)**:
 
 <table>
 <tr><td> Per il bilanciatore master </td><td> Per il bilanciatore slave </td></tr>
