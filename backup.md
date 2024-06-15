@@ -38,7 +38,7 @@ La **modalità** con cui in un NAS si possono recuperare i dati sono essenzialme
 
 <img src="img/pushvspull.png" alt="alt text" width="500">
 
-## **Backup del backup**
+### **Backup del backup**
 
 E’ opportuno prevedere un processo di **backup del backup** per dati e VM. Questo perchè, anche se rari, non possono escludersi **eventi irreversibili** che coinvolgano la macchina che contiene il NAS. Eventi **intenzionali** come **attacchi hacker** potrebbero cifrare (ramsonware) o comprometttere l'intero disco. Eventi **accidentali** come un incendio potrebbero distruggere l'intera sala server.
 
