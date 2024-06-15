@@ -296,7 +296,7 @@ Aggiungere la riga:
 
 Sitografia:
 - https://aws.amazon.com/it/compare/the-difference-between-nfs-smb/
-- 
+  
 >[Torna a reti ethernet](archeth.md)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
