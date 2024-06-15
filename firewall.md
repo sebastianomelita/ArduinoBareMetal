@@ -121,6 +121,7 @@ In **definitiva**,  può migliorare ulteriormente l'affidabilità con la:
 
 - Realizzare, con il reverse proxy commerciale **haproxy**, il **partizionamento** del traffico sulle porte 80 e 443 tra i server blog_miosito e web_miosito.
 - Nel contempo realizzare il **bilanciamento del carico** tra tre server con lo **stesso servizio** per il traffico verso web_miosito
+- in caso di ridondanza dei bilanciatori con keepalived, la stessa identica configurazione deve essere impostata sia sul nodo master che su quello slave
 
 ``` C++
 # Configurazione HAProxy
