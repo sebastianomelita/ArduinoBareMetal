@@ -229,50 +229,8 @@ Aggiungi una linea per eseguire lo script di backup (ad esempio, ogni giorno all
 Sitografia:
 - https://aws.amazon.com/it/compare/the-difference-between-nfs-smb/
 
-### **Esempio di configurazione NFS**
+### **Esempio Completo di backup PULL rsync**
 
-Creare una chiave SSH (se non è già stata creata) sul server di destinazione per consentire l'accesso senza password al server sorgente:
-
-``` C++
-ssh-keygen -t rsa
-```
-
-Copia la chiave pubblica al server sorgente:
-
-``` C++
-ssh-copy-id user@sorgente_host
-```
-Eseguire rsync dal server di destinazione per tirare i dati dal server sorgente. Ecco un esempio di comando rsync:
-
-``` C++
-rsync -avz --delete user@sorgente_host:/path/to/source /path/to/destination
-```
--a: modalità archivio, che preserva permessi, timestamp, simboli, etc.
--v: modalità verbose, che fornisce informazioni dettagliate durante l'esecuzione.
--z: comprime i file durante il trasferimento.
---delete: elimina i file nel percorso di destinazione che non esistono nel percorso sorgente.
-
-Script di Automazione: Per automatizzare il processo di backup, crea uno script shell sul server di destinazione. Ad esempio, crea un file chiamato backup.sh:
-
-``` C++
-#!/bin/bash
-rsync -avz --delete user@sorgente_host:/path/to/source /path/to/destination
-```
-Rendi eseguibile lo script:
-``` C++
-chmod +x backup.sh
-```
-Crontab: Configura un cron job per eseguire lo script di backup a intervalli regolari. Apri il crontab per l'utente corrente:
-
-``` C++
-crontab -e
-```
-Aggiungi una linea per eseguire lo script ogni giorno alle 2:00 AM (puoi modificare l'orario secondo le tue esigenze):
-
-``` C++
-0 2 * * * /path/to/backup.sh
-```
-Esempio Completo
 Creazione della chiave SSH:
 ``` C++
 ssh-keygen -t rsa
