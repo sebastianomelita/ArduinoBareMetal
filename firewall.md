@@ -112,7 +112,7 @@ vrrp_script chk_haproxy {
 </table>
 
 
-Si può migliorare ulteriormente l'affidabilità con la:
+In **definitiva**,  può migliorare ulteriormente l'affidabilità con la:
 - Ridondanza dei bilanciatori di carico (proxy) ottenuta tramite il protocollo **VRRP** su due bilanciatori (uno master e uno slave)
 - Scelta del bilanciatore in base alla disponibilità
 - Disponibilità valutata con healt check mediante **VRRP** sui server
