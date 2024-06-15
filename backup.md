@@ -34,7 +34,7 @@ Il **disco di storage** potrebbe essere realizzato:
 
 La **modalità** con cui in un NAS si possono recuperare i dati sono essenzialmente **due**:
 - **Politica PULL**, è il **NAS** che ha l’**iniziativa** di prelevare i dati dal server o NAS remoto attraverso un accesso tramite, ad es., un **client SSH** o un **client NFS**, o un client **SFTP**. Il NAS deve possedere le **credenziali di accesso** a tutti i server che intende backappare (Username e password oppure **coppia chiave pubblica e privata**).
-- **Politica PUSH**, è il **server remoto** (on un agente del NAS sul server) che ha l’**iniziativa di spostare** i dati dalla loro directory locale **verso il NAS**, utilizzando un **protocollo di clonazione** come **rsync** o **rclone**, oppure **copiando i files** su un **montaggio** locale delle **cartelle remote di backup** sul NAS. Il montaggio può essere ottenuto, ad esempio, tramite i protocolli **NFS** o **Samba (SMB)**. Il server deve possedere le **credenziali di accesso** al NAS dove intende salvare i suoi dati (Username e password oppure **coppia chiave pubblica e privata**).
+- **Politica PUSH**, è il **server remoto** (on un agente del NAS sul server) che ha l’**iniziativa di spostare** i dati dalla loro directory locale **verso il NAS**, utilizzando un **protocollo di clonazione** come **rsync** o **rclone**, oppure **copiando i files** su un **montaggio** locale delle **cartelle remote di backup** sul NAS. Il montaggio può essere ottenuto, ad esempio, tramite i protocolli **NFS** o **Samba (SMB)**. Ogni server deve possedere le **credenziali di accesso** al NAS dove intende salvare i suoi dati (Username e password oppure **coppia chiave pubblica e privata**).
 
 <img src="img/pushvspull.png" alt="alt text" width="500">
 
