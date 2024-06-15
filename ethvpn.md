@@ -142,7 +142,7 @@ Le ACL si dividono in:
 (config)# access-list 101 deny 10.0.3.0 0.0.0.255
 (config)# access-list 101 permit any 
 ! Selezione interfaccia vlan 10
-(config)# interface eth0.10 
+(config)# interface eth0/0.10 
 ! Applicazione in ingress su vlan 10
 (config-if)# ip access-group 101 in
 (config-if)# exit
