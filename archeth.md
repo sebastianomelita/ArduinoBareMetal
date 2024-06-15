@@ -567,53 +567,6 @@ Si sarebbe potuto isolare in maniera ancora **più affidabile** la rete della se
 
 L'**inconveniente** viene superato adoperando le **VLAN** e la sicurezza viene mantenuta ugualmente alta (**like wire** in pratica) grazie ai **comandi**: ```allowed vlan 1, 20, 30``` e ```allowed vlan 1, 10``` che **confinano** il traffico delle **trame MAC** relative alla LAN della **segreteria** sul solo SW dove sono collegati i suoi dispositivi. Tutte le altre dorsali non possono essere interessate da questo traffico, mentre sono tutte interessate dal traffico della **subnet amministrativa** degli AP che possono così essere gestiti da un **unico controller**.
 
-### **Esempio di Configurazione**
-
-Per configurare una rete con 3 router WiFi mesh, in cui ogni router ha una dorsale (backhaul) con canale di comunicazione dedicato e due router aggregano sensori su due subnet diverse, possiamo seguire questo schema:
-
-I Router per aggregazione dei sensori sono R2 e R3. Per le subnet possiamo usare un blocco di indirizzi privati come 10.0.0.0/8 e dividerlo, con un subnetting **FLSM classful**, come segue:
-
-#### **Subnetting**
-
-Subnet per la dorsale degli AP (VLAN amministrativa no ssid):
-- VLAN 1
-- S0: 10.0.0.0/24
-- AP1: 10.0.0.1
-- AP2: 10.0.0.2
-- APX: 10.0.0.x
-
-Subnet per la segreteria.
-- VLAN 10
-- SSID: segreteria
-- S1: 10.1.0.0/24 
-- GW1 (R2): 10.1.0.1
-- RNG1: 10.1.0.2- 10.1.255.254
-
-Subnet per i docenti.
-- VLAN 20
-- SSID: docenti
-- S2: 10.2.0.0/24 
-- GW2 (R2): 10.2.0.1
-- RNG2: 10.2.0.2- 10.2.255.254
-
-Subnet per la videosorveglienza.
-- VLAN 30
-- SSID: videosorveglienza
-- S3: 10.3.0.0/24 
-- GW3 (R2): 10.3.0.1
-- RNG3: 10.3.0.3- 10.3.255.254
-
-#### **Routing statico**
-
-R1 possiede 3 indirizzi su ciascuna subnet:
-- S0 (VLAN 1): 10.0.0.1  SM0: 255.255.0.0
-- S1 (VLAN 10): 10.1.0.1  SM1: 255.255.0.0
-- S2 (VLAN 20): 10.2.0.1  SM2: 255.255.0.0
-- S3 (VLAN 30): 10.3.0.1  SM3: 255.255.0.0
-  
-Non è necessario impostare le tabelle di routing in quanto le subnet S0, S1, S2, S3 sono, su R1, direttamente connesse.
-
-
 ## **Messaggi MQTT**
 
 ### **Messaggi confermati**
