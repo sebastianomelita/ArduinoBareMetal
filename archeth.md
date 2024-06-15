@@ -167,7 +167,7 @@ E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **
 5. **Attesa Prima della Prossima Iterazione**
    - Attendere un breve periodo (ad esempio, 1 secondo) prima di ripetere il ciclo.
 
-Per il dettaglio sulla realizzazione del firmware vedi [Firmware](sensor.md).
+Per il dettaglio sulla realizzazione del firmware vedi [Firmware](sensorfw.md).
 
 ## **Rete Ethernet (LAN)** 
 
