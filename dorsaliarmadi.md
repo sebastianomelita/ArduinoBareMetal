@@ -22,7 +22,7 @@
 
 <img src="img/passivi.png" alt="alt text" width="1000">
 
-Nello schema sopra sono stati riportati gli **A**P che sono **apparati attivi**. Formalmente sarebbe un **errore** dato che sarebbero dovuti essere rappresentati come una **presa TO**, però l'eccezione è stata voluta per rimarcare che sono dispostivi analoghi a **switch di accesso (AS)**, data l'elevata capacità di traffico che ciascuno è in grado di generare (**superiore al Gbps** nei modelli più recenti). Motivo per cui, nello schema, sono stati collegati a **switch di distribuzione** (con dorsali a 10 Gbps) invece che a scwitch di accesso (con dorsali a 1 Gbps).
+Nello schema sopra sono stati riportati gli **A**P che sono **apparati attivi**. Formalmente sarebbe un **errore** dato che sarebbero dovuti essere rappresentati come una **presa TO**, però l'eccezione è stata voluta per rimarcare che sono dispostivi analoghi a **switch di accesso (AS)**, data l'elevata capacità di traffico che ciascuno è in grado di generare (**superiore al Gbps** nei modelli più recenti). Motivo per cui, nello schema, sono stati collegati a **switch di distribuzione** (con dorsali a 10 Gbps) invece che a scwitch di accesso (con dorsali a 1 Gbps). In realtà, senza infrangere la regola, basterebbe considerare le **prese TO degli AP** com **prese speciali** con **etichette diverse** ed, eventualmente, anche con un **simbolo diverso**.
 
 ## **Tabella delle dorsali** 
 
