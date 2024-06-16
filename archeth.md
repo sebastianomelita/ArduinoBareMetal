@@ -225,6 +225,8 @@ Per il personale che si occupa della **ordinaria manutenzione** della rete è un
 - Il **trouble shooting** in caso di guasti
 - Determinare la **posizione** dei dispositivi **attivi** nella struttura dell’impianto, in quanto l'insieme di **subnetting fisico** e di **cablaggio strutturato** permette di  determinare la **posizione fisica** di un dispositivo guasto (nell’edificio e dentro gli armadi) una volta **noto** il suo **indirizzo IP**. 
 
+### **Scelta dei documenti da compilare**
+
 Non tutti i documenti sono necessari per la **definizione** di un **nuovo progetto**:
 - **servono tutti** se si progetta il **cablaggio strutturato** di un **edificio** o di un **campus** e se si è direttamente responsabili della acquisizione, gestione e manutenzione delle macchine installate.
 - serve essenzialmente solo lo **schema degli apparati attivi** se si progetta una rete in **ambito cloud** dove la maggior parte dei sistemi sono in pratica **virtualizzati** e gestiti **da remoto** secondo il modello cloud [IasS](https://cloud.google.com/learn/what-is-iaas?hl=it)
