@@ -73,7 +73,7 @@ La numerazione deve essere **non ambigua** in modo da guidare l'elettricista nel
 - Se le prese **sono parecchie** basta indicare le **direzioni della progressione** della numerazione avendo cura di renderla intellegibile numerando almeno la riga (o la colonna) **iniziale** e la riga (o la colonna) **finale**.
 - le **direzioni** andrebbero mantenute per chiarezza **costanti** scegliendo, ad esempio, quella **dall'alto in basso** e da **sinistra a destra**.
 - se ci sono **più stanze uguali**, dato che la numerazione è gerarchica, basta modificare solo la numerazione delll'armadio di piano che la serve. La numerazione dei TO deve cominciare con un punto per far capire che bisogna completarla col prefisso degli armadi
-- l'**armadio di pian**o ha per prefisso la numerazione dell'armadio di edificio a cui è collegato a stella
+- l'**armadio di piano** ha per prefisso la numerazione dell'armadio di edificio a cui è collegato a stella
 - l'**armadio di edificio** non ha bisogno di numerazione dato che l'armadio di comprensorio (campus) è unico per tutto l'impianto
 - una **legenda dei TO** mostra a **chi consulta** il **significato** delle **varie sezion**i della **numerazione gerarchica** di un **TO**
 
