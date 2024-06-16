@@ -209,7 +209,7 @@ Tendenzialmente, per risparmiare filo, vale la regola che gli armadi devono esse
 
 ## **Documentazione**
 
-Consiste in:
+Consiste nell'**ordine**:
 1. Planimetria senza cablaggio
 2. [Planimetria con cablaggio](planimetriacon.md)
 3. [Albero degli apparati passivi](dorsaliarmadi.md#albero-degli-apparati-passivi)
@@ -236,6 +236,15 @@ Non tutti i documenti sono necessari per la **definizione** di un **nuovo proget
 - servono essenzialmente **planimetria** e **schema degli apparati attivi** in ambito indoor o outdoor **Zigbee** se non è richiesto di definire il resto della rete ma, anche in questo caso, vanno definiti con precisione la **posizione** dei vari **gateway** verso la rete pubblica (Internet) o privata (LAN) di distribuzione.
 - servono essenzialmente solo la **planimetria** e un **blando schema** degli **apparati attivi** in ambito indoor o outdoor **BLE con beacon fissi** se non è richiesto di definire il resto della rete ma, anche in questo caso, vanno definiti con precisione la **posizione** dei vari **gateway** verso la rete pubblica (Internet) o privata (LAN) di distribuzione.
 - potrebbe servire grossomodo **definire tutto** nel caso di **reti BLE con listener** fissi dato che questi si configurano come veri e propri dispositivi di rete che vanno cablati assieme a tutto il resto. Una eccezione potrebbe essere realizzare l'infrastruttura in WIFi Mesh o modem LTE e allora potrebbero bastare **planimetrie** e **apparati attivi**.
+
+### **Coerenza tra documenti**
+
+Chiaramente i documenti di un cablaggio non sono scorrelati e, per di più, la definizione di alcuni è la base per la definizione dei successivi. L'**ordine** è essenzialmente quello proposto con maggiore o minore enfasi su una parte piuttosto che su un'altra. Aspetti importanti sono:
+- coerenza
+- completezza
+- assenza di ambiguità
+
+Se queste **proprietà mancassero** si potrebbero generare **inconsistenze** nella **documentazione** di parti dell'impianto che rimarrrebbe quindi **non utilizzabile** per la loro **progettazione**.
 
 ### **Conclusioni**
 
