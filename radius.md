@@ -8,7 +8,7 @@
 
 # **Autenticazione 802.1X** 
 
-L’autenticazione dell’utente e degli AP (Access Point) avviene tramite lo **scambio** di **credenziali di autenticazione**. Il protocollo più comune per lo **scambio** delle **credenziali wifi** è l’**EAP**, che scambia trame di livello 2 (derivate dal preesistente PPP) incapsulate:
+L’autenticazione dell’utente e degli AP (Access Point) avviene tramite lo **scambio** di **credenziali di autenticazione**. Il protocollo più comune per lo **scambio** delle **credenziali wifi** è l’**EAP**, che scambia trame di livello 2 (derivate dal preesistente PPP già in uso nelle reti di accesso cablate) incapsulate:
 - A **Livello 2** della pila ISO/OSI su trame di **livello pari**, cioè su trame **L2 MAC** realizzando il tunnel EAPoL (EAP Over LAN). Il **protocollo MAC**, in questo caso, viene utilizzato per trasportare le **credenziali EAP** (con username e password) nella **tratta iniziale**, quella che va dal dispositivo utente ad un **dispositivo di accesso** (NAS, inteso stavolta come Network Access Server) alla rete WiFi, tratta che è, **prima** dell'autenticazione, ancora **priva di indirizzo IP**.
 - A **Livello 7** della pila ISO/OSI su trame di livello 7 **RADIUS**. Il **protocollo Radius** adesso serve a trasportare le **credenziali utente EAP** nella **tratta successiva**, quella che va dall’autenticatore (l’AP) al server RADIUS, dove entrambi i dispositivi sono già **dotati di indirizzo IP**, essendo connessi alla rete LAN.
 
