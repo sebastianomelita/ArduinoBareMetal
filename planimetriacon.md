@@ -70,7 +70,7 @@ Nell’esempio:
 
 ## **Dispositivi che dovrebbero essere cablati con TO**
 
-Sicuramente andrebbero **posizionati** con precisione i **TO ** che servono **tutte le porte** in uso di dispositivi di **smistamente IS** (Intemediate Systems) quali:
+Sicuramente andrebbero **posizionati** con precisione i **TO** che servono **tutte le porte** in uso di dispositivi di **smistamente IS** (Intemediate Systems) quali:
 - router
 - switch
 - Hub wireless (AP)
