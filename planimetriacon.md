@@ -70,7 +70,7 @@ Nell’esempio:
 
 ## **Dispositivi che dovrebbero essere cablati con TO**
 
-Sicuramente andrebbero posizionati i **TO ** che servono **tutte le porte** in uso di dispositivi di **smistamente IS** (Intemediate Systems) quali:
+Sicuramente andrebbero **posizionati** con precisione i **TO ** che servono **tutte le porte** in uso di dispositivi di **smistamente IS** (Intemediate Systems) quali:
 - router
 - switch
 - Hub wireless (AP)
@@ -78,11 +78,11 @@ Sicuramente andrebbero posizionati i **TO ** che servono **tutte le porte** in u
 - firewall
 - network server LPWA (LoRaWAN)
 
-Ma vanno riportati anche i **TO * che servono **le porte** di dispositivi **terminali ES** (End Systems):
+Ma vanno **riportati** anche i **TO** che servono **le porte** di dispositivi **terminali ES** (End Systems):
 - server sia di **sistema** (DHCP, DNS, controller AP, DBMS e NAS condivisi dalle applicazioni) che di **business** (web server, server di microservizi, server applicativo)
-- client **utente fissi** (PC), **telefoni IP** fissi, **stampanti**, **listener BLE** per il tracciamento o la localizzazione, dispositivi di monitoraggio quali **sensori** o **attuatori** con collegamenti dati cablati, disposritivi di sorveglianza quali **videocamere IP**
+- client **utente fissi** (PC), **telefoni IP** fissi, **stampanti**, **listener BLE** per il tracciamento o la localizzazione, dispositivi di monitoraggio quali **sensori** o **attuatori** con collegamenti dati cablati, dispositivi di sorveglianza quali **videocamere IP**
 
-
+Importante è anche la l'**etichettatura** dei TO che dovrebbe essere **chiara**, magari anche grazie ad  una **legenda**, e categorizzata magari scegliendo una **numerazione gerarchica** in cui il numero del TO si può ripetere a patto che sia distinto da un diverso **prefisso** di categoria (in genere il numero dell'**armadio** da cui diramano i** collegamenti** dei TO).
 
 - >[Torna a reti ethernet](archeth.md#documentazione)
 
