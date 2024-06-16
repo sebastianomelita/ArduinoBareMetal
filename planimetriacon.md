@@ -7,7 +7,7 @@
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 
-### **Planimetria con cablaggio**
+# **Planimetria con cablaggio**
 
 Nella planimetria vanno riportate con precisione:
 - Le **dimensioni lineari** (lunghezza, larghezza e altezza) degli ambienti. Per l’altezza si può considerare quella standard (3m).
@@ -20,7 +20,7 @@ Nella planimetria vanno riportate con precisione:
 - I **prefissi** strettamente necessari sono: quelli di **FD** e quelli di **BD**. Il prefisso del CD è non necessario essendo unico.
 - Valgono i **vincoli** stabiliti dallo **standard** riguardo a numero di postazioni, armadi e lunghezza dei cavi.
 
-### **Vincoli del cablaggio**
+## **Vincoli del cablaggio**
 
 Nella definizione quantitativa dei componenti si deve tenere conto dei seguenti vincoli obbligatori previsti dallo standard:
 - Una **postazione** ogni 10m2 (se non diversamente richiesto dal cliente)
@@ -31,7 +31,7 @@ Nella definizione quantitativa dei componenti si deve tenere conto dei seguenti 
 - **Lunghezza massima** del cablaggio di **campus** di 1500m
 - **Posizione baricentrica** degli armadi (rispetto alle prese o ad altri armadi)
 
-### **Linee guida del cablaggio in planimetria**
+## **Linee guida del cablaggio in planimetria**
 
 Nella progettazione è raccomandabile seguire alcune linee guida:
 - Stabilire se il progetto riguarda un edificio già esistente o da costruire ex novo 
@@ -41,7 +41,7 @@ Nella progettazione è raccomandabile seguire alcune linee guida:
 - Utilizzare senza remora una dorsale in fibra ottica per distanze prossime o superiori ai 100m (minori interferenze, minori attenuazioni, massimizzazione della banda). Non esistono soluzioni ideali. 
 - Ogni scelta è frutto di un compromesso tra esperienza, costo e disponibilità del materiale, costo e facilità della posa.
 
-### **Disposizione degli armadi**
+## **Disposizione degli armadi**
 
 Non sempre esiste un unico armadio BD (di secondo livello) per edificio, come non sempre esiste un unico armadio FD di terzo livello per ciascun piano:
 - In un piano potrebbero esserci più armadi di terzo livello FD ed uno di secondo BD (piano assimilabile ad un edificio).
@@ -59,7 +59,7 @@ Nell’esempio:
 - Al piano terra vi è un BD0 che fa anche da FD0.1 concentrando su di se dei TO
 - Il resto degli armadi fa soltando da FD perché da essi si diramano soltanto dorsali di piano (in blu) e nessuna dorsale di edificio (di secondo livello) verso altri armadi FD
 
-### **Topologia cavi vs topologia canalizzazioni**
+## **Topologia cavi vs topologia canalizzazioni**
 
 - La topologia dei cavi UTP è sempre a stella nelle reti di ufficio e domestiche. Nella reti industriali e ferrotranviarie è possibile anche quella a BUS.
 - La topologia delle canalizzazioni è, invece:
@@ -67,6 +67,10 @@ Nell’esempio:
     - A stella se realizzata sotto il pavimento (oppure in un controsoffitto) lungo percorsi comuni a più stanze. Talvolta si ha l’opportunità di realizzare i cavidotti a stella (mediante corrugati) prima di gettare il calcestruzzo del pavimento in fase di costruzione (o in fase di ristrutturazione) dell’edificio.
 - All’interno di una canalizzazione normalmente vi sono più cavi UTP, uno per ogni presa TO servita da quella canalizzazione.
 - Le canalizzazioni vanno etichettate e la loro molteplicità massima, cioè il numero massimo di cavi che conterranno lungo tutta la loro estensione, che va stabilita in fase di progetto insieme ad una stima di massima della loro lunghezza.
+
+## **Dispositivi che dovrebbero essere cablati con TO**
+
+
 
 - >[Torna a reti ethernet](archeth.md#documentazione)
 
