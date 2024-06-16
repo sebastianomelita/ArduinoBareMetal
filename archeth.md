@@ -10,6 +10,8 @@ Servizi:
 - [Firewall](firewall.md).
 - [Backup](backup.md).
 - [Autenticazione 802.1X](radius.md)
+- [DNS]([radius.md](https://it.wikipedia.org/wiki/Domain_Name_System))
+- [DHCP]([radius.md](https://it.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol))
 
 ## **Caso d'uso LAN Ethernet** 
 
