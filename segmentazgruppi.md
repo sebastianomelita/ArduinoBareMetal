@@ -144,7 +144,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
 - Porte di uno stesso switch possono appartenere a gruppi di macchine diverse, sia F1 che F2
 - è necessaria la colorazione delle porte per distinguere i gruppi
 - Sul router ogni link virtuale genera una subnet che si mappa 1:1 su una sottostante LAN logica (VLAN)
-- il **filtraggio** è realizzato direttamente a **sullo switch** a livello di linea L2 dall'impostazione ```allowed vlan 10, 20``` sulla porta di trunk che filtra le trame della vlan 30. Ciò è stato reso possibile perchè per alcune vlan è stato possibile dividere lo spazio in zone di competenza esclusiva servite da dorsali diverse. In sostanza, quando le vlan da isolare sono anche isolate fisicamente allora, in questo caso, basta **filtrare** sul **trunk** di una zona le **vlan dell'altra** e **viceversa** con il comando **allowed**. 
+- il **filtraggio** è realizzato direttamente **sullo switch** a livello di linea L2 dall'impostazione ```allowed vlan 10, 20``` sulla porta di trunk che filtra le trame della vlan 30. Ciò è stato reso possibile perchè per alcune vlan è stato possibile dividere lo spazio in zone di competenza esclusiva servite da dorsali diverse. In sostanza, quando le vlan da isolare sono anche isolate fisicamente allora, in questo caso, basta **filtrare** sul **trunk** di una zona le **vlan dell'altra** e **viceversa** con il comando **allowed**. 
 - più **in generale**, sopratutto quando non è possibile isolare nello spazio le vlan da isolare con il traffico, allora l'isolamento può essere realizzato sul router con una **ACL estesa**:
 
 <table>
