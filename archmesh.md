@@ -6,6 +6,12 @@
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
+Servizi:
+- [Firewall](firewall.md).
+- [Backup](backup.md).
+- [Autenticazione 802.1X](radius.md)
+- [DNS](https://it.wikipedia.org/wiki/Domain_Name_System)
+- [DHCP](https://it.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol)
 
 
 ## **Caso d'uso rete wiFi Mesh**
