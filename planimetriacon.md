@@ -68,6 +68,9 @@ Nell’esempio:
 - All’interno di una canalizzazione normalmente vi sono più cavi UTP, uno per ogni presa TO servita da quella canalizzazione.
 - Le canalizzazioni vanno etichettate e la loro molteplicità massima, cioè il numero massimo di cavi che conterranno lungo tutta la loro estensione, che va stabilita in fase di progetto insieme ad una stima di massima della loro lunghezza.
 
+## **Numerazione TO**
+<img src="imgplanitest.png" alt="alt text" width="900">
+
 ## **Dispositivi che dovrebbero essere cablati con TO**
 
 Sicuramente andrebbero **posizionati** con precisione i **TO** che servono **tutte le porte** in uso di dispositivi di **smistamente IS** (Intemediate Systems) cablati quali:
