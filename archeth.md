@@ -217,14 +217,21 @@ Consiste in:
 5. [Albero degli apparati attivi](albapparatiattivi.md)
 6. [Schema degli armadi](dorsaliarmadi.md#schema-degli-armadi)
 
-Lo scopo è realizzare un guida univoca (priva di ambiguità) per il personale installatore per definire:
-- posa dei cavi affinchè si possa stabilire nel dettaglio posizione di armadi e prese TO e percorsi delle canalizzazioni all’interno dell’edificio
-- Acquisizione di qualità e quantità dei materiali coinvolti
+Lo scopo è realizzare un **guida univoca** (priva di ambiguità) per il personale **installatore** per definire:
+- **posa dei cavi** affinchè si possa stabilire nel dettaglio **posizione** di **armadi** e **prese TO** e **percorsi delle canalizzazioni** all’interno dell’edificio
+- Acquisizione di **qualità** e **quantità** dei materiali coinvolti in **fase di progettazzione** di un impianto
 
-Per il personale che si occupa della ordinaria manutenzione della rete è una guida per:
-- Il trouble shooting in caso di guasti
-- Determinare l’allocazione dei dispositivi attivi nella struttura dell’impianto in quanto vengono definiti la loro posizione (nell’edificio e dentro gli armadi), la loro architettura di collegamento e i loro indirizzi IP 
+Per il personale che si occupa della **ordinaria manutenzione** della rete è una guida per:
+- Il **trouble shooting** in caso di guasti
+- Determinare la **posizione** dei dispositivi **attivi** nella struttura dell’impianto, in quanto l'insieme di **subnetting fisico** e di **cablaggio strutturato** permette di  determinare la **posizione fisica** di un dispositivo guasto (nell’edificio e dentro gli armadi) una volta **noto** il suo **indirizzo IP**. 
 
+Non tutti i documenti sono necessari per la **definizione** di un **nuovo progetto**:
+- **servono tutti** se si progetta il **cablaggio strutturato** di un **edificio** o di un **campus** e se si è direttamente responsabili della acquisizione, gestione e manutenzione delle macchine installate.
+- serve essenzialmente solo lo **schema degli apparati attivi** se si progetta una rete in **ambito cloud** dove la maggior parte dei sistemi sono in pratica **virtualizzati** e gestiti **da remoto** secondo il modello cloud [IasS](https://cloud.google.com/learn/what-is-iaas?hl=it)
+- servono essenzialmente **planimetria** e **schema degli apparati attivi** in contesti di **reti WiFi Mesh** o di **reti LPWA** o di reti dove però, è sempre importante definire con precisione la **posizione** dei vari **gateway** verso la rete pubblica (Internet) o privata (LAN) di distribuzione.
+- servono essenzialmente **planimetria** e **schema degli apparati attivi** in ambito indoor o outdoor **Zigbee** se non è richiesto di definire il resto della rete ma, anche in questo caso, vanno definiti con precisione la **posizione** dei vari **gateway** verso la rete pubblica (Internet) o privata (LAN) di distribuzione.
+- servono essenzialmente solo la **planimetria** in ambito indoor o outdoor **BLE con beacon fissi** se non è richiesto di definire il resto della rete ma, anche in questo caso, vanno definiti con precisione la **posizione** dei vari **gateway** verso la rete pubblica (Internet) o privata (LAN) di distribuzione.
+- potrebbe servire grossomodo definire tutto nel caso di **reti BLE con listener** fissi dato che questi si configurano come veri e propri dispositivi di rete che vanno cablati assieme a tutto il resto. Una eccezione potrebbe sessere realizzare l'infrastruttura in WIFi Mesh o modem LTE e allora potrebbero bastare **planimetrie** e **apparati attivi**.
 
 ## **Planimetria** 
 
@@ -313,5 +320,6 @@ Un esempio di **canale MQTT di configurazione** per, ad esempio, impostare il pe
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 ### **Sitografia**:
+- https://cloud.google.com/learn/what-is-iaas?hl=it
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
