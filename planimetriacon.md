@@ -69,7 +69,7 @@ Nell’esempio:
 - Le canalizzazioni vanno etichettate e la loro molteplicità massima, cioè il numero massimo di cavi che conterranno lungo tutta la loro estensione, che va stabilita in fase di progetto insieme ad una stima di massima della loro lunghezza.
 
 ## **Numerazione TO**
-<img src="img/planitest.png" alt="alt text" width="900">
+<img src="img/planitest.png" alt="alt text" width="1100">
 
 ## **Dispositivi che dovrebbero essere cablati con TO**
 
