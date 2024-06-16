@@ -199,7 +199,7 @@ E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **
     - analisi dei dati per la realizzazione di studi scientifici
     - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
 
-  ## **Server di rete**
+## **Server di rete**
 
 Il **network server** è comune in alcune tipologie di **reti wireless** LPWA ed è una componente di **back-end** responsabile dello **smistamento** finale verso gli utenti (routing applicativo) dei dati provenienti dai vari **gateway** configurandosi, quindi, come il **centro stella logico** di una  stella di gateway. Lo **schema logico** di una rete di sensori LPWA basata su **network server** quindi appare:
 
