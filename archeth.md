@@ -244,7 +244,7 @@ Chiaramente i documenti di un cablaggio non sono scorrelati e, per di più, la d
 - completezza
 - assenza di ambiguità
 
-Se queste **proprietà dovessero mancare** si potrebbero generare **inconsistenze** nella **documentazione** di parti dell'impianto che rimarrrebbe quindi **non utilizzabile** per la loro **progettazione**.
+Se queste **proprietà dovessero mancare** si potrebbero generare **inconsistenze** nella **documentazione** di parti dell'impianto che rimarrebbe quindi **non utilizzabile** per la **progettazione** di quelle parti.
 
 ### **Conclusioni**
 
