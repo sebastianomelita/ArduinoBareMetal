@@ -69,6 +69,13 @@ Nell’esempio:
 - Le canalizzazioni vanno etichettate e la loro molteplicità massima, cioè il numero massimo di cavi che conterranno lungo tutta la loro estensione, che va stabilita in fase di progetto insieme ad una stima di massima della loro lunghezza.
 
 ## **Numerazione TO**
+La numerazione deve essere **non ambigua** in modo da guidare l'elettricista nella corretta disposizione delle prese e nella loro etichettatura sia sul campo che nelle corrispondenti prese sui patch panel dentro gli armadi.
+- Se le prese sono tante basta indicare le **direzioni della progressione** della numerazione avendo cura di renderla intellegibile numerando almeno la riga (o la colonna) **iniziale** e la riga (o la colonna) **finale**.
+- le direzioni andrebbero mantenute per chiarezza costanti scegliendo, ad esempio, quella dall'alto in basso e da sinisyra a destra
+- se ci sono più stanze, dato che la numerazione è gerarchica, basta modificare solo la numerazione delll'armadio di piano che la serve. La numerazione dei TO deve cominciare con un punto per far capire che bisogna completarla col prefisso degli armadi
+- l'armadio di piano ha per prefisso la numerazione dell'armadio di edificio a cui è collegato a stella
+- l'armadio di edificio non ha bisogno di numerazione dato che l'armadio di comprensorio (campus) è unico per tutto l'impianto
+
 <img src="img/planitest.png" alt="alt text" width="1100">
 
 ## **Dispositivi che dovrebbero essere cablati con TO**
