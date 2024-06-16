@@ -224,8 +224,8 @@ Lo scopo è realizzare un **guida univoca** (priva di ambiguità) per il persona
 - Acquisizione di **qualità** e **quantità** dei materiali coinvolti in **fase di progettazzione** di un impianto
 
 Per il personale che si occupa della **ordinaria manutenzione** della rete è una guida per:
-- Il **trouble shooting** in caso di guasti
-- Determinare la **posizione** dei dispositivi **attivi** nella struttura dell’impianto, in quanto l'insieme di **subnetting fisico** e di **cablaggio strutturato** permette di  determinare la **posizione fisica** di un dispositivo guasto (nell’edificio e dentro gli armadi) una volta **noto** il suo **indirizzo IP**. 
+- Determinare l’allocazione dei dispositivi attivi nella struttura dell’impianto in quanto vengono definiti la loro posizione (nell’edificio e dentro gli armadi), la loro architettura di collegamento e i loro indirizzi IP 
+- Il **trouble shooting** in caso di guasti, in quanto l'insieme di **subnetting fisico** e di **cablaggio strutturato** permette di  determinare la **posizione fisica** di un dispositivo guasto (nell’edificio e dentro gli armadi) una volta **noto** il suo **indirizzo IP**. 
 
 ### **Scelta dei documenti da compilare**
 
