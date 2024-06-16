@@ -77,6 +77,8 @@ Per il dettaglio sulla realizzazione dei backup vedi [Backup](backup.md).
 
 Per il dettaglio sulla realizzazione del firmware vedi [Firmware](sensorfw.md).
 
+Per il dettaglio sulla realizzazione dell'autenticazione 802.1X vedi [Autenticazione 802.1X](radius.md)
+
 
 ##  **Canali di comunicazione principali in una rete di sensori**
 
