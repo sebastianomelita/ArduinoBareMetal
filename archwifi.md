@@ -6,6 +6,14 @@
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
+Servizi:
+- [Firewall](firewall.md).
+- [Backup](backup.md).
+- [Autenticazione 802.1X](radius.md)
+- [DNS](https://it.wikipedia.org/wiki/Domain_Name_System)
+- [DHCP](https://it.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol)
+
+
 ## **Caso d'uso WiFi infrastruttura** 
 
 Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiFi di **tipo infrastruttura** sono quelli tipici applicazioni **IoT indoor** a **medio raggio**, dove concorre con altre tecnologie di rete: Zigbee, BLE e, sotto certe condizioni, LoRaWAN. **Caratteristiche** della rete WiFi di **tipo infrastruttura** sono essenzialmente:
