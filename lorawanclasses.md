@@ -88,6 +88,33 @@ Il **gateway All-In-One** potrebbe essere un dispositivo con **doppia interfacci
      - Interazioni di tipo PUSH o PULL
      - Paradigma Request/Response (HTTPS, COAP), Publish/Subscriber (MQTT) oppure canale persistente bidirezionale (BSD socket o WebSocket)
 
+## **Sensore**
+
+### Fasi Principali del Firmware di un Sensore che Utilizza MQTT
+
+1. **Inizializzazione dei Parametri di Connessione**
+   - Configurare i parametri del broker MQTT (indirizzo, porta, username, password).
+   - Configurare il pin del sensore di temperatura e l'intervallo di lettura.
+
+2. **Connessione al Broker MQTT**
+   - Stabilire la connessione con il broker MQTT utilizzando i parametri configurati.
+
+3. **Inizializzazione del Sensore di Temperatura**
+   - Configurare il pin del sensore per la lettura della temperatura.
+
+4. **Ciclo Principale**
+   - Ottenere il tempo corrente.
+   - Leggere il valore della temperatura dal sensore.
+   - Creare un messaggio con il valore della temperatura.
+   - Inviare il messaggio al broker MQTT se è trascorso l'intervallo prefissato.
+   - Aggiornare il timestamp dell'ultima lettura inviata.
+
+5. **Attesa Prima della Prossima Iterazione**
+   - Attendere un breve periodo (ad esempio, 1 secondo) prima di ripetere il ciclo.
+
+Per il dettaglio sulla realizzazione del firmware vedi [Firmware](sensorlora.md).
+
+
 ## **Broker MQTT** 
 
 Il **broker MQTT** è solo una delle tante soluzioni possibili per realizzare un **canale multicast** di livello **applicativo** tramite cui un utente col ruolo di **publisher** è in grado di notificare una **replica** dello stesso messaggio a più **subscribers**. E' utile per:
@@ -123,25 +150,6 @@ Il **vantaggio** del **broker MQTT** è quello di poter gestire in modo semplice
 
 Esistono molte altre soluzioni che magari sono più semplici e graficamente accattivanti ma che passano per portali proprietari o per servizi cloud a pagamento e nulla aggiungono di didatticamente rilevante ai nostri discorsi. Normalmente sono basate su webservices realizzati con protocolli Request/Response quali **HTTPS** e **COAP**.
 
-## **Server di gestione** 
-
-
-E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **subscriber** per:
-- realizzazione delle **interfacce web** per la gestione e la visualizzazione dei dati dei dispositivi e delle applicazioni agli utenti.
-- elaborazioni a **breve termine** quali la generazione di **statistiche** per la determinazione di **soglie** o **predizioni** per:
-    - realizzazione da remoto della **logica di comando** (processo dei comandi) degli **attuatori**
-    - **report** per l'assistenza alle decisioni
-    - generazioni di **allarmi**
-    - realizzazione di **ottimizzazioni** della gestione o del consumo di risorse, energia o materie prime
-    - contabilizzazione dei consumi (**smart metering**)
-    - controllo e sorveglianza in tempo reale dello **stato** di impianti o macchinari
-    - segnalazione dei **guasti** o loro **analisi predittiva** prima che accadano
-    - **consapevolezza situazionale** di ambienti remoti, difficili, pericolosi o ostili (https://it.wikipedia.org/wiki/Situational_awareness)
-- elaborazioni a **lungo termine** quali:
-    - analisi dei dati per la realizzazione di studi scientifici
-    - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
-
-
 ## **Funzioni di una rete LoRaWAN**
 
 Le **funzioni** dell'architettura **LoRaWAN** possono essere distinte su **3 dispositivi diversi** oppure coincidere in un **unico dispositivo** che le ingloba tutte:
@@ -173,34 +181,25 @@ In realtà, il **server** genera, automaticamente e in maniera trasparente all'u
 - **AppSKey**: utilizzata dal **protocollo** LoRaWAN per cifrare e decifrare il payload delle applicazioni. Viene utilizzato per garantire la **privatezza** (confidenzialità) dei messaggi. Il messaggio è **cifrato** dal dispositivo IoT e può essere **decifrato** sia dal **Network Server** che, nella variante End To End, direttamente dal **Server Applicativo**.
 - **NwkSKey**: utilizzata dal **protocollo** LoRaWAN in ingresso all'algoritmo AES-CMAC (Cipher-based Message Authentication Code), un HMAC con chiave con il quale viene generato un **hash del frame** da trasmettere, detto **MIC**. Il **trasmettitore** allega il MIC al messaggio e lo invia al **ricevitore** che estrae il MIC e lo **mette da parte** mentre ricalcola una **copia locale** del MIC utilizzando la **stessa chiave** usata in trasmissione. Se i due MIC, quello ricevuto e  quello locale,  **coincidono** allora vengono provati contemporaneamente sia l'**integrità** del messaggio che l'**autenticazione** del mittente.
 
-  
-## **Sensore**
+## **Server di gestione** 
 
-### Fasi Principali del Firmware di un Sensore che Utilizza MQTT
 
-1. **Inizializzazione dei Parametri di Connessione**
-   - Configurare i parametri del broker MQTT (indirizzo, porta, username, password).
-   - Configurare il pin del sensore di temperatura e l'intervallo di lettura.
+E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **subscriber** per:
+- realizzazione delle **interfacce web** per la gestione e la visualizzazione dei dati dei dispositivi e delle applicazioni agli utenti.
+- elaborazioni a **breve termine** quali la generazione di **statistiche** per la determinazione di **soglie** o **predizioni** per:
+    - realizzazione da remoto della **logica di comando** (processo dei comandi) degli **attuatori**
+    - **report** per l'assistenza alle decisioni
+    - generazioni di **allarmi**
+    - realizzazione di **ottimizzazioni** della gestione o del consumo di risorse, energia o materie prime
+    - contabilizzazione dei consumi (**smart metering**)
+    - controllo e sorveglianza in tempo reale dello **stato** di impianti o macchinari
+    - segnalazione dei **guasti** o loro **analisi predittiva** prima che accadano
+    - **consapevolezza situazionale** di ambienti remoti, difficili, pericolosi o ostili (https://it.wikipedia.org/wiki/Situational_awareness)
+- elaborazioni a **lungo termine** quali:
+    - analisi dei dati per la realizzazione di studi scientifici
+    - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
 
-2. **Connessione al Broker MQTT**
-   - Stabilire la connessione con il broker MQTT utilizzando i parametri configurati.
-
-3. **Inizializzazione del Sensore di Temperatura**
-   - Configurare il pin del sensore per la lettura della temperatura.
-
-4. **Ciclo Principale**
-   - Ottenere il tempo corrente.
-   - Leggere il valore della temperatura dal sensore.
-   - Creare un messaggio con il valore della temperatura.
-   - Inviare il messaggio al broker MQTT se è trascorso l'intervallo prefissato.
-   - Aggiornare il timestamp dell'ultima lettura inviata.
-
-5. **Attesa Prima della Prossima Iterazione**
-   - Attendere un breve periodo (ad esempio, 1 secondo) prima di ripetere il ciclo.
-
-Per il dettaglio sulla realizzazione del firmware vedi [Firmware](sensorlora.md).
-
-## **Server di rete**
+  ## **Server di rete**
 
 Il **network server** è comune in alcune tipologie di **reti wireless** LPWA ed è una componente di **back-end** responsabile dello **smistamento** finale verso gli utenti (routing applicativo) dei dati provenienti dai vari **gateway** configurandosi, quindi, come il **centro stella logico** di una  stella di gateway. Lo **schema logico** di una rete di sensori LPWA basata su **network server** quindi appare:
 
