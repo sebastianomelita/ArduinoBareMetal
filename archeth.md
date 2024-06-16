@@ -239,7 +239,7 @@ Non tutti i documenti sono necessari per la **definizione** di un **nuovo proget
 
 ### **Coerenza tra documenti**
 
-Chiaramente i documenti di un cablaggio non sono scorrelati e, per di più, la definizione di alcuni è la base per la definizione dei successivi. L'**ordine** è essenzialmente quello proposto con maggiore o minore enfasi su una parte piuttosto che su un'altra. Aspetti importanti sono:
+Chiaramente i documenti di un cablaggio non sono scorrelati e, per di più, la definizione di alcuni è la base per la definizione dei successivi. L'**ordine** è essenzialmente quello proposto, con maggiore o minore enfasi su una parte piuttosto che su un'altra. Aspetti importanti sono:
 - coerenza
 - completezza
 - assenza di ambiguità
