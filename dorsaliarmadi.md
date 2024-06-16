@@ -22,6 +22,8 @@
 
 <img src="img/passivi.png" alt="alt text" width="1000">
 
+Nello schema sopra sono stati riportati gli **A**P che sono **apparati attivi**. Formalmente sarebbe un **errore** dato che sarebbero dovuti essere rappresentati come una **presa TO**, però l'eccezione è stata voluta per rimarcare che sono dispostivi analoghi a **switch di accesso (AS)**, data l'elevata capacità di traffico che ciascuno è in grado di generare (**superiore al Gbps** nei modelli più recenti). Motivo per cui, nello schema, sono stati collegati a **switch di distribuzione** (con dorsali a 10 Gbps) invece che a scwitch di accesso (con dorsali a 1 Gbps).
+
 ## **Tabella delle dorsali** 
 
 Serve stabilire qualità e quantità dei cavi permanenti (installati nell’edificio) impiegati nel cablaggio. Viene redatto subito dopo la planimetria e fornisce un quadro sinottico immediato di tutte le dorsali che è molto utile quando l'impianto è composto da parecchie dorsali.
