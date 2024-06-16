@@ -70,6 +70,18 @@ Nell’esempio:
 
 ## **Dispositivi che dovrebbero essere cablati con TO**
 
+Sicuramente andrebbero posizionati i **TO ** che servono **tutte le porte** in uso di dispositivi di **smistamente IS** (Intemediate Systems) quali:
+- router
+- switch
+- Hub wireless (AP)
+- gateway tra rete di sensori e rete di distribuzione
+- firewall
+- network server LPWA (LoRaWAN)
+
+Ma vanno riportati anche i **TO * che servono **le porte** di dispositivi **terminali ES** (End Systems):
+- server sia di **sistema** (DHCP, DNS, controller AP, DBMS e NAS condivisi dalle applicazioni) che di **business** (web server, server di microservizi, server applicativo)
+- client **utente fissi** (PC), **telefoni IP** fissi, **stampanti**, **listener BLE** per il tracciamento o la localizzazione, dispositivi di monitoraggio quali **sensori** o **attuatori** con collegamenti dati cablati, disposritivi di sorveglianza quali **videocamere IP**
+
 
 
 - >[Torna a reti ethernet](archeth.md#documentazione)
