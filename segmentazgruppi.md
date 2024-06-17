@@ -91,7 +91,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
 - Subnet mappate su LAN logiche
 - Subnets delocalizzate che comprendono gruppi di host separati in base alla funzione o al servizio
 
-<img src="img/albero3.png" alt="alt text" width="1000">
+<img src="img/separazserviziopng.png" alt="alt text" width="1000">
 
 - Porte di uno stesso switch possono appartenere a gruppi di macchine diverse, sia F1 che F2
 - è necessaria la colorazione delle porte per distinguere i gruppi
