@@ -7,6 +7,7 @@
 - [Dettaglio architettura LoraWAN](lorawanclasses.md)
 
 Servizi:
+- [VPN di reti Ethernet](ethvpn.md).
 - [Firewall](firewall.md).
 - [Backup](backup.md).
 - [Autenticazione 802.1X](radius.md)
