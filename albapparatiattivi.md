@@ -146,6 +146,10 @@ Di seguito è riportato un esempio che le riassume tutte:
  - .
   <img src="img/interfacce.png" alt="alt text" width="900">
 
+### **Subnetting classful veloce**
+
+
+
 Per esempi di **topologie di apparati attivi** e per il **dettaglio sulla segmentazione** della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
 
 
