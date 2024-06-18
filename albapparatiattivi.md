@@ -120,7 +120,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
      - Persone nello stesso luogo che devono essere selezionate per confluire in dipartimenti separati (separare logicamente host fisicamente collegati)
      - 
  
-  <img src="img/interfacce.png" alt="alt text" width="700">
+  <img src="img/interfacce.png" alt="alt text" width="800">
 
 Per esempi di **topologie di apparati attivi** e per il **dettaglio sulla segmentazione** della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
 
