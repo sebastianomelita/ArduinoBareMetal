@@ -150,7 +150,8 @@ Di seguito è riportato un esempio che le riassume tutte:
 
 <table>
 <tr><td> Ind. subnet </td><td> Broadcast </td><td> Ind. gateway </td><td> Range host </td><td> Range dhcp </td></tr>
-<tr><td> 
+<tr>
+<td> 
   S1
 </td>
 <td>
@@ -159,8 +160,10 @@ Di seguito è riportato un esempio che le riassume tutte:
 <td>
 10.0.0.0/24
 </td>
+<td> 
 10.0.0.0/24
 </td>
+<td> 
 10.0.0.0/24
 </td>
 </tr>
