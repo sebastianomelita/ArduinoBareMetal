@@ -148,6 +148,30 @@ Di seguito è riportato un esempio che le riassume tutte:
 
 ### **Subnetting classful veloce subnet**
 
+Processo:
+- decidere **quanti** indirizzi servono:
+    - **pochi**: scegliere taglio classful /24
+    - **molti**: scegliere taglio classful /16
+- identificare le **subnet**:
+    - sono **tante** quanti sono i **link** dei vari router
+    - ogni **link diretto** a comune tra **due router** si conta **una sola volta**
+    - ogni **link indiretto** tra **due router** diversi e mediato da uno **switch** di transito, si conta **una sola volta**
+- per le subnet calcolare:
+    - **VLAN ID** della vlan x (se previste le VLAN)
+    - **ISx**: indirizzo base della subnet x
+    - **SMx**: subnet mask della subnet x. E’ collegato a NSx (numero di indirizzi della sub. X), in niotazione decimale o in notazione CIDR dopo ISx
+    - **BCx**: indirizzo di broadcast della subnet x
+    - **GWx**: indirizzo di gateway della subnet 
+    - **RNGx**: intervallo tra il primo indirizzo e l’ultimo indirizzo assegnabile ai client della subnet x
+    - **DHCPx**: intervallo tra il primo indirizzo e l’ultimo indirizzo assegnabile ai client della subnet x mediante protocollo DHCP
+- per le dorsali calcolare:
+    - **VLAN ID** della vlan x (se previste le VLAN)
+    - **ISx**: indirizzo base della subnet x
+    - **SMx**: subnet mask della subnet x. E’ collegato a NSx (numero di indirizzi della sub. X), in niotazione decimale o in notazione CIDR dopo ISx
+    - **BCx**: indirizzo di broadcast della subnet x
+    - **Ra**: indirizzo del primo router del link
+    - **Rb**: indirizzo delsecondo router del link
+      
 <table>
 <tr><td> Ind. subnet </td><td> Broadcast </td><td> Ind. gateway </td><td> Range host </td><td> Range dhcp </td></tr>
 <tr>
