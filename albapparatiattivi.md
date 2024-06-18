@@ -172,9 +172,9 @@ Processo:
     - **Ra**: indirizzo del primo router del link
     - **Rb**: indirizzo del secondo router del link
 
-#### **Esempio di subnetting classful**
+#### **Esempio 1 di subnetting classful**
 
-Dati 4 router R0, R1, R2, R3 dove R0 è un centro stella degli altri tre. Inoltre ogni router ha una interfaccia ulteriore collegata ad una LAN creata da uno switch.
+Dati 4 router R0, R1, R2, R3 dove R0 è un centro stella degli altri tre. Inoltre ogni router ha una interfaccia ulteriore collegata ad una LAN creata da uno switch. Immaginare subnet con **pochi host**.
 
 ##### **Subnetting classful veloce gruppi di host**
 <table>
@@ -269,6 +269,105 @@ D3: 10.0.30.0/24
 BC1: 10.0.30.255
 R0: 10.0.30.1
 R3: 10.0.30.2
+```
+
+#### **Esempio 2 di subnetting classful**
+
+Dati 4 router R0, R1, R2, R3 dove R0 è un centro stella degli altri tre. Inoltre ogni router ha una interfaccia ulteriore collegata ad una LAN creata da uno switch. Immaginare subnet con **molti host**.
+
+##### **Subnetting classful veloce gruppi di host**
+<table>
+<tr><td> Ind. subnet </td><td> Broadcast </td><td> Ind. gateway </td><td> Range host </td><td> Range dhcp </td></tr>
+<tr>
+<td> 
+  S0
+</td>
+<td>
+10.0.255.255/24
+</td>
+<td>
+10.0.255.254/24
+</td>
+<td> 
+.0.0.1 - .0.255.253
+</td>
+<td> 
+.0.0.100 - .0.255.253
+</td>
+</tr>
+     
+<tr>
+<td> 
+  S1
+</td>
+<td>
+10.0.1.255/24
+</td>
+<td>
+10.0.1.254/24
+</td>
+<td> 
+.1.0.1 - .1.255.253
+</td>
+<td> 
+.1.0.100 - .1.255.253
+</td>
+</tr>
+
+<tr>
+<td> 
+  S2
+</td>
+<td>
+10.2.0.255/24
+</td>
+<td>
+10.2.0.254/24
+</td>
+<td> 
+.2.0.1 - .2.0.253
+</td>
+<td> 
+.2.0.100 - .2.0.253
+</td>
+</tr>
+
+<tr>
+<td> 
+  S3
+</td>
+<td>
+10.3.0.255/24
+</td>
+<td>
+10.3.0.254/24
+</td>
+<td> 
+.3.0.1 - .3.0.253
+</td>
+<td> 
+.3.0.100 - .3.255.253
+</td>
+</tr>
+</table>
+
+##### **Subnetting classful veloce dorsali**
+
+```C++     
+D1: 10.10.0.0/24
+BC1: 10.10.0.255
+R0: 10.10.0.1
+R1: 10.10.0.2
+
+D2: 10.20.0.0/24
+BC1: 10.20.0.255
+R0: 10.20.0.1
+R2: 10.20.0.2
+
+D3: 10.30.0.0/24
+BC1: 10.30.0.255
+R0: 10.30.0.1
+R3: 10.30.0.2
 ```
 
 Per esempi di **topologie di apparati attivi** e per il **dettaglio sulla segmentazione** della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
