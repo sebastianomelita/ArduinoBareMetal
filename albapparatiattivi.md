@@ -207,6 +207,22 @@ Di seguito è riportato un esempio che le riassume tutte:
 
 ### **Subnetting classful veloce dorsali**
 
+```C++     
+D1: 10.0.10.0/24
+BC1: 10.0.10.255
+R0: 10.0.10.1
+R1: 10.0.10.2
+
+D2: 10.0.20.0/24
+BC1: 10.0.20.255
+R0: 10.0.20.1
+R2: 10.0.20.2
+
+D3: 10.0.30.0/24
+BC1: 10.0.30.255
+R0: 10.0.30.1
+R3: 10.0.30.2
+```
 
 Per esempi di **topologie di apparati attivi** e per il **dettaglio sulla segmentazione** della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
 
