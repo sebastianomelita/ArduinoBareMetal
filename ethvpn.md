@@ -186,5 +186,8 @@ Sitografia:
 - https://support.industry.siemens.com/cs/attachments/109792357/109792357_OpenVPN_en.pdf
 - https://openmaniak.com/openvpn_bridging.php
 - https://www.cisco.com/c/it_it/support/docs/smb/switches/cisco-small-business-300-series-managed-switches/smb5653-configure-port-to-vlan-interface-settings-on-a-switch-throug.html
+- https://miro.medium.com/v2/resize:fit:1400/1*SHNEn-wqJPRxdYf2s_yapg.png
+- https://community.cisco.com/t5/networking-knowledge-base/how-to-configure-a-gre-tunnel/ta-p/3131970
+- https://lxd.me/a-simple-vpn-tunnel-with-tun-device-demo-and-some-basic-concepts
 
 
