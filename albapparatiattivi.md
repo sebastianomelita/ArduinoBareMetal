@@ -118,7 +118,22 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
 - Le VLAN invece organizzano i raggruppamenti solo in base alla **funzione** o al tipo di **servizio** (e non in base alla posizione nello spazio):
      - persone dello stesso dipartimento che sono dislocate su più sedi fisicamente separate (collegare logicamente host fisicamente separati)
      - Persone nello stesso luogo che devono essere selezionate per confluire in dipartimenti separati (separare logicamente host fisicamente collegati)
-     - 
+
+### **Convenzioni di Nominazione delle Interfacce Cisco**
+
+Convenzioni di nominazione delle interfacce **estese**
+- **Ethernet**: Ethernet0, Ethernet1, ecc.
+- **Fast Ethernet**: FastEthernet0/0, FastEthernet0/1, ecc.
+- **Gigabit Ethernet**: GigabitEthernet0/0, GigabitEthernet0/1, ecc.
+- **Serial**: Serial0/0, Serial0/1, ecc.
+- **Tunnel**: Tunnel0, Tunnel1, ecc.
+
+Convenzioni di nominazione delle Interfacce **abbreviate**
+- **Ethernet**: Eth0, Eth1, ecc.
+- **Fast Ethernet**: Fa0/0, Fa0/1, ecc.
+- **Gigabit Ethernet**: Gi0/0, Gi0/1, ecc.
+- **Serial**: Se0/0, Se0/1, ecc.
+- **Tunnel**: Tu0, Tu1, ecc.
  
   <img src="img/interfacce.png" alt="alt text" width="900">
 
