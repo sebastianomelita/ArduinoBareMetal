@@ -137,12 +137,12 @@ Convenzioni di nominazione delle Interfacce **abbreviate**
 
 ### **Tipi di interfacce che generano subnet**
 
-Le interfacce che posono generare subnet sono tutte quelle L3 o superiori, sia fisiche che virtuali e tipicamente sono:
+Le interfacce di un **router** che possono generare subnet sono tutte quelle L3 o superiori, sia fisiche che virtuali e tipicamente sono:
 - interfacce fisiche IP che generano subnet di host **fisicamente vicini**
 - interfacce virtuali IP di tipo 802.1q che generano subnet di host **fisicamente sparsi**
 - interfacce virtuali IP di tipo tunnel che generano subnet di **dorsali VPN**
 
-Di seguito è riportato un esempio che le riassume tutte:
+Di seguito è riportato un esempio che le **riassume** tutte:
  - .
   <img src="img/interfacce.png" alt="alt text" width="900">
 
