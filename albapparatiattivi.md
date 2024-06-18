@@ -148,6 +148,44 @@ Di seguito è riportato un esempio che le riassume tutte:
 
 ### **Subnetting classful veloce**
 
+<table>
+<tr><td> Ind. subnet </td><td> Broadcast </td><td> Ind. gateway </td><td> Range host </td><td> Range dhcp </td></tr>
+<tr>
+<td> 
+  S0
+</td>
+<td>
+10.0.0.255/24
+</td>
+<td>
+10.0.0.254/24
+</td>
+<td> 
+.0.1 - .0.253
+</td>
+<td> 
+.0.100 - .0.253
+</td>
+</tr>
+     
+<tr>
+<td> 
+  S1
+</td>
+<td>
+10.0.1.255/24
+</td>
+<td>
+10.0.1.254/24
+</td>
+<td> 
+.1.1 - .1.253
+</td>
+<td> 
+.1.100 - .1.253
+</td>
+</tr>
+</table>
 
 Per esempi di **topologie di apparati attivi** e per il **dettaglio sulla segmentazione** della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
 
