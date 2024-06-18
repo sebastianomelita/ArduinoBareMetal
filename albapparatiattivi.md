@@ -139,7 +139,7 @@ Convenzioni di nominazione delle Interfacce **abbreviate**
 
 Le **subnet** sono **contenitori di indirizzi IP** derivati da altri contenitori di indirizzi IP partendo dal **partizionamento** della **parte di host** dell'indirizzo. Ogni **prefisso** di subnet può essere poi associato a un **gruppo** di host diverso.
 
-I **router** sono i dispositivi che **allocano nello spazio** le subnet permettendo di raggiungere i **gruppi di host** ad esse associati. Le **interfacce** di un **router** che possono **generare subnet** sono tutte quelle L3 o superiori, sia fisiche che virtuali e tipicamente sono:
+I **router** sono i dispositivi che **allocano fisicamente nello spazio** le subnet permettendo di raggiungere i **gruppi di host** ad esse associati. Le **interfacce** di un **router** che possono **generare subnet** sono tutte quelle L3 o superiori, sia fisiche che virtuali e tipicamente sono:
 - interfacce **fisiche IP** che generano subnet di host **fisicamente vicini**
 - interfacce **virtuali IP** di tipo 802.1q (trunk T) che generano subnet di host **fisicamente sparsi** (VLAN)
 - interfacce **virtuali IP** di tipo tunnel che generano subnet di **dorsali VPN** punto-punto
