@@ -1,5 +1,6 @@
->>[Torna a reti ethernet](archeth.md)
+>[Torna a vpn](ethvpn.md)
 
+- [Dettaglio architettura Ethernet](archeth.md)
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
@@ -94,8 +95,9 @@ interface GigabitEthernet0/0
 
 
 
->[Torna a reti ethernet](archeth.md)
+>[Torna a vpn](ethvpn.md)
 
+- [Dettaglio architettura Ethernet](archeth.md)
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
