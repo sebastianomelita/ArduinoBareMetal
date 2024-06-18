@@ -134,7 +134,9 @@ Convenzioni di nominazione delle Interfacce **abbreviate**
 - **Gigabit Ethernet**: Gi0/0, Gi0/1, ecc.
 - **Serial**: Se0/0, Se0/1, ecc.
 - **Tunnel**: Tu0, Tu1, ecc.
- 
+
+### **Tipi di interfacce che generano subnet**
+
   <img src="img/interfacce.png" alt="alt text" width="900">
 
 Per esempi di **topologie di apparati attivi** e per il **dettaglio sulla segmentazione** della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
