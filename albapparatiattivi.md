@@ -118,6 +118,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
 - Le VLAN invece organizzano i raggruppamenti solo in base alla **funzione** o al tipo di **servizio** (e non in base alla posizione nello spazio):
      - persone dello stesso dipartimento che sono dislocate su più sedi fisicamente separate (collegare logicamente host fisicamente separati)
      - Persone nello stesso luogo che devono essere selezionate per confluire in dipartimenti separati (separare logicamente host fisicamente collegati)
+     - 
  
   <img src="img/interfacce.png" alt="alt text" width="700">
 
