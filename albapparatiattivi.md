@@ -157,7 +157,7 @@ Processo:
 - identificare le **subnet**:
     - sono **tante** quanti sono i **link** dei vari router
     - ogni **link diretto** a comune tra **due router** si conta **una sola volta**
-    - ogni **link indiretto** tra **due router** diversi e mediato da uno **switch** di transito, si conta **una sola volta**
+    - tutti i **link fisici indiretti** tra **più router** co in mezzo uno o più **switch** di transito, si contano **una sola volta**
 - per le **subnet** che contengono **host** calcolare:
     - **VLAN ID** della vlan x (se previste le VLAN)
     - **ISx**: indirizzo base della subnet x
