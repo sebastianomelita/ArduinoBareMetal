@@ -185,6 +185,24 @@ Di seguito è riportato un esempio che le riassume tutte:
 .1.100 - .1.253
 </td>
 </tr>
+
+<tr>
+<td> 
+  S3
+</td>
+<td>
+10.0.3.255/24
+</td>
+<td>
+10.0.3.254/24
+</td>
+<td> 
+.3.1 - .3.253
+</td>
+<td> 
+.3.100 - .3.253
+</td>
+</tr>
 </table>
 
 Per esempi di **topologie di apparati attivi** e per il **dettaglio sulla segmentazione** della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
