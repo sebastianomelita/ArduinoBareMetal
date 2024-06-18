@@ -139,7 +139,7 @@ Convenzioni di nominazione delle Interfacce **abbreviate**
 
 Le interfacce che posono generare subnet sono tutte quelle L3 o superiori, sia fisiche che virtuali e tipicamente sono:
 - interfacce fisiche IP che generano subnet di host fisicamente vicini
-- interfacce virtuali IP di tipo 802.1q che generano subnet di host fidicamente sparsi
+- interfacce virtuali IP di tipo 802.1q che generano subnet di host fisicamente sparsi
 - interfacce virtuali IP di tipo tunnel che generano subnet di dorsali VPN
 
 Di seguito è riportato un esempio che le riassume tutte:
