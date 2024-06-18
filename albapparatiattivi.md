@@ -146,7 +146,7 @@ Di seguito è riportato un esempio che le riassume tutte:
  - .
   <img src="img/interfacce.png" alt="alt text" width="900">
 
-### **Subnetting classful veloce**
+### **Subnetting classful veloce subnet**
 
 <table>
 <tr><td> Ind. subnet </td><td> Broadcast </td><td> Ind. gateway </td><td> Range host </td><td> Range dhcp </td></tr>
@@ -204,6 +204,9 @@ Di seguito è riportato un esempio che le riassume tutte:
 </td>
 </tr>
 </table>
+
+### **Subnetting classful veloce dorsali**
+
 
 Per esempi di **topologie di apparati attivi** e per il **dettaglio sulla segmentazione** della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
 
