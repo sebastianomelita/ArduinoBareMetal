@@ -394,6 +394,8 @@ R0: 10.30.0.1
 R3: 10.30.0.2
 ```
 
+Se si desidera, è possibile allocare solo per le subnet di dorsale un subnetting /24 analogo all'esempio precedente per sprecare meno indirizzi. In ogni caso posso coesistere sullo stesso router subnet con classi di indirizzo e tagli di parte di subnet differenti.
+
 Per esempi di **topologie di apparati attivi** e per il **dettaglio sulla segmentazione** della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
 
 
