@@ -137,7 +137,7 @@ Convenzioni di nominazione delle Interfacce **abbreviate**
 
 ### **Tipi di interfacce che generano subnet**
 
-Le **subnet** sono **contenitori di indirizzi IP** derivati da altri contenitori di indirizzi IP partendo dal **partizionamento** della **parte di host** dell'indirizzo. Il **prefisso** di subnet può essere poi associato a **gruppi** di host.
+Le **subnet** sono **contenitori di indirizzi IP** derivati da altri contenitori di indirizzi IP partendo dal **partizionamento** della **parte di host** dell'indirizzo. Ogni **prefisso** di subnet può essere poi associato a un **gruppo** di host diverso.
 
 I **router** sono i dispositivi che **allocano nello spazio** le subnet permettendo di raggiungere i **gruppi di host** ad esse associati. Le **interfacce** di un **router** che possono **generare subnet** sono tutte quelle L3 o superiori, sia fisiche che virtuali e tipicamente sono:
 - interfacce **fisiche IP** che generano subnet di host **fisicamente vicini**
