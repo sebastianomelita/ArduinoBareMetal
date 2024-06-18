@@ -156,7 +156,7 @@ Processo:
     - sono **tante** quanti sono i **link** dei vari router
     - ogni **link diretto** a comune tra **due router** si conta **una sola volta**
     - ogni **link indiretto** tra **due router** diversi e mediato da uno **switch** di transito, si conta **una sola volta**
-- per le subnet calcolare:
+- per le **subnet** che contengono **host** calcolare:
     - **VLAN ID** della vlan x (se previste le VLAN)
     - **ISx**: indirizzo base della subnet x
     - **SMx**: subnet mask della subnet x. E’ collegato a NSx (numero di indirizzi della sub. X), in niotazione decimale o in notazione CIDR dopo ISx
@@ -164,7 +164,7 @@ Processo:
     - **GWx**: indirizzo di gateway della subnet 
     - **RNGx**: intervallo tra il primo indirizzo e l’ultimo indirizzo assegnabile ai client della subnet x
     - **DHCPx**: intervallo tra il primo indirizzo e l’ultimo indirizzo assegnabile ai client della subnet x mediante protocollo DHCP
-- per le dorsali calcolare:
+- per le **dorsali** (contengono solo router) calcolare:
     - **VLAN ID** della vlan x (se previste le VLAN)
     - **ISx**: indirizzo base della subnet x
     - **SMx**: subnet mask della subnet x. E’ collegato a NSx (numero di indirizzi della sub. X), in niotazione decimale o in notazione CIDR dopo ISx
