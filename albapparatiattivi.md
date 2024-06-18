@@ -121,7 +121,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
 
 Per esempi di **topologie di apparati attivi** e per il **dettaglio sulla segmentazione** della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
 
-<img src="img/interfacce.png" alt="alt text" width="500">
+<img src="img/interfacce.png" alt="alt text" width="700">
 
 >[Torna a reti ethernet](archeth.md#documentazione)
 
