@@ -379,7 +379,7 @@ Dati 4 router R0, R1, R2, R3 dove R0 è un centro stella degli altri tre. Inoltr
 
 ```C++     
 D1: 10.10.0.0/24
-BC1: 10.10.0.255
+BC1:10.10.0.255
 R0: 10.10.0.1
 R1: 10.10.0.2
 
