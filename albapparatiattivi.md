@@ -170,7 +170,7 @@ Processo:
     - **SMx**: subnet mask della subnet x. E’ collegato a NSx (numero di indirizzi della sub. X), in niotazione decimale o in notazione CIDR dopo ISx
     - **BCx**: indirizzo di broadcast della subnet x
     - **Ra**: indirizzo del primo router del link
-    - **Rb**: indirizzo delsecondo router del link
+    - **Rb**: indirizzo del secondo router del link
 
 #### **Esempio di subnetting classful**
 
