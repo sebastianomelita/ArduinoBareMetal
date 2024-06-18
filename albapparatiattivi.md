@@ -150,8 +150,8 @@ Di seguito è riportato un esempio che le riassume tutte:
 
 Processo:
 - decidere **quanti** indirizzi servono:
-    - **pochi**: scegliere taglio classful /24 (per semplicità usare 10.0.x.0/24 dove x è il **prefisso** della subnet)
-    - **molti**: scegliere taglio classful /16 (per semplicità usare 10.x.0.0/16 dove x è il **prefisso** della subnet)
+    - **pochi**: scegliere taglio classful /24 (per semplicità usare 10.0.X.0/24 dove X è il **prefisso** della subnet)
+    - **molti**: scegliere taglio classful /16 (per semplicità usare 10.X.0.0/16 dove X è il **prefisso** della subnet)
 - identificare le **subnet**:
     - sono **tante** quanti sono i **link** dei vari router
     - ogni **link diretto** a comune tra **due router** si conta **una sola volta**
