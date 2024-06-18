@@ -119,7 +119,7 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
      - persone dello stesso dipartimento che sono dislocate su più sedi fisicamente separate (collegare logicamente host fisicamente separati)
      - Persone nello stesso luogo che devono essere selezionate per confluire in dipartimenti separati (separare logicamente host fisicamente collegati)
 
-### **Convenzioni di Nominazione delle Interfacce Cisco**
+### **Convenzioni di nominazione delle interfacce Cisco**
 
 Convenzioni di nominazione delle interfacce **estese**
 - **Ethernet**: Ethernet0, Ethernet1, ecc.
