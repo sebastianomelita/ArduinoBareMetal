@@ -146,7 +146,7 @@ Di seguito è riportato un esempio che le **riassume** tutte:
  - .
   <img src="img/interfacce.png" alt="alt text" width="900">
 
-### **Subnetting classful veloce subnet**
+### **Subnetting classful veloce**
 
 Processo:
 - decidere **quanti** indirizzi servono:
