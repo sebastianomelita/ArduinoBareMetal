@@ -22,7 +22,7 @@ Nelle reti Informatiche, **TUN e TAP** sono **driver** che permettono la creazio
 - **TUN** è in grado di **simulare** una periferica di rete IP collegata ad un **link L3 punto-punto**, su cui viaggiano **pacchetti IP**, che si collega ad una periferica analoga all'**altro capo del tunnel**. 
 - **TAP** è in grado di **simulare** una NIC Ethernet che è collegata ad una **dorsale L2 punto-punto**, su cui viaggiano **trame MAC**,  che si collega ad una periferica analoga all'**altro capo del tunnel**.
 
-<img src="img/Tun-tap-osilayers-diagram.png" alt="alt text" width="400">
+<img src="img/Tun-tap-osilayers-diagram.png" alt="alt text" width="1100">
 
 
 Le **interfacce TAP e tun** sono quindi delle ulteriori interfacce che possono essere utilizzate tutte le volte che si desidera **instradare** il traffico di rete attraverso il **tunnel VPN**. 
