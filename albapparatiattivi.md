@@ -319,10 +319,10 @@ Dati 4 router R0, R1, R2, R3 dove R0 è un centro stella degli altri tre. Inoltr
   S2
 </td>
 <td>
-10.2.0.255/24
+10.2.255.255/24
 </td>
 <td>
-10.2.0.254/24
+10.2.255.254/24
 </td>
 <td> 
 .2.0.1 - .2.255.253
