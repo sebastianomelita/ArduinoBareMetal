@@ -178,6 +178,8 @@ Processo:
 
 Dati 4 router R0, R1, R2, R3 dove R0 è un centro stella degli altri tre. Inoltre ogni router ha una interfaccia ulteriore collegata ad una LAN creata da uno switch. Immaginare subnet con **pochi host**.
 
+<img src="img/subnets.png" alt="alt text" width="700">
+
 ##### **Subnetting classful veloce gruppi di host**
 <table>
 <tr><td></td><td> Ind. subnet </td><td> Broadcast </td><td> Ind. gateway </td><td> Range host </td><td> Range dhcp </td></tr>
