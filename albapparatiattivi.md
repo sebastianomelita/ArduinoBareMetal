@@ -289,10 +289,13 @@ Dati 4 router R0, R1, R2, R3 dove R0 è un centro stella degli altri tre. Inoltr
 
 ##### **Subnetting classful veloce gruppi di host**
 <table>
-<tr><td> Ind. subnet </td><td> Broadcast </td><td> Ind. gateway </td><td> Range host </td><td> Range dhcp </td></tr>
+<tr><td></td><td> Ind. subnet </td><td> Broadcast </td><td> Ind. gateway </td><td> Range host </td><td> Range dhcp </td></tr>
 <tr>
 <td> 
   S0
+</td>
+<td>
+ 10.0.0.0/16    
 </td>
 <td>
 10.0.255.255/24
@@ -313,6 +316,9 @@ Dati 4 router R0, R1, R2, R3 dove R0 è un centro stella degli altri tre. Inoltr
   S1
 </td>
 <td>
+ 10.1.0.0/16    
+</td>
+<td>
 10.1.255.255/24
 </td>
 <td>
@@ -331,6 +337,9 @@ Dati 4 router R0, R1, R2, R3 dove R0 è un centro stella degli altri tre. Inoltr
   S2
 </td>
 <td>
+ 10.2.0.0/16    
+</td>
+<td>
 10.2.255.255/24
 </td>
 <td>
@@ -347,6 +356,9 @@ Dati 4 router R0, R1, R2, R3 dove R0 è un centro stella degli altri tre. Inoltr
 <tr>
 <td> 
   S3
+</td>
+<td>
+ 10.3.0.0/16    
 </td>
 <td>
 10.3.255.255/24
