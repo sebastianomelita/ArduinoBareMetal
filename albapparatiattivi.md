@@ -143,7 +143,7 @@ Le interfacce che posono generare subnet sono tutte quelle L3 o superiori, sia f
 - interfacce virtuali IP di tipo tunnel che generano subnet di dorsali VPN
 
 Di seguito è riportato un esempio che le riassume tutte:
-- 
+ - .
   <img src="img/interfacce.png" alt="alt text" width="900">
 
 Per esempi di **topologie di apparati attivi** e per il **dettaglio sulla segmentazione** della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
