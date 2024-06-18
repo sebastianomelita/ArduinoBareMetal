@@ -216,6 +216,24 @@ Dati 4 router R0, R1, R2, R3 dove R0 è un centro stella degli altri tre. Inoltr
 
 <tr>
 <td> 
+  S2
+</td>
+<td>
+10.0.2.255/24
+</td>
+<td>
+10.0.2.254/24
+</td>
+<td> 
+.2.1 - .2.253
+</td>
+<td> 
+.2.100 - .2.253
+</td>
+</tr>
+
+<tr>
+<td> 
   S3
 </td>
 <td>
