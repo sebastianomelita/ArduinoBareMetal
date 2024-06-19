@@ -396,7 +396,7 @@ Per permettere ad un sensore di comando di modificare lo stato di un attuatore, 
 
 Una volta che le lampadine sono **riconosciute** da Zigbee2MQTT, possono eesere configurate per accettare i **comandi MQTT**. La **configurazione** di Zigbee2MQTT si occuperà del **binding automatico** tra il gateway e tutte le lampadine.
 
-Ora, configurando un singolo topic zigbee2mqtt/stanzetta/cmd per inviare comandi a tutte e tre le lampadine, possiamo usare un payload JSON per specificare lo stato desiderato di ogni lampadina.
+Ora, configurando un singolo topic zigbee2mqtt/stanzetta/comandi per inviare comandi a tutte e tre le lampadine, possiamo usare un payload JSON per specificare lo stato desiderato di ogni lampadina.
 
 #### **Accendere tutte le Lampadine:**
 
@@ -460,7 +460,7 @@ casa/
           ├── comandi
           └── stato
 ```
-In questo esempio, ```casa``` è il prefisso di tutti i tuoi topic MQTT. All'interno di questo prefisso, hai un sotto-topic per il soggiorno chiamato ```soggiorno```, e all'interno di questo sotto-topic hai i sotto-topic per ciascuna delle tue lampadine, ciascuno dei quali ha due sotto-topic: ```cmd``` e ```stato```.
+In questo esempio, ```casa``` è il prefisso di tutti i tuoi topic MQTT. All'interno di questo prefisso, hai un sotto-topic per il soggiorno chiamato ```soggiorno```, e all'interno di questo sotto-topic hai i sotto-topic per ciascuna delle tue lampadine, ciascuno dei quali ha due sotto-topic: ```comandi``` e ```stato```.
 
 ```Bash
 mqtt:
@@ -487,7 +487,7 @@ devices:
 
 #### **Accendere una lampadina del Soggiorno**
 ```Bash
-mosquitto_pub -h localhost -t 'casa/soggiorno/lampadina1/cmd' -m '{"state": "ON"}'
+mosquitto_pub -h localhost -t 'casa/soggiorno/lampadina1/comandi' -m '{"state": "ON"}'
 ```
 
 #### **Accendere Tutte le Lampadine nel Soggiorno**
