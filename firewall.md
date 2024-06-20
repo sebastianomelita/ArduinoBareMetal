@@ -10,7 +10,7 @@
 
 Il **firewall** è un **dispositivo** che eleva il livello di sicurezza di una rete locale mediante il **processo di filtraggio** (eliminazione selettiva) dei pacchetti in transito in base a delle **regole di controllo** predefinite che, per essere efficaci, devono esaminare costantemente le principali **arterie obbligate di traffico** da e verso la LAN.
 
-Il firewall + un componente essenziale della rete e ne esiste sempre almeno uno al confine tra la rete LAN e Internet. Funzionalità basilari di un firewall di qualità:
+Il firewall è un componente essenziale della rete e ne esiste sempre almeno uno al confine tra la rete LAN e Internet. Funzionalità basilari di un firewall di qualità:
 - **Stateful Firewall** con controllo granulare e possibilità di funzionare in maniera trasparente al layer 2 (in bridging)
 - **Network address translation**
 - **HA (High Availability)**: grazie a CARP permette di configurare due firewall su due macchine identiche per replicarsi e autosostituirsi nel caso di guasto di una delle due (il software pfsync si occupa di replicare lo stato firewall, la tabella delle connessioni e le regole del firewall, permettendo di passare al secondo firewall senza che le connessioni attive di rete cadano)
