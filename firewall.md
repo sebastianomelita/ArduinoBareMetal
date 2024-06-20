@@ -438,6 +438,7 @@ ip nat inside source list 1 interface GigabitEthernet0/1 overload
 ip nat inside source static tcp 192.168.1.100 80 203.0.113.1 80
 ip nat inside source static tcp 192.168.1.100 443 203.0.113.1 443
 end
+
 ! Mostra la configurazione
 show ip nat translation
 ! Salva la configurazione
@@ -474,6 +475,7 @@ ip nat inside source static tcp 192.168.1.100 443 interface GigabitEthernet0/1 4
 ! Port forwarding per SSH verso il server interno 192.168.1.101
 ip nat inside source static tcp 192.168.1.101 22 interface GigabitEthernet0/1 22
 end
+
 ! Mostra la configurazione
 show ip nat translation
 ! Salva la configurazione
