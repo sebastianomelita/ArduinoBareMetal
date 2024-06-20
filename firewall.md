@@ -409,6 +409,10 @@ Si usa per:
 - Bilanciamento del carico di lavoro di un pool di server
 - Gestione dei fallimenti di un server principale
 
+#### **Esempio di port forwarding** 
+
+<img src="img/portforward.png" alt="alt text" width="1100">
+
 ### **Esempio si SNAT PNAT con due port forward** 
 
 ``` C++
