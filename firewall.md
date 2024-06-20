@@ -415,7 +415,7 @@ Si usa per:
 
 Si notino due tipi di **port forward** molto comuni:
 - la **redirezione statica** dell'**indirizzo pubblico** del firewall sul servizio standard web non cifrato (porta 80) e cifrato (porta 443) verso il **reverse proxy** (server haproxy 10.13.0.100) che deve poi realizzare la **redirezione dinamica** di queste porte in base al **path** dell'url, per gestire l'accesso a servizi **partizionati verticalmente** su molti server.
-- la **redirezione statica** dell'**indirizzo pubblico** del firewall su servizi standard (ssh 2222 verso 10.13.0.40)che sono gestiti da un **solo server**, senza passare per il **reverse proxy** (haproxy).
+- la **redirezione statica** dell'**indirizzo pubblico** del firewall su servizi standard (ssh 2222 verso 10.13.0.40) che sono gestiti da un **solo server**, senza passare per il **reverse proxy** (haproxy).
 
 ### **Esempio si SNAT PNAT con due port forward** 
 
