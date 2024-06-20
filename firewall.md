@@ -412,6 +412,34 @@ Si usa per:
 ### **Esempio si SNAT PNAT con due port forward** 
 
 ``` C++
+enable
+configure terminal
+
+! Configurare le interfacce
+interface GigabitEthernet0/0
+ description Internal Network
+ ip address 192.168.1.1 255.255.255.0
+ ip nat inside
+ no shutdown
+
+interface GigabitEthernet0/1
+ description External Network
+ ip address 203.0.113.1 255.255.255.0
+ ip nat outside
+ no shutdown
+
+! Configurare l'access list per identificare il traffico interno
+access-list 1 permit 192.168.1.0 0.0.0.255
+
+! Configurare NAT overload per tradurre gli indirizzi privati all'indirizzo pubblico
+ip nat inside source list 1 interface GigabitEthernet0/1 overload
+
+! Salva la configurazione
+end
+write memory
+```
+
+``` C++
 ! Configurazione dell'interfaccia WAN
 interface GigabitEthernet0/1
  description WAN Interface
