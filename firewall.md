@@ -51,13 +51,6 @@ Un **IP virtuale (VIP)** è un indirizzo IP non legato a una singola macchina fi
 
 <img src="img/alg.png" alt="alt text" width="700">
 
-### **Conclusioni** 
-
-Questa tecnica permette di superare il limite tecnico del **port forwarding tradizionale** che impone il **vincolo** della non condivisibilità di una stessa porta esterna del router tra più server interni nella LAN.
-
-Questa tecnica può essere adoperata per realizzare il **partizionamento del carico** in base al **tipo di servizio** oppure, per **uno stesso servizio**, in base alla **provenienza geografica** della richiesta.
-Ad esempio una richiesta con l’indirizzo https://segreteria.marconicloud.it /non è utilizzabile dall’utente perché è riservato agli accessi ad un webservice https da parte dell’aministrazione remota di axios. https://segeteria.marconicloud/guacamole/ invece, pur afferendo alla stessa porta 443, viene dal modulo ALG rediretto verso il server di VPN Guacamole.
-
 ### **Ridondanza del reverse proxy** 
 
 **Keepalived** è uno strumento che fornisce funzionalità di failover e load balancing utilizzando il protocollo **VRRP (Virtual Router Redundancy Protocol)**. Viene usato per monitorare lo stato dei server e delle applicazioni, e per gestire il failover in caso di guasti. Il **bilanciatore slave** interroga periodicamente il **bilanciatore master** (principale) per sapere se è **attivo**. Se scopre che non lo è, allora entra in servizio lui al posto del bilanciatore master, assumendo adesso il ruolo di **bilanciatore principale** in sostituzione di quello guasto.
@@ -186,6 +179,14 @@ backend web_backend
   server web_server2 web.miosito.com:80 check
   server web_server3 web.miosito.com:80 check
 ```
+
+### **Conclusioni** 
+
+La tecnica del **reverse proxy** permette di superare il limite tecnico del **port forwarding tradizionale** che impone il **vincolo** della non condivisibilità di una stessa porta esterna del router tra più server interni nella LAN.
+
+Questa tecnica può essere adoperata per realizzare il **partizionamento del carico** in base al **tipo di servizio** oppure, per **uno stesso servizio**, in base alla **provenienza geografica** della richiesta.
+Ad esempio una richiesta con l’indirizzo https://segreteria.marconicloud.it /non è utilizzabile dall’utente perché è riservato agli accessi ad un webservice https da parte dell’aministrazione remota di axios. https://segeteria.marconicloud/guacamole/ invece, pur afferendo alla stessa porta 443, viene dal modulo ALG rediretto verso il server di VPN Guacamole.
+
 
 ## **IPS** 
 
