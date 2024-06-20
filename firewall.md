@@ -32,7 +32,7 @@ Può essere usato anche come **bilanciatore di carico** delle **connessioni WAN 
 E' un **reverse proxy** realizzato con un **destination NAT (DNAT)** che reindirizza dinamicamente le connessioni che arrivano su un **IP virtuale** in base a criteri che valutano l’**intestazione della richiesta**. Un comportamento comune è quello di **esaminare il path** dell’**indirizzo url** cioè la parte compresa tra il **nome dell’host e la sezione della query**.
 Ad ogni **path** corrisponde un **backend** con un proprio **pool di server**. Tutti i server, indipendentemente dal pool di appartenenza, possono **condividere** una stessa **porta esterna** sul router/NAT.
 
-Si può adoperare in ambito LAN:
+Si può adoperare in **ambito LAN**:
 - **sul NAT di un firewall**, a valle di un port forward statico che redirige il traffico esterno su certe porte (tipicamente 80 e 443) verso il proxy ALG. Serve a realizzare la **redirezione dinamica** dell'accesso (**con IP pubblico**) ai servizi esposti **sul firewall** verso i server su cui queii servizi sono effettivamente **allocati** (mediante partizionamento verticale).
 - su un reverse proxy interno alla LAN trusted per realizzare la **redirezione dinamica** dell'accesso (**con IP privato**), ai servizi esposti **sul reverse proxy** verso i server su cui quei servizi sono effettivamente **allocati** (mediante partizionamento verticale).
 
