@@ -434,10 +434,16 @@ access-list 1 permit 192.168.1.0 0.0.0.255
 ! Configurare NAT overload per tradurre gli indirizzi privati all'indirizzo pubblico
 ip nat inside source list 1 interface GigabitEthernet0/1 overload
 
+! Configurare il port forwarding per le porte 80 e 443
+ip nat inside source static tcp 192.168.1.100 80 203.0.113.1 80
+ip nat inside source static tcp 192.168.1.100 443 203.0.113.1 443
+
 ! Salva la configurazione
 end
 write memory
 ```
+
+Con un pool di indirizzi pubblici:
 
 ``` C++
 ! Configurazione dell'interfaccia WAN
@@ -452,14 +458,14 @@ interface GigabitEthernet0/0
  ip address 192.168.1.1 255.255.255.0
  ip nat inside
 
+! Access list per consentire il NAT per la rete interna
+access-list 1 permit 192.168.1.0 0.0.0.255
+
 ! Creare un pool di indirizzi NAT (se necessario)
-ip nat pool mynatpool 203.0.113.100 203.0.113.100 netmask 255.255.255.0
+ip nat pool mynatpool 203.0.113.100 203.0.113.110 netmask 255.255.255.0
 
 ! Associare l'interfaccia LAN al NAT realizzando un PNAT
 ip nat inside source list 1 pool mynatpool overload
-
-! Access list per consentire il NAT per la rete interna
-access-list 1 permit 192.168.1.0 0.0.0.255
 
 ! Port forwarding per HTTPS verso il server interno 192.168.1.100
 ip nat inside source static tcp 192.168.1.100 443 interface GigabitEthernet0/1 443
