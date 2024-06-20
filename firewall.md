@@ -413,7 +413,7 @@ Si usa per:
 
 <img src="img/portforward.png" alt="alt text" width="1100">
 
-Si notino due tipi di **port forward statici** molto comuni:
+Si notino due tipi di **port forward** molto comuni:
 - la **redirezione statica** dell'**indirizzo pubblico** del firewall sul servizio standard web non cifrato (porta 80) e cifrato (porta 443) verso il **reverse proxy** (haproxy) che deve poi realizzare la **redirezione dinamica** di queste porte in base al **path** dell'url, per gestire l'accesso a servizi **partizionati verticalmente** su molti server.
 - la **redirezione statica** dell'**indirizzo pubblico** del firewall su servizi standard che sono gestiti da un **solo server**, senza passare per il **reverse proxy** (haproxy).
 
