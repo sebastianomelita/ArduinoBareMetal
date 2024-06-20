@@ -29,8 +29,12 @@ Può essere usato anche come **bilanciatore di carico** delle **connessioni WAN 
 
 ## **ALG** 
 
+### **Definizione** 
+
 E' un **reverse proxy** realizzato con un **destination NAT (DNAT)** che reindirizza dinamicamente le connessioni che arrivano su un **IP virtuale** in base a criteri che valutano l’**intestazione della richiesta**. Un comportamento comune è quello di **esaminare il path** dell’**indirizzo url** cioè la parte compresa tra il **nome dell’host e la sezione della query**.
 Ad ogni **path** corrisponde un **backend** con un proprio **pool di server**. Tutti i server, indipendentemente dal pool di appartenenza, possono **condividere** una stessa **porta esterna** sul router/NAT.
+
+### **Scopo** 
 
 Si può adoperare in **ambito LAN**:
 - **sul NAT di un firewall**, a valle di un port forward statico che redirige il traffico esterno su certe porte (tipicamente 80 e 443) verso il proxy ALG. Serve a realizzare la **redirezione dinamica** dell'accesso (**con IP pubblico**) ai servizi esposti **sul firewall** verso i server su cui queii servizi sono effettivamente **allocati** (mediante partizionamento verticale).
@@ -41,16 +45,20 @@ Il **benefici** di un recerse proxy sono essenzialmente:
 - **terminazione** di una **connessione SSL** cifrata verso un **unico nodo** su cui è installato il **certificato CA** che permette la **verifica** dell'**autenticazione di un server**. La condivisione del nodo tra più server nascosti dal reverse proxy permette di non dovere installare e mantenere aggiornati i cerificati su tutti i server da autenticare. In genere il server ha necessità di sapere di trovarsi dietro ad un proxy ssl per funziona re correttamente, la cosa si ottiene con comandi di configurazione appositi (vedi configurazione haproxy a seguire).
 - possibilità di realizzare un **partizionamento orizzontale** di uno  **stesso servizio** per realizzare un **cluster di server** che abbia proprietà di **alta disponibilità** o **HA (High Availability)** a fronte di **guasti** improvvisi e di **scalabilità** a fronte di un **accresciuto numero di accessi** in corrispondenza di eventi particolari (ad es. **scadenze periodiche** per la presentazione di domande o pratiche burocratiche, **sessioni periodiche** di esami di Stato)
 
+### **IP virtuale** 
+
 Un **IP virtuale (VIP)** è un indirizzo IP non legato a una singola macchina fisica, ma, piuttosto, l'**IP condiviso** da un cluster di macchine, quello con cui queste sono raggiungibili come gruppo. E' assegnato, tramite **DNAT dinamico**, una o **più interfacce di rete** per scopi di **ridondanza** o **bilanciamento del carico**. Quando uno dei server che possiede l'IP virtuale **fallisce**, un altro server viene comandato dal bilanciatore (ALG) ad assumere quell'IP, senza interrompere il servizio. 
 
 <img src="img/alg.png" alt="alt text" width="700">
+
+### In conclusione** 
 
 Questa tecnica permette di superare il limite tecnico del **port forwarding tradizionale** che impone il **vincolo** della non condivisibilità di una stessa porta esterna del router tra più server interni nella LAN.
 
 Questa tecnica può essere adoperata per realizzare il **partizionamento del carico** in base al **tipo di servizio** oppure, per **uno stesso servizio**, in base alla **provenienza geografica** della richiesta.
 Ad esempio una richiesta con l’indirizzo https://segreteria.marconicloud.it /non è utilizzabile dall’utente perché è riservato agli accessi ad un webservice https da parte dell’aministrazione remota di axios. https://segeteria.marconicloud/guacamole/ invece, pur afferendo alla stessa porta 443, viene dal modulo ALG rediretto verso il server di VPN Guacamole.
 
-### **Keepalived** 
+### **Ridondanza del reverse proxy** 
 
 **Keepalived** è uno strumento che fornisce funzionalità di failover e load balancing utilizzando il protocollo **VRRP (Virtual Router Redundancy Protocol)**. Viene usato per monitorare lo stato dei server e delle applicazioni, e per gestire il failover in caso di guasti. Il **bilanciatore slave** interroga periodicamente il **bilanciatore master** (principale) per sapere se è **attivo**. Se scopre che non lo è, allora entra in servizio lui al posto del bilanciatore master, assumendo adesso il ruolo di **bilanciatore principale** in sostituzione di quello guasto.
 
