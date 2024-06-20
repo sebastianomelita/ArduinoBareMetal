@@ -425,7 +425,7 @@ interface GigabitEthernet0/0
  ip nat inside
 
 ! Creare un pool di indirizzi NAT (se necessario)
-ip nat pool mynatpool 203.0.113.100 203.0.113.200 netmask 255.255.255.0
+ip nat pool mynatpool 203.0.113.100 203.0.113.100 netmask 255.255.255.0
 
 ! Associare l'interfaccia LAN al NAT realizzando un PNAT
 ip nat inside source list 1 pool mynatpool overload
