@@ -214,7 +214,7 @@ Si può alternativamente realizzare con un proxy HTTPS (ad es Squid) + autorità
 #### **Fasi dell’ispezione SSL MITM Filtering** 
 
 1.	Il proxy SSL intercetta le connessioni dal client sulla porta TCP 443.
-2.	Il proxy SSL Effettua negoziazioni SSL con il server web per conto del cliente.
+2.	Il proxy SSL effettua negoziazioni SSL con il server web per conto del cliente.
 3.	Analizza il certificato inviato dal server. Se il certificato non è conforme, l'accesso al server verrà bloccato.
 4.	Se il certificato è conforme, il proxy SSL cercherà le regole del filtro SSL: blocca, passa o decifra
 5.	Se il certificato è conforme, il proxy SSL genererà un certificato falso e lo presenterà al client, che verificherà il certificato. Se il certificato dell'autorità di firma non è stato installato nel browser o nel sistema e dichiarato come autorità attendibile, verrà visualizzato un messaggio di errore.
