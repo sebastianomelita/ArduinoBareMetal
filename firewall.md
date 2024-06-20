@@ -51,7 +51,7 @@ Un **IP virtuale (VIP)** è un indirizzo IP non legato a una singola macchina fi
 
 <img src="img/alg.png" alt="alt text" width="700">
 
-### In conclusione** 
+### **Conclusioni** 
 
 Questa tecnica permette di superare il limite tecnico del **port forwarding tradizionale** che impone il **vincolo** della non condivisibilità di una stessa porta esterna del router tra più server interni nella LAN.
 
