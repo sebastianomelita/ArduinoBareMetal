@@ -192,7 +192,7 @@ Si sarebbe potuto isolare in maniera ancora **più affidabile** la rete della se
 
 L'**inconveniente** viene superato adoperando le **VLAN** e la sicurezza viene mantenuta ugualmente alta (**like wire** in pratica) grazie ai **comandi**: ```allowed vlan 1, 20, 30``` e ```allowed vlan 1, 10``` che **confinano** il traffico delle **trame MAC** relative alla LAN della **segreteria** sul solo SW dove sono collegati i suoi dispositivi. Tutte le altre dorsali non possono essere interessate da questo traffico, mentre sono tutte interessate dal traffico della **subnet amministrativa** degli AP che possono così essere gestiti da un **unico controller**.
 
-### **Sede sanitaria locale privata con policy routing**
+### **Sede sanitaria pubblica**
 
 <img src="img/albero3tris.png" alt="alt text" width="1100">
 
@@ -200,7 +200,7 @@ L'**inconveniente** viene superato adoperando le **VLAN** e la sicurezza viene m
 
 <img src="img/albero3quater.png" alt="alt text" width="1100">
 
-### **Sede sanitaria pubblica**
+### **Sede sanitaria locale privata con policy routing**
 
 <img src="img/albero3tris2.png" alt="alt text" width="1100">
 
