@@ -194,7 +194,7 @@ L'**inconveniente** viene superato adoperando le **VLAN** e la sicurezza viene m
 
 ### **Sede sanitaria pubblica**
 
-<img src="img/albero3tris.png" alt="alt text" width="1100">
+<img src="img/albero3tris2.png" alt="alt text" width="1100">
 
 ### **Sede sanitaria locale privata con doppio router**
 
