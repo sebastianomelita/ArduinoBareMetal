@@ -460,6 +460,8 @@ Sono possibili ibridazioni tra le tecniche precedenti, per cui usuale vedere un 
 
 In questo caso si può utilizzare lo stesso firewall perimetrale dell'utente purchè esso sia capace delle forme di tunnelling richieste dallo ISP regionale. Nello specifico si potrebbe ipotizzare un tunnel generico (GRE) o un tunnel PPoE. Nel client PPPoE vengono inserite le credenziali di autenticazione dell'utente con le quali può esssere riconosciuto e la connessione approvata, magari attraverso un server di autenticazione quali RADIUS o DIAMETER.
 
+In questo caso l'ISP regionale non fornisce un apparecchio ma la possibilità di utilizzare una terminazione logica del tunnell PPoE sul firewall perimetrale dell'utente.
+
 <img src="img/albero3penta.png" alt="alt text" width="1100">
 
 ### **Sede sanitaria locale privata con link fisico verso ISP**
