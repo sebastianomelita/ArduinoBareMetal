@@ -420,9 +420,9 @@ Ipotizziamo che il piano di indirizzamento per le aziende private ricalchi quell
 
 <img src="img/albero3tris2.png" alt="alt text" width="1100">
 
-### **Sede sanitaria locale privata con doppio router**
+### **Sede sanitaria locale privata con VPN**
 
-<img src="img/albero3quater.png" alt="alt text" width="1100">
+<img src="img/albero3penta.png" alt="alt text" width="1100">
 
 ### **Sede sanitaria locale privata con policy routing**
 
