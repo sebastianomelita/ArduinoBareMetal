@@ -450,6 +450,8 @@ OLT (Optical Line Terminal): I dati viaggiano dall'utente finale attraverso la r
 - **Traffico dati**: Il Broadband Network Gateway autentica gli utenti e instrada il traffico dati verso Internet attraverso la vlan 835. In sintesi: Utente Finale -> ONT (Optical Network Terminal) -> OLT (Central Office).
 - **Traffico voip**: Il VoIP Gateway gestisce la segnalazione e la commutazione delle chiamate VoIP lungo il percorso atraverso la vlan 836, in sintesi: OLT -> Aggregation Switch -> VoIP Gateway -> PSTN/Internet.
 
+### **Ibridazioni**
+
 Sono possibili ibridazioni tra le tecniche precedenti, per cui usuale vedere un tunnel PPPoE all'interno della LAN di centrale realizzata dalla VLAN 835. Normalmente il modem è in realtà uno switch da cui si isolano due interfacce sulla VLAN 835 e 836. Se queste sono fisiche si connettono direttamente al router di confine dei dati e al gateway voip rispetivamente. Se sono logiche, si realizza un tunnel PPPoE tra il router dell'ISP regionale in centrale e il router nella sede utente. Nel router utente deve chiaramente essere installato un client PPPoE.
 
 ### **Sede sanitaria locale privata con link logico verso ISP**
