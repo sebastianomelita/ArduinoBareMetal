@@ -198,7 +198,7 @@ Si vuole realizzare un ISP che connetta tra loro aziende sanitarie pubbliche e p
 
 Le aziende sanitarie pubbliche sono clienti di due servizi: l'accesso al fascicolo e l'accesso ad Internet.
 
-Le aziende sanitarie private sono clienti di un solo servizio: l'accesso al fascicolo. Per ottnere l'accesso ad Internet devono rivolgersi ad un altro provider.
+Le aziende sanitarie private sono clienti di un solo servizio: l'accesso al fascicolo. Per ottenere l'accesso ad Internet devono rivolgersi ad un altro provider.
 
 Gli indirizzi per connettersi alla infrastruttura di distribuzione, cioè quelli da utilizzare per accedere al router più vicino dell'infrastruttura, sono privati nel range 10.0.0.0/8. 
 Una sottorete del range di partenza, la 10.100.0.0/16 è assegnata alla infrastrutture private. Dimensionare le subnete per consentire l'accesso ad almeno 2000 sedi sanitarie private, lasciando dei margini adeguati per eventuali espansioni future.
