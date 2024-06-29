@@ -466,7 +466,6 @@ In questo caso l'ISP regionale non fornisce un apparecchio ma la possibilità di
 
 <img src="img/albero3penta.png" alt="alt text" width="1100">
 
-Se non si desidera far percorrere due volte il traffico in andata e ritorno allo stesso link si potrebbe, in alternativa, collegare il router R2 direttamente ad un porta del router R1, ad esempio a quella della DMZ, direttamente o tramite uno switch di transito che aggreghi altri servizi.
 
 ### **Sede sanitaria locale privata con link fisico verso ISP**
 
@@ -477,6 +476,8 @@ L'ISP regionale potrebbe usare lo stesso piano di indirizzamento dell'ISP nazion
 - Il **tunneling** avviene instradando i pacchetti lungo **percorsi fissi** basati sulle etichette, senza dover analizzare gli indirizzi IP di destinazione detti Label Switching Path (**LSP**). Gli LSP sono **percorsi predefiniti** attraverso la rete MPLS. Ogni pacchetto che attraversa la rete MPLS viene etichettato con un'identificatore che indica il suo LSP, questo migliora l'efficienza e la velocità di instradamento.
 
 <img src="img/albero3penta2.png" alt="alt text" width="1100">
+
+Se non si desidera far percorrere due volte il traffico in andata e ritorno allo stesso link si potrebbe, in alternativa, collegare il router R2 direttamente ad un porta del router R1, ad esempio a quella della DMZ, direttamente o tramite uno switch di transito che aggreghi altri servizi.
 
 ### **Sede sanitaria locale privata con policy routing**
 
