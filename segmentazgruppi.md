@@ -440,9 +440,9 @@ Il link esterni alla rete ISP regionale, cioè quelli verso il router/firewall u
 - **fisici** se il router/modem si collega direttamente alla rete dell'ISP regionale con un link fisico. In questo caso il router di confine della LAN si collega direttamente al router dell'ISP regionale.
 - **logici** se il router/modem utilizza direttamente alla rete dell'ISP regionale con un link logico normalmente realizzato con:
     - un **tunnnel L3** (tunnel PPPoE, VPN Untrusted MPLS, VPN Trusted, ecc) sul collegamento fisico. Il tunnel permette un collegamento diretto virtuale tra il router installato nella sede del cliente e il router dell'ISP regionale posto in centrale ottenuto tramite una cascata di collegamenti fisici lungo i router dell'ISP nazionale.
-    - un **tunnnel L2**, ottenuto generalmente mediante la tecnica delle VLAN, che collega gli switch in centrale con il modem dal cliente in cui vengono realizzati due bridge:
-        - quello della interfaccia **vlan 835** verso un router dedicato per i dati
-        - quello della **vlan 836** verso un router dedicato per il voip (ad es. centralino FreePBX). I **router dedicati**, per tipologie di traffico diverse, sono allocati su **porte di accesso** ad entrambi i capi della connessione (quella locale utente e quella in centrale).
+    - un **tunnnel L2**, ottenuto generalmente mediante la tecnica delle VLAN, che collega gli switch in centrale con il modem dal cliente in cui vengono realizzati **due bridge**:
+        - quello della **vlan 835** con una o più porte fisiche verso un router dedicato per i dati
+        - quello della **vlan 836** con una o più porte fisiche verso un router dedicato per il voip (ad es. centralino FreePBX). I **router dedicati**, per tipologie di traffico diverse, sono allocati su **porte di accesso** ad entrambi i capi della connessione (quella locale utente e quella in centrale).
 
 ### **Flusso del Traffico su interfacce VLAN**
 
