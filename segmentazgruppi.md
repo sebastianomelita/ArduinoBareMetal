@@ -439,7 +439,7 @@ Spesso accade che gli ISP regionali affittino l'infrastruttura di rete dei un IS
 Il link esterni alla rete ISP regionale, cioè quelli verso il router/firewall utente potrebbero essere:
 - **fisici** se il router/modem si collega direttamente alla rete dell'ISP regionale con un link fisico. In questo caso il router di confine della LAN si collega direttamente al router dell'ISP regionale.
 - **logici** se il router/modem si collega direttamente alla rete dell'ISP regionale con un link logico normalmente realizzato con:
-    - un **tunnnel L3** (tunnel PPPoE, VPN Untrusted MPLS, VPN Trusted, ecc) sul collegamento fisico. Il tunnel permette un collegamento diretto virtuale tra il router installato nella sede del cliente e il router dell'ISP regionale posto in centrale ottenuto tramite una cascata di collegamenti fisici lungo i router dell'ISP nazionale.
+    - un **tunnnel L3** (tunnel PPoE, VPN Untrusted MPLS, VPN Trusted, ecc) sul collegamento fisico. Il tunnel permette un collegamento **diretto virtuale** tra il router installato nella sede del cliente e il router dell'ISP regionale posto in centrale ottenuto tramite una cascata di collegamenti fisici lungo i router dell'ISP nazionale.
     - un **tunnnel L2**, ottenuto generalmente mediante la tecnica delle VLAN, che collega gli switch in centrale con il modem dal cliente in cui vengono realizzati **due bridge**:
         - quello della **vlan 835** con una o più porte fisiche verso un router dedicato per i dati
         - quello della **vlan 836** con una o più porte fisiche verso un router dedicato per il voip (ad es. centralino FreePBX).
@@ -454,11 +454,11 @@ OLT (Optical Line Terminal): I dati viaggiano dall'utente finale attraverso la r
 
 ### **Ibridazioni**
 
-Sono possibili ibridazioni tra le tecniche precedenti, per cui usuale vedere un tunnel PPPoE all'interno della LAN di centrale realizzata dalla VLAN 835. Normalmente il modem è in realtà uno switch da cui si isolano due interfacce sulla VLAN 835 e 836. Se queste sono fisiche si connettono direttamente al router di confine dei dati e al gateway voip rispetivamente. Se sono logiche, si realizza un tunnel PPPoE tra il router dell'ISP regionale in centrale e il router nella sede utente. Nel router utente deve chiaramente essere installato un client PPPoE.
+Sono possibili ibridazioni tra le tecniche precedenti, per cui usuale vedere un tunnel PPPoE all'interno della LAN di centrale realizzata dalla VLAN 835. Normalmente il modem è in realtà anche uno switch da cui si possono isolare due interfacce sulla VLAN 835 e 836. Se queste **sono fisiche** si connettono direttamente al router di confine per i dati e al gateway voip per la voce. Se sono logiche, si realizza un tunnel PPoE tra il router dell'ISP regionale in centrale e il router nella sede utente. Nel router utente deve chiaramente essere installato un client PPoE.
 
 ### **Sede sanitaria locale privata con link logico verso ISP**
 
-In questo caso si può utilizzare lo stesso firewall perimetrale dell'utente purchè esso sia capace delle forme di tunnelling richieste dallo ISP regionale. Nello specifico si potrebbe ipotizzare un tunnel generico (GRE) o un tunnel PPoE. Nel client PPPoE vengono inserite le credenziali di autenticazione dell'utente con le quali può esssere riconosciuto e la connessione approvata, magari attraverso un server di autenticazione quali RADIUS o DIAMETER.
+In questo caso si può utilizzare lo stesso firewall perimetrale dell'utente purchè esso sia capace delle forme di tunnelling richieste dallo ISP regionale. Nello specifico si potrebbe ipotizzare un tunnel generico (GRE) o un tunnel PPoE. Nel client PPoE vengono inserite le credenziali di autenticazione dell'utente con le quali può esssere riconosciuto e la connessione approvata, magari attraverso un server di autenticazione quali RADIUS o DIAMETER.
 
 In questo caso l'ISP regionale non fornisce un apparecchio ma la possibilità di utilizzare una terminazione logica del tunnell PPoE sul firewall perimetrale dell'utente.
 
