@@ -444,7 +444,7 @@ Il link esterni alla rete ISP regionale, cioè quelli verso il router/firewall u
         - quello della **vlan 835** con una o più porte fisiche verso un router dedicato per i dati
         - quello della **vlan 836** con una o più porte fisiche verso un router dedicato per il voip (ad es. centralino FreePBX).
 
-I **router dedicati**, per tipologie di traffico diverse, sono allocati su **porte di accesso** ad entrambi i capi della connessione (quella locale utente e quella in centrale).
+I **router dedicati**, per tipologie di traffico diverse, sono allocati su **porte di accesso** delle due VLAN ad entrambi i capi della connessione (quella locale utente e quella in centrale).
 
 ### **Flusso del Traffico su interfacce VLAN**
 
