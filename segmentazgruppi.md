@@ -210,7 +210,7 @@ Il taglio tra la parte di subnet e quella di host dell'indirizzo si porta così 
 - 2 per i due router collegati da un link fisico (il router dell'azienda sanitaria e il router dello ISP)
 - 12 indirizzi per allocare eventuali servizi pubblicati dalla ASL
 
-#### **Subnetting azienda sanitaria privata**
+### **Subnetting azienda sanitaria privata**
 Le aziende sanitarie private hanno a disposizione un solo prefisso, il prefisso 100, con estensione di 12 bit che quindi è utile a contare 4096 subnet, lasciando 4 bit per la parte di host che rimane utile a contare 16 indirizzi.
 
 <table>
@@ -432,11 +432,33 @@ Ipotizziamo che il piano di indirizzamento per le aziende private ricalchi quell
 </tr>
 </table>
 
-### **Sede sanitaria locale privata con VPN**
+### **Tipi di collegamento verso un ISP**
+
+Spesso accade che gli ISP regionali affittino l'infrastruttura di rete dei un ISP nazionale al quale possono collegare i loro router in una o più centrali. I link **interni alla rete**, cioè quelli tra i router dell'ISP regionale potrebbero **logici** e sono ottenuti attraverso varie tecniche didatticamente assimilabili ad un **tunnelling** (tunnel GRE, tunnel PPoE, VPN Trusted, VPN Untrusted MPLS).
+
+Il link esterni alla rete ISP regionale, cioè quelli verso il router/firewall utente potrebbero essere:
+- **fisici** se il router/modem si collega direttamente alla rete dell'ISP regionale con un link fisico. In questo caso il router di confine della LAN si collega direttamente al router dell'ISP regionale.
+- **logici** se il router/modem utilizza direttamente alla rete dell'ISP regionale con un link logico normalmente realizzato con:
+    - un **tunnnel L3** (tunnel PPPoE, VPN Untrusted MPLS, VPN Trusted, ecc) sul collegamento fisico. Il tunnel permette un collegamento diretto virtuale tra il router installato nella sede del cliente e il router dell'ISP regionale posto in centrale ottenuto tramite una cascata di collegamenti fisici lungo i router dell'ISP nazionale.
+    - un **tunnnel L2**, ottenuto generalmente mediante la tecnica della VLAN, che collega gli switch in centrale con il modem dal cliente in cui vengono realizzati due bridge:
+        - quello della interfaccia **vlan 835** verso un router dedicato per i dati
+        - quello della **vlan 836** verso un router dedicato per il voip (ad es. centralino FreePBX). I **router dedicati**, per tipologie di traffico diverse, sono allocati su **porte di accesso** ad entrambi i capi della connessione (quella locale utente e quella in centrale).
+
+### **Flusso del Traffico su interfacce VLAN**
+
+OLT (Optical Line Terminal): I dati viaggiano dall'utente finale attraverso la rete FTTH (Fiber to the Home) fino all'OLT, che si trova nella centrale locale. L'OLT inoltra il traffico alle VLAN appropriate verso gli switch di aggregazione, che raccolgono il traffico da più OLT e lo instradano verso il BNG o VoIP Gateway. 
+- **Traffico dati**: Il Broadband Network Gateway autentica gli utenti e instrada il traffico dati verso Internet attraverso la vlan 835. In sintesi: Utente Finale -> ONT (Optical Network Terminal) -> OLT (Central Office).
+- **Traffico voip**: Il VoIP Gateway gestisce la segnalazione e la commutazione delle chiamate VoIP lungo il percorso atraverso la vlan 836, in sintesi: OLT -> Aggregation Switch -> VoIP Gateway -> PSTN/Internet.
+
+Sono possibili ibridazioni tra le tecniche precedenti, per cui usuale vedere un tunnel PPPoE all'interno della LAN di centrale realizzata dalla VLAN 835. Normalmente il modem è in realtà uno switch da cui si isolano due interfacce sulla VLAN 835 e 836. Se queste sono fisiche si connettono direttamente al router di confine dei dati e al gateway voip rispetivamente. Se sono logiche, si realizza un tunnel PPPoE tra il router dell'ISP regionale in centrale e il router nella sede utente. Nel router utente deve chiaramente essere installato un client PPPoE.
+
+### **Sede sanitaria locale privata con link logico verso ISP**
+
+
 
 <img src="img/albero3penta.png" alt="alt text" width="1100">
 
-### **Sede sanitaria locale privata con dispositivo gateway dedicato**
+### **Sede sanitaria locale privata con link fisico verso ISP**
 
 <img src="img/albero3penta2.png" alt="alt text" width="1100">
 
