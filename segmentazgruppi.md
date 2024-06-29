@@ -192,6 +192,95 @@ Si sarebbe potuto isolare in maniera ancora **più affidabile** la rete della se
 
 L'**inconveniente** viene superato adoperando le **VLAN** e la sicurezza viene mantenuta ugualmente alta (**like wire** in pratica) grazie ai **comandi**: ```allowed vlan 1, 20, 30``` e ```allowed vlan 1, 10``` che **confinano** il traffico delle **trame MAC** relative alla LAN della **segreteria** sul solo SW dove sono collegati i suoi dispositivi. Tutte le altre dorsali non possono essere interessate da questo traffico, mentre sono tutte interessate dal traffico della **subnet amministrativa** degli AP che possono così essere gestiti da un **unico controller**.
 
+##### **Subnetting**
+
+<table>
+<tr><td></td><td> Ind. subnet </td><td> Broadcast </td><td> Ind. gateway </td><td> Range host </td><td> Range dhcp </td></tr>
+<tr>
+<td> 
+  S1
+</td>
+<td>
+10.100.0.0/28 
+</td>
+<td>
+10.100.0.15
+</td>
+<td>
+10.100.0.14
+</td>
+<td> 
+.0.1 - .0.13
+</td>
+<td> 
+.0.9 - .0.13
+</td>
+</tr>
+     
+<tr>
+<td> 
+  S2
+</td>
+<td>
+10.100.0.16/28  
+</td>
+<td>
+10.100.0.31
+</td>
+<td>
+10.100.0.30
+</td>
+<td> 
+.0.17 - .0.29
+</td>
+<td> 
+.0.25 - .0.29
+</td>
+</tr>
+
+<tr>
+<td> 
+  S3
+</td>
+<td>
+10.100.0.32/28     
+</td>
+<td>
+10.100.0.47
+</td>
+<td>
+10.100.0.46
+</td>
+<td> 
+.0.33 - .0.45
+</td>
+<td> 
+.2.41 - .0.45
+</td>
+</tr>
+
+<tr>
+<td> 
+  S4
+</td>
+<td>
+10.100.255.240/28     
+</td>
+<td>
+10.100.255.255
+</td>
+<td>
+10.100.255.254
+</td>
+<td> 
+.255.241 - .255.253
+</td>
+<td> 
+.255.249 - .255.253
+</td>
+</tr>
+</table>
+
 ### **Sede sanitaria pubblica**
 
 <img src="img/albero3tris2.png" alt="alt text" width="1100">
