@@ -416,13 +416,13 @@ Ipotizziamo che il piano di indirizzamento per le aziende private ricalchi quell
 </tr>
 </table>
 
-### **Sede sanitaria pubblica**
-
-<img src="img/albero3tris2.png" alt="alt text" width="1100">
-
 ### **Sede sanitaria locale privata con VPN**
 
 <img src="img/albero3penta.png" alt="alt text" width="1100">
+
+### **Sede sanitaria locale privata con dispositivo gateway dedicato**
+
+<img src="img/albero3penta2.png" alt="alt text" width="1100">
 
 ### **Sede sanitaria locale privata con policy routing**
 
