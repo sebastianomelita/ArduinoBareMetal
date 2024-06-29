@@ -261,7 +261,28 @@ L'**inconveniente** viene superato adoperando le **VLAN** e la sicurezza viene m
 
 <tr>
 <td> 
-  S4
+  ...............
+</td>
+<td>
+...............     
+</td>
+<td>
+...............
+</td>
+<td>
+...............
+</td>
+<td> 
+...............
+</td>
+<td> 
+...............
+</td>
+</tr>
+
+<tr>
+<td> 
+  S4096
 </td>
 <td>
 10.100.255.240/28     
