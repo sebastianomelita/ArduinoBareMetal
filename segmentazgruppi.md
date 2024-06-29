@@ -205,7 +205,7 @@ Una sottorete del range di partenza, la 10.100.0.0/16 è assegnata alla infrastr
 
 Per contare 2000 subnet di accesso ai router dello ISP servono almeno 11 bit che possono contare fino a 2048 indirizzi, per incontrare l'esigenza di espansioni future aggiungiamo un ulteriore bit arrivando a 12 bit di subnet, portando la potenzialità di conteggio fino a 4096 indirizzi.
 
-Il taglio tra la parte di subnet e quella di host dell'indirizzo si porta così a /28 (16+12), posizione che lascia appena 4 bit nella parte di host portando il numero dei corrispondenti indirizzi allocabili a 16. SOno 16 indirizzi che possono essere ripartititi così:
+Il taglio tra la parte di subnet e quella di host dell'indirizzo si porta così a /28 (16+12), posizione che lascia appena 4 bit nella parte di host portando il numero dei corrispondenti indirizzi allocabili a 16. Sono 16 indirizzi che possono essere ripartititi così:
 - 2 per indirizzo di subnet e di brosdcast
 - 2 per i due router collegati da un link fisico (il router dell'azienda sanitaria e il router dello ISP)
 - 12 indirizzi per allocare eventuali servizi pubblicati dalla ASL
