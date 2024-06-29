@@ -434,7 +434,7 @@ Ipotizziamo che il piano di indirizzamento per le aziende private ricalchi quell
 
 ### **Tipi di collegamento verso un ISP**
 
-Spesso accade che gli ISP regionali affittino l'infrastruttura di rete dei un ISP nazionale al quale possono collegare i loro router in una o più centrali. I link **interni alla rete**, cioè quelli tra i router dell'ISP regionale potrebbero **logici** e sono ottenuti attraverso varie tecniche didatticamente assimilabili ad un **tunnelling** (tunnel GRE, tunnel PPoE, VPN Trusted, VPN Untrusted MPLS).
+Spesso accade che gli ISP regionali affittino l'infrastruttura di rete dei un ISP nazionale al quale possono collegare i loro router in una o più centrali. I link **interni alla rete**, cioè quelli tra i router dell'ISP regionale potrebbero essere **logici** e sono ottenuti attraverso varie tecniche didatticamente assimilabili ad un **tunnelling** (tunnel GRE, tunnel PPoE, VPN Trusted, VPN Untrusted MPLS).
 
 Il link esterni alla rete ISP regionale, cioè quelli verso il router/firewall utente potrebbero essere:
 - **fisici** se il router/modem si collega direttamente alla rete dell'ISP regionale con un link fisico. In questo caso il router di confine della LAN si collega direttamente al router dell'ISP regionale.
