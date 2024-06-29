@@ -466,6 +466,8 @@ In questo caso l'ISP regionale non fornisce un apparecchio ma la possibilità di
 
 <img src="img/albero3penta.png" alt="alt text" width="1100">
 
+Se non si desidera far percorrere due volte il traffico in andata e ritorno allo stesso link si potrebbe, in alternativa, collegare il router R2 direttamente ad un porta del router R1, ad esempio a quella della DMZ, direttamente o tramite uno switch di transito che aggreghi altri servizi.
+
 ### **Sede sanitaria locale privata con link fisico verso ISP**
 
 In questo caso la connessione verso il router di confine dell'ISP regionale potrebbe essere sia fisica che logica (nel disegno si è immaginata fisica), in ogni caso, il router perimetrale dell'utente non si accorge della differenza dato che lui si limita ad inoltrare il traffico verso la subnet del fascicolo elettronico verso il router fornito dall'ISP regionale.
