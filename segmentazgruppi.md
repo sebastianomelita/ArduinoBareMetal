@@ -448,8 +448,8 @@ I **router dedicati**, per tipologie di traffico diverse, sono allocati su **por
 
 ### **Flusso del Traffico su interfacce VLAN**
 
-OLT (Optical Line Terminal): I dati viaggiano dall'utente finale attraverso la rete FTTH (Fiber to the Home) fino all'OLT, che si trova nella centrale locale. L'OLT inoltra il traffico alle VLAN appropriate verso gli switch di aggregazione, che raccolgono il traffico da più OLT e lo instradano verso il BNG o VoIP Gateway. 
-- **Traffico dati**: Il Broadband Network Gateway autentica gli utenti e instrada il traffico dati verso Internet attraverso la vlan 835. In sintesi: Utente Finale -> ONT (Optical Network Terminal) -> OLT (Central Office).
+OLT (Optical Line Terminal): I dati viaggiano dall'utente finale attraverso la rete FTTH (Fiber to the Home) fino all'OLT, che si trova nella centrale locale. L'OLT inoltra il traffico alle VLAN appropriate verso gli switch di aggregazione, che raccolgono il traffico da più OLT e lo instradano verso il BNG o VoIP Gateway. In sintesi, Utente Finale -> ONT (Optical Network Terminal) -> OLT (Central Office):
+- **Traffico dati**: Il Broadband Network Gateway autentica gli utenti e instrada il traffico dati verso Internet attraverso la vlan 835. In sintesi: OLT -> Aggregation Switch -> BNG -> Internet.
 - **Traffico voip**: Il VoIP Gateway gestisce la segnalazione e la commutazione delle chiamate VoIP lungo il percorso atraverso la vlan 836, in sintesi: OLT -> Aggregation Switch -> VoIP Gateway -> PSTN/Internet.
 
 ### **Ibridazioni**
