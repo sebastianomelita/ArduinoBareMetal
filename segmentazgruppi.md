@@ -479,7 +479,7 @@ L'ISP regionale potrebbe usare lo stesso piano di indirizzamento dell'ISP nazion
 
 Se non si desidera far percorrere due volte il traffico in andata e ritorno allo stesso link si potrebbe, in alternativa, collegare il router R2 direttamente ad un porta del router R1, ad esempio a quella della DMZ, direttamente o tramite uno switch di transito che aggreghi altri servizi.
 
-### **Sede sanitaria locale privata contunne + vlan**
+### **Sede sanitaria locale privata con tunnel + vlan**
 
 In questo scenario si immagina che sia direttamente l'ISP regionale a fornire il router perimetrale della LAN dell'azienda sanitaria privata. Il firewall fornito dal provider potrebbe realizzare direttamente lui internamente il routing tra le subnet aziendali e la subnet di connessione al router di confine dell'ISP. Il link di questa connessione può essere, al solito, sia fisico che logico.
 
