@@ -493,7 +493,7 @@ In questo scenario si immagina che sia direttamente l'ISP regionale a fornire il
 
 Uno scenario, insolito ma possibile, consentito da questa architettura potrebbe essere quello di fare il **bridging** tra la porta WAN e una o più  porte del router esponendo così la subnet verso il router di confine. Potrebbe essere usata per collegare questa subnet su una **VLAN separata** su cui collegare dei **server** che pubblichino qualcosa di utile per la ASL centrale oppure per collegare al fascicolo elettronico solo **pochi PC**, separati logicamente dal resto dell'infrastruttura, per **massimizzare la privacy**.
 
-<img src="img/albero3trisbridge.png" alt="alt text" width="1100">
+<img src="img/albero3trisBridge.png" alt="alt text" width="1100">
 
 >[Torna a albero apparati attivi](albapparatiattivi.md)
 
