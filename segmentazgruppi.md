@@ -438,15 +438,15 @@ Spesso accade che gli ISP regionali affittino l'infrastruttura di rete dei un IS
 
 Il link esterni alla rete ISP regionale, cioè quelli verso il router/firewall utente potrebbero essere:
 - **fisici** se il router/modem si collega direttamente alla rete dell'ISP regionale con un link fisico. In questo caso il router di confine della LAN si collega direttamente al router dell'ISP regionale.
-- **logici** se il router/modem utilizza direttamente alla rete dell'ISP regionale con un link logico normalmente realizzato con:
+- **logici** se il router/modem si collega direttamente alla rete dell'ISP regionale con un link logico normalmente realizzato con:
     - un **tunnnel L3** (tunnel PPPoE, VPN Untrusted MPLS, VPN Trusted, ecc) sul collegamento fisico. Il tunnel permette un collegamento diretto virtuale tra il router installato nella sede del cliente e il router dell'ISP regionale posto in centrale ottenuto tramite una cascata di collegamenti fisici lungo i router dell'ISP nazionale.
     - un **tunnnel L2**, ottenuto generalmente mediante la tecnica delle VLAN, che collega gli switch in centrale con il modem dal cliente in cui vengono realizzati **due bridge**:
         - quello della **vlan 835** con una o più porte fisiche verso un router dedicato per i dati
         - quello della **vlan 836** con una o più porte fisiche verso un router dedicato per il voip (ad es. centralino FreePBX).
 
-I **router dedicati**, per tipologie di traffico diverse, sono allocati su **porte di accesso** delle due VLAN ad entrambi i capi della connessione (quella locale utente e quella in centrale).
-
 ### **Flusso del Traffico su interfacce VLAN**
+
+I **router dedicati**, per tipologie di traffico diverse, sono allocati su **porte di accesso** delle due VLAN ad entrambi i capi della connessione (quella locale utente e quella in centrale).
 
 OLT (Optical Line Terminal): I dati viaggiano dall'utente finale attraverso la rete FTTH (Fiber to the Home) fino all'OLT, che si trova nella centrale locale. L'OLT inoltra il traffico alle VLAN appropriate verso gli switch di aggregazione, che raccolgono il traffico da più OLT e lo instradano verso il BNG o VoIP Gateway. In sintesi, Utente Finale -> ONT (Optical Network Terminal) -> OLT (Central Office):
 - **Traffico dati**: Il Broadband Network Gateway autentica gli utenti e instrada il traffico dati verso Internet attraverso la vlan 835. In sintesi: OLT -> Aggregation Switch -> BNG -> Internet.
