@@ -436,7 +436,7 @@ Ipotizziamo che il piano di indirizzamento per le aziende private ricalchi quell
 
 Spesso accade che gli ISP regionali affittino l'infrastruttura di rete dei un ISP nazionale al quale possono collegare i loro router in una o più centrali. I link **interni alla rete**, cioè quelli tra i router dell'ISP regionale potrebbero essere **logici** e sono ottenuti attraverso varie tecniche didatticamente assimilabili ad un **tunnelling** (tunnel GRE, tunnel PPoE, VPN Trusted, VPN Untrusted MPLS).
 
-Il link esterni alla rete ISP regionale, cioè quelli verso il router/firewall utente potrebbero essere:
+Il **link esterni** alla rete ISP regionale, cioè quelli verso il router/firewall utente che **non** sono di **transito** verso altri router dello ISP, potrebbero essere:
 - **fisici** se il router/modem si collega direttamente alla rete dell'ISP regionale con un link fisico. In questo caso il router di confine della LAN si collega direttamente al router dell'ISP regionale.
 - **logici** se il router/modem si collega direttamente alla rete dell'ISP regionale con un link logico normalmente realizzato con:
     - un **tunnnel L3** (tunnel PPoE, VPN Untrusted MPLS, VPN Trusted, ecc) sul collegamento fisico. Il tunnel permette un collegamento **diretto virtuale** tra il router installato nella sede del cliente e il router dell'ISP regionale posto in centrale ottenuto tramite una cascata di collegamenti fisici lungo i router dell'ISP nazionale.
@@ -446,9 +446,11 @@ Il link esterni alla rete ISP regionale, cioè quelli verso il router/firewall u
 
 ### **Flusso del Traffico su interfacce VLAN**
 
-I **router dedicati**, per tipologie di traffico diverse, sono allocati su **porte di accesso** delle due VLAN ad entrambi i capi della connessione (quella locale utente e quella in centrale).
+I **router dedicati**, per tipologie di traffico diverse, sono allocati su **porte di accesso** delle due VLAN ad entrambi i capi della connessione (quella locale utente e quella in centrale). Le connessioni in fibra avvengono tra due componenti passive:
+- L'**ONT** (Optical Network Terminal) è il dispositivo (borchia ottica) che riceve il segnale ottico dalla fibra ottica e lo converte in un segnale elettrico utilizzabile dai dispositivi dell'utente finale.
+- **OLT** (Optical Line Terminal) è il dispositivo di terminazione che collega la rete di accesso ottico alla rete di core del provider. Si occupa di aggregare il traffico proveniente da molte ONT e trasmetterlo verso la rete centrale dell'ISP.
 
-OLT (Optical Line Terminal): I dati viaggiano dall'utente finale attraverso la rete FTTH (Fiber to the Home) fino all'OLT, che si trova nella centrale locale. L'OLT inoltra il traffico alle VLAN appropriate verso gli switch di aggregazione, che raccolgono il traffico da più OLT e lo instradano verso il BNG o VoIP Gateway. In sintesi, Utente Finale -> ONT (Optical Network Terminal) -> OLT (Central Office):
+In centrale, iltraffico viene splittato in traffico dati e traffico voce in base alle vlan:
 - **Traffico dati**: Il Broadband Network Gateway autentica gli utenti e instrada il traffico dati verso Internet attraverso la vlan 835. In sintesi: OLT -> Aggregation Switch -> BNG -> Internet.
 - **Traffico voip**: Il VoIP Gateway gestisce la segnalazione e la commutazione delle chiamate VoIP lungo il percorso atraverso la vlan 836, in sintesi: OLT -> Aggregation Switch -> VoIP Gateway -> PSTN/Internet.
 
