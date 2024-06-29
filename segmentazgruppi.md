@@ -192,7 +192,23 @@ Si sarebbe potuto isolare in maniera ancora **più affidabile** la rete della se
 
 L'**inconveniente** viene superato adoperando le **VLAN** e la sicurezza viene mantenuta ugualmente alta (**like wire** in pratica) grazie ai **comandi**: ```allowed vlan 1, 20, 30``` e ```allowed vlan 1, 10``` che **confinano** il traffico delle **trame MAC** relative alla LAN della **segreteria** sul solo SW dove sono collegati i suoi dispositivi. Tutte le altre dorsali non possono essere interessate da questo traffico, mentre sono tutte interessate dal traffico della **subnet amministrativa** degli AP che possono così essere gestiti da un **unico controller**.
 
-### **Subnetting**
+## **Rete regionale fascicolo sanitario**
+
+Si vuole realizzare un ISP che connetta tra loro aziende sanitarie pubbliche e private per consentire loro di accedere al fascicolo sanitario personale dei cittadini di una regione italiana. 
+
+Le aziende sanitarie pubbliche sono clienti di due servizi: l'accesso al fascicolo e l'accesso ad Internet.
+
+Le aziende sanitarie private sono clienti di un solo servizio: l'accesso al fascicolo. Per ottnere l'accesso ad Internet devono rivolgersi ad un altro provider.
+
+Gli indirizzi per connettersi alla infrastruttura di distribuzione, cioè quelli da utilizzare per accedere al router più vicino dell'infrastruttura, sono privati nel range 10.0.0.0/8. 
+Una sottorete del range di partenza, la 10.100.0.0/16 è assegnata alla infrastrutture private. Dimensionare le subnete per consentire l'accesso ad almeno 2000 sedi sanitarie private, lasciando dei margini adeguati per eventuali espansioni future.
+
+Per contare 2000 subnet di accesso ai router dello ISP servono almeno 11 bit che possono contare fino a 2048 indirizzi, per incontrare l'esigenza di espansioni future aggiungiamo un ulteriore bit arrivando a 12 bit di subnet, portando la potenzialità di conteggio fino a 4096.
+
+Il taglio tra la parte di subnet e quella di host dell'indirizzo si porta così a /28 (16+12), posizione che lascia appena 4 bit nella parte di host portando il numero dei corrispondenti indirizzi allocabili a 16. SOno 16 indirizzi che possono essere ripartititi così:
+- 2 per indirizzo di subnet e di brosdcast
+- 2 per i due router collegati da un link fisico (il router dell'azienda sanitaria e il router dello ISP)
+- 12 indirizzi per allocare eventuali servizi pubblicati dalla ASL
 
 #### **Subnetting azienda sanitaria privata**
 Le aziende sanitarie private hanno a disposizione un solo prefisso, il prefisso 100, con estensione di 12 bit che quindi è utile a contare 4096 subnet, lasciando 4 bit per la parte di host che rimane utile a contare 16 indirizzi.
@@ -305,7 +321,7 @@ Le aziende sanitarie private hanno a disposizione un solo prefisso, il prefisso 
 </tr>
 </table>
 
-#### **Subnetting azienda sanitaria pubblica**
+### **Subnetting azienda sanitaria pubblica**
 Ipotizziamo che il piano di indirizzamento per le aziende private ricalchi quello preesistente già utilizzato per gli altri enti, per cui le aziende sanitarie private hanno a disposizione un prefisso con estensione di 12 bit che quindi è utile a contare 4096 subnet, lasciando 4 bit per la parte di host che rimane utile a contare 16 indirizzi. Sono ammissibili tutti i prefissi tranne il 100 e, data la loro estensione, sono tutti spalmati su due ottetti (il secondo e parte del terzo).
 
 <table>
