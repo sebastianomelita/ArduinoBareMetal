@@ -487,6 +487,14 @@ Uno scenario, insolito ma possibile, consentito da questa architettura potrebbe 
 
 <img src="img/albero3tris2.png" alt="alt text" width="1100">
 
+### **Sede sanitaria locale privata con tunnel + bridge**
+
+In questo scenario si immagina che sia direttamente l'ISP regionale a fornire il router perimetrale della LAN dell'azienda sanitaria privata. Il firewall fornito dal provider potrebbe realizzare direttamente lui internamente il routing tra le subnet aziendali e la subnet di connessione al router di confine dell'ISP. Il link di questa connessione può essere, al solito, sia fisico che logico.
+
+Uno scenario, insolito ma possibile, consentito da questa architettura potrebbe essere quello di fare il **bridging** tra la porta WAN e una o più  porte del router esponendo così la subnet verso il router di confine. Potrebbe essere usata per collegare questa subnet su una **VLAN separata** su cui collegare dei **server** che pubblichino qualcosa di utile per la ASL centrale oppure per collegare al fascicolo elettronico solo **pochi PC**, separati logicamente dal resto dell'infrastruttura, per **massimizzare la privacy**.
+
+<img src="img/albero3tris2bridge.png" alt="alt text" width="1100">
+
 >[Torna a albero apparati attivi](albapparatiattivi.md)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
