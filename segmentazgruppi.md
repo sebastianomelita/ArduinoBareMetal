@@ -203,7 +203,7 @@ Le aziende sanitarie private sono clienti di un solo servizio: l'accesso al fasc
 Gli indirizzi per connettersi alla infrastruttura di distribuzione, cioè quelli da utilizzare per accedere al router più vicino dell'infrastruttura, sono privati nel range 10.0.0.0/8. 
 Una sottorete del range di partenza, la 10.100.0.0/16 è assegnata alla infrastrutture private. Dimensionare le subnete per consentire l'accesso ad almeno 2000 sedi sanitarie private, lasciando dei margini adeguati per eventuali espansioni future.
 
-Per contare 2000 subnet di accesso ai router dello ISP servono almeno 11 bit che possono contare fino a 2048 indirizzi, per incontrare l'esigenza di espansioni future aggiungiamo un ulteriore bit arrivando a 12 bit di subnet, portando la potenzialità di conteggio fino a 4096.
+Per contare 2000 subnet di accesso ai router dello ISP servono almeno 11 bit che possono contare fino a 2048 indirizzi, per incontrare l'esigenza di espansioni future aggiungiamo un ulteriore bit arrivando a 12 bit di subnet, portando la potenzialità di conteggio fino a 4096 indirizzi.
 
 Il taglio tra la parte di subnet e quella di host dell'indirizzo si porta così a /28 (16+12), posizione che lascia appena 4 bit nella parte di host portando il numero dei corrispondenti indirizzi allocabili a 16. SOno 16 indirizzi che possono essere ripartititi così:
 - 2 per indirizzo di subnet e di brosdcast
