@@ -151,7 +151,7 @@ Di seguito è riportato un esempio che le **riassume** tutte:
 
 ## **Subnetting**
 
-E’ il processo di suddividere (partizionare) gli indirizzi allocabili della subnet di partenza in più gruppi di indirizzi aventi a comune un prefisso dell’indirizzo IP.
+E’ il **processo** di suddividere (partizionare) gli indirizzi allocabili della subnet di partenza in più gruppi di indirizzi aventi a comune un prefisso dell’indirizzo IP.
 
 Un indirizzo IPv4 si divide in una parte di network (immutabile) ed in una parte di host (partizionabile) che contiene tutti gli indirizzi degli host della subnet di partenza
 Gli **indirizzi allocabili** di una subnet sono contenuti nella sua **parte di host**. Le subnet hanno un **prefisso** che è legato alla **posizione fisica** della subnet nello spazio, cioè raggruppa host con la caratteristica di essere vicini nello spazio (contiguità fisica).
