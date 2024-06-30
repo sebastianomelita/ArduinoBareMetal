@@ -455,8 +455,8 @@ Le **VLAN** sono usate per realizzare la **multiplazione TDM** (a divisione di t
 <img src="img/olt.png" alt="alt text" width="500">
 
 In **centrale**, il traffico viene splittato in traffico dati e traffico voce in base alle vlan:
-- **Traffico dati**: Il Broadband Network Gateway autentica gli utenti e instrada il traffico dati verso Internet attraverso la vlan 835. In sintesi: OLT -> Aggregation Switch -> BNG -> Internet.
-- **Traffico voip**: Il VoIP Gateway gestisce la segnalazione e la commutazione delle chiamate VoIP lungo il percorso atraverso la vlan 836, in sintesi: OLT -> Aggregation Switch -> VoIP Gateway -> PSTN/Internet.
+- **Traffico dati**: Il **BNG** (Broadband Network Gateway) autentica gli utenti e instrada il traffico dati verso Internet. In sintesi: OLT -> Aggregation Switch -> BNG -> Internet.
+- **Traffico voip**: Il **VoIP Gateway** gestisce la segnalazione e la commutazione delle chiamate VoIP lungo il percorso, in sintesi: OLT -> Aggregation Switch -> VoIP Gateway -> PSTN/Internet.
 
 ### **Ibridazioni**
 
