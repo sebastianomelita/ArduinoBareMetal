@@ -402,9 +402,328 @@ Se si desidera, è possibile allocare solo per le subnet di dorsale un subnettin
 
 Per esempi di **topologie di apparati attivi** e per il **dettaglio sulla segmentazione** della rete per gruppi di utenti vedi [Segmentazione rete](segmentazgruppi.md). 
 
+## **Rete regionale fascicolo sanitario**
+
+Si vuole realizzare un ISP che connetta tra loro aziende sanitarie pubbliche e private per consentire loro di accedere al fascicolo sanitario personale dei cittadini di una regione italiana. 
+
+Le aziende sanitarie pubbliche sono clienti di due servizi: l'accesso al fascicolo e l'accesso ad Internet.
+
+Le aziende sanitarie private sono clienti di un solo servizio: l'accesso al fascicolo. Per ottenere l'accesso ad Internet devono rivolgersi ad un altro provider.
+
+Gli indirizzi per connettersi alla infrastruttura di distribuzione, cioè quelli da utilizzare per accedere al router più vicino dell'infrastruttura, sono privati nel range 10.0.0.0/8. 
+Una sottorete del range di partenza, la 10.100.0.0/16 è assegnata alla infrastrutture private. Dimensionare le subnete per consentire l'accesso ad almeno 2000 sedi sanitarie private, lasciando dei margini adeguati per eventuali espansioni future.
+
+Per contare 2000 subnet di accesso ai router dello ISP servono almeno 11 bit che possono contare fino a 2048 indirizzi, per incontrare l'esigenza di espansioni future aggiungiamo un ulteriore bit arrivando a 12 bit di subnet, portando la potenzialità di conteggio fino a 4096 indirizzi.
+
+Il taglio tra la parte di subnet e quella di host dell'indirizzo si porta così a /28 (16+12), posizione che lascia appena 4 bit nella parte di host portando il numero dei corrispondenti indirizzi allocabili a 16. Sono 16 indirizzi che possono essere ripartititi così:
+- 2 per indirizzo di subnet e di brosdcast
+- 2 per i due router collegati da un link fisico (il router dell'azienda sanitaria e il router dello ISP)
+- 12 indirizzi per allocare eventuali servizi pubblicati dalla ASL
+
+### **Subnetting rete di aggregazione**
+
+Il **subnetting** appena calcolato fa parte del piano di indirizzamento dell'Internet Service Provider (ISP) regionale ma non si riferisce ai collegamenti tra gli IS (intermediate systems) della sua rete ma solamente ai **collegamenti terminali** tra gli IS e i potenziali ES (End systems) dell'utente. La porzione della rete di un ISP che realizza questi collegamenti prende il nome di **rete di aggregazione**. 
+
+<img src="img/aggregazione.png" alt="alt text" width="500">
+
+In realtà, il più delle volte, al posto degli ES ci sta il **router perimetrale** di confine della rete locale (LAN) che **condivide** gli indirizzi **IPv4** assegnati dal subnetting con i **dispositivi interni** alla LAN tramite un dispositivo di **traduzione PNAT**. Per gli indirizzi **IPv6** la traduzione non è necessaria in quanto il subnetting di aggregazione, di base, fornisce almeno 16 bit per la **parte di host** dell'indirizzo che sono normalmente sufficienti ad allocare gli indirizzi di **tutti gli host** di una LAN.
+
+### **Subnetting azienda sanitaria privata**
+Le aziende sanitarie private hanno a disposizione un solo prefisso, il prefisso 100, con estensione di 12 bit che quindi è utile a contare 4096 subnet, lasciando 4 bit per la parte di host che rimane utile a contare 16 indirizzi.
+
+<table>
+<tr><td></td><td> Ind. subnet </td><td> Broadcast </td><td> Ind. gateway </td><td> Range host </td><td> Range dhcp </td></tr>
+<tr>
+<td> 
+  S1
+</td>
+<td>
+10.100.0.0/28 
+</td>
+<td>
+10.100.0.15
+</td>
+<td>
+10.100.0.14
+</td>
+<td> 
+.0.1 - .0.13
+</td>
+<td> 
+.0.9 - .0.13
+</td>
+</tr>
+     
+<tr>
+<td> 
+  S2
+</td>
+<td>
+10.100.0.16/28  
+</td>
+<td>
+10.100.0.31
+</td>
+<td>
+10.100.0.30
+</td>
+<td> 
+.0.17 - .0.29
+</td>
+<td> 
+.0.25 - .0.29
+</td>
+</tr>
+
+<tr>
+<td> 
+  S3
+</td>
+<td>
+10.100.0.32/28     
+</td>
+<td>
+10.100.0.47
+</td>
+<td>
+10.100.0.46
+</td>
+<td> 
+.0.33 - .0.45
+</td>
+<td> 
+.2.41 - .0.45
+</td>
+</tr>
+
+<tr>
+<td> 
+  ...................
+</td>
+<td>
+.....................     
+</td>
+<td>
+.....................
+</td>
+<td>
+.....................
+</td>
+<td> 
+.....................
+</td>
+<td> 
+.....................
+</td>
+</tr>
+
+<tr>
+<td> 
+  S4096
+</td>
+<td>
+10.100.255.240/28     
+</td>
+<td>
+10.100.255.255
+</td>
+<td>
+10.100.255.254
+</td>
+<td> 
+.255.241 - .255.253
+</td>
+<td> 
+.255.249 - .255.253
+</td>
+</tr>
+</table>
+
+### **Subnetting azienda sanitaria pubblica**
+Ipotizziamo che il piano di indirizzamento per le aziende private ricalchi quello preesistente già utilizzato per gli altri enti, per cui le aziende sanitarie private hanno a disposizione un prefisso con estensione di 12 bit che quindi è utile a contare 4096 subnet, lasciando 4 bit per la parte di host che rimane utile a contare 16 indirizzi. Sono ammissibili tutti i prefissi tranne il 100 e, data la loro estensione, sono tutti spalmati su due ottetti (il secondo e parte del terzo).
+
+<table>
+<tr><td></td><td> Ind. subnet </td><td> Broadcast </td><td> Ind. gateway </td><td> Range host </td><td> Range dhcp </td></tr>
+<tr>
+<td> 
+  S1
+</td>
+<td>
+10.101.0.0/28 
+</td>
+<td>
+10.101.0.15
+</td>
+<td>
+10.101.0.14
+</td>
+<td> 
+.0.1 - .0.13
+</td>
+<td> 
+.0.9 - .0.13
+</td>
+</tr>
+     
+<tr>
+<td> 
+  S2
+</td>
+<td>
+10.101.0.16/28  
+</td>
+<td>
+10.101.0.31
+</td>
+<td>
+10.101.0.30
+</td>
+<td> 
+.0.17 - .0.29
+</td>
+<td> 
+.0.25 - .0.29
+</td>
+</tr>
+
+<tr>
+<td> 
+  S3
+</td>
+<td>
+10.101.0.32/28     
+</td>
+<td>
+10.101.0.47
+</td>
+<td>
+10.101.0.46
+</td>
+<td> 
+.0.33 - .0.45
+</td>
+<td> 
+.2.41 - .0.45
+</td>
+</tr>
+
+<tr>
+<td> 
+  ...................
+</td>
+<td>
+.....................     
+</td>
+<td>
+.....................
+</td>
+<td>
+.....................
+</td>
+<td> 
+.....................
+</td>
+<td> 
+.....................
+</td>
+</tr>
+
+<tr>
+<td> 
+  S4096
+</td>
+<td>
+10.101.255.240/28     
+</td>
+<td>
+10.101.255.255
+</td>
+<td>
+10.101.255.254
+</td>
+<td> 
+.255.241 - .255.253
+</td>
+<td> 
+.255.249 - .255.253
+</td>
+</tr>
+</table>
+
+### **Tipi di collegamento verso un ISP**
+
+Spesso accade che gli ISP regionali affittino l'infrastruttura di rete dei un ISP nazionale al quale possono collegare i loro router in una o più centrali. I link **interni alla rete**, cioè quelli tra i router dell'ISP regionale potrebbero essere **logici** e sono ottenuti attraverso varie tecniche didatticamente assimilabili ad un **tunnelling** (tunnel GRE, tunnel PPoE, VPN Trusted, VPN Untrusted MPLS).
+
+Il **link esterni** alla rete ISP regionale, cioè quelli verso il router/firewall utente che **non** sono di **transito** verso altri router dello ISP, potrebbero essere:
+- **fisici** se il router/modem si collega direttamente alla rete dell'ISP regionale con un link fisico. In questo caso il router di confine della LAN si collega direttamente al router dell'ISP regionale.
+- **logici** se il router/modem si collega direttamente alla rete dell'ISP regionale con un link logico normalmente realizzato con:
+    - un **tunnnel L3** (tunnel PPoE, VPN Untrusted MPLS, VPN Trusted, ecc) sul collegamento fisico. Il tunnel permette un collegamento **diretto virtuale** tra il router installato nella sede del cliente e il router dell'ISP regionale posto in centrale ottenuto tramite una cascata di collegamenti fisici lungo i router dell'ISP nazionale.
+    - un **tunnnel L2**, ottenuto generalmente mediante la tecnica delle VLAN, che collega gli switch in centrale con il modem dal cliente in cui vengono realizzati **due bridge**:
+        - quello della **vlan 835** con una o più porte fisiche verso un router dedicato per i dati
+        - quello della **vlan 836** con una o più porte fisiche verso un router dedicato per il voip (ad es. centralino FreePBX).
+
+### **Flusso del Traffico su interfacce VLAN**
+
+I **router dedicati**, per tipologie di traffico diverse, sono allocati su **porte di accesso** delle due VLAN ad entrambi i capi della connessione (quella locale utente e quella in centrale). Le connessioni in **fibra** avvengono tra due componenti passive:
+- L'**ONT** (Optical Network Terminal) è il dispositivo (borchia ottica) che riceve il segnale ottico dalla fibra ottica e lo converte in un segnale elettrico utilizzabile dai dispositivi dell'utente finale.
+- **OLT** (Optical Line Terminal) è il dispositivo di terminazione che collega la rete di accesso ottico alla rete di core del provider. Si occupa di aggregare il traffico proveniente da molte ONT e trasmetterlo verso la rete centrale dell'ISP.
+
+Le **VLAN** sono usate per realizzare la **multiplazione TDM** (a divisione di tempo)  dei due flussi di traffico dati e voce su un'**unica connessione fisica** in fibra. Le VLAN sono configurate sui dispositivi di rete come l'OLT (Optical Line Terminal) e l'ONT, permettendo di mantenere separati i flussi di dati e voce e di applicare politiche di QoS (Quality of Service) specifiche.
+
+In **sostanza**, grazie alla **bassa attenuazione per Km** delle fibre ottiche, è possibile realizzare un lungo **canale passivo** che parte dall'**ONT utente** (dislocato nella sua sede fisica) fino ad arrivare all'**OLT in centrale**, su cui transitano trame MAC colorate di **livello L2** della pila ISO/OSI. A valle dell'OLT, si trovano i **link** verso il **router di confine dello ISP** che **generano** le **subnet di aggregazione** su cui si attestano i **dispositivi attivi utente** (host o router/firewall perimetrale).
+
+<img src="img/olt.png" alt="alt text" width="500">
+
+In **centrale**, il traffico viene splittato in traffico dati e traffico voce in base alle vlan:
+- **Traffico dati**: Il **BNG** (Broadband Network Gateway) autentica gli utenti e instrada il traffico dati verso Internet. In sintesi: OLT -> Aggregation Switch -> BNG -> Internet.
+- **Traffico voip**: Il **VoIP Gateway** gestisce la segnalazione e la commutazione delle chiamate VoIP lungo il percorso. Il gateway può inoltrare le chiamate verso la **rete PSTN** telefonica tradizionale verso cui esegue la **transcodifica**, cioè la trasformazione della voce da pacchetto a circuito, oppure può inoltrare i pacchetti voip verso una **rete** di distribuzione **completamente ip**, magari basata su Internet. In sintesi: OLT -> Aggregation Switch -> VoIP Gateway -> PSTN/Internet.
+
+### **Ibridazioni**
+
+Sono possibili ibridazioni tra le tecniche precedenti, per cui usuale vedere un tunnel PPPoE all'interno della LAN di centrale realizzata dalla VLAN 835. Normalmente il modem è in realtà anche uno switch da cui si possono isolare due interfacce sulla VLAN 835 e 836. Se queste **sono fisiche** si connettono direttamente al router di confine per i dati e al gateway voip per la voce. Se sono logiche, si realizza un tunnel PPoE tra il router dell'ISP regionale in centrale e il router nella sede utente. Nel router utente deve chiaramente essere installato un client PPoE.
+
+### **Sede sanitaria locale privata con link logico verso ISP**
+
+In questo caso si può utilizzare lo stesso firewall perimetrale dell'utente purchè esso sia capace delle forme di tunnelling richieste dallo ISP regionale. Nello specifico si potrebbe ipotizzare un tunnel generico (GRE) o un tunnel PPoE. Nel client PPoE vengono inserite le credenziali di autenticazione dell'utente con le quali può esssere riconosciuto e la connessione approvata, magari attraverso un server di autenticazione quali RADIUS o DIAMETER.
+
+In questo caso l'ISP regionale non fornisce un apparecchio ma la possibilità di utilizzare una terminazione logica del tunnel PPoE sul firewall perimetrale dell'utente.
+
+<img src="img/albero3penta.png" alt="alt text" width="1100">
+
+
+### **Sede sanitaria locale privata con link fisico verso ISP**
+
+In questo caso la connessione verso il router di confine dell'ISP regionale potrebbe essere sia fisica che logica (nel disegno si è immaginata fisica), in ogni caso, il router perimetrale dell'utente non si accorge della differenza dato che lui si limita ad inoltrare il traffico verso la subnet del fascicolo elettronico verso il router fornito dall'ISP regionale.
+
+L'ISP regionale potrebbe usare lo stesso piano di indirizzamento dell'ISP nazionale e utilizzare appieno le capacità di routing della sua infrastruttura, oppure potrebbe utilizzare varie forme di incapsulamento (tunnelling). Una molto comune perchè garantisce la **QoS** (Quality of Service) è la tecnologia **MPLS**:
+- In una configurazione L3VPN, i pacchetti vengono **incapsulati** con **etichette MPLS** all'ingresso nella rete del provider e **decapsulati** all'uscita. Questo crea un **tunnel logico** attraverso la rete MPLS (dello ISP nazionale).
+- Il **tunneling MPLS** avviene instradando i pacchetti lungo **percorsi fissi** basati sulle etichette, senza dover analizzare gli indirizzi IP di destinazione detti Label Switching Path (**LSP**). Gli LSP sono **percorsi predefiniti** attraverso la rete MPLS. Ogni pacchetto che attraversa la rete MPLS viene etichettato con un'identificatore che indica il suo LSP, questo migliora l'efficienza e la velocità di instradamento.
+
+<img src="img/albero3penta2.png" alt="alt text" width="1100">
+
+Se non si desidera far percorrere due volte il traffico in andata e ritorno allo stesso link si potrebbe, in alternativa, collegare il router R2 direttamente ad un porta del router R1, ad esempio a quella della DMZ, direttamente o tramite uno switch di transito che aggreghi altri servizi. Il link, chiaramente, diventa un'altra subnet che deve essere allocata con indirizzi privati.
+
+### **Sede sanitaria locale privata con tunnel + vlan**
+
+In questo scenario si immagina che sia direttamente l'ISP regionale a fornire il router perimetrale della LAN dell'azienda sanitaria privata. Il firewall fornito dal provider potrebbe realizzare direttamente lui internamente il routing tra le subnet aziendali e la subnet di connessione al router di confine dell'ISP. Il link di questa connessione può essere, al solito, sia fisico che logico.
+
+Le subnet sulle due vlan possono essere gestite con **autorizzazioni diverse** impostate sul router che realizza l'intervaln routing, ad esempio la subnet del fascicolo potrebbe essere autorizzata a accedere ai servizi del fascicolo sanitario mentre le altre della struttura no. Tutte possono accedere ad internet mediante la rotta di default. Le autorizzazzioni si possono impostare con delle **acl** associate ad una o più interfacce del **router firewall perimetrale**.
+
+<img src="img/albero3tris2privata.png" alt="alt text" width="1100">
+
+### **Sede sanitaria locale privata con tunnel + bridge**
+
+In questo scenario si immagina che sia direttamente l'ISP regionale a fornire il router perimetrale della LAN dell'azienda sanitaria privata. Il firewall fornito dal provider potrebbe realizzare direttamente lui internamente il routing tra le subnet aziendali e la subnet di connessione al router di confine dell'ISP. Il link di questa connessione può essere, al solito, sia fisico che logico.
+
+Uno scenario, insolito ma possibile, consentito da questa architettura potrebbe essere quello di fare il **bridging** tra la porta WAN e una o più  porte del router esponendo così la subnet verso il router di confine. Potrebbe essere usata per collegare questa subnet su una **VLAN separata** su cui collegare dei **server** che pubblichino qualcosa di utile per la ASL centrale oppure per collegare al fascicolo elettronico solo **pochi PC**, separati logicamente dal resto dell'infrastruttura, per **massimizzare la privacy**.
+
+<img src="img/albero3trisBridge.png" alt="alt text" width="1100">
+
 Sitografia:
 - https://miro.medium.com/v2/resize:fit:1400/1*SHNEn-wqJPRxdYf2s_yapg.png
 - https://community.cisco.com/t5/networking-knowledge-base/how-to-configure-a-gre-tunnel/ta-p/3131970
+- https://www.fibermall.com/blog/epon-gpon-10g-epon-10g-gpon-olt-how-to-work.htm
+- https://xxxamin1314.medium.com/an%C3%A1lisis-de-pon-qu%C3%A9-es-olt-onu-ont-y-odn-8e78eb25e4bb
 
 
 >[Torna a reti ethernet](archeth.md#documentazione)
