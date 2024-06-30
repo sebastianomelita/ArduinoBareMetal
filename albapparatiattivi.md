@@ -167,6 +167,7 @@ Di seguito è riportato un esempio che le **riassume** tutte:
  - .
   <img src="img/interfacce.png" alt="alt text" width="900">
 
+Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [Tunnel e vpn](ethvpn.md)
 
 ## **Subnetting**
 
@@ -743,6 +744,7 @@ In questo caso l'ISP regionale non fornisce un apparecchio ma la possibilità di
 
 <img src="img/albero3penta.png" alt="alt text" width="1100">
 
+Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [Tunnel e vpn](ethvpn.md)
 
 ### **Sede sanitaria locale privata con link fisico verso ISP**
 
@@ -764,6 +766,8 @@ Le subnet sulle due vlan possono essere gestite con **autorizzazioni diverse** i
 
 <img src="img/albero3tris2privata.png" alt="alt text" width="1100">
 
+Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [Tunnel e vpn](ethvpn.md)
+
 ### **Sede sanitaria locale privata con tunnel + bridge**
 
 In questo scenario si immagina che sia direttamente l'ISP regionale a fornire il router perimetrale della LAN dell'azienda sanitaria privata. Il firewall fornito dal provider potrebbe realizzare direttamente lui internamente il routing tra le subnet aziendali e la subnet di connessione al router di confine dell'ISP. Il link di questa connessione può essere, al solito, sia fisico che logico.
@@ -771,6 +775,8 @@ In questo scenario si immagina che sia direttamente l'ISP regionale a fornire il
 Uno scenario, insolito ma possibile, consentito da questa architettura potrebbe essere quello di fare il **bridging** tra la porta WAN e una o più  porte del router esponendo così la subnet verso il router di confine. Potrebbe essere usata per collegare questa subnet su una **VLAN separata** su cui collegare dei **server** che pubblichino qualcosa di utile per la ASL centrale oppure per collegare al fascicolo elettronico solo **pochi PC**, separati logicamente dal resto dell'infrastruttura, per **massimizzare la privacy**.
 
 <img src="img/albero3trisBridge.png" alt="alt text" width="1100">
+
+Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [Tunnel e vpn](ethvpn.md)
 
 Sitografia:
 - https://miro.medium.com/v2/resize:fit:1400/1*SHNEn-wqJPRxdYf2s_yapg.png
