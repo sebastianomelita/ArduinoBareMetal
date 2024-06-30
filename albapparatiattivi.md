@@ -111,7 +111,7 @@ I dispositivi server posseggono indirizzi statici per poter essere associati pi�
 - La novità è che adesso da un router si può diramare una subnet anche a partire da un link virtuale
 - Poiché più link virtuali possono condividere uno stesso collegamento fisico, esiste la possibilità di dislocare le subnet a «macchia di leopardo», cioè in modo che i loro dispositivi siano sparsi potenzialmente ovunque all’interno dell’infrastruttura fisica della rete (cade il vincolo di vicinanza fisica dei dispositivi di una subnet).
 
-<img src="img/subnetlink.jpg" alt="alt text" width="900">
+<img src="img/subnetlink.jpg" alt="alt text" width="800">
 
 ### **Modalità di segmentazione**
 
