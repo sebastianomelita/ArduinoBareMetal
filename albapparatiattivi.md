@@ -15,7 +15,14 @@ Le reti di nostro interesse principale per la **progettazione** sono le reti che
 
 <img src="img/lanman.png" alt="alt text" width="1100">
 
-In **entrambi i casi**, va stabilita qualità e numero dei dispositivi, **caratteristiche** peculiari di ciascuno quali i **protocolli** che devono sostenere, il **numero di porte**, le **funzioni** (autenticazione, DHCP, DNS, ecc.) e i **processi** di filtraggio/traduzione (NAT, firewall) devono realizzare. Per i dispositivi IP va anche realizzato il **piano di indirizzamento** di tutti e vanno **assegnati gli indirizzi** a tutti gli **IS** (Intermediate Systems) di livello 3 o superiore, ad **alcuni client** significativi (criterio del range), e a tutti i **server**. 
+Per entrambe le tipologie di rete, è possibile isolare delle aree cin funzioni simili:
+- un'**area di core** realizzata dai dispositivi di smistamento (switch o router) e dai link **più veloci** e su cui si attestano i **servizi** (server farm) che vengono distribuiti dalla rete.
+- un numero limitato di **aree di distribuzione** realizzate da dispositivi di smistamento (switch o router) e da link **mediamente veloci** che si occupano di smistare i pacchetti tra le aree di accesso e di realizzare la connettività di queste con i servizi. Questi dispositivi sono caratterizzati da avere un numero limitato di porte perchè tipicamente realizzano le **dorsali** verso le aree di accesso.
+- un numero elevato di **aree di accesso** realizzate da dispositivi di smistamento (switch o router) e dai link **meno veloci** che si occupano di smistare i pacchetti tra gli host attestati su una stessa area e di realizzare la connettività di questi con l'area di distribuzione più vicina. Nelle aree di accesso ci stanno i **dispositivi di aggregazione**, access switch (**AS**) nel caso delle LAN, **router di aggregazione** nel caso delle MAN ISP. Questi dispositivi sono caratterizzati dal fatto di avere un **numero elevato di porte** perchè realizzano i link fisici (talvolta logici) verso l'utente. 
+
+Sono possibili, soprattutto nel caso delle LAN delle **ibridazioni**, nel senso che un DS (Distribution Switch) potrebbe pure avere il ruolo di AS (Access Switch) e quindi presentare un numero elevato di porte. Lo stesso vale per il CS (Core Switch). Nel caso delle reti magliate, invece, la gerarchia viene sostanzialmente rispettata.
+
+In **entrambi gli scenari** di rete, va stabilita qualità e numero dei dispositivi, **caratteristiche** peculiari di ciascuno quali i **protocolli** che devono sostenere, il **numero di porte**, le **funzioni** (autenticazione, DHCP, DNS, ecc.) e i **processi** di filtraggio/traduzione (NAT, firewall) devono realizzare. Per i dispositivi IP va anche realizzato il **piano di indirizzamento** di tutti e vanno **assegnati gli indirizzi** a tutti gli **IS** (Intermediate Systems) di livello 3 o superiore, ad **alcuni client** significativi (criterio del range), e a tutti i **server**. 
 
 Possono essere pure affrontate a livello architetturale tematiche relative alla **separazione in gruppi** degli utenti, per questo vedi [Segmentazione rete](segmentazgruppi.md).
 
