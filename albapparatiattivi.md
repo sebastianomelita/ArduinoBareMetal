@@ -164,6 +164,19 @@ In definitiva esistono:
 
 Il processo si può iterare ulteriormente partizionando ancora la residua parte di host
 
+### **Metodologie di calcolo**
+
+Esistono essenzialmente **due metodologie** di calcolo del subnetting in base a quale sia il **criterio di allocazione** adottato:
+- criterio di **allocazione in base agli host**. Si **inizia** il calcolo cercando di allocare prima gli indirizzi per gli **host**, una volta soddisfatta questa esigenza, si **verifica**, a posteriori, se il numero di bit della parte di subnet è sufficiente ad allocare il numero pianificato per **la rete**.
+- criterio di **allocazione in base alle subnet**. Si **inizia** il calcolo cercando di allocare prima gli indirizzi per le **subnet**, una volta soddisfatta questa esigenza, si **verifica**, a posteriori, se il numero di bit della parte di host è sufficiente ad allocare il numero pianificato per **ciascuna subnet**.
+
+### **Classificazione del subnetting**
+
+Fondamentalmente sono possibili tre **tipologie di subnetting**:
+- **FLSM (Fixed Length Subnet Mask)**. Prevede subnet tutte di uguale dimensione che in virtù di questa proprietà posseggono quella di avere tutte la stessa subnet mask. Si possono ulteriormente classificare in base alla posizione del taglio tra parte di subnet e parte di host:
+- **FLSM Classful**. Prevede che il taglio sia posizionato in corrispondenza di uno degli ottetti, cioè, la parte di host comincia in corrispondenza dell’inizio di un ottetto. Tre possibili tagli: /8, /16, /24 che determinano subnet di dimensioni fisse pari rispettivamente a 16.777.216 indirizzi, 65536 indirizzi, 256 indirizzi. E’ il subnetting più semplice in assoluto
+- **FLSM Classless**. Prevede ancora subnet tutte di uguale dimensione ma senza vincoli sul taglio che adesso può essere posizionato ovunque, cioè, la parte di host può cominciare in un punto qualsiasi nel mezzo di un ottetto. Ha una complessità intermedia tra subnetting FLSM classful e VLSM.
+- **VLSM (Variable Length Subnet Mask)**. Prevede la presenza di subnet di dimensione diversa e in virtù di ciò ne consegue che possono possedere subnet mask differenti tra loro. E’ il subnetting in assoluto più complesso.
 
 ### **Subnetting classful veloce**
 
@@ -429,6 +442,10 @@ Le aziende sanitarie private sono clienti di un solo servizio: l'accesso al fasc
 
 Gli indirizzi per connettersi alla infrastruttura di distribuzione, cioè quelli da utilizzare per accedere al router più vicino dell'infrastruttura, sono privati nel range 10.0.0.0/8. 
 Una sottorete del range di partenza, la 10.100.0.0/16 è assegnata alla infrastrutture private. Dimensionare le subnete per consentire l'accesso ad almeno 2000 sedi sanitarie private, lasciando dei margini adeguati per eventuali espansioni future.
+
+### **Metodologia di subnetting**
+
+Il **processo** di calcolo più adeguato in questa situazione è quello che stabilisce per gli indirizzi un criterio di **allocazione in base alle subnet**.
 
 Per contare 2000 subnet di accesso ai router dello ISP servono almeno 11 bit che possono contare fino a 2048 indirizzi, per incontrare l'esigenza di espansioni future aggiungiamo un ulteriore bit arrivando a 12 bit di subnet, portando la potenzialità di conteggio fino a 4096 indirizzi.
 
