@@ -15,7 +15,7 @@ Le reti di nostro interesse principale per la **progettazione** sono le reti che
 
 <img src="img/lanman.png" alt="alt text" width="1100">
 
-Per entrambe le tipologie di rete, è possibile isolare delle aree cin funzioni simili:
+Per entrambe le tipologie di rete, è possibile isolare delle aree con funzioni simili:
 - un'**area di core** realizzata dai dispositivi di smistamento (switch o router) e dai link **più veloci** e su cui si attestano i **servizi** (server farm) che vengono distribuiti dalla rete.
 - un numero limitato di **aree di distribuzione** realizzate da dispositivi di smistamento (switch o router) e da link **mediamente veloci** che si occupano di smistare i pacchetti tra le aree di accesso e di realizzare la connettività di queste con i servizi. Questi dispositivi sono caratterizzati da avere un numero limitato di porte perchè tipicamente realizzano le **dorsali** verso le aree di accesso.
 - un numero elevato di **aree di accesso** realizzate da dispositivi di smistamento (switch o router) e dai link **meno veloci** che si occupano di smistare i pacchetti tra gli host attestati su una stessa area e di realizzare la connettività di questi con l'area di distribuzione più vicina. Nelle aree di accesso ci stanno i **dispositivi di aggregazione**, access switch (**AS**) nel caso delle LAN, **router di aggregazione** nel caso delle MAN ISP. Questi dispositivi sono caratterizzati dal fatto di avere un **numero elevato di porte** perchè realizzano i link fisici (talvolta logici) verso l'utente. 
