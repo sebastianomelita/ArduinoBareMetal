@@ -452,7 +452,7 @@ I **router dedicati**, per tipologie di traffico diverse, sono allocati su **por
 
 Le **VLAN** sono usate per realizzare la **multiplazione TDM** (a divisione di tempo)  dei due flussi di traffico dati e voce su un'**unica connessione fisica** in fibra. Le VLAN sono configurate sui dispositivi di rete come l'OLT (Optical Line Terminal) e l'ONT, permettendo di mantenere separati i flussi di dati e voce e di applicare politiche di QoS (Quality of Service) specifiche.
 
-<img src="img/olt.png" alt="alt text" width="800">
+<img src="img/olt.png" alt="alt text" width="500">
 
 In centrale, iltraffico viene splittato in traffico dati e traffico voce in base alle vlan:
 - **Traffico dati**: Il Broadband Network Gateway autentica gli utenti e instrada il traffico dati verso Internet attraverso la vlan 835. In sintesi: OLT -> Aggregation Switch -> BNG -> Internet.
