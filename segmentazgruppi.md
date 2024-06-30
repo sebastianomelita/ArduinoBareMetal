@@ -216,7 +216,7 @@ Il **subnetting** appena calcolato fa parte del piano di indirizzamento dell'Int
 
 <img src="img/aggregazione.png" alt="alt text" width="500">
 
-In realtà, il più delle volte, al posto degli ES ci sta il **router perimetrale** di confine della rete locale (LAN) che **condivide** gli indirizzi assegnati dal subnetting con i **dispositivi interni** alla LAN tramite un dispositivo di **traduzione PNAT**.
+In realtà, il più delle volte, al posto degli ES ci sta il **router perimetrale** di confine della rete locale (LAN) che **condivide** gli indirizzi **IPv4** assegnati dal subnetting con i **dispositivi interni** alla LAN tramite un dispositivo di **traduzione PNAT**. Per gli indirizzi **IPv6** la traduzione non è necessaria in quanto il subnetting di aggregazione, di base, fornisce almeno 16 bit per la **parte di host** dell'indirizzo.
 
 ### **Subnetting azienda sanitaria privata**
 Le aziende sanitarie private hanno a disposizione un solo prefisso, il prefisso 100, con estensione di 12 bit che quindi è utile a contare 4096 subnet, lasciando 4 bit per la parte di host che rimane utile a contare 16 indirizzi.
