@@ -456,7 +456,7 @@ Le **VLAN** sono usate per realizzare la **multiplazione TDM** (a divisione di t
 
 In **centrale**, il traffico viene splittato in traffico dati e traffico voce in base alle vlan:
 - **Traffico dati**: Il **BNG** (Broadband Network Gateway) autentica gli utenti e instrada il traffico dati verso Internet. In sintesi: OLT -> Aggregation Switch -> BNG -> Internet.
-- **Traffico voip**: Il **VoIP Gateway** gestisce la segnalazione e la commutazione delle chiamate VoIP lungo il percorso. Le chiamate possono essere dal gateway inoltrate verso la rete PSTN telefonica tradizionale e quindi esegue la trnascodifica, cioè la trasformazione della voce da pacchetto a circuito, oppure può inoltrare i pacchetti voip verso una rete di distribuzione completamente voip. In sintesi: OLT -> Aggregation Switch -> VoIP Gateway -> PSTN/Internet.
+- **Traffico voip**: Il **VoIP Gateway** gestisce la segnalazione e la commutazione delle chiamate VoIP lungo il percorso. Le chiamate possono essere dal gateway inoltrate verso la rete PSTN telefonica tradizionale che quindi esegue la trnascodifica, cioè la trasformazione della voce da pacchetto a circuito, oppure può inoltrare i pacchetti voip verso una rete di distribuzione completamente voip. In sintesi: OLT -> Aggregation Switch -> VoIP Gateway -> PSTN/Internet.
 
 ### **Ibridazioni**
 
