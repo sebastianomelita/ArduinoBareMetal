@@ -716,7 +716,7 @@ Il **link esterni** alla rete ISP regionale, cioè quelli verso il router/firewa
         - quello della **vlan 835** con una o più porte fisiche verso un router dedicato per i dati
         - quello della **vlan 836** con una o più porte fisiche verso un router dedicato per il voip (ad es. centralino FreePBX).
 
-### **Flusso del Traffico su interfacce VLAN**
+### **Architettura fisica della rete di accesso ad un ISP**
 
 I **router dedicati**, per tipologie di traffico diverse, sono allocati su **porte di accesso** delle due VLAN ad entrambi i capi della connessione (quella locale utente e quella in centrale). Le connessioni in **fibra** avvengono tra due componenti passive:
 - L'**ONT** (Optical Network Terminal) è il dispositivo (borchia ottica) che riceve il segnale ottico dalla fibra ottica e lo converte in un segnale elettrico utilizzabile dai dispositivi dell'utente finale.
