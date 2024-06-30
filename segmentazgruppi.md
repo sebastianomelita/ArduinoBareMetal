@@ -460,6 +460,8 @@ I **router dedicati**, per tipologie di traffico diverse, sono allocati su **por
 
 Le **VLAN** sono usate per realizzare la **multiplazione TDM** (a divisione di tempo)  dei due flussi di traffico dati e voce su un'**unica connessione fisica** in fibra. Le VLAN sono configurate sui dispositivi di rete come l'OLT (Optical Line Terminal) e l'ONT, permettendo di mantenere separati i flussi di dati e voce e di applicare politiche di QoS (Quality of Service) specifiche.
 
+In **sostanza**, grazie alla **bassa attenuazione per Km** delle fibre ottiche, è possibile realizzare un lungo **canale passivo** che parte dall'**ONT** nella sede dell'utente fino ad arrivare all'**OLT** in centrale su cui transitano trame MAC colorate di **livello L2** della pila ISO/OSI. A valle dell'OLT, si trova il **link** verso il **router di confine dello ISP** che **genera** le subnet di aggregazione su cui si attestano i **dispositivi attivi utente** (host o router/firewall perimetrale).
+
 <img src="img/olt.png" alt="alt text" width="500">
 
 In **centrale**, il traffico viene splittato in traffico dati e traffico voce in base alle vlan:
