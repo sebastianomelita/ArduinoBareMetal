@@ -450,6 +450,10 @@ I **router dedicati**, per tipologie di traffico diverse, sono allocati su **por
 - L'**ONT** (Optical Network Terminal) è il dispositivo (borchia ottica) che riceve il segnale ottico dalla fibra ottica e lo converte in un segnale elettrico utilizzabile dai dispositivi dell'utente finale.
 - **OLT** (Optical Line Terminal) è il dispositivo di terminazione che collega la rete di accesso ottico alla rete di core del provider. Si occupa di aggregare il traffico proveniente da molte ONT e trasmetterlo verso la rete centrale dell'ISP.
 
+Le **VLAN** sono usate per realizzare la **multiplazione TDM** (a divisione di tempo)  dei due flussi di traffico dati e voce su un'**unica connessione fisica** in fibra. Le VLAN sono configurate sui dispositivi di rete come l'OLT (Optical Line Terminal) e l'ONT, permettendo di mantenere separati i flussi di dati e voce e di applicare politiche di QoS (Quality of Service) specifiche.
+
+<img src="img/olt.png" alt="alt text" width="800">
+
 In centrale, iltraffico viene splittato in traffico dati e traffico voce in base alle vlan:
 - **Traffico dati**: Il Broadband Network Gateway autentica gli utenti e instrada il traffico dati verso Internet attraverso la vlan 835. In sintesi: OLT -> Aggregation Switch -> BNG -> Internet.
 - **Traffico voip**: Il VoIP Gateway gestisce la segnalazione e la commutazione delle chiamate VoIP lungo il percorso atraverso la vlan 836, in sintesi: OLT -> Aggregation Switch -> VoIP Gateway -> PSTN/Internet.
@@ -494,6 +498,9 @@ In questo scenario si immagina che sia direttamente l'ISP regionale a fornire il
 Uno scenario, insolito ma possibile, consentito da questa architettura potrebbe essere quello di fare il **bridging** tra la porta WAN e una o più  porte del router esponendo così la subnet verso il router di confine. Potrebbe essere usata per collegare questa subnet su una **VLAN separata** su cui collegare dei **server** che pubblichino qualcosa di utile per la ASL centrale oppure per collegare al fascicolo elettronico solo **pochi PC**, separati logicamente dal resto dell'infrastruttura, per **massimizzare la privacy**.
 
 <img src="img/albero3trisBridge.png" alt="alt text" width="1100">
+
+Sitografia:
+- https://www.fibermall.com/blog/epon-gpon-10g-epon-10g-gpon-olt-how-to-work.htm
 
 >[Torna a albero apparati attivi](albapparatiattivi.md)
 
