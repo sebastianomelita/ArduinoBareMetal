@@ -11,7 +11,7 @@
 
 PPPoE (Point-to-Point Protocol over Ethernet) è un protocollo di rete che incapsula i frame PPP (Point-to-Point Protocol) all'interno di frame Ethernet. Questo permette agli ISP di utilizzare il protocollo PPP per gestire connessioni a larga banda su reti Ethernet. PPPoE è comunemente utilizzato nelle connessioni DSL.
 
-<img src="img/ppoeencapsulation.jpeg" alt="alt text" width="400">
+<img src="img/ppoeencapsulation.jpeg" alt="alt text" width="600">
 
 <img src="img/pppoe_architecture.gif" alt="alt text" width="500">
 
