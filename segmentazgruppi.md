@@ -501,6 +501,7 @@ Uno scenario, insolito ma possibile, consentito da questa architettura potrebbe 
 
 Sitografia:
 - https://www.fibermall.com/blog/epon-gpon-10g-epon-10g-gpon-olt-how-to-work.htm
+- https://xxxamin1314.medium.com/an%C3%A1lisis-de-pon-qu%C3%A9-es-olt-onu-ont-y-odn-8e78eb25e4bb
 
 >[Torna a albero apparati attivi](albapparatiattivi.md)
 
