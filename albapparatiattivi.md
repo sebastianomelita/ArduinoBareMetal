@@ -160,7 +160,7 @@ In definitiva esistono:
 - Un prima del subnetting: parte di network + parte di host
 - Un dopo il subnetting: parte di network + parte di subnet + parte di host
 
-<img src="img/subnetting.png" alt="alt text" width="500">
+<img src="img/subnetting.png" alt="alt text" width="700">
 
 Il processo si può iterare ulteriormente partizionando ancora la residua parte di host
 
