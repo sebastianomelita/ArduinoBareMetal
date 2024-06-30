@@ -477,7 +477,7 @@ L'ISP regionale potrebbe usare lo stesso piano di indirizzamento dell'ISP nazion
 
 <img src="img/albero3penta2.png" alt="alt text" width="1100">
 
-Se non si desidera far percorrere due volte il traffico in andata e ritorno allo stesso link si potrebbe, in alternativa, collegare il router R2 direttamente ad un porta del router R1, ad esempio a quella della DMZ, direttamente o tramite uno switch di transito che aggreghi altri servizi.
+Se non si desidera far percorrere due volte il traffico in andata e ritorno allo stesso link si potrebbe, in alternativa, collegare il router R2 direttamente ad un porta del router R1, ad esempio a quella della DMZ, direttamente o tramite uno switch di transito che aggreghi altri servizi. Il link, chiaramente, diventa un'altra subnet che deve essere allocata con indirizzi privati.
 
 ### **Sede sanitaria locale privata con tunnel + vlan**
 
