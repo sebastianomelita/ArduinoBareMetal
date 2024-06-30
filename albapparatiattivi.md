@@ -167,7 +167,7 @@ Di seguito è riportato un esempio che le **riassume** tutte:
  - .
   <img src="img/interfacce.png" alt="alt text" width="900">
 
-Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [Tunnel e vpn](ethvpn.md)
+Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [tunnel e vpn](ethvpn.md)
 
 ## **Subnetting**
 
@@ -744,7 +744,7 @@ In questo caso l'ISP regionale non fornisce un apparecchio ma la possibilità di
 
 <img src="img/albero3penta.png" alt="alt text" width="1100">
 
-Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [Tunnel e vpn](ethvpn.md)
+Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [tunnel e vpn](ethvpn.md)
 
 ### **Sede sanitaria locale privata con link fisico verso ISP**
 
@@ -766,7 +766,7 @@ Le subnet sulle due vlan possono essere gestite con **autorizzazioni diverse** i
 
 <img src="img/albero3tris2privata.png" alt="alt text" width="1100">
 
-Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [Tunnel e vpn](ethvpn.md)
+Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [tunnel e vpn](ethvpn.md)
 
 ### **Sede sanitaria locale privata con tunnel + bridge**
 
@@ -776,7 +776,7 @@ Uno scenario, insolito ma possibile, consentito da questa architettura potrebbe 
 
 <img src="img/albero3trisBridge.png" alt="alt text" width="1100">
 
-Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [Tunnel e vpn](ethvpn.md)
+Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [tunnel e vpn](ethvpn.md)
 
 Sitografia:
 - https://miro.medium.com/v2/resize:fit:1400/1*SHNEn-wqJPRxdYf2s_yapg.png
