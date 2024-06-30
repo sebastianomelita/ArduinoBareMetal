@@ -148,9 +148,26 @@ Di seguito è riportato un esempio che le **riassume** tutte:
  - .
   <img src="img/interfacce.png" alt="alt text" width="900">
 
+
+## **Subnetting**
+
+E’ il processo di suddividere (partizionare) gli indirizzi allocabili della subnet di partenza in più gruppi di indirizzi aventi a comune un prefisso dell’indirizzo IP.
+
+Un indirizzo IPv4 si divide in una parte di network (immutabile) ed in una parte di host (partizionabile) che contiene tutti gli indirizzi degli host della subnet di partenza
+Gli **indirizzi allocabili** di una subnet sono contenuti nella sua **parte di host**. Le subnet hanno un **prefisso** che è legato alla **posizione fisica** della subnet nello spazio, cioè raggruppa host con la caratteristica di essere vicini nello spazio (contiguità fisica).
+
+In definitiva esistono:
+- Un prima del subnetting: parte di network + parte di host
+- Un dopo il subnetting: parte di network + parte di subnet + parte di host
+
+<img src="img/subnetting.png" alt="alt text" width="500">
+
+Il processo si può iterare ulteriormente partizionando ancora la residua parte di host
+
+
 ### **Subnetting classful veloce**
 
-Processo:
+Processo rapido per stabilire le subnet in base al **numero di host**:
 - decidere **quanti** indirizzi servono:
     - **pochi**: scegliere taglio classful /24 (per semplicità usare ```10.0.X.0/24``` dove ```X``` è il **prefisso** della subnet)
     - **molti**: scegliere taglio classful /16 (per semplicità usare ```10.X.0.0/16``` dove ```X``` è il **prefisso** della subnet)
