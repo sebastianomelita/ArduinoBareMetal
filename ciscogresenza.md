@@ -11,7 +11,7 @@
 
 GRE (Generic Routing Encapsulation) è un protocollo di tunneling sviluppato da Cisco Systems che può incapsulare una vasta gamma di protocolli di livello rete all'interno di collegamenti punto-punto virtuali. GRE è spesso utilizzato per creare tunnel che collegano reti remote o dispositivi di rete attraverso una rete IP, come Internet.
 
-<img src="img/greencapsulation.jpeg" alt="alt text" width="600">
+<img src="img/greencapsulation.jpg" alt="alt text" width="600">
 
 Caratteristiche Principali di GRE
 - Encapsulamento di Protocolli Multipli:
