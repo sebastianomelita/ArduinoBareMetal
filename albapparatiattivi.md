@@ -172,10 +172,10 @@ Esistono essenzialmente **due metodologie** di calcolo del subnetting in base a 
 
 ### **Classificazione del subnetting**
 
-Fondamentalmente sono possibili tre **tipologie di subnetting**:
+Fondamentalmente sono possibili alcune **tipologie di subnetting**:
 - **FLSM (Fixed Length Subnet Mask)**. Prevede subnet tutte di uguale dimensione che in virtù di questa proprietà posseggono quella di avere tutte la stessa subnet mask. Si possono ulteriormente classificare in base alla posizione del taglio tra parte di subnet e parte di host:
-- **FLSM Classful**. Prevede che il taglio sia posizionato in corrispondenza di uno degli ottetti, cioè, la parte di host comincia in corrispondenza dell’inizio di un ottetto. Tre possibili tagli: /8, /16, /24 che determinano subnet di dimensioni fisse pari rispettivamente a 16.777.216 indirizzi, 65536 indirizzi, 256 indirizzi. E’ il subnetting più semplice in assoluto
-- **FLSM Classless**. Prevede ancora subnet tutte di uguale dimensione ma senza vincoli sul taglio che adesso può essere posizionato ovunque, cioè, la parte di host può cominciare in un punto qualsiasi nel mezzo di un ottetto. Ha una complessità intermedia tra subnetting FLSM classful e VLSM.
+    - **FLSM Classful**. Prevede che il taglio sia posizionato in corrispondenza di uno degli ottetti, cioè, la parte di host comincia in corrispondenza dell’inizio di un ottetto. Tre possibili tagli: /8, /16, /24 che determinano subnet di dimensioni fisse pari rispettivamente a 16.777.216 indirizzi, 65536 indirizzi, 256 indirizzi. E’ il subnetting più semplice in assoluto
+    - **FLSM Classless**. Prevede ancora subnet tutte di uguale dimensione ma senza vincoli sul taglio che adesso può essere posizionato ovunque, cioè, la parte di host può cominciare in un punto qualsiasi nel mezzo di un ottetto. Ha una complessità intermedia tra subnetting FLSM classful e VLSM.
 - **VLSM (Variable Length Subnet Mask)**. Prevede la presenza di subnet di dimensione diversa e in virtù di ciò ne consegue che possono possedere subnet mask differenti tra loro. E’ il subnetting in assoluto più complesso.
 
 ### **Subnetting classful veloce**
