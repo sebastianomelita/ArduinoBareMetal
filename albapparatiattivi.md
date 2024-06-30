@@ -9,8 +9,13 @@
 
 ## **Le reti ai capi del router perimetrale**
 
-<img src="img/lanman.png" alt="alt text" width="1000">
+Le reti di nostro interesse principale per la **progettazione** sono le reti che stanno ai due capi del router perimetrale di una LAN:
+- la **rete locale** di ufficio o di campus detta LAN (Local Area Network), è realizata tipicamente con degli **switch** e ha, di base, un'**architettura ad albero** 
+- la rete di un **fornitore di servizi** di connessione o **ISP** (Internet Service Provider), è realizata tipicamente con dei **router** e ha, di base, un'**architettura a maglia**
 
+<img src="img/lanman.png" alt="alt text" width="1100">
+
+In **entrambi i casi**, va stabilita qualità e numero dei dispositivi, **caratteristiche** peculiari di ciascuno quali i **protocolli** che devono sostenere, il **numero di porte**, le **funzioni** (autenticazione, DHCP, DNS, ecc.) e i **processi** di filtraggio/traduzione (NAT, firewall) devono realizzare. Per i dispositivi IP va anche realizzato il **piano di indirizzamento** di tutti e vanno **assegnati gli indirizzi** a tutti gli **IS** (Intermediate Systems) di livello 3 o superiore, ad **alcuni client** significativi (criterio del range), e a tutti i **server**. 
 
 ## **Albero degli apparati attivi LAN**
 
