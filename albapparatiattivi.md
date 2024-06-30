@@ -7,7 +7,12 @@
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 
-## **Albero degli apparati attivi**
+## **Le reti ai capi del router perimetrale**
+
+<img src="img/lanman.png" alt="alt text" width="1000">
+
+
+## **Albero degli apparati attivi LAN**
 
 ### **Albero degli apparati attivi e armadi**
 
