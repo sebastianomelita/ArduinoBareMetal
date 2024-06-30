@@ -17,7 +17,7 @@ Le reti di nostro interesse principale per la **progettazione** sono le reti che
 
 In **entrambi i casi**, va stabilita qualità e numero dei dispositivi, **caratteristiche** peculiari di ciascuno quali i **protocolli** che devono sostenere, il **numero di porte**, le **funzioni** (autenticazione, DHCP, DNS, ecc.) e i **processi** di filtraggio/traduzione (NAT, firewall) devono realizzare. Per i dispositivi IP va anche realizzato il **piano di indirizzamento** di tutti e vanno **assegnati gli indirizzi** a tutti gli **IS** (Intermediate Systems) di livello 3 o superiore, ad **alcuni client** significativi (criterio del range), e a tutti i **server**. 
 
-Possono essere pure affrontate a livello architetturale tematiche relative alla separazione in gruppi degli utenti, per questo vedi [Segmentazione rete](segmentazgruppi.md).
+Possono essere pure affrontate a livello architetturale tematiche relative alla **separazione in gruppi** degli utenti, per questo vedi [Segmentazione rete](segmentazgruppi.md).
 
 ## **Albero degli apparati attivi LAN**
 
