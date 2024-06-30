@@ -212,7 +212,7 @@ Il taglio tra la parte di subnet e quella di host dell'indirizzo si porta così 
 
 ### **Subnetting rete di aggregazione**
 
-Il **subnetting** appena calcolato fa parte del piano di indirizzamento dell'Internet Service Provider (ISP) regionale ma non si riferisce ai collegamenti tra gli IS (intermediate systems) della sua rete ma solamente ai **collegamenti terminali** tra gli IS e i potenziali ES (End systems) dell'utente. La porzione della rete di un ISP che realizza questi collegamenti prende il nome di rete di aggregazione. 
+Il **subnetting** appena calcolato fa parte del piano di indirizzamento dell'Internet Service Provider (ISP) regionale ma non si riferisce ai collegamenti tra gli IS (intermediate systems) della sua rete ma solamente ai **collegamenti terminali** tra gli IS e i potenziali ES (End systems) dell'utente. La porzione della rete di un ISP che realizza questi collegamenti prende il nome di **rete di aggregazione**. 
 
 <img src="img/aggregazione.png" alt="alt text" width="500">
 
