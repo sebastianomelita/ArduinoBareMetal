@@ -15,6 +15,7 @@ Questo esempio crea un tunnel GRE protetto da IPsec tra Router A e Router B, uti
 
 ### **Sede A**
 
+```C++
 RouterA(config)# interface tunnel 0
 RouterA(config-if)# ip address 10.1.1.1 255.255.255.0
 RouterA(config-if)# tunnel source 192.168.1.1
