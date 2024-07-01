@@ -738,6 +738,9 @@ Sono possibili ibridazioni tra le tecniche precedenti, per cui usuale vedere un 
 - Se questo **coincide** col **link fisico** fino in centrale allora il link L3 è terminato sul primo router che in centrale sta a valle dell'OLT.
 - se **non coincide** col **link fisico**, vuol dire che questo è stato sostituito da una connessione logica L2, che attraversa **molti router** dello ISP (adesso utilizzato solamente come **rete carrier**) verso un server PPPoE nella centrale del gestore che affitta la rete regionale, dove la connessione L3 viene terminata su un suo router. Questa **connessione logica** è realizzata tipicamente tramite il protocollo di **tunnelling PPPoE**. Se nella sede del gestore ci sta il **server PPPoE**, allora nel router utente deve chiaramente essere installato anche un **client PPPoE**.
 
+Per dettagli sulla creazione e impostazione di un tunnel PPPoE vedi [Configurazione di una tunnel PPPoE CISCO](pppoe.md)
+
+
 ### **Sede sanitaria locale privata con link logico verso ISP**
 
 In questo caso si può utilizzare lo stesso firewall perimetrale dell'utente purchè esso sia capace delle forme di tunnelling richieste dallo ISP regionale. Nello specifico si potrebbe ipotizzare un tunnel generico (GRE) o un tunnel PPPoE. Nel client PPPoE vengono inserite le credenziali di autenticazione dell'utente con le quali può esssere riconosciuto e la connessione approvata, magari attraverso un server di autenticazione quali RADIUS o DIAMETER.
@@ -746,7 +749,7 @@ In questo caso l'ISP regionale non fornisce un apparecchio ma la possibilità di
 
 <img src="img/albero3penta.png" alt="alt text" width="1100">
 
-Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [tunnel e vpn](ethvpn.md)
+Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [tunnel e vpn](ethvpn.md) 
 
 ### **Sede sanitaria locale privata con link fisico verso ISP**
 
