@@ -75,6 +75,9 @@ show pppoe summary
 show pppoe interface Virtual-Template1
 ```
 
+Sitografia:
+- https://www.cisco.com/c/it_it/support/docs/long-reach-ethernet-lre-digital-subscriber-line-xdsl/asymmetric-digital-subscriber-line-adsl/12915-pppoe-arch.html
+
 >[Torna a vpn](ethvpn.md)
 
 - [Dettaglio architettura Ethernet](archeth.md)
