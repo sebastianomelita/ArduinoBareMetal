@@ -21,7 +21,6 @@ Un protocollo di trasporto a **valle del modem** non è necessario, in quanto so
 
 <img src="img/pppoe_architecture.gif" alt="alt text" width="500">
 
-Esempio di Configurazione GRE su un Router Cisco
 
 ## **Esempio di Configurazione PPPoE su un Router Cisco**
 
