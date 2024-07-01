@@ -11,9 +11,11 @@
 
 PPPoE (Point-to-Point Protocol over Ethernet) è un protocollo di rete che incapsula i frame PPP (Point-to-Point Protocol) all'interno di frame Ethernet. Questo permette agli ISP di utilizzare il protocollo PPP per gestire connessioni a larga banda su reti Ethernet. PPPoE è comunemente utilizzato nelle connessioni DSL. 
 
-<img src="img/ppoeencapsulation.jpeg" alt="alt text" width="1000">
+<img src="img/ppoeencapsulation1.jpeg" alt="alt text" width="500">
 
 I **pacchetti IP** viaggiano incapsulati dentro trame PPP per tutta la tratta dall'utente alla centrale. Però mentre a **monte del modem** le trame PPP viaggiano in tunnel **incapsulate** dentro trame MAC, dopo, a **valle del modem**, queste viaggiano **da sole** fino al modem in centrale.   
+
+<img src="img/ppoeencapsulation2.jpeg" alt="alt text" width="500">
 
 Un protocollo di trasporto a **valle del modem** non è necessario, in quanto sono le stesse **trame PPP** a trasportare i pacchetti IP payload fino al primo router di confine. Da li in poi, le **trame PPP** viaggiano incapsulate all'interno delle **trame MAC** della **rete carrier** che realizza la **connessione di trasporto** fino al nodo in cui avviene lo **sbustamento** del pacchetto IP **payload**, che può trovarsi nella sede di un **ISP** regionale, in una **extranet** di un fornitore, oppure in una **sede remota** della stessa azienda che ha iniziato il **tunnel** mediante un **client PPPoE**.
 
