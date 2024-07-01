@@ -736,7 +736,7 @@ In **centrale**, il traffico viene splittato in traffico dati e traffico voce in
 
 Sono possibili ibridazioni tra le tecniche precedenti, per cui usuale vedere un tunnel PPPPoE all'interno della LAN di centrale realizzata dalla VLAN 835. Normalmente il modem è in realtà anche uno switch in cui l'unica connessione fisica, terminata in centrale presso un OLT, viene **demultiplata** in due connessioni logiche L2 che sono terminate sul dispositivo utente su due **porte Ethernet** separate, una per VLAN 835 e l'altra per la VLAN 836. All'interno di ciascuna viene realizzato il link L3 (basato su IP) verso il router in centrale, con due varianti:
 - Se questo **coincide** col **link fisico** fino in centrale allora è terminata sul primo router che in centrale sta a valle dell'OLT
-- se **non coincide** col **link fisico** vuol dire che questo è stato sostituito da una connessione logica verso un router remoto posto nella centrale di chi affitta la rete dell'ISP regionale. Questa connessione logica è realizzata tipicamente tramite il protocollo di tunnelling PPPoE. Nella sede del gestore deve esserci il server PPPoE, mentre nel router utente deve chiaramente essere installato un client PPPoE.
+- se **non coincide** col **link fisico** vuol dire che questo è stato sostituito da una connessione logica verso un **router remoto** posto nella centrale di chi affitta la rete regionale, afittata come carrier. Questa **connessione logica** è realizzata tipicamente tramite il protocollo di **tunnelling PPPoE**. Nella sede del gestore deve esserci il **server PPPoE**, mentre nel router utente deve chiaramente essere installato un **client PPPoE**.
 
 ### **Sede sanitaria locale privata con link logico verso ISP**
 
