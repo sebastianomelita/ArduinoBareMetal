@@ -15,7 +15,7 @@ Le reti di nostro interesse principale per la **progettazione** sono le reti che
 
 <img src="img/lanman.png" alt="alt text" width="1100">
 
-Per entrambe le tipologie di rete, è possibile isolare delle aree con funzioni simili:
+Per entrambe le tipologie di rete, è possibile isolare delle aree con funzioni simili:Normalmente il modem è in realtà
 - un'**area di core** realizzata dai dispositivi di smistamento (switch o router) e dai link **più veloci** e su cui si attestano i **servizi** (server farm) che vengono distribuiti dalla rete.
 - un numero limitato di **aree di distribuzione** realizzate da dispositivi di smistamento (switch o router) e da link **mediamente veloci** che si occupano di smistare i pacchetti tra le aree di accesso e di realizzare la connettività di queste con i servizi. Questi dispositivi sono caratterizzati da avere un numero limitato di porte perchè tipicamente realizzano le **dorsali** verso le aree di accesso.
 - un numero elevato di **aree di accesso** realizzate da dispositivi di smistamento (switch o router) e dai link **meno veloci** che si occupano di smistare i pacchetti tra gli host attestati su una stessa area e di realizzare la connettività di questi con l'area di distribuzione più vicina. Nelle aree di accesso ci stanno i **dispositivi di aggregazione**, access switch (**AS**) nel caso delle LAN, **router di aggregazione** nel caso delle MAN ISP. Questi dispositivi sono caratterizzati dal fatto di avere un **numero elevato di porte** perchè realizzano i link fisici (talvolta logici) verso l'utente. 
@@ -734,7 +734,9 @@ In **centrale**, il traffico viene splittato in traffico dati e traffico voce in
 
 ### **Ibridazioni**
 
-Sono possibili ibridazioni tra le tecniche precedenti, per cui usuale vedere un tunnel PPPPoE all'interno della LAN di centrale realizzata dalla VLAN 835. Normalmente il modem è in realtà anche uno switch da cui si possono isolare due interfacce sulla VLAN 835 e 836. Se queste **sono fisiche** si connettono direttamente al router di confine per i dati e al gateway voip per la voce. Se sono logiche, si realizza un tunnel PPPoE tra il router dell'ISP regionale in centrale e il router nella sede utente. Nel router utente deve chiaramente essere installato un client PPPoE.
+Sono possibili ibridazioni tra le tecniche precedenti, per cui usuale vedere un tunnel PPPPoE all'interno della LAN di centrale realizzata dalla VLAN 835. Normalmente il modem è in realtà anche uno switch in cui l'unica connessione fisica con la terminazione in centrale (OLT) viene **demultiplata** in due connessioni che sono terminate su due **porte Ethernet** separate, una per VLAN 835 e l'altra per la VLAN 836. All'interno di ciscuna viene realizzato il link L3 (basato su IP) verso il router in centrale, con due varianti:
+- Se questo **coincide** col **link fisico** fino in centrale allora è terminata sul primo router che in centrale sta a valle dell'OLT
+- se **non coincide** col **link fisico** vuol dire che questo è stato sostituito da una connessione logica verso un router remoto posto nella centrale di chi affitta la rete dell'ISP regionale. Questa connessione logica è realizzata tipicamente tramite il protocollo di tunnelling PPPoE. Nella sede del gestore deve esserci il server PPPoE, mentre nel router utente deve chiaramente essere installato un client PPPoE.
 
 ### **Sede sanitaria locale privata con link logico verso ISP**
 
