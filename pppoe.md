@@ -15,7 +15,7 @@ PPPoE (Point-to-Point Protocol over Ethernet) è un protocollo di rete che incap
 
 I **pacchetti IP** viaggiano incapsulati dentro trame PPP per tutta la tratta dall'utente alla centrale. Però mentre a **monte del modem** le trame PPP viaggiano in tunnel **incapsulate** dentro trame MAC, dopo, a **valle del modem**, queste viaggiano **da sole** fino al modem in centrale.   
 
-Un protocollo di trasporto a **valle del modem** non è necessario, in quanto sono le stesse **trame PPP** a trasportare i pacchetti IP payload fino al primo router di confine. Da li in poi, le **trame PPP** viaggiano incapsulate all'interno delle **trame MAC** della **rete carrier** che realizza la **connessione di trasporto** fino al nodo in cui avviene lo **sbustamento** del pacchetto IP **payload** che può trovarsi nella sede di un **ISP** regionale, in una **extranet** di un fornitore, oppure in una **sede remota** della stessa azienda che ha iniziato il **tunnel** mediante un **client PPPoE**.
+Un protocollo di trasporto a **valle del modem** non è necessario, in quanto sono le stesse **trame PPP** a trasportare i pacchetti IP payload fino al primo router di confine. Da li in poi, le **trame PPP** viaggiano incapsulate all'interno delle **trame MAC** della **rete carrier** che realizza la **connessione di trasporto** fino al nodo in cui avviene lo **sbustamento** del pacchetto IP **payload**, che può trovarsi nella sede di un **ISP** regionale, in una **extranet** di un fornitore, oppure in una **sede remota** della stessa azienda che ha iniziato il **tunnel** mediante un **client PPPoE**.
 
 <img src="img/pppoe_architecture.gif" alt="alt text" width="500">
 
