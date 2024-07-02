@@ -76,6 +76,9 @@ Router# ping 10.0.0.2 source 10.0.0.1
 
 ```
 
+Sitografia:
+- https://www.cisco.com/c/en/us/td/docs/ios/12_4/interface/configuration/guide/inb_tun.html
+
 >[Torna a vpn](ethvpn.md)
 
 - [Dettaglio architettura Ethernet](archeth.md)
