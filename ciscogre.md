@@ -17,7 +17,7 @@ GRE (Generic Routing Encapsulation) è un protocollo di tunneling sviluppato da 
 
 Normalmente, si incapsulano pacchetti **IP privati**, con l'aggiunta di 24 byte di intestazione GRE, direttamente dentro pacchetti **IP pubblici**.
 
-<img src="img/carrier.jpg" alt="alt text" width="600">
+<img src="img/carrier.png" alt="alt text" width="600">
 
 
 
