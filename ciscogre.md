@@ -115,3 +115,4 @@ RouterB(config-if)# exit
 
 
 Sitografia:
+- https://www.cisco.com/c/en/us/td/docs/ios/12_4/interface/configuration/guide/inb_tun.html
