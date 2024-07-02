@@ -31,6 +31,7 @@ Il **tunneling** è costituito da **tre componenti** principali:
 
 - **Protocollo di trasporto**: Il protocollo utilizzato per trasportare il protocollo incapsulato. Il protocollo di trasporto principale è IP.
 
+## **Esempio**
 
 Questo esempio crea un tunnel GRE protetto da IPsec tra Router A e Router B, utilizzando AES per la crittografia e SHA per l'integrità. Supponiamo di avere due router (Router A e Router B) che devono creare un tunnel GRE protetto da IPsec tra di loro. Ecco un esempio completo per Router A:
 
