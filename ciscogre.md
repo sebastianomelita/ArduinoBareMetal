@@ -27,7 +27,7 @@ Il **tunneling** è costituito da **tre componenti** principali:
 
 - **Protocollo passeggero**: il protocollo che si sta incapsulando. Esempi di protocolli passeggero sono AppleTalk, CLNS, IP e IPX.
 
-- Protocollo operatore: il protocollo che esegue l'incapsulamento. Esempi di protocolli operatore sono GRE, IP-in-IP, L2TP, MPLS, STUN e DLSw+.
+- **Protocollo carrier** (operatore): il protocollo che esegue l'incapsulamento. Esempi di protocolli operatore sono GRE, IP-in-IP, L2TP, MPLS, STUN e DLSw+.
 
 - **Protocollo di trasporto**: Il protocollo utilizzato per trasportare il protocollo incapsulato. Il protocollo di trasporto principale è IP.
 
