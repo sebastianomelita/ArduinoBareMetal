@@ -13,7 +13,7 @@ In una configurazione VPN IPsec tra due router Cisco, l'indirizzo IP privato del
 
 GRE (Generic Routing Encapsulation) è un protocollo di tunneling sviluppato da Cisco Systems che può incapsulare una vasta gamma di protocolli di livello rete all'interno di collegamenti punto-punto virtuali. GRE è spesso utilizzato per creare tunnel che collegano reti remote o dispositivi di rete attraverso una rete IP, come Internet. 
 
-<img src="img/tunnel.png" alt="alt text" width="600">
+<img src="img/tunnel.png" alt="alt text" width="500">
 
 Normalmente, si incapsulano pacchetti **IP privati**, con l'aggiunta di 24 byte di intestazione GRE, direttamente dentro pacchetti **IP pubblici**.
 
