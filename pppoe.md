@@ -17,10 +17,6 @@ I **pacchetti IP** viaggiano incapsulati dentro trame PPP per tutta la tratta da
 
 <img src="img/ppoeencapsulation2.jpg" alt="alt text" width="500">
 
-Un protocollo di trasporto a **valle del modem** non è necessario, in quanto sono le stesse **trame PPP** a trasportare i pacchetti IP payload fino al primo router di confine. Da li in poi, le **trame PPP** viaggiano incapsulate all'interno delle **trame MAC** della **rete carrier** che realizza la **connessione di trasporto** fino al nodo in cui avviene lo **sbustamento** del pacchetto IP **payload**, che può trovarsi nella sede di un **ISP** regionale, in una **extranet** di un fornitore, oppure in una **sede remota** della stessa azienda che ha iniziato il **tunnel** mediante un **client PPPoE**.
-
-<img src="img/pppoe_architecture.gif" alt="alt text" width="500">
-
 A differenza dell'incapsulamento, il tunneling consente a un protocollo di **livello inferiore**, o a un protocollo dello **stesso livello**, di essere trasportato attraverso il tunnel. Un'**interfaccia** tunnel è un'**interfaccia virtuale** (o logica). 
 
 Il **tunneling** è costituito da **tre componenti** principali:
@@ -30,6 +26,9 @@ Il **tunneling** è costituito da **tre componenti** principali:
 - **Protocollo di trasporto**: Il protocollo utilizzato per trasportare il protocollo incapsulato. In questo caso è il protocollo MAC.
 
 
+Un protocollo di trasporto a **valle del modem** non è necessario, in quanto sono le stesse **trame PPP** a trasportare i pacchetti IP payload fino al primo router di confine. Da li in poi, le **trame PPP** viaggiano incapsulate all'interno delle **trame MAC** della **rete carrier** che realizza la **connessione di trasporto** fino al nodo in cui avviene lo **sbustamento** del pacchetto IP **payload**, che può trovarsi nella sede di un **ISP** regionale, in una **extranet** di un fornitore, oppure in una **sede remota** della stessa azienda che ha iniziato il **tunnel** mediante un **client PPPoE**.
+
+<img src="img/pppoe_architecture.gif" alt="alt text" width="500">
 
 ## **Esempio di Configurazione PPPoE su un Router Cisco**
 
