@@ -21,6 +21,15 @@ Un protocollo di trasporto a **valle del modem** non è necessario, in quanto so
 
 <img src="img/pppoe_architecture.gif" alt="alt text" width="500">
 
+A differenza dell'incapsulamento, il tunneling consente a un protocollo di **livello inferiore**, o a un protocollo dello **stesso livello**, di essere trasportato attraverso il tunnel. Un'**interfaccia** tunnel è un'**interfaccia virtuale** (o logica). 
+
+Il **tunneling** è costituito da **tre componenti** principali:
+
+- **Protocollo passeggero**: il protocollo che si sta incapsulando. In questo caso è il protocollo IP.
+- **Protocollo carrier** (operatore): il protocollo che esegue l'incapsulamento. In questo caso è il protocollo PPP.
+- **Protocollo di trasporto**: Il protocollo utilizzato per trasportare il protocollo incapsulato. In questo caso è il protocollo MAC.
+
+
 
 ## **Esempio di Configurazione PPPoE su un Router Cisco**
 
