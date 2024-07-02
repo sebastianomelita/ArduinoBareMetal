@@ -9,25 +9,28 @@
 
 # **Tunnel GRE** 
 
+In una configurazione VPN IPsec tra due router Cisco, l'indirizzo IP privato del tunnel (indirizzo di overlay) non è visibile o configurato esplicitamente come si farebbe con una VPN basata su interfaccia virtuale (come GRE o VTI). Invece, la VPN IPsec incapsula il traffico tra le due subnet locali direttamente.
+
 GRE (Generic Routing Encapsulation) è un protocollo di tunneling sviluppato da Cisco Systems che può incapsulare una vasta gamma di protocolli di livello rete all'interno di collegamenti punto-punto virtuali. GRE è spesso utilizzato per creare tunnel che collegano reti remote o dispositivi di rete attraverso una rete IP, come Internet. 
+
+<img src="img/tunnel.png" alt="alt text" width="500">
 
 Normalmente, si incapsulano pacchetti **IP privati**, con l'aggiunta di 24 byte di intestazione GRE, direttamente dentro pacchetti **IP pubblici**.
 
-<img src="img/greencapsulation.jpg" alt="alt text" width="600">
+<img src="img/carrier.png" alt="alt text" width="600">
 
-Caratteristiche Principali di GRE
-- Encapsulamento di Protocolli Multipli:
+Il tunneling **incapsula** i pacchetti di dati da un protocollo all'interno di un **protocollo diverso** e trasporta i pacchetti di dati **senza modifiche** attraverso una **rete esterna**. 
 
-- GRE può incapsulare vari protocolli, permettendo il trasporto di pacchetti di rete di diversi tipi all'interno di un singolo tunnel.
-Indipendenza dal Protocollo:
+A differenza dell'incapsulamento, il tunneling consente a un protocollo di **livello inferiore**, o a un protocollo dello **stesso livello**, di essere trasportato attraverso il tunnel. Un'**interfaccia** tunnel è un'**interfaccia virtuale** (o logica). 
 
-- GRE è indipendente dal protocollo e può trasportare qualsiasi protocollo di rete come IP, IPX, AppleTalk, ecc.
-Tunneling Punto-a-Punto:
+Il **tunneling** è costituito da **tre componenti** principali:
 
-- GRE crea collegamenti punto-a-punto virtuali tra due endpoint di tunnel.
-Header di Incapsulamento:
+- **Protocollo passeggero**: il protocollo che si sta incapsulando. Esempi di protocolli passeggero sono AppleTalk, CLNS, IP e IPX.
 
-- GRE aggiunge un header di 24 byte al pacchetto incapsulato. L'header include informazioni di controllo, il protocollo incapsulato e un checksum opzionale per la verifica dell'integrità.
+- **Protocollo carrier** (operatore): il protocollo che esegue l'incapsulamento. Esempi di protocolli operatore sono GRE, IP-in-IP, L2TP, MPLS, STUN e DLSw+.
+
+- **Protocollo di trasporto**: Il protocollo utilizzato per trasportare il protocollo incapsulato. Il protocollo di trasporto principale è IP.
+
 
 Vantaggi di GRE
 - Flessibilità: GRE può trasportare qualsiasi protocollo di livello rete, rendendolo utile in diverse situazioni di rete.
@@ -38,7 +41,8 @@ Limitazioni di GRE
 - Sicurezza: GRE di per sé non fornisce meccanismi di crittografia o autenticazione. Se la sicurezza è una preoccupazione, GRE è spesso utilizzato in combinazione con IPsec per fornire sicurezza ai dati incapsulati.
 - Overhead: L'header aggiuntivo di GRE introduce un overhead aggiuntivo di 24 byte, che può influire sulle prestazioni e sull'efficienza della rete.
 
-Esempio di Configurazione GRE su un Router Cisco
+## **Esempio**
+
 Supponiamo di avere due router (Router A e Router B) e vogliamo creare un tunnel GRE tra di loro. Ecco come configurarlo:
 
 ### **Sede A**
