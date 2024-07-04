@@ -79,11 +79,12 @@ Switch di distribuzione DS:
 
 ## **Divisione in gruppi di utenti o servizi**
 
-### **Link che generano subnet**
+### **Link e subnet**
+
+Un router determina una **segmentazione** della rete basata su **prefissi** di rete che devono essere **assegnati** in maniera diversa su ciascuna delle sue porte. Di fatto, il **link** su ciascuna porta diventa una **subnet**, quella individuata dal prefisso **associato** alla porta.
 
 - Il centro stella è sempre un router da cui si dirama una subnet a partire da ogni suo link fisico
-- La possibilità di realizzare subnet mappate su LAN (stub o transit) può essere estesa anche alle VLAN
-- La novità è che adesso da un router si può diramare una subnet anche a partire da un link virtuale
+- La possibilità di realizzare subnet mappate su LAN (stub o transit) può essere estesa anche alle VLAN. La novità è che adesso da un router si può diramare una subnet anche a partire da un link virtuale
 - Poiché più link virtuali possono condividere uno stesso collegamento fisico, esiste la possibilità di dislocare le subnet a «macchia di leopardo», cioè in modo che i loro dispositivi siano sparsi potenzialmente ovunque all’interno dell’infrastruttura fisica della rete (cade il vincolo di vicinanza fisica dei dispositivi di una subnet).
 
 <img src="img/subnetlink.jpg" alt="alt text" width="800">
