@@ -7,7 +7,7 @@
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
 
-## **Le reti ai capi del router perimetrale**
+# **Le reti ai capi del router perimetrale**
 
 Le reti di nostro interesse principale per la **progettazione** sono le reti che stanno ai due capi del router perimetrale di una LAN:
 - la **rete locale** di ufficio o di campus detta LAN (Local Area Network), è realizata tipicamente con degli **switch** e ha, di base, un'**architettura ad albero** 
@@ -55,7 +55,7 @@ I CS sono i concentratori dei dispositivi server (sistema e business) e delle do
 - Con gli stessi SW in uso nei DS e in questo caso sono dei CD/DS
 - Con SW speciali dedicati solo alle dorsali con meno porte ma più prestanti (ad es. da 10Gbps), realizzate in RJ45 oppure in SFP. Spesso hanno anche funzioni di routing (SW L3) e assommano molti servizi di sistema ad uso di tutti i dispositivi della rete (DHCP, DNS).
 
-### **Configurazioni switch tipiche**
+## **Configurazioni switch tipiche**
 
 - Il cablaggio orizzontale è in genere a 1Gbps
 - Il cablaggio verticale di edificio è almeno a 10Gbps in fibra (MMF o SMF) o a 10Gbps in rame (UTP cat 6A o UTP cat 7A) 
@@ -77,7 +77,7 @@ Switch di distribuzione DS:
 - 24P 1Gbps + 2P SFP 
 - 24P 1Gbps + 2P 10Gbps + 2P SFP+ 
 
-### **Tabella delle subnet**
+## **Tabella delle subnet**
 
 Per realizzarla è opportuno eseguire un subnetting della rete tenendo conto:
 - Che ogni **link** (fisico o virtuale) di un router **genera** una **subnet**
@@ -94,7 +94,7 @@ Gli **attributi minimi** di una **subnet** sono:
 - **RNGx**: intervallo tra il primo indirizzo e l’ultimo indirizzo assegnabile ai client della subnet x
 
 
-### **Indirizzi IP di client e server**
+## **Indirizzi IP di client e server**
 
 L’albero degli apparati attivi contiene dispositivi alimentati e dotati di indirizzo IP, indicati genericamente come host, sono:
 - PC client fissi o portatili
@@ -115,6 +115,22 @@ Gli **attributi minimi** di una **interfaccia IP** sono:
 Normalmente i dispositivi client ottengono automaticamente l’indirizzo IP tramite il servizio DHCP. Al limite, gli indirizzi dei dispositivi fissi possono essere assegnati staticamente per ragioni di troubleshooting.
 
 I dispositivi server posseggono indirizzi statici per poter essere associati più facilmente all’url di dominio presso cui i client possono connettersi per raggiungere i servizi che essi pubblicano. I loro indirizzi vanno sempre segnati sull’albero.
+
+### **Convenzioni di nominazione delle interfacce Cisco**
+
+Convenzioni di nominazione delle interfacce **estese**
+- **Ethernet**: Ethernet0, Ethernet1, ecc.
+- **Fast Ethernet**: FastEthernet0/0, FastEthernet0/1, ecc.
+- **Gigabit Ethernet**: GigabitEthernet0/0, GigabitEthernet0/1, ecc.
+- **Serial**: Serial0/0, Serial0/1, ecc.
+- **Tunnel**: Tunnel0, Tunnel1, ecc.
+
+Convenzioni di nominazione delle Interfacce **abbreviate**
+- **Ethernet**: Eth0, Eth1, ecc.
+- **Fast Ethernet**: Fa0/0, Fa0/1, ecc.
+- **Gigabit Ethernet**: Gi0/0, Gi0/1, ecc.
+- **Serial**: Se0/0, Se0/1, ecc.
+- **Tunnel**: Tu0, Tu1, ecc.
 
 ## **Divisione in gruppi di utenti o servizi**
 
@@ -145,21 +161,6 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
      - persone dello stesso dipartimento che sono dislocate su più sedi fisicamente separate (collegare logicamente host fisicamente separati)
      - Persone nello stesso luogo che devono essere selezionate per confluire in dipartimenti separati (separare logicamente host fisicamente collegati)
 
-### **Convenzioni di nominazione delle interfacce Cisco**
-
-Convenzioni di nominazione delle interfacce **estese**
-- **Ethernet**: Ethernet0, Ethernet1, ecc.
-- **Fast Ethernet**: FastEthernet0/0, FastEthernet0/1, ecc.
-- **Gigabit Ethernet**: GigabitEthernet0/0, GigabitEthernet0/1, ecc.
-- **Serial**: Serial0/0, Serial0/1, ecc.
-- **Tunnel**: Tunnel0, Tunnel1, ecc.
-
-Convenzioni di nominazione delle Interfacce **abbreviate**
-- **Ethernet**: Eth0, Eth1, ecc.
-- **Fast Ethernet**: Fa0/0, Fa0/1, ecc.
-- **Gigabit Ethernet**: Gi0/0, Gi0/1, ecc.
-- **Serial**: Se0/0, Se0/1, ecc.
-- **Tunnel**: Tu0, Tu1, ecc.
 
 ### **Tipi di interfacce che generano subnet**
 
