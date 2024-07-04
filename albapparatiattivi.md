@@ -89,7 +89,7 @@ Un router determina una **segmentazione** della rete basata su **prefissi** di r
 
 <img src="img/subnetlink.jpg" alt="alt text" width="800">
 
-#### **Tipi di link**
+### **Tipi di link**
 
 I link di un router possono essere sostanzialmenbte di due tipi:
 - **punto-punto**, quando all'altro capo del router ci sta un altro router, cioè il link unisce esattamente due router. In questa caso particolare, indicare nella **rotta** verso una destinazione l'**interfaccia** che ha una uscita su un certo link equivale a definire il **next hop** dello stesso router su quel link. Definire, per una certa rotta, l'**interfaccia di uscita** di un router equivale a definire quella di ingresso del **next hop**, cioè del router successivo nella rotta verso la destinazione.
