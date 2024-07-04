@@ -106,6 +106,12 @@ L’albero degli apparati attivi contiene dispositivi alimentati e dotati di ind
 - Videocamere IP
 - Dispositivi IoT per sensoristica o telerilevamento
 
+Gli **attributi minimi** di una **interfaccia IP** sono:
+- **VLAN ID** della vlan x (opzionale, se l'interfaccia fisica è di Trunk)
+- **ISx**: indirizzo base della subnet x
+- **SMx**: subnet mask della subnet x.
+- **GWx**: indirizzo di gateway della subnet. E' l'indirizzo che possiede il **router** di confine sul **link** verso la subnet che ospita l'host.
+
 Normalmente i dispositivi client ottengono automaticamente l’indirizzo IP tramite il servizio DHCP. Al limite, gli indirizzi dei dispositivi fissi possono essere assegnati staticamente per ragioni di troubleshooting.
 
 I dispositivi server posseggono indirizzi statici per poter essere associati più facilmente all’url di dominio presso cui i client possono connettersi per raggiungere i servizi che essi pubblicano. I loro indirizzi vanno sempre segnati sull’albero.
