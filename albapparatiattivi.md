@@ -106,7 +106,7 @@ L’albero degli apparati attivi contiene dispositivi alimentati e dotati di ind
 - Videocamere IP
 - Dispositivi IoT per sensoristica o telerilevamento
 
-Gli **attributi minimi** di una **interfaccia IP** sono:
+Gli **attributi minimi** di una **interfaccia IP** di un **host** sono:
 - **VLAN ID** della vlan x (opzionale, se l'interfaccia fisica è di Trunk)
 - **ISx**: indirizzo base della subnet x
 - **SMx**: subnet mask della subnet x.
@@ -117,6 +117,11 @@ Normalmente i dispositivi client ottengono automaticamente l’indirizzo IP tram
 I dispositivi server posseggono indirizzi statici per poter essere associati più facilmente all’url di dominio presso cui i client possono connettersi per raggiungere i servizi che essi pubblicano. I loro indirizzi vanno sempre segnati sull’albero.
 
 ## **Indirizzi IP dei router**
+
+Gli **attributi minimi** di una **interfaccia IP** di un **router** sono:
+- **VLAN ID** della vlan x (opzionale, se l'interfaccia fisica è di Trunk)
+- **ISx**: indirizzo base della subnet x
+- **SMx**: subnet mask della subnet x.
 
 ### **Convenzioni di nominazione delle interfacce Cisco**
 
