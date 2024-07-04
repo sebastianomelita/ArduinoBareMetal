@@ -143,10 +143,10 @@ Convenzioni di nominazione delle Interfacce **abbreviate**
 
 Le **subnet IPv4** sono **contenitori di indirizzi IP** derivati da contenitori di indirizzi IP più grandi, partendo dal **partizionamento** della **parte di host** dell'indirizzo. Ogni **prefisso** di subnet può essere poi associato a un **gruppo** di host diverso.
 
-I **router** sono i dispositivi che **allocano fisicamente nello spazio** le subnet permettendo di raggiungere i **gruppi di host** ad esse associati. Le **interfacce** di un **router** che possono **generare subnet** sono tutte quelle L3 o superiori, sia fisiche che virtuali e tipicamente sono:
-- interfacce **fisiche IP** che generano subnet di host **fisicamente vicini**
-- interfacce **virtuali IP** di tipo 802.1q (trunk T) che generano subnet di host **fisicamente sparsi** (VLAN)
-- interfacce **virtuali IP** di tipo tunnel che generano subnet di **dorsali VPN** punto-punto
+I **router** sono i dispositivi che **allocano fisicamente nello spazio** le subnet permettendo di raggiungere i **gruppi di host** ad esse associati. Ogni **interfaccia** di un **router**, di livello L3 o superiore, sia fisica che virtuale, ha la proprietà di **generare una subnet** sul link ad essa collegato. Queste interfacce tipicamente sono:
+- le interfacce **fisiche IP** che generano subnet di host **fisicamente vicini**
+- le interfacce **virtuali IP** di tipo 802.1q (trunk T) che generano subnet di host **fisicamente sparsi** (VLAN)
+- le interfacce **virtuali IP** di tipo **tunnel** che generano subnet di **dorsali VPN** punto-punto
 
 Di seguito è riportato un esempio che le **riassume** tutte:
  - .
