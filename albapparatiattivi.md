@@ -89,6 +89,12 @@ Un router determina una **segmentazione** della rete basata su **prefissi** di r
 
 <img src="img/subnetlink.jpg" alt="alt text" width="800">
 
+#### **Tipi di link**
+
+I link di un router possono essere sostanzialmenbte di due tipi:
+- **punto-punto**, quando all'altro capo del router ci sta un altro router, cioè il link unisce esattamente due router. In questa caso particolare, indicare nella **rotta** verso una destinazione l'**interfaccia** che ha una uscita su un certo link equivale a definire il **next hop** dello stesso router su quel link. Definire, per una certa rotta, l'**interfaccia di uscita** di un router equivale a definire quella di ingresso del **next hop**, cioè del router successivo nella rotta verso la destinazione.
+- **multipunto**, quando all'altro capo del router ci sta un dispositivo L1 o L2 che crea una comunicazione broadcast. E' il caso degli hub, cablati o wireless (AP), dei bridge e, più frequentemente, degli switch. In questo caso, la scelta, per una certa rotta, dell'**interfaccia** di uscita lascia indefinita la scelta del **next hop** dato che, grazie allo switch, un link verso di esso equivale a **più di un link**, uno per **ciascun router** collegato sulle sue porte. In questo caso **interfaccia di uscita** e **next hop** **non coincidono** e nella **rotta** va indicato esplicitamente **quest'ultimo**.
+
 ### **Modalità di segmentazione**
 
 La **segmentazione** di una rete LAN parte sempre da un **router** che, essendo un **dispositivo L3**, è in grado di **bloccare** le trame MAC provenienti da dispositivi di livello inferiore come gli SW e i Bridge ad L2 oppure gli Hub ad L1.
