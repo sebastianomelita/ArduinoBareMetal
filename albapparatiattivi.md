@@ -86,7 +86,6 @@ Per realizzarla è opportuno eseguire un subnetting della rete tenendo conto:
     - **gruppi di macchine** dislocate nello **stesso ambiente** delle quali gli **indirizzi** sono allocati in base ad un **ordine prestabilito** che ne permetta un **troubleshooting efficace**. Una prassi molto comune è quella di far coincidere il **prefisso di host** dell'indirizzo con il **numero della porta** ethernet a muro, numero che normalmente coincide anche con il numero assegnato alla **posizione** delle macchine nel locale che le ospita. In questo caso, l'**isolamento** delle subnet potrebbe non essere **requisito** per cui il subnetting rimane più che altro come una maniera di **organizzare gli indirizzi** di macchine **fisicamente vicine** che è complementare al **cablaggio strutturato** per la realizzazione di un **troubleshooting efficace**.
  
 Gli **attributi minimi** di una **subnet** sono:
-Un **subnetting** definisce **sei proprietà** di una **subnet**:
 - **VLAN ID** della vlan x (opzionale, se previste le VLAN)
 - **ISx**: indirizzo base della subnet x
 - **SMx**: subnet mask della subnet x. E’ collegato a NSx (numero di indirizzi della sub. X)
