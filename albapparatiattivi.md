@@ -84,16 +84,16 @@ Per realizzarla è opportuno eseguire un subnetting della rete tenendo conto:
 - Che **gruppi di indirizzi** come le subnet potrebbero essere **allocati**:
     - a **funzioni aziendali** differenti che tendenzialmente utilizzano risorse private a loro dedicate e che non dovrebbero essere esposte in altre subnet. In questo caso, l'**isolamento** delle subnet è un **requisito** e può essere soddisfatta agendo sulle **tabelle di routing** e sulle **ACL** del router che genera le subnet.
     - **gruppi di macchine** dislocate nello **stesso ambiente** delle quali gli **indirizzi** sono allocati in base ad un **ordine prestabilito** che ne permetta un **troubleshooting efficace**. Una prassi molto comune è quella di far coincidere il **prefisso di host** dell'indirizzo con il **numero della porta** ethernet a muro, numero che normalmente coincide anche con il numero assegnato alla **posizione** delle macchine nel locale che le ospita. In questo caso, l'**isolamento** delle subnet potrebbe non essere **requisito** per cui il subnetting rimane più che altro come una maniera di **organizzare gli indirizzi** di macchine **fisicamente vicine** che è complementare al **cablaggio strutturato** per la realizzazione di un **troubleshooting efficace**.
-
-La realizzazione di un inter VLAN routing obbliga a far corrispondere (mappare) ogni VLAN ad una dorsale verso il router (virtuale o fisica) e quindi ad una corrispondente subnet.
-
+ 
+Gli **attributi minimi** di una **subnet** sono:
 Un **subnetting** definisce **sei proprietà** di una **subnet**:
-- **VLAN ID** della vlan x (se previste le VLAN)
+- **VLAN ID** della vlan x (opzionale, se previste le VLAN)
 - **ISx**: indirizzo base della subnet x
 - **SMx**: subnet mask della subnet x. E’ collegato a NSx (numero di indirizzi della sub. X)
 - **BCx**: indirizzo di broadcast della subnet x
 - **GWx**: indirizzo di gateway della subnet 
 - **RNGx**: intervallo tra il primo indirizzo e l’ultimo indirizzo assegnabile ai client della subnet x
+
 
 ### **Indirizzi IP di client e server**
 
