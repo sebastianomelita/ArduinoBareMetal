@@ -107,6 +107,20 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
      - persone dello stesso dipartimento che sono dislocate su più sedi fisicamente separate (collegare logicamente host fisicamente separati)
      - Persone nello stesso luogo che devono essere selezionate per confluire in dipartimenti separati (separare logicamente host fisicamente collegati)
 
+### **Tipi di interfacce che generano subnet**
+
+Le **subnet IPv4** sono **contenitori di indirizzi IP** derivati da contenitori di indirizzi IP più grandi, partendo dal **partizionamento** della **parte di host** dell'indirizzo. Ogni **prefisso** di subnet può essere poi associato a un **gruppo** di host diverso.
+
+I **router** sono i dispositivi che **allocano fisicamente nello spazio** le subnet permettendo di raggiungere i **gruppi di host** ad esse associati. Ogni **interfaccia** di un **router**, di livello L3 o superiore, sia fisica che virtuale, ha la proprietà di **generare una subnet** sul link ad essa collegato. Queste interfacce tipicamente sono:
+- le interfacce **fisiche IP** che generano subnet di host **fisicamente vicini**
+- le interfacce **virtuali IP** di tipo 802.1q (trunk T) che generano subnet di host **fisicamente sparsi** (VLAN)
+- le interfacce **virtuali IP** di tipo **tunnel** che generano subnet di **dorsali VPN** punto-punto
+
+Di seguito è riportato un esempio che le **riassume** tutte:
+ - .
+  <img src="img/interfacce.png" alt="alt text" width="900">
+
+Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [tunnel e vpn](ethvpn.md)
 
 ## **Tabella delle subnet**
 
@@ -169,21 +183,6 @@ Convenzioni di nominazione delle Interfacce **abbreviate**
 - **Gigabit Ethernet**: Gi0/0, Gi0/1, ecc.
 - **Serial**: Se0/0, Se0/1, ecc.
 - **Tunnel**: Tu0, Tu1, ecc.
-
-### **Tipi di interfacce che generano subnet**
-
-Le **subnet IPv4** sono **contenitori di indirizzi IP** derivati da contenitori di indirizzi IP più grandi, partendo dal **partizionamento** della **parte di host** dell'indirizzo. Ogni **prefisso** di subnet può essere poi associato a un **gruppo** di host diverso.
-
-I **router** sono i dispositivi che **allocano fisicamente nello spazio** le subnet permettendo di raggiungere i **gruppi di host** ad esse associati. Ogni **interfaccia** di un **router**, di livello L3 o superiore, sia fisica che virtuale, ha la proprietà di **generare una subnet** sul link ad essa collegato. Queste interfacce tipicamente sono:
-- le interfacce **fisiche IP** che generano subnet di host **fisicamente vicini**
-- le interfacce **virtuali IP** di tipo 802.1q (trunk T) che generano subnet di host **fisicamente sparsi** (VLAN)
-- le interfacce **virtuali IP** di tipo **tunnel** che generano subnet di **dorsali VPN** punto-punto
-
-Di seguito è riportato un esempio che le **riassume** tutte:
- - .
-  <img src="img/interfacce.png" alt="alt text" width="900">
-
-Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [tunnel e vpn](ethvpn.md)
 
 ## **Subnetting**
 
