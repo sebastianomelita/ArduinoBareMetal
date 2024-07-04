@@ -79,7 +79,7 @@ Switch di distribuzione DS:
 
 ## **Tabella delle subnet**
 
-Per realizzarla è opportuno eseguire un subnetting della rete tenendo conto:
+Per realizzarla è opportuno eseguire un **subnetting** della rete tenendo conto:
 - Che ogni **link** (fisico o virtuale) di un router **genera** una **subnet**
 - Che **gruppi di indirizzi** come le subnet potrebbero essere **allocati**:
     - a **funzioni aziendali** differenti che tendenzialmente utilizzano risorse private a loro dedicate e che non dovrebbero essere esposte in altre subnet. In questo caso, l'**isolamento** delle subnet è un **requisito** e può essere soddisfatta agendo sulle **tabelle di routing** e sulle **ACL** del router che genera le subnet.
@@ -116,6 +116,8 @@ Normalmente i dispositivi client ottengono automaticamente l’indirizzo IP tram
 
 I dispositivi server posseggono indirizzi statici per poter essere associati più facilmente all’url di dominio presso cui i client possono connettersi per raggiungere i servizi che essi pubblicano. I loro indirizzi vanno sempre segnati sull’albero.
 
+## **Indirizzi IP dei router**
+
 ### **Convenzioni di nominazione delle interfacce Cisco**
 
 Convenzioni di nominazione delle interfacce **estese**
@@ -131,6 +133,21 @@ Convenzioni di nominazione delle Interfacce **abbreviate**
 - **Gigabit Ethernet**: Gi0/0, Gi0/1, ecc.
 - **Serial**: Se0/0, Se0/1, ecc.
 - **Tunnel**: Tu0, Tu1, ecc.
+
+### **Tipi di interfacce che generano subnet**
+
+Le **subnet IPv4** sono **contenitori di indirizzi IP** derivati da contenitori di indirizzi IP più grandi, partendo dal **partizionamento** della **parte di host** dell'indirizzo. Ogni **prefisso** di subnet può essere poi associato a un **gruppo** di host diverso.
+
+I **router** sono i dispositivi che **allocano fisicamente nello spazio** le subnet permettendo di raggiungere i **gruppi di host** ad esse associati. Le **interfacce** di un **router** che possono **generare subnet** sono tutte quelle L3 o superiori, sia fisiche che virtuali e tipicamente sono:
+- interfacce **fisiche IP** che generano subnet di host **fisicamente vicini**
+- interfacce **virtuali IP** di tipo 802.1q (trunk T) che generano subnet di host **fisicamente sparsi** (VLAN)
+- interfacce **virtuali IP** di tipo tunnel che generano subnet di **dorsali VPN** punto-punto
+
+Di seguito è riportato un esempio che le **riassume** tutte:
+ - .
+  <img src="img/interfacce.png" alt="alt text" width="900">
+
+Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [tunnel e vpn](ethvpn.md)
 
 ## **Divisione in gruppi di utenti o servizi**
 
@@ -161,21 +178,6 @@ Un router **reimbusta** le trame MAC su nuovi pacchetti IP ogni volta che effett
      - persone dello stesso dipartimento che sono dislocate su più sedi fisicamente separate (collegare logicamente host fisicamente separati)
      - Persone nello stesso luogo che devono essere selezionate per confluire in dipartimenti separati (separare logicamente host fisicamente collegati)
 
-
-### **Tipi di interfacce che generano subnet**
-
-Le **subnet IPv4** sono **contenitori di indirizzi IP** derivati da contenitori di indirizzi IP più grandi, partendo dal **partizionamento** della **parte di host** dell'indirizzo. Ogni **prefisso** di subnet può essere poi associato a un **gruppo** di host diverso.
-
-I **router** sono i dispositivi che **allocano fisicamente nello spazio** le subnet permettendo di raggiungere i **gruppi di host** ad esse associati. Le **interfacce** di un **router** che possono **generare subnet** sono tutte quelle L3 o superiori, sia fisiche che virtuali e tipicamente sono:
-- interfacce **fisiche IP** che generano subnet di host **fisicamente vicini**
-- interfacce **virtuali IP** di tipo 802.1q (trunk T) che generano subnet di host **fisicamente sparsi** (VLAN)
-- interfacce **virtuali IP** di tipo tunnel che generano subnet di **dorsali VPN** punto-punto
-
-Di seguito è riportato un esempio che le **riassume** tutte:
- - .
-  <img src="img/interfacce.png" alt="alt text" width="900">
-
-Per dettagli sulla creazione e impostazione di tunnel e vpn vedi [tunnel e vpn](ethvpn.md)
 
 ## **Subnetting**
 
