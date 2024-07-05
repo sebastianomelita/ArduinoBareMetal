@@ -27,6 +27,8 @@ E’ usato anche per realizzare la funzione di **NAT**, cioè traduzione degli i
 E’ adoperato come router tra le sue interfacce standard quali **LAN**, **WAN** e **DMZ**.
 Può essere usato anche come **bilanciatore di carico** delle **connessioni WAN multiple** (ad es. due in fibra e una wireless).
 
+<img src="img/archFWbase.png" alt="alt text" width="700">
+
 ## **ALG** 
 
 ### **Definizione** 
