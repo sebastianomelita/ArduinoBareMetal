@@ -45,6 +45,56 @@ La subnet di accesso può essere partizionata:
 
 <img src="img/openvpn_crittografia.png" alt="alt text" width="1100">
 
+ipconfig
+
+``` C++
+Scheda sconosciuta OpenVPN Wintun:
+
+   Suffisso DNS specifico per connessione:
+   Indirizzo IPv6 locale rispetto al collegamento . : fe80::3d2b:be72:4201:26ac%7
+   Indirizzo IPv4. . . . . . . . . . . . : 10.29.2.3
+   Subnet mask . . . . . . . . . . . . . : 255.255.255.0
+   Gateway predefinito . . . . . . . . . :
+```
+route print
+
+``` C++
+Elenco interfacce
+  7...........................Wintun Userspace Tunnel
+ 16...00 ff 95 d7 fa 38 ......TAP-Windows Adapter V9
+ 20...04 6c 59 c3 34 45 ......Microsoft Wi-Fi Direct Virtual Adapter
+  6...06 6c 59 c3 34 44 ......Microsoft Wi-Fi Direct Virtual Adapter #2
+ 18...04 6c 59 c3 34 44 ......Intel(R) Wi-Fi 6 AX201 160MHz
+  5...04 6c 59 c3 34 48 ......Bluetooth Device (Personal Area Network)
+  1...........................Software Loopback Interface 1
+===========================================================================
+
+IPv4 Tabella route
+===========================================================================
+Route attive:
+     Indirizzo rete             Mask          Gateway     Interfaccia Metrica
+          0.0.0.0          0.0.0.0     192.168.10.1   192.168.10.187     50
+         10.0.0.0      255.128.0.0        10.29.2.1        10.29.2.3    261
+        10.29.2.0    255.255.255.0         On-link         10.29.2.3    261
+        10.29.2.3  255.255.255.255         On-link         10.29.2.3    261
+      10.29.2.255  255.255.255.255         On-link         10.29.2.3    261
+        127.0.0.0        255.0.0.0         On-link         127.0.0.1    331
+        127.0.0.1  255.255.255.255         On-link         127.0.0.1    331
+  127.255.255.255  255.255.255.255         On-link         127.0.0.1    331
+       172.16.1.0    255.255.255.0        10.29.2.1        10.29.2.3    261
+      192.168.2.0    255.255.255.0        10.29.2.1        10.29.2.3    261
+      192.168.3.0    255.255.255.0        10.29.2.1        10.29.2.3    261
+     192.168.10.0    255.255.255.0         On-link    192.168.10.187    306
+   192.168.10.187  255.255.255.255         On-link    192.168.10.187    306
+   192.168.10.255  255.255.255.255         On-link    192.168.10.187    306
+        224.0.0.0        240.0.0.0         On-link         127.0.0.1    331
+        224.0.0.0        240.0.0.0         On-link         10.29.2.3    261
+        224.0.0.0        240.0.0.0         On-link    192.168.10.187    306
+  255.255.255.255  255.255.255.255         On-link         127.0.0.1    331
+  255.255.255.255  255.255.255.255         On-link         10.29.2.3    261
+  255.255.255.255  255.255.255.255         On-link    192.168.10.187    306
+===========================================================================
+``` 
 Sitografia:
 - https://docs.netgate.com/pfsense/en/latest/vpn/openvpn/index.html
 - https://docs.netgate.com/pfsense/en/latest/recipes/openvpn-ra.html
