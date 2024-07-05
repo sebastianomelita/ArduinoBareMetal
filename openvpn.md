@@ -9,7 +9,7 @@
 
 # **Configurazione servizio Open VPN su Pfsense**
 
-<img src="img/diagrams-openvpn-server.png" alt="alt text" width="700">
+<img src="img/diagrams-openvpn-server.png" alt="alt text" width="1100">
 
 Questo esempio mostra la configurazione della una VPN Home to Site OpenVPN installata sul firewall commerciale Pfsense.
 
@@ -23,6 +23,7 @@ In questa fase vengono impostati:
     - **tap**: crea una interfacccia L2, cioè il protocollo di trasporto è il **MAC**
 - l'**indirizzo** dell'interfaccia pubblica, cioè l'**IP pubblico** della **destinazione** a cui si collegheraà il client VPN
 - il **tipo** (TCP o UDP) e il **numero di porta**. Di default sono **UDP** e **1194** ma possono anche esssere modificati a piacimento in TCP e in un qualsiasi altro numero di porta
+- il protocollo **carrier** è, ovviamente, **OpenVPN** che introduce un proprio header tra l'intestazione di trasporto  e quella del protocollo passeggero.
 
 ## **Configurazione del protocollo passeggero**
 
