@@ -7,11 +7,9 @@
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 
-# **OVPN di reti Ethernet** 
+# **Configurazione servizio Open VPN su Pfsense**
 
 Questo esempio mostra la configurazione della una VPN Home to Site OpenVPN installata sul firewall commerciale Pfsense.
-
-## **Configurazione servizio Open VPN su Pfsense**
 
 ## **Configurazione protocollo trasporto**
 
