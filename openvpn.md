@@ -38,8 +38,8 @@ In questa fase vengono impostati:
 Specifica il metodo utilizzato per fornire un indirizzo IP dell'adattatore virtuale ai client quando si utilizza la modalità TUN su IPv4.
 
 La subnet di accesso può essere partizionata:
-- mediante subnetting automatico, in tante subnet /30 punto-punto, allocata dinamicamente a ciascun client che man mano si collega al server. E' la modalità che garantisce maggior isolamento in quanto i vari client non si vedono.
-- utilizzando una subnet comune non partizinata assegnando dinamicamente il primo indirizzo libero ad ogni client VPN che man mano si connette al server. E' la modalità che garantisce minor isolamento in quanto i vari client si vedono tra loro.
+- mediante **subnetting automatico**, in tante **subnets /30** punto-punto, allocata dinamicamente a ciascun client che man mano si collega al server. E' la modalità che garantisce maggior isolamento in quanto i vari client non si vedono.
+- utilizzando una **subnet comune** non partizionata, assegnando dinamicamente il primo indirizzo libero ad ogni client VPN che man mano si connette al server. E' la modalità che garantisce minor isolamento in quanto i vari client si vedono tra loro.
   
 ## **Configurazione della crittogfrafia**
 
