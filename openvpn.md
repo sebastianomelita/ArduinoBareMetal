@@ -21,7 +21,7 @@ In questa fase vengono impostati:
 - il **tipo di tunnel**, si può scegliere tra:
     - **tun**: crea una interfacccia L3, cioè il protocollo **passeggero** è l'**IP**
     - **tap**: crea una interfacccia L2, cioè il protocollo **passeggero** è il **MAC**
-- l'**indirizzo** dell'interfaccia pubblica, cioè l'**IP pubblico** della **destinazione** a cui si collegheraà il client VPN
+- l'**indirizzo** dell'interfaccia pubblica, cioè l'**IP pubblico** della **destinazione** a cui si collegherà il client VPN. Il protocollo di **trasporto** è l'IP con indirizzo pubblico di router/server VPN e client VPN (router di casa).
 - il **tipo** (TCP o UDP) e il **numero di porta**. Di default sono **UDP** e **1194** ma possono anche esssere modificati a piacimento in TCP e in un qualsiasi altro numero di porta
 - il protocollo **carrier** è, ovviamente, **OpenVPN** che introduce un proprio header tra l'intestazione di trasporto  e quella del protocollo passeggero.
 
