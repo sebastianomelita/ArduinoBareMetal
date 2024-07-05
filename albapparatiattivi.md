@@ -81,7 +81,7 @@ Switch di distribuzione DS:
 
 ### **Link e subnet**
 
-Un router determina una **segmentazione** della rete basata su **prefissi** di rete che devono essere **assegnati** in maniera diversa su ciascuna delle sue porte. Di fatto, il **link** su ciascuna porta diventa una **subnet**, quella individuata dal prefisso **associato** alla porta.
+Un router determina una **segmentazione** della rete basata su **prefissi** di rete che devono essere **assegnati** con valori **differenti** su ciascuna delle sue porte. Di fatto, il **link** su ciascuna porta diventa una **subnet**, quella individuata dal prefisso **associato** alla porta.
 
 - Il centro stella è sempre un router da cui si dirama una subnet a partire da ogni suo link fisico
 - La possibilità di realizzare subnet mappate su LAN (stub o transit) può essere estesa anche alle VLAN. La novità è che adesso da un router si può diramare una subnet anche a partire da un link virtuale
