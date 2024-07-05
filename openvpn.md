@@ -36,4 +36,8 @@ In questa fase vengono impostati:
 
 Specifica il metodo utilizzato per fornire un indirizzo IP dell'adattatore virtuale ai client quando si utilizza la modalità TUN su IPv4.
 
+## **Configurazione della crittogfrafia**
+
+<img src="img/openvpn_crittografia.png" alt="alt text" width="1100">
+
 Sitografia:
