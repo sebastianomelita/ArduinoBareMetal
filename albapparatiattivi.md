@@ -91,9 +91,13 @@ Un router determina una **segmentazione** della rete basata su **prefissi** di r
 
 ### **Tipi di link**
 
-I link di un router possono essere sostanzialmenbte di **due tipi**:
-- **punto-punto**, quando all'altro capo del router ci sta un altro router, cioè un link unisce esattamente due router e crea un'**unica subnet** per **ciascun link**. In questo caso particolare, indicare, nella **rotta** verso una destinazione, l'**interfaccia di uscita** che un router possiede su un certo link, equivale a definire il **next hop** dello stesso router su quel link. In altre parole, definire, per una certa rotta, l'**interfaccia di uscita** di un router equivale a definire quella di ingresso del **next hop**, cioè del router successivo nella rotta verso la destinazione.
-- **multipunto**, quando all'altro capo del router ci sta un dispositivo L1 o L2 che crea un'unica subnet **comune** per **tutti i link** che vi partecipano. E' il caso degli hub, cablati o wireless (AP), dei bridge e, più frequentemente, degli switch. In questo caso, la scelta, per una certa rotta, dell'**interfaccia** di uscita lascia indefinita la scelta del **next hop** dato che un link verso uno switch equivale a **più di un link**, uno per **ciascun router** collegato sulle sua porte. Poichè adesso interfaccia di uscita e next hop **non coincidono**, nella **rotta** verso una certa destinazione va indicato esplicitamente solo il **next hop**.
+I **link** di un router possono essere sostanzialmenbte di **due tipi**:
+- **punto-punto**, quando il **link** unisce  esattamente **due router**. In questo caso particolare:
+    - viene generata un'**unica subnet** per **ciascun link**
+    - nella tabella di routing, indicare, nella **rotta** verso una destinazione, l'**interfaccia di uscita** che un router possiede su un certo link, equivale a definire il **next hop** dello stesso router su quel link. In altre parole, definire, per una certa rotta, l'**interfaccia di uscita** di un router equivale a definire quella di ingresso del **next hop**, cioè del router successivo nella rotta verso la destinazione.
+- **multipunto**, quando all'altro capo del router ci sta un dispositivo L1 o L2 che:
+    - crea un'unica subnet **comune** per **tutti i link** che vi partecipano. E' il caso degli hub, cablati o wireless (AP), dei bridge e, più frequentemente, degli switch.
+    - la scelta, per una certa rotta, dell'**interfaccia** di uscita lascia indefinita la scelta del **next hop** dato che un link verso uno switch equivale a **più di un link**, uno per **ciascun router** collegato sulle sua porte. Poichè adesso interfaccia di uscita e next hop **non coincidono**, nella **rotta** verso una certa destinazione va indicato esplicitamente solo il **next hop**.
 
 ### **Modalità di segmentazione**
 
