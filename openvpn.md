@@ -9,6 +9,8 @@
 
 # **Configurazione servizio Open VPN su Pfsense**
 
+<img src="img/diagrams-openvpn-server.png" alt="alt text" width="700">
+
 Questo esempio mostra la configurazione della una VPN Home to Site OpenVPN installata sul firewall commerciale Pfsense.
 
 ## **Configurazione protocollo trasporto**
