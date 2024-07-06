@@ -101,17 +101,24 @@ Esempio di analogie delle mansioni (fonte chatGPT. Provare a chiedere una analog
 | 1       | Fisico   | Gli impiegati che si occupano della manutenzione fisica dell'infrastruttura aziendale, come elettricisti e tecnici delle telecomunicazioni, che garantiscono che i cavi, i router, i server e altre apparecchiature funzionino correttamente  | Trasmette i dati in forma di segnali elettrici, ottici o radio.  |
 
 
-### **Messaggi di controllo**
+### **PDU**
 
-L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol Data Unit) che comprendono:
-- informazione di utente (SDU o Service Data Unit) 
-- informazione di controllo (PCI o Protocol Control Information) dette anche header (intestazione)‏
+L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol Data Unit) che comprendono due **componenti**:
+- informazione di utente (**SDU** o Service Data Unit) 
+- informazione di controllo (**PCI** o Protocol Control Information) dette anche **header** (intestazione)‏
 
 Le **intestazioni** (header) dele PDU sono informazioni di controllo usate dalle **entità** pari per **portare avanti** (gestire) il **proprio protocollo**
 
-Le  **PDU** in genere sono di due tipi:
-- **Dati**: contengono il carico utile da trasferire tra Tx e Rx (payload)
+Le  **PDU** in genere sono di **due tipi**:
+- **Dati**: contengono il carico utile da trasferire tra Tx e Rx (payload).
+    - Sono quei bit che il livello N deve spostare per conto del livello superiore N+1.
+    - L’obiettivo di un protocollo di livello N è proprio inviare le sue SDU lungo il canale con una prefissata qualità di servizio.
+    - Le SDU sono la «stiva» all’interno della quale accogliere le PDU provenienti dal livello superiore. 
+    - Vengono chiamate anche payload (carico utile)
 - **Controllo**: contengono informazioni utili per la supervisione del canale (indirizzo mitt., indirizzo dest., numeri di sequenze, contatori)
+    - Sono tutte quelle informazioni di controllo necessarie a portare avanti la comunicazione di livello N.
+    - Sono tipicamente indirizzo di sorgente e di destinazione più altre informazioni necessarie per realizzare le funzioni di quel livello (contatori numeri di sequenza, checsum, ecc.)
+
 
 
 
