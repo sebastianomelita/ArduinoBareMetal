@@ -16,6 +16,8 @@ Realizza una **connessione virtuale punto-punto cifrata** tra **utenti remoti** 
 
 In genere, il **tunnelling** si può considerare un **imbustamento fuori ordine** che **incapsula** pachetti del **livello N** su pacchetti di **livello N o superiore**. 
 
+
+
 ## **Interfacce virtuali tun e tap**
 
 Nelle reti Informatiche, **TUN e TAP** sono **driver** che permettono la creazione di **periferiche di rete virtuali**. Rispetto alle comuni periferiche (ad es. eth0) che sono controllate direttamente dalle schede di rete, i pacchetti spediti da o verso dispositivi TUN/TAP sono spediti da o verso **programmi software** che si occupano dello **sbustamento** in ricezione e dell'**imbustamento** in trasmissione:
@@ -48,7 +50,7 @@ Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
 
 ### **Canale virtuale e canale reale**
 
-L'**interfaccia virtuale** realizza un **canale virtuale diretto** tra i due router con il ruolo di client e server della connessione VPN dove viene **inoltrato** il **pacchetto interno trasportato**. In realtà il **canale reale**, quello dove viene inoltrato il **pacchetto esterno vettore**, passa per il **router di confine** di ogni LAN remota che utilizza **Internet**, da lì il pacchetto esterno viene ulteriormente inoltrato verso il **server VPN**. 
+L'**interfaccia virtuale** realizza un **canale virtuale diretto** tra i due router con il ruolo di client e server della connessione VPN dove viene **inoltrato** il **pacchetto interno trasportato**. In realtà il **canale reale** (o di trasporto), quello dove viene inoltrato il **pacchetto esterno vettore**, passa per il **router di confine** di ogni LAN remota che utilizza **Internet**, da lì il pacchetto esterno viene ulteriormente inoltrato verso il **server VPN**. 
 
 ### **Esempio officina 1**
 
