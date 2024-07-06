@@ -72,10 +72,21 @@ Scheda sconosciuta OpenVPN Wintun:
 Scheda LAN wireless Wi-Fi:
 
    Suffisso DNS specifico per connessione:
-   Indirizzo IPv6 locale rispetto al collegamento . : fe80::cc93:91f1:19ed:2560%18
-   Indirizzo IPv4. . . . . . . . . . . . : 192.168.10.187
+   Descrizione . . . . . . . . . . . . . : Intel(R) Wi-Fi 6 AX201 160MHz
+   Indirizzo fisico. . . . . . . . . . . : 04-6C-59-C3-34-44
+   DHCP abilitato. . . . . . . . . . . . : Sì
+   Configurazione automatica abilitata   : Sì
+   Indirizzo IPv6 locale rispetto al collegamento . : fe80::cc93:91f1:19ed:2560%18(Preferenziale)
+   Indirizzo IPv4. . . . . . . . . . . . : 192.168.10.187(Preferenziale)
    Subnet mask . . . . . . . . . . . . . : 255.255.255.0
+   Lease ottenuto. . . . . . . . . . . . : sabato 6 luglio 2024 00:37:29
+   Scadenza lease . . . . . . . . . . .  : domenica 7 luglio 2024 09:02:43
    Gateway predefinito . . . . . . . . . : 192.168.10.1
+   Server DHCP . . . . . . . . . . . . . : 192.168.10.1
+   IAID DHCPv6 . . . . . . . . . . . : 151284825
+   DUID Client DHCPv6. . . . . . . . : 00-01-00-01-2B-B7-6A-EB-04-6C-59-C3-34-44
+   Server DNS . . . . . . . . . . . . .  : 192.168.10.1
+   NetBIOS su TCP/IP . . . . . . . . . . : Attivato
 ```
 Si notino:
 - l'**assenza** del'impostazione **gateway predefinito** nell'**interfaccia Tun**. Il **gateway di default** in un sistema di rete (router o PC) è **unico** per tutte le interfacce, circostanza che permette di attribuirlo solamente ad una di esse. Nello specifico, è possibile impostare **alternativamente** un **gateway locale** su una interfaccia LAN locale (la scheda wireless) oppure un **gateway remoto** su una interfaccia tunnel (OpenVPN Wintun).
