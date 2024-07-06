@@ -79,7 +79,7 @@ Scheda LAN wireless Wi-Fi:
 ```
 Si notino:
 - l'**assenza** del'impostazione **gateway predefinito** nell'**interfaccia Tun**. Il **gateway di default** in un sistema di rete (router o PC) è **unico** per tutte le interfacce, circostanza che permette di attribuirlo solamente ad una di esse. Nello specifico, è possibile impostare **alternativamente** un gateway locale su una interfaccia LAN locale (la scheda wireless) oppure un gateway remoto su una interfaccia tunnel (OpenVPN Wintun).
-- si noti la **presenza** dell'impostazione **gateway predefinito** nell'**interfaccia locale** wireless (LAN locale). Significa che il sistema va in **Internet** con la **connessione locale** e non con quella remota.
+- la **presenza** dell'impostazione **gateway predefinito** nell'**interfaccia locale** wireless (LAN locale). Significa che il sistema va in **Internet** con la **connessione locale** e non con quella remota.
 - la presenza di un server DNS per il traffico su questa interfaccia, ovvero per **risolvere** gli indirizzi della **rete remota**.
 - l'indirizzo 10.29.2.2 dell'**endpoint** locale della **dorsale virtuale** verso la **rete remota**. 
 
