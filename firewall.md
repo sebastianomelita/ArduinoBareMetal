@@ -252,7 +252,7 @@ Non è necessario che esistano davvero degli switch che creino delle LAN su cui 
 
 <img src="img/3tier.png" alt="alt text" width="800">
 
-In questo ultimo caso la DMZ2 viene sostituita da un WAF sul server di microservizi e sul server dati che potrebbero anche essere **installati** nella **zona trusted**.
+In questo ultimo caso la DMZ2 viene sostituita da un **WAF** sul server di **microservizi** e sul **server dati** che potrebbero anche essere **installati** nella **zona trusted**.
 
 ### **Azioni di una regola**
 
