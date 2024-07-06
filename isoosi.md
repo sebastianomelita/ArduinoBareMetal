@@ -78,7 +78,7 @@ Al **livello N**, al fine di realizzare i **servizi** per il livello superiore *
 **Riassumendo**:
 - la comunicazione **reale** tra le **entità pari** dei livelli è **indiretta** e avviene:
     - In senso **verticale** attraverso le interfacce della pila di protocolli
-    - In senso **orizzontale **lungo il canale fisico al livello 1
+    - In senso **orizzontale**lungo il canale fisico al livello 1
 - La comunicazione **virtuale** tra le **entità pari** dei livelli è **diretta** e avviene:
     - in senso orrizzontale tra entità adiacenti dello stesso livello.
     - lungo un **canale virtuale** per ciascun livello.
