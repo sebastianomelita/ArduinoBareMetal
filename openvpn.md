@@ -68,9 +68,18 @@ Scheda sconosciuta OpenVPN Wintun:
    Server DNS . . . . . . . . . . . . .  : 10.12.0.25
                                            10.12.0.26
    NetBIOS su TCP/IP . . . . . . . . . . : Attivato
+
+Scheda LAN wireless Wi-Fi:
+
+   Suffisso DNS specifico per connessione:
+   Indirizzo IPv6 locale rispetto al collegamento . : fe80::cc93:91f1:19ed:2560%18
+   Indirizzo IPv4. . . . . . . . . . . . : 192.168.10.187
+   Subnet mask . . . . . . . . . . . . . : 255.255.255.0
+   Gateway predefinito . . . . . . . . . : 192.168.10.1
 ```
 Si notino:
-- l'assenza del'impostazione **gateway** predefinito dato che questo è unico per tutte le interfacce ed è locale, cioè il sistema va in **Internet** con la **connessione locale** e non con quella remota.
+- l'**assenza** del'impostazione **gateway predefinito** nell'**interfaccia Tun**. Il **gateway di default** in un sistema di rete (router o PC) è **unico** per tutte le interfacce, circostanza che permette di attribuirlo solamente ad una di esse. Nello specifico, è possibile impostare alternativamente un gateway locale su una interfaccia LAN locale (la scheda wireless) e un gateway remoto su una interfaccia tunnel (OpenVPN Wintun).
+- si noti la **presenza** dell'impostazione **gateway predefinito** nell'**interfaccia locale** wireless (LAN locale). Significa che il sistema va in **Internet** con la **connessione locale** e non con quella remota.
 - la presenza di un server DNS per il traffico su questa interfaccia, ovvero per **risolvere** gli indirizzi della **rete remota**.
 - l'indirizzo 10.29.2.2 dell'**endpoint** locale della **dorsale virtuale** verso la **rete remota**. 
 
