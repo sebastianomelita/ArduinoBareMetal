@@ -63,15 +63,14 @@ E' un punto di vista **parziale** perchè non si basa su quello che una comunica
 - molte **proprietà** del canale vengono date **per scontate**, non percependo affatto che vengono realizzate **da altri** livelli.
 - lo **schema** della rete appare **semplificato**, non percependo che la sua **struttura** è molto più **articolata**, anche se è stata **riassunta** in un **unico link**. In particolare un **collegamento diretto** tra host potrebbe essere **spezzato** in più **collegamenti di transito** tra **IS**.
 
-Al fine di realizzare servizi usati al livello N+1:
-- La comunicazione tra entità pari di livello N apparentemente si svolge come se avvenisse tramite un canale che le connette direttamente in orizzontale
-- La comunicazione (solamente simulata) avviene lungo un canale logico detto canale virtuale di livello N: 
-    - scambiandosi PDU di livello N (N-PDU)
-    - in base ad un protocollo di livello N 
-- Ciascun canale virtuale aggiunge nuovi servizi al canale virtuale sottostante
-- Fino a che non viene raggiunto il livello 1 (canale fisico), nessun dato è trasferito direttamente dal livello N del Tx al livello N del Rx: l’unico canale reale è quello fisico!
-- le entità pari in realtà comunicano trasferendo i dati lungo l’interfaccia di separazione col livello sottostante (comunicazione reale di livello N)
-
+Il **livello N**, al fine di realizzare i **servizi** per il livello superiore **N+1**:
+- La **comunicazione** tra **entità pari** di **livello N** apparentemente si svolge come se avvenisse lungo un **canale diretto** che le unisce in **orizzontale**
+- La **comunicazione diretta**, viene dalle parti **percepita** come se avvenisse lungo un **canale logico** detto **canale virtuale** di **livello N** perchè avviene: 
+    - **scambiandosi** dPDU di livello N **(N-PDU**)
+    - in base ad un **protocollo** di **livello N** 
+- Ciascun canale virtuale aggiunge **nuovi servizi** al canale virtuale sottostante
+- Fino a che non viene raggiunto il livello 1 (canale fisico), nessun dato è realmente trasferito direttamente dal livello N del Tx al livello N del Rx: l’unico canale reale è quello fisico!
+- le **entità pari** in realtà comunicano in **verticale**, trasferendo i dati lungo le interfacce di separazione tra un livello e l'altro, prima a scendere in trasmissione e poi a salire in ricezione. L'unica comunicazione orizzontale è lungo il canale fisico realizzato dal mezzo trasmissivo (fibra ottica, conduttore metallico, mezzo radio).
 
 
 Ogni **canale logico** serve a collegare tra loro le **due entità**, moduli SW con un certo **ruolo** (analoghe a coppie di impiegati tra i tanti di una grande azienda), che sono deputate a risolvere solamente **certi problemi**, tutti e soli quelli che rientrano all'interno delle **mansioni** che competono a quelle entità. 
