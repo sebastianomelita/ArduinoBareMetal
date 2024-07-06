@@ -105,14 +105,6 @@ Esempio di analogie delle mansioni (fonte chatGPT. Provare a chiedere una analog
 
 La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che non può avvenire senza lo **scambio di messaggi di servizio** che servono a coordinare il lavoro tra le **entità pari**, cioè quelle dello **stesso livello**. I messaggi di servizio (detti **messaggi di controllo**) sono quelli legati al **ruolo** e alle **mansioni** dei due interlocutori del livello corrente e trascurano gli **altri** messaggi di servizio relativi ad **altre mansioni** che, essendo sotto la responsabilità di **altri ruoli** appartenenti ad **altri livelli**, vengono, dalle entità del livello attuale, completamente **ignorate**.
 
-I **canali logici**, però, pur agendo in **contemporanea**, non sono affatto una replica di **7 messaggi diversi** che giungono a destinazione percorrendo **7 canali fisici paralleli**. Il canale fisico è sempre **uno solo** e il messaggio fisicamente è sempre la **stessa sequenza** di bit ai capi delle due interfacce omologhe di **livello 1** (fisico). Quello che accade è che, intorno allo stesso messaggio di partenza, le informazioni di **controllo**, necessarie per svolgere le funzioni di rete, vengono **modificate** passando da un livello all'altro:
-- In **trasmissione** vengono **aggiunte** ad ogni livello scendendo lungo la pila.
-- In **ricezione** vengono **rimosse** salendo di un livello alla  volta lungo la pila.   
-
-Riassumendo, quello che **cambia**, da un livello all'altro, è:
-- la **visione** che le varie entità hanno della **comunicazione** che, scendendo di livello, diventa via via più densa di **dettagli fisici**.
-- l'insieme dei **messaggi di controllo**, rappresentato dall'**header** del messaggio ad un certo livello, che è funzionale allo svolgimento dei compiti assegnati a quel livello.
-
 ### **Imbustamento multiplo**
 
 E' una **tecnica** il cui obiettivo è la **creazione** dei **canali virtuali**.
