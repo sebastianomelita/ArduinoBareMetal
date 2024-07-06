@@ -1,13 +1,13 @@
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
 
 
-## **Stack ISO/OSI**
+# **Stack ISO/OSI**
 
-### **Interoperabilità**
+## **Interoperabilità**
 
 L'**ISO/OSI** ha catalogato e organizzato in una **architettura a 7 strati** tutti i **protocolli** concepiti nel tempo organizzandoli in base alle **categorie di problemi** di rete che essi risolvono. L'architettura è normalmente rappresentata sotto forma di **stack** (pila) e, per ogni elemento dello stack, identifica una **categoria di protocolli** che deve risolvere **un determinato insieme di problemi** della comunicazione in rete. L'architettura è **modulare** nel senso che uno strato può essere sostituito senza che quelli sopra di lui se ne accorgano permettendo una grande **flessibilità**. Questa flessibilità può essere utilizzata per **adattare** un protocollo di livello superiore a **vari mezzi fisici** o per ottenere su un certo mezzo fisico una determinata **qualità del servizio**. **Obiettivo finale** è garantire l'**interoperabilità universale tra i dispositivi** da collegare, a prescindere dalle possibili differenze che possono intercorrere rispetto a marca, modello e tecnologie adoperate. 
 
-### **Architettura a strati**
+## **Architettura a strati**
 
 Nell'informatica, esiste la necessità di una organizzazione adeguata delle funzioni per potere gestire la complessità. La soluzione trovata sta nel distribuire funzioni complesse secondo una architettura che segua una **organizzazione a strati** (o livelli). Un **vincolo dell'architettura** è che uno strato può dialogare solamente con quelli adiacenti, sopra o sotto di lui.
 
@@ -26,7 +26,7 @@ I **servizi** di uno strato sono realizzati usando:
 
 Ciascun livello utilizza i **servizi** che sono offerti dal livello inferiore per generare servizi più complessi e potenti di livello superiore (servizi a **valore aggiunto**)
 
-### **Modello ISO/OSI**
+## **Modello ISO/OSI**
 
 E’ composto da 7 livelli ordinati secondo una pila (stack) di protocolli dove gli elementi attivi di ogni livello, quelli che svolgono le funzioni, sono le entità.
 Entità appartenenti allo stesso livello, su sistemi diversi, sono dette entità pari (peer entities) e la comunicazione fra due peer ad un certo livello avviene: 
@@ -53,16 +53,20 @@ La pila di protocolli è un “contenitore” di funzioni di rete che sta all’
 - Utilizzare standard di comunicazione open source e validi in ambito mondiale
 - Abbattere i costi di vendita dei dispositivi grazie alla economia di scala derivante dalla dimensione mondiale del mercato di riferimento.
 
-### **Canali virtuali**
+## **Canali virtuali**
 
-#### **Definizione**
+### **Definizione**
 
 I **canali virtuali** sono dei **canali logici** che **emulano** un **collegamento diretto** tra entità pari dello **stesso livello**, in cui le **PDU** di quel livello **sembra** che siano scambiate proprio con le regole del **protocollo** definito per quel livello. I **canali virtuali** vengono **creati** grazie alla tecnica dell'**imbustamento multiplo** e rappresentano il **punto di vista** che un **generico livello** ha dell'unico canale effettivamente esistente, cioè il canale reale di livello 1 (fisico). 
 
-E' un punto di vista **parziale** perchè non si basa su quello che una comunicazione realmente è nella sua **complessità** ed estensione (a livello fisico e lungo i vari nodi), ma per come, ad un **certo livello**, essa appare, semplicemente osservando il modo (protocollo) con cui si **comporta** lo scambio dei **dati** all'interno di quel **livello**. Infatti, **ad ogni livello**:
-- molte **proprietà** del canale vengono date **per scontate**, non percependo affatto che vengono realizzate **da altri** livelli.
-- lo **schema** della rete appare **semplificato**, non percependo che la sua **struttura** è molto più **articolata**, anche se è stata **riassunta** in un **unico link**. In particolare un **collegamento diretto** tra host potrebbe essere **spezzato** in più **collegamenti di transito** tra **IS**.
+### **Definizione**
 
+E' un punto di vista **parziale** perchè non si basa su quello che una comunicazione realmente è nella sua **complessità** ed estensione (a livello fisico e lungo i vari nodi), ma per come, ad un **certo livello**, essa appare, semplicemente osservando il modo (protocollo) con cui si **comporta** lo scambio dei **dati** all'interno di quel **livello**. Infatti, vengono realizzate almeno tre **tipi di virtualizzazione**:
+1.alcune **proprietà** e alcune **funzioni** di uno strato vengono date **per scontate** appartenenti a lui, non percependo affatto che sono il frutto della collaborazione con **altri livelli**.
+2. lo **schema** della rete appare **semplificato**, mentre la sua **struttura** reale può essere più **articolata**, anche quando è **riassunta** in un **unico link**. In particolare, un **collegamento virtuale diretto** tra due host potrebbe essere fisicamente **spezzato** in più **collegamenti di transito** tra molti **nodi IS** di transito.
+3. il collegamento tra **due strati omologhi**, cioè le **entità** di due nodi adiacenti, appare **diretto** lungo un canale orizzontale **dedicato** solo a loro. La comunicazione, invece, è sempre più articolata e comprende la comunicazione tra **uno strato e l'altro** fino al **livello fisico**.
+
+### **Canale orrizzontale e canale verticale**
 Il **livello N**, al fine di realizzare i **servizi** per il livello superiore **N+1**:
 - La **comunicazione** tra **entità pari** di **livello N** apparentemente si svolge come se avvenisse lungo un **canale diretto** che le unisce in **orizzontale**
 - La **comunicazione diretta**, viene dalle parti **percepita** come se avvenisse lungo un **canale logico** detto **canale virtuale** di **livello N** perchè avviene: 
@@ -72,6 +76,10 @@ Il **livello N**, al fine di realizzare i **servizi** per il livello superiore *
 - Fino a che non viene raggiunto il livello 1 (canale fisico), nessun dato è realmente trasferito direttamente dal livello N del Tx al livello N del Rx: l’unico canale reale è quello fisico!
 - le **entità pari** in realtà comunicano in **verticale**, trasferendo i dati lungo le interfacce di separazione tra un livello e l'altro, prima a scendere in trasmissione e poi a salire in ricezione. L'unica comunicazione orizzontale è lungo il canale fisico realizzato dal mezzo trasmissivo (fibra ottica, conduttore metallico, mezzo radio).
 
+**Riassumendo**, la comunicazione reale tra le entità pari dei livelli è indiretta e avviene:
+- In senso verticale attraverso le interfacce della pila di protocolli
+- In senso orizzontale lungo il canale fisico al livello 1
+- La comunicazione virtuale tra le entità pari dei livelli è diretta e avviene in senso orrizzontale tra entità adiacenti dello stesso livello. Esiste una comunicazione virtuale per ciascun livello. Esistono un protocollo e una PDU tipici di ciascun livello.
 
 Ogni **canale logico** serve a collegare tra loro le **due entità**, moduli SW con un certo **ruolo** (analoghe a coppie di impiegati tra i tanti di una grande azienda), che sono deputate a risolvere solamente **certi problemi**, tutti e soli quelli che rientrano all'interno delle **mansioni** che competono a quelle entità. 
 
