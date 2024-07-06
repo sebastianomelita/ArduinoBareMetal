@@ -103,6 +103,18 @@ Esempio di analogie delle mansioni (fonte chatGPT. Provare a chiedere una analog
 
 ### **Messaggi di controllo**
 
+L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol Data Unit) che comprendono:
+- informazione di utente (SDU o Service Data Unit) 
+- informazione di controllo (PCI o Protocol Control Information) dette anche header (intestazione)‏
+
+Le **intestazioni** (header) dele PDU sono informazioni di controllo usate dalle **entità** pari per **portare avanti** (gestire) il **proprio protocollo**
+
+Le  **PDU** in genere sono di due tipi:
+- **Dati**: contengono il carico utile da trasferire tra Tx e Rx (payload)
+- **Controllo**: contengono informazioni utili per la supervisione del canale (indirizzo mitt., indirizzo dest., numeri di sequenze, contatori)
+
+
+
 La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che non può avvenire senza lo **scambio di messaggi di servizio** che servono a coordinare il lavoro tra le **entità pari**, cioè quelle dello **stesso livello**. I messaggi di servizio (detti **messaggi di controllo**) sono quelli legati al **ruolo** e alle **mansioni** dei due interlocutori del livello corrente e trascurano gli **altri** messaggi di servizio relativi ad **altre mansioni** che, essendo sotto la responsabilità di **altri ruoli** appartenenti ad **altri livelli**, vengono, dalle entità del livello attuale, completamente **ignorate**.
 
 ### **Imbustamento multiplo**
