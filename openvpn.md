@@ -52,7 +52,7 @@ La subnet di accesso può essere partizionata:
 I parametri dell'interfaccia Tun del PC si possono recuperare con il comando ```ipconfig``` (oppure ```ifconfig``` su macchine Linux) 
 
 ``` C++
-C:\Users\me>ipconfig
+C:\Users\me>ipconfig /all
 
 Scheda sconosciuta OpenVPN Wintun:
 
