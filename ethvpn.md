@@ -16,7 +16,13 @@ Realizza una **connessione virtuale punto-punto cifrata** tra **utenti remoti** 
 
 In genere, il **tunnelling** si può considerare un **imbustamento fuori ordine** che **incapsula** pachetti del **livello N** su pacchetti di **livello N o superiore**. 
 
+Il **tunneling** è costituito da **tre componenti** principali:
 
+- **Protocollo passeggero**: il protocollo che si sta incapsulando. Esempi tipici di protocolli passeggero sono **IP** e **MAC**.
+
+- **Protocollo carrier** (operatore): il protocollo che esegue l'incapsulamento. Esempi di protocolli operatore sono GRE, IP-in-IP, L2TP, MPLS, STUN e DLSw+.
+
+- **Protocollo di trasporto**: Il protocollo utilizzato per trasportare il protocollo incapsulato. Il protocollo di trasporto principale è l'**IP**.
 
 ## **Interfacce virtuali tun e tap**
 
