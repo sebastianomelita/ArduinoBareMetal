@@ -95,7 +95,11 @@ Si notino:
 - l'indirizzo 10.29.2.2 dell'**endpoint** locale della **dorsale virtuale** verso la **rete remota**. 
 
 ### **Tabella di routing del PC**
-I dettagli della tabella di routing del PC si possono recuperare con il comando ```route print``` (oppure ```ip route``` o ```netstat -rn``` su macchine Linux) 
+I dettagli della tabella di routing del PC si possono recuperare con il comando ```route print``` (oppure ```ip route``` o ```netstat -rn``` su macchine Linux).
+
+Normalmente un PC non fa routing tra le sue interfacce fisiche ma fa comunque il routing tra lo stack TCP/IP del sistema, agganciato all'**interfaccia di loopback**, e le interfacce fisiche. 
+
+In ogni caso ci sta una tabella di routing che deve avere il default gateway del sistema che deve essere un solo indirizzo. 0.0.0.0 0.0.0.0 ed è, in questo caso, l'indirizzo del router di confine della LAN.
 
 ``` C++
 C:\Users\me>route print
