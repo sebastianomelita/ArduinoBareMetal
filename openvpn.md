@@ -52,7 +52,7 @@ La subnet di accesso può essere partizionata:
 I parametri dell'interfaccia Tun del PC si possono recuperare con il comando ```ipconfig``` (oppure ```ifconfig``` su macchine Linux) 
 
 ``` C++
-> ipconfig /all
+C:\Users\me>ipconfig
 
 Scheda sconosciuta OpenVPN Wintun:
 
@@ -74,10 +74,11 @@ Si notino:
 - la presenza di un server DNS per il traffico su questa interfaccia, ovvero per **risolvere** gli indirizzi della **rete remota**.
 - l'indirizzo 10.29.2.2 dell'**endpoint** locale della **dorsale virtuale** verso la **rete remota**. 
 
-route print
+### **Tabella di routing del PC**
+I dettagli della tabella di routing del PC si possono recuperare con il comando ```route print``` (oppure ```ip route``` o ```netstat -rn``` su macchine Linux) 
 
 ``` C++
-C:\Users\sebas>route print
+C:\Users\me>route print
 ===========================================================================
 Elenco interfacce
   7...........................Wintun Userspace Tunnel
