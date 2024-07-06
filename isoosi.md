@@ -66,7 +66,7 @@ E' un punto di vista **parziale** perchè non si basa su quello che una comunica
 2. al livello corrente lo **schema** della rete potrebbe apparire **semplificato**, fino ad essere stato **riassunto** in un **unico link**. In particolare, ciò che al **livello N** generico potrebbe apparire come un **collegamento virtuale diretto** tra due host, potrebbe essere, ai livelli sottostanti, fisicamente **spezzato** in più collegamenti tra **nodi intermedi** di **transito**.
 3. il collegamento tra **due strati omologhi**, cioè le **entità** di due nodi adiacenti, potrebbe apparire **diretto** lungo un canale orizzontale **dedicato** solo a loro. La comunicazione, invece, è sempre più articolata e comprende la comunicazione tra **uno strato e l'altro** fino al **livello fisico**.
 
-### **Canale orrizzontale e canale verticale**
+### **Canale orizzontale e canale verticale**
 Il **livello N**, al fine di realizzare i **servizi** per il livello superiore **N+1**:
 - La **comunicazione** tra **entità pari** di **livello N** apparentemente si svolge come se avvenisse lungo un **canale diretto** che le unisce in **orizzontale**
 - La **comunicazione diretta**, viene dalle parti **percepita** come se avvenisse lungo un **canale logico** detto **canale virtuale** di **livello N** perchè avviene: 
