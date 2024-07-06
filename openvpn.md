@@ -91,7 +91,7 @@ Scheda LAN wireless Wi-Fi:
 Si notino:
 - l'**assenza** del'impostazione **gateway predefinito** nell'**interfaccia Tun**. Il **gateway di default** in un sistema di rete (router o PC) è **unico** per tutte le interfacce, circostanza che permette di attribuirlo solamente ad una di esse. Nello specifico, è possibile impostare **alternativamente** un **gateway locale** su una interfaccia LAN locale (la scheda wireless) oppure un **gateway remoto** su una interfaccia tunnel (OpenVPN Wintun).
 - la **presenza** dell'impostazione **gateway predefinito** nell'**interfaccia locale** wireless (LAN locale). Significa che il sistema va in **Internet** con la **connessione locale** e non con quella remota.
-- la presenza di un server DNS per il traffico su questa interfaccia, ovvero per **risolvere** gli indirizzi della rete **remota**. In realtà, il sistema client organizza i server DNS sulle varie interfacce secondo un metrica che ne sancisce un ordine di priorità nella scelta da parte del SO. Il risultato è che, quando la connessione VPN è **attiva**, il **server DNS remoto** ha priorità maggiore e tutte le richieste DNS sono risolte da lui.
+- la presenza di un server DNS per il traffico su questa interfaccia, ovvero per **risolvere** gli indirizzi della rete **remota**. In realtà, il sistema client organizza i server DNS sulle varie interfacce secondo una **metrica** che ne sancisce un ordine di priorità nella scelta da parte del SO. Il risultato è che, quando la connessione VPN è **attiva**, il **server DNS remoto** ha priorità maggiore e tutte le richieste DNS sono risolte da lui.
 - l'indirizzo 10.29.2.2 dell'**endpoint** locale della **dorsale virtuale** verso la **rete remota**. 
 
 ### **Tabella di routing del PC**
