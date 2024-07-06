@@ -99,7 +99,7 @@ I dettagli della tabella di routing del PC si possono recuperare con il comando 
 
 Normalmente un PC non fa routing tra le sue interfacce fisiche ma fa comunque il routing tra lo stack TCP/IP del sistema, agganciato all'**interfaccia di loopback**, e le interfacce fisiche. 
 
-In ogni caso ci sta una tabella di routing che deve avere il default gateway del sistema che deve essere un solo indirizzo. 0.0.0.0 0.0.0.0 ed è, in questo caso, l'indirizzo del router di confine della LAN.
+In ogni caso, ci sta una **tabella di routing** che deve avere il **default gateway** del sistema nella **rotta di deafault** verso 0.0.0.0 0.0.0.0 ed è, in questo caso, l'indirizzo del **router di confine** della **LAN locale**.
 
 ``` C++
 C:\Users\me>route print
