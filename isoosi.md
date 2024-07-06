@@ -67,10 +67,9 @@ E' un punto di vista **parziale** perchè non si basa su quello che una comunica
 3. il collegamento tra **due strati omologhi**, cioè le **entità** di due nodi adiacenti, potrebbe apparire **diretto** lungo un canale orizzontale **dedicato** solo a loro. La comunicazione, invece, è sempre più articolata e comprende la comunicazione tra **uno strato e l'altro** fino al **livello fisico**.
 
 ### **Canale orizzontale e canale verticale**
-Il **livello N**, al fine di realizzare i **servizi** per il livello superiore **N+1**:
-- La **comunicazione** tra **entità pari** di **livello N** apparentemente si svolge come se avvenisse lungo un **canale diretto** che le unisce in **orizzontale**
-- La **comunicazione diretta**, viene dalle parti **percepita** come se avvenisse lungo un **canale logico** detto **canale virtuale** di **livello N** perchè avviene: 
-    - **scambiandosi** dPDU di livello N **(N-PDU**)
+Al **livello N**, al fine di realizzare i **servizi** per il livello superiore **N+1**:
+- La **comunicazione** tra **entità pari** apparentemente si svolge come se avvenisse lungo un **canale diretto** che le unisce in **orizzontale** detto **canale virtuale** di **livello N** perchè avviene: 
+    - **scambiandosi** PDU di livello N **(N-PDU**)
     - in base ad un **protocollo** di **livello N** 
 - Ciascun canale virtuale aggiunge **nuovi servizi** al canale virtuale sottostante
 - Fino a che non viene raggiunto il livello 1 (canale fisico), nessun dato è realmente trasferito direttamente dal livello N del Tx al livello N del Rx: l’unico canale reale è quello fisico!
