@@ -62,7 +62,7 @@ I **canali virtuali** sono dei **canali logici** che **emulano** un **collegamen
 ### **Definizione**
 
 E' un punto di vista **parziale** perchè non si basa su quello che una comunicazione realmente è nella sua **complessità** ed estensione (a livello fisico e lungo i vari nodi), ma per come, ad un **certo livello**, essa appare, semplicemente osservando il modo (protocollo) con cui si **comporta** lo scambio dei **dati** all'interno di quel **livello**. Infatti, vengono realizzate almeno tre **tipi di virtualizzazione**:
-1. alcune **proprietà** e alcune **funzioni** di uno strato vengono date **per scontate** appartenenti a lui, non percependo affatto che sono il frutto della collaborazione con **altri livelli**.
+1. alcune **proprietà** e alcune **funzioni** di uno strato vengono date **per scontate**, come se lui fosse naturalmente in grado di fornirle, non percependo affatto che sono il frutto della **collaborazione** con **altri livelli**.
 2. lo **schema** della rete appare **semplificato**, mentre la sua **struttura** reale può essere più **articolata**, anche quando è **riassunta** in un **unico link**. In particolare, un **collegamento virtuale diretto** tra due host potrebbe essere fisicamente **spezzato** in più **collegamenti di transito** tra molti **nodi IS** di transito.
 3. il collegamento tra **due strati omologhi**, cioè le **entità** di due nodi adiacenti, appare **diretto** lungo un canale orizzontale **dedicato** solo a loro. La comunicazione, invece, è sempre più articolata e comprende la comunicazione tra **uno strato e l'altro** fino al **livello fisico**.
 
