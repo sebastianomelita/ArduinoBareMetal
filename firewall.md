@@ -226,8 +226,8 @@ Benchè il firewall Pfsense consenta questo tipo di ispezione intrusiva, conside
 <img src="img/zone.png" alt="alt text" width="800">
 
 Le architetture più comuni per realizzare una DMZ sono:
-- Dual Homed Bastion Host con DMZ detta anche **DMZ cuscinetto**
-- screened subnet detta anche **DMZ a vicolo cieco**
+- **Screened Host** detta anche **DMZ a vicolo cieco**. Ha il pregio della semplicità e del basso costo  pertanto è la più diffusa
+- **Dual Homed Bastion Host con DMZ** detta anche **DMZ cuscinetto**. Possiede due livelli di protezione grazie al packet filter aggiuntivo e permette di gestire nella DMZ anche aventuali indirizzi pubblici per i servizi. Ha una cifra di sicurezza in più rispetto alla precedente.
 
 <img src="img/archFWbase.png" alt="alt text" width="1100">
 
