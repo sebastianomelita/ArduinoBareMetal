@@ -59,12 +59,12 @@ La pila di protocolli è un “contenitore” di funzioni di rete che sta all’
 
 I **canali virtuali** sono dei **canali logici** che **emulano** un **collegamento diretto** tra entità pari dello **stesso livello**, in cui le **PDU** di quel livello **sembra** che siano scambiate proprio con le regole del **protocollo** definito per quel livello. I **canali virtuali** vengono **creati** grazie alla tecnica dell'**imbustamento multiplo** e rappresentano il **punto di vista** che un **generico livello** ha dell'unico canale effettivamente esistente, cioè il canale reale di livello 1 (fisico). 
 
-### **Definizione**
+### **Tre tipi di astrazione**
 
 E' un punto di vista **parziale** perchè non si basa su quello che una comunicazione realmente è nella sua **complessità** ed estensione (a livello fisico e lungo i vari nodi), ma per come, ad un **certo livello**, essa appare, semplicemente osservando il modo (protocollo) con cui si **comporta** lo scambio dei **dati** all'interno di quel **livello**. Infatti, in un generico **livello N**, vengono realizzate almeno tre **tipi di virtualizzazione**:
-1. alcune **proprietà** e alcune **funzioni** del livello corrente vengono date **per scontate**, come se questo fosse naturalmente in grado di fornirle, non percependo affatto che sono il frutto della **collaborazione** con  tutti gli **altri livelli** sottostanti.
-2. al livello corrente lo **schema** della rete potrebbe apparire **semplificato**, fino ad essere stato **riassunto** in un **unico link**. In particolare, ciò che al **livello N** generico potrebbe apparire come un **collegamento virtuale diretto** tra due host, potrebbe essere, ai livelli sottostanti, fisicamente **spezzato** in più collegamenti tra **nodi intermedi** di **transito**.
-3. il collegamento tra **due strati omologhi**, cioè le **entità** di due nodi adiacenti, potrebbe apparire **diretto** lungo un canale orizzontale **dedicato** solo a loro. La comunicazione, invece, è sempre più articolata e comprende la comunicazione tra **uno strato e l'altro** fino al **livello fisico**.
+1. **Funzionale**. Alcune **proprietà** e alcune **funzioni** del livello corrente vengono date **per scontate**, come se questo fosse naturalmente in grado di fornirle, non percependo affatto che sono il frutto della **collaborazione** con  tutti gli **altri livelli** sottostanti.
+2. **Topologica**. Al livello corrente lo **schema** della rete potrebbe apparire **semplificato**, fino ad essere stato **riassunto** in un **unico link**. In particolare, ciò che al **livello N** generico potrebbe apparire come un **collegamento virtuale diretto** tra due host, potrebbe essere, ai livelli sottostanti, fisicamente **spezzato** in più collegamenti tra **nodi intermedi** di **transito**.
+3. **Strutturale**. Il collegamento tra **due strati omologhi**, cioè le **entità** di due nodi adiacenti, potrebbe apparire **diretto** lungo un canale orizzontale **dedicato** solo a loro. La comunicazione, invece, è sempre più articolata e comprende la comunicazione tra **uno strato e l'altro** fino al **livello fisico**.
 
 ### **Canale orizzontale e canale verticale**
 Al **livello N**, al fine di realizzare i **servizi** per il livello superiore **N+1**:
