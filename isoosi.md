@@ -128,16 +128,11 @@ La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che
 
 È la **tecnica** utilizzata per realizzare più **canali virtuali** su l’unico canale fisico (**canale reale**) che collega due macchine (**hosts**)
 
-Nelle **reti a pacchetto**, in fase di **trasmissione**, si usa una tecnica, detta **imbustamento multiplo**, con la quale si **incapsulano** i messaggi di un livello, le **PDU** (Protol Data Unit),  nel campo dati, detto **SDU** (Service Data Unit), del livello **immediatamente inferiore**. Questa operazione parte dal livello applicativo ed è **ripetuta** in tutti i livelli, escluso il fisico. Il **carico utile** o **payload** è il **messaggio** che la rete ha avuto in consegna, da parte dell'utente, per essere **spostato** fino alla destinazione:
+Nelle **reti a pacchetto**, in fase di **trasmissione**, si usa una tecnica, detta **imbustamento multiplo**, con la quale si **incapsulano** i messaggi di un livello, le **PDU** (Protol Data Unit),  nel campo dati, detto **SDU** (Service Data Unit), del livello **immediatamente inferiore**. Questa operazione parte dal livello applicativo ed è **ripetuta** in tutti i livelli, escluso il fisico. 
+
+Il **carico utile** o **payload** o **SDU** è il **messaggio** che un livello ha avuto in consegna, da parte del livello superiore, per essere **gestito** tramite il suo protocollo:
 - I SAP sono le “porte” delle interfacce attraverso le quali si realizza il **canale reale** di livello N
-- I dati inviati sul canale reale da un protocollo di livello N, le N-PDU, diventano, attraversata la N-SAP, (N-1)-SDU (imbustamento multiplo)
-- Ogni livello aggiunge alle SDU, alcune informazioni di controllo, dette “header” (intestazione) o anche (PCI: Protocol Control Information) 
-- Gli header sono diversi per ogni livello e contengono informazioni di servizio che consentono al protocollo del livello di funzionare 
-- I dati inviati sul canale virtuale da un protocollo di livello N sono detti N-PDU (Protocol Data Unit) 
-
-
-
-
+- I dati inviati sul canale reale da un protocollo di livello N, le N-PDU, diventano, attraversata la N-SAP, (N-1)-SDU (imbustamento multiplo
 
 Attraversato il **SAP** (canale reale o Service Access Point) verso il livello inferiore, le PDU diventano SDU cioè sono alloggiate nella «stiva» (o payload) del livello inferiore il quale le smista utilizzando il proprio servizio di trasferimento (tracciabile mediante il proprio PCI). Il livello inferiore non è in grado di interpretare le PCI del livello superiore e pertanto le tratta alla stregua di normali dati (SDU) da trasferire secondo le regole del proprio protocollo.
 
