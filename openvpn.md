@@ -45,20 +45,40 @@ La subnet di accesso può essere partizionata:
 
 <img src="img/openvpn_crittografia.png" alt="alt text" width="1100">
 
-ipconfig
+## **Informazioni di configurazione e test**
+
+### **Parametri interfaccia Tun**
+
+I parametri dell'interfaccia Tun del PC si possono recuperare con il comando ```ipconfig``` (oppure ```ifconfig``` su macchine Linux) 
 
 ``` C++
+> ipconfig /all
+
 Scheda sconosciuta OpenVPN Wintun:
 
    Suffisso DNS specifico per connessione:
-   Indirizzo IPv6 locale rispetto al collegamento . : fe80::3d2b:be72:4201:26ac%7
-   Indirizzo IPv4. . . . . . . . . . . . : 10.29.2.3
+   Descrizione . . . . . . . . . . . . . : Wintun Userspace Tunnel
+   Indirizzo fisico. . . . . . . . . . . :
+   DHCP abilitato. . . . . . . . . . . . : No
+   Configurazione automatica abilitata   : Sì
+   Indirizzo IPv6 locale rispetto al collegamento . : fe80::3d2b:be72:4201:26ac%7(Preferenziale)
+   Indirizzo IPv4. . . . . . . . . . . . : 10.29.2.2(Preferenziale)
    Subnet mask . . . . . . . . . . . . . : 255.255.255.0
    Gateway predefinito . . . . . . . . . :
+   Server DNS . . . . . . . . . . . . .  : 10.12.0.25
+                                           10.12.0.26
+   NetBIOS su TCP/IP . . . . . . . . . . : Attivato
 ```
+Si notino:
+- l'assenza del'impostazione **gateway** predefinito dato che questo è unico per tutte le interfacce ed è locale, cioè il sistema va in **Internet** con la **connessione locale** e non con quella remota.
+- la presenza di un server DNS per il traffico su questa interfaccia, ovvero per **risolvere** gli indirizzi della **rete remota**.
+- l'indirizzo 10.29.2.2 dell'**endpoint** locale della **dorsale virtuale** verso la **rete remota**. 
+
 route print
 
 ``` C++
+C:\Users\sebas>route print
+===========================================================================
 Elenco interfacce
   7...........................Wintun Userspace Tunnel
  16...00 ff 95 d7 fa 38 ......TAP-Windows Adapter V9
@@ -74,27 +94,34 @@ IPv4 Tabella route
 Route attive:
      Indirizzo rete             Mask          Gateway     Interfaccia Metrica
           0.0.0.0          0.0.0.0     192.168.10.1   192.168.10.187     50
-         10.0.0.0      255.128.0.0        10.29.2.1        10.29.2.3    261
-        10.29.2.0    255.255.255.0         On-link         10.29.2.3    261
-        10.29.2.3  255.255.255.255         On-link         10.29.2.3    261
-      10.29.2.255  255.255.255.255         On-link         10.29.2.3    261
+         10.0.0.0      255.128.0.0        10.29.2.1        10.29.2.2    261
+        10.29.2.0    255.255.255.0         On-link         10.29.2.2    261
+        10.29.2.2  255.255.255.255         On-link         10.29.2.2    261
+      10.29.2.255  255.255.255.255         On-link         10.29.2.2    261
         127.0.0.0        255.0.0.0         On-link         127.0.0.1    331
         127.0.0.1  255.255.255.255         On-link         127.0.0.1    331
   127.255.255.255  255.255.255.255         On-link         127.0.0.1    331
-       172.16.1.0    255.255.255.0        10.29.2.1        10.29.2.3    261
-      192.168.2.0    255.255.255.0        10.29.2.1        10.29.2.3    261
-      192.168.3.0    255.255.255.0        10.29.2.1        10.29.2.3    261
+       172.16.1.0    255.255.255.0        10.29.2.1        10.29.2.2    261
+      192.168.2.0    255.255.255.0        10.29.2.1        10.29.2.2    261
+      192.168.3.0    255.255.255.0        10.29.2.1        10.29.2.2    261
      192.168.10.0    255.255.255.0         On-link    192.168.10.187    306
    192.168.10.187  255.255.255.255         On-link    192.168.10.187    306
    192.168.10.255  255.255.255.255         On-link    192.168.10.187    306
         224.0.0.0        240.0.0.0         On-link         127.0.0.1    331
-        224.0.0.0        240.0.0.0         On-link         10.29.2.3    261
+        224.0.0.0        240.0.0.0         On-link         10.29.2.2    261
         224.0.0.0        240.0.0.0         On-link    192.168.10.187    306
   255.255.255.255  255.255.255.255         On-link         127.0.0.1    331
-  255.255.255.255  255.255.255.255         On-link         10.29.2.3    261
+  255.255.255.255  255.255.255.255         On-link         10.29.2.2    261
   255.255.255.255  255.255.255.255         On-link    192.168.10.187    306
 ===========================================================================
-``` 
+Route permanenti:
+  Nessuna
+```
+Si notino:
+- la **rotta di default** locale verso il router di confine del PC:  ```0.0.0.0   0.0.0.0   192.168.10.1   192.168.10.187     50```
+- la **rotta** con il **next hop** 10.29.2.1 verso la **subnet della sede remota** 10.0.0.0/9 attraverso l'**interfaccia** 10.29.2.2 (quella del tunnel Tun):  ```10.0.0.0      255.128.0.0        10.29.2.1        10.29.2.2    261```
+- la rotta verso la subnet **direttamente connessa** (senza next hop) della **dorsale virtuale** attraverso l'interfaccia 10.29.2.2 (quella del tunnel Tun):  ```10.29.2.0    255.255.255.0    On-link     10.29.2.2    261```
+
 Sitografia:
 - https://docs.netgate.com/pfsense/en/latest/vpn/openvpn/index.html
 - https://docs.netgate.com/pfsense/en/latest/recipes/openvpn-ra.html
