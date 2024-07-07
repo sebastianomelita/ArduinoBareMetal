@@ -260,7 +260,7 @@ Valgono le seguenti **proprietà**:
 
 <img src="img/mappeindirizzi.png" alt="alt text" width="1000">
 
-## **OSI come rchitettura di riferimento**
+## **OSI come architettura di riferimento**
 
 Lo **stack di protocolli OSI** è un **modello architetturale** di riferimento. Per **ogni strato** sono stati studiati nel tempo un gran numero di protocolli, ciascuno con i propri **pregi e difetti**. Un'**architettura reale**, quella che poi verrà standardizzata ed implementata in un dispositivo commerciale, per ogni strato della propria pila, sceglierà, tra i tanti disponibili in letteratura tecnica, un certo **tipo di protocollo** del quale realizzerà e standardizzerà la propria **particolare versione**. 
 
