@@ -69,7 +69,7 @@ Esempio di analogie delle mansioni (fonte chatGPT. Provare a chiedere una analog
 | 2       | Collegamento dati     | Gli amministratori di rete e gli specialisti di supporto IT che gestiscono le connessioni locali (LAN), risolvono i problemi di connessione e assicurano che i dati vengano trasmessi correttamente tra dispositivi all'interno dell'azienda | Fornisce il trasferimento dei dati tra due nodi su una rete e corregge gli errori che possono verificarsi a livello fisico.|
 | 1       | Fisico   | Gli impiegati che si occupano della manutenzione fisica dell'infrastruttura aziendale, come elettricisti e tecnici delle telecomunicazioni, che garantiscono che i cavi, i router, i server e altre apparecchiature funzionino correttamente  | Trasmette i dati in forma di segnali elettrici, ottici o radio.  |
 
-### **PDU**
+## **PDU**
 
 L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol Data Unit) che comprendono due **componenti**:
 - informazione di utente (**SDU** o Service Data Unit) 
