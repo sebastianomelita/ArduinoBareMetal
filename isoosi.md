@@ -46,7 +46,7 @@ La pila di protocolli è un “contenitore” di funzioni di rete che sta all’
 | 2       | Collegamento dati     | **Segmenta** i messaggi lunghi aggiungendo loro l'indirizzo del mittente, esegue la **multiplazione** di più connessioni di livello 2 sulla stessa connsessione di livello 1, esegue il **controllo di errore** (senza ritrasmissione), esegue il **controllo di flusso** (velocità del mittente) | Ethernet, WiFI, BLE, Zigbee, LoRa|
 | 1       | Fisico                | Esegue la **codifica/decodifica** dei bit, cioè traduce i bit in segnali elettrici in **trasmissione** mentre traduce i segnali elettrici in bit **in ricezione**. Definisce gli **standard** meccanici ed elettrici dei canali.| CCA, LBT|
 
-## **Obiettivi ISO/OSI**
+### **Obiettivi ISO/OSI**
 
 - Realizzare sistemi aperti cioè capaci di dialogare con qualunque altro sistema a prescindere da differenze di tecnologia, marca, modello, collocazione geografica, epoca di costruzione (interoperabilità tra dispositivi eterogenei).
 - Realizzare una struttura modulare che permetta, a fronte della sostituzione di alcuni livelli, il riutilizzo di quelli rimanenti.
