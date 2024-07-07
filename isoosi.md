@@ -128,6 +128,8 @@ Al **livello N**, al fine di realizzare i **servizi** per il livello superiore *
 
 Nelle **reti a pacchetto**, in fase di **trasmissione**, si usa una tecnica, detta **imbustamento multiplo**, con la quale si **incapsulano** i messaggi di un livello, le **PDU** (Protol Data Unit), nel campo dati, detto **SDU** (Service Data Unit), del livello **immediatamente inferiore**. Questa operazione parte dal livello applicativo ed è **ripetuta** in tutti i livelli, escluso il fisico. 
 
+<img src="img/imbustamento.png" alt="alt text" width="1100">
+
 Il **carico utile** o **payload** o **SDU** è il **messaggio** che un livello ha avuto in consegna, da parte del livello superiore, per essere **gestito** tramite il suo protocollo:
 - I SAP sono le “porte” delle interfacce attraverso le quali si realizza il **canale reale** di livello N
 - I dati inviati sul canale reale da un protocollo di livello N, le N-PDU, diventano, attraversata la N-SAP, (N-1)-SDU (imbustamento multiplo
