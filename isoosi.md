@@ -84,8 +84,8 @@ Le  **PDU** in genere sono di **due tipi**:
     - Le SDU sono la «stiva» all’interno della quale accogliere le PDU provenienti dal livello superiore. 
     - Vengono chiamate anche payload (carico utile)
 - **Controllo**: contengono informazioni utili per la supervisione del canale (indirizzo mitt., indirizzo dest., numeri di sequenze, contatori)
-    - Sono tutte quelle informazioni di controllo necessarie a portare avanti la comunicazione di livello N.
-    - Sono tipicamente indirizzo di sorgente e di destinazione più altre informazioni necessarie per realizzare le funzioni di quel livello (contatori numeri di sequenza, checsum, ecc.)
+    - Sono tutte quelle informazioni di controllo necessarie a **portare avanti** la comunicazione di livello N.
+    - Sono tipicamente **indirizzo** di **sorgente** e di **destinazione** più altre informazioni necessarie per **realizzare le funzioni** di quel livello (contatori numeri di sequenza, checsum, ecc.)
 
 La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che non può avvenire senza lo **scambio di messaggi di servizio** che servono a coordinare il lavoro tra le **entità pari**, cioè quelle dello **stesso livello**. I messaggi di servizio (detti **messaggi di controllo**) sono quelli legati al **ruolo** e alle **mansioni** dei due interlocutori del livello corrente e trascurano gli **altri** messaggi di servizio relativi ad **altre mansioni** che, essendo sotto la responsabilità di **altri ruoli** appartenenti ad **altri livelli**, vengono, dalle entità del livello attuale, completamente **ignorate**.
 
