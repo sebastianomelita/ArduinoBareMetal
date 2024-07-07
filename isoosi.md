@@ -5,7 +5,9 @@
 
 ## **Interoperabilità**
 
-L'**ISO/OSI** ha catalogato e organizzato in una **architettura a 7 strati** tutti i **protocolli** concepiti nel tempo organizzandoli in base alle **categorie di problemi** di rete che essi risolvono. L'architettura è normalmente rappresentata sotto forma di **stack** (pila) e, per ogni elemento dello stack, identifica una **categoria di protocolli** che deve risolvere **un determinato insieme di problemi** della comunicazione in rete. 
+L'**ISO/OSI** ha catalogato e organizzato in una **architettura a 7 strati** tutte le funzioni di rete in base alle **categorie di problemi** di cui esse si occupano. Le funzioni, normalmente distribuite tra più nodi, si basano su **scambi di messaggi** e quindi sono gestite da **protocolli di comunicazione**. 
+
+L'architettura è normalmente rappresentata sotto forma di **stack** (pila) e, per ogni elemento dello stack, identifica una **categoria di protocolli** che deve risolvere **un determinato insieme di problemi** della comunicazione in rete. 
 
 <img src="img/pilaosi.png" alt="alt text" width="900">
 
