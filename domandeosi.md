@@ -2,9 +2,9 @@
 
 # **Domande su ISO/OSI**
 
-1.Quali sono gli obiettivi di un’architettura a strati? Quali sono i suoi vincoli di lavoro (operativi)?
+1. Quali sono gli obiettivi di un’architettura a strati? Quali sono i suoi vincoli di lavoro (operativi)?
 2. Intendendo un servizio come un algoritmo distribuito in rete, cosa lo differenzia da un algoritmo che gira localmente ad una macchina ?
-3.Cosa è un canale virtuale di livello N? Come differisce da uno reale?
+3. Cosa è un canale virtuale di livello N? Come differisce da uno reale?
 4. Quale percorso segue una PDU lungo un canale virtuale? Quale invece lungo uno reale?
 5. Cosa sono le entità pari e come avviene la comunicazione tra loro?
 6. Quali sono i livelli standardizzati dall’ente ISO/OSI?
