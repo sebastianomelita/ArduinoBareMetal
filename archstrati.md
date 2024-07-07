@@ -22,7 +22,7 @@ Ciascun livello utilizza i **servizi** che sono offerti dal livello inferiore pe
 
 ## **Metafora entità Tannenmbaum**
 
-<img src="img/metaforaindiano.png" alt="alt text" width="1000">
+<img src="img/metaforaindiano.png" alt="alt text" width="900">
 
 ## **Metafora di entità come ruoli aziendali**
 
