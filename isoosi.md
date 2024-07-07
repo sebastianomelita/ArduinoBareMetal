@@ -35,7 +35,7 @@ La pila di protocolli è un “contenitore” di funzioni di rete che sta all’
 
 ## **PDU**
 
-<img src="img/pdu.png" alt="alt text" width="500">
+<img src="img/pdu.png" alt="alt text" width="400">
 
 L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol Data Unit) che comprendono due **componenti**:
 - informazione di utente (**SDU** o Service Data Unit) 
