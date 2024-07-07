@@ -17,7 +17,9 @@ L'architettura è **modulare** nel senso che uno strato può essere sostituito s
 
 **Obiettivo finale** è garantire l'**interoperabilità universale tra i dispositivi** da collegare, a prescindere dalle possibili differenze che possono intercorrere rispetto a marca, modello e tecnologie adoperate. 
 
-Per dettagli sull'architettura a strati vedi [architettura a strati](archstrati.md)
+- Per dettagli sull'architettura a strati vedi [architettura a strati](archstrati.md)
+
+- Per delle domande riassuntive vedi [domande osi](domandeosi.md)
 
 ## **Modello ISO/OSI**
 
