@@ -135,7 +135,13 @@ L'**imbustamento multiplo** è realizzato in trasmissione, lungo il **canale rea
 - Ogni livello **aggiunge** alle **SDU**, alcune informazioni di controllo, dette **header** (intestazione) o anche (**PCI**: Protocol Control Information) 
 - Gli **header** sono **diversi** per ogni livello e contengono informazioni di servizio che consentono al protocollo di quel livello di funzionare 
 
-Ogni livello **aggiunge** al messaggio utente informazioni di controllo propriamente sue nel campo **header**. Il **livello fisico**, a seguito di tutti gli annidamenti, ha il **messaggio più lungo** perché è composto dal messaggio utente a dalla **somma di tutti gli header** aggiunti nei singoli livelli, detta, in gergo tecnico, **overhead**. 
+### **Overhead**
+
+Poichè ogni livello **aggiunge** sempre alle SDU un proprio campo **header**, accade che il **livello fisico**, a seguito di tutti gli annidamenti, produce il **messaggio più lungo** perché è composto dal messaggio utente a dalla **somma di tutti gli header** aggiunti nei singoli livelli. Questa somma è detta, in gergo tecnico, **overhead**. Il rapporto tra overhead e lunghezza del campo dati originale rappresenta una stima dell'**efficienza** del protocollo nello spedire i messaggi che, in generale è **tanto maggiore**:
+- quanto l'**overhead è minore**
+- quanto il **mesaggio dati** di partenza è **più grande**
+
+### **Sbustamento multiplo**
 
 All'**imbustamento multiplo** in **trasmissione** corrisponde lo **sbustamento multiplo in ricezione**, un'operazione analoga ma **inversa**, dove tutti i messaggi ricevuti a **livello fisico** incapsulati uno dentro l'altro, vengono, salendo da un livello all'altro, **sbustati** eliminando l'intestazione del livello immediatamente inferiore. Arrivati al **livello applicativo**, come risultato, si ottiene il **messaggio utente**. Quindi, l'**ordine** di **inserimento** delle **intestazioni** in trasmissione è esattamente l'inverso dell'ordine di **rimozione** delle stesse in ricezione, secondo una tipica **politica LIFO**.
 
