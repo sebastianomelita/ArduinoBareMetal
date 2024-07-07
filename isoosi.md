@@ -119,16 +119,13 @@ Le  **PDU** in genere sono di **due tipi**:
     - Sono tutte quelle informazioni di controllo necessarie a portare avanti la comunicazione di livello N.
     - Sono tipicamente indirizzo di sorgente e di destinazione più altre informazioni necessarie per realizzare le funzioni di quel livello (contatori numeri di sequenza, checsum, ecc.)
 
-
-
-
 La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che non può avvenire senza lo **scambio di messaggi di servizio** che servono a coordinare il lavoro tra le **entità pari**, cioè quelle dello **stesso livello**. I messaggi di servizio (detti **messaggi di controllo**) sono quelli legati al **ruolo** e alle **mansioni** dei due interlocutori del livello corrente e trascurano gli **altri** messaggi di servizio relativi ad **altre mansioni** che, essendo sotto la responsabilità di **altri ruoli** appartenenti ad **altri livelli**, vengono, dalle entità del livello attuale, completamente **ignorate**.
 
 ### **Imbustamento multiplo**
 
 È la **tecnica** utilizzata per realizzare più **canali virtuali** su l’unico canale fisico (**canale reale**) che collega due macchine (**hosts**)
 
-Nelle **reti a pacchetto**, in fase di **trasmissione**, si usa una tecnica, detta **imbustamento multiplo**, con la quale si **incapsulano** i messaggi di un livello, le **PDU** (Protol Data Unit),  nel campo dati, detto **SDU** (Service Data Unit), del livello **immediatamente inferiore**. Questa operazione parte dal livello applicativo ed è **ripetuta** in tutti i livelli, escluso il fisico. 
+Nelle **reti a pacchetto**, in fase di **trasmissione**, si usa una tecnica, detta **imbustamento multiplo**, con la quale si **incapsulano** i messaggi di un livello, le **PDU** (Protol Data Unit), nel campo dati, detto **SDU** (Service Data Unit), del livello **immediatamente inferiore**. Questa operazione parte dal livello applicativo ed è **ripetuta** in tutti i livelli, escluso il fisico. 
 
 Il **carico utile** o **payload** o **SDU** è il **messaggio** che un livello ha avuto in consegna, da parte del livello superiore, per essere **gestito** tramite il suo protocollo:
 - I SAP sono le “porte” delle interfacce attraverso le quali si realizza il **canale reale** di livello N
@@ -143,12 +140,6 @@ All'**imbustamento multiplo** in **trasmissione** corrisponde lo **sbustamento m
 **L'imbustamento multiplo** permette la creazione dei cosiddetti **canali virtuali**, cioè dei collegamenti **apparenti** e **diretti** tra **strati corrispondenti** di dispositivi **remoti**. 
 
 Un nodo può essere **logicamente** suddiviso in una serie di strati detti **"entità"**, ciascuna ha un suo proprio **ruolo** nella comunicazione, caratterizzato da specifici **compiti** e **funzioni** che hanno l'obiettivo della **consegna del payload** con una certa **QoS** (Quality Of Service). Queste **funzioni** hanno la particolarità di dover essere svolte in **maniera distribuita** nei vari nodi, mediante lo **scambio** di opportuni **messaggi di controllo**. Ogni entità lascia, quindi, una **traccia** nel messaggio finale, dato che in esso è sempre possibile isolare sia il messaggio utente trasmesso (**payload**) che le **informazioni di controllo** necessarie per realizzare le funzioni di quell'entità (**header**). 
-
-Un **protocollo** del **livello generico N**:
-- nel **processo di imbustamento**, vede come ultimo header, solo gli **header del suo livello** perchè gli header dei **livelli sottostanti** non sono ancora stati inseriti.
-- Nel **processo di sbustamento** accade invece che un livello N vede solo l'**ultimo header affiorante**, cioè il proprio, perchè quelli dei **livelli sottostanti** sono stati **rimossi** al momento del loro sbustamento.
-
-In ogni caso, anche un livello vedesse gli **header di livelli diversi** dal proprio, non saprebbe cosa farsene perchè rappresentano **informazioni di servizio** di un **protocollo diverso** dal proprio (con obiettivi diversi) che non sarebbe in grado di interpretare.
 
 Il meccanismo dell'imbustamento/sbustamento fa si che, al momento in cui un pacchetto raggiunge un certo **livello N**, questo esibisca come **header più esterno** sempre un **N-PCI**, l'unico header che il protocollo di **livello N** è in grado di **interpretare**. Inoltre, il livello N sa che tutto quello che viene dopo un N-PCI è la **N-SDU (payload)** del proprio livello e va **consegnata** al livello superiore (o a quello inferiore) senza modifiche.
 
