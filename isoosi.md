@@ -21,7 +21,7 @@ Per dettagli sull'architettura a strati vedi [architettura a strati](archstrati.
 
 ## **Modello ISO/OSI**
 
-E’ composto da 7 livelli ordinati secondo una pila (stack) di protocolli dove gli elementi attivi di ogni livello, quelli che svolgono le funzioni, sono le entità.
+E’ composto da 7 livelli ordinati secondo una pila (stack) di protocolli dove gli elementi attivi di ogni livello, cioè quelli che svolgono le funzioni, sono le entità.
 Entità appartenenti allo stesso livello, su sistemi diversi, sono dette entità pari (peer entities) e la comunicazione fra due peer ad un certo livello avviene: 
 - per mezzo di un insieme di regole e convenzioni chiamate **protocollo del livello**
 - tramite unità informative (pacchetti) dette **Protocol Data Unit** (PDU) 
