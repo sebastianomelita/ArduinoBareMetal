@@ -120,9 +120,7 @@ Al **livello N**, al fine di realizzare i **servizi** per il livello superiore *
     - lungo un **canale virtuale** per ciascun livello.
     - utilizzando un **protocollo** e una **PDU** dedicati per ciascun livello.
 
-
-
-### **Imbustamento multiplo**
+## **Imbustamento multiplo**
 
 È la **tecnica** utilizzata per realizzare più **canali virtuali** su l’unico canale fisico (**canale reale**) che collega due macchine (**hosts**)
 
