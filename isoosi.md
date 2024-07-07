@@ -281,6 +281,7 @@ Attualmente, per **accedere ad Internet** e all'interno della maggior parte dell
 Sitorafia:
 - https://www.edutecnica.it/informatica/osi/osi.htm
 - https://insights.profitap.com/osi-7-layers-explained-the-easy-way
+- https://csc-knu.github.io/sys-prog/books/Andrew%20S.%20Tanenbaum%20-%20Computer%20Networks.pdf
 
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
 
