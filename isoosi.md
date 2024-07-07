@@ -118,7 +118,7 @@ Al **livello N**, al fine di realizzare i **servizi** per il livello superiore *
     - in base ad un **protocollo** di **livello N** 
 - Ciascun canale virtuale aggiunge **nuovi servizi** al canale virtuale sottostante. I **servizi** di un livello N, esattamente come le sue N-PDU, sono standardizzati e vengono chiamati **primitive di servizio** di livello N. tutte le implementazioni di un protocollo di quel livello devono impegnarsi a realizzarle.
 
-#### **Tipi di canale virtuale**
+### **Tipi di canale virtuale**
 
 **Riassumendo**, i **canali virtuali non esistono fisicamente** ma sono **ugualmente reali** perchè, dal punto di vista dei **messaggi scambiati**, le **entità** pari (peer entity), cioè gli interlocutori corrispondenti nei vari livelli, si comportano come se essi ci fossero davvero e attraverso questi **effettivamente dialogassero**. Sono una **visione semplificata** con cui, ad un **livello superiore**, si possono **osservare** le funzioni svolte e i messaggi scambiati dai livelli inferiori. Semplificata, ma comunque reale.
 
