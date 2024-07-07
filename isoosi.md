@@ -45,7 +45,7 @@ Sarà responsabilità di «qualcun altro» svolgerle e tipicamente, sessione e p
 - Applicazione, oppure da un
 - Middleware, cioè librerie di funzioni di terze parti
 
-<img src="img/osicompleta.png" alt="alt text" width="900">
+<img src="img/osicompleta.png" alt="alt text" width="1000">
 
 Le funzioni di trasporto (L4) e di rete (L3) sono svolte dal SO e sono accessibili dai programmi tramite delle API standard (primitive socket)
 Le funzioni di linea (L2) sono svolte dai driver delle  schede di rete
