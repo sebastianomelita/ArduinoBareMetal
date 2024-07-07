@@ -110,14 +110,12 @@ E' un punto di vista **parziale** perchè non si basa su quello che una comunica
 2. **Topologica**. Al livello corrente lo **schema** della rete potrebbe apparire **semplificato**, fino ad essere stato **riassunto** in un **unico link**. In particolare, ciò che al **livello N** generico potrebbe apparire come un **collegamento virtuale diretto** tra due host, potrebbe essere, ai livelli sottostanti, fisicamente **spezzato** in più collegamenti tra **nodi intermedi** di **transito**.
 3. **Strutturale**. Il collegamento tra **due strati omologhi**, cioè le **entità** di due nodi adiacenti, potrebbe apparire **diretto** lungo un canale orizzontale **dedicato** solo a loro. La comunicazione, invece, è sempre più articolata e comprende la comunicazione tra **uno strato e l'altro** fino al **livello fisico**.
 
-### **Canale orizzontale e canale verticale**
+### **canale virtuale**
 Al **livello N**, al fine di realizzare i **servizi** per il livello superiore **N+1**:
 - La **comunicazione** tra **entità pari** apparentemente si svolge come se avvenisse lungo un **canale diretto** che le unisce in **orizzontale** detto **canale virtuale** di **livello N** perchè avviene: 
     - **scambiandosi** PDU di livello N **(N-PDU**)
     - in base ad un **protocollo** di **livello N** 
-- Ciascun canale virtuale aggiunge **nuovi servizi** al canale virtuale sottostante
-- Fino a che non viene raggiunto il livello 1 (canale fisico), nessun dato è realmente trasferito direttamente dal livello N del Tx al livello N del Rx. L’unico canale reale è quello fisico!
-- le **entità pari** in realtà comunicano in **verticale**, trasferendo i dati **attraverso i SAP**, cioè le **porte** sulle interfacce di separazione tra un livello e l'altro, prima a scendere in trasmissione e poi a salire in ricezione. L'unica comunicazione **orizzontale** è lungo il **canale fisico** realizzato dal **mezzo trasmissivo** (fibra ottica, conduttore metallico, mezzo radio).
+- Ciascun canale virtuale aggiunge **nuovi servizi** al canale virtuale sottostante. I **servizi** di un livello N, esattamente come le sue N-PDU, sono standardizzati e vengono chiamati **primitive di servizio** di livello N. tutte le implementazioni di un protocollo di quel livello devono impegnarsi a realizzarle.
 
 ### **Canale reale**
 
@@ -126,16 +124,11 @@ Il **canale reale** è il **mezzo trasmissivo** che unisce il **livello fisico**
 2. in **orizzontale** lungo il **mezzo trasmissivo**, codificato sotto forma di segnali
 3. in verticale **a salire**, in **ricezione**.
   
-I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmessi in un **blocco unico** lungo il **canale reale**. Ma per comodità, all'**interno dei dispositivi**, ogni **messaggio applicativo**  può essere visto **destrutturato** in una serie di messaggi **separati** lungo i 7 **canali virtuali** dei singoli livelli.  Il **messaggio parziale**, trasmesso e ricevuto lungo un livello, è inviato con il **formato** e con le **regole** di trasmissione (**protocollo**) propri di quel livello. 
-
 <img src="img/The 7 Layers of OSI.webp" alt="alt text" width="500">
 
-Ogni volta che un canale virtuale invia una PDU  direttamente in **orizzontale** ad una entità pari attraverso un **canale virtuale**, in realtà la stessa PDU passa in **verticale** attraverso un **SAP** (service Access Point) al **livello adiacente** dove viene da questo presa in carico per creare i **servizi** che il livello superiore utilizza per portare avanti il suo protocollo.
-
-I **servizi** di un livello N, esattamente come le sue N-PDU, sono standardizzati e vengono chiamati **primitive di servizio** di livello N. tutte le implementazioni di un protocollo di quel livello devono impegnarsi a realizzarle.
-
-**In sostanza**, i messaggi che sono stati **generati** e **trasmessi separatamente** dai 7 livelli lungo i 7 **canali virtuali**, diventano un **unico messaggio matrioska** di 7 messaggi, **annidati** uno dentro l'altro, una volta che sono trasmessi lungo il **canale reale**. 
-
+I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmessi in un **blocco unico** lungo il **canale reale**:
+- Fino a che non viene raggiunto il livello 1 (canale fisico), nessun dato è realmente trasferito direttamente dal livello N del Tx al livello N del Rx. L’unico canale reale è quello fisico!
+- le **entità pari** in realtà comunicano in **verticale**, trasferendo i dati **attraverso i SAP**, cioè le **porte** sulle interfacce di separazione tra un livello e l'altro, prima a scendere in trasmissione e poi a salire in ricezione. L'unica comunicazione **orizzontale** è lungo il **canale fisico** realizzato dal **mezzo trasmissivo** (fibra ottica, conduttore metallico, mezzo radio).
 
 ### **In sintesi**
 - la comunicazione **reale** tra le **entità pari** dei livelli è **indiretta** e avviene:
@@ -145,6 +138,11 @@ I **servizi** di un livello N, esattamente come le sue N-PDU, sono standardizzat
     - in senso orrizzontale tra entità adiacenti dello stesso livello.
     - lungo un **canale virtuale** per ciascun livello.
     - utilizzando un **protocollo** e una **PDU** dedicati per ciascun livello.
+
+Per comodità, all'**interno dei dispositivi**, ogni **messaggio applicativo**  può essere visto **destrutturato** in una serie di messaggi **separati** lungo i 7 **canali virtuali** dei singoli livelli.  Il **messaggio parziale**, trasmesso e ricevuto lungo un livello, è inviato con il **formato** e con le **regole** di trasmissione (**protocollo**) propri di quel livello. 
+ 
+**In sostanza**, i messaggi che sono stati **generati** e **trasmessi separatamente** dai 7 livelli lungo i 7 **canali virtuali**, diventano un **unico messaggio matrioska** di 7 messaggi, **annidati** uno dentro l'altro, una volta che sono trasmessi lungo il **canale reale**. 
+
 
 ## **Imbustamento multiplo**
 
