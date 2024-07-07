@@ -15,7 +15,7 @@ L'architettura è **modulare** nel senso che uno strato può essere sostituito s
 
 Nell'informatica, esiste la necessità di una organizzazione adeguata delle funzioni per potere gestire la complessità. La soluzione trovata sta nel distribuire funzioni complesse secondo una architettura che segua una **organizzazione a strati** (o livelli). Un **vincolo dell'architettura** è che uno strato può dialogare solamente con quelli adiacenti, sopra o sotto di lui.
 
-### **Funzioni**
+### **Funzioni di uno strato**
 
 Le reti di calcolatori sono organizzate secondo un modello a strati (livelli), con ogni strato costruito su quello inferiore, che ripartisce il numero e la complessità delle funzioni di rete su più livelli.
 Ciascun livello è:
@@ -110,7 +110,7 @@ E' un punto di vista **parziale** perchè non si basa su quello che una comunica
 2. **Topologica**. Al livello corrente lo **schema** della rete potrebbe apparire **semplificato**, fino ad essere stato **riassunto** in un **unico link**. In particolare, ciò che al **livello N** generico potrebbe apparire come un **collegamento virtuale diretto** tra due host, potrebbe essere, ai livelli sottostanti, fisicamente **spezzato** in più collegamenti tra **nodi intermedi** di **transito**.
 3. **Strutturale**. Il collegamento tra **due strati omologhi**, cioè le **entità** di due nodi adiacenti, potrebbe apparire **diretto** lungo un canale orizzontale **dedicato** solo a loro. La comunicazione, invece, è sempre più articolata e comprende la comunicazione tra **uno strato e l'altro** fino al **livello fisico**.
 
-### **Canale virtuale**
+### **Proprietà di un canale virtuale**
 
 Al **livello N**, al fine di realizzare i **servizi** per il livello superiore **N+1**:
 - La **comunicazione** tra **entità pari** apparentemente si svolge come se avvenisse lungo un **canale diretto** che le unisce in **orizzontale** detto **canale virtuale** di **livello N** perchè avviene: 
@@ -131,34 +131,6 @@ Al **livello N**, al fine di realizzare i **servizi** per il livello superiore *
 In figura la lettera H sta per **header** cioè intestazione (ad es. AH=Application header).
 
 <img src="iso-osi.png" alt="alt text" width="1100">
-
-### **Canale reale**
-
-Il **canale reale** è il **mezzo trasmissivo** che unisce il **livello fisico** dei due interlocutori. Si sviluppa:
-1. in **verticale** lungo le interfacce tra i vari strati **a scendere**, in **trasmissione**
-2. in **orizzontale** lungo il **mezzo trasmissivo**, codificato sotto forma di segnali
-3. in verticale **a salire**, in **ricezione**.
-  
-<img src="img/The 7 Layers of OSI.webp" alt="alt text" width="500">
-
-I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmessi in un **blocco unico** lungo il **canale reale**:
-- Fino a che non viene raggiunto il livello 1 (canale fisico), nessun dato è realmente trasferito direttamente dal livello N del Tx al livello N del Rx. L’unico canale reale è quello fisico!
-- le **entità pari** in realtà comunicano in **verticale**, trasferendo i dati **attraverso i SAP**, cioè le **porte** sulle interfacce di separazione tra un livello e l'altro, prima a scendere in trasmissione e poi a salire in ricezione. L'unica comunicazione **orizzontale** è lungo il **canale fisico** realizzato dal **mezzo trasmissivo** (fibra ottica, conduttore metallico, mezzo radio).
-
-### **In sintesi**
-- la comunicazione **reale** tra le **entità pari** dei livelli è **indiretta** e avviene:
-    - In senso **verticale** attraverso le interfacce della pila di protocolli
-    - In senso **orizzontale**lungo il canale fisico al livello 1
-- La comunicazione **virtuale** tra le **entità pari** dei livelli è **diretta** e avviene:
-    - in senso orrizzontale tra entità adiacenti dello stesso livello.
-    - lungo un **canale virtuale** per ciascun livello.
-    - utilizzando un **protocollo** e una **PDU** dedicati per ciascun livello.
-
-Per comodità, all'**interno dei dispositivi**, ogni **messaggio applicativo**  può essere visto **destrutturato** in una serie di messaggi **separati** lungo i 7 **canali virtuali** dei singoli livelli.  Il **messaggio parziale**, trasmesso e ricevuto lungo un livello, è inviato con il **formato** e con le **regole** di trasmissione (**protocollo**) propri di quel livello. 
- 
-**In sostanza**, i messaggi che sono stati **generati** e **trasmessi separatamente** dai 7 livelli lungo i 7 **canali virtuali**, diventano un **unico messaggio matrioska** di 7 messaggi, **annidati** uno dentro l'altro, una volta che sono trasmessi lungo il **canale reale**. 
-
-
 ## **Imbustamento multiplo**
 
 È la **tecnica** utilizzata per realizzare più **canali virtuali** su l’unico canale fisico (**canale reale**) che collega due macchine (**hosts**)
@@ -193,6 +165,32 @@ Arrivati al **livello applicativo**, come risultato, si ottiene il **messaggio u
 Un nodo può essere **logicamente** suddiviso in una serie di strati detti **"entità"**, ciascuna ha un suo proprio **ruolo** nella comunicazione, caratterizzato da specifici **compiti** e **funzioni** che hanno l'obiettivo della **consegna del payload** con una certa **QoS** (Quality Of Service). Queste **funzioni** hanno la particolarità di dover essere svolte in **maniera distribuita** nei vari nodi, mediante lo **scambio** di opportuni **messaggi di controllo**. Ogni entità lascia, quindi, una **traccia** nel messaggio finale, dato che in esso è sempre possibile isolare sia il messaggio utente trasmesso (**payload**) che le **informazioni di controllo** necessarie per realizzare le funzioni di quell'entità (**header**). 
 
 Il meccanismo dell'imbustamento/sbustamento fa si che, al momento in cui un pacchetto raggiunge un certo **livello N**, questo esibisca come **header più esterno** sempre un **N-PCI**, l'unico header che il protocollo di **livello N** è in grado di **interpretare**. Inoltre, il livello N sa che tutto quello che viene dopo un N-PCI è la **N-SDU (payload)** del proprio livello e va **consegnata** al livello superiore (o a quello inferiore) senza modifiche.
+
+### **Canale reale**
+
+Il **canale reale** è il **mezzo trasmissivo** che unisce il **livello fisico** dei due interlocutori. Si sviluppa:
+1. in **verticale** lungo le interfacce tra i vari strati **a scendere**, in **trasmissione**
+2. in **orizzontale** lungo il **mezzo trasmissivo**, codificato sotto forma di segnali
+3. in verticale **a salire**, in **ricezione**.
+  
+<img src="img/The 7 Layers of OSI.webp" alt="alt text" width="500">
+
+I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmessi in un **blocco unico** lungo il **canale reale**:
+- Fino a che non viene raggiunto il livello 1 (canale fisico), nessun dato è realmente trasferito direttamente dal livello N del Tx al livello N del Rx. L’unico canale reale è quello fisico!
+- le **entità pari** in realtà comunicano in **verticale**, trasferendo i dati **attraverso i SAP**, cioè le **porte** sulle interfacce di separazione tra un livello e l'altro, prima a scendere in trasmissione e poi a salire in ricezione. L'unica comunicazione **orizzontale** è lungo il **canale fisico** realizzato dal **mezzo trasmissivo** (fibra ottica, conduttore metallico, mezzo radio).
+
+### **In sintesi**
+- la comunicazione **reale** tra le **entità pari** dei livelli è **indiretta** e avviene:
+    - In senso **verticale** attraverso le interfacce della pila di protocolli
+    - In senso **orizzontale**lungo il canale fisico al livello 1
+- La comunicazione **virtuale** tra le **entità pari** dei livelli è **diretta** e avviene:
+    - in senso orrizzontale tra entità adiacenti dello stesso livello.
+    - lungo un **canale virtuale** per ciascun livello.
+    - utilizzando un **protocollo** e una **PDU** dedicati per ciascun livello.
+
+Per comodità, all'**interno dei dispositivi**, ogni **messaggio applicativo**  può essere visto **destrutturato** in una serie di messaggi **separati** lungo i 7 **canali virtuali** dei singoli livelli.  Il **messaggio parziale**, trasmesso e ricevuto lungo un livello, è inviato con il **formato** e con le **regole** di trasmissione (**protocollo**) propri di quel livello. 
+ 
+**In sostanza**, i messaggi che sono stati **generati** e **trasmessi separatamente** dai 7 livelli lungo i 7 **canali virtuali**, diventano un **unico messaggio matrioska** di 7 messaggi, **annidati** uno dentro l'altro, una volta che sono trasmessi lungo il **canale reale**. 
 
 ## **Astrazione**
 
