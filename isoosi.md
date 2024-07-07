@@ -116,7 +116,7 @@ Al **livello N**, al fine di realizzare i **servizi** per il livello superiore *
 - La **comunicazione** tra **entità pari** apparentemente si svolge come se avvenisse lungo un **canale diretto** che le unisce in **orizzontale** detto **canale virtuale** di **livello N** perchè avviene: 
     - **scambiandosi** PDU di livello N **(N-PDU**)
     - in base ad un **protocollo** di **livello N** 
-- Ciascun canale virtuale aggiunge **nuovi servizi** al canale virtuale sottostante. I **servizi** di un livello N, esattamente come le sue N-PDU, sono standardizzati e vengono chiamati **primitive di servizio** di livello N. tutte le implementazioni di un protocollo di quel livello devono impegnarsi a realizzarle.
+- Ciascun canale virtuale aggiunge **nuovi servizi** al canale virtuale sottostante. I **servizi** di un livello N, possono essere richiamati da moduli SW mediante delle **API** (Application Programming Interface) di programmazione standardizzate che, in quanto tali, vengono dette **primitive di servizio** di livello N. tutte le implementazioni di un protocollo di quel livello devono impegnarsi a realizzarle con quella segnatura (insieme di nome + parametri).
 
 ### **Tipi di canale virtuale**
 
