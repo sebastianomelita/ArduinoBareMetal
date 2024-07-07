@@ -266,6 +266,8 @@ Lo **stack di protocolli OSI** è un **modello architetturale** di riferimento. 
 
 Attualmente, per **accedere ad Internet** e all'interno della maggior parte delle **reti locali LAN**, si adopera la cosiddetta suite **TCP/IP**. In ogni caso, molte **reti di sensori**, per funzionare localmente al loro ambiente di lavoro, **non sempre usano** la suite TCP/IP. Inoltre, anche le reti di sensori che l'adoperano, ai livelli inferiori come **i livelli data link e il livello fisico**, spesso utilizzano protocolli **diversi** da quelli che sono stati standardizzati per le LAN. 
 
+per delle domande riassuntive vedi [domande osi](domandeosi.md)
+
 [Dettaglio ES/IS](isvses.md)
 
 [Dettaglio protocolli](protocolli.md)
