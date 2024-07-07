@@ -53,6 +53,42 @@ La pila di protocolli è un “contenitore” di funzioni di rete che sta all’
 - Utilizzare standard di comunicazione open source e validi in ambito mondiale
 - Abbattere i costi di vendita dei dispositivi grazie alla economia di scala derivante dalla dimensione mondiale del mercato di riferimento.
 
+## **Entità come ruoli aziendali**
+
+Ogni **canale logico** serve a collegare tra loro le **due entità**, moduli SW con un certo **ruolo** (analoghe a coppie di impiegati tra i tanti di una grande azienda), che sono deputate a risolvere solamente **certi problemi**, tutti e soli quelli che rientrano all'interno delle **mansioni** che competono a quelle entità. 
+
+Esempio di analogie delle mansioni (fonte chatGPT. Provare a chiedere una analogia con le mansioni del personale scolastico):
+
+| Livello | Nome                  | Mansione      | Funzioni svolte                      |
+|---------|-----------------------|-------------------------------------------------------------------------------------------------------------------------|-----------------------------|
+| 7       | Applicazione          | Gli impiegati del servizio clienti e delle vendite che interagiscono direttamente con i clienti, utilizzando le applicazioni per fornire supporto, rispondere a domande e vendere prodotti o servizi| Fornisce servizi di rete direttamente agli utenti finali, come la posta elettronica, il trasferimento di file e le applicazioni web |
+| 6       | Presentazione         | I designer grafici e i responsabili del branding che formattano e presentano le informazioni in modo chiaro e accattivante, garantendo che i dati siano utilizzabili e comprensibili per gli utenti finali | Traduce i dati in un formato comprensibile per il livello applicativo, gestendo la cifratura e la compressione| 
+| 5       | Sessione              | I project manager o coordinatori che organizzano e monitorano le sessioni di lavoro tra diversi dipartimenti o team, assicurandosi che le interazioni e le collaborazioni procedano senza intoppi | Gestisce e controlla le connessioni tra i processi, mantenendo e sincronizzando la comunicazione |          
+| 4       | Trasporto             | I supervisori della qualità che assicurano che i prodotti o servizi forniti siano conformi agli standard e che eventuali problemi vengano identificati e risolti | Garantisce la trasmissione affidabile dei dati e il controllo degli errori tra due processi|                                                  
+| 3       | Rete                  |Gli impiegati responsabili della logistica e della pianificazione dei percorsi di consegna, che decidono il modo migliore per far arrivare i prodotti o le informazioni da un punto A a un punto B |     Determina il percorso che i dati devono seguire per raggiungere la loro destinazione|                            
+| 2       | Collegamento dati     | Gli amministratori di rete e gli specialisti di supporto IT che gestiscono le connessioni locali (LAN), risolvono i problemi di connessione e assicurano che i dati vengano trasmessi correttamente tra dispositivi all'interno dell'azienda | Fornisce il trasferimento dei dati tra due nodi su una rete e corregge gli errori che possono verificarsi a livello fisico.|
+| 1       | Fisico   | Gli impiegati che si occupano della manutenzione fisica dell'infrastruttura aziendale, come elettricisti e tecnici delle telecomunicazioni, che garantiscono che i cavi, i router, i server e altre apparecchiature funzionino correttamente  | Trasmette i dati in forma di segnali elettrici, ottici o radio.  |
+
+### **PDU**
+
+L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol Data Unit) che comprendono due **componenti**:
+- informazione di utente (**SDU** o Service Data Unit) 
+- informazione di controllo (**PCI** o Protocol Control Information) dette anche **header** (intestazione)‏
+
+Le **intestazioni** (header) dele PDU sono informazioni di controllo usate dalle **entità** pari per **portare avanti** (gestire) il **proprio protocollo**
+
+Le  **PDU** in genere sono di **due tipi**:
+- **Dati**: contengono il carico utile da trasferire tra Tx e Rx (payload).
+    - Sono quei bit che il livello N deve spostare per conto del livello superiore N+1.
+    - L’obiettivo di un protocollo di livello N è proprio inviare le sue SDU lungo il canale con una prefissata qualità di servizio.
+    - Le SDU sono la «stiva» all’interno della quale accogliere le PDU provenienti dal livello superiore. 
+    - Vengono chiamate anche payload (carico utile)
+- **Controllo**: contengono informazioni utili per la supervisione del canale (indirizzo mitt., indirizzo dest., numeri di sequenze, contatori)
+    - Sono tutte quelle informazioni di controllo necessarie a portare avanti la comunicazione di livello N.
+    - Sono tipicamente indirizzo di sorgente e di destinazione più altre informazioni necessarie per realizzare le funzioni di quel livello (contatori numeri di sequenza, checsum, ecc.)
+
+La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che non può avvenire senza lo **scambio di messaggi di servizio** che servono a coordinare il lavoro tra le **entità pari**, cioè quelle dello **stesso livello**. I messaggi di servizio (detti **messaggi di controllo**) sono quelli legati al **ruolo** e alle **mansioni** dei due interlocutori del livello corrente e trascurano gli **altri** messaggi di servizio relativi ad **altre mansioni** che, essendo sotto la responsabilità di **altri ruoli** appartenenti ad **altri livelli**, vengono, dalle entità del livello attuale, completamente **ignorate**.
+
 ## **Canali virtuali**
 
 ### **Definizione**
@@ -84,42 +120,7 @@ Al **livello N**, al fine di realizzare i **servizi** per il livello superiore *
     - lungo un **canale virtuale** per ciascun livello.
     - utilizzando un **protocollo** e una **PDU** dedicati per ciascun livello.
 
-## **Entità come ruoli aziendali**
 
-Ogni **canale logico** serve a collegare tra loro le **due entità**, moduli SW con un certo **ruolo** (analoghe a coppie di impiegati tra i tanti di una grande azienda), che sono deputate a risolvere solamente **certi problemi**, tutti e soli quelli che rientrano all'interno delle **mansioni** che competono a quelle entità. 
-
-Esempio di analogie delle mansioni (fonte chatGPT. Provare a chiedere una analogia con le mansioni del personale scolastico):
-
-| Livello | Nome                  | Mansione      | Funzioni svolte                      |
-|---------|-----------------------|-------------------------------------------------------------------------------------------------------------------------|-----------------------------|
-| 7       | Applicazione          | Gli impiegati del servizio clienti e delle vendite che interagiscono direttamente con i clienti, utilizzando le applicazioni per fornire supporto, rispondere a domande e vendere prodotti o servizi| Fornisce servizi di rete direttamente agli utenti finali, come la posta elettronica, il trasferimento di file e le applicazioni web |
-| 6       | Presentazione         | I designer grafici e i responsabili del branding che formattano e presentano le informazioni in modo chiaro e accattivante, garantendo che i dati siano utilizzabili e comprensibili per gli utenti finali | Traduce i dati in un formato comprensibile per il livello applicativo, gestendo la cifratura e la compressione| 
-| 5       | Sessione              | I project manager o coordinatori che organizzano e monitorano le sessioni di lavoro tra diversi dipartimenti o team, assicurandosi che le interazioni e le collaborazioni procedano senza intoppi | Gestisce e controlla le connessioni tra i processi, mantenendo e sincronizzando la comunicazione |          
-| 4       | Trasporto             | I supervisori della qualità che assicurano che i prodotti o servizi forniti siano conformi agli standard e che eventuali problemi vengano identificati e risolti | Garantisce la trasmissione affidabile dei dati e il controllo degli errori tra due processi|                                                  
-| 3       | Rete                  |Gli impiegati responsabili della logistica e della pianificazione dei percorsi di consegna, che decidono il modo migliore per far arrivare i prodotti o le informazioni da un punto A a un punto B |     Determina il percorso che i dati devono seguire per raggiungere la loro destinazione|                            
-| 2       | Collegamento dati     | Gli amministratori di rete e gli specialisti di supporto IT che gestiscono le connessioni locali (LAN), risolvono i problemi di connessione e assicurano che i dati vengano trasmessi correttamente tra dispositivi all'interno dell'azienda | Fornisce il trasferimento dei dati tra due nodi su una rete e corregge gli errori che possono verificarsi a livello fisico.|
-| 1       | Fisico   | Gli impiegati che si occupano della manutenzione fisica dell'infrastruttura aziendale, come elettricisti e tecnici delle telecomunicazioni, che garantiscono che i cavi, i router, i server e altre apparecchiature funzionino correttamente  | Trasmette i dati in forma di segnali elettrici, ottici o radio.  |
-
-
-### **PDU**
-
-L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol Data Unit) che comprendono due **componenti**:
-- informazione di utente (**SDU** o Service Data Unit) 
-- informazione di controllo (**PCI** o Protocol Control Information) dette anche **header** (intestazione)‏
-
-Le **intestazioni** (header) dele PDU sono informazioni di controllo usate dalle **entità** pari per **portare avanti** (gestire) il **proprio protocollo**
-
-Le  **PDU** in genere sono di **due tipi**:
-- **Dati**: contengono il carico utile da trasferire tra Tx e Rx (payload).
-    - Sono quei bit che il livello N deve spostare per conto del livello superiore N+1.
-    - L’obiettivo di un protocollo di livello N è proprio inviare le sue SDU lungo il canale con una prefissata qualità di servizio.
-    - Le SDU sono la «stiva» all’interno della quale accogliere le PDU provenienti dal livello superiore. 
-    - Vengono chiamate anche payload (carico utile)
-- **Controllo**: contengono informazioni utili per la supervisione del canale (indirizzo mitt., indirizzo dest., numeri di sequenze, contatori)
-    - Sono tutte quelle informazioni di controllo necessarie a portare avanti la comunicazione di livello N.
-    - Sono tipicamente indirizzo di sorgente e di destinazione più altre informazioni necessarie per realizzare le funzioni di quel livello (contatori numeri di sequenza, checsum, ecc.)
-
-La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che non può avvenire senza lo **scambio di messaggi di servizio** che servono a coordinare il lavoro tra le **entità pari**, cioè quelle dello **stesso livello**. I messaggi di servizio (detti **messaggi di controllo**) sono quelli legati al **ruolo** e alle **mansioni** dei due interlocutori del livello corrente e trascurano gli **altri** messaggi di servizio relativi ad **altre mansioni** che, essendo sotto la responsabilità di **altri ruoli** appartenenti ad **altri livelli**, vengono, dalle entità del livello attuale, completamente **ignorate**.
 
 ### **Imbustamento multiplo**
 
