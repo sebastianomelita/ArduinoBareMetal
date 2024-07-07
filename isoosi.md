@@ -61,7 +61,7 @@ La **trasparenza** dei livelli aggiunge proprietà di **flessibilità** all'arch
 - **Risoluzione dei problemi**: la suddivisione delle funzionalità in livelli separati rende più facile l'identificazione e la risoluzione dei problemi, poiché i problemi possono essere isolati a un livello specifico.
 - **Economicità**: è possibile abbattere i costi di vendita dei dispositivi grazie alla **economia di scala** derivante dalla **dimensione mondiale** del **mercato** di riferimento.
 
-### **Entità come ruoli aziendali**
+### **Esempio di entità come ruoli aziendali**
 
 Ogni **canale logico** serve a collegare tra loro le **due entità**, moduli SW con un certo **ruolo** (analoghe a coppie di impiegati tra i tanti di una grande azienda), che sono deputate a risolvere solamente **certi problemi**, tutti e soli quelli che rientrano all'interno delle **mansioni** che competono a quelle entità. 
 
