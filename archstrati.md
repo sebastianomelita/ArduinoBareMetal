@@ -30,72 +30,20 @@ Immagina due filosofi che vogliono comunicare tra loro ma parlano lingue diverse
 Immagina due filosofi che vogliono comunicare tra loro ma parlano lingue diverse. Uno parla francese e l'altro parla inglese. Per poter comunicare efficacemente, devono passare attraverso vari livelli di traduzione:
 
 1. **Applicazione (Lingua originale)**:
-   - Il primo filosofo (Alice) scrive un messaggio in francese.
-   - Il secondo filosofo (Bob) scrive un messaggio in inglese.
+   - Il primo filosofo scrive un messaggio in francese.
+   - Il secondo filosofo scrive un messaggio in inglese.
 
 2. **Presentazione (Traduzione)**:
-   - Alice ha bisogno di un traduttore che converta il messaggio dal francese all'olandese.
-   - Bob ha bisogno di un traduttore che converta il messaggio dall'inglese all'olandese.
+   - Il primo filosofo ha bisogno di un traduttore che converta il messaggio dal francese all'olandese.
+   - Il secondo filosofo ha bisogno di un traduttore che converta il messaggio dall'inglese all'olandese.
 
 3. **Sessione (Formato di comunicazione)**:
    - I traduttori devono assicurarsi che il messaggio sia formattato correttamente e che la sessione di comunicazione sia stabilita.
 
-4. **Trasporto (Segmentazione e ri-assemblaggio)**:
-   - I messaggi tradotti vengono suddivisi in segmenti più piccoli per il trasporto.
-   - All'arrivo, questi segmenti vengono ri-assemblati nell'ordine corretto.
-
-5. **Rete (Instradamento)**:
-   - I segmenti devono essere indirizzati attraverso vari nodi di rete per raggiungere la destinazione corretta.
-
-6. **Data Link (Involucro dei pacchetti)**:
-   - I segmenti vengono incapsulati in frame che contengono informazioni di indirizzamento e controllo di errore.
-
-7. **Fisico (Trasmissione effettiva)**:
-   - I frame vengono trasmessi fisicamente attraverso il mezzo di comunicazione (cavi, onde radio, ecc.).
+4. **Fisico (Trasmissione effettiva)**:
+   - I messaggi vengono trasmessi fisicamente attraverso il mezzo di comunicazione mediante un fax.
 
 <img src="img/metaforaindiano.png" alt="alt text" width="900">
-
-### Esempio Dettagliato
-
-1. **Applicazione**:
-   - Alice scrive un messaggio in francese: "Bonjour, comment ça va?"
-   - Bob scrive un messaggio in inglese: "Hello, how are you?"
-
-2. **Presentazione**:
-   - Il traduttore di Alice traduce il messaggio dal francese all'olandese: "Hallo, hoe gaat het?"
-   - Il traduttore di Bob traduce il messaggio dall'inglese all'olandese: "Hallo, hoe gaat het?"
-
-3. **Sessione**:
-   - I traduttori assicurano che i messaggi siano formattati correttamente e che la sessione di comunicazione sia stabilita.
-
-4. **Trasporto**:
-   - I messaggi in olandese vengono suddivisi in segmenti più piccoli per la trasmissione.
-   - All'arrivo, questi segmenti vengono ri-assemblati nell'ordine corretto.
-
-5. **Rete**:
-   - I segmenti vengono instradati attraverso vari nodi di rete per raggiungere la destinazione corretta.
-
-6. **Data Link**:
-   - I segmenti vengono incapsulati in frame, che includono informazioni di indirizzamento e controllo degli errori.
-
-7. **Fisico**:
-   - I frame vengono trasmessi sul mezzo fisico (cavi, onde radio, ecc.).
-
-### Mappatura con il Modello OSI
-
-Questa metafora riflette i sette livelli del modello OSI:
-
-1. **Livello Fisico**: Trasmissione fisica dei dati.
-2. **Livello Data Link**: Involucro dei dati in frame e controllo degli errori.
-3. **Livello Rete**: Instradamento dei pacchetti verso la destinazione.
-4. **Livello Trasporto**: Segmentazione e ri-assemblaggio dei dati.
-5. **Livello Sessione**: Gestione delle sessioni di comunicazione.
-6. **Livello Presentazione**: Traduzione dei dati nel formato corretto.
-7. **Livello Applicazione**: Interfaccia utente e comunicazione diretta tra le applicazioni.
-
-### Conclusione
-
-La metafora dei due filosofi che parlano lingue diverse e utilizzano traduttori per comunicare illustra come i dati devono essere trasformati e incapsulati attraverso vari livelli di rete per garantire una comunicazione efficace e corretta tra due punti finali. Questo processo di traduzione e trasmissione è essenziale per comprendere il funzionamento delle reti di calcolatori e il modello OSI.
 
 
 ## **Metafora entità OSI come ruoli aziendali**
