@@ -130,15 +130,18 @@ Nelle **reti a pacchetto**, in fase di **trasmissione**, si usa una tecnica, det
 
 <img src="img/imbustamento.png" alt="alt text" width="1100">
 
-Il **carico utile** o **payload** o **SDU** è il **messaggio** che un livello ha avuto in consegna, da parte del livello superiore, per essere **gestito** tramite il suo protocollo:
-- I SAP sono le “porte” delle interfacce attraverso le quali si realizza il **canale reale** di livello N
-- I dati inviati sul canale reale da un protocollo di livello N, le N-PDU, diventano, attraversata la N-SAP, (N-1)-SDU (imbustamento multiplo
-
-Attraversato il **SAP** (canale reale o Service Access Point) verso il livello inferiore, le PDU diventano SDU cioè sono alloggiate nella «stiva» (o payload) del livello inferiore il quale le smista utilizzando il proprio servizio di trasferimento (tracciabile mediante il proprio PCI). Il livello inferiore non è in grado di interpretare le PCI del livello superiore e pertanto le tratta alla stregua di normali dati (SDU) da trasferire secondo le regole del proprio protocollo.
+L'**imbustamento multiplo** è realizzato in trasmissione, lungo il **canale reale** che scende in verticale attraverso un **SAP**:
+- I messaggi inviati sul **canale virtuale** di **livello N** sono detti **N-PDU** (Protocol Data Unit) 
+- I **SAP** sono le **porte** delle **interfacce** attraverso le quali si realizza il **canale reale** di livello N
+- Le **N-PDU** inviate sul canale reale da un protocollo di livello N, diventano, attraversata la N-SAP, **(N-1)-SDU** (imbustamento multiplo), cioè il **payload** del protocollo del **livello inferiore**. Il livello inferiore non è in grado di interpretare le PCI del livello superiore e pertanto le tratta alla stregua di normali dati (SDU) da trasferire secondo le regole del proprio protocollo.
+- Ogni livello **aggiunge** alle **SDU**, alcune informazioni di controllo, dette **header** (intestazione) o anche (**PCI**: Protocol Control Information) 
+- Gli **header** sono **diversi** per ogni livello e contengono informazioni di servizio che consentono al protocollo di quel livello di funzionare 
 
 Ogni livello **aggiunge** al messaggio utente informazioni di controllo propriamente sue nel campo **header**. Il **livello fisico**, a seguito di tutti gli annidamenti, ha il **messaggio più lungo** perché è composto dal messaggio utente a dalla **somma di tutti gli header** aggiunti nei singoli livelli, detta, in gergo tecnico, **overhead**. 
 
 All'**imbustamento multiplo** in **trasmissione** corrisponde lo **sbustamento multiplo in ricezione**, un'operazione analoga ma **inversa**, dove tutti i messaggi ricevuti a **livello fisico** incapsulati uno dentro l'altro, vengono, salendo da un livello all'altro, **sbustati** eliminando l'intestazione del livello immediatamente inferiore. Arrivati al **livello applicativo**, come risultato, si ottiene il **messaggio utente**. Quindi, l'**ordine** di **inserimento** delle **intestazioni** in trasmissione è esattamente l'inverso dell'ordine di **rimozione** delle stesse in ricezione, secondo una tipica **politica LIFO**.
+
+### **In sintesi**
 
 **L'imbustamento multiplo** permette la creazione dei cosiddetti **canali virtuali**, cioè dei collegamenti **apparenti** e **diretti** tra **strati corrispondenti** di dispositivi **remoti**. 
 
