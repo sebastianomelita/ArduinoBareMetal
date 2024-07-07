@@ -9,6 +9,8 @@ L'**ISO/OSI** ha catalogato e organizzato in una **architettura a 7 strati** tut
 
 <img src="img/pilaosi.png" alt="alt text" width="900">
 
+Esiste anche un'architettura a **5 strati** che non prevede le funzioni di sessione e trasporto. Se delle funzioni di comunicazione non sono incluse nell’architettura non vuol dire che queste siano inutili ma, semplicemente, che non è da questa che esse sono svolte. La figura suggerisce che le funzioni degli **strati mancanti** sono **delegati** in toto all'**applicazione**.
+
 L'architettura è **modulare** nel senso che uno strato può essere sostituito senza che quelli sopra di lui se ne accorgano permettendo una grande **flessibilità**. Questa flessibilità può essere utilizzata per **adattare** un protocollo di livello superiore a **vari mezzi fisici** o per ottenere su un certo mezzo fisico una determinata **qualità del servizio**. 
 
 **Obiettivo finale** è garantire l'**interoperabilità universale tra i dispositivi** da collegare, a prescindere dalle possibili differenze che possono intercorrere rispetto a marca, modello e tecnologie adoperate. 
@@ -34,6 +36,19 @@ La pila di protocolli è un “contenitore” di funzioni di rete che sta all’
 | 3       | Rete                  | **Indirizzamento**, cioè individuazione del luogo fisico in cui si trova l'host destinatario, **sceglie** il percorso migliore per raggiungerlo (**routing**), esecuzione dell'**inoltro fisico** dei pacchetti da una porta di ingresso a quella di uscita che sta nel percorso scelto (**forwarding**), per ogni router incontrato lungo il percorso.  |   IP    |                                                                  |
 | 2       | Collegamento dati     | **Segmenta** i messaggi lunghi aggiungendo loro l'indirizzo del mittente, esegue la **multiplazione** di più connessioni di livello 2 sulla stessa connsessione di livello 1, esegue il **controllo di errore** (senza ritrasmissione), esegue il **controllo di flusso** (velocità del mittente) | Ethernet, WiFI, BLE, Zigbee, LoRa|
 | 1       | Fisico                | Esegue la **codifica/decodifica** dei bit, cioè traduce i bit in segnali elettrici in **trasmissione** mentre traduce i segnali elettrici in bit **in ricezione**. Definisce gli **standard** meccanici ed elettrici dei canali.| CCA, LBT|
+
+## **Middleware**
+
+Se delle funzioni di comunicazione non sono incluse nell’architettura non vuol dire che queste siano inutili ma, semplicemente, che non è da questa che esse sono svolte
+
+Sarà responsabilità di «qualcun altro» svolgerle e tipicamente, sessione e presentazione in un nodo sono in alternativa realizzate dalla:
+- Applicazione, oppure da un
+- Middleware, cioè librerie di funzioni di terze parti
+
+<img src="img/osicompleta.png" alt="alt text" width="900">
+
+Le funzioni di trasporto (L4) e di rete (L3) sono svolte dal SO e sono accessibili dai programmi tramite delle API standard (primitive socket)
+Le funzioni di linea (L2) sono svolte dai driver delle  schede di rete
 
 ## **PDU**
 
