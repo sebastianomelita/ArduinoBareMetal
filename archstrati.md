@@ -20,7 +20,11 @@ I **servizi** di uno strato sono realizzati usando:
 
 Ciascun livello utilizza i **servizi** che sono offerti dal livello inferiore per generare servizi più complessi e potenti di livello superiore (servizi a **valore aggiunto**)
 
-## **Esempio di entità come ruoli aziendali**
+## **Metafora entità Tannenmbaum**
+
+<img src="img/metaforaindiano.png" alt="alt text" width="1000">
+
+## **Metafora di entità come ruoli aziendali**
 
 Ogni **canale logico** serve a collegare tra loro le **due entità**, moduli SW con un certo **ruolo** (analoghe a coppie di impiegati tra i tanti di una grande azienda), che sono deputate a risolvere solamente **certi problemi**, tutti e soli quelli che rientrano all'interno delle **mansioni** che competono a quelle entità. 
 
