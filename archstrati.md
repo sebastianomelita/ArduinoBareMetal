@@ -47,6 +47,15 @@ La **trasparenza** dei livelli aggiunge proprietà di **flessibilità** all'arch
 - **Risoluzione dei problemi**: la suddivisione delle funzionalità in livelli separati rende più facile l'identificazione e la risoluzione dei problemi, poiché i problemi possono essere isolati a un livello specifico.
 - **Economicità**: è possibile abbattere i costi di vendita dei dispositivi grazie alla **economia di scala** derivante dalla **dimensione mondiale** del **mercato** di riferimento.
 
+### **Modello ISO-OSI: principi guida**
+
+Principi guida adoperati  per lo sviluppo dei vari livelli (1983)
+- Tramite l’organizzazione a livelli si definisce un grado di astrazione (semplificazione) via via crescente delle funzioni di rete.
+- I livelli devono corrispondere a funzioni ben definite.
+- Le funzioni devono essere aderenti a degli standard internazionali.
+- I confini tra i livelli devono minimizzare il flusso delle informazioni tra un livello e l’altro (principio di massima coesione interna e di minimo accoppiamento tra i livelli). 
+- Il numero di livelli deve essere ottimale (non troppi né troppo pochi).
+
 
 
 >[Torna a ISO/OSI](isoosi.md)
