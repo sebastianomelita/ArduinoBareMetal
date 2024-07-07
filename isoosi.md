@@ -255,7 +255,7 @@ Valgono le seguenti **proprietà**:
 - un **indirizzo IP + num. di porta L4** (socket) identifica univocamente **un processo** globalmente nel mondo (Internet).
 - una **credenziale utente** o un **certificato** di sicurezza identificano univocamente **un utente** all'interno di un **dominio** (organizzazione).
 
-<img src="img/mappeindirizzi.png" alt="alt text" width="900">
+<img src="img/mappeindirizzi.png" alt="alt text" width="1000">
 
 ## **Architettura di riferimento**
 
