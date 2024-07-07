@@ -167,7 +167,7 @@ Un nodo può essere **logicamente** suddiviso in una serie di strati detti **"en
 
 Il meccanismo dell'imbustamento/sbustamento fa si che, al momento in cui un pacchetto raggiunge un certo **livello N**, questo esibisca come **header più esterno** sempre un **N-PCI**, l'unico header che il protocollo di **livello N** è in grado di **interpretare**. Inoltre, il livello N sa che tutto quello che viene dopo un N-PCI è la **N-SDU (payload)** del proprio livello e va **consegnata** al livello superiore (o a quello inferiore) senza modifiche.
 
-### **Canale reale**
+## **Canale reale**
 
 Il **canale reale** è il **mezzo trasmissivo** che unisce il **livello fisico** dei due interlocutori. Si sviluppa:
 1. in **verticale** lungo le interfacce tra i vari strati **a scendere**, in **trasmissione**
