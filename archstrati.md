@@ -82,6 +82,7 @@ Principi guida adoperati  per lo sviluppo dei vari livelli (1983)
 - I confini tra i livelli devono minimizzare il flusso delle informazioni tra un livello e l’altro (principio di massima coesione interna e di minimo accoppiamento tra i livelli). 
 - Il numero di livelli deve essere ottimale (non troppi né troppo pochi).
 
-
+Sitografia:
+- https://csc-knu.github.io/sys-prog/books/Andrew%20S.%20Tanenbaum%20-%20Computer%20Networks.pdf
 
 >[Torna a ISO/OSI](isoosi.md)
