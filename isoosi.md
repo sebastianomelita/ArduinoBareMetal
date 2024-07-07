@@ -59,7 +59,7 @@ La **trasparenza** dei livelli aggiunge proprietà di **flessibilità** all'arch
 - **Interoperabilità**: la trasparenza dei livelli permette a dispositivi e protocolli diversi di lavorare insieme, a patto che rispettino le interfacce standardizzate.
 - **Semplicità di progettazione**: gli sviluppatori possono concentrarsi sulle funzionalità specifiche di un livello senza dover comprendere l'intera stack di protocolli.
 - **Risoluzione dei problemi**: la suddivisione delle funzionalità in livelli separati rende più facile l'identificazione e la risoluzione dei problemi, poiché i problemi possono essere isolati a un livello specifico.
-- **economicità**: è possibile abbattere i costi di vendita dei dispositivi grazie alla **economia di scala** derivante dalla **dimensione mondiale** del **mercato** di riferimento.
+- **Economicità**: è possibile abbattere i costi di vendita dei dispositivi grazie alla **economia di scala** derivante dalla **dimensione mondiale** del **mercato** di riferimento.
 
 ### **Entità come ruoli aziendali**
 
