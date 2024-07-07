@@ -42,7 +42,7 @@ La pila di protocolli è un “contenitore” di funzioni di rete che sta all’
 
 ## **Middleware**
 
-Se delle funzioni di comunicazione non sono incluse nell’architettura non vuol dire che queste siano inutili ma, semplicemente, che non è da questa che esse sono svolte
+Se delle funzioni di comunicazione non sono incluse nell’architettura però non vuol dire che queste siano inutili ma, semplicemente, che non è da questa architettura che esse sono svolte
 
 Sarà responsabilità di «qualcun altro» svolgerle e tipicamente, sessione e presentazione in un nodo sono in alternativa realizzate dalla:
 - Applicazione, oppure da un
