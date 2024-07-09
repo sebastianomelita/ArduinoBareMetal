@@ -184,7 +184,7 @@ Ogni funzione di un livello **"astrae"**, cioè riassume in un'unica funzione di
 
 ### **Astrazione dei canali virtuali OSI**
 
-Un **processo** è **individuabile univocamente** all'interno di una stessa macchina host tramite un **numero di porta**, riusabile uguale solo su interfacce diverse o su macchine diverse. Un **processo** è **individuabile univocamente** nel mondo tramite la **coppia** (indirizzo **IP**, numero di **porta**) detta talvolta **socket**.
+Un **processo** è **individuabile univocamente** all'interno di una stessa macchina host tramite un **numero di porta**, riusabile uguale solo su interfacce diverse o su macchine diverse. Un **processo** è **individuabile univocamente** nel mondo tramite la **coppia** (indirizzo **IP pubblico**, numero di **porta**) detta talvolta **socket**. Esistono pure IP privati **riusabili localmente** in una rete LAN, ma non permettono di individuare un host in una rete WAN di estensione globale.
 
 La **ricostruzione sottostante** mira a rappresentare una rete OSI come una **infrastruttura** volta a realizzare un **canale** (apparentemente) **dedicato** ad una particolare coppia di **processi remoti**, tra i tanti che girano in due **host remoti**, a loro volta scelti tra i tanti collegati ad **Internet**.
 
