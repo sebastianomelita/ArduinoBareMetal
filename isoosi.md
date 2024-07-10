@@ -19,6 +19,8 @@ L'architettura è **modulare** nel senso che uno strato può essere sostituito s
 
 In questo senso l'architettura ISO/OSI è concepita per un obiettivo ambizioso, realizzare una rete di tipo **geografico**, una tipica **WAN** (Wide Area Network) che sia operativa a livello globale, cioè permetta di individuare una macchina o un servizio in rete a **livello mondiale**.
 
+### **La rete di reti Internet**
+
 La realizzazione tecnologica di questo obiettivo non è stato inizialmente realizzabile con un'unica rete WAN, ma piuttosto, con una **federazione** di reti **WAN** e **LAN** eterogenee, la Internet che ha poi riscosso immediato successo commerciale all'indomani dell'invenzione del **WWW** (World Wide Web) a partire dai primi anni 90' del secolo scorso. 
 
 Lo **stack TCP/IP**, una particolare e fortunata implementazione dei livelli 4 e 3 della pila OSI, ha consentito di tenere insieme una **inter-network** di **reti eterogenee** utilizzando i servizi di inoltro End To End (tipicamente di livello 3!) a livello 2 della pilo ISO/OSI. In sostanza, una rete proprietaria viene utilizzata per creare un link logico, una sorta di cavo virtuale, tra router IP. Una Internet IP è quindi spesso una rete di router IP collegati tra loro da **link virtuali punto punto**. Ogni **link** è spesso materialmente realizzato da una rete locale con tecnologia arbitraria (MPLS, ATM, Ethernet).
