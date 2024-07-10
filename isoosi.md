@@ -23,7 +23,7 @@ In questo senso, l'architettura ISO/OSI è concepita per un obiettivo ambizioso,
 
 La realizzazione tecnologica di questo obiettivo non è stata inizialmente ottenuta con un'**unica rete WAN** ma, grazie ad una soluzione di compromesso, con una **federazione** di reti **WAN** e **LAN** eterogenee, la **Internet** propriamente detta, che ha poi riscosso immediato successo commerciale all'indomani dell'invenzione del **WWW** (World Wide Web), avvenuta nel 1990. 
 
-Lo **stack TCP/IP**, una particolare e fortunata implementazione dei livelli 4 e 3 della pila OSI che stanno alla base della rete Internet, ha consentito di tenere insieme, più che un'**unica WAN**, una **inter-network** di **reti eterogenee** regionali. Per fare ciò, ha utilizzato anche a livello 2 quei servizi di inoltro End To End che tipicamento stanno al livello 3 della pila ISO/OSI. 
+Lo **stack TCP/IP**, una particolare e fortunata implementazione dei livelli 4 e 3 della pila OSI che stanno alla base della rete Internet, ha consentito di tenere insieme, più che un'**unica WAN**, una **inter-network** di **reti eterogenee** regionali. Per ottenere ciò, Internet ha utilizzato anche a livello 2 quei servizi di inoltro End To End che tipicamento si trovano al livello 3 della pila ISO/OSI. 
 
 In sostanza, una **rete proprietaria**, con propri schemi di indirizzamento (spesso non IP o con IP privati), viene utilizzata per creare un **link logico**, una sorta di **cavo di dorsale virtuale**, tra router IP di una **Internet mondiale** che utilizza indirizzi **IP pubblici**. 
 
