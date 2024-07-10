@@ -27,7 +27,7 @@ Lo **stack TCP/IP**, una particolare e fortunata implementazione dei livelli 4 e
 
 In sostanza, una **rete proprietaria**, con propri schemi di indirizzamento (spesso non IP o con IP privati), viene utilizzata per creare un **link logico**, una sorta di **cavo dorsale virtuale**, tra router IP di una **Internet mondiale** che utilizza indirizzi **IP pubblici**. Una **Internet IP** è quindi una rete di **router IP** collegati tra loro da **link punto punto** che possono essere **fisici** oppure **virtuali**. Ogni **link virtuale** è spesso materialmente realizzato utilizzando i servizi applicativi di **livello 7** di una **rete regionale** con tecnologia arbitraria (MPLS, ATM, Ethernet).
 
-Oggi il quadro è via via mutato. IP è diventata la tecnologia dominante e **Internet** è più simile ad insieme di **sottoreti omogeneee annidate** l'una nell'altra secondo una dimensione che scala da continentale a nazionale, e da nazionale a regionale. Le reti regionali, le MAN (Metropolitan Area Network) sono comunque ancora realizzate con tecnologie abbastanza varie e adoperano un inoltro dei pacchetti che non sempre è basato solamente su IP.
+Oggi il quadro è via via mutato. IP è diventata la tecnologia dominante e **Internet** è più simile ad insieme di **sottoreti omogeneee annidate** l'una dentro l'altra secondo una dimensione che scala da continentale a nazionale, e da nazionale a regionale. Le reti regionali, le MAN (Metropolitan Area Network) sono comunque ancora realizzate con tecnologie abbastanza varie e adoperano un inoltro dei pacchetti che non sempre è basato solamente su IP.
 
 
 
