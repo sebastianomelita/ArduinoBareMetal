@@ -299,6 +299,7 @@ Per delle domande riassuntive vedi [domande osi](domandeosi.md)
 Sitografia:
 - https://www.edutecnica.it/informatica/osi/osi.htm
 - https://insights.profitap.com/osi-7-layers-explained-the-easy-way
+- https://it.wikipedia.org/wiki/Internet
 
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
 
