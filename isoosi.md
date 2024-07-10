@@ -25,7 +25,7 @@ La realizzazione tecnologica di questo obiettivo non è stato inizialmente reali
 
 Lo **stack TCP/IP**, una particolare e fortunata implementazione dei livelli 4 e 3 della pila OSI che stanno alla base della rete Internet, ha consentito di tenere insieme una **inter-network** di **reti eterogenee** utilizzando i servizi di inoltro End To End (tipicamente di livello 3!) a livello 2 della pilo ISO/OSI. 
 
-In sostanza, una rete proprietaria viene utilizzata per creare un link logico, una sorta di cavo virtuale, tra router IP. Una Internet IP è quindi una rete di router IP collegati tra loro da **link punto punto** che possono essere **fisici** oppure **virtuali**. Ogni **link virtuale** è spesso materialmente realizzato utilizzando i servizi applicativi di **livello 7** di una rete locale con tecnologia arbitraria (MPLS, ATM, Ethernet).
+In sostanza, una rete proprietaria viene utilizzata per creare un link logico, una sorta di cavo virtuale, tra router IP. Una Internet IP è quindi una rete di router IP collegati tra loro da **link punto punto** che possono essere **fisici** oppure **virtuali**. Ogni **link virtuale** è spesso materialmente realizzato utilizzando i servizi applicativi di **livello 7** di una rete regionale con tecnologia arbitraria (MPLS, ATM, Ethernet).
 
 Oggi il quadro è via via mutato. Ip è diventata la tecnologia dominante e **Internet** è più simile ad insieme di sottoreti omogeneee annidate l'una nell'altra secondo una dimensione che scala da continentale a nazionale, e da nazionale a regionale. Le reti regionali, le MAN (Metropolitan Area Network) sono comunque ancora realizzate con tecnologie abbastanza varie e adoperano un inoltro dei pacchetti che non sempre è basato solamente su IP.
 
