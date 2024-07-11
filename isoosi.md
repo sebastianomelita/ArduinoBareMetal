@@ -21,7 +21,7 @@ Avendo l'**interoperabilità** spinta alla base, l'**architettura ISO/OSI** è n
 
 ### **La rete di reti Internet**
 
-La realizzazione tecnologica di questo obiettivo non è stata inizialmente ottenuta con un'**unica rete WAN** ma piuttosto, grazie ad una soluzione tecnica di compromesso, con una **federazione** di reti **WAN** e **LAN** eterogenee, la **Internet** propriamente detta, che ha poi riscosso immediato successo commerciale all'indomani dell'invenzione del **WWW** (World Wide Web), avvenuta nel 1990. 
+La realizzazione tecnologica dell'obiettivo di ottenere una **WAN mondiale** non è stata inizialmente ottenuta con un'**unica rete WAN** ma piuttosto, grazie ad una soluzione tecnica di compromesso, con una **federazione** di reti **WAN** e **LAN** eterogenee, la **Internet** propriamente detta, che ha poi riscosso immediato successo commerciale all'indomani dell'invenzione del **WWW** (World Wide Web), avvenuta nel 1990. 
 
 Lo **stack TCP/IP**, una particolare e fortunata implementazione dei livelli 4 e 3 della pila OSI che stanno alla base della rete Internet, ha consentito di tenere insieme, non tanto un'**unica WAN**, quanto una **inter-network** di numerose **reti eterogenee** regionali. Per ottenere ciò, Internet ha utilizzato anche a livello 2 quei servizi di inoltro End To End che tipicamento si trovano al livello 3 della pila ISO/OSI. 
 
