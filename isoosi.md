@@ -35,7 +35,7 @@ Col tempo il quadro è via via mutato. IP è diventata la tecnologia dominante e
 
 
 
--  Per dettagli sull'architettura a strati vedi [architettura a strati](archstrati.md)
+- Per dettagli sull'architettura a strati vedi [architettura a strati](archstrati.md)
 
 - Per delle domande riassuntive vedi [domande osi](domandeosi.md)
 
@@ -64,7 +64,7 @@ Si noti il ruolo della **segmentazione** ai livelli 2 e 4 che, frammentando lung
 - a **livello 2**, il canale L2 diretto tra due **IS adiacenti** può essere condiviso da pacchetti L3 aventi indirizzi differenti. Permette sostanzialmente la **condivisione** dei **link** tra i vari router tra **host differenti** (individuati da un indirizzo IP pubblico).
 - a **livello 4**, il canale virtuale L3 diretto tra due **ES** può essere condiviso dai segmenti L4 aventi indirizzi differenti. Permette sostanzialmente la **condivisione** dei **link virtuali End to End** tra i vari host tra **processi differenti** (individuati da un numero di porta).
 
-La **tecnologia** con cui si realizza la **multiplazione** nelle moderne reti a pacchetto è il **TDM statistico** per via della sua elevata efficienza. Per dettagli vedi 
+La **tecnologia** con cui si realizza la **multiplazione** nelle moderne reti a pacchetto è il **TDM statistico** per via della sua elevata efficienza. Per dettagli vedi [TDM statistico](tdmstatistico.md).
 
 ## **Middleware**
 
