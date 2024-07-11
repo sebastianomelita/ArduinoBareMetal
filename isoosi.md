@@ -17,7 +17,7 @@ L'architettura è **modulare** nel senso che uno strato può essere sostituito s
 
 **Obiettivo finale** è garantire l'**interoperabilità universale tra i dispositivi** da collegare, a prescindere dalle possibili differenze che possono intercorrere rispetto a marca, modello e tecnologie adoperate. 
 
-In questo senso, l'architettura ISO/OSI è concepita per un obiettivo ambizioso, realizzare una rete di tipo **geografico**, una tipica **WAN** (Wide Area Network) che sia operativa a livello globale, cioè tale da permettere di individuare una macchina o un servizio in rete ovunque nel mondo.
+Avendo l'**interoperabilità** spinta alla base, l'**architettura ISO/OSI** è concepita per un altro obiettivo ambizioso, realizzare una rete di tipo **geografico**, una tipica **WAN** (Wide Area Network) che sia operativa a livello globale, cioè tale da permettere di individuare una macchina o un servizio in rete ovunque nel mondo.
 
 ### **La rete di reti Internet**
 
