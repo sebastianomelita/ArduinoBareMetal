@@ -88,7 +88,7 @@ L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol
 - informazione di utente (**SDU** o Service Data Unit) 
 - informazione di controllo (**PCI** o Protocol Control Information) dette anche **header** (intestazione)‏
 
-Le **intestazioni** (header) dele PDU sono informazioni di controllo usate dalle **entità** pari per **portare avanti** (gestire) il **proprio protocollo**
+Le **intestazioni** (header) delle PDU sono informazioni di controllo usate dalle **entità** pari per **portare avanti** (gestire) il **proprio protocollo**
 
 Le  **PDU** in genere sono di **due tipi**:
 - **Dati**: contengono il carico utile da trasferire tra Tx e Rx (payload).
