@@ -25,7 +25,7 @@ La realizzazione tecnologica di una **WAN mondiale** non è stata inizialmente o
 
 Lo **stack TCP/IP**, una particolare e fortunata implementazione dei livelli 4 e 3 della pila OSI che stanno alla base della rete Internet, ha consentito di tenere insieme, non tanto un'**unica WAN**, quanto una **inter-network** di numerose **reti eterogenee** regionali. Per ottenere ciò, Internet ha utilizzato anche a livello 2 quei servizi di inoltro End To End che tipicamento si trovano al livello 3 della pila ISO/OSI. 
 
-In sostanza, **reti proprietarie**, con propri schemi di indirizzamento (spesso non IP o con IP privati), possono essere adoperate per realizzare dei **link logici** tra router IP di una **Internet mondiale** di nodi ed host aventi indirizzi **IP pubblici**. 
+In sostanza, **reti proprietarie**, con propri schemi di indirizzamento (spesso non IP o con IP privati), possono essere adoperate per realizzare dei **link logici** tra router IP di una **Internet mondiale** composta da nodi ed host aventi indirizzi **IP pubblici**. 
 
 Una **Internet IP** è quindi una rete di **router IP** collegati tra loro da **link punto punto** che possono essere **fisici** oppure **virtuali**:
 - ogni **link fisico** è tipicamente basato su conduttori metallici, fibre ottiche o mezzi radio.
