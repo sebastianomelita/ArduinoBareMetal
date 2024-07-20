@@ -636,6 +636,26 @@ Sovente, nella rete di distribuzione IP è presente un server col ruolo di **bro
 
 **In realtà**, il topic di configurazione, pur essendo teoricamente appropriato, potrebbe anche essere incorporato nel topic di comando, magari prevedendo un livello più alto di autorizzazione rispetto ai comandi relativi alle funzioni ordinarie.
 
+### **Gestione dei topic di misura**
+
+Potremmo a questo punto inserire la misura della temperatura e della pressione nel topic più generale delle misure che chiameremo ```misure``` e registrare il sensore di temperatura e presenza del soggiorno al topic ```/soggiorno/misure``` come publisher, mentre potremmo registrare il server di gestione al topic ```+/misure``` come subscriber delle misure di tutti gli ambienti. Il messaggio potrebbe essere il JSON  
+
+``` Json
+{
+	"envSensor": {
+		"temp": 43,
+		"press": 1001,
+		"hum": 27.5,
+		"gas": 1400,
+	},
+	"deviceID": "01",
+	"timestamp": "2024-07-20T09:43:27",
+}
+```
+Se volessimo selezionare un solo dispositivo sono possibili due strade alternative:
+- inserire il **prefisso mqtt** del dispositivo direttamente **nel path** ```/soggiorno/misure/mydevice1-98F4ABF298AD/{"envSensor": {....}}```
+- inserire un **id** del dispositivo **nel JSON** ```/soggiorno/misure/{"deviceid":"01", "envSensor": {....},"deviceID": "01",}```, dove con ```01``` ci indica un indirizzo univoco solamente all'interno del sottogruppo ```/soggiorno/misure```. Con questa soluzione il dispositivo deve saper gestire un secondo livello di indirizzi indipendente dal meccanismo del path dei topic.
+
 ### **Gestione dei topic di comando**
 
 Potremmo a questo punto inserire il comando delle luci nel topic più generale delle misure ed attuazioni che chiameremo ```comandi``` e registrare i pulsanti del soggiorno al topic ```luci/soggiorno/comandi``` come pubblisher, mentre potremmo registrare le attuazioni delle lampade allo stesso topic come subscriber. Il comando potrebbe essere il JSON  ```{"toggle":"true"}```, per cui alla fine tutto intero il path diventerebbe ```luci/soggiorno/comandi/{"toggle":"true"}```. Se volessimo selezionare un solo dispositivo sono possibili due strade alternative:
