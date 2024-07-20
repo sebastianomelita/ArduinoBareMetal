@@ -526,10 +526,10 @@ Potremmo a questo punto inserire la misura della temperatura e della pressione n
 ``` Json
 {
 	"envSensor": {
-		"temp": temp,
-		"press": press,
-		"hum": hum,
-		"gas": gas,
+		"temp": 43,
+		"press": 1001,
+		"hum": 27.5,
+		"gas": 1400,
 	},
 	"deviceID": 01,
 	"timestamp": timestamp,
