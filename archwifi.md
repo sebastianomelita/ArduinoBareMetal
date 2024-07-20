@@ -531,8 +531,8 @@ Potremmo a questo punto inserire la misura della temperatura e della pressione n
 		"hum": 27.5,
 		"gas": 1400,
 	},
-	"deviceID": 01,
-	"timestamp": timestamp,
+	"deviceID": "01",
+	"timestamp": "2024-07-20T09:43:27",
 }
 ```
 Se volessimo selezionare un solo dispositivo sono possibili due strade alternative:
