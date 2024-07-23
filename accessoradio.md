@@ -323,6 +323,7 @@ Sitografia:
 - http://www.wirelesscommunication.nl/reference/chaptr05/spreadsp/fh.htm
 - https://dl.acm.org/doi/10.1145/3546869
 - https://datatracker.ietf.org/meeting/100/materials/slides-100-lpwan-i-etsi-erm-tg28-00
+- https://www.personaldrones.it/blog/come-comunicano-i-nostri-droni-le-modulazioni-n42
 
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN) 
 
