@@ -41,7 +41,7 @@ Il **fading selettivo** in frequenza è principalmente causato dal **multipath f
 - **Diffrazione**: Il segnale si piega intorno agli ostacoli.
 - **Scattering**: Il segnale viene disperso da piccoli ostacoli o irregolarità nell'ambiente.
 
-Quando i segnali multipli raggiungono il ricevitore, possono interferire tra loro in modo **costruttivo** o **distruttivo** a seconda delle loro fasi relative. Questo porta a **variazioni nella potenza** del segnale ricevuto che **dipendono dalla frequenza**, causando il fading selettivo. 
+Quando i segnali multipli raggiungono il ricevitore, possono interferire tra loro in modo **costruttivo** o **distruttivo** a seconda delle loro fasi relative. Questo porta a **variazioni nella potenza** del segnale ricevuto che **dipendono dalla frequenza**, causando il **fading selettivo**. 
 
 E' la norma nella propagazione delle **microonde** della telefonia in **area urbana** e per quella delle trasmissioni **wireless indoor** (WiFi, blootooth, Zigbee, ecc.).
 
