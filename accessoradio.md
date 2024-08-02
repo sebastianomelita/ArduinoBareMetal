@@ -36,16 +36,16 @@ E' una forma di **evanescenza** del segnale che alterna momenti di segnale ben r
 
 <img src="img/QSB_9640_kHz_-_20140118@2245UTC_China_Radio_International.png" alt="alt text" width="1000">
 
-Il **fading selettivo** in frequenza è principalmente causato dal **multipath fading**, un fenomeno dove il segnale trasmesso raggiunge il ricevitore attraverso **diversi percorsi**. Questi percorsi multipli possono essere causati da:
-- **Riflessioni**: Il segnale rimbalza su edifici, montagne, o altre superfici.
-- **Diffrazione**: Il segnale si piega intorno agli ostacoli.
-- **Scattering**: Il segnale viene disperso da piccoli ostacoli o irregolarità nell'ambiente.
+Il **fading selettivo** in frequenza è principalmente causato dal **multipath fading**, un fenomeno dove il segnale trasmesso raggiunge il ricevitore attraverso **percorsi diversi**. Questi **percorsi multipli** possono essere causati da:
+- **Riflessioni**: Il segnale **rimbalza** su edifici, montagne, o altre superfici.
+- **Diffrazione**: Il segnale **si piega** intorno agli ostacoli.
+- **Scattering**: Il segnale viene **disperso** da piccoli ostacoli o irregolarità nell'ambiente.
 
-Quando i segnali multipli raggiungono il ricevitore, possono interferire tra loro in modo **costruttivo** o **distruttivo** a seconda delle loro fasi relative. Questo porta a **variazioni nella potenza** del segnale ricevuto che **dipendono dalla frequenza**, causando il **fading selettivo**. 
+Quando i **segnali multipli** raggiungono il **ricevitore**, possono interferire tra loro in modo **costruttivo** o **distruttivo** a seconda delle loro **fasi relative**. La combinazione delle fasi è diversa alle varie frequenze e questo porta a **variazioni nella potenza** del segnale ricevuto che sostanzialmente **dipendono dalla frequenza**, causando il fenomeno del **fading selettivo in frequenza**. 
 
-E' la norma nella propagazione delle **microonde** della telefonia in **area urbana** e per quella delle trasmissioni **wireless indoor** (WiFi, blootooth, Zigbee, ecc.).
+Il **fading selettivo in frequenza** è la norma nella propagazione delle **microonde** della telefonia in **area urbana** e per quella delle trasmissioni **wireless indoor** (WiFi, blootooth, Zigbee, ecc.).
 
-Supponiamo che un segnale sia trasmesso attraverso un canale wireless e che raggiunga il ricevitore tramite tre percorsi distinti: uno diretto, uno riflesso da un edificio, e uno riflesso da una montagna. Se il segnale diretto è relativamente forte ma i segnali riflessi arrivano con diverse attenuazioni e ritardi, il segnale risultante al ricevitore sarà una combinazione dei tre. Alcune frequenze potrebbero essere fortemente attenuate (a causa di interferenze distruttive), mentre altre potrebbero essere rafforzate (a causa di interferenze costruttive), causando il **fading selettivo**.
+Supponiamo che un segnale sia trasmesso attraverso un canale wireless e che raggiunga il ricevitore tramite tre percorsi distinti: uno diretto, uno riflesso da un edificio, e uno riflesso da una montagna. Se il segnale diretto è relativamente forte ma i segnali riflessi arrivano con diverse attenuazioni e ritardi, il segnale risultante al ricevitore sarà una combinazione dei tre. Alcune frequenze potrebbero essere fortemente **attenuate** (a causa di **interferenze distruttive**), mentre altre potrebbero essere **rafforzate** (a causa di **interferenze costruttive**), causando il **fading selettivo** in frequenza.
 
 ### **Demodulazione del segnale FDM**
 
