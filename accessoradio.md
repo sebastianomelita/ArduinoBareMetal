@@ -45,7 +45,7 @@ Quando i segnali multipli raggiungono il ricevitore, possono interferire tra lor
 
 E' la norma nella propagazione delle **microonde** della telefonia in **area urbana** e per quella delle trasmissioni **wireless indoor** (WiFi, blootooth, Zigbee, ecc.).
 
-Supponiamo che un segnale sia trasmesso attraverso un canale wireless e che raggiunga il ricevitore tramite tre percorsi distinti: uno diretto, uno riflesso da un edificio, e uno riflesso da una montagna. Se il segnale diretto è relativamente forte ma i segnali riflessi arrivano con diverse attenuazioni e ritardi, il segnale risultante al ricevitore sarà una combinazione dei tre. Alcune frequenze potrebbero essere fortemente attenuate (a causa di interferenze distruttive), mentre altre potrebbero essere rafforzate (a causa di interferenze costruttive), causando il fading selettivo.
+Supponiamo che un segnale sia trasmesso attraverso un canale wireless e che raggiunga il ricevitore tramite tre percorsi distinti: uno diretto, uno riflesso da un edificio, e uno riflesso da una montagna. Se il segnale diretto è relativamente forte ma i segnali riflessi arrivano con diverse attenuazioni e ritardi, il segnale risultante al ricevitore sarà una combinazione dei tre. Alcune frequenze potrebbero essere fortemente attenuate (a causa di interferenze distruttive), mentre altre potrebbero essere rafforzate (a causa di interferenze costruttive), causando il *fading selettivo*.
 
 ### **Demodulazione del segnale FDM**
 
