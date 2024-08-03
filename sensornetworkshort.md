@@ -66,7 +66,7 @@ Riguardo all'**interoperabilità** tra reti diverse, questa è evidentemente imp
 
 Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può ottenere:
 - **creando un'unica rete** utilizzando livelli di rete **compatibili** o **praticamente uguali** come sono **IPV6 e 6LowPan**. Lo stesso deve accadere per i **protocolli di routing** usando ad es. REPL. Lo stesso deve accadere per i **livelli superiori**. In particolare nell'ultimo, il **livello applicativo**, il **payload dell'applicazione**, cioè il messaggio utente, deve poter viaggiare **direttamente** dal **client** al **sensore**, dove poi verrà elaborato e utilizzato. Se viene inoltrato direttamente il pacchetto IPV6 (con il payload applicativo dentro) allora il gateway è tecnicamente un **router semplice**.
-- Se le condizioni di **uniformità** dei protocolli sono **soddisfatte parzialmente**, ad esempio mantenendo uguale protocollo di inoltro (6LowPAN) ma protocolli di routing diversi (OSPF nella rete di distribuzione e REPL in quella dei sensori), allora il router deve necessariamente possedere anche limitate funzionalità di **gateway**, in questo caso per effettuare l'interoperabilità tra dominii di routing differenti.
+- Se le condizioni di **uniformità** dei protocolli sono **soddisfatte parzialmente**, ad esempio mantenendo uguale protocollo di inoltro (6LowPAN) ma **protocolli di routing diversi** (OSPF nella rete di distribuzione e REPL in quella dei sensori), allora il router deve necessariamente possedere anche limitate funzionalità di **gateway**, in questo caso almeno per effettuare l'interoperabilità tra **dominii di routing** differenti.
   
 <img src="jsan-02-00235-g002.webp" alt="alt text" width="700">
 
