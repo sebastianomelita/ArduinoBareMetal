@@ -385,6 +385,9 @@ Molti **framework per IoT** come **TinyOS**, **Contiki** e **RIOT** posseggono u
 - https://www.extremenetworks.com/extreme-networks-blog/what-is-a-clear-channel-assessment-cca/
 - https://www.gsma.com/spectrum/wp-content/uploads/2020/04/3.5-GHz-5G-TDD-Synchronisation.pdf
 - https://datatracker.ietf.org/meeting/100/materials/slides-100-lpwan-i-etsi-erm-tg28-00
+- https://github.com/Koenkk/zigbee2mqtt/discussions/7443
+- https://tasmota.github.io/docs/Matter/#adding-supported-device-types
+- https://www.nordicsemi.com/Products/Technologies/Matter?utm_term=matter%20protocol&utm_campaign=M_ALL_GE_US&utm_source=adwords&utm_medium=ppc&hsa_tgt=kwd-1543757786149&hsa_grp=144720084640&hsa_src=g&hsa_net=adwords&hsa_mt=b&hsa_ver=3&hsa_ad=680036204616&hsa_acc=1116845495&hsa_kw=matter%20protocol&hsa_cam=18545141408&gad_source=1&gclid=CjwKCAjwqre1BhAqEiwA7g9QhhA67tNRkwFmmsbwHAqHuPk8BLoHyrKTGNhRTO1peAHJdP_yrP5eZxoC5NEQAvD_BwE
 
 >[Torna all'indice generale](index.md)
     
