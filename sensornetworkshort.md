@@ -63,7 +63,7 @@ In ogni caso, un qualsiasi **ente di telecomunicazioni internazionale** (IEE, IE
 ### **Interoperabilità tra reti di sensori**
 
 Riguardo all'**interoperabilità** tra reti diverse, questa è evidentemente impossibile ai livelli **fisico e di accesso**, cioè ai **primi due livelli** della pila OSI (**L1** e **L2**) dato che questi sono normalmente realizzati con tecnologie molto diverse tra loro. Ma potrebbe essere realizzata:
-- a **livello di rete**, come già accade nelle LAN e in Internet col protocollo IP. In questo caso, il **comando** proveniente da un sensore (ad esempio pressione) verrebbe imbustato su un pacchetto di livello 3 (in genere IPv6) che potrebbe essere smistato senza modifica alcuna attraverso i routerdi una o più reti di sensori, anche se queste sono fisicamente eterogenee. 
+- a **livello di rete**, come già accade nelle LAN e in Internet col protocollo IP. In questo caso, il **comando** proveniente da un sensore (ad esempio di pressione) verrebbe imbustato su un pacchetto di livello 3 (in genere IPv6) che potrebbe essere smistato senza modifica alcuna attraverso i routerdi una o più reti di sensori, anche se queste sono fisicamente eterogenee. 
 - Oppure, potrebbe essere realizzata anche solo a **livello applicativo** definendo per tutte le reti una semantica uniforme per misure e comandi (lo stesso oggetto tapparella con gli stessi comandi per tutte le reti, lo stesso oggetto lampada che si comanda con on e off ovunque, ecc...). 
 
 Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può ottenere:
