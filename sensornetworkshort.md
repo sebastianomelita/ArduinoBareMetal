@@ -79,7 +79,7 @@ Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può otte
      - se il livello di applicazione nella rete di accesso **non è customizzabile**, il gateway (detto talvolta **bridge**) ha adesso la funzione di **traduzione** dei messaggi tra il il formato in uso nella rete di distribuzione IP e quello in uso nella rete di accesso ai sensori.
      - la **traduzione del livello applicativo** (L7 pila OSI):
          - riguarda quelle reti di sensori che non si limitano solo ad inoltrare i messaggi ma che anche definiscono con esatezza il **formato dei comandi** dei propri dispositivi, formato che normalmente **non è modificabile** dallo sviluppatore.
-         - serve ad adattare la **semantica applicativa** (formato di misure e comandi) tra reti che non posseggono lo stesso livello di presentazione. Normalmente è svolta sul **gateway di confine** tra la rete di sensori e la rete di distribuzione, dato che comunque il payload, nel passaggio attraverso un gateway, deve comunque essere **sbustato** dalla rete di provenienza per essere **reibustato** in quella di inoltro (magari in uno stack di protocolli di rete completamente diverso).
+         - serve ad adattare la **semantica applicativa** (formato di misure e comandi) tra reti che non posseggono lo stesso livello di presentazione. Normalmente è svolta sul **gateway di confine** tra la rete di sensori e la rete di distribuzione, dato che comunque il payload, nel passaggio attraverso un gateway, deve comunque essere **sbustato** dallo stack di protocolli della rete di provenienza per essere **reibustato** in quello della rete di inoltro.
 <img src="jsan-02-00235-g001.webp" alt="alt text" width="600">
 
 #### **Formato dei messaggi**
