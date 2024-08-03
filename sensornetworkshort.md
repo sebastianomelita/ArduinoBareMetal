@@ -70,7 +70,7 @@ Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può otte
   
 <img src="jsan-02-00235-g002.webp" alt="alt text" width="700">
 
-- utilizzando un **gateway** per **compattare** o **tradurre** i messaggi:
+- utilizzando un **gateway applicativo** per **compattare** o **tradurre** i messaggi:
      - se il routing non è compatibile ma il **livello di applicazione** nella rete di accesso **è libero**, non limitato a messaggi preordinati da uno standard,  si può pensare ancora di utilizzare lo **stesso payload** in formato JSON della rete di distribuzione richiamando le **primitive di servizio** di livello applicativo in uso nella rete dei sensori (ad es. send) per inviarlo. Ma il formato potrebbe essere troppo prolisso per dispositivi di capacità ridotta e quindi potrebbe essere necessario **comprimerlo**.
      - se il livello di applicazione nella rete di accesso **non è customizzabile**, il gateway (detto talvolta **bridge**) ha funzione di **traduzione** dei messaggi tra il il formato in uso nella rete di distribuzione IP e quello in uso nella rete di accesso ai sensori. 
 <img src="jsan-02-00235-g001.webp" alt="alt text" width="600">
