@@ -62,7 +62,7 @@ In ogni caso, un qualsiasi **ente di telecomunicazioni internazionale** (IEE, IE
 
 ### **Interoperabilità tra reti di sensori**
 
-Riguardo all'**interoperabilità** tra reti diverse, questa è evidentemente impossibile a livello fisico e di accesso, cioè ai primi due livelli della pila OSI (L1 e L2) dato che si tratta di tecnologie molto diverse tra loro. Ma potrebbe essere realizzata:
+Riguardo all'**interoperabilità** tra reti diverse, questa è evidentemente impossibile a livello fisico e di accesso, cioè ai primi due livelli della pila OSI (L1 e L2) dato che sono realizzate con tecnologie spesso molto diverse tra loro. Ma potrebbe essere realizzata:
 - a **livello di rete**, come già accade nelle LAN e in Internet col protocollo IP e, in questo caso, potrebbero essere smistati gli stessi messaggi lungo reti che sono eterogenee a livello fisico.
 - Oppure, potrebbe essere realizzata solo a **livello applicativo** definendo per tutte le reti una semantica uniforme per misure e comandi (lo stesso oggetto tapparella con gli stessi comandi per tutte le reti, lo stesso oggetto lampada che si comanda con on e off ovunque, ecc...). 
 
