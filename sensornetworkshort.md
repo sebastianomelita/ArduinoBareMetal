@@ -399,6 +399,7 @@ Molti **framework per IoT** come **TinyOS**, **Contiki** e **RIOT** posseggono u
 - https://github.com/Koenkk/zigbee2mqtt/discussions/7443
 - https://tasmota.github.io/docs/Matter/#adding-supported-device-types
 - https://www.nordicsemi.com/Products/Technologies/Matter?utm_term=matter%20protocol&utm_campaign=M_ALL_GE_US&utm_source=adwords&utm_medium=ppc&hsa_tgt=kwd-1543757786149&hsa_grp=144720084640&hsa_src=g&hsa_net=adwords&hsa_mt=b&hsa_ver=3&hsa_ad=680036204616&hsa_acc=1116845495&hsa_kw=matter%20protocol&hsa_cam=18545141408&gad_source=1&gclid=CjwKCAjwqre1BhAqEiwA7g9QhhA67tNRkwFmmsbwHAqHuPk8BLoHyrKTGNhRTO1peAHJdP_yrP5eZxoC5NEQAvD_BwE
+- https://github.com/canonical/matter-mqtt-bridge
 
 >[Torna all'indice generale](index.md)
     
