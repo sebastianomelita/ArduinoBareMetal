@@ -87,7 +87,7 @@ Le funzioni di **linea** (L2) sono svolte dai **driver** delle schede di rete
 L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol Data Unit) che comprendono due **componenti**:
 - informazione di utente (**SDU** o Service Data Unit):
     - è l'insieme dei bit che devono essere spediti dall'entità mittente a quella di destinazione, attraverso un canale che li unisce direttamente (canale virtuale).
-    - possono essere forniti ad una entità direttamente dall'applicazione oppure dall'entità di livello imediatamente superiore.
+    - possono essere forniti ad una entità direttamente dall'applicazione oppure dall'entità di livello immediatamente superiore.
 - informazione di controllo (**PCI** o Protocol Control Information) dette anche **header** (intestazione):
     - Sono informazioni di **servizio** usate dalle **entità** pari per **portare avanti** il **protocollo** attivo sul **canale virtuale** che le collega direttamente.
     - Il protocollo sull'entità trasmittente **aggiunge** l'intestazione ai dati contenuti nella SDU (payload), lo stesso protocollo, stavolta attivo sull'entità ricevente, la **rimuove** restituendo esattamente i dati che erano stati consegnati in partenza. 
@@ -96,11 +96,11 @@ Le  **PDU** in genere sono di **due tipi**:
 - **Dati**: contengono il carico utile da trasferire tra Tx e Rx (payload).
     - Sono quei bit che il livello N deve spostare per conto del livello superiore N+1.
     - L’obiettivo di un protocollo di livello N è proprio inviare le sue SDU lungo il canale con una prefissata qualità di servizio.
-    - Le SDU sono la «stiva» all’interno della quale accogliere le PDU provenienti dal livello superiore. 
-    - Vengono chiamate anche payload (carico utile)
+    - Le SDU sono la «**stiva**» all’interno della quale **allocare** le **PDU** provenienti dal **livello superiore**. 
+    - Vengono chiamate anche **payload** (carico utile)
 - **Controllo**: contengono informazioni utili per la supervisione del canale (indirizzo mitt., indirizzo dest., numeri di sequenze, contatori)
-    - Sono tutte quelle informazioni di controllo necessarie a **portare avanti** la comunicazione di livello N.
-    - Sono tipicamente **indirizzo** di **sorgente** e di **destinazione** più altre informazioni necessarie per **realizzare le funzioni** di quel livello (contatori numeri di sequenza, checsum, ecc.)
+    - Sono tutte quelle informazioni di **servizio** necessarie a **portare avanti** la comunicazione di livello N.
+    - Sono tipicamente **indirizzo** di **sorgente** e di **destinazione** più altre informazioni necessarie per **realizzare le funzioni** di quel livello (contatori, numeri di sequenza, checsum, ecc.)
 
 La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che non può avvenire senza lo **scambio di messaggi di servizio** che servono a coordinare il lavoro tra le **entità pari**, cioè quelle dello **stesso livello**. I messaggi di servizio (detti **messaggi di controllo**) sono quelli legati al **ruolo** e alle **mansioni** dei due interlocutori del livello corrente e trascurano gli **altri** messaggi di servizio relativi ad **altre mansioni** che, essendo sotto la responsabilità di **altri ruoli** appartenenti ad **altri livelli**, vengono, dalle entità del livello attuale, completamente **ignorate**.
 
