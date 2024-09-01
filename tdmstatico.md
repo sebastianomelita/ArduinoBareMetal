@@ -63,7 +63,7 @@ Il **tempo T**, uguale al **tempo di arrivo** completo di un messaggio di una ge
 
 I messaggi **arrivano** ad **ondate successive** assimilabili a **round periodici**. Mentre si **trasmette** quella appena **ricevuta** si **riceve** l'ondata **successiva**. Il **ritardo** tra il momento della ricezione di un messaggio e quello della sua trasmissione è esattamente **T**.
 
-**T** è anche l’intervallo di tempo che intercorre tra **slot allocati** alla **stessa sorgente** cioè slot consecutivi in cui si trasmettono i messaggi di una stessa sorgente.
+**T** è anche l’intervallo di tempo ciclico (periodo) che intercorre tra **slot allocati** alla **stessa sorgente**, cioè gli slot consecutivi in cui si trasmettono i messaggi di una stessa sorgente.
 
 Gli slot sono **numerati** e l'**abbinamento** di ciascuno ad una sorgente è stabilito in fase di **setup** della comunicazione. La totalità degli abbinamenti stabilisce la composizione della **trama**, cioè la composizione del multimessaggio contenente i messaggi di tutte le sorgenti. 
 
