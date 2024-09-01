@@ -292,7 +292,7 @@ Valgono le seguenti **proprietà**:
 
 <img src="img/mappeindirizzi.png" alt="alt text" width="1000">
 
-<img src="img/osiall.jpg" alt="alt text" width="700">
+<img src="img/osiall.jpg" alt="alt text" width="1000">
 
 ## **OSI come architettura di riferimento**
 
