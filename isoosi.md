@@ -143,15 +143,15 @@ In figura la lettera H sta per **header** cioè intestazione (ad es. AH=Applicat
 
 ## **Imbustamento multiplo**
 
-È la **tecnica** utilizzata per realizzare più **canali virtuali** su l’unico canale fisico (**canale reale**) che collega due macchine (**hosts**)
+È la **tecnica** utilizzata per realizzare più **canali virtuali** su l’unico canale fisico (**canale reale**) che collega due macchine (**hosts**). 
 
-Nelle **reti a pacchetto**, in fase di **trasmissione**, si usa una tecnica, detta **imbustamento multiplo**, con la quale si **incapsulano** i messaggi di un livello, le **PDU** (Protol Data Unit), nel campo dati, detto **SDU** (Service Data Unit), del livello **immediatamente inferiore**. Questa operazione parte dal livello applicativo ed è **ripetuta** in tutti i livelli, escluso il fisico. 
+Il canale virtuale è solamente **emulato** perchè nelle **reti a pacchetto**, in fase di **trasmissione**, si usa una tecnica, detta **imbustamento multiplo**, con la quale si **incapsulano** i messaggi di un livello generico N, le **N-PDU**, all'interno del campo dati, del livello **immediatamente inferiore**, detto **(N-1)-SDU**, lungo un accesso verticale detto **SAP** (Service Access Port). Questa operazione parte dal livello applicativo ed è **ripetuta** su tutti i livelli, escluso il fisico. 
 
 <img src="img/imbustamento.png" alt="alt text" width="1100">
 
 L'**imbustamento multiplo** è realizzato in trasmissione, lungo il **canale reale** che scende in verticale attraverso un **SAP**:
 - I messaggi inviati sul **canale virtuale** di **livello N** sono detti **N-PDU** (Protocol Data Unit) 
-- I **SAP** sono le **porte** delle **interfacce** attraverso le quali si realizza il **canale reale** di livello N
+- I **SAP** sono le **porte** delle **interfacce** attraverso le quali si realizza il **canale reale** di livello N.
 - Le **N-PDU** inviate sul canale reale da un protocollo di livello N, diventano, attraversata la N-SAP, **(N-1)-SDU** (imbustamento multiplo), cioè il **payload** del protocollo del **livello inferiore**. Il livello inferiore non è in grado di interpretare le PCI del livello superiore e pertanto le tratta alla stregua di normali dati (SDU) da trasferire secondo le regole del proprio protocollo.
 - Ogni livello **aggiunge** alle **SDU**, alcune informazioni di controllo, dette **header** (intestazione) o anche (**PCI**: Protocol Control Information) 
 - Gli **header** sono **diversi** per ogni livello e contengono informazioni di servizio che consentono al protocollo di quel livello di funzionare 
