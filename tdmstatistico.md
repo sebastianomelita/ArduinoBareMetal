@@ -13,6 +13,8 @@ Nella forma che vedremo di seguito, è la tecnica di multiplazione **principalme
 
 La **grandezza fisica** che non viene condivisa tra più sorgenti, quella in base alla quale è **differenziato** e ripartito l'**accesso** al canale tra le diverse sorgenti, è il **tempo**.
 
+Il tempo è allocato **dinamicamente** tra i vari flussi di dati (sorgenti) in base alle loro **esigenze effettive**, piuttosto che in modo fisso come avviene nel multiplexing statico. Le sorgenti competono per le risorse di tempo disponibili in base al loro traffico effettivo. Questo significa che se un flusso di dati non sta trasmettendo nulla, la capacità del canale può essere utilizzata da altri flussi che hanno dati da trasmettere.
+
 ### **Idea di base**
 
 La commutazione di circuito utilizza il **TDM statico** che prevede di allocare rigidamente delle risorse ad una comunicazione su base richiesta (**prenotazione**) effettuata in fase di **set-up** (apertura) della comunicazione: l’**efficienza** può essere bassa dato che impegno il canale anche quando **non dico niente**.
