@@ -85,7 +85,9 @@ Le funzioni di **linea** (L2) sono svolte dai **driver** delle schede di rete
 <img src="img/pdu.png" alt="alt text" width="400">
 
 L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol Data Unit) che comprendono due **componenti**:
-- informazione di utente (**SDU** o Service Data Unit) 
+- informazione di utente (**SDU** o Service Data Unit):
+    - è l'insieme dei bit che devono essere spediti dall'entità mittente a quella di destinazione, attraverso un canale che li unisce direttamente (canale virtuale).
+    - possono essere forniti ad una entità direttamente dall'applicazione oppure dall'entità di livello imediatamente superiore.
 - informazione di controllo (**PCI** o Protocol Control Information) dette anche **header** (intestazione):
     - Sono informazioni di **servizio** usate dalle **entità** pari per **portare avanti** il **protocollo** attivo sul **canale virtuale** che le collega direttamente.
     - Il protocollo sull'entità trasmittente **aggiunge** l'intestazione ai dati contenuti nella SDU (payload), lo stesso protocollo, stavolta attivo sull'entità ricevente, la **rimuove** restituendo esattamente i dati che erano stati consegnati in partenza. 
