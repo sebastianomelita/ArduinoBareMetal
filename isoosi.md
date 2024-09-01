@@ -318,6 +318,8 @@ Sitografia:
 - https://www.edutecnica.it/informatica/osi/osi.htm
 - https://insights.profitap.com/osi-7-layers-explained-the-easy-way
 - https://it.wikipedia.org/wiki/Internet
+- http://www.tcpipguide.com/free/t_DataEncapsulationProtocolDataUnitsPDUsandServiceDa-2.htm
+- https://vahid.blog/post/2020-12-24-how-the-internet-works-part-iii-reliability-and-security/
 
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
 
