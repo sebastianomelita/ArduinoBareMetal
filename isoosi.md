@@ -98,7 +98,7 @@ Le  **PDU** in genere sono di **due tipi**:
     - L’obiettivo di un protocollo di livello N è proprio inviare le sue SDU lungo il canale con una prefissata qualità di servizio.
     - Le SDU sono la «**stiva**» all’interno della quale **allocare** le **PDU** provenienti dal **livello superiore**. 
     - Vengono chiamate anche **payload** (carico utile)
-- **Controllo**: contengono informazioni utili per la supervisione del canale (indirizzo mitt., indirizzo dest., numeri di sequenze, contatori)
+- **Controllo**: contengono informazioni utili per la **supervisione** (gestione e controllo) del **canale** (indirizzo mitt., indirizzo dest., numeri di sequenze, contatori)
     - Sono tutte quelle informazioni di **servizio** necessarie a **portare avanti** la comunicazione di livello N.
     - Sono tipicamente **indirizzo** di **sorgente** e di **destinazione** più altre informazioni necessarie per **realizzare le funzioni** di quel livello (contatori, numeri di sequenza, checsum, ecc.)
 
