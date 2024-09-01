@@ -104,7 +104,7 @@ Le  **PDU** in genere sono di **due tipi**:
 
 La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che non può avvenire senza lo **scambio di messaggi di servizio** che servono a coordinare il lavoro tra le **entità pari**, cioè quelle dello **stesso livello**:
 - I messaggi di servizio (detti anche **messaggi di controllo**) dei protocolli delle 7 antità viaggiano tutti **insieme** sullo stesso **canale fisico**.
-- I messaggi di **controllo** sono quelli legati al **ruolo** e alle **mansioni** dei due interlocutori del **livello corrente** e il protocollo di questo livello ignora i messaggi di controllo degli altri livelli perchè relativi ad **altre mansioni** che, sono sotto la responsabilità di **altri ruoli** appartenenti ad **altri livelli**.
+- I messaggi di **controllo** sono quelli legati al **ruolo** e alle **mansioni** dei due interlocutori del **livello corrente** e il protocollo di questo livello ignora i messaggi di controllo degli altri livelli perchè relativi ad **altre mansioni** che sono sotto la responsabilità di **altri ruoli** appartenenti ad **altri livelli**.
 
 ## **Canali virtuali**
 
