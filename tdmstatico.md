@@ -10,6 +10,10 @@ Nella forma che vedremo di seguito, è diventata obsoleta per la realizzazione d
 
 La **grandezza fisica** che non viene condivisa tra più sorgenti, quella in base alla quale è **differenziato** e ripartito l'**accesso** al canale tra le diverse sorgenti, è il **tempo**.
 
+Il **tempo** è suddiviso in **slot** fissi, e ogni **sorgente** (o flusso di dati) è assegnato a uno specifico **slot** temporale. Gli slot sono **assegnati** in modo **ciclico** alle stesse sorgenti, e ogni sorgente ha accesso al canale condiviso solo durante lo slot ad essa assegnato. Questa assegnazione è predefinita e non varia nel tempo, da qui il termine "statico".
+
+**Esempio**: In una rete TDM, un canale di trasmissione può essere diviso in 10 slot temporali, con ciascuno di essi assegnato a un utente specifico. Se uno slot rimane inutilizzato (per esempio, perché l'utente non ha dati da trasmettere), quello slot non può essere utilizzato da altri utenti.
+
 ### **Metafore**
 
 **Metafora 1**
