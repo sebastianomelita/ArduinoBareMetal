@@ -154,7 +154,7 @@ L'**imbustamento multiplo** è realizzato in trasmissione, lungo il **canale rea
 - Ogni livello **aggiunge** alle **SDU**, alcune informazioni di controllo, dette **header** (intestazione) o anche (**PCI**: Protocol Control Information) 
 - Gli **header** sono **diversi** per ogni livello e contengono informazioni di servizio che consentono al protocollo di quel livello di funzionare
 
-<img src="img/osipdusdu.png" alt="alt text" width="600">
+<img src="img/osipdusdu.png" alt="alt text" width="500">
 
 ### **Overhead**
 
