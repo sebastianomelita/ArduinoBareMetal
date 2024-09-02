@@ -99,7 +99,7 @@ L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol
 Le  **PDU** in genere sono di **due tipi**:
 - **Dati**: sono composte da intestazione (PCI) più campo dati (payload), sono le più generiche e svolgono entrambe le funzioni di:
     - trasporto dei **messaggi dati** da scambiare tra entità corrispondenti in un canale virtuale
-    - scambio dei **messaggi di servizio** che pur non essendo utili pr l'utente del servizio stesso, sono necessari per il suo corretto compimento.
+    - scambio dei **messaggi di servizio** che pur non essendo utili per l'utente del servizio stesso, sono necessari per il suo corretto compimento, dato che il **protocollo** in uso sul canale li prevede.
     
 - **Controllo**: rispetto alle PDU normali, sono **privi del campo dati** cioè non posseggono il campo SDU (o payload):
     - **non** trasportano contenuti informativi utili per gli utenti del canale (le entità corrispondenti).
