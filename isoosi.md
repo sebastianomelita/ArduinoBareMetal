@@ -101,7 +101,7 @@ Le  **PDU** in genere sono di **due tipi**:
     - trasporto dei **messaggi dati** da scambiare tra entità corrispondenti in un canale virtuale
     - scambio dei **messaggi di servizio** che pur non essendo utili per l'utente del servizio stesso, sono necessari per il suo corretto compimento, dato che il **protocollo** in uso sul canale li prevede.
     
-- **Controllo**: rispetto alle PDU normali, sono **privi del campo dati** cioè non posseggono il campo SDU (o payload):
+- **Controllo**: rispetto alle PDU normali, sono **privi del campo dati** cioè non posseggono il campo SDU (o payload), ovvero, sono composti solamente di una **intestazione** (PCI) che contiene **campi di controllo**:
     - **non** trasportano contenuti informativi utili per gli utenti del canale (le entità corrispondenti).
     - trasportano solamente **messaggi di servizio** che, pur non essendo utili per l'utente del servizio stesso, sono **necessari** per lo svolgimento del **protocollo** in uso su quel canale virtuale.
     
