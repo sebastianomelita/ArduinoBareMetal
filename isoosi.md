@@ -86,22 +86,25 @@ Le funzioni di **linea** (L2) sono svolte dai **driver** delle schede di rete
 
 L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol Data Unit) che comprendono due **componenti**:
 - informazione di utente (**SDU** o Service Data Unit):
-    - è l'insieme dei bit che devono essere spediti dall'entità mittente a quella di destinazione, attraverso un canale che li unisce direttamente (canale virtuale).
     - possono essere forniti ad una entità direttamente dall'applicazione oppure dall'entità di livello immediatamente superiore.
-- informazione di controllo (**PCI** o Protocol Control Information) dette anche **header** (intestazione):
-    - Sono informazioni di **servizio** usate dalle **entità** pari per **portare avanti** il **protocollo** attivo sul **canale virtuale** che le collega direttamente.
-    - Il protocollo sull'entità trasmittente **aggiunge** l'intestazione ai dati contenuti nella SDU (payload), lo stesso protocollo, stavolta attivo sull'entità ricevente, la **rimuove** restituendo esattamente i dati che erano stati consegnati in partenza. 
-
-Le  **PDU** in genere sono di **due tipi**:
-- **Dati**: contengono il carico utile da trasferire tra Tx e Rx (payload).
-    - Sono quei bit che il livello N deve spostare per conto del livello superiore N+1.
     - L’obiettivo di un protocollo di livello N è proprio inviare le sue SDU lungo il canale con una prefissata qualità di servizio.
     - Le SDU sono la «**stiva**» all’interno della quale **allocare** le **PDU** provenienti dal **livello superiore**. 
     - Vengono chiamate anche **payload** (carico utile)
-- **Controllo**: contengono informazioni utili per la **supervisione** (gestione e controllo) del **canale** (indirizzo mitt., indirizzo dest., numeri di sequenze, contatori)
-    - Sono tutte quelle informazioni di **servizio** necessarie a **portare avanti** la comunicazione di livello N.
+- informazione di controllo (**PCI** o Protocol Control Information) dette anche **header** (intestazione):
+    - Sono informazioni di **servizio** usate dalle **entità** pari per **portare avanti** il **protocollo** attivo sul **canale virtuale** che le collega direttamente.
+    - Il protocollo sull'entità trasmittente **aggiunge** l'intestazione ai dati contenuti nella SDU (payload), lo stesso protocollo, stavolta attivo sull'entità ricevente, la **rimuove** restituendo esattamente i dati che erano stati consegnati in partenza.
     - Sono tipicamente **indirizzo** di **sorgente** e di **destinazione** più altre informazioni necessarie per **realizzare le funzioni** di quel livello (contatori, numeri di sequenza, checsum, ecc.)
 
+
+Le  **PDU** in genere sono di **due tipi**:
+- **Dati**: sono composte da intestazione (PCI) più campo dati (payload), sono le più generiche e svolgono entrambe le funzioni di:
+    - trasporto dei **messaggi dati** da scambiare tra entità corrispondenti in un canale virtuale
+    - scambio dei **messaggi di servizio** che pur non essendo utili pr l'utente del servizio stesso, sono necessari per il suo corretto compimento.
+    
+- **Controllo**: rispetto alle PDU normali, sono **privi del campo dati** cioè non posseggono il campo SDU (o payload):
+    - **non** trasportano contenuti informativi utili per gli utenti del canale (le entità corrispondenti).
+    - trasportano solamente **messaggi di servizio** che, pur non essendo utili per l'utente del servizio stesso, sono **necessari** per lo svolgimento del **protocollo** in uso su quel canale virtuale.
+    
 La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che non può avvenire senza lo **scambio di messaggi di servizio** che servono a coordinare il lavoro tra le **entità pari**, cioè quelle dello **stesso livello**.
 
 ## **Canali virtuali**
