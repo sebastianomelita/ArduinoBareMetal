@@ -161,7 +161,7 @@ L'**imbustamento multiplo** è realizzato in trasmissione, lungo il **canale rea
 
 ### **Overhead**
 
-Poichè ogni livello **aggiunge** sempre alle SDU un proprio campo **header**, accade che il **livello fisico**, a seguito di tutti gli annidamenti, produce il **messaggio più lungo** perché è composto dal messaggio utente a dalla **somma di tutti gli header** aggiunti nei singoli livelli. Questa somma è detta, in gergo tecnico, **overhead**. Il rapporto tra overhead e lunghezza del campo dati originale rappresenta una stima dell'**efficienza** del protocollo nello spedire i messaggi che, in generale è **tanto maggiore**:
+Poichè ogni livello **aggiunge** sempre alle SDU un proprio campo **header**, accade che il **livello fisico**, a seguito di tutti gli annidamenti, produce il **messaggio più lungo** perché è composto dal messaggio utente a dalla **somma di tutti gli header** aggiunti nei singoli livelli. Questa somma è detta, in gergo tecnico, **overhead**. Il rapporto tra la lunghezza del campo dati originale e l'overhead complessivo al livelllo fisico rappresenta una stima dell'**efficienza** del protocollo nello spedire i messaggi che, in generale è **tanto maggiore**:
 - quanto l'**overhead è minore**
 - quanto il **mesaggio dati** di partenza è **più grande**
 
