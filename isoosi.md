@@ -92,7 +92,7 @@ L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol
     - Vengono chiamate anche **payload** (carico utile)
 - informazione di controllo (**PCI** o Protocol Control Information) dette anche **header** (intestazione):
     - Sono informazioni di **servizio** usate dalle **entità** pari per **portare avanti** il **protocollo** attivo sul **canale virtuale** che le collega direttamente.
-    - Il protocollo sull'entità trasmittente **aggiunge** l'intestazione ai dati contenuti nella SDU (payload), lo stesso protocollo, stavolta attivo sull'entità ricevente, la **rimuove** restituendo esattamente i dati che erano stati consegnati in partenza.
+    - Il **protocollo** sull'entità trasmittente **aggiunge** l'**intestazione** ai dati contenuti nella SDU (payload), lo stesso protocollo, stavolta attivo sull'entità ricevente, la **rimuove** restituendo esattamente i dati che erano stati consegnati in partenza su quel **canale virtuale**.
     - Sono tipicamente **indirizzo** di **sorgente** e di **destinazione** più altre informazioni necessarie per **realizzare le funzioni** di quel livello (contatori, numeri di sequenza, checsum, ecc.)
 
 
