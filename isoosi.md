@@ -111,7 +111,7 @@ La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che
 
 ### **Definizione**
 
-I **canali virtuali** sono dei **canali logici** che **emulano** un **collegamento diretto** tra entità pari dello **stesso livello**, in cui le **PDU** di un certo livello **sembra** che siano scambiate proprio con le regole di **protocollo** che, per il canale virtuale di quel livello, sono state definite. I **canali virtuali** vengono **creati** grazie alla tecnica dell'**imbustamento multiplo** e rappresentano il **punto di vista** che un **generico livello** ha dell'unico canale effettivamente esistente, cioè il canale reale di livello 1 (fisico). 
+Un **canale virtuale** è un **canali logico** che **emula** un **collegamento diretto** tra entità pari di uno **stesso livello**, in cui le **PDU** di questo **sembra** che siano scambiate proprio con le regole del **protocollo** che sono state definite per quel canale virtuale. I **canali virtuali** vengono **creati** grazie alla tecnica dell'**imbustamento multiplo** e rappresentano il **punto di vista** che un **generico livello** ha dell'unico canale effettivamente esistente, cioè il canale reale di livello 1 (fisico). 
 
 ### **Tre tipi di astrazione**
 
