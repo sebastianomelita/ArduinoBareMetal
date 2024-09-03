@@ -153,7 +153,7 @@ Il canale virtuale è solamente **emulato** perchè nelle **reti a pacchetto**, 
 L'**imbustamento multiplo** è realizzato in trasmissione, lungo il **canale reale** che scende in verticale attraverso un **SAP**:
 - I messaggi inviati sul **canale virtuale** di **livello N** sono detti **N-PDU** (Protocol Data Unit) 
 - I **SAP** sono le **porte** delle **interfacce** attraverso le quali si realizza il **canale reale** di livello N.
-- Le **N-PDU** inviate sul canale reale da un protocollo di livello N, diventano, attraversata la N-SAP, **(N-1)-SDU** (imbustamento multiplo), cioè il **payload** del protocollo del **livello inferiore**. Il livello inferiore non è in grado di interpretare le PCI del livello superiore e pertanto le tratta alla stregua di normali dati (SDU) da trasferire secondo le regole del proprio protocollo.
+- Le **N-PDU** inviate sul canale reale da un protocollo di livello N, diventano, attraversata la N-SAP, **(N-1)-SDU** (imbustamento multiplo), cioè il **payload** del protocollo del **livello inferiore**. Il livello inferiore non è in grado di interpretare le PCI del livello superiore e pertanto le tratta alla stregua di normali dati, cioè **(N-1)-SDU**, da trasferire secondo le regole del proprio protocollo.
 - Ogni livello **aggiunge** alle **SDU**, alcune informazioni di controllo, dette **header** (intestazione) o anche (**PCI**: Protocol Control Information) 
 - Gli **header** sono **diversi** per ogni livello e contengono informazioni di servizio che consentono al protocollo di quel livello di funzionare
 
