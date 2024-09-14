@@ -43,7 +43,7 @@ Col tempo il quadro è via via mutato. IP è diventata la tecnologia dominante e
 
 E’ composto da 7 livelli ordinati secondo una pila (stack) di protocolli dove gli **elementi attivi** di ogni livello, cioè quelli che svolgono le funzioni, sono le **entità**.
 
-Entità appartenenti allo stesso livello N, su sistemi diversi, sono dette **entità pari** (peer entities) e la comunicazione fra due peer ad un certo livello avviene: 
+Entità appartenenti allo **stesso livello** N, su sistemi diversi, sono dette **entità pari** (peer entities) e la comunicazione fra due peer ad un certo livello avviene: 
 - per mezzo di un insieme di regole e convenzioni chiamate **protocollo del livello N**
 - tramite unità informative (pacchetti) dette **Protocol Data Unit** di livello N (N-PDU) 
 
