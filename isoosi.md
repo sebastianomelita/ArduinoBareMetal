@@ -66,7 +66,7 @@ Si noti il ruolo della **segmentazione** ai livelli 2 e 4 che, frammentando lung
 
 La **tecnologia** con cui si realizza la **multiplazione** nelle moderne reti a pacchetto è il **TDM statistico** per via della sua elevata efficienza ed è, nella **visione OSI**, generalmente implementato all'interno dei **router** (Per dettagli vedi [TDM statistico](tdmstatistico.md)). 
 
-In realtà, la funzione di condivisione del canale tra più sorgenti appartiene anche a dispositivi come switch e hub:
+In realtà, la funzione di **condivisione del canale** tra più sorgenti appartiene anche a dispositivi come switch e hub:
 - Gli **switch** realizzano la multiplazione statistica in maniera analoga ai router mediante code poste dinanzi ad ogni canale di inoltro delle trame MAC.
 - Gli **Hub** realizzano un TDM dinamico in genere implementato con protocolli del tipo CSMA/CD e CSMA/CA (talvolta anche mediante ALOHA).
 
