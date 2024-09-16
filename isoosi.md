@@ -68,7 +68,9 @@ Si noti il ruolo della **segmentazione** ai livelli 2 e 4 che, frammentando lung
 
 La **tecnologia** con cui si realizza la **multiplazione** nelle moderne reti a pacchetto è il **TDM statistico** per via della sua elevata efficienza ed è, nella **visione OSI**, generalmente implementato all'interno dei **router** (Per dettagli vedi [TDM statistico](tdmstatistico.md)). 
 
-In realtà, la funzione di **condivisione del canale** tra più sorgenti spesso è realizzata in HW specialmente nel mondo dei dispositivi per **IoT**. La funzione di **multiplazione**, anche se realizzata in HW, logicamente appartiene al **livello 2** (data link) della pila ISO/OSI per cui non è raro trovare nella pratica dispositivi che posseggono un primo **strato di accesso** al mezzo che **non combacia** esattamente con il **primo livello** dello schema OSI ma comprende sia il livello fisico che parte del livello di linea della pila OSI.
+In realtà, la funzione di **condivisione del canale** tra più sorgenti spesso è realizzata in HW specialmente nel mondo dei dispositivi per **IoT**. 
+
+La funzione di **multiplazione**, anche se realizzata in HW, logicamente appartiene al **livello 2** (data link) della pila ISO/OSI per cui non è raro trovare nella pratica dispositivi che posseggono un primo **strato di accesso** al mezzo che **non combacia** esattamente con il **primo livello** dello schema OSI ma comprende sia il livello fisico che parte del livello di linea della pila OSI.
 
 <img src="img/zigbee-osi.png" alt="alt text" width="500">
 
