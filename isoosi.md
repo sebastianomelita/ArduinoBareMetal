@@ -64,7 +64,7 @@ Si noti il ruolo della **segmentazione** ai livelli 2 e 4 che, frammentando lung
 - a **livello 2**, il canale L2 diretto tra due **IS adiacenti** può essere condiviso da pacchetti L3 aventi indirizzi differenti. Permette sostanzialmente la **condivisione** dei **link** tra i vari router tra **host differenti** (individuati da un indirizzo IP pubblico).
 - a **livello 4**, il canale virtuale L3 diretto tra due **ES** può essere condiviso dai segmenti L4 aventi indirizzi differenti. Permette sostanzialmente la **condivisione** dei **link virtuali End to End** tra i vari host tra **processi differenti** (individuati da un numero di porta).
 
-La **tecnologia** con cui si realizza la **multiplazione** nelle moderne reti a pacchetto è il **TDM statistico** per via della sua elevata efficienza ed è generalmente implementato all'interno dei router secondo il modello ISO/OSI (Per dettagli vedi [TDM statistico](tdmstatistico.md)). 
+La **tecnologia** con cui si realizza la **multiplazione** nelle moderne reti a pacchetto è il **TDM statistico** per via della sua elevata efficienza ed è, nella **visione OSI**, generalmente implementato all'interno dei **router** (Per dettagli vedi [TDM statistico](tdmstatistico.md)). 
 
 In realtà la funzione di condivisione del canale tra più sorgenti appartiene anche a dispositivi come switch e hub:
 - Gli switch realzzano la multiplazione statistica in maniera analoga ai router mediante code poste dinanzi ad ogni canale di inoltro delle trame MAC.
