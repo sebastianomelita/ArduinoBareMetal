@@ -161,7 +161,7 @@ Quindi una subnet è un contenitore di indirizzi IP esso stesso con un proprio i
 
 La risposta è il **router**. Il router è il dispositivo che permette di distribuire le subnet nello spazio **separandole** l'una dall'altra.  Ma c'è di più. Il router è anche il dispositivo che **alloca nello spazio** le subnet in quanto ogni link sulle sue porte individua una **subnet distinta**, ciascuna con un **proprio indirizzo** IP. In sostanza, i link dei router **generano** le subnet allocandole in una certa posizione dello spazio, quella **dove** è collocata la **porta** del link.
 
-Ma sulk link di una porta posso collegare diverse tipologie di dispositivi:
+Ma **sul link** di una porta posso collegare diverse **tipologie** di dispositivi:
 - se collego un **host** il link è ancora una subnet, cioè un gruppo di indirizzi IP diversi, ma il collegamento punto-punto ne sfrutta uno solo, quello allocato all'host.
 - se collego un **router** accade una cosa simile al caso precedente perchè si realizza un collegamento punto-punto che sfrutta uno solo indirizzo IP, quello allocato al router.
 - se collego un **singolo switch** (o un hub), invece, posso assegnare agli host tanti indirizzi quante sono le porte dello switch, normalmente appena 24 o 48.
