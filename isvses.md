@@ -151,6 +151,21 @@ Il **router di confine o gateway** diventa un elemento fondamentale della LAN pe
 
 Normalmente, solo **un router**, tra tutti quelli collegati sul bordo di una LAN, è **designato** per **smistare** i pacchetti in **ingresso** o in **uscita** sulla stessa LAN. Il **router designato** diventa il **primo router** che un pacchetto uscente dalla LAN incontrerà nel suo **percorso** verso la **destinazione** ed assume, per ciascun **host** della LAN, il ruolo di **next hop**, detto anche **router di confine**, o anche **default gateway** della LAN.
 
+## **SUBNET**
+
+Una **subnet** è un raggruppamento logico di indirizzi IP che corrisponde ad alcune caratteristiche che vedremo in seguito. Quello che è interessante adesso è sapere possono essere **molti** in un range che va da poche unità a parecchi milioni a seconda del dimensionamento scelto.
+
+Nella tabella di routing di un router la prima colonna è composta da indirizzi di **subnet**. Un **indirizzo di subnet** rappresenta un **indirizzo di gruppo** che **racchiude** un certo numero di indirizzi di host che possono essere effettivamente assegnati o meno ad un host, ma che comunque sono afferenti a quell'indirizzo di gruppo (un po' come un elenco di numeri di telefono suddivisi tra quelli già assegnati e quelli ancora da assegnare ad un terminale). Una **subnet** presente nella tabello di routing è in genere **allocata** in una certa **posizione** dello spazio (settore della rete) ed è **raggiungibile** attraverso una certa **porta di uscita**, passando attraverso il link ad essa collegato.
+
+Quindi una subnet è un contenitore di indirizzi IP esso stesso con un proprio indirizzo IP, ma quale dispositivo **separa** una subnet da un'altra? La risposta è il **router**. Il router è il dispositivo che permette di distribuire le subnet nello spazio separandole l'una dall'altra.  Ma c'è di più. Il router è anche un dispositivo che **alloca nello spazio** le subnet in quanto ogni link sulle sue porte individua una **subnet distinta**, ciascuna con un **proprio indirizzo** IP. In sosatanza, i link dei router **generano** le subnet allocandole in una certa posizione dello spazio, quella **dove** è collocata la **porta** del link.
+
+Ma sulk link di una porta posso collegare diverse tipologie di dispositivi:
+- se collego un host il link è ancora una subnet, cioè un gruppo di indirizzi IP diversi, ma il collegamento punto-punto ne sfrutta uno solo, quello allocato all'host.
+- se collego un router accade una cosa simile al caso precedente perchè si realizza un collegamento punto-punto che sfrutta uno solo indirizzo IP, quello allocato al router.
+- se collego un singolo switch (o un hub), invece, posso assegnare agli host tanti indirizzi quante sono le porte dello switch, normalmente appena 24 o 48.
+- se collego una rete di switch, cioè una LAN, posso cumulare il numero di porte complessivo di tutti gli switch per raggruppare un numero elevato di host da associare alla maggiorparte degli indirizzi della subnet generata dal link di un router. Questa è generalmente la situazione più comune.
+
+
 [Dettaglio protocolli](protocolli.md)
 
 [Dettaglio ISO/OSI](isoosi.md)
