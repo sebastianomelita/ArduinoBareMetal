@@ -163,11 +163,11 @@ La risposta è il **router**. Il router è il dispositivo che permette di distri
 
 In questo  senso, una **subnet** è anche una **porzione dello spazio**, quella **presidiata** dal **route**r sulla cui **porta** viene **generata** quella subnet.
 
-Ma **sul link** di una porta posso collegare diverse **tipologie** di dispositivi:
+Ma **sul link** sulla **porta** di un **router** posso collegare diverse **tipologie** di dispositivi:
 - se collego un **host** il link è ancora una subnet, cioè un gruppo di indirizzi IP diversi, ma il collegamento **punto-punto** ne sfrutta uno solo, quello allocato all'host.
 - se collego un **router** accade una cosa simile al caso precedente perchè si realizza un collegamento **punto-punto** che sfrutta uno solo indirizzo IP, quello allocato al router.
 - se collego un **singolo switch** (o un hub), invece, posso assegnare agli host tanti indirizzi quante sono le porte dello switch, normalmente appena 24 o 48.
-- se collego una **rete di switch**, cioè **una LAN**, posso cumulare il numero di porte complessivo di tutti gli switch per raggruppare un numero elevato di host **associabili** alla maggiorparte degli indirizzi della subnet generata dal link di un router. Questa è generalmente la situazione più comune. Normalmente ad subnet corrisponde una LAN e, viceversa, una LAN **corrisponde** ad una subnet in un **mappaggio uno ad uno**.
+- se collego una **rete di switch**, cioè **una LAN**, posso cumulare il numero di porte complessivo di tutti gli switch per raggruppare un numero elevato di host **associabili** alla maggiorparte degli indirizzi della subnet **generata** da un **link**. Questa è tipicamente la situazione più comune. Normalmente ad subnet corrisponde una LAN e, viceversa, una LAN **corrisponde** ad una subnet in un **mappaggio uno ad uno**.
 
 
 [Dettaglio protocolli](protocolli.md)
