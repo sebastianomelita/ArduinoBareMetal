@@ -159,7 +159,7 @@ Nella tabella di routing di un router la prima colonna è composta da indirizzi 
 
 Quindi una subnet è un contenitore di indirizzi IP esso stesso con un proprio indirizzo IP, ma quale dispositivo **separa** una subnet da un'altra? 
 
-La risposta è il **router**. Il router è il dispositivo che permette di distribuire le subnet nello spazio separandole l'una dall'altra.  Ma c'è di più. Il router è anche il dispositivo che **alloca nello spazio** le subnet in quanto ogni link sulle sue porte individua una **subnet distinta**, ciascuna con un **proprio indirizzo** IP. In sosatanza, i link dei router **generano** le subnet allocandole in una certa posizione dello spazio, quella **dove** è collocata la **porta** del link.
+La risposta è il **router**. Il router è il dispositivo che permette di distribuire le subnet nello spazio **separandole** l'una dall'altra.  Ma c'è di più. Il router è anche il dispositivo che **alloca nello spazio** le subnet in quanto ogni link sulle sue porte individua una **subnet distinta**, ciascuna con un **proprio indirizzo** IP. In sosatanza, i link dei router **generano** le subnet allocandole in una certa posizione dello spazio, quella **dove** è collocata la **porta** del link.
 
 Ma sulk link di una porta posso collegare diverse tipologie di dispositivi:
 - se collego un host il link è ancora una subnet, cioè un gruppo di indirizzi IP diversi, ma il collegamento punto-punto ne sfrutta uno solo, quello allocato all'host.
