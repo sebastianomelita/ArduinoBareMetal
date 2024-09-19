@@ -61,7 +61,7 @@ La migliore **soluzione** per evitare le collisioni è di **partizionare** gli H
 
 ### **Dispositivi di inoltro di Livello 2**
 
-I dispositivi di **livello 2** sono un **barriera** invalicabile per la propagazione delle **trame corrotte** provenienti dai dispositivi di livello 1, in quanto i bit vengono memorizzati in una coda di ingresso ed osservati per isolare le **trame** in arrivo, verificarne i confini e controllarne il **checksum FCS** per verificarne la correttezza. 
+I dispositivi di **livello 2** sono un **barriera** invalicabile per la propagazione delle **trame corrotte** provenienti dai dispositivi di livello 1, in quanto i bit vengono memorizzati in una coda di ingresso ed osservati per isolare le **trame** in arrivo, verificarne i confini e controllarne il **checksum FCS** per stabilirne la correttezza. 
 
 Ogni trama **riconosciuta** come integra viene, a questo punto, **smistata** su una **porta di uscita** in base al proprio **indirizzo di destinazione MAC** in modo da scegliere sempre una porta verso un link che stia nel percorso (path) verso la destinazione.
 
