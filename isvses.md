@@ -81,7 +81,7 @@ I **bridge** sono degli **IS** costruiti per lavorare in modalità **store and f
 Scopo dei **buffer** (coda):
 - In **ingresso**. Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo di destinazione**.
 - In **uscita**. Accodamento trame per **adattare** temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
-- In **uscita**. Risoluzione di una eventuale **contesa** in uscita della linea da parte delle trame provenienti da più porte di ingresso (multiplazione statistica).
+- In **uscita**. Risoluzione di una eventuale **contesa** in uscita della linea da parte delle **trame MAC** provenienti da più porte di ingresso (multiplazione statistica).
 
 <img src="img/switch.png" alt="alt text" width="900">
 
@@ -106,10 +106,10 @@ Anche i **router** sono degli **IS** costruiti per lavorare in modalità **store
 - Elaborati per determinare in base all’indirizzo di IP la **porta** su cui inoltrarlo (commutazione). L'elaborazione consiste nella **ricerca** (lookup)  dell'**IP di destinazione** in una **tabella di routing** che contiene un elenco di righe con la corrispondenza [indirizzo IP - porta di uscita]. 
 - **inoltrati** (forward) in uscita sulla  porta scelta. La **multiplazione SDM** di più trame su diverse porte di ingresso che, nello stesso istante, devono andare sulla **stessa porta** di uscita, si trasforma nella **multiplazione statistica TDM**, delle stesse trame, sulla **coda** posta davanti al canale di quella porta.
 
-Scopo dei **buffer** (coda):
-- Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo di destinazione**.
-- Accodamento trame per **adattare** temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
-- Risoluzione di una eventuale **contesa** in uscita della linea da parte delle trame provenienti da più porte di ingresso (multiplazione statistica).
+copo dei **buffer** (coda):
+- In **ingresso**. Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo di destinazione**.
+- In **uscita**. Accodamento trame per **adattare** temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
+- In **uscita**. Risoluzione di una eventuale **contesa** in uscita della linea da parte dei **pacchetti IP** provenienti da più porte di ingresso (multiplazione statistica).
 
 ### **Dispositivi di inoltro di Livello 7**
 
