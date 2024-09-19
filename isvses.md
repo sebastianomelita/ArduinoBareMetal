@@ -97,7 +97,7 @@ Gli Switch sono dispositivi di commutazione che lavorano in **HW**, e quindi, me
 
 I dispositivi di **livello 2** sono un **barriera** per la propagazione delle trame provenienti dai dispositivi di livello 2 che vengono, di volta in volta, **aperte** per recuperare il loro payload, cioè per **sbustare** i pacchetti di livello 3 (pacchetti IP) che invece possono passare attraverso il router **senza modifiche**. 
 
-Un pacchetto, a questo punto, viene **smistato** su una **porta di uscita** in base al proprio **indirizzo di destinazione IP** in modo da scegliere sempre una porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. 
+Ogni pacchetto IP, una volta sbustato, viene **smistato** su una **porta di uscita** in base al proprio **indirizzo IP di destinazione** in modo da scegliere sempre una porta verso un **link** che stia nel **percorso** (path) verso la destinazione. 
 
 In sostanza, si fa uno sbustamento e una una **selezione** dei **pacchetti** per decidere **dove** inviarli. Una volta **scelta la porta** nelle direzione giusta, i pacchetti vengono **reimbustati** in una **nuova trama** MAC da inviare sul link in uscita.
 
