@@ -76,7 +76,7 @@ I **bridge** sono degli **IS** costruiti per lavorare in modalità **store and f
 - Elaborate per determinare in base all’indirizzo di MAC la **porta** su cui inoltrarle (commutazione) attraverso la **ricerca** (lookup)  del **MAC di destinazione** in una **tabella di inoltro** che contiene un **elenco di corrispondenze** [indirizzo MAC - porta di uscita]. 
 - **inoltrati** (forward) in uscita sulla  porta prescelta. 
 
-Si può notare come una **multiplazione SDM** di più trame MAC su porte di ingresso **differenti** si trasformi nella **multiplazione statistica TDM** delle stesse trame sulla **coda** di un canale di uscita quando queste devono andare sulla **stessa porta**.
+Si può notare come una **multiplazione SDM** di più trame MAC su porte di ingresso **differenti** si trasformi nella **multiplazione statistica TDM** delle stesse trame sulla **coda** di un canale di uscita, quando queste devono andare sulla **stessa porta**.
 
 **In pratica**, i **bridge** hanno **poche porte** e sono oggigiorno **per lo più** utilizzati per connettere, a livello 2 e in modo software, **reti** di tipo differente (wireless con cablata, bluetoot con Ethenet, ecc..)
 
@@ -112,7 +112,7 @@ Anche i **router** sono degli **IS** costruiti per lavorare in modalità **store
 - Elaborati per determinare in base all’indirizzo di MAC la **porta** su cui inoltrarli (commutazione) attraverso la **ricerca** (lookup)  dell'**IP di destinazione** in una **tabella di inoltro** che contiene un **elenco di corrispondenze** [indirizzo IP - porta di uscita]. 
 - **inoltrati** (forward) in uscita sulla  porta prescelta. 
 
-Si può notare come una **multiplazione SDM** di più pacchetti IP su porte di ingresso **differenti** si trasformi nella **multiplazione statistica TDM** degli stessi pacchetti sulla **coda** di un canale di uscita quando questi devono andare sulla **stessa porta**.
+Si può notare come una **multiplazione SDM** di più pacchetti IP su porte di ingresso **differenti** si trasformi nella **multiplazione statistica TDM** degli stessi pacchetti sulla **coda** di un canale di uscita, quando questi devono andare sulla **stessa porta**.
 
 Scopo dei **buffer** (coda):
 - In **ingresso**. Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo IP di destinazione**.
