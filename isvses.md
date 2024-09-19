@@ -79,9 +79,9 @@ I **bridge** sono degli **IS** costruiti per lavorare in modalità **store and f
 <img src="img/bridge.png" alt="alt text" width="1000">  
 
 Scopo dei **buffer** (coda):
-- Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo di destinazione**.
-- Accodamento trame per **adattare** temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
-- Risoluzione di una eventuale **contesa** in uscita della linea da parte delle trame provenienti da più porte di ingresso (multiplazione statistica).
+- In **ingresso**. Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo di destinazione**.
+- In **uscita**. Accodamento trame per **adattare** temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
+- In **uscita**. Risoluzione di una eventuale **contesa** in uscita della linea da parte delle trame provenienti da più porte di ingresso (multiplazione statistica).
 
 <img src="img/switch.png" alt="alt text" width="900">
 
