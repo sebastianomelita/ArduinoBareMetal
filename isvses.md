@@ -67,7 +67,7 @@ Ogni trama **riconosciuta** come integra viene, a questo punto, **smistata** su 
 
 Una volta varcata la porta nelle direzione giusta, le trame vengono inviate un bit alla volta sul link in uscita prescelto.
 
-Tradizionalmente, i **link** sulle **porte** di qualunque dispositivo di **livello 2** (bridge o switch) **non** sono semplici collegamenti punto-punto ma **BUS** su cui è attivo il protocollo **CSMA/CD**, che realizzano dei **dominii di collisione** separati.
+Tradizionalmente, i **link** sulle **porte** di qualunque dispositivo di **livello 2** (bridge o switch) **non** sono semplici collegamenti punto-punto ma **BUS** su cui è attivo il protocollo **CSMA/CD**, che realizzano dei **dominii di collisione** separati l'uno dall'altro.
 
 <img src="img/isl2.png" alt="alt text" width="1000">  
 
