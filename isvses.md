@@ -69,10 +69,12 @@ Tradizionalmente, i **link** sulle **porte** di qualunque dispositivo di **livel
 
 <img src="img/isl2.png" alt="alt text" width="1000">  
 
-I **bridge** sono degli **IS** costruiti per lavorare in modalità **store and forward**, cioè tutti **frame ethernet** vengono :
-- completamente **memorizzati** (store) per controllare la loro integrità e leggere l’**indirizzo MAC** di destinazione.
-- Elaborati per determinare in base all’indirizzo di MAC la **porta** su cui inoltrarlo (commutazione). L'elaborazione consiste nella **ricerca** (lookup)  del **MAC di destinazione** in una **tabella di inoltro** che contiene un elenco di righe con la corrispondenza [indirizzo MAC - porta di uscita]. 
-- **inoltrati** (forward) in uscita sulla  porta scelta. La **multiplazione SDM** di più trame su diverse porte di ingresso che, nello stesso istante, devono andare sulla **stessa porta** di uscita, si trasforma nella **multiplazione statistica TDM**, delle stesse trame, sulla **coda** posta davanti al canale di quella porta.
+I **bridge** sono degli **IS** costruiti per lavorare in modalità **store and forward**, cioè tutte le **frame ethernet** vengono :
+- completamente **memorizzate** (store) in una coda di ingresso per controllare la loro integrità e leggere l’**indirizzo MAC** di destinazione.
+- Elaborate per determinare in base all’indirizzo di MAC la **porta** su cui inoltrarle (commutazione) attraverso la **ricerca** (lookup)  del **MAC di destinazione** in una **tabella di inoltro** che contiene un **elenco di corrispondenze** [indirizzo MAC - porta di uscita]. 
+- **inoltrati** (forward) in uscita sulla  porta prescelta. 
+
+Si può notare come una **multiplazione SDM** di più trame MAC su porte di ingresso **differenti** si trasformi nella **multiplazione statistica TDM** delle stesse trame sulla **coda** di un canale di uscita quando queste devono andare sulla **stessa porta**.
 
 **In pratica**, i **bridge** hanno **poche porte** e sono oggigiorno **per lo più** utilizzati per connettere, a livello 2 e in modo software, **reti** di tipo differente (wireless con cablata, bluetoot con Ethenet, ecc..)
 
@@ -104,9 +106,11 @@ Una volta **varcata la porta** nelle direzione giusta, i pacchetti vengono **rei
 <img src="img/isl3.png" alt="alt text" width="1000">  
 
 Anche i **router** sono degli **IS** costruiti per lavorare in modalità **store and forward**, cioè tutti **i pacchetti** vengono :
-- completamente **memorizzati** (store) per controllare la loro integrità e leggere l’**indirizzo IP** di destinazione.
-- Elaborati per determinare in base all’indirizzo di IP la **porta** su cui inoltrarlo (commutazione). L'elaborazione consiste nella **ricerca** (lookup)  dell'**IP di destinazione** in una **tabella di routing** che contiene un elenco di righe con la corrispondenza [indirizzo IP - porta di uscita]. 
-- **inoltrati** (forward) in uscita sulla  porta scelta. La **multiplazione SDM** di più trame su diverse porte di ingresso che, nello stesso istante, devono andare sulla **stessa porta** di uscita, si trasforma nella **multiplazione statistica TDM**, delle stesse trame, sulla **coda** posta davanti al canale di quella porta.
+- completamente **memorizzati** (store) in una coda di ingresso per controllare la loro integrità e leggere l’**indirizzo IP** di destinazione.
+- Elaborati per determinare in base all’indirizzo di MAC la **porta** su cui inoltrarli (commutazione) attraverso la **ricerca** (lookup)  dell'**IP di destinazione** in una **tabella di inoltro** che contiene un **elenco di corrispondenze** [indirizzo IP - porta di uscita]. 
+- **inoltrati** (forward) in uscita sulla  porta prescelta. 
+
+Si può notare come una **multiplazione SDM** di più pacchetti IP su porte di ingresso **differenti** si trasformi nella **multiplazione statistica TDM** degli stessi pacchetti sulla **coda** di un canale di uscita quando questi devono andare sulla **stessa porta**.
 
 copo dei **buffer** (coda):
 - In **ingresso**. Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo IP di destinazione**.
