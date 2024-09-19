@@ -109,7 +109,7 @@ Una volta **varcata la porta** nelle direzione giusta, i pacchetti vengono **rei
 
 Anche i **router** sono degli **IS** costruiti per lavorare in modalità **store and forward**, cioè tutti **i pacchetti** vengono :
 - completamente **memorizzati** (store) in una coda di ingresso per controllare la loro integrità e leggere l’**indirizzo IP** di destinazione.
-- Elaborati per determinare in base all’indirizzo di MAC la **porta** su cui inoltrarli (commutazione) attraverso la **ricerca** (lookup)  dell'**IP di destinazione** in una **tabella di inoltro** che contiene un **elenco di corrispondenze** [indirizzo IP - porta di uscita]. 
+- Elaborati per determinare in base all’indirizzo di MAC la **porta** su cui inoltrarli (commutazione) attraverso la **ricerca** (lookup)  dell'**IP di destinazione** in una **tabella di routing** che contiene un **elenco di corrispondenze** [indirizzo IP - porta di uscita]. 
 - **inoltrati** (forward) in uscita sulla  porta prescelta. 
 
 Si può notare come una **multiplazione SDM** di più pacchetti IP su porte di ingresso **differenti** si trasformi nella **multiplazione statistica TDM** degli stessi pacchetti sulla **coda** di un canale di uscita, quando questi devono andare sulla **stessa porta**.
