@@ -112,7 +112,7 @@ Anche i **router** sono degli **IS** costruiti per lavorare in modalità **store
 
 Si può notare come una **multiplazione SDM** di più pacchetti IP su porte di ingresso **differenti** si trasformi nella **multiplazione statistica TDM** degli stessi pacchetti sulla **coda** di un canale di uscita quando questi devono andare sulla **stessa porta**.
 
-copo dei **buffer** (coda):
+Scopo dei **buffer** (coda):
 - In **ingresso**. Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo IP di destinazione**.
 - In **uscita**. Accodamento trame per **adattare** temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
 - In **uscita**. Risoluzione di una eventuale **contesa** in uscita della linea da parte dei **pacchetti IP** provenienti da più porte di ingresso (multiplazione statistica).
