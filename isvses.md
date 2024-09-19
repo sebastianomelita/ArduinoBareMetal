@@ -53,11 +53,11 @@ Non avendo un livello inferiore si limitano ad inoltrare bit da un ingresso a un
 
 Rimane comune l'uso dei BUS a filo in ambito industriale e domotico, governati con protocolli a contesa o determnistici costituiti da un unico filo passante per tutti i dispositivi. Ma in questo caso non si tratta concettualmente di hub. Un hub è un dispositivo che a tutti gli effetti partecipa alla creazione di una LAN, insieme agli Switch e ai Bridge.
 
-Gli hub soffrono del problema delle collisioni per cui si dice che un hub costituisce un unico “dominio di collisione” perche’ qualsiasi coppia di stazioni che provi a trasmettere contemporaneamente genera una collisione. Due o più hub connessi insieme sullo stesso canale creano un unico dominio di collisione: il traffico intenso tra due host congestiona sempre quello di tutti gli altri. 
+Gli **hub** soffrono del **problema delle collisioni** per cui si dice che un hub costituisce un unico **“dominio di collisione”** perche’ qualsiasi coppia di stazioni che provi a trasmettere contemporaneamente genera una collisione. **Due o più hub** connessi insieme sullo stesso canale creano **un unico** dominio di collisione: il traffico intenso tra due host **congestiona** sempre quello **di tutti** gli altri. 
 
-La migliore soluzione per evitare le collisioni è di patizionare gli Hub in segmenti isolati (per le collisioni). A tale scopo è possibile dividere i segmenti broadcast con BRIDGE oppure con SWITCH o con ROUTER. Infatti i dispositivi L2 e L3 bloccano i bit di livello 1 all’ingresso delle loro porte, pertanto:
-- non propagano tra una Hub e l’altro le trame corrotte risultanti da una collisione.
-- un tentativo di trasmissione su un hub non viene visto dagli altri hub e non può interferire con le loro trasmissioni. Questo processo è chiamato “SEGMENTAZIONE”. 
+La migliore **soluzione** per evitare le collisioni è di **partizionare** gli Hub in **segmenti isolati** (per le collisioni). A tale scopo è possibile dividere i **segmenti broadcast** con **BRIDGE** oppure con **SWITCH** o con **ROUTER**. Infatti i dispositivi L2 e L3 **bloccano** i bit di **livello 1** all’ingresso delle loro porte, pertanto:
+- **non propagano** tra una Hub e l’altro le trame corrotte risultanti da una collisione.
+- un tentativo di trasmissione su un hub **non viene visto** dagli altri hub e non può interferire con le loro trasmissioni. Questo **processo d partizionamento** è chiamato **“SEGMENTAZIONE”**. 
 
 ### **Dispositivi di inoltro di Livello 2**
 
