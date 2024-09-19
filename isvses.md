@@ -99,7 +99,7 @@ I dispositivi di **livello 2** sono un **barriera** per la propagazione delle tr
 
 Ogni pacchetto IP, una volta sbustato, viene **smistato** su una **porta di uscita** in base al proprio **indirizzo IP di destinazione** in modo da scegliere sempre una porta verso un **link** che stia nel **percorso** (path) verso la destinazione. 
 
-Una volta **scelta la porta** nelle direzione giusta, i pacchetti vengono **reimbustati** in una **nuova trama** MAC da inviare sul link in uscita prescelto.
+Una volta **varcata la porta** nelle direzione giusta, i pacchetti vengono **reimbustati** in una **nuova trama** MAC da inviare sul link in uscita prescelto.
 
 <img src="img/isl3.png" alt="alt text" width="1000">  
 
