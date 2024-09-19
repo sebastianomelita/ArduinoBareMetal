@@ -36,13 +36,13 @@ I **sistemi intermedi IS** sono dei nodi che in genere hanno funzione di **smist
 
 I sistemi che lavorano ad un **livello N** sono un argine invalicabile per le PDU dei **livelli inferiori**, queste **non** possono direttamente **attraversarli**. Le **SDU** dei livelli inferiori devono essere **sbustate** all’**ingresso** del nodo fino a estrarre la **N-PDU** che viene esaminata, **smistata** e **reimbustata** all’**uscita** del nodo su **nuove PDU** di **livello inferiore**. 
 
-Ad esempio, un **nodo** legge l’indirizzo di **destinazione** di **livello 3** (indirizzo IP) e in base a questo sceglie l’indirizzo di livello inferiore (indirizzo MAC) a cui inoltrare la PDU di livello inferiore 2 (tipicamente una trama MAC) contenente il pacchetto IP.
+Ad esempio, un **nodo** legge l’indirizzo di **destinazione** di **livello 3** (indirizzo IP) e in base a questo sceglie l’**indirizzo di livello inferiore** (indirizzo MAC) a cui inoltrare la PDU di livello 2 (tipicamente una trama MAC) a sua volta contenente il pacchetto IP.
 
 ### **Dispositivi di inoltro di Livello 1**
 
 <img src="img/isl1.png" alt="alt text" width="1000">  
 
-Non avendo un livello inferiore si limitano ad inoltrare bit da un ingresso a una o più uscite. Sono adoperati in reti geografiche commutate (WAN)  e nelle reti locali (LAN). Possono essere:
+I dispositivi di livello 1, non avendo un livello inferiore, si limitano ad inoltrare bit da un ingresso a una o più uscite. Sono adoperati in reti geografiche commutate (WAN)  e nelle reti locali (LAN). Possono essere:
 - **Repeater**. Tutti i mezzi trasmissivi introducono una attenuazione e un degrado complessivo del segnale (elettrico o luminoso) proporzionale alla **distanza** da questo percorsa. Un ripetitore riceve un segnale debole (o deteriorato) e lo ritrasmette **amplificato** (o rigenerato), in modo tale da raggiungere lunghe distanze con una qualità sufficiente a renderlo **intelleggibile**. E' usato talvolta in ambito wireless. 
 - **Hub**. Un HUB, come concentratore di host,  è a tutti gli effetti un REPEATER a più porte che realizza, secondo una **topologia fisica** interna **a stella**, un **collegamento logico a bus**. Le schede di rete dei vari host collegati vedono l’hub come un unico mezzo trasmissivo **comune** a tutti e pertanto vi accedono usando il protocollo di condivisione del mezzo **CSMA/CD**. Gli **hub a filo** ormai sono obsoleti e introvabili commercialmente mentre sono molto comuni nelle reti wireless sotto forma di **Access Point WiFi (AP)** che interagiscono con i client WiFi mediante il protocollo **CSMA/CA**. Il **protocollo di arbitraggio** CSMA/CD O CSMA/CA non viene realizzato dall'hub, dato che questo è sostanzialmente un **dispositivo passivo** (mezzo trasmissivo), ma viene implementato dalle **schede di rete** degli host dette **NIC (Network Interface Card)**.
 
