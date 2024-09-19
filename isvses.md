@@ -47,7 +47,7 @@ I dispositivi di livello 1, non avendo un livello inferiore, si limitano ad inol
 <img src="img/hub.png" alt="alt text" width="900">
 
 
-Rimane comune l'uso dei BUS a filo in ambito industriale e domotico, governati con protocolli a contesa o determnistici costituiti da un unico filo passante per tutti i dispositivi. Ma in questo caso non si tratta concettualmente di hub. Un hub è un dispositivo che a tutti gli effetti partecipa alla creazione di una LAN, insieme agli Switch e ai Bridge.
+Rimane comune l'uso dei BUS a filo in ambito industriale e domotico, governati con protocolli a contesa o deterministici costituiti da un unico filo passante per tutti i dispositivi. Ma in questo caso non si tratta concettualmente di hub. Un hub è un dispositivo che a tutti gli effetti partecipa alla creazione di una LAN, insieme agli Switch e ai Bridge.
 
 Gli **hub** soffrono del **problema delle collisioni** per cui si dice che un hub costituisce un unico **“dominio di collisione”** perche’ qualsiasi coppia di stazioni che provi a trasmettere contemporaneamente genera una collisione. **Due o più hub** connessi insieme sullo stesso canale creano **un unico** dominio di collisione: il traffico intenso tra due host **congestiona** sempre quello **di tutti** gli altri. 
 
