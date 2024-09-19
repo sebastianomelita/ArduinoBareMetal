@@ -79,7 +79,7 @@ I **bridge** sono degli **IS** costruiti per lavorare in modalità **store and f
 <img src="img/bridge.png" alt="alt text" width="1000">  
 
 Scopo dei **buffer** (coda):
-- In **ingresso**. Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo di destinazione**.
+- In **ingresso**. Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo MAC di destinazione**.
 - In **uscita**. Accodamento trame per **adattare** temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
 - In **uscita**. Risoluzione di una eventuale **contesa** in uscita della linea da parte delle **trame MAC** provenienti da più porte di ingresso (multiplazione statistica).
 
@@ -107,7 +107,7 @@ Anche i **router** sono degli **IS** costruiti per lavorare in modalità **store
 - **inoltrati** (forward) in uscita sulla  porta scelta. La **multiplazione SDM** di più trame su diverse porte di ingresso che, nello stesso istante, devono andare sulla **stessa porta** di uscita, si trasforma nella **multiplazione statistica TDM**, delle stesse trame, sulla **coda** posta davanti al canale di quella porta.
 
 copo dei **buffer** (coda):
-- In **ingresso**. Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo di destinazione**.
+- In **ingresso**. Memorizzazione completa per permettere il controllo di integrità e la **lettura dell’indirizzo IP di destinazione**.
 - In **uscita**. Accodamento trame per **adattare** temporanee differenze di velocità dei pacchetti tra porte di arrivo e di uscita.
 - In **uscita**. Risoluzione di una eventuale **contesa** in uscita della linea da parte dei **pacchetti IP** provenienti da più porte di ingresso (multiplazione statistica).
 
