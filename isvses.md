@@ -32,7 +32,7 @@ I nodi di IS di commutazione (switch o router) partecipano attivamente nel reali
 
 ### **Nodi di smistamento**
 
-I **sistemi intermedi IS** sono dei nodi che in genere hanno funzione di **smistamento** dei pacchetti (PDU) che eseguono in base agli indirizzi di **destinazione** contenuti nell'**header** del loro **livello** di lavoro.
+I **sistemi intermedi IS** sono dei nodi che in genere hanno funzione di **smistamento** dei pacchetti (PDU) che eseguono in base all'indirizzo di **destinazione** contenuto nell'**header** di ogni pacchetto.
 
 I sistemi che lavorano ad un **livello N** sono un argine invalicabile per le PDU dei **livelli inferiori**, queste **non** possono direttamente **attraversarli**. Le **SDU** dei livelli inferiori devono essere **sbustate** all’**ingresso** del nodo fino a estrarre la **N-PDU** da **inoltrare** che viene esaminata, **smistata** senza modifiche e **reimbustata** all’**uscita** del nodo su una **nuova PDU** di **livello inferiore**. 
 
