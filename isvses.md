@@ -61,7 +61,7 @@ La migliore **soluzione** per evitare le collisioni è di **partizionare** gli H
 
 ### **Dispositivi di inoltro di Livello 2**
 
-I dispositivi di **livello 2** sono un **barriera** per la propagazione del flusso di bit provenienti dai dispositivi di livello 1 che viene memorizzato ed osservato per isolare, di volta in volta, le **trame** in arrivo. Ogni trama viene, a questo punto, **smistata** su una **porta di uscita** in base al proprio **indirizzo di destinazione** in modo da scegliere sempre una porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. 
+I dispositivi di **livello 2** sono un **barriera** invalicabile per la propagazione del flusso di bit provenienti dai dispositivi di livello 1 che viene memorizzato ed osservato per isolare, di volta in volta, le **trame** in arrivo. Ogni trama viene, a questo punto, **smistata** su una **porta di uscita** in base al proprio **indirizzo di destinazione** in modo da scegliere sempre una porta che conduce ad un link che stia nel **percorso** (path) verso la destinazione. 
 
 In sostanza, si fa una **selezione** delle **trame** per decidere **dove** inviarle.
 
@@ -97,7 +97,7 @@ Gli Switch sono dispositivi di commutazione che lavorano in **HW**, e quindi, me
 
 ### **Dispositivi di inoltro di Livello 3**
 
-I dispositivi di **livello 2** sono un **barriera** per la propagazione delle trame provenienti dai dispositivi di livello 2 che vengono, di volta in volta, **aperte** per recuperare il loro payload, cioè per **sbustare** i pacchetti di livello 3 (pacchetti IP) che invece possono passare attraverso il router **senza modifiche**. 
+I dispositivi di **livello 3** sono un **barriera** ivalicabile per la propagazione delle trame provenienti dai dispositivi di livello 2 che vengono, di volta in volta, **aperte** per recuperare il loro payload, cioè per **sbustare** i pacchetti di livello 3 (pacchetti IP) che invece possono passare attraverso il router **senza modifiche**. 
 
 Ogni pacchetto IP, una volta sbustato, viene **smistato** su una **porta di uscita** in base al proprio **indirizzo IP di destinazione** in modo da scegliere sempre una porta verso un **link** che stia nel **percorso** (path) verso la destinazione. 
 
