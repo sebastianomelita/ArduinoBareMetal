@@ -40,7 +40,7 @@ I sistemi che lavorano ad un **livello N** sono un argine invalicabile per le PD
 
 <img src="img/isl1.png" alt="alt text" width="1000">  
 
-I dispositivi di livello 1, si limitano a **copiare bit** da una porta di **ingresso** per inoltrare una loro **replica** su ognuna delle alte porte che **non sia** la porta di **provenienza**. 
+I dispositivi di livello 1, si limitano a **copiare bit** da una porta di **ingresso** per inoltrare una loro **replica** su ognuna delle porte di **uscita** che **non sia** la porta di **provenienza**. 
 
 Sono adoperati in reti geografiche commutate (WAN)  e nelle reti locali (LAN). Possono essere:
 - **Repeater**. Hanno una sola porta di ingresso ed una sola porta di uscita. Tutti i mezzi trasmissivi introducono una attenuazione e un degrado complessivo del segnale (elettrico o luminoso) proporzionale alla **distanza** da questo percorsa. Un ripetitore riceve un segnale debole (o deteriorato) e lo ritrasmette **amplificato** (o rigenerato), in modo tale da raggiungere lunghe distanze con una qualità sufficiente a renderlo **intelleggibile**. E' usato talvolta in ambito wireless. 
