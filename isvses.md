@@ -65,7 +65,7 @@ I dispositivi di **livello 2** sono un **barriera** per le singole PDU di livell
 
 Inoltre, sono dispositivi che non propagano eventuali **collisioni** generate nei link **multpunto** (BUS) sulle loro porte. Ciò accade perchè uno switch è anche un **limite invalicabile** per la propagazione delle **trame danneggiate** provenienti dai dispositivi di livello 1. Infatti, le **trame corrotte** possono essere **rilevate** già nella **coda di ingresso** dalla funzione di **controllo di errore** del protocollo di **linea** (basato sula verifica del **checksum FCS**), in modo tale da essere **scartate** prima ancora di effettuare il loro inoltro verso una porta di uscita. 
 
-Ogni trama **riconosciuta** come integra viene, invece, **smistata** su una **porta di uscita** in base al proprio **indirizzo di destinazione MAC** in modo da scegliere sempre una porta verso un link che stia nel percorso (path) verso la destinazione.
+Ogni trama **riconosciuta** come integra viene, invece, **smistata** su una **porta di uscita** in base al proprio **indirizzo di destinazione MAC**, in modo da scegliere sempre una porta verso un link che stia nel percorso (path) verso la destinazione.
 
 Una volta varcata la porta nelle direzione giusta, le trame vengono inviate un bit alla volta sul link di uscita prescelto.
 
@@ -103,7 +103,7 @@ Gli Switch sono dispositivi di commutazione che lavorano in **HW**, e quindi, me
 
 I dispositivi di **livello 3** sono un **barriera** invalicabile per la propagazione delle **trame** provenienti dai dispositivi di livello 2 perchè i **router** riconoscono e smistano solamente **PDU di livello 3**. Pertanto, le trame di livello 2, devono essere **sbustate**, cioè **aperte**, per recuperare il payload in esse contenuto che, consistente nei pacchetti IP di livello 3, può invece passare attraverso il router così come è, **senza modifica alcuna**. 
 
-Ogni pacchetto IP, una volta sbustato, viene **smistato** su una **porta di uscita** in base al proprio **indirizzo IP di destinazione** in modo da scegliere sempre una porta verso un **link** che stia nel **percorso** (path) verso la destinazione. 
+Ogni pacchetto IP, una volta sbustato, viene **smistato** su una **porta di uscita** in base al proprio **indirizzo IP di destinazione**, in modo da scegliere sempre una porta verso un **link** che stia nel **percorso** (path) verso la destinazione. 
 
 Una volta **varcata la porta** nelle direzione giusta, i pacchetti vengono **reimbustati** in una **nuova trama** MAC da inviare sul link in uscita prescelto.
 
