@@ -61,7 +61,7 @@ La migliore **soluzione** per evitare le collisioni è di **partizionare** gli H
 
 ### **Dispositivi di inoltro di Livello 2**
 
-I dispositivi di **livello 2** sono un **barriera** invalicabile per la propagazione delle **trame corrotte** provenienti dai dispositivi di livello 1, in quanto i bit vengono memorizzati in una coda di ingresso ed osservati per isolare le **trame** in arrivo, verificarne i confini e controllarne il **checksum FCS** per stabilirne la correttezza. 
+I dispositivi di **livello 2** sono un **barriera** per le singole PDU di livello 1, cioè i bit, che, invece di essere subito inoltrate, vengono accomodate su una **coda di ingresso** fino a che non viene completato il caricamento di un pacchetto di livello 2, cioè una trama. Inoltre, sono dispositivi che non propagano le collisioni eventualmente verificatesi nel link multpunto in ingresso. Uno switch, infatti, è anche un limite invalicabile per la propagazione delle **trame danneggiate** provenienti dai dispositivi di livello 1, in quanto i bit, memorizzati sulla coda di ingresso, sono osservati per isolare le **trame** in arrivo, verificarne i confini e controllarne il **checksum FCS** per stabilirne la correttezza. 
 
 Ogni trama **riconosciuta** come integra viene, a questo punto, **smistata** su una **porta di uscita** in base al proprio **indirizzo di destinazione MAC** in modo da scegliere sempre una porta verso un link che stia nel percorso (path) verso la destinazione.
 
