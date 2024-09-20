@@ -93,7 +93,7 @@ Scopo dei **buffer** (coda):
 
 I **link** sulle **porte** di uno **SW**, pur essendo anch'essi dei **BUS**, raramente collegano **molti host** con uno stesso filo, piuttosto sono, similmente a degli hub, degli **aggregatori** di collegamenti **punto-punto** verso **singoli host**. 
 
-Oltre a essere colegamenti **punto-punto**, i link verso gli host sono normalmente anche **full duplex**, motivo per cui su di essi risulta evitata pure la residua **probabilità di collisione** tra i messaggi inviati da SW e Host nel caso in cui entrambi parlino nello stesso istante (impossibile dato che trasmettono su canali **simplex** separati per le due direzioni).
+Oltre a essere colegamenti **punto-punto**, i link verso gli host sono normalmente anche **full duplex**, motivo per cui su di essi risulta evitata pure la residua **probabilità di collisione** tra i messaggi inviati da SW e Host nel caso in cui entrambi parlino nello stesso istante (evento impossibile dato che trasmettono su canali **simplex** separati per le due direzioni).
 
 Mentre i bridge hanno **poche porte** che collegano a livello 2 alcune **reti di host**, gli **SW** hanno **molte porte** che **aggregano** una moltitudine di singoli **host** (specialmente nel caso di Access Switch). La loro funzione principale è proprio quella di permettere il collegamento reciproco e diretto di **coppie di host**, realizzando la cosidetta **microsegmentazione** dei **dominii di collisione** esistenti sulle loro **porte**.
 
