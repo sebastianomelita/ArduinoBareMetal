@@ -99,7 +99,7 @@ Gli Switch sono dispositivi di commutazione che lavorano in **HW**, e quindi, me
 
 ### **Dispositivi di inoltro di Livello 3**
 
-I dispositivi di **livello 3** sono un **barriera** ivalicabile per la propagazione delle **trame** provenienti dai dispositivi di livello 2, pertanto queste vengono, di volta in volta, **aperte** per recuperare il loro payload, cioè per **sbustare** i pacchetti di livello 3 (pacchetti IP) che invece possono passare attraverso il router così come sono, **senza modifica alcuna**. 
+I dispositivi di **livello 3** sono un **barriera** invalicabile per la propagazione delle **trame** provenienti dai dispositivi di livello 2, pertanto queste vengono, di volta in volta, **aperte** per recuperare il loro payload, cioè per **sbustare** i pacchetti di livello 3 (pacchetti IP) che invece possono passare attraverso il router così come sono, **senza modifica alcuna**. 
 
 Ogni pacchetto IP, una volta sbustato, viene **smistato** su una **porta di uscita** in base al proprio **indirizzo IP di destinazione** in modo da scegliere sempre una porta verso un **link** che stia nel **percorso** (path) verso la destinazione. 
 
