@@ -61,7 +61,7 @@ La migliore **soluzione** per evitare le collisioni è di **partizionare** gli H
 
 ### **Dispositivi di inoltro di Livello 2**
 
-I dispositivi di **livello 2** non smistano direttamente le PDU di livello 1, cioè i **bit**. Questi, invece di essere subito inoltrati, vengono accumulati su una **coda di ingresso** fino a che non viene completato il caricamento di un intera PDU di livello 2, cioè una **trama**. 
+I dispositivi di **livello 2** non smistano direttamente le PDU di livello 1, ossia i **bit**. Questi, invece di essere subito inoltrati, vengono accumulati su una **coda di ingresso** fino a che non viene completato il caricamento di un intera PDU di livello 2, cioè una **trama**. 
 
 Inoltre, gli **switch** non propagano attraverso le loro porte eventuali **collisioni** generate nei link multipunto (BUS). Questo avviene perché uno switch rappresenta un limite invalicabile per la propagazione delle **trame danneggiate** provenienti dai dispositivi di livello 1.  Le **trame corrotte**, infatti, possono essere **rilevate** già nella **coda di ingresso** grazie alla funzione di **controllo degli errori** del protocollo di **linea** (basata sulla verifica del checksum FCS), permettendo così di scartarle **prima** che vengano **inoltrate** verso una porta di uscita. 
 
