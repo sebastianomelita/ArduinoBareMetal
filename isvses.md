@@ -169,7 +169,9 @@ Normalmente, solo **un router**, tra tutti quelli collegati sul bordo di una LAN
 
 Una **subnet** è un **raggruppamento** logico di indirizzi IP che corrisponde ad alcune caratteristiche che vedremo in seguito. Quello che è interessante sapere adesso è che possono essere **molti** indirizzi in un range che va da poche unità a parecchi milioni, a seconda del dimensionamento scelto.
 
-Nella tabella di routing di un router la prima colonna è composta da indirizzi di **subnet**. Un **indirizzo di subnet** rappresenta un **indirizzo di gruppo** che **racchiude** un certo numero di indirizzi di host. Gli indirizzi di una subnet possono essere o meno effettivamente assegnati ad un host, in ogni caso, qualli non ancora assegnati sono disponibili per eventuali future assegnazioni (un po' come un elenco di numeri di telefono suddivisi tra quelli già assegnati e quelli ancora da assegnare ad un terminale). Una **subnet** presente nella tabella di routing è in genere **allocata** in una certa **posizione remota** dello spazio (settore della rete) che è **raggiungibile** attraverso una certa **porta di uscita**, passando attraverso il link ad essa collegato.
+Nella tabella di routing di un router la prima colonna è composta da indirizzi di **subnet**. Un **indirizzo di subnet** rappresenta un **indirizzo di gruppo** che **racchiude** un certo numero di indirizzi di host. 
+
+Gli indirizzi di una subnet possono essere o meno effettivamente assegnati ad un host, in ogni caso, quelli non ancora assegnati sono disponibili per eventuali future assegnazioni (un po' come un elenco di numeri di telefono suddivisi tra quelli già assegnati e quelli ancora da assegnare ad un terminale). Una **subnet** presente nella tabella di routing è in genere **allocata** in una certa **posizione remota** dello spazio (settore della rete) che è **raggiungibile** attraverso una determinata **porta di uscita**, passando attraverso il link ad essa collegato.
 
 Quindi una subnet è un **contenitore** di indirizzi IP esso stesso con un **proprio** indirizzo IP, ma quale dispositivo **separa** una subnet da un'altra? 
 
