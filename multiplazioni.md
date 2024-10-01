@@ -6,7 +6,7 @@ Un rete di computer potrebbe, in **linea di principio**, essere realizzata con u
 
 <img src="img/fullmesh.png" alt="alt text" width="900">
 
-Dalla figura, si vede chiaramente che, all'aumentare del numero dei dispositivi in numero dei collegamenti aumenta con un incremento, in proprorzione, sempre maggiore.
+Dalla figura, si vede chiaramente che, all'aumentare del numero dei dispositivi in numero dei collegamenti aumenta con un incremento, in proporzione, sempre maggiore.
 
 La **formula** esatta sarebbe:
 ```C++
