@@ -168,6 +168,22 @@ L'evoluzione degli stati di un protocollo può essere rappresentato in funzione 
 
 I **nodi** sono gli stati mentre gli **archi** rappresentano gli **stimoli** ai cambiamenti di stato, ovvero gli **ingressi**, cioè i **messaggi ricevuti**.
 
+### **Throughput**
+
+Il **throughput** è una misura della quantità di dati che possono essere trasmessi attraverso un sistema, una rete o un collegamento in un determinato intervallo di tempo. Viene spesso espresso in unità di bit al secondo (bps), come ad esempio megabit per secondo (Mbps) o gigabit per secondo (Gbps).
+
+Nel contesto delle reti informatiche, il throughput effettivo può essere influenzato da diversi fattori, tra cui:
+
+- La **capacità della rete** (larghezza di banda)
+- La **latenza** (il tempo di ritardo di trasmissione dei dati)
+- Gli **errori di trasmissione** e la necessità di ritrasmissioni
+- La **congestione della rete**
+- L'**overhead dei protocolli** di comunicazione (come TCP/IP)
+
+Differisce dal **data rate** teorico, in quanto il throughput riflette la velocità effettiva a cui i dati utili possono essere trasmessi, tenendo conto delle perdite, errori e altri fattori di degrado delle prestazioni.
+
+Per esempio, una connessione con una larghezza di banda teorica di 1 Gbps potrebbe avere un throughput effettivo più basso a causa della congestione o del ritardo nei pacchetti.
+
 [Dettaglio ES/IS](isvses.md)
 
 [Dettaglio protocolli](protocolli.md)
@@ -181,7 +197,7 @@ Sitografia:
 - https://stackoverflow.com/questions/44992151/how-can-i-encode-0000-to-11110-in-4b-5b-encoding-scheme
 - https://it.wikipedia.org/wiki/Codifica_4B/5B
 - https://it.wikipedia.org/wiki/Frame_Ethernet
-- chatGPT per trama MAC
+- chatGPT per trama MAC e throuhput
 
 
 
