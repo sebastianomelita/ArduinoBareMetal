@@ -17,7 +17,7 @@ dato che:
 - la stessa cosa dovrebbero fare complessivamente N PC
 - va diviso per 2 perchè i cavi vanno presi una sola volta (link full duplex)
 
-L'**incremento** del numero di collegamenti è pressoché **quadratico**, il che porta rapidamente a una **crescita esplosiva **del numero di connessioni. Per **un miliardo** di dispositivi sparsi in tutto il mondo, il calcolo del **quadrato** delle connessioni dedicate risulterebbe in un numero di connessioni fisiche così elevato da renderne la realizzazione e la gestione **economicamente insostenibile**, soprattutto se si vogliono mantenere bassi i **costi di accesso** per l'utente.
+L'**incremento** del numero di collegamenti è pressoché **quadratico**, il che porta rapidamente a una **crescita esplosiva** del numero di connessioni. Per **un miliardo** di dispositivi sparsi in tutto il mondo, il calcolo del **quadrato** delle connessioni dedicate risulterebbe in un numero di connessioni fisiche così elevato da renderne la realizzazione e la gestione **economicamente insostenibile**, soprattutto se si vogliono mantenere bassi i **costi di accesso** per l'utente.
 
 ### **Un percorso tra multiplazioni**
 
