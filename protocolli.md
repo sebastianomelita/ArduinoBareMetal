@@ -203,7 +203,7 @@ Sitografia:
 - https://stackoverflow.com/questions/44992151/how-can-i-encode-0000-to-11110-in-4b-5b-encoding-scheme
 - https://it.wikipedia.org/wiki/Codifica_4B/5B
 - https://it.wikipedia.org/wiki/Frame_Ethernet
-- chatGPT per trama MAC e throuhput
+- chatGPT per trama MAC e throughput
 
 
 
