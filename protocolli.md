@@ -180,7 +180,7 @@ Nel contesto delle reti informatiche, il throughput effettivo può essere influe
 - La **congestione della rete**
 - L'**overhead dei protocolli** di comunicazione (come TCP/IP)
 
-Differisce dal **data rate** teorico, in quanto il throughput riflette la velocità effettiva a cui i dati utili possono essere trasmessi, al netto di perdite ed effetti di degrado delle prestazioni introdotte dai protocolli di comunicazione quali ritardi di trasmissione o ovehead introdotti dai messaggi di controllo.
+Differisce dal **data rate** teorico, in quanto il throughput riflette la velocità effettiva a cui i ** dati utili**  possono essere trasmessi, al netto di ** perdite**  ed effetti di degrado delle prestazioni introdotte dai ** protocolli**  di comunicazione quali ** ritardi**  di trasmissione o ** ovehead**  introdotti dai messaggi di controllo.
 
 Normalmente, la **velocità di picco** di un canale è limitata dalla velocità massima consentita dal **mezzo trasmissivo** mentre la **velocità media** del canale è imp
 attata dai ritardi di trasmissione che tipicamente sono:
