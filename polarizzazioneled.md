@@ -61,6 +61,8 @@ In genere la **corrente massima** assorbibile in modo DRAIN **è minore** di que
 **Polarizzazione con catodo sulla porta.**
 ![Pulsanti](led2bis.png)
 
+Esempio blink alternato di due led: https://wokwi.com/projects/412354671517261825
+
 ### **Sitografia:**
 - https://it.wikipedia.org/wiki/LED
 
