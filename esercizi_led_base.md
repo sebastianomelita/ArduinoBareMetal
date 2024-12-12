@@ -1,3 +1,4 @@
+>[Torna all'indice eserczi](esercizi.md)
 
 # Esercizi LED - Consegne
 
@@ -83,3 +84,5 @@ Realizzare:
    - LED open-drain: lampeggio continuo (500ms)
 3. Entrambi i pulsanti premuti:
    - Tutti i LED lampeggiano in sequenza circolare
+
+>[Torna all'indice eserczi](esercizi.md)
