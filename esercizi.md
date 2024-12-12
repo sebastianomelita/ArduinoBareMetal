@@ -843,7 +843,7 @@ Per altre informazioni sul joistick analogico va su [joistick](joistick.md).
 - [Soluzioni esercizi ADC](soluzioniEserciziADC.md)
 
 ## ESERCIZI LED E PULSANTI
-- [Soluzioni esercizi ADC](esercizi_led_base.md)
+- [Esercizi led base](esercizi_led_base.md)
 
 ## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
