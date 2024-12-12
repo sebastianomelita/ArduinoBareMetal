@@ -238,3 +238,5 @@ Determinare:
 2. Guadagno amplificatore
 3. Numero bit ADC
 4. Frequenza campionamento in kHz
+
+>[Torna all'indice generale](index.md)
