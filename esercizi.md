@@ -837,6 +837,11 @@ Simulazione di una MCU ESP32 con Wokwi: https://wokwi.com/projects/3910965647077
 
 Per altre informazioni sul joistick analogico va su [joistick](joistick.md).
 
+## ESERCIZI SU ADC
+
+- [Consegne esercizi ADC](consegneEserciziADC.md)
+- [Soluzioni esercizi ADC](soluzioniEserciziADC.md)
+
 ## ESERCIZI SU PULSANTI (NORMALI E TOGGLE) E TASK CONCORRENTI
 
 ### **Es1**
