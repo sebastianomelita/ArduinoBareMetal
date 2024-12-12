@@ -1,4 +1,4 @@
->[Torna all'indice generale](esercizi.md)
+>[Torna all'indice eserczi ADC](esercizi.md)
 
 
 # Esercizi di Progettazione ADC - Consegne
@@ -239,4 +239,4 @@ Determinare:
 3. Numero bit ADC
 4. Frequenza campionamento in kHz
 
->[Torna all'indice generale](index.md)
+>[Torna all'indice eserczi ADC](esercizi.md)
