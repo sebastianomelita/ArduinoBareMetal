@@ -1,4 +1,4 @@
-
+>[Torna all'indice generale](esercizi.md)
 
 
 # Esercizi di Progettazione ADC - Consegne
