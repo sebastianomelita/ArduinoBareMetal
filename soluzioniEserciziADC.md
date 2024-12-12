@@ -1,3 +1,4 @@
+>[Torna all'indice eserczi ADC](esercizi.md)
 
 # Soluzioni Dettagliate Esercizi ADC
 
@@ -409,3 +410,4 @@
 
 **Risposta finale: 1, 5, 14, 50**
 
+>[Torna all'indice eserczi ADC](esercizi.md)
