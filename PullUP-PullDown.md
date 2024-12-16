@@ -37,7 +37,7 @@ Ogni **porta** di ingresso del microcontrollore possiede internamente un circuit
 
 - **Ruolo della resistenza** è quello di polarizzare la **tensione** sulla porta digitale che sta **nell'unico percorso** possibile per la corrente per arrivare a massa. Poiché il micro, in prima approssimazione, non consuma corrente (in realtà e trascurabile), la caduta di tensione sulla resistenza è nulla e pertanto il potenziale ai suoi capi è il medesimo (differenza di potenziale nulla in quanto Vresist = R\*I = R\*0 = 0). In altre parole, la resistenza è assimilabile ad un pezzo di **filo** che collega l’ingresso del micro **in alto a Vcc (pullup)** o **in basso a GND (pulldown).** In altre parole, a pulsante aperto, mettere un filo o mettere una resistenza è esattamente la stessa cosa. 
 
-- **Ruolo del pulsante** è lasciare l’ingresso al suo valore di default (Vcc nel caso del **pullup** o GND nel caso del **pulldown**) polarizzato mediante la **resistenza**. Dal **microcontrollore** questi valori sono codificati rispettivamente, con lo stato logico alto **HIGH** (normalmente vale1) e **LOW** (di solito vale 0)
+- **Ruolo del pulsante** è lasciare l’ingresso al suo valore di default (Vcc nel caso del **pullup** o GND nel caso del **pulldown**) polarizzato mediante la **resistenza**. Dal **microcontrollore** questi valori sono codificati rispettivamente, con lo stato logico alto **HIGH** (normalmente vale1) e **LOW** (di solito vale 0). In altra parole, a pulsante aperto il pulsante non ha alcun ruolo.
 
 **Situazione di pulsante chiuso**
 
