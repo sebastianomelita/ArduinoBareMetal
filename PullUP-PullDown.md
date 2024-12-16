@@ -23,6 +23,8 @@ Per **cablare** un pulsante ad un ingresso digitale di un microcontrollore sono 
 
 ![pullupdown](pullupdown.png)
 
+### **Concetto di pull**
+
 **Pull** vuol dire tirare per cui lo scopo dei due metodi di collegamento è letteralmente “tirare in alto” e “tirare in basso”. Questa azione da il nome alla configurazione elettrica di **default** che è quella relativa alla situazione a **pulsante aperto** in cui:
 
 - **“Chi tira?”** E' sempre la **resistenza**. Il piedino di ingresso del microcontrollore non è **mai** collegato direttamente in su alla Vcc o in giù al GND ma indirettamente **tramite una resistenza** di valore opportuno (1-10K Ohm).
