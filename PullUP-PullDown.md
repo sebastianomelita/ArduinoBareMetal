@@ -64,8 +64,8 @@ La resistenza e il pulsante servono a **polarizzare** la porta di ingresso **"ti
 La **resistenza** ha effetto solo a pulsante aperto mentre il **pulsante** ha effetto solo a pulsante chiuso.
 
 In **definitiva**, la **polarizzazione** in tensione della porta di **ingresso digitale** è realizzata:
-- a **pulsante aperto**, dalla **resistenza**. Cioè a pulsante aperto è la resistenza a **tirare** in alto o in basso, dando il nome alla configurazione di default.
-- a **pulsante chiuso**, dal **filo** tramite il **pulsante**. Cioè a pulsante chiuso è il filo interno del pulsante a **tirare** in basso o in alto invertendo la configurazione di default.
+- a **pulsante aperto**, dalla **resistenza**. Cioè a pulsante aperto è la resistenza a **tirare** in alto o in basso la **porta**, dando il nome alla configurazione di default.
+- a **pulsante chiuso**, dal **filo** tramite il **pulsante**. Cioè a pulsante chiuso è il filo interno del pulsante a **tirare** in basso o in alto la **porta** invertendo la configurazione di default.
 
 <img src="pullupelectric.png" alt="alt text" width="1000">
 
