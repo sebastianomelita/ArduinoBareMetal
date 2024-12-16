@@ -23,10 +23,11 @@ Per **cablare** un pulsante ad un ingresso digitale di un microcontrollore sono 
 
 ![pullupdown](pullupdown.png)
 
-**Pull** vuol dire tirare per cui lo scopo dei due metodi di collegamento è letteralmente “tirare in alto” e “tirare in basso”.
-- **“Chi tira?”** Il piedino di ingresso del microcontrollore non è **mai** collegato direttamente in su alla Vcc o in giù al GND ma indirettamente **tramite una resistenza** di valore opportuno (1-10K Ohm).
+**Pull** vuol dire tirare per cui lo scopo dei due metodi di collegamento è letteralmente “tirare in alto” e “tirare in basso”. Questa azione da il nome alla configurazione elettrica di **default** che è quella relativa alla situazione a **pulsante aperto** in cui:
 
-- **Chi è tirato?** Evidentemente **l’ingresso** **digitale** del microcontrollore, specificatamente il parametro elettrico **tensione** su una sua porta, quello che si misura in **volt.** I valori possibili possono essere tutti quelli compresi tra la tensione **GND** (normalmente 0V) e quella di alimentazione della scheda (**5V** per Arduino, **3,3V** per dispositivi più piccoli). Valori diversi da quelli compresi entro questo range potrebbero essere tollerati fino ad un certo limite superato il quale si danneggia irreversibilmente la porta o, nel caso peggiore, tutta la scheda.
+- **“Chi tira?”** E' sempre la **resistenza**. Il piedino di ingresso del microcontrollore non è **mai** collegato direttamente in su alla Vcc o in giù al GND ma indirettamente **tramite una resistenza** di valore opportuno (1-10K Ohm).
+
+- **Chi è tirato?** Evidentemente sempre e soltanto **l’ingresso** **digitale** del microcontrollore, specificatamente il parametro elettrico **tensione** su una sua porta, quello che si misura in **volt.** I valori possibili possono essere tutti quelli compresi tra la tensione **GND** (normalmente 0V) e quella di alimentazione della scheda (**5V** per Arduino, **3,3V** per dispositivi più piccoli). Valori diversi da quelli compresi entro questo range potrebbero essere tollerati fino ad un certo limite superato il quale si danneggia irreversibilmente la porta o, nel caso peggiore, tutta la scheda.
 
 -  **“tirare" dove?** O in **UP** alla **Vcc** (ad esempio 5V), cioè l’ingresso del microcontrollore viene portato alla alimentazione positiva della scheda (polarizzazione PULL UP), oppure in **DOWN** ovvero **GND** cioè l’ingresso del microcontrollore viene portato al potenziale zero, cioè è **virtualmente** cortocircuitato verso massa (polarizzazione PULL DOWN).
 
