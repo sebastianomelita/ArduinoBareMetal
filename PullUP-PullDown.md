@@ -52,13 +52,13 @@ A pulsante chiuso i terminali del pulsante sono tutti allo stesso potenziale, co
   
 - **Ruolo della resistenza** è quello di limitare la **corrente** che scorre nel **pulsante** quando questo viene chiuso. Infatti, per effetto della sua **chiusura**, su di esso scorre la corrente generata dalla tensione che si viene a determinare **ai capi** della resistenza pari in genere a **Vcc**. Se la resistenza fosse stata semplicemente **un filo** (resistenza nulla) la corrente sarebbe quella di **cortocircuito** (teoricamente infinita). Se la resistenza fosse stata semplicemente un **circuito aperto** l’ingresso non sarebbe stato **preventivamente tirato** al suo valore di default.
 
-### **Polarizzazione della porta di ingresso**
+## **Polarizzazione della porta di ingresso**
 
-La resistenza e il pulsante servono a polarizzare la porta di ingresso "tirandola" in alto o in basso a seconda delle circostanze. 
+La resistenza e il pulsante servono a **polarizzare** la porta di ingresso **"tirandola"** in alto o in basso a seconda delle circostanze. 
 
 La **resistenza** ha effetto solo a pulsante aperto mentre il **pulsante** ha effetto solo a pulsante chiuso.
 
-In **definitiva**, la **polarizzazione** in tensione della porta di ingresso digitale è realizzata:
+In **definitiva**, la **polarizzazione** in tensione della porta di **ingresso digitale** è realizzata:
 - a **pulsante aperto**, dalla **resistenza**. Cioè a pulsante aperto è la resistenza a **tirare** in alto o in basso, dando il nome alla configurazione di default.
 - a **pulsante chiuso**, dal **filo** tramite il **pulsante**. Cioè a pulsante chiuso è il filo del pulsante a **tirare** in basso o in alto invertendo la configurazione di default.
 
