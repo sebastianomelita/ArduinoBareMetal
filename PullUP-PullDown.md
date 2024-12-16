@@ -32,7 +32,7 @@ Per **cablare** un pulsante ad un ingresso digitale di un microcontrollore sono 
 
 -  **“tirare" quando?** La topologia rappresentata dal collegamento (pull up o pull down) fotografa la situazione in cui il pulsante **non è premuto**, cioè la situazione del pulsante che realizza un **circuito aperto** tra i suoi terminali. In altre parole, il pull up o il pull down sono due possibili polarizzazioni degli ingressi a **pulsante aperto**.
 
-**Porte digitali di ingresso**
+## **Porte digitali di ingresso**
 
 Ogni **porta** di ingresso del microcontrollore possiede internamente un circuito in grado di "leggere" la **tensione** in ingresso e **interpretarla**, cioè tradurla in un **valore digitale** in base al superamento o meno di una certa **soglia**. La soglia è posta a circa **metà** della tensione di alimentazione. Se la tensione è **sotto** la soglia l'ingresso viene interpretato come uno **0 (LOW)**, altrimenti, se è **sopra** la soglia, esso vale digitalmente un **1 (HIGH)**.
 
