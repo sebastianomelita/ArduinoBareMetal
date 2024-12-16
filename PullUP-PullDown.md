@@ -43,7 +43,10 @@ Ogni **porta** di ingresso del microcontrollore possiede internamente un circuit
 
 A pulsante chiuso i terminali del pulsante sono tutti allo stesso potenziale, coincidente con quello del filo per cui, di fatto, sono uno stesso terminale collegato all'ingresso. Questo terminale è portato a tensioni opposte (5V e GND) contemporaneamente da un filo e da una resistenza, tra i due vince sempre il filo (cioè il pulsante).
 
-- **Ruolo del pulsante** è quello di tirare in basso con un filo (cioè cortocircuitare) l’ingresso del microcontrollore che quindi, a pulsante premuto, va a potenziale **GND**. Invece, nel caso della polarizzazione **pullup**, il **ruolo del pulsante** è quello di tirare in alto con un filo (cioè cortocircuitare) l’ingresso del microcontrollore che quindi, a pulsante premuto, va a potenziale **Vcc**. La tensione ai capi del filo è sempre nulla, infatti, per la legge di Ohm, essa vale Vfilo = R\*I = 0\*I =0. L’effetto è evidentemente quello di **invertire** lo stato logico di default (determinato, a pulsante aperto, dalla resistenza).
+- **Ruolo del pulsante**. La tensione ai capi del filo è sempre nulla, infatti, per la legge di Ohm, essa vale Vfilo = R\*I = 0\*I =0. L’effetto è evidentemente quello di **invertire** lo stato logico di default (determinato, a pulsante aperto, dalla resistenza):
+    - In polarizzazione **Pull Down** è quello di tirare in basso con un filo (cioè cortocircuitare) l’ingresso del microcontrollore che quindi, a pulsante premuto, va a potenziale **GND**.
+    - In polarizzazione **Pull UP**, il **ruolo del pulsante** è quello di tirare in alto con un filo (cioè cortocircuitare) l’ingresso del microcontrollore che quindi, a pulsante premuto, va a potenziale **Vcc**.
+  
 - **Ruolo della resistenza** è quello di limitare la **corrente** che scorre nel **pulsante** quando questo viene chiuso. Infatti, per effetto della sua **chiusura**, su di esso scorre la corrente generata dalla tensione che si viene a determinare **ai capi** della resistenza pari in genere a **Vcc**. Se la resistenza fosse stata semplicemente **un filo** (resistenza nulla) la corrente sarebbe quella di **cortocircuito** (teoricamente infinita). Se la resistenza fosse stata semplicemente un **circuito aperto** l’ingresso non sarebbe stato **preventivamente tirato** al suo valore di default.
 
 
