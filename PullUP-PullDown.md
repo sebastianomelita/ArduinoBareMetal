@@ -42,7 +42,7 @@ Ogni **porta** di ingresso del microcontrollore possiede internamente un circuit
 
 - **Ruolo del pulsante** è lasciare l’ingresso al suo valore di default (Vcc nel caso del **pullup** o GND nel caso del **pulldown**) polarizzato mediante la **resistenza**. Dal **microcontrollore** questi valori sono codificati rispettivamente, con lo stato logico alto **HIGH** (normalmente vale1) e **LOW** (di solito vale 0). In altra parole, a pulsante aperto il pulsante non ha alcun ruolo.
 
-## **Situazione a pulsante chiuso**
+### **Situazione a pulsante chiuso**
 
 A pulsante chiuso i terminali del pulsante sono tutti allo stesso potenziale, coincidente con quello del filo per cui, di fatto, sono uno stesso terminale collegato all'ingresso. Questo terminale è portato a tensioni opposte (5V e GND) contemporaneamente da un filo e da una resistenza, tra i due vince sempre il filo (cioè il pulsante).
 
@@ -52,7 +52,7 @@ A pulsante chiuso i terminali del pulsante sono tutti allo stesso potenziale, co
   
 - **Ruolo della resistenza** è quello di limitare la **corrente** che scorre nel **pulsante** quando questo viene chiuso. Infatti, per effetto della sua **chiusura**, su di esso scorre la corrente generata dalla tensione che si viene a determinare **ai capi** della resistenza pari in genere a **Vcc**. Se la resistenza fosse stata semplicemente **un filo** (resistenza nulla) la corrente sarebbe quella di **cortocircuito** (teoricamente infinita). Se la resistenza fosse stata semplicemente un **circuito aperto** l’ingresso non sarebbe stato **preventivamente tirato** al suo valore di default.
 
-## **Polarizzazione della porta di ingresso**
+### **Polarizzazione della porta di ingresso**
 
 La resistenza e il pulsante servono a polarizzare la porta di ingresso "tirandola" in alto o in basso a seconda delle circostanze. 
 
