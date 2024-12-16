@@ -64,6 +64,8 @@ In **definitiva**, la **polarizzazione** in tensione della porta di ingresso dig
 
 ![elettrico](pullupelectric.png)
 
+### **Valori della resistenza**
+
 **Valori della resistenza** troppo bassi o troppo alti determinano vantaggi e svantaggi:
 
 - **Molto bassi** hanno il **vantaggio** di garantire una buona **immunità** **ai disturbi** (EMI e RFI) ma lo **svantaggio** di determinare potenzialmente un **consumo di corrente eccessivo** (eccessivo consumo delle batterie)
