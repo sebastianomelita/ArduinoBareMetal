@@ -57,7 +57,7 @@ A pulsante chiuso i terminali del pulsante sono tutti allo stesso potenziale, co
   
 - **Ruolo della resistenza** è quello di limitare la **corrente** che scorre nel **pulsante** quando questo viene chiuso. Infatti, per effetto della sua **chiusura**, su di esso scorre la corrente generata dalla tensione che si viene a determinare **ai capi** della resistenza pari in genere a **Vcc**. Se la resistenza fosse stata semplicemente **un filo** (resistenza nulla) la corrente sarebbe quella di **cortocircuito** (teoricamente infinita). Se la resistenza fosse stata semplicemente un **circuito aperto** l’ingresso non sarebbe stato **preventivamente tirato** al suo valore di default.
 
-## **Polarizzazione della porta di ingresso**
+## **Polarizzazione di una porta di ingresso**
 
 La resistenza e il pulsante servono a **polarizzare** la porta di ingresso **"tirandola"** in alto o in basso a seconda delle circostanze. 
 
