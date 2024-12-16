@@ -3,6 +3,8 @@
 >[Torna all'indice](indexpulsanti.md)
 # **GESTIONE ELETTRICA DEI PULSANTI**
 
+## **Defiinizione di pulsante**
+
 Un pulsante è un **contatto** che **chiude** un circuito alla **pressione** esercitata dall’esterno su di un **pistoncino** e che ritorna automaticamente ad una **posizione di riposo** di circuito **aperto** per effetto di una molla interna di richiamo. In sostanza, un pulsante è un interruttore che quando è **premuto** si chiude mentre quando **non è premuto** diventa, **da solo**, aperto.
 
 Il pulsante è **senza stato** nel senso che non “ricorda” né elettricamente nè meccanicamente lo stato della sua impostazione **precedente**.
