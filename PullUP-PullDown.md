@@ -101,7 +101,7 @@ Il pulsante a sinistra è collegato in configurazione Pull Down mentre quello a 
 
 - La resistenza di **pull** nel disegno ha quindi un **primo terminale** sempre verso la porta ed un **secondo terminale** sempre verso una delle alimentazioni (positiva nel pull up, negativa in caso di pull down).
 
-- Il terminale del pulsante che, a pulsante aperto, **non è collegato** alla resistenza (a sinistra della resistenza nel disegno) va collegato all'alimentazione positiva in caso di **pull down** o all'alimentazione negativa in caso di **pull up**. Questo perchè, a **pulsante chiuso**, la funzione di **pull** della porta digitale, alla **tensione contraria** a quella di riposo, è svolta, tramite un filo, proprio **dallo stesso pulsante**.
+- Il terminale del pulsante che, a pulsante aperto, **non è collegato** alla resistenza (a sinistra della resistenza nel disegno) va collegato all'alimentazione positiva in caso di **pull down** o all'alimentazione negativa in caso di **pull up**. Questo perchè, a **pulsante chiuso**, la funzione di **pull** della porta digitale, alla **tensione contraria** a quella di riposo, è svolta, tramite un filo, proprio **dal pulsante stesso**.
 
 >[Torna all'indice](indexpulsanti.md)
 
