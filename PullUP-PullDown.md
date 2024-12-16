@@ -9,6 +9,7 @@ Il pulsante è **senza stato** nel senso che non “ricorda” né elettricament
 
 ![pulsante](pulsante.png)
 
+## **Contatti**
 
 Il **contatto** che si chiude alla pressione del pulsante è in realtà **uno solo** e unisce **due terminali** indicati in figura con a-b e c-d (le due striscette verdi in figura):
 
