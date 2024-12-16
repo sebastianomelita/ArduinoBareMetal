@@ -27,7 +27,7 @@ Per **cablare** un pulsante ad un ingresso digitale di un microcontrollore sono 
 
 -  **“tirare" dove?** O in **UP** alla **Vcc** (ad esempio 5V), cioè l’ingresso del microcontrollore viene portato alla alimentazione positiva della scheda, oppure in **DOWN** ovvero **GND** cioè l’ingresso del microcontrollore viene portato al potenziale zero, cioè è **virtualmente** cortocircuitato verso massa.
 
--  **“tirare" quando?** La topologia rappresentata dal collegamento (pull up o pull down) fotografa la situazione in cui il pulsante **non è premuto**, cioè la situazione del pulsante che realizza un **circuito aperto** tra i suoi terminali.
+-  **“tirare" quando?** La topologia rappresentata dal collegamento (pull up o pull down) fotografa la situazione in cui il pulsante **non è premuto**, cioè la situazione del pulsante che realizza un **circuito aperto** tra i suoi terminali. In altre parole, il pull up o il pull down sono due possibili polarizzazioni degli ingressi a pulsante aperto.
 
 **Porte digitali di ingresso**
 
