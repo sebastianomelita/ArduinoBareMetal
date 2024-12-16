@@ -51,8 +51,8 @@ A pulsante chiuso i terminali del pulsante sono tutti allo stesso potenziale, co
 
 
 In **definitiva**, la **polarizzazione** in tensione della porta di ingresso digitale è realizzata:
-- a pulsante aperto, dalla **resistenza**
-- a pulsante chiuso, dal **filo** tramite il **pulsante** 
+- a pulsante aperto, dalla **resistenza**, cioè a pulsante aperto è la resistenza a tirare in alto o in basso, dando il nome alla confgurazione di default.
+- a pulsante chiuso, dal **filo** tramite il **pulsante**, cioè a pulsante chiuso è il filo del pulsante a tirare in basso o in alto invertendo la configurazione di default.
 
 ![elettrico](pullupelectric.png)
 
