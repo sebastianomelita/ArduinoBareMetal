@@ -7,7 +7,7 @@ Un pulsante è un **contatto** che **chiude** un circuito alla **pressione** ese
 
 Il pulsante è **senza stato** nel senso che non “ricorda” né elettricamente nè meccanicamente lo stato della sua impostazione **precedente**.
 
-![pulsante](pulsante.png)
+<img src="pulsante.png" alt="alt text" width="300">
 
 ## **Contatti**
 
