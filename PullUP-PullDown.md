@@ -87,11 +87,11 @@ Un valore di **compromesso** spazia da qualche KOhm fino a 50 KOhm (tipicamente 
 - **PULL DOWN** –> Interruttore aperto –> LOW  
 **PULL DOWN** –> Interruttore chiuso –> HIGH
 
+## **Proposta di cablaggio sulla basetta**
+
 Di seguito è riportato lo schema di un **possibile collegamento** di due pulsanti in pulldown (a sinistra) e in pullup (a destra) su una breadboard:
 
 <img src="pulsantiboard.png" alt="alt text" width="1000">
-
-## **Proposta di cablaggio sulla basetta**
 
 Il pulsante a sinistra è collegato in configurazione Pull Down mentre quello a destra in configurazione Pull Up:
 
