@@ -36,7 +36,7 @@ Per **cablare** un pulsante ad un ingresso digitale di un microcontrollore sono 
 
 Ogni **porta** di ingresso del microcontrollore possiede internamente un circuito in grado di "leggere" la **tensione** in ingresso e **interpretarla**, cioè tradurla in un **valore digitale** in base al superamento o meno di una certa **soglia**. La soglia è posta a circa **metà** della tensione di alimentazione. Se la tensione è **sotto** la soglia l'ingresso viene interpretato come uno **0 (LOW)**, altrimenti, se è **sopra** la soglia, esso vale digitalmente un **1 (HIGH)**.
 
-## **Situazione a pulsante aperto**
+### **Situazione a pulsante aperto**
 
 - **Ruolo della resistenza** è quello di polarizzare la **tensione** sulla porta digitale che sta **nell'unico percorso** possibile per la corrente per arrivare a massa. Poiché il micro, in prima approssimazione, non consuma corrente (in realtà e trascurabile), la caduta di tensione sulla resistenza è nulla e pertanto il potenziale ai suoi capi è il medesimo (differenza di potenziale nulla in quanto Vresist = R\*I = R\*0 = 0). In altre parole, la resistenza è assimilabile ad un pezzo di **filo** che collega l’ingresso del micro **in alto a Vcc (pullup)** o **in basso a GND (pulldown).** In altre parole, a pulsante aperto, mettere un filo o mettere una resistenza è esattamente la stessa cosa. 
 
