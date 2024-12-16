@@ -72,7 +72,7 @@ In **definitiva**, la **polarizzazione** in tensione della porta di ingresso dig
 
 Un valore di **compromesso** spazia da qualche KOhm fino a 50 KOhm (tipicamente **10 KOhm**).
 
-## **Riassumendo,** lo **stato logico** dei pulsanti nelle due configurazioni è:
+## **Mappa degli stati logici nelle due configurazioni**
  
 -  **PULL UP** –> Interruttore aperto –> HIGH  
 **PULL UP** –> Interruttore chiuso –> LOW
