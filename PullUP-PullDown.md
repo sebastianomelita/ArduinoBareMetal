@@ -17,6 +17,8 @@ Il **contatto** che si chiude alla pressione del pulsante è in realtà **uno so
 
 - A **circuito chiuso** i terminali sono collegati tutti insieme. I **terminali** a-b e c-d sono **cortocircuitati** **all’interno** del pulsante, in pratica diventano lo **stesso terminale** (conduttori equipotenziali con un voltaggio comune).
 
+## **Collegamenti elettrici**
+
 Per **cablare** un pulsante ad un ingresso digitale di un microcontrollore sono possibili due schemi (topologie) di collegamento: **pullup** e **pulldown**.
 
 ![pullupdown](pullupdown.png)
