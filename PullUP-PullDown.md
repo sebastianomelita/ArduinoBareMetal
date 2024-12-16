@@ -25,7 +25,7 @@ Per **cablare** un pulsante ad un ingresso digitale di un microcontrollore sono 
 
 - **Chi è tirato?** Evidentemente **l’ingresso** **digitale** del microcontrollore, specificatamente il parametro elettrico **tensione** su una sua porta, quello che si misura in **volt.** I valori possibili possono essere tutti quelli compresi tra la tensione **GND** (normalmente 0V) e quella di alimentazione della scheda (**5V** per Arduino, **3,3V** per dispositivi più piccoli). Valori diversi da quelli compresi entro questo range potrebbero essere tollerati fino ad un certo limite superato il quale si danneggia irreversibilmente la porta o, nel caso peggiore, tutta la scheda.
 
--  **“tirare" dove?** O in **UP** alla **Vcc** (ad esempio 5V), cioè l’ingresso del microcontrollore viene portato alla alimentazione positiva della scheda, oppure in **DOWN** ovvero **GND** cioè l’ingresso del microcontrollore viene portato al potenziale zero, cioè è **virtualmente** cortocircuitato verso massa.
+-  **“tirare" dove?** O in **UP** alla **Vcc** (ad esempio 5V), cioè l’ingresso del microcontrollore viene portato alla alimentazione positiva della scheda (polarizzazione PULL UP, oppure in **DOWN** ovvero **GND** cioè l’ingresso del microcontrollore viene portato al potenziale zero, cioè è **virtualmente** cortocircuitato verso massa (polarizzazione PULL DOWN).
 
 -  **“tirare" quando?** La topologia rappresentata dal collegamento (pull up o pull down) fotografa la situazione in cui il pulsante **non è premuto**, cioè la situazione del pulsante che realizza un **circuito aperto** tra i suoi terminali. In altre parole, il pull up o il pull down sono due possibili polarizzazioni degli ingressi a pulsante aperto.
 
