@@ -300,6 +300,9 @@ void loop() {
 ```
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
+
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
+
 ### **Pulsante toggle basato su interrupts e timer HW**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
