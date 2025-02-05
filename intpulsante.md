@@ -186,6 +186,11 @@ Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/p
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/350016534055223891
 
 
+Con timer non bloccante basato su libreria urutils: https://wokwi.com/projects/422059696428863489
+
+Con timer basato su millis(): https://wokwi.com/projects/421497374229509121
+
+
 ### **PULSANTE TOGGLE BASATO SU INTERRUPTS E DEBOUNCE CON TIMER SW NEL LOOP 2**
 
 ```C++
