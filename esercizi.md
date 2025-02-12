@@ -125,6 +125,8 @@ void loop(){
 }
 ```
 
+Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422697318232000513
+
 ## **SCHEDULAZIONE CON I TIMERS HW**
 
 La **schedulazione dei task** normalmente riguarda quei compiti che devono essere ripetuti in **maniera periodica**, infatti si parla di **loop() principale** e di **loop secondari** eventualmente sullo stesso thread (**protothread** o mediante costrutti **async/await**) o su altri **thread**. Lo stesso risultato può essere ottenuto con dei timer HW che realizzano un loop su **base evento**. L'**evento** è l'**interrupt** di un timer HW, il **loop** è rappresentato dalla **calback** associata al timer e che viene viene da esso **periodicamente richiamata**.
