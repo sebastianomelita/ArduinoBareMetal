@@ -92,17 +92,17 @@ void setup(){
 }
 
 void loop(){
-  if(digitalRead(pulsante1)==HIGH)
+  if(digitalRead(pulsante1)==HIGH) // fronte di salita
   {
     waitUntilInputLow(pulsante1, 50); //fronte di discesa
-    t1.start();
-    count1++;
+    t1.start();                       // armo il timer SW
+    count1++;                         // incremento del conteggio sul fronte di discesa
   }
-  if(t1.get()>2000)
+  if(t1.get()>2000)                   //faccio il polling del timout del timer
   {
-    t1.reset();
-    if(count1<2)
+    if(count1<2)                      // valutazione della scelta dell'utente
     {
+      // scelta A
       Serial.print(count1 );
       Serial.println(" scelta A");
       digitalWrite(led_rosso, HIGH);
@@ -110,12 +110,15 @@ void loop(){
     }
     else
     {
+      // scelta B
       Serial.print(count1 );
       Serial.println(" scelta B");
       digitalWrite(led_rosso, LOW);
       digitalWrite(led_verde, HIGH);
     }
     count1=0;
+    // disarmo del timer con reste del timout
+    t1.reset();
     t1.stop();
   }
   delay(10);
