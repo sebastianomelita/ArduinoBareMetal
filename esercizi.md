@@ -66,6 +66,62 @@ Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto
 
 Per consultare dettagli sulla sua implementazione vedi [timer sequenziali](polledtimer_seq.md).
 
+## **CONTEGGIO DEL NUMERO DI PRESSIONI DI UN TASTO**
+
+```C++
+/*il contatore di pressioni si può fare eseguendo ad ogni pressione
+ (o rilascio) entrambe le cose seguenti:
+il riarmo di un timer con t1.start() 
+(tanto è attivo solo alla prima volta)
+l'incremento del contatore
+Allo scadere del timer viene eseguito il conteggio:
+ se minore di uno, scelta A; se maggiore di 1, scelta B.*/
+
+#include "urutils.h"
+int led_rosso=13;
+int led_verde=12;
+int pulsante1=14;
+int count1=0;
+DiffTimer t1;
+
+void setup(){
+  pinMode(pulsante1, INPUT);
+  pinMode(led_rosso, OUTPUT);
+  pinMode(led_verde, OUTPUT);
+  Serial.begin(115200);
+}
+
+void loop(){
+  if(digitalRead(pulsante1)==HIGH)
+  {
+    waitUntilInputLow(pulsante1, 50); //fronte di discesa
+    t1.start();
+    count1++;
+  }
+  if(t1.get()>2000)
+  {
+    t1.reset();
+    if(count1<2)
+    {
+      Serial.print(count1 );
+      Serial.println(" scelta A");
+      digitalWrite(led_rosso, HIGH);
+      digitalWrite(led_verde, LOW);
+    }
+    else
+    {
+      Serial.print(count1 );
+      Serial.println(" scelta B");
+      digitalWrite(led_rosso, LOW);
+      digitalWrite(led_verde, HIGH);
+    }
+    count1=0;
+    t1.stop();
+  }
+  delay(10);
+}
+```
+
 ## **SCHEDULAZIONE CON I TIMERS HW**
 
 La **schedulazione dei task** normalmente riguarda quei compiti che devono essere ripetuti in **maniera periodica**, infatti si parla di **loop() principale** e di **loop secondari** eventualmente sullo stesso thread (**protothread** o mediante costrutti **async/await**) o su altri **thread**. Lo stesso risultato può essere ottenuto con dei timer HW che realizzano un loop su **base evento**. L'**evento** è l'**interrupt** di un timer HW, il **loop** è rappresentato dalla **calback** associata al timer e che viene viene da esso **periodicamente richiamata**.
