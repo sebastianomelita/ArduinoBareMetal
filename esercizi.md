@@ -129,7 +129,13 @@ Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/p
 
 ## **CONTEGGIO DEL TEMPO DI PRESSIONE DI UN TASTO**
 
-```C++
+ La quantità di zucchero si può scegliere facendo  partire un timer alla pressione di un pulsante e facendolo stoppare al suo rilascio. 
+ 
+ La lettura del get() del timer mi da la misura della durata della pressione in millisecondi.
+
+ La funzione ```map(t1.get(), 0, timeout, 0, ledCount)``` trasforma la durata misurata, compresa tra 0 e il timeout, nel valore di una quantità qualsiasi compresa tra 0 e ledCount.
+ 
+ ```C++
 /*
 Sceglie lo zucchero il base al tempo della 
 pressione e si vuole aumentare la 
