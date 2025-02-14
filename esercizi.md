@@ -203,6 +203,7 @@ void loop(){
 ```
 
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422865809533329409
+Simulazione online su Esp32 con Tinkercad del codice precedente: https://www.tinkercad.com/things/5wJTBdL726e-durata-pressione-di-un-pulsante
 
 ## **SCHEDULAZIONE CON I TIMERS HW**
 
