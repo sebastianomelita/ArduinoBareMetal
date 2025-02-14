@@ -202,8 +202,8 @@ void loop(){
 }
 ```
 
-Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422865809533329409
-Simulazione online su Esp32 con Tinkercad del codice precedente: https://www.tinkercad.com/things/5wJTBdL726e-durata-pressione-di-un-pulsante
+- Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422865809533329409
+- Simulazione online su Esp32 con Tinkercad del codice precedente: https://www.tinkercad.com/things/5wJTBdL726e-durata-pressione-di-un-pulsante
 
 ## **CONTEGGIO DEL TEMPO DI PRESSIONE DI UN TASTO (NON BLOCCANTE)**
 
@@ -280,8 +280,8 @@ void loop(){
 }
 ```
 
-Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422891162960627713
-Simulazione online su Esp32 con Tinkercad del codice precedente: https://www.tinkercad.com/things/fxuGfsE0KcZ/editel
+- Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422891162960627713
+- Simulazione online su Esp32 con Tinkercad del codice precedente: https://www.tinkercad.com/things/fxuGfsE0KcZ/editel
 
 ## **SCHEDULAZIONE CON I TIMERS HW**
 
