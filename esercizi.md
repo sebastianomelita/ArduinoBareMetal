@@ -127,7 +127,7 @@ void loop(){
 
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422697318232000513
 
-## **CONTEGGIO DEL TEMPO DI PRESSIONE DI UN TASTO**
+## **CONTEGGIO DEL TEMPO DI PRESSIONE DI UN TASTO  (BLOCCANTE)**
 
  La quantità di zucchero si può scegliere facendo  partire un timer alla pressione di un pulsante e facendolo stoppare al suo rilascio. 
  
@@ -204,6 +204,84 @@ void loop(){
 
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422865809533329409
 Simulazione online su Esp32 con Tinkercad del codice precedente: https://www.tinkercad.com/things/5wJTBdL726e-durata-pressione-di-un-pulsante
+
+## **CONTEGGIO DEL TEMPO DI PRESSIONE DI UN TASTO (NON BLOCCANTE)**
+
+ La quantità di zucchero si può scegliere facendo  partire un timer alla pressione di un pulsante e facendolo stoppare al suo rilascio. 
+ 
+ La lettura del get() del timer mi da la misura della durata della pressione in millisecondi.
+
+ La funzione ```map(t1.get(), 0, timeout, 0, ledCount)``` trasforma la durata misurata, compresa tra 0 e il timeout, nel valore di una quantità qualsiasi compresa tra 0 e ledCount.
+ 
+ ```C++
+/*
+Sceglie lo zucchero il base al tempo della 
+pressione e si vuole aumentare la 
+luminosità di una led bar da 0 a 10.
+
+NB2: La quantità di zucchero si può scegliere facendo
+ partire un timer alla pressione di un pulsante e 
+ facendolo stoppare al suo rilascio. 
+ La lettura del get() del timer mi da la misura 
+ del ritardo. Decidendo che sopra 10 secondi 
+ le misure valgono sempre 10 (tetto superiore), 
+ un valore da 0 a 10 dice la quantità di zucchero 
+ da stampare con Serial.println(). 
+ Variante non bloccante.
+*/
+
+#include "urutils.h"
+int led_rosso=13;
+int led_verde=12;
+int led_3=5;
+int pulsante1=14;
+const int ledCount = 10;
+const int timeout = 2000;
+DiffTimer t1;
+int ledPins[] = {
+  27, 15, 2, 4, 5, 18, 19, 21, 22, 23
+};   // an array of pin numbers to which LEDs are attached
+
+void paintBar(int ledLevel){
+  // loop over the LED array:
+  for (int thisLed = 0; thisLed < ledCount; thisLed++) {
+    // if the array element's index is less than ledLevel,
+    // turn the pin for this element on:
+    if (thisLed < ledLevel) {
+      digitalWrite(ledPins[thisLed], HIGH);
+    }
+    // turn off all pins higher than the ledLevel:
+    else {
+      digitalWrite(ledPins[thisLed], LOW);
+    }
+  }
+}
+void setup(){
+  // loop over the pin array and set them all to output:
+  for (int thisLed = 0; thisLed < ledCount; thisLed++) {
+    pinMode(ledPins[thisLed], OUTPUT);
+  }
+  pinMode(pulsante1, INPUT);
+  Serial.begin(115200);
+}
+
+void loop(){
+  if(digitalRead(pulsante1)==HIGH)
+  {
+    t1.start(); // funzione singleton (segna solo il tempo del primo start!)
+    int level = map(t1.get(), 0, timeout, 0, ledCount);
+    Serial.println(level);
+    paintBar(level);
+  }else{
+    t1.reset();
+    t1.stop();
+  }
+  delay(10);
+}
+```
+
+Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422891162960627713
+Simulazione online su Esp32 con Tinkercad del codice precedente: https://www.tinkercad.com/things/fxuGfsE0KcZ/editel
 
 ## **SCHEDULAZIONE CON I TIMERS HW**
 
