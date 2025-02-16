@@ -344,7 +344,7 @@ Si noti che, sia per timer HW che per timers SW, l'**ordine di apparizione** dei
 
 In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
 
-### **Toggle con antirimbalzo esterno**
+### **Toggle non bloccante con attivazione sul fronte di salita**
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
@@ -404,7 +404,7 @@ void loop() {
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/390695281576032257
 
 
-### **Toggle con polling del rilascio temporizzato con get()**
+### **Toggle non bloccante con attivazione sul fronte di discesa**
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
@@ -430,7 +430,7 @@ void setup() {
 
 // loop principale
 void loop() {
-  if (digitalRead(pulsante)) {// polling pulsante non premuto
+  if (digitalRead(pulsante)) {//rilevazione fronte di salita
     debt.start();
   }
   if (debt.get() > 50  && digitalRead(pulsante) == LOW) { // disarmo del timer al timeout
