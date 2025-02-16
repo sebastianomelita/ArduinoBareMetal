@@ -1314,11 +1314,12 @@ Consegnare un esempio completo per ogni scenario possibile di gestione presente 
 - Pulsante senza memoria responsivo con get https://wokwi.com/projects/391105027631947777
 - Pulsante senza memoria responsivo con i thread https://wokwi.com/projects/391106418377249793
 - Pulsante senza memoria responsivo con i timer HW https://wokwi.com/projects/391107103111045121
-- pulsante con memoria con get: https://wokwi.com/projects/391108412935624705
-- pulsante con memoria con delay: https://wokwi.com/projects/391108833341231105
-- pulsante con memoria con i thread: https://wokwi.com/projects/391109183918999553
-- pulsante con memoria con i timer HW: https://wokwi.com/projects/391109387683542017
-- pulsante con memoria con get2: https://wokwi.com/projects/391110569888045057
+- pulsante con memoria bloccante  con delay: https://wokwi.com/projects/391108833341231105
+- pulsante con memoria non bloccante con attivazione sul fronte di salita con get(): https://wokwi.com/projects/391108412935624705
+- pulsante con memoria non bloccante  con attivazione sul fronte di discesa con get(): https://wokwi.com/projects/391110569888045057
+- pulsante con memoria non bloccante  con i thread: https://wokwi.com/projects/391109183918999553
+- pulsante con memoria non bloccante  con i timer HW: https://wokwi.com/projects/391109387683542017
+
 
 ### **Es37. Erogatore per gatti**
 
