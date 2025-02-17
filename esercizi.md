@@ -1333,8 +1333,7 @@ NB: Il pulsante é premuto il topo sta entrando. Ho letto il fronte di salita e 
 
 - Con toggle non bloccante e timer sul fronte di discesa su tinkercad: https://www.tinkercad.com/things/jAM2qVg43KU/editel
 - Con rilevazione del fronte di discesa e senza debounce su tinkercad: https://www.tinkercad.com/things/5l6LDBg8K4g/editel
-
-Con rilevazione del fronte di discesa e senza debounce su Wokwi: https://wokwi.com/projects/392867901924989953
+- Con rilevazione del fronte di discesa e senza debounce su Wokwi: https://wokwi.com/projects/392867901924989953
 
 
 
