@@ -1348,7 +1348,8 @@ Allo scadere del timer viene eseguito il conteggio: se minore di uno, scelta A; 
 
 - **NB2:** La quantità di zucchero si può scegliere facendo partire un timer alla pressione di un pulsante e facendolo stoppare al suo rilascio. La lettura del get() del timer mi da la misura del ritardo. Decidendo che sopra 10 secondi le misure valgono sempre 10 (tetto superiore), un valore da 0 a 10 dice la quantità di zucchero da stampare con Serial.println(). Ricordarsi che il get() deve stare in un loop non bloccato per potere contare.
 
-https://wokwi.com/projects/391440818569488385
+- https://www.tinkercad.com/things/7TvzaavTq4A/editel
+- https://wokwi.com/projects/391440818569488385
 
 ### **Es40. Cassaforte**
 
