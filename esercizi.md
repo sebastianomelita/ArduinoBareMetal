@@ -1331,7 +1331,11 @@ Una scatola con una porta a scatto elettrica contiene un'esca. Quando il topo é
 
 NB: Il pulsante é premuto il topo sta entrando. Ho letto il fronte di salita e so che sta entrando. Leggo dopo il fonte di discesa, dello stesso pulsante (barriera luminosa) e so che é conpletamente entrato.
 
+Con toggle non bloccante e timer sul fronte di discesa: https://www.tinkercad.com/things/jAM2qVg43KU/editel
+
 https://wokwi.com/projects/392867901924989953
+
+
 
 ### **Es39. Macchina del caffè**
 
