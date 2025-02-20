@@ -334,7 +334,7 @@ Simulazione con esp32 su Wokwi: https://wokwi.com/projects/391110569888045057
 
 ### **Toggle non bloccante con attivazione sul fronte di salita**
 
-Consiste nell'utilizzare un timer per generare una **cadenza periodica** di letture del **livello corrente** dell'ingresso sotto osservazione per valutare, grazie la confronto col **livello passato**, se ci si trova in presenza di un **cambiamento** e quindi di un **fronte** (di salita o di discesa). L'analisi delle variazioni dei livelli serve a:
+Consiste nell'utilizzare un timer per generare una **cadenza periodica** di letture del **livello corrente** dell'ingresso sotto osservazione per valutare, grazie la confronto col **livello passato**, se ci si trova in presenza di un **cambiamento** e quindi di un **fronte** (di salita o di discesa). L'analisi delle variazioni dei livelli potrebbe essere utilizzata per:
 
 - Se il **periodo** è sufficientemente grande (50 msec) è possibile filtrare i ribalzi meccanici del pulsante e quindi realizzare, mediante il timer, un efficace **debouncer**.
 
