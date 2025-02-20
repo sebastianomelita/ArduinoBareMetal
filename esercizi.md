@@ -446,6 +446,7 @@ void loop() {
   delay(10);
 }
 ```
+Simulazione con esp32 su Wokwi: https://wokwi.com/projects/391110569888045057
 
 ### **Schedulatore generico realizzato con funzione get()**
 
