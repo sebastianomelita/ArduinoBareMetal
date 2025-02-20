@@ -290,6 +290,10 @@ In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il va
 
 ### **Toggle non bloccante con attivazione sul fronte di discesa**
 
+La realizzazione della logica di un **rilevatore di transito** di oggetti potrebbe essere ben ottenuta con questo esempio di utilizzo di un timer che ha la proprietà di rilevare prontmente i **fronti di discesa**, cioè quelle situazioni in cui normalmente un oggetto lascia l'area del sensore. 
+
+Un fronte di **discesa disarma** immediatamente il timer. Un eventuale rimbalzo sul fronte di discesa creerebbe comunque anche un **fronte di salita** spurio che **riarmerebbe** nuovamente il timer attivando il **debouncer**. 
+
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 #include "urutils.h"
@@ -334,13 +338,17 @@ Simulazione con esp32 su Wokwi: https://wokwi.com/projects/391110569888045057
 
 ### **Toggle non bloccante con attivazione sul fronte di salita**
 
-Consiste nell'utilizzare un timer per generare una **cadenza periodica** di letture del **livello corrente** dell'ingresso sotto osservazione per valutare, grazie la confronto col **livello passato**, se ci si trova in presenza di un **cambiamento** e quindi di un **fronte** (di salita o di discesa). L'analisi delle variazioni dei livelli potrebbe essere utilizzata per:
+Consiste nell'utilizzare un timer per generare una **cadenza periodica** di letture del **livello corrente** dell'ingresso sotto osservazione per valutare, grazie la confronto col **livello passato**, se ci si trova in presenza di un **cambiamento** e quindi di un **fronte** (di salita o di discesa). L'analisi delle variazioni dei livelli è utile per:
 
 - Se il **periodo** è sufficientemente grande (50 msec) è possibile filtrare i ribalzi meccanici del pulsante e quindi realizzare, mediante il timer, un efficace **debouncer**.
 
 - Il **confronto** tra il livello al periodo di misura attuale e quello al periodo di misura precedente ci mette in grado di evidenziare la presenza di un **fronte**.
 
 - La **memoria** dello **stato** del pulsante può essere utilizzata per realizzare una logica di inversione dello stato precedente (**logica toggle**) o una logica di **conteggio** di uno (o entrambi) dei fronti.
+
+L'utilizzo del timer in questo pulsante prevede che mediamente entrambi i fronti siano letti con la stessa velocità e questo non costituisce un problema se si vuole realizzare un **pulsante toggle** in quanto sia la logica toggle che il debouncing sono realizzati in maniera efficace.
+
+Purtuttavia, la realizzazione della logica di un **rilevatore di transito** di oggetti potrebbe essere un tantino penalizzata dal ritardo introdotto dal timer nella rilevazione dei **fronti di discesa**, quelle situazioni in cui normalmente un oggetto lascia l'area del sensore.
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
