@@ -292,7 +292,7 @@ In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il va
 
 E' un esempio efficace nel realizzare un pulsante con memoria (**logica toggle**).
 
-Ma soprattutto realizzazione della logica di un **rilevatore di transito** di oggetti potrebbe essere ben ottenuta con questo esempio di utilizzo di un timer grazie alla sua proprietà di rilevare prontamente i **fronti di discesa**, cioè quelle situazioni in cui normalmente un oggetto lascia l'area del sensore. 
+Ma soprattutto la realizzazione della logica di un **rilevatore di transito** di oggetti potrebbe essere ben ottenuta con questo esempio di utilizzo di un timer grazie alla sua proprietà di rilevare prontamente i **fronti di discesa**, cioè quelle situazioni in cui normalmente un oggetto lascia l'area del sensore. 
 
 Questa proprietà potrebbe essere utilizzata pure per realizzare un efficace **contapezzi**.
 
