@@ -284,7 +284,7 @@ void loop(){
 - Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422891162960627713
 - Simulazione online su Esp32 con Tinkercad del codice precedente: https://www.tinkercad.com/things/fxuGfsE0KcZ/editel
 
-### **Toggle basato sul polling del tempo corrente get()**
+## **APPLICAZIONI BASATE SUL POLLING DEL TEMPO CORRENTE**
 
 In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il valore del livello al loop di CPU **attuale** e **confrontandolo** con il valore del livello campionato al **loop precedente** (o a uno dei loop precedenti). Se il valore attuale è HIGH e quello precedente è LOW si è rilevato un **fronte di salita**, mentre se il valore attuale è LOW e quello precedente è HIGH si è rilevato un **fronte di discesa**.  
 
@@ -297,8 +297,6 @@ Ma soprattutto realizzazione della logica di un **rilevatore di transito** di og
 Questa proprietà potrebbe essere utilizzata pure per realizzare un efficace **contapezzi**.
 
 Un fronte di **discesa disarma** immediatamente il timer. Un eventuale rimbalzo sul fronte di discesa creerebbe comunque anche un **fronte di salita** spurio che **riarmerebbe** nuovamente il timer attivando il **debouncer**. 
-
-
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
