@@ -70,57 +70,49 @@ Per consultare dettagli sulla sua implementazione vedi [timer sequenziali](polle
 ## **CONTEGGIO DEL NUMERO DI PRESSIONI DI UN TASTO**
 
 ```C++
-/*il contatore di pressioni si può fare eseguendo ad ogni pressione
- (o rilascio) entrambe le cose seguenti:
-il riarmo di un timer con t1.start() 
-(tanto è attivo solo alla prima volta)
-l'incremento del contatore
-Allo scadere del timer viene eseguito il conteggio:
- se minore di uno, scelta A; se maggiore di 1, scelta B.*/
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led
+mentre un altro led blinka (TASK CONCORRENTI)
+*/
 
 #include "urutils.h"
-int led_rosso=13;
-int led_verde=12;
-int pulsante1=14;
-int count1=0;
+int led = 13;
+int led2 = 27;
+byte pulsante = 12;
+bool stato = LOW;
 DiffTimer t1;
+DiffTimer debt;
 
-void setup(){
-  pinMode(pulsante1, INPUT);
-  pinMode(led_rosso, OUTPUT);
-  pinMode(led_verde, OUTPUT);
-  Serial.begin(115200);
+void blink(byte led) {
+  digitalWrite(led, !digitalRead(led));
 }
 
-void loop(){
-  if(digitalRead(pulsante1)==HIGH) // fronte di salita
-  {
-    waitUntilInputLow(pulsante1, 50); //fronte di discesa
-    t1.start();                       // armo il timer SW
-    count1++;                         // incremento del conteggio sul fronte di discesa
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(pulsante, INPUT);
+  t1.start();// attivazione blink
+}
+
+// loop principale
+void loop() {
+  // TASK 1 PULSANTE CON MEMORIA
+  if (digitalRead(pulsante)) {// fronte di salita
+    debt.start(); // campionamento singleton del tempo
   }
-  if(t1.get()>2000)                   //faccio il polling del timout del timer
-  {
-    if(count1<2)                      // valutazione della scelta dell'utente
-    {
-      // scelta A
-      Serial.print(count1 );
-      Serial.println(" scelta A");
-      digitalWrite(led_rosso, HIGH);
-      digitalWrite(led_verde, LOW);
-    }
-    else
-    {
-      // scelta B
-      Serial.print(count1 );
-      Serial.println(" scelta B");
-      digitalWrite(led_rosso, LOW);
-      digitalWrite(led_verde, HIGH);
-    }
-    count1=0;
-    // disarmo del timer con reste del timout
-    t1.reset();
-    t1.stop();
+  // fronte di discesa dopo rimbalzi
+  if (debt.get() > 50  && digitalRead(pulsante) == LOW) { // disarmo del timer al timeout
+    debt.stop(); // disarmo del timer
+    debt.reset();
+    // calcolo della logica del tasto
+    stato = !stato;
+    digitalWrite(led2, stato);
+  }
+
+  // TASK 2 BLINK
+  if (t1.get() > 1000) { // polling timer blink
+    t1.reset(); // riarmo timer blink
+    blink(led);
   }
   delay(10);
 }
