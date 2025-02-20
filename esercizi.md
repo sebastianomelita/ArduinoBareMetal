@@ -290,9 +290,15 @@ In questo caso, il **rilevatore dei fronti** è realizzato **campionando** il va
 
 ### **Toggle non bloccante con attivazione sul fronte di discesa**
 
-La realizzazione della logica di un **rilevatore di transito** di oggetti potrebbe essere ben ottenuta con questo esempio di utilizzo di un timer che ha la proprietà di rilevare prontmente i **fronti di discesa**, cioè quelle situazioni in cui normalmente un oggetto lascia l'area del sensore. 
+E' un esempio efficace nel realizzare un pulsante con memoria (**logica toggle**).
+
+Ma soprattutto realizzazione della logica di un **rilevatore di transito** di oggetti potrebbe essere ben ottenuta con questo esempio di utilizzo di un timer grazie alla sua proprietà di rilevare prontamente i **fronti di discesa**, cioè quelle situazioni in cui normalmente un oggetto lascia l'area del sensore. 
+
+Questa proprietà potrebbe essere utilizzata pure per realizzare un efficace **contapezzi**.
 
 Un fronte di **discesa disarma** immediatamente il timer. Un eventuale rimbalzo sul fronte di discesa creerebbe comunque anche un **fronte di salita** spurio che **riarmerebbe** nuovamente il timer attivando il **debouncer**. 
+
+
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
