@@ -630,8 +630,8 @@ Il tempo per la **riabilitazione** (riarmo) dell'interrupt non deve essere ne tr
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 #include "urutils.h"
 int led = 13;
-byte pulsante =12;
-byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+int pulsante =12;
+volatile bool stato = false;  // variabile globale che memorizza lo stato del pulsante
 volatile bool pressed;
 #define DEBOUNCETIME 50
 DiffTimer debounce;
@@ -640,24 +640,33 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
+  // arma l'interrupt
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
+  // disarma il timer 
   pressed = false;
 }
 
 // Interrupt Service Routine (ISR)
 void switchPressed ()
 {
-  detachInterrupt(digitalPinToInterrupt(pulsante));
-  pressed = true; // disarmo del pulsante e riarmo del timer
-  stato = !stato; // logica da attivare sul fronte (toggle)
+  if(!pressed){// evita detach durante un attach nel loop
+    // disarma l'interrupt
+    detachInterrupt(digitalPinToInterrupt(pulsante));
+    // arma il timer
+    pressed = true; 
+  }
+    
 }  // end of switchPressed
 
 // loop principale
 void loop() {
-  if(pressed){
-    waitUntilInputLow(pulsante, 50);
-    attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
-    pressed = false;
+  if(pressed){// fronte di salita
+    waitUntilInputLow(pulsante, 100); 
+    // fronte di discesa
+    stato = !stato; // logica da attivare sul fronte (toggle)
+    // riarma l'interrupt
+    attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING ); 
+    pressed = false; // disarma il timer
   }
   digitalWrite(led, stato);   	// inverti lo stato precedente del led
   delay(10);
