@@ -843,6 +843,7 @@ byte pulsante =12;
 byte precval, val;
 unsigned long tbase = 50;
 DiffTimer tmrdeb;
+DiffTimer tmrblink1, tmrblink2;
  
 void setup() {
   Serial.begin(115200);
@@ -863,18 +864,20 @@ void loop() {
     if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
       tmrblink1.toggle();		
     }
-    precval=val;	
-    //task_blink1
-    if (tmrblink1.get(tbase) > 500) {
-      digitalWrite(led, !digitalRead(led));
-      tmrblink1.reset();
-    } 
-    //task_blink2
-    if (tmrblink2.get(tbase) > 1000) {
-      digitalWrite(led2, !digitalRead(led2));
-      tmrblink2.reset();
-    } 
   }
+  precval=val;	
+
+  //task_blink1
+  if (tmrblink1.get() > 500) {
+    digitalWrite(led, !digitalRead(led));
+    tmrblink1.reset();
+  } 
+  //task_blink2
+  if (tmrblink2.get() > 1000) {
+    digitalWrite(led2, !digitalRead(led2));
+    tmrblink2.reset();
+  } 
+  
   delay(10);
 }
 ```
