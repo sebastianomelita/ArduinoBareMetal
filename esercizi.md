@@ -500,8 +500,6 @@ Per evitare la rilevazione dei **fronti spuri** successivi al primo, viene disab
 Il tempo per la **riabilitazione** (riarmo) dell'interrupt non deve essere ne troppo presto, cioè minore di 50 msec, altrimenti si finisce per leggere dei rimbalzi ma neppure troppo tardi, altrimenti si perdono degli input dell'utente. Il momento migliore per riabilitare gli interrupt potrebbe essere il momento del rilascio del pulsante, dato che precede sempre una eventuale successiva pressione. In ogni caso, un timer impedisce quei tentativi di riabilitazione che potrebbero avvenire prima dei 50 msec utili ad evitare i rimbalzi.
 
 ```C++
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 #include "urutils.h"
 int led = 13;
 int pulsante =12;
