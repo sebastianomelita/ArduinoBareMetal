@@ -127,7 +127,9 @@ void loop(){
 }
 ```
 
-Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422697318232000513
+- Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422697318232000513
+- Simulazione online su Arduino con Tinkercad del codice precedente: https://www.tinkercad.com/things/biMU3UbIs4G-conta-pressioni-per-scelta-opzioni
+
 
 ### **CONTEGGIO DEL TEMPO DI PRESSIONE DI UN TASTO  (BLOCCANTE)**
 
