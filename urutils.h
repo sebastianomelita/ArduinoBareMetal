@@ -39,8 +39,8 @@ void waitUntilInputHigh(int btn, unsigned t)
 */
 struct DiffTimer
 {
-	unsigned long elapsed, last;
-	bool timerState=false;
+	volatile unsigned long elapsed, last;
+	volatile bool timerState=false;
 	byte state = 0;
 	byte count = 0;
 	void reset(){
@@ -78,10 +78,10 @@ struct DiffTimer
 	}
 };
 
-typedef struct 
+struct DiffTimer2
 {
-	unsigned long elapsed, tbase;
-	bool timerState=false;
+	volatile unsigned long elapsed, tbase;
+	volatile bool timerState=false;
 	byte state = 0;
 	byte count = 0;
 	void reset(){
@@ -120,5 +120,5 @@ typedef struct
 	void setBase(unsigned long e){
 		tbase = e;
 	}
-} DiffTimer2;
+};
 #endif
