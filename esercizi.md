@@ -739,8 +739,10 @@ void loop() {
 }
 ```
 
-Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/423543840234258433
+- Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/423543840234258433
+- Simulazione online su ESP32 del codice precedente con Tinkercad: https://www.tinkercad.com/things/dyrIzrr7OlE-toggle-interrupt-no-blocking
 
+  
 ### **Pulsante toggle basato su interrupts e debounce nella ISR**
 
 Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
