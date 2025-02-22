@@ -673,7 +673,8 @@ void loop() {
 }
 ```
 
-Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
+- Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
+- Simulazione online su ESP32 del codice precedente con Tinkercad: https://www.tinkercad.com/things/4KnKm94hoP1-toggle-interrupt-delay
 
 
 ### **Pulsante toggle basato su interrupts e timer debounce con timer SW get()**
