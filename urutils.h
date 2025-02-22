@@ -37,7 +37,7 @@ void waitUntilInputHigh(int btn, unsigned t)
     }
 }
 */
-typedef struct 
+struct DiffTimer
 {
 	unsigned long elapsed, last;
 	bool timerState=false;
@@ -76,7 +76,7 @@ typedef struct
 		reset();
 		elapsed = e;
 	}
-} DiffTimer;
+};
 
 typedef struct 
 {
