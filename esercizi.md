@@ -698,79 +698,208 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```co
 
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/388638737495929857
 
-## **Schedulatore a conteggio realizzato con funzione get()**
 
-Il codice precedente è basato su due timers SW indipendenti nel senso che ognuno realizza il polling del tempo corrente separatamente ad ogni ciclo di loop(), cioè, alla massima velocità consentita dal sistema. Se i polling sono in numero limitato questa soluzione non crea grossi problemi ma se invece i timers sono parecchi, allora potrebbe capitare che il carico computazionale del polling possa diventare comparabile al peso dei vari task eseguiti.
+## **SCHEDULATORE DI COMPITI BASATO SUL POLLING DEL TEMPO CORRENTE**
 
-E' di aiuto in questo caso l'utilizzo di uno **schedulatore** dei compiti, ovvero di un codice che, a partire da un **tempo base comune**, sappia **programmare nel tempo** (schedulare) i vari compiti (task) affinchè vengano **eseguiti** esattamente nel tempo **assegnato** a ciascuno.
+Una categoria di **schedulatori di compiti** che, a differenza di quelli basati sulla ```delay()```, possiede la peculiare proprietà di **non bloccare** l'esecuzione degli atri task del ```loop()``` si può ottenere realizzando,  all'interno del ```loop()```, il **polling periodico** della funzione ```millis()```. 
 
-Il **timer schedulatore** è realizzato utilizzando una variante ```DiffTimer2``` del timer della libreria [urutils.h](urutils.h) in cui, ad ogni chiamata della funzione ```get()```, viene incrementato il tempo corrente di ciascun timer (elapsed) di una quantità fissa pari al **tempo base**. Il momento dell'incremento è contestuale a quello della chiamata a ```get()``` che, quindi, deve avvenire **ogni tempo base**. Il tempo base è il **M.C.D.** dei tempi **in gioco** nei vari task.
+Il **polling** della funzione ```millis()``` serve a stabilire in **quale ciclo** di loop il **tempo corrente** assume il valore di **tempo limite** (timeout) oltre il quale **eseguire** un certo **compito**.
 
-Il **timer schedulatore** è diverso per ciascun task, ma tutti i timer di questo tipo hanno a comune lo stesso tempo base in base al quale incrementano internamente il proprio **tempo corrente**. Il tempo corrente (elapsed) è calcolato separatamente per ogni timer schedulatore e quindi **azzerato**, tramite la funzione ```reset()```, con una **periodicità** che è **diversa** per ciascuno. 
+E’ buona norma evitare, all'interno dei task, l’esecuzione frequente di **operazioni lente** quando queste non sono strettamente necessarie, in modo da lasciare spazio ad altre operazioni, quali ad esempio gestione degli eventi di input, che richiedono una velocità elevata per essere usufruite in modo più interattivo.
 
-La **periodicità** è stabilita dalla **condizione** sulla funzione ```get()``` che valuta l'avvenuto scadere del **timeout**. Il **polling** sulla condizione di timeout non avviene alla massima velocità del microprocessore (variabile da pezzo a pezzo) ma, in maniera più precisa e, soprattutto, più rada, ad ogni **tempo base**.
+**In particolare**, all'interno di un task, andrebbe accuratamente evitata l'introduzione di ritardi prolungati tramite **delay()**. Possono esserci per **breve tempo** (qualche mSec) ma, in ogni caso, non dovrebbero mai far parte della maniera (**algoritmo**) con cui la logica di comando **pianifica i suoi eventi**.
 
-Il **timer schedulatore** non possedendo un riferimento che tiene il tempo internamente ad esso (ad es. una millis()), deve essere richiamato da una funzione esterna esattamente allo scoccare di ogni **tempo base**.
+Utilizzando la tecnica della **schedulazione esplicita dei task** nel loop(), la **realizzazione di un algoritmo** non dovrebbe essere pensata in **maniera sequenziale (o lineare)** ma, piuttosto, come una **successione di eventi** a cui corrispondono dei **compiti** (task) che **comunicano** con le periferiche di input/output ed, eventualmente, dialogano tra loro in qualche modo (ad es. variabili globali, buffer, ecc.).
 
-Il **tempo base** viene generato utilizzando il timer ```DiffTimer1``` che realizza, mediante il polling della sua funzione ```get()```, il polling della funzione ```millis()``` che restituisce il **tempo corrente** del sistema. 
 
-Il **tempo base** viene **comunicato** a ciascun timer schedulatore attraverso un **argomento** della funzione ```get()```.
+### **Momento del campionamento**
+
+Il **polling** (o campionamento periodico) della millis() può essere fatto:
+- all'**inizio di ogni ```loop()```** per cui la misura del tempo attuale è **la stessa** per tutti i task e con questa, task per task, ci si regola per stabilire il ciclo di loop() in cui un determinato task diventa "maturo", cioè, quello in cui per lui il tempo misurato supera il **timeout** oltre il quale deve andare in esecuzione.
+  ```C++
+  // task 1
+  unsigned long currMillis = millis();
+  if ((currMillis - precs[0]) >= period[0]) {
+	precs[0] += period[0]; 
+	//................
+  }	
+  // task 2
+  if (((currMillis - precs[1]) >= period[1]) {
+	precs[1] += period[1]; 
+	//................
+  }
+  ```
+- all'**inizio di ogni task** in modo da **compensare**, nella valutazione precedente del tempo del task, anche di un eventuale **ritardo** cumulato dai task precedentemente eseguiti. 
+  E' una variante **più precisa** della precedente anche se **più costosa computazionalmente** (eccessivi polling della millis() quando ci sono molti task).
+  ```C++
+	// un timer SW indipendente per ogni task
+  	// task 1
+	if ((millis() - precs[0]) >= period[0]) {
+		precs[0] += period[0]; 
+        	//..........
+	}	
+	// task 2
+	if (((millis() - precs[1]) >= period[1]) {
+		precs[1] += period[1]; 
+        	//...........
+	} 
+    ```
+  
+### **Precisione del timer SW**
+
+I timer SW basati sul polling possono essere realizzati in due forme:
+- senza compensazione del ritardo di esecuzione della millis():
+	```C++
+	unsigned long tassoluto = 0;
+	if ((millis() - tassoluto) >= periodo)
+	{
+		tassoluto = millis();
+		....
+	}
+	```
+ 	E' poco preciso sulle lunghe corse se si è interessati anche al tempo assoluto (deriva dopo pochi minuti)
+  
+ - Con compensazione del ritardo di esecuzione della assegnazione che coinvolge la millis():
+	```C++
+	unsigned long tassoluto = 0;
+	if ((millis() - tassoluto) >= periodo)
+	{
+		tassoluto += periodo;
+		....
+	}
+	```
+	E' più preciso sulle lunghe corse se si è interessati anche al tempo assoluto (deriva dopo parecchie ore)
+
+
+### **Tipi di schedulazione**
+
+Una volta stabilito ad ogni loop() il valore del tempo corrente, ci sono molti modi per determininare da esso i tempi dei vari task. Ognuna di queste tecniche, in realtà, è adoperabile a prescindere dal campionamento della millis(), tutte richiedono soltanto che lo schedulatore venga chiamato al tempo usato come **riferimento** per la generazione di tutti gli altri tempi. Questo tempo è detto **tempo base**. 
+
+Il **tempo base** è un tempo fisso comune a tutti i task, la loro **periodicità** deve quindi essere un **multiplo intero** del tempo base.
+
+Gli **schedulatori** di questo tipo sono **periodici** e si possono realizzare sostanzialmente in **due modi**:
+- mediante ripetizione di una **sequenza di tick** periodici che fissano il **tempo base**. Un successivo **conteggio** o **filtraggio** dei tick discrimina il **momento** in cui deve essere eseguito **un task** piuttosto che un altro.
+- mediante **timer periodici** che, per **ogni task**, stabiliscono un **timeout** oltre il quale il **polling** della funzione millis() **segnala** il momento buono per **eseguire** quel task.
+
+<img src="schdulatore_generico.jpg" alt="alt text" width="1000">
+
+
+### **SCHEDULATORE DI COMPITI BASATO SU TIMER PERIODICI**
+
+Uno schedulatore di compiti (task) si può realizzare anche utilizzando **più timers** basati sul polling della funzione millis(). 
 
 ```C++
-/*
-Alla pressione del pulsante si attiva o disattiva il lampeggo di un led, mentre un
-altro led lampeggia indisturbato.
-*/
-#include "urutils.h"
-int led = 13;
-int led2 = 14;
-byte pulsante =12;
-byte precval, val;
-unsigned long tbase = 50;
-DiffTimer tmrdeb;
-DiffTimer2 tmrblink1, tmrblink2;
- 
-void setup() {
-  Serial.begin(115200);
-  pinMode(led, OUTPUT);
-  pinMode(led2, OUTPUT);
-  pinMode(pulsante, INPUT);
-  precval=LOW;
-  tmrdeb.start();
-  tmrblink2.start();
-  tmrblink1.setBase(tbase);
-  tmrblink2.setBase(tbase);
+byte led1 = 13;
+byte led2 = 12;
+unsigned long period[2];
+unsigned long precs[2];
+
+void setup()
+{
+	pinMode(led1, OUTPUT);
+  	pinMode(led2, OUTPUT);
+	precs[0]=0;
+	precs[1]=0;
+	period[0] = 500;
+	period[1] = 1000;
 }
 
-// loop principale
-void loop() {
-  if(tmrdeb.get() > tbase){  	
-    tmrdeb.reset();   
-    //task_toggle
-    val = digitalRead(pulsante);		
-    if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
-      tmrblink1.toggle();		
-    }
-    precval=val;	
-    //task_blink1
-    if (tmrblink1.get() > 500) {
-      digitalWrite(led, !digitalRead(led));
-      tmrblink1.reset();
-    } 
-    //task_blink2
-    if (tmrblink2.get() > 1000) {
-      digitalWrite(led2, !digitalRead(led2));
-      tmrblink2.reset();
-    } 
-  }
-  delay(10);
+void loop()
+{
+	unsigned long current_millis = millis();
+	// task 1
+	if ((current_millis - precs[0]) >= period[0]) {
+		precs[0] += period[0]; 
+        	digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+	}	
+	// task 2
+	if ((current_millis - precs[1]) >= period[1]) {
+		precs[1] += period[1]; 
+        	digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+	}
+	// il codice eseguito al tempo massimo della CPU va qui
 }
 ```
-Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/388359604541585409
 
-Si noti che l'**ordine di apparizione** dei task all'interno del codice del loop potrebbe non rispecchiare l'**ordine** con cui gli stessi vengono **eseguiti**, cioè l'ordine di esecuzione avviene in maniera **asincrona** rispetto al codice, secondo il principio della cosidetta programmazione ad eventi. Eventi possono attivare o disattivare altri eventi in base ad input esterni oppure in base al valore raggiunto da certe variabili di stato.
+Si noti che:
+- il timer SW con il polling viene eseguito ad **ogni ciclo** di ```loop()```
+- i timer SW sono N (uno per ogni tempo futuro)
+- il calcolo degli N tempi futuri è eseguito N volte (una per ogni tempo) **ad ogni ciclo** di ```loop()```
+- il calcolo può essere reso estremamente **preciso** e realizzato in maniera indipendente tra un tempo e l'altro.
 
-Questo esempio conclude tutte le **tecniche** possibili per programmare eventi nel tempo in un sistema a microprocessore che quindi potrebbero essere riassunte in: **delay** nel loop(), delay nei **thread**, **timer SW** nel loop(), **timer HW**, timer schedulatori per progettare complessivamente uno **scheduler** che realizzi la tecnica del multitasking a partire da un **riferimento** temporale **esterno** scelto tra millis(), delay(), interrupts di timer HW.
+Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/embed/fcbmLkC10ms?editbtn=1
+
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/351933794966569551
+
+
+## **SCHEDULATORE DI COMPITI BASATO SU FILTRAGGIO DEL TEMPO BASE**
+
+E' possibile realizzare uno schedulatore di **più task** che agiscono con periodicità **diverse** in tempi diversi a partire da un timer che esegue periodicamente un **task comune** si sincronizzazione che agisce su un **tempo** base comune **sottomultiplo** del tempo di tutti gli altri task. In altre parole, il **periodo** di ciascun task è un **multiplo intero** del periodo base di sincronizzazione comune:
+- il **tick** del **tempo base** viene ottenuto mediante il polling della funzione ```millis()``` eseguito ad **ogni ```loop()```**
+- ad ogni **tick** del **tempo base** viene aggiornato il momento del prossimo tick mediante l'espressione ```precm += tbase```
+- Il **tempo base** comune a tutti i task, si può calcolare col **massimo comune divisore** (M.C.D. o G.C.D) di tutti i tempi dei singoli task.
+- **ad ogni tick** del tempo base viene misurato se è maturato il tick del tempo di ciascun task valutando il valore del tempo base fino a quel momento mediante ```(precm - precs[i]) >= period[i]```
+- se la **condizione di scatto** del tick di un task è verificata allora viene calcolato il **tempo** del tick **successivo** sommando al tempo del tick corrente la periodicità del task: ```precs[i] += period[i]```
+
+
+```C++
+byte led1 = 13;
+byte led2 = 12;
+unsigned long period[2];
+unsigned long precs[2];
+unsigned long precm;
+unsigned long tbase;
+
+void setup()
+{
+	pinMode(led1, OUTPUT);
+  	pinMode(led2, OUTPUT);
+	period[0] = 500;
+	period[1] = 1000;
+	precm = 0;
+	tbase = 500;
+	// inizializzazione dei task
+	for(int i=0; i<2; i++){
+		precs[i] = precm -period[i];
+	}
+}
+
+void loop()
+{
+	if(millis()-precm >= tbase){ 	
+		precm += tbase;  			
+		// task 1
+		if ((precm - precs[0]) >= period[0]) {
+			precs[0] += period[0]; 
+			digitalWrite(led1,!digitalRead(led1)); 	// stato alto: led blink
+		}	
+		// task 2
+		if ((precm - precs[1]) >= period[1]) {
+			precs[1] += period[1]; 
+			digitalWrite(led2,!digitalRead(led2)); 	// stato alto: led blink
+		}
+	}
+	// il codice eseguito al tempo massimo della CPU va qui
+	delay(1);
+}
+```
+Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352691213474403329
+
+**Tempo assoluto**
+
+La generazione del tempo assoluto di riferimento mediante```precm += tbase``` è basata su considerazioni riportate in [Generazione di tempi assoluti](absolutetime.md)
+
+**Inizializzazione dei task**
+
+Per ottenere la partenza sincronizzata di tutti i task al primo tick del sistema bisogna prima inizializzare il tempo trascorso (```precs[i]```) di ogni task al valore del suo intervallo di esecuzione (``period[i]``):
+
+```C++
+//Inizializzazione dei task
+for(int i=0; i<2; i++){
+	precs[i] = precm -period[i];
+}
+```
+
 ## **SCHEDULAZIONE CON I TIMERS HW**
 
 La **schedulazione dei task** normalmente riguarda quei compiti che devono essere ripetuti in **maniera periodica**, infatti si parla di **loop() principale** e di **loop secondari** eventualmente sullo stesso thread (**protothread** o mediante costrutti **async/await**) o su altri **thread**. Lo stesso risultato può essere ottenuto con dei timer HW che realizzano un loop su **base evento**. L'**evento** è l'**interrupt** di un timer HW, il **loop** è rappresentato dalla **calback** associata al timer e che viene viene da esso **periodicamente richiamata**.
