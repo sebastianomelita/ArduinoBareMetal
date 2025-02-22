@@ -427,78 +427,6 @@ Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/p
 
 <img src="img\interruptPulsante.jpg" alt="alt text" width="1200">
 
-### **Pulsante toggle basato su interrupts e timer HW**
-
-Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
-
-All'**ingresso** di una **porta digitale** viene associata una callback che viene invocata alla ricezione di un segnale di interrupt attivo su entrambi i fronti. Il fronte di salita, **selezionato** prendendo solo i valori HIGH, potrebbe essere rilevato molte volte consecutivamente a causa del fenomeno dei rimbalzi. Per evitare la rilevazione dei **fronti spuri** successivi al primo, viene disabilitata, dentro la ISR, la loro rilevazione **disarmando** gli interrupt  mediante l'istruzione ```detachInterrupt(digitalPinToInterrupt(pulsante))```. 
-
-Il tempo per la **riabilitazione** (riarmo) dell'interrupt non deve essere ne troppo presto, cioè minore di 50 msec, altrimenti si finisce per leggere dei rimbalzi ma neppure troppo tardi, cioè dopo la pressione di un tasto, altrimenti si perdono degli input dell'utente. Il momento migliore per riabilitare gli interrupt potrebbe essere il momento del rilascio del pulsante, dato che precede sempre una eventuale successiva pressione. In ogni caso, un timer impedisce quei tentativi di riabilitazione che potrebbero avvenire prima dei 50 msec utili ad evitare i rimbalzi.
-
-Il **timer** è di tipo **one shot** e viene riarmato solo se un polling della porta del tasto fornisce ancora **valore alto** (tasto premuto se in pull down). Se invece fornisce **valore basso**, non viene riarmato il timer ma viene riarmato al suo posto l'interrupt del tasto mediante l'istruzione  ```attachInterrupt() ```.
-
-Allo scadere del timeout viene eseguita la callback ```waitUntilInputLow()``` all'interno della ISR del timer. La funzione esegue una nuova lettura del valore della porta:
-- se è **HIGH** allora deduce che il pulsante è **ancora premuto** e decide di aspettare ancora altri 50 msec riavviando il timer di rilevazione del fronte di discesa
-- se è **LOW** allore deduce che il pulsante è **stato rilasciato** e decide di riabilitarlo ad una nuova pressione (riarmo) disasserendo il fag di disabilitazione ```pressed```.
-
-La funzione di **debouncing** è garantita introducendo un **tempo minimo** di attesa tra un campionamento e l'altro.
-
-Per mantenere la ISR chiamante il più veloce possibile, viene spostato nel ```loop()```  l'algoritmo di blink basato sui ```delay()```, dove può fare il suo lavoro industurbato essendo l'unico task (suscettibile ai ritardi) presente. 
-
-Le attese sono tutte **non bloccanti** e realizzate tramite un timer HW che adopera esso stesso gli **interrupt** per richiamare la funzione di servizio (callback) da eseguire allo scadere del **timeout**. Il timer, utilizzando gli interrupt, è in grado di intervenire in tempo in **tutte le situazioni**, eventualmente anche interrompendo l'esecuzione di istruzioni che impegnino intensamente il loop(). Si tratta sicuramente di una realizzazione che, avendo la massima efficacia possibile in tutte le situazioni, si presta alla realizzazione di **dispositivi di sicurezza**.
-
-```C++
-#include <Ticker.h>
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-int led = 13;
-byte pulsante =12;
-volatile bool stato;
-#define DEBOUNCETIME 50
-Ticker debounceTicker;
- 
-void setup() {
-  Serial.begin(115200);
-  pinMode(led, OUTPUT);
-  pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
-  stato = false;
-}
-
-void switchPressed ()
-{
-  detachInterrupt(digitalPinToInterrupt(pulsante));
-  debounceTicker.once_ms(50, waitUntilInputLow);  
-  Serial.println("SALITA disarmo pulsante");
-  stato = !stato; 	 // logica da attivare sul fronte (toggle)
-
-}  // end of switchPressed
-
-void waitUntilInputLow()
-{
-    if (digitalRead(pulsante) == HIGH)//se coincide con il valore di un polling
-    { 
-        Serial.print("Aspetto");
-        debounceTicker.once_ms(50, waitUntilInputLow);  
-    }else{
-        Serial.print("DISCESA riarmo pulsante\n");
-        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
-    }
-}
-
-// loop principale
-void loop() {
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
-		delay(500);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    		delay(10);
-	}
-}
-
-```
-Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/390289622147259393
-
 ### **Pulsante toggle basato su interrupts e con debounce basato sui delay()**
 
 All'**ingresso** di una **porta digitale** viene associata una callback che viene invocata alla ricezione di un segnale di interrupt attivo su entrambi i fronti. Il fronte di salita, **selezionato** prendendo solo i valori HIGH, potrebbe essere rilevato molte volte consecutivamente a causa del fenomeno dei rimbalzi. 
@@ -704,6 +632,77 @@ Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```co
 
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/388638737495929857
 
+### **Pulsante toggle basato su interrupts e timer HW**
+
+Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
+
+All'**ingresso** di una **porta digitale** viene associata una callback che viene invocata alla ricezione di un segnale di interrupt attivo su entrambi i fronti. Il fronte di salita, **selezionato** prendendo solo i valori HIGH, potrebbe essere rilevato molte volte consecutivamente a causa del fenomeno dei rimbalzi. Per evitare la rilevazione dei **fronti spuri** successivi al primo, viene disabilitata, dentro la ISR, la loro rilevazione **disarmando** gli interrupt  mediante l'istruzione ```detachInterrupt(digitalPinToInterrupt(pulsante))```. 
+
+Il tempo per la **riabilitazione** (riarmo) dell'interrupt non deve essere ne troppo presto, cioè minore di 50 msec, altrimenti si finisce per leggere dei rimbalzi ma neppure troppo tardi, cioè dopo la pressione di un tasto, altrimenti si perdono degli input dell'utente. Il momento migliore per riabilitare gli interrupt potrebbe essere il momento del rilascio del pulsante, dato che precede sempre una eventuale successiva pressione. In ogni caso, un timer impedisce quei tentativi di riabilitazione che potrebbero avvenire prima dei 50 msec utili ad evitare i rimbalzi.
+
+Il **timer** è di tipo **one shot** e viene riarmato solo se un polling della porta del tasto fornisce ancora **valore alto** (tasto premuto se in pull down). Se invece fornisce **valore basso**, non viene riarmato il timer ma viene riarmato al suo posto l'interrupt del tasto mediante l'istruzione  ```attachInterrupt() ```.
+
+Allo scadere del timeout viene eseguita la callback ```waitUntilInputLow()``` all'interno della ISR del timer. La funzione esegue una nuova lettura del valore della porta:
+- se è **HIGH** allora deduce che il pulsante è **ancora premuto** e decide di aspettare ancora altri 50 msec riavviando il timer di rilevazione del fronte di discesa
+- se è **LOW** allore deduce che il pulsante è **stato rilasciato** e decide di riabilitarlo ad una nuova pressione (riarmo) disasserendo il fag di disabilitazione ```pressed```.
+
+La funzione di **debouncing** è garantita introducendo un **tempo minimo** di attesa tra un campionamento e l'altro.
+
+Per mantenere la ISR chiamante il più veloce possibile, viene spostato nel ```loop()```  l'algoritmo di blink basato sui ```delay()```, dove può fare il suo lavoro industurbato essendo l'unico task (suscettibile ai ritardi) presente. 
+
+Le attese sono tutte **non bloccanti** e realizzate tramite un timer HW che adopera esso stesso gli **interrupt** per richiamare la funzione di servizio (callback) da eseguire allo scadere del **timeout**. Il timer, utilizzando gli interrupt, è in grado di intervenire in tempo in **tutte le situazioni**, eventualmente anche interrompendo l'esecuzione di istruzioni che impegnino intensamente il loop(). Si tratta sicuramente di una realizzazione che, avendo la massima efficacia possibile in tutte le situazioni, si presta alla realizzazione di **dispositivi di sicurezza**.
+
+```C++
+#include <Ticker.h>
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+int led = 13;
+byte pulsante =12;
+volatile bool stato;
+#define DEBOUNCETIME 50
+Ticker debounceTicker;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
+  stato = false;
+}
+
+void switchPressed ()
+{
+  detachInterrupt(digitalPinToInterrupt(pulsante));
+  debounceTicker.once_ms(50, waitUntilInputLow);  
+  Serial.println("SALITA disarmo pulsante");
+  stato = !stato; 	 // logica da attivare sul fronte (toggle)
+
+}  // end of switchPressed
+
+void waitUntilInputLow()
+{
+    if (digitalRead(pulsante) == HIGH)//se coincide con il valore di un polling
+    { 
+        Serial.print("Aspetto");
+        debounceTicker.once_ms(50, waitUntilInputLow);  
+    }else{
+        Serial.print("DISCESA riarmo pulsante\n");
+        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
+    }
+}
+
+// loop principale
+void loop() {
+	if (stato) {
+		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
+		delay(500);
+	} else {
+		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
+    		delay(10);
+	}
+}
+
+```
+Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/390289622147259393
 
 ## **SCHEDULATORE DI COMPITI BASATO SUL POLLING DEL TEMPO CORRENTE**
 
