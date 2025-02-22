@@ -31,10 +31,6 @@ Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto
   -    **reset()** per azzerare il timer.
   -    **stop()** per bloccare (disarmare) il timer.
 
-Per consultare dettagli sulla sua implementazione vedi [timer sequenziali](polledtimer_seq.md).
-
-
-
 ```python
 class DiffTimer(object):
     def __init__(self,elapsed):
