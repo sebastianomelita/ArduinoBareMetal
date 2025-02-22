@@ -67,7 +67,11 @@ Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto
 
 Per consultare dettagli sulla sua implementazione vedi [timer sequenziali](polledtimer_seq.md).
 
-## **CONTEGGIO DEL NUMERO DI PRESSIONI DI UN TASTO**
+## **PULSANTI CON MEMORIA E SENZA MEMORIA**
+
+<img src="img\pulsanti.jpg" alt="alt text" width="1000">
+
+### **CONTEGGIO DEL NUMERO DI PRESSIONI DI UN TASTO**
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led
@@ -120,7 +124,7 @@ void loop() {
 
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422697318232000513
 
-## **CONTEGGIO DEL TEMPO DI PRESSIONE DI UN TASTO  (BLOCCANTE)**
+### **CONTEGGIO DEL TEMPO DI PRESSIONE DI UN TASTO  (BLOCCANTE)**
 
  La quantità di zucchero si può scegliere facendo  partire un timer alla pressione di un pulsante e facendolo stoppare al suo rilascio. 
  
@@ -198,7 +202,7 @@ void loop(){
 - Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/422865809533329409
 - Simulazione online su Esp32 con Tinkercad del codice precedente: https://www.tinkercad.com/things/5wJTBdL726e-durata-pressione-di-un-pulsante
 
-## **CONTEGGIO DEL TEMPO DI PRESSIONE DI UN TASTO (NON BLOCCANTE)**
+### **CONTEGGIO DEL TEMPO DI PRESSIONE DI UN TASTO (NON BLOCCANTE)**
 
  La quantità di zucchero si può scegliere facendo  partire un timer alla pressione di un pulsante e facendolo stoppare al suo rilascio. 
  
@@ -410,138 +414,6 @@ void loop() {
 ```
 
 Simulazione online su Esp32 con Wowki del codice precedente: https://wokwi.com/projects/390695281576032257
-
-
-## **SCHEDULAZIONE CON I TIMERS HW**
-
-La **schedulazione dei task** normalmente riguarda quei compiti che devono essere ripetuti in **maniera periodica**, infatti si parla di **loop() principale** e di **loop secondari** eventualmente sullo stesso thread (**protothread** o mediante costrutti **async/await**) o su altri **thread**. Lo stesso risultato può essere ottenuto con dei timer HW che realizzano un loop su **base evento**. L'**evento** è l'**interrupt** di un timer HW, il **loop** è rappresentato dalla **calback** associata al timer e che viene viene da esso **periodicamente richiamata**.
-
-Ma un **timer** si può impostare per **generare**:
-- **eventi sincroni** cioè **periodici** dopo intervalli fissi e programmabili
-- **eventi asincroni** cioè **aperiodici** da eseguire una sola volta (monostabili o one-shot) dopo un certo tempo calcolato **nel futuro** a partire dal **momento** in cui avviene il comando di **attivazione** (start).
-
-Per cui un **timer HW** offre una versatilità in più se, nello stesso progetto, si vogliono **combinare insieme** eventi periodici con eventi aperiodici triggerati da eventi su un **ingresso** o da altri **eventi** (scadenza di timeout o contatori).
-
-La **stessa cosa** è in realtà possibile realizzarla anche con i **timer SW** basati sul polling nel loop principale della funzione millis(). La loro **versatilità** è uguale se non **superiore**, ma sono soggetti ad alcune limitazioni che potrebbero renderli non adatti in certi contesti. L'ambito che **penalizza** di più i timer SW è quello delle applicazioni **mission-critical** (o **critical-time**). In questo tipo di applicazioni si deve prevedere che l'esecuzione di certi compiti avvenga in maniera estremamente puntuale, pena l'introduzione di **instabilità** nel sistema o di **perdita di sicurezza** per chi lo adopera.
-
-Rispetto agli altri metodi di creazione di base dei tempi (polling della millis(), thread e protothread), è tendenzialmente più legato ad uno specifico vendor di HW e ad una specifica linea di prodotti. Le **API dei timer**, pur esendo **molto simili** tra loro, **non sono standardizzate** e la **portabilità** del SW nel tempo potrebbe non essere garantita. In ogni caso **semplificano** parecchio la **gestione delle ISR** associate a timer HW che altrimenti, eseguita a basso livello, richiede una impostazione di **registri interni** della CPU che necessita di conoscenze di dettaglio molto specifiche.
-
- ### **Modalità di utilizzo**
-
-La **modalità di utilizzo** è simile a quella di una **usuale ISR**. Una **funzione di callback** viene associata ad un evento di un timer tramite un metodo **attach()**. La dissociazione si fa con il metodo contrario **detach()**. Gli **eventi possibili** sono una chiamata una tantum (**one shot** o timer monostabile) o una chiamata **periodica** o timer bistabile. Nella definizione dell'attach() viene anche impostato il **tempo di scadenza** del timer.  Gli **eventi possibili** sono:
-- una chiamata una tantum (**one shot** o timer monostabile)
-- una chiamata **periodica** o timer bistabile.  
-
-I **timer HW** possono essere:
-- **fisici**. Cioè **limitati in numero** ai dispositivi HW dedicati a questo scopo effettivamente presenti nel sistema (nell'ESP32 sono 4) e inoltre devono essere riferiti esplicitamente nel codice con un loro specifico id (un numero da 1 a 4).
-- **logici o virtuali**. Sono virtualmente di **numero infinito** e rappresentano delle **astrazioni SW** del sottostante HW fisico che è condiviso in qualche modo da uno **strato di gestione** trasparente al programmatore. 
-
-La possibilità di poter **instanziare** un **timer logico** per **ogni task**, a sua volta definito all'interno di una certa **callback**, rende l'utilizzo dei timer una strada **effettivamente percorribile** per la realizzazione di uno **schedulatore di compiti** sia periodici che one shot (esecuzione singola non ripetuta). La **schedulazione** dei compiti inoltre rimane **molto precisa** perchè collegata a ISR eseguite da segnali di interrupt lanciati da **timer fisici**.
-
-Si ricorda che in C e in C++ le variabili globali a comune tra ISR e loop() principale e suscettibili di modifiche da parte di entrambi andrebbero dichiarate tutte con il qualificatore ```volatile```.
-
-### **Limitazioni nell'utilizzo**
-
-I timer richiamano particolari funzioni di callback , le ISR, che sono attivate a seguito di  un interrupt HW (timeout del timer). Nei sistemi multi-core questi interrupt possono essere chiamati solo dal core che ha eseguito il timer. Ciò significa che se si utilizza un timer per attivare un interrupt, è necessario assicurarsi che l'interrupt venga chiamato solo dal core che sta eseguendo il timer.
-
-le ISR di base **non** sono **interrompibili** a meno di impostare apposite istruzioni che lo consentono. **Interrompere una ISR** potrebbe causare inconsistenze nella gestione delle risorse condivise con il loop o altri thread. D'altra parte, una ISR che non si interrompe per molto tempo impedisce la tempestiva esecuzione delle altre ISR dovute ad interruzioni **simultanee** o **temporalmente vicine**.
-
-Esistono **limitazioni speciali** su ciò che può e non può essere fatto all'interno delle ISR nella maggior parte dei controllori: 
-- Ad esempio, non è consentito allocare **memoria dinamica** all'interno di una ISR. 
-- una ISR che esegue una **logica complessa** potrebbe essere eseguita così lentamente da creare instabilità del sistema dovuta al fatto che altre interruzioni, che gestiscono servizi essenziali del sistema, non sono state prontamente soddisfatte. Un gestore di interrupt dovrebbe essere sempre una funzione **breve** che esegue il **lavoro minimo** necessario per **modificare** delle **variabili esterne**.
-- In genere, in molte implementazioni, callback diverse di uno stesso timer vengono eseguite **in sequenza** e non su thread paralleli per cui operazioni bloccanti come le ```delay()```, oltre a causare possibili **instabilità** (sono ISR basate su interrupt), **ritardano** l'esecuzione delle callback **a seguire**.
-- eseguire **task complessi** con un timer HW è possibile a patto che questi vengano resi interrompibili senza creare problemi, e ciò si può ottenere eseguendoli in un **altro thread** o nel **loop principale**. Nel **loop principale**, un **task complesso** può sempre essere immediatamente attivato da una ISR che asserisce un opportuno **flag di avvio**.
-- nel **multitasking** con i **timer logici**, il parallelismo degli **eventi** è garantito mentre il parallelismo percepito dei **task** è tanto maggiore quanto più questi sono veloci (dato che in realtà questi sono memorizzati in una coda da dove vengono estratti e mandati in esecuzione uno ad uno in sequenza). Nel **multitasking con i timer** il task di una callback viene eseguito solamente **dopo** il completamento di una eventuale callback **attualmente** in coda.
-- nel **multitasking** con i **thread**, sia il parallelismo degli **eventi** che quello dei **task** è **completo** perchè nella coda di esecuzione stavolta in sequenza non vengono eseguiti interi task ma, a turno, gruppi di istruzioni macchina di ciascun task (meccanismo dell'interleaving).  Nel **multitasking con i thread** il task di un thread viene eseguito solamente **dopo** il completamento del quanto di tempo assegnato al task **attualmente** presente nella coda dei **thread in esecuzione**.
-- nel **multitasking** con **l'interrupt sugli ingressi**, sia il parallelismo degli **eventi** che quello dei **task** è **completo** perchè la coda di esecuzione stavolta viene bloccata (mettendo thread e processi in wait) lasciando giusto il tempo di completare l'**istruzione macchina** corrente.  Nel **multitasking con gli interrupt a basso livello** il task di una ISR viene eseguito immediatamente **dopo** il completamento dell'istruzione macchina del task **attualmente** presente nella coda dei **thread in esecuzione**.
-
-### **Timers SW vs Timer HW**
-
-Se con la funzione ```get()``` di un **timer SW** si desiderasse controllare una **scadenza**, cioè vedere se è passato il tempo necessario per compiere una certa **azione** (modificare una variabile o chiamare una funzione), allora si dovrebbero soddisfare **due esigenze**:
-- verificare la verità della condizione ```get() > timeout``` ed eseguire, eventualmente, l'azione prevista al timeout (scadenza) del timer.
-- eseguire la valutazione al punto precedente **periodicamente**, finchè essa non accade.
-
-I **due requisiti** precedenti si traducono nell'azione di eseguire il **polling** della funzione ```get()``` nel ```loop()```, alla massima velocità o, più lentamente, ogni tot millisecondi. Nella vita reale, si può assimilare ad un polling l'**osservazione periodica** di un orologio a muro effettuata con lo scopo di individuare il momento esatto in cui deve essere eseguita una certa azione come, ad esempio, l'estrazione dal forno di un ciambella.
-
-Se si volesse fare la stessa cosa con un **timer HW** allora ci si renderebbe conto che il polling non è più necessario perchè, **al timeout**, attraverso, un **segnale** proveniente dal timer HW,  viene attivato l'**ISR** associata a quel segnale che, a sua volta, comanda l'esecuzione di una **callback** definita al suo interno. Per rimanere alla metafora precedente, adesso non è più necessario osservare periodicamente l'orologio alla parete, perchè un timer, impostato ad inizio cottura, avviserà con un segnale acustico il pasticciere quando il momento di togliere il dolce dal forno sarà arrivato . 
-
-Si noti che, sia per timer HW che per timers SW, l'**ordine di apparizione** dei task all'interno del codice del loop potrebbe non rispecchiare l'**ordine** con cui gli stessi vengono **eseguiti**, cioè l'ordine di esecuzione avviene in maniera **asincrona** rispetto al codice, secondo il principio della cosidetta **programmazione ad eventi**. Eventi possono attivare o disattivare altri eventi in base ad input esterni oppure in base al valore raggiunto da certe variabili di stato.
-
-<img src="img\pulsanti.jpg" alt="alt text" width="1000">
-
-### **Schedulatore generico realizzato con funzione get()**
-
-Il codice precedente è basato su due timers SW indipendenti nel senso che ognuno realizza il polling del tempo corrente separatamente ad ogni ciclo di loop(), cioè, alla massima velocità consentita dal sistema. Se i polling sono in numero limitato questa soluzione non crea grossi problemi ma se invece i timers sono parecchi, allora potrebbe capitare che il carico computazionale del polling possa diventare comparabile al peso dei vari task eseguiti.
-
-E' di aiuto in questo caso l'utilizzo di uno **schedulatore** dei compiti, ovvero di un codice che, a partire da un **tempo base comune**, sappia **programmare nel tempo** (schedulare) i vari compiti (task) affinchè vengano **eseguiti** esattamente nel tempo **assegnato** a ciascuno.
-
-Il **timer schedulatore** è realizzato utilizzando una variante ```DiffTimer2``` del timer della libreria [urutils.h](urutils.h) in cui, ad ogni chiamata della funzione ```get()```, viene incrementato il tempo corrente di ciascun timer (elapsed) di una quantità fissa pari al **tempo base**. Il momento dell'incremento è contestuale a quello della chiamata a ```get()``` che, quindi, deve avvenire **ogni tempo base**. Il tempo base è il **M.C.D.** dei tempi **in gioco** nei vari task.
-
-Il **timer schedulatore** è diverso per ciascun task, ma tutti i timer di questo tipo hanno a comune lo stesso tempo base in base al quale incrementano internamente il proprio **tempo corrente**. Il tempo corrente (elapsed) è calcolato separatamente per ogni timer schedulatore e quindi **azzerato**, tramite la funzione ```reset()```, con una **periodicità** che è **diversa** per ciascuno. 
-
-La **periodicità** è stabilita dalla **condizione** sulla funzione ```get()``` che valuta l'avvenuto scadere del **timeout**. Il **polling** sulla condizione di timeout non avviene alla massima velocità del microprocessore (variabile da pezzo a pezzo) ma, in maniera più precisa e, soprattutto, più rada, ad ogni **tempo base**.
-
-Il **timer schedulatore** non possedendo un riferimento che tiene il tempo internamente ad esso (ad es. una millis()), deve essere richiamato da una funzione esterna esattamente allo scoccare di ogni **tempo base**.
-
-Il **tempo base** viene generato utilizzando il timer ```DiffTimer1``` che realizza, mediante il polling della sua funzione ```get()```, il polling della funzione ```millis()``` che restituisce il **tempo corrente** del sistema. 
-
-Il **tempo base** viene **comunicato** a ciascun timer schedulatore attraverso un **argomento** della funzione ```get()```.
-
-```C++
-/*
-Alla pressione del pulsante si attiva o disattiva il lampeggo di un led, mentre un
-altro led lampeggia indisturbato.
-*/
-#include "urutils.h"
-int led = 13;
-int led2 = 14;
-byte pulsante =12;
-byte precval, val;
-unsigned long tbase = 50;
-DiffTimer tmrdeb;
-DiffTimer2 tmrblink1, tmrblink2;
- 
-void setup() {
-  Serial.begin(115200);
-  pinMode(led, OUTPUT);
-  pinMode(led2, OUTPUT);
-  pinMode(pulsante, INPUT);
-  precval=LOW;
-  tmrdeb.start();
-  tmrblink2.start();
-  tmrblink1.setBase(tbase);
-  tmrblink2.setBase(tbase);
-}
-
-// loop principale
-void loop() {
-  if(tmrdeb.get() > tbase){  	
-    tmrdeb.reset();   
-    //task_toggle
-    val = digitalRead(pulsante);		
-    if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
-      tmrblink1.toggle();		
-    }
-    precval=val;	
-    //task_blink1
-    if (tmrblink1.get() > 500) {
-      digitalWrite(led, !digitalRead(led));
-      tmrblink1.reset();
-    } 
-    //task_blink2
-    if (tmrblink2.get() > 1000) {
-      digitalWrite(led2, !digitalRead(led2));
-      tmrblink2.reset();
-    } 
-  }
-  delay(10);
-}
-```
-Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/388359604541585409
-
-Si noti che l'**ordine di apparizione** dei task all'interno del codice del loop potrebbe non rispecchiare l'**ordine** con cui gli stessi vengono **eseguiti**, cioè l'ordine di esecuzione avviene in maniera **asincrona** rispetto al codice, secondo il principio della cosidetta programmazione ad eventi. Eventi possono attivare o disattivare altri eventi in base ad input esterni oppure in base al valore raggiunto da certe variabili di stato.
-
-Questo esempio conclude tutte le **tecniche** possibili per programmare eventi nel tempo in un sistema a microprocessore che quindi potrebbero essere riassunte in: **delay** nel loop(), delay nei **thread**, **timer SW** nel loop(), **timer HW**, timer schedulatori per progettare complessivamente uno **scheduler** che realizzi la tecnica del multitasking a partire da un **riferimento** temporale **esterno** scelto tra millis(), delay(), interrupts di timer HW.
 
 ## **PULSANTI TOGGLE BASATI SU INTERRUPT**
 
@@ -825,6 +697,138 @@ Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **n
 Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```count1``` che sono state semplicemente dichiarate come ```volatile``` senza sezioni critiche su di essa.
 
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/388638737495929857
+
+## **SCHEDULAZIONE CON I TIMERS HW**
+
+La **schedulazione dei task** normalmente riguarda quei compiti che devono essere ripetuti in **maniera periodica**, infatti si parla di **loop() principale** e di **loop secondari** eventualmente sullo stesso thread (**protothread** o mediante costrutti **async/await**) o su altri **thread**. Lo stesso risultato può essere ottenuto con dei timer HW che realizzano un loop su **base evento**. L'**evento** è l'**interrupt** di un timer HW, il **loop** è rappresentato dalla **calback** associata al timer e che viene viene da esso **periodicamente richiamata**.
+
+Ma un **timer** si può impostare per **generare**:
+- **eventi sincroni** cioè **periodici** dopo intervalli fissi e programmabili
+- **eventi asincroni** cioè **aperiodici** da eseguire una sola volta (monostabili o one-shot) dopo un certo tempo calcolato **nel futuro** a partire dal **momento** in cui avviene il comando di **attivazione** (start).
+
+Per cui un **timer HW** offre una versatilità in più se, nello stesso progetto, si vogliono **combinare insieme** eventi periodici con eventi aperiodici triggerati da eventi su un **ingresso** o da altri **eventi** (scadenza di timeout o contatori).
+
+La **stessa cosa** è in realtà possibile realizzarla anche con i **timer SW** basati sul polling nel loop principale della funzione millis(). La loro **versatilità** è uguale se non **superiore**, ma sono soggetti ad alcune limitazioni che potrebbero renderli non adatti in certi contesti. L'ambito che **penalizza** di più i timer SW è quello delle applicazioni **mission-critical** (o **critical-time**). In questo tipo di applicazioni si deve prevedere che l'esecuzione di certi compiti avvenga in maniera estremamente puntuale, pena l'introduzione di **instabilità** nel sistema o di **perdita di sicurezza** per chi lo adopera.
+
+Rispetto agli altri metodi di creazione di base dei tempi (polling della millis(), thread e protothread), è tendenzialmente più legato ad uno specifico vendor di HW e ad una specifica linea di prodotti. Le **API dei timer**, pur esendo **molto simili** tra loro, **non sono standardizzate** e la **portabilità** del SW nel tempo potrebbe non essere garantita. In ogni caso **semplificano** parecchio la **gestione delle ISR** associate a timer HW che altrimenti, eseguita a basso livello, richiede una impostazione di **registri interni** della CPU che necessita di conoscenze di dettaglio molto specifiche.
+
+ ### **Modalità di utilizzo**
+
+La **modalità di utilizzo** è simile a quella di una **usuale ISR**. Una **funzione di callback** viene associata ad un evento di un timer tramite un metodo **attach()**. La dissociazione si fa con il metodo contrario **detach()**. Gli **eventi possibili** sono una chiamata una tantum (**one shot** o timer monostabile) o una chiamata **periodica** o timer bistabile. Nella definizione dell'attach() viene anche impostato il **tempo di scadenza** del timer.  Gli **eventi possibili** sono:
+- una chiamata una tantum (**one shot** o timer monostabile)
+- una chiamata **periodica** o timer bistabile.  
+
+I **timer HW** possono essere:
+- **fisici**. Cioè **limitati in numero** ai dispositivi HW dedicati a questo scopo effettivamente presenti nel sistema (nell'ESP32 sono 4) e inoltre devono essere riferiti esplicitamente nel codice con un loro specifico id (un numero da 1 a 4).
+- **logici o virtuali**. Sono virtualmente di **numero infinito** e rappresentano delle **astrazioni SW** del sottostante HW fisico che è condiviso in qualche modo da uno **strato di gestione** trasparente al programmatore. 
+
+La possibilità di poter **instanziare** un **timer logico** per **ogni task**, a sua volta definito all'interno di una certa **callback**, rende l'utilizzo dei timer una strada **effettivamente percorribile** per la realizzazione di uno **schedulatore di compiti** sia periodici che one shot (esecuzione singola non ripetuta). La **schedulazione** dei compiti inoltre rimane **molto precisa** perchè collegata a ISR eseguite da segnali di interrupt lanciati da **timer fisici**.
+
+Si ricorda che in C e in C++ le variabili globali a comune tra ISR e loop() principale e suscettibili di modifiche da parte di entrambi andrebbero dichiarate tutte con il qualificatore ```volatile```.
+
+### **Limitazioni nell'utilizzo**
+
+I timer richiamano particolari funzioni di callback , le ISR, che sono attivate a seguito di  un interrupt HW (timeout del timer). Nei sistemi multi-core questi interrupt possono essere chiamati solo dal core che ha eseguito il timer. Ciò significa che se si utilizza un timer per attivare un interrupt, è necessario assicurarsi che l'interrupt venga chiamato solo dal core che sta eseguendo il timer.
+
+le ISR di base **non** sono **interrompibili** a meno di impostare apposite istruzioni che lo consentono. **Interrompere una ISR** potrebbe causare inconsistenze nella gestione delle risorse condivise con il loop o altri thread. D'altra parte, una ISR che non si interrompe per molto tempo impedisce la tempestiva esecuzione delle altre ISR dovute ad interruzioni **simultanee** o **temporalmente vicine**.
+
+Esistono **limitazioni speciali** su ciò che può e non può essere fatto all'interno delle ISR nella maggior parte dei controllori: 
+- Ad esempio, non è consentito allocare **memoria dinamica** all'interno di una ISR. 
+- una ISR che esegue una **logica complessa** potrebbe essere eseguita così lentamente da creare instabilità del sistema dovuta al fatto che altre interruzioni, che gestiscono servizi essenziali del sistema, non sono state prontamente soddisfatte. Un gestore di interrupt dovrebbe essere sempre una funzione **breve** che esegue il **lavoro minimo** necessario per **modificare** delle **variabili esterne**.
+- In genere, in molte implementazioni, callback diverse di uno stesso timer vengono eseguite **in sequenza** e non su thread paralleli per cui operazioni bloccanti come le ```delay()```, oltre a causare possibili **instabilità** (sono ISR basate su interrupt), **ritardano** l'esecuzione delle callback **a seguire**.
+- eseguire **task complessi** con un timer HW è possibile a patto che questi vengano resi interrompibili senza creare problemi, e ciò si può ottenere eseguendoli in un **altro thread** o nel **loop principale**. Nel **loop principale**, un **task complesso** può sempre essere immediatamente attivato da una ISR che asserisce un opportuno **flag di avvio**.
+- nel **multitasking** con i **timer logici**, il parallelismo degli **eventi** è garantito mentre il parallelismo percepito dei **task** è tanto maggiore quanto più questi sono veloci (dato che in realtà questi sono memorizzati in una coda da dove vengono estratti e mandati in esecuzione uno ad uno in sequenza). Nel **multitasking con i timer** il task di una callback viene eseguito solamente **dopo** il completamento di una eventuale callback **attualmente** in coda.
+- nel **multitasking** con i **thread**, sia il parallelismo degli **eventi** che quello dei **task** è **completo** perchè nella coda di esecuzione stavolta in sequenza non vengono eseguiti interi task ma, a turno, gruppi di istruzioni macchina di ciascun task (meccanismo dell'interleaving).  Nel **multitasking con i thread** il task di un thread viene eseguito solamente **dopo** il completamento del quanto di tempo assegnato al task **attualmente** presente nella coda dei **thread in esecuzione**.
+- nel **multitasking** con **l'interrupt sugli ingressi**, sia il parallelismo degli **eventi** che quello dei **task** è **completo** perchè la coda di esecuzione stavolta viene bloccata (mettendo thread e processi in wait) lasciando giusto il tempo di completare l'**istruzione macchina** corrente.  Nel **multitasking con gli interrupt a basso livello** il task di una ISR viene eseguito immediatamente **dopo** il completamento dell'istruzione macchina del task **attualmente** presente nella coda dei **thread in esecuzione**.
+
+### **Timers SW vs Timer HW**
+
+Se con la funzione ```get()``` di un **timer SW** si desiderasse controllare una **scadenza**, cioè vedere se è passato il tempo necessario per compiere una certa **azione** (modificare una variabile o chiamare una funzione), allora si dovrebbero soddisfare **due esigenze**:
+- verificare la verità della condizione ```get() > timeout``` ed eseguire, eventualmente, l'azione prevista al timeout (scadenza) del timer.
+- eseguire la valutazione al punto precedente **periodicamente**, finchè essa non accade.
+
+I **due requisiti** precedenti si traducono nell'azione di eseguire il **polling** della funzione ```get()``` nel ```loop()```, alla massima velocità o, più lentamente, ogni tot millisecondi. Nella vita reale, si può assimilare ad un polling l'**osservazione periodica** di un orologio a muro effettuata con lo scopo di individuare il momento esatto in cui deve essere eseguita una certa azione come, ad esempio, l'estrazione dal forno di un ciambella.
+
+Se si volesse fare la stessa cosa con un **timer HW** allora ci si renderebbe conto che il polling non è più necessario perchè, **al timeout**, attraverso, un **segnale** proveniente dal timer HW,  viene attivato l'**ISR** associata a quel segnale che, a sua volta, comanda l'esecuzione di una **callback** definita al suo interno. Per rimanere alla metafora precedente, adesso non è più necessario osservare periodicamente l'orologio alla parete, perchè un timer, impostato ad inizio cottura, avviserà con un segnale acustico il pasticciere quando il momento di togliere il dolce dal forno sarà arrivato . 
+
+Si noti che, sia per timer HW che per timers SW, l'**ordine di apparizione** dei task all'interno del codice del loop potrebbe non rispecchiare l'**ordine** con cui gli stessi vengono **eseguiti**, cioè l'ordine di esecuzione avviene in maniera **asincrona** rispetto al codice, secondo il principio della cosidetta **programmazione ad eventi**. Eventi possono attivare o disattivare altri eventi in base ad input esterni oppure in base al valore raggiunto da certe variabili di stato.
+
+
+
+### **Schedulatore generico realizzato con funzione get()**
+
+Il codice precedente è basato su due timers SW indipendenti nel senso che ognuno realizza il polling del tempo corrente separatamente ad ogni ciclo di loop(), cioè, alla massima velocità consentita dal sistema. Se i polling sono in numero limitato questa soluzione non crea grossi problemi ma se invece i timers sono parecchi, allora potrebbe capitare che il carico computazionale del polling possa diventare comparabile al peso dei vari task eseguiti.
+
+E' di aiuto in questo caso l'utilizzo di uno **schedulatore** dei compiti, ovvero di un codice che, a partire da un **tempo base comune**, sappia **programmare nel tempo** (schedulare) i vari compiti (task) affinchè vengano **eseguiti** esattamente nel tempo **assegnato** a ciascuno.
+
+Il **timer schedulatore** è realizzato utilizzando una variante ```DiffTimer2``` del timer della libreria [urutils.h](urutils.h) in cui, ad ogni chiamata della funzione ```get()```, viene incrementato il tempo corrente di ciascun timer (elapsed) di una quantità fissa pari al **tempo base**. Il momento dell'incremento è contestuale a quello della chiamata a ```get()``` che, quindi, deve avvenire **ogni tempo base**. Il tempo base è il **M.C.D.** dei tempi **in gioco** nei vari task.
+
+Il **timer schedulatore** è diverso per ciascun task, ma tutti i timer di questo tipo hanno a comune lo stesso tempo base in base al quale incrementano internamente il proprio **tempo corrente**. Il tempo corrente (elapsed) è calcolato separatamente per ogni timer schedulatore e quindi **azzerato**, tramite la funzione ```reset()```, con una **periodicità** che è **diversa** per ciascuno. 
+
+La **periodicità** è stabilita dalla **condizione** sulla funzione ```get()``` che valuta l'avvenuto scadere del **timeout**. Il **polling** sulla condizione di timeout non avviene alla massima velocità del microprocessore (variabile da pezzo a pezzo) ma, in maniera più precisa e, soprattutto, più rada, ad ogni **tempo base**.
+
+Il **timer schedulatore** non possedendo un riferimento che tiene il tempo internamente ad esso (ad es. una millis()), deve essere richiamato da una funzione esterna esattamente allo scoccare di ogni **tempo base**.
+
+Il **tempo base** viene generato utilizzando il timer ```DiffTimer1``` che realizza, mediante il polling della sua funzione ```get()```, il polling della funzione ```millis()``` che restituisce il **tempo corrente** del sistema. 
+
+Il **tempo base** viene **comunicato** a ciascun timer schedulatore attraverso un **argomento** della funzione ```get()```.
+
+```C++
+/*
+Alla pressione del pulsante si attiva o disattiva il lampeggo di un led, mentre un
+altro led lampeggia indisturbato.
+*/
+#include "urutils.h"
+int led = 13;
+int led2 = 14;
+byte pulsante =12;
+byte precval, val;
+unsigned long tbase = 50;
+DiffTimer tmrdeb;
+DiffTimer2 tmrblink1, tmrblink2;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(pulsante, INPUT);
+  precval=LOW;
+  tmrdeb.start();
+  tmrblink2.start();
+  tmrblink1.setBase(tbase);
+  tmrblink2.setBase(tbase);
+}
+
+// loop principale
+void loop() {
+  if(tmrdeb.get() > tbase){  	
+    tmrdeb.reset();   
+    //task_toggle
+    val = digitalRead(pulsante);		
+    if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
+      tmrblink1.toggle();		
+    }
+    precval=val;	
+    //task_blink1
+    if (tmrblink1.get() > 500) {
+      digitalWrite(led, !digitalRead(led));
+      tmrblink1.reset();
+    } 
+    //task_blink2
+    if (tmrblink2.get() > 1000) {
+      digitalWrite(led2, !digitalRead(led2));
+      tmrblink2.reset();
+    } 
+  }
+  delay(10);
+}
+```
+Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/388359604541585409
+
+Si noti che l'**ordine di apparizione** dei task all'interno del codice del loop potrebbe non rispecchiare l'**ordine** con cui gli stessi vengono **eseguiti**, cioè l'ordine di esecuzione avviene in maniera **asincrona** rispetto al codice, secondo il principio della cosidetta programmazione ad eventi. Eventi possono attivare o disattivare altri eventi in base ad input esterni oppure in base al valore raggiunto da certe variabili di stato.
+
+Questo esempio conclude tutte le **tecniche** possibili per programmare eventi nel tempo in un sistema a microprocessore che quindi potrebbero essere riassunte in: **delay** nel loop(), delay nei **thread**, **timer SW** nel loop(), **timer HW**, timer schedulatori per progettare complessivamente uno **scheduler** che realizzi la tecnica del multitasking a partire da un **riferimento** temporale **esterno** scelto tra millis(), delay(), interrupts di timer HW.
+
 
 ## **ENCODER ROTATIVO**
 
