@@ -41,8 +41,8 @@ struct DiffTimer
 {
 	volatile unsigned long elapsed, last;
 	volatile bool timerState=false;
-	byte state = 0;
-	byte count = 0;
+	volatile byte state = 0;
+	volatile byte count = 0;
 	void reset(){
 		elapsed = 0;
 		last = millis();
@@ -82,8 +82,8 @@ struct DiffTimer2
 {
 	volatile unsigned long elapsed, tbase;
 	volatile bool timerState=false;
-	byte state = 0;
-	byte count = 0;
+	volatile byte state = 0;
+	volatile byte count = 0;
 	void reset(){
 		elapsed = 0;
 	}
