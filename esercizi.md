@@ -883,7 +883,8 @@ void loop()
 	delay(1);
 }
 ```
-Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352691213474403329
+- Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/352691213474403329
+- Di seguito il link della simulazione online con Tinkercad su Arduino: https://www.tinkercad.com/things/7IIKSJQCbIr-scheduler-by-millis-con-tick-base
 
 **Tempo assoluto**
 
