@@ -349,7 +349,8 @@ void loop() {
   delay(10);
 }
 ```
-Simulazione con esp32 su Wokwi: https://wokwi.com/projects/391110569888045057
+- Simulazione con esp32 su Wokwi: https://wokwi.com/projects/391110569888045057
+- Simulazione con Arduino su Tinkercad: https://www.tinkercad.com/things/dRnl4iE20U1-toggle-timer-sw-su-fronte-di-discesa
 
 ### **Toggle non bloccante con attivazione sul fronte di salita**
 
