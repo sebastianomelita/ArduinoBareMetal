@@ -631,6 +631,7 @@ Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **n
 Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```count1``` che sono state semplicemente dichiarate come ```volatile``` senza sezioni critiche su di essa.
 
 - Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/388638737495929857
+- Simulazione online su Arduino di una del codice precedente con Tinkercad: https://www.tinkercad.com/things/4YKrcH053EV-toggle-interrupt-con-debounce-in-isr
 
 ### **Pulsante toggle basato su interrupts e timer HW**
 
