@@ -733,7 +733,7 @@ void loop() {
 
 ```
 
-Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
+Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/423543840234258433
 
 Variante che **ignora** gli interrupt spuri fino al rilascio del pulsante: 
 
