@@ -1,7 +1,7 @@
 
 >[Torna all'indice generale](index.md)
 
-## **CONSIDERAZIONI GENERALI SUI PROBLEMI**
+## **CONSIDERAZIONI GENERALI SULLA GESTIONE DEI TASK**
 
 <img src="img\applicazMicro.jpg" alt="alt text" width="1000">
 
