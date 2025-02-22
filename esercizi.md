@@ -878,7 +878,8 @@ void loop() {
   delay(10);
 }
 ```
-Di seguito il link della simulazione online con ESP32 su Wokwi: https://www.tinkercad.com/things/8y61Srk2Ezd-schedulatore-periodico-con-get
+- Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/423595054703779841
+- Di seguito il link della simulazione online con Arduino su Tinkercad: https://www.tinkercad.com/things/8y61Srk2Ezd-schedulatore-periodico-con-get
 
 ## **SCHEDULATORE DI COMPITI BASATO SU FILTRAGGIO DEL TEMPO BASE**
 
