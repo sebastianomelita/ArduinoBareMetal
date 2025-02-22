@@ -829,6 +829,56 @@ Di seguito il link della simulazione online con Tinkercad su Arduino: https://ww
 
 Di seguito il link della simulazione online con Wowki su esp32: https://wokwi.com/projects/351933794966569551
 
+### **Versione dello schedulatore precedente realizzato con il timer get()**
+
+```C++
+/*
+Alla pressione del pulsante si attiva o disattiva il lampeggo di un led, mentre un
+altro led lampeggia indisturbato.
+*/
+#include "urutils.h"
+int led = 13;
+int led2 = 14;
+byte pulsante =12;
+byte precval, val;
+unsigned long tbase = 50;
+DiffTimer tmrdeb;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(pulsante, INPUT);
+  precval=LOW;
+  tmrdeb.start();
+  tmrblink2.start();
+}
+
+// loop principale
+void loop() {
+  if(tmrdeb.get() > tbase){  	
+    tmrdeb.reset();   
+    //task_toggle
+    val = digitalRead(pulsante);		
+    if(precval==LOW && val==HIGH){ 		//rivelatore di fronte di salita
+      tmrblink1.toggle();		
+    }
+    precval=val;	
+    //task_blink1
+    if (tmrblink1.get(tbase) > 500) {
+      digitalWrite(led, !digitalRead(led));
+      tmrblink1.reset();
+    } 
+    //task_blink2
+    if (tmrblink2.get(tbase) > 1000) {
+      digitalWrite(led2, !digitalRead(led2));
+      tmrblink2.reset();
+    } 
+  }
+  delay(10);
+}
+```
+Di seguito il link della simulazione online con ESP32 su Wokwi: https://wokwi.com/projects/423595054703779841
 
 ## **SCHEDULATORE DI COMPITI BASATO SU FILTRAGGIO DEL TEMPO BASE**
 
@@ -899,7 +949,7 @@ for(int i=0; i<2; i++){
 }
 ```
 
-### **Schedulatore generico realizzato con funzione get()**
+### **Versione dello schedulatore precedente realizzato con il timer get()**
 
 Schedulatore realizzato utilizzando una variante ```DiffTimer2``` del timer della libreria [urutils.h](urutils.h) in cui, ad ogni chiamata della funzione ```get()```, viene incrementato il tempo corrente di ciascun timer (elapsed) di una quantità fissa pari al **tempo base**. Il momento dell'incremento è contestuale a quello della chiamata a ```get()``` che, quindi, deve avvenire esattamente ogni tempo base. Il tempo base è il M.C.D. dei tempi in gioco nei vari task.
 
@@ -917,7 +967,6 @@ byte pulsante =12;
 byte precval, val;
 unsigned long tbase = 50;
 DiffTimer tmrdeb;
-DiffTimer2 tmrblink1, tmrblink2;
  
 void setup() {
   Serial.begin(115200);
