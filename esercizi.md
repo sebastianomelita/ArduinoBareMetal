@@ -687,11 +687,10 @@ Il tempo per la **riabilitazione** (riarmo) dell'interrupt non deve essere ne tr
 Variante che **disabilita** gli interrupt spuri fino al rilascio del pulsante: 
 
 ```C++
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 #include "urutils.h"
 int led = 13;
-byte pulsante =12;
-byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+int pulsante =12;
+volatile bool stato = false;  // variabile globale che memorizza lo stato del pulsante
 volatile bool pressed;
 #define DEBOUNCETIME 50
 DiffTimer debounce;
@@ -700,41 +699,38 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
+  // arma l'interrupt
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
+  // disarma il timer 
   pressed = false;
 }
 
 // Interrupt Service Routine (ISR)
 void switchPressed ()
 {
-  detachInterrupt(digitalPinToInterrupt(pulsante));
-  pressed = true; // disarmo del pulsante e riarmo del timer
-  stato = !stato; // logica da attivare sul fronte (toggle)
+  if(!pressed){// evita detach durante un attach nel loop
+    // disarma l'interrupt
+    detachInterrupt(digitalPinToInterrupt(pulsante));
+    // arma il timer
+    pressed = true; 
+  }
+    
 }  // end of switchPressed
 
-void waitUntilInputChange()
-{
-    if (pressed){ 
-      debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
-      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){// disarmo del timer al timeout
-        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING ); 
-        pressed = false; // riarmo del pulsante
-        debounce.stop(); // disarmo del timer
-        debounce.reset();
-      }
-    }
-}
 // loop principale
 void loop() {
-	waitUntilInputChange();
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
-		delay(1000);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    		delay(10);
-	}
+  if(pressed){// fronte di salita
+    waitUntilInputLow(pulsante, 100); 
+    // fronte di discesa
+    stato = !stato; // logica da attivare sul fronte (toggle)
+    // riarma l'interrupt
+    attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING ); 
+    pressed = false; // disarma il timer
+  }
+  digitalWrite(led, stato);   	// inverti lo stato precedente del led
+  delay(10);
 }
+
 ```
 
 Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
@@ -766,35 +762,31 @@ void setup() {
 }
 
 // Interrupt Service Routine (ISR)
-void switchPressed ()
+void switchPressed ()// si attiva sul fronte di salita
 {
     if(!pressed){ // intervento immediato ma sul primo fronte di salita soltanto (causa disarmo pulsante)
-        pressed = true; // disarmo del pulsante e riarmo del timer di debouncing
-        stato = !stato; // logica da attivare sul fronte (toggle)
+        pressed = true;// disarmo del pulsante e riarmo del timer di debouncing
+        stato = !stato;// logica da attivare sul fronte (toggle)
     }
-}   // end of switchPressed
+}  // end of switchPressed
 
 void waitUntilInputChange()
 {
     if (pressed){ 
       debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
-      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){// disarmo del timer al timeout
-        pressed = false; // riarmo del pulsante
+      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){
+        pressed = false; // riarmo del pulsante e disarmo del timer di debouncing
         debounce.stop();
-	debounce.reset();
+	      debounce.reset();
       }
     }
 }
 // loop principale
+// loop principale
 void loop() {
 	waitUntilInputChange();
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
-		delay(1000);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-   		 delay(10);
-	}
+	digitalWrite(led, stato);   	// inverti lo stato precedente del led
+  delay(10);
 }
 ```
 
