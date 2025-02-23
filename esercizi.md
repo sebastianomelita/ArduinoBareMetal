@@ -483,7 +483,17 @@ void loop() {
 }
 ```
 
-Si noti che è possibile eliminare l'**overhead** delle chiamate alle funzioni **attach()** e **detach()** utilizzando solamente il **flag pressed**. Il prezzo da pagare è un maggiore **overhead** della **ISR** che, a seguito di un interrupt, potrebbe essere chiamata anche un **centinaio** di volte consecutivamente.
+Anche **senza detach/attach**, il codice rimane **thread-safe** grazie alla **logica di guardia** sulla variabile **pressed**. Non è necessario proteggere waitUntilInputChange() con interrupts()/noInterrupts(), infatti:
+- Inizialmente pressed = false
+- La ISR può attivarsi solo quando pressed è false, e lo imposta a true
+- Una volta che pressed è true, la ISR non può più modificare nulla (per la condizione if(!pressed))
+- Il loop processa l'evento e alla fine ripristina pressed = false
+
+L'unica differenza pratica tra le due versioni (con e senza detach/attach) è che:
+- **Con detach/attach**: l'interrupt viene proprio **disabilitato fisicamente**
+- **Senza detach/attach**: l'interrupt può attivarsi ma la sua **ISR non fa nulla** (esce subito per la condizione su pressed)
+
+Dalle considerazioni precedenti si deduce che è possibile eliminare l'**overhead** delle chiamate alle funzioni **attach()** e **detach()** utilizzando solamente il **flag pressed**. Il prezzo da pagare è un maggiore **overhead** della **ISR** che, a seguito di un interrupt, potrebbe essere chiamata anche un **centinaio** di volte consecutivamente.
 
 - Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
 - Simulazione online su ESP32 del codice precedente con Tinkercad: https://www.tinkercad.com/things/4KnKm94hoP1-toggle-interrupt-delay
@@ -553,7 +563,17 @@ void loop() {
 }
 ```
 
-Si noti che è possibile eliminare l'**overhead** delle chiamate alle funzioni **attach()** e **detach()** utilizzando solamente il **flag pressed**. Il prezzo da pagare è un maggiore **overhead** della **ISR** che, a seguito di un interrupt, potrebbe essere chiamata anche un **centinaio** di volte consecutivamente.
+Anche **senza detach/attach**, il codice rimane **thread-safe** grazie alla **logica di guardia** sulla variabile **pressed**. Non è necessario proteggere waitUntilInputChange() con interrupts()/noInterrupts(), infatti:
+- Inizialmente pressed = false
+- La ISR può attivarsi solo quando pressed è false, e lo imposta a true
+- Una volta che pressed è true, la ISR non può più modificare nulla (per la condizione if(!pressed))
+- Il loop processa l'evento e alla fine ripristina pressed = false
+
+L'unica differenza pratica tra le due versioni (con e senza detach/attach) è che:
+- **Con detach/attach**: l'interrupt viene proprio **disabilitato fisicamente**
+- **Senza detach/attach**: l'interrupt può attivarsi ma la sua **ISR non fa nulla** (esce subito per la condizione su pressed)
+
+Dalle considerazioni precedenti si deduce che è possibile eliminare l'**overhead** delle chiamate alle funzioni **attach()** e **detach()** utilizzando solamente il **flag pressed**. Il prezzo da pagare è un maggiore **overhead** della **ISR** che, a seguito di un interrupt, potrebbe essere chiamata anche un **centinaio** di volte consecutivamente.
 
 - Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/423543840234258433
 - Simulazione online su ESP32 del codice precedente con Tinkercad: https://www.tinkercad.com/things/dyrIzrr7OlE-toggle-interrupt-no-blocking
