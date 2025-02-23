@@ -16,87 +16,6 @@ Per una discussione più completa sugli interrupt vedi [interrupt](interruptsbas
 <img src="img\interruptPulsante.jpg" alt="alt text" width="1200">
 
 
-### **PULSANTE TOGGLE BASATO SU INTERRUPTS E DEBOUNCE NELLA ISR**
-
-Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
-
-Il **funzionamento** è agevolmente comprensibile alla luce delle seguenti considerazioni:
-- L'**interrupt** è attivo su **un solo fronte**. 
-- Al momento del **primo bounce in rising** del pulsante la condizione ```debtimer.get() > DEBOUNCETIMERISE``` è **sempre vera** (per cui il flag ```stato``` commuta immediatamente) perchè, dato che la funzione reset() del timer era stata eseguita molto tempo prima (al momento del rilascio del pulsante da parte dell'utente), il tempo attuale misurato dalla ```get()``` è molto più grande di un timeout. I bounce successivi al primo, se in rising sono filtrati dal timer impostato nella callback ```debounceRise()```, se in falling sono filtrati dal timer impostato nella callback ```debounceFall()``` che, sebbene diversa, viene chiamata temporalmente molto vicina al ```reset()``` di quella in rising precedente.
-- Al momento del **primo bounce in falling** del pulsante la condizione ```debtimer.get() > DEBOUNCETIMEFALL``` è **sempre vera** (per cui il flag ```stato``` commuta immediatamente) perchè, dato che la funzione reset() del timer era stata eseguita molto tempo prima (al momento della pressione del pulsante da parte dell'utente), il tempo attuale misurato dalla ```get()``` è molto più grande di un timeout. I bounce successivi al primo, se in rising sono filtrati dal timer impostato nella callback ```debounceFall()```, se in falling sono filtrati dal timer impostato nella callback ```debounceRise()``` che, sebbene diversa, viene chiamata temporalmente molto vicina al ```reset()``` di quella in falling precedente.
-  
-Un esempio con l'**attuazione nel loop** del task di accnesione/spegnimento potrebbe essere:
-
-```C++
-#include "urutils.h"
-const unsigned long DEBOUNCETIMERISE = 50;
-const unsigned long DEBOUNCETIMEFALL = 50;
-const byte ENGINE = 13;
-const byte BUTTONPIN = 12;
-volatile bool stato = false;
-volatile int count1 = 0;
-DiffTimer debtimer;
-
-void debounceRise() {
-  if (debtimer.get() > DEBOUNCETIMERISE) {// al primo bounce (in rise o in fall) è sempre vero!
-    Serial.println(count1);
-    count1 = 0;
-    stato = !stato;
-    Serial.println("I have catched a RISE");
-    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceFall, FALLING);
-    debtimer.reset();// ogni tipo di fronte resetta il timer
-  } else {
-    count1++;
-  }
-}
-
-void debounceFall() {
-  if (debtimer.get() > DEBOUNCETIMEFALL) {// al primo bounce (in rise o in fall) è sempre vero!
-    Serial.println(count1);
-    count1 = 0;
-    Serial.println("I have catched a FALL");
-    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceRise, RISING);
-    debtimer.reset();// ogni tipo di fronte resetta il timer
-  } else {
-    count1++;
-  }
-}
-
-void setup ()
-{
-  Serial.begin(115200);
-  pinMode(BUTTONPIN, INPUT);
-  pinMode(ENGINE, OUTPUT);  	  // so we can update the LED
-  digitalWrite(ENGINE, LOW);
-  // attach interrupt handler
-  debtimer.start();
-  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceRise, RISING);
-}  // end of setup
-
-void loop ()
-{
-  //Serial.println(pressed);
-  if (stato) {
-    digitalWrite(ENGINE, HIGH);
-  } else {
-    digitalWrite(ENGINE, LOW);
-  }
-  delay(10);
-}
-```
-
-Le variabili **condivise** tra una ISR e il loop() andrebbero protette, da accessi **paralleli** e concorrenti da parte di entrambe, tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono sempre essere dichiarate con il qualificatore ```volatile``` per forzarne la modifica istantanea anche sui registri della CPU. 
-
-Gli **accessi paralleli** non sono un problema quando le **istruzioni** sono **atomiche**, cioè non interrompibili. Le istruzioni atomiche o sono eseguite per intero o non sono eseguite affatto. In questo caso gli **accessi**, sia in lettura che in scrittura, sono in realtà, a basso livello, **intrinsecamente sequenziali**.
-
-Nei microcontrollori attuali, in genere **nessuna istruzione** gode della proprietà di essere **atomica** con una sola eccezione per la lettura e scrittura delle **variabili ad 8 bit**. Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio macchina) è intrinsecamente garantito essere **atomico**. Per queste variabili rimane comunque la necessita dell'uso del qualificatore ```volatile```.
-
-Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **non atomiche**, pertanto le variabili a 16 o 32 bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati di default durante una routine di servizio di interrupt, quindi, non potendo verificarsi il danneggiamento di una variabile multibyte in una ISR, le **sezioni critiche** vanno inserite soltanto nel ```loop()```.
-
-Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```count1``` che sono state semplicemente dichiarate come ```volatile``` senza sezioni critiche su di essa.
-
-- Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/388638737495929857
-- Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/382727697232370689
 
 ### **PULSANTE TOGGLE BASATO SU INTERRUPTS E DEBOUNCE CON TIMER SW NEL LOOP 1**
 
@@ -190,14 +109,19 @@ Con timer non bloccante basato su libreria urutils: https://wokwi.com/projects/4
 Con timer basato su millis(): https://wokwi.com/projects/421497374229509121
 
 
-### **PULSANTE TOGGLE BASATO SU INTERRUPTS E DEBOUNCE CON TIMER SW NEL LOOP 2**
+### **Pulsante toggle basato su interrupts e con debounce basato sui delay()**
+
+All'**ingresso** di una **porta digitale** viene associata una callback che viene invocata alla ricezione di un segnale di interrupt attivo su entrambi i fronti. Il fronte di salita, **selezionato** prendendo solo i valori HIGH, potrebbe essere rilevato molte volte consecutivamente a causa del fenomeno dei rimbalzi. 
+
+Per evitare la rilevazione dei **fronti spuri** successivi al primo, viene disabilitata, dentro la ISR, la loro rilevazione **disarmando** gli interrupt  mediante l'istruzione ```detachInterrupt(digitalPinToInterrupt(pulsante))```. Contemporaneamente viene asserito un flag di segnalazione, ```pressed```, che comunica ad un loop() di attivare il timer per il riarmo dell'interrupt per rispondere a nuove pressioni dell'utente. 
+
+Il tempo per la **riabilitazione** (riarmo) dell'interrupt non deve essere ne troppo presto, cioè minore di 50 msec, altrimenti si finisce per leggere dei rimbalzi ma neppure troppo tardi, altrimenti si perdono degli input dell'utente. Il momento migliore per riabilitare gli interrupt potrebbe essere il momento del rilascio del pulsante, dato che precede sempre una eventuale successiva pressione. In ogni caso, un timer impedisce quei tentativi di riabilitazione che potrebbero avvenire prima dei 50 msec utili ad evitare i rimbalzi.
 
 ```C++
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 #include "urutils.h"
 int led = 13;
-byte pulsante =12;
-byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+int pulsante =12;
+volatile bool stato = false;  // variabile globale che memorizza lo stato del pulsante
 volatile bool pressed;
 #define DEBOUNCETIME 50
 DiffTimer debounce;
@@ -206,50 +130,67 @@ void setup() {
   Serial.begin(115200);
   pinMode(led, OUTPUT);
   pinMode(pulsante, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, CHANGE );  
+  // arma l'interrupt
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
+  // disarma il timer 
   pressed = false;
 }
 
 // Interrupt Service Routine (ISR)
 void switchPressed ()
 {
-  byte val = digitalRead(pulsante);
-  if(val == HIGH){
-    if(!pressed){ // intervento immediato sul fronte di salita
-        pressed = true; // disarmo del pulsante e riarmo del timer
-        stato = !stato; 
-    }
+  if(!pressed){// evita detach durante un attach nel loop
+    // disarma l'interrupt
+    // può essere omessa se viene tolto l'attach() nel loop()
+    detachInterrupt(digitalPinToInterrupt(pulsante));
+    // arma il timer
+    pressed = true; 
   }
+    
 }  // end of switchPressed
 
-void waitUntilInputChange()
-{
-    if (pressed){ 
-      debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
-      if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){
-        pressed = false; // riarmo del pulsante
-        debounce.stop(); // disarmo del timer
-        debounce.reset();
-      }
-    }
-}
 // loop principale
 void loop() {
-	waitUntilInputChange();
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
-		delay(1000);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    delay(10);
-	}
+  if(pressed){// fronte di salita
+    waitUntilInputLow(pulsante, 100); 
+    // fronte di discesa
+    stato = !stato; // logica da attivare sul fronte (toggle)
+    // riarma l'interrupt
+    // può essere omessa se eviene tolto il detach() nella ISR
+    attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING ); 
+    pressed = false; // disarma il timer
+  }
+  digitalWrite(led, stato);   	// inverti lo stato precedente del led
+  delay(10);
 }
 ```
+La variabile **```pressed```** è di appena **un byte** per cui le operazioni di **assegnamento** e di **confronto** su di essa sono sempre **atomiche** in tutti i microcontrollori (quindi sia Arduino che ESP32). Per renderla **thread-safe** basta qualificarla **volatile** nella dichiarazione.
 
-Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/388481409829351425
+Anche **senza detach/attach**, il codice rimane **thread-safe** grazie alla **logica di guardia** sulla variabile **pressed**. Non è necessario proteggere waitUntilInputChange() con interrupts()/noInterrupts(), infatti:
+- Inizialmente pressed = false
+- La ISR può attivarsi solo quando pressed è false, e lo imposta a true
+- Una volta che pressed è true, la ISR non può più modificare nulla (per la condizione if(!pressed))
+- Il loop processa l'evento e alla fine ripristina pressed = false
+
+L'unica differenza pratica tra le due versioni (con e senza detach/attach) è che:
+- **Con detach/attach**: l'interrupt viene proprio **disabilitato fisicamente**
+- **Senza detach/attach**: l'interrupt può attivarsi ma la sua **ISR non fa nulla** (esce subito per la condizione su pressed)
+
+Dalle considerazioni precedenti si deduce che è possibile eliminare l'**overhead** delle chiamate alle funzioni **attach()** e **detach()** utilizzando solamente il **flag pressed**. Il prezzo da pagare è un maggiore **overhead** della **ISR** che, a seguito di un interrupt, potrebbe essere chiamata anche un **centinaio** di volte consecutivamente.
+
+- Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
+- Simulazione online su ESP32 del codice precedente con Tinkercad: https://www.tinkercad.com/things/4KnKm94hoP1-toggle-interrupt-delay
 
 
-Variante che disarma gli interrupt spuri fino al rilascio del pulsante: 
+### **Pulsante toggle basato su interrupts e timer debounce con timer SW get()**
+
+All'**ingresso** di una **porta digitale** viene associata una callback che viene invocata alla ricezione di un segnale di interrupt attivo su entrambi i fronti. Il fronte di salita, **selezionato** prendendo solo i valori HIGH, potrebbe essere rilevato molte volte consecutivamente a causa del fenomeno dei rimbalzi. 
+
+Per evitare la rilevazione dei **fronti spuri** successivi al primo, viene disabilitata, dentro la ISR, la loro rilevazione **disarmando** gli interrupt  mediante l'istruzione ```detachInterrupt(digitalPinToInterrupt(pulsante))```. Contemporaneamente viene asserito un flag di segnalazione, ```pressed```, che comunica ad un loop() di attivare il timer per il riarmo dell'interrupt per rispondere a nuove pressioni dell'utente. 
+
+Il tempo per la **riabilitazione** (riarmo) dell'interrupt non deve essere ne troppo presto, cioè minore di 50 msec, altrimenti si finisce per leggere dei rimbalzi ma neppure troppo tardi, altrimenti si perdono degli input dell'utente. Il momento migliore per riabilitare gli interrupt potrebbe essere il momento del rilascio del pulsante, dato che precede sempre una eventuale successiva pressione. In ogni caso, un timer impedisce quei tentativi di riabilitazione che potrebbero avvenire prima dei 50 msec utili ad evitare i rimbalzi.
+
+Variante che **disabilita** gli interrupt spuri fino al rilascio del pulsante: 
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
@@ -272,9 +213,13 @@ void setup() {
 // Interrupt Service Routine (ISR)
 void switchPressed ()
 {
-  detachInterrupt(digitalPinToInterrupt(pulsante));
-  pressed = true; // disarmo del pulsante e riarmo del timer
-  stato = !stato; // logica da attivare sul fronte (toggle)
+ if(!pressed){// evita detach durante un attach nel loop
+    // disarma l'interrupt
+    // può essere omessa se viene tolto l'attach() nel loop()
+    detachInterrupt(digitalPinToInterrupt(pulsante));
+    // arma il timer
+    pressed = true; 
+ }
 }  // end of switchPressed
 
 void waitUntilInputChange()
@@ -282,30 +227,213 @@ void waitUntilInputChange()
     if (pressed){ 
       debounce.start();// aggiorna il millis() interno solo alla prima di molte chiamate consecutive
       if(debounce.get() > DEBOUNCETIME  && digitalRead(pulsante) == LOW){// disarmo del timer al timeout
-        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING ); 
-        pressed = false; // riarmo del pulsante
         debounce.stop(); // disarmo del timer
         debounce.reset();
+        // fronte di discesa
+        stato = !stato; // logica da attivare sul fronte (toggle)
+        // riarma l'interrupt
+        // può essere omessa se eviene tolto il detach() nella ISR
+        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );
+        pressed = false; // riarmo del pulsante
       }
     }
 }
 // loop principale
 void loop() {
 	waitUntilInputChange();
-	if (stato) {
-		digitalWrite(led, !digitalRead(led));   	// inverti lo stato precedente del led
-		delay(1000);
-	} else {
-		digitalWrite(led, LOW);    	// turn the LED off by making the voltage LOW
-    		delay(10);
-	}
+	digitalWrite(led, stato);   	// inverti lo stato precedente del led
+  delay(10);
+}
+```
+La variabile **```pressed```** è di appena **un byte** per cui le operazioni di **assegnamento** e di **confronto** su di essa sono sempre **atomiche** in tutti i microcontrollori (quindi sia Arduino che ESP32). Per renderla **thread-safe** basta qualificarla **volatile** nella dichiarazione.
+
+Anche **senza detach/attach**, il codice rimane **thread-safe** grazie alla **logica di guardia** sulla variabile **pressed**. Non è necessario proteggere waitUntilInputChange() con interrupts()/noInterrupts(), infatti:
+- Inizialmente pressed = false
+- La ISR può attivarsi solo quando pressed è false, e lo imposta a true
+- Una volta che pressed è true, la ISR non può più modificare nulla (per la condizione if(!pressed))
+- Il loop processa l'evento e alla fine ripristina pressed = false
+
+L'unica differenza pratica tra le due versioni (con e senza detach/attach) è che:
+- **Con detach/attach**: l'interrupt viene proprio **disabilitato fisicamente**
+- **Senza detach/attach**: l'interrupt può attivarsi ma la sua **ISR non fa nulla** (esce subito per la condizione su pressed)
+
+Dalle considerazioni precedenti si deduce che è possibile eliminare l'**overhead** delle chiamate alle funzioni **attach()** e **detach()** utilizzando solamente il **flag pressed**. Il prezzo da pagare è un maggiore **overhead** della **ISR** che, a seguito di un interrupt, potrebbe essere chiamata anche un **centinaio** di volte consecutivamente.
+
+- Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/423543840234258433
+- Simulazione online su ESP32 del codice precedente con Tinkercad: https://www.tinkercad.com/things/dyrIzrr7OlE-toggle-interrupt-no-blocking
+
+Variante del codice precedente ottenuta utilizzando direttamente la sola funzione millis(), senza adoperare alcuna libreria di timer.
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+volatile bool pressed;
+volatile unsigned long lastDebounceTime = 0;
+const unsigned long debounceDelay = 50;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
+  pressed = false;
 }
 
+// Interrupt Service Routine (ISR)
+void switchPressed ()
+{
+ if(!pressed){// evita detach durante un attach nel loop
+    // disarma l'interrupt
+    // può essere omessa se viene tolto l'attach() nel loop()
+    detachInterrupt(digitalPinToInterrupt(pulsante));
+    // arma il timer
+    lastDebounceTime = millis();
+    pressed = true; 
+ }
+}  // end of switchPressed
+
+void waitUntilInputChange()
+{
+    if (pressed){ 
+      if(digitalRead(pulsante)==LOW && (millis() - lastDebounceTime) > debounceDelay){// disarmo del timer al timeout
+        // fronte di discesa
+        stato = !stato; // logica da attivare sul fronte (toggle)
+        // riarma l'interrupt
+        // può essere omessa se eviene tolto il detach() nella ISR
+        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING ); 
+        pressed = false; // disarma il timer
+      }
+    }
+}
+// loop principale
+void loop() {
+	waitUntilInputChange();
+	digitalWrite(led, stato);   	// inverti lo stato precedente del led
+  delay(10);
+}
+```
+La variabile a 32 bit ```lastDebounceTime``` in ESP32 è atomica per lettura, scrittura e confronto. Negli altri microcontrollori come Arduino no.
+
+Analizziamo la questione dell'atomicità di lastDebounceTime in questo contesto:
+
+```lastDebounceTime``` viene:
+- Scritto SOLO nella ISR: ```lastDebounceTime = millis();```
+- Letto SOLO nel loop: ```(millis() - lastDebounceTime) > debounceDelay```
+
+
+La protezione delle sezioni critiche è garantita dalla variabile pressed:
+- La ISR scrive ```lastDebounceTime``` solo quando ```pressed``` è ```false```
+- Il loop legge ```lastDebounceTime``` solo quando ```pressed``` è ```true```
+
+La sequenza è sempre:
+
+```C++
+ISR (quando pressed = false):
+   lastDebounceTime = millis()
+   pressed = true
+
+Loop (quando pressed = true):
+   legge lastDebounceTime
+   ...eventualmente pressed = false
 ```
 
-Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
+Quindi, anche se ```lastDebounceTime``` è un long (tipicamente 4 byte su Arduino) e la sua scrittura/lettura non è atomica, non c'è rischio di race condition perché:
 
-Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
+Non c'è mai sovrapposizione temporale tra scrittura e lettura grazie alla **guardia pressed**. La ISR non può intervenire durante la lettura di lastDebounceTime nel loop perché:
+- ```pressed``` è true e quindi la ISR esce subito
+- ```pressed``` è false ma allora il loop non sta leggendo lastDebounceTime
+
+
+Il codice è quindi corretto anche senza accesso atomico a ```lastDebounceTime```. La variabile ```volatile``` è sufficiente per garantire la visibilità delle modifiche tra ISR e loop.
+
+L'unico caso teorico di problemi sarebbe se l'architettura non garantisse la coerenza dell'ordine delle scritture in memoria (memory ordering), ma su Arduino (AVR) questo non è un problema perché le scritture mantengono l'ordine di programma.
+
+- Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/423680930381449217
+- Simulazione online su ESP32 del codice precedente con Tinkercad: https://www.tinkercad.com/things/0jUHZOIdhvP-toggle-interrupt-no-blocking-con-millis
+  
+### **Pulsante toggle basato su interrupts e debounce nella ISR**
+
+Per una discussione generale sugli interrupt si rimanda a [interrupt](indexinterrupts.md).
+
+Il **funzionamento** è agevolmente comprensibile alla luce delle seguenti considerazioni:
+- L'**interrupt** è attivo su **un solo fronte**. 
+- Al momento del **primo bounce in rising** del pulsante la condizione ```debtimer.get() > DEBOUNCETIMERISE``` è **sempre vera** (per cui il flag ```stato``` commuta immediatamente) perchè, dato che la funzione reset() del timer era stata eseguita molto tempo prima (al momento del rilascio del pulsante da parte dell'utente), il tempo attuale misurato dalla ```get()``` è molto più grande di un timeout. I bounce successivi al primo, in rising non possono più accadere (pulsante disarmato) dato che adesso l'attachInterrupt è impostata in FALLING, se in falling sono filtrati dal timer impostato nella callback ```debounceFall()``` che, sebbene diversa, viene chiamata temporalmente molto vicina al ```reset()``` di quella in rising precedente.
+- Al momento del **primo bounce in falling** del pulsante la condizione ```debtimer.get() > DEBOUNCETIMEFALL``` è **sempre vera** (per cui il flag ```stato``` commuta immediatamente) perchè, dato che la funzione reset() del timer era stata eseguita molto tempo prima (al momento della pressione del pulsante da parte dell'utente), il tempo attuale misurato dalla ```get()``` è molto più grande di un timeout. I bounce successivi al primo, in falling non possono più accadere dato che adesso l'attachInterrupt è impostata in RISING (pulsante riarmato), se in rising sono filtrati dal timer impostato nella callback ```debounceRise()``` che, sebbene diversa, viene chiamata temporalmente molto vicina al ```reset()``` di quella in falling precedente.
+  
+Un esempio con l'**attuazione nel loop** del task di accenesione/spegnimento potrebbe essere:
+
+```C++
+#include "urutils.h"
+const unsigned long DEBOUNCETIMERISE = 50;
+const unsigned long DEBOUNCETIMEFALL = 50;
+const byte ENGINE = 13;
+const byte BUTTONPIN = 12;
+volatile bool stato = false;
+volatile int count1 = 0;
+DiffTimer debtimer;
+
+void debounceRise() {
+  if (debtimer.get() > DEBOUNCETIMERISE) {// al primo bounce (in rise o in fall) è sempre vero!
+    Serial.println(count1);
+    count1 = 0;
+    stato = !stato; // logica da attivare sul fronte (toggle)
+    Serial.println("I have catched a RISE");
+    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceFall, FALLING);// pulsante disarmato!
+    debtimer.reset();// ogni tipo di fronte resetta il timer
+  } else {
+    count1++;
+  }
+}
+
+void debounceFall() {
+  if (debtimer.get() > DEBOUNCETIMEFALL) {// al primo bounce (in rise o in fall) è sempre vero!
+    Serial.println(count1);
+    count1 = 0;
+    Serial.println("I have catched a FALL");
+    attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceRise, RISING);// pulsante riarmato!
+    debtimer.reset();// ogni tipo di fronte resetta il timer
+  } else {
+    count1++;
+  }
+}
+
+void setup ()
+{
+  Serial.begin(115200);
+  pinMode(BUTTONPIN, INPUT);
+  pinMode(ENGINE, OUTPUT);  	  // so we can update the LED
+  digitalWrite(ENGINE, LOW);
+  // attach interrupt handler
+  debtimer.start();
+  attachInterrupt(digitalPinToInterrupt(BUTTONPIN), debounceRise, RISING);
+}  // end of setup
+
+void loop ()
+{
+  //Serial.println(pressed);
+  if (stato) {
+    digitalWrite(ENGINE, HIGH);
+  } else {
+    digitalWrite(ENGINE, LOW);
+  }
+  delay(10);
+}
+```
+
+Le variabili **condivise** tra una ISR e il loop() andrebbero protette, da accessi **paralleli** e concorrenti da parte di entrambe, tramite delle **corse critiche** che rendano l'accesso **strettamente sequenziale**. Inoltre le variabili condivise devono sempre essere dichiarate con il qualificatore ```volatile``` per forzarne la modifica istantanea anche sui registri della CPU. 
+
+Gli **accessi paralleli** non sono un problema quando le **istruzioni** sono **atomiche**, cioè non interrompibili. Le istruzioni atomiche o sono eseguite per intero o non sono eseguite affatto. In questo caso gli **accessi**, sia in lettura che in scrittura, sono in realtà, a basso livello, **intrinsecamente sequenziali**.
+
+Nei microcontrollori attuali, in genere **nessuna istruzione** gode della proprietà di essere **atomica** con una sola eccezione per la lettura e scrittura delle **variabili ad 8 bit**. Per le variabili codificate con **8 bit** l'accesso a basso livello (linguaggio macchina) è intrinsecamente garantito essere **atomico**. Per queste variabili rimane comunque la necessita dell'uso del qualificatore ```volatile```.
+
+Le **modifiche** a valori con codifiche **maggiori di 8 bit** sono in genere **non atomiche**, pertanto le variabili a 16 o 32 bit andrebbero gestite con gli interrupt disabilitati (sezione critica). Tuttavia, gli interrupt vengono disabilitati di default durante una routine di servizio di interrupt, quindi, non potendo verificarsi il danneggiamento di una variabile multibyte in una ISR, le **sezioni critiche** vanno inserite soltanto nel ```loop()```.
+
+Le variabili **condivise** tra ISR e loop() e **8 bit** sono ```stato``` e ```count1``` che sono state semplicemente dichiarate come ```volatile``` senza sezioni critiche su di essa.
+
+- Simulazione online su ESP32 di una del codice precedente con Wowki: https://wokwi.com/projects/388638737495929857
+- Simulazione online su Arduino di una del codice precedente con Tinkercad: https://www.tinkercad.com/things/4YKrcH053EV-toggle-interrupt-con-debounce-in-isr
 
 ### **Pulsante toggle basato su interrupts e timer HW**
 
