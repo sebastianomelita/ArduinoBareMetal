@@ -639,17 +639,14 @@ La variabile a 32 bit ```lastDebounceTime``` in ESP32 è atomica per lettura, sc
 
 Analizziamo la questione dell'atomicità di lastDebounceTime in questo contesto:
 
-lastDebounceTime viene:
-
-Scritto SOLO nella ISR: lastDebounceTime = millis();
-Letto SOLO nel loop: (millis() - lastDebounceTime) > debounceDelay
+```lastDebounceTime``` viene:
+- Scritto SOLO nella ISR: ```lastDebounceTime = millis();```
+- Letto SOLO nel loop: ```(millis() - lastDebounceTime) > debounceDelay```
 
 
 La protezione delle sezioni critiche è garantita dalla variabile pressed:
-
-La ISR scrive lastDebounceTime solo quando pressed è false
-Il loop legge lastDebounceTime solo quando pressed è true
-
+- La ISR scrive ```lastDebounceTime``` solo quando ```pressed``` è ```false```
+- Il loop legge ```lastDebounceTime``` solo quando ```pressed``` è ```true```
 
 La sequenza è sempre:
 
