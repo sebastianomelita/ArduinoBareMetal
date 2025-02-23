@@ -654,7 +654,7 @@ Il loop legge lastDebounceTime solo quando pressed è true
 La sequenza è sempre:
 
 ```C++
-(quando pressed = false):
+ISR (quando pressed = false):
    lastDebounceTime = millis()
    pressed = true
 
