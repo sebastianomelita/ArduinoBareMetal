@@ -459,6 +459,7 @@ void switchPressed ()
 {
   if(!pressed){// evita detach durante un attach nel loop
     // disarma l'interrupt
+    // può essere omessa se viene tolto il l'attach() nel loop()
     detachInterrupt(digitalPinToInterrupt(pulsante));
     // arma il timer
     pressed = true; 
@@ -473,6 +474,7 @@ void loop() {
     // fronte di discesa
     stato = !stato; // logica da attivare sul fronte (toggle)
     // riarma l'interrupt
+    // può essere omessa se eviene tolto il detach() nella ISR
     attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING ); 
     pressed = false; // disarma il timer
   }
@@ -480,6 +482,8 @@ void loop() {
   delay(10);
 }
 ```
+
+Si noti che è possibile eliminare l'**overhead** delle chiamate alle funzioni **attach()** e **detach()** utilizzando solamente il **flag pressed**. Il prezzo da pagare è un maggiore **overhead** della **ISR** che, a seguito di un interrupt, potrebbe essere chiamata anche un **centinaio** di volte consecutivamente.
 
 - Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/390288516762524673
 - Simulazione online su ESP32 del codice precedente con Tinkercad: https://www.tinkercad.com/things/4KnKm94hoP1-toggle-interrupt-delay
