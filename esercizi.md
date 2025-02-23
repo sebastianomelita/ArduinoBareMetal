@@ -459,7 +459,7 @@ void switchPressed ()
 {
   if(!pressed){// evita detach durante un attach nel loop
     // disarma l'interrupt
-    // può essere omessa se viene tolto il l'attach() nel loop()
+    // può essere omessa se viene tolto l'attach() nel loop()
     detachInterrupt(digitalPinToInterrupt(pulsante));
     // arma il timer
     pressed = true; 
@@ -522,7 +522,7 @@ void switchPressed ()
 {
  if(!pressed){// evita detach durante un attach nel loop
     // disarma l'interrupt
-    // può essere omessa se viene tolto il l'attach() nel loop()
+    // può essere omessa se viene tolto l'attach() nel loop()
     detachInterrupt(digitalPinToInterrupt(pulsante));
     // arma il timer
     pressed = true; 
