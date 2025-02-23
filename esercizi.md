@@ -482,6 +482,7 @@ void loop() {
   delay(10);
 }
 ```
+La variabile **```pressed```** è di appena **un byte** per cui le operazioni di **assegnamento** e di **confronto** su di essa sono sempre **atomiche** in tutti i microcontrollori (quindi sia Arduino che ESP32). Per renderla **thread-safe** basta qualificarla **volatile** nella dichiarazione.
 
 Anche **senza detach/attach**, il codice rimane **thread-safe** grazie alla **logica di guardia** sulla variabile **pressed**. Non è necessario proteggere waitUntilInputChange() con interrupts()/noInterrupts(), infatti:
 - Inizialmente pressed = false
@@ -562,6 +563,7 @@ void loop() {
   delay(10);
 }
 ```
+La variabile **```pressed```** è di appena **un byte** per cui le operazioni di **assegnamento** e di **confronto** su di essa sono sempre **atomiche** in tutti i microcontrollori (quindi sia Arduino che ESP32). Per renderla **thread-safe** basta qualificarla **volatile** nella dichiarazione.
 
 Anche **senza detach/attach**, il codice rimane **thread-safe** grazie alla **logica di guardia** sulla variabile **pressed**. Non è necessario proteggere waitUntilInputChange() con interrupts()/noInterrupts(), infatti:
 - Inizialmente pressed = false
