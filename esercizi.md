@@ -662,11 +662,9 @@ Loop (quando pressed = true):
 
 Quindi, anche se ```lastDebounceTime``` è un long (tipicamente 4 byte su Arduino) e la sua scrittura/lettura non è atomica, non c'è rischio di race condition perché:
 
-Non c'è mai sovrapposizione temporale tra scrittura e lettura grazie alla guardia pressed
-La ISR non può intervenire durante la lettura di lastDebounceTime nel loop perché:
-
-O ```pressed``` è true e quindi la ISR esce subito
-O ```pressed``` è false ma allora il loop non sta leggendo lastDebounceTime
+Non c'è mai sovrapposizione temporale tra scrittura e lettura grazie alla **guardia pressed**. La ISR non può intervenire durante la lettura di lastDebounceTime nel loop perché:
+- ```pressed``` è true e quindi la ISR esce subito
+- ```pressed``` è false ma allora il loop non sta leggendo lastDebounceTime
 
 
 Il codice è quindi corretto anche senza accesso atomico a ```lastDebounceTime```. La variabile ```volatile``` è sufficiente per garantire la visibilità delle modifiche tra ISR e loop.
