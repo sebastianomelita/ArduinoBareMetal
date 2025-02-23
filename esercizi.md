@@ -584,13 +584,10 @@ Variante del codice precedente ottenuta utilizzando direttamente la sola funzion
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
-#include "urutils.h"
 int led = 13;
 byte pulsante =12;
 byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
 volatile bool pressed;
-#define DEBOUNCETIME 50
-DiffTimer debounce;
 volatile unsigned long lastDebounceTime = 0;
 const unsigned long debounceDelay = 50;
  
@@ -672,7 +669,7 @@ Il codice è quindi corretto anche senza accesso atomico a ```lastDebounceTime``
 L'unico caso teorico di problemi sarebbe se l'architettura non garantisse la coerenza dell'ordine delle scritture in memoria (memory ordering), ma su Arduino (AVR) questo non è un problema perché le scritture mantengono l'ordine di programma.
 
 - Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/423680930381449217
-- Simulazione online su ESP32 del codice precedente con Tinkercad:
+- Simulazione online su ESP32 del codice precedente con Tinkercad: https://www.tinkercad.com/things/0jUHZOIdhvP-toggle-interrupt-no-blocking-con-millis
   
 ### **Pulsante toggle basato su interrupts e debounce nella ISR**
 
