@@ -580,6 +580,104 @@ Dalle considerazioni precedenti si deduce che è possibile eliminare l'**overhea
 - Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/423543840234258433
 - Simulazione online su ESP32 del codice precedente con Tinkercad: https://www.tinkercad.com/things/dyrIzrr7OlE-toggle-interrupt-no-blocking
 
+Variante del codice precedente ottenuta utilizzando direttamente la sola funzione millis(), senza adoperare alcuna libreria di timer.
+
+```C++
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+#include "urutils.h"
+int led = 13;
+byte pulsante =12;
+byte stato= LOW;  // variabile globale che memorizza lo stato del pulsante
+volatile bool pressed;
+#define DEBOUNCETIME 50
+DiffTimer debounce;
+volatile unsigned long lastDebounceTime = 0;
+const unsigned long debounceDelay = 50;
+ 
+void setup() {
+  Serial.begin(115200);
+  pinMode(led, OUTPUT);
+  pinMode(pulsante, INPUT);
+  attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING );  
+  pressed = false;
+}
+
+// Interrupt Service Routine (ISR)
+void switchPressed ()
+{
+ if(!pressed){// evita detach durante un attach nel loop
+    // disarma l'interrupt
+    // può essere omessa se viene tolto l'attach() nel loop()
+    detachInterrupt(digitalPinToInterrupt(pulsante));
+    // arma il timer
+    lastDebounceTime = millis();
+    pressed = true; 
+ }
+}  // end of switchPressed
+
+void waitUntilInputChange()
+{
+    if (pressed){ 
+      if(digitalRead(pulsante)==LOW && (millis() - lastDebounceTime) > debounceDelay){// disarmo del timer al timeout
+        // fronte di discesa
+        stato = !stato; // logica da attivare sul fronte (toggle)
+        // riarma l'interrupt
+        // può essere omessa se eviene tolto il detach() nella ISR
+        attachInterrupt(digitalPinToInterrupt(pulsante), switchPressed, RISING ); 
+        pressed = false; // disarma il timer
+      }
+    }
+}
+// loop principale
+void loop() {
+	waitUntilInputChange();
+	digitalWrite(led, stato);   	// inverti lo stato precedente del led
+  delay(10);
+}
+```
+La variabile a 32 bit ```lastDebounceTime``` in ESP32 è atomica per lettura, scrittura e confronto. Negli altri microcontrollori come Arduino no.
+
+Analizziamo la questione dell'atomicità di lastDebounceTime in questo contesto:
+
+lastDebounceTime viene:
+
+Scritto SOLO nella ISR: lastDebounceTime = millis();
+Letto SOLO nel loop: (millis() - lastDebounceTime) > debounceDelay
+
+
+La protezione delle sezioni critiche è garantita dalla variabile pressed:
+
+La ISR scrive lastDebounceTime solo quando pressed è false
+Il loop legge lastDebounceTime solo quando pressed è true
+
+
+La sequenza è sempre:
+
+```C++
+(quando pressed = false):
+   lastDebounceTime = millis()
+   pressed = true
+
+Loop (quando pressed = true):
+   legge lastDebounceTime
+   ...eventualmente pressed = false
+```
+
+Quindi, anche se ```lastDebounceTime``` è un long (tipicamente 4 byte su Arduino) e la sua scrittura/lettura non è atomica, non c'è rischio di race condition perché:
+
+Non c'è mai sovrapposizione temporale tra scrittura e lettura grazie alla guardia pressed
+La ISR non può intervenire durante la lettura di lastDebounceTime nel loop perché:
+
+O ```pressed``` è true e quindi la ISR esce subito
+O ```pressed``` è false ma allora il loop non sta leggendo lastDebounceTime
+
+
+Il codice è quindi corretto anche senza accesso atomico a ```lastDebounceTime```. La variabile ```volatile``` è sufficiente per garantire la visibilità delle modifiche tra ISR e loop.
+
+L'unico caso teorico di problemi sarebbe se l'architettura non garantisse la coerenza dell'ordine delle scritture in memoria (memory ordering), ma su Arduino (AVR) questo non è un problema perché le scritture mantengono l'ordine di programma.
+
+- Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/423680930381449217
+- Simulazione online su ESP32 del codice precedente con Tinkercad:
   
 ### **Pulsante toggle basato su interrupts e debounce nella ISR**
 
