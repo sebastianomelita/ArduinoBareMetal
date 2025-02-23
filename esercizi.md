@@ -549,10 +549,7 @@ void loop() {
 }
 ```
 
-Si noti che è possibile eliminare l'overhead delle chiamate alle funzioni attach() e detach() utilizzando solamente il flag pressed. Il prezzo da pagare è un maggiore overhead della ISR che, a seguito di un interrupt, potrebbe essere chiamata anche un centinaio di volte consecutivamente:
-
-- attachInterrupt() può essere omessa se eviene tolto il detach() nella ISR
-- detachInterrupt() può essere omessa se viene tolto il l'attach() nel loop()
+Si noti che è possibile eliminare l'**overhead** delle chiamate alle funzioni **attach()** e **detach()** utilizzando solamente il **flag pressed**. Il prezzo da pagare è un maggiore **overhead** della **ISR** che, a seguito di un interrupt, potrebbe essere chiamata anche un **centinaio** di volte consecutivamente.
 
 - Simulazione online su ESP32 del codice precedente con Wowki: https://wokwi.com/projects/423543840234258433
 - Simulazione online su ESP32 del codice precedente con Tinkercad: https://www.tinkercad.com/things/dyrIzrr7OlE-toggle-interrupt-no-blocking
