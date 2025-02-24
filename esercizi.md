@@ -1717,8 +1717,8 @@ Scrivere un programma che realizzi una teiera automatica tale che:
 - l'erogazione termina dopo 3 secondi, passati i quali il led E si spegne.
 - una pressione prolungata del pulsante A (più di 3 secondi) spegne la teiera disattivando tutti i led.
 
-- https://wokwi.com/projects/423804874250866689
-- 
+- Con esp32 su Wokwi: https://wokwi.com/projects/423804874250866689
+- Con Arduino su Tinkercad: https://www.tinkercad.com/things/khLCxFsFdrk-teiera-automatica
 
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
