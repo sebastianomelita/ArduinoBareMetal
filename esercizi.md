@@ -1706,8 +1706,19 @@ Suggerimenti:
 
 https://wokwi.com/projects/392701811094769665?authuser=0
 
+
+### **Es41. Teiera**
+
+Scrivere un programma che realizzi una teiera automatica tale che:
+- si accenda premendo il pulsante A, alla cui pressione si mette a blinkare il led S di stato dell'acqua che così indica che la temperatura ancora non è quella giusta. 
+- Una pressione del pulsante A mentre il led S blinka non ha alcun effetto.
+- l'acqua è a temperatura quando, dopo 10 secondi, il led S non blinka più ma è a luminosità fissa
+- premere il pulsante A con il  led S è fisso mette in azione la erogazione del te da un ugello, segnalata da un led E acceso
+- l'erogazione termina dopo 3 secondi, passati i quali il led E si spegne.
+- una pressione prolungata del pulsante A (più di 3 secondi) spegne la teiera disattivando tutti i led.
+
+
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
-  
 >[Torna all'indice generale](index.md)
