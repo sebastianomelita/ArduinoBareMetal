@@ -1718,8 +1718,8 @@ Scrivere un programma che realizzi una teiera automatica tale che:
 - una pressione prolungata del pulsante A (più di 3 secondi) spegne la teiera disattivando tutti i led.
 
 N.B.: Vedi :
-- [Definizione](statifinitibase.md)
-- [Linee guida sviluppo](statifinitisviluppo.md)
+- [Definizione macchine a stati finiti](statifinitibase.md)
+- [Linee guida sviluppo macchine a stati finiti](statifinitisviluppo.md)
 
 - Con esp32 su Wokwi: https://wokwi.com/projects/423804874250866689
 - Con Arduino su Tinkercad: https://www.tinkercad.com/things/khLCxFsFdrk-teiera-automatica
