@@ -20,6 +20,8 @@ Gli input del sistema sono:
 - Timer t1 ≥ 10 secondi (riscaldamento completato)
 - Timer t2 ≥ 3 secondi (erogazione completata)
 
+### TABELLA DI TRANSIZIONE**
+
 Ecco la tabella di transizione di Mealy:
 
 | Stato attuale | Input | Stato prossimo | Output |
@@ -34,6 +36,8 @@ Ecco la tabella di transizione di Mealy:
 | EROGAZIONE | t2 ≥ 3s | BOLLITURA | Led E spento, Led S fisso |
 
 Questa tabella descrive il comportamento completo del sistema della teiera automatica secondo il codice fornito, mostrando come gli stati cambiano in risposta agli input e quali output vengono generati durante ciascuna transizione.
+
+### DIAGRAMMA DI MEALEY DELLE TRANSIZIONI**
 
 ```mermaid
 %%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
@@ -54,6 +58,9 @@ stateDiagram-v2
     
     SPENTO --> [*] : Spegnimento
 ```
+
+### CODICE ARDUINO**
+
 
 ```C++
 /*
