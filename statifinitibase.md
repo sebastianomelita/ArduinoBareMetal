@@ -10,7 +10,7 @@ La differenza tra i due sta nella particolare maniera con cui si genera l’**us
 
 In **informatica** privilegeremo la **rappresentazione di Mealy** che possiamo immaginare composta da un certo numero di stati (situazioni diverse in cui si può trovare il sistema), da un certo numero di ingressi (eventi utente o generati dall’HW) e da un certo numero di uscite (azioni svolte). 
 
-Vale la relazione **(stato, ingresso) -> uscita** cioè, fissati uno stato e un certo ingresso si genera sempre **la stessa** uscita.
+Vale la relazione **```(stato, ingresso) -> uscita```** cioè, fissati uno stato e un certo ingresso si genera sempre **la stessa** uscita.
 
 L'usuale rappresentazione grafica di un automa a stati finiti è il **grafo orientato**, dove i **cerchi** rappresentano lo stato e gli **archi** la transizione da uno stato all’altro. Le **etichette degli archi** rappresentano l’ingresso che ha generato la transizione usualmente rappresentato abbinato all’uscita da esso scatenata. **Ingressi (eventi) diversi** si rappresentano con **archi diversi** e possono generare **uscite diverse**.
 
