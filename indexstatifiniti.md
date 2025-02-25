@@ -12,5 +12,5 @@
 7. [Simulazione protocollo ALOHA per Arduino e Tinkercad](simalohaasync.md)
 8. [Simulazione protocollo CSMA per Arduino e Tinkercad](simcsmaasync.md)
 9. [Simulazione protocollo CSMA/CA per Arduino e Tinkercad](simcsmacaasync.md)
-10. [teiera automatica](teiera.md)
+10. [Teiera automatica](teiera.md)
 11. [Sitografia](statifinitisitografia.md)
