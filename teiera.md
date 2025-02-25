@@ -1,4 +1,4 @@
->[Torna all'indice generale](index.md)ndexstatifiniti.md
+>[Torna all'indice generale](indexstatifiniti.md)
 
 # **TEIERA AUTOMATICA**
 
@@ -160,4 +160,4 @@ void loop(){
 }
 ```
 
->[Torna all'indice generale](index.md)ndexstatifiniti.md
+>[Torna all'indice generale](indexstatifiniti.md)
