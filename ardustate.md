@@ -78,11 +78,3 @@ void loop() {
 - https://9g.lt/blog/arduino-state-machine-with-millis-instead-of-delay
 
 >[Torna all'indice](indexstatifiniti.md)
-
-
-```
-
-**Sitografia:**
-- https://9g.lt/blog/arduino-state-machine-with-millis-instead-of-delay
-
->[Torna all'indice](indexstatifiniti.md)
