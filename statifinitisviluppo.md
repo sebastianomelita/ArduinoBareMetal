@@ -38,4 +38,12 @@ Si possono considerare **stati**:
   * stato di attesa di ricezione di un messaggio di controllo entro lo scadere di un timeout (ACK_STATE, ecc.)
   * stato di attesa di trasmissione di un messaggio di controllo entro lo scadere di un timeout (BACKOFF_STATE, DIFS, ecc.)
 
+### Attese
+
+Le **attese** ritardano le transizioni di fino allo **scadere** di un certo **TIMEOUT** o in attesa di un **certo valore** su un **ingresso** o su un **flag di comunicazione** con un task/processo posto su di un altro thread. Possono essere, come sempre, **bloccanti** o **non bloccanti**:
+- **delay()**, rappresenta un **timer bloccante**.
+- **get()** dopo uno start() precedente, rappresenta un **timer non bloccante**
+- **waitUntilInputLow(porta, tempo_mninimo)**, rappresenta l'**attesa attiva bloccante** (polling) su un ingresso per un tempo minimo. Utile per separare un **prima**, fronte di salita alla **pressione** di un tasto, da un **dopo**, fronte di discesa al **rilascio** dello stesso tasto.
+- **waitUntil(flag)**, rappresenta , rappresenta l'**attesa attiva bloccante** (polling) su un **flag** di segnalazione, in attesa che questo venga modificato da una istruzione su un altro **thread**.
+  
 >[Torna all'indice](indexstatifiniti.md) 
