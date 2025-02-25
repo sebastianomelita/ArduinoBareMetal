@@ -48,7 +48,7 @@ Si possono considerare **stati**:
 
 ### Attese
 
-Le **attese** ritardano le transizioni di fino allo **scadere** di un certo **TIMEOUT** o in attesa di un **certo valore** su un **ingresso** o su un **flag di comunicazione** con un task/processo posto su di un altro thread. Possono essere, come sempre, **bloccanti** o **non bloccanti**:
+Le **attese** ritardano le transizioni fino allo **scadere** di un certo **TIMEOUT** o in attesa di un **certo valore** su un **ingresso** o su un **flag di comunicazione** con un task/processo posto su di un altro thread. Possono essere, come sempre, **bloccanti** o **non bloccanti**:
 - **delay()**, rappresenta un **timer bloccante**.
 - **get()** dopo uno start() precedente, rappresenta un **timer non bloccante**
 - **waitUntilInputLow(porta, tempo_mninimo)**, rappresenta l'**attesa attiva bloccante** (polling) su un ingresso per un tempo minimo. Utile per separare un **prima**, fronte di salita alla **pressione** di un tasto, da un **dopo**, fronte di discesa al **rilascio** dello stesso tasto.
