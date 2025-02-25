@@ -5,12 +5,19 @@
 ```C++
 #include <Arduino.h>
 
-enum class State :uint8_t {
-  noop,
-  wait,
-  state1,
-  state2,
-  state3
+
+>[Torna all'indice](indexstatifiniti.md)
+## **MACCHINA A STATI GENERICA PER ARDUINO**
+
+```C++
+#include <Arduino.h>
+
+enum {
+  NOOP,
+  WAIT,
+  STATE1, // stato geenerico, sostituiscilo con un nome significativo per questo stato
+  STATE2, // stato geenerico, sostituiscilo con un nome significativo per questo stato
+  STATE3  // stato geenerico, sostituiscilo con un nome significativo per questo stato
 };
 
 State nextState;
@@ -35,36 +42,43 @@ void loop() {
   currentTime = millis();
 
   switch (state) {
-    case State::noop:
+    case NOOP:
       //maybe wait for input? (for now just send anything to serial);
       if (Serial.available() > 0) {
         Serial.readString();
-        state = State::state1;
+        state = STATE1;
       }
       break;
-    case State::wait:
+    case WAIT:
       if (currentTime - prevTime > waitDelay) {
         state = nextState;
         prevTime = currentTime;
       }
       break;
-    case State::state1:
-      nextStateAfter(State::state2, 1000);
+    case STATE1:
+      nextStateAfter(STATE2, 1000);
       Serial.println("state1");
       break;
 
-    case State::state2:
-      nextStateAfter(State::state3, 2000);
+    case STATE2:
+      nextStateAfter(STATE3, 2000);
       Serial.println("state2");
       break;
 
-    case State::state3:
-      nextStateAfter(State::state1, 3000);
+    case STATE3:
+      nextStateAfter(STATE1, 3000);
       Serial.println("state3");
       break;
 
   }
 }
+```
+
+**Sitografia:**
+- https://9g.lt/blog/arduino-state-machine-with-millis-instead-of-delay
+
+>[Torna all'indice](indexstatifiniti.md)
+
 
 ```
 
