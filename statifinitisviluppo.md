@@ -21,7 +21,7 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
 -	eventi generati dall’HW (interrupt che segnalano lo scadere di un timer, o l’arrivo di un dato sul canale)
 -	polling di funzioni o di flag legati ad eventi HW o SW (verifica della disponibilità di dati in ricezione su un canale tramite Serial.available(), verifica dell’avvenuto scadere di un timeout tramite millis(), ecc.)
 
-### **stati**
+### **Stati**
 
 Si possono considerare **stati**:
 -	situazione in cui evolve un protocollo alla quale corrisponde un ben preciso messaggio
