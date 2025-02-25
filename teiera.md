@@ -21,7 +21,7 @@ Gli input del sistema sono:
 - Timer t1 ≥ 10 secondi (riscaldamento completato)
 - Timer t2 ≥ 3 secondi (erogazione completata)
 
-### TABELLA DI TRANSIZIONE**
+### **TABELLA DI TRANSIZIONE**
 
 Ecco la tabella di transizione di Mealy:
 
