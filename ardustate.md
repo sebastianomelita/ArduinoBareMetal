@@ -1,12 +1,6 @@
 
 >[Torna all'indice](indexstatifiniti.md)
-## **MACCHINA A STATI GENERICA PER ARDUINO**
 
-```C++
-#include <Arduino.h>
-
-
->[Torna all'indice](indexstatifiniti.md)
 ## **MACCHINA A STATI GENERICA PER ARDUINO**
 
 ```C++
