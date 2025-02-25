@@ -4,7 +4,6 @@
 ## **MACCHINA A STATI GENERICA PER ARDUINO**
 
 ```C++
-#include <Arduino.h>
 
 enum {
   NOOP,
@@ -28,7 +27,7 @@ void setup() {
 void nextStateAfter(State ss, uint32_t d) {
   waitDelay = d;
   nextState = ss;
-  state = State::wait;
+  state = WAIT
   prevTime = currentTime;
 }
 
@@ -66,6 +65,13 @@ void loop() {
 
   }
 }
+```
+
+**Sitografia:**
+- https://9g.lt/blog/arduino-state-machine-with-millis-instead-of-delay
+
+>[Torna all'indice](indexstatifiniti.md)
+
 ```
 
 **Sitografia:**
