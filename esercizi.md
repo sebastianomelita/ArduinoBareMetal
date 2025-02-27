@@ -1735,8 +1735,18 @@ Disegnare la mappa degli stati.
 
 Link al progetto: [Macchina per il caffè](caffè.md)
 
-- Con Arduino su Tinkercad: https://www.tinkercad.com/things/fK0ZdtcDER0-caffe
+- Simulazione con Arduino su Tinkercad: https://www.tinkercad.com/things/fK0ZdtcDER0-caffe
 
+### **Es43. Lettiera automatica**
+
+Scrivere un programma che realizzi una lettiera per gatti autopulente. Tre volte al giorno la lettiera si pulisce automaticamente attivando una 
+centrifuga. La centrifuga viene avviata solamente quando si ha la certezza che il gatto è uscito dalla lettiera mediante la valutazione 
+di un sensore di transito (pulsante con memoria) e di un sensore di presenza (deviatore a slitta senza memoria). Indicare la presenza 
+del gatto con un led verde acceso. La pulizia della lettiera con un led rosso acceso. La pulizia si attiva automaticamente ogni 
+tre volte che il gatto esce dalla lettiera.
+
+- Simulazione con Arduino su Tinkercad: https://www.tinkercad.com/things/kL0VNCCbB3B-lettiera-gatti
+  
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
