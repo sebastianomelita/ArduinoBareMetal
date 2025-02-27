@@ -1724,7 +1724,21 @@ N.B.: Vedi :
 - Con esp32 su Wokwi: https://wokwi.com/projects/423804874250866689
 - Con Arduino su Tinkercad: https://www.tinkercad.com/things/khLCxFsFdrk-teiera-automatica
 
+### **Es42. Macchina per il caffè**
+
+Realizzare una macchina per il caffè che funziona nella seguente maniera:
+- Quando premo il pulsante 1 si accende il led A(accensione) da questo momento in poi l’acqua è in riscaldamento.
+- Terminerà quando bollerà, all’incirca dopo 10s si accende il led B(acqua bolle) e viene abilitato il pulsante 2 è un toggle, alla prima pressione inizia l’erogazione indicata da un led E e termina l’erogazione con la seconda pressione e spengimento del led E.
+(IL PRIMO PULSANTE ALLA SECONDA PRESSIONE SPENGE LA MACCHINA ESSENDO UN TOGGLE).
+
+Disegnare la mappa degli stati.
+
+Link al progetto: [Macchina per il caffè](caffè.md)
+
+- Con Arduino su Tinkercad: https://www.tinkercad.com/things/fK0ZdtcDER0-caffe
+
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
+
 >[Torna all'indice generale](index.md)
