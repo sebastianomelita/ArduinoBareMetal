@@ -1,4 +1,4 @@
->[Torna all'indice generale](index.md)
+>[Torna all'indice generale](indexstatifiniti.md)
 
 # **MACCHINA PER IL CAFFE'**
 
@@ -90,4 +90,4 @@ Punti chiave del funzionamento:
     Erogazione --> Spento: Pulsante1/LED A OFF, LED B OFF, LED E OFF
 ```
 
->[Torna all'indice generale](index.md)
+>[Torna all'indice generale](indexstatifiniti.md)
