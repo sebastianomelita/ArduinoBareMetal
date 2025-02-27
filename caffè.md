@@ -236,4 +236,6 @@ void loop() {
 }
 ```
 
+- Simulazione Con Arduino su Tinkercad: https://www.tinkercad.com/things/fK0ZdtcDER0-caffe
+  
 >[Torna all'indice generale](indexstatifiniti.md)
