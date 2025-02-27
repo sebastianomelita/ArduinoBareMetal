@@ -1,3 +1,4 @@
+>[Torna all'indice generale](index.md)
 
 # **MACCHINA PER IL CAFFè**
 
@@ -85,3 +86,5 @@ Punti chiave del funzionamento:
     Pronto --> Erogazione: Pulsante2/LED E ON
     Erogazione --> Pronto: Pulsante2/LED E OFF
     Erogazione --> Spento: Pulsante1/LED A OFF, LED B OFF, LED E OFF
+
+>[Torna all'indice generale](index.md)
