@@ -1,6 +1,6 @@
 >[Torna all'indice generale](index.md)
 
-# **MACCHINA PER IL CAFFè**
+# **MACCHINA PER IL CAFFE'**
 
 Realizzare una macchina per il caffè che funziona nella seguente maniera:
 - Quando premo il pulsante 1 si accende il led A(accensione) da questo momento in poi l’acqua è in riscaldamento.
