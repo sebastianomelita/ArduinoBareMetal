@@ -74,7 +74,8 @@ Punti chiave del funzionamento:
 | S2 (Pronto)   | ON    | ON    | OFF   | Abilitato|
 | S3 (Erogaz.)  | ON    | ON    | ON    | Abilitato|
 
-
+```mermaid
+%%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
     [*] --> Spento
     
     Spento --> Riscaldamento: Pulsante1/LED A ON
@@ -86,5 +87,6 @@ Punti chiave del funzionamento:
     Pronto --> Erogazione: Pulsante2/LED E ON
     Erogazione --> Pronto: Pulsante2/LED E OFF
     Erogazione --> Spento: Pulsante1/LED A OFF, LED B OFF, LED E OFF
+```
 
 >[Torna all'indice generale](index.md)
