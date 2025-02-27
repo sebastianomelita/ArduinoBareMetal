@@ -13,4 +13,5 @@
 8. [Simulazione protocollo CSMA per Arduino e Tinkercad](simcsmaasync.md)
 9. [Simulazione protocollo CSMA/CA per Arduino e Tinkercad](simcsmacaasync.md)
 10. [Teiera automatica](teiera.md)
-11. [Sitografia](statifinitisitografia.md)
+11. [Macchina del caffè](caffè.md)
+12. [Sitografia](statifinitisitografia.md)
