@@ -53,6 +53,8 @@ Le **attese** ritardano le transizioni fino allo **scadere** di un certo **TIMEO
 - **```if(get() < TIMEOUT){...}```**, dopo uno start() precedente, rappresenta un **timer non bloccante** che attende per un tempo **```TIMEOUT```**.
 - **```waitUntilInputLow(porta, tempo_mninimo)```**, rappresenta l'**attesa attiva bloccante** (polling) su un ingresso per un tempo minimo. Utile per separare un **prima**, fronte di salita alla **pressione** di un tasto, da un **dopo**, fronte di discesa al **rilascio** dello stesso tasto.
 - **```waitUntil(flag)```**, rappresenta , rappresenta l'**attesa attiva bloccante** (polling) su un **flag** di segnalazione, in attesa che questo venga modificato da una istruzione su un altro **thread**.
+- **contatori**, un conteggio prima dell'accadere di un evento (ad esempio il numero di ingressi in un cinema) potrebbe essere interpretato come un **ingresso** che assume due possibili valori: ```conteggio < target``` e ```conteggio >= target```.
+     
 
 ### **Debug**
 
