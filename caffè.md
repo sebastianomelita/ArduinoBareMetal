@@ -91,4 +91,147 @@ stateDiagram-v2
     Erogazione --> Spento: Pulsante1/LED A OFF, LED B OFF, LED E OFF
 ```
 
+```C++
+
+//##### urutils.h #####
+void waitUntilInputLow(int btn, unsigned t)
+{
+   do{
+	 delay(t);
+   }while(digitalRead(btn)!=LOW);
+}
+
+struct DiffTimer
+{
+	unsigned long elapsed, last;
+	bool timerstate=false;
+	byte state = 0;
+	byte count = 0;
+	void reset(){
+		elapsed = 0;
+		last = millis();
+	}
+	void toggle(){
+		if(timerstate){
+    	    stop();
+		}else{
+			start();
+		}	
+	}
+	void stop(){
+		if(timerstate){
+			timerstate = false;
+    	    elapsed += millis() - last;
+		}	
+	}
+	void start(){
+		if(!timerstate){
+			timerstate = true;
+			last = millis();
+		}
+	}
+	unsigned long get(){
+		if(timerstate){
+			return millis() - last + elapsed;
+		}
+		return elapsed;
+	}
+	void set(unsigned long e){
+		reset();
+		elapsed = e;
+	}
+};
+//##### urutils.h #####
+
+/*Alla pressione del pulsante si attiva o disattiva un led
+mentre un altro led blinka (TASK CONCORRENTI)
+*/
+int led_E=13; // indicatore di erogazione
+int led_A=12; // indicatore di accensione/spegnimento
+int led_B=4;  // indicatore di pronto
+int pulsante1=2;
+int pulsante2=3;
+uint8_t state;
+DiffTimer t1;
+
+enum Stati{
+  SPENTO,
+  RISCALDAMENTO,
+  PRONTO,
+  EROGAZIONE
+};
+
+void blink(int led) {
+  digitalWrite(led, !digitalRead(led));
+}
+
+void setup(){
+  pinMode(pulsante1, INPUT);
+  pinMode(pulsante2, INPUT);
+  pinMode(led_E, OUTPUT); // indicatore di erogazione
+  pinMode(led_A, OUTPUT); // indicatore di accensione/spegnimento
+  pinMode(led_B, OUTPUT); // indicatore di pronto
+  Serial.begin(115200);
+  state = SPENTO; // inizialmente l'acqua è fredda
+}
+
+void loop() {
+  switch (state) {
+    case SPENTO:
+    	Serial.println("SPENTO");
+		if(digitalRead(pulsante1) == HIGH){
+			waitUntilInputLow(pulsante1, 50);
+			digitalWrite(led_A, HIGH);
+			state = RISCALDAMENTO;
+			t1.start();
+			t1.reset();
+		}
+    break;
+    case RISCALDAMENTO:
+		Serial.println("RISCALDAMENTO");
+		if(digitalRead(pulsante1) == HIGH){
+			waitUntilInputLow(pulsante1, 50);
+			digitalWrite(led_A, LOW);
+			state = SPENTO;	
+		}
+		if(t1.get() > 10000){
+			t1.stop();
+			digitalWrite(led_B, HIGH);
+			state = PRONTO;	
+		}
+    break;
+    case PRONTO:
+		Serial.println("PRONTO");
+		if(digitalRead(pulsante1) == HIGH){
+			waitUntilInputLow(pulsante1, 50);
+			digitalWrite(led_A, LOW);
+			digitalWrite(led_B, LOW);
+			state = SPENTO;	
+		}
+		if(digitalRead(pulsante2) == HIGH){
+			waitUntilInputLow(pulsante1, 50);
+			digitalWrite(led_E, HIGH);
+			state = EROGAZIONE;	
+		}
+    break;
+	case EROGAZIONE:
+		Serial.println("EROGAZIONE");
+		if(digitalRead(pulsante1) == HIGH){
+			waitUntilInputLow(pulsante1, 50);
+			digitalWrite(led_A, LOW);
+			digitalWrite(led_B, LOW);
+			digitalWrite(led_E, LOW);
+			state = SPENTO;	
+		}
+		if(digitalRead(pulsante2) == HIGH){
+			waitUntilInputLow(pulsante1, 50);
+			digitalWrite(led_E, LOW);
+			state = PRONTO;	
+		}
+    break;
+  }
+  delay(10);
+}
+```
+
 >[Torna all'indice generale](indexstatifiniti.md)
