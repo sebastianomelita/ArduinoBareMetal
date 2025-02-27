@@ -8,6 +8,9 @@ La **breadboard** è una basetta forata dove i componenti si incastrano meccanic
  
 La basetta è divisa da un **solco centrale** in una **zona superiore** e **zona inferiore** che sono uguali specularmente rispetto al solco, percui i discorsi che faremo per una valgono per l'altra.
 
+Le zone, superiore e d inferiore, sono divise in una parte di alimentazione che è riconoscibile dalle linee colorate di rosso e di nero marcate con il simbolo + e con il simbolo - rispettivamente.
+
+
 Concentriamoci sulla **parte superiore**.  Un solco orizzontale più sottile separa la zona di alimentazione dalla zona degli input e output:
 - Nella **parte di alimentazione**, tutti i fori di una **stessa riga** sono internamente collegati, per cui sono allo **stesso potenziale**. I collegamenti interni si sviluppano in orizzontale ma non in verticale, per cui fori che stanno sulla stessa colonna ma su righe diverse, non sono elettricamente collegati.
 - Nella **parte di input/output**, tutti i fori di una **stessa colonna** sono internamente collegati, per cui sono allo **stesso potenziale**. I collegamenti interni si sviluppano in verticale ma non in orizzontale, per cui fori che stanno sulla stessa riga ma su colonne diverse, non sono elettricamente collegati.
