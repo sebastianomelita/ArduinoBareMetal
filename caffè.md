@@ -76,7 +76,8 @@ Punti chiave del funzionamento:
 
 ```mermaid
 %%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
-    [*] --> Spento
+
+[*] --> Spento
     
     Spento --> Riscaldamento: Pulsante1/LED A ON
     Riscaldamento --> Spento: Pulsante1/LED A OFF
