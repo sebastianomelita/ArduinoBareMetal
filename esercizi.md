@@ -1729,7 +1729,7 @@ N.B.: Vedi :
 Realizzare una macchina per il caffè che funziona nella seguente maniera:
 - Quando premo il pulsante 1 si accende il led A(accensione) da questo momento in poi l’acqua è in riscaldamento.
 - Terminerà quando bollerà, all’incirca dopo 10s si accende il led B(acqua bolle) e viene abilitato il pulsante 2 è un toggle, alla prima pressione inizia l’erogazione indicata da un led E e termina l’erogazione con la seconda pressione e spengimento del led E.
-(IL PRIMO PULSANTE ALLA SECONDA PRESSIONE SPENGE LA MACCHINA ESSENDO UN TOGGLE).
+(IL PRIMO PULSANTE ALLA SECONDA PRESSIONE SPENGNE LA MACCHINA ESSENDO UN TOGGLE).
 
 Disegnare la mappa degli stati.
 
