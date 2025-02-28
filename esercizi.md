@@ -1747,6 +1747,7 @@ tre volte che il gatto esce dalla lettiera.
 
 - Simulazione con Arduino su Tinkercad mediante FSM: https://www.tinkercad.com/things/kL0VNCCbB3B-lettiera-gatti
 - Simulazione con Arduino su Tinkercad variante senza FSM: https://www.tinkercad.com/things/cYQtH4sy94O/editel
+- Simulazione con Arduino su Tinkercad variante senza FSM e senza delay: https://www.tinkercad.com/things/cYQtH4sy94O-lettiera-gatti-no-fsm-no-delay
   
 Sitografia:
 - https://docs.wokwi.com/parts/wokwi-ky-040
