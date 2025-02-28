@@ -121,4 +121,21 @@ struct DiffTimer2
 		tbase = e;
 	}
 };
+
+bool waitUntilLow(DiffTimer &d, bool val, unsigned t);
+
+bool waitUntilLow(DiffTimer &d, bool c, unsigned t){
+	bool ok = false;
+	if (c) {// fronte di salita
+		d.start(); // campionamento singleton del tempo
+	}
+	// fronte di discesa dopo rimbalzi
+	if(d.get() > t && !c){
+		// disabilitazione fino al prossimo fronte di salita
+		d.stop();
+		d.reset();
+		ok = true;
+	}
+	return ok;
+}
 #endif
