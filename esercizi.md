@@ -1746,7 +1746,7 @@ del gatto con un led verde acceso. La pulizia della lettiera con un led rosso ac
 tre volte che il gatto esce dalla lettiera.
 
 - Simulazione con Arduino su Tinkercad mediante FSM: https://www.tinkercad.com/things/kL0VNCCbB3B-lettiera-gatti
-- Simulazione con Arduino su Tinkercad variante senza FSM: https://www.tinkercad.com/things/cYQtH4sy94O/editel
+- Simulazione con Arduino su Tinkercad variante senza FSM: https://www.tinkercad.com/things/3F2C6FC6ozg-lettiera-gatti-no-fsm
 - Simulazione con Arduino su Tinkercad variante senza FSM e senza delay: https://www.tinkercad.com/things/cYQtH4sy94O-lettiera-gatti-no-fsm-no-delay
 - Simulazione con Arduino su Tinkercad variante senza FSM e senza delay ma con fronte di discesa rapido: https://www.tinkercad.com/things/7s1lQs9BxUi-lettiera-gatti-no-fsm-no-delay-e-disccesa-rapida
 - Simulazione con Arduino su Tinkercad di una variante del precedente: https://www.tinkercad.com/things/49tCYEOMBP3-lettiera-gatti-no-fsm-no-delay-e-discesa-rapida-2
