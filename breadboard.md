@@ -8,7 +8,7 @@ La **breadboard** è una basetta forata dove i componenti si incastrano meccanic
  
 La basetta è divisa da un **solco centrale** in una **zona superiore** e **zona inferiore** che sono uguali specularmente rispetto al solco, percui i discorsi che faremo per una valgono per l'altra.
 
-Le **zone**, superiore e d inferiore, sono divise in:
+Le **zone**, superiore ed inferiore, sono divise in:
 - una parte di **alimentazione** che è riconoscibile dalle linee colorate di rosso e di nero marcate con il simbolo + e con il simbolo - rispettivamente.
 - in una parte di **input/output** che è riconoscibile dalle lettere a fianco e dal solco centrale con cui confina
 
