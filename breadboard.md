@@ -12,7 +12,7 @@ Le **zone**, superiore e d inferiore, sono divise in:
 - una parte di **alimentazione** che è riconoscibile dalle linee colorate di rosso e di nero marcate con il simbolo + e con il simbolo - rispettivamente.
 - in una parte di **input/output** che è riconoscibile dalle lettere a fianco e dal solco centrale con cui confina
 
-<img src="img/breadboard-02.jpg" alt="alt text" width="800">
+<img src="img/breadboard-02.jpg" alt="alt text" width="1000">
 
 Concentriamoci sulla **parte superiore**.  Un solco orizzontale più sottile separa la zona di alimentazione dalla zona degli input e output:
 - Nella **parte di alimentazione**, tutti i fori di una **stessa riga** sono internamente collegati, per cui sono allo **stesso potenziale**. I collegamenti interni si sviluppano in orizzontale ma non in verticale, per cui fori che stanno sulla stessa colonna ma su righe diverse, non sono elettricamente collegati.
