@@ -24,7 +24,7 @@ Molti componenti di I/0 sono bipoli, cioè componenti con due piedini che devono
 
 <img src="img/led-resistor-circuit-breadboard-connections.png" alt="alt text" width="1000">
 
-Sitografia:
+**Sitografia:**
 - https://www.elecfreaks.com/blog/post/how-to-use-breadboard.html
 - https://sparkfuneducation.com/how-to/how-to-use-a-breadboard.html?hsCtaTracking=51697ce3-1f58-482b-b223-44ea67b6f6c2%7Cd257349d-45a2-4cad-a5f6-fa59de46789c
 - https://wiring.org.co/learning/tutorials/breadboard/
