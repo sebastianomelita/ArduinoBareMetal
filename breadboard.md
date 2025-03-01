@@ -22,7 +22,7 @@ Concentriamoci sulla **parte superiore**.  Un solco orizzontale più sottile sep
 
 ## **COLLEGAMENTO DEI DISPOSITIVI BIPOLI**
 
-Molti componenti di I/0 sono bipoli, cioè componenti con due piedini che devono stare a **potenziale diverso** per cui devono essere necessariamente collegati **in orizzontale**, oppure **obliquamente**, ma in ogni caso **tra colonne diverse**. Possono essere collegati **in verticale** solo **a cavallo** del **solco grande** centrale oppure **a cavallo** di un dei **solchi sottili** che separano la zona di I/0 da quella di alimentazione.
+Molti componenti di I/0 sono bipoli, cioè componenti con due piedini che devono stare a **potenziale diverso**, per cui devono essere necessariamente collegati **in orizzontale**, oppure **obliquamente**, ma in ogni caso **tra colonne diverse**. Possono essere collegati **in verticale** solo **a cavallo** del **solco grande** centrale oppure **a cavallo** di un dei **solchi sottili** che separano la zona di I/0 da quella di alimentazione.
 
 <img src="img/led-resistor-circuit-breadboard-connections.png" alt="alt text" width="1000">
 
