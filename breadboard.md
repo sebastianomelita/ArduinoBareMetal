@@ -8,7 +8,7 @@ La **breadboard** è una basetta forata dove i **componenti** si **incastrano** 
  
 La basetta è divisa da un **solco centrale** in una **zona superiore** e **zona inferiore** che sono uguali specularmente rispetto al solco, per cui i discorsi che faremo per una valgono per l'altra. 
 
-Il **solco centrale** interrompe la conduzione elettrica tra le due zone superiore ed inferiore, in conseguenza di ciò le colonne di fori della parte superiore sono **isolate elettricamente** dalle corrispondenti colonne della parte inferiore.
+Il **solco centrale** interrompe la conduzione elettrica tra le due zone superiore ed inferiore, in conseguenza di ciò le **colonne** di fori della parte superiore sono **isolate elettricamente** dalle corrispondenti colonne della parte inferiore.
 
 Le **zone**, superiore ed inferiore, sono divise in:
 - una parte di **alimentazione** che è riconoscibile dalle linee colorate di rosso e di nero marcate con il simbolo + e con il simbolo - rispettivamente.
