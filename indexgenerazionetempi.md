@@ -4,7 +4,7 @@
 
 <img src="img\applicazMicro.jpg" alt="alt text" width="1000">
 
-## **Logica sequenziale e logica ad eventi
+## **Logica sequenziale e logica ad eventi**
 
 La **logica** degli algoritmi può essere pensata essenzialmente in due maniere: ad **eventi** e in modo **sequenziale**. 
 
