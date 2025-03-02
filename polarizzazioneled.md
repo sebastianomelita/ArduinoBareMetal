@@ -19,8 +19,8 @@ Il valore con cui viene **codificato** lo stato di una **porta digitale di uscit
 Per quanto riguarda la determinazione del **verso** della **corrente** su una **porta** o su un qualsiasi **dispositivo** esterno ad essa, vale la regola che la corrente va sempre dal punto a potenziale (voltaggio) più alto a quello a potenziale più basso. In altre parole, il **verso** della corrente tra due punti è dato dal **segno** della differenza di potenziale tra quei punti. 
 
 Per quanto riguarda il calcolo del **valore** esatto della **corrente ai capi** di un dispositivo, basta rifarsi alla **caratteristica tensione-corrente** dello stesso che è riconducibile alla **legge di Ohm** per le **resistenze** ma ha leggi più complesse per i dispositivi **non lineari** come i **diodi led**.
-
-Mai, in ogni caso, andrebbe collegato un led **direttamente** alla porta, senza una resistenza di polarizzazione perché, in questo caso, la resistenza sarebbe quella di CC (corto circuito). La **resistenza di CC** è interna alla porta ed è di valore **molto basso**, così basso da poter lasciar passare una corrente tanto elevata da **danneggiare il led** (nel migliore dei casi) o la **porta** stessa (nel peggiore dei casi).
+ 
+Mai, andrebbe collegato un led **direttamente** alla porta, senza una resistenza di polarizzazione perché, in questo caso, la resistenza sarebbe quella di CC (corto circuito). La **resistenza di CC** è interna alla porta ed è sempre di valore **molto basso**, così basso da consentire il passaggio di una corrente tanto elevata da **danneggiare il led** (nel migliore dei casi) o la **porta** stessa (nel peggiore dei casi).
 
 ### **Tipi di collegamento di un LED**
 
