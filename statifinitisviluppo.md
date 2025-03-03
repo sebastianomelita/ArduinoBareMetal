@@ -42,6 +42,16 @@ Si possono considerare **stati**:
 -	situazione in cui evolve un protocollo alla quale corrisponde un ben preciso messaggio
 -	situazione in cui si trova l’applicazione alla quale corrisponde un preciso elenco di azioni possibili
 
+La linea guida generale per la progettazione di macchine a stati è quella di mantenerla il più semplice possibile, con il minor numero possibile di stati e di evitare stati duplicati.
+
+Una macchina a stati esegue azioni in risposta agli eventi. Gli stati possono essere considerati diversi/unici se sono significativamente diversi nella loro risposta agli input degli eventi.
+
+Considera la differenza tra uno "stato" e una "proprietà dello stato". Ad esempio un semplice sistema con un singolo LED bicolore rosso/verde:
+- Stati, il LED è spento, il LED è acceso.
+- Proprietà dello stato:
+     - il LED è verde, il LED è rosso.
+     - Quando il LED è acceso, il LED può essere verde o rosso.
+
 ### **Protocollo di comunicazione**
 
 Nello specifico di un **protocollo di comunicazione**:
