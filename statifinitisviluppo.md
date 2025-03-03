@@ -13,6 +13,20 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
    - scrivere uno switch-case con tutti gli stati possibili del sistema
    - all’interno di ogni campo dello switch-case valutare soltanto tutti i possibili ingressi che potrebbero generare una transizione da quel particolare stato
 
+Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM), il rapporto tra numero di stati e numero di ingressi è un fattore importante da considerare:
+
+**Quando ci sono più stati che ingressi:**
+- È generalmente preferibile l'approccio "valutare prima gli ingressi, poi gli stati"
+- Questo riduce la complessità del codice poiché avrai meno funzioni/blocchi principali (uno per ciascun ingresso)
+- La struttura del codice diventa più gestibile perché si evita di scrivere un grande blocco switch-case con molti stati
+
+**Quando ci sono più ingressi che stati:**
+- È generalmente preferibile l'approccio "valutare prima gli stati, poi gli ingressi"
+- Questo crea una struttura più compatta con un numero limitato di casi (uno per stato)
+- All'interno di ogni stato, la logica per gestire i diversi ingressi risulta più coesa e facile da seguire
+
+Queste linee guida aiutano a minimizzare la complessità del codice e a migliorare la leggibilità. In generale, conviene organizzare la struttura in modo da avere il minor numero possibile di blocchi di codice principali (casi o funzioni), raggruppando la logica attorno all'elemento meno numeroso (stati o ingressi).
+
 ### **Ingressi**
 
 **In generale**, si possono considerare **ingressi**:
