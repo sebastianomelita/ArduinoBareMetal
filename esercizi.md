@@ -1753,7 +1753,7 @@ tre volte che il gatto esce dalla lettiera.
 
 ### **Es44. Palestra per cani**
 
- Realizzare una palestra per cani che funziona in questo modo:
+ Realizzare una palestra per cani che funzioni in questo modo:
 - un osso da mordere viene portato ad una certa altezza tramite un motore che agisce per 5 secondi. 
 - il cane salta, afferra l'oggetto con i denti e fa scattare un interruttore (con memoria) che conta le prese.
 - dopo tre prese con successo consecutive l'osso viene fatto salire di una altezza corrispondente ad altri 5 secondi
