@@ -1750,8 +1750,22 @@ tre volte che il gatto esce dalla lettiera.
 - Simulazione con Arduino su Tinkercad variante senza FSM e senza delay: https://www.tinkercad.com/things/cYQtH4sy94O-lettiera-gatti-no-fsm-no-delay
 - Simulazione con Arduino su Tinkercad variante senza FSM e senza delay ma con fronte di discesa rapido: https://www.tinkercad.com/things/7s1lQs9BxUi-lettiera-gatti-no-fsm-no-delay-e-disccesa-rapida
 - Simulazione con Arduino su Tinkercad di una variante del precedente: https://www.tinkercad.com/things/49tCYEOMBP3-lettiera-gatti-no-fsm-no-delay-e-discesa-rapida-2
-  
-Sitografia:
+
+### **Es44. Palestra per cani**
+
+ Realizzare una palestra per cani che funziona in questo modo:
+- un osso da mordere viene portato ad una certa altezza tramite un motore che agisce per 5 secondi. 
+- il cane salta, afferra l'oggetto con i denti e fa scattare un interruttore (con memoria) che conta le prese.
+- dopo tre prese con successo consecutive l'osso viene fatto salire di una altezza corrispondente ad altri 5 secondi
+- il processo ricomincia fino a 3 step consecutivi, cioè 15 secondi complessivi.
+- dopo l'osso scende ad un'altezza di 5 secondi e viene rilasciato un croccantino.
+- tre led diversi (giallo, rosso e verde) indicano le tre altezze, un led indica i croccantini pronti.
+- se entro dieci secondi il cane non  effettua un tentativo, si da per scontato che rinuncia e si riparte, 
+  col conteggio delle prese azzerato, dal livello più basso.
+
+Simulazione con Tinkercad senza FSM: https://www.tinkercad.com/things/hmOB6kgqlLS-palestra-per-cani
+
+**Sitografia:**
 - https://docs.wokwi.com/parts/wokwi-ky-040
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
 
