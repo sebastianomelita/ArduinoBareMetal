@@ -25,6 +25,14 @@ Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM)
 - Questo crea una struttura più compatta con un numero limitato di casi (uno per stato)
 - All'interno di ogni stato, la logica per gestire i diversi ingressi risulta più coesa e facile da seguire
 
+**Frequenza delle modifiche**
+
+Una considerazione aggiuntiva potrebbe essere la frequenza di cambiamento: 
+- se prevedi che gli stati del sistema cambieranno più frequentemente nel tempo (ad esempio, aggiungendo nuove funzionalità), potrebbe essere preferibile l'approccio "priorità ingresso" che isola meglio i cambiamenti.
+- Viceversa, se prevedi che cambieranno gli ingressi (nuovi sensori, interfacce utente, ecc.), l'approccio "priorità stato" potrebbe essere più robusto.
+
+### **Riasssumendo**
+
 Queste linee guida aiutano a minimizzare la complessità del codice e a migliorare la leggibilità. In generale, conviene organizzare la struttura in modo da avere il minor numero possibile di blocchi di codice principali (casi o funzioni), raggruppando la logica attorno all'elemento meno numeroso (stati o ingressi).
 
 ### **Ingressi**
