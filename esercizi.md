@@ -1765,7 +1765,7 @@ tre volte che il gatto esce dalla lettiera.
 - se entro dieci secondi il cane non  effettua un tentativo, si da per scontato che rinuncia e si riparte, 
   col conteggio delle prese azzerato, dal livello più basso.
 
-Simulazione con Tinkercad senza FSM: https://www.tinkercad.com/things/hmOB6kgqlLS-palestra-per-cani
+Simulazione con Tinkercad con FSM su ingressi: https://www.tinkercad.com/things/hmOB6kgqlLS-palestra-per-cani
 
 **Sitografia:**
 - https://docs.wokwi.com/parts/wokwi-ky-040
