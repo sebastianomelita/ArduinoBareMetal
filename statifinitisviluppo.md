@@ -44,7 +44,7 @@ Queste linee guida aiutano a minimizzare la complessità del codice e a migliora
 -	polling di funzioni o di flag legati ad eventi HW o SW (verifica della disponibilità di dati in ricezione su un canale tramite Serial.available(), verifica dell’avvenuto scadere di un timeout tramite millis(), ecc.)
 -	contatori che una volta il loro target di conteggio determinano l'esecuzione di una azione
 
-### **Stati**
+## **Stati**
 
 Si possono considerare **stati**:
 -	situazione in cui evolve un protocollo alla quale corrisponde un ben preciso messaggio
