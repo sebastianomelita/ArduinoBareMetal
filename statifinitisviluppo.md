@@ -115,6 +115,8 @@ Se si sceglie, all'interno del codice, il criterio di organizzare prima la selez
 - va valutata pure la correttezza delle **transizioni**, sia osservando **chi** le ha generate, sia controllando quale stato **raggiungono**. Il tutto deve essere **coerente** con la **tabella** delle trasnizioni e con il **diagramma** dele transizioni.
 - alcuni **ingressi** non generano transizioni su certi stati. Vuol dire che non hanno effetto in quello stato e possono essere tralasciati. Nel grafo sono rappresentati con archi chiusi che tornano sullo stato stesso. Nel codice semplicemente non sono considerati in quello stato (ad esempio l'istruzione che legge la pressione di un certo pulsante).
 
+### **Stati di errore**
+
 Si potrebbe pure integrare la FSM con stati e transizioni progettati appositamente per la gestione degli errori:
 
 - **Stati di Errore:** È utile includere stati di errore nella FSM per gestire situazioni impreviste, come ingressi non validi o malfunzionamenti hardware. Questi stati possono aiutare a ripristinare il sistema in uno stato sicuro o a notificare l'utente del problema.
