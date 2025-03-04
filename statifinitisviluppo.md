@@ -61,7 +61,7 @@ Considera la differenza tra uno "stato" e una "proprietà dello stato". Ad esemp
      - Quando il LED è acceso, il LED può essere verde o rosso.
 
 Posso modellare così:
-- Stati fondamentali: spento, acceso
+- **Stati fondamentali**: spento, acceso
 - **Proprietà dello stato** "acceso": colore (rosso, verde)
 
 Questo concetto è importante perché spesso porta a una progettazione più pulita. 
