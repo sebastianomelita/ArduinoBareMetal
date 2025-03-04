@@ -60,6 +60,24 @@ Considera la differenza tra uno "stato" e una "proprietà dello stato". Ad esemp
      - il LED è verde, il LED è rosso.
      - Quando il LED è acceso, il LED può essere verde o rosso.
 
+Posso modellare così:
+- Stati fondamentali: spento, acceso
+- Proprietà dello stato "acceso": colore (rosso, verde)
+
+Questo concetto è importante perché spesso porta a una progettazione più pulita. 
+
+Anziché avere: Stati: SPENTO, ACCESO_ROSSO, ACCESO_VERDE
+
+È più elegante concettualmente:
+- Stati: SPENTO, ACCESO
+- Proprietà di ACCESO: colore ∈ {ROSSO, VERDE}
+  
+Questo approccio è particolarmente utile quando le proprietà hanno combinazioni multiple, evitando un'esplosione combinatoria degli stati. Ad esempio, se aggiungessimo l'intensità (alta/bassa) al LED, avremmo solo:
+- ```Stati: SPENTO, ACCESO```
+- Proprietà di ACCESO: ```colore ∈ {ROSSO, VERDE}```, ```intensità ∈ {ALTA, BASSA}```
+
+Invece di quattro stati separati: ```ACCESO_ROSSO_ALTO```, ```ACCESO_ROSSO_BASSO```, ```ACCESO_VERDE_ALTO```, ```ACCESO_VERDE_BASSO```.
+
 ## **Protocollo di comunicazione**
 
 Nello specifico di un **protocollo di comunicazione**:
