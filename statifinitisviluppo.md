@@ -1,8 +1,8 @@
 
 >[Torna all'indice](indexstatifiniti.md)
-## **Sviluppo di una FSM**
+# **Sviluppo di una FSM**
 
-### **Priorità stato/ingresso**
+## **Priorità stato/ingresso**
 
 In linea generale, una **linea guida per** sviluppare una macchina a stati finiti potrebbe proporre **due strade**: 
 - **Prima valutare gli ingressi** e poi gli stati:
@@ -15,17 +15,17 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
 
 Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM), il rapporto tra numero di stati e numero di ingressi è un fattore importante da considerare:
 
-**Quando ci sono più stati che ingressi:**
+### **Quando ci sono più stati che ingressi:**
 - È generalmente preferibile l'approccio "valutare prima gli ingressi, poi gli stati"
 - Questo riduce la complessità del codice poiché avrai meno funzioni/blocchi principali (uno per ciascun ingresso)
 - La struttura del codice diventa più gestibile perché si evita di scrivere un grande blocco switch-case con molti stati
 
-**Quando ci sono più ingressi che stati:**
+### **Quando ci sono più ingressi che stati:**
 - È generalmente preferibile l'approccio "valutare prima gli stati, poi gli ingressi"
 - Questo crea una struttura più compatta con un numero limitato di casi (uno per stato)
 - All'interno di ogni stato, la logica per gestire i diversi ingressi risulta più coesa e facile da seguire
 
-**Frequenza delle modifiche**
+### **Frequenza delle modifiche**
 
 Una considerazione aggiuntiva potrebbe essere la frequenza di cambiamento: 
 - se prevedi che gli stati del sistema cambieranno più frequentemente nel tempo (ad esempio, aggiungendo nuove funzionalità), potrebbe essere preferibile l'approccio "priorità ingresso" che isola meglio i cambiamenti.
@@ -35,7 +35,7 @@ Una considerazione aggiuntiva potrebbe essere la frequenza di cambiamento:
 
 Queste linee guida aiutano a minimizzare la complessità del codice e a migliorare la leggibilità. In generale, conviene organizzare la struttura in modo da avere il minor numero possibile di blocchi di codice principali (casi o funzioni), raggruppando la logica attorno all'elemento meno numeroso (stati o ingressi).
 
-### **Ingressi**
+## **Ingressi**
 
 **In generale**, si possono considerare **ingressi**:
 -	eventi generati dall’utente (input dati, pressione di un pulsante, ecc.)
@@ -60,7 +60,7 @@ Considera la differenza tra uno "stato" e una "proprietà dello stato". Ad esemp
      - il LED è verde, il LED è rosso.
      - Quando il LED è acceso, il LED può essere verde o rosso.
 
-### **Protocollo di comunicazione**
+## **Protocollo di comunicazione**
 
 Nello specifico di un **protocollo di comunicazione**:
 
@@ -79,7 +79,7 @@ Si possono considerare **stati**:
   * stato di attesa di ricezione di un messaggio di controllo entro lo scadere di un timeout (ACK_STATE, ecc.)
   * stato di attesa di trasmissione di un messaggio di controllo entro lo scadere di un timeout (BACKOFF_STATE, DIFS, ecc.)
 
-### **Attese e contatori**
+## **Attese e contatori**
 
 Le **attese** ritardano le transizioni fino allo **scadere** di un certo **TIMEOUT** o in attesa di un **certo valore** su un **ingresso** o su un **flag di comunicazione** con un task/processo posto su di un altro thread. I contatori tengono traccia del numero di eventi come ingressi o transizioni di stato. Vengono in genere **tutti** interpretati come degli **ingressi**. Possono essere, come sempre, **bloccanti** o **non bloccanti**:
 - **```delay(TIMEOUT)```**, rappresenta un **timer bloccante** che attende per un tempo **```TIMEOUT```**.
@@ -89,7 +89,7 @@ Le **attese** ritardano le transizioni fino allo **scadere** di un certo **TIMEO
 - **contatori**, un conteggio prima dell'accadere di un evento (ad esempio il numero di ingressi in un cinema) potrebbe essere interpretato come un **ingresso** che assume due possibili valori: ```conteggio < target``` e ```conteggio >= target```.
      
 
-### **Debug**
+## **Debug**
 
 Se si sceglie, all'interno del codice, il criterio di organizzare prima la selezione degli stati e solo dopo, dentro ognuno di questi, la selezione degli ingressi che a loro competono, allora è possibile gestire la sua complessità in base ad alcune considerazioni:
 - l'**analisi** del loop() può essere **compartimentata** stato per stato, cioè, si può esaminare il codice guardando, di volta in volta, il singolo blocco che è attivo in un certo stato. Il resto del codice che appartiene a stati diversi, pur essendo formalmente presente nel loop(), non viene eseguito in quel momento.
