@@ -73,7 +73,7 @@ Anziché avere: Stati: SPENTO, ACCESO_ROSSO, ACCESO_VERDE
 - Proprietà di ACCESO: colore ∈ {ROSSO, VERDE}
   
 Questo approccio è particolarmente utile quando le proprietà hanno combinazioni multiple, evitando un'esplosione combinatoria degli stati. Ad esempio, se aggiungessimo l'intensità (alta/bassa) al LED, avremmo solo:
-- ```Stati: SPENTO, ACCESO```
+- Stati: ```SPENTO, ACCESO```
 - Proprietà di ACCESO: ```colore ∈ {ROSSO, VERDE}```, ```intensità ∈ {ALTA, BASSA}```
 
 Invece di quattro stati separati: ```ACCESO_ROSSO_ALTO```, ```ACCESO_ROSSO_BASSO```, ```ACCESO_VERDE_ALTO```, ```ACCESO_VERDE_BASSO```.
