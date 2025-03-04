@@ -27,7 +27,7 @@ Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM)
 
 ### **Frequenza delle modifiche**
 
-Una considerazione aggiuntiva potrebbe essere la frequenza di cambiamento: 
+Una considerazione aggiuntiva potrebbe essere la **frequenza di cambiamento**: 
 - se prevedi che gli stati del sistema cambieranno più frequentemente nel tempo (ad esempio, aggiungendo nuove funzionalità), potrebbe essere preferibile l'approccio "priorità ingresso" che isola meglio i cambiamenti.
 - Viceversa, se prevedi che cambieranno gli ingressi (nuovi sensori, interfacce utente, ecc.), l'approccio "priorità stato" potrebbe essere più robusto.
 
