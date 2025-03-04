@@ -1717,7 +1717,7 @@ Scrivere un programma che realizzi una teiera automatica tale che:
 - l'erogazione termina dopo 3 secondi, passati i quali il led E si spegne.
 - una pressione prolungata del pulsante A (più di 3 secondi) spegne la teiera disattivando tutti i led.
 
-Link al progetto: Teiera](teiera.md)
+Link al progetto: [Teiera](teiera.md)
 
 N.B.: Vedi :
 - [Definizione macchine a stati finiti](statifinitibase.md)
