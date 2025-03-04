@@ -33,7 +33,7 @@ Una considerazione aggiuntiva potrebbe essere la frequenza di cambiamento:
 
 ### **Riasssumendo**
 
-Queste linee guida aiutano a minimizzare la complessità del codice e a migliorare la leggibilità. In generale, conviene organizzare la struttura in modo da avere il minor numero possibile di blocchi di codice principali (casi o funzioni), raggruppando la logica attorno all'elemento meno numeroso (stati o ingressi).
+Queste linee guida aiutano a minimizzare la complessità del codice e a migliorare la leggibilità. In generale, conviene organizzare la struttura in modo da avere il **minor numero** possibile di **blocchi di codice** principali (casi o funzioni), **raggruppando** la logica attorno all'**elemento meno numeroso** (stati o ingressi).
 
 ## **Ingressi**
 
