@@ -56,13 +56,13 @@ Una macchina a stati esegue azioni in risposta agli eventi. Gli stati possono es
 
 Considera la differenza tra uno "stato" e una "proprietà dello stato". Ad esempio un semplice sistema con un singolo LED bicolore rosso/verde:
 - Stati, il LED è spento, il LED è acceso.
-- Proprietà dello stato:
+- **Proprietà dello stato**:
      - il LED è verde, il LED è rosso.
      - Quando il LED è acceso, il LED può essere verde o rosso.
 
 Posso modellare così:
 - Stati fondamentali: spento, acceso
-- Proprietà dello stato "acceso": colore (rosso, verde)
+- **Proprietà dello stato** "acceso": colore (rosso, verde)
 
 Questo concetto è importante perché spesso porta a una progettazione più pulita. 
 
