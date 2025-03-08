@@ -124,13 +124,13 @@ struct DiffTimer2
 
 bool waitUntilLow(DiffTimer &d, bool val, unsigned t);
 
-bool waitUntilNot(DiffTimer &d, bool c, unsigned t){
+bool waitUntilNB(DiffTimer &d, bool c, unsigned t){
 	bool ok = false;
-	if (c) {// fronte di salita
+	if (!c) {// fronte di salita condizione
 		d.start(); // campionamento singleton del tempo
 	}
 	// fronte di discesa dopo rimbalzi
-	if(d.get() > t && !c){
+	if(d.get() > t && c){
 		// disabilitazione fino al prossimo fronte di salita
 		d.stop();
 		d.reset();
