@@ -126,10 +126,10 @@ bool waitUntilLow(DiffTimer &d, bool val, unsigned t);
 
 bool waitUntilNB(DiffTimer &d, bool c, unsigned t){
 	bool ok = false;
-	if (!c) {// fronte di salita condizione
+	if (!c) {// fronte di salita condizione contraria
 		d.start(); // campionamento singleton del tempo
 	}
-	// fronte di discesa dopo rimbalzi
+	// fronte di discesa condizione voluta dopo rimbalzi
 	if(d.get() > t && c){
 		// disabilitazione fino al prossimo fronte di salita
 		d.stop();
