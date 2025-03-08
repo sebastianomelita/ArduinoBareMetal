@@ -74,6 +74,8 @@ Punti chiave del funzionamento:
 | S2 (Pronto)   | ON    | ON    | OFF   | Abilitato|
 | S3 (Erogaz.)  | ON    | ON    | ON    | Abilitato|
 
+## **Diagramma degli stati**
+
 ```mermaid
 %%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
 stateDiagram-v2
