@@ -1782,6 +1782,25 @@ Gli studenti dovranno:
 
 Link al progetto: [Autolavaggio](autolavaggio.md)
 
+### **Pulsante luci**
+
+Scrivere un programma che realizzi una lampada intelligente
+che funzioni in questo modo:
+- Si accenda premendo il pulsante P1, alla cui pressione si attiva la luce a bassa intensità (stato 1) e si accende il LED indicatore L1.
+- Una seconda pressione del pulsante P1 mentre la lampada è accesa a bassa intensità la porta a media intensità (stato 2), spegnendo L1 e accendendo L2.
+- Una terza pressione del pulsante P1 porta la lampada ad alta intensità (stato 3), spegnendo L2 e accendendo L3.
+- Una quarta pressione del pulsante P1 spegne completamente la lampada (stato 0), spegnendo tutti i LED indicatori.
+- Se la lampada rileva che non ci sono movimenti per più di 5 minuti (tramite un sensore di movimento PIR), si spegne automaticamente passando allo stato 0.
+
+Gli studenti dovranno:     
+- Identificare gli stati necessari per descrivere il funzionamento del sistema.
+- Definire le transizioni tra gli stati in base agli eventi rilevati dai sensori e alle azioni richieste dal sistema.
+- Individuare quali siano gli ingressi (input) e le uscite (output) che il sistema deve gestire.
+- Implementare la logica della FSM in un microcontrollore (Arduino, ESP32 o altro) utilizzando un linguaggio di programmazione adeguato.
+- Documentare il lavoro svolto con un diagramma a stati e una tabella delle  transizioni.
+
+Link al progetto: [Pulsante luci](luci.md)
+
 **Sitografia:**
 - https://docs.wokwi.com/parts/wokwi-ky-040
 - https://www.lombardoandrea.com/utilizzare-un-encoder-rotativo-con-arduino/
