@@ -409,6 +409,4 @@ void loop() {
 }
 ```
 
-
-Questa modifica segue il principio di progettazione "open for extension, closed for modification", rendendo il codice più versatile per eventuali esigenze future.
 >[Torna all'indice generale](indexstatifiniti.md)
