@@ -124,7 +124,7 @@ struct DiffTimer2
 
 bool waitUntilLow(DiffTimer &d, bool val, unsigned t);
 
-bool waitUntilLow(DiffTimer &d, bool c, unsigned t){
+bool waitUntilNot(DiffTimer &d, bool c, unsigned t){
 	bool ok = false;
 	if (c) {// fronte di salita
 		d.start(); // campionamento singleton del tempo
