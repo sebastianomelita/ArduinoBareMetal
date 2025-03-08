@@ -190,24 +190,6 @@ enum Stati {
 
 // Variabili di stato
 uint8_t statoCorrente;
-bool livelloA_Precedente = LOW;
-bool livelloB_Precedente = LOW;
-
-// Funzione per rilevare fronte di salita
-bool rilevaSalita(int pin, bool &stato_precedente) {
-  bool stato_attuale = digitalRead(pin);
-  bool fronte_salita = stato_attuale && !stato_precedente;
-  stato_precedente = stato_attuale;
-  return fronte_salita;
-}
-
-// Funzione per rilevare fronte di discesa
-bool rilevaDiscesa(int pin, bool &stato_precedente) {
-  bool stato_attuale = digitalRead(pin);
-  bool fronte_discesa = !stato_attuale && stato_precedente;
-  stato_precedente = stato_attuale;
-  return fronte_discesa;
-}
 
 void setup() {
   // Inizializzazione I/O
@@ -423,7 +405,6 @@ void loop() {
       }
       break;
   }
-  
   delay(10); // Piccolo delay per stabilità
 }
 ```
