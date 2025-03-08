@@ -1767,7 +1767,7 @@ tre volte che il gatto esce dalla lettiera.
 
 Simulazione con Tinkercad con FSM su ingressi: https://www.tinkercad.com/things/hmOB6kgqlLS-palestra-per-cani
 
-### **Autolavaggio**
+### **Es45. Autolavaggio**
 
 Un'azienda di autolavaggi ha la necessità di automatizzare il processo di lavaggio dei veicoli per migliorare l'efficienza operativa e garantire un servizio uniforme. Il sistema deve gestire automaticamente le varie fasi del lavaggio, assicurandosi che il veicolo sia correttamente posizionato e che ogni fase venga completata prima di passare alla successiva.
 
@@ -1782,7 +1782,7 @@ Gli studenti dovranno:
 
 Link al progetto: [Autolavaggio](autolavaggio.md)
 
-### **Pulsante luci**
+### **Es46. Pulsante luci**
 
 Scrivere un programma che realizzi una lampada intelligente
 che funzioni in questo modo:
