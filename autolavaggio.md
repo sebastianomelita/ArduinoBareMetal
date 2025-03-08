@@ -192,25 +192,63 @@ enum Stati {
 // Struttura per gestire i sensori
 struct Sensore {
   int pin;                // Pin del sensore
-  bool livelloAttuale;    // Livello attuale
-  bool livelloPrecedente; // Livello precedente
+  bool livelloAttuale;    // Livello attuale (dopo debouncing)
+  bool livelloPrecedente; // Livello precedente 
   bool fronteSalita;      // Fronte di salita rilevato
   bool fronteDiscesa;     // Fronte di discesa rilevato
   
+  // Variabili per il debouncing
+  bool statoGrezzo;       // Lettura grezza dal pin
+  unsigned long ultimoCambioTempo;  // Timestamp dell'ultimo cambio di stato stabile
+  unsigned long debounceDelay;      // Tempo di debounce in ms
+  
   // Inizializzazione
-  void init(int _pin) {
+  void init(int _pin, unsigned long _debounceDelay = 50) {
     pin = _pin;
     livelloPrecedente = LOW;
+    livelloAttuale = LOW;
     fronteSalita = false;
     fronteDiscesa = false;
+    ultimoCambioTempo = 0;
+    debounceDelay = _debounceDelay;
   }
   
-  // Aggiornamento e rilevazione fronti
+  // Aggiornamento e rilevazione fronti con debouncing
   void aggiorna() {
-    livelloAttuale = digitalRead(pin);
-    fronteSalita = livelloAttuale && !livelloPrecedente;
-    fronteDiscesa = !livelloAttuale && livelloPrecedente;
-    livelloPrecedente = livelloAttuale;
+    // Lettura dello stato grezzo
+    bool letturaCorrente = digitalRead(pin);
+    
+    // Verifica se è cambiato lo stato grezzo
+    if (letturaCorrente != statoGrezzo) {
+      // Reset del timer di debounce
+      ultimoCambioTempo = millis();
+      statoGrezzo = letturaCorrente;
+    }
+    
+    // Verifica se è passato abbastanza tempo dall'ultimo cambio
+    if ((millis() - ultimoCambioTempo) > debounceDelay) {
+      // Se lo stato stabile è cambiato rispetto al livello attuale
+      if (statoGrezzo != livelloAttuale) {
+        livelloAttuale = statoGrezzo;
+        
+        // Rilevazione fronti
+        fronteSalita = livelloAttuale && !livelloPrecedente;
+        fronteDiscesa = !livelloAttuale && livelloPrecedente;
+        
+        // Aggiornamento livello precedente
+        livelloPrecedente = livelloAttuale;
+      }
+      else {
+        // Nessun cambio di stato, reset dei flag dei fronti
+        fronteSalita = false;
+        fronteDiscesa = false;
+      }
+    }
+    else {
+      // Durante il periodo di debounce, nessun fronte viene rilevato
+      fronteSalita = false;
+      fronteDiscesa = false;
+    }
   }
 };
 
@@ -235,8 +273,8 @@ void setup() {
   pinMode(buzzer, OUTPUT);
   
   // Inizializzazione sensori
-  sensoreA.init(sensore_A);
-  sensoreB.init(sensore_B);
+  sensoreA.init(sensore_A, 50); // 50ms di debounce
+  sensoreB.init(sensore_B, 50); // 50ms di debounce
   
   // Inizializzazione stato
   statoCorrente = LIBERO;
@@ -429,7 +467,8 @@ void loop() {
       digitalWrite(led_giallo, !digitalRead(led_giallo));
       ultimoLampeggio = millis();
     }
-  } 
+  }
+  
   delay(10); // Piccolo delay per stabilità
 }
 ```
