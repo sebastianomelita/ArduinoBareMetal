@@ -13,7 +13,7 @@ Gli studenti dovranno:
 - Implementare la logica della FSM in un microcontrollore (Arduino, ESP32 o altro) utilizzando un linguaggio di programmazione adeguato.
 - Documentare il lavoro svolto con un diagramma a stati e una breve relazione che descriva il funzionamento del sistema e le scelte progettuali adottate.
 
-# Tabella di Transizione del Sistema di Autolavaggio con Sensori di Transito
+## Tabella di Transizione del Sistema di Autolavaggio con Sensori di Transito
 
 | Stato attuale | Input | Stato prossimo | Output |
 |---------------|-------|----------------|--------|
@@ -98,6 +98,12 @@ stateDiagram-v2
         anomalia rilevata
         Intervento operatore necessario
     end note
+```
+
+## **Codice Arduino**
+
+```C++
+
 ```
 
 >[Torna all'indice generale](indexstatifiniti.md)
