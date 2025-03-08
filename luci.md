@@ -1,6 +1,6 @@
 >[Torna all'indice generale](indexstatifiniti.md)
 
-# **PULSANTE LUCIi**
+# **PULSANTE LUCI**
 
 Scrivere un programma che realizzi una lampada intelligente
 che funzioni in questo modo:
