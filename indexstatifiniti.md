@@ -15,4 +15,5 @@
 10. [Teiera automatica](teiera.md)
 11. [Macchina del caffè](caffè.md)
 12. [Autolavaggio](autolavaggio.md)
-13. [Sitografia](statifinitisitografia.md)
+13. [Pulsante luci](luci.md)
+14. [Sitografia](statifinitisitografia.md)
