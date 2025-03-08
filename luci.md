@@ -1,102 +1,83 @@
 >[Torna all'indice generale](indexstatifiniti.md)
 
-# **AUTOLAVAGGIO**
+### **Pulsante luci**
 
-Un'azienda di autolavaggi ha la necessità di automatizzare il processo di lavaggio dei veicoli per migliorare l'efficienza operativa e garantire un servizio uniforme. Il sistema deve gestire automaticamente le varie fasi del lavaggio, assicurandosi che il veicolo sia correttamente posizionato e che ogni fase venga completata prima di passare alla successiva.
+Scrivere un programma che realizzi una lampada intelligente
+che funzioni in questo modo:
+- Si accenda premendo il pulsante P1, alla cui pressione si attiva la luce a bassa intensità (stato 1) e si accende il LED indicatore L1.
+- Una seconda pressione del pulsante P1 mentre la lampada è accesa a bassa intensità la porta a media intensità (stato 2), spegnendo L1 e accendendo L2.
+- Una terza pressione del pulsante P1 porta la lampada ad alta intensità (stato 3), spegnendo L2 e accendendo L3.
+- Una quarta pressione del pulsante P1 spegne completamente la lampada (stato 0), spegnendo tutti i LED indicatori.
+- Se la lampada rileva che non ci sono movimenti per più di 5 minuti (tramite un sensore di movimento PIR), si spegne automaticamente passando allo stato 0.
 
-Il sistema deve rilevare quando un veicolo entra nell'area di lavaggio e avviarsi solo quando il veicolo è fermo nella posizione corretta. Il ciclo di lavaggio comprende diverse fasi, tra cui prelavaggio di un minuto, lavaggio principale di 5 minuti e asciugatura di un minuto. Al termine del processo, il sistema deve notificare al conducente quando è possibile uscire.
-
-Gli studenti dovranno:
+Gli studenti dovranno:     
 - Identificare gli stati necessari per descrivere il funzionamento del sistema.
 - Definire le transizioni tra gli stati in base agli eventi rilevati dai sensori e alle azioni richieste dal sistema.
 - Individuare quali siano gli ingressi (input) e le uscite (output) che il sistema deve gestire.
 - Implementare la logica della FSM in un microcontrollore (Arduino, ESP32 o altro) utilizzando un linguaggio di programmazione adeguato.
-- Documentare il lavoro svolto con un diagramma a stati e una breve relazione che descriva il funzionamento del sistema e le scelte progettuali adottate.
+- Documentare il lavoro svolto con un diagramma a stati e una tabella delle  transizioni.
 
-## Tabella di Transizione del Sistema di Autolavaggio con Sensori di Transito
+## Tabella di Transizione della Lampada Intelligente
 
 | Stato attuale | Input | Stato prossimo | Output |
 |---------------|-------|----------------|--------|
-| LIBERO | Fronte salita sensore A | INGRESSO | LED giallo ingresso, barriera bloccata |
-| INGRESSO | Fronte discesa sensore A AND Sensore C attivo | IN_ATTESA | LED giallo lampeggiante, indicazioni di posizionamento |
-| INGRESSO | Fronte discesa sensore A AND Sensore C inattivo | LIBERO | LED verde sistema pronto, reset sistema |
-| INGRESSO | Timeout (>30s) | ALLARME | LED rosso lampeggiante, segnalatore acustico |
-| IN_ATTESA | Sensore C attivo | POSIZIONATO | LED verde posizionamento, indicazioni di avvio |
-| IN_ATTESA | Timeout (>60s) | ALLARME | LED rosso lampeggiante, segnalatore acustico |
-| POSIZIONATO | Conferma avvio (automatica o manuale) | PRELAVAGGIO | Attivazione spruzzatori, LED fase prelavaggio |
-| PRELAVAGGIO | Timer scaduto (1 min) | LAVAGGIO | Disattivazione spruzzatori, attivazione spazzole e detergente, LED fase lavaggio |
-| LAVAGGIO | Timer scaduto (5 min) | ASCIUGATURA | Disattivazione spazzole e detergente, attivazione ventole, LED fase asciugatura |
-| ASCIUGATURA | Timer scaduto (1 min) | COMPLETAMENTO | Disattivazione ventole, LED verde completamento, messaggio "Procedere all'uscita" |
-| COMPLETAMENTO | Fronte salita sensore B | USCITA | LED giallo uscita, barriera uscita aperta |
-| USCITA | Fronte discesa sensore B AND Sensore C inattivo | LIBERO | LED verde sistema pronto, reset sistema |
-| USCITA | Fronte discesa sensore B AND Sensore C attivo | COMPLETAMENTO | LED verde completamento, messaggio "Procedere all'uscita" |
-| USCITA | Timeout (>30s) | ALLARME | LED rosso lampeggiante, segnalatore acustico |
-| ALLARME | Reset manuale | LIBERO | LED verde sistema pronto, reset sistema |
+| SPENTO | Pressione pulsante P1 | BASSA_INTENSITA | Lampada accesa a bassa intensità, LED L1 acceso |
+| BASSA_INTENSITA | Pressione pulsante P1 | MEDIA_INTENSITA | Lampada accesa a media intensità, LED L1 spento, LED L2 acceso |
+| BASSA_INTENSITA | Inattività > 5 minuti | SPENTO | Lampada spenta, LED L1 spento |
+| MEDIA_INTENSITA | Pressione pulsante P1 | ALTA_INTENSITA | Lampada accesa ad alta intensità, LED L2 spento, LED L3 acceso |
+| MEDIA_INTENSITA | Inattività > 5 minuti | SPENTO | Lampada spenta, LED L2 spento |
+| ALTA_INTENSITA | Pressione pulsante P1 | SPENTO | Lampada spenta, LED L3 spento |
+| ALTA_INTENSITA | Inattività > 5 minuti | SPENTO | Lampada spenta, LED L3 spento |
+
+## Ingressi (Input)
+- **Pulsante P1**: Utilizzato per cambiare l'intensità della lampada
+- **Sensore PIR**: Sensore di movimento per rilevare l'inattività
+
+## Uscite (Output)
+- **Lampada**: Con tre livelli di intensità (bassa, media, alta)
+- **LED L1**: Indicatore di bassa intensità 
+- **LED L2**: Indicatore di media intensità
+- **LED L3**: Indicatore di alta intensità
+
+## Note
+- Il sistema rileva l'inattività tramite il sensore PIR e avvia un timer di 5 minuti
+- Ogni rilevamento di movimento resetta il timer di inattività
+- In ogni stato di accensione, solo uno dei LED indicatori è acceso
 
 ## **Diagramma degli stati**
 
 ```mermaid
 %%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
 stateDiagram-v2
-
-    [*] --> Libero
+    [*] --> SPENTO
     
-    Libero --> Ingresso: Fronte salita sensore A
-    Ingresso --> InAttesa: Fronte discesa sensore A AND Sensore C attivo
-    Ingresso --> Libero: Fronte discesa sensore A AND Sensore C inattivo
-    Ingresso --> Allarme: Timeout (>30s)
+    SPENTO --> BASSA_INTENSITA: Pressione P1
+    BASSA_INTENSITA --> MEDIA_INTENSITA: Pressione P1
+    MEDIA_INTENSITA --> ALTA_INTENSITA: Pressione P1
+    ALTA_INTENSITA --> SPENTO: Pressione P1
     
-    InAttesa --> Posizionato: Sensore C attivo
-    InAttesa --> Allarme: Timeout (>60s)
+    BASSA_INTENSITA --> SPENTO: Inattività > 5 min
+    MEDIA_INTENSITA --> SPENTO: Inattività > 5 min
+    ALTA_INTENSITA --> SPENTO: Inattività > 5 min
     
-    Posizionato --> Prelavaggio: Sequenza avvio
-    
-    Prelavaggio --> Lavaggio: Timer (1 min)
-    Lavaggio --> Asciugatura: Timer (5 min)
-    Asciugatura --> Completamento: Timer (1 min)
-    
-    Completamento --> Uscita: Fronte salita sensore B
-    Uscita --> Libero: Fronte discesa sensore B AND Sensore C inattivo
-    Uscita --> Completamento: Fronte discesa sensore B AND Sensore C attivo
-    Uscita --> Allarme: Timeout (>30s)
-    
-    Allarme --> Libero: Reset manuale
-    
-    note right of Libero
-        Area lavaggio vuota
-        Sensori A, B, C inattivi
+    note right of SPENTO
+        Lampada spenta
+        Tutti i LED spenti
     end note
     
-    note right of Ingresso
-        Veicolo a cavallo ingresso
-        Sensore A attivo
-        Si verifica C per confermare
-        direzione del veicolo
+    note right of BASSA_INTENSITA
+        Lampada a bassa intensità
+        LED L1 acceso
     end note
     
-    note right of InAttesa
-        Veicolo entrato ma non
-        correttamente posizionato
-        Sensore C inattivo
+    note right of MEDIA_INTENSITA
+        Lampada a media intensità
+        LED L2 acceso
     end note
     
-    note right of Posizionato
-        Veicolo correttamente 
-        posizionato per lavaggio
-        Sensore C attivo
-    end note
-    
-    note right of Uscita
-        Veicolo a cavallo uscita
-        Sensore B attivo
-        Si verifica C per confermare
-        direzione del veicolo
-    end note
-    
-    note right of Allarme
-        Veicolo bloccato o
-        anomalia rilevata
-        Intervento operatore necessario
+    note right of ALTA_INTENSITA
+        Lampada ad alta intensità
+        LED L3 acceso
     end note
 ```
 
@@ -153,262 +134,175 @@ struct DiffTimer
 };
 //##### urutils.h #####
 
-// Definizione pin per sensori e attuatori
-int sensore_A = 2;       // Sensore di ingresso (fronte)
-int sensore_B = 3;       // Sensore di uscita (fronte)
-int sensore_C = 4;       // Sensore interno (livello)
+// Definizione dei pin
+const int pulsanteP1 = 2;     // Pin per il pulsante P1
+const int pirSensor = 3;      // Pin per il sensore PIR
+const int ledL1 = 4;          // LED indicatore bassa intensità
+const int ledL2 = 5;          // LED indicatore media intensità
+const int ledL3 = 6;          // LED indicatore alta intensità
+const int outputLampada = 9;  // Pin PWM per controllare l'intensità della lampada
 
-// LED indicatori
-int led_verde = 5;       // Sistema libero/pronto
-int led_giallo = 6;      // Ingresso/uscita/attesa
-int led_fase = 7;        // Indicatore fase lavaggio
-int led_rosso = 8;       // Allarme
+// Valori di intensità della lampada
+const int INTENSITA_BASSA = 85;    // ~33% di 255
+const int INTENSITA_MEDIA = 170;   // ~66% di 255
+const int INTENSITA_ALTA = 255;    // 100% di 255
 
-// Attuatori
-int spruzzatori = 9;     // Spruzzatori prelavaggio
-int spazzole = 10;       // Spazzole lavaggio
-int ventole = 11;        // Ventole asciugatura
-int buzzer = 12;         // Segnalatore acustico
+// Timer per l'inattività
+DiffTimer timerInattivita;
+const unsigned long TEMPO_INATTIVITA = 300000; // 5 minuti in millisecondi
 
-// Timer per le diverse fasi
-DiffTimer timerProcesso;
-DiffTimer timerTimeout;
-
-// Definizione stati del sistema
+// Definizione stati
 enum Stati {
-  LIBERO,
-  INGRESSO,
-  IN_ATTESA,
-  POSIZIONATO,
-  PRELAVAGGIO,
-  LAVAGGIO,
-  ASCIUGATURA,
-  COMPLETAMENTO,
-  USCITA,
-  ALLARME
+  SPENTO = 0,
+  BASSA_INTENSITA = 1,
+  MEDIA_INTENSITA = 2,
+  ALTA_INTENSITA = 3
 };
 
-// Variabili di stato
+// Variabile di stato
 uint8_t statoCorrente;
 
 void setup() {
-  // Inizializzazione I/O
-  pinMode(sensore_A, INPUT);
-  pinMode(sensore_B, INPUT);
-  pinMode(sensore_C, INPUT);
-  
-  pinMode(led_verde, OUTPUT);
-  pinMode(led_giallo, OUTPUT);
-  pinMode(led_fase, OUTPUT);
-  pinMode(led_rosso, OUTPUT);
-  
-  pinMode(spruzzatori, OUTPUT);
-  pinMode(spazzole, OUTPUT);
-  pinMode(ventole, OUTPUT);
-  pinMode(buzzer, OUTPUT);
+  // Inizializzazione pin
+  pinMode(pulsanteP1, INPUT);    // Pulsante con resistenza di pull-down esterna
+  pinMode(pirSensor, INPUT);     // Sensore PIR
+  pinMode(ledL1, OUTPUT);
+  pinMode(ledL2, OUTPUT);
+  pinMode(ledL3, OUTPUT);
+  pinMode(outputLampada, OUTPUT);
   
   // Inizializzazione stato
-  statoCorrente = LIBERO;
+  statoCorrente = SPENTO;
   
   // Inizializzazione seriale per debug
   Serial.begin(115200);
   
-  // Stato iniziale: sistema libero
-  digitalWrite(led_verde, HIGH);
-  Serial.println("Sistema Autolavaggio inizializzato - STATO: LIBERO");
+  // Stato iniziale: lampada spenta
+  aggiornaUscite();
+  
+  Serial.println("Sistema Lampada Intelligente inizializzato");
 }
 
 void loop() {
   // Macchina a stati
   switch (statoCorrente) {
-    case LIBERO:
-      // Sistema in attesa di veicoli
-      Serial.println("LIBERO");
-      if (digitalRead(sensore_A) == HIGH) {
-        // Rileva fronte salita sensore A tramite waitUntilInputLow
-        waitUntilInputLow(sensore_A, 50); // Debounce di 50ms
-        Serial.println("STATO: INGRESSO - Veicolo a cavallo dell'ingresso");
-        digitalWrite(led_verde, LOW);
-        digitalWrite(led_giallo, HIGH);
-        timerTimeout.reset();
-        timerTimeout.start();
-        statoCorrente = INGRESSO;
+    case SPENTO:
+      Serial.println("SPENTO");
+      // Controllo pressione pulsante P1 (HIGH con pull-down quando premuto)
+      if (digitalRead(pulsanteP1) == HIGH) {
+        waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
+        statoCorrente = BASSA_INTENSITA;
+        timerInattivita.reset();
+        timerInattivita.start();
+        aggiornaUscite();
       }
       break;
       
-    case INGRESSO:
-      // Veicolo a cavallo dell'ingresso
-      Serial.println("INGRESSO");
-      // Controlla se il veicolo è completamente entrato (sensore A basso e C alto)
-      if (digitalRead(sensore_A) == LOW && digitalRead(sensore_C) == HIGH) {
-        Serial.println("STATO: IN_ATTESA - Veicolo entrato, in attesa di posizionamento");
-        timerTimeout.reset();
-        statoCorrente = IN_ATTESA;
-      } 
-      // Controlla se il veicolo è tornato indietro (sensore A basso e C basso)
-      else if (digitalRead(sensore_A) == LOW && digitalRead(sensore_C) == LOW) {
-        Serial.println("STATO: LIBERO - Veicolo tornato indietro");
-        digitalWrite(led_giallo, LOW);
-        digitalWrite(led_verde, HIGH);
-        timerTimeout.stop();
-        statoCorrente = LIBERO;
+    case BASSA_INTENSITA:
+      Serial.println("BASSA_INTENSITA");
+      // Controllo pressione pulsante P1
+      if (digitalRead(pulsanteP1) == HIGH) {
+        waitUntilInputLow(pulsanteP1, 50);
+        statoCorrente = MEDIA_INTENSITA;
+        timerInattivita.reset(); // Reset del timer di inattività
+        aggiornaUscite();
       }
-      else if (timerTimeout.get() > 30000) {
-        // Timeout veicolo bloccato in ingresso
-        Serial.println("STATO: ALLARME - Veicolo bloccato in ingresso");
-        digitalWrite(led_giallo, LOW);
-        digitalWrite(led_rosso, HIGH);
-        digitalWrite(buzzer, HIGH);
-        statoCorrente = ALLARME;
+      
+      // Controllo movimento (rilevato = HIGH)
+      if (digitalRead(pirSensor) == HIGH) {
+        timerInattivita.reset(); // Reset del timer di inattività
+        Serial.println("Movimento rilevato - Timer resettato");
+      }
+      
+      // Verifica inattività
+      if (timerInattivita.get() > TEMPO_INATTIVITA) {
+        Serial.println("Inattività rilevata - Spegnimento automatico");
+        timerInattivita.stop();
+        statoCorrente = SPENTO;
+        aggiornaUscite();
       }
       break;
       
-    case IN_ATTESA:
-      // Veicolo entrato ma non posizionato
-      Serial.println("IN_ATTESA");
-      // Lampeggio LED giallo
-      digitalWrite(led_giallo, !digitalRead(led_giallo));
-      delay(300);
-      
-      if (digitalRead(sensore_C) == HIGH) {
-        // Veicolo posizionato correttamente
-        Serial.println("STATO: POSIZIONATO - Veicolo in posizione corretta");
-        digitalWrite(led_giallo, LOW);
-        digitalWrite(led_verde, HIGH);
-        timerTimeout.stop();
-        statoCorrente = POSIZIONATO;
+    case MEDIA_INTENSITA:
+      Serial.println("MEDIA_INTENSITA");
+      // Controllo pressione pulsante P1
+      if (digitalRead(pulsanteP1) == HIGH) {
+        waitUntilInputLow(pulsanteP1, 50);
+        statoCorrente = ALTA_INTENSITA;
+        timerInattivita.reset(); // Reset del timer di inattività
+        aggiornaUscite();
       }
-      else if (timerTimeout.get() > 60000) {
-        // Timeout veicolo non posizionato
-        Serial.println("STATO: ALLARME - Timeout posizionamento");
-        digitalWrite(led_giallo, LOW);
-        digitalWrite(led_rosso, HIGH);
-        digitalWrite(buzzer, HIGH);
-        statoCorrente = ALLARME;
+      
+      // Controllo movimento
+      if (digitalRead(pirSensor) == HIGH) {
+        timerInattivita.reset(); // Reset del timer di inattività
+        Serial.println("Movimento rilevato - Timer resettato");
       }
-      break;
       
-    case POSIZIONATO:
-      // Veicolo pronto per iniziare il processo
-      Serial.println("POSIZIONATO");
-      // Avvio automatico dopo breve pausa
-      delay(2000);
-      Serial.println("STATO: PRELAVAGGIO - Inizio ciclo di lavaggio");
-      digitalWrite(led_verde, LOW);
-      digitalWrite(led_fase, HIGH);
-      digitalWrite(spruzzatori, HIGH);
-      timerProcesso.reset();
-      timerProcesso.start();
-      statoCorrente = PRELAVAGGIO;
-      break;
-      
-    case PRELAVAGGIO:
-      // Fase di prelavaggio
-      Serial.println("PRELAVAGGIO");
-      if (timerProcesso.get() > 60000) { // 1 minuto
-        Serial.println("STATO: LAVAGGIO - Passaggio a fase di lavaggio principale");
-        digitalWrite(spruzzatori, LOW);
-        digitalWrite(spazzole, HIGH);
-        timerProcesso.reset();
-        statoCorrente = LAVAGGIO;
+      // Verifica inattività
+      if (timerInattivita.get() > TEMPO_INATTIVITA) {
+        Serial.println("Inattività rilevata - Spegnimento automatico");
+        timerInattivita.stop();
+        statoCorrente = SPENTO;
+        aggiornaUscite();
       }
       break;
       
-    case LAVAGGIO:
-      // Fase di lavaggio principale
-      Serial.println("LAVAGGIO");
-      if (timerProcesso.get() > 300000) { // 5 minuti
-        Serial.println("STATO: ASCIUGATURA - Passaggio a fase di asciugatura");
-        digitalWrite(spazzole, LOW);
-        digitalWrite(ventole, HIGH);
-        timerProcesso.reset();
-        statoCorrente = ASCIUGATURA;
+    case ALTA_INTENSITA:
+      Serial.println("ALTA_INTENSITA");
+      // Controllo pressione pulsante P1
+      if (digitalRead(pulsanteP1) == HIGH) {
+        waitUntilInputLow(pulsanteP1, 50);
+        statoCorrente = SPENTO;
+        timerInattivita.stop(); // Ferma il timer di inattività
+        aggiornaUscite();
       }
-      break;
       
-    case ASCIUGATURA:
-      // Fase di asciugatura
-      Serial.println("ASCIUGATURA");
-      if (timerProcesso.get() > 60000) { // 1 minuto
-        Serial.println("STATO: COMPLETAMENTO - Ciclo di lavaggio completato");
-        digitalWrite(ventole, LOW);
-        digitalWrite(led_fase, LOW);
-        digitalWrite(led_verde, HIGH);
-        timerProcesso.stop();
-        statoCorrente = COMPLETAMENTO;
+      // Controllo movimento
+      if (digitalRead(pirSensor) == HIGH) {
+        timerInattivita.reset(); // Reset del timer di inattività
+        Serial.println("Movimento rilevato - Timer resettato");
       }
-      break;
       
-    case COMPLETAMENTO:
-      // Lavaggio completato, in attesa di uscita
-      Serial.println("COMPLETAMENTO");
-      if (digitalRead(sensore_B) == HIGH) {
-        // Rileva fronte salita sensore B tramite waitUntilInputLow
-        waitUntilInputLow(sensore_B, 50); // Debounce di 50ms
-        Serial.println("STATO: USCITA - Veicolo in fase di uscita");
-        digitalWrite(led_verde, LOW);
-        digitalWrite(led_giallo, HIGH);
-        timerTimeout.reset();
-        timerTimeout.start();
-        statoCorrente = USCITA;
-      }
-      break;
-      
-    case USCITA:
-      // Veicolo a cavallo dell'uscita
-      Serial.println("USCITA");
-      // Controlla se il veicolo è completamente uscito (sensore B basso e C basso)
-      if (digitalRead(sensore_B) == LOW && digitalRead(sensore_C) == LOW) {
-        Serial.println("STATO: LIBERO - Veicolo uscito, sistema pronto");
-        digitalWrite(led_giallo, LOW);
-        digitalWrite(led_verde, HIGH);
-        timerTimeout.stop();
-        statoCorrente = LIBERO;
-      }
-      // Controlla se il veicolo è tornato indietro (sensore B basso e C alto)
-      else if (digitalRead(sensore_B) == LOW && digitalRead(sensore_C) == HIGH) {
-        Serial.println("STATO: COMPLETAMENTO - Veicolo tornato nell'area");
-        digitalWrite(led_giallo, LOW);
-        digitalWrite(led_verde, HIGH);
-        timerTimeout.stop();
-        statoCorrente = COMPLETAMENTO;
-      }
-      else if (timerTimeout.get() > 30000) {
-        // Timeout veicolo bloccato in uscita
-        Serial.println("STATO: ALLARME - Veicolo bloccato in uscita");
-        digitalWrite(led_giallo, LOW);
-        digitalWrite(led_rosso, HIGH);
-        digitalWrite(buzzer, HIGH);
-        statoCorrente = ALLARME;
-      }
-      break;
-      
-    case ALLARME:
-      // Gestione allarmi - Reset manuale necessario
-      Serial.println("ALLARME");
-      // Lampeggio LED rosso
-      digitalWrite(led_rosso, !digitalRead(led_rosso));
-      delay(300);
-      
-      // Simuliamo il reset manuale con la presenza e successiva assenza di un veicolo
-      if (!digitalRead(sensore_A) && !digitalRead(sensore_B) && !digitalRead(sensore_C)) {
-        delay(5000); // Simulazione di un reset dopo 5 secondi
-        Serial.println("STATO: LIBERO - Sistema resettato dopo allarme");
-        digitalWrite(led_rosso, LOW);
-        digitalWrite(buzzer, LOW);
-        digitalWrite(led_verde, HIGH);
-        // Reset di tutti gli attuatori per sicurezza
-        digitalWrite(spruzzatori, LOW);
-        digitalWrite(spazzole, LOW);
-        digitalWrite(ventole, LOW);
-        statoCorrente = LIBERO;
+      // Verifica inattività
+      if (timerInattivita.get() > TEMPO_INATTIVITA) {
+        Serial.println("Inattività rilevata - Spegnimento automatico");
+        timerInattivita.stop();
+        statoCorrente = SPENTO;
+        aggiornaUscite();
       }
       break;
   }
+  
   delay(10); // Piccolo delay per stabilità
+}
+
+// Funzione per aggiornare le uscite in base allo stato
+void aggiornaUscite() {
+  // Spegne tutti i LED indicatori
+  digitalWrite(ledL1, LOW);
+  digitalWrite(ledL2, LOW);
+  digitalWrite(ledL3, LOW);
+  
+  // Imposta l'intensità della lampada in base allo stato
+  switch (statoCorrente) {
+    case SPENTO:
+      analogWrite(outputLampada, 0);
+      break;
+    case BASSA_INTENSITA:
+      analogWrite(outputLampada, INTENSITA_BASSA);
+      digitalWrite(ledL1, HIGH);  // Accende solo L1
+      break;
+    case MEDIA_INTENSITA:
+      analogWrite(outputLampada, INTENSITA_MEDIA);
+      digitalWrite(ledL2, HIGH);  // Accende solo L2
+      break;
+    case ALTA_INTENSITA:
+      analogWrite(outputLampada, INTENSITA_ALTA);
+      digitalWrite(ledL3, HIGH);  // Accende solo L3
+      break;
+  }
 }
 ```
 
-
-Questa modifica segue il principio di progettazione "open for extension, closed for modification", rendendo il codice più versatile per eventuali esigenze future.
 >[Torna all'indice generale](indexstatifiniti.md)
