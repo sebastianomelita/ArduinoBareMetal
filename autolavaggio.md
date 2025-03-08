@@ -428,25 +428,6 @@ void loop() {
 }
 ```
 
-E' stata realizzata una struttura **Sensore** che incapsula:
-- Pin del sensore
-- Livello attuale e precedente
-- Rilevazione automatica dei fronti di salita e discesa
-- Metodi per inizializzazione e aggiornamento
-- Funzioni di gestione:
-     - ```init()```: inizializza il sensore con il pin specificato
-     - ```aggiorna()```: legge il nuovo valore, rileva eventuali fronti e aggiorna lo stato
-
-Il nome Sensore della struttura:
-- È più conciso e chiaro
-- Riflette meglio la natura generale del componente
-- Permette di estendere facilmente le funzionalità in futuro
-
-Con questo nome generico, la struttura può evolversi per gestire altri aspetti dei sensori oltre al rilevamento dei fronti, come ad esempio:
-- Funzioni di debouncing
-- Gestione di soglie e valori analogici
-- Configurazioni più complesse
-- Integrazione con altri tipi di sensori
 
 Questa modifica segue il principio di progettazione "open for extension, closed for modification", rendendo il codice più versatile per eventuali esigenze future.
 >[Torna all'indice generale](indexstatifiniti.md)
