@@ -435,15 +435,13 @@ void loop() {
 }
 ```
 
-Creazione di una struttura SensoreFronte che incapsula:
+E' stata realizzata una struttura **SensoreFronte** che incapsula:
 - Pin del sensore
 - Livello attuale e precedente
 - Rilevazione automatica dei fronti di salita e discesa
 - Metodi per inizializzazione e aggiornamento
-
-
-Funzioni di gestione:
-- ```init()```: inizializza il sensore con il pin specificato
-- ```aggiorna()```: legge il nuovo valore, rileva eventuali fronti e aggiorna lo stato
+- Funzioni di gestione:
+     - ```init()```: inizializza il sensore con il pin specificato
+     - ```aggiorna()```: legge il nuovo valore, rileva eventuali fronti e aggiorna lo stato
 
 >[Torna all'indice generale](indexstatifiniti.md)
