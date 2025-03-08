@@ -103,8 +103,7 @@ stateDiagram-v2
 ## **Codice Arduino**
 
 ```C++
-// Variabile di stato
-uint8_t statoCorrente;//##### urutils.h #####
+//##### urutils.h #####
 void waitUntilInputLow(int btn, unsigned t)
 {
    do{
@@ -189,72 +188,26 @@ enum Stati {
   ALLARME
 };
 
-// Struttura per gestire i sensori
-struct Sensore {
-  int pin;                // Pin del sensore
-  bool livelloAttuale;    // Livello attuale (dopo debouncing)
-  bool livelloPrecedente; // Livello precedente 
-  bool fronteSalita;      // Fronte di salita rilevato
-  bool fronteDiscesa;     // Fronte di discesa rilevato
-  
-  // Variabili per il debouncing
-  bool statoGrezzo;       // Lettura grezza dal pin
-  unsigned long ultimoCambioTempo;  // Timestamp dell'ultimo cambio di stato stabile
-  unsigned long debounceDelay;      // Tempo di debounce in ms
-  
-  // Inizializzazione
-  void init(int _pin, unsigned long _debounceDelay = 50) {
-    pin = _pin;
-    livelloPrecedente = LOW;
-    livelloAttuale = LOW;
-    fronteSalita = false;
-    fronteDiscesa = false;
-    ultimoCambioTempo = 0;
-    debounceDelay = _debounceDelay;
-  }
-  
-  // Aggiornamento e rilevazione fronti con debouncing
-  void aggiorna() {
-    // Lettura dello stato grezzo
-    bool letturaCorrente = digitalRead(pin);
-    
-    // Verifica se è cambiato lo stato grezzo
-    if (letturaCorrente != statoGrezzo) {
-      // Reset del timer di debounce
-      ultimoCambioTempo = millis();
-      statoGrezzo = letturaCorrente;
-    }
-    
-    // Verifica se è passato abbastanza tempo dall'ultimo cambio
-    if ((millis() - ultimoCambioTempo) > debounceDelay) {
-      // Se lo stato stabile è cambiato rispetto al livello attuale
-      if (statoGrezzo != livelloAttuale) {
-        livelloAttuale = statoGrezzo;
-        
-        // Rilevazione fronti
-        fronteSalita = livelloAttuale && !livelloPrecedente;
-        fronteDiscesa = !livelloAttuale && livelloPrecedente;
-        
-        // Aggiornamento livello precedente
-        livelloPrecedente = livelloAttuale;
-      }
-      else {
-        // Nessun cambio di stato, reset dei flag dei fronti
-        fronteSalita = false;
-        fronteDiscesa = false;
-      }
-    }
-    else {
-      // Durante il periodo di debounce, nessun fronte viene rilevato
-      fronteSalita = false;
-      fronteDiscesa = false;
-    }
-  }
-};
+// Variabili di stato
+uint8_t statoCorrente;
+bool livelloA_Precedente = LOW;
+bool livelloB_Precedente = LOW;
 
-// Definizione sensori
-Sensore sensoreA;
-Sensore sensoreB;
+// Funzione per rilevare fronte di salita
+bool rilevaSalita(int pin, bool &stato_precedente) {
+  bool stato_attuale = digitalRead(pin);
+  bool fronte_salita = stato_attuale && !stato_precedente;
+  stato_precedente = stato_attuale;
+  return fronte_salita;
+}
+
+// Funzione per rilevare fronte di discesa
+bool rilevaDiscesa(int pin, bool &stato_precedente) {
+  bool stato_attuale = digitalRead(pin);
+  bool fronte_discesa = !stato_attuale && stato_precedente;
+  stato_precedente = stato_attuale;
+  return fronte_discesa;
+}
 
 void setup() {
   // Inizializzazione I/O
@@ -272,10 +225,6 @@ void setup() {
   pinMode(ventole, OUTPUT);
   pinMode(buzzer, OUTPUT);
   
-  // Inizializzazione sensori
-  sensoreA.init(sensore_A, 50); // 50ms di debounce
-  sensoreB.init(sensore_B, 50); // 50ms di debounce
-  
   // Inizializzazione stato
   statoCorrente = LIBERO;
   
@@ -288,17 +237,14 @@ void setup() {
 }
 
 void loop() {
-  // Lettura sensori e aggiornamento fronti
-  sensoreA.aggiorna();
-  sensoreB.aggiorna();
-  bool livelloC = digitalRead(sensore_C);
-
   // Macchina a stati
   switch (statoCorrente) {
     case LIBERO:
       // Sistema in attesa di veicoli
-      if (sensoreA.fronteSalita) {
-        // Veicolo rilevato in ingresso
+      Serial.println("LIBERO");
+      if (digitalRead(sensore_A) == HIGH) {
+        // Rileva fronte salita sensore A tramite waitUntilInputLow
+        waitUntilInputLow(sensore_A, 50); // Debounce di 50ms
         Serial.println("STATO: INGRESSO - Veicolo a cavallo dell'ingresso");
         digitalWrite(led_verde, LOW);
         digitalWrite(led_giallo, HIGH);
@@ -310,15 +256,15 @@ void loop() {
       
     case INGRESSO:
       // Veicolo a cavallo dell'ingresso
-      if (sensoreA.fronteDiscesa && livelloC) {
-        // Veicolo entrato completamente
+      Serial.println("INGRESSO");
+      // Controlla se il veicolo è completamente entrato (sensore A basso e C alto)
+      if (digitalRead(sensore_A) == LOW && digitalRead(sensore_C) == HIGH) {
         Serial.println("STATO: IN_ATTESA - Veicolo entrato, in attesa di posizionamento");
-        // LED giallo lampeggiante (gestito esternamente con blink())
         timerTimeout.reset();
         statoCorrente = IN_ATTESA;
       } 
-      else if (sensoreA.fronteDiscesa && !livelloC) {
-        // Veicolo tornato indietro
+      // Controlla se il veicolo è tornato indietro (sensore A basso e C basso)
+      else if (digitalRead(sensore_A) == LOW && digitalRead(sensore_C) == LOW) {
         Serial.println("STATO: LIBERO - Veicolo tornato indietro");
         digitalWrite(led_giallo, LOW);
         digitalWrite(led_verde, HIGH);
@@ -337,7 +283,12 @@ void loop() {
       
     case IN_ATTESA:
       // Veicolo entrato ma non posizionato
-      if (livelloC) {
+      Serial.println("IN_ATTESA");
+      // Lampeggio LED giallo
+      digitalWrite(led_giallo, !digitalRead(led_giallo));
+      delay(300);
+      
+      if (digitalRead(sensore_C) == HIGH) {
         // Veicolo posizionato correttamente
         Serial.println("STATO: POSIZIONATO - Veicolo in posizione corretta");
         digitalWrite(led_giallo, LOW);
@@ -357,6 +308,7 @@ void loop() {
       
     case POSIZIONATO:
       // Veicolo pronto per iniziare il processo
+      Serial.println("POSIZIONATO");
       // Avvio automatico dopo breve pausa
       delay(2000);
       Serial.println("STATO: PRELAVAGGIO - Inizio ciclo di lavaggio");
@@ -370,6 +322,7 @@ void loop() {
       
     case PRELAVAGGIO:
       // Fase di prelavaggio
+      Serial.println("PRELAVAGGIO");
       if (timerProcesso.get() > 60000) { // 1 minuto
         Serial.println("STATO: LAVAGGIO - Passaggio a fase di lavaggio principale");
         digitalWrite(spruzzatori, LOW);
@@ -381,6 +334,7 @@ void loop() {
       
     case LAVAGGIO:
       // Fase di lavaggio principale
+      Serial.println("LAVAGGIO");
       if (timerProcesso.get() > 300000) { // 5 minuti
         Serial.println("STATO: ASCIUGATURA - Passaggio a fase di asciugatura");
         digitalWrite(spazzole, LOW);
@@ -392,6 +346,7 @@ void loop() {
       
     case ASCIUGATURA:
       // Fase di asciugatura
+      Serial.println("ASCIUGATURA");
       if (timerProcesso.get() > 60000) { // 1 minuto
         Serial.println("STATO: COMPLETAMENTO - Ciclo di lavaggio completato");
         digitalWrite(ventole, LOW);
@@ -404,7 +359,10 @@ void loop() {
       
     case COMPLETAMENTO:
       // Lavaggio completato, in attesa di uscita
-      if (sensoreB.fronteSalita) {
+      Serial.println("COMPLETAMENTO");
+      if (digitalRead(sensore_B) == HIGH) {
+        // Rileva fronte salita sensore B tramite waitUntilInputLow
+        waitUntilInputLow(sensore_B, 50); // Debounce di 50ms
         Serial.println("STATO: USCITA - Veicolo in fase di uscita");
         digitalWrite(led_verde, LOW);
         digitalWrite(led_giallo, HIGH);
@@ -416,16 +374,17 @@ void loop() {
       
     case USCITA:
       // Veicolo a cavallo dell'uscita
-      if (sensoreB.fronteDiscesa && !livelloC) {
-        // Veicolo uscito completamente
+      Serial.println("USCITA");
+      // Controlla se il veicolo è completamente uscito (sensore B basso e C basso)
+      if (digitalRead(sensore_B) == LOW && digitalRead(sensore_C) == LOW) {
         Serial.println("STATO: LIBERO - Veicolo uscito, sistema pronto");
         digitalWrite(led_giallo, LOW);
         digitalWrite(led_verde, HIGH);
         timerTimeout.stop();
         statoCorrente = LIBERO;
       }
-      else if (sensoreB.fronteDiscesa && livelloC) {
-        // Veicolo tornato indietro
+      // Controlla se il veicolo è tornato indietro (sensore B basso e C alto)
+      else if (digitalRead(sensore_B) == LOW && digitalRead(sensore_C) == HIGH) {
         Serial.println("STATO: COMPLETAMENTO - Veicolo tornato nell'area");
         digitalWrite(led_giallo, LOW);
         digitalWrite(led_verde, HIGH);
@@ -444,8 +403,13 @@ void loop() {
       
     case ALLARME:
       // Gestione allarmi - Reset manuale necessario
+      Serial.println("ALLARME");
+      // Lampeggio LED rosso
+      digitalWrite(led_rosso, !digitalRead(led_rosso));
+      delay(300);
+      
       // Simuliamo il reset manuale con la presenza e successiva assenza di un veicolo
-      if (!livelloA && !livelloB && !livelloC) {
+      if (!digitalRead(sensore_A) && !digitalRead(sensore_B) && !digitalRead(sensore_C)) {
         delay(5000); // Simulazione di un reset dopo 5 secondi
         Serial.println("STATO: LIBERO - Sistema resettato dopo allarme");
         digitalWrite(led_rosso, LOW);
@@ -458,15 +422,6 @@ void loop() {
         statoCorrente = LIBERO;
       }
       break;
-  }
-  
-  // Gestione LED lampeggiante in stato di IN_ATTESA
-  if (statoCorrente == IN_ATTESA) {
-    static unsigned long ultimoLampeggio = 0;
-    if (millis() - ultimoLampeggio > 500) { // Lampeggio ogni 500ms
-      digitalWrite(led_giallo, !digitalRead(led_giallo));
-      ultimoLampeggio = millis();
-    }
   }
   
   delay(10); // Piccolo delay per stabilità
