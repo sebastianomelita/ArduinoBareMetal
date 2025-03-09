@@ -17,4 +17,5 @@
 12. [Autolavaggio](autolavaggio.md)
 13. [Pulsante luci](luci.md)
 14. [Palestra per cani](palestracani.md)
-15. [Sitografia](statifinitisitografia.md)
+15. [Lettiera autopulente](lettiera.md)
+16. [Sitografia](statifinitisitografia.md)
