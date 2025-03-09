@@ -16,4 +16,5 @@
 11. [Macchina del caffè](caffè.md)
 12. [Autolavaggio](autolavaggio.md)
 13. [Pulsante luci](luci.md)
-14. [Sitografia](statifinitisitografia.md)
+14. [Palestra per cani](palestracani.md)
+15. [Sitografia](statifinitisitografia.md)
