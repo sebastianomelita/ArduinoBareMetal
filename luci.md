@@ -177,8 +177,11 @@ void setup() {
   // Inizializzazione seriale per debug
   Serial.begin(115200);
   
-  // Stato iniziale: lampada spenta
-  aggiornaUscite();
+  // Spegni tutti i LED e la lampada inizialmente
+  digitalWrite(ledL1, LOW);
+  digitalWrite(ledL2, LOW);
+  digitalWrite(ledL3, LOW);
+  analogWrite(outputLampada, 0);
   
   Serial.println("Sistema Lampada Intelligente inizializzato");
 }
@@ -187,25 +190,37 @@ void loop() {
   // Macchina a stati
   switch (statoCorrente) {
     case SPENTO:
-      Serial.println("SPENTO");
+      // Stato SPENTO: tutti i LED e lampada spenti
+      digitalWrite(ledL1, LOW);
+      digitalWrite(ledL2, LOW);
+      digitalWrite(ledL3, LOW);
+      analogWrite(outputLampada, 0);
+      
+      Serial.println("Stato: SPENTO");
+      
       // Controllo pressione pulsante P1 (HIGH con pull-down quando premuto)
       if (digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
         statoCorrente = BASSA_INTENSITA;
         timerInattivita.reset();
         timerInattivita.start();
-        aggiornaUscite();
       }
       break;
       
     case BASSA_INTENSITA:
-      Serial.println("BASSA_INTENSITA");
+      // Stato BASSA_INTENSITA: LED L1 acceso, altri spenti, lampada a bassa intensità
+      digitalWrite(ledL1, HIGH);
+      digitalWrite(ledL2, LOW);
+      digitalWrite(ledL3, LOW);
+      analogWrite(outputLampada, INTENSITA_BASSA);
+      
+      Serial.println("Stato: BASSA_INTENSITA");
+      
       // Controllo pressione pulsante P1
       if (digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = MEDIA_INTENSITA;
         timerInattivita.reset(); // Reset del timer di inattività
-        aggiornaUscite();
       }
       
       // Controllo movimento (rilevato = HIGH)
@@ -219,18 +234,23 @@ void loop() {
         Serial.println("Inattività rilevata - Spegnimento automatico");
         timerInattivita.stop();
         statoCorrente = SPENTO;
-        aggiornaUscite();
       }
       break;
       
     case MEDIA_INTENSITA:
-      Serial.println("MEDIA_INTENSITA");
+      // Stato MEDIA_INTENSITA: LED L2 acceso, altri spenti, lampada a media intensità
+      digitalWrite(ledL1, LOW);
+      digitalWrite(ledL2, HIGH);
+      digitalWrite(ledL3, LOW);
+      analogWrite(outputLampada, INTENSITA_MEDIA);
+      
+      Serial.println("Stato: MEDIA_INTENSITA");
+      
       // Controllo pressione pulsante P1
       if (digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = ALTA_INTENSITA;
         timerInattivita.reset(); // Reset del timer di inattività
-        aggiornaUscite();
       }
       
       // Controllo movimento
@@ -244,18 +264,23 @@ void loop() {
         Serial.println("Inattività rilevata - Spegnimento automatico");
         timerInattivita.stop();
         statoCorrente = SPENTO;
-        aggiornaUscite();
       }
       break;
       
     case ALTA_INTENSITA:
-      Serial.println("ALTA_INTENSITA");
+      // Stato ALTA_INTENSITA: LED L3 acceso, altri spenti, lampada ad alta intensità
+      digitalWrite(ledL1, LOW);
+      digitalWrite(ledL2, LOW);
+      digitalWrite(ledL3, HIGH);
+      analogWrite(outputLampada, INTENSITA_ALTA);
+      
+      Serial.println("Stato: ALTA_INTENSITA");
+      
       // Controllo pressione pulsante P1
       if (digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = SPENTO;
         timerInattivita.stop(); // Ferma il timer di inattività
-        aggiornaUscite();
       }
       
       // Controllo movimento
@@ -269,39 +294,11 @@ void loop() {
         Serial.println("Inattività rilevata - Spegnimento automatico");
         timerInattivita.stop();
         statoCorrente = SPENTO;
-        aggiornaUscite();
       }
       break;
   }
   
   delay(10); // Piccolo delay per stabilità
-}
-
-// Funzione per aggiornare le uscite in base allo stato
-void aggiornaUscite() {
-  // Spegne tutti i LED indicatori
-  digitalWrite(ledL1, LOW);
-  digitalWrite(ledL2, LOW);
-  digitalWrite(ledL3, LOW);
-  
-  // Imposta l'intensità della lampada in base allo stato
-  switch (statoCorrente) {
-    case SPENTO:
-      analogWrite(outputLampada, 0);
-      break;
-    case BASSA_INTENSITA:
-      analogWrite(outputLampada, INTENSITA_BASSA);
-      digitalWrite(ledL1, HIGH);  // Accende solo L1
-      break;
-    case MEDIA_INTENSITA:
-      analogWrite(outputLampada, INTENSITA_MEDIA);
-      digitalWrite(ledL2, HIGH);  // Accende solo L2
-      break;
-    case ALTA_INTENSITA:
-      analogWrite(outputLampada, INTENSITA_ALTA);
-      digitalWrite(ledL3, HIGH);  // Accende solo L3
-      break;
-  }
 }
 ```
 
