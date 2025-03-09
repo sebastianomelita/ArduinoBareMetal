@@ -1,6 +1,6 @@
 >[Torna all'indice generale](indexstatifiniti.md)
 
-# **LETTIERA PER GATTI**
+# **LETTIERA AUTOPULENTE**
 
 Scrivere un programma che realizzi una lettiera per gatti autopulente. Tre volte al giorno la lettiera si pulisce automaticamente attivando una centrifuga. 
 
