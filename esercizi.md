@@ -1747,13 +1747,15 @@ di un sensore di transito (pulsante con memoria) e di un sensore di presenza (de
 del gatto con un led verde acceso. La pulizia della lettiera con un led rosso acceso. La pulizia si attiva automaticamente ogni 
 tre volte che il gatto esce dalla lettiera.
 
+Link al progetto: [Lettiera autopulente](lettiera.md)
+
+
 - Simulazione con Arduino su Tinkercad mediante FSM su stati: https://www.tinkercad.com/things/kL0VNCCbB3B-lettiera-gatti
 - Simulazione con Arduino su Tinkercad variante con FSM su ingressi: https://www.tinkercad.com/things/3F2C6FC6ozg-lettiera-gatti-no-fsm
 - Simulazione con Arduino su Tinkercad variante con FSM su ingressi e senza delay: https://www.tinkercad.com/things/cYQtH4sy94O-lettiera-gatti-no-fsm-no-delay
 - Simulazione con Arduino su Tinkercad variante con FSM su ingressi e senza delay ma con fronte di discesa rapido: https://www.tinkercad.com/things/7s1lQs9BxUi-lettiera-gatti-no-fsm-no-delay-e-disccesa-rapida
 - Simulazione con Arduino su Tinkercad di una variante del precedente: https://www.tinkercad.com/things/49tCYEOMBP3-lettiera-gatti-no-fsm-no-delay-e-discesa-rapida-2
 
-Link al progetto: [Lettiera autopulente](lettiera.md)
 
 ### **Es44. Palestra per cani**
 
