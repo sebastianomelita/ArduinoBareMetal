@@ -1753,6 +1753,8 @@ tre volte che il gatto esce dalla lettiera.
 - Simulazione con Arduino su Tinkercad variante con FSM su ingressi e senza delay ma con fronte di discesa rapido: https://www.tinkercad.com/things/7s1lQs9BxUi-lettiera-gatti-no-fsm-no-delay-e-disccesa-rapida
 - Simulazione con Arduino su Tinkercad di una variante del precedente: https://www.tinkercad.com/things/49tCYEOMBP3-lettiera-gatti-no-fsm-no-delay-e-discesa-rapida-2
 
+Link al progetto: [Lettiera autopulente](lettiera.md)
+
 ### **Es44. Palestra per cani**
 
  Realizzare una palestra per cani che funzioni in questo modo:
@@ -1765,8 +1767,7 @@ tre volte che il gatto esce dalla lettiera.
 - se entro dieci secondi il cane non  effettua un tentativo, si da per scontato che rinuncia e si riparte, 
   col conteggio delle prese azzerato, dal livello più basso.
 
-Link al progetto: [Palestra per cani](palestracani.md
-)
+Link al progetto: [Palestra per cani](palestracani.md)
  
 Simulazione con Tinkercad con FSM su ingressi: https://www.tinkercad.com/things/hmOB6kgqlLS-palestra-per-cani
 
