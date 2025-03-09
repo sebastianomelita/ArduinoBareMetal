@@ -229,9 +229,8 @@ void loop() {
     }
     delay(10);
 }
-
-
-
 ```
+
+Simulazione con Tinkercad con FSM su ingressi: https://www.tinkercad.com/things/hmOB6kgqlLS-palestra-per-cani
 
 >[Torna all'indice generale](indexstatifiniti.md)
