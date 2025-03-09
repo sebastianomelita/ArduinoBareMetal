@@ -357,7 +357,7 @@ void loop() {
 ```
 
 
-- Simulazione con Arduino su Tinkercad variante senza FSM: https://www.tinkercad.com/things/3F2C6FC6ozg-lettiera-gatti-no-fsm
+- Simulazione con Arduino su Tinkercad: https://www.tinkercad.com/things/3F2C6FC6ozg-lettiera-gatti-no-fsm
 
 ## **Ulteriori varianti del codice Arduino "prima gli ingressi e dopo gli stati"**
 
