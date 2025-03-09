@@ -122,7 +122,7 @@ struct DiffTimer2
 	}
 };
 
-bool waitUntilLow(DiffTimer &d, bool val, unsigned t);
+bool waitUntilNB(DiffTimer &d, bool c, unsigned t);
 
 bool waitUntilNB(DiffTimer &d, bool c, unsigned t){
 	bool ok = false;
