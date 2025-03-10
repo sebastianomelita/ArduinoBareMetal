@@ -17,8 +17,8 @@ Le **zone**, superiore ed inferiore, sono divise in:
 <img src="img/breadboard-02.jpg" alt="alt text" width="1000">
 
 Concentriamoci sulla **parte superiore**.  Un solco orizzontale più sottile separa la zona di alimentazione dalla zona degli input e output:
-- Nella **parte di alimentazione**, tutti i fori di una **stessa riga** sono internamente collegati, per cui sono allo **stesso potenziale**. I collegamenti interni si sviluppano in orizzontale ma non in verticale, per cui fori che stanno sulla stessa colonna ma su righe diverse, non sono elettricamente collegati.
-- Nella **parte di input/output**, tutti i fori di una **stessa colonna** sono internamente collegati, per cui sono allo **stesso potenziale**. I collegamenti interni si sviluppano in verticale ma non in orizzontale, per cui fori che stanno sulla stessa riga ma su colonne diverse, non sono elettricamente collegati.
+- Nella **parte di alimentazione**, tutti i fori di una **stessa riga** sono internamente collegati, per cui sono allo **stesso potenziale**. I collegamenti interni si sviluppano **in orizzontale** ma non in verticale, per cui fori che stanno sulla stessa colonna ma su righe diverse, non sono elettricamente collegati.
+- Nella **parte di input/output**, tutti i fori di una **stessa colonna** sono internamente collegati, per cui sono allo **stesso potenziale**. I collegamenti interni si sviluppano **in verticale** ma non in orizzontale, per cui fori che stanno sulla stessa riga ma su colonne diverse, non sono elettricamente collegati.
 
 ## **COLLEGAMENTO DEI DISPOSITIVI BIPOLI**
 
