@@ -516,4 +516,168 @@ void loop() {
 }
 ```
 
+## **Codice Arduino "prima gli ingressi e poi gli stati" rappresentati come contatori**
+
+```C++
+//##### urutils.h #####
+void waitUntilInputLow(int btn, unsigned t)
+{
+   do{
+     delay(t);
+   }while(digitalRead(btn)!=LOW);
+}
+
+struct DiffTimer
+{
+	unsigned long elapsed, last;
+	bool timerstate=false;
+	byte state = 0;
+	byte count = 0;
+	void reset(){
+		elapsed = 0;
+		last = millis();
+	}
+	void toggle(){
+		if(timerstate){
+    	    stop();
+		}else{
+			start();
+		}	
+	}
+	void stop(){
+		if(timerstate){
+			timerstate = false;
+    	    elapsed += millis() - last;
+		}	
+	}
+	void start(){
+		if(!timerstate){
+			timerstate = true;
+			last = millis();
+		}
+	}
+	unsigned long get(){
+		if(timerstate){
+			return millis() - last + elapsed;
+		}
+		return elapsed;
+	}
+	void set(unsigned long e){
+		reset();
+		elapsed = e;
+	}
+};
+//##### urutils.h #####
+
+// Definizione dei pin
+const int pulsanteP1 = 2;     // Pin per il pulsante P1
+const int pirSensor = 3;      // Pin per il sensore PIR
+const int outputLampada = 9;  // Pin PWM per controllare l'intensità della lampada
+
+// Array dei pin LED - ora possono essere non consecutivi
+const int ledPins[] = {4, 5, 6};  // ledL1, ledL2, ledL3 - possono essere qualsiasi pin
+const int NUM_LED = sizeof(ledPins) / sizeof(ledPins[0]);
+
+// Valori di intensità della lampada
+const int INTENSITA[] = {0, 85, 170, 255};  // Valori di intensità per ogni stato
+const int NUM_STATI = sizeof(INTENSITA) / sizeof(INTENSITA[0]);  // Conta automaticamente gli stati
+
+// Timer per l'inattività
+DiffTimer timerInattivita;
+const unsigned long TEMPO_INATTIVITA = 300000; // 5 minuti in millisecondi
+
+// Variabile di stato come contatore
+uint8_t statoCorrente = 0;  // 0=SPENTO, 1=BASSA, 2=MEDIA, 3=ALTA
+
+// Nomi degli stati per i messaggi di debug
+const char* NOMI_STATI[] = {"SPENTO", "BASSA_INTENSITA", "MEDIA_INTENSITA", "ALTA_INTENSITA"};
+
+void setup() {
+  // Inizializzazione pin
+  pinMode(pulsanteP1, INPUT);    // Pulsante con resistenza di pull-down esterna
+  pinMode(pirSensor, INPUT);     // Sensore PIR
+  pinMode(outputLampada, OUTPUT);
+  
+  // Inizializzazione dei pin LED
+  for (int i = 0; i < NUM_LED; i++) {
+    pinMode(ledPins[i], OUTPUT);
+    digitalWrite(ledPins[i], LOW);  // Tutti i LED inizialmente spenti
+  }
+  
+  // Inizializzazione seriale per debug
+  Serial.begin(115200);
+  
+  // Imposta l'output iniziale
+  analogWrite(outputLampada, INTENSITA[statoCorrente]);
+  
+  Serial.println("Sistema Lampada Intelligente inizializzato");
+}
+
+void loop() {
+  // Macchina a stati con priorità agli ingressi
+  
+  // INGRESSO 1: Pulsante P1 premuto
+  if (digitalRead(pulsanteP1) == HIGH) {
+    waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
+    
+    // Se era spento, avvia il timer di inattività
+    if (statoCorrente == 0) {
+      timerInattivita.reset();
+      timerInattivita.start();
+    }
+    // Se passa a spento, ferma il timer
+    else if (statoCorrente == NUM_STATI - 1) {
+      timerInattivita.stop();
+    } 
+    // Altrimenti resetta il timer in corso
+    else {
+      timerInattivita.reset();
+    }
+    
+    // Incrementa lo stato in modo ciclico
+    statoCorrente = (statoCorrente + 1) % NUM_STATI;
+    Serial.print("Passaggio a stato: ");
+    Serial.println(NOMI_STATI[statoCorrente]);
+    
+    // Aggiorna output in base al nuovo stato
+    aggiornaOutput();
+  }
+  
+  // INGRESSO 2: Sensore di movimento PIR
+  else if (digitalRead(pirSensor) == HIGH) {
+    // Reset del timer di inattività solo se la lampada è accesa
+    if (statoCorrente > 0) {
+      timerInattivita.reset();
+      Serial.println("Movimento rilevato - Timer resettato");
+    }
+  }
+  
+  // INGRESSO 3: Timer di inattività scaduto
+  else if (statoCorrente > 0 && timerInattivita.get() > TEMPO_INATTIVITA) {
+    // Spegnimento automatico
+    Serial.println("Inattività rilevata - Spegnimento automatico");
+    statoCorrente = 0;  // Torna allo stato SPENTO
+    timerInattivita.stop();
+    
+    // Aggiorna output
+    aggiornaOutput();
+  }
+  
+  delay(10); // Piccolo delay per stabilità
+}
+
+// Funzione per aggiornare gli output in base allo stato corrente
+void aggiornaOutput() {
+  // Imposta l'intensità della lampada
+  analogWrite(outputLampada, INTENSITA[statoCorrente]);
+  
+  // Aggiorna i LED
+  for (int i = 0; i < NUM_LED; i++) {
+    // Accende solo il LED corrispondente allo stato corrente (se non è SPENTO)
+    // statoCorrente 1 -> LED 0, statoCorrente 2 -> LED 1, statoCorrente 3 -> LED 2
+    digitalWrite(ledPins[i], (statoCorrente > 0 && i == statoCorrente - 1) ? HIGH : LOW);
+  }
+}
+```
+
 >[Torna all'indice generale](indexstatifiniti.md)
