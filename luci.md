@@ -81,7 +81,7 @@ stateDiagram-v2
     end note
 ```
 
-## **Codice Arduino**
+## **Codice Arduino "prima gli stati e poi gli ingressi"**
 
 ```C++
 //##### urutils.h #####
@@ -304,5 +304,216 @@ void loop() {
 
 Simulazione con Arduino su Tinkercad: https://www.tinkercad.com/things/ixDZp3lQSwo-lampada-intelligente
 
+## **Codice Arduino "prima gli ingressi e poi gli stati"**
+
+```C++
+//##### urutils.h #####
+void waitUntilInputLow(int btn, unsigned t)
+{
+   do{
+     delay(t);
+   }while(digitalRead(btn)!=LOW);
+}
+
+struct DiffTimer
+{
+	unsigned long elapsed, last;
+	bool timerstate=false;
+	byte state = 0;
+	byte count = 0;
+	void reset(){
+		elapsed = 0;
+		last = millis();
+	}
+	void toggle(){
+		if(timerstate){
+    	    stop();
+		}else{
+			start();
+		}	
+	}
+	void stop(){
+		if(timerstate){
+			timerstate = false;
+    	    elapsed += millis() - last;
+		}	
+	}
+	void start(){
+		if(!timerstate){
+			timerstate = true;
+			last = millis();
+		}
+	}
+	unsigned long get(){
+		if(timerstate){
+			return millis() - last + elapsed;
+		}
+		return elapsed;
+	}
+	void set(unsigned long e){
+		reset();
+		elapsed = e;
+	}
+};
+//##### urutils.h #####
+
+// Definizione dei pin
+const int pulsanteP1 = 2;     // Pin per il pulsante P1
+const int pirSensor = 3;      // Pin per il sensore PIR
+const int ledL1 = 4;          // LED indicatore bassa intensità
+const int ledL2 = 5;          // LED indicatore media intensità
+const int ledL3 = 6;          // LED indicatore alta intensità
+const int outputLampada = 9;  // Pin PWM per controllare l'intensità della lampada
+
+// Valori di intensità della lampada
+const int INTENSITA_BASSA = 85;    // ~33% di 255
+const int INTENSITA_MEDIA = 170;   // ~66% di 255
+const int INTENSITA_ALTA = 255;    // 100% di 255
+
+// Timer per l'inattività
+DiffTimer timerInattivita;
+const unsigned long TEMPO_INATTIVITA = 300000; // 5 minuti in millisecondi
+
+// Definizione stati
+enum Stati {
+  SPENTO = 0,
+  BASSA_INTENSITA = 1,
+  MEDIA_INTENSITA = 2,
+  ALTA_INTENSITA = 3
+};
+
+// Variabile di stato
+uint8_t statoCorrente;
+
+void setup() {
+  // Inizializzazione pin
+  pinMode(pulsanteP1, INPUT);    // Pulsante con resistenza di pull-down esterna
+  pinMode(pirSensor, INPUT);     // Sensore PIR
+  pinMode(ledL1, OUTPUT);
+  pinMode(ledL2, OUTPUT);
+  pinMode(ledL3, OUTPUT);
+  pinMode(outputLampada, OUTPUT);
+  
+  // Inizializzazione stato
+  statoCorrente = SPENTO;
+  
+  // Inizializzazione seriale per debug
+  Serial.begin(115200);
+  
+  // Spegni tutti i LED e la lampada inizialmente
+  digitalWrite(ledL1, LOW);
+  digitalWrite(ledL2, LOW);
+  digitalWrite(ledL3, LOW);
+  analogWrite(outputLampada, 0);
+  
+  Serial.println("Sistema Lampada Intelligente inizializzato");
+}
+
+void loop() {
+  // Macchina a stati con priorità agli ingressi
+  
+  // INGRESSO 1: Pulsante P1 premuto
+  if (digitalRead(pulsanteP1) == HIGH) {
+    waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
+    
+    // Gestione pressione del pulsante in base allo stato attuale
+    switch (statoCorrente) {
+      case SPENTO:
+        Serial.println("Passaggio a BASSA_INTENSITA");
+        statoCorrente = BASSA_INTENSITA;
+        // Output per BASSA_INTENSITA
+        digitalWrite(ledL1, HIGH);
+        digitalWrite(ledL2, LOW);
+        digitalWrite(ledL3, LOW);
+        analogWrite(outputLampada, INTENSITA_BASSA);
+        // Avvio timer inattività
+        timerInattivita.reset();
+        timerInattivita.start();
+        break;
+        
+      case BASSA_INTENSITA:
+        Serial.println("Passaggio a MEDIA_INTENSITA");
+        statoCorrente = MEDIA_INTENSITA;
+        // Output per MEDIA_INTENSITA
+        digitalWrite(ledL1, LOW);
+        digitalWrite(ledL2, HIGH);
+        digitalWrite(ledL3, LOW);
+        analogWrite(outputLampada, INTENSITA_MEDIA);
+        // Reset timer inattività
+        timerInattivita.reset();
+        break;
+        
+      case MEDIA_INTENSITA:
+        Serial.println("Passaggio a ALTA_INTENSITA");
+        statoCorrente = ALTA_INTENSITA;
+        // Output per ALTA_INTENSITA
+        digitalWrite(ledL1, LOW);
+        digitalWrite(ledL2, LOW);
+        digitalWrite(ledL3, HIGH);
+        analogWrite(outputLampada, INTENSITA_ALTA);
+        // Reset timer inattività
+        timerInattivita.reset();
+        break;
+        
+      case ALTA_INTENSITA:
+        Serial.println("Passaggio a SPENTO");
+        statoCorrente = SPENTO;
+        // Output per SPENTO
+        digitalWrite(ledL1, LOW);
+        digitalWrite(ledL2, LOW);
+        digitalWrite(ledL3, LOW);
+        analogWrite(outputLampada, 0);
+        // Stop timer inattività
+        timerInattivita.stop();
+        break;
+    }
+  }
+  
+  // INGRESSO 2: Sensore di movimento PIR
+  else if (digitalRead(pirSensor) == HIGH) {
+    // Gestione rilevamento movimento in base allo stato attuale
+    switch (statoCorrente) {
+      case SPENTO:
+        // Non fa nulla quando è spento
+        break;
+        
+      case BASSA_INTENSITA:
+      case MEDIA_INTENSITA:
+      case ALTA_INTENSITA:
+        // Reset del timer di inattività per tutti gli stati accesi
+        timerInattivita.reset();
+        Serial.println("Movimento rilevato - Timer resettato");
+        break;
+    }
+  }
+  
+  // INGRESSO 3: Timer di inattività scaduto
+  else if (timerInattivita.get() > TEMPO_INATTIVITA) {
+    // Gestione timeout inattività in base allo stato attuale
+    switch (statoCorrente) {
+      case SPENTO:
+        // Già spento, non fa nulla
+        break;
+        
+      case BASSA_INTENSITA:
+      case MEDIA_INTENSITA:
+      case ALTA_INTENSITA:
+        // Spegnimento automatico per tutti gli stati accesi
+        Serial.println("Inattività rilevata - Spegnimento automatico");
+        statoCorrente = SPENTO;
+        // Output per SPENTO
+        digitalWrite(ledL1, LOW);
+        digitalWrite(ledL2, LOW);
+        digitalWrite(ledL3, LOW);
+        analogWrite(outputLampada, 0);
+        // Stop timer inattività
+        timerInattivita.stop();
+        break;
+    }
+  }
+  
+  delay(10); // Piccolo delay per stabilità
+}
+```
 
 >[Torna all'indice generale](indexstatifiniti.md)
