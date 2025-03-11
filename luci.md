@@ -302,4 +302,7 @@ void loop() {
 }
 ```
 
+Simulazione con Arduino su Tinkercad: https://www.tinkercad.com/things/ixDZp3lQSwo-lampada-intelligente
+
+
 >[Torna all'indice generale](indexstatifiniti.md)
