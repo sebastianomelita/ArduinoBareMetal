@@ -83,6 +83,8 @@ Approccio con **delay()** (bloccante):
 
 ## **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
 
+E' un approccio bloccante che però è molto pratico per la realizzazione di pulsanti con memoria. E' opportuno adoperare questo pattern insieme ad altri task solo se questi sono ad esso sequenziali. Se devono essere eseguiti, in parallelo alla gestione del pulsante, altri task allora è opportuno utilizzare una soluzione non bloccante, oppure isolare i task che devono procedere in parallelo su ```loop()``` **a part**, realizzati, ad esempio, mediante **timer HW** o **threads**.
+
 ```C++
 // ATTIVAZIONE SUL FRONTE DI DISCESA  (PULL DOWN)      | // ATTIVAZIONE SUL FRONTE DI SALITA (PULL UP)
 -------------------------------------------------------|------------------------------------------------------
@@ -105,19 +107,19 @@ Ecco una scheda di **confronto** tra i due **approcci** per attivare una **logic
 
 Nella **colonna sinistra**:
 
-- Codice che attiva la logica sul fronte di DISCESA
+- Codice che attiva la **logica** sul fronte di **DISCESA**
 - Rileva prima quando il pulsante è premuto (HIGH)
-- Esegue doOnRise() quando il pulsante viene premuto. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte opposto a quello di interesse (rilascio del pulsante), ad esempio, attivazione o reset di un timer.
-- Attende con anti-rimbalzo che il pulsante venga rilasciato (LOW)
-- Cambia lo stato quando il pulsante viene RILASCIATO
+- Esegue ```doOnRise()``` quando il pulsante viene premuto. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di salita (pressione del pulsante), ad esempio, attivazione o reset di un timer.
+- Attende con anti-rimbalzo che il pulsante venga **rilasciato** (LOW)
+- **Cambia lo stato** quando il pulsante viene RILASCIATO
 
 Nella **colonna destra**:
 
-- Codice che attiva la logica sul fronte di SALITA
+- Codice che attiva la **logica** sul fronte di **SALITA**
 - Rileva prima quando il pulsante è rilasciato (LOW)
-- Esegue doOnFall() quando il pulsante è rilasciato
-- Attende con anti-rimbalzo che il pulsante venga premuto (HIGH)
-- Cambia lo stato quando il pulsante viene PREMUTO
+- Esegue ```doOnFall()``` quando il pulsante è rilasciato
+- Attende con anti-rimbalzo che il pulsante venga **premuto** (HIGH)
+- **Cambia lo stato** quando il pulsante viene PREMUTO
 
 La differenza fondamentale è nel momento in cui viene modificato lo stato: nella versione di sinistra avviene quando il pulsante viene rilasciato, mentre in quella di destra quando viene premuto.
 
