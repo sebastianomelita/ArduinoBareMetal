@@ -114,18 +114,16 @@ void loop()
                                                            |
 unsigned long precm = 0;                                   | void loop() {
 const unsigned long tbase = 50; // millisecondi            |   // Lettura diretta del pulsante senza schedulazione
-int val, precval = LOW;                                    |   val = digitalRead(pulsante);  // lettura ingressi
+int val, precval = LOW;                                    |   val = digitalRead(pulsante);  
 int stato, nuovoStato;                                     |   
-int pulsante = 2; // pin del pulsante                      |   if(precval==LOW && val==HIGH) { // rivelatore di fronte di salita
+int pulsante = 2; 			                   |   if(precval==LOW && val==HIGH) { 
                                                            |     stato = nuovoStato; // impostazione del nuovo stato
 void loop() {                                              |   }
-  // Schedulatore ad eventi con funzione di antirimbalzo   |   precval=val;  // memorizzazione livello loop precedente
-  if((millis()-precm) >= tbase) {                          |   
-    precm = millis();  // preparo il tic successivo        |   updateOutputs(stato); // scrittura uscite
+  if((millis()-precm) >= tbase) {    			   |   precval=val;  
+    precm = millis();  					   |   updateOutputs(stato); 
                                                            |   
-    // Codice eseguito al tempo stabilito                  |   delay(50);  // Attesa bloccante per il debounce
-    val = digitalRead(pulsante);  // lettura ingressi      |
-                                                           |
+    val = digitalRead(pulsante);  			   |   delay(50);  // debouncer
+                                                           | }
     if(precval==LOW && val==HIGH) { // fronte di salita    |
       stato = nuovoStato; // impostazione del nuovo stato  |
     }                                                      |
@@ -138,6 +136,7 @@ void loop() {                                              |   }
   // mentre attende che passi il tempo tbase               | 
 }                                                          |
 ```
+
 
 #### **Principali differenze tra i due approcci**
 
