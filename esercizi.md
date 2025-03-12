@@ -53,10 +53,9 @@ void loop() {                                              |   }
                                                            | }
     if(precval==LOW && val==HIGH) { // fronte di salita    |
       stato = nuovoStato; // impostazione del nuovo stato  |
+      updateOutputs(stato); // scrittura uscite            |
     }                                                      |
-                                                           |
     precval=val;  // memorizza livello loop precedente     |
-    updateOutputs(stato); // scrittura uscite              |
   }                                                        |
                                                            |
   // Qui il programma può eseguire altre operazioni        | 
