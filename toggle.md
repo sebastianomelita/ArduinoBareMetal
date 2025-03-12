@@ -109,6 +109,7 @@ void loop()
 
 ### **Attivazione di una logica qualsiasi sul fronte di salita**
 
+```Arduino
 // APPROCCIO CON MILLIS() (NON BLOCCANTE)                  | // APPROCCIO CON DELAY() (BLOCCANTE)
                                                            |
 unsigned long precm = 0;                                   | void loop() {
@@ -136,6 +137,7 @@ void loop() {                                              |   }
   // Qui il programma può eseguire altre operazioni        | 
   // mentre attende che passi il tempo tbase               | 
 }                                                          |
+```
 
 #### **Principali differenze tra i due approcci**
 
