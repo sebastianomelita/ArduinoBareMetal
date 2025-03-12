@@ -84,7 +84,7 @@ Approccio con **delay()** (bloccante):
 ## **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
 
 ```C++
-// ATTIVAZIONE SUL FRONTE DI DISCESA                     | // ATTIVAZIONE SUL FRONTE DI SALITA
+// ATTIVAZIONE SUL FRONTE DI DISCESA                   | // ATTIVAZIONE SUL FRONTE DI SALITA
 -------------------------------------------------------|------------------------------------------------------
                                                        |
 // loop principale                                     | // loop principale
