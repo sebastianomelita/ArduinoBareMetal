@@ -50,8 +50,7 @@ void loop() {                                              |   }
   if((millis()-precm) >= tbase) {                          |   
     precm = millis();  // preparo il tic successivo        |   updateOutputs(stato); // scrittura uscite
                                                            |   
-    // Codice eseguito al tempo stabilito                  |   delay(50);  // Attesa bloccante per il debounce
-    val = digitalRead(pulsante);  // lettura ingressi      |
+    val = digitalRead(pulsante);  // lettura ingressi      |  delay(50);  // Attesa bloccante per il debounce
                                                            |
     if(precval==LOW && val==HIGH) { // fronte di salita    |
       stato = nuovoStato; // impostazione del nuovo stato  |
