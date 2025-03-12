@@ -160,7 +160,7 @@ Approccio con **delay()** (bloccante):
 
 ```C++
 // ATTIVAZIONE SUL FRONTE DI DISCESA                     | // ATTIVAZIONE SUL FRONTE DI SALITA
-------------------------------------------------------|------------------------------------------------------
+-------------------------------------------------------|------------------------------------------------------
                                                        |
 // loop principale                                     | // loop principale
 void loop() {                                          | void loop() {
