@@ -157,8 +157,9 @@ Approccio con **delay()** (bloccante):
 
 ### **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
 
+
 ```C++
-// ATTIVAZIONE SUL FRONTE DI DISCESA                     | // ATTIVAZIONE SUL FRONTE DI SALITA
+// ATTIVAZIONE SUL FRONTE DI DISCESA  (PULL DOWN)      | // ATTIVAZIONE SUL FRONTE DI SALITA (PULL UP)
 -------------------------------------------------------|------------------------------------------------------
                                                        |
 // loop principale                                     | // loop principale
@@ -172,7 +173,7 @@ void loop() {                                          | void loop() {
 }                                                      | }
                                                        |
 // Attivazione quando il pulsante                      | // Attivazione quando il pulsante
-// viene RILASCIATO (fronte di discesa)                | // viene PREMUTO (fronte di salita)
+// viene RILASCIATO (fronte di discesa)                | // viene RILASCIATO (fronte di salita)
 ```
 
 Ecco una scheda di **confronto** tra i due **approcci** per attivare una **logica** su **fronti diversi**:
