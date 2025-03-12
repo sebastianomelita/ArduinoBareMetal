@@ -109,7 +109,7 @@ void loop()
 
 ### **Attivazione di una logica qualsiasi sul fronte di salita**
 
-```Arduino
+```C++
 // APPROCCIO CON MILLIS() (NON BLOCCANTE)                  | // APPROCCIO CON DELAY() (BLOCCANTE)
                                                            |
 unsigned long precm = 0;                                   | void loop() {
