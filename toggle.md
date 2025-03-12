@@ -117,7 +117,7 @@ const unsigned long tbase = 50; // millisecondi            |   // Lettura dirett
 int val, precval = LOW;                                    |   val = digitalRead(pulsante);  // lettura ingressi
 int stato, nuovoStato;                                     |   
 int pulsante = 2; // pin del pulsante                      |   if(precval==LOW && val==HIGH) { // rivelatore di fronte di salita
-                                                           |     stato = nuovoStato; // impostazione dello stato del toggle
+                                                           |     stato = nuovoStato; // impostazione del nuovo stato
 void loop() {                                              |   }
   // Schedulatore ad eventi con funzione di antirimbalzo   |   precval=val;  // memorizzazione livello loop precedente
   if((millis()-precm) >= tbase) {                          |   
@@ -127,7 +127,7 @@ void loop() {                                              |   }
     val = digitalRead(pulsante);  // lettura ingressi      |
                                                            |
     if(precval==LOW && val==HIGH) { // fronte di salita    |
-      stato = nuovoStato; // imposta stato del toggle      |
+      stato = nuovoStato; // impostazione del nuovo stato  |
     }                                                      |
                                                            |
     precval=val;  // memorizza livello loop precedente     |
@@ -156,9 +156,45 @@ Approccio con **delay()** (bloccante):
 - Semplice da implementare ma inefficiente
 - Problematico in sistemi che richiedono reattività costante
 
+### **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
 
+```C++
+// ATTIVAZIONE SUL FRONTE DI DISCESA                     | // ATTIVAZIONE SUL FRONTE DI SALITA
+------------------------------------------------------|------------------------------------------------------
+                                                       |
+// loop principale                                     | // loop principale
+void loop() {                                          | void loop() {
+  if(digitalRead(pulsante) == HIGH){                   |   if(digitalRead(pulsante) == LOW){    
+    doOnRise();                                        |     doOnFall();                        
+    waitUntilInputLow(pulsante,50);                    |     waitUntilInputHigh(pulsante,50);   
+    stato = nuovoStato;                                |     stato = nuovoStato;                
+  }                                                    |   }                                  
+  updateOutputs(stato);                                |   updateOutputs(stato);              
+}                                                      | }
+                                                       |
+// Attivazione quando il pulsante                      | // Attivazione quando il pulsante
+// viene RILASCIATO (fronte di discesa)                | // viene PREMUTO (fronte di salita)
+```
 
-Il vantaggio principale dell'approccio millis() è che consente una programmazione multitasking efficiente, mentre il delay() è più semplice ma limita significativamente le capacità del microcontrollore.
+Ecco una scheda di **confronto** tra i due **approcci** per attivare una **logica** su **fronti diversi**:
+
+Nella **colonna sinistra**:
+
+- Codice che attiva la logica sul fronte di DISCESA
+- Rileva prima quando il pulsante è premuto (HIGH)
+- Esegue doOnRise() quando il pulsante viene premuto
+- Attende con anti-rimbalzo che il pulsante venga rilasciato (LOW)
+- Cambia lo stato quando il pulsante viene RILASCIATO
+
+Nella **colonna destra**:
+
+- Codice che attiva la logica sul fronte di SALITA
+- Rileva prima quando il pulsante è rilasciato (LOW)
+- Esegue doOnFall() quando il pulsante è rilasciato
+- Attende con anti-rimbalzo che il pulsante venga premuto (HIGH)
+- Cambia lo stato quando il pulsante viene PREMUTO
+
+La differenza fondamentale è nel momento in cui viene modificato lo stato: nella versione di sinistra avviene quando il pulsante viene rilasciato, mentre in quella di destra quando viene premuto.
 
 ### **Toggle con antirimbalzo esterno con get()**
 
