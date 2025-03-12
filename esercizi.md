@@ -107,7 +107,7 @@ Nella **colonna sinistra**:
 
 - Codice che attiva la logica sul fronte di DISCESA
 - Rileva prima quando il pulsante è premuto (HIGH)
-- Esegue doOnRise() quando il pulsante viene premuto
+- Esegue doOnRise() quando il pulsante viene premuto. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte opposto a quello di interesse (rilascio del pulsante), ad esempio, attivazione o reset di un timer.
 - Attende con anti-rimbalzo che il pulsante venga rilasciato (LOW)
 - Cambia lo stato quando il pulsante viene RILASCIATO
 
