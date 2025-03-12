@@ -109,7 +109,7 @@ void loop()
 
 ### **Attivazione di una logica qualsiasi sul fronte di salita**
 
-```C++
+
 # Confronto Tecniche di Debounce
 
 | Approccio con MILLIS() (NON BLOCCANTE) | Approccio con DELAY() (BLOCCANTE) |
@@ -141,7 +141,7 @@ void loop()
 |   // mentre attende che passi il tempo tbase |                        |
 | }                                    |                                 |
 | ```                                  | ```                             |
-```
+
 
 #### **Principali differenze tra i due approcci**
 
