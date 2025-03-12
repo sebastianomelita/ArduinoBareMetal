@@ -50,7 +50,7 @@ void loop() {                                              |   }
     precm = millis();  					   |   updateOutputs(stato); 
                                                            |   
     val = digitalRead(pulsante);  			   |   delay(50);  // debouncer
-                                                           |
+                                                           | }
     if(precval==LOW && val==HIGH) { // fronte di salita    |
       stato = nuovoStato; // impostazione del nuovo stato  |
     }                                                      |
