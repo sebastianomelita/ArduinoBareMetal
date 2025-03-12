@@ -107,7 +107,7 @@ void loop()
 }
 ```
 
-### **Attivazione di una logica qualsiasi su un fronte**
+### **Attivazione di una logica qualsiasi su un fronte di salita**
 
 ```C++
 // APPROCCIO CON MILLIS() (NON BLOCCANTE)                  | // APPROCCIO CON DELAY() (BLOCCANTE)
