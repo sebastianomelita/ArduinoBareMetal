@@ -139,22 +139,22 @@ void loop() {                                              |   }
 }                                                          |
 ```
 
-Principali differenze tra i due approcci
+#### **Principali differenze tra i due approcci**
 
-Approccio con millis() (non bloccante):
+Approccio con **millis()** (non bloccante):
 
-Controlla il tempo trascorso senza bloccare l'esecuzione
-Permette al microcontrollore di eseguire altre operazioni nel frattempo
-Ideale per sistemi che devono gestire più compiti contemporaneamente
-Non causa ritardi nell'esecuzione di altri processi
+- Controlla il tempo trascorso senza bloccare l'esecuzione
+- Permette al microcontrollore di eseguire altre operazioni nel frattempo
+- Ideale per sistemi che devono gestire più compiti contemporaneamente
+- Non causa ritardi nell'esecuzione di altri processi
 
 
-Approccio con delay() (bloccante):
+Approccio con **delay()** (bloccante):
 
-Inserisce una pausa fissa di 50ms dopo ogni ciclo di lettura
-Durante questo tempo il microcontrollore è completamente inattivo
-Semplice da implementare ma inefficiente
-Problematico in sistemi che richiedono reattività costante
+- Inserisce una pausa fissa di 50ms dopo ogni ciclo di lettura
+- Durante questo tempo il microcontrollore è completamente inattivo
+- Semplice da implementare ma inefficiente
+- Problematico in sistemi che richiedono reattività costante
 
 
 
