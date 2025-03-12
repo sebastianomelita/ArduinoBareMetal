@@ -71,6 +71,7 @@ Approccio con **millis()** (non bloccante):
 - Permette al microcontrollore di eseguire altre operazioni nel frattempo
 - Ideale per sistemi che devono gestire più compiti contemporaneamente
 - Non causa ritardi nell'esecuzione di altri processi
+- ```updateOutputs(stato)``` rappresenta la gestione della pressione del pulsante in base allo **stato attuale** (approccio FSM di tipo "prima gli ingressi e poi lo stato").
 
 
 Approccio con **delay()** (bloccante):
@@ -93,9 +94,9 @@ void loop() {                                          | void loop() {
   if(digitalRead(pulsante) == HIGH){                   |   if(digitalRead(pulsante) == LOW){    
     doOnRise();                                        |     doOnFall();                        
     waitUntilInputLow(pulsante,50);                    |     waitUntilInputHigh(pulsante,50);   
-    stato = nuovoStato;                                |     stato = nuovoStato;                
-  }                                                    |   }                                  
-  updateOutputs(stato);                                |   updateOutputs(stato);              
+    stato = nuovoStato;                                |     stato = nuovoStato;
+    updateOutputs(stato);                              |     updateOutputs(stato);           
+  }                                                    |   }                                               
 }                                                      | }
                                                        |
 // Attivazione quando il pulsante                      | // Attivazione quando il pulsante
@@ -111,6 +112,7 @@ Nella **colonna sinistra**:
 - Esegue ```doOnRise()``` quando il pulsante viene premuto. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di **salita** (pressione del pulsante), ad esempio, attivazione o reset di un timer.
 - Attende con anti-rimbalzo che il pulsante venga **rilasciato** (LOW)
 - **Cambia lo stato** quando il pulsante viene RILASCIATO
+- ```updateOutputs(stato)``` rappresenta la gestione della pressione del pulsante in base allo **stato attuale** (approccio FSM di tipo "prima gli ingressi e poi lo stato").
 
 Nella **colonna destra**:
 
@@ -119,6 +121,7 @@ Nella **colonna destra**:
 - Esegue ```doOnFall()``` quando il pulsante è rilasciato. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di **discesa** (pressione del pulsante), ad esempio, attivazione o reset di un timer.
 - Attende con anti-rimbalzo che il pulsante venga **premuto** (HIGH)
 - **Cambia lo stato** quando il pulsante viene PREMUTO
+- ```updateOutputs(stato)``` rappresenta la gestione della pressione del pulsante in base allo **stato attuale** (approccio FSM di tipo "prima gli ingressi e poi lo stato").
 
 La differenza fondamentale è nel momento in cui viene modificato lo stato: nella versione di sinistra avviene quando il pulsante viene rilasciato, mentre in quella di destra quando viene premuto.
 
