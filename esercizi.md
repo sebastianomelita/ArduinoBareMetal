@@ -43,13 +43,13 @@ unsigned long precm = 0;                                   | void loop() {
 const unsigned long tbase = 50; // millisecondi            |   // Lettura diretta del pulsante senza schedulazione
 int val, precval = LOW;                                    |   val = digitalRead(pulsante);  
 int stato, nuovoStato;                                     |   
-int pulsante = 2; // pin del pulsante                      |   if(precval==LOW && val==HIGH) { 
+int pulsante = 2; 			                   |   if(precval==LOW && val==HIGH) { 
                                                            |     stato = nuovoStato; // impostazione del nuovo stato
 void loop() {                                              |   }
   if((millis()-precm) >= tbase) {    			   |   precval=val;  
-    precm = millis();  // preparo il tic successivo        |   updateOutputs(stato); 
+    precm = millis();  					   |   updateOutputs(stato); 
                                                            |   
-    val = digitalRead(pulsante);  // lettura ingressi      |  delay(50);  
+    val = digitalRead(pulsante);  			   |  delay(50);  
                                                            |
     if(precval==LOW && val==HIGH) { // fronte di salita    |
       stato = nuovoStato; // impostazione del nuovo stato  |
