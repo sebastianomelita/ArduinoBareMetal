@@ -34,6 +34,95 @@ In **definitiva**, **non** adoperando, per adesso, tecniche di programmazione **
 
 <img src="img\task.jpg" alt="alt text" width="1000">
 
+## **Attivazione di una logica qualsiasi sul fronte di salita**
+
+```C++
+// APPROCCIO CON MILLIS() (NON BLOCCANTE)                  | // APPROCCIO CON DELAY() (BLOCCANTE)
+                                                           |
+unsigned long precm = 0;                                   | void loop() {
+const unsigned long tbase = 50; // millisecondi            |   // Lettura diretta del pulsante senza schedulazione
+int val, precval = LOW;                                    |   val = digitalRead(pulsante);  // lettura ingressi
+int stato, nuovoStato;                                     |   
+int pulsante = 2; // pin del pulsante                      |   if(precval==LOW && val==HIGH) { // rivelatore di fronte di salita
+                                                           |     stato = nuovoStato; // impostazione del nuovo stato
+void loop() {                                              |   }
+  // Schedulatore ad eventi con funzione di antirimbalzo   |   precval=val;  // memorizzazione livello loop precedente
+  if((millis()-precm) >= tbase) {                          |   
+    precm = millis();  // preparo il tic successivo        |   updateOutputs(stato); // scrittura uscite
+                                                           |   
+    // Codice eseguito al tempo stabilito                  |   delay(50);  // Attesa bloccante per il debounce
+    val = digitalRead(pulsante);  // lettura ingressi      |
+                                                           |
+    if(precval==LOW && val==HIGH) { // fronte di salita    |
+      stato = nuovoStato; // impostazione del nuovo stato  |
+    }                                                      |
+                                                           |
+    precval=val;  // memorizza livello loop precedente     |
+    updateOutputs(stato); // scrittura uscite              |
+  }                                                        |
+                                                           |
+  // Qui il programma può eseguire altre operazioni        | 
+  // mentre attende che passi il tempo tbase               | 
+}                                                          |
+```
+
+### **Principali differenze tra i due approcci**
+
+Approccio con **millis()** (non bloccante):
+
+- Controlla il tempo trascorso senza bloccare l'esecuzione
+- Permette al microcontrollore di eseguire altre operazioni nel frattempo
+- Ideale per sistemi che devono gestire più compiti contemporaneamente
+- Non causa ritardi nell'esecuzione di altri processi
+
+
+Approccio con **delay()** (bloccante):
+
+- Inserisce una pausa fissa di 50ms dopo ogni ciclo di lettura
+- Durante questo tempo il microcontrollore è completamente inattivo
+- Semplice da implementare ma inefficiente
+- Problematico in sistemi che richiedono reattività costante
+
+## **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
+
+```C++
+// ATTIVAZIONE SUL FRONTE DI DISCESA                     | // ATTIVAZIONE SUL FRONTE DI SALITA
+-------------------------------------------------------|------------------------------------------------------
+                                                       |
+// loop principale                                     | // loop principale
+void loop() {                                          | void loop() {
+  if(digitalRead(pulsante) == HIGH){                   |   if(digitalRead(pulsante) == LOW){    
+    doOnRise();                                        |     doOnFall();                        
+    waitUntilInputLow(pulsante,50);                    |     waitUntilInputHigh(pulsante,50);   
+    stato = nuovoStato;                                |     stato = nuovoStato;                
+  }                                                    |   }                                  
+  updateOutputs(stato);                                |   updateOutputs(stato);              
+}                                                      | }
+                                                       |
+// Attivazione quando il pulsante                      | // Attivazione quando il pulsante
+// viene RILASCIATO (fronte di discesa)                | // viene PREMUTO (fronte di salita)
+```
+
+Ecco una scheda di **confronto** tra i due **approcci** per attivare una **logica** su **fronti diversi**:
+
+Nella **colonna sinistra**:
+
+- Codice che attiva la logica sul fronte di DISCESA
+- Rileva prima quando il pulsante è premuto (HIGH)
+- Esegue doOnRise() quando il pulsante viene premuto
+- Attende con anti-rimbalzo che il pulsante venga rilasciato (LOW)
+- Cambia lo stato quando il pulsante viene RILASCIATO
+
+Nella **colonna destra**:
+
+- Codice che attiva la logica sul fronte di SALITA
+- Rileva prima quando il pulsante è rilasciato (LOW)
+- Esegue doOnFall() quando il pulsante è rilasciato
+- Attende con anti-rimbalzo che il pulsante venga premuto (HIGH)
+- Cambia lo stato quando il pulsante viene PREMUTO
+
+La differenza fondamentale è nel momento in cui viene modificato lo stato: nella versione di sinistra avviene quando il pulsante viene rilasciato, mentre in quella di destra quando viene premuto.
+
 ## **TIMER UR**
 
 E’ possibile realizzare dei timers, con cui programmare **nel futuro** lo stesso evento o una sequenza di eventi diversi, **senza attese**, cioè senza ```delay()```, eseguendo un polling del **tempo di conteggio** di un **timer**. 
