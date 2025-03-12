@@ -107,6 +107,38 @@ void loop()
 }
 ```
 
+### **Attivazione di una logica qualsiasi su un fronte**
+
+```C++
+// APPROCCIO CON MILLIS() (NON BLOCCANTE)                  | // APPROCCIO CON DELAY() (BLOCCANTE)
+                                                           |
+unsigned long precm = 0;                                   | void loop() {
+const unsigned long tbase = 50; // millisecondi            |   // Lettura diretta del pulsante senza schedulazione
+int val, precval = LOW;                                    |   val = digitalRead(pulsante);  // lettura ingressi
+int stato, nuovoStato;                                     |   
+int pulsante = 2; // pin del pulsante                      |   if(precval==LOW && val==HIGH) { // rivelatore di fronte di salita
+                                                           |     stato = nuovoStato; // impostazione dello stato del toggle
+void loop() {                                              |   }
+  // Schedulatore ad eventi con funzione di antirimbalzo   |   precval=val;  // memorizzazione livello loop precedente
+  if((millis()-precm) >= tbase) {                          |   
+    precm = millis();  // preparo il tic successivo        |   updateOutputs(stato); // scrittura uscite
+                                                           |   
+    // Codice eseguito al tempo stabilito                  |   delay(50);  // Attesa bloccante per il debounce
+    val = digitalRead(pulsante);  // lettura ingressi      |
+                                                           |
+    if(precval==LOW && val==HIGH) { // fronte di salita    |
+      stato = nuovoStato; // imposta stato del toggle      |
+    }                                                      |
+                                                           |
+    precval=val;  // memorizza livello loop precedente     |
+    updateOutputs(stato); // scrittura uscite              |
+  }                                                        |
+                                                           |
+  // Qui il programma può eseguire altre operazioni        | 
+  // mentre attende che passi il tempo tbase               | 
+}                                                          |
+```
+
 ### **Toggle con antirimbalzo esterno con get()**
 
 ```C++
