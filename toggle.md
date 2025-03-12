@@ -139,6 +139,27 @@ void loop() {                                              |   }
 }                                                          |
 ```
 
+Principali differenze tra i due approcci
+
+Approccio con millis() (non bloccante):
+
+Controlla il tempo trascorso senza bloccare l'esecuzione
+Permette al microcontrollore di eseguire altre operazioni nel frattempo
+Ideale per sistemi che devono gestire più compiti contemporaneamente
+Non causa ritardi nell'esecuzione di altri processi
+
+
+Approccio con delay() (bloccante):
+
+Inserisce una pausa fissa di 50ms dopo ogni ciclo di lettura
+Durante questo tempo il microcontrollore è completamente inattivo
+Semplice da implementare ma inefficiente
+Problematico in sistemi che richiedono reattività costante
+
+
+
+Il vantaggio principale dell'approccio millis() è che consente una programmazione multitasking efficiente, mentre il delay() è più semplice ma limita significativamente le capacità del microcontrollore.
+
 ### **Toggle con antirimbalzo esterno con get()**
 
 ```C++
