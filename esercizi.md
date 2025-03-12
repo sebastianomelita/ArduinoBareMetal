@@ -109,7 +109,7 @@ Nella **colonna sinistra**:
 
 - Codice che attiva la **logica** sul fronte di **DISCESA**
 - Rileva prima quando il pulsante è premuto (HIGH)
-- Esegue ```doOnRise()``` quando il pulsante viene premuto. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di salita (pressione del pulsante), ad esempio, attivazione o reset di un timer.
+- Esegue ```doOnRise()``` quando il pulsante viene premuto. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di **salita** (pressione del pulsante), ad esempio, attivazione o reset di un timer.
 - Attende con anti-rimbalzo che il pulsante venga **rilasciato** (LOW)
 - **Cambia lo stato** quando il pulsante viene RILASCIATO
 
@@ -117,7 +117,7 @@ Nella **colonna destra**:
 
 - Codice che attiva la **logica** sul fronte di **SALITA**
 - Rileva prima quando il pulsante è rilasciato (LOW)
-- Esegue ```doOnFall()``` quando il pulsante è rilasciato
+- Esegue ```doOnFall()``` quando il pulsante è rilasciato. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di **discesa** (pressione del pulsante), ad esempio, attivazione o reset di un timer.
 - Attende con anti-rimbalzo che il pulsante venga **premuto** (HIGH)
 - **Cambia lo stato** quando il pulsante viene PREMUTO
 
