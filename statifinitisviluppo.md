@@ -29,6 +29,13 @@ Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM)
 - Questo crea una struttura più compatta con un numero limitato di casi (uno per stato)
 - All'interno di ogni stato, la logica per gestire i diversi ingressi risulta più coesa e facile da seguire
 
+Molti stati e pochi ingressi rilevanti:
+Valutare prima gli ingressi permette di filtrare subito quelli irrilevanti. Per ogni ingresso rilevante, gestisci poi i vari stati associati. In questo modo raggruppi logicamente gli stati in base agli ingressi che effettivamente li influenzano, riducendo la complessità del codice.
+
+Pochi ingressi e pochi stati influenzati:
+Strutturare il codice partendo dagli stati permette di isolare la logica complessa solo nei pochi stati sensibili agli ingressi, mentre per la maggior parte degli stati il comportamento rimane semplice e diretto.
+
+Questo approccio, adattato alla distribuzione degli ingressi e degli stati, ti consente di eliminare rapidamente i percorsi non rilevanti e di mantenere la logica di transizione concentrata in pochi punti critici, semplificando così la manutenzione e l'estendibilità del codice.
 ### **Frequenza delle modifiche**
 
 Una considerazione aggiuntiva potrebbe essere la **frequenza di cambiamento**: 
@@ -128,5 +135,6 @@ Si potrebbe pure integrare la FSM con stati e transizioni progettati appositamen
 
 **Sitografia:**
 - https://www.reddit.com/r/embedded/comments/19879zo/embedded_c_finite_state_machine_best_practices/?tl=it
+- https://docs.google.com/document/d/e/2PACX-1vQ9FFtlZaQ_mcdUgz8e0VI6HgL8hcXBsIZ_l_iKPR4yrT5BaltgUHBLT38qxdI3dyUWP4gqp_FsPM7V/pub
   
 >[Torna all'indice](indexstatifiniti.md) 
