@@ -12,9 +12,10 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
 
 - oppure, alternativamente, **prima valutare gli stati** e poi gli ingressi:
    - scrivere uno switch-case con **tutti** gli **stati possibili** del sistema
-   - in corrispondenza di **ciascuno stato** calcolare il **valore delle uscite**.
    - all’interno di ogni campo dello switch-case valutare soltanto **gli ingressi attivi**, cioè quegli ingressi che potrebbero generare una **transizione** da quel particolare **stato**.
-   - in corrispondenza di **ciascun ingresso** impostare l'**inizializzazione** dello stato successivo.
+   - in corrispondenza di **ciascun ingresso**:
+        - calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
+        - impostare l'**inizializzazione** dello stato successivo.
 
 Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM), il rapporto tra numero di stati e numero di ingressi è un fattore importante da considerare:
 
