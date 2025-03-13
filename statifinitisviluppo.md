@@ -29,12 +29,6 @@ Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM)
 - Questo crea una struttura più compatta con un numero limitato di casi (uno per stato)
 - All'interno di ogni stato, la logica per gestire i diversi ingressi risulta più coesa e facile da seguire
 
-Molti stati e pochi ingressi rilevanti:
-Valutare prima gli ingressi permette di filtrare subito quelli irrilevanti. Per ogni ingresso rilevante, gestisci poi i vari stati associati. In questo modo raggruppi logicamente gli stati in base agli ingressi che effettivamente li influenzano, riducendo la complessità del codice.
-
-Pochi ingressi e pochi stati influenzati:
-Strutturare il codice partendo dagli stati permette di isolare la logica complessa solo nei pochi stati sensibili agli ingressi, mentre per la maggior parte degli stati il comportamento rimane semplice e diretto.
-
 Questo approccio, adattato alla distribuzione degli ingressi e degli stati, ti consente di eliminare rapidamente i percorsi non rilevanti e di mantenere la logica di transizione concentrata in pochi punti critici, semplificando così la manutenzione e l'estendibilità del codice.
 ### **Frequenza delle modifiche**
 
