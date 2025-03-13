@@ -125,11 +125,11 @@ void loop() {                                              |
                                                            |    // Lettura diretta del pulsante senza schedulazione
     val = digitalRead(P1);  			           |    val = digitalRead(pulsante);  
                                                            | 
-    if(precval==LOW && val==HIGH) { // fronte di salita    |    if(precval==LOW && val==HIGH) { 
-      stato = nuovoStato; // impostazione del nuovo stato  |       stato = nuovoStato; // impostazione del nuovo stato
-      updateOutputsInP1(stato); // scrittura uscite        |       updateOutputsInP1(stato); 
+    if(precval==LOW && val==HIGH) { /* fronte di salita*/  |    if(precval==LOW && val==HIGH) { 
+      stato = nuovoStato;/*impostazione del nuovo stato*/  |       stato = nuovoStato; // impostazione del nuovo stato
+      updateOutputsInP1(stato); /*scrittura uscite*/       |       updateOutputsInP1(stato); 
     }                                                      |    }
-    precval=val;  // memorizza livello loop precedente     |    precval=val;  
+    precval=val; /*memorizza livello loop precedente*/     |    precval=val;  
   }                                                        |    
                                                            |    delay(50);  // debouncer
   // Qui il programma può eseguire altre operazioni        | }
