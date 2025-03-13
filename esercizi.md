@@ -67,7 +67,7 @@ void loop() {                                              |
 ## **Attivazione di una logica qualsiasi sul fronte di salita con timer SW**
 
 ```C++
-// APPROCCIO CON MILLIS() - FRONTE SALITA               | // APPROCCIO CON MILLIS() - FRONTE DISCESA
+// APPROCCIO CON MILLIS() - FRONTE SALITA                  | // APPROCCIO CON MILLIS() - FRONTE DISCESA
                                                            |
                                                            | 
 const unsigned long tbase = 50; // millisecondi            | const unsigned long tbase = 50; // millisecondi
