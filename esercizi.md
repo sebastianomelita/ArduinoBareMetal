@@ -122,6 +122,7 @@ Nella **colonna destra**:
 - Attende con anti-rimbalzo che il pulsante venga **premuto** (HIGH)
 - **Cambia lo stato** quando il pulsante viene PREMUTO
 - ```updateOutputs(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. Serve a calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
+  
 La differenza fondamentale è nel momento in cui viene modificato lo stato: nella versione di sinistra avviene quando il pulsante viene rilasciato, mentre in quella di destra quando viene premuto.
 
 ## **TIMER UR**
