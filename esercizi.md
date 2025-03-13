@@ -45,9 +45,10 @@ int val, precval = LOW;                                    |   val = digitalRead
 int stato, nuovoStato;                                     |   
 int pulsante = 2; 			                   |   if(precval==LOW && val==HIGH) { 
                                                            |     stato = nuovoStato; // impostazione del nuovo stato
+							   |	 updateOutputs(stato); 
 void loop() {                                              |   }
   if((millis()-precm) >= tbase) {    			   |   precval=val;  
-    precm = millis();  					   |   updateOutputs(stato); 
+    precm = millis();  					   |   
                                                            |   
     val = digitalRead(pulsante);  			   |   delay(50);  // debouncer
                                                            | }
