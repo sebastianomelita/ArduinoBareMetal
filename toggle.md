@@ -123,7 +123,7 @@ void loop() {                                              |
   if((millis()-precm) >= tbase) {    			   |   
     precm = millis();  					   | void loop() {
                                                            |    // Lettura diretta del pulsante senza schedulazione
-    val = digitalRead(P1);  			           |    val = digitalRead(pulsante);  
+    val = digitalRead(P1);  			           |    val = digitalRead(P1);  
                                                            | 
     if(precval==LOW && val==HIGH) { /* fronte di salita*/  |    if(precval==LOW && val==HIGH) { 
       stato = nuovoStato;/*impostazione del nuovo stato*/  |       stato = nuovoStato; // impostazione del nuovo stato
@@ -136,7 +136,6 @@ void loop() {                                              |
   // mentre attende che passi il tempo tbase               | 
 }                                                          |
 ```
-
 
 ## **Attivazione di una logica qualsiasi su un fronte con timer SW**
 
@@ -154,7 +153,7 @@ void loop() {                                              | void loop() {
   if(deb.get() >= tbase) {                                 |   if(deb.get() >= tbase) {
     deb.reset();                                           |     deb.reset();
                                                            |     
-    val = digitalRead(pulsante);                           |     val = digitalRead(pulsante);
+    val = digitalRead(P1);                          	   |     val = digitalRead(P1);
                                                            | 
     if(precval==LOW && val==HIGH) {                        |     if(precval==HIGH && val==LOW) { 
       stato = nuovoStato;                                  |       stato = nuovoStato; 
@@ -167,6 +166,7 @@ void loop() {                                              | void loop() {
 }                                                          | }
 ```
 
+
 ## **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
 
 E' un approccio bloccante che però è molto pratico per la realizzazione di pulsanti con memoria. E' opportuno adoperare questo pattern insieme ad altri task solo se questi sono ad esso sequenziali. Se devono essere eseguiti, in parallelo alla gestione del pulsante, altri task allora è opportuno utilizzare una soluzione non bloccante, oppure isolare i task che devono procedere in parallelo su ```loop()``` **a parte**, realizzati, ad esempio, mediante **timer HW** o **threads**.
@@ -174,12 +174,14 @@ E' un approccio bloccante che però è molto pratico per la realizzazione di pul
 ```C++
 // ATTIVAZIONE SUL FRONTE DI DISCESA  (PULL DOWN)      | // ATTIVAZIONE SUL FRONTE DI SALITA (PULL UP)
 -------------------------------------------------------|------------------------------------------------------
+int stato, nuovoStato;                                 | int stato, nuovoStato;
+int P1 = 2;                                            | int P1 = 2;
                                                        |
 // loop principale                                     | // loop principale
 void loop() {                                          | void loop() {
-  if(digitalRead(pulsante) == HIGH){                   |   if(digitalRead(pulsante) == LOW){    
+  if(digitalRead(P1) == HIGH){                         |   if(digitalRead(P1) == LOW){    
     doOnRise();                                        |     doOnFall();                        
-    waitUntilInputLow(pulsante,50);                    |     waitUntilInputHigh(pulsante,50);   
+    waitUntilInputLow(P1, 50);                         |     waitUntilInputHigh(P1, 50);   
     stato = nuovoStato;                                |     stato = nuovoStato;
     updateOutputsInP1(stato);                          |     updateOutputsInP1(stato);           
   }                                                    |   }                                               
