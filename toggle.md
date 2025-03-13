@@ -112,78 +112,60 @@ void loop()
 ```C++
 // APPROCCIO CON MILLIS() (NON BLOCCANTE)                  | // APPROCCIO CON DELAY() (BLOCCANTE)
                                                            |
-unsigned long precm = 0;                                   | void loop() {
-const unsigned long tbase = 50; // millisecondi            |   // Lettura diretta del pulsante senza schedulazione
-int val, precval = LOW;                                    |   val = digitalRead(pulsante);  
-int stato, nuovoStato;                                     |   
-int pulsante = 2; 			                   |   if(precval==LOW && val==HIGH) { 
-                                                           |     stato = nuovoStato; // impostazione del nuovo stato
-							   |	 updateOutputs(stato); 
-void loop() {                                              |   }
-  if((millis()-precm) >= tbase) {    			   |   precval=val;  
-    precm = millis();  					   |   
-                                                           |   
-    val = digitalRead(pulsante);  			   |   delay(50);  // debouncer
-                                                           | }
-    if(precval==LOW && val==HIGH) { // fronte di salita    |
-      stato = nuovoStato; // impostazione del nuovo stato  |
-      updateOutputs(stato); // scrittura uscite            |
-    }                                                      |
-    precval=val;  // memorizza livello loop precedente     |
-  }                                                        |
-                                                           |
-  // Qui il programma può eseguire altre operazioni        | 
+unsigned long precm = 0;                                   | unsigned long precm = 0;
+const unsigned long tbase = 50; // millisecondi            | const unsigned long tbase = 50; // millisecondi 
+int val, precval = LOW;                                    | int val, precval = LOW;  
+int stato, nuovoStato;                                     | int stato, nuovoStato;  
+int P1 = 2; 			                           | int P1 = 2;   
+                                                           |    
+							   |	 
+void loop() {                                              |   
+  if((millis()-precm) >= tbase) {    			   |   
+    precm = millis();  					   | void loop() {
+                                                           |    // Lettura diretta del pulsante senza schedulazione
+    val = digitalRead(P1);  			           |    val = digitalRead(pulsante);  
+                                                           | 
+    if(precval==LOW && val==HIGH) { // fronte di salita    |    if(precval==LOW && val==HIGH) { 
+      stato = nuovoStato; // impostazione del nuovo stato  |       stato = nuovoStato; // impostazione del nuovo stato
+      updateOutputsInP1(stato); // scrittura uscite            |       updateOutputsInP1(stato); 
+    }                                                      |    }
+    precval=val;  // memorizza livello loop precedente     |    precval=val;  
+  }                                                        |    
+                                                           |    delay(50);  // debouncer
+  // Qui il programma può eseguire altre operazioni        | }
   // mentre attende che passi il tempo tbase               | 
 }                                                          |
 ```
+
 
 ## **Attivazione di una logica qualsiasi sul fronte di salita con timer SW**
 
 ```C++
-// APPROCCIO CON MILLIS() (NON BLOCCANTE)                  | // APPROCCIO CON DELAY() (BLOCCANTE)
+// APPROCCIO CON MILLIS() - FRONTE SALITA               | // APPROCCIO CON MILLIS() - FRONTE DISCESA
                                                            |
-                                                           | void loop() {
-const unsigned long tbase = 50; // millisecondi            |   // Lettura diretta del pulsante senza schedulazione
-int val, precval = LOW;                                    |   val = digitalRead(pulsante);  
-int stato, nuovoStato;                                     |   
-int pulsante = 2; 			                   |   if(precval==LOW && val==HIGH) { 
-DiffTimer deb;                                            |     stato = nuovoStato; // impostazione del nuovo stato
-							   |	 updateOutputs(stato); 
-void loop() {                                              |   }
-  if(deb.get() >= tbase) {    				   |   precval=val;  
-    deb.reset();  					   |   
-                                                           |   
-    val = digitalRead(pulsante);  			   |   delay(50);  // debouncer
-                                                           | }
-    if(precval==LOW && val==HIGH) { // fronte di salita    |
-      stato = nuovoStato; // impostazione del nuovo stato  |
-      updateOutputs(stato); // scrittura uscite            |
-    }                                                      |
-    precval=val;  // memorizza livello loop precedente     |
-  }                                                        |
-                                                           |
-  // Qui il programma può eseguire altre operazioni        | 
-  // mentre attende che passi il tempo tbase               | 
-}                                                          |
+                                                           | 
+const unsigned long tbase = 50; // millisecondi            | const unsigned long tbase = 50; // millisecondi
+int val, precval = LOW;                                    | int val, precval = HIGH;  
+int stato, nuovoStato;                                     | int stato, nuovoStato;
+int P1 = 2;                                         	   | int P1 = 2;
+DiffTimer deb;                                             | DiffTimer deb;
+                                                           | 
+void loop() {                                              | void loop() {
+  if(deb.get() >= tbase) {                                 |   if(deb.get() >= tbase) {
+    deb.reset();                                           |     deb.reset();
+                                                           |     
+    val = digitalRead(pulsante);                           |     val = digitalRead(pulsante);
+                                                           | 
+    if(precval==LOW && val==HIGH) {                        |     if(precval==HIGH && val==LOW) { 
+      stato = nuovoStato;                                  |       stato = nuovoStato; 
+      updateOutputsInP1(stato);                                |       updateOutputsInP1(stato); 
+    }                                                      |     }
+    precval=val;                                           |     precval=val;  
+  }                                                        |   }
+                                                           | 
+  // Altre operazioni possibili                            |   // Altre operazioni possibili
+}                                                          | }
 ```
-
-### **Principali differenze tra i due approcci**
-
-Approccio con **millis()** (non bloccante):
-
-- Controlla il tempo trascorso senza bloccare l'esecuzione
-- Permette al microcontrollore di eseguire altre operazioni nel frattempo
-- Ideale per sistemi che devono gestire più compiti contemporaneamente
-- Non causa ritardi nell'esecuzione di altri processi
-- ```updateOutputs(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. Serve a calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
-
-
-Approccio con **delay()** (bloccante):
-
-- Inserisce una pausa fissa di 50ms dopo ogni ciclo di lettura
-- Durante questo tempo il microcontrollore è completamente inattivo
-- Semplice da implementare ma inefficiente
-- Problematico in sistemi che richiedono reattività costante
 
 ## **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
 
