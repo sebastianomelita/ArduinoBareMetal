@@ -144,7 +144,7 @@ Approccio con **millis()** (non bloccante):
 - Permette al microcontrollore di eseguire altre operazioni nel frattempo
 - Ideale per sistemi che devono gestire più compiti contemporaneamente
 - Non causa ritardi nell'esecuzione di altri processi
-- ```updateOutputs(stato)```, una **sola volta**, quando il pulsante viene rilasciato. E' **opzionale** e rappresenta la gestione della pressione del pulsante in base allo **stato attuale** (approccio FSM di tipo "prima gli ingressi e poi gli stati"). Nella logica di una FSM "prima gli stati e poi gli ingressi", non verrebbero scritte le uscite, ma verrebbero eseguite tutte le operazioni di **inizializzazione** (setup) dello **stato successivo**.
+- ```updateOutputs(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. E' **opzionale** e rappresenta la gestione della pressione del pulsante in base allo **stato attuale** (approccio FSM di tipo "prima gli ingressi e poi gli stati"). Nella logica di una FSM "prima gli stati e poi gli ingressi", non verrebbero scritte le uscite, ma verrebbero eseguite tutte le operazioni di **inizializzazione** (setup) dello **stato successivo**.
 
 
 Approccio con **delay()** (bloccante):
