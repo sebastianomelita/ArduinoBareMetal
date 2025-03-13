@@ -112,7 +112,7 @@ Nella **colonna sinistra**:
 - Esegue ```doOnRise()``` quando il pulsante viene premuto. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di **salita** (pressione del pulsante), ad esempio, attivazione o reset di un timer.
 - Attende con anti-rimbalzo che il pulsante venga **rilasciato** (LOW)
 - **Cambia lo stato** quando il pulsante viene RILASCIATO
-- ```updateOutputs(stato)``` rappresenta la gestione della pressione del pulsante in base allo **stato attuale** (approccio FSM di tipo "prima gli ingressi e poi lo stato").
+- ```updateOutputs(stato)```, una **sola volta**, quando il pulsante viene rilasciato. E' **opzionale** e rappresenta la gestione della pressione del pulsante in base allo **stato attuale** (approccio FSM di tipo "prima gli ingressi e poi gli stati"). Nella logica di una FSM "prima gli stati e poi gli imngressi", non verrebbero scritte le uscite ma verrebbero eseguite tutte le operazioni di inizializzazione (setup) dello stato successivo.
 
 Nella **colonna destra**:
 
