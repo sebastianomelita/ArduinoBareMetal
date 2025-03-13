@@ -137,6 +137,36 @@ void loop() {                                              |   }
 }                                                          |
 ```
 
+## **Attivazione di una logica qualsiasi sul fronte di salita con timer SW**
+
+```C++
+// APPROCCIO CON MILLIS() (NON BLOCCANTE)                  | // APPROCCIO CON DELAY() (BLOCCANTE)
+                                                           |
+                                                           | void loop() {
+const unsigned long tbase = 50; // millisecondi            |   // Lettura diretta del pulsante senza schedulazione
+int val, precval = LOW;                                    |   val = digitalRead(pulsante);  
+int stato, nuovoStato;                                     |   
+int pulsante = 2; 			                   |   if(precval==LOW && val==HIGH) { 
+DiffTimer deb;                                            |     stato = nuovoStato; // impostazione del nuovo stato
+							   |	 updateOutputs(stato); 
+void loop() {                                              |   }
+  if(deb.get() >= tbase) {    				   |   precval=val;  
+    deb.reset();  					   |   
+                                                           |   
+    val = digitalRead(pulsante);  			   |   delay(50);  // debouncer
+                                                           | }
+    if(precval==LOW && val==HIGH) { // fronte di salita    |
+      stato = nuovoStato; // impostazione del nuovo stato  |
+      updateOutputs(stato); // scrittura uscite            |
+    }                                                      |
+    precval=val;  // memorizza livello loop precedente     |
+  }                                                        |
+                                                           |
+  // Qui il programma può eseguire altre operazioni        | 
+  // mentre attende che passi il tempo tbase               | 
+}                                                          |
+```
+
 ### **Principali differenze tra i due approcci**
 
 Approccio con **millis()** (non bloccante):
