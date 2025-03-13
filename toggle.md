@@ -127,7 +127,7 @@ void loop() {                                              |
                                                            | 
     if(precval==LOW && val==HIGH) { // fronte di salita    |    if(precval==LOW && val==HIGH) { 
       stato = nuovoStato; // impostazione del nuovo stato  |       stato = nuovoStato; // impostazione del nuovo stato
-      updateOutputsInP1(stato); // scrittura uscite            |       updateOutputsInP1(stato); 
+      updateOutputsInP1(stato); // scrittura uscite        |       updateOutputsInP1(stato); 
     }                                                      |    }
     precval=val;  // memorizza livello loop precedente     |    precval=val;  
   }                                                        |    
@@ -158,7 +158,7 @@ void loop() {                                              | void loop() {
                                                            | 
     if(precval==LOW && val==HIGH) {                        |     if(precval==HIGH && val==LOW) { 
       stato = nuovoStato;                                  |       stato = nuovoStato; 
-      updateOutputsInP1(stato);                                |       updateOutputsInP1(stato); 
+      updateOutputsInP1(stato);                            |       updateOutputsInP1(stato); 
     }                                                      |     }
     precval=val;                                           |     precval=val;  
   }                                                        |   }
