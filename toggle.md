@@ -181,7 +181,7 @@ void loop() {                                          | void loop() {
     doOnRise();                                        |     doOnFall();                        
     waitUntilInputLow(pulsante,50);                    |     waitUntilInputHigh(pulsante,50);   
     stato = nuovoStato;                                |     stato = nuovoStato;
-    updateOutputs(stato);                              |     updateOutputs(stato);           
+    updateOutputsInP1(stato);                              |     updateOutputsInP1(stato);           
   }                                                    |   }                                               
 }                                                      | }
                                                        |
@@ -198,7 +198,7 @@ Nella **colonna sinistra**:
 - Esegue ```doOnRise()``` quando il pulsante viene premuto. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di **salita** (pressione del pulsante), ad esempio, attivazione o reset di un timer.
 - Attende con anti-rimbalzo che il pulsante venga **rilasciato** (LOW)
 - **Cambia lo stato** quando il pulsante viene RILASCIATO
-- ```updateOutputs(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. Serve a calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
+- ```updateOutputsInP1(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. Serve a calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
 
 Nella **colonna destra**:
 
@@ -207,7 +207,7 @@ Nella **colonna destra**:
 - Esegue ```doOnFall()``` quando il pulsante è rilasciato. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di **discesa** (pressione del pulsante), ad esempio, attivazione o reset di un timer.
 - Attende con anti-rimbalzo che il pulsante venga **premuto** (HIGH)
 - **Cambia lo stato** quando il pulsante viene PREMUTO
-- ```updateOutputs(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. Serve a calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
+- ```updateOutputsInP1(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. Serve a calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
 
 La differenza fondamentale è nel momento in cui viene modificato lo stato: nella versione di sinistra avviene quando il pulsante viene rilasciato, mentre in quella di destra quando viene premuto.
 
