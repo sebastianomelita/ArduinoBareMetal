@@ -71,7 +71,7 @@ Approccio con **millis()** (non bloccante):
 - Permette al microcontrollore di eseguire altre operazioni nel frattempo
 - Ideale per sistemi che devono gestire più compiti contemporaneamente
 - Non causa ritardi nell'esecuzione di altri processi
-- ```updateOutputs(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. E' **opzionale** e rappresenta la gestione della pressione del pulsante in base allo **stato attuale** (approccio FSM di tipo "prima gli ingressi e poi gli stati"). Nella logica di una FSM "prima gli stati e poi gli ingressi", non verrebbero scritte le uscite, ma verrebbero eseguite tutte le operazioni di **inizializzazione** (setup) dello **stato successivo**.
+- ```updateOutputs(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. Serve a calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
 
 
 Approccio con **delay()** (bloccante):
@@ -112,7 +112,7 @@ Nella **colonna sinistra**:
 - Esegue ```doOnRise()``` quando il pulsante viene premuto. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di **salita** (pressione del pulsante), ad esempio, attivazione o reset di un timer.
 - Attende con anti-rimbalzo che il pulsante venga **rilasciato** (LOW)
 - **Cambia lo stato** quando il pulsante viene RILASCIATO
-- ```updateOutputs(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. E' **opzionale** e rappresenta la gestione della pressione del pulsante in base allo **stato attuale** (approccio FSM di tipo "prima gli ingressi e poi gli stati"). Nella logica di una FSM "prima gli stati e poi gli ingressi", non verrebbero scritte le uscite, ma verrebbero eseguite tutte le operazioni di **inizializzazione** (setup) dello **stato successivo**.
+- ```updateOutputs(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. Serve a calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
 
 Nella **colonna destra**:
 
@@ -121,8 +121,7 @@ Nella **colonna destra**:
 - Esegue ```doOnFall()``` quando il pulsante è rilasciato. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di **discesa** (pressione del pulsante), ad esempio, attivazione o reset di un timer.
 - Attende con anti-rimbalzo che il pulsante venga **premuto** (HIGH)
 - **Cambia lo stato** quando il pulsante viene PREMUTO
-- ```updateOutputs(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. E' **opzionale** e rappresenta la gestione della pressione del pulsante in base allo **stato attuale** (approccio FSM di tipo "prima gli ingressi e poi gli stati"). Nella logica di una FSM "prima gli stati e poi gli ingressi", non verrebbero scritte le uscite ma verrebbero eseguite tutte le operazioni di **inizializzazione** (setup) dello **stato successivo**.
-
+- ```updateOutputs(stato)```, è eseguito una **sola volta**, quando il pulsante viene rilasciato. Serve a calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
 La differenza fondamentale è nel momento in cui viene modificato lo stato: nella versione di sinistra avviene quando il pulsante viene rilasciato, mentre in quella di destra quando viene premuto.
 
 ## **TIMER UR**
