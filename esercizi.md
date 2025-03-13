@@ -108,7 +108,7 @@ void loop() {                                          | void loop() {
     doOnRise();                                        |     doOnFall();                        
     waitUntilInputLow(pulsante,50);                    |     waitUntilInputHigh(pulsante,50);   
     stato = nuovoStato;                                |     stato = nuovoStato;
-    updateOutputsInP1(stato);                              |     updateOutputsInP1(stato);           
+    updateOutputsInP1(stato);                          |     updateOutputsInP1(stato);           
   }                                                    |   }                                               
 }                                                      | }
                                                        |
