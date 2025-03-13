@@ -64,36 +64,6 @@ void loop() {                                              |
 }                                                          |
 ```
 
-
-## **Attivazione di una logica qualsiasi sul fronte di salita con timer SW**
-
-```C++
-// APPROCCIO CON MILLIS() - FRONTE SALITA               | // APPROCCIO CON MILLIS() - FRONTE DISCESA
-                                                           |
-                                                           | 
-const unsigned long tbase = 50; // millisecondi            | const unsigned long tbase = 50; // millisecondi
-int val, precval = LOW;                                    | int val, precval = HIGH;  
-int stato, nuovoStato;                                     | int stato, nuovoStato;
-int P1 = 2;                                         	   | int P1 = 2;
-DiffTimer deb;                                             | DiffTimer deb;
-                                                           | 
-void loop() {                                              | void loop() {
-  if(deb.get() >= tbase) {                                 |   if(deb.get() >= tbase) {
-    deb.reset();                                           |     deb.reset();
-                                                           |     
-    val = digitalRead(pulsante);                           |     val = digitalRead(pulsante);
-                                                           | 
-    if(precval==LOW && val==HIGH) {                        |     if(precval==HIGH && val==LOW) { 
-      stato = nuovoStato;                                  |       stato = nuovoStato; 
-      updateOutputsInP1(stato);                            |       updateOutputsInP1(stato); 
-    }                                                      |     }
-    precval=val;                                           |     precval=val;  
-  }                                                        |   }
-                                                           | 
-  // Altre operazioni possibili                            |   // Altre operazioni possibili
-}                                                          | }
-```
-
 ## **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
 
 E' un approccio bloccante che però è molto pratico per la realizzazione di pulsanti con memoria. E' opportuno adoperare questo pattern insieme ad altri task solo se questi sono ad esso sequenziali. Se devono essere eseguiti, in parallelo alla gestione del pulsante, altri task allora è opportuno utilizzare una soluzione non bloccante, oppure isolare i task che devono procedere in parallelo su ```loop()``` **a parte**, realizzati, ad esempio, mediante **timer HW** o **threads**.
