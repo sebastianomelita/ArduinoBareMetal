@@ -29,7 +29,6 @@ Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM)
 - Questo crea una struttura più compatta con un numero limitato di casi (uno per stato)
 - All'interno di ogni stato, la logica per gestire i diversi ingressi risulta più coesa e facile da seguire
 
-Questo approccio, adattato alla distribuzione degli ingressi e degli stati, ti consente di eliminare rapidamente i percorsi non rilevanti e di mantenere la logica di transizione concentrata in pochi punti critici, semplificando così la manutenzione e l'estendibilità del codice.
 ### **Frequenza delle modifiche**
 
 Una considerazione aggiuntiva potrebbe essere la **frequenza di cambiamento**: 
