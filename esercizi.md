@@ -64,7 +64,7 @@ void loop() {                                              |
 }                                                          |
 ```
 
-## **Attivazione di una logica qualsiasi sul fronte di salita con timer SW**
+## **Attivazione di una logica qualsiasi su un fronte con timer SW**
 
 ```C++
 // APPROCCIO CON MILLIS() - FRONTE SALITA                  | // APPROCCIO CON MILLIS() - FRONTE DISCESA
