@@ -11,7 +11,7 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
     - in corrispondenza di **ciascuno stato** calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
 
 - oppure, alternativamente, **prima valutare gli stati** e poi gli ingressi:
-   - scrivere uno switch-case con **tutti** gli **stati possibili** del sistema
+   - scrivere uno switch-case con **tutti** i **possibili stati** del sistema
    - all’interno di ogni campo dello switch-case valutare soltanto **gli ingressi attivi**, cioè quegli ingressi che potrebbero generare una **transizione** da quel particolare **stato**.
    - in corrispondenza di **ciascun ingresso**:
         - calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
