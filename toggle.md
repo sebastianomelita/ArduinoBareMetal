@@ -107,7 +107,7 @@ void loop()
 }
 ```
 
-### **Attivazione di una logica qualsiasi sul fronte di salita**
+## **Attivazione di una logica qualsiasi sul fronte di salita**
 
 ```C++
 // APPROCCIO CON MILLIS() (NON BLOCCANTE)                  | // APPROCCIO CON DELAY() (BLOCCANTE)
@@ -126,10 +126,9 @@ void loop() {                                              |   }
                                                            | }
     if(precval==LOW && val==HIGH) { // fronte di salita    |
       stato = nuovoStato; // impostazione del nuovo stato  |
+      updateOutputs(stato); // scrittura uscite            |
     }                                                      |
-                                                           |
     precval=val;  // memorizza livello loop precedente     |
-    updateOutputs(stato); // scrittura uscite              |
   }                                                        |
                                                            |
   // Qui il programma può eseguire altre operazioni        | 
@@ -137,8 +136,7 @@ void loop() {                                              |   }
 }                                                          |
 ```
 
-
-#### **Principali differenze tra i due approcci**
+### **Principali differenze tra i due approcci**
 
 Approccio con **millis()** (non bloccante):
 
@@ -146,6 +144,7 @@ Approccio con **millis()** (non bloccante):
 - Permette al microcontrollore di eseguire altre operazioni nel frattempo
 - Ideale per sistemi che devono gestire più compiti contemporaneamente
 - Non causa ritardi nell'esecuzione di altri processi
+- ```updateOutputs(stato)```, una **sola volta**, quando il pulsante viene rilasciato. E' **opzionale** e rappresenta la gestione della pressione del pulsante in base allo **stato attuale** (approccio FSM di tipo "prima gli ingressi e poi gli stati"). Nella logica di una FSM "prima gli stati e poi gli ingressi", non verrebbero scritte le uscite, ma verrebbero eseguite tutte le operazioni di **inizializzazione** (setup) dello **stato successivo**.
 
 
 Approccio con **delay()** (bloccante):
@@ -155,8 +154,9 @@ Approccio con **delay()** (bloccante):
 - Semplice da implementare ma inefficiente
 - Problematico in sistemi che richiedono reattività costante
 
-### **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
+## **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
 
+E' un approccio bloccante che però è molto pratico per la realizzazione di pulsanti con memoria. E' opportuno adoperare questo pattern insieme ad altri task solo se questi sono ad esso sequenziali. Se devono essere eseguiti, in parallelo alla gestione del pulsante, altri task allora è opportuno utilizzare una soluzione non bloccante, oppure isolare i task che devono procedere in parallelo su ```loop()``` **a parte**, realizzati, ad esempio, mediante **timer HW** o **threads**.
 
 ```C++
 // ATTIVAZIONE SUL FRONTE DI DISCESA  (PULL DOWN)      | // ATTIVAZIONE SUL FRONTE DI SALITA (PULL UP)
@@ -167,9 +167,9 @@ void loop() {                                          | void loop() {
   if(digitalRead(pulsante) == HIGH){                   |   if(digitalRead(pulsante) == LOW){    
     doOnRise();                                        |     doOnFall();                        
     waitUntilInputLow(pulsante,50);                    |     waitUntilInputHigh(pulsante,50);   
-    stato = nuovoStato;                                |     stato = nuovoStato;                
-  }                                                    |   }                                  
-  updateOutputs(stato);                                |   updateOutputs(stato);              
+    stato = nuovoStato;                                |     stato = nuovoStato;
+    updateOutputs(stato);                              |     updateOutputs(stato);           
+  }                                                    |   }                                               
 }                                                      | }
                                                        |
 // Attivazione quando il pulsante                      | // Attivazione quando il pulsante
@@ -180,19 +180,21 @@ Ecco una scheda di **confronto** tra i due **approcci** per attivare una **logic
 
 Nella **colonna sinistra**:
 
-- Codice che attiva la logica sul fronte di DISCESA
+- Codice che attiva la **logica** sul fronte di **DISCESA**
 - Rileva prima quando il pulsante è premuto (HIGH)
-- Esegue doOnRise() quando il pulsante viene premuto
-- Attende con anti-rimbalzo che il pulsante venga rilasciato (LOW)
-- Cambia lo stato quando il pulsante viene RILASCIATO
+- Esegue ```doOnRise()``` quando il pulsante viene premuto. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di **salita** (pressione del pulsante), ad esempio, attivazione o reset di un timer.
+- Attende con anti-rimbalzo che il pulsante venga **rilasciato** (LOW)
+- **Cambia lo stato** quando il pulsante viene RILASCIATO
+- ```updateOutputs(stato)```, una **sola volta**, quando il pulsante viene rilasciato. E' **opzionale** e rappresenta la gestione della pressione del pulsante in base allo **stato attuale** (approccio FSM di tipo "prima gli ingressi e poi gli stati"). Nella logica di una FSM "prima gli stati e poi gli ingressi", non verrebbero scritte le uscite, ma verrebbero eseguite tutte le operazioni di **inizializzazione** (setup) dello **stato successivo**.
 
 Nella **colonna destra**:
 
-- Codice che attiva la logica sul fronte di SALITA
+- Codice che attiva la **logica** sul fronte di **SALITA**
 - Rileva prima quando il pulsante è rilasciato (LOW)
-- Esegue doOnFall() quando il pulsante è rilasciato
-- Attende con anti-rimbalzo che il pulsante venga premuto (HIGH)
-- Cambia lo stato quando il pulsante viene PREMUTO
+- Esegue ```doOnFall()``` quando il pulsante è rilasciato. E' **opzionale** e rappresenta quelle operazioni da fare **una sola volta** sul fronte di **discesa** (pressione del pulsante), ad esempio, attivazione o reset di un timer.
+- Attende con anti-rimbalzo che il pulsante venga **premuto** (HIGH)
+- **Cambia lo stato** quando il pulsante viene PREMUTO
+- ```updateOutputs(stato)```, una **sola volta**, quando il pulsante viene rilasciato. E' **opzionale** e rappresenta la gestione della pressione del pulsante in base allo **stato attuale** (approccio FSM di tipo "prima gli ingressi e poi gli stati"). Nella logica di una FSM "prima gli stati e poi gli ingressi", non verrebbero scritte le uscite ma verrebbero eseguite tutte le operazioni di **inizializzazione** (setup) dello **stato successivo**.
 
 La differenza fondamentale è nel momento in cui viene modificato lo stato: nella versione di sinistra avviene quando il pulsante viene rilasciato, mentre in quella di destra quando viene premuto.
 
