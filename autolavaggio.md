@@ -40,7 +40,6 @@ Ho modificato la riga che indicava il passaggio da USCITA a COMPLETAMENTO quando
 ```mermaid
 %%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
 stateDiagram-v2
-
     [*] --> Libero
     
     Libero --> Ingresso: Fronte salita sensore A
@@ -59,7 +58,7 @@ stateDiagram-v2
     
     Completamento --> Uscita: Fronte salita sensore B
     Uscita --> Libero: Fronte discesa sensore B AND Sensore C inattivo
-    Uscita --> Completamento: Fronte discesa sensore B AND Sensore C attivo
+    Uscita --> Allarme: Fronte discesa sensore B AND Sensore C attivo
     Uscita --> Allarme: Timeout (>30s)
     
     Allarme --> Libero: Reset manuale
