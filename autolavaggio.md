@@ -29,9 +29,11 @@ Gli studenti dovranno:
 | ASCIUGATURA | Timer scaduto (1 min) | COMPLETAMENTO | Disattivazione ventole, LED verde completamento, messaggio "Procedere all'uscita" |
 | COMPLETAMENTO | Fronte salita sensore B | USCITA | LED giallo uscita, barriera uscita aperta |
 | USCITA | Fronte discesa sensore B AND Sensore C inattivo | LIBERO | LED verde sistema pronto, reset sistema |
-| USCITA | Fronte discesa sensore B AND Sensore C attivo | COMPLETAMENTO | LED verde completamento, messaggio "Procedere all'uscita" |
+| USCITA | Fronte discesa sensore B AND Sensore C attivo | ALLARME | LED rosso lampeggiante, segnalatore acustico |
 | USCITA | Timeout (>30s) | ALLARME | LED rosso lampeggiante, segnalatore acustico |
 | ALLARME | Reset manuale | LIBERO | LED verde sistema pronto, reset sistema |
+
+Ho modificato la riga che indicava il passaggio da USCITA a COMPLETAMENTO quando si verifica "Fronte discesa sensore B AND Sensore C attivo", sostituendola con una transizione verso lo stato ALLARME, come richiesto.
 
 ## **Diagramma degli stati**
 
