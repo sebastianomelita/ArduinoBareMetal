@@ -14,7 +14,8 @@ Gli studenti dovranno:
 - Documentare il lavoro svolto con un diagramma a stati e una breve relazione che descriva il funzionamento del sistema e le scelte progettuali adottate.
 
 
-## Tabella di Transizione del Sistema di Autolavaggio con Sensori di Transito (Semplificata)
+## Tabella di Transizione del Sistema di Autolavaggio con Rilevamento Movimento Anomalo
+
 | Stato attuale | Input | Stato prossimo | Output |
 |---------------|-------|----------------|--------|
 | LIBERO | Fronte salita sensore A | INGRESSO | LED giallo ingresso, barriera bloccata |
@@ -24,8 +25,11 @@ Gli studenti dovranno:
 | POSIZIONATO | Conferma avvio (automatica o manuale) | PRELAVAGGIO | Attivazione spruzzatori, LED fase prelavaggio |
 | POSIZIONATO | Timeout (>60s) | ALLARME | LED rosso lampeggiante, segnalatore acustico |
 | PRELAVAGGIO | Timer scaduto (1 min) | LAVAGGIO | Disattivazione spruzzatori, attivazione spazzole e detergente, LED fase lavaggio |
+| PRELAVAGGIO | Fronte salita sensore A OR Fronte salita sensore B | ALLARME | LED rosso lampeggiante, segnalatore acustico, messaggio "Movimento anomalo" |
 | LAVAGGIO | Timer scaduto (5 min) | ASCIUGATURA | Disattivazione spazzole e detergente, attivazione ventole, LED fase asciugatura |
+| LAVAGGIO | Fronte salita sensore A OR Fronte salita sensore B | ALLARME | LED rosso lampeggiante, segnalatore acustico, messaggio "Movimento anomalo" |
 | ASCIUGATURA | Timer scaduto (1 min) | COMPLETAMENTO | Disattivazione ventole, LED verde completamento, messaggio "Procedere all'uscita" |
+| ASCIUGATURA | Fronte salita sensore A OR Fronte salita sensore B | ALLARME | LED rosso lampeggiante, segnalatore acustico, messaggio "Movimento anomalo" |
 | COMPLETAMENTO | Fronte salita sensore B | USCITA | LED giallo uscita, barriera uscita aperta |
 | COMPLETAMENTO | Timeout (>3 min) | ALLARME | LED rosso lampeggiante, segnalatore acustico |
 | USCITA | Fronte discesa sensore B AND Sensore C inattivo | LIBERO | LED verde sistema pronto, reset sistema |
@@ -49,8 +53,13 @@ stateDiagram-v2
     Posizionato --> Allarme: Timeout (>60s)
     
     Prelavaggio --> Lavaggio: Timer (1 min)
+    Prelavaggio --> Allarme: Fronte salita sensore A OR\nFronte salita sensore B
+    
     Lavaggio --> Asciugatura: Timer (5 min)
+    Lavaggio --> Allarme: Fronte salita sensore A OR\nFronte salita sensore B
+    
     Asciugatura --> Completamento: Timer (1 min)
+    Asciugatura --> Allarme: Fronte salita sensore A OR\nFronte salita sensore B
     
     Completamento --> Uscita: Fronte salita sensore B
     Completamento --> Allarme: Timeout (>3 min)
@@ -75,6 +84,24 @@ stateDiagram-v2
         Veicolo correttamente posizionato
         Sensore C attivo, Sensore B inattivo
         Pronto per iniziare il lavaggio
+    end note
+    
+    note right of Prelavaggio
+        Monitoraggio continuo di
+        movimenti anomali tramite
+        sensori A e B
+    end note
+    
+    note right of Lavaggio
+        Monitoraggio continuo di
+        movimenti anomali tramite
+        sensori A e B
+    end note
+    
+    note right of Asciugatura
+        Monitoraggio continuo di
+        movimenti anomali tramite
+        sensori A e B
     end note
     
     note right of Completamento
@@ -173,7 +200,7 @@ DiffTimer timerTimeout;  // Usato per timeout di ingresso/uscita/posizionamento
 enum Stati {
   LIBERO,
   INGRESSO,
-  POSIZIONATO,  // Stato unificato (ex IN_ATTESA + POSIZIONATO)
+  POSIZIONATO,
   PRELAVAGGIO,
   LAVAGGIO,
   ASCIUGATURA,
@@ -212,7 +239,24 @@ void setup() {
   Serial.println("Sistema Autolavaggio inizializzato - STATO: LIBERO");
 }
 
+// Funzione per spegnere tutti gli attuatori
+void spegniTuttiAttuatori() {
+  digitalWrite(spruzzatori, LOW);
+  digitalWrite(spazzole, LOW);
+  digitalWrite(ventole, LOW);
+}
+
 void loop() {
+  // Verifica movimenti anomali durante le fasi di lavaggio
+  if ((statoCorrente == PRELAVAGGIO || statoCorrente == LAVAGGIO || statoCorrente == ASCIUGATURA) &&
+      (digitalRead(sensore_A) == HIGH || digitalRead(sensore_B) == HIGH)) {
+    Serial.println("STATO: ALLARME - Movimento anomalo del veicolo durante il lavaggio");
+    spegniTuttiAttuatori();
+    digitalWrite(led_rosso, HIGH);
+    digitalWrite(buzzer, HIGH);
+    statoCorrente = ALLARME;
+  }
+  
   // Macchina a stati
   switch (statoCorrente) {
     case LIBERO:
@@ -402,9 +446,7 @@ void loop() {
         digitalWrite(buzzer, LOW);
         digitalWrite(led_verde, HIGH);
         // Reset di tutti gli attuatori per sicurezza
-        digitalWrite(spruzzatori, LOW);
-        digitalWrite(spazzole, LOW);
-        digitalWrite(ventole, LOW);
+        spegniTuttiAttuatori();
         statoCorrente = LIBERO;
       }
       break;
