@@ -88,6 +88,44 @@ stateDiagram-v2
         LED L3 acceso
     end note
 ```
+```mermaid
+%%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
+stateDiagram-v2
+    [*] --> SPENTO
+    
+    SPENTO --> BASSA_INTENSITA: Pressione P1
+    BASSA_INTENSITA --> MEDIA_INTENSITA: Pressione P1
+    MEDIA_INTENSITA --> ALTA_INTENSITA: Pressione P1
+    ALTA_INTENSITA --> SPENTO: Pressione P1
+    
+    BASSA_INTENSITA --> SPENTO: Inattività > 5 min
+    MEDIA_INTENSITA --> SPENTO: Inattività > 5 min
+    ALTA_INTENSITA --> SPENTO: Inattività > 5 min
+    
+    BASSA_INTENSITA --> BASSA_INTENSITA: Movimento PIR / Reset timer
+    MEDIA_INTENSITA --> MEDIA_INTENSITA: Movimento PIR / Reset timer
+    ALTA_INTENSITA --> ALTA_INTENSITA: Movimento PIR / Reset timer
+    
+    note right of SPENTO
+        Lampada spenta
+        Tutti i LED spenti
+    end note
+    
+    note right of BASSA_INTENSITA
+        Lampada a bassa intensità
+        LED L1 acceso
+    end note
+    
+    note right of MEDIA_INTENSITA
+        Lampada a media intensità
+        LED L2 acceso
+    end note
+    
+    note right of ALTA_INTENSITA
+        Lampada ad alta intensità
+        LED L3 acceso
+    end note
+```
 
 ## **Codice Arduino "prima gli stati e poi gli ingressi"**
 
