@@ -14,16 +14,15 @@ Gli studenti dovranno:
 - Documentare il lavoro svolto con un diagramma a stati e una breve relazione che descriva il funzionamento del sistema e le scelte progettuali adottate.
 
 
-## Tabella di Transizione del Sistema di Autolavaggio con Sensori di Transito
+## Tabella di Transizione del Sistema di Autolavaggio con Sensori di Transito (Semplificata)
 | Stato attuale | Input | Stato prossimo | Output |
 |---------------|-------|----------------|--------|
 | LIBERO | Fronte salita sensore A | INGRESSO | LED giallo ingresso, barriera bloccata |
-| INGRESSO | Fronte discesa sensore A AND Sensore C attivo | IN_ATTESA | LED giallo lampeggiante, indicazioni di posizionamento |
+| INGRESSO | Fronte discesa sensore A AND Sensore C attivo AND Sensore B inattivo | POSIZIONATO | LED verde posizionamento, indicazioni di avvio |
 | INGRESSO | Fronte discesa sensore A AND Sensore C inattivo | LIBERO | LED verde sistema pronto, reset sistema |
 | INGRESSO | Timeout (>30s) | ALLARME | LED rosso lampeggiante, segnalatore acustico |
-| IN_ATTESA | Sensore C attivo | POSIZIONATO | LED verde posizionamento, indicazioni di avvio |
-| IN_ATTESA | Timeout (>60s) | ALLARME | LED rosso lampeggiante, segnalatore acustico |
 | POSIZIONATO | Conferma avvio (automatica o manuale) | PRELAVAGGIO | Attivazione spruzzatori, LED fase prelavaggio |
+| POSIZIONATO | Timeout (>60s) | ALLARME | LED rosso lampeggiante, segnalatore acustico |
 | PRELAVAGGIO | Timer scaduto (1 min) | LAVAGGIO | Disattivazione spruzzatori, attivazione spazzole e detergente, LED fase lavaggio |
 | LAVAGGIO | Timer scaduto (5 min) | ASCIUGATURA | Disattivazione spazzole e detergente, attivazione ventole, LED fase asciugatura |
 | ASCIUGATURA | Timer scaduto (1 min) | COMPLETAMENTO | Disattivazione ventole, LED verde completamento, messaggio "Procedere all'uscita" |
@@ -42,14 +41,12 @@ stateDiagram-v2
     [*] --> Libero
     
     Libero --> Ingresso: Fronte salita sensore A
-    Ingresso --> InAttesa: Fronte discesa sensore A AND Sensore C attivo
-    Ingresso --> Libero: Fronte discesa sensore A AND Sensore C inattivo
+    Ingresso --> Posizionato: Fronte discesa sensore A AND\nSensore C attivo AND Sensore B inattivo
+    Ingresso --> Libero: Fronte discesa sensore A AND\nSensore C inattivo
     Ingresso --> Allarme: Timeout (>30s)
     
-    InAttesa --> Posizionato: Sensore C attivo
-    InAttesa --> Allarme: Timeout (>60s)
-    
     Posizionato --> Prelavaggio: Sequenza avvio
+    Posizionato --> Allarme: Timeout (>60s)
     
     Prelavaggio --> Lavaggio: Timer (1 min)
     Lavaggio --> Asciugatura: Timer (5 min)
@@ -58,8 +55,8 @@ stateDiagram-v2
     Completamento --> Uscita: Fronte salita sensore B
     Completamento --> Allarme: Timeout (>3 min)
     
-    Uscita --> Libero: Fronte discesa sensore B AND Sensore C inattivo
-    Uscita --> Completamento: Fronte discesa sensore B AND Sensore C attivo
+    Uscita --> Libero: Fronte discesa sensore B AND\nSensore C inattivo
+    Uscita --> Completamento: Fronte discesa sensore B AND\nSensore C attivo
     Uscita --> Allarme: Timeout (>30s)
     
     Allarme --> Libero: Reset manuale
@@ -72,20 +69,12 @@ stateDiagram-v2
     note right of Ingresso
         Veicolo a cavallo ingresso
         Sensore A attivo
-        Si verifica C per confermare
-        direzione del veicolo
-    end note
-    
-    note right of InAttesa
-        Veicolo entrato ma non
-        correttamente posizionato
-        Sensore C inattivo
     end note
     
     note right of Posizionato
-        Veicolo correttamente 
-        posizionato per lavaggio
-        Sensore C attivo
+        Veicolo correttamente posizionato
+        Sensore C attivo, Sensore B inattivo
+        Pronto per iniziare il lavaggio
     end note
     
     note right of Completamento
@@ -97,8 +86,6 @@ stateDiagram-v2
     note right of Uscita
         Veicolo a cavallo uscita
         Sensore B attivo
-        Si verifica C per confermare
-        direzione del veicolo
     end note
     
     note right of Allarme
@@ -186,8 +173,7 @@ DiffTimer timerTimeout;  // Usato per timeout di ingresso/uscita/posizionamento
 enum Stati {
   LIBERO,
   INGRESSO,
-  IN_ATTESA,
-  POSIZIONATO,
+  POSIZIONATO,  // Stato unificato (ex IN_ATTESA + POSIZIONATO)
   PRELAVAGGIO,
   LAVAGGIO,
   ASCIUGATURA,
@@ -247,11 +233,15 @@ void loop() {
     case INGRESSO:
       // Veicolo a cavallo dell'ingresso
       Serial.println("INGRESSO");
-      // Controlla se il veicolo è completamente entrato (sensore A basso e C alto)
-      if (digitalRead(sensore_A) == LOW && digitalRead(sensore_C) == HIGH) {
-        Serial.println("STATO: IN_ATTESA - Veicolo entrato, in attesa di posizionamento");
+      // Controlla se il veicolo è completamente entrato e posizionato correttamente
+      // (sensore A basso, C alto e B basso)
+      if (digitalRead(sensore_A) == LOW && digitalRead(sensore_C) == HIGH && digitalRead(sensore_B) == LOW) {
+        Serial.println("STATO: POSIZIONATO - Veicolo entrato e posizionato correttamente");
+        digitalWrite(led_giallo, LOW);
+        digitalWrite(led_verde, HIGH);
         timerTimeout.reset();
-        statoCorrente = IN_ATTESA;
+        timerTimeout.start(); // Avvia timer per controllo tempo di inattività
+        statoCorrente = POSIZIONATO;
       } 
       // Controlla se il veicolo è tornato indietro (sensore A basso e C basso)
       else if (digitalRead(sensore_A) == LOW && digitalRead(sensore_C) == LOW) {
@@ -271,43 +261,32 @@ void loop() {
       }
       break;
       
-    case IN_ATTESA:
-      // Veicolo entrato ma non posizionato
-      Serial.println("IN_ATTESA");
-      // Lampeggio LED giallo
-      digitalWrite(led_giallo, !digitalRead(led_giallo));
-      delay(300);
+    case POSIZIONATO:
+      // Veicolo pronto per iniziare il processo
+      Serial.println("POSIZIONATO");
       
+      // Verifica se il veicolo è ancora posizionato correttamente
       if (digitalRead(sensore_C) == HIGH) {
-        // Veicolo posizionato correttamente
-        Serial.println("STATO: POSIZIONATO - Veicolo in posizione corretta");
-        digitalWrite(led_giallo, LOW);
-        digitalWrite(led_verde, HIGH);
-        timerTimeout.stop();
-        statoCorrente = POSIZIONATO;
-      }
+        // Avvio automatico dopo breve pausa
+        if (timerTimeout.get() > 2000) { // Attesa di 2 secondi prima di avviare
+          Serial.println("STATO: PRELAVAGGIO - Inizio ciclo di lavaggio");
+          digitalWrite(led_verde, LOW);
+          digitalWrite(led_fase, HIGH);
+          digitalWrite(spruzzatori, HIGH);
+          timerTimeout.stop();
+          timerProcesso.reset();
+          timerProcesso.start();
+          statoCorrente = PRELAVAGGIO;
+        }
+      } 
       else if (timerTimeout.get() > 60000) {
-        // Timeout veicolo non posizionato
+        // Timeout veicolo non più posizionato correttamente
         Serial.println("STATO: ALLARME - Timeout posizionamento");
-        digitalWrite(led_giallo, LOW);
+        digitalWrite(led_verde, LOW);
         digitalWrite(led_rosso, HIGH);
         digitalWrite(buzzer, HIGH);
         statoCorrente = ALLARME;
       }
-      break;
-      
-    case POSIZIONATO:
-      // Veicolo pronto per iniziare il processo
-      Serial.println("POSIZIONATO");
-      // Avvio automatico dopo breve pausa
-      delay(2000);
-      Serial.println("STATO: PRELAVAGGIO - Inizio ciclo di lavaggio");
-      digitalWrite(led_verde, LOW);
-      digitalWrite(led_fase, HIGH);
-      digitalWrite(spruzzatori, HIGH);
-      timerProcesso.reset();
-      timerProcesso.start();
-      statoCorrente = PRELAVAGGIO;
       break;
       
     case PRELAVAGGIO:
