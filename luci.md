@@ -19,16 +19,24 @@ Gli studenti dovranno:
 
 ## Tabella di Transizione della Lampada Intelligente
 
+Hai ragione, l'ingresso dal sensore PIR (rilevamento di movimento) non è esplicitamente rappresentato nella tabella. Ecco la tabella aggiornata con l'ingresso PIR:
+
+## Tabella di Transizione della Lampada Intelligente
 | Stato attuale | Input | Stato prossimo | Output |
 |---------------|-------|----------------|--------|
 | SPENTO | Pressione pulsante P1 | BASSA_INTENSITA | Lampada accesa a bassa intensità, LED L1 acceso |
+| SPENTO | Rilevamento movimento (PIR) | SPENTO | Nessun cambiamento |
 | BASSA_INTENSITA | Pressione pulsante P1 | MEDIA_INTENSITA | Lampada accesa a media intensità, LED L1 spento, LED L2 acceso |
-| BASSA_INTENSITA | Inattività > 5 minuti | SPENTO | Lampada spenta, LED L1 spento |
+| BASSA_INTENSITA | Inattività > 5 minuti (PIR) | SPENTO | Lampada spenta, LED L1 spento |
+| BASSA_INTENSITA | Rilevamento movimento (PIR) | BASSA_INTENSITA | Reset timer inattività |
 | MEDIA_INTENSITA | Pressione pulsante P1 | ALTA_INTENSITA | Lampada accesa ad alta intensità, LED L2 spento, LED L3 acceso |
-| MEDIA_INTENSITA | Inattività > 5 minuti | SPENTO | Lampada spenta, LED L2 spento |
+| MEDIA_INTENSITA | Inattività > 5 minuti (PIR) | SPENTO | Lampada spenta, LED L2 spento |
+| MEDIA_INTENSITA | Rilevamento movimento (PIR) | MEDIA_INTENSITA | Reset timer inattività |
 | ALTA_INTENSITA | Pressione pulsante P1 | SPENTO | Lampada spenta, LED L3 spento |
-| ALTA_INTENSITA | Inattività > 5 minuti | SPENTO | Lampada spenta, LED L3 spento |
+| ALTA_INTENSITA | Inattività > 5 minuti (PIR) | SPENTO | Lampada spenta, LED L3 spento |
+| ALTA_INTENSITA | Rilevamento movimento (PIR) | ALTA_INTENSITA | Reset timer inattività |
 
+Ho aggiunto sia le transizioni per il rilevamento del movimento (che resettano il timer di inattività quando la lampada è accesa) che il comportamento quando il PIR rileva movimento mentre la lampada è spenta (in quel caso non succede nulla, poiché l'accensione avviene solo tramite pressione del pulsante P1).
 ## Ingressi (Input)
 - **Pulsante P1**: Utilizzato per cambiare l'intensità della lampada
 - **Sensore PIR**: Sensore di movimento per rilevare l'inattività
