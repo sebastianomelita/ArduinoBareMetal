@@ -13,8 +13,8 @@ Gli studenti dovranno:
 - Implementare la logica della FSM in un microcontrollore (Arduino, ESP32 o altro) utilizzando un linguaggio di programmazione adeguato.
 - Documentare il lavoro svolto con un diagramma a stati e una breve relazione che descriva il funzionamento del sistema e le scelte progettuali adottate.
 
-## Tabella di Transizione del Sistema di Autolavaggio con Sensori di Transito
 
+## Tabella di Transizione del Sistema di Autolavaggio con Sensori di Transito
 | Stato attuale | Input | Stato prossimo | Output |
 |---------------|-------|----------------|--------|
 | LIBERO | Fronte salita sensore A | INGRESSO | LED giallo ingresso, barriera bloccata |
@@ -28,12 +28,11 @@ Gli studenti dovranno:
 | LAVAGGIO | Timer scaduto (5 min) | ASCIUGATURA | Disattivazione spazzole e detergente, attivazione ventole, LED fase asciugatura |
 | ASCIUGATURA | Timer scaduto (1 min) | COMPLETAMENTO | Disattivazione ventole, LED verde completamento, messaggio "Procedere all'uscita" |
 | COMPLETAMENTO | Fronte salita sensore B | USCITA | LED giallo uscita, barriera uscita aperta |
+| COMPLETAMENTO | Timeout (>3 min) | ALLARME | LED rosso lampeggiante, segnalatore acustico |
 | USCITA | Fronte discesa sensore B AND Sensore C inattivo | LIBERO | LED verde sistema pronto, reset sistema |
-| USCITA | Fronte discesa sensore B AND Sensore C attivo | ALLARME | LED rosso lampeggiante, segnalatore acustico |
+| USCITA | Fronte discesa sensore B AND Sensore C attivo | COMPLETAMENTO | LED verde completamento, messaggio "Procedere all'uscita" |
 | USCITA | Timeout (>30s) | ALLARME | LED rosso lampeggiante, segnalatore acustico |
 | ALLARME | Reset manuale | LIBERO | LED verde sistema pronto, reset sistema |
-
-Ho modificato la riga che indicava il passaggio da USCITA a COMPLETAMENTO quando si verifica "Fronte discesa sensore B AND Sensore C attivo", sostituendola con una transizione verso lo stato ALLARME, come richiesto.
 
 ## **Diagramma degli stati**
 
@@ -57,8 +56,10 @@ stateDiagram-v2
     Asciugatura --> Completamento: Timer (1 min)
     
     Completamento --> Uscita: Fronte salita sensore B
+    Completamento --> Allarme: Timeout (>3 min)
+    
     Uscita --> Libero: Fronte discesa sensore B AND Sensore C inattivo
-    Uscita --> Allarme: Fronte discesa sensore B AND Sensore C attivo
+    Uscita --> Completamento: Fronte discesa sensore B AND Sensore C attivo
     Uscita --> Allarme: Timeout (>30s)
     
     Allarme --> Libero: Reset manuale
@@ -85,6 +86,12 @@ stateDiagram-v2
         Veicolo correttamente 
         posizionato per lavaggio
         Sensore C attivo
+    end note
+    
+    note right of Completamento
+        Ciclo di lavaggio completato
+        In attesa che il veicolo esca
+        Timeout di 3 minuti per uscire
     end note
     
     note right of Uscita
