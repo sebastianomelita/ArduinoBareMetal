@@ -203,7 +203,7 @@ void loop() {
         waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
         statoCorrente = BASSA_INTENSITA;
         timerInattivita.reset();
-        timerInattivita.start();
+        timerInattivita.stop();
       }
       break;
       
@@ -220,6 +220,7 @@ void loop() {
       if (digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = MEDIA_INTENSITA;
+	timerInattivita.start(); // Reset del timer di inattività
         timerInattivita.reset(); // Reset del timer di inattività
       }
       
