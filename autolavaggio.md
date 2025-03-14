@@ -172,8 +172,8 @@ int ventole = 11;        // Ventole asciugatura
 int buzzer = 12;         // Segnalatore acustico
 
 // Timer per le diverse fasi
-DiffTimer timerProcesso;
-DiffTimer timerTimeout;
+DiffTimer timerProcesso; // Usato sia per fasi di lavaggio che per timeout completamento
+DiffTimer timerTimeout;  // Usato per timeout di ingresso/uscita/posizionamento
 
 // Definizione stati del sistema
 enum Stati {
@@ -335,7 +335,9 @@ void loop() {
         digitalWrite(ventole, LOW);
         digitalWrite(led_fase, LOW);
         digitalWrite(led_verde, HIGH);
-        timerProcesso.stop();
+        // Riutilizziamo timerProcesso per monitorare il tempo di attesa in COMPLETAMENTO
+        timerProcesso.reset();
+        timerProcesso.start();
         statoCorrente = COMPLETAMENTO;
       }
       break;
@@ -343,12 +345,24 @@ void loop() {
     case COMPLETAMENTO:
       // Lavaggio completato, in attesa di uscita
       Serial.println("COMPLETAMENTO");
-      if (digitalRead(sensore_B) == HIGH) {
+      
+      // Controlla se è scaduto il timer di completamento (3 minuti per esempio)
+      if (timerProcesso.get() > 180000) { // 3 minuti
+        Serial.println("STATO: ALLARME - Timeout uscita veicolo dopo completamento");
+        digitalWrite(led_verde, LOW);
+        digitalWrite(led_rosso, HIGH);
+        digitalWrite(buzzer, HIGH);
+        timerProcesso.stop();
+        statoCorrente = ALLARME;
+      }
+      // Controlla se il veicolo ha iniziato a uscire
+      else if (digitalRead(sensore_B) == HIGH) {
         // Rileva fronte salita sensore B tramite waitUntilInputLow
         waitUntilInputLow(sensore_B, 50); // Debounce di 50ms
         Serial.println("STATO: USCITA - Veicolo in fase di uscita");
         digitalWrite(led_verde, LOW);
         digitalWrite(led_giallo, HIGH);
+        timerProcesso.stop(); // Ferma il timer di completamento
         timerTimeout.reset();
         timerTimeout.start();
         statoCorrente = USCITA;
@@ -372,6 +386,9 @@ void loop() {
         digitalWrite(led_giallo, LOW);
         digitalWrite(led_verde, HIGH);
         timerTimeout.stop();
+        // Riavvia il timer per monitorare il tempo di permanenza in COMPLETAMENTO
+        timerProcesso.reset();
+        timerProcesso.start();
         statoCorrente = COMPLETAMENTO;
       }
       else if (timerTimeout.get() > 30000) {
