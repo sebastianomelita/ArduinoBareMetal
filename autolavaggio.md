@@ -1,4 +1,4 @@
->[Torna all'indice generale](indexstatifiniti.md)
+bot..>[Torna all'indice generale](indexstatifiniti.md)
 
 # **AUTOLAVAGGIO**
 
@@ -266,8 +266,10 @@ void loop() {
         // Rileva fronte salita sensore A tramite waitUntilInputLow
         waitUntilInputLow(sensore_A, 50); // Debounce di 50ms
         Serial.println("STATO: INGRESSO - Veicolo a cavallo dell'ingresso");
+	// impostazione valore uscite
         digitalWrite(led_verde, LOW);
         digitalWrite(led_giallo, HIGH);
+        // inizializzazione stato successivo
         timerTimeout.reset();
         timerTimeout.start();
         statoCorrente = INGRESSO;
@@ -281,8 +283,10 @@ void loop() {
       // (sensore A basso, C alto e B basso)
       if (digitalRead(sensore_A) == LOW && digitalRead(sensore_C) == HIGH && digitalRead(sensore_B) == LOW) {
         Serial.println("STATO: POSIZIONATO - Veicolo entrato e posizionato correttamente");
+        // impostazione valore uscite
         digitalWrite(led_giallo, LOW);
         digitalWrite(led_verde, HIGH);
+        // inizializzazione stato successivo
         timerTimeout.reset();
         timerTimeout.start(); // Avvia timer per controllo tempo di inattività
         statoCorrente = POSIZIONATO;
@@ -290,14 +294,17 @@ void loop() {
       // Controlla se il veicolo è tornato indietro (sensore A basso e C basso)
       else if (digitalRead(sensore_A) == LOW && digitalRead(sensore_C) == LOW) {
         Serial.println("STATO: LIBERO - Veicolo tornato indietro");
+        // impostazione valore uscite
         digitalWrite(led_giallo, LOW);
         digitalWrite(led_verde, HIGH);
+        // inizializzazione stato successivo
         timerTimeout.stop();
         statoCorrente = LIBERO;
       }
       else if (timerTimeout.get() > 30000) {
         // Timeout veicolo bloccato in ingresso
         Serial.println("STATO: ALLARME - Veicolo bloccato in ingresso");
+        // impostazione valore uscite
         digitalWrite(led_giallo, LOW);
         digitalWrite(led_rosso, HIGH);
         digitalWrite(buzzer, HIGH);
@@ -314,9 +321,11 @@ void loop() {
         // Avvio automatico dopo breve pausa
         if (timerTimeout.get() > 2000) { // Attesa di 2 secondi prima di avviare
           Serial.println("STATO: PRELAVAGGIO - Inizio ciclo di lavaggio");
+          // impostazione valore uscite
           digitalWrite(led_verde, LOW);
           digitalWrite(led_fase, HIGH);
           digitalWrite(spruzzatori, HIGH);
+          // inizializzazione stato successivo
           timerTimeout.stop();
           timerProcesso.reset();
           timerProcesso.start();
@@ -326,6 +335,7 @@ void loop() {
       else if (timerTimeout.get() > 60000) {
         // Timeout veicolo non più posizionato correttamente
         Serial.println("STATO: ALLARME - Timeout posizionamento");
+        // impostazione valore uscite
         digitalWrite(led_verde, LOW);
         digitalWrite(led_rosso, HIGH);
         digitalWrite(buzzer, HIGH);
@@ -338,8 +348,10 @@ void loop() {
       Serial.println("PRELAVAGGIO");
       if (timerProcesso.get() > 60000) { // 1 minuto
         Serial.println("STATO: LAVAGGIO - Passaggio a fase di lavaggio principale");
+        // impostazione valore uscite
         digitalWrite(spruzzatori, LOW);
         digitalWrite(spazzole, HIGH);
+        // inizializzazione stato successivo
         timerProcesso.reset();
         statoCorrente = LAVAGGIO;
       }
@@ -350,9 +362,11 @@ void loop() {
       Serial.println("LAVAGGIO");
       if (timerProcesso.get() > 300000) { // 5 minuti
         Serial.println("STATO: ASCIUGATURA - Passaggio a fase di asciugatura");
+        // impostazione valore uscite
         digitalWrite(spazzole, LOW);
         digitalWrite(ventole, HIGH);
-        timerProcesso.reset();
+	// inizializzazione stato successivo
+	timerProcesso.reset();
         statoCorrente = ASCIUGATURA;
       }
       break;
@@ -362,10 +376,12 @@ void loop() {
       Serial.println("ASCIUGATURA");
       if (timerProcesso.get() > 60000) { // 1 minuto
         Serial.println("STATO: COMPLETAMENTO - Ciclo di lavaggio completato");
+	// impostazione valore uscite
         digitalWrite(ventole, LOW);
         digitalWrite(led_fase, LOW);
         digitalWrite(led_verde, HIGH);
         // Riutilizziamo timerProcesso per monitorare il tempo di attesa in COMPLETAMENTO
+	// inizializzazione stato successivo
         timerProcesso.reset();
         timerProcesso.start();
         statoCorrente = COMPLETAMENTO;
@@ -379,9 +395,11 @@ void loop() {
       // Controlla se è scaduto il timer di completamento (3 minuti per esempio)
       if (timerProcesso.get() > 180000) { // 3 minuti
         Serial.println("STATO: ALLARME - Timeout uscita veicolo dopo completamento");
+	// impostazione valore uscite
         digitalWrite(led_verde, LOW);
         digitalWrite(led_rosso, HIGH);
         digitalWrite(buzzer, HIGH);
+	// inizializzazione stato successivo
         timerProcesso.stop();
         statoCorrente = ALLARME;
       }
@@ -390,8 +408,10 @@ void loop() {
         // Rileva fronte salita sensore B tramite waitUntilInputLow
         waitUntilInputLow(sensore_B, 50); // Debounce di 50ms
         Serial.println("STATO: USCITA - Veicolo in fase di uscita");
+	// impostazione valore uscite
         digitalWrite(led_verde, LOW);
         digitalWrite(led_giallo, HIGH);
+	// inizializzazione stato successivo
         timerProcesso.stop(); // Ferma il timer di completamento
         timerTimeout.reset();
         timerTimeout.start();
@@ -405,8 +425,10 @@ void loop() {
       // Controlla se il veicolo è completamente uscito (sensore B basso e C basso)
       if (digitalRead(sensore_B) == LOW && digitalRead(sensore_C) == LOW) {
         Serial.println("STATO: LIBERO - Veicolo uscito, sistema pronto");
+	// impostazione valore uscite
         digitalWrite(led_giallo, LOW);
         digitalWrite(led_verde, HIGH);
+	// inizializzazione stato successivo
         timerTimeout.stop();
         statoCorrente = LIBERO;
       }
@@ -417,6 +439,7 @@ void loop() {
         digitalWrite(led_verde, HIGH);
         timerTimeout.stop();
         // Riavvia il timer per monitorare il tempo di permanenza in COMPLETAMENTO
+	// inizializzazione stato successivo
         timerProcesso.reset();
         timerProcesso.start();
         statoCorrente = COMPLETAMENTO;
@@ -424,6 +447,7 @@ void loop() {
       else if (timerTimeout.get() > 30000) {
         // Timeout veicolo bloccato in uscita
         Serial.println("STATO: ALLARME - Veicolo bloccato in uscita");
+	// impostazione valore uscite
         digitalWrite(led_giallo, LOW);
         digitalWrite(led_rosso, HIGH);
         digitalWrite(buzzer, HIGH);
@@ -442,6 +466,7 @@ void loop() {
       if (!digitalRead(sensore_A) && !digitalRead(sensore_B) && !digitalRead(sensore_C)) {
         delay(5000); // Simulazione di un reset dopo 5 secondi
         Serial.println("STATO: LIBERO - Sistema resettato dopo allarme");
+	// impostazione valore uscite
         digitalWrite(led_rosso, LOW);
         digitalWrite(buzzer, LOW);
         digitalWrite(led_verde, HIGH);
