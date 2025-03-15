@@ -9,7 +9,7 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
     - scrivere tante funzioni (o blocchi di codice mutuamente esclusivi di una stessa funzione) quanti sono **tutti** i **possibili ingressi**
     - dentro ogni funzione (o blocco di codice) scrivere uno switch-case (o un blocco if-else-if) con tutti i soli **stati raggiungibili** dall’ingresso che essa rappresenta
     - in corrispondenza di **ciascuno stato**:
-        - impostare il valore dello **stato successivo** in funzione del valore della coppia (**ingresso, stato**).
+        - aggiornare il valore dello **stato corrente** con quello **stato successivo** in funzione del valore della coppia (**ingresso, stato**).
         - calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
         - impostare l'**inizializzazione** dello stato successivo.
 
@@ -17,7 +17,7 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
    - scrivere uno switch-case con **tutti** i **possibili stati** del sistema
    - all’interno di ogni campo dello switch-case valutare soltanto **gli ingressi attivi**, cioè quegli ingressi che potrebbero generare una **transizione** da quel particolare **stato**.
    - in corrispondenza di **ciascun ingresso**:
-        - impostare il valore dello **stato successivo** in funzione del valore della coppia (**ingresso, stato**).
+        - aggiornare il valore dello **stato corrente** con quello **stato successivo** in funzione del valore della coppia (**ingresso, stato**).
         - calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
         - impostare l'**inizializzazione** dello stato successivo.
 
