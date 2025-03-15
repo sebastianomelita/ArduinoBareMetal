@@ -210,15 +210,15 @@ void loop() {
   // Macchina a stati
   switch (statoCorrente) {
     case SPENTO:   
-	  // Stato SPENTO: tutti i LED e lampada spenti
+      // Stato SPENTO: tutti i LED e lampada spenti
       // Controllo pressione pulsante P1 (HIGH con pull-down quando premuto)
       if (digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
         statoCorrente = BASSA_INTENSITA;
-		Serial.println("Stato: BASSA_INTENSITA");
-		// impostazione valore uscite
-		updateOutputs(LOW, HIGH, LOW, INTENSITA_BASSA);
-		// inizializzazione stato successivo
+	Serial.println("Stato: BASSA_INTENSITA");
+	// impostazione valore uscite
+	updateOutputs(LOW, HIGH, LOW, INTENSITA_BASSA);
+	// inizializzazione stato successivo
         timerInattivita.reset();
         timerInattivita.start();
       }
