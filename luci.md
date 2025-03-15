@@ -194,17 +194,11 @@ void setup() {
   pinMode(outputLampada, OUTPUT);
   
   // Inizializzazione stato
-  statoCorrente = SPENTO;
-  
+  statoCorrente = SPENTO;  
   // Inizializzazione seriale per debug
-  Serial.begin(115200);
-  
+  Serial.begin(115200);  
   // Spegni tutti i LED e la lampada inizialmente
-  digitalWrite(ledL1, LOW);
-  digitalWrite(ledL2, LOW);
-  digitalWrite(ledL3, LOW);
-  analogWrite(outputLampada, OFF);
-  
+  updateOutputs(LOW, LOW, LOW, SPENTO);  
   Serial.println("Sistema Lampada Intelligente inizializzato");
 }
 
@@ -311,6 +305,8 @@ void loop() {
 Simulazione con Arduino su Tinkercad: https://www.tinkercad.com/things/ixDZp3lQSwo-lampada-intelligente
 
 ## **Codice Arduino "prima gli ingressi e poi gli stati"**
+
+Per lo sviluppo fare riferimento alla metodologia esposta in: [priorità-statoingresso](statifinitisviluppo.md#priorità-statoingresso)
 
 ```C++
 //##### urutils.h #####
@@ -523,6 +519,8 @@ void loop() {
 ```
 
 ## **Codice Arduino "prima gli ingressi e poi gli stati" rappresentati come contatori**
+
+Per lo sviluppo fare riferimento alla metodologia esposta in: [priorità-statoingresso](statifinitisviluppo.md#priorità-statoingresso)
 
 ```C++
 //##### urutils.h #####
