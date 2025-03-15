@@ -213,7 +213,7 @@ void loop() {
         statoCorrente = BASSA_INTENSITA;
 	Serial.println("Stato: BASSA_INTENSITA");
 	// impostazione valore uscite
-	updateOutputs(LOW, HIGH, LOW, INTENSITA_BASSA);
+	updateOutputs(HIGH, LOW, LOW, INTENSITA_BASSA);
 	// inizializzazione stato successivo
         timerInattivita.reset();
         timerInattivita.start();
@@ -229,7 +229,7 @@ void loop() {
         statoCorrente = MEDIA_INTENSITA;
 	Serial.println("Stato: MEDIA_INTENSITA");
 	// impostazione valore uscite
-	updateOutputs(HIGH, LOW, LOW, INTENSITA_MEDIA);
+	updateOutputs(LOW, HIGH, LOW, INTENSITA_MEDIA);
 	// inizializzazione stato successivo
 	timerInattivita.reset(); // Reset del timer di inattività
       }else if (digitalRead(pirSensor) == HIGH) {// Controllo movimento (rilevato = HIGH)
