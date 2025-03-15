@@ -155,6 +155,7 @@ const int ledL3 = 6;          // LED indicatore alta intensità
 const int outputLampada = 9;  // Pin PWM per controllare l'intensità della lampada
 
 // Valori di intensità della lampada
+const int OFF = 0;    // 0% di 255
 const int INTENSITA_BASSA = 85;    // ~33% di 255
 const int INTENSITA_MEDIA = 170;   // ~66% di 255
 const int INTENSITA_ALTA = 255;    // 100% di 255
@@ -173,6 +174,13 @@ enum Stati {
 
 // Variabile di stato
 uint8_t statoCorrente;
+
+void updateOutputs(uint8_t l1, uint8_t l2, uint8_t l3, uint8_t al){
+    digitalWrite(ledL1, LOW);
+    digitalWrite(ledL2, LOW);
+    digitalWrite(ledL3, LOW);
+    analogWrite(outputLampada, al);   
+}
 
 void setup() {
   // Inizializzazione pin
@@ -193,7 +201,7 @@ void setup() {
   digitalWrite(ledL1, LOW);
   digitalWrite(ledL2, LOW);
   digitalWrite(ledL3, LOW);
-  analogWrite(outputLampada, 0);
+  analogWrite(outputLampada, OFF);
   
   Serial.println("Sistema Lampada Intelligente inizializzato");
 }
@@ -201,116 +209,98 @@ void setup() {
 void loop() {
   // Macchina a stati
   switch (statoCorrente) {
-    case SPENTO:
-      // Stato SPENTO: tutti i LED e lampada spenti
-      digitalWrite(ledL1, LOW);
-      digitalWrite(ledL2, LOW);
-      digitalWrite(ledL3, LOW);
-      analogWrite(outputLampada, 0);
-      
-      Serial.println("Stato: SPENTO");
-      
+    case SPENTO:   
+	  // Stato SPENTO: tutti i LED e lampada spenti
       // Controllo pressione pulsante P1 (HIGH con pull-down quando premuto)
       if (digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
         statoCorrente = BASSA_INTENSITA;
+		Serial.println("Stato: BASSA_INTENSITA");
+		// impostazione valore uscite
+		updateOutputs(LOW, HIGH, LOW, INTENSITA_BASSA);
+		// inizializzazione stato successivo
         timerInattivita.reset();
-        timerInattivita.stop();
+        timerInattivita.start();
       }
       break;
       
     case BASSA_INTENSITA:
-      // Stato BASSA_INTENSITA: LED L1 acceso, altri spenti, lampada a bassa intensità
-      digitalWrite(ledL1, HIGH);
-      digitalWrite(ledL2, LOW);
-      digitalWrite(ledL3, LOW);
-      analogWrite(outputLampada, INTENSITA_BASSA);
-      
+      // Stato BASSA_INTENSITA: LED L1 acceso, altri spenti, lampada a bassa intensità     
       Serial.println("Stato: BASSA_INTENSITA");
-      
-      // Controllo pressione pulsante P1
-      if (digitalRead(pulsanteP1) == HIGH) {
+       
+      if (digitalRead(pulsanteP1) == HIGH) {// Controllo pressione pulsante P1
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = MEDIA_INTENSITA;
-	timerInattivita.start(); // Reset del timer di inattività
-        timerInattivita.reset(); // Reset del timer di inattività
-      }
-      
-      // Controllo movimento (rilevato = HIGH)
-      if (digitalRead(pirSensor) == HIGH) {
+		Serial.println("Stato: MEDIA_INTENSITA");
+		// impostazione valore uscite
+		updateOutputs(LOW, HIGH, LOW, INTENSITA_MEDIA);
+		// inizializzazione stato successivo
+		timerInattivita.reset(); // Reset del timer di inattività
+      }else if (digitalRead(pirSensor) == HIGH) {// Controllo movimento (rilevato = HIGH)
+		// inizializzazione stato successivo
         timerInattivita.reset(); // Reset del timer di inattività
         Serial.println("Movimento rilevato - Timer resettato");
-      }
-      
-      // Verifica inattività
-      if (timerInattivita.get() > TEMPO_INATTIVITA) {
+      }else if( timerInattivita.get() > TEMPO_INATTIVITA) {// Verifica inattività
         Serial.println("Inattività rilevata - Spegnimento automatico");
-        timerInattivita.stop();
         statoCorrente = SPENTO;
+		Serial.println("Stato: SPENTO");
+		// impostazione valore uscite
+		updateOutputs(LOW, LOW, LOW, OFF);
+		// inizializzazione stato successivo
+		timerInattivita.stop();
       }
       break;
       
     case MEDIA_INTENSITA:
       // Stato MEDIA_INTENSITA: LED L2 acceso, altri spenti, lampada a media intensità
-      digitalWrite(ledL1, LOW);
-      digitalWrite(ledL2, HIGH);
-      digitalWrite(ledL3, LOW);
-      analogWrite(outputLampada, INTENSITA_MEDIA);
-      
-      Serial.println("Stato: MEDIA_INTENSITA");
-      
       // Controllo pressione pulsante P1
-      if (digitalRead(pulsanteP1) == HIGH) {
+      if(digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = ALTA_INTENSITA;
+		Serial.println("Stato: ALTA_INTENSITA");
+		// impostazione valore uscite
+		updateOutputs(LOW, LOW, HIGH, INTENSITA_ALTA);
+		// inizializzazione stato successivo
         timerInattivita.reset(); // Reset del timer di inattività
-      }
-      
-      // Controllo movimento
-      if (digitalRead(pirSensor) == HIGH) {
+      }else if (digitalRead(pirSensor) == HIGH) {// Controllo movimento
         timerInattivita.reset(); // Reset del timer di inattività
         Serial.println("Movimento rilevato - Timer resettato");
-      }
-      
-      // Verifica inattività
-      if (timerInattivita.get() > TEMPO_INATTIVITA) {
+      }else if (timerInattivita.get() > TEMPO_INATTIVITA) {// Verifica inattività
         Serial.println("Inattività rilevata - Spegnimento automatico");
-        timerInattivita.stop();
         statoCorrente = SPENTO;
+		Serial.println("Stato: SPENTO");
+		// impostazione valore uscite
+		updateOutputs(LOW, LOW, LOW, OFF);
+		// inizializzazione stato successivo
+		timerInattivita.reset();
       }
       break;
       
     case ALTA_INTENSITA:
-      // Stato ALTA_INTENSITA: LED L3 acceso, altri spenti, lampada ad alta intensità
-      digitalWrite(ledL1, LOW);
-      digitalWrite(ledL2, LOW);
-      digitalWrite(ledL3, HIGH);
-      analogWrite(outputLampada, INTENSITA_ALTA);
-      
-      Serial.println("Stato: ALTA_INTENSITA");
-      
+      // Stato ALTA_INTENSITA: LED L3 acceso, altri spenti, lampada ad alta intensità           
       // Controllo pressione pulsante P1
-      if (digitalRead(pulsanteP1) == HIGH) {
+      if(digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = SPENTO;
+		// impostazione valore uscite
+		updateOutputs(LOW, LOW, HIGH, INTENSITA_ALTA);
+		// inizializzazione stato successivo
         timerInattivita.stop(); // Ferma il timer di inattività
-      }
-      
-      // Controllo movimento
-      if (digitalRead(pirSensor) == HIGH) {
+      }else if(digitalRead(pirSensor) == HIGH) { // controllo movimento
+		// inizializzazione stato successivo
         timerInattivita.reset(); // Reset del timer di inattività
         Serial.println("Movimento rilevato - Timer resettato");
-      }
-      
-      // Verifica inattività
-      if (timerInattivita.get() > TEMPO_INATTIVITA) {
+      }else if(timerInattivita.get() > TEMPO_INATTIVITA) {// Verifica inattività
         Serial.println("Inattività rilevata - Spegnimento automatico");
-        timerInattivita.stop();
         statoCorrente = SPENTO;
+		Serial.println("Stato: SPENTO");
+		// impostazione valore uscite
+		updateOutputs(LOW, LOW, LOW, OFF);
+		// inizializzazione stato successivo
+		timerInattivita.stop();
       }
       break;
   }
-  
   delay(10); // Piccolo delay per stabilità
 }
 ```
