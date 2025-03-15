@@ -231,23 +231,23 @@ void loop() {
       if (digitalRead(pulsanteP1) == HIGH) {// Controllo pressione pulsante P1
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = MEDIA_INTENSITA;
-		Serial.println("Stato: MEDIA_INTENSITA");
-		// impostazione valore uscite
-		updateOutputs(LOW, HIGH, LOW, INTENSITA_MEDIA);
-		// inizializzazione stato successivo
-		timerInattivita.reset(); // Reset del timer di inattività
+	Serial.println("Stato: MEDIA_INTENSITA");
+	// impostazione valore uscite
+	updateOutputs(LOW, HIGH, LOW, INTENSITA_MEDIA);
+	// inizializzazione stato successivo
+	timerInattivita.reset(); // Reset del timer di inattività
       }else if (digitalRead(pirSensor) == HIGH) {// Controllo movimento (rilevato = HIGH)
-		// inizializzazione stato successivo
+	// inizializzazione stato successivo
         timerInattivita.reset(); // Reset del timer di inattività
         Serial.println("Movimento rilevato - Timer resettato");
       }else if( timerInattivita.get() > TEMPO_INATTIVITA) {// Verifica inattività
         Serial.println("Inattività rilevata - Spegnimento automatico");
         statoCorrente = SPENTO;
-		Serial.println("Stato: SPENTO");
-		// impostazione valore uscite
-		updateOutputs(LOW, LOW, LOW, OFF);
-		// inizializzazione stato successivo
-		timerInattivita.stop();
+	Serial.println("Stato: SPENTO");
+	// impostazione valore uscite
+	updateOutputs(LOW, LOW, LOW, OFF);
+	// inizializzazione stato successivo
+	timerInattivita.stop();
       }
       break;
       
@@ -257,10 +257,10 @@ void loop() {
       if(digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = ALTA_INTENSITA;
-		Serial.println("Stato: ALTA_INTENSITA");
-		// impostazione valore uscite
-		updateOutputs(LOW, LOW, HIGH, INTENSITA_ALTA);
-		// inizializzazione stato successivo
+	Serial.println("Stato: ALTA_INTENSITA");
+	// impostazione valore uscite
+	updateOutputs(LOW, LOW, HIGH, INTENSITA_ALTA);
+	// inizializzazione stato successivo
         timerInattivita.reset(); // Reset del timer di inattività
       }else if (digitalRead(pirSensor) == HIGH) {// Controllo movimento
         timerInattivita.reset(); // Reset del timer di inattività
@@ -268,11 +268,11 @@ void loop() {
       }else if (timerInattivita.get() > TEMPO_INATTIVITA) {// Verifica inattività
         Serial.println("Inattività rilevata - Spegnimento automatico");
         statoCorrente = SPENTO;
-		Serial.println("Stato: SPENTO");
-		// impostazione valore uscite
-		updateOutputs(LOW, LOW, LOW, OFF);
-		// inizializzazione stato successivo
-		timerInattivita.reset();
+	Serial.println("Stato: SPENTO");
+	// impostazione valore uscite
+	updateOutputs(LOW, LOW, LOW, OFF);
+	// inizializzazione stato successivo
+	timerInattivita.reset();
       }
       break;
       
@@ -282,22 +282,22 @@ void loop() {
       if(digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = SPENTO;
-		// impostazione valore uscite
-		updateOutputs(LOW, LOW, HIGH, INTENSITA_ALTA);
-		// inizializzazione stato successivo
+	// impostazione valore uscite
+	updateOutputs(LOW, LOW, HIGH, INTENSITA_ALTA);
+	// inizializzazione stato successivo
         timerInattivita.stop(); // Ferma il timer di inattività
       }else if(digitalRead(pirSensor) == HIGH) { // controllo movimento
-		// inizializzazione stato successivo
+	// inizializzazione stato successivo
         timerInattivita.reset(); // Reset del timer di inattività
         Serial.println("Movimento rilevato - Timer resettato");
       }else if(timerInattivita.get() > TEMPO_INATTIVITA) {// Verifica inattività
         Serial.println("Inattività rilevata - Spegnimento automatico");
         statoCorrente = SPENTO;
-		Serial.println("Stato: SPENTO");
-		// impostazione valore uscite
-		updateOutputs(LOW, LOW, LOW, OFF);
-		// inizializzazione stato successivo
-		timerInattivita.stop();
+	Serial.println("Stato: SPENTO");
+	// impostazione valore uscite
+	updateOutputs(LOW, LOW, LOW, OFF);
+	// inizializzazione stato successivo
+	timerInattivita.stop();
       }
       break;
   }
