@@ -651,6 +651,7 @@ void loop() {
     // Spegnimento automatico
     Serial.println("Inattività rilevata - Spegnimento automatico");
     statoCorrente = 0;  // Torna allo stato SPENTO
+    // inizializzazione stato successivo
     timerInattivita.stop();
     
     // Aggiorna output
