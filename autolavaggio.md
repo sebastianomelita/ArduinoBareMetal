@@ -1,4 +1,4 @@
-bot..>[Torna all'indice generale](indexstatifiniti.md)
+>[Torna all'indice generale](indexstatifiniti.md)
 
 # **AUTOLAVAGGIO**
 
