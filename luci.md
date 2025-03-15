@@ -263,6 +263,7 @@ void loop() {
 	// inizializzazione stato successivo
         timerInattivita.reset(); // Reset del timer di inattività
       }else if (digitalRead(pirSensor) == HIGH) {// Controllo movimento
+	// inizializzazione stato successivo
         timerInattivita.reset(); // Reset del timer di inattività
         Serial.println("Movimento rilevato - Timer resettato");
       }else if (timerInattivita.get() > TEMPO_INATTIVITA) {// Verifica inattività
