@@ -430,7 +430,7 @@ void loop() {
         // impostazione valore uscite
         updateOutputs(HIGH, LOW, LOW, SPENTO);
         analogWrite(outputLampada, INTENSITA_BASSA);
-		// inizializzazione stato successivo
+	// inizializzazione stato successivo
         timerInattivita.reset();
         timerInattivita.start();// Avvio timer inattività
         break;
@@ -439,7 +439,7 @@ void loop() {
         Serial.println("Passaggio a MEDIA_INTENSITA");
         statoCorrente = MEDIA_INTENSITA;
         // impostazione valore uscite
-		updateOutputs(LOW, HIGH, LOW, INTENSITA_MEDIA);
+	updateOutputs(LOW, HIGH, LOW, INTENSITA_MEDIA);
         // inizializzazione stato successivo
         timerInattivita.reset();// Reset timer inattività
         break;
@@ -448,8 +448,8 @@ void loop() {
         Serial.println("Passaggio a ALTA_INTENSITA");
         statoCorrente = ALTA_INTENSITA;
         // impostazione valore uscite
-		updateOutputs(LOW, LOW, HIGH, INTENSITA_ALTA);
-		// inizializzazione stato successivo
+	updateOutputs(LOW, LOW, HIGH, INTENSITA_ALTA);
+	// inizializzazione stato successivo
         timerInattivita.reset();// Reset timer inattività
         break;
         
@@ -458,7 +458,7 @@ void loop() {
         statoCorrente = SPENTO;
         // impostazione valore uscite
         updateOutputs(LOW, LOW, LOW, OFF);
-		// inizializzazione stato successivo
+	// inizializzazione stato successivo
         timerInattivita.stop();// Stop timer inattività
         break;
     }
