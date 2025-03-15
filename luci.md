@@ -95,6 +95,8 @@ stateDiagram-v2
 
 ## **Codice Arduino "prima gli stati e poi gli ingressi"**
 
+Per lo sviluppo fare riferimento alla metodologia esposta in: [priorità-statoingresso](statifinitisviluppo.md#priorità-statoingresso)
+
 ```C++
 //##### urutils.h #####
 void waitUntilInputLow(int btn, unsigned t)
