@@ -11,7 +11,7 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
     - in corrispondenza di **ciascuno stato**:
         - aggiornare il valore dello **stato corrente** con quello **stato successivo** in funzione del valore della coppia (**ingresso, stato**).
         - calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
-        - impostare l'**inizializzazione** dello stato successivo.
+        - impostare l'**inizializzazione** dello stato successivo (timers, contatori, ecc.).
 
 - oppure, alternativamente, **prima valutare gli stati** e poi gli ingressi:
    - scrivere uno switch-case con **tutti** i **possibili stati** del sistema
@@ -19,7 +19,7 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
    - in corrispondenza di **ciascun ingresso**:
         - aggiornare il valore dello **stato corrente** con quello **stato successivo** in funzione del valore della coppia (**ingresso, stato**).
         - calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
-        - impostare l'**inizializzazione** dello stato successivo.
+        - impostare l'**inizializzazione** dello stato successivo (timers, contatori, ecc.).
 
 Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM), il rapporto tra numero di stati e numero di ingressi è un fattore importante da considerare:
 
