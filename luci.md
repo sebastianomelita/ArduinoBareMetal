@@ -612,7 +612,8 @@ void loop() {
   // INGRESSO 1: Pulsante P1 premuto
   if (digitalRead(pulsanteP1) == HIGH) {
     waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
-    
+
+    // inizializzazione stato successivo
     // Se era spento, avvia il timer di inattività
     if (statoCorrente == 0) {
       timerInattivita.reset();
@@ -655,7 +656,7 @@ void loop() {
     // Aggiorna output
     aggiornaOutput();
   }
-  
+
   delay(10); // Piccolo delay per stabilità
 }
 
