@@ -145,7 +145,7 @@ void loop() {
 
 Si noti che:
 - gli ingressi sui due sensori di start possono determinare transizioni verso il solo stato ```TRASPORTO_CERTO```, per cui lo switch-case interno è inutile.
-- l'ingresso sul sensore di stop determina due stati ma in momenti diversi, uno prima (```PEZZO_PRONTO```) del blocco del codice con ```waitUntilInputLow``` e uno dopo (```TRASPORTO_STIMATO```) , ne consegue che anche in questo caso lo switch-case interno è superfluo.
+- l'ingresso sul sensore di stop determina due stati ma in momenti diversi, uno prima (```PEZZO_PRONTO```) del blocco del codice con ```waitUntilInputLow``` e uno dopo (```TRASPORTO_STIMATO```), ne consegue che anche in questo caso lo switch-case interno è superfluo.
 - il timer è un ingresso che apparentemente è in ascolto su tre stati (```RIPOSO```, ```TRASPORTO_CERTO```, ```TRASPORTO_STIMATO```) ma che, in realtà, è effettivamente attivo solo nello stato ```TRASPORTO_STIMATO```, coerentemente con la tabella delle transizioni e il diagramma degli stati.
 - il timer è un ingresso che può determinare transizioni verso il solo stato ```RIPOSO``` per cui, anche in questo caso, lo switch-case interno è inutile.
 
