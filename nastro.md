@@ -707,10 +707,11 @@ Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349645533881565780
 stateDiagram-v2
     [*] --> RIPOSO
     
-    RIPOSO --> TRASPORTO: Rilevamento pezzo in ingresso\n(barriera pezzi alti o bassi)
-    TRASPORTO --> PRELIEVO: Rilevamento pezzo in uscita
-    PRELIEVO --> TRASPORTO: Pezzo prelevato\n(barriera uscita disattivata)
-    TRASPORTO --> RIPOSO: Timer di volo scaduto\n(nessun pezzo sul nastro)
+    RIPOSO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\n(barriera pezzi alti o bassi)
+    TRASPORTO_CERTO --> PRELIEVO: Rilevamento pezzo in uscita
+    PRELIEVO --> TRASPORTO_STIMATO: Pezzo prelevato\n(barriera uscita disattivata)
+    TRASPORTO_STIMATO --> RIPOSO: Timer di volo scaduto\n(nessun pezzo sul nastro)
+    TRASPORTO_STIMATO --> PRELIEVO: Rilevamento pezzo in uscita
     
     note right of RIPOSO
         Motore spento
@@ -718,15 +719,25 @@ stateDiagram-v2
         In attesa di nuovi pezzi
     end note
     
-    note right of TRASPORTO
+    note right of TRASPORTO_CERTO
         Motore acceso
-        Pezzi in movimento sul nastro
+        Timer di volo bloccato
+        Pezzo sicuramente presente sul nastro
+        (rilevato da sensore ingresso)
     end note
     
     note right of PRELIEVO
         Motore spento
+        Timer di volo bloccato
         Pezzo pronto per essere prelevato
         Ready = true
+    end note
+    
+    note right of TRASPORTO_STIMATO
+        Motore acceso
+        Timer di volo attivo
+        Possibili pezzi sul nastro
+        (non confermati da sensori)
     end note
 ```
 
