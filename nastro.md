@@ -70,14 +70,14 @@ void loop() {
 ```mermaid
 %%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
 stateDiagram-v2
-    [*] --> FERMO
+    [*] --> ASSENZA_PEZZI
     
-    FERMO --> ATTIVO: Rilevamento pezzo in ingresso\n(barriera pezzi alti o bassi)
+    ASSENZA_PEZZI --> ATTIVO: Rilevamento pezzo in ingresso\n(barriera pezzi alti o bassi)
     ATTIVO --> PRONTO_PRELIEVO: Rilevamento pezzo in uscita
     PRONTO_PRELIEVO --> ATTIVO: Pezzo prelevato\n(barriera uscita disattivata)
-    ATTIVO --> FERMO: Timer di volo scaduto\n(nessun pezzo sul nastro)
+    ATTIVO --> ASSENZA_PEZZI: Timer di volo scaduto\n(nessun pezzo sul nastro)
     
-    note right of FERMO
+    note right of ASSENZA_PEZZI
         Motore spento
         Timer di volo bloccato
         Nessun pezzo sul nastro
