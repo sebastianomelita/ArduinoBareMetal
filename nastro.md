@@ -31,6 +31,7 @@ All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta
 |---------------|-------|----------------|--------|
 | RIPOSO | Sensore pezzi alti = LOW oppure Sensore pezzi bassi = LOW | TRASPORTO_CERTO | Accensione motore, Reset e blocco timer di volo, Ready = false |
 | TRASPORTO_CERTO | Sensore uscita = LOW | PEZZO_PRONTO | Spegnimento motore, Blocco timer di volo, Ready = true |
+| TRASPORTO_CERTO | Sensore pezzi alti = LOW oppure Sensore pezzi bassi = LOW | TRASPORTO_CERTO | Nessun cambio (il motore resta acceso) |
 | PEZZO_PRONTO | Sensore uscita = HIGH | TRASPORTO_STIMATO | Accensione motore, Reset e avvio timer di volo, Ready = false |
 | TRASPORTO_STIMATO | Sensore uscita = LOW | PEZZO_PRONTO | Spegnimento motore, Blocco timer di volo, Ready = true |
 | TRASPORTO_STIMATO | Timer di volo scaduto | RIPOSO | Spegnimento motore, Ready = false |
