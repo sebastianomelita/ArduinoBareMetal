@@ -106,6 +106,9 @@ void setup() {
 
 void loop() {
 	// lettura degli ingressi
+	// RIPOSO
+	// TRASPORTO_CERTO
+	// TRASPORTO_STIMATO
 	if(digitalRead(startSensorHigh)==HIGH){		// se è alto c'è stato un fronte di salita
 		// TRASPORTO_CERTO
 		engineon = true; 	
@@ -169,6 +172,9 @@ void setup() {
 
 // loop principale
 void loop() {
+	// RIPOSO
+	// TRASPORTO_CERTO
+	// TRASPORTO_STIMATO
 	if(digitalRead(startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
 		engineon = true; 	
 		digitalWrite(engineLed, HIGH);
