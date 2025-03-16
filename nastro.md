@@ -127,9 +127,10 @@ void loop() {
 		volo.reset();
 	}
 	// polling del timer di volo
+	// TRASPORTO_STIMATO
+        // timer in corsa solo a partire da TRASPORTO_STIMATO
 	if(volo.get() > 10000){
-		// TRASPORTO_STIMATO
-		// timer in corsa solo a partire da TRASPORTO_STIMATO
+		// RIPOSO
         	volo.stop();
         	volo.reset();
 		engineon = false; 
@@ -204,9 +205,8 @@ void loop() {
 		volo.start(); 					// se c'è un pezzo in transito arriverà prima dello scadere
 		volo.reset();
                 Serial.println("Timer di volo attivato");
-	} else if(volo.get() > flyTime){
-		// TRASPORTO_STIMATO
-		// timer in corsa solo a partire da TRASPORTO_STIMATO
+	} else if(volo.get() > flyTime){// timer in corsa solo a partire da TRASPORTO_STIMATO
+		// RIPOSO
         	volo.stop();
         	volo.reset();
 		engineon = false; 
