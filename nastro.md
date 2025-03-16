@@ -708,15 +708,16 @@ stateDiagram-v2
     [*] --> RIPOSO
     
     RIPOSO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\n(barriera pezzi alti o bassi)
-    TRASPORTO_CERTO --> PRELIEVO: Rilevamento pezzo in uscita
-    PRELIEVO --> TRASPORTO_STIMATO: Pezzo prelevato\n(barriera uscita disattivata)
+    TRASPORTO_CERTO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
+    PEZZO_PRONTO --> TRASPORTO_STIMATO: Pezzo prelevato\n(barriera uscita disattivata)
     TRASPORTO_STIMATO --> RIPOSO: Timer di volo scaduto\n(nessun pezzo sul nastro)
-    TRASPORTO_STIMATO --> PRELIEVO: Rilevamento pezzo in uscita
+    TRASPORTO_STIMATO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
+    TRASPORTO_STIMATO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso
     
     note right of RIPOSO
         Motore spento
         Timer di volo bloccato
-        In attesa di nuovi pezzi
+        Nastro vuoto
     end note
     
     note right of TRASPORTO_CERTO
@@ -726,10 +727,10 @@ stateDiagram-v2
         (rilevato da sensore ingresso)
     end note
     
-    note right of PRELIEVO
+    note right of PEZZO_PRONTO
         Motore spento
         Timer di volo bloccato
-        Pezzo pronto per essere prelevato
+        Pezzo arrivato all'uscita
         Ready = true
     end note
     
