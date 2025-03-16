@@ -58,6 +58,7 @@ Riguardo agli **ingressi** bisogna tenere presente che normalmente andrebbero re
 - più **letture successive** dello stesso valore potrebbero indurre, invece che una singola transizione verso il prossimo stato, una **sequenza** di transizioni **spurie** attraverso molti stati, tutti quelli raggiungibili attraverso quel particolare ingresso.
 - lo stato di atterragio finale di un **singolo evento** di input **non è prevedibile** dipendendo dalla **durata dell'input** che è a sua volta non deterministicamente prevedibile.
 - una lettura **senza memoria**, cioè una lettura **attiva su un livello**, potrebbe essere ammissibile solamente se l'ingresso che lo genera porta ad un **solo stato**, tra i tanti di una macchina FSM.
+- nella **maggior parte dei casi** la complessità di una macchina FSM richiede l’uso di **input con memoria** per garantire un **comportamento consistente**.
 
 
 ## **Stati**
