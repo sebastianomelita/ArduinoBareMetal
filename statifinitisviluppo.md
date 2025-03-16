@@ -60,6 +60,20 @@ Riguardo agli **ingressi** bisogna tenere presente che normalmente andrebbero re
 - una lettura **senza memoria**, cioè una lettura **attiva su un livello**, potrebbe essere ammissibile solamente se l'ingresso che lo genera porta ad un **solo stato**, tra i tanti di una macchina FSM.
 - nella **maggior parte dei casi** la complessità di una macchina FSM richiede l’uso di **input con memoria** per garantire un **comportamento consistente**.
 
+### **Debounce sugli ingressi**
+
+Se un sistema rileva un ingresso su fronte di salita (passaggio da 0 a 1) e non si applica un debounce, potrebbe registrare più eventi invece di uno solo, causando comportamenti indesiderati come:
+- Doppie pressioni accidentali su un pulsante.
+- **Transizioni spurie** di stato in una FSM.
+- Attivazioni multiple di comandi o funzioni.
+
+Il **debounce Software** può essere realizzato con:
+- **Ritardo temporale tra i campioni**: Aspettare qualche millisecondo dopo la prima lettura prima di accettare il valore stabile. Esempio con ```delay()``` (bloccante) o ```millis()``` (non bloccante).
+- **Media dei campioni**: Eseguire più letture ravvicinate e considerare valido il valore più stabile.
+
+In sistemi **real-time** (come FSM o microcontrollori), il debounce software è spesso implementato con **```millis()```** per evitare di bloccare il codice. 
+
+Senza debounce, un semplice pulsante può generare ingressi errati e comportamenti imprevedibili.
 
 ## **Stati**
 
