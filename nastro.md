@@ -82,7 +82,7 @@ stateDiagram-v2
     end note
 ```
 
-##  **Soluzione del tipo prima gli ingressi**
+##  **Soluzione in logica "prima gli ingressi"**
 
 L'algoritmo proposto per la gestione di un nastro trasportatore fa uso: 
 - della **primitiva** ```waitUntilInputLow()``` per la realizzazione della logica di barriera (pulsante toggle)
@@ -234,7 +234,7 @@ void loop() {
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/bKP671nY2MU-copy-of-nastrouno/editel?tenant=circuits
 
-##  **Soluzione del tipo prima gli stati**
+##  **Soluzione in logica "prima gli stati"**
 
 L'algoritmo è implementato usando una **logica FSM** di tipo **"prima gli stati e dopo gli ingressi"**.
 
