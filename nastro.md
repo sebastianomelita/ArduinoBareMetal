@@ -17,6 +17,48 @@ Esiste un timer di volo, così chiamato perchè dura esattamente per il tempo ch
 
 All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta e pure si blocca il timer di volo. All'attivazione del sensore di uscita si blocca il nastro, alla sua disattivazione riparte il nastro e parte il timer di volo. Allo scadere del timer di volo si spegne il motore.
 
+###  **Diagramma degli stati**
+
+```mermaid
+%%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
+stateDiagram-v2
+    [*] --> RIPOSO
+    
+    RIPOSO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\n(barriera pezzi alti o bassi)
+    TRASPORTO_CERTO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
+    PEZZO_PRONTO --> TRASPORTO_STIMATO: Pezzo prelevato\n(barriera uscita disattivata)
+    TRASPORTO_STIMATO --> RIPOSO: Timer di volo scaduto\n(nessun pezzo sul nastro)
+    TRASPORTO_STIMATO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
+    TRASPORTO_STIMATO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso
+    
+    note right of RIPOSO
+        Motore spento
+        Timer di volo bloccato
+        Nastro vuoto
+    end note
+    
+    note right of TRASPORTO_CERTO
+        Motore acceso
+        Timer di volo bloccato
+        Pezzo sicuramente presente sul nastro
+        (rilevato da sensore ingresso)
+    end note
+    
+    note right of PEZZO_PRONTO
+        Motore spento
+        Timer di volo bloccato
+        Pezzo arrivato all'uscita
+        Ready = true
+    end note
+    
+    note right of TRASPORTO_STIMATO
+        Motore acceso
+        Timer di volo attivo
+        Possibili pezzi sul nastro
+        (non confermati da sensori)
+    end note
+```
+
 ###  **Soluzione**
 
 L'algoritmo proposto per la gestione di un nastro trasportatore fa uso: 
@@ -702,44 +744,6 @@ void loop() {
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349645533881565780
 
-```mermaid
-%%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
-stateDiagram-v2
-    [*] --> RIPOSO
-    
-    RIPOSO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\n(barriera pezzi alti o bassi)
-    TRASPORTO_CERTO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
-    PEZZO_PRONTO --> TRASPORTO_STIMATO: Pezzo prelevato\n(barriera uscita disattivata)
-    TRASPORTO_STIMATO --> RIPOSO: Timer di volo scaduto\n(nessun pezzo sul nastro)
-    TRASPORTO_STIMATO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
-    TRASPORTO_STIMATO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso
-    
-    note right of RIPOSO
-        Motore spento
-        Timer di volo bloccato
-        Nastro vuoto
-    end note
-    
-    note right of TRASPORTO_CERTO
-        Motore acceso
-        Timer di volo bloccato
-        Pezzo sicuramente presente sul nastro
-        (rilevato da sensore ingresso)
-    end note
-    
-    note right of PEZZO_PRONTO
-        Motore spento
-        Timer di volo bloccato
-        Pezzo arrivato all'uscita
-        Ready = true
-    end note
-    
-    note right of TRASPORTO_STIMATO
-        Motore acceso
-        Timer di volo attivo
-        Possibili pezzi sul nastro
-        (non confermati da sensori)
-    end note
-```
+
 
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](nastro_py.md)
