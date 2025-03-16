@@ -306,24 +306,24 @@ void loop() {
         Serial.println("Pezzo ALTO rilevato in ingresso");
         waitUntilInputLow(SENSORE_PEZZI_ALTI, 50); // Attendi che il pezzo attraversi completamente il sensore
         Serial.println("Avvio trasporto certo");
-		// Aggiorna lo stato
-	    statoCorrente = TRASPORTO_CERTO;
-	    // impostazione valore uscite
-	    digitalWrite(MOTORE_NASTRO, HIGH);// Attiva il motore
-	    // inizializzazione stato successivo
-	    timerVolo.reset();// Resetta e blocca il timer di volo
-	    timerVolo.stop();
+	// Aggiorna lo stato
+	statoCorrente = TRASPORTO_CERTO;
+	// impostazione valore uscite
+	digitalWrite(MOTORE_NASTRO, HIGH);// Attiva il motore
+	// inizializzazione stato successivo
+	timerVolo.reset();// Resetta e blocca il timer di volo
+	 timerVolo.stop();
       } 
       else if (digitalRead(SENSORE_PEZZI_BASSI) == HIGH) {
         Serial.println("Pezzo BASSO rilevato in ingresso");
         waitUntilInputLow(SENSORE_PEZZI_BASSI, 50); // Attendi che il pezzo attraversi completamente il sensore
         // Aggiorna lo stato
-	    statoCorrente = TRASPORTO_CERTO;
-	    // impostazione valore uscite
-	    digitalWrite(MOTORE_NASTRO, HIGH);// Attiva il motore
-	    // inizializzazione stato successivo
-	    timerVolo.reset();// Resetta e blocca il timer di volo
-	    timerVolo.stop();
+	statoCorrente = TRASPORTO_CERTO;
+	// impostazione valore uscite
+	digitalWrite(MOTORE_NASTRO, HIGH);// Attiva il motore
+	// inizializzazione stato successivo
+	timerVolo.reset();// Resetta e blocca il timer di volo
+	timerVolo.stop();
       }
       break;
       
@@ -332,8 +332,8 @@ void loop() {
       
       if (digitalRead(SENSORE_USCITA) == HIGH) {// Monitora il sensore di uscita
         Serial.println("Pezzo arrivato all'uscita");
-		// Aggiorna lo stato
-		statoCorrente = PEZZO_PRONTO;
+	// Aggiorna lo stato
+	statoCorrente = PEZZO_PRONTO;
       }
       break;
       
@@ -343,17 +343,17 @@ void loop() {
       // Monitora il sensore di uscita per rilevare quando il pezzo viene prelevato
       if (digitalRead(SENSORE_USCITA) == HIGH) {
         Serial.println("Pezzo prelevato. Avvio trasporto stimato");  
-		// Aggiorna lo stato
-		statoCorrente = TRASPORTO_STIMATO;
-	    ready = true;// segnala al thred del braccio che il pezzo è pronto
-		digitalWrite(MOTORE_NASTRO, LOW);// Blocca il motore
-		waitUntilInputLow(SENSORE_USCITA,50);// aspetta che il braccio prelevi il pezzo
-		// impostazione valore uscite
-		digitalWrite(MOTORE_NASTRO, HIGH);// Riavvia il motore
-		// inizializzazione stato successivo
-		ready = false;// segnala al thred del braccio che il pezzo è stato prelevato
-		timerVolo.reset();
-		timerVolo.start();// Avvia il timer di volo
+	// Aggiorna lo stato
+	statoCorrente = TRASPORTO_STIMATO;
+    	ready = true;// segnala al thred del braccio che il pezzo è pronto
+	digitalWrite(MOTORE_NASTRO, LOW);// Blocca il motore
+	waitUntilInputLow(SENSORE_USCITA,50);// aspetta che il braccio prelevi il pezzo
+	// impostazione valore uscite
+	digitalWrite(MOTORE_NASTRO, HIGH);// Riavvia il motore
+	// inizializzazione stato successivo
+	ready = false;// segnala al thred del braccio che il pezzo è stato prelevato
+	timerVolo.reset();
+	timerVolo.start();// Avvia il timer di volo
       }
       break;
       
@@ -363,35 +363,35 @@ void loop() {
       // Controlla se è arrivato un pezzo all'uscita
       if (digitalRead(SENSORE_USCITA) == HIGH) {
         Serial.println("Pezzo arrivato all'uscita durante trasporto stimato");
-		// Aggiorna lo stato
-		statoCorrente = PEZZO_PRONTO;
+	// Aggiorna lo stato
+	statoCorrente = PEZZO_PRONTO;
       // Controlla se è arrivato un nuovo pezzo all'ingresso
       else if (digitalRead(SENSORE_PEZZI_ALTI) == HIGH) {
         Serial.println("Nuovo pezzo ALTO rilevato in ingresso durante trasporto stimato");
         waitUntilInputLow(SENSORE_PEZZI_ALTI, 50);
         // Aggiorna lo stato
-		statoCorrente = TRASPORTO_CERTO;
+	statoCorrente = TRASPORTO_CERTO;
         // inizializzazione stato successivo
-	    timerVolo.reset();// Resetta e blocca il timer di volo (il motore è già acceso)
-	    timerVolo.stop();
+	timerVolo.reset();// Resetta e blocca il timer di volo (il motore è già acceso)
+	timerVolo.stop();
       }
       else if (digitalRead(SENSORE_PEZZI_BASSI) == HIGH) {
         Serial.println("Nuovo pezzo BASSO rilevato in ingresso durante trasporto stimato");
         waitUntilInputLow(SENSORE_PEZZI_BASSI, 50);
         // Aggiorna lo stato
-		statoCorrente = TRASPORTO_CERTO;
+	statoCorrente = TRASPORTO_CERTO;
         // inizializzazione stato successivo
-	    timerVolo.reset();// Resetta e blocca il timer di volo (il motore è già acceso)
-	    timerVolo.stop();
+	timerVolo.reset();// Resetta e blocca il timer di volo (il motore è già acceso)
+	timerVolo.stop();
       }
       // Controlla se è scaduto il timer di volo
       else if (timerVolo.get() >= TEMPO_VOLO) {
         Serial.println("Timer di volo scaduto. Nastro vuoto");
         // Aggiorna lo stato
-		statoCorrente = RIPOSO;
+	statoCorrente = RIPOSO;
         // impostazione valore uscite
         digitalWrite(MOTORE_NASTRO, LOW);// Ferma il motore
-		// inizializzazione stato successivo
+	// inizializzazione stato successivo
         ready = false;
       }
       break;
