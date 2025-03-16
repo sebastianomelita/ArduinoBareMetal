@@ -16,6 +16,20 @@ Gli studenti dovranno:
 
 ## Tabella di Transizione del Sistema di Autolavaggio con Rilevamento Movimento Anomalo
 
+Il timer di 60 secondi nello stato POSIZIONATO rappresenta un meccanismo di sicurezza che porta allo stato di ALLARME se il veicolo rimane troppo a lungo nella posizione di attesa senza che inizi il ciclo di lavaggio.
+
+Questo timeout ha diverse funzioni importanti:
+
+1. **Prevenzione di blocchi**: Se per qualche motivo la sequenza di avvio non viene attivata (ad esempio per un malfunzionamento del sistema di controllo), il sistema non rimarrà bloccato indefinitamente in questo stato.
+
+2. **Ottimizzazione dell'efficienza**: Impedisce che un veicolo occupi la stazione di lavaggio senza procedere con il ciclo, permettendo così di liberare lo spazio per altri veicoli in attesa.
+
+3. **Rilevamento anomalie**: Potrebbe indicare un problema con il veicolo o con il sistema di avvio. Ad esempio, il conducente potrebbe aver posizionato il veicolo e poi essere uscito senza avviare il ciclo.
+
+4. **Gestione energetica**: Evita che i sistemi rimangano in stato di standby troppo a lungo, riducendo sprechi energetici.
+
+In un contesto operativo reale, quando scatta questo allarme, un operatore dovrebbe verificare la situazione, risolvere eventuali problemi e resettare il sistema per permettere il normale funzionamento dell'autolavaggio.
+
 | Stato attuale | Input | Stato prossimo | Output |
 |---------------|-------|----------------|--------|
 | LIBERO | Fronte salita sensore A | INGRESSO | LED giallo ingresso, barriera bloccata |
