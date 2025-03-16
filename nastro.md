@@ -72,10 +72,10 @@ void loop() {
 stateDiagram-v2
     [*] --> ASSENZA_PEZZI
     
-    ASSENZA_PEZZI --> ATTIVO: Rilevamento pezzo in ingresso\n(barriera pezzi alti o bassi)
-    ATTIVO --> PRONTO_PRELIEVO: Rilevamento pezzo in uscita
-    PRONTO_PRELIEVO --> ATTIVO: Pezzo prelevato\n(barriera uscita disattivata)
-    ATTIVO --> ASSENZA_PEZZI: Timer di volo scaduto\n(nessun pezzo sul nastro)
+    ASSENZA_PEZZI --> PEZZI_IN_TRANSITO: Rilevamento pezzo in ingresso\n(barriera pezzi alti o bassi)
+    PEZZI_IN_TRANSITO --> PRONTO_PRELIEVO: Rilevamento pezzo in uscita
+    PRONTO_PRELIEVO --> PEZZI_IN_TRANSITO: Pezzo prelevato\n(barriera uscita disattivata)
+    PEZZI_IN_TRANSITO --> ASSENZA_PEZZI: Timer di volo scaduto\n(nessun pezzo sul nastro)
     
     note right of ASSENZA_PEZZI
         Motore spento
@@ -83,10 +83,10 @@ stateDiagram-v2
         Nessun pezzo sul nastro
     end note
     
-    note right of ATTIVO
+    note right of PEZZI_IN_TRANSITO
         Motore acceso
         Timer di volo attivo o bloccato
-        Pezzi in transito sul nastro
+        Pezzi in movimento sul nastro
     end note
     
     note right of PRONTO_PRELIEVO
