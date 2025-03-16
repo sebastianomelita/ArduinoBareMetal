@@ -7,7 +7,7 @@
 
 Programma per la gestione di un nastro trasportatore realizzato con un **timer** basato sul polling della funzione ```millis()``` e su **rilevatori di transito** basati su ```delay()```.
 
-Per dettagli sulle macchine a stati finiti o FSM vedi [FSM](indexstatifiniti.md)
+Per dettagli sulle macchine a stati finiti (o FSM) vedi [FSM](indexstatifiniti.md)
 
 ###  **Esigenza**
 
