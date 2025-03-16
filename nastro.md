@@ -312,7 +312,7 @@ void loop() {
 	digitalWrite(MOTORE_NASTRO, HIGH);// Attiva il motore
 	// inizializzazione stato successivo
 	timerVolo.reset();// Resetta e blocca il timer di volo
-	 timerVolo.stop();
+	timerVolo.stop();
       } 
       else if (digitalRead(SENSORE_PEZZI_BASSI) == HIGH) {
         Serial.println("Pezzo BASSO rilevato in ingresso");
