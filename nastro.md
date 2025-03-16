@@ -44,11 +44,11 @@ All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta
 stateDiagram-v2
     [*] --> RIPOSO
     
-    RIPOSO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\(barriera pezzi alti o bassi)
+    RIPOSO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\n(barriera pezzi alti o bassi)
     TRASPORTO_CERTO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
-    TRASPORTO_CERTO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\(nessun cambio di stato)
-    PEZZO_PRONTO --> TRASPORTO_STIMATO: Pezzo prelevato\(barriera uscita disattivata)
-    TRASPORTO_STIMATO --> RIPOSO: Timer di volo scaduto\(nessun pezzo sul nastro)
+    TRASPORTO_CERTO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\n(nessun cambio di stato)
+    PEZZO_PRONTO --> TRASPORTO_STIMATO: Pezzo prelevato\n(barriera uscita disattivata)
+    TRASPORTO_STIMATO --> RIPOSO: Timer di volo scaduto\n(nessun pezzo sul nastro)
     TRASPORTO_STIMATO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
     TRASPORTO_STIMATO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso
     
