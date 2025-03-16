@@ -67,7 +67,37 @@ void loop() {
 	}
 }
 ```
-Un **esempio completo** per la gestione di un singolo nastro, corredato di elementi di segnalazione (led) e messaggistica di debug potrebbe essere:
+```mermaid
+%%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
+stateDiagram-v2
+    [*] --> FERMO
+    
+    FERMO --> ATTIVO: Rilevamento pezzo in ingresso\n(barriera pezzi alti o bassi)
+    ATTIVO --> PRONTO_PRELIEVO: Rilevamento pezzo in uscita
+    PRONTO_PRELIEVO --> ATTIVO: Pezzo prelevato\n(barriera uscita disattivata)
+    ATTIVO --> FERMO: Timer di volo scaduto\n(nessun pezzo sul nastro)
+    
+    note right of FERMO
+        Motore spento
+        Timer di volo bloccato
+        Nessun pezzo sul nastro
+    end note
+    
+    note right of ATTIVO
+        Motore acceso
+        Timer di volo attivo o bloccato
+        Pezzi in transito sul nastro
+    end note
+    
+    note right of PRONTO_PRELIEVO
+        Motore spento
+        Timer di volo bloccato
+        Pezzo in attesa di prelievo
+        Ready = true
+    end note
+```
+
+Un **esempio completo** per la gestione di un singolo nastro, corredato di elementi di segnalazione (led) e messaggistica di debug è riportato di seguito:
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
