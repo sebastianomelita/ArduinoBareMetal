@@ -396,6 +396,7 @@ void loop() {
       }
       break;
   }
+
   // Piccolo delay per stabilità
   delay(50);
 }
