@@ -17,7 +17,18 @@ Esiste un timer di volo, così chiamato perchè dura esattamente per il tempo ch
 
 All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta e pure si blocca il timer di volo. All'attivazione del sensore di uscita si blocca il nastro, alla sua disattivazione riparte il nastro e parte il timer di volo. Allo scadere del timer di volo si spegne il motore.
 
-###  **Diagramma degli stati**
+## Tabella di Transizione del Nastro Trasportatore
+
+| Stato attuale | Input | Stato prossimo | Output |
+|---------------|-------|----------------|--------|
+| RIPOSO | Sensore pezzi alti = LOW oppure Sensore pezzi bassi = LOW | TRASPORTO_CERTO | Accensione motore, Reset e blocco timer di volo, Ready = false |
+| TRASPORTO_CERTO | Sensore uscita = LOW | PEZZO_PRONTO | Spegnimento motore, Blocco timer di volo, Ready = true |
+| PEZZO_PRONTO | Sensore uscita = HIGH | TRASPORTO_STIMATO | Accensione motore, Reset e avvio timer di volo, Ready = false |
+| TRASPORTO_STIMATO | Sensore uscita = LOW | PEZZO_PRONTO | Spegnimento motore, Blocco timer di volo, Ready = true |
+| TRASPORTO_STIMATO | Timer di volo scaduto | RIPOSO | Spegnimento motore, Ready = false |
+| TRASPORTO_STIMATO | Sensore pezzi alti = LOW oppure Sensore pezzi bassi = LOW | TRASPORTO_CERTO | Reset e blocco timer di volo (motore rimane acceso) |
+
+##  **Diagramma degli stati**
 
 ```mermaid
 %%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
@@ -59,7 +70,7 @@ stateDiagram-v2
     end note
 ```
 
-###  **Soluzione**
+##  **Soluzione**
 
 L'algoritmo proposto per la gestione di un nastro trasportatore fa uso: 
 - della **primitiva** ```waitUntilInputLow()``` per la realizzazione della logica di barriera (pulsante toggle)
