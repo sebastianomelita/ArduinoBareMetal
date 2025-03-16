@@ -52,6 +52,14 @@ Queste linee guida aiutano a minimizzare la complessità del codice e a migliora
 -	polling di funzioni o di flag legati ad eventi HW o SW (verifica della disponibilità di dati in ricezione su un canale tramite Serial.available(), verifica dell’avvenuto scadere di un timeout tramite millis(), ecc.)
 -	contatori che una volta il loro target di conteggio determinano l'esecuzione di una azione
 
+### **Ingressi su fronti o su valori**
+
+Riguardo agli **ingressi** bisogna tenere presente che normalmente andrebbero realizzati solamente input **attivi sui fronti** (ingressi con memoria) piuttosto che input **attivi sui livelli** per alcuni motivi:
+- più **letture successive** dello stesso valore potrebbero indurre, invece che una singola transizione verso il prossimo stato, una **sequenza** di transizioni **spurie** attraverso molti stati, tutti quelli raggiungibili attraverso quel particolare ingresso.
+- lo stato di atterragio finale di un **singolo evento** di input **non è prevedibile** dipendendo dalla **durata dell'input** che è a sua volta non deterministicamente prevedibile.
+- una lettura **senza memoria**, cioè una lettura **attiva su un livello**, potrebbe essere ammissibile solamente se l'ingresso che lo genera porta ad un **solo stato**, tra i tanti di una macchina FSM.
+
+
 ## **Stati**
 
 Si possono considerare **stati**:
