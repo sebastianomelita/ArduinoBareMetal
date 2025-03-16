@@ -17,6 +17,14 @@ Esiste un timer di volo, così chiamato perchè dura esattamente per il tempo ch
 
 All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta e pure si blocca il timer di volo. All'attivazione del sensore di uscita si blocca il nastro, alla sua disattivazione riparte il nastro e parte il timer di volo. Allo scadere del timer di volo si spegne il motore.
 
+## **Stati**
+
+- **RIPOSO**: Il nastro è vuoto e fermo, in attesa di nuovi pezzi.
+- **TRASPORTO_CERTO**: C'è almeno un pezzo sul nastro, confermato dal rilevamento di un sensore all'ingresso. Il timer è disattivato perché abbiamo certezza della presenza del pezzo.
+- **PEZZO_PRONTO**: Un pezzo è arrivato all'uscita ed è pronto per essere prelevato. Il nome riflette perfettamente lo stato del sistema piuttosto che l'azione esterna.
+- **TRASPORTO_STIMATO**: Potrebbero esserci altri pezzi sul nastro, ma non ne abbiamo conferma diretta dai sensori. Il timer è attivo per stimare quando il nastro sarà vuoto.
+
+
 ## Tabella di Transizione del Nastro Trasportatore
 
 | Stato attuale | Input | Stato prossimo | Output |
