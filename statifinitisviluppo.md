@@ -54,7 +54,7 @@ Queste linee guida aiutano a minimizzare la complessità del codice e a migliora
 
 ### **Ingressi su fronti o su valori**
 
-Riguardo agli **ingressi** bisogna tenere presente che normalmente andrebbero realizzati solamente input **attivi sui fronti** (ingressi con memoria) piuttosto che input **attivi sui livelli** per alcuni motivi:
+Riguardo agli **ingressi** bisogna tenere presente che normalmente andrebbero realizzati solamente input **attivi sui fronti** (ingressi con memoria) piuttosto che input **attivi sui livelli** (ingressi senza memoria) per alcuni motivi:
 - più **letture successive** dello stesso valore potrebbero indurre, invece che una singola transizione verso il prossimo stato, una **sequenza** di transizioni **spurie** attraverso molti stati, tutti quelli raggiungibili attraverso quel particolare ingresso.
 - lo stato di atterragio finale di un **singolo evento** di input **non è prevedibile** dipendendo dalla **durata dell'input** che è a sua volta non deterministicamente prevedibile.
 - una lettura **senza memoria**, cioè una lettura **attiva su un livello**, potrebbe essere ammissibile solamente se l'ingresso che lo genera porta ad un **solo stato**, tra i tanti di una macchina FSM.
