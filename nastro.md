@@ -106,17 +106,21 @@ void setup() {
 void loop() {
 	// lettura degli ingressi
 	if(digitalRead(startSensorHigh)==HIGH){		// se è alto c'è stato un fronte di salita
+		// TRASPORTO_CERTO
 		engineon = true; 	
 		volo.stop();				// c'è almeno un pezzo in transito			
 		waitUntilInputLow(startSensorHigh,50);	// attendi finchè non c'è fronte di discesa
 	}else if(digitalRead(startSensorLow)==HIGH){	// se è alto c'è stato un fronte di salita
+		// TRASPORTO_CERTO
 		engineon = true; 	
 		volo.stop();				// c'è almeno un pezzo in transito				
 		waitUntilInputLow(startSensorLow,50);	// attendi finchè non c'è fronte di discesa
 	}else if(digitalRead(stopSensor)==HIGH) {
+		// PEZZO_PRONTO
 		engineon = false; 
 		ready = true;
 		waitUntilInputLow(stopSensor,50);
+		// TRASPORTO STIMATO
 		ready = false;
 		engineon = true; 
 		volo.start(); 		// se c'è un pezzo in transito arriverà prima dello scadere
@@ -124,6 +128,8 @@ void loop() {
 	}
 	// polling del timer di volo
 	if(volo.get() > 10000){
+		// TRASPORTO_STIMATO
+		// timer in corsa solo a partire da TRASPORTO_STIMATO
         	volo.stop();
         	volo.reset();
 		engineon = false; 
@@ -171,6 +177,7 @@ void loop() {
 		waitUntilInputLow(startSensorLow,50);			// attendi finchè non c'è fronte di discesa
 		Serial.println("Pezzo basso transitato in ingresso");
 		digitalWrite(lowStartLed, LOW);
+		// TRASPORTO_CERTO
 	}else if(digitalRead(startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
 		engineon = true; 	
 		digitalWrite(engineLed, HIGH);
@@ -181,12 +188,15 @@ void loop() {
 		waitUntilInputLow(startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
 		Serial.println("Pezzo alto transitato in ingresso");
 		digitalWrite(highStartLed, LOW);
+		// TRASPORTO_CERTO
 	}else if(digitalRead(stopSensor)==HIGH) {
+		// PEZZO_PRONTO
 		engineon = false;
 		digitalWrite(engineLed, LOW);
 		digitalWrite(stopLed, HIGH);
 		Serial.println("Pezzo in uscita");
 		waitUntilInputLow(stopSensor,50);
+		// TRASPORTO STIMATO
 		Serial.println("Pezzo prelevato dall'uscita");
 		engineon = true; 
 		digitalWrite(stopLed, LOW);
@@ -195,6 +205,8 @@ void loop() {
 		volo.reset();
                 Serial.println("Timer di volo attivato");
 	} else if(volo.get() > flyTime){
+		// TRASPORTO_STIMATO
+		// timer in corsa solo a partire da TRASPORTO_STIMATO
         	volo.stop();
         	volo.reset();
 		engineon = false; 
