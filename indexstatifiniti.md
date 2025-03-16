@@ -18,4 +18,5 @@
 13. [Pulsante luci](luci.md)
 14. [Palestra per cani](palestracani.md)
 15. [Lettiera autopulente](lettiera.md)
-16. [Sitografia](statifinitisitografia.md)
+16. [Nastro trasportatore](nastro.md)
+17. [Sitografia](statifinitisitografia.md)
