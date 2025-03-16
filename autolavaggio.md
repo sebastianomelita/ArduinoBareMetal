@@ -253,10 +253,13 @@ void loop() {
   if ((statoCorrente == PRELAVAGGIO || statoCorrente == LAVAGGIO || statoCorrente == ASCIUGATURA) &&
       (digitalRead(sensore_A) == HIGH || digitalRead(sensore_B) == HIGH)) {
     Serial.println("STATO: ALLARME - Movimento anomalo del veicolo durante il lavaggio");
+    statoCorrente = ALLARME;
+    // impostazione valore uscite
     spegniTuttiAttuatori();
     digitalWrite(led_rosso, HIGH);
     digitalWrite(buzzer, HIGH);
-    statoCorrente = ALLARME;
+    // inizializzazione stato successivo
+    timerProcesso.stop();
   }
   
   // Macchina a stati
@@ -310,6 +313,8 @@ void loop() {
         digitalWrite(led_giallo, LOW);
         digitalWrite(led_rosso, HIGH);
         digitalWrite(buzzer, HIGH);
+	// inizializzazione stato successivo
+	timerProcesso.stop();
         statoCorrente = ALLARME;
       }
       break;
@@ -341,6 +346,7 @@ void loop() {
         digitalWrite(led_verde, LOW);
         digitalWrite(led_rosso, HIGH);
         digitalWrite(buzzer, HIGH);
+	
         statoCorrente = ALLARME;
       }
       break;
@@ -385,7 +391,6 @@ void loop() {
         // Riutilizziamo timerProcesso per monitorare il tempo di attesa in COMPLETAMENTO
 	// inizializzazione stato successivo
         timerProcesso.reset();
-        timerProcesso.start();
         statoCorrente = COMPLETAMENTO;
       }
       break;
