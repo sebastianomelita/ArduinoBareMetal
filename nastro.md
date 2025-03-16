@@ -142,6 +142,13 @@ void loop() {
 	}
 }
 ```
+
+Si noti che:
+- gli ingressi sui due sensori di start possono determinare transizioni verso un solo stato per cui lo switch-case interno è inutile.
+- l'ingresso sul sensore di stop determina due stati ma in momenti diversi, uno prima del blocco del codice con waitUntilInputLow e uno dopo, ne consegue che anche in questo caso lo switch-case interno è superfluo.
+- il timer è un ingresso che apparentemente è in ascolto su tre stati (RIPOSO, TRASPORTO_CERTO, TRASPORTO_STIMATO) ma che, in realtà, è effettivamente attivo solo nello stato TRASPORTO_STIMATO coerentemente con la tabella delle transizioni e il diagramma degli stati.
+- il timer è un ingresso che può determinare transizioni verso un solo stato per cui, anche in questo caso, lo switch-case interno è inutile.
+
 Un **esempio completo** per la gestione di un singolo nastro, corredato di elementi di segnalazione (led) e messaggistica di debug è riportato di seguito:
 
 
