@@ -78,7 +78,7 @@ stateDiagram-v2
     end note
 ```
 
-##  **Soluzione**
+##  **Soluzione del tipo prima gli ingressi**
 
 L'algoritmo proposto per la gestione di un nastro trasportatore fa uso: 
 - della **primitiva** ```waitUntilInputLow()``` per la realizzazione della logica di barriera (pulsante toggle)
@@ -130,9 +130,8 @@ void loop() {
 	}
 }
 ```
-
-
 Un **esempio completo** per la gestione di un singolo nastro, corredato di elementi di segnalazione (led) e messaggistica di debug è riportato di seguito:
+
 
 ```C++
 /*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
@@ -205,6 +204,202 @@ void loop() {
 }
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/bKP671nY2MU-copy-of-nastrouno/editel?tenant=circuits
+
+##  **Soluzione del tipo prima gli stati**
+
+L'algoritmo è implementato usando una **logica FSM** di tipo **"prima gli stati e dopo gli ingressi"**.
+
+```C++
+//##### urutils.h #####
+void waitUntilInputLow(int btn, unsigned t)
+{
+   do{
+     delay(t);
+   }while(digitalRead(btn)!=LOW);
+}
+
+struct DiffTimer
+{
+  unsigned long elapsed, last;
+  bool timerstate=false;
+  byte state = 0;
+  byte count = 0;
+  void reset(){
+    elapsed = 0;
+    last = millis();
+  }
+  void toggle(){
+    if(timerstate){
+      stop();
+    }else{
+      start();
+    }  
+  }
+  void stop(){
+    if(timerstate){
+      timerstate = false;
+      elapsed += millis() - last;
+    }  
+  }
+  void start(){
+    if(!timerstate){
+      timerstate = true;
+      last = millis();
+    }
+  }
+  unsigned long get(){
+    if(timerstate){
+      return millis() - last + elapsed;
+    }
+    return elapsed;
+  }
+  void set(unsigned long e){
+    reset();
+    elapsed = e;
+  }
+};
+//##### urutils.h #####
+
+// Definizione pin per sensori e attuatori
+const int SENSORE_PEZZI_ALTI = 2;   // Sensore di ingresso per pezzi alti
+const int SENSORE_PEZZI_BASSI = 3;  // Sensore di ingresso per pezzi bassi
+const int SENSORE_USCITA = 4;       // Sensore di uscita
+const int MOTORE_NASTRO = 5;        // Pin per il controllo del motore
+
+// Timer di volo
+DiffTimer timerVolo;
+const unsigned long TEMPO_VOLO = 10000; // 10 secondi (da regolare in base alla lunghezza del nastro)
+
+// Variabili di stato
+enum Stati {
+  RIPOSO,
+  TRASPORTO_CERTO,
+  TRASPORTO_STIMATO,
+  PEZZO_PRONTO
+};
+
+uint8_t statoCorrente = RIPOSO;
+bool ready = false; // Segnale che indica un pezzo pronto per essere prelevato
+
+void setup() {
+  // Inizializzazione I/O
+  pinMode(SENSORE_PEZZI_ALTI, INPUT);  // Utilizzo pullup interno: LOW quando un pezzo interrompe la barriera
+  pinMode(SENSORE_PEZZI_BASSI, INPU); // Utilizzo pullup interno: LOW quando un pezzo interrompe la barriera
+  pinMode(SENSORE_USCITA, INPUT);      // Utilizzo pullup interno: LOW quando un pezzo interrompe la barriera
+  pinMode(MOTORE_NASTRO, OUTPUT);
+  // Inizializzazione dello stato
+  digitalWrite(MOTORE_NASTRO, LOW); // Motore inizialmente spento
+  // Inizializzazione timer
+  timerVolo.reset();
+  // Inizializzazione seriale per debug
+  Serial.begin(9600);
+  Serial.println("Sistema Nastro Trasportatore inizializzato");
+}
+
+void loop() {
+  // Macchina a stati
+  switch (statoCorrente) {
+    case RIPOSO:
+      // Nastro fermo, in attesa di rilevare un pezzo in ingresso
+	  
+      if (digitalRead(SENSORE_PEZZI_ALTI) == HIGH) {
+        Serial.println("Pezzo ALTO rilevato in ingresso");
+        waitUntilInputLow(SENSORE_PEZZI_ALTI, 50); // Attendi che il pezzo attraversi completamente il sensore
+        Serial.println("Avvio trasporto certo");
+		// Aggiorna lo stato
+	    statoCorrente = TRASPORTO_CERTO;
+	    // impostazione valore uscite
+	    digitalWrite(MOTORE_NASTRO, HIGH);// Attiva il motore
+	    // inizializzazione stato successivo
+	    timerVolo.reset();// Resetta e blocca il timer di volo
+	    timerVolo.stop();
+      } 
+      else if (digitalRead(SENSORE_PEZZI_BASSI) == HIGH) {
+        Serial.println("Pezzo BASSO rilevato in ingresso");
+        waitUntilInputLow(SENSORE_PEZZI_BASSI, 50); // Attendi che il pezzo attraversi completamente il sensore
+        // Aggiorna lo stato
+	    statoCorrente = TRASPORTO_CERTO;
+	    // impostazione valore uscite
+	    digitalWrite(MOTORE_NASTRO, HIGH);// Attiva il motore
+	    // inizializzazione stato successivo
+	    timerVolo.reset();// Resetta e blocca il timer di volo
+	    timerVolo.stop();
+      }
+      break;
+      
+    case TRASPORTO_CERTO:
+      // Nastro in movimento con presenza certa di un pezzo
+      
+      if (digitalRead(SENSORE_USCITA) == HIGH) {// Monitora il sensore di uscita
+        Serial.println("Pezzo arrivato all'uscita");
+		// Aggiorna lo stato
+		statoCorrente = PEZZO_PRONTO;
+      }
+      break;
+      
+    case PEZZO_PRONTO:
+      // Pezzo in attesa di essere prelevato
+      
+      // Monitora il sensore di uscita per rilevare quando il pezzo viene prelevato
+      if (digitalRead(SENSORE_USCITA) == HIGH) {
+        Serial.println("Pezzo prelevato. Avvio trasporto stimato");  
+		// Aggiorna lo stato
+		statoCorrente = TRASPORTO_STIMATO;
+	    ready = true;// segnala al thred del braccio che il pezzo è pronto
+		digitalWrite(MOTORE_NASTRO, LOW);// Blocca il motore
+		waitUntilInputLow(SENSORE_USCITA,50);// aspetta che il braccio prelevi il pezzo
+		// impostazione valore uscite
+		digitalWrite(MOTORE_NASTRO, HIGH);// Riavvia il motore
+		// inizializzazione stato successivo
+		ready = false;// segnala al thred del braccio che il pezzo è stato prelevato
+		timerVolo.reset();
+		timerVolo.start();// Avvia il timer di volo
+      }
+      break;
+      
+    case TRASPORTO_STIMATO:
+      // Nastro in movimento, possibile presenza di pezzi non confermata
+      
+      // Controlla se è arrivato un pezzo all'uscita
+      if (digitalRead(SENSORE_USCITA) == HIGH) {
+        Serial.println("Pezzo arrivato all'uscita durante trasporto stimato");
+		// Aggiorna lo stato
+		statoCorrente = PEZZO_PRONTO;
+      // Controlla se è arrivato un nuovo pezzo all'ingresso
+      else if (digitalRead(SENSORE_PEZZI_ALTI) == HIGH) {
+        Serial.println("Nuovo pezzo ALTO rilevato in ingresso durante trasporto stimato");
+        waitUntilInputLow(SENSORE_PEZZI_ALTI, 50);
+        // Aggiorna lo stato
+		statoCorrente = TRASPORTO_CERTO;
+        // inizializzazione stato successivo
+	    timerVolo.reset();// Resetta e blocca il timer di volo (il motore è già acceso)
+	    timerVolo.stop();
+      }
+      else if (digitalRead(SENSORE_PEZZI_BASSI) == HIGH) {
+        Serial.println("Nuovo pezzo BASSO rilevato in ingresso durante trasporto stimato");
+        waitUntilInputLow(SENSORE_PEZZI_BASSI, 50);
+        // Aggiorna lo stato
+		statoCorrente = TRASPORTO_CERTO;
+        // inizializzazione stato successivo
+	    timerVolo.reset();// Resetta e blocca il timer di volo (il motore è già acceso)
+	    timerVolo.stop();
+      }
+      // Controlla se è scaduto il timer di volo
+      else if (timerVolo.get() >= TEMPO_VOLO) {
+        Serial.println("Timer di volo scaduto. Nastro vuoto");
+        // Aggiorna lo stato
+		statoCorrente = RIPOSO;
+        // impostazione valore uscite
+        digitalWrite(MOTORE_NASTRO, LOW);// Ferma il motore
+		// inizializzazione stato successivo
+        ready = false;
+      }
+      break;
+  }
+  // Piccolo delay per stabilità
+  delay(50);
+}
+```
 
 ## **URUTILS**
 I prossimi esercizi sono realizzati adoperando la libreria che si può scaricare cliccando col tasto sinistro sul link [urutils.h](urutils.h). 
