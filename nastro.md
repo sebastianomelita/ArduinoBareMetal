@@ -702,4 +702,34 @@ void loop() {
 
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349645533881565780
 
+```mermaid
+%%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
+stateDiagram-v2
+    [*] --> ASSENZA_PEZZI
+    
+    ASSENZA_PEZZI --> PEZZI_IN_TRANSITO: Rilevamento pezzo in ingresso\n(barriera pezzi alti o bassi)
+    PEZZI_IN_TRANSITO --> PRONTO_PRELIEVO: Rilevamento pezzo in uscita
+    PRONTO_PRELIEVO --> PEZZI_IN_TRANSITO: Pezzo prelevato\n(barriera uscita disattivata)
+    PEZZI_IN_TRANSITO --> ASSENZA_PEZZI: Timer di volo scaduto\n(nessun pezzo sul nastro)
+    
+    note right of ASSENZA_PEZZI
+        Motore spento
+        Timer di volo bloccato
+        Nessun pezzo sul nastro
+    end note
+    
+    note right of PEZZI_IN_TRANSITO
+        Motore acceso
+        Timer di volo attivo o bloccato
+        Pezzi in movimento sul nastro
+    end note
+    
+    note right of PRONTO_PRELIEVO
+        Motore spento
+        Timer di volo bloccato
+        Pezzo in attesa di prelievo
+        Ready = true
+    end note
+```
+
 >[Torna all'indice](indexpulsanti.md) >[versione in Python](nastro_py.md)
