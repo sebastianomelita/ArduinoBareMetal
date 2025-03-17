@@ -24,46 +24,44 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
 
 
 ```C++
-// APPROCCIO 2: Prima stati, poi ingressi        | // APPROCCIO 1: Prima ingressi, poi stati
+// APPROCCIO 1: Prima stati, poi ingressi        | // APPROCCIO 2: Prima ingressi, poi stati
 void FSM_StatiPrimaIngressi() {                  | void FSM_IngressiPrimaStati() {
     // Valutazione dello stato                   |     // Valutazione dell'ingresso
-    switch(stato_corrente) {                     |     switch(ingresso) {
-        case STATO_1:                            |         case INGRESSO_A:
-            // Ingressi per STATO_1              |             // Stati raggiungibili da INGRESSO_A
-            if(ingresso == INGRESSO_A) {         |             switch(stato_corrente) {
-                stato_corrente = STATO_2;        |                 case STATO_1:
-                uscita = USCITA_X;               |                     // Transizione
-                timer = 100;                     |                     stato_corrente = STATO_2;
-            }                                    |                     // Calcolo uscite
-            else if(ingresso == INGRESSO_C) {    |                     uscita = USCITA_X;
-                stato_corrente = STATO_5;        |                     // Inizializzazione
-                uscita = USCITA_W;               |                     timer = 100;
-            }                                    |                     break;
-            break;                               |                 
-                                                 |                 case STATO_3:
-        case STATO_2:                            |                     stato_corrente = STATO_4;
-            // Ingressi per STATO_2              |                     uscita = USCITA_Y;
-            if(ingresso == INGRESSO_B) {         |                     contatore = 0;
-                stato_corrente = STATO_3;        |                     break;
-                uscita = USCITA_Z;               |                 
-            }                                    |                 // Altri stati raggiungibili
-            break;                               |             }
-                                                 |             break;
-        // Altri possibili stati                 |             
-    }                                            |         case INGRESSO_B:
-}                                                |             // Stati raggiungibili da INGRESSO_B
-                                                 |             switch(stato_corrente) {
-                                                 |                 case STATO_2:
-                                                 |                     stato_corrente = STATO_3;
-                                                 |                     uscita = USCITA_Z;
-                                                 |                     break;
-                                                 |                 
-                                                 |                 // Altri stati raggiungibili
-                                                 |             }
-                                                 |             break;
+    switch(stato_corrente) {                     |     if (digitalRead(input1) == HIGH) {
+        case STATO_1:                            |         waitUntilInputLow(input1, 50);
+            // Ingressi per STATO_1              |         // Stati raggiungibili da input1 HIGH
+            if (digitalRead(input1) == HIGH) {   |         switch(stato_corrente) {
+                waitUntilInputLow(input1, 50);   |             case STATO_1:
+                stato_corrente = STATO_2;        |                 // Transizione
+                uscita = USCITA_X;               |                 stato_corrente = STATO_2;
+                timer = 100;                     |                 // Calcolo uscite
+            }                                    |                 uscita = USCITA_X;
+            else if (digitalRead(input2) == HIGH) { |               // Inizializzazione
+                waitUntilInputLow(input2, 50);   |                 timer = 100;
+                stato_corrente = STATO_5;        |                 break;
+                uscita = USCITA_W;               |             
+            }                                    |             case STATO_3:
+            break;                               |                 stato_corrente = STATO_4;
+                                                 |                 uscita = USCITA_Y;
+        case STATO_2:                            |                 contatore = 0;
+            // Ingressi per STATO_2              |                 break;
+            if (digitalRead(input2) == HIGH) {   |             
+                waitUntilInputLow(input2, 50);   |             // Altri stati raggiungibili
+                stato_corrente = STATO_3;        |         }
+                uscita = USCITA_Z;               |     }
+            }                                    |     else if (digitalRead(input2) == HIGH) {
+            break;                               |         waitUntilInputLow(input2, 50);
+                                                 |         // Stati raggiungibili da input2 HIGH
+        // Altri possibili stati                 |         switch(stato_corrente) {
+    }                                            |             case STATO_2:
+}                                                |                 stato_corrente = STATO_3;
+                                                 |                 uscita = USCITA_Z;
+                                                 |                 break;
                                                  |             
-                                                 |         // Altri possibili ingressi
+                                                 |             // Altri stati raggiungibili
+                                                 |         }
                                                  |     }
+                                                 |     // Altri possibili ingressi
                                                  | }
 ```
 
