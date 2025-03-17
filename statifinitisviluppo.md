@@ -93,12 +93,53 @@ Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM)
 
 ### **Scelta in base alla struttura**
 
-Quando gli stati si sviluppano principalmente in **successione lineare** con **poche diramazioni**, l'approccio "**prima gli ingressi**" può essere **più efficiente** e leggibile perchè:
+Consideriamo questo esempio di approccio " prima gli ingressi e dopo gli stati":
+
+```C++
+void loop() {
+	// lettura degli ingressi
+	// RIPOSO
+	// TRASPORTO_CERTO
+	// TRASPORTO_STIMATO
+	if(digitalRead(startSensorHigh)==HIGH){		// se è alto c'è stato un fronte di salita
+		// TRASPORTO_CERTO
+		engineon = true; 	
+		volo.stop();				// c'è almeno un pezzo in transito			
+		waitUntilInputLow(startSensorHigh,50);	// attendi finchè non c'è fronte di discesa
+	}else if(digitalRead(stopSensor)==HIGH) {
+		// PEZZO_PRONTO
+		engineon = false; 
+		ready = true;
+		waitUntilInputLow(stopSensor,50);
+		// TRASPORTO_STIMATO
+		ready = false;
+		engineon = true; 
+		volo.start(); 		// se c'è un pezzo in transito arriverà prima dello scadere
+		volo.reset();
+	}
+	// polling del timer di volo
+	// TRASPORTO_STIMATO
+        // timer in corsa solo a partire da TRASPORTO_STIMATO
+	if(volo.get() > 10000){
+		// RIPOSO
+        	volo.stop();
+        	volo.reset();
+		engineon = false; 
+	}
+}
+```
+In questo caso:
+- I sensori di **start** attivano direttamente lo stato ```TRASPORTO_CERTO```.
+- Il sensore di **stop** genera prima PEZZO_PRONTO, poi ```TRASPORTO_STIMATO```.
+- Il **timer** è rilevante solo nello stato ```TRASPORTO_STIMATO``` e causa il ritorno a ```RIPOSO```.
+
+Se ne deduce che quando gli stati si sviluppano principalmente in **successione lineare** con **poche diramazioni**, l'approccio "**prima gli ingressi**" può essere **più efficiente** e leggibile perchè:
 - **Ogni ingresso** porta essenzialmente a uno stato specifico (o a una **sequenza** determinata di stati)
 - Non c'è molta dipendenza dalla storia precedente, ovvero le transizioni di stato nel sistema dipendono principalmente dagli **ingressi correnti** e dallo **stato attuale**
 - La macchina a stati segue un flusso piuttosto **lineare**
 
-Possiamo concludere che:
+
+#### **Conclusione:**
 - Per FSM con **flussi lineari** o con **poche ramificazioni** dove gli ingressi determinano univocamente lo stato successivo → l'approccio "prima gli ingressi" è preferibile
 - Per FSM **complesse** con **molti stati** e dove uno stesso ingresso può causare **transizioni diverse** a seconda dello **stato corrente** → l'approccio "prima gli stati" è generalmente più adatto
 
