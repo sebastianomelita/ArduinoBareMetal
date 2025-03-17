@@ -68,7 +68,7 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
            }                                         |                 // Calcolo uscite
            break;                                    |                 uscita = USCITA_Z;
                                                      |                 // Inizializzazione stato successivo
-       // Altri possibili stati                      |                 timeout = millis() + 2000;
+       /* Altri possibili stati */                   |                 timeout = millis() + 2000;
    }                                                 |                 break;
 }                                                    |             
                                                      |             // Altri stati raggiungibili
