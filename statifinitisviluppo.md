@@ -24,6 +24,7 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
 
 
 ```C++
+```C++
 // APPROCCIO 1: Prima stati, poi ingressi            | // APPROCCIO 2: Prima ingressi, poi stati
 void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaStati() {
    // Valutazione dello stato                        |     // Valutazione dell'ingresso
@@ -38,6 +39,7 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
                uscita = USCITA_X;                    |                 uscita = USCITA_X;
                // Inizializzazione stato successivo  |                 // Inizializzazione stato successivo
                timer = 100;                          |                 timer = 100;
+               contatore_eventi = 0;                 |                 digitalWrite(LED_STATO_2, HIGH);
            }                                         |                 break;
            else if (digitalRead(input2) == HIGH) {   |             
                waitUntilInputLow(input2, 50);        |             case STATO_3:
@@ -46,7 +48,8 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
                // Calcolo uscite                     |                 // Calcolo uscite
                uscita = USCITA_W;                    |                 uscita = USCITA_Y;
                // Inizializzazione stato successivo  |                 // Inizializzazione stato successivo
-           }                                         |                 contatore = 0;
+               allarme_attivo = false;               |                 contatore = 0;
+           }                                         |                 ritardo_ms = 500;
            break;                                    |                 break;
                                                      |             
        case STATO_2:                                 |             // Altri stati raggiungibili
@@ -58,10 +61,11 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
                // Calcolo uscite                     |         switch(stato_corrente) {
                uscita = USCITA_Z;                    |             case STATO_2:
                // Inizializzazione stato successivo  |                 // Transizione
-           }                                         |                 stato_corrente = STATO_3;
-           break;                                    |                 // Calcolo uscite
-                                                     |                 uscita = USCITA_Z;
-       // Altri possibili stati                      |                 // Inizializzazione stato successivo
+               cicli_rimanenti = 3;                  |                 stato_corrente = STATO_3;
+           }                                         |                 // Calcolo uscite
+           break;                                    |                 uscita = USCITA_Z;
+                                                     |                 // Inizializzazione stato successivo
+       // Altri possibili stati                      |                 timeout = millis() + 2000;
    }                                                 |                 break;
 }                                                    |             
                                                      |             // Altri stati raggiungibili
@@ -69,6 +73,7 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
                                                      |     }
                                                      |     // Altri possibili ingressi
                                                      | }
+```
 ```
 
 Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM), il rapporto tra numero di stati e numero di ingressi è un fattore importante da considerare:
