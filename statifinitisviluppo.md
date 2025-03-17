@@ -26,44 +26,44 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
 ```C++
 // APPROCCIO 1: Prima stati, poi ingressi            | // APPROCCIO 2: Prima ingressi, poi stati
 void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaStati() {
-    // Valutazione dello stato                       |     // Valutazione dell'ingresso
-    switch(stato_corrente) {                         |     if (digitalRead(input1) == HIGH) {
-        case STATO_1:                                |         waitUntilInputLow(input1, 50);
-            // Ingressi per STATO_1                  |         // Stati raggiungibili da input1 HIGH
-            if (digitalRead(input1) == HIGH) {       |         switch(stato_corrente) {
-                waitUntilInputLow(input1, 50);       |             case STATO_1:
-                stato_corrente = STATO_2;            |                 // Transizione
-                uscita = USCITA_X;                   |                 stato_corrente = STATO_2;
-                timer = 100;                         |                 // Calcolo uscite
-            }                                        |                 uscita = USCITA_X;
-            else if (digitalRead(input2) == HIGH) {  |                 // Inizializzazione
-                waitUntilInputLow(input2, 50);       |                 timer = 100;
-                stato_corrente = STATO_5;            |                 break;
-                uscita = USCITA_W;                   |             
-            }                                        |             case STATO_3:
-            break;                                   |                 // Transizione
-                                                     |                 stato_corrente = STATO_4;
-        case STATO_2:                                |                 // Calcolo uscite
-            // Ingressi per STATO_2                  |                 uscita = USCITA_Y;
-            if (digitalRead(input2) == HIGH) {       |                 // Inizializzazione
-                waitUntilInputLow(input2, 50);       |                 contatore = 0;
-                stato_corrente = STATO_3;            |                 break;
-                uscita = USCITA_Z;                   |             
-            }                                        |             // Altri stati raggiungibili
-            break;                                   |         }
-                                                     |     }
-        // Altri possibili stati                     |     else if (digitalRead(input2) == HIGH) {
-    }                                                |         waitUntilInputLow(input2, 50);
-}                                                    |         // Stati raggiungibili da input2 HIGH
-                                                     |         switch(stato_corrente) {
-                                                     |             case STATO_2:
-                                                     |                 // Transizione
-                                                     |                 stato_corrente = STATO_3;
-                                                     |                 // Calcolo uscite
-                                                     |                 uscita = USCITA_Z;
-                                                     |                 // Inizializzazione
-                                                     |                 break;
+   // Valutazione dello stato                        |     // Valutazione dell'ingresso
+   switch(stato_corrente) {                          |     if (digitalRead(input1) == HIGH) {
+       case STATO_1:                                 |         waitUntilInputLow(input1, 50);
+           // Ingressi per STATO_1                   |         // Stati raggiungibili da input1 HIGH
+           if (digitalRead(input1) == HIGH) {        |         switch(stato_corrente) {
+               waitUntilInputLow(input1, 50);        |             case STATO_1:
+               // Transizione                        |                 // Transizione
+               stato_corrente = STATO_2;             |                 stato_corrente = STATO_2;
+               // Calcolo uscite                     |                 // Calcolo uscite
+               uscita = USCITA_X;                    |                 uscita = USCITA_X;
+               // Inizializzazione stato successivo  |                 // Inizializzazione stato successivo
+               timer = 100;                          |                 timer = 100;
+           }                                         |                 break;
+           else if (digitalRead(input2) == HIGH) {   |             
+               waitUntilInputLow(input2, 50);        |             case STATO_3:
+               // Transizione                        |                 // Transizione
+               stato_corrente = STATO_5;             |                 stato_corrente = STATO_4;
+               // Calcolo uscite                     |                 // Calcolo uscite
+               uscita = USCITA_W;                    |                 uscita = USCITA_Y;
+               // Inizializzazione stato successivo  |                 // Inizializzazione stato successivo
+           }                                         |                 contatore = 0;
+           break;                                    |                 break;
                                                      |             
+       case STATO_2:                                 |             // Altri stati raggiungibili
+           // Ingressi per STATO_2                   |         }
+           if (digitalRead(input2) == HIGH) {        |     }
+               waitUntilInputLow(input2, 50);        |     else if (digitalRead(input2) == HIGH) {
+               // Transizione                        |         waitUntilInputLow(input2, 50);
+               stato_corrente = STATO_3;             |         // Stati raggiungibili da input2 HIGH
+               // Calcolo uscite                     |         switch(stato_corrente) {
+               uscita = USCITA_Z;                    |             case STATO_2:
+               // Inizializzazione stato successivo  |                 // Transizione
+           }                                         |                 stato_corrente = STATO_3;
+           break;                                    |                 // Calcolo uscite
+                                                     |                 uscita = USCITA_Z;
+       // Altri possibili stati                      |                 // Inizializzazione stato successivo
+   }                                                 |                 break;
+}                                                    |             
                                                      |             // Altri stati raggiungibili
                                                      |         }
                                                      |     }
