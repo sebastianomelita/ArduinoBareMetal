@@ -93,6 +93,19 @@ Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM)
 
 ### **Scelta in base alla struttura**
 
+```mermaid
+%%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
+stateDiagram-v2
+    [*] --> RIPOSO
+    
+    RIPOSO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso
+    TRASPORTO_CERTO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
+    PEZZO_PRONTO --> TRASPORTO_STIMATO: Pezzo prelevato
+    TRASPORTO_STIMATO --> RIPOSO: Timer di volo scaduto
+    TRASPORTO_STIMATO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
+    TRASPORTO_STIMATO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso
+```
+
 Consideriamo questo esempio di approccio " prima gli ingressi e dopo gli stati":
 
 ```C++
