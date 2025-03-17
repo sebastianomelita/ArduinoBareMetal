@@ -101,8 +101,9 @@ stateDiagram-v2
     [*] --> RIPOSO
     
     RIPOSO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso
+    TRASPORTO_CERTO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso
     TRASPORTO_CERTO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
-    PEZZO_PRONTO --> TRASPORTO_STIMATO: Pezzo prelevato
+    PEZZO_PRONTO --> TRASPORTO_STIMATO
     TRASPORTO_STIMATO --> RIPOSO: Timer di volo scaduto
     TRASPORTO_STIMATO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
     TRASPORTO_STIMATO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso
@@ -111,36 +112,54 @@ stateDiagram-v2
 Consideriamo questo esempio di approccio " prima gli ingressi e dopo gli stati":
 
 ```C++
+// Definizione degli stati
+typedef enum {
+  RIPOSO,
+  TRASPORTO_CERTO,
+  PEZZO_PRONTO,
+  TRASPORTO_STIMATO
+} Stato;
+
+// Stato corrente del sistema
+Stato stato_corrente = RIPOSO;
+
 void loop() {
-	// lettura degli ingressi
-	// RIPOSO
-	// TRASPORTO_CERTO
-	// TRASPORTO_STIMATO
-	if(digitalRead(startSensorHigh)==HIGH){		// se è alto c'è stato un fronte di salita
-		// TRASPORTO_CERTO
-		engineon = true; 	
-		volo.stop();				// c'è almeno un pezzo in transito			
-		waitUntilInputLow(startSensorHigh,50);	// attendi finchè non c'è fronte di discesa
-	}else if(digitalRead(stopSensor)==HIGH) {
-		// PEZZO_PRONTO
-		engineon = false; 
-		ready = true;
-		waitUntilInputLow(stopSensor,50);
-		// TRASPORTO_STIMATO
-		ready = false;
-		engineon = true; 
-		volo.start(); 		// se c'è un pezzo in transito arriverà prima dello scadere
-		volo.reset();
-	}
-	// polling del timer di volo
-	// TRASPORTO_STIMATO
-        // timer in corsa solo a partire da TRASPORTO_STIMATO
-	if(volo.get() > 10000){
-		// RIPOSO
-        	volo.stop();
-        	volo.reset();
-		engineon = false; 
-	}
+  // Gestione degli ingressi in base allo stato corrente
+  // Approccio "prima gli ingressi"
+  
+  // Rilevamento pezzo in ingresso
+  if (digitalRead(startSensorHigh) == HIGH) {
+    // Transizione a TRASPORTO_CERTO da qualsiasi stato
+    stato_corrente = TRASPORTO_CERTO;
+    engineon = true;
+    volo.stop();
+    waitUntilInputLow(startSensorHigh, 50);
+  }
+  
+  // Rilevamento pezzo in uscita
+  else if (digitalRead(stopSensor) == HIGH) {
+    // Transizione a PEZZO_PRONTO
+    stato_corrente = PEZZO_PRONTO;
+    engineon = false;
+    ready = true;
+    waitUntilInputLow(stopSensor, 50);
+    
+    // Transizione automatica a TRASPORTO_STIMATO
+    stato_corrente = TRASPORTO_STIMATO;
+    ready = false;
+    engineon = true;
+    volo.start();
+    volo.reset();
+  }
+  
+  // Timer di volo scaduto
+  if (stato_corrente == TRASPORTO_STIMATO && volo.get() > 10000) {
+    // Transizione a RIPOSO
+    stato_corrente = RIPOSO;
+    volo.stop();
+    volo.reset();
+    engineon = false;
+  }
 }
 ```
 In questo caso:
