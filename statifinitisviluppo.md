@@ -23,6 +23,8 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
         - impostare l'**inizializzazione** dello stato successivo (timers, contatori, ecc.).
 
 
+### **Esempi a confronto**
+
 Esempio tipico per ogni approccio a confronto. Si notino la presenza, in pratica obbligatoria per ogni ingresso, del **rilevatore di fronti** bloccante con debounce ```waitUntilInputLow(P1, 50)```. SOno possibili altri approcci **non bloccanti** basati su ```millis()```.
 
 ```C++
@@ -75,7 +77,7 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
                                                      |     // Altri possibili ingressi
                                                      | }
 ```
-```
+
 
 Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM), il rapporto tra numero di stati e numero di ingressi è un fattore importante da considerare:
 
