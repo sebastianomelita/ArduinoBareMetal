@@ -5,6 +5,7 @@
 ## **Priorità stato/ingresso**
 
 In linea generale, una **linea guida per** sviluppare una macchina a stati finiti potrebbe proporre **due strade**: 
+
 - **prima valutare gli stati** e poi gli ingressi:
    - scrivere uno switch-case con **tutti** i **possibili stati** del sistema
    - all’interno di ogni campo dello switch-case valutare soltanto **gli ingressi attivi**, cioè quegli ingressi che potrebbero generare una **transizione** da quel particolare **stato**.
@@ -13,7 +14,7 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
         - calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
         - impostare l'**inizializzazione** dello stato successivo (timers, contatori, ecc.).
 
-- oppure, alternativamente, **Prima valutare gli ingressi** e poi gli stati:
+- oppure, alternativamente, **prima valutare gli ingressi** e poi gli stati:
     - scrivere tante funzioni (o blocchi di codice mutuamente esclusivi di una stessa funzione) quanti sono **tutti** i **possibili ingressi**
     - dentro ogni funzione (o blocco di codice) scrivere uno switch-case (o un blocco if-else-if) con tutti i soli **stati raggiungibili** dall’ingresso che essa rappresenta
     - in corrispondenza di **ciascuno stato**:
