@@ -91,7 +91,7 @@ Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM)
 - Questo crea una struttura più compatta con un numero limitato di casi (uno per stato)
 - All'interno di ogni stato, la logica per gestire i diversi ingressi risulta più coesa e facile da seguire
 
-### **Scelta in base alla struttura**
+### **Mappatura 1:1 stato ingresso**
 
 Data questa macchiana a stati FSM:
 
@@ -162,22 +162,23 @@ void loop() {
   }
 }
 ```
-In questo caso:
-- I sensori di **start** attivano direttamente lo stato ```TRASPORTO_CERTO```.
-- Il sensore di **stop** genera prima ```PEZZO_PRONTO```, poi ```TRASPORTO_STIMATO```.
-- Il **timer** è rilevante solo nello stato ```TRASPORTO_STIMATO``` e causa il ritorno a ```RIPOSO```.
 
-Se ne deduce che quando gli stati si sviluppano principalmente in **successione lineare** con **poche diramazioni**, l'approccio "**prima gli ingressi**" può essere **più efficiente** e leggibile perchè:
-- **Ogni ingresso** porta essenzialmente a uno stato specifico (o a una **sequenza** determinata di stati)
-- Non c'è molta dipendenza dalla storia precedente, ovvero le transizioni di stato nel sistema dipendono principalmente dagli **ingressi correnti** e dallo **stato attuale**
-- La macchina a stati segue un flusso piuttosto **lineare**
+La regola che consente di eliminare gli if interni sugli stati in questo caso può essere formulata così:
 
+**Quando un determinato ingresso causa sempre la stessa transizione di stato, indipendentemente dallo stato di partenza, non è necessario verificare lo stato corrente prima di effettuare la transizione.**
 
-#### **Conclusione:**
-- Per FSM con **flussi lineari** o con **poche ramificazioni** dove gli ingressi determinano univocamente lo stato successivo → l'approccio "prima gli ingressi" è preferibile
-- Per FSM **complesse** con **molti stati** e dove uno stesso ingresso può causare **transizioni diverse** a seconda dello **stato corrente** → l'approccio "prima gli stati" è generalmente più adatto
+Questo principio si applica perché:
 
-In **definitiva**, la scelta dell'approccio va fatta in base alla **struttura specifica** della macchina a stati che si sta implementando.
+1. Nel nostro diagramma degli stati, quando viene rilevato un pezzo in ingresso (startSensorHigh), il sistema dovrebbe sempre passare allo stato TRASPORTO_CERTO, indipendentemente dallo stato di partenza.
+
+2. Similmente, quando viene rilevato un pezzo in uscita (stopSensor), il sistema dovrebbe sempre passare a PEZZO_PRONTO (e poi a TRASPORTO_STIMATO), indipendentemente dallo stato di partenza.
+
+3. L'unico caso in cui dobbiamo mantenere il controllo dello stato è per il timer di volo, perché questo ha effetto solo quando siamo nello stato TRASPORTO_STIMATO.
+
+In altre parole, quando c'è una **mappatura diretta 1:1** tra un ingresso e uno stato di destinazione, il codice può essere strutturato intorno agli ingressi piuttosto che agli stati. Questo è precisamente il vantaggio dell'approccio "prima gli ingressi" che abbiamo discusso: riduce la complessità del codice eliminando verifiche di stato ridondanti.
+
+Questa regola è particolarmente efficace in macchine a stati semplici con flussi lineari o con transizioni "dominanti" dove certi eventi hanno sempre la priorità e causano le stesse transizioni indipendentemente dal contesto.
+
 
 ### **Frequenza delle modifiche**
 
