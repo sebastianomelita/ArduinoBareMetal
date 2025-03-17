@@ -79,7 +79,7 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
 ```
 
 
-Al fine di scegliere l'**approccio** per implementare una macchina a stati finiti (FSM) possiamo **valutare** un diagramma degli stati in base ad alcuni **criteri**:
+Al fine di scegliere l'**approccio** per implementare una macchina a stati finiti (FSM), possiamo **valutare** un diagramma degli stati in base ad alcuni **criteri**:
 
 ### **Cardinalità**
 
