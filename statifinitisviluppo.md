@@ -191,7 +191,7 @@ Questo principio si applica perché:
 
 3. L'unico caso in cui dobbiamo mantenere il controllo dello stato è per il timer di volo, perché questo ha effetto solo quando siamo nello stato TRASPORTO_STIMATO.
 
-In altre parole, quando c'è una **mappatura diretta 1:1** tra un ingresso e uno stato di destinazione, il codice può essere strutturato intorno agli ingressi piuttosto che agli stati. Questo è precisamente il vantaggio dell'approccio "prima gli ingressi" che abbiamo discusso: riduce la complessità del codice eliminando verifiche di stato ridondanti.
+In altre parole, quando c'è una **mappatura diretta 1:1** tra un ingresso e uno stato di destinazione, il codice **può essere strutturato intorno agli ingressi** piuttosto che agli stati. Questo è precisamente il vantaggio dell'approccio "prima gli ingressi" che abbiamo discusso: riduce la complessità del codice eliminando verifiche di stato ridondanti.
 
 Questa regola è particolarmente efficace in macchine a stati semplici con flussi lineari o con transizioni "dominanti" dove certi eventi hanno sempre la priorità e causano le stesse transizioni indipendentemente dal contesto.
 
