@@ -44,7 +44,7 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
             break;                                   |                 stato_corrente = STATO_4;
                                                      |                 uscita = USCITA_Y;
         case STATO_2:                                |                 contatore = 0;
-            // Ingressi per STATO_2                  |                 break;
+            /* Ingressi per STATO_2 */               |                 break;
             if (digitalRead(input2) == HIGH) {       |             
                 waitUntilInputLow(input2, 50);       |             // Altri stati raggiungibili
                 stato_corrente = STATO_3;            |         }
@@ -52,7 +52,7 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
             }                                        |     else if (digitalRead(input2) == HIGH) {
             break;                                   |         waitUntilInputLow(input2, 50);
                                                      |         // Stati raggiungibili da input2 HIGH
-        // Altri possibili stati                     |         switch(stato_corrente) {
+        /* Altri possibili stati */                  |         switch(stato_corrente) {
     }                                                |             case STATO_2:
 }                                                    |                 stato_corrente = STATO_3;
                                                      |                 uscita = USCITA_Z;
