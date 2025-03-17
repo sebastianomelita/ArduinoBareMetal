@@ -21,6 +21,50 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
         - calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
         - impostare l'**inizializzazione** dello stato successivo (timers, contatori, ecc.).
 
+```C++
+// APPROCCIO 1: Prima ingressi, poi stati        | // APPROCCIO 2: Prima stati, poi ingressi
+void FSM_IngressiPrimaStati() {                  | void FSM_StatiPrimaIngressi() {
+    // Valutazione dell'ingresso                 |     // Valutazione dello stato
+    switch(ingresso) {                           |     switch(stato_corrente) {
+        case INGRESSO_A:                         |         case STATO_1:
+            // Stati raggiungibili da INGRESSO_A |             // Ingressi per STATO_1
+            switch(stato_corrente) {             |             if(ingresso == INGRESSO_A) {
+                case STATO_1:                    |                 stato_corrente = STATO_2;
+                    // Transizione               |                 uscita = USCITA_X;
+                    stato_corrente = STATO_2;    |                 timer = 100;
+                    // Calcolo uscite            |             }
+                    uscita = USCITA_X;           |             else if(ingresso == INGRESSO_C) {
+                    // Inizializzazione          |                 stato_corrente = STATO_5;
+                    timer = 100;                 |                 uscita = USCITA_W;
+                    break;                       |             }
+                                                 |             break;
+                case STATO_3:                    |             
+                    stato_corrente = STATO_4;    |         case STATO_2:
+                    uscita = USCITA_Y;           |             // Ingressi per STATO_2
+                    contatore = 0;               |             if(ingresso == INGRESSO_B) {
+                    break;                       |                 stato_corrente = STATO_3;
+                                                 |                 uscita = USCITA_Z;
+                // Altri stati raggiungibili     |             }
+            }                                    |             break;
+            break;                               |             
+                                                 |         // Altri possibili stati
+        case INGRESSO_B:                         |     }
+            // Stati raggiungibili da INGRESSO_B | }
+            switch(stato_corrente) {             |
+                case STATO_2:                    |
+                    stato_corrente = STATO_3;    |
+                    uscita = USCITA_Z;           |
+                    break;                       |
+                                                 |
+                // Altri stati raggiungibili     |
+            }                                    |
+            break;                               |
+                                                 |
+        // Altri possibili ingressi              |
+    }                                            |
+}                                                |
+```
+
 Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM), il rapporto tra numero di stati e numero di ingressi è un fattore importante da considerare:
 
 ### **Quando ci sono più stati che ingressi:**
