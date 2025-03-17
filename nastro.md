@@ -151,21 +151,19 @@ Si noti che:
 - il timer è un ingresso che apparentemente è in ascolto su tre stati (```RIPOSO```, ```TRASPORTO_CERTO```, ```TRASPORTO_STIMATO```) ma che, in realtà, è effettivamente attivo solo nello stato ```TRASPORTO_STIMATO```, coerentemente con la tabella delle transizioni e il diagramma degli stati.
 - il timer è un ingresso che può determinare transizioni verso il solo stato ```RIPOSO``` per cui, anche in questo caso, lo switch-case interno è inutile.
 
-Quando gli stati si sviluppano principalmente in successione lineare con poche diramazioni, l'approccio "prima gli ingressi" può essere più efficiente e leggibile.
-
-Nell'esempio specifico:
+Quando gli stati si sviluppano principalmente in successione lineare con poche diramazioni, l'approccio "prima gli ingressi" può essere più efficiente e leggibile perchè:
 - Ogni ingresso porta essenzialmente a uno stato specifico (o a una sequenza determinata di stati)
 - Non c'è molta dipendenza dalla storia precedente
 - La macchina a stati segue un flusso piuttosto lineare
 
-In questi casi, l'approccio "prima gli ingressi" riduce la complessità del codice eliminando switch-case annidati inutili. Questo rende il codice:
+In questi casi, l'approccio **"prima gli ingressi"** riduce la complessità del codice eliminando switch-case annidati inutili. Questo rende il codice:
 - Più leggibile
 - Più facile da mantenere
 - Più efficiente in esecuzione
 
 Possiamo concludere che:
-- Per FSM con flussi lineari o con poche ramificazioni dove gli ingressi determinano univocamente lo stato successivo → l'approccio "prima gli ingressi" è preferibile
-- Per FSM complesse con molti stati e dove uno stesso ingresso può causare transizioni diverse a seconda dello stato corrente → l'approccio "prima gli stati" è generalmente più adatto
+- Per FSM con **flussi lineari** o con **poche ramificazioni** dove gli ingressi determinano univocamente lo stato successivo → l'approccio "prima gli ingressi" è preferibile
+- Per FSM **complesse** con **molti stati** e dove uno stesso ingresso può causare **transizioni diverse** a seconda dello **stato corrente** → l'approccio "prima gli stati" è generalmente più adatto
 
 In **definitiva**, la scelta dell'approccio vada fatta in base alla **struttura specifica** della macchina a stati che si sta implementando.
 
