@@ -81,18 +81,21 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
 
 Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM), il rapporto tra numero di stati e numero di ingressi è un fattore importante da considerare:
 
-### **Quando ci sono più stati che ingressi:**
+### **Cardinalità**
+
+Quando ci sono più stati che ingressi:
 - È generalmente preferibile l'approccio **"valutare prima gli ingressi, poi gli stati"**
 - Questo riduce la complessità del codice poiché avrai meno funzioni/blocchi principali (uno per ciascun ingresso)
 - La struttura del codice diventa più gestibile perché si evita di scrivere un grande blocco switch-case con molti stati
 
-### **Quando ci sono più ingressi che stati:**
+Quando ci sono più ingressi che stati:
 - È generalmente preferibile l'approccio **"valutare prima gli stati, poi gli ingressi"**
 - Questo crea una struttura più compatta con un numero limitato di casi (uno per stato)
 - All'interno di ogni stato, la logica per gestire i diversi ingressi risulta più coesa e facile da seguire
 
-Possiamo, in definitiva, osservare la stessa struttura di macchina a stati, ma da due prospettive duali:
+### **Clusterizzazione**
 
+Possiamo, in definitiva, osservare la stessa struttura di macchina a stati, ma da due prospettive duali:
 - Se la struttura è tale che solo **pochi ingressi** sono rilevanti per ogni stato (pochi ingressi che si addensano su ciascun stato) → approccio "prima gli stati"
 - Se la struttura è tale che solo **pochi stati** sono sensibili a ogni ingresso (pochi stati che si addensano su ciascun ingresso) → approccio "prima gli ingressi"
 
