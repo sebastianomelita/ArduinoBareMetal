@@ -79,7 +79,7 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
 ```
 
 
-Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM), il rapporto tra numero di stati e numero di ingressi è un fattore importante da considerare:
+Quando si sceglie l'**approccio** per implementare una macchina a stati finiti (FSM) possiamo **valutare** un diagramma degli stati in base ad alcuni **criteri**:
 
 ### **Cardinalità**
 
