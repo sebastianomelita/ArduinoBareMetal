@@ -93,6 +93,8 @@ Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM)
 
 ### **Scelta in base alla struttura**
 
+Data questa macchiana a stati FSM:
+
 ```mermaid
 %%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
 stateDiagram-v2
