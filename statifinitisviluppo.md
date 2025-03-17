@@ -36,26 +36,32 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
                 uscita = USCITA_X;                   |                 stato_corrente = STATO_2;
                 timer = 100;                         |                 // Calcolo uscite
             }                                        |                 uscita = USCITA_X;
-            else if (digitalRead(input2) == HIGH) {  |               // Inizializzazione
+            else if (digitalRead(input2) == HIGH) {  |                 // Inizializzazione
                 waitUntilInputLow(input2, 50);       |                 timer = 100;
                 stato_corrente = STATO_5;            |                 break;
                 uscita = USCITA_W;                   |             
             }                                        |             case STATO_3:
-            break;                                   |                 stato_corrente = STATO_4;
-                                                     |                 uscita = USCITA_Y;
-        case STATO_2:                                |                 contatore = 0;
-            /* Ingressi per STATO_2 */               |                 break;
-            if (digitalRead(input2) == HIGH) {       |             
-                waitUntilInputLow(input2, 50);       |             // Altri stati raggiungibili
-                stato_corrente = STATO_3;            |         }
-                uscita = USCITA_Z;                   |     }
-            }                                        |     else if (digitalRead(input2) == HIGH) {
-            break;                                   |         waitUntilInputLow(input2, 50);
-                                                     |         // Stati raggiungibili da input2 HIGH
-        /* Altri possibili stati */                  |         switch(stato_corrente) {
-    }                                                |             case STATO_2:
-}                                                    |                 stato_corrente = STATO_3;
+            break;                                   |                 // Transizione
+                                                     |                 stato_corrente = STATO_4;
+        case STATO_2:                                |                 // Calcolo uscite
+            // Ingressi per STATO_2                  |                 uscita = USCITA_Y;
+            if (digitalRead(input2) == HIGH) {       |                 // Inizializzazione
+                waitUntilInputLow(input2, 50);       |                 contatore = 0;
+                stato_corrente = STATO_3;            |                 break;
+                uscita = USCITA_Z;                   |             
+            }                                        |             // Altri stati raggiungibili
+            break;                                   |         }
+                                                     |     }
+        // Altri possibili stati                     |     else if (digitalRead(input2) == HIGH) {
+    }                                                |         waitUntilInputLow(input2, 50);
+}                                                    |         // Stati raggiungibili da input2 HIGH
+                                                     |         switch(stato_corrente) {
+                                                     |             case STATO_2:
+                                                     |                 // Transizione
+                                                     |                 stato_corrente = STATO_3;
+                                                     |                 // Calcolo uscite
                                                      |                 uscita = USCITA_Z;
+                                                     |                 // Inizializzazione
                                                      |                 break;
                                                      |             
                                                      |             // Altri stati raggiungibili
