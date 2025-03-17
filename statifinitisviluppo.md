@@ -24,45 +24,45 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
 
 
 ```C++
-// APPROCCIO 1: Prima stati, poi ingressi        | // APPROCCIO 2: Prima ingressi, poi stati
-void FSM_StatiPrimaIngressi() {                  | void FSM_IngressiPrimaStati() {
-    // Valutazione dello stato                   |     // Valutazione dell'ingresso
-    switch(stato_corrente) {                     |     if (digitalRead(input1) == HIGH) {
-        case STATO_1:                            |         waitUntilInputLow(input1, 50);
-            // Ingressi per STATO_1              |         // Stati raggiungibili da input1 HIGH
-            if (digitalRead(input1) == HIGH) {   |         switch(stato_corrente) {
-                waitUntilInputLow(input1, 50);   |             case STATO_1:
-                stato_corrente = STATO_2;        |                 // Transizione
-                uscita = USCITA_X;               |                 stato_corrente = STATO_2;
-                timer = 100;                     |                 // Calcolo uscite
-            }                                    |                 uscita = USCITA_X;
-            else if (digitalRead(input2) == HIGH) { |               // Inizializzazione
-                waitUntilInputLow(input2, 50);   |                 timer = 100;
-                stato_corrente = STATO_5;        |                 break;
-                uscita = USCITA_W;               |             
-            }                                    |             case STATO_3:
-            break;                               |                 stato_corrente = STATO_4;
-                                                 |                 uscita = USCITA_Y;
-        case STATO_2:                            |                 contatore = 0;
-            // Ingressi per STATO_2              |                 break;
-            if (digitalRead(input2) == HIGH) {   |             
-                waitUntilInputLow(input2, 50);   |             // Altri stati raggiungibili
-                stato_corrente = STATO_3;        |         }
-                uscita = USCITA_Z;               |     }
-            }                                    |     else if (digitalRead(input2) == HIGH) {
-            break;                               |         waitUntilInputLow(input2, 50);
-                                                 |         // Stati raggiungibili da input2 HIGH
-        // Altri possibili stati                 |         switch(stato_corrente) {
-    }                                            |             case STATO_2:
-}                                                |                 stato_corrente = STATO_3;
-                                                 |                 uscita = USCITA_Z;
-                                                 |                 break;
-                                                 |             
-                                                 |             // Altri stati raggiungibili
-                                                 |         }
-                                                 |     }
-                                                 |     // Altri possibili ingressi
-                                                 | }
+// APPROCCIO 1: Prima stati, poi ingressi            | // APPROCCIO 2: Prima ingressi, poi stati
+void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaStati() {
+    // Valutazione dello stato                       |     // Valutazione dell'ingresso
+    switch(stato_corrente) {                         |     if (digitalRead(input1) == HIGH) {
+        case STATO_1:                                |         waitUntilInputLow(input1, 50);
+            // Ingressi per STATO_1                  |         // Stati raggiungibili da input1 HIGH
+            if (digitalRead(input1) == HIGH) {       |         switch(stato_corrente) {
+                waitUntilInputLow(input1, 50);       |             case STATO_1:
+                stato_corrente = STATO_2;            |                 // Transizione
+                uscita = USCITA_X;                   |                 stato_corrente = STATO_2;
+                timer = 100;                         |                 // Calcolo uscite
+            }                                        |                 uscita = USCITA_X;
+            else if (digitalRead(input2) == HIGH) {  |               // Inizializzazione
+                waitUntilInputLow(input2, 50);       |                 timer = 100;
+                stato_corrente = STATO_5;            |                 break;
+                uscita = USCITA_W;                   |             
+            }                                        |             case STATO_3:
+            break;                                   |                 stato_corrente = STATO_4;
+                                                     |                 uscita = USCITA_Y;
+        case STATO_2:                                |                 contatore = 0;
+            // Ingressi per STATO_2                  |                 break;
+            if (digitalRead(input2) == HIGH) {       |             
+                waitUntilInputLow(input2, 50);       |             // Altri stati raggiungibili
+                stato_corrente = STATO_3;            |         }
+                uscita = USCITA_Z;                   |     }
+            }                                        |     else if (digitalRead(input2) == HIGH) {
+            break;                                   |         waitUntilInputLow(input2, 50);
+                                                     |         // Stati raggiungibili da input2 HIGH
+        // Altri possibili stati                     |         switch(stato_corrente) {
+    }                                                |             case STATO_2:
+}                                                    |                 stato_corrente = STATO_3;
+                                                     |                 uscita = USCITA_Z;
+                                                     |                 break;
+                                                     |             
+                                                     |             // Altri stati raggiungibili
+                                                     |         }
+                                                     |     }
+                                                     |     // Altri possibili ingressi
+                                                     | }
 ```
 
 Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM), il rapporto tra numero di stati e numero di ingressi è un fattore importante da considerare:
