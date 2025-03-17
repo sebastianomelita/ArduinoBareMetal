@@ -25,7 +25,7 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
 
 ### **Esempi a confronto**
 
-Esempio tipico per ogni approccio a confronto. Si notino la presenza, in pratica obbligatoria per ogni ingresso, del **rilevatore di fronti** bloccante con debounce ```waitUntilInputLow(P1, 50)```. SOno possibili altri approcci **non bloccanti** basati su ```millis()```.
+Esempio tipico per ogni approccio a confronto. Si notino la presenza, in pratica obbligatoria per ogni ingresso, del **rilevatore di fronti** bloccante con debounce ```waitUntilInputLow(P1, 50)```. Sono possibili altri approcci **non bloccanti** basati su ```millis()```.
 
 ```C++
 // APPROCCIO 1: Prima stati, poi ingressi            | // APPROCCIO 2: Prima ingressi, poi stati
