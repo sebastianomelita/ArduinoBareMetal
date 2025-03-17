@@ -102,7 +102,7 @@ Possiamo concludere che:
 - Per FSM con **flussi lineari** o con **poche ramificazioni** dove gli ingressi determinano univocamente lo stato successivo → l'approccio "prima gli ingressi" è preferibile
 - Per FSM **complesse** con **molti stati** e dove uno stesso ingresso può causare **transizioni diverse** a seconda dello **stato corrente** → l'approccio "prima gli stati" è generalmente più adatto
 
-In **definitiva**, la scelta dell'approccio vada fatta in base alla **struttura specifica** della macchina a stati che si sta implementando.
+In **definitiva**, la scelta dell'approccio va fatta in base alla **struttura specifica** della macchina a stati che si sta implementando.
 
 ### **Frequenza delle modifiche**
 
