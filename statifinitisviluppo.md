@@ -91,13 +91,13 @@ Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM)
 - Questo crea una struttura più compatta con un numero limitato di casi (uno per stato)
 - All'interno di ogni stato, la logica per gestire i diversi ingressi risulta più coesa e facile da seguire
 
-### **Reegola generale**
+### **Complessità**
 
-La regola generale che possiamo dedurre è:
-- La **complessità** dell'elaborazione dell'ingresso dovrebbe guidare la scelta dell'approccio.
+La **complessità** dell'elaborazione dell'ingresso dovrebbe guidare la scelta dell'approccio.
      - Se interpretare il significato dell'ingresso è semplice e diretto, l'approccio "prima gli ingressi" può funzionare bene.
      - Se invece richiede logica condizionale complessa che varia da stato a stato, l'approccio "prima gli stati" potrebbe offrire una struttura più chiara.
-- Questo si collega al concetto di **"coesione"** in ingegneria del software: raggruppiamo insieme le parti di codice che hanno maggiore **affinità logica**. Se la logica è principalmente guidata dai **valori degli ingressi**, organizziamo il codice intorno agli ingressi; se è principalmente guidata dal **contesto dello stato**, organizziamo il codice intorno agli stati.
+
+Questo si collega al concetto di **"coesione"** in ingegneria del software: raggruppiamo insieme le parti di codice che hanno maggiore **affinità logica**. Se la logica è principalmente guidata dai **valori degli ingressi**, organizziamo il codice intorno agli ingressi; se è principalmente guidata dal **contesto dello stato**, organizziamo il codice intorno agli stati.
 
 ### **Mappatura 1:1 stato ingresso**
 
