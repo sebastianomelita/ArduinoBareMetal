@@ -83,12 +83,12 @@ Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM)
 
 ### **Cardinalità**
 
-Quando ci sono più stati che ingressi:
+Quando ci sono **più stati** che ingressi:
 - È generalmente preferibile l'approccio **"valutare prima gli ingressi, poi gli stati"**
 - Questo riduce la complessità del codice poiché avrai meno funzioni/blocchi principali (uno per ciascun ingresso)
 - La struttura del codice diventa più gestibile perché si evita di scrivere un grande blocco switch-case con molti stati
 
-Quando ci sono più ingressi che stati:
+Quando ci sono **più ingressi** che stati:
 - È generalmente preferibile l'approccio **"valutare prima gli stati, poi gli ingressi"**
 - Questo crea una struttura più compatta con un numero limitato di casi (uno per stato)
 - All'interno di ogni stato, la logica per gestire i diversi ingressi risulta più coesa e facile da seguire
