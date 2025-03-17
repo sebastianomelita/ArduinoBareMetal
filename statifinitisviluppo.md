@@ -96,8 +96,8 @@ Quando ci sono **più ingressi** che stati:
 ### **Clusterizzazione**
 
 Possiamo osservare una stessa struttura di macchina a stati, da due **prospettive duali**:
-- Se la struttura è tale che solo **pochi ingressi** sono rilevanti per ogni stato (pochi ingressi che si addensano su ciascun stato) → approccio "prima gli stati"
-- Se la struttura è tale che solo **pochi stati** sono sensibili a ogni ingresso (pochi stati che si addensano su ciascun ingresso) → approccio "prima gli ingressi"
+- Se la struttura è tale che solo **pochi ingressi** sono **rilevanti** per ogni stato (pochi ingressi che si addensano su ciascun stato) → approccio "prima gli stati"
+- Se la struttura è tale che solo **pochi stati** sono **sensibili** a ogni ingresso (pochi stati che si addensano su ciascun ingresso) → approccio "prima gli ingressi"
 
 ### **Complessità**
 
