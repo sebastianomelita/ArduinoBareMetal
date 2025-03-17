@@ -151,7 +151,7 @@ Si noti che:
 - il timer è un ingresso che apparentemente è in ascolto su tre stati (```RIPOSO```, ```TRASPORTO_CERTO```, ```TRASPORTO_STIMATO```) ma che, in realtà, è effettivamente attivo solo nello stato ```TRASPORTO_STIMATO```, coerentemente con la tabella delle transizioni e il diagramma degli stati.
 - il timer è un ingresso che può determinare transizioni verso il solo stato ```RIPOSO``` per cui, anche in questo caso, lo switch-case interno è inutile.
 
-Quando gli stati si sviluppano principalmente in successione lineare con poche diramazioni, l'approccio "prima gli ingressi" può essere più efficiente e leggibile perchè:
+Quando gli stati si sviluppano principalmente in **successione lineare** con **poche diramazioni**, l'approccio "**prima gli ingressi**" può essere **più efficiente** e leggibile perchè:
 - Ogni ingresso porta essenzialmente a uno stato specifico (o a una sequenza determinata di stati)
 - Non c'è molta dipendenza dalla storia precedente
 - La macchina a stati segue un flusso piuttosto lineare
