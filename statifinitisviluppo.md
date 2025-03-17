@@ -143,7 +143,7 @@ void loop() {
 ```
 In questo caso:
 - I sensori di **start** attivano direttamente lo stato ```TRASPORTO_CERTO```.
-- Il sensore di **stop** genera prima ```PEZZO_PRONTO``` poi, solo in un secondo momento, ```TRASPORTO_STIMATO```.
+- Il sensore di **stop** genera prima ```PEZZO_PRONTO```, poi ```TRASPORTO_STIMATO```.
 - Il **timer** è rilevante solo nello stato ```TRASPORTO_STIMATO``` e causa il ritorno a ```RIPOSO```.
 
 Se ne deduce che quando gli stati si sviluppano principalmente in **successione lineare** con **poche diramazioni**, l'approccio "**prima gli ingressi**" può essere **più efficiente** e leggibile perchè:
