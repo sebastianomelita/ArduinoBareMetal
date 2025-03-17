@@ -91,6 +91,11 @@ Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM)
 - Questo crea una struttura più compatta con un numero limitato di casi (uno per stato)
 - All'interno di ogni stato, la logica per gestire i diversi ingressi risulta più coesa e facile da seguire
 
+Possiamo, in definitiva, osservare la stessa struttura di macchina a stati, ma da due prospettive duali:
+
+- Se la struttura è tale che solo **pochi ingressi** sono rilevanti per ogni stato (pochi ingressi che si addensano su ciascun stato) → approccio "prima gli stati"
+- Se la struttura è tale che solo **pochi stati** sono sensibili a ogni ingresso (Pochi stati che si addensano su ciascun ingresso) → approccio "prima gli ingressi"
+
 ### **Complessità**
 
 La **complessità** dell'elaborazione dell'ingresso dovrebbe guidare la scelta dell'approccio.
