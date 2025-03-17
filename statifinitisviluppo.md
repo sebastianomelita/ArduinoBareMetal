@@ -107,7 +107,7 @@ La **complessità** dell'elaborazione dell'ingresso dovrebbe guidare la scelta d
 
 Questo si collega al concetto di **"coesione"** in ingegneria del software: raggruppiamo insieme le parti di codice che hanno maggiore **affinità logica**. Se la logica è principalmente guidata dai **valori degli ingressi**, organizziamo il codice intorno agli ingressi; se è principalmente guidata dal **contesto dello stato**, organizziamo il codice intorno agli stati.
 
-### **Mappatura 1:1 stato ingresso**
+### **Mappatura 1:1 stato-ingresso**
 
 Data questa macchiana a stati FSM:
 
