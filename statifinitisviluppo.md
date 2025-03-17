@@ -91,6 +91,19 @@ Quando si sceglie l'approccio per implementare una macchina a stati finiti (FSM)
 - Questo crea una struttura più compatta con un numero limitato di casi (uno per stato)
 - All'interno di ogni stato, la logica per gestire i diversi ingressi risulta più coesa e facile da seguire
 
+### **Scelta in base alla struttura**
+
+Quando gli stati si sviluppano principalmente in **successione lineare** con **poche diramazioni**, l'approccio "**prima gli ingressi**" può essere **più efficiente** e leggibile perchè:
+- **Ogni ingresso** porta essenzialmente a uno stato specifico (o a una **sequenza** determinata di stati)
+- Non c'è molta dipendenza dalla storia precedente, ovvero le transizioni di stato nel sistema dipendono principalmente dagli **ingressi correnti** e dallo **stato attuale**
+- La macchina a stati segue un flusso piuttosto **lineare**
+
+Possiamo concludere che:
+- Per FSM con **flussi lineari** o con **poche ramificazioni** dove gli ingressi determinano univocamente lo stato successivo → l'approccio "prima gli ingressi" è preferibile
+- Per FSM **complesse** con **molti stati** e dove uno stesso ingresso può causare **transizioni diverse** a seconda dello **stato corrente** → l'approccio "prima gli stati" è generalmente più adatto
+
+In **definitiva**, la scelta dell'approccio vada fatta in base alla **struttura specifica** della macchina a stati che si sta implementando.
+
 ### **Frequenza delle modifiche**
 
 Una considerazione aggiuntiva potrebbe essere la **frequenza di cambiamento**: 
