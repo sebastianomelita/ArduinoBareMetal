@@ -57,7 +57,7 @@ stateDiagram-v2
     TRASPORTO --> PEZZO_PRONTO: Rilevamento pezzo in uscita \ contatore--
     TRASPORTO --> ANOMALIA: Timer scaduto AND contatore > 0
     
-    PEZZO_PRONTO --> TRASPORTO: Pezzo prelevato AND contatore > 0 \ contatore-- , avvia timer di volo
+    PEZZO_PRONTO --> TRASPORTO: Pezzo prelevato AND contatore > 0 \ avvia timer di volo
     PEZZO_PRONTO --> RIPOSO: Pezzo prelevato AND contatore == 0
     PEZZO_PRONTO --> ANOMALIA: contatore == 0
     
