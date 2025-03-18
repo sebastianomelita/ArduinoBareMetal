@@ -27,17 +27,31 @@ All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta
 - **TRASPORTO_STIMATO**: Potrebbero esserci altri pezzi sul nastro, ma non ne abbiamo conferma diretta dai sensori. Il timer è attivo per stimare quando il nastro sarà vuoto.
 
 
-## Tabella di Transizione del Nastro Trasportatore
+# Tabella delle Transizioni degli Stati del Sistema Trasportatore
 
-| Stato attuale | Input | Stato prossimo | Output |
-|---------------|-------|----------------|--------|
-| RIPOSO | Sensore pezzi alti = LOW oppure Sensore pezzi bassi = LOW | TRASPORTO_CERTO | Accensione motore, Reset e blocco timer di volo, Ready = false |
-| TRASPORTO_CERTO | Sensore uscita = LOW | PEZZO_PRONTO | Spegnimento motore, Blocco timer di volo, Ready = true |
-| TRASPORTO_CERTO | Sensore pezzi alti = LOW oppure Sensore pezzi bassi = LOW | TRASPORTO_CERTO | Nessun cambio (il motore resta acceso) |
-| PEZZO_PRONTO | Sensore uscita = HIGH | TRASPORTO_STIMATO | Accensione motore, Reset e avvio timer di volo, Ready = false |
-| TRASPORTO_STIMATO | Sensore uscita = LOW | PEZZO_PRONTO | Spegnimento motore, Blocco timer di volo, Ready = true |
-| TRASPORTO_STIMATO | Timer di volo scaduto | RIPOSO | Spegnimento motore, Ready = false |
-| TRASPORTO_STIMATO | Sensore pezzi alti = LOW oppure Sensore pezzi bassi = LOW | TRASPORTO_CERTO | Reset e blocco timer di volo (motore rimane acceso) |
+| Stato Attuale | Evento | Condizione | Azione | Stato Successivo |
+|---------------|--------|------------|--------|------------------|
+| RIPOSO | Rilevamento pezzo in ingresso | - | contatore++ | TRASPORTO |
+| TRASPORTO | Rilevamento pezzo in ingresso | - | contatore++ | TRASPORTO |
+| TRASPORTO | Rilevamento pezzo in uscita | - | - | PEZZO_PRONTO |
+| TRASPORTO | Timer scaduto | contatore > 0 | - | ANOMALIA |
+| PEZZO_PRONTO | Pezzo prelevato | contatore > 1 | contatore--, avvia timer di volo | TRASPORTO |
+| PEZZO_PRONTO | Pezzo prelevato | contatore == 1 | contatore-- | RIPOSO |
+| PEZZO_PRONTO | - | contatore == 0 | - | ANOMALIA |
+| ANOMALIA | Reset | - | - | RIPOSO |
+
+## Azioni degli Stati
+
+| Stato | Motore | Timer di Volo | Condizioni | Altri Segnali |
+|-------|--------|--------------|------------|---------------|
+| RIPOSO | Spento | Bloccato | Nastro vuoto, Contatore = 0 | - |
+| TRASPORTO | Acceso | Attivo se da PEZZO_PRONTO, Bloccato se da RIPOSO | Pezzi sul nastro (contatore > 0) | - |
+| PEZZO_PRONTO | Spento | Bloccato | Pezzo arrivato all'uscita | Ready = true |
+| ANOMALIA | Spento | - | - | Allarme attivo |
+
+## Tipi di Anomalia
+- **Pezzi mancanti**: Timer scaduto con contatore > 0 nel stato TRASPORTO
+- **Pezzi extra**: Pezzo rilevato in uscita con contatore == 0 nel stato PEZZO_PRONTO
 
 ##  **Diagramma degli stati**
 
