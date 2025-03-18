@@ -37,7 +37,7 @@ All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta
 | TRASPORTO | Timer scaduto AND contatore > 0 | - | ANOMALIA |
 | PEZZO_PRONTO | Pezzo prelevato AND contatore > 0 | avvia timer di volo | TRASPORTO |
 | PEZZO_PRONTO | Pezzo prelevato AND contatore == 0 | RIPOSO |
-| PEZZO_PRONTO | - | contatore == 0  | ANOMALIA |
+| PEZZO_PRONTO |  contatore == 0 | - | ANOMALIA |
 | ANOMALIA | Reset | - | RIPOSO |
 
 ## Azioni degli Stati
