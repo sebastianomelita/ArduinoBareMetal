@@ -132,7 +132,7 @@ void loop() {
 		engineon = true; 
 		volo.start(); 		// se c'è un pezzo in transito arriverà prima dello scadere
 		volo.reset();
-	}
+	}else
 	// polling del timer di volo
 	// TRASPORTO_STIMATO
         // timer in corsa solo a partire da TRASPORTO_STIMATO
