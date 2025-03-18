@@ -4,7 +4,7 @@
 
 E’ possibile realizzare dei timers, con cui programmare **nel futuro** lo stesso evento o una sequenza di eventi diversi, **senza attese**, cioè senza ```delay()```, eseguendo un polling del **tempo di conteggio** di un **timer**. 
 
-Un **polling** è l'interrogazione periodica di una **variabile** o di un **ingresso** per leggerne il **valore**. Se il valore è maggiore di un **tempo massimo** allora si considera avvenuto un **timeout** e si esegue il **blocco** di codice associato ad esso.
+Un **polling** è l'interrogazione periodica di una **variabile** o di un **ingresso** per leggerne il **valore**. Se il valore è maggiore di un **tempo massimo** allora si considera avvenuto il **timeout** e si esegue il **blocco** di codice associato ad esso.
 
 Il polling serve per controllare, ad ogni loop(), il tempo trascorso (**elapsed**) per verificare **quando** questo raggiunge il **valore finale** (timeout) stabilito come obiettivo (target). 
 
