@@ -61,7 +61,7 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
                waitUntilInputLow(input2, 50);        |     else if (digitalRead(input2) == HIGH) {
                /* Transizione */                     |         waitUntilInputLow(input2, 50);
                stato_corrente = STATO_3;             |         // Stati raggiungibili da input2 HIGH
-               /* Calcolo uscite */                   |         switch(stato_corrente) {
+               /* Calcolo uscite */                  |         switch(stato_corrente) {
                uscita = USCITA_Z;                    |             case STATO_2:
                // Inizializzazione stato successivo  |                 // Transizione
                cicli_rimanenti = 3;                  |                 stato_corrente = STATO_3;
