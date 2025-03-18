@@ -48,12 +48,12 @@ stateDiagram-v2
 
     RIPOSO --> TRASPORTO: Rilevamento pezzo in ingresso\ncontatore++
     
-    TRASPORTO --> TRASPORTO: Rilevamento pezzo in ingresso\ncontatore++
+    TRASPORTO --> TRASPORTO: Rilevamento pezzo in ingresso \ contatore++
     TRASPORTO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
-    TRASPORTO --> ANOMALIA: Timer scaduto E\ncontatore > 0
+    TRASPORTO --> ANOMALIA: Timer scaduto E \ contatore > 0
     
-    PEZZO_PRONTO --> TRASPORTO: Pezzo prelevato E\ncontatore > 1\ncontatore--\navvia timer di volo
-    PEZZO_PRONTO --> RIPOSO: Pezzo prelevato E\ncontatore == 1\ncontatore--
+    PEZZO_PRONTO --> TRASPORTO: Pezzo prelevato E \ contatore > 1 \ contatore--, avvia timer di volo
+    PEZZO_PRONTO --> RIPOSO: Pezzo prelevato E \ contatore--, contatore == 0
     PEZZO_PRONTO --> ANOMALIA: contatore == 0
     
     ANOMALIA --> RIPOSO: Reset
