@@ -133,10 +133,10 @@ void loop() {
 	if(digitalRead(startSensorHigh)==HIGH){		// se è alto c'è stato un fronte di salita
 		switch (statoCorrente) {
 		  case RIPOSO:
-		    statoCorrente = TRASPORTO;
-			waitUntilInputLow(startSensorHigh,50);
-			contatore++;
-			engineon = true; 
+		        statoCorrente = TRASPORTO;
+                        waitUntilInputLow(startSensorHigh,50);
+		        contatore++;
+                        engineon = true; 
 			volo.stop();
 		  case ANOMALIA:
 			break;
