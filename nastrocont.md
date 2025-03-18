@@ -40,15 +40,6 @@ All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta
 | PEZZO_PRONTO |  contatore == 0 | - | ANOMALIA |
 | ANOMALIA | Reset | - | RIPOSO |
 
-## Azioni degli Stati
-
-| Stato | Motore | Timer di Volo | Condizioni | Altri Segnali |
-|-------|--------|--------------|------------|---------------|
-| RIPOSO | Spento | Bloccato | Nastro vuoto, Contatore = 0 | - |
-| TRASPORTO | Acceso | Attivo se da PEZZO_PRONTO, Bloccato se da RIPOSO | Pezzi sul nastro (contatore > 0) | - |
-| PEZZO_PRONTO | Spento | Bloccato | Pezzo arrivato all'uscita | Ready = true |
-| ANOMALIA | Spento | - | - | Allarme attivo |
-
 ## Tipi di Anomalia
 - **Pezzi mancanti**: Timer scaduto con contatore > 0 nel stato TRASPORTO
 - **Pezzi extra**: Pezzo rilevato in uscita con contatore == 0 nel stato PEZZO_PRONTO
