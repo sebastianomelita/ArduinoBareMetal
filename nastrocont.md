@@ -52,8 +52,9 @@ stateDiagram-v2
     TRASPORTO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
     TRASPORTO --> ANOMALIA: Timer scaduto E\ncontatore > 0
     
-    PEZZO_PRONTO --> TRASPORTO: Pezzo prelevato\ncontatore--
-    PEZZO_PRONTO --> ANOMALIA: contatore == 0 OR\ncontatore < 0
+    PEZZO_PRONTO --> TRASPORTO: Pezzo prelevato E\ncontatore > 1\ncontatore--
+    PEZZO_PRONTO --> RIPOSO: Pezzo prelevato E\ncontatore == 1\ncontatore--
+    PEZZO_PRONTO --> ANOMALIA: contatore == 0
     
     TRASPORTO --> RIPOSO: Timer di volo scaduto E\ncontatore == 0
     
@@ -68,7 +69,7 @@ stateDiagram-v2
     
     note right of TRASPORTO
         Motore acceso
-        Timer di volo attivo al termine\ndi PEZZO_PRONTO
+        Timer di volo attivo
         Pezzi sul nastro = contatore
     end note
     
