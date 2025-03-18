@@ -148,8 +148,15 @@ void loop() {
 		  case TRASPORTO:
 			engineon = false; 
 			ready = true;
-			waitUntilInputLow(stopSensor,50);
 			// PEZZO_PRONTO
+			if(contatore == 0){
+				statoCorrente = ANOMALIA;
+				volo.stop();
+	        		volo.reset();
+				ready = false;
+				engineon = false; 
+                        }
+			waitUntilInputLow(stopSensor,50);
 			contatore--;
 			ready = false;
 			if(contatore == 0){
@@ -159,13 +166,7 @@ void loop() {
 				engineon = true; 
 				volo.start(); 		
 				volo.reset();
-			}else{
-				statoCorrente = ANOMALIA;
-				volo.stop();
-	        		volo.reset();
-				ready = false;
-				engineon = false; 
-			}	
+			}
 		  case ANOMALIA:
 			break;
 		}
