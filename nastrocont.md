@@ -178,8 +178,10 @@ Un **esempio completo** per la gestione di un singolo nastro, corredato di eleme
 
 
 ```C++
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
+/*Sistema di nastro trasportatore con contapezzi*/
 #include "urutils.h"
+
+// Pin di I/O
 byte startSensorHigh = 4;
 byte startSensorLow = 3;
 byte stopSensor = 2;
@@ -187,72 +189,188 @@ byte engineLed = 10;
 byte lowStartLed = 9;
 byte highStartLed = 8;
 byte stopLed = 11;
-unsigned flyTime = 4000; //tempo di volo di un pezzo sul nastro
-bool engineon;  // variabile globale che memorizza lo stato del motore
- 
+byte anomalyLed = 12;  // Nuovo LED per segnalare anomalie
+
+// Costanti
+unsigned flyTime = 4000; // tempo di volo di un pezzo sul nastro
+
+// Variabili globali
+bool engineon;           // stato del motore
+int contatore = 0;       // contatore pezzi sul nastro
+bool anomalia = false;   // flag per stato di anomalia
+String tipoAnomalia = ""; // tipo di anomalia rilevata
+
+// Definizione degli stati
+typedef enum {
+  RIPOSO,
+  TRASPORTO,
+  PEZZO_PRONTO,
+  ANOMALIA
+} Stato;
+
+// Stato corrente del sistema
+Stato stato_corrente = RIPOSO;
+
 void setup() {
   Serial.begin(115200);
+  
+  // Configurazione pin
   pinMode(engineLed, OUTPUT);
   pinMode(lowStartLed, OUTPUT);
   pinMode(highStartLed, OUTPUT);
   pinMode(stopLed, OUTPUT);
+  pinMode(anomalyLed, OUTPUT);
   pinMode(startSensorHigh, INPUT);
   pinMode(startSensorLow, INPUT);
   pinMode(stopSensor, INPUT); 
-  engineon= false;
+  
+  // Inizializzazione
+  engineon = false;
+  digitalWrite(engineLed, LOW);
+  digitalWrite(anomalyLed, LOW);
   volo.stop();
+  contatore = 0;
+  
+  Serial.println("Sistema inizializzato - Stato: RIPOSO");
 }
 
-// loop principale
 void loop() {
-	// RIPOSO
-	// TRASPORTO_CERTO
-	// TRASPORTO_STIMATO
-	if(digitalRead(startSensorLow)==HIGH){				// se è alto c'è stato un fronte di salita
-		engineon = true; 	
-		digitalWrite(engineLed, HIGH);
-		digitalWrite(lowStartLed, HIGH);
-		volo.stop();						// c'è almeno un pezzo in transito				
-		Serial.println("Pezzo basso in ingresso");
-		Serial.println("Timer di volo disattivato");
-		waitUntilInputLow(startSensorLow,50);			// attendi finchè non c'è fronte di discesa
-		Serial.println("Pezzo basso transitato in ingresso");
-		digitalWrite(lowStartLed, LOW);
-		// TRASPORTO_CERTO
-	}else if(digitalRead(startSensorHigh)==HIGH){			// se è alto c'è stato un fronte di salita
-		engineon = true; 	
-		digitalWrite(engineLed, HIGH);
-		digitalWrite(highStartLed, HIGH);
-		volo.stop();						// c'è almeno un pezzo in transito
-		Serial.println("Pezzo alto in ingresso");
-		Serial.println("Timer di volo disattivato");
-		waitUntilInputLow(startSensorHigh,50);			// attendi finchè non c'è fronte di discesa
-		Serial.println("Pezzo alto transitato in ingresso");
-		digitalWrite(highStartLed, LOW);
-		// TRASPORTO_CERTO
-	}else if(digitalRead(stopSensor)==HIGH) {
-		// PEZZO_PRONTO
-		engineon = false;
-		digitalWrite(engineLed, LOW);
-		digitalWrite(stopLed, HIGH);
-		Serial.println("Pezzo in uscita");
-		waitUntilInputLow(stopSensor,50);
-		// TRASPORTO STIMATO
-		Serial.println("Pezzo prelevato dall'uscita");
-		engineon = true; 
-		digitalWrite(stopLed, LOW);
-		digitalWrite(engineLed, HIGH);
-		volo.start(); 					// se c'è un pezzo in transito arriverà prima dello scadere
-		volo.reset();
-                Serial.println("Timer di volo attivato");
-	} else if(volo.get() > flyTime){// timer in corsa solo a partire da TRASPORTO_STIMATO
-		// RIPOSO
-        	volo.stop();
-        	volo.reset();
-		engineon = false; 
-		digitalWrite(engineLed, LOW);
-		Serial.println("Timer di volo scaduto");	
-	}
+  // Rilevamento pezzo in ingresso (sia alto che basso)
+  if (digitalRead(startSensorLow) == HIGH || digitalRead(startSensorHigh) == HIGH) {
+    byte sensorAttivo = (digitalRead(startSensorLow) == HIGH) ? startSensorLow : startSensorHigh;
+    byte ledAttivo = (digitalRead(startSensorLow) == HIGH) ? lowStartLed : highStartLed;
+    String tipoPezzo = (digitalRead(startSensorLow) == HIGH) ? "basso" : "alto";
+    
+    // Indipendentemente dallo stato attuale, passiamo a TRASPORTO
+    stato_corrente = TRASPORTO;
+    contatore++;
+    
+    // Aggiorniamo le uscite
+    engineon = true;
+    digitalWrite(engineLed, HIGH);
+    digitalWrite(ledAttivo, HIGH);
+    volo.stop(); // blocca il timer di volo
+    
+    Serial.print("Pezzo ");
+    Serial.print(tipoPezzo);
+    Serial.println(" in ingresso");
+    Serial.print("Contatore: ");
+    Serial.println(contatore);
+    Serial.println("Timer di volo disattivato");
+    
+    // Attesa del passaggio completo del pezzo
+    waitUntilInputLow(sensorAttivo, 50);
+    
+    Serial.print("Pezzo ");
+    Serial.print(tipoPezzo);
+    Serial.println(" transitato in ingresso");
+    digitalWrite(ledAttivo, LOW);
+  }
+  
+  // Rilevamento pezzo in uscita
+  else if (digitalRead(stopSensor) == HIGH) {
+    if (contatore > 0) {
+      // Transizione a PEZZO_PRONTO
+      stato_corrente = PEZZO_PRONTO;
+      
+      // Aggiorniamo le uscite
+      engineon = false;
+      digitalWrite(engineLed, LOW);
+      digitalWrite(stopLed, HIGH);
+      
+      Serial.println("Pezzo in uscita");
+      Serial.print("Contatore prima del prelievo: ");
+      Serial.println(contatore);
+      
+      // Attesa del prelievo del pezzo
+      waitUntilInputLow(stopSensor, 50);
+      
+      // Decremento contatore dopo prelievo
+      contatore--;
+      
+      Serial.println("Pezzo prelevato dall'uscita");
+      Serial.print("Contatore dopo il prelievo: ");
+      Serial.println(contatore);
+      
+      // Decisione in base al contatore
+      if (contatore > 0) {
+        // Ci sono ancora pezzi sul nastro
+        stato_corrente = TRASPORTO;
+        engineon = true;
+        digitalWrite(engineLed, HIGH);
+        volo.start();
+        volo.reset();
+        Serial.println("Timer di volo attivato");
+      } else {
+        // Non ci sono più pezzi, torna a RIPOSO
+        stato_corrente = RIPOSO;
+        Serial.println("Stato: RIPOSO");
+      }
+      digitalWrite(stopLed, LOW);
+    } else {
+      // Anomalia: pezzo in uscita ma contatore è 0
+      stato_corrente = ANOMALIA;
+      anomalia = true;
+      tipoAnomalia = "Pezzo extra rilevato";
+      
+      engineon = false;
+      digitalWrite(engineLed, LOW);
+      digitalWrite(anomalyLed, HIGH);
+      
+      Serial.println("ANOMALIA: Pezzo extra rilevato all'uscita");
+      Serial.println("Contatore = 0 ma c'è un pezzo all'uscita");
+      
+      // Attendi prelievo del pezzo
+      waitUntilInputLow(stopSensor, 50);
+      digitalWrite(stopLed, LOW);
+    }
+  }
+  
+  // Timer di volo scaduto (solo in stato TRASPORTO)
+  else if (stato_corrente == TRASPORTO && volo.get() > flyTime) {
+    if (contatore > 0) {
+      // Anomalia: timer scaduto ma contatore > 0
+      stato_corrente = ANOMALIA;
+      anomalia = true;
+      tipoAnomalia = "Pezzi mancanti";
+      
+      engineon = false;
+      digitalWrite(engineLed, LOW);
+      digitalWrite(anomalyLed, HIGH);
+      volo.stop();
+      volo.reset();
+      
+      Serial.println("ANOMALIA: Pezzi mancanti");
+      Serial.print("Timer di volo scaduto ma contatore = ");
+      Serial.println(contatore);
+    }
+  }
+  
+  // Reset dell'anomalia (simulato con pressione su entrambi i sensori di ingresso)
+  if (stato_corrente == ANOMALIA && 
+      digitalRead(startSensorHigh) == HIGH && 
+      digitalRead(startSensorLow) == HIGH) {
+    
+    // Reset del sistema
+    stato_corrente = RIPOSO;
+    contatore = 0;
+    anomalia = false;
+    tipoAnomalia = "";
+    
+    engineon = false;
+    digitalWrite(engineLed, LOW);
+    digitalWrite(anomalyLed, LOW);
+    volo.stop();
+    volo.reset();
+    
+    Serial.println("Reset anomalia");
+    Serial.println("Stato: RIPOSO");
+    
+    // Attendi il rilascio dei pulsanti
+    while(digitalRead(startSensorHigh) == HIGH || digitalRead(startSensorLow) == HIGH) {
+      delay(50);
+    }
+  }
 }
 ```
 Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/bKP671nY2MU-copy-of-nastrouno/editel?tenant=circuits
