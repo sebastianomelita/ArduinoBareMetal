@@ -56,8 +56,6 @@ stateDiagram-v2
     PEZZO_PRONTO --> RIPOSO: Pezzo prelevato E\ncontatore == 1\ncontatore--
     PEZZO_PRONTO --> ANOMALIA: contatore == 0
     
-    TRASPORTO --> RIPOSO: Timer di volo scaduto E\ncontatore == 0
-    
     ANOMALIA --> RIPOSO: Reset
     
     note right of RIPOSO
@@ -72,7 +70,7 @@ stateDiagram-v2
         Timer di volo: 
         - Attivo se proveniente da PEZZO_PRONTO
         - Bloccato se proveniente da RIPOSO
-        Pezzi sul nastro = contatore
+        Pezzi sul nastro = contatore > 0
     end note
     
     note right of PEZZO_PRONTO
