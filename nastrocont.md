@@ -31,14 +31,14 @@ All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta
 
 | Stato Attuale | Evento | Condizione | Azione | Stato Successivo |
 |---------------|--------|------------|--------|------------------|
-| RIPOSO | Rilevamento pezzo in ingresso | - | contatore++ | TRASPORTO |
-| TRASPORTO | Rilevamento pezzo in ingresso | - | contatore++ | TRASPORTO |
-| TRASPORTO | Rilevamento pezzo in uscita | - | contatore-- | PEZZO_PRONTO |
-| TRASPORTO | Timer scaduto | contatore > 0 | - | ANOMALIA |
-| PEZZO_PRONTO | Pezzo prelevato | contatore > 0 | avvia timer di volo | TRASPORTO |
-| PEZZO_PRONTO | Pezzo prelevato | contatore == 0 | - | RIPOSO |
-| PEZZO_PRONTO | - | contatore == 0 | - | ANOMALIA |
-| ANOMALIA | Reset | - | - | RIPOSO |
+| RIPOSO | Rilevamento pezzo in ingresso | contatore++ | TRASPORTO |
+| TRASPORTO | Rilevamento pezzo in ingresso | contatore++ | TRASPORTO |
+| TRASPORTO | Rilevamento pezzo in uscita | contatore-- | PEZZO_PRONTO |
+| TRASPORTO | Timer scaduto AND contatore > 0 | - | ANOMALIA |
+| PEZZO_PRONTO | Pezzo prelevato AND contatore > 0 | avvia timer di volo | TRASPORTO |
+| PEZZO_PRONTO | Pezzo prelevato AND contatore == 0 | RIPOSO |
+| PEZZO_PRONTO | - | contatore == 0  | ANOMALIA |
+| ANOMALIA | Reset | - | RIPOSO |
 
 ## Azioni degli Stati
 
