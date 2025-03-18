@@ -178,8 +178,8 @@ void loop() {
 	}else if(digitalRead(reset)==HIGH) {
 		switch (statoCorrente) {
 		  case ANOMALIA:
-		   waitUntilInputLow(stopSensor,50);
-            contatore = 0;
+		        waitUntilInputLow(stopSensor,50);
+                        contatore = 0;
 			volo.stop(); 
 			ready = false;
 			engineon = false; 
