@@ -614,18 +614,17 @@ void loop() {
     waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
 
     // inizializzazione stato successivo
-    // Se era spento, avvia il timer di inattività
-    if (statoCorrente == 0) {
-      timerInattivita.reset();
-      timerInattivita.start();
-    }
-    // Se passa a spento, ferma il timer
-    else if (statoCorrente == NUM_STATI - 1) {
-      timerInattivita.stop();
-    } 
-    // Altrimenti resetta il timer in corso
-    else {
-      timerInattivita.reset();
+    switch (statoCorrente) {
+      case 0: // Se era spento, avvia il timer di inattività
+        timerInattivita.reset();
+        timerInattivita.start();
+        break;
+      case NUM_STATI - 1: // Se passa a spento, ferma il timer
+        timerInattivita.stop();
+        break;
+      default: // Altrimenti resetta il timer in corso
+        timerInattivita.reset();
+        break;
     }
     
     // Incrementa lo stato in modo ciclico
@@ -661,16 +660,35 @@ void loop() {
   delay(10); // Piccolo delay per stabilità
 }
 
-// Funzione per aggiornare gli output in base allo stato corrente
+/// Funzione per aggiornare gli output in base allo stato corrente
 void aggiornaOutput() {
   // Imposta l'intensità della lampada
   analogWrite(outputLampada, INTENSITA[statoCorrente]);
   
-  // Aggiorna i LED
+  // Aggiorna i LED utilizzando uno switch-case
+  // Prima spegne tutti i LED
   for (int i = 0; i < NUM_LED; i++) {
-    // Accende solo il LED corrispondente allo stato corrente (se non è SPENTO)
-    // statoCorrente 1 -> LED 0, statoCorrente 2 -> LED 1, statoCorrente 3 -> LED 2
-    digitalWrite(ledPins[i], (statoCorrente > 0 && i == statoCorrente - 1) ? HIGH : LOW);
+    digitalWrite(ledPins[i], LOW);
+  }
+  
+  // Poi accende solo il LED appropriato in base allo stato
+  switch (statoCorrente) {
+    case 0: // SPENTO
+      // Tutti i LED rimangono spenti
+      break;
+    case 1: // BASSA_INTENSITA
+      digitalWrite(ledPins[0], HIGH);
+      break;
+    case 2: // MEDIA_INTENSITA
+      digitalWrite(ledPins[1], HIGH);
+      break;
+    case 3: // ALTA_INTENSITA
+      digitalWrite(ledPins[2], HIGH);
+      break;
+    default:
+      // Gestione di sicurezza per stati imprevisti
+      Serial.println("Stato non valido!");
+      break;
   }
 }
 ```
