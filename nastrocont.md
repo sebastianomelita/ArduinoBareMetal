@@ -45,26 +45,36 @@ All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta
 %%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
 stateDiagram-v2
     [*] --> RIPOSO
+
+    RIPOSO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\ncontatore++
     
-    RIPOSO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso \ (barriera pezzi alti o bassi)
+    TRASPORTO_CERTO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\ncontatore++
     TRASPORTO_CERTO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
-    TRASPORTO_CERTO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso \ (nessun cambio di stato)
-    PEZZO_PRONTO --> TRASPORTO_STIMATO: Pezzo prelevato \ (barriera uscita disattivata)
-    TRASPORTO_STIMATO --> RIPOSO: Timer di volo scaduto \ (nessun pezzo sul nastro)
+    TRASPORTO_CERTO --> ANOMALIA_PEZZI_MANCANTI: Timer scaduto E\ncontatore > 0
+    
+    PEZZO_PRONTO --> TRASPORTO_STIMATO: Pezzo prelevato\ncontatore--
+    
+    TRASPORTO_STIMATO --> RIPOSO: Timer di volo scaduto E\ncontatore == 0
+    TRASPORTO_STIMATO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\ncontatore++
     TRASPORTO_STIMATO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
-    TRASPORTO_STIMATO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso
+    TRASPORTO_STIMATO --> ANOMALIA_PEZZI_MANCANTI: Timer scaduto E\ncontatore > 0
+    
+    PEZZO_PRONTO --> ANOMALIA_PEZZI_EXTRA: contatore == 0
+    
+    ANOMALIA_PEZZI_MANCANTI --> RIPOSO: Reset
+    ANOMALIA_PEZZI_EXTRA --> RIPOSO: Reset
     
     note right of RIPOSO
         Motore spento
         Timer di volo bloccato
         Nastro vuoto
+        Contatore = 0
     end note
     
     note right of TRASPORTO_CERTO
         Motore acceso
         Timer di volo bloccato
-        Pezzo sicuramente presente sul nastro
-        (rilevato da sensore ingresso)
+        Pezzi sul nastro = contatore
     end note
     
     note right of PEZZO_PRONTO
@@ -77,8 +87,19 @@ stateDiagram-v2
     note right of TRASPORTO_STIMATO
         Motore acceso
         Timer di volo attivo
-        Possibili pezzi sul nastro
-        (non confermati da sensori)
+        Possibili pezzi sul nastro = contatore
+    end note
+    
+    note right of ANOMALIA_PEZZI_MANCANTI
+        Motore spento
+        Allarme attivo
+        Pezzi mancanti rilevati
+    end note
+    
+    note right of ANOMALIA_PEZZI_EXTRA
+        Motore spento
+        Allarme attivo
+        Pezzi extra rilevati
     end note
 ```
 
