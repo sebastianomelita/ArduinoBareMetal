@@ -7,7 +7,7 @@
 In linea generale, una **linea guida per** sviluppare una macchina a stati finiti potrebbe proporre **due strade**: 
 
 - **prima valutare gli stati** e poi gli ingressi:
-   - scrivere uno switch-case con **tutti** i **possibili stati** del sistema
+   - scrivere uno **switch-case** con **tutti** i **possibili stati** del sistema
    - all’interno di ogni campo dello switch-case, valutare soltanto **gli ingressi attivi**, cioè quegli ingressi **rilevanti** perchè potrebbero generare una **transizione** da quel particolare **stato**.
    - in corrispondenza di **ciascun ingresso**:
         - aggiornare il valore dello **stato corrente** con quello **stato successivo** in funzione del valore della coppia (**ingresso, stato**).
@@ -15,12 +15,16 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
         - impostare l'**inizializzazione** dello stato successivo (timers, contatori, ecc.).
 
 - oppure, alternativamente, **prima valutare gli ingressi** e poi gli stati:
-    - scrivere uno if-else-if con **tutti** i **possibili ingressi** del sistema
+    - scrivere uno **if-else-if** con **tutti** i **possibili ingressi** del sistema
     - all’interno di ogni ramo dell'if-else-if, scrivere uno switch-case (o un blocco if-else-if) con tutti i soli **stati raggiungibili** da quell'ingresso 
     - in corrispondenza di **ciascuno stato**:
         - aggiornare il valore dello **stato corrente** con quello **stato successivo** in funzione del valore della coppia (**ingresso, stato**).
         - calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
         - impostare l'**inizializzazione** dello stato successivo (timers, contatori, ecc.).
+
+### **Logica mutuamente esclusiva**
+
+Si rimarca che **tutte le selezioni**, sia quelle esterne, che quelle interne, devono essere **mutuamente esclusive**, cioè devono rigorosamente seguire la logica degli **if a più rami**. Non è generalmente corretto nè utilizzare una logica di if in cascata e neppure quelli di if annidati uno dentro l'altro. 
 
 
 ### **Esempi a confronto**
