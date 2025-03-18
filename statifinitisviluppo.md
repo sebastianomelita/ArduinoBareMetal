@@ -8,7 +8,7 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
 
 - **prima valutare gli stati** e poi gli ingressi:
    - scrivere uno switch-case con **tutti** i **possibili stati** del sistema
-   - all’interno di ogni campo dello switch-case, valutare soltanto **gli ingressi attivi**, cioè quegli ingressi che potrebbero generare una **transizione** da quel particolare **stato**.
+   - all’interno di ogni campo dello switch-case, valutare soltanto **gli ingressi attivi**, cioè quegli ingressi **rilevanti** perchè potrebbero generare una **transizione** da quel particolare **stato**.
    - in corrispondenza di **ciascun ingresso**:
         - aggiornare il valore dello **stato corrente** con quello **stato successivo** in funzione del valore della coppia (**ingresso, stato**).
         - calcolare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
@@ -96,8 +96,8 @@ Quando ci sono **più ingressi** che stati:
 ### **Clusterizzazione**
 
 Possiamo osservare una stessa struttura di macchina a stati, da due **prospettive duali**:
-- Se la struttura è tale che solo **pochi ingressi** sono **rilevanti** per ogni stato (pochi ingressi che si addensano su ciascun stato) → approccio "prima gli stati"
-- Se la struttura è tale che solo **pochi stati** sono **sensibili** a ogni ingresso (pochi stati che si addensano su ciascun ingresso) → approccio "prima gli ingressi"
+- Se la struttura è tale che solo **pochi ingressi** sono **rilevanti** per ogni stato (pochi ingressi **attivi** che si addensano su ciascun stato) → approccio "**prima gli stati**"
+- Se la struttura è tale che solo **pochi stati** sono **sensibili** a ogni ingresso (pochi stati **raggiungibili** che si addensano su ciascun ingresso) → approccio "**prima gli ingressi**"
 
 ### **Complessità**
 
