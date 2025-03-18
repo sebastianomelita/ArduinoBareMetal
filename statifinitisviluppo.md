@@ -141,7 +141,7 @@ Consideriamo un esempio di approccio "prima gli ingressi e dopo gli stati". In q
 
 **Quando un determinato ingresso causa sempre la stessa transizione di stato, indipendentemente dallo stato di partenza, non è necessario verificare lo stato corrente prima di effettuare la transizione.**
 
-La regola, in un contesto "prima gli ingressi e poi gli stati", consente di **eliminare gli if-else-if interni sugli stati**, dato che ad ogni ingresso di questo tipo è possibile associare un unico stato.
+La regola, in un contesto "prima gli ingressi e poi gli stati", consente di **eliminare gli if-else-if interni sugli stati**, dato che ad ogni ingresso di questo tipo è possibile associare un **unico stato**.
 
 In altre parole, quando c'è una **mappatura diretta 1:1** tra un ingresso e uno stato di destinazione, strutturare il codice intorno agli ingressi piuttosto che agli stati è la selta preferibile. Questo è precisamente il vantaggio dell'approccio "prima gli ingressi" che abbiamo discusso: riduce la complessità del codice eliminando verifiche di stato ridondanti.
 
