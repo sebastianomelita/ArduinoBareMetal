@@ -183,6 +183,8 @@ La regola che consente di eliminare gli if interni sugli stati in questo caso pu
 
 **Quando un determinato ingresso causa sempre la stessa transizione di stato, indipendentemente dallo stato di partenza, non è necessario verificare lo stato corrente prima di effettuare la transizione.**
 
+In altre parole, lo **stato successivo** è funzione esclusivamente dell'**ingresso corrente** e non della **coppia** (ingresso, stato).
+
 Questo principio si applica perché:
 
 1. Nel nostro diagramma degli stati, quando viene rilevato un pezzo in ingresso (startSensorHigh), il sistema dovrebbe sempre passare allo stato TRASPORTO_CERTO, indipendentemente dallo stato di partenza.
