@@ -133,11 +133,11 @@ Facciamo alcune osservazioni sul diagramma:
 
 In altre parole, lo **stato successivo** è funzione esclusivamente dell'**ingresso corrente** e non della **coppia** (ingresso, stato).
 
-Consideriamo un esempio di approccio " prima gli ingressi e dopo gli stati". In questo contesto si potrebbe formulare questa regola:
+Consideriamo un esempio di approccio "prima gli ingressi e dopo gli stati". In questo contesto si potrebbe formulare la seguente regola:
 
 **Quando un determinato ingresso causa sempre la stessa transizione di stato, indipendentemente dallo stato di partenza, non è necessario verificare lo stato corrente prima di effettuare la transizione.**
 
-La regola consente di eliminare gli if interni sugli stati dato che ad ogni ingresso siffatto è possibile associare un unico stato.
+La regola consente di eliminare gli if interni sugli stati dato che ad ogni ingresso di questo tipo è possibile associare un unico stato.
 
 In altre parole, quando c'è una **mappatura diretta 1:1** tra un ingresso e uno stato di destinazione, strutturare il codice intorno agli ingressi piuttosto che agli stati è la selta preferibile. Questo è precisamente il vantaggio dell'approccio "prima gli ingressi" che abbiamo discusso: riduce la complessità del codice eliminando verifiche di stato ridondanti.
 
