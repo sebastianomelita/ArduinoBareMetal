@@ -46,23 +46,18 @@ All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta
 stateDiagram-v2
     [*] --> RIPOSO
 
-    RIPOSO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\ncontatore++
+    RIPOSO --> TRASPORTO: Rilevamento pezzo in ingresso\ncontatore++
     
-    TRASPORTO_CERTO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\ncontatore++
-    TRASPORTO_CERTO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
-    TRASPORTO_CERTO --> ANOMALIA_PEZZI_MANCANTI: Timer scaduto E\ncontatore > 0
+    TRASPORTO --> TRASPORTO: Rilevamento pezzo in ingresso\ncontatore++
+    TRASPORTO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
+    TRASPORTO --> ANOMALIA: Timer scaduto E\ncontatore > 0
     
-    PEZZO_PRONTO --> TRASPORTO_STIMATO: Pezzo prelevato\ncontatore--
+    PEZZO_PRONTO --> TRASPORTO: Pezzo prelevato\ncontatore--
+    PEZZO_PRONTO --> ANOMALIA: contatore == 0 OR\ncontatore < 0
     
-    TRASPORTO_STIMATO --> RIPOSO: Timer di volo scaduto E\ncontatore == 0
-    TRASPORTO_STIMATO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso\ncontatore++
-    TRASPORTO_STIMATO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
-    TRASPORTO_STIMATO --> ANOMALIA_PEZZI_MANCANTI: Timer scaduto E\ncontatore > 0
+    TRASPORTO --> RIPOSO: Timer di volo scaduto E\ncontatore == 0
     
-    PEZZO_PRONTO --> ANOMALIA_PEZZI_EXTRA: contatore == 0
-    
-    ANOMALIA_PEZZI_MANCANTI --> RIPOSO: Reset
-    ANOMALIA_PEZZI_EXTRA --> RIPOSO: Reset
+    ANOMALIA --> RIPOSO: Reset
     
     note right of RIPOSO
         Motore spento
@@ -71,9 +66,9 @@ stateDiagram-v2
         Contatore = 0
     end note
     
-    note right of TRASPORTO_CERTO
+    note right of TRASPORTO
         Motore acceso
-        Timer di volo bloccato
+        Timer di volo attivo al termine\ndi PEZZO_PRONTO
         Pezzi sul nastro = contatore
     end note
     
@@ -84,22 +79,12 @@ stateDiagram-v2
         Ready = true
     end note
     
-    note right of TRASPORTO_STIMATO
-        Motore acceso
-        Timer di volo attivo
-        Possibili pezzi sul nastro = contatore
-    end note
-    
-    note right of ANOMALIA_PEZZI_MANCANTI
+    note right of ANOMALIA
         Motore spento
         Allarme attivo
-        Pezzi mancanti rilevati
-    end note
-    
-    note right of ANOMALIA_PEZZI_EXTRA
-        Motore spento
-        Allarme attivo
-        Pezzi extra rilevati
+        Tipo anomalia:
+        - Pezzi mancanti (timer scaduto con contatore > 0)
+        - Pezzi extra (pezzo in uscita con contatore == 0)
     end note
 ```
 
