@@ -146,10 +146,10 @@ void loop() {
 	}else if(digitalRead(stopSensor)==HIGH) {
 		switch (statoCorrente) {
 		  case TRASPORTO:
+			// PEZZO_PRONTO
 			engineon = false; 
 			ready = true;
-			// PEZZO_PRONTO
-			if(contatore == 0){
+			if(contatore == 0){// ci sta un pezzo di troppo
 				statoCorrente = ANOMALIA;
 				volo.stop();
 	        		volo.reset();
@@ -181,6 +181,7 @@ void loop() {
 	}else if(volo.get() > 10000){
 		switch (statoCorrente) {
 		  case TRASPORTO:
+			// ci sta un pezzo in meno del previsto
 			statoCorrente = ANOMALIA;
 			volo.stop();
         		volo.reset();
