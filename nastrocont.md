@@ -123,70 +123,79 @@ L'algoritmo è implementato usando una **logica FSM** di tipo **"prima gli ingre
 
 ```C++
 bool ready = false;
+in contatore = 0;
 
 void setup() {
   ready = false;
 }
 
 void loop() {
-	// lettura degli ingressi
-	// RIPOSO
-	// TRASPORTO_CERTO
-	// TRASPORTO_STIMATO
 	if(digitalRead(startSensorHigh)==HIGH){		// se è alto c'è stato un fronte di salita
-		// TRASPORTO_CERTO
-		engineon = true; 	
-		volo.stop();				// c'è almeno un pezzo in transito			
-		waitUntilInputLow(startSensorHigh,50);	// attendi finchè non c'è fronte di discesa
+		switch (statoCorrente) {
+		  case RIPOSO:
+		    statoCorrente = TRASPORTO;
+			waitUntilInputLow(startSensorHigh,50);
+			contatore++;
+			engineon = true; 
+			volo.stop();
+		  case ANOMALIA:
+			break;
+		}
 	}else if(digitalRead(startSensorLow)==HIGH){	// se è alto c'è stato un fronte di salita
-		// TRASPORTO_CERTO
-		engineon = true; 	
-		volo.stop();				// c'è almeno un pezzo in transito				
-		waitUntilInputLow(startSensorLow,50);	// attendi finchè non c'è fronte di discesa
+		switch (statoCorrente) {
+		  case RIPOSO:
+			statoCorrente = TRASPORTO;
+			waitUntilInputLow(startSensorLow,50);
+			contatore++;
+			engineon = true; 
+			volo.stop();
+		  case ANOMALIA:
+			break;
+		}
 	}else if(digitalRead(stopSensor)==HIGH) {
-		// PEZZO_PRONTO
-		engineon = false; 
-		ready = true;
-		waitUntilInputLow(stopSensor,50);
-		// TRASPORTO_STIMATO
-		ready = false;
-		engineon = true; 
-		volo.start(); 		// se c'è un pezzo in transito arriverà prima dello scadere
-		volo.reset();
-	}
-	// polling del timer di volo
-	// TRASPORTO_STIMATO
-        // timer in corsa solo a partire da TRASPORTO_STIMATO
-	if(volo.get() > 10000){
-		// RIPOSO
-        	volo.stop();
-        	volo.reset();
-		engineon = false; 
+		switch (statoCorrente) {
+		  case TRASPORTO:
+			engineon = false; 
+			ready = true;
+			waitUntilInputLow(stopSensor,50);
+			// PEZZO_PRONTO
+			contatore--;
+			ready = false;
+			if(contatore == 0){
+				statoCorrente = RIPOSO;
+			}else if(contatore > 0){
+				statoCorrente = TRASPORTO;
+				engineon = true; 
+				volo.start(); 		
+				volo.reset();
+			}else{
+				statoCorrente = ANOMALIA;
+				engineon = false; 
+			}	
+		  case ANOMALIA:
+			break;
+		}
+	}else if(digitalRead(reset)==HIGH) {
+		switch (statoCorrente) {
+		  case ANOMALIA:
+		   waitUntilInputLow(stopSensor,50);
+            contatore = 0;
+			volo.stop(); 
+			ready = false;
+			engineon = false; 
+			break;
+		}
+	}else if(volo.get() > 10000){
+		switch (statoCorrente) {
+		  case TRASPORTO:
+			statoCorrente = ANOMALIA;
+			engineon = false; 
+			break;
+		}
 	}
 }
 ```
 
-Si noti che:
-- gli ingressi sui due sensori di start possono determinare transizioni verso il solo stato ```TRASPORTO_CERTO```, per cui lo switch-case interno è inutile.
-- l'ingresso sul sensore di stop determina due stati ma in momenti diversi, uno prima (```PEZZO_PRONTO```) del blocco del codice con ```waitUntilInputLow``` e uno dopo (```TRASPORTO_STIMATO```), ne consegue che anche in questo caso lo switch-case interno è superfluo.
-- il timer è un ingresso che apparentemente è in ascolto su tre stati (```RIPOSO```, ```TRASPORTO_CERTO```, ```TRASPORTO_STIMATO```) ma che, in realtà, è effettivamente attivo solo nello stato ```TRASPORTO_STIMATO```, coerentemente con la tabella delle transizioni e il diagramma degli stati.
-- il timer è un ingresso che può determinare transizioni verso il solo stato ```RIPOSO``` per cui, anche in questo caso, lo switch-case interno è inutile.
-
-La regola che consente di eliminare gli if interni sugli stati in questo caso può essere formulata così:
-
-**Quando un determinato ingresso causa sempre la stessa transizione di stato, indipendentemente dallo stato di partenza, non è necessario verificare lo stato corrente prima di effettuare la transizione.**
-
-Questo principio si applica perché:
-
-1. Nel nostro diagramma degli stati, quando viene rilevato un pezzo in ingresso (startSensorHigh), il sistema dovrebbe sempre passare allo stato TRASPORTO_CERTO, indipendentemente dallo stato di partenza.
-
-2. Similmente, quando viene rilevato un pezzo in uscita (stopSensor), il sistema dovrebbe sempre passare a PEZZO_PRONTO (e poi a TRASPORTO_STIMATO), indipendentemente dallo stato di partenza.
-
-3. L'unico caso in cui dobbiamo mantenere il controllo dello stato è per il timer di volo, perché questo ha effetto solo quando siamo nello stato TRASPORTO_STIMATO.
-
-In altre parole, quando c'è una **mappatura diretta 1:1** tra un ingresso e uno stato di destinazione, il codice può essere strutturato intorno agli ingressi piuttosto che agli stati. Questo è precisamente il vantaggio dell'approccio "prima gli ingressi" che abbiamo discusso: riduce la complessità del codice eliminando verifiche di stato ridondanti.
-
-Questa regola è particolarmente efficace in macchine a stati semplici con flussi lineari o con transizioni "dominanti" dove certi eventi hanno sempre la priorità e causano le stesse transizioni indipendentemente dal contesto.
 
 Un **esempio completo** per la gestione di un singolo nastro, corredato di elementi di segnalazione (led) e messaggistica di debug è riportato di seguito:
 
