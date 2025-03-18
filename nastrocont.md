@@ -29,8 +29,8 @@ All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta
 
 # Tabella delle Transizioni degli Stati del Sistema Trasportatore
 
-| Stato Attuale | Evento | Condizione | Azione | Stato Successivo |
-|---------------|--------|------------|--------|------------------|
+| Stato Attuale | Evento | Azione | Stato Successivo |
+|---------------|--------|--------|------------------|
 | RIPOSO | Rilevamento pezzo in ingresso | contatore++ | TRASPORTO |
 | TRASPORTO | Rilevamento pezzo in ingresso | contatore++ | TRASPORTO |
 | TRASPORTO | Rilevamento pezzo in uscita | contatore-- | PEZZO_PRONTO |
