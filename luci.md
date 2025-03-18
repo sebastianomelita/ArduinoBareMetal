@@ -562,6 +562,15 @@ struct DiffTimer
 };
 //##### urutils.h #####
 
+// Enum degli stati della lampada
+enum StatoLampada {
+  SPENTO = 0,
+  BASSA_INTENSITA = 1,
+  MEDIA_INTENSITA = 2,
+  ALTA_INTENSITA = 3,
+  NUM_STATI // Questo valore sarà automaticamente 4
+};
+
 // Definizione dei pin
 const int pulsanteP1 = 2;     // Pin per il pulsante P1
 const int pirSensor = 3;      // Pin per il sensore PIR
@@ -573,14 +582,13 @@ const int NUM_LED = sizeof(ledPins) / sizeof(ledPins[0]);
 
 // Valori di intensità della lampada
 const int INTENSITA[] = {0, 85, 170, 255};  // Valori di intensità per ogni stato
-const int NUM_STATI = sizeof(INTENSITA) / sizeof(INTENSITA[0]);  // Conta automaticamente gli stati
 
 // Timer per l'inattività
 DiffTimer timerInattivita;
 const unsigned long TEMPO_INATTIVITA = 300000; // 5 minuti in millisecondi
 
-// Variabile di stato come contatore
-uint8_t statoCorrente = 0;  // 0=SPENTO, 1=BASSA, 2=MEDIA, 3=ALTA
+// Variabile di stato usando l'enum
+StatoLampada statoCorrente = SPENTO;
 
 // Nomi degli stati per i messaggi di debug
 const char* NOMI_STATI[] = {"SPENTO", "BASSA_INTENSITA", "MEDIA_INTENSITA", "ALTA_INTENSITA"};
@@ -613,22 +621,22 @@ void loop() {
   if (digitalRead(pulsanteP1) == HIGH) {
     waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
 
-    // inizializzazione stato successivo
+    // inizializzazione stato successivo usando switch-case
     switch (statoCorrente) {
-      case 0: // Se era spento, avvia il timer di inattività
+      case SPENTO:
         timerInattivita.reset();
         timerInattivita.start();
         break;
-      case NUM_STATI - 1: // Se passa a spento, ferma il timer
+      case ALTA_INTENSITA:
         timerInattivita.stop();
         break;
-      default: // Altrimenti resetta il timer in corso
+      default:
         timerInattivita.reset();
         break;
     }
     
     // Incrementa lo stato in modo ciclico
-    statoCorrente = (statoCorrente + 1) % NUM_STATI;
+    statoCorrente = static_cast<StatoLampada>((statoCorrente + 1) % NUM_STATI);
     Serial.print("Passaggio a stato: ");
     Serial.println(NOMI_STATI[statoCorrente]);
     
@@ -639,17 +647,17 @@ void loop() {
   // INGRESSO 2: Sensore di movimento PIR
   else if (digitalRead(pirSensor) == HIGH) {
     // Reset del timer di inattività solo se la lampada è accesa
-    if (statoCorrente > 0) {
+    if (statoCorrente != SPENTO) {
       timerInattivita.reset();
       Serial.println("Movimento rilevato - Timer resettato");
     }
   }
   
   // INGRESSO 3: Timer di inattività scaduto
-  else if (statoCorrente > 0 && timerInattivita.get() > TEMPO_INATTIVITA) {
+  else if (statoCorrente != SPENTO && timerInattivita.get() > TEMPO_INATTIVITA) {
     // Spegnimento automatico
     Serial.println("Inattività rilevata - Spegnimento automatico");
-    statoCorrente = 0;  // Torna allo stato SPENTO
+    statoCorrente = SPENTO;  // Torna allo stato SPENTO
     // inizializzazione stato successivo
     timerInattivita.stop();
     
@@ -660,7 +668,7 @@ void loop() {
   delay(10); // Piccolo delay per stabilità
 }
 
-/// Funzione per aggiornare gli output in base allo stato corrente
+// Funzione per aggiornare gli output in base allo stato corrente
 void aggiornaOutput() {
   // Imposta l'intensità della lampada
   analogWrite(outputLampada, INTENSITA[statoCorrente]);
@@ -673,16 +681,16 @@ void aggiornaOutput() {
   
   // Poi accende solo il LED appropriato in base allo stato
   switch (statoCorrente) {
-    case 0: // SPENTO
+    case SPENTO:
       // Tutti i LED rimangono spenti
       break;
-    case 1: // BASSA_INTENSITA
+    case BASSA_INTENSITA:
       digitalWrite(ledPins[0], HIGH);
       break;
-    case 2: // MEDIA_INTENSITA
+    case MEDIA_INTENSITA:
       digitalWrite(ledPins[1], HIGH);
       break;
-    case 3: // ALTA_INTENSITA
+    case ALTA_INTENSITA:
       digitalWrite(ledPins[2], HIGH);
       break;
     default:
