@@ -129,7 +129,7 @@ Facciamo alcune osservazioni sul diagramma:
 
 1. Quando viene rilevato un pezzo in ingresso (startSensorHigh), il sistema dovrebbe sempre passare allo stato ```TRASPORTO_CERTO```, indipendentemente dallo stato di partenza.
 2. Similmente, quando viene rilevato un pezzo in uscita (stopSensor), il sistema dovrebbe sempre passare a ```PEZZO_PRONTO``` (e poi a ```TRASPORTO_STIMATO```), indipendentemente dallo stato di partenza.
-3. L'unico caso in cui dobbiamo mantenere il controllo dello stato è per il timer di volo, perché questo ha effetto solo quando siamo nello stato TRASPORTO_STIMATO.
+3. L'unico caso in cui dobbiamo mantenere il controllo dello stato è per il timer di volo, perché questo ha effetto solo quando siamo nello stato ```TRASPORTO_STIMATO```.
 
 In altre parole, lo **stato successivo** è funzione esclusivamente dell'**ingresso corrente** e non della **coppia** (ingresso, stato).
 
