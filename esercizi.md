@@ -174,7 +174,7 @@ Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto
   -    **reset()** per azzerare il timer.
   -    **stop()** per bloccare (disarmare) il timer.
 
-Per consultare dettagli sulla sua implementazione vedi [timer sequenziali](polledtimer_seq.md).
+Per consultare dettagli sulla sua implementazione vedi [Timer basati sul polling della millis()](polledtimer_seq.md).
 
 ## **PULSANTI CON MEMORIA E SENZA MEMORIA**
 
