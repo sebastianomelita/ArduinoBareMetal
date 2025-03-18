@@ -131,7 +131,7 @@ Facciamo alcune osservazioni sul diagramma:
 2. Similmente, quando viene rilevato un pezzo in uscita (stopSensor), il sistema dovrebbe sempre passare a ```PEZZO_PRONTO``` (e poi a ```TRASPORTO_STIMATO```), indipendentemente dallo stato di partenza.
 3. L'unico caso in cui dobbiamo mantenere il controllo dello stato è per il timer di volo, perché questo ha effetto solo quando siamo nello stato ```TRASPORTO_STIMATO```.
 
-In altre parole, lo **stato successivo** è funzione esclusivamente dell'**ingresso corrente** e non della **coppia** (ingresso, stato).
+In altre parole, lo **stato successivo** all'ingresso ```Rilevamento pezzo in ingresso``` è funzione esclusivamente dell'**ingresso corrente** e non della **coppia** (ingresso, stato).
 
 Consideriamo un esempio di approccio "prima gli ingressi e dopo gli stati". In questo contesto si potrebbe formulare la seguente regola:
 
