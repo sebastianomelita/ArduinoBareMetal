@@ -125,7 +125,23 @@ stateDiagram-v2
     TRASPORTO_STIMATO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso
 ```
 
-Consideriamo questo esempio di approccio " prima gli ingressi e dopo gli stati":
+Facciamo alcune osservazioni sul diagramma:
+
+1. Quando viene rilevato un pezzo in ingresso (startSensorHigh), il sistema dovrebbe sempre passare allo stato ```TRASPORTO_CERTO```, indipendentemente dallo stato di partenza.
+2. Similmente, quando viene rilevato un pezzo in uscita (stopSensor), il sistema dovrebbe sempre passare a ```PEZZO_PRONTO``` (e poi a ```TRASPORTO_STIMATO```), indipendentemente dallo stato di partenza.
+3. L'unico caso in cui dobbiamo mantenere il controllo dello stato è per il timer di volo, perché questo ha effetto solo quando siamo nello stato TRASPORTO_STIMATO.
+
+In altre parole, lo **stato successivo** è funzione esclusivamente dell'**ingresso corrente** e non della **coppia** (ingresso, stato).
+
+Consideriamo un esempio di approccio " prima gli ingressi e dopo gli stati". In questo contesto si potrebbe formulare questa regola:
+
+**Quando un determinato ingresso causa sempre la stessa transizione di stato, indipendentemente dallo stato di partenza, non è necessario verificare lo stato corrente prima di effettuare la transizione.**
+
+La regola consente di eliminare gli if interni sugli stati dato che ad ogni ingresso siffatto è possibile associare un unico stato.
+
+In altre parole, quando c'è una **mappatura diretta 1:1** tra un ingresso e uno stato di destinazione, strutturare il codice intorno agli ingressi piuttosto che agli stati è la selta preferibile. Questo è precisamente il vantaggio dell'approccio "prima gli ingressi" che abbiamo discusso: riduce la complessità del codice eliminando verifiche di stato ridondanti.
+
+Questa regola è particolarmente efficace in macchine a stati semplici con flussi lineari o con transizioni "dominanti" dove certi eventi hanno sempre la priorità e causano le stesse transizioni indipendentemente dal contesto.
 
 ```C++
 // Definizione degli stati
@@ -179,23 +195,6 @@ void loop() {
 }
 ```
 
-La regola che consente di eliminare gli if interni sugli stati in questo caso può essere formulata così:
-
-**Quando un determinato ingresso causa sempre la stessa transizione di stato, indipendentemente dallo stato di partenza, non è necessario verificare lo stato corrente prima di effettuare la transizione.**
-
-In altre parole, lo **stato successivo** è funzione esclusivamente dell'**ingresso corrente** e non della **coppia** (ingresso, stato).
-
-Questo principio si applica perché:
-
-1. Nel nostro diagramma degli stati, quando viene rilevato un pezzo in ingresso (startSensorHigh), il sistema dovrebbe sempre passare allo stato TRASPORTO_CERTO, indipendentemente dallo stato di partenza.
-
-2. Similmente, quando viene rilevato un pezzo in uscita (stopSensor), il sistema dovrebbe sempre passare a PEZZO_PRONTO (e poi a TRASPORTO_STIMATO), indipendentemente dallo stato di partenza.
-
-3. L'unico caso in cui dobbiamo mantenere il controllo dello stato è per il timer di volo, perché questo ha effetto solo quando siamo nello stato TRASPORTO_STIMATO.
-
-In altre parole, quando c'è una **mappatura diretta 1:1** tra un ingresso e uno stato di destinazione, **il codice può essere strutturato intorno agli ingressi piuttosto che agli stati**. Questo è precisamente il vantaggio dell'approccio "prima gli ingressi" che abbiamo discusso: riduce la complessità del codice eliminando verifiche di stato ridondanti.
-
-Questa regola è particolarmente efficace in macchine a stati semplici con flussi lineari o con transizioni "dominanti" dove certi eventi hanno sempre la priorità e causano le stesse transizioni indipendentemente dal contesto.
 
 
 ### **Frequenza delle modifiche**
