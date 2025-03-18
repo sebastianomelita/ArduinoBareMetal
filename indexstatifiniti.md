@@ -19,4 +19,5 @@
 14. [Palestra per cani](palestracani.md)
 15. [Lettiera autopulente](lettiera.md)
 16. [Nastro trasportatore](nastro.md)
-17. [Sitografia](statifinitisitografia.md)
+17.  [Nastro trasportatore con contapezzi](nastrocont.md)
+18. [Sitografia](statifinitisitografia.md)
