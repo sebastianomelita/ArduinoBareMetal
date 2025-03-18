@@ -170,6 +170,9 @@ void loop() {
 				volo.reset();
 			}else{
 				statoCorrente = ANOMALIA;
+				volo.stop();
+	        		volo.reset();
+				ready = false;
 				engineon = false; 
 			}	
 		  case ANOMALIA:
@@ -179,17 +182,18 @@ void loop() {
 		switch (statoCorrente) {
 		  case ANOMALIA:
 		        waitUntilInputLow(stopSensor,50);
-                        contatore = 0;
-			volo.stop(); 
-			ready = false;
-			engineon = false; 
+			statoCorrente = RIPOSO;
+ 			contatore = 0; 
 			break;
 		}
 	}else if(volo.get() > 10000){
 		switch (statoCorrente) {
 		  case TRASPORTO:
 			statoCorrente = ANOMALIA;
-			engineon = false; 
+			volo.stop();
+        		volo.reset();
+			ready = false;
+			engineon = false;  
 			break;
 		}
 	}
