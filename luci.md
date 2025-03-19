@@ -150,11 +150,11 @@ struct DiffTimer
 
 // Definizione dei pin
 const int pulsanteP1 = 2;     // Pin per il pulsante P1
-const int pirSensor = 3;      // Pin per il sensore PIR
-const int ledL1 = 4;          // LED indicatore bassa intensità
-const int ledL2 = 5;          // LED indicatore media intensità
-const int ledL3 = 6;          // LED indicatore alta intensità
-const int outputLampada = 9;  // Pin PWM per controllare l'intensità della lampada
+const int pirSensor = 8;      // Pin per il sensore PIR
+const int ledL1 = 13;          // LED indicatore bassa intensità
+const int ledL2 = 12;          // LED indicatore media intensità
+const int ledL3 = 4;          // LED indicatore alta intensità
+const int outputLampada = 5;  // Pin PWM per controllare l'intensità della lampada
 
 // Valori di intensità della lampada
 const int OFF = 0;    // 0% di 255
@@ -178,9 +178,9 @@ enum Stati {
 uint8_t statoCorrente;
 
 void updateOutputs(uint8_t l1, uint8_t l2, uint8_t l3, uint8_t al){
-    digitalWrite(ledL1, LOW);
-    digitalWrite(ledL2, LOW);
-    digitalWrite(ledL3, LOW);
+    digitalWrite(ledL1, l1);
+    digitalWrite(ledL2, l2);
+    digitalWrite(ledL3, l3);
     analogWrite(outputLampada, al);   
 }
 
@@ -210,6 +210,7 @@ void loop() {
       // Controllo pressione pulsante P1 (HIGH con pull-down quando premuto)
       if (digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
+	Serial.println("Stato: BASSA_INTENSITA");
         statoCorrente = BASSA_INTENSITA;
 	Serial.println("Stato: BASSA_INTENSITA");
 	// impostazione valore uscite
@@ -222,7 +223,6 @@ void loop() {
       
     case BASSA_INTENSITA:
       // Stato BASSA_INTENSITA: LED L1 acceso, altri spenti, lampada a bassa intensità     
-      Serial.println("Stato: BASSA_INTENSITA");
        
       if (digitalRead(pulsanteP1) == HIGH) {// Controllo pressione pulsante P1
         waitUntilInputLow(pulsanteP1, 50);
@@ -277,10 +277,11 @@ void loop() {
       // Stato ALTA_INTENSITA: LED L3 acceso, altri spenti, lampada ad alta intensità           
       // Controllo pressione pulsante P1
       if(digitalRead(pulsanteP1) == HIGH) {
+	Serial.println("Stato: SPENTO");
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = SPENTO;
 	// impostazione valore uscite
-	updateOutputs(LOW, LOW, HIGH, INTENSITA_ALTA);
+	updateOutputs(LOW, LOW, LOW, OFF);
 	// inizializzazione stato successivo
         timerInattivita.stop(); // Ferma il timer di inattività
       }else if(digitalRead(pirSensor) == HIGH) { // controllo movimento
