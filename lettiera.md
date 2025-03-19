@@ -10,6 +10,8 @@ Indicare la presenza del gatto con un led verde acceso. La pulizia della lettier
 
 NB: E' con pochi stati e con sensore di transito, per cui si può fare benissimo anche senza macchina a stati. In ogni caso, si noti che i contatori sono considerati ingressi.
 
+Per dettagli sulle macchine a stati finiti (o FSM) vedi [FSM](indexstatifiniti.md) e [Linee guida FSM](statifinitisviluppo.md)
+
 ## **Tabella di Transizione della Lettiera Autopulente**
 
 | Stato attuale | Input | Stato prossimo | Azione | Output |
