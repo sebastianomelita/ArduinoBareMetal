@@ -390,9 +390,9 @@ enum Stati {
 uint8_t statoCorrente;
 
 void updateOutputs(uint8_t l1, uint8_t l2, uint8_t l3, uint8_t al){
-    digitalWrite(ledL1, LOW);
-    digitalWrite(ledL2, LOW);
-    digitalWrite(ledL3, LOW);
+    digitalWrite(ledL1, l1);
+    digitalWrite(ledL2, l2);
+    digitalWrite(ledL3, l3);
     analogWrite(outputLampada, al);   
 }
 
