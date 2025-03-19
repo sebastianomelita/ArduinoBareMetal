@@ -21,6 +21,8 @@ Gli input del sistema sono:
 - Timer t1 ≥ 10 secondi (riscaldamento completato)
 - Timer t2 ≥ 3 secondi (erogazione completata)
 
+Per dettagli sulle macchine a stati finiti (o FSM) vedi [FSM](indexstatifiniti.md) e [Linee guida FSM](statifinitisviluppo.md)
+
 ### **TABELLA DI TRANSIZIONE**
 
 Ecco la tabella di transizione di Mealy:
