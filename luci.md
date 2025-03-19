@@ -19,7 +19,7 @@ Gli studenti dovranno:
 
 ## Tabella di Transizione della Lampada Intelligente
 
-Per dettagli sulle macchine a stati finiti (o FSM) vedi FSM e Linee guida FSM.
+Per dettagli sulle macchine a stati finiti (o FSM) vedi [FSM](indexstatifiniti.md) e [Linee guida FSM](statifinitisviluppo.md)
 
 ## Tabella di Transizione della Lampada Intelligente
 | Stato attuale | Input | Stato prossimo | Output |
