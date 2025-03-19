@@ -19,7 +19,7 @@ Gli studenti dovranno:
 
 ## Tabella di Transizione della Lampada Intelligente
 
-Hai ragione, l'ingresso dal sensore PIR (rilevamento di movimento) non è esplicitamente rappresentato nella tabella. Ecco la tabella aggiornata con l'ingresso PIR:
+Per dettagli sulle macchine a stati finiti (o FSM) vedi FSM e Linee guida FSM.
 
 ## Tabella di Transizione della Lampada Intelligente
 | Stato attuale | Input | Stato prossimo | Output |
