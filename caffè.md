@@ -34,6 +34,8 @@ Punti chiave del funzionamento:
 - Il pulsante 2 è un toggle che inizia/termina l'erogazione (LED E)
 - Il pulsante 1 può spegnere il sistema da qualsiasi stato
 
+Per dettagli sulle macchine a stati finiti (o FSM) vedi [FSM](indexstatifiniti.md) e [Linee guida FSM](statifinitisviluppo.md)
+
 # Tabella degli Stati della Macchina del Caffè
 
 ## Stati
