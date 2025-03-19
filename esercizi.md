@@ -171,8 +171,8 @@ Si tratta di un **pattern** (tipo di API) per la realizzazione di timers **molto
      - se **```timerState == false```** allora restituisce l'ultimo **tempo di conteggio** misurato e memorizzato al momento della chiamata a stop() .
      - se **```timerState == true```** allora calcola il **tempo di conteggio** corrente campionando il ritardo attuale dall'ultimo riavvio e sommandolo ai ritardo cumulato prima dell'ultima sospensione.
 - **istruzioni triggerate** (scatenate) dal timer. Vengono eseguite in base al **tempo di conteggio misurato** dal timer. Vengono eseguite in maniera sequenziale in un punto stabilito del loop (istruzioni sincrone) in corrispondenza della **verità** di una certa **condizione** sul tempo di conteggio che coinvolge la funzione ```get()``` come operando (ad es. ```t1.get() > 5000```). Contestualmente a queste si potrebbero eseguire :
-  -    **reset()** per azzerare il timer.
-  -    **stop()** per bloccare (disarmare) il timer.
+  -    **reset()** per azzerare il timer **lasciandolo attivo**. Si usa per **schedulare nuovi timeout** dal momento del reset o per **rischedulare lo stesso timeout** periodicamente. 
+  -    **stop()** per bloccare (disarmare) il timer, **congelando il tempo** trascorso fino allo stop. Un **nuovo start()**, senza reset(),  ricomincia dal tempo congelato.
 
 Per consultare dettagli sulla sua implementazione vedi [Timer basati sul polling della millis()](polledtimer_seq.md).
 
