@@ -182,7 +182,7 @@ void setup(){
 void loop() {
   switch (state) {
     case SPENTO:
-    	Serial.println("SPENTO");
+    		Serial.println("SPENTO");
 		if(digitalRead(pulsante1) == HIGH){
 			waitUntilInputLow(pulsante1, 50);
 			digitalWrite(led_A, HIGH);
