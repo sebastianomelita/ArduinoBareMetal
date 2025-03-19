@@ -12,7 +12,7 @@
 - se entro dieci secondi il cane non  effettua un tentativo, si da per scontato che rinuncia e si riparte, 
   col conteggio delle prese azzerato, dal livello più basso.
 
-## Tabella di Transizione della Lampada Intelligente
+Per dettagli sulle macchine a stati finiti (o FSM) vedi [FSM](indexstatifiniti.md) e [Linee guida FSM](statifinitisviluppo.md)
 
 # Tabella di Transizione Semplificata della Palestra per Cani
 
