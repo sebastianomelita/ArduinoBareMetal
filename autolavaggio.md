@@ -13,6 +13,7 @@ Gli studenti dovranno:
 - Implementare la logica della FSM in un microcontrollore (Arduino, ESP32 o altro) utilizzando un linguaggio di programmazione adeguato.
 - Documentare il lavoro svolto con un diagramma a stati e una breve relazione che descriva il funzionamento del sistema e le scelte progettuali adottate.
 
+Per dettagli sulle macchine a stati finiti (o FSM) vedi [FSM](indexstatifiniti.md) e [Linee guida FSM](statifinitisviluppo.md)
 
 ## Tabella di Transizione del Sistema di Autolavaggio con Rilevamento Movimento Anomalo
 
