@@ -24,7 +24,7 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
 
 ### **Logica mutuamente esclusiva**
 
-Si rimarca che **tutte le selezioni**, sia quelle esterne, che quelle interne, devono essere **mutuamente esclusive**, cioè devono rigorosamente seguire la logica degli **if a più rami** (if-else-if oppure switch-case). Non è generalmente corretto nè utilizzare una logica di if in cascata e neppure quelli di if annidati uno dentro l'altro. 
+Si rimarca che **tutte le selezioni**, sia quelle esterne, che quelle interne, devono essere **mutuamente esclusive**, cioè devono rigorosamente seguire la logica degli **if a più rami** (if-else-if oppure switch-case). Non è generalmente corretto nè utilizzare una logica di if in cascata e neppure quella di if annidati uno dentro l'altro. 
 
 
 ### **Esempi a confronto**
