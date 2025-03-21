@@ -68,7 +68,7 @@ struct DiffTimer
 	}
 	unsigned long get(){
 		if(timerState){
-			return millis() - last + elapsed;
+			return (unsigned long) millis() - last + elapsed;
 		}
 		return elapsed;
 	}
@@ -130,7 +130,7 @@ bool waitUntilNB(DiffTimer &d, bool c, unsigned t){
 		d.start(); // campionamento singleton del tempo
 	}
 	// fronte di discesa condizione voluta dopo rimbalzi
-	if(d.get() > t && c){
+	if((unsigned long) d.get() > t && c){
 		// disabilitazione fino al prossimo fronte di salita
 		d.stop();
 		d.reset();
