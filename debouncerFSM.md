@@ -258,6 +258,64 @@ void loop() {
 - Simulazione su Esp32 con Wowki dell'esempio base essposto sopra: https://wokwi.com/projects/426050075651040257
 - Simulazione su Arduino Nano con Wowki di un motore stepper con comandi protetti da debouncer: https://wokwi.com/projects/426024956545802241
 
+##  **Soluzione in logica "prima gli ingressi"**
 
+#define TBASE 10
+#define NSTEP 1000
+unsigned long lastTime = 0;  
+unsigned long timerDelay = TBASE;  // send readings timer
+unsigned step = 0;  
+unsigned btntime = 0;
+unsigned txtime = 100;
+bool start;
+unsigned short  val;
+byte precval=0; //switchdf e toggle
+byte cmdin, led;
+
+//switch per un solo pulsante attivo su entrambi i fronti
+bool transizione(byte val){
+	bool changed = false;
+	changed = (val != precval); 	// campiona tutte le transizioni
+	precval = val;              	// valore di val campionato al loop precedente 
+	return changed;		// rivelatore di fronte (salita o discesa)
+}
+
+void setup(){
+	cmdin = 3;
+	led = 10;
+	start=false;
+	pinMode(cmdin, INPUT);
+	pinMode(led, OUTPUT);
+	Serial.begin(115200);
+}
+
+void loop() {
+	if ((millis() - lastTime) > timerDelay) {
+		lastTime = millis();
+		step = (step + 1) % NSTEP;
+		btntime = (btntime + 1) % NSTEP;
+		
+		val = digitalRead(cmdin); 
+		
+		if(transizione(val)){ 	//rivelatore di fronte (salita e discesa)
+			Serial.println("Ho una transizione dell'ingresso");
+			if(start==true){
+				start = false;
+				Serial.println("Ho filtrato un comando");
+			}else{
+				start = true;
+				Serial.println("Ho abilitato un comando");
+			}
+		    	btntime = 0;
+		}
+		
+		// se premo il pulsante sufficientemente a lungo accendo il led
+		// se rilascio il pulsante sufficientemente a lungo spengo il led
+		if(start && (btntime >= txtime)){
+			digitalWrite(led, val);
+			start = false; //consento l'abilitazione del comando opposto
+		}
+	}
+}
 
 >[Torna all'indice](indexstatifiniti.md) >[versione in Python](indexstatifiniti_py.md)
