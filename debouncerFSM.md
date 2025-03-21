@@ -260,6 +260,7 @@ void loop() {
 
 ##  **Soluzione in logica "prima gli ingressi"**
 
+```C++
 #define TBASE 10
 #define NSTEP 1000
 unsigned long lastTime = 0;  
@@ -317,5 +318,6 @@ void loop() {
 		}
 	}
 }
+```
 
 >[Torna all'indice](indexstatifiniti.md) >[versione in Python](indexstatifiniti_py.md)
