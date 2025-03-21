@@ -187,14 +187,17 @@ struct Button {
       if(val != val0) {
         // Resetta timer se continua a cambiare
         last = millis();
+        chg = false;
       }
-      val0 = val;
-      chg = false;
       
       // Gestione sicura dell'overflow di millis()
       if((unsigned long)(millis() - last) > debtime) {
         debState = false;  // Fine debounce
         val0 = val00;      // Ripristina stato di riferimento
+        chg = true;
+      }else{
+        val0 = val;
+        chg = false;
       }
     }
         
@@ -203,7 +206,7 @@ struct Button {
 };
 
 // Inizializzazione pulsanti
-Button buttonMomentary = {BUTTON1_PIN, LOW, 50};  // Pulsante senza memoria
+Button buttonMomentary = {BUTTON1_PIN, LOW, 1000};  // Pulsante senza memoria
 Button buttonToggle = {BUTTON2_PIN, LOW, 50};     // Pulsante con memoria
 
 // Stato per il pulsante con memoria
