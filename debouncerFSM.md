@@ -255,7 +255,7 @@ void loop() {
 }
 ```
 - Simulazione su Esp32 con Wowki dell'esempio base essposto sopra: https://wokwi.com/projects/426050075651040257
-- Simulazione su Esp32 con Wowki di un motore stepper con comandi protetti da debouncer: https://wokwi.com/projects/426024956545802241
+- Simulazione su Arduino Nano con Wowki di un motore stepper con comandi protetti da debouncer: https://wokwi.com/projects/426024956545802241
 
 
 
