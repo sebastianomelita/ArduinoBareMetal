@@ -79,15 +79,41 @@ Questo progetto è perfetto come introduzione alle tecniche di debouncing e alla
 - **debtime**: Tempo di debounce in millisecondi
 - **chg**: Flag che indica se è stato rilevato un cambiamento valido
 
+# Tabella delle Transizioni - Approccio a Singola Rilevazione
+
+## Definizione delle Variabili
+- **pin**: Pin di Arduino collegato al pulsante
+- **val0**: Ultimo valore letto (per rilevare cambiamenti)
+- **val**: Valore attuale letto dal pin
+- **val00**: Ultimo stato stabile (dopo il debounce)
+- **last**: Timestamp dell'ultimo cambiamento
+- **debState**: Flag stato del debounce (true = in debounce, false = rilevamento abilitato)
+- **debtime**: Tempo di debounce in millisecondi
+- **chg**: Flag che indica se è stato rilevato un cambiamento valido
+
 ## Tabella delle Transizioni
 
 | Stato Attuale | Condizione | Azione | Prossimo Stato | Output (chg) |
 |---------------|------------|--------|---------------|--------------|
 | IDLE<br>(debState = false) | val == val0 | val0 = val<br>val00 = val | IDLE | false |
-| IDLE<br>(debState = false) | val != val0 | debState = true<br>last = millis()<br>val0 = val<br>val00 = val | DEBOUNCE | true |
+| IDLE<br>(debState = false) | val != val0 | debState = true<br>last = millis()<br>val0 = val<br>val00 = val | DEBOUNCE | **true** |
 | DEBOUNCE<br>(debState = true) | val != val0 | last = millis()<br>val0 = val | DEBOUNCE | false |
 | DEBOUNCE<br>(debState = true) | val == val0 | val0 = val | DEBOUNCE | false |
-| DEBOUNCE<br>(debState = true) | (millis() - last) > debtime | debState = false<br>val0 = val00 | IDLE | false |
+| DEBOUNCE<br>(debState = true) | (millis() - last) > debtime | debState = false<br>val0 = val00 | IDLE | **false** |
+
+## Caratteristiche dell'Approccio a Singola Rilevazione
+1. **Rilevamento solo al fronte iniziale**: L'evento viene segnalato (`chg = true`) solo quando si entra nello stato DEBOUNCE dalla transizione IDLE → DEBOUNCE
+2. **Nessun evento alla fine del debounce**: Il ritorno allo stato IDLE non genera un evento (`chg = false`)
+3. **Reset del timer durante i rimbalzi**: Se lo stato continua a cambiare durante il periodo di debounce, il timer viene resettato
+4. **Filtraggio completo dei rimbalzi**: Tutti gli eventi durante il periodo di debounce vengono ignorati
+
+## Vantaggi dell'Approccio a Singola Rilevazione
+- Ideale per pulsanti che controllano toggle (on/off)
+- Previene duplicazione di eventi o conteggi multipli
+- Più intuitivo per la maggior parte delle interfacce utente
+- Simula efficacemente il comportamento di debouncing hardware con flip-flop
+
+Questo approccio è particolarmente utile quando desideri rilevare solo l'inizio di un'azione (come la pressione di un pulsante) e vuoi ignorare completamente eventuali false rilevazioni dovute ai rimbalzi elettrici dei contatti.
 
 ## Caratteristiche della Macchina a Stati
 1. **Rilevamento immediato**: Il primo cambiamento di stato viene rilevato immediatamente (chg = true)
@@ -119,18 +145,18 @@ stateDiagram-v2
     
     note right of DEBOUNCE
         debState = true
-        Inibizione temporanea
-        dei fronti successivi
+        Inibizione dei fronti
+        chg viene segnalato solo all'ingresso
     end note
     
     [*] --> IDLE
     
     IDLE --> IDLE: val == val0 / Nessun cambiamento, chg = false
-    IDLE --> DEBOUNCE: val != val0 / Rileva cambiamento + Avvia timer, chg = true
+    IDLE --> DEBOUNCE: val != val0 / Rileva cambiamento, chg = true
     
     DEBOUNCE --> DEBOUNCE: val != val0 / Reset timer, chg = false
     DEBOUNCE --> DEBOUNCE: val == val0 / Nessuna azione, chg = false
-    DEBOUNCE --> IDLE: (millis() - last) > debtime / Ripristina stato di riferimento, chg = true
+    DEBOUNCE --> IDLE: (millis() - last) > debtime / Ripristina riferimento, chg = false
 ```
 
 ##  **Soluzione in logica "prima gli stati"**
@@ -142,17 +168,12 @@ L'inizializzazione dei parametri degli **oggetti statici** è effettuata al mome
 Ecco un esempio semplificato che utilizza la tua struttura di debounce per controllare LED con e senza memoria:
 
 ```cpp
-#define BUTTON1_PIN 14     // Pulsante momentaneo (senza memoria)
-#define BUTTON2_PIN 23     // Pulsante toggle (con memoria)
-#define LED1_PIN 13        // LED controllato senza memoria
-#define LED2_PIN 12        // LED controllato con memoria
-#define DEBOUNCETIME 50   // Tempo di debounce in ms
-
 /**
- * Struttura Button per gestione avanzata del debounce
+ * Struttura Button con debouncing a singola rilevazione
  * 
- * Rileva immediatamente cambiamenti di stato e inibisce 
- * temporaneamente il rilevamento dei fronti successivi
+ * Questo debouncer rileva SOLO il fronte iniziale di un cambiamento
+ * e ignora tutti i rimbalzi e fronti successivi durante il periodo
+ * di debounce. Ritorna a stato stabile senza generare eventi.
  */
 struct Button {
   uint8_t pin;           // Pin di Arduino collegato al pulsante
@@ -164,99 +185,71 @@ struct Button {
   bool debState;         // Flag per stato debounce (true = in debounce)
   
   /**
-   * Rileva cambiamenti di stato con debounce
-   * @return true se è stato rilevato un cambiamento stabile
+   * Verifica se c'è stato un cambiamento valido dello stato del pulsante.
+   * Rileva solo il fronte iniziale del cambiamento, non la fine del debounce.
+   * 
+   * @return true solo al rilevamento del primo fronte, false altrimenti
    */
   bool changed() {
-    bool chg;
-
+    bool chg = false;    // Default: nessun cambiamento rilevato
     val = digitalRead(pin);
-    if(!debState) {
-      // Stato normale: attesa di un cambiamento
-      if(val != val0) {
-        // Primo cambiamento rilevato - attiva subito
-        debState = true;
-        last = millis();
-        chg = true;
-      } else {
-        chg = false;
+    
+    if(!debState) {      // STATO IDLE: attesa di un cambiamento
+      if(val != val0) {  // Rilevato cambiamento
+        debState = true;  // Attiva stato di debounce
+        last = millis();  // Memorizza timestamp
+        chg = true;       // Segnala cambiamento (SOLO QUI)
+        val0 = val;       // Aggiorna ultimo valore letto
+        val00 = val;      // Memorizza stato valido
+      } else {            // Nessun cambiamento
+        val0 = val;       // Aggiorna ultimo valore letto
+        val00 = val;      // Memorizza stato valido
       }
-      val0 = val;
-      val00 = val;  // Memorizza ultimo stato valido
-    } else {
-      // In debounce: ignora cambiamenti
-      if(val != val0) {
-        // Resetta timer se continua a cambiare
-        last = millis();
-        chg = false;
+    } else {              // STATO DEBOUNCE: filtraggio rimbalzi
+      if(val != val0) {   // Se lo stato continua a cambiare
+        last = millis();  // Reset del timer di debounce
       }
+      val0 = val;         // Aggiorna ultimo valore letto
       
-      // Gestione sicura dell'overflow di millis()
+      // Verifica se il periodo di debounce è terminato
       if((unsigned long)(millis() - last) > debtime) {
-        debState = false;  // Fine debounce
+        debState = false;  // Torna a stato stabile
         val0 = val00;      // Ripristina stato di riferimento
-        chg = true;
-      }else{
-        val0 = val;
-        chg = false;
+        // chg rimane false quando il debounce termina
       }
     }
-        
-    return chg;     
+    
+    return chg;  // Ritorna true solo sul fronte iniziale
   }
 };
 
-// Inizializzazione pulsanti
-Button buttonMomentary = {BUTTON1_PIN, LOW, 1000};  // Pulsante senza memoria
-Button buttonToggle = {BUTTON2_PIN, LOW, 50};     // Pulsante con memoria
-
-// Stato per il pulsante con memoria
-bool toggleState = false;
+// Esempio di utilizzo
+Button buttonToggle = {2, LOW, 50, 0, 0, 0, false};  // Pin 2, debounce 50ms
+Button buttonMomentary = {3, LOW, 50, 0, 0, 0, false};  // Pin 3, debounce 50ms
 
 void setup() {
-  Serial.begin(115200);
-  
-  // Configurazione I/O
-  pinMode(BUTTON1_PIN, INPUT);  // Pulsanti con resistenza pullup
-  pinMode(BUTTON2_PIN, INPUT);
-  pinMode(LED1_PIN, OUTPUT);           // LED 
-  pinMode(LED2_PIN, OUTPUT);
-  
-  // Stato iniziale LED
-  digitalWrite(LED1_PIN, LOW);
-  digitalWrite(LED2_PIN, LOW);
-  
-  Serial.println("Sistema di controllo LED inizializzato");
-  Serial.println("- Pulsante 1: Controllo momentaneo (senza memoria)");
-  Serial.println("- Pulsante 2: Controllo toggle (con memoria)");
+  pinMode(buttonToggle.pin, INPUT_PULLUP);
+  pinMode(buttonMomentary.pin, INPUT_PULLUP);
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
+// Variabile di stato per il toggle
+bool ledState = false;
+
 void loop() {
-  // 1. PULSANTE SENZA MEMORIA (momentaneo)
-  // Accende il LED solo quando il pulsante è premuto
-  if(buttonMomentary.changed()) {
-    // Il pulsante ha cambiato stato
-    if(buttonMomentary.val == HIGH) {  // Con pullup, LOW = premuto
-      digitalWrite(LED1_PIN, HIGH);
-      Serial.println("Pulsante 1 premuto - LED 1 acceso");
-    } else {
-      digitalWrite(LED1_PIN, LOW);
-      Serial.println("Pulsante 1 rilasciato - LED 1 spento");
-    }
-  }
-  
-  // 2. PULSANTE CON MEMORIA (toggle)
-  // Cambia lo stato del LED ad ogni pressione
+  // Toggle button con memoria: cambia stato ad ogni pressione
   if(buttonToggle.changed()) {
-    if(buttonToggle.val == HIGH) {  // Solo sulla pressione (non sul rilascio)
-      toggleState = !toggleState;  // Inverte lo stato
-      digitalWrite(LED2_PIN, toggleState);
-      Serial.print("Pulsante 2 premuto - LED 2 ");
-      Serial.println(toggleState ? "acceso" : "spento");
-    }
+    ledState = !ledState;
+    digitalWrite(LED_BUILTIN, ledState);
   }
   
-  delay(1);  // Breve pausa per stabilità
+  // Alternativa: pulsante momentaneo (senza memoria)
+  if(buttonMomentary.changed()) {
+    // Esegui un'azione una sola volta alla pressione
+    // (l'azione viene eseguita solo una volta all'inizio, non alla fine)
+  }
+  
+  delay(1);  // Piccola pausa per stabilità
 }
 ```
 - Simulazione su Esp32 con Wowki dell'esempio base essposto sopra: https://wokwi.com/projects/426050075651040257
