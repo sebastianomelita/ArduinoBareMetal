@@ -154,8 +154,11 @@ stateDiagram-v2
     IDLE --> IDLE: val == val0 / Nessun cambiamento, chg = false
     IDLE --> DEBOUNCE: val != val0 / Rileva cambiamento, chg = true
     
-    DEBOUNCE --> DEBOUNCE: val != val0 / Reset timer (last = millis()), chg = false
     DEBOUNCE --> DEBOUNCE: val == val0 / Nessuna azione, chg = false
+    
+    %% Transizione di reset con enfasi
+    DEBOUNCE --> DEBOUNCE: val != val0 / RESET TIMER (last = millis()), chg = false
+    
     DEBOUNCE --> IDLE: (millis() - last) > debtime / Ripristina riferimento, chg = false
 ```
 
