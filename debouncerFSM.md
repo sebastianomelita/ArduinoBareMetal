@@ -125,11 +125,12 @@ stateDiagram-v2
     
     [*] --> IDLE
     
-    IDLE --> IDLE: val == val0 / Nessun cambiamento
-    IDLE --> DEBOUNCE: val != val0 / Rileva cambiamento + Avvia timer
+    IDLE --> IDLE: val == val0 / Nessun cambiamento, chg = false
+    IDLE --> DEBOUNCE: val != val0 / Rileva cambiamento + Avvia timer, chg = true
     
-    DEBOUNCE --> DEBOUNCE: (millis() - last) <= debtime / Aggiorna last se val cambia
-    DEBOUNCE --> IDLE: (millis() - last) > debtime / Ripristina stato di riferimento
+    DEBOUNCE --> DEBOUNCE: val != val0 / Reset timer, chg = false
+    DEBOUNCE --> DEBOUNCE: val == val0 / Nessuna azione, chg = false
+    DEBOUNCE --> IDLE: (millis() - last) > debtime / Ripristina stato di riferimento, chg = true
 ```
 
 ##  **Soluzione in logica "prima gli stati"**
