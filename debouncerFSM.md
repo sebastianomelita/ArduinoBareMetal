@@ -1,6 +1,6 @@
 
 
->[Torna all'indice](indexpulsanti.md) >[versione in Python](nastro_py.md)
+>[Torna all'indice](indexstatifiniti.md) >[versione in Python](indexstatifiniti_py.md)
 
 #  **DEBOUNCER**
 
@@ -256,4 +256,4 @@ void loop() {
 ```
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349645533881565780
 
->[Torna all'indice](indexpulsanti.md) >[versione in Python](nastro_py.md)
+>[Torna all'indice](indexstatifiniti.md) >[versione in Python](indexstatifiniti_py.md)
