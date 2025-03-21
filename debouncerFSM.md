@@ -113,7 +113,6 @@ stateDiagram-v2
 
 ##  **Soluzione in logica "prima gli stati"**
 
-```C++
 Ecco un esempio semplificato che utilizza la tua struttura di debounce per controllare LED con e senza memoria:
 
 ```cpp
