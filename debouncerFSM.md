@@ -254,6 +254,8 @@ void loop() {
   delay(1);  // Breve pausa per stabilità
 }
 ```
+Simulazione su Esp32 con Wowki: https://wokwi.com/projects/426024956545802241
+
 Simulazione su Esp32 con Wowki: https://wokwi.com/projects/349645533881565780
 
 >[Torna all'indice](indexstatifiniti.md) >[versione in Python](indexstatifiniti_py.md)
