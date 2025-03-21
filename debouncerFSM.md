@@ -46,57 +46,69 @@ All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta
 
 ## Tabella di Transizione del Nastro Trasportatore
 
-| Stato attuale | Input | Stato prossimo | Output |
-|---------------|-------|----------------|--------|
-| RIPOSO | Sensore pezzi alti = LOW oppure Sensore pezzi bassi = LOW | TRASPORTO_CERTO | Accensione motore, Reset e blocco timer di volo, Ready = false |
-| TRASPORTO_CERTO | Sensore uscita = LOW | PEZZO_PRONTO | Spegnimento motore, Blocco timer di volo, Ready = true |
-| TRASPORTO_CERTO | Sensore pezzi alti = LOW oppure Sensore pezzi bassi = LOW | TRASPORTO_CERTO | Nessun cambio (il motore resta acceso) |
-| PEZZO_PRONTO | Sensore uscita = HIGH | TRASPORTO_STIMATO | Accensione motore, Reset e avvio timer di volo, Ready = false |
-| TRASPORTO_STIMATO | Sensore uscita = LOW | PEZZO_PRONTO | Spegnimento motore, Blocco timer di volo, Ready = true |
-| TRASPORTO_STIMATO | Timer di volo scaduto | RIPOSO | Spegnimento motore, Ready = false |
-| TRASPORTO_STIMATO | Sensore pezzi alti = LOW oppure Sensore pezzi bassi = LOW | TRASPORTO_CERTO | Reset e blocco timer di volo (motore rimane acceso) |
+# Tabella delle Transizioni del Debouncer
+
+## Definizione delle Variabili
+- **pin**: Pin di Arduino collegato al pulsante
+- **val0**: Ultimo valore letto (per rilevare cambiamenti)
+- **val**: Valore attuale letto dal pin
+- **val00**: Ultimo stato stabile (dopo il debounce)
+- **last**: Timestamp dell'ultimo cambiamento
+- **debState**: Flag stato del debounce (true = in debounce, false = rilevamento abilitato)
+- **debtime**: Tempo di debounce in millisecondi
+- **chg**: Flag che indica se è stato rilevato un cambiamento valido
+
+## Tabella delle Transizioni
+
+| Stato Attuale | Condizione | Azione | Prossimo Stato | Output (chg) |
+|---------------|------------|--------|---------------|--------------|
+| IDLE<br>(debState = false) | val == val0 | val0 = val<br>val00 = val | IDLE | false |
+| IDLE<br>(debState = false) | val != val0 | debState = true<br>last = millis()<br>val0 = val<br>val00 = val | DEBOUNCE | true |
+| DEBOUNCE<br>(debState = true) | val != val0 | last = millis()<br>val0 = val | DEBOUNCE | false |
+| DEBOUNCE<br>(debState = true) | val == val0 | val0 = val | DEBOUNCE | false |
+| DEBOUNCE<br>(debState = true) | (millis() - last) > debtime | debState = false<br>val0 = val00 | IDLE | false |
+
+## Caratteristiche della Macchina a Stati
+1. **Rilevamento immediato**: Il primo cambiamento di stato viene rilevato immediatamente (chg = true)
+2. **Periodo di inibizione**: Dopo il primo cambio, tutti i fronti successivi vengono ignorati per un periodo configurabile
+3. **Reset del timer**: Se durante il periodo di debounce lo stato continua a cambiare, il timer viene resettato
+4. **Ripristino stato di riferimento**: Al termine del debounce, lo stato di riferimento viene reimpostato all'ultimo stato stabile
+
+## Comportamento agli eventi
+- **Pulsante premuto/rilasciato**: Viene rilevato immediatamente e poi viene attivato il periodo di inibizione
+- **Rimbalzi del contatto**: Vengono filtrati durante il periodo di debounce
+- **Nuova pressione dopo debounce**: Viene rilevata come nuovo evento
+
+Questa implementazione di debouncing rileva subito il primo fronte ma ignora i successivi cambiamenti per un periodo definito, combinando reattività e stabilità.
 
 ##  **Diagramma degli stati**
 
 ```mermaid
 %%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
 stateDiagram-v2
-    [*] --> RIPOSO
+    direction LR
     
-    RIPOSO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso \ (barriera pezzi alti o bassi)
-    TRASPORTO_CERTO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
-    TRASPORTO_CERTO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso \ (nessun cambio di stato)
-    PEZZO_PRONTO --> TRASPORTO_STIMATO: Pezzo prelevato \ (barriera uscita disattivata)
-    TRASPORTO_STIMATO --> RIPOSO: Timer di volo scaduto \ (nessun pezzo sul nastro)
-    TRASPORTO_STIMATO --> PEZZO_PRONTO: Rilevamento pezzo in uscita
-    TRASPORTO_STIMATO --> TRASPORTO_CERTO: Rilevamento pezzo in ingresso
+    IDLE: Stato Stabile (IDLE)
+    DEBOUNCE: Stato di Debounce
     
-    note right of RIPOSO
-        Motore spento
-        Timer di volo bloccato
-        Nastro vuoto
+    note right of IDLE
+        debState = false
+        In attesa di un cambiamento
     end note
     
-    note right of TRASPORTO_CERTO
-        Motore acceso
-        Timer di volo bloccato
-        Pezzo sicuramente presente sul nastro
-        (rilevato da sensore ingresso)
+    note right of DEBOUNCE
+        debState = true
+        Inibizione temporanea
+        dei fronti successivi
     end note
     
-    note right of PEZZO_PRONTO
-        Motore spento
-        Timer di volo bloccato
-        Pezzo arrivato all'uscita
-        Ready = true
-    end note
+    [*] --> IDLE
     
-    note right of TRASPORTO_STIMATO
-        Motore acceso
-        Timer di volo attivo
-        Possibili pezzi sul nastro
-        (non confermati da sensori)
-    end note
+    IDLE --> IDLE: val == val0 / Nessun cambiamento
+    IDLE --> DEBOUNCE: val != val0 / Rileva cambiamento + Avvia timer
+    
+    DEBOUNCE --> DEBOUNCE: (millis() - last) <= debtime / Aggiorna last se val cambia
+    DEBOUNCE --> IDLE: (millis() - last) > debtime / Ripristina stato di riferimento
 ```
 
 ##  **Soluzione in logica "prima gli stati"**
