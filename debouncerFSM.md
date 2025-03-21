@@ -261,62 +261,115 @@ void loop() {
 ##  **Soluzione in logica "prima gli ingressi"**
 
 ```C++
-#define TBASE 10
-#define NSTEP 1000
-unsigned long lastTime = 0;  
-unsigned long timerDelay = TBASE;  // send readings timer
-unsigned step = 0;  
-unsigned btntime = 0;
-unsigned txtime = 100;
-bool start;
-unsigned short  val;
-byte precval=0; //switchdf e toggle
-byte cmdin, led;
+#define BUTTON1_PIN 14     // Pulsante momentaneo (senza memoria)
+#define BUTTON2_PIN 23     // Pulsante toggle (con memoria)
+#define LED1_PIN 13        // LED controllato senza memoria
+#define LED2_PIN 12        // LED controllato con memoria
+#define DEBOUNCETIME 50   // Tempo di debounce in ms
 
-//switch per un solo pulsante attivo su entrambi i fronti
-bool transizione(byte val){
-	bool changed = false;
-	changed = (val != precval); 	// campiona tutte le transizioni
-	precval = val;              	// valore di val campionato al loop precedente 
-	return changed;		// rivelatore di fronte (salita o discesa)
-}
+/**
+ * Struttura Button per gestione avanzata del debounce
+ * 
+ * Rileva immediatamente cambiamenti di stato e inibisce 
+ * temporaneamente il rilevamento dei fronti successivi
+ */
+struct Button {
+  uint8_t pin;           // Pin di Arduino collegato al pulsante
+  uint8_t val0;          // Ultimo valore letto
+  unsigned long debtime; // Tempo di debounce in millisecondi
+  uint8_t val;           // Valore attuale letto
+  uint8_t val00;         // Ultimo stato stabile
+  unsigned long last;    // Timestamp ultimo cambiamento
+  bool debState;         // Flag per stato debounce (true = in debounce)
+  
+  /**
+   * Rileva cambiamenti di stato con debounce
+   * @return true se è stato rilevato un cambiamento stabile
+   */
+	bool changed() {
+		bool chg = false;  // Inizializza per sicurezza
+		val = digitalRead(pin);
+		
+		if(val != val0) {  // C'è una transizione
+			if(!debState) {  // E siamo in stato stabile
+				debState = true;  // Attiva debounce
+				last = millis();  // Memorizza timestamp
+				chg = true;       // Segnala cambiamento
+				val0 = val;       // Aggiorna ultimo valore letto
+				val00 = val;      // Memorizza stato valido
+			}else{
+				last = millis();  // Memorizza timestamp
+				chg = false;  // Nessun cambiamento
+			}
+		}else{  // Non c'è transizione
+			if(!debState) {  // E siamo in stato stabile
+				chg = false;  // Nessun cambiamento
+				val0 = val;   // Aggiorna ultimo valore letto
+				val00 = val;  // Memorizza stato valido
+			}
+		}
+		
+		if(debState && ((unsigned long)(millis() - last) > debtime)) {  // Tempo di debounce scaduto
+			debState = false;  // Torna a stato stabile
+			val0 = val00;      // Ripristina stato di riferimento
+			chg = false;       // Nessun cambiamento
+		}
+				
+		return chg;     
+	}
+};
 
-void setup(){
-	cmdin = 3;
-	led = 10;
-	start=false;
-	pinMode(cmdin, INPUT);
-	pinMode(led, OUTPUT);
-	Serial.begin(115200);
+// Inizializzazione pulsanti
+Button buttonMomentary = {BUTTON1_PIN, LOW, 50};  // Pulsante senza memoria
+Button buttonToggle = {BUTTON2_PIN, LOW, 50};     // Pulsante con memoria
+
+// Stato per il pulsante con memoria
+bool toggleState = false;
+
+void setup() {
+  Serial.begin(115200);
+  
+  // Configurazione I/O
+  pinMode(BUTTON1_PIN, INPUT);  // Pulsanti con resistenza pullup
+  pinMode(BUTTON2_PIN, INPUT);
+  pinMode(LED1_PIN, OUTPUT);           // LED 
+  pinMode(LED2_PIN, OUTPUT);
+  
+  // Stato iniziale LED
+  digitalWrite(LED1_PIN, LOW);
+  digitalWrite(LED2_PIN, LOW);
+  
+  Serial.println("Sistema di controllo LED inizializzato");
+  Serial.println("- Pulsante 1: Controllo momentaneo (senza memoria)");
+  Serial.println("- Pulsante 2: Controllo toggle (con memoria)");
 }
 
 void loop() {
-	if ((millis() - lastTime) > timerDelay) {
-		lastTime = millis();
-		step = (step + 1) % NSTEP;
-		btntime = (btntime + 1) % NSTEP;
-		
-		val = digitalRead(cmdin); 
-		
-		if(transizione(val)){ 	//rivelatore di fronte (salita e discesa)
-			Serial.println("Ho una transizione dell'ingresso");
-			if(start==true){
-				start = false;
-				Serial.println("Ho filtrato un comando");
-			}else{
-				start = true;
-				Serial.println("Ho abilitato un comando");
-			}
-		    	btntime = 0;
-		}
-		
-		// se premo il pulsante sufficientemente a lungo accendo il led
-		// se rilascio il pulsante sufficientemente a lungo spengo il led
-		if(start && (btntime >= txtime)){
-			digitalWrite(led, val);
-			start = false; //consento l'abilitazione del comando opposto
-		}
-	}
+  // 1. PULSANTE SENZA MEMORIA (momentaneo)
+  // Accende il LED solo quando il pulsante è premuto
+  if(buttonMomentary.changed()) {
+    // Il pulsante ha cambiato stato
+    if(buttonMomentary.val == HIGH) {  // Con pullup, LOW = premuto
+      digitalWrite(LED1_PIN, HIGH);
+      Serial.println("Pulsante 1 premuto - LED 1 acceso");
+    } else {
+      digitalWrite(LED1_PIN, LOW);
+      Serial.println("Pulsante 1 rilasciato - LED 1 spento");
+    }
+  }
+  
+  // 2. PULSANTE CON MEMORIA (toggle)
+  // Cambia lo stato del LED ad ogni pressione
+  if(buttonToggle.changed()) {
+    if(buttonToggle.val == HIGH) {  // Solo sulla pressione (non sul rilascio)
+      toggleState = !toggleState;  // Inverte lo stato
+      digitalWrite(LED2_PIN, toggleState);
+      Serial.print("Pulsante 2 premuto - LED 2 ");
+      Serial.println(toggleState ? "acceso" : "spento");
+    }
+  }
+  
+  delay(1);  // Breve pausa per stabilità
 }
 ```
 
