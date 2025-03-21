@@ -24,14 +24,11 @@ Entrambe le modalità utilizzano lo stesso meccanismo di debounce avanzato che:
 2. Inibisce successivi rilevamenti per il periodo di debounce
 3. Gestisce correttamente gli overflow di `millis()`
 
-Questo esempio presenta l'implementazione in modo più chiaro rispetto al codice del motore stepper, facilitando la comprensione del funzionamento del meccanismo di debounce.
 
-###  **Esigenza**
-
-# Esercitazione di Debouncing per il Controllo di LED
+# Esercitazione di controllo con Debouncing per l'accensione di un LED
 
 ## Obiettivo del progetto
-Realizzare un sistema dimostratito di controllo LED che implementi diverse tecniche di gestione dei pulsanti. Il sistema deve illustrare i concetti fondamentali del debouncing software, le macchine a stati e i diversi tipi di interazione utente tramite pulsanti (momentanea e con memoria).
+Realizzare un sistema dimostrativo di controllo LED che implementi diverse tecniche di gestione dei pulsanti. Il sistema deve illustrare i concetti fondamentali del debouncing software, le macchine a stati e i diversi tipi di interazione utente tramite pulsanti (momentanea e con memoria).
 
 ## Requisiti funzionali
 
