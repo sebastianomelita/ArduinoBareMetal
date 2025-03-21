@@ -28,27 +28,51 @@ Questo esempio presenta l'implementazione in modo più chiaro rispetto al codice
 
 ###  **Esigenza**
 
-Scrivere un programma che realizzi la gestione di un nastro traportatore attraverso la lettura di tre sensori di transito (barriere ad infrarossi) e il comando di un motore. 
+# Esercitazione di Debouncing per il Controllo di LED
 
-I sensori permangono al livello alto finchè un oggetto ingombra l'area del sensore, dopodichè vanno a livello basso. I sensori sono due all'inizio del nastro (uno per i pezzi bassi ed un'altro per quelli alti) ed uno alla fine del nastro che rileva il pezzo pronto per essere prelevato. 
+## Obiettivo del progetto
+Realizzare un sistema dimostratito di controllo LED che implementi diverse tecniche di debouncing dei pulsanti. Il sistema deve illustrare i concetti fondamentali del debouncing software, le macchine a stati e i diversi tipi di interazione utente tramite pulsanti (momentanea e con memoria).
 
-Esiste un timer di volo, così chiamato perchè dura esattamente per il tempo che impiegherebbe il pezzo più lontano dall'uscita, cioè quello sulla barriera di ingresso, per arrivare sulla barriera di uscita. 
+## Requisiti funzionali
 
-All'attivazione di un qualsiasi sensore di ingresso parte il motore e si resetta e pure si blocca il timer di volo. All'attivazione del sensore di uscita si blocca il nastro, alla sua disattivazione riparte il nastro e parte il timer di volo. Allo scadere del timer di volo si spegne il motore.
+1. **Sistema di controllo LED**:
+   - Implementazione di due modalità di controllo tramite pulsanti:
+     - Modalità momentanea: LED acceso solo quando il pulsante è premuto
+     - Modalità toggle (con memoria): LED cambia stato ad ogni pressione
 
-## **Stati**
+2. **Interfaccia utente**:
+   - Due pulsanti di controllo:
+     - Pulsante 1: Controllo momentaneo del LED1 (senza memoria)
+     - Pulsante 2: Controllo toggle del LED2 (con memoria)
 
-- **RIPOSO**: Il nastro è vuoto e fermo, in attesa di nuovi pezzi.
-- **TRASPORTO_CERTO**: C'è almeno un pezzo sul nastro, confermato dal rilevamento di un sensore all'ingresso. Il timer è disattivato perché abbiamo certezza della presenza del pezzo.
-- **PEZZO_PRONTO**: Un pezzo è arrivato all'uscita ed è pronto per essere prelevato. Il nome riflette perfettamente lo stato del sistema piuttosto che l'azione esterna.
-- **TRASPORTO_STIMATO**: Potrebbero esserci altri pezzi sul nastro, ma non ne abbiamo conferma diretta dai sensori. Il timer è attivo per stimare quando il nastro sarà vuoto.
+3. **Implementazione di gestione avanzata del debounce**:
+   - Sviluppo di un sistema di debounce che rilevi immediatamente il primo fronte ma inibisca temporaneamente i fronti successivi
+   - Implementazione di una macchina a stati a due stati (IDLE e DEBOUNCE)
+   - Gestione corretta dell'overflow di millis() per garantire stabilità a lungo termine
+
+## Aspetti didattici
+Il progetto dimostra:
+- Differenza tra controlli momentanei e controlli con memoria (toggle)
+- Implementazione di una macchina a stati per il debouncing
+- Rilevamento immediato del primo fronte con successiva inibizione temporanea
+- Programmazione non bloccante
+- Gestione dell'overflow nei timer software
+- Tecniche per migliorare l'esperienza utente riducendo falsi trigger
+
+## Materiale necessario
+- Arduino Nano o compatibile
+- Due LED con relativi resistori limitatori di corrente
+- Due pulsanti
+- Resistori di pull-up per i pulsanti (se non si utilizzano i pull-up interni)
+- Breadboard e cavi di collegamento
+
+## Considerazioni finali
+Questo progetto è perfetto come introduzione alle tecniche di debouncing e alla gestione dell'input utente. Può essere utilizzato come base per sistemi più complessi di domotica o automazione che richiedono un'interfaccia utente semplice ma affidabile. L'implementazione della macchina a stati per il debouncing rappresenta un approccio robusto che può essere esteso anche ad altre applicazioni.
 
 
-## Tabella di Transizione del Nastro Trasportatore
+## Tabella delle Transizioni del Debouncer
 
-# Tabella delle Transizioni del Debouncer
-
-## Definizione delle Variabili
+### Definizione delle Variabili
 - **pin**: Pin di Arduino collegato al pulsante
 - **val0**: Ultimo valore letto (per rilevare cambiamenti)
 - **val**: Valore attuale letto dal pin
