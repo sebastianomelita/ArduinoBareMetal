@@ -31,7 +31,7 @@ Questo esempio presenta l'implementazione in modo più chiaro rispetto al codice
 # Esercitazione di Debouncing per il Controllo di LED
 
 ## Obiettivo del progetto
-Realizzare un sistema dimostratito di controllo LED che implementi diverse tecniche di debouncing dei pulsanti. Il sistema deve illustrare i concetti fondamentali del debouncing software, le macchine a stati e i diversi tipi di interazione utente tramite pulsanti (momentanea e con memoria).
+Realizzare un sistema dimostratito di controllo LED che implementi diverse tecniche di gestione dei pulsanti. Il sistema deve illustrare i concetti fondamentali del debouncing software, le macchine a stati e i diversi tipi di interazione utente tramite pulsanti (momentanea e con memoria).
 
 ## Requisiti funzionali
 
