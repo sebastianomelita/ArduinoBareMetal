@@ -140,10 +140,10 @@ stateDiagram-v2
 Ecco un esempio semplificato che utilizza la tua struttura di debounce per controllare LED con e senza memoria:
 
 ```cpp
-#define BUTTON1_PIN 2     // Pulsante momentaneo (senza memoria)
-#define BUTTON2_PIN 3     // Pulsante toggle (con memoria)
-#define LED1_PIN 8        // LED controllato senza memoria
-#define LED2_PIN 9        // LED controllato con memoria
+#define BUTTON1_PIN 14     // Pulsante momentaneo (senza memoria)
+#define BUTTON2_PIN 23     // Pulsante toggle (con memoria)
+#define LED1_PIN 13        // LED controllato senza memoria
+#define LED2_PIN 12        // LED controllato con memoria
 #define DEBOUNCETIME 50   // Tempo di debounce in ms
 
 /**
@@ -212,8 +212,8 @@ void setup() {
   Serial.begin(115200);
   
   // Configurazione I/O
-  pinMode(BUTTON1_PIN, INPUT_PULLUP);  // Pulsanti con resistenza pullup
-  pinMode(BUTTON2_PIN, INPUT_PULLUP);
+  pinMode(BUTTON1_PIN, INPUT);  // Pulsanti con resistenza pullup
+  pinMode(BUTTON2_PIN, INPUT);
   pinMode(LED1_PIN, OUTPUT);           // LED 
   pinMode(LED2_PIN, OUTPUT);
   
@@ -231,7 +231,7 @@ void loop() {
   // Accende il LED solo quando il pulsante è premuto
   if(buttonMomentary.changed()) {
     // Il pulsante ha cambiato stato
-    if(buttonMomentary.val == LOW) {  // Con pullup, LOW = premuto
+    if(buttonMomentary.val == HIGH) {  // Con pullup, LOW = premuto
       digitalWrite(LED1_PIN, HIGH);
       Serial.println("Pulsante 1 premuto - LED 1 acceso");
     } else {
@@ -243,7 +243,7 @@ void loop() {
   // 2. PULSANTE CON MEMORIA (toggle)
   // Cambia lo stato del LED ad ogni pressione
   if(buttonToggle.changed()) {
-    if(buttonToggle.val == LOW) {  // Solo sulla pressione (non sul rilascio)
+    if(buttonToggle.val == HIGH) {  // Solo sulla pressione (non sul rilascio)
       toggleState = !toggleState;  // Inverte lo stato
       digitalWrite(LED2_PIN, toggleState);
       Serial.print("Pulsante 2 premuto - LED 2 ");
