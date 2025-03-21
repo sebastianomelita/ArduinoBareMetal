@@ -134,6 +134,10 @@ stateDiagram-v2
 
 ##  **Soluzione in logica "prima gli stati"**
 
+La **FSM** che modella il comportamento del pulsante è del tutto **indipendente** ed **isolata** rispetto alla logica principale del programma. Il codice, che implementa la macchina a stati finiti sia del debouncer che del rilevamento dei fronti, è tutta **incapsulata** all'interno dell'**oggetto pulsante**, realizzato, in questo caso, con una **struct** (membri e proprietà **pubblici** di default).
+
+L'inizializzazione dei parametri degli oggetti statici è effettuata al momento della dichiarazione mediante ```Button buttonMomentary = {BUTTON1_PIN, LOW, 50}``` utilizzando la notazione ```{}``` che racchiude la **lista** completa dei **membri contigui** da inizializzare dentro le **parentesi graffe**.
+
 Ecco un esempio semplificato che utilizza la tua struttura di debounce per controllare LED con e senza memoria:
 
 ```cpp
