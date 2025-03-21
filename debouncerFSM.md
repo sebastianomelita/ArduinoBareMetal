@@ -258,19 +258,31 @@ void setup() {
 bool ledState = false;
 
 void loop() {
-  // Toggle button con memoria: cambia stato ad ogni pressione
-  if(buttonToggle.changed()) {
-    ledState = !ledState;
-    digitalWrite(LED_BUILTIN, ledState);
-  }
-  
-  // Alternativa: pulsante momentaneo (senza memoria)
+  // 1. PULSANTE SENZA MEMORIA (momentaneo)
+  // Accende il LED solo quando il pulsante è premuto
   if(buttonMomentary.changed()) {
-    // Esegui un'azione una sola volta alla pressione
-    // (l'azione viene eseguita solo una volta all'inizio, non alla fine)
+    // Il pulsante ha cambiato stato
+    if(buttonMomentary.val == HIGH) {  // Con pullup, LOW = premuto
+      digitalWrite(LED1_PIN, HIGH);
+      Serial.println("Pulsante 1 premuto - LED 1 acceso");
+    } else {
+      digitalWrite(LED1_PIN, LOW);
+      Serial.println("Pulsante 1 rilasciato - LED 1 spento");
+    }
   }
   
-  delay(1);  // Piccola pausa per stabilità
+  // 2. PULSANTE CON MEMORIA (toggle)
+  // Cambia lo stato del LED ad ogni pressione
+  if(buttonToggle.changed()) {
+    if(buttonToggle.val == HIGH) {  // Solo sulla pressione (non sul rilascio)
+      toggleState = !toggleState;  // Inverte lo stato
+      digitalWrite(LED2_PIN, toggleState);
+      Serial.print("Pulsante 2 premuto - LED 2 ");
+      Serial.println(toggleState ? "acceso" : "spento");
+    }
+  }
+  
+  delay(1);  // Breve pausa per stabilità
 }
 ```
 - Simulazione su Esp32 con Wowki dell'esempio base essposto sopra: https://wokwi.com/projects/426050075651040257
