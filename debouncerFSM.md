@@ -67,18 +67,6 @@ Il progetto dimostra:
 Questo progetto è perfetto come introduzione alle tecniche di debouncing e alla gestione dell'input utente. Può essere utilizzato come base per sistemi più complessi di domotica o automazione che richiedono un'interfaccia utente semplice ma affidabile. L'implementazione della macchina a stati per il debouncing rappresenta un approccio robusto che può essere esteso anche ad altre applicazioni.
 
 
-## Tabella delle Transizioni del Debouncer
-
-### Definizione delle Variabili
-- **pin**: Pin di Arduino collegato al pulsante
-- **val0**: Ultimo valore letto (per rilevare cambiamenti)
-- **val**: Valore attuale letto dal pin
-- **val00**: Ultimo stato stabile (dopo il debounce)
-- **last**: Timestamp dell'ultimo cambiamento
-- **debState**: Flag stato del debounce (true = in debounce, false = rilevamento abilitato)
-- **debtime**: Tempo di debounce in millisecondi
-- **chg**: Flag che indica se è stato rilevato un cambiamento valido
-
 # Tabella delle Transizioni - Approccio a Singola Rilevazione
 
 ## Definizione delle Variabili
