@@ -66,6 +66,25 @@ Il progetto dimostra:
 ## Considerazioni finali
 Questo progetto è perfetto come introduzione alle tecniche di debouncing e alla gestione dell'input utente. Può essere utilizzato come base per sistemi più complessi di domotica o automazione che richiedono un'interfaccia utente semplice ma affidabile. L'implementazione della macchina a stati per il debouncing rappresenta un approccio robusto che può essere esteso anche ad altre applicazioni.
 
+## Approcci al debouncing
+
+Questa implementazione di debouncing rileva subito il **primo fronte** ma ignora i successivi cambiamenti per un periodo definito, combinando reattività e stabilità.
+
+Dal punto di vista concettuale, ci sono due approcci legittimi al debouncing, ma con comportamenti e finalità diverse:
+
+1. **Approccio a singola rilevazione (fronte di ingresso)**: 
+   - Rileva solo la transizione iniziale, ignorando i rimbalzi successivi
+   - Segnala `chg = true` solo all'ingresso nello stato di debounce
+   - Ideale per pulsanti che controllano toggle, contatori, o eventi singoli
+
+2. **Approccio a doppia rilevazione (fronte di ingresso e di uscita)**:
+   - Rileva sia la transizione iniziale che la conclusione del periodo di debounce
+   - Segnala `chg = true` all'ingresso nello stato di debounce E all'uscita
+   - Utile per monitorare la durata stabile di un segnale o per gestire eventi sia all'inizio che alla fine di un input
+
+Tuttavia, per la maggior parte delle applicazioni con pulsanti (come il controllo di LED o motori), l'approccio a singola rilevazione è generalmente più appropriato, poiché permette di eseguire l'azione una sola volta all'inizio della pressione, senza generare eventi aggiuntivi alla fine del periodo di debounce.
+
+Se l'obiettivo è rilevare solo la pressione iniziale, allora bisogna mantenere `chg = false` nella transizione da DEBOUNCE a IDLE.
 
 # Tabella delle Transizioni - Approccio a Singola Rilevazione
 
@@ -114,25 +133,6 @@ Questo approccio è particolarmente utile quando desideri rilevare solo l'inizio
 - **Rimbalzi del contatto**: Vengono filtrati durante il periodo di debounce
 - **Nuova pressione dopo debounce**: Viene rilevata come nuovo evento
 
-## Approcci al debouncing
-
-Questa implementazione di debouncing rileva subito il **primo fronte** ma ignora i successivi cambiamenti per un periodo definito, combinando reattività e stabilità.
-
-Dal punto di vista concettuale, ci sono due approcci legittimi al debouncing, ma con comportamenti e finalità diverse:
-
-1. **Approccio a singola rilevazione (fronte di ingresso)**: 
-   - Rileva solo la transizione iniziale, ignorando i rimbalzi successivi
-   - Segnala `chg = true` solo all'ingresso nello stato di debounce
-   - Ideale per pulsanti che controllano toggle, contatori, o eventi singoli
-
-2. **Approccio a doppia rilevazione (fronte di ingresso e di uscita)**:
-   - Rileva sia la transizione iniziale che la conclusione del periodo di debounce
-   - Segnala `chg = true` all'ingresso nello stato di debounce E all'uscita
-   - Utile per monitorare la durata stabile di un segnale o per gestire eventi sia all'inizio che alla fine di un input
-
-Tuttavia, per la maggior parte delle applicazioni con pulsanti (come il controllo di LED o motori), l'approccio a singola rilevazione è generalmente più appropriato, poiché permette di eseguire l'azione una sola volta all'inizio della pressione, senza generare eventi aggiuntivi alla fine del periodo di debounce.
-
-Se l'obiettivo è rilevare solo la pressione iniziale, allora bisogna mantenere `chg = false` nella transizione da DEBOUNCE a IDLE.
 
 ##  **Diagramma degli stati**
 
