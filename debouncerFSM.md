@@ -86,6 +86,15 @@ Tuttavia, per la maggior parte delle applicazioni con pulsanti (come il controll
 
 Se l'obiettivo è rilevare solo la pressione iniziale, allora bisogna mantenere `chg = false` nella transizione da DEBOUNCE a IDLE.
 
+## Vantaggi dell'Approccio a Singola Rilevazione
+- Ideale per pulsanti che controllano toggle (on/off)
+- Previene duplicazione di eventi o conteggi multipli
+- Più intuitivo per la maggior parte delle interfacce utente
+- Simula efficacemente il comportamento di debouncing hardware con flip-flop
+
+Questo approccio è particolarmente utile quando desideri rilevare solo l'inizio di un'azione (come la pressione di un pulsante) e vuoi ignorare completamente eventuali false rilevazioni dovute ai rimbalzi elettrici dei contatti.
+
+
 # Tabella delle Transizioni - Approccio a Singola Rilevazione
 
 ## Definizione delle Variabili
@@ -114,13 +123,6 @@ Se l'obiettivo è rilevare solo la pressione iniziale, allora bisogna mantenere 
 3. **Reset del timer durante i rimbalzi**: Se lo stato continua a cambiare durante il periodo di debounce, il timer viene resettato
 4. **Filtraggio completo dei rimbalzi**: Tutti gli eventi durante il periodo di debounce vengono ignorati
 
-## Vantaggi dell'Approccio a Singola Rilevazione
-- Ideale per pulsanti che controllano toggle (on/off)
-- Previene duplicazione di eventi o conteggi multipli
-- Più intuitivo per la maggior parte delle interfacce utente
-- Simula efficacemente il comportamento di debouncing hardware con flip-flop
-
-Questo approccio è particolarmente utile quando desideri rilevare solo l'inizio di un'azione (come la pressione di un pulsante) e vuoi ignorare completamente eventuali false rilevazioni dovute ai rimbalzi elettrici dei contatti.
 
 ## Caratteristiche della Macchina a Stati
 1. **Rilevamento immediato**: Il primo cambiamento di stato viene rilevato immediatamente (chg = true)
