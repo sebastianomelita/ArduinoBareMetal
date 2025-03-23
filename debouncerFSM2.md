@@ -4,133 +4,143 @@
 
 #  **DEBOUNCER 2**
 
-# Consegna Progetto: Implementazione di una Struttura per il Debounce dei Pulsanti
+# Consegna Progetto: Rilevazione di Stabilità per Ingressi Digitali
 
 ## Obiettivo
-Creare una struttura `Button` che implementi una macchina a stati per gestire il debounce dei pulsanti in Arduino, con rilevazione del cambiamento di stato solo al termine del periodo di debounce.
+Implementare una struttura `Button` che rilevi quando un segnale digitale (es. pulsante) ha raggiunto una condizione di stabilità per un periodo minimo di tempo. Il sistema deve aggiornare un'uscita (es. LED) solo quando il segnale è rimasto stabile, filtrando eventi brevi o instabili.
 
-## Specifiche Tecniche
+## Descrizione Funzionale
+Il sistema deve:
+1. Rilevare variazioni del segnale di ingresso
+2. Attendere che il segnale rimanga stabile (senza variazioni) per un periodo minimo configurabile
+3. Segnalare la condizione di stabilità solo dopo che tale periodo è trascorso
+4. Resettare il timer di stabilità ogni volta che il segnale varia durante il periodo di attesa
 
-### Struttura dati
+## Requisiti Tecnici
+
+### Struttura `Button`
 Implementare una struttura `Button` con i seguenti campi:
-- `pin`: pin di Arduino collegato al pulsante (tipo: uint8_t)
-- `val0`: ultimo valore stabile del pulsante (tipo: uint8_t)
-- `debtime`: tempo di debounce in millisecondi (tipo: unsigned long)
-- `val`: valore attuale letto dal pulsante (tipo: uint8_t)
-- `last`: timestamp dell'ultimo cambiamento rilevato (tipo: unsigned long)
-- `debState`: flag per indicare lo stato di debounce (tipo: bool)
-
-### Macchina a Stati
-La struttura deve implementare una macchina a stati con due stati:
-- **IDLE** (debState = false): sistema in attesa di un cambiamento
-- **DEBOUNCING** (debState = true): sistema in fase di filtraggio dei rimbalzi
+- `pin`: numero del pin di Arduino collegato al pulsante (uint8_t)
+- `val0`: ultimo valore letto dal pulsante (uint8_t)
+- `debtime`: tempo minimo di stabilità richiesto in millisecondi (unsigned long)
+- `val`: valore attuale letto dal pin (uint8_t)
+- `last`: timestamp dell'ultima variazione rilevata (unsigned long)
+- `debState`: flag per indicare lo stato di monitoraggio (bool)
 
 ### Funzione `changed()`
 Implementare una funzione `changed()` che:
 1. Legga il valore attuale del pin
-2. Gestisca la macchina a stati per il debounce
+2. Gestisca la macchina a stati per il monitoraggio della stabilità
 3. Ritorni `true` SOLO quando:
-   - È stato rilevato un cambiamento di stato
-   - Tale cambiamento è persistito per l'intero periodo di debounce
-   - Il periodo di debounce è appena terminato
+   - Il segnale è rimasto stabile (senza variazioni) per l'intero periodo `debtime`
+   - Il periodo di stabilità è appena terminato
 4. Ritorni `false` in tutti gli altri casi
+5. Aggiorni `val0` con l'ultimo valore letto in ogni chiamata
+6. Resetti il timer (`last`) ogni volta che il segnale varia durante il monitoraggio
 
-### Comportamento Richiesto
-- **Nessuna rilevazione all'inizio**: quando il valore del pin cambia, il sistema deve entrare in stato DEBOUNCING ma non segnalare subito il cambiamento
-- **Rilevazione solo alla fine del debounce**: il cambiamento viene segnalato (`changed()` ritorna `true`) solo alla fine del periodo di debounce se il nuovo valore è stabile
-- **Filtraggio dei rimbalzi**: se durante il periodo di debounce il valore torna uguale a quello originale, nessun cambiamento deve essere segnalato
-- **Aggiornamento sincronizzato**: il valore stabile (val0) deve essere aggiornato solo quando un cambiamento è confermato stabile
+### Macchina a Stati
+La struttura deve implementare una macchina a stati con due stati:
+- **IDLE** (debState = false): sistema in attesa di variazioni
+- **DEBOUNCING** (debState = true): sistema in monitoraggio della stabilità
+
+### Comportamento del Sistema
+- Quando rileva una variazione, il sistema deve entrare in stato DEBOUNCING e avviare il timer
+- Ogni ulteriore variazione durante lo stato DEBOUNCING deve resettare il timer
+- Solo quando il segnale rimane invariato per l'intero periodo `debtime`, il sistema deve segnalare la stabilità e tornare allo stato IDLE
+- L'uscita (LED) deve essere aggiornata solo quando viene rilevata una condizione di stabilità
+
+## Specifiche di Implementazione
 
 ### Costruttore
 Implementare un costruttore che:
-1. Accetti il numero del pin e un tempo di debounce opzionale (default = TXTIME)
+1. Accetti il numero del pin e un tempo di stabilità opzionale (default = TXTIME)
 2. Inizializzi tutte le variabili interne
 3. Configuri il pin come INPUT
-4. Legga il valore iniziale del pin e lo imposti come valore stabile iniziale
+4. Legga il valore iniziale del pin e lo imposti come valore di riferimento
 
-## Esempio di Utilizzo
-Includere nel codice un esempio che mostri:
+### Esempio di Utilizzo
+Includere un esempio completo che mostri:
 - Come istanziare un oggetto `Button` collegato a un pin
-- Come utilizzare la funzione `changed()` nel loop principale di Arduino
-- Come aggiornare un LED in base al valore stabile del pulsante
+- Come utilizzare la funzione `changed()` nel loop principale
+- Come aggiornare un LED quando viene rilevata una condizione di stabilità
 
-## Requisiti di Implementazione
-1. Il codice deve essere chiaro e ben commentato
-2. Il tempo di debounce predefinito (TXTIME) deve essere impostato a 100 millisecondi
-3. La funzione `changed()` deve gestire correttamente tutte le transizioni di stato
-4. L'aggiornamento del valore stabile deve avvenire solo quando un cambiamento è confermato
+## Considerazioni Aggiuntive
+- Questo approccio è particolarmente utile per interfacce utente che devono ignorare pressioni accidentali o brevi
+- Il sistema filtra efficacemente sia i rimbalzi meccanici che le interazioni non intenzionali
+- L'uscita verrà aggiornata solo quando l'ingresso è rimasto in uno stato costante per il periodo di tempo specificato
 
-## Note Aggiuntive
-- Testare l'implementazione con pulsanti reali per verificare il corretto filtraggio dei rimbalzi
-- Considerare che un pulsante può cambiare stato più volte durante l'uso (pressioni multiple)
-- L'implementazione deve essere efficiente e consumare poche risorse, considerando le limitazioni dell'hardware Arduino
+## Requisiti di Consegna
+1. Codice completo e ben commentato della struttura `Button`
+2. Diagramma degli stati che illustri il comportamento della macchina a stati
+3. Esempio funzionante che dimostri il comportamento con un pulsante e un LED
+4. Breve relazione che spieghi la logica di funzionamento e i casi d'uso appropriati
 
-
-
-# Tabella delle Transizioni - Button (Rilevazione alla fine del debounce)
+# Tabella delle Transizioni - Button (Rilevazione di stabilità)
 
 ## Stati
-- **IDLE**: Sistema in attesa di un cambiamento del segnale di input (debState = false)
-- **DEBOUNCING**: Sistema in fase di filtraggio dei rimbalzi (debState = true)
+- **IDLE** (debState = false): Sistema in attesa di variazioni del segnale
+- **DEBOUNCING** (debState = true): Sistema in fase di monitoraggio della stabilità
 
 ## Variabili di Stato
 - **val**: Valore attuale letto dal pin
-- **val0**: Ultimo valore stabile (non cambia durante il debounce)
+- **val0**: Ultimo valore letto (aggiornato continuamente)
 - **last**: Timestamp dell'ultimo cambiamento rilevato
 - **debState**: Flag che indica lo stato corrente (false = IDLE, true = DEBOUNCING)
-- **debtime**: Tempo di attesa per il debounce (tipicamente TXTIME = 100ms)
+- **debtime**: Tempo di stabilità richiesto (tipicamente TXTIME = 100ms)
+- **chg**: Flag temporaneo per segnalare la rilevazione di stabilità
 
 ## Tabella delle Transizioni
 
-| Stato Attuale | Condizione                                | Azioni                                          | Stato Successivo | Valore Ritornato |
-|---------------|--------------------------------------------|------------------------------------------------|------------------|------------------|
-| IDLE          | val = val0                                | Nessuna                                         | IDLE             | false            |
-| IDLE          | val ≠ val0                                | last = millis()<br>debState = true              | DEBOUNCING       | false            |
-| DEBOUNCING    | millis() - last < debtime                 | Nessuna                                         | DEBOUNCING       | false            |
-| DEBOUNCING    | millis() - last ≥ debtime<br>val = val0   | debState = false                                | IDLE             | false            |
-| DEBOUNCING    | millis() - last ≥ debtime<br>val ≠ val0   | val0 = val<br>debState = false                  | IDLE             | true             |
+| Stato Attuale | Condizione                               | Azioni                                         | Stato Successivo | Valore Ritornato |
+|---------------|------------------------------------------|------------------------------------------------|------------------|------------------|
+| IDLE          | val = val0                               | val0 = val                                      | IDLE             | false            |
+| IDLE          | val ≠ val0                               | val0 = val<br>last = millis()<br>debState = true | DEBOUNCING       | false            |
+| DEBOUNCING    | val ≠ val0                               | val0 = val<br>last = millis()                   | DEBOUNCING       | false            |
+| DEBOUNCING    | val = val0<br>millis() - last < debtime  | Nessuna                                         | DEBOUNCING       | false            |
+| DEBOUNCING    | val = val0<br>millis() - last ≥ debtime  | debState = false                                | IDLE             | true             |
 
 ## Logica del Sistema
 
 1. **In stato IDLE**:
+   - `val0` viene sempre aggiornato con il valore attuale `val`
    - Se viene rilevata una transizione (val ≠ val0), il sistema:
-     - Memorizza il timestamp (last = millis())
+     - Registra il timestamp (last = millis())
      - Passa allo stato DEBOUNCING (debState = true)
-     - NON segnala la transizione (return false)
+     - Non segnala alcun cambiamento (chg = false)
 
 2. **In stato DEBOUNCING**:
-   - Il sistema attende che passi il tempo di debounce (debtime)
-   - Una volta trascorso il tempo:
-     - Se il valore è ancora diverso da quello stabile (val ≠ val0):
-       - Aggiorna il valore stabile (val0 = val)
-       - Torna allo stato IDLE (debState = false)
-       - Segnala il cambiamento stabile (return true)
-     - Se il valore è tornato uguale a quello stabile (val = val0):
-       - Era solo un rimbalzo, torna allo stato IDLE (debState = false)
-       - Non segnala alcun cambiamento (return false)
+   - Se il valore continua a cambiare (val ≠ val0):
+     - Il timestamp viene aggiornato (last = millis())
+     - `val0` viene aggiornato con il nuovo valore
+     - Non segnala alcun cambiamento (chg = false)
+   - Se il valore rimane stabile (val = val0) per il periodo di debounce:
+     - Torna allo stato IDLE (debState = false)
+     - Segnala la stabilità raggiunta (chg = true)
 
 3. **Comportamento complessivo**:
-   - Il sistema segnala un cambiamento solo DOPO che il periodo di debounce è completato
-   - Il valore stabile (val0) viene aggiornato solo quando un cambiamento è confermato
-   - I rimbalzi che tornano al valore originale vengono completamente filtrati
-   - L'aggiornamento dell'output (LED) avviene solo quando è confermato un cambiamento stabile
+   - Il sistema monitora la stabilità del segnale, non il suo valore specifico
+   - Ogni variazione del segnale durante il periodo di debounce resetta il timer
+   - La funzione `changed()` ritorna `true` solo quando il segnale è rimasto stabile per l'intero periodo di debounce
+   - `val0` viene continuamente aggiornato con l'ultimo valore letto
 
 ## Caratteristiche dell'Implementazione
-1. **Rilevamento solo alla fine del debounce**:
-   - La funzione `changed()` ritorna `true` solo quando un cambiamento è confermato stabile
-   - Questo avviene solo dopo che è trascorso il periodo di debounce completo
 
-2. **Filtraggio completo dei falsi positivi**:
-   - Se durante il periodo di debounce il valore torna uguale a quello stabile originale, nessun cambiamento viene segnalato
-   - Solo i cambiamenti che persistono per l'intero periodo di debounce vengono confermati
+1. **Rilevazione di stabilità**:
+   - A differenza di un normale debounce che rileva cambiamenti di stato, questo sistema rileva periodi di stabilità
+   - La funzione `changed()` non indica un "cambiamento" ma piuttosto "stabilità raggiunta"
 
-3. **Aggiornamento sincronizzato con la segnalazione**:
-   - Il valore stabile (val0) e l'aggiornamento dell'output (LED) avvengono contemporaneamente
-   - Entrambi avvengono solo quando un cambiamento è confermato stabile
+2. **Reset continuo del timer**:
+   - Ogni variazione del segnale durante lo stato DEBOUNCING resetta il timer
+   - Questo garantisce che il segnale deve rimanere stabile per l'intero `debtime` prima di essere confermato
 
-4. **Semplicità d'uso**:
-   - Una singola funzione `changed()` gestisce sia la logica di debounce che la segnalazione
-   - Non sono necessarie funzioni aggiuntive o gestioni separate per l'aggiornamento dell'output
+3. **Aggiornamento continuo di val0**:
+   - `val0` non rappresenta un "valore stabile" ma semplicemente l'ultimo valore letto
+   - Viene aggiornato continuamente sia in stato IDLE che in stato DEBOUNCING
+
+4. **Comportamento con pulsanti reali**:
+   - Pressioni o rilasci brevi (< debtime) non genereranno mai un segnale `true`
+   - Solo quando il pulsante rimane in uno stato costante per almeno `debtime` millisecondi la funzione ritorna `true`
+   - L'uscita (LED) viene aggiornata solo quando il segnale di ingresso è rimasto stabile per il periodo richiesto
 
 
 ##  **Diagramma degli stati**
@@ -140,12 +150,14 @@ Includere nel codice un esempio che mostri:
 stateDiagram-v2
     direction LR
     
-    IDLE --> DEBOUNCING: val ≠ val0 \ last = millis() \ return false
-    DEBOUNCING --> IDLE: millis() - last ≥ debtime && val = val0 \ return false
-    DEBOUNCING --> IDLE: millis() - last ≥ debtime && val ≠ val0 \ val0 = val \ return true
+    IDLE --> DEBOUNCING: val ≠ val0\nlast = millis()\nval0 = val\nreturn false
+    IDLE --> IDLE: val = val0\nval0 = val\nreturn false
     
-    note right of IDLE: Stato stabile \ In attesa di transizione
-    note right of DEBOUNCING: Filtraggio rimbalzi \ In attesa di stabilizzazione
+    DEBOUNCING --> DEBOUNCING: val ≠ val0\nlast = millis()\nval0 = val\nreturn false
+    DEBOUNCING --> IDLE: val = val0 && millis() - last ≥ debtime\ndebState = false\nreturn true
+    
+    note right of IDLE: Stato stabile o iniziale\nval0 sempre aggiornato
+    note right of DEBOUNCING: Filtraggio variazioni\nReset timer se val cambia
 ```
 
 ##  **Soluzione in logica "prima gli stati"**
@@ -161,18 +173,21 @@ Ecco un esempio semplificato che utilizza la tua struttura di debounce per contr
 
 struct Button {
   uint8_t pin;           // Pin di Arduino collegato al pulsante
-  uint8_t val0;          // Ultimo valore stabile
+  uint8_t val0;          // Ultimo valore letto
   unsigned long debtime; // Tempo di debounce in millisecondi
   uint8_t val;           // Valore attuale letto
   unsigned long last;    // Timestamp ultimo cambiamento
   bool debState;         // Flag per stato debounce (true = in debounce)
   
   /**
-   * Verifica se c'è stato un cambiamento valido dello stato del pulsante.
-   * Rileva un cambiamento solo DOPO che il periodo di debounce è completato.
-   * @return true solo quando il debounce è completato, false altrimenti
+   * Verifica se lo stato del pulsante è rimasto stabile per il periodo di debounce.
+   * Rileva la stabilità solo DOPO che il periodo di debounce è completato.
+   * Resetta il timer ogni volta che il valore cambia durante il debounce.
+   * @return true solo quando il segnale è rimasto stabile per il periodo di debounce
    */
   bool changed() {
+    bool chg = false;    // Default: nessun cambiamento rilevato
+    
     val = digitalRead(pin);  // Legge il valore attuale del pin
     
     // Gestione della macchina a stati per il debounce
@@ -180,22 +195,20 @@ struct Button {
       if (val != val0) {  // Transizione rilevata
         last = millis();  // Registra il timestamp dell'evento
         debState = true;  // Entra in stato debouncing
-        return false;     // Non segnala ancora il cambiamento
+        chg = false;     // Non segnala ancora il cambiamento
       }
+      val0 = val;      // Aggiorna il valore letto
     } else {  // In stato DEBOUNCING
-      if (millis() - last >= debtime) {  // Periodo di debounce completato
-        if (val != val0) {  // Se il valore è ancora diverso da quello stabile
-          val0 = val;      // Aggiorna il valore stabile
-          debState = false; // Torna in stato IDLE
-          return true;     // Segnala il cambiamento (alla fine del debounce)
-        } else {
-          // Il valore è tornato uguale a quello precedente, era solo un rimbalzo
-          debState = false; // Torna in stato IDLE
-        }
+      if(val != val0) {   // Se lo stato continua a cambiare
+        last = millis();  // Reset del timer di debounce
+        val0 = val;       // Aggiorna ultimo valore letto
+      } else if (millis() - last >= debtime) {  // Periodo di debounce completato (val0 == val)
+        debState = false; // Torna in stato IDLE
+        chg = true;       // Segnala la stabilità (alla fine del debounce)
       }
     }
     
-    return false;  // Nessun cambiamento stabile rilevato
+    return chg;  
   }
 
   // Costruttore
@@ -203,7 +216,7 @@ struct Button {
     pin = _pin;
     debtime = _debtime;
     val = digitalRead(_pin);  // Legge il valore iniziale
-    val0 = val;              // Imposta il valore stabile iniziale
+    val0 = val;              // Imposta il valore iniziale
     last = 0;
     debState = false;
     pinMode(pin, INPUT);
@@ -221,8 +234,8 @@ void setup() {
 
 void loop() {
   if (button.changed()) {
-    Serial.println("Cambio di stato stabile rilevato!");
-    digitalWrite(led, button.val0);  // Aggiorna il LED con il nuovo valore stabile
+    Serial.println("Stato stabile rilevato!");
+    digitalWrite(led, button.val0);  // Aggiorna il LED con il valore stabile
   }
 }
 ```
