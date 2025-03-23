@@ -138,7 +138,7 @@ Includere nel codice un esempio che mostri:
 stateDiagram-v2
     direction LR
     
-    IDLE --> DEBOUNCING: val ≠ val0 \ val0 = val\nlast = millis() \ return true
+    IDLE --> DEBOUNCING: val ≠ val0 \ val0 = val \ last = millis() \ return true
     DEBOUNCING --> IDLE: millis() - last ≥ debtime \ Aggiorna LED con val
     
     note right of IDLE: Stato stabile\nIn attesa di transizione
