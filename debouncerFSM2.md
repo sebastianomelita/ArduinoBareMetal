@@ -140,12 +140,12 @@ Includere nel codice un esempio che mostri:
 stateDiagram-v2
     direction LR
     
-    IDLE --> DEBOUNCING: val ≠ val0\nlast = millis()\nreturn false
-    DEBOUNCING --> IDLE: millis() - last ≥ debtime && val = val0\nreturn false
-    DEBOUNCING --> IDLE: millis() - last ≥ debtime && val ≠ val0\nval0 = val\nreturn true
+    IDLE --> DEBOUNCING: val ≠ val0 \ last = millis() \ return false
+    DEBOUNCING --> IDLE: millis() - last ≥ debtime && val = val0 \ return false
+    DEBOUNCING --> IDLE: millis() - last ≥ debtime && val ≠ val0 \ val0 = val \ return true
     
-    note right of IDLE: Stato stabile\nIn attesa di transizione
-    note right of DEBOUNCING: Filtraggio rimbalzi\nIn attesa di stabilizzazione
+    note right of IDLE: Stato stabile \ In attesa di transizione
+    note right of DEBOUNCING: Filtraggio rimbalzi \ In attesa di stabilizzazione
 ```
 
 ##  **Soluzione in logica "prima gli stati"**
