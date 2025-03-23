@@ -21,4 +21,5 @@
 16. [Nastro trasportatore](nastro.md)
 17. [Nastro trasportatore con contapezzi](nastrocont.md)
 18. [Debouncer per rivelatore di fronti](debouncerFSM.md)
-19. [Sitografia](statifinitisitografia.md)
+19. [Debouncer per rivelatore di fronti 2](debouncerFSM2.md)
+20. [Sitografia](statifinitisitografia.md)
