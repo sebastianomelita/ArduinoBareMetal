@@ -212,14 +212,11 @@ struct Button {
         chg = true;       // Segnala cambiamento (SOLO QUI)
         val0 = val;       // Aggiorna ultimo valore letto
         val00 = val;      // Memorizza stato valido
-      } else {            // Nessun cambiamento
-        val0 = val;       // Aggiorna ultimo valore letto
-        val00 = val;      // Memorizza stato valido
-      }
+      } 
     } else {              // STATO DEBOUNCE: filtraggio rimbalzi
       if(val != val0) {   // Se lo stato continua a cambiare
         last = millis();  // Reset del timer di debounce
-	val0 = val;         // Aggiorna ultimo valore letto
+	      val0 = val;         // Aggiorna ultimo valore letto
       }else if((unsigned long)(millis() - last) > debtime) {
         debState = false;  // Torna a stato stabile
         val0 = val00;      // Ripristina stato di riferimento
