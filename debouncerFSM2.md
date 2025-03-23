@@ -107,40 +107,60 @@ Questo approccio è particolarmente utile quando desideri rilevare solo l'inizio
 - **debtime**: Tempo di debounce in millisecondi
 - **chg**: Flag che indica se è stato rilevato un cambiamento valido
 
+# Tabella delle Transizioni del Sistema di Debounce
+
+## Stati
+- **IDLE**: Sistema in attesa di un cambiamento del segnale di input
+- **DEBOUNCING**: Sistema in fase di filtraggio dei rimbalzi (debounce)
+
+## Variabili di Stato
+- **val**: Valore attuale letto dal pin
+- **val0**: Ultimo valore letto (potenzialmente instabile)
+- **val00**: Ultimo stato stabile confermato
+- **last**: Timestamp dell'ultimo cambiamento rilevato
+- **debState**: Flag che indica lo stato corrente (false = IDLE, true = DEBOUNCING)
+- **debtime**: Tempo di attesa per il debounce (tipicamente TXTIME = 100ms)
+
 ## Tabella delle Transizioni
 
-| Stato Attuale | Condizione | Azione | Prossimo Stato | Output (chg) |
-|---------------|------------|--------|---------------|--------------|
-| IDLE<br>(debState = false) | val == val0 | val0 = val<br>val00 = val | IDLE | false |
-| IDLE<br>(debState = false) | val != val0 | debState = true<br>last = millis()<br>val0 = val<br>val00 = val | DEBOUNCE | **true** |
-| DEBOUNCE<br>(debState = true) | val != val0 | last = millis()<br>val0 = val | DEBOUNCE | false |
-| DEBOUNCE<br>(debState = true) | val == val0 | val0 = val | DEBOUNCE | false |
-| DEBOUNCE<br>(debState = true) | (millis() - last) > debtime | debState = false<br>val0 = val00 | IDLE | **false** |
+La tabella descrive in dettaglio:
+- Le condizioni che provocano ogni transizione
+- Le azioni eseguite durante ogni transizione
+- Lo stato successivo
+- Il valore ritornato dalla funzione changed()
 
-## Caratteristiche dell'Approccio a Singola Rilevazione
-1. **Rilevamento solo al fronte iniziale**: L'evento viene segnalato (`chg = true`) solo quando si entra nello stato DEBOUNCE dalla transizione IDLE → DEBOUNCE
-2. **Nessun evento alla fine del debounce**: Il ritorno allo stato IDLE non genera un evento (`chg = false`)
-3. **Reset del timer durante i rimbalzi**: Se lo stato continua a cambiare durante il periodo di debounce, il timer viene resettato
-4. **Filtraggio completo dei rimbalzi**: Tutti gli eventi durante il periodo di debounce vengono ignorati
+Il sistema è progettato per:
+- Rilevare immediatamente il fronte iniziale di una transizione
+- Ignorare i rimbalzi durante il tempo di debounce
+- Aggiornare lo stato stabile solo dopo che il segnale si è stabilizzato
 
+I due componenti principali di questa implementazione sono:
+- La rilevazione del cambiamento (val ≠ val0)
+- La gestione del tempo (millis() - last ≥ debtime)
 
-## Caratteristiche della Macchina a Stati
-1. **Rilevamento immediato**: Il primo cambiamento di stato viene rilevato immediatamente (chg = true)
-2. **Periodo di inibizione**: Dopo il primo cambio, tutti i fronti successivi vengono ignorati per un periodo configurabile
-3. **Reset del timer**: Se durante il periodo di debounce lo stato continua a cambiare, il timer viene resettato
-4. **Ripristino stato di riferimento**: Al termine del debounce, lo stato di riferimento viene reimpostato all'ultimo stato stabile
+Questo approccio garantisce che il sistema risponda rapidamente ai comandi dell'utente, pur filtrando efficacemente i falsi segnali causati dai rimbalzi meccanici del pulsante.
 
-## Comportamento agli eventi
-- **Pulsante premuto/rilasciato**: Viene rilevato immediatamente e poi viene attivato il periodo di inibizione
-- **Rimbalzi del contatto**: Vengono filtrati durante il periodo di debounce
-- **Nuova pressione dopo debounce**: Viene rilevata come nuovo evento
+| Stato Attuale | Condizione                | Azioni                                          | Stato Successivo | Valore Ritornato |
+|---------------|---------------------------|------------------------------------------------|------------------|------------------|
+| IDLE          | val = val0                | Nessuna                                         | IDLE             | false            |
+| IDLE          | val ≠ val0                | val0 = val<br>last = millis()<br>debState = true | DEBOUNCING       | true             |
+| DEBOUNCING    | millis() - last < debtime | Nessuna                                         | DEBOUNCING       | false            |
+| DEBOUNCING    | millis() - last ≥ debtime | val00 = val0<br>debState = false                | IDLE             | false            |
 
 
 ##  **Diagramma degli stati**
 
 ```mermaid
 %%{init: {'theme': 'default', 'themeVariables': { 'primaryColor': '#ffffff', 'primaryTextColor': '#000000', 'primaryBorderColor': '#000000', 'lineColor': '#000000', 'secondaryColor': '#f4f4f4', 'tertiaryColor': '#ffffff' }}}%%
-stateDiagram-v2 [*] --> IDLE IDLE --> IDLE : No button state change IDLE --> DEBOUNCING : Button state changes / Record time, print message DEBOUNCING --> DEBOUNCING : Debounce time not elapsed DEBOUNCING --> IDLE : Debounce time elapsed (≥ 100ms) / Update LED state 
+stateDiagram-v2
+    direction LR
+    
+    IDLE --> DEBOUNCING: val ≠ val0\nval0 = val\nlast = millis()\nreturn true
+    DEBOUNCING --> IDLE: millis() - last ≥ debtime\nval00 = val0
+    
+    note right of IDLE: Stato stabile\nIn attesa di transizione
+    note right of DEBOUNCING: Filtraggio rimbalzi\nAttesa stabilizzazione
+
 ```
 
 ##  **Soluzione in logica "prima gli stati"**
