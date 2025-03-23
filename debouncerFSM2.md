@@ -4,108 +4,71 @@
 
 #  **DEBOUNCER 2**
 
-##  **Gestione di pulsanti con debouncer**
+# Consegna Progetto: Implementazione di una Struttura per il Debounce dei Pulsanti
 
-Questo esempio include due modalità di funzionamento:
+## Obiettivo
+Creare una struttura `Button` che implementi una macchina a stati per gestire il debounce dei pulsanti in Arduino, seguendo l'approccio della rilevazione del fronte iniziale con aggiornamento dell'output solo al termine del periodo di debounce.
 
-### 1. Pulsante senza memoria (momentaneo)
-- Il LED1 si accende solo quando il pulsante è premuto
-- Quando il pulsante viene rilasciato, il LED si spegne
-- Simile a un campanello o un pulsante di un citofono
+## Requisiti
 
-### 2. Pulsante con memoria (toggle)
-- Il LED2 cambia stato ad ogni pressione del pulsante
-- Se il LED è spento, premendo si accende
-- Se il LED è acceso, premendo si spegne
-- Simile a un interruttore della luce in casa
+### Struttura `Button`
+Implementare una struttura `Button` con i seguenti campi:
+- `pin`: pin di Arduino collegato al pulsante (uint8_t)
+- `val0`: ultimo valore letto dal pulsante (uint8_t)
+- `debtime`: tempo di debounce in millisecondi (unsigned long)
+- `val`: valore attuale letto dal pulsante (uint8_t)
+- `last`: timestamp dell'ultimo cambiamento rilevato (unsigned long)
+- `debState`: flag per lo stato di debounce (bool, true = in debounce)
 
-Entrambe le modalità utilizzano lo stesso meccanismo di debounce avanzato che:
-1. Rileva immediatamente il primo cambiamento
-2. Inibisce successivi rilevamenti per il periodo di debounce
-3. Gestisce correttamente gli overflow di `millis()`
+### Funzionalità Richieste
+La struttura deve implementare le seguenti funzioni:
 
+1. **`changed()`**:
+   - Rileva se c'è stato un cambiamento valido dello stato del pulsante
+   - Gestisce la transizione da IDLE a DEBOUNCING
+   - Ritorna `true` solo al rilevamento del primo fronte, `false` altrimenti
 
-# Esercitazione di controllo con Debouncing per l'accensione di un LED
+2. **`debounceComplete()`**:
+   - Verifica se il periodo di debounce è completato
+   - Gestisce la transizione da DEBOUNCING a IDLE
+   - Ritorna `true` quando il debounce è appena terminato, `false` altrimenti
 
-## Obiettivo del progetto
-Realizzare un sistema dimostrativo di controllo LED che implementi diverse tecniche di gestione dei pulsanti. Il sistema deve illustrare i concetti fondamentali del debouncing software, le macchine a stati e i diversi tipi di interazione utente tramite pulsanti (momentanea e con memoria).
+3. **Costruttore**:
+   - Accetta il pin del pulsante e un tempo di debounce opzionale (default TXTIME)
+   - Inizializza tutte le variabili e configura il pin come INPUT
 
-## Requisiti funzionali
+### Comportamento della Macchina a Stati
+Implementare una macchina a stati con i seguenti stati:
+- **IDLE**: Il sistema è in attesa di un cambiamento del segnale
+- **DEBOUNCING**: Il sistema sta filtrando i rimbalzi del pulsante
 
-1. **Sistema di controllo LED**:
-   - Implementazione di due modalità di controllo tramite pulsanti:
-     - Modalità momentanea: LED acceso solo quando il pulsante è premuto
-     - Modalità toggle (con memoria): LED cambia stato ad ogni pressione
+La logica di transizione deve essere la seguente:
+- Da IDLE a DEBOUNCING: quando viene rilevata una transizione
+- Da DEBOUNCING a IDLE: quando è trascorso il tempo di debounce
 
-2. **Interfaccia utente**:
-   - Due pulsanti di controllo:
-     - Pulsante 1: Controllo momentaneo del LED1 (senza memoria)
-     - Pulsante 2: Controllo toggle del LED2 (con memoria)
+### Specifiche di Aggiornamento dell'Output
+- L'aggiornamento dell'output (LED) deve avvenire **solo** quando il periodo di debounce è completato
+- Durante lo stato di debounce, eventuali cambiamenti dell'input devono essere ignorati
 
-3. **Implementazione di gestione avanzata del debounce**:
-   - Sviluppo di un sistema di debounce che rilevi immediatamente il primo fronte ma inibisca temporaneamente i fronti successivi
-   - Implementazione di una macchina a stati a due stati (IDLE e DEBOUNCE)
-   - Gestione corretta dell'overflow di millis() per garantire stabilità a lungo termine
+## Esempio di Utilizzo
+Includere nel codice un esempio che mostri:
+- Come istanziare un oggetto `Button` collegato a un pin specifico
+- Come utilizzare le funzioni `changed()` e `debounceComplete()` nel loop principale
+- Come aggiornare un LED solo al termine del periodo di debounce
 
-## Aspetti didattici
-Il progetto dimostra:
-- Differenza tra controlli momentanei e controlli con memoria (toggle)
-- Implementazione di una macchina a stati per il debouncing
-- Rilevamento immediato del primo fronte con successiva inibizione temporanea
-- Programmazione non bloccante
-- Gestione dell'overflow nei timer software
-- Tecniche per migliorare l'esperienza utente riducendo falsi trigger
+## Criteri di Valutazione
+- Correttezza dell'implementazione della macchina a stati
+- Efficienza e chiarezza del codice
+- Rispetto dei requisiti specifici (aggiornamento dell'output solo al termine del debounce)
+- Funzionalità del sistema in condizioni reali di utilizzo
 
-## Materiale necessario
-- Arduino Nano o compatibile
-- Due LED con relativi resistori limitatori di corrente
-- Due pulsanti
-- Resistori di pull-up per i pulsanti (se non si utilizzano i pull-up interni)
-- Breadboard e cavi di collegamento
-
-## Considerazioni finali
-Questo progetto è perfetto come introduzione alle tecniche di debouncing e alla gestione dell'input utente. Può essere utilizzato come base per sistemi più complessi di domotica o automazione che richiedono un'interfaccia utente semplice ma affidabile. L'implementazione della macchina a stati per il debouncing rappresenta un approccio robusto che può essere esteso anche ad altre applicazioni.
-
-## Approcci al debouncing
-
-Questa implementazione di debouncing rileva subito il **primo fronte** ma ignora i successivi cambiamenti per un periodo definito, combinando reattività e stabilità.
-
-Dal punto di vista concettuale, ci sono due approcci legittimi al debouncing, ma con comportamenti e finalità diverse:
-
-1. **Approccio a singola rilevazione (fronte di ingresso)**: 
-   - Rileva solo la transizione iniziale, ignorando i rimbalzi successivi
-   - Segnala `chg = true` solo all'ingresso nello stato di debounce
-   - Ideale per pulsanti che controllano toggle, contatori, o eventi singoli
-
-2. **Approccio a doppia rilevazione (fronte di ingresso e di uscita)**:
-   - Rileva sia la transizione iniziale che la conclusione del periodo di debounce
-   - Segnala `chg = true` all'ingresso nello stato di debounce E all'uscita
-   - Utile per monitorare la durata stabile di un segnale o per gestire eventi sia all'inizio che alla fine di un input
-
-Tuttavia, per la maggior parte delle applicazioni con pulsanti (come il controllo di LED o motori), l'approccio a singola rilevazione è generalmente più appropriato, poiché permette di eseguire l'azione una sola volta all'inizio della pressione, senza generare eventi aggiuntivi alla fine del periodo di debounce.
-
-Se l'obiettivo è rilevare solo la pressione iniziale, allora bisogna mantenere `chg = false` nella transizione da DEBOUNCE a IDLE.
-
-## Vantaggi dell'Approccio a Singola Rilevazione
-- Ideale per pulsanti che controllano toggle (on/off)
-- Previene duplicazione di eventi o conteggi multipli
-- Più intuitivo per la maggior parte delle interfacce utente
-- Simula efficacemente il comportamento di debouncing hardware con flip-flop
-
-Questo approccio è particolarmente utile quando desideri rilevare solo l'inizio di un'azione (come la pressione di un pulsante) e vuoi ignorare completamente eventuali false rilevazioni dovute ai rimbalzi elettrici dei contatti.
+## Note Aggiuntive
+- Il tempo di debounce predefinito (TXTIME) è impostato a 100 millisecondi
+- Il sistema deve essere in grado di gestire più pulsanti istanziando più oggetti `Button`
+- Il codice deve essere ben commentato per spiegare la logica di funzionamento
 
 
-# Tabella delle Transizioni - Approccio a Singola Rilevazione
 
-## Definizione delle Variabili
-- **pin**: Pin di Arduino collegato al pulsante
-- **val0**: Ultimo valore letto (per rilevare cambiamenti)
-- **val**: Valore attuale letto dal pin
-- **val00**: Ultimo stato stabile (dopo il debounce)
-- **last**: Timestamp dell'ultimo cambiamento
-- **debState**: Flag stato del debounce (true = in debounce, false = rilevamento abilitato)
-- **debtime**: Tempo di debounce in millisecondi
-- **chg**: Flag che indica se è stato rilevato un cambiamento valido
 
 # Tabella delle Transizioni del Sistema di Debounce
 
@@ -121,31 +84,51 @@ Questo approccio è particolarmente utile quando desideri rilevare solo l'inizio
 - **debState**: Flag che indica lo stato corrente (false = IDLE, true = DEBOUNCING)
 - **debtime**: Tempo di attesa per il debounce (tipicamente TXTIME = 100ms)
 
+# Tabella delle Transizioni - Button Aggiornato
+
+## Stati
+- **IDLE**: Sistema in attesa di un cambiamento del segnale di input (debState = false)
+- **DEBOUNCING**: Sistema in fase di filtraggio dei rimbalzi (debState = true)
+
+## Variabili di Stato
+- **val**: Valore attuale letto dal pin
+- **val0**: Ultimo valore letto (equivalente a precval nel secondo codice)
+- **last**: Timestamp dell'ultimo cambiamento rilevato (equivalente a btntime)
+- **debState**: Flag che indica lo stato corrente (false = IDLE, true = DEBOUNCING)
+- **debtime**: Tempo di attesa per il debounce (tipicamente TXTIME = 100ms)
+
 ## Tabella delle Transizioni
 
-La tabella descrive in dettaglio:
-- Le condizioni che provocano ogni transizione
-- Le azioni eseguite durante ogni transizione
-- Lo stato successivo
-- Il valore ritornato dalla funzione changed()
+| Stato Attuale | Funzione        | Condizione                | Azioni                                          | Stato Successivo | Valore Ritornato |
+|---------------|-----------------|---------------------------|------------------------------------------------|------------------|------------------|
+| IDLE          | changed()       | val = val0                | Nessuna                                         | IDLE             | false            |
+| IDLE          | changed()       | val ≠ val0                | val0 = val<br>last = millis()<br>debState = true | DEBOUNCING       | true             |
+| DEBOUNCING    | changed()       | qualsiasi                 | Nessuna                                         | DEBOUNCING       | false            |
+| DEBOUNCING    | debounceComplete() | millis() - last < debtime | Nessuna                                      | DEBOUNCING       | false            |
+| DEBOUNCING    | debounceComplete() | millis() - last ≥ debtime | debState = false                             | IDLE             | true             |
 
-Il sistema è progettato per:
-- Rilevare immediatamente il fronte iniziale di una transizione
-- Ignorare i rimbalzi durante il tempo di debounce
-- Aggiornare lo stato stabile solo dopo che il segnale si è stabilizzato
+## Logica del Sistema
 
-I due componenti principali di questa implementazione sono:
-- La rilevazione del cambiamento (val ≠ val0)
-- La gestione del tempo (millis() - last ≥ debtime)
+1. **In stato IDLE**:
+   - Se viene rilevata una transizione (val ≠ val0), il sistema:
+     - Registra il nuovo valore (val0 = val)
+     - Memorizza il timestamp (last = millis())
+     - Passa allo stato DEBOUNCING (debState = true)
+     - La funzione `changed()` segnala la transizione (return true)
 
-Questo approccio garantisce che il sistema risponda rapidamente ai comandi dell'utente, pur filtrando efficacemente i falsi segnali causati dai rimbalzi meccanici del pulsante.
+2. **In stato DEBOUNCING**:
+   - La funzione `changed()` continua a leggere il valore attuale ma ritorna sempre false
+   - Il sistema attende che passi il tempo di debounce (debtime)
+   - Quando viene chiamata `debounceComplete()`:
+     - Se il tempo di debounce è completato:
+       - Il sistema ritorna allo stato IDLE (debState = false)
+       - La funzione `debounceComplete()` ritorna true
+       - Nel loop principale, quando `debounceComplete()` ritorna true, viene aggiornato il LED con il valore attuale (val)
 
-| Stato Attuale | Condizione                | Azioni                                          | Stato Successivo | Valore Ritornato |
-|---------------|---------------------------|------------------------------------------------|------------------|------------------|
-| IDLE          | val = val0                | Nessuna                                         | IDLE             | false            |
-| IDLE          | val ≠ val0                | val0 = val<br>last = millis()<br>debState = true | DEBOUNCING       | true             |
-| DEBOUNCING    | millis() - last < debtime | Nessuna                                         | DEBOUNCING       | false            |
-| DEBOUNCING    | millis() - last ≥ debtime | val00 = val0<br>debState = false                | IDLE             | false            |
+3. **Comportamento complessivo**:
+   - Il sistema segnala una transizione solo al primo cambiamento rilevato
+   - L'aggiornamento dell'output (LED) avviene solo quando il debounce è completato
+   - Durante il debounce, tutte le variazioni dell'input vengono ignorate
 
 
 ##  **Diagramma degli stati**
@@ -156,10 +139,10 @@ stateDiagram-v2
     direction LR
     
     IDLE --> DEBOUNCING: val ≠ val0\nval0 = val\nlast = millis()\nreturn true
-    DEBOUNCING --> IDLE: millis() - last ≥ debtime\nval00 = val0
+    DEBOUNCING --> IDLE: millis() - last ≥ debtime\nAggiorna LED con val
     
     note right of IDLE: Stato stabile\nIn attesa di transizione
-    note right of DEBOUNCING: Filtraggio rimbalzi\nAttesa stabilizzazione
+    note right of DEBOUNCING: Filtraggio rimbalzi\nSenza aggiornamento LED
 
 ```
 
@@ -176,37 +159,48 @@ Ecco un esempio semplificato che utilizza la tua struttura di debounce per contr
 
 struct Button {
   uint8_t pin;           // Pin di Arduino collegato al pulsante
-  uint8_t val0;          // Ultimo valore letto
+  uint8_t val0;          // Ultimo valore letto (equivalente a precval)
   unsigned long debtime; // Tempo di debounce in millisecondi
   uint8_t val;           // Valore attuale letto
-  uint8_t val00;         // Ultimo stato stabile
-  unsigned long last;    // Timestamp ultimo cambiamento
-  bool debState;         // Flag per stato debounce (true = in debounce)
+  unsigned long last;    // Timestamp ultimo cambiamento (equivalente a btntime)
+  bool debState;         // Flag per stato debounce (true = in debounce, equivalente a stato == DEBOUNCING)
   
   /**
    * Verifica se c'è stato un cambiamento valido dello stato del pulsante.
-   * Rileva solo il fronte iniziale del cambiamento, non la fine del debounce.
-   * @return true solo al rilevamento del primo fronte, false altrimenti
+   * Rileva il cambiamento e gestisce lo stato del debounce.
+   * @return true se è stata rilevata una transizione, false altrimenti
    */
   bool changed() {
     val = digitalRead(pin);  // Legge il valore attuale del pin
+    bool transitionDetected = false;
     
-    // Gestione della macchina a stati per il debounce
-    if (!debState) {  // Equivalente a stato IDLE
+    if (!debState) {  // Equivalente a stato == IDLE
       if (val != val0) {  // Transizione rilevata
-        val0 = val;      // Aggiorna l'ultimo valore letto
-        last = millis(); // Registra il timestamp dell'evento
-        debState = true; // Entra in stato debouncing
-        return true;     // Segnala il cambiamento (fronte iniziale)
+        val0 = val;       // Aggiorna l'ultimo valore letto
+        last = millis();  // Registra il timestamp dell'evento
+        debState = true;  // Entra in stato debouncing
+        transitionDetected = true;  // Segnala la transizione
       }
     } else {  // In stato DEBOUNCING
       if (millis() - last >= debtime) {  // Periodo di debounce completato
-        val00 = val0;    // Aggiorna lo stato stabile
-        debState = false; // Torna in stato IDLE
+        debState = false;  // Torna in stato IDLE
       }
     }
     
-    return false;  // Nessun nuovo fronte rilevato
+    return transitionDetected;  // Ritorna true solo se è stata rilevata una transizione
+  }
+  
+  /**
+   * Verifica se il periodo di debounce è completato e aggiorna lo stato.
+   * Da chiamare per controllare quando il periodo di debounce è terminato.
+   * @return true se il periodo di debounce è appena terminato
+   */
+  bool debounceComplete() {
+    if (debState && (millis() - last >= debtime)) {
+      debState = false;  // Torna in stato IDLE
+      return true;       // Segnala il completamento del debounce
+    }
+    return false;
   }
 
   // Costruttore
@@ -215,7 +209,6 @@ struct Button {
     debtime = _debtime;
     val0 = 0;
     val = 0;
-    val00 = 0;
     last = 0;
     debState = false;
     pinMode(pin, INPUT);
@@ -236,12 +229,11 @@ void loop() {
     Serial.println("Transizione rilevata!");
   }
   
-  if (!button.debState) {
-    digitalWrite(led, button.val0); // Aggiorna il LED solo quando lo stato è stabile
+  if (button.debounceComplete()) {
+    digitalWrite(led, button.val);  // Aggiorna il LED solo quando il debounce è completato
   }
 }
 ```
-- Simulazione su Esp32 con Wowki dell'esempio base essposto sopra: https://wokwi.com/projects/426050075651040257
-- Simulazione su Arduino Nano con Wowki di un motore stepper con comandi protetti da debouncer: https://wokwi.com/projects/426024956545802241
+
 
 >[Torna all'indice](indexstatifiniti.md) >[versione in Python](indexstatifiniti_py.md)
