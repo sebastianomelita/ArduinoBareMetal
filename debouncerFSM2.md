@@ -239,6 +239,6 @@ void loop() {
   }
 }
 ```
-
+Simulazione con Wokwi su ESP32: https://wokwi.com/projects/426258191241018369_
 
 >[Torna all'indice](indexstatifiniti.md) >[versione in Python](indexstatifiniti_py.md)
