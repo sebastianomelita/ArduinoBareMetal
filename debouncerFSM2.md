@@ -150,14 +150,14 @@ Includere un esempio completo che mostri:
 stateDiagram-v2
     direction LR
     
-    IDLE --> DEBOUNCING: val ≠ val0\nlast = millis()\nval0 = val\nreturn false
-    IDLE --> IDLE: val = val0\nval0 = val\nreturn false
+    IDLE --> DEBOUNCING: val ≠ val0 \ last = millis() \ val0 = val \ return false
+    IDLE --> IDLE: val = val0 \ val0 = val \ return false
     
     DEBOUNCING --> DEBOUNCING: val ≠ val0\nlast = millis()\nval0 = val\nreturn false
-    DEBOUNCING --> IDLE: val = val0 && millis() - last ≥ debtime\ndebState = false\nreturn true
+    DEBOUNCING --> IDLE: val = val0 && millis() - last ≥ debtime\ndebState = false \ return true
     
-    note right of IDLE: Stato stabile o iniziale\nval0 sempre aggiornato
-    note right of DEBOUNCING: Filtraggio variazioni\nReset timer se val cambia
+    note right of IDLE: Stato stabile o iniziale \ val0 sempre aggiornato
+    note right of DEBOUNCING: Filtraggio variazioni \ Reset timer se val cambia
 ```
 
 ##  **Soluzione in logica "prima gli stati"**
