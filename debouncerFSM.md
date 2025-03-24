@@ -42,7 +42,7 @@ Realizzare un sistema dimostrativo di controllo LED che implementi diverse tecni
      - Pulsante 1: Controllo momentaneo del LED1 (senza memoria)
      - Pulsante 2: Controllo toggle del LED2 (con memoria)
 
-3. **Implementazione di gestione avanzata del debounce**:
+3. **Implementazione di gestione del debounce**:
    - Sviluppo di un sistema di debounce che rilevi immediatamente il primo fronte ma inibisca temporaneamente i fronti successivi
    - Implementazione di una macchina a stati a due stati (IDLE e DEBOUNCE)
    - Gestione corretta dell'overflow di millis() per garantire stabilità a lungo termine
@@ -64,7 +64,7 @@ Il progetto dimostra:
 - Breadboard e cavi di collegamento
 
 ## Considerazioni finali
-Questo progetto è perfetto come introduzione alle tecniche di debouncing e alla gestione dell'input utente. Può essere utilizzato come base per sistemi più complessi di domotica o automazione che richiedono un'interfaccia utente semplice ma affidabile. L'implementazione della macchina a stati per il debouncing rappresenta un approccio robusto che può essere esteso anche ad altre applicazioni.
+Questo progetto è utile come introduzione alle tecniche di debouncing e alla gestione dell'input utente. Può essere utilizzato come base per sistemi più complessi di domotica o automazione che richiedono un'interfaccia utente semplice ma affidabile. L'implementazione della macchina a stati per il debouncing rappresenta un approccio robusto che può essere esteso anche ad altre applicazioni.
 
 ## Approcci al debouncing
 
@@ -175,6 +175,13 @@ stateDiagram-v2
 La **FSM** che modella il comportamento del pulsante è del tutto **indipendente** ed **isolata** rispetto alla logica principale del programma. Il codice, che implementa la macchina a stati finiti sia del debouncer che del rilevamento dei fronti, è tutta **incapsulata** all'interno dell'**oggetto pulsante**, realizzato, in questo caso, con una **struct** (membri e proprietà **pubblici** di default).
 
 L'inizializzazione dei parametri degli **oggetti statici** è effettuata al momento della dichiarazione mediante ```Button buttonMomentary = {BUTTON1_PIN, LOW, 50}``` utilizzando la notazione ```{}``` che racchiude la **lista** completa dei **membri contigui** da inizializzare dentro le **parentesi graffe**.
+
+L'ultimo **valore valido** è sempre quello che permane **immutato** tra l'**inizio** e la **fine** dell'**intervallo di debounce**.
+
+si noti che  chg = true in **due cas**i:
+- un fronte rilevato a seguito di una pressione o di un rilascio di un tasto rilevato dalla **differenza** del valore **attuale** con il **alore al loop precedente**.
+- un fronte rilevato a seguito di una pressione o di un rilascio di un tasto rilevato dalla **differenza** del valore **attuale** con l'**ultimo valore valido**. 
+
 
 Ecco un esempio semplificato che utilizza la tua struttura di debounce per controllare LED con e senza memoria:
 
