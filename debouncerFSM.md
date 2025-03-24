@@ -179,8 +179,8 @@ L'inizializzazione dei parametri degli **oggetti statici** è effettuata al mome
 L'ultimo **valore valido** è sempre quello che permane **immutato** tra l'**inizio** e la **fine** dell'**intervallo di debounce**.
 
 Si noti che  chg = true in **due cas**i:
-- un fronte rilevato a seguito di una pressione o di un rilascio di un tasto rilevato dalla **differenza** del valore **attuale** con il **alore al loop precedente**.
-- un fronte rilevato a seguito di una pressione o di un rilascio di un tasto rilevato dalla **differenza** del valore **attuale** con l'**ultimo valore valido**. 
+- un **fronte** rilevato a seguito di una pressione o di un rilascio di un tasto rilevato dalla **differenza** del valore **attuale** con il **alore al loop precedente**.
+- un **fronte** rilevato a seguito di una pressione o di un rilascio di un tasto rilevato dalla **differenza** del valore **attuale** con l'**ultimo valore valido**. 
 
 
 Ecco un esempio semplificato che utilizza la tua struttura di debounce per controllare LED con e senza memoria:
