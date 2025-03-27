@@ -14,7 +14,7 @@ Infatti, in un listato sorgente, le istruzioni che **spazialmente** vengono dopo
 Finchè un programma consiste in un **unico task** avente un flusso temporale unico va tutto bene. Il modello lineare di programmazione è chiaro, intuitivo ed adeguato. Quando però, in un algoritmo coesistono più task separati, ciascuno composto da un proprio filo temporale che si interseca con quello degli altri, allora, il problema di codificarlo in un programma si complica. In questo caso, è quindi dirimente sapere se i task di cui si compone l'algoritmo sono **sequenziali** o procedono in maniera **parallela**, e se si, stabilire se, quando si incrociano, un task deve **aspettarne** qualcun altro prima di proseguire.
 
 In linea di principio, se i task sono **sequenziali** nulla osta a metterli tutti nello **stesso loop** principale eseguendoli uno **di seguito** all'altro, dato che il loro sviluppo fisico nel codice è anche il loro sviluppo temporale.
-
+sarà 
 Se, invece, più task sono **paralleli**, allora sviluppare la loro codifica in un unico flusso di esecuzione necessita il coordinamento dei ritardi di tutti. Per ottenere ciò una strategia potrebbe essere stabilire il **massimo comune divisore** dei tempi che compaiono nei ```delay()```. Se questo MCD esiste, diventa il **tempo base** di tutti i task, cioè quello mediante il quale è possibile **programmare** i tempi dei vari task **incastrandoli** l'uno nell'altro. 
 
 Ad esempio, posso far accadere ogni 2 tempi base il blink di un led rosso e ogni 3 quello di un led verde semplicemente dividendo il tempo in **slot** tramite un delay che vale esattamente un tempo base e scrivendo, per ogni slot, l'istruzione che **compete** ad ogni task. Se un task in uno slot non fa nulla allora li non compare alcuna sua istruzione (vedi Es2).
@@ -63,6 +63,14 @@ void loop() {                                              |
   // mentre attende che passi il tempo tbase               | 
 }                                                          |
 ```
+
+- **```precval```**: rappresenta il valore dell'**ingresso** campionato al **timeout precedente**
+- **```val```**: rappresenta il valore dell'**ingresso** campionato al **timeout corrente**
+- **```precm```**: rappresenta il valore del **tempo** al **timeout**. E' il tempo di **riferimento** della condizione per determinare il successivo timeout.
+- **```(millis()-precm)```**: rappresenta il tempo trascorso dall'ultimo timeout, cioè dall'ultimo riferimento temporale noto.
+- **```(millis()-precm) >= tbase```**: è la condizione di rilevazione del **nuovo timeout**
+- **```tbase```**: è il tempo tra un timeout e l'altro
+- il **corpo dell'if**, le istruzioni contenute nel blocco then dell'if, viene esegito **periodicamente** ad ogni timeout. Gli eventi che si estinguono tra un timeout e l'altro non possono essere rilevati (rimbalzi).
 
 ## **Attivazione di una logica qualsiasi su un fronte con timer SW**
 
