@@ -174,6 +174,14 @@ void loop() {                                              | void loop() {
 }                                                          | }
 ```
 
+- **```precval```**: rappresenta il valore dell'**ingresso** campionato al **timeout precedente**
+- **```val```**: rappresenta il valore dell'**ingresso** campionato al **timeout corrente**. Se val è **diverso** da precval allora ho rilevato un **fronte** tra il valore attuale e il valore al tempo di riferimento (timeout precedente).
+- Il valore del **tempo** al **timeout** è **campionato** (internamente al timer) al momento della chiamta a ```deb.reset()``` ed è il tempo di **riferimento** della condizione per determinare il **successivo timeout**.
+- **```deb.get()```**: rappresenta il tempo trascorso dall'ultimo timeout, cioè dall'ultimo riferimento temporale noto.
+- **```deb.get() >= tbase```**: è la condizione di rilevazione del **nuovo timeout**
+- **```tbase```**: è il tempo tra un timeout e l'altro
+- il **corpo dell'if**, le istruzioni contenute nel blocco then dell'if, viene esegito **periodicamente** ad ogni timeout. Gli eventi che si estinguono tra un timeout e l'altro non possono essere rilevati (rimbalzi).
+
 
 ## **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
 
