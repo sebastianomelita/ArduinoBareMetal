@@ -65,7 +65,7 @@ void loop() {                                              |
 ```
 
 - **```precval```**: rappresenta il valore dell'**ingresso** campionato al **timeout precedente**
-- **```val```**: rappresenta il valore dell'**ingresso** campionato al **timeout corrente**
+- **```val```**: rappresenta il valore dell'**ingresso** campionato al **timeout corrente**. Se val è **diverso** da precval allora ho rilevato un **fronte** tra il valore attuale e il valore al tempo di riferimento (timeout precedente).
 - **```precm```**: rappresenta il valore del **tempo** al **timeout**. E' il tempo di **riferimento** della condizione per determinare il **successivo timeout**.
 - **```(millis()-precm)```**: rappresenta il tempo trascorso dall'ultimo timeout, cioè dall'ultimo riferimento temporale noto.
 - **```(millis()-precm) >= tbase```**: è la condizione di rilevazione del **nuovo timeout**
