@@ -43,7 +43,7 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
                // Transizione                        |                 // Transizione
                stato_corrente = STATO_2;             |                 stato_corrente = STATO_2;
                // Calcolo e impostazione uscite      |                 // Calcolo e impostazione uscite
-               digitalWrite(output1, HIGH);          |        digitalWrite(output1, HIGH); 
+               digitalWrite(output1, HIGH);          |                 digitalWrite(output1, HIGH); 
                // Inizializzazione stato successivo  |                 // Inizializzazione stato successivo
                timer = 100;                          |                 timer = 100;
                contatore_eventi = 0;                 |                 digitalWrite(LED_STATO_2, HIGH);
