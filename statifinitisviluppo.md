@@ -42,8 +42,8 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
                waitUntilInputLow(input1, 50);        |             case STATO_1:
                // Transizione                        |                 // Transizione
                stato_corrente = STATO_2;             |                 stato_corrente = STATO_2;
-               // Calcolo uscite                     |                 // Calcolo uscite
-               uscita = USCITA_X;                    |                 uscita = USCITA_X;
+               // Calcolo e impostazione uscite      |                 // Calcolo e impostazione uscite
+               digitalWrite(output1, HIGH);          |        digitalWrite(output1, HIGH); 
                // Inizializzazione stato successivo  |                 // Inizializzazione stato successivo
                timer = 100;                          |                 timer = 100;
                contatore_eventi = 0;                 |                 digitalWrite(LED_STATO_2, HIGH);
@@ -52,8 +52,8 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
                waitUntilInputLow(input2, 50);        |             case STATO_3:
                // Transizione                        |                 // Transizione
                stato_corrente = STATO_5;             |                 stato_corrente = STATO_4;
-               // Calcolo uscite                     |                 // Calcolo uscite
-               uscita = USCITA_W;                    |                 uscita = USCITA_Y;
+               // Calcolo e impostazione uscite      |                 // Calcolo e impostazione uscite
+               digitalWrite(output1, LOW);           |                 digitalWrite(output1, LOW); 
                // Inizializzazione stato successivo  |                 // Inizializzazione stato successivo
                allarme_attivo = false;               |                 contatore = 0;
            }                                         |                 ritardo_ms = 500;
@@ -65,12 +65,12 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
                waitUntilInputLow(input2, 50);        |     else if (digitalRead(input2) == HIGH) {
                /* Transizione */                     |         waitUntilInputLow(input2, 50);
                stato_corrente = STATO_3;             |         // Stati raggiungibili da input2 HIGH
-               /* Calcolo uscite */                  |         switch(stato_corrente) {
-               uscita = USCITA_Z;                    |             case STATO_2:
+               /*Calcolo e impostazione uscite */    |         switch(stato_corrente) {
+               digitalWrite(output2, HIGH);          |             case STATO_2:
                // Inizializzazione stato successivo  |                 // Transizione
                cicli_rimanenti = 3;                  |                 stato_corrente = STATO_3;
-           }                                         |                 // Calcolo uscite
-           break;                                    |                 uscita = USCITA_Z;
+           }                                         |                 // Calcolo e impostazione uscite
+           break;                                    |                 digitalWrite(output3, HIGH); 
                                                      |                 // Inizializzazione stato successivo
        /* Altri possibili stati */                   |                 timeout = millis() + 2000;
    }                                                 |                 break;
