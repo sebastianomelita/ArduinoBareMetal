@@ -533,7 +533,7 @@ struct DiffTimer
 	}
 	void toggle(){
 		if(timerstate){
-    	    stop();
+    	    		stop();
 		}else{
 			start();
 		}	
@@ -541,7 +541,7 @@ struct DiffTimer
 	void stop(){
 		if(timerstate){
 			timerstate = false;
-    	    elapsed += millis() - last;
+    	    		elapsed += millis() - last;
 		}	
 	}
 	void start(){
