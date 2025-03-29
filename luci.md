@@ -126,7 +126,7 @@ struct DiffTimer
 	void stop(){
 		if(timerstate){
 			timerstate = false;
-    	    elapsed += millis() - last;
+    	    		elapsed += millis() - last;
 		}	
 	}
 	void start(){
