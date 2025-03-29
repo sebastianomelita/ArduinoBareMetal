@@ -118,7 +118,7 @@ struct DiffTimer
 	}
 	void toggle(){
 		if(timerstate){
-    	    stop();
+    	    		stop();
 		}else{
 			start();
 		}	
