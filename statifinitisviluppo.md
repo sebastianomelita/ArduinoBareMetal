@@ -40,7 +40,7 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
            // Ingressi per STATO_1                   |         // Stati raggiungibili da input1 HIGH
            if (digitalRead(input1) == HIGH) {        |         switch(stato_corrente) {
                waitUntilInputLow(input1, 50);        |             case STATO_1:
-               // Transizione                        |                 // Transizione
+               // Transizione stato successivo       |                 // Transizione stato successivo
                stato_corrente = STATO_2;             |                 stato_corrente = STATO_2;
                // Calcolo e impostazione uscite      |                 // Calcolo e impostazione uscite
                digitalWrite(output1, HIGH);          |                 digitalWrite(output1, HIGH); 
@@ -50,7 +50,7 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
            }                                         |                 break;
            else if (digitalRead(input2) == HIGH) {   |             
                waitUntilInputLow(input2, 50);        |             case STATO_3:
-               // Transizione                        |                 // Transizione
+               // Transizione stato successivo       |                 // Transizione stato successivo
                stato_corrente = STATO_5;             |                 stato_corrente = STATO_4;
                // Calcolo e impostazione uscite      |                 // Calcolo e impostazione uscite
                digitalWrite(output1, LOW);           |                 digitalWrite(output1, LOW); 
@@ -63,11 +63,11 @@ void FSM_StatiPrimaIngressi() {                      | void FSM_IngressiPrimaSta
            // Ingressi per STATO_2                   |         }
            if (digitalRead(input2) == HIGH) {        |     }
                waitUntilInputLow(input2, 50);        |     else if (digitalRead(input2) == HIGH) {
-               /* Transizione */                     |         waitUntilInputLow(input2, 50);
+               /* Transizione stato successivo */    |         waitUntilInputLow(input2, 50);
                stato_corrente = STATO_3;             |         // Stati raggiungibili da input2 HIGH
                /*Calcolo e impostazione uscite */    |         switch(stato_corrente) {
                digitalWrite(output2, HIGH);          |             case STATO_2:
-               // Inizializzazione stato successivo  |                 // Transizione
+               // Inizializzazione stato successivo  |                 // Transizione stato successivo
                cicli_rimanenti = 3;                  |                 stato_corrente = STATO_3;
            }                                         |                 // Calcolo e impostazione uscite
            break;                                    |                 digitalWrite(output3, HIGH); 
