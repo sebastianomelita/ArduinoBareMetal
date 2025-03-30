@@ -19,7 +19,7 @@ In linea generale, una **linea guida per** sviluppare una macchina a stati finit
     - all’interno di ogni ramo dell'if-else-if, scrivere uno switch-case (o un blocco if-else-if) con tutti i soli **stati raggiungibili** da quell'ingresso 
     - in corrispondenza di **ciascuno stato**:
         - calcolare il valore dello **stato successivo** in funzione del valore della coppia (**ingresso, stato_corrente**).
-        - calcolare e impostare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato**).
+        - calcolare e impostare il **valore delle uscite** in funzione del valore della coppia (**ingresso, stato_corrente**).
         - impostare l'**inizializzazione** dello stato successivo (timers, contatori, ecc.).
 
 ### **Logica mutuamente esclusiva**
