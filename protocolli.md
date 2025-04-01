@@ -11,7 +11,8 @@ La **decodifica dei bit** si esegue in **ricezione** ed è il processo di **trad
 - [Codifica NRZ](codifica.md#codifica-NRZ)
 - [Codifica 4B5B](codifica.md#codifica-4b5b)
 - [Codifica 4D-PAM5](codifica.md#codifica-4D-PAM5)
-- [Protocolli]()
+
+# **Protocolli**
 
 I protocolli sono **regole di comunicazione** che tutti gli **interlocutori** devono seguire per **portare avanti** la **comunicazione** su di un **canale**.
 Un protocollo **definisce** il **formato** e l’**ordine dei messaggi** scambiati tra due o più entità di rete, le **azioni in risposta** ai messaggi ricevuti o **altri eventi**.
