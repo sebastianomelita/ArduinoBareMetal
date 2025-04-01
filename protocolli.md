@@ -86,6 +86,9 @@ Questa capacità extra (rispetto agli 8 bit) viene utilizzata per:
 - Codici di correzione
 - Miglioramento delle caratteristiche spettrali del segnale
 
+Su ciascuna delle quattro coppie di cavi, i simboli PAM-5 vengono trasmessi a una velocità di 125 megabaud (125 milioni di simboli al secondo)
+Con una codifica efficace di circa 2 bit per simbolo, questo si traduce in 250 Mbps per coppia
+Con quattro coppie: 4 × 250 Mbps = 1000 Mbps (1 Gbps)
 
 ### Trasmissione full-duplex
 
