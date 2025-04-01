@@ -137,7 +137,7 @@ Facciamo alcune osservazioni sul diagramma:
 
 In altre parole, lo **stato successivo** all'ingresso ```Rilevamento pezzo in ingresso``` è funzione esclusivamente dell'**ingresso corrente** e non della **coppia** (ingresso, stato).
 
-Consideriamo un esempio di approccio "prima gli ingressi e dopo gli stati". In questo contesto si potrebbe formulare la seguente regola:
+Si potrebbe formulare la seguente regola:
 
 **Quando un determinato ingresso causa sempre la stessa transizione di stato, indipendentemente dallo stato di partenza, non è necessario verificare lo stato corrente prima di effettuare la transizione.**
 
