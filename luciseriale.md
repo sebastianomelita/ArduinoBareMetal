@@ -193,9 +193,9 @@ struct DiffTimer
 
 // Definizione dei pin
 const int pulsanteP1 = 2;  // Pin per il pulsante P1
-const int redPin = 9;      // LED Rosso
-const int greenPin = 10;   // LED Verde
-const int bluePin = 11;    // LED Blu
+const int redPin = 13;     // LED Rosso
+const int greenPin = 12;   // LED Verde
+const int bluePin = 4;    // LED Blu
 
 // Definizione degli stati
 enum Stati {
@@ -276,7 +276,7 @@ void gestioneComandi() {
 
 void setup() {
   // Inizializzazione pin
-  pinMode(pulsanteP1, INPUT_PULLUP);  // Pulsante con resistenza di pull-up interna
+  pinMode(pulsanteP1, INPUT);  // Pulsante con resistenza di pull-up interna
   pinMode(redPin, OUTPUT);
   pinMode(greenPin, OUTPUT);
   pinMode(bluePin, OUTPUT);
@@ -303,7 +303,7 @@ void loop() {
     case SPENTO:
       // Stato SPENTO: tutti i LED spenti
       // Controllo pressione pulsante P1 (LOW con pull-up quando premuto)
-      if (digitalRead(pulsanteP1) == LOW) {
+      if (digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50); // Debounce
         statoCorrente = STATO_ROSSO;
         Serial.println("Stato: STATO_ROSSO");
@@ -315,7 +315,7 @@ void loop() {
     case STATO_ROSSO:
       // Stato ROSSO: LED rosso acceso, altri spenti
       // Controllo pressione pulsante P1
-      if (digitalRead(pulsanteP1) == LOW) {
+      if (digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = STATO_VERDE;
         Serial.println("Stato: STATO_VERDE");
@@ -327,7 +327,7 @@ void loop() {
     case STATO_VERDE:
       // Stato VERDE: LED verde acceso, altri spenti
       // Controllo pressione pulsante P1
-      if (digitalRead(pulsanteP1) == LOW) {
+      if (digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = STATO_BLU;
         Serial.println("Stato: STATO_BLU");
@@ -339,7 +339,7 @@ void loop() {
     case STATO_BLU:
       // Stato BLU: LED blu acceso, altri spenti
       // Controllo pressione pulsante P1
-      if (digitalRead(pulsanteP1) == LOW) {
+      if (digitalRead(pulsanteP1) == HIGH) {
         waitUntilInputLow(pulsanteP1, 50);
         statoCorrente = SPENTO;
         Serial.println("Stato: SPENTO");
