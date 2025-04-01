@@ -174,15 +174,19 @@ I **nodi** sono gli stati mentre gli **archi** rappresentano gli **stimoli** ai 
 
 ### **Throughput**
 
+#### **Definizione**
+
 Il **throughput** è una misura della quantità di dati che possono essere trasmessi attraverso un sistema, una rete o un collegamento in un determinato intervallo di tempo. Viene spesso espresso in unità di bit al secondo (bps), come ad esempio megabit per secondo (Mbps) o gigabit per secondo (Gbps).
 
-Nel contesto delle reti informatiche, il throughput effettivo può essere influenzato da diversi fattori, tra cui:
 
+Nel contesto delle reti informatiche, il **throughput effettivo** può essere influenzato da diversi fattori, tra cui:
 - La **capacità della rete** (larghezza di banda)
 - La **latenza** (il tempo di ritardo di trasmissione dei dati)
 - Gli **errori di trasmissione** e la necessità di ritrasmissioni
 - La **congestione della rete**
 - L'**overhead dei protocolli** di comunicazione (come TCP/IP)
+
+#### **Velocità effettiva**
 
 Differisce dal **data rate** teorico, in quanto il throughput riflette la **velocità effettiva** a cui i **dati utili** possono essere trasmessi, tenendo conto di:
 - **perdite** di dati che, dovendo essere ritrasmessi, rallentano il completamento della comunicazione
