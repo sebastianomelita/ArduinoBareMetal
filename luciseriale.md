@@ -56,36 +56,36 @@ Suggerimenti:
 
 Per dettagli sulle macchine a stati finiti (o FSM) vedi [FSM](indexstatifiniti.md) e [Linee guida FSM](statifinitisviluppo.md)
 
-## Tabella di Transizione della Lampada Intelligente
-| Stato attuale | Input | Stato prossimo | Output |
-|---------------|-------|----------------|--------|
-| SPENTO | Pressione pulsante P1 | BASSA_INTENSITA | Lampada accesa a bassa intensità, LED L1 acceso |
-| SPENTO | Rilevamento movimento (PIR) | SPENTO | Nessun cambiamento |
-| BASSA_INTENSITA | Pressione pulsante P1 | MEDIA_INTENSITA | Lampada accesa a media intensità, LED L1 spento, LED L2 acceso |
-| BASSA_INTENSITA | Inattività > 5 minuti (PIR) | SPENTO | Lampada spenta, LED L1 spento |
-| BASSA_INTENSITA | Rilevamento movimento (PIR) | BASSA_INTENSITA | Reset timer inattività |
-| MEDIA_INTENSITA | Pressione pulsante P1 | ALTA_INTENSITA | Lampada accesa ad alta intensità, LED L2 spento, LED L3 acceso |
-| MEDIA_INTENSITA | Inattività > 5 minuti (PIR) | SPENTO | Lampada spenta, LED L2 spento |
-| MEDIA_INTENSITA | Rilevamento movimento (PIR) | MEDIA_INTENSITA | Reset timer inattività |
-| ALTA_INTENSITA | Pressione pulsante P1 | SPENTO | Lampada spenta, LED L3 spento |
-| ALTA_INTENSITA | Inattività > 5 minuti (PIR) | SPENTO | Lampada spenta, LED L3 spento |
-| ALTA_INTENSITA | Rilevamento movimento (PIR) | ALTA_INTENSITA | Reset timer inattività |
+## Tabella delle Transizioni - Sistema di Controllo LED RGB
 
-Ho aggiunto sia le transizioni per il rilevamento del movimento (che resettano il timer di inattività quando la lampada è accesa) che il comportamento quando il PIR rileva movimento mentre la lampada è spenta (in quel caso non succede nulla, poiché l'accensione avviene solo tramite pressione del pulsante P1).
-## Ingressi (Input)
-- **Pulsante P1**: Utilizzato per cambiare l'intensità della lampada
-- **Sensore PIR**: Sensore di movimento per rilevare l'inattività
+| Stato Corrente | Input      | Stato Destinazione | Azione                       |
+|----------------|------------|-------------------|------------------------------|
+| SPENTO (0)     | Pulsante P1 | STATO_ROSSO (1)   | Accende LED Rosso           |
+| STATO_ROSSO (1) | Pulsante P1 | STATO_VERDE (2)   | Accende LED Verde           |
+| STATO_VERDE (2) | Pulsante P1 | STATO_BLU (3)     | Accende LED Blu             |
+| STATO_BLU (3)   | Pulsante P1 | SPENTO (0)        | Spegne tutti i LED          |
+| Qualsiasi      | Comando 'R' | STATO_ROSSO (1)   | Accende LED Rosso           |
+| Qualsiasi      | Comando 'G' | STATO_VERDE (2)   | Accende LED Verde           |
+| Qualsiasi      | Comando 'B' | STATO_BLU (3)     | Accende LED Blu             |
+| Qualsiasi      | Comando 'O' | SPENTO (0)        | Spegne tutti i LED          |
+| Qualsiasi      | Comando 'S' | Non cambia        | Invia info stato corrente   |
 
-## Uscite (Output)
-- **Lampada**: Con tre livelli di intensità (bassa, media, alta)
-- **LED L1**: Indicatore di bassa intensità 
-- **LED L2**: Indicatore di media intensità
-- **LED L3**: Indicatore di alta intensità
+La tabella delle transizioni illustra chiaramente come funziona il sistema di controllo LED RGB. Come puoi vedere, ci sono due tipi di input che possono causare transizioni di stato:
 
-## Note
-- Il sistema rileva l'inattività tramite il sensore PIR e avvia un timer di 5 minuti
-- Ogni rilevamento di movimento resetta il timer di inattività
-- In ogni stato di accensione, solo uno dei LED indicatori è acceso
+Pulsante fisico P1:
+- Le transizioni dipendono dallo stato corrente
+- Segue un ciclo sequenziale: SPENTO → ROSSO → VERDE → BLU → SPENTO
+
+
+Comandi seriali:
+Le transizioni sono indipendenti dallo stato corrente
+- Comando 'R': passa allo stato ROSSO da qualsiasi stato
+- Comando 'G': passa allo stato VERDE da qualsiasi stato
+- Comando 'B': passa allo stato BLU da qualsiasi stato
+- Comando 'O': passa allo stato SPENTO da qualsiasi stato
+- Comando 'S': non cambia stato, invia solo informazioni sullo stato corrente
+
+Questa tabella evidenzia perché è logico avere la gestione dei comandi seriali fuori dallo switch-case nel codice: i comandi seriali hanno lo stesso effetto indipendentemente dallo stato attuale, mentre il pulsante P1 causa transizioni diverse a seconda dello stato in cui si trova il sistema.
 
 ## **Diagramma degli stati**
 
