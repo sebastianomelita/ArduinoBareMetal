@@ -7,8 +7,8 @@ La **codifica dei bit** si esegue in **trasmissione** ed è il processo di **tra
 La **decodifica dei bit** si esegue in **ricezione** ed è il processo di **traduzione** di ciascuna sequenza di segnali elettrici ricevuta in una certa sequenza di bit. In definitiva, è una **traduzione** da segnali elettrici a simboli (binari).
 
 
-- [Codifica manchester]()
-- [Codifica NRZ]()
+- [Codifica manchester](codifica.md#codifica-manchester)
+- [Codifica NRZ](codifica.md#codifica-NRZ)
 - [Codifica 4B5B]()
 - [Codifica 4D-PAM5]()
 - [Protocolli]()
