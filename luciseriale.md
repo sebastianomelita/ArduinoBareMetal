@@ -119,6 +119,25 @@ stateDiagram-v2
 Per lo sviluppo fare riferimento alla metodologia esposta in: [priorità-statoingresso](statifinitisviluppo.md#priorità-statoingresso)
 
 ```C++
+/*
+ * Sistema di controllo illuminazione RGB con FSM e comunicazione seriale
+ * 
+ * Implementazione di un sistema di controllo per una striscia LED RGB
+ * utilizzando una macchina a stati finiti (FSM) che risponda sia a 
+ * input fisici che a comandi seriali.
+ * 
+ * Specifiche:
+ * - 4 stati: Spento, Rosso, Verde, Blu
+ * - Transizioni: pulsante fisico P1 o comandi seriali
+ * - Comunicazione seriale per controllo remoto
+ * 
+ * Pin:
+ * - Pin 2: Pulsante P1 (con resistenza di pull-up)
+ * - Pin 9: LED Rosso (o canale R di un LED RGB)
+ * - Pin 10: LED Verde (o canale G di un LED RGB)
+ * - Pin 11: LED Blu (o canale B di un LED RGB)
+ */
+
 //##### urutils.h #####
 void waitUntilInputLow(int btn, unsigned t)
 {
@@ -167,559 +186,180 @@ struct DiffTimer
 		elapsed = e;
 	}
 };
-//##### urutils.h #####
+//##### Fine urutils.h #####
 
 // Definizione dei pin
-const int pulsanteP1 = 2;     // Pin per il pulsante P1
-const int pirSensor = 8;      // Pin per il sensore PIR
-const int ledL1 = 13;          // LED indicatore bassa intensità
-const int ledL2 = 12;          // LED indicatore media intensità
-const int ledL3 = 4;          // LED indicatore alta intensità
-const int outputLampada = 5;  // Pin PWM per controllare l'intensità della lampada
+const int pulsanteP1 = 2;  // Pin per il pulsante P1
+const int redPin = 9;      // LED Rosso
+const int greenPin = 10;   // LED Verde
+const int bluePin = 11;    // LED Blu
 
-// Valori di intensità della lampada
-const int OFF = 0;    // 0% di 255
-const int INTENSITA_BASSA = 85;    // ~33% di 255
-const int INTENSITA_MEDIA = 170;   // ~66% di 255
-const int INTENSITA_ALTA = 255;    // 100% di 255
-
-// Timer per l'inattività
-DiffTimer timerInattivita;
-const unsigned long TEMPO_INATTIVITA = 300000; // 5 minuti in millisecondi
-
-// Definizione stati
+// Definizione degli stati
 enum Stati {
   SPENTO = 0,
-  BASSA_INTENSITA = 1,
-  MEDIA_INTENSITA = 2,
-  ALTA_INTENSITA = 3
+  STATO_ROSSO = 1,
+  STATO_VERDE = 2,
+  STATO_BLU = 3
 };
 
 // Variabile di stato
-uint8_t statoCorrente;
+uint8_t statoCorrente = SPENTO;
 
-void updateOutputs(uint8_t l1, uint8_t l2, uint8_t l3, uint8_t al){
-    digitalWrite(ledL1, l1);
-    digitalWrite(ledL2, l2);
-    digitalWrite(ledL3, l3);
-    analogWrite(outputLampada, al);   
+void updateOutputs(uint8_t r, uint8_t g, uint8_t b){
+    digitalWrite(redPin, r);
+    digitalWrite(greenPin, g);
+    digitalWrite(bluePin, b);
+}
+
+// Funzione per stampare la descrizione dello stato
+void stampaDescrizioneStato() {
+  switch (statoCorrente) {
+    case SPENTO:
+      Serial.println("LED spenti");
+      break;
+    case STATO_ROSSO:
+      Serial.println("LED Rosso acceso");
+      break;
+    case STATO_VERDE:
+      Serial.println("LED Verde acceso");
+      break;
+    case STATO_BLU:
+      Serial.println("LED Blu acceso");
+      break;
+  }
+  Serial.println();
+}
+
+// Funzione per gestire i comandi seriali
+void gestioneComandi() {
+  if (Serial.available() > 0) {
+    char comando = Serial.read();
+    comando = toupper(comando);
+    
+    switch (comando) {
+      case 'R': // Rosso
+        statoCorrente = STATO_ROSSO;
+        Serial.println("Comando ricevuto: R (Rosso)");
+        Serial.println("Stato: STATO_ROSSO");
+        updateOutputs(HIGH, LOW, LOW);
+        break;
+      case 'G': // Verde
+        statoCorrente = STATO_VERDE;
+        Serial.println("Comando ricevuto: G (Verde)");
+        Serial.println("Stato: STATO_VERDE");
+        updateOutputs(LOW, HIGH, LOW);
+        break;
+      case 'B': // Blu
+        statoCorrente = STATO_BLU;
+        Serial.println("Comando ricevuto: B (Blu)");
+        Serial.println("Stato: STATO_BLU");
+        updateOutputs(LOW, LOW, HIGH);
+        break;
+      case 'O': // Spento
+        statoCorrente = SPENTO;
+        Serial.println("Comando ricevuto: O (Spento)");
+        Serial.println("Stato: SPENTO");
+        updateOutputs(LOW, LOW, LOW);
+        break;
+      case 'S': // Stato
+        Serial.println("Comando ricevuto: S (Stato)");
+        Serial.print("Stato: ");
+        Serial.println(statoCorrente);
+        stampaDescrizioneStato();
+        break;
+    }
+  }
 }
 
 void setup() {
   // Inizializzazione pin
-  pinMode(pulsanteP1, INPUT);    // Pulsante con resistenza di pull-down esterna
-  pinMode(pirSensor, INPUT);     // Sensore PIR
-  pinMode(ledL1, OUTPUT);
-  pinMode(ledL2, OUTPUT);
-  pinMode(ledL3, OUTPUT);
-  pinMode(outputLampada, OUTPUT);
+  pinMode(pulsanteP1, INPUT_PULLUP);  // Pulsante con resistenza di pull-up interna
+  pinMode(redPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+  pinMode(bluePin, OUTPUT);
   
-  // Inizializzazione stato
-  statoCorrente = SPENTO;  
   // Inizializzazione seriale per debug
-  Serial.begin(115200);  
-  // Spegni tutti i LED e la lampada inizialmente
-  updateOutputs(LOW, LOW, LOW, SPENTO);  
-  Serial.println("Sistema Lampada Intelligente inizializzato");
+  Serial.begin(9600);
+  
+  // Spegni tutti i LED inizialmente
+  updateOutputs(LOW, LOW, LOW);
+  
+  Serial.println("Sistema di controllo LED RGB avviato");
+  Serial.println("Comandi disponibili: R, G, B, O, S");
+  Serial.print("Stato: ");
+  Serial.println(statoCorrente);
+  stampaDescrizioneStato();
 }
 
 void loop() {
   // Macchina a stati
   switch (statoCorrente) {
-    case SPENTO:   
-      // Stato SPENTO: tutti i LED e lampada spenti
-      // Controllo pressione pulsante P1 (HIGH con pull-down quando premuto)
-      if (digitalRead(pulsanteP1) == HIGH) {
-        waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
-	Serial.println("Stato: BASSA_INTENSITA");
-        statoCorrente = BASSA_INTENSITA;
-	Serial.println("Stato: BASSA_INTENSITA");
-	// impostazione valore uscite
-	updateOutputs(HIGH, LOW, LOW, INTENSITA_BASSA);
-	// inizializzazione stato successivo
-        timerInattivita.reset();
-        timerInattivita.start();
-      }
-      break;
-      
-    case BASSA_INTENSITA:
-      // Stato BASSA_INTENSITA: LED L1 acceso, altri spenti, lampada a bassa intensità     
-       
-      if (digitalRead(pulsanteP1) == HIGH) {// Controllo pressione pulsante P1
-        waitUntilInputLow(pulsanteP1, 50);
-        statoCorrente = MEDIA_INTENSITA;
-	Serial.println("Stato: MEDIA_INTENSITA");
-	// impostazione valore uscite
-	updateOutputs(LOW, HIGH, LOW, INTENSITA_MEDIA);
-	// inizializzazione stato successivo
-	timerInattivita.reset(); // Reset del timer di inattività
-      }else if (digitalRead(pirSensor) == HIGH) {// Controllo movimento (rilevato = HIGH)
-	// inizializzazione stato successivo
-        timerInattivita.reset(); // Reset del timer di inattività
-        Serial.println("Movimento rilevato - Timer resettato");
-      }else if( timerInattivita.get() > TEMPO_INATTIVITA) {// Verifica inattività
-        Serial.println("Inattività rilevata - Spegnimento automatico");
-        statoCorrente = SPENTO;
-	Serial.println("Stato: SPENTO");
-	// impostazione valore uscite
-	updateOutputs(LOW, LOW, LOW, OFF);
-	// inizializzazione stato successivo
-	timerInattivita.stop();
-      }
-      break;
-      
-    case MEDIA_INTENSITA:
-      // Stato MEDIA_INTENSITA: LED L2 acceso, altri spenti, lampada a media intensità
-      // Controllo pressione pulsante P1
-      if(digitalRead(pulsanteP1) == HIGH) {
-        waitUntilInputLow(pulsanteP1, 50);
-        statoCorrente = ALTA_INTENSITA;
-	Serial.println("Stato: ALTA_INTENSITA");
-	// impostazione valore uscite
-	updateOutputs(LOW, LOW, HIGH, INTENSITA_ALTA);
-	// inizializzazione stato successivo
-        timerInattivita.reset(); // Reset del timer di inattività
-      }else if (digitalRead(pirSensor) == HIGH) {// Controllo movimento
-	// inizializzazione stato successivo
-        timerInattivita.reset(); // Reset del timer di inattività
-        Serial.println("Movimento rilevato - Timer resettato");
-      }else if (timerInattivita.get() > TEMPO_INATTIVITA) {// Verifica inattività
-        Serial.println("Inattività rilevata - Spegnimento automatico");
-        statoCorrente = SPENTO;
-	Serial.println("Stato: SPENTO");
-	// impostazione valore uscite
-	updateOutputs(LOW, LOW, LOW, OFF);
-	// inizializzazione stato successivo
-	timerInattivita.reset();
-      }
-      break;
-      
-    case ALTA_INTENSITA:
-      // Stato ALTA_INTENSITA: LED L3 acceso, altri spenti, lampada ad alta intensità           
-      // Controllo pressione pulsante P1
-      if(digitalRead(pulsanteP1) == HIGH) {
-	Serial.println("Stato: SPENTO");
-        waitUntilInputLow(pulsanteP1, 50);
-        statoCorrente = SPENTO;
-	// impostazione valore uscite
-	updateOutputs(LOW, LOW, LOW, OFF);
-	// inizializzazione stato successivo
-        timerInattivita.stop(); // Ferma il timer di inattività
-      }else if(digitalRead(pirSensor) == HIGH) { // controllo movimento
-	// inizializzazione stato successivo
-        timerInattivita.reset(); // Reset del timer di inattività
-        Serial.println("Movimento rilevato - Timer resettato");
-      }else if(timerInattivita.get() > TEMPO_INATTIVITA) {// Verifica inattività
-        Serial.println("Inattività rilevata - Spegnimento automatico");
-        statoCorrente = SPENTO;
-	Serial.println("Stato: SPENTO");
-	// impostazione valore uscite
-	updateOutputs(LOW, LOW, LOW, OFF);
-	// inizializzazione stato successivo
-	timerInattivita.stop();
-      }
-      break;
-  }
-  delay(10); // Piccolo delay per stabilità
-}
-```
-
-Simulazione con Arduino su Tinkercad: https://www.tinkercad.com/things/ixDZp3lQSwo-lampada-intelligente
-
-## **Codice Arduino "prima gli ingressi e poi gli stati"**
-
-Per lo sviluppo fare riferimento alla metodologia esposta in: [priorità-statoingresso](statifinitisviluppo.md#priorità-statoingresso)
-
-```C++
-//##### urutils.h #####
-void waitUntilInputLow(int btn, unsigned t)
-{
-   do{
-     delay(t);
-   }while(digitalRead(btn)!=LOW);
-}
-
-struct DiffTimer
-{
-	unsigned long elapsed, last;
-	bool timerstate=false;
-	byte state = 0;
-	byte count = 0;
-	void reset(){
-		elapsed = 0;
-		last = millis();
-	}
-	void toggle(){
-		if(timerstate){
-    	    		stop();
-		}else{
-			start();
-		}	
-	}
-	void stop(){
-		if(timerstate){
-			timerstate = false;
-    	    		elapsed += millis() - last;
-		}	
-	}
-	void start(){
-		if(!timerstate){
-			timerstate = true;
-			last = millis();
-		}
-	}
-	unsigned long get(){
-		if(timerstate){
-			return millis() - last + elapsed;
-		}
-		return elapsed;
-	}
-	void set(unsigned long e){
-		reset();
-		elapsed = e;
-	}
-};
-//##### urutils.h #####
-
-// Definizione dei pin
-const int pulsanteP1 = 2;     // Pin per il pulsante P1
-const int pirSensor = 3;      // Pin per il sensore PIR
-const int ledL1 = 4;          // LED indicatore bassa intensità
-const int ledL2 = 5;          // LED indicatore media intensità
-const int ledL3 = 6;          // LED indicatore alta intensità
-const int outputLampada = 9;  // Pin PWM per controllare l'intensità della lampada
-
-// Valori di intensità della lampada
-const int OFF = 0;    // 0% di 255
-const int INTENSITA_BASSA = 85;    // ~33% di 255
-const int INTENSITA_MEDIA = 170;   // ~66% di 255
-const int INTENSITA_ALTA = 255;    // 100% di 255
-
-// Timer per l'inattività
-DiffTimer timerInattivita;
-const unsigned long TEMPO_INATTIVITA = 300000; // 5 minuti in millisecondi
-
-// Definizione stati
-enum Stati {
-  SPENTO = 0,
-  BASSA_INTENSITA = 1,
-  MEDIA_INTENSITA = 2,
-  ALTA_INTENSITA = 3
-};
-
-// Variabile di stato
-uint8_t statoCorrente;
-
-void updateOutputs(uint8_t l1, uint8_t l2, uint8_t l3, uint8_t al){
-    digitalWrite(ledL1, l1);
-    digitalWrite(ledL2, l2);
-    digitalWrite(ledL3, l3);
-    analogWrite(outputLampada, al);   
-}
-
-void setup() {
-  // Inizializzazione pin
-  pinMode(pulsanteP1, INPUT);    // Pulsante con resistenza di pull-down esterna
-  pinMode(pirSensor, INPUT);     // Sensore PIR
-  pinMode(ledL1, OUTPUT);
-  pinMode(ledL2, OUTPUT);
-  pinMode(ledL3, OUTPUT);
-  pinMode(outputLampada, OUTPUT);
-  
-  // Inizializzazione stato
-  statoCorrente = SPENTO;
-  
-  // Inizializzazione seriale per debug
-  Serial.begin(115200);
-  
-  // Spegni tutti i LED e la lampada inizialmente
-  updateOutputs(LOW, LOW, LOW, SPENTO);
-  
-  Serial.println("Sistema Lampada Intelligente inizializzato");
-}
-
-void loop() {
-  // Macchina a stati con priorità agli ingressi
-  
-  // INGRESSO 1: Pulsante P1 premuto
-  if (digitalRead(pulsanteP1) == HIGH) {
-    waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
-    // Gestione pressione del pulsante in base allo stato attuale
-    switch (statoCorrente) {
-      case SPENTO:
-        Serial.println("Passaggio a BASSA_INTENSITA");
-        statoCorrente = BASSA_INTENSITA;
-        // impostazione valore uscite
-        updateOutputs(HIGH, LOW, LOW, SPENTO);
-        analogWrite(outputLampada, INTENSITA_BASSA);
-	// inizializzazione stato successivo
-        timerInattivita.reset();
-        timerInattivita.start();// Avvio timer inattività
-        break;
-        
-      case BASSA_INTENSITA:
-        Serial.println("Passaggio a MEDIA_INTENSITA");
-        statoCorrente = MEDIA_INTENSITA;
-        // impostazione valore uscite
-	updateOutputs(LOW, HIGH, LOW, INTENSITA_MEDIA);
-        // inizializzazione stato successivo
-        timerInattivita.reset();// Reset timer inattività
-        break;
-        
-      case MEDIA_INTENSITA:
-        Serial.println("Passaggio a ALTA_INTENSITA");
-        statoCorrente = ALTA_INTENSITA;
-        // impostazione valore uscite
-	updateOutputs(LOW, LOW, HIGH, INTENSITA_ALTA);
-	// inizializzazione stato successivo
-        timerInattivita.reset();// Reset timer inattività
-        break;
-        
-      case ALTA_INTENSITA:
-        Serial.println("Passaggio a SPENTO");
-        statoCorrente = SPENTO;
-        // impostazione valore uscite
-        updateOutputs(LOW, LOW, LOW, OFF);
-	// inizializzazione stato successivo
-        timerInattivita.stop();// Stop timer inattività
-        break;
-    }
-  }
-  
-  // INGRESSO 2: Sensore di movimento PIR
-  else if (digitalRead(pirSensor) == HIGH) {
-    // Gestione rilevamento movimento in base allo stato attuale
-    switch (statoCorrente) {
-      case SPENTO:
-        // Non fa nulla quando è spento
-        break;
-        
-      case BASSA_INTENSITA:
-      case MEDIA_INTENSITA:
-      case ALTA_INTENSITA:
-        // inizializzazione stato successivo
-        timerInattivita.reset();// Reset del timer di inattività per tutti gli stati accesi
-        Serial.println("Movimento rilevato - Timer resettato");
-        break;
-    }
-  }
-  
-  // INGRESSO 3: Timer di inattività scaduto
-  else if (timerInattivita.get() > TEMPO_INATTIVITA) {
-    // Gestione timeout inattività in base allo stato attuale
-    switch (statoCorrente) {
-      case SPENTO:
-        // Già spento, non fa nulla
-        break;
-        
-      case BASSA_INTENSITA:
-      case MEDIA_INTENSITA:
-      case ALTA_INTENSITA:
-        // Spegnimento automatico per tutti gli stati accesi
-        Serial.println("Inattività rilevata - Spegnimento automatico");
-        statoCorrente = SPENTO;
-        // impostazione valore uscite
-        updateOutputs(LOW, LOW, LOW, OFF);
-        // inizializzazione stato successivo
-        timerInattivita.stop();// Stop timer inattività
-        break;
-    }
-  }
-  delay(10); // Piccolo delay per stabilità
-}
-```
-
-## **Codice Arduino "prima gli ingressi e poi gli stati" rappresentati come contatori**
-
-Per lo sviluppo fare riferimento alla metodologia esposta in: [priorità-statoingresso](statifinitisviluppo.md#priorità-statoingresso)
-
-```C++
-//##### urutils.h #####
-void waitUntilInputLow(int btn, unsigned t)
-{
-   do{
-     delay(t);
-   }while(digitalRead(btn)!=LOW);
-}
-
-struct DiffTimer
-{
-	unsigned long elapsed, last;
-	bool timerstate=false;
-	byte state = 0;
-	byte count = 0;
-	void reset(){
-		elapsed = 0;
-		last = millis();
-	}
-	void toggle(){
-		if(timerstate){
-    	    		stop();
-		}else{
-			start();
-		}	
-	}
-	void stop(){
-		if(timerstate){
-			timerstate = false;
-    	    		elapsed += millis() - last;
-		}	
-	}
-	void start(){
-		if(!timerstate){
-			timerstate = true;
-			last = millis();
-		}
-	}
-	unsigned long get(){
-		if(timerstate){
-			return millis() - last + elapsed;
-		}
-		return elapsed;
-	}
-	void set(unsigned long e){
-		reset();
-		elapsed = e;
-	}
-};
-//##### urutils.h #####
-
-// Enum degli stati della lampada
-enum StatoLampada {
-  SPENTO = 0,
-  BASSA_INTENSITA = 1,
-  MEDIA_INTENSITA = 2,
-  ALTA_INTENSITA = 3,
-  NUM_STATI // Questo valore sarà automaticamente 4
-};
-
-// Definizione dei pin
-const int pulsanteP1 = 2;     // Pin per il pulsante P1
-const int pirSensor = 3;      // Pin per il sensore PIR
-const int outputLampada = 9;  // Pin PWM per controllare l'intensità della lampada
-
-// Array dei pin LED - ora possono essere non consecutivi
-const int ledPins[] = {4, 5, 6};  // ledL1, ledL2, ledL3 - possono essere qualsiasi pin
-const int NUM_LED = sizeof(ledPins) / sizeof(ledPins[0]);
-
-// Valori di intensità della lampada
-const int INTENSITA[] = {0, 85, 170, 255};  // Valori di intensità per ogni stato
-
-// Timer per l'inattività
-DiffTimer timerInattivita;
-const unsigned long TEMPO_INATTIVITA = 300000; // 5 minuti in millisecondi
-
-// Variabile di stato usando l'enum
-StatoLampada statoCorrente = SPENTO;
-
-// Nomi degli stati per i messaggi di debug
-const char* NOMI_STATI[] = {"SPENTO", "BASSA_INTENSITA", "MEDIA_INTENSITA", "ALTA_INTENSITA"};
-
-void setup() {
-  // Inizializzazione pin
-  pinMode(pulsanteP1, INPUT);    // Pulsante con resistenza di pull-down esterna
-  pinMode(pirSensor, INPUT);     // Sensore PIR
-  pinMode(outputLampada, OUTPUT);
-  
-  // Inizializzazione dei pin LED
-  for (int i = 0; i < NUM_LED; i++) {
-    pinMode(ledPins[i], OUTPUT);
-    digitalWrite(ledPins[i], LOW);  // Tutti i LED inizialmente spenti
-  }
-  
-  // Inizializzazione seriale per debug
-  Serial.begin(115200);
-  
-  // Imposta l'output iniziale
-  analogWrite(outputLampada, INTENSITA[statoCorrente]);
-  
-  Serial.println("Sistema Lampada Intelligente inizializzato");
-}
-
-void loop() {
-  // Macchina a stati con priorità agli ingressi
-  
-  // INGRESSO 1: Pulsante P1 premuto
-  if (digitalRead(pulsanteP1) == HIGH) {
-    waitUntilInputLow(pulsanteP1, 50); // Debounce tramite waitUntilInputLow
-
-    // inizializzazione stato successivo usando switch-case
-    switch (statoCorrente) {
-      case SPENTO:
-        timerInattivita.reset();
-        timerInattivita.start();
-        break;
-      case ALTA_INTENSITA:
-        timerInattivita.stop();
-        break;
-      default:
-        timerInattivita.reset();
-        break;
-    }
-    
-    // Incrementa lo stato in modo ciclico
-    statoCorrente = static_cast<StatoLampada>((statoCorrente + 1) % NUM_STATI);
-    Serial.print("Passaggio a stato: ");
-    Serial.println(NOMI_STATI[statoCorrente]);
-    
-    // Aggiorna output in base al nuovo stato
-    aggiornaOutput();
-  }
-  
-  // INGRESSO 2: Sensore di movimento PIR
-  else if (digitalRead(pirSensor) == HIGH) {
-    // Reset del timer di inattività solo se la lampada è accesa
-    if (statoCorrente != SPENTO) {
-      timerInattivita.reset();
-      Serial.println("Movimento rilevato - Timer resettato");
-    }
-  }
-  
-  // INGRESSO 3: Timer di inattività scaduto
-  else if (statoCorrente != SPENTO && timerInattivita.get() > TEMPO_INATTIVITA) {
-    // Spegnimento automatico
-    Serial.println("Inattività rilevata - Spegnimento automatico");
-    statoCorrente = SPENTO;  // Torna allo stato SPENTO
-    // inizializzazione stato successivo
-    timerInattivita.stop();
-    
-    // Aggiorna output
-    aggiornaOutput();
-  }
-
-  delay(10); // Piccolo delay per stabilità
-}
-
-// Funzione per aggiornare gli output in base allo stato corrente
-void aggiornaOutput() {
-  // Imposta l'intensità della lampada
-  analogWrite(outputLampada, INTENSITA[statoCorrente]);
-  
-  // Aggiorna i LED utilizzando uno switch-case
-  // Prima spegne tutti i LED
-  for (int i = 0; i < NUM_LED; i++) {
-    digitalWrite(ledPins[i], LOW);
-  }
-  
-  // Poi accende solo il LED appropriato in base allo stato
-  switch (statoCorrente) {
     case SPENTO:
-      // Tutti i LED rimangono spenti
+      // Stato SPENTO: tutti i LED spenti
+      
+      // Gestione dei comandi seriali
+      gestioneComandi();
+      
+      // Controllo pressione pulsante P1 (LOW con pull-up quando premuto)
+      if (digitalRead(pulsanteP1) == LOW) {
+        waitUntilInputLow(pulsanteP1, 50); // Debounce
+        statoCorrente = STATO_ROSSO;
+        Serial.println("Stato: STATO_ROSSO");
+        // Imposta LED rosso acceso
+        updateOutputs(HIGH, LOW, LOW);
+      }
       break;
-    case BASSA_INTENSITA:
-      digitalWrite(ledPins[0], HIGH);
+      
+    case STATO_ROSSO:
+      // Stato ROSSO: LED rosso acceso, altri spenti
+      
+      // Gestione dei comandi seriali
+      gestioneComandi();
+      
+      // Controllo pressione pulsante P1
+      if (digitalRead(pulsanteP1) == LOW) {
+        waitUntilInputLow(pulsanteP1, 50);
+        statoCorrente = STATO_VERDE;
+        Serial.println("Stato: STATO_VERDE");
+        // Imposta LED verde acceso
+        updateOutputs(LOW, HIGH, LOW);
+      }
       break;
-    case MEDIA_INTENSITA:
-      digitalWrite(ledPins[1], HIGH);
+      
+    case STATO_VERDE:
+      // Stato VERDE: LED verde acceso, altri spenti
+      
+      // Gestione dei comandi seriali
+      gestioneComandi();
+      
+      // Controllo pressione pulsante P1
+      if (digitalRead(pulsanteP1) == LOW) {
+        waitUntilInputLow(pulsanteP1, 50);
+        statoCorrente = STATO_BLU;
+        Serial.println("Stato: STATO_BLU");
+        // Imposta LED blu acceso
+        updateOutputs(LOW, LOW, HIGH);
+      }
       break;
-    case ALTA_INTENSITA:
-      digitalWrite(ledPins[2], HIGH);
-      break;
-    default:
-      // Gestione di sicurezza per stati imprevisti
-      Serial.println("Stato non valido!");
+      
+    case STATO_BLU:
+      // Stato BLU: LED blu acceso, altri spenti
+      
+      // Gestione dei comandi seriali
+      gestioneComandi();
+      
+      // Controllo pressione pulsante P1
+      if (digitalRead(pulsanteP1) == LOW) {
+        waitUntilInputLow(pulsanteP1, 50);
+        statoCorrente = SPENTO;
+        Serial.println("Stato: SPENTO");
+        // Spegni tutti i LED
+        updateOutputs(LOW, LOW, LOW);
+      }
       break;
   }
+  
+  delay(10); // Piccolo delay per stabilità
 }
 ```
 
