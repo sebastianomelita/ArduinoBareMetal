@@ -29,6 +29,7 @@ I cinque livelli di tensione in PAM-5 tipicamente sono:
 - +1 volt
 - +2 volts
 
+```svg
 <svg width="500" height="300" xmlns="http://www.w3.org/2000/svg">
   <!-- Background -->
   <rect width="500" height="300" fill="#f8f9fa"/>
@@ -78,6 +79,7 @@ I cinque livelli di tensione in PAM-5 tipicamente sono:
   <text x="360" y="270" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">T4</text>
   <text x="440" y="270" font-family="Arial, sans-serif" font-size="12" text-anchor="middle">T5</text>
 </svg>
+```
 
 ## Come funziona PAM-5
 
@@ -100,6 +102,7 @@ A differenza della codifica 4B5B utilizzata in Fast Ethernet (dove 4 bit di dati
 
 Nel Gigabit Ethernet su cavo in rame (1000BASE-T), il PAM-5 viene implementato in modo particolarmente intelligente:
 
+```svg
 <svg width="500" height="250" xmlns="http://www.w3.org/2000/svg">
   <!-- Background -->
   <rect width="500" height="250" fill="#f8f9fa"/>
@@ -123,6 +126,7 @@ Nel Gigabit Ethernet su cavo in rame (1000BASE-T), il PAM-5 viene implementato i
   <!-- Total -->
   <text x="250" y="240" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="bold">Totale: 1000 Mbps (1 Gbps)</text>
 </svg>
+```
 
 1. Si utilizzano **4 coppie di cavi** (gli stessi presenti nei normali cavi Ethernet Cat5e/Cat6)
 2. Su ciascuna coppia, viene trasmesso un segnale PAM-5 a 125 megabaud (125 milioni di simboli al secondo)
@@ -160,6 +164,7 @@ Un'altra caratteristica importante di 1000BASE-T è la trasmissione full-duplex:
 
 Il "diagramma ad occhio" è un metodo visivo per valutare la qualità di un segnale digitale. Per PAM-5, il diagramma mostra 4 "occhi" distinti tra i 5 livelli di segnale.
 
+```svg
 <svg width="500" height="300" xmlns="http://www.w3.org/2000/svg">
   <!-- Background -->
   <rect width="500" height="300" fill="#f8f9fa"/>
@@ -233,6 +238,7 @@ Il "diagramma ad occhio" è un metodo visivo per valutare la qualità di un segn
   <text x="150" y="150" font-family="Arial, sans-serif" font-size="12" fill="#2980b9" text-anchor="middle">Occhi</text>
   <text x="350" y="150" font-family="Arial, sans-serif" font-size="12" fill="#2980b9" text-anchor="middle">Occhi</text>
 </svg>
+```
 
 ### Interpretazione del diagramma ad occhio
 
@@ -249,6 +255,7 @@ Il diagramma ad occhio è uno strumento diagnostico fondamentale per:
 
 ## Confronto con altre modulazioni
 
+```svg
 <svg width="500" height="400" xmlns="http://www.w3.org/2000/svg">
   <!-- Background -->
   <rect width="500" height="400" fill="#f8f9fa"/>
@@ -290,6 +297,7 @@ Il diagramma ad occhio è uno strumento diagnostico fondamentale per:
            fill="none" stroke="#3498db" stroke-width="2"/>
   <text x="465" y="360" font-family="Arial, sans-serif" font-size="12">~2,32 bit/simbolo</text>
 </svg>
+```
 
 ### NRZ (Non-Return-to-Zero)
 
