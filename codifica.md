@@ -1,4 +1,4 @@
-## **Codifica manchester**
+# **Codifica manchester**
 
 Nelle telecomunicazioni, la codifica **Manchester** è una forma di comunicazione dati nella quale ogni **bit** viene segnalato da una **transizione** (fronte del segnale). La codifica Manchester è considerata una codifica **auto-sincronizzante** (non necessita di un segnale di sincronia esterno), il che significa che permette un'accurata sincronizzazione del flusso dati.
 
@@ -10,7 +10,7 @@ Come possiamo vedere:
 
 Questo tipo di codifica possiede il **vantaggio** di essere **autosincronizzante** ma anche lo svantaggio di presentare un **consumo doppio** di banda rispetto a codifiche alternative quali la NRZ. E' stata adottata dal livello fisico del protocollo 802.3 **Ethernet** a 10 Mbps.
 
-## **Codifica NRZ**
+# **Codifica NRZ**
 
 Nelle telecomunicazioni, un codice di linea di non ritorno a zero (NRZ) è un codice binario in cui gli uno sono rappresentati da una condizione significativa, solitamente una tensione positiva, mentre gli zeri sono rappresentati da qualche altra condizione significativa, solitamente una tensione negativa, senza altra condizione neutra o di riposo. 
 
@@ -20,7 +20,7 @@ A dispetto della codifca Manchester, la NRZ **non** è considerata una codfica a
 
 Questo tipo di codifica possiede il **vantaggio** di essere **molto efficiente** nell'utilizzare la banda, per cui è adatta per massimizzare la velocità di trasmissione, al costo dello svantaggio di possibili **perdite di sincronizzazione**.
 
-## **Codifica 4B5B**
+# **Codifica 4B5B**
 
 Nelle telecomunicazioni, 4B5B è una forma di codice per la trasmissione di dati. 4B5B lavora mappando gruppi di 4 bit in gruppi di 5. Siccome ci sono 32 possibili combinazioni usando 5 bit e solo 16 usandone 4, i 16 gruppi di 5 bit col maggior numero di transizioni sono usati per fornire più transizioni possibili. 4B5B garantisce almeno una transizione per blocco (ingresso di 4 bit / uscita di 5) il quale permette al segnale di essere scoperto. Sfortunatamente l'uso di 5 bit per rappresentarne 4 implica che per trasmettere i dati abbiamo bisogno di una larghezza di banda più grande del 25%.
 
@@ -30,7 +30,7 @@ Dipendentemente dallo standard o dalle specifiche, potrebbero esserci diversi ca
 
 Con la codifica 4B5B vengono risolti i problemi relativi alla trasmissione di più zeri consecutivi. Le sequenze generate vengono poi trasmesse attraverso una codifica NRZI (Senza ritorno a zero invertito), che elimina anche il problema della presenza di un numero eccessivo di 1 consecutivi. Il risultato è che la codifica 4B/5B elimina ripetizioni consecutive di un numero eccessivo di valori binari tutti uguali. E' stata adottata dal livello fisico del protocollo 802.3 **Fast Ethernet** a 100 Mbps.
 
-## **Codifica 4D-PAM5**
+# **Codifica 4D-PAM5**
 
 La modulazione **4D-PAM5** (Four-Dimensional 5-level Pulse Amplitude Modulation) è una tecnica avanzata di trasmissione dati sviluppata specificamente per le reti Gigabit Ethernet su cavi in rame (1000BASE-T). Questa tecnica combina la modulazione PAM-5 tradizionale con un approccio di codifica a quattro dimensioni per ottenere prestazioni superiori rispetto alle modulazioni convenzionali.
 
@@ -52,7 +52,7 @@ PAM-5 è una tecnica di modulazione che utilizza **cinque livelli di ampiezza** 
 
 La modulazione 4D-PAM5 estende il concetto di PAM-5 a quattro dimensioni, sfruttando le quattro coppie di cavi presenti nei cavi Ethernet standard.
 
-### Il concetto di modulazione multidimensionale
+## Il concetto di modulazione multidimensionale
 
 In 4D-PAM5, non si considerano quattro segnali PAM-5 separati e indipendenti, ma piuttosto si considera un **unico segnale a quattro dimensioni**.
 
@@ -61,13 +61,13 @@ Un punto nello spazio di segnale 4D è rappresentato da una quadrupla di valori 
 (a₁, a₂, a₃, a₄) dove a_i ∈ {-2, -1, 0, +1, +2}
 ```
 
-### Relazione con la parallelizzazione
+## Relazione con la parallelizzazione
 
 Non si tratta di semplice parallelizzazione (invio di 4 simboli PAM-5 indipendenti contemporaneamente), ma di una vera e propria codifica congiunta che introduce dipendenze tra i valori trasmessi sulle diverse coppie.
 
 <img src="img/4D-PAM5-line-coding.webp" alt="alt text" width="700">
 
-### Blocchi di dati e codifica
+## Blocchi di dati e codifica
 
 1. I dati vengono elaborati in blocchi di 8 bit (1 byte)
 2. Ogni blocco di 8 bit viene mappato su un vettore 4D di simboli PAM-5
@@ -79,7 +79,7 @@ Questa capacità extra (rispetto agli 8 bit) viene utilizzata per:
 - Codici di correzione
 - Miglioramento delle caratteristiche spettrali del segnale
 
-### Velocità di segnalazione
+## Velocità di segnalazione
 - Su ciascuna delle quattro coppie di cavi, i simboli PAM-5 vengono trasmessi a una velocità di 125 megabaud (125 milioni di simboli al secondo)
 - Con una codifica efficace di circa 2 bit per simbolo, questo si traduce in 250 Mbps per coppia
 - Con quattro coppie: 4 × 250 Mbps = 1000 Mbps (1 Gbps)
