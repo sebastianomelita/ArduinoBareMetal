@@ -141,7 +141,7 @@ Consideriamo un esempio di approccio "prima gli ingressi e dopo gli stati". In q
 
 **Quando un determinato ingresso causa sempre la stessa transizione di stato, indipendentemente dallo stato di partenza, non è necessario verificare lo stato corrente prima di effettuare la transizione.**
 
-La regola:
+La **regola** operativamente potrebbe portare **nel codice** delle **semplificazioni**:
 - in un contesto **"prima gli ingressi e poi gli stati"**, consente di **eliminare gli if-else-if interni sugli stati**, dato che ad ogni ingresso di questo tipo è possibile associare un **unico stato**.
 - in un contesto **"prima gli stati e poi gli ingressi"**, consente di poter mettere la gestione di quell'ingresso **fuori dallo switch-case** che valuta gli **stati**.
 
