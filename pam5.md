@@ -67,6 +67,8 @@ Lo spazio del segnale 4D-PAM5 contiene 5⁴ = 625 possibili punti (combinazioni 
 
 Non si tratta di semplice parallelizzazione (invio di 4 simboli PAM-5 indipendenti contemporaneamente), ma di una vera e propria codifica congiunta che introduce dipendenze tra i valori trasmessi sulle diverse coppie.
 
+<img src="img/NRZcode.png" alt="alt text" width="400">
+
 ## Codifica e mappatura
 
 La codifica 4D-PAM5 in 1000BASE-T utilizza un approccio sofisticato per mappare i bit di dati sui simboli trasmessi.
