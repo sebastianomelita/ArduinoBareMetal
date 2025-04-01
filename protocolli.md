@@ -17,13 +17,17 @@ Come possiamo vedere:
 - un fronte di **salita** codifica il **bit 0**
 - un fronte di **discesa** codifica il **bit 1**
 
+Questo tipo di codifica possiede il **vantaggio** di essere **autosincronizzante** ma anche lo svantaggio di presentare un **consumo doppio** di banda rispetto a codifiche alternative quali la NRZ. E' stata adottata dal livello fisico del protocollo 802.3 **Ethernet** a 10 Mbps.
+
 ### **Codifica NRZ**
 
-Nelle telecomunicazioni, un codice di linea di non ritorno a zero (NRZ) è un codice binario in cui gli uno sono rappresentati da una condizione significativa, solitamente una tensione positiva, mentre gli zeri sono rappresentati da qualche altra condizione significativa, solitamente una tensione negativa, senza altra condizione neutra o di riposo.
+Nelle telecomunicazioni, un codice di linea di non ritorno a zero (NRZ) è un codice binario in cui gli uno sono rappresentati da una condizione significativa, solitamente una tensione positiva, mentre gli zeri sono rappresentati da qualche altra condizione significativa, solitamente una tensione negativa, senza altra condizione neutra o di riposo. 
 
 <img src="img/NRZcode.png" alt="alt text" width="400">
 
 A dispetto della codifca Manchester, la NRZ **non** è considerata una codfica autosincronizzante perchè **lunghe sequenze** di tutti **zero** o di tutti **uno**, non presentando neppure **un fronte** per tutta la loro durata, possono compromettere l'efficacia della funzione di **recupero del clock** dal flusso dati (sincronizzazione in banda).
+
+Questo tipo di codifica possiede il **vantaggio** di essere **molto efficiente** nell'utilizzare la banda, per cui è adatta per massimizzare la velocità di trasmissione, al costo dello svantaggio di possibili **perdite di sincronizzazione**.
 
 ### **Codifica 4B5B**
 
@@ -33,7 +37,7 @@ Dipendentemente dallo standard o dalle specifiche, potrebbero esserci diversi ca
 
 <img src="img/4b5b.jpg" alt="alt text" width="500">
 
-Con la codifica 4B5B vengono risolti i problemi relativi alla trasmissione di più zeri consecutivi. Le sequenze generate vengono poi trasmesse attraverso una codifica NRZI (Senza ritorno a zero invertito), che elimina anche il problema della presenza di un numero eccessivo di 1 consecutivi. Il risultato è che la codifica 4B/5B elimina ripetizioni consecutive di un numero eccessivo di valori binari tutti uguali.
+Con la codifica 4B5B vengono risolti i problemi relativi alla trasmissione di più zeri consecutivi. Le sequenze generate vengono poi trasmesse attraverso una codifica NRZI (Senza ritorno a zero invertito), che elimina anche il problema della presenza di un numero eccessivo di 1 consecutivi. Il risultato è che la codifica 4B/5B elimina ripetizioni consecutive di un numero eccessivo di valori binari tutti uguali. E' stata adottata dal livello fisico del protocollo 802.3 **Fast Ethernet** a 100 Mbps.
 
 ## **Protocolli**
 
