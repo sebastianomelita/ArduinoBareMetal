@@ -203,7 +203,8 @@ Normalmente, la **velocità di picco** di un canale è limitata dalla velocità 
 #### **Punto-punto vs multipunto**
 
 Inoltre, in sistema **punto-punto** il throughput è la capacità dedicata a due soli dispositivi, mentre in un sistema **multipunto** è la capacità complessiva distribuita tra più dispositivi, con un'inevitabile riduzione del throughput per ciascuno, man mano che vengono introdotti nuovi utenti nello stesso canale (vedi HUB WiFi).
-Per esempio, una connessione con una larghezza di banda teorica di 1 Gbps potrebbe avere un throughput effettivo più basso a causa della congestione o del ritardo nei pacchetti.
+
+Per **esempio**, una connessione con una larghezza di banda **teorica** di 1 Gbps potrebbe avere un **throughput effettivo** più basso a causa della **congestione** o del **ritardo** nei pacchetti.
 
 [Dettaglio ES/IS](isvses.md)
 
