@@ -93,6 +93,8 @@ Una caratteristica chiave di 1000BASE-T è la comunicazione full-duplex su ogni 
 - I circuiti di cancellazione dell'eco (echo cancellation) separano i segnali nelle due direzioni
 - Questa tecnica raddoppia l'efficienza dell'utilizzo della banda disponibile
 
+<img src="img/ec_dia.gif.webp" alt="alt text" width="600">
+
 Per i dettagli, vedere [codifica 4D-PAM5](pam5.md).
 
 **Sitografia:**
