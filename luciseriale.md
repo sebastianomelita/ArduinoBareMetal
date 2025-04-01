@@ -98,26 +98,20 @@ stateDiagram-v2
     Blu --> Spento: P1
     
     Spento --> Rosso: R
-    Verde --> Rosso: R
-    Blu --> Rosso: R
-    
     Spento --> Verde: G
-    Rosso --> Verde: G
-    Blu --> Verde: G
-    
     Spento --> Blu: B
-    Rosso --> Blu: B
-    Verde --> Blu: B
     
     Rosso --> Spento: O
-    Verde --> Spento: O
-    Blu --> Spento: O
+    Rosso --> Verde: G
+    Rosso --> Blu: B
     
-    linkStyle 0,1,2,3 stroke:#333,stroke-width:2px
-    linkStyle 4,5,6 stroke:#F00,stroke-width:2px
-    linkStyle 7,8,9 stroke:#0F0,stroke-width:2px
-    linkStyle 10,11,12 stroke:#00F,stroke-width:2px
-    linkStyle 13,14,15 stroke:#888,stroke-width:2px
+    Verde --> Spento: O
+    Verde --> Rosso: R
+    Verde --> Blu: B
+    
+    Blu --> Spento: O
+    Blu --> Rosso: R
+    Blu --> Verde: G
 ```
 
 ## **Codice Arduino "prima gli stati e poi gli ingressi"**
