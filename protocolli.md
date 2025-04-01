@@ -22,7 +22,7 @@ Realizzano **algoritmi distribuiti** che comprendono:
 - funzioni sui nodi della rete
 - scambio di messaggi lungo i canali della rete
 
-### **Formato messaggi**
+# **Formato messaggi**
 
 Definisce **cosa** va comunicato, il **come** e il **quando** ciò va fatto. Gli **elementi chiave** di un protocollo sono: **sintassi**, **semantica**, **temporizzazione**.
 
@@ -40,7 +40,7 @@ Il **formato** è definito indicando:
 
 Per **accedere** (in lettura o in scrittura) a un **determinato campo** basta sommare la lunghezza dei campi che precedono il campo da accedere per determinare il suo **spiazzamento** dall'inizio del messaggio.
 
-## **Tipo dei messaggi**
+# **Tipo dei messaggi**
 
 I **messaggi** si possono **classificare in**:
 - **messaggi dati**. Portano il cosidetto payload, cioè il carico utile del messaggio, ovvero l'informazione che ha valore per gli utenti utilizzano il canale (o la rete).
@@ -50,7 +50,7 @@ I **messaggi** si possono **classificare in**:
 - **sincroni**. Quando il ricevente sa il momento esatto in cui comincerà a riceverli perchè già stabilito in fase di apertura della comunicazione. Sono, in genere, associati a protocolli connessi in cui si adopera proprio la fase di apertura per negoziare accordi tra TX e RX che riguardano i dettagli sulla consegna dei dati, quali, per l'appunto, il tempo di trasmissione assegnato ad una certa sorgente.
 - **asincroni**. Quando il ricevente non conosce il momento esatto in cui comincerà a riceverli perchè non esistono accordi in merito tra TX e RX, per cui l'inizio del messaggio deve essere segnalato. Normalmente si utilizza, per questo scopo, una particolare **sequenza di bit** stabilita dal protocollo in uso nel canale e quindi nota ad entrambi gli interlocutori.
 
-## **Preambolo di sincronizzazione (di bit)**
+# **Preambolo di sincronizzazione (di bit)**
 
 I **preamboli** di un messaggio sono delle **sequenze di sincronizzazione** in grado sia di sincronizzare gli **orologi** dei dispositivi (Tx e Rx) che si accingono ad iniziare una comunicazione, ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. 
 
@@ -66,7 +66,7 @@ Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla **
 - Quelle **dinamiche** (TDM dinamico, ALOHA, CSMA) consentono la trasmissione di una sequenza di bit dati in qualunque momento, tanto l'**inizio** del messaggio è segnalato da una sequenza di bit di **SOF** (Start Of Frame). Vedi [Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) e [Dettaglio mezzi a BUS](protocollidiaccesso.md) per approfondimenti.
 - Quelle **statiche** (TDM statico), **allocano** i messaggi di stazioni trasmittenti diverse in **differenti intervalli** temporali di dimensione **fissa** detti **slot**. Ogni slot **non** possiede identificatori espliciti del messaggio (come l'indirizzo) nè del suo inizio (come lo SOF). In ricezione, un messaggio può essere riconosciuto e letto soltanto in base alla sua **posizione** all'interno di un treno prestabilito di slot, detto **trama** TDMA. Vedi [Dettaglio multiplazioni statiche](multiplazioni.md) per approfondimenti. Alcune tecniche di trasmissione includono tra una trama e l'altra TDMA dei preamboli di sincronizzazione che, in questo contesto, si chiamano **beacon**.
 
-## **Start of frame (SOF)**
+# **Start of frame (SOF)**
 
 Per i protocolli in cui il messaggio è **asincrono**, cioè di cui il ricevente non conosce in anticipo il momento esatto della ricezione, l'**inizio** dello stesso deve essere segnalato in qualche modo. Lo 
  Start Of Frame (SOF) serve a realizzare il cosidetto **sincronismo di trama** (o di messaggio), cioè la proprietà per la quale trasmettirore TX e ricevitore RX concordano su quale sia il **bit di inizio** della **trama** (o del messaggio): 
@@ -77,7 +77,7 @@ Per i protocolli in cui il messaggio è **asincrono**, cioè di cui il ricevente
 
 Il valore di SOF per IEEE 802.3 (EThernet) è 10101011. Il ricevitore esegue la **lettura continua** dei bit del canale e quando vede scorrere esattamente **quella sequenza** sa che a partire dal **bit successivo all'ultimo** dell'SOF deve cominciare a leggere un messaggio, contando i bit per identificare, isolare e leggere separatamente i **vari campi** di cui è composto il messaggio ricevuto.
 
-## **Trama MAC**
+# **Trama MAC**
 
 E' il messaggio 
 
@@ -97,7 +97,7 @@ Una **trama Ethernet** è un pacchetto di dati che viene trasmesso su una rete E
 
 La struttura e il significato di questi campi possono variare leggermente a seconda dello standard Ethernet utilizzato, come ad esempio Ethernet II o IEEE 802.3.
 
-## **Classificazione protocolli**
+# **Classificazione protocolli**
 
 I protocolli si possono **classificare** in:
 - connessi e non connessi
@@ -121,7 +121,7 @@ I **protocolli connessi** realizzano connessioni intrinsecamente più affidabili
 
 I **protocolli non orientati alla connessione** (o semplicemente detti non connessi) realizzano comunicazioni in cui il mittente si limita semplicemente a spedire i messaggi senza curarsi affatto se all'atro **capo della comunicazione** ci sia effettivamente un interlocutore pronto a riceverli. I protocolli non connessi pongono in genere l'**enfasi** sulle **prestazioni** in termini di velocità e sulla **puntualità** della consegna dei messaggi.
 
-### **Protocolli confermati e non**
+## **Protocolli confermati e non**
 
 I **protocolli confermati** sono protocolli in cui il **mittente** possiede un timer, detto **timer di ritrasmissione**, impostato ad un valore massimo di conteggio detto **timeout**. Il timer viene **avviato** al momento esatto dell'invio di un messaggio e viene **resettato** al momento della ricezione di un messaggio di conferma  di corretto arrivo a destinazione.
 
@@ -149,9 +149,9 @@ L'evoluzione degli stati di un protocollo può essere rappresentato in funzione 
 
 I **nodi** sono gli stati mentre gli **archi** rappresentano gli **stimoli** ai cambiamenti di stato, ovvero gli **ingressi**, cioè i **messaggi ricevuti**.
 
-## **Throughput**
+# **Throughput**
 
-### **Definizione**
+## **Definizione**
 
 Il **throughput** è una misura della quantità di dati che possono essere trasmessi attraverso un sistema, una rete o un collegamento in un determinato intervallo di tempo. Viene spesso espresso in unità di bit al secondo (bps), come ad esempio megabit per secondo (Mbps) o gigabit per secondo (Gbps).
 
@@ -163,7 +163,7 @@ Nel contesto delle reti informatiche, il **throughput effettivo** può essere in
 - La **congestione della rete**
 - L'**overhead dei protocolli** di comunicazione (come TCP/IP)
 
-### **Velocità effettiva**
+## **Velocità effettiva**
 
 Differisce dal **data rate** teorico, in quanto il throughput riflette la **velocità effettiva** a cui i **dati utili** possono essere trasmessi, tenendo conto di:
 - **perdite** di dati che, dovendo essere ritrasmessi, rallentano il completamento della comunicazione
@@ -171,13 +171,13 @@ Differisce dal **data rate** teorico, in quanto il throughput riflette la **velo
      - **tempo perso** introdotto dall'acumularsi lungo una tratta di **ritardi** di trasmissione consecutivi tra i vari nodi intermedi
      - **bit non informativi**, ovvero la "burocrazia" costituita dai **messaggi di controllo** che, pur non essendo un **valore** per l'utente del servizio, sono comunque **necessari** per portare avanti le **funzioni** di un **protocollo**.
 
-### **Velocità di picco vs velocità media**
+## **Velocità di picco vs velocità media**
 
 Normalmente, la **velocità di picco** di un canale è limitata dalla velocità massima consentita dal **mezzo trasmissivo** mentre la **velocità media** del canale è impattata dai ritardi di trasmissione che tipicamente sono:
 - il ritardo di ricezione di un **ack** nei protocolli confermati come il TCP
 - il **RTT** (Roun Trip Time) dei protocolli di accesso multiplo dei sistemi a BUS.
 
-### **Punto-punto vs multipunto**
+## **Punto-punto vs multipunto**
 
 Inoltre, in sistema **punto-punto** il throughput è la capacità dedicata a due soli dispositivi, mentre in un sistema **multipunto** è la capacità complessiva distribuita tra più dispositivi, con un'inevitabile riduzione del throughput per ciascuno, man mano che vengono introdotti nuovi utenti nello stesso canale (vedi HUB WiFi).
 
