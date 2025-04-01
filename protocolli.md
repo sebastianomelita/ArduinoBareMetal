@@ -47,15 +47,6 @@ Lo standard IEEE 802.3ab per il Gigabit Ethernet ha adottato 4D-PAM5 come tecnic
 
 PAM-5 è una tecnica di modulazione che utilizza **cinque livelli di ampiezza** distinti per rappresentare i dati digitali. I livelli sono tipicamente indicati come:
 
-- +2 (tensione massima positiva)
-- +1 (tensione intermedia positiva)
-- 0 (tensione nulla)
-- -1 (tensione intermedia negativa)
-- -2 (tensione massima negativa)
-
-
-### Rappresentazione dei livelli
-
 ```
     +2V  ●  ----------
          |
