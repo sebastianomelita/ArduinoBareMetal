@@ -99,6 +99,7 @@ Sitografia:
 - https://www.edn.com/pam-ethernet-a-perfect-match/
 - https://www.shunlongwei.com/it/how-does-4d-pam5-work-in-gigabit-ethernet/
 - https://www.iol.unh.edu/sites/default/files/knowledgebase/ge/pcs.pdf
+- https://www.teleconnect.de/en/technologies/spe
 
 >[Torna a protocolli](protocolli.md#codifica-di-bit)
 
