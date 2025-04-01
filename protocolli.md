@@ -41,7 +41,90 @@ Con la codifica 4B5B vengono risolti i problemi relativi alla trasmissione di pi
 
 ### **Codifica 4DPAM5**
 
+## Introduzione
 
+La modulazione **4D-PAM5** (Four-Dimensional 5-level Pulse Amplitude Modulation) è una tecnica avanzata di trasmissione dati sviluppata specificamente per le reti Gigabit Ethernet su cavi in rame (1000BASE-T). Questa tecnica combina la modulazione PAM-5 tradizionale con un approccio di codifica a quattro dimensioni per ottenere prestazioni superiori rispetto alle modulazioni convenzionali.
+
+Lo standard IEEE 802.3ab per il Gigabit Ethernet ha adottato 4D-PAM5 come tecnica di modulazione ufficiale, permettendo di raggiungere velocità di 1 Gbps su cavi Cat5e standard attraverso quattro coppie di fili intrecciati.
+
+## Fondamenti della modulazione PAM-5
+
+Prima di approfondire la variante 4D, è importante comprendere i principi base della modulazione PAM-5.
+
+### Concetto di base di PAM-5
+
+PAM-5 è una tecnica di modulazione che utilizza **cinque livelli di ampiezza** distinti per rappresentare i dati digitali. I livelli sono tipicamente indicati come:
+
+- +2 (tensione massima positiva)
+- +1 (tensione intermedia positiva)
+- 0 (tensione nulla)
+- -1 (tensione intermedia negativa)
+- -2 (tensione massima negativa)
+
+### Capacità di informazione
+
+Ogni simbolo PAM-5 può rappresentare log₂(5) ≈ 2,32 bit di informazione. Questo è un vantaggio significativo rispetto a tecniche più semplici come NRZ (Non-Return-to-Zero), che può trasmettere solo 1 bit per simbolo.
+
+### Rappresentazione dei livelli
+
+```
+    +2V  ●  ----------
+         |
+    +1V  ●  ----------
+         |
+     0V  ●  ----------
+         |
+    -1V  ●  ----------
+         |
+    -2V  ●  ----------
+```
+
+## 4D-PAM5: Estensione multidimensionale
+
+La modulazione 4D-PAM5 estende il concetto di PAM-5 a quattro dimensioni, sfruttando le quattro coppie di cavi presenti nei cavi Ethernet standard.
+
+### Il concetto di modulazione multidimensionale
+
+In 4D-PAM5, non si considerano quattro segnali PAM-5 separati e indipendenti, ma piuttosto si considera un **unico segnale a quattro dimensioni**.
+
+Un punto nello spazio di segnale 4D è rappresentato da una quadrupla di valori PAM-5, uno per ogni coppia di cavi:
+```
+(a₁, a₂, a₃, a₄) dove a_i ∈ {-2, -1, 0, +1, +2}
+```
+
+### Spazio del segnale
+
+Lo spazio del segnale 4D-PAM5 contiene 5⁴ = 625 possibili punti (combinazioni di simboli). Tuttavia, non tutte queste combinazioni vengono utilizzate nella codifica 1000BASE-T.
+
+### Relazione con la parallelizzazione
+
+Non si tratta di semplice parallelizzazione (invio di 4 simboli PAM-5 indipendenti contemporaneamente), ma di una vera e propria codifica congiunta che introduce dipendenze tra i valori trasmessi sulle diverse coppie.
+
+## Codifica e mappatura
+
+La codifica 4D-PAM5 in 1000BASE-T utilizza un approccio sofisticato per mappare i bit di dati sui simboli trasmessi.
+
+### Blocchi di dati e codifica
+
+1. I dati vengono elaborati in blocchi di 8 bit (1 byte)
+2. Ogni blocco di 8 bit viene mappato su un vettore 4D di simboli PAM-5
+3. La capacità teorica di trasportare informazioni di un vettore 4D-PAM5 è:
+   4 × log₂(5) ≈ 9,28 bit
+
+Questa capacità extra (rispetto agli 8 bit) viene utilizzata per:
+- Controllo degli errori
+- Codici di correzione
+- Miglioramento delle caratteristiche spettrali del segnale
+
+
+### Trasmissione full-duplex
+
+Una caratteristica chiave di 1000BASE-T è la comunicazione full-duplex su ogni coppia di cavi:
+- Ogni coppia trasporta contemporaneamente dati in entrambe le direzioni
+- I circuiti di cancellazione dell'eco (echo cancellation) separano i segnali nelle due direzioni
+- Questa tecnica raddoppia l'efficienza dell'utilizzo della banda disponibile
+
+Per i dettagli sulla cancellazione dell'eco, vedere [Appendice A](#appendice-a-cancellazione-delleco).
 [Codifica 4D-PAM5](pam5.md)
 
 ## **Protocolli**
