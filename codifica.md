@@ -95,5 +95,8 @@ Una caratteristica chiave di 1000BASE-T è la comunicazione full-duplex su ogni 
 
 Per i dettagli, vedere [codifica 4D-PAM5](pam5.md).
 
+Sitografia:
+- https://www.edn.com/pam-ethernet-a-perfect-match/
+
 >[Torna a protocolli](protocolli.md#codifica-di-bit)
 
