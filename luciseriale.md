@@ -70,22 +70,25 @@ Per dettagli sulle macchine a stati finiti (o FSM) vedi [FSM](indexstatifiniti.m
 | Qualsiasi      | Comando 'O' | SPENTO (0)        | Spegne tutti i LED          |
 | Qualsiasi      | Comando 'S' | Non cambia        | Invia info stato corrente   |
 
-La tabella delle transizioni illustra chiaramente come funziona il sistema di controllo LED RGB. Come puoi vedere, ci sono due tipi di input che possono causare transizioni di stato:
+La tabella delle transizioni illustra chiaramente come funziona il sistema di controllo LED RGB. 
 
-Pulsante fisico P1:
+Come si evince, ci sono due tipi di input che possono causare transizioni di stato:
+
+**Pulsante fisico** P1:
 - Le transizioni dipendono dallo stato corrente
 - Segue un ciclo sequenziale: SPENTO → ROSSO → VERDE → BLU → SPENTO
 
 
-Comandi seriali:
-Le transizioni sono indipendenti dallo stato corrente
+**Comandi seriali** dove le **transizioni** sono **indipendenti dallo stato** corrente:
 - Comando 'R': passa allo stato ROSSO da qualsiasi stato
 - Comando 'G': passa allo stato VERDE da qualsiasi stato
 - Comando 'B': passa allo stato BLU da qualsiasi stato
 - Comando 'O': passa allo stato SPENTO da qualsiasi stato
 - Comando 'S': non cambia stato, invia solo informazioni sullo stato corrente
 
-Questa tabella evidenzia perché è logico avere la gestione dei comandi seriali fuori dallo switch-case nel codice: i comandi seriali hanno lo stesso effetto indipendentemente dallo stato attuale, mentre il pulsante P1 causa transizioni diverse a seconda dello stato in cui si trova il sistema.
+Questa tabella evidenzia perché è logico avere la gestione dei comandi seriali fuori dallo switch-case nel codice: 
+- i comandi seriali hanno lo stesso effetto indipendentemente dallo stato attuale
+- mentre il pulsante P1 causa transizioni diverse a seconda dello stato in cui si trova il sistema.
 
 ## **Diagramma degli stati**
 
