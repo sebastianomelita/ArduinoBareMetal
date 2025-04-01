@@ -14,8 +14,8 @@ Nelle telecomunicazioni, la codifica **Manchester** è una forma di comunicazion
 <img src="img/Manchester_code.png" alt="alt text" width="400">
 
 Come possiamo vedere:
-- un fronte di salita codifica il bit 0
-- un fronte di discesa codifica il bit 1
+- un fronte di **salita** codifica il **bit 0**
+- un fronte di **discesa** codifica il **bit 1**
 
 ### **Codifica NRZ**
 
