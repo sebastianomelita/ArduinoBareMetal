@@ -1,3 +1,5 @@
+>[Torna a protocolli](protocolli.md)
+
 # **Codifica manchester**
 
 Nelle telecomunicazioni, la codifica **Manchester** è una forma di comunicazione dati nella quale ogni **bit** viene segnalato da una **transizione** (fronte del segnale). La codifica Manchester è considerata una codifica **auto-sincronizzante** (non necessita di un segnale di sincronia esterno), il che significa che permette un'accurata sincronizzazione del flusso dati.
@@ -92,3 +94,6 @@ Una caratteristica chiave di 1000BASE-T è la comunicazione full-duplex su ogni 
 - Questa tecnica raddoppia l'efficienza dell'utilizzo della banda disponibile
 
 Per i dettagli, vedere [codifica 4D-PAM5](pam5.md).
+
+>[Torna a protocolli](protocolli.md)
+
