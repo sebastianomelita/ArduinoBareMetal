@@ -292,14 +292,13 @@ void setup() {
 }
 
 void loop() {
-  // Macchina a stati
+  // Gestione dei comandi seriali (fuori dallo switch-case)
+  gestioneComandi();
+  
+  // Macchina a stati per gestione pulsante fisico
   switch (statoCorrente) {
     case SPENTO:
       // Stato SPENTO: tutti i LED spenti
-      
-      // Gestione dei comandi seriali
-      gestioneComandi();
-      
       // Controllo pressione pulsante P1 (LOW con pull-up quando premuto)
       if (digitalRead(pulsanteP1) == LOW) {
         waitUntilInputLow(pulsanteP1, 50); // Debounce
@@ -312,10 +311,6 @@ void loop() {
       
     case STATO_ROSSO:
       // Stato ROSSO: LED rosso acceso, altri spenti
-      
-      // Gestione dei comandi seriali
-      gestioneComandi();
-      
       // Controllo pressione pulsante P1
       if (digitalRead(pulsanteP1) == LOW) {
         waitUntilInputLow(pulsanteP1, 50);
@@ -328,10 +323,6 @@ void loop() {
       
     case STATO_VERDE:
       // Stato VERDE: LED verde acceso, altri spenti
-      
-      // Gestione dei comandi seriali
-      gestioneComandi();
-      
       // Controllo pressione pulsante P1
       if (digitalRead(pulsanteP1) == LOW) {
         waitUntilInputLow(pulsanteP1, 50);
@@ -344,10 +335,6 @@ void loop() {
       
     case STATO_BLU:
       // Stato BLU: LED blu acceso, altri spenti
-      
-      // Gestione dei comandi seriali
-      gestioneComandi();
-      
       // Controllo pressione pulsante P1
       if (digitalRead(pulsanteP1) == LOW) {
         waitUntilInputLow(pulsanteP1, 50);
