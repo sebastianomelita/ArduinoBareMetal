@@ -1,4 +1,4 @@
->[Torna a protocolli](protocolli.md)
+>[Torna a protocolli](protocolli.md#codifica-di-bit)
 
 # 4D-PAM5: Modulazione Avanzata per Gigabit Ethernet
 
@@ -488,4 +488,4 @@ Nel contesto specifico della modulazione 4D-PAM5 utilizzata in 1000BASE-T, la ca
 
 La sofisticata cancellazione dell'eco, insieme alla codifica multidimensionale, è uno degli elementi che ha permesso il salto tecnologico da Fast Ethernet (100 Mbps) a Gigabit Ethernet (1000 Mbps) mantenendo lo stesso baud rate di 125 Mbaud e utilizzando cavi in rame standard.
 
->[Torna a protocolli](protocolli.md)
+>[Torna a protocolli](protocolli.md#codifica-di-bit)
