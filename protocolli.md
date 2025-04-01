@@ -54,7 +54,7 @@ I **messaggi** si possono **classificare in**:
 
 I **preamboli** di un messaggio sono delle **sequenze di sincronizzazione** in grado sia di sincronizzare gli **orologi** dei dispositivi (Tx e Rx) che si accingono ad iniziare una comunicazione, ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. 
 
-La **sincronizzazione** di cui parliamo adesso è la cosidetta **sincronizzazione di bit** e serve a fare in modo che, al momento di una **transizione** (fronte) del **clock**, sia il dispositivo TX che quello RX siano posizionati esattamente sul **ventre** di un bit, cioè sul punto di mezzo del livello del bit, condizione necessaria in ricezione per ottenere la massima probabilità di **campionare** (misurare o decidere) un **bit corretto**. La sincronizzazione di bit, in sostanza, serve a fare in modo che il ricevente RX legga un bit nel suo punto **più stabile**, cioè in posizione **centrale** rispetto ai fronti (di salita e di discesa).
+La **sincronizzazione** di cui parliamo adesso è la cosidetta **sincronizzazione di bit** e serve a fare in modo che, al momento di una **transizione** (fronte) del **clock**, sia il dispositivo TX che quello RX siano posizionati esattamente sul **ventre** di un bit, cioè sul punto di mezzo del livello del bit, condizione necessaria in ricezione per ottenere la massima probabilità di **campionare** (misurare o decidere) un **bit corretto**. La sincronizzazione di bit, in sostanza, serve a fare in modo che il ricevente RX legga un **bit dati** nel suo punto **più stabile**, cioè in posizione **centrale** rispetto ai fronti (di salita e di discesa).
 
 <img src="img/clockextract.png" alt="alt text" width="600">
 
