@@ -9,8 +9,8 @@ La **decodifica dei bit** si esegue in **ricezione** ed è il processo di **trad
 
 - [Codifica manchester](codifica.md#codifica-manchester)
 - [Codifica NRZ](codifica.md#codifica-NRZ)
-- [Codifica 4B5B]()
-- [Codifica 4D-PAM5]()
+- [Codifica 4B5B](codifica.md#codifica-4b5b)
+- [Codifica 4D-PAM5](codifica.md#codifica-4D-PAM5)
 - [Protocolli]()
 
 I protocolli sono **regole di comunicazione** che tutti gli **interlocutori** devono seguire per **portare avanti** la **comunicazione** su di un **canale**.
