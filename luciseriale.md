@@ -350,4 +350,6 @@ void loop() {
 }
 ```
 
+Simulazione su Arduino con Tinkercad: https://www.tinkercad.com/things/b8jpqj7mosQ-lampada-seriale
+
 >[Torna all'indice generale](indexstatifiniti.md)
