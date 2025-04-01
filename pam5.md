@@ -30,18 +30,6 @@ Prima di approfondire la variante 4D, è importante comprendere i principi base 
 
 PAM-5 è una tecnica di modulazione che utilizza **cinque livelli di ampiezza** distinti per rappresentare i dati digitali. I livelli sono tipicamente indicati come:
 
-- +2 (tensione massima positiva)
-- +1 (tensione intermedia positiva)
-- 0 (tensione nulla)
-- -1 (tensione intermedia negativa)
-- -2 (tensione massima negativa)
-
-### Capacità di informazione
-
-Ogni simbolo PAM-5 può rappresentare log₂(5) ≈ 2,32 bit di informazione. Questo è un vantaggio significativo rispetto a tecniche più semplici come NRZ (Non-Return-to-Zero), che può trasmettere solo 1 bit per simbolo.
-
-### Rappresentazione dei livelli
-
 ```
     +2V  ●  ----------
          |
@@ -53,6 +41,10 @@ Ogni simbolo PAM-5 può rappresentare log₂(5) ≈ 2,32 bit di informazione. Qu
          |
     -2V  ●  ----------
 ```
+### Capacità di informazione
+
+Ogni simbolo PAM-5 può rappresentare log₂(5) ≈ 2,32 bit di informazione. Questo è un vantaggio significativo rispetto a tecniche più semplici come NRZ (Non-Return-to-Zero), che può trasmettere solo 1 bit per simbolo.
+
 
 ## 4D-PAM5: Estensione multidimensionale
 
