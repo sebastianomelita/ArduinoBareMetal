@@ -190,9 +190,13 @@ Differisce dal **data rate** teorico, in quanto il throughput riflette la **velo
      - **tempo perso** introdotto dall'acumularsi lungo una tratta di **ritardi** di trasmissione consecutivi tra i vari nodi intermedi
      - **bit non informativi**, ovvero la "burocrazia" costituita dai **messaggi di controllo** che, pur non essendo un **valore** per l'utente del servizio, sono comunque **necessari** per portare avanti le **funzioni** di un **protocollo**.
 
+#### **Velocità di picco vs velocità media**
+
 Normalmente, la **velocità di picco** di un canale è limitata dalla velocità massima consentita dal **mezzo trasmissivo** mentre la **velocità media** del canale è impattata dai ritardi di trasmissione che tipicamente sono:
 - il ritardo di ricezione di un **ack** nei protocolli confermati come il TCP
 - il **RTT** (Roun Trip Time) dei protocolli di accesso multiplo dei sistemi a BUS.
+
+#### **Punto-punto vs multipunto**
 
 Inoltre, in sistema **punto-punto** il throughput è la capacità dedicata a due soli dispositivi, mentre in un sistema **multipunto** è la capacità complessiva distribuita tra più dispositivi, con un'inevitabile riduzione del throughput per ciascuno, man mano che vengono introdotti nuovi utenti nello stesso canale (vedi HUB WiFi).
 Per esempio, una connessione con una larghezza di banda teorica di 1 Gbps potrebbe avere un throughput effettivo più basso a causa della congestione o del ritardo nei pacchetti.
