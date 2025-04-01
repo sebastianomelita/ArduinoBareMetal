@@ -7,19 +7,11 @@ La **codifica dei bit** si esegue in **trasmissione** ed è il processo di **tra
 La **decodifica dei bit** si esegue in **ricezione** ed è il processo di **traduzione** di ciascuna sequenza di segnali elettrici ricevuta in una certa sequenza di bit. In definitiva, è una **traduzione** da segnali elettrici a simboli (binari).
 
 
-## **Codifica manchester**
-
-
-## **Codifica NRZ**
-
-
-## **Codifica 4B5B**
-
-
-## **Codifica 4D-PAM5**
-
-
-## **Protocolli**
+- [Codifica manchester]()
+- [Codifica NRZ]()
+- [Codifica 4B5B]()
+- [Codifica 4D-PAM5]()
+- [Protocolli]()
 
 I protocolli sono **regole di comunicazione** che tutti gli **interlocutori** devono seguire per **portare avanti** la **comunicazione** su di un **canale**.
 Un protocollo **definisce** il **formato** e l’**ordine dei messaggi** scambiati tra due o più entità di rete, le **azioni in risposta** ai messaggi ricevuti o **altri eventi**.
