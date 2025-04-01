@@ -39,6 +39,11 @@ Dipendentemente dallo standard o dalle specifiche, potrebbero esserci diversi ca
 
 Con la codifica 4B5B vengono risolti i problemi relativi alla trasmissione di più zeri consecutivi. Le sequenze generate vengono poi trasmesse attraverso una codifica NRZI (Senza ritorno a zero invertito), che elimina anche il problema della presenza di un numero eccessivo di 1 consecutivi. Il risultato è che la codifica 4B/5B elimina ripetizioni consecutive di un numero eccessivo di valori binari tutti uguali. E' stata adottata dal livello fisico del protocollo 802.3 **Fast Ethernet** a 100 Mbps.
 
+### **Codifica 4DPAM5**
+
+
+[Codifica 4D-PAM5](pam5.md)
+
 ## **Protocolli**
 
 I protocolli sono **regole di comunicazione** che tutti gli **interlocutori** devono seguire per **portare avanti** la **comunicazione** su di un **canale**.
