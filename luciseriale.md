@@ -86,7 +86,7 @@ Come si evince, ci sono due tipi di input che possono causare transizioni di sta
 - Comando 'O': passa allo stato SPENTO da qualsiasi stato
 - Comando 'S': non cambia stato, invia solo informazioni sullo stato corrente
 
-Questa tabella evidenzia perché è logico avere la gestione dei comandi seriali fuori dallo switch-case nel codice: 
+Questa tabella evidenzia perché è logico avere la gestione dei comandi seriali fuori dallo switch-case nel codice che valuta gli stati: 
 - i comandi seriali hanno lo stesso effetto indipendentemente dallo stato attuale
 - mentre il pulsante P1 causa transizioni diverse a seconda dello stato in cui si trova il sistema.
 
@@ -118,7 +118,7 @@ stateDiagram-v2
 ```
 Quando un determinato ingresso causa sempre la stessa transizione di stato, indipendentemente dallo stato di partenza, non è necessario verificare lo stato corrente prima di effettuare la transizione.
 
-Quindi, per l'ingresso seriale, è conveniente, all'interno del codice, avere la gestione dei comandi seriali fuori dallo switch-case.
+Quindi, per l'ingresso seriale, è conveniente, all'interno del codice, avere la gestione dei comandi seriali fuori dallo switch-case che valuta gli stati.
 
 ## **Codice Arduino "prima gli stati e poi gli ingressi"**
 
