@@ -118,7 +118,7 @@ stateDiagram-v2
 ```
 Quando un determinato ingresso causa sempre la stessa transizione di stato, indipendentemente dallo stato di partenza, non è necessario verificare lo stato corrente prima di effettuare la transizione.
 
-Quindi è conveniente, all'interno del codice, avere la gestione dei comandi seriali fuori dallo switch-case.
+Quindi, per l'ingresso seriale, è conveniente, all'interno del codice, avere la gestione dei comandi seriali fuori dallo switch-case.
 
 ## **Codice Arduino "prima gli stati e poi gli ingressi"**
 
