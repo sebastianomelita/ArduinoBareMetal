@@ -100,6 +100,7 @@ Per i dettagli, vedere [codifica 4D-PAM5](pam5.md).
 - https://www.shunlongwei.com/it/how-does-4d-pam5-work-in-gigabit-ethernet/
 - https://www.iol.unh.edu/sites/default/files/knowledgebase/ge/pcs.pdf
 - https://www.teleconnect.de/en/technologies/spe
+- https://botblox.io/learn/single-pair-ethernet/what-is-single-pair-ethernet/
 
 >[Torna a protocolli](protocolli.md#codifica-di-bit)
 
