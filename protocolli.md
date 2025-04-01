@@ -74,6 +74,8 @@ Un punto nello spazio di segnale 4D è rappresentato da una quadrupla di valori 
 
 Non si tratta di semplice parallelizzazione (invio di 4 simboli PAM-5 indipendenti contemporaneamente), ma di una vera e propria codifica congiunta che introduce dipendenze tra i valori trasmessi sulle diverse coppie.
 
+<img src="img/4D-PAM5-line-coding.webp" alt="alt text" width="700">
+
 #### Blocchi di dati e codifica
 
 1. I dati vengono elaborati in blocchi di 8 bit (1 byte)
