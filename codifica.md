@@ -126,6 +126,7 @@ Per i dettagli, vedere [codifica 4D-PAM5](pam5.md).
 - https://www.iol.unh.edu/sites/default/files/knowledgebase/ge/pcs.pdf
 - https://www.teleconnect.de/en/technologies/spe
 - https://botblox.io/learn/single-pair-ethernet/what-is-single-pair-ethernet/
+- https://www.digikey.it/it/articles/revolutionizing-building-automation-with-10base-t1l?srsltid=AfmBOopURXvvVBR7O1r7kebwyTcySHt4f_a10GYGyFctVFjfBPecTZFZ
 
 >[Torna a protocolli](protocolli.md#codifica-di-bit)
 
