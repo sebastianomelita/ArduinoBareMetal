@@ -1,13 +1,13 @@
 >[Torna a reti di sensori](sensornetworkshort.md#reti-di-sensori-e-attuatori)
 
-## **Codifica di bit**
+# **Codifica di bit**
 
 La **codifica dei bit** si esegue in **trasmissione** ed è il processo di **traduzione** di ciascun bit di un messaggio in una certa sequenza di segnali elettrici caratterizzati da proprietà fisiche stabilite da standard internazionali. Alcune di queste caratteristiche sono forma, ampiezza, periodo. In definitiva, è una **traduzione** da simboli (binari) in segnali elettrici.
 
 La **decodifica dei bit** si esegue in **ricezione** ed è il processo di **traduzione** di ciascuna sequenza di segnali elettrici ricevuta in una certa sequenza di bit. In definitiva, è una **traduzione** da segnali elettrici a simboli (binari).
 
 
-### **Codifica manchester**
+## **Codifica manchester**
 
 Nelle telecomunicazioni, la codifica **Manchester** è una forma di comunicazione dati nella quale ogni **bit** viene segnalato da una **transizione** (fronte del segnale). La codifica Manchester è considerata una codifica **auto-sincronizzante** (non necessita di un segnale di sincronia esterno), il che significa che permette un'accurata sincronizzazione del flusso dati.
 
@@ -19,7 +19,7 @@ Come possiamo vedere:
 
 Questo tipo di codifica possiede il **vantaggio** di essere **autosincronizzante** ma anche lo svantaggio di presentare un **consumo doppio** di banda rispetto a codifiche alternative quali la NRZ. E' stata adottata dal livello fisico del protocollo 802.3 **Ethernet** a 10 Mbps.
 
-### **Codifica NRZ**
+## **Codifica NRZ**
 
 Nelle telecomunicazioni, un codice di linea di non ritorno a zero (NRZ) è un codice binario in cui gli uno sono rappresentati da una condizione significativa, solitamente una tensione positiva, mentre gli zeri sono rappresentati da qualche altra condizione significativa, solitamente una tensione negativa, senza altra condizione neutra o di riposo. 
 
@@ -29,7 +29,7 @@ A dispetto della codifca Manchester, la NRZ **non** è considerata una codfica a
 
 Questo tipo di codifica possiede il **vantaggio** di essere **molto efficiente** nell'utilizzare la banda, per cui è adatta per massimizzare la velocità di trasmissione, al costo dello svantaggio di possibili **perdite di sincronizzazione**.
 
-### **Codifica 4B5B**
+## **Codifica 4B5B**
 
 Nelle telecomunicazioni, 4B5B è una forma di codice per la trasmissione di dati. 4B5B lavora mappando gruppi di 4 bit in gruppi di 5. Siccome ci sono 32 possibili combinazioni usando 5 bit e solo 16 usandone 4, i 16 gruppi di 5 bit col maggior numero di transizioni sono usati per fornire più transizioni possibili. 4B5B garantisce almeno una transizione per blocco (ingresso di 4 bit / uscita di 5) il quale permette al segnale di essere scoperto. Sfortunatamente l'uso di 5 bit per rappresentarne 4 implica che per trasmettere i dati abbiamo bisogno di una larghezza di banda più grande del 25%.
 
@@ -39,7 +39,7 @@ Dipendentemente dallo standard o dalle specifiche, potrebbero esserci diversi ca
 
 Con la codifica 4B5B vengono risolti i problemi relativi alla trasmissione di più zeri consecutivi. Le sequenze generate vengono poi trasmesse attraverso una codifica NRZI (Senza ritorno a zero invertito), che elimina anche il problema della presenza di un numero eccessivo di 1 consecutivi. Il risultato è che la codifica 4B/5B elimina ripetizioni consecutive di un numero eccessivo di valori binari tutti uguali. E' stata adottata dal livello fisico del protocollo 802.3 **Fast Ethernet** a 100 Mbps.
 
-### **Codifica 4D-PAM5**
+## **Codifica 4D-PAM5**
 
 La modulazione **4D-PAM5** (Four-Dimensional 5-level Pulse Amplitude Modulation) è una tecnica avanzata di trasmissione dati sviluppata specificamente per le reti Gigabit Ethernet su cavi in rame (1000BASE-T). Questa tecnica combina la modulazione PAM-5 tradizionale con un approccio di codifica a quattro dimensioni per ottenere prestazioni superiori rispetto alle modulazioni convenzionali.
 
@@ -61,7 +61,7 @@ PAM-5 è una tecnica di modulazione che utilizza **cinque livelli di ampiezza** 
 
 La modulazione 4D-PAM5 estende il concetto di PAM-5 a quattro dimensioni, sfruttando le quattro coppie di cavi presenti nei cavi Ethernet standard.
 
-#### Il concetto di modulazione multidimensionale
+### Il concetto di modulazione multidimensionale
 
 In 4D-PAM5, non si considerano quattro segnali PAM-5 separati e indipendenti, ma piuttosto si considera un **unico segnale a quattro dimensioni**.
 
@@ -70,13 +70,13 @@ Un punto nello spazio di segnale 4D è rappresentato da una quadrupla di valori 
 (a₁, a₂, a₃, a₄) dove a_i ∈ {-2, -1, 0, +1, +2}
 ```
 
-#### Relazione con la parallelizzazione
+### Relazione con la parallelizzazione
 
 Non si tratta di semplice parallelizzazione (invio di 4 simboli PAM-5 indipendenti contemporaneamente), ma di una vera e propria codifica congiunta che introduce dipendenze tra i valori trasmessi sulle diverse coppie.
 
 <img src="img/4D-PAM5-line-coding.webp" alt="alt text" width="700">
 
-#### Blocchi di dati e codifica
+### Blocchi di dati e codifica
 
 1. I dati vengono elaborati in blocchi di 8 bit (1 byte)
 2. Ogni blocco di 8 bit viene mappato su un vettore 4D di simboli PAM-5
@@ -88,12 +88,12 @@ Questa capacità extra (rispetto agli 8 bit) viene utilizzata per:
 - Codici di correzione
 - Miglioramento delle caratteristiche spettrali del segnale
 
-#### Velocità di segnalazione
+### Velocità di segnalazione
 - Su ciascuna delle quattro coppie di cavi, i simboli PAM-5 vengono trasmessi a una velocità di 125 megabaud (125 milioni di simboli al secondo)
 - Con una codifica efficace di circa 2 bit per simbolo, questo si traduce in 250 Mbps per coppia
 - Con quattro coppie: 4 × 250 Mbps = 1000 Mbps (1 Gbps)
   
-### Trasmissione full-duplex
+## Trasmissione full-duplex
 
 Una caratteristica chiave di 1000BASE-T è la comunicazione full-duplex su ogni coppia di cavi:
 - Ogni coppia trasporta contemporaneamente dati in entrambe le direzioni
@@ -130,7 +130,7 @@ Il **formato** è definito indicando:
 
 Per **accedere** (in lettura o in scrittura) a un **determinato campo** basta sommare la lunghezza dei campi che precedono il campo da accedere per determinare il suo **spiazzamento** dall'inizio del messaggio.
 
-### **Tipo dei messaggi**
+## **Tipo dei messaggi**
 
 I **messaggi** si possono **classificare in**:
 - **messaggi dati**. Portano il cosidetto payload, cioè il carico utile del messaggio, ovvero l'informazione che ha valore per gli utenti utilizzano il canale (o la rete).
@@ -140,7 +140,7 @@ I **messaggi** si possono **classificare in**:
 - **sincroni**. Quando il ricevente sa il momento esatto in cui comincerà a riceverli perchè già stabilito in fase di apertura della comunicazione. Sono, in genere, associati a protocolli connessi in cui si adopera proprio la fase di apertura per negoziare accordi tra TX e RX che riguardano i dettagli sulla consegna dei dati, quali, per l'appunto, il tempo di trasmissione assegnato ad una certa sorgente.
 - **asincroni**. Quando il ricevente non conosce il momento esatto in cui comincerà a riceverli perchè non esistono accordi in merito tra TX e RX, per cui l'inizio del messaggio deve essere segnalato. Normalmente si utilizza, per questo scopo, una particolare **sequenza di bit** stabilita dal protocollo in uso nel canale e quindi nota ad entrambi gli interlocutori.
 
-### **Preambolo di sincronizzazione (di bit)**
+## **Preambolo di sincronizzazione (di bit)**
 
 I **preamboli** di un messaggio sono delle **sequenze di sincronizzazione** in grado sia di sincronizzare gli **orologi** dei dispositivi (Tx e Rx) che si accingono ad iniziare una comunicazione, ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. 
 
@@ -156,7 +156,7 @@ Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla **
 - Quelle **dinamiche** (TDM dinamico, ALOHA, CSMA) consentono la trasmissione di una sequenza di bit dati in qualunque momento, tanto l'**inizio** del messaggio è segnalato da una sequenza di bit di **SOF** (Start Of Frame). Vedi [Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) e [Dettaglio mezzi a BUS](protocollidiaccesso.md) per approfondimenti.
 - Quelle **statiche** (TDM statico), **allocano** i messaggi di stazioni trasmittenti diverse in **differenti intervalli** temporali di dimensione **fissa** detti **slot**. Ogni slot **non** possiede identificatori espliciti del messaggio (come l'indirizzo) nè del suo inizio (come lo SOF). In ricezione, un messaggio può essere riconosciuto e letto soltanto in base alla sua **posizione** all'interno di un treno prestabilito di slot, detto **trama** TDMA. Vedi [Dettaglio multiplazioni statiche](multiplazioni.md) per approfondimenti. Alcune tecniche di trasmissione includono tra una trama e l'altra TDMA dei preamboli di sincronizzazione che, in questo contesto, si chiamano **beacon**.
 
-### **Start of frame (SOF)**
+## **Start of frame (SOF)**
 
 Per i protocolli in cui il messaggio è **asincrono**, cioè di cui il ricevente non conosce in anticipo il momento esatto della ricezione, l'**inizio** dello stesso deve essere segnalato in qualche modo. Lo 
  Start Of Frame (SOF) serve a realizzare il cosidetto **sincronismo di trama** (o di messaggio), cioè la proprietà per la quale trasmettirore TX e ricevitore RX concordano su quale sia il **bit di inizio** della **trama** (o del messaggio): 
@@ -167,7 +167,7 @@ Per i protocolli in cui il messaggio è **asincrono**, cioè di cui il ricevente
 
 Il valore di SOF per IEEE 802.3 (EThernet) è 10101011. Il ricevitore esegue la **lettura continua** dei bit del canale e quando vede scorrere esattamente **quella sequenza** sa che a partire dal **bit successivo all'ultimo** dell'SOF deve cominciare a leggere un messaggio, contando i bit per identificare, isolare e leggere separatamente i **vari campi** di cui è composto il messaggio ricevuto.
 
-### **Trama MAC**
+## **Trama MAC**
 
 E' il messaggio 
 
@@ -187,14 +187,14 @@ Una **trama Ethernet** è un pacchetto di dati che viene trasmesso su una rete E
 
 La struttura e il significato di questi campi possono variare leggermente a seconda dello standard Ethernet utilizzato, come ad esempio Ethernet II o IEEE 802.3.
 
-### **Classificazione protocolli**
+## **Classificazione protocolli**
 
 I protocolli si possono **classificare** in:
 - connessi e non connessi
 - confermati e non confermati
 - con stato e senza stato
 
-### **Protocolli connessi e non**
+## **Protocolli connessi e non**
 
 I **protocolli connessi** sono sempre composti da **tre fasi**: 
 - **apertura** (o setup): 
@@ -221,7 +221,7 @@ Se il **timer di trasmissione** è resettato **prima** dello scadere del timeout
 
 I protocolli **non confermati** non necessitano di conferme mediate ricevute di ritorno e pertanto il tramittente **è sprovvisto del timer** che serve a questo a scopo.
 
-### **Protocolli con stato e non**
+## **Protocolli con stato e non**
 
 Un protocollo si dice **stateful** cioè **con stato** quando vale una delle due situazioni che rappresentano due facce diverse di una stessa medaglia:
 - un messaggio scambiato in un certo momento **è correlato** con gli altri messaggi scambiati in **precedenza**
@@ -239,9 +239,9 @@ L'evoluzione degli stati di un protocollo può essere rappresentato in funzione 
 
 I **nodi** sono gli stati mentre gli **archi** rappresentano gli **stimoli** ai cambiamenti di stato, ovvero gli **ingressi**, cioè i **messaggi ricevuti**.
 
-### **Throughput**
+## **Throughput**
 
-#### **Definizione**
+### **Definizione**
 
 Il **throughput** è una misura della quantità di dati che possono essere trasmessi attraverso un sistema, una rete o un collegamento in un determinato intervallo di tempo. Viene spesso espresso in unità di bit al secondo (bps), come ad esempio megabit per secondo (Mbps) o gigabit per secondo (Gbps).
 
@@ -253,7 +253,7 @@ Nel contesto delle reti informatiche, il **throughput effettivo** può essere in
 - La **congestione della rete**
 - L'**overhead dei protocolli** di comunicazione (come TCP/IP)
 
-#### **Velocità effettiva**
+### **Velocità effettiva**
 
 Differisce dal **data rate** teorico, in quanto il throughput riflette la **velocità effettiva** a cui i **dati utili** possono essere trasmessi, tenendo conto di:
 - **perdite** di dati che, dovendo essere ritrasmessi, rallentano il completamento della comunicazione
@@ -261,13 +261,13 @@ Differisce dal **data rate** teorico, in quanto il throughput riflette la **velo
      - **tempo perso** introdotto dall'acumularsi lungo una tratta di **ritardi** di trasmissione consecutivi tra i vari nodi intermedi
      - **bit non informativi**, ovvero la "burocrazia" costituita dai **messaggi di controllo** che, pur non essendo un **valore** per l'utente del servizio, sono comunque **necessari** per portare avanti le **funzioni** di un **protocollo**.
 
-#### **Velocità di picco vs velocità media**
+### **Velocità di picco vs velocità media**
 
 Normalmente, la **velocità di picco** di un canale è limitata dalla velocità massima consentita dal **mezzo trasmissivo** mentre la **velocità media** del canale è impattata dai ritardi di trasmissione che tipicamente sono:
 - il ritardo di ricezione di un **ack** nei protocolli confermati come il TCP
 - il **RTT** (Roun Trip Time) dei protocolli di accesso multiplo dei sistemi a BUS.
 
-#### **Punto-punto vs multipunto**
+### **Punto-punto vs multipunto**
 
 Inoltre, in sistema **punto-punto** il throughput è la capacità dedicata a due soli dispositivi, mentre in un sistema **multipunto** è la capacità complessiva distribuita tra più dispositivi, con un'inevitabile riduzione del throughput per ciascuno, man mano che vengono introdotti nuovi utenti nello stesso canale (vedi HUB WiFi).
 
