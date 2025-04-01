@@ -23,7 +23,7 @@ Nelle telecomunicazioni, un codice di linea di non ritorno a zero (NRZ) è un co
 
 <img src="img/NRZcode.png" alt="alt text" width="400">
 
-A dispetto della codifca Manchester, la NRZ **non** è considerata una codfica autosincronizzante perchè **lunghe sequenze** di tutti **zero** o di tutti **uno** non presentano neppure **un fronte** per tutta la loro durata.
+A dispetto della codifca Manchester, la NRZ **non** è considerata una codfica autosincronizzante perchè **lunghe sequenze** di tutti **zero** o di tutti **uno**, non presentando neppure **un fronte** per tutta la loro durata, possono compromettere l'efficacia della funzione di **recupero del clock** dal flusso dati (sincronizzazione in banda).
 
 ### **Codifica 4B5B**
 
