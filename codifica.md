@@ -117,7 +117,7 @@ Una caratteristica chiave di 1000BASE-T è la comunicazione full-duplex su ogni 
     (solo segnale
      ricevuto)
 ```
-Il diagramma che hai condiviso illustra un sistema di cancellazione dell'eco. Ecco una descrizione del processo:
+Il diagramma illustra un sistema di cancellazione dell'eco. Ecco una descrizione del processo:
 
 1. **Trasmissione iniziale**: Un segnale viene inviato dal trasmettitore attraverso il canale di trasmissione.
 
