@@ -117,6 +117,21 @@ Una caratteristica chiave di 1000BASE-T è la comunicazione full-duplex su ogni 
     (solo segnale
      ricevuto)
 ```
+Il diagramma che hai condiviso illustra un sistema di cancellazione dell'eco. Ecco una descrizione del processo:
+
+1. **Trasmissione iniziale**: Un segnale viene inviato dal trasmettitore attraverso il canale di trasmissione.
+
+2. **Modellazione dell'eco**: Parallelamente, il segnale originale passa attraverso un "modello di eco" che simula come il segnale genererà eco nel sistema. Questo modello predice quale sarà l'eco basandosi sulle caratteristiche del canale e dell'ambiente.
+
+3. **Ricezione**: Il ricevitore cattura sia il segnale desiderato che l'eco indesiderata che si è formata nel canale di trasmissione.
+
+4. **Sottrazione**: Il sistema prende l'eco predetto dal modello e lo sottrae dal segnale ricevuto (segnale + eco). Poiché il modello di eco ha generato una previsione accurata dell'eco reale, la sottrazione elimina o riduce significativamente la componente di eco.
+
+5. **Risultato finale**: Il risultato è un segnale pulito, dove l'eco è stata cancellata, lasciando principalmente il segnale originale che si voleva ricevere.
+
+Questo metodo è conosciuto come cancellazione adattiva dell'eco (Adaptive Echo Cancellation) ed è ampiamente utilizzato nelle comunicazioni telefoniche, videoconferenze e sistemi audio per eliminare il fenomeno dell'eco che può disturbare la comunicazione.
+
+L'efficacia del sistema dipende molto dalla precisione del modello di eco, che deve riuscire a predire accuratamente come l'eco si formerà nel canale di comunicazione specifico.
 
 Per i dettagli, vedere [codifica 4D-PAM5](pam5.md).
 
