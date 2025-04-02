@@ -137,6 +137,8 @@ Facciamo alcune osservazioni sul diagramma:
 
 In altre parole, lo **stato successivo** all'ingresso ```Rilevamento pezzo in ingresso``` è funzione esclusivamente dell'**ingresso corrente** e non della **coppia** (ingresso, stato).
 
+#### **Regola semplificativa**
+
 Si potrebbe formulare la seguente regola:
 
 **Quando un determinato ingresso causa sempre la stessa transizione di stato, indipendentemente dallo stato di partenza, non è necessario verificare lo stato corrente prima di effettuare la transizione.**
@@ -144,8 +146,10 @@ Si potrebbe formulare la seguente regola:
 La **regola** operativamente potrebbe portare **nel codice** delle **semplificazioni**:
 - in un contesto **"prima gli ingressi e poi gli stati"**, consente di **eliminare gli if-else-if interni sugli stati**, dato che ad ogni ingresso di questo tipo è possibile associare un **unico stato**.
 - in un contesto **"prima gli stati e poi gli ingressi"**, consente di poter mettere la gestione di quell'ingresso **fuori dallo switch-case** che valuta gli **stati**.
+  
+#### **Prima gli ingressi**
 
-In altre parole, quando c'è una **mappatura diretta 1:1** tra un ingresso e uno stato di destinazione, strutturare il codice intorno agli ingressi piuttosto che agli stati è la selta preferibile. Questo è precisamente il vantaggio dell'approccio "prima gli ingressi" che abbiamo discusso: riduce la complessità del codice eliminando verifiche di stato ridondanti.
+In altre parole, quando c'è una **mappatura diretta 1:1** tra un ingresso e uno stato di destinazione e **non** ci sono **altri ingressi**, strutturare il codice intorno agli ingressi piuttosto che agli stati è la selta preferibile. Questo è precisamente il vantaggio dell'approccio "prima gli ingressi" che abbiamo discusso: riduce la complessità del codice eliminando verifiche di stato ridondanti.
 
 Questa regola è particolarmente efficace in macchine a stati semplici con flussi lineari o con transizioni "dominanti" dove certi eventi hanno sempre la priorità e causano le stesse transizioni indipendentemente dal contesto.
 
