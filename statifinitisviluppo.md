@@ -137,7 +137,7 @@ Facciamo alcune osservazioni sul diagramma:
 
 In altre parole, lo **stato successivo** all'ingresso ```Rilevamento pezzo in ingresso``` è funzione esclusivamente dell'**ingresso corrente** e non della **coppia** (ingresso, stato), cioè:
 
-```stato_successivo(**ingresso, stato_corrente**) -> stato_successivo(**ingresso**)```
+```stato_successivo(ingresso, stato_corrente) -> stato_successivo(ingresso)```
 
 #### **Regola semplificativa**
 
