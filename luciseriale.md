@@ -87,7 +87,7 @@ Come si evince, ci sono due tipi di input che possono causare transizioni di sta
 - Comando 'S': non cambia stato, invia solo informazioni sullo stato corrente
 
 Questa tabella evidenzia perché è logico avere la gestione dei comandi seriali **fuori dallo switch-case** nel codice che valuta **gli stati**: 
-- i comandi seriali hanno lo stesso effetto indipendentemente dallo stato attuale
+- i comandi seriali hanno lo stesso effetto indipendentemente dallo stato attuale, cioè ```stato_successivo(ingresso, stato_corrente) -> stato_successivo(ingresso)```
 - mentre il pulsante P1 causa transizioni diverse a seconda dello stato in cui si trova il sistema.
 
 ## **Diagramma degli stati**
