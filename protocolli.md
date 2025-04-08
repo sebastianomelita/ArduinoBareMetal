@@ -58,7 +58,7 @@ La **sincronizzazione** di cui parliamo adesso è la cosidetta **sincronizzazion
 
 <img src="img/clockextract.png" alt="alt text" width="600">
 
-Il **momento giusto** di questa misura è implicito, cioè non viene segnalato dal trasmettitore, ma deve essere **estratto** (dal ricevitore) dal flusso di bit dei dati e mantenuto almeno per tutti i **campionamenti** dei bit del **messaggio** corrente. Per il **messaggio successivo** il ricevitore recupera il sincronismo leggendo un **nuovo preambolo**.
+Il **momento giusto** di questa misura è implicito, cioè non viene segnalato dal trasmettitore, ma deve essere **estratto** (dal ricevitore) dal flusso di bit dei dati e mantenuto almeno per tutti i **campionamenti** dei bit del **messaggio** corrente. 
 
 Nei **protocolli a carattere**, caratterizzati da un messaggio **molto breve** costituito da appena 8 bit, la sincronizzazione di bit avviene con lo start bit, ovvero l'orologio in ricezione viene sincronizzato con il **fronte di discesa** di questo (dal livello idle a zero).
 
