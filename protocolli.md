@@ -60,7 +60,13 @@ La **sincronizzazione** di cui parliamo adesso è la cosidetta **sincronizzazion
 
 Il **momento giusto** di questa misura è implicito, cioè non viene segnalato dal trasmettitore, ma deve essere **estratto** (dal ricevitore) dal flusso di bit dei dati e mantenuto almeno per tutti i **campionamenti** dei bit del **messaggio** corrente. Per il **messaggio successivo** il ricevitore recupera il sincronismo leggendo un **nuovo preambolo**.
 
-L'**estrazione** del clock avviene **in banda**, cioè sullo stesso **canale dei dati**, attraverso il riconoscimento dei **fronti** dei **bit ricevuti**, fronti che sono sicuramente presenti, in numero **sufficiente** allo scopo, solamente durante un **preambolo di sincronizzazione**.
+Nei **protocolli a carattere**, caratterizzati da un messaggio **molto breve** costituito da appena 8 bit, la sicncronizzazione di bit avviene con lo start bit, ovvero l'orologio in ricezione viene sincronizzato con il fronte di discesa di questo (dal livello idle a zero).
+
+Nei **protocolli numerici moderni**, caratterizzati da messaggi **molto lunghi**, mediamente dalle centinaia di byte a qualche migliaio di byte, la sincronizzazione di bit non è causata da un segnale speciale, diverso da quello che codifica i bit dei dati, ma viene recuperata direttamente **durante la lettura** dei bit informativi.
+
+L'**estrazione** del clock avviene **in banda**, cioè sullo stesso **canale dei dati**, attraverso il riconoscimento dei **fronti** dei **bit ricevuti**. Ma questo particolare meccanismo di recupero della sincronizzazione è efficace se è soddisfatto un requisito chiave: devono essere presenti un numero sufficiente di transizioni. La codifica dei bit però può non garantire a prescindere questo requisito per ogni messaggio trasmesso. Ad esempio lunghe sequenze di zeri o di uno in codifica NRZ non introducono nessuna transizione. 
+
+Per assicurarsi che i fronti siano sicuramente presenti in numero **sufficiente** allo scopo, solitamente si fa precedere il messaggio vero e proprio da un **preambolo di sincronizzazione**.
 
 Tutte le tecniche di multiplazione del canale (broadcast o meno) basate sulla **ripartizione** del tempo di trasmissione tra sorgenti diverse (TDM), richiedono una **sincronizzazione di bit** elevata. Però, non tutte le tecniche richiedono la **sincronizzazione del messaggio** trasmesso tra TX e RX. L'RX non è normalmente tenuto a sapere l'esatto momento dell'arrivo del prossimo messaggio. 
 - Quelle **dinamiche** (TDM dinamico, ALOHA, CSMA) consentono la trasmissione di una sequenza di bit dati in qualunque momento, tanto l'**inizio** del messaggio è segnalato da una sequenza di bit di **SOF** (Start Of Frame). Vedi [Dettaglio TDM statistico su mezzi punto-punto](tdmstatistico.md) e [Dettaglio mezzi a BUS](protocollidiaccesso.md) per approfondimenti.
