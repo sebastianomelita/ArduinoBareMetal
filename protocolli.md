@@ -58,11 +58,9 @@ La **sincronizzazione** di cui parliamo adesso è la cosidetta **sincronizzazion
 
 <img src="img/clockextract.png" alt="alt text" width="600">
 
-Il **momento giusto** di questa misura è implicito, cioè non viene segnalato dal trasmettitore, ma deve essere **estratto** (dal ricevitore) dal flusso di bit dei dati e mantenuto almeno per tutti i **campionamenti** dei bit del **messaggio** corrente. 
-
-Nei **protocolli a carattere**, caratterizzati da un messaggio **molto breve** costituito da appena 8 bit, la sincronizzazione di bit avviene con lo start bit, ovvero l'orologio in ricezione viene sincronizzato con il **fronte di discesa** di questo (dal livello idle a zero).
-
-Nei **protocolli numerici moderni**, caratterizzati da messaggi **molto lunghi**, mediamente dalle centinaia di byte a qualche migliaio di byte, la sincronizzazione di bit non è causata da un segnale speciale, diverso da quello che codifica i bit dei dati, ma viene recuperata direttamente **durante la lettura** dei bit informativi.
+Il **momento giusto** di questa misura è implicito, cioè non viene segnalato dal trasmettitore, ma deve essere **estratto** (dal ricevitore) dal flusso di bit dei dati e mantenuto almeno per tutti i **campionamenti** dei bit del **messaggio** corrente:
+- Nei **protocolli a carattere**, caratterizzati da un messaggio **molto breve** costituito da appena 8 bit, la sincronizzazione di bit avviene con lo start bit, ovvero l'orologio in ricezione viene sincronizzato con il **fronte di discesa** di questo (dal livello idle a zero).
+- Nei **protocolli numerici moderni**, caratterizzati da messaggi **molto lunghi**, mediamente dalle centinaia di byte a qualche migliaio di byte, la sincronizzazione di bit non è causata da un segnale speciale, diverso da quello che codifica i bit dei dati, ma viene recuperata direttamente **durante la lettura** dei bit informativi.
 
 L'**estrazione** del clock avviene **in banda**, cioè sullo stesso **canale dei dati**, attraverso il riconoscimento dei **fronti** dei **bit ricevuti**. Ma questo particolare meccanismo di recupero della sincronizzazione è efficace se è soddisfatto un requisito chiave: devono essere presenti un numero sufficiente di transizioni. La codifica dei bit però può non garantire a prescindere questo requisito per ogni messaggio trasmesso. Ad esempio lunghe sequenze di zeri o di uno in codifica NRZ non introducono nessuna transizione. 
 
