@@ -89,7 +89,7 @@ Le **zone colorate** in figura rappresentano la **grandezza fisica** che, di vol
 
 ### **SDM nella telefonia cellulare**
 
-<img src="cellulare.png" alt="alt text" width="400">
+<img src="cellulare.png" alt="alt text" width="1000">
 
 
 **Colori uguali** rappresentano **frequenze uguali**
