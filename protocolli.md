@@ -60,7 +60,7 @@ La **sincronizzazione** di cui parliamo adesso è la cosidetta **sincronizzazion
 
 Il **momento giusto** di questa misura è implicito, cioè non viene segnalato dal trasmettitore, ma deve essere **estratto** (dal ricevitore) dal flusso di bit dei dati e mantenuto almeno per tutti i **campionamenti** dei bit del **messaggio** corrente. Per il **messaggio successivo** il ricevitore recupera il sincronismo leggendo un **nuovo preambolo**.
 
-Nei **protocolli a carattere**, caratterizzati da un messaggio **molto breve** costituito da appena 8 bit, la sicncronizzazione di bit avviene con lo start bit, ovvero l'orologio in ricezione viene sincronizzato con il fronte di discesa di questo (dal livello idle a zero).
+Nei **protocolli a carattere**, caratterizzati da un messaggio **molto breve** costituito da appena 8 bit, la sicncronizzazione di bit avviene con lo start bit, ovvero l'orologio in ricezione viene sincronizzato con il **fronte di discesa** di questo (dal livello idle a zero).
 
 Nei **protocolli numerici moderni**, caratterizzati da messaggi **molto lunghi**, mediamente dalle centinaia di byte a qualche migliaio di byte, la sincronizzazione di bit non è causata da un segnale speciale, diverso da quello che codifica i bit dei dati, ma viene recuperata direttamente **durante la lettura** dei bit informativi.
 
