@@ -97,6 +97,10 @@ Per evitare interferenze, le celle che usano la stessa frequenza si separano nel
 - **Celle vicine** usano frequenze molto **diverse**
 - **Celle lontane** riusano le **stesse** frequenze
 
+In **sostanza**, un sistema cellulare è un **misto** tra allocazione FDM e allocazione SDM delle risorse:
+- si adopera **FDM** per gli apparati posti su **celle vicine**
+- si adopera **SDM** per gli apparati che si trovano su **celle lontane**
+  
 ### **SDM nelle Smart Antenna**
 
 <img src="smartantenna.png" alt="alt text" width="700">
