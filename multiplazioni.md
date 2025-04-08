@@ -43,7 +43,7 @@ La **condivisione** del canale è **multidimensionale**, cioè è possibile ripa
 
 L'**allocazione** del canale ad una sola sorgente però non è mai completa, la sorgente **non** occupa il canale **in tutte** le sue dimensioni di utilizzo, ma è sempre  **parziale**, cioè limitata ad **una porzione** di **almeno una** delle sue dimensioni. L'**allocazione** delle sorgenti sul canale:
 - in realtà è sempre **ripartita** lungo una delle grandezze fisiche che lo contraddistinguono (ad esempio lo spazio)
-- per le rimanenti grandezze (in questo caso tempo e frequenza), la condivisioe rimane **totale**, cioè le sorgenti, su quelle grandezze, occupano **tutto** il canale nella sua interezza.
+- per le rimanenti grandezze (in questo caso tempo e frequenza), la condivisioe rimane **totale**, cioè le sorgenti, su quelle grandezze, occupano **tutto** il canale nella propria interezza.
 
 ### **Modalità di allocazione di una risorsa**
 
