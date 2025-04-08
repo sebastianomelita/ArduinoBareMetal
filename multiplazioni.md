@@ -39,7 +39,7 @@ L'aumento progressivo dell'**efficienza** nell'utilizzo dei **canali** ha portat
 
 Le **multiplazioni** sono delle **tecniche** per aumentare l'**efficienza** di un canale introducendo un certo grado di **condivisione** dello stesso tra più **sorgenti**. 
 
-La **condivisione** del canale è **multidimensionale**, cioè è possibile ripartire il canale tra più sorgenti lungo uno o più dimensioni del mondo fisico. Ad esempio, dimensioni tipiche sono lo spazio, il tempo e la frequenza. M apotrebbero essere anche altre grandezze meno intuitive per l'uomo comune come codici ortogonali che marchiano la distribuzione dell'energia, oppure la fase della sorgente, o qualunque altra grandezza fisica che possa essere riconosciuta come univocamente associata ad una sorgente.
+La **condivisione** del canale è **multidimensionale**, cioè è possibile ripartire il canale tra più sorgenti lungo uno o più dimensioni del mondo fisico. Ad esempio, dimensioni tipiche sono lo spazio, il tempo e la frequenza. Ma potrebbero essere anche altre grandezze meno intuitive per l'uomo comune come codici ortogonali che marchiano la distribuzione dell'energia, oppure la fase della sorgente, o qualunque altra grandezza fisica che possa essere riconosciuta come univocamente associata ad una sorgente.
 
 L'**allocazione** del canale ad una sola sorgente però non è mai completa, la sorgente **non** occupa il canale **in tutte** le sue dimensioni di utilizzo, ma è sempre  **parziale**, cioè limitata ad **una porzione** di **almeno una** delle sue dimensioni. L'**allocazione** delle sorgenti sul canale:
 - in realtà è sempre **ripartita** lungo una delle grandezze fisiche che lo contraddistinguono (ad esempio lo spazio)
