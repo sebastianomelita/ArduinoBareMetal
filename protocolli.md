@@ -64,7 +64,7 @@ Il **momento giusto** di questa misura è implicito, cioè non viene segnalato d
 
 L'**estrazione** del clock avviene **in banda**, cioè sullo stesso **canale dei dati**, attraverso il riconoscimento dei **fronti** dei **bit ricevuti**. Ma questo particolare meccanismo di recupero della sincronizzazione è efficace se è soddisfatto un requisito chiave: devono essere presenti un numero sufficiente di transizioni. La codifica dei bit però può non garantire a prescindere questo requisito per ogni messaggio trasmesso. Ad esempio lunghe sequenze di zeri o di uno in codifica NRZ non introducono nessuna transizione. 
 
-Per assicurarsi che i fronti siano sicuramente presenti in numero **sufficiente** allo scopo, solitamente si fa precedere il messaggio vero e proprio da un **preambolo di sincronizzazione**. Il preambolo è una sequanza speciale di bit alternati zero ed uno, capace quindi di generare una successione ininterrotta di fronti alternati verso l'alto e verso il basso che permettono una **sicura ricalibrazione** del clock in ricezione.
+Per assicurarsi che i fronti siano sicuramente presenti in numero **sufficiente** allo scopo, solitamente si fa precedere il messaggio vero e proprio da un **preambolo di sincronizzazione**. Il preambolo è una sequanza speciale di bit alternati zero ed uno, capace quindi di generare una successione ininterrotta di fronti alternati verso l'alto e verso il basso che permette una **sicura ricalibrazione** del clock in ricezione.
 
 # **Multiplazione TDM e sincronizzazione**
 
