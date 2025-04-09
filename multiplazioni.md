@@ -87,7 +87,7 @@ E’ possibile **allocare** una comunicazione su **una porzione** della **grande
 I **segnali** possono essere **frazionati** variando alternativamente le grandezze **tempo**, **frequenza**, **spazio** e **potenza**.
 Le **zone colorate** in figura rappresentano la **grandezza fisica** che, di volta in volta, viene **ripartita** tra le **varie sorgenti**.
 
-### **SDM nella telefonia cellulare**
+### **SDM e FDM nelle reti cellulari**
 
 <img src="cellulare.png" alt="alt text" width="1000">
 
