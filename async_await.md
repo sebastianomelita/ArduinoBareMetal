@@ -264,7 +264,7 @@ Link simulazione online: https://wokwi.com/projects/393860825891092481
 
 Quando si tratta di sistemi embedded, il modello cooperativo presenta due vantaggi. 
 - Innanzitutto, è leggero. È possibile avere un numero elevato di attività perché, a differenza dei thread annullati, le attività in pausa contengono poco stato.
-- In secondo luogo evita alcuni degli insidiosi problemi associati alla programmazione con prerilascio forzato delle risorse. In pratica, il multitasking cooperativo è ampiamente utilizzato, in particolare nelle applicazioni che gestiscono interfacce utente.
+- In secondo luogo evita alcuni degli insidiosi problemi associati alla programmazione con prerilascio forzato delle risorse. In pratica, il **multitasking cooperativo** è ampiamente utilizzato, in particolare nelle applicazioni che gestiscono interfacce utente.
 - d'altronde, se si realizzano task molto pesanti, cioè di tipo CPU intensive quale il seguente:
   ```python
     for x in range(1000000):
