@@ -52,7 +52,7 @@ Gli **svantaggi** sono ascrivibili a:
 La libreria async.io ha un modello di runtime basato su un ciclo di eventi (event loop), che è responsabile:
 - dell'esecuzione del codice
 - della raccolta e dell'elaborazione degli eventi
-- dell'esecuzione delle dei sotto task (sub-tasks) in coda.
+- dell'esecuzione dei sotto task (sub-tasks) in coda.
    
 Questo modello è abbastanza diverso dai modelli in altri linguaggi come C e Java basati su processi e thread.
 Una proprietà molto interessante è che un **linguaggio ad eventi**, a differenza di molti altri linguaggi, **non blocca** mai gli altri task quando si è in attesa di un input sul task corrente.
