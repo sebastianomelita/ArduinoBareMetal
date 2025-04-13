@@ -79,9 +79,9 @@ La numerazione deve essere **non ambigua** in modo da guidare l'elettricista nel
 
 <img src="img/planitest.png" alt="alt text" width="1100">
 
-## **Dispositivi che dovrebbero essere cablati con TO**
+## **Dispositivi che dovrebbero essere cablati con prese TO**
 
-Sicuramente andrebbero **posizionati** con precisione i **TO** che servono **tutte le porte** in uso di dispositivi di **smistamente IS** (Intemediate Systems) cablati quali:
+Sicuramente andrebbero **posizionati** con precisione i **TO** che servono **tutte le porte** dei dispositivi di **smistamente IS** (Intemediate Systems) cablati quali:
 - router
 - switch
 - Hub wireless (AP)
@@ -93,7 +93,7 @@ Ma vanno **riportati** anche i **TO** che servono **le porte** di dispositivi **
 - server sia di **sistema** (DHCP, DNS, controller AP, DBMS e NAS condivisi dalle applicazioni) che di **business** (web server, server di microservizi, server applicativo)
 - client **utente fissi** (PC), **telefoni IP** fissi, **stampanti**, **listener BLE** per il tracciamento o la localizzazione, dispositivi di monitoraggio quali **sensori** o **attuatori** con collegamenti dati cablati, dispositivi di sorveglianza quali **videocamere IP**
 
-Importante è anche la l'**etichettatura** dei TO che dovrebbe essere **chiara**, magari anche grazie ad  una **legenda**, e categorizzata magari scegliendo una **numerazione gerarchica**, in cui il numero del TO si può ripetere a patto che sia distinto da un diverso **prefisso** di categoria (in genere il numero dell'**armadio** da cui diramano i **collegamenti** dei TO).
+Importante è anche la l'**etichettatura** dei TO che dovrebbe essere **chiara**, magari anche grazie ad  una **legenda**, e categorizzata magari scegliendo una **numerazione gerarchica**, in cui lo stesso numero del TO si può ripetere in altre zone a patto che sia distinto da un diverso **prefisso** di categoria (in genere il numero dell'**armadio** da cui diramano i **collegamenti** dei TO).
 
 - >[Torna a reti ethernet](archeth.md#documentazione)
 
