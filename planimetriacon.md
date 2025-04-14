@@ -77,7 +77,7 @@ La numerazione deve essere **non ambigua** in modo da guidare l'elettricista nel
 - l'**armadio di edificio** non ha bisogno di **prefisso** alla propria numerazione, dato che l'armadio di comprensorio (campus) è unico per tutto l'impianto
 - una **legenda dei TO** mostra a **chi consulta** il **significato** delle **varie sezion**i della **numerazione gerarchica** di un **TO**
 
-<img src="img/planitest.png" alt="alt text" width="1100">
+<img src="img/planitest2.png" alt="alt text" width="1100">
 
 ## **Dispositivi che dovrebbero essere cablati con prese TO**
 
