@@ -53,7 +53,7 @@ Il **nodo master** stabilisce la **composizione** della "tavola rotonda" (cioè 
 
 I messaggi **arrivano simultaneamente** ma su N porte di ingresso diverse (SDM) e si caricano sul buffer a valle di ciascuna dopo un tempo T. Il **tempo di caricamento** del buffer in ingresso di un un singolo messaggio si chiama **tempo di ricezione** del messaggio **in ingresso**. Il tempo di ricezione ha le proprietà:
 - essere uguale e costante per tutte le sorgenti
-- essere **sicronizzato** per tutte le sorgenti (sorgenti in fase). Cioè le sorgenti cominciano all'unisono la trasmissione nello stesso momento e la terminano in un momento successivo ma sempre comune a tutte.
+- essere **sicronizzato** per tutte le sorgenti (sorgenti in fase). Cioè le sorgenti cominciano all'unisono la ricezione nello stesso momento e la terminano in un momento successivo ma sempre comune a tutte.
 
 Una volta finita la ricezione, gli N messaggi vengono inviati, ripartiti in **momenti diversi** (TDM), nell’unica porta di uscita e con **velocità maggiore** di quella di arrivo in modo che la **trasmissione di tutti** avvenga sempre nel **tempo T di arrivo** di uno solo. 
 
