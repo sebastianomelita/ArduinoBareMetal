@@ -64,7 +64,7 @@ La **ricezione** in ingresso di più sorgenti nello stesso tempo (SDM) genera un
 - essere **periodiche**, cioè di ripetersi, per la stessa sorgente, dopo un **periodo T** fisso (uguale al tempo di ricezione di un messaggio) che è detto **tempo di trama** o semplicemente **trama**.
 - avere un **indice** che identifica lo slot all'interno della trama che, essendo associato univocamente ad una sorgente, **identifica** il mittente al momento della ricezione del messaggio.
   
-Ogni slot è **assegnato** ad una certa sorgente in una posizione **separata** da quella di tutte le altre che è **ciclica**, cioè  fissa, all'interno dell'intervallo di tempo **utile per trasmettere**, che corrisponde al tempo morto che intercorre tra la **ricezione** di due **messaggi consecutivi** (identico per tutte le sorgenti). 
+Ogni slot è **assegnato** ad una certa sorgente in una posizione **separata** da quella di tutte le altre che è **ciclica**, cioè  fissa, all'interno dell'intervallo di tempo **utile per trasmettere**, che corrisponde al tempo morto che intercorre tra la **ricezione** di due **messaggi consecutivi** (identico per tutte le sorgenti) ed è anche uguale al **tempo di trama**. 
 
 Il **tempo T**, uguale al **tempo di arrivo** completo di un messaggio di una generica sorgente (**tempo di ricezione** uguale per tutte), viene detto **tempo di trama** o **periodo**. E' suddiviso in **slot** numerati di ugual durata sui quali è **allocata** la trasmissione delle sorgenti, in successione, uno slot dopo l'altro:
 - Ogni slot ha la **durata** di T/N ed è **assegnato** sempre alla stessa sorgente che lo ha **prenotato** in fase di setup del canale.
