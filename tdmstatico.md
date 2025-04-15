@@ -69,7 +69,7 @@ La **composizione** della trama deve essere nota **a valle del canale** per cons
 ## **Struttura**
 
 Il **multiplatore** è composto da:
-- **Code di ingresso** dove i messaggi delle varie sorgenti arrivano contemporaneamente capaci di ospitare **un solo** messaggio.
+- **Code di ingresso** dove i messaggi delle varie sorgenti arrivano **contemporaneamente**, e hanno la capacità di ospitare **un solo** messaggio.
 - Un **deviatore** che commuta, quasi istantaneamente, da una sorgente all’altra per cui l'unico **tempo impegnato** da una sorgente è soltanto quello speso **per trasmettere** un messaggio.
 - Una **porta di uscita** su cui è collegato **il canale** da condividere tra le sorgenti
 
