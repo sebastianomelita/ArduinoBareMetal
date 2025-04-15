@@ -70,7 +70,7 @@ Il **tempo T**, uguale al **tempo di arrivo** completo di un messaggio di una ge
 - Ogni slot ha la **durata** di T/N ed è **assegnato** sempre alla stessa sorgente che lo ha **prenotato** in fase di setup del canale.
 - La **trama** si ripete all’infinito sempre con lo **stesso ordine** di trasmissione delle sorgenti e con **ugual durata** T (ripetizione periodica).
 
-I messaggi **arrivano** ad **ondate successive** assimilabili a **round periodici**. Mentre si **trasmette** quella appena **ricevuta** si **riceve** l'ondata **successiva**. Il **ritardo** tra il momento della ricezione di un messaggio e quello della sua trasmissione è esattamente **T**.
+I messaggi **arrivano** ad **ondate successive** assimilabili a **round periodici**. Mentre si sta **trasmettendo** quella appena **ricevuta**, si **riceve** l'ondata **successiva**. Il **ritardo** tra il momento della ricezione di un messaggio e quello della sua trasmissione è esattamente **T**.
 
 **T** è anche l’intervallo di tempo ciclico (periodo) che intercorre tra **slot allocati** alla **stessa sorgente**, cioè gli slot consecutivi in cui si trasmettono i messaggi di una stessa sorgente.
 
