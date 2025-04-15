@@ -128,7 +128,7 @@ La **contesa per l’accesso** al mezzo è risolta nel **dominio del tempo**  me
 Ogni pacchetto usa una **frazione della capacità** (banda) del canale (il canale è impegnato solo  in parte da una sorgente alla volta)
 I pacchetti hanno un **ritardo** di trasferimento **fisso** dipendente dal **tempo di trama**.
 
-Il **periodo di utilizzo esclusivo** del canale da parte di una sorgente (**slot**) è stabilito all’apertura della comunicazione, in fase di setup, e **permane** anche quando la sorgente non **trasmette nulla** (inefficienza intrinseca). 
+Il **periodo di utilizzo esclusivo** del canale da parte di una sorgente (**slot**) è stabilito all’apertura della comunicazione, in fase di setup della stessa, e **permane** anche quando la sorgente non **trasmette nulla** (inefficienza intrinseca). 
 
 
 [Dettaglio tecnologie di accesso al mezzo radio](accessoradio.md)
