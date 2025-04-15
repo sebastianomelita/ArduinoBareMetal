@@ -51,13 +51,17 @@ Il **nodo master** stabilisce la **composizione** della "tavola rotonda" (cioè 
 
 <img src="tdmfisso.png" alt="alt text" width="700">
 
+### **Fase di ricezione**
+
 I messaggi **arrivano simultaneamente** ma su N porte di ingresso diverse (SDM) e si caricano sul buffer a valle di ciascuna dopo un tempo T. Il **tempo di caricamento** del buffer in ingresso di un un singolo messaggio si chiama **tempo di ricezione** del messaggio **in ingresso**. Il tempo di ricezione ha le proprietà:
 - essere uguale e costante per tutte le sorgenti
 - essere **sicronizzato** per tutte le sorgenti (sorgenti in fase). Cioè le sorgenti cominciano all'unisono la **ricezione** (caricamento della coda di ingresso) e la terminano in un momento successivo ma sempre comune a tutte.
 
 Una volta finita la ricezione, gli N messaggi vengono inviati, ripartiti in **momenti diversi** (TDM), nell’unica porta di uscita e con **velocità maggiore** di quella di arrivo in modo che la **trasmissione di tutti** avvenga sempre nel **tempo T di arrivo** di uno solo. 
 
-La **ricezione** in ingresso di più sorgenti nello stesso tempo (SDM) genera una **contesa del canale** in uscita che non può essere risolta se non **frazionando il tempo** di trasmissione in modo da ripartirne una quota per ciascuna sorgente. La contesa del canale in uscita, quindi, è risolta nel dominio del tempo **comprimendo** la durata del **tempo di trasmissione** dei messaggi (rispetto a quello della loro ricezione) in finestre temporali più piccole dette **slot** che hanno le **proprietà**  di:
+### **Fase di trasmissione**
+
+L'esigenza di **trasmettere** su uno stesso canale più messaggi ricevuti contemporaneamente da ingressi differenti nello stesso tempo (SDM), genera una **contesa del canale** in uscita che non può essere risolta se non **frazionando il tempo** di trasmissione in modo da ripartirne una quota per ciascuna sorgente. La contesa del canale in uscita, quindi, è risolta nel dominio del tempo **comprimendo** la durata del **tempo di trasmissione** dei messaggi (rispetto a quello della loro ricezione) in finestre temporali più piccole dette **slot** che hanno le **proprietà**  di:
 - essere **più piccole** del tempo di ricezione di un messaggio
 - avere **ugual durata** per tutte le sorgenti
 - **durare** complessivamente quanto il **tempo di ricezione** di un messaggio
@@ -71,6 +75,8 @@ Il **tempo T**, uguale al **tempo di arrivo** completo di un messaggio di una ge
 I messaggi **arrivano** ad **ondate successive** assimilabili a **round periodici**. Mentre si sta **trasmettendo** quella appena **ricevuta**, si **riceve** l'ondata **successiva**. Il **ritardo** tra il momento della ricezione di un messaggio e quello della sua trasmissione è esattamente **T**.
 
 **T** è anche l’intervallo di tempo ciclico (periodo) che intercorre tra **slot allocati** alla **stessa sorgente**, cioè gli slot consecutivi in cui si trasmettono i messaggi di una stessa sorgente.
+
+### **Allocazione statica degli slot**
 
 Gli slot sono **numerati** e l'**abbinamento** di ciascuno ad una sorgente è stabilito in fase di **setup** della comunicazione. La totalità degli abbinamenti stabilisce la composizione della **trama**, cioè la composizione del multimessaggio contenente i messaggi di tutte le sorgenti. 
 
