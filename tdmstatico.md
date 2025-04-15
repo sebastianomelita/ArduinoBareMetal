@@ -51,11 +51,20 @@ Il **nodo master** stabilisce la **composizione** della "tavola rotonda" (cioè 
 
 <img src="tdmfisso.png" alt="alt text" width="700">
 
-I messaggi **arrivano simultaneamente** ma su N porte di ingresso diverse (SDM) e si caricano sul buffer a valle di ciascuna dopo un tempo T.
+I messaggi **arrivano simultaneamente** ma su N porte di ingresso diverse (SDM) e si caricano sul buffer a valle di ciascuna dopo un tempo T. Il **tempo di caricamento** del buffer in ingresso di un un singolo messaggio si chiama **tempo di ricezione** del messaggio **in ingresso**. Il tempo di ricezione ha le proprietà:
+- essere uguale e costante per tutte le sorgenti
+- essere **sicronizzato** per tutte le sorgenti (sorgenti in fase). Cioè le sorgenti cominciano all'unisono la trasmissione nello stesso momento e la terminano in un momento successivo ma sempre comjne a tutte.
 
-Una volta finito il caricamento, gli N messaggi vengono inviati, in **momenti diversi** (TDM), nell’unica porta di uscita e con **velocità maggiore** di quella di arrivo in modo che la **trasmissione di tutti** avvenga sempre nel **tempo T di arrivo** di uno solo. 
+Una volta finita la ricezione, gli N messaggi vengono inviati, ripartiti in **momenti diversi** (TDM), nell’unica porta di uscita e con **velocità maggiore** di quella di arrivo in modo che la **trasmissione di tutti** avvenga sempre nel **tempo T di arrivo** di uno solo. 
 
-La potenziale **contesa del canale**, da parte di quelle sorgenti che tentano di accedervi **simultaneamente**, è risolta nel dominio del tempo **comprimendo** la durata della **trasmissione** dei messaggi (rispetto a quella della loro ricezione) in finestre temporali di **ugual durata** dette **slot**. Ogni slot è **assegnato** ad una certa sorgente in una posizione **separata** da quella di tutte le altre che è **ciclica**, cioè  fissa, all'interno dell'intervallo di tempo **utile per trasmettere**, che corrisponde al tempo morto che intercorre tra la **ricezione** di due **messaggi consecutivi** (identico per tutte le sorgenti). 
+La **ricezione** in ingresso di più sorgenti nello stesso tempo (SDM) genera una **contesa del canale** in uscita che non può essere risolta se non **frazionando il tempo** di trasmissione e ripartendo una frazione per ciascuna sorgente. La contesa del canale in uscita, quindi, è risolta nel dominio del tempo **comprimendo** la durata del **tempo di trasmissione** dei messaggi (rispetto a quelloa della loro ricezione) in finestre temporali più piccole dette **slot** che hanno le **proprietà**  di:
+- essere **più piccole**
+- avere **ugual durata**
+- **durare** complessivamente quanto il **tempo di ricezione** di un messaggio
+- essere assegnate sempre alla stessa sorgente
+- essere **periodiche**, cioè di ripetersi, per la stessa sorgente, dopo un **periodo T** fisso (uguale al tempo di ricezione di un messaggio).
+  
+Ogni slot è **assegnato** ad una certa sorgente in una posizione **separata** da quella di tutte le altre che è **ciclica**, cioè  fissa, all'interno dell'intervallo di tempo **utile per trasmettere**, che corrisponde al tempo morto che intercorre tra la **ricezione** di due **messaggi consecutivi** (identico per tutte le sorgenti). 
 
 Il **tempo T**, uguale al **tempo di arrivo** completo di un messaggio di una generica sorgente (**tempo di ricezione** uguale per tutte), viene detto **tempo di trama** o **periodo**. E' suddiviso in **slot** numerati di ugual durata sui quali è **allocata** la trasmissione delle sorgenti, in successione, uno slot dopo l'altro:
 - Ogni slot ha la **durata** di T/N ed è **assegnato** sempre alla stessa sorgente che lo ha **prenotato** in fase di setup del canale.
