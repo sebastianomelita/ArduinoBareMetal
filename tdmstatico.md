@@ -57,7 +57,7 @@ I messaggi **arrivano simultaneamente** ma su N porte di ingresso diverse (SDM) 
 
 Una volta finita la ricezione, gli N messaggi vengono inviati, ripartiti in **momenti diversi** (TDM), nell’unica porta di uscita e con **velocità maggiore** di quella di arrivo in modo che la **trasmissione di tutti** avvenga sempre nel **tempo T di arrivo** di uno solo. 
 
-La **ricezione** in ingresso di più sorgenti nello stesso tempo (SDM) genera una **contesa del canale** in uscita che non può essere risolta se non **frazionando il tempo** di trasmissione in modo da ripartirne una frazione per ciascuna sorgente. La contesa del canale in uscita, quindi, è risolta nel dominio del tempo **comprimendo** la durata del **tempo di trasmissione** dei messaggi (rispetto a quello della loro ricezione) in finestre temporali più piccole dette **slot** che hanno le **proprietà**  di:
+La **ricezione** in ingresso di più sorgenti nello stesso tempo (SDM) genera una **contesa del canale** in uscita che non può essere risolta se non **frazionando il tempo** di trasmissione in modo da ripartirne una quota per ciascuna sorgente. La contesa del canale in uscita, quindi, è risolta nel dominio del tempo **comprimendo** la durata del **tempo di trasmissione** dei messaggi (rispetto a quello della loro ricezione) in finestre temporali più piccole dette **slot** che hanno le **proprietà**  di:
 - essere **più piccole**
 - avere **ugual durata**
 - **durare** complessivamente quanto il **tempo di ricezione** di un messaggio
