@@ -92,8 +92,7 @@ Le **zone colorate** in figura rappresentano la **grandezza fisica** che, di vol
 <img src="cellulare.png" alt="alt text" width="1000">
 
 
-**Colori uguali** rappresentano **frequenze uguali**
-Per evitare interferenze, le celle che usano la stessa frequenza si separano nello spazio inframezzando celle servite da frequenze diverse:
+**Colori uguali** rappresentano **frequenze uguali**. Per evitare interferenze, le celle che usano la stessa frequenza si separano nello spazio inframezzando celle servite da frequenze diverse:
 - **Celle vicine** usano frequenze molto **diverse**
 - **Celle lontane** riusano le **stesse** frequenze
 
