@@ -61,7 +61,7 @@ Una volta finita la ricezione, gli N messaggi vengono inviati, ripartiti in **mo
 
 ### **Fase di trasmissione**
 
-L'esigenza di **trasmettere** su uno stesso canale più messaggi ricevuti contemporaneamente da ingressi differenti nello stesso tempo (SDM), genera una **contesa del canale** in uscita che non può essere risolta se non **frazionando il tempo** di trasmissione in modo da ripartirne una quota per ciascuna sorgente. La contesa del canale in uscita, quindi, è risolta nel dominio del tempo **comprimendo** la durata del **tempo di trasmissione** dei messaggi (rispetto a quello della loro ricezione) in finestre temporali più piccole dette **slot** che hanno le **proprietà**  di:
+L'esigenza di **trasmettere** su uno stesso canale più messaggi ricevuti contemporaneamente da ingressi differenti (multiplazione SDM), genera una **contesa del canale** in uscita che non può essere risolta se non **frazionando il tempo** di trasmissione in modo da ripartirne una quota per ciascuna sorgente. La contesa del canale in uscita, quindi, è risolta nel dominio del tempo **comprimendo** la durata del **tempo di trasmissione** dei messaggi (rispetto a quello della loro ricezione) in finestre temporali più piccole dette **slot** che hanno le **proprietà**  di:
 - essere **più piccole** del tempo di ricezione di un messaggio
 - avere **ugual durata** per tutte le sorgenti
 - **durare** complessivamente quanto il **tempo di ricezione** di un messaggio
