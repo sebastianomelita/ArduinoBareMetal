@@ -63,14 +63,11 @@ Una volta finita la ricezione, gli N messaggi vengono inviati, ripartiti in **mo
 
 L'esigenza di **trasmettere** su uno stesso canale più messaggi ricevuti contemporaneamente da ingressi differenti (multiplazione SDM), genera una **contesa del canale** in uscita che non può essere risolta se non **frazionando il tempo** di trasmissione in modo da ripartirne una quota per ciascuna sorgente. La contesa del canale in uscita, quindi, è risolta nel dominio del tempo **comprimendo** la durata del **tempo di trasmissione** dei messaggi (rispetto a quello della loro ricezione) in finestre temporali più piccole dette **slot** che hanno le **proprietà**  di:
 - essere **più piccole** del tempo di ricezione di un messaggio
-- avere **ugual durata** per tutte le sorgenti
+- avere **ugual durata** per tutte le sorgenti pari a **T/N**
 - **durare** complessivamente quanto il **tempo di ricezione** di un messaggio
 - essere **periodiche**, cioè di ripetersi, per la stessa sorgente, dopo un **periodo T** fisso (uguale al tempo di ricezione di un messaggio) che è detto **tempo di trama** o semplicemente **trama**.
 - avere un **indice** che identifica lo slot all'interno della trama che, essendo associato univocamente ad una sorgente, **identifica** il mittente al momento della ricezione del messaggio.
-  
-Il **tempo T**, uguale al **tempo di arrivo** completo di un messaggio di una generica sorgente (**tempo di ricezione** uguale per tutte), viene detto **tempo di trama** o **periodo**. E' suddiviso in **slot** numerati di ugual durata sui quali è **allocata** la trasmissione delle sorgenti, in successione, uno slot dopo l'altro:
-- Ogni slot ha la **durata** di T/N ed è **assegnato** sempre alla stessa sorgente che lo ha **prenotato** in fase di setup del canale.
-- La **trama** si ripete all’infinito sempre con lo **stesso ordine** di trasmissione delle sorgenti e con **ugual durata** T (ripetizione periodica).
+- la **trama** si ripete all’infinito sempre con lo **stesso ordine** di trasmissione delle sorgenti e con **ugual durata** T (ripetizione periodica).
 
 I messaggi **arrivano** ad **ondate successive** assimilabili a **round periodici**. Mentre si sta **trasmettendo** quella appena **ricevuta**, si **riceve** l'ondata **successiva**. Il **ritardo** tra il momento della ricezione di un messaggio e quello della sua trasmissione è esattamente **T**.
 
@@ -78,7 +75,7 @@ I messaggi **arrivano** ad **ondate successive** assimilabili a **round periodic
 
 ### **Allocazione statica degli slot**
 
-Gli slot sono **numerati** e l'**abbinamento** di ciascuno ad una sorgente è stabilito in fase di **setup** della comunicazione. La totalità degli abbinamenti stabilisce la composizione della **trama**, cioè la composizione del multimessaggio contenente i messaggi di tutte le sorgenti. 
+Gli slot sono **numerati** e l'**abbinamento** di ciascuno ad una sorgente è stabilito (prenotato) in fase di **setup** della comunicazione. La totalità degli abbinamenti stabilisce la composizione della **trama**, cioè la composizione del multimessaggio contenente i messaggi di tutte le sorgenti. 
 
 La **composizione** della trama deve essere nota **a valle del canale** per consentire l'eventuale ripristino dei **flussi originali** su linee fisicamente separate **estraendo** i messaggi dalle **trame in arrivo** (demultiplexing).
 
