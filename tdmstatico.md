@@ -58,11 +58,11 @@ I messaggi **arrivano simultaneamente** ma su N porte di ingresso diverse (SDM) 
 Una volta finita la ricezione, gli N messaggi vengono inviati, ripartiti in **momenti diversi** (TDM), nell’unica porta di uscita e con **velocità maggiore** di quella di arrivo in modo che la **trasmissione di tutti** avvenga sempre nel **tempo T di arrivo** di uno solo. 
 
 La **ricezione** in ingresso di più sorgenti nello stesso tempo (SDM) genera una **contesa del canale** in uscita che non può essere risolta se non **frazionando il tempo** di trasmissione in modo da ripartirne una quota per ciascuna sorgente. La contesa del canale in uscita, quindi, è risolta nel dominio del tempo **comprimendo** la durata del **tempo di trasmissione** dei messaggi (rispetto a quello della loro ricezione) in finestre temporali più piccole dette **slot** che hanno le **proprietà**  di:
-- essere **più piccole**
-- avere **ugual durata**
+- essere **più piccole** del tempo di ricezione di un messaggio
+- avere **ugual durata** per tutte le sorgenti
 - **durare** complessivamente quanto il **tempo di ricezione** di un messaggio
-- essere assegnate sempre alla stessa sorgente
-- essere **periodiche**, cioè di ripetersi, per la stessa sorgente, dopo un **periodo T** fisso (uguale al tempo di ricezione di un messaggio).
+- essere **periodiche**, cioè di ripetersi, per la stessa sorgente, dopo un **periodo T** fisso (uguale al tempo di ricezione di un messaggio) che è detto **tempo di trama** o semplicemente **trama**.
+- avere un **indice** che identifica lo slot all'interno della trama che, essendo associato univocamente ad una sorgente, **identifica** il mittente al momento della ricezione del messaggio.
   
 Ogni slot è **assegnato** ad una certa sorgente in una posizione **separata** da quella di tutte le altre che è **ciclica**, cioè  fissa, all'interno dell'intervallo di tempo **utile per trasmettere**, che corrisponde al tempo morto che intercorre tra la **ricezione** di due **messaggi consecutivi** (identico per tutte le sorgenti). 
 
