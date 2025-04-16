@@ -52,7 +52,7 @@ L'esigenza di **trasmettere** su uno stesso canale più messaggi ricevuti contem
 - avere **ugual durata** per tutte le sorgenti pari a **T/N**
 - **durare** complessivamente quanto il **tempo di ricezione** di un messaggio
 - essere **periodiche**, cioè di ripetersi, per la stessa sorgente, dopo un **periodo T** fisso (uguale al tempo di ricezione di un messaggio) che è detto **tempo di trama** o semplicemente **trama**.
-- avere un **indice** che identifica lo slot all'interno della trama che, essendo stato associato univocamente ad una sorgente in fase di setup della trasmissione, di rimando **identifica** anche il mittente quando il messaggio viene ricevuto all'**altro capo** del canale multiplato.
+- avere un **indice** che identifica lo slot all'interno della trama che, essendo stato associato univocamente ad una sorgente in fase di setup della trasmissione, di rimando **identifica** anche il mittente, quando il messaggio viene ricevuto all'**altro capo** del canale multiplato.
 - la **trama** si ripete all’infinito sempre con lo **stesso ordine** di trasmissione delle sorgenti e con **ugual durata** T (ripetizione periodica).
 
 I messaggi **arrivano** ad **ondate successive** assimilabili a **round periodici**. Mentre si sta **trasmettendo** quella appena **ricevuta**, si **riceve** l'ondata **successiva**. Il **ritardo** tra il momento della ricezione di un messaggio e quello della sua trasmissione è esattamente **T**.
