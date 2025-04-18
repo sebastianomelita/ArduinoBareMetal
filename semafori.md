@@ -281,6 +281,9 @@ function signal(semaforo) {
 - Possono assumere qualsiasi valore intero non negativo
 - Utili per gestire pool di risorse
 
+Sono utili per:
+- la realizzazione della **mutua esclusione**
+  
 ### Il Conteggio nei Semafori
 
 Il valore del semaforo ha un significato importante:
@@ -293,9 +296,9 @@ Il valore del semaforo ha un significato importante:
 
 Questo doppio significato del contatore (disponibilità delle risorse quando positivo, numero di thread in attesa quando negativo) è una caratteristica distintiva dei semafori.
 
-E' utile per:
-- realizzazione della **mutua esclusione**
-- monitoraggio dell'**utilizzo delle Risorse** per evitare:
+Sono utili per:
+- la realizzazione della **mutua esclusione**
+- il monitoraggio dell'**utilizzo delle Risorse** per evitare:
      - **il sovraccarico della risorsa**: quando questa è satura, cioè ha raggiunto il limite massimo di accessi consentito, e non si possono aggiungere ulteriori accessi
      - **l'inutilizzo della risorsa**: quando questa è libera e non ci sta alcun utente che vi accede
 
