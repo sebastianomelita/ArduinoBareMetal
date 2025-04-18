@@ -54,6 +54,8 @@ I mutex supportano due operazioni fondamentali:
    - Il mutex torna nello stato sbloccato
    - Se ci sono thread in attesa, uno di essi viene svegliato e acquisisce il mutex
 
+<img src="img/mutex.png" alt="alt text" width="600">
+
 ```c
 // Pseudocodice delle operazioni di mutex
 function lock(mutex) {
@@ -273,6 +275,8 @@ function signal(semaforo) {
 - Possono assumere solo i valori 0 o 1
 - Simili ai mutex, ma con differenze importanti (ad es., un semaforo può essere segnalato da qualsiasi thread)
 
+<img src="img/semaphore.png" alt="alt text" width="600">
+
 #### 2. Semafori Contatori (o Generali)
 - Possono assumere qualsiasi valore intero non negativo
 - Utili per gestire pool di risorse
@@ -284,6 +288,8 @@ Il valore del semaforo ha un significato importante:
 - **Valore positivo (N > 0)**: Indica che ci sono N risorse disponibili
 - **Valore zero (N = 0)**: Nessuna risorsa disponibile, ma nessun thread in attesa
 - **Valore negativo (N < 0)**: |N| thread sono in attesa della risorsa
+
+<img src="img/consemaphore.png" alt="alt text" width="600">
 
 Questo doppio significato del contatore (disponibilità delle risorse quando positivo, numero di thread in attesa quando negativo) è una caratteristica distintiva dei semafori.
 
