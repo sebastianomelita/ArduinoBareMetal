@@ -1,4 +1,4 @@
->[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](threadschedpy.md)
+>[Torna a thread](threadsched.md)  >[Versione in Python](threadschedpy.md)
 
 # Concorrenza, Sincronizzazione e Mutua Esclusione
 ## Dispensa didattica
@@ -588,3 +588,6 @@ Implementa una soluzione al problema dei lettori-scrittori che dia priorità ai 
 - Tanenbaum, A. S. (2014). *Modern Operating Systems*. Pearson.
 - Stevens, W. R., & Rago, S. A. (2013). *Advanced Programming in the UNIX Environment*. Addison-Wesley.
 - *The Little Book of Semaphores* by Allen B. Downey (disponibile gratuitamente online).
+
+
+>[Torna a thread](threadsched.md)  >[Versione in Python](threadschedpy.md)
