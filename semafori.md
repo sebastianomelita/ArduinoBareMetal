@@ -297,6 +297,8 @@ Questo doppio significato del contatore (disponibilità delle risorse quando pos
 
 #### Esempio 1: Produttore-Consumatore con Buffer Limitato
 
+<img src="img/producer-consumer-1.png" alt="alt text" width="600">
+
 ```c
 #include <pthread.h>
 #include <semaphore.h>
@@ -380,6 +382,8 @@ int main() {
     return 0;
 }
 ```
+
+<img src="img/prodcons.png" alt="alt text" width="600">
 
 In questo esempio:
 - `empty_slots` è un semaforo contatore che tiene traccia degli slot vuoti nel buffer
