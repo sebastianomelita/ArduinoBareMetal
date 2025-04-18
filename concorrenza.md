@@ -220,6 +220,24 @@ La **sincronizzazione** è un meccanismo che coordina l'esecuzione di thread o p
 
 A differenza della mutua esclusione, che si concentra sull'accesso esclusivo a risorse condivise, la sincronizzazione si concentra sull'ordine e la sequenza di operazioni tra thread differenti.
 
+### Problemi di Sincronizzazione nei Sistemi Concorrenti
+
+I problemi di sincronizzazione sono una categoria fondamentale di sfide nella programmazione concorrente che riguardano il **coordinamento dell'ordine di esecuzione** tra thread o processi. A differenza dei problemi di mutua esclusione (che si concentrano sull'accesso esclusivo alle risorse condivise), i problemi di sincronizzazione si verificano quando è necessario garantire che determinate operazioni avvengano in una sequenza specifica, o quando l'esecuzione di un thread dipende dal completamento di operazioni in un altro thread.
+
+Questi problemi emergono da **dipendenze temporali** tra operazioni e non possono essere identificati completamente attraverso la sola analisi dei conflitti di accesso ai dati (come le condizioni di Bernstein). Un thread potrebbe dover attendere che un altro thread completi un calcolo, segnali un evento o renda disponibili dei dati prima di poter procedere.
+
+Esempi tipici di problemi di sincronizzazione includono:
+
+1. **Produttore-Consumatore**: Un thread produce dati che un altro thread deve consumare, richiedendo coordinamento per evitare che il consumatore tenti di elaborare dati non ancora prodotti o che il produttore sovrascriva dati non ancora consumati.
+
+2. **Segnalazione di eventi**: Un thread deve notificare ad altri thread che un certo evento è avvenuto, permettendo loro di proseguire l'esecuzione.
+
+3. **Sincronizzazione a barriera**: Un gruppo di thread deve raggiungere un punto specifico di esecuzione prima che qualsiasi thread possa proseguire oltre quel punto.
+
+4. **Ordinamento di operazioni**: Quando il risultato di un calcolo dipende dall'esecuzione di operazioni in una sequenza specifica tra thread diversi.
+
+I problemi di sincronizzazione vengono tipicamente risolti utilizzando meccanismi come semafori, variabili condition, barriere o altri strumenti di coordinamento che permettono ai thread di comunicare tra loro riguardo al loro stato di esecuzione e di attendere il verificarsi di condizioni specifiche prima di procedere.
+
 ### Implementazione
 
 #### 1. Semafori
