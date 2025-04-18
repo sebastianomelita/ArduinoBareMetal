@@ -1,3 +1,5 @@
+>[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](threadschedpy.md)
+
 # Concorrenza, Sincronizzazione e Mutua Esclusione
 ## Dispensa didattica
 
