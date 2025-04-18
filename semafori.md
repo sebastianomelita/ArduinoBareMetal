@@ -590,6 +590,7 @@ Implementa un sistema che limiti l'uso concorrente di una risorsa a un massimo d
 - Stevens, W. R., & Rago, S. A. (2013). *Advanced Programming in the UNIX Environment*. Addison-Wesley.
 - Downey, A. B. (2016). *The Little Book of Semaphores*. Green Tea Press.
 - https://takeuforward.org/operating-system/semaphore-and-its-types
+- https://takeuforward.org/operating-system/producer-consumer
 
 >[Torna a thread](threadsched.md)  >[Versione in Python](threadschedpy.md)
 
