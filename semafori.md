@@ -40,7 +40,7 @@ Caratteristiche principali:
 - Un mutex può essere in stato bloccato (locked) o sbloccato (unlocked)
 - Solo un thread alla volta può possedere un mutex
 - Solo il thread che ha acquisito il mutex può rilasciarlo
-- I mutex vengono utilizzati per proteggere le **sezioni critiche** del codice
+- I mutex vengono utilizzati per proteggere le **sezioni critiche** del codice, cioè quelle che devono essere eseguite, in maniera **strettamente sequenziale**, da un thread alla volta.
 
 ### Operazioni sui Mutex
 
@@ -277,12 +277,18 @@ function signal(semaforo) {
 
 <img src="img/semaphore.png" alt="alt text" width="600">
 
+Sono adoperati per:
+- la realizzazione della **mutua esclusione**_
+     -  Previene **race condition** e corruzione dei dati
+- **Sincronizzazione dell'accesso** ai dati:
+     - Garantisce **coordinamento** tra produttori e consumatori
+     - Mantiene l'**ordine corretto** degli elementi prodotti e consumati
+  
 #### 2. Semafori Contatori (o Generali)
-- Possono assumere qualsiasi valore intero non negativo
-- Utili per gestire pool di risorse
 
-Sono utili per:
-- la realizzazione della **mutua esclusione**
+Possono assumere qualsiasi valore **intero non negativo**, sono utili, oltre che per gli scopi dei semafori binari, anche per: 
+- gestire un **pool di risorse** che può essere acceduto in maniera parallela fino ad un certo limite
+- gestire l'**overflow/underflow** di una risorsa per evitare più accessi del consentito o il suo sottoutilizzo
   
 ### Il Conteggio nei Semafori
 
@@ -296,11 +302,7 @@ Il valore del semaforo ha un significato importante:
 
 Questo doppio significato del contatore (disponibilità delle risorse quando positivo, numero di thread in attesa quando negativo) è una caratteristica distintiva dei semafori.
 
-Sono utili per:
-- la realizzazione della **mutua esclusione**
-- il monitoraggio dell'**utilizzo delle Risorse** per evitare:
-     - **il sovraccarico della risorsa**: quando questa è satura, cioè ha raggiunto il limite massimo di accessi consentito, e non si possono aggiungere ulteriori accessi
-     - **l'inutilizzo della risorsa**: quando questa è libera e non ci sta alcun utente che vi accede
+
 
 ### Esempi Pratici di Semafori
 
