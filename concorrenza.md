@@ -358,6 +358,10 @@ Senza il mutex, a causa della race condition, il valore finale potrebbe essere i
 
 ### 2. Sincronizzazione: Produttore-Consumatore
 
+In assenza di sincronizzazione tra chi scrive (il produttore) e chi legge (il consumatore), potrebbe accadere che:
+- il produttore sovrascriva la vecchia informazione con una nuova, prima che il produttore abbia ancora letto la vecchia
+- il consumatore legga la vecchia informazione più volte pensando che essa sia una nuova nel frattempo scritta dal produttore
+
 ```c
 #include <pthread.h>
 #include <stdio.h>
