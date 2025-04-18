@@ -24,6 +24,14 @@ La **concorrenza** è la capacità di un sistema di eseguire più attività nell
 
 In un sistema a multiprocessore o multicore, abbiamo un vero **parallelismo**, dove più istruzioni vengono effettivamente eseguite nello stesso istante. In sistemi con un singolo processore, la concorrenza è spesso simulata tramite context switching, dove il sistema operativo alterna rapidamente l'esecuzione dei diversi thread.
 
+Normalmente eseguire in **parallelo** più task (o più repliche dello stesso task) attraverso la tecnica dell'**interliving** offerta dal multi-threading o dal multi-processing è conveniente perchè produce un **incremento delle prestazioni** nell'esecuzione del codice.
+
+Tuttavia, alcune **operazioni parallele** di accesso su uno stesso dato (o una stessa risorsa) possono portare l'informazione in esso contenuta in uno stato **inconsistente** (o incoerente), rendendola inutilizzabile. 
+
+Le porzioni di codice sensibili a queto problema si dicono affette da **race condition**. La soluzione al problema del race condition è passare, limitatamente a quelle sezioni di codice, da un accesso parallelo ad uno **strettamente sequenziale**. Questo significa che quelle porzioni di codice devono devono essere eseguite da **un thread alla volta**. 
+
+Riassumendo:
+
 **Perché è importante la concorrenza?**
 - Migliora le prestazioni sfruttando più unità di elaborazione
 - Permette di gestire simultaneamente più attività
@@ -35,7 +43,6 @@ In un sistema a multiprocessore o multicore, abbiamo un vero **parallelismo**, d
 - Evitare race condition, deadlock e starvation
 - Garantire la coerenza dei dati
 
----
 
 ## Le Condizioni di Bernstein
 
