@@ -528,7 +528,7 @@ Questo esempio garantisce che i thread vengano eseguiti in un ordine specifico: 
 
 ## Mappa Concettuale
 
-
+<img src="img/concorrenza.png" alt="alt text" width="1000">
 
 ---
 
