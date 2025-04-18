@@ -232,7 +232,7 @@ Un **semaforo** è un meccanismo di sincronizzazione più generale rispetto al m
 Caratteristiche principali:
 - Mantiene un contatore interno che può essere positivo, zero o negativo
 - Il valore del contatore indica la disponibilità della risorsa
-- Può essere utilizzato sia per mutua esclusione che per sincronizzazione di eventi
+- Può essere utilizzato sia per **mutua esclusione** che per **sincronizzazione di eventi**
 
 ### Operazioni sui Semafori
 
