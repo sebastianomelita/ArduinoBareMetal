@@ -293,9 +293,9 @@ Il valore del semaforo ha un significato importante:
 
 Questo doppio significato del contatore (disponibilità delle risorse quando positivo, numero di thread in attesa quando negativo) è una caratteristica distintiva dei semafori.
 
-E' utile per sorvegliare l'**utilizzo delle Risorse** in quanto gestisce efficacemente la **dimensione del buffer** per evitare:
-- **Buffer overflow**: quando il buffer è pieno e non si possono aggiungere elementi
-- **Buffer underflow**: quando il buffer è vuoto e non ci sono elementi da consumare
+E' utile per sorvegliare l'**utilizzo delle Risorse** in quanto gestisce efficacemente la **l'accesso ad una risorsa** per evitare:
+- **il sovraccarico della risorsa**: quando questa è satura e non si possono aggiungere ulteriori accessi
+- **l'inutilizzo della risorsa**: quando questa è libera e non ci sta alcun utente che vi accede
 
 ### Esempi Pratici di Semafori
 
