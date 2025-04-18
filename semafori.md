@@ -48,7 +48,7 @@ Tuttavia, alcune **operazioni parallele** di accesso su uno stesso dato (o una s
 
 Le porzioni di codice sensibili a queto problema si dicono affette da **race condition**. La soluzione al problema del race condition è passare, limitatamente a quelle sezioni di codice, da un accesso parallelo ad uno **strettamente sequenziale**. Questo significa che quelle porzioni di codice devono devono essere eseguite da **un thread alla volta**. 
 
-Le altre porzioni, per massimizzare le prestazioni, possono continuare ad essere eseguite in maniera contemporanea da più thread. Le porzioni che invece devono essere **serializzate**, vengono dette **sezioni critiche**. Individuare tutte le sezioni critiche critiche di un codice è di fondamentale importanza per evitare il fenomeno dell'inconsistenza dei dati.
+Le altre porzioni, per massimizzare le prestazioni, possono continuare ad essere eseguite in maniera contemporanea da più thread. Le porzioni che invece devono essere **serializzate**, vengono dette **sezioni critiche**. Individuare tutte le sezioni critiche di un codice è di fondamentale importanza per evitare il fenomeno dell'inconsistenza dei dati.
 
 
 ### Operazioni sui Mutex
