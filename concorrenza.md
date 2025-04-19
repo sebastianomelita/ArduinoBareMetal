@@ -651,7 +651,12 @@ Implementa una soluzione al problema dei lettori-scrittori che dia priorità ai 
 
 # Condizioni di Bernstein e sincronizzazione
 
-Le **condizioni di Bernstein** sono una condizione necessaria ma non sufficiente per garantire l'assenza di problemi di sincronizzazione (come race condition) in un programma concorrente.
+Le **condizioni di Bernstein** sono una condizione necessaria ma non sufficiente per garantire l'assenza di problemi di sincronizzazione (come race condition) in un programma concorrente:
+   - **Necessaria**: Se le condizioni di Bernstein **non** sono soddisfatte, allora le istruzioni **non** possono essere eseguite in parallelo senza rischi di race condition.  
+   - **Non sufficiente**: Anche se le condizioni di Bernstein sono soddisfatte, potrebbero comunque esserci problemi di sincronizzazione dovuti a:  
+     - **Accesso a risorse condivise** non considerate nelle condizioni (ad esempio, file, dispositivi I/O, strutture dati complesse).  
+     - **Ordinamento non deterministico** dell'esecuzione, che può portare a situazioni impreviste.  
+     - **Problemi di liveness** (deadlock, starvation, livelock) non coperti dalle condizioni di Bernstein.  
 
 ### Esempio:
 Supponiamo di avere due thread che eseguono:  
@@ -679,9 +684,6 @@ Per questo motivo, anche quando le condizioni di Bernstein sono soddisfatte, è 
 - Valutare le dipendenze logiche e temporali tra le operazioni
 - Considerare i requisiti di ordinamento delle operazioni
 - Analizzare se un thread dipende dal completamento di un'operazione in un altro thread
-
-In conclusione, le condizioni di Bernstein sono una condizione necessaria ma non sufficiente per garantire l'assenza di problemi di sincronizzazione in un programma concorrente.
-
 
 
 ## Bibliografia e Risorse
