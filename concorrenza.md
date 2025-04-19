@@ -31,9 +31,9 @@ Finchè i processi che lavorano in parallelo accedono a **dati differenti** non 
 
 Quando però più thread o (processi) competono per l'accesso a **dati condivisi** la situazione si complica e diventa pericolosa.
 
-In realtà, non accade nulla di pericoloso se più thread (o processi) si limitano ad accedere solo **in lettura** sullo stesso dato.
+In realtà, ancora non accade nulla di pericoloso se più thread (o processi) si limitano ad accedere solo **in lettura** sullo stesso dato.
 
-Se però più thread competono tutti in scrittura, o alcuni in lettura ed altri in scrittura,  per l'accesso su uno stesso dato allora l'informazione in esso contenuta può essere **corrotta** passando in uno stato **inconsistente** (o incoerente) che la rende, da quel momento in poi, inutilizzabile. 
+Se però più thread competono tutti in scrittura, o alcuni in lettura ed altri in scrittura, per l'accesso su uno stesso dato, allora l'informazione in esso contenuta può essere **corrotta** passando in uno stato **inconsistente** (o incoerente) che la rende, da quel momento in poi, inutilizzabile. 
 
 Le porzioni di codice sensibili a questo problema si dicono affette da **race condition** (o situazione di corsa o corsa critica). La soluzione al problema delle race condition è passare, limitatamente a quelle sezioni di codice, da un accesso parallelo ad uno **strettamente sequenziale**. Questo significa che quelle porzioni di codice devono essere eseguite da **un thread alla volta** (sezioni critiche). 
 
