@@ -653,38 +653,21 @@ Implementa una soluzione al problema dei lettori-scrittori che dia priorità ai 
 
 Se analizziamo il codice del produttore-consumatore secondo le condizioni di Bernstein, il **consumatore** legge `not_empty` e `buffer`, mentre il **produttore** scrive in `not_empty` e `buffer`. Quindi, le condizioni di Bernstein sono violate e identificherebbero correttamente il conflitto.
 
-Ma consideriamo questa variante:
+### Esempio:
+Supponiamo di avere due thread che eseguono:  
+- **Thread 1**: `x = 5;`  
+- **Thread 2**: `y = 10;`  
 
-```c
-// Variabili globali
-int data[SIZE];  // Solo per produttore
-int results[SIZE];  // Solo per consumatore
-int calculation_done = 0;
+Qui due thread soddisfano le condizioni di Bernstein (nessuna variabile in comune), quindi possono essere eseguiti in parallelo senza problemi.  
 
-// Thread 1: Esegue un lungo calcolo
-void calculator() {
-    // Esegue un calcolo importante
-    perform_lengthy_calculation();
-    
-    // Segnala che ha terminato
-    calculation_done = 1;
-}
+Tuttavia, se i thread fossero:  
+- **Thread 1**: `x = 5; print(x);`  
+- **Thread 2**: `x = 10;`  
 
-// Thread 2: Fa qualcosa dopo il calcolo
-void dependent_task() {
-    // Attende il completamento del calcolo
-    while (calculation_done == 0) {
-        // Attesa attiva
-    }
-    
-    // Esegue un'operazione che dipende logicamente
-    // dal completamento del calcolo, ma non usa
-    // alcun dato prodotto da calculator()
-    start_subsequent_operation();
-}
-```
+Anche se le condizioni di Bernstein sono soddisfatte (perché `print(x)` e `x = 10` non hanno dipendenze dirette), potremmo comunque avere un risultato non deterministico a seconda dell'ordine di esecuzione.  
 
-In questo caso, le operazioni di `calculator()` non hanno sovrapposizioni di dati con `dependent_task()` tranne per la variabile `calculation_done`. Se rimuovessimo questo meccanismo di sincronizzazione, le condizioni di Bernstein non sarebbero violate per le operazioni principali di questi thread - tuttavia, avremmo un problema serio di sincronizzazione!
+### Conclusione:
+Le condizioni di Bernstein sono utili per identificare l'indipendenza tra istruzioni, ma non garantiscono da sole l'assenza di tutti i problemi di sincronizzazione in un programma concorrente. Altri meccanismi (come lock, semafori, monitor) sono necessari per gestire la sincronizzazione in casi più complessi.
 
 La mancanza di violazione delle condizioni di Bernstein ci dice solo che non ci sono conflitti diretti di accesso ai dati, ma non garantisce che:
 
@@ -698,6 +681,8 @@ Per questo motivo, anche quando le condizioni di Bernstein sono soddisfatte, è 
 - Analizzare se un thread dipende dal completamento di un'operazione in un altro thread
 
 In conclusione, le condizioni di Bernstein sono una condizione necessaria ma non sufficiente per garantire l'assenza di problemi di sincronizzazione in un programma concorrente.
+
+
 
 ## Bibliografia e Risorse
 
