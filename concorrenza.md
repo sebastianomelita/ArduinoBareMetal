@@ -709,6 +709,6 @@ Per questo motivo, anche quando le condizioni di Bernstein sono soddisfatte, è 
 - Tanenbaum, A. S. (2014). *Modern Operating Systems*. Pearson.
 - Stevens, W. R., & Rago, S. A. (2013). *Advanced Programming in the UNIX Environment*. Addison-Wesley.
 - *The Little Book of Semaphores* by Allen B. Downey (disponibile gratuitamente online).
-
+- https://cloudxlab.com/blog/race-condition-and-deadlock/
 
 >[Torna a thread](threadsched.md)  >[Versione in Python](threadschedpy.md)
