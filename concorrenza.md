@@ -47,6 +47,8 @@ Le porzioni di codice sensibili a questo problema si dicono affette da **race co
 
 Le **sezioni critiche** sono la **soluzione** al problema delle race condition. Rimane il problema di **individuare** con esatezza le parti di codice sensibili alle race condition, parimenti rimane da capire come **realizzare** efficacemente le sezioni critiche.
 
+È molto comune che le race condition passino inosservate durante i test, anche dopo numerosi test e revisioni del codice. Ma in produzione, quando poi ci sono molti processi e thread che lavorano in parallelo e competono per le stesse risorse, questo problema potrebbe verificarsi, magari anche dopo anni. Questo spiega perchè la programmazione concorrente di più thread o processi su dati condivisi possa essere davvero molto insidiosa.
+
 Riassumendo:
 
 **Perché è importante la concorrenza?**
