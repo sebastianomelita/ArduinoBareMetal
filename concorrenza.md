@@ -651,7 +651,7 @@ Implementa una soluzione al problema dei lettori-scrittori che dia priorità ai 
 
 # Condizioni di Bernstein e sincronizzazione
 
-Se analizziamo il codice del produttore-consumatore secondo le condizioni di Bernstein, il **consumatore** legge `not_empty` e `buffer`, mentre il **produttore** scrive in `not_empty` e `buffer`. Quindi, le condizioni di Bernstein sono violate e identificherebbero correttamente il conflitto.
+Le **condizioni di Bernstein** sono una condizione necessaria ma non sufficiente per garantire l'assenza di problemi di sincronizzazione (come race condition) in un programma concorrente.
 
 ### Esempio:
 Supponiamo di avere due thread che eseguono:  
