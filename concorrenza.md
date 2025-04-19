@@ -14,7 +14,8 @@
 6. [Confronto: Mutex vs Sincronizzazione](#confronto-mutex-vs-sincronizzazione)
 7. [Esempi Pratici](#esempi-pratici)
 8. [Mappa Concettuale](#mappa-concettuale)
-9. [Esercizi](#esercizi)
+9. [Condizioni di Bernstein e sincronizzazione](#condizioni-di-bernstein-e-sincronizzazione)
+10. [Esercizi](#esercizi)
 
 ---
 
