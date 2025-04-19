@@ -649,6 +649,56 @@ Implementa una soluzione al problema dei lettori-scrittori che dia priorità ai 
 
 ---
 
+# Condizioni di BErnstein e sincronizzazione
+
+Se analizziamo il codice del produttore-consumatore secondo le condizioni di Bernstein, il **consumatore** legge `not_empty` e `buffer`, mentre il **produttore** scrive in `not_empty` e `buffer`. Quindi, le condizioni di Bernstein sono violate e identificherebbero correttamente il conflitto.
+
+Ma consideriamo questa variante:
+
+```c
+// Variabili globali
+int data[SIZE];  // Solo per produttore
+int results[SIZE];  // Solo per consumatore
+int calculation_done = 0;
+
+// Thread 1: Esegue un lungo calcolo
+void calculator() {
+    // Esegue un calcolo importante
+    perform_lengthy_calculation();
+    
+    // Segnala che ha terminato
+    calculation_done = 1;
+}
+
+// Thread 2: Fa qualcosa dopo il calcolo
+void dependent_task() {
+    // Attende il completamento del calcolo
+    while (calculation_done == 0) {
+        // Attesa attiva
+    }
+    
+    // Esegue un'operazione che dipende logicamente
+    // dal completamento del calcolo, ma non usa
+    // alcun dato prodotto da calculator()
+    start_subsequent_operation();
+}
+```
+
+In questo caso, le operazioni di `calculator()` non hanno sovrapposizioni di dati con `dependent_task()` tranne per la variabile `calculation_done`. Se rimuovessimo questo meccanismo di sincronizzazione, le condizioni di Bernstein non sarebbero violate per le operazioni principali di questi thread - tuttavia, avremmo un problema serio di sincronizzazione!
+
+La mancanza di violazione delle condizioni di Bernstein ci dice solo che non ci sono conflitti diretti di accesso ai dati, ma non garantisce che:
+
+1. Un'operazione che deve essere eseguita dopo un'altra lo sia effettivamente
+2. Un thread non debba attendere il completamento di un altro per ragioni logiche/funzionali
+3. Non esistano dipendenze di sequenza temporale tra operazioni
+
+Per questo motivo, anche quando le condizioni di Bernstein sono soddisfatte, è necessario:
+- Valutare le dipendenze logiche e temporali tra le operazioni
+- Considerare i requisiti di ordinamento delle operazioni
+- Analizzare se un thread dipende dal completamento di un'operazione in un altro thread
+
+In conclusione, le condizioni di Bernstein sono una condizione necessaria ma non sufficiente per garantire l'assenza di problemi di sincronizzazione in un programma concorrente.
+
 ## Bibliografia e Risorse
 
 - Silberschatz, A., Galvin, P. B., & Gagne, G. (2018). *Operating System Concepts*. Wiley.
