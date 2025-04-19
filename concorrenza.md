@@ -37,6 +37,12 @@ Se però più thread competono tutti in scrittura, o alcuni in lettura ed altri 
 
 <img src="img/rc.png" alt="alt text" width="800">
 
+In figura, due persone stanno cercando di realizzare la **transazione** di deposito di 1 euro online sullo stesso conto bancario. L'importo iniziale è di 17 euro. Entrambe le persone inizialmente vedrebbero 17 euro. Ciascuna di loro cerca di depositare 1 euro e l'importo finale previsto è di 19 euro. Ma a causa delle race condition, l'importo finale sul conto è di 18 euro invece di 19 euro. Questo fenomeno è anche noto come lettura sporca.
+
+L'anomalia è causata dalla **interferenza** reciproca delle due **transazioni** sullo stesso conto che porta ad una loro non corretta realizzazione. Le operazioni sarebbero andate a buon fine se fossero state **atomiche**, cioè svolte per intero senza interruzioni.
+
+Il problema non è tipico solamente delle transazioni composte da molte istruzioni ma anche di quelle composte da una **sola istruzione**. In un linguaggio ad **alto livello**, ad esempio il C, è comune che istruzioni singole siamo tradotte, in limnguaggio macchina, in **più istruzioni** separate. L'**atomicità** non è garantita sulle istruzioni ad alto livello, ma solamente su quelle in **linguaggio macchina**. Ritorna, quindi, per le singole istruzioni ad alto livello lo stesso problema che avevamo individuato per le transazioni.
+
 Le porzioni di codice sensibili a questo problema si dicono affette da **race condition** (o situazione di corsa o corsa critica). La soluzione al problema delle race condition è passare, limitatamente a quelle sezioni di codice, da un accesso parallelo ad uno **strettamente sequenziale**. Questo significa che quelle porzioni di codice devono essere eseguite da **un thread alla volta** (sezioni critiche). 
 
 Le **sezioni critiche** sono la **soluzione** al problema delle race condition. Rimane il problema di **individuare** con esatezza le parti di codice sensibili alle race condition, parimenti rimane da capire come **realizzare** efficacemente le sezioni critiche.
