@@ -25,7 +25,7 @@ La **concorrenza** è la capacità di un sistema di eseguire più attività nell
 
 In un sistema a multiprocessore o multicore, abbiamo un vero **parallelismo**, dove più istruzioni vengono effettivamente eseguite nello stesso istante. In sistemi con un singolo processore, la concorrenza è spesso simulata tramite context switching, dove il sistema operativo alterna rapidamente l'esecuzione dei diversi thread.
 
-Normalmente eseguire in **parallelo** più task (o più repliche dello stesso task) attraverso la tecnica emulata dell'**interliving** o quella reale dell'**overlapping** è conveniente perchè produce un **incremento delle prestazioni** nell'esecuzione del codice.
+Normalmente eseguire in **parallelo** più task (o più repliche dello stesso task) attraverso il parallelismo emulato dell'**interliving** o quello reale dell'**overlapping** è conveniente perchè produce un **incremento delle prestazioni** nell'esecuzione del codice.
 
 Tuttavia, alcune **operazioni parallele** di accesso su uno stesso dato (o una stessa risorsa) possono portare l'informazione in esso contenuta in uno stato **inconsistente** (o incoerente), rendendola inutilizzabile. 
 
