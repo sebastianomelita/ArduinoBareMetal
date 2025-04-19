@@ -48,53 +48,91 @@ Riassumendo:
 
 Le **Condizioni di Bernstein** rappresentano un criterio formale per determinare quando due operazioni possono essere eseguite in parallelo senza problemi.
 
-### Definizione
+Le condizioni si basano sui concetti di insiemi di dati **letti** (read set) e **scritti** (write set) da ciascun processo:
 
-Date due operazioni P1 e P2:
-- Sia I(P1) l'insieme di tutte le variabili lette (input) da P1
-- Sia O(P1) l'insieme di tutte le variabili scritte (output) da P1
-- Sia I(P2) l'insieme di tutte le variabili lette (input) da P2
-- Sia O(P2) l'insieme di tutte le variabili scritte (output) da P2
+- **Read set (R)**: insieme dei dati che il processo legge.
+- **Write set (W)**: insieme dei dati che il processo scrive.
 
-P1 e P2 possono essere eseguite in parallelo (sono indipendenti) se sono soddisfatte tutte le seguenti condizioni:
+Per due processi $$P_1$$ e $$P_2$$, non ci sono interferenze (quindi possono essere eseguiti in parallelo) se sono soddisfatte le seguenti condizioni:
 
-1. O(P1) ∩ I(P2) = ∅ (P1 non modifica nulla che P2 legge)
-2. O(P2) ∩ I(P1) = ∅ (P2 non modifica nulla che P1 legge)
-3. O(P1) ∩ O(P2) = ∅ (P1 e P2 non modificano le stesse variabili)
+1. $$W_1 \cap W_2 = \emptyset$$: i processi non scrivono sugli stessi dati.
+2. $$W_1 \cap R_2 = \emptyset$$: il primo processo non scrive dati che il secondo legge.
+3. $$R_1 \cap W_2 = \emptyset$$: il secondo processo non scrive dati che il primo legge.
 
+In altre parole:
+- I dati scritti da un processo non devono essere letti o scritti dall'altro.
+- I dati letti da un processo non devono essere scritti dall'altro.
+
+---
+
+### **Esempio Pratico**
+
+Immagina di avere due processi $$P_1$$ e $$P_2$$:
+- $$P_1 $$: legge $$A$$ e scrive $$B$$.
+- $$P_2$$: legge $$B$$ e scrive $$C$$.
+
+- $$R_1 = \{ A \}, W_1 = \{ B \}$$
+- $$R_2 = \{ B \}, W_2 = \{ C \}$$
+
+Verifica delle condizioni:
+1. $$W_1 \cap W_2 = \emptyset$$: $$\{ B \} \cap \{ C \} = \emptyset$$ ✅
+2. $$W_1 \cap R_2 = \emptyset$$: $$\{ B \} \cap \{ B \} \neq \emptyset$$ ❌
+3. $$R_1 \cap W_2 = \emptyset$$: $$\{ A \} \cap \{ C \} = \emptyset$$ ✅
+
+In questo caso, i due processi **non possono essere eseguiti in parallelo** perché $W_1 \cap R_2 \neq \emptyset$: il primo processo scrive $$B$$, che il secondo processo legge.
 ### Significato
 
 Le condizioni di Bernstein indicano quando non ci sono dipendenze tra operazioni, permettendo quindi l'esecuzione parallela senza problemi di coerenza dei dati.
 
 ### Esempio
 
-Consideriamo le seguenti operazioni:
-```
-P1: a = b + c
-P2: x = y + z
-```
+Certamente, rappresentiamo entrambi gli esempi usando la stessa notazione del caso precedente.
 
-Qui abbiamo:
-- I(P1) = {b, c}
-- O(P1) = {a}
-- I(P2) = {y, z}
-- O(P2) = {x}
-
-Poiché non c'è sovrapposizione tra questi insiemi, le operazioni possono essere eseguite in parallelo.
-
-Consideriamo invece:
+### Esempio 1:
 ```
-P1: a = b + c
-P2: b = x + y
+P₁: a = b + c
+P₂: x = y + z
 ```
 
-Qui abbiamo:
-- I(P1) = {b, c}
-- O(P1) = {a}
-- I(P2) = {x, y}
-- O(P2) = {b}
+- P₁: legge b e c, scrive a → R₁ = {b, c}, W₁ = {a}
+- P₂: legge y e z, scrive x → R₂ = {y, z}, W₂ = {x}
 
-La seconda condizione è violata perché O(P2) ∩ I(P1) = {b} ≠ ∅, quindi queste operazioni non possono essere eseguite in parallelo in sicurezza.
+Verifica delle condizioni di Bernstein:
+
+1. W₁ ∩ W₂ = ∅: {a} ∩ {x} = ∅ ✅
+   I due processi non scrivono nelle stesse variabili.
+
+2. W₁ ∩ R₂ = ∅: {a} ∩ {y, z} = ∅ ✅
+   P₁ scrive a, ma P₂ non legge a.
+
+3. R₁ ∩ W₂ = ∅: {b, c} ∩ {x} = ∅ ✅
+   P₁ legge b e c, ma P₂ non scrive in nessuna di queste variabili.
+
+Tutte le condizioni sono soddisfatte, quindi P₁ e P₂ possono essere eseguiti in parallelo in sicurezza.
+
+### Esempio 2:
+```
+P₁: a = b + c
+P₂: b = x + y
+```
+
+- P₁: legge b e c, scrive a → R₁ = {b, c}, W₁ = {a}
+- P₂: legge x e y, scrive b → R₂ = {x, y}, W₂ = {b}
+
+Verifica delle condizioni di Bernstein:
+
+1. W₁ ∩ W₂ = ∅: {a} ∩ {b} = ∅ ✅
+   I due processi scrivono in variabili diverse.
+
+2. W₁ ∩ R₂ = ∅: {a} ∩ {x, y} = ∅ ✅
+   P₁ scrive a, ma P₂ non legge a.
+
+3. R₁ ∩ W₂ = ∅: {b, c} ∩ {b} = {b} ≠ ∅ ❌
+   P₁ legge b e P₂ scrive b, quindi c'è un'intersezione non vuota.
+
+Poiché la terza condizione è violata, P₁ e P₂ non possono essere eseguiti in parallelo in sicurezza.
+
+Nota che il conflitto in questo secondo esempio è di tipo "read after write" (RAW), in cui P₁ legge un valore che P₂ potrebbe modificare. Se l'ordine di esecuzione non è controllato, P₁ potrebbe leggere un valore errato o inconsistente di b.
 
 ---
 
