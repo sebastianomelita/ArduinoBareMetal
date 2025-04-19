@@ -28,7 +28,7 @@ Normalmente eseguire in **parallelo** più task (o più repliche dello stesso ta
 
 Tuttavia, alcune **operazioni parallele** di accesso su uno stesso dato (o una stessa risorsa) possono portare l'informazione in esso contenuta in uno stato **inconsistente** (o incoerente), rendendola inutilizzabile. 
 
-Le porzioni di codice sensibili a queto problema si dicono affette da **race condition**. La soluzione al problema del race condition è passare, limitatamente a quelle sezioni di codice, da un accesso parallelo ad uno **strettamente sequenziale**. Questo significa che quelle porzioni di codice devono essere eseguite da **un thread alla volta**. 
+Le porzioni di codice sensibili a questo problema si dicono affette da **race condition**. La soluzione al problema del race condition è passare, limitatamente a quelle sezioni di codice, da un accesso parallelo ad uno **strettamente sequenziale**. Questo significa che quelle porzioni di codice devono essere eseguite da **un thread alla volta**. 
 
 Riassumendo:
 
