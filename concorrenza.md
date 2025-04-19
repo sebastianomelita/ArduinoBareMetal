@@ -35,6 +35,8 @@ In realtà, ancora non accade nulla di pericoloso se più thread (o processi) si
 
 Se però più thread competono tutti in scrittura, o alcuni in lettura ed altri in scrittura, per l'accesso su uno stesso dato, allora l'informazione in esso contenuta può essere **corrotta** passando in uno stato **inconsistente** (o incoerente) che la rende, da quel momento in poi, inutilizzabile. 
 
+<img src="img/rc.png" alt="alt text" width="800">
+
 Le porzioni di codice sensibili a questo problema si dicono affette da **race condition** (o situazione di corsa o corsa critica). La soluzione al problema delle race condition è passare, limitatamente a quelle sezioni di codice, da un accesso parallelo ad uno **strettamente sequenziale**. Questo significa che quelle porzioni di codice devono essere eseguite da **un thread alla volta** (sezioni critiche). 
 
 Le **sezioni critiche** sono la **soluzione** al problema delle race condition. Rimane il problema di **individuare** con esatezza le parti di codice sensibili alle race condition, parimenti rimane da capire come **realizzare** efficacemente le sezioni critiche.
