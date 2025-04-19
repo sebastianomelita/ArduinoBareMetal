@@ -31,7 +31,7 @@ Tuttavia, alcune **operazioni parallele** di accesso su uno stesso dato (o una s
 
 Le porzioni di codice sensibili a questo problema si dicono affette da **race condition**. La soluzione al problema del race condition è passare, limitatamente a quelle sezioni di codice, da un accesso parallelo ad uno **strettamente sequenziale**. Questo significa che quelle porzioni di codice devono essere eseguite da **un thread alla volta** (sezioni critiche). 
 
-Le **sezioni critiche** sono la **soluzione** al problema delle race condition. Rimane il problema di **individuare** con esatezza le parti di codice sensibili alle race condition, come rimane da capire come **realizzare** efficacemente le sezioni critiche.
+Le **sezioni critiche** sono la **soluzione** al problema delle race condition. Rimane il problema di **individuare** con esatezza le parti di codice sensibili alle race condition, parimenti rimane da capire come **realizzare** efficacemente le sezioni critiche.
 
 Riassumendo:
 
