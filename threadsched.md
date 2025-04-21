@@ -334,5 +334,6 @@ void loop() {
 - https://www.freertos.org/implementation/a00004.html
 - https://www.cs.unibo.it/~ghini/didattica/sistop/pthreads_tutorial/POSIX_Threads_Programming.htm
 - http://www.ladispe.polito.it/corsi/industrial-network/Slide/Book%20on%20C%20linux/POSIX%20Threads%20Programming.pdf
+- http://ninuzzo.freehostia.com/ant/it/teoria/so/comunicazione.html
 
 >[Torna all'indice generazione tempi](indexgenerazionetempi.md)  >[Versione in Python](threadschedpy.md)
