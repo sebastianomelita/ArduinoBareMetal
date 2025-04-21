@@ -2,17 +2,27 @@
 
 # **SCHEDULAZIONE CON I THREAD**
 
-### **Base teorica**
+## **Base teorica**
 
-I thread, detti anche processi leggeri, sono dei **flussi di esecuzione** separati da quello principale (il programma main) che procedono **indipendentemente** l'uno dall'altro e soprattutto in maniera **parallela** cioè **contemporaneamente** l'uno con l'altro. Il **parallelismo** può essere:
-- **reale** se flussi di esecuzione diversi sono eseguiti da core (o CPU) diversi. Possiede la proprietà di effettiva **simultaneità** nell'esecuzione di più istruzioni.
-- **emulato** se flussi di esecuzione diversi sono eseguiti dallo stesso core della stessa CPU. La proprietà di **simultaneità** è relativa all'esecuzione di più **programmi** nello stesso momento ma con **istruzioni** dell'uno e dell'altro eseguite in momenti diversi (tecnica dell'interleaving).
+I thread, detti anche processi leggeri, sono dei **flussi di esecuzione** separati da quello principale (il programma main) che procedono **indipendentemente** l'uno dall'altro e soprattutto in maniera **parallela** cioè **contemporaneamente** l'uno con l'altro. 
+
+### **TIpi di parallelismo**
+
+Il **parallelismo** può essere:
+- **reale** se flussi di esecuzione diversi sono eseguiti da core (o CPU) diversi. Possiede la proprietà di effettiva **simultaneità** nell'esecuzione di più istruzioni (tecnica dell'**overlapping**).
+- **emulato** se flussi di esecuzione diversi sono eseguiti dallo stesso core della stessa CPU. La proprietà di **simultaneità** è relativa all'esecuzione di più **programmi** nello stesso momento ma con **istruzioni** dell'uno e dell'altro eseguite in momenti diversi (tecnica dell'**interleaving**).
+
+<img src="img/ptime.png" alt="alt text" width="300">
 
 Normalmente una **istruzione delay(x)** fa attendere per x secondi non solo l'esecuzione di un certo task ma anche quella di tutti gli altri che quindi, in quel frattempo, sono bloccati. Il motivo risiede nel fatto che tutti i task condividono **il medesimo flusso** di esecuzione (o thread) e, se questo viene fermato, viene fermato per tutti i task.
 
-Se però due o più task vengono eseguiti su thread differenti è possibile **bloccarne soltanto uno** con un delay impedendo temporaneamente ad uno dei suoi task di andare avanti, ma **lasciando liberi tutti gli altri** task sugli altri thread di proseguire la loro esecuzione. Questo perchè thread differenti sono assimilabili a **flussi di esecuzione** differenti eseguiti su CPU (logiche) differenti. In realtà le diverse CPU logiche sono solamente **virtuali** perchè condividono un'unica CPU fisica.
+Se però due o più task vengono eseguiti su thread differenti è possibile **bloccarne soltanto uno** con un delay impedendo temporaneamente ad uno dei suoi task di andare avanti, ma **lasciando liberi tutti gli altri** task sugli altri thread di proseguire la loro esecuzione. Questo perchè thread differenti sono assimilabili a **flussi di esecuzione** differenti eseguiti su CPU (logiche) differenti. In realtà le diverse CPU logiche sono solamente **virtuali** perchè condividono un'**unica CPU fisica**.
+
+### **Programmazione lineare**
 
 Avere più **flussi di esecuzione paralleli** fornisce quindi il **vantaggio** di poter realizzare gli algoritmi in **maniera lineare** suddividendoli in **fasi successive** la cui **tempistica** può essere stabilita in **maniera semplice** ed intuitiva impostando dei **ritardi**, cioè dei delay, tra una fase e l'altra. La **separazione** dei flussi permette una **progettazione indipendente** degli algoritmi eccetto che per i **dati comuni** a più flussi (thread), per i quali deve essere **sincronizzato l'accesso** con opportuni meccanismi. 
+
+### **Processi vs threads**
 
 Anche i **processi** sono flussi di esecuzione indipendenti che procedono in parallelo su una o più CPU, esiste però una **differenza pratica** notevole con i thread:
 - nei **processi** sia input/output, che **area dati globale** che **area dati locale** (stack) sono indipendenti e separate in zone diverse della memoria RAM.
@@ -20,15 +30,29 @@ Anche i **processi** sono flussi di esecuzione indipendenti che procedono in par
 
 <img src="datathread.webp" alt="alt text" width="300">
 
-Ma come è possibile che thread diversi possano essere mandati in esecuzione contemporaneamente su un'unica CPU fisica?
+Ma come è possibile che thread diversi possano essere mandati in esecuzione contemporaneamente su un'**unica CPU fisica**?
 
-In realtà ad essere eseguiti **contemporaneamente** sono soltanto i **task**, cioè i programmi ed i relativi algoritmi, le **istruzioni** in linguaggio macchina che li compongono vengono invece eseguite **a turno**, un blocco di istruzioni alla volta. La durata del turno viene detta **quanto di tempo**. Terminato il quanto di tempo di un thread si passa ad eseguire le istruzioni di un altro thread nel quanto di tempo successivo. Ciò accade a patto che i thread siano **"preemptive"** cioè supportino il **prerilascio** della risorsa CPU **prima** del termine naturale del task (il comando return o il completamento del task). Le istruzioni accorpate in un quanto potrebbero non coincidere esattamente con un multiplo intero delle istruzioni ad alto livello, ci potrebbe essere, ad esempio, metà di un'assegnazione in un quanto e e l'altra metà in un'altro. Le istruzioni **atomiche**, cioè indivisibili, sono soltanto quelle in **linguaggio macchina**.
+### **Interleaving e prerilascio**
+
+In realtà, ad essere eseguiti **contemporaneamente** sono soltanto i **task**, cioè i programmi ed i relativi algoritmi, le **istruzioni** in linguaggio macchina che li compongono vengono invece eseguite **a turno**, un blocco di istruzioni alla volta. La durata del turno viene detta **quanto di tempo**. Terminato il quanto di tempo di un thread si passa ad eseguire le istruzioni di un altro thread nel quanto di tempo successivo. Ciò accade a patto che i thread siano **"preemptive"** cioè supportino il **prerilascio** della risorsa CPU **prima** del termine naturale del task (il comando return o il completamento del task). Le istruzioni accorpate in un quanto di tempo potrebbero non coincidere esattamente con un multiplo intero delle istruzioni ad alto livello, ci potrebbe essere, ad esempio, metà di un'assegnazione in un quanto e l'altra metà in un'altro. Le istruzioni **atomiche**, cioè indivisibili, sono soltanto quelle in **linguaggio macchina**.
 
 <img src="TaskExecution.gif" alt="alt text" width="700">
 
+### **Modelli di gestione delle risorse**
+
 Normalmente i thread possono lavorare in due **modalità operative**:
-- **prempitive o competitiva**. Se un task di un thread possiede una risorsa (ad esempio la CPU) ed è bloccato in attesa di un input o di un un delay(), viene marcato come **interrompibile** in **maniera trasparente al task**, senza che questo se ne accorga. Allo scadere di un timer HW, **il task** viene interrotto da un segnale di **interrupt** che blocca il flusso di esecuzione corrente e assegna la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**).
-- **"cooperative" cioè cooperativa**. Se un task di un thread possiede una risorsa (ad esempio la CPU) ed è bloccato in attesa di un input o di un una qualsiasi altra risorsa, esso stesso decide **spontaneamente** di cedere il controllo della CPU allo schedulatore **invocando** la sua esecuzione con un **suo** comando inserito **nel codice del task** (ad es. yeld()).  Lo **schedulatore** assegna la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**).
+- **prempitive o competitiva**. Se un task di un thread possiede una risorsa (ad esempio la CPU):
+     - è bloccato in attesa di un input o di un un delay(), allora  viene eseguita una chiamata di sistema (syscall) per l'operazione di I/O e il thread viene rimosso dalla coda dei processi in esecuzione e inserito in una coda di attesa.
+     - sta eseguendo delle istruzioni, allora allo scadere di un **timer HW**, **il task** viene interrotto da un segnale di **interrupt** che blocca il flusso di esecuzione corrente e assegna la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**). In questa modalità, è un **ente terzo** esterno con **superpoteri** (interrupt) che si prende la briga di sottrarre la CPU ad un thread e di cederla allo **schedulatore** dei thread.
+- **"non preemptive" cioè cooperativa**. Se un task di un thread possiede una risorsa (ad esempio la CPU):
+     - è bloccato in attesa di un input o di un una qualsiasi altra risorsa, allora è esso stesso che decide **spontaneamente** di cedere il controllo della CPU allo schedulatore dei thread **invocando** un comando apposito (ad es. yeld() inserito **nel codice del task**.
+     - sta eseguendo delle istruzioni, allora **il task** non viene interrotto fino al suo completamento. Per evitare che task lunghi monopolizzino la CPU si può fare in modo di inframezzare periodicamente il codice con chiamate yeld() di rilascio della CPU allo schedulatore.
+
+In entrambi i casi, lo **schedulatore**, una volta che ha il controllo della CPU lo usa per eseguire un algoritmo di scheduling che cerca, bilanciando equità ed efficienza, di assegnare la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**).
+
+Per garantire che un thread non possa monopolizzare la CPU, i kernel di molti SO moderni general-purpose (Windows, Linux, macOS) spesso implementano la modalità preemptive. Sistemi embedded e real-time possono utilizzare sia scheduling preemptive che cooperativo.
+
+### **Macchina a stati dei thread**
 
 Di seguito è riportata una possibile rappresentazione della **macchina a stati** dei thread:
 
@@ -47,7 +71,7 @@ In figura sono indicate alcune funzioni tipiche:
 - **preempt()** a seguito dell'**interruzione** del thread corrente da parte del **timer HW**, questa funzione esegue il **cambio di contesto** dal thread corrente a quello dello schedulatore.
 - **wake_up()** è una funzione che, richiamata allo scadere di un **evento esterno** al thread interrotto, lo "risveglia" mettendolo nella coda dei processi pronti (ready) per essere eseguiti. Può essere richiamata da un **evento** che avviene in un **altro thread** (ad es. una condizione su una variabile che si avvera) oppure può essere la **fine dell'attesa dell'input** che bloccava quel thread o, ancora, può essere collegata allo **scadere del tempo** di un ritardo **delay()**, che è la situazione che esploreremo nei prossimi esempi.
 
-### **Vantaggi dei thread**
+### **Vantaggi e svantaggi dei thread**
 
 Abbiamo visto che **usare i delay** per progettare i tempi di un task **è più semplice** perchè la programmazione rimane quella **lineare** a cui è solito ricorrere un programmatore per pensare gli algoritmi ma, in questo caso, **è anche molto meno costosa** in termini di efficienza che in un programma a singolo thread dato che la CPU può sempre servire tutti i task nello stesso momento (in maniera reale o simulata). 
 
@@ -62,12 +86,16 @@ Il **costo da pagare** è una certa dose di **inefficienza residua** perchè la 
 
 Riassumendo, la **schedulazione mediante thread** comporta:
 - **vantaggio**.  Maggiore semplicità nella progettazione dei programmi, grazie alla possibilità di utilizzare uno **stile lineare** di programmazione.
-- **vantaggio**. Maggiore semplicità nella progettazione dei programmi che non devono realizzare la logica della schedulazione dei task ma solo quella interna al singolo task.
+- **vantaggio**. Maggiore semplicità nella progettazione dei programmi perchè non devono realizzare la logica della schedulazione dei task ma solo quella interna al singolo task.
 - **svantaggio**. Minore efficienza nell'uso della risorsa CPU che deve comunque eseguire un thread a parte di gestione delle schedulazioni sugli altri thread.
 - **svantaggio**. Bisogna conoscere le API di libreria con cui viene realizzato il multithreading in un certo sistema con un certo linguaggio specifico. Le maniere possono essere parecchie per cui potrebbe essere utile ricorrere ad interfacce standard consolidate (ad esempio Thread POSIX)
 - **svantaggio**. la schedulazione, cioè il passaggio da un thread all'altro, è comandata dallo schedulatore secondo una tempistica che, di base, **non è governata dal programma principale**, per effetto di ciò potrebbe diventare molto probematica la gestione delle **risorse condivise**  tra un thread e l'altro. Cosa accade se due istruzioni di due task differenti scrivono contemporaneamente sullo stessa variabile globale? E se modificano contemporaneamente lo stesso registro di una periferica? 
 
 L'ultimo svantaggio è **particolarmente critico** e può comportare l'introduzione di errori difficilmente rilevabili, anche dopo innumerevoli prove sistematiche. La progettazione della gestione delle **risorse condivise**, e della gestione della **comunicazione tra i thread** in generale, deve essere molto accurata e ben ponderata. Vari strumenti SW e metodologie ad hoc permettono di affrontare più o meno efficacemente il problema.
+
+- [Concorrenza](concorrenza.md)
+- [Semafori base](semafori.md)
+
 
 ### **Utilizzo in pratica**
 
