@@ -42,10 +42,12 @@ In realtà, ad essere eseguiti **contemporaneamente** sono soltanto i **task**, 
 ### **Modelli di gestione delle risorse**
 
 Normalmente i thread possono lavorare in due **modalità operative**:
-- **prempitive o competitiva**. Se un task di un thread possiede una risorsa (ad esempio la CPU) ed è bloccato in attesa di un input o di un un delay(), viene marcato come **interrompibile** in **maniera trasparente al task**, senza che questo se ne accorga. Allo scadere di un **timer HW**, **il task** viene interrotto da un segnale di **interrupt** che blocca il flusso di esecuzione corrente e assegna la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**). In questa modalità, è un **ente terzo** esterno con **superpoteri** (interrupt) che si prende la briga di sottrarre la CPU ad un thread e di cederla allo **schedulatore** dei thread.
+- **prempitive o competitiva**. Se un task di un thread possiede una risorsa (ad esempio la CPU):
+     - è bloccato in attesa di un input o di un un delay(), allora  viene eseguita una chiamata di sistema (syscall) per l'operazione di I/O e il thread viene rimosso dalla coda dei processi in esecuzione e inserito in una coda di attesa.
+     - sta eseguendo delle istruzioni, allora allo scadere di un **timer HW**, **il task** viene interrotto da un segnale di **interrupt** che blocca il flusso di esecuzione corrente e assegna la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**). In questa modalità, è un **ente terzo** esterno con **superpoteri** (interrupt) che si prende la briga di sottrarre la CPU ad un thread e di cederla allo **schedulatore** dei thread.
 - **"non preemptive" cioè cooperativa**. Se un task di un thread possiede una risorsa (ad esempio la CPU) ed è bloccato in attesa di un input o di un una qualsiasi altra risorsa, è esso stesso che decide **spontaneamente** di cedere il controllo della CPU allo schedulatore dei thread **invocando** un comando apposito (ad es. yeld() inserito **nel codice del task** ).
 
-In enttrambi i casi, lo **schedulatore** assegna la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**).
+In entrambi i casi, lo **schedulatore** assegna la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**).
 
 Di seguito è riportata una possibile rappresentazione della **macchina a stati** dei thread:
 
