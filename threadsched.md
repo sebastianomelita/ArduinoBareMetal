@@ -45,9 +45,13 @@ Normalmente i thread possono lavorare in due **modalità operative**:
 - **prempitive o competitiva**. Se un task di un thread possiede una risorsa (ad esempio la CPU):
      - è bloccato in attesa di un input o di un un delay(), allora  viene eseguita una chiamata di sistema (syscall) per l'operazione di I/O e il thread viene rimosso dalla coda dei processi in esecuzione e inserito in una coda di attesa.
      - sta eseguendo delle istruzioni, allora allo scadere di un **timer HW**, **il task** viene interrotto da un segnale di **interrupt** che blocca il flusso di esecuzione corrente e assegna la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**). In questa modalità, è un **ente terzo** esterno con **superpoteri** (interrupt) che si prende la briga di sottrarre la CPU ad un thread e di cederla allo **schedulatore** dei thread.
-- **"non preemptive" cioè cooperativa**. Se un task di un thread possiede una risorsa (ad esempio la CPU) ed è bloccato in attesa di un input o di un una qualsiasi altra risorsa, è esso stesso che decide **spontaneamente** di cedere il controllo della CPU allo schedulatore dei thread **invocando** un comando apposito (ad es. yeld() inserito **nel codice del task** ).
+- **"non preemptive" cioè cooperativa**. Se un task di un thread possiede una risorsa (ad esempio la CPU):
+     - è bloccato in attesa di un input o di un una qualsiasi altra risorsa, allora è esso stesso che decide **spontaneamente** di cedere il controllo della CPU allo schedulatore dei thread **invocando** un comando apposito (ad es. yeld() inserito **nel codice del task**.
+     - sta eseguendo delle istruzioni, allora **il task** non viene interrotto fino al suo completamento. Per evitare che task lunghi monopolizzino la CPU si può fare in modo di inframezzare periodicamente il codice con chiamate yeld() di rilascio della CPU allo schedulatore.
 
-In entrambi i casi, lo **schedulatore** assegna la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**).
+In entrambi i casi, lo **schedulatore**, una volta che ha il controllo della CPU lo usa per eseguire un algoritmo di scheduling che cerca, bilanciando equità ed efficienza, di assegnare la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**).
+
+Per garantiree che un thread non possa monopolizzare la CPU, spesso i kernel di molti SO implementano la modalità preemptive direttamente a livello di kernel.
 
 Di seguito è riportata una possibile rappresentazione della **macchina a stati** dei thread:
 
