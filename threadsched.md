@@ -53,6 +53,8 @@ In entrambi i casi, lo **schedulatore**, una volta che ha il controllo della CPU
 
 Per garantire che un thread non possa monopolizzare la CPU, i kernel di molti SO moderni general-purpose (Windows, Linux, macOS) spesso implementano la modalità preemptive. Sistemi embedded e real-time possono utilizzare sia scheduling preemptive che cooperativo.
 
+### **Macchina a stati dei thread**
+
 Di seguito è riportata una possibile rappresentazione della **macchina a stati** dei thread:
 
 <img src="states.gif" alt="alt text" width="700">
