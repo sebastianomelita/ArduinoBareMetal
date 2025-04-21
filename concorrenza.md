@@ -63,7 +63,7 @@ Riassumendo:
 - Garantire la coerenza dei dati
 
 
-## Le Condizioni di Bernstein
+## Le condizioni di Bernstein
 
 Le **Condizioni di Bernstein** rappresentano un criterio formale per determinare quando due operazioni possono essere eseguite in parallelo senza problemi.
 
