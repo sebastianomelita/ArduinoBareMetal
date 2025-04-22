@@ -50,7 +50,7 @@ Normalmente i thread possono lavorare in due **modalità operative**:
 
 In entrambi i casi, lo **schedulatore**, una volta che ha il controllo della CPU lo usa per eseguire un **algoritmo di scheduling** che cerca, bilanciando equità ed efficienza, di assegnare la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**).
 
-Per garantire che un thread non possa monopolizzare la CPU, i kernel di molti SO moderni general-purpose (Windows, Linux, macOS) spesso implementano la modalità preemptive. Sistemi embedded e real-time possono utilizzare sia scheduling preemptive che cooperativo.
+Per garantire che un thread non possa monopolizzare la CPU, i kernel di molti SO moderni **general-purpose** (Windows, Linux, macOS) spesso implementano la modalità preemptive. Sistemi **embedded e real-time** possono utilizzare sia scheduling preemptive che cooperativo.
 
 ### **Macchina a stati dei thread**
 
