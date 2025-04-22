@@ -23,7 +23,7 @@ Se però due o più task vengono eseguiti su thread differenti è possibile **bl
 
 Avere più **flussi di esecuzione paralleli** fornisce quindi il **vantaggio** di poter realizzare gli algoritmi in **maniera lineare** suddividendoli in **fasi successive** la cui **tempistica** può essere stabilita in **maniera semplice** ed intuitiva impostando dei **ritardi**, cioè dei delay, tra una fase e l'altra. 
 
-A causa della **struttura sequenziale**, istruzioni scritte prima nel codice vengono di solito eseguite prima, per cui il **flusso di esecuzione** risulta, in definitiva, più **semplice** e **prevedibile**.
+A causa della **struttura sequenziale**, istruzioni scritte prima nel codice vengono di solito eseguite prima, per cui il **flusso di esecuzione** di un task risulta, in definitiva, più **semplice** e **prevedibile**.
 
 <img src="img/concurrency.jpeg" alt="alt text" width="600">
 
