@@ -24,7 +24,7 @@ Avere più **flussi di esecuzione paralleli** fornisce quindi il **vantaggio** d
 
 A causa della **struttura sequenziale**, istruzioni scritte prima nel codice vengono di solito eseguite prima, per cui il **flusso di esecuzione** risulta, in definitiva, più **semplice** e **prevedibile**.
 
-La **separazione** dei flussi su un **loop() separato** per ogni thread, permette una **progettazione indipendente** degli algoritmi eccetto che per i **dati comuni** a più flussi (thread), per i quali deve essere **sincronizzato l'accesso** e garantità l'**integrità** dei dati con opportuni meccanismi di gestione della concorrenza. 
+La **separazione** dei flussi su un **loop() separato** per ogni thread, permette una **progettazione indipendente** degli algoritmi eccetto che per i **dati comuni** a più flussi (thread), per i quali deve essere **sincronizzato l'accesso** e garantità l'**integrità** con opportuni meccanismi di gestione della concorrenza. 
 
 ### **Processi vs threads**
 
