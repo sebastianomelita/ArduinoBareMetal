@@ -23,32 +23,6 @@ Il modello di gestione della CPU in ambienti server come node JS e client come l
 - Un singolo task in esecuzione alla volta (esecuzione **seriale** dei **task**)
 - Più input in elaborazione contemporaneamente (esecuzione **parallela** degli **input**)
 
-### **Modello completamente cooperativo**
-
-Il modello async/await non utilizza necessariamente una singola coda, ma piuttosto si basa su un'architettura più complessa.
-
-In essenza, async/await è un pattern di programmazione costruito sopra il concetto di promesse (o future) che permette di scrivere codice asincrono in uno stile apparentemente sincrono. Ecco come funziona tipicamente l'implementazione sottostante:
-
-1. **Event Loop**: Al centro del modello c'è un loop di eventi che gestisce diverse code di callback.
-
-2. **Multiple Code**: In realtà, ci sono diverse code per diversi tipi di operazioni:
-   - Code per operazioni di I/O (lettura/scrittura file, richieste di rete)
-   - Code per timer e timeout
-   - Code per eventi di UI (nei contesti di frontend)
-   - Code per microtask (come le risoluzioni di promesse)
-
-3. **Priorità diverse**: Queste code hanno spesso priorità diverse. Per esempio, in JavaScript:
-   - La coda dei microtask (dove finiscono le promesse risolte) ha priorità maggiore
-   - La coda dei task (dove finiscono gli eventi I/O, UI, timer) ha priorità minore
-
-Quando utilizzi `await`, ciò che succede è:
-1. L'esecuzione della funzione asincrona viene sospesa
-2. Il controllo torna all'event loop che può eseguire altro codice
-3. Quando l'operazione asincrona in attesa si completa, il relativo callback viene messo in coda
-4. Quando l'event loop elabora quel callback, l'esecuzione della funzione asincrona riprende dal punto dove era stata sospesa
-
-Quindi, sebbene concettualmente possa sembrare una singola coda, in realtà il modello async/await si appoggia su un sistema più articolato con diverse code e priorità, gestite da un event loop centrale che coordina l'esecuzione asincrona.
-
 ### **Callback**
 Un callback è una funzione che:
 - viene passata ad un’altra funzione (via riferimento) con l'aspettativa che venga chiamata al **momento opportuno**
@@ -145,9 +119,34 @@ Una **future** è un oggetto restituito da una funzione **asincrona**, che rappr
 - Una future è un oggetto Python che collega il momento della produzione di codice asincrono con quello del suo consumo. In pratica, sono oggetti usati per collegare codice a basso livello **ad eventi** (basato sulle callback) con codice ad alto livello **sequenziale** (basato su async/await).
 - Le future sono in genere **restituite** da funzioni di **I/O** predisposte per questo.
 
+
 ### **Async/await**
 
 Il **caso d'uso** principale per **async/await** è rendere più **semplice** la scrittura di **codice asincrono** o, in generale, qualsiasi codice che utilizzi molte callback o futures/promesse. In particolare, async/await può aiutare a evitare **l'inferno delle callback** annidate (callback hell noto anche come piramide del destino) scrivendo programmi in **stile imperativo** (lineare e sequenziale) invece che **ad eventi**. L'obiettivo è **ristrutturare** il programma in modo che sia **più facile** da **scrivere** e **mantenere** per gli umani. Anche se i programmi asincroni sono il caso d'uso più comune, async/await non richiede che il codice sia effettivamente asincrono o utilizzi IO non bloccanti. Fondamentalmente, si tratta solo di trasformazione strutturale di un programma.
+
+Il modello async/await non utilizza necessariamente una singola coda, ma piuttosto si basa su un'architettura più complessa.
+
+In essenza, async/await è un pattern di programmazione costruito sopra il concetto di promesse (o future) che permette di scrivere codice asincrono in uno stile apparentemente sincrono. Ecco come funziona tipicamente l'implementazione sottostante:
+
+1. **Event Loop**: Al centro del modello c'è un loop di eventi che gestisce diverse code di callback.
+
+2. **Multiple Code**: In realtà, ci sono diverse code per diversi tipi di operazioni:
+   - Code per operazioni di I/O (lettura/scrittura file, richieste di rete)
+   - Code per timer e timeout
+   - Code per eventi di UI (nei contesti di frontend)
+   - Code per microtask (come le risoluzioni di promesse)
+
+3. **Priorità diverse**: Queste code hanno spesso priorità diverse. Per esempio, in JavaScript:
+   - La coda dei microtask (dove finiscono le promesse risolte) ha priorità maggiore
+   - La coda dei task (dove finiscono gli eventi I/O, UI, timer) ha priorità minore
+
+Quando si utilizza `await`, ciò che succede è:
+1. L'esecuzione della funzione asincrona viene sospesa
+2. Il controllo torna all'event loop che può eseguire altro codice
+3. Quando l'operazione asincrona in attesa si completa, il relativo callback viene messo in coda
+4. Quando l'event loop elabora quel callback, l'esecuzione della funzione asincrona riprende dal punto dove era stata sospesa
+
+Quindi, sebbene concettualmente possa sembrare una singola coda, in realtà il modello async/await si appoggia su un sistema più articolato con diverse code e priorità, gestite da un event loop centrale che coordina l'esecuzione asincrona.
 
 <img src="img/coroutine.png" alt="alt text" width="700">
 
