@@ -22,7 +22,7 @@ Il modello di gestione della CPU in ambienti server come node JS e client come l
 - Un singolo task in esecuzione alla volta (esecuzione **seriale** dei **task**)
 - Più input in elaborazione contemporaneamente (esecuzione **parallela** degli **input**)
 
-### **Modello completamente cooperativok**
+### **Modello completamente cooperativo**
 
 Il modello async/await non utilizza necessariamente una singola coda, ma piuttosto si basa su un'architettura più complessa.
 
