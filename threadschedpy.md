@@ -48,7 +48,7 @@ Normalmente i thread possono lavorare in due **modalità operative**:
      - è bloccato in attesa di un input o di un una qualsiasi altra risorsa, allora è esso stesso che decide **spontaneamente** di cedere il controllo della CPU allo schedulatore dei thread **invocando** un comando apposito (ad es. yeld() o await()) inserito **nel codice del task**.
      - sta eseguendo delle istruzioni, allora **il task** non viene interrotto fino al suo **completamento** (run to completition). Per evitare che task lunghi monopolizzino la CPU si può fare in modo di inframezzare periodicamente il codice con chiamate yeld() di rilascio della CPU allo schedulatore.
 
-In entrambi i casi, lo **schedulatore**, una volta che ha il controllo della CPU lo usa per eseguire un algoritmo di scheduling che cerca, bilanciando equità ed efficienza, di assegnare la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**).
+In entrambi i casi, lo **schedulatore**, una volta che ha il controllo della CPU lo usa per eseguire un **algoritmo di scheduling** che cerca, bilanciando equità ed efficienza, di assegnare la risorsa CPU ad **un altro thread** tra quelli che, in quel momento, aspettano di andare in esecuzione (**stato ready**).
 
 Per garantire che un thread non possa monopolizzare la CPU, i kernel di molti SO moderni general-purpose (Windows, Linux, macOS) spesso implementano la modalità preemptive. Sistemi embedded e real-time possono utilizzare sia scheduling preemptive che cooperativo.
 
