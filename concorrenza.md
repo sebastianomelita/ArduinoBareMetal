@@ -198,7 +198,14 @@ La **mutua esclusione** è un meccanismo che assicura che solo un thread alla vo
 
 ### Scopo
 
-Il principale obiettivo della mutua esclusione è prevenire le race condition, situazioni in cui il risultato finale di un'operazione dipende dall'ordine di esecuzione di thread concorrenti.
+Il principale obiettivo della mutua esclusione è **prevenire le race condition**, situazioni in cui il risultato finale di un'operazione dipende dall'ordine di esecuzione di thread concorrenti.
+
+Posseggono le seguenti **proprietà**:
+- Sono posseduti da **un solo thread** alla volta
+- Solo il thread che **ha acquisito** il mutex **può rilasciarlo**
+- Servono principalmente per garantire l'**accesso esclusivo** a risorse condivise
+- Hanno **semantica binaria** (bloccato/sbloccato)
+- Implementano il concetto di "proprietà" rigida del semaforo
 
 ### Implementazione
 
@@ -279,7 +286,7 @@ A differenza della mutua esclusione, che si concentra sull'accesso esclusivo a r
 
 ### Problemi di Sincronizzazione nei Sistemi Concorrenti
 
-I problemi di sincronizzazione sono una categoria fondamentale di sfide nella programmazione concorrente che riguardano il **coordinamento dell'ordine di esecuzione** tra thread o processi. A differenza dei problemi di mutua esclusione (che si concentrano sull'accesso esclusivo alle risorse condivise), i problemi di sincronizzazione si verificano quando è necessario garantire che determinate operazioni avvengano in una sequenza specifica, o quando l'esecuzione di un thread dipende dal completamento di operazioni in un altro thread.
+I problemi di sincronizzazione sono una categoria fondamentale di sfide nella programmazione concorrente che riguardano il **coordinamento dell'ordine di esecuzione** tra thread o processi. A differenza dei problemi di mutua esclusione (che si concentrano sull'accesso esclusivo alle risorse condivise), i problemi di sincronizzazione si verificano quando è necessario garantire che determinate operazioni avvengano in una **sequenza specifica**, o quando l'esecuzione di un thread **dipende dal completamento** di operazioni in un altro thread.
 
 Questi problemi emergono da **dipendenze temporali** tra operazioni e non possono essere identificati completamente attraverso la sola analisi dei conflitti di accesso ai dati (come le condizioni di Bernstein). Un thread potrebbe dover attendere che un altro thread completi un calcolo, segnali un evento o renda disponibili dei dati prima di poter procedere.
 
@@ -293,7 +300,12 @@ Esempi tipici di problemi di sincronizzazione includono:
 
 4. **Ordinamento di operazioni**: Quando il risultato di un calcolo dipende dall'esecuzione di operazioni in una sequenza specifica tra thread diversi.
 
-I problemi di sincronizzazione vengono tipicamente risolti utilizzando meccanismi come semafori, variabili condition, barriere o altri strumenti di coordinamento che permettono ai thread di comunicare tra loro riguardo al loro stato di esecuzione e di attendere il verificarsi di condizioni specifiche prima di procedere.
+I problemi di sincronizzazione vengono tipicamente risolti utilizzando meccanismi come semafori, variabili condition, barriere o altri **strumenti di coordinamento** che permettono ai thread di comunicare tra loro riguardo al loro stato di esecuzione e di attendere il verificarsi di condizioni specifiche prima di procedere.
+
+ Utilizzano tipicamente **semafori contatori** o **variabili di condizione**:
+- **Qualsiasi thread** può incrementare o decrementare questi semafori
+- Servono per **coordinare** la sequenza e la comunicazione tra thread di tipo diverso
+- Implementano un meccanismo di **segnalazione e sequenziamento**, non solo di esclusione
 
 ### Implementazione
 
