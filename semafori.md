@@ -410,6 +410,24 @@ In questo esempio:
 - `filled_slots` è un semaforo contatore che tiene traccia degli slot pieni
 - `mutex` è un semaforo binario (usato come mutex) per proteggere l'accesso al buffer
 
+La differenza principale tra i thread possessori dei semafori mutex e la sincronizzazione nel pattern produttore-consumatore riguarda il loro scopo, proprietà e funzionamento:
+
+**Semafori mutex (mutual exclusion):**
+- Sono posseduti da un solo thread alla volta
+- Solo il thread che ha acquisito il mutex può rilasciarlo
+- Servono principalmente per garantire l'accesso esclusivo a risorse condivise
+- Hanno semantica binaria (bloccato/sbloccato)
+- Implementano il concetto di "proprietà" rigida del semaforo
+
+**Sincronizzazione nel pattern produttore-consumatore:**
+- Utilizza tipicamente semafori contatori o variabili di condizione
+- Qualsiasi thread può incrementare o decrementare questi semafori
+- Serve per coordinare la sequenza e la comunicazione tra thread di tipo diverso
+- I produttori si bloccano quando il buffer è pieno, i consumatori quando è vuoto
+- Implementa un meccanismo di segnalazione e sequenziamento, non solo di esclusione
+
+Nel pattern produttore-consumatore, la sincronizzazione è più complessa e spesso richiede più semafori: uno per tracciare gli slot pieni nel buffer e uno per gli slot vuoti, permettendo così il coordinamento tra processi diversi.
+
 #### Esempio 2: Sincronizzazione tra Thread
 
 ```c
