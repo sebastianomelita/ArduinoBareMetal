@@ -90,7 +90,7 @@ Un **altro vantaggio** per il programmatore è che la gestione della schedulazio
 - essere fornito dal **sistema operativo** presente sulla macchina
 
 Il **costo da pagare** è una certa dose di **inefficienza residua** perchè, anche se la shedulazione dei thread può essere fatta in maniera più o meno sofisticata, essa comunque richiede l'utilizzo di un certo ammontare della risorsa CPU per le operazioni di:
-- **salvataggio del contesto** del thread corrente (essenzialmente, registro PC nello stack)
+- **salvataggio del contesto** del thread corrente (essenzialmente, dal registro PC nello stack)
 - caricamento ed esecuzione del thread dello **schedulatore**
 - **ripristino del contesto** di un thread in attesa (essenzialmente, dallo stack nel registro PC)
 
