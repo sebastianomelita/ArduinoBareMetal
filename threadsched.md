@@ -89,7 +89,14 @@ Un **altro vantaggio** per il programmatore è che la gestione della schedulazio
 - essere incluso in framework di terze parti (**middleware**)
 - essere fornito dal **sistema operativo** presente sulla macchina
 
-Il **costo da pagare** è una certa dose di **inefficienza residua** perchè la shedulazione dei thread può essere fatta in maniera più o meno sofisticata ma comunque richiede l'utilizzo di un certo ammontare della risorsa CPU. Il peso di queste inefficienze potrebbe diventare insostenibile in presenza di **molti task** che girano su sistemi con limitate risorse di calcolo, come sono tipicamente i **sistemi embedded**.
+Il **costo da pagare** è una certa dose di **inefficienza residua** perchè, anche se la shedulazione dei thread può essere fatta in maniera più o meno sofisticata, essa comunque richiede l'utilizzo di un certo ammontare della risorsa CPU per le operazioni di: - - **salvataggio del contesto** del contesto del thread corrente (in estrema sintesi, registro PC nello stack)
+- caricamento ed esecuzione del thread dello **schedulatore**
+- **ripristino del contesto** di un thread in attesa (in estrema sintesi, dallo stack nel registro PC)
+
+Il peso di queste inefficienze potrebbe diventare insostenibile in presenza di **molti task** soprattutto quando questi si alternano su sistemi con risorse limitate, come possono essere i **sistemi embedded** in presenza di:
+- Risorse limitate di RAM e CPU
+- Requisiti di risposta in tempo reale
+- Vincoli energetici (più operazioni = più consumo)
 
 Riassumendo, la **schedulazione mediante thread** comporta:
 - **vantaggio**.  Maggiore semplicità nella progettazione dei programmi, grazie alla possibilità di utilizzare uno **stile lineare** di programmazione.
