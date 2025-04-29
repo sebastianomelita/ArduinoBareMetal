@@ -166,9 +166,9 @@ Il **ritardo di propagazione** di un segnale è il **tempo finito** con cui esso
 
 La **collisione** accade nonostante che due sorgenti, che trasmettono **quasi simultaneamente**, sentano entrambe il canale libero. Chiaramente una delle sorgenti ha cominciato **per prima** la trasmissione ma, nonostante ciò, **la seconda** sente ugualmente il canale libero perchè il messaggio della prima non è **ancora arrivato** quando questa decide di trasmettere.
 
-In altre parole, se **due stazioni** A e B trasmettono una di seguito all'altra separate di un tempo Δt e il tempo di propagazione tra A a B è maggiore di Δt allora, ascoltando la portante:
+In altre parole, se **due stazioni** A e B trasmettono una di seguito all'altra separate di un tempo Δt e il tempo di propagazione tra A a B Δt1 è maggiore di Δt allora, ascoltando la portante:
 - B sente il canale libero e inizia a trasmettere il suo messaggio mentre c’è quello di A che sta per arrivare.
-- ciascuna stazione riterrà di essere l’unica a trasmettere sul canale fino a che la trama di A, che ha trasmesso prima, non arriverrà all’altra stazione B dopo il tempo di propagazione Δt corrispondente alla distanza tra A e B.
+- ciascuna stazione riterrà di essere l’unica a trasmettere sul canale perchè, al tempo Δt il canale appare ancora libero. Dopo il tempo di propagazione Δt1 (corrispondente alla distanza tra A e B) la trama di A, che ha trasmesso prima, arriverrà all’altra stazione B collidendo con la trasmissione già in corso.
 
 La **rilevazione reale**, da parte di una stazione, di **una collisione** può avvenire solo **dopo l’inizio** della trasmissione (o **durante** o **alla fine**).
 Maggiore è la distanza tra due stazioni maggiore sarà il tempo con cui il segnale si propaga dall’una all’altra:   td = d/vP
