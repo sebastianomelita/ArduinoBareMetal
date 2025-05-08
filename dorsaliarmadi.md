@@ -70,17 +70,12 @@ Uno schema degli armadi dovrebbe stabilire le esigenze in termini di:
 - **Numero di ciabatte** di alimentazione per i dispositivi attivi in esso contenuti (prese shuko) alte 1U
 - **Numero di UPS** (Universal Power Supply), gruppi di continuità per garantire l’alimentazione elettrica tramite batterie in caso di sbalzi di tensione o brevi blackout. Per i blackout lunghi potrebbero comandare il corretto spegnimento dei dispositivi.
 
-### **Schema CD**
-
-
 
 <img src="img/cd.png" width="800">
 
-### **Schema BD**
 
 <img src="img/bd.png" width="800">
 
-### **Schema FD**
 
 <img src="img/fd.png" width="800">
 
