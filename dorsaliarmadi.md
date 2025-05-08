@@ -71,13 +71,13 @@ Uno schema degli armadi dovrebbe stabilire le esigenze in termini di:
 - **Numero di UPS** (Universal Power Supply), gruppi di continuità per garantire l’alimentazione elettrica tramite batterie in caso di sbalzi di tensione o brevi blackout. Per i blackout lunghi potrebbero comandare il corretto spegnimento dei dispositivi.
 
 
-<img src="img/cd.png" width="800">
+<img src="img/cd.png" width="1000">
 
 
-<img src="img/bd.png" width="800">
+<img src="img/bd.png" width="1000">
 
 
-<img src="img/fd.png" width="800">
+<img src="img/fd.png" width="1000">
 
 >[Torna a reti ethernet](archeth.md#documentazione)
 
