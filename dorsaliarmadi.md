@@ -74,36 +74,15 @@ Uno schema degli armadi dovrebbe stabilire le esigenze in termini di:
 
 
 
-| CD |
-|-------------|----------|
-| Se si realizza un impianto fino a **24 dorsali** potrebbero servire:
-- 1 patch panel 
-- 1 cassetto ottico per ogni fibra che serve
-- spazio vuoto 
-- SW di core (CS). Alternative tipiche:
-     - 12P 10Gbps + 2P SFP 
-     - 12P 10Gbps + 12P SFP 
-     - 24P 1Gbps + 2P SFP 
-     - 24P 1Gbps + 2P 10Gbps + 2P SFP 
-- router firewall bastion Host
-- router e modem (packet filter)
-- server di sistema, server di business (web, nas, database), server di dominio 
-- spazio vuoto 
-- 1 ciabatta per ogni server 
-- 2 ups| <img src="img/cd.png" width="400"> |
+<img src="img/cd.png" width="800">
 
-### **Schema BD/FD**
+### **Schema BD**
 
-- 1 patch panel ogni 24 prese 
-- cassetti ottici (solitamente 1) 
-- spazio vuoto 
-- switch (vedi [apparati attivi](archeth.md#albero-degli-apparati-attivi)). Alternative tipiche:
-    - 12P 10Gbps + 2P SFP 
-    - 24P 1Gbps + 2P SFP 
-    - 24P 1Gbps + 2P 10Gbps + 2P SFP 
-• spazio vuoto 
-• 1 ciabatta 
-• 1 ups
+<img src="img/bd.png" width="800">
+
+### **Schema FD**
+
+<img src="img/fd.png" width="800">
 
 >[Torna a reti ethernet](archeth.md#documentazione)
 
