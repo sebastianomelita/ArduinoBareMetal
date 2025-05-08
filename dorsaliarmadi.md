@@ -29,7 +29,7 @@ Nello schema sopra sono stati riportati gli **A**P che sono **apparati attivi**.
 Serve stabilire qualità e quantità dei cavi permanenti (installati nell’edificio) impiegati nel cablaggio. Viene redatto subito dopo la planimetria e fornisce un quadro sinottico immediato di tutte le dorsali che è molto utile quando l'impianto è composto da parecchie dorsali.
 
 Deve definire perlomeno le seguenti proprietà:
-- **Sigla del cavo**, tipicamente un struttura X-Y dove X è la sigla dell’armadio di livello superiore a cui è collegato un capo del cavo, mentre Y è la sigla dell’armadio di livello inferiore (o del TO) a cui è collegato l’altro capo.
+- **Sigla del cavo**, tipicamente un struttura X-Y dove X è la sigla dell’armadio di livello superiore a cui è collegato un capo del cavo (armadio DA dove parte la dorsale), mentre Y (armadio fino A dove arriva la dorsale) è la sigla dell’armadio di livello inferiore (o del TO) a cui è collegato l’altro capo.
 - **Tipo di cavo**. MMF o SMF per la fibra, UTP, FTP o STP per il doppino
 - **Categoria**. OM1, OM2 , OM3 , OM4 , OM5 per la fibra MMF. Oppure OS1, OS2 per SMF. Cat 5e, cat 6, cat 6A, cat 7, cat 7A, cat 8 per il doppino.
 - **Molteplicità**. Il numero di sottocavi inseriti in divisione di spazio (SDM) dentro il cavo di dorsale. In numero pari, tipicamente 2, 4, 6, 8, 12 per la fibra. Sempre 4 doppini trecciati per un cavo UTP, FTP o STP.
