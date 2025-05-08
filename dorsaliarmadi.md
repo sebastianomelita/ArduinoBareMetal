@@ -72,7 +72,11 @@ Uno schema degli armadi dovrebbe stabilire le esigenze in termini di:
 
 ### **Schema CD**
 
-Se si realizza un impianto fino a **24 dorsali** potrebbero servire:
+
+
+| Descrizione | Immagine |
+|-------------|----------|
+| Se si realizza un impianto fino a **24 dorsali** potrebbero servire:
 - 1 patch panel 
 - 1 cassetto ottico per ogni fibra che serve
 - spazio vuoto 
@@ -86,7 +90,7 @@ Se si realizza un impianto fino a **24 dorsali** potrebbero servire:
 - server di sistema, server di business (web, nas, database), server di dominio 
 - spazio vuoto 
 - 1 ciabatta per ogni server 
-- 2 ups
+- 2 ups| <img src="img/cd.png" width="800"> |
 
 ### **Schema BD/FD**
 
