@@ -22,6 +22,7 @@
 I motivi per i quali una LAN debba essere divisa in più segmenti di LAN (fisici o logici) sono essenzialmente due:
 - Privacy. Isolare gruppi di utenti o di dispositivi che hanno interesse a rimanere isolati da accessi estranei per ragioni di privacy o sicurezza di database o impianti critici.
 - Prestazioni. Isolare gruppi di utenti o di servizi che devono essere trattati con priorità diversa o che devono usufruire di una banda diversa.
+
 I motivi per i quali gli stessi segmenti debbano rimanere parte di una stessa infrastruttura di rete fisica senza una separazione completa (air gap completo) sono:
 - Condivisione della stessa connessione Internet tramite lo stesso router di confine
 - Condivisione di alcuni servizi di business che sono a comune tra uno o più gruppi di utenti (ERP, server farm, NAS, server DHCP, ecc..)
