@@ -17,7 +17,9 @@ Il modello di gestione della CPU nei SO normalmente è di tipo **multithreading 
 - Evitare lo spreco della risorsa CPU in attesa di un input bloccante che tarda la sua risposta di un tempo non prevedibile
 - per realizzare un multitasking equo (fair) tramite l’esecuzione concorrente di più task in tempi uguali
 
-La **programmazione basata su eventi** consente di eseguire azioni specifiche quando si verificano determinate condizioni, come l'attivazione di un input digitale, il raggiungimento di una posizione specifica, o quando avviene un errore. E' un modello non-preemptive perchè, a differenza dei thread veri e propri, le callback degli eventi non sono preemptive - ciò significa che una callback in esecuzione non può essere interrotta per eseguirne un'altra.
+La **programmazione basata su eventi** consente di eseguire azioni specifiche quando si verificano determinate condizioni, come l'attivazione di un input digitale, il raggiungimento di una posizione specifica, o quando avviene un errore. 
+
+E' un modello **non-preemptive** perchè, a differenza dei thread veri e propri, le callback degli eventi, in genere, non sono preemptive, ciò significa che una callback in esecuzione non può essere interrotta per eseguirne un'altra (run to completition).
 
 **Tipi di eventi comuni** sono:
 
