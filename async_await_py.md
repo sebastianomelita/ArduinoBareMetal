@@ -18,23 +18,42 @@ Il modello di gestione della CPU nei SO normalmente è di tipo **multithreading 
 - Evitare lo spreco della risorsa CPU in attesa di un input bloccante che tarda la sua risposta di un tempo non prevedibile
 - per realizzare un multitasking equo (fair) tramite l’esecuzione concorrente di più task in tempi uguali
 
-Il modello di gestione della CPU in ambienti server come node JS e client come l’ambiente javascript di un browser web, invece, è normalmente a **singolo thread** dove il **multitasking** è generato non utilizzando il multithreading ma un modello di esecuzione **ad eventi (event driven runtime)** composto da:
-- Un **singolo thread**
-- Un singolo task in esecuzione alla volta (esecuzione **seriale** dei **task**)
-- Più input in elaborazione contemporaneamente (esecuzione **parallela** degli **input**)
+La **programmazione basata su eventi** consente di eseguire azioni specifiche quando si verificano determinate condizioni, come l'attivazione di un input digitale, il raggiungimento di una posizione specifica, o quando avviene un errore. 
+
+E' un modello **non-preemptive** perchè, a differenza dei thread veri e propri, i task degli eventi, in genere, non sono preemptive, ciò significa che un task in esecuzione non può essere interrotto per eseguirne un'altro (run to completition).
+
+Un **modello ad eventi** è composto da:
+
+* Un **singolo thread** su cui si generano gli eventi (quello del loop principale)  
+* Un **singolo task** in esecuzione alla volta (esecuzione seriale dei task)  
+* **Più input** in elaborazione **contemporaneamente** (esecuzione parallela degli input)
 
 ### **Callback**
-Un callback è una funzione che:
-- viene passata ad un’altra funzione (via riferimento) con l'aspettativa che venga chiamata al **momento opportuno**
-- Poiché la chiamata di queste funzioni spesso è legata alla notifica di un **evento esterno** al sistema (I/O dell’utente o l’arrivo di un messaggio da internet) di cui non si è in grado di prevedere **in anticipo** il tempo in cui accadrà, esse vengono dette **asincrone** (analogia con gli interrupt).
-- Il **parametro** della chiamata è un messaggio che contiene le **proprietà** correnti dell’evento
 
-Le **callback** sono il modo principale in cui vengono implementate in un **modello ad eventi** le **azioni** di risposta ad un evento, spesso mediante funzioni definite una **sola volta** nel codice, tipicamente in **forma anonima**.
+Un **callback** è una funzione che:
+
+* esegue il task associato ad un evento
+* viene passata ad un’altra funzione (via riferimento) con l'aspettativa che venga chiamata al momento opportuno  
+* Poiché la chiamata di queste funzioni spesso è legata alla notifica di un evento esterno al sistema (I/O dell’utente o l’arrivo di un messaggio da internet) di cui non si è in grado di prevedere in anticipo il tempo in cui accadrà, esse vengono dette **asincrone** (analogia con gli interrupt).  
+* Il **parametro** della chiamata è un **messaggio** che contiene le proprietà correnti dell’evento
+
+Le **callback** sono il modo principale in cui vengono implementate in un **modello ad eventi** le azioni di **risposta** ad un evento, spesso mediante funzioni definite **una sola volta** nel codice, tipicamente in **forma anonima**.
+
+### **Eventi simultanei**
+
+La gestione dell'I/O viene in genere eseguita tramite eventi e callback:
+
+* ad un **evento** sono associate una o più callback.  
+* Un evento è un’**azione** eseguita in qualche I/O.  
+* Una **callback** è una funzione che viene richiamata quando viene **servito** l’evento ad essa **associato**.  
+* Gli eventi che occorrono (accadono) **contemporaneamente** e che sono pronti per essere processati dalla CPU vengono ospitati in una **coda di messaggi**. In questa attesa il sistema può ancora elaborare altri eventi immagazzinandoli in coda rimanendo così **responsivo**.  
+* le callback degli eventi spesso sono **non-preemptive**, ciò significa che una callback in esecuzione non può essere interrotta per eseguirne un'altra.
 
 Le callback possono essere:
 - **Disgiunte** (separate) se relative ad eventi slegati tra loro che accadono in maniera indipendente
 - **Annidate** una dentro l’altra se ogni callback è associata ad un evento attivato proprio dentro un’altra callback mediante una richiesta di I/O. Sono particolarmente difficili da approcciare in maniera chiara.
 
+Questo design offre vantaggi significativi in molti contesti, la **limitazione pratica** più vistosa è che bisognerebbe evitare callback di eventi che eseguono operazioni lunghe o bloccanti, poiché queste ritarderebbero l'esecuzione di altri eventi in coda.
 ### **Modello ad eventi**
 
 I **casi d'uso** che potrebbero beneficiare di un modello a thread singolo ad eventi potrebbero essere:
