@@ -19,7 +19,7 @@ Il modello di gestione della CPU nei SO normalmente è di tipo **multithreading 
 
 La **programmazione basata su eventi** consente di eseguire azioni specifiche quando si verificano determinate condizioni, come l'attivazione di un input digitale, il raggiungimento di una posizione specifica, o quando avviene un errore. 
 
-E' un modello **non-preemptive** perchè, a differenza dei thread veri e propri, le callback degli eventi, in genere, non sono preemptive, ciò significa che un task in esecuzione non può essere interrotta per eseguirne un'altro (run to completition).
+E' un modello **non-preemptive** perchè, a differenza dei thread veri e propri, i task degli eventi, in genere, non sono preemptive, ciò significa che un task in esecuzione non può essere interrotto per eseguirne un'altro (run to completition).
 
 Un **modello ad eventi** è composto da:
 
@@ -31,6 +31,7 @@ Un **modello ad eventi** è composto da:
 
 Un **callback** è una funzione che:
 
+* esegue il task associato ad un evento
 * viene passata ad un’altra funzione (via riferimento) con l'aspettativa che venga chiamata al momento opportuno  
 * Poiché la chiamata di queste funzioni spesso è legata alla notifica di un evento esterno al sistema (I/O dell’utente o l’arrivo di un messaggio da internet) di cui non si è in grado di prevedere in anticipo il tempo in cui accadrà, esse vengono dette **asincrone** (analogia con gli interrupt).  
 * Il **parametro** della chiamata è un **messaggio** che contiene le proprietà correnti dell’evento
