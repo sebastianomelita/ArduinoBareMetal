@@ -57,7 +57,7 @@ Le callback possono essere:
 - **Disgiunte** (separate) se relative ad eventi slegati tra loro che accadono in maniera indipendente
 - **Annidate** una dentro l’altra se ogni callback è associata ad un evento attivato proprio dentro un’altra callback mediante una richiesta di I/O. Sono particolarmente difficili da approcciare in maniera chiara.
 
-Questo design offre vantaggi significativi in molti contesti la **limitazione pratica** è che bisognerebbe evitare callback di eventi che eseguono operazioni lunghe o bloccanti, poiché queste ritarderebbero l'esecuzione di altri eventi in coda.
+Questo design offre vantaggi significativi in molti contesti, la **limitazione pratica** più vistosa è che bisognerebbe evitare callback di eventi che eseguono operazioni lunghe o bloccanti, poiché queste ritarderebbero l'esecuzione di altri eventi in coda.
 
   
 ### **Modello ad eventi**
