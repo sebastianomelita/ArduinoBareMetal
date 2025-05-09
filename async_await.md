@@ -78,11 +78,7 @@ La libreria async.io ha un modello di runtime basato su un ciclo di eventi (even
 Questo modello è abbastanza diverso dai modelli in altri linguaggi come C e Java basati su processi e thread.
 Una proprietà molto interessante è che un **linguaggio ad eventi**, a differenza di molti altri linguaggi, **non blocca** mai gli altri task quando si è in attesa di un input sul task corrente.
 
-La **gestione dell'I/O** viene in genere eseguita tramite **eventi** e **callback**:
-- ad un **evento** sono associate una o più **callback**.
-- Un **evento** è un’**azione** eseguita in qualche **I/O**. 
-- Una **callback** è una **funzione** che viene richiamata quando viene **servito** l’evento ad essa **associato**.
-- Gli eventi che occorrono (accadono) **contemporaneamente** e che sono pronti per essere processati dalla CPU vengono ospitati in una **coda** di messaggi. In questa attesa il sistema può ancora **elaborare** altri eventi immagazzinandoli in coda rimanendo così **responsivo**. 
+Gli eventi che occorrono (accadono) **contemporaneamente** e che sono pronti per essere processati dalla CPU vengono ospitati in una **coda** di messaggi. In questa attesa il sistema può ancora **elaborare** altri eventi immagazzinandoli in coda rimanendo così **responsivo**. 
 
 Il primo messaggio in coda viene di volta in volta estratto e processato per essere **eseguito** inserendo la sua **callback**, e tutte le funzioni ad essa annidate, in altrettanti **frame** sullo stack. La callback correntemente sullo stack, viene eseguita fino a che non ritornano tutte le sottofunzioni ad essa annidate.
 
