@@ -23,9 +23,7 @@ La **programmazione basata su eventi** consente di eseguire azioni specifiche qu
 
 * Eventi di I/O (input/output digitali)  
 * Eventi di sicurezza  
-* Eventi di movimento completato  
 * Eventi temporizzati  
-* Eventi di forza/coppia
 
 Un **modello ad eventi** è composto da:
 
