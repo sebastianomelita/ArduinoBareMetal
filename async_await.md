@@ -21,12 +21,6 @@ La **programmazione basata su eventi** consente di eseguire azioni specifiche qu
 
 E' un modello **non-preemptive** perchè, a differenza dei thread veri e propri, le callback degli eventi, in genere, non sono preemptive, ciò significa che una callback in esecuzione non può essere interrotta per eseguirne un'altra (run to completition).
 
-**Tipi di eventi comuni** sono:
-
-* Eventi di I/O (input/output digitali)  
-* Eventi di sicurezza  
-* Eventi temporizzati  
-
 Un **modello ad eventi** è composto da:
 
 * Un **singolo thread** su cui si generano gli eventi (quello del loop principale)  
