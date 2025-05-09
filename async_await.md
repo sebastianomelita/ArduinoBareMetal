@@ -37,7 +37,7 @@ Un **callback** è una funzione che:
 
 Le **callback** sono il modo principale in cui vengono implementate in un **modello ad eventi** le azioni di **risposta** ad un evento, spesso mediante funzioni definite **una sola volta** nel codice, tipicamente in **forma anonima**.
 
-# **Eventi simultanei**
+### **Eventi simultanei**
 
 La gestione dell'I/O viene in genere eseguita tramite eventi e callback:
 
