@@ -522,7 +522,7 @@ Nel caso del WiFi in figura, è illustrato un backoff **con prenotazione** che h
 1. Una stazione fa partire il backoff quando sente il **canale libero**
 2. nel frattempo, la stazione in attesa del backoff continua a **sentire** il canale (CCA):
     - se il canale **diventa occupato** prima che il backoff scada, allora la stazione lo "**congela**" interrompendolo sul valore di tempo fin lì trascorso, senza azzerarlo.
-    - Nel momento in cui il canale **ritorna libero**, la stazione che era in attesa per il backoff interrotto, adesso non deve ricalcolare un nuovo backoff, ma utilizza, come valore di ritardo prima di trasmettere, il tempo rimanente al timout dell'ultimo backoff congelato. 
+    - Nel momento in cui il canale **ritorna libero**, la stazione che era in attesa per il backoff interrotto, non deve ricalcolare un nuovo backoff ma utilizza, come valore di ritardo prima di trasmettere, il tempo rimanente al timout dell'ultimo backoff congelato. 
 
 Il **backoff con prenotazione** è una maniera per non perdere la **priorità acquisita** ricalcolando il backoff da zero. E' una **ottimizzazione** per garantire una maggiore **equità (fairness)** nell'accesso alla risorsa canale che non sempre è implementata in protocolli CSMA/CA diversi dal WiFi.
 
