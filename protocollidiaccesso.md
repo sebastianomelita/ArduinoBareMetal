@@ -412,7 +412,7 @@ La funzione deliver() consegna la trama al livello superiore (ad un protocollo d
 Una **stazione ricevente**:
 1. Aspetta l’arrivo di una nuova trama
 2. Controlla se è una trama duplicate, cioè gia ricevuta
-3. Controlla il **CRC della trama** per verificare se è stata **ricevuta correttamente**
+3. Controlla il **CRC della trama** per verificare se è stata **ricevuta correttamente**,
 se non lo è la consegna al livello superiore e **non esegue** i passi successivi
 4. Aspetta un SIFS
 5. Invia una trama di ack
