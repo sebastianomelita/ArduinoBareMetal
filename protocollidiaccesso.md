@@ -521,8 +521,8 @@ Fig 13
 Nel caso del WiFi in figura, è illustrato un backoff **con prenotazione** che ha la proprietà di non azzerare, sprecandolo, il tempo di attesa **già trascorso** da una stazione sul proprio backoff:
 1. Una stazione fa partire il backoff quando sente il **canale libero**
 2. nel frattempo, la stazione in attesa del backoff continua a **sentire** il canale (CCA):
-    - se il canale **diventa occupato** prima che il backoff scada allora la stazione lo "**congela**" interrompendolo sul valore di tempo già trascorso, senza azzerarlo.
-    - Nel momento in cui il canale **ritorna libero** la stazione che era doppiamente in attesa, per il canale libero e per il  backoff, adesso **rimane in attesa** solo per il backoff, ricominciando il **conteggio iniziale** dal tempo in cui questo era stato interrotto, senza ricalcolarlo daccapo. 
+    - se il canale **diventa occupato** prima che il backoff scada allora la stazione lo "**congela**" interrompendolo sul valore di tempo fin lì trascorso, senza azzerarlo.
+    - Nel momento in cui il canale **ritorna libero** la stazione che era in attesa, per il  backoff interrotto, adesso non deve ricalcolare un nuovo backoff, ma utilizza, come valore di ritardo prima di trasmettere, il tempo rimanente al timout dell'ultimo backoff congelato. 
 
 Il **backoff con prenotazione** è una maniera per non perdere la **priorità acquisita** ricalcolando il backoff da zero. E' una **ottimizzazione** per garantire una maggiore **equità (fairness)** nell'accesso alla risorsa canale che non sempre è implementata in protocolli CSMA/CA diversi dal WiFi.
 
@@ -678,7 +678,7 @@ Un AP può assumere un controllo ancor più rigoroso sull'andamento delle trasmi
 
 <img src="IEEE-802154-MAC-superframe-structure-in-beacon-enabled-mode-active.png" alt="alt # **text" width="600">
 
-Il **beacon** è una particolare sequenza di bit che serve a **sincronizzare** gli orologi dell'AP con quello di tutte le stazioni e viene trasmessa **periodicamente** ad intervalli di tempo **regolari**. La trasmissione regolare del beacon, può però essere **posticipata** a causa della occupazione del mezzo trasmissivo, ed in tal caso ha luogo dopo che è trascorso un **PIFS** (PCF IFS) dal momento in cui il mezzo è libero. Un beacon serve anche di **indentificare** in maniera univoca i dispositivi che li emette grazi ad un id che viene in esso inserito. Per dei dettagli vedi [preambolo di sincronizzazione](protocolli.md#preambolo-di-sincronizzazione).
+Il **beacon** è una particolare sequenza di bit che serve a **sincronizzare** gli orologi dell'AP con quello di tutte le stazioni e viene trasmessa **periodicamente** ad intervalli di tempo **regolari**. La trasmissione regolare del beacon, può però essere **posticipata** a causa della occupazione del mezzo trasmissivo, ed in tal caso ha luogo dopo che è trascorso un **PIFS** (PCF IFS) dal momento in cui il mezzo è libero. Un beacon serve anche per **indentificare** in maniera univoca il dispositivo che li ha emessi grazie ad un **id** in essi incorporato. Per dei dettagli vedi [preambolo di sincronizzazione](protocolli.md#preambolo-di-sincronizzazione).
 
 La trama dati compresa tra due beacon consecutivi viene detta **supertrama** (superframe) ed è generalmente divisa in due zone con **politiche di accesso** al canale diverse:  
 - una **deterministica** al riparo dalle collisioni detta **CFP** (Contention Free Period) e regolata dalla multiplazione statica TDMA, che viene usata per trasmettere i dati delle comunicazioni **unicast**.
