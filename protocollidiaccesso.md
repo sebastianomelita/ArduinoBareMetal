@@ -642,7 +642,7 @@ Il **valore contenuto** nel CTS rappresenta il **tempo prenotato** dalla stazion
 Il **trasmettitore** prenota, presso il **ricevitore**, dei **time slot** tramite un messaggio di controllo **RTS** (Request To Send) avente per **argomento** il tempo di trasmissione necessario per inviare i suoi dati . 
 
 Il **ricevente** conferma la prenotazione tramite il messaggio di controllo **CTS** (Clear To Send) avente per **argomento** il tempo prenotato dal trasmettitore.
-Il messaggio **CTS** è ricevuto da **tutte le stazioni** che, col tempo in esso riportato, **impostano** il proprio contantore di Carrier Sensing detto **NAV** con il quale tengono conto della prenotazione.
+Il messaggio **CTS** è ricevuto da **tutte le stazioni** che, col tempo in esso riportato, **impostano** il proprio contatore di Carrier Sensing detto **NAV** con il quale tengono conto della prenotazione.
 
 Il NAV viene **decrementato** periodicamente nel tempo, fino a 0; quando il NAV è **diverso da zero**, vuol dire che una trasmissione è in atto nelle vicinanze e quindi la stazione si astiene dal trasmettere.
 
