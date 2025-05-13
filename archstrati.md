@@ -7,9 +7,9 @@ Nell'informatica, esiste la necessità di una organizzazione adeguata delle funz
 
 I **principi** sottostanti a questo tipo di architettura sono essenzialmente:
 - **divide et impera**, cioè promuovere la scomposizione di un problema esageratamente complesso in una serie di problemi più semplici ed affrontabili
-- **astrazione**, vuol dire che, man mano che **si sale**, ogni **livello** ha una visione del problema iniziale via via più **semplice e generale** che si occupa sempre meno dei **dettagli fisici** e, viceversa, sempre di più di problematiche concettuali. La **soluzione astratta** di un problema ha il decisivo **vantaggio** di poter essere utilizzata senza modifiche anche all'interno di **contesti differenti**, lì dove i **dettagli** per la sua applicazione vengono declinati in **maniera differente**. 
+- **astrazione**, vuol dire che, man mano che **si sale**, ogni **livello** ha una visione del problema iniziale via via più **semplice e generale** che si occupa sempre meno dei **dettagli fisici** e, viceversa, sempre di più di problematiche concettuali, cioè di principio. La **soluzione astratta** di un problema ha il decisivo **vantaggio** di poter essere utilizzata senza modifiche anche all'interno di **contesti fisici differenti**, lì dove i **dettagli** per la sua applicazione vengono declinati in **maniera differente**. 
 
-In genere, grossomodo accade che la soluzione astratta viene **adattata**, mentre quella di dettaglio viene **sostituita**.
+In genere, al variare di un **contesto fisico**, grossomodo accade che la soluzione astratta viene **adattata** (mantenendo il suo strato), mentre quella di dettaglio viene **sostituita** (mettendo uno strato diverso).
 
 ## **Funzioni di uno strato**
 
