@@ -3,7 +3,7 @@
 
 # **Architettura a strati**
 
-Nell'informatica, esiste la necessità di una organizzazione adeguata delle funzioni per potere **gestire la complessità**. La soluzione trovata sta nel distribuire funzioni complessesecondo una architettura che segua una **organizzazione a strati** (o livelli). Un **vincolo dell'architettura** è che uno strato può dialogare solamente con quelli adiacenti, sopra o sotto di lui.
+Nell'informatica, esiste la necessità di una organizzazione adeguata delle funzioni per potere **gestire la complessità**. La soluzione trovata sta nel distribuire funzioni complessesecondo una architettura che segua una **organizzazione a strati** (o livelli). Un **vincolo dell'architettura** è che uno strato può dialogare solamente con quelli **adiacenti**, sopra o sotto di lui.
 
 I **principi** sottostanti a questo tipo di architettura sono essenzialmente:
 - **divide et impera**, cioè promuovere la scomposizione di un problema esageratamente complesso in una serie di problemi più semplici ed affrontabili
