@@ -675,7 +675,7 @@ Il protocollo CSMA/CA (Carrier Sense Medium Access with Collision Avoidance) fun
 
 ## **PCF e Supertrama**
 
-Un AP può assumere un controllo ancor più rigoroso sull'andamento delle trasmissioni, se svolge un ruolo di **Point Coordinator** (PC), supportando la Point Coordination Function (PCF). In tal caso, in occasione delle trame Beacon può dare inizio ad un periodo libero da contesa (CFP, Contention Free Period), in cui annuncia un NAV tale da inibire la trasmissione di tutte le altre stazioni.
+Un AP può assumere un controllo ancor più rigoroso sull'andamento delle trasmissioni, se svolge un ruolo di **Point Coordinator** (PC), supportando la Point Coordination Function (PCF). In tal caso, in occasione delle trame Beacon può dare inizio ad un periodo libero da contesa (CFP, Contention Free Period), in cui annuncia un **NAV speciale**, in modo tale da inibire la trasmissione di tutte le altre stazioni.
 
 <img src="IEEE-802154-MAC-superframe-structure-in-beacon-enabled-mode-active.png" alt="alt # **text" width="600">
 
@@ -685,7 +685,10 @@ La trama dati compresa tra due beacon consecutivi viene detta **supertrama** (su
 - una **deterministica** al riparo dalle collisioni detta **CFP** (Contention Free Period) e regolata dalla multiplazione statica TDMA, che viene usata per trasmettere i dati delle comunicazioni **unicast**.
 - una **probabilistica** a contesa, in cui i tentativi di accesso dei dispositivi sono soggetti al **rischio di collisione** perchè regolata da un protocollo di tipo **CSMA/CA**, che invece serve per trasmettere delle particolari informazioni **broadcast** dette **advertisement**.
 
-Nel caso del WiFi, il **NAV CFP** (Contention Free Period) inibisce tutte le stazioni dal prendere l'**iniziativa di cominciare** una trasmissione. Finchè è valido le stazioni comunicheranno in modalità **master/slave**, cioè **risponderanno** solo **se interrogate**.
+Nel caso del WiFi, il **NAV CFP** (Contention Free Period) inibisce tutte le stazioni dal prendere l'**iniziativa di cominciare** una trasmissione. Finchè è valido le stazioni comunicheranno in modalità **master/slave**, in cui:
+- vengono scelte e ammesse a partecipare alla supertrama in base ad alcune caratteristiche del loro traffico, dando, ad esempio, priorità al traffico VOIP o a quello video
+- **risponderanno** solo **se interrogate**.
+- normalmente è l'AP che autonomamente sceglie le sorgenti da ammettere al regime deterministico, non sono queste a doverne fare esplicita richiesta.
 
 <img src="CFP1.png" alt="alt # **text" width="600">
 Fig 20
