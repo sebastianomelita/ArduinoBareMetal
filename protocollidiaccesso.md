@@ -625,11 +625,10 @@ Fig 17
 
 Insieme ad i messaggi di controllo **RTS** e **CTS**, viene introdotto un **contatore** di nome **NAV** che viene valutato per stabilire l'occupazione **logica** del canale, l'**osservazione** del suo valore viene detta anche **CCA virtuale**. 
 
-**CCA Reale o fisico:** è il Clear Channel Assesment realizzato mediante l**ascolto** effettivo del **canale fisico**, avviene **prima** della trasmissione. Presuppone che la stazione sia in stato di ricezione e che un **dispositivo a soglia** sia pronto a rilevare eventuale energia trasmessa da altre stazioni. 
-
-**CCA Virtuale: il Clear Channel Assesment virtuale** è invece realizzato mediante l’osservazione del **contatore** NAV. Il NAV è decrementato ad intervalli di tempo fissi e in ciascuno di essi può accadere:
-- Il **NAV > 0** allora il canale virtuale è considerato **occupato**
-- Il **NAV = 0** allora il canale virtuale è considerato **libero**
+- **CCA Reale o fisico:** è il Clear Channel Assesment realizzato mediante l**ascolto** effettivo del **canale fisico**, avviene **prima** della trasmissione. Presuppone che la stazione sia in stato di ricezione e che un **dispositivo a soglia** sia pronto a rilevare eventuale energia trasmessa da altre stazioni. 
+- **CCA Virtuale: il Clear Channel Assesment virtuale** è invece realizzato mediante l’osservazione del **contatore** NAV. Il NAV è decrementato ad intervalli di tempo fissi e in ciascuno di essi può accadere:
+     - Il **NAV > 0** allora il canale virtuale è considerato **occupato**
+     - Il **NAV = 0** allora il canale virtuale è considerato **libero**
 
 I due CCA sono del tutto **indipendenti** e possono portare a risultati diversi.  Lo **stato del canale** è stabilito dalla lettura di entrambi.
 - Quando **entrambi** (AND logico) rilevano che il canale è **libero**, solo allora può accadere che il trasmettitore **inizi a trasmettere**, o subito dopo avere atteso un DIFS o dopo l'attesa di un backoff.
@@ -639,14 +638,12 @@ Il **valore contenuto** nel CTS rappresenta il **tempo prenotato** dalla stazion
 
 ### **Prenotazione del canale**
 
-Il **trasmettitore** prenota, presso il **ricevitore**, dei **time slot** tramite un messaggio di controllo **RTS** (Request To Send) avente per **argomento** il tempo di trasmissione necessario per inviare i suoi dati . 
+1. Il **trasmettitore** prenota, presso il **ricevitore**, dei **time slot** tramite un messaggio di controllo **RTS** (Request To Send) avente per **argomento** il tempo di trasmissione necessario per inviare i suoi dati . 
 
-Il **ricevente** conferma la prenotazione tramite il messaggio di controllo **CTS** (Clear To Send) avente per **argomento** il tempo prenotato dal trasmettitore.
-Il messaggio **CTS** è ricevuto da **tutte le stazioni** che, col tempo in esso riportato, **impostano** il proprio contatore di Carrier Sensing detto **NAV** con il quale tengono conto della prenotazione.
-
-Il NAV viene **decrementato** periodicamente nel tempo, fino a 0; quando il NAV è **diverso da zero**, vuol dire che una trasmissione è in atto nelle vicinanze e quindi la stazione si astiene dal trasmettere.
-
-La stazione che ha prenotato il canale durante il NAV può effettuare in sicurezza la **trasmissione** dei suoi **dati** perchè **il tempo di NAV** è, di fatto, **al riparo** dalle collisioni. 
+2. Il **ricevente** conferma la prenotazione tramite il messaggio di controllo **CTS** (Clear To Send) avente per **argomento** il tempo prenotato dal trasmettitore.
+Il messaggio **CTS** è ricevuto da **tutte le stazioni**: 
+     - quelle che non hanno inviato l'RTS corrispondente, col tempo in esso riportato, **impostano** il proprio contatore di Carrier Sensing detto **NAV** con il quale tengono conto della prenotazione. Il NAV viene **decrementato** periodicamente nel tempo, fino a 0; quando il NAV è **diverso da zero**, vuol dire che una trasmissione è in atto nelle vicinanze e quindi la stazione si astiene dal trasmettere.
+     - La stazione che ha prenotato il canale con il corrispondente RTS, sa che dal momento della ricezione del CTS può cominciare a trasmettere e che può continuare a farlo in sicurezza per tutta la durata del NAV. Poichè il tempo di trasmissione NAV è al riparo dalle collisioni, di fatto, questo meccanismo rende impossibili gli eventi di collisione per i **messaggi dati**.
 
 Le collisioni in pratica **non possono** colpire i messaggi di **ack** e i **dati**, gli unici messaggi **soggetti a collisione** sono le trame di controllo **RTS** e **CTS** che però sono **molto corte**.
 
