@@ -625,7 +625,7 @@ Fig 17
 
 Il **messaggio CTS** viene ascoltato da **tutti**, anche dalle stazioni che in quel momento non devono trasmettere. Il **valore contenuto** nel CTS rappresenta il **tempo prenotato** dalla stazione autorizzata a trasmettere ed è il tempo che essa ritiene necessario per trasmettere il suo messaggio alla velocità corrente del sistema. 
 
-Le stazioni che ascoltano questa comunicazione la interpretano come un "bollettino" del **tempo** prenotato sul canale che conservano in una variabile contatore detta **NAV** che:
+Le stazioni che ascoltano questa comunicazione la interpretano come un "bollettino" del **tempo** prenotato sul canale e ne tengono traccia in una variabile contatore detta **NAV** che:
 - viene **decrementato** periodicamente dall'orologio di bordo di ciascuna stazione, anche quando **non devono trasmettere**
 - viene **valutato** al momento in cui una stazione **deve trasmettere** per stabilire l'occupazione **logica** del canale, motivo per cui l'**osservazione** del suo valore viene detta anche **CCA virtuale**. 
 
