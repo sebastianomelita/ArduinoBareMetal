@@ -686,9 +686,10 @@ La trama dati compresa tra due beacon consecutivi viene detta **supertrama** (su
 - una **probabilistica** a contesa, in cui i tentativi di accesso dei dispositivi sono soggetti al **rischio di collisione** perchè regolata da un protocollo di tipo **CSMA/CA**, che invece serve per trasmettere delle particolari informazioni **broadcast** dette **advertisement**.
 
 Nel caso del WiFi, il **NAV CFP** (Contention Free Period) inibisce tutte le stazioni dal prendere l'**iniziativa di cominciare** una trasmissione. Finchè è valido le stazioni comunicheranno in modalità **master/slave**, in cui:
-- vengono scelte e ammesse a partecipare alla supertrama in base ad alcune caratteristiche del loro traffico, dando, ad esempio, priorità al traffico VOIP o a quello video
-- **risponderanno** solo **se interrogate**.
-- normalmente è l'AP che autonomamente sceglie le sorgenti da ammettere al regime deterministico, non sono queste a doverne fare esplicita richiesta.
+- l'elenco delle stazioni ammesse a partecipare alla supertrama viene detto **Polling List** dato che **risponderanno** solo **se interrogate**.
+- le stazioni vengono scelte e ammesse a partecipare alla polling in base ad alcune caratteristiche del loro traffico dando, ad esempio, priorità al traffico VOIP o a quello video
+- Le stazioni indicano la loro capacità di supportare PCF solo durante l'associazione alla rete
+- Le stazioni non "prenotano" slot temporali specifici all'interno dellasupertrama. Normalmente è l'AP che autonomamente sceglie le sorgenti da ammettere al regime deterministico, non sono queste a doverne fare esplicita richiesta.
 
 <img src="CFP1.png" alt="alt # **text" width="600">
 Fig 20
