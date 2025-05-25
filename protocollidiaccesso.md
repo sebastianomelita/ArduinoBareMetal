@@ -689,7 +689,7 @@ Nel caso del WiFi, il **NAV CFP** (Contention Free Period) inibisce tutte le sta
 - l'elenco delle stazioni ammesse a partecipare alla supertrama viene detto **Polling List** dato che **risponderanno** solo **se interrogate**.
 - le stazioni vengono scelte e ammesse a partecipare alla polling in base ad alcune caratteristiche del loro traffico dando, ad esempio, priorità al traffico VOIP o a quello video
 - Le stazioni indicano la loro capacità di supportare PCF solo durante l'associazione alla rete
-- Le stazioni non "prenotano" slot temporali specifici all'interno dellasupertrama. Normalmente è l'AP che autonomamente sceglie le sorgenti da ammettere al regime deterministico, non sono queste a doverne fare esplicita richiesta.
+- Le stazioni non "prenotano" slot temporali specifici all'interno della supertrama. Normalmente è l'AP che autonomamente sceglie le sorgenti da ammettere al regime deterministico, non sono queste a doverne fare esplicita richiesta.
 
 <img src="CFP1.png" alt="alt # **text" width="600">
 Fig 20
