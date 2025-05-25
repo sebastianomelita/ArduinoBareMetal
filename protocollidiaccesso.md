@@ -223,7 +223,7 @@ Una stazione **trasmittente**:
 3. Se non vengono rilevati **segnali di collisione** per tutta la durata della trasmissione, allora la trasmissione è avvenuta con successo e **non** si eseguono le **fasi successive**.
 4. Altrimenti, si è rilevata una collisione (tramite lo scatto di un dispositivo a soglia), per cui la stazione **arresta** la trasmissione corrente, calcola un tempo casuale con l'**algoritmo di backoff** e **aspetta** per il tempo di backoff.
 5. Finito il backoff, la stazione **ritenta** la trasmissione della stessa trama, ripartendo **dal punto 1**.
-6. Dopo molte volte che non si ricevono conferme (acknowledgement) allora la stazione abbandona l’idea di trasmettere (linea interrotta o guasta).
+6. Dopo un numero massimo di volte in cui, **ascoltando durante** la trasmissione, si **rilevano** collisioni, allora la stazione abbandona l’idea di trasmettere (linea interrotta o guasta).
 
 ### **Protocollo CSMA/CD basico in pseudocodice**
 
@@ -347,7 +347,7 @@ La stazione **trasmittente**:
     - **trasmissione**, arrestano immediatamente la trasmissione e fanno partire il loro algoritmo di backoff. 
 4. Esegue il proprio backoff calcolando un tempo casuale di attesa (multiplo di RTT) e **attende** per il tempo di backoff prima di ritrasmettere la trama interrotta.
 5. Esegue la **ritrasmissione** della stessa trama e ripartendo dal **punto 1**.
-6. Dopo molte volte che si rilevano collisioni, allora la stazione abbandona l’idea di trasmettere (canale dato per interrotto).
+6. Dopo un numero massimo di volte in cui, **ascoltando durante** la trasmissione, si **rilevano** collisioni, allora la stazione abbandona l’idea di trasmettere (linea interrotta o guasta).
 
 #### **Sequenza di jamming**
 
