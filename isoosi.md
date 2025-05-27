@@ -242,12 +242,12 @@ La **ricostruzione sottostante** mira a rappresentare una rete OSI come una **in
 ### **Astrazioni topologiche**
 
 Astrazioni interessanti sono quelle, di tipo **topologico**, che traducono una rete con molti **link fisici** in un unico **link logico** che li riassume tutti (astrazione). Questa cosa avviene tipicamente a:
-- **livello 4**, dove una **intera rete IP**, composta da molti **link tra router** collegati a maglia, viene astratta in un unico **link diretto tra host** di tipo punto-punto (**Link End-to-End** virtuale fornito come servizio di rete di livello 4).
+- **livello 4**, dove una **intera rete IP**, magliata e composta da molti **router**, viene astratta in un unico **link diretto tra host** di tipo punto-punto (**Link End-to-End** virtuale fornito come servizio di rete di livello 4).
 - In tutti gli **altri livelli** della pila OSI, canali punto-punto vengono astratti in altri canali **punto-punto** posti:
     - tra due **router vicini** (adiacenti) nei primi due livelli
     - tra i dispositivi **End to End** (host) nei livelli 5, 6 e 7.
   
-Una **eccezione** notevole fanno le **LAN**, dove una **intera rete** LAN, composta di **link tra SW** collegati, in genere, ad albero, viene considerata come un link di livello 2 **diretto tra due router**. Ciò accade per una anomalia delle LAN in cui vi sono due **livelli di routing** complementari, di cui solo quello esterno **tra router** è, in realtà, **considerato** come facente parte dell'architettura ISO/OSI, l'altro è da questa assimilato come un unico link punto-punto tra router adiacenti:
+Una **eccezione** notevole fanno le **LAN**, dove una **intera rete** LAN, composta di **link tra SW** collegati, in genere, ad albero, viene considerata come un link di livello 2 **diretto tra due router**. Ciò accade per una anomalia delle LAN in cui vi sono due **livelli di routing** complementari, di cui solo quello esterno **tra router** è, in realtà, **considerato** come facente parte dell'architettura ISO/OSI, l'altro è da questa assimilato come un unico link punto-punto tra due router adiacenti:
 - uno **esterno alla LAN** che si occupa della consegna dei pacchetti **tra i router di confine** delle LAN sorgenti e destinazione. Realizza un **inoltro** di **pacchetti IP** tra **router**.
 - uno **interno alla LAN** che si occupa della consegna dei pacchetti tra l'**host sorgente** e il **router di confine** delle LAN **sorgente** e della consegna tra il **router di confine** della LAN di **destinazione** e l'**host** di destinazione. Realizza un **inoltro** di **trame MAC** tra **SW**.
   
