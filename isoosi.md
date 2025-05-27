@@ -36,8 +36,8 @@ In sostanza, **reti proprietarie**, con propri schemi di indirizzamento (spesso 
 Una **Internet IP** è quindi una rete di **router IP** collegati tra loro da **link punto punto** che possono essere **fisici** oppure **virtuali**:
 - ogni **link fisico** è tipicamente basato su conduttori metallici, fibre ottiche o mezzi radio.
 - Ogni **link virtuale** è spesso materialmente realizzato utilizzando i servizi applicativi di **livello 7** di una **rete regionale** con tecnologia arbitraria (MPLS, ATM, Ethernet).
-
-Col tempo il quadro è via via mutato. IP è diventata la tecnologia dominante e **Internet** è sempre più simile ad insieme di **sottoreti omogenee annidate** l'una dentro l'altra secondo una dimensione che scala da continentale a nazionale, e da nazionale a regionale. 
+la rete 
+Col tempo il quadro è via via mutato. Nella parte **core** di Internet IP è diventata la tecnologia dominante e, nel suo complesso, la rete **Internet** è sempre più simile ad insieme di **sottoreti omogenee annidate** l'una dentro l'altra dette AS (Autonomous Systems). Gli AS sono collegati da router di frontiera detti border gateway. La dimensione complessiva delle sottoreti scala da continentale a nazionale, e da nazionale a regionale. 
 
 Le **reti regionali**, le MAN (Metropolitan Area Network), sono comunque ancora realizzate con tecnologie abbastanza varie e adoperano un **inoltro** (smistamento) dei pacchetti che non sempre è basato solamente su IP (MPLS, Frame Relay).
 
