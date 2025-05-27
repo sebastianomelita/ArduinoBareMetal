@@ -25,7 +25,9 @@ La realizzazione tecnologica di una **WAN mondiale** non è stata inizialmente o
 
 Internet, nata nel ristretto ambiente della ricerca negli anni 70', ha poi riscosso il successo commerciale a cui siamo abituati solo all'indomani dell'invenzione del **WWW** (World Wide Web), avvenuta nel 1990. 
 
-Lo **stack TCP/IP**, una particolare e fortunata implementazione dei livelli 4 e 3 della pila OSI che stanno alla base della rete Internet, ha consentito di tenere insieme, non tanto un'**unica WAN**, quanto una **inter-network** di numerose **reti eterogenee** regionali. Per ottenere ciò, Internet ha utilizzato anche a livello 2 quei servizi di inoltro End To End che tipicamento si trovano al livello 3 della pila ISO/OSI. Di fatto, ha utilizzato a livello di linea i servizi di smistamento dei dati offerti da reti realizzate con tecnologia diversa dal TCP/IP.
+Lo **stack TCP/IP**, una particolare e fortunata implementazione dei livelli 4 e 3 della pila OSI che stanno alla base della rete Internet, ha consentito di tenere insieme, non tanto un'**unica WAN**, quanto una **inter-network** di numerose **reti eterogenee** regionali. 
+
+Per ottenere ciò, Internet ha utilizzato anche a livello 2 quei servizi di inoltro End To End che tipicamento si trovano al livello 3 della pila ISO/OSI. Di fatto, ha utilizzato a livello di linea i servizi di smistamento dei dati offerti da reti realizzate con tecnologia diversa dal TCP/IP.
 
 In sostanza, **reti proprietarie**, con propri schemi di indirizzamento (spesso non IP o con IP privati), possono essere adoperate per realizzare dei **link logici** tra router IP di una **Internet mondiale** composta da nodi ed host aventi indirizzi **IP pubblici**. 
 
