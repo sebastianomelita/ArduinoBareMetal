@@ -39,7 +39,7 @@ Una **Internet IP** è quindi una rete di **router IP** collegati tra loro da **
 
 Col tempo il quadro è via via mutato. IP è diventata la tecnologia dominante e **Internet** è sempre più simile ad insieme di **sottoreti omogenee annidate** l'una dentro l'altra secondo una dimensione che scala da continentale a nazionale, e da nazionale a regionale. 
 
-Le **reti regionali**, le MAN (Metropolitan Area Network), sono comunque ancora realizzate con tecnologie abbastanza varie e adoperano un **inoltro** (smistamento) dei pacchetti che non sempre è basato solamente su IP (spesso MPLS).
+Le **reti regionali**, le MAN (Metropolitan Area Network), sono comunque ancora realizzate con tecnologie abbastanza varie e adoperano un **inoltro** (smistamento) dei pacchetti che non sempre è basato solamente su IP (MPLS, Frame Relay).
 
 
 
