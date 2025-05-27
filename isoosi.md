@@ -31,7 +31,7 @@ Una **Internet IP** è quindi una rete di **router IP** collegati tra loro da **
 - ogni **link fisico** è tipicamente basato su conduttori metallici, fibre ottiche o mezzi radio.
 - Ogni **link virtuale** è spesso materialmente realizzato utilizzando i servizi applicativi di **livello 7** di una **rete regionale** con tecnologia arbitraria (MPLS, ATM, Ethernet).
 
-Col tempo il quadro è via via mutato. IP è diventata la tecnologia dominante e **Internet** è sempre più simile ad insieme di **sottoreti omogeneee annidate** l'una dentro l'altra secondo una dimensione che scala da continentale a nazionale, e da nazionale a regionale. Le **reti regionali**, le MAN (Metropolitan Area Network), sono comunque ancora realizzate con tecnologie abbastanza varie e adoperano un **inoltro** (smistamento) dei pacchetti che non sempre è basato solamente su IP.
+Col tempo il quadro è via via mutato. IP è diventata la tecnologia dominante e **Internet** è sempre più simile ad insieme di **sottoreti omogenee annidate** l'una dentro l'altra secondo una dimensione che scala da continentale a nazionale, e da nazionale a regionale. Le **reti regionali**, le MAN (Metropolitan Area Network), sono comunque ancora realizzate con tecnologie abbastanza varie e adoperano un **inoltro** (smistamento) dei pacchetti che non sempre è basato solamente su IP.
 
 
 
@@ -76,7 +76,7 @@ La funzione di **multiplazione**, anche se realizzata in HW, logicamente apparti
 
 ## **Middleware**
 
-Se delle funzioni di comunicazione non sono incluse nell’architettura però non vuol dire che queste siano inutili ma, semplicemente, che non è da questa architettura che esse sono svolte
+Se delle funzioni di comunicazione non sono incluse nell’architettura, allora non vuol dire che queste siano inutili ma, semplicemente, che non è da questa architettura che esse verranno svolte.
 
 Sarà responsabilità di «qualcun altro» svolgerle e tipicamente, sessione e presentazione in un nodo sono in alternativa realizzate dalla:
 - Applicazione, oppure da un
@@ -101,7 +101,7 @@ L’informazione da trasferire è organizzata in **unità dati** (PDU o Protocol
 - informazione di controllo (**PCI** o Protocol Control Information) dette anche **header** (intestazione):
     - Sono informazioni di **servizio** usate dalle **entità** pari per **portare avanti** il **protocollo** attivo sul **canale virtuale** che le collega direttamente.
     - Il **protocollo** sull'entità trasmittente **aggiunge** l'**intestazione** ai dati contenuti nella SDU (payload), lo stesso protocollo, stavolta attivo sull'entità ricevente, la **rimuove** restituendo esattamente i **dati** che erano stati consegnati in partenza su quel **canale virtuale**.
-    - Sono tipicamente **indirizzo** di **sorgente** e di **destinazione** più altre informazioni necessarie per **realizzare le funzioni** di quel livello (contatori, numeri di sequenza, checsum, ecc.)
+    - Sono tipicamente **indirizzo** di **sorgente** e di **destinazione** più altre informazioni necessarie per **realizzare le funzioni** di quel livello (contatori, numeri di sequenza, checksum, ecc.)
 
 
 Le  **PDU** in genere sono di **due tipi**:
@@ -109,7 +109,7 @@ Le  **PDU** in genere sono di **due tipi**:
     - trasporto dei **messaggi dati** da scambiare tra entità corrispondenti in un canale virtuale
     - trasporto dei **messaggi di servizio** che, pur non essendo utili per l'utente del servizio stesso, sono necessari per il suo corretto compimento, dato che il **protocollo** in uso sul canale li prevede.
     
-- **Controllo**: rispetto alle PDU normali, sono **privi del campo dati** cioè non posseggono il campo SDU (o payload), ovvero, sono composti solamente di una **intestazione** (PCI) che contiene **campi di controllo** che:
+- **Controllo**: rispetto alle PDU normali, sono **privi del campo dati** cioè non possiedono il campo SDU (o payload), ovvero, sono composti solamente di una **intestazione** (PCI) che contiene **campi di controllo** che:
     - **non** trasportano contenuti informativi utili per gli utenti del canale (le entità corrispondenti).
     - trasportano solamente **messaggi di servizio** che, pur non essendo utili per l'utente del servizio stesso, sono **necessari** per lo svolgimento del **protocollo** in uso su quel **canale virtuale**.
     
@@ -171,7 +171,7 @@ L'**imbustamento multiplo** è realizzato in trasmissione, lungo il **canale rea
 
 Poichè ogni livello **aggiunge** sempre alle SDU un proprio campo **header**, accade che il **livello fisico**, a seguito di tutti gli annidamenti, produce il **messaggio più lungo** perché è composto dal messaggio utente a dalla **somma di tutti gli header** aggiunti nei singoli livelli. Questa somma è detta, in gergo tecnico, **overhead**. Il rapporto tra la lunghezza del campo dati originale e l'overhead complessivo al livelllo fisico rappresenta una stima dell'**efficienza** del protocollo nello spedire i messaggi che, in generale, è **tanto maggiore**:
 - quanto l'**overhead è minore**
-- quanto il **mesaggio dati** di partenza è **più grande**
+- quanto il **messaggio dati** di partenza è **più grande**
 
 ### **Sbustamento multiplo**
 
@@ -207,7 +207,7 @@ I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmes
     - In senso **verticale** attraverso le interfacce della pila di protocolli
     - In senso **orizzontale**lungo il canale fisico al livello 1
 - La comunicazione **virtuale** tra le **entità pari** dei livelli è **diretta** e avviene:
-    - in senso orrizzontale tra entità adiacenti dello stesso livello.
+    - in senso orizzontale tra entità adiacenti dello stesso livello.
     - lungo un **canale virtuale** per ciascun livello.
     - utilizzando un **protocollo** e una **PDU** dedicati per ciascun livello.
 
@@ -261,12 +261,12 @@ La **percezione** di trovarsi in una rete a commutazione di circuito è solo **a
 
 I **vantaggi**, incomparabilmente **maggiori**, che una rete a commutazione di pacchetto offre rispetto ad una a circuito (con multiplatori TDM statici) sono:  la **scalabilità** (ottenuta facilmente aggiungendo **nuovi nodi** e **nuovi link**) e l'**efficienza** (ottenuta grazie alla multiplazione statistica). 
 
-Per contro, i canali realizzati con **multiplazione statica** mantengono ancora un'**affidabilità** e precisione temporale nella consegna (**jitter**) tutt'ora inegualiate dalle reti a pacchetto. Nonostante ciò, la **multiplazione statica** è oramai preferibile solo in applicazioni **di nicchia** in cui il **traffico prenotato** è sempre **costante** e mai **sprecato**. Ciò accade, ad esempio, nel mondo IoT quando è necessaria l'interrogazione periodica (**polling**) dei sensori, come quella effettuata, ad esempio, all'interno della zona CFP delle **supertrame** wireless.
+Per contro, i canali realizzati con **multiplazione statica** mantengono ancora un'**affidabilità** e precisione temporale nella consegna (**jitter**) tutt'ora ineguagliate dalle reti a pacchetto. Nonostante ciò, la **multiplazione statica** è oramai preferibile solo in applicazioni **di nicchia** in cui il **traffico prenotato** è sempre **costante** e mai **sprecato**. Ciò accade, ad esempio, nel mondo IoT quando è necessaria l'interrogazione periodica (**polling**) dei sensori, come quella effettuata, ad esempio, all'interno della zona CFP delle **supertrame** wireless.
 
 
 ## **Implementazione dei protocolli**
 
-La responsabilità della implementazione dei protocolli OSI è ripartità tra vari moduli SW e da un livello HW:
+La responsabilità della implementazione dei protocolli OSI è ripartita tra vari moduli SW e da un livello HW:
 
 | Livello |Protocolli                |      Chi li implementa   | Dove girano | Chi collegano  |
 |---------|-----------------------|-----------------------------|-----------------------------|-----------------------------| 
