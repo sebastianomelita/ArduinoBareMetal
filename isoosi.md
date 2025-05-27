@@ -242,7 +242,7 @@ La **ricostruzione sottostante** mira a rappresentare una rete OSI come una **in
 ### **Astrazioni topologiche**
 
 Astrazioni interessanti sono quelle, di tipo **topologico**, che traducono una rete con molti **link fisici** in un unico **link logico** che li riassume tutti (astrazione). Questa cosa avviene tipicamente a:
-- **livello 4**, dove una **intera rete IP**, magliata e composta da molti **router**, viene astratta in un unico **link diretto tra host** di tipo punto-punto (**Link End-to-End** virtuale fornito come servizio di rete di livello 4).
+- **livello 4**, dove una **intera rete IP**, magliata e composta da molti **router** e da molti link, viene astratta in un unico **link diretto tra host** senza router (**Link End-to-End** virtuale fornito come servizio di rete di livello 4).
 - In tutti gli **altri livelli** della pila OSI, canali punto-punto vengono astratti in altri canali **punto-punto** posti:
     - tra due **router vicini** (adiacenti) nei primi due livelli
     - tra i dispositivi **End to End** (host) nei livelli 5, 6 e 7.
