@@ -249,7 +249,7 @@ Astrazioni interessanti sono quelle, di tipo **topologico**, che traducono una r
   
 Una **eccezione** notevole fanno le **LAN**, dove una **intera rete** LAN, composta di **link tra SW** collegati, in genere, ad albero, viene considerata come un link di livello 2 **diretto tra due router**. Ciò accade per una anomalia dovuta storicamente dall'uso delle LAN.  L'utilizzo combinato di router e switch ha introdotto due **livelli di routing** complementari, di cui solo quello esterno **tra i router** è, in realtà, preso in considerazione dell'architettura ISO/OSI:
 - uno **esterno alla LAN** che si occupa della consegna dei pacchetti **tra i router di confine** delle LAN sorgenti e destinazione. Realizza un **inoltro** di **pacchetti IP**:
-     - è un processo che **smista** i pacchetti da una porta di ingresso ad una di uscita del router.
+     - è un processo che **smista** i pacchetti da una porta di ingresso ad una di uscita di un router.
      - Ogni porta di uscita rappresenta un **percorso** tra i router differente e viene **scelto** in base all'**indirizzo di destinazione** del pacchetto di livello 3 (IP).
      - è il livello di smistamento dei pacchetti negli ISP (Internet Service Provider) che compongono Internet.
 - uno **interno alla LAN** che si occupa della consegna dei pacchetti tra l'**host sorgente** e il **router di confine** delle LAN **sorgente** oppure della consegna tra il **router di confine** della LAN di **destinazione** e l'**host** di destinazione. Realizza un **inoltro** di **trame MAC** tra **SW**:
