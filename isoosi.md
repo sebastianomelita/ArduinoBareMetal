@@ -29,6 +29,8 @@ Lo **stack TCP/IP**, una particolare e fortunata implementazione dei livelli 4 e
 
 Per ottenere ciò, Internet ha utilizzato anche a livello 2 quei servizi di inoltro End To End che tipicamento si trovano al livello 3 della pila ISO/OSI. Di fatto, ha utilizzato a livello di linea i servizi di smistamento dei dati offerti da reti realizzate con tecnologie diverse dal TCP/IP.
 
+<img src="img/Internet.png" alt="alt text" width="800">
+
 In sostanza, **reti proprietarie**, con propri schemi di indirizzamento (spesso non IP o con IP privati), possono essere adoperate per realizzare dei **link logici** tra router IP di una **Internet mondiale** composta da nodi ed host aventi indirizzi **IP pubblici**. 
 
 Una **Internet IP** è quindi una rete di **router IP** collegati tra loro da **link punto punto** che possono essere **fisici** oppure **virtuali**:
