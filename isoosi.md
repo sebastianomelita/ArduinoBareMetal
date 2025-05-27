@@ -255,7 +255,7 @@ Una **eccezione** notevole fanno le **LAN**, dove una **intera rete** LAN compos
 - uno **interno alla LAN** che si occupa della consegna dei pacchetti tra l'**host sorgente** e il **router di confine** delle LAN **sorgente** oppure della consegna tra il **router di confine** della LAN di **destinazione** e l'**host** di destinazione. Realizza un **inoltro** di **trame MAC** tra **SW**:
      - è un processo che **smista** i pacchetti da una porta di ingresso ad una di uscita di uno switch.
      - Ogni porta di uscita rappresenta un **percorso** tra gli switch differente e viene **scelto** in base all'**indirizzo di destinazione** del pacchetto di livello 2 (MAC).
-     - ISO/OSI lo assimila ad una consegna di PDU **senza smistamento** perchè per lei avverrebbe lungo il canale punto-punto che unisce due router adiacenti. Questo canale in realtà è composto da una rete di switch che, pur non smistando pacchetti IP direttamente, smista trame MAC, ciascuna col proprio indirizzo di livello 2 e ciascuna contenente un pacchetto IP come payload. Non essendo svolto in base ad un inidirizzo di livello 3, questo routing per ISO/OSI non esiste.
+     - ISO/OSI lo assimila ad una consegna di PDU **senza smistamento** perchè per lei avverrebbe lungo il canale punto-punto che unisce due router adiacenti. Questo canale in realtà è composto da una rete di switch che, pur non smistando pacchetti IP direttamente, smista trame MAC, ciascuna col proprio indirizzo di livello 2 e ciascuna contenente un pacchetto IP come payload. Non essendo svolto in base ad un indirizzo di livello 3, questo routing per ISO/OSI non esiste.
   
 ### **Astrazione di una rete a circuito**
 
