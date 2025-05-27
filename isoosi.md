@@ -248,8 +248,12 @@ Astrazioni interessanti sono quelle, di tipo **topologico**, che traducono una r
     - tra i dispositivi **End to End** (host) nei livelli 5, 6 e 7.
   
 Una **eccezione** notevole fanno le **LAN**, dove una **intera rete** LAN, composta di **link tra SW** collegati, in genere, ad albero, viene considerata come un link di livello 2 **diretto tra due router**. Ciò accade per una anomalia dovuta storicamente dall'uso delle LAN.  L'utilizzo combinato di router e switch ha introdotto due **livelli di routing** complementari, di cui solo quello esterno **tra i router** è, in realtà, preso in considerazione dell'architettura ISO/OSI, l'altro è da questa assimilato ad una consegna **senza smistamento** di PDU lungo il canale punto-punto che unisce due router adiacenti:
-- uno **esterno alla LAN** che si occupa della consegna dei pacchetti **tra i router di confine** delle LAN sorgenti e destinazione. Realizza un **inoltro** di **pacchetti IP**, cioè un processo che **smista** i pacchetti da una porta di ingresso ad una di uscita del router. Ogni porta di uscita rappresenta un **percorso** tra i router differente e viene **scelto** in base all'**indirizzo di destinazione** del pacchetto di livello 3 (IP).
-- uno **interno alla LAN** che si occupa della consegna dei pacchetti tra l'**host sorgente** e il **router di confine** delle LAN **sorgente** oppure della consegna tra il **router di confine** della LAN di **destinazione** e l'**host** di destinazione. Realizza un **inoltro** di **trame MAC** tra **SW**, cioè un processo che **smista** i pacchetti da una porta di ingresso ad una di uscita dello switch. Ogni porta di uscita rappresenta un **percorso** tra gli switch differente e viene **scelto** in base all'**indirizzo di destinazione** del pacchetto di livello 2 (MAC).
+- uno **esterno alla LAN** che si occupa della consegna dei pacchetti **tra i router di confine** delle LAN sorgenti e destinazione. Realizza un **inoltro** di **pacchetti IP**:
+     - è un processo che **smista** i pacchetti da una porta di ingresso ad una di uscita del router.
+     - Ogni porta di uscita rappresenta un **percorso** tra i router differente e viene **scelto** in base all'**indirizzo di destinazione** del pacchetto di livello 3 (IP).
+- uno **interno alla LAN** che si occupa della consegna dei pacchetti tra l'**host sorgente** e il **router di confine** delle LAN **sorgente** oppure della consegna tra il **router di confine** della LAN di **destinazione** e l'**host** di destinazione. Realizza un **inoltro** di **trame MAC** tra **SW**:
+     - è un processo che **smista** i pacchetti da una porta di ingresso ad una di uscita dello switch.
+     - Ogni porta di uscita rappresenta un **percorso** tra gli switch differente e viene **scelto** in base all'**indirizzo di destinazione** del pacchetto di livello 2 (MAC).
   
 ### **Astrazione di una rete a circuito**
 
