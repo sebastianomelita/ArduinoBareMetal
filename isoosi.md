@@ -119,7 +119,7 @@ La **risoluzione dei problemi** di rete è sempre **distribuita**, nel senso che
 
 ### **Definizione**
 
-Un **canale virtuale** è un **canale logico** che **emula** un **collegamento diretto** tra **entità pari**, percepito da esse come un percorso che trasporta **solamente** le **PDU** di quel livello e segue esclusivamente le regole del **protocollo** in uso a quel livello. I **canali virtuali** vengono **creati** grazie alla tecnica dell'**imbustamento multiplo** e rappresentano il **punto di vista** che un **generico livello** ha dell'unico canale effettivamente esistente, cioè il **canale reale** di livello 1 (fisico). 
+Un **canale virtuale** è un **canale logico** che **emula** un **collegamento diretto** tra **entità pari**, percepito da esse come un percorso che trasporta **solamente** le **PDU** di quel livello e segue esclusivamente le regole del **protocollo** in uso a quel livello. I **canali virtuali** vengono **creati** grazie alla tecnica dell'**imbustamento multiplo**, e rappresentano il **punto di vista** che un **generico livello** ha dell'unico canale effettivamente esistente, cioè il **canale reale** di livello 1 (fisico). 
 
 ### **Tre tipi di astrazione**
 
@@ -154,7 +154,7 @@ In figura la lettera H sta per **header** cioè intestazione (ad es. AH=Applicat
 
 È la **tecnica** utilizzata per realizzare più **canali virtuali** su l’unico canale fisico (**canale reale**) che collega due macchine (**hosts**). 
 
-Il canale virtuale è solamente **emulato** perchè nelle **reti a pacchetto**, in fase di **trasmissione**, si usa una tecnica, detta **imbustamento multiplo**, con la quale si **incapsulano** i messaggi di un livello generico N, le **N-PDU**, all'interno del campo dati, del livello **immediatamente inferiore**, detto **(N-1)-SDU**, lungo un accesso verticale detto **SAP** (Service Access Port). Questa operazione parte dal livello applicativo ed è **ripetuta** su tutti i livelli, escluso il fisico. 
+Il canale virtuale è solamente **emulato** perchè nelle **reti a pacchetto**, in fase di **trasmissione**, si usa una tecnica, detta **imbustamento multiplo**, con la quale si **incapsulano** i messaggi di un livello generico N, le **N-PDU**, all'interno del campo dati, del livello **immediatamente inferiore**, detto **(N-1)-SDU**, lungo un punto di accesso verticale detto **SAP** (Service Access Port). Questo processo di **incapsulamento** parte dal livello applicativo ed è **ripetuto** su tutti i livelli, escluso il fisico. 
 
 <img src="img/imbustamento.png" alt="alt text" width="1100">
 
@@ -175,9 +175,9 @@ Poichè ogni livello **aggiunge** sempre alle SDU un proprio campo **header**, a
 
 ### **Sbustamento multiplo**
 
-All'**imbustamento multiplo** in **trasmissione** corrisponde lo **sbustamento multiplo in ricezione**, un'operazione analoga ma **inversa**, dove tutti i messaggi ricevuti a **livello fisico** incapsulati uno dentro l'altro, vengono, salendo da un livello all'altro, **sbustati** eliminando l'intestazione del livello immediatamente inferiore. 
+All'**imbustamento multiplo** in **trasmissione** corrisponde lo **sbustamento multiplo in ricezione**, un'operazione analoga ma **inversa**, dove tutti i messaggi ricevuti a **livello fisico**, incapsulati uno dentro l'altro, vengono, salendo da un livello all'altro, **sbustati** rimuovendo l'intestazione del livello immediatamente inferiore. 
 
-Arrivati al **livello applicativo**, come risultato, si ottiene il **messaggio utente**. Quindi, l'**ordine** di **inserimento** delle **intestazioni** in trasmissione è esattamente l'inverso dell'ordine di **rimozione** delle stesse in ricezione, secondo una tipica **politica LIFO**.
+Arrivati al **livello applicativo**, come risultato, si ottiene il **messaggio utente** privo di qualunque intestazione. Quindi, l'**ordine** di **inserimento** delle **intestazioni** in trasmissione è esattamente l'inverso dell'ordine di **rimozione** delle stesse in ricezione, secondo una tipica **politica LIFO** (Last In - First Out).
 
 ### **In sintesi**
 
