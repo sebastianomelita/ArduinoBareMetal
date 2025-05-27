@@ -317,8 +317,7 @@ void setup() {
 void loop() {
   if (digitalRead(pulsante)) {// polling pulsante non premuto
     debt.start();
-  }
-  if (debt.get() > 50  && digitalRead(pulsante) == LOW) { // disarmo del timer al timeout
+  }else if (debt.get() > 50) { // disarmo del timer al timeout
     debt.stop(); // disarmo del timer
     debt.reset();
     stato = !stato;
