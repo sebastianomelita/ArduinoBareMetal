@@ -41,7 +41,7 @@ Col tempo il quadro è via via mutato. Nella parte **core** di Internet, IP è d
 
 Gli **AS** sono collegati da router di frontiera detti **border gateway**. La **dimensione** complessiva delle sottoreti scala da **continentale** a **nazionale**, e da nazionale a **regionale**. 
 
-Le **reti regionali**, le MAN (Metropolitan Area Network), sono comunque ancora realizzate con tecnologie abbastanza varie e adoperano un **inoltro** (smistamento) dei pacchetti che non sempre è basato solamente su IP ma anche su tecnologie alternative quali MPLS e Frame Relay.
+Le **reti regionali**, le MAN (Metropolitan Area Network), sono comunque ancora realizzate con tecnologie abbastanza varie e adoperano un **inoltro** (smistamento) dei pacchetti che non sempre è basato solamente su IP, sono molto comuni tecnologie alternative quali MPLS e Frame Relay.
 
 
 
