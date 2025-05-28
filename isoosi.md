@@ -274,7 +274,7 @@ Una **eccezione** notevole fanno le **LAN** cioè le reti locali composta da swi
 
 Le LAN possono però essere realizzate anche con i **mezzi multipunto** di tipo broadcast, cioè con i **BUS**. I dispositivi commerciali, a filo e radio, che li realizzano sono chiamati genericamente **HUB**. Un HUB collega **molte stazioni** con lo **stesso canale** fisico multipunto che, per evitare il fenomeno delle collisioni, è regolato da opportuni **protocolli di arbitraggio**. 
 
-I protocolli di arbitraggio realizzano, al pari degli switch, una **LAN**. Più mezzi a bus collegati tra loro sono sempre la medesima LAN che termina solamente a ridosso del **link con un router**. Anche in questo caso la LAN è una vera e propria **rete di host** che offre al **livello 2** servizi di connessione tra **coppie di host**. - Dal **livello 2**, questo percorso viene **percepito** come un **link fisico diretto** tra due qualunque **coppie di host** della LAN, cioè come una connessione fisica **punto punto**.
+I protocolli di arbitraggio realizzano, al pari degli switch, una **LAN**. Più mezzi a bus collegati tra loro sono sempre la medesima LAN che termina solamente a ridosso del **link con un router**. Anche in questo caso la LAN è una vera e propria **rete** che offre al **livello 2** servizi di connessione tra **coppie di host**. Dal **livello 2**, questo percorso viene **percepito** come un **link fisico diretto** tra due qualunque **coppie di host** della LAN, cioè come una connessione fisica **punto punto**.
 
 ### **Astrazione di una rete a circuito**
 
