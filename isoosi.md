@@ -78,7 +78,7 @@ Si noti il ruolo della **segmentazione** ai livelli 2 e 4 che, frammentando lung
 
 La **tecnologia** con cui si realizza la **multiplazione** nelle moderne reti a pacchetto è il **TDM statistico** per via della sua elevata efficienza ed è, nella **visione OSI**, implementato e gestito dai **router** (Per dettagli vedi [TDM statistico](tdmstatistico.md)). 
 
-La **multiplazione**, secondo il moello OSI, è una **funzione di livello 2** che permette a **pacchetti di livello 3** (pacchetti IP), aventi indirizzi di destinazione diverse, di **condividere** uno **stesso link** di transito di livello 2 che collega due **router adiacenti**.
+La **multiplazione**, secondo il modello OSI, è una **funzione di livello 2** che permette a **pacchetti di livello 3** (pacchetti IP), aventi indirizzi di destinazione diverse, di **condividere** uno **stesso link** di transito di livello 2 che collega due **router adiacenti**.
 
 Però esistono anche analoghe multiplazioni che, essendo incorporate come **proprietà** del canale **fisico** o del canale **datalink**, non sono prese in considerazione dal modello ISO/OSI:
 
