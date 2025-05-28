@@ -82,9 +82,9 @@ La **multiplazione**, secondo il moello OSI, è una **funzione di livello 2** ch
 
 Però esistono anche analoghe multiplazioni che, essendo incorporate come proprietà del canale fisico, non sono prese in considerazione dal modello ISO/OSI:
 
-- la funzione di multiplazione svolta dai protocolli di accesso multiplo sui mezzi a BUS che tipicamente lavorano in HW a livello 1 (fisico) che permette a **pacchetti di livello 2** (trame MAC), aventi indirizzi di destinazione diverse, di **condividere** uno **stesso mezzo a BUS** di transito di livello 1 che collega **tutti gli host**.
+- la funzione di multiplazione svolta dai protocolli di accesso multiplo sui mezzi a BUS che tipicamente lavorano in HW a livello 1 (fisico). Permette a **pacchetti di livello 2** (trame MAC), aventi indirizzi di destinazione diverse, di **condividere** uno **stesso mezzo a BUS** di transito di livello 1 che collega **tutti gli host**.
 
-- la funzione di multiplazione svolta dai protocolli di accesso multiplo sui mezzi a BUS che tipicamente lavorano in HW a livello 1 (fisico) che permette a **pacchetti di livello 2** (trame MAC), aventi indirizzi di destinazione diverse, di **condividere** uno uno **stesso link** di transito di livello 1 che collega due **switch consecutivi**.
+- la funzione di multiplazione svolta dai protocolli di accesso multiplo sui mezzi a BUS che tipicamente lavorano in HW a livello 1 (fisico). Permette a **pacchetti di livello 2** (trame MAC), aventi indirizzi di destinazione diverse, di **condividere** uno uno **stesso link** di transito di livello 1 che collega due **switch consecutivi**.
 
 
 <img src="img/zigbee-osi.png" alt="alt text" width="500">
