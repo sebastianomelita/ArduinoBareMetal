@@ -17,7 +17,7 @@ L'architettura è **modulare**. Uno strato può essere sostituito senza che quel
 
 **Obiettivo finale** è garantire l'**interoperabilità universale tra i dispositivi** da collegare, a prescindere dalle possibili differenze che possono intercorrere rispetto a marca, modello e tecnologie adoperate. 
 
-Avendo l'**interoperabilità** spinta alla base, l'**architettura ISO/OSI** è naturalmente predisposta per un altro obiettivo ambizioso, realizzare una rete di tipo **geografico**, una tipica **WAN** (Wide Area Network) che sia operativa in **ambito globale**, perciò tale da permettere di individuare una **macchina** o un **servizio** in rete ovunque nel mondo.
+Avendo l'**interoperabilità** spinta alla base, l'**architettura ISO/OSI** è naturalmente predisposta per un altro obiettivo ambizioso, realizzare una rete **geografica**, cioè con estensione molto ampia, detta anche WAN (Wide Area Network). Una tipica **WAN** deve essere operativa in **ambito globale**, perciò deve essere tale da permettere di individuare una **macchina** (e un **servizio**) in rete ovunque nel mondo.
 
 ### **La rete di reti Internet**
 
