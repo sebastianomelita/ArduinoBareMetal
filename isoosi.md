@@ -78,7 +78,14 @@ Si noti il ruolo della **segmentazione** ai livelli 2 e 4 che, frammentando lung
 
 La **tecnologia** con cui si realizza la **multiplazione** nelle moderne reti a pacchetto è il **TDM statistico** per via della sua elevata efficienza ed è, nella **visione OSI**, generalmente implementato all'interno dei **router** (Per dettagli vedi [TDM statistico](tdmstatistico.md)). 
 
-In realtà, la funzione di **condivisione del canale** tra più sorgenti spesso è realizzata in HW specialmente nel mondo dei dispositivi per **IoT**. 
+La **multiplazione**, secondo il moello OSI, è una **funzione di livello 2** che permette a **pacchetti di livello 3** (pacchetti IP), aventi indirizzi di destinazione diverse, di **condividere** uno **stesso link** di transito di livello 2 che collega due **router adiacenti**.
+
+Però esistono analoghe multiplazioni che, essendo incorporate come proprietà del canale fisico, non sono prese in considerazione dal m odello ISO/OSI:
+
+- la funzione di multiplazione svolta dai protocolli di accesso multiplo sui mezzi a BUS che tipicamente lavorano in HW a livello 1 (fisico) che permette a **pacchetti di livello 2** (trame MAC), aventi indirizzi di destinazione diverse, di **condividere** uno **stesso mezzo a BUS** di transito di livello 1 che collega **tutti gli host**.
+
+- la funzione di multiplazione svolta dai protocolli di accesso multiplo sui mezzi a BUS che tipicamente lavorano in HW a livello 1 (fisico) che permette a **pacchetti di livello 2** (trame MAC), aventi indirizzi di destinazione diverse, di **condividere** uno uno **stesso link** di transito di livello 1 che collega due **switch consecutivi**.
+
 
 <img src="img/zigbee-osi.png" alt="alt text" width="500">
 
