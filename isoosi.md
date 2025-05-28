@@ -259,7 +259,7 @@ Astrazioni interessanti sono quelle, di tipo **topologico**, che traducono una r
  
 <img src="img/subnet.png" alt="alt text" width="1000">  
 
-#### **Rete L2 riassunta in un unico link L3**
+#### **Rete LAN riassunta in un unico link L2**
 
 Una **eccezione** notevole fanno le **LAN** cioè le reti locali composta da switch. Una **intera rete** LAN, composta da molti switch collegati insieme con dei link di livello 1, viene considerata come un unico link (collegamento) di livello 2 **diretto tra due router**. Ciò accade per una anomalia introdotta storicamente dall'impiego delle LAN come parti delle reti IP (dette subnet) che sfocia nell'utilizzo combinato di router e switch. Questa usanza ha, di fatto, introdotto due **livelli di routing** complementari, di cui solo quello esterno **tra i router** è, in realtà, preso in considerazione dell'architettura ISO/OSI. Riassumendo abbiamo due livelli di smistamento:
 - uno **esterno alla LAN** che si occupa della consegna dei pacchetti **tra i router di confine** delle LAN sorgenti e destinazione. Realizza un **inoltro** di **pacchetti IP**:
@@ -271,8 +271,6 @@ Una **eccezione** notevole fanno le **LAN** cioè le reti locali composta da swi
      - Ogni porta di uscita rappresenta un **percorso** tra gli switch differente e viene **scelto** in base all'**indirizzo di destinazione** del pacchetto di livello 2 (MAC).
      - Dal **livello 3**, questo percorso viene **percepito** come un **link diretto** tra due qualunque **coppie di host** della LAN, cioè come una connessione di linea **punto punto**.
      - ISO/OSI lo assimila ad una consegna di PDU **senza smistamento** perchè per lei avverrebbe lungo il canale punto-punto che unisce due router adiacenti. Questo canale in realtà è composto da una rete di switch che, pur non smistando pacchetti IP direttamente, smista trame MAC, ciascuna col proprio indirizzo di livello 2 e ciascuna contenente un pacchetto IP come payload. Non essendo svolto in base ad un indirizzo di livello 3, questo routing, per ISO/OSI, non esiste.
-
-#### **Rete L1 riassunta in un unico link L2**
 
 Le LAN possono però essere realizzate anche con i **mezzi multipunto** di tipo broadcast, cioè con i **BUS**. I dispositivi commerciali, a filo e radio, che li realizzano sono chiamati genericamente **HUB**. Un HUB collega **molte stazioni** con lo **stesso canale** fisico multipunto che, per evitare il fenomeno delle collisioni, è regolato da opportuni **protocolli di arbitraggio**. 
 
