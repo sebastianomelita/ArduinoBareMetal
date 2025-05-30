@@ -182,7 +182,35 @@ void loop() {                                              | void loop() {
 - **```tbase```**: è il tempo tra un timeout e l'altro
 - il **corpo dell'if**, le istruzioni contenute nel blocco then dell'if, viene esegito **periodicamente** ad ogni timeout. Gli eventi che si estinguono tra un timeout e l'altro non possono essere rilevati (rimbalzi).
 
+## **Attivazione immediata di una logica qualsiasi su un fronte**
 
+```C++
+// APPROCCIO CON MILLIS() - FRONTE SALITA                  | // APPROCCIO CON MILLIS() - FRONTE DISCESA
+                                                           |
+                                                           | 
+const unsigned long tbase = 50; // millisecondi            | const unsigned long tbase = 50; // millisecondi
+int val, precval = LOW;                                    | int val, precval = HIGH;  
+int stato, nuovoStato;                                     | int stato, nuovoStato;
+int P1 = 2;                                         	   | int P1 = 2;
+DiffTimer deb;                                             | DiffTimer deb;
+                                                           | 
+void loop() {                                              | void loop() {
+  if (digitalRead(P1)&& !debt.timerState) {                |   if (!digitalRead(P1)&& !debt.timerState) {
+    debt.start();                                          |     debt.start();
+    doWhenPressed();                                       |     doWhenPressed();
+   }else if(debt.get() > 50) {                         	   |   }else if(debt.get() > 50) { // disarmo del timer al timeout
+    debt.stop(); // disarmo del timer                      | 	 debt.stop(); // disarmo del timer
+    debt.reset();                                          |     debt.reset();
+    doWhenReleased();                                      |     doWhenReleased();                           |     
+    // Altre operazioni possibili                          |     // Altre operazioni possibili
+ }                                                         | }    
+                                                           |   
+```
+
+- **```deb.get()```**: rappresenta il tempo trascorso dall'ultimo timeout, cioè dall'ultimo riferimento temporale noto.
+- **```tbase```**: è il tempo tra un timeout e l'altro
+- il **corpo dell'if**, le istruzioni contenute nel blocco then dell'if, viene esegito **periodicamente** ad ogni timeout. Gli eventi che si estinguono tra un timeout e l'altro non possono essere rilevati (rimbalzi).
+  
 ## **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
 
 E' un approccio bloccante che però è molto pratico per la realizzazione di pulsanti con memoria. E' opportuno adoperare questo pattern insieme ad altri task solo se questi sono ad esso sequenziali. Se devono essere eseguiti, in parallelo alla gestione del pulsante, altri task allora è opportuno utilizzare una soluzione non bloccante, oppure isolare i task che devono procedere in parallelo su ```loop()``` **a parte**, realizzati, ad esempio, mediante **timer HW** o **threads**.
