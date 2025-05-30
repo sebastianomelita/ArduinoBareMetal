@@ -223,7 +223,7 @@ void loop() {                                              | void loop() {
   if (digitalRead(P1)&& !high) {                           |   if (!digitalRead(P1)&& !low) {
     high = true;                                           |     low = true;
     doOnRise();                                            |     doOnFall();
-   } else if(debt.get() > 50) {                            |   } else if(debt.get() > 50) { // disarmo del timer al timeout
+   } else {                                                |   } else { // disarmo del timer al timeout
     high = false;                                          | 	 low = false;
     doOnFall();                                            |     doOnRise();                                
     // Altre operazioni possibili                          |     // Altre operazioni possibili
