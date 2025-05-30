@@ -204,7 +204,7 @@ void loop() {                                              | void loop() {
     doWhenReleased();                                      |     doWhenReleased();                               
     // Altre operazioni possibili                          |     // Altre operazioni possibili
  }                                                         |   }    
-}                                                          |}    
+}                                                          | }    
 ```
 - a differenza della soluzione precedente, la rilevazione del **primo fronte** è immediata, dato che non deve attendere mai il periodo stabilito da un timer.
 - la rilevazione del **secondo fronte** (opposto al precedente) è invece possibile che venga **ritardata** se questo accade prima dello scadere del tempo minimo di garanzia necessario per mettere la rilevazione al riparo dal fenomeno dei rimbalzi.
