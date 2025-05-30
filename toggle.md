@@ -197,11 +197,11 @@ DiffTimer deb;                                             | DiffTimer deb;
 void loop() {                                              | void loop() {
   if (digitalRead(P1)&& !debt.timerState) {                |   if (!digitalRead(P1)&& !debt.timerState) {
     debt.start();                                          |     debt.start();
-    doWhenPressed();                                       |     doWhenPressed();
+    doOnRise();                                            |     doOnFall();
    } else if(debt.get() > 50) {                            |   } else if(debt.get() > 50) { // disarmo del timer al timeout
     debt.stop(); // disarmo del timer                      | 	 debt.stop(); // disarmo del timer
     debt.reset();                                          |     debt.reset();
-    doWhenReleased();                                      |     doWhenReleased();                               
+    doOnFall();                                            |     doOnRise();                                
     // Altre operazioni possibili                          |     // Altre operazioni possibili
  }                                                         |   }    
 }                                                          | }    
