@@ -109,6 +109,34 @@ void loop() {                                              | void loop() {
 - **```tbase```**: è il tempo tra un timeout e l'altro
 - il **corpo dell'if**, le istruzioni contenute nel blocco then dell'if, viene esegito **periodicamente** ad ogni timeout. Gli eventi che si estinguono tra un timeout e l'altro non possono essere rilevati (rimbalzi).
 
+## **Attivazione immediata di una logica qualsiasi su un fronte**
+
+```C++
+// APPROCCIO CON TIMER - FRONTE SALITA                     | // APPROCCIO CON TIMER - FRONTE DISCESA
+                                                           |
+                                                           | 
+int stato, nuovoStato;                                     | int stato, nuovoStato;
+int P1 = 2;                                         	   | int P1 = 2;
+DiffTimer deb;                                             | DiffTimer deb;
+                                                           | 
+void loop() {                                              | void loop() {
+  if (digitalRead(P1)&& !debt.timerState) {                |   if (!digitalRead(P1)&& !debt.timerState) {
+    debt.start();                                          |     debt.start();
+    doOnRise();                                            |     doOnFall();
+   } else if(debt.get() > 50) {                            |   } else if(debt.get() > 50) { // disarmo del timer al timeout
+    debt.stop(); // disarmo del timer                      | 	 debt.stop(); // disarmo del timer
+    debt.reset();                                          |     debt.reset();
+    doOnFall();                                            |     doOnRise();                                
+    // Altre operazioni possibili                          |     // Altre operazioni possibili
+ }                                                         |   }    
+}                                                          | }    
+```
+- a differenza della soluzione precedente, la rilevazione del **primo fronte** è immediata, dato che non deve attendere mai il periodo stabilito da un timer.
+- la rilevazione del **secondo fronte** (opposto al precedente) è invece possibile che venga **differita** se questo accade prima dello scadere del tempo minimo di garanzia necessario per mettere la rilevazione al riparo dal fenomeno dei rimbalzi.
+- **```deb.get()```**: rappresenta il tempo trascorso dall'ultimo timeout, cioè dall'ultimo riferimento temporale noto.
+- **```50 msec```**: è il tempo tra un timeout e l'altro
+- il **corpo dell'if**, le istruzioni contenute nel blocco then dell'if, viene esegito **periodicamente** ad ogni timeout. Gli eventi che si estinguono tra un timeout e l'altro non possono essere rilevati (rimbalzi).
+
 
 ## **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
 
