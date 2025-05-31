@@ -41,6 +41,16 @@ La **soluzione** è **modificare il tipo di selezione** **dell’evento** in ing
 
 ![fronti](fronti.gif)
 
+![transizioni](transizioni.png)
+
+Si nota chiaramente che in corrispondenza di ogni fronte, prima e dopo, si misurano differenze di livello. In particolare si può avere:
+
+- Un **fronte di salita** se la **transizione** avviene dal livello basso a quello alto
+
+- Un **fronte di discesa** se la **transizione** avviene dal livello alto a quello basso
+
+Se un rilevatore si limita a segnalare un **generico fronte**, allora per stabilire in quale ci troviamo, basta determinare, al momento della segnalazione, in **quale livello** si trova **l’ingresso**: se è al livello alto è un fronte di salita, se è a quello basso è un fronte di discesa.
+
 In **entrambi i casi**, un evento di fronte si ha quando si è in presenza di una **transizione di livello** di un ingresso, quindi per **rilevare un fronte** è sufficiente **rilevare una transizione**. In particolare si può avere:
 
 - Un **fronte di salita** se la **transizione** avviene dal livello basso a quello alto
@@ -59,15 +69,7 @@ Una **evento di fronte** si può rilevare in due modi:
 
 In figura sono evidenziati i **campionamenti** eseguibili, ad esempio, ad ogni loop(), oppure ad intervalli di tempo preordinati stabiliti da uno schedulatore.
 
-![transizioni](transizioni.png)
 
-Si nota chiaramente che in corrispondenza di ogni fronte, prima e dopo, si misurano differenze di livello. In particolare si può avere:
-
-- Un **fronte di salita** se la **transizione** avviene dal livello basso a quello alto
-
-- Un **fronte di discesa** se la **transizione** avviene dal livello alto a quello basso
-
-Se un rilevatore si limita a segnalare un **generico fronte**, allora per stabilire in quale ci troviamo, basta determinare, al momento della segnalazione, in **quale livello** si trova **l’ingresso**: se è al livello alto è un fronte di salita, se è a quello basso è un fronte di discesa.
 
 Il **secondo problema** è costituito dal fenomeno dei **rimbalzi**. Si palesano come una sequenza di rapide oscillazioni che hanno sia fronti di salita che di discesa. Se l’accensione di un led è associata ad un fronte e il suo spegnimento a quello successivo, allora la pressione di un pulsante realizza, di fatto, la solita slot machine…è necessario un algoritmo di debouncing.
 
