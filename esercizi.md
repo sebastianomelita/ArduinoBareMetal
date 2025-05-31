@@ -457,10 +457,7 @@ Questa proprietà potrebbe essere utilizzata pure per realizzare un efficace **c
 Un fronte di **discesa disarma** immediatamente il timer. Un eventuale rimbalzo sul fronte di discesa creerebbe comunque anche un **fronte di salita** spurio che **riarmerebbe** nuovamente il timer attivando il **debouncer**. 
 
 ```C++
-/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led
-mentre un altro led blinka (TASK CONCORRENTI)
-*/
-
+/*Alla pressione del pulsante si attiva o disattiva il lampeggo di un led*/
 #include "urutils.h"
 int led = 13;
 int led2 = 27;
@@ -483,20 +480,14 @@ void setup() {
 
 // loop principale
 void loop() {
-  // TASK 1 PULSANTE CON MEMORIA
-  if (digitalRead(pulsante)) {// fronte di salita
-    debt.start(); // campionamento singleton del tempo
-  }
-  // fronte di discesa dopo rimbalzi
-  if (debt.get() > 50  && digitalRead(pulsante) == LOW) { // disarmo del timer al timeout
+  if (digitalRead(pulsante)) {// polling pulsante non premuto
+    debt.start();
+  }else if (debt.get() > 50) { // disarmo del timer al timeout
     debt.stop(); // disarmo del timer
     debt.reset();
-    // calcolo della logica del tasto
     stato = !stato;
     digitalWrite(led2, stato);
   }
-
-  // TASK 2 BLINK
   if (t1.get() > 1000) { // polling timer blink
     t1.reset(); // riarmo timer blink
     blink(led);
