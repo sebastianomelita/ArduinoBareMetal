@@ -207,7 +207,7 @@ void loop() {                                              | void loop() {
 - a differenza della soluzione precedente, la rilevazione del **primo fronte** è immediata, dato che non deve attendere mai il periodo stabilito da un timer.
 - la rilevazione del **secondo fronte** (opposto al precedente) è invece possibile che venga **differita** se questo accade prima dello scadere del tempo minimo di garanzia necessario per mettere la rilevazione al riparo dal fenomeno dei rimbalzi.
 - **```deb.get()```**: rappresenta il tempo trascorso dall'ultimo timeout, cioè dall'ultimo riferimento temporale noto.
-- **```tbase```**: è il tempo tra un timeout e l'altro
+- **```50 msec```**: è il tempo tra un timeout e l'altro
 - il **corpo dell'if**, le istruzioni contenute nel blocco then dell'if, viene esegito **periodicamente** ad ogni timeout. Gli eventi che si estinguono tra un timeout e l'altro non possono essere rilevati (rimbalzi).
 
 ## **Attivazione immediata di una logica qualsiasi su un fronte senza debouncer**
@@ -232,7 +232,7 @@ void loop() {                                              | void loop() {
 ```
 - sia la rilevazione del **primo fronte** che quella del **secondo fronte** sono immediate, dato che non si deve attendere mai il periodo stabilito da un timer.
 - **```deb.get()```**: rappresenta il tempo trascorso dall'ultimo timeout, cioè dall'ultimo riferimento temporale noto.
-- **```tbase```**: è il tempo tra un timeout e l'altro
+- **```50 msec```**: è il tempo tra un timeout e l'altro
 - il **corpo dell'if**, le istruzioni contenute nel blocco then dell'if, viene esegito **periodicamente** ad ogni timeout. Gli eventi che si estinguono tra un timeout e l'altro non possono essere rilevati (rimbalzi).
   
 ## **Attivazione di una logica qualsiasi su un fronte con waitUntil()**
