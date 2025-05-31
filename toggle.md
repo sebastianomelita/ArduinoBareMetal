@@ -244,14 +244,16 @@ E' un approccio bloccante che però è molto pratico per la realizzazione di pul
 -------------------------------------------------------|------------------------------------------------------
 int stato, nuovoStato;                                 | int stato, nuovoStato;
 int P1 = 2;                                            | int P1 = 2;
-                                                       |
+doOnFall(){                                            | doOnRise(){
+   stato = nuovoStato;                                 |     stato = nuovoStato;
+   updateOutputsInP1(stato);                                 updateOutputsInP1(stato);   
+}                                                      | }
 // loop principale                                     | // loop principale
 void loop() {                                          | void loop() {
   if(digitalRead(P1) == HIGH){                         |   if(digitalRead(P1) == LOW){    
     doOnRise();                                        |     doOnFall();                        
     waitUntilInputLow(P1, 50);                         |     waitUntilInputHigh(P1, 50);   
-    stato = nuovoStato;                                |     stato = nuovoStato;
-    updateOutputsInP1(stato);                          |     updateOutputsInP1(stato);           
+    doOnFall();                                        |     doOnRise();  
   }                                                    |   }                                               
 }                                                      | }
                                                        |
