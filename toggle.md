@@ -51,13 +51,7 @@ Si nota chiaramente che in corrispondenza di ogni fronte, prima e dopo, si misur
 
 Se un rilevatore si limita a segnalare un **generico fronte**, allora per stabilire in quale ci troviamo, basta determinare, al momento della segnalazione, in **quale livello** si trova **l’ingresso**: se è al livello alto è un fronte di salita, se è a quello basso è un fronte di discesa.
 
-In **entrambi i casi**, un evento di fronte si ha quando si è in presenza di una **transizione di livello** di un ingresso, quindi per **rilevare un fronte** è sufficiente **rilevare una transizione**. In particolare si può avere:
-
-- Un **fronte di salita** se la **transizione** avviene dal livello basso a quello alto
-
-- Un **fronte di discesa** se la **transizione** avviene dal livello alto a quello basso
-
-Una **evento di fronte** si può rilevare in due modi:
+Un **evento di fronte** si può rilevare in due modi:
 
 - **Polling degli ingressi.** Lo scopo è rilevare una **transizione di livello**. Si tratta di campionare periodicamente il livello di un ingresso con l’obiettivo di rilevare un fronte. Un fronte può essere **rilevato** sostanzialmente in **due maniere**:
 
