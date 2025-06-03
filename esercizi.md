@@ -120,10 +120,12 @@ int P1 = 2;                                         	   | int P1 = 2;
 DiffTimer deb;                                             | DiffTimer deb;
                                                            | 
 void loop() {                                              | void loop() {
-  if (digitalRead(P1)&& !debt.timerState) {                |   if (!digitalRead(P1)&& !debt.timerState) {
-    debt.start();                                          |     debt.start();
-    doOnRise();                                            |     doOnFall();
-   } else if(debt.get() > 50) {                            |   } else if(debt.get() > 50) { // disarmo del timer al timeout
+  if (digitalRead(P1)) {                                   |   if (!digitalRead(P1)) {
+    if(!debt.timerState){                                  |     if(!debt.timerState){
+      debt.start();                                        |        debt.start();
+      doOnRise();                                          |        doOnFall();
+    }                                                      |      }
+  } else if(debt.get() > 50) {                             |   } else if(debt.get() > 50) { // disarmo del timer al timeout
     debt.stop(); // disarmo del timer                      | 	 debt.stop(); // disarmo del timer
     debt.reset();                                          |     debt.reset();
     doOnFall();                                            |     doOnRise();                                
