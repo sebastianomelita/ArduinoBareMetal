@@ -233,7 +233,7 @@ void loop() {                                              | void loop() {
     high = false;                                          | 	 low = false;
     doOnFall();                                            |     doOnRise();                                
     // Altre operazioni possibili                          |     // Altre operazioni possibili
- }                                                         |   }    
+  }                                                        |   }    
 }                                                          | }    
 ```
 - sia la rilevazione del **primo fronte** che quella del **secondo fronte** sono immediate, dato che non si deve attendere mai il periodo stabilito da un timer.
