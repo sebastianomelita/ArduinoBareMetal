@@ -163,7 +163,7 @@ Al **livello N**, al fine di realizzare i **servizi** per il livello superiore *
 
 In figura la lettera H sta per **header** cioè intestazione (ad es. AH=Application header).
 
-<img src="iso-osi.png" alt="alt text" width="1100">
+<img src="img/iso-osi.png" alt="alt text" width="1100">
 
 ## **Imbustamento multiplo**
 
