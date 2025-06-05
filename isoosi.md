@@ -26,7 +26,9 @@ L'architettura ISO/OSI modella le funzioni di una tipica rete magliata composta 
      - I nodi IS sono per ISO/OSI solamente i **router**.
      - Switch e HUB (cavo o wireless), pur offrendo anch'essi servizi di smistamento analoghi a quelli di un router, per ISO/OSI **non esistono** perchè i loro servizi, essendo **incorporati** all'interno di un collegamento di linea, sono **trasparenti**, cioè nascosti allo stack OSI.
      - I nodi IS devono implementare obbligatoriamente solo i primi 3 livelli della pila ISO/OSI (fisico, linea e rete).
-- i **nodi ES** sono i nodi di sorgente e destinazione dei messaggi della rete, sono nodi **esterni** alla rete e normalmente sono di proprietà degli utenti della rete. Devono implementare obbligaroriamente tutti i livelli della pila ISO/OSI (dal fisico fino al livello di applicazione). Sono i nodi che usufruiscono dei servizi di consegna offerti dalle **risorse** della rete che tipicamente sono:
+- i **nodi ES** sono i nodi di sorgente e destinazione dei messaggi della rete, sono nodi **esterni** alla rete e normalmente sono di proprietà degli utenti della rete.
+- Devono implementare obbligaroriamente tutti i livelli della pila ISO/OSI (dal fisico fino al livello di applicazione)
+- Sono i nodi che usufruiscono dei servizi di consegna offerti dalle **risorse** della rete che tipicamente sono:
      - canali di comunicazione fisici (cavi metallici, fibra, mezzo radio)
      - nodi di smistamento (detti anche di commutazione), tipicamente i router
      - protocolli
