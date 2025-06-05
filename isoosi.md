@@ -22,7 +22,7 @@ Avendo l'**interoperabilità** spinta alla base, l'**architettura ISO/OSI** è n
 ### **Nodi**
 
 L'architettura ISO/OSI modella le funzioni di una tipica rete magliata composta da nodi intermedi o IS (Intermediate Systems) e da nodi terminalei o ES (End Systems). 
-- i **nodi IS** sono i nodi di transito **interni** alla rete, quelli che forniscono il servizio di consegna dei messaggi utilizzato dagli ES per comunicare tra di loro. Svolgono funzioni di **smistamento** di pacchetti al fine di selezionare il percorso ottimale tra nodo ES mittente e nodo ES destinatario, tra i tanti che è possibile scegliere all'interno di una rete **parzialmente magliata**.
+- i **nodi IS** sono i nodi di transito **interni** alla rete, quelli che forniscono il servizio di consegna dei messaggi utilizzato dagli ES per comunicare tra di loro. Svolgono funzioni di **smistamento** di pacchetti al fine di selezionare il percorso ottimale tra un nodo ES **mittente** e un nodo ES **destinatario**, tra i tanti che è possibile scegliere all'interno di una rete **parzialmente magliata**.
      - I nodi IS sono per ISO/OSI solamente i **router**.
      - Switch e HUB (cavo o wireless), pur offrendo anch'essi servizi di smistamento analoghi a quelli di un router, per ISO/OSI **non esistono** perchè i loro servizi, essendo **incorporati** all'interno di un collegamento di linea, sono **trasparenti**, cioè nascosti allo stack OSI.
      - I nodi IS devono implementare obbligatoriamente solo i primi 3 livelli della pila ISO/OSI (fisico, linea e rete).
