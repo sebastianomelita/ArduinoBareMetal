@@ -30,8 +30,8 @@ L'architettura ISO/OSI modella le funzioni di una tipica rete magliata composta 
      - Devono implementare obbligaroriamente tutti i livelli della pila ISO/OSI (dal fisico fino al livello di applicazione)
      - Sono i nodi che usufruiscono dei servizi di consegna offerti dalle **risorse** della rete che tipicamente sono:
           - canali di comunicazione fisici (cavi metallici, fibra, mezzo radio)
-          - nodi di smistamento (detti anche di commutazione), tipicamente i router
-          - protocolli
+          - nodi di smistamento (detti anche di commutazione), tipicamente i **router**
+          - protocolli di comunicazione
           - servizi di gestione e controllo
 
 
