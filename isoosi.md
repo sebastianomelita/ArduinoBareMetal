@@ -229,7 +229,7 @@ Il **canale reale** è il **mezzo trasmissivo** che unisce il **livello fisico**
 2. in **orizzontale** lungo il **mezzo trasmissivo**, codificato sotto forma di segnali
 3. in verticale **a salire**, in **ricezione**.
   
-<img src="img/The 7 Layers of OSI.png" alt="alt text" width="500">
+<img src="img/The 7 Layers of OSI.png" alt="alt text" width="800">
 
 I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmessi in un **blocco unico** lungo il **canale reale**:
 - Fino a che non viene raggiunto il livello 1 (canale fisico), nessun dato è realmente trasferito direttamente dal livello N del Tx al livello N del Rx. L’unico canale reale è quello fisico!
