@@ -260,7 +260,7 @@ Vale il principio di **astrazione**, che vuol dire che, man mano che **si sale**
 
 In linea generale, grossomodo accade che la soluzione astratta viene **adattata**, mentre quella di dettaglio viene **sostituita**.
 
-Ogni funzione di un livello **"astrae"**, cioè riassume in un'unica funzione di alto livello **generica**, molte funzioni dei livelli sottostanti legate a dettagli HW specifici. Per cui, la particolarità di questi collegamenti è quella di realizzare una **virtualizzazione della rete** e dei suoi dispositivi che, salendo lungo la pila OSI, si fa sempre più spinta, **nascondendo** i dettagli implementativi degli strati inferiori e rendendo quindi **ininfluenti** le loro **differenze** per le funzioni svolte dai livelli posti sopra. 
+Ogni funzione di un livello **"astrae"**, cioè riassume in un'unica funzione di alto livello **generica**, molte funzioni dei livelli sottostanti legate a dettagli HW specifici. Per cui, la particolarità di questi collegamenti è quella di realizzare una **virtualizzazione della rete** e dei suoi dispositivi che, salendo lungo la pila OSI, si fa sempre più spinta. Ogni nuova astrazione **nasconde** i dettagli implementativi degli strati inferiori e rende **ininfluenti** le loro **differenze** per le funzioni svolte dai livelli posti sopra. 
 
 ### **Astrazione dei canali virtuali OSI**
 
