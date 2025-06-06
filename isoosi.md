@@ -235,9 +235,9 @@ I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmes
 - Fino a che non viene raggiunto il livello 1 (canale fisico), nessun dato è realmente trasferito direttamente dal livello N del Tx al livello N del Rx. L’unico canale reale è quello fisico!
 - le **entità pari** in realtà comunicano in **verticale**, trasferendo i dati **attraverso i SAP**, cioè le **porte** sulle interfacce di separazione tra un livello e l'altro, prima a scendere in trasmissione e poi a salire in ricezione. L'unica comunicazione **orizzontale** è lungo il **canale fisico** realizzato dal **mezzo trasmissivo** (fibra ottica, conduttore metallico, mezzo radio).
 - in un router (IS), esiste uno **stack separato** per **ogni porta**, detta anche interfaccia o NIC (Network Interface Card), di cui esso è dotato, per cui pacchetti vengono:
-     - **sbustati** sulla porta di **ingresso**, dove viaggiano in **verticale ascendente** dal livello 1 fino al livello 3, dove vengono recuperati i **pacchetti IP**
-     - **smistati** dalla porta di ingresso su una delle sue porte di uscita (forwarding o inoltro), per cui i **pacchetti IP** viaggiano in **orizzontale** da uno stack all'altro nello stesso livello
-     - **imbustati** sulla porta di **uscita**, dove viaggiano in **verticale discendente** dal livello 3 fino al livello 1, dove vengono spediti **bit**
+     - **sbustati** sulla porta di **ingresso**, da cui viaggiano in **verticale salendo** dal livello 1 fino al livello 3, dove vengono recuperati i **pacchetti IP**
+     - **smistati** dalla porta di ingresso su una delle sue porte di uscita (forwarding o inoltro), per cui i **pacchetti IP** viaggiano in **orizzontale** da uno stack all'altro nello **stesso livello**
+     - **imbustati** sulla porta di **uscita**, da cui viaggiano in **verticale scendendo** dal livello 3 fino al livello 1, dove vengono spediti sotto forma di **bit**
 
 ### **In sintesi**
 - la comunicazione **reale** tra le **entità pari** dei livelli è **indiretta** e avviene:
