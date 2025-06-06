@@ -237,7 +237,7 @@ I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmes
 - in un router (IS), esiste uno **stack separato** per **ogni porta**, di cui esso è dotato, per cui pacchetti vengono:
      - **sbustati** sulla porta di **ingresso**, da cui viaggiano in **verticale salendo** dal livello 1 fino al livello 3, dove vengono recuperati i **pacchetti IP**
      - **smistati** dalla porta di ingresso su una delle porte di uscita (forwarding o inoltro), da cui i **pacchetti IP** viaggiano in **orizzontale attraversando** stack diversi dello **stesso livello**
-     - **imbustati** sulla porta di **uscita**, da cui viaggiano in **verticale scendendo** dal livello 3 fino al livello 1, dove vengono spediti sotto forma di **bit**
+     - **imbustati** sulla porta di **uscita**, da cui viaggiano in **verticale scendendo** dal livello 3 fino al livello 1, dove vengono spediti sotto forma di **bit** sul canale fisico.
 
 ### **In sintesi**
 - la comunicazione **reale** tra le **entità pari** dei livelli è **indiretta** e avviene:
