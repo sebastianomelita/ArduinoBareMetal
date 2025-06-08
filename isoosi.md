@@ -239,7 +239,7 @@ I messaggi dei vari livelli, **incapsulati** uno dentro l'altro, vengono trasmes
      - i **pacchetti IP** vengono **smistati** dalla porta di ingresso su una delle porte di uscita (processo di forwarding o inoltro), viaggiando in **orizzontale**, attraversando quindi **stack diversi** dello **stesso livello**
      - **imbustati** sulla porta di **uscita**, da cui viaggiano in **verticale scendendo** dal livello 3 fino al livello 1, dove vengono spediti sotto forma di **bit** sul canale fisico.
 - tutti gli **involucri**, cioè le **intestazioni** di livello inferiore al 3 (MAC), vengono scartati in fase di **sbustamento** e poi vengono ricostruiti d'accapo, con **nuovi indirizzi**, in fase di **reimbustamento**.
-- i pacchetti di **livello 3**, cioè i **pacchetti IP**, sono per i router come dei payload (non avendo livelli superiori al 3), per cui vengono sempre da questi **inoltrati senza modifica** alcuna. Rimangono immutati sia i payload (segmento di livello 4) che le intestazioni (indirizzi sorgente e destinazione IP).
+- i pacchetti di **livello 3**, cioè i **pacchetti IP**, sono per i router come dei payload (non avendo i router livelli superiori al 3), per cui vengono sempre da questi **inoltrati senza modifica** alcuna. Rimangono immutati sia i payload (segmento di livello 4) che le intestazioni (indirizzi sorgente e destinazione IP).
 
 ### **In sintesi**
 - la comunicazione **reale** tra le **entità pari** dei livelli è **indiretta** e avviene:
