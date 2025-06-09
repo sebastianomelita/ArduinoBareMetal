@@ -1,7 +1,6 @@
 
-
-
 >[Torna all'indice generale](index.md) >[versione in Python](fasigenericapy.md)
+
 ## **Fasi di una applicazione**
 
 ![accensioneled](accensioneled.png)
@@ -41,10 +40,19 @@ Quindi le **fasi** di una **generica applicazione** dovrebbero essere nell’ord
 3. **Scrittura** uscite
 
 Ad es.:
+
 ```C++
+// C++
 val = digitalRead(pulsante);  // lettura ingressi
 stato = !(stato); // calcolo logica di comando
 digitalWrite(led,stato); // scrittura uscite
+```
+
+```python
+# MicroPython
+val = pulsante.value();  # lettura ingressi
+stato = !(stato); # calcolo logica di comando
+led.value(stato); # scrittura uscite
 ```
 
 ### **Filtraggio dell'esecuzione delle fasi**
@@ -83,12 +91,21 @@ Gli eventi **aperiodici** possono essere gestiti:
 	- lo **stato** del sistema. Se il motore è in movimento faccio una certa cosa se no non la faccio. 
 
 Di seguito la fase di scrittura delle uscite non viene eseguita ad ogni loop ma solo se un certo ingresso ha un determinato valore:
+
 ```C++
-if(in==HIGH){
-	digitalWrite(led,closed);  //scrittura uscita
+// C++
+if(input==HIGH){
+   digitalWrite(led,closed);  //scrittura uscita
 }
 ```
-### **Azioni con memoria (persistenza di una variabile)**. 
+
+```python
+# MicroPython
+if input == HIGH:
+    led.value(closed)
+```
+
+### **Azioni con memoria (persistenza di una variabile)**
 
 Le variabili in un microcontrollore possono essere **dichiarate**:
 - all'**interno** del loop() e allora si dicono **locali** alla funzione loop(). Le variabili locali hanno:
