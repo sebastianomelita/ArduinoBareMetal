@@ -88,7 +88,7 @@ Lo script di restore viene eseguito sul NAS dove è conservato il backup.
 Passo 2: Creare lo script restore.sh eseguito dal server sorgente (server da ripristinare)
 ``` C++
 #!/bin/bash
-rsync -avz --delete /path/to/source user@destination_host:/path/to/destination
+rsync -avz --delete /path/to/source/ user@destination_host:/path/to/destination
 ```
 Rendere eseguibile lo script
 ``` C++
