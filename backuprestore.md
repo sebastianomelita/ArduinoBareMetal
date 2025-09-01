@@ -70,7 +70,7 @@ ssh-copy-id user@nas_host
 Passo 2: Creare lo script restore.sh eseguito dal server sorgente (server da ripristinare)
 ``` C++
 #!/bin/bash
-rsync -avz --delete user@nas_host:/path/to/backup /path/to/restore
+rsync -avz --delete user@nas_host:/path/to/backup/ /path/to/restore
 ```
 Rendere eseguibile lo script
 ``` C++
