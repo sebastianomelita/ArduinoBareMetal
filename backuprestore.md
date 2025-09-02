@@ -12,6 +12,12 @@
 
 Lo script di restore viene eseguito sul server da ripristinare.
 
+Il comando ```--numeric-ids``` è essenziale per ripristinare i gid utente così come:
+- erano stati creati dal sistema di cui è stato eseguito il backup
+- devono essere interpretati dal sistema originale in fase di restore
+
+Il compito di mappare i gid sugli utenti, invece di essere delegato al client NFS o al server NFS viene riservato al sistema che li ha creati in origine.
+
 ``` C++
 #!/bin/bash
 
@@ -19,7 +25,7 @@ Lo script di restore viene eseguito sul server da ripristinare.
 sudo mount server_ip:/path/to/backup/folder /mnt/backup
 
 # Esegui il ripristino con rsync
-rsync -av --delete /mnt/backup/ /path/to/local/data/
+rsync -av --delete --numeric-ids /mnt/backup/ /path/to/local/data/
 
 # Smonta la condivisione NFS
 sudo umount /mnt/backup
@@ -44,7 +50,7 @@ Lo script di restore viene eseguito sul server da ripristinare.
 sudo mount -t cifs -o username=your_username,password=your_password //server_ip/path/to/backup/folder /mnt/backup
 
 # Esegui il ripristino con rsync
-rsync -av --delete /mnt/backup/ /path/to/local/data/
+rsync -av --delete --numeric-ids /mnt/backup/ /path/to/local/data/
 
 # Smonta la condivisione Samba
 sudo umount /mnt/backup
