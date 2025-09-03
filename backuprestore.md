@@ -18,6 +18,13 @@ Il comando ```--numeric-ids``` è essenziale per ripristinare i gid utente così
 
 Il compito di mappare i gid sugli utenti, invece di essere delegato al client NFS o al server NFS viene riservato al sistema che li ha creati in origine.
 
+CIò si ottiene abilitando su TrueNAS (o altro server NAS analogo):
+- NFSv3 ownership model for NFSv4, se si adopera NFS4 questa impostazione delega il mappaggio di uid e gid al sistema che adopera il client
+- Map RootUser come root, mappa l'utente root sul NAS sull'utente root sul sistema di restore
+- Map RootGroup come wheel (o root), mappa il gruppo root sul NAS sul gruppo root sul sistema di restore
+
+Le ultime due impostazioni sono necessarie per permettere all'utility di backup (scp o rsync) di accedere a qualunque file e sottocartella del backup.
+
 ``` C++
 #!/bin/bash
 
