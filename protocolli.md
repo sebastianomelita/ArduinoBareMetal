@@ -33,7 +33,8 @@ Il **formato** è definito indicando:
     -  **DA** rappresenta il Destination Address 
     - **SA** è il Sorce Address. 
     - Il campo **Information** rappresenta il payload, cioè il carico utile, ovvero le informazioni che il protocollo deve spostare dalla sorgente alla destinazione. 
-- Tutto ciò che **sta prima** del campo paysload è l'**Header**, ovvero l'**intestazione** del messaggio detta anche **PCI (Protocol Control Information)**.
+- Tutto ciò che **sta prima** del campo payload è l'**Header**, ovvero l'**intestazione** del messaggio detta anche **PCI (Protocol Control Information)**.
+- - Tutto ciò che **sta dopo** del campo payload è il **trailer**, ovvero la coda del messaggio, è presente solitamente solo al livello 1 e 2 della pila ISO/OSI e normalmente porta dei **bit di ridondanza** necessari per eseguire il la **rilevazione** e, se possibile, la **correzione** degli errori sul messaggio.
 - la **lunghezza** dei vari campi, può essere:
     - **fissa**. E' misurata in byte ed è indicata con dei numeretti posti sopra il nome del campo che misurano.
     - **variabile**. Normalmente viene indicata la lunghezza minima e quella massima. Talvolta un campo aggiuntivo (**Length** in figura) è deputato proprio a contenere la lunghezza del payload 
