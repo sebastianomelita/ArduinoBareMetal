@@ -11,7 +11,7 @@ L'**architettura** è normalmente rappresentata sotto forma di **stack** (pila) 
 
 <img src="img/pilaosi.png" alt="alt text" width="900">
 
-Esiste anche un'architettura a **5 strati** che **non prevede** le funzioni di **sessione** e **presentazione**. Se delle funzioni di comunicazione non sono incluse nell’architettura però non vuol dire che queste siano inutili ma, semplicemente, che sono svolte altrove. La figura suggerisce che le funzioni degli **strati mancanti** siano tutte **delegate** all'**applicazione**.
+Esiste anche un'architettura a **5 strati** che **non prevede** le funzioni di **sessione** e **presentazione**. Se delle funzioni di comunicazione non sono incluse nell’architettura però non vuol dire che queste siano inutili ma, semplicemente, che sono svolte altrove. La figura suggerisce che le funzioni degli **strati mancanti** sono tutte **delegate** all'**applicazione**.
 
 L'architettura è **modulare**. Uno strato può essere sostituito senza che quelli sopra di lui se ne accorgano. Ciò permette una grande **flessibilità**. Questa flessibilità può essere utilizzata per **adattare** un protocollo di livello superiore a **vari mezzi fisici** o per ottenere su uno stesso mezzo fisico un ventaglio di diverse **qualità del servizio**. 
 
