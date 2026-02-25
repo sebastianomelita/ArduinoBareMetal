@@ -65,6 +65,32 @@ L'**interfaccia virtuale** realizza un **canale virtuale diretto** tra i due rou
 
 <img src="img/integrateSediVPN2.png" alt="alt text" width="1100">
 
+#### **Esempio alternativo con routing automatico OSPF**
+
+**Area unica o multipla?**
+
+Per questa topologia **conviene una singola Area 0** (backbone) per questi motivi:
+
+- Solo 4 router e ~10 reti → nessun beneficio dal multi-area
+- Topologia hub-and-spoke semplice con R0 come centro
+- Multi-area richiederebbe ABR e aumenterebbe complessità senza vantaggi
+- Tutta la rete è già interconnessa via tunnel GRE
+  
+L'unico caso in cui valrebbe la pena aggiungere un'Area 1/2/3 è se le sedi remote crescessero molto (>50 router) — non è questo caso.
+
+<img src="img/integrateSediVPN2OSPF.png" alt="alt text" width="1100">
+
+**Punti chiave di questa configurazione**
+
+**`ip ospf network point-to-point` sui tunnel** è fondamentale — i tunnel GRE di default usano il tipo broadcast, che provoca elezione DR/BDR inutile e possibili problemi di adiacenza. Con `point-to-point` OSPF forma l'adiacenza direttamente senza DR.
+
+**`passive-interface` sulle LAN** evita che OSPF invii hello sulle interfacce verso i client, dove non ci sono altri router — riduce traffico e aumenta sicurezza.
+
+**`router-id` esplicito** (0.0.0.0 per R0, 0.0.0.1 per R1 ecc.) evita che Cisco scelga automaticamente un router-id basato sull'IP più alto, che potrebbe cambiare al reboot.
+
+**`permit ospf any any` nell'ACL** è necessario perché OSPF usa il suo protocollo IP (numero 89) — senza questa riga i pacchetti hello vengono bloccati e le adiacenze non si formano.
+
+
 #### **ACL per negare accesso alla rete ufficio dalle reti officina**
 
 Per risolvere il quesito 2, cioè negare ad un PC della subnet officina di comunicare con un PC della subnet ufficio, si può creare **una ACL** nel **router firewall** centrale **per ogni interfaccia tun**.
