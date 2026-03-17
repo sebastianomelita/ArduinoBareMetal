@@ -27,7 +27,9 @@ Il **tunneling** è costituito da **tre componenti** principali:
 ## **Interfacce virtuali tun e tap**
 
 Poste ai capi di un tunnel, **TUN e TAP** sono **driver** che permettono la creazione di **periferiche di rete virtuali**.
+
 Sono gestite esattamente come le altre periferiche tanto che il SO del router non si accorge della differenza.
+
 Rispetto alle comuni periferiche (ad es. eth0) che sono direttamente collegate al canale LAN via HW, i pacchetti diretti verso (o spediti da) dispositivi TUN/TAP sono inoltrati verso un processo che si occupa della gestione dell’incapsulamento (o del deincapsulamento) dei pacchetti nell’interfaccia WAN:
 - **TUN** è in grado di **emulare** una **periferica IP** che, collegata ad un **link L3** punto-punto su cui viaggiano pacchetti IP, comunica con una periferica analoga all'altro capo del tunnel. 
 - **TAP** in grado di **emulare** una **NIC Ethernet** che, collegata ad una **dorsale L2** punto-punto su cui viaggiano trame MAC, comunica con una periferica analoga all'altro capo del tunnel.
