@@ -26,9 +26,12 @@ Il **tunneling** è costituito da **tre componenti** principali:
 
 ## **Interfacce virtuali tun e tap**
 
-Nelle reti Informatiche, **TUN e TAP** sono **driver** che permettono la creazione di **periferiche di rete virtuali**. Rispetto alle comuni periferiche (ad es. eth0) che sono controllate direttamente dalle schede di rete, i pacchetti spediti da o verso dispositivi TUN/TAP sono spediti da o verso **programmi software** che si occupano dello **sbustamento** in ricezione e dell'**imbustamento** in trasmissione:
-- **TUN** è in grado di **simulare** una periferica di rete IP collegata ad un **link L3 punto-punto**, su cui viaggiano **pacchetti IP**, che si collega ad una periferica analoga all'**altro capo del tunnel**. 
-- **TAP** è in grado di **simulare** una NIC Ethernet che è collegata ad una **dorsale L2 punto-punto**, su cui viaggiano **trame MAC**,  che si collega ad una periferica analoga all'**altro capo del tunnel**.
+Poste ai capi di un tunnel, **TUN e TAP** sono **driver** che permettono la creazione di **periferiche di rete virtuali**.
+Sono gestite esattamente come le altre periferiche tanto che il SO del router non si accorge della differenza.
+Rispetto alle comuni periferiche (ad es. eth0) che sono direttamente collegate al canale LAN via HW, i pacchetti diretti verso (o spediti da) dispositivi TUN/TAP sono inoltrati verso un processo che si occupa della gestione dell’incapsulamento (o del deincapsulamento) dei pacchetti nell’interfaccia WAN:
+- **TUN** è in grado di **emulare** una **periferica IP** che, collegata ad un **link L3** punto-punto su cui viaggiano pacchetti IP, comunica con una periferica analoga all'altro capo del tunnel. 
+- **TAP** in grado di **emulare** una **NIC Ethernet** che, collegata ad una **dorsale L2** punto-punto su cui viaggiano trame MAC, comunica con una periferica analoga all'altro capo del tunnel.
+
 
 <img src="img/Tun-tap-osilayers-diagram.png" alt="alt text" width="1100">
 
