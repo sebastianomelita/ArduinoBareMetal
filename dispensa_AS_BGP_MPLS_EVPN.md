@@ -161,6 +161,7 @@ Questa è una domanda cruciale. `tracert` (Windows) e `traceroute` (Linux/macOS)
 Traceroute **tutto dentro Fastweb**, da una sede a Roma verso un datacenter Fastweb a Milano (L3VPN interna, niente confini di AS):
 
 ```
+tracert www.google.it
   1   10.12.0.1                               [CE sede Roma]
   2   93.34.1.25    ip47.fastwebnet.it        [PE ingresso]
   3   172.19.17.61                            [P router (area Roma)]
@@ -320,6 +321,7 @@ Questi cloud permettono alle aziende italiane latenze <5 ms verso il cloud, senz
 ![Traceroute Fastweb→Google commentato](img/fig09_traceroute_endtoend.svg)
 
 ```
+tracert www.google.it
   1   10.12.0.1                               [CPE/router cliente]
   2   93.34.1.25   ip47.fastwebnet.it         [PE Fastweb — ingresso backbone]
   3   93.32.47.97  ip31.fastwebnet.it         [P router Fastweb]
