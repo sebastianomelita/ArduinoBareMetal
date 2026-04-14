@@ -1,7 +1,6 @@
 # Dai tunnel VPN agli Autonomous System: come è fatta (davvero) Internet
 
 **Dispensa per Sistemi e Reti — 5° ITIS Informatica**
-*Preparazione all'Esame di Stato — Colloquio multidisciplinare e seconda prova*
 
 ---
 
@@ -84,7 +83,7 @@ Dal punto di vista del cliente, le sedi sembrano connesse da un cavo magico. Dal
 
 ### 3.1 Nomenclatura dei router nel modello provider
 
-![Modello CE/PE/P/RR/ASBR](figure/fig03_modello_ce_pe_p.svg)
+![Modello CE/PE/P/RR/ASBR](img/fig03_modello_ce_pe_p.svg)
 
 - **CE (Customer Edge)**: router del cliente, parla IP normale.
 - **PE (Provider Edge)**: router di frontiera del provider. Impone/rimuove le etichette MPLS e tiene tabelle di routing separate per cliente (**VRF**).
