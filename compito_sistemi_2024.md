@@ -1,5 +1,3 @@
-
-
 # Seconda prova Sistemi e Reti 2024 — Risposta ragionata (punti 1, 2, 3)
 
 **Traccia A038 — Sessione ordinaria 2024**
@@ -180,6 +178,95 @@ Dopo l'intervento:
 - sullo switch managed: **VLAN 100** include porte di CPE, server PACS, workstation medico, ecografo; **VLAN 1** include PC segreteria, stampanti;
 - sul server PACS: rotta statica `10.0.0.0/8 via 192.168.1.254` (CPE regionale);
 - sul router Internet commerciale: ACL deny `10.0.0.0/8` in uscita.
+
+### 3.5 Tre opzioni possibili in base ai requisiti della struttura
+
+La soluzione presentata finora (VLAN dedicata, niente PBR) è quella pulita ma **non è l'unica praticabile**. In sede d'esame è utile saper discutere le tre varianti principali, perché la scelta dipende dal requisito: *il dispositivo clinico deve anche navigare su Internet o no?*
+
+![Tre opzioni: VLAN pura, Routing, PBR](img/fig6_tre_opzioni.svg)
+
+#### Opzione A — VLAN dedicata "stagna" (quella presentata sopra)
+
+Il dispositivo clinico (PC medico, PACS, workstation) è in **VLAN 100** e ha **come unico default gateway il CPE regionale**. Non ha nessuna rotta verso Internet perché il CPE stesso non ne ha una: la VPN è chiusa per design.
+
+| ✅ Pro | ❌ Contro |
+|---|---|
+| Massima sicurezza: air-gap L3 da Internet | Il dispositivo clinico non può aggiornarsi, scaricare driver, accedere a cloud medicali esterni |
+| Configurazione banale sui client (un solo default gateway) | Servono postazioni separate per l'attività "office" |
+| Nessun PBR, nessuna route-map da mantenere | |
+
+Scelta consigliata per **apparecchiature diagnostiche dedicate** (ecografi, TAC, PACS) che lavorano solo con il FSE regionale.
+
+#### Opzione B — VLAN unica, routing classico destination-based
+
+Il PC sta in **un'unica VLAN** e ha **due percorsi** definiti dal **routing tradizionale per destinazione**:
+
+- tutto ciò che è destinato a 10.0.0.0/8 → next-hop = CPE regionale;
+- tutto il resto (`0.0.0.0/0`) → next-hop = router ISP commerciale.
+
+La configurazione si fa in due modi equivalenti:
+
+*Sul singolo host* (Linux):
+```
+ip route add 10.0.0.0/8 via 192.168.1.254
+# default route 192.168.1.1 già presente via DHCP
+```
+
+*Sul router ISP centralmente*:
+```
+ip route 10.0.0.0/8 192.168.1.254
+```
+In questo secondo caso l'host ha un unico default gateway (il router ISP) e il router ISP sa che per 10.0.0.0/8 deve rilanciare al CPE. Funziona perché 10.0.0.0/8 è **più specifico** di 0.0.0.0/0 e vince nella lookup per *longest prefix match*.
+
+| ✅ Pro | ❌ Contro |
+|---|---|
+| Il PC clinico può navigare su Internet per attività "office" | Segregazione L2 ridotta: tutti gli host sulla stessa VLAN |
+| Routing standard, nessun PBR | Rischio di route leak: va aggiunta ACL sul router ISP `deny 10/8` in uscita come fail-safe |
+| Facile da debuggare con `traceroute` | Se un host è compromesso vede sia Internet sia il FSE |
+
+Scelta consigliata per **workstation del medico** che devono consultare il FSE ma anche usare email, web, software gestionali cloud.
+
+> 📌 **Punto importante**: questo è **routing classico**, non PBR. La decisione si basa esclusivamente sul **prefisso di destinazione**.
+
+#### Opzione C — Policy-Based Routing (PBR)
+
+Il PBR serve quando la decisione su quale uscita usare **non può essere presa guardando solo l'indirizzo IP di destinazione**, ma richiede criteri più fini:
+
+- **sorgente** (IP mittente): "il server PACS va sempre via CPE, il PC segreteria va sempre via ISP, anche quando hanno la stessa destinazione";
+- **porta / protocollo applicativo**: "il traffico DICOM sulla porta 11112 va via CPE, tutto il resto via ISP";
+- **marcatura DSCP / QoS**: "il traffico marcato EF (expedited forwarding) per la videoconferenza telemedicina va via CPE";
+- **ora del giorno** (rari): "fascia notturna via CPE per i backup, diurna via ISP".
+
+Si implementa con **route-map** (Cisco) o **policy routing** (Linux / Juniper). Esempio Cisco-like:
+
+```
+access-list 110 permit tcp any any eq 11112         ! DICOM
+access-list 110 permit tcp any host 10.200.0.5 eq 443  ! FSE specifico
+
+route-map CLINICAL permit 10
+ match ip address 110
+ set ip next-hop 192.168.1.254                      ! CPE regionale
+
+interface vlan 1
+ ip policy route-map CLINICAL
+```
+
+| ✅ Pro | ❌ Contro |
+|---|---|
+| Controllo fine sul flusso (per applicazione, sorgente, porta) | Complessità di configurazione e debugging |
+| Permette scenari che il routing classico non copre | Costa in CPU sul router |
+| | Difficile da tracciare: `traceroute` può dare risultati inaspettati |
+| | **Serve raramente**: quasi sempre B basta |
+
+Scelta consigliata **solo** se davvero serve differenziare per criterio non-destinazione (es. stesso host che accede a un server esterno sia per applicazioni "office" sia per applicazioni cliniche, con uscite diverse).
+
+#### Riepilogo: come scegliere
+
+- **sicurezza assoluta, nessuna navigazione** → Opzione A (VLAN stagna)
+- **PC deve navigare, scelta per destinazione IP** → Opzione B (routing standard)  ← *scelta tipica nella maggior parte dei casi*
+- **serve differenziare per sorgente / applicazione / DSCP** → Opzione C (PBR)
+
+In una struttura reale ha senso **mischiare**: apparecchi diagnostici in VLAN 100 stagna (opzione A), workstation medici in VLAN 1 con routing B, PC segreteria in VLAN 1 con ACL che bloccano l'accesso al FSE. È la combinazione che massimizza sicurezza e usabilità.
 
 ---
 
