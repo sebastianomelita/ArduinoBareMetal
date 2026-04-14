@@ -223,12 +223,25 @@ Ogni partecipante stabilisce sessioni BGP con gli altri (o con un route server d
 
 ---
 
-### Analogia 
+### Subnet comune di servizio 
 
-Un IXP è come una **rotatoria gigantesca**:
+Un IXP **non è una rete IP “classica” che instrada traffico**. E' **una infrastruttura di livello 2 (LAN Ethernet) su cui le reti si collegano e scambiano informazioni di routing BGP**.
 
-* ogni rete è una strada
-* invece di fare giri lunghi passando per autostrade (transit), si entra nella rotatoria e si esce direttamente verso la destinazione
+E' una **subnet comune** dove i partecipanti ad un IXP sanno di poter trovare informazioni di routing ottimizzate per realizzare collegamenti dati tra di loro, una specie di cache locale delle informazioni di routing.  Il traffico dati non avviene su quella subnet ma utilizzando gli stessi router delle reti su cui basano il traffico in Internet verso le altre destinazioni.
+
+I router **ci sono**, ma stanno negli ISP, non nell’IXP.
+
+Schema mentale corretto:
+
+```
+[Router ISP A] ──\
+                  \ 
+                   [ SWITCH IXP ]
+                  /
+[Router ISP B] ──/
+```
+
+#### Esempi italiani
 
 I due IXP italiani principali:
 - **MIX (Milano)**: il maggiore, ~336 reti, multi-Tbps.
