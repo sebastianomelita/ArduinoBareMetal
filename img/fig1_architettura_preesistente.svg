@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <defs>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f172a"/>
+    </marker>
+  </defs>
+  <style>
+    .title{font-size:17px;font-weight:700;fill:#0f172a}
+    .role{font-size:11px;font-weight:700;fill:#fff}
+    .sub{font-size:11px;fill:#475569}
+    .lbl{font-size:12px;font-weight:600;fill:#0f172a}
+    .vrf{font-size:11px;font-weight:700;fill:#fff}
+  </style>
+
+  <text x="450" y="28" class="title" text-anchor="middle">Architettura regionale preesistente: backbone MPLS multi-VRF</text>
+  <text x="450" y="48" class="sub" text-anchor="middle">(la società regionale opera concettualmente come un AS privato con L3VPN separate per categoria di cliente)</text>
+
+  <!-- Backbone -->
+  <rect x="250" y="190" width="400" height="120" rx="18" fill="#eff6ff" stroke="#1e40af" stroke-width="2.5"/>
+  <text x="450" y="213" class="lbl" text-anchor="middle" fill="#1e40af">Backbone MPLS regionale (anello in fibra)</text>
+
+  <!-- P routers (core) -->
+  <polygon points="290,235 325,235 343,260 325,285 290,285 272,260" fill="#3b82f6"/>
+  <text x="307" y="265" class="role" text-anchor="middle">P</text>
+  <polygon points="380,235 415,235 433,260 415,285 380,285 362,260" fill="#3b82f6"/>
+  <text x="397" y="265" class="role" text-anchor="middle">P</text>
+  <polygon points="470,235 505,235 523,260 505,285 470,285 452,260" fill="#3b82f6"/>
+  <text x="487" y="265" class="role" text-anchor="middle">P</text>
+  <polygon points="560,235 595,235 613,260 595,285 560,285 542,260" fill="#3b82f6"/>
+  <text x="577" y="265" class="role" text-anchor="middle">P</text>
+
+  <!-- backbone links -->
+  <line x1="343" y1="260" x2="362" y2="260" stroke="#1e40af" stroke-width="2"/>
+  <line x1="433" y1="260" x2="452" y2="260" stroke="#1e40af" stroke-width="2"/>
+  <line x1="523" y1="260" x2="542" y2="260" stroke="#1e40af" stroke-width="2"/>
+
+  <!-- PE left -->
+  <rect x="180" y="230" width="60" height="55" rx="7" fill="#1e40af"/>
+  <text x="210" y="257" class="role" text-anchor="middle">PE</text>
+  <text x="210" y="272" class="role" text-anchor="middle" font-size="9">PoP MI</text>
+  <line x1="240" y1="260" x2="272" y2="260" stroke="#1e40af" stroke-width="2"/>
+
+  <!-- PE right -->
+  <rect x="660" y="230" width="60" height="55" rx="7" fill="#1e40af"/>
+  <text x="690" y="257" class="role" text-anchor="middle">PE</text>
+  <text x="690" y="272" class="role" text-anchor="middle" font-size="9">PoP RM</text>
+  <line x1="613" y1="260" x2="660" y2="260" stroke="#1e40af" stroke-width="2"/>
+
+  <!-- Clienti a sinistra -->
+  <g>
+    <rect x="30" y="90" width="120" height="40" rx="6" fill="#0891b2"/>
+    <text x="90" y="108" class="role" text-anchor="middle">Enti locali</text>
+    <text x="90" y="122" class="vrf" text-anchor="middle" font-size="9.5">VRF enti • 10.10/16</text>
+    <line x1="90" y1="130" x2="185" y2="235" stroke="#0891b2" stroke-width="1.8"/>
+  </g>
+  <g>
+    <rect x="30" y="150" width="120" height="40" rx="6" fill="#059669"/>
+    <text x="90" y="168" class="role" text-anchor="middle">Scuole</text>
+    <text x="90" y="182" class="vrf" text-anchor="middle" font-size="9.5">VRF scuole • 10.20/16</text>
+    <line x1="150" y1="170" x2="185" y2="245" stroke="#059669" stroke-width="1.8"/>
+  </g>
+  <g>
+    <rect x="30" y="210" width="120" height="40" rx="6" fill="#be185d"/>
+    <text x="90" y="228" class="role" text-anchor="middle">Sanità pubblica</text>
+    <text x="90" y="242" class="vrf" text-anchor="middle" font-size="9.5">VRF sanità-p • 10.50/16</text>
+    <line x1="150" y1="240" x2="185" y2="255" stroke="#be185d" stroke-width="1.8"/>
+  </g>
+
+  <!-- Datacenter a destra -->
+  <g>
+    <rect x="750" y="195" width="130" height="120" rx="10" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+    <text x="815" y="218" class="lbl" text-anchor="middle" fill="#78350f">Datacenter</text>
+    <text x="815" y="234" class="lbl" text-anchor="middle" fill="#78350f">regionale</text>
+    <text x="815" y="254" class="sub" text-anchor="middle">Fascicolo</text>
+    <text x="815" y="268" class="sub" text-anchor="middle">Sanitario</text>
+    <text x="815" y="282" class="sub" text-anchor="middle">Elettronico</text>
+    <text x="815" y="302" class="sub" text-anchor="middle" fill="#b45309">(FSE)</text>
+    <line x1="720" y1="260" x2="750" y2="255" stroke="#b45309" stroke-width="2"/>
+  </g>
+
+  <!-- Legenda VRF -->
+  <rect x="30" y="360" width="840" height="100" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="45" y="380" class="lbl">Concetto chiave: VRF (Virtual Routing and Forwarding) = tabella di routing separata per categoria di cliente.</text>
+  <text x="45" y="400" class="sub">• Ogni PE mantiene una VRF distinta per Enti, Scuole, Sanità pubblica → <tspan font-weight="700">traffico isolato</tspan> a livello logico sulla stessa fibra fisica.</text>
+  <text x="45" y="418" class="sub">• La separazione è ottenuta con MP-BGP VPNv4: i PE si scambiano rotte etichettate con un "Route Distinguisher" per VRF.</text>
+  <text x="45" y="436" class="sub">• Il datacenter viene "esportato" (via Route Target) verso tutte le VRF autorizzate → raggiungibile da tutti gli enti, ma gli enti non si vedono tra loro.</text>
+  <text x="45" y="454" class="sub" fill="#1e40af" font-weight="700">Analogia dispensa: una VRF sta a una VLAN come una L3VPN sta a un'estensione L2 — stesso principio, livello diverso.</text>
+</svg>

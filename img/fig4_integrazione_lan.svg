@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 520" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <defs>
+    <marker id="arrD" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f172a"/>
+    </marker>
+  </defs>
+  <style>
+    .title{font-size:17px;font-weight:700;fill:#0f172a}
+    .role{font-size:11px;font-weight:700;fill:#fff}
+    .sub{font-size:11px;fill:#475569}
+    .lbl{font-size:12px;font-weight:600;fill:#0f172a}
+    .warn{font-size:11px;font-weight:700;fill:#dc2626}
+  </style>
+
+  <text x="470" y="26" class="title" text-anchor="middle">Integrazione del CPE regionale nella LAN preesistente della struttura privata</text>
+  <text x="470" y="46" class="sub" text-anchor="middle">la connettività Internet commerciale rimane, il CPE si affianca (non sostituisce) — rete dual-homed</text>
+
+  <!-- Poliambulatorio box -->
+  <rect x="30" y="70" width="590" height="430" rx="14" fill="#f8fafc" stroke="#64748b" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="45" y="92" class="lbl">🏥 Struttura sanitaria privata convenzionata (poliambulatorio)</text>
+
+  <!-- Switch -->
+  <rect x="240" y="220" width="180" height="50" rx="6" fill="#334155"/>
+  <text x="330" y="243" class="role" text-anchor="middle" font-size="13">Switch managed L2</text>
+  <text x="330" y="260" class="role" text-anchor="middle" font-size="9">con VLAN 1 default + VLAN 100 "sanita-regione"</text>
+
+  <!-- Router Internet commerciale -->
+  <rect x="75" y="125" width="150" height="55" rx="8" fill="#475569"/>
+  <text x="150" y="150" class="role" text-anchor="middle">Router Internet</text>
+  <text x="150" y="166" class="role" text-anchor="middle" font-size="9">(Fastweb/TIM/VF Business)</text>
+  <line x1="150" y1="180" x2="280" y2="220" stroke="#0f172a" stroke-width="1.5"/>
+  <text x="210" y="200" class="sub">VLAN 1</text>
+
+  <!-- CPE regionale -->
+  <rect x="440" y="125" width="150" height="55" rx="8" fill="#1e3a8a" stroke="#dc2626" stroke-width="2.5"/>
+  <text x="515" y="150" class="role" text-anchor="middle">CPE regionale</text>
+  <text x="515" y="166" class="role" text-anchor="middle" font-size="9">(managed, zero-touch)</text>
+  <line x1="515" y1="180" x2="380" y2="220" stroke="#dc2626" stroke-width="2"/>
+  <text x="460" y="200" class="sub" fill="#dc2626" font-weight="700">VLAN 100</text>
+
+  <!-- Dispositivi clinici (VLAN 100) -->
+  <g>
+    <rect x="260" y="310" width="115" height="45" rx="6" fill="#be185d"/>
+    <text x="317" y="328" class="role" text-anchor="middle">Server PACS</text>
+    <text x="317" y="343" class="role" text-anchor="middle" font-size="9">192.168.1.10</text>
+    <line x1="317" y1="310" x2="310" y2="270" stroke="#be185d" stroke-width="1.5"/>
+  </g>
+  <g>
+    <rect x="385" y="310" width="115" height="45" rx="6" fill="#be185d"/>
+    <text x="442" y="328" class="role" text-anchor="middle">Workstation</text>
+    <text x="442" y="343" class="role" text-anchor="middle" font-size="9">medico (refert.)</text>
+    <line x1="442" y1="310" x2="390" y2="270" stroke="#be185d" stroke-width="1.5"/>
+  </g>
+  <g>
+    <rect x="510" y="310" width="100" height="45" rx="6" fill="#be185d"/>
+    <text x="560" y="328" class="role" text-anchor="middle">Ecografo</text>
+    <text x="560" y="343" class="role" text-anchor="middle" font-size="9">192.168.1.20</text>
+    <line x1="560" y1="310" x2="410" y2="270" stroke="#be185d" stroke-width="1.5"/>
+  </g>
+
+  <!-- Dispositivi amministrativi (VLAN 1) -->
+  <g>
+    <rect x="50" y="310" width="100" height="45" rx="6" fill="#64748b"/>
+    <text x="100" y="328" class="role" text-anchor="middle">PC segreteria</text>
+    <text x="100" y="343" class="role" text-anchor="middle" font-size="9">192.168.1.40</text>
+    <line x1="150" y1="333" x2="250" y2="270" stroke="#64748b" stroke-width="1.5"/>
+  </g>
+  <g>
+    <rect x="160" y="310" width="90" height="45" rx="6" fill="#64748b"/>
+    <text x="205" y="328" class="role" text-anchor="middle">Stampante</text>
+    <text x="205" y="343" class="role" text-anchor="middle" font-size="9">192.168.1.50</text>
+    <line x1="240" y1="333" x2="260" y2="270" stroke="#64748b" stroke-width="1.5"/>
+  </g>
+
+  <!-- Legenda colori VLAN -->
+  <rect x="50" y="385" width="540" height="100" rx="8" fill="#fff" stroke="#cbd5e1"/>
+  <text x="65" y="403" class="lbl">Segregazione L2 consigliata:</text>
+  <rect x="65" y="413" width="15" height="15" fill="#64748b"/>
+  <text x="88" y="425" class="sub"><tspan font-weight="700">VLAN 1</tspan> — rete amministrativa: uscita via router Internet commerciale</text>
+  <rect x="65" y="435" width="15" height="15" fill="#be185d"/>
+  <text x="88" y="447" class="sub"><tspan font-weight="700">VLAN 100</tspan> — rete clinica: uscita via CPE regionale verso FSE</text>
+  <text x="65" y="469" class="warn">🛡️ Se un PC amministrativo viene compromesso, non ha visibilità di rete verso il CPE regionale.</text>
+
+  <!-- Link fisico al PoP -->
+  <path d="M 590 155 Q 680 120 770 155" stroke="#dc2626" stroke-width="2.5" fill="none" marker-end="url(#arrD)"/>
+  <text x="690" y="115" class="sub" fill="#dc2626" font-weight="700">fibra dedicata</text>
+
+  <!-- Internet -->
+  <ellipse cx="770" cy="155" rx="55" ry="30" fill="#f1f5f9" stroke="#334155" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="770" y="160" class="lbl" text-anchor="middle">Internet</text>
+  <path d="M 225 155 Q 500 70 715 155" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#arrD)"/>
+
+  <!-- PoP regione -->
+  <rect x="715" y="210" width="120" height="50" rx="6" fill="#1e40af"/>
+  <text x="775" y="232" class="role" text-anchor="middle">PoP regionale</text>
+  <text x="775" y="248" class="role" text-anchor="middle" font-size="9">PE → VRF sanità-priv</text>
+
+  <!-- Datacenter -->
+  <rect x="715" y="290" width="120" height="60" rx="6" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+  <text x="775" y="310" class="lbl" text-anchor="middle" fill="#78350f">Datacenter FSE</text>
+  <text x="775" y="328" class="sub" text-anchor="middle">10.200.0.0/16</text>
+  <line x1="775" y1="260" x2="775" y2="290" stroke="#1e40af" stroke-width="2"/>
+
+  <!-- Configurazioni di rete -->
+  <rect x="650" y="380" width="270" height="130" rx="8" fill="#fff" stroke="#cbd5e1"/>
+  <text x="665" y="400" class="lbl">📝 Riconfigurazioni necessarie</text>
+  <text x="665" y="418" class="sub">• route statica: <tspan font-family="monospace" fill="#0f172a">10.0.0.0/8 via CPE</tspan></text>
+  <text x="665" y="434" class="sub">• ACL sul router Internet: blocca 10/8</text>
+  <text x="665" y="450" class="sub">  in uscita (fail-safe)</text>
+  <text x="665" y="468" class="sub">• creare VLAN 100 sullo switch</text>
+  <text x="665" y="484" class="sub">• default gw dei PACS = CPE (VLAN 100)</text>
+  <text x="665" y="502" class="sub">• default gw PC segreteria = router ISP</text>
+</svg>

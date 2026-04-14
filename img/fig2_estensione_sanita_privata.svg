@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <style>
+    .title{font-size:17px;font-weight:700;fill:#0f172a}
+    .role{font-size:11px;font-weight:700;fill:#fff}
+    .sub{font-size:11px;fill:#475569}
+    .lbl{font-size:12px;font-weight:600;fill:#0f172a}
+    .new{font-size:12px;font-weight:700;fill:#dc2626}
+  </style>
+
+  <text x="450" y="28" class="title" text-anchor="middle">Evoluzione: quarta VRF dedicata alla sanità privata convenzionata</text>
+  <text x="450" y="48" class="sub" text-anchor="middle">la rete in fibra e il core MPLS non cambiano — si aggiunge un nuovo servizio L3VPN con i suoi accessi</text>
+
+  <!-- Backbone -->
+  <rect x="250" y="185" width="400" height="110" rx="18" fill="#eff6ff" stroke="#1e40af" stroke-width="2.5"/>
+  <text x="450" y="207" class="lbl" text-anchor="middle" fill="#1e40af">Backbone MPLS regionale (invariato)</text>
+
+  <!-- P routers -->
+  <polygon points="290,225 325,225 343,250 325,275 290,275 272,250" fill="#3b82f6"/>
+  <text x="307" y="255" class="role" text-anchor="middle">P</text>
+  <polygon points="470,225 505,225 523,250 505,275 470,275 452,250" fill="#3b82f6"/>
+  <text x="487" y="255" class="role" text-anchor="middle">P</text>
+  <polygon points="560,225 595,225 613,250 595,275 560,275 542,250" fill="#3b82f6"/>
+  <text x="577" y="255" class="role" text-anchor="middle">P</text>
+  <line x1="343" y1="250" x2="452" y2="250" stroke="#1e40af" stroke-width="2"/>
+  <line x1="523" y1="250" x2="542" y2="250" stroke="#1e40af" stroke-width="2"/>
+
+  <!-- PE left (aggiornato) -->
+  <rect x="180" y="220" width="60" height="60" rx="7" fill="#1e40af"/>
+  <text x="210" y="245" class="role" text-anchor="middle">PE</text>
+  <text x="210" y="260" class="role" text-anchor="middle" font-size="8">+VRF</text>
+  <text x="210" y="272" class="role" text-anchor="middle" font-size="8">sanità-priv</text>
+  <line x1="240" y1="250" x2="272" y2="250" stroke="#1e40af" stroke-width="2"/>
+
+  <!-- PE right -->
+  <rect x="660" y="220" width="60" height="55" rx="7" fill="#1e40af"/>
+  <text x="690" y="247" class="role" text-anchor="middle">PE</text>
+  <text x="690" y="262" class="role" text-anchor="middle" font-size="9">PoP DC</text>
+  <line x1="613" y1="250" x2="660" y2="250" stroke="#1e40af" stroke-width="2"/>
+
+  <!-- Clienti preesistenti (più pallidi) -->
+  <g opacity="0.55">
+    <rect x="30" y="90" width="120" height="32" rx="6" fill="#0891b2"/>
+    <text x="90" y="110" class="role" text-anchor="middle">Enti locali</text>
+    <line x1="150" y1="106" x2="185" y2="230" stroke="#0891b2" stroke-width="1.5"/>
+    <rect x="30" y="130" width="120" height="32" rx="6" fill="#059669"/>
+    <text x="90" y="150" class="role" text-anchor="middle">Scuole</text>
+    <line x1="150" y1="146" x2="185" y2="240" stroke="#059669" stroke-width="1.5"/>
+    <rect x="30" y="170" width="120" height="32" rx="6" fill="#be185d"/>
+    <text x="90" y="190" class="role" text-anchor="middle">Sanità pubblica</text>
+    <line x1="150" y1="186" x2="185" y2="245" stroke="#be185d" stroke-width="1.5"/>
+  </g>
+
+  <!-- NUOVO: Sanità privata -->
+  <g>
+    <rect x="25" y="230" width="135" height="120" rx="10" fill="#fee2e2" stroke="#dc2626" stroke-width="2.5"/>
+    <text x="92" y="252" class="new" text-anchor="middle">NUOVO SERVIZIO</text>
+    <text x="92" y="272" class="lbl" text-anchor="middle">Sanità privata</text>
+    <text x="92" y="287" class="lbl" text-anchor="middle">convenzionata</text>
+    <text x="92" y="308" class="sub" text-anchor="middle">~2000 strutture</text>
+    <text x="92" y="323" class="sub" text-anchor="middle">VRF sanità-priv</text>
+    <text x="92" y="340" class="sub" text-anchor="middle" font-weight="700">10.100.0.0/16</text>
+
+    <!-- sedi cliente -->
+    <circle cx="75" cy="400" r="14" fill="#64748b"/>
+    <text x="75" y="405" class="role" text-anchor="middle">CE</text>
+    <circle cx="115" cy="420" r="14" fill="#64748b"/>
+    <text x="115" y="425" class="role" text-anchor="middle">CE</text>
+    <circle cx="50" cy="435" r="14" fill="#64748b"/>
+    <text x="50" y="440" class="role" text-anchor="middle">CE</text>
+    <text x="92" y="465" class="sub" text-anchor="middle" font-style="italic">…2000 struct.</text>
+
+    <line x1="92" y1="385" x2="160" y2="250" stroke="#dc2626" stroke-width="2"/>
+  </g>
+
+  <!-- Datacenter -->
+  <g>
+    <rect x="750" y="195" width="130" height="120" rx="10" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+    <text x="815" y="218" class="lbl" text-anchor="middle" fill="#78350f">Datacenter</text>
+    <text x="815" y="234" class="lbl" text-anchor="middle" fill="#78350f">regionale (FSE)</text>
+    <text x="815" y="258" class="sub" text-anchor="middle">esportato via</text>
+    <text x="815" y="272" class="sub" text-anchor="middle">Route Target</text>
+    <text x="815" y="286" class="sub" text-anchor="middle">verso tutte le VRF</text>
+    <text x="815" y="300" class="sub" text-anchor="middle">autorizzate</text>
+    <line x1="720" y1="250" x2="750" y2="250" stroke="#b45309" stroke-width="2"/>
+  </g>
+
+  <!-- Isolamento reciproco -->
+  <g transform="translate(540,345)">
+    <rect x="0" y="0" width="330" height="130" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="1.5"/>
+    <text x="15" y="22" class="lbl" fill="#065f46">🔒 Isolamento tra strutture private</text>
+    <text x="15" y="42" class="sub">• ogni CE vede SOLO il datacenter FSE</text>
+    <text x="15" y="60" class="sub">• i CE non si vedono tra loro (Route Target asimmetrici)</text>
+    <text x="15" y="78" class="sub">• nessuna default route Internet</text>
+    <text x="15" y="96" class="sub">• ACL sui PE come seconda barriera (defense-in-depth)</text>
+    <text x="15" y="118" class="sub" fill="#065f46" font-weight="700">= L3VPN "chiusa" hub-and-spoke</text>
+  </g>
+
+  <!-- Label per rete nuova -->
+  <text x="92" y="220" class="new" text-anchor="middle">→</text>
+</svg>
