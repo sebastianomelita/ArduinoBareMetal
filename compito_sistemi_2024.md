@@ -1,4 +1,4 @@
-# Seconda prova Sistemi e Reti 2024 — Risposta ragionata (punti 1, 2, 3)
+# Seconda prova Sistemi e Reti 2024 — Risposta (punti 1, 2, 3)
 
 **Traccia A038 — Sessione ordinaria 2024**
 *Rete regionale in fibra per sanità privata convenzionata (PNRR M6C2)*
