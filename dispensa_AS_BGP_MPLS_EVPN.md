@@ -1,6 +1,7 @@
 # Dai tunnel VPN agli Autonomous System: come è fatta (davvero) Internet
 
 **Dispensa per Sistemi e Reti — 5° ITIS Informatica**
+*Preparazione all'Esame di Stato — Colloquio multidisciplinare e seconda prova*
 
 ---
 
@@ -46,7 +47,7 @@ L'obiettivo è mostrare che **le stesse idee** (separare domini, creare tunnel, 
 
 ### 1.2 TUN vs TAP
 
-![TUN vs TAP](img/fig01_tun_tap.svg)
+![TUN vs TAP](figure/fig01_tun_tap.svg)
 
 - **TUN** = interfaccia virtuale di **livello 3**: trasporta pacchetti IP. Adatta a VPN tra reti instradate.
 - **TAP** = interfaccia virtuale di **livello 2**: trasporta frame Ethernet completi. Adatta a estendere una LAN via bridge.
@@ -66,7 +67,7 @@ Supponiamo di avere due sedi aziendali (Roma e Milano) che vogliono essere nella
 
 **Soluzione naïve**: un tunnel **TAP** (OpenVPN in modalità bridge, L2TP, GRE con bridging...) che incapsula i frame Ethernet dentro pacchetti IP.
 
-![VPN L2 tra due sedi](img/fig02_vpn_l2_tra_sedi.svg)
+![VPN L2 tra due sedi](figure/fig02_vpn_l2_tra_sedi.svg)
 
 Funziona per 2 sedi. Ma con 50 sedi servono 50×49/2 = 1225 tunnel (**full mesh**), tutti da configurare a mano. **Non scala.** È il problema che MPLS L3VPN (per L3) e EVPN (per L2) risolvono automaticamente.
 
@@ -83,7 +84,7 @@ Dal punto di vista del cliente, le sedi sembrano connesse da un cavo magico. Dal
 
 ### 3.1 Nomenclatura dei router nel modello provider
 
-![Modello CE/PE/P/RR/ASBR](img/fig03_modello_ce_pe_p.svg)
+![Modello CE/PE/P/RR/ASBR](figure/fig03_modello_ce_pe_p.svg)
 
 - **CE (Customer Edge)**: router del cliente, parla IP normale.
 - **PE (Provider Edge)**: router di frontiera del provider. Impone/rimuove le etichette MPLS e tiene tabelle di routing separate per cliente (**VRF**).
@@ -140,7 +141,7 @@ Apriamo la scatola nera. Dentro un AS convivono **due piani di routing**:
 
 L'IGP conosce ogni link e metrica, converge in secondi. iBGP non calcola cammini: porta solo le informazioni di raggiungibilità dei prefissi esterni, sfruttando l'IGP come trasporto.
 
-![IGP e iBGP dentro un AS](img/fig04_intra_as.svg)
+![IGP e iBGP dentro un AS](figure/fig04_intra_as.svg)
 
 **Regola mnemonica**:
 - *"Come ci arrivo?"* → IGP
@@ -151,7 +152,7 @@ L'IGP conosce ogni link e metrica, converge in secondi. iBGP non calcola cammini
 
 Questa è una domanda cruciale. `tracert` (Windows) e `traceroute` (Linux/macOS) mandano pacchetti con **TTL crescente** (1, 2, 3...) e raccolgono i messaggi ICMP *TTL exceeded* che ogni router rimanda. La tecnica ha **limiti strutturali**:
 
-![Cosa vede tracert](img/fig10_cosa_vede_tracert.svg)
+![Cosa vede tracert](figure/fig10_cosa_vede_tracert.svg)
 
 > 🔑 **Punto chiave**: tracert mostra la topologia **data-plane** (per dove passano i pacchetti), **non** il control-plane (chi decide). OSPF, iBGP, eBGP si possono solo *dedurre* dalla posizione dell'hop e dal rDNS. In particolare i **Route Reflector** e le **sessioni BGP** non compaiono mai nel traceroute.
 
@@ -182,7 +183,7 @@ Cosa si vede: 7 hop, tutti dentro AS12874. I P scelti dall'IGP (probabilmente IS
 - **eBGP**: tra ASBR di AS diversi. È il BGP "di frontiera".
 - **iBGP**: dentro un AS, tra PE/ASBR, per propagare le rotte esterne. Non modifica l'AS_PATH.
 
-![eBGP tra due AS](img/fig05_ebgp_frontiera.svg)
+![eBGP tra due AS](figure/fig05_ebgp_frontiera.svg)
 
 ### 5.2 Peering vs Transit
 
@@ -195,7 +196,39 @@ Un peering eBGP può essere **privato** (PNI, cavo dedicato) o **pubblico** (att
 
 Un **IXP (Internet Exchange Point)** è letteralmente **un grande switch Ethernet** dove decine/centinaia di AS si connettono e fanno peering via BGP. È peering L3 che viaggia su un fabric L2 condiviso.
 
-![MIX di Milano come switch condiviso](img/fig06_ixp_mix.svg)
+**Internet realizza l'instradamento tra router di confine di un AS (ASBR) mediante il protocollo BGP, non sceglie il percorso più corto in km, ma quello più conveniente secondo politiche economiche e tecniche.**
+
+Un IXP introduce archi di peering nel grafo degli Autonomous System, riducendo il numero di hop BGP e permettendo percorsi più diretti rispetto al transito.
+
+Un **IXP (Internet Exchange Point)** è un’infrastruttura di rete che permette a più operatori Internet (ISP, content provider, CDN, ecc.) di **scambiarsi traffico direttamente** tra loro.
+
+![MIX di Milano come switch condiviso](figure/fig06_ixp_mix.svg)
+
+#### Idea di base
+
+Invece di far passare i dati attraverso reti di terzi (transit provider), due reti si collegano allo stesso IXP e **si interconnettono localmente** → questo processo si chiama *peering*.
+
+#### Come funziona (visione tecnica)
+
+Un IXP è sostanzialmente:
+
+* uno o più **switch ad alte prestazioni**
+* a cui si collegano le reti partecipanti tramite porte Ethernet
+* sopra gira tipicamente **BGP**, usato per:
+
+  * annunciare le proprie reti (prefissi IP)
+  * decidere quali percorsi usare
+
+Ogni partecipante stabilisce sessioni BGP con gli altri (o con un route server dell’IXP).
+
+---
+
+### Analogia 
+
+Un IXP è come una **rotatoria gigantesca**:
+
+* ogni rete è una strada
+* invece di fare giri lunghi passando per autostrade (transit), si entra nella rotatoria e si esce direttamente verso la destinazione
 
 I due IXP italiani principali:
 - **MIX (Milano)**: il maggiore, ~336 reti, multi-Tbps.
@@ -208,7 +241,7 @@ I due IXP italiani principali:
 
 **MPLS L3VPN (RFC 4364)** è come avere una **"TUN distribuita"** gestita automaticamente dall'ISP tra tutti i suoi PE.
 
-![MPLS L3VPN con doppia etichetta](img/fig07_mpls_l3vpn.svg)
+![MPLS L3VPN con doppia etichetta](figure/fig07_mpls_l3vpn.svg)
 
 **Come funziona in 4 idee**:
 
@@ -227,7 +260,7 @@ Nei datacenter moderni si vuole lo stesso servizio ma a livello 2. Le VLAN class
 
 **Soluzione**: **VXLAN + EVPN**.
 
-![EVPN+VXLAN](img/fig08_evpn_vxlan.svg)
+![EVPN+VXLAN](figure/fig08_evpn_vxlan.svg)
 
 - **VXLAN** (il "TAP su scala datacenter"): incapsula frame Ethernet in UDP/IP (porta 4789), con un **VNI a 24 bit** → ~16 milioni di segmenti. Gli endpoint si chiamano **VTEP**.
 - **EVPN (RFC 7432)**: famiglia BGP per annunciare **quali MAC** sono dietro quali VTEP. Niente più flooding per il MAC learning.
@@ -271,7 +304,7 @@ Questi cloud permettono alle aziende italiane latenze <5 ms verso il cloud, senz
 
 ## 9. Traceroute commentato end-to-end
 
-![Traceroute Fastweb→Google commentato](img/fig09_traceroute_endtoend.svg)
+![Traceroute Fastweb→Google commentato](figure/fig09_traceroute_endtoend.svg)
 
 ```
   1   10.12.0.1                               [CPE/router cliente]
