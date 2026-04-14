@@ -1,0 +1,175 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 620" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <defs>
+    <marker id="arrO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f172a"/>
+    </marker>
+    <marker id="arrOr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="arrOb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/>
+    </marker>
+  </defs>
+  <style>
+    .title{font-size:17px;font-weight:700;fill:#0f172a}
+    .opttitle{font-size:14px;font-weight:700;fill:#0f172a}
+    .role{font-size:10px;font-weight:700;fill:#fff}
+    .sub{font-size:10px;fill:#475569}
+    .lbl{font-size:11px;font-weight:600;fill:#0f172a}
+    .good{fill:#059669;font-weight:700}
+    .bad{fill:#dc2626;font-weight:700}
+    .mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:9.5px;fill:#0f172a}
+  </style>
+
+  <text x="500" y="26" class="title" text-anchor="middle">Tre opzioni per il traffico del PC clinico: quale scegliere?</text>
+  <text x="500" y="46" class="sub" text-anchor="middle">dipende dal requisito: il dispositivo clinico deve / non deve accedere anche a Internet?</text>
+
+  <!-- ============ OPZIONE A ============ -->
+  <g transform="translate(20,70)">
+    <rect x="0" y="0" width="310" height="505" rx="12" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+    <text x="155" y="24" class="opttitle" text-anchor="middle" fill="#065f46">OPZIONE A — VLAN dedicata</text>
+    <text x="155" y="42" class="sub" text-anchor="middle">(il PC clinico NON va su Internet)</text>
+
+    <!-- PC clinico -->
+    <rect x="110" y="70" width="90" height="40" rx="6" fill="#be185d"/>
+    <text x="155" y="87" class="role" text-anchor="middle">PC clinico</text>
+    <text x="155" y="101" class="role" text-anchor="middle" font-size="8">192.168.100.10</text>
+
+    <!-- Switch -->
+    <rect x="60" y="145" width="190" height="38" rx="5" fill="#334155"/>
+    <text x="155" y="168" class="role" text-anchor="middle">Switch — VLAN 100 clinica</text>
+    <line x1="155" y1="110" x2="155" y2="145" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrO)"/>
+
+    <!-- CPE (unica uscita!) -->
+    <rect x="75" y="220" width="160" height="48" rx="7" fill="#1e3a8a"/>
+    <text x="155" y="242" class="role" text-anchor="middle">CPE regionale</text>
+    <text x="155" y="256" class="role" text-anchor="middle" font-size="9">default gw = 192.168.100.1</text>
+    <line x1="155" y1="183" x2="155" y2="220" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrO)"/>
+
+    <!-- PoP -->
+    <rect x="85" y="305" width="140" height="38" rx="6" fill="#b45309"/>
+    <text x="155" y="328" class="role" text-anchor="middle">PoP → FSE</text>
+    <line x1="155" y1="268" x2="155" y2="305" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrO)"/>
+
+    <!-- Config box -->
+    <rect x="15" y="365" width="280" height="75" rx="6" fill="#fff" stroke="#10b981"/>
+    <text x="25" y="382" class="lbl">Config PC clinico:</text>
+    <text x="25" y="400" class="mono">IP:    192.168.100.10/24</text>
+    <text x="25" y="414" class="mono">GW:    192.168.100.1  (CPE)</text>
+    <text x="25" y="428" class="mono">(niente altro — unica uscita)</text>
+
+    <!-- Pro/Con -->
+    <text x="25" y="462" class="sub"><tspan class="good">✅</tspan> massima sicurezza: air-gap da Internet</text>
+    <text x="25" y="478" class="sub"><tspan class="good">✅</tspan> zero PBR, config banale</text>
+    <text x="25" y="494" class="sub"><tspan class="bad">❌</tspan> no aggiornamenti / cloud clinici</text>
+  </g>
+
+  <!-- ============ OPZIONE B ============ -->
+  <g transform="translate(345,70)">
+    <rect x="0" y="0" width="310" height="505" rx="12" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="155" y="24" class="opttitle" text-anchor="middle" fill="#1e40af">OPZIONE B — Routing classico</text>
+    <text x="155" y="42" class="sub" text-anchor="middle">(PC in VLAN unica, scelta per destinazione)</text>
+
+    <!-- PC -->
+    <rect x="110" y="70" width="90" height="40" rx="6" fill="#475569"/>
+    <text x="155" y="87" class="role" text-anchor="middle">PC clinico</text>
+    <text x="155" y="101" class="role" text-anchor="middle" font-size="8">192.168.1.10</text>
+
+    <!-- Switch -->
+    <rect x="60" y="145" width="190" height="38" rx="5" fill="#334155"/>
+    <text x="155" y="168" class="role" text-anchor="middle">Switch — VLAN 1 (unica)</text>
+    <line x1="155" y1="110" x2="155" y2="145" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrO)"/>
+
+    <!-- Biforcazione -->
+    <text x="155" y="205" class="lbl" text-anchor="middle" fill="#1e40af">decisione su destinazione IP</text>
+
+    <!-- Router ISP (sx) -->
+    <rect x="15" y="225" width="130" height="45" rx="7" fill="#64748b"/>
+    <text x="80" y="245" class="role" text-anchor="middle">Router ISP</text>
+    <text x="80" y="260" class="role" text-anchor="middle" font-size="9">default route</text>
+    <path d="M 130 183 Q 80 205 80 225" stroke="#2563eb" stroke-width="1.8" fill="none" marker-end="url(#arrOb)"/>
+
+    <!-- CPE (dx) -->
+    <rect x="165" y="225" width="130" height="45" rx="7" fill="#1e3a8a"/>
+    <text x="230" y="245" class="role" text-anchor="middle">CPE regionale</text>
+    <text x="230" y="260" class="role" text-anchor="middle" font-size="9">rotta 10.0.0.0/8</text>
+    <path d="M 180 183 Q 230 205 230 225" stroke="#dc2626" stroke-width="1.8" fill="none" marker-end="url(#arrOr)"/>
+
+    <!-- sbocchi -->
+    <ellipse cx="80" cy="315" rx="55" ry="22" fill="#f1f5f9" stroke="#334155" stroke-dasharray="3,2"/>
+    <text x="80" y="320" class="sub" text-anchor="middle">Internet</text>
+    <line x1="80" y1="270" x2="80" y2="295" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrOb)"/>
+
+    <rect x="175" y="295" width="110" height="38" rx="6" fill="#b45309"/>
+    <text x="230" y="318" class="role" text-anchor="middle">PoP → FSE</text>
+    <line x1="230" y1="270" x2="230" y2="295" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrOr)"/>
+
+    <!-- Config -->
+    <rect x="15" y="365" width="280" height="75" rx="6" fill="#fff" stroke="#2563eb"/>
+    <text x="25" y="382" class="lbl">Config PC clinico (o router):</text>
+    <text x="25" y="398" class="mono">IP:    192.168.1.10/24</text>
+    <text x="25" y="412" class="mono">route 10.0.0.0/8 via CPE</text>
+    <text x="25" y="426" class="mono">default via Router ISP</text>
+
+    <!-- Pro/Con -->
+    <text x="15" y="462" class="sub"><tspan class="good">✅</tspan> PC può navigare su Internet</text>
+    <text x="15" y="478" class="sub"><tspan class="good">✅</tspan> routing standard, niente PBR</text>
+    <text x="15" y="494" class="sub"><tspan class="bad">❌</tspan> segregazione L2 ridotta</text>
+  </g>
+
+  <!-- ============ OPZIONE C ============ -->
+  <g transform="translate(670,70)">
+    <rect x="0" y="0" width="310" height="505" rx="12" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+    <text x="155" y="24" class="opttitle" text-anchor="middle" fill="#78350f">OPZIONE C — Policy-Based Routing</text>
+    <text x="155" y="42" class="sub" text-anchor="middle">(scelta su criteri non-destinazione)</text>
+
+    <!-- PC -->
+    <rect x="110" y="70" width="90" height="40" rx="6" fill="#475569"/>
+    <text x="155" y="87" class="role" text-anchor="middle">PC clinico</text>
+    <text x="155" y="101" class="role" text-anchor="middle" font-size="8">varie app</text>
+
+    <!-- Switch -->
+    <rect x="60" y="145" width="190" height="38" rx="5" fill="#334155"/>
+    <text x="155" y="168" class="role" text-anchor="middle">Switch L3 / router con PBR</text>
+    <line x1="155" y1="110" x2="155" y2="145" stroke="#0f172a" stroke-width="1.5" marker-end="url(#arrO)"/>
+
+    <!-- route-map -->
+    <rect x="35" y="198" width="240" height="45" rx="6" fill="#fff" stroke="#b45309" stroke-width="1.5" stroke-dasharray="3,2"/>
+    <text x="155" y="215" class="lbl" text-anchor="middle" fill="#78350f">route-map / PBR:</text>
+    <text x="155" y="232" class="mono" text-anchor="middle">match app-DICOM/HL7 → CPE, else → ISP</text>
+
+    <!-- Router ISP (sx) -->
+    <rect x="15" y="265" width="130" height="45" rx="7" fill="#64748b"/>
+    <text x="80" y="285" class="role" text-anchor="middle">Router ISP</text>
+    <text x="80" y="300" class="role" text-anchor="middle" font-size="9">traffico "office"</text>
+    <path d="M 110 243 Q 80 255 80 265" stroke="#2563eb" stroke-width="1.8" fill="none" marker-end="url(#arrOb)"/>
+
+    <!-- CPE (dx) -->
+    <rect x="165" y="265" width="130" height="45" rx="7" fill="#1e3a8a"/>
+    <text x="230" y="285" class="role" text-anchor="middle">CPE regionale</text>
+    <text x="230" y="300" class="role" text-anchor="middle" font-size="9">traffico clinico</text>
+    <path d="M 200 243 Q 230 255 230 265" stroke="#dc2626" stroke-width="1.8" fill="none" marker-end="url(#arrOr)"/>
+
+    <ellipse cx="80" cy="350" rx="55" ry="22" fill="#f1f5f9" stroke="#334155" stroke-dasharray="3,2"/>
+    <text x="80" y="355" class="sub" text-anchor="middle">Internet</text>
+    <line x1="80" y1="310" x2="80" y2="330" stroke="#2563eb" stroke-width="1.5" marker-end="url(#arrOb)"/>
+
+    <rect x="175" y="330" width="110" height="38" rx="6" fill="#b45309"/>
+    <text x="230" y="353" class="role" text-anchor="middle">PoP → FSE</text>
+    <line x1="230" y1="310" x2="230" y2="330" stroke="#dc2626" stroke-width="1.5" marker-end="url(#arrOr)"/>
+
+    <!-- Config -->
+    <rect x="15" y="390" width="280" height="60" rx="6" fill="#fff" stroke="#b45309"/>
+    <text x="25" y="407" class="lbl">Esempio route-map (Cisco-like):</text>
+    <text x="25" y="422" class="mono">match ip address ACL-DICOM</text>
+    <text x="25" y="434" class="mono">set ip next-hop 192.168.1.254</text>
+
+    <text x="15" y="468" class="sub"><tspan class="good">✅</tspan> controllo fine (app / sorgente / DSCP)</text>
+    <text x="15" y="484" class="sub"><tspan class="bad">❌</tspan> complessità, difficile da debuggare</text>
+    <text x="15" y="500" class="sub"><tspan class="bad">❌</tspan> serve solo se B non basta</text>
+  </g>
+
+  <!-- Riga riassuntiva -->
+  <rect x="20" y="585" width="960" height="30" rx="6" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="500" y="605" class="sub" text-anchor="middle">📌 In ordine di preferenza: <tspan font-weight="700">A</tspan> se la sicurezza prevale, <tspan font-weight="700">B</tspan> se il PC deve navigare (scelta standard), <tspan font-weight="700">C</tspan> solo se B non esprime il criterio richiesto (es. differenziare per applicazione)</text>
+</svg>
