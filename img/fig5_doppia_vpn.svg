@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 400" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <style>
+    .title{font-size:17px;font-weight:700;fill:#0f172a}
+    .role{font-size:11px;font-weight:700;fill:#fff}
+    .sub{font-size:11px;fill:#475569}
+    .lbl{font-size:12px;font-weight:600;fill:#0f172a}
+  </style>
+
+  <text x="450" y="28" class="title" text-anchor="middle">Doppia VPN: trusted (MPLS) + untrusted (IPsec) = defense-in-depth</text>
+  <text x="450" y="48" class="sub" text-anchor="middle">concetto chiave per il punto 4 della traccia: dati sanitari protetti a due livelli indipendenti</text>
+
+  <!-- Contenitore -->
+  <rect x="40" y="80" width="820" height="180" rx="14" fill="#fef3c7" stroke="#b45309" stroke-width="2"/>
+  <text x="55" y="102" class="lbl" fill="#78350f">Strato 1 — Trusted VPN: L3VPN MPLS (isolamento amministrativo del provider regionale)</text>
+
+  <!-- Strato MPLS -->
+  <rect x="80" y="120" width="740" height="50" rx="8" fill="#fde68a" stroke="#b45309" stroke-width="1.5"/>
+  <text x="450" y="142" class="sub" text-anchor="middle" font-weight="700" fill="#78350f">[ transport label | VPN label | pacchetto IP ]</text>
+  <text x="450" y="158" class="sub" text-anchor="middle">VRF isolate, Route Target selettivi, nessuna visibilità tra clienti → sicurezza "logica"</text>
+
+  <!-- Strato 2 IPsec dentro -->
+  <rect x="55" y="190" width="790" height="60" rx="10" fill="#ede9fe" stroke="#6d28d9" stroke-width="2"/>
+  <text x="75" y="210" class="lbl" fill="#5b21b6">Strato 2 — Untrusted VPN: tunnel IPsec (ESP) end-to-end CPE ↔ concentratore regionale</text>
+  <text x="450" y="228" class="sub" text-anchor="middle" font-weight="700" fill="#5b21b6">AES-256-GCM + autenticazione reciproca con certificati X.509 custoditi nel TPM</text>
+  <text x="450" y="244" class="sub" text-anchor="middle">protegge i dati anche in caso di misconfiguration del backbone o accesso fisico al cablaggio</text>
+
+  <!-- CPE e DC -->
+  <rect x="40" y="280" width="100" height="50" rx="7" fill="#1e3a8a"/>
+  <text x="90" y="303" class="role" text-anchor="middle">CPE</text>
+  <text x="90" y="318" class="role" text-anchor="middle" font-size="9">struttura privata</text>
+
+  <rect x="760" y="280" width="100" height="50" rx="7" fill="#b45309"/>
+  <text x="810" y="303" class="role" text-anchor="middle">Concentratore</text>
+  <text x="810" y="318" class="role" text-anchor="middle" font-size="9">regionale (FSE)</text>
+
+  <path d="M 140 305 Q 450 340 760 305" stroke="#6d28d9" stroke-width="2.5" fill="none" stroke-dasharray="8,4"/>
+  <text x="450" y="355" class="sub" text-anchor="middle" fill="#5b21b6" font-weight="700">tunnel IPsec end-to-end (dati cifrati anche dentro la rete regionale)</text>
+
+  <!-- Analogia -->
+  <text x="450" y="383" class="sub" text-anchor="middle" fill="#475569" font-style="italic">Come in dispensa: MPLS fa il trasporto, IPsec fa la crittografia — due livelli indipendenti di protezione</text>
+</svg>
