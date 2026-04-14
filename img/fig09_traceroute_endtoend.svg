@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <defs>
+    <marker id="arr9" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f172a"/>
+    </marker>
+  </defs>
+  <style>
+    .title{font-size:16px;font-weight:700;fill:#0f172a}
+    .role{font-size:11px;font-weight:700;fill:#fff}
+    .hop{font-size:11px;font-weight:700;fill:#fff}
+    .sub{font-size:10px;fill:#334155}
+    .asname{font-size:12px;font-weight:700;fill:#0f172a}
+    .note{font-size:10.5px;fill:#0f172a}
+  </style>
+
+  <text x="480" y="24" class="title" text-anchor="middle">Traceroute reale commentato: Roma (Fastweb) → Monaco (Google)</text>
+
+  <!-- CASA -->
+  <rect x="20" y="80" width="80" height="50" rx="8" fill="#64748b"/>
+  <text x="60" y="103" class="role" text-anchor="middle">CASA</text>
+  <text x="60" y="120" class="role" text-anchor="middle" font-size="10">PC + CPE</text>
+  <text x="60" y="150" class="sub" text-anchor="middle">hop 1</text>
+  <text x="60" y="163" class="sub" text-anchor="middle">10.12.0.1</text>
+
+  <!-- AS Fastweb box -->
+  <rect x="120" y="55" width="430" height="210" rx="14" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="335" y="76" class="asname" text-anchor="middle" fill="#1e40af">AS 12874 — Fastweb (intra-AS)</text>
+
+  <!-- PE ingresso -->
+  <rect x="140" y="90" width="70" height="45" rx="7" fill="#2563eb"/>
+  <text x="175" y="117" class="hop" text-anchor="middle">PE</text>
+  <text x="175" y="148" class="sub" text-anchor="middle">hop 2</text>
+  <text x="175" y="160" class="sub" text-anchor="middle">ip47.fastwebnet.it</text>
+
+  <!-- P routers -->
+  <polygon points="235,90 270,90 288,115 270,140 235,140 217,115" fill="#60a5fa"/>
+  <text x="252" y="120" class="hop" text-anchor="middle">P</text>
+  <text x="252" y="155" class="sub" text-anchor="middle">hop 3</text>
+  <text x="252" y="166" class="sub" text-anchor="middle">ip31.fastwebnet</text>
+
+  <polygon points="305,90 340,90 358,115 340,140 305,140 287,115" fill="#60a5fa"/>
+  <text x="322" y="120" class="hop" text-anchor="middle">P</text>
+  <text x="322" y="155" class="sub" text-anchor="middle">hop 4</text>
+  <text x="322" y="166" class="sub" text-anchor="middle" fill="#b45309">172.19.17.61</text>
+  <text x="322" y="177" class="sub" text-anchor="middle" fill="#b45309">(RFC1918)</text>
+
+  <polygon points="375,90 410,90 428,115 410,140 375,140 357,115" fill="#60a5fa"/>
+  <text x="392" y="120" class="hop" text-anchor="middle">P</text>
+  <text x="392" y="155" class="sub" text-anchor="middle">hop 5</text>
+  <text x="392" y="166" class="sub" text-anchor="middle" fill="#b45309">10.254.2.245</text>
+  <text x="392" y="177" class="sub" text-anchor="middle" fill="#b45309">(RFC1918)</text>
+
+  <polygon points="445,90 480,90 498,115 480,140 445,140 427,115" fill="#60a5fa"/>
+  <text x="462" y="120" class="hop" text-anchor="middle">P</text>
+  <text x="462" y="155" class="sub" text-anchor="middle">hop 6</text>
+  <text x="462" y="166" class="sub" text-anchor="middle">ip163.fastwebnet</text>
+
+  <!-- ASBR Fastweb -->
+  <rect x="505" y="90" width="40" height="50" rx="6" fill="#dc2626"/>
+  <text x="525" y="118" class="hop" text-anchor="middle">ASBR</text>
+  <text x="525" y="155" class="sub" text-anchor="middle">hop 7</text>
+  <text x="525" y="166" class="sub" text-anchor="middle">fastres.net</text>
+
+  <!-- AS Google box -->
+  <rect x="570" y="55" width="370" height="210" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="755" y="76" class="asname" text-anchor="middle" fill="#991b1b">AS 15169 — Google (intra-AS / SDN B4)</text>
+
+  <!-- ASBR Google -->
+  <rect x="585" y="90" width="40" height="50" rx="6" fill="#dc2626"/>
+  <text x="605" y="118" class="hop" text-anchor="middle">ASBR</text>
+  <text x="605" y="155" class="sub" text-anchor="middle">hop 8</text>
+  <text x="605" y="166" class="sub" text-anchor="middle">209.85.168.64</text>
+
+  <!-- Google P -->
+  <polygon points="650,90 685,90 703,115 685,140 650,140 632,115" fill="#f87171"/>
+  <text x="667" y="120" class="hop" text-anchor="middle">P</text>
+  <text x="667" y="155" class="sub" text-anchor="middle">hop 9</text>
+  <text x="667" y="166" class="sub" text-anchor="middle">fabric B4</text>
+
+  <polygon points="720,90 755,90 773,115 755,140 720,140 702,115" fill="#f87171"/>
+  <text x="737" y="120" class="hop" text-anchor="middle">P</text>
+  <text x="737" y="155" class="sub" text-anchor="middle">hop 10</text>
+  <text x="737" y="166" class="sub" text-anchor="middle">142.250.211.21</text>
+
+  <!-- edge -->
+  <rect x="800" y="90" width="120" height="50" rx="8" fill="#7c3aed"/>
+  <text x="860" y="113" class="hop" text-anchor="middle">EDGE</text>
+  <text x="860" y="128" class="hop" text-anchor="middle" font-size="10">muc12 (MUC)</text>
+  <text x="860" y="160" class="sub" text-anchor="middle">hop 11 — destinazione</text>
+
+  <!-- arrows -->
+  <line x1="100" y1="105" x2="140" y2="112" stroke="#0f172a" stroke-width="2" marker-end="url(#arr9)"/>
+  <line x1="210" y1="112" x2="218" y2="115" stroke="#0f172a" stroke-width="2" marker-end="url(#arr9)"/>
+  <line x1="288" y1="115" x2="287" y2="115" stroke="#0f172a" stroke-width="2"/>
+  <line x1="358" y1="115" x2="358" y2="115" stroke="#0f172a" stroke-width="2"/>
+  <line x1="498" y1="115" x2="505" y2="115" stroke="#0f172a" stroke-width="2" marker-end="url(#arr9)"/>
+  <line x1="545" y1="115" x2="585" y2="115" stroke="#0f172a" stroke-width="3"/>
+  <line x1="625" y1="115" x2="632" y2="115" stroke="#0f172a" stroke-width="2" marker-end="url(#arr9)"/>
+  <line x1="773" y1="115" x2="800" y2="115" stroke="#0f172a" stroke-width="2" marker-end="url(#arr9)"/>
+
+  <!-- eBGP caption -->
+  <path d="M 525 200 Q 565 230 605 200" stroke="#7c3aed" stroke-width="2" fill="none" stroke-dasharray="5,3"/>
+  <text x="565" y="235" class="note" text-anchor="middle" fill="#6d28d9">eBGP peering (al MIX Milano)</text>
+
+  <!-- legend -->
+  <rect x="20" y="290" width="920" height="115" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="30" y="310" class="note"><tspan font-weight="700">Come si leggono gli hop:</tspan></text>
+  <text x="30" y="328" class="note">• hop 1 = CE (il vostro router di casa, RFC1918)</text>
+  <text x="30" y="344" class="note">• hop 2 = PE Fastweb, entrata nel backbone MPLS (impone le etichette)</text>
+  <text x="30" y="360" class="note">• hop 3–6 = P router Fastweb, <tspan fill="#b45309">gli IP privati sono la firma del backbone MPLS</tspan> (ttl-propagate attivo)</text>
+  <text x="30" y="376" class="note">• hop 7–8 = <tspan fill="#dc2626" font-weight="700">i due ASBR</tspan>: frontiera di uscita Fastweb ↔ frontiera di ingresso Google (peering eBGP al MIX)</text>
+  <text x="30" y="392" class="note">• hop 9–10 = router interni della fabric SDN di Google (B4, non MPLS classico) — hop 11 = edge server destinazione a Monaco</text>
+</svg>

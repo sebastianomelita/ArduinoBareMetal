@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <style>
+    .title{font-size:16px;font-weight:700;fill:#0f172a}
+    .layer{font-size:13px;font-weight:700;fill:#0f172a}
+    .item{font-size:12px;fill:#0f172a}
+    .yes{fill:#059669;font-weight:700}
+    .no{fill:#dc2626;font-weight:700}
+    .maybe{fill:#d97706;font-weight:700}
+  </style>
+
+  <text x="400" y="26" class="title" text-anchor="middle">Cosa tracert/traceroute può mostrare — e cosa NO</text>
+  <text x="400" y="46" font-size="12" fill="#64748b" text-anchor="middle">(tracert è uno strumento di data-plane: vede il percorso, non chi ha parlato con chi)</text>
+
+  <!-- L1 -->
+  <rect x="50" y="65" width="700" height="42" rx="6" fill="#f1f5f9" stroke="#94a3b8"/>
+  <text x="70" y="91" class="layer">L1 fisico</text>
+  <text x="250" y="91" class="item">fibre, DWDM, cavi sottomarini</text>
+  <text x="700" y="91" class="no" text-anchor="end">❌ non visibile</text>
+
+  <!-- L2 -->
+  <rect x="50" y="115" width="700" height="42" rx="6" fill="#ecfdf5" stroke="#10b981"/>
+  <text x="70" y="141" class="layer">L2</text>
+  <text x="250" y="141" class="item">VLAN 802.1Q, VXLAN, MAC</text>
+  <text x="700" y="141" class="no" text-anchor="end">❌ non visibile</text>
+
+  <!-- MPLS -->
+  <rect x="50" y="165" width="700" height="42" rx="6" fill="#fef3c7" stroke="#d97706"/>
+  <text x="70" y="191" class="layer">L2.5 (MPLS)</text>
+  <text x="250" y="191" class="item">etichette MPLS (transport + VPN)</text>
+  <text x="700" y="191" class="maybe" text-anchor="end">⚠️ solo con RFC 4950</text>
+
+  <!-- L3 -->
+  <rect x="50" y="215" width="700" height="42" rx="6" fill="#dbeafe" stroke="#2563eb"/>
+  <text x="70" y="241" class="layer">L3 IP</text>
+  <text x="250" y="241" class="item">indirizzi IP dei router, latenze, rDNS</text>
+  <text x="700" y="241" class="yes" text-anchor="end">✅ questo è ciò che tracert mostra</text>
+
+  <!-- control plane -->
+  <rect x="50" y="275" width="700" height="130" rx="6" fill="#fef2f2" stroke="#dc2626"/>
+  <text x="70" y="298" class="layer">Control-plane (chi decide)</text>
+  <text x="90" y="322" class="item">• IGP (OSPF / IS-IS): topologia interna dell'AS</text>
+  <text x="700" y="322" class="no" text-anchor="end">❌ invisibile</text>
+  <text x="90" y="342" class="item">• iBGP: distribuzione prefissi esterni dentro l'AS</text>
+  <text x="700" y="342" class="no" text-anchor="end">❌ invisibile</text>
+  <text x="90" y="362" class="item">• eBGP: peering tra AS</text>
+  <text x="700" y="362" class="maybe" text-anchor="end">⚠️ si deduce dal cambio di rDNS/IP</text>
+  <text x="90" y="382" class="item">• Route Reflector</text>
+  <text x="700" y="382" class="no" text-anchor="end">❌ fuori dal data-plane</text>
+  <text x="90" y="401" class="item">• ASN di ogni hop</text>
+  <text x="700" y="401" class="maybe" text-anchor="end">⚠️ solo con "traceroute -A" o bgp.tools</text>
+</svg>

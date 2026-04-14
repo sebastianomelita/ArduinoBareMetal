@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 340" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <style>
+    .title{font-size:16px;font-weight:700;fill:#0f172a}
+    .role{font-size:11px;font-weight:700;fill:#fff}
+    .sub{font-size:11px;fill:#475569}
+    .as{font-size:12px;font-weight:700;fill:#0f172a}
+  </style>
+
+  <text x="400" y="28" class="title" text-anchor="middle">IXP: uno switch Ethernet gigante dove gli AS fanno peering</text>
+
+  <!-- IXP fabric -->
+  <rect x="200" y="140" width="400" height="60" rx="10" fill="#fbbf24" stroke="#b45309" stroke-width="2.5"/>
+  <text x="400" y="165" class="as" text-anchor="middle">MIX di Milano — fabric Ethernet condivisa</text>
+  <text x="400" y="185" class="sub" text-anchor="middle">(≈ 336 reti connesse, multi-Tbps)</text>
+
+  <!-- AS boxes around -->
+  <g>
+    <rect x="30" y="55" width="110" height="60" rx="8" fill="#2563eb"/>
+    <text x="85" y="80" class="role" text-anchor="middle">Fastweb</text>
+    <text x="85" y="98" class="role" text-anchor="middle">AS12874</text>
+    <line x1="85" y1="115" x2="260" y2="140" stroke="#0f172a" stroke-width="1.5"/>
+  </g>
+  <g>
+    <rect x="170" y="55" width="110" height="60" rx="8" fill="#0891b2"/>
+    <text x="225" y="80" class="role" text-anchor="middle">TIM</text>
+    <text x="225" y="98" class="role" text-anchor="middle">AS3269</text>
+    <line x1="225" y1="115" x2="310" y2="140" stroke="#0f172a" stroke-width="1.5"/>
+  </g>
+  <g>
+    <rect x="310" y="55" width="110" height="60" rx="8" fill="#dc2626"/>
+    <text x="365" y="80" class="role" text-anchor="middle">Google</text>
+    <text x="365" y="98" class="role" text-anchor="middle">AS15169</text>
+    <line x1="365" y1="115" x2="380" y2="140" stroke="#0f172a" stroke-width="1.5"/>
+  </g>
+  <g>
+    <rect x="450" y="55" width="110" height="60" rx="8" fill="#059669"/>
+    <text x="505" y="80" class="role" text-anchor="middle">Netflix</text>
+    <text x="505" y="98" class="role" text-anchor="middle">AS2906</text>
+    <line x1="505" y1="115" x2="450" y2="140" stroke="#0f172a" stroke-width="1.5"/>
+  </g>
+  <g>
+    <rect x="590" y="55" width="110" height="60" rx="8" fill="#7c3aed"/>
+    <text x="645" y="80" class="role" text-anchor="middle">Cloudflare</text>
+    <text x="645" y="98" class="role" text-anchor="middle">AS13335</text>
+    <line x1="645" y1="115" x2="520" y2="140" stroke="#0f172a" stroke-width="1.5"/>
+  </g>
+
+  <!-- lower row -->
+  <g>
+    <rect x="80" y="225" width="110" height="60" rx="8" fill="#ea580c"/>
+    <text x="135" y="250" class="role" text-anchor="middle">Vodafone</text>
+    <text x="135" y="268" class="role" text-anchor="middle">AS30722</text>
+    <line x1="135" y1="225" x2="290" y2="200" stroke="#0f172a" stroke-width="1.5"/>
+  </g>
+  <g>
+    <rect x="220" y="225" width="110" height="60" rx="8" fill="#64748b"/>
+    <text x="275" y="250" class="role" text-anchor="middle">GARR</text>
+    <text x="275" y="268" class="role" text-anchor="middle">AS137</text>
+    <line x1="275" y1="225" x2="340" y2="200" stroke="#0f172a" stroke-width="1.5"/>
+  </g>
+  <g>
+    <rect x="360" y="225" width="110" height="60" rx="8" fill="#be185d"/>
+    <text x="415" y="250" class="role" text-anchor="middle">WindTre</text>
+    <text x="415" y="268" class="role" text-anchor="middle">AS1267</text>
+    <line x1="415" y1="225" x2="410" y2="200" stroke="#0f172a" stroke-width="1.5"/>
+  </g>
+  <g>
+    <rect x="500" y="225" width="110" height="60" rx="8" fill="#0ea5e9"/>
+    <text x="555" y="250" class="role" text-anchor="middle">Microsoft</text>
+    <text x="555" y="268" class="role" text-anchor="middle">AS8075</text>
+    <line x1="555" y1="225" x2="480" y2="200" stroke="#0f172a" stroke-width="1.5"/>
+  </g>
+
+  <text x="400" y="315" class="sub" text-anchor="middle">Ogni coppia di AS decide poi, via BGP, se e con chi fare peering (accordo bilaterale).</text>
+</svg>

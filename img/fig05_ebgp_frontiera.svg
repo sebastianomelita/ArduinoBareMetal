@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 300" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <style>
+    .title{font-size:16px;font-weight:700;fill:#0f172a}
+    .role{font-size:12px;font-weight:700;fill:#fff}
+    .sub{font-size:11px;fill:#475569}
+    .caption{font-size:13px;font-weight:600;fill:#0f172a}
+  </style>
+
+  <text x="410" y="26" class="title" text-anchor="middle">eBGP: la frontiera tra due Autonomous System</text>
+
+  <!-- AS A -->
+  <rect x="30" y="55" width="340" height="210" rx="16" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="50" y="80" class="caption" fill="#1e40af">AS 12874 — Fastweb</text>
+
+  <rect x="70" y="130" width="60" height="50" rx="7" fill="#2563eb"/>
+  <text x="100" y="160" class="role" text-anchor="middle">PE</text>
+
+  <rect x="170" y="130" width="70" height="50" rx="7" fill="#8b5cf6"/>
+  <text x="205" y="160" class="role" text-anchor="middle">RR</text>
+
+  <rect x="280" y="130" width="70" height="50" rx="7" fill="#dc2626"/>
+  <text x="315" y="160" class="role" text-anchor="middle">ASBR</text>
+
+  <line x1="130" y1="155" x2="170" y2="155" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="240" y1="155" x2="280" y2="155" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="155" y="148" class="sub" fill="#8b5cf6">iBGP</text>
+  <text x="260" y="148" class="sub" fill="#8b5cf6">iBGP</text>
+
+  <!-- AS B -->
+  <rect x="450" y="55" width="340" height="210" rx="16" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="470" y="80" class="caption" fill="#991b1b">AS 15169 — Google</text>
+
+  <rect x="470" y="130" width="70" height="50" rx="7" fill="#dc2626"/>
+  <text x="505" y="160" class="role" text-anchor="middle">ASBR</text>
+
+  <rect x="580" y="130" width="70" height="50" rx="7" fill="#8b5cf6"/>
+  <text x="615" y="160" class="role" text-anchor="middle">RR</text>
+
+  <rect x="690" y="130" width="60" height="50" rx="7" fill="#dc2626"/>
+  <text x="720" y="160" class="role" text-anchor="middle">PE</text>
+
+  <line x1="540" y1="155" x2="580" y2="155" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <line x1="650" y1="155" x2="690" y2="155" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <!-- eBGP link -->
+  <line x1="350" y1="155" x2="470" y2="155" stroke="#0f172a" stroke-width="3"/>
+  <text x="410" y="145" class="caption" text-anchor="middle">eBGP</text>
+  <text x="410" y="175" class="sub" text-anchor="middle">(al MIX di Milano)</text>
+
+  <!-- Legenda -->
+  <rect x="30" y="275" width="760" height="18" fill="none"/>
+  <text x="410" y="290" class="sub" text-anchor="middle">La "frontiera" tra AS è esattamente questo link eBGP. Da qui nasce la nozione di "peering".</text>
+</svg>

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 380" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <defs>
+    <marker id="arr7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f172a"/>
+    </marker>
+  </defs>
+  <style>
+    .title{font-size:16px;font-weight:700;fill:#0f172a}
+    .role{font-size:12px;font-weight:700;fill:#fff}
+    .sub{font-size:11px;fill:#475569}
+    .caption{font-size:12px;font-weight:600;fill:#0f172a}
+    .lblbox{font-size:11px;font-weight:700;fill:#0f172a}
+  </style>
+
+  <text x="430" y="26" class="title" text-anchor="middle">MPLS L3VPN: BGP segnala, MPLS trasporta</text>
+
+  <!-- Backbone -->
+  <rect x="130" y="150" width="600" height="140" rx="16" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+  <text x="430" y="172" class="caption" text-anchor="middle" fill="#065f46">Backbone MPLS del provider</text>
+
+  <!-- CE -->
+  <circle cx="50" cy="225" r="26" fill="#64748b"/>
+  <text x="50" y="230" class="role" text-anchor="middle">CE</text>
+  <text x="50" y="268" class="sub" text-anchor="middle">Cliente Alfa</text>
+  <text x="50" y="282" class="sub" text-anchor="middle">Roma</text>
+
+  <circle cx="810" cy="225" r="26" fill="#64748b"/>
+  <text x="810" y="230" class="role" text-anchor="middle">CE</text>
+  <text x="810" y="268" class="sub" text-anchor="middle">Cliente Alfa</text>
+  <text x="810" y="282" class="sub" text-anchor="middle">Milano</text>
+
+  <!-- PE with VRF -->
+  <rect x="155" y="195" width="90" height="65" rx="8" fill="#2563eb"/>
+  <text x="200" y="220" class="role" text-anchor="middle">PE</text>
+  <text x="200" y="240" class="role" text-anchor="middle" font-size="10">VRF: Alfa</text>
+
+  <rect x="615" y="195" width="90" height="65" rx="8" fill="#2563eb"/>
+  <text x="660" y="220" class="role" text-anchor="middle">PE</text>
+  <text x="660" y="240" class="role" text-anchor="middle" font-size="10">VRF: Alfa</text>
+
+  <!-- P routers -->
+  <polygon points="320,195 360,195 380,225 360,255 320,255 300,225" fill="#60a5fa"/>
+  <text x="340" y="230" class="role" text-anchor="middle">P</text>
+  <polygon points="430,195 470,195 490,225 470,255 430,255 410,225" fill="#60a5fa"/>
+  <text x="450" y="230" class="role" text-anchor="middle">P</text>
+  <polygon points="530,195 570,195 590,225 570,255 530,255 510,225" fill="#60a5fa"/>
+  <text x="550" y="230" class="role" text-anchor="middle">P</text>
+
+  <!-- data flow arrows -->
+  <line x1="76" y1="225" x2="155" y2="225" stroke="#0f172a" stroke-width="2" marker-end="url(#arr7)"/>
+  <line x1="245" y1="225" x2="300" y2="225" stroke="#0f172a" stroke-width="2" marker-end="url(#arr7)"/>
+  <line x1="380" y1="225" x2="410" y2="225" stroke="#0f172a" stroke-width="2" marker-end="url(#arr7)"/>
+  <line x1="490" y1="225" x2="510" y2="225" stroke="#0f172a" stroke-width="2" marker-end="url(#arr7)"/>
+  <line x1="590" y1="225" x2="615" y2="225" stroke="#0f172a" stroke-width="2" marker-end="url(#arr7)"/>
+  <line x1="705" y1="225" x2="784" y2="225" stroke="#0f172a" stroke-width="2" marker-end="url(#arr7)"/>
+
+  <!-- IP label (customer) -->
+  <text x="115" y="213" class="sub" text-anchor="middle">IP puro</text>
+  <text x="745" y="213" class="sub" text-anchor="middle">IP puro</text>
+
+  <!-- Double label on backbone -->
+  <g transform="translate(340,110)">
+    <rect x="0" y="0" width="60" height="22" rx="3" fill="#a7f3d0" stroke="#059669"/>
+    <text x="30" y="15" class="lblbox" text-anchor="middle">L.ext</text>
+    <rect x="62" y="0" width="60" height="22" rx="3" fill="#86efac" stroke="#059669"/>
+    <text x="92" y="15" class="lblbox" text-anchor="middle">L.int</text>
+    <rect x="124" y="0" width="70" height="22" rx="3" fill="#c7d2fe" stroke="#4f46e5"/>
+    <text x="159" y="15" class="lblbox" text-anchor="middle">IP pkt</text>
+  </g>
+  <text x="440" y="102" class="sub" text-anchor="middle">formato del pacchetto nel backbone: [transport label | VPN label | IP]</text>
+  <line x1="440" y1="135" x2="440" y2="150" stroke="#475569" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <!-- MP-BGP between PEs -->
+  <path d="M 200 260 Q 430 340 660 260" stroke="#8b5cf6" stroke-width="1.8" fill="none" stroke-dasharray="6,3"/>
+  <text x="430" y="335" class="caption" text-anchor="middle" fill="#7c3aed">MP-BGP VPNv4 (via RR) — signalling: "chi ha quale prefisso, per quale cliente"</text>
+
+  <!-- notes -->
+  <text x="200" y="178" class="sub" text-anchor="middle">impone 2 label</text>
+  <text x="660" y="178" class="sub" text-anchor="middle">rimuove 2 label</text>
+</svg>

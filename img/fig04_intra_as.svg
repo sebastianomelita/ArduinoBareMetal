@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 360" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <style>
+    .title{font-size:16px;font-weight:700;fill:#0f172a}
+    .role{font-size:12px;font-weight:700;fill:#fff}
+    .sub{font-size:11px;fill:#475569}
+    .note{font-size:12px;fill:#0f172a}
+    .caption{font-size:12px;fill:#0f172a;font-weight:600}
+  </style>
+
+  <text x="410" y="28" class="title" text-anchor="middle">Dentro un AS: IGP (topologia) + iBGP (prefissi esterni)</text>
+
+  <!-- AS boundary -->
+  <rect x="40" y="55" width="740" height="240" rx="18" fill="#f0f9ff" stroke="#0284c7" stroke-width="2"/>
+  <text x="62" y="80" class="caption" fill="#0369a1">AS 12874 (Fastweb)</text>
+
+  <!-- PE Roma -->
+  <rect x="90" y="145" width="70" height="60" rx="8" fill="#2563eb"/>
+  <text x="125" y="180" class="role" text-anchor="middle">PE</text>
+  <text x="125" y="225" class="sub" text-anchor="middle">PE Roma</text>
+
+  <!-- P routers -->
+  <polygon points="240,145 275,145 295,175 275,205 240,205 220,175" fill="#60a5fa"/>
+  <text x="258" y="180" class="role" text-anchor="middle">P</text>
+  <polygon points="370,145 405,145 425,175 405,205 370,205 350,175" fill="#60a5fa"/>
+  <text x="388" y="180" class="role" text-anchor="middle">P</text>
+  <polygon points="500,145 535,145 555,175 535,205 500,205 480,175" fill="#60a5fa"/>
+  <text x="518" y="180" class="role" text-anchor="middle">P</text>
+
+  <!-- PE Milano -->
+  <rect x="600" y="145" width="70" height="60" rx="8" fill="#2563eb"/>
+  <text x="635" y="180" class="role" text-anchor="middle">PE</text>
+  <text x="635" y="225" class="sub" text-anchor="middle">PE Milano</text>
+
+  <!-- physical links (IGP) -->
+  <line x1="160" y1="175" x2="220" y2="175" stroke="#0f172a" stroke-width="2"/>
+  <line x1="295" y1="175" x2="350" y2="175" stroke="#0f172a" stroke-width="2"/>
+  <line x1="425" y1="175" x2="480" y2="175" stroke="#0f172a" stroke-width="2"/>
+  <line x1="555" y1="175" x2="600" y2="175" stroke="#0f172a" stroke-width="2"/>
+
+  <!-- IGP label -->
+  <text x="388" y="130" class="caption" text-anchor="middle" fill="#0f172a">IGP (OSPF / IS-IS): conosce ogni link e metrica, calcola cammini minimi</text>
+
+  <!-- Route Reflector -->
+  <rect x="340" y="245" width="95" height="38" rx="8" fill="#8b5cf6"/>
+  <text x="387" y="269" class="role" text-anchor="middle">RR</text>
+
+  <!-- iBGP dashed -->
+  <path d="M 125 205 Q 250 245 340 264" stroke="#8b5cf6" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+  <path d="M 635 205 Q 510 245 435 264" stroke="#8b5cf6" stroke-width="1.5" fill="none" stroke-dasharray="5,3"/>
+  <text x="230" y="244" class="sub" fill="#8b5cf6">iBGP</text>
+  <text x="530" y="244" class="sub" fill="#8b5cf6">iBGP</text>
+
+  <!-- ASBR -->
+  <rect x="720" y="245" width="50" height="38" rx="6" fill="#dc2626"/>
+  <text x="745" y="269" class="role" text-anchor="middle">ASBR</text>
+  <line x1="635" y1="205" x2="720" y2="264" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="5,3"/>
+
+  <!-- eBGP out -->
+  <line x1="770" y1="264" x2="800" y2="264" stroke="#dc2626" stroke-width="2"/>
+  <text x="790" y="255" class="sub" fill="#dc2626">eBGP</text>
+
+  <!-- Legenda -->
+  <rect x="45" y="310" width="730" height="40" rx="8" fill="#fff" stroke="#cbd5e1"/>
+  <text x="60" y="328" class="sub">L'<tspan font-weight="700">IGP</tspan> risponde a: "come raggiungo fisicamente un altro router?" — l'<tspan font-weight="700" fill="#8b5cf6">iBGP</tspan> risponde a: "per questo prefisso esterno, quale ASBR uso come uscita?"</text>
+  <text x="60" y="344" class="sub">La <tspan font-weight="700" fill="#8b5cf6">sessione iBGP</tspan> è logica (arriva via IGP sottostante), non richiede un link fisico diretto.</text>
+</svg>

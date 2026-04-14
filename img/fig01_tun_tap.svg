@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 260" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#334155"/>
+    </marker>
+  </defs>
+  <style>
+    .title{font-size:15px;font-weight:600;fill:#0f172a}
+    .sub{font-size:12px;fill:#475569}
+    .lbl{font-size:12px;fill:#0f172a}
+    .pkt{font-size:11px;fill:#0f172a}
+  </style>
+
+  <!-- TUN block -->
+  <text x="130" y="25" class="title" text-anchor="middle">TUN — livello 3 (IP)</text>
+  <rect x="30" y="45" width="200" height="110" rx="10" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+  <rect x="60" y="70" width="140" height="30" rx="4" fill="#c7d2fe" stroke="#4f46e5"/>
+  <text x="130" y="90" class="pkt" text-anchor="middle">IP header</text>
+  <rect x="60" y="105" width="140" height="35" rx="4" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="130" y="127" class="pkt" text-anchor="middle">payload</text>
+  <text x="130" y="180" class="sub" text-anchor="middle">trasporta pacchetti IP</text>
+  <text x="130" y="198" class="sub" text-anchor="middle">tra reti instradate</text>
+
+  <!-- arrow -->
+  <line x1="250" y1="100" x2="290" y2="100" stroke="#334155" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="270" y="90" class="sub" text-anchor="middle">tunnel</text>
+
+  <!-- TAP block -->
+  <text x="450" y="25" class="title" text-anchor="middle">TAP — livello 2 (Ethernet)</text>
+  <rect x="310" y="45" width="280" height="150" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+  <rect x="340" y="65" width="220" height="28" rx="4" fill="#a7f3d0" stroke="#059669"/>
+  <text x="450" y="84" class="pkt" text-anchor="middle">Ethernet header (MAC)</text>
+  <rect x="340" y="96" width="220" height="26" rx="4" fill="#c7d2fe" stroke="#4f46e5"/>
+  <text x="450" y="114" class="pkt" text-anchor="middle">IP header</text>
+  <rect x="340" y="125" width="220" height="35" rx="4" fill="#e0e7ff" stroke="#6366f1"/>
+  <text x="450" y="147" class="pkt" text-anchor="middle">payload</text>
+  <text x="450" y="180" class="sub" text-anchor="middle">trasporta frame Ethernet interi</text>
+
+  <!-- bottom caption -->
+  <text x="360" y="235" class="sub" text-anchor="middle">💡 A scala ISP/datacenter: TUN ↔ MPLS L3VPN, TAP ↔ EVPN/VXLAN</text>
+</svg>

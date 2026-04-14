@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 280" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f172a"/>
+    </marker>
+    <pattern id="cloud" patternUnits="userSpaceOnUse" width="10" height="10">
+      <circle cx="5" cy="5" r="1" fill="#94a3b8"/>
+    </pattern>
+  </defs>
+  <style>
+    .title{font-size:16px;font-weight:700;fill:#0f172a}
+    .lbl{font-size:12px;fill:#0f172a}
+    .sub{font-size:11px;fill:#64748b}
+    .sede{font-size:13px;font-weight:600;fill:#0f172a}
+  </style>
+
+  <text x="380" y="25" class="title" text-anchor="middle">VPN di livello 2: estendere una VLAN tra sedi</text>
+
+  <!-- Sede Roma -->
+  <rect x="30" y="60" width="180" height="160" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="120" y="85" class="sede" text-anchor="middle">Sede Roma</text>
+  <rect x="60" y="100" width="120" height="40" rx="6" fill="#fff" stroke="#f59e0b"/>
+  <text x="120" y="118" class="lbl" text-anchor="middle">LAN 10.1.0.0/24</text>
+  <text x="120" y="133" class="sub" text-anchor="middle">VLAN 10</text>
+  <circle cx="80" cy="175" r="10" fill="#1e293b"/>
+  <circle cx="110" cy="175" r="10" fill="#1e293b"/>
+  <circle cx="140" cy="175" r="10" fill="#1e293b"/>
+  <text x="120" y="205" class="sub" text-anchor="middle">PC / stampanti / server</text>
+
+  <!-- Sede Milano -->
+  <rect x="550" y="60" width="180" height="160" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+  <text x="640" y="85" class="sede" text-anchor="middle">Sede Milano</text>
+  <rect x="580" y="100" width="120" height="40" rx="6" fill="#fff" stroke="#f59e0b"/>
+  <text x="640" y="118" class="lbl" text-anchor="middle">LAN 10.1.0.0/24</text>
+  <text x="640" y="133" class="sub" text-anchor="middle">VLAN 10</text>
+  <circle cx="600" cy="175" r="10" fill="#1e293b"/>
+  <circle cx="630" cy="175" r="10" fill="#1e293b"/>
+  <circle cx="660" cy="175" r="10" fill="#1e293b"/>
+  <text x="640" y="205" class="sub" text-anchor="middle">PC / stampanti / server</text>
+
+  <!-- Cloud Internet -->
+  <ellipse cx="380" cy="140" rx="130" ry="55" fill="#f1f5f9" stroke="#64748b" stroke-width="2" stroke-dasharray="6,3"/>
+  <text x="380" y="125" class="title" text-anchor="middle" font-size="13" fill="#334155">Internet</text>
+  <text x="380" y="148" class="sub" text-anchor="middle">tunnel IP/UDP tra gateway</text>
+  <text x="380" y="165" class="sub" text-anchor="middle">(frame Ethernet incapsulati)</text>
+
+  <!-- tunnel arrows -->
+  <line x1="210" y1="140" x2="250" y2="140" stroke="#0f172a" stroke-width="2.5" marker-end="url(#arr2)"/>
+  <line x1="510" y1="140" x2="550" y2="140" stroke="#0f172a" stroke-width="2.5" marker-end="url(#arr2)"/>
+  <text x="230" y="132" class="sub" text-anchor="middle">TAP</text>
+  <text x="530" y="132" class="sub" text-anchor="middle">TAP</text>
+
+  <!-- caption -->
+  <text x="380" y="255" class="sub" text-anchor="middle">Le due sedi vedono un'unica LAN logica. Con N sedi servono N·(N-1)/2 tunnel: non scala.</text>
+</svg>

@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 340" font-family="system-ui, -apple-system, Segoe UI, sans-serif">
+  <defs>
+    <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#0f172a"/>
+    </marker>
+  </defs>
+  <style>
+    .title{font-size:16px;font-weight:700;fill:#0f172a}
+    .role{font-size:13px;font-weight:700;fill:#fff}
+    .sub{font-size:11px;fill:#475569}
+    .note{font-size:11px;fill:#0f172a}
+    .lbl{font-size:12px;font-weight:600;fill:#0f172a}
+  </style>
+
+  <text x="410" y="28" class="title" text-anchor="middle">Modello CE / PE / P / RR / ASBR di un ISP</text>
+
+  <!-- backbone cloud -->
+  <rect x="180" y="90" width="460" height="160" rx="16" fill="#eff6ff" stroke="#3b82f6" stroke-width="2" stroke-dasharray="4,3"/>
+  <text x="410" y="110" class="lbl" text-anchor="middle">Backbone MPLS del provider (AS)</text>
+
+  <!-- CE left -->
+  <circle cx="70" cy="170" r="30" fill="#64748b"/>
+  <text x="70" y="175" class="role" text-anchor="middle">CE</text>
+  <text x="70" y="220" class="sub" text-anchor="middle">Customer Edge</text>
+  <text x="70" y="235" class="sub" text-anchor="middle">(IP normale)</text>
+
+  <!-- PE left -->
+  <rect x="210" y="140" width="70" height="60" rx="8" fill="#2563eb"/>
+  <text x="245" y="175" class="role" text-anchor="middle">PE</text>
+  <text x="245" y="220" class="sub" text-anchor="middle">Provider Edge</text>
+  <text x="245" y="235" class="sub" text-anchor="middle">impone/rimuove</text>
+  <text x="245" y="248" class="sub" text-anchor="middle">etichette MPLS, VRF</text>
+
+  <!-- P routers -->
+  <polygon points="340,140 380,140 400,170 380,200 340,200 320,170" fill="#60a5fa"/>
+  <text x="360" y="175" class="role" text-anchor="middle">P</text>
+  <polygon points="450,140 490,140 510,170 490,200 450,200 430,170" fill="#60a5fa"/>
+  <text x="470" y="175" class="role" text-anchor="middle">P</text>
+  <text x="415" y="220" class="sub" text-anchor="middle">Provider core</text>
+  <text x="415" y="235" class="sub" text-anchor="middle">solo label switching</text>
+
+  <!-- PE right -->
+  <rect x="540" y="140" width="70" height="60" rx="8" fill="#2563eb"/>
+  <text x="575" y="175" class="role" text-anchor="middle">PE</text>
+
+  <!-- CE right -->
+  <circle cx="750" cy="170" r="30" fill="#64748b"/>
+  <text x="750" y="175" class="role" text-anchor="middle">CE</text>
+
+  <!-- RR above -->
+  <rect x="370" y="50" width="90" height="38" rx="8" fill="#8b5cf6"/>
+  <text x="415" y="74" class="role" text-anchor="middle">RR</text>
+  <text x="415" y="45" class="sub" text-anchor="middle">Route Reflector (fuori dal data-plane)</text>
+
+  <!-- iBGP dashed lines from RR to PEs -->
+  <line x1="385" y1="88" x2="260" y2="140" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="445" y1="88" x2="575" y2="140" stroke="#8b5cf6" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="305" y="112" class="sub" fill="#8b5cf6">iBGP</text>
+  <text x="510" y="112" class="sub" fill="#8b5cf6">iBGP</text>
+
+  <!-- data path -->
+  <line x1="100" y1="170" x2="210" y2="170" stroke="#0f172a" stroke-width="2" marker-end="url(#arr3)"/>
+  <line x1="280" y1="170" x2="320" y2="170" stroke="#0f172a" stroke-width="2" marker-end="url(#arr3)"/>
+  <line x1="400" y1="170" x2="430" y2="170" stroke="#0f172a" stroke-width="2" marker-end="url(#arr3)"/>
+  <line x1="510" y1="170" x2="540" y2="170" stroke="#0f172a" stroke-width="2" marker-end="url(#arr3)"/>
+  <line x1="610" y1="170" x2="720" y2="170" stroke="#0f172a" stroke-width="2" marker-end="url(#arr3)"/>
+
+  <!-- ASBR callout -->
+  <rect x="640" y="265" width="140" height="55" rx="8" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="710" y="283" class="lbl" text-anchor="middle" fill="#991b1b">ASBR</text>
+  <text x="710" y="300" class="sub" text-anchor="middle">alla frontiera con un altro AS</text>
+  <text x="710" y="314" class="sub" text-anchor="middle">parla eBGP</text>
+
+  <!-- Legenda -->
+  <rect x="30" y="265" width="320" height="60" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="45" y="282" class="sub">— linea continua = data-plane (pacchetti)</text>
+  <text x="45" y="298" class="sub" fill="#8b5cf6">— linea tratteggiata viola = iBGP (control-plane)</text>
+  <text x="45" y="314" class="sub">P router in esagono • PE in rettangolo blu • CE in cerchio grigio</text>
+</svg>
