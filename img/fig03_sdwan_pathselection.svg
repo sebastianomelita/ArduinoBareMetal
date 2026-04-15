@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 480" font-family="-apple-system, system-ui, sans-serif">
+  <defs>
+    <marker id="arrSel" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#15803d"/>
+    </marker>
+  </defs>
+
+  <text x="460" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">Underlay multi-link e path selection dinamica</text>
+
+  <!-- Edge A -->
+  <rect x="40" y="170" width="120" height="80" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+  <text x="100" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Edge A</text>
+  <text x="100" y="218" text-anchor="middle" font-size="10" fill="#92400e">sede Roma</text>
+  <text x="100" y="234" text-anchor="middle" font-size="9" fill="#92400e">3 uplink WAN</text>
+
+  <!-- Edge B -->
+  <rect x="760" y="170" width="120" height="80" rx="10" fill="#fef3c7" stroke="#d97706" stroke-width="2.5"/>
+  <text x="820" y="200" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">Edge B</text>
+  <text x="820" y="218" text-anchor="middle" font-size="10" fill="#92400e">sede Milano</text>
+  <text x="820" y="234" text-anchor="middle" font-size="9" fill="#92400e">3 uplink WAN</text>
+
+  <!-- 3 link tra A e B -->
+  <!-- MPLS -->
+  <rect x="220" y="80" width="480" height="40" rx="20" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="460" y="106" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a">MPLS L3VPN (TIM) — costoso, SLA garantito, latenza bassa stabile</text>
+  <line x1="160" y1="190" x2="218" y2="120" stroke="#1d4ed8" stroke-width="2"/>
+  <line x1="760" y1="190" x2="702" y2="120" stroke="#1d4ed8" stroke-width="2"/>
+
+  <!-- Internet fibra -->
+  <rect x="220" y="200" width="480" height="40" rx="20" fill="#dcfce7" stroke="#15803d" stroke-width="2"/>
+  <text x="460" y="226" text-anchor="middle" font-size="12" font-weight="700" fill="#14532d">Internet fibra (Fastweb) — economica, banda alta, qualità variabile</text>
+  <line x1="160" y1="220" x2="218" y2="220" stroke="#15803d" stroke-width="2"/>
+  <line x1="760" y1="220" x2="702" y2="220" stroke="#15803d" stroke-width="2"/>
+
+  <!-- LTE/5G -->
+  <rect x="220" y="320" width="480" height="40" rx="20" fill="#fce7f3" stroke="#be185d" stroke-width="2"/>
+  <text x="460" y="346" text-anchor="middle" font-size="12" font-weight="700" fill="#9d174d">4G/5G (Vodafone) — backup, mobile, costo a consumo</text>
+  <line x1="160" y1="240" x2="218" y2="340" stroke="#be185d" stroke-width="2"/>
+  <line x1="760" y1="240" x2="702" y2="340" stroke="#be185d" stroke-width="2"/>
+
+  <!-- pannello scelte applicative -->
+  <rect x="60" y="385" width="800" height="85" rx="10" fill="#f8fafc" stroke="#475569" stroke-width="1.5"/>
+  <text x="80" y="408" font-size="12" font-weight="700" fill="#334155">L'edge misura in continuo (latenza, jitter, perdita) e instrada per applicazione:</text>
+
+  <g transform="translate(80,420)">
+    <circle cx="6" cy="10" r="4" fill="#1d4ed8"/>
+    <text x="18" y="14" font-size="10" fill="#374151"><tspan font-weight="700">VoIP / videoconferenza</tspan> → MPLS (richiede jitter basso e stabile)</text>
+  </g>
+  <g transform="translate(80,438)">
+    <circle cx="6" cy="10" r="4" fill="#15803d"/>
+    <text x="18" y="14" font-size="10" fill="#374151"><tspan font-weight="700">Office 365, backup, web</tspan> → Internet fibra (banda alta, costo basso)</text>
+  </g>
+  <g transform="translate(440,420)">
+    <circle cx="6" cy="10" r="4" fill="#be185d"/>
+    <text x="18" y="14" font-size="10" fill="#374151"><tspan font-weight="700">Failover automatico</tspan> → 4G/5G se entrambi i primari degradano</text>
+  </g>
+  <g transform="translate(440,438)">
+    <circle cx="6" cy="10" r="4" fill="#15803d"/>
+    <text x="18" y="14" font-size="10" fill="#374151"><tspan font-weight="700">Riassegnazione</tspan> in tempo reale se un link supera la soglia di perdita</text>
+  </g>
+</svg>
