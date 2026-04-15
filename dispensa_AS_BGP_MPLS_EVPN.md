@@ -259,7 +259,7 @@ I due IXP italiani principali:
 
 **Come funziona in 4 idee**:
 
-1. **VRF**: ogni PE tiene una tabella di routing separata per ogni cliente. Gli IP dei clienti possono anche sovrapporsi: sono in VRF diverse, non si vedono.
+1. **VRF**: ogni PE tiene una tabella di routing separata per ogni organizzazione (VPN). Gli IP dei clienti possono anche sovrapporsi: sono in VRF diverse, non si vedono.
 2. **MP-BGP VPNv4**: BGP esteso trasporta tra PE le rotte dei clienti con un **Route Distinguisher** che le rende uniche. **BGP fa il signalling.**
 3. **Doppia etichetta MPLS**: etichetta esterna (transport) dice ai P come raggiungere il PE remoto; etichetta interna (VPN) dice al PE remoto a quale VRF consegnare.
 4. I P router non sanno nulla dei clienti: fanno solo label switching. Scalabilità enorme.
