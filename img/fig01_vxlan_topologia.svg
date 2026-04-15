@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 380" font-family="-apple-system, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="dc" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#dbeafe"/>
+      <stop offset="1" stop-color="#bfdbfe"/>
+    </linearGradient>
+    <linearGradient id="tenant" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="1" stop-color="#fde68a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- titolo sezione superiore -->
+  <text x="440" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Topologia spine–leaf con overlay VXLAN</text>
+
+  <!-- backbone IP -->
+  <rect x="20" y="50" width="840" height="170" rx="14" fill="url(#dc)" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="40" y="72" font-size="11" font-weight="700" fill="#1e3a8a">Underlay IP routato (OSPF/BGP) — i pacchetti VXLAN viaggiano come UDP/IP normali</text>
+
+  <!-- spine -->
+  <g>
+    <circle cx="300" cy="115" r="26" fill="#fff" stroke="#475569" stroke-width="2"/>
+    <text x="300" y="113" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">Spine1</text>
+    <text x="300" y="128" text-anchor="middle" font-size="9" fill="#475569">solo IP routing</text>
+  </g>
+  <g>
+    <circle cx="580" cy="115" r="26" fill="#fff" stroke="#475569" stroke-width="2"/>
+    <text x="580" y="113" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">Spine2</text>
+    <text x="580" y="128" text-anchor="middle" font-size="9" fill="#475569">solo IP routing</text>
+  </g>
+
+  <!-- leaf (VTEP) -->
+  <g>
+    <rect x="90" y="170" width="80" height="40" rx="8" fill="#fff" stroke="#1d4ed8" stroke-width="2.5"/>
+    <text x="130" y="188" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a">Leaf1</text>
+    <text x="130" y="202" text-anchor="middle" font-size="9" fill="#1e40af">VTEP</text>
+  </g>
+  <g>
+    <rect x="370" y="170" width="80" height="40" rx="8" fill="#fff" stroke="#1d4ed8" stroke-width="2.5"/>
+    <text x="410" y="188" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a">Leaf2</text>
+    <text x="410" y="202" text-anchor="middle" font-size="9" fill="#1e40af">VTEP</text>
+  </g>
+  <g>
+    <rect x="700" y="170" width="80" height="40" rx="8" fill="#fff" stroke="#1d4ed8" stroke-width="2.5"/>
+    <text x="740" y="188" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a">Leaf3</text>
+    <text x="740" y="202" text-anchor="middle" font-size="9" fill="#1e40af">VTEP</text>
+  </g>
+
+  <!-- collegamenti -->
+  <line x1="130" y1="170" x2="278" y2="135" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="130" y1="170" x2="558" y2="135" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="410" y1="170" x2="300" y2="141" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="410" y1="170" x2="580" y2="141" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="740" y1="170" x2="322" y2="135" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="740" y1="170" x2="602" y2="135" stroke="#94a3b8" stroke-width="1.5"/>
+
+  <!-- tenant boxes sotto i leaf -->
+  <rect x="50" y="240" width="160" height="120" rx="10" fill="url(#tenant)" stroke="#d97706" stroke-width="2"/>
+  <text x="130" y="262" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">Rack 1</text>
+  <rect x="65" y="275" width="60" height="30" rx="4" fill="#fff" stroke="#d97706"/>
+  <text x="95" y="294" text-anchor="middle" font-size="10" fill="#92400e">VM-A1</text>
+  <text x="95" y="320" text-anchor="middle" font-size="9" fill="#78350f">Tenant Rosso</text>
+  <rect x="135" y="275" width="60" height="30" rx="4" fill="#fff" stroke="#d97706"/>
+  <text x="165" y="294" text-anchor="middle" font-size="10" fill="#92400e">VM-B1</text>
+  <text x="165" y="320" text-anchor="middle" font-size="9" fill="#78350f">Tenant Blu</text>
+
+  <rect x="330" y="240" width="160" height="120" rx="10" fill="url(#tenant)" stroke="#d97706" stroke-width="2"/>
+  <text x="410" y="262" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">Rack 2</text>
+  <rect x="345" y="275" width="60" height="30" rx="4" fill="#fff" stroke="#d97706"/>
+  <text x="375" y="294" text-anchor="middle" font-size="10" fill="#92400e">VM-A2</text>
+  <text x="375" y="320" text-anchor="middle" font-size="9" fill="#78350f">Tenant Rosso</text>
+  <rect x="415" y="275" width="60" height="30" rx="4" fill="#fff" stroke="#d97706"/>
+  <text x="445" y="294" text-anchor="middle" font-size="10" fill="#92400e">VM-B2</text>
+  <text x="445" y="320" text-anchor="middle" font-size="9" fill="#78350f">Tenant Blu</text>
+
+  <rect x="660" y="240" width="160" height="120" rx="10" fill="url(#tenant)" stroke="#d97706" stroke-width="2"/>
+  <text x="740" y="262" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">Rack 3</text>
+  <rect x="675" y="275" width="60" height="30" rx="4" fill="#fff" stroke="#d97706"/>
+  <text x="705" y="294" text-anchor="middle" font-size="10" fill="#92400e">VM-A3</text>
+  <text x="705" y="320" text-anchor="middle" font-size="9" fill="#78350f">Tenant Rosso</text>
+  <rect x="745" y="275" width="60" height="30" rx="4" fill="#fff" stroke="#d97706"/>
+  <text x="775" y="294" text-anchor="middle" font-size="10" fill="#92400e">VM-B3</text>
+  <text x="775" y="320" text-anchor="middle" font-size="9" fill="#78350f">Tenant Blu</text>
+
+  <!-- linee verticali leaf -> rack -->
+  <line x1="130" y1="210" x2="130" y2="240" stroke="#334155" stroke-width="1.5"/>
+  <line x1="410" y1="210" x2="410" y2="240" stroke="#334155" stroke-width="1.5"/>
+  <line x1="740" y1="210" x2="740" y2="240" stroke="#334155" stroke-width="1.5"/>
+</svg>

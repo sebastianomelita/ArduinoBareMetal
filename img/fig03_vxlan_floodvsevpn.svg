@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 380" font-family="-apple-system, system-ui, sans-serif">
+  <defs>
+    <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#dc2626"/>
+    </marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#15803d"/>
+    </marker>
+  </defs>
+
+  <!-- pannello sinistro: flood-and-learn -->
+  <rect x="20" y="40" width="410" height="320" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="225" y="64" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b">Flood-and-learn (VXLAN classico)</text>
+  <text x="225" y="82" text-anchor="middle" font-size="10" fill="#991b1b" font-style="italic">imita L2 → genera flood multicast/BUM</text>
+
+  <!-- VTEP1 -->
+  <rect x="50" y="110" width="80" height="34" rx="6" fill="#fff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="90" y="132" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">VTEP1</text>
+
+  <!-- VTEP2 -->
+  <rect x="200" y="110" width="80" height="34" rx="6" fill="#fff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="240" y="132" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">VTEP2</text>
+
+  <!-- VTEP3 -->
+  <rect x="320" y="110" width="80" height="34" rx="6" fill="#fff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="360" y="132" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">VTEP3</text>
+
+  <!-- frecce di flood -->
+  <line x1="130" y1="127" x2="200" y2="127" stroke="#dc2626" stroke-width="1.8" marker-end="url(#arrR)"/>
+  <line x1="130" y1="135" x2="320" y2="135" stroke="#dc2626" stroke-width="1.8" marker-end="url(#arrR)"/>
+
+  <text x="225" y="180" text-anchor="middle" font-size="10" fill="#991b1b" font-weight="600">"Chi ha MAC X?"</text>
+  <text x="225" y="195" text-anchor="middle" font-size="10" fill="#991b1b">flood a TUTTI i VTEP</text>
+
+  <!-- problemi -->
+  <g transform="translate(50,225)">
+    <text x="0" y="0" font-size="11" font-weight="700" fill="#991b1b">Problemi:</text>
+    <text x="0" y="20" font-size="10" fill="#7f1d1d">• traffico BUM cresce con i VTEP</text>
+    <text x="0" y="38" font-size="10" fill="#7f1d1d">• richiede multicast nell'underlay</text>
+    <text x="0" y="56" font-size="10" fill="#7f1d1d">• nessuna conoscenza preventiva</text>
+    <text x="0" y="74" font-size="10" fill="#7f1d1d">• ripete logica STP a livello overlay</text>
+    <text x="0" y="92" font-size="10" fill="#7f1d1d">• non scala oltre poche decine VTEP</text>
+  </g>
+
+  <!-- pannello destro: EVPN -->
+  <rect x="450" y="40" width="410" height="320" rx="14" fill="#f0fdf4" stroke="#15803d" stroke-width="2"/>
+  <text x="655" y="64" text-anchor="middle" font-size="13" font-weight="700" fill="#14532d">VXLAN + EVPN (control plane moderno)</text>
+  <text x="655" y="82" text-anchor="middle" font-size="10" fill="#14532d" font-style="italic">MP-BGP annuncia i MAC → niente flood</text>
+
+  <!-- Route Reflector -->
+  <circle cx="655" cy="120" r="22" fill="#fff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="655" y="118" text-anchor="middle" font-size="10" font-weight="700" fill="#5b21b6">RR</text>
+  <text x="655" y="130" text-anchor="middle" font-size="8" fill="#6d28d9">BGP</text>
+
+  <!-- VTEP1 -->
+  <rect x="480" y="180" width="80" height="34" rx="6" fill="#fff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="520" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">VTEP1</text>
+
+  <!-- VTEP2 -->
+  <rect x="615" y="180" width="80" height="34" rx="6" fill="#fff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="655" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">VTEP2</text>
+
+  <!-- VTEP3 -->
+  <rect x="750" y="180" width="80" height="34" rx="6" fill="#fff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="790" y="202" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a">VTEP3</text>
+
+  <!-- linee BGP verso RR -->
+  <line x1="520" y1="180" x2="643" y2="138" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="4 3"/>
+  <line x1="655" y1="180" x2="655" y2="142" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="4 3"/>
+  <line x1="790" y1="180" x2="667" y2="138" stroke="#7c3aed" stroke-width="1.8" stroke-dasharray="4 3"/>
+
+  <text x="655" y="240" text-anchor="middle" font-size="10" fill="#5b21b6" font-weight="600">sessioni MP-BGP EVPN</text>
+  <text x="655" y="255" text-anchor="middle" font-size="10" fill="#15803d">"MAC X sta dietro VTEP2"</text>
+
+  <!-- vantaggi -->
+  <g transform="translate(480,285)">
+    <text x="0" y="0" font-size="11" font-weight="700" fill="#14532d">Vantaggi:</text>
+    <text x="0" y="20" font-size="10" fill="#166534">• unicast diretto al VTEP giusto</text>
+    <text x="0" y="38" font-size="10" fill="#166534">• underlay puro IP (no multicast)</text>
+    <text x="0" y="56" font-size="10" fill="#166534">• MAC noti prima del traffico</text>
+    <text x="0" y="74" font-size="10" fill="#166534">• scala a migliaia di VTEP</text>
+  </g>
+</svg>

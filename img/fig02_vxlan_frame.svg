@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 320" font-family="-apple-system, system-ui, sans-serif">
+  <text x="440" y="24" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Anatomia di un pacchetto VXLAN</text>
+
+  <!-- frame interno (originale) -->
+  <text x="80" y="70" font-size="11" font-weight="700" fill="#92400e">Frame Ethernet originale (tenant)</text>
+  <g transform="translate(80,80)">
+    <rect width="100" height="40" rx="4" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+    <text x="50" y="24" text-anchor="middle" font-size="10" fill="#92400e">MAC dst</text>
+    <text x="50" y="36" text-anchor="middle" font-size="9" fill="#92400e">VM destinazione</text>
+
+    <rect x="100" width="100" height="40" rx="4" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+    <text x="150" y="24" text-anchor="middle" font-size="10" fill="#92400e">MAC src</text>
+    <text x="150" y="36" text-anchor="middle" font-size="9" fill="#92400e">VM mittente</text>
+
+    <rect x="200" width="320" height="40" rx="4" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+    <text x="360" y="26" text-anchor="middle" font-size="11" fill="#92400e">payload IP del tenant</text>
+  </g>
+
+  <!-- freccia verso pacchetto incapsulato -->
+  <text x="440" y="148" text-anchor="middle" font-size="11" fill="#475569" font-style="italic">↓ il VTEP di ingresso incapsula così:</text>
+
+  <!-- pacchetto VXLAN completo -->
+  <text x="80" y="180" font-size="11" font-weight="700" fill="#1e3a8a">Pacchetto sul backbone IP (underlay)</text>
+  <g transform="translate(40,195)">
+    <!-- outer ethernet -->
+    <rect width="80" height="50" rx="4" fill="#cbd5e1" stroke="#475569" stroke-width="1.3"/>
+    <text x="40" y="22" text-anchor="middle" font-size="10" font-weight="600" fill="#334155">Outer</text>
+    <text x="40" y="36" text-anchor="middle" font-size="10" font-weight="600" fill="#334155">Ethernet</text>
+
+    <!-- outer IP -->
+    <rect x="80" width="120" height="50" rx="4" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.3"/>
+    <text x="140" y="20" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">Outer IP</text>
+    <text x="140" y="34" text-anchor="middle" font-size="9" fill="#1e40af">src=VTEP1</text>
+    <text x="140" y="44" text-anchor="middle" font-size="9" fill="#1e40af">dst=VTEP2</text>
+
+    <!-- UDP -->
+    <rect x="200" width="90" height="50" rx="4" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.3"/>
+    <text x="245" y="20" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">UDP</text>
+    <text x="245" y="34" text-anchor="middle" font-size="9" fill="#1e40af">dst port</text>
+    <text x="245" y="44" text-anchor="middle" font-size="9" fill="#1e40af">4789</text>
+
+    <!-- VXLAN header -->
+    <rect x="290" width="120" height="50" rx="4" fill="#c7d2fe" stroke="#4338ca" stroke-width="1.5"/>
+    <text x="350" y="20" text-anchor="middle" font-size="10" font-weight="700" fill="#3730a3">VXLAN hdr</text>
+    <text x="350" y="34" text-anchor="middle" font-size="9" fill="#3730a3">VNI 24 bit</text>
+    <text x="350" y="44" text-anchor="middle" font-size="9" fill="#3730a3">(es. 10100)</text>
+
+    <!-- frame incapsulato -->
+    <rect x="410" width="370" height="50" rx="4" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+    <text x="595" y="22" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">Frame Ethernet originale (intatto)</text>
+    <text x="595" y="38" text-anchor="middle" font-size="9" fill="#92400e">MAC src + MAC dst + payload IP del tenant</text>
+  </g>
+
+  <!-- annotazioni sotto -->
+  <g transform="translate(40,275)">
+    <text x="80" y="0" text-anchor="middle" font-size="9" fill="#475569">L2 hop-by-hop</text>
+    <text x="200" y="0" text-anchor="middle" font-size="9" fill="#1e40af">routato nel datacenter</text>
+    <text x="335" y="0" text-anchor="middle" font-size="9" fill="#1e40af">port 4789 = VXLAN</text>
+    <text x="490" y="0" text-anchor="middle" font-size="9" fill="#3730a3">identifica il tenant</text>
+    <text x="700" y="0" text-anchor="middle" font-size="9" fill="#92400e">il tenant non sa nulla di tutto questo</text>
+  </g>
+
+  <!-- nota dimensione overhead -->
+  <text x="440" y="305" text-anchor="middle" font-size="10" fill="#64748b" font-style="italic">overhead totale: 50 byte (14 outer eth + 20 IP + 8 UDP + 8 VXLAN)</text>
+</svg>

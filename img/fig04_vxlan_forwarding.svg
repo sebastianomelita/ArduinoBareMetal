@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 940 360" font-family="-apple-system, system-ui, sans-serif">
+  <defs>
+    <marker id="arrflowVx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#15803d"/>
+    </marker>
+  </defs>
+
+  <text x="470" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#1e3a8a">Forwarding VXLAN end-to-end (VM-A1 → VM-A2, stesso tenant)</text>
+
+  <!-- linea -->
+  <line x1="120" y1="200" x2="820" y2="200" stroke="#cbd5e1" stroke-width="3"/>
+
+  <!-- nodi -->
+  <g>
+    <rect x="50" y="178" width="60" height="44" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="80" y="198" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">VM-A1</text>
+    <text x="80" y="212" text-anchor="middle" font-size="9" fill="#92400e">tenant Rosso</text>
+  </g>
+  <g>
+    <circle cx="220" cy="200" r="32" fill="#fff" stroke="#1d4ed8" stroke-width="2.5"/>
+    <text x="220" y="198" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a">VTEP1</text>
+    <text x="220" y="214" text-anchor="middle" font-size="9" fill="#1e40af">ingress</text>
+  </g>
+  <g>
+    <circle cx="380" cy="200" r="28" fill="#fff" stroke="#475569" stroke-width="2"/>
+    <text x="380" y="205" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">Spine</text>
+  </g>
+  <g>
+    <circle cx="540" cy="200" r="28" fill="#fff" stroke="#475569" stroke-width="2"/>
+    <text x="540" y="205" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">Spine</text>
+  </g>
+  <g>
+    <circle cx="700" cy="200" r="32" fill="#fff" stroke="#1d4ed8" stroke-width="2.5"/>
+    <text x="700" y="198" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a">VTEP2</text>
+    <text x="700" y="214" text-anchor="middle" font-size="9" fill="#1e40af">egress</text>
+  </g>
+  <g>
+    <rect x="830" y="178" width="60" height="44" rx="6" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+    <text x="860" y="198" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">VM-A2</text>
+    <text x="860" y="212" text-anchor="middle" font-size="9" fill="#92400e">tenant Rosso</text>
+  </g>
+
+  <!-- pacchetti sopra -->
+  <!-- VM-A1 -> VTEP1: frame Ethernet originale -->
+  <g transform="translate(115,118)">
+    <rect width="78" height="32" rx="5" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+    <text x="39" y="20" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">eth | IP</text>
+  </g>
+
+  <!-- VTEP1 -> Spine: VXLAN incapsulato -->
+  <g transform="translate(252,108)">
+    <rect width="38" height="22" rx="3" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.2"/>
+    <text x="19" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">IP</text>
+    <rect x="38" width="32" height="22" rx="3" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.2"/>
+    <text x="54" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">UDP</text>
+    <rect x="70" width="50" height="22" rx="3" fill="#c7d2fe" stroke="#4338ca" stroke-width="1.2"/>
+    <text x="95" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#3730a3">VNI 10100</text>
+    <rect x="120" width="60" height="22" rx="3" fill="#fde68a" stroke="#d97706" stroke-width="1.2"/>
+    <text x="150" y="16" text-anchor="middle" font-size="9" font-weight="600" fill="#92400e">eth | IP</text>
+  </g>
+  <text x="342" y="146" text-anchor="middle" font-size="9" fill="#1e40af">src=IP_VTEP1, dst=IP_VTEP2</text>
+
+  <!-- Spine -> Spine: stesso pacchetto -->
+  <g transform="translate(412,108)">
+    <rect width="38" height="22" rx="3" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.2"/>
+    <text x="19" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">IP</text>
+    <rect x="38" width="32" height="22" rx="3" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.2"/>
+    <text x="54" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">UDP</text>
+    <rect x="70" width="50" height="22" rx="3" fill="#c7d2fe" stroke="#4338ca" stroke-width="1.2"/>
+    <text x="95" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#3730a3">VNI 10100</text>
+    <rect x="120" width="60" height="22" rx="3" fill="#fde68a" stroke="#d97706" stroke-width="1.2"/>
+    <text x="150" y="16" text-anchor="middle" font-size="9" font-weight="600" fill="#92400e">eth | IP</text>
+  </g>
+  <text x="502" y="146" text-anchor="middle" font-size="9" fill="#475569" font-style="italic">routing IP normale, payload opaco</text>
+
+  <!-- Spine -> VTEP2: stesso pacchetto -->
+  <g transform="translate(572,108)">
+    <rect width="38" height="22" rx="3" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.2"/>
+    <text x="19" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">IP</text>
+    <rect x="38" width="32" height="22" rx="3" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="1.2"/>
+    <text x="54" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">UDP</text>
+    <rect x="70" width="50" height="22" rx="3" fill="#c7d2fe" stroke="#4338ca" stroke-width="1.2"/>
+    <text x="95" y="16" text-anchor="middle" font-size="9" font-weight="700" fill="#3730a3">VNI 10100</text>
+    <rect x="120" width="60" height="22" rx="3" fill="#fde68a" stroke="#d97706" stroke-width="1.2"/>
+    <text x="150" y="16" text-anchor="middle" font-size="9" font-weight="600" fill="#92400e">eth | IP</text>
+  </g>
+
+  <!-- VTEP2 -> VM-A2: frame originale -->
+  <g transform="translate(750,118)">
+    <rect width="78" height="32" rx="5" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+    <text x="39" y="20" text-anchor="middle" font-size="10" font-weight="700" fill="#92400e">eth | IP</text>
+  </g>
+
+  <!-- freccia di flusso -->
+  <line x1="115" y1="252" x2="815" y2="252" stroke="#15803d" stroke-width="2" marker-end="url(#arrflowVx)"/>
+  <text x="465" y="244" text-anchor="middle" font-size="11" fill="#15803d" font-style="italic">flusso del frame</text>
+
+  <!-- annotazioni operazioni -->
+  <text x="220" y="280" text-anchor="middle" font-size="10" fill="#1e3a8a" font-weight="600">incapsula</text>
+  <text x="220" y="294" text-anchor="middle" font-size="9" fill="#1e3a8a">VNI 10100, dst=VTEP2</text>
+
+  <text x="380" y="280" text-anchor="middle" font-size="10" fill="#334155" font-weight="600">IP routing</text>
+  <text x="380" y="294" text-anchor="middle" font-size="9" fill="#334155">verso IP_VTEP2</text>
+
+  <text x="540" y="280" text-anchor="middle" font-size="10" fill="#334155" font-weight="600">IP routing</text>
+  <text x="540" y="294" text-anchor="middle" font-size="9" fill="#334155">verso IP_VTEP2</text>
+
+  <text x="700" y="280" text-anchor="middle" font-size="10" fill="#1e3a8a" font-weight="600">decapsula</text>
+  <text x="700" y="294" text-anchor="middle" font-size="9" fill="#1e3a8a">VNI 10100 → bridge tenant Rosso</text>
+
+  <!-- legenda -->
+  <g transform="translate(120,322)">
+    <rect width="16" height="12" rx="2" fill="#fde68a" stroke="#d97706"/>
+    <text x="22" y="11" font-size="10" fill="#374151">frame del tenant (intatto)</text>
+  </g>
+  <g transform="translate(340,322)">
+    <rect width="16" height="12" rx="2" fill="#bfdbfe" stroke="#1d4ed8"/>
+    <text x="22" y="11" font-size="10" fill="#374151">outer IP/UDP (underlay)</text>
+  </g>
+  <g transform="translate(560,322)">
+    <rect width="16" height="12" rx="2" fill="#c7d2fe" stroke="#4338ca"/>
+    <text x="22" y="11" font-size="10" fill="#374151">header VXLAN (VNI = tenant ID)</text>
+  </g>
+</svg>
