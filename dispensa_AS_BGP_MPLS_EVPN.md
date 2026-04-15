@@ -289,7 +289,8 @@ VXLAN+EVPN è la tecnologia dei datacenter moderni e dei cloud provider per dare
 
 > 🔑 Sia in MPLS L3VPN sia in EVPN/VXLAN, **BGP è il signalling**, MPLS e VXLAN sono il *formato di trasporto*. Stessa separazione signalling/trasporto delle VPN che già conoscete.
 
-> [Approfondimento VXLAN-EVPN](vxlan_evpn_approfondimento.md) 
+> [Approfondimento VXLAN-EVPN](vxlan_evpn_approfondimento.md)
+> [Approfondimento SD WAN](sdwan_approfondimento.md) 
 ---
 
 ## 8. Scenario italiano
