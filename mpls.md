@@ -49,15 +49,7 @@ MPLS è una realizzazione moderna del paradigma del circuito virtuale, fatta gir
 
 In una rete MPLS gestita da un ISP per offrire servizi a organizzazioni clienti, ci sono tre ruoli ben distinti.
 
-```
-   Sede A AziendaX                Backbone ISP                 Sede B AziendaX
-  ┌──────────────┐         ┌──────────────────────┐         ┌──────────────┐
-  │              │         │                      │         │              │
-  │   CE-A   ────┼─────────┤ PE1 ── P1 ── P2 ── PE2 ├─────────┼── CE-B       │
-  │              │         │                      │         │              │
-  └──────────────┘         └──────────────────────┘         └──────────────┘
-   rete cliente             dominio MPLS dell'ISP             rete cliente
-```
+![Topologia generale CE-PE-P-PE-CE](img/fig01_topologia.svg)
 
 ### 2.1 CE — Customer Edge
 
@@ -150,13 +142,7 @@ Indicizzata per **label MPLS**. È quella che fa il forwarding velocissimo nel c
 
 Scenario: AziendaX ha due sedi entrambe attaccate allo stesso PE1.
 
-```
-   Sede A                   Sede B
-     │                        │
-   CE-A ── eth0/1 ── PE1 ── eth0/2 ── CE-B
-                      │
-                      └── (resto della rete ISP)
-```
+![Forwarding diretto sullo stesso PE](img/fig02_forwarding_diretto.svg)
 
 Un pacchetto da `192.168.10.5` (Sede A) verso `192.168.20.7` (Sede B):
 
@@ -170,11 +156,7 @@ Non c'è nessun coinvolgimento di MPLS: il PE si comporta come un router IP qual
 
 Scenario classico: due sedi di AziendaX, una su PE1 e una su PE2, separate dal backbone.
 
-```
-  CE-A ── PE1 ── P1 ── P2 ── PE2 ── CE-B
-          │                  │
-        VRF X              VRF X
-```
+![Forwarding remoto con doppia label](img/fig03_forwarding_remoto.svg)
 
 Pacchetto da `192.168.10.5` verso `192.168.20.7`:
 
@@ -290,34 +272,7 @@ In pratica: l'RD risolve l'ambiguità nel database BGP, l'RT decide chi vede cos
 
 ## 7. Riepilogo: schema di tutto
 
-```
-┌────────────────────────────────────────────────────────────────────┐
-│                                                                    │
-│  CONTROL PLANE (signalling)                                        │
-│                                                                    │
-│  ┌─────────┐   ┌─────────┐   ┌──────────────────────────┐          │
-│  │  OSPF   │──▶│   LDP   │   │  MP-BGP VPNv4            │          │
-│  │ (IGP)   │   │ (label  │   │  (rotte cliente +        │          │
-│  │         │   │ transp.)│   │   label VPN + RD/RT)     │          │
-│  └─────────┘   └─────────┘   └──────────────────────────┘          │
-│       │             │                    │                         │
-│       ▼             ▼                    ▼                         │
-│  popola la    popola le LFIB      popola le VRF                    │
-│  routing       di P e PE          dei PE                           │
-│  globale                                                           │
-│                                                                    │
-├────────────────────────────────────────────────────────────────────┤
-│                                                                    │
-│  DATA PLANE (forwarding)                                           │
-│                                                                    │
-│  CE ──IP──▶ PE1 ──[T][V][IP]──▶ P ──[T'][V][IP]──▶ PE2 ──IP──▶ CE  │
-│             │                    │                  │              │
-│         lookup VRF +         swap label        POP label VPN +     │
-│         imposta label        transport         consegna a VRF      │
-│         transport e VPN                                            │
-│                                                                    │
-└────────────────────────────────────────────────────────────────────┘
-```
+![Schema riassuntivo control plane e data plane](img/fig04_riepilogo.svg)
 
 ---
 
