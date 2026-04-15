@@ -266,6 +266,8 @@ I due IXP italiani principali:
 
 > 🔑 **Parallelo con VPN classiche**: in OpenVPN, TLS fa il signalling e UDP trasporta. In MPLS L3VPN, MP-BGP fa il signalling e MPLS trasporta. Stesso schema, scala diversa.
 
+> [Approfondimento MPLS](mpls.md)
+
 ---
 
 ## 7. EVPN + VXLAN: BGP come signalling di un tunnel L2 nelle SDN
