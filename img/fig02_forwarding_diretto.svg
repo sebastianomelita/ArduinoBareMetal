@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 320" font-family="-apple-system, system-ui, sans-serif">
+  <defs>
+    <linearGradient id="cust2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fef3c7"/>
+      <stop offset="1" stop-color="#fde68a"/>
+    </linearGradient>
+    <marker id="arrgreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#15803d"/>
+    </marker>
+  </defs>
+
+  <!-- Sede A -->
+  <rect x="20" y="50" width="180" height="120" rx="12" fill="url(#cust2)" stroke="#d97706" stroke-width="2"/>
+  <text x="110" y="74" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Sede A</text>
+  <text x="110" y="92" text-anchor="middle" font-size="10" fill="#92400e">192.168.10.0/24</text>
+
+  <!-- Sede B -->
+  <rect x="20" y="190" width="180" height="120" rx="12" fill="url(#cust2)" stroke="#d97706" stroke-width="2"/>
+  <text x="110" y="214" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">Sede B</text>
+  <text x="110" y="232" text-anchor="middle" font-size="10" fill="#92400e">192.168.20.0/24</text>
+
+  <!-- CE-A -->
+  <circle cx="155" cy="135" r="26" fill="#fff" stroke="#d97706" stroke-width="2.5"/>
+  <text x="155" y="140" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">CE-A</text>
+
+  <!-- CE-B -->
+  <circle cx="155" cy="265" r="26" fill="#fff" stroke="#d97706" stroke-width="2.5"/>
+  <text x="155" y="270" text-anchor="middle" font-size="12" font-weight="700" fill="#92400e">CE-B</text>
+
+  <!-- PE1 -->
+  <rect x="290" y="160" width="140" height="80" rx="14" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2.5"/>
+  <text x="360" y="190" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">PE1</text>
+  <text x="360" y="210" text-anchor="middle" font-size="10" fill="#1e40af">VRF AziendaX</text>
+  <text x="360" y="226" text-anchor="middle" font-size="10" fill="#1e40af">(lookup IP normale)</text>
+
+  <!-- frecce verdi flusso -->
+  <line x1="181" y1="148" x2="288" y2="180" stroke="#15803d" stroke-width="2.5" marker-end="url(#arrgreen)"/>
+  <line x1="288" y1="220" x2="181" y2="252" stroke="#15803d" stroke-width="2.5" marker-end="url(#arrgreen)"/>
+
+  <!-- etichette "eth0/1" "eth0/2" -->
+  <text x="240" y="158" font-size="10" fill="#334155">eth0/1</text>
+  <text x="240" y="252" font-size="10" fill="#334155">eth0/2</text>
+
+  <!-- backbone tratteggiato -->
+  <line x1="430" y1="200" x2="540" y2="200" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="610" y="205" font-size="11" fill="#64748b" font-style="italic">backbone</text>
+  <text x="610" y="220" font-size="11" fill="#64748b" font-style="italic">(non coinvolto)</text>
+
+  <!-- box con messaggio -->
+  <rect x="470" y="50" width="230" height="90" rx="10" fill="#dcfce7" stroke="#15803d" stroke-width="1.5"/>
+  <text x="585" y="75" text-anchor="middle" font-size="12" font-weight="700" fill="#14532d">Pacchetto IP puro</text>
+  <text x="585" y="98" text-anchor="middle" font-size="11" fill="#166534">nessuna label MPLS</text>
+  <text x="585" y="116" text-anchor="middle" font-size="11" fill="#166534">solo lookup nella VRF</text>
+  <text x="585" y="132" text-anchor="middle" font-size="11" fill="#166534">e inoltro diretto</text>
+</svg>
