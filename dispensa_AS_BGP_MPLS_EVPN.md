@@ -287,6 +287,7 @@ Nei datacenter moderni si vuole lo stesso servizio ma a livello 2. Le VLAN class
 
 > 🔑 Sia in MPLS L3VPN sia in EVPN/VXLAN, **BGP è il signalling**, MPLS e VXLAN sono il *formato di trasporto*. Stessa separazione signalling/trasporto delle VPN che già conoscete.
 
+> [Approfondimento VXLAN-EVPN](vxlan_evpn_approfondimento.md) 
 ---
 
 ## 8. Scenario italiano
