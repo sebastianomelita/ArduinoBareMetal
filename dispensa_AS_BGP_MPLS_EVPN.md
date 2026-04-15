@@ -276,6 +276,8 @@ Nei datacenter moderni si vuole lo stesso servizio ma a livello 2. Le VLAN class
 
 **Soluzione**: **VXLAN + EVPN**.
 
+VXLAN+EVPN è la tecnologia dei datacenter moderni e dei cloud provider per dare a ogni tenant la propria rete virtuale dentro il datacenter. Lavora a L2 perché molti workload (cluster, live migration di VM, alcuni middleware) richiedono adiacenza L2.
+
 ![EVPN+VXLAN](img/fig08_evpn_vxlan.svg)
 
 - **VXLAN** (il "TAP su scala datacenter"): incapsula frame Ethernet in UDP/IP (porta 4789), con un **VNI a 24 bit** → ~16 milioni di segmenti. Gli endpoint si chiamano **VTEP**.
