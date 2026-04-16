@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 400" font-family="-apple-system, system-ui, sans-serif">
+  <text x="460" y="24" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">MPLS classico vs SR-TE con controller: cosa cambia</text>
+
+  <!-- pannello sinistro: MPLS classico -->
+  <rect x="20" y="45" width="420" height="330" rx="14" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="230" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b">MPLS classico (LDP + RSVP-TE)</text>
+
+  <!-- nodi con link -->
+  <circle cx="100" cy="150" r="20" fill="#fff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="100" y="155" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">PE1</text>
+  <circle cx="200" cy="120" r="16" fill="#fff" stroke="#475569" stroke-width="1.5"/>
+  <text x="200" y="125" text-anchor="middle" font-size="9" font-weight="700">P1</text>
+  <circle cx="300" cy="120" r="16" fill="#fff" stroke="#475569" stroke-width="1.5"/>
+  <text x="300" y="125" text-anchor="middle" font-size="9" font-weight="700">P2</text>
+  <circle cx="250" cy="180" r="16" fill="#fff" stroke="#475569" stroke-width="1.5"/>
+  <text x="250" y="185" text-anchor="middle" font-size="9" font-weight="700">P3</text>
+  <circle cx="370" cy="150" r="20" fill="#fff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="370" y="155" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">PE2</text>
+
+  <line x1="120" y1="145" x2="184" y2="125" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="120" y1="160" x2="234" y2="178" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="216" y1="120" x2="284" y2="120" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="210" y1="132" x2="238" y2="168" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="266" y1="176" x2="296" y2="132" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="316" y1="124" x2="354" y2="142" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="264" y1="172" x2="354" y2="154" stroke="#94a3b8" stroke-width="1.5"/>
+
+  <!-- nessun controller -->
+  <text x="230" y="225" text-anchor="middle" font-size="10" fill="#991b1b" font-weight="600">Nessun cervello centrale</text>
+
+  <!-- problemi -->
+  <g transform="translate(40,245)">
+    <text x="0" y="0" font-size="11" font-weight="700" fill="#991b1b">Limiti:</text>
+    <text x="0" y="20" font-size="10" fill="#7f1d1d">• ogni nodo decide in autonomia (SPF locale)</text>
+    <text x="0" y="38" font-size="10" fill="#7f1d1d">• RSVP-TE mantiene stato per-tunnel su ogni nodo</text>
+    <text x="0" y="56" font-size="10" fill="#7f1d1d">• LDP: un protocollo in più da gestire</text>
+    <text x="0" y="74" font-size="10" fill="#7f1d1d">• nessuna ottimizzazione globale del traffico</text>
+    <text x="0" y="92" font-size="10" fill="#7f1d1d">• link spesso utilizzati al 30-40%</text>
+  </g>
+
+  <!-- pannello destro: SR-TE + controller -->
+  <rect x="480" y="45" width="420" height="330" rx="14" fill="#f0fdf4" stroke="#15803d" stroke-width="2"/>
+  <text x="690" y="70" text-anchor="middle" font-size="13" font-weight="700" fill="#14532d">SR-TE + controller SDN</text>
+
+  <!-- nodi con link -->
+  <circle cx="560" cy="160" r="20" fill="#fff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="560" y="165" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">PE1</text>
+  <circle cx="660" cy="130" r="16" fill="#fff" stroke="#475569" stroke-width="1.5"/>
+  <text x="660" y="135" text-anchor="middle" font-size="9" font-weight="700">P1</text>
+  <circle cx="760" cy="130" r="16" fill="#fff" stroke="#475569" stroke-width="1.5"/>
+  <text x="760" y="135" text-anchor="middle" font-size="9" font-weight="700">P2</text>
+  <circle cx="710" cy="190" r="16" fill="#fff" stroke="#475569" stroke-width="1.5"/>
+  <text x="710" y="195" text-anchor="middle" font-size="9" font-weight="700">P3</text>
+  <circle cx="830" cy="160" r="20" fill="#fff" stroke="#1d4ed8" stroke-width="2"/>
+  <text x="830" y="165" text-anchor="middle" font-size="10" font-weight="700" fill="#1e3a8a">PE2</text>
+
+  <line x1="580" y1="155" x2="644" y2="135" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="580" y1="170" x2="694" y2="188" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="676" y1="130" x2="744" y2="130" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="670" y1="142" x2="698" y2="178" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="726" y1="186" x2="756" y2="142" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="776" y1="134" x2="814" y2="152" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="724" y1="182" x2="814" y2="164" stroke="#94a3b8" stroke-width="1.5"/>
+
+  <!-- controller -->
+  <rect x="630" y="80" width="120" height="30" rx="6" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+  <text x="690" y="100" text-anchor="middle" font-size="10" font-weight="700" fill="#5b21b6">Controller</text>
+
+  <!-- vantaggi -->
+  <text x="690" y="230" text-anchor="middle" font-size="10" fill="#14532d" font-weight="600">Cervello centrale con visione globale</text>
+
+  <g transform="translate(500,245)">
+    <text x="0" y="0" font-size="11" font-weight="700" fill="#14532d">Vantaggi:</text>
+    <text x="0" y="20" font-size="10" fill="#166534">• controller calcola percorsi ottimali globali</text>
+    <text x="0" y="38" font-size="10" fill="#166534">• nessuno stato per-tunnel nei nodi intermedi</text>
+    <text x="0" y="56" font-size="10" fill="#166534">• LDP eliminato: i SID li distribuisce l'IGP</text>
+    <text x="0" y="74" font-size="10" fill="#166534">• ricalcolo in tempo reale su congestione/guasto</text>
+    <text x="0" y="92" font-size="10" fill="#166534">• link utilizzati al 90%+ (Google B4)</text>
+  </g>
+</svg>
