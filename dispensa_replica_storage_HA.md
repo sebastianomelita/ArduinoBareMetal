@@ -20,46 +20,38 @@
     - [2.4 Cluster multi-master](#24-cluster-multi-master-database)
     - [2.5 Tassonomia riassuntiva](#25-tassonomia-riassuntiva)
     - [2.6 Il filo logico](#26-il-filo-logico-cosa-guida-la-scelta)
-3. [Quando serve anche la replica del disco](#3-quando-serve-anche-la-replica-del-disco)
-    - [3.1 Quadro completo dei casi](#31-quadro-completo-dei-casi-comuni)
-    - [3.2 La regola generale](#32-la-regola-generale)
-    - [3.3 Schema decisionale](#33-schema-decisionale)
-4. [NAS centralizzato vs distribuito](#4-nas-centralizzato-vs-nas-distribuito)
-    - [4.1 NAS centralizzato](#41-nas-centralizzato)
-    - [4.2 NAS distribuito](#42-nas-distribuito)
-    - [4.3 Confronto diretto](#43-confronto-diretto)
-5. [CephFS: quando conviene](#5-cephfs-quando-conviene)
-    - [5.1 Le tre interfacce di Ceph](#51-le-tre-interfacce-di-ceph)
-    - [5.2 Quando CephFS è la scelta giusta](#52-quando-cephfs-è-la-scelta-giusta)
-    - [5.3 CephFS vs NFS](#53-schema-decisionale-cephfs-vs-nfs)
-    - [5.4 CephFS vs GlusterFS](#54-cephfs-vs-glusterfs)
-6. [Migrazione delle VM in Proxmox](#6-migrazione-delle-vm-in-proxmox)
-    - [6.1 Migrazione e load balancer](#61-migrazione-e-load-balancer-due-meccanismi-indipendenti)
-    - [6.2 Migrazione HA vs DRBD](#62-migrazione-ha-vs-drbd-due-modi-di-fare-failover)
-    - [6.3 Tipi di migrazione](#63-tipi-di-migrazione)
-    - [6.4 Live migration e storage](#64-perché-la-live-migration-richiede-storage-condiviso)
-    - [6.5 Ripristino manuale (NAS)](#65-procedura-di-ripristino-manuale-nas-centralizzato)
-    - [6.6 Ripristino automatico (Ceph)](#66-procedura-di-ripristino-automatico-ceph-rbd--proxmox-ha)
-    - [6.7 Confronto procedure](#67-confronto-tra-le-due-procedure)
-    - [6.8 Automatica vs manuale](#68-quando-la-migrazione-è-automatica-e-quando-manuale)
-    - [6.9 Prerequisiti HA](#69-prerequisiti-per-la-migrazione-automatica-ha)
-    - [6.10 Failover di un nodo](#610-cosa-succede-quando-un-nodo-cade)
-7. [Livelli di HA: dalla protezione blanda alla HA reale](#7-livelli-di-ha-dalla-protezione-blanda-alla-ha-reale)
-    - [7.1 Livello 0 — Backup](#71-livello-0--backup-manuale-nessuna-ha)
-    - [7.2 Livello 1 — Restart locale](#72-livello-1--restart-automatico-locale)
-    - [7.3 Livello 2 — LB nodo singolo](#73-livello-2--load-balancer--vm-multiple-nodo-singolo)
-    - [7.4 Livello 3 — Cluster HA](#74-livello-3--cluster-multi-nodo-con-ha-automatico)
-    - [7.5 Livello 4 — Geo-ridondanza](#75-livello-4--geo-ridondanza-multi-sito)
-    - [7.6 Come scegliere](#76-come-scegliere-il-livello-giusto)
-    - [7.7 Confronto riassuntivo](#77-confronto-riassuntivo-dei-livelli)
-    - [7.8 Testare l'HA](#78-testare-lha-un-cluster-non-testato-non-funziona)
-8. [Il backup non è una replica](#8-il-backup-non-è-una-replica)
-    - [8.1 La differenza fondamentale](#81-la-differenza-fondamentale)
-    - [8.2 Cosa protegge cosa](#82-cosa-protegge-cosa)
-    - [8.3 La regola 3-2-1](#83-la-regola-3-2-1)
-    - [8.4 Backup in ambiente Proxmox](#84-backup-in-ambiente-proxmox)
-    - [8.5 Replica + backup](#85-replica--backup--protezione-completa)
-9. [Riepilogo finale](#riepilogo-finale)
+3. [NAS centralizzato vs distribuito](#3-nas-centralizzato-vs-nas-distribuito)
+    - [3.1 NAS centralizzato](#31-nas-centralizzato)
+    - [3.2 NAS distribuito](#32-nas-distribuito)
+    - [3.3 Confronto diretto](#33-confronto-diretto)
+4. [Ceph: architettura e quando usare CephFS](#4-ceph-architettura-e-quando-usare-cephfs)
+    - [4.1 Le tre interfacce di Ceph](#41-le-tre-interfacce-di-ceph)
+    - [4.2 Quando CephFS è la scelta giusta](#42-quando-cephfs-è-la-scelta-giusta)
+    - [4.3 CephFS vs NFS](#43-schema-decisionale-cephfs-vs-nfs)
+    - [4.4 CephFS vs GlusterFS](#44-cephfs-vs-glusterfs)
+5. [Migrazione delle VM in Proxmox](#5-migrazione-delle-vm-in-proxmox)
+    - [5.1 Migrazione e load balancer](#51-migrazione-e-load-balancer-due-meccanismi-indipendenti)
+    - [5.2 Migrazione HA vs DRBD](#52-migrazione-ha-vs-drbd-due-modi-di-fare-failover)
+    - [5.3 Tipi di migrazione](#53-tipi-di-migrazione)
+    - [5.4 Live migration e storage](#54-perché-la-live-migration-richiede-storage-condiviso)
+    - [5.5 Ripristino manuale vs automatico](#55-ripristino-di-una-vm-manuale-vs-automatico)
+    - [5.6 Prerequisiti HA](#56-prerequisiti-per-la-migrazione-automatica-ha)
+6. [Livelli di HA: dalla protezione blanda alla HA reale](#6-livelli-di-ha-dalla-protezione-blanda-alla-ha-reale)
+    - [6.1 Livello 0 — Backup](#61-livello-0--backup-manuale-nessuna-ha)
+    - [6.2 Livello 1 — Restart locale](#62-livello-1--restart-automatico-locale)
+    - [6.3 Livello 2 — LB nodo singolo](#63-livello-2--load-balancer--vm-multiple-nodo-singolo)
+    - [6.4 Livello 3 — Cluster HA](#64-livello-3--cluster-multi-nodo-con-ha-automatico)
+    - [6.5 Livello 4 — Geo-ridondanza](#65-livello-4--geo-ridondanza-multi-sito)
+    - [6.6 Come scegliere](#66-come-scegliere-il-livello-giusto)
+    - [6.7 Confronto riassuntivo](#67-confronto-riassuntivo-dei-livelli)
+    - [6.8 Testare l'HA](#68-testare-lha-un-cluster-non-testato-non-funziona)
+7. [Il backup non è una replica](#7-il-backup-non-è-una-replica)
+    - [7.1 La differenza fondamentale](#71-la-differenza-fondamentale)
+    - [7.2 Cosa protegge cosa](#72-cosa-protegge-cosa)
+    - [7.3 La regola 3-2-1](#73-la-regola-3-2-1)
+    - [7.4 Backup in ambiente Proxmox](#74-backup-in-ambiente-proxmox)
+    - [7.5 Replica + backup](#75-replica--backup--protezione-completa)
+8. [Riepilogo finale](#riepilogo-finale)
 
 ---
 
@@ -353,6 +345,10 @@ Ogni nodo MySQL in un cluster Galera ha il **proprio disco locale indipendente**
 
 ### 2.6 Il filo logico: cosa guida la scelta
 
+Due alberi decisionali riassumono l'intera sezione.
+
+**Quale tipo di replica del servizio?**
+
 ```
     Il servizio scrive dati sul disco?
                     │
@@ -372,32 +368,7 @@ Ogni nodo MySQL in un cluster Galera ha il **proprio disco locale indipendente**
                 il disco)
 ```
 
-[Torna all'indice](#indice)
-
----
-
-## 3. Quando serve ANCHE la replica del disco
-
-Questa è la domanda chiave: in quali casi la replica del servizio richiede anche la replica sincronizzata del disco sottostante?
-
-### 3.1 Quadro completo dei casi comuni
-
-| Caso | Replica servizio | Replica disco sincronizzata | Motivo |
-|------|------------------|-----------------------------|--------|
-| Web app stateless dietro LB | Active-Active (HAProxy) | **NO** | Niente stato locale da replicare |
-| Sessioni HTTPS | Active-Active | **NO** | Si usa Redis condiviso |
-| File upload condivisi | Active-Active | **NO** | Si usa CephFS / NFS |
-| Config condivise | Active-Active | **NO** | Si usa etcd / Consul |
-| DB MySQL multi-master (Galera) | Multi-master | **NO** | Galera replica internamente via wsrep |
-| DB MySQL active-passive con failover | Failover | **SÌ** | Il disco del DB deve essere accessibile dal nodo standby |
-| HA VM su cluster Proxmox | Failover automatico | **SÌ** | Ceph RBD replica i blocchi su tutti i nodi |
-| VM su nodo singolo con LB locale | Active-Active locale | **NO** | ZFS protegge il disco singolo, non replica tra VM |
-
-### 3.2 La regola generale
-
-La replica sincronizzata del disco serve quando una VM deve poter ripartire su un altro nodo fisico con lo stesso disco (Ceph RBD per HA Proxmox), oppure quando un servizio stateful in failover deve trovare i dati identici sul nodo di standby (DRBD active-passive, Ceph RBD). In tutti gli altri casi si preferisce esternalizzare lo stato (Redis, DB, S3), usare storage condiviso (CephFS, NFS) oppure usare replica applicativa (Galera, Patroni).
-
-### 3.3 Schema decisionale
+**Serve anche la replica del disco?**
 
 ```
         L'applicazione ha stato locale?
@@ -416,25 +387,27 @@ La replica sincronizzata del disco serve quando una VM deve poter ripartire su u
                               DRBD)
 ```
 
+La replica sincronizzata del disco serve solo quando il servizio è stateful e lo stato non può essere esternalizzato — tipicamente un database in failover o una VM in HA che deve ripartire su un altro nodo con lo stesso disco.
+
 [Torna all'indice](#indice)
 
 ---
 
-## 4. NAS centralizzato vs NAS distribuito
+## 3. NAS centralizzato vs NAS distribuito
 
 Nelle sezioni precedenti abbiamo visto che la replica del servizio e la replica del disco spesso richiedono uno **storage accessibile da più nodi** — che sia per il failover (il nodo standby deve raggiungere lo stesso disco), per il load balancer (le VM devono condividere file upload o sessioni), o per la migrazione delle VM. La domanda diventa: dove metto fisicamente questo storage? Le due opzioni fondamentali sono il NAS centralizzato e lo storage distribuito.
 
-### 4.1 NAS centralizzato
+### 3.1 NAS centralizzato
 
 Un singolo server espone storage via rete (NFS, SMB/CIFS, iSCSI). **Vantaggi:** semplice da gestire, basso costo, ideale per PMI e homelab. **Limiti:** se il NAS cade, tutti i client perdono accesso allo storage. Scalabilità limitata a quanto entra nel singolo chassis.
 
-### 4.2 NAS distribuito
+### 3.2 NAS distribuito
 
 Lo storage è distribuito su più nodi. Non esiste un singolo punto di guasto. **Tecnologie:** Ceph, GlusterFS, MinIO (per S3). **Vantaggi:** nessun single point of failure, scalabilità orizzontale, self-healing automatico. **Limiti:** complessità di gestione, overhead di rete, serve hardware e rete performanti.
 
 ![NAS centralizzato vs distribuito](img/nas_confronto.svg)
 
-### 4.3 Confronto diretto
+### 3.3 Confronto diretto
 
 | Aspetto | NAS centralizzato | NAS distribuito |
 |---------|-------------------|-----------------|
@@ -452,7 +425,7 @@ Lo storage è distribuito su più nodi. Non esiste un singolo punto di guasto. *
 
 ---
 
-## 5. CephFS: quando conviene
+## 4. Ceph: architettura e quando usare CephFS
 
 ### Cos'è Ceph
 
@@ -462,7 +435,7 @@ Ceph non è un singolo servizio ma una piattaforma che espone tre interfacce div
 
 CephFS è il filesystem condiviso di Ceph. Non è un prodotto a sé ma un'interfaccia costruita sopra un cluster Ceph esistente, accanto a RBD (blocchi) e RGW (oggetti S3).
 
-### 5.1 Le tre interfacce di Ceph
+### 4.1 Le tre interfacce di Ceph
 
 ![Le tre interfacce di Ceph](img/ceph_stack.svg)
 
@@ -472,13 +445,13 @@ CephFS è il filesystem condiviso di Ceph. Non è un prodotto a sé ma un'interf
 | **CephFS** | Filesystem | Più VM insieme (condiviso) | File upload, config, asset | NFS, GlusterFS |
 | **RGW** | Oggetti (S3) | Via HTTP REST | Backup, media, log | Amazon S3, MinIO |
 
-### 5.2 Quando CephFS è la scelta giusta
+### 4.2 Quando CephFS è la scelta giusta
 
 **USA CephFS quando:** hai già un cluster Ceph (es. Proxmox con Ceph); più VM devono leggere/scrivere gli stessi file; serve accesso POSIX (mount come directory locale); i file sono di dimensioni medie (documenti, config, upload utenti, asset web); serve scalabilità oltre un singolo NAS; serve tolleranza al guasto senza single point.
 
 **NON usare CephFS quando:** hai 1-2 nodi (Ceph richiede minimo 3); ti basta un NAS centralizzato (Synology, TrueNAS); le VM non devono condividere file tra loro; lo storage serve per blocchi VM (usa RBD); lo storage serve per backup/media via HTTP (usa RGW); non hai rete 10 GbE o superiore.
 
-### 5.3 Schema decisionale CephFS vs NFS
+### 4.3 Schema decisionale CephFS vs NFS
 
 ```
              Decidi tra CephFS e NFS
@@ -504,7 +477,7 @@ CephFS è il filesystem condiviso di Ceph. Non è un prodotto a sé ma un'interf
             è sufficiente  e usa CephFS
 ```
 
-### 5.4 CephFS vs GlusterFS
+### 4.4 CephFS vs GlusterFS
 
 | Aspetto | CephFS | GlusterFS |
 |---------|--------|-----------|
@@ -519,7 +492,7 @@ CephFS è il filesystem condiviso di Ceph. Non è un prodotto a sé ma un'interf
 
 ---
 
-## 6. Migrazione delle VM in Proxmox
+## 5. Migrazione delle VM in Proxmox
 
 ### Cos'è Proxmox
 
@@ -529,7 +502,7 @@ In questa dispensa usiamo Proxmox come esempio concreto perché è la piattaform
 
 La migrazione è lo spostamento di una VM da un nodo fisico a un altro all'interno dello stesso cluster Proxmox. Il suo ruolo nell'alta disponibilità è centrale.
 
-### 6.1 Migrazione e load balancer: due meccanismi indipendenti
+### 5.1 Migrazione e load balancer: due meccanismi indipendenti
 
 Un punto che genera spesso confusione: la migrazione automatica (HA) e il load balancer **non sono alternative** e **non hanno nulla a che fare l'uno con l'altro**. Risolvono problemi diversi e possono coesistere nella stessa infrastruttura.
 
@@ -555,7 +528,7 @@ Il load balancer serve per distribuire traffico su più VM identiche. L'HA serve
 | 3 VM web identiche | Load balancer (HAProxy) | Distribuire traffico, zero downtime |
 | 1 VM database | HA Proxmox (migrazione automatica) | Riavviarla su un altro nodo se il nodo cade |
 
-### 6.2 Migrazione HA vs DRBD: due modi di fare failover
+### 5.2 Migrazione HA vs DRBD: due modi di fare failover
 
 Per proteggere un servizio stateful (un database, un file server) che non può essere duplicato, esistono due approcci alternativi. Entrambi raggiungono lo stesso obiettivo — il servizio riparte su un altro nodo se il nodo attivo cade — ma con meccanismi diversi.
 
@@ -575,7 +548,7 @@ Per proteggere un servizio stateful (un database, un file server) che non può e
 
 DRBD + Pacemaker è spesso la scelta in ambienti senza virtualizzazione — due server fisici dedicati a MySQL o PostgreSQL. Proxmox HA è la scelta quando hai già un cluster virtualizzato con molte VM diverse da proteggere.
 
-### 6.3 Tipi di migrazione
+### 5.3 Tipi di migrazione
 
 | Aspetto | Live (a caldo) | Offline (a freddo) |
 |---------|----------------|--------------------|
@@ -585,7 +558,7 @@ DRBD + Pacemaker è spesso la scelta in ambienti senza virtualizzazione — due 
 | Tempo di migrazione | Secondi | Minuti/ore (dipende dalla dimensione) |
 | Uso tipico | Manutenzione pianificata, bilanciamento carico, HA | Spostamento tra cluster, cambio storage |
 
-### 6.4 Perché la live migration richiede storage condiviso
+### 5.4 Perché la live migration richiede storage condiviso
 
 La condizione necessaria per la live migration è una sola: il disco della VM deve essere raggiungibile da entrambi i nodi **prima** che la migrazione inizi. Questo si può ottenere in due modi diversi.
 
@@ -605,25 +578,19 @@ La condizione necessaria per la live migration è una sola: il disco della VM de
 
 ![Live migration: storage condiviso vs locale](img/live_migration.svg)
 
-### 6.5 Procedura di ripristino manuale (NAS centralizzato)
+### 5.5 Ripristino di una VM: manuale vs automatico
 
-Quando una VM diventa indisponibile (per corruzione della VM stessa o per guasto del nodo che la ospita) e lo storage è su un NAS centralizzato, il disco della VM è intatto e accessibile da qualsiasi nodo del cluster. Tuttavia il ripristino richiede l'intervento manuale del sistemista.
+Quando una VM diventa indisponibile (per corruzione della VM stessa o per guasto del nodo che la ospita), il ripristino dipende da dove sta il disco e da come è configurato il cluster.
 
-La procedura è la seguente: il sistemista accede alla GUI di Proxmox, individua la VM guasta, ne registra una nuova istanza su un nodo sano puntandola allo stesso volume sul NAS, e la avvia. Il disco non deve essere copiato perché è già condiviso — si tratta solo di dire a un altro nodo "avvia tu questa VM usando quel disco sul NAS".
+**Ripristino manuale (NAS centralizzato).** Il disco della VM è su un NAS accessibile da tutti i nodi. Il sistemista accede alla GUI di Proxmox, registra la VM su un nodo sano puntandola allo stesso volume sul NAS, e la avvia. Il disco non viene copiato — è già condiviso. Non si perdono dati (RPO = 0), ma il downtime dipende dalla rapidità del sistemista.
 
 ![Ripristino manuale da NAS](img/migrazione_manuale_nas.svg)
 
-Il vantaggio è che non si perdono dati (RPO = 0 perché il disco è lo stesso). Lo svantaggio è che il downtime dipende dalla rapidità con cui il sistemista interviene — possono essere minuti se è al posto di lavoro, ore se è notte o weekend.
-
-### 6.6 Procedura di ripristino automatico (Ceph RBD + Proxmox HA)
-
-Quando lo storage è su Ceph RBD e le VM sono configurate come risorse HA, l'intero processo avviene senza intervento umano. La sequenza è gestita da tre componenti che lavorano in cascata: Corosync (rileva il guasto), il meccanismo di fencing (isola il nodo guasto), e l'HA Manager (riavvia le VM altrove).
+**Ripristino automatico (Ceph RBD + Proxmox HA).** Il disco è su Ceph, replicato su tutti i nodi. L'intero processo avviene senza intervento umano: Corosync rileva il guasto (~30s), il fencing isola il nodo guasto (~30s), l'HA Manager riavvia le VM sui nodi sani (~60s). Nessun dato perso, nessun intervento umano.
 
 ![Ripristino automatico con Ceph RBD](img/migrazione_automatica_ceph.svg)
 
-La differenza fondamentale rispetto al NAS è che qui nessuno deve intervenire: il cluster decide autonomamente, isola il nodo guasto per prevenire split-brain, e riavvia le VM sui nodi sani. Il tempo totale è circa 2 minuti.
-
-### 6.7 Confronto tra le due procedure
+**Confronto tra le due procedure:**
 
 | Aspetto | NAS centralizzato (manuale) | Ceph RBD + HA (automatico) |
 |---------|---------------------------|---------------------------|
@@ -635,7 +602,11 @@ La differenza fondamentale rispetto al NAS è che qui nessuno deve intervenire: 
 | Funziona di notte/weekend | Solo se c'è reperibilità | Sempre |
 | SPOF residuo | Il NAS stesso | Nessuno |
 
-### 6.8 Quando la migrazione è automatica e quando manuale
+**Nota importante:** in entrambi i casi le VM vengono **riavviate** (cold restart), non migrate a caldo. La live migration richiede che la VM sia accesa e funzionante, il che non è possibile se il nodo è guasto. L'utente subisce un'interruzione di servizio pari al tempo di riavvio.
+
+### 5.6 Prerequisiti per la migrazione automatica (HA)
+
+Per l'HA automatico in Proxmox servono: minimo 3 nodi nel cluster per il quorum (oppure 2 nodi + 1 QDevice esterno); storage condiviso (Ceph RBD, NFS, iSCSI); VM configurata come "HA resource"; rete affidabile tra i nodi con rete dedicata per Corosync e per Ceph. Se manca anche solo uno di questi requisiti, la migrazione non sarà automatica.
 
 | Scenario | Tipo | Cosa succede |
 |----------|------|-------------|
@@ -644,27 +615,17 @@ La differenza fondamentale rispetto al NAS è che qui nessuno deve intervenire: 
 | Bilanciamento carico tra nodi | **MANUALE** | L'amministratore sposta VM per distribuire il carico |
 | Nodo in reboot imprevisto | **AUTOMATICA** | Proxmox HA rileva il nodo fuori dal quorum e avvia le VM altrove |
 
-### 6.9 Prerequisiti per la migrazione automatica (HA)
-
-Per l'HA automatico in Proxmox servono: minimo 3 nodi nel cluster per il quorum (oppure 2 nodi + 1 QDevice esterno); storage condiviso (Ceph RBD, NFS, iSCSI); VM configurata come "HA resource"; rete affidabile tra i nodi con rete dedicata per Corosync e per Ceph. Se manca anche solo uno di questi requisiti, la migrazione non sarà automatica.
-
-### 6.10 Cosa succede quando un nodo cade
-
-![Sequenza HA failover Proxmox](img/ha_failover.svg)
-
-**Nota importante:** nell'HA automatico di Proxmox, le VM vengono **riavviate** (cold restart), non migrate a caldo. La live migration richiede che la VM sia accesa e funzionante, il che non è possibile se il nodo è guasto. L'utente subisce un'interruzione di servizio pari al tempo di riavvio della VM (tipicamente 1-3 minuti).
-
 [Torna all'indice](#indice)
 
 ---
 
-## 7. Livelli di HA: dalla protezione blanda alla HA reale
+## 6. Livelli di HA: dalla protezione blanda alla HA reale
 
 Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità completa. I livelli seguenti rappresentano una scala progressiva di protezione, ognuno con costi e complessità crescenti.
 
 ![Livelli di alta disponibilità](img/livelli_ha.svg)
 
-### 7.1 Livello 0 — Backup manuale (nessuna HA)
+### 6.1 Livello 0 — Backup manuale (nessuna HA)
 
 | Aspetto | Dettaglio |
 |---------|-----------|
@@ -675,7 +636,7 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
 | Costo | Minimo |
 | Uso tipico | Homelab, sviluppo, servizi non critici |
 
-### 7.2 Livello 1 — Restart automatico locale
+### 6.2 Livello 1 — Restart automatico locale
 
 | Aspetto | Dettaglio |
 |---------|-----------|
@@ -686,7 +647,7 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
 | Costo | Basso |
 | Uso tipico | Piccole aziende, servizi interni a tolleranza media |
 
-### 7.3 Livello 2 — Load balancer + VM multiple (nodo singolo)
+### 6.3 Livello 2 — Load balancer + VM multiple (nodo singolo)
 
 | Aspetto | Dettaglio |
 |---------|-----------|
@@ -697,7 +658,7 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
 | Costo | Medio-basso |
 | Uso tipico | PMI, pre-produzione, servizi web con tolleranza al guasto HW |
 
-### 7.4 Livello 3 — Cluster multi-nodo con HA automatico
+### 6.4 Livello 3 — Cluster multi-nodo con HA automatico
 
 | Aspetto | Dettaglio |
 |---------|-----------|
@@ -708,7 +669,7 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
 | Costo | Alto (3+ server, rete dedicata, competenze) |
 | Uso tipico | Produzione aziendale, e-commerce, servizi critici |
 
-### 7.5 Livello 4 — Geo-ridondanza (multi-sito)
+### 6.5 Livello 4 — Geo-ridondanza (multi-sito)
 
 | Aspetto | Dettaglio |
 |---------|-----------|
@@ -719,7 +680,7 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
 | Costo | Molto alto (doppia infrastruttura, banda inter-sito, competenze avanzate) |
 | Uso tipico | Banche, cloud provider, infrastrutture critiche nazionali |
 
-### 7.6 Come scegliere il livello giusto
+### 6.6 Come scegliere il livello giusto
 
 ```
         Quanto costa un'ora di downtime?
@@ -739,7 +700,7 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
                    Ceph RBD)      geo-replica)
 ```
 
-### 7.7 Confronto riassuntivo dei livelli
+### 6.7 Confronto riassuntivo dei livelli
 
 | Livello | Nodi | Storage | Downtime max | Costo | Complessità |
 |---------|------|---------|-------------|-------|-------------|
@@ -749,7 +710,7 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
 | 3 — Cluster HA | 3+ | Ceph RBD | 1-3 minuti | Alto | Alta |
 | 4 — Geo-ridondanza | 6+ | Ceph + replica inter-sito | ~0 | Molto alto | Molto alta |
 
-### 7.8 Testare l'HA: un cluster non testato non funziona
+### 6.8 Testare l'HA: un cluster non testato non funziona
 
 Un cluster HA configurato ma mai testato è un cluster che probabilmente non funzionerà al momento del bisogno. Configurazioni errate, permessi mancanti, timeout troppo lunghi, fencing non configurato — tutti problemi che emergono solo quando si simula un guasto reale.
 
@@ -771,17 +732,17 @@ Un cluster HA configurato ma mai testato è un cluster che probabilmente non fun
 
 ---
 
-## 8. Il backup non è una replica
+## 7. Il backup non è una replica
 
 Replica e backup proteggono da guasti diversi. Confonderli è uno degli errori più comuni e più pericolosi nella gestione di un'infrastruttura.
 
-### 8.1 La differenza fondamentale
+### 7.1 La differenza fondamentale
 
 La **replica** duplica i dati in tempo reale (o quasi) su un altro disco o nodo. Protegge dal guasto hardware: se un disco o un nodo cade, i dati sono già altrove. Ma la replica è "cieca" — replica tutto, comprese le operazioni distruttive. Se un amministratore esegue `DROP TABLE clienti`, Ceph replica diligentemente la cancellazione su tutti i nodi. Se un ransomware cifra i file, la replica cifra anche le copie.
 
 Il **backup** è una copia dei dati congelata in un momento preciso, conservata separatamente e non modificabile dal sistema in produzione. Protegge dagli errori logici: cancellazioni accidentali, corruzione dati da bug applicativo, ransomware, aggiornamenti falliti.
 
-### 8.2 Cosa protegge cosa
+### 7.2 Cosa protegge cosa
 
 | Evento | La replica protegge? | Il backup protegge? |
 |--------|---------------------|---------------------|
@@ -793,7 +754,7 @@ Il **backup** è una copia dei dati congelata in un momento preciso, conservata 
 | Aggiornamento del DB fallito | **NO** — lo stato corrotto è replicato | **SÌ** — si ripristina il pre-aggiornamento |
 | Errore umano (rm -rf /) | **NO** — la cancellazione è replicata | **SÌ** — se il backup è recente |
 
-### 8.3 La regola 3-2-1
+### 7.3 La regola 3-2-1
 
 La regola 3-2-1 è lo standard minimo per una strategia di backup sicura:
 
@@ -801,7 +762,7 @@ La regola 3-2-1 è lo standard minimo per una strategia di backup sicura:
 - **2** supporti diversi (es. disco locale + storage remoto)
 - **1** copia offsite (in un luogo fisico diverso)
 
-### 8.4 Backup in ambiente Proxmox
+### 7.4 Backup in ambiente Proxmox
 
 Proxmox offre **Proxmox Backup Server (PBS)** come strumento dedicato. PBS fa backup incrementali delle VM (solo i blocchi cambiati), con deduplicazione e compressione, e può conservare più punti di ripristino. Il backup può essere schedulato (es. ogni notte) e la retention configurata (es. tenere gli ultimi 7 giornalieri, 4 settimanali, 12 mensili).
 
@@ -814,7 +775,7 @@ Proxmox offre **Proxmox Backup Server (PBS)** come strumento dedicato. PBS fa ba
 | Velocità di ripristino | Istantaneo (rollback) | Minuti-ore (dipende dalla dimensione) |
 | Uso tipico | Punto di ripristino rapido prima di un aggiornamento | Protezione completa, offsite |
 
-### 8.5 Replica + backup = protezione completa
+### 7.5 Replica + backup = protezione completa
 
 La replica e il backup non sono alternative — sono complementari. La replica garantisce continuità operativa (il servizio non si ferma), il backup garantisce recuperabilità (posso tornare a uno stato precedente).
 
