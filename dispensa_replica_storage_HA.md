@@ -19,6 +19,7 @@
     - [2.3 Active-Active con load balancer](#23-active-active-con-load-balancer)
     - [2.4 Cluster multi-master](#24-cluster-multi-master-database)
     - [2.5 Tassonomia riassuntiva](#25-tassonomia-riassuntiva)
+    - [2.6 Il filo logico](#26-il-filo-logico-cosa-guida-la-scelta)
 3. [Quando serve anche la replica del disco](#3-quando-serve-anche-la-replica-del-disco)
     - [3.1 Quadro completo dei casi](#31-quadro-completo-dei-casi-comuni)
     - [3.2 La regola generale](#32-la-regola-generale)
@@ -195,29 +196,81 @@ La replica **asincrona** basta quando i dati sono **riacquisibili o tollerabili 
 
 ## 2. Tipi di replica del servizio
 
-La replica del servizio ha lo scopo di garantire la continuità dell'applicazione. Non riguarda i blocchi del disco, ma la logica applicativa.
+La replica del servizio ha lo scopo di garantire la continuità dell'applicazione. Non riguarda i blocchi del disco, ma la logica applicativa. La scelta tra i diversi tipi dipende da una domanda fondamentale: **il servizio modifica i dati sul disco?**
 
 ### 2.1 Nessuna replica (single instance)
 
-Un'unica istanza del servizio gira su una sola VM. Se la VM cade, il servizio è indisponibile fino al ripristino. **Uso:** ambienti di sviluppo, servizi non critici, homelab.
+Un'unica istanza del servizio gira su una sola VM. Se la VM cade, il servizio è indisponibile fino al ripristino manuale.
+
+**Come si recupera:** il sistemista deve intervenire. Il tempo di ripristino dipende dal tipo di guasto e dalla strategia di backup.
+
+| Tipo di guasto | Recupero | Tempo stimato |
+|---|---|---|
+| Crash del processo | systemd lo riavvia automaticamente | Secondi |
+| VM corrotta, nodo sano | Restore da snapshot ZFS | 5-15 minuti |
+| VM corrotta, no snapshot | Restore da backup (Proxmox Backup Server) | 30 min - ore |
+| Nodo fisico guasto | Riparazione HW + restore, oppure restore su altra macchina | Ore - giorni |
+
+**Punto critico:** senza replica, tutto dipende dalla freschezza del backup. Se il backup è di ieri notte, le ultime 24 ore di dati sono perse (RPO = 24h). Se non c'è backup, i dati sono persi del tutto.
+
+**Uso:** ambienti di sviluppo, servizi non critici, homelab.
 
 ### 2.2 Active-Passive (failover)
 
-Due istanze del servizio esistono, ma solo una è attiva. La seconda subentra automaticamente in caso di guasto. **Tecnologie:** Keepalived, Pacemaker/Corosync, Proxmox HA. **Uso:** database, servizi stateful dove una sola istanza deve scrivere.
+Il failover si usa quando il servizio **scrive dati che cambiano** — tipicamente un database o un filesystem transazionale. Non si possono avere due istanze che scrivono contemporaneamente sugli stessi dati senza rischiare corruzione — quindi una sola istanza scrive (attiva), l'altra sta ferma e riceve la replica del disco, pronta a subentrare (standby).
+
+La replica del disco non è un prerequisito tecnico scelto a priori — è una **conseguenza** del fatto che il servizio è stateful: se i dati cambiano e vuoi che il nodo standby possa subentrare, quei cambiamenti devono arrivargli in tempo reale.
 
 ![Active-passive failover](img/active_passive.svg)
 
+**Come recupera:** quando il nodo attivo cade, il nodo di standby viene promosso. Il VIP (IP virtuale) si sposta sul nodo standby e il servizio riparte con gli stessi dati.
+
+**Tempi:** lo spostamento del VIP richiede 2-5 secondi (Keepalived). L'avvio del servizio dipende dal tipo di standby: se il servizio era già in esecuzione in sola lettura (hot standby) bastano 10-30 secondi; se la VM va avviata da zero (cold standby) servono 1-3 minuti.
+
+**Quale storage per il failover:** il nodo di standby deve poter accedere allo stesso disco del nodo attivo. Ci sono tre opzioni:
+
+| Storage | Nodi minimi | Failover automatico | SPOF | Caso d'uso tipico |
+|---------|-------------|---------------------|------|-------------------|
+| DRBD (disco replicato) | 2 | Sì (Pacemaker + DRBD) | No | Caso classico, 2 nodi bastano |
+| Ceph RBD (distribuito) | 3 | Sì (HA Manager Proxmox) | No | Cluster Proxmox in produzione |
+| NAS (NFS/iSCSI) | 2 + NAS | Sì (Pacemaker) | Sì (il NAS) | PMI, budget limitato |
+
+**Uso:** database, servizi stateful dove una sola istanza deve scrivere (MySQL single-master, PostgreSQL primary, file server con lock).
+
 ### 2.3 Active-Active con load balancer
 
-Più istanze servono contemporaneamente il traffico. Un bilanciatore distribuisce le richieste. **Tecnologie:** HAProxy, Nginx, Traefik. **Uso:** web app, API, microservizi. **Requisito fondamentale:** le VM applicative devono essere STATELESS. Lo stato (sessioni, dati, file) viene esternalizzato su un servizio dedicato.
+Il load balancer si usa quando le VM **non modificano dati locali** — servono contenuto statico, elaborano richieste senza scrivere sul proprio disco, o delegano lo stato a servizi esterni. Poiché i dischi delle VM non cambiano, non c'è nulla da replicare: si possono avere quante istanze si vuole, tutte attive contemporaneamente.
+
+Tuttavia "active-active" non significa per forza "senza stato". Significa che **lo stato non è nei dischi delle VM** — ma può esistere ed essere gestito altrove:
+
+| Dove sta lo stato | Chi lo gestisce | Esempio |
+|---|---|---|
+| Da nessuna parte (stateless puro) | Nessuno | Web server statico, API di calcolo |
+| In memoria condivisa | Redis / Memcached | Sessioni utente, cache |
+| Su disco condiviso esterno | DB esterno (MySQL) o filesystem (CephFS, NFS) | Dati applicativi, file upload |
+
+Le VM del load balancer sono **interscambiabili**: se una cade, il LB smette di mandarle traffico e le altre continuano. Nessuna replica disco, nessuna migrazione, nessun disco condiviso tra le VM — lo stato sta altrove.
 
 ![Active-active con load balancer](img/active_active.svg)
 
+**Tecnologie:** HAProxy, Nginx, Traefik. **Uso:** web app, API, microservizi.
+
 ### 2.4 Cluster multi-master (database)
 
-Più istanze del database accettano scritture contemporaneamente e si sincronizzano tra loro con un protocollo interno. **Tecnologie:** Galera Cluster, MySQL Group Replication, PostgreSQL Patroni. **Uso:** database in alta disponibilità che devono sopravvivere alla perdita di un nodo.
+Il multi-master è il caso in cui il servizio che tiene lo stato (il database) è esso stesso distribuito su più nodi, tutti in lettura e scrittura. Non è il disco che si replica — è il DB che replica le transazioni SQL tra le sue istanze tramite un protocollo applicativo interno.
+
+Ogni nodo MySQL in un cluster Galera ha il **proprio disco locale indipendente**. Quando un nodo riceve una scrittura, il protocollo wsrep la propaga a tutti gli altri nodi prima di confermarla al client. La replica è sincrona e applicativa — avviene a livello di transazione SQL, non a livello di blocchi disco.
+
+| Aspetto | Active-passive (2.2) | Multi-master (2.4) |
+|---------|---------------------|--------------------|
+| Chi scrive | Una sola istanza | Tutte le istanze |
+| Replica | A livello disco (DRBD, Ceph) | A livello applicativo (wsrep) |
+| Disco | Condiviso o replicato | Locale e indipendente per ogni nodo |
+| Se un nodo cade | Lo standby subentra | Gli altri continuano, nessun failover |
 
 ![Cluster multi-master Galera](img/multi_master.svg)
+
+**Tecnologie:** Galera Cluster, MySQL Group Replication, PostgreSQL Patroni. **Uso:** database in alta disponibilità che devono sopravvivere alla perdita di un nodo senza interruzione.
 
 ### 2.5 Tassonomia riassuntiva
 
@@ -230,6 +283,27 @@ Più istanze del database accettano scritture contemporaneamente e si sincronizz
      Manuale    Automatica   Con LB    Multi-master
     (restart)  (Keepalived,  (HAProxy,  (Galera,
                Pacemaker)    Nginx)     Patroni)
+```
+
+### 2.6 Il filo logico: cosa guida la scelta
+
+```
+    Il servizio scrive dati sul disco?
+                    │
+              ┌─────┴─────┐
+              NO          SÌ
+              │            │
+    Active-Active      Posso distribuire le
+    con LB             scritture su più nodi?
+    (dischi statici,       │
+     stato altrove)  ┌─────┴─────┐
+                     NO          SÌ
+                     │            │
+               Active-Passive  Multi-master
+               (una scrive,   (tutte scrivono,
+                l'altra        replica SQL
+                replica        interna)
+                il disco)
 ```
 
 [Torna all'indice](#indice)
