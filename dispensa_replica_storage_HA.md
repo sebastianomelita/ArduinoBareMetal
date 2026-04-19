@@ -215,6 +215,22 @@ Un'unica istanza del servizio gira su una sola VM. Se la VM cade, il servizio è
 
 **Uso:** ambienti di sviluppo, servizi non critici, homelab.
 
+#### Caso particolare: nessuna replica ma disco su NAS
+
+Se il disco della VM non è locale ma risiede su un NAS condiviso (NFS o iSCSI), la situazione cambia in modo significativo anche senza alcuna replica del servizio. Il servizio non è replicato — non c'è una seconda istanza pronta a subentrare — ma il disco è **sempre raggiungibile da qualsiasi nodo** del cluster.
+
+Quando il nodo che ospita la VM si guasta, il sistemista può avviare la stessa VM su un nodo sano senza dover ripristinare nulla da backup: il disco è già lì, intatto, con tutti i dati aggiornati all'ultimo istante prima del guasto. Non è un failover automatico, non è HA — è un **riavvio differito e manuale su un nodo diverso**, ma con RPO = 0 (nessun dato perso).
+
+| Aspetto | Disco locale (ZFS) | Disco su NAS |
+|---------|-------------------|--------------|
+| Nodo guasto → dati accessibili? | **NO** — bisogna aspettare riparazione o restore da backup | **SÌ** — il NAS è raggiungibile da altri nodi |
+| Tempo di recupero | Ore - giorni | Minuti (avvio VM su altro nodo) |
+| Dati persi (RPO) | Dipende dal backup (ore - giorni) | **Zero** (disco intatto sul NAS) |
+| Intervento richiesto | Restore da backup | Avvio VM su nodo sano (pochi click in Proxmox) |
+| Automatico? | No | No — serve il sistemista |
+
+Questa è una via di mezzo tra "nessuna protezione" e il failover automatico: non serve replica, non servono due istanze, non serve Ceph o DRBD — basta un NAS. Il limite è che il NAS stesso è un single point of failure e che il recupero resta manuale.
+
 ### 2.2 Active-Passive (failover)
 
 Il failover si usa quando il servizio **scrive dati che cambiano** — tipicamente un database o un filesystem transazionale. Non si possono avere due istanze che scrivono contemporaneamente sugli stessi dati senza rischiare corruzione — quindi una sola istanza scrive (attiva), l'altra sta ferma e riceve la replica del disco, pronta a subentrare (standby).
