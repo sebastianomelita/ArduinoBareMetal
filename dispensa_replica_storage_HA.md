@@ -50,7 +50,14 @@
     - [7.5 Livello 4 — Geo-ridondanza](#75-livello-4--geo-ridondanza-multi-sito)
     - [7.6 Come scegliere](#76-come-scegliere-il-livello-giusto)
     - [7.7 Confronto riassuntivo](#77-confronto-riassuntivo-dei-livelli)
-8. [Riepilogo finale](#riepilogo-finale)
+    - [7.8 Testare l'HA](#78-testare-lha-un-cluster-non-testato-non-funziona)
+8. [Il backup non è una replica](#8-il-backup-non-è-una-replica)
+    - [8.1 La differenza fondamentale](#81-la-differenza-fondamentale)
+    - [8.2 Cosa protegge cosa](#82-cosa-protegge-cosa)
+    - [8.3 La regola 3-2-1](#83-la-regola-3-2-1)
+    - [8.4 Backup in ambiente Proxmox](#84-backup-in-ambiente-proxmox)
+    - [8.5 Replica + backup](#85-replica--backup--protezione-completa)
+9. [Riepilogo finale](#riepilogo-finale)
 
 ---
 
@@ -303,6 +310,14 @@ Come per il failover, anche il load balancer può distribuire il traffico tra VM
 | Disco richiesto | Locale per ogni VM | Locale per ogni VM |
 | Il LB è SPOF? | Sì (gira sullo stesso nodo) | No (se ridondato con VIP) |
 | Costo | Basso (1 server) | Medio (2+ server) |
+
+#### Come ridondare il load balancer
+
+Un errore comune è mettere un singolo HAProxy davanti a 3 VM applicative ridondanti: se HAProxy cade, tutto il servizio è fermo nonostante le VM siano sane. Il load balancer stesso diventa il single point of failure.
+
+La soluzione è avere due istanze HAProxy (su due nodi diversi) con Keepalived che gestisce un VIP (IP virtuale) condiviso. I due HAProxy si scambiano heartbeat: se l'attivo non risponde, il VIP si sposta sullo standby in 2-5 secondi. Gli utenti puntano sempre al VIP e non si accorgono dello spostamento.
+
+![LB singolo vs LB ridondato](img/lb_ridondato.svg)
 
 ### 2.4 Cluster multi-master (database)
 
@@ -672,6 +687,93 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
 | 3 — Cluster HA | 3+ | Ceph RBD | 1-3 minuti | Alto | Alta |
 | 4 — Geo-ridondanza | 6+ | Ceph + replica inter-sito | ~0 | Molto alto | Molto alta |
 
+### 7.8 Testare l'HA: un cluster non testato non funziona
+
+Un cluster HA configurato ma mai testato è un cluster che probabilmente non funzionerà al momento del bisogno. Configurazioni errate, permessi mancanti, timeout troppo lunghi, fencing non configurato — tutti problemi che emergono solo quando si simula un guasto reale.
+
+**Test minimi da eseguire prima di considerare l'HA operativa:**
+
+| Test | Come si fa | Cosa si verifica |
+|------|-----------|-----------------|
+| Guasto nodo | Spegnere un nodo bruscamente (power off, non shutdown) | Le VM ripartono sugli altri nodi entro il tempo previsto |
+| Guasto VM | Killare il processo della VM (kill -9) | Il watchdog o HA Manager la riavvia |
+| Rete Corosync | Staccare il cavo della rete di heartbeat | Il cluster rileva il nodo fuori quorum e fa fencing |
+| Rete Ceph | Staccare il cavo della rete storage | I dati restano accessibili tramite gli altri OSD |
+| Split-brain | Isolare un nodo da Corosync ma non dalla rete dati | Il fencing impedisce al nodo isolato di scrivere |
+
+**Ogni test va eseguito in orario controllato**, con il team pronto a intervenire, e va ripetuto dopo ogni modifica alla configurazione del cluster. Il risultato va documentato: tempo di rilevamento, tempo di fencing, tempo di riavvio VM, eventuali errori.
+
+**La regola:** se non l'hai testato, non sai se funziona. Se non sai se funziona, non è HA — è speranza.
+
+[Torna all'indice](#indice)
+
+---
+
+## 8. Il backup non è una replica
+
+Replica e backup proteggono da guasti diversi. Confonderli è uno degli errori più comuni e più pericolosi nella gestione di un'infrastruttura.
+
+### 8.1 La differenza fondamentale
+
+La **replica** duplica i dati in tempo reale (o quasi) su un altro disco o nodo. Protegge dal guasto hardware: se un disco o un nodo cade, i dati sono già altrove. Ma la replica è "cieca" — replica tutto, comprese le operazioni distruttive. Se un amministratore esegue `DROP TABLE clienti`, Ceph replica diligentemente la cancellazione su tutti i nodi. Se un ransomware cifra i file, la replica cifra anche le copie.
+
+Il **backup** è una copia dei dati congelata in un momento preciso, conservata separatamente e non modificabile dal sistema in produzione. Protegge dagli errori logici: cancellazioni accidentali, corruzione dati da bug applicativo, ransomware, aggiornamenti falliti.
+
+### 8.2 Cosa protegge cosa
+
+| Evento | La replica protegge? | Il backup protegge? |
+|--------|---------------------|---------------------|
+| Guasto disco fisico | **SÌ** | No (il backup è altrove, non serve) |
+| Guasto nodo intero | **SÌ** | No (la replica basta) |
+| DROP TABLE accidentale | **NO** — la cancellazione viene replicata | **SÌ** — si ripristina dal backup |
+| Ransomware che cifra i file | **NO** — la cifratura viene replicata | **SÌ** — se il backup è offline/immutabile |
+| Bug applicativo che corrompe i dati | **NO** — la corruzione viene replicata | **SÌ** — si torna a uno stato precedente |
+| Aggiornamento del DB fallito | **NO** — lo stato corrotto è replicato | **SÌ** — si ripristina il pre-aggiornamento |
+| Errore umano (rm -rf /) | **NO** — la cancellazione è replicata | **SÌ** — se il backup è recente |
+
+### 8.3 La regola 3-2-1
+
+La regola 3-2-1 è lo standard minimo per una strategia di backup sicura:
+
+- **3** copie dei dati (l'originale + 2 backup)
+- **2** supporti diversi (es. disco locale + storage remoto)
+- **1** copia offsite (in un luogo fisico diverso)
+
+### 8.4 Backup in ambiente Proxmox
+
+Proxmox offre **Proxmox Backup Server (PBS)** come strumento dedicato. PBS fa backup incrementali delle VM (solo i blocchi cambiati), con deduplicazione e compressione, e può conservare più punti di ripristino. Il backup può essere schedulato (es. ogni notte) e la retention configurata (es. tenere gli ultimi 7 giornalieri, 4 settimanali, 12 mensili).
+
+| Aspetto | Snapshot ZFS | Backup PBS |
+|---------|-------------|------------|
+| Dove sta la copia | Sullo stesso disco/nodo | Su un server dedicato separato |
+| Protegge da guasto disco | **NO** | **SÌ** |
+| Protegge da guasto nodo | **NO** | **SÌ** |
+| Protegge da errore logico | **SÌ** (se lo snapshot è precedente) | **SÌ** |
+| Velocità di ripristino | Istantaneo (rollback) | Minuti-ore (dipende dalla dimensione) |
+| Uso tipico | Punto di ripristino rapido prima di un aggiornamento | Protezione completa, offsite |
+
+### 8.5 Replica + backup = protezione completa
+
+La replica e il backup non sono alternative — sono complementari. La replica garantisce continuità operativa (il servizio non si ferma), il backup garantisce recuperabilità (posso tornare a uno stato precedente).
+
+```
+    Da cosa mi devo proteggere?
+                │
+         ┌──────┴──────┐
+    Guasto            Errore
+    hardware          logico
+         │                │
+    Replica           Backup
+    (Ceph, DRBD,      (PBS, snapshot
+     ZFS mirror)       offsite)
+         │                │
+         └──────┬─────────┘
+                │
+       Servono ENTRAMBI
+       per una protezione
+       completa
+```
+
 [Torna all'indice](#indice)
 
 ---
@@ -689,6 +791,8 @@ Le due cose sono **indipendenti**: puoi avere replica disco senza replica serviz
 **MIGRAZIONE** è il meccanismo che collega il tutto: senza storage condiviso non c'è migrazione live, senza migrazione non c'è HA automatico.
 
 **LIVELLO DI HA** va scelto in base al costo del downtime: non tutti i servizi hanno bisogno di un cluster a 3 nodi, e non tutti i cluster a 3 nodi hanno bisogno di geo-ridondanza.
+
+**BACKUP** non è un'alternativa alla replica — è un complemento. La replica protegge dal guasto hardware, il backup protegge dall'errore logico. Servono entrambi.
 
 ---
 
