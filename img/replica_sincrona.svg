@@ -1,0 +1,29 @@
+<svg width="100%" viewBox="0 0 680 260" xmlns="http://www.w3.org/2000/svg">
+<style>
+  text { font-family: system-ui, -apple-system, sans-serif; }
+  .th { font-size: 14px; font-weight: 500; }
+  .ts { font-size: 12px; font-weight: 400; }
+</style>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<rect x="60" y="40" width="220" height="180" rx="16" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th" x="170" y="72" text-anchor="middle" fill="#085041">Nodo A (attivo)</text>
+
+<rect x="100" y="100" width="140" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th" x="170" y="120" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Dato v5</text>
+<text class="ts" x="170" y="140" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Confermato</text>
+
+<rect x="400" y="40" width="220" height="180" rx="16" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th" x="510" y="72" text-anchor="middle" fill="#085041">Nodo B (standby)</text>
+
+<rect x="440" y="100" width="140" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th" x="510" y="120" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Dato v5</text>
+<text class="ts" x="510" y="140" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Confermato</text>
+
+<text class="ts" x="340" y="108" text-anchor="middle" fill="#534AB7">Scrittura</text>
+<line x1="280" y1="118" x2="440" y2="118" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arrow)"/>
+<text class="ts" x="340" y="148" text-anchor="middle" fill="#534AB7">Conferma</text>
+<line x1="440" y1="140" x2="280" y2="140" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<text class="ts" x="340" y="240" text-anchor="middle" fill="#5F5E5A">I due nodi hanno SEMPRE lo stesso contenuto</text>
+</svg>

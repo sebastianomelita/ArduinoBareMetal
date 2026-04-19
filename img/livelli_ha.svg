@@ -1,0 +1,38 @@
+<svg width="100%" viewBox="0 0 680 460" xmlns="http://www.w3.org/2000/svg">
+<style>
+  text { font-family: system-ui, -apple-system, sans-serif; }
+  .th { font-size: 14px; font-weight: 500; }
+  .ts { font-size: 12px; font-weight: 400; }
+</style>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<text class="th" x="340" y="28" text-anchor="middle" fill="#2C2C2A">Livelli di alta disponibilità</text>
+
+<rect x="80" y="370" width="520" height="56" rx="8" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+<text class="th" x="340" y="392" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">Livello 0 — Backup manuale</text>
+<text class="ts" x="340" y="412" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">Nodo singolo, ZFS locale, backup offsite. Downtime: ore</text>
+
+<rect x="110" y="300" width="460" height="56" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="th" x="340" y="322" text-anchor="middle" dominant-baseline="central" fill="#633806">Livello 1 — Restart automatico locale</text>
+<text class="ts" x="340" y="342" text-anchor="middle" dominant-baseline="central" fill="#854F0B">Watchdog + systemd + snapshot ZFS. Downtime: minuti</text>
+
+<rect x="140" y="230" width="400" height="56" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text class="th" x="340" y="252" text-anchor="middle" dominant-baseline="central" fill="#712B13">Livello 2 — LB + VM multiple (nodo singolo)</text>
+<text class="ts" x="340" y="272" text-anchor="middle" dominant-baseline="central" fill="#993C1D">Rolling update, isolamento guasti VM. Non protegge HW</text>
+
+<rect x="170" y="160" width="340" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th" x="340" y="182" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Livello 3 — Cluster multi-nodo</text>
+<text class="ts" x="340" y="202" text-anchor="middle" dominant-baseline="central" fill="#534AB7">3 nodi + Ceph RBD + HA Proxmox. Downtime: 1-3 min</text>
+
+<rect x="200" y="90" width="280" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th" x="340" y="112" text-anchor="middle" dominant-baseline="central" fill="#085041">Livello 4 — Geo-ridondanza</text>
+<text class="ts" x="340" y="132" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Multi-sito + replica asincrona. Downtime: ~0</text>
+
+<text class="ts" x="46" y="120" text-anchor="middle" fill="#5F5E5A">HA reale</text>
+<line x1="46" y1="130" x2="46" y2="400" stroke="#888780" stroke-width="1" marker-end="url(#arrow)"/>
+<text class="ts" x="46" y="420" text-anchor="middle" fill="#5F5E5A">HA blanda</text>
+
+<text class="ts" x="634" y="120" text-anchor="middle" fill="#5F5E5A">Costo alto</text>
+<line x1="634" y1="400" x2="634" y2="130" stroke="#888780" stroke-width="1" marker-end="url(#arrow)"/>
+<text class="ts" x="634" y="420" text-anchor="middle" fill="#5F5E5A">Costo basso</text>
+</svg>

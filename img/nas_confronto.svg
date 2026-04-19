@@ -1,0 +1,72 @@
+<svg width="100%" viewBox="0 0 680 400" xmlns="http://www.w3.org/2000/svg">
+<style>
+  text { font-family: system-ui, -apple-system, sans-serif; }
+  .th { font-size: 14px; font-weight: 500; }
+  .ts { font-size: 12px; font-weight: 400; }
+</style>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<text class="th" x="165" y="24" text-anchor="middle" fill="#2C2C2A">NAS centralizzato</text>
+
+<rect x="80" y="40" width="60" height="36" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+<text class="ts" x="110" y="61" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">VM 1</text>
+<rect x="155" y="40" width="60" height="36" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+<text class="ts" x="185" y="61" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">VM 2</text>
+<rect x="230" y="40" width="60" height="36" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+<text class="ts" x="260" y="61" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">VM 3</text>
+
+<line x1="110" y1="76" x2="165" y2="140" stroke="#5F5E5A" stroke-width="1" marker-end="url(#arrow)"/>
+<line x1="185" y1="76" x2="185" y2="140" stroke="#5F5E5A" stroke-width="1" marker-end="url(#arrow)"/>
+<line x1="260" y1="76" x2="205" y2="140" stroke="#5F5E5A" stroke-width="1" marker-end="url(#arrow)"/>
+
+<rect x="105" y="140" width="160" height="100" rx="12" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text class="th" x="185" y="168" text-anchor="middle" dominant-baseline="central" fill="#712B13">NAS centrale</text>
+<text class="ts" x="185" y="188" text-anchor="middle" dominant-baseline="central" fill="#993C1D">Synology / TrueNAS</text>
+
+<rect x="125" y="210" width="50" height="20" rx="4" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="ts" x="150" y="223" text-anchor="middle" dominant-baseline="central" fill="#633806">HDD</text>
+<rect x="195" y="210" width="50" height="20" rx="4" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="ts" x="220" y="223" text-anchor="middle" dominant-baseline="central" fill="#633806">HDD</text>
+
+<rect x="115" y="270" width="140" height="34" rx="8" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text class="th" x="185" y="290" text-anchor="middle" dominant-baseline="central" fill="#791F1F">Single point of failure</text>
+
+<rect x="338" y="30" width="1" height="350" fill="#D3D1C7" opacity="0.5"/>
+
+<text class="th" x="510" y="24" text-anchor="middle" fill="#2C2C2A">NAS distribuito</text>
+
+<rect x="405" y="40" width="60" height="36" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+<text class="ts" x="435" y="61" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">VM 1</text>
+<rect x="490" y="40" width="60" height="36" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+<text class="ts" x="520" y="61" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">VM 2</text>
+<rect x="575" y="40" width="60" height="36" rx="6" fill="#F1EFE8" stroke="#888780" stroke-width="0.5"/>
+<text class="ts" x="605" y="61" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">VM 3</text>
+
+<line x1="435" y1="76" x2="435" y2="140" stroke="#5F5E5A" stroke-width="1" marker-end="url(#arrow)"/>
+<line x1="520" y1="76" x2="520" y2="140" stroke="#5F5E5A" stroke-width="1" marker-end="url(#arrow)"/>
+<line x1="605" y1="76" x2="605" y2="140" stroke="#5F5E5A" stroke-width="1" marker-end="url(#arrow)"/>
+
+<rect x="395" y="140" width="90" height="100" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th" x="440" y="168" text-anchor="middle" dominant-baseline="central" fill="#085041">Nodo 1</text>
+<text class="ts" x="440" y="188" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">OSD</text>
+
+<rect x="495" y="140" width="90" height="100" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th" x="540" y="168" text-anchor="middle" dominant-baseline="central" fill="#085041">Nodo 2</text>
+<text class="ts" x="540" y="188" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">OSD</text>
+
+<rect x="595" y="140" width="60" height="100" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th" x="625" y="168" text-anchor="middle" dominant-baseline="central" fill="#085041">Nodo 3</text>
+<text class="ts" x="625" y="188" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">OSD</text>
+
+<line x1="485" y1="200" x2="495" y2="200" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="495" y1="210" x2="485" y2="210" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="585" y1="200" x2="595" y2="200" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line x1="595" y1="210" x2="585" y2="210" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<rect x="425" y="270" width="180" height="34" rx="8" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+<text class="th" x="515" y="290" text-anchor="middle" dominant-baseline="central" fill="#27500A">Nessun SPOF</text>
+
+<text class="ts" x="185" y="340" text-anchor="middle" fill="#5F5E5A">Se cade, tutto fermo</text>
+<text class="ts" x="515" y="340" text-anchor="middle" fill="#5F5E5A">Se un nodo cade, i dati</text>
+<text class="ts" x="515" y="358" text-anchor="middle" fill="#5F5E5A">restano accessibili</text>
+</svg>
