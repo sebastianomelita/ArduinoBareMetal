@@ -420,6 +420,8 @@ La replica sincronizzata del disco serve quando una VM deve poter ripartire su u
 
 ## 4. NAS centralizzato vs NAS distribuito
 
+Nelle sezioni precedenti abbiamo visto che la replica del servizio e la replica del disco spesso richiedono uno **storage accessibile da più nodi** — che sia per il failover (il nodo standby deve raggiungere lo stesso disco), per il load balancer (le VM devono condividere file upload o sessioni), o per la migrazione delle VM. La domanda diventa: dove metto fisicamente questo storage? Le due opzioni fondamentali sono il NAS centralizzato e lo storage distribuito.
+
 ### 4.1 NAS centralizzato
 
 Un singolo server espone storage via rete (NFS, SMB/CIFS, iSCSI). **Vantaggi:** semplice da gestire, basso costo, ideale per PMI e homelab. **Limiti:** se il NAS cade, tutti i client perdono accesso allo storage. Scalabilità limitata a quanto entra nel singolo chassis.
@@ -449,6 +451,12 @@ Lo storage è distribuito su più nodi. Non esiste un singolo punto di guasto. *
 ---
 
 ## 5. CephFS: quando conviene
+
+### Cos'è Ceph
+
+**Ceph** è una piattaforma di storage distribuito open source, progettata per eliminare ogni single point of failure. Invece di un singolo NAS, Ceph distribuisce i dati su un cluster di nodi (tipicamente 3 o più), replicandoli automaticamente. Se un disco o un nodo cade, il cluster si auto-ripara senza intervento umano.
+
+Ceph non è un singolo servizio ma una piattaforma che espone tre interfacce diverse sullo stesso cluster fisico: blocchi (RBD), filesystem (CephFS) e oggetti S3 (RGW). Nella sezione 4 abbiamo visto la differenza tra NAS centralizzato e distribuito — Ceph è l'implementazione più diffusa di storage distribuito nel mondo della virtualizzazione, ed è integrato nativamente in Proxmox.
 
 CephFS è il filesystem condiviso di Ceph. Non è un prodotto a sé ma un'interfaccia costruita sopra un cluster Ceph esistente, accanto a RBD (blocchi) e RGW (oggetti S3).
 
@@ -510,6 +518,12 @@ CephFS è il filesystem condiviso di Ceph. Non è un prodotto a sé ma un'interf
 ---
 
 ## 6. Migrazione delle VM in Proxmox
+
+### Cos'è Proxmox
+
+**Proxmox VE (Virtual Environment)** è una piattaforma di virtualizzazione open source basata su Debian Linux. Permette di creare e gestire macchine virtuali (KVM) e container (LXC) tramite un'interfaccia web. Proxmox può funzionare su un nodo singolo (come un hypervisor tradizionale) o su un cluster di più nodi, con supporto nativo per Ceph come storage distribuito e per l'alta disponibilità automatica delle VM.
+
+In questa dispensa usiamo Proxmox come esempio concreto perché è la piattaforma open source più diffusa per la virtualizzazione in ambito didattico e nelle PMI, e perché integra nativamente tutti i concetti visti finora: storage locale (ZFS), storage distribuito (Ceph), clustering (Corosync), HA automatico, e live migration. I concetti però sono validi anche per altre piattaforme come VMware vSphere o oVirt.
 
 La migrazione è lo spostamento di una VM da un nodo fisico a un altro all'interno dello stesso cluster Proxmox. Il suo ruolo nell'alta disponibilità è centrale.
 
