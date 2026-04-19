@@ -34,14 +34,16 @@
     - [5.3 CephFS vs NFS](#53-schema-decisionale-cephfs-vs-nfs)
     - [5.4 CephFS vs GlusterFS](#54-cephfs-vs-glusterfs)
 6. [Migrazione delle VM in Proxmox](#6-migrazione-delle-vm-in-proxmox)
-    - [6.1 Tipi di migrazione](#61-tipi-di-migrazione)
-    - [6.2 Live migration e storage](#62-perché-la-live-migration-richiede-storage-condiviso)
-    - [6.3 Ripristino manuale (NAS)](#63-procedura-di-ripristino-manuale-nas-centralizzato)
-    - [6.4 Ripristino automatico (Ceph)](#64-procedura-di-ripristino-automatico-ceph-rbd--proxmox-ha)
-    - [6.5 Confronto procedure](#65-confronto-tra-le-due-procedure)
-    - [6.6 Automatica vs manuale](#66-quando-la-migrazione-è-automatica-e-quando-manuale)
-    - [6.7 Prerequisiti HA](#67-prerequisiti-per-la-migrazione-automatica-ha)
-    - [6.8 Failover di un nodo](#68-cosa-succede-quando-un-nodo-cade)
+    - [6.1 Migrazione e load balancer](#61-migrazione-e-load-balancer-due-meccanismi-indipendenti)
+    - [6.2 Migrazione HA vs DRBD](#62-migrazione-ha-vs-drbd-due-modi-di-fare-failover)
+    - [6.3 Tipi di migrazione](#63-tipi-di-migrazione)
+    - [6.4 Live migration e storage](#64-perché-la-live-migration-richiede-storage-condiviso)
+    - [6.5 Ripristino manuale (NAS)](#65-procedura-di-ripristino-manuale-nas-centralizzato)
+    - [6.6 Ripristino automatico (Ceph)](#66-procedura-di-ripristino-automatico-ceph-rbd--proxmox-ha)
+    - [6.7 Confronto procedure](#67-confronto-tra-le-due-procedure)
+    - [6.8 Automatica vs manuale](#68-quando-la-migrazione-è-automatica-e-quando-manuale)
+    - [6.9 Prerequisiti HA](#69-prerequisiti-per-la-migrazione-automatica-ha)
+    - [6.10 Failover di un nodo](#610-cosa-succede-quando-un-nodo-cade)
 7. [Livelli di HA: dalla protezione blanda alla HA reale](#7-livelli-di-ha-dalla-protezione-blanda-alla-ha-reale)
     - [7.1 Livello 0 — Backup](#71-livello-0--backup-manuale-nessuna-ha)
     - [7.2 Livello 1 — Restart locale](#72-livello-1--restart-automatico-locale)
@@ -527,7 +529,53 @@ In questa dispensa usiamo Proxmox come esempio concreto perché è la piattaform
 
 La migrazione è lo spostamento di una VM da un nodo fisico a un altro all'interno dello stesso cluster Proxmox. Il suo ruolo nell'alta disponibilità è centrale.
 
-### 6.1 Tipi di migrazione
+### 6.1 Migrazione e load balancer: due meccanismi indipendenti
+
+Un punto che genera spesso confusione: la migrazione automatica (HA) e il load balancer **non sono alternative** e **non hanno nulla a che fare l'uno con l'altro**. Risolvono problemi diversi e possono coesistere nella stessa infrastruttura.
+
+La migrazione automatica **non coinvolge nessun load balancer**. Quando un nodo cade, Proxmox HA riavvia la VM su un altro nodo — la VM mantiene il suo IP, e i client si collegano allo stesso indirizzo di prima. Non c'è nessun bilanciatore coinvolto.
+
+```
+PRIMA del guasto:
+
+  Client → IP 10.0.0.50 → [ VM MySQL su Nodo 1 ]
+
+DOPO il guasto (HA interviene, ~2 min):
+
+  Client → IP 10.0.0.50 → [ VM MySQL su Nodo 2 ]
+
+  Stesso IP, stessa VM, nodo fisico diverso.
+  Nessun LB coinvolto.
+```
+
+Il load balancer serve per distribuire traffico su più VM identiche. L'HA serve per spostare una VM che non può essere duplicata. Nella stessa infrastruttura convivono naturalmente:
+
+| Componente | Gestito da | Serve per |
+|---|---|---|
+| 3 VM web identiche | Load balancer (HAProxy) | Distribuire traffico, zero downtime |
+| 1 VM database | HA Proxmox (migrazione automatica) | Riavviarla su un altro nodo se il nodo cade |
+
+### 6.2 Migrazione HA vs DRBD: due modi di fare failover
+
+Per proteggere un servizio stateful (un database, un file server) che non può essere duplicato, esistono due approcci alternativi. Entrambi raggiungono lo stesso obiettivo — il servizio riparte su un altro nodo se il nodo attivo cade — ma con meccanismi diversi.
+
+**Proxmox HA + Ceph RBD:** il disco è già accessibile da tutti i nodi (Ceph lo replica su tutti). Quando il nodo cade, Proxmox HA riavvia l'**intera VM** su un altro nodo. È l'hypervisor che gestisce tutto — il servizio dentro la VM non sa nemmeno che è successo qualcosa.
+
+**DRBD + Pacemaker:** il disco è replicato tra due nodi specifici tramite DRBD. Quando il nodo attivo cade, Pacemaker promuove il nodo standby: monta il disco DRBD in modalità primaria e avvia il **singolo servizio** (il processo MySQL, non un'intera VM). È il cluster manager del sistema operativo che gestisce tutto, senza bisogno di un hypervisor.
+
+| Aspetto | Proxmox HA + Ceph | DRBD + Pacemaker |
+|---------|-------------------|------------------|
+| Cosa si sposta | L'intera VM | Il singolo servizio (processo) |
+| Cosa replica il disco | Ceph (su tutti i nodi) | DRBD (tra 2 nodi specifici) |
+| Chi decide il failover | Proxmox HA Manager | Pacemaker/Corosync |
+| Nodi minimi | 3 | 2 |
+| Serve hypervisor | Sì (Proxmox) | No (può girare su bare metal) |
+| Complessità | Alta (Ceph + Proxmox) | Media (DRBD + Pacemaker) |
+| Caso d'uso tipico | Cluster virtualizzato con molte VM | 2 server dedicati a un singolo servizio critico |
+
+DRBD + Pacemaker è spesso la scelta in ambienti senza virtualizzazione — due server fisici dedicati a MySQL o PostgreSQL. Proxmox HA è la scelta quando hai già un cluster virtualizzato con molte VM diverse da proteggere.
+
+### 6.3 Tipi di migrazione
 
 | Aspetto | Live (a caldo) | Offline (a freddo) |
 |---------|----------------|--------------------|
@@ -537,7 +585,7 @@ La migrazione è lo spostamento di una VM da un nodo fisico a un altro all'inter
 | Tempo di migrazione | Secondi | Minuti/ore (dipende dalla dimensione) |
 | Uso tipico | Manutenzione pianificata, bilanciamento carico, HA | Spostamento tra cluster, cambio storage |
 
-### 6.2 Perché la live migration richiede storage condiviso
+### 6.4 Perché la live migration richiede storage condiviso
 
 La condizione necessaria per la live migration è una sola: il disco della VM deve essere raggiungibile da entrambi i nodi **prima** che la migrazione inizi. Questo si può ottenere in due modi diversi.
 
@@ -557,7 +605,7 @@ La condizione necessaria per la live migration è una sola: il disco della VM de
 
 ![Live migration: storage condiviso vs locale](img/live_migration.svg)
 
-### 6.3 Procedura di ripristino manuale (NAS centralizzato)
+### 6.5 Procedura di ripristino manuale (NAS centralizzato)
 
 Quando una VM diventa indisponibile (per corruzione della VM stessa o per guasto del nodo che la ospita) e lo storage è su un NAS centralizzato, il disco della VM è intatto e accessibile da qualsiasi nodo del cluster. Tuttavia il ripristino richiede l'intervento manuale del sistemista.
 
@@ -567,7 +615,7 @@ La procedura è la seguente: il sistemista accede alla GUI di Proxmox, individua
 
 Il vantaggio è che non si perdono dati (RPO = 0 perché il disco è lo stesso). Lo svantaggio è che il downtime dipende dalla rapidità con cui il sistemista interviene — possono essere minuti se è al posto di lavoro, ore se è notte o weekend.
 
-### 6.4 Procedura di ripristino automatico (Ceph RBD + Proxmox HA)
+### 6.6 Procedura di ripristino automatico (Ceph RBD + Proxmox HA)
 
 Quando lo storage è su Ceph RBD e le VM sono configurate come risorse HA, l'intero processo avviene senza intervento umano. La sequenza è gestita da tre componenti che lavorano in cascata: Corosync (rileva il guasto), il meccanismo di fencing (isola il nodo guasto), e l'HA Manager (riavvia le VM altrove).
 
@@ -575,7 +623,7 @@ Quando lo storage è su Ceph RBD e le VM sono configurate come risorse HA, l'int
 
 La differenza fondamentale rispetto al NAS è che qui nessuno deve intervenire: il cluster decide autonomamente, isola il nodo guasto per prevenire split-brain, e riavvia le VM sui nodi sani. Il tempo totale è circa 2 minuti.
 
-### 6.5 Confronto tra le due procedure
+### 6.7 Confronto tra le due procedure
 
 | Aspetto | NAS centralizzato (manuale) | Ceph RBD + HA (automatico) |
 |---------|---------------------------|---------------------------|
@@ -587,7 +635,7 @@ La differenza fondamentale rispetto al NAS è che qui nessuno deve intervenire: 
 | Funziona di notte/weekend | Solo se c'è reperibilità | Sempre |
 | SPOF residuo | Il NAS stesso | Nessuno |
 
-### 6.6 Quando la migrazione è automatica e quando manuale
+### 6.8 Quando la migrazione è automatica e quando manuale
 
 | Scenario | Tipo | Cosa succede |
 |----------|------|-------------|
@@ -596,11 +644,11 @@ La differenza fondamentale rispetto al NAS è che qui nessuno deve intervenire: 
 | Bilanciamento carico tra nodi | **MANUALE** | L'amministratore sposta VM per distribuire il carico |
 | Nodo in reboot imprevisto | **AUTOMATICA** | Proxmox HA rileva il nodo fuori dal quorum e avvia le VM altrove |
 
-### 6.7 Prerequisiti per la migrazione automatica (HA)
+### 6.9 Prerequisiti per la migrazione automatica (HA)
 
 Per l'HA automatico in Proxmox servono: minimo 3 nodi nel cluster per il quorum (oppure 2 nodi + 1 QDevice esterno); storage condiviso (Ceph RBD, NFS, iSCSI); VM configurata come "HA resource"; rete affidabile tra i nodi con rete dedicata per Corosync e per Ceph. Se manca anche solo uno di questi requisiti, la migrazione non sarà automatica.
 
-### 6.8 Cosa succede quando un nodo cade
+### 6.10 Cosa succede quando un nodo cade
 
 ![Sequenza HA failover Proxmox](img/ha_failover.svg)
 
