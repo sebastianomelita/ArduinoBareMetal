@@ -237,6 +237,22 @@ La replica del disco non è un prerequisito tecnico scelto a priori — è una *
 
 **Uso:** database, servizi stateful dove una sola istanza deve scrivere (MySQL single-master, PostgreSQL primary, file server con lock).
 
+#### Failover sullo stesso nodo vs su nodi diversi
+
+Il failover può essere realizzato in due modi, con livelli di protezione molto diversi.
+
+**Failover sullo stesso nodo fisico.** Due VM (o due container) sulla stessa macchina: se la VM attiva crasha, la standby subentra. Protegge dal guasto software (crash del processo, corruzione della VM) ma NON dal guasto hardware — se il nodo cade, cadono entrambe. Il disco può essere locale (ZFS) perché entrambe le VM ci accedono dalla stessa macchina. È un'HA "blanda" ma semplice e a costo zero.
+
+**Failover su nodi diversi.** La VM attiva è su un nodo, la standby su un altro nodo fisico. Se il nodo intero cade, la standby sull'altro nodo subentra. Protegge anche dal guasto hardware. Ma qui il disco DEVE essere replicato o condiviso (DRBD, Ceph, NAS) — perché i due nodi non condividono lo storage locale.
+
+| Aspetto | Stesso nodo | Nodi diversi |
+|---------|-------------|--------------|
+| Protegge da guasto VM/software | **SÌ** | **SÌ** |
+| Protegge da guasto nodo/hardware | **NO** | **SÌ** |
+| Disco richiesto | Locale (ZFS) basta | Replicato o condiviso (DRBD, Ceph, NAS) |
+| Costo | Basso (1 server) | Alto (2+ server) |
+| Complessità | Bassa | Media-alta |
+
 ### 2.3 Active-Active con load balancer
 
 Il load balancer si usa quando le VM **non modificano dati locali** — servono contenuto statico, elaborano richieste senza scrivere sul proprio disco, o delegano lo stato a servizi esterni. Poiché i dischi delle VM non cambiano, non c'è nulla da replicare: si possono avere quante istanze si vuole, tutte attive contemporaneamente.
@@ -254,6 +270,23 @@ Le VM del load balancer sono **interscambiabili**: se una cade, il LB smette di 
 ![Active-active con load balancer](img/active_active.svg)
 
 **Tecnologie:** HAProxy, Nginx, Traefik. **Uso:** web app, API, microservizi.
+
+#### Load balancer sullo stesso nodo vs su nodi diversi
+
+Come per il failover, anche il load balancer può distribuire il traffico tra VM sullo stesso nodo o su nodi diversi, con conseguenze diverse.
+
+**LB con VM sullo stesso nodo fisico.** Tutte le VM girano sulla stessa macchina. È utile per isolare i guasti software tra VM e per fare rolling update senza downtime applicativo — si aggiorna una VM alla volta mentre le altre continuano a servire. Ma se il nodo fisico cade, tutte le VM si fermano insieme. Non serve disco replicato né condiviso.
+
+**LB con VM su nodi diversi.** Le VM sono distribuite su più macchine fisiche. Se un nodo cade, le VM sugli altri nodi continuano a servire — il LB smette di inviare traffico al nodo guasto. È HA reale. Il reverse proxy stesso va ridondato (due istanze HAProxy con Keepalived e VIP) per non diventare a sua volta un single point of failure.
+
+| Aspetto | Stesso nodo | Nodi diversi |
+|---------|-------------|--------------|
+| Protegge da guasto VM/software | **SÌ** | **SÌ** |
+| Protegge da guasto nodo/hardware | **NO** | **SÌ** |
+| Rolling update senza downtime | **SÌ** | **SÌ** |
+| Disco richiesto | Locale per ogni VM | Locale per ogni VM |
+| Il LB è SPOF? | Sì (gira sullo stesso nodo) | No (se ridondato con VIP) |
+| Costo | Basso (1 server) | Medio (2+ server) |
 
 ### 2.4 Cluster multi-master (database)
 
