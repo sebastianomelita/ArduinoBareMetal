@@ -12,6 +12,7 @@
     - [1.2 Replica sincrona di rete](#12-replica-sincrona-di-rete-tra-nodi)
     - [1.3 Replica asincrona di rete](#13-replica-asincrona-di-rete-tra-nodi)
     - [1.4 Tassonomia riassuntiva](#14-tassonomia-riassuntiva)
+    - [1.5 Quando serve e quale tipo](#15-quando-serve-la-replica-del-disco-e-quale-tipo)
 2. [Tipi di replica del servizio](#2-tipi-di-replica-del-servizio)
     - [2.1 Nessuna replica](#21-nessuna-replica-single-instance)
     - [2.2 Active-Passive](#22-active-passive-failover)
@@ -159,6 +160,34 @@ La scrittura viene confermata subito sul nodo primario. La copia remota avviene 
     hardware  mirror  (DRBD,    (ZFS send,
     (mdadm)  (RAIDZ)   Ceph)     rsync)
 ```
+
+### 1.5 Quando serve la replica del disco e quale tipo
+
+La replica del disco serve in due scenari fondamentali, entrambi legati a un guasto hardware.
+
+**Guasto di un disco fisico (protezione locale).** Il disco si rompe, i dati devono sopravvivere su un altro disco nella stessa macchina. Il sistema operativo e le applicazioni non si accorgono di nulla — la replica avviene sotto di loro, a livello di blocchi. Tecnologie: RAID hardware, RAID software (mdadm), ZFS mirror/RAIDZ. Esempi tipici: disco di un database su nodo singolo, disco di un file server, disco di sistema di un hypervisor.
+
+**Guasto di un nodo intero (protezione di rete).** Il nodo cade per un problema che non riguarda il singolo disco (alimentatore, scheda madre, incendio, blackout). I dati devono essere già presenti su un altro nodo fisico, pronto a subentrare. Tecnologie: Ceph RBD, DRBD. Esempi tipici: disco di una VM in cluster HA Proxmox, volume persistente di un nodo Kubernetes, replica di disaster recovery su un sito remoto.
+
+#### Sincrona vs asincrona: quando serve quale
+
+La differenza tra replica sincrona e asincrona si riduce a una sola domanda: **posso permettermi di perdere le ultime scritture?**
+
+La replica **sincrona** serve quando i dati sono **transazionali**, cioè ogni singola scrittura ha valore e non è ricostruibile. Se perdo un ordine, una transazione bancaria, o un commit su un database in produzione, quel dato è perso per sempre. La replica sincrona garantisce RPO = 0 (nessuna perdita), al costo di una latenza aggiuntiva su ogni scrittura.
+
+La replica **asincrona** basta quando i dati sono **riacquisibili o tollerabili da perdere**. Il nodo primario conferma la scrittura immediatamente; la copia remota avviene in background, con un ritardo. Se il nodo primario cade prima che la copia sia completata, le ultime scritture vanno perse (RPO > 0).
+
+| Dato | Tipo | Perché |
+|------|------|--------|
+| Transazioni bancarie | **Sincrona** | Ogni operazione è denaro reale, non ricostruibile |
+| Disco VM in cluster HA | **Sincrona** | La VM deve ripartire con dati identici su un altro nodo |
+| DB e-commerce (ordini, pagamenti) | **Sincrona** | Un ordine perso è un cliente perso |
+| Backup offsite giornaliero | **Asincrona** | Si accetta di perdere fino a 24 ore di dati |
+| Replica DR su sito remoto (100+ km) | **Asincrona** | La latenza inter-sito rende la sincrona troppo lenta |
+| Log applicativi | **Asincrona** | Perdere qualche riga di log è tollerabile |
+| Media e upload utenti | **Asincrona** | File riacquisibili dall'utente, non critici |
+
+**La regola:** se il dato è una transazione (non ricostruibile, non ripetibile) → sincrona. Se il dato è riacquisibile o il costo della sua perdita è accettabile → asincrona, con il vantaggio di meno latenza e meno costi infrastrutturali.
 
 [Torna all'indice](#indice)
 
