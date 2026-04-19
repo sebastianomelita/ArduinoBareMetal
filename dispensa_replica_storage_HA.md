@@ -6,13 +6,119 @@
 
 ## Indice
 
-1. Tipi di replica del disco
-2. Tipi di replica del servizio
-3. Quando serve anche la replica del disco
-4. NAS centralizzato vs distribuito
-5. CephFS: quando conviene
-6. Migrazione delle VM in Proxmox
-7. Livelli di HA: dalla protezione blanda alla HA reale
+0. [Glossario: grandezze e metriche fondamentali](#0-glossario-grandezze-e-metriche-fondamentali)
+1. [Tipi di replica del disco](#1-tipi-di-replica-del-disco)
+    - [1.1 Replica locale](#11-replica-locale-stesso-nodo)
+    - [1.2 Replica sincrona di rete](#12-replica-sincrona-di-rete-tra-nodi)
+    - [1.3 Replica asincrona di rete](#13-replica-asincrona-di-rete-tra-nodi)
+    - [1.4 Tassonomia riassuntiva](#14-tassonomia-riassuntiva)
+2. [Tipi di replica del servizio](#2-tipi-di-replica-del-servizio)
+    - [2.1 Nessuna replica](#21-nessuna-replica-single-instance)
+    - [2.2 Active-Passive](#22-active-passive-failover)
+    - [2.3 Active-Active con load balancer](#23-active-active-con-load-balancer)
+    - [2.4 Cluster multi-master](#24-cluster-multi-master-database)
+    - [2.5 Tassonomia riassuntiva](#25-tassonomia-riassuntiva)
+3. [Quando serve anche la replica del disco](#3-quando-serve-anche-la-replica-del-disco)
+    - [3.1 Quadro completo dei casi](#31-quadro-completo-dei-casi-comuni)
+    - [3.2 La regola generale](#32-la-regola-generale)
+    - [3.3 Schema decisionale](#33-schema-decisionale)
+4. [NAS centralizzato vs distribuito](#4-nas-centralizzato-vs-nas-distribuito)
+    - [4.1 NAS centralizzato](#41-nas-centralizzato)
+    - [4.2 NAS distribuito](#42-nas-distribuito)
+    - [4.3 Confronto diretto](#43-confronto-diretto)
+5. [CephFS: quando conviene](#5-cephfs-quando-conviene)
+    - [5.1 Le tre interfacce di Ceph](#51-le-tre-interfacce-di-ceph)
+    - [5.2 Quando CephFS è la scelta giusta](#52-quando-cephfs-è-la-scelta-giusta)
+    - [5.3 CephFS vs NFS](#53-schema-decisionale-cephfs-vs-nfs)
+    - [5.4 CephFS vs GlusterFS](#54-cephfs-vs-glusterfs)
+6. [Migrazione delle VM in Proxmox](#6-migrazione-delle-vm-in-proxmox)
+    - [6.1 Tipi di migrazione](#61-tipi-di-migrazione)
+    - [6.2 Live migration e storage](#62-perché-la-live-migration-richiede-storage-condiviso)
+    - [6.3 Automatica vs manuale](#63-quando-la-migrazione-è-automatica-e-quando-manuale)
+    - [6.4 Prerequisiti HA](#64-prerequisiti-per-la-migrazione-automatica-ha)
+    - [6.5 Failover di un nodo](#65-cosa-succede-quando-un-nodo-cade)
+7. [Livelli di HA: dalla protezione blanda alla HA reale](#7-livelli-di-ha-dalla-protezione-blanda-alla-ha-reale)
+    - [7.1 Livello 0 — Backup](#71-livello-0--backup-manuale-nessuna-ha)
+    - [7.2 Livello 1 — Restart locale](#72-livello-1--restart-automatico-locale)
+    - [7.3 Livello 2 — LB nodo singolo](#73-livello-2--load-balancer--vm-multiple-nodo-singolo)
+    - [7.4 Livello 3 — Cluster HA](#74-livello-3--cluster-multi-nodo-con-ha-automatico)
+    - [7.5 Livello 4 — Geo-ridondanza](#75-livello-4--geo-ridondanza-multi-sito)
+    - [7.6 Come scegliere](#76-come-scegliere-il-livello-giusto)
+    - [7.7 Confronto riassuntivo](#77-confronto-riassuntivo-dei-livelli)
+8. [Riepilogo finale](#riepilogo-finale)
+
+---
+
+## 0. Glossario: grandezze e metriche fondamentali
+
+Prima di affrontare i temi della replica e dell'alta disponibilità, è essenziale conoscere le grandezze con cui si misurano le prestazioni e la resilienza di un'infrastruttura.
+
+### Metriche di disponibilità
+
+**Uptime** è il tempo in cui un servizio è operativo e raggiungibile. Si esprime come percentuale su base annua. La tabella seguente mostra i livelli convenzionali detti "nine" (da 9, cioè il numero di cifre significative dopo la virgola).
+
+| Livello | Uptime (%) | Downtime annuo | Esempio tipico |
+|---------|-----------|----------------|----------------|
+| 2 nine | 99% | 3 giorni 15 ore | Homelab, dev |
+| 3 nine | 99.9% | 8 ore 45 minuti | PMI, servizi interni |
+| 4 nine | 99.99% | 52 minuti | E-commerce, produzione |
+| 5 nine | 99.999% | 5 minuti | Banche, telco, cloud |
+
+**Downtime** è il complementare dell'uptime: il tempo in cui il servizio è indisponibile, sia per guasto sia per manutenzione programmata.
+
+### Metriche di ripristino
+
+**RTO (Recovery Time Objective)** è il tempo massimo accettabile per ripristinare il servizio dopo un guasto. È un obiettivo, non una misura: lo si decide prima che il guasto avvenga e si progetta l'infrastruttura per rispettarlo.
+
+**RPO (Recovery Point Objective)** è la quantità massima di dati che si accetta di perdere in caso di guasto, espressa in tempo. Un RPO di 1 ora significa che, nel caso peggiore, si perdono le ultime 60 minuti di scritture.
+
+```
+        Tempo ───────────────────────────────►
+
+        ultimo backup         guasto        servizio ripristinato
+             │                   │                   │
+             ├───────────────────┤                   │
+             │       RPO         │                   │
+             │  (dati persi)     │                   │
+                                 ├───────────────────┤
+                                 │       RTO         │
+                                 │  (tempo di fermo) │
+```
+
+| Metrica | Domanda a cui risponde | Esempio |
+|---------|----------------------|---------|
+| **RPO** | "Quanti dati posso permettermi di perdere?" | RPO = 0 → replica sincrona, nessuna perdita |
+| **RTO** | "Quanto tempo posso restare fermo?" | RTO = 2 min → serve HA automatico con failover |
+
+### Metriche di latenza e prestazioni
+
+**Latenza (delay)** è il tempo che intercorre tra una richiesta e la sua risposta. Nel contesto della replica, la latenza di rete tra i nodi determina quanto "costa" una replica sincrona: ogni scrittura deve attendere la conferma remota prima di completarsi.
+
+**Throughput (banda)** è la quantità di dati trasferibili nell'unità di tempo (es. MB/s, Gbps). Determina quanto velocemente i dati possono essere replicati tra nodi. Una rete a 1 GbE (~100 MB/s) è spesso insufficiente per replica sincrona sotto carico; 10 GbE (~1 GB/s) è il minimo consigliato per Ceph.
+
+**IOPS (Input/Output Operations Per Second)** è il numero di operazioni di lettura o scrittura che lo storage riesce a gestire al secondo. È la metrica critica per i database: un disco HDD fa 100-200 IOPS, un SSD SATA 10.000-50.000, un NVMe 100.000+.
+
+### Metriche di resilienza
+
+**SPOF (Single Point of Failure)** è un qualsiasi componente il cui guasto provoca l'indisponibilità dell'intero servizio. L'obiettivo dell'alta disponibilità è eliminare ogni SPOF.
+
+**Quorum** è il numero minimo di nodi che devono essere operativi perché il cluster prenda decisioni (es. riavviare una VM su un altro nodo). Con 3 nodi, il quorum è 2: se un nodo cade, i 2 rimanenti possono decidere. Con 2 nodi senza QDevice, la perdita di un nodo impedisce il quorum.
+
+**Split-brain** è la situazione in cui due parti di un cluster, non potendo comunicare tra loro, credono entrambe di essere il cluster attivo e operano in modo indipendente. Porta a corruzione dei dati. Il quorum serve proprio a prevenirlo: solo la partizione con la maggioranza può restare attiva.
+
+**Fencing** è il meccanismo con cui il cluster "isola" un nodo che non risponde, impedendogli di scrivere sui dischi condivisi. Proxmox usa il watchdog hardware o IPMI per forzare lo spegnimento del nodo guasto prima di riavviare le sue VM altrove.
+
+### Relazioni tra le metriche
+
+| Se vuoi... | Ti serve... | Che impatta su... |
+|-----------|------------|-------------------|
+| RPO = 0 (nessuna perdita dati) | Replica sincrona | Latenza di scrittura (+) |
+| RTO basso (ripristino rapido) | HA automatico, Ceph RBD | Costo infrastruttura (+) |
+| IOPS alti | SSD/NVMe, Ceph su SSD | Costo storage (+) |
+| Eliminare SPOF | Minimo 3 nodi, Ceph | Complessità (+) |
+| Prevenire split-brain | Quorum + fencing | Nodi minimi = 3 |
+
+[Torna all'indice](#indice)
 
 ---
 
@@ -50,6 +156,8 @@ La scrittura viene confermata subito sul nodo primario. La copia remota avviene 
     hardware  mirror  (DRBD,    (ZFS send,
     (mdadm)  (RAIDZ)   Ceph)     rsync)
 ```
+
+[Torna all'indice](#indice)
 
 ---
 
@@ -91,6 +199,8 @@ Più istanze del database accettano scritture contemporaneamente e si sincronizz
     (restart)  (Keepalived,  (HAProxy,  (Galera,
                Pacemaker)    Nginx)     Patroni)
 ```
+
+[Torna all'indice](#indice)
 
 ---
 
@@ -134,6 +244,8 @@ La replica sincronizzata del disco serve quando una VM deve poter ripartire su u
                               DRBD)
 ```
 
+[Torna all'indice](#indice)
+
 ---
 
 ## 4. NAS centralizzato vs NAS distribuito
@@ -161,6 +273,8 @@ Lo storage è distribuito su più nodi. Non esiste un singolo punto di guasto. *
 | Rete richiesta | 1 GbE sufficiente | 10 GbE consigliato |
 | Self-healing | NO | SÌ (automatico) |
 | Esempi | Synology, QNAP, TrueNAS | Ceph, GlusterFS, MinIO |
+
+[Torna all'indice](#indice)
 
 ---
 
@@ -221,6 +335,8 @@ CephFS è il filesystem condiviso di Ceph. Non è un prodotto a sé ma un'interf
 | Complessità | Alta | Media |
 | Meglio per | Ambienti già Ceph / Proxmox | Cluster dedicati solo a file |
 
+[Torna all'indice](#indice)
+
 ---
 
 ## 6. Migrazione delle VM in Proxmox
@@ -259,6 +375,8 @@ Per l'HA automatico in Proxmox servono: minimo 3 nodi nel cluster per il quorum 
 ![Sequenza HA failover Proxmox](img/ha_failover.svg)
 
 **Nota importante:** nell'HA automatico di Proxmox, le VM vengono **riavviate** (cold restart), non migrate a caldo. La live migration richiede che la VM sia accesa e funzionante, il che non è possibile se il nodo è guasto. L'utente subisce un'interruzione di servizio pari al tempo di riavvio della VM (tipicamente 1-3 minuti).
+
+[Torna all'indice](#indice)
 
 ---
 
@@ -352,6 +470,8 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
 | 2 — LB nodo singolo | 1 | ZFS locale | Zero (VM) / Ore (HW) | Medio | Media |
 | 3 — Cluster HA | 3+ | Ceph RBD | 1-3 minuti | Alto | Alta |
 | 4 — Geo-ridondanza | 6+ | Ceph + replica inter-sito | ~0 | Molto alto | Molto alta |
+
+[Torna all'indice](#indice)
 
 ---
 
