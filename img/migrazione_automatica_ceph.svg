@@ -1,0 +1,104 @@
+<svg width="100%" viewBox="0 0 680 700" xmlns="http://www.w3.org/2000/svg">
+<style>
+  text { font-family: system-ui, -apple-system, sans-serif; }
+  .th { font-size: 14px; font-weight: 500; }
+  .ts { font-size: 12px; font-weight: 400; }
+  .tl { font-size: 11px; font-weight: 400; }
+</style>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<text class="th" x="340" y="24" text-anchor="middle" fill="#2C2C2A">Ripristino AUTOMATICO con Ceph RBD + Proxmox HA</text>
+
+<!-- FASE 1 -->
+<rect x="40" y="44" width="120" height="26" rx="6" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text class="ts" x="100" y="60" text-anchor="middle" dominant-baseline="central" fill="#791F1F">Fase 1: guasto</text>
+
+<rect x="50" y="84" width="110" height="60" rx="10" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text class="ts" x="105" y="104" text-anchor="middle" dominant-baseline="central" fill="#791F1F">Nodo 1</text>
+<text class="tl" x="105" y="122" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">GUASTO</text>
+
+<rect x="190" y="84" width="110" height="60" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="ts" x="245" y="104" text-anchor="middle" dominant-baseline="central" fill="#085041">Nodo 2</text>
+<text class="tl" x="245" y="122" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">OK</text>
+
+<rect x="330" y="84" width="110" height="60" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="ts" x="385" y="104" text-anchor="middle" dominant-baseline="central" fill="#085041">Nodo 3</text>
+<text class="tl" x="385" y="122" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">OK</text>
+
+<text class="tl" x="530" y="90" text-anchor="start" fill="#5F5E5A">Il nodo 1 cade improvvisamente.</text>
+<text class="tl" x="530" y="108" text-anchor="start" fill="#5F5E5A">Le sue VM (es. VM-A, VM-D)</text>
+<text class="tl" x="530" y="126" text-anchor="start" fill="#5F5E5A">si fermano.</text>
+
+<!-- FASE 2 -->
+<rect x="40" y="170" width="225" height="26" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="ts" x="152" y="186" text-anchor="middle" dominant-baseline="central" fill="#633806">Fase 2: Corosync rileva (~30 sec)</text>
+
+<rect x="50" y="210" width="110" height="60" rx="10" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text class="ts" x="105" y="230" text-anchor="middle" dominant-baseline="central" fill="#791F1F">Nodo 1</text>
+<text class="tl" x="105" y="248" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">Nessun heartbeat</text>
+
+<rect x="190" y="210" width="110" height="60" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="ts" x="245" y="230" text-anchor="middle" dominant-baseline="central" fill="#085041">Nodo 2</text>
+
+<rect x="330" y="210" width="110" height="60" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="ts" x="385" y="230" text-anchor="middle" dominant-baseline="central" fill="#085041">Nodo 3</text>
+
+<line x1="245" y1="245" x2="330" y2="245" stroke="#0F6E56" stroke-width="1.5"/>
+<text class="tl" x="287" y="260" text-anchor="middle" fill="#0F6E56">quorum OK (2/3)</text>
+
+<text class="tl" x="530" y="216" text-anchor="start" fill="#5F5E5A">Corosync invia heartbeat ogni</text>
+<text class="tl" x="530" y="234" text-anchor="start" fill="#5F5E5A">2 secondi. Dopo ~30s senza</text>
+<text class="tl" x="530" y="252" text-anchor="start" fill="#5F5E5A">risposta, nodo 1 è dichiarato</text>
+<text class="tl" x="530" y="270" text-anchor="start" fill="#5F5E5A">fuori dal quorum.</text>
+
+<!-- FASE 3 -->
+<rect x="40" y="296" width="200" height="26" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="ts" x="140" y="312" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Fase 3: fencing (~30 sec)</text>
+
+<rect x="50" y="336" width="110" height="60" rx="10" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text class="ts" x="105" y="356" text-anchor="middle" dominant-baseline="central" fill="#791F1F">Nodo 1</text>
+<text class="tl" x="105" y="374" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">Forzato OFF</text>
+
+<text class="tl" x="530" y="342" text-anchor="start" fill="#5F5E5A">Proxmox forza lo spegnimento</text>
+<text class="tl" x="530" y="360" text-anchor="start" fill="#5F5E5A">del nodo 1 via watchdog o IPMI.</text>
+<text class="tl" x="530" y="378" text-anchor="start" fill="#5F5E5A">Questo IMPEDISCE che il nodo</text>
+<text class="tl" x="530" y="396" text-anchor="start" fill="#5F5E5A">torni vivo e scriva sui dischi</text>
+<text class="tl" x="530" y="414" text-anchor="start" fill="#5F5E5A">→ previene split-brain.</text>
+
+<!-- FASE 4 -->
+<rect x="40" y="436" width="260" height="26" rx="6" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+<text class="ts" x="170" y="452" text-anchor="middle" dominant-baseline="central" fill="#27500A">Fase 4: HA Manager riavvia le VM (~1-2 min)</text>
+
+<rect x="50" y="476" width="110" height="60" rx="10" fill="#FCEBEB" stroke="#A32D2D" stroke-width="0.5"/>
+<text class="ts" x="105" y="496" text-anchor="middle" dominant-baseline="central" fill="#791F1F">Nodo 1</text>
+<text class="tl" x="105" y="514" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">SPENTO</text>
+
+<rect x="190" y="476" width="110" height="60" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="ts" x="245" y="491" text-anchor="middle" dominant-baseline="central" fill="#085041">Nodo 2</text>
+<text class="tl" x="245" y="509" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">VM-A avviata</text>
+<text class="tl" x="245" y="524" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">qui</text>
+
+<rect x="330" y="476" width="110" height="60" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="ts" x="385" y="491" text-anchor="middle" dominant-baseline="central" fill="#085041">Nodo 3</text>
+<text class="tl" x="385" y="509" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">VM-D avviata</text>
+<text class="tl" x="385" y="524" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">qui</text>
+
+<path d="M160 496 L188 496" stroke="#0F6E56" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+<path d="M160 516 L328 516" stroke="#0F6E56" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#arrow)"/>
+
+<text class="tl" x="530" y="482" text-anchor="start" fill="#5F5E5A">HA Manager sceglie su quale nodo</text>
+<text class="tl" x="530" y="500" text-anchor="start" fill="#5F5E5A">riavviare ogni VM in base al</text>
+<text class="tl" x="530" y="518" text-anchor="start" fill="#5F5E5A">carico. Il disco Ceph RBD è già</text>
+<text class="tl" x="530" y="536" text-anchor="start" fill="#5F5E5A">accessibile da tutti i nodi →</text>
+<text class="tl" x="530" y="554" text-anchor="start" fill="#5F5E5A">basta avviare la VM.</text>
+
+<!-- Ceph bar -->
+<rect x="50" y="556" width="390" height="30" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="ts" x="245" y="574" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Ceph RBD — dischi replicati su tutti i nodi</text>
+
+<!-- Summary -->
+<rect x="40" y="610" width="600" height="70" rx="8" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+<text class="ts" x="340" y="632" text-anchor="middle" dominant-baseline="central" fill="#27500A">Procedura AUTOMATICA — nessun intervento del sistemista</text>
+<text class="tl" x="340" y="652" text-anchor="middle" dominant-baseline="central" fill="#3B6D11">Tempo totale: ~2 minuti (30s rilevamento + 30s fencing + 60s avvio VM)</text>
+<text class="tl" x="340" y="668" text-anchor="middle" dominant-baseline="central" fill="#3B6D11">RPO = 0 (replica sincrona Ceph) — RTO ≈ 2 minuti</text>
+</svg>
