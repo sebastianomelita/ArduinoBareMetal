@@ -260,9 +260,9 @@ La replica del disco non è un prerequisito tecnico scelto a priori — è una *
 
 Il failover può essere realizzato in due modi, con livelli di protezione molto diversi.
 
-**Failover sullo stesso nodo fisico.** Due VM (o due container) sulla stessa macchina: se la VM attiva crasha, la standby subentra. Protegge dal guasto software (crash del processo, corruzione della VM) ma NON dal guasto hardware — se il nodo cade, cadono entrambe. Il disco può essere locale (ZFS) perché entrambe le VM ci accedono dalla stessa macchina. È un'HA "blanda" ma semplice e a costo zero.
+- **Failover sullo stesso nodo fisico.** Due VM (o due container) sulla stessa macchina: se la VM attiva crasha, la standby subentra. Protegge dal guasto software (crash del processo, corruzione della VM) ma NON dal guasto hardware — se il nodo cade, cadono entrambe. Il disco può essere locale (ZFS) perché entrambe le VM ci accedono dalla stessa macchina. È un'HA "blanda" ma semplice e a costo zero.
 
-**Failover su nodi diversi.** La VM attiva è su un nodo, la standby su un altro nodo fisico. Se il nodo intero cade, la standby sull'altro nodo subentra. Protegge anche dal guasto hardware. Ma qui il disco DEVE essere replicato o condiviso (DRBD, Ceph, NAS) — perché i due nodi non condividono lo storage locale.
+- **Failover su nodi diversi.** La VM attiva è su un nodo, la standby su un altro nodo fisico. Se il nodo intero cade, la standby sull'altro nodo subentra. Protegge anche dal guasto hardware. Ma qui il disco DEVE essere replicato o condiviso (DRBD, Ceph, NAS) — perché i due nodi non condividono lo storage locale.
 
 | Aspetto | Stesso nodo | Nodi diversi |
 |---------|-------------|--------------|
@@ -294,9 +294,9 @@ Le VM del load balancer sono **interscambiabili**: se una cade, il LB smette di 
 
 Come per il failover, anche il load balancer può distribuire il traffico tra VM sullo stesso nodo o su nodi diversi, con conseguenze diverse.
 
-**LB con VM sullo stesso nodo fisico.** Tutte le VM girano sulla stessa macchina. È utile per isolare i guasti software tra VM e per fare rolling update senza downtime applicativo — si aggiorna una VM alla volta mentre le altre continuano a servire. Ma se il nodo fisico cade, tutte le VM si fermano insieme. Non serve disco replicato né condiviso.
+- **LB con VM sullo stesso nodo fisico.** Tutte le VM girano sulla stessa macchina. È utile per isolare i guasti software tra VM e per fare rolling update senza downtime applicativo — si aggiorna una VM alla volta mentre le altre continuano a servire. Ma se il nodo fisico cade, tutte le VM si fermano insieme. Non serve disco replicato né condiviso.
 
-**LB con VM su nodi diversi.** Le VM sono distribuite su più macchine fisiche. Se un nodo cade, le VM sugli altri nodi continuano a servire — il LB smette di inviare traffico al nodo guasto. È HA reale. Il reverse proxy stesso va ridondato (due istanze HAProxy con Keepalived e VIP) per non diventare a sua volta un single point of failure.
+- **LB con VM su nodi diversi.** Le VM sono distribuite su più macchine fisiche. Se un nodo cade, le VM sugli altri nodi continuano a servire — il LB smette di inviare traffico al nodo guasto. È HA reale. Il reverse proxy stesso va ridondato (due istanze HAProxy con Keepalived e VIP) per non diventare a sua volta un single point of failure.
 
 | Aspetto | Stesso nodo | Nodi diversi |
 |---------|-------------|--------------|
@@ -599,9 +599,9 @@ DRBD + Pacemaker è spesso la scelta in ambienti senza virtualizzazione — due 
 
 La condizione necessaria per la live migration è una sola: il disco della VM deve essere raggiungibile da entrambi i nodi **prima** che la migrazione inizi. Questo si può ottenere in due modi diversi.
 
-**Con storage distribuito (Ceph RBD):** i dati sono replicati su tutti i nodi del cluster. Non esiste un singolo punto di guasto dello storage. È la scelta più robusta ma anche la più costosa e complessa (minimo 3 nodi, rete 10 GbE).
+- **Con storage distribuito (Ceph RBD):** i dati sono replicati su tutti i nodi del cluster. Non esiste un singolo punto di guasto dello storage. È la scelta più robusta ma anche la più costosa e complessa (minimo 3 nodi, rete 10 GbE).
 
-**Con NAS centralizzato (NFS / iSCSI):** un NAS esterno (Synology, TrueNAS, QNAP) espone lo storage via rete. Tutti i nodi Proxmox montano lo stesso volume. È più semplice ed economico, ma il NAS diventa un single point of failure: se il NAS cade, tutte le VM si fermano.
+- **Con NAS centralizzato (NFS / iSCSI):** un NAS esterno (Synology, TrueNAS, QNAP) espone lo storage via rete. Tutti i nodi Proxmox montano lo stesso volume. È più semplice ed economico, ma il NAS diventa un single point of failure: se il NAS cade, tutte le VM si fermano.
 
 | Aspetto | Ceph RBD (distribuito) | NAS centralizzato (NFS/iSCSI) |
 |---------|----------------------|-------------------------------|
