@@ -41,13 +41,14 @@
 6. [Livelli di HA: dalla protezione blanda alla HA reale](#6-livelli-di-ha-dalla-protezione-blanda-alla-ha-reale)
     - [6.1 Livello 0 — Backup](#61-livello-0--backup-manuale-nessuna-ha)
     - [6.2 Livello 1 — Restart locale](#62-livello-1--restart-automatico-locale)
-    - [6.3 Livello 1b — DR con nodo slave](#63-livello-1b--disaster-recovery-con-nodo-slave-e-backup-su-nas)
-    - [6.4 Livello 2 — LB nodo singolo](#64-livello-2--load-balancer--vm-multiple-nodo-singolo)
-    - [6.5 Livello 3 — Cluster HA](#65-livello-3--cluster-multi-nodo-con-ha-automatico)
-    - [6.6 Livello 4 — Geo-ridondanza](#66-livello-4--geo-ridondanza-multi-sito)
-    - [6.7 Come scegliere](#67-come-scegliere-il-livello-giusto)
-    - [6.8 Confronto riassuntivo](#68-confronto-riassuntivo-dei-livelli)
-    - [6.9 Testare l'HA](#69-testare-lha-un-cluster-non-testato-non-funziona)
+    - [6.3 Livello 1b — DR con backup su NAS](#63-livello-1b--disaster-recovery-con-nodo-slave-e-backup-su-nas)
+    - [6.4 Livello 1c — VM su NAS con slave](#64-livello-1c--vm-su-nas-con-nodo-slave-pronto)
+    - [6.5 Livello 2 — LB nodo singolo](#65-livello-2--load-balancer--vm-multiple-nodo-singolo)
+    - [6.6 Livello 3 — Cluster HA](#66-livello-3--cluster-multi-nodo-con-ha-automatico)
+    - [6.7 Livello 4 — Geo-ridondanza](#67-livello-4--geo-ridondanza-multi-sito)
+    - [6.8 Come scegliere](#68-come-scegliere-il-livello-giusto)
+    - [6.9 Confronto riassuntivo](#69-confronto-riassuntivo-dei-livelli)
+    - [6.10 Testare l'HA](#610-testare-lha-un-cluster-non-testato-non-funziona)
 7. [Il backup non è una replica](#7-il-backup-non-è-una-replica)
     - [7.1 La differenza fondamentale](#71-la-differenza-fondamentale)
     - [7.2 Cosa protegge cosa](#72-cosa-protegge-cosa)
@@ -728,7 +729,53 @@ Emergenza:
 | Automatico | No | No | No | Sì |
 | Costo | Basso | Basso | Medio | Alto |
 
-### 6.4 Livello 2 — Load balancer + VM multiple (nodo singolo)
+### 6.4 Livello 1c — VM su NAS con nodo slave pronto
+
+A differenza del livello 1b dove le VM girano su disco locale e vengono copiate sul NAS come backup, qui le VM girano **direttamente** sul NAS. Il nodo slave monta lo stesso NAS — quindi master e slave vedono gli stessi dischi VM. Se il nodo A cade, il sistemista avvia le VM sul nodo B senza ripristinare nulla: il disco è già lì, con i dati aggiornati all'ultimo istante.
+
+```
+Stato normale:
+
+  [ Nodo A (attivo) ] ── esegue VM ──► [ NAS ]
+  [ Nodo B (slave)  ] ── montato, idle ► [ NAS ]
+                                           │
+                                    stesso disco,
+                                    stessi dati,
+                                    nessun backup
+                                    da ripristinare
+
+Emergenza:
+
+  [ Nodo A  GUASTO  ]
+  [ Nodo B (attivo) ] ── avvia le VM ─► [ NAS ]
+                                           │
+                                    RPO = 0
+                                    RTO = minuti
+```
+
+| Aspetto | Dettaglio |
+|---------|-----------|
+| Infrastruttura | 2 nodi hypervisor + 1 NAS (NFS/iSCSI), VM su NAS |
+| Protegge da | Guasto hardware di un nodo, guasto VM, corruzione VM |
+| Non protegge da | Guasto del NAS (SPOF) |
+| Downtime stimato | **Minuti** (avvio VM su nodo B, nessun restore) |
+| Dati persi (RPO) | **Zero** (disco unico e sempre aggiornato) |
+| Costo | Medio-basso (un NAS + un nodo slave) |
+| Uso tipico | PMI che accettano il NAS come SPOF in cambio di zero perdita dati |
+
+**Trade-off rispetto al livello 1b:**
+
+| Aspetto | 1b (disco locale + backup su NAS) | 1c (VM su NAS diretto) |
+|---------|----------------------------------|------------------------|
+| Prestazioni VM | **Ottime** (I/O locale) | Medie (I/O via rete) |
+| Dati persi (RPO) | Ore (dipende dal backup) | **Zero** |
+| Tempo ripristino (RTO) | Minuti-ore (restore) | **Minuti** (solo avvio) |
+| SPOF | No | Sì (il NAS) |
+| Rete richiesta | 1 GbE basta per backup | 10 GbE consigliato per I/O |
+
+La scelta tra 1b e 1c dipende dalla priorità: se contano le **prestazioni** → 1b (disco locale, accetti di perdere ore di dati). Se conta la **completezza dei dati** → 1c (NAS diretto, accetti prestazioni inferiori e il NAS come SPOF).
+
+### 6.5 Livello 2 — Load balancer + VM multiple (nodo singolo)
 
 | Aspetto | Dettaglio |
 |---------|-----------|
@@ -739,7 +786,7 @@ Emergenza:
 | Costo | Medio-basso |
 | Uso tipico | PMI, pre-produzione, servizi web con tolleranza al guasto HW |
 
-### 6.5 Livello 3 — Cluster multi-nodo con HA automatico
+### 6.6 Livello 3 — Cluster multi-nodo con HA automatico
 
 | Aspetto | Dettaglio |
 |---------|-----------|
@@ -750,7 +797,7 @@ Emergenza:
 | Costo | Alto (3+ server, rete dedicata, competenze) |
 | Uso tipico | Produzione aziendale, e-commerce, servizi critici |
 
-### 6.6 Livello 4 — Geo-ridondanza (multi-sito)
+### 6.7 Livello 4 — Geo-ridondanza (multi-sito)
 
 | Aspetto | Dettaglio |
 |---------|-----------|
@@ -761,7 +808,7 @@ Emergenza:
 | Costo | Molto alto (doppia infrastruttura, banda inter-sito, competenze avanzate) |
 | Uso tipico | Banche, cloud provider, infrastrutture critiche nazionali |
 
-### 6.7 Come scegliere il livello giusto
+### 6.8 Come scegliere il livello giusto
 
 ```
         Quanto costa un'ora di downtime?
@@ -781,18 +828,19 @@ Emergenza:
                    Ceph RBD)      geo-replica)
 ```
 
-### 6.8 Confronto riassuntivo dei livelli
+### 6.9 Confronto riassuntivo dei livelli
 
-| Livello | Nodi | Storage | Downtime max | Costo | Complessità |
-|---------|------|---------|-------------|-------|-------------|
-| 0 — Backup | 1 | ZFS locale | Ore | Minimo | Bassa |
-| 1 — Restart locale | 1 | ZFS + snapshot | Minuti | Basso | Bassa |
-| 1b — DR con nodo slave | 2 + NAS | ZFS locale + backup su NAS | Minuti-ore | Medio-basso | Bassa |
-| 2 — LB nodo singolo | 1 | ZFS locale | Zero (VM) / Ore (HW) | Medio | Media |
-| 3 — Cluster HA | 3+ | Ceph RBD | 1-3 minuti | Alto | Alta |
-| 4 — Geo-ridondanza | 6+ | Ceph + replica inter-sito | ~0 | Molto alto | Molto alta |
+| Livello | Nodi | Storage | Downtime max | RPO | Costo | Complessità |
+|---------|------|---------|-------------|-----|-------|-------------|
+| 0 — Backup | 1 | ZFS locale | Ore | Ore-giorni | Minimo | Bassa |
+| 1 — Restart locale | 1 | ZFS + snapshot | Minuti | Minuti | Basso | Bassa |
+| 1b — DR backup su NAS | 2 + NAS | ZFS locale + backup NAS | Minuti-ore | Ore | Medio-basso | Bassa |
+| 1c — VM su NAS + slave | 2 + NAS | NAS diretto | Minuti | **Zero** | Medio-basso | Bassa |
+| 2 — LB nodo singolo | 1 | ZFS locale | Zero (VM) / Ore (HW) | N/A | Medio | Media |
+| 3 — Cluster HA | 3+ | Ceph RBD | 1-3 minuti | **Zero** | Alto | Alta |
+| 4 — Geo-ridondanza | 6+ | Ceph + replica inter-sito | ~0 | **Zero** | Molto alto | Molto alta |
 
-### 6.9 Testare l'HA: un cluster non testato non funziona
+### 6.10 Testare l'HA: un cluster non testato non funziona
 
 Un cluster HA configurato ma mai testato è un cluster che probabilmente non funzionerà al momento del bisogno. Configurazioni errate, permessi mancanti, timeout troppo lunghi, fencing non configurato — tutti problemi che emergono solo quando si simula un guasto reale.
 
