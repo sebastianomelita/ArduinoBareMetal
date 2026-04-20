@@ -31,11 +31,13 @@
     - [4.4 CephFS vs GlusterFS](#44-cephfs-vs-glusterfs)
 5. [Migrazione delle VM in Proxmox](#5-migrazione-delle-vm-in-proxmox)
     - [5.1 Migrazione e load balancer](#51-migrazione-e-load-balancer-due-meccanismi-indipendenti)
-    - [5.2 Migrazione HA vs DRBD](#52-migrazione-ha-vs-drbd-due-modi-di-fare-failover)
-    - [5.3 Tipi di migrazione](#53-tipi-di-migrazione)
-    - [5.4 Live migration e storage](#54-perché-la-live-migration-richiede-storage-condiviso)
-    - [5.5 Ripristino manuale vs automatico](#55-ripristino-di-una-vm-manuale-vs-automatico)
-    - [5.6 Prerequisiti HA](#56-prerequisiti-per-la-migrazione-automatica-ha)
+    - [5.2 VM su NAS remoto](#52-le-vm-possono-girare-direttamente-su-un-nas)
+    - [5.3 Stessa VM su due nodi?](#53-si-può-avere-la-stessa-vm-accesa-su-due-nodi)
+    - [5.4 Migrazione HA vs DRBD](#54-migrazione-ha-vs-drbd-due-modi-di-fare-failover)
+    - [5.5 Tipi di migrazione](#55-tipi-di-migrazione)
+    - [5.6 Live migration e storage](#56-perché-la-live-migration-richiede-storage-condiviso)
+    - [5.7 Ripristino manuale vs automatico](#57-ripristino-di-una-vm-manuale-vs-automatico)
+    - [5.8 Prerequisiti HA](#58-prerequisiti-per-la-migrazione-automatica-ha)
 6. [Livelli di HA: dalla protezione blanda alla HA reale](#6-livelli-di-ha-dalla-protezione-blanda-alla-ha-reale)
     - [6.1 Livello 0 — Backup](#61-livello-0--backup-manuale-nessuna-ha)
     - [6.2 Livello 1 — Restart locale](#62-livello-1--restart-automatico-locale)
@@ -136,19 +138,19 @@ La replica del disco ha lo scopo di garantire che i dati sopravvivano al guasto 
 
 I dati vengono duplicati tra dischi fisici della stessa macchina. **Tecnologie:** RAID hardware, RAID software (mdadm), ZFS (mirror, RAIDZ). **Protegge da:** guasto di un disco fisico. **Non protegge da:** guasto del nodo intero (scheda madre, alimentatore, incendio).
 
-![Replica locale](img/replica_locale.svg)
+<img src="img/replica_locale.svg" alt="Replica locale" width="70%">
 
 ### 1.2 Replica sincrona di rete (tra nodi)
 
 Ogni scrittura viene confermata solo quando tutti i nodi coinvolti hanno scritto il dato. Nessun dato viene perso in caso di guasto di un nodo. **Tecnologie:** DRBD (sincrono), Ceph (con replica factor ≥ 2). **Protegge da:** guasto di un nodo intero. **Costo:** latenza aggiuntiva su ogni scrittura (attende la conferma remota).
 
-![Replica sincrona di rete](img/replica_sincrona.svg)
+<img src="img/replica_sincrona.svg" alt="Replica sincrona di rete" width="70%">
 
 ### 1.3 Replica asincrona di rete (tra nodi)
 
 La scrittura viene confermata subito sul nodo primario. La copia remota avviene dopo, in background. È possibile perdere le ultime scritture in caso di guasto. **Tecnologie:** ZFS send/receive (sanoid/syncoid), DRBD asincrono, rsync periodico. **Protegge da:** guasto del nodo, con possibile perdita delle ultime modifiche. **Costo:** basso impatto sulle prestazioni, ma rischio di perdita dati (RPO > 0).
 
-![Replica asincrona di rete](img/replica_asincrona.svg)
+<img src="img/replica_asincrona.svg" alt="Replica asincrona di rete" width="70%">
 
 ### 1.4 Tassonomia riassuntiva
 
@@ -238,7 +240,7 @@ Il failover si usa quando il servizio **scrive dati che cambiano** — tipicamen
 
 La replica del disco non è un prerequisito tecnico scelto a priori — è una **conseguenza** del fatto che il servizio è stateful: se i dati cambiano e vuoi che il nodo standby possa subentrare, quei cambiamenti devono arrivargli in tempo reale.
 
-![Active-passive failover](img/active_passive.svg)
+<img src="img/active_passive.svg" alt="Active-passive failover" width="70%">
 
 **Come recupera:** quando il nodo attivo cade, il nodo di standby viene promosso. Il VIP (IP virtuale) si sposta sul nodo standby e il servizio riparte con gli stessi dati.
 
@@ -284,7 +286,7 @@ Tuttavia "active-active" non significa per forza "senza stato". Significa che **
 
 Le VM del load balancer sono **interscambiabili**: se una cade, il LB smette di mandarle traffico e le altre continuano. Nessuna replica disco, nessuna migrazione, nessun disco condiviso tra le VM — lo stato sta altrove.
 
-![Active-active con load balancer](img/active_active.svg)
+<img src="img/active_active.svg" alt="Active-active con load balancer" width="70%">
 
 **Tecnologie:** HAProxy, Nginx, Traefik. **Uso:** web app, API, microservizi.
 
@@ -311,7 +313,7 @@ Un errore comune è mettere un singolo HAProxy davanti a 3 VM applicative ridond
 
 La soluzione è avere due istanze HAProxy (su due nodi diversi) con Keepalived che gestisce un VIP (IP virtuale) condiviso. I due HAProxy si scambiano heartbeat: se l'attivo non risponde, il VIP si sposta sullo standby in 2-5 secondi. Gli utenti puntano sempre al VIP e non si accorgono dello spostamento.
 
-![LB singolo vs LB ridondato](img/lb_ridondato.svg)
+<img src="img/lb_ridondato.svg" alt="LB singolo vs LB ridondato" width="70%">
 
 ### 2.4 Cluster multi-master (database)
 
@@ -326,7 +328,7 @@ Ogni nodo MySQL in un cluster Galera ha il **proprio disco locale indipendente**
 | Disco | Condiviso o replicato | Locale e indipendente per ogni nodo |
 | Se un nodo cade | Lo standby subentra | Gli altri continuano, nessun failover |
 
-![Cluster multi-master Galera](img/multi_master.svg)
+<img src="img/multi_master.svg" alt="Cluster multi-master Galera" width="70%">
 
 **Tecnologie:** Galera Cluster, MySQL Group Replication, PostgreSQL Patroni. **Uso:** database in alta disponibilità che devono sopravvivere alla perdita di un nodo senza interruzione.
 
@@ -405,7 +407,7 @@ Un singolo server espone storage via rete (NFS, SMB/CIFS, iSCSI). **Vantaggi:** 
 
 Lo storage è distribuito su più nodi. Non esiste un singolo punto di guasto. **Tecnologie:** Ceph, GlusterFS, MinIO (per S3). **Vantaggi:** nessun single point of failure, scalabilità orizzontale, self-healing automatico. **Limiti:** complessità di gestione, overhead di rete, serve hardware e rete performanti.
 
-![NAS centralizzato vs distribuito](img/nas_confronto.svg)
+<img src="img/nas_confronto.svg" alt="NAS centralizzato vs distribuito" width="70%">
 
 ### 3.3 Confronto diretto
 
@@ -437,7 +439,7 @@ CephFS è il filesystem condiviso di Ceph. Non è un prodotto a sé ma un'interf
 
 ### 4.1 Le tre interfacce di Ceph
 
-![Le tre interfacce di Ceph](img/ceph_stack.svg)
+<img src="img/ceph_stack.svg" alt="Le tre interfacce di Ceph" width="70%">
 
 | Interfaccia | Tipo | Accesso | Uso tipico | Analogo |
 |-------------|------|---------|------------|---------|
@@ -528,7 +530,42 @@ Il load balancer serve per distribuire traffico su più VM identiche. L'HA serve
 | 3 VM web identiche | Load balancer (HAProxy) | Distribuire traffico, zero downtime |
 | 1 VM database | HA Proxmox (migrazione automatica) | Riavviarla su un altro nodo se il nodo cade |
 
-### 5.2 Migrazione HA vs DRBD: due modi di fare failover
+### 5.2 Le VM possono girare direttamente su un NAS?
+
+Sì. È una pratica comune e il meccanismo è semplice: il NAS espone un volume via NFS o iSCSI, l'hypervisor lo monta come datastore, e ci esegue le VM sopra. L'hypervisor non sa (e non gli interessa) se i blocchi stanno su un disco locale o su un NAS in rete — vede un volume e lo usa. Questo funziona sia in Proxmox sia in VMware ESXi.
+
+Questo permette di avere un **nodo slave pronto a partire**: due nodi hypervisor montano lo stesso NAS, le VM girano sul nodo A, il nodo B è idle. Se A cade, il sistemista avvia le VM su B puntandole agli stessi dischi — senza copiare nulla.
+
+```
+Stato normale:
+
+  [ Nodo A (attivo) ] ── esegue VM ──► [ NAS ]
+  [ Nodo B (slave)  ] ── montato, idle ► [ NAS ]
+
+Nodo A cade:
+
+  [ Nodo A  GUASTO  ]
+  [ Nodo B (attivo) ] ── avvia le VM ─► [ NAS ]
+```
+
+L'unica limitazione è la **prestazione**: la latenza di rete si aggiunge a ogni operazione di I/O. Con 1 GbE può essere lento; con 10 GbE la differenza con un disco locale è trascurabile. Per questo la rete storage è sempre dedicata e ad alta velocità.
+
+### 5.3 Si può avere la stessa VM accesa su due nodi?
+
+No. È un equivoco comune ma importante da chiarire: **non si può accendere la stessa VM contemporaneamente su due nodi diversi**. Due istanze della stessa VM che scrivono sugli stessi blocchi disco causano corruzione del filesystem — ext4, NTFS, XFS non sono progettati per accesso concorrente da due sistemi operativi.
+
+L'active-active non si fa duplicando la VM, ma duplicando il **servizio** dentro VM diverse e indipendenti, ognuna con il suo disco:
+
+| Cosa vuoi | Si può? | Perché |
+|---|---|---|
+| Stessa VM accesa su 2 nodi, stesso disco | **NO** | Corruzione disco garantita |
+| Stessa VM accesa su 2 nodi, dischi replicati (DRBD) | **NO** | DRBD replica anche i danni |
+| Due VM diverse, stesso servizio, dietro LB | **SÌ** | Active-active classico |
+| Una VM accesa, una spenta pronta a partire | **SÌ** | Active-passive / nodo slave |
+
+La confusione nasce dal fatto che "replica della VM" sembra voler dire "due copie identiche della stessa VM accese insieme". Ma active-active si fa a livello di servizio (più VM diverse che fanno la stessa cosa), non a livello di VM (stessa VM clonata e accesa due volte).
+
+### 5.4 Migrazione HA vs DRBD: due modi di fare failover
 
 Per proteggere un servizio stateful (un database, un file server) che non può essere duplicato, esistono due approcci alternativi. Entrambi raggiungono lo stesso obiettivo — il servizio riparte su un altro nodo se il nodo attivo cade — ma con meccanismi diversi.
 
@@ -548,7 +585,7 @@ Per proteggere un servizio stateful (un database, un file server) che non può e
 
 DRBD + Pacemaker è spesso la scelta in ambienti senza virtualizzazione — due server fisici dedicati a MySQL o PostgreSQL. Proxmox HA è la scelta quando hai già un cluster virtualizzato con molte VM diverse da proteggere.
 
-### 5.3 Tipi di migrazione
+### 5.5 Tipi di migrazione
 
 | Aspetto | Live (a caldo) | Offline (a freddo) |
 |---------|----------------|--------------------|
@@ -558,7 +595,7 @@ DRBD + Pacemaker è spesso la scelta in ambienti senza virtualizzazione — due 
 | Tempo di migrazione | Secondi | Minuti/ore (dipende dalla dimensione) |
 | Uso tipico | Manutenzione pianificata, bilanciamento carico, HA | Spostamento tra cluster, cambio storage |
 
-### 5.4 Perché la live migration richiede storage condiviso
+### 5.6 Perché la live migration richiede storage condiviso
 
 La condizione necessaria per la live migration è una sola: il disco della VM deve essere raggiungibile da entrambi i nodi **prima** che la migrazione inizi. Questo si può ottenere in due modi diversi.
 
@@ -576,19 +613,19 @@ La condizione necessaria per la live migration è una sola: il disco della VM de
 | Complessità | Alta | Bassa |
 | Caso d'uso tipico | Produzione critica | PMI, budget limitato, homelab avanzato |
 
-![Live migration: storage condiviso vs locale](img/live_migration.svg)
+<img src="img/live_migration.svg" alt="Live migration: storage condiviso vs locale" width="70%">
 
-### 5.5 Ripristino di una VM: manuale vs automatico
+### 5.7 Ripristino di una VM: manuale vs automatico
 
 Quando una VM diventa indisponibile (per corruzione della VM stessa o per guasto del nodo che la ospita), il ripristino dipende da dove sta il disco e da come è configurato il cluster.
 
 **Ripristino manuale (NAS centralizzato).** Il disco della VM è su un NAS accessibile da tutti i nodi. Il sistemista accede alla GUI di Proxmox, registra la VM su un nodo sano puntandola allo stesso volume sul NAS, e la avvia. Il disco non viene copiato — è già condiviso. Non si perdono dati (RPO = 0), ma il downtime dipende dalla rapidità del sistemista.
 
-![Ripristino manuale da NAS](img/migrazione_manuale_nas.svg)
+<img src="img/migrazione_manuale_nas.svg" alt="Ripristino manuale da NAS" width="70%">
 
 **Ripristino automatico (Ceph RBD + Proxmox HA).** Il disco è su Ceph, replicato su tutti i nodi. L'intero processo avviene senza intervento umano: Corosync rileva il guasto (~30s), il fencing isola il nodo guasto (~30s), l'HA Manager riavvia le VM sui nodi sani (~60s). Nessun dato perso, nessun intervento umano.
 
-![Ripristino automatico con Ceph RBD](img/migrazione_automatica_ceph.svg)
+<img src="img/migrazione_automatica_ceph.svg" alt="Ripristino automatico con Ceph RBD" width="70%">
 
 **Confronto tra le due procedure:**
 
@@ -604,7 +641,7 @@ Quando una VM diventa indisponibile (per corruzione della VM stessa o per guasto
 
 **Nota importante:** in entrambi i casi le VM vengono **riavviate** (cold restart), non migrate a caldo. La live migration richiede che la VM sia accesa e funzionante, il che non è possibile se il nodo è guasto. L'utente subisce un'interruzione di servizio pari al tempo di riavvio.
 
-### 5.6 Prerequisiti per la migrazione automatica (HA)
+### 5.8 Prerequisiti per la migrazione automatica (HA)
 
 Per l'HA automatico in Proxmox servono: minimo 3 nodi nel cluster per il quorum (oppure 2 nodi + 1 QDevice esterno); storage condiviso (Ceph RBD, NFS, iSCSI); VM configurata come "HA resource"; rete affidabile tra i nodi con rete dedicata per Corosync e per Ceph. Se manca anche solo uno di questi requisiti, la migrazione non sarà automatica.
 
@@ -623,7 +660,7 @@ Per l'HA automatico in Proxmox servono: minimo 3 nodi nel cluster per il quorum 
 
 Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità completa. I livelli seguenti rappresentano una scala progressiva di protezione, ognuno con costi e complessità crescenti.
 
-![Livelli di alta disponibilità](img/livelli_ha.svg)
+<img src="img/livelli_ha.svg" alt="Livelli di alta disponibilità" width="70%">
 
 ### 6.1 Livello 0 — Backup manuale (nessuna HA)
 
