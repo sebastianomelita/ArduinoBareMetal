@@ -617,32 +617,6 @@ La condizione necessaria per la live migration è una sola: il disco della VM de
 
 <img src="img/live_migration.svg" alt="Live migration: storage condiviso vs locale" width="70%">
 
-### 5.7 Ripristino di una VM: manuale vs automatico
-
-Quando una VM diventa indisponibile (per corruzione della VM stessa o per guasto del nodo che la ospita), il ripristino dipende da dove sta il disco e da come è configurato il cluster.
-
-**Ripristino manuale (NAS centralizzato).** Il disco della VM è su un NAS accessibile da tutti i nodi. Il sistemista accede alla GUI di Proxmox, registra la VM su un nodo sano puntandola allo stesso volume sul NAS, e la avvia. Il disco non viene copiato — è già condiviso. Non si perdono dati (RPO = 0), ma il downtime dipende dalla rapidità del sistemista.
-
-<img src="img/migrazione_manuale_nas.svg" alt="Ripristino manuale da NAS" width="70%">
-
-**Ripristino automatico (Ceph RBD + Proxmox HA).** Il disco è su Ceph, replicato su tutti i nodi. L'intero processo avviene senza intervento umano: Corosync rileva il guasto (~30s), il fencing isola il nodo guasto (~30s), l'HA Manager riavvia le VM sui nodi sani (~60s). Nessun dato perso, nessun intervento umano.
-
-<img src="img/migrazione_automatica_ceph.svg" alt="Ripristino automatico con Ceph RBD" width="70%">
-
-**Confronto tra le due procedure:**
-
-| Aspetto | NAS centralizzato (manuale) | Ceph RBD + HA (automatico) |
-|---------|---------------------------|---------------------------|
-| Chi interviene | Il sistemista | Il cluster autonomamente |
-| Tempo di ripristino (RTO) | Minuti-ore (dipende dal sistemista) | ~2 minuti |
-| Dati persi (RPO) | 0 (disco intatto sul NAS) | 0 (replica sincrona Ceph) |
-| Fencing | Non previsto | Automatico (watchdog/IPMI) |
-| Rischio split-brain | Basso (intervento manuale) | Nullo (quorum + fencing) |
-| Funziona di notte/weekend | Solo se c'è reperibilità | Sempre |
-| SPOF residuo | Il NAS stesso | Nessuno |
-
-**Nota importante:** in entrambi i casi le VM vengono **riavviate** (cold restart), non migrate a caldo. La live migration richiede che la VM sia accesa e funzionante, il che non è possibile se il nodo è guasto. L'utente subisce un'interruzione di servizio pari al tempo di riavvio.
-
 ### 5.8 Prerequisiti per la migrazione automatica (HA)
 
 Per l'HA automatico in Proxmox servono: minimo 3 nodi nel cluster per il quorum (oppure 2 nodi + 1 QDevice esterno); storage condiviso (Ceph RBD, NFS, iSCSI); VM configurata come "HA resource"; rete affidabile tra i nodi con rete dedicata per Corosync e per Ceph. Se manca anche solo uno di questi requisiti, la migrazione non sarà automatica.
