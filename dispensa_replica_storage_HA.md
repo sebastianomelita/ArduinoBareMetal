@@ -41,12 +41,13 @@
 6. [Livelli di HA: dalla protezione blanda alla HA reale](#6-livelli-di-ha-dalla-protezione-blanda-alla-ha-reale)
     - [6.1 Livello 0 — Backup](#61-livello-0--backup-manuale-nessuna-ha)
     - [6.2 Livello 1 — Restart locale](#62-livello-1--restart-automatico-locale)
-    - [6.3 Livello 2 — LB nodo singolo](#63-livello-2--load-balancer--vm-multiple-nodo-singolo)
-    - [6.4 Livello 3 — Cluster HA](#64-livello-3--cluster-multi-nodo-con-ha-automatico)
-    - [6.5 Livello 4 — Geo-ridondanza](#65-livello-4--geo-ridondanza-multi-sito)
-    - [6.6 Come scegliere](#66-come-scegliere-il-livello-giusto)
-    - [6.7 Confronto riassuntivo](#67-confronto-riassuntivo-dei-livelli)
-    - [6.8 Testare l'HA](#68-testare-lha-un-cluster-non-testato-non-funziona)
+    - [6.3 Livello 1b — DR con nodo slave](#63-livello-1b--disaster-recovery-con-nodo-slave-e-backup-su-nas)
+    - [6.4 Livello 2 — LB nodo singolo](#64-livello-2--load-balancer--vm-multiple-nodo-singolo)
+    - [6.5 Livello 3 — Cluster HA](#65-livello-3--cluster-multi-nodo-con-ha-automatico)
+    - [6.6 Livello 4 — Geo-ridondanza](#66-livello-4--geo-ridondanza-multi-sito)
+    - [6.7 Come scegliere](#67-come-scegliere-il-livello-giusto)
+    - [6.8 Confronto riassuntivo](#68-confronto-riassuntivo-dei-livelli)
+    - [6.9 Testare l'HA](#69-testare-lha-un-cluster-non-testato-non-funziona)
 7. [Il backup non è una replica](#7-il-backup-non-è-una-replica)
     - [7.1 La differenza fondamentale](#71-la-differenza-fondamentale)
     - [7.2 Cosa protegge cosa](#72-cosa-protegge-cosa)
@@ -684,7 +685,50 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
 | Costo | Basso |
 | Uso tipico | Piccole aziende, servizi interni a tolleranza media |
 
-### 6.3 Livello 2 — Load balancer + VM multiple (nodo singolo)
+### 6.3 Livello 1b — Disaster recovery con nodo slave e backup su NAS
+
+Un miglioramento del livello 1 che aggiunge protezione dal guasto hardware senza la complessità di un cluster HA. Le VM girano sul nodo A con dischi su ZFS locale (prestazioni ottimali). Ogni notte (o più frequentemente) un backup completo delle VM viene salvato su un NAS. Un secondo nodo B, normalmente idle, monta lo stesso NAS ed è pronto a ripristinare e avviare le VM in caso di emergenza.
+
+```
+Stato normale:
+
+  [ Nodo A ] ── VM su ZFS locale (veloce)
+       │
+   backup notturno
+       │
+       ▼
+  [ NAS ] ── immagini backup VM
+       │
+  [ Nodo B ] ── montato, idle
+
+Emergenza:
+
+  [ Nodo A  GUASTO ]
+  [ NAS ] ── il sistemista ripristina le VM dal backup
+  [ Nodo B ] ── avvia le VM ripristinate dal NAS
+```
+
+| Aspetto | Dettaglio |
+|---------|-----------|
+| Infrastruttura | 2 nodi + NAS, ZFS locale sul nodo primario, backup su NAS |
+| Protegge da | Guasto hardware del nodo, guasto disco, errori logici |
+| Non protegge da | Dati modificati dopo l'ultimo backup (RPO > 0) |
+| Downtime stimato | **Minuti-ore** (restore dal backup + avvio VM su nodo B) |
+| Dati persi (RPO) | Fino a 24h (backup notturno) o meno con backup più frequenti |
+| Costo | Medio-basso (un NAS + un nodo slave) |
+| Uso tipico | PMI che vogliono protezione HW senza complessità HA |
+
+**Miglioramento possibile:** invece di un backup notturno, fare snapshot incrementali ogni ora con Proxmox Backup Server. L'RPO scende da 24 ore a 1 ora, con impatto minimo sulle prestazioni del nodo A.
+
+| Aspetto | Backup notturno | Backup ogni ora | NAS come storage primario | Ceph RBD |
+|---------|----------------|-----------------|--------------------------|----------|
+| Prestazioni VM | **Ottime** (disco locale) | **Ottime** | Dipendono dalla rete | Buone |
+| RPO (dati persi) | Fino a 24h | Fino a 1h | **Zero** | **Zero** |
+| RTO (tempo ripristino) | Ore | Minuti-ore | Minuti | ~2 minuti |
+| Automatico | No | No | No | Sì |
+| Costo | Basso | Basso | Medio | Alto |
+
+### 6.4 Livello 2 — Load balancer + VM multiple (nodo singolo)
 
 | Aspetto | Dettaglio |
 |---------|-----------|
@@ -695,7 +739,7 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
 | Costo | Medio-basso |
 | Uso tipico | PMI, pre-produzione, servizi web con tolleranza al guasto HW |
 
-### 6.4 Livello 3 — Cluster multi-nodo con HA automatico
+### 6.5 Livello 3 — Cluster multi-nodo con HA automatico
 
 | Aspetto | Dettaglio |
 |---------|-----------|
@@ -706,7 +750,7 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
 | Costo | Alto (3+ server, rete dedicata, competenze) |
 | Uso tipico | Produzione aziendale, e-commerce, servizi critici |
 
-### 6.5 Livello 4 — Geo-ridondanza (multi-sito)
+### 6.6 Livello 4 — Geo-ridondanza (multi-sito)
 
 | Aspetto | Dettaglio |
 |---------|-----------|
@@ -717,7 +761,7 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
 | Costo | Molto alto (doppia infrastruttura, banda inter-sito, competenze avanzate) |
 | Uso tipico | Banche, cloud provider, infrastrutture critiche nazionali |
 
-### 6.6 Come scegliere il livello giusto
+### 6.7 Come scegliere il livello giusto
 
 ```
         Quanto costa un'ora di downtime?
@@ -737,17 +781,18 @@ Non tutti i contesti richiedono (o possono permettersi) un'alta disponibilità c
                    Ceph RBD)      geo-replica)
 ```
 
-### 6.7 Confronto riassuntivo dei livelli
+### 6.8 Confronto riassuntivo dei livelli
 
 | Livello | Nodi | Storage | Downtime max | Costo | Complessità |
 |---------|------|---------|-------------|-------|-------------|
 | 0 — Backup | 1 | ZFS locale | Ore | Minimo | Bassa |
 | 1 — Restart locale | 1 | ZFS + snapshot | Minuti | Basso | Bassa |
+| 1b — DR con nodo slave | 2 + NAS | ZFS locale + backup su NAS | Minuti-ore | Medio-basso | Bassa |
 | 2 — LB nodo singolo | 1 | ZFS locale | Zero (VM) / Ore (HW) | Medio | Media |
 | 3 — Cluster HA | 3+ | Ceph RBD | 1-3 minuti | Alto | Alta |
 | 4 — Geo-ridondanza | 6+ | Ceph + replica inter-sito | ~0 | Molto alto | Molto alta |
 
-### 6.8 Testare l'HA: un cluster non testato non funziona
+### 6.9 Testare l'HA: un cluster non testato non funziona
 
 Un cluster HA configurato ma mai testato è un cluster che probabilmente non funzionerà al momento del bisogno. Configurazioni errate, permessi mancanti, timeout troppo lunghi, fencing non configurato — tutti problemi che emergono solo quando si simula un guasto reale.
 
