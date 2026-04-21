@@ -231,7 +231,7 @@ Quando lo storage è su Ceph RBD e le VM sono configurate come risorse HA in Pro
 2. **Fencing** forza lo spegnimento del nodo guasto via watchdog/IPMI (~30 secondi)
 3. **HA Manager** sceglie un nodo sano e riavvia le VM (~60 secondi)
 
-<img src="migrazione_automatica_ceph.svg" alt="Ripristino automatico con Ceph RBD" width="70%">
+<img src="/img/migrazione_automatica_ceph.svg" alt="Ripristino automatico con Ceph RBD" width="70%">
 
 Il disco Ceph RBD è già accessibile da tutti i nodi — non c'è nulla da copiare o ripristinare. L'HA Manager deve solo dire a un nodo sano "avvia questa VM".
 
