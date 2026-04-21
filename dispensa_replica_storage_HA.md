@@ -6,7 +6,7 @@
 
 ## Indice
 
-0. [Glossario: grandezze e metriche fondamentali](#0-glossario-grandezze-e-metriche-fondamentali)
+0. [Glossario: grandezze e metriche fondamentali](#0-glossario-grandezze-e-metriche-fondamentali) — [approfondimento](approfondimenti/metriche.md)
 1. [Tipi di replica del disco](#1-tipi-di-replica-del-disco)
     - [1.1 Replica locale](#11-replica-locale-stesso-nodo)
     - [1.2 Replica sincrona di rete](#12-replica-sincrona-di-rete-tra-nodi)
@@ -20,15 +20,8 @@
     - [2.4 Cluster multi-master](#24-cluster-multi-master-database)
     - [2.5 Tassonomia riassuntiva](#25-tassonomia-riassuntiva)
     - [2.6 Il filo logico](#26-il-filo-logico-cosa-guida-la-scelta)
-3. [NAS centralizzato vs distribuito](#3-nas-centralizzato-vs-nas-distribuito)
-    - [3.1 NAS centralizzato](#31-nas-centralizzato)
-    - [3.2 NAS distribuito](#32-nas-distribuito)
-    - [3.3 Confronto diretto](#33-confronto-diretto)
-4. [Ceph: architettura e quando usare CephFS](#4-ceph-architettura-e-quando-usare-cephfs)
-    - [4.1 Le tre interfacce di Ceph](#41-le-tre-interfacce-di-ceph)
-    - [4.2 Quando CephFS è la scelta giusta](#42-quando-cephfs-è-la-scelta-giusta)
-    - [4.3 CephFS vs NFS](#43-schema-decisionale-cephfs-vs-nfs)
-    - [4.4 CephFS vs GlusterFS](#44-cephfs-vs-glusterfs)
+3. [NAS centralizzato vs distribuito](#3-nas-centralizzato-vs-nas-distribuito) — [approfondimento](approfondimenti/nas.md)
+4. [Ceph: architettura e quando usare CephFS](#4-ceph-architettura-e-quando-usare-cephfs) — [approfondimento](approfondimenti/ceph.md)
 5. [Migrazione delle VM in Proxmox](#5-migrazione-delle-vm-in-proxmox)
     - [5.1 Migrazione e load balancer](#51-migrazione-e-load-balancer-due-meccanismi-indipendenti)
     - [5.2 VM su NAS remoto](#52-le-vm-possono-girare-direttamente-su-un-nas)
@@ -63,24 +56,19 @@
 
 Prima di affrontare i temi della replica e dell'alta disponibilità, è essenziale conoscere le grandezze con cui si misurano le prestazioni e la resilienza di un'infrastruttura.
 
-### Metriche di disponibilità
-
-**Uptime** è il tempo in cui un servizio è operativo e raggiungibile. Si esprime come percentuale su base annua. La tabella seguente mostra i livelli convenzionali detti "nine" (da 9, cioè il numero di cifre significative dopo la virgola).
-
-| Livello | Uptime (%) | Downtime annuo | Esempio tipico |
-|---------|-----------|----------------|----------------|
-| 2 nine | 99% | 3 giorni 15 ore | Homelab, dev |
-| 3 nine | 99.9% | 8 ore 45 minuti | PMI, servizi interni |
-| 4 nine | 99.99% | 52 minuti | E-commerce, produzione |
-| 5 nine | 99.999% | 5 minuti | Banche, telco, cloud |
-
-**Downtime** è il complementare dell'uptime: il tempo in cui il servizio è indisponibile, sia per guasto sia per manutenzione programmata.
-
-### Metriche di ripristino
-
-**RTO (Recovery Time Objective)** è il tempo massimo accettabile per ripristinare il servizio dopo un guasto. È un obiettivo, non una misura: lo si decide prima che il guasto avvenga e si progetta l'infrastruttura per rispettarlo.
-
-**RPO (Recovery Point Objective)** è la quantità massima di dati che si accetta di perdere in caso di guasto, espressa in tempo. Un RPO di 1 ora significa che, nel caso peggiore, si perdono le ultime 60 minuti di scritture.
+| Termine | Definizione breve |
+|---------|-------------------|
+| **Uptime** | Percentuale di tempo in cui il servizio è operativo (es. 99.9% = 8h 45min di downtime/anno) |
+| **Downtime** | Tempo in cui il servizio è indisponibile, per guasto o manutenzione |
+| **RTO** | Recovery Time Objective — tempo massimo accettabile per ripristinare il servizio |
+| **RPO** | Recovery Point Objective — quantità massima di dati che si accetta di perdere |
+| **Latenza** | Tempo tra una richiesta e la sua risposta; nella replica, è il costo della sincronia |
+| **Throughput** | Banda disponibile (es. 1 GbE = ~100 MB/s, 10 GbE = ~1 GB/s) |
+| **IOPS** | Operazioni I/O al secondo; critico per i database (HDD ~200, SSD ~50.000, NVMe ~500.000) |
+| **SPOF** | Single Point of Failure — componente il cui guasto ferma tutto il servizio |
+| **Quorum** | Numero minimo di nodi attivi per prendere decisioni (3 nodi → quorum = 2) |
+| **Split-brain** | Due parti del cluster credono entrambe di essere attive → corruzione dati |
+| **Fencing** | Spegnimento forzato di un nodo guasto per impedire scritture concorrenti |
 
 ```
         Tempo ───────────────────────────────►
@@ -95,38 +83,7 @@ Prima di affrontare i temi della replica e dell'alta disponibilità, è essenzia
                                  │  (tempo di fermo) │
 ```
 
-| Metrica | Domanda a cui risponde | Esempio |
-|---------|----------------------|---------|
-| **RPO** | "Quanti dati posso permettermi di perdere?" | RPO = 0 → replica sincrona, nessuna perdita |
-| **RTO** | "Quanto tempo posso restare fermo?" | RTO = 2 min → serve HA automatico con failover |
-
-### Metriche di latenza e prestazioni
-
-**Latenza (delay)** è il tempo che intercorre tra una richiesta e la sua risposta. Nel contesto della replica, la latenza di rete tra i nodi determina quanto "costa" una replica sincrona: ogni scrittura deve attendere la conferma remota prima di completarsi.
-
-**Throughput (banda)** è la quantità di dati trasferibili nell'unità di tempo (es. MB/s, Gbps). Determina quanto velocemente i dati possono essere replicati tra nodi. Una rete a 1 GbE (~100 MB/s) è spesso insufficiente per replica sincrona sotto carico; 10 GbE (~1 GB/s) è il minimo consigliato per Ceph.
-
-**IOPS (Input/Output Operations Per Second)** è il numero di operazioni di lettura o scrittura che lo storage riesce a gestire al secondo. È la metrica critica per i database: un disco HDD fa 100-200 IOPS, un SSD SATA 10.000-50.000, un NVMe 100.000+.
-
-### Metriche di resilienza
-
-**SPOF (Single Point of Failure)** è un qualsiasi componente il cui guasto provoca l'indisponibilità dell'intero servizio. L'obiettivo dell'alta disponibilità è eliminare ogni SPOF.
-
-**Quorum** è il numero minimo di nodi che devono essere operativi perché il cluster prenda decisioni (es. riavviare una VM su un altro nodo). Con 3 nodi, il quorum è 2: se un nodo cade, i 2 rimanenti possono decidere. Con 2 nodi senza QDevice, la perdita di un nodo impedisce il quorum.
-
-**Split-brain** è la situazione in cui due parti di un cluster, non potendo comunicare tra loro, credono entrambe di essere il cluster attivo e operano in modo indipendente. Porta a corruzione dei dati. Il quorum serve proprio a prevenirlo: solo la partizione con la maggioranza può restare attiva.
-
-**Fencing** è il meccanismo con cui il cluster "isola" un nodo che non risponde, impedendogli di scrivere sui dischi condivisi. Proxmox usa il watchdog hardware o IPMI per forzare lo spegnimento del nodo guasto prima di riavviare le sue VM altrove.
-
-### Relazioni tra le metriche
-
-| Se vuoi... | Ti serve... | Che impatta su... |
-|-----------|------------|-------------------|
-| RPO = 0 (nessuna perdita dati) | Replica sincrona | Latenza di scrittura (+) |
-| RTO basso (ripristino rapido) | HA automatico, Ceph RBD | Costo infrastruttura (+) |
-| IOPS alti | SSD/NVMe, Ceph su SSD | Costo storage (+) |
-| Eliminare SPOF | Minimo 3 nodi, Ceph | Complessità (+) |
-| Prevenire split-brain | Quorum + fencing | Nodi minimi = 3 |
+📖 **[Approfondimento: metriche e grandezze in dettaglio →](approfondimenti/metriche.md)**
 
 [Torna all'indice](#indice)
 
@@ -425,21 +382,17 @@ Lo storage è distribuito su più nodi. Non esiste un singolo punto di guasto. *
 | Self-healing | NO | SÌ (automatico) |
 | Esempi | Synology, QNAP, TrueNAS | Ceph, GlusterFS, MinIO |
 
+📖 **[Approfondimento: NAS centralizzato e distribuito in dettaglio →](approfondimenti/nas.md)**
+
 [Torna all'indice](#indice)
 
 ---
 
 ## 4. Ceph: architettura e quando usare CephFS
 
-### Cos'è Ceph
+**Ceph** è una piattaforma di storage distribuito open source — è l'implementazione più diffusa di NAS distribuito nel mondo della virtualizzazione, integrata nativamente in Proxmox. Distribuisce i dati su un cluster di nodi (minimo 3), li replica automaticamente, e si auto-ripara in caso di guasto.
 
-**Ceph** è una piattaforma di storage distribuito open source, progettata per eliminare ogni single point of failure. Invece di un singolo NAS, Ceph distribuisce i dati su un cluster di nodi (tipicamente 3 o più), replicandoli automaticamente. Se un disco o un nodo cade, il cluster si auto-ripara senza intervento umano.
-
-Ceph non è un singolo servizio ma una piattaforma che espone tre interfacce diverse sullo stesso cluster fisico: blocchi (RBD), filesystem (CephFS) e oggetti S3 (RGW). Nella sezione 4 abbiamo visto la differenza tra NAS centralizzato e distribuito — Ceph è l'implementazione più diffusa di storage distribuito nel mondo della virtualizzazione, ed è integrato nativamente in Proxmox.
-
-CephFS è il filesystem condiviso di Ceph. Non è un prodotto a sé ma un'interfaccia costruita sopra un cluster Ceph esistente, accanto a RBD (blocchi) e RGW (oggetti S3).
-
-### 4.1 Le tre interfacce di Ceph
+Ceph espone tre interfacce diverse sullo stesso cluster fisico:
 
 <img src="img/ceph_stack.svg" alt="Le tre interfacce di Ceph" width="70%">
 
@@ -449,48 +402,9 @@ CephFS è il filesystem condiviso di Ceph. Non è un prodotto a sé ma un'interf
 | **CephFS** | Filesystem | Più VM insieme (condiviso) | File upload, config, asset | NFS, GlusterFS |
 | **RGW** | Oggetti (S3) | Via HTTP REST | Backup, media, log | Amazon S3, MinIO |
 
-### 4.2 Quando CephFS è la scelta giusta
+**Quando usare CephFS:** hai già un cluster Ceph e più VM devono condividere gli stessi file. **Quando non usarlo:** hai meno di 3 nodi, ti basta un NAS centralizzato, o lo storage serve per i dischi VM (usa RBD) o per backup (usa RGW).
 
-**USA CephFS quando:** hai già un cluster Ceph (es. Proxmox con Ceph); più VM devono leggere/scrivere gli stessi file; serve accesso POSIX (mount come directory locale); i file sono di dimensioni medie (documenti, config, upload utenti, asset web); serve scalabilità oltre un singolo NAS; serve tolleranza al guasto senza single point.
-
-**NON usare CephFS quando:** hai 1-2 nodi (Ceph richiede minimo 3); ti basta un NAS centralizzato (Synology, TrueNAS); le VM non devono condividere file tra loro; lo storage serve per blocchi VM (usa RBD); lo storage serve per backup/media via HTTP (usa RGW); non hai rete 10 GbE o superiore.
-
-### 4.3 Schema decisionale CephFS vs NFS
-
-```
-             Decidi tra CephFS e NFS
-                      │
-         Hai già un cluster Ceph?
-                      │
-                ┌─────┴─────┐
-                NO          SÌ
-                │            │
-       Quanti nodi hai?   Usa CephFS
-                │         (è già lì)
-          ┌─────┴─────┐
-          1-2        3+
-          │            │
-     NAS centrale   Vuoi eliminare
-     (NFS/Synology) il single point
-                    of failure?
-                       │
-                 ┌─────┴─────┐
-                 NO          SÌ
-                 │            │
-            NAS + backup   Installa Ceph
-            è sufficiente  e usa CephFS
-```
-
-### 4.4 CephFS vs GlusterFS
-
-| Aspetto | CephFS | GlusterFS |
-|---------|--------|-----------|
-| Architettura | Object store sotto (RADOS) | Brick su filesystem locali |
-| Metadati | Server dedicato (MDS) | Distribuiti (no MDS) |
-| Integrazione Proxmox | Nativa | Standalone |
-| Altre interfacce nello stesso cluster | RBD + RGW | Solo filesystem |
-| Complessità | Alta | Media |
-| Meglio per | Ambienti già Ceph / Proxmox | Cluster dedicati solo a file |
+📖 **[Approfondimento: architettura Ceph, replica, CRUSH map, quorum →](approfondimenti/ceph.md)**
 
 [Torna all'indice](#indice)
 
@@ -617,7 +531,7 @@ La condizione necessaria per la live migration è una sola: il disco della VM de
 
 <img src="img/live_migration.svg" alt="Live migration: storage condiviso vs locale" width="70%">
 
-### 5.8 Prerequisiti per la migrazione automatica (HA)
+### 5.7 Prerequisiti per la migrazione automatica (HA)
 
 Per l'HA automatico in Proxmox servono: minimo 3 nodi nel cluster per il quorum (oppure 2 nodi + 1 QDevice esterno); storage condiviso (Ceph RBD, NFS, iSCSI); VM configurata come "HA resource"; rete affidabile tra i nodi con rete dedicata per Corosync e per Ceph. Se manca anche solo uno di questi requisiti, la migrazione non sarà automatica.
 
