@@ -11,7 +11,7 @@
 
 Di seguito è riportata l'architettura generale di una **rete di reti** di sensori. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
 
-<img src="sensornet1.png" alt="alt text" width="800">
+<img src="../sensornet1.png" alt="alt text" width="800">
 
 ### **Rete di distribuzione** 
 
@@ -27,7 +27,7 @@ Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione **in Internet** + server di gestione e controllo che potrebbe rappresentare **tre edifici** distanti domotizzati tramite **zigbeee** e federati tramite **Internet**: 
 
-<img src="img/integratedGW-Zigbee.png" alt="alt text" width="900">
+<img src="../img/integratedGW-Zigbee.png" alt="alt text" width="900">
 
 Il **bridge zigbee** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **coordinatore** della rete di sensori. 
 
@@ -57,4 +57,4 @@ La **partizione** di una rete Zigbee potrebbe essere utile anche in determinate 
 
 Per **partizionare** una rete Zigbee, si potrebbero creare **più coordinatori** Zigbee, cioè più **gateway**, ciascuno con la propria rete di sensori da gestire, e utilizzare una **LAN** (composta da più switch) per collegare le reti tra loro. 
 
-<img src="img/integratedGW-ZigbeeLAN.png" alt="alt text" width="900">
+<img src="../img/integratedGW-ZigbeeLAN.png" alt="alt text" width="900">
