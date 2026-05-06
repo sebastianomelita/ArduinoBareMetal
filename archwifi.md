@@ -57,10 +57,14 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 ## **Rete in modo infrastruttura** 
 
+## **Architetture delle reti WiFi** 
+
 Una architettura di rete wireless WiFi è può essere realizzata in tre modalità:
 - **Modalità Infrastruttura** di tipo master/slave
 - **Modalità ad hoc** di tipo peer to peer 
 - **Modalità Wifi Direct**  di tipo Punto – punto
+
+## **Architettura WiFi Infrastruttura** 
 
 Le architetture **più diffuse** in ambito aziendale ed **indoor** sono di **tipo infrastruttura** e sono composte di un dispositivo master centrale detto **Access Point (AP)** posto in posizione **baricentrica** rispetto a più dispositivi slave della rete wireless detti **Client**. 
 
