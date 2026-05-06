@@ -32,130 +32,17 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 
-## **Architettura di una rete di reti** 
+[Rete di reti BLE](/approfondimenti/ble_federation.md)
+       
+[Broker MQTT](/approfondimenti/broker_mqtt.md)
 
-Di seguito è riportata l'architettura generale di una **rete di reti** di sensori. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
+[Messaggi MQTT](/approfondimenti/messaggi_mqtt.md)
 
-<img src="sensornet1.png" alt="alt text" width="800">
+[Server di gestione](/approfondimenti/server_di_gestione.md)
 
-### **Rete di distribuzione** 
-
-I **gateway** utilizzano la **rete internet** e/o una **LAN** per realizzare un collegamento verso il **broker MQTT**, per cui, in definitiva, la topologia risultante è, **fisicamente**, quella di più **reti di accesso** con tecnologia e topologia differente (a maglia nel caso di BLE) tenute insieme da una **rete di distribuzione** qualsiasi purchè sia di tipo TCP/IP (LAN o Internet).
-
-Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture è utile perchè permette di creare interfacce web o applicazioni per smartphone o tablet per:
-- eseguire, in un'unica interfaccia (form), comandi verso attuatori posti su reti con tecnologia differente.
-- riassumere in un'unica interfaccia (report) letture di sensori provenienti da reti eterogenee per tecnologia e topologia
-
-Il **gateway All-In-One** potrebbe essere un dispositivo con **doppia interfaccia**, modem **UMTS** per l'accesso alla rete di distribuzione su **Internet**, **BLE** verso la **rete di sensori**. Può essere utile per realizzare un **gateway BLE da campo** da adoperare:
-- in **contesti occasionali** (fiere, eventi sportivi, infrastrutture di emergenza, grandi mezzi mobili).
-- in contesti simili ma **dispersi** in aree geografiche molto distanti tra loro e coperte solo dalla **rete cellulare** terrestre della telefonia mobile o dai **satelliti in orbita bassa (LEO)**.
-  
-## **Documentazione logica della rete (albero degli apparati attivi)** 
-
-### **Federazione di reti BLE in Internet** 
-
-L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione **in Internet** + server di gestione e controllo che potrebbe rappresentare **tre edifici** distanti domotizzati tramite **BLE** e federati tramite **Internet**: 
-
-<img src="img/integratedGW-BLE.png" alt="alt text" width="900">
-
-Il **bridge BLE** (in realtà è un **gateway** e quindi pure un router) è normalmente anche il **master o centrale** della rete di sensori. 
-
-Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
-
-Il **gateway**, quando collegato direttamente ad **Internet**, è normalmente anche un **firewall** (con funzioni di NAT se si adopera IPv4), mentre se collegato alla **LAN** (attraverso uno SW o un HUB wiereless) ha solamente la **funzioni** di:
-- **router applicativo** che **traduce** i messaggi da una rete IP (la LAN) ad una non IP (la rete di sensori).
-- **client MQTT** con funzione di **publisher** (sul topic di stato e traduce **da** i dispositivi) e di **subscriber** (sui topic di comando e configurazione e traduce **verso** i dispositivi).
-
-### **Federazione di reti BLE su LAN** 
-
-#### **Partizionamento e ridondanza** 
-
-Per quanto riguarda il **numero dei gateway** in una stessa **LAN**, il numero minimo necessario perchè la rete BLE funzioni è **uno**. Un gateway avente anche funzione di **master** nelle rete di sensori. Però, data la **criticità** di eventuali **guasti** su questo dispositivo (la rete di sensori diventa nel suo complesso **inaccessibile**), potrebbe essere opportuno prevedere:
-- localmente la **ridondanza dei gateway**. Almeno 2 gateway per ogni rete di sensori. Uno master attivo di default, e uno slave che entra in azione quando sente che il proprio master è non raggiungibile.
-- globalmente un **partizionamento della rete** di sensori in più settori con frequenze diverse e gestiti da coordinatori diversi inseriti in **più gateway sparsi** in **zone diverse** dell'impianto.
-  
-La **partizione** di una rete BLE può essere utile in determinate situazioni, specialmente se si hanno un **gran numero** di dispositivi o se si vuole **separare** i dispositivi **per zone** o **per scopi** diversi. Ecco alcune **situazioni** in cui potrebbe essere vantaggioso partizionare una rete BLE:
-
-- **Servizi e profili**: Nelle reti BLE, i dispositivi comunicano attraverso **servizi** e **profili** Bluetooth standardizzati. Puoi organizzare i dispositivi in **gruppi** basati su **servizi simili** o scopi simili. Ad esempio, potresti avere un gruppo di dispositivi BLE che forniscono dati di monitoraggio della salute e un altro gruppo di dispositivi che controllano i dispositivi domestici intelligenti.
-
-- **Partizionamento fisico**: Si possono dividere fisicamente le reti BLE in base alla loro **posizione** o alla loro **area di copertura**. Ad esempio, potresti avere un insieme di dispositivi BLE all'interno di un'abitazione e un altro insieme di dispositivi all'esterno. In questo caso, potresti usare **più gateway** o controller per gestire le diverse parti della rete.
-
-- **Rilevanza dei dati**: Si possono configurare i  dispositivi BLE per trasmettere solo i dati rilevanti per una particolare area o scopo. Ad esempio, in un grande magazzino, si potrebbe voler raccogliere solo i dati dai sensori nelle aree attive durante un determinato momento anziché da tutti i dispositivi nell'intero magazzino.
-
-- **Gestione del traffico**: Si potrebbe pianificare la distribuzione dei dispositivi BLE in modo da evitare congestioni di traffico e interferenze. Ad esempio, si potrebbe evitare di sovraccaricare una specifica area con troppi dispositivi BLE che trasmettono contemporaneamente.
-
-Il partizionamento delle reti BLE può essere utile per migliorare l'efficienza, la sicurezza e la gestibilità di una infrastruttura IoT. Per **partizionare** una rete BLE, si potrebbero creare **più centrali** BLE, cioè più **gateway**, ciascuno con la propria rete di sensori da gestire, e utilizzare una **LAN** (compoasta da switch) per collegare le reti tra loro. 
-
-<img src="img/integratedGW-BLE-LAN.png" alt="alt text" width="900">
-
-##  **Canali di comunicazione principali in una rete di sensori**
-
-**In sintesi**, sono necessari almeno **due canali** di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
-- **tra sensori e gateway** verso la LAN realizzato dalle **sottoreti dei sensori**:
-    - **A filo** con accesso:,
-        - **singolo dedicato**: un filo o un canale per sensore in tecnologia SDM o TDM (multiplexer, UART, porta analogica, porta digitale)
-        - **multiplo condiviso** cioè tramite mezzo broadcast (BUS) con **arbitraggio** di tipo **master slave** (Modubus, Dallas, I2C, SPI) o **peer to peer** (CanBUS, KNX, ecc) o misto (ProfiBUS). 
-        - Spesso **bidirezionale** specie se in presenza di attuatori
-        
-    - **Senza filo** cioè wireless con accesso:
-        - **singolo dedicato**: link punto-punto analogico digitalizzato con AX25 oppure digitale con un radio modem (Yarm ACME Systems, 6LoWPAN, LoRa) resi full duplex con l'uso di multiplazioni FDM o TDM.
-        - **Multiplo e condiviso** (BUS) di tipo half duplex reso bidirezionale (full duplex) tramite tecniche asincrone CSMA/CA (BLE, wifi, LoRa) o sincrone TDMA (BLE, Bluetooth).
-- **Tra gateway e gestore** delle informazioni realizzato dalla **rete di distribuzione**:
-     - Tipicamente tramite **LAN ethernet** e architettura **Client/Server**
-     - Interazioni di tipo PUSH o PULL
-     - Paradigma Request/Response (HTTPS, COAP), Publish/Subscriber (MQTT) oppure canale persistente bidirezionale (BSD socket o WebSocket)
-
-## **Broker MQTT** 
-
-Il **broker MQTT** è solo una delle tante soluzioni possibili per realizzare un **canale multicast** di livello **applicativo** tramite cui un utente col ruolo di **publisher** è in grado di notificare una **replica** dello stesso messaggio a più **subscribers**. E' utile per:
-- inoltro dei comandi da un **sensore di comando** su una rete di tipo A (ad es. LoRaWAN) ad un attuatore su una rete diversa di tipo B (ad es. BLE)
-- inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **pannello di controllo** su una rete diversa di tipo B (tipicamente IP)
-- inoltro di una **misura** da un **sensore ambientale** su una rete di tipo A (ad es. LoRaWAN) ad un **server di gestione** su una rete diversa di tipo B (tipicamente IP)
-
-Il **canale applicativo** su cui vengono inviati i messaggi sono quindi i **topic**. Su un certo **topic** il dispositivo con il ruolo di **output** agisce come un **publisher**, mentre quello con il ruolo di **input** agisce come un **subscriber**.
-
-Gli utenti, in ogni caso, si comportano tutti come **client** poiché sono loro che **iniziano la connessione** con il broker e non il viceversa. 
-
-<img src="img/fasimqtt.jpg" alt="alt text" width="600">
-
-**Fasi** del protocollo:
-1. Il **Subscriber** dichiara presso il broker il proprio interesse a ricevere notifiche riguardo ad un certo argomento (topic) effettuando una chiamata **subscribe()**
-2. il **publisher** pubblica un messaggio che riguarda un **certo topic** effettuando una chiamata **publish()**
-3. Il **broker** inoltra il messaggio a tutti i subscriber interessati a **quel topic**
-
-L'**ID MQTT** è un identificativo che permette di individuare un dispositivo ma non è un indirizzo di livello 3, non individua la macchina host in base al suo IP, piuttosto è un indirizzo di livello applicativo noto solo ad un server centrale, cioè il broker. Un dispositivo IoT non è tenuto a conoscere l'IP di tutti gli altri dispositivi ma solamente quello del broker. Il broker soltanto sa gli indirizzi di tutti i dispositivi, conoscenza che acquisisce durante la fase di **connessione** di un client al broker, momento in cui avviene anche il recupero del'**socket remoto** del client.
-
-Il **broker**, dal canto suo, **associa** ogni **topic** con tutti gli **ID** che sono registrati presso di esso come **subscriber**. Questa associazione è utilizzata per smistare tutti i messaggi che arrivano con un certo topic verso tutti gli ID che ad esso sono associati. Il topic diventa così un **indirizzo di gruppo**. La particolarità di questo indirizzo è che è **gerarchico** secondo una struttura ad **albero**, cioè gruppi di dispositivi possono essere suddivisi in **sottogruppi** più piccoli estendendo il nome del path con un **ulteriore prefisso**, diverso per ciascun sottogruppo. L'operazione può essere ripetuta ulteriormente in maniera **ricorsiva**.
-
-**Ad esempio**, posso individuare le lampade della casa con il path ```luci``` e accenderle e spegnerle tutte insieme, ma posso sezionarle ulteriormente con il path ```luci/soggiorno``` con il quale accendere o spegnere solo quelle del soggiorno oppure con il path ```luci/soggiorno/piantane``` con il quale fare la stessa cosa ma solo con le piantane del soggiorno.
-
-Osservando l'albero degli **apparati attivi**, si vede bene che, nelle **reti BLE**, il **client MQTT** (con il ruolo di **publisher** o di **subscriber**) è sempre il **gateway** che è anche il master della rete BLE. 
-
-In **generale**, su reti **non IP**, i **client MQTT** (con il ruolo di **publisher** o di **subscriber**) sono sempre i **gateway di confine** della **rete di sensori**. Le uniche reti di sensori che non hanno bisogno di un gateway di confine che sia, nel contempo anche client MQTT, sono le reti IP. Esistono ancora i gateway nelle **reti IP** ma con **scopi diversi** da quello di **realizzare** un **client MQTT**. Nelle **reti IP**, il **client MQTT** è, normalmente, direttamente **a bordo** del **dispositivo** sensore dotato di indirizzo IP (**MCU**).
-
-Il **vantaggio** del **broker MQTT** è quello di poter gestire in modo semplice e **standardizzato** lo **smistamento** (inoltro) delle **misure** e dei **comandi** tra i vari portatori di interesse (stakeholder) di un **cluster** di reti di sensori, siano essi utenti umani, interfacce grafiche, server applicativi diversi o altri dispositivi IoT.
+[Sensori](/approfondimenti/sensore.md)
 
 
-### **Alternative ad MQTT**
-
-Esistono molte altre soluzioni che magari sono più semplici e graficamente accattivanti ma che passano per portali proprietari o per servizi cloud a pagamento e nulla aggiungono di didatticamente rilevante ai nostri discorsi. Normalmente sono basate su webservices realizzati con protocolli Request/Response quali **HTTPS** e **COAP**.
-
-## **Server di gestione** 
-
-E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **subscriber** per:
-- realizzazione delle **interfacce web** per la gestione e la visualizzazione dei dati dei dispositivi e delle applicazioni agli utenti.
-- elaborazioni a **breve termine** quali la generazione di **statistiche** per la determinazione di **soglie** o **predizioni** per:
-    - realizzazione da remoto della **logica di comando** (processo dei comandi) degli **attuatori**
-    - **report** per l'assistenza alle decisioni
-    - generazioni di **allarmi**
-    - realizzazione di **ottimizzazioni** della gestione o del consumo di risorse, energia o materie prime
-    - contabilizzazione dei consumi (**smart metering**)
-    - controllo e sorveglianza in tempo reale dello **stato** di impianti o macchinari
-    - segnalazione dei **guasti** o loro **analisi predittiva** prima che accadano
-    - **consapevolezza situazionale** di ambienti remoti, difficili, pericolosi o ostili (https://it.wikipedia.org/wiki/Situational_awareness)
-- elaborazioni a **lungo termine** quali:
-    - analisi dei dati per la realizzazione di studi scientifici
-    - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
 
 ## **Semantica applicativa standard**
 
