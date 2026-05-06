@@ -18,7 +18,7 @@ Il **canale applicativo** su cui vengono inviati i messaggi sono quindi i **topi
 
 Gli utenti, in ogni caso, si comportano tutti come **client** poiché sono loro che **iniziano la connessione** con il broker e non il viceversa. 
 
-<img src="img/fasimqtt.jpg" alt="alt text" width="600">
+<img src="../img/fasimqtt.jpg" alt="alt text" width="600">
 
 **Fasi** del protocollo:
 1. Il **Subscriber** dichiara presso il broker il proprio interesse a ricevere notifiche riguardo ad un certo argomento (topic) effettuando una chiamata **subscribe()**
