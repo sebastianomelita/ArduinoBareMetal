@@ -91,7 +91,7 @@ Il **gateway All-In-One** potrebbe essere un dispositivo con **doppia interfacci
      - Interazioni di tipo PUSH o PULL
      - Paradigma Request/Response (HTTPS, COAP), Publish/Subscriber (MQTT) oppure canale persistente bidirezionale (BSD socket o WebSocket)
        
-[Sensori](/approfondimenti/broker_mqtt.md)
+[Broker MQTT](/approfondimenti/broker_mqtt.md)
 
 [Server di gestione](/approfondimenti/server_di_gestione.md)
 
