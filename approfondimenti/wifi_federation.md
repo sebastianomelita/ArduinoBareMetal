@@ -1,11 +1,17 @@
+>[Torna a reti ethernet](../archeth.md)
 
+- [Dettaglio architettura Zigbee](../archzigbee.md)
+- [Dettaglio architettura BLE](../archble.md)
+- [Dettaglio architettura WiFi infrastruttura](../archwifi.md)
+- [Dettaglio architettura WiFi mesh](../archmesh.md) 
+- [Dettaglio architettura LoraWAN](../lorawanclasses.md) 
 
 
 ## **Architettura di una rete di reti** 
 
 Di seguito è riportata l'architettura generale di una **rete di reti** di sensori. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
 
-<img src="sensornet1.png" alt="alt text" width="800">
+<img src="../sensornet1.png" alt="alt text" width="800">
 
 ### **Rete di distribuzione** 
 
@@ -17,7 +23,7 @@ In questo caso non è necessario avere dei gateway con funzione di traduzione da
 
 L'albero degli **apparati attivi** di una rete di sensori + rete di distribuzione + server di gestione e controllo potrebbe apparire:
 
-<img src="img/integratedGW-WiFimesh.png" alt="alt text" width="1000">
+<img src="../img/integratedGW-WiFimesh.png" alt="alt text" width="1000">
 
 Il **broker MQTT** può essere installato in cloud, in una Virtual Private network, oppure On Premise direttamente nel centro di gestione e controllo. 
 
