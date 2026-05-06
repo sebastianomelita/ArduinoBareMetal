@@ -56,7 +56,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 [Sensori](/approfondimenti/sensore.md)
 
-## **Rete in modo infrastruttura** 
+## **Architetture delle reti WiFi** 
 
 Una architettura di rete wireless WiFi è può essere realizzata in tre modalità:
 - **Modalità Infrastruttura** di tipo master/slave
