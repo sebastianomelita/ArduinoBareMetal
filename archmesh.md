@@ -48,7 +48,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 La **rete di distribuzione**, in questo caso, **coincide** con una **rete di reti IP**, in definitiva direttamente con **Internet** se le reti wifi sono **federate** e **remote**, cioè in luoghi sparsi in Internet. 
 
-In questo caso non è necessario avere dei gateway con funzione di traduzione dalla rete di ditribuzione IP a quella dei sensori, dato che questa è anch'essa una rete IP.
+In questo caso non è necessario avere dei gateway con funzione di traduzione dalla rete di distribuzione IP a quella dei sensori, dato che questa è anch'essa una rete IP.
 
 ## **Architettura di una rete di reti** 
 
