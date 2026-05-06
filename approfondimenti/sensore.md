@@ -32,7 +32,7 @@
 
 Per il dettaglio sulla realizzazione del firmware vedi [Firmware](../sensorfw.md).
 
-###  **Canali di comunicazione principali in una rete di sensori**
+##  **Canali di comunicazione principali in una rete di sensori**
 
 **In sintesi**, sono necessari almeno **due canali** di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
 - **tra sensori e gateway** verso la LAN realizzato dalle **sottoreti dei sensori**:
