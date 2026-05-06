@@ -63,6 +63,8 @@ Una architettura di rete wireless WiFi è può essere realizzata in tre modalit�
 - **Modalità ad hoc** di tipo peer to peer 
 - **Modalità Wifi Direct**  di tipo Punto – punto
 
+## **Architettura WiFi Mesh** 
+
 Le architetture **più diffuse** in ambito aziendale ed **outdoor** sono di **tipo Modalità wifi mesh** e sono composte di una rete magliata di dispositivi (router o bridge wifi) collegati attraverso un nodo gateway ad un rete cablata o wireless che fornisce l'accesso ad Internet.
 
 Gli **elementi** di una rete in modo infrastruttura sono:
