@@ -71,7 +71,7 @@ Questa dispensa analizza in dettaglio la terza architettura, quella di Ubiquiti 
 
 Prima di entrare nei dettagli, vediamo l'architettura complessiva. Una rete UniFi con captive portal coinvolge cinque componenti principali, ciascuno con una responsabilità precisa. Il diagramma seguente li mostra tutti insieme con i flussi di traffico:
 
-![Architettura completa UniFi](images/diagram1_architettura.png)
+![Architettura completa UniFi](../img/diagram1_architettura.png)
 
 *Figura 1 — Architettura completa di un captive portal UniFi: client, AP, gateway, controller, RADIUS, firewall.*
 
@@ -92,7 +92,7 @@ L'architettura mostrata nella Figura 1 è il modello "completo" che vedi nei mat
 
 Questo è esattamente lo scenario reale del nostro istituto, ed è importante capirlo perché molti diagrammi standard non lo mostrano.
 
-![Architettura UniFi senza gateway dedicato](images/diagram4_no_gateway.png)
+![Architettura UniFi senza gateway dedicato](../img/diagram4_no_gateway.png)
 
 *Figura 1-bis — Architettura reale di una scuola italiana: nessun apparato hardware "Gateway UniFi", funzioni redistribuite tra Firewall e Controller-su-VM.*
 
@@ -245,7 +245,7 @@ La separazione tra gateway UniFi e firewall aziendale è una buona pratica di si
 
 L'Access Point è il componente più sottovalutato dell'architettura UniFi. La maggior parte degli studenti (e anche di molti professionisti) lo considera una semplice "antenna intelligente", ma in realtà contiene una stack software complessa che gestisce localmente molte funzioni del captive portal. Vediamo come è organizzato internamente:
 
-![Architettura interna dell'AP UniFi](images/diagram3_ap_interno.png)
+![Architettura interna dell'AP UniFi](../img/diagram3_ap_interno.png)
 
 *Figura 2 — Architettura interna dell'Access Point UniFi: hardware, kernel Linux, user space.*
 
@@ -293,7 +293,7 @@ Sopra il kernel, in user space, girano alcuni processi dedicati:
 
 Vediamo ora come funziona il sistema in azione, seguendo passo passo cosa succede quando un utente si connette per la prima volta al WiFi e si autentica. Il diagramma di sequenza che segue mostra TUTTI i messaggi scambiati tra i cinque attori, divisi in quattro fasi temporali distinte:
 
-![Diagramma di sequenza completo](images/diagram2_sequenza.png)
+![Diagramma di sequenza completo](../img/diagram2_sequenza.png)
 
 *Figura 3 — Diagramma di sequenza completo: dal collegamento all'autenticazione all'accesso a Internet.*
 
