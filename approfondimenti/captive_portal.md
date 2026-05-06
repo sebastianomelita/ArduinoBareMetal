@@ -1,5 +1,3 @@
-
-
 # Il Captive Portal Ubiquiti UniFi
 
 ## Architettura, funzionamento e flusso dei messaggi
@@ -16,6 +14,7 @@
 
 1. [Introduzione: cos'è un captive portal e perché serve](#1-introduzione-cosè-un-captive-portal-e-perché-serve)
 2. [L'architettura UniFi a colpo d'occhio](#2-larchitettura-unifi-a-colpo-docchio)
+2-bis. [Variante reale: l'architettura SENZA gateway UniFi dedicato](#2-bis-variante-reale-larchitettura-senza-gateway-unifi-dedicato)
 3. [I cinque attori del sistema](#3-i-cinque-attori-del-sistema)
    - 3.1 Il client
    - 3.2 L'Access Point
@@ -72,7 +71,7 @@ Questa dispensa analizza in dettaglio la terza architettura, quella di Ubiquiti 
 
 Prima di entrare nei dettagli, vediamo l'architettura complessiva. Una rete UniFi con captive portal coinvolge cinque componenti principali, ciascuno con una responsabilità precisa. Il diagramma seguente li mostra tutti insieme con i flussi di traffico:
 
-![Architettura completa UniFi](../img/diagram1_architettura.png)
+![Architettura completa UniFi](images/diagram1_architettura.png)
 
 *Figura 1 — Architettura completa di un captive portal UniFi: client, AP, gateway, controller, RADIUS, firewall.*
 
@@ -84,6 +83,84 @@ Una nota di lettura: i flussi sono di due tipi:
 > 🔑 **Punto chiave dell'architettura**
 >
 > L'Access Point UniFi **NON è un semplice bridge L2 stupido**. È una macchina Linux embedded con processi attivi che gestiscono parte significativa della logica del captive portal localmente. Questa è una caratteristica distintiva di UniFi rispetto ad architetture controller-based più tradizionali (come Cisco WLC), e ha implicazioni importanti sullo scaling e sul comportamento della rete.
+
+---
+
+## 2-bis. Variante reale: l'architettura SENZA gateway UniFi dedicato
+
+L'architettura mostrata nella Figura 1 è il modello "completo" che vedi nei materiali commerciali Ubiquiti, con tutti i pezzi in casa. Ma nelle reti reali — **specialmente nelle scuole italiane** — è molto comune incontrare uno scenario diverso: **non c'è alcun gateway UniFi**. Il routing, il NAT e il DHCP vengono fatti dal firewall aziendale (FortiGate, Stormshield, pfSense) che già esisteva prima dell'installazione del WiFi UniFi, mentre il **Controller UniFi gira come applicazione software dentro una macchina virtuale Linux** ospitata su un server di virtualizzazione della scuola.
+
+Questo è esattamente lo scenario reale del nostro istituto, ed è importante capirlo perché molti diagrammi standard non lo mostrano.
+
+![Architettura UniFi senza gateway dedicato](images/diagram4_no_gateway.png)
+
+*Figura 1-bis — Architettura reale di una scuola italiana: nessun apparato hardware "Gateway UniFi", funzioni redistribuite tra Firewall e Controller-su-VM.*
+
+### 2-bis.1 Cosa cambia rispetto allo scenario "completo"
+
+Le differenze concrete sono tre:
+
+**1. Il Firewall aziendale assorbe le funzioni di gateway L3.**
+Tutto quello che nello scenario completo era affidato al Gateway UniFi (USG/UDM/UXG) — DHCP server della VLAN guest, routing inter-VLAN, NAT verso WAN, DNS forwarder — viene fatto dal firewall di terze parti. Per il client, il default gateway `10.12.0.1` non è un apparato Ubiquiti ma un FortiGate/Stormshield/pfSense. Funzionalmente non cambia nulla dal punto di vista del client: continua a ricevere il suo IP via DHCP e a uscire verso Internet attraverso quel default gateway.
+
+**2. Il Controller gira come VM, non come hardware dedicato.**
+La UniFi Network Application è un'applicazione Java (con database MongoDB embedded) che può essere installata su qualsiasi sistema Linux, Windows o macOS. Tipicamente nelle scuole si crea una VM Ubuntu Server o Debian con 4 GB di RAM e 2 vCPU, sopra un hypervisor scolastico (Proxmox, VMware ESXi, o Hyper-V). La VM riceve un IP della rete di management, e da lì comunica con tutti gli AP via protocollo `inform` sulla porta 8080.
+
+**3. La landing page del portale è ospitata dal Controller stesso.**
+Nello scenario completo la pagina HTML del portale era servita dal Gateway UniFi sulle porte 8880/8843. Senza gateway, il Controller stesso fa da web server per la landing page. Quando l'AP fa il redirect HTTP 302, l'header `Location` punta all'IP del Controller (es. `https://10.10.0.5:8843/...`) invece che all'IP del gateway. L'IP del Controller deve quindi essere inserito nel walled garden, altrimenti i client in stato Pending non potrebbero raggiungerlo.
+
+### 2-bis.2 Confronto tabellare delle due architetture
+
+| Funzione | Con Gateway UniFi | Senza Gateway UniFi |
+|---|---|---|
+| Routing L3 / NAT | Gateway UniFi | Firewall aziendale |
+| DHCP server | Gateway UniFi | Firewall aziendale |
+| Hosting landing page portale | Gateway UniFi (:8880/:8843) | Controller su VM (:8880/:8843) |
+| DNS hijacking + redirect HTTP | AP UniFi (uguale) | AP UniFi (uguale) |
+| Walled garden enforcement | AP UniFi (uguale) | AP UniFi (uguale) |
+| Stato Pending/Authorized | AP UniFi (uguale) | AP UniFi (uguale) |
+| Autenticazione / vouchers / RADIUS | Controller | Controller (su VM) |
+| Content filter MIUR / IPS | Firewall aziendale | Firewall aziendale (uguale) |
+| Identità del Controller | Cloud Key / UDM-Pro | VM Linux (Ubuntu/Debian) |
+| Protocollo AP → Controller | `inform` :8080 | `inform` :8080 (uguale) |
+
+Nota importante: **le funzioni dell'AP non cambiano**. `dnsmasq`, `redirector`, `iptables`, `ipset`, lo stato Pending/Authorized — tutto questo gira sull'AP a prescindere dal fatto che esista o meno un gateway UniFi. È questo che rende l'architettura UniFi flessibile: la "logica intelligente" è distribuita sugli AP e non dipende dalla presenza di hardware Ubiquiti centrale.
+
+### 2-bis.3 Vantaggi e svantaggi di questa architettura
+
+**Vantaggi:**
+
+- **Riuso dell'investimento esistente.** Le scuole spesso hanno già un firewall enterprise acquistato in precedenza con bandi pubblici o convenzioni Consip; non ha senso comprare un secondo apparato di gateway UniFi quando il firewall già fa il lavoro.
+- **Content filtering serio.** I firewall enterprise hanno sistemi di filtraggio dei contenuti molto più maturi di quelli integrati nei gateway UniFi (categorie MIUR-compliant, aggiornamento automatico delle blacklist, SSL inspection, ecc.).
+- **Gestione separata dei domini di responsabilità.** L'amministratore del WiFi gestisce il Controller; l'amministratore della sicurezza perimetrale gestisce il firewall. Sono spesso persone diverse con competenze diverse.
+- **Flessibilità del Controller.** Una VM è facile da migrare, snapshottare, backuppare. Una Cloud Key hardware no.
+
+**Svantaggi:**
+
+- **Più punti da configurare correttamente.** Bisogna assicurarsi che la VLAN guest sia raggiungibile dal Controller (per il management) e che gli AP sappiano dove trovare il Controller (tipicamente via opzione DHCP 43 o via DNS).
+- **Walled garden più articolato.** L'IP del Controller deve essere esplicitamente aggiunto al walled garden, altrimenti il redirect non funziona. Spesso i tecnici inesperti dimenticano questo passo.
+- **Single point of failure software.** Se la VM del Controller cade (es. l'host di virtualizzazione si spegne), gli AP continuano a far funzionare le configurazioni che hanno già in cache, ma nuove autenticazioni guest possono fallire perché il portale non risponde. Soluzione: backup automatico della VM e high availability.
+- **Doppia configurazione DHCP.** Il DHCP del firewall deve essere configurato per fornire le opzioni che gli AP UniFi cercano (in particolare l'opzione 43 con l'IP del Controller, in formato esadecimale specifico).
+
+> 💡 **Come fanno gli AP a trovare il Controller?**
+>
+> Quando un AP UniFi viene acceso per la prima volta, deve "scoprire" dove sta il Controller. Ci sono tre meccanismi possibili, in ordine di preferenza:
+>
+> 1. **DHCP Option 43:** il server DHCP (sul firewall) include nelle risposte DHCP un campo speciale che contiene l'IP del Controller. Gli AP lo leggono e si connettono direttamente.
+> 2. **Record DNS:** se esiste un record DNS chiamato `unifi.<dominio-locale>`, gli AP lo risolvono e si connettono. Per la vostra scuola sarebbe `unifi.marconicloud.it`.
+> 3. **Adoption manuale via SSH:** in mancanza dei due meccanismi automatici, un tecnico deve collegarsi via SSH a ogni AP e dirgli manualmente l'IP del Controller con il comando `set-inform`.
+>
+> Le scuole serie usano l'opzione 43 perché è completamente automatica: appena un AP viene acceso, riceve l'IP del Controller già nella risposta DHCP e si "adopta" da solo.
+
+### 2-bis.4 Implicazioni per il flusso del captive portal
+
+Tutto il diagramma di sequenza che vedremo nel Capitolo 5 rimane valido, con due piccole differenze:
+
+- Negli step 3-4 (DHCP), il server DHCP che risponde è il **firewall**, non il gateway UniFi.
+- Negli step 9-10 (HTTPS GET portal + landing page), il server HTTPS che risponde è il **Controller sulla VM Linux**, non il gateway UniFi.
+- Lo step 12 (API call al controller) diventa una chiamata interna del Controller a sé stesso (è già lui che ha ricevuto la POST del login).
+
+Tutto il resto rimane identico: l'AP è sempre il punto chiave dove avviene il DNS hijacking, il redirect HTTP, e l'enforcement dello stato Pending/Authorized.
 
 ---
 
@@ -168,7 +245,7 @@ La separazione tra gateway UniFi e firewall aziendale è una buona pratica di si
 
 L'Access Point è il componente più sottovalutato dell'architettura UniFi. La maggior parte degli studenti (e anche di molti professionisti) lo considera una semplice "antenna intelligente", ma in realtà contiene una stack software complessa che gestisce localmente molte funzioni del captive portal. Vediamo come è organizzato internamente:
 
-![Architettura interna dell'AP UniFi](../img/diagram3_ap_interno.png)
+![Architettura interna dell'AP UniFi](images/diagram3_ap_interno.png)
 
 *Figura 2 — Architettura interna dell'Access Point UniFi: hardware, kernel Linux, user space.*
 
@@ -216,7 +293,7 @@ Sopra il kernel, in user space, girano alcuni processi dedicati:
 
 Vediamo ora come funziona il sistema in azione, seguendo passo passo cosa succede quando un utente si connette per la prima volta al WiFi e si autentica. Il diagramma di sequenza che segue mostra TUTTI i messaggi scambiati tra i cinque attori, divisi in quattro fasi temporali distinte:
 
-![Diagramma di sequenza completo](../img/diagram2_sequenza.png)
+![Diagramma di sequenza completo](images/diagram2_sequenza.png)
 
 *Figura 3 — Diagramma di sequenza completo: dal collegamento all'autenticazione all'accesso a Internet.*
 
