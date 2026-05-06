@@ -125,22 +125,7 @@ Il **vantaggio** del **broker MQTT** è quello di poter gestire in modo semplice
 
 Esistono molte altre soluzioni che magari sono più semplici e graficamente accattivanti ma che passano per portali proprietari o per servizi cloud a pagamento e nulla aggiungono di didatticamente rilevante ai nostri discorsi. Normalmente sono basate su webservices realizzati con protocolli Request/Response quali **HTTPS** e **COAP**.
 
-## **Server di gestione** 
-
-E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **subscriber** per:
-- realizzazione delle **interfacce web** per la gestione e la visualizzazione dei dati dei dispositivi e delle applicazioni agli utenti.
-- elaborazioni a **breve termine** quali la generazione di **statistiche** per la determinazione di **soglie** o **predizioni** per:
-    - realizzazione da remoto della **logica di comando** (processo dei comandi) degli **attuatori**
-    - **report** per l'assistenza alle decisioni
-    - generazioni di **allarmi**
-    - realizzazione di **ottimizzazioni** della gestione o del consumo di risorse, energia o materie prime
-    - contabilizzazione dei consumi (**smart metering**)
-    - controllo e sorveglianza in tempo reale dello **stato** di impianti o macchinari
-    - segnalazione dei **guasti** o loro **analisi predittiva** prima che accadano
-    - **consapevolezza situazionale** di ambienti remoti, difficili, pericolosi o ostili (https://it.wikipedia.org/wiki/Situational_awareness)
-- elaborazioni a **lungo termine** quali:
-    - analisi dei dati per la realizzazione di studi scientifici
-    - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
+[Server di gestione](/approfondimenti/server_di_gestione.md)
 
 [Sensori](/approfondimenti/sensore.md)
 
