@@ -142,7 +142,7 @@ E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **
     - analisi dei dati per la realizzazione di studi scientifici
     - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
 
-[Sensore](/approfondimento/sensore.md)
+[Sensori](/approfondimenti/sensore.md)
 
 ## **Rete in modo infrastruttura** 
 
