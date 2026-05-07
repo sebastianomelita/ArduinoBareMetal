@@ -5,7 +5,8 @@
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
-- [Dettaglio architettura WiFi mesh](archmesh.md) 
+- [Dettaglio architettura WiFi mesh](archmesh.md)
+- [Dettaglio architettura cellulare](ranprivata.md)
   
 ## **Caso d'uso LoRaWan** 
 
