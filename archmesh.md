@@ -6,6 +6,7 @@
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 - [Dettaglio architettura 5G/6G](ranprivata.md)
+- [Dettaglio architettura RFID](archrfid.md)
 
 Servizi:
 - [VPN di reti Ethernet](ethvpn.md).
