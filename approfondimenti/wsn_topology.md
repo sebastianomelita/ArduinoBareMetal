@@ -1,4 +1,4 @@
->[Torna all'indice generale](index.md)
+>[Torna all'indice generale](../index.md)
 
 ##  **Topologia delle reti di sensori wireless**     
  
