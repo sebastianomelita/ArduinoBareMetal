@@ -1,11 +1,10 @@
+![Uploading rfid_gerarchia.png…]()
 > [Torna a reti di sensori](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/sensornetworkshort.md)
 
-- [Dettaglio architettura Zigbee](archzigbee.md)
-- [Dettaglio architettura BLE](archble.md)
-- [Dettaglio architettura WiFi infrastruttura](archwifi.md)
-- [Dettaglio architettura WiFi mesh](archmesh.md) 
-- [Dettaglio architettura LoraWAN](lorawanclasses.md)
-- [Dettaglio architettura 5G/6G](ranprivata.md)
+- [Dettaglio architettura BLE](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/archble.md)
+- [Dettaglio architettura zigbee](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/archzigbee.md)
+- [Dettaglio architettura WiFi infrastruttura](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/archwifi.md)
+- [Dettaglio architettura LoraWAN](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/lorawanclasses.md)
 
 # **Architettura RFID**
 
@@ -128,6 +127,44 @@ Casi d'uso:
 - **Documenti d'identità elettronici** (CIE, passaporto biometrico).
 - **Controllo accessi sicuro** (badge aziendali con MIFARE DESFire).
 - **Smart poster** e marketing interattivo.
+
+#### **Come si inquadra NFC rispetto a RFID?**
+
+L'**NFC** (Near Field Communication, ISO 18092 / NFCIP-1) è una **fonte di confusione** tipica nelle dispense, perché viene presentato a volte come "tecnologia a sé" (smartphone, pagamenti) e altre volte come "RFID HF". In realtà è **entrambe le cose**: a livello fisico è un **sottoinsieme di RFID HF** a 13.56 MHz, ma aggiunge **estensioni** che lo rendono molto più di una semplice carta contactless.
+
+![alt text](img/rfid_gerarchia.png)
+
+NFC condivide con l'RFID HF "puro" la **frequenza** (13.56 MHz) e il **principio fisico** (accoppiamento induttivo near-field). La base normativa di NFC (ISO 18092) cita esplicitamente la **compatibilità** con i preesistenti **ISO 14443** (proximity card) e **ISO 15693** (vicinity card): un reader NFC può leggere senza problemi una qualunque carta MIFARE o un tag ISO 15693.
+
+Cosa **aggiunge NFC** rispetto al "puro" RFID HF:
+
+- **Distanza ridotta a 4 cm**: non è un limite tecnico ma una **scelta di sicurezza by design**. Il corto raggio è una contromisura intrinseca contro l'**eavesdropping** e contro le letture accidentali in scenari come i pagamenti.
+- **Tre modalità operative** invece di una sola:
+  * **Reader/Writer**: lo smartphone si comporta come un reader RFID HF e legge tag NDEF (es. smart poster, etichette in un museo).
+  * **Card Emulation (HCE)**: lo smartphone si fa passare **per un tag** davanti a un POS. È il meccanismo dietro **Apple Pay**, **Google Pay** e i biglietti elettronici dei trasporti urbani sullo smartphone.
+  * **Peer-to-Peer**: due smartphone si scambiano dati avvicinandoli. Modalità oggi quasi obsoleta, sostituita dall'**handover** verso Bluetooth/WiFi (l'NFC viene usato solo per scambiare le chiavi di pairing, poi il trasferimento avviene su radio più veloci).
+- **Formato dati standardizzato NDEF** (NFC Data Exchange Format): un wrapping che permette a un tag di contenere un **URL**, una **vCard**, un **comando di pairing WiFi**, ecc. con sintassi nota a tutti gli smartphone, garantendo l'**interoperabilità** universale.
+- **Ecosistema mobile**: l'**NFC Forum** (industry consortium) ha standardizzato l'ecosistema e oggi **tutti gli smartphone moderni** integrano nativamente un controller NFC, il che rende la tecnologia il candidato naturale per applicazioni rivolte all'utente finale.
+
+##### **Differenze pratiche rispetto a "RFID HF puro"**
+
+| Aspetto | RFID HF "classico" (ISO 15693) | NFC (ISO 18092) |
+|---|---|---|
+| **Frequenza** | 13.56 MHz | 13.56 MHz (identica) |
+| **Distanza** | fino a 1 m | < 4 cm (per design) |
+| **Asimmetria** | reader sempre attivo, tag sempre passivo | entrambi i lati possono essere attivi (P2P) o passivi |
+| **Standard dati** | proprietario / dipende dall'applicazione | NDEF (standardizzato dall'NFC Forum) |
+| **Card Emulation** | non prevista | sì, è una delle modalità chiave |
+| **Integrazione mobile** | rara, richiede hardware dedicato | nativa in tutti gli smartphone |
+| **Casi d'uso tipici** | controllo accessi industriale, biblioteche, biglietti riusabili | pagamenti, biglietti trasporti, smart poster, pairing |
+
+##### **Come scegliere tra NFC e RFID HF "puro" nella seconda prova**
+
+Quando una traccia coinvolge **interazione con utente finale**, **smartphone**, **pagamenti**, **biglietti elettronici**, **pairing rapido**, **autenticazione fisica con Secure Element o HCE** → la risposta corretta è **NFC**, motivata sostenendo che è **nativamente integrato in tutti gli smartphone moderni**, che supporta la modalità **Card Emulation con Secure Element / HCE** richiesta dai pagamenti EMV, che garantisce **interoperabilità globale** tramite NDEF e che la **portata sub-cm** è una **contromisura intrinseca** all'eavesdropping.
+
+Quando invece la traccia parla di **tessere riusabili "tradizionali"** senza coinvolgere lo smartphone (badge dipendenti aziendali, tessere per prestito biblioteche, biglietti urbani da validare al tornello) si può scegliere **RFID HF "puro"** con **MIFARE DESFire EV3** (ISO 14443) — più economico, perché il chip non deve gestire le tre modalità NFC e l'overhead NDEF, pur mantenendo la **stessa sicurezza crittografica** (AES-128).
+
+Quando la traccia richiede invece **lettura di massa** (logistica, antitaccheggio, inventario di magazzino) → **NFC è inadatto** per via della distanza < 4 cm: si va su **UHF EPC Gen2**.
 
 ### **UHF (Ultra High Frequency, 860-960 MHz)**
 
