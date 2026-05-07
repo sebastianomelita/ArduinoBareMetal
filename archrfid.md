@@ -1,9 +1,11 @@
 > [Torna a reti di sensori](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/sensornetworkshort.md)
 
-- [Dettaglio architettura BLE](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/archble.md)
-- [Dettaglio architettura zigbee](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/archzigbee.md)
-- [Dettaglio architettura WiFi infrastruttura](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/archwifi.md)
-- [Dettaglio architettura LoraWAN](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/lorawanclasses.md)
+- [Dettaglio architettura Ethernet](archeth.md)
+- [Dettaglio architettura zigbee](archzigbee.md)
+- [Dettaglio architettura WiFi infrastruttura](archwifi.md)
+- [Dettaglio architettura WiFi mesh](archmesh.md) 
+- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
+- [Dettaglio architettura 5G/6G](ranprivata.md)
 
 # **Architettura RFID**
 
