@@ -34,6 +34,16 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 
+[Messaggi MQTT](/approfondimenti/messaggi_mqtt.md)
+
+[Broker MQTT](/approfondimenti/broker_mqtt.md)
+
+[Messaggi MQTT](/approfondimenti/messaggi_mqtt.md)
+
+[Server di gestione](/approfondimenti/server_di_gestione.md)
+
+[Sensori](/approfondimenti/sensore.md)
+
 ## **RETI CELLULARI**
 
 ### **Bande di frequenza**
