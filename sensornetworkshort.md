@@ -61,7 +61,7 @@ Lo **stack di protocolli OSI** è un **modello architetturale** di riferimento. 
 
 In ogni caso, un qualsiasi **ente di telecomunicazioni internazionale** (IEE, IETF, ITUT, ecc.) o **alleanza di case produttrici** di dispositivi di rete (Zigbee, Bluetooth) o anche **singole aziende** (LoraWan e Sigfox), per realizzare reti di dispositivi utilizzabili direttamente dall'utente, devono **progettare** una **propria versione** dello **stack ISO/OSI** che includa anche i livelli superiori. Talvolta ci si ferma al tradizionale livello 6 di **presentazione** (LoraWan e Sigfox), altre volte si arriva persino a dettagliare il livello di **applicazione** (zigbee, BLE, Matter) attraverso la definizione sia del significato che del formato delle **misure** e dei **comandi** che queste reti trasportano (semantica). 
 
-[Dettaglio ](approfondimenti/nteroperabilità_tra_reti_di_sensori)
+[Dettaglio interoperabilità tra reti di sensori](approfondimenti/interoperabilità_tra_reti_di_sensori)
 
 #### **Formato dei messaggi**
 
