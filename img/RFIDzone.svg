@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 480" font-family="'Times New Roman', Times, serif">
+  <!-- sfondo bianco -->
+  <rect width="1000" height="480" fill="#ffffff"/>
+
+  <!-- ============ ASSI ============ -->
+  <!-- asse X (Distance) -->
+  <line x1="80" y1="420" x2="970" y2="420" stroke="#1f4e8c" stroke-width="2"/>
+  <polygon points="970,420 958,414 958,426" fill="#1f4e8c"/>
+  <!-- asse Y (Rate) -->
+  <line x1="80" y1="420" x2="80" y2="40" stroke="#1f4e8c" stroke-width="2"/>
+  <polygon points="80,40 74,52 86,52" fill="#1f4e8c"/>
+
+  <!-- etichette assi -->
+  <text x="50" y="240" font-size="20" fill="#000" font-style="italic">Rate</text>
+  <text x="525" y="470" font-size="20" fill="#000" font-style="italic">Distance</text>
+
+  <!-- tacche e label asse X -->
+  <text x="155" y="448" text-anchor="middle" font-size="16" fill="#000">&lt;1 m</text>
+  <text x="320" y="448" text-anchor="middle" font-size="16" fill="#000">10 m</text>
+  <text x="650" y="448" text-anchor="middle" font-size="16" fill="#000">100 m</text>
+  <text x="900" y="448" text-anchor="middle" font-size="16" fill="#000">1000 m</text>
+
+  <!-- ============ ELLISSI TECNOLOGIE ============ -->
+
+  <!-- UWB (alto rate, corto raggio) -->
+  <ellipse cx="220" cy="110" rx="65" ry="45"
+           fill="#6a5acd" fill-opacity="0.85"
+           stroke="#3a2f8a" stroke-width="1"/>
+  <text x="220" y="118" text-anchor="middle" font-size="22" font-weight="bold" fill="#000">UWB</text>
+
+  <!-- WiFi IEEE 802.11 (giallo, grande, centrale) -->
+  <ellipse cx="430" cy="170" rx="195" ry="115"
+           fill="#fff44f" fill-opacity="0.95"
+           stroke="#b8a800" stroke-width="1"/>
+  <text x="430" y="160" text-anchor="middle" font-size="22" font-weight="bold" fill="#000">IEEE 802.11</text>
+  <text x="430" y="190" text-anchor="middle" font-size="22" font-weight="bold" fill="#000">WiFi</text>
+
+  <!-- Bluetooth (viola) -->
+  <ellipse cx="270" cy="245" rx="115" ry="42"
+           fill="#9370db" fill-opacity="0.85"
+           stroke="#5d3a9b" stroke-width="1"/>
+  <text x="270" y="253" text-anchor="middle" font-size="20" font-weight="bold" fill="#000">BlueTooth</text>
+  <text x="343" y="240" font-size="11" font-weight="bold" fill="#000">TM</text>
+
+  <!-- Cellular 2G/3G/4G (verde oliva) -->
+  <ellipse cx="745" cy="180" rx="180" ry="105"
+           fill="#8a9a5b" fill-opacity="0.85"
+           stroke="#5a6a3b" stroke-width="1"/>
+  <text x="745" y="185" text-anchor="middle" font-size="22" font-weight="bold" fill="#000">Cellular 2G/3G/4G</text>
+
+  <!-- ZigBee IEEE 802.15.4 (verde chiaro) -->
+  <ellipse cx="520" cy="320" rx="200" ry="55"
+           fill="#7fc99a" fill-opacity="0.85"
+           stroke="#3f8a5e" stroke-width="1"/>
+  <text x="520" y="315" text-anchor="middle" font-size="20" font-weight="bold" fill="#000">IEEE 802.15.4</text>
+  <text x="520" y="340" text-anchor="middle" font-size="20" font-weight="bold" fill="#000">ZigBee</text>
+  <text x="595" y="307" font-size="11" font-weight="bold" fill="#000">TM</text>
+
+  <!-- LPWA (rettangolo arancione) -->
+  <rect x="720" y="290" width="240" height="90"
+        fill="#ff8c42" fill-opacity="0.95"
+        stroke="#b85a1f" stroke-width="1"/>
+  <text x="840" y="343" text-anchor="middle" font-size="22" font-weight="bold" fill="#000">LPWA</text>
+
+  <!-- ====== RFID (azzurro, in basso a sinistra) ====== -->
+  <ellipse cx="200" cy="370" rx="115" ry="35"
+           fill="#5dc5e8" fill-opacity="0.95"
+           stroke="#1f7fa3" stroke-width="1"/>
+  <text x="200" y="378" text-anchor="middle" font-size="22" font-weight="bold" fill="#000">RFID</text>
+
+  <!-- ====== CERCHIO ROSSO DI EVIDENZIAZIONE su RFID ====== -->
+  <ellipse cx="200" cy="370" rx="125" ry="46"
+           fill="none"
+           stroke="#e60000" stroke-width="4"/>
+</svg>
