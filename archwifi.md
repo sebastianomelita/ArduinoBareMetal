@@ -5,7 +5,7 @@
 - [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
-- [Dettaglio architettura cellulare](ranprivata.md)
+- [Dettaglio architettura 5G/6G](ranprivata.md)
   
 Servizi:
 - [VPN di reti Ethernet](ethvpn.md).
