@@ -83,4 +83,4 @@ Quasi **tutte le tecnologie wireless** poi permettono di mettere, nell'intervall
 
 Il **consumo di energia** è generalmente proporzionale alla **velocità di trasmissione** e alla lunghezza dei messaggi. Tecnologie **general purpose** che sono **ottimizzate** per la trasmissione di **file o stream** più che di **brevi messaggi** in genere sono più complesse e esibiscono consumi **più elevati**.
   
-[Topologia reti WSN](/wsn_topology.md)
+[Topologia reti WSN](approfondimenti/wsn_topology.md)
