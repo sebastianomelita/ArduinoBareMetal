@@ -49,7 +49,7 @@ Per il dettaglio sulla realizzazione del firmware vedi [Firmware](../sensorfw.md
      - Interazioni di tipo PUSH o PULL
      - Paradigma Request/Response (HTTPS, COAP), Publish/Subscriber (MQTT) oppure canale persistente bidirezionale (BSD socket o WebSocket)
 
-<img src="../radiolinks.jpg" alt="alt text" width="500">
+<img src="../radiolinks.jpg" alt="alt text" width="700">
 
 ##  **Interfacce dei dispositivi terminali (sensori/attuatori)** 
 
