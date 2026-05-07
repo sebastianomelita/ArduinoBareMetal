@@ -179,7 +179,7 @@ Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli
     -  L'**interfaccia sui sensori** usa un collegamento **digitale/analogico dedicato**, con un solo filo verso **ciascun** sensore, per cui l'**architettura** risultante dei loro collegamenti è a **stella**, avente la MCU come **centro  stella**.
     -  L'**interfaccia sui sensori** usa un collegamento **digitale a BUS** verso un **gruppo** di sensori, usando gli stessi fili in **condivisione** per tutti, per cui l'**architettura** risultante dei loro collegamenti è a **BUS**, avente la MCU come **master** del BUS di campo. 
      
-[Dettaglio sensori](sensore.md)         
+[Dettaglio sensori](approfondimenti/sensore.md)         
  
 
 ##  **Classificazione delle tecnologie WSN in base a velocità e copertura**    
