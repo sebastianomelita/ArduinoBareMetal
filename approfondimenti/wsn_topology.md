@@ -1,4 +1,4 @@
->[Torna all'indice generale](../index.md)
+>[Torna a reti di sensori](../sensornetworkshort.md)
 
 ##  **Topologia delle reti di sensori wireless**     
  
