@@ -11,7 +11,7 @@
 
 L'**RFID** (Radio Frequency IDentification) non è una tecnologia di rete di sensori in senso stretto, ma una **tecnologia di identificazione automatica** (Auto-ID) che si pone come alternativa o complemento al **codice a barre**, al **QR code** e, in alcuni scenari, al **BLE beacon**. I casi d'uso tipici sono **identificazione**, **tracciamento** e **autenticazione** di oggetti o persone in scenari dove è richiesta una **lettura rapida**, **senza contatto** e potenzialmente **senza linea di vista** (NLOS).
 
-![alt text](img/RFIDzone.png)
+<img src="img/RFIDzone.png" alt="alt text" width="800">
 
 A differenza di BLE, WiFi e LoRaWAN, l'RFID nella sua forma classica (passiva) **non trasmette dati di sensore** in modo autonomo: i tag passivi non hanno batteria, non si "svegliano" da soli e non collaborano in una rete mesh. Sono **dispositivi reattivi** che entrano in funzione **solo** quando illuminati dal campo elettromagnetico di un **reader** (interrogatore).
 
