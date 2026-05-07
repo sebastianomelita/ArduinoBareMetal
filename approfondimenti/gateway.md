@@ -1,4 +1,4 @@
-
+>[Torna a reti di sensori](../sensornetworkshort.md)
 
 ### **Gateway applicativo**
 
