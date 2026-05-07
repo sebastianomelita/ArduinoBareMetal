@@ -170,7 +170,8 @@ Il controller degli access point ha le funzioni di:
 - Gestione centralizzata delle interfacce radio virtuali per gruppi di AP (anche tutti o uno solo)
 - Captive portal con varie modalità di accesso quali ad esempio il meccanismo dei voucher 
 
-[Dettaglio Captive Portal](captive_portal.md)
+[Dettaglio Captive Portal](approfonfimenti/captive_portal.md)
+
 
 >[Torna a rete wifi infrastruttura](archwifi.md#autenticazione-utente-presso-un-ap)
 
