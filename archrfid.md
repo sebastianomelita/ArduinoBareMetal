@@ -1,6 +1,7 @@
 > [Torna a reti di sensori](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/sensornetworkshort.md)
 
 - [Dettaglio architettura Ethernet](archeth.md)
+- [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura zigbee](archzigbee.md)
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
