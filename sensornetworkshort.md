@@ -1,4 +1,5 @@
 >[Torna all'indice generale](index.md)
+
 ## **Reti ethernet da ufficio**
 
 Le **reti di ufficio** sono realizzate con tecnologie ethernet a topologia fisica a stella o a stella gerarchica (albero). Lo **switch** ha la funzione di:
