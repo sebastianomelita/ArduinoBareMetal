@@ -25,14 +25,9 @@ Una rete **cellulare 5G/6G/7G** è un sistema di rete wireless progettato per fo
 ### **Aspetti critici**
 
 Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scelte argomentate** sono:
-- schema fisico (**planimetria**) dell'infrastruttura con etichettatura univoca di tutti gli asset tecnologici di rete.
-- tipologia di **divisione in gruppi** degli utenti.
+- tipologia di **divisione in gruppi** e in **classi  di servizio** degli utenti.
 - definizione delle **tecnologie dei dispositivi** chiave quali sensori/attuatori ([dispositivi terminali](sensornetworkshort.md#dispositivi-terminali-sensoriattuatori)), gateway, link (dual radio, three radio), accesso radio (allocazione di servizi sincroni TDM, asincroni CSMA/CA o a basso ritardo slotted CSMA/CA) e loro dimensionamento di  massima (quantità, numero di porte, banda, ecc.).
-- eventuali vincoli normativi sulle tecnologie in uso come potenza, EIRP, ERP e duty cycle. 
-- schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro ruolo e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7)
 - dislocazione di eventuali **gateway**.
-- **subnetting** e definizione degli indirizzi dei vari gruppi di utenti, delle server farm, definizione degli indirizzi dei server.
-- definizione del **tipo di routing** (statico o dinamico). In caso si scelga il **routing statico**, definizione delle **tabelle di routing** più significative.
 - definizione della posizione del broker MQTT.
 - definizione dei topic utili per i casi d'uso richiesti.
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
