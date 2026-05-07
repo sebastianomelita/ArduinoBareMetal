@@ -5,7 +5,6 @@
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
-- [Dettaglio architettura cellulare](ranprivata.md)
 
 ## **RETI CELLULARI PRIVATE**
 
