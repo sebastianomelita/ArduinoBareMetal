@@ -8,7 +8,7 @@
 
 <img src="img/cellular_zone.png" alt="alt text" width="800">
 
-## **Caso d'uso indoor** 
+## **Caso d'uso alta bit rate** 
 
 Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiFi di **tipo infrastruttura** sono quelli tipici applicazioni **IoT indoor** a **medio raggio**, dove concorre con altre tecnologie di rete: Zigbee, BLE e, sotto certe condizioni, LoRaWAN. **Caratteristiche** della rete WiFi di **tipo infrastruttura** sono essenzialmente:
 - possibilità di realizzare **comandi** a distanza wireless anche relativamente piccoli con una **durata** delle batterie relativamente lunga (dell'ordine dei mesi).
@@ -17,7 +17,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiF
 - architettura ad **hop singolo** del collegamento verso la **stazione radio base** che deve essere in posizione **baricentrica** rispetto ai dispositivi ad esso collegati. Il **consumo** dei dispositivi è tanto minore quanto e breve la distanza degli AP.
 - **rete di sensori** composta **dalle stazioni radio base** della stessa rete wireless LAN utilizzata per i **dati**. Gli unici dispositivi capaci di inoltro dei dati sono gli stessi della LAN (switch, router, bridge wifi).
 
-## **Caso d'uso outdoor** 
+## **Caso d'uso IoT** 
 
 Una rete **cellulare 5G/6G/7G** è un sistema di rete wireless progettato per fornire una copertura Wi-Fi estesa che consiste di più **base station**. Una rete Wi-Fi mesh è una **soluzione avanzata** per estendere la copertura Wi-Fi e migliorare l'affidabilità della connessione in **ambienti complessi** nei quali risulta essere problematica la realizzazione di **dorsali cablate** verso gli AP. Con la capacità di **auto-configurarsi**, gestire il **roaming continuo** e fornire una **copertura scalabile**, le reti cellulari rappresentano una scelta preferibile per chi necessita di una connettività robusta e senza interruzioni su aree estese.
 
