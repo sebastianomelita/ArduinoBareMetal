@@ -1,4 +1,3 @@
-![Uploading rfid_gerarchia.png…]()
 > [Torna a reti di sensori](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/sensornetworkshort.md)
 
 - [Dettaglio architettura BLE](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/archble.md)
