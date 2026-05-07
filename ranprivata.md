@@ -5,7 +5,8 @@
 - [Dettaglio architettura BLE](archble.md)
 - [Dettaglio architettura WiFi infrastruttura](archwifi.md)
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
-- [Dettaglio architettura LoraWAN](lorawanclasses.md) 
+- [Dettaglio architettura LoraWAN](lorawanclasses.md)
+- [Dettaglio architettura RFID](archrfid.md)
 
 <img src="img/cellular_zone.png" alt="alt text" width="800">
 
