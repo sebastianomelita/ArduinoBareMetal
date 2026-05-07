@@ -6,6 +6,7 @@
 - [Dettaglio architettura WiFi mesh](archmesh.md) 
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 - [Dettaglio architettura 5G/6G](ranprivata.md)
+- [Dettaglio architettura RFID](archrfid.md)
 
 ## **Caso d'uso Zigbee** 
 
