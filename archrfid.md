@@ -497,6 +497,8 @@ Analogamente al caso del BLE — in cui distinguevamo tra **schema a beacon fiss
 
 È l'approccio **dominante** nei sistemi RFID logistici. I **reader sono fissi**, posizionati in **punti strategici** noti a sistema (varchi, gate, scaffali smart) ed **etichettati univocamente**. I **tag** invece **si muovono** sugli oggetti, i quali entrano ed escono dai campi di lettura dei reader.
 
+![alt text](img/topologia_reader_fisso.png)
+
 Si noti che in questo approccio:
 
 - i **reader fissi** sono **collegati alla rete di distribuzione** (Ethernet/PoE/WiFi).
@@ -521,6 +523,8 @@ Il **WMS** (Warehouse Management System) ricostruisce la **storia** di ogni arti
 ### **Topologia a tag attivo**
 
 Quando si vuole **localizzazione continua** invece di lettura **a varco**, si passa ai **tag attivi**: piccoli dispositivi a batteria che **trasmettono** periodicamente un beacon RFID (es. ogni 1-10 secondi). I **reader fissi** distribuiti nell'ambiente captano questi beacon e, tramite **trilaterazione** o **fingerprinting RSSI**, calcolano la posizione del tag.
+
+![alt text](img/topologia_tag_attivo.png)
 
 Questa topologia è concettualmente analoga allo schema BLE a **scanner fisso**: anche qui i **dispositivi fissi** ascoltano i tag che si spostano. La differenza è che, mentre i beacon BLE sono **economici** e si possono distribuire a centinaia, i tag attivi RFID sono **più costosi** ma offrono **portate maggiori** (decine di metri vs i 5-15 m del BLE).
 
