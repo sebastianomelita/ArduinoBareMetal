@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 700" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <!-- gradient pavimento -->
+    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e8eef5"/>
+      <stop offset="100%" stop-color="#cfd8e3"/>
+    </linearGradient>
+    <!-- gradient scaffali -->
+    <linearGradient id="shelf" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a98e6f"/>
+      <stop offset="100%" stop-color="#7d6448"/>
+    </linearGradient>
+    <!-- gradient pallet -->
+    <linearGradient id="pallet" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d2a263"/>
+      <stop offset="100%" stop-color="#9c7339"/>
+    </linearGradient>
+    <!-- gradient cono campo RF -->
+    <radialGradient id="rfcone" cx="0.5" cy="0" r="1">
+      <stop offset="0%"  stop-color="#3498db" stop-opacity="0.45"/>
+      <stop offset="60%" stop-color="#3498db" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#3498db" stop-opacity="0"/>
+    </radialGradient>
+    <!-- ombra -->
+    <filter id="drop" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="2"/>
+      <feOffset dx="2" dy="3" result="off"/>
+      <feComponentTransfer><feFuncA type="linear" slope="0.35"/></feComponentTransfer>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <!-- freccia -->
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c0392b"/>
+    </marker>
+    <marker id="arrowDark" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2c3e50"/>
+    </marker>
+  </defs>
+
+  <!-- ============ SFONDO E TITOLO ============ -->
+  <rect width="1100" height="700" fill="#fafbfc"/>
+  <text x="550" y="32" text-anchor="middle" font-size="22" font-weight="bold" fill="#1a1a1a">
+    Topologia a reader fisso – Magazzino logistico
+  </text>
+  <text x="550" y="54" text-anchor="middle" font-size="13" fill="#555" font-style="italic">
+    I reader sono in posizione nota; i tag sulle merci attraversano i campi di lettura
+  </text>
+
+  <!-- ============ PAVIMENTO ============ -->
+  <rect x="40" y="80" width="1020" height="560" fill="url(#floor)" stroke="#8a98a8" stroke-width="1.5" rx="6"/>
+  
+  <!-- griglia leggera pavimento -->
+  <g stroke="#b8c4d2" stroke-width="0.5" opacity="0.5">
+    <line x1="40" y1="180" x2="1060" y2="180"/>
+    <line x1="40" y1="280" x2="1060" y2="280"/>
+    <line x1="40" y1="380" x2="1060" y2="380"/>
+    <line x1="40" y1="480" x2="1060" y2="480"/>
+    <line x1="40" y1="580" x2="1060" y2="580"/>
+    <line x1="200" y1="80" x2="200" y2="640"/>
+    <line x1="400" y1="80" x2="400" y2="640"/>
+    <line x1="600" y1="80" x2="600" y2="640"/>
+    <line x1="800" y1="80" x2="800" y2="640"/>
+  </g>
+
+  <!-- ============ ZONE: ETICHETTE AREA ============ -->
+  <text x="160" y="105" font-size="12" font-weight="bold" fill="#5a6677" letter-spacing="1">RICEZIONE</text>
+  <text x="500" y="105" font-size="12" font-weight="bold" fill="#5a6677" letter-spacing="1">SCAFFALI / SMART SHELF</text>
+  <text x="900" y="105" font-size="12" font-weight="bold" fill="#5a6677" letter-spacing="1">SPEDIZIONE</text>
+
+  <!-- ============ VARCO RICEZIONE (sinistra) ============ -->
+  <!-- montante sinistro -->
+  <rect x="120" y="180" width="14" height="280" fill="#34495e" rx="2" filter="url(#drop)"/>
+  <!-- antenna a sinistra -->
+  <rect x="100" y="240" width="34" height="50" fill="#2c3e50" stroke="#1a252f" stroke-width="1.5" rx="3"/>
+  <rect x="105" y="248" width="24" height="34" fill="#5dade2" opacity="0.6" rx="2"/>
+  <text x="117" y="310" text-anchor="middle" font-size="9" fill="#2c3e50" font-weight="bold">ANT 1</text>
+
+  <!-- montante destro -->
+  <rect x="240" y="180" width="14" height="280" fill="#34495e" rx="2" filter="url(#drop)"/>
+  <!-- antenna a destra -->
+  <rect x="234" y="240" width="34" height="50" fill="#2c3e50" stroke="#1a252f" stroke-width="1.5" rx="3"/>
+  <rect x="239" y="248" width="24" height="34" fill="#5dade2" opacity="0.6" rx="2"/>
+  <text x="251" y="310" text-anchor="middle" font-size="9" fill="#2c3e50" font-weight="bold">ANT 2</text>
+
+  <!-- traversa superiore -->
+  <rect x="115" y="170" width="145" height="14" fill="#34495e" rx="2" filter="url(#drop)"/>
+  <!-- reader scatola -->
+  <rect x="155" y="148" width="65" height="26" fill="#1abc9c" stroke="#16a085" stroke-width="1.5" rx="3" filter="url(#drop)"/>
+  <text x="187" y="166" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">READER 1</text>
+
+  <!-- campo RF tra le antenne -->
+  <ellipse cx="187" cy="320" rx="68" ry="100" fill="url(#rfcone)" opacity="0.7"/>
+  <!-- onde radio -->
+  <g fill="none" stroke="#3498db" stroke-width="1.5" opacity="0.6">
+    <path d="M 134 290 Q 187 270 240 290"/>
+    <path d="M 134 320 Q 187 295 240 320"/>
+    <path d="M 134 350 Q 187 320 240 350"/>
+  </g>
+
+  <!-- fotocellula -->
+  <circle cx="120" cy="475" r="5" fill="#e74c3c"/>
+  <circle cx="254" cy="475" r="5" fill="#e74c3c"/>
+  <line x1="125" y1="475" x2="249" y2="475" stroke="#e74c3c" stroke-width="1" stroke-dasharray="3,3" opacity="0.7"/>
+  <text x="187" y="492" text-anchor="middle" font-size="9" fill="#c0392b" font-style="italic">fotocellula trigger</text>
+
+  <!-- pallet in ingresso con tag -->
+  <g transform="translate(60, 350)" filter="url(#drop)">
+    <rect x="0" y="0" width="50" height="55" fill="url(#pallet)" stroke="#5a3a18" stroke-width="1.5" rx="2"/>
+    <rect x="3" y="3" width="44" height="10" fill="#b8915a" stroke="#5a3a18" stroke-width="0.5"/>
+    <rect x="3" y="16" width="44" height="10" fill="#b8915a" stroke="#5a3a18" stroke-width="0.5"/>
+    <rect x="3" y="29" width="44" height="10" fill="#b8915a" stroke="#5a3a18" stroke-width="0.5"/>
+    <!-- tag su pallet -->
+    <rect x="35" y="42" width="14" height="9" fill="#f1c40f" stroke="#7d6608" stroke-width="0.8" rx="1"/>
+    <text x="42" y="49" text-anchor="middle" font-size="6" font-weight="bold" fill="#5a4400">TAG</text>
+  </g>
+  <text x="85" y="425" text-anchor="middle" font-size="10" fill="#34495e" font-style="italic">pallet in ingresso</text>
+  <!-- freccia movimento -->
+  <path d="M 115 378 L 145 378" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- ============ SCAFFALI CON SMART SHELF (centro) ============ -->
+  <g transform="translate(330, 200)" filter="url(#drop)">
+    <!-- scaffale 1 -->
+    <rect x="0" y="0" width="220" height="300" fill="url(#shelf)" stroke="#5a3a18" stroke-width="1.5" rx="2"/>
+    <!-- ripiani -->
+    <rect x="5" y="20" width="210" height="60" fill="#c4a378" stroke="#5a3a18" stroke-width="0.7"/>
+    <rect x="5" y="90" width="210" height="60" fill="#c4a378" stroke="#5a3a18" stroke-width="0.7"/>
+    <rect x="5" y="160" width="210" height="60" fill="#c4a378" stroke="#5a3a18" stroke-width="0.7"/>
+    <rect x="5" y="230" width="210" height="60" fill="#c4a378" stroke="#5a3a18" stroke-width="0.7"/>
+    
+    <!-- scatole con tag su ogni ripiano -->
+    <!-- ripiano 1 -->
+    <g transform="translate(15, 30)">
+      <rect width="32" height="40" fill="#e67e22" stroke="#7d3c0f" stroke-width="0.7" rx="1"/>
+      <rect x="22" y="28" width="9" height="6" fill="#f1c40f" stroke="#7d6608" stroke-width="0.4"/>
+    </g>
+    <g transform="translate(55, 30)">
+      <rect width="32" height="40" fill="#3498db" stroke="#1f5f8b" stroke-width="0.7" rx="1"/>
+      <rect x="22" y="28" width="9" height="6" fill="#f1c40f" stroke="#7d6608" stroke-width="0.4"/>
+    </g>
+    <g transform="translate(95, 30)">
+      <rect width="32" height="40" fill="#9b59b6" stroke="#5d3a73" stroke-width="0.7" rx="1"/>
+      <rect x="22" y="28" width="9" height="6" fill="#f1c40f" stroke="#7d6608" stroke-width="0.4"/>
+    </g>
+    <g transform="translate(135, 30)">
+      <rect width="32" height="40" fill="#e74c3c" stroke="#922b21" stroke-width="0.7" rx="1"/>
+      <rect x="22" y="28" width="9" height="6" fill="#f1c40f" stroke="#7d6608" stroke-width="0.4"/>
+    </g>
+    <g transform="translate(175, 30)">
+      <rect width="32" height="40" fill="#27ae60" stroke="#196f3d" stroke-width="0.7" rx="1"/>
+      <rect x="22" y="28" width="9" height="6" fill="#f1c40f" stroke="#7d6608" stroke-width="0.4"/>
+    </g>
+    <!-- ripiano 2 -->
+    <g transform="translate(15, 100)">
+      <rect width="32" height="40" fill="#16a085" stroke="#0e6655" stroke-width="0.7" rx="1"/>
+      <rect x="22" y="28" width="9" height="6" fill="#f1c40f" stroke="#7d6608" stroke-width="0.4"/>
+    </g>
+    <g transform="translate(55, 100)">
+      <rect width="32" height="40" fill="#f39c12" stroke="#9c6a0c" stroke-width="0.7" rx="1"/>
+      <rect x="22" y="28" width="9" height="6" fill="#f1c40f" stroke="#7d6608" stroke-width="0.4"/>
+    </g>
+    <g transform="translate(95, 100)">
+      <rect width="32" height="40" fill="#34495e" stroke="#1a252f" stroke-width="0.7" rx="1"/>
+      <rect x="22" y="28" width="9" height="6" fill="#f1c40f" stroke="#7d6608" stroke-width="0.4"/>
+    </g>
+    <g transform="translate(135, 100)">
+      <rect width="32" height="40" fill="#8e44ad" stroke="#5b2c75" stroke-width="0.7" rx="1"/>
+      <rect x="22" y="28" width="9" height="6" fill="#f1c40f" stroke="#7d6608" stroke-width="0.4"/>
+    </g>
+    <g transform="translate(175, 100)">
+      <rect width="32" height="40" fill="#d35400" stroke="#873400" stroke-width="0.7" rx="1"/>
+      <rect x="22" y="28" width="9" height="6" fill="#f1c40f" stroke="#7d6608" stroke-width="0.4"/>
+    </g>
+    <!-- ripiano 3 e 4 simili -->
+    <g transform="translate(35, 170)"><rect width="32" height="40" fill="#2980b9" rx="1"/><rect x="22" y="28" width="9" height="6" fill="#f1c40f"/></g>
+    <g transform="translate(75, 170)"><rect width="32" height="40" fill="#c0392b" rx="1"/><rect x="22" y="28" width="9" height="6" fill="#f1c40f"/></g>
+    <g transform="translate(115, 170)"><rect width="32" height="40" fill="#1abc9c" rx="1"/><rect x="22" y="28" width="9" height="6" fill="#f1c40f"/></g>
+    <g transform="translate(155, 170)"><rect width="32" height="40" fill="#7f8c8d" rx="1"/><rect x="22" y="28" width="9" height="6" fill="#f1c40f"/></g>
+    
+    <g transform="translate(20, 240)"><rect width="32" height="40" fill="#f1c40f" rx="1"/><rect x="22" y="28" width="9" height="6" fill="#e67e22"/></g>
+    <g transform="translate(70, 240)"><rect width="32" height="40" fill="#27ae60" rx="1"/><rect x="22" y="28" width="9" height="6" fill="#f1c40f"/></g>
+    <g transform="translate(120, 240)"><rect width="32" height="40" fill="#3498db" rx="1"/><rect x="22" y="28" width="9" height="6" fill="#f1c40f"/></g>
+    <g transform="translate(170, 240)"><rect width="32" height="40" fill="#9b59b6" rx="1"/><rect x="22" y="28" width="9" height="6" fill="#f1c40f"/></g>
+  </g>
+
+  <!-- antenne smart shelf integrate (sopra ogni ripiano una piccola antenna) -->
+  <g fill="#1abc9c" stroke="#0e6655" stroke-width="0.8">
+    <rect x="335" y="216" width="210" height="3" rx="1"/>
+    <rect x="335" y="286" width="210" height="3" rx="1"/>
+    <rect x="335" y="356" width="210" height="3" rx="1"/>
+    <rect x="335" y="426" width="210" height="3" rx="1"/>
+  </g>
+  <!-- onde sottili che escono dai ripiani -->
+  <g fill="none" stroke="#1abc9c" stroke-width="1" opacity="0.5">
+    <path d="M 345 215 Q 345 205 350 200"/>
+    <path d="M 540 215 Q 540 205 535 200"/>
+  </g>
+
+  <!-- reader smart shelf -->
+  <rect x="555" y="200" width="55" height="22" fill="#1abc9c" stroke="#0e6655" stroke-width="1.2" rx="2" filter="url(#drop)"/>
+  <text x="582" y="215" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">READER 2</text>
+  <line x1="555" y1="220" x2="548" y2="290" stroke="#0e6655" stroke-width="1" stroke-dasharray="2,2"/>
+
+  <!-- etichetta scaffali -->
+  <text x="440" y="525" text-anchor="middle" font-size="11" fill="#34495e" font-style="italic">scaffali con antenne integrate (smart shelf)</text>
+
+  <!-- ============ VARCO SPEDIZIONE (destra) ============ -->
+  <!-- montante sinistro -->
+  <rect x="850" y="180" width="14" height="280" fill="#34495e" rx="2" filter="url(#drop)"/>
+  <rect x="830" y="240" width="34" height="50" fill="#2c3e50" stroke="#1a252f" stroke-width="1.5" rx="3"/>
+  <rect x="835" y="248" width="24" height="34" fill="#5dade2" opacity="0.6" rx="2"/>
+  <text x="847" y="310" text-anchor="middle" font-size="9" fill="#2c3e50" font-weight="bold">ANT 1</text>
+
+  <rect x="970" y="180" width="14" height="280" fill="#34495e" rx="2" filter="url(#drop)"/>
+  <rect x="964" y="240" width="34" height="50" fill="#2c3e50" stroke="#1a252f" stroke-width="1.5" rx="3"/>
+  <rect x="969" y="248" width="24" height="34" fill="#5dade2" opacity="0.6" rx="2"/>
+  <text x="981" y="310" text-anchor="middle" font-size="9" fill="#2c3e50" font-weight="bold">ANT 2</text>
+
+  <rect x="845" y="170" width="145" height="14" fill="#34495e" rx="2" filter="url(#drop)"/>
+  <rect x="885" y="148" width="65" height="26" fill="#1abc9c" stroke="#16a085" stroke-width="1.5" rx="3" filter="url(#drop)"/>
+  <text x="917" y="166" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">READER 3</text>
+
+  <ellipse cx="917" cy="320" rx="68" ry="100" fill="url(#rfcone)" opacity="0.7"/>
+  <g fill="none" stroke="#3498db" stroke-width="1.5" opacity="0.6">
+    <path d="M 864 290 Q 917 270 970 290"/>
+    <path d="M 864 320 Q 917 295 970 320"/>
+    <path d="M 864 350 Q 917 320 970 350"/>
+  </g>
+
+  <!-- pallet in uscita -->
+  <g transform="translate(990, 350)" filter="url(#drop)">
+    <rect x="0" y="0" width="50" height="55" fill="url(#pallet)" stroke="#5a3a18" stroke-width="1.5" rx="2"/>
+    <rect x="3" y="3" width="44" height="10" fill="#b8915a" stroke="#5a3a18" stroke-width="0.5"/>
+    <rect x="3" y="16" width="44" height="10" fill="#b8915a" stroke="#5a3a18" stroke-width="0.5"/>
+    <rect x="3" y="29" width="44" height="10" fill="#b8915a" stroke="#5a3a18" stroke-width="0.5"/>
+    <rect x="35" y="42" width="14" height="9" fill="#f1c40f" stroke="#7d6608" stroke-width="0.8" rx="1"/>
+    <text x="42" y="49" text-anchor="middle" font-size="6" font-weight="bold" fill="#5a4400">TAG</text>
+  </g>
+  <text x="1015" y="425" text-anchor="middle" font-size="10" fill="#34495e" font-style="italic">pallet in uscita</text>
+  <path d="M 985 378 L 1015 378" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <!-- ============ GATEWAY E RETE ============ -->
+  <!-- gateway centrale in basso -->
+  <g transform="translate(490, 565)" filter="url(#drop)">
+    <rect width="120" height="55" fill="#2c3e50" stroke="#1a252f" stroke-width="1.5" rx="4"/>
+    <rect x="6" y="6" width="108" height="20" fill="#34495e"/>
+    <circle cx="14" cy="16" r="2.5" fill="#2ecc71"/>
+    <circle cx="22" cy="16" r="2.5" fill="#2ecc71"/>
+    <circle cx="30" cy="16" r="2.5" fill="#f1c40f"/>
+    <text x="60" y="42" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">GATEWAY</text>
+    <text x="60" y="52" text-anchor="middle" font-size="8" fill="#bdc3c7">middleware + MQTT</text>
+  </g>
+
+  <!-- cavi Ethernet dai reader al gateway -->
+  <g stroke="#27ae60" stroke-width="2" fill="none" stroke-dasharray="6,3" opacity="0.85">
+    <path d="M 187 175 Q 187 540 510 580"/>
+    <path d="M 583 222 Q 583 540 555 580"/>
+    <path d="M 917 175 Q 917 540 590 580"/>
+  </g>
+
+  <!-- cloud -->
+  <g transform="translate(880, 555)" filter="url(#drop)">
+    <ellipse cx="60" cy="35" rx="65" ry="28" fill="#ecf0f1" stroke="#7f8c8d" stroke-width="1.5"/>
+    <ellipse cx="40" cy="25" rx="22" ry="18" fill="#ecf0f1" stroke="#7f8c8d" stroke-width="1.5"/>
+    <ellipse cx="78" cy="22" rx="20" ry="16" fill="#ecf0f1" stroke="#7f8c8d" stroke-width="1.5"/>
+    <text x="60" y="40" text-anchor="middle" font-size="11" font-weight="bold" fill="#2c3e50">ERP / WMS</text>
+    <text x="60" y="52" text-anchor="middle" font-size="9" fill="#7f8c8d">cloud</text>
+  </g>
+  <path d="M 615 595 Q 750 600 880 590" stroke="#27ae60" stroke-width="2" fill="none" stroke-dasharray="6,3" opacity="0.85"/>
+
+  <!-- legenda -->
+  <g transform="translate(50, 655)">
+    <rect width="11" height="9" fill="#f1c40f" stroke="#7d6608"/>
+    <text x="16" y="8" font-size="10" fill="#2c3e50">tag passivo UHF</text>
+
+    <rect x="125" y="0" width="34" height="9" fill="#1abc9c" stroke="#0e6655"/>
+    <text x="163" y="8" font-size="10" fill="#2c3e50">reader fisso</text>
+
+    <ellipse cx="245" cy="4" rx="14" ry="5" fill="url(#rfcone)" opacity="0.8"/>
+    <text x="263" y="8" font-size="10" fill="#2c3e50">campo RF</text>
+
+    <line x1="335" y1="4" x2="365" y2="4" stroke="#27ae60" stroke-width="2" stroke-dasharray="6,3"/>
+    <text x="370" y="8" font-size="10" fill="#2c3e50">Ethernet / MQTT su IP</text>
+
+    <line x1="495" y1="4" x2="525" y2="4" stroke="#c0392b" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <text x="535" y="8" font-size="10" fill="#2c3e50">movimento dei tag (oggetti)</text>
+  </g>
+</svg>
