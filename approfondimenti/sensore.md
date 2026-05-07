@@ -50,7 +50,7 @@ Per il dettaglio sulla realizzazione del firmware vedi [Firmware](../sensorfw.md
      - Paradigma Request/Response (HTTPS, COAP), Publish/Subscriber (MQTT) oppure canale persistente bidirezionale (BSD socket o WebSocket)
 
 
-##  **Dispositivi terminali (sensori/attuatori)** 
+##  **Interfacce dei dispositivi terminali (sensori/attuatori)** 
 
 Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli. Per le applicazioni di **nostro interesse** le **topologie** più adoperate sono:
 - **nodo sensore di rete**. Dispositivo che in un unico **contenitore** ingloba **insieme** un certo numero di **sensori**, la **MCU**, la **scheda di rete** verso la **rete di accesso** ai sensori, la **batteria** di alimentazione. E' un nodo unico, con tutto quello che serve per misurare e comunicare nella rete di sensori.
@@ -69,7 +69,7 @@ Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli
  
  Nella **figura sotto**, si vedono **tre esempi** di prodotti commerciali per sensore **All In One** (a sinistra), **HUB di sensori** (al centro), **BUS di sensori** (a destra):
  
- <img src="img/sensor2.png" alt="alt text" width="1100">
+ <img src="../img/sensor2.png" alt="alt text" width="1100">
 
  Il **numero** dei dispositivi **collegabili** dipende dal **più critico** di molti fattori che potrebbero essere: il **numero di porte/indirizzi** disponibili, la **lunghezza dei collegamenti** ammissibile, la **lunghezza dei messaggi** trasmessi, il **duty cycle** disponibile in trasmissione, la **banda** disponibile in trasmissione.
 
