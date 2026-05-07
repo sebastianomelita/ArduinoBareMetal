@@ -151,9 +151,11 @@ Il **grafico sotto** mostra **il posizionamento** delle varie tecnologie wireles
   - [Dettaglio architettura BLE](archble.md)
 - **medio raggio**. E' il dominio del WiFi e della telefonia cellulare intesa come **modem dati a pacchetto**. Sono tipici in quest'ambito servizi **M2M** (Machine to Machine). Il 5G ha incorporato le tecnologie preesistenti **Cat-NB Narrowband IoT (NB-IoT)** and **Class M LTE (LTE-M)** che offrono servizi a **basso bit rate**, anche se a **consumi** significativamente **superiori** rispetto a LoraWan, però le **basse latenze** li rendono adatti ad **applicazioni mission critical** quali **robotica**, **guida autonoma** e **telecontrollo remoto**.  Una novità recente è l'introduzione delle **reti LTE private** (RAN private), cioè l'installazione di infrastrutture di telefonia cellulare private che possono essere **licensed** o **ulicensed**, cioè utilizzare o meno frequenze licenziate in concessione all'operatore o lavorare nella **banda comune NR-U** libera e simile concettualmente alla **banda ISM**.  Le **RAN private** possono essere anche **dipendent o indipendent** a seconda che siano gestite direttamente o meno dall'operatore telefonico. Il **WiFi** può realizzare reti di **notevoli dimensioni** (città intere o grandi aree rurali) ma ogni dispositivo ha range di copertura limitato (tipicamente 25m). E' possibile realizzare anche con il wifi una copertura di **tipo cellulare** che supporti il **roaming** cioè la **mobilità dei dispositivi**. Tutte queste tecnologie richiedono una **infrastruttura** (cablata o wireless) **complessa** e al momento dai **consumi elevati** soprattutto per dispositivi come i sensori. Se l'interesse preminente è il **basso consumo** e la **semplicità della rete** si rientra nella categoria delle soluzioni **LPWA** che, al momento, taglia fuori il wifi in favore di **LoraWan** e **NB-IoT**, per citare le tecnologie più conosciute ed adoperate. 
    - [Dettaglio architettura WiFi](archwifi.md)
-   - [Dettaglio architettura WiFi mesh](archmesh.md) 
+   - [Dettaglio architettura WiFi mesh](archmesh.md)
+   - [Dettagli su reti cellullari 4G/5G/6G](ranprivata.md)
 - **lungo raggio**. **LPWAN** (Low Power Wide Area Network) garantiscono una trasmissione a **lungo raggio** (da qualche chilometro a qualche decina di chilometri), un **consumo energetico contenuto** per la trasmissione/ricezione dati e un **basso costo** di realizzazione dei dispositivi al prezzo di una **ridotta velocità** di trasferimento dati (poche decine di kilobit al secondo). Forniscono anche **servizi outdoor** di **posizionamento** e **tracciamento** di oggetti. Sono adatti sia per applicazioni indoor che outdoor ma **outdoor** forniscono servizi che altre tecnologie hanno difficoltà a fornire con uguale semplicità. L'infrastruttura è leggera dato che anche migliaia di dispositivi possono essere serviti da un'unica BS (Stazione Base) chiamata Gateway. Il resto dell'infrastruttura può essere realizzato semplicemente in house e utilizzato ancora più semplicemente se realizzato in cloud. Le principali **tecnologie LPWA** attualmente disponibili sono **LoraWan**, **Sigfox** e, recentemente, **NB-IoT**.  **VSAT** è una tecnologia satellitare piuttosto datata ma a basso costo e disponibile ovunque nel globo, è utilizzata in regioni rurali, spesso con alimentazione solare.
-    - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
+    - [Dettaglio architettura LoraWAN](lorawanclasses.md)
+    - [Dettagli su reti cellullari NB IoT](ranprivata.md)
 
 <img src="Data-rate-vs-range-in-communication-networks-Source-27.png" alt="alt text" width="700">
 
@@ -243,10 +245,6 @@ La **parte logica** dei due stack sotto (LoraWan a sinistra e Zigbee a destra) p
 Molti **framework per IoT** come **TinyOS**, **Contiki** e **RIOT** posseggono una **struttura modulare** che permette loro di includere, senza particolare sforzo, **stack personalizzati** di protocolli  in maniera tale da adattarli alle esigenze più particolari svincolandosi dagli **stack protocollari completi** certificati dall'industria (Zigbee, LoraWan). 
 
 [Dettagli su stack wireless specifici](stackwirelesspecifici.md)
-
-[Dettagli su reti cellullari private](ranprivata.md)
-
-
 
 
 **Sitografia:**
