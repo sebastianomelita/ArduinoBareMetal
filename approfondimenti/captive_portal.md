@@ -1,3 +1,5 @@
+>[Torna a rete wifi infrastruttura](../archwifi.md#autenticazione-utente-presso-un-ap)>[Torna su autenticazione 802.1X](../radius.md)
+
 # Il Captive Portal Ubiquiti UniFi
 
 ## Architettura, funzionamento e flusso dei messaggi
