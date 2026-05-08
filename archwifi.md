@@ -289,7 +289,9 @@ Tra trasmettitore e gateway potrebbe essere valutato il cosidetto **link budget*
 
 In **bridge mode**, il collegamento tra due AP è assimilabile ad una **dorsale L2**. Nessun altro dispositivo client può entrare a far parte del bridge oltre i due AP. I dispositivi possono essere connessi in modalità WDS oppure in modalità Ad Hoc. Gli host a monte e a valle dei due dispositivi si vedono reciprocamente. Il **bridge a monte** si chiama root bridge, è il bridge con il ruolo di radice nell'albero di **spanning tree** (protocollo STP). 
 
-Il funzionamento della **modalità Bridge** in un dispositivo wireless coinvolge l'intercettazione del traffico wireless proveniente da una rete e il suo **inoltro** a un'altra rete, consentendo così la comunicazione tra le due reti senza fili come se fossero collegate tra loro tramite uno **switch**.
+Il funzionamento della **modalità Bridge** in un dispositivo wireless coinvolge l'intercettazione del traffico wireless proveniente da una rete e il suo **inoltro** a un'altra rete, consentendo così la comunicazione tra le due reti senza fili come se fossero collegate tra loro tramite uno stesso **switch**.
+
+La scelta del modo bridge comporta che l'inoltro dei pacchetti tra un AP e l'altro avvenga a livello L2  mediante inoltro di trame MAC basato sull'indirizzo MAC di destinazione. Poichè le trame MAC vengono mantenute lungo il percorso dalla sorgente alla destinazione, il bridge mode permette una cosa altrimenti impossibile in modo routing (client mode): la possibilità di estendere le VLAN dell'infrastruttura cablata attraverso il bridge. In altre parole, le stesse VLAN vengono **mantenute** ai due capi del bridge. 
 
 #### **Problema rete treno**
 
