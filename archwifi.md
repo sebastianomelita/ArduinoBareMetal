@@ -123,6 +123,25 @@ Un dispositivo AP commerciale può essere configurato in:
 - **WDS mode**: è una evoluzione del Bridge mode in cui i due bridge, oltre a creare la dorsale L2 tra di loro, hanno anche la funzione di un normale AP consentendo l’accesso ai dispositivi client.
 - **Long range mode**: è la disinserzione forzata su un master della modalità peer to peer trasformandolo di fatto in un dispositivo con accesso TDMA (ack e contesa eliminati). Si utilizza per realizzare ponti radio fissi di centinaia di chilometri. Su dispositivi di fascia bassa, spesso non si realizza un TDMA ma ci si limita ad allungare i tempi degli RTT del sistema (contesa con ack ritardati).
 
+## **Struttura cellulare**
+
+Una rete wifi è organizzata nelle zone di influenza di ciascun AP dette **cella**. A causa dell'**attenuazione** del segnale radio dovuta alla distanza o agli ostacoli un client raggiunge un AP solo fino ai confini della sua cella.
+Il collegamento in **mobilità** di un client da una cella ad un’altra adiacente si chiama **roaming** e determina un passaggio della presa in carico di un utente da una cella a quella di transito vicina che viene detto in gergo **handover**. Un handover avviene generalmente, in maniera trasparente all’utente e **senza la cessazione** di eventuali connessioni in corso. 
+
+<img src="img/wificells.jpg" alt="alt text" width="400">
+
+Una organizzazione ottima della rete fa in modo di minimizzare la cosidetta **interferenza cocanale**. L’interferenza cocanale è il disturbo creato alle comunicazioni di un AP dalle comunicazioni di un altro AP che condivide la stessa frequenza. L’interferenza cocanale è minimizzata quando:
+- Dispositivi adiacenti hanno frequenze molto diverse
+- Frequenze uguali sono condivise da dispositivi molto lontani
+
+La divisione in celle è una forma di **SDM** (Space Division Multiplation), infatti celle di uno stesso colore possono trasmettere senza interferirsi nella stessa frequenza e nello stesso istante purchè siano in posizioni differenti. 
+Per dettagli vedi [multiplazioni statiche](multiplazioni.md)
+
+Si tenga conto poi che i dispositivi WiFi sono dei veri e propri **hub** e quindi dei **mezzi broadcast** assimilabili ad un **BUS a filo**:
+- Il **riutilizzo** della **stessa frequenza** tra due dispositivi **vicini** unisce i bus a livello fisico causando la **condivisione** dei rispettivi **dominii di collision**e, circostanza che **dimezza di netto la banda** disponibile di entrambi.
+- l'utilizzo di **frequenze diverse** permette di tenere gli **hub separati** e di lasciare al meccanismo del **roaming** del dispositivo la **scelta** di collegarsi ad uno piuttosto che all'altro. 
+
+Per dettagli in merito alla canalizzazione delle celle vedi [Allocazione dei canali alle celle](wifichannels.md).
 
 ### **Esempio**
 
@@ -186,25 +205,6 @@ R1 possiede 3 indirizzi su ciascuna subnet:
   
 Non è necessario impostare le tabelle di routing in quanto le subnet S0, S1, S2, S3 sono, su R1, direttamente connesse.
 
-## **Struttura cellulare**
-
-Una rete wifi è organizzata nelle zone di influenza di ciascun AP dette **cella**. A causa dell'**attenuazione** del segnale radio dovuta alla distanza o agli ostacoli un client raggiunge un AP solo fino ai confini della sua cella.
-Il collegamento in **mobilità** di un client da una cella ad un’altra adiacente si chiama **roaming** e determina un passaggio della presa in carico di un utente da una cella a quella di transito vicina che viene detto in gergo **handover**. Un handover avviene generalmente, in maniera trasparente all’utente e **senza la cessazione** di eventuali connessioni in corso. 
-
-<img src="img/wificells.jpg" alt="alt text" width="400">
-
-Una organizzazione ottima della rete fa in modo di minimizzare la cosidetta **interferenza cocanale**. L’interferenza cocanale è il disturbo creato alle comunicazioni di un AP dalle comunicazioni di un altro AP che condivide la stessa frequenza. L’interferenza cocanale è minimizzata quando:
-- Dispositivi adiacenti hanno frequenze molto diverse
-- Frequenze uguali sono condivise da dispositivi molto lontani
-
-La divisione in celle è una forma di **SDM** (Space Division Multiplation), infatti celle di uno stesso colore possono trasmettere senza interferirsi nella stessa frequenza e nello stesso istante purchè siano in posizioni differenti. 
-Per dettagli vedi [multiplazioni statiche](multiplazioni.md)
-
-Si tenga conto poi che i dispositivi WiFi sono dei veri e propri **hub** e quindi dei **mezzi broadcast** assimilabili ad un **BUS a filo**:
-- Il **riutilizzo** della **stessa frequenza** tra due dispositivi **vicini** unisce i bus a livello fisico causando la **condivisione** dei rispettivi **dominii di collision**e, circostanza che **dimezza di netto la banda** disponibile di entrambi.
-- l'utilizzo di **frequenze diverse** permette di tenere gli **hub separati** e di lasciare al meccanismo del **roaming** del dispositivo la **scelta** di collegarsi ad uno piuttosto che all'altro. 
-
-Per dettagli in merito alla canalizzazione delle celle vedi [Allocazione dei canali alle celle](wifichannels.md).
 
 ## **Beacon**
 
