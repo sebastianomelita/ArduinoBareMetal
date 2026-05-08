@@ -70,7 +70,11 @@ Una architettura di rete wireless WiFi è può essere realizzata in tre modalit�
 
 ## **Architettura WiFi Infrastruttura** 
 
-Le architetture **più diffuse** in ambito aziendale ed **indoor** sono di **tipo infrastruttura** e sono composte di un dispositivo master centrale detto **Access Point (AP)** posto in posizione **baricentrica** rispetto a più dispositivi slave della rete wireless detti **Client**. 
+Le architetture **più diffuse** in ambito aziendale ed **indoor** sono di **tipo infrastruttura** e sono composte di un dispositivo master centrale detto **Access Point (AP)** posto in posizione **baricentrica** rispetto a più dispositivi slave della rete wireless detti **Client**:
+- La comunicazione tra client gestiti da uno **stesso AP** avviene direttamente attraverso l’hub wireless da lui creato
+- La comunicazione tra client di **AP diversi**, o tra un **AP e host fissi** avviene sempre mediata dai dispositivi dell’infrastruttura di rete (switch e router)
+
+Gli AP della stessa infrastruttura condividono lo stesso SSID, cioè l’SSID è una proprietà dell’infrastruttura wireless e non del singolo AP.
 
 Gli **elementi** di una rete in modo infrastruttura sono:
 - gli **AP (Access Point)**, sono dei dispositivi di **aggregazione** dei client della rete LAN (PC, dispositivi IoT, smartphone, tablet, ecc.) che, attraverso gli AP, ottengono un accesso alla rete LAN aziendale. In modo infrastruttura, gli AP sono in realtà assimilabili a 2 dispositivi distinti:
@@ -109,6 +113,16 @@ L'autenticazione di un Access Point (AP) Wi-Fi è un processo fondamentale per g
 8. **802.1X/EAP (Extensible Authentication Protocol)**: Utilizzato principalmente nelle reti WPA2-Enterprise e WPA3-Enterprise. Richiede un server di autenticazione (RADIUS) e supporta vari metodi di autenticazione come certificati digitali, smart card, token hardware e credenziali di nome utente/password. Uso comune: Grandi reti aziendali e ambienti dove è necessaria una gestione avanzata delle credenziali di accesso e autenticazione forte. E' la più sofisticata, per dettagli vedi [Autenticazione 802.1X](radius.md)
 
 Ogni tipo di autenticazione ha i suoi pro e contro in termini di sicurezza, facilità d'uso e configurazione. La scelta del metodo di autenticazione dipende dalle esigenze specifiche della rete e dal livello di sicurezza richiesto.
+
+## **Modi di un dispositivo wireless 802.11**
+
+Un dispositivo AP commerciale può essere configurato in:
+- **AP mode**: l’AP diventa un dispositivo master che crea un hub radio con un SSID che identifica l’infrastruttura wireless. L’AP diventa un aggregatore di client sulla LAN aziendale, al pari di uno SW di accesso. L’hub wireless è  collegato alla LAN mediante un bridge.
+- **Client mode**: l’AP diventa un dispositivo che serve a permettere l’accesso ad una rete WiFi già esistente con un dato SSID da parte di un dispositivo client (PC, SW, router). Spesso possiede funzioni di routing e di NAT che impediscono sul lato client l’accesso da parte di host che stanno  sul lato AP.
+- **Bridge mode**: l’AP realizza una condivisione del proprio Hub radio con uno diverso generato da un altro AP di cui condivide lo stesso SSID.  In altre parole, da due hub separati ne ottengo uno con lo stesso ssid. Se uno dei due hub è in bridge con una LAN allora anche il secondo lo diventa, i due hub e il bridge diventano una stessa LAN. Gli host a monte e a valle dei due AP si vedono reciprocamente (dorsale L2). In questo modo creo un collegamento diretto che non accetta l’accesso di dispositivi client.
+- **WDS mode**: è una evoluzione del Bridge mode in cui i due bridge, oltre a creare la dorsale L2 tra di loro, hanno anche la funzione di un normale AP consentendo l’accesso ai dispositivi client.
+- **Long range mode**: è la disinserzione forzata su un master della modalità peer to peer trasformandolo di fatto in un dispositivo con accesso TDMA (ack e contesa eliminati). Si utilizza per realizzare ponti radio fissi di centinaia di chilometri. Su dispositivi di fascia bassa, spesso non si realizza un TDMA ma ci si limita ad allungare i tempi degli RTT del sistema (contesa con ack ritardati).
+
 
 ### **Esempio**
 
