@@ -323,13 +323,13 @@ Si ha la necessità di unire due reti LAN della stessa azienda ma poste su edifi
 
 ### **Soluzione**
 
-Il dispositivo client implementa un **router** ed un **NAT**. In genere, gli host sulla LAN del client utilizzano il server DHCP del router, poiché di fatto è una rete indipendente. 
-
-Il dispositivo in modo AP implementa un router senza NAT.
+Il dispositivo client implementa un **router** ed un **NAT**. Il dispositivo in modo AP implementa un router senza NAT.
 
 Gli host del lato AP sono su una **subnet diversa** da quella degli host sul lato client. Anche la dorsale wireless tra i due dispositivi è essa stessa una subnet essendo un link tra due router.
 
 Gli host del lato AP non vedono quelli del lato client ma solo un router (con indirizzo privato). Gli host del lato client vedono quelli del lato AP, ed accedono ad internet.
+
+In genere, gli host sulla LAN del client utilizzano il server DHCP del dispositivo client, poiché di fatto essi stanno su una rete sconosciuta per il lato AP. 
 
 
 ### **WiFi in repeater mode**
