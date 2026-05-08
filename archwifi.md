@@ -71,9 +71,10 @@ Una architettura di rete wireless WiFi è può essere realizzata in tre modalit�
 ## **Architettura Wifi Direct** 
 
 Wi-Fi Direct, invece, è un protocollo peer-to-peer definito dalla Wi-Fi Alliance che consente a due dispositivi di negoziare dinamicamente chi fa da Group Owner (una sorta di soft-AP) e chi da client, senza bisogno di un'infrastruttura preesistente. 
-Entrambi, bridge mode e wifi direct, creano un collegamento diretto tra dispositivi senza che i client vi accedano liberamente però il bridge mode è pensato per collegamenti permanenti (ponti radio).
-Lo scopo tipico del Wi-Fi Direct è la comunicazione temporanea e diretta tra endpoint (stampante, telefono, display), non l'interconnessione di LAN. 
 
+<img src="img/wifi_direct.png" alt="alt text" width="800">
+
+Entrambi, bridge mode e wifi direct, creano un collegamento diretto tra dispositivi senza che i client vi accedano liberamente però il bridge mode è pensato per collegamenti permanenti (ponti radio). Lo scopo tipico del Wi-Fi Direct è la comunicazione temporanea e diretta tra endpoint (stampante, telefono, display), non l'interconnessione di LAN. 
 
 
 ## **Architettura WiFi Infrastruttura** 
