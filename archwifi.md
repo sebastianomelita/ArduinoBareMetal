@@ -362,8 +362,8 @@ Le interfacce wireless fisiche sono divise in più sotto interfacce logiche,
 Anche le interfacce ethernet fisiche (Trunk) sono divise in più sotto interfacce logiche, ciascuna con il proprio vlan id.
 
 L'**associazione** di una interfaccia ad una VLAN può essere:
-- **Statica** e si imposta sul controller degli AP
-- **Dinamica** e si imposta sul server Radius con:
+- **Statica**, associa ad ogni SSID la sua VLAN e si imposta sul controller degli AP
+- **Dinamica**: associa ad ogni username la sua VLAN e si imposta sul server Radius con:
   - **Una ACL** sul file di configurazione users del server radius 
   - **Una impostazione** nel modulo eap in mods-available che setta use_tunneled_reply = yes
 
