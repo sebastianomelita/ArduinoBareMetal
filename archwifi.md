@@ -58,6 +58,8 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 [Sensori](/approfondimenti/sensore.md)
 
+[Autenticazione 802.1X](radius.md)
+
 
 ## **Rete in modo infrastruttura** 
 
