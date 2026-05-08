@@ -108,6 +108,13 @@ L’accesso di gran lunga più sicuro rimane iismarconi perché autenticato su b
 ## **Gestione dinamica degli SSID**
 
 In realtà l’associazione statica degli ssid è solo di base (default) e può essere cambiata in qualsiasi momento impostando il campo Tunnel-Private-Group-Id nella risposta  verso l’autenticatore (RFC2868).
+
+L'**associazione** di una interfaccia ad una VLAN può essere:
+- **Statica** e si imposta sul controller degli AP
+- **Dinamica** e si imposta sul server Radius con:
+  - **Una ACL** sul file di configurazione users del server radius 
+  - **Una impostazione** nel modulo eap in mods-available che setta use_tunneled_reply = yes
+    
 Le utenze si autenticano col le loro credenziali che, dall’autenticatore in poi, sono inviate (tramite protocollo RADIUS) verso un server che cerca l’username all’interno di un database LDAP verificando la password. Ad autenticazione avvenuta con successo, viene prelevato il profilo utente che è composto da una stringa che rappresenta un DN (Distinguished Name), cioè l’insieme completo degli attributi che lo riguardano. Il DN viene conservato nella variabile d’ambiente freeradius Ldap-Group dove può essere letto ed utilizzato per un eventuale confronto.
 Nel file users di Freeradius vengono definiti eventuali criteri di assegnazione dinamica del campo Tunnel-Private-Group-Id della risposta del protocollo RADIUS in base al valore del DN prelevato dal profilo utente.
 
