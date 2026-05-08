@@ -291,7 +291,9 @@ In **bridge mode**, il collegamento tra due AP è assimilabile ad una **dorsale 
 
 Il funzionamento della **modalità Bridge** in un dispositivo wireless coinvolge l'intercettazione del traffico wireless proveniente da una rete e il suo **inoltro** a un'altra rete, consentendo così la comunicazione tra le due reti senza fili come se fossero collegate tra loro tramite uno stesso **switch**.
 
-La scelta del modo bridge comporta che l'inoltro dei pacchetti tra un AP e l'altro avvenga a livello L2  mediante inoltro di trame MAC basato sull'indirizzo MAC di destinazione. Poichè le trame MAC vengono mantenute lungo il percorso dalla sorgente alla destinazione, il bridge mode permette una cosa altrimenti impossibile in modo routing (client mode): la possibilità di estendere le VLAN dell'infrastruttura cablata attraverso il bridge. In altre parole, le stesse VLAN vengono **mantenute** ai due capi del bridge. 
+La scelta del modo bridge comporta che l'inoltro dei pacchetti tra un AP e l'altro avvenga a livello L2  mediante inoltro di trame MAC basato sull'indirizzo MAC di destinazione. Poichè le trame MAC vengono mantenute lungo il percorso dalla sorgente alla destinazione, il bridge mode permette di ottenere **due vantaggi** altrimenti impossibile in modo routing (client mode): 
+- la possibilità di **estendere le VLAN** dell'infrastruttura cablata attraverso il bridge. In altre parole, le stesse VLAN vengono **mantenute** ai due capi del bridge.
+- la possibilitàò di poter consideraare le LAN ai due capi del bridge come **una sola LAN** su cui allocare per i PC gli indirizzi di una **stessa subnet IP**. 
 
 #### **Problema rete treno**
 
