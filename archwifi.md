@@ -315,6 +315,8 @@ Per funzionare efficacemente dovrebbe avere:
 
 ### **WiFi in client mode**
 
+E' opportuna questa soluzione quando si ha la necessità di connettere **gruppi diversi** di utenti disposti fisicamente ai due capi di un ponte radio che li separa.
+
 In **client mode** il collegamento tra due AP è assimilabile ad una **dorsale L3**. Altri dispositivi client possono entrare a far parte del link tra i due AP.
 
 <img src="img/ponteaziendawifi.png" alt="alt text" width="1000">
@@ -324,8 +326,6 @@ In **client mode** il collegamento tra due AP è assimilabile ad una **dorsale L
 Si ha la necessità di unire due reti LAN della stessa azienda ma poste su edifici separati da una strada pubblica che non si vuole o non si può cablare. Non si vuole ricorrere a VPN per non dover pagare un secondo abbonamento ad internet.
 
 ### **Soluzione**
-
-E' opportuna questa soluzione quando si ha la necessità di connettere **gruppi diversi** di utenti disposti fisicamente ai due capi di un ponte radio che li separa.
 
 Il dispositivo client implementa un **router** ed un **NAT**. Il dispositivo in modo AP implementa un router senza NAT.
 
