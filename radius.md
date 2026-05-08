@@ -109,7 +109,7 @@ L’accesso di gran lunga più sicuro rimane iismarconi perché autenticato su b
 
 In realtà l’associazione statica degli ssid è solo di base (default) e può essere cambiata in qualsiasi momento impostando il campo Tunnel-Private-Group-Id nella risposta  verso l’autenticatore (RFC2868).
 
-L'**associazione dinamica** di una interfaccia ad una VLAN si ottiene con:
+L'**associazione dinamica** associa ad ogni username la sua VLAN e si imposta con:
   - **Una ACL** sul file di configurazione users del server radius 
   - **Una impostazione** nel modulo eap in mods-available che setta use_tunneled_reply = yes
     
