@@ -19,6 +19,8 @@ La **conferma**, però, potrebbe pure essere gestita soltanto dal **livello appl
 
 ### **Definizione di topic e payload**
 
+<img src="../img/mqtt_scena_stanza.svg" width="800">
+
 Molto spesso, nella rete di distribuzione IP è presente un server col ruolo di **broker MQTT** che potrebbe servire vari **scenari di comunicazione**. A titolo di esempio:
 - su un **topic di misura** (/soggiorno/misure):
     - un dispositivo **sensore**, che è registrato sul broker col ruolo di **publisher**, vuole usare questo topic come canale di **output** per inviare le misure verso il **server applicativo** che le deve elaborare o visualizzare.
