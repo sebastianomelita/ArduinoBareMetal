@@ -79,7 +79,7 @@ L'interesse potrebbe nascere per più motivi:
 - **Sincronizzazione PULL** di un **pannello di controllo** web. Un **quadro di controllo web** potrebbe **inviare** sul topic di comando la **richiesta** "getAllStates"  per  ottenere lo **stato** degli attuatori:
     -  una **sola volta**, all'inizio, quando la pagina è stata **caricata/ricaricata** dall'utente
     -  **periodicamente**, grazie ad un timer SW, per essere certi di avere sempre lo **stato più aggiornato**, anche a fronte di una eventuale **disconnessione** di rete che abbia impedito la registrazione dell'ultimo feedback da parte dell'attuatore.
-- **Sincronizzazione PUSH**. Lo stesso attuatore potrebbe prendere l'iniziativa di **spedire periodicamente**, e automaticamente senza alcuna richiesta sul topic di comando, il proprio stato a tutti coloro che ne sono interessati (server di gestione o tutti i display web che lo comandano). E' un'**alternativa PUSH** alla sincronizzazione PULL periodica.
+- **Sincronizzazione PUSH**. Lo stesso attuatore potrebbe prendere l'iniziativa di **spedire periodicamente** sul topic di stato il proprio stato a tutti coloro che ne sono interessati (server di gestione o tutti i display web che lo comandano), senza che venga effettuata alcuna richiesta sul topic di comando, . E' un'**alternativa PUSH** alla sincronizzazione PULL periodica.
 
 Un esempio di **canale MQTT di stato** potrebbe essere: 
 - nel caso di **identificazione univoca** del dispositivo via  **path MQTT**: ```luci/soggiorno/stato/mydevice1-98F4ABF298AD/{"state":"on"}```
