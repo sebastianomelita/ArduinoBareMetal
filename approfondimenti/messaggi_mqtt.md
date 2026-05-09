@@ -37,6 +37,8 @@ Molto spesso, nella rete di distribuzione IP è presente un server col ruolo di 
 
 ### **Gestione dei topic di misura**
 
+<img src="img/mqtt_topic_misura.svg" width="800">
+
 Potremmo a questo punto inserire la misura della temperatura e della pressione nel topic più generale delle misure che chiameremo ```misure``` e registrare il sensore di temperatura e presenza del soggiorno al topic ```/soggiorno/misure``` come publisher, mentre potremmo registrare il server di gestione al topic ```+/misure``` come subscriber delle misure di tutti gli ambienti. Il messaggio potrebbe essere il JSON  
 
 ``` Json
@@ -57,11 +59,15 @@ Se volessimo selezionare un solo dispositivo sono possibili due strade alternati
 
 ### **Gestione dei topic di comando**
 
+<img src="img/mqtt_topic_comando.svg" width="800">
+
 Potremmo a questo punto inserire il comando delle luci nel topic più generale delle misure ed attuazioni che chiameremo ```comandi``` e registrare i pulsanti del soggiorno al topic ```luci/soggiorno/comandi``` come pubblisher, mentre potremmo registrare le attuazioni delle lampade allo stesso topic come subscriber. Il comando potrebbe essere il JSON  ```{"toggle":"true"}```, per cui alla fine tutto intero il path diventerebbe ```luci/soggiorno/comandi/{"toggle":"true"}```. Se volessimo selezionare un solo dispositivo sono possibili due strade alternative:
 - inserire il **prefisso mqtt** del dispositivo direttamente **nel path** ```luci/soggiorno/comandi/mydevice1-98F4ABF298AD/{"toggle":"true"}```
 - inserire un **id** del dispositivo **nel JSON** ```luci/soggiorno/comandi/{"deviceid":"01", "toggle":"true"}```, dove con ```01``` ci indica un indirizzo univoco solamente all'interno del sottogruppo ```luci/soggiorno```. Con questa soluzione il dispositivo deve saper gestire un secondo livello di indirizzi indipendente dal meccanismo del path dei topic.
 
 ### **Gestione dei topic di stato**
+
+<img src="img/mqtt_topic_stato.svg" width="800">
 
 Questo canale viene utilizzato per inviare lo **stato** di un dispositivo a tutti coloro che ne sono interessati. L'interesse potrebbe nascere per più motivi:
 - **Conferma** dell'avvenuta **attuazione**. Alla **ricezione** di un comando (ad esempio "on":"true"), l'**attuatore** potrebbe  **notificare spontaneamente** (in modalità PUSH), al **display** associato al sensore (e al **server di gestione**), il proprio **stato attuale**, in modo che l'**utente** (o il server di gestione) possa verificare l'effettiva **efficacia** dell'ultimo comando di attuazione.
@@ -76,6 +82,8 @@ Un esempio di **canale MQTT di stato** potrebbe essere:
 - nel caso di **identificazione univoca** del dispositivo nel **payload JSON**: ```luci/soggiorno/stato/{"deviceid":"01", "state":"on"}```
 
 ### **Gestione dei topic di configurazione**
+
+<img src="img/mqtt_topic_config.svg" width="800">
 
 Questo canale viene utilizzato per inviare **comandi di configurazione** al dispositivo da parte del server di processo. L'interesse potrebbe nascere per più motivi:
 - effettuare un aggiornamento del FW di bordo via wireless.
