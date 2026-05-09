@@ -17,9 +17,9 @@ La conferma, invece, è prevista per funzioni di **comando** o **configurazione*
 
 La **conferma**, però, potrebbe pure essere gestita soltanto dal **livello applicativo** (non dal protocollo) utilizzando un **topic di feeedback** (o stato) per inviare il valore dello stato corrente subito dopo che questo viene interessato da un comando in ingresso sul dispositivo. 
 
-### **Definizione di topic e payload**
-
 <img src="../img/mqtt_scena_stanza.svg" width="800">
+
+### **Definizione di topic e payload**
 
 Molto spesso, nella rete di distribuzione IP è presente un server col ruolo di **broker MQTT** che potrebbe servire vari **scenari di comunicazione**. A titolo di esempio:
 - su un **topic di misura** (/soggiorno/misure):
