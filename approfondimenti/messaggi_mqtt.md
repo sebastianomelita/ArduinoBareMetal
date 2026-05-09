@@ -22,7 +22,7 @@ La **conferma**, però, potrebbe pure essere gestita soltanto dal **livello appl
 Molto spesso, nella rete di distribuzione IP è presente un server col ruolo di **broker MQTT** che potrebbe servire vari **scenari di comunicazione**. A titolo di esempio:
 - su un **topic di misura** (/soggiorno/misure):
     - un dispositivo **sensore**, che è registrato sul broker col ruolo di **publisher**, vuole usare questo topic come canale di **output** per inviare le misure verso il **server applicativo** che le deve elaborare o visualizzare.
-    - veceversa, il **server applicativo**, che è registrato come **subscriber**, vuole usare il canale /soggiorno/misure come **input** perchè è interessato a ricevere le misure di **tutti** i sensori presenti nell'ambiente (soggiorno).
+    - veceversa, il **server applicativo**, che è registrato come **subscriber**, vuole usare il topic /soggiorno/misure come canale di **input** perchè è interessato a ricevere le misure di **tutti** i sensori presenti nell'ambiente (soggiorno).
 - su un **topic di attuazione (comando)**, ad esempio luci/soggiorno/comandi:
     - il dispositivo **sensore** col ruolo di pulsante è registrato sul broker col ruolo di **publisher** perchè vuole usare questo topic come canale di **output** per **inviare il comando** "toggle":"true" verso l'attuatore (la lampada). 
     - il dispositivo **attuatore** col ruolo di lampada è registrato sul broker con il ruolo di **subscriber** perchè vuole usare questo topic come canale di **input** per ricevere eventuali comandi di attuazione (toggle). 
