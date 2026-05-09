@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 260" role="img">
   <title>Topic di stato MQTT</title>
-  <desc>Lampada che pubblica il proprio stato sul topic, display e server di gestione iscritti, broker MQTT al centro.</desc>
+  <desc>Lampada a destra che pubblica il proprio stato sul topic, display e server di gestione a sinistra iscritti, broker MQTT al centro, freccia del tubo da destra a sinistra.</desc>
   <style>
     .th { font: 500 14px sans-serif; fill: #2C2C2A; }
     .ts { font: 400 12px sans-serif; fill: #444441; }
@@ -26,24 +26,24 @@
   <text class="ts" x="340" y="102" text-anchor="middle">{"state":"on"}</text>
 
   <rect class="tube" x="170" y="115" width="340" height="36" rx="18"/>
-  <line class="tube-arrow" x1="200" y1="133" x2="480" y2="133" marker-end="url(#arrow)"/>
+  <line class="tube-arrow" x1="480" y1="133" x2="200" y2="133" marker-end="url(#arrow)"/>
 
   <rect class="topic-label-box" x="270" y="158" width="140" height="22" rx="4"/>
   <text class="ts topic-label-text" x="340" y="173" text-anchor="middle">luci/soggiorno/stato</text>
   <text class="ts" x="340" y="197" text-anchor="middle">Broker MQTT</text>
 
-  <rect class="pub-box" x="40" y="105" width="120" height="56" rx="8"/>
-  <text class="th pub-text" x="100" y="125" text-anchor="middle">Lampada</text>
-  <text class="ts pub-text" x="100" y="145" text-anchor="middle">attuatore</text>
-  <rect class="pub-badge" x="55" y="168" width="90" height="22" rx="11"/>
-  <text class="badge-text" x="100" y="183" text-anchor="middle">publish()</text>
+  <rect class="sub-box" x="40" y="78" width="120" height="40" rx="8"/>
+  <text class="th sub-text" x="100" y="102" text-anchor="middle">Display</text>
 
-  <rect class="sub-box" x="520" y="78" width="120" height="40" rx="8"/>
-  <text class="th sub-text" x="580" y="102" text-anchor="middle">Display</text>
+  <rect class="sub-box" x="40" y="148" width="120" height="40" rx="8"/>
+  <text class="th sub-text" x="100" y="172" text-anchor="middle">Server gestione</text>
 
-  <rect class="sub-box" x="520" y="148" width="120" height="40" rx="8"/>
-  <text class="th sub-text" x="580" y="172" text-anchor="middle">Server gestione</text>
+  <rect class="sub-badge" x="48" y="200" width="104" height="22" rx="11"/>
+  <text class="badge-text" x="100" y="215" text-anchor="middle">subscribe()</text>
 
-  <rect class="sub-badge" x="528" y="200" width="104" height="22" rx="11"/>
-  <text class="badge-text" x="580" y="215" text-anchor="middle">subscribe()</text>
+  <rect class="pub-box" x="520" y="105" width="120" height="56" rx="8"/>
+  <text class="th pub-text" x="580" y="125" text-anchor="middle">Lampada</text>
+  <text class="ts pub-text" x="580" y="145" text-anchor="middle">attuatore</text>
+  <rect class="pub-badge" x="535" y="168" width="90" height="22" rx="11"/>
+  <text class="badge-text" x="580" y="183" text-anchor="middle">publish()</text>
 </svg>
