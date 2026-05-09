@@ -37,9 +37,9 @@ Molto spesso, nella rete di distribuzione IP è presente un server col ruolo di 
 
 ### **Gestione dei topic di misura**
 
-<img src="../img/mqtt_topic_misura.svg" width="800">
-
 Potremmo a questo punto inserire la misura della temperatura e della pressione nel topic più generale delle misure che chiameremo ```misure``` e registrare il sensore di temperatura e presenza del soggiorno al topic ```/soggiorno/misure``` come publisher, mentre potremmo registrare il server di gestione al topic ```+/misure``` come subscriber delle misure di tutti gli ambienti. Il messaggio potrebbe essere il JSON  
+
+<img src="../img/mqtt_topic_misura.svg" width="800">
 
 ``` Json
 {
