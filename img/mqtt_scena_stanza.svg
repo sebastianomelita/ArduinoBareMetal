@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 500" role="img">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 550" role="img">
   <title>Scena fisica del soggiorno con dispositivi IoT</title>
-  <desc>Pianta del soggiorno con pulsante a parete, display LED, lampada con attacco a vite E27, scatolotto del server applicativo contenente pulsante virtuale e web app. Esterni alla stanza: smartphone con mockup interfaccia e broker MQTT.</desc>
+  <desc>Pianta del soggiorno con pulsante a parete, display LED, lampada con attacco a vite E27, sensore ambientale di temperatura, scatolotto del server applicativo contenente pulsante virtuale e web app. Esterni alla stanza: smartphone con dashboard luci e temperatura, broker MQTT.</desc>
   <style>
     .th { font: 500 14px sans-serif; fill: #2C2C2A; }
     .ts { font: 400 12px sans-serif; fill: #444441; }
@@ -8,6 +8,7 @@
     .wall-plate { fill: #FAF8F2; stroke: #5C5852; stroke-width: 0.8; }
     .display-screen { fill: #2C2C2A; stroke: #1a1a18; stroke-width: 0.8; }
     .display-text { font: 600 16px ui-monospace, monospace; fill: #5DCAA5; }
+    .temp-big { font: 600 20px ui-monospace, monospace; fill: #993C1D; }
     .server-box { fill: #FBF5E5; stroke: #9C7A1A; stroke-width: 1.2; }
     .module-box { fill: #FFFFFF; stroke: #9C7A1A; stroke-width: 0.8; stroke-dasharray: 4 3; }
     .broker-box { fill: #CECBF6; stroke: #534AB7; stroke-width: 0.8; }
@@ -15,18 +16,19 @@
     .phone-screen { fill: #FFFFFF; }
     .phone-header { fill: #3DA980; }
     .phone-text-h { font: 600 8px ui-monospace, monospace; fill: #FFFFFF; }
-    .phone-text-b { font: 400 7px ui-monospace, monospace; fill: #444441; }
-    .phone-text-on { font: 600 6px ui-monospace, monospace; fill: #5DCAA5; }
-    .phone-text-mini { font: 400 5px ui-monospace, monospace; fill: #888780; }
+    .card-bg { fill: #F5F5F0; stroke: #888780; stroke-width: 0.4; }
+    .card-title { font: 600 7px ui-monospace, monospace; fill: #444441; }
     .toggle-bg { fill: #5DCAA5; }
     .toggle-knob { fill: #FFFFFF; }
+    .phone-text-on { font: 600 7px ui-monospace, monospace; fill: #5DCAA5; }
+    .phone-text-mini { font: 400 5px ui-monospace, monospace; fill: #888780; }
+    .phone-temp { font: 600 14px ui-monospace, monospace; fill: #993C1D; }
     .net-line { stroke: #888780; stroke-width: 0.6; stroke-dasharray: 4 3; fill: none; }
     .web-tile-screen { fill: #2C2C2A; }
     .web-tile-inner { fill: #3DA980; }
-    .web-tile-header { font: 600 6px ui-monospace, monospace; fill: #FFFFFF; }
+    .web-tile-header { font: 600 5px ui-monospace, monospace; fill: #FFFFFF; }
     .web-tile-toggle { fill: #FFFFFF; }
     .web-tile-knob { fill: #3DA980; }
-    .web-tile-status { font: 400 5px ui-monospace, monospace; fill: #FFFFFF; }
   </style>
   <defs>
     <radialGradient id="bulb-glow" cx="50%" cy="40%" r="55%">
@@ -44,9 +46,13 @@
       <stop offset="50%" stop-color="#9C9489"/>
       <stop offset="100%" stop-color="#6E685E"/>
     </linearGradient>
+    <linearGradient id="temp-merc" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#993C1D"/>
+      <stop offset="100%" stop-color="#E66B43"/>
+    </linearGradient>
   </defs>
 
-  <rect class="room" x="40" y="60" width="440" height="400" rx="6"/>
+  <rect class="room" x="40" y="60" width="440" height="450" rx="6"/>
   <text class="th" x="60" y="85">Soggiorno</text>
 
   <rect class="wall-plate" x="80" y="120" width="160" height="120" rx="6"/>
@@ -68,47 +74,74 @@
   <text class="th" x="380" y="245" text-anchor="middle">Lampada</text>
   <text class="ts" x="380" y="259" text-anchor="middle">attuatore</text>
 
-  <rect class="server-box" x="80" y="285" width="360" height="160" rx="8"/>
-  <text class="th" x="98" y="305">Server applicativo</text>
-  <text class="ts" x="245" y="305">scatolotto / Raspberry / mini-PC</text>
+  <g transform="translate(80, 280)">
+    <rect class="wall-plate" x="0" y="0" width="160" height="78" rx="6"/>
+    <circle cx="32" cy="20" r="9" fill="#FFFFFF" stroke="#5C5852" stroke-width="0.7"/>
+    <rect x="29" y="20" width="6" height="38" fill="#FFFFFF" stroke="#5C5852" stroke-width="0.7"/>
+    <rect x="30.5" y="22" width="3" height="34" fill="url(#temp-merc)"/>
+    <circle cx="32" cy="58" r="6.5" fill="url(#temp-merc)" stroke="#5C5852" stroke-width="0.6"/>
+    <text class="temp-big" x="100" y="32" text-anchor="middle">23 °C</text>
+    <text class="ts" x="100" y="52" text-anchor="middle">Sensore</text>
+    <text class="ts" x="100" y="66" text-anchor="middle">ambientale</text>
+  </g>
+  <text class="ts" x="160" y="375" text-anchor="middle">misure: temp, umidità, pressione</text>
 
-  <rect class="module-box" x="100" y="320" width="155" height="110" rx="6"/>
-  <circle cx="177" cy="358" r="20" fill="url(#btn-cap)" stroke="#9C7A1A" stroke-width="0.7" stroke-dasharray="2 2"/>
-  <circle cx="177" cy="358" r="13" fill="none" stroke="#9C7A1A" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.6"/>
-  <text class="th" x="177" y="402" text-anchor="middle">Pulsante virtuale</text>
-  <text class="ts" x="177" y="418" text-anchor="middle">imita un pulsante reale</text>
+  <rect class="server-box" x="80" y="395" width="360" height="100" rx="8"/>
+  <text class="th" x="98" y="412">Server applicativo</text>
+  <text class="ts" x="245" y="412">scatolotto / Raspberry / mini-PC</text>
 
-  <rect class="module-box" x="265" y="320" width="155" height="110" rx="6"/>
-  <rect class="web-tile-screen" x="318" y="335" width="48" height="56" rx="5"/>
-  <rect class="web-tile-inner" x="321" y="339" width="42" height="40" rx="2"/>
-  <text class="web-tile-header" x="342" y="354" text-anchor="middle">LUCI</text>
-  <rect class="web-tile-toggle" x="327" y="360" width="30" height="6" rx="3"/>
-  <circle class="web-tile-knob" cx="352" cy="363" r="2"/>
-  <text class="web-tile-status" x="342" y="375" text-anchor="middle">on</text>
-  <text class="th" x="342" y="402" text-anchor="middle">Web app</text>
-  <text class="ts" x="342" y="418" text-anchor="middle">interfaccia per smartphone</text>
+  <rect class="module-box" x="100" y="422" width="155" height="62" rx="6"/>
+  <circle cx="125" cy="453" r="14" fill="url(#btn-cap)" stroke="#9C7A1A" stroke-width="0.7" stroke-dasharray="2 2"/>
+  <circle cx="125" cy="453" r="9" fill="none" stroke="#9C7A1A" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.6"/>
+  <text class="th" x="170" y="450" text-anchor="middle">Pulsante</text>
+  <text class="ts" x="170" y="465" text-anchor="middle">virtuale</text>
+
+  <rect class="module-box" x="265" y="422" width="155" height="62" rx="6"/>
+  <rect class="web-tile-screen" x="285" y="436" width="32" height="38" rx="3"/>
+  <rect class="web-tile-inner" x="287" y="438" width="28" height="26" rx="1"/>
+  <text class="web-tile-header" x="301" y="450" text-anchor="middle">LUCI</text>
+  <rect class="web-tile-toggle" x="291" y="455" width="20" height="4" rx="2"/>
+  <circle class="web-tile-knob" cx="307" cy="457" r="1.4"/>
+  <text class="th" x="365" y="450" text-anchor="middle">Web app</text>
+  <text class="ts" x="365" y="465" text-anchor="middle">browser</text>
 
   <rect class="broker-box" x="540" y="80" width="140" height="80" rx="8"/>
   <text class="th" x="610" y="108" text-anchor="middle">Broker MQTT</text>
   <text class="ts" x="610" y="128" text-anchor="middle">smista i messaggi</text>
   <text class="ts" x="610" y="146" text-anchor="middle">tra i dispositivi</text>
 
-  <rect class="phone-body" x="565" y="290" width="90" height="160" rx="14"/>
-  <rect class="phone-screen" x="572" y="308" width="76" height="124" rx="2"/>
-  <rect class="phone-header" x="572" y="308" width="76" height="20" rx="2"/>
-  <text class="phone-text-h" x="610" y="322" text-anchor="middle">Smart Home</text>
-  <text class="phone-text-b" x="610" y="345" text-anchor="middle">Luci soggiorno</text>
-  <rect class="toggle-bg" x="582" y="355" width="56" height="20" rx="10"/>
-  <circle class="toggle-knob" cx="628" cy="365" r="7"/>
-  <text class="phone-text-on" x="610" y="392" text-anchor="middle">ON</text>
-  <rect x="582" y="405" width="56" height="14" rx="3" fill="none" stroke="#888780" stroke-width="0.4"/>
-  <text class="phone-text-mini" x="610" y="415" text-anchor="middle">stato live</text>
-  <rect x="600" y="438" width="20" height="8" rx="2" fill="none" stroke="#1a1a18" stroke-width="0.5"/>
-  <text class="ts" x="610" y="475" text-anchor="middle">smartphone (utente remoto)</text>
+  <rect class="phone-body" x="555" y="240" width="110" height="280" rx="14"/>
+  <rect class="phone-screen" x="563" y="258" width="94" height="244" rx="2"/>
+  <rect class="phone-header" x="563" y="258" width="94" height="20" rx="2"/>
+  <text class="phone-text-h" x="610" y="272" text-anchor="middle">Smart Home</text>
+
+  <rect class="card-bg" x="571" y="288" width="78" height="92" rx="3"/>
+  <text class="card-title" x="610" y="302" text-anchor="middle">Luci soggiorno</text>
+  <rect class="toggle-bg" x="582" y="312" width="56" height="20" rx="10"/>
+  <circle class="toggle-knob" cx="628" cy="322" r="7"/>
+  <text class="phone-text-on" x="610" y="350" text-anchor="middle">ON</text>
+  <rect x="582" y="358" width="56" height="14" rx="3" fill="none" stroke="#888780" stroke-width="0.4"/>
+  <text class="phone-text-mini" x="610" y="368" text-anchor="middle">stato live</text>
+
+  <rect class="card-bg" x="571" y="392" width="78" height="92" rx="3"/>
+  <text class="card-title" x="610" y="406" text-anchor="middle">Temperatura</text>
+  <g transform="translate(580, 416)">
+    <circle cx="6" cy="6" r="5.5" fill="#FFFFFF" stroke="#993C1D" stroke-width="0.6"/>
+    <rect x="4" y="6" width="4" height="22" fill="#FFFFFF" stroke="#993C1D" stroke-width="0.6"/>
+    <rect x="5" y="7" width="2" height="20" fill="#993C1D"/>
+    <circle cx="6" cy="28" r="4" fill="#993C1D" stroke="#993C1D" stroke-width="0.4"/>
+  </g>
+  <text class="phone-temp" x="625" y="436" text-anchor="middle">23 °C</text>
+  <text class="phone-text-mini" x="625" y="450" text-anchor="middle">soggiorno</text>
+  <rect x="582" y="460" width="56" height="14" rx="3" fill="none" stroke="#888780" stroke-width="0.4"/>
+  <text class="phone-text-mini" x="610" y="470" text-anchor="middle">aggiornamento live</text>
+
+  <rect x="600" y="508" width="20" height="8" rx="2" fill="none" stroke="#1a1a18" stroke-width="0.5"/>
+  <text class="ts" x="610" y="535" text-anchor="middle">smartphone (utente remoto)</text>
 
   <line class="net-line" x1="480" y1="120" x2="538" y2="120"/>
   <text class="ts" x="509" y="113" text-anchor="middle">rete</text>
 
-  <line class="net-line" x1="563" y1="370" x2="442" y2="370"/>
-  <text class="ts" x="500" y="363" text-anchor="middle">Wi-Fi / web</text>
+  <line class="net-line" x1="553" y1="380" x2="442" y2="380"/>
+  <text class="ts" x="500" y="373" text-anchor="middle">Wi-Fi / web</text>
 </svg>
