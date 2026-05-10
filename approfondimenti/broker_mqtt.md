@@ -37,6 +37,21 @@ In **generale**, su reti **non IP**, i **client MQTT** (con il ruolo di **publis
 
 Il **vantaggio** del **broker MQTT** è quello di poter gestire in modo semplice e **standardizzato** lo **smistamento** (inoltro) delle **misure** e dei **comandi** tra i vari portatori di interesse (stakeholder) di un **cluster** di reti di sensori, siano essi utenti umani, interfacce grafiche, server applicativi diversi o altri dispositivi IoT.
 
+### **Rappresentazione astratta come canale**
+
+Un canale MQTT si può vedere come un canale bidirezionale realizzabile come unione di due canali simplex in direzioni opposte.
+
+Fornisce un canale multicast di livello applicativo (L7) tramite cui un utente col ruolo di publisher è in grado di notificare una replica dello stesso messaggio a più subscribers.
+
+<img src="../img/canalemqtt.png" alt="alt text" width="600">
+
+Non è un modello Client/Server classico, in questo caso tutti gli utenti sono dei client con ruoli diversi: produttore di informazione il publisher, consumatore di informazione il subscriber.
+
+Le connessioni sono iniziate dai client dall’interno delle reti locali di appartenenza per cui non è necessario modificare firewall perimetrali per esporre servizi all’esterno.
+
+
+
+
 ### **Alternative ad MQTT**
 
 Esistono molte altre soluzioni che magari sono più semplici e graficamente accattivanti ma che passano per portali proprietari o per servizi cloud a pagamento e nulla aggiungono di didatticamente rilevante ai nostri discorsi. Normalmente sono basate su webservices realizzati con protocolli Request/Response quali **HTTPS** e **COAP**.
