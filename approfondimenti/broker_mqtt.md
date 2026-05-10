@@ -42,8 +42,8 @@ Il **vantaggio** del **broker MQTT** è quello di poter gestire in modo semplice
 Un canale MQTT si può vedere come un canale bidirezionale realizzabile come unione di due canali simplex in direzioni opposte.
 
 Fornisce un canale multicast di livello applicativo (L7) tramite cui un utente col ruolo di publisher è in grado di notificare una replica dello stesso messaggio a più subscribers **identificati** mediante un topic, assimilabile ad un **indirizzo di gruppo di sorgente** per un subscriber o ad un **indirizzo di gruppo di destinazione**  per un publisher. Se si volesse identificare un **solo dispositivo** allora sono possibili due alternative:
-- un topic che lo individua univocamente, magari all'interno di un topic che individua gerarchicamente il suo gruppo: /soggiorno/comandi/mydevice1-98F4ABF298AD/{"toggle":"true"}
-- un topic che identifica il suo gruppo di appartenenza su cui si individua un certo dispositivo mediante una proprietà univoca contenuta nel messaggio JSON come un deviceid: /soggiorno/comandi/{"deviceid":"01", "toggle":"true"}
+- un **topic unico** che lo individua univocamente, magari all'interno di un topic che individua gerarchicamente il suo gruppo: /soggiorno/comandi/mydevice1-98F4ABF298AD/{"toggle":"true"}
+- un **topic comune** che identifica una classe di dispositivi all'interno della quale si individua un certo dispositivo mediante una proprietà univoca contenuta nel messaggio JSON (deviceid): /soggiorno/comandi/{"deviceid":"01", "toggle":"true"}
 
 <img src="../img/canalemqtt.png" alt="alt text" width="600">
 
