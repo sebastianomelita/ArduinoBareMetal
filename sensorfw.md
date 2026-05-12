@@ -66,64 +66,6 @@ Il pattern `currentTime - lastSentTime >= interval` è preferibile a un `delay(i
 Un breve `delay()` (tipicamente 1 secondo) o, nelle implementazioni a basso consumo, una modalità sleep più o meno profonda.
 
 
-## Fasi in Python
-
-``` Python
-import time
-import paho.mqtt.client as mqtt
-import random  # Utilizzato per simulare la lettura del sensore
-
-# Parametri di connessione MQTT
-MQTT_BROKER = "broker_address"
-MQTT_PORT = 1883
-MQTT_USERNAME = "username"
-MQTT_PASSWORD = "password"
-MQTT_TOPIC = "sensors/temperature"
-
-# Identificatore unico del sensore
-SENSOR_ID = "sensor_001"
-
-# Intervallo di lettura in secondi
-INTERVAL = 60
-
-# Inizializzazione del client MQTT
-client = mqtt.Client()
-client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
-
-def on_connect(client, userdata, flags, rc):
-    print(f"Connesso al broker MQTT con codice di risultato {rc}")
-
-def on_publish(client, userdata, mid):
-    print(f"Messaggio pubblicato con ID {mid}")
-
-client.on_connect = on_connect
-client.on_publish = on_publish
-
-client.connect(MQTT_BROKER, MQTT_PORT, 60)
-
-def read_temperature():
-    # Simulazione della lettura della temperatura
-    return round(random.uniform(20.0, 30.0), 2)
-
-last_sent_time = 0
-
-while True:
-    current_time = time.time()
-    
-    if current_time - last_sent_time >= INTERVAL:
-        temperature = read_temperature()
-        message = f'{{"sensor_id": "{SENSOR_ID}", "temperature": {temperature}}}'
-        result = client.publish(MQTT_TOPIC, message)
-        
-        # Assicurarsi che il messaggio sia stato inviato
-        if result.rc == mqtt.MQTT_ERR_SUCCESS:
-            print(f"Messaggio inviato: {message}")
-        else:
-            print(f"Errore nell'invio del messaggio: {result.rc}")
-        
-        last_sent_time = current_time
-```
-
 ## Fasi in C++
 
 ``` Python
@@ -220,6 +162,64 @@ void loop() {
     lastSentTime = currentTime;
   }
 }
+```
+
+## Fasi in Python
+
+``` Python
+import time
+import paho.mqtt.client as mqtt
+import random  # Utilizzato per simulare la lettura del sensore
+
+# Parametri di connessione MQTT
+MQTT_BROKER = "broker_address"
+MQTT_PORT = 1883
+MQTT_USERNAME = "username"
+MQTT_PASSWORD = "password"
+MQTT_TOPIC = "sensors/temperature"
+
+# Identificatore unico del sensore
+SENSOR_ID = "sensor_001"
+
+# Intervallo di lettura in secondi
+INTERVAL = 60
+
+# Inizializzazione del client MQTT
+client = mqtt.Client()
+client.username_pw_set(MQTT_USERNAME, MQTT_PASSWORD)
+
+def on_connect(client, userdata, flags, rc):
+    print(f"Connesso al broker MQTT con codice di risultato {rc}")
+
+def on_publish(client, userdata, mid):
+    print(f"Messaggio pubblicato con ID {mid}")
+
+client.on_connect = on_connect
+client.on_publish = on_publish
+
+client.connect(MQTT_BROKER, MQTT_PORT, 60)
+
+def read_temperature():
+    # Simulazione della lettura della temperatura
+    return round(random.uniform(20.0, 30.0), 2)
+
+last_sent_time = 0
+
+while True:
+    current_time = time.time()
+    
+    if current_time - last_sent_time >= INTERVAL:
+        temperature = read_temperature()
+        message = f'{{"sensor_id": "{SENSOR_ID}", "temperature": {temperature}}}'
+        result = client.publish(MQTT_TOPIC, message)
+        
+        # Assicurarsi che il messaggio sia stato inviato
+        if result.rc == mqtt.MQTT_ERR_SUCCESS:
+            print(f"Messaggio inviato: {message}")
+        else:
+            print(f"Errore nell'invio del messaggio: {result.rc}")
+        
+        last_sent_time = current_time
 ```
 
 
