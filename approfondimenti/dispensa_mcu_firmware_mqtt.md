@@ -29,7 +29,7 @@ Il documento di riferimento `sensorfw.md` mostra due implementazioni dello stess
 
 Il firmware di un nodo sensore che pubblica dati su un broker MQTT si articola in cinque fasi, schematizzate qui sotto.
 
-![Fasi del firmware](../img/01_fasi_firmware.svg)
+<img src="../img/01_fasi_firmware.svg" alt="Fasi del firmware" width="700">
 
 ### 1. Inizializzazione dei parametri di connessione
 
@@ -90,7 +90,7 @@ Un breve `delay()` (tipicamente 1 secondo) o, nelle implementazioni a basso cons
 
 Una MCU tipica contiene questi blocchi funzionali, tutti integrati nello stesso chip.
 
-![Schema a blocchi di una MCU](../img/02_blocchi_mcu.svg)
+<img src="../img/02_blocchi_mcu.svg" alt="Schema a blocchi di una MCU" width="700">
 
 ### Blocchi di elaborazione e memoria
 
@@ -131,7 +131,7 @@ Su MCU moderne come ESP32 si aggiungono blocchi radio integrati (WiFi, Bluetooth
 
 Ciascuna fase del firmware coinvolge blocchi hardware specifici. Comprendere questa corrispondenza è ciò che distingue chi sa "far funzionare" un firmware da chi sa progettarlo.
 
-![Mapping fasi firmware su blocchi MCU](../img/03_mapping.svg)
+<img src="../img/03_mapping.svg" alt="Mapping fasi firmware su blocchi MCU" width="700">
 
 ### Fase 1 — Inizializzazione parametri
 
@@ -183,7 +183,7 @@ Un semplice `delay()` lascia la CPU in idle ma alimentata. Un **deep sleep** spe
 
 Per confronto, ecco l'architettura di un Single Board Computer come il Raspberry Pi.
 
-![Schema a blocchi di un SBC](../img/04_blocchi_sbc.svg)
+<img src="../img/04_blocchi_sbc.svg" alt="Schema a blocchi di un SBC" width="700">
 
 La differenza principale rispetto alla MCU è la separazione fisica dei componenti.
 
@@ -219,7 +219,7 @@ Le periferiche di un SBC sono di natura diversa rispetto a quelle di una MCU. Me
 
 ## Confronto MCU vs SBC
 
-![Confronto MCU vs SBC](../img/05_confronto.svg)
+<img src="../img/05_confronto.svg" alt="Confronto MCU vs SBC" width="600">
 
 Stesso firmware MQTT, comportamento profondamente diverso:
 
