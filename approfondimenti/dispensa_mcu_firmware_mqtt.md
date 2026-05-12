@@ -32,8 +32,6 @@ Una MCU tipica contiene questi blocchi funzionali, tutti integrati nello stesso 
 
 <img src="../img/02_blocchi_mcu.svg" alt="Schema a blocchi di una MCU" width="700">
 
----
-
 ### Blocchi di elaborazione e memoria
 
 | Blocco | Funzione |
