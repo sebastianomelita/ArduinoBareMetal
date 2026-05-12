@@ -1,4 +1,4 @@
->[Torna a reti ethernet](archeth.md)
+>[Torna a reti ethernet](archeth.md)>[Torna a Sensori](/approfondimenti/sensore.md)
 
 - [Dettaglio architettura Zigbee](archzigbee.md)
 - [Dettaglio architettura BLE](archble.md)
