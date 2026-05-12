@@ -28,6 +28,65 @@
 5. **Attesa Prima della Prossima Iterazione**
    - Attendere un breve periodo (ad esempio, 1 secondo) prima di ripetere il ciclo.
 
+## Fasi principali del firmware di un sensore MQTT
+
+Il firmware di un nodo sensore che pubblica dati su un broker MQTT si articola in cinque fasi, schematizzate qui sotto.
+
+<img src="../img/01_fasi_firmware.svg" alt="Fasi del firmware" width="700">
+
+### 1. Inizializzazione dei parametri di connessione
+
+Si configurano i parametri necessari al funzionamento: indirizzo e porta del broker MQTT, username e password, pin del sensore di temperatura, intervallo di lettura. In C++ sono tipicamente costanti `const char*` o `#define`; in Python sono variabili a livello modulo.
+
+```cpp
+const char* mqtt_server = "broker_address";
+const int mqtt_port = 1883;
+const long interval = 60000;  // millisecondi
+```
+
+### 2. Connessione al broker MQTT
+
+Si stabilisce prima la connessione di rete (su ESP32 tipicamente WiFi) e poi la connessione MQTT vera e propria, che include l'handshake del protocollo con il broker.
+
+```cpp
+WiFi.begin(ssid, password);
+// ... attesa connessione WiFi ...
+client.setServer(mqtt_server, mqtt_port);
+client.connect("ArduinoClient", mqtt_user, mqtt_password);
+```
+
+### 3. Inizializzazione del sensore di temperatura
+
+Si configura il pin o l'interfaccia di comunicazione con il sensore. Nel caso più semplice è una `pinMode()`; con sensori digitali come BME280 o DS18B20 servono librerie dedicate che gestiscono il protocollo specifico (I2C, SPI, 1-Wire).
+
+### 4. Ciclo principale
+
+È il cuore del firmware, eseguito ripetutamente nel `loop()`:
+
+- ottenere il tempo corrente con `millis()`
+- leggere il valore della temperatura
+- comporre un messaggio JSON con sensor_id e valore
+- pubblicare il messaggio al broker se è trascorso l'intervallo
+- aggiornare il timestamp dell'ultimo invio
+
+```cpp
+unsigned long currentTime = millis();
+if (currentTime - lastSentTime >= interval) {
+    float temperature = read_temperature();
+    snprintf(message, sizeof(message),
+        "{\"sensor_id\": \"%s\", \"temperature\": %.2f}",
+        sensor_id, temperature);
+    client.publish(mqtt_topic, message);
+    lastSentTime = currentTime;
+}
+```
+
+Il pattern `currentTime - lastSentTime >= interval` è preferibile a un `delay(interval)` perché lascia la CPU libera di gestire altri compiti (come il `client.loop()` di MQTT che mantiene viva la connessione).
+
+### 5. Attesa prima della prossima iterazione
+
+Un breve `delay()` (tipicamente 1 secondo) o, nelle implementazioni a basso consumo, una modalità sleep più o meno profonda.
+
 
 ## Fasi in Python
 
