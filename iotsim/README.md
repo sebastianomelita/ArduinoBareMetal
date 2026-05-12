@@ -28,7 +28,7 @@ qualunque sistema:
 scp -r piattaforma-mqtt/ utente@server.scuola.it:/var/www/html/mqtt-sim/
 ```
 
-Gli studenti aprono `https://studenti.marconicloud.it/shared/iotsim/)`.
+Gli studenti aprono [Link simulatore IoT](https://studenti.marconicloud.it/shared/iotsim/). 
 
 > **Nota**: la pagina richiede una connessione `wss://` al broker. Se usate il
 > broker HiveMQ pubblico (default), la pagina deve essere servita via HTTPS,
