@@ -32,6 +32,8 @@
 
 Per il dettaglio sulla realizzazione del firmware vedi [Firmware](../sensorfw.md).
 
+Per il dettaglio sulla differenza tra MCU e SBC vedi [MCU vs SBC](../dispensa_mcu_firmware_mqtt.md).
+
 ##  **Canali di comunicazione principali in una rete di sensori**
 
 **In sintesi**, sono necessari almeno **due canali** di comunicazione che, insieme, complessivamente, realizzano la **comunicazione tra sensori e gestore** delle informazioni:
