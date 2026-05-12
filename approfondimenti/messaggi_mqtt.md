@@ -19,7 +19,7 @@ La **conferma**, però, potrebbe pure essere gestita soltanto dal **livello appl
 
 <img src="../img/mqtt_scena_stanza.svg" width="890">
 
-[Link simulatore IoT](../iotsim/README.md)
+[Link simulatore IoT](https://studenti.marconicloud.it/shared/iotsim/)
 
 ### **Definizione di topic e payload**
 
