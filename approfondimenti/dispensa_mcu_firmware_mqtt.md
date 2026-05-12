@@ -1,3 +1,5 @@
+>[Torna a Sensori](/approfondimenti/sensore.md)
+
 # Dispensa: dal firmware di un sensore MQTT all'architettura di una MCU
 
 ## Indice
