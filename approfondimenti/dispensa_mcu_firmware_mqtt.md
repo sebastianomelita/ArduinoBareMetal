@@ -5,13 +5,12 @@
 ## Indice
 
 1. [Premessa: MCU vs SBC](#premessa-mcu-vs-sbc)
-2. [Fasi principali del firmware di un sensore MQTT](#fasi-principali-del-firmware-di-un-sensore-mqtt)
-3. [Schema a blocchi di una MCU](#schema-a-blocchi-di-una-mcu)
-4. [Mapping fasi firmware → blocchi MCU](#mapping-fasi-firmware--blocchi-mcu)
-5. [Schema a blocchi di un SBC](#schema-a-blocchi-di-un-sbc)
-6. [Confronto MCU vs SBC](#confronto-mcu-vs-sbc)
-7. [Considerazioni progettuali](#considerazioni-progettuali)
-8. [Riferimenti](#riferimenti)
+2. [Schema a blocchi di una MCU](#schema-a-blocchi-di-una-mcu)
+3. [Mapping fasi firmware → blocchi MCU](#mapping-fasi-firmware--blocchi-mcu)
+4. [Schema a blocchi di un SBC](#schema-a-blocchi-di-un-sbc)
+5. [Confronto MCU vs SBC](#confronto-mcu-vs-sbc)
+6. [Considerazioni progettuali](#considerazioni-progettuali)
+7. [Riferimenti](#riferimenti)
 
 ---
 
@@ -24,9 +23,6 @@ Un **microcontrollore (MCU)** è un chip singolo che integra al suo interno CPU,
 Un **Single Board Computer (SBC)** è invece una scheda che integra un microprocessore completo, memoria RAM esterna, storage esterno (tipicamente microSD) e periferiche. Esempi: Raspberry Pi, BeagleBone. Su un SBC gira un sistema operativo completo (Linux), e i programmi sono processi gestiti dallo scheduler del kernel.
 
 Il documento di riferimento `sensorfw.md` mostra due implementazioni dello stesso firmware: una in Python (più adatta a un SBC) e una in C++ con `WiFi.h` e `PubSubClient` (schiettamente per MCU come ESP32). In questa dispensa ci concentriamo sulla seconda perché evidenzia meglio il rapporto diretto tra software e hardware.
-
----
-
 
 ---
 
