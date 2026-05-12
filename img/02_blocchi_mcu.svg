@@ -1,0 +1,80 @@
+<svg width="100%" viewBox="0 0 680 620" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<style>
+.t2 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; }
+.ts2 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 12px; }
+.th2 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; font-weight: 500; }
+.arr2 { stroke: #888780; stroke-width: 1.5; fill: none; }
+</style>
+</defs>
+
+<rect x="30" y="30" width="620" height="500" rx="14" fill="none" stroke="#888780" stroke-width="1" stroke-dasharray="4 4" opacity="0.6"/>
+<text class="ts2" x="50" y="50" text-anchor="start" fill="#5F5E5A">Microcontrollore (chip singolo)</text>
+
+<rect x="60" y="80" width="180" height="80" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th2" x="150" y="110" text-anchor="middle" dominant-baseline="central" fill="#3C3489">CPU</text>
+<text class="ts2" x="150" y="132" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Core, ALU, registri</text>
+
+<rect x="260" y="80" width="180" height="80" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th2" x="350" y="110" text-anchor="middle" dominant-baseline="central" fill="#085041">Flash</text>
+<text class="ts2" x="350" y="132" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Memoria programma</text>
+
+<rect x="460" y="80" width="180" height="80" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th2" x="550" y="110" text-anchor="middle" dominant-baseline="central" fill="#085041">RAM</text>
+<text class="ts2" x="550" y="132" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Memoria dati</text>
+
+<rect x="60" y="200" width="580" height="40" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text class="th2" x="350" y="220" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">Bus interno (dati, indirizzi, controllo)</text>
+
+<line x1="150" y1="160" x2="150" y2="200" class="arr2"/>
+<line x1="350" y1="160" x2="350" y2="200" class="arr2"/>
+<line x1="550" y1="160" x2="550" y2="200" class="arr2"/>
+
+<line x1="120" y1="240" x2="120" y2="280" class="arr2"/>
+<line x1="260" y1="240" x2="260" y2="280" class="arr2"/>
+<line x1="400" y1="240" x2="400" y2="280" class="arr2"/>
+<line x1="540" y1="240" x2="540" y2="280" class="arr2"/>
+
+<rect x="50" y="280" width="140" height="70" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text class="th2" x="120" y="305" text-anchor="middle" dominant-baseline="central" fill="#712B13">GPIO</text>
+<text class="ts2" x="120" y="325" text-anchor="middle" dominant-baseline="central" fill="#993C1D">Pin digitali I/O</text>
+
+<rect x="200" y="280" width="120" height="70" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text class="th2" x="260" y="305" text-anchor="middle" dominant-baseline="central" fill="#712B13">UART/SPI/I2C</text>
+<text class="ts2" x="260" y="325" text-anchor="middle" dominant-baseline="central" fill="#993C1D">Comunicazione seriale</text>
+
+<rect x="340" y="280" width="120" height="70" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text class="th2" x="400" y="305" text-anchor="middle" dominant-baseline="central" fill="#712B13">Timer / PWM</text>
+<text class="ts2" x="400" y="325" text-anchor="middle" dominant-baseline="central" fill="#993C1D">Conteggi e segnali</text>
+
+<rect x="480" y="280" width="120" height="70" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text class="th2" x="540" y="305" text-anchor="middle" dominant-baseline="central" fill="#712B13">ADC / DAC</text>
+<text class="ts2" x="540" y="325" text-anchor="middle" dominant-baseline="central" fill="#993C1D">Conversione analogica</text>
+
+<line x1="120" y1="350" x2="120" y2="385" class="arr2" marker-end="url(#arrow2)"/>
+<line x1="260" y1="350" x2="260" y2="385" class="arr2" marker-end="url(#arrow2)"/>
+<line x1="400" y1="350" x2="400" y2="385" class="arr2" marker-end="url(#arrow2)"/>
+<line x1="540" y1="350" x2="540" y2="385" class="arr2" marker-end="url(#arrow2)"/>
+
+<rect x="60" y="385" width="580" height="36" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text class="ts2" x="350" y="403" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">Pin esterni verso sensori, attuatori, altri dispositivi</text>
+
+<rect x="60" y="450" width="170" height="60" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="th2" x="145" y="473" text-anchor="middle" dominant-baseline="central" fill="#633806">Oscillatore / Clock</text>
+<text class="ts2" x="145" y="493" text-anchor="middle" dominant-baseline="central" fill="#854F0B">Frequenza di sistema</text>
+
+<rect x="255" y="450" width="170" height="60" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="th2" x="340" y="473" text-anchor="middle" dominant-baseline="central" fill="#633806">Reset / Power</text>
+<text class="ts2" x="340" y="493" text-anchor="middle" dominant-baseline="central" fill="#854F0B">Avvio e alimentazione</text>
+
+<rect x="450" y="450" width="190" height="60" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="th2" x="545" y="473" text-anchor="middle" dominant-baseline="central" fill="#633806">Controllore interrupt</text>
+<text class="ts2" x="545" y="493" text-anchor="middle" dominant-baseline="central" fill="#854F0B">Gestione eventi asincroni</text>
+
+<line x1="145" y1="450" x2="145" y2="240" stroke="#854F0B" stroke-width="0.5" stroke-dasharray="3 3" fill="none"/>
+<line x1="340" y1="450" x2="340" y2="240" stroke="#854F0B" stroke-width="0.5" stroke-dasharray="3 3" fill="none"/>
+<line x1="545" y1="450" x2="545" y2="240" stroke="#854F0B" stroke-width="0.5" stroke-dasharray="3 3" fill="none"/>
+</svg>

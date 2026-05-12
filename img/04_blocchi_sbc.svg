@@ -1,0 +1,90 @@
+<svg width="100%" viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrow4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<style>
+.t4 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; }
+.ts4 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 12px; }
+.th4 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; font-weight: 500; }
+.arr4 { stroke: #888780; stroke-width: 1.5; fill: none; }
+</style>
+</defs>
+
+<rect x="30" y="30" width="620" height="600" rx="14" fill="none" stroke="#888780" stroke-width="1" stroke-dasharray="4 4" opacity="0.6"/>
+<text class="ts4" x="50" y="50" text-anchor="start" fill="#5F5E5A">Single Board Computer (es. Raspberry Pi)</text>
+
+<rect x="60" y="80" width="560" height="160" rx="12" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5" opacity="0.4"/>
+<text class="ts4" x="80" y="100" text-anchor="start" fill="#3C3489">SoC (System on Chip)</text>
+
+<rect x="80" y="115" width="160" height="110" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th4" x="160" y="145" text-anchor="middle" dominant-baseline="central" fill="#3C3489">CPU multi-core</text>
+<text class="ts4" x="160" y="167" text-anchor="middle" dominant-baseline="central" fill="#534AB7">ARM Cortex-A</text>
+<text class="ts4" x="160" y="185" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Cache L1, L2, L3</text>
+<text class="ts4" x="160" y="203" text-anchor="middle" dominant-baseline="central" fill="#534AB7">MMU per memoria virtuale</text>
+
+<rect x="260" y="115" width="160" height="110" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th4" x="340" y="145" text-anchor="middle" dominant-baseline="central" fill="#3C3489">GPU</text>
+<text class="ts4" x="340" y="167" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Grafica e video</text>
+<text class="ts4" x="340" y="185" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Decodifica hardware</text>
+<text class="ts4" x="340" y="203" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Calcolo parallelo</text>
+
+<rect x="440" y="115" width="160" height="110" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th4" x="520" y="145" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Controller I/O</text>
+<text class="ts4" x="520" y="167" text-anchor="middle" dominant-baseline="central" fill="#534AB7">USB, Ethernet</text>
+<text class="ts4" x="520" y="185" text-anchor="middle" dominant-baseline="central" fill="#534AB7">HDMI, DSI</text>
+<text class="ts4" x="520" y="203" text-anchor="middle" dominant-baseline="central" fill="#534AB7">DMA</text>
+
+<rect x="60" y="270" width="560" height="40" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text class="th4" x="340" y="290" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">Bus ad alta velocità (AXI / AMBA)</text>
+
+<line x1="160" y1="240" x2="160" y2="270" class="arr4"/>
+<line x1="340" y1="240" x2="340" y2="270" class="arr4"/>
+<line x1="520" y1="240" x2="520" y2="270" class="arr4"/>
+
+<line x1="160" y1="310" x2="160" y2="345" class="arr4"/>
+<line x1="340" y1="310" x2="340" y2="345" class="arr4"/>
+<line x1="520" y1="310" x2="520" y2="345" class="arr4"/>
+
+<rect x="60" y="345" width="200" height="80" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th4" x="160" y="370" text-anchor="middle" dominant-baseline="central" fill="#085041">RAM (esterna)</text>
+<text class="ts4" x="160" y="392" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">DDR4, parecchi GB</text>
+<text class="ts4" x="160" y="410" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Chip separati sulla scheda</text>
+
+<rect x="280" y="345" width="200" height="80" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th4" x="380" y="370" text-anchor="middle" dominant-baseline="central" fill="#085041">Storage (microSD/eMMC)</text>
+<text class="ts4" x="380" y="392" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Sistema operativo e dati</text>
+<text class="ts4" x="380" y="410" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Decine di GB</text>
+
+<rect x="500" y="345" width="120" height="80" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="th4" x="560" y="370" text-anchor="middle" dominant-baseline="central" fill="#633806">PMU</text>
+<text class="ts4" x="560" y="392" text-anchor="middle" dominant-baseline="central" fill="#854F0B">Power management</text>
+<text class="ts4" x="560" y="410" text-anchor="middle" dominant-baseline="central" fill="#854F0B">Clock di sistema</text>
+
+<rect x="60" y="465" width="560" height="40" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text class="th4" x="340" y="485" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">Connettori e interfacce esterne</text>
+
+<line x1="160" y1="425" x2="160" y2="465" class="arr4"/>
+<line x1="380" y1="425" x2="380" y2="465" class="arr4"/>
+
+<line x1="120" y1="505" x2="120" y2="540" class="arr4" marker-end="url(#arrow4)"/>
+<line x1="260" y1="505" x2="260" y2="540" class="arr4" marker-end="url(#arrow4)"/>
+<line x1="400" y1="505" x2="400" y2="540" class="arr4" marker-end="url(#arrow4)"/>
+<line x1="540" y1="505" x2="540" y2="540" class="arr4" marker-end="url(#arrow4)"/>
+
+<rect x="50" y="540" width="140" height="70" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text class="th4" x="120" y="565" text-anchor="middle" dominant-baseline="central" fill="#712B13">USB</text>
+<text class="ts4" x="120" y="585" text-anchor="middle" dominant-baseline="central" fill="#993C1D">Tastiera, dischi, webcam</text>
+
+<rect x="200" y="540" width="120" height="70" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text class="th4" x="260" y="565" text-anchor="middle" dominant-baseline="central" fill="#712B13">Ethernet / WiFi</text>
+<text class="ts4" x="260" y="585" text-anchor="middle" dominant-baseline="central" fill="#993C1D">Rete TCP/IP</text>
+
+<rect x="340" y="540" width="120" height="70" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text class="th4" x="400" y="565" text-anchor="middle" dominant-baseline="central" fill="#712B13">HDMI / display</text>
+<text class="ts4" x="400" y="585" text-anchor="middle" dominant-baseline="central" fill="#993C1D">Output video</text>
+
+<rect x="480" y="540" width="140" height="70" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text class="th4" x="550" y="565" text-anchor="middle" dominant-baseline="central" fill="#712B13">GPIO header</text>
+<text class="ts4" x="550" y="585" text-anchor="middle" dominant-baseline="central" fill="#993C1D">UART, SPI, I2C, pin</text>
+</svg>

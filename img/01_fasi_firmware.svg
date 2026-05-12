@@ -1,0 +1,65 @@
+<svg width="100%" viewBox="0 0 680 720" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrow1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<style>
+.t { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; fill: #2C2C2A; }
+.ts { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 12px; fill: #5F5E5A; }
+.th { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; font-weight: 500; fill: #2C2C2A; }
+.arr { stroke: #888780; stroke-width: 1.5; fill: none; }
+</style>
+</defs>
+
+<rect x="240" y="30" width="200" height="44" rx="22" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text class="th" x="340" y="52" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">Avvio firmware</text>
+<line x1="340" y1="74" x2="340" y2="100" class="arr" marker-end="url(#arrow1)"/>
+
+<rect x="200" y="100" width="280" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th" x="340" y="120" text-anchor="middle" dominant-baseline="central" fill="#3C3489">1. Inizializzazione parametri</text>
+<text class="ts" x="340" y="140" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Broker, porta, credenziali, pin sensore</text>
+<line x1="340" y1="156" x2="340" y2="180" class="arr" marker-end="url(#arrow1)"/>
+
+<rect x="200" y="180" width="280" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th" x="340" y="200" text-anchor="middle" dominant-baseline="central" fill="#085041">2. Connessione al broker MQTT</text>
+<text class="ts" x="340" y="220" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">WiFi + handshake con il broker</text>
+<line x1="340" y1="236" x2="340" y2="260" class="arr" marker-end="url(#arrow1)"/>
+
+<rect x="200" y="260" width="280" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th" x="340" y="280" text-anchor="middle" dominant-baseline="central" fill="#085041">3. Inizializzazione sensore</text>
+<text class="ts" x="340" y="300" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Configura pin di lettura temperatura</text>
+<line x1="340" y1="316" x2="340" y2="346" class="arr" marker-end="url(#arrow1)"/>
+
+<rect x="80" y="346" width="520" height="240" rx="14" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text class="th" x="340" y="368" text-anchor="middle" dominant-baseline="central" fill="#712B13">4. Ciclo principale</text>
+
+<rect x="110" y="390" width="200" height="44" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="ts" x="210" y="412" text-anchor="middle" dominant-baseline="central" fill="#633806">Leggi tempo corrente</text>
+<line x1="310" y1="412" x2="370" y2="412" class="arr" marker-end="url(#arrow1)"/>
+
+<rect x="370" y="390" width="200" height="44" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="ts" x="470" y="412" text-anchor="middle" dominant-baseline="central" fill="#633806">Leggi temperatura</text>
+
+<path d="M470 434 L470 450 L210 450 L210 466" stroke="#854F0B" stroke-width="0.5" fill="none" marker-end="url(#arrow1)"/>
+
+<rect x="110" y="466" width="200" height="44" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="ts" x="210" y="488" text-anchor="middle" dominant-baseline="central" fill="#633806">Componi messaggio JSON</text>
+<line x1="310" y1="488" x2="370" y2="488" class="arr" marker-end="url(#arrow1)"/>
+
+<rect x="370" y="466" width="200" height="44" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="ts" x="470" y="488" text-anchor="middle" dominant-baseline="central" fill="#633806">Pubblica se è ora</text>
+
+<path d="M470 510 L470 526 L210 526 L210 540" stroke="#854F0B" stroke-width="0.5" fill="none" marker-end="url(#arrow1)"/>
+
+<rect x="110" y="540" width="460" height="36" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="ts" x="340" y="558" text-anchor="middle" dominant-baseline="central" fill="#633806">Aggiorna timestamp ultimo invio</text>
+
+<line x1="340" y1="586" x2="340" y2="610" class="arr" marker-end="url(#arrow1)"/>
+
+<rect x="200" y="610" width="280" height="56" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="th" x="340" y="630" text-anchor="middle" dominant-baseline="central" fill="#0C447C">5. Attesa</text>
+<text class="ts" x="340" y="650" text-anchor="middle" dominant-baseline="central" fill="#185FA5">Breve delay prima della prossima iterazione</text>
+
+<path d="M200 638 L40 638 L40 412 L110 412" stroke="#185FA5" stroke-width="0.5" fill="none" marker-end="url(#arrow1)"/>
+<text class="ts" x="48" y="525" text-anchor="start" fill="#185FA5">loop</text>
+</svg>

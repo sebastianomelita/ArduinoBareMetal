@@ -1,0 +1,95 @@
+<svg width="100%" viewBox="0 0 680 760" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<marker id="arrow3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+<style>
+.t3 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; }
+.ts3 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 12px; }
+.th3 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; font-weight: 500; }
+.arr3 { stroke: #888780; stroke-width: 1.5; fill: none; }
+</style>
+</defs>
+
+<text class="ts3" x="60" y="30" text-anchor="start" fill="#5F5E5A">Fasi firmware</text>
+<text class="ts3" x="430" y="30" text-anchor="start" fill="#5F5E5A">Blocchi MCU coinvolti</text>
+
+<rect x="40" y="50" width="240" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th3" x="160" y="70" text-anchor="middle" dominant-baseline="central" fill="#3C3489">1. Inizializzazione parametri</text>
+<text class="ts3" x="160" y="90" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Broker, credenziali, pin</text>
+
+<rect x="410" y="50" width="230" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th3" x="525" y="70" text-anchor="middle" dominant-baseline="central" fill="#085041">CPU + Flash + RAM</text>
+<text class="ts3" x="525" y="90" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Carica costanti in variabili</text>
+<line x1="280" y1="78" x2="410" y2="78" class="arr3" marker-end="url(#arrow3)"/>
+
+<rect x="40" y="140" width="240" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th3" x="160" y="160" text-anchor="middle" dominant-baseline="central" fill="#3C3489">2. Connessione al broker</text>
+<text class="ts3" x="160" y="180" text-anchor="middle" dominant-baseline="central" fill="#534AB7">WiFi + handshake MQTT</text>
+
+<rect x="410" y="140" width="230" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th3" x="525" y="160" text-anchor="middle" dominant-baseline="central" fill="#085041">Radio WiFi + stack TCP/IP</text>
+<text class="ts3" x="525" y="180" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Periferica dedicata + RAM</text>
+<line x1="280" y1="168" x2="410" y2="168" class="arr3" marker-end="url(#arrow3)"/>
+
+<rect x="40" y="230" width="240" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th3" x="160" y="250" text-anchor="middle" dominant-baseline="central" fill="#3C3489">3. Inizializzazione sensore</text>
+<text class="ts3" x="160" y="270" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Configura pin di lettura</text>
+
+<rect x="410" y="230" width="230" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th3" x="525" y="250" text-anchor="middle" dominant-baseline="central" fill="#085041">GPIO o ADC o I2C/SPI</text>
+<text class="ts3" x="525" y="270" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Dipende dal tipo di sensore</text>
+<line x1="280" y1="258" x2="410" y2="258" class="arr3" marker-end="url(#arrow3)"/>
+
+<rect x="40" y="320" width="240" height="280" rx="8" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text class="th3" x="160" y="345" text-anchor="middle" dominant-baseline="central" fill="#712B13">4. Ciclo principale</text>
+
+<rect x="60" y="365" width="200" height="40" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="ts3" x="160" y="385" text-anchor="middle" dominant-baseline="central" fill="#633806">millis() / time.time()</text>
+
+<rect x="410" y="365" width="230" height="40" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="ts3" x="525" y="385" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Timer di sistema</text>
+<line x1="260" y1="385" x2="410" y2="385" class="arr3" marker-end="url(#arrow3)"/>
+
+<rect x="60" y="415" width="200" height="40" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="ts3" x="160" y="435" text-anchor="middle" dominant-baseline="central" fill="#633806">Leggi temperatura</text>
+
+<rect x="410" y="415" width="230" height="40" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="ts3" x="525" y="435" text-anchor="middle" dominant-baseline="central" fill="#0C447C">ADC o I2C/SPI + GPIO</text>
+<line x1="260" y1="435" x2="410" y2="435" class="arr3" marker-end="url(#arrow3)"/>
+
+<rect x="60" y="465" width="200" height="40" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="ts3" x="160" y="485" text-anchor="middle" dominant-baseline="central" fill="#633806">Componi JSON</text>
+
+<rect x="410" y="465" width="230" height="40" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="ts3" x="525" y="485" text-anchor="middle" dominant-baseline="central" fill="#0C447C">CPU + RAM (buffer stringa)</text>
+<line x1="260" y1="485" x2="410" y2="485" class="arr3" marker-end="url(#arrow3)"/>
+
+<rect x="60" y="515" width="200" height="40" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="ts3" x="160" y="535" text-anchor="middle" dominant-baseline="central" fill="#633806">Pubblica messaggio</text>
+
+<rect x="410" y="515" width="230" height="40" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="ts3" x="525" y="535" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Radio WiFi (TCP/MQTT)</text>
+<line x1="260" y1="535" x2="410" y2="535" class="arr3" marker-end="url(#arrow3)"/>
+
+<rect x="60" y="565" width="200" height="30" rx="6" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+<text class="ts3" x="160" y="580" text-anchor="middle" dominant-baseline="central" fill="#633806">Aggiorna timestamp</text>
+
+<rect x="410" y="565" width="230" height="30" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="ts3" x="525" y="580" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Variabile in RAM</text>
+<line x1="260" y1="580" x2="410" y2="580" class="arr3" marker-end="url(#arrow3)"/>
+
+<rect x="40" y="630" width="240" height="56" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="th3" x="160" y="650" text-anchor="middle" dominant-baseline="central" fill="#3C3489">5. Attesa</text>
+<text class="ts3" x="160" y="670" text-anchor="middle" dominant-baseline="central" fill="#534AB7">delay / sleep</text>
+
+<rect x="410" y="630" width="230" height="56" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="th3" x="525" y="650" text-anchor="middle" dominant-baseline="central" fill="#085041">Timer + interrupt</text>
+<text class="ts3" x="525" y="670" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">Eventualmente deep sleep</text>
+<line x1="280" y1="658" x2="410" y2="658" class="arr3" marker-end="url(#arrow3)"/>
+
+<rect x="40" y="710" width="12" height="12" rx="2" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="ts3" x="58" y="716" dominant-baseline="central" fill="#5F5E5A">Blocchi usati una volta (setup)</text>
+<rect x="280" y="710" width="12" height="12" rx="2" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="ts3" x="298" y="716" dominant-baseline="central" fill="#5F5E5A">Blocchi usati a ogni iterazione</text>
+</svg>

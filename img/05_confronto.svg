@@ -1,0 +1,59 @@
+<svg width="100%" viewBox="0 0 680 560" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<style>
+.t5 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; }
+.ts5 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 12px; }
+.th5 { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-size: 14px; font-weight: 500; }
+</style>
+</defs>
+
+<rect x="30" y="30" width="300" height="500" rx="14" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5" opacity="0.3"/>
+<text class="th5" x="180" y="55" text-anchor="middle" fill="#3C3489">MCU</text>
+<text class="ts5" x="180" y="73" text-anchor="middle" fill="#534AB7">Microcontrollore</text>
+
+<rect x="350" y="30" width="300" height="500" rx="14" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5" opacity="0.3"/>
+<text class="th5" x="500" y="55" text-anchor="middle" fill="#085041">SBC</text>
+<text class="ts5" x="500" y="73" text-anchor="middle" fill="#0F6E56">Single Board Computer</text>
+
+<line x1="30" y1="100" x2="650" y2="100" stroke="#888780" stroke-width="0.5"/>
+
+<text class="th5" x="50" y="125" fill="#2C2C2A">Esempi</text>
+<text class="ts5" x="50" y="145" fill="#5F5E5A">ATmega328, ESP32, STM32</text>
+<text class="ts5" x="370" y="145" fill="#5F5E5A">Raspberry Pi, BeagleBone</text>
+
+<line x1="30" y1="170" x2="650" y2="170" stroke="#D3D1C7" stroke-width="0.5"/>
+
+<text class="th5" x="50" y="195" fill="#2C2C2A">Architettura</text>
+<text class="ts5" x="50" y="215" fill="#5F5E5A">CPU, RAM, Flash sullo</text>
+<text class="ts5" x="50" y="231" fill="#5F5E5A">stesso chip</text>
+<text class="ts5" x="370" y="215" fill="#5F5E5A">SoC + RAM + storage</text>
+<text class="ts5" x="370" y="231" fill="#5F5E5A">come componenti separati</text>
+
+<line x1="30" y1="250" x2="650" y2="250" stroke="#D3D1C7" stroke-width="0.5"/>
+
+<text class="th5" x="50" y="275" fill="#2C2C2A">Software</text>
+<text class="ts5" x="50" y="295" fill="#5F5E5A">Bare metal: un solo</text>
+<text class="ts5" x="50" y="311" fill="#5F5E5A">programma (loop infinito)</text>
+<text class="ts5" x="370" y="295" fill="#5F5E5A">Sistema operativo Linux,</text>
+<text class="ts5" x="370" y="311" fill="#5F5E5A">processi e scheduler</text>
+
+<line x1="30" y1="330" x2="650" y2="330" stroke="#D3D1C7" stroke-width="0.5"/>
+
+<text class="th5" x="50" y="355" fill="#2C2C2A">Memoria</text>
+<text class="ts5" x="50" y="375" fill="#5F5E5A">RAM: KB; Flash: MB</text>
+<text class="ts5" x="370" y="375" fill="#5F5E5A">RAM: GB; storage: GB</text>
+
+<line x1="30" y1="395" x2="650" y2="395" stroke="#D3D1C7" stroke-width="0.5"/>
+
+<text class="th5" x="50" y="420" fill="#2C2C2A">Consumo</text>
+<text class="ts5" x="50" y="440" fill="#5F5E5A">Da µW (deep sleep)</text>
+<text class="ts5" x="50" y="456" fill="#5F5E5A">a poche centinaia di mW</text>
+<text class="ts5" x="370" y="440" fill="#5F5E5A">Da 2-3 W a oltre 10 W</text>
+<text class="ts5" x="370" y="456" fill="#5F5E5A">in carico</text>
+
+<line x1="30" y1="475" x2="650" y2="475" stroke="#D3D1C7" stroke-width="0.5"/>
+
+<text class="th5" x="50" y="500" fill="#2C2C2A">Uso tipico</text>
+<text class="ts5" x="50" y="520" fill="#5F5E5A">Sensori, attuatori, IoT edge</text>
+<text class="ts5" x="370" y="520" fill="#5F5E5A">Gateway, computer vision, ML</text>
+</svg>
