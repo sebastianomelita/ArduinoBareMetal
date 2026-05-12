@@ -32,7 +32,7 @@
 
 Per il dettaglio sulla realizzazione del firmware vedi [Firmware](../sensorfw.md).
 
-Per il dettaglio sulla differenza tra MCU e SBC vedi [MCU vs SBC](../dispensa_mcu_firmware_mqtt.md).
+Per il dettaglio sulla differenza tra MCU e SBC vedi [MCU vs SBC](../approfondimenti/dispensa_mcu_firmware_mqtt.md).
 
 ##  **Canali di comunicazione principali in una rete di sensori**
 
