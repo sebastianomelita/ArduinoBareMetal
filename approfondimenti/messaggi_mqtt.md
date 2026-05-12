@@ -21,6 +21,8 @@ La **conferma**, però, potrebbe pure essere gestita soltanto dal **livello appl
 
 [Link simulatore IoT](https://studenti.marconicloud.it/shared/iotsim/)
 
+[HiveMQ Websocket Client](https://www.hivemq.com/demos/websocket-client/)
+
 ### **Definizione di topic e payload**
 
 Molto spesso, nella rete di distribuzione IP è presente un server col ruolo di **broker MQTT** che potrebbe servire vari **scenari di comunicazione**. A titolo di esempio:
