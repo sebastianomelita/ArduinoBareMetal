@@ -19,6 +19,8 @@ La **conferma**, però, potrebbe pure essere gestita soltanto dal **livello appl
 
 <img src="../img/mqtt_scena_stanza.svg" width="890">
 
+[Link simulatore IoT](../iotsim/README.md)
+
 ### **Definizione di topic e payload**
 
 Molto spesso, nella rete di distribuzione IP è presente un server col ruolo di **broker MQTT** che potrebbe servire vari **scenari di comunicazione**. A titolo di esempio:
