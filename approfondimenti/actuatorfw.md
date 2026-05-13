@@ -12,7 +12,7 @@
 A differenza del firmware di un **sensore**, che è essenzialmente un *publisher* periodico, il firmware di un **attuatore** è guidato da eventi **asincroni** in arrivo dalla rete: l'attuatore deve mettersi in **ascolto** del topic di comando e, ad ogni messaggio ricevuto, agire sul mondo fisico (un relè, un motore, una lampada). Poiché la consegna del comando deve essere **affidabile** ma il protocollo MQTT non fornisce conferme applicative, è l'attuatore stesso che deve confermare l'avvenuta attuazione **ripubblicando il proprio stato** su un dedicato *topic di feedback*. Questo meccanismo di "ACK applicativo" è la trasposizione, sul livello applicativo, della conferma che il protocollo non garantisce a livello di trasporto.
 
 <p align="center">
-  <img src="attuatore_mqtt.svg" alt="Flusso MQTT di un attuatore" width="780"/>
+  <img src="../img/attuatore_mqtt.svg" alt="Flusso MQTT di un attuatore" width="780"/>
 </p>
 
 I tre topic coinvolti sono:
@@ -67,7 +67,7 @@ I tre topic coinvolti sono:
 Il diagramma seguente sintetizza le fasi appena descritte. La parte sinistra rappresenta il **flusso sincrono** del firmware (setup lineare + loop principale), mentre la parte destra rappresenta la **callback asincrona** `on_message`, eseguita ogni volta che arriva un messaggio dal broker su uno dei topic sottoscritti.
 
 <p align="center">
-  <img src="attuatore_flowchart.svg" alt="Diagramma di flusso del firmware dell'attuatore" width="820"/>
+  <img src="../img/attuatore_flowchart.svg" alt="Diagramma di flusso del firmware dell'attuatore" width="820"/>
 </p>
 
 I due punti chiave del diagramma sono i due **rombi gialli** del loop principale e i due **rombi gialli** della callback:
