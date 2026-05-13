@@ -64,7 +64,7 @@ Nelle **reti industriali** sono molto comuni topologie complesse a molti livelli
       <img src="../Star-network-1024x466.png" alt="alt text" width="600">
     -  L'**interfaccia sui sensori** usa un collegamento **digitale a BUS** verso un **gruppo** di sensori, usando gli stessi fili in **condivisione** per tutti, per cui l'**architettura** risultante dei loro collegamenti è a **BUS**, avente la MCU come **master** del BUS di campo. 
         <img src="../bus.png" alt="alt text" width="600">
-        - [Dettagli su stack cablati specifici per domotica e sensoristica](stackcablati.md)
+        - [Dettagli su stack cablati specifici per domotica e sensoristica](../stackcablati.md)
      
           
  Chiaramente, se la rete di sensori **coincide** con la **rete di distribuzione IP** (LAN o WiFi o Internet), allora il dispositivo con la MCU potrebbe anche **concettualmente** essere inteso come un **gateway** tra la rete di sensori a BUS di campo e la rete di distribuzione. Vedi [Cablaggio rete LAN di ufficio](archeth.md) per dettagli.     
