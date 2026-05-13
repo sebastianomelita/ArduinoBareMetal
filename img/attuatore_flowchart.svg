@@ -231,8 +231,8 @@
   <path d="M 970 1110 L 970 1160" class="edge" marker-end="url(#fc)"/>
   <text x="982" y="1140" class="edgeLabel">SI</text>
 
-  <!-- topic == comandi NO (config) -> ramo destro che scende fino a config -->
-  <path d="M 1110 1050 Q 1170 1050, 1170 1350 Q 1170 1460, 1090 1460" class="edge" marker-end="url(#fc)"/>
+  <!-- topic == comandi NO (config) -> scende a destra e rientra dall'alto nel box config -->
+  <path d="M 1110 1050 Q 1170 1050, 1170 1350 Q 1170 1410, 1110 1410 L 970 1410 L 970 1430" class="edge" marker-end="url(#fc)"/>
   <text x="1120" y="1042" class="edgeLabel">NO (config)</text>
 
   <!-- aggiorna stato -> publish feedback -->
