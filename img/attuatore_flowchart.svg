@@ -1,0 +1,248 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 1480" font-family="Arial, Helvetica, sans-serif">
+  <defs>
+    <marker id="fc" viewBox="0 0 10 10" refX="9" refY="5"
+            markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <style>
+    .terminator { fill: #ffe0b2; stroke: #e65100; stroke-width: 2; }
+    .process    { fill: #e3f2fd; stroke: #1565c0; stroke-width: 2; }
+    .io         { fill: #f3e5f5; stroke: #6a1b9a; stroke-width: 2; }
+    .decision   { fill: #fff9c4; stroke: #f9a825; stroke-width: 2; }
+    .callback   { fill: #e8f5e9; stroke: #2e7d32; stroke-width: 2; }
+    .lbl        { font-size: 13px; fill: #222; }
+    .lblB       { font-size: 13px; fill: #222; font-weight: bold; }
+    .small      { font-size: 11px; fill: #333; }
+    .edge       { fill: none; stroke: #333; stroke-width: 1.8; }
+    .edgeLabel  { font-size: 12px; fill: #c62828; font-weight: bold; }
+    .sectionTitle { font-size: 14px; fill: #555; font-style: italic; }
+  </style>
+
+  <!-- Titolo -->
+  <text x="440" y="30" text-anchor="middle" font-size="18" font-weight="bold" fill="#222">
+    Diagramma di flusso del firmware di un attuatore MQTT
+  </text>
+
+  <!-- Legenda forme -->
+  <g transform="translate(560,55)">
+    <rect x="0" y="0" width="300" height="105" rx="6" fill="#fafafa" stroke="#bbb"/>
+    <text x="10" y="18" font-size="12" font-weight="bold" fill="#333">Legenda delle forme</text>
+
+    <ellipse cx="22" cy="38" rx="14" ry="7" class="terminator"/>
+    <text x="42" y="42" class="small">terminatore (start/stop)</text>
+
+    <rect x="8" y="52" width="28" height="14" class="process"/>
+    <text x="42" y="63" class="small">processo / azione</text>
+
+    <polygon points="22,72 36,80 22,88 8,80" class="decision"/>
+    <text x="42" y="84" class="small">decisione</text>
+
+    <rect x="170" y="34" width="28" height="14" class="callback"/>
+    <text x="204" y="45" class="small">callback / evento</text>
+
+    <polygon points="170,54 198,54 192,68 164,68" class="io"/>
+    <text x="204" y="65" class="small">I/O (publish/subscribe)</text>
+  </g>
+
+  <!-- ====== FASE SETUP ====== -->
+  <text x="20" y="80" class="sectionTitle">SETUP</text>
+
+  <!-- START -->
+  <ellipse cx="240" cy="105" rx="60" ry="22" class="terminator"/>
+  <text x="240" y="110" text-anchor="middle" class="lblB">START</text>
+
+  <!-- 1. Init parametri -->
+  <rect x="120" y="155" width="240" height="55" rx="6" class="process"/>
+  <text x="240" y="178" text-anchor="middle" class="lblB">1. Inizializza parametri</text>
+  <text x="240" y="196" text-anchor="middle" class="small">broker, topic, device_id, pin, state_period</text>
+
+  <!-- 2. Connessione Wi-Fi / MQTT -->
+  <rect x="120" y="235" width="240" height="55" rx="6" class="process"/>
+  <text x="240" y="258" text-anchor="middle" class="lblB">2. Connessione Wi-Fi e broker MQTT</text>
+  <text x="240" y="276" text-anchor="middle" class="small">registra le callback on_connect, on_message</text>
+
+  <!-- 3. Init pin attuatore -->
+  <rect x="120" y="315" width="240" height="55" rx="6" class="process"/>
+  <text x="240" y="338" text-anchor="middle" class="lblB">3. Inizializza pin attuatore</text>
+  <text x="240" y="356" text-anchor="middle" class="small">pinMode(OUTPUT), stato iniziale = off</text>
+
+  <!-- 4. Subscribe ai topic -->
+  <polygon points="120,395 360,395 350,440 130,440" class="io"/>
+  <text x="240" y="416" text-anchor="middle" class="lblB">4. Subscribe ai topic</text>
+  <text x="240" y="431" text-anchor="middle" class="small">comandi, config</text>
+
+  <!-- 5. Publish stato iniziale -->
+  <polygon points="120,465 360,465 350,510 130,510" class="io"/>
+  <text x="240" y="486" text-anchor="middle" class="lblB">5. Publish stato iniziale</text>
+  <text x="240" y="501" text-anchor="middle" class="small">su topic stato (annuncio)</text>
+
+  <!-- Frecce setup -->
+  <path d="M 240 127 L 240 155" class="edge" marker-end="url(#fc)"/>
+  <path d="M 240 210 L 240 235" class="edge" marker-end="url(#fc)"/>
+  <path d="M 240 290 L 240 315" class="edge" marker-end="url(#fc)"/>
+  <path d="M 240 370 L 240 395" class="edge" marker-end="url(#fc)"/>
+  <path d="M 240 440 L 240 465" class="edge" marker-end="url(#fc)"/>
+
+  <!-- ====== LOOP PRINCIPALE ====== -->
+  <text x="20" y="555" class="sectionTitle">LOOP PRINCIPALE</text>
+
+  <!-- Ingresso loop -->
+  <ellipse cx="240" cy="585" rx="60" ry="18" class="terminator"/>
+  <text x="240" y="590" text-anchor="middle" class="lblB">LOOP</text>
+
+  <!-- Connesso? -->
+  <polygon points="240,625 360,680 240,735 120,680" class="decision"/>
+  <text x="240" y="676" text-anchor="middle" class="lblB">Client connesso</text>
+  <text x="240" y="694" text-anchor="middle" class="lblB">al broker?</text>
+
+  <!-- Reconnect -->
+  <rect x="430" y="650" width="200" height="60" rx="6" class="process"/>
+  <text x="530" y="675" text-anchor="middle" class="lblB">reconnect()</text>
+  <text x="530" y="693" text-anchor="middle" class="small">subscribe ai topic,</text>
+  <text x="530" y="706" text-anchor="middle" class="small">publishState()</text>
+
+  <!-- client.loop() -->
+  <rect x="120" y="765" width="240" height="50" rx="6" class="process"/>
+  <text x="240" y="788" text-anchor="middle" class="lblB">client.loop()</text>
+  <text x="240" y="805" text-anchor="middle" class="small">servizio della rete / dispatch messaggi</text>
+
+  <!-- Decisione: messaggio ricevuto? (gestita dalla callback) -->
+  <polygon points="240,840 360,895 240,950 120,895" class="decision"/>
+  <text x="240" y="886" text-anchor="middle" class="lblB">Messaggio</text>
+  <text x="240" y="904" text-anchor="middle" class="lblB">ricevuto?</text>
+  <text x="240" y="922" text-anchor="middle" class="small">(callback on_message)</text>
+
+  <!-- Decisione: state_period scaduto? -->
+  <polygon points="240,1100 360,1150 240,1200 120,1150" class="decision"/>
+  <text x="240" y="1142" text-anchor="middle" class="lblB">Scaduto</text>
+  <text x="240" y="1160" text-anchor="middle" class="lblB">state_period?</text>
+
+  <!-- Publish PUSH periodico -->
+  <polygon points="430,1115 670,1115 660,1180 440,1180" class="io"/>
+  <text x="550" y="1140" text-anchor="middle" class="lblB">Publish stato (PUSH)</text>
+  <text x="550" y="1158" text-anchor="middle" class="small">su topic stato,</text>
+  <text x="550" y="1172" text-anchor="middle" class="small">last_state_pub = now</text>
+
+  <!-- Delay 1s -->
+  <rect x="120" y="1230" width="240" height="45" rx="6" class="process"/>
+  <text x="240" y="1258" text-anchor="middle" class="lblB">delay(1s) — torna al LOOP</text>
+
+  <!-- Frecce loop principale -->
+  <path d="M 240 603 L 240 625" class="edge" marker-end="url(#fc)"/>
+  <!-- Connesso? SI -->
+  <path d="M 240 735 L 240 765" class="edge" marker-end="url(#fc)"/>
+  <text x="252" y="755" class="edgeLabel">SI</text>
+  <!-- Connesso? NO -->
+  <path d="M 360 680 L 430 680" class="edge" marker-end="url(#fc)"/>
+  <text x="380" y="672" class="edgeLabel">NO</text>
+  <!-- reconnect torna al check -->
+  <path d="M 530 650 Q 530 540, 300 540 Q 240 540, 240 567" class="edge" marker-end="url(#fc)"/>
+
+  <!-- client.loop -> decisione messaggio -->
+  <path d="M 240 815 L 240 840" class="edge" marker-end="url(#fc)"/>
+
+  <!-- Decisione messaggio NO -> decisione state_period -->
+  <path d="M 240 950 L 240 1100" class="edge" marker-end="url(#fc)"/>
+  <text x="252" y="1030" class="edgeLabel">NO</text>
+
+  <!-- state_period SI -> publish push -->
+  <path d="M 360 1150 L 430 1150" class="edge" marker-end="url(#fc)"/>
+  <text x="380" y="1142" class="edgeLabel">SI</text>
+
+  <!-- publish push -> delay -->
+  <path d="M 550 1180 Q 550 1252, 360 1252" class="edge" marker-end="url(#fc)"/>
+
+  <!-- state_period NO -> delay -->
+  <path d="M 240 1200 L 240 1230" class="edge" marker-end="url(#fc)"/>
+  <text x="252" y="1218" class="edgeLabel">NO</text>
+
+  <!-- delay -> torna a LOOP -->
+  <path d="M 120 1252 Q 50 1252, 50 585 Q 50 585, 180 585" class="edge" marker-end="url(#fc)"/>
+
+  <!-- ====== Setup -> Loop ====== -->
+  <path d="M 240 510 L 240 567" class="edge" marker-end="url(#fc)"/>
+
+  <!-- ====== CALLBACK on_message (a destra) ====== -->
+  <text x="500" y="830" class="sectionTitle">CALLBACK on_message</text>
+
+  <!-- Callback entry -->
+  <ellipse cx="660" cy="855" rx="80" ry="20" class="callback"/>
+  <text x="660" y="860" text-anchor="middle" class="lblB">on_message(topic, payload)</text>
+
+  <!-- Decisione device_id corretto? -->
+  <polygon points="660,890 800,945 660,1000 520,945" class="decision"/>
+  <text x="660" y="936" text-anchor="middle" class="lblB">device_id</text>
+  <text x="660" y="954" text-anchor="middle" class="lblB">corretto?</text>
+
+  <!-- Decisione: topic == comandi? -->
+  <polygon points="500,1020 620,1060 500,1100 380,1060" class="decision"/>
+  <text x="500" y="1056" text-anchor="middle" class="lblB">topic ==</text>
+  <text x="500" y="1072" text-anchor="middle" class="lblB">comandi?</text>
+
+  <!-- Esegui azione + apply_output -->
+  <rect x="380" y="1135" width="240" height="55" rx="6" class="process"/>
+  <text x="500" y="1158" text-anchor="middle" class="lblB">Aggiorna current_state</text>
+  <text x="500" y="1176" text-anchor="middle" class="small">apply_output(current_state)</text>
+
+  <!-- Publish stato (feedback ACK applicativo) -->
+  <polygon points="380,1215 620,1215 610,1280 390,1280" class="io"/>
+  <text x="500" y="1238" text-anchor="middle" class="lblB">Publish stato (feedback)</text>
+  <text x="500" y="1255" text-anchor="middle" class="small">ACK applicativo:</text>
+  <text x="500" y="1268" text-anchor="middle" class="small">conferma dell'avvenuta attuazione</text>
+
+  <!-- Ramo configurazione -->
+  <rect x="660" y="1040" width="200" height="55" rx="6" class="process"/>
+  <text x="760" y="1063" text-anchor="middle" class="lblB">Aggiorna parametro</text>
+  <text x="760" y="1081" text-anchor="middle" class="small">es. state_period</text>
+
+  <!-- Fine callback -->
+  <ellipse cx="660" cy="1335" rx="70" ry="18" class="callback"/>
+  <text x="660" y="1340" text-anchor="middle" class="lblB">return (al loop)</text>
+
+  <!-- Frecce callback -->
+  <!-- Dalla decisione messaggio ricevuto SI alla callback entry -->
+  <path d="M 360 895 Q 480 895, 580 855" class="edge" marker-end="url(#fc)"/>
+  <text x="430" y="877" class="edgeLabel">SI</text>
+
+  <path d="M 660 875 L 660 890" class="edge" marker-end="url(#fc)"/>
+
+  <!-- device_id NO -> return -->
+  <path d="M 800 945 Q 850 945, 850 1335 Q 850 1335, 730 1335" class="edge" marker-end="url(#fc)"/>
+  <text x="810" y="935" class="edgeLabel">NO</text>
+
+  <!-- device_id SI -> topic check -->
+  <path d="M 660 1000 Q 660 1020, 580 1040" class="edge" marker-end="url(#fc)"/>
+  <text x="668" y="1018" class="edgeLabel">SI</text>
+
+  <!-- topic == comandi SI -> aggiorna stato -->
+  <path d="M 500 1100 L 500 1135" class="edge" marker-end="url(#fc)"/>
+  <text x="512" y="1122" class="edgeLabel">SI</text>
+
+  <!-- topic == comandi NO -> ramo config -->
+  <path d="M 620 1060 L 660 1060" class="edge" marker-end="url(#fc)"/>
+  <text x="628" y="1052" class="edgeLabel">NO (config)</text>
+
+  <!-- aggiorna stato -> publish feedback -->
+  <path d="M 500 1190 L 500 1215" class="edge" marker-end="url(#fc)"/>
+
+  <!-- publish feedback -> return -->
+  <path d="M 500 1280 Q 500 1335, 590 1335" class="edge" marker-end="url(#fc)"/>
+
+  <!-- ramo config -> return -->
+  <path d="M 760 1095 Q 760 1335, 730 1335" class="edge" marker-end="url(#fc)"/>
+
+  <!-- Annotazione importante -->
+  <g transform="translate(40,1320)">
+    <rect x="0" y="0" width="380" height="130" rx="6" fill="#fffde7" stroke="#f9a825" stroke-width="1.5" stroke-dasharray="4,3"/>
+    <text x="10" y="20" font-size="12" font-weight="bold" fill="#5d4037">Note progettuali</text>
+    <text x="10" y="42" font-size="11" fill="#333">• La conferma applicativa (riquadro verde-viola)</text>
+    <text x="10" y="58" font-size="11" fill="#333">  sostituisce l'ACK del protocollo: il mittente del</text>
+    <text x="10" y="74" font-size="11" fill="#333">  comando si registra come subscriber del topic stato.</text>
+    <text x="10" y="94" font-size="11" fill="#333">• La pubblicazione PUSH periodica risincronizza</text>
+    <text x="10" y="110" font-size="11" fill="#333">  pannelli di controllo che si fossero persi un feedback</text>
+    <text x="10" y="126" font-size="11" fill="#333">  per disconnessioni temporanee della rete.</text>
+  </g>
+
+</svg>
