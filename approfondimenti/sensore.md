@@ -30,7 +30,9 @@
 5. **Attesa Prima della Prossima Iterazione**
    - Attendere un breve periodo (ad esempio, 1 secondo) prima di ripetere il ciclo.
 
-Per il dettaglio sulla realizzazione del firmware vedi [Firmware](../sensorfw.md).
+Per il dettaglio sulla realizzazione del firmware di un sensore vedi [Firmware](../sensorfw.md).actuatorfw.md
+
+Per il dettaglio sulla realizzazione del firmware di un attuatore vedi [Firmware](../actuatorfw.md).
 
 Per il dettaglio sulla differenza tra MCU e SBC vedi [MCU vs SBC](../approfondimenti/dispensa_mcu_firmware_mqtt.md).
 
