@@ -32,7 +32,7 @@
 
 Per il dettaglio sulla realizzazione del firmware di un sensore vedi [Firmware sensore](../sensorfw.md).actuatorfw.md
 
-Per il dettaglio sulla realizzazione del firmware di un attuatore vedi [Firmware attuatore](../actuatorfw.md).
+Per il dettaglio sulla realizzazione del firmware di un attuatore vedi [Firmware attuatore](actuatorfw.md).
 
 Per il dettaglio sulla differenza tra MCU e SBC vedi [MCU vs SBC](../approfondimenti/dispensa_mcu_firmware_mqtt.md).
 
