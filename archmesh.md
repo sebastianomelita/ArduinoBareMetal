@@ -233,6 +233,14 @@ Il routing è basato su **indirizzi IP** che, essendo **gerarchici** , permetton
 
 Se si volessero separare un'**area di produzione** agricola con accesso riservato solamente ai **sensori/attuatori**, da un'area dedicata all'**accesso degli impiegati** amministrativi e da un altra ancora dedicata all'**accesso degli ospiti** esterni per le conferenze, allora la **separazione** dei gruppi di utenti in base alla **dislocazione fisica** potrebbe essere una **soluzione efficace**. 
 
+#### Subnet di accesso (IPv4 statiche)
+
+| Subnet | Rete | Gateway | SSID | DHCP |
+|--------|------|---------|------|------|
+| S2 (sensori R2) | `192.168.2.0/24` | `192.168.2.254` (R2) | `Sensors_R2` | `.1`–`.253` |
+| S3 (sensori R3) | `192.168.3.0/24` | `192.168.3.254` (R3) | `Sensors_R3` | `.1`–`.253` |
+
+
 [Soluzione con dorsali link local](/approfondimenti/mesh_linklocal_example.md)
 
 [Soluzione con dorsali statiche](/approfondimenti/mesh_static_example.md)
