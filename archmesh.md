@@ -150,7 +150,7 @@ In definitiva, i bridge **inoltrano** direttamente **trame MAC**, e la rete comp
 
 #### **Esempio**
 
-Si vogliono separare i **servizi di produzione** agricola con i suoi **sensori** sparsi su tutto l'agro, dai **servizi di mobilità** ai tecnici agronomi dotati di tablet sui loro mezzi con i quali eseguono il controllo giornaliero degli impianti di competenza, consentendo anche di dedicare una gestione separata al traffico dei **servizi di videosorveglianza**. 
+Si vogliono separare i **servizi di produzione** agricola con i suoi **sensori** sparsi su tutto l'agro, dai **servizi di mobilità** ai tecnici agronomi dotati di tablet sui loro mezzi con i quali eseguono il controllo giornaliero degli impianti di competenza (staff e manager), consentendo anche di dedicare una gestione separata al traffico dei **servizi per gli ospiti**. 
 
 <img src="img/meshvlan2.png" alt="alt text" width="1000">
 
