@@ -23,21 +23,25 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 
 <img src="img/lorazone.png" alt="alt text" width="800">
 
-### **Aspetti critici**
+### **Aspetti critici da documentare**
 
 Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scelte argomentate** sono:
-- schema fisico (**planimetria**) dell'infrastruttura con etichettatura univoca di tutti gli asset tecnologici di rete.
-- tipologia di **divisione in gruppi** degli utenti.
-- definizione delle **tecnologie dei dispositivi** chiave quali sensori/attuatori ([dispositivi terminali](sensornetworkshort.md#dispositivi-terminali-sensoriattuatori)), gateway, link (dual radio, three radio), accesso radio (allocazione di servizi sincroni TDM, asincroni CSMA/CA o a basso ritardo slotted CSMA/CA) e loro dimensionamento di  massima (quantità, numero di porte, banda, ecc.).
-- eventuali vincoli normativi sulle tecnologie in uso come potenza, EIRP, ERP e duty cycle. 
+- schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti e edifici chiave e schema dell'infrastruttura con etichettatura univoca di tutti gli asset tecnologici di rete.
+- tipologia di **divisione in gruppi** degli utenti e loro caratterizzazione (dislocazione fisica delimitata o diffusa a macchia a macchia di leopardo).
+- definizione delle **tecnologie dei dispositivi** chiave quali sensori/attuatori (stella, bus, singolo), gateway, link (dual radio, three radio), accesso radio (allocazione di servizi sincroni TDM, asincroni CSMA/CA o a basso ritardo slotted CSMA/CA) e loro dimensionamento di  massima (quantità, numero di porte, banda, ecc.).
+- definizione di dorsali wireless e di punti di accesso e aggregazione dei dispositivi utente
+- eventuali vincoli normativi sulle tecnologie in uso come potenza, EIRP, ERP e duty cycle.
 - schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro ruolo e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7)
 - dislocazione di eventuali **gateway**.
-- **subnetting** e definizione degli indirizzi dei vari gruppi di utenti, delle server farm, definizione degli indirizzi dei server.
+- **subnetting** e definizione degli indirizzi delle subnet di aggregazione per i vari gruppi di utenti (generalmente statica), e definizione degli indirizzi delle subnet di dorsale (statica o automatica), definizione degli indirizzi delle subnet di servizio (server farm e DMZ),
+- definizione degli indirizzi dei server e dei range di quelli dei client.
+- definizione delle tecniche di **autenticazione** degli utenti necessarie per un dato scenario nonchè di quelle che realizzano l'autenticazione dei servizi.
 - definizione del **tipo di routing** (statico o dinamico). In caso si scelga il **routing statico**, definizione delle **tabelle di routing** più significative.
 - definizione della posizione del broker MQTT.
 - definizione dei topic utili per i casi d'uso richiesti.
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
+
 
 [Rete di reti Lorawan](/approfondimenti/lorawan_federation.md)  
 
