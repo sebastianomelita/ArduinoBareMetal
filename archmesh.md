@@ -215,6 +215,10 @@ Nelle reti Wifi **Routed mesh**, si sfrutta la **proprietà** (comune a tutti i 
 
 Il **link-local next hop** è l'indirizzo **IPv6 link-local** (che inizia sempre con fe80::) e viene utilizzato automaticamente come "prossimo salto" per inoltrare i pacchetti dati permettendo di evitare di configurare staticamente a mano le subnet delle dorsali. Quasi tutte le reti mesh moderne ne fanno uso: il protocollo di routing **Babel** di OpenWrt, e **OSPF** nelle versioni 2 e 3. Vale anche per reti con subnet di accesso IPv4. Ogni nodo possiede due indirizzi: **uno IPV6** link local quando è identificato come next hop per il routing e **uno IPV4** di loopback quando è necessario individuarlo per accedervi tramite un servizio quale ping o ssh.
 
+Per OSPF sono possibili due soluzioni:
+- l'**estensione RFC 8950 di OSPFv2**. Questa estensione permette a protocolli di routing IPv4 (principalmente usato in BGP, ma supportato in alcune implementazioni di altri IGP) di usare un Next Hop IPv6 Link-Local per risparmiare indirizzi IPv4 sui link punto-punto.
+- configurare **OSPFv3** (OSPF nativo IPv6) per annunciare prefissi IPv4 usando come next hop un indirizzo IPv6 link-local.
+  
 Il routing è basato su **indirizzi IP** che, essendo **gerarchici** , permettono di **partizionare la rete** in subnet con **gruppi** di dispositivi dislocati in aree **delimitate** e presidiate da **router**, cioè da dispositivi in grado filtrare gli accessi con **regole** basate sull'indirizzo di **sorgente**. Questo è un vantaggio di sicurezza perchè delle **ACL** sui router potrebbero abilitare l'accesso a certe **aree fisiche** (corrispondenti a certe subnet di destinazione) semplicemente controllando la **subnet di appartenenza** della sorgente.
 
 ### **Esempio**
