@@ -172,9 +172,9 @@ Subnet per la dorsale dei router mesh (VLAN amministrativa):
 - VLAN 10
 - SSID: Mesh_Backhaul
 - S1: 192.168.1.0/24
-- R1: 192.168.1.1
-- R2: 192.168.1.2
-- R3: 192.168.1.3
+- AP1: 192.168.1.1
+- AP2: 192.168.1.2
+- AP3: 192.168.1.3
 
 Subnet per i sensori collegati a R2.
 - VLAN 20
