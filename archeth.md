@@ -32,7 +32,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori Eth
 ### **Aspetti critici da documentare**
 
 Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scelte argomentate** sono:
-- schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti e edifici chiave e schema dell'infrastruttura con etichettatura univoca di tutti gli asset tecnologici di rete.
+- schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti e edifici chiave e schema (indoor ed outdoor) dell'infrastruttura con etichettatura univoca di tutti gli asset tecnologici di rete.
 - tipologia di **divisione in gruppi** degli utenti e loro caratterizzazione (dislocazione fisica delimitata o diffusa a macchia a macchia di leopardo).
 - definizione delle **tecnologie dei dispositivi** chiave quali sensori/attuatori (stella, bus, singolo), gateway, link (dual radio, three radio), accesso radio (allocazione di servizi sincroni TDM, asincroni CSMA/CA o a basso ritardo slotted CSMA/CA) e loro dimensionamento di  massima (quantità, numero di porte, banda, ecc.).
 - definizione di dorsali wireless e di punti di accesso e aggregazione dei dispositivi utente
