@@ -152,7 +152,7 @@ In definitiva, i bridge **inoltrano** direttamente **trame MAC**, e la rete comp
 
 Si vogliono separare i **servizi di produzione** agricola con i suoi **sensori** sparsi su tutto l'agro, dai **servizi di mobilità** ai tecnici agronomi dotati di tablet sui loro mezzi con i quali eseguono il controllo giornaliero degli impianti di competenza, consentendo anche di dedicare una gestione separata al traffico dei **servizi di videosorveglianza**. 
 
-<img src="img/meshvlan.png" alt="alt text" width="1000">
+<img src="img/meshvlan2.png" alt="alt text" width="1000">
 
 La **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe evidentemente impossibile, mentre sarebbe **effettiva** la separazione mediante **VLAN** dislocate su una infrastruttura **bridged**.
 
