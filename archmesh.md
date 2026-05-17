@@ -222,7 +222,7 @@ Il **link-local next hop** è l'indirizzo **IPv6 link-local** (che inizia sempre
 
 Ogni nodo possiede due indirizzi: **uno IPV6** link local quando è identificato come next hop per il routing e **uno IPV4** di loopback quando è necessario individuarlo per accedervi tramite un servizio IPv4 quale ping o ssh.
 
-In **OSPF** sono possibili due soluzioni per definire il **subnetting statico** delle sole **subnet di accesso** delegando la definizione del **subnetting delle dorsali** al protocollo di routing:
+In **OSPF** sono possibili due soluzioni per definire il **subnetting statico** delle sole **subnet di accesso** delegando la definizione del **subnetting delle dorsali** (tramite indirizzi Link Local) al protocollo di routing:
 - l'**estensione RFC 8950 di OSPFv2**. Questa estensione permette a protocolli di routing IPv4 (principalmente usato in BGP, ma supportato in alcune implementazioni di altri IGP) di usare un Next Hop IPv6 Link-Local per risparmiare indirizzi IPv4 sui link punto-punto.
 - configurare **OSPFv3** (OSPF nativo IPv6) per annunciare prefissi IPv4 usando come next hop un indirizzo IPv6 link-local.
   
