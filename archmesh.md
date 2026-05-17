@@ -227,6 +227,10 @@ Il routing è basato su **indirizzi IP** che, essendo **gerarchici** , permetton
 
 Se si volessero separare un'**area di produzione** agricola con accesso riservato solamente ai **sensori/attuatori**, da un'area dedicata all'**accesso degli impiegati** amministrativi e da un altra ancora dedicata all'**accesso degli ospiti** esterni per le conferenze, allora la **separazione** dei gruppi di utenti in base alla **dislocazione fisica** potrebbe essere una **soluzione efficace**. 
 
+[Soluzione con dorsali link local](/approfondimenti/mesh_linklocal_example.md)
+
+[Soluzione con dorsali statiche](/approfondimenti/mesh_static_example.md)
+
 #### **Definizione dei gruppi mediante router**
 
 La **definizione** dei gruppi si può fare con una dislocazione **fisicamente contigua** degli host, cioè gli **host** di un **certo gruppo** sono vincolati ad effettuare l'accesso solo presso **un certo router**. La **separazione** avviene **subito**, sul **router** wireless di accesso, grazie all'assegnazione di indirizzi appartenenti a **subnet diverse**.
