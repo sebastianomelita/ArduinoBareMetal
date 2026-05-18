@@ -303,6 +303,7 @@ Nel contesto di LoRaWAN, un **gateway** può assumere un ruolo di **coordinament
 
 Per il dettaglio sulla gestione delle classi di servizio vedi [Classi di servizio LoRAWAN](classilora.md).
 
+[tutorial Conduit](approfondimenti/tutorial-conduit-abp.md)
 
 ### **Pagine correlate:**
 
