@@ -191,7 +191,7 @@ In sintesi, la lunghezza dei messaggi LoRaWAN è strettamente correlata alle **l
 |---|---|---|---|
 | **PHY** | 12,5 | preambolo, header fisico, CRC | radio (SX1276/SX1262) |
 | **MAC** | 5 | tipo di frame, integrità/autenticazione | stack LoRaWAN |
-| **LoRaWAN** | 8 | indirizzamento, contatore, controllo, porto | stack LoRaWAN |
+| **LoRaWAN** | 8 | indirizzamento, contatore, controllo, porta | stack LoRaWAN |
 | **Totale overhead** | **25,5** | | |
 
 
