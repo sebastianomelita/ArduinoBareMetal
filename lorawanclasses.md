@@ -184,7 +184,43 @@ In sintesi, la lunghezza dei messaggi LoRaWAN è strettamente correlata alle **l
 
 [Dettaglio banda ISM 868 MHz](ism.md)
 
- <img src="img/messaggilora.png" alt="alt text" width="1000">
+Esempio di **payload**:
+```Json
+{
+  "jver": 1,
+  "tmst": 561224395,
+  "time": "2023-03-04T23:14:39.522787Z",
+  "tmms": 1362006897523,
+  "chan": 6,
+  "rfch": 1,
+  "freq": 903.5,
+  "mid": 8,
+  "stat": 1,
+  "modu": "LORA",
+  "datr": "SF9BW125",
+  "codr": "4/5",
+  "rssis": -14,
+  "lsnr": 9.2,
+  "foff": -2769,
+  "rssi": -13,
+  "opts": "03070307",
+  "size": 8,
+  "fcnt": 1,
+  "cls": 0,
+  "port": 33,
+  "mhdr": "80cb80d000840100",
+  "data": "dGVzdGRhdGE=",
+  "appeui": "8b-6c-f0-8e-ee-df-1b-b6",
+  "deveui": "00-80-00-ff-ff-00-00-03",
+  "joineui": "16-ea-76-f6-ab-66-3d-80",
+  "name": "JSR-DEBIAN-PC-DOT2",
+  "devaddr": "00d080cb",
+  "ack": false,
+  "adr": true,
+  "gweui": "00-80-00-00-d0-00-01-ff",
+  "seqn": 1
+}
+```
 
 I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che si mappano l’uno sull’altro:
 - **Messaggi corti**, in formato binario, tra sensore e gateway. Vengono mandati in wireless su **banda ISM** con forti limitazioni di duty cycle, per cui devono essere i più **corti** possibile, anche a discapito della chiarezza. Possono essere **definiti** sotto forma di **struct C** e poi inviati ad una **libreria di serializzazione** (come Cayenne LPP) che si occupa di trasformali in una **sequenza compatta** di singoli bit.
@@ -297,43 +333,6 @@ lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/up
 ```
 Questo topic può essere **letto** (come subscriber) dal **Server applicativo** per realizzare una **attuazione** verso un altro dispositivo o una **elaborazione statistica** o un **salvataggio persistente** in un database.
 
-Esempio di **payload**:
-```Json
-{
-  "jver": 1,
-  "tmst": 561224395,
-  "time": "2023-03-04T23:14:39.522787Z",
-  "tmms": 1362006897523,
-  "chan": 6,
-  "rfch": 1,
-  "freq": 903.5,
-  "mid": 8,
-  "stat": 1,
-  "modu": "LORA",
-  "datr": "SF9BW125",
-  "codr": "4/5",
-  "rssis": -14,
-  "lsnr": 9.2,
-  "foff": -2769,
-  "rssi": -13,
-  "opts": "03070307",
-  "size": 8,
-  "fcnt": 1,
-  "cls": 0,
-  "port": 33,
-  "mhdr": "80cb80d000840100",
-  "data": "dGVzdGRhdGE=",
-  "appeui": "8b-6c-f0-8e-ee-df-1b-b6",
-  "deveui": "00-80-00-ff-ff-00-00-03",
-  "joineui": "16-ea-76-f6-ab-66-3d-80",
-  "name": "JSR-DEBIAN-PC-DOT2",
-  "devaddr": "00d080cb",
-  "ack": false,
-  "adr": true,
-  "gweui": "00-80-00-00-d0-00-01-ff",
-  "seqn": 1
-}
-```
 ### **Solo topic down**
 **Topic** ```down``` in cui **gateway** è il **publisher** dei messaggi che vanno nella **direzione** dal gateway al dispositivo, mentre il **dispositivo** è il loro **subscriber**
 ```Python
