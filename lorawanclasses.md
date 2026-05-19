@@ -71,7 +71,7 @@ Le **funzioni** dell'architettura **lora** possono essere distinte su **3 dispos
 
 Per abilitare l'**accesso OTAA**, vanno configurati sia il **dispositivo IoT** che il **network server**.
 
-<img src="/img/auth-lora.jpg" alt="alt text" width="1000">
+<img src="/img/auth-lorawan.jpg" alt="alt text" width="1000">
 
 Sul **Dispositivo IoT** (End-Device) vanno impostati:
 - **DevEUI** o **identificatore del dispositivo**, è unico e normalmente si deduce dal MAC Ethernet con il processo **EUI64**.
