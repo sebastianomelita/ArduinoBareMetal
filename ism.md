@@ -82,13 +82,9 @@ E il limite **dipende dalla sotto-banda** su cui trasmetti, non dalla direzione.
 
 In LoRaWAN un end-device Class A apre due finestre di ricezione dopo ogni uplink:
 
-- **RX1**: 1 secondo dopo l'uplink, **sulla stessa frequenza** dell'uplink, con uno SF derivato.
-- **RX2**: 2 secondi dopo l'uplink, **frequenza fissa 869,525 MHz**, SF12 (default EU868).
-
-Risultato:
-
-- Se il gateway risponde in **RX1** → trasmette ad esempio su 868,1 MHz (sotto-banda g1) → **1% di duty cycle** disponibile, come gli uplink.
-- Se il gateway risponde in **RX2** → trasmette su 869,525 MHz (sotto-banda **g3**) → **10% di duty cycle** disponibile, **dieci volte più budget**.
+In LoRaWAN un end-device Class A apre due finestre di ricezione dopo ogni uplink:
+- RX1: 1 secondo dopo l'uplink, sulla stessa frequenza dell'uplink, con uno SF derivato. Se il gateway risponde in RX1 → trasmette ad esempio su 868,1 MHz (sotto-banda g1) → 1% di duty cycle disponibile, come gli uplink.
+- RX2: 2 secondi dopo l'uplink, frequenza fissa 869,525 MHz, SF12 (default EU868). Se il gateway risponde in RX2 → trasmette su 869,525 MHz (sotto-banda g3) → 10% di duty cycle disponibile, dieci volte più budget.
 
     - **Trasmissioni parallele**. Di queste, 5 (numerate da B0 a B5) sono utilizzabili dai nodi di terminali e permettono, mediante parallellizazione FDM dei flussi di bit su 5 canali diversi, un  duty cycle complessivo del 3.2%. Il **gateway** LoRaWAN utilizza un'architettura a basso costo e basso consumo energetico che consente il posizionamento di una **coppia di radio** con larghezza  di banda di **1 MHz** ovunque nella banda ISM dell'UE. Gli **otto canali** di ricezione LoRa sono posizionati all'interno di queste due bande da 1 MHz. Quindi una applicazione su un dispositivo, avrà la  possibilità di poter dividere il duty cycle su **due sole sottofasce**. Nella maggior parte delle reti, queste saranno scelte vantaggiosamente se si concentreranno sulle allocazioni di uplink dell'1%, piuttosto che in quelle allo 0.1%. Ciò significa che ci si può ragionevolmente aspettare il **2% di duty cycle** aggregato disponibile per una **stessa sorgente**.
   
