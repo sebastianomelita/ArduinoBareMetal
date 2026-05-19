@@ -324,5 +324,6 @@ Per il dettaglio sulla gestione delle classi di servizio vedi [Classi di servizi
 - https://github.com/myDevicesIoT/cayenne-docs/blob/master/docs/LORA.md
 - https://webthesis.biblio.polito.it/secure/18698/1/tesi.pdf
 - https://www.starlink.com/business/direct-to-cell
+- https://eadalabs.com/lorawan-overhead/
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
