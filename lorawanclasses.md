@@ -43,7 +43,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 
 
-[Rete di reti Lorawan](/approfondimenti/lorawan_federation.md)  
+[Rete di reti lora](/approfondimenti/lora_federation.md)  
 
 [Messaggi MQTT](/approfondimenti/messaggi_mqtt.md)
 
@@ -55,9 +55,9 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 [Sensori](/approfondimenti/sensore.md)
 
-## **Funzioni di una rete LoRaWAN**
+## **Funzioni di una rete lora**
 
-Le **funzioni** dell'architettura **LoRaWAN** possono essere distinte su **3 dispositivi diversi** oppure coincidere in un **unico dispositivo** che le ingloba tutte:
+Le **funzioni** dell'architettura **lora** possono essere distinte su **3 dispositivi diversi** oppure coincidere in un **unico dispositivo** che le ingloba tutte:
 
 - Il **packet forwarder** è il gateway stesso essendo la funzione di forwarding, (inoltro) dei messaggi dal sensore al network server, la funzione principale del gateway. L'inoltro dei messaggi di uno stesso sensore può essere **parallelo** se questo è associato a più di un gateway, circostanza che aumenta la ridondanza a costo della presenza di duplicati in rete. In ogni caso, i **messaggi duplicati** verranno successivamente scartati dal network server, prima dell'inoltro finale verso l'applicazione.
 
@@ -71,7 +71,7 @@ Le **funzioni** dell'architettura **LoRaWAN** possono essere distinte su **3 dis
 
 Per abilitare l'**accesso OTAA**, vanno configurati sia il **dispositivo IoT** che il **network server**.
 
-<img src="/img/auth-lorawan.jpg" alt="alt text" width="1000">
+<img src="/img/auth-lora.jpg" alt="alt text" width="1000">
 
 Sul **Dispositivo IoT** (End-Device) vanno impostati:
 - **DevEUI** o **identificatore del dispositivo**, è unico e normalmente si deduce dal MAC Ethernet con il processo **EUI64**.
@@ -82,11 +82,11 @@ Sul **Network Server**:
 - si impostano i parametri del dispositivo (DevEUI, AppEUI) e l'AppKey, tutti corrispondenti a quelli del dispositivo.
 - si esegue l'associazione a un **join server** che gestirà il processo di accesso.
 
-La chiave **AppKey** può essere generata online su cloud di gestione dei dispositivi LoraWAN come TTN, oppure localmente, ad esempio con il comando ```openssl rand -hex 16```.
+La chiave **AppKey** può essere generata online su cloud di gestione dei dispositivi lora come TTN, oppure localmente, ad esempio con il comando ```openssl rand -hex 16```.
 
 In realtà, il **server** genera, automaticamente e in maniera trasparente all'utente, **due chiavi**:
-- **AppSKey**: utilizzata dal **protocollo** LoRaWAN per cifrare e decifrare il payload delle applicazioni. Viene utilizzato per garantire la **privatezza** (confidenzialità) dei messaggi. Il messaggio è **cifrato** dal dispositivo IoT e può essere **decifrato** sia dal **Network Server** che, nella variante End To End, direttamente dal **Server Applicativo**.
-- **NwkSKey**: utilizzata dal **protocollo** LoRaWAN in ingresso all'algoritmo AES-CMAC (Cipher-based Message Authentication Code), un HMAC con chiave con il quale viene generato un **hash del frame** da trasmettere, detto **MIC**. Il **trasmettitore** allega il MIC al messaggio e lo invia al **ricevitore** che estrae il MIC e lo **mette da parte** mentre ricalcola una **copia locale** del MIC utilizzando la **stessa chiave** usata in trasmissione. Se i due MIC, quello ricevuto e  quello locale,  **coincidono** allora vengono provati contemporaneamente sia l'**integrità** del messaggio che l'**autenticazione** del mittente.
+- **AppSKey**: utilizzata dal **protocollo** lora per cifrare e decifrare il payload delle applicazioni. Viene utilizzato per garantire la **privatezza** (confidenzialità) dei messaggi. Il messaggio è **cifrato** dal dispositivo IoT e può essere **decifrato** sia dal **Network Server** che, nella variante End To End, direttamente dal **Server Applicativo**.
+- **NwkSKey**: utilizzata dal **protocollo** lora in ingresso all'algoritmo AES-CMAC (Cipher-based Message Authentication Code), un HMAC con chiave con il quale viene generato un **hash del frame** da trasmettere, detto **MIC**. Il **trasmettitore** allega il MIC al messaggio e lo invia al **ricevitore** che estrae il MIC e lo **mette da parte** mentre ricalcola una **copia locale** del MIC utilizzando la **stessa chiave** usata in trasmissione. Se i due MIC, quello ricevuto e  quello locale,  **coincidono** allora vengono provati contemporaneamente sia l'**integrità** del messaggio che l'**autenticazione** del mittente.
 
 <img src="img/lora-process.png" alt="alt text" width="1000">
 
@@ -142,7 +142,7 @@ Il **server di rete** è collegato ai **gateway dei sensori** mediante una norma
 I dati ricevuti possono essere **inviati agli application server** per le elaborazioni successive oppure è possibile inviare eventuali notifiche agli end device per far attuare un’azione.
 Non ci sono interfacce standard di trasmissione dei dati tra network server ed application server (webservice, websocket, webhook, MQTT sono variamente implementati).
 
-Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e pertanto fanno esse stesse parte della **infrastruttura di rete**. Spesso sono **virtualizzate** e le loro funzioni sono offerte come **servizio** su abbonamento. Sono presenti in quasi tutte le **infrastrutture LPWA** a lungo raggio come **LoraWan**, **Sigfox** e **NB-IoT**.
+Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e pertanto fanno esse stesse parte della **infrastruttura di rete**. Spesso sono **virtualizzate** e le loro funzioni sono offerte come **servizio** su abbonamento. Sono presenti in quasi tutte le **infrastrutture LPWA** a lungo raggio come **lora**, **Sigfox** e **NB-IoT**.
 
 ## **Gateway**
 
@@ -154,7 +154,7 @@ Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e per
        - **indiretto** tramite una dorsale virtuale, cioè un **tunnel**, verso il network server o verso un router di una WAN privata, realizzato, ad esempio, in maniera cifrata tramite un **client di VPN**, oppure in maniera non cifrata tramite un client di tunnel generico **GRE**. In questo caso il **gateway** possiede:
          - un indirizzo **IP pubblico** nell'interfaccia in **Internet**. 
          - un **IP privato** nell'interfaccia sul **tunnel cifrato**. Il tunnel cifrato, per VPN L3, è gestito con una subnet IP **separata** per ogni tunnel.
-  - **Traduzione di formato** dei **messaggi** dalla interfaccia sulla rete **LoRaWAN** a quella sulla rete **ethernet** e viceversa. La **traduzione** del livello applicativo **non** è presente, dato che LoRaWAN **non definisce** una **semantica** per gli oggetti IoT. LoRaWan fornisce un mero servizio di **messagistica breve** e a **basso consumo** la cui **semantica** (significato degli oggetti) deve essere definita dall'**applicazione**.
+  - **Traduzione di formato** dei **messaggi** dalla interfaccia sulla rete **lora** a quella sulla rete **ethernet** e viceversa. La **traduzione** del livello applicativo **non** è presente, dato che lora **non definisce** una **semantica** per gli oggetti IoT. lora fornisce un mero servizio di **messagistica breve** e a **basso consumo** la cui **semantica** (significato degli oggetti) deve essere definita dall'**applicazione**.
   - **Interrogazione periodica** (polling) dei dispositivi nella rete di sensori (master di una architettura master/slave)
   - **Raccolta e memorizzazione** delle informazioni per essere trasferite in un **secondo momento** al server di gestione
   - **Protezione della rete di sensori**, cioè di firewall, soprattutto quando questa, tramite il gateway, si connette direttamente alla rete **Internet** mediante un **IP pubblico**.
@@ -172,34 +172,34 @@ In **generale**, su reti **non IP**, i **client MQTT** (con il ruolo di **publis
 
 ### **Gateway come MCU hub di sensori**
 
-La **parola gateway** potrebbe talvolta portare a **fraintendimenti** dovuti al diverso significato nei **diversi contesti** in cui la si usa. **Spesso**, con il **termine gateway** si intente anche il **dispositivo IoT** che potrebbe essere, **a sua volta**, un **gateway** tra la il **link di campo**, porte analogiche/digitali o BUS, (vedi [bus di campo](cablatisemplici.md) per dettagli) e la **rete di sensori** (WiFi, Zigbee, LoraWAN, LAN, BLE, ecc.). In questo caso il gateway ha il compito di tradurre i messaggi dall'interfaccia a BUS su filo verso quella LoRaWAN e viceversa. Vedi ([dispositivi terminali](sensornetworkshort.md#dispositivi-terminali-sensoriattuatori)) per approfondimenti.
+La **parola gateway** potrebbe talvolta portare a **fraintendimenti** dovuti al diverso significato nei **diversi contesti** in cui la si usa. **Spesso**, con il **termine gateway** si intente anche il **dispositivo IoT** che potrebbe essere, **a sua volta**, un **gateway** tra la il **link di campo**, porte analogiche/digitali o BUS, (vedi [bus di campo](cablatisemplici.md) per dettagli) e la **rete di sensori** (WiFi, Zigbee, lora, LAN, BLE, ecc.). In questo caso il gateway ha il compito di tradurre i messaggi dall'interfaccia a BUS su filo verso quella lora e viceversa. Vedi ([dispositivi terminali](sensornetworkshort.md#dispositivi-terminali-sensoriattuatori)) per approfondimenti.
 
-## **Formato dei messaggi LoRaWAN**
+## **Formato dei messaggi lora**
 
-In sintesi, la lunghezza dei messaggi LoRaWAN è strettamente correlata alle **limitazioni in banda ISM** attraverso le restrizioni sul **duty cycle** e il **Time on Air**. Gli **sviluppatori** devono bilanciare la necessità di trasmettere dati con le normative che limitano il tempo di trasmissione per assicurare un uso efficiente e conforme dello spettro radio.
+In sintesi, la lunghezza dei messaggi lora è strettamente correlata alle **limitazioni in banda ISM** attraverso le restrizioni sul **duty cycle** e il **Time on Air**. Gli **sviluppatori** devono bilanciare la necessità di trasmettere dati con le normative che limitano il tempo di trasmissione per assicurare un uso efficiente e conforme dello spettro radio.
 
 **Time on Air (ToA)** è a durata della trasmissione di un messaggio, dipende dalla lunghezza del messaggio e dalle impostazioni di trasmissione come il **Data Rate** e il **Spreading Factor (SF)**. Messaggi **più lunghi** o l'uso di **Spreading Factor più alti** aumentano il Time on Air. Poiché il duty cycle limita il tempo totale di trasmissione, **messaggi più lunghi** riducono la **frequenza** con cui i dispositivi possono trasmettere senza superare i limiti di duty cycle.
 
-**Calcolatori online**. Un esempio di calcolatore online di duty cycle per la **tecnologia LoraWAN** è: https://avbentem.github.io/airtime-calculator/ttn/eu868
+**Calcolatori online**. Un esempio di calcolatore online di duty cycle per la **tecnologia lora** è: https://avbentem.github.io/airtime-calculator/ttn/eu868
 
 [Dettaglio banda ISM 868 MHz](ism.md)
 
 
-### **lunghezza messaggi LoRaWAN**
+### **lunghezza messaggi lora**
 
 | Livello | Byte | Ruolo principale | Chi lo gestisce |
 |---|---|---|---|
 | **PHY** | 12,5 | preambolo, header fisico, CRC | radio (SX1276/SX1262) |
-| **MAC** | 5 | tipo di frame, integrità/autenticazione | stack LoRaWAN |
-| **LoRaWAN** | 8 | indirizzamento, contatore, controllo, porta | stack LoRaWAN |
+| **MAC** | 5 | tipo di frame, integrità/autenticazione | stack lora |
+| **lora** | 8 | indirizzamento, contatore, controllo, porta | stack lora |
 | **Totale overhead** | **25,5** | | |
 
 - **PHY**, circa 13 byte è l'**header LoRa**
-- **MAC + LoRaWAN**, 13 byte, sono l'**header LoRaWAN**, cioè l'header overhead del calcolatore online 
+- **MAC + lora**, 13 byte, sono l'**header lora**, cioè l'header overhead del calcolatore online 
 
-I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che si mappano l’uno sull’altro: **Messaggi corti** e **messaggi lunghi**. 
+I messaggi scambiati in una rete lora sono complessivamente di due tipi che si mappano l’uno sull’altro: **Messaggi corti** e **messaggi lunghi**. 
 
-### **Messaggi corti (Formato del payload LoRaWAN)**
+### **Messaggi corti (Formato del payload lora)**
 
 Sono in formato binario, tra sensore e gateway. Vengono mandati in wireless su **banda ISM** con forti limitazioni di duty cycle, per cui devono essere i più **corti** possibile, anche a discapito della chiarezza. Possono essere **definiti** sotto forma di **struct C** e poi inviati ad una **libreria di serializzazione** (come Cayenne LPP) che si occupa di trasformali in una **sequenza compatta** di singoli bit.
   
@@ -262,19 +262,19 @@ Esempio di **json di servizio** tra gateway e application server:
 
 La **deserializzazione** del  campo ```data``` dal formato pacchettizzato binario al formato strutturato nei singoli campi contenenti i valori delle varie misure, non viene fatta normalmente direttamente sul gateway, lui li **decifra** con la chiave simmetrica di sesssione e li trasferisce in chiaro in un **JSON di servizio** ma senza scompattare (deserializzare) il payload applicativo. La **trasformazione dei dati** (come la codifica e decodifica in formato Cayenne LPP) tipicamente avviene a livello di **server di rete** o di **server di applicazione** o di **dashboard di visualizzazione** (ad esempio web). Ecco come potrebbe essere gestita:
 
-- **Server di Rete LoRaWAN (Network Server)**: Alcuni server di rete LoRaWAN, come quelli offerti da The Things Network (TTN) o ChirpStack, forniscono integrazioni che possono gestire il payload dei dispositivi. E' possibile configurare questi server per utilizzare codec specifici che codificano o decodificano i messaggi nel formato desiderato, come Cayenne LPP.
+- **Server di Rete lora (Network Server)**: Alcuni server di rete lora, come quelli offerti da The Things Network (TTN) o ChirpStack, forniscono integrazioni che possono gestire il payload dei dispositivi. E' possibile configurare questi server per utilizzare codec specifici che codificano o decodificano i messaggi nel formato desiderato, come Cayenne LPP.
 
-- **Applicazione Custom**: E' possibile creare un'**applicazione** (sull'application server) che riceva i dati dal **server di rete** LoRaWAN e che poi gestisca la compattazione e decompressione dei dati JSON utilizzando librerie apposite (come Cayenne LPP). Questa applicazione si può considerare un **middleware** che si occupa della **trasformazione dei dati** prima di passarli alla **applicazione finale** (livello di presentazione OSI). 
+- **Applicazione Custom**: E' possibile creare un'**applicazione** (sull'application server) che riceva i dati dal **server di rete** lora e che poi gestisca la compattazione e decompressione dei dati JSON utilizzando librerie apposite (come Cayenne LPP). Questa applicazione si può considerare un **middleware** che si occupa della **trasformazione dei dati** prima di passarli alla **applicazione finale** (livello di presentazione OSI). 
 - **Integrazione diretta con un cloud**: Ad esempio, Cayenne di MyDevices fornisce una piattaforma per la gestione e visualizzazione dei dati IoT che supporta nativamente il formato Cayenne LPP. Puoi configurare il tuo server di rete per inviare i dati direttamente alla piattaforma Cayenne, che si occuperà della decodifica e visualizzazione dei dati in formato JSON.
  
-Per esempi di messagggi LoRawaN lunghi e corti vedi [Esempi messaggi LoRa](esempimessaggilora.md)
+Per esempi di messagggi lora lunghi e corti vedi [Esempi messaggi LoRa](esempimessaggilora.md)
   
 ## **Gestione bridge broker MQTT**
 
 E' una maniera per fare diventare il network server un **client del broker MQTT** che sta nella rete di distribuzione centrale.
 
 Serve a realizzare un ponte tra: 
-- un broker MQTT locale al network server che colleziona tutti i messaggi del modem LoraWAN
+- un broker MQTT locale al network server che colleziona tutti i messaggi del modem lora
 - il broker in uso nella rete di distribuzione che è interessato solo ad un sottoinsieme dei topic del network server (vengono filtrati i messaggi di servizio)
 - #, # è invece l’impostazione per un bridge privo di filtraggi
 
@@ -286,10 +286,10 @@ Serve a realizzare un ponte tra:
 |---|---|---|---|---|---|
 | `packet_recv` | **uplink** | PHY (prima della decifratura) | Ogni frame demodulato con CRC OK, **anche se poi verrà scartato dal NS** | Metadati radio (freq, SF, RSSI, SNR) + `data` ancora **cifrato** | Diagnostica radio, monitoraggio qualità link |
 | `up` | **uplink** | Applicativo (dopo i 4 passi) | Solo per frame validati e decifrati | `data` **in chiaro** + DevEUI + FCnt | **Topic principale per le applicazioni** |
-| `packet_missed` | uplink (meta) | LoRaWAN | Quando il NS rileva un salto nel FCnt | `{"count": N}` con N = numero di pacchetti persi | Statistiche packet loss |
-| `geolocation` | uplink (meta) | LoRaWAN | Insieme a ogni `up` | DevEUI, gateway che ha ricevuto, RSSI, SNR | Triangolazione multi-gateway |
+| `packet_missed` | uplink (meta) | lora | Quando il NS rileva un salto nel FCnt | `{"count": N}` con N = numero di pacchetti persi | Statistiche packet loss |
+| `geolocation` | uplink (meta) | lora | Insieme a ogni `up` | DevEUI, gateway che ha ricevuto, RSSI, SNR | Triangolazione multi-gateway |
 | `packet_sent` | **downlink** | PHY | Quando il gateway sta per trasmettere un downlink | `data` del frame downlink (cifrato), parametri TX | Tracciamento downlink lato radio |
-| `mac_sent` | **downlink** | LoRaWAN | Quando il NS spedisce un MAC command | `opts` = MAC commands codificati (LinkADRReq, DevStatusReq…) | Capire perché il NS parla al device |
+| `mac_sent` | **downlink** | lora | Quando il NS spedisce un MAC command | `opts` = MAC commands codificati (LinkADRReq, DevStatusReq…) | Capire perché il NS parla al device |
 
 ### Quale topic serve per cosa
 
@@ -347,25 +347,25 @@ L'**associazione** può riguardare i **topic**:
 
 Il **payload** è un **messaggio JSON** contenente un campo **data** e varie informazioni di controllo. Il campo data è **codificato** in BASE64 e **compattato** per occupare meno spazio possibile nella tratta dal sensore al gateway.
 
-Un applicativo còient del broker MQTT generale può recuperarare i messaggi di un certo sensore eseguendo il subscribe sul topic ```lorawan/<APP-EUI>/<DEV-EUI>/+``` dove <APP-EUI> è il MAC del network server mentre /<DEV-EUI> è il MAC del sensore.
+Un applicativo còient del broker MQTT generale può recuperarare i messaggi di un certo sensore eseguendo il subscribe sul topic ```lora/<APP-EUI>/<DEV-EUI>/+``` dove <APP-EUI> è il MAC del network server mentre /<DEV-EUI> è il MAC del sensore.
 
 ```Python
-lorawan/<APP-EUI>/<DEV-EUI>/+
-lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/+
+lora/<APP-EUI>/<DEV-EUI>/+
+lora/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/+
 ```
 ### **Solo topic up**
 **Topic** ```up``` in cui **dispositivo** è il **publisher** dei messaggi che vanno nella **direzione** dal dispositivo al gateway, mentre il **gateway** è il loro **subscriber**
 ```Python
-lorawan/<APP-EUI>/<DEV-EUI>/up 
-lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/up
+lora/<APP-EUI>/<DEV-EUI>/up 
+lora/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/up
 ```
 Questo topic può essere **letto** (come subscriber) dal **Server applicativo** per realizzare una **attuazione** verso un altro dispositivo o una **elaborazione statistica** o un **salvataggio persistente** in un database.
 
 ### **Solo topic down**
 **Topic** ```down``` in cui **gateway** è il **publisher** dei messaggi che vanno nella **direzione** dal gateway al dispositivo, mentre il **dispositivo** è il loro **subscriber**
 ```Python
-lorawan/<APP-EUI>/<DEV-EUI>/down
-lorawan/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/down
+lora/<APP-EUI>/<DEV-EUI>/down
+lora/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/down
 ```
 Questo topic può essere **scritto** (come publisher) dal **Server applicativo** o da un altro dispositivo IoT per realizzare una attuazione o una configurazione
 
