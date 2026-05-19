@@ -185,6 +185,16 @@ In sintesi, la lunghezza dei messaggi LoRaWAN è strettamente correlata alle **l
 [Dettaglio banda ISM 868 MHz](ism.md)
 
 
+### **lunghezza messaggi LoRaWAN**
+
+| Livello | Byte | Ruolo principale | Chi lo gestisce |
+|---|---|---|---|
+| **PHY** | 12,5 | preambolo, header fisico, CRC | radio (SX1276/SX1262) |
+| **MAC** | 5 | tipo di frame, integrità/autenticazione | stack LoRaWAN |
+| **LoRaWAN** | 8 | indirizzamento, contatore, controllo, porto | stack LoRaWAN |
+| **Totale overhead** | **25,5** | | |
+
+
 
 I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che si mappano l’uno sull’altro: **Messaggi corti** e **messaggi lunghi**. 
 
@@ -248,7 +258,6 @@ Esempio di **json di servizio** tra gateway e application server:
   "seqn": 1
 }
 ```
-
 
 La **deserializzazione** del  campo ```data``` dal formato pacchettizzato binario al formato strutturato nei singoli campi contenenti i valori delle varie misure, non viene fatta normalmente direttamente sul gateway, lui li **decifra** con la chiave simmetrica di sesssione e li trasferisce in chiaro in un **JSON di servizio** ma senza scompattare (deserializzare) il payload applicativo. La **trasformazione dei dati** (come la codifica e decodifica in formato Cayenne LPP) tipicamente avviene a livello di **server di rete** o di **server di applicazione** o di **dashboard di visualizzazione** (ad esempio web). Ecco come potrebbe essere gestita:
 
