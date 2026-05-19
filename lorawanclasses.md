@@ -211,7 +211,7 @@ Sono in formato binario, tra sensore e gateway. Vengono mandati in wireless su *
 
 Sono scambiati tra tra Network Server e server Applicativo. Vengono mandati **in Internet** e devono essere più che altro chiari e, se possibile, autoesplicativi. Dato che vengono inviati su un mezzo senza particolari limitazioni di banda, possono essere **definiti** in **formato JSON**.
 
-Esempio di **payload**:
+Esempio di **json di servizio** tra gateway e application server:
 ```Json
 {
   "jver": 1,
@@ -236,7 +236,7 @@ Esempio di **payload**:
   "cls": 0,
   "port": 33,
   "mhdr": "80cb80d000840100",
-  "data": "dGVzdGRhdGE=",
+  "data": "dDEAAAAAAAAFAPoAngCcASUC5gCSjAEA", // dato pacchettizzato decifrato e codificato in BCD
   "appeui": "8b-6c-f0-8e-ee-df-1b-b6",
   "deveui": "00-80-00-ff-ff-00-00-03",
   "joineui": "16-ea-76-f6-ab-66-3d-80",
@@ -250,7 +250,7 @@ Esempio di **payload**:
 ```
 
 
-La **traduzione** non viene fatta normalmente direttamente sul gateway, anche se lui li traduce effettivamente in un JSON di servizio ma senza scompattare il payload applicativo (componente lora-gateway-bridge del gateway). La **trasformazione dei dati** (come la codifica e decodifica in formato Cayenne LPP) tipicamente avviene a livello di **server di rete** o di **server di applicazione**. Ecco come potrebbe essere gestita:
+La **deserializzazione** del  campo ```data``` dal formato pacchettizzato binario al formato strutturato nei singoli campi contenenti i valori delle varie misure, non viene fatta normalmente direttamente sul gateway, lui li traduce effettivamente in un **JSON di servizio** ma senza scompattare il payload applicativo (componente lora-gateway-bridge del gateway). La **trasformazione dei dati** (come la codifica e decodifica in formato Cayenne LPP) tipicamente avviene a livello di **server di rete** o di **server di applicazione** o di **dashboard di viualizzazione** (ad esempio web). Ecco come potrebbe essere gestita:
 
 - **Server di Rete LoRaWAN (Network Server)**: Alcuni server di rete LoRaWAN, come quelli offerti da The Things Network (TTN) o ChirpStack, forniscono integrazioni che possono gestire il payload dei dispositivi. E' possibile configurare questi server per utilizzare codec specifici che codificano o decodificano i messaggi nel formato desiderato, come Cayenne LPP.
 
