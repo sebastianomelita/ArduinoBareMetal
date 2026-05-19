@@ -25,6 +25,11 @@ Il nodo terminale apre due slot di ricezione in t1 e t2 secondi dopo una trasmis
 
   <img src="img/classAlora.png" alt="alt text" width="600">
 
+In LoRaWAN un end-device Class A apre due finestre di ricezione dopo ogni uplink:
+
+- RX1: 1 secondo dopo l'uplink, sulla stessa frequenza dell'uplink, con uno SF derivato. Se il gateway risponde in RX1 → trasmette ad esempio su 868,1 MHz (sotto-banda g1) → 1% di duty cycle disponibile, come gli uplink.
+- RX2: 2 secondi dopo l'uplink, frequenza fissa 869,525 MHz, SF12 (default EU868). Se il gateway risponde in RX2 → trasmette su 869,525 MHz (sotto-banda g3) → 10% di duty cycle disponibile, dieci volte più budget.
+
 ### **Classe B**
 
 Oltre agli slot di ricezione di Classe A, i dispositivi di classe B aprono slot di ricezione aggiuntivi a orari programmati.
