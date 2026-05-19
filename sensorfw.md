@@ -222,7 +222,7 @@ while True:
         last_sent_time = current_time
 ```
 
-## Fasi in Python LoRaWAN (payload non compattato)
+## Fasi in Python LoRaWAN (payload compattato)
 
 ``` python
 # Versione di test: invia numeri casuali a TTN via LoRaWAN.
