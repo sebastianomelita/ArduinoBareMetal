@@ -25,6 +25,7 @@ I **criteri** riguardano anche alcuni dettagli fisici e tecnici:
   
      - **Trasmissione parallela su più canali**. In questo caso, la stessa sorgente trasmette su due canali in due sottobande diverse con una occupazione di due unità su 10 (cioè 20 su 100) per ciascun ciascun canale. Il duty cycle totale della sorgente, in questo caso, è del 60%. Dopo che il dispositivo ha trasmesso su un canale, non trasmetterà nuovamente su quel canale finché non sarà raggiunto il tempo minimo di disattivazione TX, che è un tempo maggiore di 100 ms.       
       <img src="img/duty-cycle-multi-band.png" alt="alt text" width="600">
+
      
      - **Duty cycle aggregato**. È utile avere molti canali nella maschera dei canali, in modo che le trasmissioni abbiano meno probabilità di subire ritardi. I requisiti europei stabiliscono inoltre che su uno spettro di 200 kHz possono verificarsi solo 100 secondi di trasmissione nell'arco di un'ora. Questo metodo semplifica e ottimizza i calcoli dell'utilizzo dello spettro nell'arco di un'ora. Lo standard afferma che più canali si usano, più tempo di trasmissione puoi occupare in un periodo di un'ora. Si può calcolare il duty cycle effettivo in base al numero di canali disponibili abilitati come segue:
 ```Duty cycle effettivo = (numero di canali * 36)/3600```. Ad esempio, se si abilitassero **due canali** si avrebbe un **duty cycle effettivo** del **2%**.
@@ -84,9 +85,66 @@ In LoRaWAN un end-device Class A apre due finestre di ricezione dopo ogni uplink
 - **RX1**: 1 secondo dopo l'uplink, sulla stessa frequenza dell'uplink, con uno SF derivato. Se il gateway risponde in RX1 → trasmette ad esempio su 868,1 MHz (sotto-banda g1) → 1% di duty cycle disponibile, come gli uplink. In RX1 lo SF del downlink è determinato dallo SF dell'uplink, secondo una tabella di "RX1 DR offset" definita per regione. In EU868 con offset = 0 (default), la regola è:SF del downlink = SF dell'uplink
 - **RX2**: 2 secondi dopo l'uplink, frequenza fissa 869,525 MHz, SF12 (default EU868). Se il gateway risponde in RX2 → trasmette su 869,525 MHz (sotto-banda g3) → 10% di duty cycle disponibile, dieci volte più budget. In RX2 lo SF è un valore fisso scelto dal Network Server e comunicato al device. In EU868 il default specificato dallo standard è SF12BW125 (DR0), questo è anche il default della specifica LoRaWAN, scelto per massimizzare la sensibilità del downlink di emergenza (quello che deve "sempre arrivare", tipo i LinkADRReq di setup). Si può cambiare ma non è consigliabile se si vuole garantire la buona probabilità di consegna di messaggi di emergenza o di configurazione (OTA) fino ai dispositivi più remoti.
 
+# Parallelizzazione in uplink in LoRaWAN EU868
 
-    - **Trasmissioni parallele**. Di queste, 5 (numerate da B0 a B5) sono utilizzabili dai nodi di terminali e permettono, mediante parallellizazione FDM dei flussi di bit su 5 canali diversi, un  duty cycle complessivo del 3.2%. Il **gateway** LoRaWAN utilizza un'architettura a basso costo e basso consumo energetico che consente il posizionamento di una **coppia di radio** con larghezza  di banda di **1 MHz** ovunque nella banda ISM dell'UE. Gli **otto canali** di ricezione LoRa sono posizionati all'interno di queste due bande da 1 MHz. Quindi una applicazione su un dispositivo, avrà la  possibilità di poter dividere il duty cycle su **due sole sottofasce**. Nella maggior parte delle reti, queste saranno scelte vantaggiosamente se si concentreranno sulle allocazioni di uplink dell'1%, piuttosto che in quelle allo 0.1%. Ciò significa che ci si può ragionevolmente aspettare il **2% di duty cycle** aggregato disponibile per una **stessa sorgente**.
-  
+In LoRaWAN si parla di "parallelizzazione" in tre sensi diversi che è importante distinguere, perché operano su scale diverse e con conseguenze diverse sul duty cycle.
+
+## 1. Parallelismo del singolo dispositivo: non esiste
+
+Un end-device ha **un solo modem radio** (SX1276 o SX1262) con una sola catena RF e un solo PLL. Può trasmettere su **una frequenza alla volta**, punto. Quando "salta" tra canali (channel hopping), lo fa **in sequenza**, non in parallelo: una TX su 868,1, poi un'altra su 867,3, poi su 868,5, eccetera.
+
+Questo non è una restrizione regolatoria europea, è un vincolo hardware uguale in tutto il mondo.
+
+## 2. Parallelismo del gateway: esiste e si chiama "ricezione concorrente"
+
+Il gateway, al contrario del device, usa un chip concentrator (SX1301 / SX1302 / SX1303) con **8 demodulatori paralleli**. Può quindi **ricevere fino a 8 uplink simultanei** su frequenze e Spreading Factor diversi senza collisioni a livello fisico.
+
+Conseguenze pratiche:
+- Se 8 device trasmettono nello stesso istante su 8 frequenze diverse, il gateway li riceve tutti.
+- Se due device trasmettono nello stesso istante sulla **stessa** frequenza e stesso SF, c'è collisione e (probabilmente) il gateway perde entrambi.
+- Lo SF aggiunge un livello extra di "isolamento": due segnali sulla stessa frequenza con SF diversi sono in larga misura indipendenti grazie all'ortogonalità quasi-perfetta dello chirp spread spectrum. Il gateway li può separare.
+
+Quindi a livello di **sistema**, LoRaWAN EU868 è progettato per gestire molti uplink concorrenti, e la "parallelizzazione" lato infrastruttura è una caratteristica fondante.
+
+## 3. Parallelizzazione "nel tempo" — distribuire le TX su più canali e sotto-bande
+
+Questa è la forma di parallelismo che riguarda davvero il device, ed è il motivo per cui si parla di "duty cycle aggregato".
+
+**Il principio:** il device non trasmette davvero in parallelo (vedi punto 1), ma **distribuendo le TX consecutive su canali diversi**, e soprattutto su **sotto-bande diverse**, ottiene una capacità di trasmissione aggregata superiore a quella che avrebbe restando su una sola frequenza.
+
+**Perché funziona:** ETSI impone il duty cycle dell'1% **per sotto-banda di frequenza**, non per dispositivo. Quindi se il device usa contemporaneamente canali in:
+- sotto-banda **L** (865-868 MHz) → 1% di budget dedicato = 36 s/ora
+- sotto-banda **M** (868-868,6 MHz) → 1% di budget dedicato = 36 s/ora
+
+I due budget sono **indipendenti**. Il device può consumare entrambi, arrivando a **72 secondi di TX per ora**, ovvero un duty cycle "del dispositivo" (descrittivo) del 2%, pur restando perfettamente entro l'1% **per sotto-banda** che è la regola normativa.
+
+**Tabella concreta per EU868:**
+
+| Configurazione | Canali | Sotto-bande coinvolte | TX time/ora aggregato |
+|---|---|---|---|
+| Solo 3 canali standard | 868,1 / 868,3 / 868,5 | solo M | 36 s |
+| 8 canali standard estesi | 867,1/3/5/7/9 + 868,1/3/5 | L + M | **72 s** |
+| 3 canali standard nella stessa sotto-banda | tutti in M | solo M | sempre 36 s (no guadagno) |
+
+Nota importante: aprire più canali **nella stessa sotto-banda** non aumenta il budget aggregato. I 3 canali obbligatori 868,1 / 868,3 / 868,5 sono tutti in sotto-banda M: usarli tutti e tre non triplica il budget, lo distribuisce sui tre canali.
+
+## 4. Quello che NON è ammesso
+
+Tre cose che a volte si pensano possibili in Europa ma non lo sono:
+
+- **Trasmissioni simultanee dallo stesso device** (richiederebbe due modem RF, hardware non standard).
+- **Channel bonding** stile WiFi, in cui due canali da 125 kHz si fondono in uno da 250 kHz per raddoppiare il throughput. In LoRaWAN questo non esiste: ogni canale è un'entità separata. L'unica eccezione è DR6 a 250 kHz, ma è una banda diversa, non un'aggregazione.
+- **Trasmettere senza duty cycle "perché tanto cambio canale"**. Il duty cycle si misura sulla sotto-banda; cambiare canale all'interno della stessa sotto-banda non aiuta. Cambiare sotto-banda sì, ma resti comunque vincolato all'1% di ciascuna.
+
+## 5. Implicazioni pratiche per chi sviluppa
+
+- **Configurare il device per usare tutti gli 8 canali EU868** (e non solo i 3 obbligatori) è di fatto un *raddoppio* del budget di TX. Librerie come `ulora` lo fanno di default con `country="EU"`.
+- **Il gateway deve essere configurato per ascoltare gli stessi canali** del device, altrimenti i pacchetti sui canali "estranei" cadono nel vuoto. È quello che vedi sul Conduit quando aggiungi i canali 867,x in Network Settings → Additional Channels.
+- **Il duty cycle dell'1% è la regola legale**, ma il vincolo pratico per applicazioni dense è il **tempo radio del gateway**: un singolo gateway che riceve 100 device in zona può saturare la sua capacità in ricezione (8 demodulatori) o in trasmissione (1 TX simultanea per i downlink).
+- **Per applicazioni che richiedono molti uplink veloci**, l'unica strada legittima è ridurre il time-on-air per messaggio (SF basso, payload piccolo, coding rate 4/5) e distribuire bene sui canali, piuttosto che cercare scorciatoie regolatorie.
+
+Per il tuo Heltec specifico: con `ulora` su tutti gli 8 canali e SF12, il limite pratico resta intorno a **48 trasmissioni/ora del payload completo da 24 byte** (24 a SF12 in g1 + 24 in g/L). Per fare di più, serve scendere di SF o ridurre il payload.
+
 - **Modalità avanzate di accesso** al canale radio. Sono consentiti due **schemi di riferimento**: ascolto del canale prima di parlare (LBT) e Agilità di frequenza adattiva (AFA). **LBT (listen befor Talk)** è una modalità di accesso nella quale un dispositivo che deve trasmettere non occupa subito il canale ma, prima di parlare, deve ascoltare se il mezzo è già in uso attivando la funzione di **CCA** (Clear Channel Assessment).
     - Se il canale **è libero**, e sono passati 100 msec dall'ultima trasmissione allora si può procedere immediatamente con la trasmissione.
     - Se il canale **è occupato**, per evitare una collisione, la successiva trasmissione deve essere **spostata** o nel **tempo** o nella **frequenza**:
