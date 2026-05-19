@@ -194,8 +194,8 @@ In sintesi, la lunghezza dei messaggi LoRaWAN è strettamente correlata alle **l
 | **LoRaWAN** | 8 | indirizzamento, contatore, controllo, porta | stack LoRaWAN |
 | **Totale overhead** | **25,5** | | |
 
-- **PHY**, circa 13 byte è l'header
-- **MAC + LoRaWAN**, 13 byte, sono l'header overhead del calcolatore online 
+- **PHY**, circa 13 byte è l'**header Lora**
+- **MAC + LoRaWAN**, 13 byte, sono l'**header LoraWAN**, cioè l'header overhead del calcolatore online 
 
 I messaggi scambiati in una rete LoraWAN sono complessivamente di due tipi che si mappano l’uno sull’altro: **Messaggi corti** e **messaggi lunghi**. 
 
