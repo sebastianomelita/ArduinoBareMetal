@@ -417,5 +417,6 @@ Per il dettaglio sulla gestione delle classi di servizio vedi [Classi di servizi
 - https://webthesis.biblio.polito.it/secure/18698/1/tesi.pdf
 - https://www.starlink.com/business/direct-to-cell
 - https://eadalabs.com/lorawan-overhead/
+- https://divan.dev/posts/fountaincodes/
 
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
