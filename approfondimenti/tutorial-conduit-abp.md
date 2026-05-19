@@ -1,3 +1,13 @@
+>[Torna a reti di sensori](../sensornetworkshort.md)>[Torna a reti ethernet](../archeth.md)
+
+- [Dettaglio architettura Zigbee](../archzigbee.md)
+- [Dettaglio architettura BLE](../archble.md)
+- [Dettaglio architettura WiFi infrastruttura](../archwifi.md)
+- [Dettaglio architettura WiFi mesh](../archmesh.md) 
+- [Dettaglio architettura LoraWAN](../lorawanclasses.md) 
+
+
+
 # Tutorial: configurare un end-device LoRaWAN ABP su MultiTech Conduit (mPower)
 
 Guida operativa basata su un setup reale: gateway **MultiTech Conduit MTCDTIP-267A**, firmware **mPower 6.0.1**, in modalità **Network Server locale** (non packet-forwarder verso TTN). End-device **Heltec ESP32 LoRa V2 / Wireless Stick** con firmware MicroPython che usa la libreria `ulora` in attivazione **ABP**.
