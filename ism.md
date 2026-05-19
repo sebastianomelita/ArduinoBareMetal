@@ -80,8 +80,6 @@ E il limite **dipende dalla sotto-banda** su cui trasmetti, non dalla direzione.
 | **g3** | **869,4 – 869,65 MHz** | **10%** | **500 mW (27 dBm)** | **downlink RX2 (869,525)** |
 | g4 | 869,7 – 870,0 MHz | 1% | 5 mW | — |
 
-## Il punto chiave per il downlink LoRaWAN
-
 In LoRaWAN un end-device Class A apre due finestre di ricezione dopo ogni uplink:
 
 - **RX1**: 1 secondo dopo l'uplink, **sulla stessa frequenza** dell'uplink, con uno SF derivato.
