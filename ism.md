@@ -63,7 +63,35 @@ Organizzare i canali in **bande** può servire per isolare **gruppi di canali** 
             - +14 dBm = 25 mW
             - +27 dBm = 500 mW
     ```
-   
+Prima cosa importante: il duty cycle non è una regola del protocollo LoRaWAN, è una regola **regolatoria europea** (ETSI EN 300 220) che vincola **chiunque trasmetta** sulla banda 863-870 MHz, sia esso un device o un gateway.
+
+Quindi vale per:
+- gli **uplink** trasmessi dai device (di cui parlavamo prima)
+- i **downlink** trasmessi dal gateway
+
+E il limite **dipende dalla sotto-banda** su cui trasmetti, non dalla direzione.
+
+| Sotto-banda | Frequenze | Duty cycle | Potenza max | Uso tipico in LoRaWAN |
+|---|---|---|---|---|
+| g | 863,0 – 870,0 MHz (generica) | 1% | 25 mW (14 dBm) | — |
+| h1.4 / g | 865,0 – 868,0 MHz | 1% | 25 mW | uplink (canali 867,1–867,9) |
+| **g1** | **868,0 – 868,6 MHz** | **1%** | **25 mW** | uplink (canali 868,1/3/5) |
+| g2 | 868,7 – 869,2 MHz | 0,1% | 25 mW | poco usato |
+| **g3** | **869,4 – 869,65 MHz** | **10%** | **500 mW (27 dBm)** | **downlink RX2 (869,525)** |
+| g4 | 869,7 – 870,0 MHz | 1% | 5 mW | — |
+
+## Il punto chiave per il downlink LoRaWAN
+
+In LoRaWAN un end-device Class A apre due finestre di ricezione dopo ogni uplink:
+
+- **RX1**: 1 secondo dopo l'uplink, **sulla stessa frequenza** dell'uplink, con uno SF derivato.
+- **RX2**: 2 secondi dopo l'uplink, **frequenza fissa 869,525 MHz**, SF12 (default EU868).
+
+Risultato:
+
+- Se il gateway risponde in **RX1** → trasmette ad esempio su 868,1 MHz (sotto-banda g1) → **1% di duty cycle** disponibile, come gli uplink.
+- Se il gateway risponde in **RX2** → trasmette su 869,525 MHz (sotto-banda **g3**) → **10% di duty cycle** disponibile, **dieci volte più budget**.
+
     - **Trasmissioni parallele**. Di queste, 5 (numerate da B0 a B5) sono utilizzabili dai nodi di terminali e permettono, mediante parallellizazione FDM dei flussi di bit su 5 canali diversi, un  duty cycle complessivo del 3.2%. Il **gateway** LoRaWAN utilizza un'architettura a basso costo e basso consumo energetico che consente il posizionamento di una **coppia di radio** con larghezza  di banda di **1 MHz** ovunque nella banda ISM dell'UE. Gli **otto canali** di ricezione LoRa sono posizionati all'interno di queste due bande da 1 MHz. Quindi una applicazione su un dispositivo, avrà la  possibilità di poter dividere il duty cycle su **due sole sottofasce**. Nella maggior parte delle reti, queste saranno scelte vantaggiosamente se si concentreranno sulle allocazioni di uplink dell'1%, piuttosto che in quelle allo 0.1%. Ciò significa che ci si può ragionevolmente aspettare il **2% di duty cycle** aggregato disponibile per una **stessa sorgente**.
   
 - **Modalità avanzate di accesso** al canale radio. Sono consentiti due **schemi di riferimento**: ascolto del canale prima di parlare (LBT) e Agilità di frequenza adattiva (AFA). **LBT (listen befor Talk)** è una modalità di accesso nella quale un dispositivo che deve trasmettere non occupa subito il canale ma, prima di parlare, deve ascoltare se il mezzo è già in uso attivando la funzione di **CCA** (Clear Channel Assessment).
