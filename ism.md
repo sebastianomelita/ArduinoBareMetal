@@ -15,8 +15,11 @@ L'ente regolatore, in Italia il Ministero dello Sviluppo Economico (MISE), fissa
 
 I **parametri** e le **limitazioni** che vedremo sono dei criteri di accesso al mezzo radio volti a ridurre **disturbi mutui** fra i vari servizi dei vari utenti e la **monopolizzazione** di un canale da parte di un singolo utente.
 
-I **criteri** riguardano anche alcuni dettagli fisici e tecnici:
-- Il **Duty Cycle** fa riferimento al rapporto fra il tempo di trasmissione e il tempo di ricezione più il tempo di ricezione. E' analogo ad un **periodo di attesa** obbligatorio tra una trasmissione e la successiva. Ad esempio un duty cycle dell'1% impone che a fronte della trasmissione di un pacchetto dati di un secondo, l’apparato non possa trasmettere per 99 secondi. Questo parametro, di fatto, limita a trasmissioni brevi, non frequenti ed esclude gli streaming audio e video. La durata predefinita del periodo di osservazione è di 1 ora, se non diversamente specificato per la banda di frequenza specifica. Attualmente tutte le bande di frequenza utilizzano il periodo di osservazione predefinito di 1 ora. I Duty Cycle variano dallo 0,1% (3,6 s all'ora), passando per 1% (36 s all'ora),  fino al 10% (360 s all'ora). Il  **tempo giornaliero** di occupazione del canale corrispondente al duty cycle massimo consentito per quel canale può essere riassunto:
+I **criteri** riguardano anche alcuni dettagli fisici e tecnici.
+
+## **Duty Cycle** 
+
+Fa riferimento al rapporto fra il tempo di trasmissione e il tempo di ricezione più il tempo di ricezione. E' analogo ad un **periodo di attesa** obbligatorio tra una trasmissione e la successiva. Ad esempio un duty cycle dell'1% impone che a fronte della trasmissione di un pacchetto dati di un secondo, l’apparato non possa trasmettere per 99 secondi. Questo parametro, di fatto, limita a trasmissioni brevi, non frequenti ed esclude gli streaming audio e video. La durata predefinita del periodo di osservazione è di 1 ora, se non diversamente specificato per la banda di frequenza specifica. Attualmente tutte le bande di frequenza utilizzano il periodo di osservazione predefinito di 1 ora. I Duty Cycle variano dallo 0,1% (3,6 s all'ora), passando per 1% (36 s all'ora),  fino al 10% (360 s all'ora). Il  **tempo giornaliero** di occupazione del canale corrispondente al duty cycle massimo consentito per quel canale può essere riassunto:
     ```C++
           0.1%	86 seconds
           1%	864 seconds
@@ -32,7 +35,9 @@ I **criteri** riguardano anche alcuni dettagli fisici e tecnici:
 
     - **Calcolatori online**. Un esempio di calcolatore online di duty cycle per la **tecnologia LoraWAN** è: https://avbentem.github.io/airtime-calculator/ttn/eu868
   
-* **Canali e bande**. I **canali** sono intervalli di frequenza adoperati per allocare nel dominio della frequenza la trasmissione di una certa sorgente. Un canale è caratterizzato da una frequenza centrale e da una sua ampiezza (rappresentabile anche come escursione dalla frequenza centrale. Le **bande** sono intervalli di frequenza all'interno delle quali sono allocabili un certo numero di canali.
+## **Canali e bande**. 
+
+I **canali** sono intervalli di frequenza adoperati per allocare nel dominio della frequenza la trasmissione di una certa sorgente. Un canale è caratterizzato da una frequenza centrale e da una sua ampiezza (rappresentabile anche come escursione dalla frequenza centrale. Le **bande** sono intervalli di frequenza all'interno delle quali sono allocabili un certo numero di canali.
 Organizzare i canali in **bande** può servire per isolare **gruppi di canali** che possono essere adoperati per gli **stessi servizi**. Organizzare i canali in **sottobande** può servire per isolare **gruppi di canali** a cui applicare le **stesse regole**. Ad esempio, le sottobande LoraWAN in Europa sono :  
 
   <img src="img/LoRaWAN_Sub-bands.webp" alt="alt text" width="600">
@@ -85,17 +90,17 @@ In LoRaWAN un end-device Class A apre due finestre di ricezione dopo ogni uplink
 - **RX1**: 1 secondo dopo l'uplink, sulla stessa frequenza dell'uplink, con uno SF derivato. Se il gateway risponde in RX1 → trasmette ad esempio su 868,1 MHz (sotto-banda g1) → 1% di duty cycle disponibile, come gli uplink. In RX1 lo SF del downlink è determinato dallo SF dell'uplink, secondo una tabella di "RX1 DR offset" definita per regione. In EU868 con offset = 0 (default), la regola è:SF del downlink = SF dell'uplink
 - **RX2**: 2 secondi dopo l'uplink, frequenza fissa 869,525 MHz, SF12 (default EU868). Se il gateway risponde in RX2 → trasmette su 869,525 MHz (sotto-banda g3) → 10% di duty cycle disponibile, dieci volte più budget. In RX2 lo SF è un valore fisso scelto dal Network Server e comunicato al device. In EU868 il default specificato dallo standard è SF12BW125 (DR0), questo è anche il default della specifica LoRaWAN, scelto per massimizzare la sensibilità del downlink di emergenza (quello che deve "sempre arrivare", tipo i LinkADRReq di setup). Si può cambiare ma non è consigliabile se si vuole garantire la buona probabilità di consegna di messaggi di emergenza o di configurazione (OTA) fino ai dispositivi più remoti.
 
-# Parallelizzazione in uplink in LoRaWAN EU868
+## **Parallelizzazione in uplink in LoRaWAN EU868**
 
 In LoRaWAN si parla di "parallelizzazione" in tre sensi diversi che è importante distinguere, perché operano su scale diverse e con conseguenze diverse sul duty cycle.
 
-## 1. Parallelismo del singolo dispositivo: non esiste
+### 1. Parallelismo del singolo dispositivo: non esiste
 
 Un end-device ha **un solo modem radio** (SX1276 o SX1262) con una sola catena RF e un solo PLL. Può trasmettere su **una frequenza alla volta**, punto. Quando "salta" tra canali (channel hopping), lo fa **in sequenza**, non in parallelo: una TX su 868,1, poi un'altra su 867,3, poi su 868,5, eccetera.
 
 Questo non è una restrizione regolatoria europea, è un vincolo hardware uguale in tutto il mondo.
 
-## 2. Parallelismo del gateway: esiste e si chiama "ricezione concorrente"
+### 2. Parallelismo del gateway: esiste e si chiama "ricezione concorrente"
 
 Il gateway, al contrario del device, usa un chip concentrator (SX1301 / SX1302 / SX1303) con **8 demodulatori paralleli**. Può quindi **ricevere fino a 8 uplink simultanei** su frequenze e Spreading Factor diversi senza collisioni a livello fisico.
 
@@ -106,7 +111,7 @@ Conseguenze pratiche:
 
 Quindi a livello di **sistema**, LoRaWAN EU868 è progettato per gestire molti uplink concorrenti, e la "parallelizzazione" lato infrastruttura è una caratteristica fondante.
 
-## 3. Parallelizzazione "nel tempo" — distribuire le TX su più canali e sotto-bande
+### 3. Parallelizzazione "nel tempo" — distribuire le TX su più canali e sotto-bande
 
 Questa è la forma di parallelismo che riguarda davvero il device, ed è il motivo per cui si parla di "duty cycle aggregato".
 
@@ -128,7 +133,7 @@ I due budget sono **indipendenti**. Il device può consumare entrambi, arrivando
 
 Nota importante: aprire più canali **nella stessa sotto-banda** non aumenta il budget aggregato. I 3 canali obbligatori 868,1 / 868,3 / 868,5 sono tutti in sotto-banda M: usarli tutti e tre non triplica il budget, lo distribuisce sui tre canali.
 
-## 4. Quello che NON è ammesso
+### 4. Quello che NON è ammesso
 
 Tre cose che a volte si pensano possibili in Europa ma non lo sono:
 
@@ -136,16 +141,15 @@ Tre cose che a volte si pensano possibili in Europa ma non lo sono:
 - **Channel bonding** stile WiFi, in cui due canali da 125 kHz si fondono in uno da 250 kHz per raddoppiare il throughput. In LoRaWAN questo non esiste: ogni canale è un'entità separata. L'unica eccezione è DR6 a 250 kHz, ma è una banda diversa, non un'aggregazione.
 - **Trasmettere senza duty cycle "perché tanto cambio canale"**. Il duty cycle si misura sulla sotto-banda; cambiare canale all'interno della stessa sotto-banda non aiuta. Cambiare sotto-banda sì, ma resti comunque vincolato all'1% di ciascuna.
 
-## 5. Implicazioni pratiche per chi sviluppa
+### 5. Implicazioni pratiche per chi sviluppa
 
 - **Configurare il device per usare tutti gli 8 canali EU868** (e non solo i 3 obbligatori) è di fatto un *raddoppio* del budget di TX. Librerie come `ulora` lo fanno di default con `country="EU"`.
 - **Il gateway deve essere configurato per ascoltare gli stessi canali** del device, altrimenti i pacchetti sui canali "estranei" cadono nel vuoto. È quello che vedi sul Conduit quando aggiungi i canali 867,x in Network Settings → Additional Channels.
 - **Il duty cycle dell'1% è la regola legale**, ma il vincolo pratico per applicazioni dense è il **tempo radio del gateway**: un singolo gateway che riceve 100 device in zona può saturare la sua capacità in ricezione (8 demodulatori) o in trasmissione (1 TX simultanea per i downlink).
 - **Per applicazioni che richiedono molti uplink veloci**, l'unica strada legittima è ridurre il time-on-air per messaggio (SF basso, payload piccolo, coding rate 4/5) e distribuire bene sui canali, piuttosto che cercare scorciatoie regolatorie.
 
-Per il tuo Heltec specifico: con `ulora` su tutti gli 8 canali e SF12, il limite pratico resta intorno a **48 trasmissioni/ora del payload completo da 24 byte** (24 a SF12 in g1 + 24 in g/L). Per fare di più, serve scendere di SF o ridurre il payload.
-
-- **Modalità avanzate di accesso** al canale radio. Sono consentiti due **schemi di riferimento**: ascolto del canale prima di parlare (LBT) e Agilità di frequenza adattiva (AFA). **LBT (listen befor Talk)** è una modalità di accesso nella quale un dispositivo che deve trasmettere non occupa subito il canale ma, prima di parlare, deve ascoltare se il mezzo è già in uso attivando la funzione di **CCA** (Clear Channel Assessment).
+## **Modalità avanzate di accesso**
+Sono consentiti due **schemi di riferimento**: ascolto del canale prima di parlare (LBT) e Agilità di frequenza adattiva (AFA). **LBT (listen befor Talk)** è una modalità di accesso nella quale un dispositivo che deve trasmettere non occupa subito il canale ma, prima di parlare, deve ascoltare se il mezzo è già in uso attivando la funzione di **CCA** (Clear Channel Assessment).
     - Se il canale **è libero**, e sono passati 100 msec dall'ultima trasmissione allora si può procedere immediatamente con la trasmissione.
     - Se il canale **è occupato**, per evitare una collisione, la successiva trasmissione deve essere **spostata** o nel **tempo** o nella **frequenza**:
         - **nel tempo**, il dispositivo deve **attendere** che siano vere entrambe le seguenti condizioni: che il canale **diventi libero** e che siano passati almeno 100 msec dall'ultima trasmissione. A **questa attesa** si deve sommare un **ritardo** aggiuntivo dato da un **backoff casuale** prima di **ritentare** il **CCA** sullo **stesso canale**. 
@@ -156,7 +160,9 @@ Per il tuo Heltec specifico: con `ulora` su tutti gli 8 canali e SF12, il limite
      
     <img src="img/13638_2019_1502_Fig3_HTML.png" alt="alt text" width="500" style="margin-top: 20px;">
 
-    - **Duty cycle aggregato con LBT**. È utile avere molti canali nella maschera dei canali, in modo che le trasmissioni abbiano meno probabilità di subire ritardi. I requisiti europei stabiliscono inoltre che, usando LBT, su uno spettro di 200 kHz possono verificarsi solo **100 secondi** di trasmissione **nell'arco di un'ora**. Questo metodo semplifica e ottimizza i calcoli dell'utilizzo dello spettro nell'arco di un'ora. Lo standard afferma che più canali si adoperano per trasmettere, più tempo di trasmissione si può occupare in un periodo di un'ora. Si può calcolare il duty cycle effettivo in base al numero di canali disponibili abilitati come segue:
+## **Duty cycle aggregato con LBT**.
+
+È utile avere molti canali nella maschera dei canali, in modo che le trasmissioni abbiano meno probabilità di subire ritardi. I requisiti europei stabiliscono inoltre che, usando LBT, su uno spettro di 200 kHz possono verificarsi solo **100 secondi** di trasmissione **nell'arco di un'ora**. Questo metodo semplifica e ottimizza i calcoli dell'utilizzo dello spettro nell'arco di un'ora. Lo standard afferma che più canali si adoperano per trasmettere, più tempo di trasmissione si può occupare in un periodo di un'ora. Si può calcolare il duty cycle effettivo in base al numero di canali disponibili abilitati come segue:
 ```Duty cycle effettivo = (numero di canali * 100)/3600```. Ad esempio, se si abilitassero **due canali** si avrebbe un **duty cycle effettivo** del **5,6%**.
 
     - **vincoli su CCA e backoff**.
@@ -179,7 +185,9 @@ In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla den
        
   <img src="img/Antenna-gain-dBi2.png" alt="alt text" width="1000">
   
-     - **Antenne direttive vs omnidirezionali**. Per ottenere il massimo guadagno di antenna complessivo di un **collegamento** è necessario **collimare** le antenne trasmittente e ricevente nella direzione di massimo guadagno. Si tenga conto che maggiore è la direttività delle antenne e più precisa e stabile nel tempo dovrà essere mantenuta questa collimazione (aspetto perlomeno critico praticamente), ciò va bene per collegamenti fissi **punto punto** come i **ponti radio**. Se invece, uno terminale è **mobile** o se il collegamento è **punto-multipunto** con un cluster di dispositivi sparpagliati in una certa area dello spazio, allora è più pratico utilizzare antenne con bassa direttività se non addirittura antenne ominidirezionali, cioè isotrope, almeno nel lato a uno del collegamento (gateway). Vedremo dopo che, nella banda ISM, per limitare le interferenze ad altri dispositivi posti in prossimità dell'antenna, si lasciano pressochè omnidirezionali anche le antenne del lato a molti (dispositivi terminali).
+## **Antenne direttive vs omnidirezionali**.
+
+Per ottenere il massimo guadagno di antenna complessivo di un **collegamento** è necessario **collimare** le antenne trasmittente e ricevente nella direzione di massimo guadagno. Si tenga conto che maggiore è la direttività delle antenne e più precisa e stabile nel tempo dovrà essere mantenuta questa collimazione (aspetto perlomeno critico praticamente), ciò va bene per collegamenti fissi **punto punto** come i **ponti radio**. Se invece, uno terminale è **mobile** o se il collegamento è **punto-multipunto** con un cluster di dispositivi sparpagliati in una certa area dello spazio, allora è più pratico utilizzare antenne con bassa direttività se non addirittura antenne ominidirezionali, cioè isotrope, almeno nel lato a uno del collegamento (gateway). Vedremo dopo che, nella banda ISM, per limitare le interferenze ad altri dispositivi posti in prossimità dell'antenna, si lasciano pressochè omnidirezionali anche le antenne del lato a molti (dispositivi terminali).
       
        <img src="img/dbd-dbi-img-rf-community-2_636160177208686785.jpg" alt="alt text" width="600">
        
