@@ -241,6 +241,40 @@ Serve a realizzare un ponte tra:
 **"Voglio vedere cosa il NS sta dicendo al device."**
 → `mac_sent` (cosa significa) e `packet_sent` (come viene trasmesso).
 
+### Differenza chiave: `packet_recv` vs `up`
+
+```
+            ┌─────────────────────────────────────────────┐
+            │  Frame demodulato dalla radio (CRC OK)      │
+            └──────────────────────┬──────────────────────┘
+                                   │
+                                   ▼
+              ┌────────── pubblicazione su `packet_recv` ──────────┐
+              │   contiene: metadati radio + data CIFRATO          │
+              │   pubblicato SEMPRE, anche se i passi 1-4 falliscono│
+              └─────────────────────┬──────────────────────────────┘
+                                    │
+                                    ▼
+                       [ 4 passi di decifratura ]
+                                    │
+                  ┌─────────────────┴─────────────────┐
+                  │                                   │
+                  ▼                                   ▼
+          ✗ qualche passo                   ✓ tutti i passi
+            fallisce                          superati
+                  │                                   │
+                  ▼                                   ▼
+         scartato, niente               pubblicazione su `up`
+         pubblicato su `up`             contiene: metadati + data CHIARO
+```
+
+**Conseguenze pratiche.**
+
+- Un device che trasmette ma è **registrato male sul Conduit** (chiavi sbagliate, FCnt incoerente): i suoi pacchetti compaiono in `packet_recv` ma **mai** in `up`. È esattamente questo lo scenario "Recent Rx Packets vede il pacchetto ma Sessions non si aggiorna".
+- Un device **completamente sconosciuto** (DevAddr non corrispondente a nessuna Session): stessa cosa, `packet_recv` sì, `up` no.
+- Un device **funzionante**: `packet_recv` + `up` pubblicati per ogni TX, contemporaneamente.
+
+
 ### **Tutti i topic**
 Topic in cui recuperare tutti i **messaggi associati** ad un **gateway** avente identificativo univoco ```APP-EUI```e a un **dispositivo IoT** avente un identificativo EUI64 che vale ```APP-EUI``` 
 L'**associazione** può riguardare i **topic**:
