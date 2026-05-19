@@ -227,6 +227,20 @@ Serve a realizzare un ponte tra:
 | `packet_sent` | **downlink** | PHY | Quando il gateway sta per trasmettere un downlink | `data` del frame downlink (cifrato), parametri TX | Tracciamento downlink lato radio |
 | `mac_sent` | **downlink** | LoRaWAN | Quando il NS spedisce un MAC command | `opts` = MAC commands codificati (LinkADRReq, DevStatusReq…) | Capire perché il NS parla al device |
 
+### Quale topic serve per cosa
+
+**"Voglio leggere i dati del mio sensore."**
+→ `lora/<DevEUI>/up`. È il topic principale. Tutto il resto è diagnostica.
+
+**"Voglio capire perché un device non funziona."**
+→ Sottoscrivi a `lora/<DevEUI>/#` (wildcard `#` = tutti i sotto-topic). Vedi `packet_recv` ma non `up` → il NS sta scartando i pacchetti, controlla chiavi e FCnt. Vedi sia `packet_recv` che `up` → tutto ok lato pipeline, il problema è nell'applicazione.
+
+**"Voglio statistiche sulla qualità del link."**
+→ `packet_recv` (RSSI, SNR per ogni frame ricevuto) + `packet_missed` (frame persi).
+
+**"Voglio vedere cosa il NS sta dicendo al device."**
+→ `mac_sent` (cosa significa) e `packet_sent` (come viene trasmesso).
+
 ### **Tutti i topic**
 Topic in cui recuperare tutti i **messaggi associati** ad un **gateway** avente identificativo univoco ```APP-EUI```e a un **dispositivo IoT** avente un identificativo EUI64 che vale ```APP-EUI``` 
 L'**associazione** può riguardare i **topic**:
