@@ -164,7 +164,7 @@ void loop() {
 }
 ```
 
-## Fasi in Python
+## Fasi in Python WiFi (payload non compattato)
 
 ``` Python
 import time
@@ -222,6 +222,151 @@ while True:
         last_sent_time = current_time
 ```
 
+## Fasi in Python LoRaWAN (payload non compattato)
+
+``` python
+# Versione di test: invia numeri casuali a TTN via LoRaWAN.
+# Stessa struttura di payload del programma originale, ma senza SDS011/BME280 collegati.
+# Utile per testare l'integrazione TTN -> broker MQTT senza hardware sensori.
+
+import utime
+import time
+import struct
+import urandom
+import machine
+import network
+import ubinascii
+from machine import Pin, UART, deepsleep
+from machine import reset as machine_reset
+
+import esp
+esp.osdebug(None)
+
+import gc
+gc.collect()
+
+from utils import *
+from ulora import TTN, uLoRa
+
+# --- Pin SPI LoRa (Heltec ESP32 LoRa V2 / Wireless Stick) ---
+LORA_CS    = const(18)
+LORA_SCK   = const(5)
+LORA_MOSI  = const(27)
+LORA_MISO  = const(19)
+LORA_IRQ   = const(26)
+LORA_RST   = const(14)
+LORA_DATARATE = "SF9BW125"
+LORA_FPORT    = const(1)
+
+LED_PIN = const(25)
+
+# --- Credenziali TTN (ABP) - sostituisci con le tue ---
+TTN_DEVADDR = bytearray([0x26, 0x0B, 0x26, 0x2C])
+TTN_NWKEY   = bytearray([0xC7, 0x7F, 0xB7, 0x8C, 0x37, 0x7A, 0xDB, 0x11,
+                         0x80, 0x3F, 0x5B, 0xD3, 0x1D, 0x5B, 0x4F, 0xC2])
+TTN_APP     = bytearray([0x7A, 0x95, 0x96, 0x3A, 0xB4, 0xAD, 0xC6, 0xE7,
+                         0xEA, 0x25, 0x19, 0x11, 0x4B, 0xD4, 0xAD, 0xF3])
+
+TTN_CONFIG = TTN(TTN_DEVADDR, TTN_NWKEY, TTN_APP, country="EU")
+FPORT = 1
+
+# --- Intervallo tra invii (secondi). Attenzione al duty cycle EU868! ---
+SEND_INTERVAL_S = 60
+
+# --- Check wake reason ---
+if machine.reset_cause() == machine.DEEPSLEEP_RESET:
+    print('Woke up from a deep sleep')
+
+# LED acceso per tutta la durata del programma
+led = Pin(LED_PIN, Pin.OUT, value=1)
+
+# Info MAC/EUI (solo log)
+sta_if = network.WLAN(network.STA_IF)
+wlan_mac = sta_if.config('mac')
+mac = bin2hex(wlan_mac)
+print("mac:", mac)
+eui = mac2eui(mac).upper()
+print("eui:", eui)
+
+# --- Init LoRa ---
+print("Init LoRa...")
+lora = uLoRa(
+    cs=LORA_CS,
+    sck=LORA_SCK,
+    mosi=LORA_MOSI,
+    miso=LORA_MISO,
+    irq=LORA_IRQ,
+    rst=LORA_RST,
+    ttn_config=TTN_CONFIG,
+    datarate=LORA_DATARATE,
+    fport=FPORT
+)
+
+
+def rand_in(lo, hi):
+    """Intero casuale uniforme in [lo, hi]."""
+    return lo + urandom.getrandbits(16) % (hi - lo + 1)
+
+
+def fake_readings():
+    """Genera valori plausibili per PM, eCO2, tVOC, temperatura, pressione."""
+    # PM moltiplicato per 10 come nell'originale (decimi di ug/m3)
+    pm10  = rand_in(50,  400)    # 5.0 - 40.0 ug/m3
+    pm25  = rand_in(20,  250)    # 2.0 - 25.0 ug/m3
+    eCO2  = rand_in(400, 1500)   # ppm
+    tVOC  = rand_in(0,   600)    # ppb
+    temp  = rand_in(150, 300)    # decimi di gradi -> 15.0 - 30.0 C  (int16)
+    press = rand_in(98000, 103000)  # Pa (uint32)
+    return pm10, pm25, eCO2, tVOC, temp, press
+
+
+print("Loop di invio dati casuali. CTRL+C per fermare.")
+try:
+    while True:
+        try:
+            pmSensorID = 5  # come nel programma originale dopo la lettura
+            pm10, pm25, eCO2, tVOC, temp, press = fake_readings()
+
+            # timestamp: se non hai sincronizzato l'NTP, utc_time() potrebbe non
+            # essere valido. In tal caso ripiega su utime.time().
+            try:
+                ts = utc_time()
+            except Exception:
+                ts = utime.time()
+
+            # Stesso formato del programma originale:
+            #   <Q  uint64  timestamp
+            #    H  uint16  pmSensorID
+            #    H  uint16  pm10
+            #    H  uint16  pm25
+            #    H  uint16  eCO2
+            #    H  uint16  tVOC
+            #    h  int16   temp
+            #    I  uint32  press
+            payload = struct.pack('<QHHHHHhI',
+                                  ts, pmSensorID, pm10, pm25,
+                                  eCO2, tVOC, temp, press)
+
+            print("---")
+            print("ts:", ts,
+                  "pm10:", pm10/10, "pm25:", pm25/10,
+                  "eCO2:", eCO2, "tVOC:", tVOC,
+                  "temp:", temp/10, "press:", press)
+            print("payload hex:", ubinascii.hexlify(payload))
+            print("len:", len(payload))
+
+            lora.send_data(payload, len(payload), lora.frame_counter)
+            print("Inviato. frame_counter =", lora.frame_counter)
+
+        except Exception as e:
+            print("Errore invio:", e)
+
+        utime.sleep(SEND_INTERVAL_S)
+
+except KeyboardInterrupt:
+    print("Stop richiesto.")
+    led.value(0)
+```
 
 
 >[Torna a reti ethernet](archeth.md)
