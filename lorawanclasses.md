@@ -216,6 +216,17 @@ Serve a realizzare un ponte tra:
 
 <img src="img/brokerBridge.png" alt="alt text" width="600">
 
+###  Tabella riassuntiva dei topic
+
+| Topic | Direzione | Stadio della pipeline | Quando pubblicato | Contenuto principale | Uso tipico |
+|---|---|---|---|---|---|
+| `packet_recv` | **uplink** | PHY (prima della decifratura) | Ogni frame demodulato con CRC OK, **anche se poi verrà scartato dal NS** | Metadati radio (freq, SF, RSSI, SNR) + `data` ancora **cifrato** | Diagnostica radio, monitoraggio qualità link |
+| `up` | **uplink** | Applicativo (dopo i 4 passi) | Solo per frame validati e decifrati | `data` **in chiaro** + DevEUI + FCnt | **Topic principale per le applicazioni** |
+| `packet_missed` | uplink (meta) | LoRaWAN | Quando il NS rileva un salto nel FCnt | `{"count": N}` con N = numero di pacchetti persi | Statistiche packet loss |
+| `geolocation` | uplink (meta) | LoRaWAN | Insieme a ogni `up` | DevEUI, gateway che ha ricevuto, RSSI, SNR | Triangolazione multi-gateway |
+| `packet_sent` | **downlink** | PHY | Quando il gateway sta per trasmettere un downlink | `data` del frame downlink (cifrato), parametri TX | Tracciamento downlink lato radio |
+| `mac_sent` | **downlink** | LoRaWAN | Quando il NS spedisce un MAC command | `opts` = MAC commands codificati (LinkADRReq, DevStatusReq…) | Capire perché il NS parla al device |
+
 ### **Tutti i topic**
 Topic in cui recuperare tutti i **messaggi associati** ad un **gateway** avente identificativo univoco ```APP-EUI```e a un **dispositivo IoT** avente un identificativo EUI64 che vale ```APP-EUI``` 
 L'**associazione** può riguardare i **topic**:
