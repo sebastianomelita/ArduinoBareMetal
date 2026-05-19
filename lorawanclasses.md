@@ -116,6 +116,8 @@ Il **network server** è comune in alcune tipologie di **reti wireless** LPWA ed
 
 <img src="lpwan.png" alt="alt text" width="700">
 
+<img src="img/network-server.png" alt="alt text" width="700">
+
 ### **Funzioni essenziali**
 
 Il Network Server, dopo aver elaborato i messaggi ricevuti dai gateway, li inoltra al LoRa App Server.
