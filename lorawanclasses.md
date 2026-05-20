@@ -85,6 +85,10 @@ La tratta tra un sensore/attuatore e un gateway LoRaWAN è un collegamento radio
 
 In generale, in una rete LoRaWAN le **collisioni** tra messaggi di sorgenti diverse vengono evitate o risolte sfruttando tutte le **dimensioni disponibili** della comunicazione radio.
 
+Esistono due direzioni di trasmissione:
+- **uplink** dal dispositivo terminale (end device) fino al gateway
+- **downlink**, dal gateway fino al dispositivo terminale
+
 ### **SDM: separazione cellulare all'interno di una certa area**
 
 Device sufficientemente lontani tra loro, o coperti da gateway diversi, non si interferiscono anche trasmettendo sulla stessa frequenza con lo stesso SF (codice ortogonale) e nello stesso istante. E' l'effetto dell'**attenuazione di spazio libero** dei segnali radio che permette il riuso delle frequenze (canali) vicine o uguali in posizioni lontane. 
