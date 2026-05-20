@@ -167,7 +167,9 @@ Un segnale di **chirp** può essere suddiviso in 2^SF valori che **codificano**,
 
 Ad **un simbolo** corrisponde, nel tempo, una certa **sequenza lunga SF** di bit da trasmettere che può essere ricostruita **in ricezione** misurando la **lunghezza in frequenza** del chirp nello sprettogramma (mediante FFT) dove ha un valore compreso tra [0, 2^SF]. 
 
-La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere uno scivolamento di B Hertz (banda) nel tempo in cui si raccolgono SF bit, cioè un un simbolo, e questo per tutti i valori di SF. Per effetto di ciò, in corrispondenza di un fattore di spreading SF, i singoli bit verranno diffusi di 2^SF/SF nella frequenza.
+Un **chip** è il segnale elementare minimo della modulazione CSS: è la singola variazione di frequenza che il chirp compie in un intervallo di tempo pari a 1/B secondi (il reciproco della larghezza di banda). Più chip compongono un simbolo, e più simboli compongono i bit trasmessi.
+
+La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere uno scivolamento di B Hertz (banda) nel tempo in cui si raccolgono SF bit, cioè un simbolo, e questo per tutti i valori di SF. Poiché un simbolo contiene sempre **2^SF chip** e ogni chip occupa una porzione uguale della banda B, ogni singolo bit viene rappresentato da **2^SF/SF chip**. Questo rapporto esprime il **fattore di diffusione per bit**: quanti chip elementari "coprono" un singolo bit nello spettro. Al crescere di SF, questo valore cresce in modo pressochè esponenziale — ad esempio da ~18 chip/bit con SF7 fino a ~341 chip/bit con SF12 — rendendo ogni bit progressivamente più resistente al rumore e alle interferenze, al costo però di un bitrate più basso.
 
 I segnali di chirp con uguale SF non sono ortogonali tra loro per cui potenzialmente si interferiscono, mentre i segnali di chirp con **SF differente** sono effettivamente **ortogonali** per cui non si interferiscono anche se presenti nello stesso momento sullo stesso canale. Chiaramente, un numero elevato di segnali ortogonali interferenti tendenzialmente degrada il rapporto segnale rumore del canale.
  
