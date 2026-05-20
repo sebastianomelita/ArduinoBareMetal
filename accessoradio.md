@@ -171,14 +171,7 @@ Un **chip** è il segnale elementare minimo della modulazione CSS: è la singola
 
 La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere uno scivolamento di B Hertz (banda) nel tempo in cui si raccolgono SF bit, cioè un simbolo, e questo per tutti i valori di SF. Poiché un simbolo contiene sempre **2^SF chip** e ogni chip occupa una porzione uguale della banda B, ogni singolo bit viene rappresentato da **2^SF/SF chip**. Questo rapporto esprime il **fattore di diffusione per bit**: quanti chip elementari "coprono" un singolo bit nello spettro. Al crescere di SF, questo valore cresce in modo pressochè esponenziale — ad esempio da ~18 chip/bit con SF7 fino a ~341 chip/bit con SF12 — rendendo ogni bit progressivamente più resistente al rumore e alle interferenze, al costo però di un bitrate più basso.
 
-| SF | chip/simbolo (2^SF) | chip/bit (2^SF / SF) |
-|:--:|:-------------------:|:--------------------:|
-| 7  | 128                 | ≈ 18                 |
-| 8  | 256                 | 32                   |
-| 9  | 512                 | ≈ 57                 |
-| 10 | 1024                | ≈ 102                |
-| 11 | 2048                | ≈ 186                |
-| 12 | 4096                | ≈ 341                |
+<img src="img/chip_spreading.svg" alt="Fattore di diffusione per bit in LoRa: tabella SF7-SF12" width="600">
 
 I segnali di chirp con uguale SF non sono ortogonali tra loro per cui potenzialmente si interferiscono, mentre i segnali di chirp con **SF differente** sono effettivamente **ortogonali** per cui non si interferiscono anche se presenti nello stesso momento sullo stesso canale. Chiaramente, un numero elevato di segnali ortogonali interferenti tendenzialmente degrada il rapporto segnale rumore del canale.
  
@@ -228,6 +221,7 @@ Altre **caratteristiche positive** di Lora sono:
 - Resistenza all'effetto Doppler (applicazioni mobili)
 
 Può essere adoperato da solo, implementando su di esso uno **stack custom**, oppure come parte della pila **LoraWAN** mantenuta dalla Lora Alliance, purchè l'accesso radio rispetti le regolamentazioni valide per la banda **ISM** per cui è nato.
+
 
 ## **TSCH**
 
