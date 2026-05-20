@@ -118,7 +118,7 @@ Se due device trasmettono in istanti diversi per caso semplicemente non si inter
 
 Quando invece due device collidono (stessa frequenza, stesso SF, stesso istante), interviene l'**Aloha**: ciascuno ritrasmette dopo un **intervallo casuale**, riducendo la probabilità di una nuova collisione. 
 
-Il **duty cycle** imposto dalla **regolamentazione ISM** (in EU868 1% in uplink e 1% e 10% in downlink) contribuisce indirettamente a diluire nel tempo il traffico, abbassando il tasso di collisioni. [definizione di Duty Cycle](approfondimenti/ism.md#duty-cycle)
+Il **duty cycle** imposto dalla **regolamentazione ISM** (in EU868 1% in uplink e 1% e 10% in downlink) contribuisce indirettamente a diluire nel tempo il traffico, abbassando il tasso di collisioni. [Definizione di Duty Cycle](ism.md#duty-cycle)
 
 L'**Aloha** è quindi l'arbitro di ultima istanza: interviene solo quando tutte le altre dimensioni di separazione — spazio, frequenza, codice — non sono sufficienti a evitare la sovrapposizione.
 
