@@ -69,49 +69,6 @@ Le **funzioni** dell'architettura **lora** possono essere distinte su **3 dispos
     - **Join Request Validation**: Il Join Server verifica la validità delle richieste di join inviate dai dispositivi end-device. Questo processo include la verifica delle firme digitali e altre informazioni di autenticazione fornite dal dispositivo. Può avvenire tramite il processo **Over-the-Air Activation (OTAA)**, con cui il Join Server fornisce al dispositivo le **chiavi di sessione** necessarie per stabilire una connessione sicura con il Network Server, in maniera automatica. Nel **modo ABP** deve essere invece l'utente a generare ed inserire le chiavi di sessione nel join server.      
     - **Gestione delle sessioni**: Il Join Server mantiene il contesto di sicurezza per i dispositivi che sono stati autorizzati a unirsi alla rete. Questo include la gestione delle chiavi di sessione e altre informazioni di sicurezza necessarie per garantire una comunicazione sicura tra il dispositivo e il Network Server.
 
-## **Join Server e accesso OTAA**
-
-Per abilitare l'**accesso OTAA**, vanno configurati sia il **dispositivo IoT** che il **network server**.
-
-<img src="/img/auth-lorawan.jpg" alt="alt text" width="1000">
-
-Sul **Dispositivo IoT** (End-Device) vanno impostati:
-- **DevEUI** o **identificatore del dispositivo**, è unico e normalmente si deduce dal MAC Ethernet con il processo **EUI64**.
-- **AppEUI** o **dentificatore dell'applicazione**, è unico e normalmente è fornito dall'**amministratore** della rete (è un parametro impostato sul Network Server).
-- **AppKey** o **Chiave di applicazione**, una chiave **segreta** e **precondivisa** (su un canale sicuro) tra il dispositivo e il join server, serve per cifrare con hash con chiave HMAC la chiave OTP di sessione che verrà utilizzata dai dispositivi ad ogni nuova connessione.
- 
-Sul **Network Server**:
-- si impostano i parametri del dispositivo (DevEUI, AppEUI) e l'AppKey, tutti corrispondenti a quelli del dispositivo.
-- si esegue l'associazione a un **join server** che gestirà il processo di accesso.
-
-La chiave **AppKey** può essere generata online su cloud di gestione dei dispositivi lora come TTN, oppure localmente, ad esempio con il comando ```openssl rand -hex 16```.
-
-In realtà, il **server** genera, automaticamente e in maniera trasparente all'utente, **due chiavi**:
-- **AppSKey**: utilizzata dal **protocollo** lora per cifrare e decifrare il payload delle applicazioni. Viene utilizzato per garantire la **privatezza** (confidenzialità) dei messaggi. Il messaggio è **cifrato** dal dispositivo IoT e può essere **decifrato** sia dal **Network Server** che, nella variante End To End, direttamente dal **Server Applicativo**.
-- **NwkSKey**: utilizzata dal **protocollo** lora in ingresso all'algoritmo AES-CMAC (Cipher-based Message Authentication Code), un HMAC con chiave con il quale viene generato un **hash del frame** da trasmettere, detto **MIC**. Il **trasmettitore** allega il MIC al messaggio e lo invia al **ricevitore** che estrae il MIC e lo **mette da parte** mentre ricalcola una **copia locale** del MIC utilizzando la **stessa chiave** usata in trasmissione. Se i due MIC, quello ricevuto e  quello locale,  **coincidono** allora vengono provati contemporaneamente sia l'**integrità** del messaggio che l'**autenticazione** del mittente.
-
-<img src="img/lora-process.png" alt="alt text" width="1000">
-
-**Nota**. In ABP queste chiavi sono fisse e configurate manualmente. In OTAA vengono generate ad ogni JoinRequest dal Join Server, ma il loro ruolo nella pipeline (passi 2 e 4) è identico.
-
-## **Server di gestione** 
-
-
-E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **subscriber** per:
-- realizzazione delle **interfacce web** per la gestione e la visualizzazione dei dati dei dispositivi e delle applicazioni agli utenti.
-- elaborazioni a **breve termine** quali la generazione di **statistiche** per la determinazione di **soglie** o **predizioni** per:
-    - realizzazione da remoto della **logica di comando** (processo dei comandi) degli **attuatori**
-    - **report** per l'assistenza alle decisioni
-    - generazioni di **allarmi**
-    - realizzazione di **ottimizzazioni** della gestione o del consumo di risorse, energia o materie prime
-    - contabilizzazione dei consumi (**smart metering**)
-    - controllo e sorveglianza in tempo reale dello **stato** di impianti o macchinari
-    - segnalazione dei **guasti** o loro **analisi predittiva** prima che accadano
-    - **consapevolezza situazionale** di ambienti remoti, difficili, pericolosi o ostili (https://it.wikipedia.org/wiki/Situational_awareness)
-- elaborazioni a **lungo termine** quali:
-    - analisi dei dati per la realizzazione di studi scientifici
-    - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
-
 ## **Server di rete**
 
 Il **network server** è comune in alcune tipologie di **reti wireless** LPWA ed è una componente di **back-end** responsabile dello **smistamento** finale verso gli utenti (routing applicativo) dei dati provenienti dai vari **gateway** configurandosi, quindi, come il **centro stella logico** di una  stella di gateway. Lo **schema logico** di una rete di sensori LPWA basata su **network server** quindi appare:
@@ -175,6 +132,51 @@ In **generale**, su reti **non IP**, i **client MQTT** (con il ruolo di **publis
 ### **Gateway come MCU hub di sensori**
 
 La **parola gateway** potrebbe talvolta portare a **fraintendimenti** dovuti al diverso significato nei **diversi contesti** in cui la si usa. **Spesso**, con il **termine gateway** si intente anche il **dispositivo IoT** che potrebbe essere, **a sua volta**, un **gateway** tra la il **link di campo**, porte analogiche/digitali o BUS, (vedi [bus di campo](cablatisemplici.md) per dettagli) e la **rete di sensori** (WiFi, Zigbee, lora, LAN, BLE, ecc.). In questo caso il gateway ha il compito di tradurre i messaggi dall'interfaccia a BUS su filo verso quella lora e viceversa. Vedi ([dispositivi terminali](sensornetworkshort.md#dispositivi-terminali-sensoriattuatori)) per approfondimenti.
+
+
+## **Join Server e accesso OTAA**
+
+Per abilitare l'**accesso OTAA**, vanno configurati sia il **dispositivo IoT** che il **network server**.
+
+<img src="/img/auth-lorawan.jpg" alt="alt text" width="1000">
+
+Sul **Dispositivo IoT** (End-Device) vanno impostati:
+- **DevEUI** o **identificatore del dispositivo**, è unico e normalmente si deduce dal MAC Ethernet con il processo **EUI64**.
+- **AppEUI** o **dentificatore dell'applicazione**, è unico e normalmente è fornito dall'**amministratore** della rete (è un parametro impostato sul Network Server).
+- **AppKey** o **Chiave di applicazione**, una chiave **segreta** e **precondivisa** (su un canale sicuro) tra il dispositivo e il join server, serve per cifrare con hash con chiave HMAC la chiave OTP di sessione che verrà utilizzata dai dispositivi ad ogni nuova connessione.
+ 
+Sul **Network Server**:
+- si impostano i parametri del dispositivo (DevEUI, AppEUI) e l'AppKey, tutti corrispondenti a quelli del dispositivo.
+- si esegue l'associazione a un **join server** che gestirà il processo di accesso.
+
+La chiave **AppKey** può essere generata online su cloud di gestione dei dispositivi lora come TTN, oppure localmente, ad esempio con il comando ```openssl rand -hex 16```.
+
+In realtà, il **server** genera, automaticamente e in maniera trasparente all'utente, **due chiavi**:
+- **AppSKey**: utilizzata dal **protocollo** lora per cifrare e decifrare il payload delle applicazioni. Viene utilizzato per garantire la **privatezza** (confidenzialità) dei messaggi. Il messaggio è **cifrato** dal dispositivo IoT e può essere **decifrato** sia dal **Network Server** che, nella variante End To End, direttamente dal **Server Applicativo**.
+- **NwkSKey**: utilizzata dal **protocollo** lora in ingresso all'algoritmo AES-CMAC (Cipher-based Message Authentication Code), un HMAC con chiave con il quale viene generato un **hash del frame** da trasmettere, detto **MIC**. Il **trasmettitore** allega il MIC al messaggio e lo invia al **ricevitore** che estrae il MIC e lo **mette da parte** mentre ricalcola una **copia locale** del MIC utilizzando la **stessa chiave** usata in trasmissione. Se i due MIC, quello ricevuto e  quello locale,  **coincidono** allora vengono provati contemporaneamente sia l'**integrità** del messaggio che l'**autenticazione** del mittente.
+
+<img src="img/lora-process.png" alt="alt text" width="1000">
+
+**Nota**. In ABP queste chiavi sono fisse e configurate manualmente. In OTAA vengono generate ad ogni JoinRequest dal Join Server, ma il loro ruolo nella pipeline (passi 2 e 4) è identico.
+
+## **Server di gestione** 
+
+
+E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **subscriber** per:
+- realizzazione delle **interfacce web** per la gestione e la visualizzazione dei dati dei dispositivi e delle applicazioni agli utenti.
+- elaborazioni a **breve termine** quali la generazione di **statistiche** per la determinazione di **soglie** o **predizioni** per:
+    - realizzazione da remoto della **logica di comando** (processo dei comandi) degli **attuatori**
+    - **report** per l'assistenza alle decisioni
+    - generazioni di **allarmi**
+    - realizzazione di **ottimizzazioni** della gestione o del consumo di risorse, energia o materie prime
+    - contabilizzazione dei consumi (**smart metering**)
+    - controllo e sorveglianza in tempo reale dello **stato** di impianti o macchinari
+    - segnalazione dei **guasti** o loro **analisi predittiva** prima che accadano
+    - **consapevolezza situazionale** di ambienti remoti, difficili, pericolosi o ostili (https://it.wikipedia.org/wiki/Situational_awareness)
+- elaborazioni a **lungo termine** quali:
+    - analisi dei dati per la realizzazione di studi scientifici
+    - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
+
 
 ## **Formato dei messaggi lora**
 
