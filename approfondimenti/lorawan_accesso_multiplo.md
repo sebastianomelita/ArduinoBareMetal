@@ -1,4 +1,4 @@
-> [Torna a LoRa e tecnologie di accesso radio](accessoradio.md#lora)
+> [Torna ISM](ism.md#2-parallelismo-del-gateway-ricezione-concorrente)
 
 # **Accesso multiplo in LoRaWAN: FDM reale + CDM**
 
@@ -84,4 +84,4 @@ La **asimmetria** tra device e gateway è una scelta progettuale precisa: il dev
 
 ---
 
-> [Torna a LoRa e tecnologie di accesso radio](accessoradio.md#lora)
+> [Torna ISM](ism.md#2-parallelismo-del-gateway-ricezione-concorrente)
