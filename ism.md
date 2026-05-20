@@ -223,6 +223,28 @@ In alcune implementazioni, se un dispositivo rileva che il canale è libero imme
 
 ## Potenza disponibile massima
 
+
+### Potenza massima in trasmissione per device e gateway EU868
+
+La potenza massima irradiabile in EU868 dipende dalla **sotto-banda** su cui si trasmette, ed è espressa come **ERP** (non EIRP). I valori sono fissati da ETSI EN 300 220:
+
+| Sotto-banda | Frequenze | ERP max | Uso tipico |
+|:-----------:|:---------:|:-------:|:----------:|
+| K | 863,0 – 865,0 MHz | 25 mW (+14 dBm) | poco usato |
+| L | 865,0 – 868,0 MHz | 25 mW (+14 dBm) | uplink device |
+| M | 868,0 – 868,6 MHz | 25 mW (+14 dBm) | uplink device |
+| N | 868,7 – 869,2 MHz | 25 mW (+14 dBm) | poco usato |
+| **P** | **869,4 – 869,65 MHz** | **500 mW (+27 dBm)** | **downlink RX2 gateway** |
+| Q | 869,7 – 870,0 MHz | 5 mW (+7 dBm) | poco usato |
+
+**Device (end-node):** trasmette quasi sempre in sotto-banda L o M, quindi il limite è **25 mW ERP (+14 dBm)**. La potenza effettiva del modulo radio (es. SX1276) è tipicamente configurabile tra +2 dBm e +17 dBm (50 mW) sul morsetto RF, ma tenendo conto delle perdite del cavo e del guadagno dell'antenna il limite normativo ERP di +14 dBm non deve essere superato. In pratica la maggior parte dei moduli LoRa opera a **+14 dBm sul pin RF** con antenna omnidirezionale a guadagno unitario (0 dBd), il che equivale esattamente al limite ERP consentito.
+
+**Gateway:** in ricezione non ha limiti di potenza (riceve, non trasmette). In trasmissione (downlink):
+- Se risponde su **RX1** (stessa frequenza dell'uplink, sotto-banda L o M) → limite **25 mW ERP (+14 dBm)**, identico al device.
+- Se risponde su **RX2** (869,525 MHz, sotto-banda P) → limite **500 mW ERP (+27 dBm)**, venti volte superiore. Questo è il motivo per cui RX2 è la finestra preferita per i downlink critici (join accept, comandi MAC): il gateway può trasmettere con molta più potenza, aumentando significativamente la probabilità che il messaggio raggiunga device lontani o in posizioni sfavorevoli.
+
+**Nota importante su EIRP vs ERP:** i limiti ETSI sono espressi in ERP. Se si usa un'antenna con guadagno superiore a 0 dBd (es. un'antenna direttiva da +6 dBd), la potenza sul morsetto RF deve essere **ridotta di conseguenza** per non superare l'ERP massimo. Ad esempio con un'antenna da +3 dBd la potenza sul morsetto non può superare +11 dBm per restare entro +14 dBm ERP.
+
 La potenza, in genere espressa in **mW** (millesimi di watt) o in **dBm**, è il parametro che indica quanto un trasmettitore può "spingere" in uscita. In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla **densità di potenza** (mW/MHz o mW/kHz). È il caso degli apparati WLAN e HiperLAN.
 
 ### EIRP ed ERP
