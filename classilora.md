@@ -32,23 +32,69 @@ In LoRaWAN un end-device Class A apre due finestre di ricezione dopo ogni uplink
 
 ### **Classe B**
 
-Oltre agli slot di ricezione di Classe A, i dispositivi di classe B aprono slot di ricezione aggiuntivi a orari programmati.
+La Classe B nasce per risolvere il limite principale della Classe A: in Class A il server può inviare un downlink **solo nelle due finestre RX1/RX2** che si aprono subito dopo un uplink del device. Se il device non trasmette, il server non ha modo di contattarlo. Questo va bene per sensori che inviano dati periodicamente, ma non per device che devono **ricevere comandi dal server in modo programmato e prevedibile**, senza dover aspettare un uplink.
 
-Il nodo terminale riceve un beacon sincronizzato col tempo dal gateway, consentendo al gateway di sapere quando il nodo è in ascolto. Un dispositivo di classe B non supporta la funzionalità del dispositivo C.
+**Lo scopo** della Classe B è dare al server la possibilità di contattare il device in **slot temporali periodici e noti in anticipo**, chiamati **ping slot**, senza che il device debba trasmettere per primo. La latenza massima del downlink è quindi **deterministica e configurabile**, a differenza della Classe A dove dipende da quando il device decide di trasmettere.
 
-Il beacon viene inviato ogni 128 secondi a partire dalle 00:00:00 Coordinated Universal Time 13 (UTC), 1 gennaio 1970 più NwkID più TBeaconDelay. 
+#### Come funziona la sincronizzazione
 
-TBeaconDelay è un ritardo specifico della rete scelto nell'intervallo [0:50] ms. TBeaconDelay può variare da una rete all'altra ed è pensato per consentire un leggero ritardo di trasmissione dei gateway. TBeaconDelay deve essere lo stesso per tutti i gateway di una determinata rete. Tutti gli slot di ping dei dispositivi terminali utilizzano il tempo di trasmissione del beacon come riferimento temporale, pertanto il server di rete deve tenere in considerazione questo tempo quando pianifica i downlink di classe B.
+Il meccanismo si basa su un **beacon** — un segnale radio broadcast trasmesso dal gateway ogni **128 secondi** esatti, sincronizzato all'UTC. Quando il device riceve il beacon, aggancia il proprio orologio interno a quello della rete. Da quel momento in poi il device sa esattamente quando si aprirà il prossimo ping slot, e si sveglia autonomamente in quegli istanti per ascoltare eventuali downlink, anche senza aver trasmesso nulla.
 
-  <img src="img/classBlora.png" alt="alt text" width="600">
+I **ping slot** sono finestre di ricezione aggiuntive che si aprono all'interno di ogni periodo beacon di 128 secondi. La frequenza dei ping slot è configurabile: da 1 a 128 slot per periodo beacon, con intervalli che sono potenze di 2 (ogni 128s, 64s, 32s, 16s, 8s, 4s, 2s, 1s). Più ping slot si aprono, minore è la latenza massima del downlink ma maggiore è il consumo energetico, perché il device si sveglia più spesso.
+
+#### Come avviene la comunicazione
+
+1. Il gateway trasmette il beacon ogni 128s. Il device lo riceve e si sincronizza.
+2. Il network server conosce la frequenza di ping del device (comunicata durante il join o con un comando MAC `PingSlotInfoReq`) e sa quindi quando il device sarà in ascolto.
+3. Quando il server vuole inviare un downlink, lo accoda e lo trasmette nel **prossimo ping slot disponibile** del device. Il device si sveglia in quell'istante, riceve il messaggio e torna a dormire.
+4. Gli uplink spontanei restano possibili esattamente come in Classe A, con le relative finestre RX1/RX2.
+
+Se il device perde il beacon (ad esempio per interferenze o mobilità), entra in una modalità di **beacon tracking** in cui allarga progressivamente la finestra di ascolto per ritrovarlo. Se non riesce a riagganciarsi entro un certo numero di tentativi, il device scade automaticamente in modalità Classe A.
+
+#### Scenari tipici
+
+La Classe B è adatta a device **alimentati a batteria** che devono però ricevere comandi dal server con latenza controllata e prevedibile: valvole di irrigazione intelligenti che ricevono l'orario di apertura dal server, contatori smart che devono rispondere a richieste di lettura programmate, sensori di parcheggio che ricevono aggiornamenti di configurazione, attuatori a basso consumo in reti di controllo industriale leggero.
+
+[![alt text](img/classBlora.png)](img/classBlora.png)
+
+---
 
 ### **Classe C**
 
-Oltre agli slot di ricezione di Classe A, un dispositivo di Classe C ascolterà continuamente le risposte dal gateway. Un dispositivo di classe C non supporta la funzionalità del dispositivo B.
+La Classe C è la più semplice concettualmente: il device mantiene la **finestra di ricezione sempre aperta**, interrompendola solo per il brevissimo istante in cui sta trasmettendo un uplink. Non c'è beacon, non ci sono ping slot, non c'è sincronizzazione: il device è **sempre in ascolto**.
 
-Non c'è un messaggio specifico per un nodo per dire al server che è un nodo di Classe C. Spetta all'applicazione lato server sapere che 13 gestisce i nodi di Classe C in base al contratto passato durante la procedura di join.
+**Lo scopo** è minimizzare la latenza del downlink. Il server può inviare un messaggio in qualsiasi momento e il device lo riceve **entro pochi millisecondi**, senza dover aspettare né un uplink né un ping slot programmato. È il comportamento opposto alla Classe A: massima reattività, massimo consumo energetico.
 
-  <img src="img/classClora.png" alt="alt text" width="600">
+#### Come avviene la comunicazione
+
+1. Il device trasmette un uplink (come sempre in LoRaWAN). Subito dopo si aprono le due finestre RX1 e RX2 esattamente come in Classe A.
+2. Terminata RX2, invece di tornare a dormire, il device **rimane in ascolto continuo** su RX2 (869,525 MHz, SF12 di default in EU868) finché non deve trasmettere di nuovo.
+3. Il server può inviare un downlink in qualsiasi momento: il device lo riceverà immediatamente, indipendentemente da quando ha trasmesso l'ultimo uplink.
+
+Poiché il device è sempre in ricezione, il server può inviare **più downlink consecutivi** senza aspettare un uplink intermedio. Questo apre la possibilità a scenari di **controllo bidirezionale quasi in tempo reale**, che in Classe A sarebbero impossibili.
+
+> **Nota sulla segnalazione al server.** Non esiste un messaggio esplicito con cui il device comunica al server di essere Classe C: è l'applicazione server che deve sapere, in base al contratto stabilito durante il join, che quel device opera in Classe C e quindi può essere contattato in qualsiasi momento.
+
+#### Scenari tipici
+
+La Classe C è adatta a device **alimentati a rete elettrica** (non a batteria) che devono rispondere a comandi del server con la minima latenza possibile: attuatori fissi come interruttori smart, dimmer, relè industriali, controllo di illuminazione pubblica, sistemi di apertura cancelli o serrature, punti di ricarica per veicoli elettrici, qualsiasi applicazione dove un operatore umano preme un pulsante e si aspetta una risposta immediata dall'attuatore remoto.
+
+[![alt text](img/classClora.png)](img/classClora.png)
+
+---
+
+## Confronto tra le classi
+
+| | Classe A | Classe B | Classe C |
+|:---|:---:|:---:|:---:|
+| Finestre RX dopo uplink | RX1 + RX2 | RX1 + RX2 | RX1 + RX2 |
+| Ricezione aggiuntiva | — | Ping slot periodici | Sempre aperta |
+| Sincronizzazione | — | Beacon ogni 128s | — |
+| Latenza downlink | Alta (dipende dall'uplink) | Media e deterministica | Minima (ms) |
+| Consumo | Minimo | Medio | Massimo |
+| Alimentazione tipica | Batteria | Batteria | Rete elettrica |
+| Scenari tipici | Sensori periodici | Attuatori programmati | Attuatori reattivi |
+
 
 **Uplink confermato**
 
