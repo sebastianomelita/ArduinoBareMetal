@@ -1,5 +1,7 @@
 > [Torna ISM](../ism.md#2-parallelismo-del-gateway-ricezione-concorrente)
 
+> [Torna a LoRa e tecnologie di accesso radio](accessoradio.md#lora)
+
 # **Accesso multiplo in LoRaWAN: FDM reale + CDM**
 
 In una rete LoRaWAN il gateway deve ricevere contemporaneamente i messaggi di migliaia di dispositivi IoT distribuiti sul territorio. Per farlo sfrutta una combinazione di due tecniche di multiplazione: una **FDM reale** tra canali in frequenza e una **CDM basata sullo Spreading Factor** all'interno di ciascun canale.
@@ -14,13 +16,16 @@ Tra un pacchetto e il successivo il device cambia frequenza in modo pseudo-casua
 
 ---
 
-## **Lato gateway: 8 radio fisiche in parallelo**
+## **Lato gateway: non 8 radio fisiche, ma 2 frontend + DSP**
 
-Il gateway LoRaWAN non ha una sola radio che salta a round robin tra le 8 frequenze: ha **8 ricevitori fisici distinti e simultanei**. Questo è reso possibile dal chip concentratore **Semtech SX1301** (e successori), che integra in un singolo IC 8 canali di ricezione in parallelo, ciascuno sintonizzato su una frequenza diversa.
+Il gateway LoRaWAN non ha una sola radio che salta a round robin tra le 8 frequenze, ma non ha nemmeno 8 radio fisiche distinte. La soluzione adottata dal chip concentratore **Semtech SX1301** (e successore SX1302) è più sottile:
 
-Un gateway che facesse round robin su una sola radio perderebbe tutti i pacchetti che arrivano mentre sta ascoltando le altre frequenze — inaccettabile con migliaia di device che trasmettono in modo asincrono e imprevedibile.
+- **2 chip frontend** (es. SX1257), ciascuno capace di digitalizzare circa 1 MHz di spettro continuo in I/Q a 32 MHz. I due chip coprono insieme circa 2 MHz di banda, sufficienti per contenere 8 canali da 125 kHz separati di 200 kHz.
+- **1 chip baseband SX1301**, un motore di elaborazione digitale (DSP) che riceve i campioni I/Q dai due frontend e li smista su 8 canali logici in parallelo, demodulando contemporaneamente tutti i pacchetti presenti in quello spettro.
 
-Il costo di 8 frontend radio non è proibitivo perché la complessità è interamente integrata nel chip concentratore, che ha un prezzo paragonabile a quello di un modulo radio singolo.
+In pratica i due SX1257 funzionano come due ADC ad alta velocità che "fotografano" l'intero spettro, e il SX1301 lo analizza digitalmente estraendo gli 8 canali. Non è round robin (che perderebbe pacchetti), ma nemmeno 8 ricetrasmettitori indipendenti: è **ricezione wideband + demultiplazione digitale**.
+
+Un gateway che facesse round robin su una sola radio perderebbe tutti i pacchetti che arrivano mentre sta ascoltando le altre frequenze — inaccettabile con migliaia di device che trasmettono in modo asincrono e imprevedibile. Il chip SX1302 evolve ulteriormente questo approccio portando a 16 demodulatori logici interni su 8 canali in frequenza.
 
 ---
 
@@ -51,6 +56,15 @@ All'interno di **ciascuno** degli 8 canali in frequenza, più dispositivi posson
 
 Questo è concettualmente analogo al **CDM (Code Division Multiplexing)**: la proprietà di separazione non è né il tempo né la frequenza, ma il **codice di spreading** (in questo caso lo SF). Ogni ricevitore fisico del gateway è quindi un **demodulatore multi-SF**, capace di decodificare in parallelo fino a 6 trasmissioni contemporanee sulla stessa frequenza (una per ogni SF da 7 a 12).
 
+In generale, in una rete LoRaWAN le collisioni tra sorgenti diverse vengono evitate o risolte sfruttando tutte le dimensioni disponibili della comunicazione radio:
+
+- **Spazio**: device sufficientemente lontani tra loro, o coperti da gateway diversi, non si interferiscono anche trasmettendo sulla stessa frequenza con lo stesso SF.
+- **Frequenza (FDM)**: gli 8 canali uplink distribuiscono il traffico su frequenze diverse; il frequency hopping pseudo-casuale tra pacchetti riduce la probabilità che due device scelgano sempre lo stesso canale.
+- **Codice (CDM)**: SF diversi sulla stessa frequenza sono ortogonali e convivono senza interferirsi, come descritto sopra.
+- **Tempo**: i device trasmettono in modo **asincrono e non coordinato** — non esiste un TDM, che richiederebbe un coordinatore centrale che assegna slot temporali. Se due device trasmettono in istanti diversi per caso semplicemente non si interferiscono, ma non è una garanzia. Quando invece due device collidono (stessa frequenza, stesso SF, stesso istante), interviene l'**Aloha**: ciascuno ritrasmette dopo un intervallo casuale, riducendo la probabilità di una nuova collisione. Il duty cycle imposto dalla regolamentazione ISM (1% in EU868) contribuisce indirettamente a diluire nel tempo il traffico, abbassando il tasso di collisioni.
+
+L'**Aloha** è quindi l'arbitro di ultima istanza: interviene solo quando tutte le altre dimensioni di separazione — spazio, frequenza, codice — non sono sufficienti a evitare la sovrapposizione.
+
 ---
 
 ## **Capacità totale del gateway**
@@ -74,7 +88,7 @@ Ogni demodulatore logico può ricevere indipendentemente un pacchetto da un devi
 
 | | End-device | Gateway |
 |:---|:---:|:---:|
-| Radio fisiche | **1** | **8** |
+| Frontend radio fisici | **1** | **2** (+ DSP SX1301) |
 | Canali simultanei in TX/RX | 1 | 8 |
 | SF simultanei per canale | 1 | fino a 6 |
 | Demodulatori logici totali | 1 | fino a 48 |
@@ -83,6 +97,9 @@ Ogni demodulatore logico può ricevere indipendentemente un pacchetto da un devi
 La **asimmetria** tra device e gateway è una scelta progettuale precisa: il device deve essere economico, a basso consumo e semplice; il gateway, che serve migliaia di device, può permettersi maggiore complessità hardware concentrata nel chip SX1301.
 
 ---
+
+> [Torna a LoRa e tecnologie di accesso radio](accessoradio.md#lora)
+
 
 ## **Fonti**
 
