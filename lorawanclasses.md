@@ -118,7 +118,7 @@ L'ultima grandezza che adesso può isolare i messaggi è li **Tempo**. Ma i devi
 
 Se due device trasmettono in istanti diversi per caso semplicemente non si interferiscono, ma non è una garanzia. 
 
-Quando invece due device collidono (stessa frequenza, stesso SF, stesso istante), interviene l'**Aloha**: ciascuno ritrasmette dopo un **intervallo casuale**, riducendo la probabilità di una nuova collisione. 
+Quando invece due device collidono (stessa frequenza, stesso SF, stesso istante), interviene l'**Aloha**: ciascuno ritrasmette dopo un **intervallo casuale**, riducendo la probabilità di una nuova collisione. [Dettaglio ALOHA](protocollidiaccesso.md#aloha) 
 
 Il **duty cycle** imposto dalla **regolamentazione ISM** (in EU868 1% in uplink e 1% e 10% in downlink) contribuisce indirettamente a diluire nel tempo il traffico, abbassando il tasso di collisioni. 
 
