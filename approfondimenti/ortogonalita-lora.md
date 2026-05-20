@@ -1,3 +1,5 @@
+> [Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)>[Torna banda ISM](ism.md)
+
 # Ortogonalità degli Spreading Factor in LoRa
 
 Una delle proprietà che rende LoRa adatto a reti con molti dispositivi è la **quasi-ortogonalità tra segnali con Spreading Factor diversi**. Questa dispensa analizza cosa significa, perché esiste, quando funziona e quando si rompe.
