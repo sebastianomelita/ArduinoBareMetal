@@ -84,4 +84,34 @@ La **asimmetria** tra device e gateway è una scelta progettuale precisa: il dev
 
 ---
 
+## **Fonti**
+
+- **Semtech SX1301 datasheet** — chip concentratore con 8 canali paralleli integrati:
+  <https://www.semtech.com/products/wireless-rf/lora-core/sx1301>
+
+- **RF Essentials — LoRa SF orthogonality and 48 virtual channels**:
+  <https://rfessentials.com/rf-knowledge-base/what-are-the-rf-requirements-for-a-lora-device-and-how-does-the-spreading-factor/>
+
+- **LoRa Alliance — Regional Parameters RP002-1.0.2** (specifiche ufficiali EU868, frequenze obbligatorie, piano canali):
+  <https://lora-alliance.org/wp-content/uploads/2020/11/RP_2-1.0.2.pdf>
+
+- **The Things Network — EU868 regional parameters** (frequenze, DR, SF):
+  <https://www.thethingsnetwork.org/docs/lorawan/regional-parameters/eu868/>
+
+- **EdgePilot — EU868 frequency bands guide** (sotto-bande ETSI, duty cycle, canali mandatory):
+  <https://edgepilot.io/news/lorawan-frequency-bands-europe-eu868-guide>
+
+- **arXiv:1902.02866 — Analysis of LoRaWAN Uplink with Multiple Demodulating Paths** (analisi della capacità SX1301 con Nc canali paralleli):
+  <https://arxiv.org/pdf/1902.02866>
+
+- **arXiv:1912.01285 — A Complete LoRaWAN Model for Single-Gateway Scenarios** (ortogonalità degli SF, decodifica simultanea):
+  <https://arxiv.org/pdf/1912.01285>
+
+- **NCBI/PMC — Energy Constrained Optimization for SF Allocation in LoRaWAN** (ortogonalità imperfetta degli SF, gestione interferenze):
+  <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7472179/>
+
+- **Tektelic — The benefit of a 16-channel deployment in EU868**:
+  <https://tektelic.com/expertise/the-benefit-of-a-16-channel-deployment/>
+
+---
 > [Torna ISM](../ism.md#2-parallelismo-del-gateway-ricezione-concorrente)
