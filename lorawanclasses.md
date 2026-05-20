@@ -85,7 +85,7 @@ In generale, in una rete LoRaWAN le **collisioni** tra messaggi di sorgenti dive
 
 ### **SDM: separazione cellulare all'interno di una certa area**
 
-Device sufficientemente lontani tra loro, o coperti da gateway diversi, non si interferiscono anche trasmettendo sulla stessa frequenza con lo stesso SF (codice ortogonale) e nello stesso istante. E' l'effetto dell'attenuazione di spazio libero dei segnali radio che permette il riuso delle frequenze (canali) vicine o uguali in posizioni lontane. 
+Device sufficientemente lontani tra loro, o coperti da gateway diversi, non si interferiscono anche trasmettendo sulla stessa frequenza con lo stesso SF (codice ortogonale) e nello stesso istante. E' l'effetto dell'**attenuazione di spazio libero** dei segnali radio che permette il riuso delle frequenze (canali) vicine o uguali in posizioni lontane. 
 
 ### **FDM: separazione in frequenza all'interno di ogni gateway**
 
