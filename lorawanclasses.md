@@ -86,12 +86,11 @@ Device sufficientemente lontani tra loro, o coperti da gateway diversi, non si i
 ### **FDM: separazione in frequenza all'interno di ogni gateway**
 
 In EU868 i canali obbligatori sono 3 fino ad mun massimo di 16 permesso dallo standard LoRaWAN. In realtà normalmente sono fino ad 8 dato che i gateway più comuni (come quelli basati su SX1301) supportano fino a 8 canali simultanei, e i network server come TTN li configurano tutti e 8, ma non è un requisito obbligatorio dello standard.
+- 868.1 MHz
+- 868.3 MHz
+- 868.5 MHz
 
-868.1 MHz
-868.3 MHz
-868.5 MHz
-
-Questi tre canali devono essere supportati da qualsiasi device e gateway LoRaWAN EU868. Gli altri 5 (fino a 8 totali) sono opzionali, definiti dal network server e comunicati al device durante il join tramite i comandi MAC NewChannelReq. il frequency hopping pseudo-casuale tra pacchetti riduce la probabilità che due device scelgano sempre lo stesso canale.
+Questi **tre canali** devono essere supportati da qualsiasi device e gateway LoRaWAN EU868. Gli altri 5 (fino a 8 totali) sono opzionali, definiti dal network server e comunicati al device durante il join tramite i comandi MAC NewChannelReq. il frequency hopping pseudo-casuale tra pacchetti riduce la probabilità che due device scelgano sempre lo stesso canale.
 
 
 ### **CDM: separazione per Spreading Factor all'interno di ogni canale**
