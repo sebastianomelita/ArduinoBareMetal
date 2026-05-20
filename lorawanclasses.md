@@ -61,7 +61,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 Di seguito è riportata l'architettura generale **fisica** di una rete Lorawan. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
 
-<img src="../img/lorawanArchitecture.png" alt="alt text" width="1000">
+<img src="/img/lorawanArchitecture.png" alt="alt text" width="1000">
 
 La rete di sensori **fisica** è a stella dove il centro stella è il gateway. Un sensore può anche essere associato a più gateway ed inviare dati a tutti i gateway a cui esso è associato. I dati normalmente arrivano ad un certo dispositivo attraverso un solo gateway.
 
@@ -75,7 +75,7 @@ Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture
 
 La **figura** sottostante riassume la rete LoRaWAN dal punto di osservazione di un **collegamento L7** (applicativo) sulla **rete di distribuzione**:
 
-<img src="../img/lorawanLogicArchitecture.png" alt="alt text" width="700">
+<img src="/img/lorawanLogicArchitecture.png" alt="alt text" width="700">
 
 Si noti, che il canale che collega i dispositivi IoT ai gateway non supera mai il **livello 2** della pila ISO/OSI. Questi link hanno **topologia** a **stella** e possono collegare lo stesso sensore/attuatore a molti gateway. I dispositivi utilizzano un meccanismo di **routing** di livello L1 e quindi basato sul **flooding**. E' il  routing **più semplice** possibile, e anche il **più affidabile** ma possiede l'**incoveniente** di generare **pacchetti duplicati** nel loro percorso verso l'**applicazione**. Questo problema è gestito dal **network server**.
 
