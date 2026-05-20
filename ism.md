@@ -123,7 +123,7 @@ Non è una restrizione regolatoria europea, è un vincolo hardware uguale in tut
 
 ### 2. Parallelismo del gateway: ricezione concorrente
 
-Il gateway, al contrario del device, usa un chip *concentrator* (SX1301 / SX1302 / SX1303) con **8 demodulatori paralleli**. Può quindi **ricevere fino a 8 uplink simultanei** su frequenze e Spreading Factor diversi senza collisioni a livello fisico. [Ddettagli su parallelizzazione canali gateway LoRa](approfondimenti/lorawan_accesso_multiplo.md)
+Il gateway, al contrario del device, usa un chip *concentrator* (SX1301 / SX1302 / SX1303) con **8 demodulatori paralleli**. Può quindi **ricevere fino a 8 uplink simultanei** su frequenze e Spreading Factor diversi senza collisioni a livello fisico. [Dettagli su parallelizzazione canali gateway LoRa](approfondimenti/lorawan_accesso_multiplo.md)
 
 Conseguenze pratiche:
 
