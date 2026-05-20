@@ -79,6 +79,10 @@ La **figura** sottostante riassume la rete LoRaWAN dal punto di osservazione di 
 
 Si noti, che il canale che collega i dispositivi IoT ai gateway non supera mai il **livello 2** della pila ISO/OSI. Questi link hanno **topologia** a **stella** e possono collegare lo stesso sensore/attuatore a molti gateway. I dispositivi utilizzano un meccanismo di **routing** di livello L1 e quindi basato sul **flooding**. E' il  routing **più semplice** possibile, e anche il **più affidabile** ma possiede l'**incoveniente** di generare **pacchetti duplicati** nel loro percorso verso l'**applicazione**. Questo problema è gestito dal **network server**.
 
+## **Collisioni**
+
+In generale, in una rete LoRaWAN le **collisioni** tra messaggi di sorgenti diverse vengono evitate o risolte sfruttando tutte le **dimensioni disponibili** della comunicazione radio.
+
 ### **SDM: separazione cellulare all'interno di una certa area**
 
 Device sufficientemente lontani tra loro, o coperti da gateway diversi, non si interferiscono anche trasmettendo sulla stessa frequenza con lo stesso SF (codice ortogonale) e nello stesso istante. E' l'effetto dell'attenuazione di spazio libero dei segnali radio che permette il riuso delle frequenze (canali) vicine o uguali in posizioni lontane. 
@@ -90,8 +94,7 @@ In EU868 i canali obbligatori sono 3 fino ad mun massimo di 16 permesso dallo st
 - 868.3 MHz
 - 868.5 MHz
 
-Questi **tre canali** devono essere supportati da qualsiasi device e gateway LoRaWAN EU868. Gli altri 5 (fino a 8 totali) sono opzionali, definiti dal network server e comunicati al device durante il join tramite i comandi MAC NewChannelReq. il frequency hopping pseudo-casuale tra pacchetti riduce la probabilità che due device scelgano sempre lo stesso canale.
-
+Questi **tre canali** devono essere supportati da qualsiasi device e gateway LoRaWAN EU868. Gli altri 5 (fino a 8 totali) sono opzionali, definiti dal network server e comunicati al device durante il join tramite i comandi MAC NewChannelReq. il **frequency hopping** pseudo-casuale tra pacchetti riduce la probabilità che due device scelgano sempre lo stesso canale.
 
 ### **CDM: separazione per Spreading Factor all'interno di ogni canale**
 
@@ -102,8 +105,6 @@ Tra un pacchetto e il successivo il device **cambia frequenza** in modo pseudo-c
 All'interno di **ciascuno** degli 8 canali in frequenza, più dispositivi possono trasmettere **contemporaneamente sulla stessa frequenza** usando Spreading Factor diversi. Come visto nella modulazione CSS, segnali con SF differente sono **ortogonali** tra loro: il ricevitore riesce a separarli e decodificarli indipendentemente, anche se sovrapposti nel tempo e nella frequenza.
 
 Questo è concettualmente analogo al **CDM (Code Division Multiplexing)**: la proprietà di separazione non è né il tempo né la frequenza, ma il **codice di spreading** (in questo caso lo SF). Ogni ricevitore fisico del gateway è quindi un **demodulatore multi-SF**, capace di decodificare in parallelo fino a 6 trasmissioni contemporanee sulla stessa frequenza (una per ogni SF da 7 a 12).
-
-In generale, in una rete LoRaWAN le **collisioni** tra messaggi di sorgenti diverse vengono evitate o risolte sfruttando tutte le **dimensioni disponibili** della comunicazione radio:
 
 ### **ALOHA: separazione per tempo all'interno di uno stesso SF**
 
