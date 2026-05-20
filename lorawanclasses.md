@@ -77,13 +77,13 @@ La **figura** sottostante riassume la rete LoRaWAN dal punto di osservazione di 
 
 <img src="/img/lorawanLogicArchitecture.png" alt="alt text" width="700">
 
+Si noti, che il canale che collega i dispositivi IoT ai gateway non supera mai il **livello 2** della pila ISO/OSI. Questi link hanno **topologia** a **stella** e possono collegare lo stesso sensore/attuatore a molti gateway. I dispositivi utilizzano un meccanismo di **routing** di livello L1 e quindi basato sul **flooding**. E' il  routing **più semplice** possibile, e anche il **più affidabile** ma possiede l'**incoveniente** di generare **pacchetti duplicati** nel loro percorso verso l'**applicazione**. Questo problema è gestito dal **network server**.
+
 ### **SDM: separazione cellulare all'interno di una certa area**
 
 Device sufficientemente lontani tra loro, o coperti da gateway diversi, non si interferiscono anche trasmettendo sulla stessa frequenza con lo stesso SF (codice ortogonale) e nello stesso istante. E' l'effetto dell'attenuazione di spazio libero dei segnali radio che permette il riuso delle frequenze (canali) vicine o uguali in posizioni lontane. 
 
 ### **FDM: separazione in frequenza all'interno di ogni gateway**
-
-Si noti, che il canale che collega i dispositivi IoT ai gateway non supera mai il **livello 2** della pila ISO/OSI. Questi link hanno **topologia** a **stella** e possono collegare lo stesso sensore/attuatore a molti gateway. I dispositivi utilizzano un meccanismo di **routing** di livello L1 e quindi basato sul **flooding**. E' il  routing **più semplice** possibile, e anche il **più affidabile** ma possiede l'**incoveniente** di generare **pacchetti duplicati** nel loro percorso verso l'**applicazione**. Questo problema è gestito dal **network server**.
 
 In EU868 i canali obbligatori sono 3 fino ad mun massimo di 16 permesso dallo standard LoRaWAN. In realtà normalmente sono fino ad 8 dato che i gateway più comuni (come quelli basati su SX1301) supportano fino a 8 canali simultanei, e i network server come TTN li configurano tutti e 8, ma non è un requisito obbligatorio dello standard.
 
