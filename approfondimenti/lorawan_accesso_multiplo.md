@@ -113,5 +113,15 @@ La **asimmetria** tra device e gateway è una scelta progettuale precisa: il dev
 - **Tektelic — The benefit of a 16-channel deployment in EU868**:
   <https://tektelic.com/expertise/the-benefit-of-a-16-channel-deployment/>
 
+- **The Stunning Efficiency and Beauty of the Polyphase Channelizer**
+  https://tomverbeure.github.io/2026/02/16/Polyphase-Channelizer.html
+
+  - **Datasheet SX1301 v2.4 (PDF ufficiale Semtech, estratti verificati) — descrive i canali IF, la decimazione e l'architettura a livello funzionale:**
+    https://docs.rakwireless.com/product-categories/wislink/rak831/datasheet/
+- **FAQ Semtech — architettura 2×SX1257 + SX1301:**
+  https://www.semtech.com/design-support/faq/faq-gateway
+- Teoria del digital channelizer (il processo DSP sottostante, indipendente da LoRa) — fonte accademica classica: Crochiere & Rabiner, Multirate Digital Signal Processing, Prentice Hall 1983 — citato anche nel brevetto USPTO citato sopra.
+
+- https://bxbsp.com/Tutorials/Tutorial1/Channelizer_Derivation.html
 ---
 > [Torna ISM](../ism.md#2-parallelismo-del-gateway-ricezione-concorrente)
