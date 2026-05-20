@@ -173,6 +173,8 @@ Tre cose che a volte si pensano possibili in Europa ma non lo sono:
 
 ## Modalità avanzate di accesso: LBT e AFA
 
+> **Nota.** Questo regime alternativo è previsto da ETSI ma **in LoRaWAN EU868 non viene utilizzato in pratica**: le LoRa Alliance Regional Parameters per EU868 prescrivono esplicitamente il regime a duty cycle, e di conseguenza gli stack diffusi (LMIC, ulora, LoRaMac-node, MultiTech mPower) non implementano LBT per questa regione. I motivi principali sono tre: (1) i moduli LoRa a basso costo non sono pensati per restare in ricezione prima di ogni TX, peggiorando il consumo di batteria; (2) la certificazione ETSI in modalità LBT è più complessa e costosa di quella in duty cycle; (3) la quasi-ortogonalità degli SF e gli 8 canali distinti rendono già le collisioni rare, quindi il "guadagno" di LBT non giustifica la complessità aggiuntiva. LBT/AFA è invece **obbligatorio** in altre regioni (profili regionali AS923 per Giappone e parte dell'Asia, KR920 per la Corea del Sud), dove esistono profili LoRaWAN dedicati. La sezione che segue resta utile come **completezza teorica e di riferimento normativo**.
+
 ETSI EN 300 220 consente, in alternativa al regime a duty cycle, due **schemi di riferimento** più sofisticati: ascolto prima di trasmettere (LBT) e agilità di frequenza adattiva (AFA).
 
 **LBT (*Listen Before Talk*)** è una modalità in cui un dispositivo, prima di trasmettere, deve ascoltare se il mezzo è già in uso attraverso una funzione di **CCA** (*Clear Channel Assessment*).
