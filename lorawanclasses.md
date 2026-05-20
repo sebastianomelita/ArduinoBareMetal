@@ -477,6 +477,7 @@ Nel contesto di LoRaWAN, un **gateway** può assumere un ruolo di **coordinament
      - Sensori di vibrazione o shock — monitoraggio strutturale di ponti, edifici, macchinari: trasmettono su evento quando viene rilevata un'anomalia.
      - Rilevatori di apertura/chiusura — porte, finestre, tombini: trasmettono l'evento e non richiedono feedback immediato.
      - Sensori agricoli — umidità del suolo, irraggiamento solare, meteo: campionamento periodico, nessuna necessità di downlink frequenti.
+
 Il denominatore comune è: il device decide quando trasmettere, il server si limita ad ascoltare, e i rari downlink di configurazione o comando possono attendere il prossimo uplink spontaneo senza impatti operativi.
 - **B(eacon)** Come la classe A ma questi dispositivi aprono anche finestre di ricezione aggiuntive a orari programmati.
 - **C(continuo)** Uguale ad A ma questi dispositivi sono in ascolto continuo. Pertanto questi dispositivi consumano più energia e sono spesso alimentati dalla rete elettrica. La Classe B è adatta a device alimentati a batteria che devono però ricevere comandi dal server con latenza controllata e prevedibile: valvole di irrigazione intelligenti che ricevono l'orario di apertura dal server, contatori smart che devono rispondere a richieste di lettura programmate, sensori di parcheggio che ricevono aggiornamenti di configurazione, attuatori a basso consumo in reti di controllo industriale leggero.
