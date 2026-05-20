@@ -6,7 +6,7 @@
 
 ### **Segnale in banda base (BB)**
 
-Il **segnale** di una qualsiasi comunicazione viene **generato** a partire da una operazione di **trasduzione** (trasformazione da **grandezza fisica** a **segnale elettrico**) a cui poi segue, nel mondo digitale, una operazione di **campionamento** e **quantizzazione** per trasformarlo, dal mondo doppiamente **infinito** del tempo e dello spazio, a quello doppiamente **discreto** (finito) dei **campioni** e dei **livelli**, questi ultimi numerati e **codificati** in **bit**. 
+Il **segnale** di una qualsiasi comunicazione viene **generato** a partire da una operazione di **trasduzione** (trasformazione da **grandezza fisica** a **segnale elettrico**) a cui poi segue, nel mondo digitale, una operazione di **campionamento** e **quantizzazione** per trasformarlo, dal mondo doppiamente **infinito** del tempo e dello spazio, a quello doppiamente **discreto** (finito) dei **campioni** e dei **livelli**, questi ultimi numerati e **codificati** in **bit**. -
 
 <img src="img/adc.png" alt="alt text" width="700">
 
@@ -165,7 +165,7 @@ Un segnale di **chirp** può essere suddiviso in 2^SF valori che **codificano**,
 - SF11 → 2^11 = **2048** valori
 - SF12 → 2^12 = **4096** valori
 
-Ad **un simbolo** corrisponde, nel tempo, una certa **sequenza lunga SF** di bit da trasmettere che può essere ricostruita **in ricezione** misurando, nel dominio della frequenza rappresentato come sprettogramma (ottenuto mediante FFT), la **lunghezza del segmento inclinato** del chirp che **codifica** un valore di **simbolo** compreso tra [0, 2^SF]. 
+Ad **un simbolo** corrisponde, nel tempo, una certa **sequenza lunga SF** di bit da trasmettere che può essere ricostruita **in ricezione** misurando, nel dominio della frequenza rappresentato come sprettogramma (ottenuto mediante FFT), la **lunghezza del segmento inclinato** del chirp dato che questa **codifica** un valore di **simbolo** compreso tra [0, 2^SF]. 
 
 Un **chip** è il segnale elementare minimo della modulazione CSS: è la singola variazione di frequenza che il chirp compie in un intervallo di tempo pari a 1/B secondi (il reciproco della larghezza di banda). Più chip compongono un simbolo, e più simboli compongono i bit trasmessi.
 
