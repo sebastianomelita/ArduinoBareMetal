@@ -275,6 +275,8 @@ In sintesi, la lunghezza dei messaggi lora è strettamente correlata alle **limi
 
 I messaggi scambiati in una rete lora sono complessivamente di due tipi che si mappano l’uno sull’altro: **Messaggi corti** e **messaggi lunghi**. 
 
+Per dei dettagli sul preambolo vedi [preambolo di sincronizzazione](protocolli.md#preambolo-di-sincronizzazione).
+
 ### **Messaggi corti (Formato del payload lora)**
 
 Sono in formato binario, tra sensore e gateway. Vengono mandati in wireless su **banda ISM** con forti limitazioni di duty cycle, per cui devono essere i più **corti** possibile, anche a discapito della chiarezza. Possono essere **definiti** sotto forma di **struct C** e poi inviati ad una **libreria di serializzazione** (come Cayenne LPP) che si occupa di trasformali in una **sequenza compatta** di singoli bit.
