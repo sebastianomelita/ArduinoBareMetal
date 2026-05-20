@@ -91,6 +91,8 @@ Device sufficientemente lontani tra loro, o coperti da gateway diversi, non si i
 
 Tra un pacchetto e il successivo il device **cambia frequenza** in modo **pseudo-casuale** tra quelle disponibili (**frequency hopping** tra pacchetti), ma si tratta di una trasmissione sequenziale, non parallela. L'obiettivo del frequency hopping è distribuire il carico sui canali disponibili e ridurre le probabilità di collisioni, non aumentare il throughput di un singolo device.
 
+Un singolo end-device LoRa dispone di un **solo trasmettitore radio**. Questo significa che in ogni istante può trasmettere su **una sola frequenza**. Non è capace di trasmettere bit in parallelo su più canali simultaneamente.
+
 In EU868 i canali obbligatori sono 3 fino ad un massimo di 16 permesso dallo standard LoRaWAN. In realtà normalmente sono fino ad 8 dato che i gateway più comuni (come quelli basati su SX1301) supportano fino a 8 canali simultanei, e i network server come TTN li configurano tutti e 8, ma non è un requisito obbligatorio dello standard.
 - 868.1 MHz
 - 868.3 MHz
@@ -99,8 +101,6 @@ In EU868 i canali obbligatori sono 3 fino ad un massimo di 16 permesso dallo sta
 ### **CDM: separazione per Spreading Factor all'interno di ogni canale**
 
 All'interno di **ciascuno** degli 8 canali in frequenza, più dispositivi possono trasmettere **contemporaneamente sulla stessa frequenza** usando Spreading Factor diversi. Come visto nella modulazione CSS, segnali con SF differente sono **ortogonali** tra loro: il ricevitore riesce a separarli e decodificarli indipendentemente, anche se sovrapposti nel tempo e nella frequenza.
-
-Un singolo end-device LoRa dispone di un **solo trasmettitore radio**. Questo significa che in ogni istante può trasmettere su **una sola frequenza**. Non è capace di trasmettere bit in parallelo su più canali simultaneamente.
 
 Questo è concettualmente analogo al **CDM (Code Division Multiplexing)**: la proprietà di separazione non è né il tempo né la frequenza, ma il **codice di spreading** (in questo caso lo SF). Ogni ricevitore fisico del gateway è quindi un **demodulatore multi-SF**, capace di decodificare in parallelo fino a 6 trasmissioni contemporanee sulla stessa frequenza (una per ogni SF da 7 a 12).
 
