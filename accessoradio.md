@@ -175,15 +175,20 @@ La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere
 
 I segnali di chirp con uguale SF non sono ortogonali tra loro per cui potenzialmente si interferiscono, mentre i segnali di chirp con **SF differente** sono effettivamente **ortogonali** per cui non si interferiscono anche se presenti nello stesso momento sullo stesso canale. Chiaramente, un numero elevato di segnali ortogonali interferenti tendenzialmente degrada il rapporto segnale rumore del canale.
  
-L'ampiezza di banda B del canale rappresenta il chip rate. Il reciproco del chip rate rappresenta la lunghezza del chip nel tempo.
+### **Riassumendo**
 
-Il numero di simboli al secondo trasmessi rappresenta il symbol rate. Il reciproco del symbol rate rappresenta la lunghezza del simbolo nel tempo.
+L'ampiezza di banda B del canale rappresenta il **chip rate** ovvero al numero di segnali elementari al secondo, ma anche la larghezza del canale. 
+
+Il reciproco del chip rate rappresenta la lunghezza del chip nel tempo ovvero il **tempo di durata del chip**.
+
+Il numero di simboli al secondo trasmessi rappresenta il **symbol rate**. Il reciproco del symbol rate rappresenta la lunghezza del simbolo nel tempo ovvero il **tempo di durata del simbolo**.
+
+Un **chip** è anche un simbolo di frequenza massima.
 
 CHIP RATE         |  SYMBOL RATE  |  BIT RATE  | CHIP DURATION        |  SYMBOL DURATION   
 :-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:|:-------------------------:
 ![](img/bw.webp)  |  ![](img/rs.webp)   |   ![](img/rb.webp)  |  ![](img/ts.webp) |  ![](img/tc.webp)
 
-La larghezza di banda B equivale al **chip rate**, ovvero al numero di segnali elementari al secondo, è la larghezza del canale. Un simbolo di frequenza massima si chiama **chip**. 
 
 Lo **Spreading Factor (SF)** in LoRa è definito come il numero di bit per simbolo e indica il numero di volte che il segnale viene **allargato in frequenza** rispetto alla larghezza originale in banda stretta. Ad esempio, con SF7, il segnale viene allargato di 2^7/7 volte rispetto alla larghezza di banda originale, un incremento pressochè **esponenziale**.
 
