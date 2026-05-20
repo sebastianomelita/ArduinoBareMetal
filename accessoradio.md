@@ -159,7 +159,7 @@ Definizioni:
 
 Un segnale di **chirp** può essere suddiviso in 2^SF valori (128) che **codificano**, nella frequenza, il simbolo da trasmettere. Ad **un simbolo** corrisponde, nel tempo, una certa **sequenza lunga SF** di bit da trasmettere che può essere ricostruita **in ricezione** misurando la **lunghezza in frequenza** del chirp nello sprettogramma (mediante FFT) dove ha un valore compreso tra [0, 2^SF]. 
 
-La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere uno scivolamento di B Hertz nel tempo in cui si raccolgono SF bit, cioè un un simbolo, e questo per tutti i valori di SF. Per effetto di ciò, in corrispondenza di un fattore di spreading SF, i singoli bit verranno diffusi di 2^SF/SF nella frequenza.
+La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere uno scivolamento di B Hertz (banda) nel tempo in cui si raccolgono SF bit, cioè un un simbolo, e questo per tutti i valori di SF. Per effetto di ciò, in corrispondenza di un fattore di spreading SF, i singoli bit verranno diffusi di 2^SF/SF nella frequenza.
 
 I segnali di chirp con uguale SF non sono ortogonali tra loro per cui potenzialmente si interferiscono, mentre i segnali di chirp con **SF differente** sono effettivamente **ortogonali** per cui non si interferiscono anche se presenti nello stesso momento sullo stesso canale. Chiaramente, un numero elevato di segnali ortogonali interferenti tendenzialmente degrada il rapporto segnale rumore del canale.
  
