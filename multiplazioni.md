@@ -1,5 +1,15 @@
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)
 
+
+- [Dettaglio architettura Zigbee](archzigbee.md)
+- [Dettaglio architettura BLE](archble.md)
+- [Dettaglio architettura WiFi infrastruttura](archwifi.md)
+- [Dettaglio architettura WiFi mesh](archmesh.md) 
+- [Dettaglio architettura LoraWAN](lorawanclasses.md)
+- [Dettaglio architettura 5G/6G](ranprivata.md)
+- [Dettaglio architettura RFID](archrfid.md)
+
+
 ## **Le multiplazioni statiche**
 
 Un rete di computer potrebbe, in **linea di principio**, essere realizzata con un collegamento **fisico**, **diretto** e **dedicato** tra un PC e **tutti** gli altri. Un collegamento fisico **dedicato** è un link fisico utilizzato solamente da due interlocutori e basta, che quindi possono usufruirne sempre e in qualunque momento senza aspettare.
