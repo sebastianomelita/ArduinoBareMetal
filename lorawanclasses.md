@@ -43,7 +43,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 
 
-[Rete di reti lora](/approfondimenti/lora_federation.md)  
+[Rete di reti lora](/approfondimenti/lorawan_federation.md)  
 
 [Messaggi MQTT](/approfondimenti/messaggi_mqtt.md)
 
