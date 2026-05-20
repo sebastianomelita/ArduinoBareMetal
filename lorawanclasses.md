@@ -93,6 +93,8 @@ Esistono due **direzioni** di trasmissione, entrambe soggette a collisione:
 
 Device sufficientemente lontani tra loro, o coperti da gateway diversi, non si interferiscono anche trasmettendo sulla stessa frequenza con lo stesso SF (codice ortogonale) e nello stesso istante. E' l'effetto dell'**attenuazione di spazio libero** dei segnali radio che permette il riuso delle frequenze (canali) vicine o uguali in posizioni lontane. 
 
+L'effetto isolante dell'attenuazione di spazio libero è massimizzato da una serie di regole molto rigide che riguardano il controllo sia della potenza di trasmissione che del guadagno delle antenne. Queste regole sono essenziali per garantire un minimo di fairness nell'accesso ad una banda abbastanza affollata come quella ISM. [Potenza e antenne in banda ISM](ism.md#potenza-disponibile-massima)  
+
 ### **FDM: separazione in frequenza all'interno di ogni gateway**
 
 Tra un pacchetto e il successivo il device **cambia frequenza** in modo **pseudo-casuale** tra quelle disponibili (**frequency hopping** tra pacchetti), ma si tratta di una trasmissione sequenziale, non parallela. L'obiettivo del frequency hopping è distribuire il carico sui canali disponibili e ridurre le probabilità di collisioni, non aumentare il throughput di un singolo device.
