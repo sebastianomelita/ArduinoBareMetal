@@ -1,5 +1,13 @@
 >[Torna a reti di sensori](sensornetworkshort.md#topologia-delle-reti-di-sensori-cablata)
 
+- [Dettaglio architettura Zigbee](archzigbee.md)
+- [Dettaglio architettura BLE](archble.md)
+- [Dettaglio architettura WiFi infrastruttura](archwifi.md)
+- [Dettaglio architettura WiFi mesh](archmesh.md) 
+- [Dettaglio architettura LoraWAN](lorawanclasses.md)
+- [Dettaglio architettura 5G/6G](ranprivata.md)
+- [Dettaglio architettura RFID](archrfid.md)
+
 ### **Esempi di collegamenti base con topologia a stella**:
 
   <img src="Star-network-1024x466.png" alt="alt text" width="700">
