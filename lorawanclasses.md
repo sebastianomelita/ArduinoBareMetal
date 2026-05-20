@@ -81,7 +81,7 @@ Si noti, che il canale che collega i dispositivi IoT ai gateway non supera mai i
 
 ## **Collisioni**
 
-La tratta tra un sensore/attuatore e un gateway LoRaWAN è un collegamento radio che, essendo un **mezzo broadcast** (se uno parla allora tutti ascoltano) è per sua natura soggetto al fenomeno delle collisioni (interferenza distruttiva tra i messaggi).
+La tratta tra un sensore/attuatore e un gateway LoRaWAN è un collegamento radio che, essendo un **mezzo broadcast** (se uno parla allora tutti ascoltano) è per sua natura soggetta al fenomeno delle collisioni (interferenza distruttiva tra i messaggi).
 
 In generale, in una rete LoRaWAN le **collisioni** tra messaggi di sorgenti diverse vengono evitate o risolte sfruttando tutte le **dimensioni disponibili** della comunicazione radio.
 
