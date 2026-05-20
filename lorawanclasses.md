@@ -55,6 +55,8 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 [Sensori](/approfondimenti/sensore.md)
 
+[Dettaglio tecnologie di accesso al mezzo radio](accessoradio.md)
+
 ## **Funzioni di una rete lora**
 
 Le **funzioni** dell'architettura **lora** possono essere distinte su **3 dispositivi diversi** oppure coincidere in un **unico dispositivo** che le ingloba tutte:
