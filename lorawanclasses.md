@@ -75,7 +75,7 @@ Avere a disposizione una **rete di distribuzione IP** per i comandi e le letture
 
 La **figura** sottostante riassume la rete LoRaWAN dal punto di osservazione di un **collegamento L7** (applicativo) sulla **rete di distribuzione**:
 
-<img src="/img/lorawanLogicArchitecture.png" alt="alt text" width="700">
+<img src="/img/lorawanLogicArchitecture.png" alt="alt text" width="800">
 
 Si noti, che il canale che collega i dispositivi IoT ai gateway non supera mai il **livello 2** della pila ISO/OSI. Questi link hanno **topologia** a **stella** e possono collegare lo stesso sensore/attuatore a molti gateway. I dispositivi utilizzano un meccanismo di **routing** di livello L1 e quindi basato sul **flooding**. E' il  routing **più semplice** possibile, e anche il **più affidabile** ma possiede l'**incoveniente** di generare **pacchetti duplicati** nel loro percorso verso l'**applicazione**. Questo problema è gestito dal **network server**.
 
