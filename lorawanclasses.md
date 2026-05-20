@@ -112,7 +112,7 @@ Questo è concettualmente analogo al **CDM (Code Division Multiplexing)**: la pr
 
 ### **ALOHA: separazione per tempo all'interno di uno stesso SF**
 
-L'ultima grandezza che adesso può isolare i messaggi è li **Tempo**. Ma i device trasmettono in modo **asincrono e non coordinato**, non esiste un TDM, che richiederebbe un coordinatore centrale che assegna slot temporali. 
+L'ultima grandezza che adesso può isolare i messaggi è li **Tempo**. Ma i device trasmettono in modo **asincrono e non coordinato**, non esiste un TDM, che richiederebbe un **coordinatore centrale** che assegna slot temporali. 
 
 Se due device trasmettono in istanti diversi per caso semplicemente non si interferiscono, ma non è una garanzia. 
 
