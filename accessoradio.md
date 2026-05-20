@@ -157,7 +157,15 @@ Definizioni:
 - **Fattore di spreading (diffusione)**: numero di bit codificato per simbolo (stato RF)
 - **Chirp rate**: derivata prima della frequenza del chirp
 
-Un segnale di **chirp** può essere suddiviso in 2^SF valori (128) che **codificano**, nella frequenza, il simbolo da trasmettere. Ad **un simbolo** corrisponde, nel tempo, una certa **sequenza lunga SF** di bit da trasmettere che può essere ricostruita **in ricezione** misurando la **lunghezza in frequenza** del chirp nello sprettogramma (mediante FFT) dove ha un valore compreso tra [0, 2^SF]. 
+Un segnale di **chirp** può essere suddiviso in 2^SF valori che **codificano**, nella frequenza, il simbolo da trasmettere. Il numero di valori dipende dallo SF scelto:
+- SF7 → 2^7 = **128** valori
+- SF8 → 2^8 = **256** valori
+- SF9 → 2^9 = **512** valori
+- SF10 → 2^10 = **1024** valori
+- SF11 → 2^11 = **2048** valori
+- SF12 → 2^12 = **4096** valori
+
+Ad **un simbolo** corrisponde, nel tempo, una certa **sequenza lunga SF** di bit da trasmettere che può essere ricostruita **in ricezione** misurando la **lunghezza in frequenza** del chirp nello sprettogramma (mediante FFT) dove ha un valore compreso tra [0, 2^SF]. 
 
 La **pendenza** (slope) del chirp nello spettrogramma è sempre tale da ottenere uno scivolamento di B Hertz (banda) nel tempo in cui si raccolgono SF bit, cioè un un simbolo, e questo per tutti i valori di SF. Per effetto di ciò, in corrispondenza di un fattore di spreading SF, i singoli bit verranno diffusi di 2^SF/SF nella frequenza.
 
@@ -183,7 +191,7 @@ DR         |  SF
 
 Il **data rate (DR)** varia da 0 a 5 ed è inversamente proporzionale allo **spreading factor (SF)** che varia da 7 a 12.
 
-Aumentando lo spreading factor, si aumentano le componenti di frequenza dello spettro totale del segnale. In altre parole, l’energia del segnale totale è ora distribuita su una gamma più ampia di frequenze, consentendo al ricevitore di discernere un segnale con un rapporto segnale-rumore (SNR) più basso (cioè peggiore).
+Aumentando lo spreading factor, si aumentano le componenti di frequenza dello spettro totale del segnale. In altre parole, l'energia del segnale totale è ora distribuita su una gamma più ampia di frequenze, consentendo al ricevitore di discernere un segnale con un rapporto segnale-rumore (SNR) più basso (cioè peggiore).
 
 <img src="img/chirpedMsg.png" alt="alt text" width="600">
 
@@ -194,7 +202,7 @@ La **trama Lora** è composta da un preambolo di 8 chirp di sincronizzazione pi�
 In **ricezione**, viene effettuato il cosidetto **dechirping** generando localmente dei segnali upchirp e downchirp con appropriato chirp rate e moltiplicandoli per i segnali ricevuti con pendenza opposta. Per effetto di ciò si ottengono nello spettrogramma dei segnali a frequenza costante che rappresentano singole righe spettrali. Quelle del **preambolo** hanno frequenza sempre uguale per tutti i messaggi mentre quelle del **payload** hanno frequenze diverse per ogni simbolo e la loro posizione nello spettro rappresenta il **valore** della codifica del simbolo, da cui è possibile risalire alla sequenza degli SF bit corrispondenti che sono stati trasmessi. 
 
 Altre **operazioni numeriche** coperte da brevetto e ricostruibili solamente mediante reverse ingegnering permettono di completare la decodifica effettiva dei bit. In totale sono riconducibili a 4 fasi:
-1. **Symbol “gray indexing”**, aggiunge tolleranza agli errori
+1. **Symbol "gray indexing"**, aggiunge tolleranza agli errori
 2. **Data whitening**. Introduce randomizzazione dei bit trasmessi
 3. **Interleaving**. Realizza proprietà di oscuramento dei bit 
 4. **Forward Error Correction**, aggiunge dei bit di parità
