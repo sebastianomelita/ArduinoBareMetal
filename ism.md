@@ -1,271 +1,356 @@
->[Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
+> [Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
 
-## **Banda ISM**
+## Banda ISM
 
-Le bande libere sono le frequenze di uso libero, non tutelate, che non richiedono concessioni per il loro impiego. Sono spesso indicate come ISM (Industrial, Scientific and Medical)[Nota 1].
+Le bande libere sono frequenze di uso libero, non tutelate, che non richiedono concessioni per il loro impiego. Sono spesso indicate come ISM (*Industrial, Scientific and Medical*) [Nota 1].
 
-In realtà ISM è un sottogruppo di tutte le frequenze disponibili.posside 
-L’uso di tali bande è regolamentato in modo da consentirne l’impiego condiviso ed evitare che un utente o un servizio possa monopolizzare la risorsa.
+In realtà ISM è un sottogruppo di tutte le frequenze disponibili. L'uso di tali bande è regolamentato in modo da consentirne l'impiego condiviso ed evitare che un utente o un servizio possa monopolizzare la risorsa.
 
 In tabella un elenco parziale con le principali limitazioni:
 
-<img src="ismband.png" alt="alt text" width="600">
+<img src="ismband.png" alt="Bande ISM" width="600">
 
-L'ente regolatore, in Italia il Ministero dello Sviluppo Economico (MISE), fissa alcuni criteri per stabilire il diritto di accesso quali la distinzione nell’uso privato e non o la destinazione di frequenze ad uso contemporaneo a differenti servizi aventi differenti finalità. L’uso delle bande libere è destinato ad apparati denominati SRD (Short Range Devices). Curiosamente la banda 862-876 MHz (sub-GHz) molto utilizzata da dispositivi SRD, è gestita dal Ministero della Difesa e non dal MISE.  
+L'ente regolatore — in Italia il MIMIT (ex MISE, Ministero delle Imprese e del Made in Italy) — fissa i criteri per stabilire il diritto di accesso: distinzione fra uso privato e non, destinazione di frequenze a servizi con finalità diverse, ecc. L'uso delle bande libere è destinato ad apparati denominati **SRD** (*Short Range Devices*). La banda sub-GHz 862-876 MHz, molto utilizzata da dispositivi SRD, ricade nel Piano Nazionale di Ripartizione delle Frequenze ed è soggetta ad autorizzazione generale; storicamente parte di questo range è stata coordinata con il Ministero della Difesa.
 
-I **parametri** e le **limitazioni** che vedremo sono dei criteri di accesso al mezzo radio volti a ridurre **disturbi mutui** fra i vari servizi dei vari utenti e la **monopolizzazione** di un canale da parte di un singolo utente.
+I **parametri** e le **limitazioni** che vedremo sono criteri di accesso al mezzo radio volti a ridurre i **disturbi mutui** fra i vari servizi e la **monopolizzazione** di un canale da parte di un singolo utente. I criteri riguardano anche alcuni dettagli fisici e tecnici.
 
-I **criteri** riguardano anche alcuni dettagli fisici e tecnici.
+---
 
-## **Duty Cycle** 
+## Duty cycle
 
-Fa riferimento al rapporto fra il tempo di trasmissione e il tempo di ricezione più il tempo di ricezione. E' analogo ad un **periodo di attesa** obbligatorio tra una trasmissione e la successiva. Ad esempio un duty cycle dell'1% impone che a fronte della trasmissione di un pacchetto dati di un secondo, l’apparato non possa trasmettere per 99 secondi. Questo parametro, di fatto, limita a trasmissioni brevi, non frequenti ed esclude gli streaming audio e video. La durata predefinita del periodo di osservazione è di 1 ora, se non diversamente specificato per la banda di frequenza specifica. Attualmente tutte le bande di frequenza utilizzano il periodo di osservazione predefinito di 1 ora. I Duty Cycle variano dallo 0,1% (3,6 s all'ora), passando per 1% (36 s all'ora),  fino al 10% (360 s all'ora). Il  **tempo giornaliero** di occupazione del canale corrispondente al duty cycle massimo consentito per quel canale può essere riassunto:
-    ```C++
-          0.1%	86 seconds
-          1%	864 seconds
-          10%	8640 seconds
-    ```
-  
-     - **Trasmissione parallela su più canali**. In questo caso, la stessa sorgente trasmette su due canali in due sottobande diverse con una occupazione di due unità su 10 (cioè 20 su 100) per ciascun ciascun canale. Il duty cycle totale della sorgente, in questo caso, è del 60%. Dopo che il dispositivo ha trasmesso su un canale, non trasmetterà nuovamente su quel canale finché non sarà raggiunto il tempo minimo di disattivazione TX, che è un tempo maggiore di 100 ms.       
-      <img src="img/duty-cycle-multi-band.png" alt="alt text" width="600">
+Il duty cycle indica il rapporto fra il tempo di **trasmissione** e il tempo **totale** (trasmissione + silenzio) in una finestra di osservazione. È equivalente a un **periodo di attesa obbligatorio** fra una trasmissione e la successiva. Ad esempio, un duty cycle dell'1% impone che a fronte della trasmissione di un pacchetto della durata di un secondo, l'apparato non possa trasmettere per i successivi 99 secondi.
 
-     
-     - **Duty cycle aggregato**. È utile avere molti canali nella maschera dei canali, in modo che le trasmissioni abbiano meno probabilità di subire ritardi. I requisiti europei stabiliscono inoltre che su uno spettro di 200 kHz possono verificarsi solo 100 secondi di trasmissione nell'arco di un'ora. Questo metodo semplifica e ottimizza i calcoli dell'utilizzo dello spettro nell'arco di un'ora. Lo standard afferma che più canali si usano, più tempo di trasmissione puoi occupare in un periodo di un'ora. Si può calcolare il duty cycle effettivo in base al numero di canali disponibili abilitati come segue:
-```Duty cycle effettivo = (numero di canali * 36)/3600```. Ad esempio, se si abilitassero **due canali** si avrebbe un **duty cycle effettivo** del **2%**.
+Questo parametro limita la radio a trasmissioni brevi e poco frequenti, escludendo per esempio gli streaming audio e video. La **durata predefinita del periodo di osservazione è di un'ora**, salvo diverse specifiche per la banda di frequenza considerata. Attualmente tutte le bande sub-GHz europee usano il periodo di osservazione di un'ora.
 
-    - **Calcolatori online**. Un esempio di calcolatore online di duty cycle per la **tecnologia LoraWAN** è: https://avbentem.github.io/airtime-calculator/ttn/eu868
-  
-## **Canali e bande**. 
+I duty cycle previsti da ETSI variano dallo **0,1%** (3,6 s all'ora), all'**1%** (36 s all'ora), fino al **10%** (360 s all'ora). Il tempo cumulativo di occupazione del canale può essere riassunto:
 
-I **canali** sono intervalli di frequenza adoperati per allocare nel dominio della frequenza la trasmissione di una certa sorgente. Un canale è caratterizzato da una frequenza centrale e da una sua ampiezza (rappresentabile anche come escursione dalla frequenza centrale. Le **bande** sono intervalli di frequenza all'interno delle quali sono allocabili un certo numero di canali.
-Organizzare i canali in **bande** può servire per isolare **gruppi di canali** che possono essere adoperati per gli **stessi servizi**. Organizzare i canali in **sottobande** può servire per isolare **gruppi di canali** a cui applicare le **stesse regole**. Ad esempio, le sottobande LoraWAN in Europa sono :  
+```text
+0,1%   → 3,6 s/ora       (86 s al giorno)
+1%     → 36 s/ora        (864 s al giorno)
+10%    → 360 s/ora       (8.640 s al giorno)
+```
 
-  <img src="img/LoRaWAN_Sub-bands.webp" alt="alt text" width="600">
-  
-   ```C++
-    - K. (863 MHz - 865 MHz): 0.1%, 25 mW ERP       (uplink)
-    - L. (865 MHz - 868 MHz): 1%, 25 mW ERP         (uplink)
-    - M. (868 MHz - 868.6 MHz): 1%, 25 mW ERP       (uplink)
-    - N. (868.7 MHz - 869.2 MHz): 0.1%, 25 mW ERP   (uplink)
-    - P. (869.4 MHz - 869.65 MHz): 10%, 500 mW ERP  (downlink)
-    - Q. (869.7 MHz - 870 MHz): 1%, 25 mW ERP       (uplink)
+### Calcolatori online
 
-    - Uplink:
-            -  1. 868.1 - SF7BW125 to SF12BW125
-            -  2. 868.3 - SF7BW125 to SF12BW125 and SF7BW250
-            -  3. 868.5 - SF7BW125 to SF12BW125
-            -  4. 867.1 - SF7BW125 to SF12BW125
-            -  5. 867.3 - SF7BW125 to SF12BW125
-            -  6. 867.5 - SF7BW125 to SF12BW125
-            -  7. 867.7 - SF7BW125 to SF12BW125
-            -  8. 867.9 - SF7BW125 to SF12BW125
-            -  9. 868.8 - FSK
-    -  Downlink:
-            -  Uplink channels 1-9 (RX1)
-            -  869.525 - SF9BW125 (RX2)
+Un esempio di calcolatore online di duty cycle / time-on-air per LoRaWAN è:
+<https://avbentem.github.io/airtime-calculator/ttn/eu868>
 
-    -  dBm to mW:  
-            - +16 dBm = 40 mW
-            - +14 dBm = 25 mW
-            - +27 dBm = 500 mW
-    ```
-Prima cosa importante: il duty cycle non è una regola del protocollo LoRaWAN, è una regola **regolatoria europea** (ETSI EN 300 220) che vincola **chiunque trasmetta** sulla banda 863-870 MHz, sia esso un device o un gateway.
+---
 
-Quindi vale per:
-- gli **uplink** trasmessi dai device (di cui parlavamo prima)
-- i **downlink** trasmessi dal gateway
+## Canali e bande
 
-E il limite **dipende dalla sotto-banda** su cui trasmetti, non dalla direzione.
+I **canali** sono intervalli di frequenza adoperati per allocare nel dominio della frequenza la trasmissione di una sorgente. Un canale è caratterizzato da una frequenza centrale e da un'ampiezza (rappresentabile anche come escursione dalla frequenza centrale).
 
-| Sotto-banda | Frequenze | Duty cycle | Potenza max | Uso tipico in LoRaWAN |
+Le **bande** sono intervalli di frequenza all'interno dei quali sono allocabili un certo numero di canali. Organizzare i canali in bande serve a isolare gruppi di canali destinati agli **stessi servizi**. Organizzare i canali in **sottobande** serve a isolare gruppi di canali a cui applicare le **stesse regole** (duty cycle, potenza, modalità di accesso).
+
+Le sottobande LoRaWAN in Europa secondo ETSI EN 300 220 sono:
+
+<img src="img/LoRaWAN_Sub-bands.webp" alt="Sottobande LoRaWAN EU868" width="600">
+
+```text
+K  (863,0 – 865,0 MHz)   → 0,1%   25 mW ERP
+L  (865,0 – 868,0 MHz)   → 1%     25 mW ERP
+M  (868,0 – 868,6 MHz)   → 1%     25 mW ERP
+N  (868,7 – 869,2 MHz)   → 0,1%   25 mW ERP
+P  (869,4 – 869,65 MHz)  → 10%    500 mW ERP
+Q  (869,7 – 870,0 MHz)   → 1%     5 mW ERP
+```
+
+> **Nota.** L'uso "uplink vs downlink" delle sotto-bande non è una prescrizione regolatoria ETSI, ma una **convenzione adottata da LoRaWAN**: gli uplink ricadono tipicamente in L (canali 867,1–867,9) e M (canali 868,1/3/5), il downlink RX2 in P (869,525 MHz) per beneficiare del duty cycle al 10% e dei 500 mW di potenza.
+
+**Canali LoRaWAN EU868:**
+
+```text
+Uplink:
+  1. 868,1 MHz   SF7BW125 ÷ SF12BW125          (sotto-banda M)
+  2. 868,3 MHz   SF7BW125 ÷ SF12BW125, SF7BW250 (sotto-banda M)
+  3. 868,5 MHz   SF7BW125 ÷ SF12BW125          (sotto-banda M)
+  4. 867,1 MHz   SF7BW125 ÷ SF12BW125          (sotto-banda L)
+  5. 867,3 MHz   SF7BW125 ÷ SF12BW125          (sotto-banda L)
+  6. 867,5 MHz   SF7BW125 ÷ SF12BW125          (sotto-banda L)
+  7. 867,7 MHz   SF7BW125 ÷ SF12BW125          (sotto-banda L)
+  8. 867,9 MHz   SF7BW125 ÷ SF12BW125          (sotto-banda L)
+  9. 868,8 MHz   FSK                            (sotto-banda M)
+
+Downlink:
+  RX1: stessa frequenza dell'uplink (canali 1-9)
+  RX2: 869,525 MHz   SF12BW125 (DR0)             (sotto-banda P)
+
+Conversioni dBm ↔ mW:
+  +14 dBm = 25 mW
+  +16 dBm = 40 mW
+  +27 dBm = 500 mW
+```
+
+---
+
+## Duty cycle in LoRaWAN
+
+Il duty cycle non è una regola del protocollo LoRaWAN, è una regola **regolatoria europea** (ETSI EN 300 220) che vincola chiunque trasmetta nella banda 863-870 MHz, sia esso un device o un gateway.
+
+Vale quindi sia per gli **uplink** trasmessi dai device, sia per i **downlink** trasmessi dal gateway. Il limite **dipende dalla sotto-banda** su cui si trasmette, non dalla direzione.
+
+| Sotto-banda | Frequenze | Duty cycle | ERP max | Uso tipico in LoRaWAN |
 |---|---|---|---|---|
-| g | 863,0 – 870,0 MHz (generica) | 1% | 25 mW (14 dBm) | — |
-| h1.4 / g | 865,0 – 868,0 MHz | 1% | 25 mW | uplink (canali 867,1–867,9) |
-| **g1** | **868,0 – 868,6 MHz** | **1%** | **25 mW** | uplink (canali 868,1/3/5) |
-| g2 | 868,7 – 869,2 MHz | 0,1% | 25 mW | poco usato |
-| **g3** | **869,4 – 869,65 MHz** | **10%** | **500 mW (27 dBm)** | **downlink RX2 (869,525)** |
-| g4 | 869,7 – 870,0 MHz | 1% | 5 mW | — |
+| K | 863,0 – 865,0 MHz | 0,1% | 25 mW | poco usato |
+| L | 865,0 – 868,0 MHz | 1% | 25 mW | uplink (canali 867,1–867,9) |
+| **M** | **868,0 – 868,6 MHz** | **1%** | **25 mW** | **uplink** (canali 868,1/3/5) |
+| N | 868,7 – 869,2 MHz | 0,1% | 25 mW | poco usato |
+| **P** | **869,4 – 869,65 MHz** | **10%** | **500 mW** | **downlink RX2** (869,525) |
+| Q | 869,7 – 870,0 MHz | 1% | 5 mW | poco usato |
 
-In LoRaWAN un end-device Class A apre due finestre di ricezione dopo ogni uplink:
-- **RX1**: 1 secondo dopo l'uplink, sulla stessa frequenza dell'uplink, con uno SF derivato. Se il gateway risponde in RX1 → trasmette ad esempio su 868,1 MHz (sotto-banda g1) → 1% di duty cycle disponibile, come gli uplink. In RX1 lo SF del downlink è determinato dallo SF dell'uplink, secondo una tabella di "RX1 DR offset" definita per regione. In EU868 con offset = 0 (default), la regola è:SF del downlink = SF dell'uplink
-- **RX2**: 2 secondi dopo l'uplink, frequenza fissa 869,525 MHz, SF12 (default EU868). Se il gateway risponde in RX2 → trasmette su 869,525 MHz (sotto-banda g3) → 10% di duty cycle disponibile, dieci volte più budget. In RX2 lo SF è un valore fisso scelto dal Network Server e comunicato al device. In EU868 il default specificato dallo standard è SF12BW125 (DR0), questo è anche il default della specifica LoRaWAN, scelto per massimizzare la sensibilità del downlink di emergenza (quello che deve "sempre arrivare", tipo i LinkADRReq di setup). Si può cambiare ma non è consigliabile se si vuole garantire la buona probabilità di consegna di messaggi di emergenza o di configurazione (OTA) fino ai dispositivi più remoti.
+### Finestre di ricezione del downlink Class A
 
-## **Parallelizzazione in uplink in LoRaWAN EU868**
+Un end-device Class A apre due finestre di ricezione dopo ogni uplink:
+
+- **RX1**: 1 secondo dopo l'uplink, **sulla stessa frequenza** dell'uplink, con uno SF derivato. Se il gateway risponde in RX1 → trasmette per esempio su 868,1 MHz (sotto-banda M), quindi con duty cycle **1%**, come gli uplink. In RX1 lo SF del downlink è determinato dallo SF dell'uplink secondo la tabella "RX1 DR offset" definita per regione. In EU868 con offset = 0 (default) la regola è:
+  
+  > **SF del downlink RX1 = SF dell'uplink**
+
+- **RX2**: 2 secondi dopo l'uplink, **frequenza fissa 869,525 MHz**, SF di default **SF12BW125 (DR0)**. Se il gateway risponde in RX2 → trasmette in sotto-banda P, quindi con duty cycle **10%**, dieci volte più budget. In RX2 lo SF è un valore fisso scelto dal Network Server e comunicato al device. Il default LoRaWAN (SF12, DR0) è pensato per massimizzare la sensibilità del downlink di emergenza (LinkADRReq di setup, configurazioni OTA). Si può cambiare ma non è consigliabile se si vuole garantire alta probabilità di consegna di messaggi critici ai dispositivi remoti.
+
+---
+
+## Parallelizzazione in uplink in LoRaWAN EU868
 
 In LoRaWAN si parla di "parallelizzazione" in tre sensi diversi che è importante distinguere, perché operano su scale diverse e con conseguenze diverse sul duty cycle.
 
 ### 1. Parallelismo del singolo dispositivo: non esiste
 
-Un end-device ha **un solo modem radio** (SX1276 o SX1262) con una sola catena RF e un solo PLL. Può trasmettere su **una frequenza alla volta**, punto. Quando "salta" tra canali (channel hopping), lo fa **in sequenza**, non in parallelo: una TX su 868,1, poi un'altra su 867,3, poi su 868,5, eccetera.
+Un end-device ha **un solo modem radio** (SX1276 o SX1262) con una sola catena RF e un solo PLL. Può trasmettere su **una frequenza alla volta**. Quando "salta" tra canali (*channel hopping*), lo fa in sequenza, non in parallelo: una TX su 868,1, poi un'altra su 867,3, poi su 868,5, e così via.
 
-Questo non è una restrizione regolatoria europea, è un vincolo hardware uguale in tutto il mondo.
+Non è una restrizione regolatoria europea, è un vincolo hardware uguale in tutto il mondo.
 
-### 2. Parallelismo del gateway: esiste e si chiama "ricezione concorrente"
+### 2. Parallelismo del gateway: ricezione concorrente
 
-Il gateway, al contrario del device, usa un chip concentrator (SX1301 / SX1302 / SX1303) con **8 demodulatori paralleli**. Può quindi **ricevere fino a 8 uplink simultanei** su frequenze e Spreading Factor diversi senza collisioni a livello fisico.
+Il gateway, al contrario del device, usa un chip *concentrator* (SX1301 / SX1302 / SX1303) con **8 demodulatori paralleli**. Può quindi **ricevere fino a 8 uplink simultanei** su frequenze e Spreading Factor diversi senza collisioni a livello fisico.
 
 Conseguenze pratiche:
+
 - Se 8 device trasmettono nello stesso istante su 8 frequenze diverse, il gateway li riceve tutti.
-- Se due device trasmettono nello stesso istante sulla **stessa** frequenza e stesso SF, c'è collisione e (probabilmente) il gateway perde entrambi.
-- Lo SF aggiunge un livello extra di "isolamento": due segnali sulla stessa frequenza con SF diversi sono in larga misura indipendenti grazie all'ortogonalità quasi-perfetta dello chirp spread spectrum. Il gateway li può separare.
+- Se due device trasmettono nello stesso istante sulla stessa frequenza e stesso SF, c'è collisione e (probabilmente) il gateway perde entrambi.
+- Lo SF aggiunge un livello extra di "isolamento": due segnali sulla stessa frequenza con SF diversi sono in larga misura indipendenti grazie alla quasi-ortogonalità del *chirp spread spectrum*. Il gateway li può separare.
 
-Quindi a livello di **sistema**, LoRaWAN EU868 è progettato per gestire molti uplink concorrenti, e la "parallelizzazione" lato infrastruttura è una caratteristica fondante.
+A livello di **sistema**, LoRaWAN EU868 è progettato per gestire molti uplink concorrenti, e la parallelizzazione lato infrastruttura è una caratteristica fondante.
 
-### 3. Parallelizzazione "nel tempo" — distribuire le TX su più canali e sotto-bande
+### 3. Parallelizzazione "nel tempo": distribuire le TX su più canali e sotto-bande
 
 Questa è la forma di parallelismo che riguarda davvero il device, ed è il motivo per cui si parla di "duty cycle aggregato".
 
-**Il principio:** il device non trasmette davvero in parallelo (vedi punto 1), ma **distribuendo le TX consecutive su canali diversi**, e soprattutto su **sotto-bande diverse**, ottiene una capacità di trasmissione aggregata superiore a quella che avrebbe restando su una sola frequenza.
+**Il principio.** Il device non trasmette davvero in parallelo (vedi punto 1), ma **distribuendo le TX consecutive su canali diversi**, e soprattutto su **sotto-bande diverse**, ottiene una capacità di trasmissione aggregata superiore a quella che avrebbe restando su una sola frequenza.
 
-**Perché funziona:** ETSI impone il duty cycle dell'1% **per sotto-banda di frequenza**, non per dispositivo. Quindi se il device usa contemporaneamente canali in:
-- sotto-banda **L** (865-868 MHz) → 1% di budget dedicato = 36 s/ora
-- sotto-banda **M** (868-868,6 MHz) → 1% di budget dedicato = 36 s/ora
+**Perché funziona.** ETSI impone il duty cycle **per sotto-banda di frequenza**, non per dispositivo. Quindi se il device usa canali in:
+
+- sotto-banda **L** (865–868 MHz) → 1% di budget dedicato = 36 s/ora
+- sotto-banda **M** (868–868,6 MHz) → 1% di budget dedicato = 36 s/ora
 
 I due budget sono **indipendenti**. Il device può consumare entrambi, arrivando a **72 secondi di TX per ora**, ovvero un duty cycle "del dispositivo" (descrittivo) del 2%, pur restando perfettamente entro l'1% **per sotto-banda** che è la regola normativa.
-
-**Tabella concreta per EU868:**
 
 | Configurazione | Canali | Sotto-bande coinvolte | TX time/ora aggregato |
 |---|---|---|---|
 | Solo 3 canali standard | 868,1 / 868,3 / 868,5 | solo M | 36 s |
 | 8 canali standard estesi | 867,1/3/5/7/9 + 868,1/3/5 | L + M | **72 s** |
-| 3 canali standard nella stessa sotto-banda | tutti in M | solo M | sempre 36 s (no guadagno) |
+| 3 canali nella stessa sotto-banda | tutti in M | solo M | 36 s (nessun guadagno) |
 
-Nota importante: aprire più canali **nella stessa sotto-banda** non aumenta il budget aggregato. I 3 canali obbligatori 868,1 / 868,3 / 868,5 sono tutti in sotto-banda M: usarli tutti e tre non triplica il budget, lo distribuisce sui tre canali.
+**Nota importante.** Aprire più canali **nella stessa sotto-banda** non aumenta il budget aggregato. I 3 canali obbligatori 868,1 / 868,3 / 868,5 sono tutti in sotto-banda M: usarli tutti e tre non triplica il budget, lo distribuisce sui tre canali.
 
 ### 4. Quello che NON è ammesso
 
 Tre cose che a volte si pensano possibili in Europa ma non lo sono:
 
-- **Trasmissioni simultanee dallo stesso device** (richiederebbe due modem RF, hardware non standard).
-- **Channel bonding** stile WiFi, in cui due canali da 125 kHz si fondono in uno da 250 kHz per raddoppiare il throughput. In LoRaWAN questo non esiste: ogni canale è un'entità separata. L'unica eccezione è DR6 a 250 kHz, ma è una banda diversa, non un'aggregazione.
-- **Trasmettere senza duty cycle "perché tanto cambio canale"**. Il duty cycle si misura sulla sotto-banda; cambiare canale all'interno della stessa sotto-banda non aiuta. Cambiare sotto-banda sì, ma resti comunque vincolato all'1% di ciascuna.
+- **Trasmissioni simultanee dallo stesso device**: richiederebbe due modem RF, hardware non standard.
+- **Channel bonding** stile WiFi (due canali da 125 kHz fusi in uno da 250 kHz per raddoppiare il throughput). In LoRaWAN non esiste: ogni canale è un'entità separata. L'unica eccezione è DR6 a 250 kHz, ma è una larghezza di banda diversa, non un'aggregazione.
+- **Trasmettere senza duty cycle "perché tanto cambio canale"**. Il duty cycle si misura sulla sotto-banda; cambiare canale all'interno della stessa sotto-banda non aiuta. Cambiare sotto-banda sì, ma si resta comunque vincolati all'1% di ciascuna.
 
-### 5. Implicazioni pratiche per chi sviluppa
+### 5. Implicazioni pratiche
 
 - **Configurare il device per usare tutti gli 8 canali EU868** (e non solo i 3 obbligatori) è di fatto un *raddoppio* del budget di TX. Librerie come `ulora` lo fanno di default con `country="EU"`.
-- **Il gateway deve essere configurato per ascoltare gli stessi canali** del device, altrimenti i pacchetti sui canali "estranei" cadono nel vuoto. È quello che vedi sul Conduit quando aggiungi i canali 867,x in Network Settings → Additional Channels.
-- **Il duty cycle dell'1% è la regola legale**, ma il vincolo pratico per applicazioni dense è il **tempo radio del gateway**: un singolo gateway che riceve 100 device in zona può saturare la sua capacità in ricezione (8 demodulatori) o in trasmissione (1 TX simultanea per i downlink).
-- **Per applicazioni che richiedono molti uplink veloci**, l'unica strada legittima è ridurre il time-on-air per messaggio (SF basso, payload piccolo, coding rate 4/5) e distribuire bene sui canali, piuttosto che cercare scorciatoie regolatorie.
+- **Il gateway deve essere configurato per ascoltare gli stessi canali** del device, altrimenti i pacchetti sui canali "estranei" cadono nel vuoto.
+- **Il duty cycle dell'1% è la regola legale**, ma il vincolo pratico per applicazioni dense è il **tempo radio del gateway**: un singolo gateway che riceve molti device in zona può saturare la sua capacità in ricezione (8 demodulatori) o in trasmissione (una sola TX simultanea per i downlink).
+- **Per applicazioni che richiedono molti uplink veloci**, l'unica strada legittima è ridurre il *time-on-air* per messaggio (SF basso, payload piccolo, coding rate 4/5) e distribuire bene sui canali, non cercare scorciatoie regolatorie.
 
-## **Modalità avanzate di accesso**
-Sono consentiti due **schemi di riferimento**: ascolto del canale prima di parlare (LBT) e Agilità di frequenza adattiva (AFA). **LBT (listen befor Talk)** è una modalità di accesso nella quale un dispositivo che deve trasmettere non occupa subito il canale ma, prima di parlare, deve ascoltare se il mezzo è già in uso attivando la funzione di **CCA** (Clear Channel Assessment).
-    - Se il canale **è libero**, e sono passati 100 msec dall'ultima trasmissione allora si può procedere immediatamente con la trasmissione.
-    - Se il canale **è occupato**, per evitare una collisione, la successiva trasmissione deve essere **spostata** o nel **tempo** o nella **frequenza**:
-        - **nel tempo**, il dispositivo deve **attendere** che siano vere entrambe le seguenti condizioni: che il canale **diventi libero** e che siano passati almeno 100 msec dall'ultima trasmissione. A **questa attesa** si deve sommare un **ritardo** aggiuntivo dato da un **backoff casuale** prima di **ritentare** il **CCA** sullo **stesso canale**. 
-        - **nella frequenza** il dispositivo può eseguire immediatamente un nuovo CCA ma, stavolta, su un **altro canale**. Quest'ultima tecnica si chiama **AFA**.
-        -  Quando uno dei due meccanismi precedenti viene implementato, il duty cycle viene portato a **100 sec** di tempo di trasmissione cumulativo **all'ora** per ogni possibile intervallo di 200 kHz, che corrisponde a un rapporto del **duty cycle** del 2,7%.
-        - 
+---
 
-     
-    <img src="img/13638_2019_1502_Fig3_HTML.png" alt="alt text" width="500" style="margin-top: 20px;">
+## Modalità avanzate di accesso: LBT e AFA
 
-## **Duty cycle aggregato con LBT**.
+ETSI EN 300 220 consente, in alternativa al regime a duty cycle, due **schemi di riferimento** più sofisticati: ascolto prima di trasmettere (LBT) e agilità di frequenza adattiva (AFA).
 
-È utile avere molti canali nella maschera dei canali, in modo che le trasmissioni abbiano meno probabilità di subire ritardi. I requisiti europei stabiliscono inoltre che, usando LBT, su uno spettro di 200 kHz possono verificarsi solo **100 secondi** di trasmissione **nell'arco di un'ora**. Questo metodo semplifica e ottimizza i calcoli dell'utilizzo dello spettro nell'arco di un'ora. Lo standard afferma che più canali si adoperano per trasmettere, più tempo di trasmissione si può occupare in un periodo di un'ora. Si può calcolare il duty cycle effettivo in base al numero di canali disponibili abilitati come segue:
-```Duty cycle effettivo = (numero di canali * 100)/3600```. Ad esempio, se si abilitassero **due canali** si avrebbe un **duty cycle effettivo** del **5,6%**.
+**LBT (*Listen Before Talk*)** è una modalità in cui un dispositivo, prima di trasmettere, deve ascoltare se il mezzo è già in uso attraverso una funzione di **CCA** (*Clear Channel Assessment*).
 
-    - **vincoli su CCA e backoff**.
-        - Il **controllo CCA** deve avere una durata minima di 160 μs.
-        - Dopo questo controllo, se il **canale è libero**, il dispositivo deve comunque aspettare un **tempo di attesa** ulteriore fisso di **5 ms** prima di poter iniziare una nuova trasmissione (nel CSMA/CA si chiama DIFS).
-        - La trasmissione stessa ha una **durata massima** di 1 sec o 4 sec a seconda del tipo di trasmissione. Si definisce **trasmissione singola** una delle due seguenti situazioni: una **sequenza continua di bit** (senza interruzioni), oppure un **serie di sequenze** distinte purchè separate da intervalli di tempo inferiori a **5 ms**.
-       
-- **Finestra di Opportunità**. In alcune implementazioni, se un dispositivo rileva che il canale è libero immediatamente dopo un breve periodo di ascolto (inferiore a quello standard), potrebbe essere consentito trasmettere immediatamente senza attendere l'intero periodo minimo di attesa. Questo può avvenire solo se le regolamentazioni locali lo permettono. Alcune eccezioni sono:
-     - **Reti Private**: In una rete LoRaWAN privata configurata per un campus aziendale, i gestori della rete possono configurare i tempi di attesa minima per essere più brevi rispetto alle reti pubbliche, ottimizzando così la latenza e l'efficienza per applicazioni specifiche.
-     - **Applicazioni di Emergenza**: un dispositivo di allarme antincendio potrebbe avere priorità di trasmissione che gli consentono di ignorare il tempo di attesa minima standard e trasmettere immediatamente in caso di rilevamento di un incendio.  
-- **Potenza disponibile massima**. La potenza in Watt. In genere dell’ordine dei millesimi di watt (mW) è spesso espressa in dBm.
-In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla densità di potenza, ovvero alla potenza, in milliwatt per MHz o per KHz. E’ il caso degli apparati WLAN E HiperLAN.
-- **EIRP** e **ERP**. La potenza è generalmente riferita al **segnale irradiato** sotto forma di misura ERP o di misura EIRP. L’antenna è un componente passivo, ma possiede pur sempre una sorta di guadagno. Il guadagno quantifica la capacità dell’antenna di concentrare l’energia irradiata (o ricevuta) in una determinata direzione.
-     - Un'antenna si dice **isotropa** quando emette la stessa potenza in tutte le direzioni in quanto non possiede direzioni di emissione privilegiate in cui emette più energia rispetto ad altre. Ciò equivale a dire che, in una sfera avente per centro l'antenna, la densità di potenza è la stessa in ogni punto sulla sua superficie. Ma si tratta solo di una approssimazione ideale. Le antenne reali, a parità di distanza, distribuiscono la loro energia in maniera non uniforme al variare della direzione di un punto nello spazio.
-       
-       <img src="img/Antenna-gain-dBi.png" alt="alt text" width="1000">
-       
-     - Le antenne cosidette **direttive** sono progettate proprio per introdurre di proposito un guadagno ulteriore sulla potenza fornita dal trasmettitore detto **guadagno di antenna** che è dovuto proprio alla capacità di concentrare la potenza irradiata in una **direzione privilegiata**. In realtà questa direzione è solo quella dove si concentra la **densità massima** di energia che rimane comunque ancora significativa (almeno la metà) in un cono nello spazio avente una apertura caratteristica detto **apertura a 3dB**. Infatti, 3dB è proprio la differenza di intensità del fascio tra la direzione privilegiata di massima emissione e i bordi del cono in cui la potenza misurata vale la metà di quella massima. Chiaramente, il guadagno elevato, raggiunto in un cono di apertura più o meno stretta, può avvenire solo al prezzo di una analoga perdita in tutte le altre direzioni. Si concentra in una direzione ciò che si perde in tutte le altre. La direzione di **minima intensità** (toricamente nulla) è sempre, paradossalmente, la base dove si alimenta l'antenna.
-     - **Principio di reciprocità**. Collega il comportamento di un'antenna ricevente a quello che la stessa possiede quando è usata come trasmittente.  Stabilisce che le proprietà (ampiezza di banda, direttività, ecc.) di un'antenna ricevente sono le stesse che avrebbe la stessa antenna usata come trasmittente.
-       
-  <img src="img/Antenna-gain-dBi2.png" alt="alt text" width="1000">
-  
-## **Antenne direttive vs omnidirezionali**.
+- Se il canale è **libero**, e sono passati almeno 100 ms dall'ultima trasmissione, il device può trasmettere immediatamente.
+- Se il canale è **occupato**, per evitare collisioni la trasmissione deve essere spostata:
+    - **nel tempo**: il dispositivo attende che il canale diventi libero **e** che siano passati almeno 100 ms dall'ultima trasmissione, sommando un *backoff* casuale, prima di ritentare il CCA sullo stesso canale;
+    - **nella frequenza** (**AFA**): il dispositivo esegue immediatamente un nuovo CCA su un altro canale.
 
-Per ottenere il massimo guadagno di antenna complessivo di un **collegamento** è necessario **collimare** le antenne trasmittente e ricevente nella direzione di massimo guadagno. Si tenga conto che maggiore è la direttività delle antenne e più precisa e stabile nel tempo dovrà essere mantenuta questa collimazione (aspetto perlomeno critico praticamente), ciò va bene per collegamenti fissi **punto punto** come i **ponti radio**. Se invece, uno terminale è **mobile** o se il collegamento è **punto-multipunto** con un cluster di dispositivi sparpagliati in una certa area dello spazio, allora è più pratico utilizzare antenne con bassa direttività se non addirittura antenne ominidirezionali, cioè isotrope, almeno nel lato a uno del collegamento (gateway). Vedremo dopo che, nella banda ISM, per limitare le interferenze ad altri dispositivi posti in prossimità dell'antenna, si lasciano pressochè omnidirezionali anche le antenne del lato a molti (dispositivi terminali).
-      
-       <img src="img/dbd-dbi-img-rf-community-2_636160177208686785.jpg" alt="alt text" width="600">
-       
-     - La potenza **EIRP** di una antenna direttiva è invece la potenza con cui dovrebbe essere alimentata un'antenna isotropica per irradiare la stessa potenza che viene emessa dall'antenna direttiva nella sua direzione di massimo irraggiamento.  La potenza **EIRP** è la somma della **potenza erogata** dal trasmettittore più il **guadagno di antenna** (al netto delle perdite sul cavo sempre presenti). 
-     - Un'altra grandezza considerata nella pratica è la potenza **ERP**, analoga alla precedente ma riferita alla potenza emessa da un **dipolo orientato** normalmente alla direzione di massima intensità dell'antenna direttiva (di solito è considerata un'antenna verticale con propagazione orizzontale, parallela al piano terrestre). Stavolta si valuta il guadagno dell'antenna sotto test rispetto al guadagno di un dipolo standard a mezza lunghezza d'onda. In questo caso il valore ERP dBd è leggermente più basso rispetto al valore di un'antenna istropa EIRP dBi (dBi = dBd + 2,15dB) in quanto il dipolo guadagna 2,15dB in più rispetto al radiale isotropico, anche se soltanto lungo la direzione di massima irradiazione. Un limite comune stabilito dalle **regolamentazione** è di fissare l'ERP proprio esattamente uguale alla massima potenza disponibile ammessa sul morsetto di antenna, ciò implica che l'antenna **non debba guadagnare** per nulla rispetto ad un dipolo a mezz'onda o, equivalentemente, che guadagni soltanto **2.15 dB** rispetto ad una antenna isotropa alimentata con la stessa potenza disponibile.
-     - **Link budget**. Tra trasmettitore e gateway potrebbe essere valutato il cosidetto link budget, overossia la somma dei guadagni e delle attenuazioni lungo il percorso fino al ricevitore. L'obiettivo è valutare il rispetto del **vincolo finale** sul ricevitore, cioè che la potenza ricevuta sia maggiore della **sensibilità minima** del ricevitore più un certo **margine di sicurezza** per tenere conto del **fading** ambientale (multipath oppure attenuazione atmosferica) che è una quantità che varia, più o meno rapidamente, col **tempo**. Per dettagli sul calcolo vedere https://www.vincenzov.net/tutorial/elettronica-di-base/Trasmissioni/link.htm. Rimane assodato che si tratta soltanto di un **calcolo di massima** che fornisce indicazioni sulla fattibilità teorica di un collegamento che, se positiva, richiede attente e ripetute **verifiche sul campo** nelle condizioni di esercizio previste per l'impianto.
-    
-         - **Sensitività e Spreading Factor**. Nelle modulazioni a **spettro espanso** la sensitività del ricevitore varia a seconda del fattore di spreading del segnale a banda stretta originale (125 KHz). In linea generale, SF più alti migliorano la sensibilità del ricevitore. Un esempio di questa variazione per i ricevitori LoraWAN della Semtech è riportata nella seguente tabella:
-       ```C++
-        - SF7	-123 dBm
-        - SF8	-126 dBm
-        - SF9	-129 dBm
-        - SF10	-132 dBm
-        - SF11	-134.5 dBm
-        - SF12	-137 dBm
-       ```
-- **Dimensione massima del messaggio**.
-    Le regole ISM non mettono esplicitamente limiti alla lunghezza del messaggio anche se talvolta ne impongono una durata massima (solo in caso di LBT in Europa) detta **dwell time**. Fattori tecnici, stabiliti dal protocollo in uso sul canale, limitano la dimensione del messaggio ad una **dimensione massima**. Nel caso della modulazione LoraWAN, la **velocità dei dati** dipende da  **fattore di spreading**, la **larghezza di banda** e la **velocità di codifica**. 
+Quando uno di questi meccanismi viene implementato correttamente, il limite normativo viene portato a **100 secondi di trasmissione cumulativa per ora su ogni intervallo di spettro di 200 kHz**, che corrisponde a un duty cycle effettivo del **circa 2,78%** (100/3600).
 
-```C++
-La tabella presenta le configurazioni e le velocità in bit per ciascuna velocità dati (DR0 - DR15).
-Data rate	Configuration	    Bit rate (bit/s)  Maximum MAC payload size M (bytes)  Maximum application payload size N (bytes)
-0	    LoRa: SF12 / 125 kHz	    250                59	                                    51            
-1	    LoRa: SF11 / 125 kHz	    440                59	                                    51   
-2	    LoRa: SF10 / 125 kHz	    980                59	                                    51
-3	    LoRa: SF9 / 125 kHz	            1760               123	                                    115	                                             
-4	    LoRa: SF8 / 125 kHz	            3125               230	                                    222
-5	    LoRa: SF7 / 125 kHz	            5470               230	                                    222
-6	    LoRa: SF7 / 250 kHz	            11000              230	                                    222
-7	    FSK: 50 kbps	            50000              230	                                    222
-8	    LR-FHSS CR1/3: 137 kHz BW	    162                58	                                    50
-9	    LR-FHSS CR2/3: 137 kHz BW	    325                123	                                    115
-10	    LR-FHSS CR1/3: 336 kHz BW	    162                58	                                    50
-11	    LR-FHSS CR2/3: 336 kHz BW	    325                123	                                    115
-12..14	RFU	-
-15	*Defined in [TS001]	-                              Not defined	                            Not defined
-``` 
-       
-### **Tecnologia LoraWAN: schema riassuntivo**
+<img src="img/13638_2019_1502_Fig3_HTML.png" alt="Meccanismi di accesso LBT/AFA" width="500">
 
-<img src="img/eulorapecs.png" alt="alt text" width="400">
+### Duty cycle aggregato con LBT
 
+L'uso di LBT con molti canali nella maschera dei canali riduce la probabilità che le trasmissioni subiscano ritardi. Più canali si adoperano per trasmettere, più tempo di trasmissione aggregato si può occupare nell'arco di un'ora. Il duty cycle effettivo in regime LBT si può calcolare in base al numero di canali abilitati come:
 
-### **Allocazione bande ISM**
-Schemi riassuntivi che ilustrano la situazione normativa per le varie bande ISM:
+```text
+Duty cycle effettivo LBT = (numero di canali × 100) / 3600
+```
 
-<img src="433.png" alt="alt text" width="600">
-<img src="868.png" alt="alt text" width="600">
-<img src="2400.png" alt="alt text" width="600">
+Per esempio, abilitando **due canali** in regime LBT si ottiene un **duty cycle effettivo del 5,6%**.
 
-Sitografia:
-- https://docdb.cept.org/download/3700
-- https://www.etsi.org/deliver/etsi_en/300200_300299/30022002/03.02.01_60/en_30022002v030201p.pdf
-- https://blog.semtech.com/certifying-an-end-device-for-lorawan-european-sub-bands
-- https://www.thethingsnetwork.org/docs/lorawan/regional-limitations-of-rf-use/
-- https://www.thethingsnetwork.org/docs/lorawan/regional-parameters/eu868/
-- https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/
-- https://docs.heltec.org/general/lorawan_frequency_plans.html
-- https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/
-- https://jwcn-eurasipjournals.springeropen.com/articles/10.1186/s13638-019-1502-5
-- http://mwl.diet.uniroma1.it/IACEm/02_proprieta_antenne.pdf
-- https://blog.semtech.com/lorawan-protocol-expands-network-capacity-with-new-long-range-frequency-hopping-spread-spectrum-technology
-- https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/
-- https://lora.readthedocs.io/en/latest/
-- https://lora-alliance.org/wp-content/uploads/2020/11/lorawan_regional_parameters_v1.0.3reva_0.pdf
-- https://dl.acm.org/doi/10.1145/3546869
-- https://static1.squarespace.com/static/54cecce7e4b054df1848b5f9/t/57489e6e07eaa0105215dc6c/1464376943218/Reversing-Lora-Knight.pdf
-- https://wirelesspi.com/understanding-lora-phy-long-range-physical-layer/
-- https://thesis.unipd.it/retrieve/d813d8b9-9d45-4158-acbc-eada172983c8/Chinta_Venkata_Rajesh.pdf
-- https://www.vincenzov.net/tutorial/elettronica-di-base/Trasmissioni/antenne.htm
-- https://www.radartutorial.eu/06.antennas/an18.it.html
-- https://edmelectronics.editorialedelfino.it/come-leggere-un-diagramma-di-irradiazione/
-- https://www.youtube.com/watch?v=kkGavD1E2gU
-- https://www.researchgate.net/figure/Direction-dependent-gain-of-a-half-wave-dipole-antenna-Equation-1-as-compared-to-the_fig1_4278652
-- https://teletopix.org/what-is-polarization-gain-and-power-rating-in-antenna/
-- https://www.everythingrf.com/community/what-is-the-difference-between-dbi-and-dbd
-  
->[Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
+> **Attenzione.** Questa formula vale **solo in regime LBT**. Nel regime classico a duty cycle (quello usato da LoRaWAN EU868 standard) il vincolo è 1% **per sotto-banda**, non per canale, e la formula non si applica.
 
+### Vincoli tecnici su CCA e backoff
 
+- Il controllo CCA deve avere una durata minima di **160 μs**.
+- Dopo questo controllo, se il canale è libero, il dispositivo deve attendere un tempo di attesa fisso di **5 ms** prima di iniziare una nuova trasmissione (nel CSMA/CA si chiama DIFS).
 
+### Definizione di trasmissione singola
+
+Una trasmissione ha **durata massima** di 1 s o 4 s a seconda del tipo. Si definisce **trasmissione singola** una delle due seguenti situazioni:
+
+- una sequenza continua di bit, senza interruzioni;
+- una serie di sequenze distinte, purché separate da intervalli inferiori a 5 ms.
+
+### Finestra di opportunità
+
+In alcune implementazioni, se un dispositivo rileva che il canale è libero immediatamente dopo un breve periodo di ascolto (inferiore allo standard), potrebbe essere consentito trasmettere immediatamente senza attendere l'intero periodo minimo. Questo può avvenire **solo se le regolamentazioni locali lo permettono**. Alcune eccezioni:
+
+- **Reti private**: in una rete LoRaWAN privata configurata per un campus aziendale, i gestori possono configurare tempi di attesa minima più brevi, ottimizzando latenza ed efficienza per applicazioni specifiche.
+- **Applicazioni di emergenza**: un dispositivo di allarme antincendio può avere priorità di trasmissione che gli consente di ignorare il tempo di attesa minimo e trasmettere immediatamente al rilevamento.
+
+---
+
+## Potenza disponibile massima
+
+La potenza, in genere espressa in **mW** (millesimi di watt) o in **dBm**, è il parametro che indica quanto un trasmettitore può "spingere" in uscita. In taluni casi, in relazione alla larghezza di banda, si fa riferimento alla **densità di potenza** (mW/MHz o mW/kHz). È il caso degli apparati WLAN e HiperLAN.
+
+### EIRP ed ERP
+
+La potenza è generalmente riferita al **segnale irradiato** sotto forma di misura ERP o EIRP. L'antenna è un componente passivo, ma possiede pur sempre una sorta di guadagno: il guadagno quantifica la capacità dell'antenna di concentrare l'energia irradiata (o ricevuta) in una determinata direzione.
+
+#### Antenne isotrope
+
+Un'antenna si dice **isotropa** quando emette la stessa potenza in tutte le direzioni: non possiede direzioni di emissione privilegiate. In una sfera centrata sull'antenna, la densità di potenza è la stessa in ogni punto della superficie. È un'approssimazione ideale: le antenne reali, a parità di distanza, distribuiscono l'energia in maniera non uniforme al variare della direzione.
+
+<img src="img/Antenna-gain-dBi.png" alt="Guadagno d'antenna in dBi" width="1000">
+
+#### Antenne direttive
+
+Le antenne **direttive** sono progettate per introdurre di proposito un guadagno ulteriore sulla potenza fornita dal trasmettitore, detto **guadagno d'antenna**, dovuto alla capacità di concentrare la potenza irradiata in una **direzione privilegiata**. Questa direzione è quella in cui si concentra la densità massima di energia, che rimane significativa (almeno la metà) in un cono detto **apertura a 3 dB**: 3 dB è la differenza di intensità del fascio tra la direzione di massima emissione e i bordi del cono in cui la potenza misurata vale la metà di quella massima.
+
+Il guadagno elevato in un cono di apertura più o meno stretta avviene al prezzo di una perdita in tutte le altre direzioni: si concentra in una direzione ciò che si perde in tutte le altre. La direzione di minima intensità è paradossalmente quella alla base dove si alimenta l'antenna.
+
+#### Principio di reciprocità
+
+Collega il comportamento di un'antenna ricevente a quello che la stessa possiede quando è usata come trasmittente. Le proprietà di un'antenna ricevente (ampiezza di banda, direttività, ecc.) sono le stesse che avrebbe la stessa antenna usata come trasmittente.
+
+<img src="img/Antenna-gain-dBi2.png" alt="Principio di reciprocità" width="1000">
+
+### Antenne direttive vs omnidirezionali
+
+Per ottenere il massimo guadagno complessivo di un collegamento è necessario **collimare** le antenne trasmittente e ricevente nella direzione di massimo guadagno. Maggiore è la direttività delle antenne, più precisa e stabile nel tempo deve essere mantenuta la collimazione (aspetto praticamente critico). Funziona per collegamenti fissi **punto-punto** come i ponti radio.
+
+Se invece uno dei terminali è **mobile** o il collegamento è **punto-multipunto** con un cluster di dispositivi sparpagliati nello spazio, è più pratico usare antenne con bassa direttività o **omnidirezionali** almeno su un lato (il gateway). Nella banda ISM, per limitare le interferenze ad altri dispositivi vicini, si lasciano pressoché omnidirezionali anche le antenne lato dispositivi terminali.
+
+<img src="img/dbd-dbi-img-rf-community-2_636160177208686785.jpg" alt="Confronto dBd vs dBi" width="600">
+
+### EIRP, ERP e relazione dBd ↔ dBi
+
+- **EIRP** (*Effective Isotropic Radiated Power*) di un'antenna direttiva è la potenza con cui dovrebbe essere alimentata un'antenna **isotropa** per irradiare la stessa potenza che viene emessa dall'antenna direttiva nella sua direzione di massimo irraggiamento. EIRP è la somma della potenza erogata dal trasmettitore più il guadagno d'antenna (al netto delle perdite sul cavo).
+- **ERP** (*Effective Radiated Power*) è analoga, ma riferita alla potenza emessa da un **dipolo a mezz'onda** orientato normalmente alla direzione di massima intensità dell'antenna direttiva (di solito un'antenna verticale con propagazione parallela al piano terrestre). In questo caso si valuta il guadagno dell'antenna rispetto al guadagno di un dipolo standard.
+
+La relazione tra le due unità di misura è fissa:
+
+> **dBi = dBd + 2,15 dB**
+
+cioè un'antenna isotropa "guadagna" 2,15 dB in meno rispetto a un dipolo a mezz'onda nella sua direzione di massima irradiazione. Equivalentemente, **ERP < EIRP di 2,15 dB** per la stessa antenna.
+
+Un limite comune delle regolamentazioni è fissare l'**ERP** uguale alla massima potenza disponibile sul morsetto d'antenna: ciò implica che l'antenna **non debba guadagnare** rispetto a un dipolo a mezz'onda, ovvero che guadagni al massimo **2,15 dB** rispetto a un'antenna isotropa.
+
+### Link budget
+
+Tra trasmettitore e ricevitore si può valutare il cosiddetto **link budget**: la somma dei guadagni e delle attenuazioni lungo il percorso. L'obiettivo è verificare il vincolo finale sul ricevitore: che la potenza ricevuta sia maggiore della **sensibilità minima** del ricevitore più un **margine di sicurezza** per tenere conto del *fading* ambientale (multipath, attenuazione atmosferica), che varia nel tempo. Dettagli del calcolo: <https://www.vincenzov.net/tutorial/elettronica-di-base/Trasmissioni/link.htm>
+
+Si tratta di un calcolo "di massima" che fornisce indicazioni sulla fattibilità teorica di un collegamento; se positiva, richiede comunque attente e ripetute **verifiche sul campo** nelle condizioni di esercizio previste.
+
+### Sensitività e Spreading Factor
+
+Nelle modulazioni a **spettro espanso**, la sensitività del ricevitore varia a seconda del fattore di spreading rispetto al segnale a banda stretta originale (125 kHz). In linea generale, SF più alti **migliorano** la sensibilità del ricevitore. Esempio per i ricevitori LoRa Semtech:
+
+```text
+SF7   →  -123 dBm
+SF8   →  -126 dBm
+SF9   →  -129 dBm
+SF10  →  -132 dBm
+SF11  →  -134,5 dBm
+SF12  →  -137 dBm
+```
+
+---
+
+## Dimensione massima del messaggio
+
+Le regole ISM non pongono esplicitamente limiti alla lunghezza del messaggio, anche se talvolta ne impongono una **durata massima** (in particolare con LBT in Europa), detta **dwell time**. Fattori tecnici, stabiliti dal protocollo in uso sul canale, limitano la dimensione del messaggio.
+
+Nel caso di LoRaWAN, la **velocità dei dati** dipende da fattore di spreading, larghezza di banda e velocità di codifica. La tabella seguente presenta configurazioni e velocità per ciascun data rate (DR0–DR15) in EU868:
+
+| Data rate | Configurazione | Bit rate (bit/s) | MAC payload max (B) | App payload max (B) |
+|---|---|---|---|---|
+| 0  | LoRa: SF12 / 125 kHz | 250 | 59 | 51 |
+| 1  | LoRa: SF11 / 125 kHz | 440 | 59 | 51 |
+| 2  | LoRa: SF10 / 125 kHz | 980 | 59 | 51 |
+| 3  | LoRa: SF9 / 125 kHz | 1.760 | 123 | 115 |
+| 4  | LoRa: SF8 / 125 kHz | 3.125 | 230 | 222 |
+| 5  | LoRa: SF7 / 125 kHz | 5.470 | 230 | 222 |
+| 6  | LoRa: SF7 / 250 kHz | 11.000 | 230 | 222 |
+| 7  | FSK: 50 kbps | 50.000 | 230 | 222 |
+| 8  | LR-FHSS CR1/3: 137 kHz BW | 162 | 58 | 50 |
+| 9  | LR-FHSS CR2/3: 137 kHz BW | 325 | 123 | 115 |
+| 10 | LR-FHSS CR1/3: 336 kHz BW | 162 | 58 | 50 |
+| 11 | LR-FHSS CR2/3: 336 kHz BW | 325 | 123 | 115 |
+| 12-14 | RFU (reserved) | — | — | — |
+| 15 | definito in [TS001] | — | non definito | non definito |
+
+> **Nota sui bit rate.** I valori riportati per SF7÷SF12 sono quelli canonici della tabella LoRa Alliance EU868 e rappresentano il *bit rate utile* arrotondato. I valori esatti dipendono dal coding rate (4/5÷4/8) e includono l'header LoRa.
+
+---
+
+### Tecnologia LoRaWAN: schema riassuntivo
+
+<img src="img/eulorapecs.png" alt="Schema riassuntivo LoRaWAN EU" width="400">
+
+### Allocazione bande ISM
+
+Schemi riassuntivi che illustrano la situazione normativa per le varie bande ISM:
+
+<img src="433.png" alt="Banda 433 MHz" width="600">
+<img src="868.png" alt="Banda 868 MHz" width="600">
+<img src="2400.png" alt="Banda 2,4 GHz" width="600">
+
+---
+
+## Sitografia
+
+- <https://docdb.cept.org/download/3700>
+- <https://www.etsi.org/deliver/etsi_en/300200_300299/30022002/03.02.01_60/en_30022002v030201p.pdf>
+- <https://blog.semtech.com/certifying-an-end-device-for-lorawan-european-sub-bands>
+- <https://www.thethingsnetwork.org/docs/lorawan/regional-limitations-of-rf-use/>
+- <https://www.thethingsnetwork.org/docs/lorawan/regional-parameters/eu868/>
+- <https://www.thethingsnetwork.org/docs/lorawan/duty-cycle/>
+- <https://docs.heltec.org/general/lorawan_frequency_plans.html>
+- <https://lora-developers.semtech.com/documentation/tech-papers-and-guides/lora-and-lorawan/>
+- <https://jwcn-eurasipjournals.springeropen.com/articles/10.1186/s13638-019-1502-5>
+- <http://mwl.diet.uniroma1.it/IACEm/02_proprieta_antenne.pdf>
+- <https://blog.semtech.com/lorawan-protocol-expands-network-capacity-with-new-long-range-frequency-hopping-spread-spectrum-technology>
+- <https://lora.readthedocs.io/en/latest/>
+- <https://lora-alliance.org/wp-content/uploads/2020/11/lorawan_regional_parameters_v1.0.3reva_0.pdf>
+- <https://dl.acm.org/doi/10.1145/3546869>
+- <https://static1.squarespace.com/static/54cecce7e4b054df1848b5f9/t/57489e6e07eaa0105215dc6c/1464376943218/Reversing-Lora-Knight.pdf>
+- <https://wirelesspi.com/understanding-lora-phy-long-range-physical-layer/>
+- <https://thesis.unipd.it/retrieve/d813d8b9-9d45-4158-acbc-eada172983c8/Chinta_Venkata_Rajesh.pdf>
+- <https://www.vincenzov.net/tutorial/elettronica-di-base/Trasmissioni/antenne.htm>
+- <https://www.radartutorial.eu/06.antennas/an18.it.html>
+- <https://edmelectronics.editorialedelfino.it/come-leggere-un-diagramma-di-irradiazione/>
+- <https://teletopix.org/what-is-polarization-gain-and-power-rating-in-antenna/>
+- <https://www.everythingrf.com/community/what-is-the-difference-between-dbi-and-dbd>
+
+> [Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)
