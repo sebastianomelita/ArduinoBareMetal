@@ -93,7 +93,7 @@ Esistono due **direzioni** di trasmissione, entrambe soggette a collisione:
 
 Device sufficientemente lontani tra loro, o coperti da gateway diversi, non si interferiscono anche trasmettendo sulla stessa frequenza con lo stesso SF (codice ortogonale) e nello stesso istante. E' l'effetto dell'**attenuazione di spazio libero** dei segnali radio che permette il riuso delle frequenze (canali) vicine o uguali in posizioni lontane. 
 
-L'effetto isolante dell'attenuazione di spazio libero è massimizzato da una serie di regole molto rigide che riguardano il controllo sia della potenza di trasmissione che del guadagno delle antenne. Queste regole sono essenziali per garantire un minimo di fairness nell'accesso ad una banda abbastanza affollata come quella ISM. [Potenza e antenne in banda ISM](ism.md#potenza-disponibile-massima)  
+L'effetto isolante dell'attenuazione di spazio libero è massimizzato da una serie di regole molto rigide che riguardano il controllo sia della potenza di trasmissione che del guadagno delle antenne. Queste regole sono essenziali per garantire un minimo di **fairness** nell'accesso ad una banda abbastanza affollata come quella ISM. [Potenza e antenne in banda ISM](ism.md#potenza-disponibile-massima)  
 
 ### **FDM: separazione in frequenza all'interno di ogni gateway**
 
