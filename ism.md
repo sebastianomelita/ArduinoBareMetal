@@ -128,7 +128,7 @@ Il gateway, al contrario del device, usa un chip *concentrator* (SX1301 / SX1302
 Conseguenze pratiche:
 
 - Se 8 device trasmettono nello stesso istante su 8 frequenze diverse, il gateway li riceve tutti.
-- Se due device trasmettono nello stesso istante sulla stessa frequenza e stesso SF, c'è collisione e (probabilmente) il gateway perde entrambi (vedi [Ortogonalità LoRa](ortogonalita-lora.md)).
+- Se due device trasmettono nello stesso istante sulla stessa frequenza e stesso SF, c'è collisione e (probabilmente) il gateway perde entrambi (vedi [Ortogonalità LoRa](approfondimenti/ortogonalita-lora.md)).
 - Lo SF aggiunge un livello extra di "isolamento": due segnali sulla stessa frequenza con SF diversi sono in larga misura indipendenti grazie alla quasi-ortogonalità del *chirp spread spectrum*. Il gateway li può separare.
 
 A livello di **sistema**, LoRaWAN EU868 è progettato per gestire molti uplink concorrenti, e la parallelizzazione lato infrastruttura è una caratteristica fondante.
