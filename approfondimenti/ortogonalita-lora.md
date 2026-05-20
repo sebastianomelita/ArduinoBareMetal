@@ -1,4 +1,4 @@
-> [Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)>[Torna banda ISM](ism.md)
+> [Torna a reti di sensori](sensornetworkshort.md#interfaccia-radio)>[Torna banda ISM](../ism.md)
 
 # Ortogonalità degli Spreading Factor in LoRa
 
