@@ -89,7 +89,7 @@ Device sufficientemente lontani tra loro, o coperti da gateway diversi, non si i
 
 ### **FDM: separazione in frequenza all'interno di ogni gateway**
 
-Tra un pacchetto e il successivo il device **cambia frequenza** in modo pseudo-casuale tra quelle disponibili (frequency hopping tra pacchetti), ma si tratta di una trasmissione sequenziale, non parallela. L'obiettivo del frequency hopping è distribuire il carico sui canali disponibili e ridurre le probabilità di collisioni, non aumentare il throughput di un singolo device.
+Tra un pacchetto e il successivo il device **cambia frequenza** in modo **pseudo-casuale** tra quelle disponibili (**frequency hopping** tra pacchetti), ma si tratta di una trasmissione sequenziale, non parallela. L'obiettivo del frequency hopping è distribuire il carico sui canali disponibili e ridurre le probabilità di collisioni, non aumentare il throughput di un singolo device.
 
 All'interno di **ciascuno** degli 8 canali in frequenza, più dispositivi possono trasmettere **contemporaneamente sulla stessa frequenza** usando Spreading Factor diversi. Come visto nella modulazione CSS, segnali con SF differente sono **ortogonali** tra loro: il ricevitore riesce a separarli e decodificarli indipendentemente, anche se sovrapposti nel tempo e nella frequenza.
 
@@ -97,8 +97,6 @@ In EU868 i canali obbligatori sono 3 fino ad un massimo di 16 permesso dallo sta
 - 868.1 MHz
 - 868.3 MHz
 - 868.5 MHz
-
-Questi **tre canali** devono essere supportati da qualsiasi device e gateway LoRaWAN EU868. Gli altri 5 (fino a 8 totali) sono opzionali, definiti dal network server e comunicati al device durante il join tramite i comandi MAC NewChannelReq. il **frequency hopping** pseudo-casuale tra pacchetti riduce la probabilità che due device scelgano sempre lo stesso canale.
 
 ### **CDM: separazione per Spreading Factor all'interno di ogni canale**
 
