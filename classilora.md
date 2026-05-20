@@ -18,17 +18,54 @@
 
 ### **Classe A**
 
-In qualsiasi momento un nodo terminale può trasmettere un segnale. Dopo questa trasmissione uplink (tx) il nodo finale ascolterà una risposta dal gateway.
+In qualsiasi momento un nodo terminale può trasmettere un segnale. Dopo questa trasmissione uplink il nodo finale ascolterà una risposta dal gateway aprendo due slot di ricezione in RX1 (1 secondo dopo l'uplink) e RX2 (2 secondi dopo l'uplink). Il gateway può rispondere all'interno del primo slot di ricezione o del secondo, ma non in entrambi. I dispositivi di classe B e C devono supportare anche la funzionalità di classe A.
 
-Il nodo terminale apre due slot di ricezione in t1 e t2 secondi dopo una trasmissione uplink. Il gateway può rispondere all'interno del primo slot di ricezione o del secondo slot di ricezione, ma non in entrambi. I dispositivi di classe B e C devono supportare anche la funzionalità di classe A.
+[![alt text](img/classAlora.png)](img/classAlora.png)
 
+#### Scenari tipici
 
-  <img src="img/classAlora.png" alt="alt text" width="600">
+La Classe A è la scelta naturale per tutti i device **alimentati a batteria** che hanno un comportamento prevalentemente **unidirezionale verso il server** (uplink-driven): il device misura qualcosa, lo manda, e non si aspetta comandi frequenti dall'esterno.
 
-In LoRaWAN un end-device Class A apre due finestre di ricezione dopo ogni uplink:
+Esempi concreti:
 
-- RX1: 1 secondo dopo l'uplink, sulla stessa frequenza dell'uplink, con uno SF derivato. Se il gateway risponde in RX1 → trasmette ad esempio su 868,1 MHz (sotto-banda g1) → 1% di duty cycle disponibile, come gli uplink.
-- RX2: 2 secondi dopo l'uplink, frequenza fissa 869,525 MHz, SF12 (default EU868). Se il gateway risponde in RX2 → trasmette su 869,525 MHz (sotto-banda g3) → 10% di duty cycle disponibile, dieci volte più budget.
+- **Sensori ambientali periodici** — temperatura, umidità, qualità dell'aria, CO₂: trasmettono una misura ogni N minuti e tornano a dormire. Il server raccoglie i dati ma non ha bisogno di comandare il sensore in tempo reale.
+- **Contatori di impulsi** — consumi idrici, elettrici, gas: inviano letture periodiche o al superamento di una soglia.
+- **Sensori di livello** — cisterne, fiumi, pozzi: trasmettono il livello a intervalli regolari o su evento (soglia superata).
+- **Tracker GPS a basso aggiornamento** — posizione di asset statici o lenti (container, bestiame, macchinari agricoli): trasmettono la posizione ogni ora o ogni pochi minuti, senza necessità di comandi real-time.
+- **Sensori di vibrazione o shock** — monitoraggio strutturale di ponti, edifici, macchinari: trasmettono su evento quando viene rilevata un'anomalia.
+- **Rilevatori di apertura/chiusura** — porte, finestre, tombini: trasmettono l'evento e non richiedono feedback immediato.
+- **Sensori agricoli** — umidità del suolo, irraggiamento solare, meteo: campionamento periodico, nessuna necessità di downlink frequenti.
+
+Il denominatore comune è: **il device decide quando trasmettere**, il server si limita ad ascoltare, e i rari downlink di configurazione o comando possono attendere il prossimo uplink spontaneo senza impatti operativi.
+
+#### Conferma di avvenuto comando
+
+Class A gestisce le conferme, ma con un vincolo importante: la conferma viaggia nell'**uplink successivo**, non immediatamente.
+
+Il flusso è:
+1. Il server invia il comando downlink nella finestra RX1 o RX2 dopo un uplink del device.
+2. Il device riceve il comando, lo esegue, e nella **prossima trasmissione uplink** include un ACK o un payload applicativo che conferma l'esecuzione.
+3. Il server riceve la conferma solo quando il device decide di trasmettere di nuovo — che può essere secondi, minuti o ore dopo, a seconda del periodo di campionamento.
+
+Per applicazioni dove la conferma deve arrivare entro un tempo ragionevole e prevedibile, Class A funziona solo se il device trasmette abbastanza frequentemente. Se trasmette ogni ora, la conferma potrebbe arrivare fino a un'ora dopo — accettabile per alcuni scenari (cambio configurazione), non per altri (apertura di una valvola).
+
+#### Configurazione remota (es. periodo di polling)
+
+Il server invia il nuovo valore come payload downlink. Il device lo riceve nella finestra RX dopo il prossimo uplink, aggiorna il proprio timer interno, e da quel momento trasmette con il nuovo periodo. La conferma arriva nell'uplink successivo. Funziona correttamente, ma se il device trasmette ogni ora e il server vuole cambiare il periodo, deve aspettare fino a un'ora prima che il comando venga consegnato.
+
+#### Nota sull'impostazione dello Spreading Factor
+
+La configurazione dello SF **non dovrebbe essere gestita direttamente dall'applicazione**, ma delegata al meccanismo **ADR (Adaptive Data Rate)** di LoRaWAN, tramite il comando MAC `LinkADRReq` inviato dal network server.
+
+I motivi sono:
+
+- L'ADR si basa su statistiche reali di ricezione (SNR, frame error rate) raccolte su più uplink consecutivi, e adatta lo SF in modo continuo e ottimale alle condizioni reali del link.
+- Se l'applicazione imposta SF manualmente, bypassa l'ADR e rischia di fissare un valore subottimale che non si adatta a variazioni del link (mobilità del device, interferenze stagionali, variazioni ambientali).
+- C'è inoltre un rischio specifico: se il link è già degradato nel momento in cui si vuole aumentare SF, il comando `LinkADRReq` potrebbe non arrivare proprio perché il link è troppo debole — l'ADR gestisce questo caso con meccanismi di fallback che una configurazione manuale non ha.
+
+L'unico caso in cui fissare SF manualmente ha senso è in **reti private senza ADR**, dove si conosce con certezza la distanza e le condizioni del link e si vuole un bitrate fisso e prevedibile.
+
+---
 
 ### **Classe B**
 
@@ -94,7 +131,6 @@ La Classe C è adatta a device **alimentati a rete elettrica** (non a batteria) 
 | Consumo | Minimo | Medio | Massimo |
 | Alimentazione tipica | Batteria | Batteria | Rete elettrica |
 | Scenari tipici | Sensori periodici | Attuatori programmati | Attuatori reattivi |
-
 
 **Uplink confermato**
 
