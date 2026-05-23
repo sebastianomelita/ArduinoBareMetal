@@ -128,7 +128,7 @@ All'interno di un singolo canale principale (che può essere largo 20, 40, 80, 1
 L'Access Point può assegnare dinamicamente diverse RU a diversi client nello stesso istante. Un singolo dispositivo client dispone di una catena radio che, in quel momento, si concentra solo sulle frequenze della RU assegnata. Questo consente a più dispositivi di trasmettere o ricevere dati **in parallelo e simultaneamente su frequenze diverse**, riducendo drasticamente la probabilità di collisione rispetto alla vecchia trasmissione a canale intero.
 
 
-### **ALOHA e TDM: Separazione per tempo e accesso al mezzo**
+### **CSMA e TDM: Separazione per tempo e accesso al mezzo**
 
 L'ultima grandezza in grado di isolare i messaggi è il **Tempo**. Il Wi-Fi gestisce questa dimensione combinando un approccio asincrono/probabilistico (ereditato dal passato) e uno programmato/deterministico.
 
