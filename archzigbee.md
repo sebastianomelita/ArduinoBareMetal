@@ -385,7 +385,6 @@ Esistono due **direzioni** di trasmissione, entrambe soggette a collisione:
 * **uplink** dal dispositivo terminale verso i router o il coordinatore.
 * **downlink**, dal coordinatore/router verso i dispositivi terminale.
 
----
 
 ### **SDM: Separazione spaziale e topologia Mesh**
 
@@ -414,16 +413,6 @@ L'ultima e fondamentale grandezza per isolare i messaggi all'interno della stess
 * **Accesso programmato (GTS - Guaranteed Time Slots):** Nella modalità sincrona (Beacon-enabled), il tempo viene regolato centralmente eliminando la contesa per i messaggi critici, allocando slot temporali dedicati in logica TDMA.
 
 ---
-
-## **Beacon e Struttura della Supertrama**
-
-Nelle reti Zigbee configurate in modalità sincrona, il Coordinatore emette periodicamente dei frame speciali chiamati **Beacon**, che fungono da battito cardiaco della rete. Il Beacon serve a sincronizzare perfettamente i **clock interni** di tutti i dispositivi (fondamentale per permettere loro di dormire e svegliarsi nello stesso istante, risparmiando batteria) e descrive la struttura della trama successiva.
-
-La trama dati compresa tra due beacon consecutivi viene definita **Supertrama (Superframe)** ed è rigidamente divisa in due zone operative distinte, più una di riposo:
-
-* **CAP (Contention Access Period):** È la zona **probabilistica** a contesa. Tutti i dispositivi che devono inviare dati generici o richieste di associazione competono per il canale utilizzando il protocollo **CSMA/CA slottato** (sincronizzato sul beacon). I tentativi sono soggetti al rischio di collisione.
-* **CFP (Contention Free Period):** È la zona **deterministica** al riparo dalle collisioni. È formata da un massimo di 7 slot temporali chiamati **GTS (Guaranteed Time Slots)**. Il Coordinatore agisce da **master** assoluto e assegna questi slot in modo esclusivo a specifici dispositivi che necessitano di bassa latenza o traffico garantito (applicazione in modalità *polling* centralizzato). Nessun altro dispositivo può trasmettere in quegli slot, azzerando le collisioni.
-* **Inactive Period:** Una finestra temporale finale in cui il Coordinatore e i dispositivi entrano in stato di sonno profondo (sleep) per ottimizzare i consumi, in attesa del Beacon successivo.
 
 ## **Tipologie di nodi** 
 
@@ -458,6 +447,8 @@ L'utilizzo del **FHSS**, in particolare, permette la selezione automatica dei ca
 Zigbee utilizza 16 canali (da 11 a 26) nella banda 2,4 GHz in tutto il mondo, 13 canali nella banda 915 MHz in Nord America, e un unico canale nella banda 868 MHz in Europa. Alcuni dispositivi utilizzano anche la banda 784 MHz in Cina per Zigbee.
 
 Attraverso questi canali, ogni dispositivo Zigbee utilizza una larghezza di banda fino a 2 MHz mentre due canali diversi sono separati da una banda di guardia di 5 MHz per prevenire interferenze dovute ad altri dispositivi Zigbee. La velocità dati che può essere raggiunta nella banda da 2,4 GHz è di 250 Kbps per canale, 40 Kbps per canale nella banda 915 MHz e 20 Kbps per canale nella banda 868 MHz. Tuttavia, il throughput effettivo che può essere fornito è inevitabilmente inferiore ai valori specificati, a causa di vari fattori come il sovraccarico dei pacchetti, i ritardi di elaborazione e la latenza del canale. Le radio Zigbee generalmente forniscono una potenza di uscita di 1-100 mW su queste bande di frequenza.
+
+---
 
 ## **Beacon**
 
@@ -499,6 +490,8 @@ Lo **slotted CSMA** (Carrier Sense Multiple Access) è un protocollo di accesso 
 
 In genere, per reti a stella, il CSMA/CA senza slot è migliore del CSMA/CA con slot in termini di probabilità di successo del pacchetto, consumo di energia e ritardo. Mentre CSMA/CA con slot è migliore di CSMA/CA senza slot in termini di throughput, cioè capacità complessiva di traffico.
 
+---
+
 ## **Tipologie di servizio** 
 
 Molti sistemi (wifi, zigbee, bluetooth BLE, LoRaWan, Sigfox) permettono di impostare **contemporaneamente**, sulla **stessa interfaccia** radio, un **servizio sincrono** mediante **TDMA** per le sorgenti che eseguono il **polling** di sensori e un **servizio asincrono** con **ALOHA** o **CSMA/CA** per le sorgenti che devono effettuare la **notifica** del **comando** di un pulsante di accensione di un attuatore. Ciò è ottenuto **attivando** sul canale la funzionalità **beacon** con le cosiddette **superframe**, divise in zone dedicate a:
@@ -521,6 +514,7 @@ Nel caso delle reti in **beacon mode**, i **link** sono regolati in maniera prob
 
 In generale, i protocolli Zigbee riducono al minimo il tempo di accensione della radio, così da ridurre il consumo energetico. Nelle reti di beacon, i nodi devono essere attivi solo durante la trasmissione di un beacon. Nelle reti non abilitate ai beacon, il consumo energetico è decisamente asimmetrico: alcuni dispositivi sono **sempre attivi** (generalmente i router) mentre altri passano la maggior parte del tempo a dormire (i nodi terminali RFD).
 
+---
 
 ### **Pagine correlate:**
 
