@@ -146,6 +146,9 @@ La trama temporale che si sviluppa tra i beacon può essere idealmente suddivisa
 * **Fase programmata (Trigger-Based):** Nello scenario moderno, l'Access Point assume un ruolo di **coordinamento centrale assoluto** (approccio master/slave). L'AP invia un pacchetto speciale chiamato **Trigger Frame**. Questo frame stabilisce in modo rigido e centralizzato **quale** stazione deve parlare in uplink, **quando**, per **quanto tempo** e definisce l'esatta combinazione di risorse da usare (assegnando a ciascuno una specifica *Resource Unit* in frequenza o un preciso *flusso spaziale* MU-MIMO).
 
 Durante la trasmissione coordinata dal Trigger Frame, l'accesso distribuito viene temporaneamente sospeso: l'AP interroga le stazioni (polling dinamico) blindando la comunicazione uplink da qualsiasi collisione interna alla cella.
+
+---
+
 ## **Tipi di Backhaul**
 
 Il **backhaul Wi-Fi** è il collegamento **wireless** tra i **nodi** che partecipano ad una **dorsale principale** ad alto traffico di una rete mesh e il **gateway**. Il gateway è l'unico dispositivo della rete mesh che è **cablato** su una rete LAN, generalmente per ottenere l'accesso a Internet. In una rete mesh, i nodi (che possono essere router o access point) comunicano tra loro per estendere la copertura Wi-Fi, e il backhaul è essenziale per mantenere questa comunicazione fluida e efficiente. Le **Tipologie di Backhaul** sono:
