@@ -16,7 +16,8 @@ Servizi:
 - [Backup](backup.md).
 - [Autenticazione 802.1X](radius.md)
 - [DNS](https://it.wikipedia.org/wiki/Domain_Name_System)
-- [DHCP](https://it.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol)
+- [DHCP](https://it.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol) 
+- [PVLAN](/approfonfimenti/private_vlan.md) 
 
 
 ## **Caso d'uso rete wiFi Mesh**
