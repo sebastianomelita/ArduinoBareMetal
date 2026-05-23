@@ -359,6 +359,7 @@ mosquitto_pub -h localhost -t 'casa/soggiorno/comandi' -m '{"state": "ON"}'
 ```Bash
 mosquitto_pub -h localhost -t 'casa/soggiorno/comandi' -m '{"state": "OFF"}'
 ```
+---
 
 ## **Rete di sensori Zigbee** 
 
