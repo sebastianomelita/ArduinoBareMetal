@@ -217,6 +217,7 @@ Si vogliono separare i **servizi di produzione** agricola con i suoi **sensori**
 
 La **separazione** dei gruppi di utenti in base alla **dislocazione fisica** sarebbe evidentemente impossibile, mentre sarebbe **effettiva** la separazione mediante **VLAN** dislocate su una infrastruttura **bridged**.
 
+
 #### **Definizione dei gruppi mediante VLAN**
 
 La **definizione** dei gruppi si può fare con una dislocazione a **macchia di leopardo** delle **interfacce** di accesso alla diverse VLAN, aventi **ssid statici** diversi o uno unico ma **dinamico** ([Autenticazione 802.1X](radius.md#gestione-dinamica-degli-ssid)). Gli **host** possono collegarsi all'**ssid** di una certa VLAN su **ogni bridge** wireless. La loro **separazione** avviene **dopo**, su un **router** di confine collegato con un **backaul** capace di creare il **trunking** dei flussi sul router (**inter vlan routing** in modo **router on a stick**). Le **dorsali** tra i vari bridge devono essere configurate come dorsali di **trunk** (802.1Q) in modo tale che portino il traffico aggregato di **tutte le VLAN**.
@@ -267,8 +268,6 @@ Se si volessero separare un'**area di produzione** agricola con accesso riservat
 [Soluzione con dorsali link local](/approfondimenti/mesh_linklocal_example.md)
 
 [Soluzione con dorsali statiche](/approfondimenti/mesh_static_example.md)
-
----
 
 #### **Definizione dei gruppi mediante router**
 
