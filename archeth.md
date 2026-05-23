@@ -18,6 +18,7 @@ Servizi:
 - [Autenticazione 802.1X](radius.md)
 - [DNS](https://it.wikipedia.org/wiki/Domain_Name_System)
 - [DHCP](https://it.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol)
+- [PVLAN](/approfondimenti/private_vlan.md) 
 
 ## **Caso d'uso LAN Ethernet** 
 
