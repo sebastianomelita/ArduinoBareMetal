@@ -368,7 +368,62 @@ Più reti possono organizzarsi in cluster con una struttura logica ad albero (sp
 
 Caratteristiche distintiva di questa tecnologia di rete di sensori  è la **topologia a maglia** che comporta che:
 - qualunque dispositivo collegato **alla rete elettrica** diventa un **router**. Cioé, insieme ad un elettrodomestico (ad es. una lampadina) o ad una macchina industriale si compra pure un dispositivo di rete. Piú se ne mettono e piú la rete é estesa e affidabile.
-- un **dispositivo di comand**o non deve spendere l'energia per arrivare al gateway o all'attuatore remoto, ma solamente quella necessaria a raggiungere il **primo router** (next hop), cioè il primo elettrodomestico domotizzato nelle vicinanze.
+- un **dispositivo di comando** non deve spendere l'energia per arrivare al gateway o all'attuatore remoto, ma solamente quella necessaria a raggiungere il **primo router** (next hop), cioè il primo elettrodomestico domotizzato nelle vicinanze.
+
+Ecco la trattazione adattata per lo **Zigbee (basato sullo standard IEEE 802.15.4)**, mantenendo la stessa struttura e lo stesso taglio logico incentrato sulla gestione delle dimensioni radio e sulla struttura della supertrama.
+
+---
+
+## **Collisioni nello Zigbee**
+
+La tratta tra un dispositivo terminale (End Device), un Router e il Coordinatore in una rete Zigbee è un collegamento radio che, essendo un **mezzo broadcast** (se uno parla, tutti ascoltano), è per sua natura soggetta al fenomeno delle collisioni (interferenza distruttiva tra i messaggi).
+
+In generale, in una rete Zigbee le **collisioni** tra messaggi di sorgenti diverse vengono evitate o ridotte sfruttando le **dimensioni disponibili** della comunicazione radio, sebbene con vincoli hardware più stringenti rispetto a tecnologie industriali o cellulari.
+
+Esistono due **direzioni** di trasmissione, entrambe soggette a collisione:
+
+* **uplink** dal dispositivo terminale verso i router o il coordinatore.
+* **downlink**, dal coordinatore/router verso i dispositivi terminale.
+
+---
+
+### **SDM: Separazione spaziale e topologia Mesh**
+
+I dispositivi Zigbee sono tipicamente apparati a corto raggio e bassa potenza. L'**attenuazione di spazio libero** viene sfruttata geometricamente attraverso la **topologia Mesh**:
+
+* Coppie di dispositivi sufficientemente lontane tra loro possono trasmettere contemporaneamente sullo stesso canale frequenziale senza interferire, poiché i rispettivi segnali decadono prima di sovrapporsi con potenza distruttiva.
+* La rete frammenta la copertura in tanti piccoli saltelli (multi-hop). Questo permette il riuso della stessa frequenza in punti diversi della casa o dell'industria, ottimizzando lo spazio ed evitando che un singolo device impegni l'etere dell'intera area coperta dalla rete.
+
+### **FDM: Selezione del canale (Coesistenza statica)**
+
+A differenza di altre tecnologie, lo standard Zigbee standard non implementa un *frequency hopping* dinamico pacchetto per pacchetto. Nella banda ISM a 2.4 GHz, lo standard suddivide lo spettro in **16 canali fissi** (numerati da 11 a 26), larghi 2 MHz e spaziati di 5 MHz l'uno dall'altro.
+
+Al momento della creazione della rete, il Coordinatore effettua una scansione energetica dei canali (Energy Scan) per identificare quello meno affollato (ad esempio per evitare i canali Wi-Fi più usati) e **fissa la rete su quel singolo canale**. Tutti i dispositivi della rete comunicheranno da quel momento in poi su quell'unica frequenza. La separazione in frequenza (FDM) serve quindi a isolare *reti Zigbee diverse* nello stesso spazio, o a evitare interferenze esterne, ma non a separare i client della stessa rete.
+
+### **DSSS: Robustezza del codice (Direct Sequence Spread Spectrum)**
+
+Zigbee non possiede un meccanismo di modulazione multi-codice parallelo (come il multi-SF). Tuttavia, per proteggere i pacchetti dalle collisioni e dal rumore all'interno dello stesso canale, utilizza il **DSSS**.
+
+Ogni blocco di 4 bit di dati viene convertito a livello fisico in una sequenza ortogonale di 32 chip (detta *pseudo-random noise sequence*). Questa espansione dello spettro fornisce un **guadagno di processo** che permette al ricevitore di ricostruire correttamente il messaggio anche in presenza di interferenze parziali o rumore di fondo. Se due pacchetti collidono ma uno arriva con una potenza nettamente superiore (effetto cattura), il DSSS permette di decodificare il messaggio più forte ignorando quello più debole come semplice rumore.
+
+### **CSMA/CA e GTS: Separazione nel tempo e accesso al mezzo**
+
+L'ultima e fondamentale grandezza per isolare i messaggi all'interno della stessa rete è il **Tempo**. Lo Zigbee può operare in due modalità gestite nel dominio del tempo:
+
+* **Accesso a contesa (CSMA/CA):** Nella modalità asincrona (Non-Beacon enabled), i dispositivi usano il meccanismo *Listen Before Talk*. Prima di trasmettere, il device esegue un controllo del canale (CCA - Clear Channel Assessment). Se il canale è occupato, attende il tempo imposto da un algoritmo di **Backoff esponenziale causale** prima di riprovare. Se due device trasmettono nello stesso istante, avviene una collisione; l'assenza del pacchetto di ACK (conferma) obbligherà i nodi a ripetere la procedura aumentando il tempo di attesa.
+* **Accesso programmato (GTS - Guaranteed Time Slots):** Nella modalità sincrona (Beacon-enabled), il tempo viene regolato centralmente eliminando la contesa per i messaggi critici, allocando slot temporali dedicati in logica TDMA.
+
+---
+
+## **Beacon e Struttura della Supertrama**
+
+Nelle reti Zigbee configurate in modalità sincrona, il Coordinatore emette periodicamente dei frame speciali chiamati **Beacon**, che fungono da battito cardiaco della rete. Il Beacon serve a sincronizzare perfettamente i **clock interni** di tutti i dispositivi (fondamentale per permettere loro di dormire e svegliarsi nello stesso istante, risparmiando batteria) e descrive la struttura della trama successiva.
+
+La trama dati compresa tra due beacon consecutivi viene definita **Supertrama (Superframe)** ed è rigidamente divisa in due zone operative distinte, più una di riposo:
+
+* **CAP (Contention Access Period):** È la zona **probabilistica** a contesa. Tutti i dispositivi che devono inviare dati generici o richieste di associazione competono per il canale utilizzando il protocollo **CSMA/CA slottato** (sincronizzato sul beacon). I tentativi sono soggetti al rischio di collisione.
+* **CFP (Contention Free Period):** È la zona **deterministica** al riparo dalle collisioni. È formata da un massimo di 7 slot temporali chiamati **GTS (Guaranteed Time Slots)**. Il Coordinatore agisce da **master** assoluto e assegna questi slot in modo esclusivo a specifici dispositivi che necessitano di bassa latenza o traffico garantito (applicazione in modalità *polling* centralizzato). Nessun altro dispositivo può trasmettere in quegli slot, azzerando le collisioni.
+* **Inactive Period:** Una finestra temporale finale in cui il Coordinatore e i dispositivi entrano in stato di sonno profondo (sleep) per ottimizzare i consumi, in attesa del Beacon successivo.
 
 ## **Tipologie di nodi** 
 
