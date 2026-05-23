@@ -139,7 +139,7 @@ L'ultima grandezza in grado di isolare i messaggi è il **Tempo**. Il Wi-Fi gest
 
 ## **Beacon e Schedulazione Centralizzata (Trigger Frame)**
 
-Nelle reti Wi-Fi, l'Access Point emette periodicamente (di norma ogni 102,4 ms) un frame di gestione speciale chiamato **Beacon**. Il Beacon è una sequenza di sincronizzazione fondamentale: serve a allineare gli **orologi interni** di tutte le stazioni collegate (garantendo la precisione dei meccanismi a tempo come il TWT) e annuncia la presenza e i parametri della rete.
+Nelle reti Wi-Fi, l'Access Point emette periodicamente (di norma ogni 102,4 ms) un frame di gestione speciale chiamato **Beacon**. Il Beacon è una sequenza di sincronizzazione fondamentale: serve a allineare gli **orologi interni** di tutte le stazioni collegate (garantendo la precisione dei meccanismi a tempo come il TWT) e annuncia la presenza e i parametri della rete. Per dei dettagli vedi [preambolo di sincronizzazione](protocolli.md#preambolo-di-sincronizzazione).
 
 La trama temporale che si sviluppa tra i beacon può essere idealmente suddivisa in base alle **politiche di accesso** al canale imposte dall'AP:
 
