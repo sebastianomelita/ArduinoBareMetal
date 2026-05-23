@@ -109,7 +109,6 @@ Esistono due **direzioni** di trasmissione, entrambe soggette a collisione ma ge
 * **uplink**, dal dispositivo client fino all'Access Point.
 * **downlink**, dall'Access Point fino al dispositivo client.
 
----
 
 ### **SDM: Separazione spaziale (Riuso e Multiplexing)**
 
@@ -120,7 +119,6 @@ A differenza del tempo o della frequenza, lo spazio permette di isolare i messag
 
 Questo permette a più dispositivi di trasmettere o ricevere contemporaneamente **sulla stessa identica frequenza e nello stesso istante**. L'AP separa matematicamente i flussi paralleli sfruttando le diverse impronte spaziali delle antenne dei client, azzerando le collisioni tra i dispositivi coinvolti.
 
----
 
 ### **FDM: Separazione in frequenza granulare (OFDMA)**
 
@@ -128,7 +126,6 @@ All'interno di un singolo canale principale (che può essere largo 20, 40, 80, 1
 
 L'Access Point può assegnare dinamicamente diverse RU a diversi client nello stesso istante. Un singolo dispositivo client dispone di una catena radio che, in quel momento, si concentra solo sulle frequenze della RU assegnata. Questo consente a più dispositivi di trasmettere o ricevere dati **in parallelo e simultaneamente su frequenze diverse**, riducendo drasticamente la probabilità di collisione rispetto alla vecchia trasmissione a canale intero.
 
----
 
 ### **ALOHA e TDM: Separazione per tempo e accesso al mezzo**
 
