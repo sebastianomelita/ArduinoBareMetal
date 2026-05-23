@@ -10,6 +10,8 @@
 - [Dettaglio architettura 5G/6G](ranprivata.md)
 - [Dettaglio architettura RFID](archrfid.md)
 
+---
+
 ## **Caso d'uso Zigbee** 
 
 Date le particolarità della tecnologia, i casi d'uso per la rete di sensori sono quelli tipici applicazioni **IoT indoor** a **corto/medio raggio**, dove concorre con altre tecnologie di rete: WIFi, BLE e, sotto certe condizioni, LoRaWAN. Punti di forza che portano a preferire Zigbee sono essenzialmente:
@@ -23,7 +25,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 
 <img src="img/zigbeezone.png" alt="alt text" width="800">
 
-### **Aspetti critici**
+## **Aspetti critici**
 
 Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scelte argomentate** sono:
 - schema fisico (**planimetria**) dell'infrastruttura con etichettatura univoca di tutti gli asset tecnologici di rete.
@@ -49,8 +51,9 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 [Sensori](/approfondimenti/sensore.md)
 
+---
 
-### **Profili Zigbee**
+## **Profili Zigbee**
 
 Ogni dispositivo Zigbee aderisce a un profilo di dispositivo specifico che descrive le sue funzionalità e capacità. Questi profili sono standardizzati per garantire che i dispositivi di produttori diversi possano funzionare insieme senza problemi. Alcuni esempi di profili di dispositivi sono:
 - **Home Automation (HA)**: Utilizzato per applicazioni domestiche come luci, termostati e serrature.
@@ -145,7 +148,8 @@ Payload: 0x00
   "Command": "0x00"
 }
 ```
-  
+---
+
 ## **Gateway** 
 
 ### **Ruolo del gateway** 
@@ -195,8 +199,9 @@ In ogni caso, per gli **oggetti Zigbee**, la semantica dei comandi e dello stato
 
 Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in modo tale da includere la **semantica** di tutti i dispositivi IoT coinvolti nelle reti di sensori collegate, che di volta in volta, poi andrà **tradotta** nella **semantica applicativa standard** prevista nello stack della rete di accesso Zigbee.
 
+---
 
-### **Traduzione della semantica applicativa** 
+## **Traduzione della semantica applicativa** 
 
 **Zigbee2mqtt** è un software open-source progettato per permettere ai dispositivi Zigbee di comunicare direttamente con un server MQTT (Message Queuing Telemetry Transport) senza la necessità di un hub proprietario. 
 
