@@ -94,7 +94,60 @@ I router e i nodi mesh Wi-Fi 6 (802.11ax) spesso supportano più bande radio, ti
 
 Il **backhaul Wi-Fi** è il collegamento **wireless** tra i **nodi** che partecipano ad una **dorsale principale** ad alto traffico di una rete mesh e il **gateway**.
 
-### **Tipi di Backhaul**
+Ecco una trattazione speculare incentrata sull'architettura del **Wi-Fi moderno (Wi-Fi 6/6E/7)**, strutturata con lo stesso taglio tecnico e focalizzata sulla gestione delle collisioni attraverso le diverse dimensioni dello spettro radio.
+
+---
+
+## **Collisioni nel Wi-Fi Moderno**
+
+La tratta tra un dispositivo client (station) e un Access Point (AP) Wi-Fi è un collegamento radio che, condividendo lo stesso spettro di frequenze, è un **mezzo broadcast** per sua natura soggetto al fenomeno delle collisioni.
+
+Nelle generazioni più recenti del Wi-Fi, le collisioni tra messaggi di sorgenti diverse vengono evitate, ridotte o gestite sfruttando in modo combinato tutte le **dimensioni disponibili** della comunicazione radio (frequenza, spazio, tempo).
+
+Esistono due **direzioni** di trasmissione, gestite con logiche differenti:
+
+* **uplink (UL)**, dai dispositivi client verso l'Access Point.
+* **downlink (DL)**, dall'Access Point verso i dispositivi client.
+
+### **SDM: Riuso spaziale e BSS Coloring**
+
+Dispositivi appartenenti a reti diverse (BSS diversi) ma geometricamente vicini rischierebbero di bloccarsi a vicenda pur non dovendo comunicare con lo stesso AP. Il Wi-Fi moderno introduce il **BSS Coloring**: ogni pacchetto radio include un "colore" (un identificativo numerico) nel preambolo.
+
+Se un dispositivo rileva una trasmissione su una determinata frequenza, ma il colore è diverso da quello della propria rete (OBSS - Overlapping BSS), può ignorare parzialmente il segnale o alzare la soglia di tolleranza dell'interferenza (Clear Channel Assessment). Questo permette la trasmissione simultanea di dispositivi spazialmente separati sulla stessa frequenza, ottimizzando l'**attenuazione di spazio libero** e superando i vincoli rigidi del tradizionale "ascolto" radio.
+
+### **OFDMA: Separazione in frequenza granulare (Sotto-canali)**
+
+All'interno di un singolo canale principale (es. 20, 40, 80 o 160 MHz), il Wi-Fi moderno non è più obbligato a far trasmettere un solo dispositivo alla volta occupando tutta la banda. Tramite la tecnologia **OFDMA (Orthogonal Frequency Division Multiple Access)**, il canale viene suddiviso nel dominio della frequenza in sotto-canali più piccoli chiamati **Resource Units (RU)**.
+
+L'Access Point può assegnare dinamicamente diverse RU a diversi client nello stesso istante. Un singolo dispositivo trasmette solo sulle frequenze della RU assegnata. Questo consente a più dispositivi di trasmettere o ricevere dati **in parallelo e simultaneamente**, riducendo drasticamente i tempi di attesa e la probabilità di collisione rispetto alla trasmissione a canale intero.
+
+### **MU-MIMO: Separazione spaziale tramite flussi multipli**
+
+Invece di affidarsi a codici ortogonali, il Wi-Fi sfrutta le proprietà fisiche dello spazio e delle antenne multiple tramite il **MU-MIMO (Multi-User Multiple-Input Multiple-Output)**. Sfruttando tecniche avanzate di *beamforming* (formazione del fascio direzionale) e la sfasatura dei segnali, l'AP è in grado di creare cammini spaziali indipendenti.
+
+Questo permette a più dispositivi di trasmettere o ricevere contemporaneamente **sulla stessa identica frequenza e nello stesso istante**, purché siano separati nello spazio. L'AP mathematically separa i flussi di dati paralleli sfruttando le diverse impronte spaziali delle antenne dei client, operando una vera e proprio multiplazione spaziale dinamica.
+
+### **CSMA/CA e TWT: Separazione nel tempo e accesso al mezzo**
+
+Quando le risorse in frequenza (OFDMA) o spaziali (MU-MIMO) non sono sufficienti o coordinate, l'ultima dimensione per isolare i messaggi è il **Tempo**. Il Wi-Fi gestisce il tempo attraverso due anime: una probabilistica e una deterministica.
+
+* **Accesso a contesa (CSMA/CA con Backoff):** È il meccanismo classico *Listen Before Talk*. Prima di trasmettere, il dispositivo ascolta il canale. Se il canale è occupato, attende che torni libero e poi avvia un temporizzatore casuale (**Binary Exponential Backoff**). Se due dispositivi trasmettono nello stesso identico istante, avviene una collisione; la mancata ricezione del pacchetto di conferma (ACK) farà scattare un backoff più lungo per il tentativo successivo.
+* **Target Wake Time (TWT):** Introdotto per ordinare il traffico nel tempo, il TWT permette all'AP e ai client di negoziare ed "accordarsi" su tempi specifici in cui il client deve svegliarsi per trasmettere o ricevere dati. Al di fuori di queste finestre temporali, il dispositivo dorme. Questo elimina la contesa selvaggia del tempo, azzerando le collisioni per quei determinati flussi schedulati.
+
+---
+
+## **Beacon e Schedulazione Centralizzata (Trigger Frame)**
+
+Nelle reti Wi-Fi, l'Access Point emette periodicamente (di norma ogni 102,4 ms) un frame di gestione speciale chiamato **Beacon**. Il Beacon è una sequenza di sincronizzazione fondamentale: serve a sincronizzare i clock interni di tutte le stazioni collegate (garantendo la precisione dei meccanismi a tempo come il TWT) e annuncia la presenza della rete, le sue capacità e l'eventuale presenza di traffico dati in attesa per i dispositivi in modalità risparmio energetico (tramite la TIM - Traffic Indication Map).
+
+La gestione del tempo e delle risorse radio può essere divisa in due macro-modalità operative gestite centralmente dall'AP:
+
+* **Fase a Contesa (EDCA):** I dispositivi competono per l'accesso al canale utilizzando i meccanismi probabilistici di priorità del traffico (Voice, Video, Best Effort, Background), accettando il rischio di collisione ordinato dal Backoff.
+* **Fase Schedulata (Trigger-Based):** Nel Wi-Fi moderno, l'AP può assumere il controllo totale e deterministico del mezzo trasmissivo agendo da coordinatore centrale. Per fare questo, l'AP invia un pacchetto speciale chiamato **Trigger Frame**. Questo frame stabilisce in modo rigido e centralizzato **quale** stazione deve parlare in uplink, **quando**, per **quanto tempo** e su quale specifica **Resource Unit (frequenza)** o **flusso spaziale**.
+
+Durante la trasmissione coordinata dal Trigger Frame, l'accesso al canale passa da una logica distribuita a contesa a una logica puramente centralizzata guidata dall'AP (simile a un *polling* dinamico), blindando la comunicazione uplink dalle collisioni interne alla cella.
+
+## **Tipi di Backhaul**
 
 Il **backhaul Wi-Fi** è il collegamento **wireless** tra i **nodi** che partecipano ad una **dorsale principale** ad alto traffico di una rete mesh e il **gateway**. Il gateway è l'unico dispositivo della rete mesh che è **cablato** su una rete LAN, generalmente per ottenere l'accesso a Internet. In una rete mesh, i nodi (che possono essere router o access point) comunicano tra loro per estendere la copertura Wi-Fi, e il backhaul è essenziale per mantenere questa comunicazione fluida e efficiente. Le **Tipologie di Backhaul** sono:
 - **Backhaul Wireless**: Utilizza la connessione Wi-Fi stessa per collegare i nodi mesh tra loro. E'Semplice da configurare, nessun cablaggio necessario. Ma larghezza di banda disponibile può essere ridotta, specie se il canale Wi-Fi è condiviso tra il traffico client e il traffico backhaul. Può anche essere soggetto a interferenze e degrado del segnale.
@@ -110,7 +163,7 @@ In una **rete mesh**, il controllo del tempo di trasmissione attraverso CFP o te
 - **Allocazione Dinamica**: Durante i periodi di contesa, i nodi mesh possono utilizzare tecniche come **OFDMA** (introdotto a partire dal wiFi6) per allocare dinamicamente subcanali e slot di tempo ai dispositivi client, ottimizzando l'uso dello spettro e **riducendo la latenza**.
 - **Gestione della QoS**: Per applicazioni che richiedono alta qualità del servizio, come lo streaming video o le chiamate VoIP, i nodi mesh possono **riservare slot** di tempo specifici durante i CFP per garantire una trasmissione senza interruzioni e con bassa latenza.
 
-### **Funzionalità Chiave di una implementazione multiradio**
+## **Funzionalità Chiave di una implementazione multiradio**
 
 Quando si vuole **selezionare** un AP Wi-Fi per una rete mesh ad **alte prestazioni**, potrebbe esse utile tenere in considerazione le seguenti funzionalità:
 - **Tri-Band Support**: I sistemi mesh tri-band hanno tre radio: una per 2.4 GHz, una per 5 GHz, e una terza che può operare su 5 GHz o 6 GHz. Questo permette una maggiore flessibilità e prestazioni superiori, poiché una delle bande a 5 GHz o 6 GHz può essere utilizzata esclusivamente per il backhaul.
@@ -120,7 +173,7 @@ Quando si vuole **selezionare** un AP Wi-Fi per una rete mesh ad **alte prestazi
 - **Dynamic Band Steering**: La rete mesh può dirigere dinamicamente i dispositivi verso la banda più appropriata, migliorando l'efficienza della rete. I dispositivi più vicini ai nodi mesh possono essere indirizzati verso le bande a 5 GHz o 6 GHz, mentre quelli più lontani possono usare la banda a 2.4 GHz.
 - **Facilità di Configurazione**: meglio scegliere dispositivi con app di gestione intuitive e supporto tecnico affidabile.
 
-### **Autenticazione utente presso un nodo di aggregazione**
+## **Autenticazione utente presso un nodo di aggregazione**
 
 L'autenticazione di un nodo Wi-Fi è un processo fondamentale per garantire che solo gli utenti autorizzati possano connettersi alla rete. Ecco un elenco dei principali tipi di autenticazione utilizzati in un AP Wi-Fi, con una breve descrizione di ciascuno:
 
@@ -133,7 +186,7 @@ L'autenticazione di un nodo Wi-Fi è un processo fondamentale per garantire che 
     - **WPA3**: L'ultima versione del protocollo WPA, offre miglioramenti in termini di sicurezza rispetto a WPA2, inclusa una protezione più robusta contro gli attacchi a dizionario e Forward Secrecy. **WPA3-Personal**: Utilizza Simultaneous Authentication of Equals (SAE) per una maggiore sicurezza della chiave pre-condivisa.**WPA3-Enterprise**: Migliora la sicurezza rispetto a WPA2-Enterprise, offrendo una crittografia più robusta e una gestione delle chiavi più sicura. E' di uso comune nelle reti di nuova generazione che richiedono la massima sicurezza disponibile.
 8. **802.1X/EAP (Extensible Authentication Protocol)**: Utilizzato principalmente nelle reti WPA2-Enterprise e WPA3-Enterprise. Richiede un server di autenticazione (RADIUS) e supporta vari metodi di autenticazione come certificati digitali, smart card, token hardware e credenziali di nome utente/password. Uso comune: Grandi reti aziendali e ambienti dove è necessaria una gestione avanzata delle credenziali di accesso e autenticazione forte. E' la più sofisticata, per dettagli vedi [Autenticazione 802.1X](radius.md)
 
-### **Bridge mesh network**
+## **Bridge mesh network**
 
 Nelle reti Wifi **Bridge mesh**, si sfrutta la **proprietà** (comune a tutti i dispositivi WiFi) di possedere un **bridge interno**, realizato in SW, che collega i **link wireless** appartenenti ad interfacce **radio diverse** (per esempio, una a 2.4 GHz ed una a 5 GHz). Quindi, un **nodo WiFi** è, a tutti gli effetti, un dispositivo **IS** di **livello 2** della pila **ISO/OSI**. 
 
@@ -167,7 +220,7 @@ Però, nonostante la sua semplicità, questa non è la configurazione preferita.
 - il fatto che gli **indirizzi MAC** non siano **gerarchici** non permette di **partizionare la rete** in subnet con **gruppi** di dispositivi dislocati in aree **delimitate** e presidiate da **router**, circostanza che impedisce di migliorare ulteriormente la **sicurezza** e il livello di **controllo** di accesso con **regole** di filtraggio basate sull'indirizzo di **sorgente**.
 
 
-### **Routed ad hoc mesh network**
+## **Routed ad hoc mesh network**
 
 Nelle reti Wifi **Routed mesh**, si sfrutta la **proprietà** (comune a tutti i dispositivi WiFi) di possedere un **router interno**, realizato in SW, che collega i **link wireless** appartenenti ad interfacce **radio diverse** (per esempio, una a 2.4 GHz ed una a 5 GHz). Quindi, un **nodo WiFi** è, a tutti gli effetti, un dispositivo **IS** di **livello 3** della pila **ISO/OSI**. 
 
@@ -189,7 +242,7 @@ In **OSPF** sono possibili due soluzioni per definire il **subnetting statico** 
 Il routing è basato su **indirizzi IP** che, essendo **gerarchici** , permettono di **partizionare la rete** in subnet con **gruppi** di dispositivi dislocati in aree **delimitate** e presidiate da **router**, cioè da dispositivi in grado filtrare gli accessi con **regole** basate sull'indirizzo di **sorgente**. Questo è un vantaggio di sicurezza perchè delle **ACL** sui router potrebbero abilitare l'accesso a certe **aree fisiche** (corrispondenti a certe subnet di destinazione) semplicemente controllando la **subnet di appartenenza** della sorgente.
 
 
-### **Esempio**
+## **Esempio**
 
 Se si volessero separare un'**area di produzione** agricola con accesso riservato solamente ai **sensori/attuatori**, da un'area dedicata all'**accesso degli impiegati** amministrativi e da un altra ancora dedicata all'**accesso degli ospiti** esterni per le conferenze, allora la **separazione** dei gruppi di utenti in base alla **dislocazione fisica** potrebbe essere una **soluzione efficace**. 
 
