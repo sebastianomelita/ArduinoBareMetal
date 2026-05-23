@@ -63,7 +63,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 [Autenticazione 802.1X](radius.md)
 
-
+---
 ## **Rete in modo infrastruttura** 
 
 ## **Architetture delle reti WiFi** 
@@ -73,6 +73,7 @@ Una architettura di rete wireless WiFi è può essere realizzata in tre modalit�
 - **Modalità ad hoc** di tipo peer to peer 
 - **Modalità Wifi Direct**  di tipo Punto – punto
 
+---
 ## **Architettura Wifi Direct** 
 
 Wi-Fi Direct, invece, è un protocollo peer-to-peer definito dalla Wi-Fi Alliance che consente a due dispositivi di negoziare dinamicamente chi fa da Group Owner (una sorta di soft-AP) e chi da client, senza bisogno di un'infrastruttura preesistente. 
@@ -81,7 +82,7 @@ Wi-Fi Direct, invece, è un protocollo peer-to-peer definito dalla Wi-Fi Allianc
 
 Entrambi, bridge mode e wifi direct, creano un collegamento diretto tra dispositivi senza che i client vi accedano liberamente però il bridge mode è pensato per collegamenti permanenti (ponti radio). Lo scopo tipico del Wi-Fi Direct è la comunicazione temporanea e diretta tra endpoint (stampante, telefono, display), non l'interconnessione di LAN. 
 
-
+---
 ## **Architettura WiFi Infrastruttura** 
 
 Le architetture **più diffuse** in ambito aziendale ed **indoor** sono di **tipo infrastruttura** e sono composte di un dispositivo master centrale detto **Access Point (AP)** posto in posizione **baricentrica** rispetto a più dispositivi slave della rete wireless detti **Client**:
@@ -98,6 +99,7 @@ Gli **elementi** di una rete in modo infrastruttura sono:
 
 <img src="img/ap.drawio.png" alt="alt text" width="800">
 
+---
 ## **Access point**
 
 Il dispositivo AP è assimilabile ad un **Hub** che realizza un BUS broadcast che collega tutti i device client. Il mezzo radio è di tipo broadcast half duplex in cui uno parla e tutti ascoltano. Per realizzare un canale percepito dalle stazioni client come full duplex l’accesso di queste necessita di essere arbitrato. L'**arbitraggio** può essere di tipo:
@@ -113,6 +115,58 @@ Per quanto riguarda il loro **collegamento** ai **dispositivi attivi** della ret
 - il collegamento sulle porte di uno **switch di distribuzione** (DS) condiviso con le dorsali di piano che, oltre a diramare dorsali ad alta densità di traffico verso gli AS, dedicano anche dorsali ad alta capacità verso ogni singolo AP. Soluzione dimensionalmente adeguata tenedo conto del thoughput superiore al Gbit/sec  degli AP più recenti che permettono sia collegamenti ad **alte prestazioni** (200-300 Mbps/sec) che l'aggregazione di un **elevato numero** di client (superiore a 100). Soluzione desiderabile per grandi ambienti che basano i loro servizi su Internet quali alberghi, scuole, campus universitari, ecc.
 - l'utilizzo, per entrambe le soluzioni precedenti, di **SW dedicati** solo per gli AP, soluzione che permette di dedicare una **dorsale dedicata**  (di piano o di campus) a ciascun **gruppo di AP**. Soluzione auspicabile per **servizi avanzati** ad alta **densità** di utenze (come luoghi pubblici) e alta **intensità** di traffico (come servizi multimediali avanzati).
 
+---
+
+## **Collisioni nel Wi-Fi Moderno**
+
+La tratta tra un dispositivo client (station) e un Access Point (AP) Wi-Fi è un collegamento radio che, essendo un **mezzo broadcast** (se uno parla, tutti ascoltano), è per sua natura soggetta al fenomeno delle collisioni (interferenza distruttiva tra i messaggi).
+
+In generale, nel Wi-Fi moderno le **collisioni** tra messaggi di sorgenti diverse vengono evitate o ridotte sfruttando in modo combinato tutte le **dimensioni disponibili** della comunicazione radio.
+
+Esistono due **direzioni** di trasmissione, entrambe soggette a collisione ma gestite con logiche differenti:
+
+* **uplink**, dal dispositivo client fino all'Access Point.
+* **downlink**, dall'Access Point fino al dispositivo client.
+
+
+### **SDM: Separazione spaziale (Riuso e Multiplexing)**
+
+A differenza del tempo o della frequenza, lo spazio permette di isolare i messaggi sfruttando la posizione geografica dei dispositivi e la direzionalità dei segnali. Nel Wi-Fi moderno, l'SDM opera su due livelli: inter-cella (macro) e intra-cella (micro).
+
+* **Riuso spaziale inter-cella (BSS Coloring):** Dispositivi appartenenti a reti diverse (BSS diversi) ma geometricamente vicini rischierebbero di bloccarsi a vicenda pur non dovendo comunicare con lo stesso AP. Con il *BSS Coloring*, ogni pacchetto radio include un "colore" (un identificativo numerico) nel preambolo. Se un dispositivo rileva una trasmissione ma il colore è diverso da quello della propria rete (OBSS - Overlapping BSS), capisce che il traffico appartiene a un'altra cella. Sfruttando l'**attenuazione di spazio libero**, può alzare la soglia di tolleranza dell'interferenza e trasmettere comunque, permettendo il riuso delle frequenze in posizioni vicine.
+* **Multiplexing spaziale intra-cella (MU-MIMO):** All'interno della stessa cella, l'AP sfrutta array di antenne multiple e tecniche avanzate di *beamforming* (manipolazione di fase del segnale) per non irradiare in modo omnidirezionale, ma per creare dei "fasci" direzionali indipendenti.
+
+Questo permette a più dispositivi di trasmettere o ricevere contemporaneamente **sulla stessa identica frequenza e nello stesso istante**. L'AP separa matematicamente i flussi paralleli sfruttando le diverse impronte spaziali delle antenne dei client, azzerando le collisioni tra i dispositivi coinvolti.
+
+
+### **FDM: Separazione in frequenza granulare (OFDMA)**
+
+All'interno di un singolo canale principale (che può essere largo 20, 40, 80, 160 o fino a 320 MHz nelle bande a 5 e 6 GHz), il Wi-Fi moderno non è più obbligato a far trasmettere un solo dispositivo alla volta sull'intera banda. Tramite la tecnologia **OFDMA (Orthogonal Frequency Division Multiple Access)**, il canale viene suddiviso nel dominio della frequenza in sotto-canali più piccoli e ortogonali chiamati **Resource Units (RU)**.
+
+L'Access Point può assegnare dinamicamente diverse RU a diversi client nello stesso istante. Un singolo dispositivo client dispone di una catena radio che, in quel momento, si concentra solo sulle frequenze della RU assegnata. Questo consente a più dispositivi di trasmettere o ricevere dati **in parallelo e simultaneamente su frequenze diverse**, riducendo drasticamente la probabilità di collisione rispetto alla vecchia trasmissione a canale intero.
+
+
+### **CSMA e TDM: Separazione per tempo e accesso al mezzo**
+
+L'ultima grandezza in grado di isolare i messaggi è il **Tempo**. Il Wi-Fi gestisce questa dimensione combinando un approccio asincrono/probabilistico (ereditato dal passato) e uno programmato/deterministico.
+
+* **Accesso a contesa distribuito (CSMA/CA con Backoff):** Quando i dispositivi non sono coordinati centralmente, applicano una logica simile all'Aloha ma evoluta (*Listen Before Talk*). Prima di trasmettere, il dispositivo ascolta il canale: se è occupato, attende che torni libero e poi avvia un temporizzatore casuale (**Binary Exponential Backoff**). Se due dispositivi finiscono il backoff e trasmettono nello stesso identico istante, avviene una collisione. La mancata ricezione del pacchetto di conferma (ACK) farà scattare un backoff più lungo per il tentativo successivo.
+* **Target Wake Time (TWT):** Per evitare la contesa selvaggia del tempo, l'AP e i client possono negoziare preventivamente degli slot temporali specifici (finestre di attivazione). Il client si sveglia solo nel suo istante riservato per trasmettere o ricevere, rimanendo in uno stato di sonno profondo per il resto del tempo. Questo approccio quasi-deterministico azzera il rischio di collisione per i flussi di dati schedulati.
+
+---
+
+## **Beacon e Schedulazione Centralizzata (Trigger Frame)**
+
+Nelle reti Wi-Fi, l'Access Point emette periodicamente (di norma ogni 102,4 ms) un frame di gestione speciale chiamato **Beacon**. Il Beacon è una sequenza di sincronizzazione fondamentale: serve a allineare gli **orologi interni** di tutte le stazioni collegate (garantendo la precisione dei meccanismi a tempo come il TWT) e annuncia la presenza e i parametri della rete.
+
+La trama temporale che si sviluppa tra i beacon può essere idealmente suddivisa in base alle **politiche di accesso** al canale imposte dall'AP:
+
+* **Fase a contesa (EDCA):** Una zona probabilistica in cui i dispositivi competono per l'accesso al canale utilizzando i meccanismi di CSMA/CA ordinati dalle priorità del traffico, accettando il rischio di collisione.
+* **Fase programmata (Trigger-Based):** Nello scenario moderno, l'Access Point assume un ruolo di **coordinamento centrale assoluto** (approccio master/slave). L'AP invia un pacchetto speciale chiamato **Trigger Frame**. Questo frame stabilisce in modo rigido e centralizzato **quale** stazione deve parlare in uplink, **quando**, per **quanto tempo** e definisce l'esatta combinazione di risorse da usare (assegnando a ciascuno una specifica *Resource Unit* in frequenza o un preciso *flusso spaziale* MU-MIMO).
+
+Durante la trasmissione coordinata dal Trigger Frame, l'accesso distribuito viene temporaneamente sospeso: l'AP interroga le stazioni (polling dinamico) blindando la comunicazione uplink da qualsiasi collisione interna alla cella.
+
+---
 ## **Autenticazione utente presso un AP**
 
 L'autenticazione di un Access Point (AP) Wi-Fi è un processo fondamentale per garantire che solo gli utenti autorizzati possano connettersi alla rete. Ecco un elenco dei principali tipi di autenticazione utilizzati in un AP Wi-Fi, con una breve descrizione di ciascuno:
@@ -127,7 +181,7 @@ L'autenticazione di un Access Point (AP) Wi-Fi è un processo fondamentale per g
 8. **802.1X/EAP (Extensible Authentication Protocol)**: Utilizzato principalmente nelle reti WPA2-Enterprise e WPA3-Enterprise. Richiede un server di autenticazione (RADIUS) e supporta vari metodi di autenticazione come certificati digitali, smart card, token hardware e credenziali di nome utente/password. Uso comune: Grandi reti aziendali e ambienti dove è necessaria una gestione avanzata delle credenziali di accesso e autenticazione forte. E' la più sofisticata, per dettagli vedi [Autenticazione 802.1X](radius.md)
 
 Ogni tipo di autenticazione ha i suoi pro e contro in termini di sicurezza, facilità d'uso e configurazione. La scelta del metodo di autenticazione dipende dalle esigenze specifiche della rete e dal livello di sicurezza richiesto.
-
+---
 ## **Modi di un dispositivo wireless 802.11**
 
 Un dispositivo AP commerciale può essere configurato in:
@@ -136,7 +190,7 @@ Un dispositivo AP commerciale può essere configurato in:
 - **Bridge mode**: l’AP realizza una condivisione del proprio Hub radio con uno diverso generato da un altro AP di cui condivide lo stesso SSID.  In altre parole, da due hub separati ne ottengo uno con lo stesso ssid. Se uno dei due hub è in bridge con una LAN allora anche il secondo lo diventa, i due hub e il bridge diventano una stessa LAN. Gli host a monte e a valle dei due AP si vedono reciprocamente (dorsale L2). In questo modo creo un collegamento diretto che non accetta l’accesso di dispositivi client.
 - **WDS mode**: è una evoluzione del Bridge mode in cui i due bridge, oltre a creare la dorsale L2 tra di loro, hanno anche la funzione di un normale AP consentendo l’accesso ai dispositivi client.
 - **Long range mode**: è la disinserzione forzata su un master della modalità peer to peer trasformandolo di fatto in un dispositivo con accesso TDMA (ack e contesa eliminati). Si utilizza per realizzare ponti radio fissi di centinaia di chilometri. Su dispositivi di fascia bassa, spesso non si realizza un TDMA ma ci si limita ad allungare i tempi degli RTT del sistema (contesa con ack ritardati).
-
+---
 ## **Struttura cellulare**
 
 Una rete wifi è organizzata nelle zone di influenza di ciascun AP dette **cella**. A causa dell'**attenuazione** del segnale radio dovuta alla distanza o agli ostacoli un client raggiunge un AP solo fino ai confini della sua cella.
@@ -219,7 +273,7 @@ R1 possiede 3 indirizzi su ciascuna subnet:
   
 Non è necessario impostare le tabelle di routing in quanto le subnet S0, S1, S2, S3 sono, su R1, direttamente connesse.
 
-
+---
 ## **Beacon**
 
 I beacon sono delle **sequenze di sincronizzazione** (dette preambolo) in grado sia di sincronizzare gli **orologi** dei dispositivi (Tx e Rx) che si accingono ad iniziare una comunicazione, ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. Per dei dettagli vedi [preambolo di sincronizzazione](protocolli.md#preambolo-di-sincronizzazione).
@@ -238,7 +292,7 @@ Nel caso del WiFi, il **NAV CFP** (Contention Free Period) è un meccanismo che 
 
 **Riassumendo**, Normalmente i dispositivi AP lavorano in **modalità ibrida** DCF e PCF. Vengono trasmessi periodicamente dei beacon e l'intervallo temporale tra un beacon e l'altro viene suddiviso in **due zone**, una soggetta a trasmissioni di tipo **PCF** e quindi **intrinsecamente** al riparo dalle collisioni adatta a trasmissioni **sincrone** e un'altra di tipo **DCF**, soggetta a collisioni sugli RTS, dedicata alle trasmissioni **asincrone**.
 
-
+---
 ## **Banda ISM**
 
 Le **bande libere** sono le frequenze di **uso libero**, non tutelate, che non richiedono **concessioni** per il loro impiego. Sono spesso indicate come **ISM** (Industrial, Scientific and Medical)[Nota 1].
@@ -257,6 +311,7 @@ Ogni **access point** utilizza un **singolo canale** (largo 22 MHz), che viene c
 
 La trasmissione avviene a **pacchetti** con **conferma** di ricezione.
 
+---
 ##  **Impatto ambientale**
 
 La **potenza media** delle emissioni ambientali dipende dalle condizioni di servizio ed è influenzata dal duty cycle, a sua volta determinato da vari **fattori**:
@@ -270,7 +325,8 @@ La **potenza media** delle emissioni ambientali dipende dalle condizioni di serv
 - Il duty cycle minimo dell’access point è fissato dai segnali di servizio (beacon signals) ed è dell’ordine di 0.01%
 
 Considerata la **bassa potenza** di uscita di **picco**, il bassissimo **guadagno d’antenna** e la riduzione operata dal **duty cycle**, gli access point delle reti Wi-Fi generano livelli di **densità di potenza** sempre molti ordini di grandezza sotto i **limiti normativi** ed anche significativamente inferiori alle **stazioni radio base** della telefonia cellulare.
- 
+
+ ---
 ## **Ponti radio WiFi**
 
 Un ponte radio WiFi è una dorsale tra due tronchi di rete **cablata** realizzata mediante due o più **dispositivi wireless**. Può essere:
@@ -349,7 +405,9 @@ Il dispositivo **amplifica** il segnale estendendo la dimensione nello spazio de
 
 Essendo parte di una unica LAN derivata dallo stesso hub esteso, tutti i dispositivi devono possedere **indirizzi IP** afferenti alla **medesima subnet**.
 
-### **Bridge group**
+---
+
+## **Bridge group**
 
 All'**interno** di ogni **AP**, in realtà, sono sempre presenti uno o più **bridge** realizzati in SW (creati  mediante il comando  bridge-group x) che hanno il compito di **associare** il traffico delle **interfacce wireless**  con le **interfacce Ethernet** della reta cablata.
 
@@ -435,8 +493,8 @@ interface Dot11Radio1.20
 ```
 Questa configurazione mantiene il traffico wireless appartenente a un SSID isolato dal traffico appartenente all'altro mentre transita l'access point dall'interfaccia cablata all'interfaccia wireless e viceversa. Nota che poiché non c'è un'interfaccia BVI2, l'access point non ha alcun indirizzo IP raggiungibile direttamente dall'SSID Guest.
 
-
-### **Conclusioni**
+---
+## **Conclusioni**
 
 Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prestazioni e la copertura, utilizzando bande diverse per i link tra nodi e per le connessioni dei dispositivi. Questa tecnologia permette di ridurre la congestione e migliorare l'efficienza della rete, offrendo una connessione più stabile e veloce per tutti i dispositivi collegati. 
 
@@ -445,6 +503,7 @@ Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prest
 - **Netgear Orbi**: Offre prestazioni elevate con backhaul dedicato e supporto tri-band, ideale per case grandi.
 - **Eero Pro 6**: Supporta Wi-Fi 6, offre alta velocità e copertura estesa, facile da configurare tramite app mobile.
 - **Ubiquiti AmpliFi HD**: Un sistema potente con una gestione avanzata delle reti, ottimo per utenti più tecnici.
+
 
 ### **Pagine correlate:**
 
