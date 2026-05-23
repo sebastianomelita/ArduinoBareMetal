@@ -12,7 +12,7 @@
   
 Servizi:
 - [VPN di reti Ethernet](ethvpn.md).
-- [Firewall](firewall.md).
+- [Firewall](firewall.md).F
 - [Backup](backup.md).
 - [Autenticazione 802.1X](radius.md)
 - [DNS](https://it.wikipedia.org/wiki/Domain_Name_System)
@@ -157,7 +157,7 @@ L'ultima grandezza in grado di isolare i messaggi è il **Tempo**. Il Wi-Fi gest
 
 ## **Beacon e Schedulazione Centralizzata (Trigger Frame)**
 
-Nelle reti Wi-Fi, l'Access Point emette periodicamente (di norma ogni 102,4 ms) un frame di gestione speciale chiamato **Beacon**. Il Beacon è una sequenza di sincronizzazione fondamentale: serve a allineare gli **orologi interni** di tutte le stazioni collegate (garantendo la precisione dei meccanismi a tempo come il TWT) e annuncia la presenza e i parametri della rete.
+Nelle reti Wi-Fi, l'Access Point emette periodicamente (di norma ogni 102,4 ms) un frame di gestione speciale chiamato **Beacon**. Il Beacon è una sequenza di sincronizzazione fondamentale: serve a allineare gli **orologi interni** di tutte le stazioni collegate (garantendo la precisione dei meccanismi a tempo come il TWT) e annuncia la presenza e i parametri della rete. Per dei dettagli vedi [preambolo di sincronizzazione](protocolli.md#preambolo-di-sincronizzazione).
 
 La trama temporale che si sviluppa tra i beacon può essere idealmente suddivisa in base alle **politiche di accesso** al canale imposte dall'AP:
 
@@ -274,25 +274,7 @@ R1 possiede 3 indirizzi su ciascuna subnet:
 Non è necessario impostare le tabelle di routing in quanto le subnet S0, S1, S2, S3 sono, su R1, direttamente connesse.
 
 ---
-## **Beacon**
 
-I beacon sono delle **sequenze di sincronizzazione** (dette preambolo) in grado sia di sincronizzare gli **orologi** dei dispositivi (Tx e Rx) che si accingono ad iniziare una comunicazione, ma anche di **indentificare** in maniera univoca i dispositivi che li emettono. Per dei dettagli vedi [preambolo di sincronizzazione](protocolli.md#preambolo-di-sincronizzazione).
-
-La trama dati compresa tra **due beacon** consecutivi viene detta **supertrama** (superframe) ed è generalmente divisa in due zone con **politiche di accesso** al canale diverse:  
-- una **deterministica** al riparo dalle collisioni detta **CFP** (Contention Free Period) e regolata dalla multiplazione statica TDMA, che viene usata per trasmettere i dati delle comunicazioni **unicast**.
-- una **probabilistica** a contesa, in cui i tentativi di accesso dei dispositivi sono soggetti al **rischio di collisione** perchè regolata da un protocollo di tipo **CSMA/CA**, che invece serve per trasmettere delle particolari informazioni **broadcast** dette **advertisement**.
-
-Nel contesto di WiFi, un **Access Point (AP)** può assumere un ruolo di **coordinamento**, detto PCF, gestendo l'accesso al canale in modo master/slave in cui il centrale ha il ruolo di **master** che stabilisce **quale** stazione deve parlare, **quando** e **per quanto** tempo usando una politica di **turnazione** delle stazioni (**polling**).
-  
-Nel caso del WiFi, il **NAV CFP** (Contention Free Period) è un meccanismo che inibisce tutte le stazioni dal prendere l'**iniziativa di cominciare** una trasmissione. Finchè è valido le stazioni comunicheranno in modalità **master/slave**, cioè **risponderanno** solo **se interrogate**.
-
-<img src="CFP1.png" alt="alt # **text" width="600">
-
-**Durante il CFP**, il PC invia messaggi di Polling a rotazione verso le stazioni, interrogandole a riguardo della **disponibilità** di dati da trasmettere. Questà modalità offre il vantaggio di adattarsi meglio alle **sorgenti** dati di tipo **real time** caratterizzate da trasmissioni di tipo **sincrono**. Sorgenti sincrone tipicamente sono: **sensori**, telefonia **VOIP**, **videoconferenza**, **streaming**, ecc.
-
-**Riassumendo**, Normalmente i dispositivi AP lavorano in **modalità ibrida** DCF e PCF. Vengono trasmessi periodicamente dei beacon e l'intervallo temporale tra un beacon e l'altro viene suddiviso in **due zone**, una soggetta a trasmissioni di tipo **PCF** e quindi **intrinsecamente** al riparo dalle collisioni adatta a trasmissioni **sincrone** e un'altra di tipo **DCF**, soggetta a collisioni sugli RTS, dedicata alle trasmissioni **asincrone**.
-
----
 ## **Banda ISM**
 
 Le **bande libere** sono le frequenze di **uso libero**, non tutelate, che non richiedono **concessioni** per il loro impiego. Sono spesso indicate come **ISM** (Industrial, Scientific and Medical)[Nota 1].
