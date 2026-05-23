@@ -164,7 +164,7 @@ Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in m
 
 --- 
 
-#### **Formato dei messaggi**
+### **Formato dei messaggi**
 
 **Misure** e **comandi** sono attualmente definiti sotto forma di **oggetti JSON** in formato ASCII. Questo dovrebbe garantire da un lato l'interoperabilità tra reti di sensori diverse, dall'altro l'interoperabilità con sistemi terzi che si occupano della pubblicazione dei dati o della loro eleborazione statistica. Il fatto che il formato scelto sia chiaro, testuale ed autoesplicativo è sicuramente un vantaggio nella rete di **distribuzione**. 
 
