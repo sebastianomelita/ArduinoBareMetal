@@ -9,7 +9,9 @@
 - [Dettaglio architettura LoraWAN](lorawanclasses.md) 
 - [Dettaglio architettura 5G/6G](ranprivata.md)
 - [Dettaglio architettura RFID](archrfid.md)
-  
+
+---
+
 ## **Caso d'uso BLE** 
 
 Date le particolarità della tecnologia, i casi d'uso per la rete di sensori sono quelli tipici applicazioni **IoT indoor** a **corto/medio raggio**, dove concorre con altre tecnologie di rete: WIFi, Zigbee e, sotto certe condizioni, LoRaWAN. Per la sensoristica Indoor ha praticamente gli stessi punti di forza di Zigbee con il quale è praticamente intercambiambile (ma non interoperabile).
@@ -46,7 +48,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 [Sensori](/approfondimenti/sensore.md)
 
-
+---
 
 ## **Semantica applicativa standard**
 
@@ -108,6 +110,7 @@ Immaginiamo di avere un'applicazione di controllo della casa intelligente che de
   "Operation": "Read"
 }
 ```
+---
 
 ## **Gateway**
 
@@ -159,7 +162,8 @@ In ogni caso, per gli **oggetti BLE**, la semantica dei comandi e dello stato è
 
 Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in modo tale da includere la **semantica** di tutti i dispositivi IoT coinvolti nelle reti di sensori collegate, che di volta in volta, poi andrà **tradotta** nella **semantica applicativa standard** prevista nello stack della rete di accesso BLE.
 
- 
+--- 
+
 #### **Formato dei messaggi**
 
 **Misure** e **comandi** sono attualmente definiti sotto forma di **oggetti JSON** in formato ASCII. Questo dovrebbe garantire da un lato l'interoperabilità tra reti di sensori diverse, dall'altro l'interoperabilità con sistemi terzi che si occupano della pubblicazione dei dati o della loro eleborazione statistica. Il fatto che il formato scelto sia chiaro, testuale ed autoesplicativo è sicuramente un vantaggio nella rete di **distribuzione**. 
@@ -313,6 +317,7 @@ mosquitto_pub -h localhost -t 'casa/soggiorno/cmd' -m '{"state": "ON"}'
 ```Bash
 mosquitto_pub -h localhost -t 'casa/soggiorno/cmd' -m '{"state": "OFF"}'
 ```
+---
 
 ## **Reti BLE per tracciamento e localizzazione** 
 
@@ -427,6 +432,68 @@ Nell'architettura a **scanner fissi** i dispositivi BLE **non** possono restare 
 
 E' una architettura a stella gerarchica (albero). E' realizzata da un solo dispositivo master. Un master può essere contemporaneamente pure slave di un'altra piconet.
 
+Ecco l'adattamento della trattazione per il **BLE (Bluetooth Low Energy)**, mantenendo la stessa struttura logica e lo stesso livello di dettaglio tecnico per analizzare come questa tecnologia gestisce le collisioni e l'accesso al mezzo radio.
+
+---
+
+## **Collisioni nel BLE (Bluetooth Low Energy)**
+
+La tratta tra un dispositivo periferico (es. un sensore) e un dispositivo centrale (es. uno smartphone o un gateway) in una rete BLE è un collegamento radio che, operando su un **mezzo broadcast** condiviso nella banda ISM a 2.4 GHz, è per sua natura soggetta al fenomeno delle collisioni.
+
+Nel BLE, le collisioni vengono mitigate in modo estremamente efficiente separando il traffico in base allo stato del dispositivo: la fase di **scoperta/annuncio (Advertising)** adotta una logica probabilistica, mentre la fase di **connessione (Connection)** adotta una logica puramente deterministica, sfruttando tutte le dimensioni dello spettro.
+
+Esistono due **direzioni** di trasmissione all'interno di una connessione:
+
+* **uplink** (da Peripheral a Central)
+* **downlink** (da Central a Peripheral)
+
+
+### **SDM: Limitazione del raggio e riuso spaziale**
+
+Il BLE è progettato nativamente come tecnologia a corto o cortissimo raggio (Personal Area Network). L'**attenuazione di spazio libero** viene sfruttata in modo aggressivo mantenendo potenze di trasmissione molto basse (tipicamente tra -20 dBm e +10 dBm).
+
+* Dispositivi situati in stanze diverse o separati da pochi metri attenuano il segnale a tal punto da permettere il riuso simultaneo degli stessi canali radio senza causare interferenze distruttive.
+* Questa forte localizzazione spaziale riduce drasticamente il numero di nodi che competono all'interno della stessa "cella" radio effettiva.
+
+### **FDM: Canali dedicati e Adaptive Frequency Hopping (AFH)**
+
+Lo spettro a 2.4 GHz viene suddiviso dal BLE in **40 canali a radiofrequenza** spaziati di 2 MHz. La gestione del canale (FDM) è una delle armi principali del BLE e si divide nettamente tra due modalità:
+
+* **Canali di Advertising (37, 38, 39):** Sono 3 canali speciali, posizionati strategicamente in punti dello spettro non sovrapposti ai canali Wi-Fi più utilizzati (1, 6, 11). Vengono usati dai dispositivi non connessi per inviare beacon o per farsi trovare.
+* **Canali di Data (da 0 a 36):** Sono 37 canali utilizzati esclusivamente quando una connessione è attiva. Durante una connessione, il BLE non rimane fisso su un canale, ma implementa il **Frequency Hopping** dinamico: i due dispositivi cambiano canale frequenziale *per ogni singolo pacchetto* seguendo una sequenza pseudo-casuale.
+* Se un canale è disturbato (es. a causa del Wi-Fi), interviene l'**Adaptive Frequency Hopping (AFH)**: il dispositivo Central mappa i canali d'accordo con il Peripheral, "sospende" quelli danneggiati e continua il salto di frequenza solo sui canali puliti, azzerando le collisioni persistenti.
+
+### **Modulazione e Robustezza (GFSK e LE Coded)**
+
+Il BLE standard utilizza una modulazione **GFSK (Gaussian Frequency Shift Keying)**, che non prevede codici ortogonali simultanei (niente CDM puro).
+
+Tuttavia, a partire da BLE 5, è stata introdotta la modalità **LE Coded** dedicata al lungo raggio. Questa modalità introduce la codifica FEC (Forward Error Correction) associata a un meccanismo di *Pattern Mapping* (S=2 o S=8). Pur non trattandosi di un accesso multiplo a divisione di codice, questo sistema espande virtualmente il segnale nel tempo, offrendo un forte **guadagno di processo**. Il ricevitore riesce così a decodificare il messaggio corretto anche se parzialmente sovrapposto a rumore o a un'interferenza collisionale meno potente (effetto cattura).
+
+### **ALOHA e TDM: Separazione nel tempo e stati operativi**
+
+La gestione della dimensione temporale nel BLE è dicotomica e dipende dallo stato del link:
+
+* **Fase Non Connessa (Simil-ALOHA con advDelay):** Quando un dispositivo invia pacchetti di annuncio (Beacon/Advertising), lo fa in modo asincrono. Per evitare che due beacon vicini, avviati nello stesso istante, continuino a collidere ciclicamente all'infinito, lo standard impone l'aggiunta di un ritardo casuale chiamato **`advDelay`** (un tempo randomico da 0 a 10 ms) dopo ogni intervallo di trasmissione nominale (`advInterval`). Questo meccanismo, del tutto analogo all'Aloha, introduce il disallineamento temporale necessario a risolvere le collisioni successive.
+* **Fase Connessa (TDM Deterministico):** Una volta stabilita una connessione, il rischio di collisione interna viene **azzerato**. Il tempo viene diviso in slot rigidi governati dal Central.
+
+## **L'Evento di Connessione e la Sincronizzazione**
+
+Nel BLE non esiste una supertrama classica legata a un beacon broadcast aperto a tutti durante la connessione. Il coordinamento avviene tramite l'**Evento di Connessione (Connection Event)**, che si ripete ciclicamente a intervalli regolari stabiliti dal Central (chiamati *Connection Interval*).
+
+Il pacchetto iniziale inviato dal Central per aprire l'evento funge da **sequenza di sincronizzazione**: permette al Peripheral di riallineare il proprio clock interno, compensando il naturale sfasamento dei quarzi (clock drift) e permettendogli di dormire nei periodi di inattività per risparmiare energia.
+
+All'interno di ogni Evento di Connessione, l'accesso al mezzo è rigorosamente regolato in modalità master/slave (Central/Peripheral) tramite una politica di **polling deterministico**:
+
+* L'evento inizia sempre con il **Central che trasmette** sul canale frequenziale designato dal frequency hopping.
+* Il **Peripheral ascolta** e, solo dopo aver ricevuto il pacchetto del Central ed essere trascorsi esattamente 15 microsecondi (IFS - *Inter-Frame Space*), può rispondere in uplink.
+* I due dispositivi continuano a scambiarsi pacchetti alternandosi nel tempo (approccio Time Division Duplex) finché uno dei due non decide di chiudere l'evento o non ci sono più dati da inviare.
+
+In questa fase, nessuna contesa è ammessa: nessun altro dispositivo esterno sa su quale frequenza e in quale microsecondo avverrà lo scambio, blindando la comunicazione da collisioni intra-cella.
+
+*(Nota: Per i beacon broadcast puri, BLE 5 introduce anche il **Periodic Advertising**, dove l'emettitore trasmette a intervalli temporali rigidamente deterministici e i ricevitori si sincronizzano sulla sua scansione temporale, creando una ricezione programmata priva di contesa).*
+
+--- 
+
 ## **Topologie di connessione**
 
 ### **Beacon**
@@ -483,6 +550,8 @@ Stanno iniziando a comparire dispositivi dual-mode e single-mode più avanzati, 
 
 <img src="img/blemisto.png" alt="alt text" width="600">
 
+---
+
 ## **GATT**
 
 I dispositivi BLE, dal punto di vista SW, si dividono in dispositivi **Client** e in dispositivi **Server**:
@@ -522,6 +591,8 @@ Ma se la tua applicazione necessita di un proprio UUID, è possibile generarlo u
 
 In sintesi, l'UUID viene utilizzato per identificare in modo univoco le informazioni. Ad esempio, può identificare un particolare servizio fornito da un dispositivo Bluetooth.
 
+---
+
 ## **Protocolli di accesso al canale**
 
 La situazione può essere riassunta nel seguente modo:
@@ -540,6 +611,7 @@ Una **connessione** può essere stabilita solo tra un dispositivo **advertiser**
 **Slave Latency**: il numero di eventi connection che lo slave può «saltare» cioè nei quali lo slave non è obbligato ad “ascoltare” il master e quindi può restare nello stato standby.
 **Supervision Timeout**: tempo massimo tra due pacchetti di dati validi ricevuti prima che una connessione venga considerata "persa".
 
+---
 
 ## **API di connessione** 
 
@@ -571,6 +643,8 @@ La **configurazione diretta** del livello GAP descrive le funzioni e i parametri
 - La possibilità di passare dallo stato di connessione attiva (**connection**) allo stato standby, permette allo slave di risparmiare energia durante gli intervalli di tempo tra una trasmissione e quella successiva. 
 Dalla figura si vede che  questo passaggio possa avvenire però solo attraverso gli stati advertising e initiating; cioè la fase di connessione deve essere sempre preceduta da una fase di ricerca.
 
+---
+
 ## **Modulazione**
 
 BLE adopera una forma di FDM in cui trasmettitore e ricevitore non usano in una connessione sempre la stessa frequenza ma saltano, ad istanti prefissati, lungo 37 canali secondo uno schema reso noto ad entrambi in fase di setup. Ogni connessione avrà uno schema di salti che, istante per istante, non si sovrappone a quello delle altre connessioni.
@@ -587,6 +661,7 @@ Ciò significa che mentre i due dispositivi comunicano, rimapperanno i salti in 
 
 <img src="img/blefhss.png" alt="alt text" width="600">
 
+---
 
 ### **Pagine correlate:**
 
