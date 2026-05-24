@@ -123,6 +123,10 @@ Quando si dispongono più AP in un'area ristretta, va evitata l'interferenza co-
 
 **Banda 2.4 GHz (access legacy).** Solo 3 canali non sovrapposti in EU: 1, 6, 11. Schema di riuso a 3 colori, sufficiente per la maggior parte dei layout.
 
+Ecco la tabella con la colonna colori aggiunta:
+
+---
+
 **Banda 5 GHz (access moderno e backhaul).** In EU lo spettro 5 GHz è diviso in canali base da 20 MHz. Per avere throughput maggiori si **aggregano canali adiacenti** in canali più larghi: 40 MHz (coppia), 80 MHz (quadrupla), 160 MHz (ottupla). Più ampio è il canale, più alto il throughput ma anche più spettro occupato.
 
 In totale ci sono 19 canali base da 20 MHz, distribuiti in tre sotto-bande regolatorie:
@@ -133,23 +137,27 @@ In totale ci sono 19 canali base da 20 MHz, distribuiti in tre sotto-bande regol
 
 Aggregandoli si ottengono 9 canali a 40 MHz oppure **4 canali a 80 MHz non sovrapposti**, identificati dal numero del primo canale base che li compone:
 
-| Nome breve | Slot da 20 MHz occupate | Sotto-banda | DFS |
-|---|---|---|---|
-| **ch 36 @ 80 MHz** | 36, 40, 44, 48 | U-NII-1 | no |
-| **ch 52 @ 80 MHz** | 52, 56, 60, 64 | U-NII-2A | sì |
-| **ch 100 @ 80 MHz** | 100, 104, 108, 112 | U-NII-2C | sì |
-| **ch 116 @ 80 MHz** | 116, 120, 124, 128 | U-NII-2C | sì |
+| Colore (riuso N=4) | Nome breve | Slot da 20 MHz occupate | Sotto-banda | DFS |
+|---|---|---|---|---|
+| **A — azzurro** | **ch 36 @ 80 MHz** | 36, 40, 44, 48 | U-NII-1 | no |
+| **B — verde** | **ch 52 @ 80 MHz** | 52, 56, 60, 64 | U-NII-2A | sì |
+| **C — giallo** | **ch 100 @ 80 MHz** | 100, 104, 108, 112 | U-NII-2C | sì |
+| **D — rosso** | **ch 116 @ 80 MHz** | 116, 120, 124, 128 | U-NII-2C | sì |
 
 Questi 4 canali a 80 MHz sono spettralmente disgiunti: due AP che usano canali diversi della tabella non si interferiscono, indipendentemente da quanto siano vicini fisicamente. È esattamente quello che serve per il **riuso a 4 colori** della pianificazione cellulare: si associa un colore a ciascun canale e si distribuiscono i colori sulla griglia degli AP in modo che celle adiacenti abbiano colori diversi.
 
-Sul nostro sito (Figura 2):
+Sul nostro sito (Figura 2) i colori sono coerenti con la legenda della planimetria:
 
-- **Gruppo A** = ch 36 @ 80 MHz (occupa 36–48)
-- **Gruppo B** = ch 52 @ 80 MHz (occupa 52–64)
-- **Gruppo C** = ch 100 @ 80 MHz (occupa 100–112)
-- **Gruppo D** = ch 116 @ 80 MHz (occupa 116–128)
+- **A azzurro** — usato dalle celle T1 e T3 (riuso lontano)
+- **B verde** — usato dalle celle T2 e T4
+- **C giallo** — usato dalla cella T5 (mastio)
+- **D rosso** — usato dalle celle T6, T7-GW e T8 (perimetrali sud)
 
 Restano disponibili, **fuori da questi 4 colori**, i canali alti **ch 132 @ 80 MHz** (occupa 132–144, ancora DFS) e **ch 149 @ 80 MHz** (occupa 149–161, banda U-NII-3 non-DFS, massima EIRP outdoor consentita): si usano per il backhaul mesh, completamente separati dallo spettro access.
+
+---
+
+Così la corrispondenza tra tabella e mappa è esplicita: leggi "C giallo" nella tabella e ritrovi lo stesso colore giallo sulla cella T5 in figura, sia nella legenda sia nella pillola dell'AP.
 
 ---
 
