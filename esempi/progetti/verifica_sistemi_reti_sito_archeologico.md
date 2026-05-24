@@ -123,7 +123,43 @@ Quando si dispongono più AP in un'area ristretta, va evitata l'interferenza co-
 
 **Banda 2.4 GHz (access legacy).** Solo 3 canali non sovrapposti in EU: 1, 6, 11. Schema di riuso a 3 colori, sufficiente per la maggior parte dei layout.
 
-**Banda 5 GHz (access moderno e backhaul).** In EU sono disponibili 19 canali a 20 MHz (36–64 banda U-NII-1/2A non-DFS, 100–144 banda U-NII-2C DFS); a 40 MHz se ne ottengono 9, a 80 MHz 4 (canali 36/40/44/48 — 52/56/60/64 — 100/104/108/112 — 116/120/124/128). Lo spazio è ampio: si può adottare un riuso a 4 colori che mappa elegantemente su una griglia esagonale.
+Ecco il paragrafo corretto, da sostituire integralmente nel markdown (nella sezione "Pianificazione cellulare dei canali"):
+
+---
+
+**Banda 5 GHz (access moderno e backhaul).** In EU lo spettro 5 GHz è diviso in canali base da 20 MHz. Per avere throughput maggiori si **aggregano canali adiacenti** in canali più larghi: 40 MHz (coppia), 80 MHz (quadrupla), 160 MHz (ottupla). Più ampio è il canale, più alto il throughput ma anche più spettro occupato.
+
+In totale ci sono 19 canali base da 20 MHz, distribuiti in tre sotto-bande regolatorie:
+
+- **U-NII-1** (non-DFS): canali 36, 40, 44, 48
+- **U-NII-2A** (DFS): canali 52, 56, 60, 64
+- **U-NII-2C** (DFS): canali 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140
+
+Aggregandoli si ottengono 9 canali a 40 MHz oppure **4 canali a 80 MHz non sovrapposti**, identificati dal numero del primo canale base che li compone:
+
+| Nome breve | Slot da 20 MHz occupate | Sotto-banda | DFS |
+|---|---|---|---|
+| **ch 36 @ 80 MHz** | 36, 40, 44, 48 | U-NII-1 | no |
+| **ch 52 @ 80 MHz** | 52, 56, 60, 64 | U-NII-2A | sì |
+| **ch 100 @ 80 MHz** | 100, 104, 108, 112 | U-NII-2C | sì |
+| **ch 116 @ 80 MHz** | 116, 120, 124, 128 | U-NII-2C | sì |
+
+Questi 4 canali a 80 MHz sono spettralmente disgiunti: due AP che usano canali diversi della tabella non si interferiscono, indipendentemente da quanto siano vicini fisicamente. È esattamente quello che serve per il **riuso a 4 colori** della pianificazione cellulare: si associa un colore a ciascun canale e si distribuiscono i colori sulla griglia degli AP in modo che celle adiacenti abbiano colori diversi.
+
+Sul nostro sito (Figura 2):
+
+- **Gruppo A** = ch 36 @ 80 MHz (occupa 36–48)
+- **Gruppo B** = ch 52 @ 80 MHz (occupa 52–64)
+- **Gruppo C** = ch 100 @ 80 MHz (occupa 100–112)
+- **Gruppo D** = ch 116 @ 80 MHz (occupa 116–128)
+
+Restano disponibili, **fuori da questi 4 colori**, i canali alti **ch 132 @ 80 MHz** (occupa 132–144, ancora DFS) e **ch 149 @ 80 MHz** (occupa 149–161, banda U-NII-3 non-DFS, massima EIRP outdoor consentita): si usano per il backhaul mesh, completamente separati dallo spettro access.
+
+---
+
+Note rapide sulla notazione:
+- "**ch X @ 80 MHz**" significa "canale a 80 MHz che inizia con il canale base numero X", quindi occupa X, X+4, X+8, X+12.
+- È il modo standard di indicare i canali aggregati nei manuali Wi-Fi e nei tool di site survey (Ekahau, NetSpot).
 
 **Esempio concreto sul nostro sito.** Supponiamo le 4 torri perimetrali (T1, T2, T3, T4) e il mastio centrale (M):
 
