@@ -1,5 +1,5 @@
 
->[Torna a reti WiFi Mesh](../archmesh.md#esempio-1)>[Torna a reti WiFi Infrastruttura](../archwifi.md#esempio-1)    
+>[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)>[Torna a reti WiFi Mesh](../archmesh.md#esempio-1)>[Torna a reti WiFi Infrastruttura](../archwifi.md#esempio-1)    
 
 
 ## **Bridge group**
