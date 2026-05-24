@@ -245,6 +245,13 @@ Questi 4 canali a 80 MHz sono spettralmente disgiunti: due AP che usano canali d
 
 Restano disponibili, **fuori da questi 4 colori**, i canali alti **ch 132 @ 80 MHz** (occupa 132–144, ancora DFS) e **ch 149 @ 80 MHz** (occupa 149–161, banda U-NII-3 non-DFS, massima EIRP outdoor consentita): si usano per il backhaul mesh, completamente separati dallo spettro access.
 
+**Strumenti operativi:** un site survey con strumenti come Ekahau o NetSpot consente di misurare RSSI e SNR effettivi nei punti critici, e di affinare la pianificazione iniziale. Molti controller WLAN moderni offrono anche un meccanismo di *Auto-RF* (es. Cisco RRM, Aruba ARM) che assegna e ribilancia i canali dinamicamente in base alle misure on-air; resta comunque buona pratica impostare manualmente i canali del backhaul (per non destabilizzare i link punto-punto), lasciando l'auto-RF solo sull'access.
+
+![Planimetria fisica del sito](esempi/img/planimetria.png)
+
+*Figura 2 — Planimetria fisica del sito archeologico: disposizione di AP mesh (T1–T8), POI, gateway, server e InfoPoint. Le celle (access) sono circolari per via delle antenne omnidirezionali e usano i canali dei gruppi A/B/C/D (36/52/100/116) con riuso N=4. La topologia di backhaul è ad albero a due livelli: T5 (mastio centrale) è la radice, T2 e T3 sono concentratori intermedi che aggregano rispettivamente T1/T6 (settore ovest) e T4/T8 (settore est). I link backhaul usano canali 5 GHz alti (ch 132 e ch 149) alternati lungo l'albero, in modo che le due radio mesh di uno stesso concentratore non si interferiscano. Il link tra T5 e T7-GW è in 60 GHz direttivo (linea rossa). In Figura 3 si analizza il comportamento in caso di guasto di T5.*
+
+
 ---
 
 ## **Tipi di Backhaul**
