@@ -473,7 +473,7 @@ Tuttavia, a partire da BLE 5, è stata introdotta la modalità **LE Coded** dedi
 
 La gestione della dimensione temporale nel BLE è dicotomica e dipende dallo stato del link:
 
-* **Fase Non Connessa (Simil-ALOHA con advDelay):** Quando un dispositivo invia pacchetti di annuncio (Beacon/Advertising), lo fa in modo asincrono. Per evitare che due beacon vicini, avviati nello stesso istante, continuino a collidere ciclicamente all'infinito, lo standard impone l'aggiunta di un ritardo casuale chiamato **`advDelay`** (un tempo randomico da 0 a 10 ms) dopo ogni intervallo di trasmissione nominale (`advInterval`). Questo meccanismo, del tutto analogo all'Aloha, introduce il disallineamento temporale necessario a risolvere le collisioni successive.
+* **Fase Non Connessa (Simil-ALOHA con advDelay):** Quando un dispositivo invia pacchetti di annuncio (Beacon/Advertising), lo fa in modo asincrono. Per evitare che due beacon vicini, avviati nello stesso istante, continuino a collidere ciclicamente all'infinito, lo standard impone l'aggiunta di un ritardo casuale chiamato **`advDelay`** (un tempo randomico da 0 a 10 ms) dopo ogni intervallo di trasmissione nominale (`advInterval`). Questo meccanismo, del tutto analogo all'Aloha, introduce il disallineamento temporale necessario a risolvere le collisioni successive. [Dettaglio ALOHA](protocollidiaccesso.md#aloha) 
 * **Fase Connessa (TDM Deterministico):** Una volta stabilita una connessione, il rischio di collisione interna viene **azzerato**. Il tempo viene diviso in slot rigidi governati dal Central.
 
 ## **L'Evento di Connessione e la Sincronizzazione**
