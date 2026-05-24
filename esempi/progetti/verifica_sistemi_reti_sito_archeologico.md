@@ -1,4 +1,4 @@
->[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)>- [Torna a Dettaglio architettura WiFi mesh](archmesh.md) 
+>[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)>- [Torna a Dettaglio architettura WiFi mesh](/archmesh.md) 
 
 
 # Verifica di Sistemi e Reti
