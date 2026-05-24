@@ -415,7 +415,7 @@ Ogni blocco di 4 bit di dati viene convertito a livello fisico in una sequenza o
 
 L'ultima e fondamentale grandezza per isolare i messaggi all'interno della stessa rete è il **Tempo**. Lo Zigbee può operare in due modalità gestite nel dominio del tempo:
 
-* **Accesso a contesa (CSMA/CA):** Nella modalità asincrona (Non-Beacon enabled), i dispositivi usano il meccanismo *Listen Before Talk*. Prima di trasmettere, il device esegue un controllo del canale (CCA - Clear Channel Assessment). Se il canale è occupato, attende il tempo imposto da un algoritmo di **Backoff esponenziale causale** prima di riprovare. Se due device trasmettono nello stesso istante, avviene una collisione; l'assenza del pacchetto di ACK (conferma) obbligherà i nodi a ripetere la procedura aumentando il tempo di attesa.
+* **Accesso a contesa (CSMA/CA):** Nella modalità asincrona (Non-Beacon enabled), i dispositivi usano il meccanismo *Listen Before Talk*. Prima di trasmettere, il device esegue un controllo del canale (CCA - Clear Channel Assessment). Se il canale è occupato, attende il tempo imposto da un algoritmo di **Backoff esponenziale causale** prima di riprovare. Se due device trasmettono nello stesso istante, avviene una collisione; l'assenza del pacchetto di ACK (conferma) obbligherà i nodi a ripetere la procedura aumentando il tempo di attesa.  [Dettaglio CSMA/CA](protocollidiaccesso.md#csmaca) 
 * **Accesso programmato (GTS - Guaranteed Time Slots):** Nella modalità sincrona (Beacon-enabled), il tempo viene regolato centralmente eliminando la contesa per i messaggi critici, allocando slot temporali dedicati in logica TDMA.
 
 ---
