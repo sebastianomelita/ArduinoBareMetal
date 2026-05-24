@@ -247,7 +247,7 @@ Aggregandoli si ottengono 9 canali a 40 MHz oppure **4 canali a 80 MHz non sovra
 
 Questi 4 canali a 80 MHz sono spettralmente disgiunti: due AP che usano canali diversi della tabella non si interferiscono, indipendentemente da quanto siano vicini fisicamente. È esattamente quello che serve per il **riuso a 4 colori** della pianificazione cellulare: si associa un colore a ciascun canale e si distribuiscono i colori sulla griglia degli AP in modo che celle adiacenti abbiano colori diversi.
 
-## **Canali Backhaul**
+### **Canali Backhaul**
 
 Restano disponibili, **fuori da questi 4 colori**, i canali alti **ch 132 @ 80 MHz** (occupa 132–144, ancora DFS) e **ch 149 @ 80 MHz** (occupa 149–161, banda U-NII-3 non-DFS, massima EIRP outdoor consentita): si usano per il backhaul mesh, completamente separati dallo spettro access.
 
