@@ -56,7 +56,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione del **tipo di routing** (nei mesh sempre automatico).
 - se presenti VLAN, defiunizione del tipo di **associazione** delle VLAN agli SSID (statico o dinamico con Tunnel-Private-Group-Id)
 - definizione **posizione del controller degli AP**
-- definizione posizione dei **servizi di sistema** (DHCP, DNS) 
+- definizione posizione dei **servizi di sistema** (DHCP, DNS) dislocati, a scelta, a bordo del FW, collegati al CS, inseriti in una server farm.
 - definizione della posizione del **broker MQTT**.
 - definizione dei **topic utili** per i casi d'uso richiesti.
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
