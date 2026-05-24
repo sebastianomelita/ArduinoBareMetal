@@ -252,7 +252,20 @@ Restano disponibili, **fuori da questi 4 colori**, i canali alti **ch 132 @ 80 M
 *Figura 2 — Planimetria fisica del sito archeologico: disposizione di AP mesh (T1–T8), POI, gateway, server e InfoPoint. Le celle (access) sono circolari per via delle antenne omnidirezionali e usano i canali dei gruppi A/B/C/D (36/52/100/116) con riuso N=4. La topologia di backhaul è ad albero a due livelli: T5 (mastio centrale) è la radice, T2 e T3 sono concentratori intermedi che aggregano rispettivamente T1/T6 (settore ovest) e T4/T8 (settore est). I link backhaul usano canali 5 GHz alti (ch 132 e ch 149) alternati lungo l'albero, in modo che le due radio mesh di uno stesso concentratore non si interferiscano. Il link tra T5 e T7-GW è in 60 GHz direttivo (linea rossa). In Figura 3 si analizza il comportamento in caso di guasto di T5.*
 
 
+#### Ridondanza e ricalcolo automatico delle rotte
+
+La topologia di backhaul mostrata nella Figura 2 è un **albero a due livelli** radicato su T5 (mastio): T5 si collega al gateway via 60 GHz, e a sua volta serve due concentratori intermedi T2 e T3 che aggregano i quattro AP foglia (T1, T6 a ovest, T4, T8 a est). Questa struttura limita a 3 il numero di link backhaul incidenti su ciascun nodo, evitando interferenza co-canale eccessiva sul node centrale. T5 resta però un **single point of failure** apparente: se cade, sembrerebbe che le foglie restino isolate.
+
+In realtà la rete sopravvive, perché alcuni AP perimetrali sono fisicamente vicini abbastanza da **sentirsi a vicenda**: in particolare T2 e T3 (i due concentratori, entrambi affacciati sul cortile centrale) e T8 e T7-GW (entrambi nel settore sud-est del sito). Fra di loro esistono **adiacenze radio potenziali** non disegnate in Figura 2 perché nel funzionamento normale il protocollo di routing le scarta in favore del percorso a minor costo. Sono comunque rilevabili dai messaggi *hello* periodici di HWMP, OSPF o Babel. Quando il protocollo rileva la caduta di T5 — tipicamente in pochi secondi, dopo qualche hello mancato — ricalcola le rotte attivando quelle adiacenze dormienti. La Figura 3 mostra l'effetto del ricalcolo: il percorso da T1 al gateway passa ora da T2 a T3 (riconnettendo le due metà del sito) e poi via T8 al gateway, con qualche hop in più ma la connettività preservata.
+
+![Scenario di guasto e ricalcolo](esempi/img/failover.png)
+
+*Figura 3 — Effetto del crollo del nodo centrale T5 sul backbone mesh. A sinistra la topologia normale ad albero: T5 è la radice, T2 e T3 concentratori intermedi; il percorso da T1 al gateway compie 3 hop sul mesh. A destra: T5 caduta, i link verso il centro sono disattivati (grigi tratteggiati), il protocollo di routing dinamico ricalcola attivando le adiacenze dormienti T2↔T3 e T8↔T7-GW (azzurro). Il nuovo percorso T1→T2→T3→T8→T7-GW (frecce arancioni) compie 4 hop. La rete continua a funzionare in modalità degradata fino al ripristino del mastio.*
+
+La ridondanza non richiede modifiche di progetto: dipende solo dal fatto che gli AP siano **abbastanza vicini** da poter dialogare anche senza il mastio. La pianificazione dei canali a riuso N=4 favorisce naturalmente questo scenario, perché i canali sono già pensati per limitare l'interferenza fra celle adiacenti.
+
 ---
+
 
 ## **Tipi di Backhaul**
 
