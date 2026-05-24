@@ -166,6 +166,65 @@ Durante la trasmissione coordinata dal Trigger Frame, l'accesso distribuito vien
 
 ---
 
+### 1.b — Dimensionamento dei nodi
+
+#### Numero di AP
+
+La regola pratica è copertura + capacità. Su 4 ettari con muri spessi:
+
+- **Outdoor**: AP con antenne settoriali o omnidirezionali, raggio utile ~40–60 m in 5 GHz Wi-Fi 6 (802.11ax) → 8 AP outdoor.
+- **Indoor (torri, antiquarium, chiesa)**: un AP per ambiente, perché i muri in pietra attenuano fortemente il segnale → 5 AP indoor.
+- **Totale**: 13 nodi mesh + 1 nodo gateway presso l'InfoPoint.
+
+#### Criteri di posizionamento
+
+- Ogni POI deve avere almeno un AP entro 15 m con linea di vista sufficiente per garantire RSSI ≥ −65 dBm (necessario per il vincolo di prossimità, vedi Q2).
+- Ogni nodo mesh deve avere almeno due vicini visibili, per garantire la ridondanza HWMP.
+- Gli AP outdoor vanno installati ad altezza intermedia (3–4 m) e non sulle sommità delle torri, per evitare copertura eccessiva oltre il perimetro (questo serve anche al vincolo di prossimità).
+
+#### Numero di radio per AP e pianificazione cellulare dei canali
+
+Un nodo mesh fa contemporaneamente **access** (serve i client) e **backhaul** (parla con i vicini). Se queste due funzioni condividono la stessa radio si finisce nel classico problema dei single-radio mesh: il throughput utile si dimezza ad ogni hop, perché la radio non può trasmettere e ricevere contemporaneamente sullo stesso canale (CSMA/CA serializza tutto). La via standard per evitarlo è separare le funzioni su radio fisiche distinte.
+
+**Apparati dual-band (2 radio).** Tipicamente una radio 2.4 GHz e una 5 GHz. Si può scegliere:
+
+- mettere il backhaul sui 5 GHz e l'access sui 2.4 GHz: backhaul veloce ma access lento e congestionato (la banda 2.4 GHz ha solo 3 canali non sovrapposti — 1, 6, 11 — e tantissime sorgenti di interferenza);
+- mettere access e backhaul entrambi sui 5 GHz, ma su canali diversi: la radio è una sola e va in time-sharing, quindi è la soluzione peggiore in termini di prestazioni.
+
+In pratica gli apparati dual-band sono accettabili solo come ripiego economico per nodi periferici a basso carico.
+
+**Apparati tri-band (3 radio).** Le tre radio coprono in genere 2.4 GHz, 5 GHz lower (canali 36–64) e 5 GHz upper (canali 100–144, DFS). La configurazione consigliata è:
+
+- radio 1 — 2.4 GHz per access ai client legacy (Wi-Fi 4/5, IoT, smartphone vecchi);
+- radio 2 — 5 GHz lower per access ai client moderni (minitablet Wi-Fi 6);
+- radio 3 — 5 GHz upper DFS dedicata al backhaul mesh, su canali a 80 MHz con potenza più alta consentita dal regolatorio (in EU su DFS si raggiungono i 23 dBm EIRP indoor, 30 dBm outdoor).
+
+Così access e backhaul lavorano in parallelo, non in time-sharing, e si recupera tutto il throughput utile sui multi-hop.
+
+**Apparati con 4 radio o radio aggiuntiva 6 GHz / 60 GHz.** Su tratte punto-punto critiche (es. dal mastio al gateway) si può aggiungere una radio mmWave 60 GHz (802.11ad/ay) con antenna direttiva: throughput dell'ordine del Gbps, immune all'interferenza degli altri canali Wi-Fi, ma richiede line-of-sight. È la scelta classica per i due-tre link più importanti del backbone.
+
+**Vantaggi/svantaggi a confronto:**
+
+| Apparato | Vantaggi | Svantaggi |
+|---|---|---|
+| Dual-band (2 radio) | Costo basso; meno antenne da installare; alimentazione PoE inferiore. | Access e backhaul si contendono lo spettro; throughput utile dimezzato ad ogni hop; sopravvive solo per nodi foglia a basso carico. |
+| Tri-band (3 radio) | Backhaul dedicato e parallelo all'access; throughput costante anche su 2–3 hop; sfrutta tutti i canali Wi-Fi disponibili in EU; supporta client legacy senza penalizzare i moderni. | Costo più alto; più antenne; maggiore consumo elettrico (PoE+ o PoE++); pianificazione canali più articolata. |
+| Tri-band + radio 60 GHz | Backbone capace di Gbps su tratte critiche; nessuna interferenza con il resto della rete Wi-Fi; latenza minima. | Richiede line-of-sight perfetta; sensibile alla pioggia intensa; costo per link elevato; ha senso solo per i 2–3 link principali del backbone. |
+
+**Scelta per il progetto:** apparati **tri-band** per tutti i nodi mesh, con eventuale aggiunta di un link 60 GHz dedicato tra il gateway dell'InfoPoint e il nodo di sommità del mastio (che è il punto di rilancio naturale verso il resto del sito).
+
+#### Pianificazione cellulare dei canali
+
+Quando si dispongono più AP in un'area ristretta, va evitata l'interferenza co-canale (CCI), cioè AP vicini che trasmettono sullo stesso canale e si rubano tempo d'aria a vicenda. La tecnica consolidata, mutuata dalle reti cellulari, è il riuso di frequenza con schema esagonale: si assegnano i canali in modo che due AP che operano sulla stessa frequenza siano il più lontano possibile, mentre due AP fisicamente vicini ricevano canali ben separati nello spettro.
+
+**Regola pratica:** dispositivi *vicini nello spazio* → frequenze *lontane*; dispositivi *lontani nello spazio* → frequenze anche *vicine* (il riuso diventa possibile perché l'attenuazione di propagazione li disaccoppia).
+
+**Banda 2.4 GHz (access legacy).** Solo 3 canali non sovrapposti in EU: 1, 6, 11. Schema di riuso a 3 colori, sufficiente per la maggior parte dei layout.
+
+**Banda 5 GHz (access moderno e backhaul).** In EU sono disponibili 19 canali a 20 MHz (36–64 banda U-NII-1/2A non-DFS, 100–144 banda U-NII-2C DFS); a 40 MHz se ne ottengono 9, a 80 MHz 4 (canali 36/40/44/48 — 52/56/60/64 — 100/104/108/112 — 116/120/124/128). Lo spazio è ampio: si può adottare un riuso a 4 colori che mappa elegantemente su una griglia esagonale.
+
+---
+
 ## **Tipi di Backhaul**
 
 Il **backhaul Wi-Fi** è il collegamento **wireless** tra i **nodi** che partecipano ad una **dorsale principale** ad alto traffico di una rete mesh e il **gateway**. Il gateway è l'unico dispositivo della rete mesh che è **cablato** su una rete LAN, generalmente per ottenere l'accesso a Internet. In una rete mesh, i nodi (che possono essere router o access point) comunicano tra loro per estendere la copertura Wi-Fi, e il backhaul è essenziale per mantenere questa comunicazione fluida e efficiente. Le **Tipologie di Backhaul** sono:
