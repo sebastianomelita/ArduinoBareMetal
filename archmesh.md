@@ -209,6 +209,8 @@ In definitiva, i bridge **inoltrano** direttamente **trame MAC**, e la rete comp
 - di essere **autoconfigurante** e quindi molto semplice
 - la possibilità di permettere di creare **una sola subnet** che includa tutti i dispositivi **client**.
 - la possibilità di poter **partizionare** la rete per **gruppi di utenti** in base al **tipo di servizio** piuttosto che in base alla loro **dislocazione fisica** utilizzando la tecnologia delle **VLAN**. Le VLAN diventano la **scelta obbligata** quando i **gruppi di utenti** da separare sono **sparsi** a macchia di leopardo su tutta la rete.
+- **Roaming**: trasparente in L2 (il client non cambia IP né subnet)
+
 
 #### **Inoltro L2**
 
@@ -251,6 +253,11 @@ Inoltre, nelle reti mesh WiFi ad hoc, il **routing** è generalmente **automatic
 - basati su protocolli **DV** (Distance Vector) di tipo **reattivo** poiché ricerca dei percorsi nella rete solo su richiesta, risparmiando l'energia di conoscere in anticipo il percorso verso nodi poco usati. Molto usato è **AODV** (Ad hoc On-Demand Distance Vector) o altri protocolli specifici per le reti mesh. Il vantaggio principale di AODV è l'**efficienza** perchè non  genera traffico nel caso di percorsi già stabiliti e funzionanti, proprietà che lo rende anche molto **economico** come consumo di energia.
 - basati su protocolli **LSP** (Link State Packet) di tipo **pro-attivo**, cioè che conoscono in anticipo i percorsi **prima del loro uso**. Un protocollo disponibile su molti router è **OLSR** (Optimized Link State Routing), protocollo di routing IP ottimizzato per le reti mobili ad hoc, che può essere utilizzato anche su altre reti wireless ad hoc. Soluzione **più veloce** rispetto alla precedente, ma dispendiosa come calcolo ed energia.
 
+**Caratteristiche:**
+-	Livello del forwarding su indirizzi IP.
+-	Dominio broadcast: uno per ciascun AP (L3) e per ciascun link.
+-	Roaming: non trasparente perché in in L3 cambiando AP cambia subnet.
+-	Stato per nodo: in OSPF link-state il nodo deve mantenere la topologia completa della rete (overhead maggiore, ma convergenza più rapida dopo eventi di topologia).
 
 <img src="img/integratedGW-WiFi-LAN.png" alt="alt text" width="900">
 
