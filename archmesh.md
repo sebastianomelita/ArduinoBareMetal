@@ -63,6 +63,12 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 
+## **Progetto di esempio completo**
+
+[Sito archeologico](/esempi/progetti/verifica_sistemi_reti_sito_archeologico.md)
+
+## **Argomenti correlati**
+
 [Rete di reti WiFi](/approfondimenti/wifi_federation.md)
        
 [Broker MQTT](/approfondimenti/broker_mqtt.md)
