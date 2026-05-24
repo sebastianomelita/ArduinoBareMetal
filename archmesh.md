@@ -45,6 +45,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - eventuali vincoli normativi sulle tecnologie in uso come potenza, EIRP, ERP e duty cycle.
 - schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro ruolo e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7)
 - dislocazione di eventuali **gateway**.
+- definizione di eventuali **link di backaul** e della relativa tecnologia
 - definire le **interfacce radio** scegliendo tra **2-band** (dual channel) e **3-band** (three channel).
 - definire i **canali dei link** scegliendoli tra quelli a disposizione in banda ISM e pianificando il loro **riuso nello spazio** minimizzando l'**interferenza cocanale**.
 - gestire eventuali **vincoli di prossimità** mediante controllo di potenza o gestione del roaming e eventuali **vincoli di posizionamento** mediante trilaterazione.
