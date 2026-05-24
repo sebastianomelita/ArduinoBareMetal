@@ -52,6 +52,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - **subnetting** e definizione degli indirizzi delle **subnet di aggregazione** per i vari gruppi di utenti (generalmente statica), e definizione degli indirizzi delle **subnet di dorsale** (statica o automatica basata su Link Local), definizione degli indirizzi delle **subnet di servizio** (server farm e DMZ),
 - definizione degli **indirizzi dei server** e dei range di quelli dei client.
 - definizione delle **tecniche di autenticazione** degli utenti necessarie per un dato scenario nonchè di quelle che realizzano l'autenticazione dei servizi (ad es. 802.1X). Secegliere tra autenticazione L2 EAP (statica per AP o per utente con RADIUS) e quella L7 con Captive portal. 
+- definizione delle tecniche di **autenticazione** dei servizi (openid, psw, sessioni, ecc).
 - definizione del **tipo di rete mesh** scegliendo tra **routed mesh** o **bridged mesh**
 - definizione del **tipo di routing** (nei mesh sempre automatico).
 - se presenti VLAN, defiunizione del tipo di **associazione** delle VLAN agli SSID (statico o dinamico con Tunnel-Private-Group-Id)
