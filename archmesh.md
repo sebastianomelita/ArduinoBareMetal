@@ -132,7 +132,8 @@ L'Access Point può assegnare dinamicamente diverse RU a diversi client nello st
 
 L'ultima grandezza in grado di isolare i messaggi è il **Tempo**. Il Wi-Fi gestisce questa dimensione combinando un approccio asincrono/probabilistico (ereditato dal passato) e uno programmato/deterministico.
 
-* **Accesso a contesa distribuito (CSMA/CA con Backoff):** Quando i dispositivi non sono coordinati centralmente, applicano una logica simile all'Aloha ma evoluta (*Listen Before Talk*). Prima di trasmettere, il dispositivo ascolta il canale: se è occupato, attende che torni libero e poi avvia un temporizzatore casuale (**Binary Exponential Backoff**). Se due dispositivi finiscono il backoff e trasmettono nello stesso identico istante, avviene una collisione. La mancata ricezione del pacchetto di conferma (ACK) farà scattare un backoff più lungo per il tentativo successivo.
+* **Accesso a contesa distribuito (CSMA/CA con Backoff):** Quando i dispositivi non sono coordinati centralmente, applicano una logica simile all'Aloha ma evoluta (*Listen Before Talk*). Prima di trasmettere, il dispositivo ascolta il canale: se è occupato, attende che torni libero e poi avvia un temporizzatore casuale (**Binary Exponential Backoff**). Se due dispositivi finiscono il backoff e trasmettono nello stesso identico istante, avviene una collisione. La mancata ricezione del pacchetto di conferma (ACK) farà scattare un backoff più lungo per il tentativo successivo. [Dettaglio CSMA/CA](protocollidiaccesso.md#csmaca) 
+
 * **Target Wake Time (TWT):** Per evitare la contesa selvaggia del tempo, l'AP e i client possono negoziare preventivamente degli slot temporali specifici (finestre di attivazione). Il client si sveglia solo nel suo istante riservato per trasmettere o ricevere, rimanendo in uno stato di sonno profondo per il resto del tempo. Questo approccio quasi-deterministico azzera il rischio di collisione per i flussi di dati schedulati.
 
 ---
