@@ -210,6 +210,16 @@ In definitiva, i bridge **inoltrano** direttamente **trame MAC**, e la rete comp
 - la possibilità di permettere di creare **una sola subnet** che includa tutti i dispositivi **client**.
 - la possibilità di poter **partizionare** la rete per **gruppi di utenti** in base al **tipo di servizio** piuttosto che in base alla loro **dislocazione fisica** utilizzando la tecnologia delle **VLAN**. Le VLAN diventano la **scelta obbligata** quando i **gruppi di utenti** da separare sono **sparsi** a macchia di leopardo su tutta la rete.
 
+#### **Inoltro L2**
+
+**HWMP** (802.11s) è l'unico standard internazionale se si vuole la compatibilità tra marche diverse a Livello 2. I sistemi mesh commerciali preferiscono protocolli proprietari blindati per ottimizzare le prestazioni sui propri hardware. Le reti mesh open/comunitarie preferiscono protocolli come OLSR o BATMAN perché scalano meglio su centinaia di nodi rispetto a HWMP.
+
+HWMP è un protocollo affascinante perché è un ibrido: unisce i vantaggi dei protocolli reattivi (che cercano una strada solo quando serve) e di quelli proattivi (che mantengono una mappa della rete sempre pronta). Funziona interamente al Livello 2 (Data Link), muovendo i dati usando gli indirizzi MAC e non gli indirizzi IP.
+Ecco come funziona nel dettaglio la sua doppia anima:
+  1. L'anima Proattiva (La struttura ad albero). In quasi tutte le reti Wi-Fi mesh domestiche o aziendali, c'è un nodo centrale fondamentale: il Root Node (il nodo radice, solitamente il modulo mesh collegato fisicamente al modem/router internet). Ogni volta che un tuo dispositivo (smartphone, PC) vuole navigare su internet, il nodo mesh a cui è connesso sa già istantaneamente qual è la strada più veloce per mandare i dati verso il modem.
+  2. L'anima Reattiva (I percorsi Point-to-Point). Cosa succede se il PC collegato al Nodo A vuole inviare un file alla stampante collegata al Nodo B, senza passare per forza dal router centrale? Qui entra in gioco la parte reattiva, basata su un protocollo chiamato AODV. Viene creata una strada temporanea "punto-punto" diretta tra i due nodi. Questa strada rimane attiva solo finché c'è traffico dati. Se per un po' di tempo non si passano più file, il percorso viene cancellato per non occupare la memoria dei nodi.
+Cosa succede se un nodo si spegne? Se un nodo mesh intermedio viene spento o perde l'alimentazione, i nodi adiacenti se ne accorgono perché non ricevono più i segnali di conferma, la componente reattiva o proattiva di HWMP ricalcola istantaneamente una strada alternativa, il tutto in pochi millisecondi e senza che l'utente se ne accorga.
+
 #### **Esempio**
 
 Si vogliono separare i **servizi di produzione** agricola con i suoi **sensori** sparsi su tutto l'agro, dai **servizi di mobilità** ai tecnici agronomi dotati di tablet sui loro mezzi con i quali eseguono il controllo giornaliero degli impianti di competenza (staff e manager), consentendo anche di dedicare una gestione separata al traffico dei **servizi per gli ospiti**. 
