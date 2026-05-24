@@ -258,10 +258,6 @@ Restano disponibili, **fuori da questi 4 colori**, i canali alti **ch 132 @ 80 M
 
 ---
 
-Così la corrispondenza tra tabella e mappa è esplicita: leggi "C giallo" nella tabella e ritrovi lo stesso colore giallo sulla cella T5 in figura, sia nella legenda sia nella pillola dell'AP.
-
----
-
 ## **Tipi di Backhaul**
 
 Il **backhaul Wi-Fi** è il collegamento **wireless** tra i **nodi** che partecipano ad una **dorsale principale** ad alto traffico di una rete mesh e il **gateway**. Il gateway è l'unico dispositivo della rete mesh che è **cablato** su una rete LAN, generalmente per ottenere l'accesso a Internet. In una rete mesh, i nodi (che possono essere router o access point) comunicano tra loro per estendere la copertura Wi-Fi, e il backhaul è essenziale per mantenere questa comunicazione fluida e efficiente. Le **Tipologie di Backhaul** sono:
