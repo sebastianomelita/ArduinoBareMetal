@@ -299,6 +299,14 @@ L'autenticazione di un nodo Wi-Fi è un processo fondamentale per garantire che 
 
 ---
 
+## **Schema di principio degli apparati attivi**
+
+![Schema apparati attivi](esempi/img/apparati.png)
+
+*Figura 1 — Schema apparati attivi (simbologia Cisco): confronto fra mesh L2 (bridge, separazione a macchia di leopardo via 802.1Q) e mesh L3 (router, subnet di accesso fisicamente dislocate, link mesh autoconfigurati su IPv6 link-local).*
+
+---
+
 ## **Bridge mesh network**
 
 Nelle reti Wifi **Bridge mesh**, si sfrutta la **proprietà** (comune a tutti i dispositivi WiFi) di possedere un **bridge interno**, realizato in SW, che collega i **link wireless** appartenenti ad interfacce **radio diverse** (per esempio, una a 2.4 GHz ed una a 5 GHz). Quindi, un **nodo WiFi** è, a tutti gli effetti, un dispositivo **IS** di **livello 2** della pila **ISO/OSI**. 
