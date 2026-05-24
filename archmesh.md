@@ -55,7 +55,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione delle tecniche di **autenticazione** dei servizi (openid, psw, sessioni, ecc).
 - definizione del **tipo di rete mesh** scegliendo tra **routed mesh** o **bridged mesh**
 - definizione del **tipo di routing** (nei mesh sempre automatico).
-- se presenti VLAN, defiunizione del tipo di **associazione** delle VLAN agli SSID (statico o dinamico con Tunnel-Private-Group-Id)
+- se presenti VLAN, definizione del tipo di **associazione** delle VLAN agli SSID (statico o dinamico con Tunnel-Private-Group-Id)
 - definizione **posizione del controller degli AP**
 - definizione posizione dei **servizi di sistema** (DHCP, DNS) dislocati, a scelta, a bordo del FW, collegati al CS, inseriti in una server farm.
 - definizione della posizione del **broker MQTT**.
