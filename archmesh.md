@@ -214,15 +214,13 @@ In definitiva, i bridge **inoltrano** direttamente **trame MAC**, e la rete comp
 
 #### **Inoltro L2**
 
-**HWMP** (802.11s) è l'unico standard internazionale se si vuole la compatibilità tra marche diverse a Livello 2. I sistemi mesh commerciali preferiscono protocolli proprietari blindati per ottimizzare le prestazioni sui propri hardware. Le reti mesh open/comunitarie preferiscono protocolli come OLSR o BATMAN perché scalano meglio su centinaia di nodi rispetto a HWMP.
-
-HWMP è un protocollo **ibrido**: unisce i vantaggi dei **protocolli reattivi** (che cercano una strada solo quando serve) e di **quelli proattivi** (che mantengono una mappa della rete sempre pronta). Funziona interamente al Livello 2 (Data Link), muovendo i dati usando gli indirizzi MAC e non gli indirizzi IP.
-
-Ecco come funziona nel dettaglio la sua **doppia anima**:
-  1. **L'anima Proattiva** (La struttura ad albero). In quasi tutte le reti Wi-Fi mesh domestiche o aziendali, c'è un **nodo centrale** fondamentale: il **Root Node** (il nodo radice, solitamente il modulo mesh collegato fisicamente al modem/router internet). Ogni volta che un tuo dispositivo (smartphone, PC) vuole navigare su internet, il nodo mesh a cui è connesso sa già istantaneamente qual è la strada più veloce per mandare i dati verso il modem.
-  2. L'**anima Reattiva** (I percorsi Point-to-Point). Cosa succede se il PC collegato al Nodo A vuole inviare un file alla stampante collegata al Nodo B, senza passare per forza dal router centrale? Qui entra in gioco la parte reattiva, basata su un protocollo chiamato **AODV**. Viene creata una **strada temporanea "punto-punto" diretta** tra i due nodi. Questa strada rimane attiva solo finché c'è traffico dati. Se per un po' di tempo non si passano più file, il percorso viene cancellato per non occupare la memoria dei nodi.
+Mesh L2 (bridge / HWMP). HWMP — Hybrid Wireless Mesh Protocol, definito da 802.11s — combina due modalità di path selection:
+-	**Proattiva (tree-based)**: un root mesh STA (tipicamente il gateway) diffonde periodicamente messaggi PREQ a tutta la mesh; ogni nodo impara un percorso  verso il root, formando un albero **unico** per tuttii nodi. È ottimizzata per il traffico verso Internet/server, che nelle reti mesh è il flusso dominante.
+-	**Reattiva (on-demand, AODV-like)**: quando un nodo deve raggiungere una destinazione interna alla mesh non coperta dall’albero, o vuole un percorso laterale migliore di quello via root, emette un PREQ in broadcast cercando proprio quella destinazione; la destinazione risponde con un PREP che torna lungo il percorso a metrica migliore, costruendo un path diretto specifico fra quella coppia (sorgente, destinazione). I messaggi PREQ/PREP sono identici a quelli di AODV (RFC 3561), che è a tutti gli effetti un distance-vector on-demand. La metrica standard è la Airtime Link Metric, radio-consapevole, che stima il tempo d’aria necessario per trasmettere un frame considerando bitrate, dimensione e tasso d’errore.
 
 Se un nodo mesh intermedio **viene spento o perde l'alimentazione**, i nodi adiacenti se ne accorgono perché non ricevono più i segnali di conferma, la componente reattiva o proattiva di HWMP ricalcola istantaneamente una strada alternativa, il tutto in pochi millisecondi e senza che l'utente se ne accorga.
+
+Quindi HWMP non è limitato a un albero unico: fornisce un **albero unico** per il traffico verso il root (tipicamente Internet) e, parallelamente, **percorsi diretti su richiesta** per il traffico interno. Quello che resta invariato è il livello del forwarding: il routing è a livello 2 sui MAC, l’intera mesh è un singolo dominio broadcast L2, le decisioni di inoltro sono prese dai mesh STA su un piano di forwarding bridge-like.
 
 #### **Esempio**
 
