@@ -43,7 +43,8 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro ruolo e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7)
 - dislocazione di eventuali **gateway**.
 - **subnetting** e definizione degli indirizzi delle **subnet di aggregazione** per i vari gruppi di utenti (generalmente statica), e definizione degli indirizzi delle **subnet di dorsale** (statica o automatica basata su Link Local), definizione degli indirizzi delle **subnet di servizio** (server farm e DMZ),
-- definizione degli indirizzi dei server e dei range di quelli dei client.
+- definizione degli **indirizzi dei server** e dei range di quelli dei client.
+- definizione delle **tecniche di autenticazione** degli utenti necessarie per un dato scenario nonchè di quelle che realizzano l'autenticazione dei servizi (ad es. 802.1X). Secegliere tra autenticazione L2 EAP (statica per AP o per utente con RADIUS) e quella L7 con Captive portal. 
 - definizione **posizione del controller degli AP**
 - definizione posizione dei **servizi di sistema** (DHCP, DNS) dislocati, a scelta, a bordo del FW, collegati al CS, inseriti in una server farm.
 - definizione delle tecniche di **autenticazione** degli utenti necessarie per un dato scenario nonchè di quelle che realizzano l'autenticazione dei servizi.
