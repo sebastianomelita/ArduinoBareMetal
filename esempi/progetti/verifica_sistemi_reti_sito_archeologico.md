@@ -123,10 +123,6 @@ Quando si dispongono più AP in un'area ristretta, va evitata l'interferenza co-
 
 **Banda 2.4 GHz (access legacy).** Solo 3 canali non sovrapposti in EU: 1, 6, 11. Schema di riuso a 3 colori, sufficiente per la maggior parte dei layout.
 
-Ecco il paragrafo corretto, da sostituire integralmente nel markdown (nella sezione "Pianificazione cellulare dei canali"):
-
----
-
 **Banda 5 GHz (access moderno e backhaul).** In EU lo spettro 5 GHz è diviso in canali base da 20 MHz. Per avere throughput maggiori si **aggregano canali adiacenti** in canali più larghi: 40 MHz (coppia), 80 MHz (quadrupla), 160 MHz (ottupla). Più ampio è il canale, più alto il throughput ma anche più spettro occupato.
 
 In totale ci sono 19 canali base da 20 MHz, distribuiti in tre sotto-bande regolatorie:
