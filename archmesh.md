@@ -385,6 +385,8 @@ Ogni **access point** utilizza un **singolo canale** (largo 22 MHz), che viene c
 
 La trasmissione avviene a **pacchetti** con **conferma** di ricezione.
 
+---
+
 ### **Conclusioni**
 
 Le reti mesh Wi-Fi 6 sfruttano la capacità multi-radio per ottimizzare le prestazioni e la copertura, utilizzando bande diverse per i link tra nodi e per le connessioni dei dispositivi. Questa tecnologia permette di ridurre la congestione e migliorare l'efficienza della rete, offrendo una connessione più stabile e veloce per tutti i dispositivi collegati. 
