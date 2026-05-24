@@ -166,9 +166,9 @@ Durante la trasmissione coordinata dal Trigger Frame, l'accesso distribuito vien
 
 ---
 
-### 1.b — Dimensionamento dei nodi
+## 1.b — Dimensionamento dei nodi
 
-#### Numero di AP
+### Numero di AP
 
 La regola pratica è copertura + capacità. Su 4 ettari con muri spessi:
 
@@ -176,13 +176,13 @@ La regola pratica è copertura + capacità. Su 4 ettari con muri spessi:
 - **Indoor (torri, antiquarium, chiesa)**: un AP per ambiente, perché i muri in pietra attenuano fortemente il segnale → 5 AP indoor.
 - **Totale**: 13 nodi mesh + 1 nodo gateway presso l'InfoPoint.
 
-#### Criteri di posizionamento
+### Criteri di posizionamento
 
 - Ogni POI deve avere almeno un AP entro 15 m con linea di vista sufficiente per garantire RSSI ≥ −65 dBm (necessario per il vincolo di prossimità, vedi Q2).
 - Ogni nodo mesh deve avere almeno due vicini visibili, per garantire la ridondanza HWMP.
 - Gli AP outdoor vanno installati ad altezza intermedia (3–4 m) e non sulle sommità delle torri, per evitare copertura eccessiva oltre il perimetro (questo serve anche al vincolo di prossimità).
 
-#### Numero di radio per AP e pianificazione cellulare dei canali
+### Numero di radio per AP e pianificazione cellulare dei canali
 
 Un nodo mesh fa contemporaneamente **access** (serve i client) e **backhaul** (parla con i vicini). Se queste due funzioni condividono la stessa radio si finisce nel classico problema dei single-radio mesh: il throughput utile si dimezza ad ogni hop, perché la radio non può trasmettere e ricevere contemporaneamente sullo stesso canale (CSMA/CA serializza tutto). La via standard per evitarlo è separare le funzioni su radio fisiche distinte.
 
@@ -213,15 +213,52 @@ Così access e backhaul lavorano in parallelo, non in time-sharing, e si recuper
 
 **Scelta per il progetto:** apparati **tri-band** per tutti i nodi mesh, con eventuale aggiunta di un link 60 GHz dedicato tra il gateway dell'InfoPoint e il nodo di sommità del mastio (che è il punto di rilancio naturale verso il resto del sito).
 
-#### Pianificazione cellulare dei canali
+### Pianificazione cellulare dei canali
 
 Quando si dispongono più AP in un'area ristretta, va evitata l'interferenza co-canale (CCI), cioè AP vicini che trasmettono sullo stesso canale e si rubano tempo d'aria a vicenda. La tecnica consolidata, mutuata dalle reti cellulari, è il riuso di frequenza con schema esagonale: si assegnano i canali in modo che due AP che operano sulla stessa frequenza siano il più lontano possibile, mentre due AP fisicamente vicini ricevano canali ben separati nello spettro.
 
 **Regola pratica:** dispositivi *vicini nello spazio* → frequenze *lontane*; dispositivi *lontani nello spazio* → frequenze anche *vicine* (il riuso diventa possibile perché l'attenuazione di propagazione li disaccoppia).
 
-**Banda 2.4 GHz (access legacy).** Solo 3 canali non sovrapposti in EU: 1, 6, 11. Schema di riuso a 3 colori, sufficiente per la maggior parte dei layout.
+**Banda 2.4 GHz (access legacy).** 
+- Solo 3 canali non sovrapposti in EU: 1, 6, 11. 
 
-**Banda 5 GHz (access moderno e backhaul).** In EU sono disponibili 19 canali a 20 MHz (36–64 banda U-NII-1/2A non-DFS, 100–144 banda U-NII-2C DFS); a 40 MHz se ne ottengono 9, a 80 MHz 4 (canali 36/40/44/48 — 52/56/60/64 — 100/104/108/112 — 116/120/124/128). Lo spazio è ampio: si può adottare un riuso a 4 colori che mappa elegantemente su una griglia esagonale.
+Schema di riuso a 3 colori, sufficiente per la maggior parte dei layout.
+
+Ecco la tabella con la colonna colori aggiunta:
+
+---
+
+**Banda 5 GHz (access moderno e backhaul).** In EU lo spettro 5 GHz è diviso in canali base da 20 MHz. Per avere throughput maggiori si **aggregano canali adiacenti** in canali più larghi: 40 MHz (coppia), 80 MHz (quadrupla), 160 MHz (ottupla). Più ampio è il canale, più alto il throughput ma anche più spettro occupato.
+
+In totale ci sono 19 canali base da 20 MHz, distribuiti in tre sotto-bande regolatorie:
+
+- **U-NII-1** (non-DFS): canali 36, 40, 44, 48
+- **U-NII-2A** (DFS): canali 52, 56, 60, 64
+- **U-NII-2C** (DFS): canali 100, 104, 108, 112, 116, 120, 124, 128, 132, 136, 140
+
+Aggregandoli si ottengono 9 canali a 40 MHz oppure **4 canali a 80 MHz non sovrapposti**, identificati dal numero del primo canale base che li compone:
+
+| Colore (riuso N=4) | Nome breve | Slot da 20 MHz occupate | Sotto-banda | DFS |
+|---|---|---|---|---|
+| **A — azzurro** | **ch 36 @ 80 MHz** | 36, 40, 44, 48 | U-NII-1 | no |
+| **B — verde** | **ch 52 @ 80 MHz** | 52, 56, 60, 64 | U-NII-2A | sì |
+| **C — giallo** | **ch 100 @ 80 MHz** | 100, 104, 108, 112 | U-NII-2C | sì |
+| **D — rosso** | **ch 116 @ 80 MHz** | 116, 120, 124, 128 | U-NII-2C | sì |
+
+Questi 4 canali a 80 MHz sono spettralmente disgiunti: due AP che usano canali diversi della tabella non si interferiscono, indipendentemente da quanto siano vicini fisicamente. È esattamente quello che serve per il **riuso a 4 colori** della pianificazione cellulare: si associa un colore a ciascun canale e si distribuiscono i colori sulla griglia degli AP in modo che celle adiacenti abbiano colori diversi.
+
+Sul nostro sito (Figura 2) i colori sono coerenti con la legenda della planimetria:
+
+- **A azzurro** — usato dalle celle T1 e T3 (riuso lontano)
+- **B verde** — usato dalle celle T2 e T4
+- **C giallo** — usato dalla cella T5 (mastio)
+- **D rosso** — usato dalle celle T6, T7-GW e T8 (perimetrali sud)
+
+Restano disponibili, **fuori da questi 4 colori**, i canali alti **ch 132 @ 80 MHz** (occupa 132–144, ancora DFS) e **ch 149 @ 80 MHz** (occupa 149–161, banda U-NII-3 non-DFS, massima EIRP outdoor consentita): si usano per il backhaul mesh, completamente separati dallo spettro access.
+
+---
+
+Così la corrispondenza tra tabella e mappa è esplicita: leggi "C giallo" nella tabella e ritrovi lo stesso colore giallo sulla cella T5 in figura, sia nella legenda sia nella pillola dell'AP.
 
 ---
 
