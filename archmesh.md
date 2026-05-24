@@ -166,7 +166,7 @@ Durante la trasmissione coordinata dal Trigger Frame, l'accesso distribuito vien
 
 ---
 
-## 1.b — Dimensionamento dei nodi
+## Dimensionamento dei nodi
 
 ### Numero di AP
 
