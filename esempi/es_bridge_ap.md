@@ -7,7 +7,7 @@ Le **interfacce wireless** fisiche sono divise in più **sotto interfacce** logi
 
 Anche le interfacce ethernet fisiche sono divise in più **sotto interfacce** logiche, ciascuna con il proprio vlan id.
 
-<img src="..img/ap_bridge_groups.png" alt="alt text" width="1000">
+<img src="../img/ap_bridge_groups.png" alt="alt text" width="1000">
 
 All'interno di ogni AP, in realtà, sono sempre presenti uno o più bridge realizzati in SW (creati mediante il comando bridge-group x) che hanno il compito di collegare il traffico delle interfacce wireless con le interfacce Ethernet della rete LAN
 Le interfacce wireless fisiche sono divise in più sotto interfacce logiche, ciascuna con il proprio SSID (veri e propri Hub wireless separati da un ssid). Esiste un bridge diverso associato ad ogni VLAN che collega il traffico wireless 802.11 di una VLAN con il traffico Ethernet 802.3 della stessa VLAN.
