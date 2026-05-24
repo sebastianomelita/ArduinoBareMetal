@@ -1,5 +1,6 @@
 
->[Torna a reti WiFi Mesh](../archmesh.md#esempio-1)
+>[Torna a reti WiFi Mesh](../archmesh.md#esempio-1)>[Torna a reti WiFi Infrastruttura](../archwifi.md#esempio-1)    
+
 
 ## **Bridge group**
 
