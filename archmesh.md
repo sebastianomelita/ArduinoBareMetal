@@ -49,15 +49,15 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definire i **canali dei link** scegliendoli tra quelli a disposizione in banda ISM e pianificando il loro **riuso nello spazio** minimizzando l'**interferenza cocanale**.
 - gestire eventuali **vincoli di prossimità** mediante controllo di potenza o gestione del roaming e eventuali **vincoli di posizionamento** mediante trilaterazione.
 - **subnetting** e definizione degli indirizzi delle **subnet di aggregazione** per i vari gruppi di utenti (generalmente statica), e definizione degli indirizzi delle **subnet di dorsale** (statica o automatica basata su Link Local), definizione degli indirizzi delle **subnet di servizio** (server farm e DMZ),
-- definizione degli indirizzi dei server e dei range di quelli dei client.
-- definizione delle tecniche di **autenticazione** degli utenti necessarie per un dato scenario nonchè di quelle che realizzano l'autenticazione dei servizi (ad es. 802.1X). Secegliere tra autenticazione L2 EAP (statica per AP o per utente con RADIUS) e quella L7 con Captive portal. 
-- definizione del tipo di rete mesh scegliendo tra **routed mesh** o **bridged mesh**
+- definizione degli **indirizzi dei server** e dei range di quelli dei client.
+- definizione delle **tecniche di autenticazione** degli utenti necessarie per un dato scenario nonchè di quelle che realizzano l'autenticazione dei servizi (ad es. 802.1X). Secegliere tra autenticazione L2 EAP (statica per AP o per utente con RADIUS) e quella L7 con Captive portal. 
+- definizione del **tipo di rete mesh** scegliendo tra **routed mesh** o **bridged mesh**
 - definizione del **tipo di routing** (nei mesh sempre automatico).
 - se presenti VLAN, defiunizione del tipo di **associazione** delle VLAN agli SSID (statico o dinamico con Tunnel-Private-Group-Id)
-- definizione posizione del controller degli AP
-- definizione posizione dei servizi di sistema (DHCP, DNS) 
-- definizione della posizione del broker MQTT.
-- definizione dei topic utili per i casi d'uso richiesti.
+- definizione **posizione del controller degli AP**
+- definizione posizione dei **servizi di sistema** (DHCP, DNS) 
+- definizione della posizione del **broker MQTT**.
+- definizione dei **topic utili** per i casi d'uso richiesti.
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 
