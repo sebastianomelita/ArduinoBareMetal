@@ -1,4 +1,6 @@
 
+>[Torna a reti WiFi Mesh](../archmesh.md#esempio-1)
+
 ## **Bridge group**
 
 All'**interno** di ogni **AP**, in realtà, sono sempre presenti uno o più **bridge** realizzati in SW (creati  mediante il comando  bridge-group x) che hanno il compito di **associare** il traffico delle **interfacce wireless**  con le **interfacce Ethernet** della reta cablata.
