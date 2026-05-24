@@ -123,10 +123,6 @@ Quando si dispongono più AP in un'area ristretta, va evitata l'interferenza co-
 
 **Banda 2.4 GHz (access legacy).** Solo 3 canali non sovrapposti in EU: 1, 6, 11. Schema di riuso a 3 colori, sufficiente per la maggior parte dei layout.
 
-Ecco la tabella con la colonna colori aggiunta:
-
----
-
 **Banda 5 GHz (access moderno e backhaul).** In EU lo spettro 5 GHz è diviso in canali base da 20 MHz. Per avere throughput maggiori si **aggregano canali adiacenti** in canali più larghi: 40 MHz (coppia), 80 MHz (quadrupla), 160 MHz (ottupla). Più ampio è il canale, più alto il throughput ma anche più spettro occupato.
 
 In totale ci sono 19 canali base da 20 MHz, distribuiti in tre sotto-bande regolatorie:
@@ -154,10 +150,6 @@ Sul nostro sito (Figura 2) i colori sono coerenti con la legenda della planimetr
 - **D rosso** — usato dalle celle T6, T7-GW e T8 (perimetrali sud)
 
 Restano disponibili, **fuori da questi 4 colori**, i canali alti **ch 132 @ 80 MHz** (occupa 132–144, ancora DFS) e **ch 149 @ 80 MHz** (occupa 149–161, banda U-NII-3 non-DFS, massima EIRP outdoor consentita): si usano per il backhaul mesh, completamente separati dallo spettro access.
-
----
-
-Così la corrispondenza tra tabella e mappa è esplicita: leggi "C giallo" nella tabella e ritrovi lo stesso colore giallo sulla cella T5 in figura, sia nella legenda sia nella pillola dell'AP.
 
 ---
 
