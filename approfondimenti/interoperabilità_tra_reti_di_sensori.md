@@ -1,9 +1,6 @@
 >[Torna a reti di sensori](../sensornetworkshort.md)
 
 
->[Torna a reti di sensori](../sensornetworkshort.md)
-
-
 ### **Interoperabilità tra reti di sensori**
 
 Riguardo all'**interoperabilità** tra reti diverse, questa è evidentemente impossibile ai livelli **fisico e di accesso**, cioè ai **primi due livelli** della pila OSI (**L1** e **L2**) dato che questi sono normalmente realizzati con tecnologie molto diverse tra loro. Ma potrebbe essere realizzata:
