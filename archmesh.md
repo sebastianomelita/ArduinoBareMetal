@@ -313,6 +313,46 @@ L'autenticazione di un nodo Wi-Fi è un processo fondamentale per garantire che 
 
 ---
 
+## Backhaul mesh: autenticazione fra AP
+
+Sul lato backhaul — il "back office" della rete, dove gli AP si parlano fra loro per inoltrare il traffico mesh — il problema è diverso. Non c'è un "client" e un "server": ci sono N nodi paritari (peer) che devono potersi fidare reciprocamente prima di scambiarsi frame, altrimenti un AP rogue piazzato vicino al sito da un attaccante potrebbe inserirsi nella mesh e intercettare/manipolare il traffico.
+
+Le tecnologie disponibili dipendono dallo standard mesh adottato.
+
+### IEEE 802.11s — SAE (Simultaneous Authentication of Equals)
+
+Lo standard 802.11s definisce **SAE**, lo stesso meccanismo introdotto da WPA3 per l'access lato client, ma applicato fra peer mesh. SAE è una variante del **Dragonfly key exchange** (RFC 7664) basata su una **passphrase pre-condivisa** fra i nodi mesh. Caratteristiche essenziali:
+
+- **Simmetrico**: nessun nodo è "client" o "server", entrambi seguono lo stesso protocollo;
+- **Resistente al dizionario offline**: anche se un attaccante cattura tutto lo scambio, non può provare password a velocità arbitraria contro l'hash, perché ogni tentativo richiede un'interazione attiva con un peer (Forward Secrecy garantita);
+- **Negozia una chiave di sessione fresca** ad ogni associazione, usata poi per cifrare i frame con AES-CCMP a livello link.
+
+Una volta autenticati con SAE, i due nodi mesh stabiliscono una **Mesh Peering Management** session (MPM), che è l'analogo dell'associazione client-AP ma fra peer paritari. Tutti i frame successivi sul link sono cifrati e autenticati.
+
+La gestione è **distribuita**: ogni nodo mesh conserva la propria passphrase, configurata al momento dell'installazione (tipicamente dal controller WLAN). Non c'è un server centrale come il RADIUS: la passphrase deve essere la stessa su tutti i nodi della mesh.
+
+### Soluzioni proprietarie (Cisco, Aruba, MikroTik, Ubiquiti)
+
+I principali vendor offrono varianti più sofisticate per ambienti enterprise:
+
+- **Cisco Adaptive Wireless Path Protocol (AWPP)** sui Mesh AP, con autenticazione mutua basata su certificati X.509 firmati dalla CA del controller WLAN. Ogni Mesh AP riceve un certificato univoco al momento del *zero-touch provisioning* contro il WLC.
+- **Aruba InstantOS Mesh** usa certificati per l'autenticazione mesh, sempre gestiti dal controller (Mobility Conductor).
+- **MikroTik CAPsMAN + nv2** usa chiavi condivise o certificati a discrezione, ma è meno automatizzato.
+- **Ubiquiti UniFi Mesh** usa una chiave condivisa derivata dal sito UniFi e dalla password admin, gestita centralmente dal UniFi Controller.
+
+Il **denominatore comune** di queste soluzioni proprietarie è la **gestione centralizzata** via controller WLAN: il sistemista non configura singolarmente ogni AP, ma adotta una policy a livello di sito che il controller applica via *zero-touch provisioning* su ciascun nuovo nodo che entra nella mesh. La rotazione delle chiavi, la revoca dei certificati, l'aggiunta di nuovi AP autorizzati si fanno tutte lì.
+
+### IETF / mesh community — IPsec / WireGuard sopra il link mesh
+
+In alternativa, o in aggiunta, all'autenticazione mesh nativa di 802.11s, si può **incapsulare** il traffico fra nodi in un tunnel IPsec o WireGuard che gestisce indipendentemente l'autenticazione mutua a livello IP:
+
+- **IPsec con IKEv2** + certificati X.509: standard maturo, supportato da qualunque router serio. Adatto se si vuole isolare il piano di gestione (es. il traffico verso il controller WLAN) dentro un tunnel cifrato sopra il link mesh.
+- **WireGuard**: più moderno, basato su chiavi pubbliche Curve25519, configurazione semplicissima (una chiave per peer). Sta diventando lo standard di fatto nelle mesh community come Freifunk.
+
+Questa via è quella adottata tipicamente quando i nodi mesh sono macchine Linux generaliste (es. router OpenWRT) piuttosto che AP dedicati di un vendor, e la flessibilità prevale sulla semplicità.
+
+---
+
 ## **Schema di principio degli apparati attivi**
 
 ![Schema apparati attivi](esempi/img/apparati.png)
