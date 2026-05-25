@@ -1,4 +1,4 @@
->[Torna a reti di sensori](../sensornetworkshort.md)>[Broker MQTT](../broker_mqtt.md)
+>[Torna a reti di sensori](../sensornetworkshort.md)>[Broker MQTT](broker_mqtt.md)
 
 
 ### **Interoperabilità tra reti di sensori**
