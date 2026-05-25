@@ -56,6 +56,6 @@ Le connessioni sono iniziate dai client dall’interno delle reti locali di appa
 
 Esistono molte altre soluzioni che magari sono più semplici e graficamente accattivanti ma che passano per portali proprietari o per servizi cloud a pagamento e nulla aggiungono di didatticamente rilevante ai nostri discorsi. Normalmente sono basate su webservices realizzati con protocolli Request/Response quali **HTTPS** e **COAP**.
 
-Vedi per approfondimenti [interoperabilità_tra_reti_di_sensori](approfondimenti/interoperabilità_tra_reti_di_sensori.md)
+Vedi per approfondimenti [Interoperabilità_tra_reti_di_sensori](interoperabilità_tra_reti_di_sensori.md)
 
 
