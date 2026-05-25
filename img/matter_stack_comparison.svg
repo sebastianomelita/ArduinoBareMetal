@@ -1,6 +1,6 @@
-<svg width="100%" viewBox="0 0 680 480" role="img" xmlns="http://www.w3.org/2000/svg">
+<svg width="100%" viewBox="0 0 680 520" role="img" xmlns="http://www.w3.org/2000/svg">
 <title>Confronto degli stack protocollari Matter, Zigbee e MQTT</title>
-<desc>Tre colonne mostrano gli stack di Matter, Zigbee e MQTT, evidenziando dove condividono il livello fisico 802.15.4 e dove divergono ai livelli rete e applicazione.</desc>
+<desc>Tre colonne mostrano gli stack di Matter, Zigbee e MQTT, evidenziando il ruolo di 6LoWPAN come livello di adattamento tra IPv6 e 802.15.4.</desc>
 <style>
 .t  { font-family: sans-serif; font-size: 14px; fill: #2C2C2A; }
 .ts { font-family: sans-serif; font-size: 12px; fill: #5F5E5A; }
@@ -11,6 +11,8 @@
 .c-teal   text { fill: #04342C; }
 .c-blue   rect { fill: #E6F1FB; stroke: #185FA5; }
 .c-blue   text { fill: #042C53; }
+.c-amber  rect { fill: #FAEEDA; stroke: #BA7517; }
+.c-amber  text { fill: #412402; }
 .c-coral  rect { fill: #FAECE7; stroke: #993C1D; }
 .c-coral  text { fill: #4A1B0C; }
 .c-pink   rect { fill: #FBEAF0; stroke: #993556; }
@@ -23,11 +25,12 @@
 <text class="th" x="340" y="30" text-anchor="middle">Zigbee</text>
 <text class="th" x="560" y="30" text-anchor="middle">MQTT (su IP)</text>
 
-<text class="ts" x="30" y="80"  text-anchor="start">L7 App</text>
-<text class="ts" x="30" y="170" text-anchor="start">L4 Trasp.</text>
-<text class="ts" x="30" y="240" text-anchor="start">L3 Rete</text>
-<text class="ts" x="30" y="320" text-anchor="start">L2 MAC</text>
-<text class="ts" x="30" y="390" text-anchor="start">L1 PHY</text>
+<text class="ts" x="20" y="80"  text-anchor="start">L7 App</text>
+<text class="ts" x="20" y="160" text-anchor="start">L4 Trasp.</text>
+<text class="ts" x="20" y="220" text-anchor="start">L3 Rete</text>
+<text class="ts" x="20" y="280" text-anchor="start">L2.5 Adatt.</text>
+<text class="ts" x="20" y="350" text-anchor="start">L2 MAC</text>
+<text class="ts" x="20" y="420" text-anchor="start">L1 PHY</text>
 
 <g class="c-purple">
 <rect x="100" y="55" width="180" height="60" rx="8" stroke-width="0.5"/>
@@ -36,23 +39,30 @@
 </g>
 
 <g class="c-teal">
-<rect x="100" y="145" width="180" height="50" rx="8" stroke-width="0.5"/>
-<text class="th" x="190" y="170" text-anchor="middle" dominant-baseline="central">MRP su UDP</text>
+<rect x="100" y="135" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="190" y="160" text-anchor="middle" dominant-baseline="central">MRP su UDP</text>
 </g>
 
 <g class="c-blue">
-<rect x="100" y="215" width="180" height="50" rx="8" stroke-width="0.5"/>
-<text class="th" x="190" y="240" text-anchor="middle" dominant-baseline="central">IPv6</text>
+<rect x="100" y="195" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="190" y="220" text-anchor="middle" dominant-baseline="central">IPv6</text>
+</g>
+
+<g class="c-amber">
+<rect x="100" y="255" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="190" y="275" text-anchor="middle" dominant-baseline="central">6LoWPAN</text>
+<text class="ts" x="190" y="293" text-anchor="middle" dominant-baseline="central">compressione, framm.</text>
 </g>
 
 <g class="c-gray">
-<rect x="100" y="285" width="180" height="50" rx="8" stroke-width="0.5"/>
-<text class="th" x="190" y="310" text-anchor="middle" dominant-baseline="central">Thread (mesh)</text>
+<rect x="100" y="315" width="180" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="190" y="340" text-anchor="middle" dominant-baseline="central">802.15.4 MAC + Thread</text>
+<text class="ts" x="190" y="358" text-anchor="middle" dominant-baseline="central">mesh routing, MLE</text>
 </g>
 
 <g class="c-gray">
-<rect x="100" y="355" width="180" height="50" rx="8" stroke-width="0.5"/>
-<text class="th" x="190" y="380" text-anchor="middle" dominant-baseline="central">IEEE 802.15.4</text>
+<rect x="100" y="385" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="190" y="410" text-anchor="middle" dominant-baseline="central">IEEE 802.15.4</text>
 </g>
 
 <g class="c-coral">
@@ -62,23 +72,26 @@
 </g>
 
 <g class="c-coral">
-<rect x="320" y="145" width="180" height="50" rx="8" stroke-width="0.5"/>
-<text class="th" x="410" y="170" text-anchor="middle" dominant-baseline="central">Zigbee APS</text>
+<rect x="320" y="135" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="410" y="160" text-anchor="middle" dominant-baseline="central">Zigbee APS</text>
 </g>
 
 <g class="c-coral">
-<rect x="320" y="215" width="180" height="50" rx="8" stroke-width="0.5"/>
-<text class="th" x="410" y="240" text-anchor="middle" dominant-baseline="central">Zigbee NWK (non-IP)</text>
+<rect x="320" y="195" width="180" height="110" rx="8" stroke-width="0.5"/>
+<text class="th" x="410" y="240" text-anchor="middle" dominant-baseline="central">Zigbee NWK</text>
+<text class="ts" x="410" y="258" text-anchor="middle" dominant-baseline="central">non-IP, proprietario</text>
+<text class="ts" x="410" y="276" text-anchor="middle" dominant-baseline="central">(no 6LoWPAN)</text>
 </g>
 
 <g class="c-gray">
-<rect x="320" y="285" width="180" height="50" rx="8" stroke-width="0.5"/>
-<text class="th" x="410" y="310" text-anchor="middle" dominant-baseline="central">Zigbee MAC</text>
+<rect x="320" y="315" width="180" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="410" y="340" text-anchor="middle" dominant-baseline="central">Zigbee MAC</text>
+<text class="ts" x="410" y="358" text-anchor="middle" dominant-baseline="central">basato su 802.15.4</text>
 </g>
 
 <g class="c-gray">
-<rect x="320" y="355" width="180" height="50" rx="8" stroke-width="0.5"/>
-<text class="th" x="410" y="380" text-anchor="middle" dominant-baseline="central">IEEE 802.15.4</text>
+<rect x="320" y="385" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="410" y="410" text-anchor="middle" dominant-baseline="central">IEEE 802.15.4</text>
 </g>
 
 <g class="c-pink">
@@ -88,21 +101,21 @@
 </g>
 
 <g class="c-teal">
-<rect x="540" y="145" width="120" height="50" rx="8" stroke-width="0.5"/>
-<text class="th" x="600" y="170" text-anchor="middle" dominant-baseline="central">TCP</text>
+<rect x="540" y="135" width="120" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="600" y="160" text-anchor="middle" dominant-baseline="central">TCP</text>
 </g>
 
 <g class="c-blue">
-<rect x="540" y="215" width="120" height="50" rx="8" stroke-width="0.5"/>
-<text class="th" x="600" y="240" text-anchor="middle" dominant-baseline="central">IP (v4/v6)</text>
+<rect x="540" y="195" width="120" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="600" y="220" text-anchor="middle" dominant-baseline="central">IP (v4/v6)</text>
 </g>
 
 <g class="c-gray">
-<rect x="540" y="285" width="120" height="120" rx="8" stroke-width="0.5"/>
+<rect x="540" y="255" width="120" height="180" rx="8" stroke-width="0.5"/>
 <text class="th" x="600" y="335" text-anchor="middle" dominant-baseline="central">Ethernet / WiFi</text>
 <text class="ts" x="600" y="355" text-anchor="middle" dominant-baseline="central">qualunque L1/L2</text>
 </g>
 
-<rect x="60" y="350" width="540" height="60" rx="6" fill="none" stroke="#534AB7" stroke-width="1" stroke-dasharray="4 3"/>
-<text class="ts" x="60" y="440" text-anchor="start">Thread e Zigbee condividono lo stesso ferro radio (802.15.4), ma divergono completamente dal livello rete in su.</text>
+<text class="ts" x="40" y="475" text-anchor="start">6LoWPAN comprime gli header IPv6 e frammenta i pacchetti per farli stare nei 127 byte di 802.15.4.</text>
+<text class="ts" x="40" y="495" text-anchor="start">Zigbee non lo usa: il suo NWK proprietario non è IP, quindi non deve adattarsi a IPv6.</text>
 </svg>
