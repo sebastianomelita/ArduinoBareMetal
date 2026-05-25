@@ -1,0 +1,92 @@
+<svg width="100%" viewBox="0 0 760 520" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Matter come payload IPv6 attraverso una rete IP di soli router L3</title>
+<desc>Il payload Matter viaggia cifrato attraverso una rete IP che fa solo routing di livello 3. Al consumo, due scenari: attuatore Matter nativo che esegue il comando, oppure connettore applicativo (Node-RED, Home Assistant) che decifra il TLV e lo ripubblica come JSON su MQTT/REST/dashboard.</desc>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<style>
+.t  { font-family: sans-serif; font-size: 13px; fill: #2C2C2A; }
+.ts { font-family: sans-serif; font-size: 11px; fill: #5F5E5A; }
+.th { font-family: sans-serif; font-size: 13px; font-weight: 500; fill: #2C2C2A; }
+.tcap { font-family: sans-serif; font-size: 12px; font-style: italic; fill: #5F5E5A; }
+.arr { stroke: #5F5E5A; stroke-width: 1.2; fill: none; }
+.c-purple rect { fill: #EEEDFE; stroke: #534AB7; }
+.c-purple text { fill: #26215C; }
+.c-teal   rect { fill: #E1F5EE; stroke: #0F6E56; }
+.c-teal   text { fill: #04342C; }
+.c-blue   rect { fill: #E6F1FB; stroke: #185FA5; }
+.c-blue   text { fill: #042C53; }
+.c-amber  rect { fill: #FAEEDA; stroke: #BA7517; }
+.c-amber  text { fill: #412402; }
+.c-coral  rect { fill: #FAECE7; stroke: #993C1D; }
+.c-coral  text { fill: #4A1B0C; }
+</style>
+
+<g class="c-purple">
+<rect x="30" y="60" width="150" height="80" rx="10" stroke-width="0.5"/>
+<text class="th" x="105" y="90" text-anchor="middle" dominant-baseline="central">Controller Matter</text>
+<text class="ts" x="105" y="110" text-anchor="middle" dominant-baseline="central">o sensore Matter</text>
+<text class="ts" x="105" y="125" text-anchor="middle" dominant-baseline="central">(origine del payload)</text>
+</g>
+
+<rect x="210" y="40" width="340" height="120" rx="14" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5" stroke-dasharray="5 3"/>
+<text class="th" x="380" y="62" text-anchor="middle">Rete IP — solo routing L3</text>
+<text class="ts" x="380" y="80" text-anchor="middle">i router non conoscono Matter, vedono solo IPv6 + UDP</text>
+
+<g class="c-blue">
+<rect x="240" y="100" width="80" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="280" y="125" text-anchor="middle" dominant-baseline="central">Router L3</text>
+</g>
+<g class="c-blue">
+<rect x="350" y="100" width="80" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="390" y="125" text-anchor="middle" dominant-baseline="central">Router L3</text>
+</g>
+<g class="c-blue">
+<rect x="460" y="100" width="80" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="500" y="125" text-anchor="middle" dominant-baseline="central">Router L3</text>
+</g>
+
+<line x1="180" y1="100" x2="240" y2="125" class="arr"/>
+<line x1="320" y1="125" x2="350" y2="125" class="arr"/>
+<line x1="430" y1="125" x2="460" y2="125" class="arr"/>
+
+<text class="ts" x="200" y="180" text-anchor="middle">payload Matter cifrato (TLV)</text>
+<text class="ts" x="380" y="180" text-anchor="middle">IPv6 + UDP + MRP, opaco ai router</text>
+<text class="ts" x="560" y="180" text-anchor="middle">arriva intatto all'endpoint</text>
+
+<line x1="540" y1="125" x2="620" y2="125" class="arr"/>
+<line x1="620" y1="125" x2="650" y2="240" class="arr" marker-end="url(#arrow)"/>
+<line x1="620" y1="125" x2="650" y2="380" class="arr" marker-end="url(#arrow)"/>
+
+<g class="c-coral">
+<rect x="540" y="220" width="200" height="100" rx="10" stroke-width="0.5"/>
+<text class="th" x="640" y="245" text-anchor="middle" dominant-baseline="central">Scenario 1</text>
+<text class="th" x="640" y="265" text-anchor="middle" dominant-baseline="central">Attuatore Matter nativo</text>
+<text class="ts" x="640" y="290" text-anchor="middle" dominant-baseline="central">decifra ed esegue</text>
+<text class="ts" x="640" y="305" text-anchor="middle" dominant-baseline="central">direttamente il comando</text>
+</g>
+
+<g class="c-amber">
+<rect x="540" y="360" width="200" height="120" rx="10" stroke-width="0.5"/>
+<text class="th" x="640" y="385" text-anchor="middle" dominant-baseline="central">Scenario 2</text>
+<text class="th" x="640" y="405" text-anchor="middle" dominant-baseline="central">Connettore applicativo</text>
+<text class="ts" x="640" y="425" text-anchor="middle" dominant-baseline="central">Node-RED, Home Assistant</text>
+<text class="ts" x="640" y="445" text-anchor="middle" dominant-baseline="central">decifra il TLV, lo traduce in</text>
+<text class="ts" x="640" y="460" text-anchor="middle" dominant-baseline="central">JSON, ripubblica su MQTT/REST</text>
+</g>
+
+<g class="c-teal">
+<rect x="40" y="360" width="460" height="120" rx="10" stroke-width="0.5"/>
+<text class="th" x="60" y="385" text-anchor="start">Uscite del connettore verso il mondo applicativo</text>
+<text class="ts" x="60" y="410" text-anchor="start">&#8226; MQTT broker  →  server applicativi, automazioni, time series</text>
+<text class="ts" x="60" y="428" text-anchor="start">&#8226; REST/WebSocket  →  dashboard web, app mobile, monitoring</text>
+<text class="ts" x="60" y="446" text-anchor="start">&#8226; InfluxDB / database  →  statistiche, storico, analisi</text>
+<text class="ts" x="60" y="464" text-anchor="start">&#8226; Webhook / cloud  →  notifiche, integrazioni esterne</text>
+</g>
+
+<line x1="540" y1="420" x2="500" y2="420" class="arr" marker-end="url(#arrow)"/>
+
+<text class="tcap" x="380" y="510" text-anchor="middle">L7 (Matter) viaggia trasparente attraverso L3 (IP). La traduzione semantica avviene solo agli endpoint, non in mezzo.</text>
+</svg>
