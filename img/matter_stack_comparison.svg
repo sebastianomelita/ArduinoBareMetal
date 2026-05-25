@@ -1,0 +1,108 @@
+<svg width="100%" viewBox="0 0 680 480" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Confronto degli stack protocollari Matter, Zigbee e MQTT</title>
+<desc>Tre colonne mostrano gli stack di Matter, Zigbee e MQTT, evidenziando dove condividono il livello fisico 802.15.4 e dove divergono ai livelli rete e applicazione.</desc>
+<style>
+.t  { font-family: sans-serif; font-size: 14px; fill: #2C2C2A; }
+.ts { font-family: sans-serif; font-size: 12px; fill: #5F5E5A; }
+.th { font-family: sans-serif; font-size: 14px; font-weight: 500; fill: #2C2C2A; }
+.c-purple rect { fill: #EEEDFE; stroke: #534AB7; }
+.c-purple text { fill: #26215C; }
+.c-teal   rect { fill: #E1F5EE; stroke: #0F6E56; }
+.c-teal   text { fill: #04342C; }
+.c-blue   rect { fill: #E6F1FB; stroke: #185FA5; }
+.c-blue   text { fill: #042C53; }
+.c-coral  rect { fill: #FAECE7; stroke: #993C1D; }
+.c-coral  text { fill: #4A1B0C; }
+.c-pink   rect { fill: #FBEAF0; stroke: #993556; }
+.c-pink   text { fill: #4B1528; }
+.c-gray   rect { fill: #F1EFE8; stroke: #5F5E5A; }
+.c-gray   text { fill: #2C2C2A; }
+</style>
+
+<text class="th" x="120" y="30" text-anchor="middle">Matter over Thread</text>
+<text class="th" x="340" y="30" text-anchor="middle">Zigbee</text>
+<text class="th" x="560" y="30" text-anchor="middle">MQTT (su IP)</text>
+
+<text class="ts" x="30" y="80"  text-anchor="start">L7 App</text>
+<text class="ts" x="30" y="170" text-anchor="start">L4 Trasp.</text>
+<text class="ts" x="30" y="240" text-anchor="start">L3 Rete</text>
+<text class="ts" x="30" y="320" text-anchor="start">L2 MAC</text>
+<text class="ts" x="30" y="390" text-anchor="start">L1 PHY</text>
+
+<g class="c-purple">
+<rect x="100" y="55" width="180" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="190" y="80"  text-anchor="middle" dominant-baseline="central">Matter Data Model</text>
+<text class="ts" x="190" y="100" text-anchor="middle" dominant-baseline="central">cluster, endpoint</text>
+</g>
+
+<g class="c-teal">
+<rect x="100" y="145" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="190" y="170" text-anchor="middle" dominant-baseline="central">MRP su UDP</text>
+</g>
+
+<g class="c-blue">
+<rect x="100" y="215" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="190" y="240" text-anchor="middle" dominant-baseline="central">IPv6</text>
+</g>
+
+<g class="c-gray">
+<rect x="100" y="285" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="190" y="310" text-anchor="middle" dominant-baseline="central">Thread (mesh)</text>
+</g>
+
+<g class="c-gray">
+<rect x="100" y="355" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="190" y="380" text-anchor="middle" dominant-baseline="central">IEEE 802.15.4</text>
+</g>
+
+<g class="c-coral">
+<rect x="320" y="55" width="180" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="410" y="80"  text-anchor="middle" dominant-baseline="central">Zigbee Cluster Lib</text>
+<text class="ts" x="410" y="100" text-anchor="middle" dominant-baseline="central">ZCL, profili</text>
+</g>
+
+<g class="c-coral">
+<rect x="320" y="145" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="410" y="170" text-anchor="middle" dominant-baseline="central">Zigbee APS</text>
+</g>
+
+<g class="c-coral">
+<rect x="320" y="215" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="410" y="240" text-anchor="middle" dominant-baseline="central">Zigbee NWK (non-IP)</text>
+</g>
+
+<g class="c-gray">
+<rect x="320" y="285" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="410" y="310" text-anchor="middle" dominant-baseline="central">Zigbee MAC</text>
+</g>
+
+<g class="c-gray">
+<rect x="320" y="355" width="180" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="410" y="380" text-anchor="middle" dominant-baseline="central">IEEE 802.15.4</text>
+</g>
+
+<g class="c-pink">
+<rect x="540" y="55" width="120" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="600" y="80"  text-anchor="middle" dominant-baseline="central">MQTT</text>
+<text class="ts" x="600" y="100" text-anchor="middle" dominant-baseline="central">topic, broker</text>
+</g>
+
+<g class="c-teal">
+<rect x="540" y="145" width="120" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="600" y="170" text-anchor="middle" dominant-baseline="central">TCP</text>
+</g>
+
+<g class="c-blue">
+<rect x="540" y="215" width="120" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="600" y="240" text-anchor="middle" dominant-baseline="central">IP (v4/v6)</text>
+</g>
+
+<g class="c-gray">
+<rect x="540" y="285" width="120" height="120" rx="8" stroke-width="0.5"/>
+<text class="th" x="600" y="335" text-anchor="middle" dominant-baseline="central">Ethernet / WiFi</text>
+<text class="ts" x="600" y="355" text-anchor="middle" dominant-baseline="central">qualunque L1/L2</text>
+</g>
+
+<rect x="60" y="350" width="540" height="60" rx="6" fill="none" stroke="#534AB7" stroke-width="1" stroke-dasharray="4 3"/>
+<text class="ts" x="60" y="440" text-anchor="start">Thread e Zigbee condividono lo stesso ferro radio (802.15.4), ma divergono completamente dal livello rete in su.</text>
+</svg>

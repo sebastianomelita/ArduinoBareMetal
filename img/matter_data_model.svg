@@ -1,0 +1,69 @@
+<svg width="100%" viewBox="0 0 680 420" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Modello dati di Matter: nodo, endpoint, cluster, attributi, comandi</title>
+<desc>Struttura gerarchica di un dispositivo Matter. Un nodo contiene endpoint, ciascuno con cluster standard, ciascuno con attributi e comandi.</desc>
+<style>
+.t  { font-family: sans-serif; font-size: 14px; fill: #2C2C2A; }
+.ts { font-family: sans-serif; font-size: 12px; fill: #5F5E5A; }
+.th { font-family: sans-serif; font-size: 14px; font-weight: 500; fill: #2C2C2A; }
+.c-purple rect { fill: #EEEDFE; stroke: #534AB7; }
+.c-purple text { fill: #26215C; }
+.c-teal   rect { fill: #E1F5EE; stroke: #0F6E56; }
+.c-teal   text { fill: #04342C; }
+.c-amber  rect { fill: #FAEEDA; stroke: #BA7517; }
+.c-amber  text { fill: #412402; }
+</style>
+
+<g class="c-purple">
+<rect x="40" y="40" width="600" height="350" rx="16" stroke-width="0.5"/>
+<text class="th" x="60" y="68" text-anchor="start">Nodo Matter (es. lampadina RGB)</text>
+<text class="ts" x="60" y="86" text-anchor="start">indirizzo IPv6, certificato X.509, fabric ID</text>
+</g>
+
+<g class="c-teal">
+<rect x="70" y="110" width="260" height="250" rx="12" stroke-width="0.5"/>
+<text class="th" x="200" y="135" text-anchor="middle" dominant-baseline="central">Endpoint 1</text>
+<text class="ts" x="200" y="153" text-anchor="middle" dominant-baseline="central">tipo: Color Light</text>
+</g>
+
+<g class="c-amber">
+<rect x="90" y="175" width="220" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="200" y="195" text-anchor="middle" dominant-baseline="central">Cluster OnOff</text>
+<text class="ts" x="200" y="213" text-anchor="middle" dominant-baseline="central">attr: OnOff &#8226; cmd: Toggle</text>
+</g>
+
+<g class="c-amber">
+<rect x="90" y="235" width="220" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="200" y="255" text-anchor="middle" dominant-baseline="central">Cluster LevelControl</text>
+<text class="ts" x="200" y="273" text-anchor="middle" dominant-baseline="central">attr: CurrentLevel &#8226; cmd: MoveToLevel</text>
+</g>
+
+<g class="c-amber">
+<rect x="90" y="295" width="220" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="200" y="315" text-anchor="middle" dominant-baseline="central">Cluster ColorControl</text>
+<text class="ts" x="200" y="333" text-anchor="middle" dominant-baseline="central">attr: Hue, Saturation &#8226; cmd: MoveToHue</text>
+</g>
+
+<g class="c-teal">
+<rect x="350" y="110" width="260" height="250" rx="12" stroke-width="0.5"/>
+<text class="th" x="480" y="135" text-anchor="middle" dominant-baseline="central">Endpoint 0</text>
+<text class="ts" x="480" y="153" text-anchor="middle" dominant-baseline="central">tipo: Root (sempre presente)</text>
+</g>
+
+<g class="c-amber">
+<rect x="370" y="175" width="220" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="480" y="195" text-anchor="middle" dominant-baseline="central">Cluster Descriptor</text>
+<text class="ts" x="480" y="213" text-anchor="middle" dominant-baseline="central">elenco di endpoint e cluster</text>
+</g>
+
+<g class="c-amber">
+<rect x="370" y="235" width="220" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="480" y="255" text-anchor="middle" dominant-baseline="central">Cluster BasicInformation</text>
+<text class="ts" x="480" y="273" text-anchor="middle" dominant-baseline="central">vendor, product, firmware</text>
+</g>
+
+<g class="c-amber">
+<rect x="370" y="295" width="220" height="50" rx="8" stroke-width="0.5"/>
+<text class="th" x="480" y="315" text-anchor="middle" dominant-baseline="central">Cluster OperationalCredentials</text>
+<text class="ts" x="480" y="333" text-anchor="middle" dominant-baseline="central">certificati, fabric</text>
+</g>
+</svg>
