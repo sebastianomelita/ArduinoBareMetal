@@ -361,6 +361,8 @@ mosquitto_pub -h localhost -t 'casa/soggiorno/comandi' -m '{"state": "OFF"}'
 
 ## **Matter: gateway come router L3**
 
+<img src="/img/matter_router.png" alt="Matter come payload IPv6 attraverso una rete IP di soli router L3" width="760">
+
 **Crea un'unica rete** utilizzando livelli di rete **compatibili** o **praticamente uguali** come sono **IPV6 e 6LowPan**. Lo stesso deve accadere per i **protocolli di routing** usando ad es. REPL. Se le condizioni di **uniformità** dei protocolli sono **soddisfatte solo parzialmente**, ad esempio mantenendo uguale protocollo di inoltro (6LowPAN) ma **protocolli di routing diversi** (OSPF nella rete di distribuzione e REPL in quella dei sensori), allora il router deve necessariamente possedere anche limitate funzionalità di **gateway**, in questo caso almeno per effettuare l'interoperabilità tra **dominii di routing** differenti.
 
 <img src="/img/matter_osi_stack.svg" alt="Matter come payload IPv6 attraverso una rete IP di soli router L3" width="760">
