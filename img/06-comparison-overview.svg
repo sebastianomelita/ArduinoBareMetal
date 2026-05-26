@@ -1,0 +1,243 @@
+<svg viewBox="0 0 1000 480" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,sans-serif">
+  <rect width="1000" height="480" fill="#f8fafc"/>
+  <text x="500" y="32" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">I 4 paradigmi a colpo d'occhio</text>
+  <text x="500" y="52" font-size="12" text-anchor="middle" fill="#64748b">dalla VPN classica al SASE: come cambia l'architettura</text>
+
+  <!-- COL 1: VPN classica -->
+  <g transform="translate(20,80)">
+    <rect width="230" height="380" fill="#fef2f2" stroke="#dc2626" stroke-width="2" rx="8"/>
+    <text x="115" y="22" font-size="13" font-weight="700" text-anchor="middle" fill="#991b1b">VPN classica</text>
+    <text x="115" y="38" font-size="9" text-anchor="middle" fill="#b91c1c" font-style="italic">Trusted network</text>
+
+    <!-- Mini topology -->
+    <g transform="translate(20,55)">
+      <rect width="30" height="22" fill="#fff" stroke="#dc2626" rx="2"/>
+      <text x="15" y="17" font-size="11" text-anchor="middle">👤</text>
+      <rect width="30" height="22" y="30" fill="#fff" stroke="#dc2626" rx="2"/>
+      <text x="15" y="47" font-size="11" text-anchor="middle">👤</text>
+
+      <path d="M 30 11 L 80 50" stroke="#6366f1" stroke-width="2"/>
+      <path d="M 30 41 L 80 60" stroke="#6366f1" stroke-width="2"/>
+
+      <rect x="80" y="45" width="35" height="35" fill="#fde68a" stroke="#b45309" rx="3"/>
+      <text x="97" y="68" font-size="14" text-anchor="middle">🛡️</text>
+
+      <rect x="125" y="20" width="80" height="90" fill="#fef3c7" stroke="#b45309" stroke-dasharray="3,2" rx="4"/>
+      <text x="165" y="38" font-size="8" font-weight="600" text-anchor="middle" fill="#78350f">rete trusted</text>
+      <text x="142" y="60" font-size="11">🖥️</text>
+      <text x="170" y="60" font-size="11">💾</text>
+      <text x="190" y="60" font-size="11">📁</text>
+      <text x="142" y="85" font-size="11">⚙️</text>
+      <text x="170" y="85" font-size="11">🗄️</text>
+      <text x="190" y="85" font-size="11">📧</text>
+
+      <path d="M 115 62 L 125 62" stroke="#6366f1" stroke-width="2"/>
+    </g>
+
+    <!-- Key facts -->
+    <line x1="15" y1="180" x2="215" y2="180" stroke="#fca5a5"/>
+    <text x="115" y="200" font-size="10" font-weight="700" text-anchor="middle" fill="#991b1b">Architettura</text>
+    <text x="115" y="215" font-size="9" text-anchor="middle" fill="#7f1d1d">tunnel → perimetro fisso</text>
+    <text x="115" y="227" font-size="9" text-anchor="middle" fill="#7f1d1d">accesso a tutta la rete</text>
+
+    <text x="115" y="252" font-size="10" font-weight="700" text-anchor="middle" fill="#991b1b">Modello fiducia</text>
+    <text x="115" y="266" font-size="9" text-anchor="middle" fill="#7f1d1d">implicita (perimetrale)</text>
+
+    <text x="115" y="291" font-size="10" font-weight="700" text-anchor="middle" fill="#991b1b">Granularità</text>
+    <text x="115" y="305" font-size="9" text-anchor="middle" fill="#7f1d1d">L3/L4 network-level</text>
+
+    <text x="115" y="330" font-size="10" font-weight="700" text-anchor="middle" fill="#991b1b">Punti deboli</text>
+    <text x="115" y="344" font-size="8" text-anchor="middle" fill="#7f1d1d">movimento laterale</text>
+    <text x="115" y="356" font-size="8" text-anchor="middle" fill="#7f1d1d">single point of failure</text>
+    <text x="115" y="368" font-size="8" text-anchor="middle" fill="#7f1d1d">no cloud / SaaS</text>
+  </g>
+
+  <!-- COL 2: ZTNA -->
+  <g transform="translate(265,80)">
+    <rect width="230" height="380" fill="#dcfce7" stroke="#16a34a" stroke-width="2" rx="8"/>
+    <text x="115" y="22" font-size="13" font-weight="700" text-anchor="middle" fill="#14532d">ZTNA</text>
+    <text x="115" y="38" font-size="9" text-anchor="middle" fill="#15803d" font-style="italic">Zero Trust Network Access</text>
+
+    <!-- Mini topology: P2P mesh -->
+    <g transform="translate(20,55)">
+      <!-- Control plane -->
+      <rect width="190" height="22" fill="#ede9fe" stroke="#7c3aed" rx="3"/>
+      <text x="95" y="16" font-size="9" font-weight="600" text-anchor="middle" fill="#5b21b6">Control plane (policy)</text>
+
+      <!-- Peers -->
+      <circle cx="30" cy="60" r="14" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="30" y="65" font-size="13" text-anchor="middle">💻</text>
+      <text x="30" y="85" font-size="8" text-anchor="middle" fill="#14532d">peer</text>
+
+      <circle cx="160" cy="60" r="14" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="160" y="65" font-size="13" text-anchor="middle">☁️</text>
+      <text x="160" y="85" font-size="8" text-anchor="middle" fill="#14532d">peer</text>
+
+      <circle cx="30" cy="115" r="14" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="30" y="120" font-size="13" text-anchor="middle">🖥️</text>
+      <text x="30" y="140" font-size="8" text-anchor="middle" fill="#14532d">peer</text>
+
+      <circle cx="160" cy="115" r="14" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="160" y="120" font-size="13" text-anchor="middle">📱</text>
+      <text x="160" y="140" font-size="8" text-anchor="middle" fill="#14532d">peer</text>
+
+      <!-- P2P mesh -->
+      <line x1="44" y1="60" x2="146" y2="60" stroke="#16a34a" stroke-width="2"/>
+      <line x1="44" y1="115" x2="146" y2="115" stroke="#16a34a" stroke-width="2"/>
+      <line x1="30" y1="74" x2="30" y2="101" stroke="#16a34a" stroke-width="2"/>
+      <line x1="160" y1="74" x2="160" y2="101" stroke="#16a34a" stroke-width="2"/>
+      <line x1="44" y1="74" x2="146" y2="101" stroke="#16a34a" stroke-width="1.5" opacity="0.6"/>
+      <line x1="44" y1="101" x2="146" y2="74" stroke="#16a34a" stroke-width="1.5" opacity="0.6"/>
+
+      <!-- Control plane to peers (dashed) -->
+      <line x1="30" y1="22" x2="30" y2="46" stroke="#7c3aed" stroke-width="1" stroke-dasharray="2,2"/>
+      <line x1="160" y1="22" x2="160" y2="46" stroke="#7c3aed" stroke-width="1" stroke-dasharray="2,2"/>
+    </g>
+
+    <!-- Key facts -->
+    <line x1="15" y1="200" x2="215" y2="200" stroke="#86efac"/>
+    <text x="115" y="220" font-size="10" font-weight="700" text-anchor="middle" fill="#14532d">Architettura</text>
+    <text x="115" y="235" font-size="9" text-anchor="middle" fill="#166534">mesh P2P · overlay cifrato</text>
+    <text x="115" y="247" font-size="9" text-anchor="middle" fill="#166534">control/data plane separati</text>
+
+    <text x="115" y="272" font-size="10" font-weight="700" text-anchor="middle" fill="#14532d">Modello fiducia</text>
+    <text x="115" y="286" font-size="9" text-anchor="middle" fill="#166534">esplicita (identity-based)</text>
+
+    <text x="115" y="311" font-size="10" font-weight="700" text-anchor="middle" fill="#14532d">Granularità</text>
+    <text x="115" y="325" font-size="9" text-anchor="middle" fill="#166534">L7 application-level</text>
+
+    <text x="115" y="350" font-size="10" font-weight="700" text-anchor="middle" fill="#14532d">Esempi</text>
+    <text x="115" y="364" font-size="8" text-anchor="middle" fill="#166534">NetBird · Tailscale · Twingate</text>
+    <text x="115" y="376" font-size="8" text-anchor="middle" fill="#166534">Zscaler ZPA · Cloudflare Access</text>
+  </g>
+
+  <!-- COL 3: SSE -->
+  <g transform="translate(510,80)">
+    <rect width="230" height="380" fill="#fce7f3" stroke="#be185d" stroke-width="2" rx="8"/>
+    <text x="115" y="22" font-size="13" font-weight="700" text-anchor="middle" fill="#831843">SSE</text>
+    <text x="115" y="38" font-size="9" text-anchor="middle" fill="#9d174d" font-style="italic">Security Service Edge</text>
+
+    <!-- Mini topology: hairpin to cloud -->
+    <g transform="translate(20,55)">
+      <!-- Users left -->
+      <circle cx="15" cy="40" r="13" fill="#fff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="15" y="45" font-size="12" text-anchor="middle">👤</text>
+      <circle cx="15" cy="80" r="13" fill="#fff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="15" y="85" font-size="12" text-anchor="middle">🏢</text>
+      <circle cx="15" cy="120" r="13" fill="#fff" stroke="#2563eb" stroke-width="1.5"/>
+      <text x="15" y="125" font-size="12" text-anchor="middle">📱</text>
+
+      <!-- SSE cloud center -->
+      <ellipse cx="95" cy="80" rx="45" ry="50" fill="#fff" stroke="#be185d" stroke-width="2"/>
+      <text x="95" y="65" font-size="9" font-weight="700" text-anchor="middle" fill="#831843">SSE</text>
+      <text x="95" y="78" font-size="8" text-anchor="middle" fill="#9d174d">ZTNA SWG</text>
+      <text x="95" y="89" font-size="8" text-anchor="middle" fill="#9d174d">CASB DLP</text>
+      <text x="95" y="100" font-size="8" text-anchor="middle" fill="#9d174d">FWaaS RBI</text>
+
+      <!-- Arrows in -->
+      <line x1="28" y1="40" x2="55" y2="65" stroke="#be185d" stroke-width="1.5"/>
+      <line x1="28" y1="80" x2="50" y2="80" stroke="#be185d" stroke-width="1.5"/>
+      <line x1="28" y1="120" x2="55" y2="95" stroke="#be185d" stroke-width="1.5"/>
+
+      <!-- Destinations right -->
+      <circle cx="175" cy="40" r="13" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="175" y="45" font-size="12" text-anchor="middle">🌍</text>
+      <circle cx="175" cy="80" r="13" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="175" y="85" font-size="12" text-anchor="middle">☁️</text>
+      <circle cx="175" cy="120" r="13" fill="#fff" stroke="#16a34a" stroke-width="1.5"/>
+      <text x="175" y="125" font-size="12" text-anchor="middle">🔒</text>
+
+      <!-- Arrows out -->
+      <line x1="135" y1="65" x2="162" y2="40" stroke="#15803d" stroke-width="1.5"/>
+      <line x1="140" y1="80" x2="162" y2="80" stroke="#15803d" stroke-width="1.5"/>
+      <line x1="135" y1="95" x2="162" y2="120" stroke="#15803d" stroke-width="1.5"/>
+    </g>
+
+    <!-- Key facts -->
+    <line x1="15" y1="200" x2="215" y2="200" stroke="#f9a8d4"/>
+    <text x="115" y="220" font-size="10" font-weight="700" text-anchor="middle" fill="#831843">Architettura</text>
+    <text x="115" y="235" font-size="9" text-anchor="middle" fill="#9d174d">hairpin via cloud PoP</text>
+    <text x="115" y="247" font-size="9" text-anchor="middle" fill="#9d174d">single-pass inspection</text>
+
+    <text x="115" y="272" font-size="10" font-weight="700" text-anchor="middle" fill="#831843">Modello fiducia</text>
+    <text x="115" y="286" font-size="9" text-anchor="middle" fill="#9d174d">Zero Trust unificato</text>
+
+    <text x="115" y="311" font-size="10" font-weight="700" text-anchor="middle" fill="#831843">Scope</text>
+    <text x="115" y="325" font-size="9" text-anchor="middle" fill="#9d174d">tutta la security cloud</text>
+
+    <text x="115" y="350" font-size="10" font-weight="700" text-anchor="middle" fill="#831843">Esempi</text>
+    <text x="115" y="364" font-size="8" text-anchor="middle" fill="#9d174d">Zscaler · Netskope</text>
+    <text x="115" y="376" font-size="8" text-anchor="middle" fill="#9d174d">Prisma Access · Cloudflare One</text>
+  </g>
+
+  <!-- COL 4: SASE -->
+  <g transform="translate(755,80)">
+    <rect width="230" height="380" fill="#fef3c7" stroke="#b45309" stroke-width="2.5" rx="8"/>
+    <text x="115" y="22" font-size="13" font-weight="700" text-anchor="middle" fill="#78350f">SASE</text>
+    <text x="115" y="38" font-size="9" text-anchor="middle" fill="#92400e" font-style="italic">Secure Access Service Edge</text>
+
+    <!-- Mini topology: SD-WAN + SSE -->
+    <g transform="translate(20,55)">
+      <!-- Sources -->
+      <rect x="0" y="30" width="22" height="18" fill="#fff" stroke="#2563eb" rx="2"/>
+      <text x="11" y="44" font-size="10" text-anchor="middle">🏢</text>
+      <rect x="0" y="70" width="22" height="18" fill="#fff" stroke="#2563eb" rx="2"/>
+      <text x="11" y="84" font-size="10" text-anchor="middle">👤</text>
+      <rect x="0" y="110" width="22" height="18" fill="#fff" stroke="#2563eb" rx="2"/>
+      <text x="11" y="124" font-size="10" text-anchor="middle">📱</text>
+
+      <!-- Multi-link SD-WAN -->
+      <line x1="22" y1="40" x2="65" y2="60" stroke="#1e40af" stroke-width="1.5"/>
+      <line x1="22" y1="45" x2="65" y2="65" stroke="#1e40af" stroke-width="1" stroke-dasharray="2,1"/>
+      <line x1="22" y1="80" x2="65" y2="75" stroke="#1e40af" stroke-width="1.5"/>
+      <line x1="22" y1="118" x2="65" y2="90" stroke="#1e40af" stroke-width="1.5"/>
+
+      <!-- SASE PoP box -->
+      <rect x="65" y="35" width="80" height="100" fill="#fff" stroke="#b45309" stroke-width="2" rx="5"/>
+      <text x="105" y="50" font-size="8" font-weight="700" text-anchor="middle" fill="#78350f">SASE PoP</text>
+      <rect x="72" y="58" width="66" height="22" fill="#dbeafe" stroke="#3b82f6" rx="2"/>
+      <text x="105" y="73" font-size="8" font-weight="600" text-anchor="middle" fill="#1e3a8a">SD-WAN</text>
+      <rect x="72" y="84" width="66" height="22" fill="#fce7f3" stroke="#ec4899" rx="2"/>
+      <text x="105" y="99" font-size="8" font-weight="600" text-anchor="middle" fill="#831843">SSE</text>
+      <text x="105" y="119" font-size="7" text-anchor="middle" fill="#78350f">unified</text>
+      <text x="105" y="128" font-size="7" text-anchor="middle" fill="#78350f">policy</text>
+
+      <!-- Destinations -->
+      <line x1="145" y1="60" x2="180" y2="40" stroke="#15803d" stroke-width="1.5"/>
+      <line x1="145" y1="80" x2="180" y2="80" stroke="#15803d" stroke-width="1.5"/>
+      <line x1="145" y1="110" x2="180" y2="125" stroke="#15803d" stroke-width="1.5"/>
+
+      <rect x="180" y="30" width="22" height="18" fill="#fff" stroke="#16a34a" rx="2"/>
+      <text x="191" y="44" font-size="10" text-anchor="middle">🌍</text>
+      <rect x="180" y="70" width="22" height="18" fill="#fff" stroke="#16a34a" rx="2"/>
+      <text x="191" y="84" font-size="10" text-anchor="middle">☁️</text>
+      <rect x="180" y="115" width="22" height="18" fill="#fff" stroke="#16a34a" rx="2"/>
+      <text x="191" y="129" font-size="10" text-anchor="middle">🔒</text>
+    </g>
+
+    <!-- Key facts -->
+    <line x1="15" y1="200" x2="215" y2="200" stroke="#fcd34d"/>
+    <text x="115" y="220" font-size="10" font-weight="700" text-anchor="middle" fill="#78350f">Architettura</text>
+    <text x="115" y="235" font-size="9" text-anchor="middle" fill="#92400e">SD-WAN + SSE convergenti</text>
+    <text x="115" y="247" font-size="9" text-anchor="middle" fill="#92400e">PoP globali, edge-delivered</text>
+
+    <text x="115" y="272" font-size="10" font-weight="700" text-anchor="middle" fill="#78350f">Modello fiducia</text>
+    <text x="115" y="286" font-size="9" text-anchor="middle" fill="#92400e">Zero Trust + QoS</text>
+
+    <text x="115" y="311" font-size="10" font-weight="700" text-anchor="middle" fill="#78350f">Scope</text>
+    <text x="115" y="325" font-size="9" text-anchor="middle" fill="#92400e">networking + security totale</text>
+
+    <text x="115" y="350" font-size="10" font-weight="700" text-anchor="middle" fill="#78350f">Esempi</text>
+    <text x="115" y="364" font-size="8" text-anchor="middle" fill="#92400e">Cato Networks · Versa</text>
+    <text x="115" y="376" font-size="8" text-anchor="middle" fill="#92400e">Prisma SASE · FortiSASE</text>
+  </g>
+
+  <!-- Bottom arrow showing evolution -->
+  <defs>
+    <marker id="bigArr" markerWidth="12" markerHeight="12" refX="11" refY="4" orient="auto">
+      <polygon points="0 0, 12 4, 0 8" fill="#0f172a"/>
+    </marker>
+  </defs>
+  <line x1="100" y1="465" x2="900" y2="465" stroke="#0f172a" stroke-width="2" marker-end="url(#bigArr)"/>
+  <text x="500" y="478" font-size="11" font-weight="600" text-anchor="middle" fill="#0f172a">Evoluzione: da rete trusted/perimetrale → a Zero Trust → a convergenza totale identity-driven</text>
+</svg>

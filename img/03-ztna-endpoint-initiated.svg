@@ -1,0 +1,122 @@
+<svg viewBox="0 0 800 540" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,sans-serif">
+  <defs>
+    <marker id="arrZ" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#7c3aed"/>
+    </marker>
+    <marker id="arrZG" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#15803d"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="540" fill="#f8fafc"/>
+  <text x="400" y="30" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">Architettura ZTNA endpoint-initiated</text>
+  <text x="400" y="50" font-size="12" text-anchor="middle" fill="#64748b">overlay mesh P2P cifrato (modello NetBird, Tailscale)</text>
+
+  <!-- CONTROL PLANE (top) -->
+  <rect x="200" y="75" width="400" height="110" fill="#ede9fe" stroke="#7c3aed" stroke-width="2.5" rx="10"/>
+  <text x="400" y="100" font-size="13" font-weight="700" text-anchor="middle" fill="#5b21b6">CONTROL PLANE (cloud / self-hosted)</text>
+
+  <g transform="translate(220,115)">
+    <rect width="100" height="55" fill="#fff" stroke="#7c3aed" stroke-width="1.5" rx="5"/>
+    <text x="50" y="20" font-size="10" font-weight="700" text-anchor="middle" fill="#5b21b6">Management</text>
+    <text x="50" y="38" font-size="18" text-anchor="middle">🧠</text>
+    <text x="50" y="50" font-size="8" text-anchor="middle" fill="#6d28d9">policy + identity</text>
+  </g>
+
+  <g transform="translate(335,115)">
+    <rect width="100" height="55" fill="#fff" stroke="#7c3aed" stroke-width="1.5" rx="5"/>
+    <text x="50" y="20" font-size="10" font-weight="700" text-anchor="middle" fill="#5b21b6">Signal server</text>
+    <text x="50" y="38" font-size="18" text-anchor="middle">📡</text>
+    <text x="50" y="50" font-size="8" text-anchor="middle" fill="#6d28d9">NAT traversal</text>
+  </g>
+
+  <g transform="translate(450,115)">
+    <rect width="130" height="55" fill="#fff" stroke="#7c3aed" stroke-width="1.5" rx="5"/>
+    <text x="65" y="20" font-size="10" font-weight="700" text-anchor="middle" fill="#5b21b6">Relay (fallback)</text>
+    <text x="65" y="38" font-size="18" text-anchor="middle">🔁</text>
+    <text x="65" y="50" font-size="8" text-anchor="middle" fill="#6d28d9">solo se P2P fallisce</text>
+  </g>
+
+  <!-- IdP external -->
+  <g transform="translate(625,105)">
+    <rect width="140" height="70" fill="#fff" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,2" rx="5"/>
+    <text x="70" y="20" font-size="10" font-weight="700" text-anchor="middle" fill="#475569">IdP esterno</text>
+    <text x="70" y="38" font-size="22" text-anchor="middle">🔐</text>
+    <text x="70" y="55" font-size="8" text-anchor="middle" fill="#64748b">Okta, Google,</text>
+    <text x="70" y="66" font-size="8" text-anchor="middle" fill="#64748b">Microsoft Entra</text>
+  </g>
+  <line x1="600" y1="140" x2="625" y2="140" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="3,2"/>
+
+  <text x="400" y="200" font-size="9" text-anchor="middle" fill="#5b21b6" font-style="italic">↑ il control plane NON vede mai il traffico utente</text>
+
+  <!-- PEERS (data plane) -->
+  <!-- Peer 1: User laptop -->
+  <g transform="translate(40,250)">
+    <rect width="130" height="100" fill="#dbeafe" stroke="#2563eb" stroke-width="2" rx="8"/>
+    <text x="65" y="22" font-size="11" font-weight="700" text-anchor="middle" fill="#1e3a8a">PEER (utente)</text>
+    <text x="65" y="50" font-size="28" text-anchor="middle">💻</text>
+    <rect x="20" y="60" width="90" height="30" fill="#fff" stroke="#3b82f6" rx="3"/>
+    <text x="65" y="73" font-size="9" font-weight="600" text-anchor="middle" fill="#1e40af">Agent</text>
+    <text x="65" y="84" font-size="8" text-anchor="middle" fill="#1e40af">(WireGuard®)</text>
+  </g>
+
+  <!-- Peer 2: Server VPC AWS -->
+  <g transform="translate(630,250)">
+    <rect width="130" height="100" fill="#dbeafe" stroke="#2563eb" stroke-width="2" rx="8"/>
+    <text x="65" y="22" font-size="11" font-weight="700" text-anchor="middle" fill="#1e3a8a">PEER (cloud)</text>
+    <text x="65" y="50" font-size="28" text-anchor="middle">☁️</text>
+    <rect x="20" y="60" width="90" height="30" fill="#fff" stroke="#3b82f6" rx="3"/>
+    <text x="65" y="73" font-size="9" font-weight="600" text-anchor="middle" fill="#1e40af">Agent</text>
+    <text x="65" y="84" font-size="8" text-anchor="middle" fill="#1e40af">su VPC AWS</text>
+  </g>
+
+  <!-- Peer 3: On-prem server -->
+  <g transform="translate(40,420)">
+    <rect width="130" height="100" fill="#dbeafe" stroke="#2563eb" stroke-width="2" rx="8"/>
+    <text x="65" y="22" font-size="11" font-weight="700" text-anchor="middle" fill="#1e3a8a">PEER (on-prem)</text>
+    <text x="65" y="50" font-size="28" text-anchor="middle">🖥️</text>
+    <rect x="20" y="60" width="90" height="30" fill="#fff" stroke="#3b82f6" rx="3"/>
+    <text x="65" y="73" font-size="9" font-weight="600" text-anchor="middle" fill="#1e40af">Agent</text>
+    <text x="65" y="84" font-size="8" text-anchor="middle" fill="#1e40af">DC aziendale</text>
+  </g>
+
+  <!-- Peer 4: Mobile -->
+  <g transform="translate(630,420)">
+    <rect width="130" height="100" fill="#dbeafe" stroke="#2563eb" stroke-width="2" rx="8"/>
+    <text x="65" y="22" font-size="11" font-weight="700" text-anchor="middle" fill="#1e3a8a">PEER (mobile)</text>
+    <text x="65" y="50" font-size="28" text-anchor="middle">📱</text>
+    <rect x="20" y="60" width="90" height="30" fill="#fff" stroke="#3b82f6" rx="3"/>
+    <text x="65" y="73" font-size="9" font-weight="600" text-anchor="middle" fill="#1e40af">Agent</text>
+    <text x="65" y="84" font-size="8" text-anchor="middle" fill="#1e40af">iOS/Android</text>
+  </g>
+
+  <!-- Control connections from peers to management (dashed thin) -->
+  <path d="M 105 250 Q 200 220 270 170" stroke="#7c3aed" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+  <path d="M 695 250 Q 600 220 530 170" stroke="#7c3aed" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+  <path d="M 105 420 Q 200 350 270 175" stroke="#7c3aed" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+  <path d="M 695 420 Q 600 350 530 175" stroke="#7c3aed" stroke-width="1.5" fill="none" stroke-dasharray="4,3"/>
+
+  <text x="180" y="245" font-size="9" fill="#5b21b6" font-style="italic">policy</text>
+
+  <!-- P2P MESH (thick green tunnels) -->
+  <path d="M 170 300 L 630 300" stroke="#16a34a" stroke-width="3" fill="none"/>
+  <path d="M 170 470 L 630 470" stroke="#16a34a" stroke-width="3" fill="none"/>
+  <path d="M 105 350 L 105 420" stroke="#16a34a" stroke-width="3" fill="none"/>
+  <path d="M 695 350 L 695 420" stroke="#16a34a" stroke-width="3" fill="none"/>
+  <path d="M 170 350 Q 400 420 630 470" stroke="#16a34a" stroke-width="3" fill="none"/>
+  <path d="M 170 470 Q 400 420 630 350" stroke="#16a34a" stroke-width="3" fill="none"/>
+
+  <!-- Central mesh label -->
+  <rect x="320" y="360" width="160" height="50" fill="#dcfce7" stroke="#16a34a" stroke-width="2" rx="6"/>
+  <text x="400" y="380" font-size="12" font-weight="700" text-anchor="middle" fill="#14532d">Tunnel P2P cifrati</text>
+  <text x="400" y="395" font-size="10" text-anchor="middle" fill="#15803d">WireGuard® end-to-end</text>
+  <text x="400" y="405" font-size="9" text-anchor="middle" fill="#15803d" font-style="italic">data plane diretto</text>
+
+  <!-- Legend -->
+  <rect x="40" y="220" width="720" height="25" fill="#fff" stroke="#cbd5e1" rx="4"/>
+  <text x="55" y="237" font-size="10" fill="#0f172a">
+    <tspan font-weight="700">Legenda:</tspan>
+    <tspan font-weight="600" fill="#7c3aed">  ┄┄┄ control plane (policy/signaling)</tspan>
+    <tspan font-weight="600" fill="#15803d">    ─── data plane P2P cifrato (mesh)</tspan>
+  </text>
+</svg>

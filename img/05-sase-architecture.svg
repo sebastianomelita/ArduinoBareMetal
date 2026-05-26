@@ -1,0 +1,169 @@
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,sans-serif">
+  <defs>
+    <marker id="arrA" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#b45309"/>
+    </marker>
+    <marker id="arrAG" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#15803d"/>
+    </marker>
+    <marker id="arrAB" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#1e40af"/>
+    </marker>
+  </defs>
+
+  <rect width="800" height="600" fill="#f8fafc"/>
+  <text x="400" y="30" font-size="18" font-weight="700" text-anchor="middle" fill="#0f172a">Architettura SASE — Secure Access Service Edge</text>
+  <text x="400" y="50" font-size="12" text-anchor="middle" fill="#64748b">convergenza networking (SD-WAN) + security (SSE) su PoP globali</text>
+
+  <!-- LEFT: Sources with SD-WAN connections -->
+  <g transform="translate(30,90)">
+    <text x="65" y="0" font-size="11" font-weight="700" text-anchor="middle" fill="#1e3a8a">SORGENTI</text>
+
+    <!-- Branch with multi-link -->
+    <rect x="0" y="15" width="130" height="80" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5" rx="6"/>
+    <text x="18" y="40" font-size="22">🏢</text>
+    <text x="85" y="32" font-size="10" font-weight="600" fill="#1e3a8a">HQ / Branch</text>
+    <rect x="50" y="50" width="75" height="14" fill="#fff" stroke="#3b82f6" rx="2"/>
+    <text x="87" y="60" font-size="7" text-anchor="middle" fill="#1e40af">SD-WAN edge</text>
+    <text x="65" y="78" font-size="7" text-anchor="middle" fill="#1e40af">MPLS · fibra · 4G/5G</text>
+    <text x="65" y="88" font-size="7" text-anchor="middle" fill="#1e40af">+ broadband</text>
+
+    <rect x="0" y="110" width="130" height="55" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5" rx="6"/>
+    <text x="20" y="140" font-size="22">👤</text>
+    <text x="85" y="132" font-size="10" font-weight="600" fill="#1e3a8a">Utenti remoti</text>
+    <text x="85" y="146" font-size="8" fill="#1e40af">(agent SASE)</text>
+
+    <rect x="0" y="180" width="130" height="55" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5" rx="6"/>
+    <text x="20" y="210" font-size="22">📱</text>
+    <text x="85" y="202" font-size="10" font-weight="600" fill="#1e3a8a">Mobile</text>
+    <text x="85" y="216" font-size="8" fill="#1e40af">always-on</text>
+
+    <rect x="0" y="250" width="130" height="55" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5" rx="6"/>
+    <text x="20" y="280" font-size="22">🏭</text>
+    <text x="85" y="272" font-size="10" font-weight="600" fill="#1e3a8a">IoT / OT</text>
+    <text x="85" y="286" font-size="8" fill="#1e40af">tunnel IPsec</text>
+  </g>
+
+  <!-- Multi-link arrows from branch (showing SD-WAN path selection) -->
+  <path d="M 160 70 L 245 200" stroke="#1e40af" stroke-width="2.5" marker-end="url(#arrAB)"/>
+  <path d="M 160 80 Q 200 180 245 220" stroke="#1e40af" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <path d="M 160 90 Q 200 200 245 240" stroke="#1e40af" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="185" y="125" font-size="9" font-weight="600" fill="#1e40af">path</text>
+  <text x="185" y="138" font-size="9" font-weight="600" fill="#1e40af">selection</text>
+
+  <path d="M 160 137 L 250 270" stroke="#1e40af" stroke-width="2" marker-end="url(#arrAB)"/>
+  <path d="M 160 207 L 250 285" stroke="#1e40af" stroke-width="2" marker-end="url(#arrAB)"/>
+  <path d="M 160 277 L 250 300" stroke="#1e40af" stroke-width="2" marker-end="url(#arrAB)"/>
+
+  <!-- CENTRAL: SASE PoP -->
+  <g>
+    <rect x="255" y="105" width="290" height="370" fill="#fef3c7" stroke="#b45309" stroke-width="3" rx="14"/>
+    <text x="400" y="132" font-size="14" font-weight="700" text-anchor="middle" fill="#78350f">SASE PLATFORM (PoP edge)</text>
+    <text x="400" y="148" font-size="9" text-anchor="middle" fill="#92400e" font-style="italic">cloud-native · distribuito globalmente</text>
+
+    <!-- SD-WAN layer (top) -->
+    <rect x="275" y="165" width="250" height="105" fill="#dbeafe" stroke="#2563eb" stroke-width="2" rx="8"/>
+    <text x="400" y="185" font-size="12" font-weight="700" text-anchor="middle" fill="#1e3a8a">📡 SD-WAN layer (networking)</text>
+
+    <rect x="290" y="195" width="105" height="30" fill="#fff" stroke="#3b82f6" rx="3"/>
+    <text x="342" y="214" font-size="9" font-weight="600" text-anchor="middle" fill="#1e40af">QoS / shaping</text>
+
+    <rect x="405" y="195" width="105" height="30" fill="#fff" stroke="#3b82f6" rx="3"/>
+    <text x="457" y="214" font-size="9" font-weight="600" text-anchor="middle" fill="#1e40af">Path selection</text>
+
+    <rect x="290" y="232" width="105" height="30" fill="#fff" stroke="#3b82f6" rx="3"/>
+    <text x="342" y="251" font-size="9" font-weight="600" text-anchor="middle" fill="#1e40af">Link aggregation</text>
+
+    <rect x="405" y="232" width="105" height="30" fill="#fff" stroke="#3b82f6" rx="3"/>
+    <text x="457" y="251" font-size="9" font-weight="600" text-anchor="middle" fill="#1e40af">WAN optim.</text>
+
+    <!-- Arrow down between layers -->
+    <path d="M 400 275 L 400 295" stroke="#b45309" stroke-width="2" marker-end="url(#arrA)"/>
+    <text x="438" y="290" font-size="8" fill="#78350f" font-style="italic">single-pass</text>
+
+    <!-- SSE layer (bottom) -->
+    <rect x="275" y="300" width="250" height="160" fill="#fce7f3" stroke="#be185d" stroke-width="2" rx="8"/>
+    <text x="400" y="320" font-size="12" font-weight="700" text-anchor="middle" fill="#831843">🛡️ SSE layer (security)</text>
+
+    <rect x="290" y="330" width="65" height="28" fill="#fff" stroke="#ec4899" rx="3"/>
+    <text x="322" y="348" font-size="9" font-weight="700" text-anchor="middle" fill="#831843">ZTNA</text>
+
+    <rect x="365" y="330" width="65" height="28" fill="#fff" stroke="#ec4899" rx="3"/>
+    <text x="397" y="348" font-size="9" font-weight="700" text-anchor="middle" fill="#831843">SWG</text>
+
+    <rect x="440" y="330" width="70" height="28" fill="#fff" stroke="#ec4899" rx="3"/>
+    <text x="475" y="348" font-size="9" font-weight="700" text-anchor="middle" fill="#831843">CASB</text>
+
+    <rect x="290" y="365" width="65" height="28" fill="#fff" stroke="#ec4899" rx="3"/>
+    <text x="322" y="383" font-size="9" font-weight="700" text-anchor="middle" fill="#831843">FWaaS</text>
+
+    <rect x="365" y="365" width="65" height="28" fill="#fff" stroke="#ec4899" rx="3"/>
+    <text x="397" y="383" font-size="9" font-weight="700" text-anchor="middle" fill="#831843">DLP</text>
+
+    <rect x="440" y="365" width="70" height="28" fill="#fff" stroke="#ec4899" rx="3"/>
+    <text x="475" y="383" font-size="9" font-weight="700" text-anchor="middle" fill="#831843">RBI</text>
+
+    <rect x="290" y="400" width="100" height="28" fill="#fff" stroke="#ec4899" rx="3"/>
+    <text x="340" y="418" font-size="9" font-weight="700" text-anchor="middle" fill="#831843">Threat prev.</text>
+
+    <rect x="400" y="400" width="110" height="28" fill="#fff" stroke="#ec4899" rx="3"/>
+    <text x="455" y="418" font-size="9" font-weight="700" text-anchor="middle" fill="#831843">DNS security</text>
+
+    <rect x="305" y="435" width="200" height="18" fill="#fef3c7" stroke="#d97706" rx="3"/>
+    <text x="405" y="448" font-size="9" font-weight="700" text-anchor="middle" fill="#78350f">Identity + Policy Engine (unico)</text>
+  </g>
+
+  <!-- RIGHT: Destinations -->
+  <g transform="translate(640,90)">
+    <text x="65" y="0" font-size="11" font-weight="700" text-anchor="middle" fill="#14532d">DESTINAZIONI</text>
+
+    <rect x="0" y="15" width="130" height="50" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5" rx="6"/>
+    <text x="20" y="42" font-size="22">🌍</text>
+    <text x="85" y="38" font-size="9" font-weight="600" fill="#14532d">Internet</text>
+
+    <rect x="0" y="78" width="130" height="50" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5" rx="6"/>
+    <text x="20" y="105" font-size="22">☁️</text>
+    <text x="85" y="101" font-size="9" font-weight="600" fill="#14532d">SaaS</text>
+
+    <rect x="0" y="141" width="130" height="50" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5" rx="6"/>
+    <text x="20" y="168" font-size="22">🔒</text>
+    <text x="85" y="158" font-size="9" font-weight="600" fill="#14532d">App private</text>
+    <text x="85" y="170" font-size="8" fill="#15803d">VPC, on-prem</text>
+
+    <rect x="0" y="204" width="130" height="50" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5" rx="6"/>
+    <text x="20" y="231" font-size="22">🏭</text>
+    <text x="85" y="227" font-size="9" font-weight="600" fill="#14532d">Datacenter</text>
+
+    <rect x="0" y="267" width="130" height="50" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5" rx="6"/>
+    <text x="20" y="294" font-size="22">🏪</text>
+    <text x="85" y="290" font-size="9" font-weight="600" fill="#14532d">Altre sedi</text>
+    <text x="85" y="302" font-size="8" fill="#15803d">PoP-to-PoP</text>
+  </g>
+
+  <!-- Arrows out -->
+  <path d="M 555 250 L 635 40" stroke="#15803d" stroke-width="2" fill="none" marker-end="url(#arrAG)"/>
+  <path d="M 555 280 L 635 103" stroke="#15803d" stroke-width="2" fill="none" marker-end="url(#arrAG)"/>
+  <path d="M 555 310 L 635 166" stroke="#15803d" stroke-width="2" fill="none" marker-end="url(#arrAG)"/>
+  <path d="M 555 340 L 635 229" stroke="#15803d" stroke-width="2" fill="none" marker-end="url(#arrAG)"/>
+  <path d="M 555 370 L 635 292" stroke="#15803d" stroke-width="2" fill="none" marker-end="url(#arrAG)"/>
+
+  <!-- Global PoP indicators -->
+  <g transform="translate(40,500)">
+    <text x="0" y="0" font-size="11" font-weight="700" fill="#0f172a">🌐 PoP geograficamente distribuiti:</text>
+    <circle cx="200" cy="-5" r="8" fill="#fde047" stroke="#a16207"/>
+    <text x="200" cy="-5" y="-2" font-size="8" text-anchor="middle">EU</text>
+    <circle cx="240" cy="-5" r="8" fill="#fde047" stroke="#a16207"/>
+    <text x="240" y="-2" font-size="8" text-anchor="middle">US</text>
+    <circle cx="280" cy="-5" r="8" fill="#fde047" stroke="#a16207"/>
+    <text x="280" y="-2" font-size="8" text-anchor="middle">APAC</text>
+    <circle cx="325" cy="-5" r="8" fill="#fde047" stroke="#a16207"/>
+    <text x="325" y="-2" font-size="8" text-anchor="middle">LATAM</text>
+    <text x="365" y="-2" font-size="9" fill="#475569">→ utente connesso al PoP più vicino (bassa latenza)</text>
+  </g>
+
+  <!-- Bottom key concept -->
+  <rect x="40" y="520" width="720" height="65" fill="#fff" stroke="#cbd5e1" stroke-width="1.5" rx="6"/>
+  <text x="400" y="540" font-size="11" font-weight="700" text-anchor="middle" fill="#0f172a">Concetto chiave: convergenza in un'unica piattaforma identity-driven</text>
+  <text x="400" y="558" font-size="10" text-anchor="middle" fill="#475569">Un solo vendor, una sola console, un solo policy engine per networking + security</text>
+  <text x="400" y="574" font-size="9" text-anchor="middle" fill="#64748b" font-style="italic">Vendor: Cato Networks, Versa, Cloudflare One, Palo Alto Prisma SASE, Fortinet FortiSASE, Netskope</text>
+</svg>
