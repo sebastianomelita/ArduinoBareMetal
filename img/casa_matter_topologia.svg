@@ -1,0 +1,148 @@
+<svg width="100%" viewBox="0 0 840 640" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Topologia di una casa intelligente Matter con Alexa, Home Assistant e dispositivi misti</title>
+<desc>Schema topologico: router WiFi domestico al centro come unico vero router L3, controller Matter (Alexa, HomePod, Home Assistant) come host applicativi sulla LAN, dispositivi Matter nativi e dispositivi legacy raggiunti via bridge.</desc>
+<defs>
+<marker id="arrowEnd" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+<path d="M2 2L8 5L2 8" fill="none" stroke="context-stroke" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+</marker>
+</defs>
+<style>
+.t   { font-family: sans-serif; font-size: 12px; fill: #2C2C2A; }
+.ts  { font-family: sans-serif; font-size: 11px; fill: #5F5E5A; }
+.th  { font-family: sans-serif; font-size: 13px; font-weight: 600; fill: #2C2C2A; }
+.tlabel { font-family: sans-serif; font-size: 10px; fill: #5F5E5A; font-style: italic; }
+.ttitle { font-family: sans-serif; font-size: 15px; font-weight: 600; fill: #2C2C2A; }
+.lan { stroke: #185FA5; stroke-width: 1.4; fill: none; }
+.thread { stroke: #BA7517; stroke-width: 1.4; fill: none; stroke-dasharray: 4 3; }
+.zigbee { stroke: #993C1D; stroke-width: 1.4; fill: none; stroke-dasharray: 5 4; }
+.ble    { stroke: #993556; stroke-width: 1.4; fill: none; stroke-dasharray: 2 3; }
+.cloud  { stroke: #5F5E5A; stroke-width: 1; fill: none; stroke-dasharray: 6 4; }
+.c-blue   rect, .c-blue circle, .c-blue ellipse { fill: #E6F1FB; stroke: #185FA5; }
+.c-blue   text { fill: #042C53; }
+.c-purple rect, .c-purple ellipse { fill: #EEEDFE; stroke: #534AB7; }
+.c-purple text { fill: #26215C; }
+.c-teal   rect, .c-teal ellipse { fill: #E1F5EE; stroke: #0F6E56; }
+.c-teal   text { fill: #04342C; }
+.c-amber  rect, .c-amber ellipse { fill: #FAEEDA; stroke: #BA7517; }
+.c-amber  text { fill: #412402; }
+.c-coral  rect, .c-coral ellipse { fill: #FAECE7; stroke: #993C1D; }
+.c-coral  text { fill: #4A1B0C; }
+.c-pink   rect, .c-pink ellipse { fill: #FBEAF0; stroke: #993556; }
+.c-pink   text { fill: #4B1528; }
+.c-gray   rect, .c-gray ellipse { fill: #F1EFE8; stroke: #5F5E5A; }
+.c-gray   text { fill: #2C2C2A; }
+</style>
+
+<text class="ttitle" x="420" y="28" text-anchor="middle">Topologia di una casa intelligente Matter</text>
+
+<!-- Cloud -->
+<g class="c-gray">
+<ellipse cx="100" cy="80" rx="60" ry="22" stroke-width="0.5"/>
+<text class="th" x="100" y="84" text-anchor="middle" dominant-baseline="central">Internet</text>
+</g>
+
+<!-- Router WiFi -->
+<g class="c-blue">
+<rect x="340" y="110" width="160" height="60" rx="10" stroke-width="0.7"/>
+<text class="th" x="420" y="133" text-anchor="middle" dominant-baseline="central">Router WiFi domestico</text>
+<text class="ts" x="420" y="153" text-anchor="middle" dominant-baseline="central">unico vero router L3</text>
+</g>
+
+<line x1="140" y1="92" x2="340" y2="138" class="cloud"/>
+
+<!-- LAN bus -->
+<line x1="100" y1="220" x2="740" y2="220" class="lan"/>
+<text class="tlabel" x="420" y="212" text-anchor="middle">LAN IPv6 (WiFi / Ethernet) — solo trasporto, nessuna conoscenza di Matter</text>
+<line x1="420" y1="170" x2="420" y2="220" class="lan"/>
+
+<!-- Host 1: HomePod -->
+<g class="c-purple">
+<rect x="60" y="240" width="160" height="100" rx="10" stroke-width="0.7"/>
+<text class="th" x="140" y="262" text-anchor="middle" dominant-baseline="central">HomePod mini</text>
+<text class="ts" x="140" y="282" text-anchor="middle" dominant-baseline="central">Controller Matter</text>
+<text class="ts" x="140" y="298" text-anchor="middle" dominant-baseline="central">Thread Border Router</text>
+<text class="ts" x="140" y="320" text-anchor="middle" dominant-baseline="central">→ cloud Apple Home</text>
+</g>
+<line x1="140" y1="220" x2="140" y2="240" class="lan"/>
+
+<!-- Host 2: Echo -->
+<g class="c-purple">
+<rect x="240" y="240" width="160" height="100" rx="10" stroke-width="0.7"/>
+<text class="th" x="320" y="262" text-anchor="middle" dominant-baseline="central">Echo Hub / Echo 4</text>
+<text class="ts" x="320" y="282" text-anchor="middle" dominant-baseline="central">Controller Matter</text>
+<text class="ts" x="320" y="298" text-anchor="middle" dominant-baseline="central">Thread Border + Bridge Zigbee</text>
+<text class="ts" x="320" y="320" text-anchor="middle" dominant-baseline="central">→ cloud Amazon (chiuso)</text>
+</g>
+<line x1="320" y1="220" x2="320" y2="240" class="lan"/>
+
+<!-- Host 3: Home Assistant -->
+<g class="c-teal">
+<rect x="430" y="240" width="180" height="100" rx="10" stroke-width="0.7"/>
+<text class="th" x="520" y="262" text-anchor="middle" dominant-baseline="central">Home Assistant</text>
+<text class="ts" x="520" y="282" text-anchor="middle" dominant-baseline="central">Controller Matter aperto</text>
+<text class="ts" x="520" y="298" text-anchor="middle" dominant-baseline="central">Connettore semantico</text>
+<text class="ts" x="520" y="320" text-anchor="middle" dominant-baseline="central">→ MQTT / REST / dashboard</text>
+</g>
+<line x1="520" y1="220" x2="520" y2="240" class="lan"/>
+
+<!-- Hue Bridge -->
+<g class="c-amber">
+<rect x="640" y="240" width="160" height="100" rx="10" stroke-width="0.7"/>
+<text class="th" x="720" y="262" text-anchor="middle" dominant-baseline="central">Hue Bridge v2</text>
+<text class="ts" x="720" y="282" text-anchor="middle" dominant-baseline="central">Bridge applicativo</text>
+<text class="ts" x="720" y="298" text-anchor="middle" dominant-baseline="central">Zigbee ↔ Matter</text>
+<text class="ts" x="720" y="320" text-anchor="middle" dominant-baseline="central">(traduzione L7)</text>
+</g>
+<line x1="720" y1="220" x2="720" y2="240" class="lan"/>
+
+<!-- Thread mesh -->
+<g class="c-coral">
+<ellipse cx="230" cy="430" rx="160" ry="40" stroke-width="0.7"/>
+<text class="th" x="230" y="425" text-anchor="middle" dominant-baseline="central">Rete Thread (mesh 802.15.4)</text>
+<text class="ts" x="230" y="445" text-anchor="middle" dominant-baseline="central">IPv6 + 6LoWPAN trasportato dai Border Router</text>
+</g>
+<line x1="140" y1="340" x2="180" y2="395" class="thread"/>
+<line x1="320" y1="340" x2="280" y2="395" class="thread"/>
+
+<!-- Dispositivi Thread -->
+<g class="c-coral">
+<rect x="80" y="510" width="120" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="140" y="535" text-anchor="middle" dominant-baseline="central">Sensore Matter</text>
+<text class="ts" x="140" y="552" text-anchor="middle" dominant-baseline="central">(su Thread)</text>
+</g>
+<line x1="140" y1="470" x2="140" y2="510" class="thread"/>
+
+<g class="c-coral">
+<rect x="260" y="510" width="120" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="320" y="535" text-anchor="middle" dominant-baseline="central">Lampadina Matter</text>
+<text class="ts" x="320" y="552" text-anchor="middle" dominant-baseline="central">(su Thread)</text>
+</g>
+<line x1="320" y1="470" x2="320" y2="510" class="thread"/>
+
+<!-- Dispositivo WiFi nativo Matter -->
+<g class="c-blue">
+<rect x="430" y="430" width="160" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="510" y="455" text-anchor="middle" dominant-baseline="central">Presa Matter</text>
+<text class="ts" x="510" y="472" text-anchor="middle" dominant-baseline="central">(WiFi nativo)</text>
+</g>
+<line x1="510" y1="220" x2="510" y2="430" class="lan"/>
+
+<!-- Zigbee dietro Hue -->
+<g class="c-amber">
+<rect x="630" y="430" width="180" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="720" y="455" text-anchor="middle" dominant-baseline="central">Lampadine Hue Zigbee</text>
+<text class="ts" x="720" y="472" text-anchor="middle" dominant-baseline="central">(esposte come Matter)</text>
+</g>
+<line x1="720" y1="340" x2="720" y2="430" class="zigbee"/>
+
+<!-- Legenda -->
+<rect x="60" y="590" width="720" height="40" rx="6" fill="#FAFAF7" stroke="#5F5E5A" stroke-width="0.4"/>
+<line x1="80"  y1="610" x2="120" y2="610" class="lan"/>
+<text class="ts" x="128" y="613">LAN IP</text>
+<line x1="200" y1="610" x2="240" y2="610" class="thread"/>
+<text class="ts" x="248" y="613">Thread (802.15.4)</text>
+<line x1="360" y1="610" x2="400" y2="610" class="zigbee"/>
+<text class="ts" x="408" y="613">Zigbee (802.15.4)</text>
+<line x1="510" y1="610" x2="550" y2="610" class="cloud"/>
+<text class="ts" x="558" y="613">Internet / cloud</text>
+</svg>

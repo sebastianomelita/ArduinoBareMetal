@@ -1,0 +1,113 @@
+<svg width="100%" viewBox="0 0 820 460" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Matrice dei ruoli funzionali nella casa Matter</title>
+<desc>Quattro ruoli funzionali (router L3, Thread Border Router, bridge applicativo L7, controller/connettore Matter) confrontati su sei dispositivi tipici della casa intelligente.</desc>
+<style>
+.t   { font-family: sans-serif; font-size: 12px; fill: #2C2C2A; }
+.ts  { font-family: sans-serif; font-size: 11px; fill: #5F5E5A; }
+.th  { font-family: sans-serif; font-size: 12px; font-weight: 600; fill: #2C2C2A; }
+.thcol { font-family: sans-serif; font-size: 11px; font-weight: 600; fill: #2C2C2A; }
+.ttitle { font-family: sans-serif; font-size: 15px; font-weight: 600; fill: #2C2C2A; }
+.tnote { font-family: sans-serif; font-size: 11px; font-style: italic; fill: #5F5E5A; }
+.tcheck { font-family: sans-serif; font-size: 16px; font-weight: 700; }
+.row-alt { fill: #FAFAF7; }
+.gridline { stroke: #D6D4CC; stroke-width: 0.5; }
+.ok { fill: #0F6E56; }
+.partial { fill: #BA7517; }
+.no { fill: #C5C1B5; }
+</style>
+
+<text class="ttitle" x="410" y="28" text-anchor="middle">Chi è chi nella casa Matter — ruoli funzionali</text>
+
+<!-- Header row -->
+<rect x="40" y="50" width="220" height="50" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.4"/>
+<rect x="260" y="50" width="135" height="50" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.4"/>
+<rect x="395" y="50" width="135" height="50" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.4"/>
+<rect x="530" y="50" width="135" height="50" fill="#FAECE7" stroke="#993C1D" stroke-width="0.4"/>
+<rect x="665" y="50" width="135" height="50" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.4"/>
+
+<text class="th"    x="150" y="78" text-anchor="middle">Dispositivo</text>
+<text class="thcol" x="327" y="72" text-anchor="middle">Router L3</text>
+<text class="ts"    x="327" y="90" text-anchor="middle">smistatore IP</text>
+<text class="thcol" x="462" y="72" text-anchor="middle">Thread Border</text>
+<text class="ts"    x="462" y="90" text-anchor="middle">router IPv6 ↔ 802.15.4</text>
+<text class="thcol" x="597" y="72" text-anchor="middle">Bridge L7</text>
+<text class="ts"    x="597" y="90" text-anchor="middle">traduzione applicativa</text>
+<text class="thcol" x="732" y="72" text-anchor="middle">Controller Matter</text>
+<text class="ts"    x="732" y="90" text-anchor="middle">connettore semantico</text>
+
+<!-- Row 1: Router WiFi -->
+<rect x="40"  y="100" width="220" height="42" class="row-alt"/>
+<rect x="260" y="100" width="540" height="42" class="row-alt"/>
+<text class="th" x="60" y="120" text-anchor="start">Router WiFi domestico</text>
+<text class="ts" x="60" y="135" text-anchor="start">FRITZ!Box, AVM, ecc.</text>
+<text class="tcheck ok"      x="327" y="127" text-anchor="middle">✓</text>
+<text class="tcheck no"      x="462" y="127" text-anchor="middle">—</text>
+<text class="tcheck no"      x="597" y="127" text-anchor="middle">—</text>
+<text class="tcheck no"      x="732" y="127" text-anchor="middle">—</text>
+
+<!-- Row 2: HomePod -->
+<text class="th" x="60" y="162" text-anchor="start">HomePod mini / Apple TV</text>
+<text class="ts" x="60" y="177" text-anchor="start">controller Apple Home</text>
+<text class="tcheck no"      x="327" y="169" text-anchor="middle">—</text>
+<text class="tcheck ok"      x="462" y="169" text-anchor="middle">✓</text>
+<text class="tcheck no"      x="597" y="169" text-anchor="middle">—</text>
+<text class="tcheck ok"      x="732" y="169" text-anchor="middle">✓</text>
+
+<!-- Row 3: Echo -->
+<rect x="40"  y="184" width="220" height="42" class="row-alt"/>
+<rect x="260" y="184" width="540" height="42" class="row-alt"/>
+<text class="th" x="60" y="204" text-anchor="start">Echo Hub / Echo 4</text>
+<text class="ts" x="60" y="219" text-anchor="start">controller Amazon Alexa</text>
+<text class="tcheck no"      x="327" y="211" text-anchor="middle">—</text>
+<text class="tcheck ok"      x="462" y="211" text-anchor="middle">✓</text>
+<text class="tcheck partial" x="597" y="211" text-anchor="middle">◐</text>
+<text class="tcheck ok"      x="732" y="211" text-anchor="middle">✓</text>
+
+<!-- Row 4: Nest Hub -->
+<text class="th" x="60" y="246" text-anchor="start">Google Nest Hub 2</text>
+<text class="ts" x="60" y="261" text-anchor="start">controller Google Home</text>
+<text class="tcheck no"      x="327" y="253" text-anchor="middle">—</text>
+<text class="tcheck ok"      x="462" y="253" text-anchor="middle">✓</text>
+<text class="tcheck no"      x="597" y="253" text-anchor="middle">—</text>
+<text class="tcheck ok"      x="732" y="253" text-anchor="middle">✓</text>
+
+<!-- Row 5: Home Assistant -->
+<rect x="40"  y="268" width="220" height="42" class="row-alt"/>
+<rect x="260" y="268" width="540" height="42" class="row-alt"/>
+<text class="th" x="60" y="288" text-anchor="start">Home Assistant</text>
+<text class="ts" x="60" y="303" text-anchor="start">connettore aperto multi-protocollo</text>
+<text class="tcheck no"      x="327" y="295" text-anchor="middle">—</text>
+<text class="tcheck partial" x="462" y="295" text-anchor="middle">◐</text>
+<text class="tcheck ok"      x="597" y="295" text-anchor="middle">✓</text>
+<text class="tcheck ok"      x="732" y="295" text-anchor="middle">✓</text>
+
+<!-- Row 6: Hue Bridge -->
+<text class="th" x="60" y="330" text-anchor="start">Philips Hue Bridge v2</text>
+<text class="ts" x="60" y="345" text-anchor="start">bridge applicativo Zigbee→Matter</text>
+<text class="tcheck no"      x="327" y="337" text-anchor="middle">—</text>
+<text class="tcheck no"      x="462" y="337" text-anchor="middle">—</text>
+<text class="tcheck ok"      x="597" y="337" text-anchor="middle">✓</text>
+<text class="tcheck no"      x="732" y="337" text-anchor="middle">—</text>
+
+<!-- Row 7: SmartThings -->
+<rect x="40"  y="352" width="220" height="42" class="row-alt"/>
+<rect x="260" y="352" width="540" height="42" class="row-alt"/>
+<text class="th" x="60" y="372" text-anchor="start">Aqara M3 / SmartThings</text>
+<text class="ts" x="60" y="387" text-anchor="start">hub multiprotocollo</text>
+<text class="tcheck no"      x="327" y="379" text-anchor="middle">—</text>
+<text class="tcheck ok"      x="462" y="379" text-anchor="middle">✓</text>
+<text class="tcheck ok"      x="597" y="379" text-anchor="middle">✓</text>
+<text class="tcheck ok"      x="732" y="379" text-anchor="middle">✓</text>
+
+<!-- Legenda -->
+<text class="tcheck ok"      x="60"  y="430" text-anchor="middle">✓</text>
+<text class="ts" x="80"  y="433" text-anchor="start">ruolo pieno e nativo</text>
+
+<text class="tcheck partial" x="240" y="430" text-anchor="middle">◐</text>
+<text class="ts" x="260" y="433" text-anchor="start">ruolo limitato o condizionato</text>
+
+<text class="tcheck no"      x="460" y="430" text-anchor="middle">—</text>
+<text class="ts" x="480" y="433" text-anchor="start">non ricopre questo ruolo</text>
+
+<text class="tnote" x="410" y="455" text-anchor="middle">Lo stesso dispositivo fisico può ricoprire più ruoli funzionali contemporaneamente.</text>
+</svg>
