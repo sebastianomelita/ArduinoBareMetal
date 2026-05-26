@@ -199,9 +199,7 @@ In ogni caso, per gli **oggetti Zigbee**, la semantica dei comandi e dello stato
 
 Gli oggetti JSON scambiati nella rete di distribuzione vanno **progettati** in modo tale da includere la **semantica** di tutti i dispositivi IoT coinvolti nelle reti di sensori collegate, che di volta in volta, poi andrà **tradotta** nella **semantica applicativa standard** prevista nello stack della rete di accesso Zigbee.
 
----
-
-## **Traduzione della semantica applicativa** 
+### **Traduzione della semantica applicativa** 
 
 **Zigbee2mqtt** è un software open-source progettato per permettere ai dispositivi Zigbee di comunicare direttamente con un server MQTT (Message Queuing Telemetry Transport) senza la necessità di un hub proprietario. 
 
