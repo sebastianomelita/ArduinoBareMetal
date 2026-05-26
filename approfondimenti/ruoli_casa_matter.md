@@ -44,20 +44,56 @@ La matrice riassume in modo compatto chi ricopre quali ruoli. Tre osservazioni m
 
 - **Echo è bridge Zigbee limitato**: ha radio Zigbee e parla con dispositivi Zigbee, ma li espone solo internamente all'ecosistema Amazon, **non li ripubblica come Matter** verso altri controller. Per questo è segnato come ruolo parziale.
 
+### **Un bridge Zigbee è sempre il coordinator della propria PAN**
+
+Un'osservazione architetturale importante riguardo ai **bridge Zigbee**: la loro capacità di parlare con i dispositivi Zigbee della propria rete non è una "funzione aggiuntiva" che si appoggia su un coordinator esterno, ma deriva dal fatto che il **bridge incorpora — fisicamente o logicamente — il coordinator stesso della PAN** (Personal Area Network) Zigbee.
+
+In una rete Zigbee esiste **uno e un solo coordinator** per PAN. Il coordinator è l'unico nodo che crea la rete, distribuisce le **network key**, gestisce il join/leave dei dispositivi, è sempre acceso (Full Function Device) e mantiene la tabella di routing della mesh. Un bridge che volesse parlare con dispositivi Zigbee senza essere coordinator non potrebbe né far entrare nuovi dispositivi nella rete (servirebbe la network key, distribuita solo dal coordinator) né accedere al traffico della PAN.
+
+Per semplicità progettuale ed efficienza, dunque, il **bridge è il coordinator**. Sono fisicamente la stessa scatola.
+
+<img src="../img/bridge_zigbee_coordinator.svg" alt="Architettura interna di un bridge Zigbee: il coordinator è incorporato nello stesso dispositivo" width="760">
+
+Si distinguono due casi pratici:
+
+- **Caso A — Bridge integrato** (Philips Hue Bridge v2, Aqara M3, SmartThings Station): l'hub commerciale è una singola scatola che contiene la radio 802.15.4, il firmware del coordinator Zigbee, la logica di traduzione applicativa ZCL → cluster Matter, e lo stack Matter completo verso la LAN IP. Tutto integrato.
+
+- **Caso B — Distribuito (Zigbee2MQTT)**: in un'installazione tipica di Home Assistant con dongle USB (Sonoff, SkyConnect, ConBee II), la radio e il firmware NCP (Network Co-Processor) vivono nel dongle, mentre la logica di coordinator vera e propria gira nel software Zigbee2MQTT sul Raspberry Pi/PC. Dal punto di vista **logico** il coordinator resta uno solo: dongle + software insieme formano il bridge completo.
+
+La **proprietà** che viene garantita in entrambi i casi è la stessa: il bridge ha **accesso privilegiato** alla PAN Zigbee in quanto coordinator, e su questo accesso costruisce la traduzione applicativa verso Matter, MQTT o altri protocolli di consumo.
+
+**Conseguenze pratiche** di questa architettura:
+
+- Un bridge Zigbee **non parla con dispositivi di altre PAN**: ogni PAN ha il suo coordinator e le PAN sono isolate. In una casa con Hue Bridge + Aqara M3, esistono due reti Zigbee separate che non si parlano tra loro a livello 802.15.4. Comunicano solo **attraverso la LAN IP**, dove entrambi i bridge ri-espongono i loro dispositivi via Matter.
+- Un bridge Zigbee può avere difficoltà con dispositivi che usano **cluster proprietari** non standard (caso classico: Aqara su hub di altre marche). La radio li sente perfettamente, ma la traduzione applicativa non sa interpretarne i messaggi.
+- Un bridge Zigbee non parla con dispositivi **Thread** o **BLE** o **Z-Wave**: ognuna di queste tecnologie richiede il proprio coordinator/master, e quindi il proprio bridge. Gli hub "multi-radio" (Aqara M3, SmartThings) ospitano semplicemente più coordinator nella stessa scatola.
+
+Riassumendo in una formulazione precisa: **un bridge Zigbee è sempre in grado di parlare con i dispositivi della propria rete Zigbee, perché ne è il coordinator**. La traduzione applicativa verso Matter o MQTT è una funzione aggiuntiva che si appoggia su questo accesso privilegiato. Senza essere coordinator, un bridge Zigbee non avrebbe modo di entrare nella rete.
+
 ### **Alexa e Home Assistant: due connettori molto diversi**
 
 Sia Alexa che Home Assistant sono **controller Matter**, ma con una differenza qualitativa fondamentale che vale la pena chiarire.
 
-**Alexa è un connettore chiuso**. Quando decifra il payload Matter in arrivo da un sensore, lo invia al **cloud Amazon**, dove viene processato per le funzioni di riconoscimento vocale e automazione. Il payload non è disponibile localmente: non c'è un endpoint REST della tua LAN che ti permetta di leggere "la temperatura del soggiorno via Alexa". Per costruire una dashboard custom o un server applicativo che reagisce a un sensore, Alexa non è la strada.
+**Alexa è un connettore chiuso, con elaborazione delegata al cloud Amazon.** Il dispositivo Echo è effettivamente un controller Matter locale: ha certificati propri nella fabric, decifra il payload TLV in arrivo dai sensori, ed è in grado di inviare comandi Matter agli attuatori della LAN. Quello che però **non avviene localmente** è l'**elaborazione semantica** delle informazioni:
 
-**Home Assistant è un connettore aperto**. Decifra lo stesso payload Matter e lo **ri-espone localmente** su:
+- Quando un sensore Matter pubblica una misura (es. "temperatura 22.5°C"), Echo decifra il TLV e **invia l'informazione al cloud Amazon** per essere processata insieme alla voce dell'utente, alle routine configurate e ai modelli di automazione di Alexa.
+- Le **decisioni** vengono prese nel cloud Amazon: se un'utenza ha detto "Alexa, accendi le luci quando entro in casa", la logica vive nel cloud, non sull'Echo.
+- Il **comando** che ne deriva (es. "accendi la lampadina del soggiorno") viene **rimandato** dal cloud all'Echo, che lo **ritrasforma in un comando Matter** e lo invia all'attuatore locale attraverso la fabric. L'attuatore riceve un normale `Invoke` Matter, senza sapere che la decisione è venuta dal cloud.
+
+Il risultato è che il **payload originale dei sensori non è accessibile localmente**: non c'è un endpoint REST sulla tua LAN che ti permetta di leggere "la temperatura del soggiorno via Alexa", né un broker MQTT su cui Echo ripubblichi spontaneamente le misure. Per costruire una **dashboard custom** o un **server applicativo proprio** che reagisca direttamente alle misure di un sensore, Alexa non è la strada: il payload semantico transita per il cloud Amazon, non per la tua infrastruttura locale.
+
+Va detto, per equilibrio, che il **percorso del comando** rimane comunque locale: la latenza Sensor → Echo → Cloud → Echo → Attuatore è ottimizzata da Amazon con il programma **"Local Voice Control"** e gli **Hub Routines** locali, che cercano di eseguire alcune logiche direttamente sull'Echo senza passare dal cloud. Ma la regola generale resta: **l'intelligenza decisionale di Alexa vive nel cloud**, e il payload Matter dei sensori non è disponibile per applicazioni esterne all'ecosistema Amazon.
+
+**Home Assistant è un connettore aperto.** Decifra lo stesso payload Matter e lo **ri-espone localmente** su:
 - **REST API** locale (`/api/states/sensor.soggiorno_temperatura`)
 - **WebSocket API** per push real-time alla dashboard
 - **MQTT broker** (se attivato l'add-on Mosquitto)
 - **InfluxDB / database** per storico e statistiche
 - **Webhook** per integrazioni con servizi esterni
 
-In altre parole, Home Assistant realizza concretamente lo **Scenario 2** descritto nella sezione sull'interoperabilità: spacchetta il TLV di Matter in JSON e lo rende disponibile come fonte per applicazioni web, server applicativi, dashboard, sistemi di automazione complessi.
+Le decisioni di automazione possono essere prese **interamente in locale** (con le sue automazioni YAML o Node-RED), oppure delegate a servizi esterni a scelta dell'utente. L'utente ha pieno controllo del payload semantico.
+
+In altre parole, Home Assistant realizza concretamente lo **Scenario 2** descritto nella sezione sull'interoperabilità: spacchetta il TLV di Matter in JSON e lo rende disponibile come fonte per applicazioni web, server applicativi, dashboard, sistemi di automazione complessi. Alexa, pur essendo tecnicamente un controller Matter equivalente, non offre questa **disponibilità del payload** verso il mondo applicativo locale, perché la sua catena decisionale passa dal cloud Amazon.
 
 ### **Multi-Admin: la coesistenza dei controller**
 
