@@ -150,7 +150,7 @@ Payload: 0x00
 ```
 ---
 
-## **Gateway** 
+## **Zigbee: gateway come router applicativo** 
 
 ### **Ruolo del gateway** 
 
