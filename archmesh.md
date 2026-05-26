@@ -52,11 +52,11 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - gestire eventuali **vincoli di prossimità** mediante controllo di potenza o gestione del roaming e eventuali **vincoli di posizionamento** mediante trilaterazione.
 - **subnetting** e definizione degli indirizzi delle **subnet di aggregazione** per i vari gruppi di utenti (generalmente statica), e definizione degli indirizzi delle **subnet di dorsale** (statica o automatica basata su Link Local), definizione degli indirizzi delle **subnet di servizio** (server farm e DMZ),
 - definizione degli **indirizzi dei server** e dei range di quelli dei client.
-- definizione delle **tecniche di autenticazione** degli utenti necessarie per un dato scenario nonchè di quelle che realizzano l'autenticazione dei servizi (ad es. 802.1X). Secegliere tra autenticazione L2 EAP (statica per AP o per utente con RADIUS) e quella L7 con Captive portal. 
+- definizione delle **tecniche di autenticazione** degli utenti necessarie per un dato scenario (ad es. 802.1X). Scegliere tra autenticazione L2 EAP (statica per AP o per utente con RADIUS) e quella L7 con Captive portal. 
 - definizione delle tecniche di **autenticazione** dei servizi (openid, psw, sessioni, ecc).
 - definizione delle tecniche di autenticazione dei **nodi AP** (Certificati, psw, preshared key, ecc.). Può essere reciproca (backaul, link radio) oppure tra nodi e servizi (ad es. autenticazione di un AP su RADIUS)
 - definizione del **tipo di rete mesh** scegliendo tra **routed mesh** o **bridged mesh**
-- definizione del **tipo di routing** (nei mesh sempre automatico).
+- definizione del **tipo di routing**, nei mesh sempre automatico (AODV. OLSR, Babel), e la definizione automatica delle subnet dei link tra i nodi router (LLA, SLAAC).
 - se presenti VLAN, definizione del tipo di **associazione** delle VLAN agli SSID (statico o dinamico con Tunnel-Private-Group-Id)
 - definizione **posizione del controller degli AP**
 - definizione posizione dei **servizi di sistema** (DHCP, DNS) dislocati, a scelta, a bordo del FW, collegati al CS, inseriti in una server farm.
