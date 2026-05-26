@@ -19,7 +19,7 @@ Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può otte
 
 La **proprietà** che viene garantita in questo schema è una doppia separazione di competenze: la **rete IP** non vede mai la semantica applicativa, e la **traduzione semantica** verso protocolli di consumo (MQTT, REST, ecc.) avviene solo all'**endpoint applicativo**, non in mezzo. Il connettore non è quindi un **bridge** nel senso tecnico discusso più avanti (non sta a cavallo tra due reti fisiche eterogenee) ma un **client Matter legittimo** che fa da **pivot semantico** verso il mondo delle web API. La crittografia end-to-end di Matter resta intatta fino al connettore, perché questo è un interlocutore autorizzato della fabric, non un man-in-the-middle.
 
-        <img src="../img/matter_payload_ip.svg" alt="Matter come payload IPv6 attraverso una rete IP di soli router L3" width="760">
+<img src="../img/matter_payload_ip.svg" alt="Matter come payload IPv6 attraverso una rete IP di soli router L3" width="760">
 
 Questo modello realizza in modo molto pulito il principio **end-to-end** della rete IP: l'intelligenza sta agli estremi, la rete in mezzo è "stupida" e generica, e lo stesso payload può essere consumato da destinazioni diverse (un attuatore fisico, una dashboard web, un server statistico) senza che nessuna di queste richieda modifiche all'infrastruttura di rete.
 
