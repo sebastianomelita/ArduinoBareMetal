@@ -1,3 +1,12 @@
+>[Torna a reti di sensori](../sensornetworkshort.md)>[Torna a reti ethernet](../archeth.md)
+
+- [Dettaglio architettura Zigbee](../archzigbee.md)
+- [Dettaglio architettura BLE](../archble.md)
+- [Dettaglio architettura WiFi infrastruttura](../archwifi.md)
+- [Dettaglio architettura WiFi mesh](../archmesh.md) 
+- [Dettaglio architettura LoraWAN](../lorawanclasses.md) 
+
+
 # Dispensa sintetica — Modelli emergenti di rete sicura
 
 > Dal modello "Trusted Network" classico ai paradigmi moderni: Zero Trust, ZTNA, SSE e SASE.
