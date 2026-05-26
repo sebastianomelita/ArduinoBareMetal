@@ -40,7 +40,7 @@ A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di i
 Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scelte argomentate** sono:
 - schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti e edifici chiave e schema (indoor ed outdoor) dell'infrastruttura con etichettatura univoca di tutti gli asset tecnologici di rete.
 - Posizionamento **in planimetria** dei nodi con relativa etichetta, avendo cura che tra essi esista almeno un percorso LOS (Line Of Sight) con dei vicini. Progettare dei percorsi alternativi (**backup**) in caso di guasto dei nodi centrali di traffico.
-- tipologia di **divisione in gruppi** degli utenti e loro caratterizzazione (dislocazione fisica delimitata o diffusa a macchia a macchia di leopardo).
+- Tipologia di **divisione in gruppi** degli utenti e loro caratterizzazione (dislocazione fisica delimitata o diffusa a macchia a macchia di leopardo).
 - definizione delle **tecnologie dei dispositivi** chiave quali sensori/attuatori (stella, bus, singolo), gateway, link (dual radio, three radio), accesso radio (allocazione di servizi sincroni TDM, asincroni CSMA/CA o a basso ritardo slotted CSMA/CA) e loro dimensionamento di  massima (quantità, numero di porte, banda, ecc.).
 - definizione di dorsali wireless e di punti di accesso e aggregazione dei dispositivi utente
 - eventuali vincoli normativi sulle tecnologie in uso come potenza, EIRP, ERP e duty cycle.
