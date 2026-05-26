@@ -359,7 +359,7 @@ mosquitto_pub -h localhost -t 'casa/soggiorno/comandi' -m '{"state": "OFF"}'
 ```
 ---
 
-## **Gateway come semplici router**
+## **Matter: gateway come semplici router**
 
 Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può ottenere:
 - **creando un'unica rete** utilizzando livelli di rete **compatibili** o **praticamente uguali** come sono **IPV6 e 6LowPan**. Lo stesso deve accadere per i **protocolli di routing** usando ad es. REPL. Lo stesso deve accadere per i **livelli superiori**. In particolare nell'ultimo, il **livello applicativo**, il **payload dell'applicazione**, cioè un comando, deve poter viaggiare **direttamente** dal **sensore** all'**attuatore**, dove poi verrà elaborato e utilizzato. Se viene inoltrato direttamente il pacchetto IPV6 (con il payload applicativo dentro) allora il gateway, tra le due reti di livello fisico differente, è tecnicamente un **semplice router**.
