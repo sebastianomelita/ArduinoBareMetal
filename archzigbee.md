@@ -375,7 +375,7 @@ Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può otte
         Questo modello realizza in modo molto pulito il principio **end-to-end** della rete IP: l'intelligenza sta agli estremi, la rete in mezzo è "stupida" e generica, e lo stesso payload può essere consumato da destinazioni diverse (un attuatore fisico, una dashboard web, un server statistico) senza che nessuna di queste richieda modifiche all'infrastruttura di rete.
     - la **standardizzazione** del livello applicativo possiede anche il vantaggio di poter associare senza sforzo un dispositivo IoT ad un **server applicativo** che ne comanda o gestisce molti altri semplicemente esibendo **nome e versione del protocollo** di presentazione. Sarà poi l'applicazione (ad es. OpenHab, Home Assistant) a cercare nel proprio database il **formato** definito dallo standard per quella particolare categoria (in gergo entità) a cui appartiene il dispositivo da associare.
   
-<img src="img/jsan-02-00235-g002.webp" alt="alt text" width="700">
+<img src="jsan-02-00235-g002.webp" alt="alt text" width="700">
 
 ---
 
