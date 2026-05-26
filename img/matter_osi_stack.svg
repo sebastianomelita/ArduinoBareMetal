@@ -1,0 +1,129 @@
+<svg width="100%" viewBox="0 0 760 720" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>Stack OSI completo di Matter</title>
+<desc>Mappatura dei sette livelli OSI sullo stack Matter, con confronto tra Matter over Thread e Matter over WiFi/Ethernet. Evidenziati i livelli condivisi (L7-L3) e quelli che differiscono in base al trasporto (L2-L1).</desc>
+<style>
+.t   { font-family: sans-serif; font-size: 13px; fill: #2C2C2A; }
+.ts  { font-family: sans-serif; font-size: 11px; fill: #5F5E5A; }
+.th  { font-family: sans-serif; font-size: 13px; font-weight: 500; fill: #2C2C2A; }
+.tosi{ font-family: sans-serif; font-size: 12px; font-weight: 600; fill: #2C2C2A; }
+.tlay{ font-family: sans-serif; font-size: 10px; fill: #5F5E5A; }
+.ttitle { font-family: sans-serif; font-size: 14px; font-weight: 600; fill: #2C2C2A; }
+.tnote  { font-family: sans-serif; font-size: 11px; font-style: italic; fill: #5F5E5A; }
+.c-purple rect { fill: #EEEDFE; stroke: #534AB7; }
+.c-purple text { fill: #26215C; }
+.c-violet rect { fill: #F0E5FB; stroke: #6B3AAD; }
+.c-violet text { fill: #2E1252; }
+.c-teal   rect { fill: #E1F5EE; stroke: #0F6E56; }
+.c-teal   text { fill: #04342C; }
+.c-blue   rect { fill: #E6F1FB; stroke: #185FA5; }
+.c-blue   text { fill: #042C53; }
+.c-amber  rect { fill: #FAEEDA; stroke: #BA7517; }
+.c-amber  text { fill: #412402; }
+.c-coral  rect { fill: #FAECE7; stroke: #993C1D; }
+.c-coral  text { fill: #4A1B0C; }
+.c-gray   rect { fill: #F1EFE8; stroke: #5F5E5A; }
+.c-gray   text { fill: #2C2C2A; }
+</style>
+
+<text class="ttitle" x="380" y="30" text-anchor="middle">Stack OSI completo di Matter</text>
+
+<text class="th" x="270" y="65" text-anchor="middle">Matter over Thread</text>
+<text class="th" x="570" y="65" text-anchor="middle">Matter over WiFi / Ethernet</text>
+
+<text class="tosi" x="20"  y="115" text-anchor="start">L7</text>
+<text class="tlay" x="20"  y="130" text-anchor="start">Applicazione</text>
+
+<g class="c-purple">
+<rect x="120" y="90" width="600" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="420" y="115" text-anchor="middle" dominant-baseline="central">Matter Application Layer — Data Model</text>
+<text class="ts" x="420" y="135" text-anchor="middle" dominant-baseline="central">nodi, endpoint, cluster, attributi, comandi, eventi</text>
+</g>
+
+<text class="tosi" x="20"  y="185" text-anchor="start">L6</text>
+<text class="tlay" x="20"  y="200" text-anchor="start">Presentazione</text>
+
+<g class="c-violet">
+<rect x="120" y="160" width="600" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="420" y="185" text-anchor="middle" dominant-baseline="central">Matter TLV (Tag-Length-Value) + Interaction Model</text>
+<text class="ts" x="420" y="205" text-anchor="middle" dominant-baseline="central">serializzazione binaria compatta, Read/Write/Invoke/Subscribe</text>
+</g>
+
+<text class="tosi" x="20"  y="255" text-anchor="start">L5</text>
+<text class="tlay" x="20"  y="270" text-anchor="start">Sessione</text>
+
+<g class="c-teal">
+<rect x="120" y="230" width="600" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="420" y="255" text-anchor="middle" dominant-baseline="central">Matter Secure Channel — CASE / PASE</text>
+<text class="ts" x="420" y="275" text-anchor="middle" dominant-baseline="central">handshake con certificati X.509, sessione AES-CCM end-to-end</text>
+</g>
+
+<text class="tosi" x="20"  y="325" text-anchor="start">L4</text>
+<text class="tlay" x="20"  y="340" text-anchor="start">Trasporto</text>
+
+<g class="c-teal">
+<rect x="120" y="300" width="600" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="420" y="325" text-anchor="middle" dominant-baseline="central">UDP + MRP (Message Reliability Protocol)</text>
+<text class="ts" x="420" y="345" text-anchor="middle" dominant-baseline="central">ritrasmissioni, ordinamento, deduplica sopra UDP (porta 5540)</text>
+</g>
+
+<text class="tosi" x="20"  y="395" text-anchor="start">L3</text>
+<text class="tlay" x="20"  y="410" text-anchor="start">Rete</text>
+
+<g class="c-blue">
+<rect x="120" y="370" width="600" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="420" y="395" text-anchor="middle" dominant-baseline="central">IPv6</text>
+<text class="ts" x="420" y="415" text-anchor="middle" dominant-baseline="central">indirizzamento globale, routing end-to-end, scoperta via mDNS</text>
+</g>
+
+<line x1="370" y1="450" x2="370" y2="690" stroke="#5F5E5A" stroke-width="0.5" stroke-dasharray="4 3"/>
+
+<text class="tosi" x="20"  y="475" text-anchor="start">L2.5</text>
+<text class="tlay" x="20"  y="490" text-anchor="start">Adattamento</text>
+
+<g class="c-amber">
+<rect x="120" y="450" width="240" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="240" y="475" text-anchor="middle" dominant-baseline="central">6LoWPAN</text>
+<text class="ts" x="240" y="495" text-anchor="middle" dominant-baseline="central">compressione header, frammentazione</text>
+</g>
+
+<g class="c-gray">
+<rect x="380" y="450" width="340" height="60" rx="8" stroke-width="0.5"/>
+<text class="ts" x="550" y="480" text-anchor="middle" dominant-baseline="central">non necessario</text>
+<text class="ts" x="550" y="495" text-anchor="middle" dominant-baseline="central">(MTU di WiFi/Ethernet già ≥ 1500 byte)</text>
+</g>
+
+<text class="tosi" x="20"  y="540" text-anchor="start">L2</text>
+<text class="tlay" x="20"  y="555" text-anchor="start">Data Link</text>
+
+<g class="c-coral">
+<rect x="120" y="515" width="240" height="70" rx="8" stroke-width="0.5"/>
+<text class="th" x="240" y="538" text-anchor="middle" dominant-baseline="central">Thread MAC + Mesh</text>
+<text class="ts" x="240" y="558" text-anchor="middle" dominant-baseline="central">IEEE 802.15.4 MAC, MLE,</text>
+<text class="ts" x="240" y="572" text-anchor="middle" dominant-baseline="central">routing mesh, sicurezza link</text>
+</g>
+
+<g class="c-coral">
+<rect x="380" y="515" width="340" height="70" rx="8" stroke-width="0.5"/>
+<text class="th" x="550" y="538" text-anchor="middle" dominant-baseline="central">IEEE 802.11 MAC  /  Ethernet MAC</text>
+<text class="ts" x="550" y="558" text-anchor="middle" dominant-baseline="central">accesso al mezzo, indirizzi MAC,</text>
+<text class="ts" x="550" y="572" text-anchor="middle" dominant-baseline="central">framing standard</text>
+</g>
+
+<text class="tosi" x="20"  y="615" text-anchor="start">L1</text>
+<text class="tlay" x="20"  y="630" text-anchor="start">Fisico</text>
+
+<g class="c-gray">
+<rect x="120" y="590" width="240" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="240" y="615" text-anchor="middle" dominant-baseline="central">IEEE 802.15.4 PHY</text>
+<text class="ts" x="240" y="635" text-anchor="middle" dominant-baseline="central">2.4 GHz, O-QPSK, 250 kbit/s</text>
+</g>
+
+<g class="c-gray">
+<rect x="380" y="590" width="340" height="60" rx="8" stroke-width="0.5"/>
+<text class="th" x="550" y="615" text-anchor="middle" dominant-baseline="central">802.11 PHY  /  Ethernet PHY</text>
+<text class="ts" x="550" y="635" text-anchor="middle" dominant-baseline="central">radio WiFi 2.4/5/6 GHz, cavo Cat5e/6, fibra</text>
+</g>
+
+<text class="tnote" x="380" y="685" text-anchor="middle">I livelli L7–L3 sono identici nei due trasporti: questa è la chiave dell'interoperabilità di Matter.</text>
+<text class="tnote" x="380" y="702" text-anchor="middle">Solo da L2.5 in giù lo stack si specializza in funzione del mezzo fisico utilizzato.</text>
+</svg>
