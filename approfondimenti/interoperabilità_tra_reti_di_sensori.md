@@ -9,7 +9,7 @@ Riguardo all'**interoperabilità** tra reti diverse, questa è evidentemente imp
 
 Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può ottenere in due modi: router L3/L4 unificato, gateway applicativo.
 
-## **Router L3/L4 di tipo IP/UDP
+## **Router L3/L4 di tipo IP/UDP**
 
 - **crea un'unica rete** utilizzando livelli di rete **compatibili** o **praticamente uguali** come sono **IPV6 e 6LowPan**. Lo stesso deve accadere per i **protocolli di routing** usando ad es. REPL. Se le condizioni di **uniformità** dei protocolli sono **soddisfatte solo parzialmente**, ad esempio mantenendo uguale protocollo di inoltro (6LowPAN) ma **protocolli di routing diversi** (OSPF nella rete di distribuzione e REPL in quella dei sensori), allora il router deve necessariamente possedere anche limitate funzionalità di **gateway**, in questo caso almeno per effettuare l'interoperabilità tra **dominii di routing** differenti.
 - **Estensione naturale — Matter come payload IPv6 in una rete IP di soli router L3**: i protocolli di livello fisico e data link (L1 e L2 OSI) sono diversi da IP mentre quelli di livello di rete e trasporto (L3 e L4 della pila OSI) sono esattamente gli stessi. Una conseguenza diretta dell'avere un **livello applicativo standardizzato** (come Matter) **sopra** un livello di rete unificato (IPv6/6LoWPAN) è che il **payload applicativo** può viaggiare **intatto** attraverso una qualunque rete IP intermedia, senza che gli apparati di rete debbano conoscerne il significato. I router della rete di distribuzione restano **semplici smistatori di livello 3** in senso ISO/OSI puro: vedono pacchetti IPv6 + UDP cifrati e li instradano, esattamente come farebbero per un qualunque flusso applicativo. All'estremità di **consumo** del payload Matter si presentano due scenari, entrambi compatibili con la stessa identica rete di trasporto:
@@ -25,7 +25,7 @@ Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può otte
   
 <img src="../jsan-02-00235-g002.webp" alt="alt text" width="700">
 
-## **Gateway applicativo
+## **Gateway applicativo**
 
 - utilizzando un **gateway applicativo** per **compattare** o **tradurre** i messaggi:
      - se il routing non è compatibile ma il **livello di applicazione** nella rete di accesso **è libero**, non limitato a messaggi preordinati da uno standard, si può pensare ancora di utilizzare lo **stesso payload** in formato JSON della rete di distribuzione (definito dallo sviluppatore) richiamando le **primitive di servizio** di livello applicativo in uso nella rete dei sensori (ad es. send) per inviarlo. Ma il formato potrebbe essere troppo prolisso per dispositivi di capacità ridotta e quindi potrebbe essere necessario **comprimerlo** in un formato più compatto (normalmente binario). E' la situazione tipica dei messaggi in banda ISM a basso duty cycle come quelli di tipo LoraWAN.
