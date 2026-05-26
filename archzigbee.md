@@ -359,6 +359,8 @@ mosquitto_pub -h localhost -t 'casa/soggiorno/comandi' -m '{"state": "OFF"}'
 ```
 ---
 
+## **Gateway come semplici router**
+
 Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può ottenere:
 - **creando un'unica rete** utilizzando livelli di rete **compatibili** o **praticamente uguali** come sono **IPV6 e 6LowPan**. Lo stesso deve accadere per i **protocolli di routing** usando ad es. REPL. Lo stesso deve accadere per i **livelli superiori**. In particolare nell'ultimo, il **livello applicativo**, il **payload dell'applicazione**, cioè un comando, deve poter viaggiare **direttamente** dal **sensore** all'**attuatore**, dove poi verrà elaborato e utilizzato. Se viene inoltrato direttamente il pacchetto IPV6 (con il payload applicativo dentro) allora il gateway, tra le due reti di livello fisico differente, è tecnicamente un **semplice router**.
     - Se le condizioni di **uniformità** dei protocolli sono **soddisfatte solo parzialmente**, ad esempio mantenendo uguale protocollo di inoltro (6LowPAN) ma **protocolli di routing diversi** (OSPF nella rete di distribuzione e REPL in quella dei sensori), allora il router deve necessariamente possedere anche limitate funzionalità di **gateway**, in questo caso almeno per effettuare l'interoperabilità tra **dominii di routing** differenti.
@@ -370,12 +372,12 @@ Alla luce di quanto detto, l'**interoperabilità** tra reti diverse si può otte
 
         La **proprietà** che viene garantita in questo schema è una doppia separazione di competenze: la **rete IP** non vede mai la semantica applicativa, e la **traduzione semantica** verso protocolli di consumo (MQTT, REST, ecc.) avviene solo all'**endpoint applicativo**, non in mezzo. Il connettore non è quindi un **bridge** nel senso tecnico discusso più avanti (non sta a cavallo tra due reti fisiche eterogenee) ma un **client Matter legittimo** che fa da **pivot semantico** verso il mondo delle web API. La crittografia end-to-end di Matter resta intatta fino al connettore, perché questo è un interlocutore autorizzato della fabric, non un man-in-the-middle.
 
-        <img src="../img/matter_payload_ip.svg" alt="Matter come payload IPv6 attraverso una rete IP di soli router L3" width="760">
+        <img src="img/matter_payload_ip.svg" alt="Matter come payload IPv6 attraverso una rete IP di soli router L3" width="760">
 
         Questo modello realizza in modo molto pulito il principio **end-to-end** della rete IP: l'intelligenza sta agli estremi, la rete in mezzo è "stupida" e generica, e lo stesso payload può essere consumato da destinazioni diverse (un attuatore fisico, una dashboard web, un server statistico) senza che nessuna di queste richieda modifiche all'infrastruttura di rete.
     - la **standardizzazione** del livello applicativo possiede anche il vantaggio di poter associare senza sforzo un dispositivo IoT ad un **server applicativo** che ne comanda o gestisce molti altri semplicemente esibendo **nome e versione del protocollo** di presentazione. Sarà poi l'applicazione (ad es. OpenHab, Home Assistant) a cercare nel proprio database il **formato** definito dallo standard per quella particolare categoria (in gergo entità) a cui appartiene il dispositivo da associare.
   
-<img src="../jsan-02-00235-g002.webp" alt="alt text" width="700">
+<img src="img/jsan-02-00235-g002.webp" alt="alt text" width="700">
 
 ---
 
