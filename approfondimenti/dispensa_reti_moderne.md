@@ -9,7 +9,7 @@
 
 Per decenni la sicurezza di rete si è basata sul concetto di **perimetro fidato**: dentro la rete aziendale ci si fidava, fuori no. L'accesso remoto avveniva via VPN, che creava un tunnel verso la rete interna concedendo accesso di rete *ampio* a tutto ciò che stava "dentro".
 
-![Architettura VPN classica / Trusted Network](img/01-vpn-trusted-network.svg)
+![Architettura VPN classica / Trusted Network](../img/01-vpn-trusted-network.svg)
 
 ### Caratteristiche dell'architettura
 
@@ -33,7 +33,7 @@ Nel 2010 Forrester (John Kindervag) propone il modello **Zero Trust**, formalizz
 
 > **Principio guida**: *"Never trust, always verify"* — non fidarti mai, verifica sempre.
 
-![Zero Trust Architecture - NIST SP 800-207](img/02-zero-trust-architecture.svg)
+![Zero Trust Architecture - NIST SP 800-207](../img/02-zero-trust-architecture.svg)
 
 ### I componenti dell'architettura NIST
 
@@ -68,7 +68,7 @@ Esistono due architetture ZTNA:
 
 Mostro l'architettura **endpoint-initiated** perché è quella di NetBird e rappresenta il modello più moderno (no broker, no choke point):
 
-![Architettura ZTNA endpoint-initiated - modello NetBird/Tailscale](img/03-ztna-endpoint-initiated.svg)
+![Architettura ZTNA endpoint-initiated - modello NetBird/Tailscale](../img/03-ztna-endpoint-initiated.svg)
 
 ### Caratteristiche architetturali
 
@@ -96,7 +96,7 @@ Termine coniato da **Gartner nel 2021**. È la **suite di sicurezza cloud-delive
 
 > SSE = **ZTNA + SWG + CASB + FWaaS + DLP** (e altri)
 
-![Architettura SSE - tutto il traffico passa dal cloud security stack](img/04-sse-architecture.svg)
+![Architettura SSE - tutto il traffico passa dal cloud security stack](../img/04-sse-architecture.svg)
 
 ### Il concetto chiave: "hairpin via cloud"
 
@@ -128,7 +128,7 @@ Termine coniato da **Gartner nel 2019** (prima di SSE). È il framework più amp
 
 > SASE = **SD-WAN + SSE**
 
-![Architettura SASE - convergenza SD-WAN + SSE](img/05-sase-architecture.svg)
+![Architettura SASE - convergenza SD-WAN + SSE](../img/05-sase-architecture.svg)
 
 ### Cosa aggiunge SASE rispetto a SSE
 
@@ -156,7 +156,7 @@ Cato Networks, Versa Networks, Cloudflare One, Palo Alto Prisma SASE, Fortinet F
 
 Vediamo i 4 modelli affiancati per capire come è cambiata l'architettura nel tempo:
 
-![Confronto dei 4 paradigmi](img/06-comparison-overview.svg)
+![Confronto dei 4 paradigmi](../img/06-comparison-overview.svg)
 
 ### Tabella comparativa
 
