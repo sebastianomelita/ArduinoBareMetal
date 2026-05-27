@@ -18,8 +18,6 @@
 
 Per decenni la sicurezza di rete si è basata sul concetto di **perimetro fidato**: dentro la rete aziendale ci si fidava, fuori no. L'accesso remoto avveniva via VPN, che creava un tunnel verso la rete interna concedendo accesso di rete *ampio* a tutto ciò che stava "dentro".
 
-A differenza delle VPN e dei firewall, i servizi ZTNA sono progettati per connettere in modo sicuro specifiche entità tra di loro, senza la necessità di un accesso globale alla rete. Nella maggior parte dei casi, si tratta di dipendenti e utenti terzi che si connettono da casa, in viaggio o in ufficio. Ma tutto questo non si limita agli utenti: la tecnologia ZTNA può essere applicata anche al traffico da applicazione ad applicazione e sotto forma di microsegmentazione.
-
 ![Architettura VPN classica / Trusted Network](../img/01-vpn-trusted-network.svg)
 
 ### Caratteristiche dell'architettura
@@ -42,9 +40,28 @@ A differenza delle VPN e dei firewall, i servizi ZTNA sono progettati per connet
 
 Nel 2010 Forrester (John Kindervag) propone il modello **Zero Trust**, formalizzato poi dal NIST con lo standard **SP 800-207** (2020).
 
+A differenza delle VPN e dei firewall, i servizi ZTNA sono progettati per connettere in modo sicuro specifiche entità tra di loro, senza la necessità di un accesso globale alla rete. Nella maggior parte dei casi, si tratta di dipendenti e utenti terzi che si connettono da casa, in viaggio o in ufficio. Ma tutto questo non si limita agli utenti: la tecnologia ZTNA può essere applicata anche al traffico da applicazione ad applicazione e sotto forma di microsegmentazione.
+
+### **Concetti chiave**
+
 > **Principio guida**: *"Never trust, always verify"* — non fidarti mai, verifica sempre.
 
+- **Base zero trust**: ZTNA si basa sul principio del modello zero trust, questo significa che nessun utente o sistema è considerato affidabile per impostazione predefinita, indipendentemente da dove o come si connette. Ogni richiesta di accesso deve essere completamente autenticata, autorizzata e crittografata prima di concedere l’accesso.
+- **Accesso orientato alle applicazioni**: a differenza degli approcci tradizionali che consentono di accedere alla rete, ZTNA garantisce che l’accesso venga fornito solo ad applicazioni specifiche. Questo avviene attraverso connessioni solo in uscita che riducono la superficie di attacco ed evitano di esporre la rete aziendale a Internet.
+- **Accesso con privilegi minimi**: ZTNA applica il principio del privilegio minimo fornendo agli utenti il livello minimo di accesso necessario per svolgere in modo efficace la propria mansione. Questo avviene attraverso policy di accesso granulari, applicate in modo coerente e globale in tutta l’organizzazione, indipendentemente dalla posizione dell’utente.
+
+
 ![Zero Trust Architecture - NIST SP 800-207](../img/02-zero-trust-architecture.svg)
+
+
+### **Come funziona ZTNA**
+
+Lo ZTNA crea una connessione sicura e crittografata tra il dispositivo dell'utente e l'applicazione o il servizio privato a cui deve accedere. Di solito prevede quanto segue.
+
+1. **Autenticazione**: l'utente fornisce le credenziali e la sua identità viene verificata tramite autenticazione a più fattori (MFA) o provider di identità (IdP).
+2. **Convalida del dispositivo**: viene valutata la compliance alle policy di sicurezza del dispositivo (ad esempio, versione del sistema operativo, stato dell'antivirus, ecc.).
+3. **Applicazione delle policy**: una volta autenticato, l'accesso viene concesso in base alle policy zero trust predefinite che tengono conto del ruolo dell'utente, della sicurezza del dispositivo, della posizione e di altri fattori contestuali.
+4. **Accesso specifico all'applicazione**: lo ZTNA garantisce che gli utenti vedano e accedano solo alle applicazioni per cui sono autorizzati, senza visibilità o accesso al resto della rete.
 
 ### I componenti dell'architettura NIST
 
