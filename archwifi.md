@@ -12,7 +12,7 @@
   
 Servizi:
 - [VPN di reti Ethernet](ethvpn.md).
-- [Firewall](firewall.md).F
+- [Firewall](firewall.md).
 - [Backup](backup.md).
 - [Autenticazione 802.1X](radius.md)
 - [DNS](https://it.wikipedia.org/wiki/Domain_Name_System)
