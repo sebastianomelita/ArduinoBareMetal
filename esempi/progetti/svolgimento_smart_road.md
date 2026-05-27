@@ -115,13 +115,145 @@ Le tecnologie scelte differiscono per ogni "salto" della gerarchia, in funzione 
 
 ### 3.1 Comunicazione interna allo smart-gate
 
-All'interno del singolo smart-gate i vari dispositivi (telecamere, sensori, maxi-schermo) comunicano col SoC centrale tramite:
+Lo smart-gate ha al suo interno due famiglie di dispositivi che richiedono trattamenti diversi:
 
-- **Telecamere IP**: protocollo **ONVIF** / RTSP su Ethernet PoE+. La rete interna allo smart-gate è una piccola LAN privata con switch managed industriale.
-- **Sensori ambientali**: bus **Modbus RTU** su RS-485 oppure **I²C** per sensori posti nel rack di controllo. I sensori sul fondo stradale, distanti decine di metri, possono comunicare via **LoRa-PHY** (raggio breve ma robusta).
-- **Maxi-schermo**: controller dedicato accessibile via TCP/IP attraverso API proprietaria o standard (es. NTCIP per la segnaletica USA, in EU specifiche EN 12966).
+- **Telecamere IP + maxi-schermo**: tecnologia cablata Ethernet/IP, perché producono e consumano traffico ad alta banda (FullHD streaming, comandi di segnaletica con conferma). Le telecamere si collegano via **ONVIF/RTSP** su una piccola LAN PoE+ interna allo smart-gate; il maxi-schermo è raggiungibile via TCP/IP attraverso API standard (es. EN 12966 in UE per la segnaletica variabile).
+- **Sensori ambientali distribuiti sul km**: tecnologia **wireless LoRaWAN** — vedi la sezione dedicata [§3.2](#32-rete-di-sensori-wireless-lorawan-del-km) qui sotto, perché è una parte sostanziale del progetto e merita una trattazione a sé.
 
-### 3.2 Comunicazione smart-gate ↔ CdC
+### 3.2 Rete di sensori wireless LoRaWAN del km
+
+Una delle scelte progettuali più caratterizzanti del progetto è realizzare la sensoristica ambientale come **rete wireless LPWA in tecnologia LoRaWAN** distribuita lungo il km di carreggiata di pertinenza di ogni smart-gate. Questa scelta merita un'argomentazione esplicita perché incide su molti aspetti dell'infrastruttura.
+
+#### 3.2.1 Topologia fisica della rete di sensori
+
+```
+   Sensori end-device LoRaWAN (batteria + microfotovoltaico, IP67)
+   ☼─[M]   ☼─[A]              ☼─[F]   ☼─[Φ]      lungo il guard-rail
+    ╲       ╲                  ╱       ╱            (~10-30 sensori/km)
+     ╲       ╲    radio       ╱       ╱
+      ╲       ╲   868 MHz    ╱       ╱
+       ╲       ╲    ISM     ╱       ╱
+        ╲       ╲          ╱       ╱
+         ╲       ╲        ╱       ╱
+          ┌──────▼────────▼──────┐
+          │   Maxi-schermo a     │   <- a 5-7 m di altezza,
+          │   portale (cabinet)  │      in posizione baricentrica
+          │                      │
+          │   ├─ Maxi-schermo LED│
+          │   ├─ Gateway LoRaWAN │   <- alimentato dalla rete elettrica
+          │   ├─ SoC edge        │      del display (o impianto FV grande)
+          │   └─ Switch + uplink │
+          └──────────┬───────────┘
+                     │ Fibra ottica + 5G backup
+                     ▼
+              Centro di Controllo regionale
+              (Network Server + Broker MQTT)
+```
+
+#### 3.2.2 Sensori (end-device LoRaWAN)
+
+I sensori sono **end-device LoRaWAN in classe A**, distribuiti lungo il km e ancorati al guard-rail. Caratteristiche:
+
+- **Alimentazione**: batteria al litio (es. AA da 3000 mAh) con piccolo **pannello fotovoltaico ausiliario** (formato 5×5 cm o 10×5 cm, tipo "da calcolatrice") e batteria tampone Li-Ion o supercondensatore. Combinazione che garantisce **autonomia energetica indefinita**: il pannellino ricarica la batteria di giorno, la batteria sostiene il funzionamento di notte e durante le giornate nuvolose.
+- **Classe A**: il modem radio dorme la maggior parte del tempo e si sveglia solo per trasmettere un breve uplink, seguito da due brevissime finestre di ricezione di downlink. È la classe a minimo consumo energetico — adeguata perché i sensori producono solo telemetria e non hanno bisogno di ricevere comandi tempestivi.
+- **Cadenza di trasmissione**: una misura ogni 30-60 secondi a seconda del sensore, compatibile con le limitazioni di **duty cycle** della banda ISM 868 MHz (1% del tempo nelle sotto-bande tipiche).
+- **Formato di payload**: messaggi brevi in formato binario compatto, tipicamente **Cayenne LPP** o codec custom dichiarati sotto forma di struct C. Il payload è cifrato con AES tramite la chiave di sessione **AppSKey** ottenuta in fase di OTAA.
+- **Identificazione**: ogni sensore ha un **DevEUI** univoco a 64 bit derivato dal MAC Ethernet via EUI64. Non ha indirizzo IP — l'IP entra in gioco solo dal gateway in poi.
+- **Custodia**: enclosure IP67/IP68 robusta, fissata al guard-rail con staffe a bullone, resistente a vibrazioni, pioggia, sale, escursioni termiche -20°C/+60°C.
+- **Tipologie**: tipicamente 10-30 sensori per km, suddivisi tra centraline meteo, sensori di qualità dell'aria (PM10, PM2.5, NOx), fonometri, sensori di vibrazione/temperatura del fondo stradale, sensori di luminosità ambientale.
+
+#### 3.2.3 Gateway LoRaWAN nel cabinet del maxi-schermo
+
+Il gateway LoRaWAN del km è **ospitato all'interno del cabinet del maxi-schermo a portale**, scelta motivata da quattro ragioni concrete:
+
+1. **Posizione baricentrica e in altezza** (5-7 m da terra): l'antenna del gateway è in line-of-sight con tutti i sensori del km, fuori dagli ostacoli (veicoli, guard-rail). Il bilancio di link migliora di 10-20 dB rispetto a un'installazione a livello strada, il che si traduce in margine per data rate più aggressivi e quindi consumi ancora più bassi sui sensori.
+2. **Alimentazione condivisa**: il maxi-schermo dispone già di una linea elettrica robusta (rete elettrica con UPS, oppure — nei tratti remoti — impianto fotovoltaico dimensionato per centinaia di watt). Il gateway LoRaWAN consuma 5-10 W, carico marginale che non richiede infrastruttura elettrica aggiuntiva.
+3. **Sicurezza fisica e ambientale**: l'enclosure IP65/66 del display protegge anche il gateway da intemperie e vandalismo; manutenzione condivisa con il display.
+4. **Connettività IP condivisa**: lo stesso cavo Ethernet che porta i comandi al maxi-schermo viene riutilizzato come uplink IP per il gateway LoRaWAN verso il network server nel CdC. Un solo cavo dati per più funzioni.
+
+Funzioni del gateway:
+
+- **Packet forwarder**: riceve i pacchetti radio dai sensori e li inoltra al network server via IP. Quando un sensore è ricevibile anche dal gateway dello smart-gate adiacente, lo stesso pacchetto arriva al network server da due percorsi diversi — la **ridondanza è gratuita**, e il network server scarta il duplicato tenendo quello con RSSI/SNR migliore.
+- **Bridge LoRa→MQTT**: la componente `lora-gateway-bridge` incapsula il messaggio LoRaWAN in un payload MQTT di servizio (in JSON) pubblicato su un broker locale, che il network server consuma.
+- **Coordinatore radio**: applica le politiche di **Adaptive Data Rate (ADR)** decise dal network server, assegnando a ciascun sensore data rate e potenza di trasmissione ottimali. Sensori vicini al gateway → data rate alto, potenza bassa (consumo minimo). Sensori lontani → data rate basso (più resistente al rumore), potenza alta.
+
+#### 3.2.4 Modalità "All-In-One" per tratti remoti
+
+Per i tratti autostradali in zone scarsamente coperte dalla fibra (passi montani, contesti isolati), il gateway LoRaWAN può essere realizzato come **gateway All-In-One con doppia interfaccia**: LoRaWAN verso i sensori, modem **5G/4G** o connettività **satellitare LEO** (es. Starlink Direct-to-Cell) verso il network server. È la stessa configurazione utilizzata in agricoltura di precisione e nel monitoraggio ambientale di aree remote.
+
+#### 3.2.5 Confine LoRaWAN / IP
+
+Punto importante da chiarire (è una sorgente classica di confusione in sede d'esame):
+
+| Tratta | Protocollo | Formato messaggi | Identificazione |
+|--------|-----------|------------------|-----------------|
+| Sensore ↔ Gateway (radio) | LoRaWAN (PHY/MAC LoRa) | Binario compatto (Cayenne LPP), cifrato AES con AppSKey | DevEUI a 64 bit |
+| Gateway ↔ Network Server | IP su fibra/5G, MQTT su TLS | JSON di servizio con payload LoRa incapsulato | Indirizzi IP privati |
+| Network Server ↔ Server applicativo | IP, MQTT su TLS | JSON applicativo dopo decodifica Cayenne LPP | Indirizzi IP privati |
+
+Il **gateway** è esattamente il **punto di traduzione** tra il mondo LoRa (senza IP) e il mondo IP/MQTT. Sopra LoRaWAN non c'è IP: il sensore non ha alcun indirizzo IP, ha solo il suo DevEUI.
+
+#### 3.2.6 Topic MQTT della rete LoRaWAN
+
+Al modello di topic MQTT visto nella sezione successiva si aggiungono quelli generati dalla rete LoRaWAN. Estendendo il pattern standard:
+
+```
+smartroad/<RR>/<TT>/<NNN>/lora/<DEV-EUI>/up      # uplink dal sensore
+smartroad/<RR>/<TT>/<NNN>/lora/<DEV-EUI>/down    # downlink verso il sensore
+```
+
+Su `up` il dispositivo è publisher (tramite il gateway) e il network server è subscriber. Il payload è un JSON di servizio contenente, oltre a metadati di rete (RSSI, SNR, gateway che ha ricevuto, timestamp, ecc.), il campo `data` con il payload applicativo in BASE64.
+
+Esempio di messaggio sul topic `up` (sensore meteo del km 142 dell'A1, Lombardia tratto 1, smart-gate 042):
+
+```json
+{
+  "jver": 1,
+  "time": "2024-06-15T10:32:14Z",
+  "tmst": 561224395,
+  "chan": 6,
+  "freq": 868.5,
+  "modu": "LORA",
+  "datr": "SF9BW125",
+  "codr": "4/5",
+  "rssi": -87,
+  "lsnr": 8.5,
+  "fcnt": 142,
+  "port": 33,
+  "data": "AwIBAAEBZwGsAmhMA2hyBAAA",
+  "appeui": "8b-6c-f0-8e-ee-df-1b-b6",
+  "deveui": "00-80-00-ff-ff-00-2a-3f",
+  "gweui": "00-80-00-00-d0-00-01-ff",
+  "name": "LO-01-042-METEO-007"
+}
+```
+
+Il server applicativo del CdC fa **subscribe** sul pattern `smartroad/+/+/+/lora/+/up`, decodifica il campo `data` con il codec Cayenne LPP, e ri-pubblica il dato decodificato sul topic "alto livello" (`smartroad/<RR>/<TT>/<NNN>/misure/meteo`) per il consumo da parte di dashboard, sistema di archiviazione e bridge verso il Centro Nazionale.
+
+#### 3.2.7 Sicurezza della rete LoRaWAN
+
+Ogni sensore si registra al network server tramite **Over-the-Air Activation (OTAA)**. In fabbrica il sensore viene programmato con:
+
+- **DevEUI**: identificatore univoco del dispositivo (derivato dal MAC via EUI64).
+- **AppEUI**: identificatore dell'applicazione di destinazione (è un parametro del network server).
+- **AppKey**: chiave segreta pre-condivisa a 128 bit, scambiata su canale sicuro tra dispositivo e join server.
+
+Al primo join, il join server usa la AppKey per generare e distribuire al sensore due chiavi di sessione:
+
+- **AppSKey**: utilizzata per cifrare con AES il payload applicativo. Garantisce la **confidenzialità** dei dati: solo il server applicativo (che possiede la stessa chiave) può decifrare.
+- **NwkSKey**: utilizzata come chiave in ingresso all'algoritmo **AES-CMAC** per calcolare il **MIC (Message Integrity Code)** di ogni frame. Il sensore allega il MIC al messaggio; il network server ricalcola localmente il MIC con la stessa chiave e verifica la coincidenza. Se i due MIC coincidono, sono provate **simultaneamente l'integrità del messaggio e l'autenticazione del mittente**.
+
+Questo meccanismo è anche un caso applicativo concreto delle **funzioni hash crittografiche** (quesito 4 della seconda parte): AES-CMAC è una funzione di tipo HMAC che produce un'impronta non falsificabile senza conoscere la chiave.
+
+#### 3.2.8 Riassunto dei vantaggi della scelta
+
+- **Zero scavi lungo il km**: nessun cavo di alimentazione né di dati per i sensori. Costo di posa fortemente abbattuto rispetto a soluzioni cablate.
+- **Installazione e manutenzione modulare**: ogni sensore è una scatoletta indipendente fissata al guard-rail in mezz'ora.
+- **Energia autonoma a tempo indeterminato**: batteria + microfotovoltaico → nessuna manutenzione energetica per anni.
+- **Ridondanza gratuita**: sensori al confine tra due km sono ricevibili da entrambi i gateway adiacenti, il network server deduplica.
+- **Sicurezza forte**: cifratura end-to-end del payload (AppSKey), autenticazione e integrità tramite MIC (NwkSKey), OTAA per il provisioning sicuro delle chiavi di sessione.
+
+### 3.3 Comunicazione smart-gate ↔ CdC
 
 Questa è la tratta più delicata: deve essere ad alta banda (per gli stream video on-demand), bassa latenza, sempre disponibile.
 
@@ -194,7 +326,7 @@ Esempio di payload sul topic `comandi/schermo`:
 }
 ```
 
-### 3.3 Comunicazione CdC ↔ CN
+### 3.4 Comunicazione CdC ↔ CN
 
 - **Connessione primaria**: rete **MPLS L3VPN** fornita da un operatore telco. Garantisce SLA contrattuali, classi di servizio (QoS) e isolamento.
 - **Connessione di backup**: tunnel **VPN IPsec site-to-site** su Internet pubblica, da firewall a firewall.
@@ -203,14 +335,14 @@ Esempio di payload sul topic `comandi/schermo`:
   - **HTTPS/REST** per le chiamate sincrone (es. recupero di dati storici, push di configurazioni globali dal CN ai CdC).
   - **gRPC** in alternativa al REST quando occorre throughput più alto e contratti tipizzati (Protocol Buffers).
 
-### 3.4 Comunicazione APP utenti ↔ CN
+### 3.5 Comunicazione APP utenti ↔ CN
 
 - **HTTPS/REST** (versionato `/v1/...`) per le chiamate stateless del client.
 - **WebSocket Secure (WSS)** per il push real-time delle segnaletiche e dello stato dei punti di ricarica.
 - In alternativa, **MQTT over WebSocket Secure** se si vuole riusare l'infrastruttura broker (il client APP si registra come subscriber su topic di pubblico interesse).
 - Autenticazione utenti con **OAuth 2.0 + OpenID Connect** per le funzioni che richiedono profilazione (prenotazione ricarica). Le funzioni di sola lettura della segnaletica sono accessibili in modo anonimo.
 
-### 3.5 Comunicazione stazioni di ricarica ↔ rete
+### 3.6 Comunicazione stazioni di ricarica ↔ rete
 
 Le stazioni di ricarica utilizzano lo standard **OCPP (Open Charge Point Protocol) 1.6 o 2.0.1** su WebSocket Secure verso un CSMS (Charging Station Management System) che, nel nostro progetto, è un microservizio del CN. Questo dà accesso a:
 
