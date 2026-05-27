@@ -50,7 +50,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione di eventuali **link di backaul** e della relativa tecnologia
 - definire le **interfacce radio** scegliendo tra **2-band** (dual channel) e **3-band** (three channel).
 - definire i **canali dei link** scegliendoli tra quelli a disposizione in banda ISM e pianificando il loro **riuso nello spazio** minimizzando l'**interferenza cocanale**.
-- gestire eventuali **vincoli di prossimità** mediante controllo di potenza o gestione del roaming e eventuali **vincoli di posizionamento** mediante trilaterazione.
+- gestire eventuali **vincoli di prossimità**, distinguendo tra gestione di ambienti indoor e outdoor, mediante controllo di potenza o gestione del roaming e eventuali **vincoli di posizionamento** mediante trilaterazione.
 - **subnetting** e definizione degli indirizzi delle **subnet di aggregazione** per i vari gruppi di utenti (generalmente statica), e definizione degli indirizzi delle **subnet di dorsale** (statica o automatica basata su Link Local), definizione degli indirizzi delle **subnet di servizio** (server farm e DMZ),
 - definizione degli **indirizzi dei server** e dei range di quelli dei client.
 - definizione delle **tecniche di autenticazione** degli utenti necessarie per un dato scenario (ad es. 802.1X). Scegliere tra autenticazione L2 EAP (statica per AP o per utente con RADIUS) e quella L7 con Captive portal. 
