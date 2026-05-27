@@ -34,13 +34,19 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro ruolo e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7)
 - dislocazione di eventuali **gateway**.
 - **subnetting** e definizione degli indirizzi delle **subnet di aggregazione** per i vari gruppi di utenti (generalmente statica), e definizione degli indirizzi delle **subnet di dorsale** (statica o automatica basata su Link Local), definizione degli indirizzi delle **subnet di servizio** (server farm e DMZ),
-- definizione degli indirizzi dei server e dei range di quelli dei client.
-- definizione delle tecniche di **autenticazione** degli utenti necessarie per un dato scenario nonchè di quelle che realizzano l'autenticazione dei servizi.
-- definizione del **tipo di routing** (statico o dinamico). In caso si scelga il **routing statico**, definizione delle **tabelle di routing** più significative.
-- definizione della posizione del broker MQTT.
+- definizione degli indirizzi dei server e dei range di quelli dei client delle reti IP presenti.
+- definizione posizione dei **servizi di sistema** (DHCP, DNS) per le reti IP.
+- definizione delle **tecniche di autenticazione** degli utenti necessarie per un dato scenario (ad es. 802.1X). Scegliere tra autenticazione L2 EAP (statica per AP o per utente con RADIUS) e quella L7 con Captive portal. 
+- definizione delle tecniche di **autenticazione** dei servizi (openid, psw, sessioni, ecc).
+- definizione delle tecniche di autenticazione dei **nodi lorawan**. Può essere reciproca (backaul, link radio) oppure tra nodi e servizi (ad es. Network Server)
+- definizione del **tipo di routing** (statico o dinamico) per le reti IP. In caso si scelga il **routing statico**, definizione delle **tabelle di routing** più significative.
+- definire se è necessaria o meno una federazione di reti di sensori, stabilire se il broker e il network server sono individualmente o entrambi parte del router/gateway verso la rete IP o sono a comune con più reti lorawan.
+- definizione della posizione del broker MQTT, del join server, del network server e dell'application server nella rete IP.
 - definizione dei topic utili per i casi d'uso richiesti.
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
+- gestire eventuali **vincoli di prossimità**, distinguendo tra gestione di ambienti indoor e outdoor, mediante controllo di potenza o gestione del roaming e eventuali **vincoli di posizionamento** mediante trilaterazione.
+
 
 
 [Rete di reti lora](/approfondimenti/lorawan_federation.md)  
