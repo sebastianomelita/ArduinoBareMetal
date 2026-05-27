@@ -245,26 +245,254 @@ Al primo join, il join server usa la AppKey per generare e distribuire al sensor
 
 Questo meccanismo è anche un caso applicativo concreto delle **funzioni hash crittografiche** (quesito 4 della seconda parte): AES-CMAC è una funzione di tipo HMAC che produce un'impronta non falsificabile senza conoscere la chiave.
 
-#### 3.2.8 Riassunto dei vantaggi della scelta
+#### 3.2.8 Architettura distribuita dei network server
+
+Una scelta progettuale importante riguarda **dove collocare fisicamente i network server**. La specifica LoRaWAN canonica prevede una topologia "stella di stelle" in cui i gateway sono packet forwarder stupidi e tutta l'intelligenza sta nel network server. Nel nostro progetto questa scelta classica presenta un problema serio.
+
+**Il problema della latenza decisionale.** Consideriamo un caso concreto: un sensore di vibrazione del fondo stradale rileva un picco anomalo compatibile con una buca improvvisa. La catena standard sarebbe:
+
+1. Sensore → uplink LoRa → gateway del km (decine di ms)
+2. Gateway → IP/MQTT → network server al CdC regionale (centinaia di km di distanza, decine di ms su fibra, fino a centinaia in caso di backup 5G)
+3. Network server → application server → logica di business → decisione "abbassa il limite a 50 km/h sullo smart-gate del km"
+4. Decisione → MQTT → SoC dello smart-gate → maxi-schermo
+
+Il tempo totale è dell'ordine di **centinaia di millisecondi nel caso ottimo, secondi nei casi degradati**. Per la sicurezza autostradale è un problema: una buca a 130 km/h è pericolosa, e ogni mezzo secondo in più di latenza significa 18 metri di strada percorsi a velocità non ridotta da ogni veicolo che transita. Inoltre i pacchetti viaggiano sulla WAN regionale anche solo per essere processati e tornare indietro: traffico distribuito su tutta la rete per una decisione che è puramente locale.
+
+**Tre configurazioni possibili.** L'industria LoRaWAN ha riconosciuto questo problema e l'evoluzione architettonica recente prevede di **avvicinare il network server al gateway** (pattern Edge Network Server, diffuso nel contesto Industrial IoT e mission-critical IoT). Le configurazioni ragionevoli sono tre:
+
+| Configurazione | Collocazione del NS | Sensori per NS | Latenza decisione | Numero di NS da gestire | Adatta per |
+|----------------|---------------------|----------------|-------------------|--------------------------|------------|
+| **A — NS locale per gateway** | Dentro lo smart-gate, sullo stesso SoC | 10-30 | ms (loopback) | ~1.000 | Decisioni di sicurezza in tempo reale |
+| **B — NS ogni N gateway** | In uno smart-gate "capo-gruppo" o in armadio dedicato | 50-150 (5-10 km) | decine di ms | ~100-200 | Decisioni coordinate su gruppi di km |
+| **C — NS regionale (classica)** | Al CdC regionale | ~1.500 | centinaia di ms | ~20 | Decisioni non time-critical, archiviazione |
+
+**Scelta per il progetto: architettura ibrida a due strati.** La scelta corretta non è "scegliere una configurazione e basta", ma realizzare una **gerarchia funzionale** che usa configurazioni diverse per ruoli diversi:
+
+- **Strato edge — Network server locale per gateway (configurazione A)**: gestisce in autonomia tutte le funzioni con vincoli di latenza:
+  * decisioni di sicurezza basate sui sensori (ghiaccio, buche, smottamenti, visibilità ridotta)
+  * attivazione automatica della segnaletica di emergenza sul maxi-schermo locale
+  * gestione dell'ADR (Adaptive Data Rate) dei sensori vicini
+  * **modalità degraded autonoma**: anche se la fibra è tagliata e il 5G è giù, lo smart-gate continua a gestire i propri sensori e a prendere decisioni di sicurezza
+- **Strato regionale — Network server al CdC (configurazione C, in parallelo)**: gestisce le funzioni di coordinamento sovra-locale e di archiviazione:
+  * aggregazione e archiviazione dei dati di tutti gli smart-gate del tratto
+  * analytics di tratto (previsione del traffico, pattern stagionali)
+  * coordinamento tra smart-gate distanti (es. propagare l'informazione di una chiusura corsia su tutto il tratto)
+  * override manuale da parte dell'operatore di sala
+
+La motivazione forte per la configurazione A allo strato edge è l'argomento dell'**autonomia in modalità degraded**: ogni smart-gate deve poter continuare a operare correttamente anche se completamente isolato dalla rete IP, e questo è possibile solo se ha al suo interno tutta la pipeline LoRaWAN locale (gateway + network server + application server locale per le decisioni di sicurezza).
+
+**La gestione dei 1.000 network server locali.** L'obiezione naturale è: "1.000 network server da gestire sono ingestibili". È vero solo con strumenti vecchi. Con il **fleet management moderno** (Ansible/Salt per la configurazione, container Docker o K3s edge per il deployment, Prometheus per il monitoring, OTA firmware update via canale MQTT sicuro) la gestione di 1.000 dispositivi edge identici è un'operazione standardizzata. Le grandi reti CDN e le flotte di POS gestiscono decine o centinaia di migliaia di nodi edge con questi strumenti — 1.000 è un numero piccolo.
+
+**Separazione dei ruoli del network server.** È un altro punto fondamentale per chiarire l'architettura. La specifica LoRaWAN identifica diversi ruoli funzionali che possono stare insieme su una sola macchina o essere distribuiti:
+
+| Ruolo | Cosa fa | Vincolo di latenza | Collocazione nel progetto |
+|-------|---------|---------------------|---------------------------|
+| **Packet forwarder** | Inoltra i pacchetti radio al NS | Bassissimo | Sempre nel gateway (smart-gate) |
+| **Network Server** | Deduplica, gestione MAC, ADR, sessione | Alto per real-time | Locale allo smart-gate (strato edge) + replica al CdC |
+| **Join Server** | Autenticazione OTAA, gestione chiavi | Basso (interviene solo al primo join) | Centralizzato — vedi §3.2.9 |
+| **Application Server** | Decodifica payload, logica di business | Variabile per funzione | Funzioni real-time in edge, aggregazione in regionale/nazionale |
+
+Questa separazione fisica è esattamente quella che la specifica LoRaWAN raccomanda e che si trova nelle implementazioni reali (ChirpStack, The Things Stack, Actility ThingPark).
+
+#### 3.2.9 Join Server e ridondanza
+
+Il **Join Server** è il componente che gestisce le funzioni di **autenticazione e autorizzazione** dei sensori in fase di registrazione, e di **gestione delle chiavi di sessione** durante la vita operativa del dispositivo. Le sue responsabilità sono:
+
+- **Join Request Validation**: verifica le richieste di join (OTAA) inviate dai sensori, controllando la firma con la chiave **AppKey** pre-condivisa.
+- **Generazione delle chiavi di sessione**: produce le chiavi **AppSKey** (cifratura del payload) e **NwkSKey** (calcolo del MIC), le invia in modo sicuro al sensore e al network server di pertinenza.
+- **Gestione del ciclo di vita delle chiavi**: rinnovi periodici, revoche in caso di compromissione del dispositivo, rotazione delle chiavi master.
+- **Custodia delle AppKey**: mantiene il database delle chiavi master, che è il segreto più importante dell'intera infrastruttura.
+
+**Vincoli di latenza nulli o quasi.** A differenza del network server, il join server **non ha vincoli di latenza real-time**. Interviene solo:
+
+- una volta al primo provisioning del sensore (join iniziale)
+- ai rinnovi periodici della sessione (tipicamente ogni qualche giorno o settimana)
+- in caso di rejoin esplicito dopo un reset o un disservizio
+
+Si tratta di un'operazione **rara** rispetto alla telemetria normale: ogni sensore fa migliaia di uplink per ogni singolo join. Quindi il join server può tranquillamente essere **centralizzato a livello nazionale**, senza penalizzare le prestazioni della rete.
+
+**Perché centralizzare il join server è la scelta giusta.** Tre ragioni progettuali forti:
+
+1. **Le AppKey sono il segreto più sensibile dell'infrastruttura**: se un attaccante ottiene le AppKey, può clonare i sensori e iniettare dati falsi nella rete. Distribuirle in 1.000 smart-gate al bordo strada è una pessima idea dal punto di vista della sicurezza fisica. Tenerle in un datacenter al CN, dietro HSM (Hardware Security Module) e controlli di accesso fisici stretti, è enormemente più sicuro.
+2. **Provisioning unificato**: quando viene fabbricato un nuovo sensore, le sue credenziali devono essere registrate **una sola volta** in un sistema centrale. Avere un join server centralizzato semplifica drasticamente il workflow di onboarding.
+3. **Revoche immediate su tutta la rete**: se un sensore viene rubato o compromesso, la revoca deve propagarsi istantaneamente su tutta la rete nazionale. Con un join server centralizzato basta cancellare la chiave in un solo posto.
+
+**Ridondanza del join server.** Centralizzare però significa creare un single point of failure critico: se il join server è down, **nessun sensore nuovo può aggregarsi alla rete** e i rinnovi di sessione falliscono (i sensori esistenti continuano a funzionare con la sessione corrente, ma alla scadenza decadono). La soluzione standard è una **configurazione in alta disponibilità multi-sito**:
+
+```
+                         JOIN SERVER (active-active)
+                ┌──────────────────────────────────┐
+                │                                  │
+       ┌────────┴─────────┐          ┌─────────────┴────┐
+       │  Join Server #1  │          │  Join Server #2  │
+       │  (DC Milano)     │◄────────►│  (DC Roma)       │
+       │                  │  replica │                  │
+       │  - HSM           │  sincrona│  - HSM           │
+       │  - DB chiavi     │          │  - DB chiavi     │
+       └──────────────────┘          └──────────────────┘
+                │                                  │
+                └──────────────┬───────────────────┘
+                               │ load balancer geografico (anycast/GSLB)
+                               │
+                  ┌────────────┴────────────┐
+                  │     Network Servers     │
+                  │  (edge negli smart-gate │
+                  │   + regionali nei CdC)  │
+                  └─────────────────────────┘
+```
+
+Caratteristiche dell'alta disponibilità del join server:
+
+- **Due istanze in due data-center geograficamente separati** (es. Milano e Roma), in configurazione **active-active**. Entrambe servono richieste, non c'è un'istanza "in caldo" inutilizzata.
+- **Database delle chiavi replicato sincronicamente** tra i due siti, su link in fibra dedicato. La replica sincrona è obbligatoria: una nuova chiave creata su un sito deve essere immediatamente visibile sull'altro, altrimenti un sensore appena registrato potrebbe non poter fare join se la richiesta arriva al sito "indietro".
+- **HSM (Hardware Security Module)** in ogni sito per la custodia delle chiavi master: le AppKey non lasciano mai l'HSM in chiaro, le operazioni di crittografia avvengono dentro l'HSM, neanche un amministratore di sistema può estrarle.
+- **Bilanciamento via GSLB (Global Server Load Balancing)** o **anycast IP**: i network server raggiungono il join server tramite un endpoint logico unico (es. `join.smart-road.example`) che il GSLB risolve sul sito più vicino e funzionante. In caso di failure di un sito, il GSLB rimuove l'IP dalla risoluzione DNS in pochi secondi e tutto il traffico converge sull'altro sito.
+- **Disaster Recovery di terzo livello**: backup giornaliero delle chiavi master (cifrato e replicato su storage offline) in un terzo sito, per il caso catastrofico di perdita simultanea di entrambi i data-center primari (incendio, attacco fisico). Recovery time obiettivo nell'ordine delle ore.
+
+**Una piccola nota progettuale.** Esiste in commercio anche la possibilità di affidare il join server a un provider esterno specializzato (es. Actility, Senet, alcuni operatori telco offrono questo come servizio gestito). Per un progetto di infrastruttura critica nazionale come la rete autostradale è però **preferibile mantenere il controllo interno**: le chiavi master sono un asset strategico del paese e affidarle a un terzo introduce dipendenze contrattuali e geopolitiche che vale la pena evitare.
+
+#### 3.2.10 Riassunto dei vantaggi della scelta
 
 - **Zero scavi lungo il km**: nessun cavo di alimentazione né di dati per i sensori. Costo di posa fortemente abbattuto rispetto a soluzioni cablate.
 - **Installazione e manutenzione modulare**: ogni sensore è una scatoletta indipendente fissata al guard-rail in mezz'ora.
 - **Energia autonoma a tempo indeterminato**: batteria + microfotovoltaico → nessuna manutenzione energetica per anni.
 - **Ridondanza gratuita**: sensori al confine tra due km sono ricevibili da entrambi i gateway adiacenti, il network server deduplica.
-- **Sicurezza forte**: cifratura end-to-end del payload (AppSKey), autenticazione e integrità tramite MIC (NwkSKey), OTAA per il provisioning sicuro delle chiavi di sessione.
+- **Decisioni di sicurezza in tempo reale**: network server locale a ogni smart-gate (architettura edge) → latenza decisionale di millisecondi, autonomia in modalità degraded.
+- **Custodia centralizzata e sicura delle chiavi master**: join server ridondato active-active con HSM in due data-center separati.
+- **Sicurezza forte end-to-end**: cifratura del payload (AppSKey), autenticazione e integrità tramite MIC (NwkSKey), OTAA per il provisioning sicuro delle chiavi di sessione.
 
 ### 3.3 Comunicazione smart-gate ↔ CdC
 
 Questa è la tratta più delicata: deve essere ad alta banda (per gli stream video on-demand), bassa latenza, sempre disponibile.
 
-- **Fisicamente**: fibra ottica monomodale lungo l'autostrada (cavo posato in canalina sotto il guard-rail o nella controsoffittatura delle gallerie). Topologia ad **anello ottico** in modo che ogni smart-gate sia raggiungibile da due lati: in caso di taglio del cavo la rete si ricuce automaticamente (es. tramite protocollo **ERPS - Ethernet Ring Protection Switching**, IEEE G.8032, con tempi di failover < 50 ms).
+- **Fisicamente**: fibra ottica monomodale lungo l'autostrada, con topologia ad **anello** per la resilienza. La scelta dell'apparato attivo che chiude l'anello a ogni km è discussa in dettaglio nella sezione [§3.3.1](#331-topologia-fisica-e-spillamento-della-fibra-lungo-il-tratto).
 - **Logicamente**: link Ethernet/IP. Sopra IP si appoggiano:
   - **MQTT su TLS** per la messaggistica asincrona di telemetria, comandi e stato (publish/subscribe verso il broker del CdC).
   - **HTTPS / REST** per gli aggiornamenti di configurazione e per il push di nuove segnaletiche.
   - **RTSP/SRT** per gli stream video on-demand (solo quando l'operatore richiede la visione live).
 - **Backup**: connessione **5G/4G LTE** con APN privato della società autostradale, attivata automaticamente da BGP/SD-WAN in caso di failure della fibra.
 
-#### Modello dei topic MQTT per uno smart-gate
+#### 3.3.1 Topologia fisica e spillamento della fibra lungo il tratto
+
+Domanda progettuale importante: come si "spilla" la fibra lungo le decine di km del tratto autostradale per servire ogni smart-gate? Ci sono **tre tecnologie** che competono per questo ruolo, con equilibri costi/benefici diversi.
+
+##### A. Anello Ethernet attivo con switch industriali (livello 2)
+
+È la scelta più diffusa per le reti di campo lungo infrastrutture lineari (autostrade, ferrovie, oleodotti). In ogni smart-gate è installato uno **switch managed industriale** con almeno **2 porte ottiche** (gli "uplink" verso i due vicini sull'anello) e alcune porte Ethernet di accesso per i dispositivi interni allo smart-gate (SoC, gateway LoRaWAN, telecamere via PoE+, controller del maxi-schermo).
+
+```
+              CdC regionale (switch aggregatore)
+              ┌─────┴─────┐
+              │           │
+              ▼           ▼  fibra (cavo 1)
+   ┌────┐   ┌────┐   ┌────┐         ┌────┐
+   │ SW │═══│ SW │═══│ SW │═══...═══│ SW │
+   │km 1│   │km 2│   │km 3│         │kmN │
+   └─┬──┘   └─┬──┘   └─┬──┘         └─┬──┘
+     │        │        │              │
+   smart    smart    smart          smart
+   -gate    -gate    -gate          -gate
+
+   chiusura anello: fibra di ritorno (cavo 2 oppure
+   altra coppia di fibre dello stesso cavo) tra km N e CdC
+```
+
+**Come avviene lo "spillamento" fisicamente.** Lo switch industriale **non è un derivatore passivo**: è un dispositivo attivo che riceve il segnale ottico su una porta, lo converte in elettrico, lo elabora (forwarding L2 in base agli indirizzi MAC), lo rigenera e lo trasmette sulla porta di uscita. È a tutti gli effetti una **rigenerazione 3R** (re-amplification, re-shaping, re-timing). Questo significa che:
+
+- Il segnale viene **rigenerato** a ogni nodo: a 1 km di distanza tra nodi adiacenti la rigenerazione è ampiamente sovrabbondante (la fibra monomodale arriva tranquillamente a 40-80 km senza rigenerazione).
+- Ogni switch è un **dominio di broadcast separato**: gli switch usano i propri MAC address per scambiarsi i frame del protocollo di controllo dell'anello.
+- Il traffico verso il CdC attraversa N switch prima di arrivare a destinazione: ogni switch aggiunge tipicamente decine di microsecondi di latenza di store-and-forward. Su un tratto di 50 km, parliamo di ~1-2 ms aggiuntivi sul tempo di volo della luce in fibra (250 µs). Trascurabile.
+
+**Chiusura dell'anello.** L'anello si chiude in due modi possibili:
+
+- **Singolo cavo ottico** con due fibre fisicamente separate: una "va" e una "torna", entrambe nello stesso cavo. È economico ma in caso di taglio del cavo (escavatore, incidente, frana) **entrambi i percorsi vengono persi simultaneamente** e l'anello si spezza.
+- **Doppio cavo ottico in percorsi geograficamente diversi**: la fibra dell'andata corre sul guard-rail di destra, quella del ritorno sul guard-rail di sinistra (o nella canalina opposta). Costa di più, ma garantisce sopravvivenza a un singolo guasto fisico. È la scelta corretta per infrastruttura critica come una smart-road.
+
+**Protocollo di failover: ERPS (IEEE G.8032).** Sull'anello gira il protocollo **Ethernet Ring Protection Switching**, che in condizioni normali tiene **bloccata** una delle due tratte (il "Ring Protection Link") per evitare loop di broadcast. Quando un nodo rileva un guasto:
+
+1. Invia un messaggio R-APS (Ring-APS) di tipo "Signal Fail" ai vicini.
+2. Il nodo che teneva bloccato il RPL lo sblocca.
+3. Tutti i nodi flushano la loro tabella MAC e la riapprendono sul nuovo percorso.
+4. Tempo totale di failover: **< 50 ms**, conforme ai requisiti delle reti carrier-grade.
+
+Per il nostro progetto è essenziale: 50 ms è impercettibile sia per la telemetria MQTT che per gli stream video.
+
+##### B. Anello IP attivo con router (livello 3)
+
+Variante della precedente, ma a ogni km c'è un **router** invece di uno switch L2. La differenza pratica:
+
+- **Pro**: ogni km è un dominio L3 separato; routing dinamico (OSPF) gestisce automaticamente il failover; segmentazione del traffico migliore; isolamento dei domini di guasto.
+- **Contro**: hardware più costoso (router industriali costano significativamente più di switch industriali); convergenza OSPF tipicamente più lenta di ERPS (1-3 secondi anche con timer aggressivi vs <50 ms di ERPS); più configurazione per nodo.
+
+**Quando ha senso usarla?** Solo se il tratto è molto lungo (oltre 100 km con molti km tra nodi), se serve coesistenza con altre reti IP esterne, o se la gestione del traffico richiede policy L3 fine (ACL, QoS DSCP). Per il nostro progetto sperimentale (tratti di ~50 km) **lo switch L2 con ERPS è più adatto**: failover molto più rapido e gestione più semplice.
+
+##### C. PON — Passive Optical Network
+
+Tecnologia radicalmente diversa: a ogni km **non c'è apparato attivo**. La fibra che esce dal CdC arriva a uno **splitter ottico passivo** (un dispositivo che divide la potenza luminosa in N rami, senza alimentazione) collocato in un pozzetto a bordo strada. Ogni ramo dello splitter raggiunge un **ONT (Optical Network Terminal)** dentro uno smart-gate. Lo schema logico è quello di una **rete punto-multipunto** in cui un singolo apparato attivo al CdC (l'**OLT - Optical Line Terminal**) parla con N ONT.
+
+```
+   CdC                Splitter passivo
+   ┌────┐    fibra    ┌──────────┐    fibra
+   │OLT │═══════════►│ 1:32     │═══►ONT km 1 ─► smart-gate
+   └────┘             │ splitter │═══►ONT km 2 ─► smart-gate
+                      │          │═══►ONT km 3 ─► smart-gate
+                      │          │═══►...
+                      └──────────┘
+```
+
+**Come avviene lo "spillamento" in PON.** Lo splitter è letteralmente un **prisma in fibra ottica**: divide la potenza luminosa in ingresso su N uscite (tipicamente 1:32 o 1:64), senza alimentazione né elettronica. Tutti gli ONT ricevono **tutto il traffico downstream** (è broadcast fisico), e ciascuno **estrae solo i frame destinati al proprio identificativo** (Logical Link Identifier). In upstream, gli ONT trasmettono in TDMA coordinato dall'OLT per evitare collisioni.
+
+**Caratteristiche.**
+
+- **Pro**: zero apparato attivo a bordo strada, quindi zero alimentazione necessaria nei pozzetti intermedi, zero manutenzione di switch/router intermedi, zero punti di guasto attivi. Tecnologia che le telco usano in massa per l'FTTH residenziale.
+- **Contro**: niente ridondanza ad anello (è una topologia stella ottica passiva); se si taglia la fibra principale tra OLT e splitter, **tutti gli smart-gate dietro lo splitter perdono connettività**; banda condivisa tra tutti gli ONT (in GPON tipicamente 2.5 Gbps downstream divisa tra 32 ONT = ~80 Mbps medio, in XGS-PON 10 Gbps); cifratura del traffico downstream **obbligatoria** perché tutti vedono tutto.
+
+**Quando ha senso usarla?** Quando il vincolo principale è il **costo di manutenzione** e si accetta una resilienza minore. In autostrada, dove la fibra è soggetta a tagli accidentali, la mancanza di ridondanza ad anello è uno svantaggio rilevante. **Per il nostro progetto la scartiamo** in favore dell'anello attivo.
+
+##### Scelta per il progetto e tabella riepilogativa
+
+| Caratteristica | A — Anello L2 ERPS | B — Anello L3 OSPF | C — PON |
+|----------------|-------------------|--------------------|---------| 
+| Apparato a ogni km | Switch industriale | Router industriale | Solo ONT passivo |
+| Splitter intermedi | No (rigenerazione attiva) | No (rigenerazione attiva) | Sì (1:32 o 1:64 passivo) |
+| Resilienza | ✅ Anello, failover <50 ms | ✅ Anello, failover 1-3 s | ❌ Stella, nessuna ridondanza |
+| Banda per smart-gate | 1-10 Gbps dedicati | 1-10 Gbps dedicati | ~80-300 Mbps condivisi |
+| Costo CAPEX a km | Medio | Alto | Basso |
+| Costo OPEX (manutenzione) | Medio | Medio | Basso |
+| Alimentazione intermedia | Sì (poco) | Sì (poco) | No |
+| Scelta per il progetto | ✅ **Adottata** | ❌ Esagerata | ❌ Insufficiente resilienza |
+
+**Scelta: anello Ethernet L2 con ERPS.** Motivazioni:
+
+1. **Failover sotto i 50 ms** è essenziale per garantire che gli stream video on-demand e la telemetria MQTT non vedano interruzioni percepibili anche durante un guasto.
+2. **Banda dedicata** per smart-gate (~1 Gbps) è ampiamente sufficiente per i flussi video FullHD on-demand e per la telemetria.
+3. **Switch L2 industriali sono prodotti maturi e standardizzati** (esempi: Hirschmann, Moxa, Cisco IE series, Westermo). Costo accettabile, MTBF molto alto (decine di migliaia di ore).
+4. **L'alimentazione dello switch piggy-backa su quella già presente nello smart-gate**: lo switch sta dentro il cabinet del maxi-schermo, alimentato dalla stessa linea, esattamente come il gateway LoRaWAN. Carico aggiuntivo trascurabile (10-20 W).
+5. **Apparato fisicamente compatto**: uno switch industriale a 8-16 porte sta in un modulo DIN-rail da poche unità rack, non aumenta significativamente l'ingombro del cabinet.
+
+##### Componenti dello switch industriale a ogni smart-gate
+
+Lo switch tipo per questo scenario ha le seguenti caratteristiche:
+
+- **2 porte SFP+** per la fibra dell'anello (10 Gbps per affrontare il caso di tutti i flussi video aggregati che attraversano lo smart-gate verso il CdC).
+- **4-8 porte Gigabit Ethernet** per gli apparati interni allo smart-gate (SoC edge, telecamere PoE+, gateway LoRaWAN, controller maxi-schermo). Alcune con **PoE+** o **PoE++** per alimentare le telecamere.
+- **Alimentazione ridondata** (doppia) 24-48 VDC, alimentata dalla rete dello smart-gate con UPS.
+- **Temperatura operativa estesa** -40°C / +75°C: lo switch può lavorare anche in galleria d'estate o in montagna d'inverno senza condizionamento.
+- **Supporto ERPS** (G.8032) e VLAN 802.1Q nativi.
+- **Management out-of-band** via porta console seriale e via SNMPv3/SSH dalla rete di management dedicata.
+
+##### Tracciato fisico della fibra lungo l'autostrada
+
+La fibra fisica viene posata in modi diversi a seconda del contesto:
+
+- **Tratto a cielo aperto**: cavo in fibra armata, **canalina interrata** sotto la banchina o sotto il guard-rail. Posa con scavi minimi grazie a tecniche di **mini-trenching** (taglio della pavimentazione, posa del cavo, sigillatura). Profondità tipica 30-50 cm.
+- **Tratti in galleria**: cavo fissato alla **controsoffittatura** o a bracci metallici lungo la parete del tunnel, con guaine ignifughe LSZH (Low Smoke Zero Halogen).
+- **Tratti su viadotto**: cavo armato fissato sotto l'impalcato in alloggiamenti dedicati, con compensazione meccanica per le escursioni termiche.
+- **Pozzetti di derivazione** a ogni smart-gate (o ogni paio di km): contengono i giunti ottici e i cassetti di permutazione per spillare la fibra dello smart-gate dal cavo dell'anello. Il pozzetto è impermeabile (IP68), accessibile dalla strada per manutenzione senza chiudere la carreggiata.
+
+Il cavo in fibra tipico per questa applicazione ha **24 o 48 fibre** ottiche monomodali (G.652 standard), di cui solo 4-8 effettivamente utilizzate per la rete dello smart-gate: le altre sono **fibre di scorta ("dark fiber")** per espansioni future, sostituzione di fibre danneggiate, o servizi aggiuntivi (es. videosorveglianza dedicata, connettività per i ristoranti/aree di servizio lungo il tratto).
+
+#### 3.3.2 Modello dei topic MQTT per uno smart-gate
 
 Estendendo il modello visto nei materiali di riferimento (riferimento didattico: `sebastianomelita/ArduinoBareMetal`), si può definire una gerarchia di topic come segue. Sia `<RR>` la regione, `<TT>` il tratto, `<NNN>` l'identificatore numerico dello smart-gate (es. `LO/01/042` = Lombardia, tratto 1, smart-gate 42):
 
