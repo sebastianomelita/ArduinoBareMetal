@@ -18,6 +18,8 @@
 
 Per decenni la sicurezza di rete si è basata sul concetto di **perimetro fidato**: dentro la rete aziendale ci si fidava, fuori no. L'accesso remoto avveniva via VPN, che creava un tunnel verso la rete interna concedendo accesso di rete *ampio* a tutto ciò che stava "dentro".
 
+A differenza delle VPN e dei firewall, i servizi ZTNA sono progettati per connettere in modo sicuro specifiche entità tra di loro, senza la necessità di un accesso globale alla rete. Nella maggior parte dei casi, si tratta di dipendenti e utenti terzi che si connettono da casa, in viaggio o in ufficio. Ma tutto questo non si limita agli utenti: la tecnologia ZTNA può essere applicata anche al traffico da applicazione ad applicazione e sotto forma di microsegmentazione.
+
 ![Architettura VPN classica / Trusted Network](../img/01-vpn-trusted-network.svg)
 
 ### Caratteristiche dell'architettura
@@ -257,6 +259,7 @@ Per evitare confusioni terminologiche frequenti:
 - **Gartner** — *The Future of Network Security Is in the Cloud* (2019, definizione SASE)
 - **Gartner** — *Magic Quadrant for Security Service Edge* (annuale, dal 2022)
 - **Executive Order 14028** (USA, 2021) — Improving the Nation's Cybersecurity (mandato Zero Trust per agenzie federali)
+- https://www.hpe.com/it/it/what-is/ztna.html
 
 ---
 
