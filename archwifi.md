@@ -18,7 +18,7 @@ Servizi:
 - [DNS](https://it.wikipedia.org/wiki/Domain_Name_System)
 - [DHCP](https://it.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol)
 - [PVLAN](/approfondimenti/private_vlan.md)
-- [[Secure network moderne](/approfondimenti/dispensa_reti_moderne.md)
+- [Secure network moderne](/approfondimenti/dispensa_reti_moderne.md)
 
 ## **Caso d'uso WiFi infrastruttura** 
 
