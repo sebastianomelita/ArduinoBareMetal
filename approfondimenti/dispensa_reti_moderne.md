@@ -61,6 +61,14 @@ A differenza delle VPN e dei firewall, i servizi ZTNA sono progettati per connet
 - **Accelerazione dell’integrazione dell’IT** durante fusioni e acquisizioni o cessioni: lo ZTNA consente di accelerare ciascun processo, che normalmente richiede da 9 a 14 mesi, a pochi giorni o settimane, evitando la necessità di consolidare (o suddividere) le reti, di gestire la NAT per gli indirizzi IP sovrapposti o di creare un’infrastruttura VDI.
 - **Alternativa VDI**: evita i costi elevati, i problemi di scalabilità e la latenza della VDI tradizionale sostituendo gli ambienti virtuali complessi con ZTNA. Lo ZTNA garantisce un accesso remoto sicuro e senza interruzioni tramite connessioni dirette e basate su policy alle applicazioni, in base all'identità dell'utente, al comportamento del dispositivo e al contesto.
 
+### **vantaggi**
+
+Tre miglioramenti basilari della sicurezza: 
+- **riduzione della superficie di attacco**. ZTNA riduce le infrastrutture esposte e le opportunità di scansione: invece di pubblicare gateway VPN generici o lasciare aperti i percorsi inbound, ZTNA funge da broker per le connessioni in modo tale che l'unico livello raggiungibile sia quello di policy/broker e le applicazioni private non siano generalmente individuabili. In effetti, i malitenzionati  non possono quello che non vedono.
+- **riduzione dei movimenti laterali**. Lo ZTNA riduce il raggio d'azione limitando il movimento laterale: il modello di ZTNA evita di connettere l'utente alla rete aziendale, limitando l’accesso ad applicazioni specifiche. Tenendo gli utenti lontani dalla rete aziendale, l'azienda è in grado di ridurre drasticamente il movimento laterale e quindi il rischio.
+- **applicazione più coerente delle policy in tutte le sedi**. Lo ZTNA migliora la coerenza e la resilienza negli ambienti ibridi: L’Universal ZTNA (UZTNA) viene descritto come un sistema che estende la stessa applicazione del principio zero trust a tutti i percorsi di accesso (da remoto e on-premise), con le stesse policy che si applicano se l’utente si trova in un bar o alla scrivania. Inoltre, le funzionalità ZTNA Private Edge mantengono il traffico a livello locale e possono supportare la continuità operativa quando Internet non è disponibile, migliorando la resilienza operativa e garantendo al contempo controlli di sicurezza coerenti. 
+
+
 ### **Come funziona ZTNA**
 
 Lo ZTNA crea una connessione sicura e crittografata tra il dispositivo dell'utente e l'applicazione o il servizio privato a cui deve accedere. Di solito prevede quanto segue.
