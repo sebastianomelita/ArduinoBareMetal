@@ -61,7 +61,7 @@ A differenza delle VPN e dei firewall, i servizi ZTNA sono progettati per connet
 - **Accelerazione dell’integrazione dell’IT** durante fusioni e acquisizioni o cessioni: lo ZTNA consente di accelerare ciascun processo, che normalmente richiede da 9 a 14 mesi, a pochi giorni o settimane, evitando la necessità di consolidare (o suddividere) le reti, di gestire la NAT per gli indirizzi IP sovrapposti o di creare un’infrastruttura VDI.
 - **Alternativa VDI**: evita i costi elevati, i problemi di scalabilità e la latenza della VDI tradizionale sostituendo gli ambienti virtuali complessi con ZTNA. Lo ZTNA garantisce un accesso remoto sicuro e senza interruzioni tramite connessioni dirette e basate su policy alle applicazioni, in base all'identità dell'utente, al comportamento del dispositivo e al contesto.
 
-### **vantaggi**
+### **Vantaggi**
 
 Tre miglioramenti basilari della sicurezza: 
 - **riduzione della superficie di attacco**. ZTNA riduce le infrastrutture esposte e le opportunità di scansione: invece di pubblicare gateway VPN generici o lasciare aperti i percorsi inbound, ZTNA funge da broker per le connessioni in modo tale che l'unico livello raggiungibile sia quello di policy/broker e le applicazioni private non siano generalmente individuabili. In effetti, i malitenzionati  non possono quello che non vedono.
