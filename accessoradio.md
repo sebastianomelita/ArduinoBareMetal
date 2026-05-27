@@ -233,6 +233,8 @@ Altre **caratteristiche positive** di Lora sono:
 - Resistenza agli effetti multi-percorso
 - Resistenza all'effetto Doppler (applicazioni mobili)
 
+L'**efficienza spettrale** LoRa (espressa in bit/s/Hz) è intenzionalmente molto bassa rispetto ad altre modulazioni (es. QAM). La priorità è far decodificare il messaggio a grandissime distanze con un consumo energetico irrisorio, sacrificando la quantità di dati trasferibili nell'unità di tempo
+
 Può essere adoperato da solo, implementando su di esso uno **stack custom**, oppure come parte della pila **LoraWAN** mantenuta dalla Lora Alliance, purchè l'accesso radio rispetti le regolamentazioni valide per la banda **ISM** per cui è nato.
 
 
