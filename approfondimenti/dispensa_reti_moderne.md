@@ -283,7 +283,7 @@ Per evitare confusioni terminologiche frequenti:
 - **Gartner** — *The Future of Network Security Is in the Cloud* (2019, definizione SASE)
 - **Gartner** — *Magic Quadrant for Security Service Edge* (annuale, dal 2022)
 - **Executive Order 14028** (USA, 2021) — Improving the Nation's Cybersecurity (mandato Zero Trust per agenzie federali)
-- https://www.hpe.com/it/it/what-is/ztna.html
+- **HPE Zero Trust Network Access (ZTNA)** -  https://www.hpe.com/it/it/what-is/ztna.html
 
 ---
 
