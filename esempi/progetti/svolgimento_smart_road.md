@@ -42,7 +42,7 @@ Prima di entrare nel dettaglio tecnico è opportuno fissare alcune **ipotesi agg
 
 L'architettura proposta è **gerarchica a 3 livelli**, modello che si presta naturalmente al problema perché replica la struttura fisica della rete autostradale (gate locale → tratto regionale → coordinamento nazionale).
 
-![Architettura gerarchica a tre livelli](./img/architettura_3_livelli.svg)
+![Architettura gerarchica a tre livelli](./../img/architettura_3_livelli.svg)
 
 ### 2.1 Livello smart-gate (edge)
 
@@ -105,7 +105,7 @@ Una delle scelte progettuali più caratterizzanti del progetto è realizzare la 
 
 #### 3.2.1 Topologia fisica della rete di sensori
 
-![Topologia LoRaWAN del km autostradale](./img/topologia_lorawan_km.svg)
+![Topologia LoRaWAN del km autostradale](./../img/topologia_lorawan_km.svg)
 
 #### 3.2.2 Sensori (end-device LoRaWAN)
 
@@ -229,7 +229,7 @@ Il tempo totale è dell'ordine di **centinaia di millisecondi nel caso ottimo, s
 
 La configurazione C corrisponde al pattern "federazione di reti LoRaWAN" raccomandato dalla specifica, in cui ogni regione ha il proprio network server e tutti convergono al CN a livello applicativo:
 
-![Federazione dei network server LoRaWAN](./img/federazione_network_server.svg)
+![Federazione dei network server LoRaWAN](./../img/federazione_network_server.svg)
 
 **Scelta per il progetto: architettura ibrida a due strati.** La scelta corretta non è "scegliere una configurazione e basta", ma realizzare una **gerarchia funzionale** che usa configurazioni diverse per ruoli diversi:
 
@@ -343,7 +343,7 @@ Come si "spilla" la fibra lungo le decine di km del tratto per servire ogni smar
 
 Per il progetto si adotta l'**anello Ethernet L2 con ERPS (IEEE G.8032)**: ogni smart-gate ospita uno switch industriale con 2 porte ottiche (anello) e porte di accesso per gli apparati interni; lo switch è alimentato dalla stessa linea del maxi-schermo. Il failover sotto i 50 ms garantisce continuità per gli stream video e la telemetria anche in caso di taglio della fibra. La fibra è posata in canalina sotto il guard-rail (mini-trenching), con cavi a 24-48 fibre di cui buona parte tenuta di scorta (dark fiber) per espansioni future.
 
-![Anello in fibra ottica con switch ERPS a ogni km](./img/anello_fibra_erps.svg)
+![Anello in fibra ottica con switch ERPS a ogni km](./../img/anello_fibra_erps.svg)
 
 > **Dettaglio completo** — confronto tecnico delle tre tecnologie (rigenerazione attiva vs spillamento passivo), meccanica del protocollo ERPS, specifiche dello switch industriale, tracciato fisico della posa: vedi il file [`dettaglio_spillamento_fibra.md`](./dettaglio_spillamento_fibra.md).
 
