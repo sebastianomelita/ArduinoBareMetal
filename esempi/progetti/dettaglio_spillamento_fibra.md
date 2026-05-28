@@ -24,7 +24,7 @@ Come si "spilla" la fibra lungo le decine di km del tratto autostradale per serv
 - **Rigenerazione attiva**: a ogni km c'è un apparato (switch o router) che riceve il segnale ottico, lo converte in elettrico, lo rigenera e lo ritrasmette. Il segnale "riparte nuovo" a ogni nodo.
 - **Spillamento passivo**: a ogni derivazione c'è uno splitter ottico (un prisma in fibra) che divide la potenza luminosa senza alcuna elettronica né alimentazione. Tutti ricevono lo stesso segnale e si selezionano logicamente.
 
-![Anello in fibra ottica con switch ERPS a ogni km](./img/anello_fibra_erps.svg)
+![Anello in fibra ottica con switch ERPS a ogni km](../img/anello_fibra_erps.svg)
 
 ---
 
