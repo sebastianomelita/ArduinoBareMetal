@@ -6,6 +6,8 @@
 
 > Documento di approfondimento allo svolgimento della seconda prova d'esame.
 > Riferimento traccia: Indirizzo Informatica e Telecomunicazioni - Articolazione Informatica.
+>
+[Consegna Smart Road](consegnaSmartroad.md)
 
 ---
 
