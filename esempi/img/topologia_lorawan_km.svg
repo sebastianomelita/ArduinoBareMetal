@@ -68,7 +68,7 @@
 <text class="ts" x="600" y="337" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">aria</text>
 
 <!-- ===== note in basso ===== -->
-<text class="ts" x="40" y="425">Sensori a batteria + microfotovoltaico (autonomia indefinita)</text>
+<text class="ts" x="40" y="425">Sensori a batteria o supercondensatore + microfotovoltaico (autonomia indefinita)</text>
 <text class="ts" x="40" y="442">Gateway alimentato dalla linea del maxi-schermo (rete o FV grande)</text>
 <text class="ts" x="40" y="459">Decine di sensori per km, tutti agganciati a un unico gateway baricentrico</text>
 </svg>
