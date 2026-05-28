@@ -6,8 +6,6 @@
 
 > Documento di approfondimento allo svolgimento della seconda prova d'esame.
 > Riferimento traccia: Indirizzo Informatica e Telecomunicazioni - Articolazione Informatica.
->
-[Consegna Smart Road](consegnaSmartroad.md)
 
 ---
 
@@ -47,7 +45,7 @@ Prima di entrare nel dettaglio tecnico è opportuno fissare alcune **ipotesi agg
 
 L'architettura proposta è **gerarchica a 3 livelli**, modello che si presta naturalmente al problema perché replica la struttura fisica della rete autostradale (gate locale → tratto regionale → coordinamento nazionale).
 
-![Architettura gerarchica a tre livelli](../img/architettura_3_livelli.svg)
+<img src="../img/architettura_3_livelli.svg" alt="Architettura gerarchica a tre livelli" width="680">
 
 ### 2.1 Livello smart-gate (edge)
 
@@ -111,7 +109,7 @@ Una delle scelte progettuali più caratterizzanti del progetto è realizzare la 
 
 #### 3.2.1 Topologia fisica della rete di sensori
 
-![Topologia LoRaWAN del km autostradale](../img/topologia_lorawan_km.svg)
+<img src="../img/topologia_lorawan_km.svg" alt="Topologia LoRaWAN del km autostradale" width="680">
 
 #### 3.2.2 Sensori (end-device LoRaWAN)
 
@@ -195,9 +193,53 @@ Esempio di messaggio sul topic `up` (sensore meteo del km 142 dell'A1, Lombardia
 }
 ```
 
-Il server applicativo del CdC fa **subscribe** sul pattern `smartroad/+/+/+/lora/+/up`, decodifica il campo `data` con il codec Cayenne LPP, e ri-pubblica il dato decodificato sul topic "alto livello" (`smartroad/<RR>/<TT>/<NNN>/misure/meteo`) per il consumo da parte di dashboard, sistema di archiviazione e bridge verso il Centro Nazionale.
+L'**application server** fa **subscribe** sul pattern `smartroad/+/+/+/lora/+/up`, decodifica il campo `data` con il codec Cayenne LPP, e ri-pubblica il dato decodificato sul topic "alto livello" (`smartroad/<RR>/<TT>/<NNN>/misure/meteo`) per il consumo da parte di dashboard, sistema di archiviazione e bridge verso il Centro Nazionale.
 
-#### 3.2.7 Sicurezza della rete LoRaWAN
+#### 3.2.7 Chi decodifica il payload, e dove
+
+Punto da chiarire con precisione, perché è una sorgente classica di errore. Nella catena LoRaWAN i ruoli agiscono **in sequenza**:
+
+1. Il **network server** riceve il frame, verifica il MIC con la NwkSKey (integrità + autenticazione), deduplica e gestisce l'ADR. **Non legge il contenuto applicativo.**
+2. L'**application server** riceve il payload, lo **decifra** con la AppSKey e poi lo **decodifica** dal formato compatto Cayenne LPP al JSON leggibile.
+
+Ne segue una conseguenza architetturale vincolante: **la decodifica del payload può avvenire solo dove c'è l'application server, che a sua volta presuppone a monte il network server.** Per questo, avendo scelto (vedi §3.2.9) di portare le decisioni di sicurezza all'edge, mettiamo **network server + application server insieme all'edge** — a bordo di ogni gateway (configurazione A) o ogni N gateway (configurazione B). È lì che il payload diventa un dato in chiaro.
+
+##### I due livelli di cifratura (indipendenti)
+
+Sul percorso del dato convivono **due cifrature sovrapposte e indipendenti**, che proteggono cose diverse:
+
+| Livello | Cosa cifra | Con quale chiave | Chi può "aprirla" |
+|---------|-----------|------------------|-------------------|
+| **Applicativo (end-to-end LoRaWAN)** | Il payload del sensore (le misure) | **AppSKey** | Solo l'application server |
+| **Trasporto (a salti)** | Il canale IP tra due nodi (involucro MQTT, topic, metadati) | sessione **TLS** | I nodi terminanti TLS (gateway, broker, ecc.) |
+
+La chiave è che **il payload resta cifrato con AppSKey anche dentro il tunnel TLS**: nessun nodo intermedio (gateway che inoltra, broker che smista) può leggere le misure, perché non possiede la AppSKey. Il TLS protegge l'involucro; la AppSKey protegge il contenuto.
+
+##### Come viaggia il dato verso il Centro Nazionale
+
+Poiché network server + application server stanno all'edge, **la decifratura e la decodifica avvengono vicino alla sorgente**. Da quel momento il dato è in chiaro (JSON) e viaggia verso il CN come normale messaggio **MQTT su TLS**: il CN riceve un dato già leggibile e **non ha bisogno della AppSKey**. La AppSKey resta confinata all'edge (dove serve a decifrare) e al join server (dove viene generata); non viene mai propagata al CN. Le chiavi *master* (AppKey) non lasciano mai il join server (§3.2.10).
+
+> In altre parole, per spedire il dato all'archiviazione centrale **non** si manda il payload ancora cifrato con AppSKey attraverso il broker: lo si decodifica prima, all'edge, e si manda il JSON in chiaro protetto dal solo TLS di trasporto. Mandare il payload cifrato fino a un application server centrale (scenario alternativo) funzionerebbe tecnicamente, ma costringerebbe a tenere la AppSKey al centro e rinuncerebbe alla decodifica vicino alla sorgente: incoerente con la scelta edge della §3.2.9.
+
+##### Il rischio della scelta edge e come mitigarlo
+
+Va dichiarato apertamente: **tenere l'application server all'edge è un compromesso, non una soluzione a costo zero.** Il prezzo della bassa latenza è che le **AppSKey** dei sensori risiedono fisicamente in un nodo a bordo strada, accessibile a chi abbia mezzi e determinazione. È un trade-off consapevole tra reattività (decisioni di sicurezza in millisecondi) ed esposizione delle chiavi di sessione. Per renderlo accettabile servono tre difese su piani diversi, da adottare **insieme**.
+
+**1. Mutua autenticazione forte tra nodo edge e join/application server (mTLS).** Quando il join server distribuisce le AppSKey, deve consegnarle *solo* al nodo edge legittimo. Il canale è protetto da **mutual TLS**: sia il join server sia il nodo edge si presentano con un certificato X.509 emesso da una PKI interna. Un nodo edge clonato o sostituito da un attaccante non possiede un certificato valido, quindi **non riesce a farsi consegnare le chiavi** né a riconnettersi al backend. L'identità del nodo è inoltre **vincolata ai DevEUI di sua competenza**: un application server è autorizzato a ricevere le chiavi solo dei sensori del proprio km, non dell'intera rete (principio del minimo privilegio).
+
+**2. Custodia delle chiavi in modulo anti-tampering (Secure Element / HSM all'edge).** L'autenticazione del canale non basta: bisogna proteggere le chiavi *una volta arrivate* sul nodo. Le AppSKey (e la chiave privata del certificato del nodo) vanno custodite in un **Secure Element** o **HSM** integrato nell'apparato edge — un chip che esegue le operazioni crittografiche al proprio interno e **non rivela mai le chiavi in chiaro**, nemmeno al microcontrollore che lo ospita. Aprire fisicamente il cabinet e leggere la memoria flash non basta più a estrarre le chiavi. I moduli anti-tampering di buona qualità **azzerano automaticamente** il contenuto (zeroization) al rilevamento di intrusione fisica (apertura dell'involucro, sbalzo di temperatura/tensione, tentativo di accesso ai bus interni).
+
+**3. Attestazione dell'integrità prima della consegna delle chiavi.** È l'anello che lega le prime due: il join server consegna le AppSKey **solo dopo** che il nodo ha dimostrato di essere integro e non manomesso. Il nodo edge esegue un **secure boot** (avvia solo firmware firmato) e fornisce una **attestazione** basata su TPM/HSM del proprio stato; se l'attestazione fallisce — perché il firmware è stato alterato o il cabinet manomesso — il join server **rifiuta di inviare le chiavi**. Così la mutua autenticazione (chi sei) si combina con l'anti-tampering (sei integro) prima che qualunque segreto scenda all'edge.
+
+**Reti di sicurezza a contorno**, già previste altrove nel progetto:
+
+- **Tamper detection del cabinet** (§5.2): l'apertura genera un allarme immediato al SOC, che **revoca** centralmente certificati e sessioni del nodo. L'attaccante resta con chiavi morte.
+- **Rinnovo delle sessioni** (rejoin): le AppSKey eventualmente esfiltrate scadono al rinnovo; un `ForceRejoinReq` in downlink può invalidarle subito, senza mai trasmettere chiavi (la AppKey master non scende mai — §3.2.10).
+- **Contenimento del blast radius**: la compromissione di un nodo espone solo i sensori di *quel* km, e solo per la durata della sessione corrente; non si propaga né nello spazio né nel tempo.
+
+In sintesi: la scelta edge resta valida **a condizione** che il nodo edge sia trattato come un dispositivo di sicurezza a sé — autenticato mutuamente, con chiavi in modulo anti-tampering, e con consegna delle chiavi subordinata all'attestazione di integrità. Senza queste difese, l'application server all'edge sarebbe effettivamente un punto debole; con esse, il rischio residuo è circoscritto e gestibile.
+
+#### 3.2.8 Sicurezza della rete LoRaWAN
 
 Ogni sensore si registra al network server tramite **Over-the-Air Activation (OTAA)**. In fabbrica il sensore viene programmato con:
 
@@ -205,14 +247,14 @@ Ogni sensore si registra al network server tramite **Over-the-Air Activation (OT
 - **AppEUI**: identificatore dell'applicazione di destinazione (è un parametro del network server).
 - **AppKey**: chiave segreta pre-condivisa a 128 bit, scambiata su canale sicuro tra dispositivo e join server.
 
-Al primo join, il join server usa la AppKey per generare e distribuire al sensore due chiavi di sessione:
+Al primo join, il join server usa la AppKey per generare e distribuire due chiavi di sessione:
 
-- **AppSKey**: utilizzata per cifrare con AES il payload applicativo. Garantisce la **confidenzialità** dei dati: solo il server applicativo (che possiede la stessa chiave) può decifrare.
+- **AppSKey**: utilizzata per cifrare con AES il payload applicativo. Garantisce la **confidenzialità** dei dati: solo l'application server (che possiede la stessa chiave) può decifrare. Viene distribuita all'**application server edge** competente per quel sensore.
 - **NwkSKey**: utilizzata come chiave in ingresso all'algoritmo **AES-CMAC** per calcolare il **MIC (Message Integrity Code)** di ogni frame. Il sensore allega il MIC al messaggio; il network server ricalcola localmente il MIC con la stessa chiave e verifica la coincidenza. Se i due MIC coincidono, sono provate **simultaneamente l'integrità del messaggio e l'autenticazione del mittente**.
 
 Questo meccanismo è anche un caso applicativo concreto delle **funzioni hash crittografiche** (quesito 4 della seconda parte): AES-CMAC è una funzione di tipo HMAC che produce un'impronta non falsificabile senza conoscere la chiave.
 
-#### 3.2.8 Architettura distribuita dei network server
+#### 3.2.9 Architettura distribuita dei network server
 
 Una scelta progettuale importante riguarda **dove collocare fisicamente i network server**. La specifica LoRaWAN canonica prevede una topologia "stella di stelle" in cui i gateway sono packet forwarder stupidi e tutta l'intelligenza sta nel network server. Nel nostro progetto questa scelta classica presenta un problema serio.
 
@@ -235,7 +277,7 @@ Il tempo totale è dell'ordine di **centinaia di millisecondi nel caso ottimo, s
 
 La configurazione C corrisponde al pattern "federazione di reti LoRaWAN" raccomandato dalla specifica, in cui ogni regione ha il proprio network server e tutti convergono al CN a livello applicativo:
 
-![Federazione dei network server LoRaWAN](../img/federazione_network_server.svg)
+<img src="../img/federazione_network_server.svg" alt="Federazione dei network server LoRaWAN" width="680">
 
 **Scelta per il progetto: architettura ibrida a due strati.** La scelta corretta non è "scegliere una configurazione e basta", ma realizzare una **gerarchia funzionale** che usa configurazioni diverse per ruoli diversi:
 
@@ -260,12 +302,12 @@ La motivazione forte per la configurazione A allo strato edge è l'argomento del
 |-------|---------|---------------------|---------------------------|
 | **Packet forwarder** | Inoltra i pacchetti radio al NS | Bassissimo | Sempre nel gateway (smart-gate) |
 | **Network Server** | Deduplica, gestione MAC, ADR, sessione | Alto per real-time | Locale allo smart-gate (strato edge) + replica al CdC |
-| **Join Server** | Autenticazione OTAA, gestione chiavi | Basso (interviene solo al primo join) | Centralizzato — vedi §3.2.9 |
-| **Application Server** | Decodifica payload, logica di business | Variabile per funzione | Funzioni real-time in edge, aggregazione in regionale/nazionale |
+| **Join Server** | Autenticazione OTAA, gestione chiavi | Basso (interviene solo al primo join) | Centralizzato — vedi §3.2.10 |
+| **Application Server** | Decifratura (AppSKey) + decodifica payload (Cayenne LPP), logica di business | Variabile per funzione | **Decodifica all'edge** insieme al NS (§3.2.7); aggregazione/analytics in nazionale |
 
 Questa separazione fisica è esattamente quella che la specifica LoRaWAN raccomanda e che si trova nelle implementazioni reali (ChirpStack, The Things Stack, Actility ThingPark).
 
-#### 3.2.9 Join Server e ridondanza
+#### 3.2.10 Join Server e ridondanza
 
 Il **Join Server** è il componente che gestisce le funzioni di **autenticazione e autorizzazione** dei sensori in fase di registrazione, e di **gestione delle chiavi di sessione** durante la vita operativa del dispositivo. Le sue responsabilità sono:
 
@@ -322,7 +364,7 @@ Caratteristiche dell'alta disponibilità del join server:
 
 **Una piccola nota progettuale.** Esiste in commercio anche la possibilità di affidare il join server a un provider esterno specializzato (es. Actility, Senet, alcuni operatori telco offrono questo come servizio gestito). Per un progetto di infrastruttura critica nazionale come la rete autostradale è però **preferibile mantenere il controllo interno**: le chiavi master sono un asset strategico del paese e affidarle a un terzo introduce dipendenze contrattuali e geopolitiche che vale la pena evitare.
 
-#### 3.2.10 Riassunto dei vantaggi della scelta
+#### 3.2.11 Riassunto dei vantaggi della scelta
 
 - **Zero scavi lungo il km**: nessun cavo di alimentazione né di dati per i sensori. Costo di posa fortemente abbattuto rispetto a soluzioni cablate.
 - **Installazione e manutenzione modulare**: ogni sensore è una scatoletta indipendente fissata al guard-rail in mezz'ora.
@@ -331,6 +373,7 @@ Caratteristiche dell'alta disponibilità del join server:
 - **Decisioni di sicurezza in tempo reale**: network server locale a ogni smart-gate (architettura edge) → latenza decisionale di millisecondi, autonomia in modalità degraded.
 - **Custodia centralizzata e sicura delle chiavi master**: join server ridondato active-active con HSM in due data-center separati.
 - **Sicurezza forte end-to-end**: cifratura del payload (AppSKey), autenticazione e integrità tramite MIC (NwkSKey), OTAA per il provisioning sicuro delle chiavi di sessione.
+- **Trade-off edge gestito**: l'application server all'edge espone le AppSKey a bordo strada; il rischio è mitigato con mutua autenticazione (mTLS), custodia delle chiavi in modulo anti-tampering (Secure Element/HSM) e attestazione di integrità prima della consegna delle chiavi (§3.2.7).
 
 ### 3.3 Comunicazione smart-gate ↔ CdC
 
@@ -349,7 +392,7 @@ Come si "spilla" la fibra lungo le decine di km del tratto per servire ogni smar
 
 Per il progetto si adotta l'**anello Ethernet L2 con ERPS (IEEE G.8032)**: ogni smart-gate ospita uno switch industriale con 2 porte ottiche (anello) e porte di accesso per gli apparati interni; lo switch è alimentato dalla stessa linea del maxi-schermo. Il failover sotto i 50 ms garantisce continuità per gli stream video e la telemetria anche in caso di taglio della fibra. La fibra è posata in canalina sotto il guard-rail (mini-trenching), con cavi a 24-48 fibre di cui buona parte tenuta di scorta (dark fiber) per espansioni future.
 
-![Anello in fibra ottica con switch ERPS a ogni km](../img/anello_fibra_erps.svg)
+<img src="../img/anello_fibra_erps.svg" alt="Anello in fibra ottica con switch ERPS a ogni km" width="680">
 
 > **Dettaglio completo** — confronto tecnico delle tre tecnologie (rigenerazione attiva vs spillamento passivo), meccanica del protocollo ERPS, specifiche dello switch industriale, tracciato fisico della posa: vedi il file [`dettaglio_spillamento_fibra.md`](./dettaglio_spillamento_fibra.md).
 
@@ -370,7 +413,7 @@ smartroad/<RR>/<TT>/<NNN>/config
 
 Ruoli sui topic:
 
-- **`misure/*`**: lo smart-gate è **publisher**, il server applicativo del CdC è **subscriber**. Sono usati per inviare la telemetria periodica (cadenza tipica: meteo ogni 30 s, aria ogni 60 s, fondo ogni 10 s).
+- **`misure/*`**: pubblicati dall'**application server edge** dopo la decodifica del payload LoRaWAN (Cayenne LPP → JSON, vedi §3.2.7); i subscriber sono la dashboard dell'operatore al CdC e il bridge verso il CN. Telemetria periodica (cadenza tipica: meteo ogni 30 s, aria ogni 60 s, fondo ogni 10 s).
 - **`eventi/targhe`**: lo smart-gate pubblica un messaggio asincrono ogni volta che riconosce una targa. Il CdC è subscriber e inoltra i dati al CN.
 - **`comandi/schermo`**: il server del CdC è **publisher** (o l'operatore tramite la console), lo smart-gate è **subscriber**. Tramite questo canale si invia la segnaletica da visualizzare.
 - **`stato/schermo`**: lo smart-gate è **publisher** e conferma in modalità PUSH il contenuto attualmente visualizzato. Serve all'operatore come feedback e al sistema per chiusura del loop comando-conferma.
@@ -451,10 +494,10 @@ Spazio scelto: `10.0.0.0/8`. Strutturato gerarchicamente in modo che dall'IP si 
 
 ```
 10.<RR>.<TT>.<NNN>
-      │   │    │
-      │   │    └── host nel tratto (0-255)
-      │   └─────── numero tratto nella regione (0-255)
-      └─────────── codice regione (1-20)
+        │   │    │
+        │   │    └── host nel tratto (0-255)
+        │   └─────── numero tratto nella regione (0-255)
+        └─────────── codice regione (1-20)
 ```
 
 | Range | Uso |
@@ -471,6 +514,10 @@ Spazio scelto: `10.0.0.0/8`. Strutturato gerarchicamente in modo che dall'IP si 
 | `10.<RR>.<TT>.11-50` | Workstation operatori, dispositivi management |
 | `10.<RR>.<TT>.51-200` | Smart-gate (1 IP ciascuno; ne basterebbero 50 ma riserva per espansioni) |
 | `10.<RR>.<TT>.201-250` | Stazioni di ricarica del tratto |
+
+Questo schema è di tipo **classful semplificato** (ogni campo occupa un ottetto), quindi limita a 256 il numero di tratti per regione. Se il progetto si estende ai tratti pericolosi delle strade statali, occorre passare a uno schema **classless** che superi questo limite mantenendo 256 host per tratto.
+
+> **Approfondimento** — variante di subnetting da classful a classless (5 bit regione = 32 regioni, 11 bit tratto = 2048 tratti/regione, 8 bit host = 256 indirizzi), con tabella delle subnet, aggregazione per regione e riserva di range per le statali: vedi il file [`dettaglio_subnetting_classless.md`](./dettaglio_subnetting_classless.md).
 
 ### 4.2 Segmentazione interna di uno smart-gate
 
