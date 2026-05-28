@@ -72,7 +72,7 @@ Tecnologia radicalmente diversa: a ogni km **non c'è apparato attivo**. La fibr
 ```
    CdC                Splitter passivo
    ┌────┐    fibra    ┌──────────┐    fibra
-   │OLT │═══════════►│ 1:32     │═══►ONT km 1 ─► smart-gate
+   │OLT │═══════════► │ 1:32     │═══►ONT km 1 ─► smart-gate
    └────┘             │ splitter │═══►ONT km 2 ─► smart-gate
                       │          │═══►ONT km 3 ─► smart-gate
                       │          │═══►...
