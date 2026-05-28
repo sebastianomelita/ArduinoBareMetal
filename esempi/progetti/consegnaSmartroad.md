@@ -1,3 +1,6 @@
+>[Torna a svolgimento Smart Road](svolgimento_smart_road.md)>[Torna a Dettaglio architettura LoRaWAN](/lorawanclasses.md) 
+>
+
 # Esame di Stato di Istituto Tecnico 2023/24 — Traccia
 
 **Indirizzo:** Informatica e Telecomunicazioni
