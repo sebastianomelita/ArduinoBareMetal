@@ -45,7 +45,7 @@ Prima di entrare nel dettaglio tecnico è opportuno fissare alcune **ipotesi agg
 
 L'architettura proposta è **gerarchica a 3 livelli**, modello che si presta naturalmente al problema perché replica la struttura fisica della rete autostradale (gate locale → tratto regionale → coordinamento nazionale).
 
-![Architettura gerarchica a tre livelli](./../img/architettura_3_livelli.svg)
+![Architettura gerarchica a tre livelli](../img/architettura_3_livelli.svg)
 
 ### 2.1 Livello smart-gate (edge)
 
@@ -56,7 +56,8 @@ Ogni smart-gate è un nodo **edge computing** con le seguenti caratteristiche:
 | SoC | Industrial mini-PC con CPU quad-core ARM/x86, 8 GB RAM, SSD 256 GB | Capacità di eseguire localmente algoritmi di computer vision (riconoscimento targhe) e logica di emergenza |
 | OS | Linux real-time hardened | Determinismo per il controllo del maxi-schermo, sicurezza |
 | Telecamere | 2-4 telecamere IP PoE+ FullHD, una con ottica per targhe (OCR locale) | Riduzione banda: si trasmette il dato strutturato (targa+timestamp), non sempre il video |
-| Sensori | Centralina meteo, sensore di luminosità/visibilità, accelerometri sul fondo stradale, sensori PM10/PM2.5/NOx, fonometro | Acquisizione locale via bus Modbus/RS-485 o LoRa-PHY |
+| Sensori ambientali | Misure di meteo, visibilità, condizioni del fondo stradale, qualità dell'aria (PM10/PM2.5/NOx) e inquinamento acustico | **Non cablati al SoC**: sono end-device LoRaWAN wireless distribuiti lungo il km sul guard-rail, raccolti dal gateway LoRaWAN del cabinet (vedi §3.2) |
+| Gateway LoRaWAN | Concentratore radio 868 MHz (es. Semtech SX1302, 8 canali) | Aggrega i sensori wireless del km e li inoltra via IP al network server |
 | Maxi-schermo | LED matrix controller via Ethernet | Aggiornamento dinamico via API REST locale |
 | Connettività primaria | Fibra ottica dedicata (lungo la canalina del guard-rail) | Banda garantita, latenza bassa, alimentazione PoE++ possibile |
 | Connettività di backup | Modem 5G/4G LTE con SIM M2M | Continuità in caso di taglio fibra |
@@ -108,7 +109,7 @@ Una delle scelte progettuali più caratterizzanti del progetto è realizzare la 
 
 #### 3.2.1 Topologia fisica della rete di sensori
 
-![Topologia LoRaWAN del km autostradale](./../img/topologia_lorawan_km.svg)
+![Topologia LoRaWAN del km autostradale](../img/topologia_lorawan_km.svg)
 
 #### 3.2.2 Sensori (end-device LoRaWAN)
 
@@ -232,7 +233,7 @@ Il tempo totale è dell'ordine di **centinaia di millisecondi nel caso ottimo, s
 
 La configurazione C corrisponde al pattern "federazione di reti LoRaWAN" raccomandato dalla specifica, in cui ogni regione ha il proprio network server e tutti convergono al CN a livello applicativo:
 
-![Federazione dei network server LoRaWAN](./../img/federazione_network_server.svg)
+![Federazione dei network server LoRaWAN](../img/federazione_network_server.svg)
 
 **Scelta per il progetto: architettura ibrida a due strati.** La scelta corretta non è "scegliere una configurazione e basta", ma realizzare una **gerarchia funzionale** che usa configurazioni diverse per ruoli diversi:
 
@@ -346,7 +347,7 @@ Come si "spilla" la fibra lungo le decine di km del tratto per servire ogni smar
 
 Per il progetto si adotta l'**anello Ethernet L2 con ERPS (IEEE G.8032)**: ogni smart-gate ospita uno switch industriale con 2 porte ottiche (anello) e porte di accesso per gli apparati interni; lo switch è alimentato dalla stessa linea del maxi-schermo. Il failover sotto i 50 ms garantisce continuità per gli stream video e la telemetria anche in caso di taglio della fibra. La fibra è posata in canalina sotto il guard-rail (mini-trenching), con cavi a 24-48 fibre di cui buona parte tenuta di scorta (dark fiber) per espansioni future.
 
-![Anello in fibra ottica con switch ERPS a ogni km](./../img/anello_fibra_erps.svg)
+![Anello in fibra ottica con switch ERPS a ogni km](../img/anello_fibra_erps.svg)
 
 > **Dettaglio completo** — confronto tecnico delle tre tecnologie (rigenerazione attiva vs spillamento passivo), meccanica del protocollo ERPS, specifiche dello switch industriale, tracciato fisico della posa: vedi il file [`dettaglio_spillamento_fibra.md`](./dettaglio_spillamento_fibra.md).
 
@@ -448,10 +449,10 @@ Spazio scelto: `10.0.0.0/8`. Strutturato gerarchicamente in modo che dall'IP si 
 
 ```
 10.<RR>.<TT>.<NNN>
-     │   │    │
-     │   │    └── host nel tratto (0-255)
-     │   └─────── numero tratto nella regione (0-255)
-     └─────────── codice regione (1-20)
+        │   │    │
+        │   │    └── host nel tratto (0-255)
+        │   └─────── numero tratto nella regione (0-255)
+        └─────────── codice regione (1-20)
 ```
 
 | Range | Uso |
@@ -852,3 +853,4 @@ Payload di esempio su `smartroad/pub/LO/01/042/signage`:
 - **MQTT/WSS** dà push real-time efficiente in termini di batteria e banda (connessione persistente, payload compatti), passa attraverso firewall e proxy aziendali (porta 443).
 - Il riuso del broker MQTT già presente nell'infrastruttura riduce costi e complessità.
 - Versionamento dell'API (`/v1`, `/v2`) consente evoluzioni senza rompere i client già distribuiti.
+
