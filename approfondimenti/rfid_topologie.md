@@ -1,4 +1,4 @@
-> [Torna alla dispensa principale RFID](../archrfid.md)
+> [Torna alla dispensa principale RFID](../archrfid.md)>
 > [Torna a reti di sensori](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/sensornetworkshort.md)
 
 # **Topologie di lettura RFID**
