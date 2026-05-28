@@ -2,6 +2,8 @@
 
 [Azienda reale che si occupa di sensoristica stradale](https://www.yetipi.com/)
 
+[Testo della prova](consegnaSmartroad.md)
+
 # Svolgimento Esame di Stato 2023/24 - Sistemi e Reti
 ## Progetto Smart-Road - Approfondimenti
 
