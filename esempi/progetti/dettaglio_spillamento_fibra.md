@@ -1,3 +1,6 @@
+>[Torna a svolgimento Smart Road](svolgimento_smart_road.md)>[Torna a Dettaglio architettura LoRaWAN](/lorawanclasses.md) 
+>
+
 # Dettaglio — Spillamento della fibra lungo il tratto autostradale
 
 > Documento di dettaglio collegato allo svolgimento principale (sezione §3.3).
