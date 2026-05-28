@@ -448,10 +448,10 @@ Spazio scelto: `10.0.0.0/8`. Strutturato gerarchicamente in modo che dall'IP si 
 
 ```
 10.<RR>.<TT>.<NNN>
-        │   │    │
-        │   │    └── host nel tratto (0-255)
-        │   └─────── numero tratto nella regione (0-255)
-        └─────────── codice regione (1-20)
+     │   │    │
+     │   │    └── host nel tratto (0-255)
+     │   └─────── numero tratto nella regione (0-255)
+     └─────────── codice regione (1-20)
 ```
 
 | Range | Uso |
