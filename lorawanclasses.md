@@ -46,8 +46,12 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 - gestire eventuali **vincoli di prossimità**, distinguendo tra gestione di ambienti indoor e outdoor, mediante controllo di potenza o gestione del roaming e eventuali **vincoli di posizionamento** mediante trilaterazione.
+---
+## **Progetto di esempio completo**
 
+[Sito archeologico](/esempi/progetti/svolgimento_smart_road.md)
 
+---
 
 [Rete di reti lora](/approfondimenti/lorawan_federation.md)  
 
