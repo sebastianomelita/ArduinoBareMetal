@@ -49,7 +49,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 ---
 ## **Progetto di esempio completo**
 
-[Sito archeologico](/esempi/progetti/svolgimento_smart_road.md)
+[Smart Road](/esempi/progetti/svolgimento_smart_road.md)
 
 ---
 
