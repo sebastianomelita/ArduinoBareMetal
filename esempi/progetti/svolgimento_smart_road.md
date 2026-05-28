@@ -1,3 +1,6 @@
+>[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)>[Torna a Dettaglio architettura LoRaWAN](/(lorawanclasses.md) 
+>
+
 # Svolgimento Esame di Stato 2023/24 - Sistemi e Reti
 ## Progetto Smart-Road - Approfondimenti
 
