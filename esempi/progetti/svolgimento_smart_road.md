@@ -1,6 +1,6 @@
 >[Torna a reti di sensori](sensornetworkshort.md#servizi-di-accesso-radio-per-WSN)>[Torna a Dettaglio architettura LoRaWAN](/lorawanclasses.md) 
 
-[Aziende reali](https://www.yetipi.com/)
+[Azienda reale che si occupa di sensoristica stradale](https://www.yetipi.com/)
 
 # Svolgimento Esame di Stato 2023/24 - Sistemi e Reti
 ## Progetto Smart-Road - Approfondimenti
