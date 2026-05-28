@@ -1,3 +1,7 @@
+>[Torna a svolgimento Smart Road](svolgimento_smart_road.md)>[Torna a Dettaglio architettura LoRaWAN](/lorawanclasses.md) 
+>
+
+
 # Dettaglio — Variante di subnetting: da classful a classless per i tratti regionali
 
 > Documento di dettaglio collegato allo svolgimento principale (sezione §4, Piano di indirizzamento).
