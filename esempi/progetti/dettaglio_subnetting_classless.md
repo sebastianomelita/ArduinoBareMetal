@@ -134,7 +134,7 @@ Sul modello della tabella dell'azienda sanitaria, ogni subnet di tratto è un `/
 | … | … | … | … | … | … |
 | Reg 31, Tratto 2047 | `10.255.255.0/24` | `10.255.255.255` | `10.255.255.254` | `.255.1 – .255.253` | `.255.200 – .255.253` |
 
-Si osservi come, passando da una regione alla successiva, il "salto" nel secondo ottetto sia di **8** (`10.0.x` → `10.8.x` → `10.16.x` …): è la conseguenza diretta del fatto che i 3 bit bassi del secondo ottetto appartengono al campo tratto, quindi ogni regione occupa un blocco di 8 valori del secondo ottetto.
+Si osservi come, passando da una regione alla successiva, il "salto" nel secondo ottetto sia di **8** (`10.0.x` → `10.8.x` → `10.16.x` …): è la conseguenza diretta del fatto che i 3 bit bassi del secondo ottetto appartengono al campo tratto, quindi ogni regione occupa un blocco di 8 valori del secondo ottetto. In altre parole, considerando come parte di host tutta quella che comprende i bit di tratto e di sensore (8+11 bit), questa è composta di 19 bit di cui solo 3 sono nel secondo ottetto (l'ottetto di lavoro per questo host). Il riporto per questa subnet di 19 host nell'ottetto di lavoro è proprio di 2^3=8 che è il limite a partire dal quale scatta una nuova regione (il tratto diventa tutto 0 e un uno si aggiunge al prefisso di regione). 
 
 ---
 
