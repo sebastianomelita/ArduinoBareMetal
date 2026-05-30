@@ -51,6 +51,8 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 ---
 
+soluzione_scenario_C.md
+
 ## **Mappa degli approfondimenti**
 
 Per ogni argomento è disponibile una **scheda di approfondimento** dedicata. Qui di seguito i **concetti chiave** di ciascuna sezione, con il link alla pagina completa.
