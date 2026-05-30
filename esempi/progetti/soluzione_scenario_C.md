@@ -385,4 +385,85 @@ I **dati indirettamente personali** si producono nel momento in cui il PC viene 
 
 ---
 
-*Fine soluzione di riferimento — Scenario C ibrido.*
+---
+
+# Appendici — varianti minori dello Scenario C
+
+> *Le due varianti seguenti rappresentano combinazioni di ipotesi diverse, entrambe coerenti, entrambe meritevoli di punteggio se ben argomentate, ma con un funzionamento sensibilmente più povero rispetto alla soluzione ibrida principale. Si descrivono per il confronto: ciò che vale di simile rispetto allo Scenario C non viene ripetuto e si rinvia alle sezioni 1–10.*
+
+## Appendice A — Variante "UHF passivo a portali"
+
+### A.1 Ipotesi caratterizzanti
+
+Questa variante adotta la combinazione **H1(a), H2(a), H4(a), H6(a)** con ipotesi neutre su H3 (irrilevante: non si usa BLE quindi la presenza di Wi-Fi BLE-capable è indifferente) e H5(a) (cassone "muto"). Il candidato che la sceglie dichiara esplicitamente che gli **basta sapere quando il PC transita dai varchi**, che vuole **costi unitari minimi** sul singolo tag (pochi centesimi), e che accetta in cambio una notevole **rinuncia funzionale** rispetto a quanto la traccia consente.
+
+### A.2 Architettura derivata
+
+L'intero sistema poggia sul **solo tag passivo UHF** (EPC Gen2, banda 865–868 MHz, *on-metal*) applicato a ciascun PC. I lettori sono fissi a varco: uno per piano sull'accesso al corridoio, lettori dedicati all'ingresso delle aule più sensibili (laboratorio di informatica, palestra) e un **portale di tipo *hard*** al varco esterno con allarme istantaneo e trigger della videocamera. Il cassone-carica ospita un'antenna UHF integrata nello sportello che legge in massa i PC presenti all'apertura e alla chiusura. **Non esistono dispositivi BLE**: la rete Wi-Fi resta dedicata alle funzioni didattiche e non porta carico di scansione radio. Il gateway raccoglie le letture EPC e le pubblica via MQTT verso il backend, che applica la logica applicativa per ricavare gli eventi semantici (transito anomalo, uscita non autorizzata).
+
+### A.3 Funzioni: cosa resta, cosa cade
+
+- **F1 — registrazione prelievo/restituzione:** *implementata* dall'antenna UHF integrata nello sportello del cassone, con scansione massiva all'apertura e alla chiusura. Granularità: cassone (non slot specifico).
+- **F2 — posizione del cassone:** *non implementata.* Il cassone non porta un tag tracciato; si rinuncia perché in pratica si sposta poco.
+- **F3 — rilevazione di distacco PC↔cassone:** *non implementata nella forma originale.* Si degrada a evento discreto: il portale di piano segnala se un PC passa fuori dall'orario previsto, ma non c'è la nozione di "distanza dal cassone".
+- **F4 — allerta *soft* di prossimità all'uscita:** *non implementata* nella forma originale. Si può simulare con un secondo portale UHF nel corridoio a qualche metro dalla porta, che funge da pre-allarme sulla console operatore.
+- **F5 — evento di uscita + videocamera:** *implementata* nel modo classico antitaccheggio retail — portale *hard* al varco + trigger istantaneo della videocamera.
+- **F6 — ricerca del PC dimenticato:** *implementata* via reader handheld UHF in modalità "Geiger" lungo i corridoi (è la stessa funzione che nello Scenario C costituiva la rete di sicurezza, qui promossa a funzione primaria).
+
+### A.4 Quesiti — risposte sintetiche
+
+**Quesito I.** Il "distacco" si riduce a un evento di transito non autorizzato dal varco di piano. L'algoritmo risiede interamente al backend: a ogni lettura EPC, il server applicativo verifica se il PC è nel registro dei prestiti autorizzati per l'orario corrente; in caso negativo emette un evento `transito_anomalo`. Nessun calcolo locale, nessun RSSI, nessuna isteresi temporale: solo lookup discreto in un database. La latenza è dell'ordine dei secondi e la granularità è quella del varco di piano, non del cassone.
+
+**Quesito II.** Doppia rilevazione realizzata con due portali UHF in serie: il primo a circa tre metri dentro il corridoio (*soft alert*), il secondo sulla soglia esterna (*hard alert* + trigger camera). La criticità intrinseca è che un tag UHF non porta informazione di traiettoria: il portale interno spara comunque, anche se lo studente torna indietro. I falsi positivi sono parte del prezzo da pagare per la semplicità della tecnologia.
+
+**Quesito III.** Topic MQTT e payload JSON molto più semplici: una sola classe di sorgente (lettore UHF), una sola classe di evento di campo (`lettura_portale`). È il backend a derivare semanticamente gli eventi applicativi (transito anomalo, uscita non autorizzata) tramite arricchimento successivo contro il registro dei prestiti. Il gateway esegue un ciclo che legge dal reader, filtra i duplicati entro due secondi, pubblica su MQTT e mantiene il buffer locale in caso di interruzione della rete.
+
+**Quesito IV.** Privacy notevolmente semplificata. Poiché non esiste tracciamento continuo, non c'è dato di posizione continua di natura potenzialmente personale: restano solo gli eventi discreti di transito ai varchi, di per sé patrimoniali. Il richiamo allo Statuto dei lavoratori (per analogia agli studenti) è meno cogente. Restano la cifratura del registro studente-PC, la pseudonimizzazione e il ruolo del DPO, ma la DPIA risulta più snella perché il volume e la sensibilità del trattamento sono inferiori.
+
+---
+
+## Appendice B — Variante "BLE attivo puro"
+
+### B.1 Ipotesi caratterizzanti
+
+Combinazione **H1(b), H2(b), H3(b), H4(b), H5(b), H6(b)**. È identica a quella dello Scenario C tranne che per **H2**: qui il dispositivo radio sul PC è **soltanto** il beacon attivo, senza il tag UHF passivo di backup. La scelta è coerente per chi privilegia la **semplicità di un'unica tecnologia** rispetto alla resilienza ridondante della soluzione a due tag eterogenei.
+
+### B.2 Architettura derivata
+
+Identica a quella dello Scenario C descritta alla sezione 2, **rimuovendo interamente lo strato UHF**: niente tag passivo sul PC, niente antenna UHF integrata nello sportello del cassone, niente portale UHF al varco di uscita. Restano tutte le radio BLE già presenti (sui PC come beacon, sui cassoni e sugli AP come scanner, ai varchi come scanner di prossimità) e il backend resta invariato. Nel diagramma di architettura della sezione 2 si può immaginare di depennare i blocchi e le frecce relative al canale UHF.
+
+### B.3 Funzioni: tutte presenti, una è esposta
+
+Tutte e sei le funzioni F1–F6 sono implementate **esattamente come nello Scenario C** sul canale BLE; la registrazione di restituzione al cassone (F1) si appoggia all'RSSI del beacon che sale sopra la soglia di slot. La differenza essenziale è di **resilienza**: se il beacon BLE di un PC viene rimosso, danneggiato o ha la batteria scarica, il PC diventa **invisibile al sistema**. Nello Scenario C il tag UHF passivo intercettava comunque il PC al varco esterno; qui non c'è secondo livello, e l'unica difesa è l'evento `beacon_silente` (stato `LOST` della macchina a stati) che si attiva dopo 60 secondi di silenzio. Una rimozione effettuata già fuori dall'edificio non è rilevabile in tempo utile.
+
+### B.4 Quesiti — risposte sintetiche
+
+**Quesito I.** Identico allo Scenario C, sezione 7. Stessa macchina a stati, stesse soglie RSSI, stessa isteresi temporale, stesso payload JSON.
+
+**Quesito II.** Identica disposizione fisica del doppio scanner BLE descritta alla sezione 8, ma il blocco "rete di sicurezza UHF" e l'analisi delle tre combinazioni `sources` vengono meno: il campo `sources` nel JSON dell'evento di uscita contiene sempre e solo `["BLE"]`. Sparisce conseguentemente la classe di evento composto `beacon_silente + lettura_uhf_uscita` di alta priorità, che nello Scenario C costituiva il segnale forte di sospetta manomissione.
+
+**Quesito III.** Topic MQTT e payload JSON identici a quelli dello Scenario C, eccetto che i topic della famiglia `scuola/galilei/uhf/*` non esistono e il campo `uhf` nel JSON dell'evento di uscita è sempre assente. Lo pseudocodice del gateway è identico.
+
+**Quesito IV.** Identica analisi GDPR e identiche contromisure rispetto allo Scenario C. Un solo dettaglio cambia: l'assenza dello strato UHF passivo elimina un piccolo vettore di rischio di *eavesdropping* a media distanza (un reader UHF non autorizzato a trenta-cinquanta metri con antenna ad alto guadagno può, in teoria, sentire i tag passivi al varco). In compenso si introduce il rischio di "scomparsa silenziosa" del PC dal sistema in caso di guasto del beacon. Dal punto di vista del titolare del trattamento questo è un rischio operativo, non un rischio privacy, ma va comunque indicato nella DPIA come ipotesi di funzionamento degradato del sistema.
+
+---
+
+## Tabella di sintesi delle tre soluzioni
+
+| Aspetto | Variante A (UHF puro) | Variante B (BLE puro) | Scenario C (ibrido) |
+|---|---|---|---|
+| Costo radio per PC | < 1 € | 5–10 € | 5–11 € |
+| Granularità di posizione | Solo al transito dei varchi | Continua, di zona/aula | Continua + varchi |
+| Latenza di un'allerta di distacco | Discreta, solo al varco | Pochi secondi | Pochi secondi |
+| Antitaccheggio *hard* al varco esterno | Sì, nativo (EAS classico) | No, derivato da trend RSSI | Sì, su entrambi i livelli |
+| Manutenzione su singolo PC | Nessuna | Sostituzione batteria 1–3 anni | Idem variante B |
+| Resilienza a guasto silenzioso del primario | non applicabile | Bassa | Alta (rete di sicurezza UHF) |
+| Resilienza a rimozione malevola del tag | Bassa | Bassa | Media-alta (due livelli da neutralizzare) |
+| Complessità progettuale | Bassa | Media | Alta |
+| Rischi privacy aggiuntivi | Bassi | Tracciamento continuo da gestire | Idem B |
+| Compatibilità con punteggio pieno d'esame | Solo se la rinuncia è motivata in modo netto | Sì | Sì, con maggiore profondità progettuale |
+
+> **In sintesi per la commissione.** La variante A premia la *concretezza ingegneristica* del candidato che riconosce i propri limiti di budget e rinuncia consapevolmente alle funzioni *smart*. La variante B premia l'*eleganza architetturale* di chi sceglie un'unica tecnologia coerente e la sa applicare in tutte le sue declinazioni. Lo Scenario C premia la *maturità sistemica* di chi capisce che, in un sistema di sicurezza, la ridondanza eterogenea vale più della semplicità di stack.
+
+
+
