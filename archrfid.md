@@ -50,8 +50,15 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - **considerazioni di sicurezza e privacy** (clonazione, eavesdropping, kill command, GDPR).
 
 ---
+## **Progetto di esempio completo**
 
-soluzione_scenario_C.md
+[Testo della prova cassone Smart](consegnaSmartroad.md)
+
+[Svolgimento Cassone Smart](/esempi/progetti/soluzione_scenario_C.md)
+
+---
+
+
 
 ## **Mappa degli approfondimenti**
 
