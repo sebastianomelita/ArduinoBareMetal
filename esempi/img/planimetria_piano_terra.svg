@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 880 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Planimetria di massima piano terra">
+  <style>
+    .tit { font: bold 14px sans-serif; fill: #1F2937; }
+    .lbl { font: 11px sans-serif; fill: #1F2937; }
+    .leg { font: 11px sans-serif; fill: #1F2937; }
+    .sub { font: 10px sans-serif; fill: #4B5563; }
+    .wall { fill: #F3F4F6; stroke: #4B5563; stroke-width: 2; }
+    .room { fill: #FFFFFF; stroke: #9CA3AF; stroke-width: 1; }
+    .corr { fill: #E5E7EB; stroke: #9CA3AF; stroke-width: 1; }
+    .exit { fill: #FECACA; stroke: #DC2626; stroke-width: 2; }
+    .stair{ fill: #F3F4F6; stroke: #4B5563; stroke-width: 1.5; }
+    .ap   { fill: #7C3AED; }
+    .uhf  { fill: #2563EB; }
+    .cas  { fill: #16A34A; }
+    .cam  { fill: #DC2626; }
+    .ble2 { fill: #A78BFA; }
+  </style>
+
+  <text class="tit" x="440" y="20" text-anchor="middle">Piano terra — pianta schematica</text>
+
+  <!-- Edificio rettangolare -->
+  <rect class="wall" x="40" y="40" width="800" height="280"/>
+
+  <!-- Corridoio centrale -->
+  <rect class="corr" x="40" y="170" width="800" height="50"/>
+  <text class="sub" x="440" y="200" text-anchor="middle">corridoio centrale</text>
+
+  <!-- Aule sopra -->
+  <rect class="room" x="80"  y="60" width="100" height="110"/>
+  <rect class="room" x="190" y="60" width="100" height="110"/>
+  <rect class="room" x="300" y="60" width="100" height="110"/>
+  <rect class="room" x="410" y="60" width="100" height="110"/>
+  <rect class="room" x="520" y="60" width="100" height="110"/>
+  <rect class="room" x="630" y="60" width="100" height="110"/>
+  <rect class="room" x="740" y="60" width="80"  height="110"/>
+  <text class="lbl" x="130" y="115" text-anchor="middle">Aula 1</text>
+  <text class="lbl" x="240" y="115" text-anchor="middle">Aula 2</text>
+  <text class="lbl" x="350" y="115" text-anchor="middle">Aula 3</text>
+  <text class="lbl" x="460" y="115" text-anchor="middle">Aula 4</text>
+  <text class="lbl" x="570" y="115" text-anchor="middle">Aula 5</text>
+  <text class="lbl" x="680" y="115" text-anchor="middle">Aula 6</text>
+  <text class="lbl" x="780" y="115" text-anchor="middle">Lab.</text>
+
+  <!-- Aule sotto -->
+  <rect class="room" x="80"  y="220" width="100" height="100"/>
+  <rect class="room" x="190" y="220" width="100" height="100"/>
+  <rect class="stair" x="300" y="220" width="100" height="100"/>
+  <rect class="room" x="410" y="220" width="100" height="100"/>
+  <rect class="room" x="520" y="220" width="100" height="100"/>
+  <rect class="room" x="630" y="220" width="100" height="100"/>
+  <rect class="room" x="740" y="220" width="80"  height="100"/>
+  <text class="lbl" x="130" y="270" text-anchor="middle">Aula 7</text>
+  <text class="lbl" x="240" y="270" text-anchor="middle">Aula 8</text>
+  <text class="lbl" x="350" y="270" text-anchor="middle">SCALA</text>
+  <text class="lbl" x="460" y="270" text-anchor="middle">Aula 9</text>
+  <text class="lbl" x="570" y="270" text-anchor="middle">Aula 10</text>
+  <text class="lbl" x="680" y="270" text-anchor="middle">Uffici</text>
+  <text class="lbl" x="780" y="270" text-anchor="middle">CED</text>
+
+  <!-- Uscite -->
+  <rect class="exit" x="0"   y="170" width="40" height="50"/>
+  <rect class="exit" x="840" y="170" width="40" height="50"/>
+  <text class="lbl" x="20"  y="200" text-anchor="middle" fill="#7F1D1D">USC</text>
+  <text class="lbl" x="860" y="200" text-anchor="middle" fill="#7F1D1D">USC</text>
+
+  <!-- Scanner BLE (cerchi viola) negli AP, uno ogni ~2 aule -->
+  <circle class="ap" cx="135" cy="195" r="6"/>
+  <circle class="ap" cx="295" cy="195" r="6"/>
+  <circle class="ap" cx="465" cy="195" r="6"/>
+  <circle class="ap" cx="625" cy="195" r="6"/>
+  <circle class="ap" cx="775" cy="195" r="6"/>
+
+  <!-- Cassone-carica nei locali di servizio (verde) -->
+  <rect class="cas" x="130" y="290" width="22" height="22" rx="3"/>
+  <rect class="cas" x="690" y="290" width="22" height="22" rx="3"/>
+
+  <!-- Doppio scanner BLE all'uscita (viola chiaro): interno (a ~5m) ed esterno (sulla soglia) -->
+  <circle class="ble2" cx="85"  cy="195" r="6"/>
+  <circle class="ble2" cx="25"  cy="195" r="6"/>
+  <circle class="ble2" cx="795" cy="195" r="6"/>
+  <circle class="ble2" cx="855" cy="195" r="6"/>
+
+  <!-- Lettore UHF al varco (blu, ai due lati della porta) -->
+  <rect class="uhf" x="0"   y="160" width="6" height="8"/>
+  <rect class="uhf" x="0"   y="222" width="6" height="8"/>
+  <rect class="uhf" x="874" y="160" width="6" height="8"/>
+  <rect class="uhf" x="874" y="222" width="6" height="8"/>
+
+  <!-- Videocamere ai varchi (rosso) -->
+  <polygon class="cam" points="40,165 60,170 60,180 40,175"/>
+  <polygon class="cam" points="840,165 820,170 820,180 840,175"/>
+
+  <!-- Legenda (singola colonna, riordinata) -->
+  <rect x="40" y="335" width="800" height="115" fill="#FFFFFF" stroke="#E5E7EB"/>
+  <text class="tit" x="50" y="353">Legenda</text>
+
+  <circle class="ap" cx="65" cy="372" r="5"/>
+  <text class="leg" x="78" y="376">AP Wi-Fi enterprise con radio BLE in scansione (uno ogni circa due aule)</text>
+
+  <circle class="ble2" cx="65" cy="390" r="5"/>
+  <text class="leg" x="78" y="394">Scanner BLE dedicato di prossimità uscita (configurazione doppia: interno + esterno)</text>
+
+  <rect class="uhf" x="60" y="404" width="10" height="8"/>
+  <text class="leg" x="78" y="412">Antenne del lettore UHF EPC Gen2 al portale d'uscita (rete di sicurezza passiva)</text>
+
+  <rect class="cas" x="60" y="420" width="10" height="10" rx="2"/>
+  <text class="leg" x="78" y="429">Cassone-carica intelligente (un cassone per ala / piano)</text>
+
+  <polygon class="cam" points="60,440 76,443 76,448 60,445"/>
+  <text class="leg" x="83" y="447">Videocamera con trigger sull'evento di uscita non autorizzata</text>
+</svg>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Sequence diagram doppio varco di uscita">
+  <style>
+    .lane { font: bold 11px sans-serif; fill: #1F2937; text-anchor: middle; }
+    .lab  { font: 10px sans-serif; fill: #1F2937; }
+    .ev   { font: 10px sans-serif; fill: #1F2937; }
+    .t    { font: 10px sans-serif; fill: #6B7280; }
+    .arS  { fill: none; stroke: #7C3AED; stroke-width: 1.5; marker-end: url(#m1); }
+    .arH  { fill: none; stroke: #DC2626; stroke-width: 2; marker-end: url(#m2); }
+    .arN  { fill: none; stroke: #2563EB; stroke-width: 1.5; marker-end: url(#m3); }
+    .arT  { fill: none; stroke: #16A34A; stroke-width: 1.5; marker-end: url(#m4); }
+    .col  { stroke: #9CA3AF; stroke-width: 1; stroke-dasharray: 3 3; }
+  </style>
+  <defs>
+    <marker id="m1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7C3AED"/></marker>
+    <marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#DC2626"/></marker>
+    <marker id="m3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2563EB"/></marker>
+    <marker id="m4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16A34A"/></marker>
+  </defs>
+
+  <!-- Lane headers -->
+  <rect x="20"  y="20" width="100" height="30" fill="#EDE9FE" stroke="#7C3AED"/>
+  <text class="lane" x="70"  y="40">PC con tag</text>
+  <rect x="160" y="20" width="100" height="30" fill="#EDE9FE" stroke="#7C3AED"/>
+  <text class="lane" x="210" y="40">S_INT</text>
+  <rect x="300" y="20" width="100" height="30" fill="#DBEAFE" stroke="#2563EB"/>
+  <text class="lane" x="350" y="40">UHF gate</text>
+  <rect x="440" y="20" width="100" height="30" fill="#EDE9FE" stroke="#7C3AED"/>
+  <text class="lane" x="490" y="40">S_EXT</text>
+  <rect x="580" y="20" width="100" height="30" fill="#FEF3C7" stroke="#D97706"/>
+  <text class="lane" x="630" y="40">Backend</text>
+  <rect x="720" y="20" width="100" height="30" fill="#FEE2E2" stroke="#DC2626"/>
+  <text class="lane" x="770" y="40">Camera</text>
+
+  <!-- Time columns -->
+  <line class="col" x1="70"  y1="50" x2="70"  y2="390"/>
+  <line class="col" x1="210" y1="50" x2="210" y2="390"/>
+  <line class="col" x1="350" y1="50" x2="350" y2="390"/>
+  <line class="col" x1="490" y1="50" x2="490" y2="390"/>
+  <line class="col" x1="630" y1="50" x2="630" y2="390"/>
+  <line class="col" x1="770" y1="50" x2="770" y2="390"/>
+
+  <!-- t = 0 s -->
+  <text class="t" x="10" y="80">t = 0</text>
+  <path class="arS" d="M 70 80 L 207 80"/>
+  <text class="ev" x="120" y="75">adv RSSI −65 dBm</text>
+
+  <text class="t" x="10" y="115">t = 1</text>
+  <path class="arS" d="M 70 115 L 207 115"/>
+  <text class="ev" x="120" y="110">adv RSSI −58 dBm</text>
+
+  <text class="t" x="10" y="150">t = 3</text>
+  <path class="arS" d="M 70 150 L 207 150"/>
+  <text class="ev" x="120" y="145">adv RSSI −55 dBm  (PC vicino)</text>
+  <path class="arN" d="M 210 158 L 628 158"/>
+  <text class="ev" x="365" y="153" font-weight="bold" fill="#2563EB">approaching_exit (soft alert)</text>
+
+  <text class="t" x="10" y="195">t = 4</text>
+  <path class="arS" d="M 70 195 L 347 195"/>
+  <text class="ev" x="170" y="190" fill="#2563EB">il PC entra nel campo UHF</text>
+  <path class="arN" d="M 350 203 L 628 203"/>
+  <text class="ev" x="490" y="198" fill="#2563EB">letto EPC tag UHF</text>
+
+  <text class="t" x="10" y="230">t = 5</text>
+  <path class="arS" d="M 70 230 L 487 230"/>
+  <text class="ev" x="280" y="225">adv RSSI in calo lato interno, in salita lato esterno</text>
+
+  <text class="t" x="10" y="270">t = 6</text>
+  <path class="arS" d="M 70 270 L 487 270"/>
+  <text class="ev" x="280" y="265">adv RSSI −50 dBm su S_EXT (PC fuori)</text>
+  <path class="arH" d="M 490 280 L 628 280"/>
+  <text class="ev" x="555" y="275" font-weight="bold" fill="#DC2626">exit_unauthorized (hard)</text>
+
+  <text class="t" x="10" y="315">t = 6.1</text>
+  <path class="arT" d="M 628 315 L 767 315"/>
+  <text class="ev" x="690" y="310" font-weight="bold" fill="#16A34A">camera_trigger</text>
+
+  <text class="t" x="10" y="355">t = 6.2</text>
+  <path class="arT" d="M 770 355 L 633 355"/>
+  <text class="ev" x="690" y="350" fill="#16A34A">salva clip −5 s / +10 s</text>
+</svg>

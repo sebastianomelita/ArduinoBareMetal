@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 880 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Macchina a stati del distacco">
+  <style>
+    .st  { font: bold 12px sans-serif; fill: #1F2937; text-anchor: middle; }
+    .ds  { font: 10px sans-serif; fill: #4B5563; text-anchor: middle; }
+    .tr  { font: 10px sans-serif; fill: #1F2937; }
+    .ok  { fill: #DCFCE7; stroke: #16A34A; stroke-width: 1.8; }
+    .wn  { fill: #FEF3C7; stroke: #D97706; stroke-width: 1.8; }
+    .al  { fill: #FEE2E2; stroke: #DC2626; stroke-width: 1.8; }
+    .ar  { fill: none; stroke: #4B5563; stroke-width: 1.5; marker-end: url(#a1); }
+    .ara { fill: none; stroke: #DC2626; stroke-width: 1.8; marker-end: url(#a2); }
+  </style>
+  <defs>
+    <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4B5563"/></marker>
+    <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#DC2626"/></marker>
+  </defs>
+
+  <!-- Stati -->
+  <ellipse class="ok" cx="120" cy="120" rx="78" ry="40"/>
+  <text class="st" x="120" y="115">IN_SLOT</text>
+  <text class="ds" x="120" y="132">RSSI &gt; −45 dBm</text>
+
+  <ellipse class="ok" cx="340" cy="120" rx="78" ry="40"/>
+  <text class="st" x="340" y="115">NEAR</text>
+  <text class="ds" x="340" y="132">−75 &lt; RSSI &lt; −45</text>
+
+  <ellipse class="wn" cx="560" cy="120" rx="78" ry="40"/>
+  <text class="st" x="560" y="115">DRIFTING</text>
+  <text class="ds" x="560" y="132">−85 &lt; RSSI &lt; −75</text>
+
+  <ellipse class="al" cx="780" cy="120" rx="78" ry="40"/>
+  <text class="st" x="780" y="115">DETACHED</text>
+  <text class="ds" x="780" y="132">RSSI &lt; −85 da T_off</text>
+
+  <ellipse class="al" cx="450" cy="280" rx="78" ry="40"/>
+  <text class="st" x="450" y="275">LOST</text>
+  <text class="ds" x="450" y="293">nessun adv &gt; 60 s</text>
+
+  <!-- Transizioni -->
+  <path class="ar" d="M 198 110 L 262 110"/>
+  <text class="tr" x="230" y="100" text-anchor="middle">RSSI scende</text>
+
+  <path class="ar" d="M 262 130 L 198 130"/>
+  <text class="tr" x="230" y="148" text-anchor="middle">RSSI risale &gt; −45</text>
+
+  <path class="ar" d="M 418 110 L 482 110"/>
+  <text class="tr" x="450" y="100" text-anchor="middle">RSSI scende</text>
+
+  <path class="ar" d="M 482 130 L 418 130"/>
+  <text class="tr" x="450" y="148" text-anchor="middle">RSSI risale</text>
+
+  <path class="ara" d="M 638 110 L 702 110"/>
+  <text class="tr" x="670" y="100" text-anchor="middle" fill="#DC2626">T_off scaduto</text>
+
+  <path class="ar" d="M 702 140 Q 670 175 638 140"/>
+  <text class="tr" x="670" y="180" text-anchor="middle">RSSI risale &gt; −75 per T_on</text>
+
+  <!-- LOST -->
+  <path class="ara" d="M 340 160 Q 380 240 384 248"/>
+  <text class="tr" x="295" y="225">timeout 60 s</text>
+
+  <path class="ara" d="M 560 160 Q 520 240 516 248"/>
+  <path class="ara" d="M 780 160 Q 700 240 516 270"/>
+
+  <path class="ar" d="M 450 240 Q 450 200 410 165"/>
+  <text class="tr" x="370" y="208">advertisement ricomincia</text>
+
+  <!-- Evento generato -->
+  <text class="tr" x="780" y="180" text-anchor="middle" font-weight="bold" fill="#DC2626">evento MQTT</text>
+  <text class="tr" x="780" y="194" text-anchor="middle" font-weight="bold" fill="#DC2626">distacco_pc</text>
+  <text class="tr" x="450" y="340" text-anchor="middle" font-weight="bold" fill="#DC2626">evento MQTT</text>
+  <text class="tr" x="450" y="354" text-anchor="middle" font-weight="bold" fill="#DC2626">beacon_silente_pc</text>
+</svg>

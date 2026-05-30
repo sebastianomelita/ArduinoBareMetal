@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg viewBox="0 0 880 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schema logico di rete">
+  <style>
+    .nd  { font: 12px sans-serif; fill: #1F2937; }
+    .sm  { font: 10px sans-serif; fill: #6B7280; }
+    .tit { font: bold 13px sans-serif; fill: #1F2937; }
+    .box { fill: #FFFFFF; stroke: #2563EB; stroke-width: 1.5; rx: 5; ry: 5; }
+    .fwa { fill: #FEE2E2; stroke: #DC2626; stroke-width: 1.5; rx: 5; ry: 5; }
+    .l3  { fill: #FEF3C7; stroke: #D97706; stroke-width: 1.5; rx: 5; ry: 5; }
+    .l2  { fill: #DBEAFE; stroke: #2563EB; stroke-width: 1.5; rx: 5; ry: 5; }
+    .ep  { fill: #DCFCE7; stroke: #16A34A; stroke-width: 1; rx: 4; ry: 4; }
+    .srv { fill: #EDE9FE; stroke: #7C3AED; stroke-width: 1.5; rx: 5; ry: 5; }
+    .ln  { fill: none; stroke: #6B7280; stroke-width: 1.5; }
+    .vln { font: italic 10px sans-serif; fill: #16A34A; }
+    .osi { font: bold 10px sans-serif; fill: #2563EB; }
+  </style>
+
+  <!-- Core / firewall -->
+  <rect class="fwa" x="380" y="30" width="120" height="50"/>
+  <text class="tit" x="440" y="50" text-anchor="middle">Firewall</text>
+  <text class="sm"  x="440" y="68" text-anchor="middle">core, NAT, uplink Internet</text>
+
+  <!-- Distribution L3 -->
+  <rect class="l3" x="350" y="120" width="180" height="55"/>
+  <text class="tit" x="440" y="142" text-anchor="middle">Switch L3 (distribution)</text>
+  <text class="sm"  x="440" y="160" text-anchor="middle">inter-VLAN routing + ACL</text>
+
+  <!-- Access switches L2 -->
+  <rect class="l2" x="40"  y="210" width="140" height="45"/>
+  <text class="nd" x="110" y="232" text-anchor="middle">Switch L2 P0</text>
+  <text class="sm" x="110" y="248" text-anchor="middle">PoE per AP/scanner</text>
+
+  <rect class="l2" x="200" y="210" width="140" height="45"/>
+  <text class="nd" x="270" y="232" text-anchor="middle">Switch L2 P1</text>
+  <text class="sm" x="270" y="248" text-anchor="middle">PoE per AP/scanner</text>
+
+  <rect class="l2" x="360" y="210" width="140" height="45"/>
+  <text class="nd" x="430" y="232" text-anchor="middle">Switch L2 P2</text>
+  <text class="sm" x="430" y="248" text-anchor="middle">PoE per AP/scanner</text>
+
+  <rect class="l2" x="520" y="210" width="160" height="45"/>
+  <text class="nd" x="600" y="232" text-anchor="middle">Switch L2 server</text>
+  <text class="sm" x="600" y="248" text-anchor="middle">backbone CED</text>
+
+  <rect class="l2" x="700" y="210" width="140" height="45"/>
+  <text class="nd" x="770" y="232" text-anchor="middle">Switch L2 uffici</text>
+
+  <!-- Endpoint -->
+  <rect class="ep" x="40"  y="295" width="60" height="35"/><text class="sm" x="70"  y="318" text-anchor="middle">AP+BLE</text>
+  <rect class="ep" x="115" y="295" width="60" height="35"/><text class="sm" x="145" y="318" text-anchor="middle">Cassone</text>
+  <rect class="ep" x="200" y="295" width="60" height="35"/><text class="sm" x="230" y="318" text-anchor="middle">AP+BLE</text>
+  <rect class="ep" x="275" y="295" width="60" height="35"/><text class="sm" x="305" y="318" text-anchor="middle">UHF gw</text>
+  <rect class="ep" x="360" y="295" width="60" height="35"/><text class="sm" x="390" y="318" text-anchor="middle">AP+BLE</text>
+  <rect class="ep" x="435" y="295" width="60" height="35"/><text class="sm" x="465" y="318" text-anchor="middle">Camera</text>
+
+  <rect class="srv" x="520" y="295" width="75" height="35"/><text class="sm" x="557" y="318" text-anchor="middle">MQTT</text>
+  <rect class="srv" x="600" y="295" width="75" height="35"/><text class="sm" x="637" y="318" text-anchor="middle">App+DB</text>
+  <rect class="srv" x="700" y="295" width="60" height="35"/><text class="sm" x="730" y="318" text-anchor="middle">PC uff.</text>
+  <rect class="srv" x="775" y="295" width="60" height="35"/><text class="sm" x="805" y="318" text-anchor="middle">PC uff.</text>
+
+  <!-- linee -->
+  <path class="ln" d="M 440 80 L 440 120"/>
+  <path class="ln" d="M 440 175 L 110 210"/>
+  <path class="ln" d="M 440 175 L 270 210"/>
+  <path class="ln" d="M 440 175 L 430 210"/>
+  <path class="ln" d="M 440 175 L 600 210"/>
+  <path class="ln" d="M 440 175 L 770 210"/>
+  <path class="ln" d="M 110 255 L 70 295"/>
+  <path class="ln" d="M 110 255 L 145 295"/>
+  <path class="ln" d="M 270 255 L 230 295"/>
+  <path class="ln" d="M 270 255 L 305 295"/>
+  <path class="ln" d="M 430 255 L 390 295"/>
+  <path class="ln" d="M 430 255 L 465 295"/>
+  <path class="ln" d="M 600 255 L 557 295"/>
+  <path class="ln" d="M 600 255 L 637 295"/>
+  <path class="ln" d="M 770 255 L 730 295"/>
+  <path class="ln" d="M 770 255 L 805 295"/>
+
+  <!-- Etichette OSI / VLAN -->
+  <text class="osi" x="40"  y="360">OSI 1-2 (Fisico / MAC):</text>
+  <text class="sm"  x="40"  y="375">BLE 2.4 GHz, UHF 865-868 MHz, Wi-Fi 802.11, Ethernet</text>
+  <text class="osi" x="40"  y="395">OSI 3 (Rete):</text>
+  <text class="sm"  x="40"  y="410">IP privato 10.10.0.0/16 con subnetting per VLAN (vedi sez. 6)</text>
+  <text class="osi" x="40"  y="430">OSI 4 (Trasporto):</text>
+  <text class="sm"  x="40"  y="445">TCP per MQTT (porta 8883 con TLS) e per la console</text>
+
+  <text class="osi" x="470" y="360">OSI 5-6 (Sessione / Presentazione):</text>
+  <text class="sm"  x="470" y="375">sessione TLS persistente, payload JSON UTF-8</text>
+  <text class="osi" x="470" y="395">OSI 7 (Applicazione):</text>
+  <text class="sm"  x="470" y="410">MQTT publish/subscribe; gerarchia gerarchica di topic</text>
+  <text class="osi" x="470" y="430">Ruolo del gateway:</text>
+  <text class="sm"  x="470" y="445">bridge semantico fra campo (L1-2) e MQTT (L7)</text>
+</svg>
