@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg viewBox="0 0 880 460" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Planimetria di massima piano terra">
+<svg viewBox="0 0 880 485" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Planimetria di massima piano terra">
   <style>
     .tit { font: bold 14px sans-serif; fill: #1F2937; }
     .lbl { font: 11px sans-serif; fill: #1F2937; }
@@ -11,6 +11,7 @@
     .exit { fill: #FECACA; stroke: #DC2626; stroke-width: 2; }
     .stair{ fill: #F3F4F6; stroke: #4B5563; stroke-width: 1.5; }
     .ap   { fill: #7C3AED; }
+    .apo  { fill: #4C1D95; stroke: #FFFFFF; stroke-width: 1.2; }
     .uhf  { fill: #2563EB; }
     .cas  { fill: #16A34A; }
     .cam  { fill: #DC2626; }
@@ -64,12 +65,18 @@
   <text class="lbl" x="20"  y="200" text-anchor="middle" fill="#7F1D1D">USC</text>
   <text class="lbl" x="860" y="200" text-anchor="middle" fill="#7F1D1D">USC</text>
 
-  <!-- Scanner BLE (cerchi viola) negli AP, uno ogni ~2 aule -->
+  <!-- Scanner BLE (cerchi viola) negli AP del corridoio, uno ogni ~2 aule -->
   <circle class="ap" cx="135" cy="195" r="6"/>
   <circle class="ap" cx="295" cy="195" r="6"/>
   <circle class="ap" cx="465" cy="195" r="6"/>
   <circle class="ap" cx="625" cy="195" r="6"/>
   <circle class="ap" cx="775" cy="195" r="6"/>
+
+  <!-- Scanner BLE fuori asse (quadrati viola scuro) per rompere la collinearità del corridoio -->
+  <rect class="apo" x="155" y="68" width="12" height="12" rx="2"/>
+  <rect class="apo" x="798" y="68" width="12" height="12" rx="2"/>
+  <rect class="apo" x="155" y="304" width="12" height="12" rx="2"/>
+  <rect class="apo" x="798" y="304" width="12" height="12" rx="2"/>
 
   <!-- Cassone-carica nei locali di servizio (verde) -->
   <rect class="cas" x="130" y="290" width="22" height="22" rx="3"/>
@@ -91,22 +98,25 @@
   <polygon class="cam" points="40,165 60,170 60,180 40,175"/>
   <polygon class="cam" points="840,165 820,170 820,180 840,175"/>
 
-  <!-- Legenda (singola colonna, riordinata) -->
-  <rect x="40" y="335" width="800" height="115" fill="#FFFFFF" stroke="#E5E7EB"/>
+  <!-- Legenda -->
+  <rect x="40" y="335" width="800" height="140" fill="#FFFFFF" stroke="#E5E7EB"/>
   <text class="tit" x="50" y="353">Legenda</text>
 
   <circle class="ap" cx="65" cy="372" r="5"/>
-  <text class="leg" x="78" y="376">AP Wi-Fi enterprise con radio BLE in scansione (uno ogni circa due aule)</text>
+  <text class="leg" x="78" y="376">AP Wi-Fi enterprise con radio BLE in scansione, sul corridoio (uno ogni circa due aule)</text>
 
-  <circle class="ble2" cx="65" cy="390" r="5"/>
-  <text class="leg" x="78" y="394">Scanner BLE dedicato di prossimità uscita (configurazione doppia: interno + esterno)</text>
+  <rect class="apo" x="60" y="386" width="10" height="10" rx="2"/>
+  <text class="leg" x="78" y="395">Scanner BLE fuori asse, in laboratorio, aule di testata e CED (rompe la collinearità del corridoio)</text>
 
-  <rect class="uhf" x="60" y="404" width="10" height="8"/>
-  <text class="leg" x="78" y="412">Antenne del lettore UHF EPC Gen2 al portale d'uscita (rete di sicurezza passiva)</text>
+  <circle class="ble2" cx="65" cy="408" r="5"/>
+  <text class="leg" x="78" y="412">Scanner BLE dedicato di prossimità uscita (configurazione doppia: interno + esterno)</text>
 
-  <rect class="cas" x="60" y="420" width="10" height="10" rx="2"/>
-  <text class="leg" x="78" y="429">Cassone-carica intelligente (un cassone per ala / piano)</text>
+  <rect class="uhf" x="60" y="422" width="10" height="8"/>
+  <text class="leg" x="78" y="430">Antenne del lettore UHF EPC Gen2 al portale d'uscita (rete di sicurezza passiva)</text>
 
-  <polygon class="cam" points="60,440 76,443 76,448 60,445"/>
-  <text class="leg" x="83" y="447">Videocamera con trigger sull'evento di uscita non autorizzata</text>
+  <rect class="cas" x="60" y="438" width="10" height="10" rx="2"/>
+  <text class="leg" x="78" y="447">Cassone-carica intelligente (un cassone per ala / piano)</text>
+
+  <polygon class="cam" points="60,458 76,461 76,466 60,463"/>
+  <text class="leg" x="83" y="465">Videocamera con trigger sull'evento di uscita non autorizzata</text>
 </svg>
