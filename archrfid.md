@@ -52,7 +52,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 ---
 ## **Progetto di esempio completo**
 
-[Testo della prova cassone Smart](consegnaSmartroad.md)
+[Testo della prova cassone Smart](/esempi/progetti/consegna_esame.pdf)
 
 [Svolgimento Cassone Smart](/esempi/progetti/soluzione_scenario_C.md)
 
