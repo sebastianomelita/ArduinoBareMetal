@@ -385,8 +385,6 @@ I **dati indirettamente personali** si producono nel momento in cui il PC viene 
 
 ---
 
----
-
 # Appendici — varianti minori dello Scenario C
 
 > *Le due varianti seguenti rappresentano combinazioni di ipotesi diverse, entrambe coerenti, entrambe meritevoli di punteggio se ben argomentate, ma con un funzionamento sensibilmente più povero rispetto alla soluzione ibrida principale. Si descrivono per il confronto: ciò che vale di simile rispetto allo Scenario C non viene ripetuto e si rinvia alle sezioni 1–10.*
