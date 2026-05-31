@@ -401,6 +401,71 @@ La **standardizzazione** del livello applicativo possiede anche il vantaggio di 
 
 ---
 
+## Application Server LoRaWAN e interfacciamento con il mondo esterno
+
+Nello stack LoRaWAN la specifica distingue con precisione i ruoli funzionali dei
+componenti server. Mentre il **Network Server** gestisce la sessione MAC, la
+deduplicazione dei pacchetti ricevuti da più gateway e l'Adaptive Data Rate (ADR),
+è l'**Application Server** il componente responsabile dell'ultimo e fondamentale
+passo: la **decifratura** e la **decodifica del payload applicativo**. È quindi
+l'Application Server il nodo in cui il dato grezzo trasmesso dal sensore diventa
+informazione interpretabile, e di conseguenza il primo punto della catena in cui
+può essere applicata una logica di business o decisionale.
+
+### Cifratura e integrità: la sicurezza a due livelli
+
+LoRaWAN implementa un modello di sicurezza basato su **due chiavi di sessione
+indipendenti**, che separano nettamente le competenze del Network Server da quelle
+dell'Application Server:
+
+- **NwkSKey** (Network Session Key): condivisa tra il dispositivo e il Network Server,
+  serve a calcolare e verificare il **MIC** (Message Integrity Code), un campo che
+  garantisce l'**integrità** e l'**autenticità** del messaggio. Permette al Network
+  Server di accertare che il pacchetto provenga davvero dal dispositivo dichiarato
+  e che non sia stato alterato in transito, **senza però poterne leggere il contenuto**.
+
+- **AppSKey** (Application Session Key): condivisa solo tra il dispositivo e
+  l'Application Server, cifra il **payload applicativo** (il dato utile). Questo
+  significa che il contenuto effettivo della misura viaggia cifrato **end-to-end**:
+  né il gateway né il Network Server sono in grado di leggerlo. Solo l'Application
+  Server, detentore della AppSKey, può decifrare il dato.
+
+Questa separazione realizza una proprietà importante: l'infrastruttura di rete
+(gateway e Network Server) può **instradare e validare** i pacchetti senza mai
+accedere al loro significato. La riservatezza del dato è garantita fino
+all'Application Server, che è l'unico interlocutore autorizzato a interpretarlo —
+un principio analogo alla crittografia end-to-end vista per Matter.
+
+### Decodifica del payload e collegamento al mondo esterno
+
+Una volta decifrato, il payload è ancora una sequenza di byte grezzi, compattata
+per rispettare i vincoli di banda di LoRaWAN. L'Application Server applica quindi
+un **decoder** (tipicamente in formato Cayenne LPP, oppure un decoder JavaScript
+custom) che traduce i byte in **oggetti strutturati e autoesplicativi**, normalmente
+in formato **JSON**. È lo stesso principio di traduzione semantica già visto per il
+bridge zigbee2mqtt: dal formato compatto e proprietario della rete di sensori a un
+formato testuale, chiaro e interoperabile per la rete di distribuzione.
+
+<img src="/img/Schema-Security.png" alt="Schema-Security.png" width="760">
+
+Il collegamento dell'Application Server verso i sistemi a valle avviene di norma
+attraverso un **broker MQTT**. L'Application Server agisce come **publisher**,
+pubblicando i dati decodificati su appositi *topic* (es. uplink/misure) a cui
+dashboard, database time-series e server applicativi possono iscriversi come
+*subscriber*. Per i comandi verso gli attuatori il flusso si inverte:
+l'Application Server si **iscrive** ai topic dei comandi (es. downlink/comandi),
+e quando riceve un messaggio MQTT lo cifra con la AppSKey e lo consegna al Network
+Server, che lo programma come downlink verso il dispositivo (compatibilmente con la
+classe del dispositivo e i vincoli di duty cycle).
+
+Implementazioni reali di questo schema sono ChirpStack, The Things Stack e Actility
+ThingPark, tutte costruite attorno a un broker MQTT come interfaccia primaria verso
+le applicazioni esterne. Accanto a MQTT, l'Application Server espone spesso anche
+interfacce **HTTP/REST** (webhook) e connettori verso piattaforme cloud, ma MQTT
+resta il canale d'elezione per il suo modello publish/subscribe leggero e
+disaccoppiato, ideale per il traffico IoT.
+
+---
 
 ## **Rete di sensori Zigbee** 
 
