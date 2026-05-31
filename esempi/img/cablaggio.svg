@@ -1,0 +1,164 @@
+<svg viewBox="0 0 680 720" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif" font-size="11">
+  <rect width="680" height="720" fill="#f8f9fa"/>
+  <text x="340" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#2c3e50">Cablaggio strutturato Ethernet - dorsale verticale + distribuzione di piano</text>
+
+  <!-- LEGENDA -->
+  <rect x="40" y="32" width="600" height="30" rx="6" fill="#f1efe8" stroke="#b4b2a9" stroke-width="0.7"/>
+  <line x1="56" y1="47" x2="86" y2="47" stroke="#c0392b" stroke-width="3"/><text x="92" y="51" font-size="9" fill="#2c3e50">dorsale fibra (uplink)</text>
+  <line x1="220" y1="47" x2="250" y2="47" stroke="#185fa5" stroke-width="2"/><text x="256" y="51" font-size="9" fill="#2c3e50">Cat6 orizzontale</text>
+  <rect x="370" y="40" width="16" height="14" rx="2" fill="#2c3e50"/><text x="392" y="51" font-size="9" fill="#2c3e50">switch / armadio</text>
+  <rect x="510" y="40" width="14" height="14" rx="2" fill="#d68910"/><text x="530" y="51" font-size="9" fill="#2c3e50">presa RJ45 stanza</text>
+
+  <!-- SALA TECNICA (sgabuzzino piano terra) - MDF -->
+  <rect x="40" y="560" width="600" height="120" rx="8" fill="#fce8e6" stroke="#c0392b" stroke-width="0.9"/>
+  <text x="56" y="580" font-size="12" font-weight="bold" fill="#922b21">Sala tecnica - sgabuzzino addetti pulizie (MDF, piano terra)</text>
+  <!-- rack MDF -->
+  <rect x="56" y="590" width="170" height="78" rx="4" fill="#2c3e50" stroke="#1a252f"/>
+  <text x="141" y="606" text-anchor="middle" font-size="9" fill="#ecf0f1" font-weight="bold">Rack MDF</text>
+  <rect x="66" y="612" width="150" height="12" rx="2" fill="#c0392b"/><text x="141" y="621" text-anchor="middle" font-size="8" fill="white">Firewall / NAT</text>
+  <rect x="66" y="627" width="150" height="12" rx="2" fill="#34495e"/><text x="141" y="636" text-anchor="middle" font-size="8" fill="white">Core Switch L3 (collapsed core)</text>
+  <rect x="66" y="642" width="150" height="12" rx="2" fill="#7f8c8d"/><text x="141" y="651" text-anchor="middle" font-size="8" fill="white">Patch panel dorsali</text>
+  <rect x="66" y="657" width="150" height="8" rx="2" fill="#95a5a6"/>
+  <!-- server farm -->
+  <rect x="240" y="590" width="180" height="78" rx="4" fill="#1e6f5c" stroke="#0e4d3f"/>
+  <text x="330" y="606" text-anchor="middle" font-size="9" fill="#eafaf1" font-weight="bold">Server farm</text>
+  <text x="330" y="622" text-anchor="middle" font-size="8" fill="#d5f5e3">Broker MQTT 10.0.1.10</text>
+  <text x="330" y="635" text-anchor="middle" font-size="8" fill="#d5f5e3">Web 10.0.1.20 - DB 10.0.1.30</text>
+  <text x="330" y="648" text-anchor="middle" font-size="8" fill="#d5f5e3">Media/IPTV 10.0.1.40 - DNS 10.0.1.1</text>
+  <text x="330" y="661" text-anchor="middle" font-size="8" fill="#d5f5e3">collegata al Core L3 in Gigabit</text>
+  <!-- ISP -->
+  <rect x="440" y="590" width="180" height="78" rx="4" fill="#d6eaf8" stroke="#2980b9"/>
+  <text x="530" y="606" text-anchor="middle" font-size="9" fill="#1a5276" font-weight="bold">Uscita Internet</text>
+  <text x="530" y="624" text-anchor="middle" font-size="8" fill="#1a5276">Router ISP - 4 IP pubblici</text>
+  <text x="530" y="638" text-anchor="middle" font-size="8" fill="#1a5276">NAT/PAT dinamico</text>
+  <text x="530" y="652" text-anchor="middle" font-size="8" fill="#1a5276">verso Firewall</text>
+  <line x1="440" y1="629" x2="226" y2="629" stroke="#185fa5" stroke-width="2" marker-end="url(#a)"/>
+  <line x1="240" y1="629" x2="226" y2="629" stroke="#185fa5" stroke-width="2"/>
+
+  <!-- Core L3 nodo centrale (punto di partenza dorsali) -->
+  <circle cx="141" cy="555" r="5" fill="#34495e"/>
+
+  <!-- ============ PIANI: ogni piano ha un armadio IDF ============ -->
+  <!-- struttura: dorsale fibra verticale dal MDF (x=141) a ogni IDF -->
+
+  <!-- PIANO 3 (in alto) y=72 -->
+  <rect x="40" y="72" width="600" height="108" rx="8" fill="#faeeda" stroke="#854f0b" stroke-width="0.7"/>
+  <text x="56" y="90" font-size="11" font-weight="bold" fill="#633806">Piano 3 - armadio IDF-3</text>
+  <!-- IDF switch -->
+  <rect x="86" y="100" width="110" height="44" rx="4" fill="#2c3e50" stroke="#1a252f"/>
+  <text x="141" y="116" text-anchor="middle" font-size="8" fill="#ecf0f1" font-weight="bold">IDF-3 Switch</text>
+  <text x="141" y="128" text-anchor="middle" font-size="7" fill="#bdc3c7">PoE+ 48p - VLAN 14</text>
+  <text x="141" y="139" text-anchor="middle" font-size="7" fill="#bdc3c7">uplink fibra 1/10G</text>
+  <!-- prese stanze P3 -->
+  <g fill="#d68910">
+  <rect x="230" y="104" width="12" height="11" rx="2"/><rect x="244" y="104" width="12" height="11" rx="2"/>
+  <rect x="300" y="104" width="12" height="11" rx="2"/><rect x="314" y="104" width="12" height="11" rx="2"/>
+  <rect x="370" y="104" width="12" height="11" rx="2"/><rect x="384" y="104" width="12" height="11" rx="2"/>
+  <rect x="440" y="104" width="12" height="11" rx="2"/><rect x="454" y="104" width="12" height="11" rx="2"/>
+  </g>
+  <text x="236" y="128" font-size="7" fill="#7d5a0b" text-anchor="middle">S301</text>
+  <text x="306" y="128" font-size="7" fill="#7d5a0b" text-anchor="middle">S302</text>
+  <text x="376" y="128" font-size="7" fill="#7d5a0b" text-anchor="middle">...</text>
+  <text x="446" y="128" font-size="7" fill="#7d5a0b" text-anchor="middle">S312</text>
+  <text x="540" y="118" font-size="8" fill="#633806" text-anchor="middle">2 prese/stanza</text>
+  <text x="540" y="130" font-size="8" fill="#633806" text-anchor="middle">+ AP + coord. Zigbee</text>
+  <!-- AP e coord su PoE -->
+  <circle cx="500" cy="155" r="6" fill="#c0392b"/><text x="500" y="173" font-size="7" fill="#922b21" text-anchor="middle">AP PoE</text>
+  <rect x="540" y="149" width="16" height="12" rx="2" fill="#185fa5"/><text x="548" y="173" font-size="7" fill="#0c447c" text-anchor="middle">coord</text>
+  <!-- cat6 da IDF alle prese -->
+  <line x1="196" y1="118" x2="226" y2="110" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="120" x2="296" y2="110" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="122" x2="436" y2="110" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="130" x2="496" y2="152" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="132" x2="538" y2="153" stroke="#185fa5" stroke-width="1.3"/>
+
+  <!-- PIANO 2 y=192 -->
+  <rect x="40" y="192" width="600" height="108" rx="8" fill="#faece7" stroke="#993c1d" stroke-width="0.7"/>
+  <text x="56" y="210" font-size="11" font-weight="bold" fill="#712b13">Piano 2 - armadio IDF-2</text>
+  <rect x="86" y="220" width="110" height="44" rx="4" fill="#2c3e50" stroke="#1a252f"/>
+  <text x="141" y="236" text-anchor="middle" font-size="8" fill="#ecf0f1" font-weight="bold">IDF-2 Switch</text>
+  <text x="141" y="248" text-anchor="middle" font-size="7" fill="#bdc3c7">PoE+ 48p - VLAN 13</text>
+  <text x="141" y="259" text-anchor="middle" font-size="7" fill="#bdc3c7">uplink fibra 1/10G</text>
+  <g fill="#d68910">
+  <rect x="230" y="224" width="12" height="11" rx="2"/><rect x="244" y="224" width="12" height="11" rx="2"/>
+  <rect x="300" y="224" width="12" height="11" rx="2"/><rect x="314" y="224" width="12" height="11" rx="2"/>
+  <rect x="370" y="224" width="12" height="11" rx="2"/><rect x="384" y="224" width="12" height="11" rx="2"/>
+  <rect x="440" y="224" width="12" height="11" rx="2"/><rect x="454" y="224" width="12" height="11" rx="2"/>
+  </g>
+  <text x="236" y="248" font-size="7" fill="#8a3518" text-anchor="middle">S201</text>
+  <text x="306" y="248" font-size="7" fill="#8a3518" text-anchor="middle">S202</text>
+  <text x="376" y="248" font-size="7" fill="#8a3518" text-anchor="middle">...</text>
+  <text x="446" y="248" font-size="7" fill="#8a3518" text-anchor="middle">S212</text>
+  <text x="540" y="238" font-size="8" fill="#712b13" text-anchor="middle">2 prese/stanza</text>
+  <text x="540" y="250" font-size="8" fill="#712b13" text-anchor="middle">+ AP + coord. Zigbee</text>
+  <circle cx="500" cy="275" r="6" fill="#c0392b"/><text x="500" y="293" font-size="7" fill="#922b21" text-anchor="middle">AP PoE</text>
+  <rect x="540" y="269" width="16" height="12" rx="2" fill="#185fa5"/><text x="548" y="293" font-size="7" fill="#0c447c" text-anchor="middle">coord</text>
+  <line x1="196" y1="238" x2="226" y2="230" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="240" x2="296" y2="230" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="242" x2="436" y2="230" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="250" x2="496" y2="272" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="252" x2="538" y2="273" stroke="#185fa5" stroke-width="1.3"/>
+
+  <!-- PIANO 1 y=312 -->
+  <rect x="40" y="312" width="600" height="108" rx="8" fill="#eeedfe" stroke="#534ab7" stroke-width="0.7"/>
+  <text x="56" y="330" font-size="11" font-weight="bold" fill="#3c3489">Piano 1 - armadio IDF-1</text>
+  <rect x="86" y="340" width="110" height="44" rx="4" fill="#2c3e50" stroke="#1a252f"/>
+  <text x="141" y="356" text-anchor="middle" font-size="8" fill="#ecf0f1" font-weight="bold">IDF-1 Switch</text>
+  <text x="141" y="368" text-anchor="middle" font-size="7" fill="#bdc3c7">PoE+ 48p - VLAN 12</text>
+  <text x="141" y="379" text-anchor="middle" font-size="7" fill="#bdc3c7">uplink fibra 1/10G</text>
+  <g fill="#d68910">
+  <rect x="230" y="344" width="12" height="11" rx="2"/><rect x="244" y="344" width="12" height="11" rx="2"/>
+  <rect x="300" y="344" width="12" height="11" rx="2"/><rect x="314" y="344" width="12" height="11" rx="2"/>
+  <rect x="370" y="344" width="12" height="11" rx="2"/><rect x="384" y="344" width="12" height="11" rx="2"/>
+  <rect x="440" y="344" width="12" height="11" rx="2"/><rect x="454" y="344" width="12" height="11" rx="2"/>
+  </g>
+  <text x="236" y="368" font-size="7" fill="#3c3489" text-anchor="middle">S101</text>
+  <text x="306" y="368" font-size="7" fill="#3c3489" text-anchor="middle">S102</text>
+  <text x="376" y="368" font-size="7" fill="#3c3489" text-anchor="middle">...</text>
+  <text x="446" y="368" font-size="7" fill="#3c3489" text-anchor="middle">S112</text>
+  <text x="540" y="358" font-size="8" fill="#3c3489" text-anchor="middle">2 prese/stanza</text>
+  <text x="540" y="370" font-size="8" fill="#3c3489" text-anchor="middle">+ AP + coord. Zigbee</text>
+  <circle cx="500" cy="395" r="6" fill="#c0392b"/><text x="500" y="413" font-size="7" fill="#922b21" text-anchor="middle">AP PoE</text>
+  <rect x="540" y="389" width="16" height="12" rx="2" fill="#185fa5"/><text x="548" y="413" font-size="7" fill="#0c447c" text-anchor="middle">coord</text>
+  <line x1="196" y1="358" x2="226" y2="350" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="360" x2="296" y2="350" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="362" x2="436" y2="350" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="370" x2="496" y2="392" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="372" x2="538" y2="393" stroke="#185fa5" stroke-width="1.3"/>
+
+  <!-- PIANO TERRA y=432 -->
+  <rect x="40" y="432" width="600" height="120" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.7"/>
+  <text x="56" y="450" font-size="11" font-weight="bold" fill="#085041">Piano terra - aree comuni (IDF-PT vicino al MDF)</text>
+  <rect x="86" y="460" width="110" height="44" rx="4" fill="#2c3e50" stroke="#1a252f"/>
+  <text x="141" y="476" text-anchor="middle" font-size="8" fill="#ecf0f1" font-weight="bold">IDF-PT Switch</text>
+  <text x="141" y="488" text-anchor="middle" font-size="7" fill="#bdc3c7">PoE+ 48p - VLAN 11</text>
+  <text x="141" y="499" text-anchor="middle" font-size="7" fill="#bdc3c7">rame corto al MDF</text>
+  <g fill="#d68910">
+  <rect x="230" y="464" width="12" height="11" rx="2"/><rect x="300" y="464" width="12" height="11" rx="2"/>
+  <rect x="370" y="464" width="12" height="11" rx="2"/><rect x="440" y="464" width="12" height="11" rx="2"/>
+  </g>
+  <text x="236" y="488" font-size="7" fill="#085041" text-anchor="middle">Reception</text>
+  <text x="306" y="488" font-size="7" fill="#085041" text-anchor="middle">Hall</text>
+  <text x="376" y="488" font-size="7" fill="#085041" text-anchor="middle">Congressi</text>
+  <text x="446" y="488" font-size="7" fill="#085041" text-anchor="middle">Cucina</text>
+  <text x="540" y="476" font-size="8" fill="#085041" text-anchor="middle">postazioni cablate</text>
+  <text x="540" y="488" font-size="8" fill="#085041" text-anchor="middle">+ AP comuni + coord-PT</text>
+  <circle cx="500" cy="513" r="6" fill="#c0392b"/><text x="500" y="531" font-size="7" fill="#922b21" text-anchor="middle">AP PoE</text>
+  <rect x="540" y="507" width="16" height="12" rx="2" fill="#185fa5"/><text x="548" y="531" font-size="7" fill="#0c447c" text-anchor="middle">coord</text>
+  <line x1="196" y1="476" x2="226" y2="470" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="478" x2="296" y2="470" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="480" x2="436" y2="470" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="488" x2="496" y2="510" stroke="#185fa5" stroke-width="1.3"/>
+  <line x1="196" y1="490" x2="538" y2="511" stroke="#185fa5" stroke-width="1.3"/>
+
+  <!-- DORSALE VERTICALE IN FIBRA: dal MDF (141,555) a ogni IDF -->
+  <!-- linea verticale principale -->
+  <line x1="141" y1="555" x2="141" y2="504" stroke="#c0392b" stroke-width="3"/>
+  <line x1="141" y1="460" x2="141" y2="384" stroke="#c0392b" stroke-width="3"/>
+  <line x1="141" y1="340" x2="141" y2="264" stroke="#c0392b" stroke-width="3"/>
+  <line x1="141" y1="220" x2="141" y2="144" stroke="#c0392b" stroke-width="3"/>
+  <!-- etichetta dorsale -->
+  <text x="150" y="530" font-size="8" fill="#922b21">dorsale verticale in fibra OM4 (montante di edificio)</text>
+
+  <defs><marker id="a" markerWidth="9" markerHeight="6" refX="9" refY="3" orient="auto"><polygon points="0 0, 9 3, 0 6" fill="#185fa5"/></marker></defs>
+</svg>
