@@ -347,9 +347,7 @@ interfacce **HTTP/REST** (webhook) e connettori verso piattaforme cloud, ma MQTT
 resta il canale d'elezione per il suo modello publish/subscribe leggero e
 disaccoppiato, ideale per il traffico IoT.
 
-## **Server applicativo e consegna delle chiavi di sessione**
-
-[#server-applicativo-e-consegna-delle-chiavi-di-sessione](#server-applicativo-e-consegna-delle-chiavi-di-sessione)
+### **Server applicativo e consegna delle chiavi di sessione**
 
 Una distinzione spesso fonte di **confusione** è quella tra **Application Server** (server applicativo) e **server di gestione**. Sebbene nella pratica possano coincidere sulla **stessa macchina** o nello **stesso stack software**, si tratta di **ruoli logicamente distinti**, e il confine tra i due passa esattamente per il punto in cui **termina la sicurezza LoRaWAN**.
 
