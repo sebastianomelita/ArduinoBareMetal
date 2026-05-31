@@ -48,6 +48,16 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione delle tecniche di **autenticazione** dei servizi (openid, psw, sessioni, ecc).
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 
+---
+
+## **Progetto di esempio completo**
+
+[Testo della prova Albergo Domotizzato](/esempi/progetti/consegnaSmartroad.md)
+
+[Svolgimento Albergo Domotizzato](/esempi/progetti/svolgimento_smart_road.md)
+
+---
+
 [Rete di reti Zigbee](/approfondimenti/zigbee_federation.md)
        
 [Broker MQTT](/approfondimenti/broker_mqtt.md)
