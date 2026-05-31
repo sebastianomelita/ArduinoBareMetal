@@ -64,6 +64,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione della posizione del **broker MQTT**.
 - definizione dei **topic utili** per i casi d'uso richiesti.
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
+- definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la **sede dell'elaborazione dei comandi** più opportuna (locale o edge vs remota on premise/cloud). 
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 
 ## **Progetto di esempio completo**
