@@ -360,8 +360,6 @@ In altri termini: l'Application Server **converte** il dato cifrato e compattato
 
 ### **Promuovere un server di gestione ad Application Server**
 
-[#promuovere-un-server-di-gestione-ad-application-server](#promuovere-un-server-di-gestione-ad-application-server)
-
 Un errore comune è pensare che basti aggiungere un **connettore per le chiavi** a un server di gestione per trasformarlo in un Application Server. **Non è sufficiente**. Essere un vero Application Server, nella **variante end-to-end** (quella in cui il payload viene decifrato **direttamente** dal server applicativo e **non** dal network server), richiede **tre** elementi, non solo la chiave:
 
 1. **possedere la AppSKey** del dispositivo;
@@ -372,38 +370,12 @@ Un server di gestione che si limita a effettuare il **subscribe** del JSON **gi�
 
 ### **API per lo scambio delle chiavi: l'interfaccia AS-JS**
 
-[#api-per-lo-scambio-delle-chiavi-l-interfaccia-as-js](#api-per-lo-scambio-delle-chiavi-l-interfaccia-as-js)
-
 Lo **scambio delle chiavi di sessione** verso l'Application Server **non** è lasciato all'improvvisazione: è **standardizzato** dalla specifica **LoRaWAN Backend Interfaces (TS002)**, che definisce le interfacce di back-end tra Network Server, Join Server e Application Server. In particolare:
 
 - esiste un'interfaccia dedicata, l'**AS-JS**, il cui unico scopo è la **consegna della AppSKey dal Join Server all'Application Server**;
 - la chiave **non** viaggia in chiaro: la **AppSKey è cifrata** con un **segreto condiviso** (una *Key Encryption Key*, **KEK**) tra Join Server e Application Server. Una volta ricevuta e decifrata, l'Application Server inizia a **usare la AppSKey** per cifrare e decifrare il payload applicativo.
 
 Di conseguenza, per ricevere le chiavi nel rispetto della specifica, l'Application Server deve **implementare i messaggi dell'interfaccia AS-JS** (basata su HTTP/JSON) **e** **condividere una KEK** con il Join Server.
-
-### **Due interfacce da non confondere**
-
-[#due-interfacce-da-non-confondere](#due-interfacce-da-non-confondere)
-
-È fondamentale **distinguere** le due interfacce che insistono sull'Application Server, perché hanno uno **stato di standardizzazione opposto**:
-
-| Interfaccia | Cosa trasporta | Standardizzata? |
-|-------------|----------------|-----------------|
-| **JS → AS** | Consegna della **AppSKey** | **Sì**, dalla Backend Interfaces (interfaccia AS-JS) |
-| **NS → AS** | Payload applicativo + metadati | **No**, fuori dallo scopo della specifica |
-
-L'interfaccia **NS → AS** è infatti esplicitamente lasciata all'implementazione (webservice, websocket, webhook, MQTT sono variamente realizzati), come già osservato nella sezione sul **server di rete**. È invece la consegna **chiave** (JS → AS) ad essere normata.
-
-### **Le due varianti architetturali**
-
-[#le-due-varianti-architetturali](#le-due-varianti-architetturali)
-
-La scelta di **dove** decifrare il payload determina anche se Application Server e server di gestione **collassano** in un unico componente:
-
-- **Variante "standard"**: la AppSKey è nota al **Network Server**, che **decifra** e inoltra il dato **in chiaro** all'applicazione. In questo caso l'"Application Server" può essere un **semplice consumatore** e, di fatto, **coincide** con il server di gestione.
-- **Variante "end-to-end"**: la AppSKey viene consegnata **direttamente** all'Application Server tramite l'interfaccia **AS-JS**, e il Network Server **non la vede mai**. Qui l'Application Server **deve** possedere crittografia e interfaccia chiavi, e la sua **separazione** dal server di gestione diventa concreta. È, ad esempio, il caso di **ChirpStack** con un Join Server **esterno**: le chiavi di sessione non vengono derivate dall'Application Server, che **non ha bisogno** di conoscere la AppKey.
-
-**In sintesi**: un connettore per le chiavi **non basta**; serve un'**interfaccia specifica** (AS-JS della Backend Interfaces) e lo **stack crittografico**, ma **solo** se si vuole la vera variante **end-to-end**. Se invece è il Network Server a decifrare e a fornire il JSON in chiaro, allora **Application Server** e **server di gestione** collassano legittimamente in un **unico componente**.
 
 ---
 
