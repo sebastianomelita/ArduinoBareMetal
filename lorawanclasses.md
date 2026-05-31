@@ -49,7 +49,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 ---
 ## **Progetto di esempio completo**
 
-[Testo della prova Smart Road](consegnaSmartroad.md)
+[Testo della prova Smart Road](/esempi/progetti/consegnaSmartroad.md)
 
 [Svolgimento Smart Road](/esempi/progetti/svolgimento_smart_road.md)
 
