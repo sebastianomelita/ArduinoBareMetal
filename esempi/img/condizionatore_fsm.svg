@@ -1,0 +1,95 @@
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif" font-size="10">
+  <rect width="900" height="480" fill="#f8f9fa"/>
+  <text x="450" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">Condizionatore con scheda stanza + rilevatore di presenza — Macchina a stati</text>
+
+  <rect x="30" y="45" width="160" height="50" rx="6" fill="#3498db" stroke="#2980b9" stroke-width="1.5"/>
+  <text x="110" y="65" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Lettore scheda</text>
+  <text x="110" y="80" text-anchor="middle" font-size="8" fill="#d6eaf8">smartcard/stato</text>
+
+  <rect x="30" y="105" width="160" height="50" rx="6" fill="#16a085" stroke="#0e6655" stroke-width="1.5"/>
+  <text x="110" y="125" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Sensore presenza</text>
+  <text x="110" y="140" text-anchor="middle" font-size="8" fill="#d1f2eb">presenza/stato (PIR)</text>
+
+  <rect x="30" y="165" width="160" height="50" rx="6" fill="#8e44ad" stroke="#6c3483" stroke-width="1.5"/>
+  <text x="110" y="185" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Termostato comodino</text>
+  <text x="110" y="200" text-anchor="middle" font-size="8" fill="#e8daef">ac/cmd (setpoint)</text>
+
+  <line x1="190" y1="70" x2="250" y2="120" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="190" y1="130" x2="250" y2="130" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="190" y1="190" x2="250" y2="140" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <rect x="250" y="90" width="120" height="80" rx="8" fill="#34495e" stroke="#2c3e50" stroke-width="2"/>
+  <text x="310" y="120" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Macchina</text>
+  <text x="310" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="white">a stati</text>
+  <text x="310" y="152" text-anchor="middle" font-size="8" fill="#bdc3c7">(Web Server)</text>
+
+  <rect x="430" y="50" width="180" height="55" rx="6" fill="#d5f5e3" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="520" y="70" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e8449">COMFORT</text>
+  <text x="520" y="85" text-anchor="middle" font-size="8" fill="#1e8449">scheda + presenza</text>
+  <text x="520" y="97" text-anchor="middle" font-size="8" fill="#1e8449">AC segue setpoint ospite (es. 22 gradi)</text>
+
+  <rect x="430" y="115" width="180" height="55" rx="6" fill="#fef5e7" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="520" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="#a04000">ECO_HOLD</text>
+  <text x="520" y="150" text-anchor="middle" font-size="8" fill="#a04000">scheda c'e', stanza vuota oltre 20min</text>
+  <text x="520" y="162" text-anchor="middle" font-size="8" fill="#a04000">AC banda risparmio (estate 26 gradi)</text>
+
+  <rect x="430" y="180" width="180" height="55" rx="6" fill="#fadbd8" stroke="#e74c3c" stroke-width="1.5"/>
+  <text x="520" y="200" text-anchor="middle" font-size="11" font-weight="bold" fill="#a93226">OFF_DEFAULT</text>
+  <text x="520" y="215" text-anchor="middle" font-size="8" fill="#a93226">scheda rimossa oltre 60s</text>
+  <text x="520" y="227" text-anchor="middle" font-size="8" fill="#a93226">AC OFF, luci OFF, persiane chiuse</text>
+
+  <line x1="370" y1="115" x2="425" y2="80" stroke="#27ae60" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="370" y1="130" x2="425" y2="140" stroke="#f39c12" stroke-width="1.5" marker-end="url(#ar)"/>
+  <line x1="370" y1="148" x2="425" y2="205" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#ar)"/>
+
+  <path d="M 615 95 Q 660 110 615 130" fill="none" stroke="#27ae60" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arg)"/>
+  <text x="675" y="112" font-size="8" fill="#27ae60">no presenza 20min</text>
+  <path d="M 660 140 Q 705 115 622 90" fill="none" stroke="#27ae60" stroke-width="1.2" stroke-dasharray="4,3" marker-end="url(#arg)"/>
+  <text x="675" y="135" font-size="8" fill="#27ae60">PIR rileva, torna su</text>
+
+  <line x1="520" y1="235" x2="520" y2="260" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#ar)"/>
+  <rect x="430" y="260" width="180" height="36" rx="6" fill="#7f8c8d" stroke="#5d6d7e"/>
+  <text x="520" y="278" text-anchor="middle" font-size="9" font-weight="bold" fill="white">publish albergo/p1/s101/ac/cmd</text>
+  <text x="520" y="290" text-anchor="middle" font-size="8" fill="#ecf0f1">via broker MQTT on-premise</text>
+
+  <rect x="30" y="240" width="370" height="70" rx="6" fill="#eaf4fd" stroke="#2980b9" stroke-width="1"/>
+  <text x="40" y="258" font-size="10" font-weight="bold" fill="#1a5276">Perche' serve il sensore di presenza:</text>
+  <text x="40" y="274" font-size="8.5" fill="#1a5276">Con la sola scheda, l'ospite puo' lasciare una tessera fittizia nello</text>
+  <text x="40" y="287" font-size="8.5" fill="#1a5276">slot e tenere acceso l'AC mentre e' fuori. Il PIR distingue stanza</text>
+  <text x="40" y="300" font-size="8.5" fill="#1a5276">occupata da scheda inserita ma vuota, recuperando il risparmio.</text>
+
+  <rect x="30" y="320" width="840" height="145" rx="8" fill="#1e2124" stroke="#2c3e50" stroke-width="1.5"/>
+  <text x="450" y="338" text-anchor="middle" font-size="11" font-weight="bold" fill="#ecf0f1">Messaggi JSON sui Topic MQTT</text>
+
+  <text x="45" y="358" font-size="9" font-weight="bold" fill="#1abc9c">// presenza - albergo/p1/s101/presenza/stato</text>
+  <rect x="45" y="363" width="260" height="90" rx="4" fill="#2d3436"/>
+  <text x="55" y="380" fill="#27ae60" font-size="10">{</text>
+  <text x="65" y="394" fill="#5dcaa5" font-size="10">"motion"</text><text x="125" y="394" fill="#f0997b" font-size="10">: true,</text>
+  <text x="65" y="408" fill="#5dcaa5" font-size="10">"illuminance"</text><text x="160" y="408" fill="#f0997b" font-size="10">: 120,</text>
+  <text x="65" y="422" fill="#5dcaa5" font-size="10">"last_seen"</text><text x="150" y="422" fill="#fac775" font-size="10">: 1748710800,</text>
+  <text x="65" y="436" fill="#5dcaa5" font-size="10">"battery"</text><text x="130" y="436" fill="#f0997b" font-size="10">: 92</text>
+  <text x="55" y="448" fill="#27ae60" font-size="10">}</text>
+
+  <text x="320" y="358" font-size="9" font-weight="bold" fill="#85b7eb">// scheda - albergo/p1/s101/smartcard/stato</text>
+  <rect x="320" y="363" width="260" height="90" rx="4" fill="#2d3436"/>
+  <text x="330" y="380" fill="#27ae60" font-size="10">{</text>
+  <text x="340" y="394" fill="#85b7eb" font-size="10">"present"</text><text x="410" y="394" fill="#f0997b" font-size="10">: true,</text>
+  <text x="340" y="408" fill="#85b7eb" font-size="10">"uid"</text><text x="375" y="408" fill="#fac775" font-size="10">: "A3F2C1",</text>
+  <text x="340" y="422" fill="#85b7eb" font-size="10">"valid"</text><text x="390" y="422" fill="#f0997b" font-size="10">: true,</text>
+  <text x="340" y="436" fill="#85b7eb" font-size="10">"ts"</text><text x="368" y="436" fill="#fac775" font-size="10">: 1748710800</text>
+  <text x="330" y="448" fill="#27ae60" font-size="10">}</text>
+
+  <text x="595" y="358" font-size="9" font-weight="bold" fill="#afa9ec">// comando AC - albergo/p1/s101/ac/cmd</text>
+  <rect x="595" y="363" width="260" height="90" rx="4" fill="#2d3436"/>
+  <text x="605" y="380" fill="#27ae60" font-size="10">{</text>
+  <text x="615" y="394" fill="#afa9ec" font-size="10">"power"</text><text x="665" y="394" fill="#f0997b" font-size="10">: "ON",</text>
+  <text x="615" y="408" fill="#afa9ec" font-size="10">"mode"</text><text x="660" y="408" fill="#fac775" font-size="10">: "eco",</text>
+  <text x="615" y="422" fill="#afa9ec" font-size="10">"setpoint"</text><text x="695" y="422" fill="#f0997b" font-size="10">: 26,</text>
+  <text x="615" y="436" fill="#afa9ec" font-size="10">"source"</text><text x="675" y="436" fill="#fac775" font-size="10">: "fsm:ECO_HOLD"</text>
+  <text x="605" y="448" fill="#27ae60" font-size="10">}</text>
+
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="6" refX="9" refY="3" orient="auto"><polygon points="0 0, 9 3, 0 6" fill="#7f8c8d"/></marker>
+    <marker id="arg" markerWidth="9" markerHeight="6" refX="9" refY="3" orient="auto"><polygon points="0 0, 9 3, 0 6" fill="#27ae60"/></marker>
+  </defs>
+</svg>

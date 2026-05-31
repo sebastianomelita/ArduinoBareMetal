@@ -1,0 +1,68 @@
+<svg viewBox="0 0 680 470" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif" font-size="11">
+  <rect width="680" height="470" fill="#f8f9fa"/>
+  <text x="340" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#2c3e50">Federazione di reti Zigbee su canali distinti, convergenti sul broker MQTT</text>
+
+  <rect x="230" y="38" width="220" height="40" rx="8" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.8"/>
+  <text x="340" y="55" text-anchor="middle" font-size="11" font-weight="bold" fill="#085041">Broker MQTT</text>
+  <text x="340" y="70" text-anchor="middle" font-size="9" fill="#0f6e56">on-premise (LAN)</text>
+
+  <line x1="340" y1="78" x2="340" y2="98" stroke="#1d9e75" stroke-width="1.5" marker-end="url(#a)"/>
+  <rect x="40" y="100" width="600" height="8" rx="4" fill="#888780" opacity="0.4"/>
+  <text x="340" y="96" text-anchor="middle" font-size="9" fill="#5f5e5a">LAN - switch L3</text>
+
+  <g>
+  <rect x="56" y="126" width="120" height="54" rx="6" fill="#e1f5ee" stroke="#0f6e56" stroke-width="0.7"/>
+  <text x="116" y="146" text-anchor="middle" font-size="11" font-weight="bold" fill="#085041">GW-PT</text>
+  <text x="116" y="161" text-anchor="middle" font-size="9" fill="#0f6e56">Piano terra</text>
+  <text x="116" y="174" text-anchor="middle" font-size="9" fill="#0f6e56">canale 11</text>
+  <rect x="196" y="126" width="120" height="54" rx="6" fill="#eeedfe" stroke="#534ab7" stroke-width="0.7"/>
+  <text x="256" y="146" text-anchor="middle" font-size="11" font-weight="bold" fill="#3c3489">GW-P1</text>
+  <text x="256" y="161" text-anchor="middle" font-size="9" fill="#534ab7">Piano 1</text>
+  <text x="256" y="174" text-anchor="middle" font-size="9" fill="#534ab7">canale 15</text>
+  <rect x="364" y="126" width="120" height="54" rx="6" fill="#faece7" stroke="#993c1d" stroke-width="0.7"/>
+  <text x="424" y="146" text-anchor="middle" font-size="11" font-weight="bold" fill="#712b13">GW-P2</text>
+  <text x="424" y="161" text-anchor="middle" font-size="9" fill="#993c1d">Piano 2</text>
+  <text x="424" y="174" text-anchor="middle" font-size="9" fill="#993c1d">canale 20</text>
+  <rect x="504" y="126" width="120" height="54" rx="6" fill="#faeeda" stroke="#854f0b" stroke-width="0.7"/>
+  <text x="564" y="146" text-anchor="middle" font-size="11" font-weight="bold" fill="#633806">GW-P3</text>
+  <text x="564" y="161" text-anchor="middle" font-size="9" fill="#854f0b">Piano 3</text>
+  <text x="564" y="174" text-anchor="middle" font-size="9" fill="#854f0b">canale 25</text>
+  </g>
+  <line x1="116" y1="108" x2="116" y2="126" stroke="#888780" stroke-width="1.2" marker-end="url(#a)"/>
+  <line x1="256" y1="108" x2="256" y2="126" stroke="#888780" stroke-width="1.2" marker-end="url(#a)"/>
+  <line x1="424" y1="108" x2="424" y2="126" stroke="#888780" stroke-width="1.2" marker-end="url(#a)"/>
+  <line x1="564" y1="108" x2="564" y2="126" stroke="#888780" stroke-width="1.2" marker-end="url(#a)"/>
+
+  <g font-size="8" text-anchor="middle">
+  <rect x="48" y="196" width="138" height="74" rx="6" fill="#f4fbf8" stroke="#1d9e75" stroke-width="0.6"/><text x="117" y="212" fill="#085041" font-size="9">rete ch 11</text>
+  <circle cx="72" cy="232" r="7" fill="#1d9e75"/><circle cx="117" cy="232" r="7" fill="#1d9e75"/><circle cx="162" cy="232" r="7" fill="#1d9e75"/>
+  <rect x="62" y="250" width="22" height="14" rx="2" fill="#ba7517"/><rect x="106" y="250" width="22" height="14" rx="2" fill="#ba7517"/><rect x="150" y="250" width="22" height="14" rx="2" fill="#ba7517"/>
+  <rect x="187" y="196" width="138" height="74" rx="6" fill="#f6f5ff" stroke="#534ab7" stroke-width="0.6"/><text x="256" y="212" fill="#3c3489" font-size="9">rete ch 15</text>
+  <circle cx="211" cy="232" r="7" fill="#534ab7"/><circle cx="256" cy="232" r="7" fill="#534ab7"/><circle cx="301" cy="232" r="7" fill="#534ab7"/>
+  <rect x="201" y="250" width="22" height="14" rx="2" fill="#ba7517"/><rect x="245" y="250" width="22" height="14" rx="2" fill="#ba7517"/><rect x="289" y="250" width="22" height="14" rx="2" fill="#ba7517"/>
+  <rect x="355" y="196" width="138" height="74" rx="6" fill="#fdf3ef" stroke="#993c1d" stroke-width="0.6"/><text x="424" y="212" fill="#712b13" font-size="9">rete ch 20</text>
+  <circle cx="379" cy="232" r="7" fill="#993c1d"/><circle cx="424" cy="232" r="7" fill="#993c1d"/><circle cx="469" cy="232" r="7" fill="#993c1d"/>
+  <rect x="369" y="250" width="22" height="14" rx="2" fill="#ba7517"/><rect x="413" y="250" width="22" height="14" rx="2" fill="#ba7517"/><rect x="457" y="250" width="22" height="14" rx="2" fill="#ba7517"/>
+  <rect x="495" y="196" width="138" height="74" rx="6" fill="#fef9ef" stroke="#854f0b" stroke-width="0.6"/><text x="564" y="212" fill="#633806" font-size="9">rete ch 25</text>
+  <circle cx="519" cy="232" r="7" fill="#854f0b"/><circle cx="564" cy="232" r="7" fill="#854f0b"/><circle cx="609" cy="232" r="7" fill="#854f0b"/>
+  <rect x="509" y="250" width="22" height="14" rx="2" fill="#ba7517"/><rect x="553" y="250" width="22" height="14" rx="2" fill="#ba7517"/><rect x="597" y="250" width="22" height="14" rx="2" fill="#ba7517"/>
+  </g>
+  <line x1="116" y1="180" x2="116" y2="196" stroke="#1d9e75" stroke-width="1.2" marker-end="url(#a)"/>
+  <line x1="256" y1="180" x2="256" y2="196" stroke="#534ab7" stroke-width="1.2" marker-end="url(#a)"/>
+  <line x1="424" y1="180" x2="424" y2="196" stroke="#993c1d" stroke-width="1.2" marker-end="url(#a)"/>
+  <line x1="564" y1="180" x2="564" y2="196" stroke="#854f0b" stroke-width="1.2" marker-end="url(#a)"/>
+
+  <rect x="40" y="286" width="600" height="80" rx="8" fill="#eaf4fd" stroke="#185fa5" stroke-width="0.7"/>
+  <text x="56" y="304" font-size="11" font-weight="bold" fill="#0c447c">Separazione spettrale (banda ISM 2.4 GHz)</text>
+  <text x="56" y="322" font-size="9" fill="#185fa5">I canali Zigbee 15, 20, 25 cadono negli avvallamenti tra i canali Wi-Fi 1/6/11, minimizzando le interferenze.</text>
+  <text x="56" y="338" font-size="9" fill="#185fa5">Ogni piano usa un canale diverso anche per ridurre l'interferenza Zigbee-Zigbee tra piani adiacenti.</text>
+  <text x="56" y="354" font-size="9" fill="#185fa5">Le reti restano comunque tutte raggiungibili dallo stesso topic tree MQTT (albergo/pN/sXXX/...).</text>
+
+  <rect x="40" y="372" width="600" height="76" rx="8" fill="#f1efe8" stroke="#b4b2a9" stroke-width="0.7"/>
+  <text x="56" y="390" font-size="11" font-weight="bold" fill="#2c2c2a">Vantaggi della federazione</text>
+  <text x="56" y="408" font-size="9" fill="#444441">Isolamento guasti: se GW-P1 si rompe, i piani 2 e 3 continuano a funzionare autonomamente.</text>
+  <text x="56" y="424" font-size="9" fill="#444441">Scalabilita': si aggiunge un piano con un nuovo GW e un canale libero senza toccare le reti esistenti.</text>
+  <text x="56" y="440" font-size="9" fill="#444441">Capacita': ogni rete gestisce ~70-95 dispositivi, ben sotto il limite pratico di 200 per coordinatore.</text>
+
+  <defs><marker id="a" markerWidth="9" markerHeight="6" refX="9" refY="3" orient="auto"><polygon points="0 0, 9 3, 0 6" fill="#7f8c8d"/></marker></defs>
+</svg>
