@@ -82,7 +82,7 @@ La topologia logica comprende i seguenti livelli:
 Ogni piano ha una rete Zigbee indipendente con coordinatore integrato nel gateway. I router FFD (lampade) formano la mesh. I dispositivi RFD (comandi, serrature, sensori) comunicano con il router FFD più vicino con un solo hop.
 
 **Livello L2 — LAN Ethernet:**  
-Access switch per piano (802.1Q trunk) + 2 prese Ethernet per stanza. Le VLAN separano: server farm, piani, domotica, Wi-Fi ospiti, Wi-Fi staff.
+Uno switch di accesso PoE+ per piano (armadio IDF) collegato al Core L3 in fibra; trunk 802.1Q per trasportare più VLAN sullo stesso link, 2 prese Ethernet per stanza. Le VLAN separano: server farm, piani, domotica, Wi-Fi ospiti, Wi-Fi staff. Il dettaglio del cablaggio è nella sezione 4.1.
 
 **Livello L3 — Core Switch (routing statico inter-VLAN):**  
 Il Core Switch L3 smista il traffico tra le VLAN con routing statico. La VLAN 20 (domotica) è segregata: i gateway Zigbee possono raggiungere solo il broker MQTT (10.0.1.10), non la rete ospiti.
@@ -101,6 +101,28 @@ Riceve i messaggi dai gateway Zigbee (publisher) e li distribuisce alle dashboar
 
 **Livello L7 — Web Server (Node.js + NGINX):**  
 Eroga il sito di prenotazione (HTTPS), la dashboard domotica per la reception e i comandi web per aree comuni. Si connette al broker MQTT come client per inviare comandi e ricevere stati.
+
+### 4.1 Cablaggio strutturato Ethernet
+
+Il sistema di cablaggio segue lo standard del cablaggio strutturato (gerarchia EIA/TIA 568) con un centro stella di edificio (MDF) e un armadio di permutazione per ogni piano (IDF).
+
+![Cablaggio strutturato Ethernet](../img/cablaggio.svg)
+
+**Centro stella di edificio (MDF) — sala tecnica al piano terra.** Lo sgabuzzino degli addetti alle pulizie, indicato dalla traccia come sala tecnica, ospita il rack principale con: router/firewall verso l'ISP (i 4 IP pubblici), il Core Switch L3 in configurazione *collapsed core* (fa sia da distribuzione sia da core, adeguato a un edificio di queste dimensioni), i patch panel delle dorsali verticali e la server farm. Il Core L3 è il punto in cui terminano tutte le dorsali di piano e dove avviene il routing inter-VLAN e l'applicazione delle ACL.
+
+**Dorsale verticale (backbone) in fibra.** Dal MDF parte un montante verticale di edificio in **fibra ottica multimodale OM4** che raggiunge l'armadio IDF di ciascun piano. La fibra è preferita al rame sui tratti verticali perché supera agevolmente i ~90 m di portata del rame su un edificio a più piani, è immune ai disturbi elettromagnetici del vano ascensore/montanti elettrici e offre uplink a 1/10 Gbit/s verso gli switch di piano. Il piano terra, essendo adiacente al MDF, può essere collegato in rame corto.
+
+**Armadi di piano (IDF) e distribuzione orizzontale.** Ogni piano ha un armadio IDF con uno switch di accesso **PoE+ a 48 porte** (lo standard 802.3at alimenta direttamente Access Point e coordinatori Zigbee dallo stesso cavo dati). Dall'IDF parte la distribuzione orizzontale in **cavo Cat6 U/FTP** verso:
+
+- le **2 prese RJ45 per stanza** richieste dalla traccia (una tipicamente per la TV/IPTV, una per uso dati dell'ospite o telefono VoIP);
+- gli **Access Point Wi-Fi** distribuiti baricentricamente, alimentati in PoE;
+- i **coordinatori Zigbee** a soffitto nel corridoio, anch'essi in PoE.
+
+Ogni tratta orizzontale resta entro i 90 m di permanent link + 10 m di patch previsti dallo standard, vincolo agevolmente rispettato con un IDF per piano.
+
+**Dimensionamento porte per piano residenziale.** Per i 12 alloggi di un piano: 12 stanze × 2 prese = 24 porte dati + 2 Access Point + 1 coordinatore Zigbee = **27 porte attive**, comodamente entro uno switch da 48 porte, che lascia margine per crescita e per le porte di management. Il piano terra dimensiona invece sulle postazioni cablate di reception, sale comuni e cucina.
+
+**Separazione logica su infrastruttura condivisa.** Lo stesso cablaggio fisico trasporta VLAN diverse grazie ai trunk 802.1Q tra IDF e Core: la porta della stanza è in VLAN piano (es. 12), l'Access Point pubblica le SSID ospiti/staff su VLAN 30/31, il coordinatore Zigbee è in VLAN 20. La segregazione tra reti, descritta nelle ACL della sezione 5, viaggia quindi sopra un'unica infrastruttura di rame e fibra, senza bisogno di cablaggi fisici separati per la domotica.
 
 ---
 
