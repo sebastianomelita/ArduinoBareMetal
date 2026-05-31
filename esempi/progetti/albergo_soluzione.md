@@ -1,4 +1,8 @@
-# 11 – GESTIONE ALBERGO (IoT indoor + NAT)
+>[Torna a svolgimento Smart Road](svolgimento_smart_road.md)>[Torna a Dettaglio architettura LoRaWAN](/lorawanclasses.md) 
+>
+
+
+# GESTIONE ALBERGO (IoT indoor + NAT)
 ## Soluzione completa d'esame
 
 ---
