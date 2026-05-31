@@ -52,9 +52,9 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 ## **Progetto di esempio completo**
 
-[Testo della prova Albergo Domotizzato](/esempi/progetti/albergo_soluzione.md)
+[Testo della prova Albergo Domotizzato](/esempi/progetti/albergo.pdf)
 
-[Svolgimento Albergo Domotizzato](/esempi/progetti/svolgimento_smart_road.md)
+[Svolgimento Albergo Domotizzato](/esempi/progetti//albergo_soluzione.md)
 
 ---
 
