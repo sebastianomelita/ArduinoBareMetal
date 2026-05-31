@@ -108,6 +108,8 @@ Per ogni caso d'uso esistono alternative all'RFID che vanno valutate: **codice a
 
 Soluzione completa di una traccia d'esame: **catena di abbigliamento con 50 punti vendita** che vuole inventario in tempo reale, antitaccheggio, velocità di cassa e integrazione cloud. Comprende: scelta tecnologica argomentata (UHF EPC Gen2), architettura del singolo store con 4 tipi di reader e gateway locale, architettura backend cloud, schema di subnetting con VLAN dedicata e VPN IPsec, gerarchia di topic MQTT, esempi di messaggi JSON (lettura scaffale, allarme antitaccheggio, kill alla cassa), pseudocodice del firmware del gateway con buffer di resilienza, contromisure di sicurezza e privacy by design GDPR. → [scheda completa](approfondimenti/rfid_seconda_prova.md)
 
+[Localizzazione Indoor: Trilaterazione e RSSI Fingerprinting](/approfondimenti/position.md)
+
 ---
 
 ## **Pagine correlate**
