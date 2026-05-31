@@ -45,7 +45,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione dei topic utili per i casi d'uso richiesti.
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
-- definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la **sede dell'elaborazione dei comandi** più opportuna (locale o edge vs remota on primise/cloud). 
+- definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la **sede dell'elaborazione dei comandi** più opportuna (locale o edge vs remota on premise/cloud). 
 - gestire eventuali **vincoli di prossimità**, distinguendo tra gestione di ambienti indoor e outdoor, mediante controllo di potenza o gestione del roaming e eventuali **vincoli di posizionamento** mediante trilaterazione.
 ---
 ## **Progetto di esempio completo**
