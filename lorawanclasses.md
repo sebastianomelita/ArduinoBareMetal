@@ -70,6 +70,8 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 [Dettaglio tecnologie di accesso al mezzo radio](accessoradio.md)
 
+---
+
 ## **Architettura di una rete di reti** 
 
 Di seguito è riportata l'architettura generale **fisica** di una rete Lorawan. Essa è composta, a **livello fisico**, essenzialmente di una **rete di accesso** ai sensori e da una **rete di distribuzione** che fa da collante di ciascuna rete di sensori.
@@ -91,6 +93,8 @@ La **figura** sottostante riassume la rete LoRaWAN dal punto di osservazione di 
 <img src="/img/lorawanLogicArchitecture.png" alt="alt text" width="800">
 
 Si noti, che il canale che collega i dispositivi IoT ai gateway non supera mai il **livello 2** della pila ISO/OSI. Questi link hanno **topologia** a **stella** e possono collegare lo stesso sensore/attuatore a molti gateway. I dispositivi utilizzano un meccanismo di **routing** di livello L1 e quindi basato sul **flooding**. E' il  routing **più semplice** possibile, e anche il **più affidabile** ma possiede l'**incoveniente** di generare **pacchetti duplicati** nel loro percorso verso l'**applicazione**. Questo problema è gestito dal **network server**.
+
+---
 
 ## **Collisioni**
 
@@ -151,6 +155,8 @@ La trama dati compresa tra due beacon consecutivi viene detta **supertrama** (su
 
 Nel contesto di LoRaWAN, un **gateway** può assumere un ruolo di **coordinamento**, simile a quello svolto dal PCF in una rete Wi-Fi, gestendo l'accesso al canale nel modo master/slave, quello in cui il centrale ha il ruolo di **master** che stabilisce **quale** stazione deve parlare, **quando** e **per quanto** tempo, usando una politica di **turnazione** delle stazioni (**polling**).
 
+---
+
 ## **Classi di dispositivi**
 
   La specifica LoRaWAN definisce tre classi di dispositivi:
@@ -168,6 +174,8 @@ Nel contesto di LoRaWAN, un **gateway** può assumere un ruolo di **coordinament
 - **C(continuo)**. La Classe C è adatta a device **alimentati a rete elettrica** (non a batteria) che devono rispondere a comandi del server con la minima latenza possibile: attuatori fissi come interruttori smart, dimmer, relè industriali, controllo di illuminazione pubblica, sistemi di apertura cancelli o serrature, punti di ricarica per veicoli elettrici, qualsiasi applicazione dove un operatore umano preme un pulsante e si aspetta una risposta immediata dall'attuatore remoto.
 
 Per il dettaglio sulla gestione delle classi di servizio vedi [Classi di servizio LoRAWAN](classilora.md).
+
+---
 
 ## **Funzioni di una rete lora**
 
@@ -215,6 +223,8 @@ Non ci sono interfacce standard di trasmissione dei dati tra network server ed a
 
 Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e pertanto fanno esse stesse parte della **infrastruttura di rete**. Spesso sono **virtualizzate** e le loro funzioni sono offerte come **servizio** su abbonamento. Sono presenti in quasi tutte le **infrastrutture LPWA** a lungo raggio come **lora**, **Sigfox** e **NB-IoT**.
 
+---
+
 ## **Gateway**
 
 **Riassumendo**, alla **rete di distribuzione IP** si collegano, quindi, una o più **reti secondarie** che servono da **rete di accesso** per i dispositivi sensori o attuatori con **interfacce** spesso di tipo **non ethernet** che necessitano di un **gateway** di confine con possibili funzioni di:     
@@ -245,7 +255,7 @@ In **generale**, su reti **non IP**, i **client MQTT** (con il ruolo di **publis
 
 La **parola gateway** potrebbe talvolta portare a **fraintendimenti** dovuti al diverso significato nei **diversi contesti** in cui la si usa. **Spesso**, con il **termine gateway** si intente anche il **dispositivo IoT** che potrebbe essere, **a sua volta**, un **gateway** tra la il **link di campo**, porte analogiche/digitali o BUS, (vedi [bus di campo](cablatisemplici.md) per dettagli) e la **rete di sensori** (WiFi, Zigbee, lora, LAN, BLE, ecc.). In questo caso il gateway ha il compito di tradurre i messaggi dall'interfaccia a BUS su filo verso quella lora e viceversa. Vedi [Sensori](/approfondimenti/sensore.md) per approfondimenti.
 
-
+---
 ## **Join Server e accesso OTAA**
 
 Per abilitare l'**accesso OTAA**, vanno configurati sia il **dispositivo IoT** che il **network server**.
@@ -271,7 +281,6 @@ In realtà, il **server** genera, automaticamente e in maniera trasparente all'u
 
 **Nota**. In ABP queste chiavi sono fisse e configurate manualmente. In OTAA vengono generate ad ogni JoinRequest dal Join Server, ma il loro ruolo nella pipeline (passi 2 e 4) è identico.
 
----
 ---
 
 ## Application Server LoRaWAN e interfacciamento con il mondo esterno
@@ -358,7 +367,7 @@ E' un **client** del **broker MQTT** con funzioni sia di **publisher** che di **
     - analisi dei dati per la realizzazione di studi scientifici
     - elaborazione di nuovi modelli statistici o fisici o biologici dell'ambiente misurato
 
-
+---
 ## **Formato dei messaggi lora**
 
 In sintesi, la lunghezza dei messaggi lora è strettamente correlata alle **limitazioni in banda ISM** attraverso le restrizioni sul **duty cycle** e il **Time on Air**. Gli **sviluppatori** devono bilanciare la necessità di trasmettere dati con le normative che limitano il tempo di trasmissione per assicurare un uso efficiente e conforme dello spettro radio.
@@ -555,6 +564,8 @@ lora/<APP-EUI>/<DEV-EUI>/down
 lora/8b-6c-f0-8e-ee-df-1b-b6/00-80-00-ff-ff-00-00-03/down
 ```
 Questo topic può essere **scritto** (come publisher) dal **Server applicativo** o da un altro dispositivo IoT per realizzare una attuazione o una configurazione
+
+---
 
 ## **Gestione firewall**
 
