@@ -1,3 +1,6 @@
+> [Torna alla dispensa principale RFID](../archrfid.md)>
+> [Torna a reti di sensori](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/sensornetworkshort.md)
+
 # Localizzazione Indoor: Trilaterazione e RSSI Fingerprinting
 
 ## Trilaterazione
