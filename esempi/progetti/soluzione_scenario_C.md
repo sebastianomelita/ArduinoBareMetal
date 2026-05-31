@@ -1,3 +1,7 @@
+>[Torna a svolgimento Smart Road](svolgimento_smart_road.md)>[Torna a Dettaglio architettura Zigbee](/archzigbee.md) 
+>
+
+
 # Chiave di soluzione — Seconda prova
 ## Scenario C: architettura ibrida a due tag eterogenei
 
