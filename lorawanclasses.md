@@ -319,7 +319,7 @@ in formato **JSON**. È lo stesso principio di traduzione semantica già visto p
 bridge zigbee2mqtt: dal formato compatto e proprietario della rete di sensori a un
 formato testuale, chiaro e interoperabile per la rete di distribuzione.
 
-<img src="/img/Schema-Security.png" alt="Schema-Security.png" width="760">
+<img src="/img/Schema-Security.png" alt="Schema-Security.png" width="600">
 
 Il collegamento dell'Application Server verso i sistemi a valle avviene di norma
 attraverso un **broker MQTT**. L'Application Server agisce come **publisher**,
