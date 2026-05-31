@@ -41,6 +41,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione del **tipo di routing** (statico o dinamico). In caso si scelga il **routing statico**, definizione delle **tabelle di routing** più significative.
 - definizione della posizione del broker MQTT.
 - definizione dei topic utili per i casi d'uso richiesti.
+- definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la **sede dell'elaborazione dei comandi** più opportuna (locale o edge vs remota on premise/cloud). 
 - definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 - definizione delle **tecniche di autenticazione** degli utenti necessarie per un dato scenario (ad es. 802.1X). Scegliere tra autenticazione L2 EAP (statica per AP o per utente con RADIUS) e quella L7 con Captive portal. 
