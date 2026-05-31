@@ -104,13 +104,13 @@ Minacce tipiche: **eavesdropping** (lettura UHF a 30-50 m), **clonazione** dei t
 
 Per ogni caso d'uso esistono alternative all'RFID che vanno valutate: **codice a barre/QR**, **BLE beacon**, **UWB**, **biometria**. Sei scenari analizzati con tabelle comparative: tracciamento merci, controllo accessi, pagamenti, ticketing, identificazione paziente, identificazione animali. **Sintesi rapida**: NFC se c'è uno smartphone in gioco, RFID HF "puro" (MIFARE DESFire EV3) se servono tessere riusabili senza smartphone, UHF EPC Gen2 se serve lettura di massa. → [scheda completa](approfondimenti/rfid_scenari.md)
 
+### 📡 [Localizzazione Indoor: Trilaterazione e RSSI Fingerprinting](approfondimenti/position.md)
+
+Il fingerprinting costruisce offline un database di firme RSSI per ogni punto noto dello spazio e, online, confronta la misura corrente con quelle memorizzate per stimare la posizione — senza bisogno di alcun modello di propagazione. La trilaterazione invece converte l'RSSI in distanze geometriche tramite un modello fisico, risultando fragile in ambienti indoor dove riflessioni e NLOS distorcono il segnale. Il fingerprinting eccelle proprio dove la trilaterazione fallisce: ambienti multipath densi, muri spessi, e soprattutto geometrie di AP sfavorevoli come la collinearità, che genera un'intersezione mal condizionata (*poor GDOP*). Il suo limite principale è il costo della raccolta dati e la sensibilità ai cambiamenti ambientali, che richiedono aggiornamenti periodici della mappa.
+
 ### 📝 [Esempio di traccia svolta in stile seconda prova](approfondimenti/rfid_seconda_prova.md)
 
 Soluzione completa di una traccia d'esame: **catena di abbigliamento con 50 punti vendita** che vuole inventario in tempo reale, antitaccheggio, velocità di cassa e integrazione cloud. Comprende: scelta tecnologica argomentata (UHF EPC Gen2), architettura del singolo store con 4 tipi di reader e gateway locale, architettura backend cloud, schema di subnetting con VLAN dedicata e VPN IPsec, gerarchia di topic MQTT, esempi di messaggi JSON (lettura scaffale, allarme antitaccheggio, kill alla cassa), pseudocodice del firmware del gateway con buffer di resilienza, contromisure di sicurezza e privacy by design GDPR. → [scheda completa](approfondimenti/rfid_seconda_prova.md)
-
-### 📝 [Localizzazione Indoor: Trilaterazione e RSSI Fingerprinting](approfondimenti/position.md)
-
-Il fingerprinting costruisce offline un database di firme RSSI per ogni punto noto dello spazio e, online, confronta la misura corrente con quelle memorizzate per stimare la posizione — senza bisogno di alcun modello di propagazione. La trilaterazione invece converte l'RSSI in distanze geometriche tramite un modello fisico, risultando fragile in ambienti indoor dove riflessioni e NLOS distorcono il segnale. Il fingerprinting eccelle proprio dove la trilaterazione fallisce: ambienti multipath densi, muri spessi, e soprattutto geometrie di AP sfavorevoli come la collinearità, che genera un'intersezione mal condizionata (*poor GDOP*). Il suo limite principale è il costo della raccolta dati e la sensibilità ai cambiamenti ambientali, che richiedono aggiornamenti periodici della mappa.
 
 
 ---
