@@ -16,10 +16,10 @@ L'albergo è un edificio di **4 piani** (piano terra + 3 piani residenziali), co
 | Indirizzi IP pubblici | 4 (NAT dinamico per ospiti + servizi esposti) |
 | Gateway Zigbee | 4 (1 per piano + 1 piano terra/reception) |
 | Access Point Wi-Fi 802.11ac | 10 (2 per piano + 2 piano terra) |
-| Dispositivi Zigbee per stanza | 6 (lampada FFD, persiana RFD, condizionatore FFD, serratura RFD, comando comodino RFD, sensore T/H RFD) |
+| Dispositivi Zigbee per stanza | 8 (lampada FFD, persiana, condizionatore, serratura, comando comodino, sensore T/H, sensore presenza, lettore scheda) |
 | Dispositivi Zigbee aree comuni | ~30 (luci corridoi FFD, portoni, giardino, garage, palestra, ristorante) |
 
-**Stima totale nodi Zigbee:** 36 × 6 + 30 = **246 dispositivi** distribuiti su 4 reti Zigbee (una per piano/zona).
+**Stima totale nodi Zigbee:** 36 × 8 + 30 ≈ **318 dispositivi**, suddivisi in 4 reti Zigbee federate (una per piano/zona) su canali distinti. Ogni rete gestisce così ~70–95 dispositivi, ben sotto il limite pratico di ~200 per coordinatore.
 
 **Dimensionamento router Zigbee:** Le **lampade alimentate a rete** (FFD) fungono contemporaneamente da attuatori e da router della mesh Zigbee. Con mediamente 3 lampade per stanza e 6 per corridoio, si stimano ~150 router FFD e ~100 end device RFD a batteria.
 
@@ -61,10 +61,14 @@ Si sceglie un **broker MQTT on-premise** (Mosquitto su server dedicato in sala t
 
 **Note progettuali:**
 
-- I **gateway Zigbee** (GW-RT, GW-P1, GW-P2, GW-P3) sono posizionati in rack tecnici vicino al vano scale, nel punto più denso di router FFD (luci corridoio), così da avere molteplici percorsi fisici di ridondanza verso la mesh.
+- I **coordinatori Zigbee** (uno per piano + uno per il piano terra) sono dispositivi **PoE montati a soffitto al centro del corridoio**, non nel rack. Il cavo Ethernet fornisce dati e alimentazione e scende al patch panel di piano. Vanno tenuti fuori dagli armadi metallici: un rack chiuso si comporta da gabbia di Faraday e degrada il segnale RF della mesh.
+- Il coordinatore a soffitto vede direttamente le **lampade FFD** più vicine del corridoio, che fanno da spina dorsale della mesh e instradano i comandi verso le stanze.
+- Le quattro reti sono **federate su canali Zigbee distinti** (11, 15, 20, 25) per evitare interferenze tra piani adiacenti e con il Wi-Fi a 2.4 GHz, pur convergendo tutte sullo stesso broker MQTT via LAN.
 - Gli **Access Point Wi-Fi** sono posizionati baricentricamente con copertura sovrapposta (roaming 802.11r).
-- La **sala tecnica** al piano terra ospita: Core Switch L3, Firewall/NAT, Broker MQTT, Web Server, DB Server.
+- La **sala tecnica** al piano terra ospita solo gli apparati cablati: Core Switch L3, Firewall/NAT, Broker MQTT, Web Server, DB Server. I coordinatori Zigbee restano a soffitto nei corridoi.
 - La **rete domotica** è fisicamente separata dalla rete ospiti tramite VLAN dedicata (VLAN 20).
+
+![Federazione di reti Zigbee su canali distinti](../img/federazione_canali.svg)
 
 ---
 
@@ -106,15 +110,102 @@ Eroga il sito di prenotazione (HTTPS), la dashboard domotica per la reception e 
 
 Il subnetting utilizza `10.0.0.0/8` come spazio privato con VLAN dedicate per ogni zona funzionale. Il **routing è statico** dato il numero contenuto di subnet e la topologia stabile dell'edificio.
 
-**Regole firewall significative:**
+### 5.1 Matrice degli accessi (chi può raggiungere cosa)
+
+La matrice riassume le politiche di sicurezza tra le VLAN. La regola generale è "default deny": tutto ciò che non è esplicitamente permesso è bloccato. Legenda: ✓ = permesso, ✗ = negato, △ = permesso solo su porte/servizi specifici.
+
+| Sorgente ↓ \ Destinazione → | Server (10) | Piani PT/1/2/3 | Domotica (20) | Wi-Fi Ospiti (30) | Wi-Fi Staff (31) | Internet |
+|---|:---:|:---:|:---:|:---:|:---:|:---:|
+| **Server Farm (VLAN 10)** | ✓ | △ | △ | ✗ | ✗ | △ |
+| **Piani PT/1/2/3 (VLAN 11–14)** | △ | ✓ | ✗ | ✗ | ✗ | △ |
+| **Domotica/Gateway (VLAN 20)** | △ | ✗ | ✓ | ✗ | ✗ | ✗ |
+| **Wi-Fi Ospiti (VLAN 30)** | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ |
+| **Wi-Fi Staff (VLAN 31)** | △ | ✗ | ✗ | ✗ | ✓ | ✓ |
+| **Amministratore (VPN)** | ✓ | ✓ | △ | ✗ | ✓ | ✓ |
+
+Note di lettura delle celle △ più importanti:
+- **Domotica → Server**: solo MQTT verso il broker (porta 8883/TLS). Nient'altro: i gateway non devono raggiungere il DB né il web server.
+- **Server → Domotica**: solo il Web Server può aprire connessioni MQTT verso il broker; la risposta ai gateway viaggia sullo stesso canale già stabilito.
+- **Piani → Server**: gli ospiti in stanza (Ethernet/IPTV) raggiungono il media server e il DNS, non il DB delle prenotazioni.
+- **Wi-Fi Ospiti**: completamente isolata dalla LAN interna, può solo uscire su Internet via NAT (client isolation attiva anche tra ospiti).
+
+### 5.2 Tabella ACL dettagliata con comandi
+
+Le ACL sono applicate sul Core Switch L3 (sintassi tipo Cisco IOS) e in ingresso su ogni interfaccia VLAN (`ip access-group ACL_NOME in`). Le regole sono valutate in ordine; la prima corrispondenza vince; al fondo c'è un deny implicito.
+
+| # | VLAN applicata | Azione | Protocollo | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|---|
+| 10 | 20 (Domotica) | permit | tcp | 10.0.20.0/24 | 10.0.1.10 | 8883 | Gateway → broker MQTT (TLS) |
+| 11 | 20 (Domotica) | permit | udp | 10.0.20.0/24 | 10.0.1.1 | 123 | Sincronizzazione oraria NTP |
+| 12 | 20 (Domotica) | deny | ip | 10.0.20.0/24 | any | — | Blocca ogni altro traffico domotica |
+| 20 | 30 (Ospiti) | deny | ip | 10.0.30.0/23 | 10.0.0.0/8 | — | Isola ospiti dalla LAN interna |
+| 21 | 30 (Ospiti) | permit | tcp/udp | 10.0.30.0/23 | any | 80,443,53 | Web + DNS verso Internet |
+| 22 | 30 (Ospiti) | permit | udp | 10.0.30.0/23 | 10.0.1.1 | 67,68 | DHCP captive portal |
+| 23 | 30 (Ospiti) | deny | ip | any | any | — | Deny implicito finale |
+| 30 | 11–14 (Piani) | permit | tcp/udp | 10.0.10.0/24 | 10.0.1.40 | 554,8000 | IPTV stream (RTSP) dal media server |
+| 31 | 11–14 (Piani) | permit | udp | 10.0.10.0/24 | 10.0.1.1 | 53 | DNS interno |
+| 32 | 11–14 (Piani) | permit | tcp/udp | 10.0.10.0/24 | any | 80,443 | Internet ospiti in stanza (via NAT) |
+| 33 | 11–14 (Piani) | deny | ip | 10.0.10.0/24 | 10.0.20.0/24 | — | Stanze non toccano la domotica |
+| 40 | 10 (Server) | permit | tcp | any | 10.0.1.20 | 443 | HTTPS prenotazioni dall'esterno |
+| 41 | 10 (Server) | permit | tcp | 10.0.1.20 | 10.0.1.10 | 8883 | Web Server → broker MQTT |
+| 42 | 10 (Server) | permit | tcp | 10.0.1.20 | 10.0.1.30 | 5432 | Web Server → PostgreSQL |
+| 43 | 10 (Server) | deny | ip | 10.0.1.0/27 | 10.0.30.0/23 | — | Server non iniziano verso ospiti |
+| 50 | 31 (Staff) | permit | tcp | 10.0.32.0/25 | 10.0.1.20 | 443 | Dashboard reception/pulizie |
+| 51 | 31 (Staff) | permit | tcp/udp | 10.0.32.0/25 | any | 80,443,53 | Internet staff |
+| 52 | 31 (Staff) | deny | ip | 10.0.32.0/25 | 10.0.20.0/24 | — | Staff non accede ai gateway |
+
+#### Comandi di configurazione (estratto Cisco IOS)
 
 ```
-VLAN20 (Domotica) → PERMIT TCP 10.0.20.0/24 → 10.0.1.10:1883   # MQTT verso broker
-VLAN20 (Domotica) → DENY any any                                 # blocca tutto il resto
-VLAN30 (Ospiti)   → PERMIT any → Internet (via NAT)
-VLAN30 (Ospiti)   → DENY any → 10.0.0.0/8                       # isola ospiti dalla LAN
-VLAN10 (Server)   → PERMIT TCP 0.0.0.0/0 → 10.0.1.20:443        # HTTPS prenotazioni
+! --- ACL Domotica: solo MQTT-TLS verso il broker, poi deny ---
+ip access-list extended ACL_DOMOTICA
+ permit tcp 10.0.20.0 0.0.0.255 host 10.0.1.10 eq 8883
+ permit udp 10.0.20.0 0.0.0.255 host 10.0.1.1 eq 123
+ deny   ip  10.0.20.0 0.0.0.255 any
+!
+interface Vlan20
+ ip address 10.0.20.1 255.255.255.0
+ ip access-group ACL_DOMOTICA in
+!
+! --- ACL Ospiti: isolati dalla LAN, solo Internet ---
+ip access-list extended ACL_OSPITI
+ deny   ip  10.0.30.0 0.0.1.255 10.0.0.0 0.255.255.255
+ permit udp 10.0.30.0 0.0.1.255 host 10.0.1.1 eq bootps
+ permit tcp 10.0.30.0 0.0.1.255 any eq www
+ permit tcp 10.0.30.0 0.0.1.255 any eq 443
+ permit udp 10.0.30.0 0.0.1.255 any eq domain
+ deny   ip  any any
+!
+interface Vlan30
+ ip address 10.0.30.1 255.255.254.0
+ ip access-group ACL_OSPITI in
+!
+! --- ACL Server: espone solo HTTPS, parla con broker e DB ---
+ip access-list extended ACL_SERVER
+ permit tcp any host 10.0.1.20 eq 443
+ permit tcp host 10.0.1.20 host 10.0.1.10 eq 8883
+ permit tcp host 10.0.1.20 host 10.0.1.30 eq 5432
+ deny   ip  10.0.1.0 0.0.0.31 10.0.30.0 0.0.1.255
+ permit ip  10.0.1.0 0.0.0.31 any
+!
+interface Vlan10
+ ip address 10.0.1.1 255.255.255.224
+ ip access-group ACL_SERVER in
 ```
+
+#### Tabella ACL ↔ comando domotico
+
+Questa tabella collega ogni tipo di comando domotico al percorso di rete che attraversa e alla regola ACL che lo autorizza. Mostra come un comando "accendi luce" parta dalla dashboard e arrivi alla lampada Zigbee passando per il broker.
+
+| Comando domotico | Origine | Percorso di rete | Topic MQTT | ACL coinvolta |
+|---|---|---|---|---|
+| Accendi/spegni luce stanza | Dashboard reception | Staff → Web Server → broker → GW piano | `albergo/pN/sXXX/luce/cmd` | #50, #41, #10 |
+| Imposta condizionatore | Web Server (FSM) | Web Server → broker → GW piano | `albergo/pN/sXXX/ac/cmd` | #41, #10 |
+| Sblocca serratura | Reception | Staff → Web Server → broker → GW | `albergo/pN/sXXX/serratura/cmd` | #50, #41, #10 |
+| Default checkout (scheda via) | Web Server (FSM) | Web Server → broker → GW | `albergo/pN/sXXX/+/cmd` | #41, #10 |
+| Comando luci area comune | Dashboard | Staff → Web Server → broker → GW-PT | `albergo/pT/<area>/luce/cmd` | #50, #41, #10 |
+| Stato sensore presenza | Sensore PIR | GW piano → broker → Web Server | `albergo/pN/sXXX/presenza/stato` | #10, #41 |
+| Lettura stato dispositivi | Dashboard (subscribe) | Web Server ← broker ← GW | `albergo/+/+/+/stato` | #41, #10 |
 
 ---
 
@@ -134,21 +225,92 @@ Ogni stanza (36 in totale) è dotata dei seguenti dispositivi Zigbee:
 | Serratura elettronica | RFD | Batteria 3.6V | `0x0101` Door Lock | Vita batteria ~2 anni |
 | Comando comodino | RFD | Batteria CR2032 | `0x0005` Scenes, `0x0006` On/Off | Vita batteria ~3 anni |
 | Sensore T/H | RFD | Batteria AA | `0x0402` Temperature, `0x0405` Humidity | Vita batteria ~2 anni |
+| Sensore presenza PIR/mmWave | RFD | Rete o batteria | `0x0406` Occupancy Sensing | Abbina la scheda per la logica AC |
+| Lettore scheda stanza | RFD | Rete 230V | `0x0500` IAS Zone (custom) | Slot RFID 13.56 MHz |
 
 **TV:** non Zigbee, riceve stream IP (IPTV via multicast su VLAN piano). Si connette alle prese Ethernet della stanza.
 
-### 6.2 Comportamento default (rimozione smartcard)
+### 6.2 Gestione condizionatore con scheda stanza e rilevatore di presenza
 
-Dopo 1 minuto dalla rimozione della smartcard del cliente:
+![Condizionatore con scheda e presenza — macchina a stati](../img/condizionatore_fsm.svg)
+
+La traccia chiede che luci, persiane, serratura e condizionatore tornino a una posizione di default un minuto dopo la rimozione della smartcard. La logica più semplice — "scheda inserita = tutto acceso, scheda rimossa = tutto in default" — ha però un difetto noto in ambito alberghiero: l'ospite lascia una scheda fittizia (o una vecchia tessera) nello slot per tenere acceso il condizionatore mentre è fuori, vanificando il risparmio energetico. Negli impianti professionali questo si risolve **combinando due segnali**: lo stato della scheda nello slot e un rilevatore di presenza (PIR o mmWave) in stanza. Il condizionatore (e in generale i carichi non di sicurezza) restano attivi solo se entrambi confermano l'occupazione effettiva.
+
+Il condizionatore è quindi modellato con tre input e una macchina a stati che vive nel Web Server (o, in alternativa, in un'automazione locale del controller domotico):
+
+| Segnale | Sorgente | Topic |
+|---------|----------|-------|
+| Scheda nello slot | Lettore RFID stanza (RFD) | `albergo/p1/s101/smartcard/stato` |
+| Presenza fisica | Sensore PIR/mmWave (RFD) | `albergo/p1/s101/presenza/stato` |
+| Setpoint richiesto | Termostato comodino (RFD) | `albergo/p1/s101/ac/cmd` |
+
+Gli stati del condizionatore sono tre:
+
+- `COMFORT` — scheda inserita **e** presenza rilevata. Il condizionatore segue il setpoint scelto dall'ospite (es. 22 °C), con limiti minimo/massimo (18–28 °C) per evitare consumi estremi.
+- `ECO_HOLD` — scheda inserita ma **nessuna** presenza da più di N minuti (es. 20 min, l'ospite è uscito ma la scheda è nello slot). Il setpoint viene rilassato verso una banda di risparmio (es. estate 26 °C, inverno 19 °C). Appena il PIR rileva di nuovo movimento, si torna istantaneamente a `COMFORT`.
+- `OFF_DEFAULT` — scheda **rimossa** da oltre 60 secondi (l'ospite ha lasciato la stanza e ha portato via la tessera). Il condizionatore si spegne, le luci vanno a OFF, le persiane si chiudono. La serratura resta sempre comandata indipendentemente (sicurezza).
+
+La distinzione tra `ECO_HOLD` e `OFF_DEFAULT` è il punto chiave: con la sola scheda non si distinguerebbe "ospite uscito brevemente con scheda nello slot" da "ospite in stanza"; il PIR colma questo buco e recupera il risparmio energetico anche nel caso della scheda fittizia.
+
+#### Binding Zigbee vs elaborazione centralizzata
+
+Per la reattività locale, l'accensione/spegnimento immediato all'inserimento della scheda può sfruttare il **binding Zigbee** diretto tra il lettore di scheda e il condizionatore (associazione endpoint-to-endpoint), così funziona anche se la LAN o il broker sono momentaneamente irraggiungibili. La logica più sofisticata `ECO_HOLD` (che incrocia presenza, timer e PMS) richiede invece visione d'insieme e vive nel Web Server, che pubblica i comandi via MQTT. Questa è esattamente la scelta "sede dell'elaborazione dei comandi" richiesta dalla traccia: comando di sicurezza/base in locale via binding, logica energetica avanzata centralizzata.
+
+#### Pseudocodice della macchina a stati
+
+```javascript
+const ROOM = {}; // stato per stanza: { card, presence, lastSeen, acState }
+
+function onMessage(topic, payload) {
+  const [, piano, stanza, device, kind] = topic.split('/');
+  const key = `${piano}/${stanza}`;
+  const r = ROOM[key] ??= { card: false, presence: false, lastSeen: 0, acState: 'OFF_DEFAULT' };
+
+  if (device === 'smartcard') r.card = payload.present;
+  if (device === 'presenza')  { r.presence = payload.motion; if (payload.motion) r.lastSeen = Date.now(); }
+
+  evaluate(key, r);
+}
+
+function evaluate(key, r) {
+  let next;
+  if (!r.card) {
+    next = 'OFF_DEFAULT';                       // scheda via → spegni tutto
+  } else if (r.presence || (Date.now() - r.lastSeen) < 20 * 60_000) {
+    next = 'COMFORT';                           // scheda + presenza recente
+  } else {
+    next = 'ECO_HOLD';                          // scheda c'è, ma stanza vuota da 20 min
+  }
+
+  if (next === r.acState) return;               // nessun cambio
+  r.acState = next;
+  applyAC(key, next);
+}
+
+function applyAC(key, state) {
+  const base = `albergo/${key}/ac/cmd`;
+  const stagione = currentSeason();             // 'summer' | 'winter'
+  if (state === 'COMFORT') {
+    publish(base, { power: 'ON', mode: stagione === 'summer' ? 'cool' : 'heat', follow_setpoint: true });
+  } else if (state === 'ECO_HOLD') {
+    publish(base, { power: 'ON', setpoint: stagione === 'summer' ? 26 : 19, mode: 'eco' });
+  } else { // OFF_DEFAULT
+    scheduleAfter(60_000, () => {               // ritardo 60 s richiesto dalla traccia
+      publish(base, { power: 'OFF' });
+      publish(`albergo/${key}/luce/cmd`, { state: 'OFF' });
+      publish(`albergo/${key}/persiana/cmd`, { position: 0 });
+    });
+  }
+}
+```
+
+#### Comportamento default complessivo (rimozione smartcard)
+
+Dopo 60 secondi dalla rimozione della smartcard (stato `OFF_DEFAULT`):
+- Condizionatore → OFF
 - Luci → OFF
-- Condizionatore → 26°C, modalità economy
-- Persiane → posizione chiusa (0%)
-- Serratura → bloccata
-
-Questo viene gestito da una regola nel Web Server (Node.js) che:
-1. Riceve l'evento di logout smartcard dal topic `albergo/p1/s101/smartcard/stato`
-2. Attende 60 secondi
-3. Pubblica i comandi di default sui topic `/cmd` di ogni attuatore della stanza
+- Persiane → chiuse (0%)
+- Serratura → bloccata (comandata a parte, sempre)
 
 ### 6.3 Dispositivi aree comuni
 
@@ -207,7 +369,9 @@ albergo/
 │   │   ├── serratura/stato      # {"locked":true,"card_uid":"A3F2C1"}
 │   │   ├── serratura/cmd        # {"action":"unlock"}
 │   │   ├── sensor/stato         # {"temperature":23.4,"humidity":58}
-│   │   └── smartcard/stato      # {"present":true,"uid":"A3F2C1"}
+│   │   ├── presenza/stato       # {"motion":true,"last_seen":1748710800}
+│   │   ├── smartcard/stato      # {"present":true,"uid":"A3F2C1"}
+│   │   └── ac/fsm               # {"state":"ECO_HOLD"}  ← stato macchina AC
 │   └── corridoio/luce/cmd       # {"state":"ON"} → gruppo intero piano
 ├── p2/...
 ├── p3/...
