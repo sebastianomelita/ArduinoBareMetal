@@ -2,7 +2,7 @@
 >
 
 
-# GESTIONE ALBERGO (IoT indoor + NAT)
+# GESTIONE ALBERGO
 ## Soluzione completa d'esame
 
 ---
