@@ -1,0 +1,113 @@
+<svg viewBox="0 0 880 500" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif" font-size="11">
+  <rect width="880" height="500" fill="#f8f9fa"/>
+  <text x="440" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">Confronto Architetture: Gateway L7 (Zigbee) vs Gateway L3 (Thread/Matter)</text>
+
+  <!-- LEFT SIDE: ZIGBEE L7 -->
+  <rect x="20" y="35" width="380" height="440" rx="8" fill="#eaf4fd" stroke="#2980b9" stroke-width="2"/>
+  <text x="210" y="57" text-anchor="middle" font-size="13" font-weight="bold" fill="#1a5276">SCENARIO A — Gateway L7 Zigbee ✓ SCELTO</text>
+  <text x="210" y="72" text-anchor="middle" font-size="10" fill="#2980b9">(architettura adottata per l'albergo)</text>
+
+  <!-- Zigbee device stack -->
+  <rect x="30" y="82" width="140" height="200" rx="5" fill="white" stroke="#95a5a6"/>
+  <text x="100" y="98" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">Sensore/Attuatore</text>
+  <text x="100" y="110" text-anchor="middle" font-size="9" fill="#7f8c8d">Zigbee End Device (RFD)</text>
+  <rect x="40" y="118" width="120" height="20" rx="3" fill="#f1948a"/><text x="100" y="132" text-anchor="middle" font-size="9" fill="#7b241c">L7 App (ZCL cluster)</text>
+  <rect x="40" y="142" width="120" height="20" rx="3" fill="#f8c471"/><text x="100" y="156" text-anchor="middle" font-size="9" fill="#784212">L6 Presentazione (ZCL)</text>
+  <rect x="40" y="166" width="120" height="20" rx="3" fill="#a9cce3"/><text x="100" y="180" text-anchor="middle" font-size="9" fill="#1a5276">L5 Sessione (ZDP)</text>
+  <rect x="40" y="190" width="120" height="20" rx="3" fill="#a9dfbf"/><text x="100" y="204" text-anchor="middle" font-size="9" fill="#1e8449">L4 Trasporto (ZBee)</text>
+  <rect x="40" y="214" width="120" height="20" rx="3" fill="#d7bde2"/><text x="100" y="228" text-anchor="middle" font-size="9" fill="#6c3483">L3 Rete (NWK)</text>
+  <rect x="40" y="238" width="120" height="20" rx="3" fill="#f9e79f"/><text x="100" y="252" text-anchor="middle" font-size="9" fill="#7d6608">L2 MAC (IEEE 802.15.4)</text>
+  <rect x="40" y="262" width="120" height="20" rx="3" fill="#d5dbdb"/><text x="100" y="276" text-anchor="middle" font-size="9" fill="#424949">L1 PHY (2.4GHz)</text>
+
+  <!-- Gateway L7 stack -->
+  <rect x="230" y="82" width="155" height="200" rx="5" fill="white" stroke="#8e44ad" stroke-width="2"/>
+  <text x="307" y="98" text-anchor="middle" font-size="10" font-weight="bold" fill="#6c3483">Gateway L7 (Zigbee2MQTT)</text>
+  <text x="307" y="110" text-anchor="middle" font-size="9" fill="#8e44ad">Traduzione semantica</text>
+  <rect x="240" y="118" width="135" height="20" rx="3" fill="#f1948a"/><text x="307" y="132" text-anchor="middle" font-size="9" fill="#7b241c">L7 MQTT (publisher)</text>
+  <rect x="240" y="142" width="135" height="20" rx="3" fill="#f8c471"/><text x="307" y="156" text-anchor="middle" font-size="9" fill="#784212">L6 JSON (traduzione ZCL→JSON)</text>
+  <rect x="240" y="166" width="135" height="20" rx="3" fill="#a9cce3"/><text x="307" y="180" text-anchor="middle" font-size="9" fill="#1a5276">TCP/IP (interfaccia LAN)</text>
+  <rect x="240" y="190" width="135" height="20" rx="3" fill="#f9e79f"/><text x="307" y="204" text-anchor="middle" font-size="9" fill="#7d6608">L2 Ethernet (LAN)</text>
+  <rect x="240" y="214" width="135" height="20" rx="3" fill="#f1948a" stroke="#8e44ad" stroke-width="1"/><text x="307" y="228" text-anchor="middle" font-size="9" fill="#7b241c">L7 ZCL (interfaccia Zigbee)</text>
+  <rect x="240" y="238" width="135" height="20" rx="3" fill="#d7bde2"/><text x="307" y="252" text-anchor="middle" font-size="9" fill="#6c3483">L3 NWK Zigbee</text>
+  <rect x="240" y="262" width="135" height="20" rx="3" fill="#d5dbdb"/><text x="307" y="276" text-anchor="middle" font-size="9" fill="#424949">L1/L2 IEEE 802.15.4</text>
+
+  <!-- Translation arrow -->
+  <line x1="170" y1="128" x2="230" y2="128" stroke="#e74c3c" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="200" y="123" text-anchor="middle" font-size="8" fill="#e74c3c">traduce</text>
+
+  <!-- Zigbee network description -->
+  <rect x="30" y="295" width="360" height="60" rx="5" fill="#d6eaf8" stroke="#2980b9"/>
+  <text x="210" y="315" text-anchor="middle" font-size="10" font-weight="bold" fill="#1a5276">Rete Zigbee (mesh IEEE 802.15.4)</text>
+  <text x="210" y="330" text-anchor="middle" font-size="9" fill="#1a5276">• Coordinatore: 1 per rete (nel gateway)</text>
+  <text x="210" y="344" text-anchor="middle" font-size="9" fill="#1a5276">• Router FFD: luci alimentate a rete  • End Device RFD: comandi a batteria</text>
+
+  <!-- MQTT/LAN section -->
+  <rect x="30" y="365" width="360" height="50" rx="5" fill="#d5f5e3" stroke="#27ae60"/>
+  <text x="210" y="385" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e8449">Rete IP LAN — Broker MQTT on-premise</text>
+  <text x="210" y="400" text-anchor="middle" font-size="9" fill="#1e8449">Gateway pubblica topic MQTT → Broker distribuisce → Dashboard/App Web</text>
+
+  <!-- Pro/con -->
+  <rect x="30" y="425" width="360" height="42" rx="5" fill="#eafaf1" stroke="#27ae60"/>
+  <text x="40" y="440" font-size="9" fill="#1e8449">✓ Rete sensori indipendente dall'IP  ✓ Batterie anni  ✓ Mesh auto-riparante</text>
+  <text x="40" y="453" font-size="9" fill="#1e8449">✓ Interop. zigbee2mqtt open-source  ✓ MQTT broker on-premise: controllo totale</text>
+
+  <!-- RIGHT SIDE: THREAD/MATTER L3 -->
+  <rect x="480" y="35" width="380" height="440" rx="8" fill="#fef9e7" stroke="#f39c12" stroke-width="2"/>
+  <text x="670" y="57" text-anchor="middle" font-size="13" font-weight="bold" fill="#a04000">SCENARIO B — Gateway L3 Thread/Matter</text>
+  <text x="670" y="72" text-anchor="middle" font-size="10" fill="#f39c12">(alternativa valutata e scartata)</text>
+
+  <!-- Thread device stack -->
+  <rect x="490" y="82" width="140" height="200" rx="5" fill="white" stroke="#95a5a6"/>
+  <text x="560" y="98" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">Sensore/Attuatore</text>
+  <text x="560" y="110" text-anchor="middle" font-size="9" fill="#7f8c8d">Thread End Device</text>
+  <rect x="500" y="118" width="120" height="20" rx="3" fill="#f1948a"/><text x="560" y="132" text-anchor="middle" font-size="9" fill="#7b241c">L7 Matter (TLV cifrato)</text>
+  <rect x="500" y="142" width="120" height="20" rx="3" fill="#f8c471"/><text x="560" y="156" text-anchor="middle" font-size="9" fill="#784212">L6 (integrata in Matter)</text>
+  <rect x="500" y="166" width="120" height="20" rx="3" fill="#a9cce3"/><text x="560" y="180" text-anchor="middle" font-size="9" fill="#1a5276">UDP/DTLS</text>
+  <rect x="500" y="190" width="120" height="20" rx="3" fill="#a9dfbf"/><text x="560" y="204" text-anchor="middle" font-size="9" fill="#1e8449">L3 IPv6 / 6LoWPAN</text>
+  <rect x="500" y="214" width="120" height="20" rx="3" fill="#d7bde2"/><text x="560" y="228" text-anchor="middle" font-size="9" fill="#6c3483">L3 Thread (REPL routing)</text>
+  <rect x="500" y="238" width="120" height="20" rx="3" fill="#f9e79f"/><text x="560" y="252" text-anchor="middle" font-size="9" fill="#7d6608">L2 MAC (IEEE 802.15.4)</text>
+  <rect x="500" y="262" width="120" height="20" rx="3" fill="#d5dbdb"/><text x="560" y="276" text-anchor="middle" font-size="9" fill="#424949">L1 PHY (2.4GHz)</text>
+
+  <!-- Router L3 (border router) -->
+  <rect x="690" y="82" width="155" height="200" rx="5" fill="white" stroke="#f39c12" stroke-width="2"/>
+  <text x="767" y="98" text-anchor="middle" font-size="10" font-weight="bold" fill="#a04000">Border Router L3</text>
+  <text x="767" y="110" text-anchor="middle" font-size="9" fill="#f39c12">Solo routing IPv6</text>
+  <rect x="700" y="118" width="135" height="20" rx="3" fill="#f9e79f"/><text x="767" y="132" text-anchor="middle" font-size="9" fill="#7d6608">IPv6 routing (OSPF↔REPL)</text>
+  <rect x="700" y="142" width="135" height="20" rx="3" fill="#a9dfbf"/><text x="767" y="156" text-anchor="middle" font-size="9" fill="#1e8449">IPv6 (stessa semantica)</text>
+  <rect x="700" y="166" width="135" height="20" rx="3" fill="#a9cce3"/><text x="767" y="180" text-anchor="middle" font-size="9" fill="#1a5276">UDP passthrough</text>
+  <rect x="700" y="190" width="135" height="20" rx="3" fill="#f9e79f"/><text x="767" y="204" text-anchor="middle" font-size="9" fill="#7d6608">L2 Ethernet (LAN)</text>
+  <rect x="700" y="214" width="135" height="20" rx="3" fill="#a9dfbf"/><text x="767" y="228" text-anchor="middle" font-size="9" fill="#1e8449">IPv6 / 6LoWPAN bridge</text>
+  <rect x="700" y="238" width="135" height="20" rx="3" fill="#f9e79f"/><text x="767" y="252" text-anchor="middle" font-size="9" fill="#7d6608">Thread MAC</text>
+  <rect x="700" y="262" width="135" height="20" rx="3" fill="#d5dbdb"/><text x="767" y="276" text-anchor="middle" font-size="9" fill="#424949">L1 PHY</text>
+
+  <!-- Routing arrow (L3, no translation) -->
+  <line x1="630" y1="195" x2="690" y2="195" stroke="#27ae60" stroke-width="2" marker-end="url(#arr2)"/>
+  <text x="660" y="190" text-anchor="middle" font-size="8" fill="#27ae60">routing</text>
+  <text x="660" y="200" text-anchor="middle" font-size="8" fill="#27ae60">puro L3</text>
+
+  <!-- Thread network description -->
+  <rect x="490" y="295" width="360" height="60" rx="5" fill="#fdebd0" stroke="#e67e22"/>
+  <text x="670" y="315" text-anchor="middle" font-size="10" font-weight="bold" fill="#a04000">Rete Thread (mesh IPv6/6LoWPAN)</text>
+  <text x="670" y="330" text-anchor="middle" font-size="9" fill="#a04000">• Border Router: solo routing IPv6  • End Devices: IPv6 nativo</text>
+  <text x="670" y="344" text-anchor="middle" font-size="9" fill="#a04000">• Matter fabric: crittografia E2E  • Controller: Node-RED/HA</text>
+
+  <!-- Matter connector section -->
+  <rect x="490" y="365" width="360" height="50" rx="5" fill="#fef5e7" stroke="#f39c12"/>
+  <text x="670" y="385" text-anchor="middle" font-size="10" font-weight="bold" fill="#a04000">Connettore Matter → MQTT/REST (pivot semantico)</text>
+  <text x="670" y="400" text-anchor="middle" font-size="9" fill="#a04000">Traduzione TLV Matter→JSON avviene solo all'endpoint (Node-RED/HA), non in rete</text>
+
+  <!-- Pro/con Thread -->
+  <rect x="490" y="425" width="360" height="42" rx="5" fill="#fef5e7" stroke="#e67e22"/>
+  <text x="500" y="440" font-size="9" fill="#a04000">✗ Ecosistema giovane (Thread/Matter 2022+)  ✗ Meno dispositivi disponibili</text>
+  <text x="500" y="453" font-size="9" fill="#a04000">✗ Serve controller Matter aggiuntivo per MQTT/dashboard web  ✗ Più complesso</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e74c3c"/>
+    </marker>
+    <marker id="arr2" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#27ae60"/>
+    </marker>
+  </defs>
+</svg>

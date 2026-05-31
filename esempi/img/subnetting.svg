@@ -1,0 +1,95 @@
+<svg viewBox="0 0 880 420" xmlns="http://www.w3.org/2000/svg" font-family="Arial, monospace" font-size="10">
+  <rect width="880" height="420" fill="#1e2124"/>
+  <text x="440" y="22" text-anchor="middle" font-size="13" font-weight="bold" fill="#ecf0f1" font-family="Arial, sans-serif">Subnetting — Piano di indirizzamento IP</text>
+
+  <!-- Table header -->
+  <rect x="20" y="32" width="840" height="24" rx="4" fill="#2c3e50"/>
+  <text x="30" y="49" fill="#3498db" font-weight="bold">RETE / VLAN</text>
+  <text x="180" y="49" fill="#3498db" font-weight="bold">SUBNET</text>
+  <text x="310" y="49" fill="#3498db" font-weight="bold">GATEWAY</text>
+  <text x="420" y="49" fill="#3498db" font-weight="bold">RANGE HOST</text>
+  <text x="580" y="49" fill="#3498db" font-weight="bold">USO</text>
+
+  <!-- Rows -->
+  <rect x="20" y="56" width="840" height="22" fill="#2d3436"/>
+  <text x="30" y="72" fill="#27ae60">Server Farm (VLAN 10)</text>
+  <text x="180" y="72" fill="#ecf0f1">10.0.1.0/27</text>
+  <text x="310" y="72" fill="#ecf0f1">10.0.1.1</text>
+  <text x="420" y="72" fill="#ecf0f1">10.0.1.2 – 10.0.1.30</text>
+  <text x="580" y="72" fill="#95a5a6">Broker MQTT, Web, DB, DNS</text>
+
+  <rect x="20" y="78" width="840" height="22" fill="#1e2124"/>
+  <text x="30" y="94" fill="#27ae60">Piano Terra (VLAN 11)</text>
+  <text x="180" y="94" fill="#ecf0f1">10.0.10.0/25</text>
+  <text x="310" y="94" fill="#ecf0f1">10.0.10.1</text>
+  <text x="420" y="94" fill="#ecf0f1">10.0.10.2 – 10.0.10.126</text>
+  <text x="580" y="94" fill="#95a5a6">Reception, Hall, Congressi, Cucina</text>
+
+  <rect x="20" y="100" width="840" height="22" fill="#2d3436"/>
+  <text x="30" y="116" fill="#27ae60">Piano 1 (VLAN 12)</text>
+  <text x="180" y="116" fill="#ecf0f1">10.0.11.0/25</text>
+  <text x="310" y="116" fill="#ecf0f1">10.0.11.1</text>
+  <text x="420" y="116" fill="#ecf0f1">10.0.11.2 – 10.0.11.126</text>
+  <text x="580" y="116" fill="#95a5a6">12 stanze + AP + GW Zigbee</text>
+
+  <rect x="20" y="122" width="840" height="22" fill="#1e2124"/>
+  <text x="30" y="138" fill="#27ae60">Piano 2 (VLAN 13)</text>
+  <text x="180" y="138" fill="#ecf0f1">10.0.12.0/25</text>
+  <text x="310" y="138" fill="#ecf0f1">10.0.12.1</text>
+  <text x="420" y="138" fill="#ecf0f1">10.0.12.2 – 10.0.12.126</text>
+  <text x="580" y="138" fill="#95a5a6">12 stanze + AP + GW Zigbee</text>
+
+  <rect x="20" y="144" width="840" height="22" fill="#2d3436"/>
+  <text x="30" y="160" fill="#27ae60">Piano 3 (VLAN 14)</text>
+  <text x="180" y="160" fill="#ecf0f1">10.0.13.0/25</text>
+  <text x="310" y="160" fill="#ecf0f1">10.0.13.1</text>
+  <text x="420" y="160" fill="#ecf0f1">10.0.13.2 – 10.0.13.126</text>
+  <text x="580" y="160" fill="#95a5a6">12 stanze + AP + GW Zigbee</text>
+
+  <rect x="20" y="166" width="840" height="22" fill="#1e2124"/>
+  <text x="30" y="182" fill="#e74c3c">Domotica/IoT (VLAN 20)</text>
+  <text x="180" y="182" fill="#ecf0f1">10.0.20.0/24</text>
+  <text x="310" y="182" fill="#ecf0f1">10.0.20.1</text>
+  <text x="420" y="182" fill="#ecf0f1">10.0.20.2 – 10.0.20.254</text>
+  <text x="580" y="182" fill="#95a5a6">Gateway Zigbee (segregata)</text>
+
+  <rect x="20" y="188" width="840" height="22" fill="#2d3436"/>
+  <text x="30" y="204" fill="#3498db">Wi-Fi Clienti (VLAN 30)</text>
+  <text x="180" y="204" fill="#ecf0f1">10.0.30.0/23</text>
+  <text x="310" y="204" fill="#ecf0f1">10.0.30.1</text>
+  <text x="420" y="204" fill="#ecf0f1">10.0.30.2 – 10.0.31.254</text>
+  <text x="580" y="204" fill="#95a5a6">Ospiti hotel (DHCP → Internet solo)</text>
+
+  <rect x="20" y="210" width="840" height="22" fill="#1e2124"/>
+  <text x="30" y="226" fill="#3498db">Wi-Fi Staff (VLAN 31)</text>
+  <text x="180" y="226" fill="#ecf0f1">10.0.32.0/25</text>
+  <text x="310" y="226" fill="#ecf0f1">10.0.32.1</text>
+  <text x="420" y="226" fill="#ecf0f1">10.0.32.2 – 10.0.32.126</text>
+  <text x="580" y="226" fill="#95a5a6">Terminali addetti pulizie</text>
+
+  <!-- ROUTING TABLE SECTION -->
+  <text x="440" y="255" text-anchor="middle" font-size="13" font-weight="bold" fill="#ecf0f1" font-family="Arial, sans-serif">Tabella di Routing Statico — Core Switch L3</text>
+  <rect x="20" y="263" width="840" height="22" rx="4" fill="#2c3e50"/>
+  <text x="30" y="279" fill="#3498db" font-weight="bold">DESTINAZIONE</text>
+  <text x="250" y="279" fill="#3498db" font-weight="bold">MASCHERA</text>
+  <text x="380" y="279" fill="#3498db" font-weight="bold">NEXT HOP / INTERFACCIA</text>
+  <text x="600" y="279" fill="#3498db" font-weight="bold">METRICA / NOTE</text>
+
+  <rect x="20" y="285" width="840" height="20" fill="#2d3436"/>
+  <text x="30" y="300" fill="#2ecc71">0.0.0.0</text><text x="250" y="300" fill="#ecf0f1">0.0.0.0</text><text x="380" y="300" fill="#ecf0f1">10.0.254.1 (FW/NAT int.)</text><text x="600" y="300" fill="#95a5a6">Default → Internet</text>
+
+  <rect x="20" y="305" width="840" height="20" fill="#1e2124"/>
+  <text x="30" y="320" fill="#2ecc71">10.0.1.0</text><text x="250" y="320" fill="#ecf0f1">/27</text><text x="380" y="320" fill="#ecf0f1">Vlan10 – directly connected</text><text x="600" y="320" fill="#95a5a6">Server Farm</text>
+
+  <rect x="20" y="325" width="840" height="20" fill="#2d3436"/>
+  <text x="30" y="340" fill="#2ecc71">10.0.10.0</text><text x="250" y="340" fill="#ecf0f1">/25</text><text x="380" y="340" fill="#ecf0f1">Vlan11 – directly connected</text><text x="600" y="340" fill="#95a5a6">Piano Terra</text>
+
+  <rect x="20" y="345" width="840" height="20" fill="#1e2124"/>
+  <text x="30" y="360" fill="#2ecc71">10.0.11–13.0</text><text x="250" y="360" fill="#ecf0f1">/25 (x3)</text><text x="380" y="360" fill="#ecf0f1">Vlan12/13/14 – directly conn.</text><text x="600" y="360" fill="#95a5a6">Piani 1/2/3</text>
+
+  <rect x="20" y="365" width="840" height="20" fill="#2d3436"/>
+  <text x="30" y="380" fill="#e74c3c">10.0.20.0</text><text x="250" y="380" fill="#ecf0f1">/24</text><text x="380" y="380" fill="#ecf0f1">Vlan20 – directly connected</text><text x="600" y="380" fill="#e74c3c">Domotica (no routing verso ospiti)</text>
+
+  <rect x="20" y="385" width="840" height="20" fill="#1e2124"/>
+  <text x="30" y="400" fill="#3498db">10.0.30.0</text><text x="250" y="400" fill="#ecf0f1">/23</text><text x="380" y="400" fill="#ecf0f1">Vlan30 – directly connected</text><text x="600" y="400" fill="#95a5a6">Wi-Fi Ospiti → solo default GW</text>
+</svg>

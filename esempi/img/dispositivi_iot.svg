@@ -1,0 +1,129 @@
+<svg viewBox="0 0 880 440" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif" font-size="10">
+  <rect width="880" height="440" fill="#f8f9fa"/>
+  <text x="440" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">Funzionalità Dispositivi IoT per Stanza — Messaggi MQTT/JSON</text>
+
+  <!-- ROOM DIAGRAM -->
+  <rect x="20" y="35" width="250" height="370" rx="8" fill="#fef9e7" stroke="#f39c12" stroke-width="2"/>
+  <text x="145" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#a04000">Stanza Hotel (es. S101)</text>
+
+  <!-- Smartcard slot -->
+  <rect x="40" y="65" width="90" height="30" rx="4" fill="#3498db" stroke="#2980b9"/>
+  <text x="85" y="82" text-anchor="middle" font-size="9" fill="white">Smartcard RFD</text>
+  <text x="85" y="93" text-anchor="middle" font-size="8" fill="#d6eaf8">Presenza ospite</text>
+
+  <!-- Lampada -->
+  <polygon points="185,65 200,95 170,95" fill="#f39c12" stroke="#e67e22" stroke-width="1"/>
+  <rect x="175" y="95" width="20" height="8" fill="#e67e22"/>
+  <text x="185" y="115" text-anchor="middle" font-size="9" fill="#a04000">Lampada FFD</text>
+
+  <!-- Persiana -->
+  <rect x="40" y="115" width="90" height="30" rx="4" fill="#95a5a6" stroke="#7f8c8d"/>
+  <text x="85" y="132" text-anchor="middle" font-size="9" fill="white">Persiana RFD</text>
+  <text x="85" y="143" text-anchor="middle" font-size="8" fill="#d5d8dc">Motorizzata</text>
+
+  <!-- Condizionatore -->
+  <rect x="150" y="125" width="95" height="30" rx="4" fill="#8e44ad" stroke="#6c3483"/>
+  <text x="197" y="143" text-anchor="middle" font-size="9" fill="white">Condiz. FFD</text>
+
+  <!-- Serratura -->
+  <rect x="40" y="165" width="90" height="30" rx="4" fill="#e74c3c" stroke="#c0392b"/>
+  <text x="85" y="182" text-anchor="middle" font-size="9" fill="white">Serratura RFD</text>
+  <text x="85" y="193" text-anchor="middle" font-size="8" fill="#fadbd8">Smartcard</text>
+
+  <!-- TV -->
+  <rect x="150" y="165" width="95" height="30" rx="4" fill="#2c3e50" stroke="#1a252f"/>
+  <text x="197" y="183" text-anchor="middle" font-size="9" fill="white">TV (IP stream)</text>
+
+  <!-- Comodino CMD -->
+  <rect x="40" y="215" width="95" height="30" rx="4" fill="#16a085" stroke="#0e6655"/>
+  <text x="87" y="232" text-anchor="middle" font-size="9" fill="white">Comando comodino</text>
+  <text x="87" y="243" text-anchor="middle" font-size="8" fill="#d1f2eb">RFD a batteria</text>
+
+  <!-- Sensore temperatura -->
+  <rect x="150" y="215" width="95" height="30" rx="4" fill="#2980b9" stroke="#1f618d"/>
+  <text x="197" y="232" text-anchor="middle" font-size="9" fill="white">Sensor Temp/Hum</text>
+  <text x="197" y="243" text-anchor="middle" font-size="8" fill="#d6eaf8">RFD batteria</text>
+
+  <!-- Presa Ethernet -->
+  <rect x="40" y="263" width="95" height="30" rx="4" fill="#7f8c8d" stroke="#5d6d7e"/>
+  <text x="87" y="280" text-anchor="middle" font-size="9" fill="white">2x presa Ethernet</text>
+  <text x="87" y="291" text-anchor="middle" font-size="8" fill="#d5d8dc">10.0.11.x (VLAN12)</text>
+
+  <!-- Zigbee Router (lampadina = FFD) -->
+  <rect x="40" y="313" width="200" height="50" rx="4" fill="#d5f5e3" stroke="#27ae60"/>
+  <text x="140" y="330" text-anchor="middle" font-size="9" font-weight="bold" fill="#1e8449">Le lampade = Router Zigbee FFD</text>
+  <text x="140" y="343" text-anchor="middle" font-size="8" fill="#1e8449">Alimentate a rete → sempre attive</text>
+  <text x="140" y="356" text-anchor="middle" font-size="8" fill="#1e8449">Relay mesh verso GW di piano</text>
+
+  <!-- DEFAULT behavior note -->
+  <rect x="40" y="373" width="200" height="22" rx="4" fill="#fdebd0" stroke="#e67e22"/>
+  <text x="140" y="389" text-anchor="middle" font-size="8" fill="#a04000">Default 1min dopo rimozione card:</text>
+  <text x="140" y="400" text-anchor="middle" font-size="8" fill="#a04000">luci OFF, AC 26°C, persiane chiuse</text>
+
+  <!-- JSON MESSAGES SECTION -->
+  <rect x="285" y="35" width="580" height="370" rx="8" fill="#1e2124" stroke="#2c3e50" stroke-width="2"/>
+  <text x="575" y="55" text-anchor="middle" font-size="12" font-weight="bold" fill="#ecf0f1">Messaggi JSON sui Topic MQTT</text>
+
+  <!-- Luce -->
+  <text x="295" y="75" font-size="10" font-weight="bold" fill="#f39c12">// LUCE STANZA — topic: albergo/p1/s101/luce/stato</text>
+  <rect x="295" y="80" width="270" height="85" rx="4" fill="#2d3436"/>
+  <text x="305" y="97" fill="#27ae60">{</text>
+  <text x="315" y="111" fill="#3498db">"device"</text><text x="375" y="111" fill="#ecf0f1">: "luce_camera",</text>
+  <text x="315" y="125" fill="#3498db">"state"</text><text x="375" y="125" fill="#e74c3c">: "ON",</text>
+  <text x="315" y="139" fill="#3498db">"brightness"</text><text x="395" y="139" fill="#e74c3c">: 80,</text>
+  <text x="315" y="153" fill="#3498db">"color_temp"</text><text x="405" y="153" fill="#e74c3c">: 3000</text>
+  <text x="305" y="160" fill="#27ae60">}</text>
+
+  <!-- Condizionatore -->
+  <text x="295" y="180" font-size="10" font-weight="bold" fill="#8e44ad">// CONDIZIONATORE — topic: albergo/p1/s101/ac/stato</text>
+  <rect x="295" y="185" width="270" height="95" rx="4" fill="#2d3436"/>
+  <text x="305" y="202" fill="#27ae60">{</text>
+  <text x="315" y="216" fill="#3498db">"device"</text><text x="375" y="216" fill="#ecf0f1">: "condizionatore",</text>
+  <text x="315" y="230" fill="#3498db">"power"</text><text x="375" y="230" fill="#e74c3c">: "ON",</text>
+  <text x="315" y="244" fill="#3498db">"mode"</text><text x="375" y="244" fill="#e74c3c">: "cool",</text>
+  <text x="315" y="258" fill="#3498db">"setpoint"</text><text x="390" y="258" fill="#e74c3c">: 22,</text>
+  <text x="315" y="270" fill="#3498db">"fan"</text><text x="375" y="270" fill="#e74c3c">: "auto"</text>
+  <text x="305" y="278" fill="#27ae60">}</text>
+
+  <!-- Serratura -->
+  <text x="295" y="296" font-size="10" font-weight="bold" fill="#e74c3c">// SERRATURA — topic: albergo/p1/s101/serratura/stato</text>
+  <rect x="295" y="301" width="270" height="95" rx="4" fill="#2d3436"/>
+  <text x="305" y="318" fill="#27ae60">{</text>
+  <text x="315" y="332" fill="#3498db">"device"</text><text x="375" y="332" fill="#ecf0f1">: "serratura",</text>
+  <text x="315" y="346" fill="#3498db">"locked"</text><text x="380" y="346" fill="#e74c3c">: false,</text>
+  <text x="315" y="360" fill="#3498db">"card_uid"</text><text x="390" y="360" fill="#e67e22">: "A3F2C1",</text>
+  <text x="315" y="374" fill="#3498db">"timestamp"</text><text x="400" y="374" fill="#e67e22">: 1748710800</text>
+  <text x="305" y="386" fill="#27ae60">}</text>
+
+  <!-- Persiana -->
+  <text x="580" y="75" font-size="10" font-weight="bold" fill="#95a5a6">// PERSIANA — albergo/p1/s101/persiana/stato</text>
+  <rect x="580" y="80" width="270" height="85" rx="4" fill="#2d3436"/>
+  <text x="590" y="97" fill="#27ae60">{</text>
+  <text x="600" y="111" fill="#3498db">"device"</text><text x="660" y="111" fill="#ecf0f1">: "persiana",</text>
+  <text x="600" y="125" fill="#3498db">"position"</text><text x="660" y="125" fill="#e74c3c">: 75,</text>
+  <text x="600" y="139" fill="#3498db">"tilt"</text><text x="660" y="139" fill="#e74c3c">: 30,</text>
+  <text x="600" y="153" fill="#3498db">"moving"</text><text x="660" y="153" fill="#e74c3c">: false</text>
+  <text x="590" y="160" fill="#27ae60">}</text>
+
+  <!-- Temperatura/sensore -->
+  <text x="580" y="180" font-size="10" font-weight="bold" fill="#2980b9">// SENSORE — albergo/p1/s101/sensor/stato</text>
+  <rect x="580" y="185" width="270" height="95" rx="4" fill="#2d3436"/>
+  <text x="590" y="202" fill="#27ae60">{</text>
+  <text x="600" y="216" fill="#3498db">"device"</text><text x="660" y="216" fill="#ecf0f1">: "sensor_th",</text>
+  <text x="600" y="230" fill="#3498db">"temperature"</text><text x="680" y="230" fill="#e74c3c">: 23.4,</text>
+  <text x="600" y="244" fill="#3498db">"humidity"</text><text x="670" y="244" fill="#e74c3c">: 58.0,</text>
+  <text x="600" y="258" fill="#3498db">"battery"</text><text x="660" y="258" fill="#e74c3c">: 87,</text>
+  <text x="600" y="270" fill="#3498db">"ts"</text><text x="660" y="270" fill="#e67e22">: 1748710800</text>
+  <text x="590" y="278" fill="#27ae60">}</text>
+
+  <!-- CMD (comando da web/dashboard) -->
+  <text x="580" y="296" font-size="10" font-weight="bold" fill="#16a085">// COMANDO da dashboard — albergo/p1/s101/luce/cmd</text>
+  <rect x="580" y="301" width="270" height="95" rx="4" fill="#2d3436"/>
+  <text x="590" y="318" fill="#27ae60">{</text>
+  <text x="600" y="332" fill="#3498db">"state"</text><text x="660" y="332" fill="#e74c3c">: "ON",</text>
+  <text x="600" y="346" fill="#3498db">"brightness"</text><text x="680" y="346" fill="#e74c3c">: 60,</text>
+  <text x="600" y="360" fill="#3498db">"transition"</text><text x="680" y="360" fill="#e74c3c">: 2,</text>
+  <text x="600" y="374" fill="#3498db">"source"</text><text x="660" y="374" fill="#e67e22">: "dashboard",</text>
+  <text x="600" y="386" fill="#3498db">"user"</text><text x="660" y="386" fill="#e67e22">: "reception"</text>
+  <text x="590" y="398" fill="#27ae60">}</text>
+</svg>

@@ -1,0 +1,157 @@
+<svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif" font-size="11">
+  <!-- Background -->
+  <rect width="900" height="620" fill="#f8f9fa"/>
+  <text x="450" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">Planimetria Albergo — Distribuzione dispositivi IoT Zigbee</text>
+
+  <!-- PIANO TERRA -->
+  <rect x="20" y="35" width="860" height="170" rx="6" fill="#e8f4fd" stroke="#2980b9" stroke-width="2"/>
+  <text x="30" y="52" font-size="12" font-weight="bold" fill="#1a5276">PIANO TERRA</text>
+
+  <!-- Reception -->
+  <rect x="30" y="58" width="150" height="80" rx="4" fill="#d5e8d4" stroke="#27ae60" stroke-width="1.5"/>
+  <text x="105" y="92" text-anchor="middle" font-size="11" font-weight="bold" fill="#1e8449">Reception</text>
+  <!-- AP -->
+  <circle cx="80" cy="110" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <text x="80" y="130" text-anchor="middle" font-size="9" fill="#c0392b">AP-RT1</text>
+  <!-- Zigbee GW -->
+  <rect x="130" y="103" width="40" height="18" rx="3" fill="#8e44ad" stroke="#6c3483"/>
+  <text x="150" y="116" text-anchor="middle" font-size="9" fill="white">GW-RT</text>
+  <!-- Switch -->
+  <rect x="130" y="58" width="40" height="16" rx="2" fill="#2980b9"/>
+  <text x="150" y="70" text-anchor="middle" font-size="9" fill="white">SW-RT</text>
+
+  <!-- Hall -->
+  <rect x="195" y="58" width="180" height="80" rx="4" fill="#fef9e7" stroke="#f39c12" stroke-width="1.5"/>
+  <text x="285" y="92" text-anchor="middle" font-size="11" font-weight="bold" fill="#b7950b">Hall</text>
+  <circle cx="235" cy="110" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <text x="235" y="130" text-anchor="middle" font-size="9" fill="#c0392b">AP-HL1</text>
+  <circle cx="285" cy="110" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <text x="285" y="130" text-anchor="middle" font-size="9" fill="#c0392b">AP-HL2</text>
+
+  <!-- Sala Congressi -->
+  <rect x="390" y="58" width="220" height="80" rx="4" fill="#fdebd0" stroke="#e67e22" stroke-width="1.5"/>
+  <text x="500" y="92" text-anchor="middle" font-size="11" font-weight="bold" fill="#a04000">Sala Congressi</text>
+  <circle cx="430" cy="110" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <text x="430" y="130" text-anchor="middle" font-size="9" fill="#c0392b">AP-SC1</text>
+  <circle cx="530" cy="110" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <text x="530" y="130" text-anchor="middle" font-size="9" fill="#c0392b">AP-SC2</text>
+  <rect x="585" y="65" width="14" height="14" rx="2" fill="#16a085"/>
+  <text x="592" y="93" text-anchor="middle" font-size="9" fill="#16a085">CMD</text>
+
+  <!-- Cucina/Pranzo -->
+  <rect x="625" y="58" width="235" height="80" rx="4" fill="#ebdef0" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="742" y="92" text-anchor="middle" font-size="11" font-weight="bold" fill="#6c3483">Cucina + Sala Pranzo</text>
+  <circle cx="680" cy="110" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <text x="680" y="130" text-anchor="middle" font-size="9" fill="#c0392b">AP-CP1</text>
+
+  <!-- Sala tecnica -->
+  <rect x="30" y="148" width="860" height="48" rx="4" fill="#d6eaf8" stroke="#2980b9" stroke-width="1"/>
+  <text x="450" y="168" text-anchor="middle" font-size="11" fill="#1a5276">Sala Tecnica (Sgabuzzino addetti pulizie) — Core switch L3, Firewall/NAT, Server farm, Broker MQTT on-premise</text>
+  <!-- Core switch icons -->
+  <rect x="50" y="154" width="50" height="14" rx="2" fill="#2c3e50"/><text x="75" y="165" text-anchor="middle" font-size="9" fill="white">L3-CORE</text>
+  <rect x="115" y="154" width="40" height="14" rx="2" fill="#c0392b"/><text x="135" y="165" text-anchor="middle" font-size="9" fill="white">FW/NAT</text>
+  <rect x="168" y="154" width="50" height="14" rx="2" fill="#27ae60"/><text x="193" y="165" text-anchor="middle" font-size="9" fill="white">MQTT-BRK</text>
+  <rect x="232" y="154" width="50" height="14" rx="2" fill="#7f8c8d"/><text x="257" y="165" text-anchor="middle" font-size="9" fill="white">Web-Server</text>
+  <rect x="296" y="154" width="50" height="14" rx="2" fill="#8e44ad"/><text x="321" y="165" text-anchor="middle" font-size="9" fill="white">DB-Server</text>
+
+  <!-- PIANO 1 -->
+  <rect x="20" y="220" width="860" height="170" rx="6" fill="#eafaf1" stroke="#27ae60" stroke-width="2"/>
+  <text x="30" y="237" font-size="12" font-weight="bold" fill="#1a5276">PIANO 1 (12 stanze: S101–S112)</text>
+
+  <!-- Corridoio piano 1 -->
+  <rect x="30" y="243" width="860" height="28" rx="3" fill="#d5f5e3" stroke="#1e8449" stroke-width="1"/>
+  <text x="450" y="262" text-anchor="middle" font-size="10" fill="#1e8449">Corridoio Piano 1 — Zigbee Router mesh (luci corridoio = router FFD)</text>
+  <!-- Router Zigbee nel corridoio -->
+  <polygon points="100,248 110,265 90,265" fill="#27ae60"/><text x="100" y="280" text-anchor="middle" font-size="8" fill="#1e8449">R1-C1</text>
+  <polygon points="200,248 210,265 190,265" fill="#27ae60"/><text x="200" y="280" text-anchor="middle" font-size="8" fill="#1e8449">R1-C2</text>
+  <polygon points="300,248 310,265 290,265" fill="#27ae60"/><text x="300" y="280" text-anchor="middle" font-size="8" fill="#1e8449">R1-C3</text>
+  <polygon points="450,248 460,265 440,265" fill="#27ae60"/><text x="450" y="280" text-anchor="middle" font-size="8" fill="#1e8449">R1-C4</text>
+  <polygon points="600,248 610,265 590,265" fill="#27ae60"/><text x="600" y="280" text-anchor="middle" font-size="8" fill="#1e8449">R1-C5</text>
+  <polygon points="750,248 760,265 740,265" fill="#27ae60"/><text x="750" y="280" text-anchor="middle" font-size="8" fill="#1e8449">R1-C6</text>
+
+  <!-- Stanze piano 1 (12 stanze) -->
+  <!-- Stanze lato A (6 stanze) -->
+  <g>
+    <rect x="30" y="285" width="100" height="55" rx="3" fill="white" stroke="#95a5a6" stroke-width="1"/>
+    <text x="80" y="305" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">S101</text>
+    <rect x="40" y="310" width="14" height="14" rx="2" fill="#3498db"/><text x="47" y="320" text-anchor="middle" font-size="7" fill="white">TV</text>
+    <rect x="60" y="310" width="14" height="14" rx="2" fill="#16a085"/><text x="67" y="320" text-anchor="middle" font-size="7" fill="white">CMD</text>
+    <polygon points="85,310 93,325 77,325" fill="#f39c12"/><text x="85" y="338" text-anchor="middle" font-size="7" fill="#e67e22">LMP</text>
+    <rect x="100" y="310" width="20" height="14" rx="2" fill="#8e44ad"/><text x="110" y="320" text-anchor="middle" font-size="7" fill="white">AC</text>
+  </g>
+  <!-- repeat pattern shorthand for other rooms -->
+  <rect x="145" y="285" width="100" height="55" rx="3" fill="white" stroke="#95a5a6" stroke-width="1"/>
+  <text x="195" y="312" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">S102</text>
+  <rect x="155" y="318" width="14" height="14" rx="2" fill="#3498db"/><rect x="175" y="318" width="14" height="14" rx="2" fill="#16a085"/>
+  <polygon points="200,318 208,333 192,333" fill="#f39c12"/><rect x="215" y="318" width="20" height="14" rx="2" fill="#8e44ad"/>
+
+  <rect x="260" y="285" width="100" height="55" rx="3" fill="white" stroke="#95a5a6" stroke-width="1"/>
+  <text x="310" y="312" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">S103</text>
+  <rect x="270" y="318" width="14" height="14" rx="2" fill="#3498db"/><rect x="290" y="318" width="14" height="14" rx="2" fill="#16a085"/>
+  <polygon points="315,318 323,333 307,333" fill="#f39c12"/><rect x="330" y="318" width="20" height="14" rx="2" fill="#8e44ad"/>
+
+  <rect x="375" y="285" width="100" height="55" rx="3" fill="white" stroke="#95a5a6" stroke-width="1"/>
+  <text x="425" y="312" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">S104</text>
+  <rect x="385" y="318" width="14" height="14" rx="2" fill="#3498db"/><rect x="405" y="318" width="14" height="14" rx="2" fill="#16a085"/>
+  <polygon points="430,318 438,333 422,333" fill="#f39c12"/><rect x="445" y="318" width="20" height="14" rx="2" fill="#8e44ad"/>
+
+  <rect x="490" y="285" width="100" height="55" rx="3" fill="white" stroke="#95a5a6" stroke-width="1"/>
+  <text x="540" y="312" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">S105</text>
+  <rect x="500" y="318" width="14" height="14" rx="2" fill="#3498db"/><rect x="520" y="318" width="14" height="14" rx="2" fill="#16a085"/>
+  <polygon points="545,318 553,333 537,333" fill="#f39c12"/><rect x="560" y="318" width="20" height="14" rx="2" fill="#8e44ad"/>
+
+  <rect x="605" y="285" width="100" height="55" rx="3" fill="white" stroke="#95a5a6" stroke-width="1"/>
+  <text x="655" y="312" text-anchor="middle" font-size="10" font-weight="bold" fill="#2c3e50">S106</text>
+  <rect x="615" y="318" width="14" height="14" rx="2" fill="#3498db"/><rect x="635" y="318" width="14" height="14" rx="2" fill="#16a085"/>
+  <polygon points="660,318 668,333 652,333" fill="#f39c12"/><rect x="675" y="318" width="20" height="14" rx="2" fill="#8e44ad"/>
+
+  <text x="770" y="320" text-anchor="middle" font-size="10" fill="#7f8c8d">… S107–S112</text>
+  <text x="770" y="335" text-anchor="middle" font-size="9" fill="#95a5a6">(schema identico)</text>
+
+  <!-- AP piano 1 -->
+  <circle cx="740" cy="365" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <text x="740" y="385" text-anchor="middle" font-size="9" fill="#c0392b">AP-P1A</text>
+  <circle cx="820" cy="365" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <text x="820" y="385" text-anchor="middle" font-size="9" fill="#c0392b">AP-P1B</text>
+
+  <!-- GW Zigbee piano 1 -->
+  <rect x="30" y="353" width="50" height="18" rx="3" fill="#8e44ad" stroke="#6c3483"/>
+  <text x="55" y="366" text-anchor="middle" font-size="9" fill="white">GW-P1</text>
+
+  <!-- PIANO 2 -->
+  <rect x="20" y="405" width="860" height="100" rx="6" fill="#fef5e7" stroke="#f39c12" stroke-width="2"/>
+  <text x="30" y="422" font-size="12" font-weight="bold" fill="#1a5276">PIANO 2 (12 stanze: S201–S212) — schema identico Piano 1</text>
+
+  <rect x="30" y="433" width="860" height="22" rx="3" fill="#fdebd0" stroke="#e67e22" stroke-width="1"/>
+  <text x="450" y="449" text-anchor="middle" font-size="10" fill="#a04000">Corridoio Piano 2 — Zigbee Router mesh (luci corridoio = router FFD)</text>
+
+  <rect x="30" y="460" width="50" height="18" rx="3" fill="#8e44ad" stroke="#6c3483"/>
+  <text x="55" y="473" text-anchor="middle" font-size="9" fill="white">GW-P2</text>
+  <circle cx="740" cy="475" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <text x="740" y="495" text-anchor="middle" font-size="9" fill="#c0392b">AP-P2A</text>
+  <circle cx="820" cy="475" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <text x="820" y="495" text-anchor="middle" font-size="9" fill="#c0392b">AP-P2B</text>
+  <text x="450" y="487" text-anchor="middle" font-size="10" fill="#7f8c8d">S201–S212 (stesse attrezzature IoT Zigbee per stanza)</text>
+
+  <!-- PIANO 3 -->
+  <rect x="20" y="515" width="860" height="60" rx="6" fill="#f9f9f9" stroke="#95a5a6" stroke-width="2"/>
+  <text x="30" y="532" font-size="12" font-weight="bold" fill="#1a5276">PIANO 3 (12 stanze: S301–S312) — schema identico</text>
+  <rect x="30" y="540" width="50" height="18" rx="3" fill="#8e44ad" stroke="#6c3483"/>
+  <text x="55" y="553" text-anchor="middle" font-size="9" fill="white">GW-P3</text>
+  <circle cx="740" cy="555" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <text x="740" y="570" text-anchor="middle" font-size="9" fill="#c0392b">AP-P3A</text>
+  <circle cx="820" cy="555" r="8" fill="#e74c3c" stroke="#c0392b" stroke-width="1"/>
+  <text x="820" y="570" text-anchor="middle" font-size="9" fill="#c0392b">AP-P3B</text>
+  <text x="450" y="557" text-anchor="middle" font-size="10" fill="#7f8c8d">S301–S312 (stesse attrezzature IoT Zigbee per stanza)</text>
+
+  <!-- LEGENDA -->
+  <rect x="20" y="583" width="860" height="32" rx="4" fill="#ecf0f1" stroke="#bdc3c7"/>
+  <circle cx="40" cy="599" r="7" fill="#e74c3c"/><text x="52" y="603" font-size="9" fill="#2c3e50">Access Point Wi-Fi</text>
+  <rect x="135" y="592" width="18" height="14" rx="2" fill="#8e44ad"/><text x="157" y="603" font-size="9" fill="#2c3e50">Gateway Zigbee (GW)</text>
+  <polygon points="250,592 258,607 242,607" fill="#27ae60"/><text x="270" y="603" font-size="9" fill="#2c3e50">Router Zigbee FFD</text>
+  <rect x="355" y="592" width="14" height="14" rx="2" fill="#16a085"/><text x="374" y="603" font-size="9" fill="#2c3e50">Comando domotica (RFD)</text>
+  <polygon points="480,592 488,607 472,607" fill="#f39c12"/><text x="493" y="603" font-size="9" fill="#2c3e50">Lampadina/attuatore</text>
+  <rect x="590" y="592" width="20" height="14" rx="2" fill="#8e44ad"/><text x="615" y="603" font-size="9" fill="#2c3e50">Condizionatore</text>
+  <rect x="680" y="592" width="14" height="14" rx="2" fill="#3498db"/><text x="699" y="603" font-size="9" fill="#2c3e50">TV stream IP</text>
+  <rect x="760" y="592" width="50" height="14" rx="2" fill="#27ae60"/><text x="815" y="603" font-size="9" fill="#2c3e50">Server farm</text>
+</svg>

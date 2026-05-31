@@ -1,0 +1,132 @@
+<svg viewBox="0 0 920 560" xmlns="http://www.w3.org/2000/svg" font-family="Arial, sans-serif" font-size="11">
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#7f8c8d"/>
+    </marker>
+    <marker id="b" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e74c3c"/>
+    </marker>
+    <marker id="c" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#27ae60"/>
+    </marker>
+    <marker id="d" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2980b9"/>
+    </marker>
+  </defs>
+  <rect width="920" height="560" fill="#f8f9fa"/>
+  <text x="460" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#2c3e50">Schema Logico Apparati Attivi — Flusso Dati MQTT on-premise</text>
+
+  <!-- INTERNET CLOUD -->
+  <ellipse cx="460" cy="68" rx="200" ry="35" fill="#d6eaf8" stroke="#2980b9" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="460" y="65" text-anchor="middle" font-size="11" font-weight="bold" fill="#1a5276">INTERNET</text>
+  <text x="460" y="80" text-anchor="middle" font-size="9" fill="#2980b9">4 IP pubblici dinamici (NAT)</text>
+
+  <!-- FIREWALL/NAT -->
+  <rect x="360" y="118" width="200" height="40" rx="6" fill="#c0392b" stroke="#922b21" stroke-width="2"/>
+  <text x="460" y="135" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Firewall / NAT</text>
+  <text x="460" y="150" text-anchor="middle" font-size="9" fill="#fadbd8">4 IP pubblici → IP privati interni</text>
+
+  <!-- Arrow Internet→FW -->
+  <line x1="460" y1="103" x2="460" y2="118" stroke="#2980b9" stroke-width="2" marker-end="url(#d)"/>
+
+  <!-- CORE SWITCH L3 -->
+  <rect x="330" y="178" width="260" height="40" rx="6" fill="#2c3e50" stroke="#1a252f" stroke-width="2"/>
+  <text x="460" y="195" text-anchor="middle" font-size="11" font-weight="bold" fill="white">Core Switch L3  (10.0.0.0/8)</text>
+  <text x="460" y="210" text-anchor="middle" font-size="9" fill="#bdc3c7">Routing statico inter-VLAN — trunk 802.1Q</text>
+  <line x1="460" y1="158" x2="460" y2="178" stroke="#7f8c8d" stroke-width="2" marker-end="url(#a)"/>
+
+  <!-- SERVER FARM row -->
+  <!-- MQTT Broker -->
+  <rect x="30" y="260" width="130" height="50" rx="6" fill="#1abc9c" stroke="#148f77" stroke-width="2"/>
+  <text x="95" y="278" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Broker MQTT</text>
+  <text x="95" y="291" text-anchor="middle" font-size="9" fill="white">on-premise</text>
+  <text x="95" y="303" text-anchor="middle" font-size="8" fill="#d1f2eb">10.0.1.10 — Mosquitto</text>
+
+  <!-- Web Server -->
+  <rect x="180" y="260" width="130" height="50" rx="6" fill="#2980b9" stroke="#1f618d" stroke-width="2"/>
+  <text x="245" y="278" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Web Server</text>
+  <text x="245" y="291" text-anchor="middle" font-size="9" fill="white">Prenotazioni + Dashboard</text>
+  <text x="245" y="303" text-anchor="middle" font-size="8" fill="#d6eaf8">10.0.1.20 — Node.js/NGINX</text>
+
+  <!-- DB Server -->
+  <rect x="330" y="260" width="130" height="50" rx="6" fill="#8e44ad" stroke="#6c3483" stroke-width="2"/>
+  <text x="395" y="278" text-anchor="middle" font-size="10" font-weight="bold" fill="white">DB Server</text>
+  <text x="395" y="291" text-anchor="middle" font-size="9" fill="white">Prenotazioni + IoT</text>
+  <text x="395" y="303" text-anchor="middle" font-size="8" fill="#e8daef">10.0.1.30 — PostgreSQL</text>
+
+  <!-- DHCP/DNS -->
+  <rect x="480" y="260" width="130" height="50" rx="6" fill="#7f8c8d" stroke="#5d6d7e" stroke-width="2"/>
+  <text x="545" y="278" text-anchor="middle" font-size="10" font-weight="bold" fill="white">DHCP / DNS</text>
+  <text x="545" y="291" text-anchor="middle" font-size="9" fill="white">10.0.1.1</text>
+  <text x="545" y="303" text-anchor="middle" font-size="8" fill="#d5d8dc">Integrato nel Core SW</text>
+
+  <!-- Lines from Core to servers -->
+  <line x1="380" y1="218" x2="95" y2="260" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="420" y1="218" x2="245" y2="260" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="460" y1="218" x2="395" y2="260" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="500" y1="218" x2="545" y2="260" stroke="#7f8c8d" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- ACCESS SWITCHES PER PIANO -->
+  <!-- SW Piano Terra -->
+  <rect x="30" y="355" width="115" height="38" rx="5" fill="#27ae60" stroke="#1e8449"/>
+  <text x="88" y="370" text-anchor="middle" font-size="10" font-weight="bold" fill="white">SW Piano Terra</text>
+  <text x="88" y="383" text-anchor="middle" font-size="8" fill="#d5f5e3">10.0.10.0/24</text>
+
+  <!-- SW Piano 1 -->
+  <rect x="165" y="355" width="115" height="38" rx="5" fill="#27ae60" stroke="#1e8449"/>
+  <text x="222" y="370" text-anchor="middle" font-size="10" font-weight="bold" fill="white">SW Piano 1</text>
+  <text x="222" y="383" text-anchor="middle" font-size="8" fill="#d5f5e3">10.0.11.0/24</text>
+
+  <!-- SW Piano 2 -->
+  <rect x="300" y="355" width="115" height="38" rx="5" fill="#27ae60" stroke="#1e8449"/>
+  <text x="357" y="370" text-anchor="middle" font-size="10" font-weight="bold" fill="white">SW Piano 2</text>
+  <text x="357" y="383" text-anchor="middle" font-size="8" fill="#d5f5e3">10.0.12.0/24</text>
+
+  <!-- SW Piano 3 -->
+  <rect x="435" y="355" width="115" height="38" rx="5" fill="#27ae60" stroke="#1e8449"/>
+  <text x="492" y="370" text-anchor="middle" font-size="10" font-weight="bold" fill="white">SW Piano 3</text>
+  <text x="492" y="383" text-anchor="middle" font-size="8" fill="#d5f5e3">10.0.13.0/24</text>
+
+  <!-- SW Domotica (VLAN separata) -->
+  <rect x="600" y="355" width="145" height="38" rx="5" fill="#e74c3c" stroke="#c0392b"/>
+  <text x="672" y="370" text-anchor="middle" font-size="10" font-weight="bold" fill="white">VLAN Domotica</text>
+  <text x="672" y="383" text-anchor="middle" font-size="8" fill="#fadbd8">10.0.20.0/24 (segregata)</text>
+
+  <!-- Lines Core → Switches -->
+  <line x1="400" y1="218" x2="88" y2="355" stroke="#27ae60" stroke-width="1.5" marker-end="url(#c)"/>
+  <line x1="430" y1="218" x2="222" y2="355" stroke="#27ae60" stroke-width="1.5" marker-end="url(#c)"/>
+  <line x1="460" y1="218" x2="357" y2="355" stroke="#27ae60" stroke-width="1.5" marker-end="url(#c)"/>
+  <line x1="490" y1="218" x2="492" y2="355" stroke="#27ae60" stroke-width="1.5" marker-end="url(#c)"/>
+  <line x1="540" y1="218" x2="672" y2="355" stroke="#e74c3c" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#b)"/>
+
+  <!-- ZIGBEE GATEWAYS -->
+  <rect x="560" y="420" width="110" height="38" rx="5" fill="#8e44ad" stroke="#6c3483"/>
+  <text x="615" y="435" text-anchor="middle" font-size="10" font-weight="bold" fill="white">GW Zigbee RT</text>
+  <text x="615" y="448" text-anchor="middle" font-size="8" fill="#e8daef">Reception/Piano terra</text>
+
+  <rect x="685" y="420" width="110" height="38" rx="5" fill="#8e44ad" stroke="#6c3483"/>
+  <text x="740" y="435" text-anchor="middle" font-size="10" font-weight="bold" fill="white">GW Zigbee P1</text>
+  <text x="740" y="448" text-anchor="middle" font-size="8" fill="#e8daef">Piano 1</text>
+
+  <rect x="810" y="420" width="90" height="38" rx="5" fill="#8e44ad" stroke="#6c3483"/>
+  <text x="855" y="435" text-anchor="middle" font-size="10" font-weight="bold" fill="white">GW P2/P3</text>
+  <text x="855" y="448" text-anchor="middle" font-size="8" fill="#e8daef">Piano 2 e 3</text>
+
+  <line x1="640" y1="393" x2="615" y2="420" stroke="#8e44ad" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="672" y1="393" x2="740" y2="420" stroke="#8e44ad" stroke-width="1.5" marker-end="url(#a)"/>
+  <line x1="710" y1="393" x2="855" y2="420" stroke="#8e44ad" stroke-width="1.5" marker-end="url(#a)"/>
+
+  <!-- MQTT topic flow labels -->
+  <rect x="30" y="420" width="530" height="65" rx="6" fill="#eafaf1" stroke="#27ae60"/>
+  <text x="295" y="438" text-anchor="middle" font-size="10" font-weight="bold" fill="#1e8449">Flusso MQTT — Topic hierarchy (on-premise broker)</text>
+  <text x="40" y="453" font-size="9" fill="#1e8449">Publish:  albergo/p1/s101/luce/stato  →  {"state":"ON","brightness":80}</text>
+  <text x="40" y="466" font-size="9" fill="#1e8449">Subscribe: albergo/p1/s101/luce/cmd  →  {"state":"OFF"}</text>
+  <text x="40" y="479" font-size="9" fill="#1e8449">Publish:  albergo/p1/s101/ac/stato   →  {"temp":22,"mode":"cool","power":"ON"}</text>
+
+  <!-- AP Wi-Fi note -->
+  <rect x="760" y="260" width="140" height="50" rx="5" fill="#e74c3c" stroke="#c0392b"/>
+  <text x="830" y="278" text-anchor="middle" font-size="10" font-weight="bold" fill="white">Access Points Wi-Fi</text>
+  <text x="830" y="291" text-anchor="middle" font-size="9" fill="white">10.0.30.0/24</text>
+  <text x="830" y="303" text-anchor="middle" font-size="8" fill="#fadbd8">Clienti + Terminali staff</text>
+  <line x1="560" y1="218" x2="830" y2="260" stroke="#e74c3c" stroke-width="1.5" marker-end="url(#b)"/>
+</svg>
