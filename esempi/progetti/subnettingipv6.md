@@ -1,140 +1,333 @@
-# **Esercizio di Subnetting IPv6**
+# Subnetting IPv6 — Gerarchia Geografica Italia
+### Prefisso ISP: `2001:db8:1::/48` — Classful e Classless a confronto
 
-## **Esigenza**
+---
 
-Dati i gruppi da 3000 e 40 host:
+## Indice
 
-1\) Realizzare il subnetting classful di un indirizzo di documentazione definendo gli indirizzi link local e GUA di ognidispositivo e di subnet di ogni subnet (GRP).
+1. [Contesto e obiettivo](#1-contesto-e-obiettivo)
+2. [Struttura degli indirizzi IPv6](#2-struttura-degli-indirizzi-ipv6)
+3. [Subnetting Classful (nibble-aligned)](#3-subnetting-classful-nibble-aligned)
+4. [Subnetting Classless (bit-exact)](#4-subnetting-classless-bit-exact)
+5. [Confronto tra i due approcci](#5-confronto-tra-i-due-approcci)
+6. [Tabella riepilogativa finale](#6-tabella-riepilogativa-finale)
 
-2\) Definire l'indirizzo multicast di un PC a scelta
+---
 
-3\) Considerato il primo subnetting come una divisione in dipartimenti, farne un secondo con una divisione in settori e trovare l'indirizzo del quarto settore del terzo dipartimento
+## 1. Contesto e obiettivo
 
-## **Dati del problema:**
+Un ISP assegna all'organizzazione il prefisso `/48`:
 
-- Gruppi da 3000 e 40 host  
-- Richiesta di subnetting classful (a cavallo tra un nibble e l'altro)  
-- Necessità di definire indirizzi link-local e GUA (Global Unicast Address)  
-- Definire indirizzo multicast di un PC  
-- Fare un secondo subnetting per settori all'interno dei dipartimenti
+```
+2001:db8:1::/48
+```
 
-## **1\) Subnetting Classful per 3000 e 40 host**
+L'obiettivo è strutturare gerarchicamente lo spazio di indirizzamento in modo da rispecchiare la geografia italiana:
 
-### **Analisi dei requisiti**
+```
+Italia  →  Regioni  →  Province  →  Subnet di sede
+```
 
-- Per 3000 host: abbiamo bisogno di 12 bit (2^12 \= 4096 \> 3000\)  
-- Per 40 host: abbiamo bisogno di 6 bit (2^6 \= 64 \> 40\)
+I dati di riferimento sono:
 
-### **Subnetting per 3000 host (dipartimenti)**
+| Livello       | Entità reali     | Note                          |
+|---------------|-----------------|-------------------------------|
+| Regioni       | 20              | Regioni italiane              |
+| Province      | max 12          | Lombardia (la più grande)     |
+| Subnet/sede   | a scelta        | LAN, Server, VoIP, DMZ, ecc. |
 
-Utilizziamo l'indirizzo di documentazione 2001:db8::/32 come base.
+---
 
-Per seguire il suggerimento di fare il subnetting a cavallo tra un nibble e l'altro, definiamo:
+## 2. Struttura degli indirizzi IPv6
 
-- Prefisso base: 2001:db8::/32  
-- Per il primo livello di subnetting (dipartimenti), utilizziamo 12 bit, partendo da bit 32  
-- Questo ci porta a un prefisso /44 (32 \+ 12), che attraversa il confine tra il terzo e il quarto gruppo esadecimale
+Un indirizzo IPv6 è composto da **128 bit**, suddivisi in **8 gruppi da 16 bit** (hexteto), separati da `:`.
 
-#### **Indirizzi dei dipartimenti:**
+```
+2001:0db8:0001:XXYY:0000:0000:0000:0000
+|______________|____|__________________|
+   48 bit ISP   16b     64 bit host
+               nostra
+             gerarchia
+```
 
-1. Primo dipartimento: 2001:db8:0000::/44 (rappresentato anche come 2001:db8:0::/44)  
-2. Secondo dipartimento: 2001:db8:0010::/44  
-3. Terzo dipartimento: 2001:db8:0020::/44  
-4. Quarto dipartimento: 2001:db8:0030::/44 ...e così via.
+I **16 bit centrali** (bit 48–63) sono quelli che possiamo suddividere per la gerarchia interna.
 
-### **Definizione degli indirizzi**
+Rappresentati in esadecimale, questi 16 bit formano l'**hexteto 4**:
 
-Per ogni subnet del primo livello (dipartimenti), definiamo:
+```
+.... .... .... .... | R R P P | .... ....
+                      ^ ^^ ^
+                      | ||_|_____ PP = province / subnet (nibble basso)
+                      |_|________ RR = regioni (nibble alto, 2 nibble = 8 bit)
+```
 
-1. **Indirizzo di subnet GUA**:
+---
 
-   - Dipartimento 1: 2001:db8:0000::/44  
-   - Dipartimento 2: 2001:db8:0010::/44  
-   - Dipartimento 3: 2001:db8:0020::/44  
-2. **Indirizzi GUA dei dispositivi**: Per il primo dipartimento:
+## 3. Subnetting Classful (nibble-aligned)
 
-   - Host 1: 2001:db8:0000::1/44  
-   - Host 2: 2001:db8:0000::2/44  
-   - Host 3: 2001:db8:0000::3/44  
-3. **Indirizzi link-local**: Gli indirizzi link-local iniziano sempre con fe80:: e sono seguiti dall'identificatore di interfaccia.
+Il subnetting **classful in IPv6** allinea i tagli ai confini di nibble (4 bit).  
+I prefissi ammessi sono: `/48`, `/52`, `/56`, `/60`, `/64`.
 
-   - Host 1: fe80::1  
-   - Host 2: fe80::2  
-   - Host 3: fe80::3
+### Distribuzione dei nibble disponibili
 
-## **2\) Definizione dell'indirizzo multicast di un PC**
+Disponiamo di **4 nibble** (16 bit) tra `/48` e `/64`:
 
-Scegliamo l'Host 1 del primo dipartimento per definire un indirizzo multicast.
+```
+/48 ──── /52 ──── /56 ──── /60 ──── /64
+   nibble1  nibble2  nibble3  nibble4
+```
 
-Gli indirizzi multicast IPv6 iniziano con ff e includono:
+Scelta ottimale:
 
-- Bandiere (0 \= permanente, 1 \= temporaneo)  
-- Ambito (1 \= nodo locale, 2 \= collegamento locale, 5 \= sito locale, e \= globale)  
-- ID del gruppo multicast
+| Nibble usati | Livello   | Prefisso | Slot disponibili | Slot usati |
+|:------------:|-----------|:--------:|:----------------:|:----------:|
+| 2            | Regioni   | /56      | 256              | 20 ✅      |
+| 1            | Province  | /60      | 16               | 12 ✅      |
+| 1            | Subnet    | /64      | **16**           | a scelta   |
 
-Per un indirizzo multicast a livello di collegamento locale per l'Host 1:
+> **Con 1 nibble per le regioni (/52) si ottengono solo 16 slot — insufficienti per le 20 regioni italiane.**  
+> Quindi si usano 2 nibble per le regioni → prefisso /56.
 
-- **Indirizzo multicast**: ff02::1 (tutti i nodi nel collegamento locale)
+---
 
-## **3\) Secondo livello di subnetting (Settori all'interno dei Dipartimenti)**
+### Livello 1 — Regioni `/56`
 
-Per il secondo livello di subnetting, suddividiamo ulteriormente i dipartimenti in settori:
+Incremento: `+0x01` nel byte alto dell'hexteto 4.
 
-- Partiamo dal prefisso /44 dei dipartimenti  
-- Per i settori (40 host), necessitiamo di 6 bit  
-- Quindi il prefisso per i settori sarà /50 (44 \+ 6\)
+| #  | Regione          | Prefisso /56             |
+|----|-----------------|--------------------------|
+| 01 | Piemonte         | `2001:db8:1:0100::/56`   |
+| 02 | Valle d'Aosta    | `2001:db8:1:0200::/56`   |
+| 03 | Lombardia        | `2001:db8:1:0300::/56`   |
+| 04 | Trentino-AA      | `2001:db8:1:0400::/56`   |
+| 05 | Veneto           | `2001:db8:1:0500::/56`   |
+| 06 | Friuli-VG        | `2001:db8:1:0600::/56`   |
+| 07 | Liguria          | `2001:db8:1:0700::/56`   |
+| 08 | Emilia-Romagna   | `2001:db8:1:0800::/56`   |
+| 09 | Toscana          | `2001:db8:1:0900::/56`   |
+| 10 | Umbria           | `2001:db8:1:0a00::/56`   |
+| 11 | Marche           | `2001:db8:1:0b00::/56`   |
+| 12 | Lazio            | `2001:db8:1:0c00::/56`   |
+| 13 | Abruzzo          | `2001:db8:1:0d00::/56`   |
+| 14 | Molise           | `2001:db8:1:0e00::/56`   |
+| 15 | Campania         | `2001:db8:1:0f00::/56`   |
+| 16 | Puglia           | `2001:db8:1:1000::/56`   |
+| 17 | Basilicata       | `2001:db8:1:1100::/56`   |
+| 18 | Calabria         | `2001:db8:1:1200::/56`   |
+| 19 | Sicilia          | `2001:db8:1:1300::/56`   |
+| 20 | Sardegna         | `2001:db8:1:1400::/56`   |
 
-### **Definizione dei settori all'interno dei dipartimenti**
+> Slot liberi: da `0x1500` a `0xff00` → **235 regioni di riserva** (espansione futura).
 
-Per il terzo dipartimento (2001:db8:0020::/44):
+---
 
-1. Primo settore: 2001:db8:0020:0000::/50  
-2. Secondo settore: 2001:db8:0020:0400::/50  
-3. Terzo settore: 2001:db8:0020:0800::/50  
-4. **Quarto settore: 2001:db8:0020:0c00::/50**
+### Livello 2 — Province della Lombardia `/60`
 
-L'indirizzo del quarto settore del terzo dipartimento è quindi **2001:db8:0020:0c00::/50**.
+Prendiamo **Lombardia** → `2001:db8:1:0300::/56`  
+Incremento: `+0x10` nel nibble basso dell'hexteto 4.
 
-## **Verifica della soluzione**
+| #  | Provincia      | Prefisso /60               |
+|----|---------------|---------------------------|
+| 1  | Milano         | `2001:db8:1:0300::/60`    |
+| 2  | Bergamo        | `2001:db8:1:0310::/60`    |
+| 3  | Brescia        | `2001:db8:1:0320::/60`    |
+| 4  | Como           | `2001:db8:1:0330::/60`    |
+| 5  | Cremona        | `2001:db8:1:0340::/60`    |
+| 6  | Lecco          | `2001:db8:1:0350::/60`    |
+| 7  | Lodi           | `2001:db8:1:0360::/60`    |
+| 8  | Mantova        | `2001:db8:1:0370::/60`    |
+| 9  | Monza-Brianza  | `2001:db8:1:0380::/60`    |
+| 10 | Pavia          | `2001:db8:1:0390::/60`    |
+| 11 | Sondrio        | `2001:db8:1:03a0::/60`    |
+| 12 | Varese         | `2001:db8:1:03b0::/60`    |
+| —  | (riserva)      | `03c0` → `03f0`           |
 
-### **Note sul subnetting a cavallo tra nibble**
+> Slot liberi per provincia: 4 (da `03c0` a `03f0`).
 
-Nel nostro esercizio:
+---
 
-- Il primo livello di subnetting (dipartimenti) ha un prefisso /44, che attraversa il confine tra il terzo gruppo (0020) e il quarto gruppo (0000)  
-- Il secondo livello di subnetting (settori) ha un prefisso /50, che cade a metà del quarto gruppo esadecimale
+### Livello 3 — Subnet sede di Milano `/64`
 
-### **Tabella riassuntiva degli indirizzi**
+Prendiamo **Milano** → `2001:db8:1:0300::/60`  
+Il nibble residuo genera **16 subnet /64** (incremento `+0x1` nel nibble finale).
 
-| Livello | Descrizione | Indirizzo/Prefisso |
-| :---- | :---- | :---- |
-| Base | Prefisso di documentazione | 2001:db8::/32 |
-| Dipartimento 1 | Primo dipartimento | 2001:db8:0000::/44 |
-| Dipartimento 2 | Secondo dipartimento | 2001:db8:0010::/44 |
-| Dipartimento 3 | Terzo dipartimento | 2001:db8:0020::/44 |
-| Settore 3.1 | Primo settore del terzo dipartimento | 2001:db8:0020:0000::/50 |
-| Settore 3.2 | Secondo settore del terzo dipartimento | 2001:db8:0020:0400::/50 |
-| Settore 3.3 | Terzo settore del terzo dipartimento | 2001:db8:0020:0800::/50 |
-| Settore 3.4 | Quarto settore del terzo dipartimento | 2001:db8:0020:0c00::/50 |
-| Host 1 GUA | Indirizzo globale Host 1 (dip. 1\) | 2001:db8:0000::1/44 |
-| Host 1 LL | Indirizzo link-local Host 1 | fe80::1 |
-| Host 1 MC | Indirizzo multicast Host 1 | ff02::1 |
+| #  | Prefisso /64               | Uso suggerito         |
+|----|---------------------------|-----------------------|
+| 1  | `2001:db8:1:0300::/64`    | LAN utenti            |
+| 2  | `2001:db8:1:0301::/64`    | Server interni        |
+| 3  | `2001:db8:1:0302::/64`    | VoIP                  |
+| 4  | `2001:db8:1:0303::/64`    | DMZ                   |
+| 5  | `2001:db8:1:0304::/64`    | Management / OOB      |
+| 6  | `2001:db8:1:0305::/64`    | IoT / Building Mgmt   |
+| 7  | `2001:db8:1:0306::/64`    | Wi-Fi ospiti          |
+| 8  | `2001:db8:1:0307::/64`    | Backup / Storage      |
+| 9–16 | `0308` → `030f`        | Riserva               |
 
-## **7\. Considerazioni Finali**
+> **Ogni sede provinciale dispone di 16 subnet /64** con ~18,4 × 10¹⁸ indirizzi host ciascuna.
 
-Come sottolineato nel documento, è importante adattare lo schema di indirizzamento IPv6 alle specifiche esigenze dell'organizzazione:
+---
 
-*"Of course you'll want to do what works best for your organization and aligns with your business goals and requirements. There are no requirements regarding the site and sub-site or even how these are broken down."*
+### Spreco del classful
 
-I principali vantaggi del subnetting IPv6 sono:
+| Livello  | Bit reali necessari | Bit assegnati (nibble) | Bit sprecati |
+|----------|:-------------------:|:----------------------:|:------------:|
+| Regioni  | 5 (per 20)          | 8 (2 nibble)           | **3 bit**    |
+| Province | 4 (per 12)          | 4 (1 nibble)           | 0 bit        |
+| Subnet   | 4 (per 16)          | 4 (1 nibble)           | 0 bit        |
+| **Totale** |                   |                        | **3 bit**    |
 
-1. **Spazio di indirizzamento praticamente illimitato**  
-2. **Possibilità di strutturare gerarchicamente la rete**  
-3. **Semplificazione del routing e dell'aggregazione**  
-4. **Eliminazione della necessità di NAT**  
-5. **Maggiore flessibilità nella progettazione**
+I 3 bit sprecati al livello regioni significano che **7/8 dello spazio** di quel livello è inutilizzato.
 
-La transizione a IPv6 rappresenta un'opportunità per ripensare e ottimizzare l'architettura di rete, abbandonando le limitazioni e i compromessi imposti da IPv4.
+---
 
-\[IMMAGINE 15: Confronto tra IPv4 e IPv6 che mostra i vantaggi del nuovo protocollo\]
+## 4. Subnetting Classless (bit-exact)
 
+Il subnetting **classless** usa esattamente i bit necessari, indipendentemente dai confini di nibble.
+
+### Calcolo bit necessari
+
+| Livello  | Entità | Bit esatti         | Prefisso        |
+|----------|-------:|:------------------:|:---------------:|
+| Regioni  | 20     | 5 bit (2⁵=32≥20)  | /48+5 = **/53** |
+| Province | 12     | 4 bit (2⁴=16≥12)  | /53+4 = **/57** |
+| Subnet   | 16     | 4 bit (2⁴=16)     | /57+4 = **/61** |
+
+> ⚠️ Il prefisso `/61` **attraversa il confine del /64**, il che **rompe SLAAC** (Stateless Address AutoConfiguration).  
+> Per preservare la compatibilità SLAAC, si estende l'ultimo livello fino a /64 — sprecando 3 bit sul livello subnet — oppure si riduce il livello subnet a 3 bit (8 subnet).
+
+**Soluzione consigliata con SLAAC rispettato:**
+
+| Livello  | Bit | Prefisso | Slot   |
+|----------|:---:|:--------:|:------:|
+| Regioni  | 5   | /53      | 32     |
+| Province | 4   | /57      | 16     |
+| Subnet   | 7 → esteso a /64 | **/64** | 128 ✅ |
+
+> Con questo approccio le subnet per sede diventano **128** invece di 16.
+
+---
+
+### Livello 1 — Regioni `/53`
+
+Incremento: `+0x0800` nell'hexteto 4 (ogni passo avanza di 2¹¹ = 2048 in decimale).
+
+| #  | Regione          | Prefisso /53             |
+|----|-----------------|--------------------------|
+| 01 | Piemonte         | `2001:db8:1:0000::/53`   |
+| 02 | Valle d'Aosta    | `2001:db8:1:0800::/53`   |
+| 03 | Lombardia        | `2001:db8:1:1000::/53`   |
+| 04 | Trentino-AA      | `2001:db8:1:1800::/53`   |
+| 05 | Veneto           | `2001:db8:1:2000::/53`   |
+| 06 | Friuli-VG        | `2001:db8:1:2800::/53`   |
+| 07 | Liguria          | `2001:db8:1:3000::/53`   |
+| 08 | Emilia-Romagna   | `2001:db8:1:3800::/53`   |
+| 09 | Toscana          | `2001:db8:1:4000::/53`   |
+| 10 | Umbria           | `2001:db8:1:4800::/53`   |
+| 11 | Marche           | `2001:db8:1:5000::/53`   |
+| 12 | Lazio            | `2001:db8:1:5800::/53`   |
+| 13 | Abruzzo          | `2001:db8:1:6000::/53`   |
+| 14 | Molise           | `2001:db8:1:6800::/53`   |
+| 15 | Campania         | `2001:db8:1:7000::/53`   |
+| 16 | Puglia           | `2001:db8:1:7800::/53`   |
+| 17 | Basilicata       | `2001:db8:1:8000::/53`   |
+| 18 | Calabria         | `2001:db8:1:8800::/53`   |
+| 19 | Sicilia          | `2001:db8:1:9000::/53`   |
+| 20 | Sardegna         | `2001:db8:1:9800::/53`   |
+
+> Slot liberi: da `0xa000` a `0xf800` → **12 regioni di riserva** (contro le 235 del classful).
+
+---
+
+### Livello 2 — Province della Lombardia `/57`
+
+Prendiamo **Lombardia** → `2001:db8:1:1000::/53`  
+Incremento: `+0x0080` (2⁷ = 128 per ogni passo).
+
+| #  | Provincia      | Prefisso /57               |
+|----|---------------|---------------------------|
+| 1  | Milano         | `2001:db8:1:1000::/57`    |
+| 2  | Bergamo        | `2001:db8:1:1080::/57`    |
+| 3  | Brescia        | `2001:db8:1:1100::/57`    |
+| 4  | Como           | `2001:db8:1:1180::/57`    |
+| 5  | Cremona        | `2001:db8:1:1200::/57`    |
+| 6  | Lecco          | `2001:db8:1:1280::/57`    |
+| 7  | Lodi           | `2001:db8:1:1300::/57`    |
+| 8  | Mantova        | `2001:db8:1:1380::/57`    |
+| 9  | Monza-Brianza  | `2001:db8:1:1400::/57`    |
+| 10 | Pavia          | `2001:db8:1:1480::/57`    |
+| 11 | Sondrio        | `2001:db8:1:1500::/57`    |
+| 12 | Varese         | `2001:db8:1:1580::/57`    |
+| —  | (riserva)      | `1600` → `17ff`           |
+
+> Slot liberi per provincia: 4 (da `1600` a `1780`).
+
+---
+
+### Livello 3 — Subnet sede di Milano `/64`
+
+Prendiamo **Milano** → `2001:db8:1:1000::/57`  
+I 7 bit rimanenti fino al /64 generano **128 subnet /64**.
+
+| #   | Prefisso /64               | Uso suggerito         |
+|-----|---------------------------|-----------------------|
+| 1   | `2001:db8:1:1000::/64`    | LAN utenti            |
+| 2   | `2001:db8:1:1001::/64`    | Server interni        |
+| 3   | `2001:db8:1:1002::/64`    | VoIP                  |
+| 4   | `2001:db8:1:1003::/64`    | DMZ                   |
+| 5   | `2001:db8:1:1004::/64`    | Management / OOB      |
+| 6   | `2001:db8:1:1005::/64`    | IoT / Building Mgmt   |
+| 7   | `2001:db8:1:1006::/64`    | Wi-Fi ospiti          |
+| 8   | `2001:db8:1:1007::/64`    | Backup / Storage      |
+| … | `1008` → `107f`           | Riserva (120 subnet)  |
+
+> **Ogni sede provinciale dispone di 128 subnet /64** — 8× il classful.
+
+---
+
+## 5. Confronto tra i due approcci
+
+| Caratteristica              | Classful (nibble)       | Classless (bit-exact)   |
+|-----------------------------|-------------------------|-------------------------|
+| Prefisso regioni            | /56                     | /53                     |
+| Prefisso province           | /60                     | /57                     |
+| Prefisso subnet sede        | /64                     | /64                     |
+| Regioni disponibili         | 256 (usate 20)          | 32 (usate 20)           |
+| Province per regione        | 16                      | 16                      |
+| **Subnet /64 per sede**     | **16**                  | **128**                 |
+| Spreco bit gerarchia        | 3 bit                   | 0 bit                   |
+| Leggibilità indirizzi hex   | ✅ Molto alta            | ⚠️ Media (tagli oddly-aligned) |
+| Compatibilità SLAAC         | ✅ Sì (/64 finale)       | ✅ Sì (/64 finale)       |
+| Semplicità configurazione   | ✅ Alta                  | ⚠️ Media                |
+| Efficienza spazio           | ⚠️ Media                 | ✅ Alta                  |
+
+---
+
+## 6. Tabella riepilogativa finale
+
+### Classful
+
+| Livello           | Descrizione                  | Prefisso                     |
+|-------------------|------------------------------|------------------------------|
+| ISP               | Blocco assegnato             | `2001:db8:1::/48`            |
+| Regione 03        | Lombardia                    | `2001:db8:1:0300::/56`       |
+| Provincia 01      | Milano (Lombardia)           | `2001:db8:1:0300::/60`       |
+| Subnet 1          | LAN utenti — Milano          | `2001:db8:1:0300::/64`       |
+| Subnet 2          | Server — Milano              | `2001:db8:1:0301::/64`       |
+| …                 | …                            | …                            |
+| Subnet 16         | Ultima subnet — Milano       | `2001:db8:1:030f::/64`       |
+
+### Classless
+
+| Livello           | Descrizione                  | Prefisso                     |
+|-------------------|------------------------------|------------------------------|
+| ISP               | Blocco assegnato             | `2001:db8:1::/48`            |
+| Regione 03        | Lombardia                    | `2001:db8:1:1000::/53`       |
+| Provincia 01      | Milano (Lombardia)           | `2001:db8:1:1000::/57`       |
+| Subnet 1          | LAN utenti — Milano          | `2001:db8:1:1000::/64`       |
+| Subnet 2          | Server — Milano              | `2001:db8:1:1001::/64`       |
+| …                 | …                            | …                            |
+| Subnet 128        | Ultima subnet — Milano       | `2001:db8:1:107f::/64`       |
+
+---
+
+> **Conclusione:** il classful è preferibile per leggibilità e semplicità operativa; il classless è preferibile quando si vogliono massimizzare le subnet disponibili per sede (128 vs 16) senza sprecare bit nella gerarchia superiore. In entrambi i casi il prefisso finale `/64` garantisce la piena compatibilità con SLAAC e EUI-64.
