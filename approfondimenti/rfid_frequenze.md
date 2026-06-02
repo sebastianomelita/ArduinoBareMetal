@@ -7,7 +7,7 @@ La scelta della **frequenza** di lavoro è la **prima decisione progettuale** in
 
 ![alt text](../img/rfid_gerarchia.png)
 
-| Banda | Frequenza | Principio | Portata tipica | Velocità | Comportamento su metallo/acqua | Esempi |
+| Banda | Frequenza | Principio | Portata tipica | Velocità | Comportamento su metallo/acqua | Casi d'uso |
 |---|---|---|---|---|---|---|
 | **LF** | 125-134 kHz | Induttivo | < 10 cm | bassa (~1 kbps) | Ottimo: trapassa | Microchip animali, immobilizer auto |
 | **HF / NFC** | 13.56 MHz | Induttivo | < 10 cm (NFC), fino 1 m (HF) | media (~106-848 kbps) | Buono | Pagamenti, ticketing, passaporti, biglietti, controllo accessi |
