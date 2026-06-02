@@ -43,7 +43,7 @@
   <line class="sw" x1="-55" y1="24" x2="11" y2="24" marker-end="url(#a)" stroke-width="1.1"/>
   <line class="sw" x1="15" y1="31" x2="-51" y2="31" marker-end="url(#a)" stroke-width="1.1"/>
 </g>
-<text class="lbl" x="375" y="304" text-anchor="middle" font-weight="600">CS — core switch L2 puro (CD)</text>
+<text class="lbl" x="375" y="304" text-anchor="middle" font-weight="600">CS — core switch L2 (CD)</text>
 <text class="sub" x="375" y="319" text-anchor="middle">solo commutazione · nessun routing</text>
 
 <g transform="translate(480,256)"><rect class="body srv" x="0" y="0" width="26" height="40" rx="3"/><line class="srv" x1="0" y1="13" x2="26" y2="13" stroke-width="0.7"/><line class="srv" x1="0" y1="26" x2="26" y2="26" stroke-width="0.7"/><circle cx="5" cy="7" r="1.4" fill="#7F77DD"/></g>
@@ -56,14 +56,11 @@
 
 <!-- access switch -->
 <g transform="translate(170,380)"><rect class="body sw" x="-50" y="0" width="100" height="32" rx="3"/><line class="sw" x1="-38" y1="9" x2="2" y2="9" marker-end="url(#a)"/><line class="sw" x1="8" y1="15" x2="-32" y2="15" marker-end="url(#a)"/><line class="sw" x1="-38" y1="21" x2="2" y2="21" marker-end="url(#a)"/></g>
-<text class="lbl" x="170" y="430" text-anchor="middle" font-weight="600">AS-0 (atrio)</text>
-<text class="sub" x="170" y="445" text-anchor="middle">24p PoE+ · access VLAN 10</text>
+<text class="lbl" x="170" y="429" text-anchor="middle" font-weight="600">AS-0 (atrio)</text>
 <g transform="translate(362,380)"><rect class="body sw" x="-50" y="0" width="100" height="32" rx="3"/><line class="sw" x1="-38" y1="9" x2="2" y2="9" marker-end="url(#a)"/><line class="sw" x1="8" y1="15" x2="-32" y2="15" marker-end="url(#a)"/><line class="sw" x1="-38" y1="21" x2="2" y2="21" marker-end="url(#a)"/></g>
-<text class="lbl" x="362" y="430" text-anchor="middle" font-weight="600">AS-1 (FD-1)</text>
-<text class="sub" x="362" y="445" text-anchor="middle">banchina 1</text>
+<text class="lbl" x="362" y="429" text-anchor="middle" font-weight="600">AS-1 (FD-1)</text>
 <g transform="translate(550,380)"><rect class="body sw" x="-50" y="0" width="100" height="32" rx="3"/><line class="sw" x1="-38" y1="9" x2="2" y2="9" marker-end="url(#a)"/><line class="sw" x1="8" y1="15" x2="-32" y2="15" marker-end="url(#a)"/><line class="sw" x1="-38" y1="21" x2="2" y2="21" marker-end="url(#a)"/></g>
-<text class="lbl" x="550" y="430" text-anchor="middle" font-weight="600">AS-2 (FD-2)</text>
-<text class="sub" x="550" y="445" text-anchor="middle">banchina 2</text>
+<text class="lbl" x="550" y="429" text-anchor="middle" font-weight="600">AS-2 (FD-2)</text>
 
 <path class="fib" d="M340 286 L175 378" marker-end="url(#a)"/>
 <path class="fib" d="M370 286 L362 378" marker-end="url(#a)"/>
@@ -74,20 +71,20 @@
 <g><rect class="rdr" x="110" y="488" width="40" height="34" rx="4"/><circle cx="130" cy="505" r="7" fill="none" stroke="#BA7517"/><text class="sub" x="130" y="534" text-anchor="middle">RDR A.01</text></g>
 <text class="sub" x="170" y="508" text-anchor="middle">···</text>
 <g><rect class="rdr" x="190" y="488" width="40" height="34" rx="4"/><circle cx="210" cy="505" r="7" fill="none" stroke="#BA7517"/><text class="sub" x="210" y="534" text-anchor="middle">RDR A.07</text></g>
-<path class="rdl" d="M160 412 L130 486"/><path class="rdl" d="M180 412 L210 486"/>
+<path class="rdl" d="M130 412 L130 486"/><path class="rdl" d="M210 412 L210 486"/>
 <g><rect class="rdr" x="312" y="488" width="40" height="34" rx="4"/><circle cx="332" cy="505" r="7" fill="none" stroke="#BA7517"/><text class="sub" x="332" y="534" text-anchor="middle">RDR 1.01</text></g>
 <text class="sub" x="372" y="508" text-anchor="middle">···</text>
 <g><rect class="rdr" x="392" y="488" width="40" height="34" rx="4"/><circle cx="412" cy="505" r="7" fill="none" stroke="#BA7517"/><text class="sub" x="412" y="534" text-anchor="middle">RDR 1.06</text></g>
-<path class="rdl" d="M352 412 L332 486"/><path class="rdl" d="M372 412 L412 486"/>
+<path class="rdl" d="M332 412 L332 486"/><path class="rdl" d="M412 412 L412 486"/>
 <g><rect class="rdr" x="500" y="488" width="40" height="34" rx="4"/><circle cx="520" cy="505" r="7" fill="none" stroke="#BA7517"/><text class="sub" x="520" y="534" text-anchor="middle">RDR 2.01</text></g>
 <text class="sub" x="560" y="508" text-anchor="middle">···</text>
 <g><rect class="rdr" x="580" y="488" width="40" height="34" rx="4"/><circle cx="600" cy="505" r="7" fill="none" stroke="#BA7517"/><text class="sub" x="600" y="534" text-anchor="middle">RDR 2.05</text></g>
-<path class="rdl" d="M540 412 L520 486"/><path class="rdl" d="M560 412 L600 486"/>
+<path class="rdl" d="M520 412 L520 486"/><path class="rdl" d="M600 412 L600 486"/>
 
 <rect x="50" y="556" width="600" height="92" rx="6" fill="none" stroke="#d1d5db" stroke-width="0.5" stroke-dasharray="4 3"/>
 <text class="lbl" x="60" y="575" font-weight="600">Router-on-a-stick — punti chiave</text>
 <text class="sub" x="60" y="593">Subnet interne direttamente connesse a R-FW → rotte automatiche, una sola tabella di routing</text>
 <text class="sub" x="60" y="610">Routing inter-VLAN sul solo R-FW · core L2 senza IP di gateway · trunk 802.1q unico</text>
 <text class="sub" x="60" y="627">Limite: effetto tornante sul trunk · R-FW = single point of failure (mitigabile con VRRP/HSRP)</text>
-<text class="sub" x="60" y="641">Router=cilindro · switch=box+frecce · server=tower · pastiglia=reader</text>
+<text class="sub" x="60" y="641">AS-0 atrio, AS-1 banchina 1, AS-2 banchina 2 — switch 24p PoE+, access VLAN 10 · Router=cilindro, switch=box+frecce, server=tower, pastiglia=reader</text>
 </svg>
