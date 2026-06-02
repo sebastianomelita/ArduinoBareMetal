@@ -62,7 +62,7 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 
 ## **Progetto di esempio completo 2**
 
-[Testo della prova rete RFID metropolitana](/esempi/1_simulazione_seconda_prova_informatica_ITIA_26.pdf)
+[Testo della prova rete RFID metropolitana](/esempi/progetti/1_simulazione_seconda_prova_informatica_ITIA_26.pdf)
 
 [Svolgimento rete RFID metropolitana](/esempi/progetti/soluzione_seconda_prova_RFID.md)
 
