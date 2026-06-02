@@ -39,7 +39,7 @@ L'infrastruttura è modellata come **rete di reti** a topologia *hub-and-spoke*.
 
 Le subnet di dorsale logiche (interfacce `Tunnel0`): CE-A `10.255.1.0/30`, CE-B `10.255.2.0/30`, CE-C `10.255.3.0/30`, con il PE come secondo estremo. Il PNAT sul router di confine condivide l'indirizzo pubblico WAN con gli host interni.
 
-![Architettura generale con flussi L3 IP e L7 MQTT](img/1_architettura_flussi_L3_L7.svg)
+![Architettura generale con flussi L3 IP e L7 MQTT](../img/1_architettura_flussi_L3_L7.svg)
 *Figura 1 — Architettura generale (icone Cisco). Tratteggio nero = flussi L3 IP (dorsali logiche VPN tra i firewall dei siti e il firewall del SUM); punteggiato azzurro = flussi L7 MQTT (client MQTT dei siti ↔ broker centrale); bobina = interfaccia wireless L2 NFC/RFID HF (ISO 14443) tra reader e card.*
 
 ### 2.1 Categoria A — luoghi ad alta frequenza (stazioni treni, metro principali, pontili capolinea)
@@ -60,7 +60,7 @@ Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server
 
 ### 3.1 Stazione Cat. A (≈ 60 × 45 m)
 
-![Planimetria fisica della stazione Cat. A](img/2_planimetria_stazione_catA.svg)
+![Planimetria fisica della stazione Cat. A](../img/2_planimetria_stazione_catA.svg)
 *Figura 2 — Planimetria fisica stazione Cat. A: atrio con tornelli, banchine, locale tecnico con armadio CD, armadi FD baricentrici, prese TO, dorsali in fibra e cablaggio orizzontale.*
 
 - **Armadio CD** nel locale tecnico, in posizione **baricentrica**; accorpa i ruoli CD/BD/FD-0 e serve direttamente i tornelli dell'atrio.
@@ -70,7 +70,7 @@ Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server
 
 ### 3.2 Fermata Cat. B (pensilina ≈ 8 × 3 m)
 
-![Planimetria fisica della fermata Cat. B](img/5_planimetria_fermata_catB.svg)
+![Planimetria fisica della fermata Cat. B](../img/5_planimetria_fermata_catB.svg)
 *Figura 3 — Planimetria fisica fermata Cat. B: due reader ridondati ai due accessi, armadietto stradale IP55 con router 4G/5G e mini-switch PoE.*
 
 - **2 reader NFC ridondati** ai due accessi (prese TO B.01, B.02).
@@ -79,7 +79,7 @@ Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server
 
 ### 3.3 Pontile capolinea (Cat. A fluviale)
 
-![Planimetria fisica del pontile capolinea fluviale](img/6_planimetria_pontile_capolinea.svg)
+![Planimetria fisica del pontile capolinea fluviale](../img/6_planimetria_pontile_capolinea.svg)
 *Figura 4 — Planimetria fisica pontile capolinea: pontile galleggiante con varchi/prese TO, FD di banchina, CD nel locale tecnico a terra, WAN ridondata fibra + 4G.*
 
 - Imbarcadero con **pensilina di banchina** e **locale tecnico** lato terra (CD).
@@ -92,7 +92,7 @@ Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server
 
 ### 4.1 Albero degli apparati passivi (topologia logica)
 
-![Albero degli apparati passivi](img/3_albero_passivi_stazione.svg)
+![Albero degli apparati passivi](../img/3_albero_passivi_stazione.svg)
 *Figura 5 — Albero degli apparati passivi: radice CD, nodi FD, foglie TO; i rami sono le dorsali.*
 
 ```
@@ -117,7 +117,7 @@ Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server
 
 ### 4.2 Albero degli apparati attivi (configurazione **router-on-a-stick**)
 
-![Albero degli apparati attivi in configurazione router-on-a-stick](img/4_albero_attivi_router_on_a_stick.svg)
+![Albero degli apparati attivi in configurazione router-on-a-stick](../img/4_albero_attivi_router_on_a_stick.svg)
 *Figura 6 — Albero degli apparati attivi (icone Cisco), variante router-on-a-stick: R-FW unico apparato L3 con sottointerfacce dot1q, core switch L2, access switch PoE+ negli FD, reader.*
 
 ```
@@ -314,13 +314,13 @@ SERVIZIO_MANUTENZIONE(idServizio PK, idReader FK→READER, dataOra, tipo, descri
 
 ---
 
-## Allegati grafici (cartella `img/`)
-1. `img/1_architettura_flussi_L3_L7.svg` — Architettura generale con flussi L3 IP e L7 MQTT (Figura 1).
-2. `img/2_planimetria_stazione_catA.svg` — Planimetria fisica stazione Cat. A (Figura 2).
-3. `img/5_planimetria_fermata_catB.svg` — Planimetria fisica fermata Cat. B (Figura 3).
-4. `img/6_planimetria_pontile_capolinea.svg` — Planimetria fisica pontile capolinea (Figura 4).
-5. `img/3_albero_passivi_stazione.svg` — Albero degli apparati passivi (Figura 5).
-6. `img/4_albero_attivi_router_on_a_stick.svg` — Albero degli apparati attivi, router-on-a-stick (Figura 6).
+## Allegati grafici (cartella `../img/`)
+1. `../img/1_architettura_flussi_L3_L7.svg` — Architettura generale con flussi L3 IP e L7 MQTT (Figura 1).
+2. `../img/2_planimetria_stazione_catA.svg` — Planimetria fisica stazione Cat. A (Figura 2).
+3. `../img/5_planimetria_fermata_catB.svg` — Planimetria fisica fermata Cat. B (Figura 3).
+4. `../img/6_planimetria_pontile_capolinea.svg` — Planimetria fisica pontile capolinea (Figura 4).
+5. `../img/3_albero_passivi_stazione.svg` — Albero degli apparati passivi (Figura 5).
+6. `../img/4_albero_attivi_router_on_a_stick.svg` — Albero degli apparati attivi, router-on-a-stick (Figura 6).
 7. `config_R-FW_router-on-a-stick.txt` — Configurazione completa Cisco IOS di `R-FW`.
 
-> Per visualizzare le figure, tenere il file Markdown e la cartella `img/` nella stessa posizione.
+> Per visualizzare le figure, tenere il file Markdown e la cartella `../img/` nella stessa posizione.
