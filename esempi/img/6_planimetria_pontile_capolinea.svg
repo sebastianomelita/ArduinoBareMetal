@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 480" font-family="Segoe UI, Arial, sans-serif">
+<style>
+  .lbl{font-size:12px;fill:#1f2937}.sub{font-size:10px;fill:#6b7280}.ttl{font-size:13px;font-weight:600;fill:#111827}
+  .room{fill:#f7f8fa;stroke:#d1d5db;stroke-width:0.5}
+  .to{fill:none;stroke:#BA7517;stroke-width:1.2}.tohdr{fill:#BA7517;opacity:0.25}
+  .fd{fill:#15A179;opacity:0.18;stroke:#15A179;stroke-width:1.4}
+  .cd{fill:#534AB7;opacity:0.12;stroke:#534AB7;stroke-width:1.6}
+  .fib{stroke:#378ADD;stroke-width:2.4;fill:none}.utp{stroke:#15A179;stroke-width:1;stroke-dasharray:4 2;fill:none}
+  .water{fill:#dbeafe;opacity:0.5}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<text class="ttl" x="350" y="22" text-anchor="middle">Planimetria fisica — Pontile capolinea fluviale (Cat. A)</text>
+
+<!-- acqua -->
+<rect class="water" x="40" y="40" width="620" height="120" rx="4"/>
+<text class="sub" x="350" y="60" text-anchor="middle" fill="#3b6fb0">canale / fiume — specchio d'acqua</text>
+<!-- profilo battello -->
+<path d="M250 120 q150 30 200 0 l-10 24 q-90 18 -180 0 Z" fill="#c7d2e8" stroke="#94a3b8" stroke-width="0.8"/>
+<text class="sub" x="350" y="138" text-anchor="middle">battello in ormeggio</text>
+
+<!-- pontile galleggiante -->
+<rect x="120" y="170" width="460" height="70" rx="4" fill="#fdf6ec" stroke="#BA7517" stroke-width="0.8"/>
+<text class="sub" x="350" y="188" text-anchor="middle">Pontile d'imbarco (passerella galleggiante)</text>
+<g><rect class="to" x="150" y="200" width="30" height="32" rx="3"/><rect class="tohdr" x="150" y="200" width="30" height="9"/><text class="sub" x="165" y="248" text-anchor="middle">TO P.01</text></g>
+<g><rect class="to" x="320" y="200" width="44" height="32" rx="3"/><rect class="tohdr" x="320" y="200" width="44" height="9"/><text class="sub" x="342" y="248" text-anchor="middle">P.02 (imbarco)</text></g>
+<g><rect class="to" x="520" y="200" width="30" height="32" rx="3"/><rect class="tohdr" x="520" y="200" width="30" height="9"/><text class="sub" x="535" y="248" text-anchor="middle">P.03</text></g>
+
+<!-- terra ferma: pensilina + FD -->
+<rect class="room" x="120" y="270" width="460" height="80"/>
+<text class="sub" x="132" y="288">Pensilina di banchina (a terra)</text>
+<g><rect class="fd" x="430" y="296" width="34" height="40" rx="2"/><text class="lbl" x="447" y="313" text-anchor="middle" font-weight="600">FD</text><text class="sub" x="447" y="328" text-anchor="middle">P</text></g>
+<text class="sub" x="300" y="320" text-anchor="middle">tornelli/varchi → cablaggio orizzontale verso FD</text>
+
+<!-- locale tecnico a terra -->
+<rect class="room" x="120" y="370" width="460" height="90"/>
+<text class="sub" x="132" y="388">Locale tecnico lato terra (CD)</text>
+<g><rect class="cd" x="250" y="398" width="200" height="52" rx="3"/>
+<text class="lbl" x="350" y="418" text-anchor="middle" font-weight="600">Armadio CD</text>
+<text class="sub" x="350" y="434" text-anchor="middle">Core SW · server edge · R-FW · UPS</text></g>
+
+<!-- cablaggi -->
+<line class="utp" x1="165" y1="232" x2="430" y2="300"/>
+<line class="utp" x1="342" y1="232" x2="436" y2="298"/>
+<line class="utp" x1="535" y1="232" x2="450" y2="300"/>
+<line class="fib" x1="447" y1="336" x2="400" y2="398"/>
+<text class="sub" x="470" y="372">dorsale fibra FD→CD</text>
+
+<!-- WAN ridondata -->
+<line x1="450" y1="424" x2="600" y2="424" stroke="#9aa0a6" stroke-width="2"/>
+<text class="sub" x="540" y="417" text-anchor="middle">fibra terrestre + backup 4G</text>
+<g transform="translate(600,424)">
+  <ellipse cx="0" cy="5" rx="14" ry="4" fill="#fff" stroke="#2F7DD1"/>
+  <path d="M-14 5 V-3 A14 4 0 0 1 14 -3 V5" fill="#fff" stroke="#2F7DD1"/>
+  <ellipse cx="0" cy="-3" rx="14" ry="4" fill="#fff" stroke="#2F7DD1"/>
+</g>
+<text class="sub" x="600" y="448" text-anchor="middle">→ SUM</text>
+
+<rect x="40" y="462" width="620" height="14" fill="none"/>
+<rect x="120" y="240" width="0" height="0"/>
+<!-- legenda compatta -->
+<rect x="40" y="44" width="0" height="0"/>
+<text class="sub" x="50" y="472">TO=reader varco · FD=armadio banchina · CD=centro stella a terra · cavo per esterni/antiumidità sul pontile</text>
+</svg>
