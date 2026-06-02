@@ -39,7 +39,6 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - **densità dei tag** simultanei nel campo (**dense reader environment**) e la necessità di eventuali protocolli di **anticollisione**.
 - Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura che tra essi esista almeno **un gateway** che permetta l'accesso ad una rete IP. Progettare dei percorsi alternativi (**backup**) in caso del gateway principale.
 - Tipologia di **divisione in gruppi** degli utenti e loro caratterizzazione (dislocazione fisica delimitata o diffusa a macchia a macchia di leopardo).
-- definizione delle **tecnologie dei dispositivi** chiave quali sensori/attuatori ([dispositivi terminali](sensornetworkshort.md#dispositivi-terminali-sensoriattuatori)), gateway, tipologia di servizio (polling sincrono, comando asincrono, ecc).
 - eventuali vincoli normativi sulle tecnologie in uso come potenza, EIRP, ERP e duty cycle.
 - gestire eventuali **vincoli di prossimità** mediante controllo di potenza o gestione del roaming e eventuali **vincoli di posizionamento** mediante trilaterazione.
 - schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro ruolo e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7)
