@@ -99,7 +99,7 @@ Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server
                          ┌──────────┐
                          │    CD    │  (locale tecnico — radice)
                          └────┬─────┘
-            ┌─────────────────┼──────────────────┐   dorsali (rami)
+            ┌─────────────────┼──────────────── ──┐   dorsali (rami)
        ┌────┴────┐       ┌────┴────┐         ┌────┴────┐
        │  FD-0   │       │  FD-1   │         │  FD-2   │
        │ (atrio) │       │(banch.1)│         │(banch.2)│
