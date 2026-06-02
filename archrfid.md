@@ -76,6 +76,14 @@ Due principi distinti governano la trasmissione: **accoppiamento induttivo near-
 
 ![alt text](img/rfid_gerarchia.png)
 
+| Banda | Frequenza | Principio | Portata tipica | Velocità | Comportamento su metallo/acqua | Esempi |
+|---|---|---|---|---|---|---|
+| **LF** | 125-134 kHz | Induttivo | < 10 cm | bassa (~1 kbps) | Ottimo: trapassa | Microchip animali, immobilizer auto |
+| **HF / NFC** | 13.56 MHz | Induttivo | < 10 cm (NFC), fino 1 m (HF) | media (~106-848 kbps) | Buono | Pagamenti, ticketing, passaporti, biglietti |
+| **UHF** | 860-960 MHz | Backscatter | 1-12 m | alta (~640 kbps) | Pessimo: riflesso/assorbito | Logistica, retail, antitaccheggio |
+| **Microonde** | 2.45 GHz | Backscatter | 1-2 m | molto alta | Pessimo | Telepass, tag attivi |
+
+
 Quattro bande con caratteristiche complementari: **LF** (125-134 kHz, microchip animali), **HF** (13.56 MHz, controllo accessi, ticketing), **UHF** (860-960 MHz, logistica, retail), **microonde** (2.45 GHz, telepass). **NFC è un sottoinsieme specializzato di RFID HF** che aggiunge tre modalità (Reader/Writer, Card Emulation/HCE, Peer-to-Peer), il formato dati standardizzato **NDEF** e l'integrazione nativa in tutti gli smartphone. La banda UHF in Europa è **865-868 MHz** (ETSI EN 302 208), max 2 W ERP con LBT. → [scheda completa](approfondimenti/rfid_frequenze.md)
 
 ### 🏷️ [Tag e Reader](approfondimenti/rfid_tag_reader.md)
