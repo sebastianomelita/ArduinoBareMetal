@@ -42,6 +42,15 @@ Le subnet di dorsale logiche (interfacce `Tunnel0`): CE-A `10.255.1.0/30`, CE-B 
 ![Architettura generale con flussi L3 IP e L7 MQTT](../img/1_architettura_flussi_L3_L7.svg)
 *Figura 1 — Architettura generale (icone Cisco). Tratteggio nero = flussi L3 IP (dorsali logiche VPN tra i firewall dei siti e il firewall del SUM); punteggiato azzurro = flussi L7 MQTT (client MQTT dei siti ↔ broker centrale); bobina = interfaccia wireless L2 NFC/RFID HF (ISO 14443) tra reader e card.*
 
+La classificazione classica (Ferguson & Huston, ripresa in quasi tutti i testi di reti) distingue:
+
+Una **secure VPN** ottiene la riservatezza con la **crittografia**: i tunnel IPsec che abbiamo messo sono esattamente questo. Il provider di trasporto non è considerato fidato — può anche essere Internet pubblica — e la sicurezza è garantita end-to-end dai due estremi che cifrano (AES-256 nel nostro caso). È la scelta giusta quando le dorsali viaggiano su un trasporto non controllato.
+
+Una **trusted VPN** non cifra: la separazione del traffico è garantita dal **provider** che riserva e isola i percorsi. L'esempio tipico è proprio una **MPLS L3VPN** (o L2VPN), dove l'operatore tiene separate le VRF dei vari clienti tramite le etichette MPLS e il cliente "si fida" che nessuno entri nel suo instradamento. Non c'è cifratura: la fiducia è contrattuale e tecnica verso l'operatore.
+
+Quindi la frase corretta da dire è questa: nel nostro progetto le dorsali logiche sono realizzate come **secure VPN IPsec** sopra un trasporto generico; in alternativa, se la società partecipata acquista dall'operatore un servizio **MPLS** dedicato per la rete metropolitana, le stesse dorsali possono essere realizzate come **trusted VPN (MPLS L3VPN)**, eliminando l'overhead della cifratura ma spostando la fiducia sull'operatore.
+
+
 ### 2.1 Categoria A — luoghi ad alta frequenza (stazioni treni, metro principali, pontili capolinea)
 
 Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server edge** che esegue il middleware RFID (gestione sessione di viaggio, cache saldo, traduzione semantica dell'UID, risposta locale a bassa latenza) e a un **router/firewall perimetrale** con VPN verso il SUM. Il feedback al viaggiatore è gestito localmente in < 200 ms; verso il SUM si trasmettono eventi aggregati.
