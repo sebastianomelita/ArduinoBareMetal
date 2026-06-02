@@ -54,11 +54,17 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 - definizione delle tecniche di **autenticazione** dei servizi (openid, psw, sessioni, ecc).
 - definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
 ---
-## **Progetto di esempio completo**
+## **Progetto di esempio completo 1**
 
 [Testo della prova cassone Smart](/esempi/progetti/consegna_esame.pdf)
 
 [Svolgimento Cassone Smart](/esempi/progetti/soluzione_scenario_C.md)
+
+## **Progetto di esempio completo 2**
+
+[Testo della prova rete RFID metropolitana](/esempi/progetti/consegna_esame.pdf)
+
+[Svolgimento rete RFID metropolitana](/esempi/progetti/soluzione_scenario_C.md)
 
 ---
 
