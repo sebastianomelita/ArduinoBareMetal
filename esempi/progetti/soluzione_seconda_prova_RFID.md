@@ -24,7 +24,7 @@ L'infrastruttura è modellata come **rete di reti** a topologia *hub-and-spoke*.
 
 ```
    Reti laterali (spoke)                Rete di trasporto IP          SUM (hub)
- ┌───────────────────────┐                                   ┌──────────────────────┐
+ ┌───────────────────────┐                                    ┌──────────────────────┐
  │ Sito Cat. A           │── CE-A ──┐                      ┌──│ Gateway confine (PE) │
  │ (LAN + server edge)   │          │                      │  │ Firewall + WAF       │
  └───────────────────────┘          │     ╔═══════════╗    │  │ Core switch          │
