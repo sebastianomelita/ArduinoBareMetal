@@ -12,10 +12,9 @@
 <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
 
 <text class="ttl" x="620" y="30" text-anchor="middle">Architettura generale — flussi L3 IP e L7 MQTT (sistema RFID metropolitano)</text>
+<text class="big" x="470" y="455" text-anchor="middle" opacity="0.7">Internet o LAN — rete di trasporto IP</text>
 
 <!-- ===================== CLOUDS ===================== -->
-<!-- nuvola centrale: rete di trasporto IP -->
-<path class="body cl" d="M270 270 q-18 0 -22 -22 q-30 -6 -22 -34 q-20 -22 8 -36 q4 -30 40 -24 q18 -28 52 -12 q30 -18 50 8 q34 -4 30 30 q26 12 8 40 q10 30 -26 30 q-12 22 -44 12 q-26 18 -52 0 q-28 8 -30 -10 Z" transform="translate(187,180)"/>
 <path class="body cl" d="M270 270 q-18 0 -22 -22 q-30 -6 -22 -34 q-20 -22 8 -36 q4 -30 40 -24 q18 -28 52 -12 q30 -18 50 8 q34 -4 30 30 q26 12 8 40 q10 30 -26 30 q-12 22 -44 12 q-26 18 -52 0 q-28 8 -30 -10 Z" transform="translate(217,-140)"/>
 <path class="body cl" d="M270 270 q-18 0 -22 -22 q-30 -6 -22 -34 q-20 -22 8 -36 q4 -30 40 -24 q18 -28 52 -12 q30 -18 50 8 q34 -4 30 30 q26 12 8 40 q10 30 -26 30 q-12 22 -44 12 q-26 18 -52 0 q-28 8 -30 -10 Z" transform="translate(-143,120)"/>
 <path class="body cl" d="M270 270 q-18 0 -22 -22 q-30 -6 -22 -34 q-20 -22 8 -36 q4 -30 40 -24 q18 -28 52 -12 q30 -18 50 8 q34 -4 30 30 q26 12 8 40 q10 30 -26 30 q-12 22 -44 12 q-26 18 -52 0 q-28 8 -30 -10 Z" transform="translate(227,320)"/>
@@ -164,10 +163,6 @@
 <path class="l7" d="M278 700 Q540 580 734 516"/>
 <path class="l7" d="M540 730 Q660 610 740 522"/>
 <path class="l7" d="M1000 576 Q880 535 788 506"/>
-
-<!-- etichetta dentro la nuvola centrale -->
-<text class="lbl" x="480" y="425" text-anchor="middle" font-weight="600">Internet o LAN</text>
-<text class="lbl" x="480" y="443" text-anchor="middle">rete di trasporto IP</text>
 
 <!-- ===================== LEGENDA ===================== -->
 <rect x="840" y="700" width="376" height="120" rx="6" fill="none" stroke="#d1d5db" stroke-width="0.5"/>
