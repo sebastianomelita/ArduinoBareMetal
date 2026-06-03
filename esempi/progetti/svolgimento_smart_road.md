@@ -310,6 +310,8 @@ La motivazione forte per la configurazione A allo strato edge è l'argomento del
 
 Questa separazione fisica è esattamente quella che la specifica LoRaWAN raccomanda e che si trova nelle implementazioni reali (ChirpStack, The Things Stack, Actility ThingPark).
 
+<img src="../img/cdc_lombardia_due_livelli.svg" alt="cdc_lombardia_due_livelli" width="680">
+
 #### 3.2.10 Join Server e ridondanza
 
 Il **Join Server** è il componente che gestisce le funzioni di **autenticazione e autorizzazione** dei sensori in fase di registrazione, e di **gestione delle chiavi di sessione** durante la vita operativa del dispositivo. Le sue responsabilità sono:
