@@ -112,7 +112,13 @@ Una delle scelte progettuali più caratterizzanti del progetto è realizzare la 
 
 #### 3.2.1 Topologia fisica della rete di sensori
 
+Topologia della rete LAN dei sensori di un generico tratto:
+
 <img src="../img/topologia_lorawan_km.svg" alt="Topologia LoRaWAN del km autostradale" width="680">
+
+Topologia logica della rete di reti di LAN, una per ogni tratto:
+
+<img src="../img/cdc_lombardia_due_livelli.svg" alt="cdc_lombardia_due_livelli" width="900">
 
 #### 3.2.2 Sensori (end-device LoRaWAN)
 
@@ -310,7 +316,7 @@ La motivazione forte per la configurazione A allo strato edge è l'argomento del
 
 Questa separazione fisica è esattamente quella che la specifica LoRaWAN raccomanda e che si trova nelle implementazioni reali (ChirpStack, The Things Stack, Actility ThingPark).
 
-<img src="../img/cdc_lombardia_due_livelli.svg" alt="cdc_lombardia_due_livelli" width="680">
+
 
 #### 3.2.10 Join Server e ridondanza
 
