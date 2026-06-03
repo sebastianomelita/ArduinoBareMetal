@@ -71,7 +71,7 @@ e nei suoi servizi. Lo si ritrova in:
 
 ## Il «double-hop» e la delega
 
-![Il double-hop e la delega Kerberos tra prodotti Microsoft](../img/sso_microsoft_doublehop.svg)
+![Il double-hop e la delega Kerberos tra prodotti Microsoft](img/sso_microsoft_doublehop.svg)
 
 Molte applicazioni Microsoft sono a più livelli: il browser parla con SharePoint
 (IIS), e SharePoint deve poi leggere i dati da **SQL Server** *a nome
