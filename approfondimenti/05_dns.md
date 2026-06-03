@@ -9,7 +9,7 @@ Active Directory dipende dal DNS per due categorie di record: i record di
 Controller. Tutti vengono registrati automaticamente dal DC all'avvio, tramite
 il servizio **Netlogon**.
 
-![Come il client trova il Domain Controller via SRV](../img/dns_srv.svg)
+![Come il client trova il Domain Controller via SRV](img/dns_srv.svg)
 
 ## I record SRV
 
