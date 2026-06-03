@@ -112,56 +112,21 @@ Una delle scelte progettuali più caratterizzanti del progetto è realizzare la 
 
 #### 3.2.1 Topologia fisica della rete di sensori
 
-Perfetto, ora ho il modello davanti. Ricapitolo cosa vedo per essere sicuro di interpretarlo bene prima di adattarlo al caso smart-road:
-
-**Lo schema che mi hai mostrato.**
-
-- Tre "Aree" (Area1, Area2, Area3), ognuna con la propria uscita Internet via firewall-VPN (39.68.34.121/122/123) e una mesh WiFi interna (AP1, AP2, link wireless L2).
-- In Area1 e Area2 c'è un **Sensore** publisher/subscriber; in Area3 un **Attuatore** publisher/subscriber.
-- A destra il **Centro di gestione e comando**, anche lui dietro firewall (.11.2/.12.2/.13.2 sulle dorsali), con dentro Client MQTT (Node-RED), Server Web, Server di analisi/storage.
-- Al centro il **Broker MQTT**, che è il punto di incontro di tutto.
-- Tre tipi di link distinti dalla legenda:
-  - **L3 IP** (tratteggio nero): le tre dorsali logiche 10.0.11.0/24, 10.0.12.0/24, 10.0.13.0/24 che collegano i firewall delle aree al firewall del centro, e i collegamenti IP interni ai data-center.
-  - **L7 MQTT** (puntinato azzurro): i flussi publish/subscribe tra sensori/attuatori e broker, e tra broker e client MQTT (Node-RED). Il broker è disegnato come *router applicativo* — non come router IP — esattamente come dici tu.
-  - **L2 WiFi** (onde azzurre): i link radio della mesh interna a ogni area.
-
-**L'aspetto chiave del modello è che ** I link L3 e L7 **non coincidono fisicamente**: un sensore in Area1 raggiunge il broker via L7 *passando logicamente attraverso* l'infrastruttura IP (firewall, dorsale, firewall, broker), ma a livello applicativo il "salto" è uno solo (sensore → broker). I due piani descrivono lo stesso traffico da due angolazioni: L3 mostra il percorso fisico-logico dei pacchetti IP, L7 mostra il percorso dei messaggi MQTT che, dal punto di vista applicativo, "saltano" direttamente al broker come se i firewall non esistessero.
-
-## Adattamento al CdC Lombardia
-
-Sostituisco i pezzi mantenendo identica la grammatica del disegno (stesso schema di link L2/L3/L7, stesso ruolo del broker come router applicativo):
-
-| Elemento del tuo schema | Equivalente nello smart-road |
-|---|---|
-| Area1, Area2, Area3 | **Tratto A1**, **Tratto A14**, **Tratto A22** (tre tratti autostradali della Lombardia) |
-| WiFi mesh interna all'area | **Rete radio LoRaWAN** del tratto (banda ISM 868 MHz) — onde L2 |
-| AP1, AP2 dentro la mesh | **Gateway LoRaWAN** dei km del tratto (uno per smart-gate) |
-| Sensore in Area1/Area2 (publisher/subscriber) | **Sensori ambientali** del guard-rail (publisher) — meteo, aria, fondo |
-| Attuatore in Area3 (publisher/subscriber) | **Maxi-schermo + segnaletica** dello smart-gate (subscriber per i comandi, publisher per lo stato) |
-| Firewall di area | **Firewall di accesso del tratto** (un nodo edge per tratto, con NS+AS co-locati) |
-| Dorsale logica 10.0.11.0/24 e simili | Le tre **subnet di tratto** (10.3.0.0/24, 10.3.1.0/24, 10.3.2.0/24 — Lombardia tratti 0/1/2 secondo lo schema classless) |
-| Centro di gestione e comando | **CdC Lombardia** (sala operativa regionale) |
-| Client MQTT Node-RED | **Server di processo** del CdC (logica di business sovra-locale, dashboard operatore) |
-| Server Web | **Portale operatore** del CdC |
-| Server di analisi/storage | **Database operativo** + **storage video** del CdC |
-| Broker MQTT centrale | **Broker MQTT del CdC Lombardia** (router applicativo) |
-
-**Una differenza tecnica importante che vale la pena dire esplicitamente** prima di disegnare: nel tuo schema sensori/attuatori sono **client MQTT diretti** (parlano MQTT loro stessi via WiFi/IP). Nel nostro caso i sensori parlano **LoRaWAN**, non MQTT, quindi non sono publisher MQTT in prima persona. È l'**application server edge** (co-locato col gateway) che fa il publish MQTT a nome dei sensori, dopo aver decodificato il payload Cayenne LPP (vedi §3.2.7). Quindi dal punto di vista del **piano L7 MQTT** il publisher non è il sensore ma il nodo edge — il sensore è "trasparente" rispetto a MQTT. Lo riflette il disegno facendo partire il link L7 dal nodo edge, non dal sensore.
-
-
-1. **L3 e L7 non coincidono.** Un sensore del tratto A1 raggiunge il dashboard del CdC fisicamente attraverso quattro nodi IP (gateway edge → firewall A1 → dorsale → firewall CdC → switch CdC → dashboard), ma a livello applicativo MQTT ci sono solo **due salti**: gateway edge → broker, e broker → dashboard. Il broker "appiattisce" la topologia IP dal punto di vista applicativo: chi pubblica e chi si abbona vedono solo il broker, non la rete IP sottostante.
-
-2. **Il broker è il "router applicativo".** A livello IP ha un solo indirizzo (`.10.x` nel CdC) e un solo collegamento al resto della rete. Ma a livello L7 ha molti "vicini" (publisher e subscriber distribuiti su tre tratti diversi), e instrada i messaggi tra di loro **in base al topic**, non in base all'indirizzo IP. È esattamente l'analogia che hai usato tu: come un router IP smista pacchetti in base all'indirizzo destinazione, il broker MQTT smista messaggi in base al topic destinazione.
-
-
-
 Topologia della rete LAN dei sensori di un generico tratto:
 
 <img src="../img/topologia_lorawan_km.svg" alt="Topologia LoRaWAN del km autostradale" width="680">
 
+#### 3.2.1bis Topologia logica della rete di sensori
+
+In questo schema i sensori/attuatori non sono **client MQTT diretti** (non parlano MQTT loro stessi via WiFi/IP). In questo caso i sensori parlano **LoRaWAN**, non MQTT, quindi non sono publisher MQTT in prima persona. È l'**application server edge** (co-locato col gateway) che fa il publish MQTT a nome dei sensori, dopo aver decodificato il payload Cayenne LPP (vedi §3.2.7). Quindi dal punto di vista del **piano L7 MQTT** il publisher non è il sensore ma il nodo edge — il sensore è "trasparente" rispetto a MQTT. Lo riflette il disegno facendo partire il link L7 dal nodo edge, non dal sensore:
+1. **L3 e L7 non coincidono.** Un sensore del tratto A1 raggiunge il dashboard del CdC fisicamente attraverso quattro nodi IP (gateway edge → firewall A1 → dorsale → firewall CdC → switch CdC → dashboard), ma a livello applicativo MQTT ci sono solo **due salti**: gateway edge → broker, e broker → dashboard. Il broker "appiattisce" la topologia IP dal punto di vista applicativo: chi pubblica e chi si abbona vedono solo il broker, non la rete IP sottostante.
+2. **Il broker è il "router applicativo".** A livello IP ha un solo indirizzo (`.10.x` nel CdC) e un solo collegamento al resto della rete. Ma a livello L7 ha molti "vicini" (publisher e subscriber distribuiti su tre tratti diversi), e instrada i messaggi tra di loro **in base al topic**, non in base all'indirizzo IP. È esattamente l'analogia che hai usato tu: come un router IP smista pacchetti in base all'indirizzo destinazione, il broker MQTT smista messaggi in base al topic destinazione.
+
 Topologia logica della rete di reti di LAN, una per ogni tratto:
 
 <img src="../img/cdc_lombardia_due_livelli.svg" alt="cdc_lombardia_due_livelli" width="900">
+
+**L'aspetto chiave del modello è che ** I link L3 e L7 **non coincidono fisicamente**: un sensore in Area1 raggiunge il broker via L7 *passando logicamente attraverso* l'infrastruttura IP (firewall, dorsale, firewall, broker), ma a livello applicativo il "salto" è uno solo (sensore → broker). I due piani descrivono lo stesso traffico da due angolazioni: L3 mostra il percorso fisico-logico dei pacchetti IP, L7 mostra il percorso dei messaggi MQTT che, dal punto di vista applicativo, "saltano" direttamente al broker come se i firewall non esistessero.
 
 #### 3.2.2 Sensori (end-device LoRaWAN)
 
