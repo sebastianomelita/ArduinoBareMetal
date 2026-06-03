@@ -126,7 +126,6 @@ Topologia logica della rete di reti di LAN, una per ogni tratto:
 
 <img src="../img/cdc_lombardia_due_livelli.svg" alt="cdc_lombardia_due_livelli" width="900">
 
-**L'aspetto chiave del modello è che ** I link L3 e L7 **non coincidono fisicamente**: un sensore in Area1 raggiunge il broker via L7 *passando logicamente attraverso* l'infrastruttura IP (firewall, dorsale, firewall, broker), ma a livello applicativo il "salto" è uno solo (sensore → broker). I due piani descrivono lo stesso traffico da due angolazioni: L3 mostra il percorso fisico-logico dei pacchetti IP, L7 mostra il percorso dei messaggi MQTT che, dal punto di vista applicativo, "saltano" direttamente al broker come se i firewall non esistessero.
 
 #### 3.2.2 Sensori (end-device LoRaWAN)
 
