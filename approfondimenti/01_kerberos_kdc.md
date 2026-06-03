@@ -9,7 +9,7 @@ protocollo di autenticazione basato su **crittografia simmetrica** e su una
 **terza parte fidata**, il KDC. L'obiettivo è permettere a due entità di
 autenticarsi reciprocamente **senza mai trasmettere la password** sulla rete.
 
-![Il flusso Kerberos in tre scambi](../img/kerberos_flow.svg)
+![Il flusso Kerberos in tre scambi](img/kerberos_flow.svg)
 
 ## Le due anime del KDC
 
