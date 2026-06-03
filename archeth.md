@@ -20,7 +20,8 @@ Servizi:
 - [DHCP](https://it.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol)
 - [PVLAN](/approfondimenti/private_vlan.md)
 - [Secure network moderne](/approfondimenti/dispensa_reti_moderne.md)
-
+- [Autenticazione sso Active Directory](/approfondimenti/00_dispensa_principale.md)
+  
 ## **Caso d'uso LAN Ethernet** 
 
 Date le particolarità della tecnologia, i casi d'uso per la rete di sensori Ethernet sono quelli tipici per applicazioni **IoT indoor** a **medio raggio**, dove concorre con altre tecnologie di rete: Zigbee, BLE e, sotto certe condizioni, LoRaWAN. **Caratteristiche** della rete Ethernet di **tipo ufficio** sono essenzialmente:
