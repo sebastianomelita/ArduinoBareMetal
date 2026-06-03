@@ -9,7 +9,7 @@ LDAP (**RFC 4511**) è un protocollo client-server che opera sulla porta **389**
 Controller espone un endpoint LDAP che dà accesso alla directory *X.500-like*
 del dominio.
 
-![L'albero della directory (DIT) e member/memberOf](../img/ldap_dit.svg)
+![L'albero della directory (DIT) e member/memberOf](img/ldap_dit.svg)
 
 ## LDAP vs database relazionali: perché due strumenti diversi
 
