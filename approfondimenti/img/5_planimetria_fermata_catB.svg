@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 420" font-family="Segoe UI, Arial, sans-serif">
+<style>
+  .lbl{font-size:12px;fill:#1f2937}.sub{font-size:10px;fill:#6b7280}.ttl{font-size:13px;font-weight:600;fill:#111827}
+  .room{fill:#f7f8fa;stroke:#d1d5db;stroke-width:0.5}
+  .rdr{fill:#FAEEDA;stroke:#BA7517;stroke-width:1.3}.body{fill:#fff}.rt{stroke:#2F7DD1}.sw{stroke:#15A179}
+  .utp{stroke:#15A179;stroke-width:1.2;stroke-dasharray:4 2;fill:none}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<text class="ttl" x="350" y="22" text-anchor="middle">Planimetria fisica — Fermata Cat. B (pensilina ≈ 8 × 3 m)</text>
+
+<rect class="room" x="60" y="60" width="560" height="150"/>
+<text class="sub" x="72" y="80">Marciapiede / banchina di fermata</text>
+<rect x="180" y="100" width="320" height="90" rx="4" fill="none" stroke="#111827" stroke-width="1.4"/>
+<text class="sub" x="340" y="150" text-anchor="middle">pensilina (tettoia + paline)</text>
+
+<g><rect class="rdr" x="120" y="116" width="34" height="56" rx="4"/><circle cx="137" cy="138" r="9" fill="none" stroke="#BA7517"/><text class="sub" x="137" y="184" text-anchor="middle">RDR-1</text><text class="sub" x="137" y="197" text-anchor="middle">TO B.01</text></g>
+<g><rect class="rdr" x="526" y="116" width="34" height="56" rx="4"/><circle cx="543" cy="138" r="9" fill="none" stroke="#BA7517"/><text class="sub" x="543" y="184" text-anchor="middle">RDR-2</text><text class="sub" x="543" y="197" text-anchor="middle">TO B.02 ridond.</text></g>
+
+<rect class="room" x="300" y="250" width="160" height="120"/>
+<text class="sub" x="380" y="270" text-anchor="middle">Armadietto stradale IP55</text>
+<g transform="translate(350,316)">
+  <ellipse class="body rt" cx="0" cy="5" rx="20" ry="5.5"/>
+  <path class="body rt" d="M-20 5 V-4 A20 5.5 0 0 1 20 -4 V5"/>
+  <ellipse class="body rt" cx="0" cy="-4" rx="20" ry="5.5"/>
+  <line class="rt" x1="-8" y1="-6" x2="10" y2="-6" marker-end="url(#a)"/>
+  <line class="rt" x1="8" y1="-2" x2="-10" y2="-2" marker-end="url(#a)"/>
+  <line class="rt" x1="0" y1="-9" x2="0" y2="-22" stroke-width="1"/>
+  <path class="rt" d="M-6 -24 q6 -6 12 0" fill="none" stroke-width="0.9"/>
+</g>
+<text class="sub" x="350" y="345" text-anchor="middle">CE-B router 4G/5G</text>
+<text class="sub" x="350" y="358" text-anchor="middle">switch PoE 4p + UPS</text>
+<g transform="translate(426,300)"><rect class="body sw" x="-22" y="0" width="44" height="22" rx="2"/><line class="sw" x1="-14" y1="7" x2="12" y2="7" marker-end="url(#a)"/><line class="sw" x1="14" y1="15" x2="-12" y2="15" marker-end="url(#a)"/></g>
+<text class="sub" x="426" y="335" text-anchor="middle">SW PoE</text>
+
+<path class="utp" d="M137 172 L137 232 L320 232 L320 300" marker-end="url(#a)"/>
+<path class="utp" d="M543 172 L543 232 L440 232 L440 300" marker-end="url(#a)"/>
+<text class="sub" x="230" y="226">UTP Cat6A interrato (&lt;15 m)</text>
+
+<line x1="350" y1="294" x2="350" y2="250" stroke="#9aa0a6" stroke-width="1.4"/>
+<text class="sub" x="410" y="258">↑ WAN cellulare → SUM (MQTT/TLS)</text>
+
+<rect x="60" y="384" width="560" height="30" rx="6" fill="none" stroke="#d1d5db" stroke-width="0.5" stroke-dasharray="4 3"/>
+<rect x="72" y="392" width="14" height="14" rx="3" fill="#FAEEDA" stroke="#BA7517"/><text class="sub" x="92" y="403">Reader NFC (TO)</text>
+<text class="sub" x="220" y="403">Router cilindro = CE 4G/5G · box = mini-switch PoE · 2 reader = ridondanza fisica</text>
+</svg>

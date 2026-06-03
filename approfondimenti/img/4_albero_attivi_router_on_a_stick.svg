@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 660" font-family="Segoe UI, Arial, sans-serif">
+<style>
+  .lbl{font-size:12px;fill:#1f2937}.sub{font-size:10px;fill:#6b7280}.ttl{font-size:13px;font-weight:600;fill:#111827}
+  .body{fill:#fff}.rt{stroke:#2F7DD1}.sw{stroke:#15A179}.srv{stroke:#7F77DD}.db{stroke:#6b7280}.cl{stroke:#9aa0a6}
+  .arr{stroke:#9aa0a6;stroke-width:1.2;fill:none}.fib{stroke:#378ADD;stroke-width:2.2;fill:none}
+  .rdr{fill:#FAEEDA;stroke:#BA7517;stroke-width:1.2}.rdl{stroke:#BA7517;stroke-width:1;stroke-dasharray:4 2;fill:none}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<text class="ttl" x="350" y="22" text-anchor="middle">Albero degli apparati attivi — router-on-a-stick (icone Cisco)</text>
+
+<!-- cloud WAN -->
+<path class="body cl" d="M300 58 q-14 0 -17 -16 q-22 -5 -16 -25 q-15 -16 6 -27 q3 -22 30 -18 q13 -20 39 -9 q22 -13 37 6 q25 -3 22 22 q19 9 6 30 q7 22 -19 22 q-9 16 -33 9 q-19 13 -39 0 q-21 6 -22 -7 Z" transform="translate(35,16)"/>
+<text class="lbl" x="375" y="56" text-anchor="middle" font-weight="600">WAN / ISP</text>
+<text class="sub" x="375" y="72" text-anchor="middle">→ rete trasporto IP</text>
+
+<!-- R-FW -->
+<g transform="translate(375,144)">
+  <ellipse class="body rt" cx="0" cy="6" rx="24" ry="6.5"/>
+  <path class="body rt" d="M-24 6 V-4 A24 6.5 0 0 1 24 -4 V6"/>
+  <ellipse class="body rt" cx="0" cy="-4" rx="24" ry="6.5"/>
+  <line class="rt" x1="-10" y1="-7" x2="11" y2="-7" marker-end="url(#a)" stroke-width="1.4"/>
+  <line class="rt" x1="9" y1="-2" x2="-12" y2="-2" marker-end="url(#a)" stroke-width="1.4"/>
+</g>
+<text class="lbl" x="375" y="176" text-anchor="middle" font-weight="600">R-FW perimetrale (unico L3)</text>
+<text class="sub" x="375" y="191" text-anchor="middle">PNAT · ACL · VPN IPsec · default route</text>
+<line class="arr" x1="375" y1="138" x2="375" y2="118" marker-end="url(#a)"/>
+<text class="sub" x="388" y="112">Gi0/0 → WAN</text>
+
+<rect x="468" y="150" width="200" height="74" rx="6" fill="none" stroke="#2F7DD1" stroke-width="0.6" stroke-dasharray="4 3"/>
+<text class="sub" x="478" y="168">Sottointerfacce dot1q (gateway):</text>
+<text class="sub" x="478" y="185" font-family="monospace">Gi0/1.10  10.1.1.1  reader</text>
+<text class="sub" x="478" y="201" font-family="monospace">Gi0/1.20  10.1.2.1  server</text>
+<text class="sub" x="478" y="217" font-family="monospace">Gi0/1.99  10.1.99.1 mgmt</text>
+
+<line x1="375" y1="182" x2="375" y2="250" stroke="#9F5BD0" stroke-width="3" marker-end="url(#a)"/>
+<text class="sub" x="262" y="220">trunk 802.1q unico</text>
+
+<!-- core L2 -->
+<g transform="translate(375,252)">
+  <rect class="body sw" x="-70" y="0" width="140" height="34" rx="3"/>
+  <line class="sw" x1="-55" y1="10" x2="11" y2="10" marker-end="url(#a)" stroke-width="1.1"/>
+  <line class="sw" x1="15" y1="17" x2="-51" y2="17" marker-end="url(#a)" stroke-width="1.1"/>
+  <line class="sw" x1="-55" y1="24" x2="11" y2="24" marker-end="url(#a)" stroke-width="1.1"/>
+  <line class="sw" x1="15" y1="31" x2="-51" y2="31" marker-end="url(#a)" stroke-width="1.1"/>
+</g>
+<text class="lbl" x="375" y="304" text-anchor="middle" font-weight="600">CS — core switch L2 puro (CD)</text>
+<text class="sub" x="375" y="319" text-anchor="middle">solo commutazione · nessun routing</text>
+
+<g transform="translate(480,256)"><rect class="body srv" x="0" y="0" width="26" height="40" rx="3"/><line class="srv" x1="0" y1="13" x2="26" y2="13" stroke-width="0.7"/><line class="srv" x1="0" y1="26" x2="26" y2="26" stroke-width="0.7"/><circle cx="5" cy="7" r="1.4" fill="#7F77DD"/></g>
+<text class="sub" x="493" y="310" text-anchor="middle">Edge .10</text>
+<g transform="translate(548,256)"><rect class="body db" x="0" y="0" width="26" height="40" rx="3"/><ellipse class="body db" cx="13" cy="6" rx="12" ry="3.4"/><ellipse cx="13" cy="18" rx="12" ry="3.4" fill="none" stroke="#6b7280" stroke-width="0.7"/><ellipse cx="13" cy="30" rx="12" ry="3.4" fill="none" stroke="#6b7280" stroke-width="0.7"/></g>
+<text class="sub" x="561" y="310" text-anchor="middle">NAS .11</text>
+<text class="sub" x="600" y="274">VLAN 20</text>
+<line class="sw" x1="445" y1="270" x2="478" y2="270"/>
+<line class="sw" x1="506" y1="270" x2="546" y2="270"/>
+
+<!-- access switch -->
+<g transform="translate(170,380)"><rect class="body sw" x="-50" y="0" width="100" height="32" rx="3"/><line class="sw" x1="-38" y1="9" x2="2" y2="9" marker-end="url(#a)"/><line class="sw" x1="8" y1="15" x2="-32" y2="15" marker-end="url(#a)"/><line class="sw" x1="-38" y1="21" x2="2" y2="21" marker-end="url(#a)"/></g>
+<text class="lbl" x="170" y="430" text-anchor="middle" font-weight="600">AS-0 (atrio)</text>
+<text class="sub" x="170" y="445" text-anchor="middle">24p PoE+ · access VLAN 10</text>
+<g transform="translate(362,380)"><rect class="body sw" x="-50" y="0" width="100" height="32" rx="3"/><line class="sw" x1="-38" y1="9" x2="2" y2="9" marker-end="url(#a)"/><line class="sw" x1="8" y1="15" x2="-32" y2="15" marker-end="url(#a)"/><line class="sw" x1="-38" y1="21" x2="2" y2="21" marker-end="url(#a)"/></g>
+<text class="lbl" x="362" y="430" text-anchor="middle" font-weight="600">AS-1 (FD-1)</text>
+<text class="sub" x="362" y="445" text-anchor="middle">banchina 1</text>
+<g transform="translate(550,380)"><rect class="body sw" x="-50" y="0" width="100" height="32" rx="3"/><line class="sw" x1="-38" y1="9" x2="2" y2="9" marker-end="url(#a)"/><line class="sw" x1="8" y1="15" x2="-32" y2="15" marker-end="url(#a)"/><line class="sw" x1="-38" y1="21" x2="2" y2="21" marker-end="url(#a)"/></g>
+<text class="lbl" x="550" y="430" text-anchor="middle" font-weight="600">AS-2 (FD-2)</text>
+<text class="sub" x="550" y="445" text-anchor="middle">banchina 2</text>
+
+<path class="fib" d="M340 286 L175 378" marker-end="url(#a)"/>
+<path class="fib" d="M370 286 L362 378" marker-end="url(#a)"/>
+<path class="fib" d="M410 286 L545 378" marker-end="url(#a)"/>
+<text class="sub" x="232" y="338">trunk 10G dot1q</text>
+
+<!-- reader -->
+<g><rect class="rdr" x="110" y="488" width="40" height="34" rx="4"/><circle cx="130" cy="505" r="7" fill="none" stroke="#BA7517"/><text class="sub" x="130" y="534" text-anchor="middle">RDR A.01</text></g>
+<text class="sub" x="170" y="508" text-anchor="middle">···</text>
+<g><rect class="rdr" x="190" y="488" width="40" height="34" rx="4"/><circle cx="210" cy="505" r="7" fill="none" stroke="#BA7517"/><text class="sub" x="210" y="534" text-anchor="middle">RDR A.07</text></g>
+<path class="rdl" d="M160 412 L130 486"/><path class="rdl" d="M180 412 L210 486"/>
+<g><rect class="rdr" x="312" y="488" width="40" height="34" rx="4"/><circle cx="332" cy="505" r="7" fill="none" stroke="#BA7517"/><text class="sub" x="332" y="534" text-anchor="middle">RDR 1.01</text></g>
+<text class="sub" x="372" y="508" text-anchor="middle">···</text>
+<g><rect class="rdr" x="392" y="488" width="40" height="34" rx="4"/><circle cx="412" cy="505" r="7" fill="none" stroke="#BA7517"/><text class="sub" x="412" y="534" text-anchor="middle">RDR 1.06</text></g>
+<path class="rdl" d="M352 412 L332 486"/><path class="rdl" d="M372 412 L412 486"/>
+<g><rect class="rdr" x="500" y="488" width="40" height="34" rx="4"/><circle cx="520" cy="505" r="7" fill="none" stroke="#BA7517"/><text class="sub" x="520" y="534" text-anchor="middle">RDR 2.01</text></g>
+<text class="sub" x="560" y="508" text-anchor="middle">···</text>
+<g><rect class="rdr" x="580" y="488" width="40" height="34" rx="4"/><circle cx="600" cy="505" r="7" fill="none" stroke="#BA7517"/><text class="sub" x="600" y="534" text-anchor="middle">RDR 2.05</text></g>
+<path class="rdl" d="M540 412 L520 486"/><path class="rdl" d="M560 412 L600 486"/>
+
+<rect x="50" y="556" width="600" height="92" rx="6" fill="none" stroke="#d1d5db" stroke-width="0.5" stroke-dasharray="4 3"/>
+<text class="lbl" x="60" y="575" font-weight="600">Router-on-a-stick — punti chiave</text>
+<text class="sub" x="60" y="593">Subnet interne direttamente connesse a R-FW → rotte automatiche, una sola tabella di routing</text>
+<text class="sub" x="60" y="610">Routing inter-VLAN sul solo R-FW · core L2 senza IP di gateway · trunk 802.1q unico</text>
+<text class="sub" x="60" y="627">Limite: effetto tornante sul trunk · R-FW = single point of failure (mitigabile con VRRP/HSRP)</text>
+<text class="sub" x="60" y="641">Router=cilindro · switch=box+frecce · server=tower · pastiglia=reader</text>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 470" font-family="Segoe UI, Arial, sans-serif">
+<style>
+  .lbl{font-size:12px;fill:#1f2937}.sub{font-size:10px;fill:#6b7280}.ttl{font-size:13px;font-weight:600;fill:#111827}
+  .fd{fill:#15A179;opacity:0.18;stroke:#15A179;stroke-width:1.4}
+  .cd{fill:#534AB7;opacity:0.12;stroke:#534AB7;stroke-width:1.6}
+  .to{fill:none;stroke:#BA7517;stroke-width:1.2}.tohdr{fill:#BA7517;opacity:0.25}
+  .fib{stroke:#378ADD;stroke-width:2.4;fill:none}.utp{stroke:#15A179;stroke-width:1;stroke-dasharray:4 2;fill:none}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<text class="ttl" x="350" y="22" text-anchor="middle">Albero degli apparati passivi — Stazione Cat. A</text>
+
+<g><rect class="cd" x="285" y="40" width="110" height="50" rx="3"/><text class="lbl" x="340" y="62" text-anchor="middle" font-weight="600">CD</text><text class="sub" x="340" y="78" text-anchor="middle">locale tecnico</text></g>
+
+<g><rect class="fd" x="80" y="170" width="100" height="46" rx="3"/><text class="lbl" x="130" y="190" text-anchor="middle" font-weight="600">FD-0</text><text class="sub" x="130" y="205" text-anchor="middle">atrio (su CD)</text></g>
+<g><rect class="fd" x="290" y="170" width="100" height="46" rx="3"/><text class="lbl" x="340" y="190" text-anchor="middle" font-weight="600">FD-1</text><text class="sub" x="340" y="205" text-anchor="middle">banchina 1</text></g>
+<g><rect class="fd" x="500" y="170" width="100" height="46" rx="3"/><text class="lbl" x="550" y="190" text-anchor="middle" font-weight="600">FD-2</text><text class="sub" x="550" y="205" text-anchor="middle">banchina 2</text></g>
+
+<path class="fib" d="M310 90 L130 168" marker-end="url(#a)"/>
+<path class="fib" d="M340 90 L340 168" marker-end="url(#a)"/>
+<path class="fib" d="M370 90 L550 168" marker-end="url(#a)"/>
+<text class="sub" x="200" y="122">CD-FD0</text>
+<text class="sub" x="350" y="130">CD-FD1</text>
+<text class="sub" x="455" y="122">CD-FD2 · SMF OS2 2f 10G</text>
+
+<g><rect class="to" x="60" y="300" width="44" height="40" rx="3"/><rect class="tohdr" x="60" y="300" width="44" height="10"/><text class="sub" x="82" y="330" text-anchor="middle">A.01</text></g>
+<text class="sub" x="130" y="324" text-anchor="middle">···</text>
+<g><rect class="to" x="156" y="300" width="44" height="40" rx="3"/><rect class="tohdr" x="156" y="300" width="44" height="10"/><text class="sub" x="178" y="330" text-anchor="middle">A.07</text></g>
+<path class="utp" d="M120 216 L82 298"/><path class="utp" d="M140 216 L178 298"/>
+
+<g><rect class="to" x="270" y="300" width="44" height="40" rx="3"/><rect class="tohdr" x="270" y="300" width="44" height="10"/><text class="sub" x="292" y="330" text-anchor="middle">1.01</text></g>
+<text class="sub" x="340" y="324" text-anchor="middle">···</text>
+<g><rect class="to" x="366" y="300" width="44" height="40" rx="3"/><rect class="tohdr" x="366" y="300" width="44" height="10"/><text class="sub" x="388" y="330" text-anchor="middle">1.06</text></g>
+<path class="utp" d="M330 216 L292 298"/><path class="utp" d="M350 216 L388 298"/>
+
+<g><rect class="to" x="480" y="300" width="44" height="40" rx="3"/><rect class="tohdr" x="480" y="300" width="44" height="10"/><text class="sub" x="502" y="330" text-anchor="middle">2.01</text></g>
+<text class="sub" x="550" y="324" text-anchor="middle">···</text>
+<g><rect class="to" x="576" y="300" width="44" height="40" rx="3"/><rect class="tohdr" x="576" y="300" width="44" height="10"/><text class="sub" x="598" y="330" text-anchor="middle">2.05</text></g>
+<path class="utp" d="M540 216 L502 298"/><path class="utp" d="M560 216 L598 298"/>
+
+<rect x="50" y="370" width="600" height="84" rx="6" fill="none" stroke="#d1d5db" stroke-width="0.5"/>
+<text class="lbl" x="60" y="388" font-weight="600">Tabella dorsali (estratto)</text>
+<text class="sub" x="60" y="406">CD-FD1 · SMF OS2 · 2 fibre · ~40 m · dorsale banchina 10 Gbps</text>
+<text class="sub" x="60" y="422">CD-FD2 · SMF OS2 · 2 fibre · ~55 m · dorsale banchina 10 Gbps</text>
+<text class="sub" x="60" y="438">FD1-TO1.xx · UTP Cat6A · 4 coppie · ≤90 m · orizzontale 1 Gbps PoE+</text>
+</svg>
