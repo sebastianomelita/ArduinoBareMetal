@@ -8,7 +8,7 @@ Il protocollo **RADIUS** (RFC 2865) opera su **UDP 1812** (autenticazione) e
 **1813** (accounting). Nel contesto **802.1X / WPA2-Enterprise** il flusso
 coinvolge tre attori distinti.
 
-![Flusso 802.1X / RADIUS con VLAN dinamica](../img/radius_8021x.svg)
+![Flusso 802.1X / RADIUS con VLAN dinamica](img/radius_8021x.svg)
 
 ## I tre attori
 
