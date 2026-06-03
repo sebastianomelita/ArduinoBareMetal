@@ -9,7 +9,7 @@
 
 Prima di tutto: non esiste una tecnologia che fa tutto. La continuità di servizio risponde a **tre domande distinte**, e confonderle porta invariabilmente a scegliere la soluzione sbagliata.
 
-![I tre piani della continuità di servizio](img/01_tre_piani.svg)
+![I tre piani della continuità di servizio](img/1_tre_piani.svg)
 
 | Piano | La domanda | Cosa non fa |
 |---|---|---|
@@ -25,7 +25,7 @@ La replica sincrona (piano 2) propaga fedelmente qualsiasi stato del sistema —
 
 Il principio guida è semplice: investire prima nella protezione dai guasti più frequenti, poi salire verso quelli più rari man mano che il costo aumenta.
 
-![Guasti per probabilità di occorrenza](img/02_piramide_guasti.svg)
+![Guasti per probabilità di occorrenza](img/2_piramide_guasti.svg)
 
 Leggendo dal basso verso l'alto:
 
@@ -51,7 +51,7 @@ Leggendo dal basso verso l'alto:
 
 Il piano del servizio è costruito su due livelli sovrapposti, non alternativi.
 
-![Piano del Servizio: VRRP + HAProxy + DNAT](img/03_vrrp_haproxy.svg)
+![Piano del Servizio: VRRP + HAProxy + DNAT](img/3_vrrp_haproxy.svg)
 
 ### Livello 1 — Ridondanza del proxy (VRRP / keepalived)
 
@@ -75,7 +75,7 @@ Il proxy attivo distribuisce le connessioni in ingresso ai server backend attrav
 
 Che il servizio sia raggiungibile non implica che i dati siano al sicuro. Se il nodo che acquisisce il VIP non ha una copia aggiornata dei dati, il servizio riparte ma con un database vuoto.
 
-![Piano dei Dati: HCI con replica distribuita e DRBD](img/04_hci_drbd.svg)
+![Piano dei Dati: HCI con replica distribuita e DRBD](img/4_hci_drbd.svg)
 
 ### HCI — Iperconvergenza (Proxmox + Ceph, VMware vSAN)
 
@@ -107,7 +107,7 @@ VMware FT sincronizza non solo i dati disco ma **tutto lo stato della VM** — m
 
 Il backup non è la rete di sicurezza dell'infrastruttura poco seria — è lo strato indispensabile che completa qualsiasi architettura, per difendersi dalla corruzione logica che nessuna replica può coprire.
 
-![Piano del Ripristino: Regola 3-2-1 e snapshot](img/05_backup_321.svg)
+![Piano del Ripristino: Regola 3-2-1 e snapshot](img/5_backup_321.svg)
 
 ### La Regola 3-2-1
 
@@ -143,7 +143,7 @@ Il Recovery Point Objective (la massima perdita di dati accettabile) dipende dir
 
 Quanti "nove" vuole il contratto — e cosa serve per raggiungerli?
 
-![La scala della disponibilità](img/06_scala_nines.svg)
+![La scala della disponibilità](img/6_scala_nines.svg)
 
 La scala della disponibilità è utile perché mette in relazione diretta il downtime annuo tollerato con la complessità e il costo dell'infrastruttura. Non esiste una soluzione giusta in assoluto: esiste la soluzione giusta per il profilo di rischio specifico.
 
@@ -155,7 +155,7 @@ Da 99% a 99.9% il salto principale è l'aggiunta della virtualizzazione con HA (
 
 La mappa completa: quale tecnologia risponde a quale tipo di guasto.
 
-![Chi protegge da cosa](img/07_chi_copre_cosa.svg)
+![Chi protegge da cosa](img/7_chi_copre_cosa.svg)
 
 La colonna più importante è quella del ransomware/corruzione logica: tutte le tecnologie di replica (DRBD, HCI, VMware FT) mostrano **✗** perché propagano fedelmente qualsiasi stato, incluso quello corrotto. Solo backup e WORM mostrano **✓✓✓** in quella riga.
 
@@ -165,7 +165,7 @@ La colonna più importante è quella del ransomware/corruzione logica: tutte le 
 
 I tre livelli non si escludono — si sovrappongono e si completano.
 
-![Architettura completa a tre livelli](img/08_architettura_completa.svg)
+![Architettura completa a tre livelli](img/8_architettura_completa.svg)
 
 In un'architettura di produzione completa:
 
