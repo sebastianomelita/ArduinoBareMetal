@@ -19,7 +19,7 @@ GPO **corrotte o incomplete**.
 
 ## Ordine di applicazione e precedenza (LSDOU)
 
-![L'ordine LSDOU di applicazione delle GPO](../img/gpo_lsdou.svg)
+![L'ordine LSDOU di applicazione delle GPO](img/gpo_lsdou.svg)
 
 | Ordine | Livello | Descrizione |
 | --- | --- | --- |
