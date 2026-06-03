@@ -122,8 +122,6 @@ In questo schema i sensori/attuatori non sono **client MQTT diretti** (non parla
 1. **L3 e L7 non coincidono.** Un sensore del tratto A1 raggiunge il dashboard del CdC fisicamente attraverso quattro nodi IP (gateway edge → firewall A1 → dorsale → firewall CdC → switch CdC → dashboard), ma a livello applicativo MQTT ci sono solo **due salti**: gateway edge → broker, e broker → dashboard. Il broker "appiattisce" la topologia IP dal punto di vista applicativo: chi pubblica e chi si abbona vedono solo il broker, non la rete IP sottostante.
 2. **Il broker è il "router applicativo".** A livello IP ha un solo indirizzo (`.10.x` nel CdC) e un solo collegamento al resto della rete. Ma a livello L7 ha molti "vicini" (publisher e subscriber distribuiti su tre tratti diversi), e instrada i messaggi tra di loro **in base al topic**, non in base all'indirizzo IP. È esattamente l'analogia del router applicativo: come un router IP smista pacchetti in base all'indirizzo destinazione, il broker MQTT smista messaggi in base al topic destinazione.
 
-Topologia logica della rete di reti di LAN, una per ogni tratto:
-
 <img src="../img/cdc_lombardia_due_livelli.svg" alt="cdc_lombardia_due_livelli" width="900">
 
 
