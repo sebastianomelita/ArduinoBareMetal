@@ -124,7 +124,7 @@ In questo schema i sensori/attuatori non sono **client MQTT diretti** (non parla
 
 <img src="../img/cdc_lombardia_due_livelli.svg" alt="cdc_lombardia_due_livelli" width="900">
  
-La **linea tratteggiata** rappresenta il tipo di servizio "like wired" scelto per interconnettere i gateway dei vari tratti con il loro CdG (Centro di Ggestione) regionale, una **Trusted VPN MPLS**. Garantisce SLA contrattuali ruguardo a: classi di servizio (QoS), autenticazione dei nodi gateway e isolamento.
+La **linea tratteggiata** rappresenta il tipo di servizio "like wired" scelto per interconnettere i gateway dei vari tratti con il loro CdG (Centro di Gestione) regionale, una **Trusted VPN MPLS**. Garantisce SLA contrattuali ruguardo a: classi di servizio (QoS), autenticazione dei nodi gateway e isolamento.
 
 #### 3.2.2 Sensori (end-device LoRaWAN)
 
