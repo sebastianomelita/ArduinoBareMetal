@@ -42,7 +42,7 @@ Kerberos funziona esattamente così in una rete informatica:
 - i **biglietti per le singole stanze** sono i **Service Ticket**;
 - le **stanze** sono le risorse di rete: cartelle, stampanti, applicazioni.
 
-![Il flusso Kerberos in tre scambi](../img/kerberos_flow.svg)
+![Il flusso Kerberos in tre scambi](/img/kerberos_flow.svg)
 
 > **🔑 Concetto chiave.** La password **non viaggia mai** sulla rete. Il KDC
 > verifica chi sei una volta sola e rilascia i ticket. Ogni risorsa si fida dei
@@ -63,7 +63,7 @@ Grazie al PAC, quando Alice accede a una cartella di rete il file server sa già
 *Contabilità* e può scrivere, ma non è nel gruppo *Direzione*, quindi non può
 cancellare i file riservati.
 
-![Struttura del PAC dentro il ticket](../img/pac_struttura.svg)
+![Struttura del PAC dentro il ticket](/img/pac_struttura.svg)
 
 > **📌 In pratica.** Kerberos **trasporta** l'identità (chi sei e a che gruppi
 > appartieni). La singola risorsa **usa** quell'identità per decidere cosa ti è
@@ -200,7 +200,7 @@ Il **Single Sign-On** è il cuore dell'esperienza in una LAN d'ufficio: l'utente
 **digita la password una volta sola**, al logon del mattino, e da lì in poi
 accede a tutte le risorse autorizzate **senza più reinserire le credenziali**.
 
-![Single Sign-On in una LAN d'ufficio](../img/sso_lan_ufficio.svg)
+![Single Sign-On in una LAN d'ufficio](/img/sso_lan_ufficio.svg)
 
 Perché funziona? Al logon il PC ottiene il **TGT** e lo tiene in cache. Ogni
 volta che serve una risorsa nuova (una cartella, l'intranet, il database),
@@ -240,7 +240,7 @@ un'operazione che con il vecchio NTLM non sarebbe possibile.
 
 ## 8. Schema riassuntivo: chi fa cosa
 
-![Separazione dei ruoli: Kerberos, LDAP, Risorsa](../img/ruoli_chi_fa_cosa.svg)
+![Separazione dei ruoli: Kerberos, LDAP, Risorsa](/img/ruoli_chi_fa_cosa.svg)
 
 > **🎯 Il principio fondamentale.** **Kerberos** gestisce l'**autenticazione** e
 > il **trasporto dell'identità** (tramite il PAC). L'**autorizzazione** è sempre
