@@ -1,0 +1,57 @@
+<svg viewBox="0 0 920 470" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <filter id="softm" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1a2233" flood-opacity="0.16"/>
+    </filter>
+    <marker id="aM" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1d4e8f"/></marker>
+    <marker id="aMg" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#6a3da8"/></marker>
+  </defs>
+  <rect width="920" height="470" fill="#ffffff"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#1a2233">Il «double-hop»: delega Kerberos tra prodotti Microsoft</text>
+  <text x="32" y="64" font-size="14" fill="#5b6677">Quando un servizio deve accedere a un secondo servizio a nome dell'utente, serve la delega (KCD).</text>
+
+  <!-- actors -->
+  <g filter="url(#softm)">
+    <rect x="40" y="150" width="180" height="86" rx="12" fill="#e8f0fa" stroke="#1d4e8f" stroke-width="1.5"/>
+    <rect x="370" y="150" width="180" height="86" rx="12" fill="#fdf3df" stroke="#b8791a" stroke-width="1.5"/>
+    <rect x="700" y="150" width="180" height="86" rx="12" fill="#e9f4ee" stroke="#2f7d52" stroke-width="1.5"/>
+  </g>
+  <text x="130" y="182" font-size="14" font-weight="700" fill="#1d4e8f" text-anchor="middle">Browser (Alice)</text>
+  <text x="130" y="203" font-size="11.5" fill="#46586e" text-anchor="middle">credenziali di dominio</text>
+  <text x="130" y="221" font-size="11" fill="#46586e" text-anchor="middle">1° hop</text>
+
+  <text x="460" y="178" font-size="14" font-weight="700" fill="#9a6512" text-anchor="middle">SharePoint / IIS</text>
+  <text x="460" y="199" font-size="11.5" fill="#7d5a23" text-anchor="middle">SPN: HTTP/portale.dom</text>
+  <text x="460" y="217" font-size="11" fill="#7d5a23" text-anchor="middle">app pool = WebAppSvc</text>
+
+  <text x="790" y="178" font-size="14" font-weight="700" fill="#2f7d52" text-anchor="middle">SQL Server</text>
+  <text x="790" y="199" font-size="11.5" fill="#3d6b51" text-anchor="middle">SPN: MSSQLSvc/sql.dom:1433</text>
+  <text x="790" y="217" font-size="11" fill="#3d6b51" text-anchor="middle">2° hop</text>
+
+  <!-- hop 1 -->
+  <line x1="220" y1="180" x2="362" y2="180" stroke="#1d4e8f" stroke-width="2.2" marker-end="url(#aM)"/>
+  <text x="291" y="172" font-size="11.5" font-weight="600" fill="#1d4e8f" text-anchor="middle">ST per HTTP/portale</text>
+  <!-- hop 2 -->
+  <line x1="550" y1="180" x2="692" y2="180" stroke="#6a3da8" stroke-width="2.2" marker-end="url(#aMg)"/>
+  <text x="621" y="172" font-size="11.5" font-weight="600" fill="#6a3da8" text-anchor="middle">ST per SQL (a nome di Alice)</text>
+
+  <!-- delegation note under SharePoint -->
+  <path d="M460 236 L460 270" stroke="#b8791a" stroke-width="2" stroke-dasharray="3 3"/>
+  <rect x="300" y="270" width="320" height="58" rx="10" fill="#fdf3df" stroke="#b8791a" stroke-width="1.3"/>
+  <text x="460" y="293" font-size="12.5" font-weight="700" fill="#9a6512" text-anchor="middle">Kerberos Constrained Delegation</text>
+  <text x="460" y="313" font-size="11.5" fill="#7d5a23" text-anchor="middle">il DC autorizza WebAppSvc a impersonare l'utente</text>
+
+  <!-- why NTLM fails -->
+  <rect x="40" y="358" width="400" height="90" rx="12" fill="#fbeaea" stroke="#b23b3b" stroke-width="1.3"/>
+  <text x="60" y="382" font-size="13" font-weight="700" fill="#b23b3b">Con NTLM il double-hop si rompe</text>
+  <text x="60" y="404" font-size="11.8" fill="#7a2a2a">NTLM non sa inoltrare l'identità a un secondo</text>
+  <text x="60" y="421" font-size="11.8" fill="#7a2a2a">server: SQL vedrebbe «accesso anonimo» e</text>
+  <text x="60" y="438" font-size="11.8" fill="#7a2a2a">negherebbe i dati. Kerberos invece delega.</text>
+
+  <!-- prereqs -->
+  <rect x="480" y="358" width="400" height="90" rx="12" fill="#eef4fb" stroke="#1d4e8f" stroke-width="1.3"/>
+  <text x="500" y="382" font-size="13" font-weight="700" fill="#1d4e8f">Cosa serve perché funzioni</text>
+  <text x="500" y="404" font-size="11.8" fill="#27384e">• SPN corretto e univoco su ogni servizio</text>
+  <text x="500" y="421" font-size="11.8" fill="#27384e">• Negotiate (Kerberos) prima di NTLM in IIS</text>
+  <text x="500" y="438" font-size="11.8" fill="#27384e">• delega abilitata sull'account di servizio</text>
+</svg>

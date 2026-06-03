@@ -1,0 +1,72 @@
+<svg viewBox="0 0 920 470" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <filter id="soft2" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1a2233" flood-opacity="0.16"/>
+    </filter>
+    <marker id="aGray" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8c98a8"/></marker>
+  </defs>
+  <rect width="920" height="470" fill="#ffffff"/>
+  <text x="32" y="42" font-size="22" font-weight="700" fill="#1a2233">Chi fa cosa: autenticazione, directory, autorizzazione</text>
+  <text x="32" y="66" font-size="14" fill="#5b6677">Tre ruoli distinti che collaborano. L'autorizzazione resta sempre alla singola risorsa.</text>
+
+  <!-- Kerberos column -->
+  <g filter="url(#soft2)">
+    <rect x="40" y="96" width="262" height="320" rx="14" fill="#eef4fb" stroke="#1d4e8f" stroke-width="1.6"/>
+  </g>
+  <rect x="40" y="96" width="262" height="48" rx="14" fill="#1d4e8f"/>
+  <rect x="40" y="120" width="262" height="24" fill="#1d4e8f"/>
+  <text x="171" y="126" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">KERBEROS / KDC</text>
+  <text x="171" y="160" font-size="12.5" font-weight="600" fill="#1d4e8f" text-anchor="middle">«Verifica chi sei»</text>
+  <g font-size="13" fill="#27384e">
+    <text x="62" y="196">✓ Autentica l'utente al logon</text>
+    <text x="62" y="226">✓ Emette TGT e Service Ticket</text>
+    <text x="62" y="256">✓ Firma il PAC (SID + gruppi)</text>
+    <text x="62" y="286">✓ Garantisce il Single Sign-On</text>
+  </g>
+  <rect x="62" y="318" width="218" height="78" rx="9" fill="#dce9f7"/>
+  <text x="171" y="342" font-size="11.5" font-weight="700" fill="#1d4e8f" text-anchor="middle">PRODUCE</text>
+  <text x="171" y="364" font-size="12" fill="#27384e" text-anchor="middle">Un'identità verificata e</text>
+  <text x="171" y="381" font-size="12" fill="#27384e" text-anchor="middle">firmata, trasportata nel ticket</text>
+
+  <!-- LDAP column -->
+  <g filter="url(#soft2)">
+    <rect x="329" y="96" width="262" height="320" rx="14" fill="#f3eefb" stroke="#6a3da8" stroke-width="1.6"/>
+  </g>
+  <rect x="329" y="96" width="262" height="48" rx="14" fill="#6a3da8"/>
+  <rect x="329" y="120" width="262" height="24" fill="#6a3da8"/>
+  <text x="460" y="126" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">LDAP / DIRECTORY</text>
+  <text x="460" y="160" font-size="12.5" font-weight="600" fill="#6a3da8" text-anchor="middle">«Conserva e cerca i dati»</text>
+  <g font-size="13" fill="#33274e">
+    <text x="351" y="196">✓ Archivia utenti, gruppi, policy</text>
+    <text x="351" y="226">✓ Risponde alle query di ricerca</text>
+    <text x="351" y="256">✓ Fornisce i dati al KDC</text>
+    <text x="351" y="286">✓ Auth legacy via LDAP Bind</text>
+  </g>
+  <rect x="351" y="318" width="218" height="78" rx="9" fill="#e9ddf7"/>
+  <text x="460" y="342" font-size="11.5" font-weight="700" fill="#6a3da8" text-anchor="middle">FORNISCE</text>
+  <text x="460" y="364" font-size="12" fill="#33274e" text-anchor="middle">SID, gruppi, attributi</text>
+  <text x="460" y="381" font-size="12" fill="#33274e" text-anchor="middle">che il KDC mette nel PAC</text>
+
+  <!-- Resource column -->
+  <g filter="url(#soft2)">
+    <rect x="618" y="96" width="262" height="320" rx="14" fill="#e9f4ee" stroke="#2f7d52" stroke-width="1.6"/>
+  </g>
+  <rect x="618" y="96" width="262" height="48" rx="14" fill="#2f7d52"/>
+  <rect x="618" y="120" width="262" height="24" fill="#2f7d52"/>
+  <text x="749" y="126" font-size="16" font-weight="700" fill="#fff" text-anchor="middle">RISORSA</text>
+  <text x="749" y="160" font-size="12.5" font-weight="600" fill="#2f7d52" text-anchor="middle">«Decide cosa puoi fare»</text>
+  <g font-size="13" fill="#234a37">
+    <text x="640" y="196">✓ Riceve il Service Ticket</text>
+    <text x="640" y="226">✓ Verifica le firme del PAC</text>
+    <text x="640" y="256">✓ Legge SID e gruppi dal PAC</text>
+    <text x="640" y="286">✓ Applica ACL / quote / policy</text>
+  </g>
+  <rect x="640" y="318" width="218" height="78" rx="9" fill="#d7ecde"/>
+  <text x="749" y="342" font-size="11.5" font-weight="700" fill="#2f7d52" text-anchor="middle">DECIDE</text>
+  <text x="749" y="364" font-size="12" fill="#234a37" text-anchor="middle">Senza richiamare il DC</text>
+  <text x="749" y="381" font-size="12" fill="#234a37" text-anchor="middle">a ogni accesso (scalabilità)</text>
+
+  <!-- connectors LDAP->KDC and KDC->Resource -->
+  <path d="M329 240 L302 240" stroke="#8c98a8" stroke-width="2" fill="none" marker-end="url(#aGray)"/>
+  <path d="M618 240 L591 240" stroke="#8c98a8" stroke-width="2" fill="none" marker-end="url(#aGray)" transform="translate(0,0)"/>
+</svg>

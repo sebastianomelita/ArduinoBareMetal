@@ -1,0 +1,71 @@
+<svg viewBox="0 0 920 520" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <filter id="soft3" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#1a2233" flood-opacity="0.16"/>
+    </filter>
+    <radialGradient id="hub" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#2a66ad"/>
+      <stop offset="100%" stop-color="#163b6b"/>
+    </radialGradient>
+  </defs>
+  <rect width="920" height="520" fill="#ffffff"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#1a2233">Single Sign-On: un solo logon, accesso trasparente a tutto</text>
+  <text x="32" y="64" font-size="14" fill="#5b6677">Alice digita la password una volta, al mattino. Il TGT che ottiene apre — in silenzio — ogni risorsa autorizzata.</text>
+
+  <!-- central hub -->
+  <circle cx="460" cy="300" r="78" fill="url(#hub)" filter="url(#soft3)"/>
+  <text x="460" y="288" font-size="15" font-weight="700" fill="#fff" text-anchor="middle">LOGON</text>
+  <text x="460" y="308" font-size="12.5" fill="#cfe0f4" text-anchor="middle">password 1 volta</text>
+  <text x="460" y="328" font-size="12.5" fill="#fff" text-anchor="middle">→ TGT (10h)</text>
+
+  <!-- user -->
+  <g filter="url(#soft3)">
+    <rect x="360" y="120" width="200" height="56" rx="12" fill="#e8f0fa" stroke="#1d4e8f" stroke-width="1.5"/>
+  </g>
+  <text x="460" y="146" font-size="14" font-weight="700" fill="#1d4e8f" text-anchor="middle">Alice — utente di dominio</text>
+  <text x="460" y="165" font-size="12" fill="#46586e" text-anchor="middle">una sola identità in Active Directory</text>
+  <line x1="460" y1="176" x2="460" y2="220" stroke="#1d4e8f" stroke-width="2.5"/>
+
+  <!-- spokes: each resource gets a Service Ticket -->
+  <!-- helper: lines from hub -->
+  <g stroke="#b8791a" stroke-width="2" stroke-dasharray="3 4">
+    <line x1="395" y1="245" x2="180" y2="160"/>
+    <line x1="386" y1="285" x2="150" y2="285"/>
+    <line x1="392" y1="330" x2="175" y2="420"/>
+    <line x1="525" y1="245" x2="740" y2="160"/>
+    <line x1="534" y1="285" x2="770" y2="285"/>
+    <line x1="528" y1="330" x2="745" y2="420"/>
+  </g>
+
+  <!-- resource boxes -->
+  <g font-family="'Segoe UI', Arial, sans-serif">
+    <g filter="url(#soft3)"><rect x="40" y="132" width="150" height="56" rx="11" fill="#e9f4ee" stroke="#2f7d52" stroke-width="1.4"/></g>
+    <text x="115" y="156" font-size="13" font-weight="700" fill="#2f7d52" text-anchor="middle">File share</text>
+    <text x="115" y="174" font-size="11" fill="#3d6b51" text-anchor="middle">cartelle di rete · NTFS</text>
+
+    <g filter="url(#soft3)"><rect x="20" y="257" width="150" height="56" rx="11" fill="#e9f4ee" stroke="#2f7d52" stroke-width="1.4"/></g>
+    <text x="95" y="281" font-size="13" font-weight="700" fill="#2f7d52" text-anchor="middle">Stampanti</text>
+    <text x="95" y="299" font-size="11" fill="#3d6b51" text-anchor="middle">coda di stampa</text>
+
+    <g filter="url(#soft3)"><rect x="40" y="392" width="150" height="56" rx="11" fill="#e9f4ee" stroke="#2f7d52" stroke-width="1.4"/></g>
+    <text x="115" y="416" font-size="13" font-weight="700" fill="#2f7d52" text-anchor="middle">Intranet / IIS</text>
+    <text x="115" y="434" font-size="11" fill="#3d6b51" text-anchor="middle">SharePoint, web app</text>
+
+    <g filter="url(#soft3)"><rect x="730" y="132" width="150" height="56" rx="11" fill="#e9f4ee" stroke="#2f7d52" stroke-width="1.4"/></g>
+    <text x="805" y="156" font-size="13" font-weight="700" fill="#2f7d52" text-anchor="middle">SQL Server</text>
+    <text x="805" y="174" font-size="11" fill="#3d6b51" text-anchor="middle">gestionali, BI</text>
+
+    <g filter="url(#soft3)"><rect x="750" y="257" width="150" height="56" rx="11" fill="#e9f4ee" stroke="#2f7d52" stroke-width="1.4"/></g>
+    <text x="825" y="281" font-size="13" font-weight="700" fill="#2f7d52" text-anchor="middle">Exchange</text>
+    <text x="825" y="299" font-size="11" fill="#3d6b51" text-anchor="middle">posta interna</text>
+
+    <g filter="url(#soft3)"><rect x="730" y="392" width="150" height="56" rx="11" fill="#e9f4ee" stroke="#2f7d52" stroke-width="1.4"/></g>
+    <text x="805" y="416" font-size="13" font-weight="700" fill="#2f7d52" text-anchor="middle">Wi-Fi 802.1X</text>
+    <text x="805" y="434" font-size="11" fill="#3d6b51" text-anchor="middle">via RADIUS + AD</text>
+  </g>
+
+  <!-- legend -->
+  <rect x="300" y="470" width="320" height="32" rx="8" fill="#fdf3df" stroke="#b8791a" stroke-width="1.2"/>
+  <line x1="318" y1="486" x2="348" y2="486" stroke="#b8791a" stroke-width="2" stroke-dasharray="3 4"/>
+  <text x="356" y="490" font-size="12" fill="#7d5a23">ogni risorsa = un Service Ticket emesso «al volo», senza re-login</text>
+</svg>

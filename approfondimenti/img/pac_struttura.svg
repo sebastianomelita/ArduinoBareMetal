@@ -1,0 +1,57 @@
+<svg viewBox="0 0 880 520" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <defs>
+    <filter id="softp" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#1a2233" flood-opacity="0.16"/>
+    </filter>
+  </defs>
+  <rect width="880" height="520" fill="#ffffff"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#1a2233">Dentro il ticket: il PAC trasporta l'identità</text>
+  <text x="32" y="64" font-size="14" fill="#5b6677">Non solo «chi sei», ma «a quali gruppi appartieni» — già pronto, firmato due volte.</text>
+
+  <!-- Ticket envelope -->
+  <g filter="url(#softp)">
+    <rect x="60" y="92" width="760" height="402" rx="16" fill="#fbfdff" stroke="#1d4e8f" stroke-width="2"/>
+  </g>
+  <rect x="60" y="92" width="760" height="46" rx="16" fill="#1d4e8f"/>
+  <rect x="60" y="116" width="760" height="22" fill="#1d4e8f"/>
+  <text x="84" y="122" font-size="15" font-weight="700" fill="#fff">SERVICE TICKET</text>
+  <text x="804" y="122" font-size="12" fill="#cfe0f4" text-anchor="end">cifrato con la chiave del server di destinazione</text>
+
+  <!-- PAC inner box -->
+  <rect x="92" y="160" width="696" height="220" rx="12" fill="#fdf3df" stroke="#b8791a" stroke-width="1.6"/>
+  <text x="112" y="186" font-size="15" font-weight="700" fill="#9a6512">PAC — Privilege Attribute Certificate</text>
+
+  <!-- data fields grid -->
+  <g font-family="'Segoe UI', Arial, sans-serif">
+    <rect x="112" y="200" width="320" height="50" rx="8" fill="#fff" stroke="#e0c98c" stroke-width="1"/>
+    <text x="126" y="221" font-size="13" font-weight="700" fill="#27384e">SID utente</text>
+    <text x="126" y="240" font-size="11.5" fill="#5b6677">S-1-5-21-…-1013 · immutabile</text>
+
+    <rect x="448" y="200" width="320" height="50" rx="8" fill="#fff" stroke="#e0c98c" stroke-width="1"/>
+    <text x="462" y="221" font-size="13" font-weight="700" fill="#27384e">SID dei gruppi</text>
+    <text x="462" y="240" font-size="11.5" fill="#5b6677">Contabilità, Docenti, VPN…</text>
+
+    <rect x="112" y="262" width="320" height="50" rx="8" fill="#fff" stroke="#e0c98c" stroke-width="1"/>
+    <text x="126" y="283" font-size="13" font-weight="700" fill="#27384e">UAC flags</text>
+    <text x="126" y="302" font-size="11.5" fill="#5b6677">account abilitato, tipo, requisiti pwd</text>
+
+    <rect x="448" y="262" width="320" height="50" rx="8" fill="#fff" stroke="#e0c98c" stroke-width="1"/>
+    <text x="462" y="283" font-size="13" font-weight="700" fill="#27384e">Info di logon</text>
+    <text x="462" y="302" font-size="11.5" fill="#5b6677">ora logon, scadenza pwd, profilo</text>
+  </g>
+
+  <!-- signatures row -->
+  <rect x="112" y="324" width="320" height="44" rx="8" fill="#e6f3ec" stroke="#2f7d52" stroke-width="1.2"/>
+  <text x="126" y="343" font-size="12.5" font-weight="700" fill="#2f7d52">🔏 KDC Signature</text>
+  <text x="126" y="360" font-size="11" fill="#3d6b51">HMAC con la chiave del KDC → prova l'origine</text>
+
+  <rect x="448" y="324" width="320" height="44" rx="8" fill="#e6f3ec" stroke="#2f7d52" stroke-width="1.2"/>
+  <text x="462" y="343" font-size="12.5" font-weight="700" fill="#2f7d52">🔏 Server Signature</text>
+  <text x="462" y="360" font-size="11" fill="#3d6b51">HMAC col server → blocca il riuso altrove</text>
+
+  <!-- effect note -->
+  <rect x="92" y="398" width="696" height="78" rx="12" fill="#eef4fb" stroke="#1d4e8f" stroke-width="1.3"/>
+  <text x="112" y="424" font-size="13.5" font-weight="700" fill="#1d4e8f">Effetto pratico</text>
+  <text x="112" y="447" font-size="12.5" fill="#27384e">Il file server sa già che Alice è in «Contabilità» — può scrivere, ma non è in «Direzione»,</text>
+  <text x="112" y="466" font-size="12.5" fill="#27384e">quindi non cancella i file riservati. Tutto senza una sola chiamata al Domain Controller.</text>
+</svg>
