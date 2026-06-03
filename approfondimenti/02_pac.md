@@ -9,7 +9,7 @@ Il PAC è una **struttura dati proprietaria Microsoft** inserita nel campo
 *“chi sei”* in qualcosa di immediatamente utile per l'autorizzazione *“cosa puoi
 fare”*.
 
-![Struttura del PAC dentro il ticket](../img/pac_struttura.svg)
+![Struttura del PAC dentro il ticket](img/pac_struttura.svg)
 
 ## Cosa contiene
 
