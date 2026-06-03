@@ -20,7 +20,7 @@ Servizi:
 - [DHCP](https://it.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol)
 - [PVLAN](/approfondimenti/private_vlan.md)
 - [Secure network moderne](/approfondimenti/dispensa_reti_moderne.md)
-- [Autenticazione sso Active Directory](/approfondimenti/00_dispensa_principale.md)
+- [Autenticazione SSO Active Directory](/approfondimenti/00_dispensa_principale.md)
   
 ## **Caso d'uso LAN Ethernet** 
 
