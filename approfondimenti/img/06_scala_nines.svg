@@ -1,90 +1,75 @@
-<svg viewBox="0 0 820 480" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, sans-serif">
+<svg viewBox="0 0 860 470" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, sans-serif">
   <defs>
-    <linearGradient id="bg6" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#f0f4ff"/>
-      <stop offset="100%" stop-color="#e8f0fe"/>
-    </linearGradient>
-    <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#dc2626"/>
-      <stop offset="40%" stop-color="#f59e0b"/>
-      <stop offset="75%" stop-color="#16a34a"/>
-      <stop offset="100%" stop-color="#0891b2"/>
-    </linearGradient>
-    <filter id="sh6">
-      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#00000018"/>
-    </filter>
+    <linearGradient id="bg6" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0f4ff"/><stop offset="100%" stop-color="#e8f0fe"/></linearGradient>
+    <linearGradient id="bar" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#dc2626"/><stop offset="35%" stop-color="#f59e0b"/><stop offset="70%" stop-color="#16a34a"/><stop offset="100%" stop-color="#0891b2"/></linearGradient>
+    <filter id="sh6"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#00000018"/></filter>
   </defs>
 
-  <rect width="820" height="480" fill="url(#bg6)" rx="16"/>
-  <text x="410" y="34" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">La Scala della Disponibilità</text>
-  <text x="410" y="52" text-anchor="middle" font-size="11.5" fill="#475569">Quanti "9" di uptime — e cosa serve per raggiungerli</text>
+  <rect width="860" height="470" fill="url(#bg6)" rx="16"/>
+  <text x="430" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a">La Scala della Disponibilità</text>
+  <text x="430" y="56" text-anchor="middle" font-size="12.5" fill="#475569">Quanti "9" di uptime — e cosa serve per raggiungerli</text>
 
-  <!-- Horizontal gradient availability bar -->
-  <rect x="50" y="68" width="720" height="20" rx="10" fill="url(#bar)" filter="url(#sh6)"/>
-  
-  <!-- Tick marks and % labels -->
-  <line x1="50" y1="88" x2="50" y2="96" stroke="#374151" stroke-width="1.5"/>
-  <text x="50" y="108" text-anchor="middle" font-size="10" fill="#374151">90%</text>
-  
-  <line x1="194" y1="88" x2="194" y2="96" stroke="#374151" stroke-width="1.5"/>
-  <text x="194" y="108" text-anchor="middle" font-size="10" fill="#374151">99%</text>
-  
-  <line x1="338" y1="88" x2="338" y2="96" stroke="#374151" stroke-width="1.5"/>
-  <text x="338" y="108" text-anchor="middle" font-size="10" fill="#374151">99.9%</text>
-  
-  <line x1="482" y1="88" x2="482" y2="96" stroke="#374151" stroke-width="1.5"/>
-  <text x="482" y="108" text-anchor="middle" font-size="10" fill="#374151">99.99%</text>
-  
-  <line x1="626" y1="88" x2="626" y2="96" stroke="#374151" stroke-width="1.5"/>
-  <text x="626" y="108" text-anchor="middle" font-size="10" fill="#374151">99.999%</text>
-  
-  <line x1="770" y1="88" x2="770" y2="96" stroke="#374151" stroke-width="1.5"/>
-  <text x="770" y="108" text-anchor="middle" font-size="10" fill="#374151">99.9999%</text>
+  <!-- gradient bar -->
+  <rect x="50" y="70" width="760" height="16" rx="8" fill="url(#bar)" filter="url(#sh6)"/>
+  <g font-size="9.5" fill="#475569" text-anchor="middle">
+    <text x="50" y="102">90%</text><text x="202" y="102">99%</text><text x="354" y="102">99.9%</text>
+    <text x="506" y="102">99.99%</text><text x="658" y="102">99.999%</text><text x="810" y="102">99.9999%</text>
+  </g>
+  <g stroke="#64748b" stroke-width="1">
+    <line x1="50" y1="86" x2="50" y2="92"/><line x1="202" y1="86" x2="202" y2="92"/><line x1="354" y1="86" x2="354" y2="92"/>
+    <line x1="506" y1="86" x2="506" y2="92"/><line x1="658" y1="86" x2="658" y2="92"/><line x1="810" y1="86" x2="810" y2="92"/>
+  </g>
 
-  <!-- Level rows -->
-  <!-- Row 1: 90% -->
-  <rect x="30" y="120" width="760" height="62" rx="10" fill="white" stroke="#fee2e2" stroke-width="1.5" filter="url(#sh6)"/>
-  <rect x="30" y="120" width="6" height="62" rx="3" fill="#dc2626"/>
-  <text x="46" y="139" font-size="12" font-weight="700" fill="#0f172a">90%  <tspan fill="#64748b" font-weight="400">— 1 nove</tspan></text>
-  <text x="46" y="154" font-size="10.5" fill="#374151">Downtime annuo: ≈ 36,5 giorni    |    Nessuna tecnologia specifica — server singolo senza ridondanza</text>
-  <text x="46" y="169" font-size="10" fill="#64748b">Scenario tipico: server bare-metal senza virtualizzazione, nessun backup automatico. Accettabile solo per ambienti di test.</text>
-  <!-- tag -->
-  <rect x="700" y="128" width="80" height="20" rx="10" fill="#fee2e2"/>
-  <text x="740" y="141" text-anchor="middle" font-size="9.5" font-weight="600" fill="#dc2626">Nessuna HA</text>
+  <!-- rows: column layout - left badge, mid text, right tag -->
+  <!-- ROW 90% -->
+  <rect x="40" y="116" width="780" height="58" rx="10" fill="white" stroke="#fecaca" stroke-width="1.5" filter="url(#sh6)"/>
+  <rect x="40" y="116" width="6" height="58" rx="3" fill="#dc2626"/>
+  <text x="64" y="139" font-size="14" font-weight="700" fill="#0f172a">90%</text>
+  <text x="64" y="157" font-size="10.5" fill="#64748b">1 nove</text>
+  <text x="150" y="139" font-size="11.5" font-weight="600" fill="#dc2626">Downtime annuo ≈ 36,5 giorni</text>
+  <text x="150" y="158" font-size="11" fill="#475569">Server singolo senza ridondanza né backup automatico — solo ambienti di test.</text>
+  <rect x="688" y="134" width="120" height="24" rx="12" fill="#fee2e2"/>
+  <text x="748" y="150" text-anchor="middle" font-size="10.5" font-weight="600" fill="#dc2626">Nessuna HA</text>
 
-  <!-- Row 2: 99% -->
-  <rect x="30" y="194" width="760" height="62" rx="10" fill="white" stroke="#fef3c7" stroke-width="1.5" filter="url(#sh6)"/>
-  <rect x="30" y="194" width="6" height="62" rx="3" fill="#f59e0b"/>
-  <text x="46" y="213" font-size="12" font-weight="700" fill="#0f172a">99%  <tspan fill="#64748b" font-weight="400">— 2 nove</tspan></text>
-  <text x="46" y="228" font-size="10.5" fill="#374151">Downtime annuo: ≈ 3,65 giorni    |    Backup periodico su NAS + UPS + VM con snapshot</text>
-  <text x="46" y="243" font-size="10" fill="#64748b">Scenario tipico: scuola/piccola PA. Un server Proxmox, backup notturno, RTO ~4 ore. Accettabile se il servizio non è 24h.</text>
-  <rect x="674" y="202" width="106" height="20" rx="10" fill="#fef3c7"/>
-  <text x="727" y="215" text-anchor="middle" font-size="9.5" font-weight="600" fill="#92400e">Backup + UPS</text>
+  <!-- ROW 99% -->
+  <rect x="40" y="180" width="780" height="58" rx="10" fill="white" stroke="#fde68a" stroke-width="1.5" filter="url(#sh6)"/>
+  <rect x="40" y="180" width="6" height="58" rx="3" fill="#f59e0b"/>
+  <text x="64" y="203" font-size="14" font-weight="700" fill="#0f172a">99%</text>
+  <text x="64" y="221" font-size="10.5" fill="#64748b">2 nove</text>
+  <text x="150" y="203" font-size="11.5" font-weight="600" fill="#b45309">Downtime annuo ≈ 3,65 giorni</text>
+  <text x="150" y="222" font-size="11" fill="#475569">Un server Proxmox, backup notturno su NAS, UPS, snapshot. RTO ~4 ore.</text>
+  <rect x="676" y="198" width="132" height="24" rx="12" fill="#fef3c7"/>
+  <text x="742" y="214" text-anchor="middle" font-size="10.5" font-weight="600" fill="#92400e">Backup + UPS</text>
 
-  <!-- Row 3: 99.9% -->
-  <rect x="30" y="268" width="760" height="62" rx="10" fill="white" stroke="#d1fae5" stroke-width="1.5" filter="url(#sh6)"/>
-  <rect x="30" y="268" width="6" height="62" rx="3" fill="#16a34a"/>
-  <text x="46" y="287" font-size="12" font-weight="700" fill="#0f172a">99.9%  <tspan fill="#64748b" font-weight="400">— 3 nove</tspan></text>
-  <text x="46" y="302" font-size="10.5" fill="#374151">Downtime annuo: ≈ 8,7 ore    |    Virtualizzazione + storage condiviso (NAS/SAN) + HA cluster</text>
-  <text x="46" y="317" font-size="10" fill="#64748b">Scenario tipico: servizio enterprise non mission-critical. VMware vCenter HA o Proxmox HA, DNAT clustering, MTTR &lt; 10 min.</text>
-  <rect x="636" y="276" width="144" height="20" rx="10" fill="#d1fae5"/>
-  <text x="708" y="289" text-anchor="middle" font-size="9.5" font-weight="600" fill="#14532d">Virtualizzazione + HA</text>
+  <!-- ROW 99.9% -->
+  <rect x="40" y="244" width="780" height="58" rx="10" fill="white" stroke="#86efac" stroke-width="1.5" filter="url(#sh6)"/>
+  <rect x="40" y="244" width="6" height="58" rx="3" fill="#16a34a"/>
+  <text x="64" y="267" font-size="14" font-weight="700" fill="#0f172a">99.9%</text>
+  <text x="64" y="285" font-size="10.5" fill="#64748b">3 nove</text>
+  <text x="150" y="267" font-size="11.5" font-weight="600" fill="#15803d">Downtime annuo ≈ 8,76 ore</text>
+  <text x="150" y="286" font-size="11" fill="#475569">Virtualizzazione + storage condiviso (SAN/NAS) + HA cluster. MTTR &lt; 10 min.</text>
+  <rect x="652" y="262" width="156" height="24" rx="12" fill="#dcfce7"/>
+  <text x="730" y="278" text-anchor="middle" font-size="10.5" font-weight="600" fill="#14532d">Virtualizzazione + HA</text>
 
-  <!-- Row 4: 99.99% -->
-  <rect x="30" y="342" width="760" height="62" rx="10" fill="white" stroke="#cffafe" stroke-width="1.5" filter="url(#sh6)"/>
-  <rect x="30" y="342" width="6" height="62" rx="3" fill="#0891b2"/>
-  <text x="46" y="361" font-size="12" font-weight="700" fill="#0f172a">99.99%  <tspan fill="#64748b" font-weight="400">— 4 nove</tspan></text>
-  <text x="46" y="376" font-size="10.5" fill="#374151">Downtime annuo: ≈ 52 minuti    |    VRRP + HCI (Ceph/vSAN) + DNAT + replica sincrona</text>
-  <text x="46" y="391" font-size="10" fill="#64748b">Scenario tipico: e-commerce, ospedale, CRM aziendale. Stack combinato: HAProxy+VRRP+HCI. MTTR in secondi.</text>
-  <rect x="620" y="350" width="160" height="20" rx="10" fill="#cffafe"/>
-  <text x="700" y="363" text-anchor="middle" font-size="9.5" font-weight="600" fill="#155e75">VRRP + HCI + DNAT</text>
+  <!-- ROW 99.99% -->
+  <rect x="40" y="308" width="780" height="58" rx="10" fill="white" stroke="#67e8f9" stroke-width="1.5" filter="url(#sh6)"/>
+  <rect x="40" y="308" width="6" height="58" rx="3" fill="#0891b2"/>
+  <text x="64" y="331" font-size="14" font-weight="700" fill="#0f172a">99.99%</text>
+  <text x="64" y="349" font-size="10.5" fill="#64748b">4 nove</text>
+  <text x="150" y="331" font-size="11.5" font-weight="600" fill="#0e7490">Downtime annuo ≈ 52,6 minuti</text>
+  <text x="150" y="350" font-size="11" fill="#475569">Stack combinato VRRP + HCI (Ceph/vSAN) + DNAT, replica sincrona. MTTR in secondi.</text>
+  <rect x="640" y="326" width="168" height="24" rx="12" fill="#cffafe"/>
+  <text x="724" y="342" text-anchor="middle" font-size="10.5" font-weight="600" fill="#155e75">VRRP + HCI + DNAT</text>
 
-  <!-- Row 5: 99.999% -->
-  <rect x="30" y="416" width="760" height="54" rx="10" fill="white" stroke="#e0e7ff" stroke-width="1.5" filter="url(#sh6)"/>
-  <rect x="30" y="416" width="6" height="54" rx="3" fill="#4f46e5"/>
-  <text x="46" y="435" font-size="12" font-weight="700" fill="#0f172a">99.999%  <tspan fill="#64748b" font-weight="400">— 5 nove</tspan></text>
-  <text x="46" y="450" font-size="10.5" fill="#374151">Downtime annuo: ≈ 5,3 minuti    |    VMware Fault Tolerance  /  DRBD + HCI + datacenter ridondato (TIA-942 Tier IV)</text>
-  <text x="46" y="464" font-size="10" fill="#64748b">Scenario tipico: trading HFT, sistemi di controllo industriale, pagamenti real-time. Costo molto elevato.</text>
-  <rect x="662" y="422" width="118" height="20" rx="10" fill="#e0e7ff"/>
-  <text x="721" y="435" text-anchor="middle" font-size="9.5" font-weight="600" fill="#3730a3">VMware FT · Tier IV</text>
+  <!-- ROW 99.999% -->
+  <rect x="40" y="372" width="780" height="58" rx="10" fill="white" stroke="#a5b4fc" stroke-width="1.5" filter="url(#sh6)"/>
+  <rect x="40" y="372" width="6" height="58" rx="3" fill="#4f46e5"/>
+  <text x="64" y="395" font-size="14" font-weight="700" fill="#0f172a">99.999%</text>
+  <text x="64" y="413" font-size="10.5" fill="#64748b">5 nove</text>
+  <text x="170" y="395" font-size="11.5" font-weight="600" fill="#4338ca">Downtime annuo ≈ 5,26 minuti</text>
+  <text x="170" y="414" font-size="11" fill="#475569">VMware Fault Tolerance / DRBD + HCI + datacenter Tier IV. Costo molto elevato.</text>
+  <rect x="652" y="390" width="156" height="24" rx="12" fill="#e0e7ff"/>
+  <text x="730" y="406" text-anchor="middle" font-size="10.5" font-weight="600" fill="#3730a3">VMware FT · Tier IV</text>
+
+  <text x="430" y="452" text-anchor="middle" font-size="10.5" font-style="italic" fill="#64748b">Ogni nove in più riduce il downtime di un fattore 10 — e fa salire ripidamente costo e complessità.</text>
 </svg>

@@ -1,133 +1,117 @@
-<svg viewBox="0 0 820 430" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, sans-serif">
+<svg viewBox="0 0 860 470" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, sans-serif">
   <defs>
-    <linearGradient id="bg5" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#fff7ed"/>
-      <stop offset="100%" stop-color="#ffedd5"/>
-    </linearGradient>
-    <filter id="sh5">
-      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#ea580c22"/>
-    </filter>
-    <filter id="sh5b">
-      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00000012"/>
-    </filter>
-    <marker id="arr5" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#ea580c"/>
-    </marker>
-    <marker id="arr5b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-      <path d="M0,0 L0,6 L8,3 z" fill="#64748b"/>
-    </marker>
+    <linearGradient id="bg5" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#fff7ed"/><stop offset="100%" stop-color="#ffedd5"/></linearGradient>
+    <filter id="sh5"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#ea580c22"/></filter>
+    <filter id="sh5b"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00000012"/></filter>
+    <marker id="a5" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L0,7 L9,3.5 z" fill="#ea580c"/></marker>
   </defs>
 
-  <rect width="820" height="430" fill="url(#bg5)" rx="16"/>
-  <text x="410" y="34" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">Piano del Ripristino: Regola 3-2-1 e Snapshot</text>
-  <text x="410" y="52" text-anchor="middle" font-size="11.5" fill="#475569">Come tornare a uno stato precedente sano — difesa contro ransomware ed errori umani</text>
+  <rect width="860" height="470" fill="url(#bg5)" rx="16"/>
+  <text x="430" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a">Piano del Ripristino: Regola 3-2-1 e Snapshot</text>
+  <text x="430" y="56" text-anchor="middle" font-size="12.5" fill="#475569">Tornare a uno stato sano — difesa contro ransomware ed errori umani</text>
 
-  <!-- 3-2-1 header boxes -->
-  <rect x="30" y="66" width="200" height="60" rx="12" fill="#ea580c" filter="url(#sh5)"/>
-  <text x="130" y="89" text-anchor="middle" font-size="32" font-weight="900" fill="white">3</text>
-  <text x="130" y="108" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.9)">copie dei dati</text>
+  <!-- 3-2-1 header -->
+  <rect x="40" y="72" width="250" height="56" rx="12" fill="#ea580c" filter="url(#sh5)"/>
+  <text x="92" y="110" text-anchor="middle" font-size="30" font-weight="900" fill="white">3</text>
+  <text x="190" y="98" text-anchor="middle" font-size="13" fill="white">copie</text>
+  <text x="190" y="115" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.85)">dei dati</text>
 
-  <rect x="250" y="66" width="200" height="60" rx="12" fill="#c2410c" filter="url(#sh5)"/>
-  <text x="350" y="89" text-anchor="middle" font-size="32" font-weight="900" fill="white">2</text>
-  <text x="350" y="108" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.9)">supporti diversi</text>
+  <rect x="305" y="72" width="250" height="56" rx="12" fill="#c2410c" filter="url(#sh5)"/>
+  <text x="357" y="110" text-anchor="middle" font-size="30" font-weight="900" fill="white">2</text>
+  <text x="455" y="98" text-anchor="middle" font-size="13" fill="white">supporti</text>
+  <text x="455" y="115" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.85)">diversi</text>
 
-  <rect x="470" y="66" width="200" height="60" rx="12" fill="#9a3412" filter="url(#sh5)"/>
-  <text x="570" y="89" text-anchor="middle" font-size="32" font-weight="900" fill="white">1</text>
-  <text x="570" y="108" text-anchor="middle" font-size="12" fill="rgba(255,255,255,0.9)">copia fuori sede</text>
+  <rect x="570" y="72" width="250" height="56" rx="12" fill="#9a3412" filter="url(#sh5)"/>
+  <text x="622" y="110" text-anchor="middle" font-size="30" font-weight="900" fill="white">1</text>
+  <text x="720" y="98" text-anchor="middle" font-size="13" fill="white">copia</text>
+  <text x="720" y="115" text-anchor="middle" font-size="13" fill="rgba(255,255,255,0.85)">fuori sede</text>
 
-  <rect x="690" y="66" width="110" height="60" rx="12" fill="#7c2d12" filter="url(#sh5b)"/>
-  <text x="745" y="88" text-anchor="middle" font-size="11" font-weight="700" fill="white">WORM /</text>
-  <text x="745" y="103" text-anchor="middle" font-size="11" font-weight="700" fill="white">Immutabile</text>
-  <text x="745" y="118" text-anchor="middle" font-size="9" fill="rgba(255,255,255,0.8)">⟶ antiransomware</text>
+  <!-- COPIA 1 -->
+  <rect x="40" y="142" width="248" height="132" rx="12" fill="white" stroke="#ea580c" stroke-width="2" filter="url(#sh5b)"/>
+  <rect x="40" y="142" width="248" height="28" rx="12" fill="#ea580c"/>
+  <rect x="40" y="158" width="248" height="12" fill="#ea580c"/>
+  <text x="164" y="161" text-anchor="middle" font-size="12" font-weight="700" fill="white">Copia 1 — Server Live</text>
+  <rect x="62" y="186" width="56" height="40" rx="5" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <line x1="62" y1="198" x2="118" y2="198" stroke="#16a34a" stroke-width="1"/>
+  <line x1="62" y1="210" x2="118" y2="210" stroke="#16a34a" stroke-width="1"/>
+  <circle cx="71" cy="204" r="3" fill="#16a34a"/><circle cx="71" cy="216" r="3" fill="#16a34a"/>
+  <text x="90" y="242" text-anchor="middle" font-size="9.5" fill="#374151">server fisico</text>
+  <text x="200" y="196" text-anchor="middle" font-size="11" fill="#374151">Dati in uso,</text>
+  <text x="200" y="212" text-anchor="middle" font-size="11" fill="#374151">aggiornati in</text>
+  <text x="200" y="228" text-anchor="middle" font-size="11" fill="#374151">tempo reale</text>
+  <rect x="62" y="250" width="200" height="18" rx="9" fill="#fff7ed"/>
+  <text x="162" y="263" text-anchor="middle" font-size="9.5" fill="#9a3412">RPO = ora attuale</text>
 
-  <!-- COPIA 1: Live sul server -->
-  <rect x="30" y="152" width="220" height="130" rx="12" fill="white" stroke="#ea580c" stroke-width="2" filter="url(#sh5b)"/>
-  <rect x="30" y="152" width="220" height="28" rx="12" fill="#ea580c"/>
-  <rect x="30" y="168" width="220" height="12" fill="#ea580c"/>
-  <text x="140" y="170" text-anchor="middle" font-size="11" font-weight="700" fill="white">Copia 1 — Server Live</text>
-  <!-- Server icon -->
-  <rect x="52" y="192" width="50" height="36" rx="5" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
-  <line x1="52" y1="202" x2="102" y2="202" stroke="#16a34a" stroke-width="1"/>
-  <line x1="52" y1="212" x2="102" y2="212" stroke="#16a34a" stroke-width="1"/>
-  <circle cx="60" cy="207" r="3" fill="#16a34a"/>
-  <circle cx="60" cy="217" r="3" fill="#16a34a"/>
-  <text x="77" y="244" text-anchor="middle" font-size="10" fill="#374151">server fisico</text>
-  <text x="170" y="200" font-size="10" fill="#374151">Dati in uso,</text>
-  <text x="170" y="215" font-size="10" fill="#374151">aggiornati in</text>
-  <text x="170" y="230" font-size="10" fill="#374151">tempo reale</text>
-  <text x="140" y="268" text-anchor="middle" font-size="9.5" fill="#64748b">RPO = ora attuale</text>
+  <!-- arrow 1->2 -->
+  <line x1="292" y1="208" x2="316" y2="208" stroke="#ea580c" stroke-width="2.5" marker-end="url(#a5)"/>
+  <text x="304" y="200" text-anchor="middle" font-size="8.5" fill="#ea580c">backup</text>
 
-  <!-- Arrow 1→2 -->
-  <path d="M 256,210 C 274,210 280,210 298,210" stroke="#ea580c" stroke-width="2" fill="none" marker-end="url(#arr5)"/>
-  <text x="277" y="204" text-anchor="middle" font-size="8.5" fill="#ea580c">backup</text>
-  <text x="277" y="216" text-anchor="middle" font-size="8.5" fill="#ea580c">periodico</text>
+  <!-- COPIA 2 -->
+  <rect x="320" y="142" width="248" height="132" rx="12" fill="white" stroke="#c2410c" stroke-width="2" filter="url(#sh5b)"/>
+  <rect x="320" y="142" width="248" height="28" rx="12" fill="#c2410c"/>
+  <rect x="320" y="158" width="248" height="12" fill="#c2410c"/>
+  <text x="444" y="161" text-anchor="middle" font-size="12" font-weight="700" fill="white">Copia 2 — NAS Locale</text>
+  <rect x="342" y="186" width="56" height="46" rx="5" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+  <line x1="342" y1="198" x2="398" y2="198" stroke="#3b82f6" stroke-width="1"/>
+  <line x1="342" y1="210" x2="398" y2="210" stroke="#3b82f6" stroke-width="1"/>
+  <line x1="342" y1="222" x2="398" y2="222" stroke="#3b82f6" stroke-width="1"/>
+  <circle cx="390" cy="204" r="2.5" fill="#3b82f6"/><circle cx="390" cy="216" r="2.5" fill="#3b82f6"/>
+  <text x="370" y="248" text-anchor="middle" font-size="9.5" fill="#374151">Synology / QNAP</text>
+  <text x="490" y="196" text-anchor="middle" font-size="11" fill="#374151">Snapshot orari</text>
+  <text x="490" y="212" text-anchor="middle" font-size="11" fill="#374151">o notturni</text>
+  <text x="490" y="228" text-anchor="middle" font-size="10" fill="#64748b">stesso locale</text>
+  <rect x="342" y="250" width="200" height="18" rx="9" fill="#fff7ed"/>
+  <text x="442" y="263" text-anchor="middle" font-size="9.5" fill="#9a3412">RPO = intervallo tra snapshot</text>
 
-  <!-- COPIA 2: NAS locale -->
-  <rect x="300" y="152" width="220" height="130" rx="12" fill="white" stroke="#c2410c" stroke-width="2" filter="url(#sh5b)"/>
-  <rect x="300" y="152" width="220" height="28" rx="12" fill="#c2410c"/>
-  <rect x="300" y="168" width="220" height="12" fill="#c2410c"/>
-  <text x="410" y="170" text-anchor="middle" font-size="11" font-weight="700" fill="white">Copia 2 — NAS Locale</text>
-  <!-- NAS icon -->
-  <rect x="322" y="192" width="50" height="42" rx="5" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
-  <line x1="322" y1="202" x2="372" y2="202" stroke="#3b82f6" stroke-width="1"/>
-  <line x1="322" y1="212" x2="372" y2="212" stroke="#3b82f6" stroke-width="1"/>
-  <line x1="322" y1="222" x2="372" y2="222" stroke="#3b82f6" stroke-width="1"/>
-  <circle cx="365" cy="207" r="2.5" fill="#3b82f6"/>
-  <circle cx="365" cy="217" r="2.5" fill="#3b82f6"/>
-  <circle cx="365" cy="227" r="2.5" fill="#3b82f6"/>
-  <text x="347" y="248" text-anchor="middle" font-size="10" fill="#374151">NAS (Synology/QNAP)</text>
-  <text x="430" y="200" font-size="10" fill="#374151">Snapshot orari</text>
-  <text x="430" y="215" font-size="10" fill="#374151">o notturni</text>
-  <text x="430" y="235" font-size="9.5" fill="#64748b">RPO = intervallo</text>
-  <text x="430" y="248" font-size="9.5" fill="#64748b">tra snapshot</text>
-  <text x="410" y="268" text-anchor="middle" font-size="9.5" fill="#64748b">stesso locale fisico</text>
+  <!-- arrow 2->3 -->
+  <line x1="572" y1="208" x2="596" y2="208" stroke="#9a3412" stroke-width="2.5" marker-end="url(#a5)"/>
+  <text x="584" y="200" text-anchor="middle" font-size="8.5" fill="#9a3412">replica</text>
 
-  <!-- Arrow 2→3 -->
-  <path d="M 526,210 C 544,210 550,210 568,210" stroke="#9a3412" stroke-width="2" fill="none" marker-end="url(#arr5)"/>
-  <text x="547" y="204" text-anchor="middle" font-size="8.5" fill="#9a3412">replica</text>
-  <text x="547" y="216" text-anchor="middle" font-size="8.5" fill="#9a3412">notturna</text>
+  <!-- COPIA 3 -->
+  <rect x="600" y="142" width="220" height="132" rx="12" fill="white" stroke="#9a3412" stroke-width="2" filter="url(#sh5b)"/>
+  <rect x="600" y="142" width="220" height="28" rx="12" fill="#9a3412"/>
+  <rect x="600" y="158" width="220" height="12" fill="#9a3412"/>
+  <text x="710" y="161" text-anchor="middle" font-size="12" font-weight="700" fill="white">Copia 3 — Offsite / Cloud</text>
+  <path d="M620,212 Q620,194 636,194 Q639,185 653,185 Q669,185 672,196 Q683,196 683,206 Q683,217 672,217 L620,217 Q611,217 620,212 Z" fill="#e0f2fe" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="648" y="238" text-anchor="middle" font-size="9.5" fill="#374151">S3 / B2 / Glacier</text>
+  <text x="752" y="194" text-anchor="middle" font-size="10" fill="#374151">Geograficamente</text>
+  <text x="752" y="208" text-anchor="middle" font-size="10" fill="#374151">separata.</text>
+  <text x="752" y="226" text-anchor="middle" font-size="9.5" fill="#64748b">incendio · furto</text>
+  <rect x="620" y="250" width="180" height="18" rx="9" fill="#7c2d12"/>
+  <text x="710" y="263" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">WORM / Object Lock</text>
 
-  <!-- COPIA 3: Offsite/Cloud -->
-  <rect x="570" y="152" width="230" height="130" rx="12" fill="white" stroke="#9a3412" stroke-width="2" filter="url(#sh5b)"/>
-  <rect x="570" y="152" width="230" height="28" rx="12" fill="#9a3412"/>
-  <rect x="570" y="168" width="230" height="12" fill="#9a3412"/>
-  <text x="685" y="170" text-anchor="middle" font-size="11" font-weight="700" fill="white">Copia 3 — Offsite / Cloud</text>
-  <!-- Cloud icon -->
-  <path d="M600,215 Q600,198 615,198 Q617,190 630,190 Q645,190 648,200 Q658,200 658,210 Q658,220 648,220 L600,220 Q592,220 600,215 Z" fill="#e0f2fe" stroke="#0891b2" stroke-width="1.5"/>
-  <text x="625" y="240" text-anchor="middle" font-size="9.5" fill="#374151">S3 / B2 / Glacier</text>
-  <text x="720" y="198" font-size="9.5" fill="#374151">Geograficamente</text>
-  <text x="720" y="212" font-size="9.5" fill="#374151">separata</text>
-  <rect x="700" y="220" width="80" height="18" rx="6" fill="#7c2d12"/>
-  <text x="740" y="232" text-anchor="middle" font-size="9" font-weight="700" fill="white">WORM / Object Lock</text>
-  <text x="685" y="260" text-anchor="middle" font-size="9.5" fill="#64748b">Protegge da:</text>
-  <text x="685" y="272" text-anchor="middle" font-size="9" fill="#64748b">incendio · furto · ransomware</text>
+  <!-- BOTTOM LEFT: Snapshot panel -->
+  <rect x="40" y="288" width="380" height="166" rx="12" fill="white" stroke="#7c3aed" stroke-width="2" filter="url(#sh5b)"/>
+  <rect x="40" y="288" width="380" height="28" rx="12" fill="#7c3aed"/>
+  <rect x="40" y="304" width="380" height="12" fill="#7c3aed"/>
+  <text x="230" y="307" text-anchor="middle" font-size="12.5" font-weight="700" fill="white">Snapshot a Caldo</text>
+  <text x="62" y="338" font-size="11.5" font-weight="700" fill="#4c1d95">RPO = ora esatta dello snapshot</text>
+  <text x="62" y="360" font-size="11" fill="#374151">Uso tipico: prima di un aggiornamento rischioso si crea</text>
+  <text x="62" y="376" font-size="11" fill="#374151">uno snapshot. Se l'operazione fallisce, il rollback riporta</text>
+  <text x="62" y="392" font-size="11" fill="#374151">il sistema allo stato precedente in pochi secondi.</text>
+  <rect x="62" y="406" width="336" height="38" rx="8" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="230" y="423" text-anchor="middle" font-size="10.5" font-weight="700" fill="#4c1d95">⚠ Snapshot ≠ backup offsite</text>
+  <text x="230" y="438" text-anchor="middle" font-size="10" fill="#475569">resta sullo stesso storage, non copre crash hardware</text>
 
-  <!-- Snapshot panel at bottom -->
-  <rect x="30" y="300" width="350" height="116" rx="12" fill="white" stroke="#7c3aed" stroke-width="2" filter="url(#sh5b)"/>
-  <rect x="30" y="300" width="350" height="28" rx="12" fill="#7c3aed"/>
-  <rect x="30" y="316" width="350" height="12" fill="#7c3aed"/>
-  <text x="205" y="318" text-anchor="middle" font-size="12" font-weight="700" fill="white">Snapshot a Caldo — RPO = ora dello snapshot</text>
-  <!-- Timeline -->
-  <text x="50" y="348" font-size="10" fill="#374151" font-weight="600">Uso tipico:</text>
-  <text x="50" y="364" font-size="10" fill="#374151">Prima di aggiornamenti rischiosi →</text>
-  <text x="50" y="378" font-size="10" fill="#374151">snapshot → esegui aggiornamento → se fallisce</text>
-  <text x="50" y="392" font-size="10" fill="#374151">→ rollback in secondi all'ultimo stato sano.</text>
-  <rect x="260" y="340" width="110" height="24" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
-  <text x="315" y="355" text-anchor="middle" font-size="10" font-weight="700" fill="#4c1d95">Non server manuale</text>
-  <text x="315" y="375" font-size="9" fill="#475569" text-anchor="middle">Snapshot ≠ backup offsite:</text>
-  <text x="315" y="388" font-size="9" fill="#475569" text-anchor="middle">rimane sullo stesso storage</text>
-  <text x="315" y="401" font-size="9" fill="#475569" text-anchor="middle">(non protegge da crash hw)</text>
-
-  <!-- Warning ransomware -->
-  <rect x="400" y="300" width="400" height="116" rx="12" fill="#fff1f2" stroke="#e11d48" stroke-width="2" filter="url(#sh5b)"/>
-  <rect x="400" y="300" width="400" height="28" rx="12" fill="#e11d48"/>
-  <rect x="400" y="316" width="400" height="12" fill="#e11d48"/>
-  <text x="600" y="318" text-anchor="middle" font-size="12" font-weight="700" fill="white">⚠  Perché la replica NON basta contro il ransomware</text>
-  <text x="420" y="348" font-size="11" fill="#374151">La replica sincrona (HCI, DRBD, VMware FT) propaga</text>
-  <text x="420" y="364" font-size="11" fill="#374151">fedelmente <tspan font-weight="700" fill="#be123c">qualsiasi stato — incluso quello cifrato dal malware</tspan>.</text>
-  <text x="420" y="382" font-size="11" fill="#374151">Solo un backup su storage</text>
-  <text x="420" y="396" font-size="11" fill="#374151">immutabile conserva uno stato verificato come sano.</text>
-  <rect x="672" y="360" width="110" height="44" rx="8" fill="#7c2d12"/>
-  <text x="727" y="378" text-anchor="middle" font-size="10" font-weight="700" fill="white">WORM storage</text>
-  <text x="727" y="394" text-anchor="middle" font-size="9" fill="#fecaca">unica soluzione</text>
+  <!-- BOTTOM RIGHT: ransomware panel - clear two-column split -->
+  <rect x="436" y="288" width="384" height="166" rx="12" fill="#fff1f2" stroke="#e11d48" stroke-width="2" filter="url(#sh5b)"/>
+  <rect x="436" y="288" width="384" height="28" rx="12" fill="#e11d48"/>
+  <rect x="436" y="304" width="384" height="12" fill="#e11d48"/>
+  <text x="628" y="307" text-anchor="middle" font-size="12.5" font-weight="700" fill="white">Perché la replica NON basta</text>
+  <!-- left text column: x 456..640 -->
+  <text x="456" y="338" font-size="11" fill="#374151">La replica sincrona (HCI,</text>
+  <text x="456" y="354" font-size="11" fill="#374151">DRBD, VMware FT) propaga</text>
+  <text x="456" y="370" font-size="11" font-weight="700" fill="#be123c">fedelmente qualsiasi stato</text>
+  <text x="456" y="386" font-size="11" font-weight="700" fill="#be123c">— anche quello cifrato</text>
+  <text x="456" y="402" font-size="11" font-weight="700" fill="#be123c">dal malware.</text>
+  <text x="456" y="424" font-size="11" fill="#374151">Solo un backup immutabile</text>
+  <text x="456" y="440" font-size="11" fill="#374151">conserva uno stato sano.</text>
+  <!-- right box column: x 656..804 -->
+  <rect x="656" y="330" width="148" height="112" rx="10" fill="#7c2d12"/>
+  <text x="730" y="356" text-anchor="middle" font-size="13" font-weight="700" fill="white">WORM</text>
+  <text x="730" y="374" text-anchor="middle" font-size="11" fill="#fed7aa">storage</text>
+  <line x1="676" y1="386" x2="784" y2="386" stroke="#fb923c" stroke-width="1" opacity="0.5"/>
+  <text x="730" y="406" text-anchor="middle" font-size="10" fill="#fecaca">Write Once</text>
+  <text x="730" y="420" text-anchor="middle" font-size="10" fill="#fecaca">Read Many</text>
+  <text x="730" y="436" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fde68a">unica soluzione</text>
 </svg>

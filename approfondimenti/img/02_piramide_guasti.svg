@@ -1,97 +1,123 @@
-<svg viewBox="0 0 820 500" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, sans-serif">
+<svg viewBox="0 0 860 540" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, sans-serif">
   <defs>
-    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#f8fafc"/>
-      <stop offset="100%" stop-color="#f1f5f9"/>
-    </linearGradient>
-    <filter id="sh2">
-      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#00000018"/>
-    </filter>
+    <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f8fafc"/><stop offset="100%" stop-color="#f1f5f9"/></linearGradient>
+    <filter id="sh2"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#00000015"/></filter>
   </defs>
-  
-  <rect width="820" height="500" fill="url(#bg2)" rx="16"/>
-  <text x="410" y="36" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a">Guasti per Probabilità di Occorrenza</text>
-  <text x="410" y="56" text-anchor="middle" font-size="12" fill="#64748b">Dal più frequente (in basso) al più raro (in alto) — con le tecnologie che li coprono</text>
 
-  <!-- Frequency label on left -->
-  <text x="22" y="410" font-size="11" fill="#94a3b8" text-anchor="middle" transform="rotate(-90,22,300)">← più frequente</text>
-  <line x1="35" y1="80" x2="35" y2="465" stroke="#e2e8f0" stroke-width="1.5"/>
-  <!-- Arrow up = rarer -->
-  <polygon points="35,78 31,88 39,88" fill="#94a3b8"/>
+  <rect width="860" height="540" fill="url(#bg2)" rx="16"/>
+  <text x="430" y="38" text-anchor="middle" font-size="21" font-weight="700" fill="#0f172a">Guasti per Probabilità di Occorrenza</text>
+  <text x="430" y="59" text-anchor="middle" font-size="13" fill="#64748b">Dal più frequente (in alto) al più raro (in basso) — con le tecnologie che li coprono</text>
 
-  <!-- Level 1 - Most frequent: Crash processo/servizio -->
-  <rect x="50" y="428" width="560" height="38" rx="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5" filter="url(#sh2)"/>
-  <rect x="50" y="428" width="10" height="38" rx="4" fill="#16a34a"/>
-  <text x="76" y="443" font-size="12" font-weight="700" fill="#14532d">Crash di un processo / servizio</text>
-  <text x="76" y="458" font-size="10.5" fill="#166534">Molto comune — anche quotidiano</text>
-  <text x="628" y="445" font-size="10.5" fill="#14532d">⟶ Restart automatico VM · Health check HAProxy</text>
-  <text x="628" y="459" font-size="10.5" fill="#14532d">    Watchdog · systemd</text>
+  <!-- column headers -->
+  <text x="48" y="84" font-size="11" font-weight="700" fill="#94a3b8" letter-spacing="0.5">TIPO DI GUASTO</text>
+  <text x="500" y="84" font-size="11" font-weight="700" fill="#94a3b8" letter-spacing="0.5">FREQUENZA</text>
+  <text x="640" y="84" font-size="11" font-weight="700" fill="#94a3b8" letter-spacing="0.5">TECNOLOGIA DI PROTEZIONE</text>
+  <line x1="48" y1="92" x2="812" y2="92" stroke="#e2e8f0" stroke-width="1.5"/>
 
-  <!-- Level 2 - Frequent: Guasto disco singolo -->
-  <rect x="50" y="378" width="510" height="38" rx="8" fill="#d1fae5" stroke="#059669" stroke-width="1.5" filter="url(#sh2)"/>
-  <rect x="50" y="378" width="10" height="38" rx="4" fill="#059669"/>
-  <text x="76" y="393" font-size="12" font-weight="700" fill="#064e3b">Guasto disco singolo</text>
-  <text x="76" y="408" font-size="10.5" fill="#065f46">Frequente — ogni pochi mesi per disco</text>
-  <text x="578" y="395" font-size="10.5" fill="#064e3b">⟶ RAID-1 / RAIDZ2 / ZFS</text>
-  <text x="578" y="409" font-size="10.5" fill="#064e3b">    Nessuna interruzione del servizio</text>
+  <!-- Row template: y starts 102, each row h=52, gap 4 => step 56 -->
+  <!-- ROW 1 -->
+  <g>
+    <rect x="48" y="102" width="764" height="52" rx="9" fill="#dcfce7" stroke="#86efac" stroke-width="1.5" filter="url(#sh2)"/>
+    <rect x="48" y="102" width="6" height="52" rx="3" fill="#16a34a"/>
+    <text x="70" y="125" font-size="13" font-weight="700" fill="#14532d">Crash di un processo / servizio</text>
+    <text x="70" y="143" font-size="11" fill="#166534">interno alla VM: kernel panic, servizio bloccato</text>
+    <!-- freq meter -->
+    <rect x="500" y="120" width="110" height="9" rx="4.5" fill="#bbf7d0"/>
+    <rect x="500" y="120" width="106" height="9" rx="4.5" fill="#16a34a"/>
+    <text x="500" y="143" font-size="10" fill="#166534">molto comune</text>
+    <!-- tech -->
+    <text x="640" y="125" font-size="11.5" font-weight="600" fill="#14532d">Health check + restart VM</text>
+    <text x="640" y="143" font-size="10.5" fill="#166534">ripristino in secondi</text>
+  </g>
 
-  <!-- Level 3: Guasto server backend -->
-  <rect x="50" y="328" width="460" height="38" rx="8" fill="#fef9c3" stroke="#ca8a04" stroke-width="1.5" filter="url(#sh2)"/>
-  <rect x="50" y="328" width="10" height="38" rx="4" fill="#ca8a04"/>
-  <text x="76" y="343" font-size="12" font-weight="700" fill="#713f12">Guasto server backend (tier 2)</text>
-  <text x="76" y="358" font-size="10.5" fill="#854d0e">Periodico — qualche volta l'anno</text>
-  <text x="528" y="345" font-size="10.5" fill="#713f12">⟶ DNAT Clustering + health check</text>
-  <text x="528" y="359" font-size="10.5" fill="#713f12">    Redirect automatico in &lt; 5 s</text>
+  <!-- ROW 2 -->
+  <g>
+    <rect x="48" y="158" width="764" height="52" rx="9" fill="#d1fae5" stroke="#6ee7b7" stroke-width="1.5" filter="url(#sh2)"/>
+    <rect x="48" y="158" width="6" height="52" rx="3" fill="#059669"/>
+    <text x="70" y="181" font-size="13" font-weight="700" fill="#064e3b">Guasto di un disco singolo</text>
+    <text x="70" y="199" font-size="11" fill="#065f46">usura fisica nel ciclo di vita dello storage</text>
+    <rect x="500" y="176" width="110" height="9" rx="4.5" fill="#a7f3d0"/>
+    <rect x="500" y="176" width="92" height="9" rx="4.5" fill="#059669"/>
+    <text x="500" y="199" font-size="10" fill="#065f46">frequente</text>
+    <text x="640" y="181" font-size="11.5" font-weight="600" fill="#064e3b">RAID-1 / RAIDZ2 / ZFS</text>
+    <text x="640" y="199" font-size="10.5" fill="#065f46">assorbito senza interruzione del servizio</text>
+  </g>
 
-  <!-- Level 4: Guasto proxy/router -->
-  <rect x="50" y="278" width="410" height="38" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5" filter="url(#sh2)"/>
-  <rect x="50" y="278" width="10" height="38" rx="4" fill="#d97706"/>
-  <text x="76" y="293" font-size="12" font-weight="700" fill="#78350f">Guasto proxy / load balancer</text>
-  <text x="76" y="308" font-size="10.5" fill="#92400e">Raro — singolo punto di guasto critico</text>
-  <text x="478" y="295" font-size="10.5" fill="#78350f">⟶ VRRP / keepalived</text>
-  <text x="478" y="309" font-size="10.5" fill="#78350f">    VIP trasferito in 2–3 s</text>
+  <!-- ROW 3 -->
+  <g>
+    <rect x="48" y="214" width="764" height="52" rx="9" fill="#fef9c3" stroke="#fde047" stroke-width="1.5" filter="url(#sh2)"/>
+    <rect x="48" y="214" width="6" height="52" rx="3" fill="#ca8a04"/>
+    <text x="70" y="237" font-size="13" font-weight="700" fill="#713f12">Guasto server backend (tier 2)</text>
+    <text x="70" y="255" font-size="11" fill="#854d0e">un nodo applicativo del pool diventa irraggiungibile</text>
+    <rect x="500" y="232" width="110" height="9" rx="4.5" fill="#fef08a"/>
+    <rect x="500" y="232" width="68" height="9" rx="4.5" fill="#ca8a04"/>
+    <text x="500" y="255" font-size="10" fill="#854d0e">periodico</text>
+    <text x="640" y="237" font-size="11.5" font-weight="600" fill="#713f12">DNAT Clustering + health check</text>
+    <text x="640" y="255" font-size="10.5" fill="#854d0e">redirect automatico in &lt; 5 s</text>
+  </g>
 
-  <!-- Level 5: Guasto nodo hypervisor -->
-  <rect x="50" y="228" width="360" height="38" rx="8" fill="#fed7aa" stroke="#ea580c" stroke-width="1.5" filter="url(#sh2)"/>
-  <rect x="50" y="228" width="10" height="38" rx="4" fill="#ea580c"/>
-  <text x="76" y="243" font-size="12" font-weight="700" fill="#7c2d12">Guasto nodo hypervisor (server fisico)</text>
-  <text x="76" y="258" font-size="10.5" fill="#9a3412">Raro — ma impatta tutte le VM sul nodo</text>
-  <text x="428" y="245" font-size="10.5" fill="#7c2d12">⟶ HCI (Ceph/vSAN) · HA cluster</text>
-  <text x="428" y="259" font-size="10.5" fill="#7c2d12">    VM riavviate in secondi sui nodi superstiti</text>
+  <!-- ROW 4 -->
+  <g>
+    <rect x="48" y="270" width="764" height="52" rx="9" fill="#fef3c7" stroke="#fcd34d" stroke-width="1.5" filter="url(#sh2)"/>
+    <rect x="48" y="270" width="6" height="52" rx="3" fill="#d97706"/>
+    <text x="70" y="293" font-size="13" font-weight="700" fill="#78350f">Guasto proxy / load balancer</text>
+    <text x="70" y="311" font-size="11" fill="#92400e">singolo punto di transito: bloccherebbe tutto il traffico</text>
+    <rect x="500" y="288" width="110" height="9" rx="4.5" fill="#fde68a"/>
+    <rect x="500" y="288" width="52" height="9" rx="4.5" fill="#d97706"/>
+    <text x="500" y="311" font-size="10" fill="#92400e">raro</text>
+    <text x="640" y="293" font-size="11.5" font-weight="600" fill="#78350f">VRRP / keepalived</text>
+    <text x="640" y="311" font-size="10.5" fill="#92400e">VIP trasferito allo slave in 2–3 s</text>
+  </g>
 
-  <!-- Level 6: Corruzione logica / ransomware -->
-  <rect x="50" y="178" width="310" height="38" rx="8" fill="#fecdd3" stroke="#e11d48" stroke-width="1.5" filter="url(#sh2)"/>
-  <rect x="50" y="178" width="10" height="38" rx="4" fill="#e11d48"/>
-  <text x="76" y="193" font-size="12" font-weight="700" fill="#881337">Corruzione logica / ransomware</text>
-  <text x="76" y="208" font-size="10.5" fill="#9f1239">Raro ma devastante — la replica non aiuta</text>
-  <text x="378" y="195" font-size="10.5" fill="#881337">⟶ Backup WORM / offsite</text>
-  <text x="378" y="209" font-size="10.5" fill="#881337">    Unica difesa efficace</text>
+  <!-- ROW 5 -->
+  <g>
+    <rect x="48" y="326" width="764" height="52" rx="9" fill="#fed7aa" stroke="#fb923c" stroke-width="1.5" filter="url(#sh2)"/>
+    <rect x="48" y="326" width="6" height="52" rx="3" fill="#ea580c"/>
+    <text x="70" y="349" font-size="13" font-weight="700" fill="#7c2d12">Guasto nodo hypervisor (server fisico)</text>
+    <text x="70" y="367" font-size="11" fill="#9a3412">tutte le VM su quel nodo offline contemporaneamente</text>
+    <rect x="500" y="344" width="110" height="9" rx="4.5" fill="#fdba74"/>
+    <rect x="500" y="344" width="46" height="9" rx="4.5" fill="#ea580c"/>
+    <text x="500" y="367" font-size="10" fill="#9a3412">raro</text>
+    <text x="640" y="349" font-size="11.5" font-weight="600" fill="#7c2d12">HCI (Ceph / vSAN) · DRBD</text>
+    <text x="640" y="367" font-size="10.5" fill="#9a3412">VM riavviate sui superstiti in secondi</text>
+  </g>
 
-  <!-- Level 7: Guasto rack / sala server -->
-  <rect x="50" y="128" width="260" height="38" rx="8" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.5" filter="url(#sh2)"/>
-  <rect x="50" y="128" width="10" height="38" rx="4" fill="#7c3aed"/>
-  <text x="76" y="143" font-size="12" font-weight="700" fill="#3b0764">Guasto rack / alimentazione sala server</text>
-  <text x="76" y="158" font-size="10.5" fill="#4c1d95">Molto raro — dipende da UPS e impianti</text>
-  <text x="328" y="145" font-size="10.5" fill="#3b0764">⟶ UPS ridondati · Generatori</text>
-  <text x="328" y="159" font-size="10.5" fill="#3b0764">    TIA-942 Tier III/IV</text>
+  <!-- ROW 6 -->
+  <g>
+    <rect x="48" y="382" width="764" height="52" rx="9" fill="#fecdd3" stroke="#fb7185" stroke-width="1.5" filter="url(#sh2)"/>
+    <rect x="48" y="382" width="6" height="52" rx="3" fill="#e11d48"/>
+    <text x="70" y="405" font-size="13" font-weight="700" fill="#881337">Corruzione logica / ransomware / errore umano</text>
+    <text x="70" y="423" font-size="11" fill="#9f1239">la replica propaga lo stato corrotto: non aiuta</text>
+    <rect x="500" y="400" width="110" height="9" rx="4.5" fill="#fda4af"/>
+    <rect x="500" y="400" width="34" height="9" rx="4.5" fill="#e11d48"/>
+    <text x="500" y="423" font-size="10" fill="#9f1239">raro · devastante</text>
+    <text x="640" y="405" font-size="11.5" font-weight="600" fill="#881337">Backup WORM / offsite</text>
+    <text x="640" y="423" font-size="10.5" fill="#9f1239">unica difesa efficace</text>
+  </g>
 
-  <!-- Level 8: Disastro datacenter -->
-  <rect x="50" y="78" width="210" height="38" rx="8" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1.5" filter="url(#sh2)"/>
-  <rect x="50" y="78" width="10" height="38" rx="4" fill="#4f46e5"/>
-  <text x="76" y="93" font-size="12" font-weight="700" fill="#1e1b4b">Disastro datacenter (incendio, alluvione)</text>
-  <text x="76" y="108" font-size="10.5" fill="#312e81">Rarissimo — ma perdita totale</text>
-  <text x="278" y="95" font-size="10.5" fill="#1e1b4b">⟶ Backup offsite fisico</text>
-  <text x="278" y="109" font-size="10.5" fill="#1e1b4b">    DR site geograficamente separato</text>
+  <!-- ROW 7 -->
+  <g>
+    <rect x="48" y="438" width="764" height="52" rx="9" fill="#f3e8ff" stroke="#c084fc" stroke-width="1.5" filter="url(#sh2)"/>
+    <rect x="48" y="438" width="6" height="52" rx="3" fill="#7c3aed"/>
+    <text x="70" y="461" font-size="13" font-weight="700" fill="#3b0764">Guasto alimentazione / rack / sala server</text>
+    <text x="70" y="479" font-size="11" fill="#4c1d95">black-out, surriscaldamento, guasto impianto</text>
+    <rect x="500" y="456" width="110" height="9" rx="4.5" fill="#e9d5ff"/>
+    <rect x="500" y="456" width="22" height="9" rx="4.5" fill="#7c3aed"/>
+    <text x="500" y="479" font-size="10" fill="#4c1d95">molto raro</text>
+    <text x="640" y="461" font-size="11.5" font-weight="600" fill="#3b0764">UPS ridondati · generatori</text>
+    <text x="640" y="479" font-size="10.5" fill="#4c1d95">TIA-942 Tier III / IV</text>
+  </g>
 
-  <!-- Legend bar at right -->
-  <rect x="742" y="78" width="18" height="390" rx="9" fill="url(#lgnd)"/>
-  <defs>
-    <linearGradient id="lgnd" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#4f46e5"/>
-      <stop offset="50%" stop-color="#ea580c"/>
-      <stop offset="100%" stop-color="#16a34a"/>
-    </linearGradient>
-  </defs>
-  <text x="760" y="86" font-size="10" fill="#64748b" text-anchor="middle">raro</text>
-  <text x="760" y="470" font-size="10" fill="#64748b" text-anchor="middle">comune</text>
+  <!-- ROW 8 -->
+  <g>
+    <rect x="48" y="494" width="764" height="40" rx="9" fill="#e0e7ff" stroke="#818cf8" stroke-width="1.5" filter="url(#sh2)"/>
+    <rect x="48" y="494" width="6" height="40" rx="3" fill="#4f46e5"/>
+    <text x="70" y="513" font-size="13" font-weight="700" fill="#1e1b4b">Disastro datacenter (incendio, alluvione)</text>
+    <text x="70" y="528" font-size="10.5" fill="#312e81">perdita fisica totale del sito</text>
+    <rect x="500" y="508" width="110" height="9" rx="4.5" fill="#c7d2fe"/>
+    <rect x="500" y="508" width="14" height="9" rx="4.5" fill="#4f46e5"/>
+    <text x="500" y="528" font-size="10" fill="#312e81">rarissimo</text>
+    <text x="640" y="513" font-size="11.5" font-weight="600" fill="#1e1b4b">Backup offsite · DR site</text>
+    <text x="640" y="528" font-size="10.5" fill="#312e81">copia geograficamente distante</text>
+  </g>
 </svg>
