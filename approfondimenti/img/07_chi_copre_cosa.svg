@@ -1,0 +1,171 @@
+<svg viewBox="0 0 820 520" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg7" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#f1f5f9"/>
+    </linearGradient>
+    <filter id="sh7">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#00000015"/>
+    </filter>
+  </defs>
+
+  <rect width="820" height="520" fill="url(#bg7)" rx="16"/>
+  <text x="410" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">Chi Protegge da Cosa</text>
+  <text x="410" y="50" text-anchor="middle" font-size="11.5" fill="#475569">Mappa guasti → tecnologie — in ordine di probabilità decrescente</text>
+
+  <!-- Column headers -->
+  <rect x="30" y="60" width="820" height="36" fill="none"/>
+  <!-- fault col -->
+  <rect x="30" y="60" width="220" height="36" rx="8" fill="#1e293b"/>
+  <text x="140" y="82" text-anchor="middle" font-size="11" font-weight="700" fill="white">Tipo di guasto</text>
+  
+  <!-- tech cols -->
+  <rect x="256" y="60" width="80" height="36" rx="6" fill="#16a34a"/>
+  <text x="296" y="77" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">Health Check</text>
+  <text x="296" y="89" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">+ DNAT</text>
+
+  <rect x="341" y="60" width="76" height="36" rx="6" fill="#2563eb"/>
+  <text x="379" y="77" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">VRRP</text>
+  <text x="379" y="89" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">keepalived</text>
+
+  <rect x="422" y="60" width="74" height="36" rx="6" fill="#7c3aed"/>
+  <text x="459" y="77" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">DRBD</text>
+  <text x="459" y="89" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">replica</text>
+
+  <rect x="501" y="60" width="72" height="36" rx="6" fill="#0891b2"/>
+  <text x="537" y="77" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">HCI</text>
+  <text x="537" y="89" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">Ceph/vSAN</text>
+
+  <rect x="578" y="60" width="76" height="36" rx="6" fill="#4f46e5"/>
+  <text x="616" y="77" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">VMware</text>
+  <text x="616" y="89" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">FT</text>
+
+  <rect x="659" y="60" width="72" height="36" rx="6" fill="#ea580c"/>
+  <text x="695" y="77" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">Backup</text>
+  <text x="695" y="89" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">NAS</text>
+
+  <rect x="736" y="60" width="72" height="36" rx="6" fill="#7c2d12"/>
+  <text x="772" y="77" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">WORM</text>
+  <text x="772" y="89" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">Offsite</text>
+
+  <!-- Helper function simulation: rows -->
+  <!-- Symbols: ✓✓ = strong, ✓ = partial, — = no, ✗ = makes worse -->
+  
+  <!-- define row bg colors alternating -->
+  <!-- Row 1: crash processo -->
+  <rect x="30" y="100" width="778" height="52" rx="8" fill="#f0fdf4" filter="url(#sh7)"/>
+  <rect x="30" y="100" width="4" height="52" rx="2" fill="#16a34a"/>
+  <text x="46" y="118" font-size="10.5" font-weight="700" fill="#0f172a">Crash processo / servizio</text>
+  <text x="46" y="134" font-size="9.5" fill="#64748b">Molto comune · systemd watchdog / health check</text>
+  <rect x="248" y="103" width="82" height="44" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="289" y="122" text-anchor="middle" font-size="16" fill="#16a34a">✓✓</text>
+  <text x="289" y="138" text-anchor="middle" font-size="8.5" fill="#15803d">redirige in &lt;5s</text>
+  <text x="379" y="126" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="459" y="126" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="537" y="126" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="616" y="126" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="695" y="126" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="772" y="126" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+
+  <!-- Row 2: guasto disco singolo -->
+  <rect x="30" y="156" width="778" height="52" rx="8" fill="white" filter="url(#sh7)"/>
+  <rect x="30" y="156" width="4" height="52" rx="2" fill="#16a34a"/>
+  <text x="46" y="174" font-size="10.5" font-weight="700" fill="#0f172a">Guasto disco singolo</text>
+  <text x="46" y="190" font-size="9.5" fill="#64748b">Frequente · RAID/ZFS gestisce silenziosamente</text>
+  <text x="289" y="182" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="379" y="182" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <rect x="418" y="160" width="82" height="44" rx="6" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="459" y="179" text-anchor="middle" font-size="16" fill="#7c3aed">✓✓</text>
+  <text x="459" y="194" text-anchor="middle" font-size="8.5" fill="#6d28d9">RAID-1 rete</text>
+  <rect x="497" y="160" width="82" height="44" rx="6" fill="#e0f2fe" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="537" y="179" text-anchor="middle" font-size="16" fill="#0891b2">✓✓</text>
+  <text x="537" y="194" text-anchor="middle" font-size="8.5" fill="#0e7490">replica dist.</text>
+  <rect x="574" y="160" width="84" height="44" rx="6" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="616" y="179" text-anchor="middle" font-size="16" fill="#4f46e5">✓✓</text>
+  <text x="616" y="194" text-anchor="middle" font-size="8.5" fill="#3730a3">sinc. completa</text>
+  <text x="695" y="182" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="772" y="182" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+
+  <!-- Row 3: guasto server backend -->
+  <rect x="30" y="212" width="778" height="52" rx="8" fill="#f0fdf4" filter="url(#sh7)"/>
+  <rect x="30" y="212" width="4" height="52" rx="2" fill="#ca8a04"/>
+  <text x="46" y="230" font-size="10.5" font-weight="700" fill="#0f172a">Guasto server backend (tier 2)</text>
+  <text x="46" y="246" font-size="9.5" fill="#64748b">Periodico · impatta solo quel backend</text>
+  <rect x="248" y="216" width="82" height="44" rx="6" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="289" y="235" text-anchor="middle" font-size="16" fill="#16a34a">✓✓</text>
+  <text x="289" y="250" text-anchor="middle" font-size="8.5" fill="#15803d">esclude nodo</text>
+  <text x="379" y="238" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="459" y="238" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="537" y="238" text-anchor="middle" font-size="13" fill="#16a34a">✓</text>
+  <text x="616" y="238" text-anchor="middle" font-size="13" fill="#16a34a">✓</text>
+  <text x="695" y="238" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="772" y="238" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+
+  <!-- Row 4: guasto proxy -->
+  <rect x="30" y="268" width="778" height="52" rx="8" fill="white" filter="url(#sh7)"/>
+  <rect x="30" y="268" width="4" height="52" rx="2" fill="#d97706"/>
+  <text x="46" y="286" font-size="10.5" font-weight="700" fill="#0f172a">Guasto proxy / load balancer</text>
+  <text x="46" y="302" font-size="9.5" fill="#64748b">Raro · singolo punto di guasto — bloccherebbe tutto</text>
+  <text x="289" y="294" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <rect x="336" y="272" width="86" height="44" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="379" y="291" text-anchor="middle" font-size="16" fill="#2563eb">✓✓</text>
+  <text x="379" y="306" text-anchor="middle" font-size="8.5" fill="#1d4ed8">VIP in 2–3 s</text>
+  <text x="459" y="294" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="537" y="294" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="616" y="294" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="695" y="294" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="772" y="294" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+
+  <!-- Row 5: guasto hypervisor -->
+  <rect x="30" y="324" width="778" height="52" rx="8" fill="#f0fdf4" filter="url(#sh7)"/>
+  <rect x="30" y="324" width="4" height="52" rx="2" fill="#ea580c"/>
+  <text x="46" y="342" font-size="10.5" font-weight="700" fill="#0f172a">Guasto nodo hypervisor (server fisico)</text>
+  <text x="46" y="358" font-size="9.5" fill="#64748b">Raro · tutte le VM su quel nodo offline</text>
+  <text x="289" y="350" text-anchor="middle" font-size="13" fill="#16a34a">✓</text>
+  <text x="379" y="350" text-anchor="middle" font-size="13" fill="#16a34a">✓</text>
+  <rect x="418" y="328" width="82" height="44" rx="6" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="459" y="347" text-anchor="middle" font-size="16" fill="#7c3aed">✓✓</text>
+  <text x="459" y="362" text-anchor="middle" font-size="8.5" fill="#6d28d9">failover nodo 2</text>
+  <rect x="497" y="328" width="82" height="44" rx="6" fill="#e0f2fe" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="537" y="347" text-anchor="middle" font-size="16" fill="#0891b2">✓✓</text>
+  <text x="537" y="362" text-anchor="middle" font-size="8.5" fill="#0e7490">VM sui superstiti</text>
+  <rect x="574" y="328" width="84" height="44" rx="6" fill="#e0e7ff" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="616" y="347" text-anchor="middle" font-size="14" fill="#4f46e5">✓✓✓</text>
+  <text x="616" y="362" text-anchor="middle" font-size="8.5" fill="#3730a3">zero downtime</text>
+  <text x="695" y="350" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="772" y="350" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+
+  <!-- Row 6: ransomware/corruption -->
+  <rect x="30" y="380" width="778" height="52" rx="8" fill="white" filter="url(#sh7)"/>
+  <rect x="30" y="380" width="4" height="52" rx="2" fill="#e11d48"/>
+  <text x="46" y="398" font-size="10.5" font-weight="700" fill="#0f172a">Corruzione logica / ransomware / errore umano</text>
+  <text x="46" y="414" font-size="9.5" fill="#64748b">Raro ma devastante · la replica propaga lo stato corrotto</text>
+  <text x="289" y="406" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <text x="379" y="406" text-anchor="middle" font-size="12" fill="#94a3b8">—</text>
+  <!-- DRBD makes worse (propagates corruption) -->
+  <rect x="418" y="384" width="82" height="44" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="459" y="403" text-anchor="middle" font-size="14" fill="#dc2626">✗</text>
+  <text x="459" y="418" text-anchor="middle" font-size="8.5" fill="#991b1b">propaga corruz.</text>
+  <rect x="497" y="384" width="82" height="44" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="537" y="403" text-anchor="middle" font-size="14" fill="#dc2626">✗</text>
+  <text x="537" y="418" text-anchor="middle" font-size="8.5" fill="#991b1b">propaga corruz.</text>
+  <rect x="574" y="384" width="84" height="44" rx="6" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="616" y="403" text-anchor="middle" font-size="14" fill="#dc2626">✗</text>
+  <text x="616" y="418" text-anchor="middle" font-size="8.5" fill="#991b1b">propaga corruz.</text>
+  <rect x="655" y="384" width="82" height="44" rx="6" fill="#ffedd5" stroke="#ea580c" stroke-width="1.5"/>
+  <text x="695" y="403" text-anchor="middle" font-size="16" fill="#ea580c">✓✓</text>
+  <text x="695" y="418" text-anchor="middle" font-size="8.5" fill="#9a3412">RPO=intervallo</text>
+  <rect x="732" y="384" width="76" height="44" rx="6" fill="#fee2e2" stroke="#7c2d12" stroke-width="2"/>
+  <text x="772" y="399" text-anchor="middle" font-size="14" fill="#7c2d12">✓✓✓</text>
+  <text x="772" y="414" text-anchor="middle" font-size="8" fill="#7c2d12">UNICA difesa</text>
+  <text x="772" y="424" text-anchor="middle" font-size="8" fill="#7c2d12">immutabile</text>
+
+  <!-- Legend -->
+  <rect x="30" y="444" width="760" height="28" rx="8" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="50" y="462" font-size="10.5" font-weight="700" fill="#0f172a">Legenda:</text>
+  <text x="120" y="462" font-size="13" fill="#16a34a">✓✓✓</text><text x="148" y="462" font-size="10" fill="#374151">copertura completa</text>
+  <text x="270" y="462" font-size="13" fill="#16a34a">✓✓</text><text x="294" y="462" font-size="10" fill="#374151">copertura forte</text>
+  <text x="400" y="462" font-size="13" fill="#16a34a">✓</text><text x="414" y="462" font-size="10" fill="#374151">copertura parziale</text>
+  <text x="530" y="462" font-size="12" fill="#94a3b8">—</text><text x="544" y="462" font-size="10" fill="#374151">non pertinente</text>
+  <text x="640" y="462" font-size="13" fill="#dc2626">✗</text><text x="654" y="462" font-size="10" fill="#374151">aggrava il problema (propaga lo stato corrotto)</text>
+</svg>

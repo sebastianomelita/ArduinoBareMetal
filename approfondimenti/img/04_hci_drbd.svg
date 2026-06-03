@@ -1,0 +1,144 @@
+<svg viewBox="0 0 820 500" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0fdfa"/>
+      <stop offset="100%" stop-color="#ccfbf1"/>
+    </linearGradient>
+    <filter id="sh4">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#0891b222"/>
+    </filter>
+    <filter id="sh4b">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00000015"/>
+    </filter>
+    <marker id="arr4" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L7,3.5 z" fill="#0891b2"/>
+    </marker>
+    <marker id="arr4r" markerWidth="7" markerHeight="7" refX="5" refY="3.5" orient="auto">
+      <path d="M0,0 L0,7 L7,3.5 z" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <rect width="820" height="500" fill="url(#bg4)" rx="16"/>
+  <text x="410" y="34" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">Piano dei Dati: HCI con Replica Distribuita</text>
+  <text x="410" y="52" text-anchor="middle" font-size="11.5" fill="#475569">Ogni scrittura confermata su N nodi — RPO &lt; 1 s anche al guasto hardware</text>
+
+  <!-- Cluster boundary -->
+  <rect x="30" y="68" width="600" height="310" rx="16" fill="none" stroke="#0891b2" stroke-width="2" stroke-dasharray="8,5"/>
+  <text x="330" y="88" text-anchor="middle" font-size="12" font-weight="700" fill="#0e7490">CLUSTER HCI — Proxmox + Ceph  (o VMware vSAN)</text>
+
+  <!-- NODE 1 -->
+  <rect x="50" y="100" width="165" height="255" rx="12" fill="white" stroke="#0891b2" stroke-width="2" filter="url(#sh4)"/>
+  <rect x="50" y="100" width="165" height="30" rx="12" fill="#0891b2"/>
+  <rect x="50" y="118" width="165" height="12" fill="#0891b2"/>
+  <text x="132" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="white">Nodo 1</text>
+  <!-- CPU -->
+  <rect x="64" y="140" width="66" height="44" rx="6" fill="#e0f2fe" stroke="#0891b2" stroke-width="1"/>
+  <text x="97" y="160" text-anchor="middle" font-size="10" font-weight="600" fill="#0c4a6e">CPU + RAM</text>
+  <text x="97" y="174" text-anchor="middle" font-size="9" fill="#0369a1">Hypervisor KVM</text>
+  <!-- VM -->
+  <rect x="64" y="194" width="66" height="30" rx="5" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="1"/>
+  <text x="97" y="212" text-anchor="middle" font-size="10" font-weight="600" fill="#075985">VM-A</text>
+  <!-- Disks -->
+  <text x="97" y="241" text-anchor="middle" font-size="9" fill="#64748b">dischi locali:</text>
+  <rect x="64" y="247" width="66" height="20" rx="4" fill="#cffafe" stroke="#22d3ee" stroke-width="1"/>
+  <text x="97" y="261" text-anchor="middle" font-size="9.5" font-weight="600" fill="#155e75">NVMe ①</text>
+  <rect x="64" y="272" width="66" height="20" rx="4" fill="#cffafe" stroke="#22d3ee" stroke-width="1"/>
+  <text x="97" y="286" text-anchor="middle" font-size="9.5" font-weight="600" fill="#155e75">NVMe ②</text>
+  <rect x="64" y="297" width="66" height="20" rx="4" fill="#cffafe" stroke="#22d3ee" stroke-width="1"/>
+  <text x="97" y="311" text-anchor="middle" font-size="9.5" font-weight="600" fill="#155e75">NVMe ③</text>
+  <!-- Ceph OSD label -->
+  <rect x="138" y="140" width="64" height="60" rx="6" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="170" y="160" text-anchor="middle" font-size="9" font-weight="700" fill="#14532d">Ceph OSD</text>
+  <text x="170" y="175" text-anchor="middle" font-size="8.5" fill="#166534">agent</text>
+  <text x="170" y="189" text-anchor="middle" font-size="8" fill="#166534">replica sync</text>
+
+  <!-- NODE 2 -->
+  <rect x="237" y="100" width="165" height="255" rx="12" fill="white" stroke="#0891b2" stroke-width="2" filter="url(#sh4)"/>
+  <rect x="237" y="100" width="165" height="30" rx="12" fill="#0891b2"/>
+  <rect x="237" y="118" width="165" height="12" fill="#0891b2"/>
+  <text x="319" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="white">Nodo 2</text>
+  <rect x="251" y="140" width="66" height="44" rx="6" fill="#e0f2fe" stroke="#0891b2" stroke-width="1"/>
+  <text x="284" y="160" text-anchor="middle" font-size="10" font-weight="600" fill="#0c4a6e">CPU + RAM</text>
+  <text x="284" y="174" text-anchor="middle" font-size="9" fill="#0369a1">Hypervisor KVM</text>
+  <rect x="251" y="194" width="66" height="30" rx="5" fill="#f0f9ff" stroke="#7dd3fc" stroke-width="1"/>
+  <text x="284" y="212" text-anchor="middle" font-size="10" font-weight="600" fill="#075985">VM-B</text>
+  <text x="284" y="241" text-anchor="middle" font-size="9" fill="#64748b">dischi locali:</text>
+  <rect x="251" y="247" width="66" height="20" rx="4" fill="#cffafe" stroke="#22d3ee" stroke-width="1"/>
+  <text x="284" y="261" text-anchor="middle" font-size="9.5" font-weight="600" fill="#155e75">NVMe ①</text>
+  <rect x="251" y="272" width="66" height="20" rx="4" fill="#cffafe" stroke="#22d3ee" stroke-width="1"/>
+  <text x="284" y="286" text-anchor="middle" font-size="9.5" font-weight="600" fill="#155e75">NVMe ②</text>
+  <rect x="251" y="297" width="66" height="20" rx="4" fill="#cffafe" stroke="#22d3ee" stroke-width="1"/>
+  <text x="284" y="311" text-anchor="middle" font-size="9.5" font-weight="600" fill="#155e75">NVMe ③</text>
+  <rect x="325" y="140" width="64" height="60" rx="6" fill="#f0fdf4" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="357" y="160" text-anchor="middle" font-size="9" font-weight="700" fill="#14532d">Ceph OSD</text>
+  <text x="357" y="175" text-anchor="middle" font-size="8.5" fill="#166534">agent</text>
+  <text x="357" y="189" text-anchor="middle" font-size="8" fill="#166534">replica sync</text>
+
+  <!-- NODE 3 - FAILED -->
+  <rect x="424" y="100" width="165" height="255" rx="12" fill="#fff5f5" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,4" filter="url(#sh4b)"/>
+  <rect x="424" y="100" width="165" height="30" rx="12" fill="#dc2626"/>
+  <rect x="424" y="118" width="165" height="12" fill="#dc2626"/>
+  <text x="506" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="white">Nodo 3  ✕ GUASTO</text>
+  <rect x="438" y="140" width="66" height="44" rx="6" fill="#fee2e2" stroke="#fca5a5" stroke-width="1"/>
+  <text x="471" y="160" text-anchor="middle" font-size="10" font-weight="600" fill="#991b1b">CPU + RAM</text>
+  <text x="471" y="174" text-anchor="middle" font-size="9" fill="#b91c1c">OFFLINE</text>
+  <!-- X overlay on node 3 -->
+  <line x1="424" y1="100" x2="589" y2="355" stroke="#dc262630" stroke-width="3"/>
+  <line x1="589" y1="100" x2="424" y2="355" stroke="#dc262630" stroke-width="3"/>
+  
+  <!-- Arrows: replica between nodes -->
+  <line x1="218" y1="176" x2="236" y2="176" stroke="#0891b2" stroke-width="1.5" marker-end="url(#arr4)"/>
+  <line x1="236" y1="184" x2="218" y2="184" stroke="#0891b2" stroke-width="1.5" marker-end="url(#arr4)"/>
+  <text x="227" y="173" text-anchor="middle" font-size="8" fill="#0891b2">sync</text>
+
+  <line x1="405" y1="176" x2="423" y2="176" stroke="#0891b2" stroke-width="1.5" marker-end="url(#arr4)"/>
+  <line x1="423" y1="184" x2="405" y2="184" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#arr4r)"/>
+  <text x="414" y="173" text-anchor="middle" font-size="8" fill="#0891b2">sync</text>
+  <text x="414" y="195" text-anchor="middle" font-size="7.5" fill="#dc2626">interrotta</text>
+
+  <!-- Auto-failover label -->
+  <rect x="50" y="365" width="540" height="46" rx="10" fill="#ecfdf5" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="68" y="382" font-size="12" font-weight="700" fill="#14532d">⚡ Failover automatico quando Nodo 3 cade:</text>
+  <text x="68" y="400" font-size="11" fill="#166534">L'orchestratore (Proxmox HA / VMware vCenter) riavvia VM-C sui nodi 1 o 2 — che hanno già le repliche Ceph — in pochi secondi. Nessun trasferimento dati.</text>
+
+  <!-- Right side: DRBD comparison -->
+  <rect x="642" y="68" width="168" height="310" rx="12" fill="white" stroke="#7c3aed" stroke-width="2" filter="url(#sh4b)"/>
+  <rect x="642" y="68" width="168" height="30" rx="12" fill="#7c3aed"/>
+  <rect x="642" y="86" width="168" height="12" fill="#7c3aed"/>
+  <text x="726" y="88" text-anchor="middle" font-size="11" font-weight="700" fill="white">DRBD (alternativa)</text>
+  <text x="726" y="110" text-anchor="middle" font-size="10" font-weight="600" fill="#4c1d95">RAID-1 di rete</text>
+  <text x="726" y="126" text-anchor="middle" font-size="9.5" fill="#475569">Solo 2 nodi (primario/secondario)</text>
+  
+  <!-- Node A primary -->
+  <rect x="656" y="136" width="64" height="64" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="688" y="158" text-anchor="middle" font-size="9.5" font-weight="700" fill="#4c1d95">Primario</text>
+  <text x="688" y="172" text-anchor="middle" font-size="8.5" fill="#6d28d9">VM attiva</text>
+  <text x="688" y="186" text-anchor="middle" font-size="8" fill="#7c3aed">disco locale</text>
+  
+  <!-- Double arrow -->
+  <line x1="724" y1="168" x2="737" y2="168" stroke="#7c3aed" stroke-width="1.5" marker-end="url(#arr4)"/>
+  <text x="731" y="162" font-size="7.5" fill="#7c3aed" text-anchor="middle">sync</text>
+  <text x="731" y="178" font-size="7.5" fill="#7c3aed" text-anchor="middle">conf.</text>
+  
+  <!-- Node B secondary -->
+  <rect x="740" y="136" width="56" height="64" rx="8" fill="#faf5ff" stroke="#a78bfa" stroke-width="1" opacity="0.85"/>
+  <text x="768" y="158" text-anchor="middle" font-size="9" font-weight="700" fill="#6d28d9">Secondario</text>
+  <text x="768" y="172" text-anchor="middle" font-size="8" fill="#7c3aed">standby</text>
+  <text x="768" y="186" text-anchor="middle" font-size="8" fill="#7c3aed">replica</text>
+  
+  <text x="726" y="226" text-anchor="middle" font-size="9.5" font-weight="600" fill="#4c1d95">Pro</text>
+  <text x="726" y="240" text-anchor="middle" font-size="9" fill="#374151">RPO &lt; 1 s su disco</text>
+  <text x="726" y="254" text-anchor="middle" font-size="9" fill="#374151">Economico</text>
+  <text x="726" y="274" text-anchor="middle" font-size="9.5" font-weight="600" fill="#b91c1c">Contro</text>
+  <text x="726" y="288" text-anchor="middle" font-size="9" fill="#374151">Solo 1 scrittura attiva</text>
+  <text x="726" y="302" text-anchor="middle" font-size="9" fill="#374151">RAM/CPU non replicati</text>
+  <text x="726" y="316" text-anchor="middle" font-size="9" fill="#374151">Riavvio VM al failover</text>
+  <text x="726" y="338" text-anchor="middle" font-size="9" fill="#0891b2" font-style="italic">Ideale con VRRP per</text>
+  <text x="726" y="351" text-anchor="middle" font-size="9" fill="#0891b2" font-style="italic">piano dati a basso costo</text>
+
+  <!-- ZFS note -->
+  <rect x="642" y="388" width="168" height="52" rx="10" fill="#fef9c3" stroke="#d97706" stroke-width="1.5"/>
+  <text x="726" y="405" text-anchor="middle" font-size="10" font-weight="700" fill="#78350f">ZFS (nodo singolo)</text>
+  <text x="726" y="419" text-anchor="middle" font-size="9" fill="#92400e">RAIDZ2: protegge da perdita</text>
+  <text x="726" y="432" text-anchor="middle" font-size="9" fill="#92400e">di 2 dischi sullo stesso server</text>
+</svg>

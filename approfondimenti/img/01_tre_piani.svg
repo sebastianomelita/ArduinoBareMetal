@@ -1,0 +1,108 @@
+<svg viewBox="0 0 820 420" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0f4ff"/>
+      <stop offset="100%" stop-color="#e8f0fe"/>
+    </linearGradient>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#0891b2"/>
+      <stop offset="100%" stop-color="#0e7490"/>
+    </linearGradient>
+    <linearGradient id="g3" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#c2410c"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-color="#00000022"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="820" height="420" fill="url(#bg)" rx="16"/>
+  
+  <!-- Title -->
+  <text x="410" y="38" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a" letter-spacing="0.5">I Tre Piani della Continuità di Servizio</text>
+  <text x="410" y="57" text-anchor="middle" font-size="12" fill="#64748b">Tre domande distinte — tre famiglie di tecnologie</text>
+  
+  <!-- Connector arrows between planes -->
+  <line x1="410" y1="120" x2="410" y2="145" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <polygon points="410,148 406,140 414,140" fill="#94a3b8"/>
+  <line x1="410" y1="228" x2="410" y2="253" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <polygon points="410,256 406,248 414,248" fill="#94a3b8"/>
+
+  <!-- PIANO 1: Servizio -->
+  <rect x="40" y="72" width="740" height="68" rx="12" fill="url(#g1)" filter="url(#shadow)"/>
+  <!-- Icon: network/globe -->
+  <circle cx="88" cy="106" r="22" fill="rgba(255,255,255,0.2)"/>
+  <circle cx="88" cy="106" r="14" fill="none" stroke="white" stroke-width="2"/>
+  <line x1="88" y1="92" x2="88" y2="120" stroke="white" stroke-width="1.5"/>
+  <line x1="74" y1="106" x2="102" y2="106" stroke="white" stroke-width="1.5"/>
+  <path d="M76,97 Q88,93 100,97" fill="none" stroke="white" stroke-width="1.5"/>
+  <path d="M76,115 Q88,119 100,115" fill="none" stroke="white" stroke-width="1.5"/>
+  
+  <text x="125" y="99" font-size="16" font-weight="700" fill="white">Piano del Servizio</text>
+  <text x="125" y="116" font-size="12" fill="rgba(255,255,255,0.85)">Come rendo il servizio sempre raggiungibile?</text>
+  
+  <!-- Tech tags -->
+  <rect x="440" y="82" width="88" height="24" rx="12" fill="rgba(255,255,255,0.22)"/>
+  <text x="484" y="98" text-anchor="middle" font-size="11" font-weight="600" fill="white">VRRP / keepalived</text>
+  <rect x="537" y="82" width="58" height="24" rx="12" fill="rgba(255,255,255,0.22)"/>
+  <text x="566" y="98" text-anchor="middle" font-size="11" font-weight="600" fill="white">DNAT/ALG</text>
+  <rect x="604" y="82" width="72" height="24" rx="12" fill="rgba(255,255,255,0.22)"/>
+  <text x="640" y="98" text-anchor="middle" font-size="11" font-weight="600" fill="white">HAProxy/Nginx</text>
+  <rect x="685" y="82" width="82" height="24" rx="12" fill="rgba(255,255,255,0.22)"/>
+  <text x="726" y="98" text-anchor="middle" font-size="11" font-weight="600" fill="white">Load Balancer</text>
+  <text x="440" y="128" font-size="10.5" fill="rgba(255,255,255,0.7)">⟶ Failover proxy in 2–3 s · Health check continui · VIP condiviso · SSL termination</text>
+
+  <!-- PIANO 2: Dati -->
+  <rect x="40" y="148" width="740" height="68" rx="12" fill="url(#g2)" filter="url(#shadow)"/>
+  <!-- Icon: database -->
+  <ellipse cx="88" cy="164" rx="16" ry="6" fill="none" stroke="white" stroke-width="2"/>
+  <rect x="72" y="164" width="32" height="24" fill="none" stroke="white" stroke-width="2"/>
+  <ellipse cx="88" cy="188" rx="16" ry="6" fill="none" stroke="white" stroke-width="2"/>
+  <line x1="72" y1="172" x2="72" y2="188" stroke="white" stroke-width="1"/>
+  <line x1="104" y1="172" x2="104" y2="188" stroke="white" stroke-width="1"/>
+
+  <text x="125" y="175" font-size="16" font-weight="700" fill="white">Piano dei Dati</text>
+  <text x="125" y="192" font-size="12" fill="rgba(255,255,255,0.85)">Come rendo i dati sempre integri e disponibili?</text>
+  
+  <rect x="440" y="158" width="52" height="24" rx="12" fill="rgba(255,255,255,0.22)"/>
+  <text x="466" y="174" text-anchor="middle" font-size="11" font-weight="600" fill="white">DRBD</text>
+  <rect x="501" y="158" width="80" height="24" rx="12" fill="rgba(255,255,255,0.22)"/>
+  <text x="541" y="174" text-anchor="middle" font-size="11" font-weight="600" fill="white">HCI / Ceph</text>
+  <rect x="590" y="158" width="60" height="24" rx="12" fill="rgba(255,255,255,0.22)"/>
+  <text x="620" y="174" text-anchor="middle" font-size="11" font-weight="600" fill="white">VMware FT</text>
+  <rect x="659" y="158" width="50" height="24" rx="12" fill="rgba(255,255,255,0.22)"/>
+  <text x="684" y="174" text-anchor="middle" font-size="11" font-weight="600" fill="white">RAID/ZFS</text>
+  <text x="440" y="204" font-size="10.5" fill="rgba(255,255,255,0.7)">⟶ Replica sincrona · RPO &lt; 1 s · Nessun dato perso al failover · RAID-1 di rete</text>
+
+  <!-- PIANO 3: Ripristino -->
+  <rect x="40" y="256" width="740" height="68" rx="12" fill="url(#g3)" filter="url(#shadow)"/>
+  <!-- Icon: restore/clock arrow -->
+  <circle cx="88" cy="290" r="18" fill="none" stroke="white" stroke-width="2"/>
+  <path d="M76,282 Q80,272 90,272 Q100,272 104,282" fill="none" stroke="white" stroke-width="2"/>
+  <polygon points="76,282 70,277 80,275" fill="white"/>
+  <line x1="88" y1="281" x2="88" y2="291" stroke="white" stroke-width="2"/>
+  <line x1="88" y1="291" x2="95" y2="296" stroke="white" stroke-width="2"/>
+
+  <text x="125" y="282" font-size="16" font-weight="700" fill="white">Piano del Ripristino</text>
+  <text x="125" y="299" font-size="12" fill="rgba(255,255,255,0.85)">Come torno a uno stato precedente sano?</text>
+  
+  <rect x="440" y="265" width="66" height="24" rx="12" fill="rgba(255,255,255,0.22)"/>
+  <text x="473" y="281" text-anchor="middle" font-size="11" font-weight="600" fill="white">Snapshot</text>
+  <rect x="515" y="265" width="82" height="24" rx="12" fill="rgba(255,255,255,0.22)"/>
+  <text x="556" y="281" text-anchor="middle" font-size="11" font-weight="600" fill="white">Backup su NAS</text>
+  <rect x="606" y="265" width="90" height="24" rx="12" fill="rgba(255,255,255,0.22)"/>
+  <text x="651" y="281" text-anchor="middle" font-size="11" font-weight="600" fill="white">Offsite / WORM</text>
+  <text x="440" y="311" font-size="10.5" fill="rgba(255,255,255,0.7)">⟶ Rollback istantaneo · Protezione ransomware · Regola 3-2-1 · Conservazione a norma</text>
+
+  <!-- Warning box at bottom -->
+  <rect x="40" y="344" width="740" height="60" rx="10" fill="#fef9c3" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="68" y="363" font-size="13" font-weight="700" fill="#92400e">⚠  I tre piani sono complementari, non alternativi</text>
+  <text x="68" y="381" font-size="11.5" fill="#78350f">La replica (Piano 2) propaga fedelmente anche uno stato corrotto. Il backup (Piano 3) è l'unica difesa contro</text>
+  <text x="68" y="396" font-size="11.5" fill="#78350f">ransomware ed errori umani — e resta necessario anche con la migliore architettura HCI.</text>
+</svg>

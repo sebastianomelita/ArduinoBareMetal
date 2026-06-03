@@ -1,0 +1,128 @@
+<svg viewBox="0 0 820 460" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg3" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </linearGradient>
+    <filter id="sh3">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#2563eb22"/>
+    </filter>
+    <filter id="sh3b">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00000015"/>
+    </filter>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arr2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#dc2626"/>
+    </marker>
+    <marker id="arr3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <rect width="820" height="460" fill="url(#bg3)" rx="16"/>
+  <text x="410" y="34" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">Piano del Servizio: VRRP + HAProxy + DNAT</text>
+  <text x="410" y="52" text-anchor="middle" font-size="11.5" fill="#475569">Come il servizio rimane raggiungibile anche durante un guasto</text>
+
+  <!-- CLIENT -->
+  <rect x="30" y="190" width="90" height="60" rx="10" fill="#1e293b" filter="url(#sh3b)"/>
+  <text x="75" y="216" text-anchor="middle" font-size="11" font-weight="700" fill="white">CLIENT</text>
+  <!-- monitor icon -->
+  <rect x="58" y="221" width="34" height="22" rx="3" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="75" y1="243" x2="75" y2="248" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="69" y1="248" x2="81" y2="248" stroke="#94a3b8" stroke-width="1.5"/>
+
+  <!-- Arrow: client → VIP -->
+  <line x1="122" y1="220" x2="165" y2="220" stroke="#2563eb" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="144" y="214" text-anchor="middle" font-size="9" fill="#2563eb">HTTPS</text>
+
+  <!-- VIP bubble -->
+  <ellipse cx="210" cy="220" rx="40" ry="24" fill="#2563eb" filter="url(#sh3)"/>
+  <text x="210" y="216" text-anchor="middle" font-size="10" font-weight="700" fill="white">VIP</text>
+  <text x="210" y="229" text-anchor="middle" font-size="9" fill="#bfdbfe">10.0.0.1</text>
+
+  <!-- VRRP label -->
+  <rect x="168" y="256" width="84" height="24" rx="6" fill="#1d4ed8" opacity="0.85"/>
+  <text x="210" y="272" text-anchor="middle" font-size="10" font-weight="700" fill="white">VRRP keepalived</text>
+
+  <!-- Arrow VIP → Master -->
+  <line x1="252" y1="206" x2="318" y2="165" stroke="#16a34a" stroke-width="2" marker-end="url(#arr3)"/>
+  <!-- Arrow VIP ⟶ Slave (dashed, standby) -->
+  <line x1="252" y1="234" x2="318" y2="275" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+  <!-- PROXY MASTER -->
+  <rect x="320" y="118" width="140" height="90" rx="12" fill="white" stroke="#16a34a" stroke-width="2.5" filter="url(#sh3)"/>
+  <rect x="320" y="118" width="140" height="26" rx="12" fill="#16a34a"/>
+  <rect x="320" y="132" width="140" height="12" fill="#16a34a"/>
+  <text x="390" y="134" text-anchor="middle" font-size="11" font-weight="700" fill="white">PROXY MASTER</text>
+  <text x="390" y="153" text-anchor="middle" font-size="10" fill="#166534">HAProxy / Nginx</text>
+  <text x="390" y="167" text-anchor="middle" font-size="9.5" fill="#374151">health check ogni 500 ms</text>
+  <text x="390" y="180" text-anchor="middle" font-size="9.5" fill="#374151">SSL termination · ALG</text>
+  <rect x="335" y="188" width="110" height="16" rx="8" fill="#dcfce7"/>
+  <text x="390" y="199" text-anchor="middle" font-size="9" font-weight="600" fill="#14532d">● ATTIVO — detiene il VIP</text>
+
+  <!-- PROXY SLAVE -->
+  <rect x="320" y="248" width="140" height="80" rx="12" fill="white" stroke="#94a3b8" stroke-width="1.5" filter="url(#sh3b)" opacity="0.85"/>
+  <rect x="320" y="248" width="140" height="26" rx="12" fill="#94a3b8"/>
+  <rect x="320" y="262" width="140" height="12" fill="#94a3b8"/>
+  <text x="390" y="264" text-anchor="middle" font-size="11" font-weight="700" fill="white">PROXY SLAVE</text>
+  <text x="390" y="283" text-anchor="middle" font-size="10" fill="#374151">HAProxy / Nginx</text>
+  <text x="390" y="297" text-anchor="middle" font-size="9.5" fill="#374151">in ascolto dell'heartbeat</text>
+  <rect x="335" y="308" width="110" height="16" rx="8" fill="#f1f5f9"/>
+  <text x="390" y="319" text-anchor="middle" font-size="9" font-weight="600" fill="#64748b">◌ STANDBY — pronto al takeover</text>
+
+  <!-- Heartbeat double arrow -->
+  <line x1="390" y1="210" x2="390" y2="246" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="404" y="231" font-size="9" fill="#d97706">heartbeat</text>
+
+  <!-- Failover label -->
+  <rect x="460" y="245" width="120" height="34" rx="8" fill="#fef9c3" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="520" y="259" text-anchor="middle" font-size="10" font-weight="700" fill="#78350f">⚡ Failover</text>
+  <text x="520" y="272" text-anchor="middle" font-size="9" fill="#92400e">Slave acquisisce VIP in 2–3 s</text>
+  <line x1="460" y1="261" x2="461" y2="262" stroke="none"/>
+
+  <!-- Arrow: Master → Backend pool -->
+  <line x1="462" y1="163" x2="554" y2="163" stroke="#16a34a" stroke-width="2" marker-end="url(#arr3)"/>
+  <text x="508" y="157" text-anchor="middle" font-size="9" fill="#15803d">DNAT / load balance</text>
+
+  <!-- BACKEND POOL -->
+  <rect x="556" y="88" width="230" height="220" rx="14" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2" filter="url(#sh3b)"/>
+  <text x="671" y="110" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">BACKEND POOL</text>
+  <text x="671" y="125" text-anchor="middle" font-size="10" fill="#64748b">server web / applicativi</text>
+
+  <!-- Server 1 (healthy) -->
+  <rect x="574" y="133" width="90" height="52" rx="8" fill="white" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="619" y="152" text-anchor="middle" font-size="10" font-weight="600" fill="#166534">Server 1</text>
+  <rect x="580" y="158" width="78" height="20" rx="5" fill="#dcfce7"/>
+  <text x="619" y="172" text-anchor="middle" font-size="9" fill="#14532d">● UP · risponde</text>
+
+  <!-- Server 2 (healthy) -->
+  <rect x="574" y="197" width="90" height="52" rx="8" fill="white" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="619" y="216" text-anchor="middle" font-size="10" font-weight="600" fill="#166534">Server 2</text>
+  <rect x="580" y="222" width="78" height="20" rx="5" fill="#dcfce7"/>
+  <text x="619" y="236" text-anchor="middle" font-size="9" fill="#14532d">● UP · risponde</text>
+
+  <!-- Server 3 (down) -->
+  <rect x="672" y="165" width="96" height="52" rx="8" fill="white" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="720" y="184" text-anchor="middle" font-size="10" font-weight="600" fill="#dc2626">Server 3</text>
+  <rect x="678" y="190" width="84" height="20" rx="5" fill="#fee2e2"/>
+  <text x="720" y="204" text-anchor="middle" font-size="9" fill="#991b1b">✕ DOWN · escluso</text>
+  <!-- X over it -->
+  <line x1="672" y1="165" x2="768" y2="217" stroke="#dc262640" stroke-width="2"/>
+  <line x1="768" y1="165" x2="672" y2="217" stroke="#dc262640" stroke-width="2"/>
+
+  <!-- Health check arrows -->
+  <line x1="556" y1="155" x2="556" y2="165" stroke="none"/>
+  <path d="M 547,163 L 572,163" stroke="#16a34a" stroke-width="1" marker-end="url(#arr3)" stroke-dasharray="2,2"/>
+  <path d="M 547,223 L 572,223" stroke="#16a34a" stroke-width="1" marker-end="url(#arr3)" stroke-dasharray="2,2"/>
+  <path d="M 547,191 L 670,191" stroke="#dc2626" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arr2)"/>
+
+  <!-- Description box at bottom -->
+  <rect x="40" y="392" width="740" height="54" rx="10" fill="white" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="60" y="412" font-size="12" font-weight="700" fill="#0f172a">Come funziona:</text>
+  <text x="60" y="428" font-size="11" fill="#374151">1. I client raggiungono sempre il VIP (indirizzo virtuale condiviso tra master e slave).</text>
+  <text x="60" y="442" font-size="11" fill="#374151">2. Il proxy master distribuisce il traffico via DNAT ai server backend sani (health check ogni 500 ms).</text>
+  <text x="60" y="429" font-size="11" fill="#374151"/>
+  <!-- Rewrite the box lines -->
+</svg>
