@@ -21,7 +21,7 @@ Servizi:
 - [PVLAN](/approfondimenti/private_vlan.md)
 - [Secure network moderne](/approfondimenti/dispensa_reti_moderne.md)
 - [Autenticazione SSO Active Directory](/approfondimenti/00_dispensa_principale.md)
-- [AContinuità di servizio](/approfondimenti/continuita_di_servizio.md)
+- [Continuità di servizio](/approfondimenti/continuita_di_servizio.md)
   
 ## **Caso d'uso LAN Ethernet** 
 
