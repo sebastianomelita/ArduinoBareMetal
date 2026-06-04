@@ -40,7 +40,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 
 ## **Aspetti critici generali**
 
-- [Aspetti critici generali](aspetti_critici_generali.md)
+- [Aspetti critici generali](approfondimenti/aspetti_critici_generali.md)
 - **Aspetti particolari per Zigbee**
 
      - Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura di posizionare tra essi
