@@ -1,6 +1,6 @@
 # DRBD — Replica dei Dati a Livello di Blocco
 
-> Piano dei Dati · Approfondimento di [continuità di servizio](../continuita_di_servizio.md)
+> Piano dei Dati · Approfondimento di [continuità di servizio](continuita_di_servizio.md)
 
 ## Il problema che risolve
 
