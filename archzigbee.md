@@ -39,23 +39,23 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 <img src="img/zigbeezone.png" alt="alt text" width="800">
 
 ## **Aspetti critici**
-- generali:
+- **generali**:
      - Schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti
   ed edifici chiave e schema (**indoor** ed **outdoor**) dell'infrastruttura, con **etichettatura univoca**
   di tutti gli asset tecnologici di rete.
      - Schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro **ruolo**
   e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7).
-- Utenti e dispositivi
+- **Utenti e dispositivi**
      - Tipologia di **divisione in gruppi** degli utenti e loro caratterizzazione (dislocazione fisica
   delimitata oppure diffusa "a macchia di leopardo").
     - Definizione delle **tecnologie dei dispositivi** chiave: sensori/attuatori, **gateway**, e relativo
   **dimensionamento di massima** (quantità, numero di porte, banda, ecc.).
   *(I dettagli specifici — topologie, link radio, tipo di accesso, ecc. — sono nelle sezioni particolari.)*
     - Dislocazione di eventuali **router/Firewall**.
-- Vincoli
+- **Vincoli**
     - Eventuali **vincoli normativi** sulle tecnologie in uso: **cablaggio strutturato**, **potenza**, **EIRP**, **ERP**, **duty cycle**.
 
-- Indirizzamento e routing
+- **Indirizzamento e routing**
     - **Subnetting** e definizione degli indirizzi (gruppi di utenti, server farm) e degli **indirizzi dei server**.
     - Definizione posizione dei **servizi di sistema** (DHCP, DNS), dislocati a scelta a bordo del **FW**,
   collegati al **CS**, o inseriti in una **server farm**.
@@ -63,7 +63,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
   delle **tabelle di routing** più significative.
   *(Eccezione: nel WiFi Mesh il routing è sempre automatico — vedi sezione dedicata.)*
 
-- Autenticazione
+- **Autenticazione**
      - Definizione delle **tecniche di autenticazione degli utenti** (es. **802.1X**): scelta tra autenticazione
   **L2 EAP** (statica per AP o per utente con **RADIUS**) e autenticazione **L7 con Captive portal**.
      - Definizione delle tecniche di **autenticazione dei webservice** (openid, psw, sessioni, ecc.).
@@ -71,7 +71,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
      - Definizione delle tecniche di **autenticazione dei nodi sensori/attuatori** (certificati, psw, preshared key, ecc.).
      - Definizione delle tecniche di **autenticazione dei nodi di elaborazione/pubblicazione** (certificati, psw, preshared key, ecc.).
      - Definizione delle tecniche di **autenticazione dei nodi di smistamento** (certificati, vpn, ecc.).
-- Applicazione e dati IoT
+- **Applicazione e dati IoT**
      - Definizione della posizione del **broker MQTT**.
      - Definizione dei **topic** utili per i casi d'uso richiesti.
      - Definizione dei **messaggi JSON** per alcuni dispositivi IoT significativi in merito a **comandi**,
