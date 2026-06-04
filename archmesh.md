@@ -99,12 +99,12 @@ A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di i
      - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
      - Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.);
          reciproca (backhaul/link radio) o tra nodi e servizi (es. AP su RADIUS).
-      - Definizione del **tipo di rete mesh**: **routed mesh** vs **bridged mesh**.
-      - **Routing sempre automatico** (AODV, OLSR, Babel) con definizione automatica delle subnet dei link
+     - Definizione del **tipo di rete mesh**: **routed mesh** vs **bridged mesh**.
+     - **Routing sempre automatico** (AODV, OLSR, Babel) con definizione automatica delle subnet dei link
          tra i nodi router (**LLA**, **SLAAC**). *(Sostituisce il routing statico/dinamico generale.)*
-      - Se presenti VLAN, definizione del tipo di **associazione VLAN↔SSID** (statica o dinamica con
+     - Se presenti VLAN, definizione del tipo di **associazione VLAN↔SSID** (statica o dinamica con
          **Tunnel-Private-Group-Id**).
-      - Definizione della **posizione del controller degli AP**.
+     - Definizione della **posizione del controller degli AP**.
 
 
 ## **Progetto di esempio completo**
