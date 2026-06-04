@@ -1,0 +1,90 @@
+<svg viewBox="0 0 860 620" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="bg9" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0f4ff"/><stop offset="100%" stop-color="#e8eaf6"/></linearGradient>
+    <filter id="sh9"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#4f46e522"/></filter>
+    <filter id="sh9b"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#00000014"/></filter>
+    <marker id="g_cy" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L0,7 L9,3.5 z" fill="#0891b2"/></marker>
+    <marker id="g_bl" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L0,7 L9,3.5 z" fill="#2563eb"/></marker>
+    <marker id="g_sl" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto"><path d="M0,0 L0,7 L9,3.5 z" fill="#475569"/></marker>
+  </defs>
+
+  <rect width="860" height="620" fill="url(#bg9)" rx="16"/>
+  <text x="430" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a">Join Server in Active-Active Geografico</text>
+  <text x="430" y="54" text-anchor="middle" font-size="12.5" fill="#475569">Due datacenter, entrambi attivi — nessuna istanza in standby inutilizzata</text>
+
+  <!-- bracket label -->
+  <rect x="110" y="72" width="640" height="22" rx="11" fill="#4f46e5"/>
+  <text x="430" y="87" text-anchor="middle" font-size="11" font-weight="700" fill="white">JOIN SERVER · active-active  —  entrambe le sedi servono richieste di join</text>
+
+  <!-- JOIN SERVER #1 (Milano) -->
+  <rect x="110" y="104" width="250" height="156" rx="13" fill="white" stroke="#4f46e5" stroke-width="2.5" filter="url(#sh9)"/>
+  <rect x="110" y="104" width="250" height="28" rx="13" fill="#4f46e5"/>
+  <rect x="110" y="120" width="250" height="12" fill="#4f46e5"/>
+  <text x="235" y="123" text-anchor="middle" font-size="12.5" font-weight="700" fill="white">Join Server #1</text>
+  <text x="235" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#3730a3">DC Milano</text>
+  <!-- HSM badge -->
+  <rect x="126" y="160" width="104" height="40" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="178" y="177" text-anchor="middle" font-size="10.5" font-weight="700" fill="#78350f">HSM</text>
+  <text x="178" y="191" text-anchor="middle" font-size="9" fill="#92400e">chiavi root</text>
+  <!-- DB badge -->
+  <rect x="238" y="160" width="106" height="40" rx="8" fill="#cffafe" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="291" y="177" text-anchor="middle" font-size="10.5" font-weight="700" fill="#155e75">DB chiavi</text>
+  <text x="291" y="191" text-anchor="middle" font-size="9" fill="#0e7490">session keys</text>
+  <!-- status -->
+  <rect x="126" y="208" width="218" height="20" rx="10" fill="#dcfce7"/>
+  <text x="235" y="222" text-anchor="middle" font-size="9.5" font-weight="700" fill="#14532d">● ATTIVO — serve richieste</text>
+  <text x="235" y="246" text-anchor="middle" font-size="9" fill="#64748b">deriva le session key (OTAA join)</text>
+
+  <!-- JOIN SERVER #2 (Roma) -->
+  <rect x="500" y="104" width="250" height="156" rx="13" fill="white" stroke="#4f46e5" stroke-width="2.5" filter="url(#sh9)"/>
+  <rect x="500" y="104" width="250" height="28" rx="13" fill="#4f46e5"/>
+  <rect x="500" y="120" width="250" height="12" fill="#4f46e5"/>
+  <text x="625" y="123" text-anchor="middle" font-size="12.5" font-weight="700" fill="white">Join Server #2</text>
+  <text x="625" y="150" text-anchor="middle" font-size="12" font-weight="700" fill="#3730a3">DC Roma</text>
+  <rect x="516" y="160" width="104" height="40" rx="8" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="568" y="177" text-anchor="middle" font-size="10.5" font-weight="700" fill="#78350f">HSM</text>
+  <text x="568" y="191" text-anchor="middle" font-size="9" fill="#92400e">chiavi root</text>
+  <rect x="628" y="160" width="106" height="40" rx="8" fill="#cffafe" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="681" y="177" text-anchor="middle" font-size="10.5" font-weight="700" fill="#155e75">DB chiavi</text>
+  <text x="681" y="191" text-anchor="middle" font-size="9" fill="#0e7490">session keys</text>
+  <rect x="516" y="208" width="218" height="20" rx="10" fill="#dcfce7"/>
+  <text x="625" y="222" text-anchor="middle" font-size="9.5" font-weight="700" fill="#14532d">● ATTIVO — serve richieste</text>
+  <text x="625" y="246" text-anchor="middle" font-size="9" fill="#64748b">deriva le session key (OTAA join)</text>
+
+  <!-- SYNC REPLICATION between the two JS (gap 360..500) -->
+  <rect x="364" y="146" width="132" height="20" rx="10" fill="#0891b2"/>
+  <text x="430" y="160" text-anchor="middle" font-size="9.5" font-weight="700" fill="white">replica sincrona</text>
+  <line x1="362" y1="178" x2="498" y2="178" stroke="#0891b2" stroke-width="2" marker-end="url(#g_cy)"/>
+  <line x1="498" y1="194" x2="362" y2="194" stroke="#0891b2" stroke-width="2" marker-end="url(#g_cy)"/>
+  <text x="430" y="212" text-anchor="middle" font-size="8.5" fill="#0e7490">HSM + DB chiavi</text>
+  <text x="430" y="224" text-anchor="middle" font-size="8.5" fill="#0e7490">allineati tra le sedi</text>
+
+  <!-- arrows GSLB -> JS (request routing, upward) -->
+  <line x1="350" y1="326" x2="250" y2="262" stroke="#2563eb" stroke-width="2" marker-end="url(#g_bl)"/>
+  <line x1="510" y1="326" x2="610" y2="262" stroke="#2563eb" stroke-width="2" marker-end="url(#g_bl)"/>
+
+  <!-- GSLB box -->
+  <rect x="270" y="328" width="320" height="58" rx="12" fill="#2563eb" filter="url(#sh9)"/>
+  <text x="430" y="352" text-anchor="middle" font-size="13" font-weight="700" fill="white">Load balancer geografico</text>
+  <text x="430" y="372" text-anchor="middle" font-size="11" fill="#bfdbfe">anycast / GSLB — instrada al Join Server più vicino e sano</text>
+
+  <!-- arrow NS -> GSLB (upward) -->
+  <line x1="430" y1="446" x2="430" y2="390" stroke="#475569" stroke-width="2" marker-end="url(#g_sl)"/>
+  <text x="500" y="420" text-anchor="middle" font-size="9.5" fill="#475569">richieste di join</text>
+
+  <!-- NETWORK SERVERS box -->
+  <rect x="180" y="448" width="500" height="86" rx="13" fill="#f8fafc" stroke="#cbd5e1" stroke-width="2" filter="url(#sh9b)"/>
+  <text x="430" y="470" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1e293b">Network Server</text>
+  <rect x="200" y="482" width="220" height="42" rx="9" fill="white" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="310" y="500" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0e7490">edge — negli smart-gate</text>
+  <text x="310" y="515" text-anchor="middle" font-size="9" fill="#475569">vicino ai dispositivi LoRaWAN</text>
+  <rect x="440" y="482" width="220" height="42" rx="9" fill="white" stroke="#0891b2" stroke-width="1.5"/>
+  <text x="550" y="500" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0e7490">regionali — nei CdC</text>
+  <text x="550" y="515" text-anchor="middle" font-size="9" fill="#475569">aggregazione e routing</text>
+
+  <!-- CAVEAT band -->
+  <rect x="30" y="548" width="800" height="60" rx="11" fill="#fff1f2" stroke="#e11d48" stroke-width="1.5"/>
+  <text x="48" y="568" font-size="12" font-weight="700" fill="#9f1239">⚠  Il caso più delicato: active-active geografico su un servizio di chiavi</text>
+  <text x="48" y="585" font-size="10.5" fill="#881337">• La replica sincrona inter-DC fa pagare a ogni join la latenza Milano–Roma (RTT ~5–10 ms).   • In partizione di rete i due DB chiavi divergono → split-brain (teorema CAP).</text>
+  <text x="48" y="600" font-size="10.5" fill="#881337">• Mitigazione: quorum/arbitro su un 3° sito (come DRBD/Ceph), oppure scritture attive su una sola sede e lettura ovunque.</text>
+</svg>
