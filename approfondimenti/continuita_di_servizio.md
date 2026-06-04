@@ -1,11 +1,3 @@
->[Torna a reti di sensori](../sensornetworkshort.md)>[Torna a reti ethernet](../archeth.md)
-
-- [Dettaglio architettura Zigbee](../archzigbee.md)
-- [Dettaglio architettura BLE](../archble.md)
-- [Dettaglio architettura WiFi infrastruttura](../archwifi.md)
-- [Dettaglio architettura WiFi mesh](../archmesh.md) 
-- [Dettaglio architettura LoraWAN](../lorawanclasses.md) 
-
 # Continuità di Servizio
 ## Guida Pratica alle Tecnologie per l'Alta Disponibilità
 
@@ -77,7 +69,7 @@ Il proxy attivo distribuisce le connessioni in ingresso ai server backend attrav
 
 **SSL Termination**: il proxy apre due connessioni TCP separate — HTTPS col client, HTTP (o HTTPS separato) con i backend. Questo alleggerisce i server dal carico crittografico e permette il routing L7 su traffico cifrato.
 
-> **Approfondisci:** [VRRP e keepalived]( vrrp_keepalived.md) · [DNAT, clustering e load balancing]( dnat_load_balancing.md)
+> **Approfondisci:** [VRRP e keepalived](tecniche/vrrp_keepalived.md) · [DNAT, clustering e load balancing](tecniche/dnat_load_balancing.md)
 
 ---
 
@@ -111,7 +103,7 @@ In Proxmox, ZFS e Ceph si usano insieme: ZFS per le prestazioni di I/O locali e 
 
 VMware FT sincronizza non solo i dati disco ma **tutto lo stato della VM** — memoria, registri CPU, stato dei dispositivi. La VM slave è già in esecuzione in parallelo sul nodo secondario. Al guasto il failover avviene senza riavvio e senza interruzione. RPO e MTTR entrambi prossimi a zero. Costo: consumo di banda significativo e obbligo di host fisicamente separato.
 
-> **Approfondisci:** [DRBD]( drbd.md) · [HCI e Ceph]( hci_ceph.md) · [RAID e ZFS]( zfs_raid.md) · [VMware Fault Tolerance]( vmware_ft.md)
+> **Approfondisci:** [DRBD](tecniche/drbd.md) · [HCI e Ceph](tecniche/hci_ceph.md) · [RAID e ZFS](tecniche/zfs_raid.md) · [VMware Fault Tolerance](tecniche/vmware_ft.md)
 
 ---
 
@@ -149,7 +141,7 @@ Il Recovery Point Objective (la massima perdita di dati accettabile) dipende dir
 | Snapshot orario | ~59 minuti | Studio professionale, PA media |
 | Backup notturno | ~23 ore | Scuola, servizi interni |
 
-> **Approfondisci:** [Backup, regola 3-2-1, snapshot e WORM]( backup_321_worm.md)
+> **Approfondisci:** [Backup, regola 3-2-1, snapshot e WORM](tecniche/backup_321_worm.md)
 
 ---
 
@@ -241,13 +233,14 @@ Quale guasto preoccupa di più?
 
 Per uno studio in profondità, ogni tecnica ha una scheda dedicata con meccanismo di funzionamento, modalità di guasto, configurazione di massima e link alla documentazione ufficiale:
 
-- [VRRP e keepalived]( vrrp_keepalived.md) — ridondanza del punto di ingresso
-- [DNAT, clustering e load balancing]( dnat_load_balancing.md) — distribuzione del traffico, L4/L7, ALG, SSL termination
-- [DRBD]( drbd.md) — replica a blocchi, split-brain, quorum, STONITH
-- [HCI e Ceph]( hci_ceph.md) — storage distribuito, CRUSH, OSD, replica vs erasure coding
-- [RAID e ZFS]( zfs_raid.md) — protezione dei dischi nel nodo, RAIDZ, checksum
-- [VMware Fault Tolerance]( vmware_ft.md) — continuità senza riavvio
-- [Backup, 3-2-1, snapshot e WORM]( backup_321_worm.md) — il piano del ripristino e la difesa anti-ransomware
+- [VRRP e keepalived](tecniche/vrrp_keepalived.md) — ridondanza del punto di ingresso
+- [DNAT, clustering e load balancing](tecniche/dnat_load_balancing.md) — distribuzione del traffico, L4/L7, ALG, SSL termination
+- [DRBD](tecniche/drbd.md) — replica a blocchi, split-brain, quorum, STONITH
+- [HCI e Ceph](tecniche/hci_ceph.md) — storage distribuito, CRUSH, OSD, replica vs erasure coding
+- [RAID e ZFS](tecniche/zfs_raid.md) — protezione dei dischi nel nodo, RAIDZ, checksum
+- [VMware Fault Tolerance](tecniche/vmware_ft.md) — continuità senza riavvio
+- [Backup, 3-2-1, snapshot e WORM](tecniche/backup_321_worm.md) — il piano del ripristino e la difesa anti-ransomware
+- [HA geografica](tecniche/ha_geografica.md) — active-active, active-passive e quorum tra datacenter (oltre il singolo sito)
 
 ---
 
