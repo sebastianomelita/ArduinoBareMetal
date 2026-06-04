@@ -10,6 +10,18 @@
 - [Dettaglio architettura 5G/6G](ranprivata.md)
 - [Dettaglio architettura RFID](archrfid.md)
 
+Servizi:
+- [DNS](https://it.wikipedia.org/wiki/Domain_Name_System)
+- [DHCP](https://it.wikipedia.org/wiki/Dynamic_Host_Configuration_Protocol)
+- [PVLAN](/approfondimenti/private_vlan.md)
+- [VPN di reti Ethernet](ethvpn.md).
+- [Secure network moderne](/approfondimenti/dispensa_reti_moderne.md)
+- [Firewall](firewall.md).
+- [Autenticazione 802.1X](radius.md)
+- [Autenticazione SSO Active Directory](/approfondimenti/00_dispensa_principale.md)
+- [Continuità di servizio](/approfondimenti/continuita_di_servizio.md)
+- [Backup](backup.md).
+
 ---
 
 ## **Caso d'uso BLE** 
