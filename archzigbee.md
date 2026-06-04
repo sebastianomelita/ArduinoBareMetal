@@ -39,18 +39,11 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 <img src="img/zigbeezone.png" alt="alt text" width="800">
 
 ## **Aspetti critici**
-
-## Aspetti comuni (caso generale)
-
-Elementi che ricorrono (in modo identico o quasi) in **tutte** le sezioni — Zigbee, Ethernet, BLE,
-WiFi infrastruttura, WiFi Mesh, LoRaWAN, RFID. Vanno sempre documentati bilanciando le convenienze
-e argomentando le scelte.
-
-### Schema fisico e logico
-- Schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti
+- generali:
+     - Schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti
   ed edifici chiave e schema (**indoor** ed **outdoor**) dell'infrastruttura, con **etichettatura univoca**
   di tutti gli asset tecnologici di rete.
-- Schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro **ruolo**
+     - Schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro **ruolo**
   e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7).
 
 ### Utenti e dispositivi
