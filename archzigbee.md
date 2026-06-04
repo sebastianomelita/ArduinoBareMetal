@@ -39,7 +39,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 <img src="img/zigbeezone.png" alt="alt text" width="800">
 
 ## **Aspetti critici**
-- **generali**:
+- **schema fisico**:
      - Schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti
   ed edifici chiave e schema (**indoor** ed **outdoor**) dell'infrastruttura, con **etichettatura univoca**
   di tutti gli asset tecnologici di rete.
@@ -80,18 +80,16 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
   **sede dell'elaborazione dei comandi** più opportuna (locale/edge vs remota on-premise/cloud).
      - Definizione (anche in **pseudocodice**) delle **funzioni del firmware** di bordo dei dispositivi IoT.
 
----
+- **Aspetti particolari per Zigbee**
 
-## Aspetti particolari per Zigbee
-
-- Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura di posizionare tra essi
+     - Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura di posizionare tra essi
   almeno **un gateway** che permetta l'accesso a una rete IP. Progettare dei **percorsi alternativi
   (backup)** in caso di guasto del gateway principale.
-- Tecnologie dei dispositivi: definizione della **tipologia di servizio** (polling sincrono,
+     - Tecnologie dei dispositivi: definizione della **tipologia di servizio** (polling sincrono,
   comando asincrono, ecc.).
-- Gestire eventuali **vincoli di prossimità** (mediante controllo di potenza o gestione del roaming)
+      - Gestire eventuali **vincoli di prossimità** (mediante controllo di potenza o gestione del roaming)
   ed eventuali **vincoli di posizionamento** (mediante trilaterazione).
-- Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
+     - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
   **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
 
 
