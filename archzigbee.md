@@ -39,7 +39,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 <img src="img/zigbeezone.png" alt="alt text" width="800">
 
 ## **Aspetti critici**
-- **schema fisico**:
+- **Schema fisico**:
      - Schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti
   ed edifici chiave e schema (**indoor** ed **outdoor**) dell'infrastruttura, con **etichettatura univoca**
   di tutti gli asset tecnologici di rete.
