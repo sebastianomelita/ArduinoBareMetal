@@ -86,18 +86,18 @@ L'RFID è dunque **complementare** alle reti di sensori: in molti scenari si **i
      - Definizione (anche in **pseudocodice**) delle **funzioni del firmware** di bordo dei dispositivi IoT.
 
 - **Aspetti particolari per RFID**
-      - **Tecnologie dei tag** da usare: **passivi**, **attivi**, **semi-passivi (BAP)**. La scelta determina
+     - **Tecnologie dei tag** da usare: **passivi**, **attivi**, **semi-passivi (BAP)**. La scelta determina
   **portata**, **costo** e **durata**.
-      - **Scelta della frequenza di lavoro** (**LF**, **HF**, **UHF**, **microonde**) in funzione di
+     - **Scelta della frequenza di lavoro** (**LF**, **HF**, **UHF**, **microonde**) in funzione di
         **materiali**, **distanza** e **vincoli normativi nazionali**.
-      - **Densità dei tag** simultanei nel campo (**dense reader environment**) e necessità di eventuali
+     - **Densità dei tag** simultanei nel campo (**dense reader environment**) e necessità di eventuali
         protocolli di **anticollisione**.
-      - Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura che tra essi esista
+     - Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura che tra essi esista
         almeno **un gateway** che permetta l'accesso a una rete IP. Progettare dei **percorsi alternativi
         (backup)** in caso di guasto del gateway principale.
-      - Gestire eventuali **vincoli di prossimità** (controllo di potenza o gestione del roaming) ed eventuali
+       Gestire eventuali **vincoli di prossimità** (controllo di potenza o gestione del roaming) ed eventuali
         **vincoli di posizionamento** (trilaterazione).
-      - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
+     - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
         **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
 
 ---
