@@ -84,7 +84,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
   **Network Server** sono individualmente o entrambi parte del router/gateway verso la rete IP,
   oppure se sono **a comune** con più reti LoRaWAN.
      - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
-  **sede dell'elaborazione dei comandi** più opportuna dove effettuare decifrazione del payload. Ovvero stabilire se l'AS debba stare o meno sul GW insieme al PF e al NS.
+  **sede dell'elaborazione dei comandi** più opportuna dove effettuare decifrazione del payload. Ovvero, stabilire se l'AS debba stare o meno sul GW insieme al PF e al NS.
      - Gestire i **vincoli di prossimità** (indoor/outdoor, controllo potenza/roaming) e i
   **vincoli di posizionamento** (trilaterazione).
 
