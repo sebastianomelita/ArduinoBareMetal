@@ -82,9 +82,8 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 
 ---
 
-## Aspetti particolari per tecnologia
+## Aspetti particolari per Zigbee
 
-### Zigbee
 - Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura di posizionare tra essi
   almeno **un gateway** che permetta l'accesso a una rete IP. Progettare dei **percorsi alternativi
   (backup)** in caso di guasto del gateway principale.
