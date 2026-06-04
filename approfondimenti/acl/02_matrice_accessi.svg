@@ -1,0 +1,91 @@
+<svg viewBox="0 0 1000 560" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif,'Segoe UI',Roboto,system-ui,sans-serif">
+  <defs>
+    <style>
+      .title{font-size:22px;font-weight:700;fill:#0f172a;}
+      .sub{font-size:13px;fill:#64748b;}
+      .col{font-size:12.5px;font-weight:700;fill:#0f172a;}
+      .row{font-size:13px;font-weight:700;}
+      .cell{font-size:14px;font-weight:700;}
+      .note{font-size:11px;fill:#475569;}
+    </style>
+  </defs>
+  <rect width="1000" height="560" fill="#fbfbf8"/>
+  <text x="40" y="46" class="title">Matrice degli accessi (chi può raggiungere chi)</text>
+  <text x="40" y="68" class="sub">Sorgente (riga) → destinazione (colonna) · il traffico intra-subnet resta a livello L2 e non transita dal router</text>
+
+  <!-- column headers -->
+  <g class="col" text-anchor="middle">
+    <text x="120" y="118" fill="#475569">Da \ Verso</text>
+    <text x="320" y="112">Internet</text>
+    <text x="450" y="106">File server</text><text x="450" y="120">Subnet A</text>
+    <text x="570" y="112">Subnet B</text>
+    <text x="690" y="112">Subnet C</text>
+    <text x="810" y="112">Subnet D</text>
+    <text x="915" y="106">DMZ /</text><text x="915" y="120">Farm</text>
+  </g>
+  <line x1="40" y1="132" x2="970" y2="132" stroke="#cbd5e1" stroke-width="1.5"/>
+
+  <!-- rows -->
+  <!-- row template: y centers at 175, 245, 315, 385 -->
+  <!-- ROW A -->
+  <rect x="40" y="146" width="160" height="58" rx="8" fill="#eff4ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="52" y="172" class="row" fill="#1d4ed8">Subnet A</text>
+  <text x="52" y="190" class="note">Utenti standard</text>
+
+  <!-- ROW B -->
+  <rect x="40" y="216" width="160" height="58" rx="8" fill="#eff4ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="52" y="242" class="row" fill="#1d4ed8">Subnet B</text>
+  <text x="52" y="260" class="note">Accesso risorse</text>
+
+  <!-- ROW C -->
+  <rect x="40" y="286" width="160" height="58" rx="8" fill="#f5f3ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="52" y="312" class="row" fill="#6d28d9">Subnet C</text>
+  <text x="52" y="330" class="note">Privilegiato</text>
+
+  <!-- ROW D -->
+  <rect x="40" y="356" width="160" height="58" rx="8" fill="#eff4ff" stroke="#2563eb" stroke-width="1.5"/>
+  <text x="52" y="382" class="row" fill="#1d4ed8">Subnet D</text>
+  <text x="52" y="400" class="note">Solo esterno</text>
+
+  <!-- cells: columns x-centers 320(Internet) 450(srvA) 570(B) 690(C) 810(D) 915(DMZ/Farm); width ~110 -->
+  <!-- helper: PERMIT=green DENY=red NA=gray -->
+  <g class="cell" text-anchor="middle">
+    <!-- Row A -->
+    <rect x="270" y="148" width="100" height="54" rx="8" fill="#dcfce7"/><text x="320" y="181" fill="#15803d">✓</text>
+    <rect x="395" y="148" width="100" height="54" rx="8" fill="#e2e8f0"/><text x="445" y="181" fill="#64748b">— L2</text>
+    <rect x="520" y="148" width="100" height="54" rx="8" fill="#fee2e2"/><text x="570" y="181" fill="#b91c1c">✕</text>
+    <rect x="640" y="148" width="100" height="54" rx="8" fill="#fee2e2"/><text x="690" y="181" fill="#b91c1c">✕</text>
+    <rect x="760" y="148" width="100" height="54" rx="8" fill="#fee2e2"/><text x="810" y="181" fill="#b91c1c">✕</text>
+    <rect x="865" y="148" width="100" height="54" rx="8" fill="#fee2e2"/><text x="915" y="181" fill="#b91c1c">✕</text>
+    <!-- Row B -->
+    <rect x="270" y="218" width="100" height="54" rx="8" fill="#fee2e2"/><text x="320" y="251" fill="#b91c1c">✕</text>
+    <rect x="395" y="218" width="100" height="54" rx="8" fill="#dcfce7"/><text x="445" y="251" fill="#15803d">✓</text>
+    <rect x="520" y="218" width="100" height="54" rx="8" fill="#e2e8f0"/><text x="570" y="251" fill="#64748b">— L2</text>
+    <rect x="640" y="218" width="100" height="54" rx="8" fill="#fee2e2"/><text x="690" y="251" fill="#b91c1c">✕</text>
+    <rect x="760" y="218" width="100" height="54" rx="8" fill="#fee2e2"/><text x="810" y="251" fill="#b91c1c">✕</text>
+    <rect x="865" y="218" width="100" height="54" rx="8" fill="#fee2e2"/><text x="915" y="251" fill="#b91c1c">✕</text>
+    <!-- Row C -->
+    <rect x="270" y="288" width="100" height="54" rx="8" fill="#dcfce7"/><text x="320" y="321" fill="#15803d">✓</text>
+    <rect x="395" y="288" width="100" height="54" rx="8" fill="#dcfce7"/><text x="445" y="321" fill="#15803d">✓</text>
+    <rect x="520" y="288" width="100" height="54" rx="8" fill="#dcfce7"/><text x="570" y="321" fill="#15803d">✓</text>
+    <rect x="640" y="288" width="100" height="54" rx="8" fill="#e2e8f0"/><text x="690" y="321" fill="#64748b">— L2</text>
+    <rect x="760" y="288" width="100" height="54" rx="8" fill="#dcfce7"/><text x="810" y="321" fill="#15803d">✓</text>
+    <rect x="865" y="288" width="100" height="54" rx="8" fill="#dcfce7"/><text x="915" y="321" fill="#15803d">✓</text>
+    <!-- Row D -->
+    <rect x="270" y="358" width="100" height="54" rx="8" fill="#dcfce7"/><text x="320" y="391" fill="#15803d">✓</text>
+    <rect x="395" y="358" width="100" height="54" rx="8" fill="#fee2e2"/><text x="445" y="391" fill="#b91c1c">✕</text>
+    <rect x="520" y="358" width="100" height="54" rx="8" fill="#fee2e2"/><text x="570" y="391" fill="#b91c1c">✕</text>
+    <rect x="640" y="358" width="100" height="54" rx="8" fill="#fee2e2"/><text x="690" y="391" fill="#b91c1c">✕</text>
+    <rect x="760" y="358" width="100" height="54" rx="8" fill="#e2e8f0"/><text x="810" y="391" fill="#64748b">— L2</text>
+    <rect x="865" y="358" width="100" height="54" rx="8" fill="#fee2e2"/><text x="915" y="391" fill="#b91c1c">✕</text>
+  </g>
+
+  <!-- legend -->
+  <g font-size="13px">
+    <rect x="40" y="450" width="18" height="18" rx="4" fill="#dcfce7"/><text x="64" y="464" fill="#334155">✓ consentito (permit)</text>
+    <rect x="240" y="450" width="18" height="18" rx="4" fill="#fee2e2"/><text x="264" y="464" fill="#334155">✕ negato (deny)</text>
+    <rect x="430" y="450" width="18" height="18" rx="4" fill="#e2e8f0"/><text x="454" y="464" fill="#334155">— intra-subnet L2 (non transita dal router)</text>
+  </g>
+  <text x="40" y="510" class="note">Eccezione: il file server 10.0.1.100 può rispondere a B e C — i relativi permit vanno scritti PRIMA dei deny generali della Subnet A (regola più selettiva prima).</text>
+  <text x="40" y="530" class="note">La DMZ e la Server Farm non avviano mai connessioni verso le subnet interne: ✕ in colonna riflette l'isolamento difensivo (lateral-movement contenuto).</text>
+</svg>

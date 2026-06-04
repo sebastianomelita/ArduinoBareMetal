@@ -1,0 +1,64 @@
+<svg viewBox="0 0 1000 540" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif,'Segoe UI',Roboto,system-ui,sans-serif">
+  <defs>
+    <style>
+      .title{font-size:22px;font-weight:700;fill:#0f172a;}
+      .sub{font-size:13px;fill:#64748b;}
+      .tier{font-size:15px;font-weight:700;}
+      .mono{font-size:12px;font-family:ui-monospace,'SF Mono',Menlo,monospace;}
+      .small{font-size:11.5px;fill:#475569;}
+      .acl{font-size:11px;font-weight:700;fill:#c2410c;font-family:ui-monospace,Menlo,monospace;}
+    </style>
+    <marker id="a2" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0f172a"/></marker>
+    <marker id="a3" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#0f766e"/></marker>
+  </defs>
+  <rect width="1000" height="540" fill="#fbfbf8"/>
+  <text x="40" y="46" class="title">Architettura 3-Tier · isolamento del database</text>
+  <text x="40" y="68" class="sub">Il DB risponde solo all'app server e non apre mai connessioni autonome — la keyword <tspan font-family="ui-monospace,Menlo,monospace" font-weight="700">established</tspan> consente solo i pacchetti di ritorno (ACK/RST)</text>
+
+  <!-- Tier 1 -->
+  <rect x="40" y="150" width="220" height="150" rx="12" fill="#eff4ff" stroke="#2563eb" stroke-width="2"/>
+  <text x="150" y="182" text-anchor="middle" class="tier" fill="#1d4ed8">Tier 1 — Client</text>
+  <text x="150" y="208" text-anchor="middle" class="small">Subnet A–D</text>
+  <text x="150" y="232" text-anchor="middle" class="mono" fill="#334155">richieste HTTP/HTTPS</text>
+  <text x="150" y="256" text-anchor="middle" class="small">verso l'app server in DMZ</text>
+
+  <!-- Tier 2 -->
+  <rect x="390" y="150" width="220" height="150" rx="12" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+  <text x="500" y="182" text-anchor="middle" class="tier" fill="#c2410c">Tier 2 — App (DMZ)</text>
+  <text x="500" y="208" text-anchor="middle" class="mono" fill="#334155">10.0.5.100</text>
+  <text x="500" y="232" text-anchor="middle" class="small">elabora le richieste</text>
+  <text x="500" y="256" text-anchor="middle" class="small">interroga il DB sulle</text>
+  <text x="500" y="274" text-anchor="middle" class="small">porte 3306 / 5432</text>
+
+  <!-- Tier 3 -->
+  <rect x="740" y="150" width="220" height="150" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="2"/>
+  <text x="850" y="182" text-anchor="middle" class="tier" fill="#0f766e">Tier 3 — DB (Farm)</text>
+  <text x="850" y="208" text-anchor="middle" class="mono" fill="#334155">10.0.6.100</text>
+  <text x="850" y="232" text-anchor="middle" class="small">risponde solo all'app server</text>
+  <text x="850" y="256" text-anchor="middle" class="small">mai raggiungibile</text>
+  <text x="850" y="274" text-anchor="middle" class="small">direttamente dai client</text>
+
+  <!-- INIT arrows -->
+  <line x1="260" y1="200" x2="388" y2="200" stroke="#0f172a" stroke-width="2.5" marker-end="url(#a2)"/>
+  <line x1="610" y1="200" x2="738" y2="200" stroke="#0f172a" stroke-width="2.5" marker-end="url(#a2)"/>
+  <text x="324" y="190" class="small" font-weight="700">INIT →</text>
+  <text x="660" y="190" class="small" font-weight="700">INIT (SYN) →</text>
+
+  <!-- REPLY arrow -->
+  <line x1="738" y1="262" x2="612" y2="262" stroke="#0f766e" stroke-width="2.5" marker-end="url(#a3)" stroke-dasharray="6 4"/>
+  <text x="640" y="252" class="small" font-weight="700" fill="#0f766e">← REPLY (ACK)</text>
+
+  <!-- ACL labels under interfaces -->
+  <text x="324" y="322" text-anchor="middle" class="acl">ACL-SUBNET-* in</text>
+  <text x="500" y="322" text-anchor="middle" class="acl">ACL-DMZ in · Gi0/5</text>
+  <text x="500" y="340" text-anchor="middle" class="small">permit tcp host .100 host .100 eq 3306/5432</text>
+  <text x="850" y="322" text-anchor="middle" class="acl">ACL-SERVERFARM in · Gi0/6</text>
+  <text x="850" y="340" text-anchor="middle" class="small">permit tcp .100 .100 established</text>
+
+  <!-- key box -->
+  <rect x="40" y="390" width="920" height="120" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="62" y="420" font-size="14px" font-weight="700" fill="#047857">🔑 established — solo risposte TCP</text>
+  <text x="62" y="446" class="small">Corrisponde ai pacchetti con flag ACK o RST già impostati. Un SYN (nuova connessione) non li ha → bloccato.</text>
+  <text x="62" y="468" class="small">Il DB può rispondere ma non può aprire connessioni proprie. Limite: vale solo per TCP e un ACK forgiato passerebbe comunque →</text>
+  <text x="62" y="490" class="small">in produzione si preferisce un firewall stateful reale (ZBF con <tspan font-family="ui-monospace,Menlo,monospace" font-weight="700">inspect</tspan>, vedi Appendice A.7).</text>
+</svg>

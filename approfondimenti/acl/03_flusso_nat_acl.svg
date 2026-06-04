@@ -1,0 +1,59 @@
+<svg viewBox="0 0 1000 470" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif,'Segoe UI',Roboto,system-ui,sans-serif">
+  <defs>
+    <style>
+      .title{font-size:22px;font-weight:700;fill:#0f172a;}
+      .sub{font-size:13px;fill:#64748b;}
+      .stage{font-size:14px;font-weight:700;}
+      .mono{font-size:12px;font-family:ui-monospace,'SF Mono',Menlo,monospace;fill:#334155;}
+      .small{font-size:11px;fill:#475569;}
+    </style>
+    <marker id="arr" markerWidth="12" markerHeight="12" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker>
+  </defs>
+  <rect width="1000" height="470" fill="#fbfbf8"/>
+  <text x="40" y="46" class="title">Caso 5b — il DNAT avviene PRIMA del filtraggio ACL</text>
+  <text x="40" y="68" class="sub">Quando l'ACL WAN valuta il pacchetto, la destinazione è già stata tradotta nell'IP interno del server DMZ</text>
+
+  <!-- flow boxes -->
+  <!-- 1 client/internet -->
+  <rect x="40" y="120" width="160" height="120" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+  <text x="120" y="150" text-anchor="middle" class="stage" fill="#b91c1c">1 · Internet</text>
+  <text x="120" y="178" text-anchor="middle" class="mono">dst = IP-PUB</text>
+  <text x="120" y="196" text-anchor="middle" class="mono">:443</text>
+  <text x="120" y="222" text-anchor="middle" class="small">richiesta HTTPS</text>
+
+  <!-- 2 DNAT -->
+  <rect x="270" y="120" width="180" height="120" rx="12" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+  <text x="360" y="150" text-anchor="middle" class="stage" fill="#4338ca">2 · DNAT (NAT)</text>
+  <text x="360" y="178" text-anchor="middle" class="mono">IP-PUB:443</text>
+  <text x="360" y="196" text-anchor="middle" class="mono">↓ traduce ↓</text>
+  <text x="360" y="214" text-anchor="middle" class="mono" fill="#4338ca">10.0.5.50:443</text>
+
+  <!-- 3 ACL -->
+  <rect x="520" y="120" width="200" height="120" rx="12" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+  <text x="620" y="150" text-anchor="middle" class="stage" fill="#c2410c">3 · ACL-WAN in</text>
+  <text x="620" y="176" text-anchor="middle" class="small">vede già la dest interna:</text>
+  <text x="620" y="196" text-anchor="middle" class="mono" fill="#15803d">permit tcp any</text>
+  <text x="620" y="214" text-anchor="middle" class="mono" fill="#15803d">host 10.0.5.50 eq 443</text>
+
+  <!-- 4 server -->
+  <rect x="790" y="120" width="170" height="120" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="2"/>
+  <text x="875" y="150" text-anchor="middle" class="stage" fill="#0f766e">4 · Web server</text>
+  <text x="875" y="178" text-anchor="middle" class="mono">10.0.5.50</text>
+  <text x="875" y="196" text-anchor="middle" class="small">DMZ · TLS termina qui</text>
+  <text x="875" y="222" text-anchor="middle" class="small">(o reverse proxy)</text>
+
+  <g stroke="#334155" stroke-width="2.5" marker-end="url(#arr)">
+    <line x1="200" y1="180" x2="262" y2="180"/>
+    <line x1="450" y1="180" x2="512" y2="180"/>
+    <line x1="720" y1="180" x2="782" y2="180"/>
+  </g>
+
+  <!-- regola d'oro -->
+  <rect x="40" y="290" width="920" height="140" rx="12" fill="#fffbeb" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="62" y="322" font-size="14px" font-weight="700" fill="#b45309">📌 Regola di coerenza NAT ↔ ACL</text>
+  <text x="62" y="350" class="small">Per ogni regola di port-forward deve esistere una ACE permit corrispondente, scritta sull'IP INTERNO (non sull'IP pubblico):</text>
+  <text x="62" y="378" class="mono" fill="#4338ca">ip nat inside source static tcp &lt;IP-PUB&gt; 443 10.0.5.50 443</text>
+  <text x="500" y="378" class="mono" fill="#334155">→</text>
+  <text x="525" y="378" class="mono" fill="#15803d">permit tcp any host 10.0.5.50 eq 443</text>
+  <text x="62" y="408" class="small">Usare <tspan font-family="ui-monospace,Menlo,monospace" fill="#b91c1c">any</tspan> come destinazione è sintatticamente valido ma pericoloso: senza DNAT permetterebbe traffico verso qualunque host. SSH va ristretto all'IP admin.</text>
+</svg>
