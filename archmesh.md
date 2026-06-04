@@ -40,7 +40,7 @@ A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di i
 
 ## **Aspetti critici**
 
-- **schema fisico**:
+- **Schema fisico**:
      - Schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti
   ed edifici chiave e schema (**indoor** ed **outdoor**) dell'infrastruttura, con **etichettatura univoca**
   di tutti gli asset tecnologici di rete.
