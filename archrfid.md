@@ -44,7 +44,7 @@ I casi d'uso tipici si dividono in **macro-categorie**:
 L'RFID è dunque **complementare** alle reti di sensori: in molti scenari si **integra** con BLE, WiFi o LoRaWAN, dove i reader RFID svolgono il ruolo di **dispositivi terminali** che, a loro volta, si collegano a una **rete di distribuzione IP** tramite un **gateway**.
 
 ## **Aspetti critici**
-- **schema fisico**:
+- **Schema fisico**:
      - Schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti
   ed edifici chiave e schema (**indoor** ed **outdoor**) dell'infrastruttura, con **etichettatura univoca**
   di tutti gli asset tecnologici di rete.
