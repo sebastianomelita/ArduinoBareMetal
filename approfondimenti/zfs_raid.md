@@ -1,6 +1,6 @@
 # RAID e ZFS — Protezione dei Dischi nel Nodo
 
-> Piano dei Dati · Approfondimento di [continuità di servizio](../continuita_di_servizio.md)
+> Piano dei Dati · Approfondimento di [continuità di servizio](continuita_di_servizio.md)
 
 ## Il problema che risolve
 
