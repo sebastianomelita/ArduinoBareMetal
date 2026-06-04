@@ -69,6 +69,8 @@ Il proxy attivo distribuisce le connessioni in ingresso ai server backend attrav
 
 **SSL Termination**: il proxy apre due connessioni TCP separate — HTTPS col client, HTTP (o HTTPS separato) con i backend. Questo alleggerisce i server dal carico crittografico e permette il routing L7 su traffico cifrato.
 
+> **Approfondisci:** [VRRP e keepalived](tecniche/vrrp_keepalived.md) · [DNAT, clustering e load balancing](tecniche/dnat_load_balancing.md)
+
 ---
 
 ## 4. Piano dei Dati: Mai Perdere un Byte
@@ -100,6 +102,8 @@ In Proxmox, ZFS e Ceph si usano insieme: ZFS per le prestazioni di I/O locali e 
 ### VMware Fault Tolerance — L'eccezione
 
 VMware FT sincronizza non solo i dati disco ma **tutto lo stato della VM** — memoria, registri CPU, stato dei dispositivi. La VM slave è già in esecuzione in parallelo sul nodo secondario. Al guasto il failover avviene senza riavvio e senza interruzione. RPO e MTTR entrambi prossimi a zero. Costo: consumo di banda significativo e obbligo di host fisicamente separato.
+
+> **Approfondisci:** [DRBD](tecniche/drbd.md) · [HCI e Ceph](tecniche/hci_ceph.md) · [RAID e ZFS](tecniche/zfs_raid.md) · [VMware Fault Tolerance](tecniche/vmware_ft.md)
 
 ---
 
@@ -137,6 +141,8 @@ Il Recovery Point Objective (la massima perdita di dati accettabile) dipende dir
 | Snapshot orario | ~59 minuti | Studio professionale, PA media |
 | Backup notturno | ~23 ore | Scuola, servizi interni |
 
+> **Approfondisci:** [Backup, regola 3-2-1, snapshot e WORM](tecniche/backup_321_worm.md)
+
 ---
 
 ## 6. La Scala della Disponibilità
@@ -148,6 +154,8 @@ Quanti "nove" vuole il contratto — e cosa serve per raggiungerli?
 La scala della disponibilità è utile perché mette in relazione diretta il downtime annuo tollerato con la complessità e il costo dell'infrastruttura. Non esiste una soluzione giusta in assoluto: esiste la soluzione giusta per il profilo di rischio specifico.
 
 Da 99% a 99.9% il salto principale è l'aggiunta della virtualizzazione con HA (failover automatico in minuti). Da 99.9% a 99.99% si aggiungono VRRP, HCI e DNAT per portare il MTTR a secondi. Oltre i quattro nove si entra nel territorio di VMware FT e dei datacenter TIA-942 Tier IV, con costi proporzionalmente molto più elevati.
+
+> **Un caveat importante:** la scala lega la disponibilità alla *tecnologia*, ma il 99.99% reale dipende almeno quanto dalla **maturità operativa** — monitoraggio efficace, runbook scritti, test di failover periodici, gestione corretta delle finestre di manutenzione. Una tecnologia da "quattro nove" mal gestita rende facilmente molto meno; viceversa, processi disciplinati spremono il massimo da un'architettura modesta. La tecnologia pone il tetto; le operations decidono quanto ci si avvicina.
 
 ---
 
@@ -218,6 +226,20 @@ Quale guasto preoccupa di più?
    Ransomware / corruzione  ──── Backup WORM — unica soluzione
    Disastro datacenter      ──── Sito DR geograficamente separato
 ```
+
+---
+
+## Approfondimenti per Tecnica
+
+Per uno studio in profondità, ogni tecnica ha una scheda dedicata con meccanismo di funzionamento, modalità di guasto, configurazione di massima e link alla documentazione ufficiale:
+
+- [VRRP e keepalived](tecniche/vrrp_keepalived.md) — ridondanza del punto di ingresso
+- [DNAT, clustering e load balancing](tecniche/dnat_load_balancing.md) — distribuzione del traffico, L4/L7, ALG, SSL termination
+- [DRBD](tecniche/drbd.md) — replica a blocchi, split-brain, quorum, STONITH
+- [HCI e Ceph](tecniche/hci_ceph.md) — storage distribuito, CRUSH, OSD, replica vs erasure coding
+- [RAID e ZFS](tecniche/zfs_raid.md) — protezione dei dischi nel nodo, RAIDZ, checksum
+- [VMware Fault Tolerance](tecniche/vmware_ft.md) — continuità senza riavvio
+- [Backup, 3-2-1, snapshot e WORM](tecniche/backup_321_worm.md) — il piano del ripristino e la difesa anti-ransomware
 
 ---
 
