@@ -9,7 +9,7 @@
 - [Dettaglio architettura RFID](archrfid.md)
 
 
-## **Aspetti critici**
+## **Aspetti critici generali**
 - **Schema fisico**:
      - Schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti
   ed edifici chiave e schema (**indoor** ed **outdoor**) dell'infrastruttura, con **etichettatura univoca**
