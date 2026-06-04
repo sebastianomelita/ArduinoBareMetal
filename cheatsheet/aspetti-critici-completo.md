@@ -42,7 +42,7 @@ e argomentando le scelte.
 - Definizione delle **tecniche di autenticazione degli utenti** (es. **802.1X**): scelta tra autenticazione
   **L2 EAP** (statica per AP o per utente con **RADIUS**) e autenticazione **L7 con Captive portal**.
 - Definizione delle tecniche di **autenticazione dei webservice** (openid, psw, sessioni, ecc.).
-- Definizione delle tecniche di **autorizzazione sso** (openid, kerberos, ecc.).
+- Definizione delle tecniche di **autorizzazione SSO** (openid, kerberos, ecc.).
 - Definizione delle tecniche di **autenticazione dei nodi sensori/attuatori** (certificati, psw, preshared key, ecc.).
 - Definizione delle tecniche di **autenticazione dei nodi di elaborazione/pubblicazione** (certificati, psw, preshared key, ecc.).
 - Definizione delle tecniche di **autenticazione dei nodi di smistamento** (certificati, vpn, ecc.).
