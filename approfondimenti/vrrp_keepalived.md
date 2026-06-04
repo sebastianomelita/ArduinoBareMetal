@@ -1,6 +1,6 @@
 # VRRP e keepalived — Ridondanza del Punto di Ingresso
 
-> Piano del Servizio · Approfondimento di [continuità di servizio](../continuita_di_servizio.md)
+> Piano del Servizio · Approfondimento di [continuità di servizio](continuita_di_servizio.md)
 
 ## Il problema che risolve
 
