@@ -753,3 +753,52 @@ deny   ip 10.0.1.0 0.0.0.255  10.0.2.0 0.0.0.255
 ## Implicit deny
 
 Ogni ACL estesa Cisco termina con un `deny ip any any` **implicito**. Nelle liste default-deny lo si scrive comunque esplicito per renderlo visibile e abilitare il contatore di match. Nelle liste default-allow, invece, il `permit ip any any` finale **neutralizza** l'implicit deny: è proprio questo a realizzare la politica «tutto permesso se non negato».
+
+# Riferimenti didattici online — ACL, DMZ, VPN (Sistemi e Reti)
+
+> Sitografia ragionata a supporto della dispensa. I link sono stati verificati tramite ricerca; alcune attività Cisco
+> sono accessibili solo dentro la piattaforma ufficiale (netacad.com), gli altri siti ne riportano svolgimento/soluzioni.
+
+## A · Cisco Networking Academy — laboratori Packet Tracer
+
+Le attività numerate (es. *5.5.1*) provengono dai corsi CCNA della Cisco Networking Academy
+(*Switching, Routing and Wireless Essentials* / *Enterprise Networking, Security and Automation*).
+Fonte primaria: **netacad.com** (richiede iscrizione al corso). I link qui sotto sono svolgimenti pubblici utili come traccia.
+
+| Attività | A cosa serve in classe | Link |
+|---|---|---|
+| **5.5.1 — IPv4 ACL Implementation Challenge** | Esercizio di sintesi: lo studente scrive ACL estese, standard named ed extended named per soddisfare requisiti dati, scegliendo posizione e direzione. Ottimo come compito finale. | https://itexamanswers.net/5-5-1-packet-tracer-ipv4-acl-implementation-challenge-answers.html · https://infraexam.com/5-5-1-packet-tracer-ipv4-acl-implementation-challenge-answers/ |
+| **5.4.12 — Configure Extended IPv4 ACLs (Scenario 1)** | Introduce le ACL estese e mostra esplicitamente l'*implicit deny* (nessun `deny any any` finale, ma il traffico non corrispondente cade). | https://itexamanswers.net/5-4-12-packet-tracer-configure-extended-ipv4-acls-scenario-1-answers.html |
+| **5.3.4 — Configuring Extended ACLs** | Filtraggio per rete di classe C con wildcard mask, blocco Telnet, applicazione su interfaccia. Buono per consolidare le wildcard. | https://itexamanswers.net/5-3-4-packet-tracer-configuring-extended-acls-answers.html |
+
+> Nota: itexamanswers / infraexam sono "answer key". Usali come guida per il docente o per la correzione, non come materiale da consegnare già risolto agli studenti.
+
+## B · Esame di Stato ITT Informatica/Telecomunicazioni — tracce e soluzioni
+
+| Risorsa | Contenuto utile | Link |
+|---|---|---|
+| **Soluzioni simulazioni II prova** (A. Centinaro) | Soluzioni svolte con DMZ, firewall, VPN site-to-site; le topologie sono disegnate con draw.io. | https://www.alfredocentinaro.it/lezioni/esami-di-stato/soluzione-simulazione-ii-prova-istituti-tecnici-informatica-parte-sistemi-e-reti-2-aprile-2019/ · https://www.alfredocentinaro.it/lezioni/esami-di-stato/soluzione-simulazione-ii-prova-istituti-tecnici-telecomunicazioni-sistemi-e-reti-2016/ |
+| **Preparazione prova scritta Sistemi e Reti** (Giselda) | Checklist passo-passo: server in DMZ tipici, VPN, piano di indirizzamento, sezione ACL sul router. Buon canovaccio per impostare un tema. | https://giselda.altervista.org/prepsistemi.php |
+| **Guida allo svolgimento dell'Esame di Stato — Sistemi e Reti** (DeAScuola, PDF) | Tracce con quesiti su accesso remoto e VPN per aziende multi-sede; utile per i quesiti della seconda parte. | https://deascuola-nephila-bucket-staging.s3.amazonaws.com/cms/filer_public/04/51/0451d0aa-012b-4f79-b35e-2f60cafd6b4b/guida_allo_svolgimento_dell_esame_di_stato_sistemi_e_reti.pdf |
+| **Studocu — corso Sistemi e Reti (5° anno)** | Raccolta di appunti, tra cui "Firewall, Proxy, ACL e DMZ" e "VLAN 802.1Q"; materiale di ripasso per gli studenti. | https://www.studocu.com/it/course/sistemi-e-reti-tecnologico-informatica-e-telecomunicazioni/6157232 |
+
+## C · Tutorial ACL / DMZ con Packet Tracer
+
+| Risorsa | A cosa serve | Link |
+|---|---|---|
+| **IPCisco — Standard & Extended ACL su Packet Tracer** | Due lezioni guidate (standard 1–99, extended 100–199) con topologia e spiegazione di wildcard e implicit deny. Buone per la prima introduzione. | https://ipcisco.com/lesson/standard-access-list-configuration-with-packet-tracer-2/ · https://ipcisco.com/lesson/extended-access-list-configuration-with-packet-tracer-2/ |
+| **PacketTracerNetwork — ACL tutorial** | Riepilogo dei tipi di ACL, posizionamento (standard vicino alla destinazione, extended vicino alla sorgente) e `access-class` sulle VTY. | https://www.packettracernetwork.com/tutorials/packet-tracer-acls.html |
+| **Mowry — ACL Laboratory Experiment 9** (PDF) | Laboratorio completo standard + extended named per filtrare Telnet e servizi server (WEB/DHCP). | https://www.ccri.edu/faculty_staff/comp/jmowry/Cisco%20Bridge/ACL%20Laboratory%20Experiment%209.pdf |
+| **GitHub — network-security-acl** | Lab NetAcad di ACL estese pubblicato come progetto; esempio di documentazione di un'esercitazione. | https://github.com/lukegtyler/network-security-acl |
+
+## D · Strumenti per le topologie
+
+- **Cisco Packet Tracer** — simulatore ufficiale per i laboratori (download dalla Networking Academy).
+- **draw.io / diagrams.net** — per disegnare schemi di rete e DMZ nelle relazioni (usato anche nelle soluzioni d'esame del punto B).
+- **GNS3 / EVE-NG** — emulazione con IOS reale, per chi vuole spingersi oltre Packet Tracer (ZBF, IPsec).
+
+## Collegamento con la dispensa
+
+- L'**implicit deny** mostrato in 5.4.12 è il fondamento della Parte C (`permit ip any any` vs `deny ip any any` come riga di default).
+- Le tracce del punto B (server in DMZ + VPN site-to-site) corrispondono a Parte B (Caso 5b) e Parte C.4 (tunnel default-deny).
+- La **5.5.1 Implementation Challenge** è un buon compito per far riprodurre agli studenti la matrice degli accessi del §4 da zero.
