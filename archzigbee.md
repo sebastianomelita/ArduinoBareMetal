@@ -38,9 +38,9 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 
 <img src="img/zigbeezone.png" alt="alt text" width="800">
 
-## **Aspetti critici generali**
+## **Aspetti critici**
 
-- [Aspetti critici generali](approfondimenti/aspetti_critici_generali.md)
+- [Aspetti critici comuni per tutte le tecnologie](approfondimenti/aspetti_critici_generali.md)
 - **Aspetti particolari per Zigbee**
 
      - Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura di posizionare tra essi
