@@ -1,6 +1,6 @@
 # VMware Fault Tolerance — Continuità Senza Interruzione
 
-> Piano dei Dati (caso speciale) · Approfondimento di [continuità di servizio](../continuita_di_servizio.md)
+> Piano dei Dati (caso speciale) · Approfondimento di [continuità di servizio](continuita_di_servizio.md)
 
 ## Il problema che risolve
 
