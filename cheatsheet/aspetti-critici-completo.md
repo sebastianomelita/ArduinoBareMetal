@@ -25,14 +25,13 @@ e argomentando le scelte.
 - Definizione delle **tecnologie dei dispositivi** chiave: sensori/attuatori, **gateway**, e relativo
   **dimensionamento di massima** (quantità, numero di porte, banda, ecc.).
   *(I dettagli specifici — topologie, link radio, tipo di accesso, ecc. — sono nelle sezioni particolari.)*
-- Dislocazione di eventuali **gateway**.
+- Dislocazione di eventuali **router/Firewall**.
 
 ### Vincoli
-- Eventuali **vincoli normativi** sulle tecnologie in uso: **potenza**, **EIRP**, **ERP**, **duty cycle**.
+- Eventuali **vincoli normativi** sulle tecnologie in uso: **cablaggio strutturato**, **potenza**, **EIRP**, **ERP**, **duty cycle**.
 
 ### Indirizzamento e routing
 - **Subnetting** e definizione degli indirizzi (gruppi di utenti, server farm) e degli **indirizzi dei server**.
-  *(La struttura specifica delle subnet è dettagliata nelle sezioni particolari.)*
 - Definizione posizione dei **servizi di sistema** (DHCP, DNS), dislocati a scelta a bordo del **FW**,
   collegati al **CS**, o inseriti in una **server farm**.
 - Definizione del **tipo di routing** (statico o dinamico). In caso di **routing statico**, definizione
@@ -42,8 +41,11 @@ e argomentando le scelte.
 ### Autenticazione
 - Definizione delle **tecniche di autenticazione degli utenti** (es. **802.1X**): scelta tra autenticazione
   **L2 EAP** (statica per AP o per utente con **RADIUS**) e autenticazione **L7 con Captive portal**.
-- Definizione delle tecniche di **autenticazione dei servizi** (openid, psw, sessioni, ecc.).
-  *(Nota: la sezione BLE del documento originale non specifica l'autenticazione.)*
+- Definizione delle tecniche di **autenticazione dei webservice** (openid, psw, sessioni, ecc.).
+- Definizione delle tecniche di **sso** (openid, kerberos, ecc.).
+- Definizione delle tecniche di **autenticazione dei nodi sensori/attuatori** (certificati, psw, preshared key, ecc.).
+- Definizione delle tecniche di **autenticazione dei nodi di elaborazione/pubblicazione** (certificati, psw, preshared key, ecc.).
+- Definizione delle tecniche di **autenticazione dei nodi di smistamento** (certificati, vpn, ecc.).
 
 ### Applicazione e dati IoT
 - Definizione della posizione del **broker MQTT**.
@@ -52,7 +54,6 @@ e argomentando le scelte.
   **stato** o **configurazione**.
 - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
   **sede dell'elaborazione dei comandi** più opportuna (locale/edge vs remota on-premise/cloud).
-  *(Nota: la sezione RFID del documento originale non specifica questo punto.)*
 - Definizione (anche in **pseudocodice**) delle **funzioni del firmware** di bordo dei dispositivi IoT.
 
 ---
@@ -60,15 +61,15 @@ e argomentando le scelte.
 ## Aspetti particolari per tecnologia
 
 ### Zigbee
-- Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura che tra essi esista
+- Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura di posizionare tra essi
   almeno **un gateway** che permetta l'accesso a una rete IP. Progettare dei **percorsi alternativi
   (backup)** in caso di guasto del gateway principale.
 - Tecnologie dei dispositivi: definizione della **tipologia di servizio** (polling sincrono,
   comando asincrono, ecc.).
 - Gestire eventuali **vincoli di prossimità** (mediante controllo di potenza o gestione del roaming)
   ed eventuali **vincoli di posizionamento** (mediante trilaterazione).
-- **Subnetting** con struttura "piatta": indirizzi dei vari **gruppi di utenti**, delle **server farm**
-  e definizione degli **indirizzi dei server**.
+- Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
+  **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
 
 ### Ethernet
 - Tecnologie dei dispositivi: **topologia** dei sensori/attuatori (**stella**, **bus**, **singolo**);
@@ -79,16 +80,17 @@ e argomentando le scelte.
   - subnet di **aggregazione** per i gruppi di utenti (generalmente statica);
   - subnet di **dorsale** (statica o automatica basata su **Link Local**);
   - subnet di **servizio** (server farm e **DMZ**).
-- Definizione degli **indirizzi dei server** e dei **range** di quelli dei client.
+- Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
 
 ### BLE
 - Tecnologie dei dispositivi: **sensori/attuatori**, **gateway**, **link** (dual radio, three radio),
   **accesso radio** (allocazione di servizi sincroni **TDM**, asincroni **CSMA/CA** o a basso ritardo
   **slotted CSMA/CA**) con relativo dimensionamento.
-- **Subnetting** con struttura "piatta": indirizzi dei vari **gruppi di utenti**, delle **server farm**
-  e definizione degli **indirizzi dei server**.
 - **Nota:** rispetto alle altre tecnologie, la sezione BLE del documento originale **non specifica**
   le tecniche di autenticazione (utenti/servizi).
+- Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
+  **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
+
 
 ### WiFi infrastruttura
 - Tecnologie dei dispositivi: **topologia** dei sensori/attuatori (**stella**, **bus**, **singolo**);
@@ -97,7 +99,7 @@ e argomentando le scelte.
 - Definizione di **dorsali wireless** e di **punti di accesso e aggregazione** dei dispositivi utente.
 - **Subnetting** strutturato: subnet di **aggregazione** (statica), subnet di **dorsale**
   (statica o Link Local), subnet di **servizio** (server farm e **DMZ**).
-- Definizione degli **indirizzi dei server** e dei **range** dei client.
+- Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
 - Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.).
   Può essere **reciproca** (backhaul, link radio) oppure **tra nodi e servizi** (es. autenticazione
   di un AP su RADIUS).
@@ -121,6 +123,7 @@ e argomentando le scelte.
 - **Subnetting** strutturato: subnet di **aggregazione** (statica), subnet di **dorsale**
   (statica o Link Local), subnet di **servizio** (server farm e **DMZ**); più **indirizzi dei server**
   e **range** dei client.
+- Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
 - Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.);
   reciproca (backhaul/link radio) o tra nodi e servizi (es. AP su RADIUS).
 - Definizione del **tipo di rete mesh**: **routed mesh** vs **bridged mesh**.
@@ -131,20 +134,12 @@ e argomentando le scelte.
 - Definizione della **posizione del controller degli AP**.
 
 ### LoRaWAN
-- Tecnologie dei dispositivi: **topologia** (stella, bus, singolo), **link**, **accesso radio**
-  (TDM / CSMA/CA / slotted CSMA/CA) con dimensionamento.
-- Definizione di **dorsali wireless** e di **punti di accesso e aggregazione** dei dispositivi utente.
-- **Subnetting** strutturato (per le reti IP): subnet di **aggregazione** (statica), subnet di **dorsale**
-  (statica o Link Local), subnet di **servizio** (server farm e **DMZ**); più **indirizzi dei server**
-  e **range** dei client.
-- I **servizi di sistema** (DHCP, DNS) e il **routing** vanno riferiti alle **reti IP** presenti.
-- Definizione delle tecniche di **autenticazione dei nodi LoRaWAN**. Può essere **reciproca**
-  (backhaul, link radio) oppure **tra nodi e servizi** (es. **Network Server**).
+- schema fisico (planimetria) dello scenario del problema con la rappresentazione di ambienti e edifici chiave e schema (indoor ed outdoor) dell'infrastruttura con etichettatura univoca di asset specifici quali sensori/attuatori, gateway/packet forwardere (PF), network server (NS), join server (JS) e application server (AP).
 - Definire se è necessaria una **federazione di reti di sensori**: stabilire se **broker** e
   **Network Server** sono individualmente o entrambi parte del router/gateway verso la rete IP,
   oppure se sono **a comune** con più reti LoRaWAN.
-- Definizione della posizione, nella rete IP, di: **broker MQTT**, **Join Server**, **Network Server**
-  e **Application Server**.
+- Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
+  **sede dell'elaborazione dei comandi** più opportuna dove effettuare decifrazione del payload. Ovvero stabilire se l'AS debba stare o meno sul GW insieme al PF e al NS.
 - Gestire i **vincoli di prossimità** (indoor/outdoor, controllo potenza/roaming) e i
   **vincoli di posizionamento** (trilaterazione).
 
@@ -160,7 +155,5 @@ e argomentando le scelte.
   (backup)** in caso di guasto del gateway principale.
 - Gestire eventuali **vincoli di prossimità** (controllo di potenza o gestione del roaming) ed eventuali
   **vincoli di posizionamento** (trilaterazione).
-- **Subnetting** con struttura "piatta": indirizzi dei vari **gruppi di utenti**, delle **server farm**
-  e definizione degli **indirizzi dei server**.
-- **Nota:** rispetto alle altre tecnologie, la sezione RFID del documento originale **non specifica**
-  la definizione del percorso dati / sede di elaborazione dei comandi.
+- Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
+  **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
