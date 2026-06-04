@@ -40,26 +40,71 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 
 ## **Aspetti critici**
 
-Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scelte argomentate** sono:
-- schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti e edifici chiave e schema (indoor ed outdoor) dell'infrastruttura con etichettatura univoca di tutti gli asset tecnologici di rete.
-- Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura che tra essi esista almeno **un gateway** che permetta l'accesso ad una rete IP. Progettare dei percorsi alternativi (**backup**) in caso del gateway principale.
-- Tipologia di **divisione in gruppi** degli utenti e loro caratterizzazione (dislocazione fisica delimitata o diffusa a macchia a macchia di leopardo).
-- definizione delle **tecnologie dei dispositivi** chiave quali sensori/attuatori ([dispositivi terminali](sensornetworkshort.md#dispositivi-terminali-sensoriattuatori)), gateway, tipologia di servizio (polling sincrono, comando asincrono, ecc).
-- eventuali vincoli normativi sulle tecnologie in uso come potenza, EIRP, ERP e duty cycle.
-- gestire eventuali **vincoli di prossimità** mediante controllo di potenza o gestione del roaming e eventuali **vincoli di posizionamento** mediante trilaterazione.
-- schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro ruolo e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7)
-- dislocazione di eventuali **gateway**.
-- **subnetting** e definizione degli indirizzi dei vari gruppi di utenti, delle server farm, definizione degli indirizzi dei server.
-- definizione posizione dei **servizi di sistema** (DHCP, DNS) dislocati, a scelta, a bordo del FW, collegati al CS, inseriti in una server farm.
-- definizione del **tipo di routing** (statico o dinamico). In caso si scelga il **routing statico**, definizione delle **tabelle di routing** più significative.
-- definizione della posizione del broker MQTT.
-- definizione dei topic utili per i casi d'uso richiesti.
-- definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la **sede dell'elaborazione dei comandi** più opportuna (locale o edge vs remota on premise/cloud). 
-- definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
-- definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
-- definizione delle **tecniche di autenticazione** degli utenti necessarie per un dato scenario (ad es. 802.1X). Scegliere tra autenticazione L2 EAP (statica per AP o per utente con RADIUS) e quella L7 con Captive portal. 
-- definizione delle tecniche di **autenticazione** dei servizi (openid, psw, sessioni, ecc).
-- definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
+## Aspetti comuni (caso generale)
+
+Elementi che ricorrono (in modo identico o quasi) in **tutte** le sezioni — Zigbee, Ethernet, BLE,
+WiFi infrastruttura, WiFi Mesh, LoRaWAN, RFID. Vanno sempre documentati bilanciando le convenienze
+e argomentando le scelte.
+
+### Schema fisico e logico
+- Schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti
+  ed edifici chiave e schema (**indoor** ed **outdoor**) dell'infrastruttura, con **etichettatura univoca**
+  di tutti gli asset tecnologici di rete.
+- Schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro **ruolo**
+  e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7).
+
+### Utenti e dispositivi
+- Tipologia di **divisione in gruppi** degli utenti e loro caratterizzazione (dislocazione fisica
+  delimitata oppure diffusa "a macchia di leopardo").
+- Definizione delle **tecnologie dei dispositivi** chiave: sensori/attuatori, **gateway**, e relativo
+  **dimensionamento di massima** (quantità, numero di porte, banda, ecc.).
+  *(I dettagli specifici — topologie, link radio, tipo di accesso, ecc. — sono nelle sezioni particolari.)*
+- Dislocazione di eventuali **router/Firewall**.
+
+### Vincoli
+- Eventuali **vincoli normativi** sulle tecnologie in uso: **cablaggio strutturato**, **potenza**, **EIRP**, **ERP**, **duty cycle**.
+
+### Indirizzamento e routing
+- **Subnetting** e definizione degli indirizzi (gruppi di utenti, server farm) e degli **indirizzi dei server**.
+- Definizione posizione dei **servizi di sistema** (DHCP, DNS), dislocati a scelta a bordo del **FW**,
+  collegati al **CS**, o inseriti in una **server farm**.
+- Definizione del **tipo di routing** (statico o dinamico). In caso di **routing statico**, definizione
+  delle **tabelle di routing** più significative.
+  *(Eccezione: nel WiFi Mesh il routing è sempre automatico — vedi sezione dedicata.)*
+
+### Autenticazione
+- Definizione delle **tecniche di autenticazione degli utenti** (es. **802.1X**): scelta tra autenticazione
+  **L2 EAP** (statica per AP o per utente con **RADIUS**) e autenticazione **L7 con Captive portal**.
+- Definizione delle tecniche di **autenticazione dei webservice** (openid, psw, sessioni, ecc.).
+- Definizione delle tecniche di **autorizzazione SSO** (openid, kerberos, ecc.).
+- Definizione delle tecniche di **autenticazione dei nodi sensori/attuatori** (certificati, psw, preshared key, ecc.).
+- Definizione delle tecniche di **autenticazione dei nodi di elaborazione/pubblicazione** (certificati, psw, preshared key, ecc.).
+- Definizione delle tecniche di **autenticazione dei nodi di smistamento** (certificati, vpn, ecc.).
+
+### Applicazione e dati IoT
+- Definizione della posizione del **broker MQTT**.
+- Definizione dei **topic** utili per i casi d'uso richiesti.
+- Definizione dei **messaggi JSON** per alcuni dispositivi IoT significativi in merito a **comandi**,
+  **stato** o **configurazione**.
+- Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
+  **sede dell'elaborazione dei comandi** più opportuna (locale/edge vs remota on-premise/cloud).
+- Definizione (anche in **pseudocodice**) delle **funzioni del firmware** di bordo dei dispositivi IoT.
+
+---
+
+## Aspetti particolari per tecnologia
+
+### Zigbee
+- Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura di posizionare tra essi
+  almeno **un gateway** che permetta l'accesso a una rete IP. Progettare dei **percorsi alternativi
+  (backup)** in caso di guasto del gateway principale.
+- Tecnologie dei dispositivi: definizione della **tipologia di servizio** (polling sincrono,
+  comando asincrono, ecc.).
+- Gestire eventuali **vincoli di prossimità** (mediante controllo di potenza o gestione del roaming)
+  ed eventuali **vincoli di posizionamento** (mediante trilaterazione).
+- Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
+  **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
+
 
 ---
 
