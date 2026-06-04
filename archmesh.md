@@ -81,30 +81,30 @@ A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di i
      - Definizione (anche in **pseudocodice**) delle **funzioni del firmware** di bordo dei dispositivi IoT.
 
 - **Aspetti particolari per WiFi Mesh**
-       - Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura che tra essi esista
+     - Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura che tra essi esista
          almeno **un percorso LOS** (Line Of Sight) con dei vicini. Progettare dei **percorsi alternativi
          (backup)** in caso di guasto dei nodi centrali di traffico.
-       - Tecnologie dei dispositivi: **topologia** (stella, bus, singolo), **link**, **accesso radio**
+     - Tecnologie dei dispositivi: **topologia** (stella, bus, singolo), **link**, **accesso radio**
          (TDM / CSMA/CA / slotted CSMA/CA) con dimensionamento.
-       - Definizione di **dorsali wireless** e di **punti di accesso e aggregazione** dei dispositivi utente.
-       - Definizione di eventuali **link di backhaul** e della relativa tecnologia.
-       - Definire le **interfacce radio** scegliendo tra **2-band** (dual channel) e **3-band** (three channel).
-       - Definire i **canali dei link** scegliendoli tra quelli in banda **ISM** e pianificandone il
+     - Definizione di **dorsali wireless** e di **punti di accesso e aggregazione** dei dispositivi utente.
+     - Definizione di eventuali **link di backhaul** e della relativa tecnologia.
+     - Definire le **interfacce radio** scegliendo tra **2-band** (dual channel) e **3-band** (three channel).
+     - Definire i **canali dei link** scegliendoli tra quelli in banda **ISM** e pianificandone il
          **riuso nello spazio**, minimizzando l'**interferenza cocanale**.
-       - Gestire i **vincoli di prossimità** (indoor/outdoor, controllo potenza/roaming) e i
+     - Gestire i **vincoli di prossimità** (indoor/outdoor, controllo potenza/roaming) e i
          **vincoli di posizionamento** (trilaterazione).
-       - **Subnetting** strutturato: subnet di **aggregazione** (statica), subnet di **dorsale**
+     - **Subnetting** strutturato: subnet di **aggregazione** (statica), subnet di **dorsale**
          (statica o Link Local), subnet di **servizio** (server farm e **DMZ**); più **indirizzi dei server**
          e **range** dei client.
-       - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
-       - Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.);
+     - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
+     - Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.);
          reciproca (backhaul/link radio) o tra nodi e servizi (es. AP su RADIUS).
-       - Definizione del **tipo di rete mesh**: **routed mesh** vs **bridged mesh**.
-       - **Routing sempre automatico** (AODV, OLSR, Babel) con definizione automatica delle subnet dei link
+      - Definizione del **tipo di rete mesh**: **routed mesh** vs **bridged mesh**.
+      - **Routing sempre automatico** (AODV, OLSR, Babel) con definizione automatica delle subnet dei link
          tra i nodi router (**LLA**, **SLAAC**). *(Sostituisce il routing statico/dinamico generale.)*
-       - Se presenti VLAN, definizione del tipo di **associazione VLAN↔SSID** (statica o dinamica con
+      - Se presenti VLAN, definizione del tipo di **associazione VLAN↔SSID** (statica o dinamica con
          **Tunnel-Private-Group-Id**).
-       - Definizione della **posizione del controller degli AP**.
+      - Definizione della **posizione del controller degli AP**.
 
 
 ## **Progetto di esempio completo**
