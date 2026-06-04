@@ -1,6 +1,6 @@
 # Backup, Regola 3-2-1, Snapshot e WORM — Il Piano del Ripristino
 
-> Piano del Ripristino · Approfondimento di [continuità di servizio](../continuita_di_servizio.md)
+> Piano del Ripristino · Approfondimento di [continuità di servizio](continuita_di_servizio.md)
 
 ## Il problema che risolve
 
