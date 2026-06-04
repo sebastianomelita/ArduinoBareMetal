@@ -1,6 +1,6 @@
 # DNAT, Clustering e Load Balancing — Distribuzione del Traffico
 
-> Piano del Servizio · Approfondimento di [continuità di servizio](../continuita_di_servizio.md)
+> Piano del Servizio · Approfondimento di [continuità di servizio](continuita_di_servizio.md)
 
 ## Il problema che risolve
 
@@ -67,7 +67,7 @@ Vantaggi: un **unico certificato** gestito in un solo punto (il proxy presenta u
 - **Il load balancer è esso stesso uno SPOF:** va reso ridondante con [VRRP](vrrp_keepalived.md). DNAT clustering copre i backend, non il proxy.
 - **Sessioni con stato:** senza sticky session o stato condiviso, un client può finire su backend diversi e perdere il login. Gestire con stick-tables o store esterno (Redis).
 - **Health check troppo aggressivi/lenti:** intervalli troppo brevi caricano i backend; troppo lunghi allungano la finestra di packet loss durante un guasto.
-- **DNAT non protegge i dati:** distribuisce traffico, ma se i backend non condividono lo storage, ognuno risponde con dati diversi. Serve il [piano dei dati](../continuita_di_servizio.md).
+- **DNAT non protegge i dati:** distribuisce traffico, ma se i backend non condividono lo storage, ognuno risponde con dati diversi. Serve il [piano dei dati](continuita_di_servizio.md).
 
 ## Prodotti
 
