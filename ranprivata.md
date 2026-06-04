@@ -22,6 +22,7 @@ Servizi:
 - [Continuità di servizio](/approfondimenti/continuita_di_servizio.md)
 - [Backup](backup.md).
 
+--- 
 
 <img src="img/cellular_zone.png" alt="alt text" width="800">
 
@@ -38,6 +39,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiF
 
 Una rete **cellulare 5G/6G/7G** è un sistema di rete wireless progettato per fornire una copertura Wi-Fi estesa che consiste di più **base station**. Una rete Wi-Fi mesh è una **soluzione avanzata** per estendere la copertura Wi-Fi e migliorare l'affidabilità della connessione in **ambienti complessi** nei quali risulta essere problematica la realizzazione di **dorsali cablate** verso gli AP. Con la capacità di **auto-configurarsi**, gestire il **roaming continuo** e fornire una **copertura scalabile**, le reti cellulari rappresentano una scelta preferibile per chi necessita di una connettività robusta e senza interruzioni su aree estese.
 
+--- 
 
 ### **Aspetti critici**
 
@@ -59,6 +61,8 @@ Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scel
 [Server di gestione](/approfondimenti/server_di_gestione.md)
 
 [Sensori](/approfondimenti/sensore.md)
+
+---
 
 ## **RETI CELLULARI**
 
