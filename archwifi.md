@@ -37,30 +37,64 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiF
 
 <img src="img/wifizone.png" alt="alt text" width="800">
 
-### **Aspetti critici da documentare**
+## **Aspetti critici**
 
-Elementi **critici** su cui **bilanciare convenienze** e saper fare delle **scelte argomentate** sono:
-- schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti e edifici chiave e schema (indoor ed outdoor) dell'infrastruttura con etichettatura univoca di tutti gli asset tecnologici di rete.
-- tipologia di **divisione in gruppi** degli utenti e loro caratterizzazione (dislocazione fisica delimitata o diffusa a macchia a macchia di leopardo).
-- definizione delle **tecnologie dei dispositivi** chiave quali sensori/attuatori (stella, bus, singolo), gateway, link (dual radio, three radio), accesso radio (allocazione di servizi sincroni TDM, asincroni CSMA/CA o a basso ritardo slotted CSMA/CA) e loro dimensionamento di  massima (quantità, numero di porte, banda, ecc.).
-- definizione di dorsali wireless e di punti di accesso e aggregazione dei dispositivi utente
-- eventuali vincoli normativi sulle tecnologie in uso come potenza, EIRP, ERP e duty cycle.
-- schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro ruolo e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7)
-- dislocazione di eventuali **gateway**.
-- **subnetting** e definizione degli indirizzi delle **subnet di aggregazione** per i vari gruppi di utenti (generalmente statica), e definizione degli indirizzi delle **subnet di dorsale** (statica o automatica basata su Link Local), definizione degli indirizzi delle **subnet di servizio** (server farm e DMZ),
-- definizione degli **indirizzi dei server** e dei range di quelli dei client.
-- definizione delle **tecniche di autenticazione** degli utenti necessarie per un dato scenario nonchè di quelle che realizzano l'autenticazione dei servizi (ad es. 802.1X). Secegliere tra autenticazione L2 EAP (statica per AP o per utente con RADIUS) e quella L7 con Captive portal. 
-- definizione delle tecniche di **autenticazione** dei servizi (openid, psw, sessioni, ecc).
-- definizione delle tecniche di autenticazione dei **nodi AP** (Certificati, psw, preshared key, ecc.). Può essere reciproca (backaul, link radio) oppure tra nodi e servizi (ad es. autenticazione di un AP su RADIUS)
-gestire eventuali **vincoli di prossimità**, distinguendo tra gestione di ambienti indoor e outdoor, mediante controllo di potenza o gestione del roaming e eventuali **vincoli di posizionamento** mediante trilaterazione.
-- definizione **posizione del controller degli AP**
-- definizione posizione dei **servizi di sistema** (DHCP, DNS) dislocati, a scelta, a bordo del FW, collegati al CS, inseriti in una server farm.
-- definizione del **tipo di routing** (statico o dinamico). In caso si scelga il **routing statico**, definizione delle **tabelle di routing** più significative.
-- definizione della posizione del broker MQTT.
-- definizione dei topic utili per i casi d'uso richiesti.
-- definizione dei **messaggi JSON** per alcuni **dispositivi IoT** ritenuti significativi in merito a **comandi**, **stato** o **configurazione**.
-- definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la **sede dell'elaborazione dei comandi** più opportuna (locale o edge vs remota on premise/cloud). 
-- definizione (anche in pseudocodice) delle **funzioni del firmware** di bordo dei **dispositivi IoT**.
+- **Schema fisico**:
+     - Schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti
+  ed edifici chiave e schema (**indoor** ed **outdoor**) dell'infrastruttura, con **etichettatura univoca**
+  di tutti gli asset tecnologici di rete.
+     - Schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro **ruolo**
+  e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7).
+- **Utenti e dispositivi**
+     - Tipologia di **divisione in gruppi** degli utenti e loro caratterizzazione (dislocazione fisica
+  delimitata oppure diffusa "a macchia di leopardo").
+    - Definizione delle **tecnologie dei dispositivi** chiave: sensori/attuatori, **gateway**, e relativo
+  **dimensionamento di massima** (quantità, numero di porte, banda, ecc.).
+  *(I dettagli specifici — topologie, link radio, tipo di accesso, ecc. — sono nelle sezioni particolari.)*
+    - Dislocazione di eventuali **router/Firewall**.
+- **Vincoli**
+    - Eventuali **vincoli normativi** sulle tecnologie in uso: **cablaggio strutturato**, **potenza**, **EIRP**, **ERP**, **duty cycle**.
+
+- **Indirizzamento e routing**
+    - **Subnetting** e definizione degli indirizzi (gruppi di utenti, server farm) e degli **indirizzi dei server**.
+    - Definizione posizione dei **servizi di sistema** (DHCP, DNS), dislocati a scelta a bordo del **FW**,
+  collegati al **CS**, o inseriti in una **server farm**.
+    - Definizione del **tipo di routing** (statico o dinamico). In caso di **routing statico**, definizione
+  delle **tabelle di routing** più significative.
+  *(Eccezione: nel WiFi Mesh il routing è sempre automatico — vedi sezione dedicata.)*
+
+- **Autenticazione**
+     - Definizione delle **tecniche di autenticazione degli utenti** (es. **802.1X**): scelta tra autenticazione
+  **L2 EAP** (statica per AP o per utente con **RADIUS**) e autenticazione **L7 con Captive portal**.
+     - Definizione delle tecniche di **autenticazione dei webservice** (openid, psw, sessioni, ecc.).
+     - Definizione delle tecniche di **autorizzazione SSO** (openid, kerberos, ecc.).
+     - Definizione delle tecniche di **autenticazione dei nodi sensori/attuatori** (certificati, psw, preshared key, ecc.).
+     - Definizione delle tecniche di **autenticazione dei nodi di elaborazione/pubblicazione** (certificati, psw, preshared key, ecc.).
+     - Definizione delle tecniche di **autenticazione dei nodi di smistamento** (certificati, vpn, ecc.).
+- **Applicazione e dati IoT**
+     - Definizione della posizione del **broker MQTT**.
+     - Definizione dei **topic** utili per i casi d'uso richiesti.
+     - Definizione dei **messaggi JSON** per alcuni dispositivi IoT significativi in merito a **comandi**,
+  **stato** o **configurazione**.
+     - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
+  **sede dell'elaborazione dei comandi** più opportuna (locale/edge vs remota on-premise/cloud).
+     - Definizione (anche in **pseudocodice**) delle **funzioni del firmware** di bordo dei dispositivi IoT.
+
+- **Aspetti particolari per WiFi Infrastruttura**
+    - Tecnologie dei dispositivi: **topologia** dei sensori/attuatori (**stella**, **bus**, **singolo**);
+      **link** (dual radio, three radio); **accesso radio** (**TDM** / **CSMA/CA** / **slotted CSMA/CA**)
+      con relativo dimensionamento.
+    - Definizione di **dorsali wireless** e di **punti di accesso e aggregazione** dei dispositivi utente.
+    - **Subnetting** strutturato: subnet di **aggregazione** (statica), subnet di **dorsale**
+      (statica o Link Local), subnet di **servizio** (server farm e **DMZ**).
+    - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
+    - Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.).
+      Può essere **reciproca** (backhaul, link radio) oppure **tra nodi e servizi** (es. autenticazione
+      di un AP su RADIUS).
+    - Gestire i **vincoli di prossimità**, distinguendo tra ambienti **indoor** e **outdoor** (controllo di
+      potenza o gestione del roaming) e i **vincoli di posizionamento** (trilaterazione).
+    - Definizione della **posizione del controller degli AP**.
+
 
 [Rete di reti WiFi](/approfondimenti/wifi_infra_federation.md)
        
