@@ -21,7 +21,7 @@ Servizi:
 - [Autenticazione 802.1X](radius.md)
 - [Autenticazione SSO Active Directory](/approfondimenti/00_dispensa_principale.md)
 - [Continuità di servizio](/approfondimenti/continuita_di_servizio.md)
-- [Backup](backup.md).
+- [Backup](backup.md)
 
   
 ## **Caso d'uso WiFi infrastruttura** 
