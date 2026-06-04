@@ -1,5 +1,6 @@
 >[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
 
+- [Dettaglio architettura Ethernet](../archeth.md)
 - [Dettaglio architettura Zigbee](../archzigbee.md)
 - [Dettaglio architettura BLE](../archble.md)
 - [Dettaglio architettura WiFi infrastruttura](../archwifi.md)
@@ -9,7 +10,7 @@
 - [Dettaglio architettura RFID](../archrfid.md)
 
 
-## **Aspetti critici generali**
+## **Aspetti critici comuni**
 - **Schema fisico**:
      - Schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti
   ed edifici chiave e schema (**indoor** ed **outdoor**) dell'infrastruttura, con **etichettatura univoca**
