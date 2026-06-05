@@ -53,8 +53,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiF
       potenza o gestione del roaming) e i **vincoli di posizionamento** (trilaterazione).
     - Definizione della **posizione del controller degli AP**.
     - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
-    - Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.);
-         reciproca (backhaul/link radio) o tra nodi e servizi (es. AP su RADIUS).
+    - Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.) tra nodi e servizi (es. AP su RADIUS).
     - Se presenti VLAN, definizione del tipo di **associazione VLAN↔SSID** (statica o dinamica con
          **Tunnel-Private-Group-Id**).
     - Definizione della **posizione del controller degli AP**.
