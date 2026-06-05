@@ -55,9 +55,6 @@ A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di i
          **riuso nello spazio**, minimizzando l'**interferenza cocanale**.
      - Gestire i **vincoli di prossimità** (indoor/outdoor, controllo potenza/roaming) e i
          **vincoli di posizionamento** (trilaterazione).
-     - **Subnetting** strutturato: subnet di **aggregazione** (statica), subnet di **dorsale**
-         (statica o Link Local), subnet di **servizio** (server farm e **DMZ**); più **indirizzi dei server**
-         e **range** dei client.
      - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
      - Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.);
          reciproca (backhaul/link radio) o tra nodi e servizi (es. AP su RADIUS).
