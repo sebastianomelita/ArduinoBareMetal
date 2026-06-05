@@ -17,8 +17,9 @@
   di tutti gli asset tecnologici di rete.
      - Schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro **ruolo**
   e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7) che tipicamente consistono in:
-          - **tunnel** (VPN) su rete pubblica di un ISP di tipo Secure Network o Trusted Network
-          - **ponte radio 802.11** (WiFi) di tipo Client/Server o bridged
+          - link L2/L3 **tunnel** (VPN) su rete pubblica di un ISP di tipo Secure Network o Trusted Network
+          - link L2/L3 **ponte radio 802.11** (WiFi) di tipo Client/Server o bridged
+          - link L7 tra sensori/attuatori IP e il broker MQTT, oppure tra i gateway WSN e il broker MQTT.
 - **Utenti e dispositivi**
      - Tipologia di **divisione in gruppi** degli utenti e loro caratterizzazione (dislocazione fisica
   delimitata oppure diffusa "a macchia di leopardo").
