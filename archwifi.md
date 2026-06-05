@@ -46,9 +46,8 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiF
     - Gestire i **vincoli di prossimità**, distinguendo tra ambienti **indoor** e **outdoor** (controllo di
       potenza o gestione del roaming) e i **vincoli di posizionamento** (trilaterazione).
     - Definizione della **posizione del controller degli AP**.
-    - Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.) tra nodi e servizi (es. AP su RADIUS).
-    - Se presenti VLAN, definizione del tipo di **associazione VLAN↔SSID** (statica o dinamica con
-         **Tunnel-Private-Group-Id**).
+    - Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.) presso i servizi (es. AP su RADIUS).
+    - Se presenti VLAN, definizione del tipo di **associazione VLAN↔SSID** (statica o dinamica con **Tunnel-Private-Group-Id**).
 
 [Rete di reti WiFi](/approfondimenti/wifi_infra_federation.md)
        
