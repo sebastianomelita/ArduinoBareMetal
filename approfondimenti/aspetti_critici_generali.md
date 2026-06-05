@@ -22,7 +22,7 @@
           - link L7 tra sensori/attuatori IP e il broker MQTT, oppure tra i gateway WSN e il broker MQTT.
 - **Utenti e dispositivi**
      - Tipologia di **divisione in gruppi** degli utenti e loro caratterizzazione (dislocazione fisica
-  delimitata oppure diffusa "a macchia di leopardo").
+  delimitata mediante subnet oppure diffusa "a macchia di leopardo" mediante VLAN).
     - Definizione delle **tecnologie dei dispositivi** chiave: sensori/attuatori, **gateway**, e relativo
   **dimensionamento di massima** (quantità, numero di porte, banda, ecc.).
   *(I dettagli specifici — topologie, link radio, tipo di accesso, ecc. — sono nelle sezioni particolari.)*
@@ -32,12 +32,14 @@
 
 - **Indirizzamento e routing**
     - **Subnetting** e definizione degli indirizzi (gruppi di utenti, server farm) e degli **indirizzi dei server**.
-    - Definizione posizione dei **servizi di sistema** (DHCP, DNS), dislocati a scelta a bordo del **FW**,
-  collegati al **CS**, o inseriti in una **server farm**.
     - Definizione del **tipo di routing** (statico o dinamico). In caso di **routing statico**, definizione
   delle **tabelle di routing** più significative.
   *(Eccezione: nel WiFi Mesh il routing è sempre automatico — vedi sezione dedicata.)*
-
+- **Servizi di rete**
+     - Definizione posizione dei **servizi di sistema** (DHCP, DNS), dislocati a scelta a bordo del **FW**, collegati al **CS**, o inseriti in una **server farm**.
+     - Impostazione della **continuità del  servizio** mediante tecniche di replica agenti lungo il piano del servizio, il piano dei dati e il piano del ripristino (backup).
+     - Installazione, sulle interfacce di **ingresso** (direzione IN) di ciascun router, delle **ACL** che definiscono il processo di **filtraggio dei pacchetti** per autorizzare/negare il traffico dati tra i gruppi di utenti del sistema.
+     - Installazione sulla interfaccia WAN verso internet del processo **NAT** di traduzione degli indirizzi privati nel pool di indirizzi pubblici del router di confine sul link versi un ISP.
 - **Autenticazione**
      - Definizione delle **tecniche di autenticazione degli utenti** (es. **802.1X**) per l'accesso alla **risorsa rete** presso un **supplicant** (NAS) a scelta tra autenticazione:
           - **L2 EAP** di porta fisica per accesso presso uno **switch** (in base al MAC o all'id utente mediante **RADIUS/DIAMETER**)
