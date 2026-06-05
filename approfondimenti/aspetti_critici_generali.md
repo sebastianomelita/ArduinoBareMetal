@@ -39,9 +39,9 @@
   *(Eccezione: nel WiFi Mesh il routing è sempre automatico — vedi sezione dedicata.)*
 
 - **Autenticazione**
-     - Definizione delle **tecniche di autenticazione degli utenti** (es. **802.1X**): scelta tra autenticazione:
-          - **L2 EAP** di porta fisica su uno switch (in base al MAC o all'id utente mediante **RADIUS/DIAMETER**)
-          - **L2 EAP** di porta logica (in base al MAC o all'id utente mediante **RADIUS/DIAMETER**) 
+     - Definizione delle **tecniche di autenticazione degli utenti** (es. **802.1X**) per l'accesso alla **risorsa rete** presso un **supplicant** (NAS) a scelta tra autenticazione:
+          - **L2 EAP** di porta fisica per accesso presso switch (in base al MAC o all'id utente mediante **RADIUS/DIAMETER**)
+          - **L2 EAP** di porta logica per accesso presso un AP WiFi (in base al MAC o all'id utente mediante **RADIUS/DIAMETER**) 
           - **L7 con Captive portal** mediante sottomissione di username e password o inserimento di un codice vaucher su un form web.
      - Definizione delle tecniche di **autenticazione dei webservice** (openid, psw, sessioni, ecc.).
      - Definizione delle tecniche di **autorizzazione SSO** (openid, kerberos, ecc.).
