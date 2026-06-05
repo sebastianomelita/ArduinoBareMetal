@@ -48,7 +48,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
   (backup)** in caso di guasto del gateway principale.
      - Tecnologie dei dispositivi: definizione della **tipologia di servizio** (polling sincrono,
   comando asincrono, ecc.).
-      - Gestire eventuali **vincoli di prossimità** (mediante controllo di potenza o gestione del roaming)
+     - Gestire eventuali **vincoli di prossimità** (mediante controllo di potenza o gestione del roaming)
   ed eventuali **vincoli di posizionamento** (mediante trilaterazione).
      - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
   **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
