@@ -56,8 +56,6 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiF
     - Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.) tra nodi e servizi (es. AP su RADIUS).
     - Se presenti VLAN, definizione del tipo di **associazione VLAN↔SSID** (statica o dinamica con
          **Tunnel-Private-Group-Id**).
-    - Definizione della **posizione del controller degli AP**.
-
 
 [Rete di reti WiFi](/approfondimenti/wifi_infra_federation.md)
        
