@@ -53,6 +53,7 @@ A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di i
      - Definire le **interfacce radio** scegliendo tra **2-band** (dual channel) e **3-band** (three channel).
      - Definire i **canali dei link** scegliendoli tra quelli in banda **ISM** e pianificandone il
          **riuso nello spazio**, minimizzando l'**interferenza cocanale**.
+     - **Subnetting e indirizzamento:** definizione degli indirizzi delle subnet di aggregazione per i vari gruppi di utenti (generalmente statica), definizione degli indirizzi delle subnet di dorsale (statica o automatica basata su Link Local) e definizione degli indirizzi delle subnet di servizio (server farm e DMZ).
      - Gestire i **vincoli di prossimità** (indoor/outdoor, controllo potenza/roaming) e i
          **vincoli di posizionamento** (trilaterazione).
      - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
