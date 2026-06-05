@@ -42,7 +42,6 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiF
 - [Aspetti critici comuni per tutte le tecnologie](approfondimenti/aspetti_critici_generali.md)
 
 - **Aspetti particolari per WiFi Infrastruttura**
-    - Definizione di **dorsali wireless** e di **punti di accesso e aggregazione** dei dispositivi utente.
     - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
     - Gestire i **vincoli di prossimità**, distinguendo tra ambienti **indoor** e **outdoor** (controllo di
       potenza o gestione del roaming) e i **vincoli di posizionamento** (trilaterazione).
