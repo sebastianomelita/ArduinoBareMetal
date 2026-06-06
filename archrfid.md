@@ -62,6 +62,8 @@ L'RFID è dunque **complementare** alle reti di sensori: in molti scenari si **i
      - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
         **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
 
+[Cheat Sheet](/cheatsheet/cheatsheet.md)
+
 ---
 ## **Progetto di esempio completo 1**
 
