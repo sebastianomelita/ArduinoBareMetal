@@ -46,6 +46,14 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori Eth
         - subnet di **servizio** (server farm e **DMZ**).
      - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
 
+---
+
+## **Progetto di esempio completo**
+
+[Sito archeologico](/esempi/progetti/verifica_sistemi_reti_sito_archeologico.md)
+
+---
+
 Per **maggiori dettagli** vedi [Punti critici cablaggio strutturato](punticablaggio.md).
 
 Per una disamina degli errori più comuni nello sviluppo di una documentazione sul cablaggio strutturato vedi [Errori comuni cablaggio](erroricablaggio.md)
