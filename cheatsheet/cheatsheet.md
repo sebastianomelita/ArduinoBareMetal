@@ -73,7 +73,7 @@ Consiste nell'**ordine**:
 Alcuni documenti possono essere **trascurati** il relazione a quanto forte nel progetto è la responsabilità della definizione della parte fisica dei servizi. In linea di principio:
 - se i servizi stanno in **cloud** la parte fisica corrispondente è delegata al datacenter che li ospita
 - se i servizi stanno **on premise** la parte fisica corrispondente è responsabilità del progetto
-- nelle reti mesh WiFi e WSN (LoraWAN, Zigbee, RFID) in cui il gateway WSN è assemblato insieme al modem wireless che realizzza l'accesso alla rete Internet o insieme all'AP che realizzza l'accesso alla rete LAN la parte fisica è praticamente nulla.
+- nelle reti **mesh WiFi** e **WSN** (LoraWAN, Zigbee, RFID) in cui il **gateway WSN** coincide con il **gateway di accesso** alla rete Internet (Modem/Firewall) allora la parte fisica dovrebbe rappresentare la posizione dei nodi e una ipotesi di collegamento wireless reciproco primario. Consigliabile la definizione di una ipotesi di collegamento wireless secondario (backup) in caso di guasto di uno o più nodi principali di traffico. 
 
 ## Aspetti particolari per tecnologia
 
@@ -104,6 +104,7 @@ Alcuni documenti possono essere **trascurati** il relazione a quanto forte nel p
 
 
 ### WiFi infrastruttura
+- Posizionamento in planimetria degli **AP** con relativa etichetta, avendo cura che siano disposti in **posizione baricentrica** rispetto alle utenze
 - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
 - Gestire i **vincoli di prossimità**, distinguendo tra ambienti **indoor** e **outdoor** (controllo di
  potenza o gestione del roaming) e i **vincoli di posizionamento** (trilaterazione).
