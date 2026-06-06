@@ -1045,7 +1045,4 @@ finirebbero in CSMA/CA sullo stesso canale → throughput dimezzato.
 - ❌ backhaul a larghezza piena su canali dei client;
 - ❌ saltare il site survey (Ekahau / NetSpot).
 
----
 
-*Raccolta derivata da: dispense ArduinoBareMetal (S. Melita), progetto "sito archeologico",
-`man rsync`/`crontab`, documentazione NFS/Samba. Adattare canali ed EIRP al regolatorio locale.*
