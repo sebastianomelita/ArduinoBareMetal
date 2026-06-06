@@ -83,9 +83,6 @@ anche gli aspetti comuni.
 - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
 
 ### BLE
-- Tecnologie dei dispositivi: **sensori/attuatori**, **gateway**, **link** (dual radio, three radio),
-  **accesso radio** (allocazione di servizi sincroni **TDM**, asincroni **CSMA/CA** o a basso ritardo
-  **slotted CSMA/CA**) con relativo dimensionamento.
 - **Nota:** rispetto alle altre tecnologie, la sezione BLE del documento originale **non specifica**
   le tecniche di autenticazione (utenti/servizi).
 - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
@@ -135,6 +132,8 @@ anche gli aspetti comuni.
   **sede dell'elaborazione dei comandi** più opportuna dove effettuare decifrazione del payload. Ovvero, stabilire se l'AS debba stare o meno sul GW insieme al PF e al NS.
 - Gestire i **vincoli di prossimità** (indoor/outdoor, controllo potenza/roaming) e i
   **vincoli di posizionamento** (trilaterazione).
+- Definizione delle **classi di servizio** dei nodi sensori e attuatori
+- Definizione della **modalità di autenticazione** (OTAA o ABP) dei nodi
 
 ### RFID
 - **Tecnologie dei tag** da usare: **passivi**, **attivi**, **semi-passivi (BAP)**. La scelta determina
