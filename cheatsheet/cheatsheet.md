@@ -435,6 +435,8 @@ sudo tcpdump -i eth0 vrrp    ← verifica gli advertisement
 
 HAProxy riceve sull'IP virtuale VRRP e smista ai backend.
 
+<img src="../img/reverse-proxy.svg" alt="alt text" width="600">
+
 ```
 # /etc/haproxy/haproxy.cfg (estratto)
 defaults
