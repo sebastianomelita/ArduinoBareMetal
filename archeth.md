@@ -60,6 +60,9 @@ Per una disamina degli errori più comuni nello sviluppo di una documentazione s
 
 [Sensori](/approfondimenti/sensore.md)
 
+[Cheat Sheet](/cheatsheet/cheatsheet.md)
+
+
 
 Per il dettaglio sulle VPN pratiche vedi [VPN di reti Ethernet](ethvpn.md).
 
