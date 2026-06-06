@@ -39,13 +39,15 @@ La tecnologia dei **beacon** è **comune** a quasi tutti i protocolli wireless m
 
 - [Aspetti critici comuni per tutte le tecnologie](approfondimenti/aspetti_critici_generali.md)
 - **Aspetti particolari per BLE**
-     - Tecnologie dei dispositivi: **sensori/attuatori**, **gateway**, **link** (dual radio, three radio),
-         **accesso radio** (allocazione di servizi sincroni **TDM**, asincroni **CSMA/CA** o a basso ritardo
-         **slotted CSMA/CA**) con relativo dimensionamento.
-     - **Nota:** rispetto alle altre tecnologie, la sezione BLE del documento originale **non specifica**
-         le tecniche di autenticazione (utenti/servizi).
-     - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
-         **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
+    - Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura di posizionare tra essi
+  almeno **un gateway** che permetta l'accesso a una rete IP. Progettare dei **percorsi alternativi
+  (backup)** in caso di guasto del gateway principale.
+    - Tecnologie dei dispositivi: definizione della **tipologia di servizio** (polling sincrono,
+  comando asincrono, ecc.).
+    - Gestire eventuali **vincoli di prossimità** (mediante controllo di potenza o gestione del roaming)
+  ed eventuali **vincoli di posizionamento** (mediante trilaterazione).
+    - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
+  **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
 
 [Rete di reti BLE](/approfondimenti/ble_federation.md)
        
