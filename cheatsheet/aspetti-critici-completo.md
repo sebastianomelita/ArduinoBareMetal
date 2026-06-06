@@ -75,9 +75,6 @@ anche gli aspetti comuni.
   **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
 
 ### Ethernet
-- Tecnologie dei dispositivi: **topologia** dei sensori/attuatori (**stella**, **bus**, **singolo**);
-  **link** (dual radio, three radio); **accesso radio** (allocazione di servizi sincroni **TDM**,
-  asincroni **CSMA/CA** o a basso ritardo **slotted CSMA/CA**) con relativo dimensionamento.
 - Definizione di **dorsali (wireless)** e di **punti di accesso e aggregazione** dei dispositivi utente.
 - **Subnetting** strutturato:
   - subnet di **aggregazione** per i gruppi di utenti (generalmente statica);
