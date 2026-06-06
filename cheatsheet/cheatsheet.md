@@ -162,7 +162,6 @@ Alcuni documenti si possono **trascurare** secondo il peso della parte fisica ne
 - **Nodi** + **gateway** verso IP con **backup**; **vincoli** prossimità/posizionamento; **sede dell'elaborazione**.
 
 ---
----
 
 # Parte II · Cisco IOS & Linux — VLAN · OSPF · NAT · ACL · Tunnel
 
