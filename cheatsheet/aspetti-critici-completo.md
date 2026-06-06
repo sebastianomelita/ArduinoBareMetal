@@ -96,19 +96,12 @@ anche gli aspetti comuni.
 
 
 ### WiFi infrastruttura
-- Tecnologie dei dispositivi: **topologia** dei sensori/attuatori (**stella**, **bus**, **singolo**);
-  **link** (dual radio, three radio); **accesso radio** (**TDM** / **CSMA/CA** / **slotted CSMA/CA**)
-  con relativo dimensionamento.
-- Definizione di **dorsali wireless** e di **punti di accesso e aggregazione** dei dispositivi utente.
-- **Subnetting** strutturato: subnet di **aggregazione** (statica), subnet di **dorsale**
-  (statica o Link Local), subnet di **servizio** (server farm e **DMZ**).
 - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
-- Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.).
-  Può essere **reciproca** (backhaul, link radio) oppure **tra nodi e servizi** (es. autenticazione
-  di un AP su RADIUS).
 - Gestire i **vincoli di prossimità**, distinguendo tra ambienti **indoor** e **outdoor** (controllo di
-  potenza o gestione del roaming) e i **vincoli di posizionamento** (trilaterazione).
+ potenza o gestione del roaming) e i **vincoli di posizionamento** (trilaterazione).
 - Definizione della **posizione del controller degli AP**.
+- Definizione delle tecniche di **autenticazione dei nodi AP** (certificati, psw, preshared key, ecc.) presso i servizi (es. AP su RADIUS).
+- Se presenti VLAN, definizione del tipo di **associazione VLAN↔SSID** (statica o dinamica con **Tunnel-Private-Group-Id**).
 
 ### WiFi Mesh
 - Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura che tra essi esista
