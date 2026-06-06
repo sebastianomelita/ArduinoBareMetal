@@ -74,7 +74,7 @@ Alcuni documenti possono essere **trascurati** il relazione a quanto forte è ne
 - se i servizi stanno in **cloud** la parte fisica corrispondente è delegata al datacenter che li ospita
 - se i servizi stanno **on premise** la parte fisica corrispondente è responsabilità del progetto
 - nelle reti **mesh WiFi** e **WSN** (LoraWAN, Zigbee, RFID) in cui il **gateway WSN** coincide con il **gateway di accesso** alla rete Internet (Modem/Firewall) allora la parte di **cablaggio dei cavi** è, in pratica, inesistente.
-- nelle reti **mesh WiFi** e **WSN** la planimetria dovrebbe comprendere anche l'albero degli apparati attivi (che quindi va definito solo per la parte ethernet) e rappresentare:
+- nelle reti **mesh WiFi** e **WSN** la planimetria dovrebbe comprendere anche l'albero degli apparati attivi (che quindi va definito solo per la parte ethernet) e dovrebbe rappresentare:
      - la posizione dei nodi
      - una ipotesi di **albero principale** del collegamento wireless (L2 o L3) reciproco tra i nodi. Consigliabile la definizione di una ipotesi di collegamento wireless secondario (backup) in caso di guasto di uno o più nodi principali di traffico.
 - in **tutte le reti** in generale è utile rappresentare, nell'albero degli apparati attivi, un documento dei collegamenti in **tunnel** e di **livello 7** della pila ISO/OSI (broker MQTT, flussi HTTP, ecc.)
