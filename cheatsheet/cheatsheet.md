@@ -151,6 +151,15 @@ anche gli aspetti comuni.
 - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
   **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
 
+## **Documentazione cablaggio**
+
+Consiste nell'**ordine**:
+1. Planimetria senza cablaggio
+2. Planimetria con cablaggio
+3. Albero degli apparati passivi
+4. Tabella delle dorsali
+5. Albero degli apparati attivi
+6. Schema degli armadi
 
 
 
