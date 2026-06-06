@@ -75,6 +75,8 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 
 [Dettaglio tecnologie di accesso al mezzo radio](accessoradio.md)
 
+[Cheat Sheet](/cheatsheet/cheatsheet.md)
+
 ---
 
 ## **Architettura di una rete di reti** 
