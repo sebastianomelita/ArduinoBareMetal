@@ -49,6 +49,8 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
   **sede dell'elaborazione dei comandi** più opportuna dove effettuare decifrazione del payload. Ovvero, stabilire se l'AS debba stare o meno sul GW insieme al PF e al NS.
      - Gestire i **vincoli di prossimità** (indoor/outdoor, controllo potenza/roaming) e i
   **vincoli di posizionamento** (trilaterazione).
+     - Definizione delle **classi di servizio** dei nodi sensori e attuatori
+     - Definizione della **modalità di autenticazione** (OTAA o ABP) dei nodi
 
 ---
 ## **Progetto di esempio completo**
