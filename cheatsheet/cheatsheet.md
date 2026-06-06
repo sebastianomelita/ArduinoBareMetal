@@ -79,7 +79,7 @@ Alcuni documenti possono essere **trascurati** il relazione a quanto forte è ne
      - una ipotesi di **albero principale** del collegamento wireless (L2 o L3) reciproco tra i nodi. Consigliabile la definizione di una ipotesi di collegamento wireless secondario (backup) in caso di guasto di uno o più nodi principali di traffico.
 - in **tutte le reti** in generale è utile rappresentare, nell'albero degli apparati attivi, un documento dei collegamenti in **tunnel** e di **livello 7** della pila ISO/OSI (broker MQTT, flussi HTTP, ecc.)
 - se gli scenari del progetto sono diversi e di differente natura allora conviene replicare la planimetria per ciascuno.
-- se gli scenari sono diversi e distribuiti nello spazio secondo un concetto di rete di reti (ethernet o WSN) isolate, allora potrebbe essere utile definire uno schema logico (ad esempio degli apparati attivi) che le rappresenta insieme con tutti i collegamenti reciproci fisici e logici (tunnel L2/L3 o broker MQTT).
+- se gli scenari sono diversi e distribuiti nello spazio secondo un concetto di rete di reti (ethernet o WSN) isolate, allora potrebbe essere utile definire uno schema logico (ad esempio degli apparati attivi) che le rappresenta insieme come **federazione di reti** con tutti i collegamenti reciproci fisici e logici (tunnel L2/L3 o broker MQTT).
 
 ## Aspetti particolari per tecnologia
 
