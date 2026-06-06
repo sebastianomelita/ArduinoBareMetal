@@ -62,6 +62,8 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori WiF
 
 [Autenticazione 802.1X](radius.md)
 
+[Cheat Sheet](/cheatsheet/cheatsheet.md)
+
 ---
 ## **Rete in modo infrastruttura** 
 
