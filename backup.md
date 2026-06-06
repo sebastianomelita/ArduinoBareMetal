@@ -16,6 +16,49 @@ Il **backup** si realizza essenzialmente per raggiungere due **obiettivi**:
     - **Snapshot** e **migrazioni** sono funzioni **realizzabili a caldo**, cioè a macchina attiva e pienamente erogante il servizio.
     - Il **recupero** di un sistema **danneggiato** o **infetto** avviene prontamente, abbandonando la copia compromessa e sostituendola con la sua copia più recente conservata sul NAS. Il **procedimento di restore** può avvenire in maniera automatica o manuale, comunque sfruttando i **servizi di connettività** a larga banda offerti dalla **rete locale**.
 
+## 1. Concetti chiave
+
+| Termine | Significato |
+|---|---|
+| **NAS** | Disco di storage + disco di servizio (SO + AAA) che condivide cartelle in rete |
+| **Disaster recovery** | Ripristino di **dati** dopo compromissione (guasto, ransomware) |
+| **Service recovery** | Ripristino di **servizi/VM** sostituendo la copia infetta con l'ultima sana |
+| **Snapshot** | Punto di ripristino datato; salva solo le **differenze** (versioning) |
+| **Backup incrementale** | Copia solo ciò che è cambiato → veloce ed efficiente (`rsync`, `rclone`) |
+
+### PULL vs PUSH — chi prende l'iniziativa?
+
+| | **PULL** 🔽 | **PUSH** 🔼 |
+|---|---|---|
+| **Iniziativa** | Il **NAS** preleva i dati dal server | Il **server** spinge i dati verso il NAS |
+| **Esecuzione script** | Sul **NAS** | Sul **server da backuppare** |
+| **Chi ha la chiave privata** | Il NAS | Il server |
+| **Chi ha la chiave pubblica** | Il server (sorgente) | Il NAS (destinazione) |
+| **Tipico per** | Backup centralizzato di più server | Ogni macchina gestisce il proprio backup |
+
+### Regola d'oro **3-2-1**
+- **3** copie dei dati → **2** supporti diversi → **1** copia *off-site* (altro edificio o **cloud**).
+- Prevedi sempre il **backup del backup** (NAS gemello + cloud, es. Google Drive).
+
+---
+
+## 2. Setup chiavi SSH (autenticazione senza password)
+
+```bash
+# 1. Genera la coppia di chiavi (sul sistema che AVRÀ l'iniziativa)
+ssh-keygen -t rsa
+
+# 2. Copia la chiave PUBBLICA sull'altro host
+ssh-copy-id user@host_remoto
+
+# 3. Verifica
+ssh user@host_remoto
+```
+
+> 🔑 **Regola**: la chiave **privata** resta su chi lancia il comando; la **pubblica** va sull'host a cui ci si connette.
+
+---
+
 
 ## **Backup dei dati** 
 
