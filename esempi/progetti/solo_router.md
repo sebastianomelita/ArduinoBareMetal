@@ -1,4 +1,4 @@
->[Torna a svolgimento Smart Road](svolgimento_smart_road.md)>[Torna a Dettaglio architettura Zigbee](/archeth.md) 
+>[Torna a svolgimento Smart Road](svolgimento_smart_road.md)>[Torna a Dettaglio architettura Ethernet](/archeth.md) 
 >
 
 # Esame di Stato — Sistemi e Reti (ITTL · Telecomunicazioni)
