@@ -151,6 +151,8 @@ anche gli aspetti comuni.
 - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
   **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
 
+---
+
 ## **Documentazione cablaggio**
 
 Consiste nell'**ordine**:
@@ -161,7 +163,7 @@ Consiste nell'**ordine**:
 5. Albero degli apparati attivi
 6. Schema degli armadi
 
-
+---
 
 # VLAN + OSPF + NAT — Cisco IOS Cheat Sheet
 
