@@ -83,17 +83,6 @@ Alcuni documenti possono essere **trascurati** il relazione a quanto forte è ne
 
 ## Aspetti particolari per tecnologia
 
-### Zigbee
-- Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura di posizionare tra essi
-  almeno **un gateway** che permetta l'accesso a una rete IP. Progettare dei **percorsi alternativi
-  (backup)** in caso di guasto del gateway principale.
-- Tecnologie dei dispositivi: definizione della **tipologia di servizio** (polling sincrono,
-  comando asincrono, ecc.).
-- Gestire eventuali **vincoli di prossimità** (mediante controllo di potenza o gestione del roaming)
-  ed eventuali **vincoli di posizionamento** (mediante trilaterazione).
-- Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
-  **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
-
 ### Ethernet
 - Definizione di **dorsali (wireless)** e di **punti di accesso e aggregazione** dei dispositivi utente.
 - **Subnetting** strutturato:
@@ -101,14 +90,6 @@ Alcuni documenti possono essere **trascurati** il relazione a quanto forte è ne
   - subnet di **dorsale** (statica o automatica basata su **Link Local**);
   - subnet di **servizio** (server farm e **DMZ**).
 - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
-
-### BLE
-- Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura di posizionare tra essi
-  almeno **un gateway** che permetta l'accesso a una rete IP. Progettare dei **percorsi alternativi
-  (backup)** in caso di guasto del gateway principale.
-- Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
-  **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
-
 
 ### WiFi infrastruttura
 - Posizionamento in planimetria degli **AP** con relativa etichetta, avendo cura che siano disposti in **posizione baricentrica** rispetto alle utenze
@@ -155,6 +136,28 @@ Alcuni documenti possono essere **trascurati** il relazione a quanto forte è ne
 - Definizione delle **classi di servizio** dei nodi sensori e attuatori
 - Definizione della **modalità di autenticazione** (OTAA o ABP) dei nodi
 
+### Zigbee
+- Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura di posizionare tra essi
+  almeno **un gateway** che permetta l'accesso a una rete IP. Progettare dei **percorsi alternativi
+  (backup)** in caso di guasto del gateway principale.
+- Tecnologie dei dispositivi: definizione della **tipologia di servizio** (polling sincrono,
+  comando asincrono, ecc.).
+- Gestire eventuali **vincoli di prossimità** (mediante controllo di potenza o gestione del roaming)
+  ed eventuali **vincoli di posizionamento** (mediante trilaterazione).
+- Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
+  **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
+
+### BLE
+- Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura di posizionare tra essi
+  almeno **un gateway** che permetta l'accesso a una rete IP. Progettare dei **percorsi alternativi
+  (backup)** in caso di guasto del gateway principale.
+- Tecnologie dei dispositivi: definizione della **tipologia di servizio** (polling sincrono,
+  comando asincrono, ecc.).
+- Gestire eventuali **vincoli di prossimità** (mediante controllo di potenza o gestione del roaming)
+  ed eventuali **vincoli di posizionamento** (mediante trilaterazione).
+- Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
+  **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
+  
 ### RFID
 - **Tecnologie dei tag** da usare: **passivi**, **attivi**, **semi-passivi (BAP)**. La scelta determina
   **portata**, **costo** e **durata**.
