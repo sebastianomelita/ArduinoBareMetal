@@ -63,19 +63,21 @@ anche gli aspetti comuni.
 ### **Documentazione cablaggio**
 
 Consiste nell'**ordine**:
-1. Planimetria senza cablaggio
-2. Planimetria con cablaggio
-3. Albero degli apparati passivi
-4. Tabella delle dorsali
-5. Albero degli apparati attivi
-6. Schema degli armadi
+1. Planimetria senza cablaggio (parte fisica utile ma non necessaria)
+2. Planimetria con cablaggio (parte fisica necessaria in tutti i contesti eccetto il cloud, fusa con l'albero degli apparati attivi nelle reti WiFi mesh)
+3. Albero degli apparati passivi (parte fisica necessaria in tutti i contesti ethernet + WSN
+4. Tabella delle dorsali (parte fisica necessaria in tutti i contesti ethernet + wsn)
+5. Albero degli apparati attivi (parte fisica necessaria in tutti i contesti ethernet + WSN)
+6. Schema degli armadi (parte fisica necessaria in tutti i contesti ethernet + WSN)
    
-Alcuni documenti possono essere **trascurati** il relazione a quanto forte nel progetto è la responsabilità della definizione della parte fisica dei servizi. In linea di principio:
+Alcuni documenti possono essere **trascurati** il relazione a quanto forte è nel progetto la responsabilità della definizione della parte fisica dei servizi. In linea di principio:
 - se i servizi stanno in **cloud** la parte fisica corrispondente è delegata al datacenter che li ospita
 - se i servizi stanno **on premise** la parte fisica corrispondente è responsabilità del progetto
-- nelle reti **mesh WiFi** e **WSN** (LoraWAN, Zigbee, RFID) in cui il **gateway WSN** coincide con il **gateway di accesso** alla rete Internet (Modem/Firewall) allora la parte di **cablaggio dei cavi** è inesistente.
-- nelle reti **mesh WiFi** e **WSN** la parte fisica dovrebbe comprendere anche quella logica di livello 2 e livello 3 della pila ISO/OSI (che quindi è inutile definire a parte) e rappresentare la posizione dei nodi e una ipotesi di collegamento wireless (L2 o L3) reciproco primario. Consigliabile la definizione di una ipotesi di collegamento wireless secondario (backup) in caso di guasto di uno o più nodi principali di traffico.
-- in **tutte le reti** in generale è utile rappresentare, a parte o insieme a quello logico, un documento logico dei collegamenti in **tunnel** e di **livello 7** della pila ISO/OSI (broker MQTT, flussi HTTP, ecc.) 
+- nelle reti **mesh WiFi** e **WSN** (LoraWAN, Zigbee, RFID) in cui il **gateway WSN** coincide con il **gateway di accesso** alla rete Internet (Modem/Firewall) allora la parte di **cablaggio dei cavi** è, in pratica, inesistente.
+- nelle reti **mesh WiFi** e **WSN** la parte fisica dovrebbe comprendere anche l'albero degli apparati attivi (che quindi è inutile definire a parte) e rappresentare la posizione dei nodi e una ipotesi di collegamento wireless (L2 o L3) reciproco primario. Consigliabile la definizione di una ipotesi di collegamento wireless secondario (backup) in caso di guasto di uno o più nodi principali di traffico.
+- in **tutte le reti** in generale è utile rappresentare, nell'albero degli apparati attivi, un documento dei collegamenti in **tunnel** e di **livello 7** della pila ISO/OSI (broker MQTT, flussi HTTP, ecc.)
+- se gli scenari del progetto sono diversi e di differente natura conviene replicare la planimetria per ciascuno.
+- se gli scenari sono diversi e distribuiti nello spazio secondo un concetto di rete di reti (ethernet o WSN) isolate allora potrebbe essere utile definire uno schema logico (ad esempio degli apparati attivi) che le rappresenta insieme con i collegamenti reciproci (tunnel L2/L3 o broker MQTT).
 
 ## Aspetti particolari per tecnologia
 
