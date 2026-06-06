@@ -1,3 +1,14 @@
+>[Torna a reti di sensori](sensornetworkshort.md#classificazione-delle-tecnologie-wsn-in-base-a-velocità-e-copertura)
+
+- [Dettaglio architettura Ethernet](../archeth.md)
+- [Dettaglio architettura Zigbee](../archzigbee.md)
+- [Dettaglio architettura BLE](../archble.md)
+- [Dettaglio architettura WiFi infrastruttura](../archwifi.md)
+- [Dettaglio architettura WiFi mesh](../archmesh.md) 
+- [Dettaglio architettura LoraWAN](../lorawanclasses.md)
+- [Dettaglio architettura 5G/6G](../ranprivata.md)
+- [Dettaglio architettura RFID](../archrfid.md)
+
 # Esame di Stato — Sistemi e Reti (ITTL · Telecomunicazioni)
 
 > **Ministero dell'Istruzione, dell'Università e della Ricerca**
