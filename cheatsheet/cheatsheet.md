@@ -103,8 +103,9 @@ Alcuni documenti possono essere **trascurati** il relazione a quanto forte è ne
 - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
 
 ### BLE
-- **Nota:** rispetto alle altre tecnologie, la sezione BLE del documento originale **non specifica**
-  le tecniche di autenticazione (utenti/servizi).
+- Posizionamento in planimetria dei **nodi** con relativa etichetta, avendo cura di posizionare tra essi
+  almeno **un gateway** che permetta l'accesso a una rete IP. Progettare dei **percorsi alternativi
+  (backup)** in caso di guasto del gateway principale.
 - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
   **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
 
@@ -145,10 +146,8 @@ Alcuni documenti possono essere **trascurati** il relazione a quanto forte è ne
 - Definizione della **posizione del controller degli AP**.
 
 ### LoRaWAN
-- schema fisico (planimetria) dello scenario del problema con la rappresentazione di ambienti e edifici chiave e schema (indoor ed outdoor) dell'infrastruttura con etichettatura univoca di asset specifici quali sensori/attuatori, gateway/packet forwardere (PF), network server (NS), join server (JS) e application server (AP).
-- Definire se è necessaria una **federazione di reti di sensori**: stabilire se **broker** e
-  **Network Server** sono individualmente o entrambi parte del router/gateway verso la rete IP,
-  oppure se sono **a comune** con più reti LoRaWAN.
+- schema fisico (planimetria) dello scenario del problema con la rappresentazione di ambienti e edifici chiave e schema (indoor ed outdoor) dell'infrastruttura con etichettatura univoca di asset specifici quali sensori/attuatori, gateway/packet forwarder (**PF**), network server (**NS**), join server (**JS**) e application server (**AP**).
+- Definire se è necessaria una **federazione di reti di sensori**: stabilire se **broker** e **Network Server** sono individualmente o entrambi parte del router/gateway verso la rete IP, oppure se sono **a comune** con più reti LoRaWAN.
 - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
   **sede dell'elaborazione dei comandi** più opportuna dove effettuare decifrazione del payload. Ovvero, stabilire se l'AS debba stare o meno sul GW insieme al PF e al NS.
 - Gestire i **vincoli di prossimità** (indoor/outdoor, controllo potenza/roaming) e i
