@@ -560,7 +560,21 @@ Scelte principali: isolamento bidirezionale Contabile ↔ Commerciale; accesso u
 
 **Perché una soluzione mista.** I due edifici sono due domini amministrativi che si fidano l'uno dell'altro solo fino a un certo punto: ciascun edificio implementa, sui propri apparati, il blocco di tutti i flussi entranti che minacciano la propria rete sensibile, indipendentemente dall'altro. Sul router-firewall dell'Edificio 2 questo si traduce in due ACL complementari (non alternative). Le ACL speculari sull'altro edificio realizzano una **difesa in profondità**: il pacchetto vietato deve forzare due ACL indipendenti, su due apparati gestiti da due edifici diversi.
 
-**Parte 1 — ACL standard su `Tunnel0` in "in"** (*default-deny con whitelist*): si autorizza la sola rete commerciale Ed.1. Sul tunnel l'unica sorgente possibile è la rete dall'altro lato, quindi conoscerne la sorgente basta.
+Per ciascuna delle due ACL si riporta prima la **lista astratta delle ACE** (*Access Control Entry*) — la sequenza di regole indipendente dall'apparato, valutata dall'alto verso il basso con logica *first-match* (vince la prima ACE che combacia) e chiusa da un *implicit deny* — e poi la sua **realizzazione concreta in Cisco IOS**. La tabella astratta è la specifica; il codice IOS ne è una delle possibili implementazioni.
+
+**Parte 1 — ACL standard su `Tunnel0` in "in"** (*default-deny con whitelist*): si autorizza la sola rete commerciale Ed.1. Il Tunnel0 è un'interfaccia di confine verso un'altra sede, quindi adotta la stessa politica di una **WAN**: si parte da *deny all* e si apre in *whitelist* solo ciò che è esplicitamente previsto, secondo il principio del minimo privilegio. Sul tunnel, inoltre, l'unica sorgente possibile è la rete dall'altro lato, quindi conoscerne la sola sorgente basta a decidere.
+
+*Tabella delle ACE (rappresentazione astratta):*
+
+| # | Azione | Sorgente | Destinazione | Proto / Porta | Esito |
+|:--:|---|---|---|---|---|
+| 1 | permit | 172.16.0.0/22 (Commerciale Ed.1) | non valutata ¹ | non valutato ¹ | accetta il traffico dal solo peer commerciale |
+| 2 | deny | any | non valutata ¹ | non valutato ¹ | scarta tutto il resto |
+| — | *(implicit deny)* | any | non valutata ¹ | non valutato ¹ | l'ACE 2 esplicita ciò che sarebbe comunque l'implicit deny |
+
+¹ Una ACL *standard* ispeziona **solo** l'indirizzo sorgente: destinazione e protocollo non entrano nel criterio di match. Per questo va applicata vicino alla destinazione da proteggere — qui sul Tunnel0, dove l'unica sorgente possibile è già la rete remota.
+
+*Realizzazione concreta (Cisco IOS):*
 
 ```cisco
 access-list 10 remark Solo la Commerciale Ed.1 puo' entrare dal tunnel
@@ -576,7 +590,23 @@ interface Tunnel0
  ip access-group 10 in
 ```
 
-**Parte 2 — ACL estesa su `g0/1.20` in "in"** (*default-accept con blacklist*): si negano i pochi flussi vietati (Commerciale Ed.2 → Contabile Ed.2, e opzionalmente tutto verso la DMZ tranne HTTPS) e si conclude con un `permit ip ... any`. Serve l'estesa perché dalla stessa sottointerfaccia entrano sia i pacchetti leciti (Internet, tunnel) sia quelli vietati: solo la coppia (sorgente, destinazione) permette di distinguerli.
+**Parte 2 — ACL estesa su `g0/1.20` in "in"** (*default-accept con blacklist*): si negano esplicitamente i pochi flussi vietati (Commerciale Ed.2 → Contabile Ed.2, e opzionalmente tutto verso la DMZ tranne HTTPS) e si conclude con un `permit` che lascia passare il resto. Serve l'estesa perché dalla stessa sottointerfaccia entrano sia i pacchetti leciti (Internet, tunnel) sia quelli vietati: solo la coppia (sorgente, destinazione) permette di distinguerli.
+
+Questa interfaccia adotta la politica **opposta** rispetto al Tunnel0: su una LAN utente la quasi totalità del traffico è lecita, quindi si parte da *permit all* e si elencano in *blacklist* solo i pochi flussi da bloccare. La tabella è in *forma B*: il `permit` finale è ristretto alla sorgente legittima della VLAN, e l'*implicit deny* finale realizza l'anti-spoofing scartando ogni sorgente diversa dalla VLAN 20.
+
+*Tabella delle ACE (rappresentazione astratta):*
+
+| # | Azione | Protocollo | Sorgente | Porta sorg. | Destinazione | Porta dest. | Esito |
+|:--:|---|---|---|:--:|---|:--:|---|
+| 1 | deny | IP | 192.168.1.32/27 | — | 192.168.1.0/28 (Contabile) | — | blocca Commerciale Ed.2 → Contabile Ed.2 |
+| 2 | permit | TCP | 192.168.1.32/27 | — | 192.168.1.64/28 (DMZ) | 443 | DMZ raggiungibile solo via HTTPS |
+| 3 | deny | IP | 192.168.1.32/27 | — | 192.168.1.64/28 (DMZ) | — | ogni altro flusso verso la DMZ è vietato |
+| 4 | permit | IP | 192.168.1.32/27 | — | any | — | *permit all* della blacklist: Internet (via NAT) e Commerciale Ed.1 (via tunnel) |
+| — | *(implicit deny)* | IP | any | — | any | — | anti-spoofing: scarta ogni sorgente ≠ 192.168.1.32/27 |
+
+L'ordine è vincolante (*first-match*): l'ACE 1 deve precedere l'ACE 4, altrimenti il `permit ... any` lascerebbe passare anche il flusso verso la contabile. A differenza della ACL standard, qui la **destinazione** è parte del criterio di match, ed è proprio ciò che consente di bloccare il solo flusso verso la contabile lasciando liberi Internet e tunnel.
+
+*Realizzazione concreta (Cisco IOS):*
 
 ```cisco
 ip access-list extended ACL_VLAN20_IN
