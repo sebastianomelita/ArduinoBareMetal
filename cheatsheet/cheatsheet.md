@@ -1221,6 +1221,34 @@ SW# debug dot1x all
 # Sul server RADIUS:
 sudo tail -f /var/log/freeradius/radius.log
 ```
+#### Assegnazione dinamica della VLAN via RADIUS
+
+Una caratteristica molto potente di 802.1X è che il RADIUS non si limita a dire "sì/no": nella risposta `Access-Accept` può anche dire al NAS *in quale VLAN* mettere l'utente appena autenticato. Si usano gli attributi standard definiti dalla RFC 2868:
+
+```
+Tunnel-Type        = VLAN
+Tunnel-Medium-Type = IEEE-802
+Tunnel-Private-Group-Id = "10"     # VLAN ID di destinazione
+```
+
+Questo permette di **unificare l'SSID** per tutti gli operatori (un unico SSID *SitoArcheologico-Staff*) e di smistare ciascun utente nella VLAN giusta sulla base del suo profilo nel database. In FreeRADIUS la regola si scrive nel file `users` attaccandosi a un attributo dell'utente — tipicamente il *gruppo LDAP* di appartenenza:
+
+```
+DEFAULT Ldap-Group == "cn=tecnici,ou=staff,dc=sito,dc=it"
+        Tunnel-Type             = VLAN,
+        Tunnel-Medium-Type      = IEEE-802,
+        Tunnel-Private-Group-Id = "10"     # → VLAN Mgmt
+
+DEFAULT Ldap-Group == "cn=infopoint,ou=staff,dc=sito,dc=it"
+        Tunnel-Type             = VLAN,
+        Tunnel-Medium-Type      = IEEE-802,
+        Tunnel-Private-Group-Id = "40"     # → VLAN InfoPoint
+
+DEFAULT Auth-Type := Reject
+
+```
+
+Il vantaggio operativo è enorme: aggiungere un nuovo tecnico significa creare l'utenza in LDAP e assegnarla al gruppo `cn=tecnici`, senza toccare la configurazione né degli AP né degli switch. Lo stesso meccanismo si presta a confinare automaticamente in una **VLAN di quarantena** gli utenti il cui profilo è stato sospeso, semplicemente spostandoli di gruppo in LDAP.
 
 ---
 
@@ -1249,7 +1277,6 @@ R# show running-config | section nat
 # 🗄️ Cheat Sheet — Backup & Ripristino (semplice)
 
 > Riferimento rapido per backup/restore di **dati** e **VM** con `rsync`, **NFS** e **Samba**.
-> Ispirato alla dispensa *ArduinoBareMetal — backup* di S. Melita + pratiche standard.
 
 ---
 
