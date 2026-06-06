@@ -60,7 +60,20 @@ anche gli aspetti comuni.
   **sede dell'elaborazione dei comandi** più opportuna (locale/edge vs remota on-premise/cloud).
      - Definizione (anche in **pseudocodice**) delle **funzioni del firmware** di bordo dei dispositivi IoT.
 
----
+## **Documentazione cablaggio**
+
+Consiste nell'**ordine**:
+1. Planimetria senza cablaggio
+2. Planimetria con cablaggio
+3. Albero degli apparati passivi
+4. Tabella delle dorsali
+5. Albero degli apparati attivi
+6. Schema degli armadi
+   
+Alcuni documenti possono essere **trascurati** il relazione a quanto forte nel progetto è la responsabilità della definizione della parte fisica dei servizi. In linea di principio:
+- se i servizi stanno in **cloud** la parte fisica corrispondente è delegata al datacenter che li ospita
+- se i servizi stanno **on premise** la parte fisica corrispondente è responsabilità del progetto
+- nelle reti mesh WiFi e WSN (LoraWAN, Zigbee, RFID) in cui il gateway WSN è assemblato insieme al modem wireless che realizzza l'accesso alla rete Internet o insieme all'AP che realizzza l'accesso alla rete LAN la parte fisica è praticamente nulla.
 
 ## Aspetti particolari per tecnologia
 
@@ -151,17 +164,6 @@ anche gli aspetti comuni.
 - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
   **sede dell'elaborazione dei comandi** più opportuna (locale/edge sul gateway vs remota on-premise/cloud).
 
----
-
-## **Documentazione cablaggio**
-
-Consiste nell'**ordine**:
-1. Planimetria senza cablaggio
-2. Planimetria con cablaggio
-3. Albero degli apparati passivi
-4. Tabella delle dorsali
-5. Albero degli apparati attivi
-6. Schema degli armadi
 
 ---
 
