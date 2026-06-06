@@ -74,7 +74,8 @@ Alcuni documenti possono essere **trascurati** il relazione a quanto forte nel p
 - se i servizi stanno in **cloud** la parte fisica corrispondente è delegata al datacenter che li ospita
 - se i servizi stanno **on premise** la parte fisica corrispondente è responsabilità del progetto
 - nelle reti **mesh WiFi** e **WSN** (LoraWAN, Zigbee, RFID) in cui il **gateway WSN** coincide con il **gateway di accesso** alla rete Internet (Modem/Firewall) allora la parte di cablaggio è inesistente.
-- nelle reti **mesh WiFi** e **WSN** la parte fisica dovrebbe coincidere con quella logica (che quindi è inutile definire a parte) e rappresentare la posizione dei nodi e una ipotesi di collegamento wireless reciproco primario. Consigliabile la definizione di una ipotesi di collegamento wireless secondario (backup) in caso di guasto di uno o più nodi principali di traffico. 
+- nelle reti **mesh WiFi** e **WSN** la parte fisica dovrebbe coincidere con quella logica di livello 2 e livello 3 della pila ISO/OSI(che quindi è inutile definire a parte) e rappresentare la posizione dei nodi e una ipotesi di collegamento wireless reciproco primario. Consigliabile la definizione di una ipotesi di collegamento wireless secondario (backup) in caso di guasto di uno o più nodi principali di traffico.
+- in tutte le reti in generale è utile rappresentare un documento logico dei collegamenti in tunnel e di livello 7 della pila ISO/OSI (broker MQTT, flussi HTTP, ecc.) 
 
 ## Aspetti particolari per tecnologia
 
