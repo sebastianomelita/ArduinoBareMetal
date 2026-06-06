@@ -74,6 +74,8 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 
 [Sensori](/approfondimenti/sensore.md)
 
+[Cheat Sheet](/cheatsheet/cheatsheet.md)
+
 ---
 
 ## **Profili Zigbee**
