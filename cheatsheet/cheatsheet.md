@@ -1246,6 +1246,239 @@ R# show running-config | section nat
 > `traceroute` mostra il percorso hop-by-hop — utile per verificare quale router
 > smista il traffico tra VLAN o aree OSPF.
 
+# 🗄️ Cheat Sheet — Backup & Ripristino (semplice)
+
+> Riferimento rapido per backup/restore di **dati** e **VM** con `rsync`, **NFS** e **Samba**.
+> Ispirato alla dispensa *ArduinoBareMetal — backup* di S. Melita + pratiche standard.
+
+---
+
+## 1. Concetti chiave
+
+| Termine | Significato |
+|---|---|
+| **NAS** | Disco di storage + disco di servizio (SO + AAA) che condivide cartelle in rete |
+| **Disaster recovery** | Ripristino di **dati** dopo compromissione (guasto, ransomware) |
+| **Service recovery** | Ripristino di **servizi/VM** sostituendo la copia infetta con l'ultima sana |
+| **Snapshot** | Punto di ripristino datato; salva solo le **differenze** (versioning) |
+| **Backup incrementale** | Copia solo ciò che è cambiato → veloce ed efficiente (`rsync`, `rclone`) |
+
+### PULL vs PUSH — chi prende l'iniziativa?
+
+| | **PULL** 🔽 | **PUSH** 🔼 |
+|---|---|---|
+| **Iniziativa** | Il **NAS** preleva i dati dal server | Il **server** spinge i dati verso il NAS |
+| **Esecuzione script** | Sul **NAS** | Sul **server da backuppare** |
+| **Chi ha la chiave privata** | Il NAS | Il server |
+| **Chi ha la chiave pubblica** | Il server (sorgente) | Il NAS (destinazione) |
+| **Tipico per** | Backup centralizzato di più server | Ogni macchina gestisce il proprio backup |
+
+### Regola d'oro **3-2-1**
+- **3** copie dei dati → **2** supporti diversi → **1** copia *off-site* (altro edificio o **cloud**).
+- Prevedi sempre il **backup del backup** (NAS gemello + cloud, es. Google Drive).
+
+---
+
+## 2. Setup chiavi SSH (autenticazione senza password)
+
+```bash
+# 1. Genera la coppia di chiavi (sul sistema che AVRÀ l'iniziativa)
+ssh-keygen -t rsa
+
+# 2. Copia la chiave PUBBLICA sull'altro host
+ssh-copy-id user@host_remoto
+
+# 3. Verifica
+ssh user@host_remoto
+```
+
+> 🔑 **Regola**: la chiave **privata** resta su chi lancia il comando; la **pubblica** va sull'host a cui ci si connette.
+
+---
+
+## 3. `rsync` — i flag che servono
+
+```bash
+rsync -av --delete  user@host:/sorgente/  /destinazione/
+```
+
+| Flag | Cosa fa |
+|---|---|
+| `-a` | *archive*: copia ricorsiva + preserva permessi, timestamp, link, owner |
+| `-v` | *verbose*: mostra cosa copia |
+| `-z` | comprime durante il trasferimento (utile su rete/WAN) |
+| `--delete` | elimina dalla destinazione i file non più presenti in sorgente (copia **speculare**) |
+| `--numeric-ids` | **solo in restore**: mantiene UID/GID originali senza rimapparli |
+| `--dry-run` | simula senza scrivere nulla → **provalo sempre prima!** |
+
+> ⚠️ `--delete` rende la destinazione identica alla sorgente: un file cancellato in sorgente sparisce anche dal backup. Affidati agli **snapshot** del NAS per il versioning.
+> ⚠️ La **`/` finale** nei path conta: `sorgente/` copia il *contenuto*, `sorgente` copia la *cartella*.
+
+---
+
+## 4. BACKUP
+
+### 4a. PUSH con `rsync` (lo script gira sul server sorgente)
+
+```bash
+#!/bin/bash
+# backup.sh — esegue sul server, copia verso il NAS
+rsync -avz --delete /path/dati/locali/ user@nas_host:/path/backup/
+```
+
+### 4b. PULL con `rsync` (lo script gira sul NAS)
+
+```bash
+#!/bin/bash
+# backup.sh — esegue sul NAS, preleva dal server
+rsync -avz --delete user@sorgente_host:/path/dati/ /path/backup/locale/
+```
+
+### 4c. PUSH montando una condivisione **NFS**
+
+```bash
+#!/bin/bash
+sudo mount server_ip:/path/backup/folder /mnt/backup   # monta
+rsync -av --delete /path/dati/locali/ /mnt/backup/      # copia
+sudo umount /mnt/backup                                 # smonta
+```
+
+### 4d. PUSH montando una condivisione **Samba (SMB/CIFS)**
+
+```bash
+#!/bin/bash
+sudo mount -t cifs -o username=utente,password=pwd //server_ip/Backup /mnt/backup
+rsync -av --delete /path/dati/locali/ /mnt/backup/
+sudo umount /mnt/backup
+```
+
+---
+
+## 5. RESTORE (ripristino)
+
+> 🔁 È un backup **al contrario**: la sorgente diventa il backup, la destinazione il sistema da recuperare.
+> 🔑 In restore usa **sempre `--numeric-ids`** per mantenere proprietari e gruppi originali.
+
+### 5a. Ripristino PULL con `rsync` (gira sul server da ripristinare)
+
+```bash
+#!/bin/bash
+# restore.sh
+rsync -avz --delete --numeric-ids user@nas_host:/path/backup/ /path/dati/da_ripristinare/
+```
+
+### 5b. Ripristino PUSH con `rsync` (gira sul NAS che conserva il backup)
+
+```bash
+#!/bin/bash
+# restore.sh
+rsync -avz --delete --numeric-ids /path/backup/ user@host_destinazione:/path/da_ripristinare/
+```
+
+### 5c. Ripristino PULL con **NFS**
+
+```bash
+#!/bin/bash
+sudo mount server_ip:/path/backup/folder /mnt/backup
+rsync -av --delete --numeric-ids /mnt/backup/ /path/dati/locali/
+sudo umount /mnt/backup
+```
+
+### 5d. Ripristino PULL con **Samba**
+
+```bash
+#!/bin/bash
+sudo mount -t cifs -o username=utente,password=pwd //server_ip/path/backup /mnt/backup
+rsync -av --delete --numeric-ids /mnt/backup/ /path/dati/locali/
+sudo umount /mnt/backup
+```
+
+> ℹ️ **NFSv4**: per ripristinare correttamente UID/GID, sul NAS (es. TrueNAS) abilita
+> *"NFSv3 ownership model for NFSv4"* e mappa **RootUser → root** e **RootGroup → wheel/root**.
+
+---
+
+## 6. Rendere eseguibile e pianificare con `cron`
+
+```bash
+chmod +x /path/to/script.sh        # rendi eseguibile
+bash /path/to/script.sh            # esecuzione manuale
+crontab -e                         # apri la tabella cron
+```
+
+Riga di esempio — ogni giorno alle **02:00**:
+
+```cron
+0 2 * * * /path/to/backup.sh
+```
+
+### Sintassi cron `* * * * *`
+```
+┌─ minuto (0-59)
+│ ┌─ ora (0-23)
+│ │ ┌─ giorno del mese (1-31)
+│ │ │ ┌─ mese (1-12)
+│ │ │ │ ┌─ giorno settimana (0-6, 0=domenica)
+│ │ │ │ │
+0 2 * * *   → ogni giorno alle 02:00
+0 * * * *   → ogni ora (oraria)
+0 3 * * 0   → ogni domenica alle 03:00 (settimanale)
+0 4 1 * *   → il 1° di ogni mese alle 04:00 (mensile)
+```
+
+> 💡 **Backup a più granularità** (oraria / giornaliera / settimanale / mensile) in cartelle separate
+> → permette di tornare al punto giusto a seconda dell'incidente.
+
+---
+
+## 7. Setup lato server (configurazione condivisioni)
+
+### NFS — `/etc/exports`
+```bash
+sudo mkdir -p /path/backup/folder
+sudo nano /etc/exports
+#   /path/backup/folder  client_ip(rw,sync,no_subtree_check)
+sudo exportfs -a
+sudo systemctl restart nfs-kernel-server
+```
+
+### Samba — `/etc/samba/smb.conf`
+```ini
+[Backup]
+   path = /path/backup/folder
+   valid users = @users
+   read only = no
+   browsable = yes
+```
+```bash
+sudo mkdir -p /path/backup/folder
+sudo chown -R nobody:nogroup /path/backup/folder
+sudo chmod -R 0777 /path/backup/folder
+sudo systemctl restart smbd && sudo systemctl restart nmbd
+```
+
+---
+
+## 8. ✅ Checklist rapida
+
+- [ ] Definito l'obiettivo: recupero **dati** o recupero **servizi/VM**?
+- [ ] Scelta strategia: **PULL** (NAS centralizza) o **PUSH** (server autonomi)?
+- [ ] Chiavi SSH configurate (pubblica sul lato giusto)
+- [ ] Testato con `--dry-run` prima del primo run reale
+- [ ] In **restore** usato `--numeric-ids`
+- [ ] Pianificazione `cron` attiva con la giusta granularità
+- [ ] **Snapshot/versioning** attivi sul NAS
+- [ ] Applicata la regola **3-2-1** (copia off-site / cloud)
+- [ ] Accesso ai backup limitato ai soli amministratori (AAA)
+
+---
+
+### 📚 Fonti
+- Dispensa *ArduinoBareMetal — backup / backuprestore* (S. Melita)
+- `man rsync`, `man crontab`, documentazione NFS/Samba
+- AWS — *NFS vs SMB*: https://aws.amazon.com/it/compare/the-difference-between-nfs-smb/
+
+
 # 📡 Cheat Sheet — Definizione rapida dei canali in una mesh Wi-Fi **tri-band** (EU)
 
 > Obiettivo: assegnare canali ad access e backhaul in pochi passi, senza interferenza co-canale (CCI), usando il **riuso cellulare a 4 colori (N=4)** in banda 5 GHz.
