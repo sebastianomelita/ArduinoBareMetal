@@ -104,7 +104,7 @@ Le **tabelle ACL** sono lo strumento di implementazione: per ciascun router si s
 - **Default-deny con whitelist** — si elencano esplicitamente i flussi consentiti e tutto il resto è negato. Si usa sulle interfacce di confine (WAN verso Internet, Tunnel0 verso l'altra sede), dove vale il principio del minimo privilegio.
 - **Default-accept con blacklist** — si elencano esplicitamente i flussi negati e tutto il resto è permesso. Si usa sulle interfacce LAN e sulle sottointerfacce VLAN, dove la maggior parte del traffico è lecito e si vuole bloccare solo un piccolo insieme di flussi mirati.
 
-> **Due forme equivalenti di blacklist.** La *forma A* (blacklist pura con anti-spoofing esplicito) inizia con un `deny` che blocca i pacchetti la cui sorgente non appartiene alla subnet attesa, prosegue con i `deny` mirati e termina con `permit ip any any`. La *forma B* (blacklist con whitelist implicita sulla sorgente) scrive ogni regola con la sola subnet legittima come sorgente e si affida all'*implicit deny* di IOS. Le due forme lasciano passare e bloccano esattamente lo stesso traffico. Le configurazioni di questo documento adottano la **forma B**.
+> **Due forme equivalenti di blacklist.** La *forma A* (blacklist pura con anti-spoofing esplicito) inizia con un `deny` che blocca i pacchetti la cui sorgente non appartiene alla subnet attesa, prosegue con i `deny` mirati e termina con `permit ip any any`. La *forma B* (blacklist con whitelist implicita sulla sorgente) scrive ogni regola con la sola subnet legittima come sorgente e si affida all'*implicit deny* di IOS. Le due forme lasciano passare e bloccano esattamente lo stesso traffico. Le configurazioni di questo documento adottano la **forma A**: la default rule (`permit ip any any` per le blacklist, `deny any` / `deny ip any any` per le whitelist) è sempre scritta in chiaro come ultima ACE, sia nelle tabelle astratte sia nelle config Cisco, per massima trasparenza didattica. Dove serve l'anti-spoofing implicito si segnala in nota la forma B equivalente.
 
 ---
 ## Prima parte
@@ -154,10 +154,10 @@ Politica: *default-accept con blacklist* su entrambe le interfacce LAN.
 | Interfaccia | Azione | Sorgente | Destinazione | Proto | Note |
 |---|---|---|---|---|---|
 | f0/0 — in | DENY | 172.16.0.0/22 | 192.168.10.0/28 | IP | Comm. → Cont.: vietato |
-| f0/0 — in | PERMIT | 172.16.0.0/22 | any | IP | Resto del traffico Comm. |
+| f0/0 — in | PERMIT | any | any | IP | **default rule** (*permit-all*): resto del traffico Comm. via router1 |
 | f0/1 — in | PERMIT | 192.168.10.0/28 | 172.16.0.0/22 | TCP est. | Cont. → Comm. solo connessioni stabilite |
 | f0/1 — in | DENY | 192.168.10.0/28 | 172.16.0.0/22 | IP | Cont. → Comm.: il resto è vietato |
-| f0/1 — in | PERMIT | 192.168.10.0/28 | any | IP | Cont. → Internet |
+| f0/1 — in | PERMIT | any | any | IP | **default rule** (*permit-all*): Cont. → Internet via router1 |
 
 ```cisco
 ! ============================================================
@@ -166,14 +166,14 @@ Politica: *default-accept con blacklist* su entrambe le interfacce LAN.
 ip access-list extended ACL_COMM_IN
  remark Vieta Commerciale -> Contabile
  deny ip 172.16.0.0 0.0.3.255 192.168.10.0 0.0.0.15
- remark Permette il resto (Internet via router1)
- permit ip 172.16.0.0 0.0.3.255 any
+ remark Default rule esplicita: permit-all (Internet via router1)
+ permit ip any any
 ip access-list extended ACL_CONT_IN
  remark Contabile -> Commerciale: solo connessioni gia' stabilite
  permit tcp 192.168.10.0 0.0.0.15 172.16.0.0 0.0.3.255 established
  deny ip 192.168.10.0 0.0.0.15 172.16.0.0 0.0.3.255
- remark Contabile -> Internet (via router1)
- permit ip 192.168.10.0 0.0.0.15 any
+ remark Default rule esplicita: permit-all (Internet via router1)
+ permit ip any any
 interface FastEthernet0/0
  description Lato commerciale Ed.1
  ip access-group ACL_COMM_IN in
@@ -569,10 +569,10 @@ Per ciascuna delle due ACL si riporta prima la **lista astratta delle ACE** (*Ac
 | # | Azione | Sorgente | Destinazione | Proto / Porta | Esito |
 |:--:|---|---|---|---|---|
 | 1 | permit | 172.16.0.0/22 (Commerciale Ed.1) | non valutata ¹ | non valutato ¹ | accetta il traffico dal solo peer commerciale |
-| 2 | deny | any | non valutata ¹ | non valutato ¹ | scarta tutto il resto |
-| — | *(implicit deny)* | any | non valutata ¹ | non valutato ¹ | l'ACE 2 esplicita ciò che sarebbe comunque l'implicit deny |
+| 2 | **deny** | **any** | non valutata ¹ | non valutato ¹ | **default rule esplicita** (*deny-all*): scarta tutto il resto |
 
 ¹ Una ACL *standard* ispeziona **solo** l'indirizzo sorgente: destinazione e protocollo non entrano nel criterio di match. Per questo va applicata vicino alla destinazione da proteggere — qui sul Tunnel0, dove l'unica sorgente possibile è già la rete remota.
+² La default rule di una ACL *standard* è `deny any` (senza campo destinazione): è l'equivalente, per le standard, del `deny ip any any` di una ACL estesa. È scritta in chiaro come ultima ACE, anziché lasciata all'*implicit deny*, per esplicitare la politica *deny-all*.
 
 *Realizzazione concreta (Cisco IOS):*
 
@@ -592,7 +592,9 @@ interface Tunnel0
 
 **Parte 2 — ACL estesa su `g0/1.20` in "in"** (*default-accept con blacklist*): si negano esplicitamente i pochi flussi vietati (Commerciale Ed.2 → Contabile Ed.2, e opzionalmente tutto verso la DMZ tranne HTTPS) e si conclude con un `permit` che lascia passare il resto. Serve l'estesa perché dalla stessa sottointerfaccia entrano sia i pacchetti leciti (Internet, tunnel) sia quelli vietati: solo la coppia (sorgente, destinazione) permette di distinguerli.
 
-Questa interfaccia adotta la politica **opposta** rispetto al Tunnel0: su una LAN utente la quasi totalità del traffico è lecita, quindi si parte da *permit all* e si elencano in *blacklist* solo i pochi flussi da bloccare. La tabella è in *forma B*: il `permit` finale è ristretto alla sorgente legittima della VLAN, e l'*implicit deny* finale realizza l'anti-spoofing scartando ogni sorgente diversa dalla VLAN 20.
+Questa interfaccia adotta la politica **opposta** rispetto al Tunnel0: su una LAN utente la quasi totalità del traffico è lecita, quindi si parte da *permit-all* e si elencano in *blacklist* solo i pochi flussi da bloccare. La tabella è scritta in **forma A**: si elencano i `deny` mirati e si chiude con la **default rule esplicita `permit ip any any`** come ultima ACE, anziché vincolare il `permit` finale alla sola sorgente legittima. È la forma più chiara dal punto di vista didattico, perché la politica *permit-all* è scritta a tutte lettere.
+
+> **Nota (anti-spoofing).** La default rule `permit ip any any` permette *qualunque* sorgente: di per sé questa forma **non** fa anti-spoofing. Se si vuole anche scartare i pacchetti con sorgente contraffatta (diversa da `192.168.1.32/27`) si usa invece la *forma B* — il `permit` finale ristretto a `permit ip 192.168.1.32 0.0.0.31 any`, così l'*implicit deny* scarta automaticamente le altre sorgenti — oppure si antepone alla `permit ip any any` una coppia esplicita di ACE di anti-spoofing. Le due forme bloccano comunque lo stesso flusso pericoloso (Commerciale Ed.2 → Contabile Ed.2): qui si è scelta la forma A per la massima leggibilità della default rule.
 
 *Tabella delle ACE (rappresentazione astratta):*
 
@@ -601,10 +603,9 @@ Questa interfaccia adotta la politica **opposta** rispetto al Tunnel0: su una LA
 | 1 | deny | IP | 192.168.1.32/27 | — | 192.168.1.0/28 (Contabile) | — | blocca Commerciale Ed.2 → Contabile Ed.2 |
 | 2 | permit | TCP | 192.168.1.32/27 | — | 192.168.1.64/28 (DMZ) | 443 | DMZ raggiungibile solo via HTTPS |
 | 3 | deny | IP | 192.168.1.32/27 | — | 192.168.1.64/28 (DMZ) | — | ogni altro flusso verso la DMZ è vietato |
-| 4 | permit | IP | 192.168.1.32/27 | — | any | — | *permit all* della blacklist: Internet (via NAT) e Commerciale Ed.1 (via tunnel) |
-| — | *(implicit deny)* | IP | any | — | any | — | anti-spoofing: scarta ogni sorgente ≠ 192.168.1.32/27 |
+| 4 | **permit** | **IP** | **any** | — | **any** | — | **default rule esplicita** (*permit-all*): lascia passare tutto il resto (Internet via NAT, Commerciale Ed.1 via tunnel) |
 
-L'ordine è vincolante (*first-match*): l'ACE 1 deve precedere l'ACE 4, altrimenti il `permit ... any` lascerebbe passare anche il flusso verso la contabile. A differenza della ACL standard, qui la **destinazione** è parte del criterio di match, ed è proprio ciò che consente di bloccare il solo flusso verso la contabile lasciando liberi Internet e tunnel.
+L'ordine è vincolante (*first-match*): l'ACE 1 deve precedere la default rule, altrimenti il `permit ip any any` finale lascerebbe passare anche il flusso verso la contabile. A differenza della ACL standard, qui la **destinazione** è parte del criterio di match, ed è proprio ciò che consente di bloccare il solo flusso verso la contabile lasciando liberi Internet e tunnel.
 
 *Realizzazione concreta (Cisco IOS):*
 
@@ -615,8 +616,8 @@ ip access-list extended ACL_VLAN20_IN
  remark (Opzionale) DMZ solo HTTPS
  permit tcp 192.168.1.32 0.0.0.31 192.168.1.64 0.0.0.15 eq 443
  deny ip 192.168.1.32 0.0.0.31 192.168.1.64 0.0.0.15
- remark Permette Internet (NAT) e Commerciale Ed.1 (tunnel)
- permit ip 192.168.1.32 0.0.0.31 any
+ remark Default rule esplicita: permit-all (Internet via NAT, Commerciale Ed.1 via tunnel)
+ permit ip any any
 !
 interface GigabitEthernet0/1.20
  ip access-group ACL_VLAN20_IN in
