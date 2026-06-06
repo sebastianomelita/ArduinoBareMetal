@@ -20,7 +20,7 @@
 
 In base alle esigenze dei client in termini di velocità (e consumo) e di distanza dei collegamenti è possibile realizzare una tassonomia delle reti di dispositivi:
 
-<img src="img/wifizone.png" alt="alt text" width="800">
+<img src="../img/wifizone.png" alt="alt text" width="800">
 
 In questo caso, a titolo di esempio, è stata cerchiata la tecnologia WIFi perchè siamo interessati a medie distanze (comprese tra 10m e 100m) e a bit rate sostenute (quindi alti consumi).
 
