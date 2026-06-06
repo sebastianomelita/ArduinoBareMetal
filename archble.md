@@ -59,6 +59,8 @@ La tecnologia dei **beacon** è **comune** a quasi tutti i protocolli wireless m
 
 [Sensori](/approfondimenti/sensore.md)
 
+[Cheat Sheet](/cheatsheet/cheatsheet.md)
+
 ---
 
 ## **Semantica applicativa standard**
