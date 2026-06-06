@@ -1246,3 +1246,135 @@ R# show running-config | section nat
 > `traceroute` mostra il percorso hop-by-hop — utile per verificare quale router
 > smista il traffico tra VLAN o aree OSPF.
 
+# 📡 Cheat Sheet — Definizione rapida dei canali in una mesh Wi-Fi **tri-band** (EU)
+
+> Obiettivo: assegnare canali ad access e backhaul in pochi passi, senza interferenza co-canale (CCI), usando il **riuso cellulare a 4 colori (N=4)** in banda 5 GHz.
+> Riferimenti: `archmesh.md` (teoria multiradio) + esempio `verifica_sistemi_reti_sito_archeologico.md §1.b`.
+
+---
+
+## 0 · Principio guida (da tenere a mente sempre)
+
+> **Vicini nello spazio → frequenze lontane.**
+> **Lontani nello spazio → frequenze anche vicine** (la propagazione li disaccoppia, il riuso diventa possibile).
+
+Due funzioni da **non** mettere mai sulla stessa radio: **access** (serve i client) e **backhaul** (parla con i nodi vicini). Se condividono la radio, il throughput si dimezza ad ogni hop (CSMA/CA serializza tutto). Da qui la scelta tri-band.
+
+---
+
+## 1 · Assegna le 3 radio (apparato tri-band)
+
+| Radio | Banda | Ruolo | Per chi |
+|-------|-------|-------|---------|
+| **R1** | 2.4 GHz | Access | client legacy (Wi-Fi 4/5, IoT, smartphone vecchi) |
+| **R2** | 5 GHz *lower* (36–64) | Access | client moderni (Wi-Fi 6) |
+| **R3** | 5 GHz *upper* DFS (100–144) | **Backhaul** mesh | solo nodi mesh, canali a 80 MHz |
+
+> 💡 Tratte punto-punto critiche (es. mastio → gateway): aggiungi una radio **60 GHz** direttiva (Gbps, LOS richiesta).
+
+---
+
+## 2 · Canali ACCESS — i 4 "colori" (riuso N=4)
+
+Notazione: **`ch X @ 80 MHz`** = canale a 80 MHz che parte dal canale base X → occupa **X, X+4, X+8, X+12**.
+
+| Colore | Canale 80 MHz | Slot 20 MHz | Sotto-banda | DFS |
+|--------|---------------|-------------|-------------|-----|
+| 🟦 **A** azzurro | `ch 36 @ 80` | 36·40·44·48 | U-NII-1 | no |
+| 🟩 **B** verde | `ch 52 @ 80` | 52·56·60·64 | U-NII-2A | sì |
+| 🟨 **C** giallo | `ch 100 @ 80` | 100·104·108·112 | U-NII-2C | sì |
+| 🟥 **D** rosso | `ch 116 @ 80` | 116·120·124·128 | U-NII-2C | sì |
+
+✅ Questi 4 canali sono **spettralmente disgiunti**: due AP con colori diversi **non** si interferiscono, comunque siano vicini.
+
+> Se usi canali a **40 MHz** invece di 80, i 4 gruppi diventano: A=36/40, B=52/56, C=100/104, D=116/120.
+
+### Banda 2.4 GHz (access legacy)
+Solo **3 canali non sovrapposti: 1, 6, 11** → riuso a **3 colori**. Sufficiente per la maggior parte dei layout.
+
+---
+
+## 3 · Canali BACKHAUL — sempre fuori dai 4 colori
+
+Dopo aver "speso" i 4 colori per l'access, restano liberi in alto:
+
+| Canale | Slot | Banda | DFS | Perché è buono per il backhaul |
+|--------|------|-------|-----|-------------------------------|
+| `ch 132 @ 80` | 132·136·140·144 | U-NII-2C | sì | lontano dall'access; stabile su tratte fisse |
+| `ch 149 @ 80` | 149·153·157·161 | U-NII-3 | **no** | **max EIRP outdoor (fino a 30 dBm)**, ideale per link lunghi |
+
+Vantaggi: nessuna autointerferenza access↔backhaul sullo stesso AP, e spazio totalmente separato.
+
+---
+
+## 4 · Procedura passo-passo (rapida)
+
+1. **Disegna la griglia** degli AP sulla planimetria (chi è vicino a chi).
+2. **Colora le celle access** con A/B/C/D in modo che **celle adiacenti abbiano colori diversi**.
+3. **Riusa un colore** solo tra celle ben separate (la più lontana, o schermata da muri/torri). → es. il nodo centrale riusa il colore della cella perimetrale più distante.
+4. **2.4 GHz**: ripeti lo stesso schema con 1 / 6 / 11.
+5. **Backhaul**: assegna **132** e **149** alternandoli lungo l'**albero** (vedi §5).
+6. **Verifica sul campo** con un site survey (RSSI/SNR) e affina.
+
+### Esempio lampo (4 torri perimetrali + mastio centrale M)
+```
+T1 → ch 36/40   (A)
+T2 → ch 52/56   (B)
+T3 → ch 100/104 (C)
+T4 → ch 116/120 (D)
+M  → ch 36/40   (A, riusato: è lontano da T1, circondato da B/C/D)
+```
+
+---
+
+## 5 · Backhaul su topologia ad albero — regola dell'**alternanza**
+
+Le **due radio mesh** di uno stesso concentratore devono stare su canali **opposti**, così non si pestano:
+
+```
+            T5 (root)
+          132 /   \ 149
+            T2     T3        ← concentratori
+        149 |       | 132
+          T1/T6   T4/T8      ← foglie (1 sola radio mesh)
+```
+
+- **Root (T5):** ramo ovest su `132`, ramo est su `149`.
+- **Concentratore ovest (T2):** `132` verso il root, `149` verso le foglie.
+- **Concentratore est (T3):** `149` verso il root, `132` verso le foglie.
+- **Foglie:** unica radio sul canale del proprio concentratore.
+
+✅ **Perché funziona:** le trasmissioni concorrenti (T5↔T2 su 132, T5↔T3 su 149, T2↔foglie su 149, T3↔foglie su 132) avvengono **in parallelo su 2 canali diversi**. Senza alternanza finirebbero tutte in CSMA/CA sullo stesso canale → throughput dimezzato.
+
+---
+
+## 6 · Promemoria EIRP (EU, indicativo)
+
+| Banda | EIRP tipico |
+|-------|-------------|
+| 2.4 GHz | 20–24 dBm (100–250 mW) |
+| 5 GHz DFS (U-NII-2) | ~23 dBm indoor, ~30 dBm outdoor |
+| 5 GHz U-NII-3 (149+) | massima outdoor consentita |
+
+---
+
+## 7 · ✅ Checklist finale & ❌ errori comuni
+
+**Controlla che…**
+- [ ] access e backhaul siano su **radio fisiche diverse**;
+- [ ] celle access **adiacenti** non condividano colore;
+- [ ] il backhaul usi **132 e 149**, mai i 4 colori access;
+- [ ] le due radio mesh di un concentratore siano **alternate**;
+- [ ] i canali backhaul siano **impostati a mano** (no Auto-RF: destabilizza i link punto-punto);
+- [ ] l'access possa restare in **Auto-RF** (Cisco RRM, Aruba ARM) per il ribilanciamento.
+
+**Da evitare:**
+- ❌ stesso canale su access e backhaul dello stesso AP (autointerferenza);
+- ❌ riuso di un colore tra celle troppo vicine;
+- ❌ backhaul a larghezza piena su canali condivisi con i client;
+- ❌ saltare il site survey (Ekahau / NetSpot) prima della messa in esercizio.
+
+---
+
+*Cheat sheet derivato dal progetto "sito archeologico" — adattare i numeri di canale al regolatorio locale e a eventuali eventi DFS (radar).*
+
