@@ -573,6 +573,15 @@ Convenzione: per non sovrascrivere le ACL della Parte A, le liste della variante
 
 ## C.2 LAN — *default-allow* (`permit ip any any` finale)
 
+Su un'interfaccia LAN l'unica sorgente legittima è la subnet locale. Quando la riga finale diventa `permit ip any any`, si perde la protezione anti-spoofing che il permit ristretto alla sola subnet (Parte A) forniva implicitamente. Per recuperarla senza rinunciare al default-allow si inserisce — **subito prima del default** — la coppia:
+
+1. `permit ip <subnet-locale> any` → fa uscire la sorgente locale legittima;
+2. `deny ip 10.0.0.0 0.0.255.255 any` → **anti-spoofing**: scarta ogni altra sorgente interna (un host che si finge un'altra subnet `10.0.x`).
+
+> 🔑 **L'ordine è essenziale.** La subnet locale va permessa *prima* del `deny` sul `/16`: quel deny copre tutta l'intranet (subnet locale inclusa), quindi senza il permit precedente scarterebbe anche il traffico legittimo. Una volta capito questo, basta **una sola** riga di anti-spoofing — non serve elencare le subnet sorelle una per una.
+
+La protezione anti-spoofing sulle LAN è **silenziosa** (nessun `log`, a differenza della WAN): il `log` resta riservato alla frontiera esterna (Caso 5 / 5b). Il contatore di match è comunque visibile con `show access-lists` sulla riga di `deny`. Un pacchetto con sorgente *pubblica* arrivato su una LAN cadrebbe sul `permit ip any any` finale: caso anomalo e innocuo (verrebbe NAT-tato, le risposte non tornerebbero allo spoofer). La Subnet C (privilegiata, §C.2.2) resta volutamente senza anti-spoofing, coerente con il profilo «accesso illimitato».
+
 ### C.2.1 Subnet A — Gi0/0 (Internet only, isolamento laterale)
 
 | # | Sorgente | Destinazione | Proto | Azione | Note |
@@ -580,13 +589,17 @@ Convenzione: per non sovrascrivere le ACL della Parte A, le liste della variante
 | 1 | 10.0.1.100 | 10.0.2.0/24 | IP | ✅ PERMIT | Eccezione: reply file server → B (prima dei deny) |
 | 2 | 10.0.1.100 | 10.0.3.0/24 | IP | ✅ PERMIT | Eccezione: reply file server → C |
 | 3 | 10.0.1.0/24 | 10.0.0.0/16 | IP | ❌ DENY | Blocco di tutta l'intranet (A–F) |
-| 4 | qualsiasi | qualsiasi | IP | ✅ PERMIT | **DEFAULT ALLOW** → uscita Internet |
+| 4 | 10.0.1.0/24 | qualsiasi | IP | ✅ PERMIT | Sorgente locale legittima → Internet |
+| 5 | 10.0.0.0/16 | qualsiasi | IP | ❌ DENY | **Anti-spoofing**: altra sorgente interna = spoof |
+| 6 | qualsiasi | qualsiasi | IP | ✅ PERMIT | **DEFAULT ALLOW** → uscita Internet |
 
 ```cisco
 Router(config)# ip access-list extended ACL-SUBNET-A-DA
 Router(config-ext-nacl)# permit ip host 10.0.1.100  10.0.2.0 0.0.0.255
 Router(config-ext-nacl)# permit ip host 10.0.1.100  10.0.3.0 0.0.0.255
 Router(config-ext-nacl)# deny   ip 10.0.1.0 0.0.0.255  10.0.0.0 0.0.255.255
+Router(config-ext-nacl)# permit ip 10.0.1.0 0.0.0.255  any
+Router(config-ext-nacl)# deny   ip 10.0.0.0 0.0.255.255 any
 Router(config-ext-nacl)# permit ip any any
 Router(config-ext-nacl)# exit
 Router(config)# interface GigabitEthernet0/0
@@ -614,11 +627,15 @@ Router(config-if)# ip access-group ACL-SUBNET-C-DA in
 | # | Sorgente | Destinazione | Proto | Azione | Note |
 |---|---|---|---|---|---|
 | 1 | 10.0.4.0/24 | 10.0.0.0/16 | IP | ❌ DENY | Blocco di tutta l'intranet |
-| 2 | qualsiasi | qualsiasi | IP | ✅ PERMIT | **DEFAULT ALLOW** → Internet |
+| 2 | 10.0.4.0/24 | qualsiasi | IP | ✅ PERMIT | Sorgente locale legittima → Internet |
+| 3 | 10.0.0.0/16 | qualsiasi | IP | ❌ DENY | **Anti-spoofing**: altra sorgente interna = spoof |
+| 4 | qualsiasi | qualsiasi | IP | ✅ PERMIT | **DEFAULT ALLOW** → Internet |
 
 ```cisco
 Router(config)# ip access-list extended ACL-SUBNET-D-DA
 Router(config-ext-nacl)# deny   ip 10.0.4.0 0.0.0.255  10.0.0.0 0.0.255.255
+Router(config-ext-nacl)# permit ip 10.0.4.0 0.0.0.255  any
+Router(config-ext-nacl)# deny   ip 10.0.0.0 0.0.255.255 any
 Router(config-ext-nacl)# permit ip any any
 Router(config-ext-nacl)# exit
 Router(config)# interface GigabitEthernet0/3
@@ -632,13 +649,17 @@ Router(config-if)# ip access-group ACL-SUBNET-D-DA in
 | 1 | 10.0.5.100 | 10.0.6.100:3306 | TCP | ✅ PERMIT | Eccezione 3-Tier: App→DB MySQL |
 | 2 | 10.0.5.100 | 10.0.6.100:5432 | TCP | ✅ PERMIT | Eccezione 3-Tier: App→DB PostgreSQL |
 | 3 | 10.0.5.0/24 | 10.0.0.0/16 | IP | ❌ DENY | Blocco di tutta l'intranet (incl. resto Server Farm) |
-| 4 | qualsiasi | qualsiasi | IP | ✅ PERMIT | **DEFAULT ALLOW** → Internet (update, DNS, NTP) |
+| 4 | 10.0.5.0/24 | qualsiasi | IP | ✅ PERMIT | Sorgente locale legittima → Internet |
+| 5 | 10.0.0.0/16 | qualsiasi | IP | ❌ DENY | **Anti-spoofing**: altra sorgente interna = spoof |
+| 6 | qualsiasi | qualsiasi | IP | ✅ PERMIT | **DEFAULT ALLOW** → Internet (update, DNS, NTP) |
 
 ```cisco
 Router(config)# ip access-list extended ACL-DMZ-DA
 Router(config-ext-nacl)# permit tcp host 10.0.5.100  host 10.0.6.100 eq 3306
 Router(config-ext-nacl)# permit tcp host 10.0.5.100  host 10.0.6.100 eq 5432
 Router(config-ext-nacl)# deny   ip 10.0.5.0 0.0.0.255  10.0.0.0 0.0.255.255
+Router(config-ext-nacl)# permit ip 10.0.5.0 0.0.0.255  any
+Router(config-ext-nacl)# deny   ip 10.0.0.0 0.0.255.255 any
 Router(config-ext-nacl)# permit ip any any
 Router(config-ext-nacl)# exit
 Router(config)# interface GigabitEthernet0/5
@@ -728,6 +749,8 @@ Router# show access-lists                       ! tutte le ACL con i contatori d
 Router# show ip interface GigabitEthernet0/0    ! quale ACL e in che direzione
 Router# show ip access-lists ACL-WAN-DD         ! 0 match su un permit = regola mai usata
 ```
+
+> 💡 **Verifica anti-spoofing (silenziosa).** Sulle ACL LAN `-DA` la riga `deny ip 10.0.0.0 0.0.255.255 any` non logga, ma il contatore resta leggibile: `show ip access-lists ACL-SUBNET-A-DA`. Se sale, qualche host si sta spacciando per un'altra rete interna.
 
 ---
 
