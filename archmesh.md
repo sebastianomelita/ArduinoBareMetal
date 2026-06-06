@@ -83,6 +83,8 @@ A parità di architettura, le reti WiFi mesh si differenziano per il **tipo di i
 
 [Sensori](/approfondimenti/sensore.md)
 
+[Cheat Sheet](/cheatsheet/cheatsheet.md)
+
 ## **Architetture delle reti WiFi** 
 
 Una architettura di rete wireless WiFi è può essere realizzata in tre modalità:
