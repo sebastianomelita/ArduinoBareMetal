@@ -39,9 +39,6 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori Eth
 
 - [Aspetti critici comuni per tutte le tecnologie](approfondimenti/aspetti_critici_generali.md)
 - **Aspetti particolari per Ethernet**
-     - Tecnologie dei dispositivi: **topologia** dei sensori/attuatori (**stella**, **bus**, **singolo**);
-        **link** (dual radio, three radio); **accesso radio** (allocazione di servizi sincroni **TDM**,
-        asincroni **CSMA/CA** o a basso ritardo **slotted CSMA/CA**) con relativo dimensionamento.
      - Definizione di **dorsali (wireless)** e di **punti di accesso e aggregazione** dei dispositivi utente.
      - **Subnetting** strutturato:
         - subnet di **aggregazione** per i gruppi di utenti (generalmente statica);
