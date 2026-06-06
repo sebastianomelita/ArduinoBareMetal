@@ -60,7 +60,7 @@ anche gli aspetti comuni.
   **sede dell'elaborazione dei comandi** più opportuna (locale/edge vs remota on-premise/cloud).
      - Definizione (anche in **pseudocodice**) delle **funzioni del firmware** di bordo dei dispositivi IoT.
 
-## **Documentazione cablaggio**
+### **Documentazione cablaggio**
 
 Consiste nell'**ordine**:
 1. Planimetria senza cablaggio
