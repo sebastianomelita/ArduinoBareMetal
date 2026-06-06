@@ -46,13 +46,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori Eth
         - subnet di **servizio** (server farm e **DMZ**).
      - Definizione degli **indirizzi dei server** e dei **range** di quelli dei **dispositivi client IP** (PC, smartphone, tablets, sensori/attuatori).
 
----
 
-## **Progetto di esempio completo**
-
-[Sito archeologico](/esempi/progetti/verifica_sistemi_reti_sito_archeologico.md)
-
----
 
 Per **maggiori dettagli** vedi [Punti critici cablaggio strutturato](punticablaggio.md).
 
@@ -79,6 +73,14 @@ Per il dettaglio sulle impostazioni di un firewall [Firewall](firewall.md).
 Per il dettaglio sulla realizzazione dei backup vedi [Backup](backup.md).
 
 Per il dettaglio sulla realizzazione dell'autenticazione 802.1X vedi [Autenticazione 802.1X](radius.md)
+
+---
+
+## **Progetto di esempio completo**
+
+[Sede centrale e sede remota unite con una VPN](/esempi/progetti/solo_router.md)
+
+---
 
 ## **Rete Ethernet (LAN)** 
 
