@@ -416,6 +416,8 @@ vrrp_instance VI_1 {
 
 ### 10.2 Parametri per nodo
 
+<img src="../img/vrrp-generico.svg" alt="alt text" width="600">
+
 | Nodo | `<STATE>` | `<PRIORITY>` |
 |---|---|---|
 | Primario | `MASTER` | `100` (più alto = preferito) |
