@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 430" width="620" height="430" font-family="Segoe UI, system-ui, sans-serif">
+  <line x1="310" y1="86" x2="120" y2="156" stroke="#9ca3af" stroke-width="1.3"/>
+  <line x1="310" y1="86" x2="310" y2="156" stroke="#9ca3af" stroke-width="1.3"/>
+  <line x1="310" y1="86" x2="500" y2="156" stroke="#9ca3af" stroke-width="1.3"/>
+  <line x1="120" y1="234" x2="120" y2="296" stroke="#9ca3af" stroke-width="1.3"/>
+  <line x1="310" y1="234" x2="310" y2="296" stroke="#9ca3af" stroke-width="1.3"/>
+  <line x1="500" y1="234" x2="500" y2="296" stroke="#9ca3af" stroke-width="1.3"/>
+  <!-- root -->
+  <ellipse cx="310" cy="52" rx="56" ry="34" fill="#fde68a" stroke="#d97706" stroke-width="1.6"/>
+  <text x="310" y="48" text-anchor="middle" font-size="13" font-weight="700" fill="#78350f">router1</text>
+  <text x="310" y="64" text-anchor="middle" font-size="12" fill="#78350f">Ed.1</text>
+  <!-- children green -->
+  <ellipse cx="120" cy="195" rx="62" ry="38" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="120" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="#065f46">comm. Ed.1</text>
+  <text x="120" y="206" text-anchor="middle" font-size="11" fill="#065f46">172.16.0.0/22</text>
+  <ellipse cx="310" cy="195" rx="62" ry="38" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="310" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="#065f46">transito</text>
+  <text x="310" y="206" text-anchor="middle" font-size="11" fill="#065f46">10.10.10.0/30</text>
+  <ellipse cx="500" cy="195" rx="62" ry="38" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="500" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="#065f46">WAN</text>
+  <text x="500" y="206" text-anchor="middle" font-size="11" fill="#065f46">200.1.2.0/30</text>
+  <!-- grandchildren orange -->
+  <ellipse cx="120" cy="335" rx="62" ry="38" fill="#fed7aa" stroke="#f97316" stroke-width="1.5"/>
+  <text x="120" y="330" text-anchor="middle" font-size="12" font-weight="600" fill="#7c2d12">cont. Ed.1</text>
+  <text x="120" y="346" text-anchor="middle" font-size="11" fill="#7c2d12">192.168.10.0/28</text>
+  <text x="172" y="312" font-size="16" font-weight="700" fill="#dc2626">✗</text>
+  <ellipse cx="310" cy="335" rx="62" ry="38" fill="#fed7aa" stroke="#f97316" stroke-width="1.5"/>
+  <text x="310" y="330" text-anchor="middle" font-size="12" font-weight="600" fill="#7c2d12">comm. Ed.2</text>
+  <text x="310" y="346" text-anchor="middle" font-size="11" fill="#7c2d12">192.168.1.32/27</text>
+  <text x="362" y="312" font-size="16" font-weight="700" fill="#dc2626">✗</text>
+  <ellipse cx="500" cy="335" rx="62" ry="38" fill="#fed7aa" stroke="#f97316" stroke-width="1.5"/>
+  <text x="500" y="330" text-anchor="middle" font-size="12" font-weight="600" fill="#7c2d12">default</text>
+  <text x="500" y="346" text-anchor="middle" font-size="11" fill="#7c2d12">0.0.0.0/0</text>
+  <text x="552" y="312" font-size="16" font-weight="700" fill="#dc2626">✗</text>
+  <!-- legenda -->
+  <circle cx="150" cy="402" r="7" fill="#d1fae5" stroke="#10b981"/>
+  <text x="164" y="406" font-size="10" fill="#374151">subnet di transito direttamente connessa</text>
+  <circle cx="400" cy="402" r="7" fill="#fed7aa" stroke="#f97316"/>
+  <text x="412" y="398" font-size="11" font-weight="700" fill="#dc2626">✗</text>
+  <text x="424" y="406" font-size="10" fill="#374151">subnet remota (con X)</text>
+</svg>

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 740 560" width="740" height="560" font-family="Segoe UI, system-ui, sans-serif">
+  <defs><marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#6b7280"/></marker></defs>
+  <text x="370" y="22" text-anchor="middle" font-size="15" font-weight="700" fill="#1f2937">Edificio 1 — Soluzione di sicurezza proposta</text>
+  <!-- ISP -->
+  <ellipse cx="560" cy="70" rx="46" ry="30" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="560" y="66" text-anchor="middle" font-size="12" font-weight="600" fill="#3730a3">ISP</text>
+  <text x="560" y="81" text-anchor="middle" font-size="10" fill="#3730a3">200.1.2.3/30</text>
+  <line x1="560" y1="100" x2="560" y2="128" stroke="#6b7280" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="572" y="118" font-size="9" fill="#374151">f0/0 WAN</text>
+  <!-- router1 -->
+  <rect x="500" y="130" width="120" height="48" rx="8" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+  <text x="560" y="151" text-anchor="middle" font-size="13" font-weight="600" fill="#78350f">router1</text>
+  <text x="560" y="167" text-anchor="middle" font-size="10" fill="#78350f">perimetrale</text>
+  <line x1="560" y1="178" x2="560" y2="206" stroke="#6b7280" stroke-width="1.5" marker-end="url(#a)"/>
+  <!-- firewall -->
+  <rect x="496" y="208" width="128" height="50" rx="8" fill="#fed7aa" stroke="#ea580c" stroke-width="1.6"/>
+  <text x="560" y="229" text-anchor="middle" font-size="13" font-weight="700" fill="#7c2d12">Firewall</text>
+  <text x="560" y="245" text-anchor="middle" font-size="10" fill="#7c2d12">stateful + IDS</text>
+  <!-- DMZ -->
+  <rect x="636" y="210" width="92" height="46" rx="8" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5"/>
+  <text x="682" y="231" text-anchor="middle" font-size="12" font-weight="700" fill="#713f12">DMZ</text>
+  <text x="682" y="246" text-anchor="middle" font-size="9" fill="#713f12">server pubbl.</text>
+  <line x1="624" y1="233" x2="636" y2="233" stroke="#6b7280" stroke-width="1.5"/>
+  <!-- collegamento firewall -> commerciale -->
+  <line x1="496" y1="240" x2="320" y2="290" stroke="#6b7280" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="420" y="258" font-size="9" fill="#374151">f0/1 172.16.0.1</text>
+  <!-- rete commerciale -->
+  <ellipse cx="210" cy="300" rx="135" ry="42" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="210" y="294" text-anchor="middle" font-size="13" font-weight="600" fill="#14532d">Rete commerciale</text>
+  <text x="210" y="311" text-anchor="middle" font-size="11" fill="#14532d">172.16.0.0/22</text>
+  <text x="210" y="327" text-anchor="middle" font-size="9" fill="#14532d">switch + host commerciali</text>
+  <line x1="210" y1="342" x2="210" y2="372" stroke="#6b7280" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="222" y="362" font-size="9" fill="#374151">f0/0 172.16.3.254</text>
+  <!-- router2 -->
+  <rect x="150" y="374" width="120" height="48" rx="8" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+  <text x="210" y="395" text-anchor="middle" font-size="13" font-weight="600" fill="#78350f">router2</text>
+  <text x="210" y="411" text-anchor="middle" font-size="10" fill="#78350f">+ ACL</text>
+  <line x1="210" y1="422" x2="210" y2="452" stroke="#6b7280" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="222" y="442" font-size="9" fill="#374151">f0/1 192.168.10.1</text>
+  <!-- rete contabile -->
+  <ellipse cx="210" cy="490" rx="150" ry="42" fill="#fecaca" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="210" y="484" text-anchor="middle" font-size="13" font-weight="600" fill="#7f1d1d">Rete contabile (dati sensibili)</text>
+  <text x="210" y="501" text-anchor="middle" font-size="11" fill="#7f1d1d">192.168.10.0/28</text>
+  <text x="210" y="517" text-anchor="middle" font-size="9" fill="#7f1d1d">cifrata a riposo</text>
+  <!-- box misure -->
+  <rect x="430" y="320" width="298" height="208" rx="8" fill="#fffbeb" stroke="#d97706" stroke-width="1.2"/>
+  <text x="579" y="342" text-anchor="middle" font-size="12" font-weight="700" fill="#78350f">Misure di sicurezza aggiunte</text>
+  <text x="444" y="368" font-size="11" fill="#374151">• Firewall stateful in serie a router1</text>
+  <text x="444" y="390" font-size="11" fill="#374151">• DMZ per i server pubblicati</text>
+  <text x="444" y="412" font-size="11" fill="#374151">• ACL su router2: deny commerciale → contabile</text>
+  <text x="444" y="434" font-size="11" fill="#374151">• IDS/IPS, syslog centralizzato, backup offsite</text>
+  <text x="444" y="456" font-size="11" fill="#374151">• Cifratura dati contabili, MFA, RADIUS/LDAP</text>
+  <text x="444" y="478" font-size="11" fill="#374151">• Policy default-deny sul firewall perimetrale</text>
+  <text x="444" y="506" font-size="10" font-style="italic" fill="#6b7280">Tunnel IPsec opzionale router2 ↔ server contabile</text>
+</svg>

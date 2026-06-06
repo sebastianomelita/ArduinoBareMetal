@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 200" width="560" height="200" font-family="Segoe UI, system-ui, sans-serif">
+  <defs><marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#6b7280"/></marker></defs>
+  <line x1="280" y1="100" x2="350" y2="100" stroke="#6b7280" stroke-width="1.5"/>
+  <ellipse cx="150" cy="100" rx="130" ry="46" fill="#c7d2fe" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="150" y="92" text-anchor="middle" font-size="13" font-weight="600" fill="#312e81">Rete commerciale</text>
+  <text x="150" y="109" text-anchor="middle" font-size="13" font-weight="600" fill="#312e81">e contabile</text>
+  <text x="150" y="126" text-anchor="middle" font-size="12" fill="#312e81">192.168.1.0/24</text>
+  <rect x="350" y="77" width="100" height="46" rx="8" fill="#fde68a" stroke="#d97706" stroke-width="1.5"/>
+  <text x="400" y="105" text-anchor="middle" font-size="13" font-weight="600" fill="#78350f">router1</text>
+  <text x="315" y="90" text-anchor="middle" font-size="9" fill="#374151">f0/1 · 192.168.1.1</text>
+  <ellipse cx="520" cy="48" rx="34" ry="26" fill="#e0e7ff" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="520" y="46" text-anchor="middle" font-size="11" font-weight="600" fill="#3730a3">ISP</text>
+  <text x="520" y="60" text-anchor="middle" font-size="9" fill="#3730a3">Internet</text>
+  <line x1="450" y1="86" x2="494" y2="62" stroke="#6b7280" stroke-width="1.5" marker-end="url(#a)"/>
+  <text x="475" y="140" text-anchor="middle" font-size="9" fill="#374151">f0/0 · 200.1.2.4/30</text>
+</svg>

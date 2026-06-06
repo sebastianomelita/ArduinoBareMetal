@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 500" width="620" height="500" font-family="Segoe UI, system-ui, sans-serif">
+  <line x1="310" y1="86" x2="200" y2="156" stroke="#9ca3af" stroke-width="1.3"/>
+  <line x1="310" y1="86" x2="430" y2="156" stroke="#9ca3af" stroke-width="1.3"/>
+  <line x1="200" y1="234" x2="200" y2="296" stroke="#9ca3af" stroke-width="1.3"/>
+  <line x1="200" y1="374" x2="200" y2="406" stroke="#9ca3af" stroke-width="1.3"/>
+  <line x1="430" y1="234" x2="430" y2="296" stroke="#9ca3af" stroke-width="1.3"/>
+  <!-- root -->
+  <ellipse cx="310" cy="52" rx="56" ry="34" fill="#fde68a" stroke="#d97706" stroke-width="1.6"/>
+  <text x="310" y="48" text-anchor="middle" font-size="13" font-weight="700" fill="#78350f">router1</text>
+  <text x="310" y="64" text-anchor="middle" font-size="12" fill="#78350f">Ed.2</text>
+  <!-- children green -->
+  <ellipse cx="200" cy="195" rx="62" ry="38" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="200" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="#065f46">transito</text>
+  <text x="200" y="206" text-anchor="middle" font-size="11" fill="#065f46">10.10.10.0/30</text>
+  <ellipse cx="430" cy="195" rx="62" ry="38" fill="#d1fae5" stroke="#10b981" stroke-width="1.5"/>
+  <text x="430" y="190" text-anchor="middle" font-size="12" font-weight="600" fill="#065f46">WAN</text>
+  <text x="430" y="206" text-anchor="middle" font-size="11" fill="#065f46">200.1.2.4/30</text>
+  <!-- mid orange comm Ed.1 -->
+  <ellipse cx="200" cy="335" rx="62" ry="38" fill="#fed7aa" stroke="#f97316" stroke-width="1.5"/>
+  <text x="200" y="330" text-anchor="middle" font-size="12" font-weight="600" fill="#7c2d12">comm. Ed.1</text>
+  <text x="200" y="346" text-anchor="middle" font-size="11" fill="#7c2d12">172.16.0.0/22</text>
+  <text x="252" y="312" font-size="16" font-weight="700" fill="#dc2626">✗</text>
+  <!-- leaf orange cont Ed.1 -->
+  <ellipse cx="200" cy="445" rx="64" ry="38" fill="#fed7aa" stroke="#f97316" stroke-width="1.5"/>
+  <text x="200" y="440" text-anchor="middle" font-size="12" font-weight="600" fill="#7c2d12">cont. Ed.1</text>
+  <text x="200" y="456" text-anchor="middle" font-size="11" fill="#7c2d12">192.168.10.0/28</text>
+  <text x="254" y="422" font-size="16" font-weight="700" fill="#dc2626">✗</text>
+  <!-- leaf orange default -->
+  <ellipse cx="430" cy="335" rx="62" ry="38" fill="#fed7aa" stroke="#f97316" stroke-width="1.5"/>
+  <text x="430" y="330" text-anchor="middle" font-size="12" font-weight="600" fill="#7c2d12">default</text>
+  <text x="430" y="346" text-anchor="middle" font-size="11" fill="#7c2d12">0.0.0.0/0</text>
+  <text x="482" y="312" font-size="16" font-weight="700" fill="#dc2626">✗</text>
+</svg>
