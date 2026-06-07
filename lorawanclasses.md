@@ -261,6 +261,14 @@ Non ci sono interfacce standard di trasmissione dei dati tra network server ed a
 
 Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e pertanto fanno esse stesse parte della **infrastruttura di rete**. Spesso sono **virtualizzate** e le loro funzioni sono offerte come **servizio** su abbonamento. Sono presenti in quasi tutte le **infrastrutture LPWA** a lungo raggio come **lora**, **Sigfox** e **NB-IoT**.
 
+Il punto chiave è come avviene l'instradamento. Nel modello LoRaWAN il NS è il "centro stella": riceve gli uplink da tutti i gateway e poi smista ciascun pacchetto verso l'Application Server corretto. La logica di smistamento si basa sull'associazione **device → applicazione → AS**:
+
+- Ogni end device appartiene a un'**applicazione** definita sul NS.
+- Ogni applicazione può essere collegata a un **Application Server** (o integrazione) diverso.
+- Il NS, riconosciuto il DevEUI e l'applicazione di appartenenza, inoltra il payload solo all'**AS associato a quell'applicazione**.
+
+Nella procedura di Join (OTAA) entra in gioco anche il **JoinEUI** (ex AppEUI), che identifica il proprietario dell'applicazione. Il Join Server serve proprio a indirizzare la join request verso il soggetto corretto quando ci sono più applicazioni e più owner sullo stesso NS.
+
 ---
 
 ## **Gateway**
@@ -412,6 +420,18 @@ Lo **scambio delle chiavi di sessione** verso l'Application Server **non** è la
 - la chiave **non** viaggia in chiaro: la **AppSKey è cifrata** con un **segreto condiviso** (una *Key Encryption Key*, **KEK**) tra Join Server e Application Server. Una volta ricevuta e decifrata, l'Application Server inizia a **usare la AppSKey** per cifrare e decifrare il payload applicativo.
 
 Di conseguenza, per ricevere le chiavi nel rispetto della specifica, l'Application Server deve **implementare i messaggi dell'interfaccia AS-JS** (basata su HTTP/JSON) **e** **condividere una KEK** con il Join Server.
+
+Nella procedura di Join (OTAA) entra in gioco anche il **JoinEUI** (ex AppEUI), che identifica il proprietario dell'applicazione. Il Join Server serve proprio a indirizzare la join request verso il soggetto corretto quando ci sono più applicazioni e più owner sullo stesso NS.
+
+Ci sono quindi due **dimensioni di "molteplicità"**:
+
+1. **Più AS per più applicazioni** — è il caso tipico: un NS con decine di applicazioni, ognuna che punta a un proprio AS (magari di clienti o reparti diversi). Ogni device manda i suoi dati a un solo AS, ma il sistema nel complesso ne ha molti.
+
+2. **Più destinazioni per la stessa applicazione** — molti NS (ChirpStack, The Things Stack, Actility ThingPark, ecc.) permettono il *fan-out*: la stessa applicazione invia i dati contemporaneamente a più integrazioni/AS (es. un broker MQTT, un webhook HTTP, un connettore cloud), per duplicare i flussi verso sistemi diversi.
+
+Un caso a parte è il **roaming**, dove l'uplink di un device può transitare per più Network Server (fNS/sNS/hNS), ma l'Application Server resta quello associato alla rete "home" del device: la molteplicità lì è lato NS, non lato AS.
+
+Quindi, in sintesi: un NS → molti AS è la norma, e la separazione è gestita **per applicazione** tramite l'identità del dispositivo e del relativo owner. 
 
 ---
 
