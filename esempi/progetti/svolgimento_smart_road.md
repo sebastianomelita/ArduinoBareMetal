@@ -57,18 +57,18 @@ Ogni smart-gate è un nodo **edge computing** con le seguenti caratteristiche:
 | Componente | Specifica | Motivazione |
 |------------|-----------|-------------|
 | SoC | Industrial mini-PC con CPU quad-core ARM/x86, 8 GB RAM, SSD 256 GB | Capacità di eseguire localmente algoritmi di computer vision (riconoscimento targhe) e logica di emergenza |
-| OS | Linux real-time hardened | Determinismo per il controllo del maxi-schermo, sicurezza |
+| OS | Linux real-time hardened | Determinismo per il controllo del PMV (Pannello a Messaggio Variabile), sicurezza |
 | Telecamere | 2-4 telecamere IP PoE+ FullHD, una con ottica per targhe (OCR locale) | Riduzione banda: si trasmette il dato strutturato (targa+timestamp), non sempre il video |
 | Sensori ambientali | Misure di meteo, visibilità, condizioni del fondo stradale, qualità dell'aria (PM10/PM2.5/NOx) e inquinamento acustico | **Non cablati al SoC**: sono end-device LoRaWAN wireless distribuiti lungo il km sul guard-rail, raccolti dal gateway LoRaWAN del cabinet (vedi §3.2) |
 | Gateway LoRaWAN | Concentratore radio 868 MHz (es. Semtech SX1302, 8 canali) | Aggrega i sensori wireless del km e li inoltra via IP al network server |
-| Maxi-schermo | LED matrix controller via Ethernet | Aggiornamento dinamico via API REST locale |
+| PMV (Pannello a Messaggio Variabile) | LED matrix controller via Ethernet | Aggiornamento dinamico via API REST locale |
 | Connettività primaria | Fibra ottica dedicata (lungo la canalina del guard-rail) | Banda garantita, latenza bassa, alimentazione PoE++ possibile |
 | Connettività di backup | Modem 5G/4G LTE con SIM M2M | Continuità in caso di taglio fibra |
 
 Il fatto di concentrare elaborazione locale (edge) è una scelta motivata da:
 
 1. **Riduzione della banda**: non si trasmette il video raw, ma metadati (targa rilevata, conteggio veicoli, classe del veicolo).
-2. **Bassa latenza nelle decisioni di sicurezza**: se un sensore rileva ghiaccio sull'asfalto, lo smart-gate può abbassare autonomamente il limite di velocità sul maxi-schermo in < 100 ms, senza attendere il CdC.
+2. **Bassa latenza nelle decisioni di sicurezza**: se un sensore rileva ghiaccio sull'asfalto, lo smart-gate può abbassare autonomamente il limite di velocità sul PMV (Pannello a Messaggio Variabile) in < 100 ms, senza attendere il CdC.
 3. **Modalità degraded**: in caso di isolamento, lo smart-gate continua a operare in autonomia con segnaletica conservativa.
 
 ### 2.2 Livello Centro di Controllo (CdC)
@@ -103,7 +103,7 @@ Le tecnologie scelte differiscono per ogni "salto" della gerarchia, in funzione 
 
 Lo smart-gate ha al suo interno due famiglie di dispositivi che richiedono trattamenti diversi:
 
-- **Telecamere IP + maxi-schermo**: tecnologia cablata Ethernet/IP, perché producono e consumano traffico ad alta banda (FullHD streaming, comandi di segnaletica con conferma). Le telecamere si collegano via **ONVIF/RTSP** su una piccola LAN PoE+ interna allo smart-gate; il maxi-schermo è raggiungibile via TCP/IP attraverso API standard (es. EN 12966 in UE per la segnaletica variabile).
+- **Telecamere IP + PMV (Pannello a Messaggio Variabile)**: tecnologia cablata Ethernet/IP, perché producono e consumano traffico ad alta banda (FullHD streaming, comandi di segnaletica con conferma). Le telecamere si collegano via **ONVIF/RTSP** su una piccola LAN PoE+ interna allo smart-gate; il PMV (Pannello a Messaggio Variabile) è raggiungibile via TCP/IP attraverso API standard (es. EN 12966 in UE per la segnaletica variabile).
 - **Sensori ambientali distribuiti sul km**: tecnologia **wireless LoRaWAN** — vedi la sezione dedicata [§3.2](#32-rete-di-sensori-wireless-lorawan-del-km) qui sotto, perché è una parte sostanziale del progetto e merita una trattazione a sé.
 
 ### 3.2 Rete di sensori wireless LoRaWAN del km
@@ -142,14 +142,14 @@ Dal punto di vista del **firmware**, il sensore segue un ciclo semplice: dopo un
 
 > **Dettaglio completo** — schema a fasi, macchina a stati, pseudocodice commentato ed esempio in C++ (Arduino/LMIC), gestione dell'energia e formato Cayenne LPP: vedi il file [`dettaglio_firmware_sensore.md`](./dettaglio_firmware_sensore.md).
 
-#### 3.2.3 Gateway LoRaWAN nel cabinet del maxi-schermo
+#### 3.2.3 Gateway LoRaWAN nel cabinet del PMV (Pannello a Messaggio Variabile)
 
-Il gateway LoRaWAN del km è **ospitato all'interno del cabinet del maxi-schermo a portale**, scelta motivata da quattro ragioni concrete:
+Il gateway LoRaWAN del km è **ospitato all'interno del cabinet del PMV (Pannello a Messaggio Variabile) a portale**, scelta motivata da quattro ragioni concrete:
 
 1. **Posizione baricentrica e in altezza** (5-7 m da terra): l'antenna del gateway è in line-of-sight con tutti i sensori del km, fuori dagli ostacoli (veicoli, guard-rail). Il bilancio di link migliora di 10-20 dB rispetto a un'installazione a livello strada, il che si traduce in margine per data rate più aggressivi e quindi consumi ancora più bassi sui sensori.
-2. **Alimentazione condivisa**: il maxi-schermo dispone già di una linea elettrica robusta (rete elettrica con UPS, oppure — nei tratti remoti — impianto fotovoltaico dimensionato per centinaia di watt). Il gateway LoRaWAN consuma 5-10 W, carico marginale che non richiede infrastruttura elettrica aggiuntiva.
+2. **Alimentazione condivisa**: il PMV (Pannello a Messaggio Variabile) dispone già di una linea elettrica robusta (rete elettrica con UPS, oppure — nei tratti remoti — impianto fotovoltaico dimensionato per centinaia di watt). Il gateway LoRaWAN consuma 5-10 W, carico marginale che non richiede infrastruttura elettrica aggiuntiva.
 3. **Sicurezza fisica e ambientale**: l'enclosure IP65/66 del display protegge anche il gateway da intemperie e vandalismo; manutenzione condivisa con il display.
-4. **Connettività IP condivisa**: lo stesso cavo Ethernet che porta i comandi al maxi-schermo viene riutilizzato come uplink IP per il gateway LoRaWAN verso il network server nel CdC. Un solo cavo dati per più funzioni.
+4. **Connettività IP condivisa**: lo stesso cavo Ethernet che porta i comandi al PMV (Pannello a Messaggio Variabile) viene riutilizzato come uplink IP per il gateway LoRaWAN verso il network server nel CdC. Un solo cavo dati per più funzioni.
 
 Funzioni del gateway:
 
@@ -278,7 +278,7 @@ Una scelta progettuale importante riguarda **dove collocare fisicamente i networ
 1. Sensore → uplink LoRa → gateway del km (decine di ms)
 2. Gateway → IP/MQTT → network server al CdC regionale (centinaia di km di distanza, decine di ms su fibra, fino a centinaia in caso di backup 5G)
 3. Network server → application server → logica di business → decisione "abbassa il limite a 50 km/h sullo smart-gate del km"
-4. Decisione → MQTT → SoC dello smart-gate → maxi-schermo
+4. Decisione → MQTT → SoC dello smart-gate → PMV (Pannello a Messaggio Variabile)
 
 Il tempo totale è dell'ordine di **centinaia di millisecondi nel caso ottimo, secondi nei casi degradati**. Per la sicurezza autostradale è un problema: una buca a 130 km/h è pericolosa, e ogni mezzo secondo in più di latenza significa 18 metri di strada percorsi a velocità non ridotta da ogni veicolo che transita. Inoltre i pacchetti viaggiano sulla WAN regionale anche solo per essere processati e tornare indietro: traffico distribuito su tutta la rete per una decisione che è puramente locale.
 
@@ -298,7 +298,7 @@ La configurazione C corrisponde al pattern "federazione di reti LoRaWAN" raccoma
 
 - **Strato edge — Network server locale per gateway (configurazione A)**: gestisce in autonomia tutte le funzioni con vincoli di latenza:
   * decisioni di sicurezza basate sui sensori (ghiaccio, buche, smottamenti, visibilità ridotta)
-  * attivazione automatica della segnaletica di emergenza sul maxi-schermo locale
+  * attivazione automatica della segnaletica di emergenza sul PMV (Pannello a Messaggio Variabile) locale
   * gestione dell'ADR (Adaptive Data Rate) dei sensori vicini
   * **modalità degraded autonoma**: anche se la fibra è tagliata e il 5G è giù, lo smart-gate continua a gestire i propri sensori e a prendere decisioni di sicurezza
 - **Strato regionale — Network server al CdC (configurazione C, in parallelo)**: gestisce le funzioni di coordinamento sovra-locale e di archiviazione:
@@ -407,7 +407,7 @@ Questa è la tratta più delicata: deve essere ad alta banda (per gli stream vid
 
 Come si "spilla" la fibra lungo le decine di km del tratto per servire ogni smart-gate? Esistono tre approcci: un **anello Ethernet attivo con switch L2** (rigenerazione attiva a ogni km, failover ERPS < 50 ms), un **anello IP con router L3** (più costoso e con failover più lento) e una **PON con splitter ottici passivi** (niente apparato attivo a bordo strada, ma nessuna ridondanza ad anello).
 
-Per il progetto si adotta l'**anello Ethernet L2 con ERPS (IEEE G.8032)**: ogni smart-gate ospita uno switch industriale con 2 porte ottiche (anello) e porte di accesso per gli apparati interni; lo switch è alimentato dalla stessa linea del maxi-schermo. Il failover sotto i 50 ms garantisce continuità per gli stream video e la telemetria anche in caso di taglio della fibra. La fibra è posata in canalina sotto il guard-rail (mini-trenching), con cavi a 24-48 fibre di cui buona parte tenuta di scorta (dark fiber) per espansioni future.
+Per il progetto si adotta l'**anello Ethernet L2 con ERPS (IEEE G.8032)**: ogni smart-gate ospita uno switch industriale con 2 porte ottiche (anello) e porte di accesso per gli apparati interni; lo switch è alimentato dalla stessa linea del PMV (Pannello a Messaggio Variabile). Il failover sotto i 50 ms garantisce continuità per gli stream video e la telemetria anche in caso di taglio della fibra. La fibra è posata in canalina sotto il guard-rail (mini-trenching), con cavi a 24-48 fibre di cui buona parte tenuta di scorta (dark fiber) per espansioni future.
 
 <img src="../img/anello_fibra_erps.svg" alt="Anello in fibra ottica con switch ERPS a ogni km" width="680">
 
@@ -544,7 +544,7 @@ Lo smart-gate ha al suo interno una piccola LAN con VLAN dedicate per separare i
 |------|--------|-----|
 | 10 | `192.168.10.0/29` | Telecamere IP (sottorete isolata, non raggiungibile dall'esterno) |
 | 20 | `192.168.20.0/29` | Sensori IP-based |
-| 30 | `192.168.30.0/29` | Controller maxi-schermo |
+| 30 | `192.168.30.0/29` | Controller PMV (Pannello a Messaggio Variabile) |
 | 99 | `192.168.99.0/29` | Management (SSH, SNMP) |
 
 Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
