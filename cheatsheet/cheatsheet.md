@@ -482,7 +482,7 @@ sudo systemctl restart haproxy
 echo "show stat" | sudo socat stdio /var/run/haproxy/admin.sock
 ```
 
-## Cheat sheet ACL
+# Cheat sheet ACL — versione conforme alla dispensa
 
 > Adattato al piano di indirizzamento `10.0.0.0/16` (Subnet A–F della dispensa) e alle **due politiche di default** che usiamo:
 > - **LAN → default-allow**: si elencano i `deny` (eccezioni) e si chiude con `permit ip any any`.
@@ -496,7 +496,7 @@ Piano di riferimento: A `10.0.1.0/24`, B `10.0.2.0/24`, C `10.0.3.0/24`, D `10.0
 
 ![Topologia: un router con un'interfaccia per subnet e l'ACL applicata inbound su ciascuna](../img/topologia_flat.svg)
 
-Ogni subnet entra nel router su una porta dedicata; è su quell'interfaccia, in ingresso, che agisce l'ACL. Mappa interfaccia → ACL: `Gi0/0`→`ACL-SUBNET-A-DA`, `Gi0/1`→`ACL-SUBNET-B`, `Gi0/2`→`ACL-SUBNET-C-DA`, `Gi0/3`→`ACL-SUBNET-D-DA`, `Gi0/4`→`ACL-WAN`, `Gi0/5`→`ACL-DMZ-DA`, `Gi0/6`→`ACL-SERVERFARM`.
+Ogni subnet entra nel router su una porta dedicata; è su quell'interfaccia, in ingresso, che agisce l'ACL. In alto, separate dalle LAN, le due frontiere *default-deny* che riding sulla WAN: la WAN fisica e il tunnel logico. Mappa interfaccia → ACL: `Gi0/0`→`ACL-SUBNET-A-DA`, `Gi0/2`→`ACL-SUBNET-C-DA`, `Gi0/3`→`ACL-SUBNET-D-DA`, `Gi0/5`→`ACL-DMZ-DA`, `Gi0/6`→`ACL-SERVERFARM`, `Gi0/4`→`ACL-WAN`, `tun0`→`ACL-TUNNEL-DD`.
 
 ---
 
@@ -547,7 +547,7 @@ R# show ip interface <X>          ← quale ACL è applicata e in che direzione
 R# show ip access-lists NOME      ← contatori per ACE (0 match su un permit = regola mai usata)
 ```
 
-## 13 · ACL firewall — scenari tipici
+## 13 · ACL firewall — scenari tipici (conformi)
 
 **13.1 — Whitelist a un solo host (standard) · default-DENY esplicito.** Caso "isola chiusa" come la Subnet B: si enumera ciò che passa, il resto cade.
 
