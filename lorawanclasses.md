@@ -261,13 +261,15 @@ Non ci sono interfacce standard di trasmissione dei dati tra network server ed a
 
 Quindi sono macchine che partecipano attivamente alle **funzioni di rete** e pertanto fanno esse stesse parte della **infrastruttura di rete**. Spesso sono **virtualizzate** e le loro funzioni sono offerte come **servizio** su abbonamento. Sono presenti in quasi tutte le **infrastrutture LPWA** a lungo raggio come **lora**, **Sigfox** e **NB-IoT**.
 
+### **Server di rete come router applicativo**
+
 Il punto chiave è come avviene l'instradamento. Nel modello LoRaWAN il NS è il "centro stella": riceve gli uplink da tutti i gateway e poi smista ciascun pacchetto verso l'Application Server corretto. La logica di smistamento si basa sull'associazione **device → applicazione → AS**:
 
 - Ogni end device appartiene a un'**applicazione** definita sul NS.
 - Ogni applicazione può essere collegata a un **Application Server** (o integrazione) diverso.
 - Il NS, riconosciuto il DevEUI e l'applicazione di appartenenza, inoltra il payload solo all'**AS associato a quell'applicazione**.
 
-Nella procedura di Join (OTAA) entra in gioco anche il **JoinEUI** (ex AppEUI), che identifica il proprietario dell'applicazione. Il Join Server serve proprio a indirizzare la join request verso il soggetto corretto quando ci sono più applicazioni e più owner sullo stesso NS.
+Nella procedura di Join (OTAA) entra in gioco anche il **JoinEUI** (ex AppEUI), che identifica il proprietario dell'applicazione. Il Join Server serve proprio a indirizzare la join request verso il soggetto corretto quando ci sono più applicazioni e più owner sullo stesso NS. 
 
 ---
 
