@@ -547,7 +547,7 @@ R# show ip interface <X>          ← quale ACL è applicata e in che direzione
 R# show ip access-lists NOME      ← contatori per ACE (0 match su un permit = regola mai usata)
 ```
 
-## 13 · ACL firewall — scenari tipici (conformi)
+## 13 · ACL firewall — scenari tipici
 
 **13.1 — Whitelist a un solo host (standard) · default-DENY esplicito.** Caso "isola chiusa" come la Subnet B: si enumera ciò che passa, il resto cade.
 
@@ -640,7 +640,7 @@ interface s0/0/0
 > Solo i protocolli **riflessi** (qui HTTP e DNS) ottengono traffico di ritorno: i ritorni di
 > ciò che esce con il `permit ip any any` non riflesso cadono comunque sul `deny ip any any` di `ACL_ESTERNA`.
 
-## 15 · ACL anti-spoofing — WAN e LAN (conformi)
+## 15 · ACL anti-spoofing — WAN e LAN 
 
 ### 15.1 WAN in ingresso — **default-deny** (= Caso 5)
 
@@ -682,22 +682,10 @@ interface GigabitEthernet0/0                   ! LAN (inside)
 > le subnet sorelle. La protezione è silenziosa, ma il contatore resta visibile:
 > `show ip access-lists ACL-SUBNET-A-DA`.
 
----
-
-## Riepilogo conformità
-
-| Scenario | Interfaccia | Politica di default | Riga finale |
-|---|---|---|---|
-| Whitelist a host / flusso singolo (§13.1, §13.3, §13.5, §13.6) | LAN | default-deny (isola chiusa) | `deny ip any any` esplicito |
-| Filtro permissivo, blocco eccezioni (§13.2, §13.4) | LAN | default-allow | `permit ip any any` |
-| Anti-spoofing LAN (§15.2) | LAN | default-allow | `permit ip any any` (preceduto da `deny 10.0.0.0/16`) |
-| Reflexive — lato esterno (§14) | WAN in | default-deny | `deny ip any any` esplicito |
-| Anti-spoofing WAN (§15.1) | WAN in | default-deny | `deny ip any any` esplicito |
-| Tunnel VPN site-to-site (Parte C.4) | Tunnel in | default-deny | `deny ip any any` esplicito |
-
 Regola pratica: **default-deny ovunque ci sia un confine di fiducia** (WAN, tunnel, whitelist, accesso al DB);
 **default-allow solo dentro una zona già fidata** dove le eccezioni sono poche e serve fluidità.
 
+---
 
 ## 16 · Tunnel VPN — L3-su-L3 e L2-su-L3
 
