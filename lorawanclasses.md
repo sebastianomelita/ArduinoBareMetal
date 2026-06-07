@@ -42,11 +42,10 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 
 - **Aspetti particolari per LoRaWAN**
      - schema fisico (planimetria) dello scenario del problema con la rappresentazione di ambienti e edifici chiave e schema (indoor ed outdoor) dell'infrastruttura, con **definizione della posizione** ed etichettatura univoca di asset specifici quali sensori/attuatori, gateway/packet forwardere (PF), network server (NS), join server (JS) e application server (AP).
-     - Definire se è necessaria una **federazione di reti di sensori**: stabilire se **broker** e
-  **Network Server** sono individualmente o entrambi parte del router/gateway verso la rete IP,
-  oppure se sono **a comune** con più reti LoRaWAN.
+     - Stabilire se serve una **federazione di reti**: se **broker** e **NS** sono nel router/gateway o **a comune** tra più reti LoRaWAN.
+     - stabilire la natura del collegamento fisico (cavo ethernet, fibra ottica, 5G, satellite) e logico IP (tunnel MPLS Trusted Network o tunnel VPN Secure Network o TLS senza tunnel) tra PF e NS, e tra NS e AS
      - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
-  **sede dell'elaborazione dei comandi** più opportuna dove effettuare decifrazione del payload. Ovvero, stabilire se l'AS debba stare o meno sul GW insieme al PF e al NS.
+  **sede dell'elaborazione dei comandi** più opportuna dove effettuare decifrazione del payload. Ovvero, stabilire se l'AS debba stare **locale** sul GW insieme al PF e al NS oppure **remoto** in una sede di gestione.
      - Gestire i **vincoli di prossimità** (indoor/outdoor, controllo potenza/roaming) e i
   **vincoli di posizionamento** (trilaterazione).
      - Definizione delle **classi di servizio** dei nodi sensori e attuatori
