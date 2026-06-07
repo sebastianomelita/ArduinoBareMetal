@@ -482,7 +482,7 @@ sudo systemctl restart haproxy
 echo "show stat" | sudo socat stdio /var/run/haproxy/admin.sock
 ```
 
-# Cheat sheet ACL 
+# Cheat sheet ACL — versione conforme alla dispensa
 
 > Adattato al piano di indirizzamento `10.0.0.0/16` (Subnet A–F della dispensa) e alle **due politiche di default** che usiamo:
 > - **LAN → default-allow**: si elencano i `deny` (eccezioni) e si chiude con `permit ip any any`.
@@ -543,40 +543,54 @@ R# show ip access-lists NOME      ← contatori per ACE (0 match su un permit = 
 
 ## 13 · ACL firewall — scenari tipici (conformi)
 
+**13.1 — Whitelist a un solo host (standard) · default-DENY esplicito.** Caso "isola chiusa" come la Subnet B: si enumera ciò che passa, il resto cade.
+
 ```cisco
-! 1) Whitelist a un solo host (standard) — default-DENY esplicito.
-!    Caso "isola chiusa" come la Subnet B: si enumera ciò che passa, il resto cade.
 access-list 1 permit host 10.0.3.10
 access-list 1 deny   any                    ! ← default deny esplicito (riga di casa)
 interface GigabitEthernet0/2
  ip access-group 1 in
+```
 
-! 2) Negare un host e permettere il resto (standard) — default-ALLOW.
+**13.2 — Negare un host e permettere il resto (standard) · default-ALLOW.**
+
+```cisco
 access-list 10 deny   host 10.0.1.66
 access-list 10 permit any                    ! ← default allow esplicito
 interface GigabitEthernet0/0
  ip access-group 10 in
+```
 
-! 3) Flusso singolo subnet → host (estesa) — default-DENY esplicito.
-!    Es. Subnet B può raggiungere solo il file server.
+**13.3 — Flusso singolo subnet → host (estesa) · default-DENY esplicito.** Es. Subnet B può raggiungere solo il file server.
+
+```cisco
 ip access-list extended ACL-B-WHITELIST
  permit ip 10.0.2.0 0.0.0.255 host 10.0.1.100
  deny   ip any any                           ! ← default deny esplicito
 interface GigabitEthernet0/1
  ip access-group ACL-B-WHITELIST in
+```
 
-! 4) Negare Telnet (23) e permettere il resto — default-ALLOW.
+**13.4 — Negare Telnet (23) e permettere il resto · default-ALLOW.**
+
+```cisco
 ip access-list extended ACL-NO-TELNET
  deny   tcp any any eq 23
  permit ip  any any                          ! ← default allow esplicito
+```
 
-! 5) Permettere solo DNS (53) verso il resolver — default-DENY esplicito.
+**13.5 — Permettere solo DNS (53) verso il resolver · default-DENY esplicito.**
+
+```cisco
 ip access-list extended ACL-SOLO-DNS
  permit udp any host 10.0.6.53 eq domain
  permit tcp any host 10.0.6.53 eq domain
  deny   ip  any any                          ! ← default deny esplicito
+```
 
-! 6) Connessioni monodirezionali — established (stateless) — default-DENY esplicito.
+**13.6 — Connessioni monodirezionali con `established` (stateless) · default-DENY esplicito.**
+
+```cisco
 ip access-list extended ACL-RITORNO
  permit tcp any any gt 1023 established
  deny   ip  any any                          ! ← default deny esplicito
