@@ -215,7 +215,7 @@ Il gateway si collega al NS tramite un backhaul IP standard, che può essere rea
 
 **Livello logico/IP (GW ↔ NS)**
 
-Qui entrano le tre opzioni della tua domanda, tutte praticabili:
+Qui sono possibili tre opzioni, tutte praticabili:
 
 1. **MPLS Trusted Network (tunnel trusted)** — Possibile e usato soprattutto in deployment carrier/telco. Il traffico GW-NS viaggia su una VPN MPLS privata, isolata dalla rete pubblica, considerata "trusted" perché il perimetro è controllato dall'operatore.
 
