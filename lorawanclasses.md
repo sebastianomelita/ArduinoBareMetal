@@ -202,6 +202,39 @@ Il **network server** è comune in alcune tipologie di **reti wireless** LPWA ed
 
 <img src="img/network-server.png" alt="alt text" width="900">
 
+Sì, ti confermo che nell'architettura LoRaWAN il collegamento logico tra Gateway (GW/Packet Forwarder) e Network Server può essere realizzato in tutte e tre le modalità che citi. È una caratteristica intrinseca del modello: il backhaul GW↔NS è **IP-based e agnostico rispetto al trasporto**, quindi la scelta dipende dall'architettura di sicurezza dell'operatore, non da un vincolo dello standard.
+
+Ti riassumo i due livelli.
+
+###****Link di servizio (PF/GW ↔ NS)**
+
+Il gateway si collega al NS tramite un backhaul IP standard, che può essere realizzato con qualsiasi mezzo:
+- Ethernet su rame (tipico per installazioni fisse indoor/campus)
+- Fibra ottica (siti con connettività dedicata)
+- Cellulare 4G/5G (molto comune per gateway remoti o outdoor)
+- Wi-Fi
+- Satellitare (siti isolati)
+
+**Livello logico/IP (GW ↔ NS)**
+
+Qui entrano le tre opzioni della tua domanda, tutte praticabili:
+
+1. **MPLS Trusted Network (tunnel trusted)** — Possibile e usato soprattutto in deployment carrier/telco. Il traffico GW-NS viaggia su una VPN MPLS privata, isolata dalla rete pubblica, considerata "trusted" perché il perimetro è controllato dall'operatore.
+
+2. **VPN Secure Network (tunnel secure)** — Molto diffuso, in particolare con backhaul cellulare su rete pubblica. Si stabilisce un tunnel (tipicamente IPsec) tra gateway e NS che cifra l'intero backhaul. È lo scenario più frequente quando il gateway esce su Internet ma si vuole proteggere anche metadati e gestione.
+
+3. **Internet senza tunnel** — Anch'esso usato. Qui conta molto il protocollo del packet forwarder:
+   - *Semtech UDP Packet Forwarder* (legacy, porta 1700): UDP in chiaro, senza cifratura di trasporto. Funziona ma il backhaul è esposto.
+   - *Basics Station / LNS protocol*: usa WebSocket su **TLS**, quindi fornisce cifratura a livello di trasporto anche andando "in chiaro su Internet" senza un tunnel separato.
+
+**Nota di sicurezza importante**
+
+In tutti e tre i casi, il *payload applicativo* LoRaWAN è comunque cifrato end-to-end in AES-128 (chiavi NwkSKey/AppSKey). Quindi la riservatezza del dato applicativo è protetta anche nell'opzione "Internet senza tunnel". Ciò che cambia tra le tre opzioni è la protezione del **backhaul stesso**: metadati radio (RSSI/SNR, GW EUI, timestamp), traffico di management del gateway ed eventuale esposizione del NS. Per questo, su trasporto pubblico, si preferisce almeno TLS (Basics Station) o un tunnel VPN, riservando l'MPLS trusted ai contesti dove l'operatore possiede la rete.
+
+**NS ↔ AS**
+
+Stessa logica: spesso il collegamento è interno al datacenter/cloud (rete privata), oppure su Internet con HTTPS/TLS o MQTT over TLS; in contesti enterprise si trovano anche MPLS o VPN. Le interfacce LoRaWAN qui sono tipicamente HTTP/REST o MQTT, quindi TLS è la prassi.
+
 ### **Funzioni essenziali**
 
 Il Network Server, dopo aver elaborato i messaggi ricevuti dai gateway, li inoltra al LoRa App Server.
