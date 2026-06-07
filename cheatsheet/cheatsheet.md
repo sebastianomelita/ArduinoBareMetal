@@ -144,6 +144,7 @@ Alcuni documenti si possono **trascurare** secondo il peso della parte fisica ne
 - Planimetria con **posizione** ed etichettatura di sensori/attuatori, gateway/packet forwarder (**PF**), network server (**NS**), join server (**JS**), application server (**AS**).
 - Stabilire se serve una **federazione di reti**: se **broker** e **NS** sono nel router/gateway o **a comune** tra più reti LoRaWAN.
 - stabilire la natura del collegamento fisico (cavo ethernet, fibra ottica, 5G, satellite) e logico IP (tunnel MPLS Trusted Network o tunnel VPN Secure Network o TLS senza tunnel) tra PF e NS, e tra NS e AS
+- Definire, se necessario, più AS associati a certi gruppi di sensori.
 - **Percorso dei dati** → **sede dell'elaborazione** dove decifrare il payload: AS **locale sul GW** (insieme a PF e NS) oppure in una **sede remota**.
 - **Vincoli di prossimità** e **di posizionamento**.
 - **Classi di servizio** dei nodi sensori/attuatori.
