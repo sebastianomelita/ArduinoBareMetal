@@ -139,7 +139,7 @@ Alcuni documenti si possono **trascurare** secondo il peso della parte fisica ne
 - **Posizione del controller** degli AP.
 
 ### 3.4 LoRaWAN
-- Planimetria con etichettatura di sensori/attuatori, gateway/packet forwarder (**PF**), network server (**NS**), join server (**JS**), application server (**AS**).
+- Planimetria con **posizione** ed etichettatura di sensori/attuatori, gateway/packet forwarder (**PF**), network server (**NS**), join server (**JS**), application server (**AS**).
 - Stabilire se serve una **federazione di reti**: se **broker** e **NS** sono nel router/gateway o **a comune** tra più reti LoRaWAN.
 - **Percorso dei dati** → **sede dell'elaborazione** dove decifrare il payload (AS sul GW insieme a PF e NS oppure no).
 - **Vincoli di prossimità** e **di posizionamento**.
