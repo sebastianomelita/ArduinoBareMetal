@@ -492,6 +492,12 @@ echo "show stat" | sudo socat stdio /var/run/haproxy/admin.sock
 
 Piano di riferimento: A `10.0.1.0/24`, B `10.0.2.0/24`, C `10.0.3.0/24`, D `10.0.4.0/24`, DMZ `10.0.5.0/24`, Server Farm `10.0.6.0/24`. Intranet aggregata: `10.0.0.0 0.0.255.255`. File server `10.0.1.100`, app server `10.0.5.100`, DB `10.0.6.100`, web server `10.0.5.50`.
 
+### Contesto — un solo router, un'ACL inbound per interfaccia
+
+![Topologia: un router con un'interfaccia per subnet e l'ACL applicata inbound su ciascuna](../img/topologia_flat.svg)
+
+Ogni subnet entra nel router su una porta dedicata; è su quell'interfaccia, in ingresso, che agisce l'ACL. Mappa interfaccia → ACL: `Gi0/0`→`ACL-SUBNET-A-DA`, `Gi0/1`→`ACL-SUBNET-B`, `Gi0/2`→`ACL-SUBNET-C-DA`, `Gi0/3`→`ACL-SUBNET-D-DA`, `Gi0/4`→`ACL-WAN`, `Gi0/5`→`ACL-DMZ-DA`, `Gi0/6`→`ACL-SERVERFARM`.
+
 ---
 
 ## 12 · ACL — definizione e tipi
@@ -577,6 +583,8 @@ interface GigabitEthernet0/1
 ip access-list extended ACL-NO-TELNET
  deny   tcp any any eq 23
  permit ip  any any                          ! ← default allow esplicito
+interface GigabitEthernet0/0
+ ip access-group ACL-NO-TELNET in
 ```
 
 **13.5 — Permettere solo DNS (53) verso il resolver · default-DENY esplicito.**
@@ -586,6 +594,8 @@ ip access-list extended ACL-SOLO-DNS
  permit udp any host 10.0.6.53 eq domain
  permit tcp any host 10.0.6.53 eq domain
  deny   ip  any any                          ! ← default deny esplicito
+interface GigabitEthernet0/3
+ ip access-group ACL-SOLO-DNS in
 ```
 
 **13.6 — Connessioni monodirezionali con `established` (stateless) · default-DENY esplicito.**
@@ -594,6 +604,8 @@ ip access-list extended ACL-SOLO-DNS
 ip access-list extended ACL-RITORNO
  permit tcp any any gt 1023 established
  deny   ip  any any                          ! ← default deny esplicito
+interface GigabitEthernet0/4
+ ip access-group ACL-RITORNO in
 ```
 
 > `established` seleziona i pacchetti con flag ACK/RST (esclude i SYN puri). È **stateless**:
