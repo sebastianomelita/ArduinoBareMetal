@@ -482,7 +482,7 @@ sudo systemctl restart haproxy
 echo "show stat" | sudo socat stdio /var/run/haproxy/admin.sock
 ```
 
-# Cheat sheet ACL — versione conforme alla dispensa
+## Cheat sheet ACL
 
 > Adattato al piano di indirizzamento `10.0.0.0/16` (Subnet A–F della dispensa) e alle **due politiche di default** che usiamo:
 > - **LAN → default-allow**: si elencano i `deny` (eccezioni) e si chiude con `permit ip any any`.
