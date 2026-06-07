@@ -46,6 +46,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
      - stabilire la natura del collegamento fisico (cavo ethernet, fibra ottica, 5G, satellite) e logico IP (tunnel MPLS Trusted Network o tunnel VPN Secure Network o TLS senza tunnel) tra PF e NS, e tra NS e AS
      - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
   **sede dell'elaborazione dei comandi** più opportuna dove effettuare decifrazione del payload. Ovvero, stabilire se l'AS debba stare **locale** sul GW insieme al PF e al NS oppure **remoto** in una sede di gestione.
+     - Definire, se necessario, più AS associati a certi gruppi di sensori.
      - Gestire i **vincoli di prossimità** (indoor/outdoor, controllo potenza/roaming) e i
   **vincoli di posizionamento** (trilaterazione).
      - Definizione delle **classi di servizio** dei nodi sensori e attuatori
