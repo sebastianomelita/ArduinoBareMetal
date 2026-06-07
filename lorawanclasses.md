@@ -201,9 +201,8 @@ Il **network server** è comune in alcune tipologie di **reti wireless** LPWA ed
 
 <img src="img/network-server.png" alt="alt text" width="900">
 
-Sì, ti confermo che nell'architettura LoRaWAN il collegamento logico tra Gateway (GW/Packet Forwarder) e Network Server può essere realizzato in tutte e tre le modalità che citi. È una caratteristica intrinseca del modello: il backhaul GW↔NS è **IP-based e agnostico rispetto al trasporto**, quindi la scelta dipende dall'architettura di sicurezza dell'operatore, non da un vincolo dello standard.
+Il backhaul GW↔NS è **IP-based e agnostico rispetto al trasporto**, quindi la scelta dipende dall'architettura di sicurezza dell'operatore, non da un vincolo dello standard.
 
-Ti riassumo i due livelli.
 
 ### **Link di servizio (PF/GW ↔ NS)**
 
