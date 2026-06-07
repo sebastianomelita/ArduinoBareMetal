@@ -482,6 +482,18 @@ sudo systemctl restart haproxy
 echo "show stat" | sudo socat stdio /var/run/haproxy/admin.sock
 ```
 
+# Cheat sheet ACL 
+
+> Adattato al piano di indirizzamento `10.0.0.0/16` (Subnet A–F della dispensa) e alle **due politiche di default** che usiamo:
+> - **LAN → default-allow**: si elencano i `deny` (eccezioni) e si chiude con `permit ip any any`.
+> - **WAN e tunnel → default-deny**: si elencano i `permit` (servizi ammessi) e si chiude con `deny ip any any` **esplicito**.
+> - Regola di casa: la **riga di default si scrive sempre in chiaro** (anche dove l'implicit deny basterebbe), per renderla visibile e abilitare il contatore di match.
+> - Anti-spoofing **silenzioso** sulle LAN (nessun `log`); `log` riservato alla WAN.
+
+Piano di riferimento: A `10.0.1.0/24`, B `10.0.2.0/24`, C `10.0.3.0/24`, D `10.0.4.0/24`, DMZ `10.0.5.0/24`, Server Farm `10.0.6.0/24`. Intranet aggregata: `10.0.0.0 0.0.255.255`. File server `10.0.1.100`, app server `10.0.5.100`, DB `10.0.6.100`, web server `10.0.5.50`.
+
+---
+
 ## 12 · ACL — definizione e tipi
 
 Una **ACL** è una lista ordinata di **ACE**. Il router le esamina in sequenza: alla prima
@@ -496,6 +508,7 @@ corrispondenza esegue l'azione e si ferma. Se nessuna corrisponde → **deny all
 
 > Standard vicino alla **destinazione** (filtra solo per sorgente, altrimenti bloccherebbe tutto
 > il traffico dell'host). Estesa vicino alla **sorgente** (scarta subito, evita transiti inutili).
+> Nella dispensa usiamo **sempre estese con nome, applicate inbound** sull'interfaccia della subnet.
 
 ### Sintassi base
 ```
@@ -507,63 +520,90 @@ interface <X>
  ip access-group <numero|NOME> {in|out}
 ```
 
-> `in` = pacchetti **entranti** (protezione del sistema locale).
-> `out` = pacchetti **uscenti** (gestisce anche il traffico generato localmente).
+> `in` = pacchetti **entranti** sull'interfaccia (è la direzione che usiamo in tutta la dispensa).
+> `out` = pacchetti **uscenti** dall'interfaccia (non filtra il traffico generato dal router stesso).
+
+### La riga di default (regola di casa)
+```
+! LAN — default-allow
+ ... (deny delle eccezioni) ...
+ permit ip any any            ! neutralizza l'implicit deny → "tutto permesso se non negato"
+
+! WAN / tunnel — default-deny
+ ... (permit dei servizi ammessi) ...
+ deny ip any any              ! esplicito, anche se ridondante con l'implicit deny
+```
 
 **Test**
 ```
 R# show access-lists
 R# show ip interface <X>          ← quale ACL è applicata e in che direzione
+R# show ip access-lists NOME      ← contatori per ACE (0 match su un permit = regola mai usata)
 ```
 
-## 13 · ACL firewall — scenari tipici
+## 13 · ACL firewall — scenari tipici (conformi)
 
-```
-! Permettere un solo host (standard)
-access-list 1 permit host 192.168.10.1
-interface ethernet0
+```cisco
+! 1) Whitelist a un solo host (standard) — default-DENY esplicito.
+!    Caso "isola chiusa" come la Subnet B: si enumera ciò che passa, il resto cade.
+access-list 1 permit host 10.0.3.10
+access-list 1 deny   any                    ! ← default deny esplicito (riga di casa)
+interface GigabitEthernet0/2
  ip access-group 1 in
 
-! Negare un host, permettere il resto
-access-list 10 deny   host 192.168.0.1
-access-list 10 permit any
+! 2) Negare un host e permettere il resto (standard) — default-ALLOW.
+access-list 10 deny   host 10.0.1.66
+access-list 10 permit any                    ! ← default allow esplicito
+interface GigabitEthernet0/0
+ ip access-group 10 in
 
-! Subnet → subnet (estesa)
-access-list 101 permit ip 192.168.10.0 0.0.0.255 192.168.200.0 0.0.0.255
+! 3) Flusso singolo subnet → host (estesa) — default-DENY esplicito.
+!    Es. Subnet B può raggiungere solo il file server.
+ip access-list extended ACL-B-WHITELIST
+ permit ip 10.0.2.0 0.0.0.255 host 10.0.1.100
+ deny   ip any any                           ! ← default deny esplicito
+interface GigabitEthernet0/1
+ ip access-group ACL-B-WHITELIST in
 
-! Negare Telnet (23), permettere il resto
-access-list 102 deny   tcp any any eq 23
-access-list 102 permit ip  any any
+! 4) Negare Telnet (23) e permettere il resto — default-ALLOW.
+ip access-list extended ACL-NO-TELNET
+ deny   tcp any any eq 23
+ permit ip  any any                          ! ← default allow esplicito
 
-! Permettere solo DNS (53)
-access-list 112 permit udp any any eq domain
-access-list 112 permit tcp any any eq domain
+! 5) Permettere solo DNS (53) verso il resolver — default-DENY esplicito.
+ip access-list extended ACL-SOLO-DNS
+ permit udp any host 10.0.6.53 eq domain
+ permit tcp any host 10.0.6.53 eq domain
+ deny   ip  any any                          ! ← default deny esplicito
 
-! Connessioni monodirezionali — established (stateless)
-access-list 102 permit tcp any any gt 1023 established
+! 6) Connessioni monodirezionali — established (stateless) — default-DENY esplicito.
+ip access-list extended ACL-RITORNO
+ permit tcp any any gt 1023 established
+ deny   ip  any any                          ! ← default deny esplicito
 ```
 
 > `established` seleziona i pacchetti con flag ACK/RST (esclude i SYN puri). È **stateless**:
-> un attaccante può falsificare i flag → preferire le ACL riflessive (§14).
+> un attaccante può falsificare i flag → preferire le ACL riflessive (§14) o ZBF.
 
 ## 14 · ACL riflessive (stateful)
 
 Creano ACE temporanee al passaggio del traffico uscente, ammettendo solo le risposte a
-connessioni già aperte dall'interno.
+connessioni già aperte dall'interno. Sul lato non fidato (in ingresso) la lista è **default-deny**.
 
-```
-! Passo 1 — ACL interna: traccia le sessioni uscenti
+```cisco
+! Passo 1 — ACL interna (uscente): traccia le sessioni e lascia uscire il resto (LAN default-allow)
 ip access-list extended ACL_INTERNA
- permit tcp any any eq 80 reflect ACL-WEB
- permit udp any any eq 53 reflect ACL-DNS timeout 10
+ permit tcp 10.0.0.0 0.0.255.255 any eq 80 reflect ACL-WEB
+ permit udp 10.0.0.0 0.0.255.255 any eq 53 reflect ACL-DNS timeout 10
+ permit ip  any any                          ! ← default allow in uscita
 
-! Passo 2 — ACL esterna: valuta le ACE riflessive sul traffico di ritorno
+! Passo 2 — ACL esterna (entrante): solo i ritorni riflessi, poi default-DENY esplicito
 ip access-list extended ACL_ESTERNA
  evaluate ACL-WEB
  evaluate ACL-DNS
- deny ip any any
+ deny ip any any                             ! ← default deny esplicito
 
-! Passo 3 — applica
+! Passo 3 — applica sull'interfaccia verso la WAN
 interface s0/0/0
  ip access-group ACL_INTERNA out
  ip access-group ACL_ESTERNA in
@@ -571,30 +611,67 @@ interface s0/0/0
 
 > `reflect` crea l'ACE inversa temporanea; `evaluate` la usa per il ritorno; `timeout`
 > (secondi) ne definisce la durata per i protocolli stateless (UDP).
+> Solo i protocolli **riflessi** (qui HTTP e DNS) ottengono traffico di ritorno: i ritorni di
+> ciò che esce con il `permit ip any any` non riflesso cadono comunque sul `deny ip any any` di `ACL_ESTERNA`.
 
-## 15 · ACL anti-spoofing — WAN e LAN
+## 15 · ACL anti-spoofing — WAN e LAN (conformi)
 
+### 15.1 WAN in ingresso — **default-deny** (= Caso 5)
+
+```cisco
+! Blocca le sorgenti impossibili (con log), poi nega tutto il resto.
+ip access-list extended ACL-WAN
+ deny   ip host 0.0.0.0       any              log   ! default gateway
+ deny   ip 127.0.0.0   0.255.255.255  any      log   ! loopback
+ deny   ip 10.0.0.0    0.255.255.255  any      log   ! RFC1918 A
+ deny   ip 172.16.0.0  0.15.255.255   any      log   ! RFC1918 B
+ deny   ip 192.168.0.0 0.0.255.255    any      log   ! RFC1918 C
+ deny   ip 224.0.0.0   15.255.255.255 any      log   ! multicast sorgente
+ deny   ip any any                                    ! ← DEFAULT DENY (era "permit ip any any")
+interface GigabitEthernet0/4                  ! WAN (outside)
+ ip access-group ACL-WAN in
 ```
-! WAN in ingresso — blocca sorgenti non instradabili
-access-list 101 deny ip host 0.0.0.0       any              log   ! default gateway
-access-list 101 deny ip 127.0.0.0   0.255.255.255  any      log   ! loopback
-access-list 101 deny ip 10.0.0.0    0.255.255.255  any      log   ! RFC1918 A
-access-list 101 deny ip 172.16.0.0  0.15.255.255   any      log   ! RFC1918 B
-access-list 101 deny ip 192.168.0.0 0.0.255.255    any      log   ! RFC1918 C
-access-list 101 permit ip any any
-interface fa0/1                   ! WAN (outside)
- ip access-group 101 in
 
-! LAN in ingresso — blocca indirizzi "marziani"
-access-list 112 deny ip 172.16.0.0 0.15.255.255  any
-access-list 112 deny ip 10.0.0.0   0.255.255.255 any
-access-list 112 permit ip any any
-interface fa0/0                   ! LAN (inside)
- ip access-group 112 in
+> Se si espongono servizi in DMZ (Caso 5b), i `permit` selettivi (es. `permit tcp any host 10.0.5.50 eq 443`)
+> vanno inseriti **prima** del `deny ip any any` finale. La WAN resta comunque default-deny.
+
+### 15.2 LAN in ingresso — **default-allow** con anti-spoofing silenzioso (= Parte C)
+
+Sul nostro piano `10.0.0.0/16` non si può negare `10.0.0.0/8` in blocco (bloccherebbe la LAN stessa).
+La logica è inversa: **permetto prima la subnet locale**, poi nego il resto dell'intranet, poi default-allow.
+
+```cisco
+! Esempio su Gi0/0 (Subnet A, 10.0.1.0/24)
+ip access-list extended ACL-SUBNET-A-DA
+ permit ip 10.0.1.0 0.0.0.255  any            ! sorgente locale legittima → esce
+ deny   ip 10.0.0.0 0.0.255.255 any            ! anti-spoofing: ogni altra sorgente interna = spoof (silenzioso)
+ permit ip any any                             ! ← DEFAULT ALLOW
+interface GigabitEthernet0/0                   ! LAN (inside)
+ ip access-group ACL-SUBNET-A-DA in
 ```
 
-> **WAN**: nessun pacchetto con IP privato (RFC1918) deve arrivare da fuori → se arriva è falsificato.
-> **LAN**: nessun host interno deve trasmettere con IP estraneo al piano locale.
+> 🔑 **L'ordine conta.** Il `permit` della subnet locale deve precedere il `deny 10.0.0.0/16`:
+> quel deny copre tutta l'intranet (subnet locale inclusa), quindi senza il permit a monte
+> scarterebbe anche il traffico buono. Una sola riga di anti-spoofing basta — non serve elencare
+> le subnet sorelle. La protezione è silenziosa, ma il contatore resta visibile:
+> `show ip access-lists ACL-SUBNET-A-DA`.
+
+---
+
+## Riepilogo conformità
+
+| Scenario | Interfaccia | Politica di default | Riga finale |
+|---|---|---|---|
+| Whitelist a host / flusso singolo (§13.1, §13.3, §13.5, §13.6) | LAN | default-deny (isola chiusa) | `deny ip any any` esplicito |
+| Filtro permissivo, blocco eccezioni (§13.2, §13.4) | LAN | default-allow | `permit ip any any` |
+| Anti-spoofing LAN (§15.2) | LAN | default-allow | `permit ip any any` (preceduto da `deny 10.0.0.0/16`) |
+| Reflexive — lato esterno (§14) | WAN in | default-deny | `deny ip any any` esplicito |
+| Anti-spoofing WAN (§15.1) | WAN in | default-deny | `deny ip any any` esplicito |
+| Tunnel VPN site-to-site (Parte C.4) | Tunnel in | default-deny | `deny ip any any` esplicito |
+
+Regola pratica: **default-deny ovunque ci sia un confine di fiducia** (WAN, tunnel, whitelist, accesso al DB);
+**default-allow solo dentro una zona già fidata** dove le eccezioni sono poche e serve fluidità.
+
 
 ## 16 · Tunnel VPN — L3-su-L3 e L2-su-L3
 
