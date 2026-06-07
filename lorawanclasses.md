@@ -304,7 +304,7 @@ La **parola gateway** potrebbe talvolta portare a **fraintendimenti** dovuti al 
 ---
 ## **Join Server e accesso OTAA**
 
-Per abilitare l'**accesso OTAA**, vanno configurati sia il **dispositivo IoT** che il **network server**.
+Per abilitare l'**accesso OTAA**, vanno configurati sia il **dispositivo IoT** che il **network server**. L'AppEUI/JoinEUI identifica il JoinServer che custodisce le root key (AppKey e NwkKey) di un certo dispositivo. L'AppEUI/JoinEUI non seleziona l'AS, ma identifica il Join Server che custodisce le root key e che, al join, consegna l'AppSKey all'AS giusto.
 
 <img src="/img/auth-lorawan.jpg" alt="alt text" width="1000">
 
