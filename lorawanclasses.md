@@ -41,7 +41,7 @@ Date le particolarità della tecnologia, i casi d'uso per la rete di sensori son
 - [Aspetti critici comuni per tutte le tecnologie](approfondimenti/aspetti_critici_generali.md)
 
 - **Aspetti particolari per LoRaWAN**
-     - schema fisico (planimetria) dello scenario del problema con la rappresentazione di ambienti e edifici chiave e schema (indoor ed outdoor) dell'infrastruttura con etichettatura univoca di asset specifici quali sensori/attuatori, gateway/packet forwardere (PF), network server (NS), join server (JS) e application server (AP).
+     - schema fisico (planimetria) dello scenario del problema con la rappresentazione di ambienti e edifici chiave e schema (indoor ed outdoor) dell'infrastruttura, con **definizione della posizione** ed etichettatura univoca di asset specifici quali sensori/attuatori, gateway/packet forwardere (PF), network server (NS), join server (JS) e application server (AP).
      - Definire se è necessaria una **federazione di reti di sensori**: stabilire se **broker** e
   **Network Server** sono individualmente o entrambi parte del router/gateway verso la rete IP,
   oppure se sono **a comune** con più reti LoRaWAN.
