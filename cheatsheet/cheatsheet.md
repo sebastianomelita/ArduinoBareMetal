@@ -55,7 +55,7 @@ Normalmente, bit rate e consumo sono direttamente proporzionali, quando cresce i
 - Eventuali **vincoli normativi**: **cablaggio strutturato**, **potenza**, **EIRP**, **ERP**, **duty cycle**.
 
 ### 1.4 Indirizzamento e routing
-- **Subnetting** e definizione indirizzi (gruppi utenti, server farm) e **indirizzi dei server**.
+- **Subnetting** dei **link verso le LAN** (fisiche o virtuali per gruppi di utenti, server farm e DMZ) definizione dell **indirizzo del router di confine** della LAN. Definizione degli **indirizzi dei server**.
 - **Subnetting** dei **link fisici di dorsale** tra i router e definizione degli **indirizzi delle interfacce fisiche** dei router
 - **Subnetting** dei **link logici L3 di dorsale** tra i router e definizione degli **indirizzi delle interfacce virtuali TUN** dei router
 - **Tipo di routing** (statico o dinamico). Se statico, definire le **tabelle** più significative.
