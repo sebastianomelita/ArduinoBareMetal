@@ -31,7 +31,7 @@
     - Eventuali **vincoli normativi** sulle tecnologie in uso: **cablaggio strutturato**, **potenza**, **EIRP**, **ERP**, **duty cycle**.
 
 - **Indirizzamento e routing**
-    - **Subnetting** e definizione dei **link verso le LAN** (fisiche o virtuali) per l'allocazione di gruppi di utenti, server farm e DMZ. Definizione degli **indirizzi dei server**.
+    - **Subnetting** dei **link verso le LAN** (fisiche o virtuali) per l'allocazione di gruppi di utenti, server farm e DMZ definizione dell **indirizzo del router di confine** della LAN. Definizione degli **indirizzi dei server**.
     - **Subnetting** dei **link fisici di dorsale** tra i router e definizione degli **indirizzi delle interfacce fisiche** dei router
     - **Subnetting** dei **link logici L3 di dorsale** tra i router e definizione degli **indirizzi delle interfacce virtuali TUN** dei router
     - Definizione del **tipo di routing** (statico o dinamico). In caso di **routing statico**, definizione
