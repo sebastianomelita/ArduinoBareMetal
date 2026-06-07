@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="202" viewBox="0 0 680 202" role="img">
+<title>Topologia piatta: un router Cisco centrale, le subnet in fila, ACL inbound per interfaccia</title>
+<desc>Un solo router (simbolo Cisco a cerchio con X) su un bus orizzontale. La WAN Gi0/4 sale verso Internet (ACL-WAN, default-deny). Le subnet A, C, D e la DMZ sono default-allow; la Subnet B e la Server Farm sono default-deny.</desc>
+<style>
+  text{font-family:"Anthropic Sans",system-ui,Segoe UI,Roboto,sans-serif}
+  .th{font-size:14px;font-weight:500}
+  .ts{font-size:12px;font-weight:400}
+  .ln{stroke:#888780;stroke-width:.8;fill:none}
+  .gl{stroke:#5F5E5A;stroke-width:1.2;fill:none}
+  .teal-f{fill:#E1F5EE;stroke:#0F6E56;stroke-width:.5}
+  .teal-t{fill:#085041}
+  .coral-f{fill:#FAECE7;stroke:#993C1D;stroke-width:.5}
+  .coral-t{fill:#712B13}
+  .gray-f{fill:#F1EFE8;stroke:#5F5E5A;stroke-width:.5}
+  .gray-t{fill:#2C2C2A}
+  @media (prefers-color-scheme: dark){
+    .teal-f{fill:#085041;stroke:#5DCAA5}.teal-t{fill:#9FE1CB}
+    .coral-f{fill:#712B13;stroke:#F0997B}.coral-t{fill:#F5C4B3}
+    .gray-f{fill:#2C2C2A;stroke:#B4B2A9}.gray-t{fill:#D3D1C7}
+    .ln{stroke:#9c9a92}.gl{stroke:#B4B2A9}
+  }
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+
+<rect class="coral-f" x="283" y="6" width="114" height="36" rx="8"/>
+<text class="th coral-t" x="340" y="23" text-anchor="middle" dominant-baseline="central">Internet/WAN</text>
+<text class="ts coral-t" x="340" y="36" text-anchor="middle" dominant-baseline="central">Gi0/4 · ACL-WAN</text>
+<line class="ln" x1="340" y1="42" x2="340" y2="50"/>
+
+<line class="ln" x1="40" y1="70" x2="320" y2="70"/>
+<line class="ln" x1="360" y1="70" x2="640" y2="70"/>
+
+<circle class="gray-f" cx="340" cy="70" r="20"/>
+<line class="gl" x1="340" y1="70" x2="353" y2="57" marker-end="url(#arrow)"/>
+<line class="gl" x1="340" y1="70" x2="327" y2="57" marker-end="url(#arrow)"/>
+<line class="gl" x1="340" y1="70" x2="353" y2="83" marker-end="url(#arrow)"/>
+<line class="gl" x1="340" y1="70" x2="327" y2="83" marker-end="url(#arrow)"/>
+<text class="ts gray-t" x="340" y="103" text-anchor="middle">Router · Gi0/0–0/6</text>
+
+<line class="ln" x1="85" y1="70" x2="85" y2="108"/>
+<line class="ln" x1="187" y1="70" x2="187" y2="108"/>
+<line class="ln" x1="289" y1="70" x2="289" y2="108"/>
+<line class="ln" x1="391" y1="70" x2="391" y2="108"/>
+<line class="ln" x1="493" y1="70" x2="493" y2="108"/>
+<line class="ln" x1="595" y1="70" x2="595" y2="108"/>
+
+<rect class="teal-f" x="40" y="110" width="90" height="56" rx="8"/>
+<text class="th teal-t" x="85" y="128" text-anchor="middle" dominant-baseline="central">Subnet A</text>
+<text class="ts teal-t" x="85" y="144" text-anchor="middle" dominant-baseline="central">10.0.1.0/24</text>
+<text class="ts teal-t" x="85" y="159" text-anchor="middle" dominant-baseline="central">Gi0/0</text>
+
+<rect class="coral-f" x="142" y="110" width="90" height="56" rx="8"/>
+<text class="th coral-t" x="187" y="128" text-anchor="middle" dominant-baseline="central">Subnet B</text>
+<text class="ts coral-t" x="187" y="144" text-anchor="middle" dominant-baseline="central">10.0.2.0/24</text>
+<text class="ts coral-t" x="187" y="159" text-anchor="middle" dominant-baseline="central">Gi0/1</text>
+
+<rect class="teal-f" x="244" y="110" width="90" height="56" rx="8"/>
+<text class="th teal-t" x="289" y="128" text-anchor="middle" dominant-baseline="central">Subnet C</text>
+<text class="ts teal-t" x="289" y="144" text-anchor="middle" dominant-baseline="central">10.0.3.0/24</text>
+<text class="ts teal-t" x="289" y="159" text-anchor="middle" dominant-baseline="central">Gi0/2</text>
+
+<rect class="teal-f" x="346" y="110" width="90" height="56" rx="8"/>
+<text class="th teal-t" x="391" y="128" text-anchor="middle" dominant-baseline="central">Subnet D</text>
+<text class="ts teal-t" x="391" y="144" text-anchor="middle" dominant-baseline="central">10.0.4.0/24</text>
+<text class="ts teal-t" x="391" y="159" text-anchor="middle" dominant-baseline="central">Gi0/3</text>
+
+<rect class="teal-f" x="448" y="110" width="90" height="56" rx="8"/>
+<text class="th teal-t" x="493" y="128" text-anchor="middle" dominant-baseline="central">DMZ</text>
+<text class="ts teal-t" x="493" y="144" text-anchor="middle" dominant-baseline="central">10.0.5.0/24</text>
+<text class="ts teal-t" x="493" y="159" text-anchor="middle" dominant-baseline="central">Gi0/5</text>
+
+<rect class="coral-f" x="550" y="110" width="90" height="56" rx="8"/>
+<text class="th coral-t" x="595" y="128" text-anchor="middle" dominant-baseline="central">Farm</text>
+<text class="ts coral-t" x="595" y="144" text-anchor="middle" dominant-baseline="central">10.0.6.0/24</text>
+<text class="ts coral-t" x="595" y="159" text-anchor="middle" dominant-baseline="central">Gi0/6</text>
+
+<rect class="teal-f" x="150" y="180" width="12" height="12" rx="3"/>
+<text class="ts gray-t" x="168" y="190">default-allow (permit ip any any)</text>
+<rect class="coral-f" x="400" y="180" width="12" height="12" rx="3"/>
+<text class="ts gray-t" x="418" y="190">default-deny (deny ip any any)</text>
+</svg>
