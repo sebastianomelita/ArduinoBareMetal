@@ -206,7 +206,7 @@ Sì, ti confermo che nell'architettura LoRaWAN il collegamento logico tra Gatewa
 
 Ti riassumo i due livelli.
 
-###****Link di servizio (PF/GW ↔ NS)**
+### **Link di servizio (PF/GW ↔ NS)**
 
 Il gateway si collega al NS tramite un backhaul IP standard, che può essere realizzato con qualsiasi mezzo:
 - Ethernet su rame (tipico per installazioni fisse indoor/campus)
