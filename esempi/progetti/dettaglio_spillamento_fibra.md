@@ -155,7 +155,7 @@ Tecnologia radicalmente diversa: a ogni km **non c'è apparato attivo**. La fibr
 | Costo OPEX (manutenzione) | Medio | Medio | Basso |
 | Alimentazione intermedia | Sì (poco) | Sì (poco) | No |
 
-[Ultimo miglio ISP in fibra](../approfondimenti/isp_access.md)
+[Ultimo miglio ISP in fibra](/isp_access.md)
 
 ---
 
