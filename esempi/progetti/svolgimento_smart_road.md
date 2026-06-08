@@ -120,6 +120,12 @@ Per i dettegli sulla tecnologia della rete fisica in fibra vedi il file [`dettag
 
 ---
 
+## 5. Confronto e scelta
+
+| Caratteristica | A — Anello L2 ERPS | B — Anello L3 OSPF | C — PON |
+|----------------|-------------------|--------------------|---------| 
+| Scelta per il progetto | ✅ **Adottata** | ❌ Esagerata | ❌ Insufficiente resilienza |
+
 ## 6. Componenti dello switch a ogni smart-gate
 
 Lo switch tipo per questo scenario ha le seguenti caratteristiche:
