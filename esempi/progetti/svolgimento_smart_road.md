@@ -129,8 +129,8 @@ La **linea tratteggiata** rappresenta il tipo di servizio "like wired" scelto pe
 #### 3.2.1bis Topologia logica della rete di sensori nel caso di rete fisica B1
 
 In questo caso la rete di sensori è analoga ad una grande LAN industriale composta di soli switch:
-- **switch di tratt**, in serie a quello del tratto successivo
-- **switch di multiplazione**: con una porta di loop si chiude, mediante una fibra lunga quanto un tratto, sul primo switch del loop, con una seconda porta si collega ad un MUX/DEMUX DWDM che genera una **link**, dedicato a quel cluster di tratti, attestato su una porta del **core switch** L2 locato nel centro di controllo regionale.
+- **switch di tratto**, in serie a quello del tratto successivo
+- **switch di multiplazione**: con una **porta di loop** si chiude, mediante una fibra lunga quanto un tratto, sul primo switch del loop, con una seconda **porta di dorsale** si collega ad un MUX/DEMUX DWDM che genera una **link**, dedicato a quel cluster di tratti, attestato su una porta del **core switch** L2 locato nel centro di controllo regionale.
 
 <img src="../img/cdc_lombardia_B1_dwdm.svg" alt="cdc_lombardia_B1_due_livelli" width="900">
 
