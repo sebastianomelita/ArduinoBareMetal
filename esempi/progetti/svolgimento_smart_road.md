@@ -116,7 +116,7 @@ Topologia della rete LAN dei sensori di un generico tratto:
 
 <img src="../img/topologia_lorawan_km.svg" alt="Topologia LoRaWAN del km autostradale" width="680">
 
-#### 3.2.1bis Topologia logica della rete di sensori
+#### 3.2.1bis Topologia logica della rete di sensori nel caso di rete fisica B2
 
 In questo schema i sensori/attuatori non sono **client MQTT diretti** (non parlano MQTT loro stessi via WiFi/IP). In questo caso i sensori parlano **LoRaWAN**, non MQTT, quindi non sono publisher MQTT in prima persona. È l'**application server edge** (co-locato col gateway) che fa il publish MQTT a nome dei sensori, dopo aver decodificato il payload Cayenne LPP (vedi §3.2.7). Quindi dal punto di vista del **piano L7 MQTT** il publisher non è il sensore ma il nodo edge — il sensore è "trasparente" rispetto a MQTT. Lo riflette il disegno facendo partire il link L7 dal nodo edge, non dal sensore:
 1. **L3 e L7 non coincidono.** Un sensore del tratto A1 raggiunge il dashboard del CdC fisicamente attraverso quattro nodi IP (gateway edge → firewall A1 → dorsale → firewall CdC → switch CdC → dashboard), ma a livello applicativo MQTT ci sono solo **due salti**: gateway edge → broker, e broker → dashboard. Il broker "appiattisce" la topologia IP dal punto di vista applicativo: chi pubblica e chi si abbona vedono solo il broker, non la rete IP sottostante.
@@ -125,6 +125,10 @@ In questo schema i sensori/attuatori non sono **client MQTT diretti** (non parla
 <img src="../img/cdc_lombardia_due_livelli.svg" alt="cdc_lombardia_due_livelli" width="900">
  
 La **linea tratteggiata** rappresenta il tipo di servizio "like wired" scelto per interconnettere i gateway dei vari tratti con il loro CdG (Centro di Gestione) regionale, una **Trusted VPN MPLS**. Garantisce SLA contrattuali ruguardo a: classi di servizio (QoS), autenticazione dei nodi gateway e isolamento.
+
+#### 3.2.1bis Topologia logica della rete di sensori nel caso di rete fisica B1
+
+<img src="../img/cdc_lombardia_B1_dwdm.svg" alt="cdc_lombardia_B1_due_livelli" width="900">
 
 #### 3.2.2 Sensori (end-device LoRaWAN)
 
