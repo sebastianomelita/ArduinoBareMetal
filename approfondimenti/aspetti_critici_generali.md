@@ -12,14 +12,17 @@
 
 ## **Aspetti critici comuni**
 - **Schema fisico**:
-     - Schema fisico (**planimetria**) dello scenario del problema con la rappresentazione di ambienti
-  ed edifici chiave e schema (**indoor** ed **outdoor**) dell'infrastruttura, con **etichettatura univoca**
-  di tutti gli asset tecnologici di rete.
-     - Schema logico (albero degli **apparati attivi**) di tutti i dispositivi di rete con il loro **ruolo**
-  e i **link virtuali** astratti ai vari livelli della **pila ISO/OSI** (tipicamente L2, L3, L7) che tipicamente consistono in:
-          - link L2/L3 **tunnel** (VPN) su rete pubblica di un ISP di tipo Secure Network o Trusted Network
-          - link L2/L3 **ponte radio 802.11** (WiFi) di tipo Client/Server o bridged
-          - link L7 tra sensori/attuatori IP e il broker MQTT, oppure tra i gateway WSN e il broker MQTT.
+     - Schema fisico (**planimetria**) dello scenario: ambienti ed edifici chiave, infrastruttura
+  **indoor**/**outdoor**, con **etichettatura univoca** di tutti gli asset di rete.
+     - Schema logico (albero degli **apparati attivi**) di tutti i dispositivi che rappresenti:
+          - eventuale **router di confine** della LAN
+          - eventuale gerarchia di **switch** che realizzano fisicamente la LAN
+          - **link fisici**: dorsali interne alle LAN e dorsali esterne verso lo ISP
+          - **link virtuali** ai vari livelli ISO/OSI (tipicamente L2, L3, L7):
+              - link L2/L3 **tunnel** (VPN) su rete pubblica ISP — Secure o Trusted Network;
+              - link L2/L3 **ponte radio 802.11** (WiFi) Client/Server o bridged;
+              - link L7 tra sensori/attuatori IP e broker MQTT, o tra gateway WSN e broker MQTT.
+              - link L7 tra sensori/attuatori IP e il broker MQTT, oppure tra i gateway WSN e il broker MQTT.
 - **Utenti e dispositivi**
      - Tipologia di **divisione in gruppi** degli utenti e loro caratterizzazione (dislocazione fisica
   delimitata mediante subnet oppure diffusa "a macchia di leopardo" mediante VLAN).
