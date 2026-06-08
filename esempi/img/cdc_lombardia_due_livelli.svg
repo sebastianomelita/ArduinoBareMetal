@@ -124,11 +124,11 @@
 
 <line x1="505" y1="700" x2="515" y2="675" stroke="#5F5E5A" stroke-width="1"/>
 
-<!-- attuatore maxi-schermo -->
+<!-- attuatore pannello PMV -->
 <path d="M 625 760 Q 590 740 555 756" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
 <path d="M 625 765 Q 590 745 555 760" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
 <rect x="600" y="745" width="80" height="42" rx="4" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
-<text class="tt" x="640" y="760" text-anchor="middle" dominant-baseline="central" fill="#3C3489">maxi-schermo</text>
+<text class="tt" x="640" y="760" text-anchor="middle" dominant-baseline="central" fill="#3C3489">pannello PMV</text>
 <text class="tt" x="640" y="775" text-anchor="middle" dominant-baseline="central" fill="#534AB7">(attuatore)</text>
 
 <!-- ====================== CdC LOMBARDIA (a destra) ====================== -->
