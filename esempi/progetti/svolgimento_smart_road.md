@@ -148,7 +148,7 @@ La fibra fisica viene posata in modi diversi a seconda del contesto:
 Il cavo in fibra tipico per questa applicazione ha **24 o 48 fibre** ottiche monomodali (G.652 standard), di cui solo 4-8 effettivamente utilizzate per la rete dello smart-gate: le altre sono **fibre di scorta ("dark fiber")** per espansioni future, sostituzione di fibre danneggiate, o servizi aggiuntivi (es. videosorveglianza dedicata, connettività per i ristoranti/aree di servizio lungo il tratto).
 
 
-### 4 topologia fisica 
+### 3.2.5. Cluster di tratti 
 
 Come si "spilla" la fibra lungo le decine di km del tratto per servire ogni smart-gate? Esistono tre approcci: un **anello Ethernet attivo con switch L2** (rigenerazione attiva a ogni km, failover ERPS < 50 ms), un **anello IP con router L3** (più costoso e con failover più lento) e una **PON con splitter ottici passivi** (niente apparato attivo a bordo strada, ma nessuna ridondanza ad anello).
 
@@ -159,9 +159,9 @@ Per il progetto si adotta l'**anello Ethernet L2 con ERPS (IEEE G.8032)**: ogni 
 > **Dettaglio completo** — confronto tecnico delle tre tecnologie (rigenerazione attiva vs spillamento passivo), meccanica del protocollo ERPS, specifiche dello switch industriale, tracciato fisico della posa: vedi il file [`dettaglio_spillamento_fibra.md`](./dettaglio_spillamento_fibra.md).
 
 ---
+## 4. Topologia logica
 
-
-#### 3.2.6 Topologia logica della rete di sensori nel caso di rete fisica A2
+### 4.1. Topologia logica della rete di sensori nel caso di rete fisica A2
 
 Il **dispositivo di tratta** è un PE (Provider Edge), cioè un **router di confine** di una rete **MPLS**, assimilabile in pratica ad un **tunnel TUN** tra il PE sul tratto e il router PE nella sede regionale. Essendo un tunnel L3 su di esso andrà allocata una **subnet di dorsale**.
 
@@ -173,7 +173,7 @@ In questo schema i sensori/attuatori non sono **client MQTT diretti** (non parla
  
 La **linea tratteggiata** rappresenta il tipo di servizio "like wired" scelto per interconnettere i gateway dei vari tratti con il loro CdG (Centro di Gestione) regionale, una **Trusted VPN MPLS**. Garantisce SLA contrattuali ruguardo a: classi di servizio (QoS), autenticazione dei nodi gateway e isolamento.
 
-#### 3.2.7 Topologia logica della rete di sensori nel caso di rete fisica A1
+#### 4.2. Topologia logica della rete di sensori nel caso di rete fisica A1
 
 In questo caso la rete di sensori è analoga ad una grande LAN industriale composta di soli switch:
 - **switch di tratto**, in serie a quello del tratto successivo
@@ -183,7 +183,9 @@ In questo caso la rete di sensori è analoga ad una grande LAN industriale compo
 
 Il link equivale ad una **dorsale di trunk** tra due switch e aggrega su di se le **dorsali logiche** di tutte le VLAN di un tratto. Il CS L2 provvederà a fondere insieme le VLAN di ogni tratto. Su ogni VLAN si allocheranno, mediante subnetting, **tre subnet separate** (una per i sensori, una per le videocamere, una per le colonnine di ricarica).
 
-#### 3.2.2 Sensori (end-device LoRaWAN)
+---
+
+## 5.1 Sensori (end-device LoRaWAN)
 
 I sensori sono **end-device LoRaWAN in classe A**, distribuiti lungo il km e ancorati al guard-rail. Caratteristiche:
 
@@ -199,7 +201,7 @@ Dal punto di vista del **firmware**, il sensore segue un ciclo semplice: dopo un
 
 > **Dettaglio completo** — schema a fasi, macchina a stati, pseudocodice commentato ed esempio in C++ (Arduino/LMIC), gestione dell'energia e formato Cayenne LPP: vedi il file [`dettaglio_firmware_sensore.md`](./dettaglio_firmware_sensore.md).
 
-#### 3.2.8 Gateway LoRaWAN nel cabinet del PMV (Pannello a Messaggio Variabile)
+### 5.2. Gateway LoRaWAN nel cabinet del PMV (Pannello a Messaggio Variabile)
 
 Il gateway LoRaWAN del km è **ospitato all'interno del cabinet del PMV (Pannello a Messaggio Variabile) a portale**, scelta motivata da quattro ragioni concrete:
 
@@ -214,11 +216,11 @@ Funzioni del gateway:
 - **Bridge LoRa→MQTT**: la componente `lora-gateway-bridge` incapsula il messaggio LoRaWAN in un payload MQTT di servizio (in JSON) pubblicato su un broker locale, che il network server consuma.
 - **Coordinatore radio**: applica le politiche di **Adaptive Data Rate (ADR)** decise dal network server, assegnando a ciascun sensore data rate e potenza di trasmissione ottimali. Sensori vicini al gateway → data rate alto, potenza bassa (consumo minimo). Sensori lontani → data rate basso (più resistente al rumore), potenza alta.
 
-#### 3.2.9 Modalità "All-In-One" per tratti remoti
+#### 5.3. Modalità "All-In-One" per tratti remoti
 
 Per i tratti autostradali in zone scarsamente coperte dalla fibra (passi montani, contesti isolati), il gateway LoRaWAN può essere realizzato come **gateway All-In-One con doppia interfaccia**: LoRaWAN verso i sensori, modem **5G/4G** o connettività **satellitare LEO** (es. Starlink Direct-to-Cell) verso il network server. È la stessa configurazione utilizzata in agricoltura di precisione e nel monitoraggio ambientale di aree remote.
 
-#### 3.2.10 Confine LoRaWAN / IP
+#### 5.4. Confine LoRaWAN / IP
 
 Punto importante da chiarire (è una sorgente classica di confusione in sede d'esame):
 
@@ -230,7 +232,9 @@ Punto importante da chiarire (è una sorgente classica di confusione in sede d'e
 
 Il **gateway** è esattamente il **punto di traduzione** tra il mondo LoRa (senza IP) e il mondo IP/MQTT. Sopra LoRaWAN non c'è IP: il sensore non ha alcun indirizzo IP, ha solo il suo DevEUI.
 
-#### 3.2.11 Topic MQTT della rete LoRaWAN
+---
+
+## 6 Topic MQTT della rete LoRaWAN
 
 Al modello di topic MQTT visto nella sezione successiva si aggiungono quelli generati dalla rete LoRaWAN. Estendendo il pattern standard:
 
@@ -267,7 +271,7 @@ Esempio di messaggio sul topic `up` (sensore meteo del km 142 dell'A1, Lombardia
 
 L'**application server** fa **subscribe** sul pattern `smartroad/+/+/+/lora/+/up`, decodifica il campo `data` con il codec Cayenne LPP, e ri-pubblica il dato decodificato sul topic "alto livello" (`smartroad/<RR>/<TT>/<NNN>/misure/meteo`) per il consumo da parte di dashboard, sistema di archiviazione e bridge verso il Centro Nazionale.
 
-#### 3.2.7 Chi decodifica il payload, e dove
+### 6.1. Chi decodifica il payload, e dove
 
 Punto da chiarire con precisione, perché è una sorgente classica di errore. Nella catena LoRaWAN i ruoli agiscono **in sequenza**:
 
@@ -276,7 +280,7 @@ Punto da chiarire con precisione, perché è una sorgente classica di errore. Ne
 
 Ne segue una conseguenza architetturale vincolante: **la decodifica del payload può avvenire solo dove c'è l'application server, che a sua volta presuppone a monte il network server.** Per questo, avendo scelto (vedi §3.2.9) di portare le decisioni di sicurezza all'edge, mettiamo **network server + application server insieme all'edge** — a bordo di ogni gateway (configurazione A) o ogni N gateway (configurazione B). È lì che il payload diventa un dato in chiaro.
 
-##### I due livelli di cifratura (indipendenti)
+#### I due livelli di cifratura (indipendenti)
 
 Sul percorso del dato convivono **due cifrature sovrapposte e indipendenti**, che proteggono cose diverse:
 
@@ -287,13 +291,13 @@ Sul percorso del dato convivono **due cifrature sovrapposte e indipendenti**, ch
 
 La chiave è che **il payload resta cifrato con AppSKey anche dentro il tunnel TLS**: nessun nodo intermedio (gateway che inoltra, broker che smista) può leggere le misure, perché non possiede la AppSKey. Il TLS protegge l'involucro; la AppSKey protegge il contenuto.
 
-##### Come viaggia il dato verso il Centro Nazionale
+#### Come viaggia il dato verso il Centro Nazionale
 
 Poiché network server + application server stanno all'edge, **la decifratura e la decodifica avvengono vicino alla sorgente**. Da quel momento il dato è in chiaro (JSON) e viaggia verso il CN come normale messaggio **MQTT su TLS**: il CN riceve un dato già leggibile e **non ha bisogno della AppSKey**. La AppSKey resta confinata all'edge (dove serve a decifrare) e al join server (dove viene generata); non viene mai propagata al CN. Le chiavi *master* (AppKey) non lasciano mai il join server (§3.2.10).
 
 > In altre parole, per spedire il dato all'archiviazione centrale **non** si manda il payload ancora cifrato con AppSKey attraverso il broker: lo si decodifica prima, all'edge, e si manda il JSON in chiaro protetto dal solo TLS di trasporto. Mandare il payload cifrato fino a un application server centrale (scenario alternativo) funzionerebbe tecnicamente, ma costringerebbe a tenere la AppSKey al centro e rinuncerebbe alla decodifica vicino alla sorgente: incoerente con la scelta edge della §3.2.9.
 
-##### Il rischio della scelta edge e come mitigarlo
+#### Il rischio della scelta edge e come mitigarlo
 
 Va dichiarato apertamente: **tenere l'application server all'edge è un compromesso, non una soluzione a costo zero.** Il prezzo della bassa latenza è che le **AppSKey** dei sensori risiedono fisicamente in un nodo a bordo strada, accessibile a chi abbia mezzi e determinazione. È un trade-off consapevole tra reattività (decisioni di sicurezza in millisecondi) ed esposizione delle chiavi di sessione. Per renderlo accettabile servono tre difese su piani diversi, da adottare **insieme**.
 
@@ -311,7 +315,9 @@ Va dichiarato apertamente: **tenere l'application server all'edge è un comprome
 
 In sintesi: la scelta edge resta valida **a condizione** che il nodo edge sia trattato come un dispositivo di sicurezza a sé — autenticato mutuamente, con chiavi in modulo anti-tampering, e con consegna delle chiavi subordinata all'attestazione di integrità. Senza queste difese, l'application server all'edge sarebbe effettivamente un punto debole; con esse, il rischio residuo è circoscritto e gestibile.
 
-#### 3.2.8 Sicurezza della rete LoRaWAN
+---
+
+## 7.1. Sicurezza della rete LoRaWAN
 
 Ogni sensore si registra al network server tramite **Over-the-Air Activation (OTAA)**. In fabbrica il sensore viene programmato con:
 
@@ -326,7 +332,7 @@ Al primo join, il join server usa la AppKey per generare e distribuire due chiav
 
 Questo meccanismo è anche un caso applicativo concreto delle **funzioni hash crittografiche** (quesito 4 della seconda parte): AES-CMAC è una funzione di tipo HMAC che produce un'impronta non falsificabile senza conoscere la chiave.
 
-#### 3.2.9 Architettura distribuita dei network server
+#### 7.2. Architettura distribuita dei network server
 
 Una scelta progettuale importante riguarda **dove collocare fisicamente i network server**. La specifica LoRaWAN canonica prevede una topologia "stella di stelle" in cui i gateway sono packet forwarder stupidi e tutta l'intelligenza sta nel network server. Nel nostro progetto questa scelta classica presenta un problema serio.
 
@@ -381,7 +387,7 @@ Questa separazione fisica è esattamente quella che la specifica LoRaWAN raccoma
 
 
 
-#### 3.2.10 Join Server e ridondanza
+#### 7.3.  Join Server e ridondanza
 
 Il **Join Server** è il componente che gestisce le funzioni di **autenticazione e autorizzazione** dei sensori in fase di registrazione, e di **gestione delle chiavi di sessione** durante la vita operativa del dispositivo. Le sue responsabilità sono:
 
