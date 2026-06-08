@@ -470,7 +470,7 @@ Questa è la tratta più delicata: deve essere ad alta banda (per gli stream vid
 
 ### 7.5. Modello dei topic MQTT per uno smart-gate
 
-Estendendo il modello visto nei materiali di riferimento (riferimento didattico: `sebastianomelita/ArduinoBareMetal`), si può definire una gerarchia di topic come segue. Sia `<RR>` la regione, `<TT>` il tratto, `<NNN>` l'identificatore numerico dello smart-gate (es. `LO/01/042` = Lombardia, tratto 1, smart-gate 42):
+Si può definire una gerarchia di topic come segue. Sia `<RR>` la regione, `<TT>` il tratto, `<NNN>` l'identificatore numerico dello smart-gate (es. `LO/01/042` = Lombardia, tratto 1, smart-gate 42):
 
 ```
 smartroad/<RR>/<TT>/<NNN>/misure/meteo
