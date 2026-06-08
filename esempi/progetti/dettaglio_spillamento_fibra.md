@@ -141,3 +141,28 @@ Tecnologia radicalmente diversa: a ogni km **non c'è apparato attivo**. La fibr
 
 **Quando ha senso usarla?** Quando il vincolo principale è il **costo di manutenzione** e si accetta una resilienza minore. In autostrada, dove la fibra è soggetta a tagli accidentali, la mancanza di ridondanza ad anello è uno svantaggio rilevante. **Per il nostro progetto la scartiamo** in favore dell'anello attivo.
 
+---
+
+## 5. Confronto e scelta
+
+| Caratteristica | A — Anello L2 ERPS | B — Anello L3 OSPF | C — PON |
+|----------------|-------------------|--------------------|---------| 
+| Apparato a ogni km | Switch industriale | Router industriale | Solo ONT passivo |
+| Splitter intermedi | No (rigenerazione attiva) | No (rigenerazione attiva) | Sì (1:32 o 1:64 passivo) |
+| Resilienza | ✅ Anello, failover <50 ms | ✅ Anello, failover 1-3 s | ❌ Stella, nessuna ridondanza |
+| Banda per smart-gate | 1-10 Gbps dedicati | 1-10 Gbps dedicati | ~80-300 Mbps condivisi |
+| Costo CAPEX a km | Medio | Alto | Basso |
+| Costo OPEX (manutenzione) | Medio | Medio | Basso |
+| Alimentazione intermedia | Sì (poco) | Sì (poco) | No |
+| Scelta per il progetto | ✅ **Adottata** | ❌ Esagerata | ❌ Insufficiente resilienza |
+
+**Scelta: anello Ethernet L2 con ERPS.** Motivazioni:
+
+1. **Failover sotto i 50 ms** è essenziale per garantire che gli stream video on-demand e la telemetria MQTT non vedano interruzioni percepibili anche durante un guasto.
+2. **Banda dedicata** per smart-gate (~1 Gbps) è ampiamente sufficiente per i flussi video FullHD on-demand e per la telemetria.
+3. **Switch L2 industriali sono prodotti maturi e standardizzati** (esempi: Hirschmann, Moxa, Cisco IE series, Westermo). Costo accettabile, MTBF molto alto (decine di migliaia di ore).
+4. **L'alimentazione dello switch piggy-backa su quella già presente nello smart-gate**: lo switch sta dentro il cabinet del maxi-schermo, alimentato dalla stessa linea, esattamente come il gateway LoRaWAN. Carico aggiuntivo trascurabile (10-20 W).
+5. **Apparato fisicamente compatto**: uno switch industriale a 8-16 porte sta in un modulo DIN-rail da poche unità rack, non aumenta significativamente l'ingombro del cabinet.
+
+---
+
