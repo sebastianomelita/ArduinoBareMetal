@@ -114,7 +114,6 @@ Lo stesso hardware, due verdetti nella stessa flotta: un gateway che riporta sol
 
 Nell'ultimo ramo dell'albero, la decisione finale pesa tre fattori insieme: la **conseguenza** nella finestra cieca, la **frequenza** con cui la funzione viene richiesta in quella finestra (un allarme demandato di rado tollera una finestra diversa da un controllo continuo), e la **durata della finestra cieca** stessa — che è il MTTR di sostituzione. Se mandare un tecnico con uno spare dà un MTTR molto inferiore al tempo-al-danno, lo spare basta: la ridondanza a caldo aggiunge costo ×1000, non sicurezza.
 
----
 
 ---
 
