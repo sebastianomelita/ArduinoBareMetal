@@ -118,15 +118,14 @@ Topologia della rete LAN dei sensori di un generico tratto:
 
 Per i dettegli sulla tecnologia della rete fisica in fibra vedi il file [`dettaglio_spillamento_fibra.md`](./dettaglio_spillamento_fibra.md)
 
----
 
-## 5. Confronto e scelta
+### 3.2.2. Confronto e scelta tra tecnologie di rete in fibra
 
 | Caratteristica | A — Anello L2 ERPS | B — Anello L3 OSPF | C — PON |
 |----------------|-------------------|--------------------|---------| 
 | Scelta per il progetto | ✅ **Adottata** | ❌ Esagerata | ❌ Insufficiente resilienza |
 
-## 6. Componenti dello switch a ogni smart-gate
+### 3.2.3. Componenti dello switch a ogni smart-gate
 
 Lo switch tipo per questo scenario ha le seguenti caratteristiche:
 
@@ -137,9 +136,7 @@ Lo switch tipo per questo scenario ha le seguenti caratteristiche:
 - **Supporto ERPS** (G.8032) e VLAN 802.1Q nativi.
 - **Management out-of-band** via porta console seriale e via SNMPv3/SSH dalla rete di management dedicata.
 
----
-
-## 7. Tracciato fisico della fibra
+## 3.2.4. Tracciato fisico della fibra
 
 La fibra fisica viene posata in modi diversi a seconda del contesto:
 
@@ -151,7 +148,7 @@ La fibra fisica viene posata in modi diversi a seconda del contesto:
 Il cavo in fibra tipico per questa applicazione ha **24 o 48 fibre** ottiche monomodali (G.652 standard), di cui solo 4-8 effettivamente utilizzate per la rete dello smart-gate: le altre sono **fibre di scorta ("dark fiber")** per espansioni future, sostituzione di fibre danneggiate, o servizi aggiuntivi (es. videosorveglianza dedicata, connettività per i ristoranti/aree di servizio lungo il tratto).
 
 
-#### 3.2.1 Cluster di tratti
+### 4 topologia fisica 
 
 Come si "spilla" la fibra lungo le decine di km del tratto per servire ogni smart-gate? Esistono tre approcci: un **anello Ethernet attivo con switch L2** (rigenerazione attiva a ogni km, failover ERPS < 50 ms), un **anello IP con router L3** (più costoso e con failover più lento) e una **PON con splitter ottici passivi** (niente apparato attivo a bordo strada, ma nessuna ridondanza ad anello).
 
@@ -164,7 +161,7 @@ Per il progetto si adotta l'**anello Ethernet L2 con ERPS (IEEE G.8032)**: ogni 
 ---
 
 
-#### 3.2.1bis Topologia logica della rete di sensori nel caso di rete fisica A2
+#### 3.2.6 Topologia logica della rete di sensori nel caso di rete fisica A2
 
 Il **dispositivo di tratta** è un PE (Provider Edge), cioè un **router di confine** di una rete **MPLS**, assimilabile in pratica ad un **tunnel TUN** tra il PE sul tratto e il router PE nella sede regionale. Essendo un tunnel L3 su di esso andrà allocata una **subnet di dorsale**.
 
@@ -176,7 +173,7 @@ In questo schema i sensori/attuatori non sono **client MQTT diretti** (non parla
  
 La **linea tratteggiata** rappresenta il tipo di servizio "like wired" scelto per interconnettere i gateway dei vari tratti con il loro CdG (Centro di Gestione) regionale, una **Trusted VPN MPLS**. Garantisce SLA contrattuali ruguardo a: classi di servizio (QoS), autenticazione dei nodi gateway e isolamento.
 
-#### 3.2.1bis Topologia logica della rete di sensori nel caso di rete fisica A1
+#### 3.2.7 Topologia logica della rete di sensori nel caso di rete fisica A1
 
 In questo caso la rete di sensori è analoga ad una grande LAN industriale composta di soli switch:
 - **switch di tratto**, in serie a quello del tratto successivo
@@ -202,7 +199,7 @@ Dal punto di vista del **firmware**, il sensore segue un ciclo semplice: dopo un
 
 > **Dettaglio completo** — schema a fasi, macchina a stati, pseudocodice commentato ed esempio in C++ (Arduino/LMIC), gestione dell'energia e formato Cayenne LPP: vedi il file [`dettaglio_firmware_sensore.md`](./dettaglio_firmware_sensore.md).
 
-#### 3.2.3 Gateway LoRaWAN nel cabinet del PMV (Pannello a Messaggio Variabile)
+#### 3.2.8 Gateway LoRaWAN nel cabinet del PMV (Pannello a Messaggio Variabile)
 
 Il gateway LoRaWAN del km è **ospitato all'interno del cabinet del PMV (Pannello a Messaggio Variabile) a portale**, scelta motivata da quattro ragioni concrete:
 
@@ -217,11 +214,11 @@ Funzioni del gateway:
 - **Bridge LoRa→MQTT**: la componente `lora-gateway-bridge` incapsula il messaggio LoRaWAN in un payload MQTT di servizio (in JSON) pubblicato su un broker locale, che il network server consuma.
 - **Coordinatore radio**: applica le politiche di **Adaptive Data Rate (ADR)** decise dal network server, assegnando a ciascun sensore data rate e potenza di trasmissione ottimali. Sensori vicini al gateway → data rate alto, potenza bassa (consumo minimo). Sensori lontani → data rate basso (più resistente al rumore), potenza alta.
 
-#### 3.2.4 Modalità "All-In-One" per tratti remoti
+#### 3.2.9 Modalità "All-In-One" per tratti remoti
 
 Per i tratti autostradali in zone scarsamente coperte dalla fibra (passi montani, contesti isolati), il gateway LoRaWAN può essere realizzato come **gateway All-In-One con doppia interfaccia**: LoRaWAN verso i sensori, modem **5G/4G** o connettività **satellitare LEO** (es. Starlink Direct-to-Cell) verso il network server. È la stessa configurazione utilizzata in agricoltura di precisione e nel monitoraggio ambientale di aree remote.
 
-#### 3.2.5 Confine LoRaWAN / IP
+#### 3.2.10 Confine LoRaWAN / IP
 
 Punto importante da chiarire (è una sorgente classica di confusione in sede d'esame):
 
@@ -233,7 +230,7 @@ Punto importante da chiarire (è una sorgente classica di confusione in sede d'e
 
 Il **gateway** è esattamente il **punto di traduzione** tra il mondo LoRa (senza IP) e il mondo IP/MQTT. Sopra LoRaWAN non c'è IP: il sensore non ha alcun indirizzo IP, ha solo il suo DevEUI.
 
-#### 3.2.6 Topic MQTT della rete LoRaWAN
+#### 3.2.11 Topic MQTT della rete LoRaWAN
 
 Al modello di topic MQTT visto nella sezione successiva si aggiungono quelli generati dalla rete LoRaWAN. Estendendo il pattern standard:
 
