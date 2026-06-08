@@ -62,7 +62,7 @@ Sulle tratte lunghe si inseriscono **amplificatori ottici (EDFA)**, tipicamente 
 
 ### Il dispositivo di confine della tratta: due opzioni
 
-### Opzione B1 — confine L2 (switch)
+### Opzione A1 — confine L2 (switch)
 
 La λ trasporta in modo trasparente un **trunk di VLAN** fino a un **core switch (CS) multilayer** in centrale.
 
@@ -70,7 +70,7 @@ La λ trasporta in modo trasparente un **trunk di VLAN** fino a un **core switch
 - L'eventuale routing inter-VLAN (verso applicazioni del CdC, Internet, ecc.) è **centralizzato sul CS** tramite SVI. Non serve un router per tratta.
 - Pro: semplice, trasparente, la *discovery* L2 (ONVIF/multicast) funziona end-to-end. Contro: il dominio di broadcast di ogni VLAN è esteso lungo la dorsale (da contenere con segmentazione VLAN, storm-control, ARP/ND suppression).
 
-### Opzione B2 — confine L3/MPLS (PE router)
+### Opzione A2 — confine L3/MPLS (PE router)
 
 "Versione avanzata": il dispositivo di tratta è un **PE (Provider Edge)** con una **subinterfaccia per VLAN**, ciascuna mappata su una VPN.
 
