@@ -136,7 +136,7 @@ Lo switch tipo per questo scenario ha le seguenti caratteristiche:
 - **Supporto ERPS** (G.8032) e VLAN 802.1Q nativi.
 - **Management out-of-band** via porta console seriale e via SNMPv3/SSH dalla rete di management dedicata.
 
-## 3.2.4. Tracciato fisico della fibra
+### 3.2.4. Tracciato fisico della fibra
 
 La fibra fisica viene posata in modi diversi a seconda del contesto:
 
