@@ -185,7 +185,9 @@ Il link equivale ad una **dorsale di trunk** tra due switch e aggrega su di se l
 
 ---
 
-## 5.1 Sensori (end-device LoRaWAN)
+## 5.1 Dispositivi LoRaWAN
+
+### 5.1.1 Sensori (end-device LoRaWAN)
 
 I sensori sono **end-device LoRaWAN in classe A**, distribuiti lungo il km e ancorati al guard-rail. Caratteristiche:
 
@@ -201,7 +203,7 @@ Dal punto di vista del **firmware**, il sensore segue un ciclo semplice: dopo un
 
 > **Dettaglio completo** — schema a fasi, macchina a stati, pseudocodice commentato ed esempio in C++ (Arduino/LMIC), gestione dell'energia e formato Cayenne LPP: vedi il file [`dettaglio_firmware_sensore.md`](./dettaglio_firmware_sensore.md).
 
-### 5.2. Gateway LoRaWAN nel cabinet del PMV (Pannello a Messaggio Variabile)
+### 5.1.2 Gateway LoRaWAN nel cabinet del PMV (Pannello a Messaggio Variabile)
 
 Il gateway LoRaWAN del km è **ospitato all'interno del cabinet del PMV (Pannello a Messaggio Variabile) a portale**, scelta motivata da quattro ragioni concrete:
 
@@ -216,11 +218,11 @@ Funzioni del gateway:
 - **Bridge LoRa→MQTT**: la componente `lora-gateway-bridge` incapsula il messaggio LoRaWAN in un payload MQTT di servizio (in JSON) pubblicato su un broker locale, che il network server consuma.
 - **Coordinatore radio**: applica le politiche di **Adaptive Data Rate (ADR)** decise dal network server, assegnando a ciascun sensore data rate e potenza di trasmissione ottimali. Sensori vicini al gateway → data rate alto, potenza bassa (consumo minimo). Sensori lontani → data rate basso (più resistente al rumore), potenza alta.
 
-#### 5.3. Modalità "All-In-One" per tratti remoti
+### 5.1.3  Modalità "All-In-One" per tratti remoti
 
 Per i tratti autostradali in zone scarsamente coperte dalla fibra (passi montani, contesti isolati), il gateway LoRaWAN può essere realizzato come **gateway All-In-One con doppia interfaccia**: LoRaWAN verso i sensori, modem **5G/4G** o connettività **satellitare LEO** (es. Starlink Direct-to-Cell) verso il network server. È la stessa configurazione utilizzata in agricoltura di precisione e nel monitoraggio ambientale di aree remote.
 
-#### 5.4. Confine LoRaWAN / IP
+### 5.1.4 Confine LoRaWAN / IP
 
 Punto importante da chiarire (è una sorgente classica di confusione in sede d'esame):
 
