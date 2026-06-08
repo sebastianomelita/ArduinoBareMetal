@@ -1,0 +1,218 @@
+<svg width="100%" viewBox="0 0 1100 800" xmlns="http://www.w3.org/2000/svg" role="img" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+<title>CdC Lombardia — Opzione B1 (L2 + DWDM): rete di reti LoRaWAN</title>
+<desc>Tre tratti autostradali, ciascuno con anello ERPS di switch L2 e gateway LoRaWAN, collegati al CdC Lombardia tramite una lunghezza d'onda DWDM dedicata su dorsale comune; terminazione su Core Switch multilayer; overlay applicativo MQTT verso il broker centrale.</desc>
+<defs>
+<style>
+.t  { font-size: 14px; fill: #2C2C2A; }
+.ts { font-size: 12px; fill: #5F5E5A; }
+.th { font-size: 14px; font-weight: 500; fill: #2C2C2A; }
+.tt { font-size: 11px; fill: #5F5E5A; }
+.area-title { font-size: 15px; font-weight: 500; fill: #2C2C2A; }
+</style>
+</defs>
+
+<!-- ====================== TITOLO ====================== -->
+<text class="area-title" x="20" y="28">CdC Lombardia — Opzione B1 (L2 + DWDM): rete di reti LoRaWAN</text>
+<text class="ts" x="20" y="46">L2 LoRa (onde) nel tratto · trasporto su λ DWDM dedicata per tratta (ambra) · commutazione/SVI sul Core Switch · L7 MQTT (puntinato azzurro)</text>
+
+<!-- ====================== LEGENDA ====================== -->
+<rect x="690" y="86" width="395" height="108" rx="6" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="0.5" opacity="0.96"/>
+<text class="th" x="705" y="106">Legenda</text>
+<line x1="710" y1="122" x2="770" y2="122" stroke="#C8772E" stroke-width="2"/>
+<text class="tt" x="780" y="126">Trasporto DWDM — λ dedicata per tratta (trunk VLAN, L1/L2)</text>
+<line x1="710" y1="140" x2="770" y2="140" stroke="#2C2C2A" stroke-width="1.2"/>
+<text class="tt" x="780" y="144">Commutazione/instradamento al Core Switch (VLAN · SVI) e LAN</text>
+<line x1="710" y1="158" x2="770" y2="158" stroke="#2A8FD4" stroke-width="1.5" stroke-dasharray="2 4"/>
+<text class="tt" x="780" y="162">Collegamento L7 MQTT (publish/subscribe)</text>
+<path d="M 710 176 Q 720 170 730 176 Q 740 182 750 176 Q 760 170 770 176" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.7"/>
+<text class="tt" x="780" y="180">Collegamento radio L2 LoRaWAN (868 MHz)</text>
+
+<!-- ====================== NOTA B1 ====================== -->
+<rect x="320" y="328" width="300" height="74" rx="6" fill="#FFFFFF" stroke="#C8772E" stroke-width="0.6" opacity="0.95"/>
+<text class="th" x="332" y="346" fill="#9A5A1E">Opzione B1 — bridging L2</text>
+<text class="tt" x="332" y="362">• Trasporto: una λ DWDM dedicata per tratta, dorsale comune</text>
+<text class="tt" x="332" y="377">• VLAN 30 sensori = 10.30.0.0/24, subnet UNICA estesa ai tratti</text>
+<text class="tt" x="332" y="392">• Termina sul Core Switch multilayer (gw/SVI .254), no NAT per tratta</text>
+
+<!-- ====================== TRATTO A1 (alto-sinistra) ====================== -->
+<text class="area-title" x="55" y="80">Tratto A1</text>
+
+<!-- OADM lambda 1 -->
+<rect x="125" y="95" width="120" height="32" rx="4" fill="#F7ECDD" stroke="#C8772E" stroke-width="0.6"/>
+<text class="tt" x="185" y="111" text-anchor="middle" dominant-baseline="central" fill="#9A5A1E">OADM · λ1</text>
+
+<!-- switch L2 / anello ERPS -->
+<rect x="120" y="142" width="130" height="38" rx="4" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text class="tt" x="185" y="156" text-anchor="middle" dominant-baseline="central">Switch L2 · anello ERPS</text>
+<text class="tt" x="185" y="170" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">trunk VLAN 30/40</text>
+<line x1="185" y1="127" x2="185" y2="142" stroke="#5F5E5A" stroke-width="1"/>
+
+<!-- rete LoRaWAN del tratto -->
+<ellipse cx="185" cy="235" rx="80" ry="28" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5" stroke-dasharray="3 3"/>
+<text class="ts" x="185" y="231" text-anchor="middle" fill="#0F6E56">rete LoRaWAN</text>
+<text class="ts" x="185" y="247" text-anchor="middle" fill="#0F6E56">del tratto · 868 MHz</text>
+<line x1="185" y1="180" x2="185" y2="207" stroke="#5F5E5A" stroke-width="1"/>
+
+<!-- gateway km 1 -->
+<rect x="55" y="288" width="92" height="54" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="tt" x="101" y="305" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Gateway km 1</text>
+<text class="tt" x="101" y="320" text-anchor="middle" dominant-baseline="central" fill="#534AB7">NS + AS edge</text>
+<text class="tt" x="101" y="334" text-anchor="middle" dominant-baseline="central" fill="#534AB7">10.30.0.11</text>
+<line x1="101" y1="288" x2="150" y2="258" stroke="#5F5E5A" stroke-width="1"/>
+
+<!-- gateway km 2 -->
+<rect x="205" y="288" width="92" height="54" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="tt" x="251" y="305" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Gateway km 2</text>
+<text class="tt" x="251" y="320" text-anchor="middle" dominant-baseline="central" fill="#534AB7">NS + AS edge</text>
+<text class="tt" x="251" y="334" text-anchor="middle" dominant-baseline="central" fill="#534AB7">10.30.0.12</text>
+<line x1="251" y1="288" x2="220" y2="258" stroke="#5F5E5A" stroke-width="1"/>
+
+<!-- sensore km 1 + onde -->
+<path d="M 70 378 Q 80 358 101 344" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
+<path d="M 75 383 Q 85 363 101 344" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
+<path d="M 80 388 Q 90 368 101 344" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
+<rect x="48" y="376" width="52" height="26" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="tt" x="74" y="390" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">sensore</text>
+<text class="tt" x="74" y="416" text-anchor="middle" fill="#5F5E5A">guard-rail</text>
+
+<!-- sensore km 2 + onde -->
+<path d="M 220 378 Q 240 358 251 344" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
+<path d="M 225 383 Q 245 363 251 344" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
+<path d="M 230 388 Q 250 368 251 344" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
+<rect x="200" y="376" width="52" height="26" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="tt" x="226" y="390" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">sensore</text>
+
+<!-- ====================== TRATTO A14 (basso-sinistra) ====================== -->
+<text class="area-title" x="55" y="470">Tratto A14</text>
+
+<rect x="125" y="485" width="120" height="32" rx="4" fill="#F7ECDD" stroke="#C8772E" stroke-width="0.6"/>
+<text class="tt" x="185" y="501" text-anchor="middle" dominant-baseline="central" fill="#9A5A1E">OADM · λ2</text>
+
+<rect x="120" y="532" width="130" height="38" rx="4" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text class="tt" x="185" y="546" text-anchor="middle" dominant-baseline="central">Switch L2 · anello ERPS</text>
+<text class="tt" x="185" y="560" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">trunk VLAN 30/40</text>
+<line x1="185" y1="517" x2="185" y2="532" stroke="#5F5E5A" stroke-width="1"/>
+
+<ellipse cx="185" cy="625" rx="80" ry="28" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5" stroke-dasharray="3 3"/>
+<text class="ts" x="185" y="621" text-anchor="middle" fill="#0F6E56">rete LoRaWAN</text>
+<text class="ts" x="185" y="637" text-anchor="middle" fill="#0F6E56">del tratto · 868 MHz</text>
+<line x1="185" y1="570" x2="185" y2="597" stroke="#5F5E5A" stroke-width="1"/>
+
+<rect x="100" y="678" width="92" height="54" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="tt" x="146" y="695" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Gateway km 5</text>
+<text class="tt" x="146" y="710" text-anchor="middle" dominant-baseline="central" fill="#534AB7">NS + AS edge</text>
+<text class="tt" x="146" y="724" text-anchor="middle" dominant-baseline="central" fill="#534AB7">10.30.0.15</text>
+<line x1="146" y1="678" x2="160" y2="650" stroke="#5F5E5A" stroke-width="1"/>
+
+<path d="M 65 760 Q 100 740 131 756" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
+<path d="M 65 765 Q 100 745 131 761" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
+<rect x="35" y="755" width="52" height="26" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text class="tt" x="61" y="769" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">sensore</text>
+
+<!-- ====================== TRATTO A22 (basso-centro) ====================== -->
+<text class="area-title" x="440" y="470">Tratto A22</text>
+
+<rect x="505" y="485" width="120" height="32" rx="4" fill="#F7ECDD" stroke="#C8772E" stroke-width="0.6"/>
+<text class="tt" x="565" y="501" text-anchor="middle" dominant-baseline="central" fill="#9A5A1E">OADM · λ3</text>
+
+<rect x="500" y="532" width="130" height="38" rx="4" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.6"/>
+<text class="tt" x="565" y="546" text-anchor="middle" dominant-baseline="central">Switch L2 · anello ERPS</text>
+<text class="tt" x="565" y="560" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">trunk VLAN 30/40</text>
+<line x1="565" y1="517" x2="565" y2="532" stroke="#5F5E5A" stroke-width="1"/>
+
+<ellipse cx="565" cy="625" rx="80" ry="28" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5" stroke-dasharray="3 3"/>
+<text class="ts" x="565" y="621" text-anchor="middle" fill="#0F6E56">rete LoRaWAN</text>
+<text class="ts" x="565" y="637" text-anchor="middle" fill="#0F6E56">del tratto · 868 MHz</text>
+<line x1="565" y1="570" x2="565" y2="597" stroke="#5F5E5A" stroke-width="1"/>
+
+<rect x="460" y="678" width="92" height="54" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="tt" x="506" y="695" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Gateway km 8</text>
+<text class="tt" x="506" y="710" text-anchor="middle" dominant-baseline="central" fill="#534AB7">NS + AS edge</text>
+<text class="tt" x="506" y="724" text-anchor="middle" dominant-baseline="central" fill="#534AB7">10.30.0.18</text>
+<line x1="506" y1="678" x2="520" y2="650" stroke="#5F5E5A" stroke-width="1"/>
+
+<!-- attuatore pannello PMV -->
+<path d="M 625 760 Q 590 740 556 756" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
+<path d="M 625 765 Q 590 745 556 761" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
+<rect x="600" y="745" width="82" height="42" rx="4" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+<text class="tt" x="641" y="760" text-anchor="middle" dominant-baseline="central" fill="#3C3489">pannello PMV</text>
+<text class="tt" x="641" y="775" text-anchor="middle" dominant-baseline="central" fill="#534AB7">attuatore · VLAN 40</text>
+
+<!-- ====================== CdC LOMBARDIA (destra) ====================== -->
+<text class="area-title" x="745" y="232">CdC Lombardia</text>
+
+<!-- perimetro: Internet/MPLS + FW -->
+<ellipse cx="965" cy="276" rx="48" ry="18" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text class="ts" x="965" y="280" text-anchor="middle" dominant-baseline="central">Internet/MPLS</text>
+<rect x="918" y="306" width="94" height="38" rx="4" fill="#FBE9E1" stroke="#A32D2D" stroke-width="0.5"/>
+<text class="tt" x="965" y="320" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">FW perimetro</text>
+<text class="tt" x="965" y="334" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">+ zona OT · .10.1</text>
+<line x1="965" y1="294" x2="965" y2="306" stroke="#5F5E5A" stroke-width="1"/>
+
+<!-- DWDM demux -->
+<rect x="745" y="320" width="140" height="42" rx="4" fill="#F7ECDD" stroke="#C8772E" stroke-width="0.6"/>
+<text class="tt" x="815" y="335" text-anchor="middle" dominant-baseline="central" fill="#9A5A1E">DWDM demux</text>
+<text class="tt" x="815" y="349" text-anchor="middle" dominant-baseline="central" fill="#9A5A1E">λ1 · λ2 · λ3</text>
+
+<!-- Core Switch multilayer -->
+<rect x="745" y="388" width="150" height="56" rx="5" fill="#EAF0EC" stroke="#0F6E56" stroke-width="0.8"/>
+<text class="th" x="820" y="406" text-anchor="middle" dominant-baseline="central" fill="#0C5A45">Core Switch (CS)</text>
+<text class="tt" x="820" y="423" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">multilayer L2/L3</text>
+<text class="tt" x="820" y="436" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">SVI 10.30.0.254</text>
+<line x1="815" y1="362" x2="818" y2="388" stroke="#5F5E5A" stroke-width="1"/>
+<line x1="918" y1="344" x2="880" y2="388" stroke="#5F5E5A" stroke-width="1"/>
+
+<!-- servizi VLAN 10 nota -->
+<text class="tt" x="905" y="378" fill="#5F5E5A">Servizi VLAN 10 · 10.10.0.0/24</text>
+
+<!-- broker MQTT -->
+<rect x="915" y="392" width="120" height="52" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="th" x="975" y="410" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Broker MQTT</text>
+<text class="tt" x="975" y="429" text-anchor="middle" dominant-baseline="central" fill="#185FA5">router L7 · .10.20</text>
+<line x1="895" y1="416" x2="915" y2="416" stroke="#5F5E5A" stroke-width="1"/>
+
+<!-- Node-RED / processo comandi -->
+<rect x="925" y="456" width="110" height="46" rx="6" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="0.5"/>
+<text class="tt" x="980" y="472" text-anchor="middle" dominant-baseline="central">processo comandi</text>
+<text class="tt" x="980" y="487" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">Node-RED · .10.30</text>
+
+<!-- dashboard -->
+<rect x="925" y="510" width="110" height="46" rx="6" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="0.5"/>
+<text class="tt" x="980" y="526" text-anchor="middle" dominant-baseline="central">dashboard web</text>
+<text class="tt" x="980" y="541" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">.10.40</text>
+
+<!-- storage -->
+<rect x="925" y="564" width="110" height="46" rx="6" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="0.5"/>
+<text class="tt" x="980" y="580" text-anchor="middle" dominant-baseline="central">analisi · storage</text>
+<text class="tt" x="980" y="595" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">.10.50</text>
+
+<!-- NS/AS regionale -->
+<rect x="925" y="618" width="110" height="46" rx="6" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="0.5"/>
+<text class="tt" x="980" y="634" text-anchor="middle" dominant-baseline="central">NS/AS regionale</text>
+<text class="tt" x="980" y="649" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">.10.60</text>
+
+<!-- LAN CdC: CS verso server (L2/L3) -->
+<line x1="895" y1="432" x2="925" y2="479" stroke="#2C2C2A" stroke-width="1.2"/>
+<line x1="895" y1="436" x2="925" y2="533" stroke="#2C2C2A" stroke-width="1.2"/>
+<line x1="895" y1="440" x2="925" y2="587" stroke="#2C2C2A" stroke-width="1.2"/>
+<line x1="895" y1="442" x2="925" y2="641" stroke="#2C2C2A" stroke-width="1.2"/>
+
+<!-- ====================== LINK λ DWDM (dorsale comune) ====================== -->
+<line x1="245" y1="111" x2="745" y2="338" stroke="#C8772E" stroke-width="2"/>
+<line x1="245" y1="501" x2="745" y2="348" stroke="#C8772E" stroke-width="2"/>
+<line x1="625" y1="501" x2="745" y2="356" stroke="#C8772E" stroke-width="2"/>
+<text class="tt" x="395" y="290" fill="#9A5A1E">Dorsale DWDM comune · λ1 / λ2 / λ3 (una per tratta, stessa coppia di fibre)</text>
+
+<!-- ====================== LINK L7 MQTT ====================== -->
+<path d="M 147 312 C 380 360, 640 400, 915 408" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
+<path d="M 297 312 C 460 350, 660 398, 915 412" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
+<path d="M 192 702 C 420 640, 700 470, 915 422" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
+<path d="M 552 702 C 680 640, 800 500, 915 430" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
+<path d="M 975 444 C 1000 470, 1010 470, 980 456" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
+<path d="M 1000 440 C 1050 480, 1050 520, 1015 510" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
+<path d="M 1005 442 C 1060 500, 1060 580, 1015 564" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
+<text class="tt" x="370" y="430" fill="#2A8FD4">publish misure · smartroad/.../misure</text>
+<text class="tt" x="858" y="475" fill="#2A8FD4">subscribe</text>
+<text class="tt" x="858" y="489" fill="#2A8FD4">misure + comandi</text>
+
+</svg>
