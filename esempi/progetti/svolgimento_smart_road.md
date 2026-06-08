@@ -116,6 +116,8 @@ Topologia della rete LAN dei sensori di un generico tratto:
 
 <img src="../img/topologia_lorawan_km.svg" alt="Topologia LoRaWAN del km autostradale" width="680">
 
+Per i dettegli sulla tecnologia della rete fisica in fibra vedi il file [`dettaglio_spillamento_fibra.md`](./dettaglio_spillamento_fibra.md)
+
 #### 3.2.1bis Topologia logica della rete di sensori nel caso di rete fisica A2
 
 In questo schema i sensori/attuatori non sono **client MQTT diretti** (non parlano MQTT loro stessi via WiFi/IP). In questo caso i sensori parlano **LoRaWAN**, non MQTT, quindi non sono publisher MQTT in prima persona. È l'**application server edge** (co-locato col gateway) che fa il publish MQTT a nome dei sensori, dopo aver decodificato il payload Cayenne LPP (vedi §3.2.7). Quindi dal punto di vista del **piano L7 MQTT** il publisher non è il sensore ma il nodo edge — il sensore è "trasparente" rispetto a MQTT. Lo riflette il disegno facendo partire il link L7 dal nodo edge, non dal sensore:
