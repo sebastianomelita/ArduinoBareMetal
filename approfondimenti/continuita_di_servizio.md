@@ -15,7 +15,7 @@
 
 > Prima di chiedersi *come* garantire la continuità, bisogna chiedersi *a chi* — e con quale criterio. È la domanda che precede ogni scelta tecnologica: confondere i criteri porta a sovra-proteggere ciò che non conta e a lasciare scoperto ciò che conta davvero.
 
-[![I due assi di criticità](../img/00_due_assi.svg)](../img/00_due_assi.svg)
+[![I due assi di criticità](img/00_due_assi.svg)](img/00_due_assi.svg)
 
 Le sezioni successive descrivono *come* mantenere un servizio raggiungibile, i dati integri e il ripristino possibile. Ma quelle tecniche hanno un costo — economico e operativo — che cresce rapidamente. Applicarle a tappeto è insostenibile; applicarle a caso è pericoloso. Serve un filtro a monte: **quali apparati sono critici, e per quale ragione lo sono.**
 
