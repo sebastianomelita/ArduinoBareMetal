@@ -519,35 +519,38 @@ corrispondenza esegue l'azione e si ferma. Se nessuna corrisponde → **deny all
 > il traffico dell'host). Estesa vicino alla **sorgente** (scarta subito, evita transiti inutili).
 > Nella dispensa usiamo **sempre estese con nome, applicate inbound** sull'interfaccia della subnet.
 
-### Sintassi base
-```
-access-list 1-99    {permit|deny} <sorgente> <wildcard>                                  ! standard
-access-list 100-199 {permit|deny} <proto> <src> <wild> <dst> <wild> [eq <porta>]         ! estesa
-ip access-list {standard|extended} NOME                                                  ! con nome
- {permit|deny} ...
-interface <X>
- ip access-group <numero|NOME> {in|out}
+### Sintassi base (con prompt di modalità)
+```cisco
+Router> enable                                            ! da user EXEC a privileged EXEC
+Router# configure terminal                                ! da privileged EXEC a global config
+Router(config)# access-list 1-99    {permit|deny} <sorgente> <wildcard>                          ! standard (numerata)
+Router(config)# access-list 100-199 {permit|deny} <proto> <src> <wild> <dst> <wild> [eq <porta>] ! estesa (numerata)
+Router(config)# ip access-list {standard|extended} NOME   ! con nome → entra in (config-std-nacl)/(config-ext-nacl)
+Router(config-ext-nacl)# {permit|deny} ...                ! qui si scrivono le ACE della lista con nome
+Router(config-ext-nacl)# exit
+Router(config)# interface <X>
+Router(config-if)# ip access-group <numero|NOME> {in|out}
 ```
 
 > `in` = pacchetti **entranti** sull'interfaccia (è la direzione che usiamo in tutta la dispensa).
 > `out` = pacchetti **uscenti** dall'interfaccia (non filtra il traffico generato dal router stesso).
 
 ### La riga di default (regola di casa)
-```
+```cisco
 ! LAN — default-allow
- ... (deny delle eccezioni) ...
- permit ip any any            ! neutralizza l'implicit deny → "tutto permesso se non negato"
+Router(config-ext-nacl)# ...                 ! (deny delle eccezioni)
+Router(config-ext-nacl)# permit ip any any   ! neutralizza l'implicit deny → "tutto permesso se non negato"
 
 ! WAN / tunnel — default-deny
- ... (permit dei servizi ammessi) ...
- deny ip any any              ! esplicito, anche se ridondante con l'implicit deny
+Router(config-ext-nacl)# ...                 ! (permit dei servizi ammessi)
+Router(config-ext-nacl)# deny ip any any     ! esplicito, anche se ridondante con l'implicit deny
 ```
 
-**Test**
-```
-R# show access-lists
-R# show ip interface <X>          ← quale ACL è applicata e in che direzione
-R# show ip access-lists NOME      ← contatori per ACE (0 match su un permit = regola mai usata)
+**Test** (da privileged EXEC)
+```cisco
+Router# show access-lists
+Router# show ip interface <X>          ! quale ACL è applicata e in che direzione
+Router# show ip access-lists NOME      ! contatori per ACE (0 match su un permit = regola mai usata)
 ```
 
 ## 13 · ACL firewall — scenari tipici (conformi)
@@ -555,60 +558,64 @@ R# show ip access-lists NOME      ← contatori per ACE (0 match su un permit = 
 **13.1 — Whitelist a un solo host (standard) · default-DENY esplicito.** Caso "isola chiusa" come la Subnet B: si enumera ciò che passa, il resto cade.
 
 ```cisco
-access-list 1 permit host 10.0.3.10
-access-list 1 deny   any                    ! ← default deny esplicito (riga di casa)
-interface GigabitEthernet0/2
- ip access-group 1 in
+Router(config)# access-list 1 permit host 10.0.3.10
+Router(config)# access-list 1 deny   any                 ! ← default deny esplicito (riga di casa)
+Router(config)# interface GigabitEthernet0/2
+Router(config-if)# ip access-group 1 in
 ```
 
 **13.2 — Negare un host e permettere il resto (standard) · default-ALLOW.**
 
 ```cisco
-access-list 10 deny   host 10.0.1.66
-access-list 10 permit any                    ! ← default allow esplicito
-interface GigabitEthernet0/0
- ip access-group 10 in
+Router(config)# access-list 10 deny   host 10.0.1.66
+Router(config)# access-list 10 permit any                ! ← default allow esplicito
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ip access-group 10 in
 ```
 
 **13.3 — Flusso singolo subnet → host (estesa) · default-DENY esplicito.** Es. Subnet B può raggiungere solo il file server.
 
 ```cisco
-ip access-list extended ACL-B-WHITELIST
- permit ip 10.0.2.0 0.0.0.255 host 10.0.1.100
- deny   ip any any                           ! ← default deny esplicito
-interface GigabitEthernet0/1
- ip access-group ACL-B-WHITELIST in
+Router(config)# ip access-list extended ACL-B-WHITELIST
+Router(config-ext-nacl)# permit ip 10.0.2.0 0.0.0.255 host 10.0.1.100
+Router(config-ext-nacl)# deny   ip any any               ! ← default deny esplicito
+Router(config-ext-nacl)# exit
+Router(config)# interface GigabitEthernet0/1
+Router(config-if)# ip access-group ACL-B-WHITELIST in
 ```
 
 **13.4 — Negare Telnet (23) e permettere il resto · default-ALLOW.**
 
 ```cisco
-ip access-list extended ACL-NO-TELNET
- deny   tcp any any eq 23
- permit ip  any any                          ! ← default allow esplicito
-interface GigabitEthernet0/0
- ip access-group ACL-NO-TELNET in
+Router(config)# ip access-list extended ACL-NO-TELNET
+Router(config-ext-nacl)# deny   tcp any any eq 23
+Router(config-ext-nacl)# permit ip  any any              ! ← default allow esplicito
+Router(config-ext-nacl)# exit
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ip access-group ACL-NO-TELNET in
 ```
 
 **13.5 — Permettere solo DNS (53) verso il resolver · default-DENY esplicito.**
 
 ```cisco
-ip access-list extended ACL-SOLO-DNS
- permit udp any host 10.0.6.53 eq domain
- permit tcp any host 10.0.6.53 eq domain
- deny   ip  any any                          ! ← default deny esplicito
-interface GigabitEthernet0/3
- ip access-group ACL-SOLO-DNS in
+Router(config)# ip access-list extended ACL-SOLO-DNS
+Router(config-ext-nacl)# permit udp any host 10.0.6.53 eq domain
+Router(config-ext-nacl)# permit tcp any host 10.0.6.53 eq domain
+Router(config-ext-nacl)# deny   ip  any any              ! ← default deny esplicito
+Router(config-ext-nacl)# exit
+Router(config)# interface GigabitEthernet0/3
+Router(config-if)# ip access-group ACL-SOLO-DNS in
 ```
 
 **13.6 — Connessioni monodirezionali con `established` (stateless) · default-DENY esplicito.**
 
 ```cisco
-ip access-list extended ACL-RITORNO
- permit tcp any any gt 1023 established
- deny   ip  any any                          ! ← default deny esplicito
-interface GigabitEthernet0/4
- ip access-group ACL-RITORNO in
+Router(config)# ip access-list extended ACL-RITORNO
+Router(config-ext-nacl)# permit tcp any any gt 1023 established
+Router(config-ext-nacl)# deny   ip  any any              ! ← default deny esplicito
+Router(config-ext-nacl)# exit
+Router(config)# interface GigabitEthernet0/4
+Router(config-if)# ip access-group ACL-RITORNO in
 ```
 
 > `established` seleziona i pacchetti con flag ACK/RST (esclude i SYN puri). È **stateless**:
@@ -621,21 +628,21 @@ connessioni già aperte dall'interno. Sul lato non fidato (in ingresso) la lista
 
 ```cisco
 ! Passo 1 — ACL interna (uscente): traccia le sessioni e lascia uscire il resto (LAN default-allow)
-ip access-list extended ACL_INTERNA
- permit tcp 10.0.0.0 0.0.255.255 any eq 80 reflect ACL-WEB
- permit udp 10.0.0.0 0.0.255.255 any eq 53 reflect ACL-DNS timeout 10
- permit ip  any any                          ! ← default allow in uscita
-
+Router(config)# ip access-list extended ACL_INTERNA
+Router(config-ext-nacl)# permit tcp 10.0.0.0 0.0.255.255 any eq 80 reflect ACL-WEB
+Router(config-ext-nacl)# permit udp 10.0.0.0 0.0.255.255 any eq 53 reflect ACL-DNS timeout 10
+Router(config-ext-nacl)# permit ip  any any              ! ← default allow in uscita
+Router(config-ext-nacl)# exit
 ! Passo 2 — ACL esterna (entrante): solo i ritorni riflessi, poi default-DENY esplicito
-ip access-list extended ACL_ESTERNA
- evaluate ACL-WEB
- evaluate ACL-DNS
- deny ip any any                             ! ← default deny esplicito
-
+Router(config)# ip access-list extended ACL_ESTERNA
+Router(config-ext-nacl)# evaluate ACL-WEB
+Router(config-ext-nacl)# evaluate ACL-DNS
+Router(config-ext-nacl)# deny ip any any                 ! ← default deny esplicito
+Router(config-ext-nacl)# exit
 ! Passo 3 — applica sull'interfaccia verso la WAN
-interface s0/0/0
- ip access-group ACL_INTERNA out
- ip access-group ACL_ESTERNA in
+Router(config)# interface s0/0/0
+Router(config-if)# ip access-group ACL_INTERNA out
+Router(config-if)# ip access-group ACL_ESTERNA in
 ```
 
 > `reflect` crea l'ACE inversa temporanea; `evaluate` la usa per il ritorno; `timeout`
@@ -649,16 +656,17 @@ interface s0/0/0
 
 ```cisco
 ! Blocca le sorgenti impossibili (con log), poi nega tutto il resto.
-ip access-list extended ACL-WAN
- deny   ip host 0.0.0.0       any              log   ! default gateway
- deny   ip 127.0.0.0   0.255.255.255  any      log   ! loopback
- deny   ip 10.0.0.0    0.255.255.255  any      log   ! RFC1918 A
- deny   ip 172.16.0.0  0.15.255.255   any      log   ! RFC1918 B
- deny   ip 192.168.0.0 0.0.255.255    any      log   ! RFC1918 C
- deny   ip 224.0.0.0   15.255.255.255 any      log   ! multicast sorgente
- deny   ip any any                                    ! ← DEFAULT DENY (era "permit ip any any")
-interface GigabitEthernet0/4                  ! WAN (outside)
- ip access-group ACL-WAN in
+Router(config)# ip access-list extended ACL-WAN
+Router(config-ext-nacl)# deny   ip host 0.0.0.0       any              log   ! default gateway
+Router(config-ext-nacl)# deny   ip 127.0.0.0   0.255.255.255  any      log   ! loopback
+Router(config-ext-nacl)# deny   ip 10.0.0.0    0.255.255.255  any      log   ! RFC1918 A
+Router(config-ext-nacl)# deny   ip 172.16.0.0  0.15.255.255   any      log   ! RFC1918 B
+Router(config-ext-nacl)# deny   ip 192.168.0.0 0.0.255.255    any      log   ! RFC1918 C
+Router(config-ext-nacl)# deny   ip 224.0.0.0   15.255.255.255 any      log   ! multicast sorgente
+Router(config-ext-nacl)# deny   ip any any                                   ! ← DEFAULT DENY (era "permit ip any any")
+Router(config-ext-nacl)# exit
+Router(config)# interface GigabitEthernet0/4                                 ! WAN (outside)
+Router(config-if)# ip access-group ACL-WAN in
 ```
 
 > Se si espongono servizi in DMZ (Caso 5b), i `permit` selettivi (es. `permit tcp any host 10.0.5.50 eq 443`)
@@ -671,12 +679,13 @@ La logica è inversa: **permetto prima la subnet locale**, poi nego il resto del
 
 ```cisco
 ! Esempio su Gi0/0 (Subnet A, 10.0.1.0/24)
-ip access-list extended ACL-SUBNET-A-DA
- permit ip 10.0.1.0 0.0.0.255  any            ! sorgente locale legittima → esce
- deny   ip 10.0.0.0 0.0.255.255 any            ! anti-spoofing: ogni altra sorgente interna = spoof (silenzioso)
- permit ip any any                             ! ← DEFAULT ALLOW
-interface GigabitEthernet0/0                   ! LAN (inside)
- ip access-group ACL-SUBNET-A-DA in
+Router(config)# ip access-list extended ACL-SUBNET-A-DA
+Router(config-ext-nacl)# permit ip 10.0.1.0 0.0.0.255  any            ! sorgente locale legittima → esce
+Router(config-ext-nacl)# deny   ip 10.0.0.0 0.0.255.255 any           ! anti-spoofing: ogni altra sorgente interna = spoof (silenzioso)
+Router(config-ext-nacl)# permit ip any any                            ! ← DEFAULT ALLOW
+Router(config-ext-nacl)# exit
+Router(config)# interface GigabitEthernet0/0                          ! LAN (inside)
+Router(config-if)# ip access-group ACL-SUBNET-A-DA in
 ```
 
 > 🔑 **L'ordine conta.** Il `permit` della subnet locale deve precedere il `deny 10.0.0.0/16`:
@@ -689,6 +698,7 @@ Regola pratica: **default-deny ovunque ci sia un confine di fiducia** (WAN, tunn
 **default-allow solo dentro una zona già fidata** dove le eccezioni sono poche e serve fluidità.
 
 ---
+
 
 ## 16 · Tunnel VPN — L3-su-L3 e L2-su-L3
 
