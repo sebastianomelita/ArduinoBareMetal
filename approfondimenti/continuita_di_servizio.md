@@ -11,6 +11,111 @@
 
 > Una mappa visiva per orientarsi tra tecnologie, gradi di disponibilità e tipi di guasto — senza perdersi nei parametri SLA.
 
+# 0. Chi Va Protetto, e Perché
+
+> Prima di chiedersi *come* garantire la continuità, bisogna chiedersi *a chi* — e con quale criterio. È la domanda che precede ogni scelta tecnologica: confondere i criteri porta a sovra-proteggere ciò che non conta e a lasciare scoperto ciò che conta davvero.
+
+[![I due assi di criticità](../img/00_due_assi.svg)](../img/00_due_assi.svg)
+
+Le sezioni successive descrivono *come* mantenere un servizio raggiungibile, i dati integri e il ripristino possibile. Ma quelle tecniche hanno un costo — economico e operativo — che cresce rapidamente. Applicarle a tappeto è insostenibile; applicarle a caso è pericoloso. Serve un filtro a monte: **quali apparati sono critici, e per quale ragione lo sono.**
+
+---
+
+## 0.1 Due Assi di Criticità
+
+La criticità non è una proprietà del *tipo* di apparato, ma di due caratteristiche indipendenti che possono presentarsi insieme o separatamente. Lo stesso identico dispositivo può essere critico su un asse e irrilevante sull'altro.
+
+**Criticità topologica (architetturale).** Un apparato è critico per *dove* sta: è un punto di concentrazione o di aggregazione il cui guasto si propaga a valle. È il classico *single point of failure*. La metrica non è la mole di traffico in sé — quella è solo un indizio — ma il **fan-out**: quanti servizi, nodi o utenti dipendono da lui. Un centro-stella può essere critico anche con traffico modesto se tutto vi transita; esiste inoltre una *criticità da dipendenza* (DNS, NTP, autenticazione, default gateway) che è core-like pur senza grandi volumi.
+
+**Criticità funzionale.** Un apparato è critico per *cosa fa*: eroga una funzione di sicurezza, sorveglianza o controllo, indipendentemente dalla sua posizione in rete. Qui la metrica non è quanti altri nodi dipendono da lui, ma **la conseguenza di non erogare quella funzione** — che può arrivare al danno fisico o ambientale.
+
+| | **Criticità topologica** | **Criticità funzionale** |
+| --- | --- | --- |
+| **Critico per…** | *dove* sta (posizione in rete) | *cosa* fa (funzione svolta) |
+| **La domanda** | Quanti dipendono da lui? | Cosa succede se la funzione manca? |
+| **Metrica** | Fan-out / blast radius | Gravità della conseguenza |
+| **Esempi** | Proxy/load balancer, switch di aggregazione, gateway uplink, DNS | Rilevatore gas, interlock di sicurezza, controllore SCADA, sensore antintrusione |
+| **Rimedio dominante** | Ridondanza, HA, eliminazione del SPOF | Logica fail-safe locale, integrità |
+
+La distinzione è operativa: i due assi non solo identificano apparati diversi, ma **portano a rimedi diversi**. La criticità topologica si combatte con la ridondanza (gli strumenti del resto di questa dispensa). La criticità funzionale, come vedremo, spesso *non* si combatte con la ridondanza.
+
+---
+
+## 0.2 Quattro Tipi di Sistema Critico
+
+La letteratura sui sistemi critici offre un vocabolario preciso, utile per assegnare a ogni apparato la sua classe e calibrare di conseguenza RPO, RTO e SLA.
+
+| Tipo | Se fallisce… | Cosa domina | Esempio tipico |
+| --- | --- | --- | --- |
+| **Safety-critical** | Danno a persone o ambiente | Integrità (fail-safe) | Interlock, rilevatore gas/fumo |
+| **Mission-critical** | L'obiettivo non viene raggiunto | Disponibilità | Controllo di processo, navigazione |
+| **Business-critical** | Perdita economica significativa | Disponibilità | E-commerce, CRM, gestionale |
+| **Security-critical** | Perdita o furto di dati sensibili | Riservatezza/integrità | Sistemi di autenticazione, log |
+
+Gli apparati a criticità *funzionale* (l'edge di sicurezza/controllo) cadono per lo più nelle classi **safety** e **security**. Quelli a criticità *topologica* (il core) nelle classi **mission** e **business**. Non è una corrispondenza rigida, ma orienta la scelta: per i primi conta che il sistema fallisca *bene*, per i secondi che *non fallisca*.
+
+---
+
+## 0.3 Disponibilità ≠ Integrità
+
+> Tutta questa dispensa ragiona in "nove": come tenere un servizio *su*. Ma per un apparato safety-critical l'obiettivo può essere l'opposto — fermarsi in stato sicuro. È la differenza tra **disponibilità** (continuare a erogare) e **integrità** (erogare solo correttamente, altrimenti spegnersi).
+
+Questa distinzione smonta l'istinto "raddoppio e sto tranquillo", e va tenuta presente prima di applicare VRRP, HCI o load balancing a un nodo di sicurezza:
+
+- **La ridondanza dà disponibilità, non integrità.** Avere un percorso ridondante non implica alta disponibilità a meno che il failover sia automatico — e comunque due copie di un nodo safety ne aumentano l'*uptime*, non la *correttezza*. Per quel nodo conta che fallisca in stato sicuro, non che resti acceso.
+- **Più componenti, più modi di guasto.** Aggiungere uno slave introduce nuove modalità di guasto e guasti di causa comune. Su un nodo di sicurezza, uno slave che "tiene su" il sistema in uno stato dubbio può essere peggio di uno spegnimento netto.
+- **Il framework di riferimento cambia.** Per le funzioni di sicurezza non si ragiona in nove di disponibilità ma in livelli di integrità (SIL, IEC 61508), su probabilità di *guasto pericoloso* e modalità di domanda (bassa domanda vs. continua).
+
+In sintesi: il resto della dispensa vale per gli apparati **mission/business-critical**; per i **safety-critical** è un paradigma complementare, dove la freccia punta a *localizzare e far fallire in sicurezza*, non a *ridondare*.
+
+---
+
+## 0.4 Come si Assegna la Criticità
+
+Il metodo canonico per individuare i destinatari della continuità è la **Business Impact Analysis (BIA)**: si elencano funzioni e apparati, si classificano per *conseguenza del guasto*, e si concentrano le risorse dove serve.
+
+- **Classificazione a tier (ABC).** Ogni apparato riceve una classe — mission-critical, importante, minore — in base all'impatto del suo guasto. La classe determina poi quanti "nove" e quale piano di ripristino gli spettano.
+- **FMEA.** L'analisi dei modi di guasto e dei loro effetti rende esplicito *cosa* accade quando il singolo apparato cade, prima ancora di decidere come proteggerlo.
+- **Principio 80/20.** Tipicamente un ~20% di apparati genera l'80% dell'impatto. Identificarlo evita di spalmare ridondanza ovunque.
+
+> **Approfondisci:** [BIA e criticità degli asset — NIST IR 8286](https://csrc.nist.gov/pubs/ir/8286/d/final) · [Tassonomia dei sistemi critici](https://en.wikipedia.org/wiki/Mission_critical) · [Sicurezza funzionale — IEC 61508](https://it.wikipedia.org/wiki/IEC_61508)
+
+---
+
+## 0.5 Un Caso Pratico: Ridondare un Gateway?
+
+Il criterio diventa concreto sul caso più frequente in una rete di sensori: un gateway tra mille, va ridondato?
+
+Il punto di partenza è che **"uno su mille" è già metà della risposta**. Un gateway-foglia in una flotta ampia, con celle di copertura sovrapposte, ha per costruzione criticità topologica *bassa*: il suo blast radius è una singola cella. Il default, sull'asse missione, è quindi *non* ridondarlo — la resilienza si costruisce a livello di flotta (copertura ridondante, mesh, store-and-forward) con spare a magazzino e monitoraggio. Ridondare ciascuno dei mille gateway è antieconomico e di solito risolve un problema che non si ha.
+
+La criticità funzionale può ribaltare il verdetto, ma la risposta corretta a un requisito di sicurezza **non è quasi mai ridondare il gateway**: è togliere il gateway dal loop, rendendo locale la decisione di sicurezza. Si ridonda solo nei due casi in cui il nodo *non è davvero* una foglia: quando è un aggregatore travestito (alto fan-out), o quando porta una funzione di sicurezza non localizzabile.
+
+```
+Questo gateway va ridondato?
+
+   È una foglia o un aggregatore?
+      Aggregatore (alto fan-out)  ──────── Ridonda (è un nodo core)
+      Foglia (1 su N, copertura sovrapposta) → prosegui
+
+   Cosa trasporta?
+      Solo telemetria  ────────────────── No ridondanza · resilienza di flotta
+      Safety / controllo → prosegui
+
+   La decisione sicura è localizzabile?
+      Sì  ─────────────────────────────── No ridondanza · autonomia edge + fail-safe locale
+      No (gateway nel loop) → prosegui
+
+   Conseguenza grave E finestra cieca > tempo-al-danno?
+      Sì  ─────────────────────────────── Ridonda (o ridisegna per localizzare)
+      No  ─────────────────────────────── Spare + monitoraggio rapido
+```
+
+Lo stesso hardware, due verdetti nella stessa flotta: un gateway che riporta solo la temperatura ambiente → no ridondanza. Un gateway che è l'*unica* via di una linea antintrusione perimetrale o di un rilevatore gas *senza trip locale* → o lo ridondi, o (preferibile) gli affianchi la logica di fail-safe locale, così che la rilevazione non dipenda più dal round-trip verso il centro.
+
+Nell'ultimo ramo dell'albero, la decisione finale pesa tre fattori insieme: la **conseguenza** nella finestra cieca, la **frequenza** con cui la funzione viene richiesta in quella finestra (un allarme demandato di rado tollera una finestra diversa da un controllo continuo), e la **durata della finestra cieca** stessa — che è il MTTR di sostituzione. Se mandare un tecnico con uno spare dà un MTTR molto inferiore al tempo-al-danno, lo spare basta: la ridondanza a caldo aggiunge costo ×1000, non sicurezza.
+
+---
+
 ---
 
 ## 1. I Tre Piani della Continuità
