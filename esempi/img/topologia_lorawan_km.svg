@@ -1,6 +1,6 @@
 <svg width="100%" viewBox="0 0 680 480" xmlns="http://www.w3.org/2000/svg" role="img" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
 <title>Topologia LoRaWAN del km autostradale</title>
-<desc>Sensori end-device LoRaWAN distribuiti lungo il km, gateway baricentrico nel cabinet del maxi-schermo, uplink IP verso il CdC.</desc>
+<desc>Sensori end-device LoRaWAN distribuiti lungo il km, gateway baricentrico nel cabinet del pannello PMV, uplink IP verso il CdC.</desc>
 <defs>
 <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
 <style>
@@ -21,7 +21,7 @@
 <!-- ===== Smart-gate cabinet ===== -->
 <rect x="220" y="120" width="280" height="104" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
 <text class="th" x="360" y="146" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Smart-gate (cabinet a portale)</text>
-<text class="ts" x="360" y="168" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Maxi-schermo · Gateway LoRaWAN</text>
+<text class="ts" x="360" y="168" text-anchor="middle" dominant-baseline="central" fill="#534AB7">Pannello PMV · Gateway LoRaWAN</text>
 <text class="ts" x="360" y="186" text-anchor="middle" dominant-baseline="central" fill="#534AB7">SoC edge · Switch + uplink fibra</text>
 <text class="ts" x="360" y="206" text-anchor="middle" dominant-baseline="central" fill="#534AB7">5-7 m di altezza · posizione baricentrica</text>
 
@@ -69,6 +69,6 @@
 
 <!-- ===== note in basso ===== -->
 <text class="ts" x="40" y="425">Sensori a batteria o supercondensatore + microfotovoltaico (autonomia indefinita)</text>
-<text class="ts" x="40" y="442">Gateway alimentato dalla linea del maxi-schermo (rete o FV grande)</text>
+<text class="ts" x="40" y="442">Gateway alimentato dalla linea del pannello PMV (rete o FV grande)</text>
 <text class="ts" x="40" y="459">Decine di sensori per km, tutti agganciati a un unico gateway baricentrico</text>
 </svg>
