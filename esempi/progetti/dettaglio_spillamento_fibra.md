@@ -37,8 +37,8 @@ Come si "spilla" la fibra lungo le decine di km del tratto autostradale per serv
 
 **Come avviene lo "spillamento" fisicamente.** Lo switch industriale **non è un derivatore passivo**: è un dispositivo attivo che riceve il segnale ottico su una porta, lo converte in elettrico, lo elabora (forwarding L2 in base agli indirizzi MAC), lo rigenera e lo trasmette sulla porta di uscita. È a tutti gli effetti una **rigenerazione 3R** (re-amplification, re-shaping, re-timing). Questo significa che:
 
-- Il segnale viene **rigenerato** a ogni nodo: a 1 km di distanza tra nodi adiacenti la rigenerazione è ampiamente sovrabbondante (la fibra monomodale arriva tranquillamente a 40-80 km senza rigenerazione).
-- Ogni switch è un **dominio di broadcast separato**: gli switch usano i propri MAC address per scambiarsi i frame del protocollo di controllo dell'anello.
+- Il segnale viene **rigenerato a ogni nodo**: a 1 km di distanza tra nodi adiacenti la rigenerazione è ampiamente sovrabbondante (la fibra monomodale arriva tranquillamente a 40-80 km senza rigenerazione).
+- **L'anello è un unico dominio di broadcast** (per ciascuna VLAN): lo switch separa i domini di collisione, non quelli di broadcast. È la **segmentazione in VLAN** — e infine il confine L3 in centrale — a delimitare il broadcast. Proprio perché il dominio è unico e la topologia è ad anello serve ERPS, che blocca l'RPL per impedire i loop. Le R-APS girano su una VLAN di controllo dedicata usando i MAC degli switch, ma è un fatto di forwarding del protocollo, non di partizione dei domini.
 - Il traffico verso il CdC attraversa N switch prima di arrivare a destinazione: ogni switch aggiunge tipicamente decine di microsecondi di latenza di store-and-forward. Su un tratto di 50 km, parliamo di ~1-2 ms aggiuntivi sul tempo di volo della luce in fibra (250 µs). Trascurabile.
 
 **Chiusura dell'anello.** L'anello si chiude in due modi possibili:
@@ -46,15 +46,65 @@ Come si "spilla" la fibra lungo le decine di km del tratto autostradale per serv
 - **Singolo cavo ottico** con due fibre fisicamente separate: una "va" e una "torna", entrambe nello stesso cavo. È economico ma in caso di taglio del cavo (escavatore, incidente, frana) **entrambi i percorsi vengono persi simultaneamente** e l'anello si spezza.
 - **Doppio cavo ottico in percorsi geograficamente diversi**: la fibra dell'andata corre sul guard-rail di destra, quella del ritorno sul guard-rail di sinistra (o nella canalina opposta). Costa di più, ma garantisce sopravvivenza a un singolo guasto fisico. È la scelta corretta per infrastruttura critica come una smart-road.
 
-**Protocollo di failover: ERPS (IEEE G.8032).** Sull'anello gira il protocollo **Ethernet Ring Protection Switching**, che in condizioni normali tiene **bloccata** una delle due tratte (il "Ring Protection Link") per evitare loop di broadcast. Quando un nodo rileva un guasto:
+**Protocollo di failover: ERPS (IEEE G.8032).** Sull'anello gira il protocollo **Ethernet Ring Protection Switching**, che in condizioni normali tiene **bloccata** una delle due tratte (il "Ring Protection Link", RPL) per evitare loop di broadcast. Quando un nodo rileva un guasto:
 
 1. Invia un messaggio R-APS (Ring-APS) di tipo "Signal Fail" ai vicini.
-2. Il nodo che teneva bloccato il RPL lo sblocca.
+2. Il nodo che teneva bloccato il RPL (RPL Owner) lo sblocca.
 3. Tutti i nodi flushano la loro tabella MAC e la riapprendono sul nuovo percorso.
 4. Tempo totale di failover: **< 50 ms**, conforme ai requisiti delle reti carrier-grade.
 
 Per il nostro progetto è essenziale: 50 ms è impercettibile sia per la telemetria MQTT che per gli stream video.
 
+## Dal singolo anello alla dorsale: trasporto DWDM
+
+Gli anelli non si concatenano "l'uno nel successivo": ciascuna **tratta** ottiene una propria **lunghezza d'onda (λ)** su un'unica coppia di fibre di dorsale che percorre l'intero asse. Il **DWDM** multiplexa decine di λ indipendenti sulla stessa fibra; a ogni tratta un **OADM/ROADM** *inserisce* la sua λ e lascia transitare le altre in **puro bypass ottico** (nessuna conversione O/E/O, latenza pari alla sola propagazione, ~5 µs/km). Tutte le λ convergono al sito di centrale, dove vengono demultiplexate: ogni tratta vi arriva come un **collegamento punto-punto dedicato**. La topologia logica è quindi una **stella centrata sulla centrale**, anche se fisicamente la fibra di dorsale attraversa in serie tutti i siti.
+
+Sulle tratte lunghe si inseriscono **amplificatori ottici (EDFA)**, tipicamente ogni 60-100 km. Per coerenza con la scelta del doppio cavo fatta per gli anelli, anche la dorsale va instradata su **due percorsi fisici distinti**, con protezione di linea ottica (OLP) o anello DWDM, così da sopravvivere a un singolo taglio.
+
+## Il dispositivo di confine della tratta: due opzioni
+
+### Opzione B1 — confine L2 (switch)
+
+La λ trasporta in modo trasparente un **trunk di VLAN** fino a un **core switch (CS) multilayer** in centrale.
+
+- Videocamere e relativo **server** stanno nella **stessa VLAN/subnet**: il server è attestato su una porta di accesso del CS in quella VLAN, e il traffico videocamere↔server resta **L2 puro, senza alcun router nel percorso**. Idem per il gateway sensori e il suo server di gestione.
+- L'eventuale routing inter-VLAN (verso applicazioni del CdC, Internet, ecc.) è **centralizzato sul CS** tramite SVI. Non serve un router per tratta.
+- Pro: semplice, trasparente, la *discovery* L2 (ONVIF/multicast) funziona end-to-end. Contro: il dominio di broadcast di ogni VLAN è esteso lungo la dorsale (da contenere con segmentazione VLAN, storm-control, ARP/ND suppression).
+
+### Opzione B2 — confine L3/MPLS (PE router)
+
+"Versione avanzata": il dispositivo di tratta è un **PE (Provider Edge)** con una **subinterfaccia per VLAN**, ciascuna mappata su una VPN.
+
+- **L3VPN (una VRF per servizio):** traffico **instradato**, subnet di tratta ≠ subnet del server, raggiungibilità via routing nella VRF. Comportamento **analogo a una VPN TUN**. I dispositivi restano host con default gateway sul PE: nessun router lato dispositivo.
+- **L2VPN (EVPN/VPLS):** **bridging** dei frame, la subnet è **stesa fino alla centrale**. Comportamento **analogo a una VPN TAP**. Si usa quando occorre preservare l'adiacenza L2 attraverso un core a pacchetto.
+- Un PE **EVPN con IRB** copre entrambi i casi (bridging + routing integrati).
+
+In alternativa al PE alla tratta si può adottare la topologia MPLS classica: un **router di confine (CE)** alla tratta che dialoga con un **PE in centrale**. Il CE è per definizione **fuori dall'MPLS** (scambia solo rotte IP col PE, non vede etichette né control plane), quindi l'accesso indesiderato all'infrastruttura MPLS è intrinsecamente impedito; l'isolamento tra tratte e verso la centrale è governato dalla **VRF + policy di route-target** sul PE. Il CE aggiunge un **punto di policy/NAT locale** vicino al campo e mantiene il dispositivo MPLS-aware nel sito fisicamente sicuro.
+
+## Segmentazione e indirizzamento
+
+- **B1 (bridging):** una subnet per VLAN di servizio. Caso semplice: estesa a tutte le tratte (dominio di broadcast più ampio). In alternativa: VLAN/subnet dedicate per tratta, comunque terminate sul CS, per confinare il broadcast.
+- **B2 L3VPN (routing):** una **subnet isolata per tratta**, ciascuna nella propria VRF; l'L3VPN instrada tra le subnet delle tratte e quella di centrale. (Il modello L2VPN/EVPN riporterebbe invece a una subnet estesa, come in B1 ma su core L3.)
+
+## Qualità del servizio e priorità del traffico
+
+I flussi hanno profili diversi: le **segnalazioni** (telemetria MQTT, messaggi C-ITS, allarmi, comando dei pannelli) sono a bassa banda ma sensibili a latenza e perdita e ad **alta priorità**; lo **streaming video** è ad alta banda e più tollerante alle perdite, a priorità inferiore.
+
+La priorità si ottiene con la **QoS**, non con la mera separazione in VLAN/VRF: classificazione e marcatura (**802.1p/CoS** a L2, **DSCP** a L3) e **code a priorità** ai punti di contesa (uplink dell'anello, uplink del CS, porte verso i server). Questi meccanismi sono **nativi negli switch di B1**: non è necessario MPLS per garantire priorità alle segnalazioni rispetto al video. Con una **λ dedicata per tratta** non c'è inoltre contesa *tra* tratte (lunghezze d'onda distinte): la QoS agisce solo dentro l'anello e sugli uplink centrali. L'MPLS aggiungerebbe il **DiffServ-TE** (LSP dedicati per classe con riserva di banda su un core multi-hop), funzione priva di valore in una topologia a centrale unica.
+
+## Sicurezza: isolamento della zona sensori/OT
+
+L'isolamento del segmento sensori si realizza con un **firewall centrale** che ne presidia il confine L3 (firewall-on-a-stick sul CS, oppure VRF dedicata raggiungibile solo via firewall). La segmentazione vera la fa la **policy a zone** in logica least-privilege: la zona sensori è abilitata **unicamente** verso il network server sui port previsti (es. MQTT 8883, UDP 1700), con divieto di movimento laterale e di egress non necessario. Poiché il traffico dei gateway è **client-initiated** verso il network server, la policy può essere strettamente egress-only.
+
+Il **NAT** non è un meccanismo di sicurezza e si impiega solo se necessario: sovrapposizioni di indirizzamento ("cookie-cutter" per sito) o uscita verso reti esterne/cloud. In un dominio privato sono in genere preferibili indirizzi univoci e stabili per dispositivo (tracciabilità, raggiungibilità server→device per configurazione e firmware), quindi si privilegia un piano d'indirizzamento per tratta rispetto al NAT.
+
+## Scelta architetturale e razionale
+
+Per il presente progetto si adotta l'**Opzione B1**: anelli di accesso in **ERPS (G.8032)**, trasporto su **dorsale DWDM con una λ dedicata per tratta**, terminazione su un **CS multilayer in coppia HA** presso l'unica centrale, isolamento dei servizi tramite VLAN (ed eventualmente VRF-lite sul CS) e **firewall centrale** a presidio della zona sensori/OT.
+
+La scelta è motivata dalla topologia a **centrale unica**. L'MPLS L3VPN (Opzione B2) ripaga la propria complessità solo con più siti centrali, multi-tenancy, traffic engineering o isolamento di routing scalabile via MP-BGP: condizioni qui assenti. Le **λ dedicate** forniscono già isolamento a livello fisico (L1) sul trasporto, e l'unico punto di terminazione rende sufficiente la segmentazione a VLAN più un firewall di zona, senza introdurre un dominio MPLS.
+
+L'architettura resta predisposta a evolvere verso **B2/MPLS** qualora subentrino più siti centrali o l'esigenza di isolamento di routing forte e scalabile (VRF con route-target), distinguendo il modello **L3VPN** (instradato, una subnet isolata per tratta, ≈ tunnel TUN) dal modello **L2VPN/EVPN** (bridging, subnet estesa, ≈ tunnel TAP). L'inserimento di un router di confine (CE) per **NAT o policy locali** vicino al campo resta una scelta **ortogonale**, applicabile anche all'interno di B1.
 ---
 
 ## 3. Opzione B — Anello IP attivo con router L3
