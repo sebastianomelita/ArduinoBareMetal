@@ -319,7 +319,7 @@ In sintesi: la scelta edge resta valida **a condizione** che il nodo edge sia tr
 
 ---
 
-## 7.1. Sicurezza della rete LoRaWAN
+## 7 Sicurezza della rete LoRaWAN
 
 Ogni sensore si registra al network server tramite **Over-the-Air Activation (OTAA)**. In fabbrica il sensore viene programmato con:
 
@@ -334,7 +334,7 @@ Al primo join, il join server usa la AppKey per generare e distribuire due chiav
 
 Questo meccanismo è anche un caso applicativo concreto delle **funzioni hash crittografiche** (quesito 4 della seconda parte): AES-CMAC è una funzione di tipo HMAC che produce un'impronta non falsificabile senza conoscere la chiave.
 
-#### 7.2. Architettura distribuita dei network server
+### 7.1. Architettura distribuita dei network server
 
 Una scelta progettuale importante riguarda **dove collocare fisicamente i network server**. La specifica LoRaWAN canonica prevede una topologia "stella di stelle" in cui i gateway sono packet forwarder stupidi e tutta l'intelligenza sta nel network server. Nel nostro progetto questa scelta classica presenta un problema serio.
 
@@ -389,7 +389,7 @@ Questa separazione fisica è esattamente quella che la specifica LoRaWAN raccoma
 
 
 
-#### 7.3.  Join Server e ridondanza
+### 7.2.  Join Server e ridondanza
 
 Il **Join Server** è il componente che gestisce le funzioni di **autenticazione e autorizzazione** dei sensori in fase di registrazione, e di **gestione delle chiavi di sessione** durante la vita operativa del dispositivo. Le sue responsabilità sono:
 
@@ -446,7 +446,7 @@ Caratteristiche dell'alta disponibilità del join server:
 
 **Una piccola nota progettuale.** Esiste in commercio anche la possibilità di affidare il join server a un provider esterno specializzato (es. Actility, Senet, alcuni operatori telco offrono questo come servizio gestito). Per un progetto di infrastruttura critica nazionale come la rete autostradale è però **preferibile mantenere il controllo interno**: le chiavi master sono un asset strategico del paese e affidarle a un terzo introduce dipendenze contrattuali e geopolitiche che vale la pena evitare.
 
-#### 3.2.11 Riassunto dei vantaggi della scelta
+### 7.3. Riassunto dei vantaggi della scelta
 
 - **Zero scavi lungo il km**: nessun cavo di alimentazione né di dati per i sensori. Costo di posa fortemente abbattuto rispetto a soluzioni cablate.
 - **Installazione e manutenzione modulare**: ogni sensore è una scatoletta indipendente fissata al guard-rail in mezz'ora.
@@ -457,7 +457,7 @@ Caratteristiche dell'alta disponibilità del join server:
 - **Sicurezza forte end-to-end**: cifratura del payload (AppSKey), autenticazione e integrità tramite MIC (NwkSKey), OTAA per il provisioning sicuro delle chiavi di sessione.
 - **Trade-off edge gestito**: l'application server all'edge espone le AppSKey a bordo strada; il rischio è mitigato con mutua autenticazione (mTLS), custodia delle chiavi in modulo anti-tampering (Secure Element/HSM) e attestazione di integrità prima della consegna delle chiavi (§3.2.7).
 
-### 3.3 Comunicazione smart-gate ↔ CdC
+### 7.4. Comunicazione smart-gate ↔ CdC
 
 Questa è la tratta più delicata: deve essere ad alta banda (per gli stream video on-demand), bassa latenza, sempre disponibile.
 
@@ -468,7 +468,7 @@ Questa è la tratta più delicata: deve essere ad alta banda (per gli stream vid
   - **RTSP/SRT** per gli stream video on-demand (solo quando l'operatore richiede la visione live).
 - **Backup**: connessione **5G/4G LTE** con APN privato della società autostradale, attivata automaticamente da BGP/SD-WAN in caso di failure della fibra.
 
-#### 3.3.1 Modello dei topic MQTT per uno smart-gate
+### 7.5. Modello dei topic MQTT per uno smart-gate
 
 Estendendo il modello visto nei materiali di riferimento (riferimento didattico: `sebastianomelita/ArduinoBareMetal`), si può definire una gerarchia di topic come segue. Sia `<RR>` la regione, `<TT>` il tratto, `<NNN>` l'identificatore numerico dello smart-gate (es. `LO/01/042` = Lombardia, tratto 1, smart-gate 42):
 
@@ -530,7 +530,7 @@ Esempio di payload sul topic `comandi/schermo`:
 }
 ```
 
-### 3.4 Comunicazione CdC ↔ CN
+### 7.6. Comunicazione CdC ↔ CN
 
 - **Connessione primaria**: rete **MPLS L3VPN** fornita da un operatore telco. Garantisce SLA contrattuali, classi di servizio (QoS) e isolamento.
 - **Connessione di backup**: tunnel **VPN IPsec site-to-site** su Internet pubblica, da firewall a firewall.
@@ -539,14 +539,14 @@ Esempio di payload sul topic `comandi/schermo`:
   - **HTTPS/REST** per le chiamate sincrone (es. recupero di dati storici, push di configurazioni globali dal CN ai CdC).
   - **gRPC** in alternativa al REST quando occorre throughput più alto e contratti tipizzati (Protocol Buffers).
 
-### 3.5 Comunicazione APP utenti ↔ CN
+### 7.7. Comunicazione APP utenti ↔ CN
 
 - **HTTPS/REST** (versionato `/v1/...`) per le chiamate stateless del client.
 - **WebSocket Secure (WSS)** per il push real-time delle segnaletiche e dello stato dei punti di ricarica.
 - In alternativa, **MQTT over WebSocket Secure** se si vuole riusare l'infrastruttura broker (il client APP si registra come subscriber su topic di pubblico interesse).
 - Autenticazione utenti con **OAuth 2.0 + OpenID Connect** per le funzioni che richiedono profilazione (prenotazione ricarica). Le funzioni di sola lettura della segnaletica sono accessibili in modo anonimo.
 
-### 3.6 Comunicazione stazioni di ricarica ↔ rete
+### 7.8. Comunicazione stazioni di ricarica ↔ rete
 
 Le stazioni di ricarica utilizzano lo standard **OCPP (Open Charge Point Protocol) 1.6 o 2.0.1** su WebSocket Secure verso un CSMS (Charging Station Management System) che, nel nostro progetto, è un microservizio del CN. Questo dà accesso a:
 
