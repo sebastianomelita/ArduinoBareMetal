@@ -733,18 +733,22 @@ Un tunnel è un **link punto-punto virtuale** su rete pubblica. Tre regole valgo
 | Bridge richiesto | no | sì (tunnel ↔ `eth0`) |
 | Caso d'uso | collegare reti IP distinte | estendere lo stesso dominio L2 |
 
+![Confronto tunnel: tun0 (L3-su-L3, GRE) e tap0 (L2-su-L3, GRETAP/OpenVPN)](../img/tunnel_l3_vs_l2.svg)
+
+> Nomenclatura Linux TUN/TAP: **`tun0`** = L3 (instradato, subnet diverse) · **`tap0`** = L2 (bridgeato in `br0`, stessa VLAN). Su Cisco IOS gli equivalenti sono `Tunnel0` (GRE) e l'`xconnect` L2TPv3.
+
 ### 16.2 L3-su-L3 — GRE (Cisco IOS)
 
-```
+```cisco
 ! Template (un capo — l'altro è speculare, §16.1)
-interface TunnelN
- ip address <IP-TUNNEL> 255.255.255.0
- tunnel source <IP-PUB-LOCALE>
- tunnel destination <IP-PUB-PEER>
- tunnel mode gre ip
- ip ospf network point-to-point        ! evita elezione DR/BDR sul tunnel
- ip ospf 100 area 0
- no shutdown
+R0(config)# interface TunnelN
+R0(config-if)# ip address <IP-TUNNEL> 255.255.255.0
+R0(config-if)# tunnel source <IP-PUB-LOCALE>
+R0(config-if)# tunnel destination <IP-PUB-PEER>
+R0(config-if)# tunnel mode gre ip
+R0(config-if)# ip ospf network point-to-point        ! evita elezione DR/BDR sul tunnel
+R0(config-if)# ip ospf 100 area 0
+R0(config-if)# no shutdown
 ```
 
 Parametri per sede (centrale R0 — IP pubblico 198.64.5.1):
@@ -755,60 +759,62 @@ Parametri per sede (centrale R0 — IP pubblico 198.64.5.1):
 | `Tunnel1` | `10.0.12.2/24` | `39.68.34.122` (R2) |
 | `Tunnel2` | `10.0.13.2/24` | `39.68.34.123` (R3) |
 
-```
+```cisco
 ! ACL WAN — far passare GRE (protocollo IP 47) e OSPF
-ip access-list extended ALLOW_GRE
- permit gre  any any
- permit ospf any any
- permit ip   any any        ! restringere in produzione
-interface GigabitEthernet0/0
- ip access-group ALLOW_GRE in
+R0(config)# ip access-list extended ALLOW_GRE
+R0(config-ext-nacl)# permit gre  any any
+R0(config-ext-nacl)# permit ospf any any
+R0(config-ext-nacl)# permit ip   any any        ! restringere in produzione
+R0(config-ext-nacl)# exit
+R0(config)# interface GigabitEthernet0/0
+R0(config-if)# ip access-group ALLOW_GRE in
 ```
 
-**Test**
-```
-R# show ip ospf neighbor               ← peer FULL
-R# ping 10.0.11.1 source 10.0.11.2     ← connettività end-to-end
+**Test** (da privileged EXEC)
+```cisco
+R0# show ip ospf neighbor               ! peer FULL
+R0# ping 10.0.11.1 source 10.0.11.2     ! connettività end-to-end
 ```
 
 ### 16.3 L2-su-L3 — L2TPv3 (Cisco IOS, nativo)
 
 Crea un **pseudowire** che trasporta i frame Ethernet (trunk 802.1q incluso) senza bridge software.
 
-```
+```cisco
 ! Template (un capo — l'altro speculare, stesso VC-ID)
-pseudowire-class PW-PEER
- encapsulation l2tpv3
- protocol none
- ip local interface GigabitEthernet0/1     ! IP pubblico locale
-interface GigabitEthernet0/0               ! trunk verso switch
- no ip address                             ! cavo L2 virtuale
- xconnect <IP-PUB-PEER> 100 pw-class PW-PEER
+R0(config)# pseudowire-class PW-PEER
+R0(config-pw-class)# encapsulation l2tpv3
+R0(config-pw-class)# protocol none
+R0(config-pw-class)# ip local interface GigabitEthernet0/1     ! IP pubblico locale
+R0(config-pw-class)# exit
+R0(config)# interface GigabitEthernet0/0               ! trunk verso switch
+R0(config-if)# no ip address                           ! cavo L2 virtuale
+R0(config-if)# xconnect <IP-PUB-PEER> 100 pw-class PW-PEER
 ```
 
 > `VC-ID` (qui **100**) identico ai due lati. Più sedi → più pseudowire (VC-ID 100,101,102…).
 > Per un unico dominio L2 tra molte sedi → **VPLS**.
 
-**Test**: `show l2tun session all` · `show xconnect all` · `show mac address-table`
+**Test** (da privileged EXEC): `R0# show l2tun session all` · `R0# show xconnect all` · `R0# show mac address-table`
 
 ### 16.4 L2-su-L3 — variante Linux (GRETAP / OpenVPN TAP)
 
-Il **bridge è identico** per le due tecnologie: cambia **solo l'interfaccia tunnel**.
+Il **bridge è identico** per le due tecnologie: cambia **solo l'interfaccia tunnel**. I comandi girano sul gateway Linux come root.
 
 ```bash
 # Bridge L2 (comune — una volta sola)
-ip link add name br0 type bridge && ip link set br0 up
-ip link set <IFACE_TUNNEL> master br0    # tap0 (OpenVPN) | gretap0 (GRETAP)
-ip link set eth0 master br0              # trunk verso switch — NO ip su eth0
-ip addr add 10.0.3.254/24 dev br0
-iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE   # SNAT su eth1 (WAN), MAI sul bridge
+root@gw:~# ip link add name br0 type bridge && ip link set br0 up
+root@gw:~# ip link set tap0 master br0              # tap0: OpenVPN TAP o GRETAP (vedi sotto)
+root@gw:~# ip link set eth0 master br0              # trunk verso switch — NO ip su eth0
+root@gw:~# ip addr add 10.0.3.254/24 dev br0
+root@gw:~# iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE   # SNAT su eth1 (WAN), MAI sul bridge
 ```
 
 ```bash
 # Creazione interfaccia tunnel — SOLO questo cambia
 # Opzione 1 — GRETAP (no cifratura: link fidati o sopra IPsec)
-ip link add gretap0 type gretap local <IP-PUB-LOCALE> remote <IP-PUB-PEER>
-ip link set gretap0 up
+root@gw:~# ip link add tap0 type gretap local <IP-PUB-LOCALE> remote <IP-PUB-PEER>   # tipo gretap, nome tap0
+root@gw:~# ip link set tap0 up
 # Opzione 2 — OpenVPN TAP (TLS nativa): dev tap0 in server.conf/client.conf
 ```
 
@@ -818,7 +824,7 @@ ip link set gretap0 up
 | Disponibilità | solo Linux | multipiattaforma |
 | Config | 2 comandi `ip link` | file `.conf` + certificati |
 
-**Test**: `ip -d link show <iface>` · `brctl show br0` · `arping -I br0 <IP-remoto>`
+**Test** (sul gateway Linux): `root@gw:~# ip -d link show <iface>` · `root@gw:~# bridge link` · `root@gw:~# arping -I br0 <IP-remoto>`
 
 ## 17 · 802.1X — autenticazione sulle porte access
 
@@ -831,24 +837,26 @@ ip link set gretap0 up
 | 3 | Switch | `dot1x port-control auto` su ogni porta access |
 | 4 | RADIUS | client (lo switch) + utenti |
 
-```
+```cisco
 ! Switch — globale e RADIUS
-aaa new-model
-aaa authentication dot1x default group radius local
-dot1x system-auth-control
-radius-server host 192.168.1.100 auth-port 1812 acct-port 1813 key <chiave>
-username admin secret <password>          ! fallback se RADIUS irraggiungibile
+Switch(config)# aaa new-model
+Switch(config)# aaa authentication dot1x default group radius local
+Switch(config)# dot1x system-auth-control
+Switch(config)# radius-server host 192.168.1.100 auth-port 1812 acct-port 1813 key <chiave>
+Switch(config)# username admin secret <password>          ! fallback se RADIUS irraggiungibile
+```
 
+```cisco
 ! Switch — porte access
-interface range fa0/1-48
- switchport mode access
- switchport access vlan 10
- dot1x port-control auto                  ! auto | force-authorized | force-unauthorized
- spanning-tree portfast
+Switch(config)# interface range fa0/1-48
+Switch(config-if-range)# switchport mode access
+Switch(config-if-range)# switchport access vlan 10
+Switch(config-if-range)# dot1x port-control auto                  ! auto | force-authorized | force-unauthorized
+Switch(config-if-range)# spanning-tree portfast
 ```
 
 ```
-# FreeRADIUS — clients.conf
+# FreeRADIUS — clients.conf (contenuto di file, non CLI)
 client 192.168.1.0/24 {
     secret    = <chiave>                  # IDENTICA al "key" sullo switch
     shortname = switch-lab
@@ -865,6 +873,7 @@ mario  Cleartext-Password := "password123"
 Nell'`Access-Accept` il RADIUS può dire al NAS **in quale VLAN** mettere l'utente (RFC 2868):
 
 ```
+# attributi RADIUS (contenuto di file, non CLI)
 Tunnel-Type             = VLAN
 Tunnel-Medium-Type      = IEEE-802
 Tunnel-Private-Group-Id = "10"            # VLAN ID di destinazione
@@ -873,6 +882,7 @@ Tunnel-Private-Group-Id = "10"            # VLAN ID di destinazione
 Si può **unificare l'SSID** e smistare ogni utente nella VLAN giusta in base al gruppo LDAP:
 
 ```
+# FreeRADIUS — policy per gruppo LDAP (contenuto di file, non CLI)
 DEFAULT Ldap-Group == "cn=tecnici,ou=staff,dc=sito,dc=it"
         Tunnel-Type = VLAN, Tunnel-Medium-Type = IEEE-802, Tunnel-Private-Group-Id = "10"
 DEFAULT Ldap-Group == "cn=infopoint,ou=staff,dc=sito,dc=it"
@@ -883,21 +893,26 @@ DEFAULT Auth-Type := Reject
 > Aggiungere un tecnico = creare l'utenza in LDAP nel gruppo giusto, senza toccare AP né switch.
 > Stesso meccanismo per confinare un profilo sospeso in una **VLAN di quarantena**.
 
-**Test**: `show dot1x all` · `show dot1x interface fa0/1` · `tail -f /var/log/freeradius/radius.log`
+**Test**: `Switch# show dot1x all` · `Switch# show dot1x interface fa0/1` · `root@radius:~# tail -f /var/log/freeradius/radius.log`
 
-## 18 · Test end-to-end — comandi utili
+## 18 · Test end-to-end — comandi utili (da privileged EXEC)
 
-```
-ping <ip> ; ping <ip> source <ip-sorgente> ; traceroute <ip>
-R# show ip route ; show ip route ospf ; show ip route 192.168.1.0
-R# show ip interface brief ; show interfaces GigabitEthernet0/0
-R# show running-config | section ospf
-R# show running-config | section nat
+```cisco
+R0# ping <ip>
+R0# ping <ip> source <ip-sorgente>
+R0# traceroute <ip>
+R0# show ip route
+R0# show ip route ospf
+R0# show ip route 192.168.1.0
+R0# show ip interface brief
+R0# show interfaces GigabitEthernet0/0
+R0# show running-config | section ospf
+R0# show running-config | section nat
 ```
 
 > `traceroute` mostra il percorso hop-by-hop: utile per capire quale router smista tra VLAN o aree OSPF.
 
----
+
 ---
 
 # Parte III · Backup & Ripristino
