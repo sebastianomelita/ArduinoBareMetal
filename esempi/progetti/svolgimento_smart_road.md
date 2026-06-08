@@ -134,7 +134,7 @@ In questo caso la rete di sensori è analoga ad una grande LAN industriale compo
 
 <img src="../img/cdc_lombardia_B1_dwdm.svg" alt="cdc_lombardia_B1_due_livelli" width="900">
 
-Il link equivale ad un link di trunk tra due switch  e porta con se tutte le VLAN di un tratto, condividendole con tutte quelle degli altri tratti, in un'unica subnet comune a tutti per ogni VLAN (una per i sensori, una per le videocamere, una per le colonnine di ricarica).
+Il link equivale ad una **dorsale di trunk** tra due switch e aggrega su di se le **dorsali logiche** di tutte le VLAN di un tratto. Il CS L2 provvederà a fondere insieme le VLAN di ogni tratto, su di esse si allocheranno **tre subnet separate** (una per i sensori, una per le videocamere, una per le colonnine di ricarica).
 
 #### 3.2.2 Sensori (end-device LoRaWAN)
 
