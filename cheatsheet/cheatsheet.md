@@ -38,11 +38,14 @@ Normalmente, bit rate e consumo sono direttamente proporzionali, quando cresce i
 ### 1.1 Schema fisico
 - Schema fisico (**planimetria**) dello scenario: ambienti ed edifici chiave, infrastruttura
   **indoor**/**outdoor**, con **etichettatura univoca** di tutti gli asset di rete.
-- Schema logico (albero degli **apparati attivi**) di tutti i dispositivi con **ruolo** e
-  **link virtuali** ai vari livelli ISO/OSI (tipicamente L2, L3, L7):
-  - link L2/L3 **tunnel** (VPN) su rete pubblica ISP — Secure o Trusted Network;
-  - link L2/L3 **ponte radio 802.11** (WiFi) Client/Server o bridged;
-  - link L7 tra sensori/attuatori IP e broker MQTT, o tra gateway WSN e broker MQTT.
+- Schema logico (albero degli **apparati attivi**) di tutti i dispositivi che rappresenti:
+     - eventuale **router di confine** della LAN
+     - eventuale gerarchia di **switch** che realizzano fisicamente la LAN
+     - **link fisici**: dorsali interne alle LAN e dorsali esterne verso lo ISP
+     - **link virtuali** ai vari livelli ISO/OSI (tipicamente L2, L3, L7):
+         - link L2/L3 **tunnel** (VPN) su rete pubblica ISP — Secure o Trusted Network;
+         - link L2/L3 **ponte radio 802.11** (WiFi) Client/Server o bridged;
+         - link L7 tra sensori/attuatori IP e broker MQTT, o tra gateway WSN e broker MQTT.
 
 ### 1.2 Utenti e dispositivi
 - **Divisione in gruppi** degli utenti e caratterizzazione (dislocazione delimitata via subnet
