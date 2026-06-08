@@ -22,6 +22,7 @@ Servizi:
 - [Autenticazione SSO Active Directory](/approfondimenti/00_dispensa_principale.md)
 - [Continuità di servizio](/approfondimenti/continuita_di_servizio.md)
 - [Backup](backup.md)
+- [Spillamento fibra](/esempi/progetti/dettaglio_spillamento_fibra.md) 
 
 ## **Caso d'uso LoRaWan** 
 
