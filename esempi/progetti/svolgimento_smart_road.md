@@ -648,10 +648,19 @@ La sicurezza è organizzata per **strati** (defense in depth):
 - Firewall stateful al perimetro di ogni CdC e del CN; IDS/IPS con regole signature-based + analisi comportamentale.
 - Segmentazione **micro** tramite VLAN e ACL: gli smart-gate non possono parlare tra loro, ma solo col CdC.
 - **NAC (Network Access Control)** con 802.1X sugli switch del CdC per autenticare ogni dispositivo che si collega.
-- si abilita 802.1X sulle porte di accesso dello switch dello smart-gate
+- si abilita 802.1X sulle porte di accesso dello switch dello smart-gate che autentica a L2 con EAP i dispositivi connessi al loro inserimento senza cifratura End to End con:
      - EAP-TLS dove i dispositivi lo supportano (riusando la PKI di 802.1X),
      - MAB+profiling per i dispositivi legacy
      - RADIUS locale o critical-auth per non rompere la modalità degraded. È un rafforzamento che si aggiunge a tamper detection e mutual-TLS, non li sostituisce.
+
+**Sicurezza applicativa**:
+
+- Tutto in **TLS 1.3** (HTTPS, MQTTS, WSS).
+- Autenticazione dei dispositivi smart-gate verso il broker MQTT con **certificati X.509** (mutual TLS). Ogni smart-gate ha il proprio certificato emesso da una PKI interna; il certificato viene installato in fabbrica e ruotato annualmente.
+- Autenticazione degli utenti dell'APP con **OAuth 2.0 + OIDC** e MFA per le funzioni che muovono denaro (prenotazione e pagamento ricarica).
+- Le password sugli account utente sono salvate con **bcrypt/argon2** (mai in chiaro, mai con hash veloci come MD5/SHA1).
+
+**Il perchè dell'autenticazione multilivello**
 
 L'autenticazione 802.1X e mTLS (Mutual TLS) sembrano alternativi perché usano lo stesso tipo di credenziale (certificato X.509) e magari la stessa PKI, ma autenticano cose diverse, a livelli diversi, verso interlocutori diversi. Sono complementari, non sostitutivi. Uno **presenta** il certificato **al RADIUS** per entrare in rete, l'altro lo presenta **al broker** per aprire la sessione applicativa:
 
@@ -660,13 +669,6 @@ L'autenticazione 802.1X e mTLS (Mutual TLS) sembrano alternativi perché usano l
 - **Con solo 802.1X**: un dispositivo che ha superato l'ammissione (o che ha spoofato il MAC in MAB) potrebbe provare a connettersi al broker; senza mTLS il broker non potrebbe verificarne l'identità applicativa né il traffico sarebbe **cifrato end-to-end** attraverso la WAN, dove passa per nodi intermedi (firewall, dorsale, broker che inoltra).
 
 Un'**analogia**: l'802.1X è il tornello con badge all'ingresso dell'edificio; il mTLS è il mostrare il documento alla persona specifica con cui poi parli, in una stanza insonorizzata. Stesso documento d'identità, due controlli in due punti diversi.
-
-**Sicurezza applicativa**:
-
-- Tutto in **TLS 1.3** (HTTPS, MQTTS, WSS).
-- Autenticazione dei dispositivi smart-gate verso il broker MQTT con **certificati X.509** (mutual TLS). Ogni smart-gate ha il proprio certificato emesso da una PKI interna; il certificato viene installato in fabbrica e ruotato annualmente.
-- Autenticazione degli utenti dell'APP con **OAuth 2.0 + OIDC** e MFA per le funzioni che muovono denaro (prenotazione e pagamento ricarica).
-- Le password sugli account utente sono salvate con **bcrypt/argon2** (mai in chiaro, mai con hash veloci come MD5/SHA1).
 
 **Crittografia**:
 
