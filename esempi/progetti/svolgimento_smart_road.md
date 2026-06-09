@@ -246,11 +246,10 @@ Il gateway LoRaWAN del km è **ospitato all'interno del cabinet del PMV (Pannell
 
 Per i tratti autostradali in zone scarsamente coperte dalla fibra (passi montani, contesti isolati), il gateway LoRaWAN può essere realizzato come **gateway All-In-One con doppia interfaccia**: LoRaWAN verso i sensori, modem **5G/4G** o connettività **satellitare LEO** (es. Starlink Direct-to-Cell) verso il network server. È la stessa configurazione utilizzata in agricoltura di precisione e nel monitoraggio ambientale di aree remote.
 
----
 
-# 7.  Network server - Colui che autentica il payload
+## 6.3.  Network server - Colui che autentica il payload
 
-## 7.1 Architettura distribuita vs centralizzata
+### 6.3.1. Architettura distribuita vs centralizzata
 
 **Separazione dei ruoli del network server.** È un altro punto fondamentale per chiarire l'architettura. La specifica LoRaWAN identifica diversi ruoli funzionali che possono stare insieme su una sola macchina o essere distribuiti:
 
@@ -303,18 +302,18 @@ La motivazione forte per la configurazione A allo strato edge è l'argomento del
 
 **La gestione dei 1.000 network server locali.** L'obiezione naturale è: "1.000 network server da gestire sono ingestibili". È vero solo con strumenti vecchi. Con il **fleet management moderno** (Ansible/Salt per la configurazione, container Docker o K3s edge per il deployment, Prometheus per il monitoring, OTA firmware update via canale MQTT sicuro) la gestione di 1.000 dispositivi edge identici è un'operazione standardizzata. Le grandi reti CDN e le flotte di POS gestiscono decine o centinaia di migliaia di nodi edge con questi strumenti — 1.000 è un numero piccolo.
 
----
+## 6.4. Application  server - Colui che decodifica il payload
 
-# 8. Apllication  server - Colui che decodifica il payload
+## 6.4.1. Chiave di sessione
 
-Punto da chiarire con precisione, perché è una sorgente classica di errore. Nella catena LoRaWAN i ruoli agiscono **in sequenza**:
+Nella catena LoRaWAN i ruoli agiscono **in sequenza**:
 
 1. Il **network server** riceve il frame, verifica il MIC con la NwkSKey (integrità + autenticazione), deduplica e gestisce l'ADR. **Non legge il contenuto applicativo.**
 2. L'**application server** riceve il payload, lo **decifra** con la AppSKey e poi lo **decodifica** dal formato compatto Cayenne LPP al JSON leggibile.
 
 Ne segue una conseguenza architetturale vincolante: **la decodifica del payload può avvenire solo dove c'è l'application server, che a sua volta presuppone a monte il network server.** Per questo, avendo scelto (vedi §3.2.9) di portare le decisioni di sicurezza all'edge, mettiamo **network server + application server insieme all'edge** — a bordo di ogni gateway (configurazione A) o ogni N gateway (configurazione B). È lì che il payload diventa un dato in chiaro.
 
-#### I due livelli di cifratura (indipendenti)
+### 6.4.2. I due livelli di cifratura (indipendenti)
 
 Sul percorso del dato convivono **due cifrature sovrapposte e indipendenti**, che proteggono cose diverse:
 
@@ -325,13 +324,13 @@ Sul percorso del dato convivono **due cifrature sovrapposte e indipendenti**, ch
 
 La chiave è che **il payload resta cifrato con AppSKey anche dentro il tunnel TLS**: nessun nodo intermedio (gateway che inoltra, broker che smista) può leggere le misure, perché non possiede la AppSKey. Il TLS protegge l'involucro; la AppSKey protegge il contenuto.
 
-#### Come viaggia il dato verso il Centro Nazionale
+### 6.4.3. Come viaggia il dato verso il Centro Nazionale
 
 Poiché network server + application server stanno all'edge, **la decifratura e la decodifica avvengono vicino alla sorgente**. Da quel momento il dato è in chiaro (JSON) e viaggia verso il CN come normale messaggio **MQTT su TLS**: il CN riceve un dato già leggibile e **non ha bisogno della AppSKey**. La AppSKey resta confinata all'edge (dove serve a decifrare) e al join server (dove viene generata); non viene mai propagata al CN. Le chiavi *master* (AppKey) non lasciano mai il join server (§3.2.10).
 
 L'AS sul gateway diventa il publisher dei messaggi MQTT in up verso il server di gestione. L'AS sul gateway è anche il subscriober di eventuali messaggi MQTT in down dal server di gestione verso lo smart gate. 
 
-#### Il rischio della scelta edge e come mitigarlo
+### 6.4.4. Il rischio della scelta edge e come mitigarlo
 
 Va dichiarato apertamente: **tenere l'application server all'edge è un compromesso, non una soluzione a costo zero.** Il prezzo della bassa latenza è che le **AppSKey** dei sensori risiedono fisicamente in un nodo a bordo strada, accessibile a chi abbia mezzi e determinazione. È un trade-off consapevole tra reattività (decisioni di sicurezza in millisecondi) ed esposizione delle chiavi di sessione. Per renderlo accettabile servono tre difese su piani diversi, da adottare **insieme**.
 
@@ -349,11 +348,10 @@ Va dichiarato apertamente: **tenere l'application server all'edge è un comprome
 
 In sintesi: la scelta edge resta valida **a condizione** che il nodo edge sia trattato come un dispositivo di sicurezza a sé — autenticato mutuamente, con chiavi in modulo anti-tampering, e con consegna delle chiavi subordinata all'attestazione di integrità. Senza queste difese, l'application server all'edge sarebbe effettivamente un punto debole; con esse, il rischio residuo è circoscritto e gestibile.
 
----
 
-# 9 Join server - colui che distribuisce le chiavi di sessione
+## 6.5. Join server - colui che distribuisce le chiavi di sessione
 
-## Gestione della sicurezza della rete LoRaWAN
+### 6.5.1.  Gestione della sicurezza della rete LoRaWAN
 
 Ogni sensore si registra al network server tramite **Over-the-Air Activation (OTAA)**. In fabbrica il sensore viene programmato con:
 
@@ -369,7 +367,7 @@ Al primo join, il join server usa la AppKey per generare e distribuire due chiav
 Questo meccanismo è anche un caso applicativo concreto delle **funzioni hash crittografiche** (quesito 4 della seconda parte): AES-CMAC è una funzione di tipo HMAC che produce un'impronta non falsificabile senza conoscere la chiave.
 
 
-## 9.2.  Join Server e ridondanza
+### 6.5.2.  Join Server e ridondanza
 
 Il **Join Server** è il componente che gestisce le funzioni di **autenticazione e autorizzazione** dei sensori in fase di registrazione, e di **gestione delle chiavi di sessione** durante la vita operativa del dispositivo. Le sue responsabilità sono:
 
@@ -426,7 +424,7 @@ Caratteristiche dell'alta disponibilità del join server:
 
 **Una piccola nota progettuale.** Esiste in commercio anche la possibilità di affidare il join server a un provider esterno specializzato (es. Actility, Senet, alcuni operatori telco offrono questo come servizio gestito). Per un progetto di infrastruttura critica nazionale come la rete autostradale è però **preferibile mantenere il controllo interno**: le chiavi master sono un asset strategico del paese e affidarle a un terzo introduce dipendenze contrattuali e geopolitiche che vale la pena evitare.
 
-### 9.2.1. Riassunto dei vantaggi della scelta
+### 6.5.3. Riassunto dei vantaggi della scelta
 
 - **Zero scavi lungo il km**: nessun cavo di alimentazione né di dati per i sensori. Costo di posa fortemente abbattuto rispetto a soluzioni cablate.
 - **Installazione e manutenzione modulare**: ogni sensore è una scatoletta indipendente fissata al guard-rail in mezz'ora.
@@ -441,6 +439,8 @@ Caratteristiche dell'alta disponibilità del join server:
 
 # 10. Server di gestione - Colui che elabora i payload
 
+Non è un dispositivo della gerarchia LoRaWAN, non deve implementare lo stack protocollare LoRaWAN ma deve semplicemente ricevere i payload che l'AS spedisce e inoltra via MQTT.
+
 ## 10.1. Comunicazione smart-gate ↔ CdC
 
 Questa è la tratta più delicata: deve essere ad alta banda (per gli stream video on-demand), bassa latenza, sempre disponibile.
@@ -452,7 +452,7 @@ Questa è la tratta più delicata: deve essere ad alta banda (per gli stream vid
   - **RTSP/SRT** per gli stream video on-demand (solo quando l'operatore richiede la visione live).
 - **Backup**: connessione **5G/4G LTE** con APN privato della società autostradale, attivata automaticamente da BGP/SD-WAN in caso di failure della fibra.
 
-## 10.2. Modello dei topic MQTT per uno smart-gate
+## 7.2. Modello dei topic MQTT per uno smart-gate
 
 Si può definire una gerarchia di topic come segue. Sia `<RR>` la regione, `<TT>` il tratto, `<NNN>` l'identificatore numerico dello smart-gate (es. `LO/01/042` = Lombardia, tratto 1, smart-gate 42):
 
@@ -513,9 +513,9 @@ Esempio di payload sul topic `comandi/schermo`:
   }
 }
 ```
-## 10.3. gerarchia di server di gestione
+## 7.3. gerarchia di server di gestione
 
-### 10.3.1. Comunicazione CdC ↔ CN
+### 7.3.1. Comunicazione CdC ↔ CN
 
 - **Connessione primaria**: rete **MPLS L3VPN** fornita da un operatore telco. Garantisce SLA contrattuali, classi di servizio (QoS) e isolamento.
 - **Connessione di backup**: tunnel **VPN IPsec site-to-site** su Internet pubblica, da firewall a firewall.
@@ -524,14 +524,14 @@ Esempio di payload sul topic `comandi/schermo`:
   - **HTTPS/REST** per le chiamate sincrone (es. recupero di dati storici, push di configurazioni globali dal CN ai CdC).
   - **gRPC** in alternativa al REST quando occorre throughput più alto e contratti tipizzati (Protocol Buffers).
 
-### 10.3.2. Comunicazione APP utenti ↔ CN
+### 7.3.2. Comunicazione APP utenti ↔ CN
 
 - **HTTPS/REST** (versionato `/v1/...`) per le chiamate stateless del client.
 - **WebSocket Secure (WSS)** per il push real-time delle segnaletiche e dello stato dei punti di ricarica.
 - In alternativa, **MQTT over WebSocket Secure** se si vuole riusare l'infrastruttura broker (il client APP si registra come subscriber su topic di pubblico interesse).
 - Autenticazione utenti con **OAuth 2.0 + OpenID Connect** per le funzioni che richiedono profilazione (prenotazione ricarica). Le funzioni di sola lettura della segnaletica sono accessibili in modo anonimo.
 
-### 10.3.3. Comunicazione stazioni di ricarica ↔ rete
+### 7.3.3. Comunicazione stazioni di ricarica ↔ rete
 
 Le stazioni di ricarica utilizzano lo standard **OCPP (Open Charge Point Protocol) 1.6 o 2.0.1** su WebSocket Secure verso un CSMS (Charging Station Management System) che, nel nostro progetto, è un microservizio del CN. Questo dà accesso a:
 
@@ -541,11 +541,11 @@ Le stazioni di ricarica utilizzano lo standard **OCPP (Open Charge Point Protoco
 
 ---
 
-# 11. Piano di indirizzamento dettagliato - Subnetting dorsali in fibra
+# 8. Piano di indirizzamento dettagliato - Subnetting dorsali in fibra
 
 Si adotta un piano basato su **RFC 1918** all'interno della rete privata della società autostradale e indirizzi pubblici solo per i servizi esposti su Internet (APP, sito istituzionale).
 
-## 11.1 Spazio di indirizzamento privato
+## 8.1 Spazio di indirizzamento privato
 
 Si può definire una gerarchia di topic come segue. Sia `<RR>` la regione, `<TT>` il tratto, `<NNN>` prefisso di host dei dispositivi dotati di IP in quel tratto.
 
@@ -603,7 +603,7 @@ Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
 
 ---
 
-# 12. Routing e NAT
+# 9. Routing e NAT
 
 ## 12.1. Routing e NAT
 - **Routing dinamico interno**: protocollo **OSPF** sulle aree regionali, con area 0 (backbone) tra i CdC e il CN.
@@ -612,15 +612,15 @@ Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
 
 ---
 
-## 12.2. NAT e indirizzi pubblici
+## 9.2. NAT e indirizzi pubblici
 
 Solo i servizi rivolti agli utenti dell'APP hanno indirizzi pubblici. Si usa un piccolo blocco IPv4 (es. `203.0.113.0/29`) e/o IPv6 nativo, dietro load balancer di frontiera con WAF (Web Application Firewall).
 
 ---
 
-# 14. Continuità di servizio e sicurezza
+# 10. Continuità di servizio e sicurezza
 
-## 14.1 Continuità di servizio (alta affidabilità)
+## 10.1 Continuità di servizio (alta affidabilità)
 
 | Livello | Tecniche adottate |
 |---------|-------------------|
@@ -632,7 +632,7 @@ Solo i servizi rivolti agli utenti dell'APP hanno indirizzi pubblici. Si usa un 
 | Dati | Backup giornalieri + replica geografica; piano di Disaster Recovery con RTO < 4 h e RPO < 15 min |
 | Servizi APP | CDN davanti all'API gateway; rate limiting per resistere a spike di traffico |
 
-### 14.2 Sicurezza
+### 10.2 Sicurezza
 
 La sicurezza è organizzata per **strati** (defense in depth):
 
@@ -667,11 +667,11 @@ La sicurezza è organizzata per **strati** (defense in depth):
 
 ---
 
-# 15. Quesito 1 - Database prenotazioni ricarica (modello logico)
+# 11. Quesito 1 - Database prenotazioni ricarica (modello logico)
 
 Si modella la porzione del database nazionale dedicata alle **stazioni di ricarica e alle prenotazioni** per veicoli elettrici. Le altre porzioni (storico segnaletiche, telemetria, utenti) sono lasciate fuori da questo schema per coerenza con il quesito.
 
-## 15.1 Analisi dei requisiti
+## 11.1 Analisi dei requisiti
 
 Dal testo della traccia:
 
@@ -681,7 +681,7 @@ Dal testo della traccia:
 - Si devono gestire **prenotazioni** sulla base dell'**orario di arrivo** stimato e della **durata** stimata.
 - Le prenotazioni sono fatte da utenti dell'APP.
 
-## 15.2 Modello concettuale (ER)
+## 11.2 Modello concettuale (ER)
 
 Entità individuate:
 
@@ -703,7 +703,7 @@ Relazioni principali:
 - TARIFFA 1—N PRENOTAZIONE.
 - PRENOTAZIONE 1—1 SESSIONE_RICARICA (opzionale: alcune prenotazioni non sfociano in una sessione, es. no-show).
 
-## 15.3 Schema logico relazionale
+## 11.3 Schema logico relazionale
 
 Notazione: chiave primaria sottolineata `[PK]`, chiave esterna `[FK→tabella.campo]`.
 
@@ -734,14 +734,14 @@ UTENTE ──< VEICOLO
                          └──1:1── SESSIONE_RICARICA
 ```
 
-### 15.3.1 Vincoli di integrità rilevanti
+### 11.3.1 Vincoli di integrità rilevanti
 
 - Una **prenotazione** non può sovrapporsi a un'altra sulla stessa coppia (id_punto, intervallo_temporale). Vincolo applicativo o tramite **exclusion constraint** (in PostgreSQL `EXCLUDE USING gist`).
 - Il tipo di connettore della prenotazione deve essere compatibile col veicolo: vincolo da implementare a livello applicativo o con trigger.
 - `stato` di PRENOTAZIONE ∈ {attiva, in_corso, completata, annullata, no_show}.
 - `stato_corrente` di PUNTO_RICARICA ∈ {libero, occupato, guasto, manutenzione, prenotato}.
 
-### 15.3.2 Query di esempio
+### 11.3.2 Query di esempio
 
 Punti liberi compatibili con il veicolo dell'utente, in una stazione, in una finestra oraria:
 
@@ -762,16 +762,16 @@ WHERE p.id_stazione = :id_stazione_richiesta
   );
 ```
 
-### 15.3.3 Considerazioni di scalabilità
+### 11.3.3 Considerazioni di scalabilità
 
 - Le tabelle ad alta frequenza di scrittura (PUNTO_RICARICA.stato_corrente) andrebbero affiancate da una cache in-memory (Redis) per servire le query di stato all'APP con latenza < 100 ms.
 - Le sessioni di ricarica chiuse possono essere migrate su una tabella storica partizionata per anno/mese per non appesantire la tabella attiva.
 
 ---
 
-# 16. Quesito 2 - Protocollo applicativo per l'APP guidatori
+# 12. Quesito 2 - Protocollo applicativo per l'APP guidatori
 
-## 16.1 Scelta della tecnologia
+## 12.1 Scelta della tecnologia
 
 L'APP guidatori deve:
 
@@ -789,7 +789,7 @@ La scelta proposta è **ibrida**:
 
 Questa combinazione è elegante perché **riusa la stessa infrastruttura di brokering MQTT** già presente per la comunicazione interna smart-gate → CdC → CN: il broker centrale espone su Internet (dietro TLS e autenticazione) un sottoinsieme dei topic, e l'APP è semplicemente un altro client del broker.
 
-## 16.2 Architettura della comunicazione APP↔CN
+## 12.2 Architettura della comunicazione APP↔CN
 
 ```
    ┌──────────┐   HTTPS REST    ┌─────────────┐
@@ -803,7 +803,7 @@ Questa combinazione è elegante perché **riusa la stessa infrastruttura di brok
    └──────────┘                 └─────────────┘
 ```
 
-## 16.3 Specifica del protocollo applicativo REST
+## 12.3 Specifica del protocollo applicativo REST
 
 Convenzioni:
 
@@ -813,7 +813,7 @@ Convenzioni:
 - Codici di stato HTTP standard (`200 OK`, `201 Created`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `409 Conflict`, `5xx`).
 - Paginazione tramite `?page=1&size=20` con header `X-Total-Count`.
 
-#### 16.3.1 Risorse principali
+#### 12.3.1 Risorse principali
 
 | Metodo | Endpoint | Descrizione | Auth |
 |--------|----------|-------------|------|
@@ -868,7 +868,7 @@ X-Updated-At: 2024-06-15T10:32:20Z
 }
 ```
 
-#### 16.3.3 Esempio: creazione prenotazione
+#### 12.3.3 Esempio: creazione prenotazione
 
 **Request**:
 
@@ -921,7 +921,7 @@ Content-Type: application/json
 }
 ```
 
-## 16.4 Specifica del canale push (MQTT)
+## 12.4 Specifica del canale push (MQTT)
 
 L'APP, dopo l'apertura, individua il tratto autostradale in cui si trova l'utente (tramite GPS + endpoint `/segments`) e si sottoscrive ai topic di interesse sul broker pubblico:
 
@@ -952,7 +952,7 @@ Payload di esempio su `smartroad/pub/LO/01/042/signage`:
 }
 ```
 
-### 16.4.1 Sicurezza del protocollo
+### 12.4.1 Sicurezza del protocollo
 
 - Tutti gli scambi sono in **TLS 1.3** con certificati firmati da una CA pubblica (server) e con possibile **pinning** lato APP per resistere ad attacchi MITM con CA compromesse.
 - I JWT hanno scadenza breve (15 min) e sono rinnovati tramite **refresh token** (rotazione del refresh token a ogni uso).
@@ -960,7 +960,7 @@ Payload di esempio su `smartroad/pub/LO/01/042/signage`:
 - Validazione lato server di tutti gli input (lunghezza, formato, range), per prevenire injection.
 - I dati di prenotazione restano nel DB nazionale; l'APP non memorizza dati sensibili (targhe, ecc.) oltre la sessione corrente.
 
-### 16.4.2 Vantaggi della soluzione proposta
+### 12.4.2 Vantaggi della soluzione proposta
 
 - **REST/HTTPS** è universalmente supportato, semplice da debuggare (curl, Postman), facile da cachare lato CDN per i dati pubblici (segnaletica, stazioni).
 - **MQTT/WSS** dà push real-time efficiente in termini di batteria e banda (connessione persistente, payload compatti), passa attraverso firewall e proxy aziendali (porta 443).
