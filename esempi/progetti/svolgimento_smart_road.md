@@ -24,11 +24,11 @@
 
 ---
 
-## 1. Analisi della realtà di riferimento e ipotesi aggiuntive
+# 1. Analisi della realtà di riferimento e ipotesi aggiuntive
 
 Prima di entrare nel dettaglio tecnico è opportuno fissare alcune **ipotesi aggiuntive** che restringono il dominio del problema e rendono coerenti le scelte progettuali successive.
 
-### 1.1 Ipotesi sul dominio
+## 1.1 Ipotesi sul dominio
 
 - **Tratti sperimentali**: si ipotizzano 20 **catene** di tratti di autostrada che si estendono complessivamente per circa 50 km ciascuno, una catena per regione (20 regioni), per un totale di circa 1.000 km coperti e **~1.000 smart-gate** (uno ogni km).
 - **Smart-gate**: ognuno è una stazione "embedded industrial" con doppia alimentazione (rete elettrica + UPS + pannelli fotovoltaici di backup) installata a bordo strada.
@@ -37,7 +37,7 @@ Prima di entrare nel dettaglio tecnico è opportuno fissare alcune **ipotesi agg
 - **Stazioni di ricarica**: ipotizziamo ~200 stazioni totali, con 4-8 punti di ricarica ciascuna, collegate al CN tramite il loro CdC regionale.
 - **Volume di traffico dati**: ogni smart-gate trasmette ~1-2 KB/s di telemetria (sensori a bassa frequenza) e fino a ~5 Mbps in upload se sono attivi stream video dalle telecamere. In totale per un tratto: 50 smart-gate × 5 Mbps = ~250 Mbps di picco.
 
-### 1.2 Vincoli normativi
+## 1.2 Vincoli normativi
 
 - **GDPR**: le targhe sono dati personali; i flussi video sono trattati come dati personali. Devono essere previste cifratura at-rest e in-transit, retention limitata, mascheramento per il dataset di analytics.
 - **Codice della strada**: la segnaletica variabile è normata; gli smart-gate devono poter operare in **modalità degraded** anche se isolati dal CdC (segnaletica preimpostata di sicurezza).
@@ -119,7 +119,7 @@ Topologia della rete LAN dei sensori di un generico tratto:
 Per i dettegli sulla tecnologia della rete fisica in fibra vedi il file [`dettaglio_spillamento_fibra.md`](./dettaglio_spillamento_fibra.md)
 
 
-### 3.2.2. Confronto e scelta tra tecnologie di rete in fibra
+### 3.3. Confronto e scelta tra tecnologie di rete in fibra
 
 **Scelta: anello Ethernet L2 con ERPS.** Motivazioni:
 
@@ -133,7 +133,7 @@ Per i dettegli sulla tecnologia della rete fisica in fibra vedi il file [`dettag
 |----------------|-------------------|--------------------|---------| 
 | Scelta per il progetto | ✅ **Adottata** | ❌ Esagerata | ❌ Insufficiente resilienza |
 
-### 3.2.4. Tracciato fisico della fibra
+### 3.4. Tracciato fisico della fibra
 
 La fibra fisica viene posata in modi diversi a seconda del contesto:
 
@@ -145,7 +145,7 @@ La fibra fisica viene posata in modi diversi a seconda del contesto:
 Il cavo in fibra tipico per questa applicazione ha **24 o 48 fibre** ottiche monomodali (G.652 standard), di cui solo 4-8 effettivamente utilizzate per la rete dello smart-gate: le altre sono **fibre di scorta ("dark fiber")** per espansioni future, sostituzione di fibre danneggiate, o servizi aggiuntivi (es. videosorveglianza dedicata, connettività per i ristoranti/aree di servizio lungo il tratto).
 
 
-### 3.2.5. Cluster di tratti 
+### 3.5. Cluster di tratti 
 
 Come si "spilla" la fibra lungo le decine di km del tratto per servire ogni smart-gate? Esistono tre approcci: un **anello Ethernet attivo con switch L2** (rigenerazione attiva a ogni km, failover ERPS < 50 ms), un **anello IP con router L3** (più costoso e con failover più lento) e una **PON con splitter ottici passivi** (niente apparato attivo a bordo strada, ma nessuna ridondanza ad anello).
 
@@ -193,9 +193,9 @@ Lo switch tipo per questo scenario ha le seguenti caratteristiche:
 
 ---
 
-## 5.1 Dispositivi LoRaWAN
+## 5 Dispositivi LoRaWAN
 
-### 5.1.1 Sensori (end-device LoRaWAN)
+### 5.1 Sensori (end-device LoRaWAN)
 
 I sensori sono **end-device LoRaWAN in classe A**, distribuiti lungo il km e ancorati al guard-rail. Caratteristiche:
 
@@ -211,7 +211,7 @@ Dal punto di vista del **firmware**, il sensore segue un ciclo semplice: dopo un
 
 > **Dettaglio completo** — schema a fasi, macchina a stati, pseudocodice commentato ed esempio in C++ (Arduino/LMIC), gestione dell'energia e formato Cayenne LPP: vedi il file [`dettaglio_firmware_sensore.md`](./dettaglio_firmware_sensore.md).
 
-### 5.1.2 Gateway LoRaWAN nel cabinet del PMV (Pannello a Messaggio Variabile)
+### 5.2 Gateway LoRaWAN nel cabinet del PMV (Pannello a Messaggio Variabile)
 
 Il gateway LoRaWAN del km è **ospitato all'interno del cabinet del PMV (Pannello a Messaggio Variabile) a portale**, scelta motivata da quattro ragioni concrete:
 
@@ -226,11 +226,11 @@ Funzioni del gateway:
 - **Bridge LoRa→MQTT**: la componente `lora-gateway-bridge` incapsula il messaggio LoRaWAN in un payload MQTT di servizio (in JSON) pubblicato su un broker locale, che il network server consuma.
 - **Coordinatore radio**: applica le politiche di **Adaptive Data Rate (ADR)** decise dal network server, assegnando a ciascun sensore data rate e potenza di trasmissione ottimali. Sensori vicini al gateway → data rate alto, potenza bassa (consumo minimo). Sensori lontani → data rate basso (più resistente al rumore), potenza alta.
 
-### 5.1.3  Modalità "All-In-One" per tratti remoti
+### 5.3  Modalità "All-In-One" per tratti remoti
 
 Per i tratti autostradali in zone scarsamente coperte dalla fibra (passi montani, contesti isolati), il gateway LoRaWAN può essere realizzato come **gateway All-In-One con doppia interfaccia**: LoRaWAN verso i sensori, modem **5G/4G** o connettività **satellitare LEO** (es. Starlink Direct-to-Cell) verso il network server. È la stessa configurazione utilizzata in agricoltura di precisione e nel monitoraggio ambientale di aree remote.
 
-### 5.1.4 Confine LoRaWAN / IP
+### 5.4 Confine LoRaWAN / IP
 
 Punto importante da chiarire (è una sorgente classica di confusione in sede d'esame):
 
@@ -240,7 +240,7 @@ Punto importante da chiarire (è una sorgente classica di confusione in sede d'e
 | Gateway ↔ Network Server | IP su fibra/5G, MQTT su TLS | JSON di servizio con payload LoRa incapsulato | Indirizzi IP privati |
 | Network Server ↔ Server applicativo | IP, MQTT su TLS | JSON applicativo dopo decodifica Cayenne LPP | Indirizzi IP privati |
 
-Il **gateway** è esattamente il **punto di traduzione** tra il mondo LoRa (senza IP) e il mondo IP/MQTT. Sopra LoRaWAN non c'è IP: il sensore non ha alcun indirizzo IP, ha solo il suo DevEUI.
+Il **gateway** è esattamente il **punto di traduzione** (significato di gateway) tra il mondo LoRa (senza IP) e il mondo IP/MQTT. Sopra LoRaWAN non c'è IP: il sensore non ha alcun indirizzo IP, ha solo il suo DevEUI.
 
 ---
 
