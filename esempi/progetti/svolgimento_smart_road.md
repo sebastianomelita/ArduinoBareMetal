@@ -44,13 +44,13 @@ Prima di entrare nel dettaglio tecnico è opportuno fissare alcune **ipotesi agg
 
 ---
 
-## 2. Architettura della rete - dettaglio
+# 2. Architettura della rete - dettaglio
 
 L'architettura proposta è **gerarchica a 3 livelli**, modello che si presta naturalmente al problema perché replica la struttura fisica della rete autostradale (gate locale → tratto regionale → coordinamento nazionale).
 
 <img src="../img/architettura_3_livelli.svg" alt="Architettura gerarchica a tre livelli" width="680">
 
-### 2.1 Livello smart-gate (edge)
+## 2.1 Livello smart-gate (edge)
 
 Ogni smart-gate è un nodo **edge computing** con le seguenti caratteristiche:
 
@@ -71,7 +71,7 @@ Il fatto di concentrare elaborazione locale (edge) è una scelta motivata da:
 2. **Bassa latenza nelle decisioni di sicurezza**: se un sensore rileva ghiaccio sull'asfalto, lo smart-gate può abbassare autonomamente il limite di velocità sul PMV (Pannello a Messaggio Variabile) in < 100 ms, senza attendere il CdC.
 3. **Modalità degraded**: in caso di isolamento, lo smart-gate continua a operare in autonomia con segnaletica conservativa.
 
-### 2.2 Livello Centro di Controllo (CdC)
+## 2.2 Livello Centro di Controllo (CdC)
 
 Ogni CdC è un **mini data-center regionale** che funge da aggregatore per ~50 smart-gate. Comprende:
 
@@ -83,7 +83,7 @@ Ogni CdC è un **mini data-center regionale** che funge da aggregatore per ~50 s
 - **Firewall di frontiera** (cluster active/standby) con segmentazione VLAN interna.
 - **Router di accesso WAN** verso il CN (doppia uscita: MPLS primario + Internet con VPN IPsec come backup).
 
-### 2.3 Livello nazionale (CN)
+## 2.3 Livello nazionale (CN)
 
 Il CN è progettato come **due data-center attivo-attivo** geograficamente separati (es. Roma e Milano), con repliche sincrone del DB tramite link in fibra dedicato. Ospita:
 
@@ -95,22 +95,22 @@ Il CN è progettato come **due data-center attivo-attivo** geograficamente separ
 
 ---
 
-## 3. Tecnologie di comunicazione tra nodi
+# 3. Tecnologie di comunicazione tra nodi
 
 Le tecnologie scelte differiscono per ogni "salto" della gerarchia, in funzione di banda richiesta, latenza, affidabilità ed esposizione.
 
-### 3.1 Comunicazione interna allo smart-gate
+## 3.1 Comunicazione interna allo smart-gate
 
 Lo smart-gate ha al suo interno due famiglie di dispositivi che richiedono trattamenti diversi:
 
 - **Telecamere IP + PMV (Pannello a Messaggio Variabile)**: tecnologia cablata Ethernet/IP, perché producono e consumano traffico ad alta banda (FullHD streaming, comandi di segnaletica con conferma). Le telecamere si collegano via **ONVIF/RTSP** su una piccola LAN PoE+ interna allo smart-gate; il PMV (Pannello a Messaggio Variabile) è raggiungibile via TCP/IP attraverso API standard (es. EN 12966 in UE per la segnaletica variabile).
 - **Sensori ambientali distribuiti sul km**: tecnologia **wireless LoRaWAN** — vedi la sezione dedicata [§3.2](#32-rete-di-sensori-wireless-lorawan-del-km) qui sotto, perché è una parte sostanziale del progetto e merita una trattazione a sé.
 
-### 3.2 Rete di sensori wireless LoRaWAN del km
+## 3.2 Rete di sensori wireless LoRaWAN del km
 
 Una delle scelte progettuali più caratterizzanti del progetto è realizzare la sensoristica ambientale come **rete wireless LPWA in tecnologia LoRaWAN** distribuita lungo il km di carreggiata di pertinenza di ogni smart-gate. Questa scelta merita un'argomentazione esplicita perché incide su molti aspetti dell'infrastruttura.
 
-#### 3.2.1 Topologia fisica della rete di sensori
+### 3.2.1 Topologia fisica della rete di sensori
 
 Topologia della rete LAN dei sensori di un generico tratto:
 
@@ -119,7 +119,7 @@ Topologia della rete LAN dei sensori di un generico tratto:
 Per i dettegli sulla tecnologia della rete fisica in fibra vedi il file [`dettaglio_spillamento_fibra.md`](./dettaglio_spillamento_fibra.md)
 
 
-### 3.3. Confronto e scelta tra tecnologie di rete in fibra
+# 4 Confronto e scelta tra tecnologie di rete di reti di sensori
 
 **Scelta: anello Ethernet L2 con ERPS.** Motivazioni:
 
@@ -133,7 +133,7 @@ Per i dettegli sulla tecnologia della rete fisica in fibra vedi il file [`dettag
 |----------------|-------------------|--------------------|---------| 
 | Scelta per il progetto | ✅ **Adottata** | ❌ Esagerata | ❌ Insufficiente resilienza |
 
-### 3.4. Tracciato fisico della fibra
+## 4.1 Tracciato fisico della fibra
 
 La fibra fisica viene posata in modi diversi a seconda del contesto:
 
@@ -145,7 +145,7 @@ La fibra fisica viene posata in modi diversi a seconda del contesto:
 Il cavo in fibra tipico per questa applicazione ha **24 o 48 fibre** ottiche monomodali (G.652 standard), di cui solo 4-8 effettivamente utilizzate per la rete dello smart-gate: le altre sono **fibre di scorta ("dark fiber")** per espansioni future, sostituzione di fibre danneggiate, o servizi aggiuntivi (es. videosorveglianza dedicata, connettività per i ristoranti/aree di servizio lungo il tratto).
 
 
-### 3.5. Cluster di tratti 
+### 4.1.1 Cluster di tratti 
 
 Come si "spilla" la fibra lungo le decine di km del tratto per servire ogni smart-gate? Esistono tre approcci: un **anello Ethernet attivo con switch L2** (rigenerazione attiva a ogni km, failover ERPS < 50 ms), un **anello IP con router L3** (più costoso e con failover più lento) e una **PON con splitter ottici passivi** (niente apparato attivo a bordo strada, ma nessuna ridondanza ad anello).
 
@@ -156,9 +156,9 @@ Per il progetto si adotta l'**anello Ethernet L2 con ERPS (IEEE G.8032)**: ogni 
 > **Dettaglio completo** — confronto tecnico delle tre tecnologie (rigenerazione attiva vs spillamento passivo), meccanica del protocollo ERPS, specifiche dello switch industriale, tracciato fisico della posa: vedi il file [`dettaglio_spillamento_fibra.md`](./dettaglio_spillamento_fibra.md).
 
 ---
-## 4. Topologia logica
+# 5. Topologia logica
 
-### 4.1. Topologia logica della rete di sensori nel caso di rete fisica A2
+## 5.1. Topologia logica della rete di sensori nel caso di rete fisica A2
 
 Il **dispositivo di tratta** è un PE (Provider Edge), cioè un **router di confine** di una rete **MPLS**, assimilabile in pratica ad un **tunnel TUN** tra il PE sul tratto e il router PE nella sede regionale. Essendo un tunnel L3 su di esso andrà allocata una **subnet di dorsale**.
 
@@ -170,7 +170,7 @@ In questo schema i sensori/attuatori non sono **client MQTT diretti** (non parla
  
 La **linea tratteggiata** rappresenta il tipo di servizio "like wired" scelto per interconnettere i gateway dei vari tratti con il loro CdG (Centro di Gestione) regionale, una **Trusted VPN MPLS**. Garantisce SLA contrattuali ruguardo a: classi di servizio (QoS), autenticazione dei nodi gateway e isolamento.
 
-#### 4.2. Topologia logica della rete di sensori nel caso di rete fisica A1
+### 5.2. Topologia logica della rete di sensori nel caso di rete fisica A1
 
 In questo caso la rete di sensori è analoga ad una grande LAN industriale composta di soli switch:
 - **switch di tratto**, in serie a quello del tratto successivo
@@ -180,7 +180,7 @@ In questo caso la rete di sensori è analoga ad una grande LAN industriale compo
 
 Il link equivale ad una **dorsale di trunk** tra due switch e aggrega su di se le **dorsali logiche** di tutte le VLAN di un tratto. Il CS L2 provvederà a fondere insieme le VLAN di ogni tratto. Su ogni VLAN si allocheranno, mediante subnetting, **tre subnet separate** (una per i sensori, una per le videocamere, una per le colonnine di ricarica).
 
-### 4.3. Componenti dello switch a ogni smart-gate
+## 5.3. Componenti dello switch a ogni smart-gate
 
 Lo switch tipo per questo scenario ha le seguenti caratteristiche:
 
@@ -193,9 +193,9 @@ Lo switch tipo per questo scenario ha le seguenti caratteristiche:
 
 ---
 
-## 5 Dispositivi LoRaWAN
+# 6 Dispositivi LoRaWAN
 
-### 5.1 Sensori (end-device LoRaWAN)
+## .1 Sensori (end-device LoRaWAN)
 
 I sensori sono **end-device LoRaWAN in classe A**, distribuiti lungo il km e ancorati al guard-rail. Caratteristiche:
 
@@ -211,7 +211,16 @@ Dal punto di vista del **firmware**, il sensore segue un ciclo semplice: dopo un
 
 > **Dettaglio completo** — schema a fasi, macchina a stati, pseudocodice commentato ed esempio in C++ (Arduino/LMIC), gestione dell'energia e formato Cayenne LPP: vedi il file [`dettaglio_firmware_sensore.md`](./dettaglio_firmware_sensore.md).
 
-### 5.2 Gateway LoRaWAN nel cabinet del PMV (Pannello a Messaggio Variabile)
+
+## 6.2 Gateway LoRaWAN nel cabinet del PMV (Pannello a Messaggio Variabile)
+
+| Tratta | Protocollo | Formato messaggi | Identificazione |
+|--------|-----------|------------------|-----------------|
+| Sensore ↔ Gateway (radio) | LoRaWAN (PHY/MAC LoRa) | Binario compatto (Cayenne LPP), cifrato AES con AppSKey | DevEUI a 64 bit |
+| Gateway ↔ Network Server | IP su fibra/5G, MQTT su TLS | JSON di servizio con payload LoRa incapsulato | Indirizzi IP privati |
+| Network Server ↔ Server applicativo | IP, MQTT su TLS | JSON applicativo dopo decodifica Cayenne LPP | Indirizzi IP privati |
+
+Il **gateway** è esattamente il **punto di traduzione** (significato di gateway) tra il mondo LoRa (senza IP) e il mondo IP/MQTT. Sopra LoRaWAN non c'è IP: il sensore non ha alcun indirizzo IP, ha solo il suo DevEUI.
 
 Il gateway LoRaWAN del km è **ospitato all'interno del cabinet del PMV (Pannello a Messaggio Variabile) a portale**, scelta motivata da quattro ragioni concrete:
 
@@ -226,25 +235,13 @@ Funzioni del gateway:
 - **Bridge LoRa→MQTT**: la componente `lora-gateway-bridge` incapsula il messaggio LoRaWAN in un payload MQTT di servizio (in JSON) pubblicato su un broker locale, che il network server consuma.
 - **Coordinatore radio**: applica le politiche di **Adaptive Data Rate (ADR)** decise dal network server, assegnando a ciascun sensore data rate e potenza di trasmissione ottimali. Sensori vicini al gateway → data rate alto, potenza bassa (consumo minimo). Sensori lontani → data rate basso (più resistente al rumore), potenza alta.
 
-### 5.3  Modalità "All-In-One" per tratti remoti
+### 6.3.1  Modalità "All-In-One" per tratti remoti
 
 Per i tratti autostradali in zone scarsamente coperte dalla fibra (passi montani, contesti isolati), il gateway LoRaWAN può essere realizzato come **gateway All-In-One con doppia interfaccia**: LoRaWAN verso i sensori, modem **5G/4G** o connettività **satellitare LEO** (es. Starlink Direct-to-Cell) verso il network server. È la stessa configurazione utilizzata in agricoltura di precisione e nel monitoraggio ambientale di aree remote.
 
-### 5.4 Confine LoRaWAN / IP
-
-Punto importante da chiarire (è una sorgente classica di confusione in sede d'esame):
-
-| Tratta | Protocollo | Formato messaggi | Identificazione |
-|--------|-----------|------------------|-----------------|
-| Sensore ↔ Gateway (radio) | LoRaWAN (PHY/MAC LoRa) | Binario compatto (Cayenne LPP), cifrato AES con AppSKey | DevEUI a 64 bit |
-| Gateway ↔ Network Server | IP su fibra/5G, MQTT su TLS | JSON di servizio con payload LoRa incapsulato | Indirizzi IP privati |
-| Network Server ↔ Server applicativo | IP, MQTT su TLS | JSON applicativo dopo decodifica Cayenne LPP | Indirizzi IP privati |
-
-Il **gateway** è esattamente il **punto di traduzione** (significato di gateway) tra il mondo LoRa (senza IP) e il mondo IP/MQTT. Sopra LoRaWAN non c'è IP: il sensore non ha alcun indirizzo IP, ha solo il suo DevEUI.
-
 ---
 
-### 7.1. Architettura distribuita dei network server
+## 7.  Network server - Architettura distribuita vs centralizzata
 
 **Separazione dei ruoli del network server.** È un altro punto fondamentale per chiarire l'architettura. La specifica LoRaWAN identifica diversi ruoli funzionali che possono stare insieme su una sola macchina o essere distribuiti:
 
@@ -299,7 +296,7 @@ La motivazione forte per la configurazione A allo strato edge è l'argomento del
 
 ---
 
-### 6.1. Chi decodifica il payload, e dove
+# 8. Apllication  server - colui che decodifica il payload
 
 Punto da chiarire con precisione, perché è una sorgente classica di errore. Nella catena LoRaWAN i ruoli agiscono **in sequenza**:
 
@@ -345,7 +342,7 @@ In sintesi: la scelta edge resta valida **a condizione** che il nodo edge sia tr
 
 ---
 
-## 7 Sicurezza della rete LoRaWAN
+# 9 Join server - Sicurezza della rete LoRaWAN
 
 Ogni sensore si registra al network server tramite **Over-the-Air Activation (OTAA)**. In fabbrica il sensore viene programmato con:
 
@@ -361,7 +358,7 @@ Al primo join, il join server usa la AppKey per generare e distribuire due chiav
 Questo meccanismo è anche un caso applicativo concreto delle **funzioni hash crittografiche** (quesito 4 della seconda parte): AES-CMAC è una funzione di tipo HMAC che produce un'impronta non falsificabile senza conoscere la chiave.
 
 
-### 7.2.  Join Server e ridondanza
+## 9.2.  Join Server e ridondanza
 
 Il **Join Server** è il componente che gestisce le funzioni di **autenticazione e autorizzazione** dei sensori in fase di registrazione, e di **gestione delle chiavi di sessione** durante la vita operativa del dispositivo. Le sue responsabilità sono:
 
@@ -418,7 +415,7 @@ Caratteristiche dell'alta disponibilità del join server:
 
 **Una piccola nota progettuale.** Esiste in commercio anche la possibilità di affidare il join server a un provider esterno specializzato (es. Actility, Senet, alcuni operatori telco offrono questo come servizio gestito). Per un progetto di infrastruttura critica nazionale come la rete autostradale è però **preferibile mantenere il controllo interno**: le chiavi master sono un asset strategico del paese e affidarle a un terzo introduce dipendenze contrattuali e geopolitiche che vale la pena evitare.
 
-### 7.3. Riassunto dei vantaggi della scelta
+### 9.2.1. Riassunto dei vantaggi della scelta
 
 - **Zero scavi lungo il km**: nessun cavo di alimentazione né di dati per i sensori. Costo di posa fortemente abbattuto rispetto a soluzioni cablate.
 - **Installazione e manutenzione modulare**: ogni sensore è una scatoletta indipendente fissata al guard-rail in mezz'ora.
@@ -429,7 +426,7 @@ Caratteristiche dell'alta disponibilità del join server:
 - **Sicurezza forte end-to-end**: cifratura del payload (AppSKey), autenticazione e integrità tramite MIC (NwkSKey), OTAA per il provisioning sicuro delle chiavi di sessione.
 - **Trade-off edge gestito**: l'application server all'edge espone le AppSKey a bordo strada; il rischio è mitigato con mutua autenticazione (mTLS), custodia delle chiavi in modulo anti-tampering (Secure Element/HSM) e attestazione di integrità prima della consegna delle chiavi (§3.2.7).
 
-### 7.4. Comunicazione smart-gate ↔ CdC
+# 10. Server di gestione - Comunicazione smart-gate ↔ CdC
 
 Questa è la tratta più delicata: deve essere ad alta banda (per gli stream video on-demand), bassa latenza, sempre disponibile.
 
@@ -440,7 +437,7 @@ Questa è la tratta più delicata: deve essere ad alta banda (per gli stream vid
   - **RTSP/SRT** per gli stream video on-demand (solo quando l'operatore richiede la visione live).
 - **Backup**: connessione **5G/4G LTE** con APN privato della società autostradale, attivata automaticamente da BGP/SD-WAN in caso di failure della fibra.
 
-### 7.5. Modello dei topic MQTT per uno smart-gate
+## 10.1. Modello dei topic MQTT per uno smart-gate
 
 Si può definire una gerarchia di topic come segue. Sia `<RR>` la regione, `<TT>` il tratto, `<NNN>` l'identificatore numerico dello smart-gate (es. `LO/01/042` = Lombardia, tratto 1, smart-gate 42):
 
@@ -501,8 +498,9 @@ Esempio di payload sul topic `comandi/schermo`:
   }
 }
 ```
+## 10.2. gerarchia di server di gestione
 
-### 7.6. Comunicazione CdC ↔ CN
+### 10.2.1. Comunicazione CdC ↔ CN
 
 - **Connessione primaria**: rete **MPLS L3VPN** fornita da un operatore telco. Garantisce SLA contrattuali, classi di servizio (QoS) e isolamento.
 - **Connessione di backup**: tunnel **VPN IPsec site-to-site** su Internet pubblica, da firewall a firewall.
@@ -511,14 +509,14 @@ Esempio di payload sul topic `comandi/schermo`:
   - **HTTPS/REST** per le chiamate sincrone (es. recupero di dati storici, push di configurazioni globali dal CN ai CdC).
   - **gRPC** in alternativa al REST quando occorre throughput più alto e contratti tipizzati (Protocol Buffers).
 
-### 7.7. Comunicazione APP utenti ↔ CN
+### 10.2.2. Comunicazione APP utenti ↔ CN
 
 - **HTTPS/REST** (versionato `/v1/...`) per le chiamate stateless del client.
 - **WebSocket Secure (WSS)** per il push real-time delle segnaletiche e dello stato dei punti di ricarica.
 - In alternativa, **MQTT over WebSocket Secure** se si vuole riusare l'infrastruttura broker (il client APP si registra come subscriber su topic di pubblico interesse).
 - Autenticazione utenti con **OAuth 2.0 + OpenID Connect** per le funzioni che richiedono profilazione (prenotazione ricarica). Le funzioni di sola lettura della segnaletica sono accessibili in modo anonimo.
 
-### 7.8. Comunicazione stazioni di ricarica ↔ rete
+### 10.2.2. Comunicazione stazioni di ricarica ↔ rete
 
 Le stazioni di ricarica utilizzano lo standard **OCPP (Open Charge Point Protocol) 1.6 o 2.0.1** su WebSocket Secure verso un CSMS (Charging Station Management System) che, nel nostro progetto, è un microservizio del CN. Questo dà accesso a:
 
@@ -528,11 +526,11 @@ Le stazioni di ricarica utilizzano lo standard **OCPP (Open Charge Point Protoco
 
 ---
 
-## 4. Piano di indirizzamento dettagliato
+# 11. Piano di indirizzamento dettagliato - subnetting dorsali in fibra
 
 Si adotta un piano basato su **RFC 1918** all'interno della rete privata della società autostradale e indirizzi pubblici solo per i servizi esposti su Internet (APP, sito istituzionale).
 
-### 4.1 Spazio di indirizzamento privato
+## 11.1 Spazio di indirizzamento privato
 
 Si può definire una gerarchia di topic come segue. Sia `<RR>` la regione, `<TT>` il tratto, `<NNN>` prefisso di host dei dispositivi dotati di IP in quel tratto.
 
@@ -565,7 +563,7 @@ Questo schema è di tipo **classful semplificato** (ogni campo occupa un ottetto
 
 > **Approfondimento** — variante di subnetting da classful a classless (5 bit regione = 32 regioni, 11 bit tratto = 2048 tratti/regione, 8 bit host = 256 indirizzi), con tabella delle subnet, aggregazione per regione e riserva di range per le statali: vedi il file [`dettaglio_subnetting_classless.md`](./dettaglio_subnetting_classless.md).
 
-### 4.2 Segmentazione interna di uno smart-gate
+## 11.2 Segmentazione interna di uno smart-gate
 
 Lo smart-gate ha al suo interno una piccola LAN con VLAN dedicate per separare i sottosistemi (segmentazione di sicurezza):
 
@@ -578,7 +576,7 @@ Lo smart-gate ha al suo interno una piccola LAN con VLAN dedicate per separare i
 
 Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
 
-### 4.3 VLAN del CdC
+### 11.3 VLAN del CdC
 
 | VLAN | Subnet | Uso |
 |------|--------|-----|
@@ -588,21 +586,21 @@ Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
 | 130 | `10.<RR>.<TT>.96/27` | Management/IPMI |
 | 200 | `10.<RR>.<TT>.128/25` | Subnet smart-gate (transit) |
 
-### 4.4 Routing
+# 12 Routing
 
 - **Routing dinamico interno**: protocollo **OSPF** sulle aree regionali, con area 0 (backbone) tra i CdC e il CN.
 - **Routing tra CdC e CN su MPLS**: **BGP** verso il PE dell'operatore telco (BGP per le route private nella VPN MPLS).
 - **VPN IPsec di backup**: route statiche oppure BGP-over-IPsec.
 
-### 4.5 NAT e indirizzi pubblici
+# 13 NAT e indirizzi pubblici
 
 Solo i servizi rivolti agli utenti dell'APP hanno indirizzi pubblici. Si usa un piccolo blocco IPv4 (es. `203.0.113.0/29`) e/o IPv6 nativo, dietro load balancer di frontiera con WAF (Web Application Firewall).
 
 ---
 
-## 5. Continuità di servizio e sicurezza
+# 14. Continuità di servizio e sicurezza
 
-### 5.1 Continuità di servizio (alta affidabilità)
+## 14.1 Continuità di servizio (alta affidabilità)
 
 | Livello | Tecniche adottate |
 |---------|-------------------|
@@ -614,7 +612,7 @@ Solo i servizi rivolti agli utenti dell'APP hanno indirizzi pubblici. Si usa un 
 | Dati | Backup giornalieri + replica geografica; piano di Disaster Recovery con RTO < 4 h e RPO < 15 min |
 | Servizi APP | CDN davanti all'API gateway; rate limiting per resistere a spike di traffico |
 
-### 5.2 Sicurezza
+### 14.2 Sicurezza
 
 La sicurezza è organizzata per **strati** (defense in depth):
 
@@ -649,11 +647,11 @@ La sicurezza è organizzata per **strati** (defense in depth):
 
 ---
 
-## 6. Quesito 1 - Database prenotazioni ricarica (modello logico)
+# 15. Quesito 1 - Database prenotazioni ricarica (modello logico)
 
 Si modella la porzione del database nazionale dedicata alle **stazioni di ricarica e alle prenotazioni** per veicoli elettrici. Le altre porzioni (storico segnaletiche, telemetria, utenti) sono lasciate fuori da questo schema per coerenza con il quesito.
 
-### 6.1 Analisi dei requisiti
+## 15.1 Analisi dei requisiti
 
 Dal testo della traccia:
 
@@ -663,7 +661,7 @@ Dal testo della traccia:
 - Si devono gestire **prenotazioni** sulla base dell'**orario di arrivo** stimato e della **durata** stimata.
 - Le prenotazioni sono fatte da utenti dell'APP.
 
-### 6.2 Modello concettuale (ER)
+## 15.2 Modello concettuale (ER)
 
 Entità individuate:
 
@@ -685,7 +683,7 @@ Relazioni principali:
 - TARIFFA 1—N PRENOTAZIONE.
 - PRENOTAZIONE 1—1 SESSIONE_RICARICA (opzionale: alcune prenotazioni non sfociano in una sessione, es. no-show).
 
-### 6.3 Schema logico relazionale
+## 15.3 Schema logico relazionale
 
 Notazione: chiave primaria sottolineata `[PK]`, chiave esterna `[FK→tabella.campo]`.
 
@@ -716,7 +714,7 @@ UTENTE ──< VEICOLO
                          └──1:1── SESSIONE_RICARICA
 ```
 
-### 6.5 Vincoli di integrità rilevanti
+### 15.3.1 Vincoli di integrità rilevanti
 
 - Una **prenotazione** non può sovrapporsi a un'altra sulla stessa coppia (id_punto, intervallo_temporale). Vincolo applicativo o tramite **exclusion constraint** (in PostgreSQL `EXCLUDE USING gist`).
 - Il tipo di connettore della prenotazione deve essere compatibile col veicolo: vincolo da implementare a livello applicativo o con trigger.
@@ -744,16 +742,16 @@ WHERE p.id_stazione = :id_stazione_richiesta
   );
 ```
 
-### 6.7 Considerazioni di scalabilità
+### 15.3.2 Considerazioni di scalabilità
 
 - Le tabelle ad alta frequenza di scrittura (PUNTO_RICARICA.stato_corrente) andrebbero affiancate da una cache in-memory (Redis) per servire le query di stato all'APP con latenza < 100 ms.
 - Le sessioni di ricarica chiuse possono essere migrate su una tabella storica partizionata per anno/mese per non appesantire la tabella attiva.
 
 ---
 
-## 7. Quesito 2 - Protocollo applicativo per l'APP guidatori
+# 16. Quesito 2 - Protocollo applicativo per l'APP guidatori
 
-### 7.1 Scelta della tecnologia
+## 16.1 Scelta della tecnologia
 
 L'APP guidatori deve:
 
@@ -771,7 +769,7 @@ La scelta proposta è **ibrida**:
 
 Questa combinazione è elegante perché **riusa la stessa infrastruttura di brokering MQTT** già presente per la comunicazione interna smart-gate → CdC → CN: il broker centrale espone su Internet (dietro TLS e autenticazione) un sottoinsieme dei topic, e l'APP è semplicemente un altro client del broker.
 
-### 7.2 Architettura della comunicazione APP↔CN
+## 16.2 Architettura della comunicazione APP↔CN
 
 ```
    ┌──────────┐   HTTPS REST    ┌─────────────┐
@@ -785,7 +783,7 @@ Questa combinazione è elegante perché **riusa la stessa infrastruttura di brok
    └──────────┘                 └─────────────┘
 ```
 
-### 7.3 Specifica del protocollo applicativo REST
+## 16.3 Specifica del protocollo applicativo REST
 
 Convenzioni:
 
@@ -795,7 +793,7 @@ Convenzioni:
 - Codici di stato HTTP standard (`200 OK`, `201 Created`, `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `409 Conflict`, `5xx`).
 - Paginazione tramite `?page=1&size=20` con header `X-Total-Count`.
 
-#### 7.3.1 Risorse principali
+#### 16.3.1 Risorse principali
 
 | Metodo | Endpoint | Descrizione | Auth |
 |--------|----------|-------------|------|
@@ -815,7 +813,7 @@ Convenzioni:
 | GET | `/reservations/{id}` | Dettaglio prenotazione | sì |
 | DELETE | `/reservations/{id}` | Annullare prenotazione | sì |
 
-#### 7.3.2 Esempio: lettura segnaletica corrente
+#### 16.3.2 Esempio: lettura segnaletica corrente
 
 **Request**:
 
@@ -850,7 +848,7 @@ X-Updated-At: 2024-06-15T10:32:20Z
 }
 ```
 
-#### 7.3.3 Esempio: creazione prenotazione
+#### 16.3.3 Esempio: creazione prenotazione
 
 **Request**:
 
@@ -903,7 +901,7 @@ Content-Type: application/json
 }
 ```
 
-### 7.4 Specifica del canale push (MQTT)
+## 16.4 Specifica del canale push (MQTT)
 
 L'APP, dopo l'apertura, individua il tratto autostradale in cui si trova l'utente (tramite GPS + endpoint `/segments`) e si sottoscrive ai topic di interesse sul broker pubblico:
 
@@ -934,7 +932,7 @@ Payload di esempio su `smartroad/pub/LO/01/042/signage`:
 }
 ```
 
-### 7.5 Sicurezza del protocollo
+### 16.4.1 Sicurezza del protocollo
 
 - Tutti gli scambi sono in **TLS 1.3** con certificati firmati da una CA pubblica (server) e con possibile **pinning** lato APP per resistere ad attacchi MITM con CA compromesse.
 - I JWT hanno scadenza breve (15 min) e sono rinnovati tramite **refresh token** (rotazione del refresh token a ogni uso).
@@ -942,7 +940,7 @@ Payload di esempio su `smartroad/pub/LO/01/042/signage`:
 - Validazione lato server di tutti gli input (lunghezza, formato, range), per prevenire injection.
 - I dati di prenotazione restano nel DB nazionale; l'APP non memorizza dati sensibili (targhe, ecc.) oltre la sessione corrente.
 
-### 7.6 Vantaggi della soluzione proposta
+### 16.4.2 Vantaggi della soluzione proposta
 
 - **REST/HTTPS** è universalmente supportato, semplice da debuggare (curl, Postman), facile da cachare lato CDN per i dati pubblici (segnaletica, stazioni).
 - **MQTT/WSS** dà push real-time efficiente in termini di batteria e banda (connessione persistente, payload compatti), passa attraverso firewall e proxy aziendali (porta 443).
