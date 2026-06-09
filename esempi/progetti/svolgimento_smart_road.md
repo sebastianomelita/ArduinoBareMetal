@@ -248,6 +248,7 @@ Il **gateway** è esattamente il **punto di traduzione** tra il mondo LoRa (senz
 
 Al modello di topic MQTT visto nella sezione successiva si aggiungono quelli generati dalla rete LoRaWAN. Estendendo il pattern standard:
 
+
 ```
 smartroad/<RR>/<TT>/<NNN>/lora/<DEV-EUI>/up      # uplink dal sensore
 smartroad/<RR>/<TT>/<NNN>/lora/<DEV-EUI>/down    # downlink verso il sensore
@@ -569,6 +570,8 @@ Le stazioni di ricarica utilizzano lo standard **OCPP (Open Charge Point Protoco
 Si adotta un piano basato su **RFC 1918** all'interno della rete privata della società autostradale e indirizzi pubblici solo per i servizi esposti su Internet (APP, sito istituzionale).
 
 ### 4.1 Spazio di indirizzamento privato
+
+Si può definire una gerarchia di topic come segue. Sia `<RR>` la regione, `<TT>` il tratto, `<NNN>` prefisso di host dei dispositivi dotati di IP in quel tratto.
 
 Spazio scelto: `10.0.0.0/8`. Strutturato gerarchicamente in modo che dall'IP si possa risalire alla regione e al tratto, semplificando le ACL e il troubleshooting.
 
