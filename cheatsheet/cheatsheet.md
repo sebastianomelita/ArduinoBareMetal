@@ -41,7 +41,7 @@ Normalmente, bit rate e consumo sono direttamente proporzionali, quando cresce i
 
 ### 1.1 Schema fisico
 - Schema fisico (**planimetria**) dello scenario: ambienti ed edifici chiave, infrastruttura
-  **indoor**/**outdoor**, con **etichettatura univoca** di tutti gli asset di rete.
+  **indoor**/**outdoor**, con **etichettatura univoca** di tutti i **dispositivi passivi** di rete (armadi) e con la definizione del **tracciato** dei mezzi trasmissivi (cavi ethernet e fibra).
 - Schema logico (albero degli **apparati attivi**) di tutti i dispositivi che rappresenti:
      - eventuale **router di confine** della LAN
      - eventuale gerarchia di **switch** che realizzano fisicamente la LAN
