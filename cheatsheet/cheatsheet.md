@@ -35,6 +35,10 @@ Normalmente, bit rate e consumo sono direttamente proporzionali, quando cresce i
 
 ## 1 · Aspetti critici comuni
 
+### 1.0 Analisi della realtà
+- **Ipotesi sul dominio**: ipotesi più precise sulla distribuzione degli asset (nodi di elaborazione e nodi di rete), ipotesi sui volumidi traffico e sui livelli di servizio.
+- **Vincoli normativi**: di privacy (GDPR, NIS), di dominio (codice della strada, regole amministrative, ecc), di sistema (cablaggio strutturato,  BIA e criticità degli asset, Sicurezza funzionale — IEC 61508, ecc)
+
 ### 1.1 Schema fisico
 - Schema fisico (**planimetria**) dello scenario: ambienti ed edifici chiave, infrastruttura
   **indoor**/**outdoor**, con **etichettatura univoca** di tutti gli asset di rete.
