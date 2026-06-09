@@ -44,13 +44,13 @@ Prima di entrare nel dettaglio tecnico è opportuno fissare alcune **ipotesi agg
 
 ---
 
-# 2. Architettura della rete - dettaglio
+# 2. Architettura della rete di distribuzione - rete IP di reti LoRaWAN
 
 L'architettura proposta è **gerarchica a 3 livelli**, modello che si presta naturalmente al problema perché replica la struttura fisica della rete autostradale (gate locale → tratto regionale → coordinamento nazionale).
 
 <img src="../img/architettura_3_livelli.svg" alt="Architettura gerarchica a tre livelli" width="680">
 
-## 2.1 Livello smart-gate (edge)
+## 2.1 Livello smart-gate (edge) - rete LAN di tratto
 
 Ogni smart-gate è un nodo **edge computing** con le seguenti caratteristiche:
 
@@ -71,7 +71,7 @@ Il fatto di concentrare elaborazione locale (edge) è una scelta motivata da:
 2. **Bassa latenza nelle decisioni di sicurezza**: se un sensore rileva ghiaccio sull'asfalto, lo smart-gate può abbassare autonomamente il limite di velocità sul PMV (Pannello a Messaggio Variabile) in < 100 ms, senza attendere il CdC.
 3. **Modalità degraded**: in caso di isolamento, lo smart-gate continua a operare in autonomia con segnaletica conservativa.
 
-## 2.2 Livello Centro di Controllo (CdC)
+## 2.2 Livello Centro di Controllo (CdC) - rete LAN datacenter regionale
 
 Ogni CdC è un **mini data-center regionale** che funge da aggregatore per ~50 smart-gate. Comprende:
 
@@ -83,7 +83,7 @@ Ogni CdC è un **mini data-center regionale** che funge da aggregatore per ~50 s
 - **Firewall di frontiera** (cluster active/standby) con segmentazione VLAN interna.
 - **Router di accesso WAN** verso il CN (doppia uscita: MPLS primario + Internet con VPN IPsec come backup).
 
-## 2.3 Livello nazionale (CN)
+## 2.3 Livello nazionale (CN) - rete LAN datacenter nazionale
 
 Il CN è progettato come **due data-center attivo-attivo** geograficamente separati (es. Roma e Milano), con repliche sincrone del DB tramite link in fibra dedicato. Ospita:
 
@@ -93,34 +93,31 @@ Il CN è progettato come **due data-center attivo-attivo** geograficamente separ
 - **Servizio di prenotazione ricariche** (microservizio a sé stante con il proprio database).
 - **Centro operativo nazionale** con monitoraggio aggregato di tutti i tratti.
 
----
 
-# 3. Tecnologie di comunicazione tra nodi
 
-Le tecnologie scelte differiscono per ogni "salto" della gerarchia, in funzione di banda richiesta, latenza, affidabilità ed esposizione.
-
-## 3.1 Comunicazione interna allo smart-gate
-
-Lo smart-gate ha al suo interno due famiglie di dispositivi che richiedono trattamenti diversi:
-
-- **Telecamere IP + PMV (Pannello a Messaggio Variabile)**: tecnologia cablata Ethernet/IP, perché producono e consumano traffico ad alta banda (FullHD streaming, comandi di segnaletica con conferma). Le telecamere si collegano via **ONVIF/RTSP** su una piccola LAN PoE+ interna allo smart-gate; il PMV (Pannello a Messaggio Variabile) è raggiungibile via TCP/IP attraverso API standard (es. EN 12966 in UE per la segnaletica variabile).
-- **Sensori ambientali distribuiti sul km**: tecnologia **wireless LoRaWAN** — vedi la sezione dedicata [§3.2](#32-rete-di-sensori-wireless-lorawan-del-km) qui sotto, perché è una parte sostanziale del progetto e merita una trattazione a sé.
-
-## 3.2 Rete di sensori wireless LoRaWAN del km
+## 3.2 Rete di sensori wireless LoRaWAN del tratto 
 
 Una delle scelte progettuali più caratterizzanti del progetto è realizzare la sensoristica ambientale come **rete wireless LPWA in tecnologia LoRaWAN** distribuita lungo il km di carreggiata di pertinenza di ogni smart-gate. Questa scelta merita un'argomentazione esplicita perché incide su molti aspetti dell'infrastruttura.
 
-### 3.2.1 Topologia fisica della rete di sensori
+### 3.2.1 Topologia fisica della rete di tratto (IP + LoRaWAN)
 
 Topologia della rete LAN dei sensori di un generico tratto:
 
 <img src="../img/topologia_lorawan_km.svg" alt="Topologia LoRaWAN del km autostradale" width="680">
 
-Per i dettegli sulla tecnologia della rete fisica in fibra vedi il file [`dettaglio_spillamento_fibra.md`](./dettaglio_spillamento_fibra.md)
+La **rete ethernet** è composta da uno **piccolo switch** che connette: 
+
+- un **mini PC** per l'elaborazione locale dei comandi di sicurezza
+- un **gateway LoRaWAN** che si interfaccia con la rete di sensori distribuita sul tratto di autostrada. 
+- **Telecamere IP + PMV (Pannello a Messaggio Variabile)**: tecnologia cablata Ethernet/IP, perché producono e consumano traffico ad alta banda (FullHD streaming, comandi di segnaletica con conferma). Le telecamere si collegano via **ONVIF/RTSP** su una piccola LAN PoE+ interna allo smart-gate; il PMV (Pannello a Messaggio Variabile) è raggiungibile via TCP/IP attraverso API standard (es. EN 12966 in UE per la segnaletica variabile).
 
 ---
 
-# 4 Confronto e scelta tra tecnologie di rete di reti di sensori
+# 4. Confronto e scelta tra tecnologie di rete di distribuzione
+
+Si è scelto di mettere a confronto due tecnologie per la realizzazione di una rete aziendale privata di dimensioni geografiche:
+1. una pubblica MPLS nazionale, cioè una rete VPN Trusted fornita da ISP nazionale sia per il tratto regionale che per quello nazionale.
+2. una pubblica MPLS nazionaleper il tratto regionale e una rete metropolitana privata, gestita direttamente dall'ente autostrade regionale, per la rete regionale.
 
 **Scelta: anello Ethernet L2 con ERPS.** Motivazioni:
 
@@ -133,6 +130,8 @@ Per i dettegli sulla tecnologia della rete fisica in fibra vedi il file [`dettag
 | Caratteristica | A — Anello L2 ERPS | B — Anello L3 OSPF | C — PON |
 |----------------|-------------------|--------------------|---------| 
 | Scelta per il progetto | ✅ **Adottata** | ❌ Esagerata | ❌ Insufficiente resilienza |
+
+E' stata selezionata come migliore la seconda opzione in questa fase iniziale di diffusione dei tratti, scelta che può rapidamente connettersi ed espandersi in un contesto nazionale poggiandosi alle reti Trusted MPLS esistenti. 
 
 ## 4.1 Tracciato fisico della fibra
 
@@ -150,7 +149,9 @@ Il cavo in fibra tipico per questa applicazione ha **24 o 48 fibre** ottiche mon
 
 Come si "spilla" la fibra lungo le decine di km del tratto per servire ogni smart-gate? Esistono tre approcci: un **anello Ethernet attivo con switch L2** (rigenerazione attiva a ogni km, failover ERPS < 50 ms), un **anello IP con router L3** (più costoso e con failover più lento) e una **PON con splitter ottici passivi** (niente apparato attivo a bordo strada, ma nessuna ridondanza ad anello).
 
-Per il progetto si adotta l'**anello Ethernet L2 con ERPS (IEEE G.8032)**: ogni smart-gate ospita uno switch industriale con 2 porte ottiche (anello) e porte di accesso per gli apparati interni; lo switch è alimentato dalla stessa linea del PMV (Pannello a Messaggio Variabile). Il failover sotto i 50 ms garantisce continuità per gli stream video e la telemetria anche in caso di taglio della fibra. La fibra è posata in canalina sotto il guard-rail (mini-trenching), con cavi a 24-48 fibre di cui buona parte tenuta di scorta (dark fiber) per espansioni future.
+Per il progetto si adotta l'**anello Ethernet L2 con ERPS (IEEE G.8032)**: ogni smart-gate ospita uno switch industriale con 2 porte ottiche (anello) e porte di accesso per gli apparati interni; lo switch è alimentato dalla stessa linea del PMV (Pannello a Messaggio Variabile). Il failover sotto i 50 ms garantisce continuità per gli stream video e la telemetria anche in caso di taglio della fibra. La fibra è posata in canalina sotto il guard-rail (mini-trenching), con cavi a 24-48 fibre di cui buona parte tenuta di scorta (dark fiber) per espansioni future.la'adattamento 
+
+E' l'adattamento in ambito metropolitano di una tipica architettura ethernet industriale composta da un albero di LAN ridondate mediante topologia ad anello.
 
 <img src="../img/anello_fibra_erps.svg" alt="Anello in fibra ottica con switch ERPS a ogni km" width="680">
 
