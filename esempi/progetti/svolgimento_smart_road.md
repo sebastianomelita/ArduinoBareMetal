@@ -196,7 +196,7 @@ Lo switch tipo per questo scenario ha le seguenti caratteristiche:
 
 # 6 Dispositivi LoRaWAN
 
-## 6.1 Sensori (end-device LoRaWAN)
+## 6.1 Sensori - Coloro che generano il payload
 
 I sensori sono **end-device LoRaWAN in classe A**, distribuiti lungo il km e ancorati al guard-rail. Caratteristiche:
 
@@ -213,7 +213,19 @@ Dal punto di vista del **firmware**, il sensore segue un ciclo semplice: dopo un
 > **Dettaglio completo** — schema a fasi, macchina a stati, pseudocodice commentato ed esempio in C++ (Arduino/LMIC), gestione dell'energia e formato Cayenne LPP: vedi il file [`dettaglio_firmware_sensore.md`](./dettaglio_firmware_sensore.md).
 
 
-## 6.2 Gateway LoRaWAN nel cabinet del PMV (Pannello a Messaggio Variabile)
+## 6.2 Gateway LoRaWAN - Colui che smista il payload
+
+I payload ricevuti dal gateway vengono inoltrati in flooding verso il network server (NS). Il **gateway** è esattamente il **punto di traduzione** (significato di gateway) tra il mondo LoRa (senza IP) e il mondo IP/MQTT. Sopra LoRaWAN non c'è IP: il sensore non ha alcun indirizzo IP, ha solo il suo DevEUI.
+
+### 6.2.1 Funzioni del gateway:
+
+- **Packet forwarder**: riceve i pacchetti radio dai sensori e li inoltra al network server via IP. Quando un sensore è ricevibile anche dal gateway dello smart-gate adiacente, lo stesso pacchetto arriva al network server da due percorsi diversi — la **ridondanza è gratuita**, e il network server scarta il duplicato tenendo quello con RSSI/SNR migliore.
+- **Bridge LoRa→MQTT**: la componente `lora-gateway-bridge` incapsula il messaggio LoRaWAN in un payload MQTT di servizio (in JSON) pubblicato su un broker locale, che il network server consuma.
+- **Coordinatore radio**: applica le politiche di **Adaptive Data Rate (ADR)** decise dal network server, assegnando a ciascun sensore data rate e potenza di trasmissione ottimali. Sensori vicini al gateway → data rate alto, potenza bassa (consumo minimo). Sensori lontani → data rate basso (più resistente al rumore), potenza alta.
+
+### 6.2.2 Allocazione fisica del gateway
+
+Nel cabinet del PMV (Pannello a Messaggio Variabile)
 
 | Tratta | Protocollo | Formato messaggi | Identificazione |
 |--------|-----------|------------------|-----------------|
@@ -221,7 +233,6 @@ Dal punto di vista del **firmware**, il sensore segue un ciclo semplice: dopo un
 | Gateway ↔ Network Server | IP su fibra/5G, MQTT su TLS | JSON di servizio con payload LoRa incapsulato | Indirizzi IP privati |
 | Network Server ↔ Server applicativo | IP, MQTT su TLS | JSON applicativo dopo decodifica Cayenne LPP | Indirizzi IP privati |
 
-Il **gateway** è esattamente il **punto di traduzione** (significato di gateway) tra il mondo LoRa (senza IP) e il mondo IP/MQTT. Sopra LoRaWAN non c'è IP: il sensore non ha alcun indirizzo IP, ha solo il suo DevEUI.
 
 Il gateway LoRaWAN del km è **ospitato all'interno del cabinet del PMV (Pannello a Messaggio Variabile) a portale**, scelta motivata da quattro ragioni concrete:
 
@@ -230,19 +241,14 @@ Il gateway LoRaWAN del km è **ospitato all'interno del cabinet del PMV (Pannell
 3. **Sicurezza fisica e ambientale**: l'enclosure IP65/66 del display protegge anche il gateway da intemperie e vandalismo; manutenzione condivisa con il display.
 4. **Connettività IP condivisa**: lo stesso cavo Ethernet che porta i comandi al PMV (Pannello a Messaggio Variabile) viene riutilizzato come uplink IP per il gateway LoRaWAN verso il network server nel CdC. Un solo cavo dati per più funzioni.
 
-Funzioni del gateway:
 
-- **Packet forwarder**: riceve i pacchetti radio dai sensori e li inoltra al network server via IP. Quando un sensore è ricevibile anche dal gateway dello smart-gate adiacente, lo stesso pacchetto arriva al network server da due percorsi diversi — la **ridondanza è gratuita**, e il network server scarta il duplicato tenendo quello con RSSI/SNR migliore.
-- **Bridge LoRa→MQTT**: la componente `lora-gateway-bridge` incapsula il messaggio LoRaWAN in un payload MQTT di servizio (in JSON) pubblicato su un broker locale, che il network server consuma.
-- **Coordinatore radio**: applica le politiche di **Adaptive Data Rate (ADR)** decise dal network server, assegnando a ciascun sensore data rate e potenza di trasmissione ottimali. Sensori vicini al gateway → data rate alto, potenza bassa (consumo minimo). Sensori lontani → data rate basso (più resistente al rumore), potenza alta.
-
-### 6.3.1  Modalità "All-In-One" per tratti remoti
+### 6.2.3 Modalità "All-In-One" per tratti remoti
 
 Per i tratti autostradali in zone scarsamente coperte dalla fibra (passi montani, contesti isolati), il gateway LoRaWAN può essere realizzato come **gateway All-In-One con doppia interfaccia**: LoRaWAN verso i sensori, modem **5G/4G** o connettività **satellitare LEO** (es. Starlink Direct-to-Cell) verso il network server. È la stessa configurazione utilizzata in agricoltura di precisione e nel monitoraggio ambientale di aree remote.
 
 ---
 
-# 7.  Network server - Colui che autentica il paylosd
+# 7.  Network server - Colui che autentica il payload
 
 ## 7.1 Architettura distribuita vs centralizzata
 
