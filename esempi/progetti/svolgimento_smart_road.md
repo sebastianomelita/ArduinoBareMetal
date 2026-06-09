@@ -597,15 +597,16 @@ Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
 
 ---
 
-# 12 Routing
+# 12. Routing e NAT
 
+## 12.1. Routing e NAT
 - **Routing dinamico interno**: protocollo **OSPF** sulle aree regionali, con area 0 (backbone) tra i CdC e il CN.
 - **Routing tra CdC e CN su MPLS**: **BGP** verso il PE dell'operatore telco (BGP per le route private nella VPN MPLS).
 - **VPN IPsec di backup**: route statiche oppure BGP-over-IPsec.
 
 ---
 
-# 13 NAT e indirizzi pubblici
+## 12.2. NAT e indirizzi pubblici
 
 Solo i servizi rivolti agli utenti dell'APP hanno indirizzi pubblici. Si usa un piccolo blocco IPv4 (es. `203.0.113.0/29`) e/o IPv6 nativo, dietro load balancer di frontiera con WAF (Web Application Firewall).
 
