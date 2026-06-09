@@ -345,7 +345,9 @@ In sintesi: la scelta edge resta valida **a condizione** che il nodo edge sia tr
 
 ---
 
-# 9 Join server - Sicurezza della rete LoRaWAN
+# 9 Join server - colui che distribuisce le chiavi di sessione
+
+## Gestione della sicurezza della rete LoRaWAN
 
 Ogni sensore si registra al network server tramite **Over-the-Air Activation (OTAA)**. In fabbrica il sensore viene programmato con:
 
