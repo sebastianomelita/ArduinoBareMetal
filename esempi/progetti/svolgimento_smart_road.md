@@ -433,7 +433,9 @@ Caratteristiche dell'alta disponibilità del join server:
 
 ---
 
-# 10. Server di gestione - Comunicazione smart-gate ↔ CdC
+# 10. Server di gestione - Colui che elabora i payload
+
+## 10.1. ##  Comunicazione smart-gate ↔ CdC
 
 Questa è la tratta più delicata: deve essere ad alta banda (per gli stream video on-demand), bassa latenza, sempre disponibile.
 
@@ -444,7 +446,7 @@ Questa è la tratta più delicata: deve essere ad alta banda (per gli stream vid
   - **RTSP/SRT** per gli stream video on-demand (solo quando l'operatore richiede la visione live).
 - **Backup**: connessione **5G/4G LTE** con APN privato della società autostradale, attivata automaticamente da BGP/SD-WAN in caso di failure della fibra.
 
-## 10.1. Modello dei topic MQTT per uno smart-gate
+## 10.2. Modello dei topic MQTT per uno smart-gate
 
 Si può definire una gerarchia di topic come segue. Sia `<RR>` la regione, `<TT>` il tratto, `<NNN>` l'identificatore numerico dello smart-gate (es. `LO/01/042` = Lombardia, tratto 1, smart-gate 42):
 
