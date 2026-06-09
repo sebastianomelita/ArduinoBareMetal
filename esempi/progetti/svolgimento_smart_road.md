@@ -435,7 +435,7 @@ Caratteristiche dell'alta disponibilità del join server:
 
 # 10. Server di gestione - Colui che elabora i payload
 
-## 10.1. ##  Comunicazione smart-gate ↔ CdC
+## 10.1. Comunicazione smart-gate ↔ CdC
 
 Questa è la tratta più delicata: deve essere ad alta banda (per gli stream video on-demand), bassa latenza, sempre disponibile.
 
