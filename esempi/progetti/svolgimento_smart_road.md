@@ -196,7 +196,7 @@ Lo switch tipo per questo scenario ha le seguenti caratteristiche:
 
 # 6 Dispositivi LoRaWAN
 
-## .1 Sensori (end-device LoRaWAN)
+## 6.1 Sensori (end-device LoRaWAN)
 
 I sensori sono **end-device LoRaWAN in classe A**, distribuiti lungo il km e ancorati al guard-rail. Caratteristiche:
 
