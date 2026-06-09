@@ -507,9 +507,9 @@ Esempio di payload sul topic `comandi/schermo`:
   }
 }
 ```
-## 10.2. gerarchia di server di gestione
+## 10.3. gerarchia di server di gestione
 
-### 10.2.1. Comunicazione CdC ↔ CN
+### 10.3.1. Comunicazione CdC ↔ CN
 
 - **Connessione primaria**: rete **MPLS L3VPN** fornita da un operatore telco. Garantisce SLA contrattuali, classi di servizio (QoS) e isolamento.
 - **Connessione di backup**: tunnel **VPN IPsec site-to-site** su Internet pubblica, da firewall a firewall.
@@ -518,14 +518,14 @@ Esempio di payload sul topic `comandi/schermo`:
   - **HTTPS/REST** per le chiamate sincrone (es. recupero di dati storici, push di configurazioni globali dal CN ai CdC).
   - **gRPC** in alternativa al REST quando occorre throughput più alto e contratti tipizzati (Protocol Buffers).
 
-### 10.2.2. Comunicazione APP utenti ↔ CN
+### 10.3.2. Comunicazione APP utenti ↔ CN
 
 - **HTTPS/REST** (versionato `/v1/...`) per le chiamate stateless del client.
 - **WebSocket Secure (WSS)** per il push real-time delle segnaletiche e dello stato dei punti di ricarica.
 - In alternativa, **MQTT over WebSocket Secure** se si vuole riusare l'infrastruttura broker (il client APP si registra come subscriber su topic di pubblico interesse).
 - Autenticazione utenti con **OAuth 2.0 + OpenID Connect** per le funzioni che richiedono profilazione (prenotazione ricarica). Le funzioni di sola lettura della segnaletica sono accessibili in modo anonimo.
 
-### 10.2.2. Comunicazione stazioni di ricarica ↔ rete
+### 10.3.3. Comunicazione stazioni di ricarica ↔ rete
 
 Le stazioni di ricarica utilizzano lo standard **OCPP (Open Charge Point Protocol) 1.6 o 2.0.1** su WebSocket Secure verso un CSMS (Charging Station Management System) che, nel nostro progetto, è un microservizio del CN. Questo dà accesso a:
 
@@ -535,7 +535,7 @@ Le stazioni di ricarica utilizzano lo standard **OCPP (Open Charge Point Protoco
 
 ---
 
-# 11. Piano di indirizzamento dettagliato - subnetting dorsali in fibra
+# 11. Piano di indirizzamento dettagliato - Subnetting dorsali in fibra
 
 Si adotta un piano basato su **RFC 1918** all'interno della rete privata della società autostradale e indirizzi pubblici solo per i servizi esposti su Internet (APP, sito istituzionale).
 
