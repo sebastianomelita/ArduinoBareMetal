@@ -176,7 +176,9 @@ La **linea tratteggiata** rappresenta il tipo di servizio "like wired" scelto pe
 
 In questo caso la rete di sensori è analoga ad una grande LAN industriale composta di soli switch:
 - **switch di tratto**, in serie a quello del tratto successivo
-- **switch di multiplazione**: con una **porta di loop** si chiude, mediante una fibra lunga quanto un tratto, sul primo switch del loop, con una seconda **porta di dorsale** si collega ad un MUX/DEMUX che genera, su un'unica fibra ottica comune per tutti i tratti, un **link multiplato** dedicato a quel cluster di tratti, associandolo ad una certa lunghezza d'onda della luce (multiplazione DWDM). Ogni link multiplato arriva su una porta dedicata del **core switch** L2 che, essendo   locato nel centro di controllo regionale, crea una stella di cluster di tratti tra loro collegati ad anello.
+- **switch di multiplazione**:
+     - con una **porta di loop** si chiude, mediante una fibra lunga quanto un tratto, sul primo switch del loop.
+     - Con una seconda **porta di dorsale** si collega ad un MUX/DEMUX che genera, su un'unica fibra ottica comune per tutti i tratti, un **link multiplato** dedicato a quel cluster di tratti, associandolo ad una certa lunghezza d'onda della luce (multiplazione DWDM). Ogni link multiplato arriva su una porta dedicata del **core switch** L2 che, essendo locato nel centro di controllo regionale, crea una stella di cluster di tratti che sono tra loro collegati ad anello.
 
 <img src="../img/cdc_lombardia_B1_dwdm.svg" alt="cdc_lombardia_B1_due_livelli" width="900">
 
