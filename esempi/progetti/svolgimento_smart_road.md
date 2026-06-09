@@ -133,17 +133,6 @@ Per i dettegli sulla tecnologia della rete fisica in fibra vedi il file [`dettag
 |----------------|-------------------|--------------------|---------| 
 | Scelta per il progetto | ✅ **Adottata** | ❌ Esagerata | ❌ Insufficiente resilienza |
 
-### 3.2.3. Componenti dello switch a ogni smart-gate
-
-Lo switch tipo per questo scenario ha le seguenti caratteristiche:
-
-- **2 porte SFP+** per la fibra dell'anello (10 Gbps per affrontare il caso di tutti i flussi video aggregati che attraversano lo smart-gate verso il CdC).
-- **4-8 porte Gigabit Ethernet** per gli apparati interni allo smart-gate (SoC edge, telecamere PoE+, gateway LoRaWAN, controller maxi-schermo). Alcune con **PoE+** o **PoE++** per alimentare le telecamere.
-- **Alimentazione ridondata** (doppia) 24-48 VDC, alimentata dalla rete dello smart-gate con UPS.
-- **Temperatura operativa estesa** -40°C / +75°C: lo switch può lavorare anche in galleria d'estate o in montagna d'inverno senza condizionamento.
-- **Supporto ERPS** (G.8032) e VLAN 802.1Q nativi.
-- **Management out-of-band** via porta console seriale e via SNMPv3/SSH dalla rete di management dedicata.
-
 ### 3.2.4. Tracciato fisico della fibra
 
 La fibra fisica viene posata in modi diversi a seconda del contesto:
@@ -190,6 +179,17 @@ In questo caso la rete di sensori è analoga ad una grande LAN industriale compo
 <img src="../img/cdc_lombardia_B1_dwdm.svg" alt="cdc_lombardia_B1_due_livelli" width="900">
 
 Il link equivale ad una **dorsale di trunk** tra due switch e aggrega su di se le **dorsali logiche** di tutte le VLAN di un tratto. Il CS L2 provvederà a fondere insieme le VLAN di ogni tratto. Su ogni VLAN si allocheranno, mediante subnetting, **tre subnet separate** (una per i sensori, una per le videocamere, una per le colonnine di ricarica).
+
+### 4.3. Componenti dello switch a ogni smart-gate
+
+Lo switch tipo per questo scenario ha le seguenti caratteristiche:
+
+- **2 porte SFP+** per la fibra dell'anello (10 Gbps per affrontare il caso di tutti i flussi video aggregati che attraversano lo smart-gate verso il CdC).
+- **4-8 porte Gigabit Ethernet** per gli apparati interni allo smart-gate (SoC edge, telecamere PoE+, gateway LoRaWAN, controller maxi-schermo). Alcune con **PoE+** o **PoE++** per alimentare le telecamere.
+- **Alimentazione ridondata** (doppia) 24-48 VDC, alimentata dalla rete dello smart-gate con UPS.
+- **Temperatura operativa estesa** -40°C / +75°C: lo switch può lavorare anche in galleria d'estate o in montagna d'inverno senza condizionamento.
+- **Supporto ERPS** (G.8032) e VLAN 802.1Q nativi.
+- **Management out-of-band** via porta console seriale e via SNMPv3/SSH dalla rete di management dedicata.
 
 ---
 
