@@ -155,7 +155,7 @@ E' l'adattamento in ambito metropolitano di una tipica architettura ethernet ind
 
 <img src="../img/anello_fibra_erps.svg" alt="Anello in fibra ottica con switch ERPS a ogni km" width="680">
 
-> **Dettaglio completo** — confronto tecnico delle tre tecnologie (rigenerazione attiva vs spillamento passivo), meccanica del protocollo ERPS, specifiche dello switch industriale, tracciato fisico della posa: vedi il file [`dettaglio_spillamento_fibra.md`](./dettaglio_spillamento_fibra.md).
+> **Dettaglio completo** — confronto tecnico delle tre tecnologie (rigenerazione attiva vs spillamento passivo), meccanica del protocollo ERPS, specifiche dello switch industriale, tracciato fisico della posa: vedi il file [dettaglio_spillamento_fibra.md](./dettaglio_spillamento_fibra.md).
 
 ---
 # 5. Topologia logica
@@ -211,7 +211,7 @@ I sensori sono **end-device LoRaWAN in classe A**, distribuiti lungo il km e anc
 
 Dal punto di vista del **firmware**, il sensore segue un ciclo semplice: dopo un join OTAA iniziale, a ogni risveglio dal deep sleep legge i valori, li codifica in formato compatto (Cayenne LPP), trasmette un uplink LoRaWAN, ascolta brevemente per eventuali downlink e torna a dormire. È lo stesso schema a fasi del firmware MQTT classico (inizializza → leggi → invia a intervalli → ripeti), ma adattato al risparmio energetico estremo di LoRaWAN: niente connessione persistente, deep sleep tra una trasmissione e l'altra.
 
-> **Dettaglio completo** — schema a fasi, macchina a stati, pseudocodice commentato ed esempio in C++ (Arduino/LMIC), gestione dell'energia e formato Cayenne LPP: vedi il file [`dettaglio_firmware_sensore.md`](./dettaglio_firmware_sensore.md).
+> **Dettaglio completo** — schema a fasi, macchina a stati, pseudocodice commentato ed esempio in C++ (Arduino/LMIC), gestione dell'energia e formato Cayenne LPP: vedi il file [dettaglio_firmware_sensore.md](./dettaglio_firmware_sensore.md).
 
 
 ## 6.2 Gateway LoRaWAN - Colui che smista il payload
@@ -446,7 +446,7 @@ Non è un dispositivo della gerarchia LoRaWAN, non deve implementare lo stack pr
 
 Questa è la tratta più delicata: deve essere ad alta banda (per gli stream video on-demand), bassa latenza, sempre disponibile.
 
-- **Fisicamente**: fibra ottica monomodale lungo l'autostrada, con topologia ad **anello** per la resilienza. La scelta dell'apparato attivo che chiude l'anello a ogni km è discussa in dettaglio nella sezione [§3.3.1](#331-topologia-fisica-e-spillamento-della-fibra-lungo-il-tratto).
+- **Fisicamente**: fibra ottica monomodale lungo l'autostrada, con topologia ad **anello** per la resilienza. La scelta dell'apparato attivo che chiude l'anello a ogni km è discussa in dettaglio nella sezione  [dettaglio_spillamento_fibra.md](./dettaglio_spillamento_fibra.md).
 - **Logicamente**: link Ethernet/IP. Sopra IP si appoggiano:
   - **MQTT su TLS** per la messaggistica asincrona di telemetria, comandi e stato (publish/subscribe verso il broker del CdC).
   - **HTTPS / REST** per gli aggiornamenti di configurazione e per il push di nuove segnaletiche.
