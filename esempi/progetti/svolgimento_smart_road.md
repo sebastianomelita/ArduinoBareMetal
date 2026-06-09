@@ -535,8 +535,9 @@ Esempio di payload sul topic `comandi/schermo`:
 ### 7.3.3. Comunicazione stazioni di ricarica ↔ rete
 
 Le stazioni di ricarica utilizzano:
-- a L3 la rete IP fornita dallo switch di tratto
-- a L7 lo standard applicativo  **OCPP (Open Charge Point Protocol) 1.6 o 2.0.1** su WebSocket Secure verso un CSMS (Charging Station Management System) che, nel nostro progetto, è un microservizio del CN. Questo dà accesso a:
+- **Fisicamente**: fibra ottica monomodale lungo l'autostrada, con topologia ad **anello** per la resilienza. La scelta dell'apparato attivo che chiude l'anello a ogni km è discussa in dettaglio nella sezione [§3.3.1](#331-topologia-fisica-e-spillamento-della-fibra-lungo-il-tratto).
+- **Logicamente**: link Ethernet/IP. Sopra IP si appoggiano:
+     - a L7 lo standard applicativo  **OCPP (Open Charge Point Protocol) 1.6 o 2.0.1** su WebSocket Secure verso un CSMS (Charging Station Management System) che, nel nostro progetto, è un microservizio del CN. Questo dà accesso a:
 
 - stato in tempo reale di ogni punto (libero, occupato, in errore);
 - avvio/interruzione remota di una sessione di ricarica;
