@@ -118,6 +118,7 @@ Topologia della rete LAN dei sensori di un generico tratto:
 
 Per i dettegli sulla tecnologia della rete fisica in fibra vedi il file [`dettaglio_spillamento_fibra.md`](./dettaglio_spillamento_fibra.md)
 
+---
 
 # 4 Confronto e scelta tra tecnologie di rete di reti di sensori
 
@@ -426,6 +427,8 @@ Caratteristiche dell'alta disponibilità del join server:
 - **Sicurezza forte end-to-end**: cifratura del payload (AppSKey), autenticazione e integrità tramite MIC (NwkSKey), OTAA per il provisioning sicuro delle chiavi di sessione.
 - **Trade-off edge gestito**: l'application server all'edge espone le AppSKey a bordo strada; il rischio è mitigato con mutua autenticazione (mTLS), custodia delle chiavi in modulo anti-tampering (Secure Element/HSM) e attestazione di integrità prima della consegna delle chiavi (§3.2.7).
 
+---
+
 # 10. Server di gestione - Comunicazione smart-gate ↔ CdC
 
 Questa è la tratta più delicata: deve essere ad alta banda (per gli stream video on-demand), bassa latenza, sempre disponibile.
@@ -586,11 +589,15 @@ Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
 | 130 | `10.<RR>.<TT>.96/27` | Management/IPMI |
 | 200 | `10.<RR>.<TT>.128/25` | Subnet smart-gate (transit) |
 
+---
+
 # 12 Routing
 
 - **Routing dinamico interno**: protocollo **OSPF** sulle aree regionali, con area 0 (backbone) tra i CdC e il CN.
 - **Routing tra CdC e CN su MPLS**: **BGP** verso il PE dell'operatore telco (BGP per le route private nella VPN MPLS).
 - **VPN IPsec di backup**: route statiche oppure BGP-over-IPsec.
+
+---
 
 # 13 NAT e indirizzi pubblici
 
@@ -721,7 +728,7 @@ UTENTE ──< VEICOLO
 - `stato` di PRENOTAZIONE ∈ {attiva, in_corso, completata, annullata, no_show}.
 - `stato_corrente` di PUNTO_RICARICA ∈ {libero, occupato, guasto, manutenzione, prenotato}.
 
-### 6.6 Query di esempio
+### 15.3.2 Query di esempio
 
 Punti liberi compatibili con il veicolo dell'utente, in una stazione, in una finestra oraria:
 
@@ -742,7 +749,7 @@ WHERE p.id_stazione = :id_stazione_richiesta
   );
 ```
 
-### 15.3.2 Considerazioni di scalabilità
+### 15.3.3 Considerazioni di scalabilità
 
 - Le tabelle ad alta frequenza di scrittura (PUNTO_RICARICA.stato_corrente) andrebbero affiancate da una cache in-memory (Redis) per servire le query di stato all'APP con latenza < 100 ms.
 - Le sessioni di ricarica chiuse possono essere migrate su una tabella storica partizionata per anno/mese per non appesantire la tabella attiva.
