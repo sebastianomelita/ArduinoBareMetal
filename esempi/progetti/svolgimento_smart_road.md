@@ -196,7 +196,7 @@ Lo switch tipo per questo scenario ha le seguenti caratteristiche:
 
 # 6 Dispositivi LoRaWAN
 
-## 6.1 Sensori - Coloro che generano e codificano il payload
+## 6.1 Sensori - Coloro che generano e cifrano il payload
 
 I sensori sono **end-device LoRaWAN in classe A**, distribuiti lungo il km e ancorati al guard-rail. Caratteristiche:
 
@@ -302,7 +302,7 @@ La motivazione forte per la configurazione A allo strato edge è l'argomento del
 
 **La gestione dei 1.000 network server locali.** L'obiezione naturale è: "1.000 network server da gestire sono ingestibili". È vero solo con strumenti vecchi. Con il **fleet management moderno** (Ansible/Salt per la configurazione, container Docker o K3s edge per il deployment, Prometheus per il monitoring, OTA firmware update via canale MQTT sicuro) la gestione di 1.000 dispositivi edge identici è un'operazione standardizzata. Le grandi reti CDN e le flotte di POS gestiscono decine o centinaia di migliaia di nodi edge con questi strumenti — 1.000 è un numero piccolo.
 
-## 6.4. Application  server - Colui che decodifica il payload
+## 6.4. Application  server - Colui che decifra il payload
 
 ## 6.4.1. Chiave di sessione
 
