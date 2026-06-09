@@ -299,7 +299,7 @@ La motivazione forte per la configurazione A allo strato edge è l'argomento del
 
 ---
 
-# 8. Apllication  server - colui che decodifica il payload
+# 8. Apllication  server - Colui che decodifica il payload
 
 Punto da chiarire con precisione, perché è una sorgente classica di errore. Nella catena LoRaWAN i ruoli agiscono **in sequenza**:
 
