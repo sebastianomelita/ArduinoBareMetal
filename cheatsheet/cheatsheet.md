@@ -39,10 +39,10 @@ Normalmente, bit rate e consumo sono direttamente proporzionali, quando cresce i
 - **Ipotesi sul dominio**: ipotesi più precise sulla distribuzione degli asset (nodi di elaborazione e nodi di rete), ipotesi sui volumi di traffico e sui livelli di servizio.
 - **Vincoli normativi**: di privacy (GDPR, NIS), di dominio (codice della strada, regole amministrative, ecc), di sistema (cablaggio strutturato,  BIA e criticità degli asset, Sicurezza funzionale — IEC 61508, ecc)
 
-### 1.1 Schema fisico
+### 1.1 Schemi fondamentali
 - Schema fisico (**planimetria**) dello scenario: ambienti ed edifici chiave, infrastruttura
   **indoor**/**outdoor**, con **etichettatura univoca** di tutti i **dispositivi passivi** di rete (armadi) e con la definizione del **tracciato** dei mezzi trasmissivi (cavi ethernet e fibra).
-- Schema logico (albero degli **apparati attivi**) di tutti i dispositivi che rappresenti:
+- Schema **logico** (albero degli **apparati attivi**) di tutti i dispositivi che rappresenti:
      - eventuale **router di confine** della LAN
      - eventuale gerarchia di **switch** che realizzano fisicamente la LAN
      - **link fisici**: dorsali interne alle LAN e dorsali esterne verso lo ISP
