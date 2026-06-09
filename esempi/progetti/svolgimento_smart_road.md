@@ -648,6 +648,18 @@ La sicurezza è organizzata per **strati** (defense in depth):
 - Firewall stateful al perimetro di ogni CdC e del CN; IDS/IPS con regole signature-based + analisi comportamentale.
 - Segmentazione **micro** tramite VLAN e ACL: gli smart-gate non possono parlare tra loro, ma solo col CdC.
 - **NAC (Network Access Control)** con 802.1X sugli switch del CdC per autenticare ogni dispositivo che si collega.
+- si abilita 802.1X sulle porte di accesso dello switch dello smart-gate
+     - EAP-TLS dove i dispositivi lo supportano (riusando la PKI),
+     - MAB+profiling per i dispositivi legacy
+     - RADIUS locale o critical-auth per non rompere la modalità degraded. È un rafforzamento che si aggiunge a tamper detection e mutual-TLS, non li sostituisce.
+
+L'autenticazione 802.1X e mTLS (Mutual TLS) sembrano alternativi perché usano lo stesso tipo di credenziale (certificato X.509) e magari la stessa PKI, ma autenticano cose diverse, a livelli diversi, verso interlocutori diversi. Sono complementari, non sostitutivi. Uno **presenta** il certificato **al RADIUS** per entrare in rete, l'altro lo presenta **al broker** per aprire la sessione applicativa.
+
+Con solo mTLS: un apparato rogue infilato nel cabinet non riuscirebbe a fingersi il client MQTT, ma sarebbe comunque sulla LAN a scansionare, attaccare le telecamere o il controller PMV (che magari non parlano mTLS), fare ARP spoofing. L'802.1X glielo impedisce a monte.
+
+Con solo 802.1X: un dispositivo che ha superato l'ammissione (o che ha spoofato il MAC in MAB) potrebbe provare a connettersi al broker; senza mTLS il broker non potrebbe verificarne l'identità applicativa né il traffico sarebbe **cifrato end-to-end** attraverso la WAN, dove passa per nodi intermedi (firewall, dorsale, broker che inoltra).
+
+Un'analogia: l'802.1X è il tornello con badge all'ingresso dell'edificio; il mTLS è il mostrare il documento alla persona specifica con cui poi parli, in una stanza insonorizzata. Stesso documento d'identità, due controlli in due punti diversi.
 
 **Sicurezza applicativa**:
 
