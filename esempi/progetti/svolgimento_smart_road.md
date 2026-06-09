@@ -117,7 +117,7 @@ La **rete ethernet** è composta da uno **piccolo switch** che connette:
 
 Si è scelto di mettere a confronto due tecnologie per la realizzazione di una rete aziendale privata di dimensioni geografiche:
 1. una pubblica MPLS nazionale, cioè una rete VPN Trusted fornita da ISP nazionale sia per il tratto regionale che per quello nazionale.
-2. una pubblica MPLS nazionaleper il tratto regionale e una rete metropolitana privata, gestita direttamente dall'ente autostrade regionale, per la rete regionale.
+2. una pubblica MPLS nazionale per il tratto regionale e una rete metropolitana privata, gestita direttamente dall'ente autostrade regionale, per la rete regionale.
 
 **Scelta: anello Ethernet L2 con ERPS.** Motivazioni:
 
@@ -514,27 +514,27 @@ Esempio di payload sul topic `comandi/schermo`:
   }
 }
 ```
-## 7.3. gerarchia di server di gestione
+## 7.3. Dorsali della rete di gestione
 
 ### 7.3.1. Comunicazione CdC ↔ CN
 
-- **Connessione primaria**: rete **MPLS L3VPN** fornita da un operatore telco. Garantisce SLA contrattuali, classi di servizio (QoS) e isolamento.
-- **Connessione di backup**: tunnel **VPN IPsec site-to-site** su Internet pubblica, da firewall a firewall.
-- **Protocolli applicativi**:
+- L3: **Connessione primaria**: rete **MPLS L3VPN** fornita da un operatore telco. Garantisce SLA contrattuali, classi di servizio (QoS) e isolamento.
+- L3: **Connessione di backup**: tunnel **VPN IPsec site-to-site** su Internet pubblica, da firewall a firewall.
+- L7: **Canale applicativo**:
   - **MQTT bridge** (è il pattern classico): il broker del CdC fa da bridge verso il broker del CN, replicando solo i topic di interesse nazionale (es. dati aggregati di traffico, prenotazioni ricariche, allarmi, eventi targhe).
   - **HTTPS/REST** per le chiamate sincrone (es. recupero di dati storici, push di configurazioni globali dal CN ai CdC).
   - **gRPC** in alternativa al REST quando occorre throughput più alto e contratti tipizzati (Protocol Buffers).
 
 ### 7.3.2. Comunicazione APP utenti ↔ CN
 
-- **HTTPS/REST** (versionato `/v1/...`) per le chiamate stateless del client.
-- **WebSocket Secure (WSS)** per il push real-time delle segnaletiche e dello stato dei punti di ricarica.
-- In alternativa, **MQTT over WebSocket Secure** se si vuole riusare l'infrastruttura broker (il client APP si registra come subscriber su topic di pubblico interesse).
+- L7: Canale applicativo **HTTPS/REST** (versionato `/v1/...`) per le chiamate stateless del client.
+- L7: Canale applicativo **WebSocket Secure (WSS)** per il push real-time delle segnaletiche e dello stato dei punti di ricarica.
+- L7: In alternativa, **MQTT over WebSocket Secure** se si vuole riusare l'infrastruttura broker (il client APP si registra come subscriber su topic di pubblico interesse).
 - Autenticazione utenti con **OAuth 2.0 + OpenID Connect** per le funzioni che richiedono profilazione (prenotazione ricarica). Le funzioni di sola lettura della segnaletica sono accessibili in modo anonimo.
 
 ### 7.3.3. Comunicazione stazioni di ricarica ↔ rete
 
-Le stazioni di ricarica utilizzano lo standard **OCPP (Open Charge Point Protocol) 1.6 o 2.0.1** su WebSocket Secure verso un CSMS (Charging Station Management System) che, nel nostro progetto, è un microservizio del CN. Questo dà accesso a:
+Le stazioni di ricarica utilizzano lo standard applicativo  **OCPP (Open Charge Point Protocol) 1.6 o 2.0.1** su WebSocket Secure verso un CSMS (Charging Station Management System) che, nel nostro progetto, è un microservizio del CN. Questo dà accesso a:
 
 - stato in tempo reale di ogni punto (libero, occupato, in errore);
 - avvio/interruzione remota di una sessione di ricarica;
@@ -542,7 +542,7 @@ Le stazioni di ricarica utilizzano lo standard **OCPP (Open Charge Point Protoco
 
 ---
 
-# 8. Piano di indirizzamento dettagliato - Subnetting dorsali in fibra
+# 8. Piano di indirizzamento dettagliato - Subnetting dorsali di tratto
 
 Si adotta un piano basato su **RFC 1918** all'interno della rete privata della società autostradale e indirizzi pubblici solo per i servizi esposti su Internet (APP, sito istituzionale).
 
