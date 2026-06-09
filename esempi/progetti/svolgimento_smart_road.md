@@ -95,7 +95,7 @@ Il CN è progettato come **due data-center attivo-attivo** geograficamente separ
 
 
 
-## 3.2 Rete di sensori wireless LoRaWAN del tratto 
+## 3.2 Rete WSN del tratto 
 
 Una delle scelte progettuali più caratterizzanti del progetto è realizzare la sensoristica ambientale come **rete wireless LPWA in tecnologia LoRaWAN** distribuita lungo il km di carreggiata di pertinenza di ogni smart-gate. Questa scelta merita un'argomentazione esplicita perché incide su molti aspetti dell'infrastruttura.
 
