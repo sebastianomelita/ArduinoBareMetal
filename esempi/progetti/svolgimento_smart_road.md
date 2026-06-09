@@ -242,7 +242,9 @@ Per i tratti autostradali in zone scarsamente coperte dalla fibra (passi montani
 
 ---
 
-# 7.  Network server - Architettura distribuita vs centralizzata
+# 7.  Network server - Colui che autentica il paylosd
+
+## 7.1 Architettura distribuita vs centralizzata
 
 **Separazione dei ruoli del network server.** È un altro punto fondamentale per chiarire l'architettura. La specifica LoRaWAN identifica diversi ruoli funzionali che possono stare insieme su una sola macchina o essere distribuiti:
 
