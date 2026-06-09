@@ -1,6 +1,6 @@
 <svg width="100%" viewBox="0 0 1100 800" xmlns="http://www.w3.org/2000/svg" role="img" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
 <title>CdC Lombardia — rete di reti LoRaWAN a due livelli (L3 IP / L7 MQTT)</title>
-<desc>Tre tratti autostradali con i propri nodi edge (gateway + network server + application server) collegati al CdC Lombardia tramite dorsali IP; sovrapposto il piano applicativo MQTT con il broker come router applicativo.</desc>
+<desc>Tre tratti autostradali con switch L2 di tratto e nodi edge (gateway + network server + application server) collegati al CdC Lombardia tramite dorsali IP; i link radio sensore-gateway sono LoRaWAN 868 MHz; sovrapposto il piano applicativo MQTT con il broker come router applicativo.</desc>
 <defs>
 <style>
 .t  { font-size: 14px; fill: #2C2C2A; }
@@ -13,7 +13,7 @@
 
 <!-- ====================== TITOLO ====================== -->
 <text class="area-title" x="20" y="28">CdC Lombardia — rete di reti LoRaWAN a due livelli</text>
-<text class="ts" x="20" y="46">L2 LoRa (onde) all'interno di ogni tratto · L3 IP (tratteggio nero) tra firewall · L7 MQTT (puntinato azzurro) come piano applicativo sopra IP</text>
+<text class="ts" x="20" y="46">L2 LoRa (onde verdi) sensore↔gateway · L3 IP (tratteggio nero) tra firewall · L7 MQTT (puntinato azzurro) come piano applicativo sopra IP</text>
 
 <!-- ====================== TRATTO A1 (in alto a sinistra) ====================== -->
 <text class="area-title" x="60" y="80">Tratto A1</text>
@@ -30,11 +30,16 @@
 <text class="tt" x="210" y="148">39.68.34.121</text>
 <text class="tt" x="210" y="178">DHCP·NAT·VPN</text>
 
-<!-- "rete LoRaWAN del tratto" (al posto della WiFi mesh) -->
-<ellipse cx="180" cy="240" rx="80" ry="28" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5" stroke-dasharray="3 3"/>
-<text class="ts" x="180" y="236" text-anchor="middle" fill="#0F6E56">rete LoRaWAN</text>
-<text class="ts" x="180" y="252" text-anchor="middle" fill="#0F6E56">del tratto · 868 MHz</text>
-<line x1="180" y1="191" x2="180" y2="212" stroke="#5F5E5A" stroke-width="1"/>
+<!-- switch L2 del tratto (simbolo Cisco) -->
+<g transform="translate(137,217)">
+  <rect x="0" y="14" width="86" height="32" rx="3" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.8"/>
+  <path d="M18 4 H40 M35 1 L40 4 L35 7" stroke="#5F5E5A" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M40 10 H18 M23 7 L18 10 L23 13" stroke="#5F5E5A" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M46 4 H68 M63 1 L68 4 L63 7" stroke="#5F5E5A" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M68 10 H46 M51 7 L46 10 L51 13" stroke="#5F5E5A" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="43" y="34" text-anchor="middle" font-size="11" fill="#2C2C2A">Switch L2</text>
+</g>
+<line x1="180" y1="191" x2="180" y2="231" stroke="#5F5E5A" stroke-width="1"/>
 
 <!-- gateway km 1 -->
 <rect x="60" y="290" width="90" height="56" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
@@ -47,6 +52,10 @@
 <text class="tt" x="255" y="308" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Gateway km 2</text>
 <text class="tt" x="255" y="324" text-anchor="middle" dominant-baseline="central" fill="#534AB7">+ NS + AS edge</text>
 <text class="tt" x="255" y="338" text-anchor="middle" dominant-baseline="central" fill="#534AB7">.0.52</text>
+
+<!-- link L2 gateway -> switch del tratto -->
+<line x1="105" y1="290" x2="150" y2="263" stroke="#5F5E5A" stroke-width="1"/>
+<line x1="255" y1="290" x2="210" y2="263" stroke="#5F5E5A" stroke-width="1"/>
 
 <!-- onde radio LoRaWAN dai sensori verso gateway km 1 -->
 <path d="M 70 380 Q 80 360 105 346" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
@@ -66,9 +75,9 @@
 <rect x="200" y="375" width="50" height="26" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
 <text class="tt" x="225" y="389" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">sensore</text>
 
-<!-- link L3 dai gateway alla mesh LoRaWAN del tratto (in realtà alla LAN del tratto, via switch interno) -->
-<line x1="105" y1="290" x2="135" y2="262" stroke="#5F5E5A" stroke-width="1"/>
-<line x1="255" y1="290" x2="225" y2="262" stroke="#5F5E5A" stroke-width="1"/>
+<!-- etichetta link radio LoRaWAN -->
+<text class="tt" x="180" y="360" text-anchor="middle" fill="#0F6E56">LoRaWAN</text>
+<text class="tt" x="180" y="372" text-anchor="middle" fill="#0F6E56">868 MHz</text>
 
 <!-- ====================== TRATTO A14 (in basso a sinistra) ====================== -->
 <text class="area-title" x="60" y="490">Tratto A14</text>
@@ -82,23 +91,33 @@
 <line x1="180" y1="547" x2="180" y2="565" stroke="#5F5E5A" stroke-width="1"/>
 <text class="tt" x="210" y="558">39.68.34.122</text>
 
-<ellipse cx="180" cy="650" rx="80" ry="28" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5" stroke-dasharray="3 3"/>
-<text class="ts" x="180" y="646" text-anchor="middle" fill="#0F6E56">rete LoRaWAN</text>
-<text class="ts" x="180" y="662" text-anchor="middle" fill="#0F6E56">del tratto · 868 MHz</text>
-<line x1="180" y1="601" x2="180" y2="622" stroke="#5F5E5A" stroke-width="1"/>
+<!-- switch L2 del tratto (simbolo Cisco) -->
+<g transform="translate(137,627)">
+  <rect x="0" y="14" width="86" height="32" rx="3" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.8"/>
+  <path d="M18 4 H40 M35 1 L40 4 L35 7" stroke="#5F5E5A" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M40 10 H18 M23 7 L18 10 L23 13" stroke="#5F5E5A" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M46 4 H68 M63 1 L68 4 L63 7" stroke="#5F5E5A" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M68 10 H46 M51 7 L46 10 L51 13" stroke="#5F5E5A" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="43" y="34" text-anchor="middle" font-size="11" fill="#2C2C2A">Switch L2</text>
+</g>
+<line x1="180" y1="601" x2="180" y2="641" stroke="#5F5E5A" stroke-width="1"/>
 
 <rect x="100" y="700" width="90" height="56" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
 <text class="tt" x="145" y="718" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Gateway km 5</text>
 <text class="tt" x="145" y="734" text-anchor="middle" dominant-baseline="central" fill="#534AB7">+ NS + AS edge</text>
 <text class="tt" x="145" y="748" text-anchor="middle" dominant-baseline="central" fill="#534AB7">.1.51</text>
 
-<line x1="145" y1="700" x2="155" y2="675" stroke="#5F5E5A" stroke-width="1"/>
+<line x1="145" y1="700" x2="160" y2="673" stroke="#5F5E5A" stroke-width="1"/>
 
 <!-- sensore tratto A14 -->
 <path d="M 65 760 Q 100 740 130 756" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
 <path d="M 65 765 Q 100 745 130 760" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
 <rect x="35" y="755" width="50" height="26" rx="4" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
 <text class="tt" x="60" y="769" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">sensore</text>
+
+<!-- etichetta link radio LoRaWAN -->
+<text class="tt" x="235" y="744" text-anchor="middle" fill="#0F6E56">LoRaWAN</text>
+<text class="tt" x="235" y="756" text-anchor="middle" fill="#0F6E56">868 MHz</text>
 
 <!-- ====================== TRATTO A22 (in basso al centro) ====================== -->
 <text class="area-title" x="440" y="490">Tratto A22</text>
@@ -112,24 +131,34 @@
 <line x1="540" y1="547" x2="540" y2="565" stroke="#5F5E5A" stroke-width="1"/>
 <text class="tt" x="570" y="558">39.68.34.123</text>
 
-<ellipse cx="540" cy="650" rx="80" ry="28" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5" stroke-dasharray="3 3"/>
-<text class="ts" x="540" y="646" text-anchor="middle" fill="#0F6E56">rete LoRaWAN</text>
-<text class="ts" x="540" y="662" text-anchor="middle" fill="#0F6E56">del tratto · 868 MHz</text>
-<line x1="540" y1="601" x2="540" y2="622" stroke="#5F5E5A" stroke-width="1"/>
+<!-- switch L2 del tratto (simbolo Cisco) -->
+<g transform="translate(497,627)">
+  <rect x="0" y="14" width="86" height="32" rx="3" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.8"/>
+  <path d="M18 4 H40 M35 1 L40 4 L35 7" stroke="#5F5E5A" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M40 10 H18 M23 7 L18 10 L23 13" stroke="#5F5E5A" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M46 4 H68 M63 1 L68 4 L63 7" stroke="#5F5E5A" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M68 10 H46 M51 7 L46 10 L51 13" stroke="#5F5E5A" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="43" y="34" text-anchor="middle" font-size="11" fill="#2C2C2A">Switch L2</text>
+</g>
+<line x1="540" y1="601" x2="540" y2="641" stroke="#5F5E5A" stroke-width="1"/>
 
 <rect x="460" y="700" width="90" height="56" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
 <text class="tt" x="505" y="718" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Gateway km 8</text>
 <text class="tt" x="505" y="734" text-anchor="middle" dominant-baseline="central" fill="#534AB7">+ NS + AS edge</text>
 <text class="tt" x="505" y="748" text-anchor="middle" dominant-baseline="central" fill="#534AB7">.2.51</text>
 
-<line x1="505" y1="700" x2="515" y2="675" stroke="#5F5E5A" stroke-width="1"/>
+<line x1="505" y1="700" x2="520" y2="673" stroke="#5F5E5A" stroke-width="1"/>
 
-<!-- attuatore pannello PMV -->
+<!-- attuatore pannello PMV (collegato in LoRaWAN) -->
 <path d="M 625 760 Q 590 740 555 756" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
 <path d="M 625 765 Q 590 745 555 760" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
 <rect x="600" y="745" width="80" height="42" rx="4" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
 <text class="tt" x="640" y="760" text-anchor="middle" dominant-baseline="central" fill="#3C3489">pannello PMV</text>
 <text class="tt" x="640" y="775" text-anchor="middle" dominant-baseline="central" fill="#534AB7">(attuatore)</text>
+
+<!-- etichetta link radio LoRaWAN -->
+<text class="tt" x="575" y="726" text-anchor="middle" fill="#0F6E56">LoRaWAN</text>
+<text class="tt" x="575" y="738" text-anchor="middle" fill="#0F6E56">868 MHz</text>
 
 <!-- ====================== CdC LOMBARDIA (a destra) ====================== -->
 <text class="area-title" x="800" y="200">CdC Lombardia</text>
