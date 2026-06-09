@@ -648,7 +648,7 @@ La sicurezza è organizzata per **strati** (defense in depth):
 - Firewall stateful al perimetro di ogni CdC e del CN; IDS/IPS con regole signature-based + analisi comportamentale.
 - Segmentazione **micro** tramite VLAN e ACL: gli smart-gate non possono parlare tra loro, ma solo col CdC.
 - **NAC (Network Access Control)** con 802.1X sugli switch del CdC per autenticare ogni dispositivo che si collega.
-- si abilita 802.1X sulle porte di accesso dello switch dello smart-gate che autentica a L2 con EAP i dispositivi connessi al loro inserimento senza cifratura End to End con:
+- si abilita 802.1X sulle porte di accesso dello switch dello smart-gate per **proteggere la rete** dagli **accessi rogue** (abusivi):
      - EAP-TLS dove i dispositivi lo supportano (riusando la PKI di 802.1X),
      - MAB+profiling per i dispositivi legacy
      - RADIUS locale o critical-auth per non rompere la modalità degraded. È un rafforzamento che si aggiunge a tamper detection e mutual-TLS, non li sostituisce.
@@ -656,7 +656,7 @@ La sicurezza è organizzata per **strati** (defense in depth):
 **Sicurezza applicativa**:
 
 - Tutto in **TLS 1.3** (HTTPS, MQTTS, WSS).
-- Autenticazione dei dispositivi smart-gate verso il broker MQTT con **certificati X.509** (mutual TLS). Ogni smart-gate ha il proprio certificato emesso da una PKI interna; il certificato viene installato in fabbrica e ruotato annualmente.
+- Autenticazione dei dispositivi smart-gate verso il broker MQTT con **certificati X.509** (mutual TLS). Ogni smart-gate ha il proprio certificato emesso da una PKI interna; il certificato viene installato in fabbrica e ruotato annualmente. Serve a **proteggere il broker MQTT** da accessi abusivi.
 - Autenticazione degli utenti dell'APP con **OAuth 2.0 + OIDC** e MFA per le funzioni che muovono denaro (prenotazione e pagamento ricarica).
 - Le password sugli account utente sono salvate con **bcrypt/argon2** (mai in chiaro, mai con hash veloci come MD5/SHA1).
 
