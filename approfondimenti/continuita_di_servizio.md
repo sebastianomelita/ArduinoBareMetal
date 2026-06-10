@@ -112,7 +112,7 @@ Questo gateway va ridondato?
 
 Lo stesso hardware, due verdetti nella stessa flotta: un gateway che riporta solo la temperatura ambiente → no ridondanza. Un gateway che è l'*unica* via di una linea antintrusione perimetrale o di un rilevatore gas *senza trip locale* → o lo ridondi, o (preferibile) gli affianchi la logica di fail-safe locale, così che la rilevazione non dipenda più dal round-trip verso il centro.
 
-Nell'ultimo ramo dell'albero, la decisione finale pesa tre fattori insieme: la **conseguenza** nella finestra cieca, la **frequenza** con cui la funzione viene richiesta in quella finestra (un allarme demandato di rado tollera una finestra diversa da un controllo continuo), e la **durata della finestra cieca** stessa — che è il MTTR di sostituzione. Se mandare un tecnico con uno spare dà un MTTR molto inferiore al tempo-al-danno, lo spare basta: la ridondanza a caldo aggiunge costo ×1000, non sicurezza.
+Nell'ultimo ramo dell'albero, la decisione finale pesa tre fattori insieme: la **conseguenza** nella finestra cieca, la **frequenza** con cui la funzione viene richiesta in quella finestra (un allarme inviato di rado tollera una finestra diversa da un controllo continuo), e la **durata della finestra cieca** stessa coincidente con il MTTR di sostituzione. Se mandare un tecnico con uno spare (ricambio) dà un MTTR (Mean Time To repair) molto inferiore al tempo-al-danno, lo spare basta: la ridondanza a caldo aggiunge costo ×1000, non sicurezza.
 
 
 ---
