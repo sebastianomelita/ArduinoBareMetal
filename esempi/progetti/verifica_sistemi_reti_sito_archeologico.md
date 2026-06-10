@@ -551,85 +551,60 @@ Vantaggi della soluzione B: minore investimento in hardware (meno minitablet), m
 
 ## Allegato A — Configurazione Cisco IOS completa delle ACL
 
-Questo allegato traduce in sintassi **Cisco IOS** la tabella astratta delle regole ACL del paragrafo 3.d. Tutte le ACL sono **extended**, nominate (per leggibilità) e applicate in ingresso sull'interfaccia di ciascuna VLAN, in modo che il filtro avvenga al confine della VLAN sorgente, prima che il traffico venga instradato verso le altre.
+Questo allegato traduce in sintassi **Cisco IOS** la tabella astratta delle regole del §3.d. Tutte le ACL sono **extended**, nominate e applicate **in ingresso** sull'interfaccia di ciascuna VLAN, così il filtro avviene al confine della VLAN **sorgente**, prima dell'instradamento. Ogni mini-tabella è seguita **subito dal blocco di comandi** che la realizza.
 
-### A.0 — Scelta dell'architettura: router-on-a-stick
+### A.0 — Architettura: router-on-a-stick
 
-L'inter-VLAN routing può essere realizzato in due modi tipici, e la scelta condiziona *dove* si applicano le ACL ma **non** la loro logica:
+Si adotta la configurazione **router-on-a-stick (RoAS)**: un router con un'unica interfaccia fisica verso lo switch in **trunk 802.1Q**, su cui si creano cinque **sub-interfaces** (una per VLAN), ciascuna con il proprio default gateway. È il modello canonico CCNA, ottimo come esempio didattico.
 
-- **Router-on-a-stick (RoAS)**: un router separato dallo switch L2, con **un'unica interfaccia fisica** verso lo switch configurata come **trunk 802.1Q**. Su quell'interfaccia si creano tante **sub-interfaces** logiche, una per VLAN, ciascuna con il proprio IP di default gateway. Il routing inter-VLAN è fatto dal router, che riceve il pacchetto su una sub-interface, lo instrada e lo rispedisce sulla stessa interfaccia fisica con un tag VLAN diverso. Economico, ottimo come esempio didattico, ma il trunk diventa un collo di bottiglia per il traffico inter-VLAN.
-- **Multilayer switch (L3 switch)**: uno switch capace di fare routing in hardware (ASIC). Le VLAN non hanno sub-interfaces ma **SVI** (*Switch Virtual Interface*): interfacce logiche del piano di routing dello switch, una per VLAN. L'inter-VLAN routing avviene *dentro* lo switch, a velocità di linea. Più costoso ma molto più performante.
+> **Invarianza rispetto all'L3 switch.** La stessa logica si trasferisce a un multilayer switch sostituendo `interface FastEthernet0/0.X` → `interface VlanX`, togliendo `encapsulation dot1Q X`, aggiungendo `ip routing`. I comandi `ip address` e `ip access-group` restano identici: **matrice, tabella e ACL non cambiano**, cambia solo il tipo di interfaccia.
 
-**In questo allegato si adotta la configurazione router-on-a-stick**, perché ha valore didattico più immediato — è il modello canonico dei manuali Cisco CCNA. Va però rimarcato che la stessa logica di ACL si trasferisce all'L3 switch con una sostituzione meccanica:
+**Indirizzi di riferimento:** `10.0.20.10` = server contenuti/RADIUS/captive portal (V20); `10.0.20.20` = NVR telecamere (V20); `10.0.10.5` = syslog server (V10). Subnet: V10 `10.0.10.0/24`, V20 `10.0.20.0/24`, V30 `10.0.30.0/23`, V40 `10.0.40.0/24`, V50 `10.0.50.0/24`.
 
-- le `interface FastEthernet0/0.X` diventano `interface VlanX`;
-- si rimuove la riga `encapsulation dot1Q X` (l'associazione VLAN è implicita nella SVI);
-- si aggiunge il comando globale `ip routing` (sui multilayer switch è disabilitato per default);
-- i comandi `ip address`, `ip access-group` restano *identici*.
-
-In altre parole, la matrice degli accessi, la tabella delle regole e il contenuto delle ACL sono **invarianti rispetto all'architettura**; cambia solo il tipo di interfaccia su cui si applicano. Per il nostro sito, in produzione, sarebbe preferibile l'L3 switch (le 200 sessioni HTTPS contemporanee ai picchi giustificano il forwarding in ASIC); in sede d'esame la versione RoAS è quella che meglio mostra il meccanismo del routing inter-VLAN.
-
-**Architettura complessiva.** In entrambi i casi è opportuno avere **anche un firewall vero** in serie tra il router/L3 switch e l'uplink FWA verso Internet, dedicato al confine WAN: NAT, stateful inspection robusta, IPS, eventuale VPN site-to-site. Il firewall non si occupa del traffico inter-VLAN interno (sarebbe troppo lento per quello), ma solo del traffico verso/da Internet.
-
-**Indirizzi di riferimento utilizzati:**
-
-- `10.0.20.10` = host del Server contenuti / RADIUS / captive portal (VLAN 20);
-- `10.0.20.20` = host NVR per le telecamere (VLAN 20);
-- `10.0.10.0/24` = subnet Management; `10.0.20.0/24` = Server; `10.0.30.0/23` = Tablet; `10.0.40.0/24` = InfoPoint; `10.0.50.0/24` = IoT.
-
-### A.1 — Configurazione del trunk e delle sub-interfaces
-
-Lato switch L2, la porta che collega lo switch al router (es. `FastEthernet0/24`) è configurata come **trunk 802.1Q** e trasporta tutte le VLAN:
+### A.1 — Trunk e sub-interfaces
 
 ```cisco
-! Configurazione lato switch L2
+! --- lato switch L2 ---
 interface FastEthernet0/24
  description Uplink al router (RoAS)
  switchport mode trunk
  switchport trunk encapsulation dot1q
  switchport trunk allowed vlan 10,20,30,40,50
-```
-
-Lato router, l'interfaccia fisica resta *senza indirizzo IP*, e su di essa si creano cinque sub-interfaces, una per VLAN. Ogni sub-interface dichiara la VLAN che trasporta con `encapsulation dot1Q` e ospita il default gateway della relativa subnet:
-
-```cisco
-! Configurazione lato router
+!
+! --- lato router ---
 interface FastEthernet0/0
  description Trunk verso lo switch L2 (RoAS)
  no ip address
  no shutdown
 !
 interface FastEthernet0/0.10
- description MGMT - default gateway 10.0.10.1
  encapsulation dot1Q 10
  ip address 10.0.10.1 255.255.255.0
-!
 interface FastEthernet0/0.20
- description SERVER - default gateway 10.0.20.1
  encapsulation dot1Q 20
  ip address 10.0.20.1 255.255.255.0
-!
 interface FastEthernet0/0.30
- description TABLET - default gateway 10.0.30.1
  encapsulation dot1Q 30
- ip address 10.0.30.1 255.255.254.0       ! /23 = 510 host
-!
+ ip address 10.0.30.1 255.255.254.0        ! /23 = 510 host
+ ip helper-address 10.0.20.10              ! relay DHCP verso il server (vedi A.2.3)
 interface FastEthernet0/0.40
- description INFOPOINT - default gateway 10.0.40.1
  encapsulation dot1Q 40
  ip address 10.0.40.1 255.255.255.0
-!
 interface FastEthernet0/0.50
- description IOT - default gateway 10.0.50.1
  encapsulation dot1Q 50
  ip address 10.0.50.1 255.255.255.0
 ```
 
-### A.2 — ACL per ciascuna VLAN
+---
 
-#### A.2.1 — ACL-V10-IN: management
+### A.2 — Una ACL per VLAN (tabella + comandi)
 
-La VLAN 10 è il piano di controllo: ha accesso pieno a tutto. Una sola riga di permit più la deny implicita.
+#### A.2.1 — `ACL-V10-IN` · Management (control plane)
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | ip | 10.0.10.0/24 | any | — | Management: accesso pieno |
+| 2 | deny | ip | any | any | — | **Default deny** (log) |
 
 ```cisco
 ip access-list extended ACL-V10-IN
@@ -638,13 +613,21 @@ ip access-list extended ACL-V10-IN
  deny   ip any any log
 ```
 
-#### A.2.2 — ACL-V20-IN: server
+#### A.2.2 — `ACL-V20-IN` · Server contenuti
 
-Il server contenuti deve potersi aggiornare (HTTPS verso Internet), risolvere nomi (DNS) e sincronizzare l'orologio (NTP). Non ha motivo di iniziare connessioni verso le altre VLAN — solo di rispondere, e il traffico di ritorno è gestito automaticamente dal reflexive ACL o dal CBAC/ZBF se il dispositivo lo supporta.
+Il server può solo aggiornarsi, risolvere nomi, sincronizzare l'ora e loggare. Non **inizia** connessioni verso le VLAN utente: risponde soltanto, e le risposte sono riaperte da CBAC (A.4).
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | tcp | 10.0.20.0/24 | any | 443 | Aggiornamenti software (HTTPS) |
+| 2 | permit | udp | 10.0.20.0/24 | any | 53 | DNS |
+| 3 | permit | udp | 10.0.20.0/24 | any | 123 | NTP |
+| 4 | permit | udp | 10.0.20.0/24 | 10.0.10.5 | 514 | Syslog → server log (MGMT) |
+| 5 | deny | ip | any | any | — | **Default deny** (log) |
 
 ```cisco
 ip access-list extended ACL-V20-IN
- remark === Server: solo updates / DNS / NTP verso Internet ===
+ remark === Server: updates / DNS / NTP / syslog ===
  permit tcp 10.0.20.0 0.0.0.255 any eq 443
  permit udp 10.0.20.0 0.0.0.255 any eq domain
  permit udp 10.0.20.0 0.0.0.255 any eq ntp
@@ -652,35 +635,58 @@ ip access-list extended ACL-V20-IN
  deny   ip any any log
 ```
 
-#### A.2.3 — ACL-V30-IN: tablet visitatori
+#### A.2.3 — `ACL-V30-IN` · Tablet visitatori
 
-La regola centrale del progetto: i tablet possono parlare solo HTTPS verso il server contenuti, nient'altro. Niente Internet, niente altre subnet, niente peer-to-peer (quest'ultimo è bloccato anche dal client isolation sull'SSID, ma il filtro qui è una seconda linea).
+La regola centrale: i tablet parlano **solo** HTTPS al server contenuti. Niente Internet, niente altre subnet, niente peer-to-peer (già fermato dal client isolation sull'SSID; qui è la seconda linea).
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | tcp | 10.0.30.0/23 | 10.0.20.10 | 443 | HTTPS al server contenuti |
+| 2 | permit | udp | 10.0.30.0/23 | 10.0.20.10 | 53 | DNS interno |
+| 3 | deny | ip | any | any | — | **Default deny** (log) |
 
 ```cisco
 ip access-list extended ACL-V30-IN
  remark === Tablet: solo HTTPS verso il server contenuti ===
  permit tcp 10.0.30.0 0.0.1.255 host 10.0.20.10 eq 443
- permit udp 10.0.30.0 0.0.1.255 host 10.0.20.10 eq domain   ! DNS interno
- permit udp 10.0.30.0 0.0.1.255 host 10.0.20.10 eq bootps   ! DHCP (relay)
+ permit udp 10.0.30.0 0.0.1.255 host 10.0.20.10 eq domain
  deny   ip any any log
 ```
 
-#### A.2.4 — ACL-V40-IN: InfoPoint / cassa
+> **DHCP.** Non serve una riga ACL: la DISCOVER del tablet è un broadcast `255.255.255.255` che non attraversa questa lista, ma viene intercettato dall'`ip helper-address 10.0.20.10` sulla sub-interface V30 (A.1), che la inoltra in unicast al server come relay. Il rinnovo unicast del lease è comunque traffico di ritorno gestito da CBAC.
 
-Gli operatori InfoPoint accedono all'app cassa (sul server contenuti) e a gestionali esterni via HTTPS, ma non devono potersi infilare nella VLAN Management né in quella dei tablet.
+#### A.2.4 — `ACL-V40-IN` · InfoPoint / cassa
+
+Gli operatori usano l'app cassa (sul server) e gestionali esterni in HTTPS, ma **non** devono entrare in Management, tablet o IoT. Il `deny` verso le reti interne **precede** il permit largo verso Internet, così `permit tcp … any eq 443` vale solo per l'esterno.
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | udp | 10.0.40.0/24 | 10.0.20.10 | 53 | DNS interno |
+| 2 | permit | tcp | 10.0.40.0/24 | 10.0.20.0/24 | 443 | App cassa / biglietteria |
+| 3 | deny | ip | 10.0.40.0/24 | 10.0.0.0/8 | — | Niente altre VLAN interne |
+| 4 | permit | tcp | 10.0.40.0/24 | any | 443 | Gestionali esterni (Internet) |
+| 5 | deny | ip | any | any | — | **Default deny** (log) |
 
 ```cisco
 ip access-list extended ACL-V40-IN
  remark === InfoPoint: server interno + gestionali esterni HTTPS ===
- permit tcp 10.0.40.0 0.0.0.255 10.0.20.0 0.0.0.255 eq 443
  permit udp 10.0.40.0 0.0.0.255 host 10.0.20.10 eq domain
- permit tcp 10.0.40.0 0.0.0.255 any eq 443
+ permit tcp 10.0.40.0 0.0.0.255 10.0.20.0 0.0.0.255 eq 443
+ deny   ip  10.0.40.0 0.0.0.255 10.0.0.0 0.255.255.255      ! prima: blocca le altre VLAN interne
+ permit tcp 10.0.40.0 0.0.0.255 any eq 443                  ! poi: solo Internet resta
  deny   ip any any log
 ```
 
-#### A.2.5 — ACL-V50-IN: telecamere / IoT
+#### A.2.5 — `ACL-V50-IN` · Telecamere / IoT
 
-Le telecamere parlano solo con l'NVR (RTSP/HTTPS) e con un server NTP. Nessun traffico verso altre direzioni, in particolare verso i tablet o verso Internet.
+Le telecamere parlano solo con l'NVR (RTSP/HTTPS) e con un server NTP. Nient'altro, in particolare niente tablet né Internet.
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | tcp | 10.0.50.0/24 | 10.0.20.20 | 554 | RTSP → NVR |
+| 2 | permit | tcp | 10.0.50.0/24 | 10.0.20.20 | 443 | HTTPS → NVR |
+| 3 | permit | udp | 10.0.50.0/24 | any | 123 | NTP |
+| 4 | deny | ip | any | any | — | **Default deny** (log) |
 
 ```cisco
 ip access-list extended ACL-V50-IN
@@ -691,88 +697,106 @@ ip access-list extended ACL-V50-IN
  deny   ip any any log
 ```
 
-#### A.2.6 — ACL-INET-IN: traffico in ingresso da Internet
+#### A.2.6 — `ACL-INET-IN` · Ingresso dalla WAN
 
-Sulla porta WAN del firewall, filtraggio classico anti-spoofing e default-deny per il traffico non sollecitato proveniente da Internet. Il return-traffic delle connessioni iniziate dall'interno viene comunque permesso dal motore stateful.
+Sulla porta WAN: anti-spoofing completo e default-deny per il traffico **non sollecitato**. Il ritorno delle connessioni iniziate dall'interno è riaperto da CBAC (A.4).
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | deny | ip | host 0.0.0.0 | any | — | Sorgente nulla |
+| 2 | deny | ip | 10.0.0.0/8 | any | — | Anti-spoofing (RFC1918) |
+| 3 | deny | ip | 172.16.0.0/12 | any | — | Anti-spoofing (RFC1918) |
+| 4 | deny | ip | 192.168.0.0/16 | any | — | Anti-spoofing (RFC1918) |
+| 5 | deny | ip | 127.0.0.0/8 | any | — | Loopback |
+| 6 | deny | ip | 224.0.0.0/4 | any | — | Multicast come sorgente |
+| 7 | deny | ip | any | any | — | **Default deny** (log) |
 
 ```cisco
 ip access-list extended ACL-INET-IN
- remark === Anti-spoofing: scarta sorgenti private/loopback ===
+ remark === Anti-spoofing: sorgenti illegittime dalla WAN ===
+ deny   ip host 0.0.0.0 any log
  deny   ip 10.0.0.0 0.255.255.255 any log
  deny   ip 172.16.0.0 0.15.255.255 any log
  deny   ip 192.168.0.0 0.0.255.255 any log
  deny   ip 127.0.0.0 0.255.255.255 any log
- remark === Tutto il resto: solo return traffic via stateful inspection ===
+ deny   ip 224.0.0.0 15.255.255.255 any log
+ remark === Tutto il resto: solo return traffic via CBAC ===
  deny   ip any any log
 ```
 
-### A.3 — Applicazione delle ACL alle interfacce
+---
 
-Le ACL sono applicate in ingresso sulle sub-interfaces del router: il filtro avviene prima del routing inter-VLAN, sul confine della VLAN sorgente. Questo è il pattern raccomandato perché blocca il traffico vietato al primo hop.
+### A.3 — Applicazione delle ACL alle interfacce
 
 ```cisco
 interface FastEthernet0/0.10
  ip access-group ACL-V10-IN in
-!
 interface FastEthernet0/0.20
  ip access-group ACL-V20-IN in
-!
 interface FastEthernet0/0.30
  ip access-group ACL-V30-IN in
-!
 interface FastEthernet0/0.40
  ip access-group ACL-V40-IN in
-!
 interface FastEthernet0/0.50
  ip access-group ACL-V50-IN in
 !
-! Interfaccia WAN verso il firewall / CPE FWA
 interface GigabitEthernet0/1
  description WAN - uplink verso firewall e CPE FWA
  ip address 192.0.2.2 255.255.255.252
  ip access-group ACL-INET-IN in
 ```
 
-**Variante L3 switch:** se si scegliesse l'altra architettura, ciascun blocco diventerebbe semplicemente `interface Vlan10`, `interface Vlan20`, …, sostituendo la sub-interface con la SVI omonima. Il comando `ip access-group … in` resta letterale.
+> **Variante L3 switch:** ogni blocco diventa `interface Vlan10`, `interface Vlan20`, … La riga `ip access-group … in` resta letterale.
 
-### A.4 — Stateful inspection (CBAC o Zone-Based Firewall)
+---
 
-Le ACL extended di Cisco IOS sono di per sé stateless: una regola che apre TCP/443 da V30 verso il server lascia partire la richiesta, ma non basta a far tornare automaticamente la risposta. Per gestire correttamente il return traffic ci sono due opzioni:
+### A.4 — Stateful inspection inter-VLAN (CBAC esteso)
 
-- **CBAC** (*Context-Based Access Control*): comando `ip inspect name <NOME> tcp`, applicato in uscita sull'interfaccia; tiene una tabella di sessioni e apre automaticamente i ritorni;
-- **Zone-Based Firewall (ZBF)**: approccio più moderno (IOS 12.4(6)T+), si definiscono *zones* e *zone-pairs* con policy specifiche. È preferibile per progetti nuovi.
+**Il punto critico.** Le ACL extended sono *stateless*: `ACL-V30-IN` lascia partire il tablet verso il server:443, ma la **risposta** del server (`V20 → tablet:porta-alta`) rientra da V20, viene valutata da `ACL-V20-IN` — che permette solo destinazioni `:443/53/123/514` — e finisce sul `deny ip any any`. Senza stato, **il ritorno cade**.
 
-Esempio minimo CBAC:
+La soluzione minima e più diffusa è **CBAC** (`ip inspect`), già usato in questo progetto sulla WAN, ora **esteso all'interno**: si ispeziona il traffico **in ingresso su ogni sub-interface VLAN**. CBAC registra ogni sessione che *nasce* da una VLAN e apre dinamicamente il foro di ritorno nella ACL inbound dell'interfaccia su cui la risposta rientra (es. inserisce un permit temporaneo in `ACL-V20-IN` per `server → tablet`).
 
 ```cisco
-ip inspect name STATEFUL tcp
-ip inspect name STATEFUL udp
-ip inspect name STATEFUL icmp
+ip inspect name INTERVLAN tcp
+ip inspect name INTERVLAN udp
+ip inspect name INTERVLAN icmp
 !
-interface GigabitEthernet0/1
- ip inspect STATEFUL out
+interface FastEthernet0/0.10
+ ip inspect INTERVLAN in
+interface FastEthernet0/0.20
+ ip inspect INTERVLAN in
+interface FastEthernet0/0.30
+ ip inspect INTERVLAN in
+interface FastEthernet0/0.40
+ ip inspect INTERVLAN in
+interface FastEthernet0/0.50
+ ip inspect INTERVLAN in
 ```
+
+> **Un solo meccanismo copre tutto.** Ispezionando in ingresso su ogni VLAN, CBAC gestisce sia i ritorni **inter-VLAN** (es. server→tablet) sia quelli **verso Internet** (la risposta dell'esterno rientra dalla WAN e trova il foro temporaneo già aperto in `ACL-INET-IN`). Il precedente `ip inspect STATEFUL out` sulla WAN diventa quindi ridondante e si può rimuovere.
+
+> **Perché CBAC e non gli altri due.** La **ZBF** otterrebbe lo stesso risultato in modo più ordinato su reti grandi, ma richiede zone, zone-pair e policy-map: troppa impalcatura qui. Le **ACL riflessive** funzionerebbero, ma andrebbero annidate (`reflect`/`evaluate`) dentro ogni lista, rovinando la leggibilità per-VLAN appena ottenuta. CBAC lascia le ACL pulite e aggiunge lo stato in un blocco separato.
+
+---
 
 ### A.5 — Logging e contatori
 
-Le righe terminanti con la parola chiave `log` inviano una notifica syslog ogni volta che una ACL drop fa match. Sul firewall di gateway si configurano la destinazione e la frequenza:
-
 ```cisco
-access-list logging interval 60
+ip access-list logging interval 60
 logging host 10.0.10.5            ! syslog server in MGMT
 logging trap informational
 ```
 
-Il throttling a 60 s evita flood. Per ottenere contatori per riga (utile in debug) basta il comando in modalità privilegiata:
+Per i contatori per-riga (debug), in modalità privilegiata:
 
 ```
 show access-lists ACL-V30-IN
 ! Extended IP access list ACL-V30-IN
 !     10 permit tcp 10.0.30.0 0.0.1.255 host 10.0.20.10 eq 443 (12847 matches)
-!     20 deny   ip any any log (143 matches)
+!     30 deny   ip any any log (143 matches)
 ```
 
-I 143 match di deny della seconda riga sono il nostro indicatore principale: ogni numero che cresce velocemente segnala un tablet che sta tentando flussi non previsti.
+I match crescenti sul `deny` finale sono l'indicatore principale: un tablet che tenta flussi non previsti.
 
 ---
 
