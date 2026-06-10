@@ -157,83 +157,114 @@ Note di lettura delle celle △ più importanti:
 
 ### 5.2 Tabella ACL dettagliata con comandi
 
-Le ACL sono applicate sul Core Switch L3 (sintassi tipo Cisco IOS) e in ingresso su ogni interfaccia VLAN (`ip access-group ACL_NOME in`). Le regole sono valutate in ordine; la prima corrispondenza vince; al fondo c'è un deny implicito.
+Le ACL sono applicate sul Core Switch L3 (sintassi tipo Cisco IOS), in ingresso su ogni interfaccia VLAN. La politica di default è **differenziata per zona**: *default-allow* solo nelle LAN di utenti interni fidati (Staff/admin), *default-deny* su tutto ciò che è confine, esposto o non fidato.
+
+#### Politica di default per zona
+
+| Zona | VLAN | Politica di default | Riga finale | Perché |
+|---|---|---|---|---|
+| **Staff** (reception/pulizie) | 31 | **default-allow** | `permit ip any any` | utenti interni fidati: si bloccano poche eccezioni |
+| Server Farm / DMZ | 10 | default-deny | `deny ip any any` | espone HTTPS **e** ospita il DB: asset critico |
+| Domotica / IoT | 20 | default-deny | `deny ip any any` | dispositivi non fidati: solo MQTT verso il broker |
+| Wi-Fi Ospiti | 30 | default-deny | `deny ip any any` | utenti non fidati: solo Internet, LAN isolata |
+| Piani / stanze | 11–14 | default-deny | `deny ip any any` | la presa in camera la usa l'ospite → non fidata |
+
+> Lo Staff è *default-allow* perché è l'unica zona di utenti realmente fidati. Le stanze e il Wi-Fi ospiti, pur essendo "interne", sono usate dai clienti: restano *default-deny*. Server Farm/DMZ e Domotica/IoT sono confine/asset critico: *default-deny*.
+
+#### Tabella ACE
 
 | # | VLAN applicata | Azione | Protocollo | Sorgente | Destinazione | Porta | Scopo |
 |---|---|---|---|---|---|---|---|
 | 10 | 20 (Domotica) | permit | tcp | 10.0.20.0/24 | 10.0.1.10 | 8883 | Gateway → broker MQTT (TLS) |
 | 11 | 20 (Domotica) | permit | udp | 10.0.20.0/24 | 10.0.1.1 | 123 | Sincronizzazione oraria NTP |
-| 12 | 20 (Domotica) | deny | ip | 10.0.20.0/24 | any | — | Blocca ogni altro traffico domotica |
+| 12 | 20 (Domotica) | deny | ip | any | any | — | **Default deny** |
 | 20 | 30 (Ospiti) | deny | ip | 10.0.30.0/23 | 10.0.0.0/8 | — | Isola ospiti dalla LAN interna |
 | 21 | 30 (Ospiti) | permit | tcp/udp | 10.0.30.0/23 | any | 80,443,53 | Web + DNS verso Internet |
 | 22 | 30 (Ospiti) | permit | udp | 10.0.30.0/23 | 10.0.1.1 | 67,68 | DHCP captive portal |
-| 23 | 30 (Ospiti) | deny | ip | any | any | — | Deny implicito finale |
+| 23 | 30 (Ospiti) | deny | ip | any | any | — | **Default deny** |
 | 30 | 11–14 (Piani) | permit | tcp/udp | 10.0.10.0/24 | 10.0.1.40 | 554,8000 | IPTV stream (RTSP) dal media server |
 | 31 | 11–14 (Piani) | permit | udp | 10.0.10.0/24 | 10.0.1.1 | 53 | DNS interno |
 | 32 | 11–14 (Piani) | permit | tcp/udp | 10.0.10.0/24 | any | 80,443 | Internet ospiti in stanza (via NAT) |
 | 33 | 11–14 (Piani) | deny | ip | 10.0.10.0/24 | 10.0.20.0/24 | — | Stanze non toccano la domotica |
+| 34 | 11–14 (Piani) | deny | ip | any | any | — | **Default deny** |
 | 40 | 10 (Server) | permit | tcp | any | 10.0.1.20 | 443 | HTTPS prenotazioni dall'esterno |
 | 41 | 10 (Server) | permit | tcp | 10.0.1.20 | 10.0.1.10 | 8883 | Web Server → broker MQTT |
 | 42 | 10 (Server) | permit | tcp | 10.0.1.20 | 10.0.1.30 | 5432 | Web Server → PostgreSQL |
 | 43 | 10 (Server) | deny | ip | 10.0.1.0/27 | 10.0.30.0/23 | — | Server non iniziano verso ospiti |
-| 50 | 31 (Staff) | permit | tcp | 10.0.32.0/25 | 10.0.1.20 | 443 | Dashboard reception/pulizie |
-| 51 | 31 (Staff) | permit | tcp/udp | 10.0.32.0/25 | any | 80,443,53 | Internet staff |
-| 52 | 31 (Staff) | deny | ip | 10.0.32.0/25 | 10.0.20.0/24 | — | Staff non accede ai gateway |
+| 44 | 10 (Server) | permit | ip | 10.0.1.0/27 | any | — | Server → Internet/servizi remoti |
+| 45 | 10 (Server) | deny | ip | any | any | — | **Default deny** |
+| 50 | 31 (Staff) | deny | ip | 10.0.32.0/25 | 10.0.20.0/24 | — | Eccezione: no domotica/IoT |
+| 51 | 31 (Staff) | deny | ip | 10.0.32.0/25 | 10.0.30.0/23 | — | Eccezione: no rete ospiti |
+| 52 | 31 (Staff) | deny | tcp | 10.0.32.0/25 | 10.0.1.30 | 5432 | Eccezione: no DB diretto (solo via dashboard) |
+| 53 | 31 (Staff) | deny | tcp | 10.0.32.0/25 | 10.0.1.10 | 8883 | Eccezione: no broker MQTT diretto |
+| 54 | 31 (Staff) | permit | ip | any | any | — | **Default allow** (dashboard, Internet, resto) |
+
+> Nelle zone *default-deny* (#12, #23, #34, #45) si elencano i **permit** e si chiude con `deny ip any any`. Nello Staff *default-allow* si rovescia: si elencano i **deny** (le poche cose vietate: IoT, ospiti, DB e broker diretti) e si chiude con `permit ip any any` (#54). Importante: i blocchi staff vanno **nell'ACL dello Staff** (la sua interfaccia inbound), perché il filtro agisce sulla sorgente — il `deny ip any any` di VLAN 10/20 non fermerebbe un pacchetto che *parte* dallo staff.
 
 #### Comandi di configurazione (estratto Cisco IOS)
 
-```
-! --- ACL Domotica: solo MQTT-TLS verso il broker, poi deny ---
+```cisco
+! --- DEFAULT-DENY: Domotica/IoT — solo MQTT-TLS al broker e NTP ---
 ip access-list extended ACL_DOMOTICA
  permit tcp 10.0.20.0 0.0.0.255 host 10.0.1.10 eq 8883
  permit udp 10.0.20.0 0.0.0.255 host 10.0.1.1 eq 123
- deny   ip  10.0.20.0 0.0.0.255 any
+ deny   ip  any any                       ! ← default deny
 !
 interface Vlan20
- ip address 10.0.20.1 255.255.255.0
  ip access-group ACL_DOMOTICA in
 !
-! --- ACL Ospiti: isolati dalla LAN, solo Internet ---
+! --- DEFAULT-DENY: Wi-Fi Ospiti — isolati dalla LAN, solo Internet ---
+! zona "interna" ma NON fidata: la usano i clienti → default-deny
 ip access-list extended ACL_OSPITI
  deny   ip  10.0.30.0 0.0.1.255 10.0.0.0 0.255.255.255
  permit udp 10.0.30.0 0.0.1.255 host 10.0.1.1 eq bootps
  permit tcp 10.0.30.0 0.0.1.255 any eq www
  permit tcp 10.0.30.0 0.0.1.255 any eq 443
  permit udp 10.0.30.0 0.0.1.255 any eq domain
- deny   ip  any any
+ deny   ip  any any                       ! ← default deny
 !
 interface Vlan30
- ip address 10.0.30.1 255.255.254.0
  ip access-group ACL_OSPITI in
 !
-! --- ACL Server: espone solo HTTPS, parla con broker e DB ---
+! --- DEFAULT-DENY: Piani/stanze — IPTV+DNS+Internet, niente domotica ---
+! zona "interna" ma NON fidata: la presa in camera la usa l'ospite → default-deny
+ip access-list extended ACL_PIANI
+ permit udp 10.0.10.0 0.0.0.255 host 10.0.1.40 range 554 8000
+ permit tcp 10.0.10.0 0.0.0.255 host 10.0.1.40 range 554 8000
+ permit udp 10.0.10.0 0.0.0.255 host 10.0.1.1 eq domain
+ permit tcp 10.0.10.0 0.0.0.255 any eq www
+ permit tcp 10.0.10.0 0.0.0.255 any eq 443
+ deny   ip  10.0.10.0 0.0.0.255 10.0.20.0 0.0.0.255
+ deny   ip  any any                       ! ← default deny
+!
+interface range Vlan11 - 14
+ ip access-group ACL_PIANI in
+!
+! --- DEFAULT-DENY: Server Farm/DMZ — espone HTTPS, parla con broker e DB ---
 ip access-list extended ACL_SERVER
  permit tcp any host 10.0.1.20 eq 443
  permit tcp host 10.0.1.20 host 10.0.1.10 eq 8883
  permit tcp host 10.0.1.20 host 10.0.1.30 eq 5432
  deny   ip  10.0.1.0 0.0.0.31 10.0.30.0 0.0.1.255
  permit ip  10.0.1.0 0.0.0.31 any
+ deny   ip  any any                       ! ← default deny
 !
 interface Vlan10
- ip address 10.0.1.1 255.255.255.224
  ip access-group ACL_SERVER in
+!
+! --- DEFAULT-ALLOW: Staff (zona fidata) — si bloccano solo le eccezioni ---
+ip access-list extended ACL_STAFF
+ deny   ip  10.0.32.0 0.0.0.127 10.0.20.0 0.0.0.255      ! eccezione: no domotica/IoT
+ deny   ip  10.0.32.0 0.0.0.127 10.0.30.0 0.0.1.255      ! eccezione: no rete ospiti
+ deny   tcp 10.0.32.0 0.0.0.127 host 10.0.1.30 eq 5432   ! eccezione: no DB diretto
+ deny   tcp 10.0.32.0 0.0.0.127 host 10.0.1.10 eq 8883   ! eccezione: no broker diretto
+ permit ip  any any                                      ! ← DEFAULT ALLOW
+!
+interface Vlan31
+ ip access-group ACL_STAFF in
 ```
 
-#### Tabella ACL ↔ comando domotico
-
-Questa tabella collega ogni tipo di comando domotico al percorso di rete che attraversa e alla regola ACL che lo autorizza. Mostra come un comando "accendi luce" parta dalla dashboard e arrivi alla lampada Zigbee passando per il broker.
-
-| Comando domotico | Origine | Percorso di rete | Topic MQTT | ACL coinvolta |
-|---|---|---|---|---|
-| Accendi/spegni luce stanza | Dashboard reception | Staff → Web Server → broker → GW piano | `albergo/pN/sXXX/luce/cmd` | #50, #41, #10 |
-| Imposta condizionatore | Web Server (FSM) | Web Server → broker → GW piano | `albergo/pN/sXXX/ac/cmd` | #41, #10 |
-| Sblocca serratura | Reception | Staff → Web Server → broker → GW | `albergo/pN/sXXX/serratura/cmd` | #50, #41, #10 |
-| Default checkout (scheda via) | Web Server (FSM) | Web Server → broker → GW | `albergo/pN/sXXX/+/cmd` | #41, #10 |
-| Comando luci area comune | Dashboard | Staff → Web Server → broker → GW-PT | `albergo/pT/<area>/luce/cmd` | #50, #41, #10 |
-| Stato sensore presenza | Sensore PIR | GW piano → broker → Web Server | `albergo/pN/sXXX/presenza/stato` | #10, #41 |
-| Lettura stato dispositivi | Dashboard (subscribe) | Web Server ← broker ← GW | `albergo/+/+/+/stato` | #41, #10 |
-
----
+> **Variante con anti-spoofing (versione rigorosa).** Se vuoi che anche lo Staff abbia l'anti-spoofing come nella dispensa, inserisci prima del `permit ip any any` la coppia `permit ip 10.0.32.0 0.0.0.127 any` → `deny ip 10.0.0.0 0.255.255.255 any` (permetti la sorgente locale, poi scarta ogni altra sorgente interna falsificata).
 
 ## 6. Funzionalità tecnologiche dei dispositivi
 
