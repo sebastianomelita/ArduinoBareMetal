@@ -193,7 +193,9 @@ Che il servizio sia raggiungibile non implica che i dati siano al sicuro. Se il 
 
 ### HCI — Iperconvergenza (Proxmox + Ceph, VMware vSAN)
 
-l'HCI (Hyper-Converged Infrastructure - infrastruttura iperconvergente) è un framework IT software-defined che porta lo storage **dentro** ogni nodo di compute. I **nodi** sono server fisici su cui è installato un hypervisor (come VMware ESXi, Proxmox VE o Microsoft Hyper-V). I dischi di tutti i nodi vengono visti come un unico pool distribuito, accessibile da qualsiasi VM del cluster. Ogni scrittura viene confermata su almeno N nodi fisici diversi prima di essere completata (replica sincrona).
+l'HCI (Hyper-Converged Infrastructure - infrastruttura iperconvergente) è un framework IT software-defined che porta lo storage **dentro** ogni nodo di compute. I **nodi** sono server fisici su cui è installato un hypervisor (come VMware ESXi, Proxmox VE o Microsoft Hyper-V). 
+
+I dischi di tutti i nodi vengono visti come un unico pool distribuito, accessibile da qualsiasi VM del cluster. Ogni scrittura viene confermata su almeno N nodi fisici diversi prima di essere completata (replica sincrona).
 
 Vantaggi chiave:
 - **RPO < 1 secondo** per i dati storage
