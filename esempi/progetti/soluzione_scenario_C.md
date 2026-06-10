@@ -122,7 +122,7 @@ Estensione delle «ACL fondamentali» della sezione 6. Le liste sono **estese, c
 
 > Indirizzi server assunti (non fissati dalla traccia): broker MQTT `10.10.20.10`, application server / console `10.10.20.20`, DB `10.10.20.30`. Postazioni operatore (sorveglianza/dirigenza) assunte in `10.10.40.0/28`.
 
-### Politica di default per zona
+### Quadro d'insieme
 
 | VLAN | Nome | Chi/cosa | Politica di default | Riga finale |
 |---|---|---|---|---|
@@ -134,46 +134,69 @@ Estensione delle «ACL fondamentali» della sezione 6. Le liste sono **estese, c
 | 60 | campo-gateway | gateway UHF + controller AP-BLE | default-deny | `deny ip any any` |
 | 70 | palmari | reader handheld operatori | default-deny | `deny ip any any` |
 
-> Lo **studente non è equiparato al personale**: la VLAN 30 è trattata come zona non fidata (analoga al Wi-Fi ospiti), non come LAN interna. Il **personale (VLAN 40)** è invece dipendente della scuola → unica zona *default-allow*. La **console con la mappa live dei minori** resta ristretta alle postazioni operatore (`10.10.40.0/28`) anche dentro la VLAN 40, per coerenza con §10 (la vedono solo sorveglianza e dirigenza).
+> Lo **studente non è equiparato al personale**: la VLAN 30 è zona non fidata (analoga al Wi-Fi ospiti), non LAN interna. Il **personale (VLAN 40)** è dipendente della scuola → unica zona *default-allow*. La **console con la mappa live dei minori** resta ristretta alle postazioni operatore (`10.10.40.0/28`) anche dentro la VLAN 40, per coerenza con §10.
 
-### Tabella ACE
+> **Direzione:** ogni ACL è inbound sulla SVI, quindi filtra il traffico che **parte** da quella VLAN. Gli sbarramenti dell'utente stanno perciò nell'ACL della *sorgente* (es. «uffici non vedono il campo» → in `ACL_UFFICI`), non nella destinazione.
 
-| # | VLAN | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
-|---|---|---|---|---|---|---|---|
-| 10 | 30 Studenti | deny | ip | 10.10.30.0/23 | 10.10.0.0/16 | — | Isola gli studenti da tutta l'infrastruttura |
-| 11 | 30 Studenti | permit | udp | 10.10.30.0/23 | any | 53 | DNS verso Internet |
-| 12 | 30 Studenti | permit | tcp | 10.10.30.0/23 | any | 80,443 | Web verso Internet |
-| 13 | 30 Studenti | deny | ip | any | any | — | **Default deny** |
-| 20 | 40 Uffici | permit | tcp | 10.10.40.0/28 | 10.10.20.20 | 443 | Console operatore (solo postazioni autorizzate) |
-| 21 | 40 Uffici | deny | tcp | 10.10.40.0/24 | 10.10.20.20 | 443 | Resto uffici: NO mappa live minori (§10) |
-| 22 | 40 Uffici | deny | ip | 10.10.40.0/24 | 10.10.10.0/24 | — | Eccezione: no management |
-| 23 | 40 Uffici | deny | ip | 10.10.40.0/24 | 10.10.50.0/23 | — | Eccezione: no campo (cassoni+gateway) |
-| 24 | 40 Uffici | deny | ip | 10.10.40.0/24 | 10.10.70.0/24 | — | Eccezione: no palmari |
-| 25 | 40 Uffici | deny | ip | 10.10.40.0/24 | 10.10.30.0/23 | — | Eccezione: no rete studenti |
-| 26 | 40 Uffici | deny | tcp | 10.10.40.0/24 | 10.10.20.30 | 5432 | Eccezione: no DB diretto |
-| 27 | 40 Uffici | deny | tcp | 10.10.40.0/24 | 10.10.20.10 | 8883 | Eccezione: no broker diretto |
-| 28 | 40 Uffici | permit | ip | any | any | — | **Default allow** (Internet, intranet, resto) |
-| 30 | 50 Cassoni | permit | tcp | 10.10.50.0/24 | 10.10.20.10 | 8883 | Cassoni → broker MQTT/TLS |
-| 31 | 50 Cassoni | deny | ip | any | any | — | **Default deny** |
-| 40 | 60 Gateway | permit | tcp | 10.10.60.0/24 | 10.10.20.10 | 8883 | Gateway/AP-BLE → broker MQTT/TLS |
-| 41 | 60 Gateway | deny | ip | any | any | — | **Default deny** |
-| 50 | 70 Palmari | permit | tcp | 10.10.70.0/24 | 10.10.20.10 | 8883 | Palmari → broker MQTT/TLS |
-| 51 | 70 Palmari | permit | tcp | 10.10.70.0/24 | 10.10.20.20 | 443 | Palmari → app server HTTPS |
-| 52 | 70 Palmari | deny | ip | any | any | — | **Default deny** |
-| 60 | 20 Server | permit | udp | 10.10.20.0/24 | any | 53,123 | DNS/NTP per i server |
-| 61 | 20 Server | permit | tcp | 10.10.20.0/24 | any | 80,443 | Aggiornamenti software |
-| 62 | 20 Server | deny | ip | 10.10.20.0/24 | 10.10.0.0/16 | — | Server non iniziano verso le reti d'utenza/campo |
-| 63 | 20 Server | deny | ip | any | any | — | **Default deny** |
-| 70 | 10 Mgmt | permit | tcp | 10.10.10.0/24 | 10.10.0.0/16 | 22,443 | SSH/HTTPS di gestione agli apparati |
-| 71 | 10 Mgmt | permit | udp | 10.10.10.0/24 | 10.10.0.0/16 | 161 | SNMP |
-| 72 | 10 Mgmt | deny | ip | any | any | — | **Default deny** |
+---
 
-> Nota di direzione: ogni ACL è **inbound sulla SVI**, quindi filtra il traffico che **parte** da quella VLAN. Per questo gli sbarramenti dell'utente (es. «uffici non vedono il campo») stanno nell'ACL della *sorgente* (VLAN 40), non in quella della destinazione: un `deny` sulla VLAN 50 non fermerebbe un pacchetto che nasce in VLAN 40.
+### VLAN 10 — Management (`ACL_MGMT`) · default-deny
 
-### Comandi di configurazione (Cisco IOS)
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | tcp | 10.10.10.0/24 | 10.10.0.0/16 | 22,443 | SSH/HTTPS gestione apparati |
+| 2 | permit | udp | 10.10.10.0/24 | 10.10.0.0/16 | 161 | SNMP |
+| 3 | deny | ip | any | any | — | **Default deny** |
 
 ```cisco
-! --- DEFAULT-DENY: Studenti (wifi-didattica) — zona NON fidata: solo Internet ---
+ip access-list extended ACL_MGMT
+ permit tcp 10.10.10.0 0.0.0.255 10.10.0.0 0.0.255.255 eq 22
+ permit tcp 10.10.10.0 0.0.0.255 10.10.0.0 0.0.255.255 eq 443
+ permit udp 10.10.10.0 0.0.0.255 10.10.0.0 0.0.255.255 eq snmp
+ deny   ip  any any                                       ! ← default deny
+!
+interface Vlan10
+ ip access-group ACL_MGMT in
+```
+
+---
+
+### VLAN 20 — Server farm (`ACL_SERVER`) · default-deny
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | deny | ip | 10.10.20.0/24 | 10.10.0.0/16 | — | Server non iniziano verso utenti/campo |
+| 2 | permit | udp | 10.10.20.0/24 | any | 53,123 | DNS / NTP |
+| 3 | permit | tcp | 10.10.20.0/24 | any | 80,443 | Aggiornamenti software |
+| 4 | deny | ip | any | any | — | **Default deny** |
+
+```cisco
+ip access-list extended ACL_SERVER
+ deny   ip  10.10.20.0 0.0.0.255 10.10.0.0 0.0.255.255    ! niente connessioni verso reti utente/campo
+ permit udp 10.10.20.0 0.0.0.255 any eq domain
+ permit udp 10.10.20.0 0.0.0.255 any eq ntp
+ permit tcp 10.10.20.0 0.0.0.255 any eq 443
+ permit tcp 10.10.20.0 0.0.0.255 any eq www
+ deny   ip  any any                                       ! ← default deny
+!
+interface Vlan20
+ ip access-group ACL_SERVER in
+```
+
+---
+
+### VLAN 30 — Studenti / wifi-didattica (`ACL_STUDENTI`) · default-deny
+
+Zona **non fidata** (BYOD e PC in prestito): isolata da tutta l'infrastruttura, può solo uscire su Internet.
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | deny | ip | 10.10.30.0/23 | 10.10.0.0/16 | — | Isola da tutta l'infrastruttura interna |
+| 2 | permit | udp | 10.10.30.0/23 | any | 53 | DNS verso Internet |
+| 3 | permit | tcp | 10.10.30.0/23 | any | 80,443 | Web verso Internet |
+| 4 | deny | ip | any | any | — | **Default deny** |
+
+```cisco
 ip access-list extended ACL_STUDENTI
  deny   ip  10.10.30.0 0.0.1.255 10.10.0.0 0.0.255.255   ! isola da tutta l'infrastruttura interna
  permit udp 10.10.30.0 0.0.1.255 any eq domain
@@ -183,8 +206,27 @@ ip access-list extended ACL_STUDENTI
 !
 interface Vlan30
  ip access-group ACL_STUDENTI in
-!
-! --- DEFAULT-ALLOW: Personale/docenti (wifi-uffici) — unica LAN fidata ---
+```
+
+---
+
+### VLAN 40 — Personale / wifi-uffici (`ACL_UFFICI`) · default-allow
+
+Unica **LAN fidata**: si elencano le poche eccezioni da bloccare e si chiude con `permit ip any any`.
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | tcp | 10.10.40.0/28 | 10.10.20.20 | 443 | Console operatore: **solo** postazioni autorizzate |
+| 2 | deny | tcp | 10.10.40.0/24 | 10.10.20.20 | 443 | Resto uffici: NO mappa live dei minori (§10) |
+| 3 | deny | ip | 10.10.40.0/24 | 10.10.10.0/24 | — | No management |
+| 4 | deny | ip | 10.10.40.0/24 | 10.10.50.0/23 | — | No campo (cassoni 50 + gateway 60) |
+| 5 | deny | ip | 10.10.40.0/24 | 10.10.70.0/24 | — | No palmari |
+| 6 | deny | ip | 10.10.40.0/24 | 10.10.30.0/23 | — | No rete studenti |
+| 7 | deny | tcp | 10.10.40.0/24 | 10.10.20.30 | 5432 | No DB diretto |
+| 8 | deny | tcp | 10.10.40.0/24 | 10.10.20.10 | 8883 | No broker diretto |
+| 9 | permit | ip | any | any | — | **Default allow** (Internet, intranet, resto) |
+
+```cisco
 ip access-list extended ACL_UFFICI
  permit tcp 10.10.40.0 0.0.0.15  host 10.10.20.20 eq 443   ! console: SOLO postazioni operatore (§10)
  deny   tcp 10.10.40.0 0.0.0.255 host 10.10.20.20 eq 443   ! resto uffici: niente mappa live dei minori
@@ -198,24 +240,55 @@ ip access-list extended ACL_UFFICI
 !
 interface Vlan40
  ip access-group ACL_UFFICI in
-!
-! --- DEFAULT-DENY: Cassoni (campo IoT) — solo MQTT/TLS al broker ---
+```
+
+---
+
+### VLAN 50 — Cassoni-carica (`ACL_CASSONI`) · default-deny
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | tcp | 10.10.50.0/24 | 10.10.20.10 | 8883 | Cassoni → broker MQTT/TLS |
+| 2 | deny | ip | any | any | — | **Default deny** |
+
+```cisco
 ip access-list extended ACL_CASSONI
  permit tcp 10.10.50.0 0.0.0.255 host 10.10.20.10 eq 8883
  deny   ip  any any                                       ! ← default deny
 !
 interface Vlan50
  ip access-group ACL_CASSONI in
-!
-! --- DEFAULT-DENY: Gateway UHF + controller AP-BLE — solo MQTT/TLS al broker ---
+```
+
+---
+
+### VLAN 60 — Gateway UHF + controller AP-BLE (`ACL_GATEWAY`) · default-deny
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | tcp | 10.10.60.0/24 | 10.10.20.10 | 8883 | Gateway/AP-BLE → broker MQTT/TLS |
+| 2 | deny | ip | any | any | — | **Default deny** |
+
+```cisco
 ip access-list extended ACL_GATEWAY
  permit tcp 10.10.60.0 0.0.0.255 host 10.10.20.10 eq 8883
  deny   ip  any any                                       ! ← default deny
 !
 interface Vlan60
  ip access-group ACL_GATEWAY in
-!
-! --- DEFAULT-DENY: Palmari operatori — MQTT/TLS + HTTPS al server ---
+```
+
+---
+
+### VLAN 70 — Palmari operatori (`ACL_PALMARI`) · default-deny
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | tcp | 10.10.70.0/24 | 10.10.20.10 | 8883 | Palmari → broker MQTT/TLS |
+| 2 | permit | tcp | 10.10.70.0/24 | 10.10.20.20 | 443 | Palmari → app server HTTPS |
+| 3 | deny | ip | any | any | — | **Default deny** |
+
+```cisco
 ip access-list extended ACL_PALMARI
  permit tcp 10.10.70.0 0.0.0.255 host 10.10.20.10 eq 8883
  permit tcp 10.10.70.0 0.0.0.255 host 10.10.20.20 eq 443
@@ -223,31 +296,12 @@ ip access-list extended ACL_PALMARI
 !
 interface Vlan70
  ip access-group ACL_PALMARI in
-!
-! --- DEFAULT-DENY: Server — escono solo per update/DNS/NTP, non iniziano verso gli utenti ---
-ip access-list extended ACL_SERVER
- deny   ip  10.10.20.0 0.0.0.255 10.10.0.0 0.0.255.255    ! niente connessioni verso reti utente/campo
- permit udp 10.10.20.0 0.0.0.255 any eq domain
- permit udp 10.10.20.0 0.0.0.255 any eq ntp
- permit tcp 10.10.20.0 0.0.0.255 any eq 443
- permit tcp 10.10.20.0 0.0.0.255 any eq www
- deny   ip  any any                                       ! ← default deny
-!
-interface Vlan20
- ip access-group ACL_SERVER in
-!
-! --- DEFAULT-DENY: Management — gestione apparati, poi blocca tutto ---
-ip access-list extended ACL_MGMT
- permit tcp 10.10.10.0 0.0.0.255 10.10.0.0 0.0.255.255 eq 22
- permit tcp 10.10.10.0 0.0.0.255 10.10.0.0 0.0.255.255 eq 443
- permit udp 10.10.10.0 0.0.0.255 10.10.0.0 0.0.255.255 eq snmp
- deny   ip  any any                                       ! ← default deny
-!
-interface Vlan10
- ip access-group ACL_MGMT in
 ```
 
+---
+
 > **Variante con anti-spoofing (versione rigorosa).** Sulla VLAN 40 *default-allow*, prima del `permit ip any any` finale si può aggiungere `permit ip 10.10.40.0 0.0.0.255 any` → `deny ip 10.10.0.0 0.0.255.255 any`: si permette la sorgente locale legittima e si scarta ogni altra sorgente interna falsificata, recuperando l'anti-spoofing senza rinunciare al default-allow. In alternativa, uRPF sull'interfaccia: `ip verify unicast source reachable-via rx`.
+
 
 
 ---
