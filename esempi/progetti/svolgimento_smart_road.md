@@ -172,7 +172,7 @@ In questo schema i sensori/attuatori non sono **client MQTT diretti** (non parla
  
 La **linea tratteggiata** rappresenta il tipo di servizio "like wired" scelto per interconnettere i gateway dei vari tratti con il loro CdG (Centro di Gestione) regionale, una **Trusted VPN MPLS**. Garantisce SLA contrattuali ruguardo a: classi di servizio (QoS), autenticazione dei nodi gateway e isolamento.
 
-### 5.2. Topologia logica della rete di sensori nel caso di rete fisica A1
+## 5.2. Topologia logica della rete di sensori nel caso di rete fisica A1
 
 In questo caso la rete di sensori è analoga ad una grande LAN industriale composta di soli switch:
 - **switch di tratto**, in serie a quello del tratto successivo
