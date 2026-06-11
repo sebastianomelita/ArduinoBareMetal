@@ -625,34 +625,64 @@ Router(config-if)# ip access-group ACL-RITORNO in
 > `established` seleziona i pacchetti con flag ACK/RST (esclude i SYN puri). È **stateless**:
 > un attaccante può falsificare i flag → preferire le ACL riflessive (§14) o ZBF.
 
-## 14 · ACL riflessive (stateful)
+## 14 · ACL stateful con CBAC (Context-Based Access Control)
 
-Creano ACE temporanee al passaggio del traffico uscente, ammettendo solo le risposte a
-connessioni già aperte dall'interno. Sul lato non fidato (in ingresso) la lista è **default-deny**.
+> Versione moderna che **sostituisce le ACL riflessive**. CBAC (`ip inspect`, a volte chiamato *Classic / legacy IOS Firewall*) ispeziona le sessioni in uscita e **apre da solo i ritorni**, tenendo una vera tabella di stato. Più robusto delle riflessive perché capisce i protocolli a livello applicativo (FTP, SIP, RTSP, TFTP…), che aprono porte dinamiche. Il gradino successivo — ancora più moderno e oggi raccomandato da Cisco per i progetti nuovi — è la **Zone-Based Firewall (ZBF)**.
+
+**Idea.** Invece di costruire a mano le ACE inverse (`reflect`/`evaluate`), si delega a un motore stateful: una sola ACL inbound sul lato non fidato (**default-deny**), e l'`ip inspect` fa il resto inserendo i fori di ritorno temporanei sopra il `deny` finale.
 
 ```cisco
-! Passo 1 — ACL interna (uscente): traccia le sessioni e lascia uscire il resto (LAN default-allow)
-Router(config)# ip access-list extended ACL_INTERNA
-Router(config-ext-nacl)# permit tcp 10.0.0.0 0.0.255.255 any eq 80 reflect ACL-WEB
-Router(config-ext-nacl)# permit udp 10.0.0.0 0.0.255.255 any eq 53 reflect ACL-DNS timeout 10
-Router(config-ext-nacl)# permit ip  any any              ! ← default allow in uscita
-Router(config-ext-nacl)# exit
-! Passo 2 — ACL esterna (entrante): solo i ritorni riflessi, poi default-DENY esplicito
+! Passo 1 — regola di ispezione: quali protocolli tracciare in uscita
+Router> enable
+Router# configure terminal
+Router(config)# ip inspect name CBAC-OUT tcp        ! copre TUTTO il TCP (HTTP, HTTPS, SSH...) in un colpo
+Router(config)# ip inspect name CBAC-OUT udp        ! copre l'UDP (DNS, NTP...)
+Router(config)# ip inspect name CBAC-OUT icmp       ! ping/traceroute di ritorno
+! granulare per gli ALG che aprono porte dinamiche:
+! Router(config)# ip inspect name CBAC-OUT ftp
+
+! Passo 2 — ACL esterna (entrante): default-DENY esplicito, nessun permit di ritorno scritto a mano
 Router(config)# ip access-list extended ACL_ESTERNA
-Router(config-ext-nacl)# evaluate ACL-WEB
-Router(config-ext-nacl)# evaluate ACL-DNS
-Router(config-ext-nacl)# deny ip any any                 ! ← default deny esplicito
+Router(config-ext-nacl)# deny ip any any log         ! ← CBAC inserisce i ritorni dinamicamente SOPRA questa riga
 Router(config-ext-nacl)# exit
+
 ! Passo 3 — applica sull'interfaccia verso la WAN
 Router(config)# interface s0/0/0
-Router(config-if)# ip access-group ACL_INTERNA out
-Router(config-if)# ip access-group ACL_ESTERNA in
+Router(config-if)# ip access-group ACL_ESTERNA in    ! blocca tutto l'ingresso non sollecitato
+Router(config-if)# ip inspect CBAC-OUT out           ! ispeziona le sessioni uscenti e apre i ritorni
 ```
 
-> `reflect` crea l'ACE inversa temporanea; `evaluate` la usa per il ritorno; `timeout`
-> (secondi) ne definisce la durata per i protocolli stateless (UDP).
-> Solo i protocolli **riflessi** (qui HTTP e DNS) ottengono traffico di ritorno: i ritorni di
-> ciò che esce con il `permit ip any any` non riflesso cadono comunque sul `deny ip any any` di `ACL_ESTERNA`.
+> Sul lato LAN si tiene la solita ACL inbound **default-allow** (Parte C): qui **non serve più** la lista interna con i `reflect`. La differenza pratica con la §14 riflessiva è tutta lì: **una ACL invece di due**, e nessuna ACE inversa da gestire.
+
+### Riflessive → CBAC → ZBF a confronto
+
+| | ACL riflessive | **CBAC** (questa) | ZBF |
+|---|---|---|---|
+| Stato | ACE inverse temporanee | tabella di sessioni vera | tabella + policy per zona |
+| Config | **2 ACL** (`reflect` + `evaluate`) | **1 ACL** + `ip inspect` | zone, zone-pair, policy-map |
+| Livello | L3/L4 (solo flag) | L4 **+ L7 (ALG)** | L4 + L7 (ALG) |
+| Porte dinamiche (FTP attivo, SIP…) | ❌ falliscono | ✅ gestite | ✅ gestite |
+| Enumerazione porte | una `reflect` per porta | `tcp`/`udp` coprono tutto | per class-map |
+| Verbosità | media | **bassa** | alta ma ordinata |
+| Stato in Cisco | legacy | legacy ma valido | **raccomandato** |
+
+> **Nota sui port-range.** Nella riflessiva dovevi scrivere `permit tcp … eq 80 reflect …` porta per porta. Con CBAC `ip inspect name CBAC-OUT tcp` traccia **qualunque** sessione TCP in uscita: niente elenco di porte.
+
+> **Direzione equivalente.** `ip inspect CBAC-OUT out` sulla WAN ispeziona il traffico interno→esterno. Lo stesso risultato si ottiene con `ip inspect CBAC-OUT in` applicato sull'interfaccia **LAN** (ispeziona ciò che entra dalla LAN). Si sceglie un punto solo, non entrambi.
+
+> **Timer di sessione** (facoltativi): `ip inspect tcp idle-time <s>`, `ip inspect udp idle-time <s>`, `ip inspect tcp synwait-time <s>`.
+
+> **Servizi esposti in DMZ.** Se un server interno deve ricevere connessioni **non sollecitate** dall'esterno (es. `permit tcp any host 10.0.5.50 eq 443`), quel `permit` va inserito **prima** del `deny ip any any` di `ACL_ESTERNA`, esattamente come nella WAN default-deny della §15.1. CBAC apre solo i ritorni delle sessioni *iniziate dall'interno*.
+
+**Test** (da privileged EXEC)
+```cisco
+Router# show ip inspect name CBAC-OUT     ! la regola di ispezione
+Router# show ip inspect sessions          ! sessioni stateful attive = i "fori" aperti
+Router# show ip inspect all
+Router# show access-lists ACL_ESTERNA     ! vedi le ACE dinamiche inserite da CBAC sopra il deny
+```
+
+> Perché è "più moderna" delle riflessive: niente ACE inverse da gestire a mano, una tabella di stato reale, e soprattutto la comprensione dei protocolli che negoziano porte dinamiche, dove le riflessive si rompono. Resta comunque un meccanismo classico: per un progetto nuovo, la **ZBF** esprime le stesse capacità stateful ma organizzate per *zone* e *zone-pair*.
 
 ## 15 · ACL anti-spoofing — WAN e LAN 
 
