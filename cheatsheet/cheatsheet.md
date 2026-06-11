@@ -654,64 +654,113 @@ Router(config-if)# ip inspect CBAC-OUT out           ! ispeziona le sessioni usc
 
 > Sul lato LAN si tiene la solita ACL inbound **default-allow** (Parte C): qui **non serve più** la lista interna con i `reflect`. La differenza pratica con la §14 riflessiva è tutta lì: **una ACL invece di due**, e nessuna ACE inversa da gestire.
 
-## 14 · ACL stateful con CBAC (Context-Based Access Control)
 
-> Versione moderna che **sostituisce le ACL riflessive**. CBAC (`ip inspect`, a volte chiamato *Classic / legacy IOS Firewall*) ispeziona le sessioni in uscita e **apre da solo i ritorni**, tenendo una vera tabella di stato. Più robusto delle riflessive perché capisce i protocolli a livello applicativo (FTP, SIP, RTSP, TFTP…), che aprono porte dinamiche. Il gradino successivo — ancora più moderno e oggi raccomandato da Cisco per i progetti nuovi — è la **Zone-Based Firewall (ZBF)**.
+## 14-bis · ACL stateful con ZBF (Zone-Based Firewall)
 
-**Idea.** Invece di costruire a mano le ACE inverse (`reflect`/`evaluate`), si delega a un motore stateful: una sola ACL inbound sul lato non fidato (**default-deny**), e l'`ip inspect` fa il resto inserendo i fori di ritorno temporanei sopra il `deny` finale.
+> Il gradino **più moderno**, quello che Cisco raccomanda per i progetti nuovi. Stesse capacità stateful del CBAC (§14), ma organizzate per **zone** e **zone-pair** invece che per interfaccia. Il grande vantaggio concettuale: il **default-deny è strutturale**, non una riga da ricordare — due interfacce in zone diverse non si parlano *finché non lo dici esplicitamente* con una zone-pair.
+
+**Tre regole di default del modello a zone** (da sapere a memoria):
+1. Interfacce nella **stessa zona** → traffico **permesso** (nessuna policy serve).
+2. Interfacce in **zone diverse senza zone-pair** → traffico **scartato** (è il default-deny "gratis").
+3. Traffico **da/verso il router stesso** → usa la zona speciale `self`, permesso di default (limitabile con zone-pair su `self`: utile per SSH di gestione, OSPF…).
+
+La zone-pair è **unidirezionale**: definisci `INSIDE → OUTSIDE` con `inspect` e i ritorni sono automatici (stateful); `OUTSIDE → INSIDE` non esiste → l'ingresso non sollecitato cade da solo. **Non serve nessuna ACL inbound.**
 
 ```cisco
-! Passo 1 — regola di ispezione: quali protocolli tracciare in uscita
+! Passo 1 — definisci le zone
 Router> enable
 Router# configure terminal
-Router(config)# ip inspect name CBAC-OUT tcp        ! copre TUTTO il TCP (HTTP, HTTPS, SSH...) in un colpo
-Router(config)# ip inspect name CBAC-OUT udp        ! copre l'UDP (DNS, NTP...)
-Router(config)# ip inspect name CBAC-OUT icmp       ! ping/traceroute di ritorno
-! granulare per gli ALG che aprono porte dinamiche:
-! Router(config)# ip inspect name CBAC-OUT ftp
+Router(config)# zone security INSIDE
+Router(config-sec-zone)# exit
+Router(config)# zone security OUTSIDE
+Router(config-sec-zone)# exit
 
-! Passo 2 — ACL esterna (entrante): default-DENY esplicito, nessun permit di ritorno scritto a mano
-Router(config)# ip access-list extended ACL_ESTERNA
-Router(config-ext-nacl)# deny ip any any log         ! ← CBAC inserisce i ritorni dinamicamente SOPRA questa riga
-Router(config-ext-nacl)# exit
+! Passo 2 — class-map: QUALE traffico è "interessante" da ispezionare
+Router(config)# class-map type inspect match-any CM-OUT
+Router(config-cmap)# match protocol tcp           ! tutto il TCP in un colpo
+Router(config-cmap)# match protocol udp
+Router(config-cmap)# match protocol icmp
+Router(config-cmap)# exit
 
-! Passo 3 — applica sull'interfaccia verso la WAN
-Router(config)# interface s0/0/0
-Router(config-if)# ip access-group ACL_ESTERNA in    ! blocca tutto l'ingresso non sollecitato
-Router(config-if)# ip inspect CBAC-OUT out           ! ispeziona le sessioni uscenti e apre i ritorni
+! Passo 3 — policy-map: COSA farne → inspect (stateful), il resto drop
+Router(config)# policy-map type inspect PM-IN-OUT
+Router(config-pmap)# class type inspect CM-OUT
+Router(config-pmap-c)# inspect                     ! traccia la sessione e apre il ritorno
+Router(config-pmap-c)# exit
+Router(config-pmap)# class class-default
+Router(config-pmap-c)# drop log                    ! ← default-deny ESPLICITO (la "riga di casa")
+Router(config-pmap-c)# exit
+Router(config-pmap)# exit
+
+! Passo 4 — zone-pair: DA dove A dove applicare la policy (unidirezionale)
+Router(config)# zone-pair security ZP-IN-OUT source INSIDE destination OUTSIDE
+Router(config-sec-zone-pair)# service-policy type inspect PM-IN-OUT
+Router(config-sec-zone-pair)# exit
+
+! Passo 5 — assegna le interfacce alle zone
+Router(config)# interface GigabitEthernet0/0       ! LAN
+Router(config-if)# zone-member security INSIDE
+Router(config-if)# exit
+Router(config)# interface Serial0/0/0              ! WAN
+Router(config-if)# zone-member security OUTSIDE
+Router(config-if)# exit
 ```
 
-> Sul lato LAN si tiene la solita ACL inbound **default-allow** (Parte C): qui **non serve più** la lista interna con i `reflect`. La differenza pratica con la §14 riflessiva è tutta lì: **una ACL invece di due**, e nessuna ACE inversa da gestire.
+> **Il ritorno e il default-deny sono entrambi impliciti nel modello.** I ritorni delle sessioni `INSIDE→OUTSIDE` sono ammessi dall'`inspect`; l'ingresso non richiesto `OUTSIDE→INSIDE` cade perché **quella zone-pair non esiste**. Il `class-default → drop log` rende comunque visibile e contato ciò che la policy scarta, coerente con la regola di casa della dispensa.
 
-### Riflessive → CBAC → ZBF a confronto
+### Dal CBAC alla ZBF — mappa mentale
 
-| | ACL riflessive | **CBAC** (questa) | ZBF |
+Ogni pezzo del CBAC (§14) ha il suo corrispondente:
+
+| Concetto CBAC | Equivalente ZBF |
+|---|---|
+| `ip inspect name X tcp/udp/icmp` | `class-map type inspect` (match protocol) |
+| azione "ispeziona" | `policy-map` con `inspect` |
+| `ip inspect X out` sull'interfaccia | `zone-pair` source INSIDE destination OUTSIDE |
+| ACL inbound `deny ip any any` sulla WAN | implicito: nessuna zone-pair = drop |
+| `deny ip any any log` esplicito | `class class-default` → `drop log` |
+| applicare l'inspect a un'interfaccia | `zone-member security <ZONA>` |
+
+### Estensione a tre zone (DMZ con servizio esposto)
+
+Per esporre un server (es. HTTPS in DMZ) si aggiunge una **terza zona** e una zone-pair `OUTSIDE → DMZ` che ispeziona solo quel servizio:
+
+```cisco
+Router(config)# class-map type inspect match-any CM-WEB
+Router(config-cmap)# match protocol https
+Router(config-cmap)# exit
+Router(config)# policy-map type inspect PM-OUT-DMZ
+Router(config-pmap)# class type inspect CM-WEB
+Router(config-pmap-c)# inspect
+Router(config-pmap-c)# exit
+Router(config-pmap)# class class-default
+Router(config-pmap-c)# drop log
+Router(config-pmap-c)# exit
+Router(config-pmap)# exit
+Router(config)# zone-pair security ZP-OUT-DMZ source OUTSIDE destination DMZ
+Router(config-sec-zone-pair)# service-policy type inspect PM-OUT-DMZ
+```
+
+> È lo stesso ruolo dei `permit` selettivi prima del `deny ip any any` in §15.1, ma qui ogni flusso vive nella **sua** zone-pair: l'apertura verso la DMZ non tocca minimamente la regola `INSIDE↔OUTSIDE`.
+
+### Riflessive → CBAC → ZBF, in una riga
+
+| | Riflessive | CBAC | **ZBF** |
 |---|---|---|---|
-| Stato | ACE inverse temporanee | tabella di sessioni vera | tabella + policy per zona |
-| Config | **2 ACL** (`reflect` + `evaluate`) | **1 ACL** + `ip inspect` | zone, zone-pair, policy-map |
-| Livello | L3/L4 (solo flag) | L4 **+ L7 (ALG)** | L4 + L7 (ALG) |
-| Porte dinamiche (FTP attivo, SIP…) | ❌ falliscono | ✅ gestite | ✅ gestite |
-| Enumerazione porte | una `reflect` per porta | `tcp`/`udp` coprono tutto | per class-map |
-| Verbosità | media | **bassa** | alta ma ordinata |
-| Stato in Cisco | legacy | legacy ma valido | **raccomandato** |
-
-> **Nota sui port-range.** Nella riflessiva dovevi scrivere `permit tcp … eq 80 reflect …` porta per porta. Con CBAC `ip inspect name CBAC-OUT tcp` traccia **qualunque** sessione TCP in uscita: niente elenco di porte.
-
-> **Direzione equivalente.** `ip inspect CBAC-OUT out` sulla WAN ispeziona il traffico interno→esterno. Lo stesso risultato si ottiene con `ip inspect CBAC-OUT in` applicato sull'interfaccia **LAN** (ispeziona ciò che entra dalla LAN). Si sceglie un punto solo, non entrambi.
-
-> **Timer di sessione** (facoltativi): `ip inspect tcp idle-time <s>`, `ip inspect udp idle-time <s>`, `ip inspect tcp synwait-time <s>`.
-
-> **Servizi esposti in DMZ.** Se un server interno deve ricevere connessioni **non sollecitate** dall'esterno (es. `permit tcp any host 10.0.5.50 eq 443`), quel `permit` va inserito **prima** del `deny ip any any` di `ACL_ESTERNA`, esattamente come nella WAN default-deny della §15.1. CBAC apre solo i ritorni delle sessioni *iniziate dall'interno*.
+| Default-deny | da scrivere (`deny` esplicito) | da scrivere (ACL inbound) | **strutturale** (no zone-pair = drop) |
+| Organizzazione | per ACL | per interfaccia | **per zona/flusso** |
+| Scalabilità multi-segmento | scarsa | media | **alta** |
+| Stato Cisco | legacy | legacy ma valido | **raccomandato** |
 
 **Test** (da privileged EXEC)
 ```cisco
-Router# show ip inspect name CBAC-OUT     ! la regola di ispezione
-Router# show ip inspect sessions          ! sessioni stateful attive = i "fori" aperti
-Router# show ip inspect all
-Router# show access-lists ACL_ESTERNA     ! vedi le ACE dinamiche inserite da CBAC sopra il deny
+Router# show zone security                              ! zone e interfacce membre
+Router# show zone-pair security                         ! quali coppie hanno una policy
+Router# show policy-map type inspect zone-pair          ! contatori per classe (inspect vs drop)
+Router# show policy-map type inspect zone-pair sessions ! sessioni stateful attive
 ```
 
-> Perché è "più moderna" delle riflessive: niente ACE inverse da gestire a mano, una tabella di stato reale, e soprattutto la comprensione dei protocolli che negoziano porte dinamiche, dove le riflessive si rompono. Resta comunque un meccanismo classico: per un progetto nuovo, la **ZBF** esprime le stesse capacità stateful ma organizzate per *zone* e *zone-pair*.
+> Quando usare quale: **CBAC** se vuoi il minimo indispensabile su un router con due interfacce e ti basta il drop-in delle riflessive; **ZBF** appena le zone diventano tre o più (LAN/DMZ/WAN, o più VLAN), perché il default-deny per zona evita di rincorrere `deny` espliciti su ogni lista.
 
 
 ## 15 · ACL anti-spoofing — WAN e LAN 
