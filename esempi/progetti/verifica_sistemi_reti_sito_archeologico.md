@@ -274,7 +274,7 @@ Quindi HWMP **non è limitato a un albero unico**: fornisce un albero per il tra
 - **Babel** usa *distance-vector* proattivo con *feasibility condition* (anti-loop), particolarmente efficace su reti wireless instabili;
 - **OLSRv2** usa *link-state* ottimizzato con *MPR* (Multipoint Relay) per ridurre il flooding.
 
-Tutti convergono allo stesso risultato concettuale: ciascun nodo conosce il percorso a costo minimo verso ogni destinazione. Per le **destinazioni *esterne*** (server, Internet, tipicamente raggiungibili solo via gateway) gli alberi calcolati dai vari router sono sostanzialmente identici e coincidono con l'albero proattivo HWMP. Per **traffico *interno*** gli alberi sono diversi (uno per sorgente), e in questo coincidono con la modalità reattiva di HWMP — la differenza è solo che in L3 i percorsi sono pre-calcolati invece che on-demand.
+Tutti convergono allo stesso risultato concettuale: ciascun nodo conosce il percorso a costo minimo verso ogni destinazione. Per le **destinazioni *esterne*** (server, Internet, tipicamente raggiungibili solo via gateway) gli alberi calcolati dai vari router sono sostanzialmente identici e coincidono con l'albero proattivo HWMP. Per il **traffico *interno*** gli alberi sono diversi (uno per sorgente), e in questo coincidono con la modalità reattiva di HWMP — la differenza è solo che in L3 i percorsi sono pre-calcolati invece che on-demand.
 
 **Differenza pratica vera.** A livello di *selezione del percorso* i due approcci sono sostanzialmente equivalenti. Quello che cambia davvero è:
 
