@@ -255,7 +255,7 @@ Destinazione         Next hop (mesh nbr)   Interfaccia   Metrica
 0.0.0.0/0            fe80::aa:bb:cc:00     mesh0         1 hop  (default → gateway)
 ```
 
-La scelta ibrida (statico sul gateway, dinamico sul mesh) è quella adottata in pratica anche dalle distribuzioni mesh community (Freifunk, Ninux): il backbone si autoconfigura, ma le rotte verso l'esterno e l'indirizzamento dei client sono fissi e annunciati centralmente.
+La scelta ibrida (statico sul gateway, dinamico sul mesh) è quella adottata in pratica anche dalle distribuzioni mesh community (Freifunk, Ninux): il backbone si autoconfigura, ma le rotte verso l'**esterno** e l'indirizzamento dei client sono fissi e annunciati centralmente.
 
 #### Path selection in L2 (HWMP) vs L3 (OSPF/Babel)
 
@@ -274,7 +274,7 @@ Quindi HWMP **non è limitato a un albero unico**: fornisce un albero per il tra
 - **Babel** usa *distance-vector* proattivo con *feasibility condition* (anti-loop), particolarmente efficace su reti wireless instabili;
 - **OLSRv2** usa *link-state* ottimizzato con *MPR* (Multipoint Relay) per ridurre il flooding.
 
-Tutti convergono allo stesso risultato concettuale: ciascun nodo conosce il percorso a costo minimo verso ogni destinazione. Per le destinazioni *esterne* (server, Internet, tipicamente raggiungibili solo via gateway) gli alberi calcolati dai vari router sono sostanzialmente identici e coincidono con l'albero proattivo HWMP. Per traffico *interno* gli alberi sono diversi (uno per sorgente), e in questo coincidono con la modalità reattiva di HWMP — la differenza è solo che in L3 i percorsi sono pre-calcolati invece che on-demand.
+Tutti convergono allo stesso risultato concettuale: ciascun nodo conosce il percorso a costo minimo verso ogni destinazione. Per le **destinazioni *esterne*** (server, Internet, tipicamente raggiungibili solo via gateway) gli alberi calcolati dai vari router sono sostanzialmente identici e coincidono con l'albero proattivo HWMP. Per **traffico *interno*** gli alberi sono diversi (uno per sorgente), e in questo coincidono con la modalità reattiva di HWMP — la differenza è solo che in L3 i percorsi sono pre-calcolati invece che on-demand.
 
 **Differenza pratica vera.** A livello di *selezione del percorso* i due approcci sono sostanzialmente equivalenti. Quello che cambia davvero è:
 
