@@ -181,10 +181,20 @@ Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server
 
 ## 6. Configurazione di R-FW (Cisco IOS — router-on-a-stick)
 
-```
+Instradamento inter-VLAN collassato sul solo router perimetrale, NAT overload, dorsale VPN verso il SUM, ACL conformi (default-deny su reader/server/WAN/tunnel, default-allow solo sul piano di management) e ritorno stateful via CBAC. Per ogni interfaccia: **mini-tabella ACE astratta + blocco IOS** corrispondente.
+
+### 6.1 — Base: routing, CBAC, DHCP, NAT, interfacce
+
+```cisco
 hostname R-FW-STAZ-A
 ip routing
 !
+! === Motore stateful (CBAC): apre i ritorni delle sessioni iniziate dall'interno ===
+ip inspect name STATEFUL tcp
+ip inspect name STATEFUL udp
+ip inspect name STATEFUL icmp
+!
+! === DHCP per i reader (il pool risiede sul router) ===
 ip dhcp excluded-address 10.1.1.1 10.1.1.99
 ip dhcp excluded-address 10.1.1.201 10.1.1.254
 ip dhcp pool VLAN10-READER
@@ -192,29 +202,39 @@ ip dhcp pool VLAN10-READER
  default-router 10.1.1.1
  dns-server 10.1.2.11
 !
+! === Interfacce L3 (gateway VLAN + WAN + tunnel) ===
 interface GigabitEthernet0/0
  description WAN verso ISP / core MPLS-IP
  ip address dhcp
  ip nat outside
+ ip access-group ACL-WAN-IN in
 !
 interface GigabitEthernet0/1
  description Trunk 802.1q verso core switch L2
  no ip address
 !
 interface GigabitEthernet0/1.10
+ description Gateway VLAN 10 - Reader NFC
  encapsulation dot1Q 10
  ip address 10.1.1.1 255.255.255.0
  ip nat inside
  ip access-group VLAN10-IN in
+ ip inspect STATEFUL in
+!
 interface GigabitEthernet0/1.20
+ description Gateway VLAN 20 - Server farm (edge, NAS)
  encapsulation dot1Q 20
  ip address 10.1.2.1 255.255.255.0
  ip nat inside
  ip access-group VLAN20-IN in
+ ip inspect STATEFUL in
+!
 interface GigabitEthernet0/1.99
+ description Gateway VLAN 99 - Management
  encapsulation dot1Q 99
  ip address 10.1.99.1 255.255.255.0
  ip access-group VLAN99-IN in
+ ip inspect STATEFUL in
 !
 interface Tunnel0
  description Dorsale VPN verso SUM (10.255.1.0/30)
@@ -222,33 +242,142 @@ interface Tunnel0
  tunnel source GigabitEthernet0/0
  tunnel destination <IP_PE_SUM>
  tunnel protection ipsec profile VPN-SUM
+ ip access-group ACL-TUNNEL-IN in
 !
-! subnet interne = direttamente connesse -> nessuna rotta statica interna
+! === Instradamento: subnet interne direttamente connesse, niente rotte statiche interne ===
 ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0
 ip route 10.0.0.0 255.0.0.0 Tunnel0
 !
+! === PNAT (overload) per gli host interni ===
 ip access-list standard NAT-INTERNI
  permit 10.1.0.0 0.0.255.255
 ip nat inside source list NAT-INTERNI interface GigabitEthernet0/0 overload
-!
-! --- ACL inter-VLAN (isolamento dei gruppi, default deny) ---
-ip access-list extended VLAN10-IN
- permit tcp 10.1.1.0 0.0.0.255 host 10.1.2.10 eq 8883
- permit udp 10.1.1.0 0.0.0.255 host 10.1.1.1 eq 67
- permit udp 10.1.1.0 0.0.0.255 host 10.1.2.11 eq 53
- permit ip  10.1.1.0 0.0.0.255 10.0.0.0 0.255.255.255
- deny   ip  10.1.1.0 0.0.0.255 10.1.2.0 0.0.0.255
- deny   ip  10.1.1.0 0.0.0.255 10.1.99.0 0.0.0.255
- deny   ip  any any
-ip access-list extended VLAN20-IN
- permit ip  10.1.2.0 0.0.0.255 10.0.0.0 0.255.255.255
- deny   ip  10.1.2.0 0.0.0.255 10.1.99.0 0.0.0.255
- permit ip  10.1.2.0 0.0.0.255 any
-ip access-list extended VLAN99-IN
- permit ip 10.1.99.0 0.0.0.255 any
 ```
 
-Crittografia IPsec (ISAKMP policy AES-256/SHA-256/DH14, transform-set ESP-AES-256) come da profilo `VPN-SUM`.
+### 6.2 — `VLAN10-IN` · Reader NFC (Gi0/1.10) · default-deny
+
+I reader Cat. A parlano **solo** col broker edge locale `10.1.2.10`, più DHCP/DNS/NTP. Niente SUM diretto, niente resto della server farm, niente management.
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | udp | host 0.0.0.0 | host 255.255.255.255 | 67 | DHCP DISCOVER/REQUEST (broadcast) |
+| 2 | permit | udp | 10.1.1.0/24 | 10.1.1.1 | 67 | DHCP rinnovo unicast |
+| 3 | permit | tcp | 10.1.1.0/24 | 10.1.2.10 | 8883 | Reader → broker edge (MQTT/TLS) |
+| 4 | permit | udp | 10.1.1.0/24 | 10.1.2.11 | 53 | DNS |
+| 5 | permit | udp | 10.1.1.0/24 | 10.1.2.11 | 123 | NTP (validità certificati TLS) |
+| 6 | deny | ip | any | any | — | **Default deny** (log) |
+
+```cisco
+ip access-list extended VLAN10-IN
+ remark === Reader NFC: solo broker edge + DHCP/DNS/NTP ===
+ permit udp host 0.0.0.0 host 255.255.255.255 eq bootps
+ permit udp 10.1.1.0 0.0.0.255 host 10.1.1.1 eq bootps
+ permit tcp 10.1.1.0 0.0.0.255 host 10.1.2.10 eq 8883
+ permit udp 10.1.1.0 0.0.0.255 host 10.1.2.11 eq domain
+ permit udp 10.1.1.0 0.0.0.255 host 10.1.2.11 eq ntp
+ deny   ip any any log
+```
+
+### 6.3 — `VLAN20-IN` · Server farm (Gi0/1.20) · default-deny
+
+L'edge inoltra al broker centrale del SUM (via VPN), risolve/sincronizza e si aggiorna. Non inizia verso i reader: risponde soltanto, e i ritorni li apre CBAC.
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | tcp | 10.1.2.10 | 10.0.2.0/24 | 8883 | Edge → broker cluster SUM (via VPN) |
+| 2 | permit | udp | 10.1.2.0/24 | any | 53 | DNS ricorsivo upstream |
+| 3 | permit | udp | 10.1.2.0/24 | any | 123 | NTP |
+| 4 | permit | tcp | 10.1.2.0/24 | any | 443 | Aggiornamenti software (HTTPS) |
+| 5 | deny | ip | any | any | — | **Default deny** (log) |
+
+```cisco
+ip access-list extended VLAN20-IN
+ remark === Server farm: edge->broker SUM + DNS/NTP/updates ===
+ permit tcp host 10.1.2.10 10.0.2.0 0.0.0.255 eq 8883
+ permit udp 10.1.2.0 0.0.0.255 any eq domain
+ permit udp 10.1.2.0 0.0.0.255 any eq ntp
+ permit tcp 10.1.2.0 0.0.0.255 any eq 443
+ deny   ip any any log
+```
+
+> Il traffico **intra-VLAN** (edge `10.1.2.10` ↔ srv-sis `10.1.2.11` per DNS/log) è L2 nella stessa subnet: non passa dal router, nessuna ACL serve.
+
+### 6.4 — `VLAN99-IN` · Management (Gi0/1.99) · control plane
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | ip | 10.1.99.0/24 | any | — | Management: accesso pieno |
+| 2 | deny | ip | any | any | — | **Default deny** (log) |
+
+```cisco
+ip access-list extended VLAN99-IN
+ remark === Management: accesso totale ===
+ permit ip 10.1.99.0 0.0.0.255 any
+ deny   ip any any log
+```
+
+### 6.5 — `ACL-WAN-IN` · WAN (Gi0/0) · anti-spoofing + default-deny
+
+Scarta le sorgenti impossibili, ammette l'instaurazione del tunnel IPsec dal PE del SUM, poi nega il resto. I ritorni NAT li apre CBAC.
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | deny | ip | host 0.0.0.0 | any | — | Sorgente nulla |
+| 2 | deny | ip | 10.0.0.0/8 | any | — | Anti-spoofing RFC1918 |
+| 3 | deny | ip | 172.16.0.0/12 | any | — | Anti-spoofing RFC1918 |
+| 4 | deny | ip | 192.168.0.0/16 | any | — | Anti-spoofing RFC1918 |
+| 5 | deny | ip | 127.0.0.0/8 | any | — | Loopback |
+| 6 | deny | ip | 224.0.0.0/4 | any | — | Multicast come sorgente |
+| 7 | permit | udp | host «IP_PE_SUM» | any | 500,4500 | IKE / NAT-T del tunnel IPsec |
+| 8 | permit | esp | host «IP_PE_SUM» | any | — | ESP del tunnel IPsec |
+| 9 | deny | ip | any | any | — | **Default deny** (log) |
+
+```cisco
+ip access-list extended ACL-WAN-IN
+ remark === Anti-spoofing: sorgenti illegittime ===
+ deny   ip host 0.0.0.0 any log
+ deny   ip 10.0.0.0 0.255.255.255 any log
+ deny   ip 172.16.0.0 0.15.255.255 any log
+ deny   ip 192.168.0.0 0.0.255.255 any log
+ deny   ip 127.0.0.0 0.255.255.255 any log
+ deny   ip 224.0.0.0 15.255.255.255 any log
+ remark === Instaurazione tunnel IPsec dal PE del SUM ===
+ permit udp host <IP_PE_SUM> any eq isakmp
+ permit udp host <IP_PE_SUM> any eq non500-isakmp
+ permit esp host <IP_PE_SUM> any
+ deny   ip any any log
+```
+
+### 6.6 — `ACL-TUNNEL-IN` · dorsale VPN dal SUM (Tunnel0) · default-deny
+
+Sul tunnel arriva il traffico interno dal SUM. Si ammette solo ciò che il SUM **inizia** (gestione remota verso il management); le risposte alle sessioni dell'edge le apre CBAC.
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | tcp | 10.0.3.0/28 | 10.1.99.0/24 | 22 | SUM admin → mgmt (SSH) |
+| 2 | permit | udp | 10.0.3.0/28 | 10.1.99.0/24 | 161 | SUM admin → mgmt (SNMP) |
+| 3 | deny | ip | any | any | — | **Default deny** (log) |
+
+```cisco
+ip access-list extended ACL-TUNNEL-IN
+ remark === Dal SUM: solo SSH/SNMP verso il management di stazione ===
+ permit tcp 10.0.3.0 0.0.0.15 10.1.99.0 0.0.0.255 eq 22
+ permit udp 10.0.3.0 0.0.0.15 10.1.99.0 0.0.0.255 eq snmp
+ deny   ip any any log
+```
+
+### 6.7 — Logging
+
+```cisco
+logging host 10.1.2.11
+logging trap informational
+```
+
+Crittografia IPsec (ISAKMP policy AES-256/SHA-256/DH14, transform-set ESP-AES-256) come da profilo `VPN-SUM`. `<IP_PE_SUM>` coincide con `tunnel destination`; se il profilo incapsula GRE, aggiungere `permit gre host <IP_PE_SUM> any` in `ACL-WAN-IN`.
+
+> **Nota d'ordine.** Le definizioni `ip inspect name STATEFUL` stanno in §6.1 (prima delle interfacce) perché alcune versioni IOS rifiutano `ip inspect STATEFUL in` se la regola non esiste ancora. Le ACL sono definite in §6.2–6.6 dopo l'applicazione `ip access-group`: incollando il config completo i riferimenti si risolvono comunque.
+
+
 
 ---
 
