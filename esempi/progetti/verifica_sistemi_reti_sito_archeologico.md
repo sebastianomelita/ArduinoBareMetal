@@ -553,6 +553,8 @@ Vantaggi della soluzione B: minore investimento in hardware (meno minitablet), m
 
 Questo allegato traduce in sintassi **Cisco IOS** la tabella astratta delle regole del §3.d. Tutte le ACL sono **extended**, nominate e applicate **in ingresso** sull'interfaccia di ciascuna VLAN, così il filtro avviene al confine della VLAN **sorgente**, prima dell'instradamento. Ogni mini-tabella è seguita **subito dal blocco di comandi** che la realizza.
 
+> **Convenzione sui prompt.** Ogni riga riporta la modalità in cui va digitata: `Router>` (utente), `Router#` (privilegiata), `Router(config)#` (configurazione globale), `Router(config-if)#` (interfaccia), `Router(config-subif)#` (sub-interface), `Router(config-ext-nacl)#` (ACL estesa nominata); `Switch(...)` per lo switch. I blocchi A.2–A.4 partono già da `Router(config)#`, dando per assunto di esservi entrati con `enable` → `configure terminal` (mostrato per esteso in A.1).
+
 ### A.0 — Architettura: router-on-a-stick
 
 Si adotta la configurazione **router-on-a-stick (RoAS)**: un router con un'unica interfaccia fisica verso lo switch in **trunk 802.1Q**, su cui si creano cinque **sub-interfaces** (una per VLAN), ciascuna con il proprio default gateway. È il modello canonico CCNA, ottimo come esempio didattico.
@@ -563,37 +565,53 @@ Si adotta la configurazione **router-on-a-stick (RoAS)**: un router con un'unica
 
 ### A.1 — Trunk e sub-interfaces
 
+Lato switch L2, la porta verso il router diventa trunk 802.1Q:
+
 ```cisco
-! --- lato switch L2 ---
-interface FastEthernet0/24
- description Uplink al router (RoAS)
- switchport mode trunk
- switchport trunk encapsulation dot1q
- switchport trunk allowed vlan 10,20,30,40,50
-!
-! --- lato router ---
-interface FastEthernet0/0
- description Trunk verso lo switch L2 (RoAS)
- no ip address
- no shutdown
-!
-interface FastEthernet0/0.10
- encapsulation dot1Q 10
- ip address 10.0.10.1 255.255.255.0
-interface FastEthernet0/0.20
- encapsulation dot1Q 20
- ip address 10.0.20.1 255.255.255.0
-interface FastEthernet0/0.30
- encapsulation dot1Q 30
- ip address 10.0.30.1 255.255.254.0        ! /23 = 510 host
- ip helper-address 10.0.20.10              ! relay DHCP verso il server (vedi A.2.3)
-interface FastEthernet0/0.40
- encapsulation dot1Q 40
- ip address 10.0.40.1 255.255.255.0
-interface FastEthernet0/0.50
- encapsulation dot1Q 50
- ip address 10.0.50.1 255.255.255.0
+Switch> enable
+Switch# configure terminal
+Switch(config)# interface FastEthernet0/24
+Switch(config-if)# description Uplink al router (RoAS)
+Switch(config-if)# switchport trunk encapsulation dot1q
+Switch(config-if)# switchport mode trunk
+Switch(config-if)# switchport trunk allowed vlan 10,20,30,40,50
+Switch(config-if)# end
 ```
+
+Lato router, l'interfaccia fisica resta senza IP e ospita le cinque sub-interfaces:
+
+```cisco
+Router> enable
+Router# configure terminal
+Router(config)# interface FastEthernet0/0
+Router(config-if)# description Trunk verso lo switch L2 (RoAS)
+Router(config-if)# no ip address
+Router(config-if)# no shutdown
+Router(config-if)# exit
+Router(config)# interface FastEthernet0/0.10
+Router(config-subif)# encapsulation dot1Q 10
+Router(config-subif)# ip address 10.0.10.1 255.255.255.0
+Router(config-subif)# exit
+Router(config)# interface FastEthernet0/0.20
+Router(config-subif)# encapsulation dot1Q 20
+Router(config-subif)# ip address 10.0.20.1 255.255.255.0
+Router(config-subif)# exit
+Router(config)# interface FastEthernet0/0.30
+Router(config-subif)# encapsulation dot1Q 30
+Router(config-subif)# ip address 10.0.30.1 255.255.254.0
+Router(config-subif)# ip helper-address 10.0.20.10
+Router(config-subif)# exit
+Router(config)# interface FastEthernet0/0.40
+Router(config-subif)# encapsulation dot1Q 40
+Router(config-subif)# ip address 10.0.40.1 255.255.255.0
+Router(config-subif)# exit
+Router(config)# interface FastEthernet0/0.50
+Router(config-subif)# encapsulation dot1Q 50
+Router(config-subif)# ip address 10.0.50.1 255.255.255.0
+Router(config-subif)# exit
+```
+
+> La `/23` di V30 (`255.255.254.0`) dà 510 host, sopra il picco di 200 tablet. L'`ip helper-address` sulla V30 fa da relay DHCP verso il server (vedi A.2.3).
 
 ---
 
@@ -607,10 +625,11 @@ interface FastEthernet0/0.50
 | 2 | deny | ip | any | any | — | **Default deny** (log) |
 
 ```cisco
-ip access-list extended ACL-V10-IN
- remark === Management: accesso totale ===
- permit ip 10.0.10.0 0.0.0.255 any
- deny   ip any any log
+Router(config)# ip access-list extended ACL-V10-IN
+Router(config-ext-nacl)# remark === Management: accesso totale ===
+Router(config-ext-nacl)# permit ip 10.0.10.0 0.0.0.255 any
+Router(config-ext-nacl)# deny ip any any log
+Router(config-ext-nacl)# exit
 ```
 
 #### A.2.2 — `ACL-V20-IN` · Server contenuti
@@ -626,13 +645,14 @@ Il server può solo aggiornarsi, risolvere nomi, sincronizzare l'ora e loggare. 
 | 5 | deny | ip | any | any | — | **Default deny** (log) |
 
 ```cisco
-ip access-list extended ACL-V20-IN
- remark === Server: updates / DNS / NTP / syslog ===
- permit tcp 10.0.20.0 0.0.0.255 any eq 443
- permit udp 10.0.20.0 0.0.0.255 any eq domain
- permit udp 10.0.20.0 0.0.0.255 any eq ntp
- permit udp 10.0.20.0 0.0.0.255 host 10.0.10.5 eq syslog
- deny   ip any any log
+Router(config)# ip access-list extended ACL-V20-IN
+Router(config-ext-nacl)# remark === Server: updates / DNS / NTP / syslog ===
+Router(config-ext-nacl)# permit tcp 10.0.20.0 0.0.0.255 any eq 443
+Router(config-ext-nacl)# permit udp 10.0.20.0 0.0.0.255 any eq domain
+Router(config-ext-nacl)# permit udp 10.0.20.0 0.0.0.255 any eq ntp
+Router(config-ext-nacl)# permit udp 10.0.20.0 0.0.0.255 host 10.0.10.5 eq syslog
+Router(config-ext-nacl)# deny ip any any log
+Router(config-ext-nacl)# exit
 ```
 
 #### A.2.3 — `ACL-V30-IN` · Tablet visitatori
@@ -646,11 +666,12 @@ La regola centrale: i tablet parlano **solo** HTTPS al server contenuti. Niente 
 | 3 | deny | ip | any | any | — | **Default deny** (log) |
 
 ```cisco
-ip access-list extended ACL-V30-IN
- remark === Tablet: solo HTTPS verso il server contenuti ===
- permit tcp 10.0.30.0 0.0.1.255 host 10.0.20.10 eq 443
- permit udp 10.0.30.0 0.0.1.255 host 10.0.20.10 eq domain
- deny   ip any any log
+Router(config)# ip access-list extended ACL-V30-IN
+Router(config-ext-nacl)# remark === Tablet: solo HTTPS verso il server contenuti ===
+Router(config-ext-nacl)# permit tcp 10.0.30.0 0.0.1.255 host 10.0.20.10 eq 443
+Router(config-ext-nacl)# permit udp 10.0.30.0 0.0.1.255 host 10.0.20.10 eq domain
+Router(config-ext-nacl)# deny ip any any log
+Router(config-ext-nacl)# exit
 ```
 
 > **DHCP.** Non serve una riga ACL: la DISCOVER del tablet è un broadcast `255.255.255.255` che non attraversa questa lista, ma viene intercettato dall'`ip helper-address 10.0.20.10` sulla sub-interface V30 (A.1), che la inoltra in unicast al server come relay. Il rinnovo unicast del lease è comunque traffico di ritorno gestito da CBAC.
@@ -668,13 +689,14 @@ Gli operatori usano l'app cassa (sul server) e gestionali esterni in HTTPS, ma *
 | 5 | deny | ip | any | any | — | **Default deny** (log) |
 
 ```cisco
-ip access-list extended ACL-V40-IN
- remark === InfoPoint: server interno + gestionali esterni HTTPS ===
- permit udp 10.0.40.0 0.0.0.255 host 10.0.20.10 eq domain
- permit tcp 10.0.40.0 0.0.0.255 10.0.20.0 0.0.0.255 eq 443
- deny   ip  10.0.40.0 0.0.0.255 10.0.0.0 0.255.255.255      ! prima: blocca le altre VLAN interne
- permit tcp 10.0.40.0 0.0.0.255 any eq 443                  ! poi: solo Internet resta
- deny   ip any any log
+Router(config)# ip access-list extended ACL-V40-IN
+Router(config-ext-nacl)# remark === InfoPoint: server interno + gestionali esterni HTTPS ===
+Router(config-ext-nacl)# permit udp 10.0.40.0 0.0.0.255 host 10.0.20.10 eq domain
+Router(config-ext-nacl)# permit tcp 10.0.40.0 0.0.0.255 10.0.20.0 0.0.0.255 eq 443
+Router(config-ext-nacl)# deny ip 10.0.40.0 0.0.0.255 10.0.0.0 0.255.255.255
+Router(config-ext-nacl)# permit tcp 10.0.40.0 0.0.0.255 any eq 443
+Router(config-ext-nacl)# deny ip any any log
+Router(config-ext-nacl)# exit
 ```
 
 #### A.2.5 — `ACL-V50-IN` · Telecamere / IoT
@@ -689,12 +711,13 @@ Le telecamere parlano solo con l'NVR (RTSP/HTTPS) e con un server NTP. Nient'alt
 | 4 | deny | ip | any | any | — | **Default deny** (log) |
 
 ```cisco
-ip access-list extended ACL-V50-IN
- remark === IoT: solo RTSP/HTTPS verso NVR, NTP ===
- permit tcp 10.0.50.0 0.0.0.255 host 10.0.20.20 eq 554
- permit tcp 10.0.50.0 0.0.0.255 host 10.0.20.20 eq 443
- permit udp 10.0.50.0 0.0.0.255 any eq ntp
- deny   ip any any log
+Router(config)# ip access-list extended ACL-V50-IN
+Router(config-ext-nacl)# remark === IoT: solo RTSP/HTTPS verso NVR, NTP ===
+Router(config-ext-nacl)# permit tcp 10.0.50.0 0.0.0.255 host 10.0.20.20 eq 554
+Router(config-ext-nacl)# permit tcp 10.0.50.0 0.0.0.255 host 10.0.20.20 eq 443
+Router(config-ext-nacl)# permit udp 10.0.50.0 0.0.0.255 any eq ntp
+Router(config-ext-nacl)# deny ip any any log
+Router(config-ext-nacl)# exit
 ```
 
 #### A.2.6 — `ACL-INET-IN` · Ingresso dalla WAN
@@ -712,16 +735,17 @@ Sulla porta WAN: anti-spoofing completo e default-deny per il traffico **non sol
 | 7 | deny | ip | any | any | — | **Default deny** (log) |
 
 ```cisco
-ip access-list extended ACL-INET-IN
- remark === Anti-spoofing: sorgenti illegittime dalla WAN ===
- deny   ip host 0.0.0.0 any log
- deny   ip 10.0.0.0 0.255.255.255 any log
- deny   ip 172.16.0.0 0.15.255.255 any log
- deny   ip 192.168.0.0 0.0.255.255 any log
- deny   ip 127.0.0.0 0.255.255.255 any log
- deny   ip 224.0.0.0 15.255.255.255 any log
- remark === Tutto il resto: solo return traffic via CBAC ===
- deny   ip any any log
+Router(config)# ip access-list extended ACL-INET-IN
+Router(config-ext-nacl)# remark === Anti-spoofing: sorgenti illegittime dalla WAN ===
+Router(config-ext-nacl)# deny ip host 0.0.0.0 any log
+Router(config-ext-nacl)# deny ip 10.0.0.0 0.255.255.255 any log
+Router(config-ext-nacl)# deny ip 172.16.0.0 0.15.255.255 any log
+Router(config-ext-nacl)# deny ip 192.168.0.0 0.0.255.255 any log
+Router(config-ext-nacl)# deny ip 127.0.0.0 0.255.255.255 any log
+Router(config-ext-nacl)# deny ip 224.0.0.0 15.255.255.255 any log
+Router(config-ext-nacl)# remark === Tutto il resto: solo return traffic via CBAC ===
+Router(config-ext-nacl)# deny ip any any log
+Router(config-ext-nacl)# exit
 ```
 
 ---
@@ -729,24 +753,29 @@ ip access-list extended ACL-INET-IN
 ### A.3 — Applicazione delle ACL alle interfacce
 
 ```cisco
-interface FastEthernet0/0.10
- ip access-group ACL-V10-IN in
-interface FastEthernet0/0.20
- ip access-group ACL-V20-IN in
-interface FastEthernet0/0.30
- ip access-group ACL-V30-IN in
-interface FastEthernet0/0.40
- ip access-group ACL-V40-IN in
-interface FastEthernet0/0.50
- ip access-group ACL-V50-IN in
-!
-interface GigabitEthernet0/1
- description WAN - uplink verso firewall e CPE FWA
- ip address 192.0.2.2 255.255.255.252
- ip access-group ACL-INET-IN in
+Router(config)# interface FastEthernet0/0.10
+Router(config-subif)# ip access-group ACL-V10-IN in
+Router(config-subif)# exit
+Router(config)# interface FastEthernet0/0.20
+Router(config-subif)# ip access-group ACL-V20-IN in
+Router(config-subif)# exit
+Router(config)# interface FastEthernet0/0.30
+Router(config-subif)# ip access-group ACL-V30-IN in
+Router(config-subif)# exit
+Router(config)# interface FastEthernet0/0.40
+Router(config-subif)# ip access-group ACL-V40-IN in
+Router(config-subif)# exit
+Router(config)# interface FastEthernet0/0.50
+Router(config-subif)# ip access-group ACL-V50-IN in
+Router(config-subif)# exit
+Router(config)# interface GigabitEthernet0/1
+Router(config-if)# description WAN - uplink verso firewall e CPE FWA
+Router(config-if)# ip address 192.0.2.2 255.255.255.252
+Router(config-if)# ip access-group ACL-INET-IN in
+Router(config-if)# exit
 ```
 
-> **Variante L3 switch:** ogni blocco diventa `interface Vlan10`, `interface Vlan20`, … La riga `ip access-group … in` resta letterale.
+> **Variante L3 switch:** ogni blocco diventa `Router(config)# interface Vlan10`, `… Vlan20`, … La riga `ip access-group … in` resta letterale.
 
 ---
 
@@ -754,28 +783,55 @@ interface GigabitEthernet0/1
 
 **Il punto critico.** Le ACL extended sono *stateless*: `ACL-V30-IN` lascia partire il tablet verso il server:443, ma la **risposta** del server (`V20 → tablet:porta-alta`) rientra da V20, viene valutata da `ACL-V20-IN` — che permette solo destinazioni `:443/53/123/514` — e finisce sul `deny ip any any`. Senza stato, **il ritorno cade**.
 
-La soluzione minima e più diffusa è **CBAC** (`ip inspect`), già usato in questo progetto sulla WAN, ora **esteso all'interno**: si ispeziona il traffico **in ingresso su ogni sub-interface VLAN**. CBAC registra ogni sessione che *nasce* da una VLAN e apre dinamicamente il foro di ritorno nella ACL inbound dell'interfaccia su cui la risposta rientra (es. inserisce un permit temporaneo in `ACL-V20-IN` per `server → tablet`).
+La soluzione minima e più diffusa è **CBAC** (`ip inspect`), già usato sulla WAN, ora **esteso all'interno**: si ispeziona il traffico **in ingresso su ogni sub-interface VLAN**. CBAC registra ogni sessione che *nasce* da una VLAN e apre dinamicamente il foro di ritorno nella ACL inbound dell'interfaccia su cui la risposta rientra (es. inserisce un permit temporaneo in `ACL-V20-IN` per `server → tablet`).
 
 ```cisco
-ip inspect name INTERVLAN tcp
-ip inspect name INTERVLAN udp
-ip inspect name INTERVLAN icmp
-!
-interface FastEthernet0/0.10
- ip inspect INTERVLAN in
-interface FastEthernet0/0.20
- ip inspect INTERVLAN in
-interface FastEthernet0/0.30
- ip inspect INTERVLAN in
-interface FastEthernet0/0.40
- ip inspect INTERVLAN in
-interface FastEthernet0/0.50
- ip inspect INTERVLAN in
+Router(config)# ip inspect name INTERVLAN tcp
+Router(config)# ip inspect name INTERVLAN udp
+Router(config)# ip inspect name INTERVLAN icmp
+Router(config)# interface FastEthernet0/0.10
+Router(config-subif)# ip inspect INTERVLAN in
+Router(config-subif)# exit
+Router(config)# interface FastEthernet0/0.20
+Router(config-subif)# ip inspect INTERVLAN in
+Router(config-subif)# exit
+Router(config)# interface FastEthernet0/0.30
+Router(config-subif)# ip inspect INTERVLAN in
+Router(config-subif)# exit
+Router(config)# interface FastEthernet0/0.40
+Router(config-subif)# ip inspect INTERVLAN in
+Router(config-subif)# exit
+Router(config)# interface FastEthernet0/0.50
+Router(config-subif)# ip inspect INTERVLAN in
+Router(config-subif)# exit
 ```
 
 > **Un solo meccanismo copre tutto.** Ispezionando in ingresso su ogni VLAN, CBAC gestisce sia i ritorni **inter-VLAN** (es. server→tablet) sia quelli **verso Internet** (la risposta dell'esterno rientra dalla WAN e trova il foro temporaneo già aperto in `ACL-INET-IN`). Il precedente `ip inspect STATEFUL out` sulla WAN diventa quindi ridondante e si può rimuovere.
 
 > **Perché CBAC e non gli altri due.** La **ZBF** otterrebbe lo stesso risultato in modo più ordinato su reti grandi, ma richiede zone, zone-pair e policy-map: troppa impalcatura qui. Le **ACL riflessive** funzionerebbero, ma andrebbero annidate (`reflect`/`evaluate`) dentro ogni lista, rovinando la leggibilità per-VLAN appena ottenuta. CBAC lascia le ACL pulite e aggiunge lo stato in un blocco separato.
+
+---
+
+### A.5 — Logging e contatori
+
+```cisco
+Router(config)# ip access-list logging interval 60
+Router(config)# logging host 10.0.10.5
+Router(config)# logging trap informational
+Router(config)# end
+```
+
+Per i contatori per-riga (debug), in modalità privilegiata:
+
+```cisco
+Router# show access-lists ACL-V30-IN
+Extended IP access list ACL-V30-IN
+    10 permit tcp 10.0.30.0 0.0.1.255 host 10.0.20.10 eq 443 (12847 matches)
+    30 deny   ip any any log (143 matches)
+```
+
+I match crescenti sul `deny` finale sono l'indicatore principale: un tablet che tenta flussi non previsti.
+
 
 ---
 
