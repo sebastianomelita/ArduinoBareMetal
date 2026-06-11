@@ -654,6 +654,35 @@ Router(config-if)# ip inspect CBAC-OUT out           ! ispeziona le sessioni usc
 
 > Sul lato LAN si tiene la solita ACL inbound **default-allow** (Parte C): qui **non serve più** la lista interna con i `reflect`. La differenza pratica con la §14 riflessiva è tutta lì: **una ACL invece di due**, e nessuna ACE inversa da gestire.
 
+## 14 · ACL stateful con CBAC (Context-Based Access Control)
+
+> Versione moderna che **sostituisce le ACL riflessive**. CBAC (`ip inspect`, a volte chiamato *Classic / legacy IOS Firewall*) ispeziona le sessioni in uscita e **apre da solo i ritorni**, tenendo una vera tabella di stato. Più robusto delle riflessive perché capisce i protocolli a livello applicativo (FTP, SIP, RTSP, TFTP…), che aprono porte dinamiche. Il gradino successivo — ancora più moderno e oggi raccomandato da Cisco per i progetti nuovi — è la **Zone-Based Firewall (ZBF)**.
+
+**Idea.** Invece di costruire a mano le ACE inverse (`reflect`/`evaluate`), si delega a un motore stateful: una sola ACL inbound sul lato non fidato (**default-deny**), e l'`ip inspect` fa il resto inserendo i fori di ritorno temporanei sopra il `deny` finale.
+
+```cisco
+! Passo 1 — regola di ispezione: quali protocolli tracciare in uscita
+Router> enable
+Router# configure terminal
+Router(config)# ip inspect name CBAC-OUT tcp        ! copre TUTTO il TCP (HTTP, HTTPS, SSH...) in un colpo
+Router(config)# ip inspect name CBAC-OUT udp        ! copre l'UDP (DNS, NTP...)
+Router(config)# ip inspect name CBAC-OUT icmp       ! ping/traceroute di ritorno
+! granulare per gli ALG che aprono porte dinamiche:
+! Router(config)# ip inspect name CBAC-OUT ftp
+
+! Passo 2 — ACL esterna (entrante): default-DENY esplicito, nessun permit di ritorno scritto a mano
+Router(config)# ip access-list extended ACL_ESTERNA
+Router(config-ext-nacl)# deny ip any any log         ! ← CBAC inserisce i ritorni dinamicamente SOPRA questa riga
+Router(config-ext-nacl)# exit
+
+! Passo 3 — applica sull'interfaccia verso la WAN
+Router(config)# interface s0/0/0
+Router(config-if)# ip access-group ACL_ESTERNA in    ! blocca tutto l'ingresso non sollecitato
+Router(config-if)# ip inspect CBAC-OUT out           ! ispeziona le sessioni uscenti e apre i ritorni
+```
+
+> Sul lato LAN si tiene la solita ACL inbound **default-allow** (Parte C): qui **non serve più** la lista interna con i `reflect`. La differenza pratica con la §14 riflessiva è tutta lì: **una ACL invece di due**, e nessuna ACE inversa da gestire.
+
 ### Riflessive → CBAC → ZBF a confronto
 
 | | ACL riflessive | **CBAC** (questa) | ZBF |
@@ -683,6 +712,7 @@ Router# show access-lists ACL_ESTERNA     ! vedi le ACE dinamiche inserite da CB
 ```
 
 > Perché è "più moderna" delle riflessive: niente ACE inverse da gestire a mano, una tabella di stato reale, e soprattutto la comprensione dei protocolli che negoziano porte dinamiche, dove le riflessive si rompono. Resta comunque un meccanismo classico: per un progetto nuovo, la **ZBF** esprime le stesse capacità stateful ma organizzate per *zone* e *zone-pair*.
+
 
 ## 15 · ACL anti-spoofing — WAN e LAN 
 
