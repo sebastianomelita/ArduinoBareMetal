@@ -569,7 +569,7 @@ Router# show ip access-lists NOME      ! contatori per ACE (0 match su un permit
 
 ```cisco
 Router(config)# access-list 1 permit host 10.0.3.10
-Router(config)# access-list 1 deny   any                 ! ← default deny esplicito (riga di casa)
+Router(config)# access-list 1 deny   any                 ! ← default deny esplicito (riga non necessaria nei router CISCO))
 Router(config)# interface GigabitEthernet0/2
 Router(config-if)# ip access-group 1 in
 ```
