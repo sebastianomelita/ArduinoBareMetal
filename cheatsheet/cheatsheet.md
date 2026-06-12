@@ -692,7 +692,7 @@ Router(config-pmap)# class type inspect CM-OUT
 Router(config-pmap-c)# inspect                     ! traccia la sessione e apre il ritorno
 Router(config-pmap-c)# exit
 Router(config-pmap)# class class-default
-Router(config-pmap-c)# drop log                    ! ← default-deny ESPLICITO (la "riga di casa")
+Router(config-pmap-c)# drop log                    ! ← default-deny ESPLICITO 
 Router(config-pmap-c)# exit
 Router(config-pmap)# exit
 
