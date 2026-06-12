@@ -563,7 +563,7 @@ Router# show ip interface <X>          ! quale ACL è applicata e in che direzio
 Router# show ip access-lists NOME      ! contatori per ACE (0 match su un permit = regola mai usata)
 ```
 
-## 13 · ACL firewall — scenari tipici (conformi)
+## 13 · ACL firewall — scenari tipici 
 
 **13.1 — Whitelist a un solo host (standard) · default-DENY esplicito.** Caso "isola chiusa" come la Subnet B: si enumera ciò che passa, il resto cade.
 
