@@ -758,7 +758,7 @@ Router(config-ext-nacl)# deny   ip 10.0.0.0    0.255.255.255  any      log   ! R
 Router(config-ext-nacl)# deny   ip 172.16.0.0  0.15.255.255   any      log   ! RFC1918 B
 Router(config-ext-nacl)# deny   ip 192.168.0.0 0.0.255.255    any      log   ! RFC1918 C
 Router(config-ext-nacl)# deny   ip 224.0.0.0   15.255.255.255 any      log   ! multicast sorgente
-Router(config-ext-nacl)# deny   ip any any                                   ! ← DEFAULT DENY (era "permit ip any any")
+Router(config-ext-nacl)# deny   ip any any                                   ! ← DEFAULT DENY
 Router(config-ext-nacl)# exit
 Router(config)# interface GigabitEthernet0/4                                 ! WAN (outside)
 Router(config-if)# ip access-group ACL-WAN in
