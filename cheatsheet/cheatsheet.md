@@ -1010,7 +1010,7 @@ R0# show running-config | section nat
 
 ---
 
-# Parte III · Backup & Ripristino
+[# Parte III · Backup & Ripristino
 
 > Backup/restore di **dati** e **VM** con `rsync`, **NFS** e **Samba**.
 
@@ -1159,8 +1159,7 @@ sudo systemctl restart smbd && sudo systemctl restart nmbd
 - [ ] **Snapshot/versioning** sul NAS
 - [ ] Regola **3-2-1** (off-site / cloud)
 - [ ] Accesso ai backup limitato agli amministratori (AAA)
-
----
+]
 ---
 
 # Parte IV · Wi-Fi Mesh tri-band — pianificazione canali (EU)
