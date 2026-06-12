@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 680 180" role="img" aria-labelledby="t3 d3">
+<title id="t3">Regola 3-2-1 del backup</title>
+<desc id="d3">Tre copie dei dati, su due supporti diversi, di cui una copia conservata off-site in un altro edificio o nel cloud.</desc>
+<style>
+ .f{font-family:-apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+ .na{stroke:#73726c;fill:none}
+ @media (prefers-color-scheme:dark){.na{stroke:#9c9a92}}
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+
+<rect x="50" y="55" width="175" height="72" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="f" font-size="14" font-weight="500" fill="#042C53" x="137" y="83" text-anchor="middle" dominant-baseline="central">3 copie totali</text>
+<text class="f" font-size="12" fill="#185FA5" x="137" y="103" text-anchor="middle" dominant-baseline="central">originale + 2 backup</text>
+
+<rect x="252" y="55" width="175" height="72" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="f" font-size="14" font-weight="500" fill="#042C53" x="339" y="83" text-anchor="middle" dominant-baseline="central">2 supporti diversi</text>
+<text class="f" font-size="12" fill="#185FA5" x="339" y="103" text-anchor="middle" dominant-baseline="central">es. disco + NAS</text>
+
+<rect x="454" y="55" width="175" height="72" rx="10" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+<text class="f" font-size="14" font-weight="500" fill="#042C53" x="541" y="83" text-anchor="middle" dominant-baseline="central">1 copia off-site</text>
+<text class="f" font-size="12" fill="#185FA5" x="541" y="103" text-anchor="middle" dominant-baseline="central">altro edificio o cloud</text>
+
+<line class="na" x1="225" y1="91" x2="252" y2="91" stroke-width="1.5" marker-end="url(#arrow)"/>
+<line class="na" x1="427" y1="91" x2="454" y2="91" stroke-width="1.5" marker-end="url(#arrow)"/>
+</svg>

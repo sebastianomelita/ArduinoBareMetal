@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 680 235" role="img" aria-labelledby="t2 d2">
+<title id="t2">Backup e restore come operazioni speculari</title>
+<desc id="d2">Il backup copia i dati dal sistema al NAS con rsync; il restore è l'operazione inversa, copia i dati dal NAS al sistema e usa sempre il flag --numeric-ids.</desc>
+<style>
+ .f{font-family:-apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+ .nt{fill:#3d3d3a}.ns{fill:#73726c}
+ @media (prefers-color-scheme:dark){.nt{fill:#e8e6dc}.ns{fill:#a8a69c}}
+</style>
+<defs>
+<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+</defs>
+
+<rect x="60" y="95" width="180" height="60" rx="10" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text class="f" font-size="14" font-weight="500" fill="#2C2C2A" x="150" y="118" text-anchor="middle" dominant-baseline="central">Sistema</text>
+<text class="f" font-size="12" fill="#5F5E5A" x="150" y="137" text-anchor="middle" dominant-baseline="central">dati / VM da proteggere</text>
+
+<rect x="440" y="95" width="180" height="60" rx="10" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text class="f" font-size="14" font-weight="500" fill="#2C2C2A" x="530" y="118" text-anchor="middle" dominant-baseline="central">NAS</text>
+<text class="f" font-size="12" fill="#5F5E5A" x="530" y="137" text-anchor="middle" dominant-baseline="central">conserva i backup</text>
+
+<text class="f nt" font-size="14" font-weight="500" x="340" y="52" text-anchor="middle">Backup</text>
+<text class="f ns" font-size="12" x="340" y="70" text-anchor="middle">copia speculare con --delete</text>
+<line x1="240" y1="82" x2="440" y2="82" stroke="#1D9E75" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+
+<text class="f nt" font-size="14" font-weight="500" x="340" y="183" text-anchor="middle">Restore</text>
+<text class="f ns" font-size="12" x="340" y="201" text-anchor="middle">sempre con --numeric-ids</text>
+<line x1="440" y1="168" x2="240" y2="168" stroke="#D85A30" stroke-width="1.5" fill="none" marker-end="url(#arrow)"/>
+</svg>
