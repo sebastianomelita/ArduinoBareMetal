@@ -712,10 +712,6 @@ Router(config-if)# exit
 
 > **Il ritorno e il default-deny sono entrambi impliciti nel modello.** I ritorni delle sessioni `INSIDE→OUTSIDE` sono ammessi dall'`inspect`; l'ingresso non richiesto `OUTSIDE→INSIDE` cade perché **quella zone-pair non esiste**. Il `class-default → drop log` rende comunque visibile e contato ciò che la policy scarta, coerente con la regola di casa della dispensa.
 
-### Dal CBAC alla ZBF — mappa mentale
-
-Ogni pezzo del CBAC (§14) ha il suo corrispondente:
-
 ### Estensione a tre zone (DMZ con servizio esposto)
 
 Per esporre un server (es. HTTPS in DMZ) si aggiunge una **terza zona** e una zone-pair `OUTSIDE → DMZ` che ispeziona solo quel servizio:
