@@ -734,15 +734,6 @@ Router(config-sec-zone-pair)# service-policy type inspect PM-OUT-DMZ
 
 > È lo stesso ruolo dei `permit` selettivi prima del `deny ip any any` in §15.1, ma qui ogni flusso vive nella **sua** zone-pair: l'apertura verso la DMZ non tocca minimamente la regola `INSIDE↔OUTSIDE`.
 
-### Riflessive → CBAC → ZBF, in una riga
-
-| | Riflessive | CBAC | **ZBF** |
-|---|---|---|---|
-| Default-deny | da scrivere (`deny` esplicito) | da scrivere (ACL inbound) | **strutturale** (no zone-pair = drop) |
-| Organizzazione | per ACL | per interfaccia | **per zona/flusso** |
-| Scalabilità multi-segmento | scarsa | media | **alta** |
-| Stato Cisco | legacy | legacy ma valido | **raccomandato** |
-
 **Test** (da privileged EXEC)
 ```cisco
 Router# show zone security                              ! zone e interfacce membre
