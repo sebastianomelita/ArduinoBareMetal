@@ -459,7 +459,7 @@ defaults
 
 frontend http_front
     bind *:80
-    bind *:443 ssl crt /etc/haproxy/cert.pem             # ssl termination: il reverse proxy autentica TUTTI i server del backend 
+    bind *:443 ssl crt /etc/haproxy/cert.pem    # ssl termination: il reverse proxy autentica TUTTI i server del backend 
     http-request redirect scheme https unless { ssl_fc }  # redirige le connessioni sulla porta 80 sulla porta 443
     http-request add-header X-Forwarded-Proto https if { ssl_fc }  # dice ai server che stano dietro ad un proxy
     acl is_blog hdr_end(host) -i blog.miosito.com      # ALG: routing L7 per hostname
