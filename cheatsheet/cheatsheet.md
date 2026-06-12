@@ -459,9 +459,9 @@ defaults
 
 frontend http_front
     bind *:80
-    bind *:443 ssl crt /etc/haproxy/cert.pem
-    http-request redirect scheme https unless { ssl_fc }
-    http-request add-header X-Forwarded-Proto https if { ssl_fc }
+    bind *:443 ssl crt /etc/haproxy/cert.pem             # ssl termination: il reverse proxy autentica TUTTI i server del backend 
+    http-request redirect scheme https unless { ssl_fc }  # redirige le connessioni sulla porta 80 sulla porta 443
+    http-request add-header X-Forwarded-Proto https if { ssl_fc }  # dice ai server che stano dietro ad un proxy
     acl is_blog hdr_end(host) -i blog.miosito.com      # ALG: routing L7 per hostname
     acl is_web  hdr_end(host) -i web.miosito.com
     use_backend blog_backend if is_blog
@@ -472,9 +472,9 @@ backend blog_backend
 
 backend web_backend
     balance roundrobin                                  # clustering
-    server web_server1 web.miosito.com:80 check
-    server web_server2 web.miosito.com:80 check
-    server web_server3 web.miosito.com:80 check
+    server web_server1 web1.miosito.com:80 check
+    server web_server2 web2.miosito.com:80 check
+    server web_server3 web3.miosito.com:80 check
 ```
 
 > **ALG** — `acl` + `use_backend`: ogni dominio va su un pool diverso (routing L7).
