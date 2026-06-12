@@ -450,7 +450,6 @@ HAProxy riceve sull'IP virtuale VRRP e smista ai backend.
 <img src="../img/reverse-proxy.svg" alt="alt text" width="600">
 
 ```
-# /etc/haproxy/haproxy.cfg (estratto)
 defaults
     mode http
     timeout connect 5000
@@ -459,19 +458,25 @@ defaults
 
 frontend http_front
     bind *:80
-    bind *:443 ssl crt /etc/haproxy/cert.pem    # ssl termination: il reverse proxy autentica TUTTI i server del backend 
-    http-request redirect scheme https unless { ssl_fc }  # redirige le connessioni sulla porta 80 sulla porta 443
-    http-request add-header X-Forwarded-Proto https if { ssl_fc }  # dice ai server che stano dietro ad un proxy
-    acl is_blog hdr_end(host) -i blog.miosito.com      # ALG: routing L7 per hostname
-    acl is_web  hdr_end(host) -i web.miosito.com
+    bind *:443 ssl crt /etc/haproxy/cert.pem 
+    # SSL termination: il proxy decifra il TLS e parla ai backend in HTTP
+
+    http-request redirect scheme https unless { ssl_fc }            # forza HTTPS a fronte di rchieste HTTP
+    http-request add-header X-Forwarded-Proto https if { ssl_fc }   # informa i backend del protocollo HTTPS
+    # Impostazione ALG
+    acl is_blog hdr_end(host) -i blog.miosito.com   # routing L7 per host
+    acl is_web  path_beg      -i /web               # routing L7 per path  
+
     use_backend blog_backend if is_blog
     use_backend web_backend  if is_web
+    default_backend web_backend                     # fallback: evita i 503
 
 backend blog_backend
-    server blog_server1 blog.miosito.com:80 check
+    server blog_server1 10.0.0.11:80 check          # ← IP interno, non il nome pubblico
 
 backend web_backend
-    balance roundrobin                                  # clustering
+    # Impostazione CLUSTER
+    balance roundrobin
     server web_server1 web1.miosito.com:80 check
     server web_server2 web2.miosito.com:80 check
     server web_server3 web3.miosito.com:80 check
