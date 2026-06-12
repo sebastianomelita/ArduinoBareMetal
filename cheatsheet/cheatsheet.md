@@ -464,8 +464,8 @@ frontend http_front
     http-request redirect scheme https unless { ssl_fc }            # forza HTTPS a fronte di rchieste HTTP
     http-request add-header X-Forwarded-Proto https if { ssl_fc }   # informa i backend del protocollo HTTPS
     # Impostazione ALG
-    acl is_blog hdr_end(host) -i blog.miosito.com   # routing L7 per host
-    acl is_web  path_beg      -i /web               # routing L7 per path  
+    acl is_blog hdr_end(host) -i blog.miosito.com   # routing L7 per host (hdr_beg, hdr_end, hdr_sub…) 
+    acl is_web  path_beg      -i /web               # routing L7 per path (path_beg, path_end, path_sub, path_reg…)
 
     use_backend blog_backend if is_blog
     use_backend web_backend  if is_web
