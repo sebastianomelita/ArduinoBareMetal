@@ -633,9 +633,7 @@ Router(config-if)# ip access-group ACL-RITORNO in
 
 ## 14 · ACL stateful con CBAC (Context-Based Access Control)
 
-> Versione moderna che **sostituisce le ACL riflessive**. CBAC (`ip inspect`, a volte chiamato *Classic / legacy IOS Firewall*) ispeziona le sessioni in uscita e **apre da solo i ritorni**, tenendo una vera tabella di stato. Più robusto delle riflessive perché capisce i protocolli a livello applicativo (FTP, SIP, RTSP, TFTP…), che aprono porte dinamiche. Il gradino successivo — ancora più moderno e oggi raccomandato da Cisco per i progetti nuovi — è la **Zone-Based Firewall (ZBF)**.
-
-**Idea.** Invece di costruire a mano le ACE inverse (`reflect`/`evaluate`), si delega a un motore stateful: una sola ACL inbound sul lato non fidato (**default-deny**), e l'`ip inspect` fa il resto inserendo i fori di ritorno temporanei sopra il `deny` finale.
+> Versione moderna che **sostituisce le ACL riflessive**. CBAC (`ip inspect`, a volte chiamato *Classic / legacy IOS Firewall*) ispeziona le sessioni in uscita e **apre da solo i ritorni**, tenendo una vera tabella di stato. Capisce i protocolli a livello applicativo (FTP, SIP, RTSP, TFTP…), che aprono porte dinamiche. 
 
 ```cisco
 ! Passo 1 — regola di ispezione: quali protocolli tracciare in uscita
@@ -717,15 +715,6 @@ Router(config-if)# exit
 ### Dal CBAC alla ZBF — mappa mentale
 
 Ogni pezzo del CBAC (§14) ha il suo corrispondente:
-
-| Concetto CBAC | Equivalente ZBF |
-|---|---|
-| `ip inspect name X tcp/udp/icmp` | `class-map type inspect` (match protocol) |
-| azione "ispeziona" | `policy-map` con `inspect` |
-| `ip inspect X out` sull'interfaccia | `zone-pair` source INSIDE destination OUTSIDE |
-| ACL inbound `deny ip any any` sulla WAN | implicito: nessuna zone-pair = drop |
-| `deny ip any any log` esplicito | `class class-default` → `drop log` |
-| applicare l'inspect a un'interfaccia | `zone-member security <ZONA>` |
 
 ### Estensione a tre zone (DMZ con servizio esposto)
 
