@@ -569,7 +569,7 @@ Router# show ip access-lists NOME      ! contatori per ACE (0 match su un permit
 
 ```cisco
 Router(config)# access-list 1 permit host 10.0.3.10
-Router(config)# access-list 1 deny   any                 ! ← default deny esplicito (riga non necessaria nei router CISCO))
+Router(config)# access-list 1 deny   any                 ! ← default deny esplicito (riga non necessaria nei router CISCO)
 Router(config)# interface GigabitEthernet0/2
 Router(config-if)# ip access-group 1 in
 ```
@@ -588,7 +588,7 @@ Router(config-if)# ip access-group 10 in
 ```cisco
 Router(config)# ip access-list extended ACL-B-WHITELIST
 Router(config-ext-nacl)# permit ip 10.0.2.0 0.0.0.255 host 10.0.1.100
-Router(config-ext-nacl)# deny   ip any any               ! ← default deny esplicito
+Router(config-ext-nacl)# deny   ip any any               ! ← default deny esplicito (riga non necessaria nei router CISCO)
 Router(config-ext-nacl)# exit
 Router(config)# interface GigabitEthernet0/1
 Router(config-if)# ip access-group ACL-B-WHITELIST in
@@ -611,7 +611,7 @@ Router(config-if)# ip access-group ACL-NO-TELNET in
 Router(config)# ip access-list extended ACL-SOLO-DNS
 Router(config-ext-nacl)# permit udp any host 10.0.6.53 eq domain
 Router(config-ext-nacl)# permit tcp any host 10.0.6.53 eq domain
-Router(config-ext-nacl)# deny   ip  any any              ! ← default deny esplicito
+Router(config-ext-nacl)# deny   ip  any any              ! ← default deny esplicito (riga non necessaria nei router CISCO)
 Router(config-ext-nacl)# exit
 Router(config)# interface GigabitEthernet0/3
 Router(config-if)# ip access-group ACL-SOLO-DNS in
@@ -622,7 +622,7 @@ Router(config-if)# ip access-group ACL-SOLO-DNS in
 ```cisco
 Router(config)# ip access-list extended ACL-RITORNO
 Router(config-ext-nacl)# permit tcp any any gt 1023 established
-Router(config-ext-nacl)# deny   ip  any any              ! ← default deny esplicito
+Router(config-ext-nacl)# deny   ip  any any              ! ← default deny esplicito (riga non necessaria nei router CISCO)
 Router(config-ext-nacl)# exit
 Router(config)# interface GigabitEthernet0/4
 Router(config-if)# ip access-group ACL-RITORNO in
