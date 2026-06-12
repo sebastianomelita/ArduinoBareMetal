@@ -314,50 +314,54 @@ R# show ip ospf interface GigabitEthernet0/0    ← area, cost, DR/BDR, timer He
 
 ## 8 · NAT Cisco IOS
 
-### 8.1 Interfacce (comune a TUTTI i tipi di NAT)
-
+### Parte comune (tutti i tipi)
 ```
 R(config)# interface fa0/0
 R(config-if)# ip address 192.168.1.254 255.255.255.0
 R(config-if)# ip nat inside
+R(config-if)# exit
 R(config)# interface fa0/1
 R(config-if)# ip address 213.234.10.2 255.255.255.252
 R(config-if)# ip nat outside
+R(config-if)# exit
 ```
 
-> `ip nat inside`/`ip nat outside` vanno sempre impostati su entrambe le interfacce,
-> qualunque sia il tipo di NAT.
-
-### 8.2 I quattro tipi — comando chiave
-
-| Tipo | Comando chiave (riga distintiva) | Quando |
-|---|---|---|
-| **Statico 1:1** (SNAT) | `ip nat inside source static 172.16.0.5 10.16.0.5` | server sempre raggiungibile da Internet |
-| **Dinamico 1:N** | `ip nat inside source list NAT-LIST pool DYNAMIC-IP` | molti host, pool di IP pubblici |
-| **PAT / overload** | `ip nat inside source list 1 interface Gi0/1 overload` | un **solo** IP pubblico (porte diverse) |
-| **Port forward** (DNAT) | `ip nat inside source static tcp 192.168.1.100 80 203.0.113.1 80` | esporre un servizio interno |
-
-> Statico e port-forward permettono connessioni **iniziate dall'esterno**.
-> PAT e port-forward **coesistono**: PAT gestisce l'uscita, il port-forward l'ingresso.
-
-### 8.3 Dettagli che servono oltre alla riga chiave
-
+### 1. Statico 1:1 (SNAT)
 ```
-! — NAT dinamico: definire pool + ACL prima del comando chiave
-ip nat pool DYNAMIC-IP 10.0.16.1 10.0.16.6 prefix-length 29
-ip access-list standard NAT-LIST
- permit 172.16.0.0 0.0.0.255
-
-! — PAT: l'ACL che identifica il traffico inside da tradurre
-access-list 1 permit 192.168.1.0 0.0.0.255
+R(config)# ip nat inside source static 192.168.1.5 213.234.10.5
 ```
+Completamento: nessuno. IP pubblico instradato verso di te.
 
-**Test (tutti i tipi)**
+### 2. Dinamico 1:N
+```
+R(config)# ip nat pool DYNAMIC-IP 213.234.10.5 213.234.10.10 prefix-length 29
+R(config)# ip access-list standard NAT-LIST
+R(config-std-nacl)# permit 192.168.1.0 0.0.0.255
+R(config-std-nacl)# exit
+R(config)# ip nat inside source list NAT-LIST pool DYNAMIC-IP
+```
+Completamento: pool + ACL.
+
+### 3. PAT / overload
+```
+R(config)# access-list 1 permit 192.168.1.0 0.0.0.255
+R(config)# ip nat inside source list 1 interface fa0/1 overload
+```
+Completamento: solo ACL. `overload` = PAT.
+
+### Port-forward (DNAT, opzionale)
+```
+R(config)# ip nat inside source static tcp 192.168.1.100 80 213.234.10.2 80
+```
+Coesiste con PAT/dinamico (ingresso). Ridondante con statico 1:1.
+
+### Verifica
 ```
 R# show ip nat translations
 R# show ip nat statistics
 R# debug ip nat
 ```
+
 
 ## 9 · NAT Linux — iptables
 
