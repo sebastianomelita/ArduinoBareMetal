@@ -37,7 +37,7 @@ Normalmente, bit rate e consumo sono direttamente proporzionali, quando cresce i
 
 ### 1.0 Analisi della realtà
 - **Ipotesi sul dominio**: ipotesi più precise sulla distribuzione degli asset (nodi di elaborazione e nodi di rete), ipotesi sui volumi di traffico e sui livelli di servizio.
-- **Vincoli normativi**: di privacy (GDPR, NIS), di dominio (codice della strada, regole amministrative, ecc), di sistema (cablaggio strutturato,  BIA e criticità degli asset, Sicurezza funzionale — IEC 61508, ecc)
+- **Vincoli normativi**: di privacy (GDPR, NIS), di dominio (codice della strada, regole amministrative, ecc), di sistema (cablaggio strutturato,  BIA e criticità degli asset, Sicurezza funzionale — IEC 61508, potenza, EIRP, ERP, duty cycle, ecc)
 
 ### 1.1 Schemi fondamentali
 - Schema fisico (**planimetria**) dello scenario: ambienti ed edifici chiave, infrastruttura
@@ -58,17 +58,14 @@ Normalmente, bit rate e consumo sono direttamente proporzionali, quando cresce i
   **dimensionamento di massima** (quantità, porte, banda). *(I dettagli specifici nelle sezioni particolari.)*
 - Dislocazione di eventuali **router/Firewall**.
 
-### 1.3 Vincoli
-- Eventuali **vincoli normativi**: **cablaggio strutturato**, **potenza**, **EIRP**, **ERP**, **duty cycle**.
-
-### 1.4 Indirizzamento e routing
+### 1.3 Indirizzamento e routing
 - **Subnetting** dei **link verso le LAN** (fisiche o virtuali per gruppi di utenti, server farm e DMZ) definizione dell **indirizzo del router di confine** della LAN. Definizione degli **indirizzi dei server**.
 - **Subnetting** dei **link fisici di dorsale** tra i router e definizione degli **indirizzi delle interfacce fisiche** dei router
 - **Subnetting** dei **link logici L3 di dorsale** tra i router e definizione degli **indirizzi delle interfacce virtuali TUN** dei router
 - **Tipo di routing** (statico o dinamico). Se statico, definire le **tabelle** più significative.
   *(Eccezione: nel WiFi Mesh il routing è sempre automatico — vedi §3.3.)*
 
-### 1.5 Servizi di rete
+### 1.4 Servizi di rete
 - Posizione dei **servizi di sistema** (DHCP, DNS): a bordo del **FW**, collegati al **CS**, o in **server farm**.
 - Eventuale **continuità del servizio** mediante replica sul piano servizio, dati e ripristino (backup).
 - Eventuali **ACL** in **ingresso** (direzione IN) di ciascun router per il **filtraggio dei pacchetti**.
@@ -79,7 +76,7 @@ Normalmente, bit rate e consumo sono direttamente proporzionali, quando cresce i
   - connessione **site-to-site** (secure o trusted) "like wired" verso sede remota, con
     **autenticazione del nodo** e **cifratura dei dati**.
 
-### 1.6 Autenticazione
+### 1.5 Autenticazione
 - **Autenticazione utenti** (es. **802.1X**) per l'accesso alla **risorsa rete** presso un **supplicant** (NAS):
   - **L2 EAP** porta fisica presso **switch** (MAC o id utente via **RADIUS/DIAMETER**);
   - **L2 EAP** porta logica presso **AP WiFi** (MAC o id utente via **RADIUS/DIAMETER**);
@@ -90,7 +87,7 @@ Normalmente, bit rate e consumo sono direttamente proporzionali, quando cresce i
 - **Autenticazione nodi di elaborazione/pubblicazione** (certificati, psw, preshared key…).
 - **Autenticazione nodi di smistamento** (certificati, vpn…).
 
-### 1.7 Applicazione e dati IoT
+### 1.6 Applicazione e dati IoT
 - Posizione del **broker MQTT**.
 - **Topic** utili per i casi d'uso richiesti.
 - **Messaggi JSON** per dispositivi IoT significativi (**comandi**, **stato**, **configurazione**).
