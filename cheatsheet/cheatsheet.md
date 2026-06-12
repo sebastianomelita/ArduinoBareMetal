@@ -545,7 +545,7 @@ Router(config-if)# ip access-group <numero|NOME> {in|out}
 > `in` = pacchetti **entranti** sull'interfaccia (è la direzione che usiamo in tutta la dispensa).
 > `out` = pacchetti **uscenti** dall'interfaccia (non filtra il traffico generato dal router stesso).
 
-### La riga di default (regola di casa)
+### La riga di default (politica di default quando nulla matcha)
 ```cisco
 ! LAN — default-allow
 Router(config-ext-nacl)# ...                 ! (deny delle eccezioni)
