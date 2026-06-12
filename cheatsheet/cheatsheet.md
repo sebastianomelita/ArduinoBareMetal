@@ -1034,7 +1034,7 @@ R0# show running-config | section nat
 | **Chiave pubblica** | server (sorgente) | NAS (destinazione) |
 | **Tipico per** | backup centralizzato di più server | ogni macchina gestisce il proprio |
 
-<img src="../img/pull-vs-push.svg" alt="PULL vs PUSH: chi prende l'iniziativa" width="600">
+<img src="../img/pull-vs-push.svg" alt="PULL vs PUSH: chi prende l'iniziativa" width="800">
 
 *Fig. 1 — In entrambe le strategie i **dati** viaggiano sempre dal server al NAS; cambia solo **chi avvia** il trasferimento, e con esso dove gira lo script e dove sta la chiave privata.*
 
@@ -1042,7 +1042,7 @@ R0# show running-config | section nat
 **3** copie → **2** supporti diversi → **1** copia *off-site* (altro edificio o **cloud**).
 Prevedi sempre il **backup del backup** (NAS gemello + cloud).
 
-<img src="../img/regola-3-2-1.svg" alt="Regola 3-2-1: 3 copie, 2 supporti, 1 off-site" width="600">
+<img src="../img/regola-3-2-1.svg" alt="Regola 3-2-1: 3 copie, 2 supporti, 1 off-site" width="800">
 
 *Fig. 2 — Lo standard minimo per sopravvivere anche al caso peggiore; il "backup del backup" è il modo pratico di coprire la copia off-site.*
 
@@ -1099,7 +1099,7 @@ sudo umount /mnt/backup
 > 🔁 È un backup **al contrario**: la sorgente diventa il backup, la destinazione il sistema da recuperare.
 > 🔑 In restore usa **sempre `--numeric-ids`**.
 
-<img src="../img/backup-vs-restore.svg" alt="Backup e restore come operazioni speculari" width="600">
+<img src="../img/backup-vs-restore.svg" alt="Backup e restore come operazioni speculari" width="800">
 
 *Fig. 3 — Il restore è il backup invertito: sorgente e destinazione si scambiano, e si aggiunge sempre `--numeric-ids` per conservare UID/GID.*
 
