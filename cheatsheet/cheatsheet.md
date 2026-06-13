@@ -504,6 +504,43 @@ Lo scambio di ruolo automatico è un layer in più (cluster manager).
 
 ---
 
+## Configurazione di base (comune ai due casi)
+
+### Risorsa — /etc/drbd.d/r0.res
+```
+resource r0 {
+  protocol C;
+  on node1 {
+    device    /dev/drbd0;
+    disk      /dev/sdb1;
+    address   192.168.1.1:7789;
+    meta-disk internal;
+  }
+  on node2 {
+    device    /dev/drbd0;
+    disk      /dev/sdb1;
+    address   192.168.1.2:7789;
+    meta-disk internal;
+  }
+}
+```
+`protocol C` = replica sincrona (default HA).
+
+### Init (su ENTRAMBI i nodi)
+```
+node# drbdadm create-md r0
+node# drbdadm up r0
+```
+
+### Primo sync (SOLO sul primario)
+```
+node1# drbdadm primary --force r0
+node1# mkfs.ext4 /dev/drbd0
+node1# mount /dev/drbd0 /mnt/data
+```
+
+---
+
 ## Caso A — Senza failover (promozione manuale)
 
 <img src="../img/drbd-manuale.svg" alt="DRBD senza failover" width="700">
@@ -547,6 +584,7 @@ Nessun comando manuale: il cluster rileva il guasto → fence del nodo morto →
 node# pcs status
 node# crm_mon -1
 ```
+
 ---
 
 # Cheat sheet ACL
