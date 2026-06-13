@@ -495,6 +495,60 @@ sudo systemctl restart haproxy
 echo "show stat" | sudo socat stdio /var/run/haproxy/admin.sock
 ```
 
+---
+
+# DRBD — Replica e Failover
+
+DRBD replica solo il blocco: la promozione del secondario **non è automatica**.
+Lo scambio di ruolo automatico è un layer in più (cluster manager).
+
+---
+
+## Caso A — Senza failover (promozione manuale)
+
+<img src="../img/drbd-manuale.svg" alt="DRBD senza failover" width="700">
+
+### A.1 Funzionamento normale
+Primario attivo (FS montato + servizio), secondario in standby (FS non montato).
+Replica sincrona `protocol C`: la write ritorna OK al client solo dopo l'ACK del secondario.
+```
+node# drbdadm status r0
+node# cat /proc/drbd
+```
+
+### A.2 Guasto del primario — promozione MANUALE
+Sul secondario, a mano:
+```
+node2# drbdadm primary --force r0
+node2# mount /dev/drbd0 /mnt/data
+node2# systemctl start <servizio>
+```
+Niente split-brain: decidi tu chi diventa primary.
+
+---
+
+## Caso B — Con failover automatico (Pacemaker / keepalived)
+
+<img src="../img/drbd-failover.svg" alt="DRBD con failover automatico" width="700">
+
+### B.1 Funzionamento normale
+Il cluster manager gestisce 4 risorse + ordering/colocation + STONITH (fencing):
+```
+node1# pcs resource create drbd ocf:linbit:drbd drbd_resource=r0
+node1# pcs resource promotable drbd promoted-max=1
+node1# pcs resource create fs Filesystem device=/dev/drbd0 directory=/mnt/data fstype=ext4
+node1# pcs resource create vip IPaddr2 ip=192.168.1.10 cidr_netmask=24
+! ordine: promuovi drbd → monta fs → avvia servizio → alza vip
+```
+
+### B.2 Guasto del primario — failover AUTOMATICO
+Nessun comando manuale: il cluster rileva il guasto → fence del nodo morto → promuove il secondario → monta FS → avvia servizio → sposta la VIP.
+```
+node# pcs status
+node# crm_mon -1
+```
+---
+
 # Cheat sheet ACL
 
 > Adattato al piano di indirizzamento `10.0.0.0/16` (Subnet A–F della dispensa) e alle **due politiche di default** che usiamo:
