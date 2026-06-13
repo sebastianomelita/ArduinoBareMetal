@@ -1,0 +1,74 @@
+<svg viewBox="0 0 820 472" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ad" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9aa7b4"/></marker>
+    <marker id="ab" markerWidth="10" markerHeight="10" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#2d6cdf"/></marker>
+    <marker id="ag" markerWidth="11" markerHeight="11" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#1f9d55"/></marker>
+    <marker id="aa" markerWidth="11" markerHeight="11" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#e08a1e"/></marker>
+    <marker id="ar" markerWidth="11" markerHeight="11" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#7c5cff"/></marker>
+  </defs>
+  <rect x="0" y="0" width="820" height="472" fill="#ffffff"/>
+  <text x="410" y="26" text-anchor="middle" font-size="18" font-weight="700" fill="#1f2933">Caso B — DRBD con failover automatico (Pacemaker / keepalived)</text>
+
+  <!-- CLIENT + VIP -->
+  <rect x="325" y="42" width="170" height="40" rx="8" fill="#fef6e0" stroke="#e0a526" stroke-width="1.6"/>
+  <text x="410" y="60" text-anchor="middle" font-size="11.5" font-weight="700" fill="#8a6a14">Client → VIP</text>
+  <text x="410" y="75" text-anchor="middle" font-size="10.5" fill="#a07d1e">192.168.1.10</text>
+  <line x1="392" y1="82" x2="212" y2="118" stroke="#2d6cdf" stroke-width="2" marker-end="url(#ab)"/>
+  <line x1="428" y1="82" x2="608" y2="118" stroke="#9aa7b4" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#ad)"/>
+  <text x="552" y="103" font-size="9.5" fill="#9aa7b4">(al failover)</text>
+
+  <!-- CLUSTER BAND -->
+  <rect x="40" y="120" width="740" height="30" rx="8" fill="#ede9fb" stroke="#7c5cff" stroke-width="1.6"/>
+  <text x="410" y="139" text-anchor="middle" font-size="12" font-weight="700" fill="#5b3fd6">Cluster manager — Pacemaker+Corosync / keepalived · fencing (STONITH)</text>
+
+  <!-- NODO 1 -->
+  <rect x="40" y="162" width="300" height="270" rx="10" fill="#f4f7fb" stroke="#34506b" stroke-width="2"/>
+  <path d="M50 162 H330 Q340 162 340 172 V196 H40 V172 Q40 162 50 162 Z" fill="#1f9d55"/>
+  <text x="58" y="184" font-size="13" font-weight="700" fill="#ffffff">NODO 1</text>
+  <rect x="213" y="168" width="122" height="22" rx="11" fill="#ffffff"/>
+  <text x="274" y="183" text-anchor="middle" font-size="10.5" font-weight="700" fill="#137a3e">PRIMARY · ATTIVO</text>
+  <rect x="65" y="208" width="250" height="42" rx="8" fill="#ffffff" stroke="#c3cedb" stroke-width="1.5"/>
+  <text x="190" y="234" text-anchor="middle" font-size="12" font-weight="600" fill="#1f2933">Servizio + FS montato</text>
+  <line x1="190" y1="250" x2="190" y2="260" stroke="#5b6b7c" stroke-width="1.6" marker-end="url(#ad)"/>
+  <rect x="65" y="262" width="250" height="42" rx="8" fill="#e8f0fe" stroke="#2d6cdf" stroke-width="1.6"/>
+  <text x="190" y="288" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f4fa3">DRBD /dev/drbd0</text>
+  <line x1="190" y1="304" x2="190" y2="328" stroke="#5b6b7c" stroke-width="1.6" marker-end="url(#ad)"/>
+  <ellipse cx="190" cy="386" rx="58" ry="11" fill="#c2cedb"/>
+  <rect x="132" y="332" width="116" height="54" fill="#d9e2ec"/>
+  <line x1="132" y1="332" x2="132" y2="386" stroke="#8aa0b8" stroke-width="1.5"/>
+  <line x1="248" y1="332" x2="248" y2="386" stroke="#8aa0b8" stroke-width="1.5"/>
+  <path d="M132 386 A58 11 0 0 0 248 386" fill="none" stroke="#8aa0b8" stroke-width="1.5"/>
+  <ellipse cx="190" cy="332" rx="58" ry="11" fill="#eef3f8" stroke="#8aa0b8" stroke-width="1.5"/>
+  <text x="190" y="366" text-anchor="middle" font-size="12" font-weight="700" fill="#34506b">/dev/sdb1</text>
+
+  <!-- NODO 2 -->
+  <rect x="480" y="162" width="300" height="270" rx="10" fill="#f4f7fb" stroke="#34506b" stroke-width="2"/>
+  <path d="M490 162 H770 Q780 162 780 172 V196 H480 V172 Q480 162 490 162 Z" fill="#7c8a9a"/>
+  <text x="498" y="184" font-size="13" font-weight="700" fill="#ffffff">NODO 2</text>
+  <rect x="635" y="168" width="138" height="22" rx="11" fill="#ffffff"/>
+  <text x="704" y="183" text-anchor="middle" font-size="10" font-weight="700" fill="#b03a2e">SECONDARY · STANDBY</text>
+  <rect x="505" y="208" width="250" height="42" rx="8" fill="#f0f2f5" stroke="#b6c0cc" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="630" y="234" text-anchor="middle" font-size="12" font-weight="600" fill="#7c8a9a">FS non montato (standby)</text>
+  <line x1="630" y1="250" x2="630" y2="260" stroke="#9aa7b4" stroke-width="1.6" marker-end="url(#ad)"/>
+  <rect x="505" y="262" width="250" height="42" rx="8" fill="#eef1f4" stroke="#7c8a9a" stroke-width="1.6"/>
+  <text x="630" y="288" text-anchor="middle" font-size="12.5" font-weight="700" fill="#516170">DRBD /dev/drbd0</text>
+  <line x1="630" y1="304" x2="630" y2="328" stroke="#9aa7b4" stroke-width="1.6" marker-end="url(#ad)"/>
+  <ellipse cx="630" cy="386" rx="58" ry="11" fill="#c2cedb"/>
+  <rect x="572" y="332" width="116" height="54" fill="#d9e2ec"/>
+  <line x1="572" y1="332" x2="572" y2="386" stroke="#8aa0b8" stroke-width="1.5"/>
+  <line x1="688" y1="332" x2="688" y2="386" stroke="#8aa0b8" stroke-width="1.5"/>
+  <path d="M572 386 A58 11 0 0 0 688 386" fill="none" stroke="#8aa0b8" stroke-width="1.5"/>
+  <ellipse cx="630" cy="332" rx="58" ry="11" fill="#eef3f8" stroke="#8aa0b8" stroke-width="1.5"/>
+  <text x="630" y="366" text-anchor="middle" font-size="12" font-weight="700" fill="#34506b">/dev/sdb1</text>
+  <rect x="480" y="196" width="300" height="236" fill="#8895a3" opacity="0.10"/>
+
+  <!-- REPLICA -->
+  <line x1="315" y1="277" x2="503" y2="277" stroke="#1f9d55" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#ag)"/>
+  <text x="409" y="270" text-anchor="middle" font-size="12" font-weight="700" fill="#1f7d45">① write</text>
+  <line x1="505" y1="293" x2="317" y2="293" stroke="#e08a1e" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#aa)"/>
+  <text x="409" y="309" text-anchor="middle" font-size="11" font-weight="700" fill="#c47d12">② ACK · su disco</text>
+
+  <!-- FAILOVER AUTOMATICO -->
+  <path d="M190 432 C190 462 630 462 630 432" fill="none" stroke="#7c5cff" stroke-width="2.2" stroke-dasharray="8 5" marker-end="url(#ar)"/>
+  <text x="410" y="460" text-anchor="middle" font-size="12" font-weight="700" fill="#5b3fd6">✗ Guasto → il cluster promuove NODO 2 e sposta la VIP — AUTOMATICO</text>
+</svg>

@@ -1,0 +1,64 @@
+<svg viewBox="0 0 820 430" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ad" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#5b6b7c"/></marker>
+    <marker id="ag" markerWidth="11" markerHeight="11" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#1f9d55"/></marker>
+    <marker id="aa" markerWidth="11" markerHeight="11" refX="7" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#e08a1e"/></marker>
+  </defs>
+  <rect x="0" y="0" width="820" height="430" fill="#ffffff"/>
+  <text x="410" y="28" text-anchor="middle" font-size="18" font-weight="700" fill="#1f2933">Caso A — DRBD senza failover · promozione manuale</text>
+
+  <!-- NODO 1 PRIMARY -->
+  <rect x="40" y="58" width="300" height="300" rx="10" fill="#f4f7fb" stroke="#34506b" stroke-width="2"/>
+  <path d="M50 58 H330 Q340 58 340 68 V92 H40 V68 Q40 58 50 58 Z" fill="#1f9d55"/>
+  <text x="58" y="80" font-size="13" font-weight="700" fill="#ffffff">NODO 1</text>
+  <rect x="213" y="64" width="122" height="22" rx="11" fill="#ffffff"/>
+  <text x="274" y="79" text-anchor="middle" font-size="10.5" font-weight="700" fill="#137a3e">PRIMARY · ATTIVO</text>
+  <rect x="65" y="108" width="250" height="46" rx="8" fill="#ffffff" stroke="#c3cedb" stroke-width="1.5"/>
+  <text x="190" y="128" text-anchor="middle" font-size="12" font-weight="600" fill="#1f2933">Servizio + FS montato</text>
+  <text x="190" y="145" text-anchor="middle" font-size="11" fill="#5b6b7c">mount /dev/drbd0</text>
+  <line x1="190" y1="154" x2="190" y2="166" stroke="#5b6b7c" stroke-width="1.6" marker-end="url(#ad)"/>
+  <rect x="65" y="168" width="250" height="46" rx="8" fill="#e8f0fe" stroke="#2d6cdf" stroke-width="1.6"/>
+  <text x="190" y="195" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f4fa3">DRBD /dev/drbd0</text>
+  <line x1="190" y1="214" x2="190" y2="240" stroke="#5b6b7c" stroke-width="1.6" marker-end="url(#ad)"/>
+  <ellipse cx="190" cy="298" rx="60" ry="11" fill="#c2cedb"/>
+  <rect x="130" y="244" width="120" height="54" fill="#d9e2ec"/>
+  <line x1="130" y1="244" x2="130" y2="298" stroke="#8aa0b8" stroke-width="1.5"/>
+  <line x1="250" y1="244" x2="250" y2="298" stroke="#8aa0b8" stroke-width="1.5"/>
+  <path d="M130 298 A60 11 0 0 0 250 298" fill="none" stroke="#8aa0b8" stroke-width="1.5"/>
+  <ellipse cx="190" cy="244" rx="60" ry="11" fill="#eef3f8" stroke="#8aa0b8" stroke-width="1.5"/>
+  <text x="190" y="278" text-anchor="middle" font-size="12" font-weight="700" fill="#34506b">/dev/sdb1</text>
+
+  <!-- NODO 2 SECONDARY -->
+  <rect x="480" y="58" width="300" height="300" rx="10" fill="#f4f7fb" stroke="#34506b" stroke-width="2"/>
+  <path d="M490 58 H770 Q780 58 780 68 V92 H480 V68 Q480 58 490 58 Z" fill="#7c8a9a"/>
+  <text x="498" y="80" font-size="13" font-weight="700" fill="#ffffff">NODO 2</text>
+  <rect x="635" y="64" width="138" height="22" rx="11" fill="#ffffff"/>
+  <text x="704" y="79" text-anchor="middle" font-size="10" font-weight="700" fill="#b03a2e">SECONDARY · STANDBY</text>
+  <rect x="505" y="108" width="250" height="46" rx="8" fill="#f0f2f5" stroke="#b6c0cc" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="630" y="128" text-anchor="middle" font-size="12" font-weight="600" fill="#7c8a9a">FS non montato</text>
+  <text x="630" y="145" text-anchor="middle" font-size="11" fill="#9aa7b4">(standby)</text>
+  <line x1="630" y1="154" x2="630" y2="166" stroke="#9aa7b4" stroke-width="1.6" marker-end="url(#ad)"/>
+  <rect x="505" y="168" width="250" height="46" rx="8" fill="#eef1f4" stroke="#7c8a9a" stroke-width="1.6"/>
+  <text x="630" y="195" text-anchor="middle" font-size="12.5" font-weight="700" fill="#516170">DRBD /dev/drbd0</text>
+  <line x1="630" y1="214" x2="630" y2="240" stroke="#9aa7b4" stroke-width="1.6" marker-end="url(#ad)"/>
+  <ellipse cx="630" cy="298" rx="60" ry="11" fill="#c2cedb"/>
+  <rect x="570" y="244" width="120" height="54" fill="#d9e2ec"/>
+  <line x1="570" y1="244" x2="570" y2="298" stroke="#8aa0b8" stroke-width="1.5"/>
+  <line x1="690" y1="244" x2="690" y2="298" stroke="#8aa0b8" stroke-width="1.5"/>
+  <path d="M570 298 A60 11 0 0 0 690 298" fill="none" stroke="#8aa0b8" stroke-width="1.5"/>
+  <ellipse cx="630" cy="244" rx="60" ry="11" fill="#eef3f8" stroke="#8aa0b8" stroke-width="1.5"/>
+  <text x="630" y="278" text-anchor="middle" font-size="12" font-weight="700" fill="#34506b">/dev/sdb1</text>
+  <rect x="480" y="92" width="300" height="266" fill="#8895a3" opacity="0.10"/>
+
+  <!-- REPLICA -->
+  <line x1="315" y1="184" x2="503" y2="184" stroke="#1f9d55" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#ag)"/>
+  <text x="409" y="176" text-anchor="middle" font-size="12" font-weight="700" fill="#1f7d45">① write</text>
+  <line x1="505" y1="200" x2="317" y2="200" stroke="#e08a1e" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#aa)"/>
+  <text x="409" y="216" text-anchor="middle" font-size="11" font-weight="700" fill="#c47d12">② ACK · su disco</text>
+  <text x="409" y="232" text-anchor="middle" font-size="10" fill="#6b7a8d">protocol C: commit dopo ②</text>
+
+  <!-- FAILOVER MANUALE -->
+  <rect x="120" y="372" width="580" height="42" rx="8" fill="#fdeeee" stroke="#c0392b" stroke-width="1.5"/>
+  <text x="410" y="389" text-anchor="middle" font-size="12" font-weight="700" fill="#b03a2e">✗ Guasto NODO 1 → promozione MANUALE su NODO 2:</text>
+  <text x="410" y="406" text-anchor="middle" font-size="11" fill="#8a2a22">drbdadm primary --force r0  ·  mount /dev/drbd0  ·  start servizio</text>
+</svg>
