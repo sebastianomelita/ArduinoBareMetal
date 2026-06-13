@@ -205,7 +205,17 @@ Vantaggi chiave:
 
 ### DRBD — RAID-1 di rete
 
-DRBD (Distributed Replicated Block Device) è una soluzione più semplice ed economica: replica i blocchi di un disco su un secondo nodo remoto, in modalità **Protocol C** (sincrona — ogni scrittura confermata sul secondario prima di completarsi). RPO < 1 secondo per i dati disco. Limite: solo memoria e registri CPU non vengono replicati — al failover è necessario un breve riavvio della VM (decine di secondi). Funziona bene in combinazione con VRRP/keepalived.
+DRBD (Distributed Replicated Block Device) è la soluzione più semplice ed economica (rispetto a CEPH o Vmmware FT) perchè permette di avere a disposizione in ogni momento una replica aggiornata fino alle ultime modifiche e pronta all'uso per un eventuale ripristino con downtime di:
+- **minuti** in caso di ripristino manuale
+- **secondi** in caso di ripristino automatico
+
+**Esempi**: replica di un **controller di dominio** (Windows Server o Univention) su un secondo Hypervisor pronto per prendere il posto del server guasto, oppure replica di un **firewall** perimetrale che prende il posto del gemello primario non più disponibile.
+
+Replica i **blocchi** di un disco su un secondo nodo remoto (nella stessa LAN), in modalità **Protocol C** (sincrona — ogni scrittura confermata sul secondario prima di completarsi). RPO < 1 secondo per i dati disco. Limite: solo memoria e registri CPU non vengono replicati — al failover è necessario un breve riavvio della VM (decine di secondi). Funziona bene in combinazione con VRRP/keepalived.
+
+Al guasto del nodo primario sono possibili due soluzioni:
+- **Failover manuale** -> Niente split-brain: decidi tu chi diventa primary.
+- **Failover automatico** -> Nessun comando manuale: il cluster rileva il guasto → fence del nodo morto → promuove il secondario → monta FS → avvia servizio → sposta la VIP.
 
 ### ZFS — Protezione intra-nodo
 
