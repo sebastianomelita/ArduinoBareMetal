@@ -70,5 +70,5 @@
 
   <!-- FAILOVER AUTOMATICO -->
   <path d="M190 432 C190 462 630 462 630 432" fill="none" stroke="#7c5cff" stroke-width="2.2" stroke-dasharray="8 5" marker-end="url(#ar)"/>
-  <text x="410" y="490" text-anchor="middle" font-size="12" font-weight="700" fill="#5b3fd6">✗ Guasto → il cluster promuove NODO 2 e sposta la VIP — AUTOMATICO</text>
+  <text x="410" y="470" text-anchor="middle" font-size="12" font-weight="700" fill="#5b3fd6">✗ Guasto → il cluster promuove NODO 2 e sposta la VIP — AUTOMATICO</text>
 </svg>
