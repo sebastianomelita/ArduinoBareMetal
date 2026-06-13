@@ -10,6 +10,16 @@ Avere il servizio sempre raggiungibile (piano del servizio) non serve a nulla se
 
 **DRBD (Distributed Replicated Block Device)** è un modulo del kernel Linux che intercetta le scritture su un dispositivo a blocchi e le replica via rete su un altro nodo. Si descrive comunemente come un **"RAID-1 di rete"** in architettura *shared-nothing*: ogni nodo ha il proprio disco fisico, e DRBD li tiene speculari. Le letture sono locali; le scritture vengono mirrorate sul peer remoto.
 
+<img src="../img/drbd-manuale.svg" alt="DRBD senza failover" width="700">
+
+#### A.1 Funzionamento normale
+Primario attivo (FS montato + servizio), secondario in standby (FS non montato).
+Replica sincrona `protocol C`: la write ritorna OK al client solo dopo l'ACK del secondario.
+```
+node# drbdadm status r0
+node# cat /proc/drbd
+```
+
 Importante: DRBD **non è un filesystem distribuito**. Replica blocchi, non file. Presenta a ogni nodo un dispositivo a blocchi virtuale (`/dev/drbdX`) sopra cui si monta un normale filesystem.
 
 ## I protocolli di replica (A, B, C)
@@ -43,6 +53,8 @@ DRBD distingue lo *split-brain DRBD* (descritto sopra) dalla *cluster partition*
 ## Dual-primary
 
 DRBD supporta una modalità *dual-primary* (entrambi i nodi in scrittura simultanea), ma richiede Protocol C e un filesystem cluster-aware (es. OCFS2, GFS2) che gestisca il locking distribuito. È sensibile alla latenza e inadatto alle WAN. Nella maggior parte degli scenari HA si usa **single-primary** (un solo nodo scrive, l'altro è replica passiva).
+
+<img src="../img/drbd-failover.svg" alt="DRBD con failover automatico" width="700">
 
 ## Quando usarlo
 
