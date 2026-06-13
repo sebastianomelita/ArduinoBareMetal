@@ -1,0 +1,68 @@
+<svg viewBox="0 0 840 470" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ad" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#5b6b7c"/>
+    </marker>
+    <marker id="ag" markerWidth="11" markerHeight="11" refX="7" refY="3.5" orient="auto">
+      <path d="M0,0 L7,3.5 L0,7 Z" fill="#1f9d55"/>
+    </marker>
+  </defs>
+
+  <rect x="0" y="0" width="840" height="470" fill="#ffffff"/>
+  <text x="420" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#1f2933">DRBD — Distributed Replicated Block Device (RAID‑1 di rete)</text>
+
+  <!-- ===== NODO 1 (PRIMARY) ===== -->
+  <rect x="30" y="64" width="300" height="370" rx="10" fill="#f4f7fb" stroke="#34506b" stroke-width="2"/>
+  <path d="M40 64 H320 Q330 64 330 74 V104 H30 V74 Q30 64 40 64 Z" fill="#2d6cdf"/>
+  <text x="180" y="90" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">NODO 1 — PRIMARY</text>
+
+  <rect x="55" y="132" width="250" height="54" rx="8" fill="#ffffff" stroke="#c3cedb" stroke-width="1.5"/>
+  <text x="180" y="156" text-anchor="middle" font-size="13" font-weight="600" fill="#1f2933">Applicazione + Filesystem</text>
+  <text x="180" y="174" text-anchor="middle" font-size="12" fill="#5b6b7c">mount /dev/drbd0</text>
+
+  <line x1="180" y1="186" x2="180" y2="204" stroke="#5b6b7c" stroke-width="1.6" marker-end="url(#ad)"/>
+
+  <rect x="55" y="206" width="250" height="54" rx="8" fill="#e8f0fe" stroke="#2d6cdf" stroke-width="1.6"/>
+  <text x="180" y="230" text-anchor="middle" font-size="13" font-weight="700" fill="#1f4fa3">DRBD</text>
+  <text x="180" y="248" text-anchor="middle" font-size="12" fill="#2d6cdf">/dev/drbd0</text>
+
+  <line x1="180" y1="260" x2="180" y2="298" stroke="#5b6b7c" stroke-width="1.6" marker-end="url(#ad)"/>
+
+  <ellipse cx="180" cy="370" rx="70" ry="12" fill="#c2cedb"/>
+  <rect x="110" y="302" width="140" height="68" fill="#d9e2ec"/>
+  <line x1="110" y1="302" x2="110" y2="370" stroke="#8aa0b8" stroke-width="1.5"/>
+  <line x1="250" y1="302" x2="250" y2="370" stroke="#8aa0b8" stroke-width="1.5"/>
+  <path d="M110 370 A70 12 0 0 0 250 370" fill="none" stroke="#8aa0b8" stroke-width="1.5"/>
+  <ellipse cx="180" cy="302" rx="70" ry="12" fill="#eef3f8" stroke="#8aa0b8" stroke-width="1.5"/>
+  <text x="180" y="345" text-anchor="middle" font-size="13" font-weight="700" fill="#34506b">/dev/sdb1</text>
+
+  <!-- ===== NODO 2 (SECONDARY) ===== -->
+  <rect x="510" y="64" width="300" height="370" rx="10" fill="#f4f7fb" stroke="#34506b" stroke-width="2"/>
+  <path d="M520 64 H800 Q810 64 810 74 V104 H510 V74 Q510 64 520 64 Z" fill="#7c8a9a"/>
+  <text x="660" y="90" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">NODO 2 — SECONDARY</text>
+
+  <rect x="535" y="132" width="250" height="54" rx="8" fill="#f0f2f5" stroke="#b6c0cc" stroke-width="1.5" stroke-dasharray="5 4"/>
+  <text x="660" y="156" text-anchor="middle" font-size="13" font-weight="600" fill="#7c8a9a">FS non montato</text>
+  <text x="660" y="174" text-anchor="middle" font-size="12" fill="#9aa7b4">(standby)</text>
+
+  <line x1="660" y1="186" x2="660" y2="204" stroke="#9aa7b4" stroke-width="1.6" marker-end="url(#ad)"/>
+
+  <rect x="535" y="206" width="250" height="54" rx="8" fill="#eef1f4" stroke="#7c8a9a" stroke-width="1.6"/>
+  <text x="660" y="230" text-anchor="middle" font-size="13" font-weight="700" fill="#516170">DRBD</text>
+  <text x="660" y="248" text-anchor="middle" font-size="12" fill="#7c8a9a">/dev/drbd0</text>
+
+  <line x1="660" y1="260" x2="660" y2="298" stroke="#9aa7b4" stroke-width="1.6" marker-end="url(#ad)"/>
+
+  <ellipse cx="660" cy="370" rx="70" ry="12" fill="#c2cedb"/>
+  <rect x="590" y="302" width="140" height="68" fill="#d9e2ec"/>
+  <line x1="590" y1="302" x2="590" y2="370" stroke="#8aa0b8" stroke-width="1.5"/>
+  <line x1="730" y1="302" x2="730" y2="370" stroke="#8aa0b8" stroke-width="1.5"/>
+  <path d="M590 370 A70 12 0 0 0 730 370" fill="none" stroke="#8aa0b8" stroke-width="1.5"/>
+  <ellipse cx="660" cy="302" rx="70" ry="12" fill="#eef3f8" stroke="#8aa0b8" stroke-width="1.5"/>
+  <text x="660" y="345" text-anchor="middle" font-size="13" font-weight="700" fill="#34506b">/dev/sdb1</text>
+
+  <!-- ===== REPLICA ===== -->
+  <line x1="305" y1="233" x2="533" y2="233" stroke="#1f9d55" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#ag)"/>
+  <text x="419" y="216" text-anchor="middle" font-size="12.5" font-weight="700" fill="#1f7d45">replica sincrona</text>
+  <text x="419" y="256" text-anchor="middle" font-size="11.5" fill="#1f9d55">TCP :7789 · protocol C</text>
+</svg>
