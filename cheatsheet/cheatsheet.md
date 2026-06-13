@@ -10,8 +10,9 @@
 - **Parte II · Cisco IOS & Linux — VLAN · OSPF · NAT · ACL · Tunnel**
   - 1 Subnetting · 2 VLAN · 3 Porte access · 4 Porte trunk · 5 Inter-VLAN routing
   - 6 OSPF (config-router) · 7 OSPF (config-if) · 8 NAT Cisco · 9 NAT Linux
-  - 10 VRRP/keepalived · 11 HAProxy · 12 ACL tipi · 13 ACL scenari · 14 ACL riflessive
-  - 15 ACL anti-spoofing · 16 Tunnel L2/L3 · 17 802.1X · 18 Test end-to-end
+  - 10 VRRP/keepalived · 11 HAProxy · 12 DRBD
+  - 13 ACL definizione e tipi · 14 ACL scenari · 15 ACL CBAC · 16 ACL ZBF
+  - 17 ACL anti-spoofing · 18 Tunnel L2/L3 · 19 802.1X · 20 Test end-to-end
 - **Parte III · Backup & Ripristino**
 - **Parte IV · Wi-Fi Mesh tri-band — pianificazione canali**
 
@@ -170,7 +171,6 @@ Alcuni documenti si possono **trascurare** secondo il peso della parte fisica ne
 - **Nodi** + **gateway** verso IP con **backup**; **vincoli** prossimità/posizionamento; **sede dell'elaborazione**.
 
 ---
-
 # Parte II · Cisco IOS & Linux — VLAN · OSPF · NAT · ACL · Tunnel
 
 ## 1 · Subnetting — pianificazione e indirizzamento
@@ -444,7 +444,7 @@ ip addr show eth0            ← sul MASTER deve comparire 192.168.1.100
 sudo tcpdump -i eth0 vrrp    ← verifica gli advertisement
 ```
 
-## 11 · HAProxy — ALG, clustering e HA
+## 11  HAProxy — ALG, clustering e HA
 
 HAProxy riceve sull'IP virtuale VRRP e smista ai backend.
 
@@ -497,16 +497,14 @@ echo "show stat" | sudo socat stdio /var/run/haproxy/admin.sock
 
 ---
 
-# DRBD — Replica e Failover
+## 12 · DRBD — Replica e Failover
 
 DRBD replica solo il blocco: la promozione del secondario **non è automatica**.
 Lo scambio di ruolo automatico è un layer in più (cluster manager).
 
----
+### Configurazione di base (comune ai due casi)
 
-## Configurazione di base (comune ai due casi)
-
-### Risorsa — /etc/drbd.d/r0.res
+#### Risorsa — /etc/drbd.d/r0.res
 ```
 resource r0 {
   protocol C;
@@ -526,26 +524,24 @@ resource r0 {
 ```
 `protocol C` = replica sincrona (default HA).
 
-### Init (su ENTRAMBI i nodi)
+#### Init (su ENTRAMBI i nodi)
 ```
 node# drbdadm create-md r0
 node# drbdadm up r0
 ```
 
-### Primo sync (SOLO sul primario)
+#### Primo sync (SOLO sul primario)
 ```
 node1# drbdadm primary --force r0
 node1# mkfs.ext4 /dev/drbd0
 node1# mount /dev/drbd0 /mnt/data
 ```
 
----
-
-## Caso A — Senza failover (promozione manuale)
+### Caso A — Senza failover (promozione manuale)
 
 <img src="../img/drbd-manuale.svg" alt="DRBD senza failover" width="700">
 
-### A.1 Funzionamento normale
+#### A.1 Funzionamento normale
 Primario attivo (FS montato + servizio), secondario in standby (FS non montato).
 Replica sincrona `protocol C`: la write ritorna OK al client solo dopo l'ACK del secondario.
 ```
@@ -553,7 +549,7 @@ node# drbdadm status r0
 node# cat /proc/drbd
 ```
 
-### A.2 Guasto del primario — promozione MANUALE
+#### A.2 Guasto del primario — promozione MANUALE
 Sul secondario, a mano:
 ```
 node2# drbdadm primary --force r0
@@ -562,13 +558,11 @@ node2# systemctl start <servizio>
 ```
 Niente split-brain: decidi tu chi diventa primary.
 
----
-
-## Caso B — Con failover automatico (Pacemaker / keepalived)
+### Caso B — Con failover automatico (Pacemaker / keepalived)
 
 <img src="../img/drbd-failover.svg" alt="DRBD con failover automatico" width="700">
 
-### B.1 Funzionamento normale
+#### B.1 Funzionamento normale
 Il cluster manager gestisce 4 risorse + ordering/colocation + STONITH (fencing):
 ```
 node1# pcs resource create drbd ocf:linbit:drbd drbd_resource=r0
@@ -578,7 +572,7 @@ node1# pcs resource create vip IPaddr2 ip=192.168.1.10 cidr_netmask=24
 ! ordine: promuovi drbd → monta fs → avvia servizio → alza vip
 ```
 
-### B.2 Guasto del primario — failover AUTOMATICO
+#### B.2 Guasto del primario — failover AUTOMATICO
 Nessun comando manuale: il cluster rileva il guasto → fence del nodo morto → promuove il secondario → monta FS → avvia servizio → sposta la VIP.
 ```
 node# pcs status
@@ -586,8 +580,7 @@ node# crm_mon -1
 ```
 
 ---
-
-# Cheat sheet ACL
+## 13 · ACL — premessa e contesto
 
 > Adattato al piano di indirizzamento `10.0.0.0/16` (Subnet A–F della dispensa) e alle **due politiche di default** che usiamo:
 > - **LAN → default-allow**: si elencano i `deny` (eccezioni) e si chiude con `permit ip any any`.
@@ -603,9 +596,7 @@ Piano di riferimento: A `10.0.1.0/24`, B `10.0.2.0/24`, C `10.0.3.0/24`, D `10.0
 
 Ogni subnet entra nel router su una porta dedicata; è su quell'interfaccia, in ingresso, che agisce l'ACL. In alto, separate dalle LAN, le due frontiere *default-deny* che riding sulla WAN: la WAN fisica e il tunnel logico. Mappa interfaccia → ACL: `Gi0/0`→`ACL-SUBNET-A-DA`, `Gi0/2`→`ACL-SUBNET-C-DA`, `Gi0/3`→`ACL-SUBNET-D-DA`, `Gi0/5`→`ACL-DMZ-DA`, `Gi0/6`→`ACL-SERVERFARM`, `Gi0/4`→`ACL-WAN`, `tun0`→`ACL-TUNNEL-DD`.
 
----
-
-## 12 · ACL — definizione e tipi
+### 13.1 · ACL — definizione e tipi
 
 Una **ACL** è una lista ordinata di **ACE**. Il router le esamina in sequenza: alla prima
 corrispondenza esegue l'azione e si ferma. Se nessuna corrisponde → **deny all** implicito.
@@ -621,7 +612,7 @@ corrispondenza esegue l'azione e si ferma. Se nessuna corrisponde → **deny all
 > il traffico dell'host). Estesa vicino alla **sorgente** (scarta subito, evita transiti inutili).
 > Nella dispensa usiamo **sempre estese con nome, applicate inbound** sull'interfaccia della subnet.
 
-### Sintassi base (con prompt di modalità)
+#### Sintassi base (con prompt di modalità)
 ```cisco
 Router> enable                                            ! da user EXEC a privileged EXEC
 Router# configure terminal                                ! da privileged EXEC a global config
@@ -637,7 +628,7 @@ Router(config-if)# ip access-group <numero|NOME> {in|out}
 > `in` = pacchetti **entranti** sull'interfaccia (è la direzione che usiamo in tutta la dispensa).
 > `out` = pacchetti **uscenti** dall'interfaccia (non filtra il traffico generato dal router stesso).
 
-### La riga di default (politica di default quando nulla matcha)
+#### La riga di default (politica di default quando nulla matcha)
 ```cisco
 ! LAN — default-allow
 Router(config-ext-nacl)# ...                 ! (deny delle eccezioni)
@@ -655,9 +646,9 @@ Router# show ip interface <X>          ! quale ACL è applicata e in che direzio
 Router# show ip access-lists NOME      ! contatori per ACE (0 match su un permit = regola mai usata)
 ```
 
-## 13 · ACL firewall — scenari tipici 
+## 14 · ACL firewall — scenari tipici
 
-**13.1 — Whitelist a un solo host (standard) · default-DENY esplicito.** Caso "isola chiusa" come la Subnet B: si enumera ciò che passa, il resto cade.
+**14.1 — Whitelist a un solo host (standard) · default-DENY esplicito.** Caso "isola chiusa" come la Subnet B: si enumera ciò che passa, il resto cade.
 
 ```cisco
 Router(config)# access-list 1 permit host 10.0.3.10
@@ -666,7 +657,7 @@ Router(config)# interface GigabitEthernet0/2
 Router(config-if)# ip access-group 1 in
 ```
 
-**13.2 — Negare un host e permettere il resto (standard) · default-ALLOW.**
+**14.2 — Negare un host e permettere il resto (standard) · default-ALLOW.**
 
 ```cisco
 Router(config)# access-list 10 deny   host 10.0.1.66
@@ -675,7 +666,7 @@ Router(config)# interface GigabitEthernet0/0
 Router(config-if)# ip access-group 10 in
 ```
 
-**13.3 — Flusso singolo subnet → host (estesa) · default-DENY esplicito.** Es. Subnet B può raggiungere solo il file server.
+**14.3 — Flusso singolo subnet → host (estesa) · default-DENY esplicito.** Es. Subnet B può raggiungere solo il file server.
 
 ```cisco
 Router(config)# ip access-list extended ACL-B-WHITELIST
@@ -686,7 +677,7 @@ Router(config)# interface GigabitEthernet0/1
 Router(config-if)# ip access-group ACL-B-WHITELIST in
 ```
 
-**13.4 — Negare Telnet (23) e permettere il resto · default-ALLOW.**
+**14.4 — Negare Telnet (23) e permettere il resto · default-ALLOW.**
 
 ```cisco
 Router(config)# ip access-list extended ACL-NO-TELNET
@@ -697,7 +688,7 @@ Router(config)# interface GigabitEthernet0/0
 Router(config-if)# ip access-group ACL-NO-TELNET in
 ```
 
-**13.5 — Permettere solo DNS (53) verso il resolver · default-DENY esplicito.**
+**14.5 — Permettere solo DNS (53) verso il resolver · default-DENY esplicito.**
 
 ```cisco
 Router(config)# ip access-list extended ACL-SOLO-DNS
@@ -709,7 +700,7 @@ Router(config)# interface GigabitEthernet0/3
 Router(config-if)# ip access-group ACL-SOLO-DNS in
 ```
 
-**13.6 — Connessioni monodirezionali con `established` (stateless) · default-DENY esplicito.**
+**14.6 — Connessioni monodirezionali con `established` (stateless) · default-DENY esplicito.**
 
 ```cisco
 Router(config)# ip access-list extended ACL-RITORNO
@@ -721,9 +712,9 @@ Router(config-if)# ip access-group ACL-RITORNO in
 ```
 
 > `established` seleziona i pacchetti con flag ACK/RST (esclude i SYN puri). È **stateless**:
-> un attaccante può falsificare i flag → preferire le ACL riflessive (§14) o ZBF.
+> un attaccante può falsificare i flag → preferire le ACL stateful: CBAC (§15) o ZBF (§16).
 
-## 14 · ACL stateful con CBAC (Context-Based Access Control)
+## 15 · ACL stateful con CBAC (Context-Based Access Control)
 
 > Versione moderna che **sostituisce le ACL riflessive**. CBAC (`ip inspect`, a volte chiamato *Classic / legacy IOS Firewall*) ispeziona le sessioni in uscita e **apre da solo i ritorni**, tenendo una vera tabella di stato. Capisce i protocolli a livello applicativo (FTP, SIP, RTSP, TFTP…), che aprono porte dinamiche. 
 
@@ -748,12 +739,12 @@ Router(config-if)# ip access-group ACL_ESTERNA in    ! blocca tutto l'ingresso n
 Router(config-if)# ip inspect CBAC-OUT out           ! ispeziona le sessioni uscenti e apre i ritorni
 ```
 
-> Sul lato LAN si tiene la solita ACL inbound **default-allow** (Parte C): qui **non serve più** la lista interna con i `reflect`. La differenza pratica con la §14 riflessiva è tutta lì: **una ACL invece di due**, e nessuna ACE inversa da gestire.
+> Sul lato LAN si tiene la solita ACL inbound **default-allow** (Parte C): qui **non serve più** la lista interna con i `reflect`. La differenza pratica con le ACL riflessive classiche è tutta lì: **una ACL invece di due**, e nessuna ACE inversa da gestire.
 
 
-## 14-bis · ACL stateful con ZBF (Zone-Based Firewall)
+## 16 · ACL stateful con ZBF (Zone-Based Firewall)
 
-> Il gradino **più moderno**, quello che Cisco raccomanda per i progetti nuovi. Stesse capacità stateful del CBAC (§14), ma organizzate per **zone** e **zone-pair** invece che per interfaccia. Il grande vantaggio concettuale: il **default-deny è strutturale**, non una riga da ricordare — due interfacce in zone diverse non si parlano *finché non lo dici esplicitamente* con una zone-pair.
+> Il gradino **più moderno**, quello che Cisco raccomanda per i progetti nuovi. Stesse capacità stateful del CBAC (§15), ma organizzate per **zone** e **zone-pair** invece che per interfaccia. Il grande vantaggio concettuale: il **default-deny è strutturale**, non una riga da ricordare — due interfacce in zone diverse non si parlano *finché non lo dici esplicitamente* con una zone-pair.
 
 **Tre regole di default del modello a zone** (da sapere a memoria):
 1. Interfacce nella **stessa zona** → traffico **permesso** (nessuna policy serve).
@@ -824,7 +815,7 @@ Router(config)# zone-pair security ZP-OUT-DMZ source OUTSIDE destination DMZ
 Router(config-sec-zone-pair)# service-policy type inspect PM-OUT-DMZ
 ```
 
-> È lo stesso ruolo dei `permit` selettivi prima del `deny ip any any` in §15.1, ma qui ogni flusso vive nella **sua** zone-pair: l'apertura verso la DMZ non tocca minimamente la regola `INSIDE↔OUTSIDE`.
+> È lo stesso ruolo dei `permit` selettivi prima del `deny ip any any` in §17.1, ma qui ogni flusso vive nella **sua** zone-pair: l'apertura verso la DMZ non tocca minimamente la regola `INSIDE↔OUTSIDE`.
 
 **Test** (da privileged EXEC)
 ```cisco
@@ -837,9 +828,9 @@ Router# show policy-map type inspect zone-pair sessions ! sessioni stateful atti
 > Quando usare quale: **CBAC** se vuoi il minimo indispensabile su un router con due interfacce e ti basta il drop-in delle riflessive; **ZBF** appena le zone diventano tre o più (LAN/DMZ/WAN, o più VLAN), perché il default-deny per zona evita di rincorrere `deny` espliciti su ogni lista.
 
 
-## 15 · ACL anti-spoofing — WAN e LAN 
+## 17 · ACL anti-spoofing — WAN e LAN 
 
-### 15.1 WAN in ingresso — **default-deny** (= Caso 5)
+### 17.1 WAN in ingresso — **default-deny** (= Caso 5)
 
 ```cisco
 ! Blocca le sorgenti impossibili (con log), poi nega tutto il resto.
@@ -859,7 +850,7 @@ Router(config-if)# ip access-group ACL-WAN in
 > Se si espongono servizi in DMZ (Caso 5b), i `permit` selettivi (es. `permit tcp any host 10.0.5.50 eq 443`)
 > vanno inseriti **prima** del `deny ip any any` finale. La WAN resta comunque default-deny.
 
-### 15.2 LAN in ingresso — **default-allow** con anti-spoofing silenzioso (= Parte C)
+### 17.2 LAN in ingresso — **default-allow** con anti-spoofing silenzioso (= Parte C)
 
 Sul nostro piano `10.0.0.0/16` non si può negare `10.0.0.0/8` in blocco (bloccherebbe la LAN stessa).
 La logica è inversa: **permetto prima la subnet locale**, poi nego il resto dell'intranet, poi default-allow.
@@ -887,9 +878,9 @@ Regola pratica: **default-deny ovunque ci sia un confine di fiducia** (WAN, tunn
 ---
 
 
-## 16 · Tunnel VPN — L3-su-L3 e L2-su-L3
+## 18 · Tunnel VPN — L3-su-L3 e L2-su-L3
 
-### 16.1 Anatomia comune (vale per TUTTI i tunnel)
+### 18.1 Anatomia comune (vale per TUTTI i tunnel)
 
 Un tunnel è un **link punto-punto virtuale** su rete pubblica. Tre regole valgono **sempre**:
 
@@ -902,7 +893,7 @@ Un tunnel è un **link punto-punto virtuale** su rete pubblica. Tre regole valgo
    | L2TPv3 | il **VC-ID** |
    | OpenVPN | i **certificati** + `tls-server`/`tls-client` |
 
-3. **Più sedi → un'interfaccia per sede.** Non duplicare i blocchi: usa **template + tabella** (§16.2).
+3. **Più sedi → un'interfaccia per sede.** Non duplicare i blocchi: usa **template + tabella** (§18.2).
 
 **Quale tunnel?** Due domande: *(1) cosa trasporto* (IP=L3 o frame Ethernet=L2)? *(2) quale piattaforma?*
 
@@ -924,10 +915,10 @@ Un tunnel è un **link punto-punto virtuale** su rete pubblica. Tre regole valgo
 
 > Nomenclatura Linux TUN/TAP: **`tun0`** = L3 (instradato, subnet diverse) · **`tap0`** = L2 (bridgeato in `br0`, stessa VLAN). Su Cisco IOS gli equivalenti sono `Tunnel0` (GRE) e l'`xconnect` L2TPv3.
 
-### 16.2 L3-su-L3 — GRE (Cisco IOS)
+### 18.2 L3-su-L3 — GRE (Cisco IOS)
 
 ```cisco
-! Template (un capo — l'altro è speculare, §16.1)
+! Template (un capo — l'altro è speculare, §18.1)
 R0(config)# interface TunnelN
 R0(config-if)# ip address <IP-TUNNEL> 255.255.255.0
 R0(config-if)# tunnel source <IP-PUB-LOCALE>
@@ -963,7 +954,7 @@ R0# show ip ospf neighbor               ! peer FULL
 R0# ping 10.0.11.1 source 10.0.11.2     ! connettività end-to-end
 ```
 
-### 16.3 L2-su-L3 — L2TPv3 (Cisco IOS, nativo)
+### 18.3 L2-su-L3 — L2TPv3 (Cisco IOS, nativo)
 
 Crea un **pseudowire** che trasporta i frame Ethernet (trunk 802.1q incluso) senza bridge software.
 
@@ -984,7 +975,7 @@ R0(config-if)# xconnect <IP-PUB-PEER> 100 pw-class PW-PEER
 
 **Test** (da privileged EXEC): `R0# show l2tun session all` · `R0# show xconnect all` · `R0# show mac address-table`
 
-### 16.4 L2-su-L3 — variante Linux (GRETAP / OpenVPN TAP)
+### 18.4 L2-su-L3 — variante Linux (GRETAP / OpenVPN TAP)
 
 Il **bridge è identico** per le due tecnologie: cambia **solo l'interfaccia tunnel**. I comandi girano sul gateway Linux come root.
 
@@ -1013,7 +1004,7 @@ root@gw:~# ip link set tap0 up
 
 **Test** (sul gateway Linux): `root@gw:~# ip -d link show <iface>` · `root@gw:~# bridge link` · `root@gw:~# arping -I br0 <IP-remoto>`
 
-## 17 · 802.1X — autenticazione sulle porte access
+## 19 · 802.1X — autenticazione sulle porte access
 
 802.1X blocca la porta switch (`unauthorized`) finché l'utente non si autentica via RADIUS.
 
@@ -1055,7 +1046,7 @@ mario  Cleartext-Password := "password123"
 > La `secret` di `clients.conf` **deve coincidere** con `key` del comando `radius-server host`:
 > un mismatch fa fallire silenziosamente tutte le autenticazioni.
 
-### 17.1 Assegnazione dinamica della VLAN via RADIUS
+### 19.1 Assegnazione dinamica della VLAN via RADIUS
 
 Nell'`Access-Accept` il RADIUS può dire al NAS **in quale VLAN** mettere l'utente (RFC 2868):
 
@@ -1082,7 +1073,7 @@ DEFAULT Auth-Type := Reject
 
 **Test**: `Switch# show dot1x all` · `Switch# show dot1x interface fa0/1` · `root@radius:~# tail -f /var/log/freeradius/radius.log`
 
-## 18 · Test end-to-end — comandi utili (da privileged EXEC)
+## 20 · Test end-to-end — comandi utili (da privileged EXEC)
 
 ```cisco
 R0# ping <ip>
@@ -1101,7 +1092,6 @@ R0# show running-config | section nat
 
 
 ---
-
 # Parte III · Backup & Ripristino
 
 > Backup/restore di **dati** e **VM** con `rsync`, **NFS** e **Samba**.
@@ -1367,5 +1357,3 @@ finirebbero in CSMA/CA sullo stesso canale → throughput dimezzato.
 - ❌ riuso colore tra celle troppo vicine;
 - ❌ backhaul a larghezza piena su canali dei client;
 - ❌ saltare il site survey (Ekahau / NetSpot).
-
-
