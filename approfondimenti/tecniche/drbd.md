@@ -54,7 +54,7 @@ DRBD distingue lo *split-brain DRBD* (descritto sopra) dalla *cluster partition*
 
 DRBD supporta una modalità *dual-primary* (entrambi i nodi in scrittura simultanea), ma richiede Protocol C e un filesystem cluster-aware (es. OCFS2, GFS2) che gestisca il locking distribuito. È sensibile alla latenza e inadatto alle WAN. Nella maggior parte degli scenari HA si usa **single-primary** (un solo nodo scrive, l'altro è replica passiva).
 
-<img src="../img/drbd-failover.svg" alt="DRBD con failover automatico" width="700">
+<img src="/img/drbd-failover.svg" alt="DRBD con failover automatico" width="700">
 
 ## Quando usarlo
 
