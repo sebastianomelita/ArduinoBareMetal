@@ -10,7 +10,7 @@ Avere il servizio sempre raggiungibile (piano del servizio) non serve a nulla se
 
 **DRBD (Distributed Replicated Block Device)** è un modulo del kernel Linux che intercetta le scritture su un dispositivo a blocchi e le replica via rete su un altro nodo. Si descrive comunemente come un **"RAID-1 di rete"** in architettura *shared-nothing*: ogni nodo ha il proprio disco fisico, e DRBD li tiene speculari. Le letture sono locali; le scritture vengono mirrorate sul peer remoto.
 
-<img src="../img/drbd-manuale.svg" alt="DRBD senza failover" width="700">
+<img src="/img/drbd-manuale.svg" alt="DRBD senza failover" width="700">
 
 #### A.1 Funzionamento normale
 Primario attivo (FS montato + servizio), secondario in standby (FS non montato).
