@@ -455,13 +455,4 @@ SERVIZIO_MANUTENZIONE(idServizio PK, idReader FK→READER, dataOra, tipo, descri
 
 ---
 
-## Allegati grafici (cartella `../img/`)
-1. `../img/1_architettura_flussi_L3_L7.svg` — Architettura generale con flussi L3 IP e L7 MQTT (Figura 1).
-2. `../img/2_planimetria_stazione_catA.svg` — Planimetria fisica stazione Cat. A (Figura 2).
-3. `../img/5_planimetria_fermata_catB.svg` — Planimetria fisica fermata Cat. B (Figura 3).
-4. `../img/6_planimetria_pontile_capolinea.svg` — Planimetria fisica pontile capolinea (Figura 4).
-5. `../img/3_albero_passivi_stazione.svg` — Albero degli apparati passivi (Figura 5).
-6. `../img/4_albero_attivi_router_on_a_stick.svg` — Albero degli apparati attivi, router-on-a-stick (Figura 6).
-7. `config_R-FW_router-on-a-stick.txt` — Configurazione completa Cisco IOS di `R-FW`.
 
-> Per visualizzare le figure, tenere il file Markdown e la cartella `../img/` nella stessa posizione.
