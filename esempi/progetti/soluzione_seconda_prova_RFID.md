@@ -196,6 +196,35 @@ interface range <porte-server>
 | `Tun0` (R-FW) ↔ PE SUM | 10.255.1.0/30 | .1 ↔ .2 | dorsale VPN IPsec di transito |
 | `Gi0/0` (WAN) | assegnata da ISP | dinamica (DHCP) | uscita verso il trasporto IP |
 
+### 5.1 Subnetting del centro SUM (datacenter)
+
+| Zona | Subnet | Maschera | Range host | Host utili | Gateway | Ruolo |
+|---|---|---|---|---|---|---|
+| DMZ | 10.0.1.0/28 | 255.255.255.240 | .1–.14 | 14 | 10.0.1.1 | WAF + API gateway controllori (HTTPS/JWT), front-end pubblico |
+| Server farm | 10.0.2.0/24 | 255.255.255.0 | .1–.254 | 254 | 10.0.2.1 | broker MQTT cluster, app server, DB centrale (zona interna) |
+| Admin / management | 10.0.3.0/28 | 255.255.255.240 | .1–.14 | 14 | 10.0.3.1 | postazioni amministratori, NMS; gestione apparati SUM e stazioni via tunnel |
+| Dorsali VPN (lato PE) | 10.255.0.0/16 | /30 per sito | .1 ↔ .2 | 2 per sito | — | terminazione dei tunnel IPsec punto-punto (uno per sito) |
+
+**Allocazione statica nella server farm (10.0.2.0/24):**
+
+| Host | Indirizzo | Ruolo |
+|---|---|---|
+| Broker MQTT (VIP cluster) | 10.0.2.10 | endpoint MQTT/TLS `:8883` (active-active) |
+| Broker nodo 1 / nodo 2 | 10.0.2.11 / .12 | nodi del cluster |
+| App server | 10.0.2.20 | logica applicativa / backend REST |
+| DB master / slave | 10.0.2.30 / .31 | database centrale (replica master-slave) |
+| DNS / NTP interni | 10.0.2.5 | servizi infrastrutturali del datacenter |
+
+**Riepilogo allocazione metropolitana** (sostituisce la riga "Schema metropolitano (estratto)"):
+
+| Blocco | Allocazione | Dettaglio |
+|---|---|---|
+| 10.0.0.0/16 | Centro SUM | DMZ, server farm, admin (tabella sopra) |
+| 10.1.0.0/16 | Stazioni Cat. A | `10.1.N.0/24` per stazione (VLAN 10/20/99) |
+| 10.2.0.0/16 | Fermate Cat. B | `10.2.M.0/29` per fermata |
+| 10.3.0.0/16 | Sede controllori | `10.3.0.0/24` |
+| 10.255.0.0/16 | Dorsali VPN | `10.255.x.0/30` punto-punto, uno per sito |
+
 ---
 
 ## 6. Configurazione di R-FW (Cisco IOS — router-on-a-stick)
