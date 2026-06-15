@@ -379,7 +379,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 ### 6.1 Aspetti critici di una autenticazione
 
-<img src="img/authutente/matrice_loa.png" alt="Aspetti critici di una autenticazione" width="600px">
+<img src="img/authutente/matrice_loa.png" alt="Aspetti critici di una autenticazione" width="300px">
 
 - La fiducia o il grado di confidenza in una corretta autenticazione deriva dalla forza (misurata in livelli) dei processi di:
 - registrazione dell’utente, ad esempio la prova dell'identità, la sua verifica e la sua autenticazione. Altrimenti indicato come garanzia dell'identità (identity assurance)
