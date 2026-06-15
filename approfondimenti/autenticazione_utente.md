@@ -411,7 +411,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
   - L’impatto di un’eccessiva verifica dell’identità (ovvero, la raccolta e l’archiviazione sicura di più informazioni su una persona di quelle necessarie per fornire con successo il servizio digitale).
 
 
-<img src="img/authutente/livelli_spid_eidas.png" alt="Livelli di affidabilità di una autenticazione" width="600px">
+<img src="img/authutente/livelli_spid_eidas.png" alt="Livelli di affidabilità di una autenticazione" width="800px">
 
 
 ### 6.3 LOA1
