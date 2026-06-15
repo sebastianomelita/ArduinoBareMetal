@@ -154,7 +154,7 @@
 
 #### Fasi Protocollo di autenticazione PAP
 
-<img src="img/authutente/pap_schema.png" alt="Protocollo di autenticazione PAP" width="600px">
+<img src="img/authutente/pap_schema.png" alt="Protocollo di autenticazione PAP" width="400px">
 
 - Va usato su un canale sicuro perché è esposto ad attacco replay
 - l Password Authentication Protocol è un protocollo di autenticazione base di un utente che chiede un accesso ad un sistema che prevede lo scambio del segreto ad ogni autenticazione:
