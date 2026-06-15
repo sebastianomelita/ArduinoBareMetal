@@ -409,6 +409,71 @@ Crittografia IPsec (ISAKMP policy AES-256/SHA-256/DH14, transform-set ESP-AES-25
 
 **Sicurezza.** TLS 1.3 / VPN IPsec AES-256 verso il SUM; reader autenticati al broker con certificati **X.509**; segmentazione **VLAN** + ACL inter-VLAN; **firewall** perimetrale, **IDS/IPS**, **WAF** sulle API; separazione DMZ/zona interna; SIEM con retention 12 mesi. Card: autenticazione mutua **AES-128**, chiavi diversificate per UID, dati cifrati. Privacy: la card porta un **value file cifrato e pseudonimizzato** col minimo stato necessario al funzionamento offline; i dati di mobilità nominali restano nel back-end, **pseudonimizzazione** nei log, conformità **GDPR** (diritto alla cancellazione dei dati di mobilità).
 
+**Pseudocodice firmware reader (Cat. B — validazione autonoma offline):**
+
+```text
+# --- Avvio ---
+all'avvio:
+    carica_chiavi_AES_diversificate()            # per autenticazione mutua
+    deny_list ← carica_da_flash()                # ultima copia con TTL
+    buffer ← carica_eventi_pendenti_da_flash()   # eventi non ancora confermati
+    connetti_MQTT_TLS(broker_SUM, porta 8883)    # tentativo, non bloccante
+    sottoscrivi(topic = "…/<idReader>/ack")
+    sottoscrivi(topic = "…/<idReader>/config")   # aggiornamenti deny-list
+    avvia_task(invia_heartbeat, ogni 60 s)
+    avvia_task(riconcilia_buffer, quando_online)
+
+# --- Evento di tap (percorso critico: tutto locale, < 1 s) ---
+al tap di una card:
+    if NOT autenticazione_mutua_AES(card):       # chiave diversificata per UID
+        mostra("Card non valida"); return
+
+    uid ← leggi_uid(card)
+    if uid in deny_list:                         # controllo offline
+        mostra("Card non abilitata"); return
+
+    stato ← leggi_value_file(card)               # { saldo, stato_viaggio }
+
+    if stato.saldo < (tariffa − soglia_negativa): # rischio offline controllato
+        mostra("Saldo insufficiente"); return
+
+    # Debito ATOMICO sulla card con prova crittografica
+    tmac ← debito_value_file(card, tariffa)      # operazione atomica DESFire
+    if tmac == ERRORE:
+        mostra("Riprova"); return                # nessun addebito avvenuto
+    scrivi_stato_viaggio(card, nuovo_stato)
+
+    mostra(feedback(stato.saldo − tariffa))      # esito immediato, < 1 s
+
+    # Registra l'evento firmato per il clearing (a prescindere dalla rete)
+    evento ← { eventId: UUID(),                  # dedup lato SUM
+               idReader, uid, tariffa, timestamp,
+               saldoPost: stato.saldo − tariffa, tmac }
+    buffer.accoda(evento)
+    salva_su_flash(buffer)                        # persistenza anti-spegnimento
+
+# --- Riconciliazione asincrona (quando la WAN è disponibile) ---
+task riconcilia_buffer():
+    while online AND buffer NOT vuoto:
+        evento ← buffer.primo()
+        pubblica_MQTT(topic="…/tap", evento, QoS=1)  # consegna garantita
+        ack ← attendi_ack(timeout)
+        if ack.ricevuto:                         # il SUM deduplica per UUID
+            buffer.rimuovi(evento)
+            salva_su_flash(buffer)
+        else:
+            break                                # ritenta al ciclo seguente
+
+# --- Manutenzione control plane ---
+alla ricezione di config(nuova_deny_list):
+    deny_list ← nuova_deny_list
+    salva_su_flash(deny_list)                    # con TTL aggiornato
+
+task invia_heartbeat():
+    pubblica_MQTT(topic="…/stato",
+        { idReader, online, n_eventi_buffer, ts }, QoS=1)
+```
+
 ---
 
 # SECONDA PARTE — Quesiti
