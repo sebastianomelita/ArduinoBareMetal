@@ -37,8 +37,7 @@
 - Punto debole: fase di autenticazione delle parti
 
 
-### 3.2 Attori e ruoli in un attacco
-
+**Attori e ruoli in un attacco:**
 - Alice and Bob. Generalmente Alice vuole mandare un messaggio a Bob.
 - Carol o Charlie, è il terzo partecipante alla comunicazione.
 - Chuck, un terzo partecipante avente intenzioni fraudolente.
