@@ -261,7 +261,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 #### Fase di registrazione Scambio delle chiavi pubbliche
 
-<img src="img/authutente/scambio_chiavi_pubbliche.png" alt="Fase di registrazione Scambio delle chiavi pubbliche" width="400px">
+<img src="img/authutente/scambio_chiavi_pubbliche.png" alt="Fase di registrazione Scambio delle chiavi pubbliche" width="500px">
 
 - Avviene una o più volte anche su canali insicuri
 - Necessità di associazione autenticata tra l’utente e la chiave pubblica ottenuta mediante una procedura di autenticazione della chiave pubblica (prevenzione di un attacco Man-In-The-Middle)
