@@ -181,18 +181,13 @@ interface range <porte-server>
 
 ## 5. Piano di indirizzamento e VLAN (stazione Cat. A)
 
-| VLAN | Funzione | Subnet | Broadcast | Gateway (sottointerf.) | Range host | DHCP |
-|---|---|---|---|---|---|---|
-| 10 | Reader NFC | 10.1.1.0/24 | 10.1.1.255 | 10.1.1.1 (Gi0/1.10) | .2–.254 | .100–.200 |
-| 20 | Server + Management | 10.1.2.0/24 | 10.1.2.255 | 10.1.2.1 (Gi0/1.20) | .2–.254 | statico |
+| VLAN | Funzione | Subnet | Broadcast | Gateway (sottointerf.) | Range host | DHCP | Estensione |
+|---|---|---|---|---|---|---|---|
+| 10 | Reader NFC | 10.1.1.0/24 | 10.1.1.255 | 10.1.1.1 (Gi0/1.10) | .2–.254 | .100–.200 | trunk R-FW↔CS↔AS |
+| 20 | Server | 10.1.2.0/24 | 10.1.2.255 | 10.1.2.1 (Gi0/1.20) | .2–.254 | statico | solo CS (potata sugli AS) |
+| 99 | Management | 10.1.99.0/24 | 10.1.99.255 | 10.1.99.1 (Gi0/1.99) | .2–.254 | statico | tutti i trunk |
 
-**Indirizzi statici VLAN 20:**
-
-| Host | Indirizzo | Ruolo |
-|---|---|---|
-| mgmt apparati (CS, AS-0/1/2) | 10.1.2.2–.9 | interfacce di gestione switch/AP |
-| srv-edge | 10.1.2.10 | middleware + broker MQTT locale |
-| srv-sis | 10.1.2.11 | DHCP/DNS · NAS log/syslog |
+**Indirizzi statici VLAN 20:** srv-edge `10.1.2.10` (middleware + broker MQTT), srv-sis `10.1.2.11` (DHCP/DNS · NAS log).
 
 **Interfacce L3 punto-punto (non VLAN):**
 
