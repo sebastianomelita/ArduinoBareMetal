@@ -27,9 +27,9 @@
 ## 3. Attacchi informatici
 
 <img src="img/authutente/mappa_attacchi_informatici.jpg" alt="Mappa concettuale degli attacchi informatici" width="1000px">
+ 
 
-
-### 3.1Tipi di attacco
+### 3.1 Tipi di attacco
 
 <img src="img/authutente/intrusi_passivi_attivi.jpg" alt="Tipi di attacco" width="600px">
 
@@ -95,7 +95,7 @@
   - La sua costruzione: può essere scoperta
 
 
-### 4.2 Costruzione della password
+#### Costruzione della password
 
 - Una password “ben formata” dovrebbe seguire un certo numero di criteri che ne rafforzano la inviolabilità:
   - Lunghezza sufficiente (ad es. 8 caratteri)
@@ -103,7 +103,7 @@
   - Sequenza confusa (stringhe senza significato nella lingua naturale o correlazioni semplici con informazioni sul proprietario come nomi propri di parenti, età, ecc.)
 
 
-### 4.3 Conservazione della password
+#### Conservazione della password
 
 <img src="img/authutente/tabella_password_salt_hash.png" alt="Conservazione della password" width="600px">
 
