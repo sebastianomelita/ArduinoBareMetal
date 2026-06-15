@@ -24,7 +24,9 @@ Il sistema è un'infrastruttura metropolitana per la gestione di card di traspor
 
 ## 2. Architettura generale: rete di trasporto IP con gateway di confine
 
-L'infrastruttura è modellata come **rete di reti** a topologia *hub-and-spoke*. Le reti di sito sono **reti laterali (spoke)** attestate, tramite il proprio **router di confine (CE)**, su una **rete di trasporto IP metropolitana** (core MPLS/IP). Il **gateway di confine (PE)** del SUM aggrega tutte le reti laterali; sopra il trasporto corrono **tunnel VPN IPsec** punto-punto, uno per sito, che costituiscono le subnet di dorsale logiche.
+L'infrastruttura è modellata come **rete di reti** a topologia *hub-and-spoke*. Le reti di sito sono **reti laterali (spoke)** attestate, tramite il proprio **router perimetrale di sito** (R-FW), su una **rete di trasporto IP** metropolitana — un trasporto generico e **non fidato**, che può essere anche Internet pubblica. Il **gateway VPN del SUM** (hub) aggrega tutte le reti laterali: sopra il trasporto corrono **tunnel IPsec punto-punto**, uno per sito, cifrati end-to-end, che costituiscono le dorsali logiche.
+
+[…figura e descrizione invariate, ma rietichettare nel disegno: "router di confine (CE)" → "router perimetrale di sito (R-FW)", "Gateway confine (PE)" → "gateway VPN del SUM"…]
 
 ```
    Reti laterali (spoke)                Rete di trasporto IP          SUM (hub)
@@ -40,6 +42,16 @@ L'infrastruttura è modellata come **rete di reti** a topologia *hub-and-spoke*.
  │ Sede controllori      │── CE-C ──┘                      └───┘  (tunnel punto-punto)
  └───────────────────────┘
 ```
+
+**Secure VPN vs trusted VPN.** La classificazione classica (Ferguson & Huston) distingue due famiglie, che si **escludono a vicenda** nella scelta del trasporto:
+
+- **Secure VPN** — la riservatezza si ottiene con la **crittografia**: i due estremi cifrano (AES-256), il provider di trasporto non è fidato e può essere Internet pubblica. È il caso dei **tunnel IPsec**.
+- **Trusted VPN** — non cifra: la separazione del traffico è garantita dal **provider**, che isola i percorsi. L'esempio tipico è la **MPLS L3VPN**, dove l'operatore tiene separate le VRF dei clienti tramite le etichette MPLS (terminologia CE/PE) e il cliente "si fida" dell'operatore. La fiducia è contrattuale, non crittografica.
+
+**Scelta del progetto: secure VPN IPsec.** Le dorsali sono **tunnel IPsec** sopra un trasporto IP generico e non controllato dalla società. È la scelta coerente con l'ipotesi di trasporto non fidato ed è esattamente ciò che configura la §6 (interfaccia `Tunnel0`, profilo IPsec `VPN-SUM`, ammissione di IKE/ESP in `ACL-WAN-IN`). La cifratura end-to-end paga un overhead ma non richiede alcun servizio dedicato dall'operatore.
+
+**Alternativa (mutuamente esclusiva): trusted VPN MPLS.** Se la società partecipata acquistasse dall'operatore una **MPLS L3VPN** dedicata, le dorsali sarebbero realizzate come **trusted VPN**: niente IPsec, separazione affidata alle VRF/etichette MPLS dell'operatore, terminologia CE (router cliente) e PE (router operatore). In quel caso la §6 cambierebbe — sparirebbero `Tunnel0` e il profilo IPsec, e `ACL-WAN-IN` non ammetterebbe IKE/ESP — e la fiducia si sposterebbe sul provider, eliminando l'overhead della cifratura.
+
 
 Le subnet di dorsale logiche (interfacce `Tun0`): CE-A `10.255.1.0/30`, CE-B `10.255.2.0/30`, CE-C `10.255.3.0/30`, con il PE come secondo estremo. Il PNAT sul router di confine condivide l'indirizzo pubblico WAN con gli host interni.
 
