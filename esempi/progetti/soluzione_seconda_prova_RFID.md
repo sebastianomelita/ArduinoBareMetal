@@ -26,34 +26,9 @@ Il sistema è un'infrastruttura metropolitana per la gestione di card di traspor
 
 L'infrastruttura è modellata come **rete di reti** a topologia *hub-and-spoke*. Le reti di sito sono **reti laterali (spoke)** attestate, tramite il proprio **router perimetrale di sito** (R-A/R-B/R-C), su una **rete di trasporto IP** metropolitana — un trasporto generico e **non fidato**, che può essere anche Internet pubblica. Il **gateway VPN del SUM** (hub) aggrega tutte le reti laterali: sopra il trasporto corrono **tunnel IPsec punto-punto**, uno per sito, cifrati end-to-end, che costituiscono le dorsali logiche.
 
-<img src="../img/1_architettura_hub_spoke.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM" width="800px">
+<img src="../img/1_architettura_hub_spoke.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM">
 
 *Figura 1 — Architettura hub-and-spoke. Le reti laterali (spoke) — Sito Cat. A, Sito Cat. B, Sede controllori — raggiungono il SUM (hub) tramite **tunnel IPsec cifrati**, instaurati dai router perimetrali R-A/R-B/R-C su una **rete di trasporto IP non fidata**. La cifratura è end-to-end tra ogni R-x e il gateway del SUM, quindi il trasporto resta attraversabile senza doversene fidare. Nel SUM, il **gateway VPN con firewall e WAF** fa da perimetro davanti alla **server farm** (broker MQTT cluster, app server, DB centrale).*
-
-
-**Secure VPN vs trusted VPN.** La classificazione classica (Ferguson & Huston) distingue due famiglie, che si **escludono a vicenda** nella scelta del trasporto:
-
-- **Secure VPN** — la riservatezza si ottiene con la **crittografia**: i due estremi cifrano (AES-256), il provider di trasporto non è fidato e può essere Internet pubblica. È il caso dei **tunnel IPsec**.
-- **Trusted VPN** — non cifra: la separazione del traffico è garantita dal **provider**, che isola i percorsi. L'esempio tipico è la **MPLS L3VPN**, dove l'operatore tiene separate le VRF dei clienti tramite le etichette MPLS (terminologia CE/PE) e il cliente "si fida" dell'operatore. La fiducia è contrattuale, non crittografica.
-
-**Scelta del progetto: secure VPN IPsec.** Le dorsali sono **tunnel IPsec** sopra un trasporto IP generico e non controllato dalla società. È la scelta coerente con l'ipotesi di trasporto non fidato ed è esattamente ciò che configura la §6 (interfaccia `Tunnel0`, profilo IPsec `VPN-SUM`, ammissione di IKE/ESP in `ACL-WAN-IN`). La cifratura end-to-end paga un overhead ma non richiede alcun servizio dedicato dall'operatore.
-
-**Alternativa (mutuamente esclusiva): trusted VPN MPLS.** Se la società partecipata acquistasse dall'operatore una **MPLS L3VPN** dedicata, le dorsali sarebbero realizzate come **trusted VPN**: niente IPsec, separazione affidata alle VRF/etichette MPLS dell'operatore, terminologia CE (router cliente) e PE (router operatore). In quel caso la §6 cambierebbe — sparirebbero `Tunnel0` e il profilo IPsec, e `ACL-WAN-IN` non ammetterebbe IKE/ESP — e la fiducia si sposterebbe sul provider, eliminando l'overhead della cifratura.
-
-
-Le subnet di dorsale logiche (interfacce `Tun0`): CE-A `10.255.1.0/30`, CE-B `10.255.2.0/30`, CE-C `10.255.3.0/30`, con il PE come secondo estremo. Il PNAT sul router di confine condivide l'indirizzo pubblico WAN con gli host interni.
-
-<img src="../img/architettura_hub_spoke_vpn_ipsec.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM">
-
-*Figura 1 — Architettura generale (icone Cisco). Tratteggio nero = flussi L3 IP (dorsali logiche VPN tra i firewall dei siti e il firewall del SUM); punteggiato azzurro = flussi L7 MQTT (client MQTT dei siti ↔ broker centrale); bobina = interfaccia wireless L2 NFC/RFID HF (ISO 14443) tra reader e card.*
-
-La classificazione classica (Ferguson & Huston, ripresa in quasi tutti i testi di reti) distingue:
-
-- Una **secure VPN** ottiene la riservatezza con la **crittografia**: i tunnel IPsec che abbiamo messo sono esattamente questo. Il provider di trasporto non è considerato fidato — può anche essere Internet pubblica — e la sicurezza è garantita end-to-end dai due estremi che cifrano (AES-256 nel nostro caso). È la scelta giusta quando le dorsali viaggiano su un trasporto non controllato.
-- Una **trusted VPN** non cifra: la separazione del traffico è garantita dal **provider** che riserva e isola i percorsi. L'esempio tipico è proprio una **MPLS L3VPN** (o L2VPN), dove l'operatore tiene separate le VRF dei vari clienti tramite le etichette MPLS e il cliente "si fida" che nessuno entri nel suo instradamento. Non c'è cifratura: la fiducia è contrattuale e tecnica verso l'operatore.
-
-Nel nostro progetto le dorsali logiche sono realizzate come **secure VPN IPsec** sopra un trasporto generico; in alternativa, se la società partecipata acquista dall'operatore un servizio **MPLS** dedicato per la rete metropolitana, le stesse dorsali possono essere realizzate come **trusted VPN (MPLS L3VPN)**, eliminando l'overhead della cifratura ma spostando la fiducia sull'operatore.
-
 
 ### 2.1 Categoria A — luoghi ad alta frequenza (stazioni treni, metro principali, pontili capolinea)
 
@@ -67,7 +42,7 @@ Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server
 
 Il comportamento del reader è descritto da una **macchina a stati** con tre stati operativi — *Online*, *Offline*, *Riconciliazione* — le cui transizioni dipendono dalla disponibilità della WAN e dallo svuotamento del buffer. In tutti gli stati la validazione del tap resta locale: se la WAN è assente già all'avvio, il reader entra direttamente in *Offline* e continua a operare.
 
-<img src="../img/macchina_stati_reader_catB.svg" alt="Macchina a stati del reader Cat. B: Online, Offline, Riconciliazione" width="600px">
+<img src="../img/1_architettura_hub_spoke.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM" width="800px">
 
 *Figura 8 — Macchina a stati del reader Cat. B. La validazione del tap è locale in tutti gli stati; la connettività con il SUM determina solo quando l'evento viene inviato (Online), accodato (Offline) o riconciliato dal buffer (Riconciliazione).*
 
