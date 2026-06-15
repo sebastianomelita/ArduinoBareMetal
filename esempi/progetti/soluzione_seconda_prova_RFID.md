@@ -140,9 +140,9 @@ Il comportamento del reader è descritto da una **macchina a stati** con tre sta
                           │ Gi0/0   (+ Tunnel0 → SUM)
                   ┌───────┴────────┐
                   │      R-FW      │  router-on-a-stick:
-                  │  apparato L3   │     Gi0/1.10  10.1.1.1   (RFID)
-                  └───────┬────────┘     Gi0/1.20  10.1.2.1   (server)
-                          │ Gi0/1        Gi0/1.99  10.1.99.1 (mgmt)
+                  │  apparato L3   │     Gi0/1.10  10.1.1.254   (RFID)
+                  └───────┬────────┘     Gi0/1.20  10.1.2.254   (server)
+                          │ Gi0/1        Gi0/1.99  10.1.99.254 (mgmt)
              trunk 802.1q │ ───────────── allowed vlan 10,20,99
                   ┌───────┴────────┐
                   │   CS core L2   │── server (VLAN 20, porta di accesso)
@@ -183,9 +183,9 @@ interface range <porte-server>
 
 | VLAN | Funzione | Subnet | Broadcast | Gateway (sottointerf.) | Range host | DHCP | Estensione |
 |---|---|---|---|---|---|---|---|
-| 10 | Reader NFC | 10.1.1.0/24 | 10.1.1.255 | 10.1.1.1 (Gi0/1.10) | .2–.254 | .100–.200 | trunk R-FW↔CS↔AS |
-| 20 | Server | 10.1.2.0/24 | 10.1.2.255 | 10.1.2.1 (Gi0/1.20) | .2–.254 | statico | solo CS (potata sugli AS) |
-| 99 | Management | 10.1.99.0/24 | 10.1.99.255 | 10.1.99.1 (Gi0/1.99) | .2–.254 | statico | tutti i trunk |
+| 10 | Reader NFC | 10.1.1.0/24 | 10.1.1.255 | 10.1.1.254 (Gi0/1.10) | .1–.253 | .100–.200 | trunk R-FW↔CS↔AS |
+| 20 | Server | 10.1.2.0/24 | 10.1.2.255 | 10.1.2.254 (Gi0/1.20) | .1–.253 | statico | solo CS (potata sugli AS) |
+| 99 | Management | 10.1.99.0/24 | 10.1.99.255 | 10.1.99.254 (Gi0/1.99) | .1–.253 | statico | tutti i trunk |
 
 **Indirizzi statici VLAN 20:** srv-edge `10.1.2.10` (middleware + broker MQTT), srv-sis `10.1.2.11` (DHCP/DNS · NAS log).
 
