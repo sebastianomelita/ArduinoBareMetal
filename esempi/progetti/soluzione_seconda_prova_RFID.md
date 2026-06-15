@@ -254,7 +254,7 @@ interface GigabitEthernet0/1
 interface GigabitEthernet0/1.10
  description Gateway VLAN 10 - Reader NFC
  encapsulation dot1Q 10
- ip address 10.1.1.1 255.255.255.0
+ ip address 10.1.1.254 255.255.255.0
  ip nat inside
  ip access-group VLAN10-IN in
  ip inspect STATEFUL in
@@ -262,7 +262,7 @@ interface GigabitEthernet0/1.10
 interface GigabitEthernet0/1.20
  description Gateway VLAN 20 - Server
  encapsulation dot1Q 20
- ip address 10.1.2.1 255.255.255.0
+ ip address 10.1.2.254 255.255.255.0
  ip nat inside
  ip access-group VLAN20-IN in
  ip inspect STATEFUL in
@@ -270,13 +270,13 @@ interface GigabitEthernet0/1.20
 interface GigabitEthernet0/1.99
  description Gateway VLAN 99 - Management (no NAT: niente uscita Internet)
  encapsulation dot1Q 99
- ip address 10.1.99.1 255.255.255.0
+ ip address 10.1.99.254 255.255.255.0
  ip access-group VLAN99-IN in
  ip inspect STATEFUL in
 !
 interface Tunnel0
  description Dorsale VPN verso SUM (10.255.1.0/30)
- ip address 10.255.1.1 255.255.255.252
+ ip address 10.255.1.254 255.255.255.252
  tunnel source GigabitEthernet0/0
  tunnel destination <IP_PE_SUM>
  tunnel protection ipsec profile VPN-SUM
@@ -300,7 +300,7 @@ I reader parlano **solo** col broker edge `10.1.2.10`, più DHCP/DNS/NTP. Niente
 | # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
 |---|---|---|---|---|---|---|
 | 1 | permit | udp | host 0.0.0.0 | host 255.255.255.255 | 67 | DHCP DISCOVER/REQUEST (broadcast) |
-| 2 | permit | udp | 10.1.1.0/24 | 10.1.1.1 | 67 | DHCP rinnovo unicast |
+| 2 | permit | udp | 10.1.1.0/24 | 10.1.1.254 | 67 | DHCP rinnovo unicast |
 | 3 | permit | tcp | 10.1.1.0/24 | 10.1.2.10 | 8883 | Reader → broker edge (MQTT/TLS) |
 | 4 | permit | udp | 10.1.1.0/24 | 10.1.2.11 | 53 | DNS |
 | 5 | permit | udp | 10.1.1.0/24 | 10.1.2.11 | 123 | NTP (validità certificati TLS) |
@@ -310,7 +310,7 @@ I reader parlano **solo** col broker edge `10.1.2.10`, più DHCP/DNS/NTP. Niente
 ip access-list extended VLAN10-IN
  remark === Reader NFC: solo broker edge + DHCP/DNS/NTP ===
  permit udp host 0.0.0.0 host 255.255.255.255 eq bootps
- permit udp 10.1.1.0 0.0.0.255 host 10.1.1.1 eq bootps
+ permit udp 10.1.1.0 0.0.0.255 host 10.1.1.254 eq bootps
  permit tcp 10.1.1.0 0.0.0.255 host 10.1.2.10 eq 8883
  permit udp 10.1.1.0 0.0.0.255 host 10.1.2.11 eq domain
  permit udp 10.1.1.0 0.0.0.255 host 10.1.2.11 eq ntp
