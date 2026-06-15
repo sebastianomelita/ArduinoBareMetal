@@ -24,24 +24,12 @@ Il sistema è un'infrastruttura metropolitana per la gestione di card di traspor
 
 ## 2. Architettura generale: rete di trasporto IP con gateway di confine
 
-L'infrastruttura è modellata come **rete di reti** a topologia *hub-and-spoke*. Le reti di sito sono **reti laterali (spoke)** attestate, tramite il proprio **router perimetrale di sito** (R-FW), su una **rete di trasporto IP** metropolitana — un trasporto generico e **non fidato**, che può essere anche Internet pubblica. Il **gateway VPN del SUM** (hub) aggrega tutte le reti laterali: sopra il trasporto corrono **tunnel IPsec punto-punto**, uno per sito, cifrati end-to-end, che costituiscono le dorsali logiche.
+L'infrastruttura è modellata come **rete di reti** a topologia *hub-and-spoke*. Le reti di sito sono **reti laterali (spoke)** attestate, tramite il proprio **router perimetrale di sito** (R-A/R-B/R-C), su una **rete di trasporto IP** metropolitana — un trasporto generico e **non fidato**, che può essere anche Internet pubblica. Il **gateway VPN del SUM** (hub) aggrega tutte le reti laterali: sopra il trasporto corrono **tunnel IPsec punto-punto**, uno per sito, cifrati end-to-end, che costituiscono le dorsali logiche.
 
-[…figura e descrizione invariate, ma rietichettare nel disegno: "router di confine (CE)" → "router perimetrale di sito (R-FW)", "Gateway confine (PE)" → "gateway VPN del SUM"…]
+<img src="../img/1_architettura_hub_spoke.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM">
 
-```
-   Reti laterali (spoke)                Rete di trasporto IP          SUM (hub)
- ┌───────────────────────┐                                    ┌──────────────────────┐
- │ Sito Cat. A           │── CE-A ──┐                      ┌──│ Gateway confine (PE) │
- │ (LAN + server edge)   │          │                      │  │ Firewall + WAF       │
- └───────────────────────┘          │     ╔═══════════╗    │  │ Core switch          │
- ┌───────────────────────┐          ├────►║  core     ║◄───┤  │ Broker MQTT cluster  │
- │ Sito Cat. B           │── CE-B ──┤     ║  MPLS/IP  ║    │  │ App server           │
- │ (2 reader su WAN)     │          │     ╚═══════════╝    │  │ DB centrale          │
- └───────────────────────┘          │                      │  └──────────────────────┘
- ┌───────────────────────┐          │                      │   ▲ VPN IPsec da ogni CE
- │ Sede controllori      │── CE-C ──┘                      └───┘  (tunnel punto-punto)
- └───────────────────────┘
-```
+*Figura 1 — Architettura hub-and-spoke. Le reti laterali (spoke) — Sito Cat. A, Sito Cat. B, Sede controllori — raggiungono il SUM (hub) tramite **tunnel IPsec cifrati**, instaurati dai router perimetrali R-A/R-B/R-C su una **rete di trasporto IP non fidata**. La cifratura è end-to-end tra ogni R-x e il gateway del SUM, quindi il trasporto resta attraversabile senza doversene fidare. Nel SUM, il **gateway VPN con firewall e WAF** fa da perimetro davanti alla **server farm** (broker MQTT cluster, app server, DB centrale).*
+
 
 **Secure VPN vs trusted VPN.** La classificazione classica (Ferguson & Huston) distingue due famiglie, che si **escludono a vicenda** nella scelta del trasporto:
 
@@ -55,7 +43,8 @@ L'infrastruttura è modellata come **rete di reti** a topologia *hub-and-spoke*.
 
 Le subnet di dorsale logiche (interfacce `Tun0`): CE-A `10.255.1.0/30`, CE-B `10.255.2.0/30`, CE-C `10.255.3.0/30`, con il PE come secondo estremo. Il PNAT sul router di confine condivide l'indirizzo pubblico WAN con gli host interni.
 
-![Architettura generale con flussi L3 IP e L7 MQTT](../img/1_architettura_flussi_L3_L7.svg)
+<img src="../img/1_architettura_hub_spoke.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM">
+
 *Figura 1 — Architettura generale (icone Cisco). Tratteggio nero = flussi L3 IP (dorsali logiche VPN tra i firewall dei siti e il firewall del SUM); punteggiato azzurro = flussi L7 MQTT (client MQTT dei siti ↔ broker centrale); bobina = interfaccia wireless L2 NFC/RFID HF (ISO 14443) tra reader e card.*
 
 La classificazione classica (Ferguson & Huston, ripresa in quasi tutti i testi di reti) distingue:
