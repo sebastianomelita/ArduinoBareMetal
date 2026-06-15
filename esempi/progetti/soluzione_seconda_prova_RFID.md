@@ -397,7 +397,7 @@ Crittografia IPsec (ISAKMP policy AES-256/SHA-256/DH14, transform-set ESP-AES-25
 
 **Transazioni in modalità degradata.** Stato e valore risiedono nel *value file* cifrato della card (DESFire EV3): credito/debito atomici autenticati AES-128 con **Transaction MAC** come prova crittografica. Il reader/edge autorizza in locale (< 1 s) anche con WAN assente; l'evento, identificato da **UUID**, viene accodato e inviato al SUM via MQTT/TLS (QoS 1) al ripristino. Il SUM esegue **clearing e deduplica per UUID** e ridistribuisce la **deny-list** (card sospese/rubate) con TTL. Feedback al passeggero definito anche in degradato: "viaggio registrato" su esito positivo, rifiuto su deny-list o saldo oltre soglia.
 
-<img src="../img/7_transazione_card_offline.svg" alt="Transazione su card NFC in modalità offline: ciclo di autorizzazione locale e riconciliazione asincrona con il SUM">
+<img src="../img/transazione_card_offline.svg" alt="Transazione su card NFC in modalità offline: ciclo di autorizzazione locale e riconciliazione asincrona con il SUM">
 
 *Figura 7 — Transazione su card NFC in modalità offline. Cornice superiore: il ciclo di autorizzazione (autenticazione → lettura value file → verifica → debito atomico → feedback) si chiude tra card e reader in < 1 s, senza rete. Cornice inferiore: l'evento firmato viene riconciliato con il SUM in modo asincrono al ripristino della WAN.*
 
