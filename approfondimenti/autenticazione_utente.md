@@ -1,22 +1,18 @@
 # Autenticazione Utente — Tecniche e protocolli
 
 
-## 1. AUTENTICAZIONE UTENTE
 
-- Tecniche e protocolli
-
-
-## 2. Fasi di una autenticazione
+## 1. Fasi di una autenticazione
 
   - Si autenticano gli utenti della comunicazione svolgendo in sequenza le due fasi:
-    - fase di scambio e registrazione delle credenziali
-    - fase di verifica delle credenziali
+    .1 fase di scambio e registrazione delle credenziali
+    .2 fase di verifica delle credenziali
   - Credenziali:
-  - informazioni univoche associate ad un certo utente
-  - Sono direttamente o indirettamente collegate ad un segreto condiviso
+       - informazioni univoche associate ad un certo utente
+       - Sono direttamente o indirettamente collegate ad un segreto condiviso
 
 
-## 3. Fattori di autenticazione: classificazione
+## 2. Fattori di autenticazione: classificazione
 
 - In base a ISO 27001, il processo di autenticazione di un utente che vuole accedere alle risorse di un sistema può avvenire in base a tre criteri possibili :
   - La conoscenza di un segreto (quello che l’utente sa: una password, un PIN)
@@ -26,17 +22,14 @@
   - Dalla sua conservazione: deve essere memorizzato in archivi sicuri
   - Dalla sua comunicazione: deve essere adeguatamente protetta (meglio ancora se si evita il più possibile di comunicarlo)
 
-
-## 4. Fattori di autenticazione
-
 <img src="img/authutente/fattori_di_autenticazione.png" alt="Mappa concettuale degli attacchi informatici" width="600px">
 
-## 5. Mappa concettuale: attacchi informatici
+## 3. Attacchi informatici
 
 <img src="img/authutente/mappa_attacchi_informatici.jpg" alt="Mappa concettuale degli attacchi informatici" width="600px">
 
 
-## 6. Tipi di attacco
+### 3.1Tipi di attacco
 
 <img src="img/authutente/intrusi_passivi_attivi.jpg" alt="Tipi di attacco" width="600px">
 
@@ -44,7 +37,7 @@
 - Punto debole: fase di autenticazione delle parti
 
 
-## 7. Attori e ruoli
+### 3.2 Attori e ruoli in un attacco
 
 - Alice and Bob. Generalmente Alice vuole mandare un messaggio a Bob.
 - Carol o Charlie, è il terzo partecipante alla comunicazione.
@@ -59,12 +52,12 @@
 - Victor, è un verifier, verifica le prove fornite da Peggy
 
 
-## 8. Attacco MITM
+### 3.3 Attacco MITM
 
 - Il MITM consiste nel dirottare il traffico generato durante la comunicazione tra due host verso un terzo host (attaccante) il quale fingerà di essere l’end-point legittimo della comunicazione.
 
 
-## 9. Tipi di attacco MITM (Man In The Middle)
+#### Tipi di attacco MITM (Man In The Middle)
 
 <img src="img/authutente/tipi_mitm.jpg" alt="Tipi di attacco MITM (Man In The Middle)" width="600px">
 
@@ -73,7 +66,7 @@
 - Autenticazione degli interlocutori per tutti gli altri attacchi
 
 
-## 10. Attacchi MTM: scenario bellico
+#### Attacchi MTM: scenario bellico
 
 - Interception: avviene ascoltando una comunicazione. Immagina qualcuno che ascolta i segreti nazionali.
 - Interruption: ricezione dei messaggi e impedimento al destinatario di riceverli. Il mittente crederà che il destinatario ha ricevuto il messaggio ma il destinatario non l'ha ricevuto. Supponiamo di voler sparare un missile, ma il software missilistico non sta ricevendo i tuoi comandi, e la cosa peggiore è che tu pensi che il missile sia stato sparato.
@@ -82,7 +75,7 @@
 - Fabrication: l'uomo nel mezzo fabbricherà un nuovo messaggio e lo invierà al destinatario. Il destinatario crederà che il messaggio provenga dal mittente. A questo punto, immagina che un missile venga improvvisamente da te sparato contro una tua nazione amica….
 
 
-## 11. Attacco replay
+### 3.4 Attacco replay
 
 - Questo attacco permette operazioni fraudolente come falsa autenticazione e/o transazioni duplicate, senza dover necessariamente decrittare la password, ma soltanto ritrasmettendola in un tempo successivo.
 - A differenza dell'attacco di tipo MTM di tipo modification che opera sempre in tempo reale, il replay attack può operare anche in modo asincrono quando la comunicazione originale è terminata.
@@ -93,12 +86,9 @@
   - Quando Bob chiede a Mallory (convinto di parlare con Alice) una chiave d'autenticazione, Mallory prontamente invia quella (mai in  realtà decifrata) di Alice, instaurando così la comunicazione.
 
 
-## 12. Passwords
+## 4 Passwords
 
-- Criticità
-
-
-## 13. Criticità di una password
+### 4.1 Criticità di una password
 
 - Una password è una informazione segreta che identifica un utente, possiede le seguenti criticità:
   - La sua comunicazione: può essere intercettata
@@ -106,7 +96,7 @@
   - La sua costruzione: può essere scoperta
 
 
-## 14. Costruzione della password
+### 4.2 Costruzione della password
 
 - Una password “ben formata” dovrebbe seguire un certo numero di criteri che ne rafforzano la inviolabilità:
   - Lunghezza sufficiente (ad es. 8 caratteri)
@@ -114,7 +104,7 @@
   - Sequenza confusa (stringhe senza significato nella lingua naturale o correlazioni semplici con informazioni sul proprietario come nomi propri di parenti, età, ecc.)
 
 
-## 15. Conservazione della password
+### 4.3 Conservazione della password
 
 <img src="img/authutente/tabella_password_salt_hash.png" alt="Conservazione della password" width="600px">
 
@@ -125,7 +115,7 @@
 - In genere si rafforza ulteriormente la password tramite la tecnica del salt che allunga la password con una sequenza di riempimento casuale (il salt per l’appunto) che rende il database più immune ad un eventuale attacco a dizionario
 
 
-## 16. Attacco a dizionario
+### 4.4 Attacco a dizionario
 
 - Prerequisito: l’attaccante deve rubare in qualche modo il database delle password. Ciò può accadere, per esempio, con la tecnica dello SQL Injection.
 - Una volta che l’attaccante ha tutto il DB in locale sul proprio PC, l’hacker può tentare un attacco a forza bruta sul DB che, essendo in locale, non è più protetto dall’IDS/IPS del firewall aziendale.
@@ -138,26 +128,19 @@
   - Evitare di usare informazioni personali note all’interno della password
 
 
-## 17. Comunicazione della password
+### 4.5 Comunicazione della password
 
 - Una password può essere scambiata:
   - in una rete sicura: allora può essere in chiaro
   - In una rete insicura: allora deve essere cifrata
 
 
-## 18. Mappa concettuale: autenticazione utente
+## 5 Autenticazione utente
 
 <img src="img/authutente/mappa_autenticazione_utente.jpg" alt="Mappa concettuale dell'autenticazione utente" width="600px">
 
 
-## 19. Autenticazione debole
-
-- Come realizzare la garanzia dell’autenticazione
-- su canali sicuri:
-- Autenticazione debole
-
-
-## 20. Autenticazione base (o debole)
+### 5.1 Autenticazione debole
 
 - Client e server devono eseguire:
   - Una fase di registrazione dell’account: condividere in partenza un segreto, la coppia di valori username e password detta account o credenziali, attraverso un canale diretto e sicuro (privatezza ed autenticazione)
@@ -171,7 +154,7 @@
   - La conservazione della password in un archivio
 
 
-## 21. Protocollo di autenticazione PAP
+#### Fasi Protocollo di autenticazione PAP
 
 <img src="img/authutente/pap_schema.png" alt="Protocollo di autenticazione PAP" width="600px">
 
@@ -188,7 +171,7 @@
   - una trasformazione (digest) di password (in chiaro o criptata) e salt insieme;
 
 
-## 22. Protocollo di autenticazione PAP
+## 22. Registrazione Protocollo di autenticazione PAP
 
 <img src="img/authutente/password_creazione_verifica.png" alt="Protocollo di autenticazione PAP" width="600px">
 
@@ -197,14 +180,14 @@
   - Verifica della password: è l’autenticazione vera e propria di un utente e si esegue tutte le volte che un utente richiede un accesso.
 
 
-## 23. Autenticazione su canali insicuri
+### 5.3 Autenticazione su canali insicuri
 
-- Come realizzare la garanzia dell’autenticazione su canali insicuri:
+Come realizzare la garanzia dell’autenticazione su canali insicuri:
 - Autenticazione media
 - Autenticazione forte
 
 
-## 24. La sfida (o challenge)
+#### La sfida (o challenge)
 
 - Le credenziali oltre a essere irreversibili ed autenticate hanno pure l’esigenza di dover essere uniche per proteggersi da attacchi di tipo replay
 - La sfida è un numero che rende unico una credenziale e serve a verificare l’autenticazione per proteggersi da attacchi MITM di tipo replay
@@ -219,10 +202,7 @@
   - nel caso del tempo, il problema è che gli orologi di Alice e Bob devono essere sincronizzati, soluzione perlomeno costosa.
 
 
-## 25. Autenticazione media sfida/risposta
-
-
-## 26. Autenticazione media sfida-risposta
+### 5.4 Autenticazione media sfida/risposta
 
 - Sfida/risposta è ritenuto un metodo di autenticazione a media sicurezza e si basa su:
   - Fase di registrazione: attraverso un canale diretto e sicuro (confidenziale) o suo equivalente avviene la condivisione, integra e autenticata di una informazione privata: il segreto tra Alice e Bob (la password)
@@ -230,7 +210,7 @@
   - Le credenziali, ad ogni autenticazione, zono rese uniche attraverso una sfida random o basata sul tempo
 
 
-## 27. Protocollo di autenticazione sfida/risposta CHAP
+#### Protocollo di autenticazione sfida/risposta CHAP
 
 <img src="img/authutente/chap_sfida_risposta.png" alt="Protocollo di autenticazione sfida/risposta CHAP" width="600px">
 
@@ -249,7 +229,7 @@
 - Non realizza l’autenticazione del server
 
 
-## 28. Autenticazione forte a due fattori (2FA)
+### 5.5 Autenticazione forte a due fattori (2FA)
 
 - si basa sull'utilizzo congiunto di due metodi di autenticazione individuali deboli che realizzano complessivamente un’autenticazione più affidabile (detta forte).
 - Le più comuni forme di autenticazione a due fattori usano:
@@ -262,17 +242,15 @@
 - Il server confronta la copia locale con quella ricevuta e, se combaciano, convalida l’autenticazione.
 
 
-## 29. TOTP su canale insicuro
+#### TOTP su canale insicuro
 
 <img src="img/authutente/2fa_login.jpg" alt="TOTP su canale insicuro" width="600px">
 
   - Il canale sicuro su cui effettuare l’autenticazione 2F è già stato creato (con crittografia ibrida) da una controparte che si era già in precedenza autenticata su un canale insicuro mediante una autenticazione forte.
 
 
-## 30. Autenticazione forte asimmetrica
+### 5.6 Autenticazione su canali insicuri
 
-
-## 31. Autenticazione su canali insicuri
 
 - L’autenticazione asimmetrica e l’autenticazione con Diffie-Helmann sono ritenuti un metodo di autenticazione forte e si basano su:
   - Fase di registrazione: condivisione integra tra Alice e Bob lungo un canale insicuro (non confidenziale) di informazioni pubbliche a ciascuno di essi associate in maniera univoca (chiave pubblica o certificato)
@@ -283,7 +261,7 @@
 - In una autenticazione mutua spesso la parte più forte crea il canale sicuro su cui si autentica la controparte con autenticazione più debole
 
 
-## 32. Fase di registrazione Scambio delle chiavi pubbliche
+#### Fase di registrazione Scambio delle chiavi pubbliche
 
 <img src="img/authutente/scambio_chiavi_pubbliche.png" alt="Fase di registrazione Scambio delle chiavi pubbliche" width="600px">
 
@@ -293,7 +271,7 @@
 - Metodo più efficace: uso di un certificato rilasciato da una CA
 
 
-## 33. Attacco MITM e chiavi pubbliche
+#### Attacco MITM e chiavi pubbliche
 
 - La modifica MITM durante uno scambio di chiavi pubbliche può essere arginata con l’autenticazione reciproca delle chiavi pubbliche delle due parti
 - L’autenticazione reciproca si può realizzare con:
@@ -301,7 +279,7 @@
   - Uso di chiavi pubbliche firmate da un ente terzo (CA o utente fidato)
 
 
-## 34. Autenticazione forte asimmetrica
+### 5.7 Autenticazione forte asimmetrica
 
 - Nessun uso di password, un algoritmo di cifratura asimmetrico permette l’autenticazione degli utenti
 - Chi deve verificare l’autenticazione della controparte invia una sfida
@@ -316,15 +294,14 @@
 - L’autenticazione mutua necessita di un protocollo a tre vie (Three-Way-Handshake)
 
 
-## 35. Certificati vs credenziali
+#### Certificati vs credenziali
 
 - Va rimarcato che lo scambio di certificati, di per se, non autentica gli utenti ma solamente autentica la loro chiave pubblica, cioè garantisce l’identità dell’intestatario (subject) dei certificati.
 - Poiché l’associazione tra una chiave pubblica e la sua chiave privata è unica, un certificato indirettamente autentica anche la chiave privata corrispondente come chiave associata allo stesso intestatario.
 - Lo scambio di credenziali, qualora sia possibile dimostrare che queste sono derivate dalla chiave privata autenticata dal certificato, invece, autentica a tutti gli effetti un utente, poiché solo il detentore del segreto (chi ha la chiave privata) è in grado di esibire le credenziali corrette.
 - Certificati e credenziali sono complementari nella realizzazione dell’autenticazione di un utente che accede ad una risorsa.
 
-
-## 36. Autenticazione singola asimmetrica con sfida in chiaro
+#### Autenticazione singola asimmetrica con sfida in chiaro
 
 <img src="img/authutente/auth_singola_asimmetrica.jpg" alt="Autenticazione singola asimmetrica con sfida in chiaro" width="600px">
 
@@ -335,7 +312,7 @@
 - La sfida è inviata sempre da chi deve verificare l’autenticazione, in questo caso Bob.
 
 
-## 37. Autenticazione mutua asimmetrica con sfida in chiaro
+#### Autenticazione mutua asimmetrica con sfida in chiaro
 
 <img src="img/authutente/auth_mutua_asimmetrica.jpg" alt="Autenticazione mutua asimmetrica con sfida in chiaro" width="600px">
 
@@ -346,7 +323,7 @@
 - Alice autentica Bob se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
 
 
-## 38. Autenticazione forte con Diffie-Helmann
+#### Autenticazione forte con Diffie-Helmann
 
 - DH può essere utilizzato anche per la generazione delle sfide: i nonce sono proprio le chiavi pubbliche di DH (basate sui numeri random privati a e b).
 - Le chiavi pubbliche di DH sono gli esponenziali YA= ga mod p e YB= gb mod p
@@ -356,7 +333,7 @@
 - L’utilizzo di DH ha il vantaggio di poter fare contemporaneamente sia l’autenticazione dell’utente (tramite nonce) che la generazione di una chiave effimera di sessione.
 
 
-## 39. Autenticazione di un server
+### 5.8 Autenticazione di un server
 
 - Un riassunto delle fasi dell’autenticazione asimmetrica forte potrebbe essere:
 - Il Client manda al server un messaggio contenente la sua identità è la sfida OTP che ha scelto lui, b.
@@ -366,7 +343,7 @@
   - Se riesce ad autenticare la chiave pubblica utilizzando il certificato CA dell’autorità che l’ha firmata.
 
 
-## 40. Verifica del certificato di un server
+#### Verifica del certificato di un server
 
 <img src="img/authutente/verifica_certificato_server.png" alt="Verifica del certificato di un server" width="600px">
 
@@ -382,7 +359,7 @@
 - Normalmente, un utente si autentica con PAP su canale HTTPS cifrato, mentre un server si autentica con autenticazione asimmetrica su canale insicuro (dopo si fa quello cifrato HTTPS)
 
 
-## 41. Autenticazione mista HTTPS
+### 5.9 Autenticazione mista HTTPS
 
 - il client inizia il processo di autenticazione del server inviando una sfida in chiaro a cui il server risponde con una sfida firmata (con la propria chiave privata) che presenta insieme al proprio certificato utente.
 - il client per prima cosa verifica l'attendibilità del certificato utente (che autentica la chiave pubblica) verificando la firma della CA con la chiave pubblica della stessa contenuta nel certificato CA installato nel suo SO. Poi controlla che il nome di dominio con cui si presenta il server sia effettivamente quello dichiarato nel subject del certificato utente. Dopo aver controllato altri dettagli ancora (CA sia trusted e data) il certificato utente è verificato.
@@ -393,12 +370,8 @@
 - Da questo momento in poi, sia il client che il server posseggono la medesima chiave di sessione che possono utilizzare per cifrare i dati in entrambe le direzioni.
 
 
-## 42. Standards di autenticazione eIDASe ISO/IEC 2915
 
-- Livelli di garanzia LOA
-
-
-## 43. Identità digitale
+## 6. Identità digitale
 
 - E’ l’identità di una persona in Internet.
 - Internet però è per sua natura sostanzialmente anonima nel senso che l’identità digitale può non corrispondere all’identità reale.
@@ -406,7 +379,7 @@
 - Identità ufficiale (Official digital identity) è basata su documenti ufficiali del mondo reale. La fase di registrazione dell’utente è molto più forte e realizza una corrispondenza affidabile tra mondo online e mondo fisico. Le persone sono tenute a presentare un documento di identità ufficiale del mondo reale (certificato di nascita, passaporto ecc.) per autenticare la propria identità prima del rilascio della credenziali utilizzabili online.
 
 
-## 44. Aspetti critici di una autenticazione
+### 6.1 Aspetti critici di una autenticazione
 
 <img src="img/authutente/matrice_loa.png" alt="Aspetti critici di una autenticazione" width="600px">
 
@@ -416,7 +389,7 @@
 - autenticazione online. Altrimenti indicato come garanzia dell’autenticazione (authentication assurance).
 
 
-## 45. Livelli di garanzia di una autenticazione
+### 6.2 Livelli di garanzia di una autenticazione
 
 - Secondo il regolamento eIDAS (recepito da tutti gli stati UE) esistono tre livelli di garanzia (asurance levels):
 - Il livello di affidabilità basso (low) si riferisce a mezzi di identificazione elettronica che forniscono un grado di sicurezza limitato riguardo all'identità pretesa o dichiarata di una persona. (Lieve diminuzione del rischio di uso abusivo o alterazione dell'identità)
@@ -424,7 +397,7 @@
 - Il livello di affidabilità elevato (high) si riferisce a un mezzo di identificazione elettronica che fornisce riguardo all'identità, pretesa o dichiarata, di una persona un grado di sicurezza molto elevato. (Eliminazione del rischio di uso abusivo o alterazione dell'identità)
 
 
-## 46. Scelta dei livelli legata al rischio
+#### Scelta dei livelli legata al rischio
 
 - Il livello di garanzia richiesto può essere stimato in base a:
 - l'importanza dei dati e i potenziali danni se tali dati dovessero essere ottenuti o modificati da utenti non autorizzati
@@ -440,15 +413,10 @@
   - L’impatto di un’eccessiva verifica dell’identità (ovvero, la raccolta e l’archiviazione sicura di più informazioni su una persona di quelle necessarie per fornire con successo il servizio digitale).
 
 
-## 47. Livelli di affidabilità di una autenticazione
-
 <img src="img/authutente/livelli_spid_eidas.png" alt="Livelli di affidabilità di una autenticazione" width="600px">
 
 
-## 48. Livelli di affidabilità SPID
-
-
-## 49. LOA1
+### 6.3 LOA1
 
 - In LoA1, c'è una fiducia minima (cioè poca o nessuna) nell'identità dichiarata dall’utente, ma una certa sicurezza che l’utente sia identificabile come lo stesso su eventi di autenticazione consecutivi.
 - Non ha un livello corrispondente nella definizione eIDAS.
@@ -458,7 +426,7 @@
 - I protocolli di autenticazione possono essere basici senza l’implementazione di meccanismi complessi di protezione della comunicazione ma la trasmissione della password in chiaro su un canale insicuro non è consigliabile (meglio un tunnel cifrato).
 
 
-## 50. LOA2
+### 6.4 LOA2
 
 - È equivalente al livello basso secondo la definizione eIDAS, che fa riferimento a una credenziale di identificazione elettronica che fornisce un grado limitato di fiducia nell'identità dichiarata di una persona.
 - In fase di registrazione viene introdotta una qualche forma di verifica dell'identità, che richiede la presentazione (anche online) di informazioni di identificazione provenienti da una fonte autorevole.
@@ -466,7 +434,7 @@
 - I protocolli di autenticazione devono proteggere da intercettazioni, attacchi replay, ecc.
 
 
-## 51. LOA3
+### 6.5 LOA3
 
 - È equivalente al livello sostanziale secondo la definizione eIDAS, che fa riferimento a una credenziale di identificazione elettronica che fornisce un grado sostanziale di fiducia nell'identità dichiarata di una persona.
 - In fase di registrazione viene introdotta una verifica dell'identità, che richiede la presentazione (in presenza o  online) di informazioni di identificazione provenienti da una fonte autorevole che devono essere verificate e controllate dall’autorità di registrazione.
@@ -475,7 +443,7 @@
 - LoA3 viene utilizzato quando associato ad un'autenticazione errata è associata un rischio sostanziale .
 
 
-## 52. LOA4
+### 6.6 LOA4
 
 - Rappresenta il più alto livello di garanzia definito dalla norma ISO/IEC 2915. È equivalente al livello alto secondo la definizione eIDAS, che fa riferimento a una credenziale di identificazione elettronica che fornisce un grado elevato di fiducia nell'identità dichiarata di una persona.
 - In fase di registrazione viene introdotta una forma forte di verifica dell'identità, che richiede la presentazione in presenza di informazioni di identificazione provenienti da una fonte autorevole che devono essere verificate e controllate dall’autorità di registrazione.
