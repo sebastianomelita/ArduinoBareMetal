@@ -64,6 +64,12 @@ Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server
 
 **Almeno 2 reader** (ridondanza fisica). I reader sono **IP nativi con client MQTT integrato** e si connettono **direttamente al SUM** via WAN cellulare (4G/5G) con un router di confine in armadietto stradale. La validazione del tap è **autonoma sul reader**: autenticazione mutua, lettura/debito atomico sul *value file* della card e controllo della **deny-list locale**, senza dipendere dal SUM. Il SUM resta autorità di **clearing**, non di autorizzazione per singolo tap. Ogni reader mantiene la deny-list (aggiornata con TTL) e un **buffer flash** con gli eventi firmati (UUID) da riconciliare al ripristino del collegamento. Politica di rischio: addebito ammesso fino a una **soglia di saldo negativo** configurata, recuperata al successivo top-up online.
 
+Il comportamento del reader è descritto da una **macchina a stati** con tre stati operativi — *Online*, *Offline*, *Riconciliazione* — le cui transizioni dipendono dalla disponibilità della WAN e dallo svuotamento del buffer. In tutti gli stati la validazione del tap resta locale: se la WAN è assente già all'avvio, il reader entra direttamente in *Offline* e continua a operare.
+
+<img src="../img/macchina_stati_reader_catB.svg" alt="Macchina a stati del reader Cat. B: Online, Offline, Riconciliazione" width="800">
+
+*Figura 8 — Macchina a stati del reader Cat. B. La validazione del tap è locale in tutti gli stati; la connettività con il SUM determina solo quando l'evento viene inviato (Online), accodato (Offline) o riconciliato dal buffer (Riconciliazione).*
+
 ---
 
 ## 3. Planimetrie fisiche e cablaggio strutturato
