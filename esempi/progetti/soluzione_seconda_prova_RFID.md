@@ -26,7 +26,7 @@ Il sistema è un'infrastruttura metropolitana per la gestione di card di traspor
 
 L'infrastruttura è modellata come **rete di reti** a topologia *hub-and-spoke*. Le reti di sito sono **reti laterali (spoke)** attestate, tramite il proprio **router perimetrale di sito** (R-A/R-B/R-C), su una **rete di trasporto IP** metropolitana — un trasporto generico e **non fidato**, che può essere anche Internet pubblica. Il **gateway VPN del SUM** (hub) aggrega tutte le reti laterali: sopra il trasporto corrono **tunnel IPsec punto-punto**, uno per sito, cifrati end-to-end, che costituiscono le dorsali logiche.
 
-<img src="../img/architettura_hub_spoke_vpn_ipsec.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM">
+<img src="../img/architettura_hub_spoke_vpn_ipsec.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM" width="800px">
 
 *Figura 1 — Architettura hub-and-spoke. Le reti laterali (spoke) — Sito Cat. A, Sito Cat. B, Sede controllori — raggiungono il SUM (hub) tramite **tunnel IPsec cifrati**, instaurati dai router perimetrali R-A/R-B/R-C su una **rete di trasporto IP non fidata**. La cifratura è end-to-end tra ogni R-x e il gateway del SUM, quindi il trasporto resta attraversabile senza doversene fidare. Nel SUM, il **gateway VPN con firewall e WAF** fa da perimetro davanti alla **server farm** (broker MQTT cluster, app server, DB centrale).*
 
@@ -41,10 +41,6 @@ Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server
 **Almeno 2 reader** (ridondanza fisica). I reader sono **IP nativi con client MQTT integrato** e si connettono **direttamente al SUM** via WAN cellulare (4G/5G) con un router di confine in armadietto stradale. La validazione del tap è **autonoma sul reader**: autenticazione mutua, lettura/debito atomico sul *value file* della card e controllo della **deny-list locale**, senza dipendere dal SUM. Il SUM resta autorità di **clearing**, non di autorizzazione per singolo tap. Ogni reader mantiene la deny-list (aggiornata con TTL) e un **buffer flash** con gli eventi firmati (UUID) da riconciliare al ripristino del collegamento. Politica di rischio: addebito ammesso fino a una **soglia di saldo negativo** configurata, recuperata al successivo top-up online.
 
 Il comportamento del reader è descritto da una **macchina a stati** con tre stati operativi — *Online*, *Offline*, *Riconciliazione* — le cui transizioni dipendono dalla disponibilità della WAN e dallo svuotamento del buffer. In tutti gli stati la validazione del tap resta locale: se la WAN è assente già all'avvio, il reader entra direttamente in *Offline* e continua a operare.
-
-<img src="../img/1_architettura_hub_spoke.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM" width="800px">
-
-*Figura 8 — Macchina a stati del reader Cat. B. La validazione del tap è locale in tutti gli stati; la connettività con il SUM determina solo quando l'evento viene inviato (Online), accodato (Offline) o riconciliato dal buffer (Riconciliazione).*
 
 ---
 
