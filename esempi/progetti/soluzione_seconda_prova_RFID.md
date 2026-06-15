@@ -67,7 +67,7 @@ Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server
 
 Il comportamento del reader è descritto da una **macchina a stati** con tre stati operativi — *Online*, *Offline*, *Riconciliazione* — le cui transizioni dipendono dalla disponibilità della WAN e dallo svuotamento del buffer. In tutti gli stati la validazione del tap resta locale: se la WAN è assente già all'avvio, il reader entra direttamente in *Offline* e continua a operare.
 
-<img src="../img/macchina_stati_reader_catB.svg" alt="Macchina a stati del reader Cat. B: Online, Offline, Riconciliazione" width="800">
+<img src="../img/macchina_stati_reader_catB.svg" alt="Macchina a stati del reader Cat. B: Online, Offline, Riconciliazione" width="600px">
 
 *Figura 8 — Macchina a stati del reader Cat. B. La validazione del tap è locale in tutti gli stati; la connettività con il SUM determina solo quando l'evento viene inviato (Online), accodato (Offline) o riconciliato dal buffer (Riconciliazione).*
 
