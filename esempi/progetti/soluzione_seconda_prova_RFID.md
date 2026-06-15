@@ -198,12 +198,14 @@ interface range <porte-server>
 
 ### 5.1 Subnetting del centro SUM (datacenter)
 
+> Convenzione: **gateway sull'ultimo indirizzo utile (`.254`)**, host da `.1` a `.253`, broadcast `.255`.
+
 | Zona | Subnet | Maschera | Range host | Host utili | Gateway | Ruolo |
 |---|---|---|---|---|---|---|
-| DMZ | 10.0.1.0/28 | 255.255.255.240 | .1–.14 | 14 | 10.0.1.1 | WAF + API gateway controllori (HTTPS/JWT), front-end pubblico |
-| Server farm | 10.0.2.0/24 | 255.255.255.0 | .1–.254 | 254 | 10.0.2.1 | broker MQTT cluster, app server, DB centrale (zona interna) |
-| Admin / management | 10.0.3.0/28 | 255.255.255.240 | .1–.14 | 14 | 10.0.3.1 | postazioni amministratori, NMS; gestione apparati SUM e stazioni via tunnel |
-| Dorsali VPN (lato PE) | 10.255.0.0/16 | /30 per sito | .1 ↔ .2 | 2 per sito | — | terminazione dei tunnel IPsec punto-punto (uno per sito) |
+| DMZ | 10.0.1.0/24 | 255.255.255.0 | .1–.253 | 253 | 10.0.1.254 | WAF + API gateway controllori (HTTPS/JWT), front-end pubblico |
+| Server farm | 10.0.2.0/24 | 255.255.255.0 | .1–.253 | 253 | 10.0.2.254 | broker MQTT cluster, app server, DB centrale (zona interna) |
+| Admin / management | 10.0.3.0/24 | 255.255.255.0 | .1–.253 | 253 | 10.0.3.254 | postazioni amministratori, NMS; gestione apparati SUM e stazioni via tunnel |
+| Dorsali VPN (lato PE) | 10.255.x.0/30 | 255.255.255.252 | .1 ↔ .2 | 2 | — (punto-punto) | terminazione dei tunnel IPsec, uno per sito |
 
 **Allocazione statica nella server farm (10.0.2.0/24):**
 
@@ -214,8 +216,9 @@ interface range <porte-server>
 | App server | 10.0.2.20 | logica applicativa / backend REST |
 | DB master / slave | 10.0.2.30 / .31 | database centrale (replica master-slave) |
 | DNS / NTP interni | 10.0.2.5 | servizi infrastrutturali del datacenter |
+| Gateway | 10.0.2.254 | router/firewall di confine del SUM (PE) |
 
-**Riepilogo allocazione metropolitana** (sostituisce la riga "Schema metropolitano (estratto)"):
+**Riepilogo allocazione metropolitana:**
 
 | Blocco | Allocazione | Dettaglio |
 |---|---|---|
