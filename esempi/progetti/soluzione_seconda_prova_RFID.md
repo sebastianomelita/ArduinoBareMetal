@@ -56,13 +56,13 @@ Nel nostro progetto le dorsali logiche sono realizzate come **secure VPN IPsec**
 
 ### 2.1 Categoria A — luoghi ad alta frequenza (stazioni treni, metro principali, pontili capolinea)
 
-Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server edge** che esegue il middleware RFID (gestione sessione di viaggio, cache saldo, traduzione semantica dell'UID, risposta locale a bassa latenza) e a un **router/firewall perimetrale** con VPN verso il SUM. Il feedback al viaggiatore è gestito localmente in < 200 ms; verso il SUM si trasmettono eventi aggregati.
+Reader connessi in **LAN locale** a uno **switch PoE+**, attestati a un **server edge** che esegue il middleware RFID (gestione sessione di viaggio, traduzione semantica dell'UID, risposta locale a bassa latenza) e a un **router/firewall perimetrale** con VPN verso il SUM. Il feedback al viaggiatore è gestito localmente in < 200 ms; verso il SUM si trasmettono eventi aggregati.
 
-*Motivazione:* il server edge riduce latenza e banda verso il SUM e garantisce continuità di servizio anche con link WAN temporaneamente assente.
+*Motivazione e modello offline.* Il server edge riduce latenza e banda verso il SUM, ma la continuità in caso di WAN assente **non** si appoggia a una cache del saldo: l'autorità sul valore è la **card stessa**. Al tap l'edge autentica la card, legge il *value file* DESFire (saldo + stato viaggio), verifica la deny-list locale e **addebita atomicamente sul value file con Transaction MAC**. L'autorizzazione si chiude in locale anche a SUM irraggiungibile; verso il SUM si trasmettono solo eventi già conclusi, per il clearing.
 
 ### 2.2 Categoria B — fermate a bassa frequenza (metro secondarie, tram/bus, pontili intermedi)
 
-**Almeno 2 reader** (ridondanza fisica). I reader sono **IP nativi con client MQTT integrato** e si connettono **direttamente al SUM** via WAN cellulare (4G/5G) con un router di confice in armadietto stradale. Nessun server locale: la logica risiede nel SUM. Ogni reader ha **buffer flash** per accumulare le transazioni in caso di disconnessione e ritrasmetterle al ripristino.
+**Almeno 2 reader** (ridondanza fisica). I reader sono **IP nativi con client MQTT integrato** e si connettono **direttamente al SUM** via WAN cellulare (4G/5G) con un router di confine in armadietto stradale. La validazione del tap è **autonoma sul reader**: autenticazione mutua, lettura/debito atomico sul *value file* della card e controllo della **deny-list locale**, senza dipendere dal SUM. Il SUM resta autorità di **clearing**, non di autorizzazione per singolo tap. Ogni reader mantiene la deny-list (aggiornata con TTL) e un **buffer flash** con gli eventi firmati (UUID) da riconciliare al ripristino del collegamento. Politica di rischio: addebito ammesso fino a una **soglia di saldo negativo** configurata, recuperata al successivo top-up online.
 
 ---
 
@@ -393,9 +393,15 @@ Crittografia IPsec (ISAKMP policy AES-256/SHA-256/DH14, transform-set ESP-AES-25
 
 ## 8. Continuità di servizio e sicurezza
 
-**Continuità.** Cat. A: link WAN ridondato (fibra + backup 4G/5G con failover) e cache del saldo sul server edge. Cat. B: 2 reader ridondati con buffer flash e risincronizzazione. SUM: broker MQTT in cluster active-active, DB master-slave, datacenter Tier III. Deduplica degli eventi tramite **UUID** per evento (finestra di 60 s).
+**Continuità.** Cat. A: link WAN ridondato (fibra + backup 4G/5G con failover) e server edge che valida in locale. Cat. B: 2 reader ridondati con validazione autonoma e buffer flash con risincronizzazione. SUM: broker MQTT in cluster active-active, DB master-slave, datacenter Tier III. Deduplica degli eventi tramite **UUID** per evento (finestra di 60 s).
 
-**Sicurezza.** TLS 1.3 / VPN IPsec AES-256 verso il SUM; reader autenticati al broker con certificati **X.509**; segmentazione **VLAN** + ACL inter-VLAN; **firewall** perimetrale, **IDS/IPS**, **WAF** sulle API; separazione DMZ/zona interna; SIEM con retention 12 mesi. Card: autenticazione mutua **AES-128**, chiavi diversificate per UID, dati cifrati. Privacy: **identificativo opaco** sulla card, dati personali solo nel back-end, **pseudonimizzazione** nei log, conformità **GDPR** (diritto alla cancellazione dei dati di mobilità).
+**Transazioni in modalità degradata.** Stato e valore risiedono nel *value file* cifrato della card (DESFire EV3): credito/debito atomici autenticati AES-128 con **Transaction MAC** come prova crittografica. Il reader/edge autorizza in locale (< 1 s) anche con WAN assente; l'evento, identificato da **UUID**, viene accodato e inviato al SUM via MQTT/TLS (QoS 1) al ripristino. Il SUM esegue **clearing e deduplica per UUID** e ridistribuisce la **deny-list** (card sospese/rubate) con TTL. Feedback al passeggero definito anche in degradato: "viaggio registrato" su esito positivo, rifiuto su deny-list o saldo oltre soglia.
+
+<img src="../img/7_transazione_card_offline.svg" alt="Transazione su card NFC in modalità offline: ciclo di autorizzazione locale e riconciliazione asincrona con il SUM">
+
+*Figura 7 — Transazione su card NFC in modalità offline. Cornice superiore: il ciclo di autorizzazione (autenticazione → lettura value file → verifica → debito atomico → feedback) si chiude tra card e reader in < 1 s, senza rete. Cornice inferiore: l'evento firmato viene riconciliato con il SUM in modo asincrono al ripristino della WAN.*
+
+**Sicurezza.** TLS 1.3 / VPN IPsec AES-256 verso il SUM; reader autenticati al broker con certificati **X.509**; segmentazione **VLAN** + ACL inter-VLAN; **firewall** perimetrale, **IDS/IPS**, **WAF** sulle API; separazione DMZ/zona interna; SIEM con retention 12 mesi. Card: autenticazione mutua **AES-128**, chiavi diversificate per UID, dati cifrati. Privacy: la card porta un **value file cifrato e pseudonimizzato** col minimo stato necessario al funzionamento offline; i dati di mobilità nominali restano nel back-end, **pseudonimizzazione** nei log, conformità **GDPR** (diritto alla cancellazione dei dati di mobilità).
 
 ---
 
