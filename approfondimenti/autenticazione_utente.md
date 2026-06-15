@@ -210,7 +210,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 #### Protocollo di autenticazione sfida/risposta CHAP
 
-<img src="img/authutente/chap_sfida_risposta.png" alt="Protocollo di autenticazione sfida/risposta CHAP" width="600px">
+<img src="img/authutente/chap_sfida_risposta.png" alt="Protocollo di autenticazione sfida/risposta CHAP" width="500px">
 
 - È il PAP protetto dagli attacchi MITM replay con un nonce
 - Ha un punto debole: le password nel database sono più sensibili ad un attacco a dizionario poiché non si può utilizzare il metodo del salt per rafforzare la password
