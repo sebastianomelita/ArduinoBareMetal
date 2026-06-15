@@ -41,7 +41,7 @@ L'infrastruttura è modellata come **rete di reti** a topologia *hub-and-spoke*.
  └───────────────────────┘
 ```
 
-Le subnet di dorsale logiche (interfacce `Tunnel0`): CE-A `10.255.1.0/30`, CE-B `10.255.2.0/30`, CE-C `10.255.3.0/30`, con il PE come secondo estremo. Il PNAT sul router di confine condivide l'indirizzo pubblico WAN con gli host interni.
+Le subnet di dorsale logiche (interfacce `Tun0`): CE-A `10.255.1.0/30`, CE-B `10.255.2.0/30`, CE-C `10.255.3.0/30`, con il PE come secondo estremo. Il PNAT sul router di confine condivide l'indirizzo pubblico WAN con gli host interni.
 
 ![Architettura generale con flussi L3 IP e L7 MQTT](../img/1_architettura_flussi_L3_L7.svg)
 *Figura 1 — Architettura generale (icone Cisco). Tratteggio nero = flussi L3 IP (dorsali logiche VPN tra i firewall dei siti e il firewall del SUM); punteggiato azzurro = flussi L7 MQTT (client MQTT dei siti ↔ broker centrale); bobina = interfaccia wireless L2 NFC/RFID HF (ISO 14443) tra reader e card.*
@@ -137,9 +137,9 @@ Il comportamento del reader è descritto da una **macchina a stati** con tre sta
 
 ```
                  WAN / rete di trasporto IP
-                          │ Gi0/0   (+ Tunnel0 → SUM)
-                  ┌───────┴────────┐
-             DNS  │      R-FW      │  router-on-a-stick:
+                          │ Gi0/0   (+ Tun0 → SUM)
+                  ┌───────┴────────┐   router-on-a-stick:
+             DNS  │      R-FW      │     Tun0   10.255.1.1
              DHCP │  apparato L3   │     Gi0/1.10  10.1.1.254   (RFID)
                   └───────┬────────┘     Gi0/1.20  10.1.2.254   (server)
                           │ Gi0/1        Gi0/1.99  10.1.99.254 (mgmt)
@@ -193,7 +193,7 @@ interface range <porte-server>
 
 | Interfaccia | Subnet | Indirizzi | Ruolo |
 |---|---|---|---|
-| `Tunnel0` (R-FW) ↔ PE SUM | 10.255.1.0/30 | .1 ↔ .2 | dorsale VPN IPsec di transito |
+| `Tun0` (R-FW) ↔ PE SUM | 10.255.1.0/30 | .1 ↔ .2 | dorsale VPN IPsec di transito |
 | `Gi0/0` (WAN) | assegnata da ISP | dinamica (DHCP) | uscita verso il trasporto IP |
 
 ---
@@ -274,9 +274,9 @@ interface GigabitEthernet0/1.99
  ip access-group VLAN99-IN in
  ip inspect STATEFUL in
 !
-interface Tunnel0
+interface Tun0
  description Dorsale VPN verso SUM (10.255.1.0/30)
- ip address 10.255.1.254 255.255.255.252
+ ip address 10.255.1.1 255.255.255.252
  tunnel source GigabitEthernet0/0
  tunnel destination <IP_PE_SUM>
  tunnel protection ipsec profile VPN-SUM
@@ -284,7 +284,7 @@ interface Tunnel0
 !
 ! === Instradamento: subnet interne direttamente connesse ===
 ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0
-ip route 10.0.0.0 255.0.0.0 Tunnel0
+ip route 10.0.0.0 255.0.0.0 Tun0
 !
 ! === PNAT (overload), con esclusione del traffico verso il SUM (va nel tunnel) ===
 ip access-list extended NAT-INTERNI
@@ -387,7 +387,7 @@ ip access-list extended ACL-WAN-IN
  deny   ip any any log
 ```
 
-### 6.6 — `ACL-TUNNEL-IN` · dorsale VPN dal SUM (Tunnel0) · default-deny
+### 6.6 — `ACL-TUNNEL-IN` · dorsale VPN dal SUM (Tun0) · default-deny
 
 Sul tunnel arriva il traffico interno dal SUM. Si ammette solo ciò che il SUM **inizia** (gestione remota verso il management); le risposte alle sessioni dell'edge le apre CBAC.
 
