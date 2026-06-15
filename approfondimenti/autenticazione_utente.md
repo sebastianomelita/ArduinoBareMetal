@@ -29,7 +29,7 @@
 
 ## 4. Fattori di autenticazione
 
-<img src="img/authutente/fattori_di_autenticazione.jpg" alt="Mappa concettuale degli attacchi informatici" width="600px">
+<img src="img/authutente/fattori_di_autenticazione.png" alt="Mappa concettuale degli attacchi informatici" width="600px">
 
 ## 5. Mappa concettuale: attacchi informatici
 
