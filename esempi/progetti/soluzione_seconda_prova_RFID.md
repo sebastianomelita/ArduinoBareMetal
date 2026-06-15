@@ -149,7 +149,7 @@ Il comportamento del reader è descritto da una **macchina a stati** con tre sta
                   │  mgmt SVI .99  │      srv-edge .10 / srv-sis .11
                   └──┬─────────┬───┘
        trunk 10,99   │         │  trunk 10,99      (VLAN 20: pruned)
-              ┌──────┴───┐ ┌───┴─────┐
+              ┌──────┴──┐  ┌───┴─────┐
               │  AS-0   │  │  AS-2   │  access switch PoE+ (FD)
               │ mgmt.99 │  │ mgmt.99 │
               └────┬────┘  └────┬────┘
