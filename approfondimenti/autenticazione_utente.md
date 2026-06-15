@@ -343,7 +343,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 #### Verifica del certificato di un server
 
-<img src="img/authutente/verifica_certificato_server.png" alt="Verifica del certificato di un server" width="400px">
+<img src="img/authutente/verifica_certificato_server.png" alt="Verifica del certificato di un server" width="600px">
 
 - Un server si presenta con una credenziale firmata e con un certificato utente
 - Il controllo si basa sul presupposto che il client che controlla possegga un certificato CA che validi la firma sul certificato da controllare.
