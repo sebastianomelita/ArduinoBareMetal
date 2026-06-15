@@ -22,11 +22,11 @@
   - Dalla sua conservazione: deve essere memorizzato in archivi sicuri
   - Dalla sua comunicazione: deve essere adeguatamente protetta (meglio ancora se si evita il più possibile di comunicarlo)
 
-<img src="img/authutente/fattori_di_autenticazione.png" alt="Mappa concettuale degli attacchi informatici" width="600px">
+<img src="img/authutente/fattori_di_autenticazione.png" alt="Mappa concettuale degli attacchi informatici" width="1000px">
 
 ## 3. Attacchi informatici
 
-<img src="img/authutente/mappa_attacchi_informatici.jpg" alt="Mappa concettuale degli attacchi informatici" width="600px">
+<img src="img/authutente/mappa_attacchi_informatici.jpg" alt="Mappa concettuale degli attacchi informatici" width="1000px">
 
 
 ### 3.1Tipi di attacco
