@@ -32,12 +32,12 @@
 
 ## 5. Mappa concettuale: attacchi informatici
 
-<img src=" img/authutente/mappa_attacchi_informatici.jpg" alt="Mappa concettuale degli attacchi informatici" width="600px">
+<img src="img/authutente/mappa_attacchi_informatici.jpg" alt="Mappa concettuale degli attacchi informatici" width="600px">
 
 
 ## 6. Tipi di attacco
 
-<img src=" img/authutente/intrusi_passivi_attivi.jpg" alt="Tipi di attacco" width="600px">
+<img src="img/authutente/intrusi_passivi_attivi.jpg" alt="Tipi di attacco" width="600px">
 
 - Anche se gli algoritmi di cifratura sono molto sicuri spesso i protocolli di sicurezza che li utilizzano lo sono molto meno: se un messaggio non può essere decifrato le parti che lo scambiano possono essere imbrogliate
 - Punto debole: fase di autenticazione delle parti
@@ -65,7 +65,7 @@
 
 ## 9. Tipi di attacco MITM (Man In The Middle)
 
-<img src=" img/authutente/tipi_mitm.jpg" alt="Tipi di attacco MITM (Man In The Middle)" width="600px">
+<img src="img/authutente/tipi_mitm.jpg" alt="Tipi di attacco MITM (Man In The Middle)" width="600px">
 
 - Soluzioni:
 - Token di sessione per l’attacco replay
@@ -115,7 +115,7 @@
 
 ## 15. Conservazione della password
 
-<img src=" img/authutente/tabella_password_salt_hash.png" alt="Conservazione della password" width="600px">
+<img src="img/authutente/tabella_password_salt_hash.png" alt="Conservazione della password" width="600px">
 
 - La conservazione di una password in un archivio può essere resa sicura:
   - Proteggendo l’archivio da accessi non autorizzati
@@ -146,7 +146,7 @@
 
 ## 18. Mappa concettuale: autenticazione utente
 
-<img src=" img/authutente/mappa_autenticazione_utente.jpg" alt="Mappa concettuale dell'autenticazione utente" width="600px">
+<img src="img/authutente/mappa_autenticazione_utente.jpg" alt="Mappa concettuale dell'autenticazione utente" width="600px">
 
 
 ## 19. Autenticazione debole
@@ -172,7 +172,7 @@
 
 ## 21. Protocollo di autenticazione PAP
 
-<img src=" img/authutente/pap_schema.png" alt="Protocollo di autenticazione PAP" width="600px">
+<img src="img/authutente/pap_schema.png" alt="Protocollo di autenticazione PAP" width="600px">
 
 - Va usato su un canale sicuro perché è esposto ad attacco replay
 - l Password Authentication Protocol è un protocollo di autenticazione base di un utente che chiede un accesso ad un sistema che prevede lo scambio del segreto ad ogni autenticazione:
@@ -189,7 +189,7 @@
 
 ## 22. Protocollo di autenticazione PAP
 
-<img src=" img/authutente/password_creazione_verifica.png" alt="Protocollo di autenticazione PAP" width="600px">
+<img src="img/authutente/password_creazione_verifica.png" alt="Protocollo di autenticazione PAP" width="600px">
 
 - Il PAP (Password Authentication Protocol) in realtà si compone di due fasi:
   - Identificazione dell’utente e creazione della password: è il momento in cui viene registrato un nuovo utente sul sistema. Si esegue una sola volta all’inizio. Viene calcolata e memorizzata l’impronta sul database.
@@ -231,7 +231,7 @@
 
 ## 27. Protocollo di autenticazione sfida/risposta CHAP
 
-<img src=" img/authutente/chap_sfida_risposta.png" alt="Protocollo di autenticazione sfida/risposta CHAP" width="600px">
+<img src="img/authutente/chap_sfida_risposta.png" alt="Protocollo di autenticazione sfida/risposta CHAP" width="600px">
 
 - È il PAP protetto dagli attacchi MITM replay con un nonce
 - Ha un punto debole: le password nel database sono più sensibili ad un attacco a dizionario poiché non si può utilizzare il metodo del salt per rafforzare la password
@@ -263,7 +263,7 @@
 
 ## 29. TOTP su canale insicuro
 
-<img src=" img/authutente/2fa_login.jpg" alt="TOTP su canale insicuro" width="600px">
+<img src="img/authutente/2fa_login.jpg" alt="TOTP su canale insicuro" width="600px">
 
   - Il canale sicuro su cui effettuare l’autenticazione 2F è già stato creato (con crittografia ibrida) da una controparte che si era già in precedenza autenticata su un canale insicuro mediante una autenticazione forte.
 
@@ -284,7 +284,7 @@
 
 ## 32. Fase di registrazione Scambio delle chiavi pubbliche
 
-<img src=" img/authutente/scambio_chiavi_pubbliche.png" alt="Fase di registrazione Scambio delle chiavi pubbliche" width="600px">
+<img src="img/authutente/scambio_chiavi_pubbliche.png" alt="Fase di registrazione Scambio delle chiavi pubbliche" width="600px">
 
 - Avviene una o più volte anche su canali insicuri
 - Necessità di associazione autenticata tra l’utente e la chiave pubblica ottenuta mediante una procedura di autenticazione della chiave pubblica (prevenzione di un attacco Man-In-The-Middle)
@@ -325,7 +325,7 @@
 
 ## 36. Autenticazione singola asimmetrica con sfida in chiaro
 
-<img src=" img/authutente/auth_singola_asimmetrica.jpg" alt="Autenticazione singola asimmetrica con sfida in chiaro" width="600px">
+<img src="img/authutente/auth_singola_asimmetrica.jpg" alt="Autenticazione singola asimmetrica con sfida in chiaro" width="600px">
 
 - Bob manda ad Alice un messaggio contenente la sua identità è la nonce che ha scelto lui, b.
 - Alice risponde mandando la sua identità e la propria firma sulla sfida b; Fase  scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente
@@ -336,7 +336,7 @@
 
 ## 37. Autenticazione mutua asimmetrica con sfida in chiaro
 
-<img src=" img/authutente/auth_mutua_asimmetrica.jpg" alt="Autenticazione mutua asimmetrica con sfida in chiaro" width="600px">
+<img src="img/authutente/auth_mutua_asimmetrica.jpg" alt="Autenticazione mutua asimmetrica con sfida in chiaro" width="600px">
 
 - Bob manda ad Alice un messaggio contenente la sua identità è la nonce che ha scelto lui, b;
 - Alice risponde mandando la sua identità e la sua nonce a e la propria firma sulla nonce di B); Fase di scambio credenziali (Credenziali = sfida firmata).
@@ -367,7 +367,7 @@
 
 ## 40. Verifica del certificato di un server
 
-<img src=" img/authutente/verifica_certificato_server.png" alt="Verifica del certificato di un server" width="600px">
+<img src="img/authutente/verifica_certificato_server.png" alt="Verifica del certificato di un server" width="600px">
 
 - Un server si presenta con una credenziale firmata e con un certificato utente
 - Il controllo si basa sul presupposto che il client che controlla possegga un certificato CA che validi la firma sul certificato da controllare.
@@ -407,7 +407,7 @@
 
 ## 44. Aspetti critici di una autenticazione
 
-<img src=" img/authutente/matrice_loa.png" alt="Aspetti critici di una autenticazione" width="600px">
+<img src="img/authutente/matrice_loa.png" alt="Aspetti critici di una autenticazione" width="600px">
 
 - La fiducia o il grado di confidenza in una corretta autenticazione deriva dalla forza (misurata in livelli) dei processi di:
 - registrazione dell’utente, ad esempio la prova dell'identità, la sua verifica e la sua autenticazione. Altrimenti indicato come garanzia dell'identità (identity assurance)
@@ -441,7 +441,7 @@
 
 ## 47. Livelli di affidabilità di una autenticazione
 
-<img src=" img/authutente/livelli_spid_eidas.png" alt="Livelli di affidabilità di una autenticazione" width="600px">
+<img src="img/authutente/livelli_spid_eidas.png" alt="Livelli di affidabilità di una autenticazione" width="600px">
 
 
 ## 48. Livelli di affidabilità SPID
