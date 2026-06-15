@@ -58,7 +58,7 @@
 
 #### Tipi di attacco MITM (Man In The Middle)
 
-<img src="img/authutente/tipi_mitm.jpg" alt="Tipi di attacco MITM (Man In The Middle)" width="800px">
+<img src="img/authutente/tipi_mitm.jpg" alt="Tipi di attacco MITM (Man In The Middle)" width="700px">
 
 - Soluzioni:
 - Token di sessione per l’attacco replay
