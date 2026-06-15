@@ -242,7 +242,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 #### TOTP su canale insicuro
 
-<img src="img/authutente/totp.png" alt="TOTP su canale insicuro" width="600px">
+<img src="img/authutente/totp.png" alt="TOTP su canale insicuro" width="700px">
 
   - Il canale sicuro su cui effettuare l’autenticazione 2F è già stato creato (con crittografia ibrida) da una controparte che si era già in precedenza autenticata su un canale insicuro mediante una autenticazione forte.
 
