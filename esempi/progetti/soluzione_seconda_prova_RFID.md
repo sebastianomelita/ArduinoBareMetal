@@ -202,12 +202,6 @@ interface range <porte-server>
 
 Instradamento inter-VLAN collassato sul solo router perimetrale, NAT overload, dorsale VPN verso il SUM, ACL conformi (default-deny su reader/server/WAN/tunnel, default-allow solo sul piano di management) e ritorno stateful via CBAC. Per ogni interfaccia: **mini-tabella ACE astratta + blocco IOS** corrispondente.
 
-## 6. Configurazione di R-FW (Cisco IOS — router-on-a-stick)
-
-Instradamento inter-VLAN collassato sul solo router perimetrale, NAT overload, dorsale VPN verso il SUM, ACL conformi (default-deny su tutte le interfacce, interne ed esterne) e ritorno stateful via CBAC. Per ogni ACL: **mini-tabella ACE astratta + blocco IOS** corrispondente.
-
-## 6. Configurazione di R-FW (Cisco IOS — router-on-a-stick)
-
 ### 6.0 Matrice degli accessi (politica di flusso)
 
 > Ogni cella indica il traffico che la **sorgente (riga)** può **iniziare** verso la **destinazione (colonna)**. I ritorni delle sessioni iniziate dall'interno sono aperti dallo stateful (CBAC) e non compaiono. `✗` = negato (default-deny).
