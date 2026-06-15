@@ -105,7 +105,7 @@
 
 #### Conservazione della password
 
-<img src="img/authutente/tabella_password_salt_hash.png" alt="Conservazione della password" width="600px">
+<img src="img/authutente/tabella_password_salt_hash.png" alt="Conservazione della password" width="800px">
 
 - La conservazione di una password in un archivio può essere resa sicura:
   - Proteggendo l’archivio da accessi non autorizzati
