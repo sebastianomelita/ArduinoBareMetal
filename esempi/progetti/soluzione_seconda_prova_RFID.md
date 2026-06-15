@@ -432,8 +432,8 @@ Sul tunnel arriva il traffico interno dal SUM. Si ammette solo ciò che il SUM *
 ```cisco
 ip access-list extended ACL-TUNNEL-IN
  remark === Dal SUM: solo SSH/SNMP verso il management di stazione ===
- permit tcp 10.0.3.0 0.0.0.15 10.1.99.0 0.0.0.255 eq 22
- permit udp 10.0.3.0 0.0.0.15 10.1.99.0 0.0.0.255 eq snmp
+ permit tcp 10.0.3.0 0.0.0.255 10.1.99.0 0.0.0.255 eq 22
+ permit udp 10.0.3.0 0.0.0.255 10.1.99.0 0.0.0.255 eq snmp
  deny   ip any any log
 ```
 
