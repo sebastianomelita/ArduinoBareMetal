@@ -113,6 +113,11 @@
   - Criptando la password con una funzione di hash
 - In genere si rafforza ulteriormente la password tramite la tecnica del salt che allunga la password con una sequenza di riempimento casuale (il salt per l’appunto) che rende il database più immune ad un eventuale attacco a dizionario
 
+#### Comunicazione della password
+
+- Una password può essere scambiata:
+  - in una rete sicura: allora può essere in chiaro
+  - In una rete insicura: allora deve essere cifrata
 
 ### 4.4 Attacco a dizionario
 
@@ -127,16 +132,10 @@
   - Evitare di usare informazioni personali note all’interno della password
 
 
-### 4.5 Comunicazione della password
-
-- Una password può essere scambiata:
-  - in una rete sicura: allora può essere in chiaro
-  - In una rete insicura: allora deve essere cifrata
-
 
 ## 5 Autenticazione utente
 
-<img src="img/authutente/mappa_autenticazione_utente.jpg" alt="Mappa concettuale dell'autenticazione utente" width="600px">
+<img src="img/authutente/mappa_autenticazione_utente.jpg" alt="Mappa concettuale dell'autenticazione utente" width="1000px">
 
 
 ### 5.1 Autenticazione debole
