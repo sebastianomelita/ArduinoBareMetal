@@ -139,7 +139,7 @@ Il comportamento del reader è descritto da una **macchina a stati** con tre sta
                  WAN / rete di trasporto IP
                           │ Gi0/0   (+ Tun0 → SUM)
                   ┌───────┴────────┐   router-on-a-stick:
-             DNS  │      R-FW      │     Tun0   10.255.1.1
+             DNS  │      R-FW      │     Tun0      10.255.1.1
              DHCP │  apparato L3   │     Gi0/1.10  10.1.1.254   (RFID)
                   └───────┬────────┘     Gi0/1.20  10.1.2.254   (server)
                           │ Gi0/1        Gi0/1.99  10.1.99.254 (mgmt)
