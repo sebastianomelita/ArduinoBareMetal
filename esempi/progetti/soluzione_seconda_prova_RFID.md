@@ -206,6 +206,27 @@ Instradamento inter-VLAN collassato sul solo router perimetrale, NAT overload, d
 
 Instradamento inter-VLAN collassato sul solo router perimetrale, NAT overload, dorsale VPN verso il SUM, ACL conformi (default-deny su tutte le interfacce, interne ed esterne) e ritorno stateful via CBAC. Per ogni ACL: **mini-tabella ACE astratta + blocco IOS** corrispondente.
 
+## 6. Configurazione di R-FW (Cisco IOS — router-on-a-stick)
+
+### 6.0 Matrice degli accessi (politica di flusso)
+
+> Ogni cella indica il traffico che la **sorgente (riga)** può **iniziare** verso la **destinazione (colonna)**. I ritorni delle sessioni iniziate dall'interno sono aperti dallo stateful (CBAC) e non compaiono. `✗` = negato (default-deny).
+
+| Sorgente \ Destinazione | Reader (10.1.1.0/24) | Server (10.1.2.0/24) | Management (10.1.99.0/24) | SUM broker (10.0.2.0/24) | SUM admin (10.0.3.0/28) | Internet/WAN |
+|---|---|---|---|---|---|---|
+| **Reader** (VLAN 10) | intra-VLAN (L2) | MQTT/TLS 8883 → edge; DNS 53, NTP 123 → srv-sis | ✗ | ✗ | ✗ | ✗ |
+| **Server** (VLAN 20) | ✗ | intra-VLAN (L2) | ✗ | MQTT/TLS 8883 (solo edge, via VPN) | ✗ | DNS 53, NTP 123, HTTPS 443 |
+| **Management** (VLAN 99) | accesso pieno | accesso pieno | — | accesso pieno (via VPN) | accesso pieno | ✗ (no NAT) |
+| **SUM broker** (10.0.2.0/24) | ✗ | ✗ | ✗ | — | — | — |
+| **SUM admin** (10.0.3.0/28) | ✗ | ✗ | SSH 22, SNMP 161 (via tunnel) | ✗ | — | — |
+| **Internet/WAN** | ✗ | ✗ | ✗ | — | — | — |
+
+Letture chiave: i **reader** parlano solo col broker edge e con DNS/NTP interni; il **management** raggiunge tutto l'interno per gestirlo ma è isolato in ingresso (solo SUM admin via tunnel) e non esce su Internet; dalla **WAN** si ammette solo l'instaurazione del tunnel IPsec dal PE del SUM.
+
+---
+
+Instradamento inter-VLAN collassato sul solo router perimetrale, NAT overload, dorsale VPN verso il SUM, ACL conformi (default-deny su reader/server/WAN/tunnel; permit-all dalla sola subnet di management) e ritorno stateful via CBAC. Per ogni ACL applicata **in**: mini-tabella ACE astratta + blocco IOS.
+
 ### 6.1 — Base: routing, CBAC, DHCP, NAT, interfacce
 
 ```cisco
@@ -233,7 +254,7 @@ interface GigabitEthernet0/0
  ip access-group ACL-WAN-IN in
 !
 interface GigabitEthernet0/1
- description Trunk 802.1q verso core switch L2
+ description Trunk 802.1q verso CS (allowed vlan 10,20,99)
  no ip address
 !
 interface GigabitEthernet0/1.10
@@ -245,11 +266,18 @@ interface GigabitEthernet0/1.10
  ip inspect STATEFUL in
 !
 interface GigabitEthernet0/1.20
- description Gateway VLAN 20 - Server + Management
+ description Gateway VLAN 20 - Server
  encapsulation dot1Q 20
  ip address 10.1.2.1 255.255.255.0
  ip nat inside
  ip access-group VLAN20-IN in
+ ip inspect STATEFUL in
+!
+interface GigabitEthernet0/1.99
+ description Gateway VLAN 99 - Management (no NAT: niente uscita Internet)
+ encapsulation dot1Q 99
+ ip address 10.1.99.1 255.255.255.0
+ ip access-group VLAN99-IN in
  ip inspect STATEFUL in
 !
 interface Tunnel0
@@ -260,11 +288,11 @@ interface Tunnel0
  tunnel protection ipsec profile VPN-SUM
  ip access-group ACL-TUNNEL-IN in
 !
-! === Instradamento: subnet interne direttamente connesse, niente rotte statiche interne ===
+! === Instradamento: subnet interne direttamente connesse ===
 ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0
 ip route 10.0.0.0 255.0.0.0 Tunnel0
 !
-! === PNAT (overload), con esclusione del traffico verso il SUM (va nel tunnel, non NATtato) ===
+! === PNAT (overload), con esclusione del traffico verso il SUM (va nel tunnel) ===
 ip access-list extended NAT-INTERNI
  deny   ip 10.1.0.0 0.0.255.255 10.0.0.0 0.255.255.255
  permit ip 10.1.0.0 0.0.255.255 any
@@ -273,7 +301,7 @@ ip nat inside source list NAT-INTERNI interface GigabitEthernet0/0 overload
 
 ### 6.2 — `VLAN10-IN` · Reader NFC (Gi0/1.10) · default-deny
 
-I reader parlano **solo** col broker edge locale `10.1.2.10`, più DHCP/DNS/NTP. Niente SUM diretto, niente resto della server farm, **niente management** (gli indirizzi `10.1.2.2–.9` sono negati dal default-deny pur condividendo la subnet con i server).
+I reader parlano **solo** col broker edge `10.1.2.10`, più DHCP/DNS/NTP. Niente SUM diretto, niente management.
 
 | # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
 |---|---|---|---|---|---|---|
@@ -286,7 +314,7 @@ I reader parlano **solo** col broker edge locale `10.1.2.10`, più DHCP/DNS/NTP.
 
 ```cisco
 ip access-list extended VLAN10-IN
- remark === Reader NFC: solo broker edge + DHCP/DNS/NTP (mgmt implicitamente negato) ===
+ remark === Reader NFC: solo broker edge + DHCP/DNS/NTP ===
  permit udp host 0.0.0.0 host 255.255.255.255 eq bootps
  permit udp 10.1.1.0 0.0.0.255 host 10.1.1.1 eq bootps
  permit tcp 10.1.1.0 0.0.0.255 host 10.1.2.10 eq 8883
@@ -295,9 +323,9 @@ ip access-list extended VLAN10-IN
  deny   ip any any log
 ```
 
-### 6.3 — `VLAN20-IN` · Server + Management (Gi0/1.20) · default-deny
+### 6.3 — `VLAN20-IN` · Server (Gi0/1.20) · default-deny
 
-L'edge inoltra al broker centrale del SUM (via VPN), risolve/sincronizza e si aggiorna. Server e apparati di gestione condividono la zona di fiducia; non iniziano verso i reader (rispondono soltanto, e i ritorni li apre CBAC).
+L'edge inoltra al broker centrale del SUM (via VPN), risolve/sincronizza e si aggiorna. Non inizia verso i reader: risponde soltanto (ritorni via CBAC).
 
 | # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
 |---|---|---|---|---|---|---|
@@ -309,7 +337,7 @@ L'edge inoltra al broker centrale del SUM (via VPN), risolve/sincronizza e si ag
 
 ```cisco
 ip access-list extended VLAN20-IN
- remark === Server+mgmt: edge->broker SUM + DNS/NTP/updates ===
+ remark === Server: edge->broker SUM + DNS/NTP/updates ===
  permit tcp host 10.1.2.10 10.0.2.0 0.0.0.255 eq 8883
  permit udp 10.1.2.0 0.0.0.255 any eq domain
  permit udp 10.1.2.0 0.0.0.255 any eq ntp
@@ -317,9 +345,23 @@ ip access-list extended VLAN20-IN
  deny   ip any any log
 ```
 
-> Il traffico **intra-VLAN 20** (switch/AP → srv-sis `10.1.2.11` per syslog/SNMP, edge `.10` ↔ srv-sis `.11`) è L2 nella stessa subnet: non passa dal router, nessuna ACL serve.
+### 6.4 — `VLAN99-IN` · Management (Gi0/1.99) · permit-all dalla subnet mgmt
 
-### 6.4 — `ACL-WAN-IN` · WAN (Gi0/0) · anti-spoofing + default-deny
+Unica zona con permit-all in uscita: è il control plane e deve raggiungere tutti gli apparati. La protezione è in ingresso (vedi §6.6) e nell'assenza di NAT (niente Internet pubblica).
+
+| # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
+|---|---|---|---|---|---|---|
+| 1 | permit | ip | 10.1.99.0/24 | any | — | Management: accesso pieno (control plane) |
+| 2 | deny | ip | any | any | — | **Default deny** (log) — scarta sorgenti spoofate |
+
+```cisco
+ip access-list extended VLAN99-IN
+ remark === Management: accesso totale dalla subnet mgmt ===
+ permit ip 10.1.99.0 0.0.0.255 any
+ deny   ip any any log
+```
+
+### 6.5 — `ACL-WAN-IN` · WAN (Gi0/0) · anti-spoofing + default-deny
 
 Scarta le sorgenti impossibili, ammette l'instaurazione del tunnel IPsec dal PE del SUM, poi nega il resto. I ritorni NAT li apre CBAC.
 
@@ -351,25 +393,25 @@ ip access-list extended ACL-WAN-IN
  deny   ip any any log
 ```
 
-### 6.5 — `ACL-TUNNEL-IN` · dorsale VPN dal SUM (Tunnel0) · default-deny
+### 6.6 — `ACL-TUNNEL-IN` · dorsale VPN dal SUM (Tunnel0) · default-deny
 
-Sul tunnel arriva il traffico interno dal SUM. Si ammette solo ciò che il SUM **inizia** (gestione remota di server e apparati in VLAN 20); le risposte alle sessioni dell'edge le apre CBAC.
+Sul tunnel arriva il traffico interno dal SUM. Si ammette solo ciò che il SUM **inizia** (gestione remota verso il management); le risposte alle sessioni dell'edge le apre CBAC.
 
 | # | Azione | Proto | Sorgente | Destinazione | Porta | Scopo |
 |---|---|---|---|---|---|---|
-| 1 | permit | tcp | 10.0.3.0/28 | 10.1.2.0/24 | 22 | SUM admin → server+mgmt (SSH) |
-| 2 | permit | udp | 10.0.3.0/28 | 10.1.2.0/24 | 161 | SUM admin → server+mgmt (SNMP) |
+| 1 | permit | tcp | 10.0.3.0/28 | 10.1.99.0/24 | 22 | SUM admin → mgmt (SSH) |
+| 2 | permit | udp | 10.0.3.0/28 | 10.1.99.0/24 | 161 | SUM admin → mgmt (SNMP) |
 | 3 | deny | ip | any | any | — | **Default deny** (log) |
 
 ```cisco
 ip access-list extended ACL-TUNNEL-IN
- remark === Dal SUM: SSH/SNMP verso server e mgmt di stazione (VLAN 20) ===
- permit tcp 10.0.3.0 0.0.0.15 10.1.2.0 0.0.0.255 eq 22
- permit udp 10.0.3.0 0.0.0.15 10.1.2.0 0.0.0.255 eq snmp
+ remark === Dal SUM: solo SSH/SNMP verso il management di stazione ===
+ permit tcp 10.0.3.0 0.0.0.15 10.1.99.0 0.0.0.255 eq 22
+ permit udp 10.0.3.0 0.0.0.15 10.1.99.0 0.0.0.255 eq snmp
  deny   ip any any log
 ```
 
-### 6.6 — Logging
+### 6.7 — Logging
 
 ```cisco
 logging host 10.1.2.11
@@ -378,10 +420,7 @@ logging trap informational
 
 Crittografia IPsec (ISAKMP policy AES-256/SHA-256/DH14, transform-set ESP-AES-256) come da profilo `VPN-SUM`. `<IP_PE_SUM>` coincide con `tunnel destination`; se il profilo incapsula GRE, aggiungere `permit gre host <IP_PE_SUM> any` in `ACL-WAN-IN`.
 
-> **Nota d'ordine.** Le definizioni `ip inspect name STATEFUL` stanno in §6.1 (prima delle interfacce) perché alcune versioni IOS rifiutano `ip inspect STATEFUL in` se la regola non esiste ancora. Le ACL sono definite in §6.2–6.5 dopo l'applicazione `ip access-group`: incollando il config completo i riferimenti si risolvono comunque.
-Crittografia IPsec (ISAKMP policy AES-256/SHA-256/DH14, transform-set ESP-AES-256) come da profilo `VPN-SUM`. `<IP_PE_SUM>` coincide con `tunnel destination`; se il profilo incapsula GRE, aggiungere `permit gre host <IP_PE_SUM> any` in `ACL-WAN-IN`.
-
-> **Nota d'ordine.** Le definizioni `ip inspect name STATEFUL` stanno in §6.1 (prima delle interfacce) perché alcune versioni IOS rifiutano `ip inspect STATEFUL in` se la regola non esiste ancora. Le ACL sono definite in §6.2–6.6 dopo l'applicazione `ip access-group`: incollando il config completo i riferimenti si risolvono comunque.
+> **Nota d'ordine.** Le definizioni `ip inspect name STATEFUL` stanno in §6.1 (prima delle interfacce) perché alcune versioni IOS rifiutano `ip inspect STATEFUL in` se la regola non esiste ancora. Le ACL sono definite in §6.2–6.6 dopo l'`ip access-group`: incollando il config completo i riferimenti si risolvono comunque.
 
 
 
