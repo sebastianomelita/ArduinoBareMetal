@@ -133,33 +133,49 @@ Il comportamento del reader è descritto da una **macchina a stati** con tre sta
 | CD–FD2 | SMF | OS2 | 2 fibre | ~55 m | dorsale banchina 10G |
 | FD1–TO 1.xx | UTP | Cat6A | 4 coppie | ≤ 90 m | orizzontale 1G PoE+ |
 
-### 4.2 Albero degli apparati attivi (configurazione **router-on-a-stick**)
+### 4.2 Albero degli apparati attivi (router-on-a-stick, con pruning del trunk)
 
 ```
                  WAN / rete di trasporto IP
                           │ Gi0/0   (+ Tunnel0 → SUM)
                   ┌───────┴────────┐
-                  │  R-FW (unico   │  sottointerfacce dot1q = gateway VLAN:
-                  │  apparato L3)  │   Gi0/1.10 10.1.1.1  (reader)
-                  └───────┬────────┘   Gi0/1.20 10.1.2.1  (server + mgmt)
-                          │ Gi0/1
-                    trunk 802.1q (unico)
+                  │      R-FW      │  router-on-a-stick:
+                  │  apparato L3   │     Gi0/1.10  10.1.1.1   (RFID)
+                  └───────┬────────┘     Gi0/1.20  10.1.2.1   (server)
+                          │ Gi0/1        Gi0/1.99  10.1.99.1 (mgmt)
+             trunk 802.1q │ ───────────── allowed vlan 10,20,99
                   ┌───────┴────────┐
-                  │ CS — core L2   │── srv-edge .10 / srv-sis .11 / mgmt apparati .2–.9  (VLAN 20)
-                  │ (sola commut.) │
-                  └───┬────┬───┬───┘
-              trunk10G│    │   │
-              ┌───────┘  ┌─┘   └────────┐
-          ┌───┴──┐   ┌───┴──┐       ┌───┴──┐
-          │ AS-0 │   │ AS-1 │       │ AS-2 │  access switch PoE+ (negli FD)
-          │atrio │   │banc.1│       │banc.2│
-          └──┬───┘   └──┬───┘       └──┬───┘
-          reader     reader         reader  (VLAN 10, PoE+)
+                  │   CS core L2   │── server (VLAN 20, porta di accesso)
+                  │  mgmt SVI .99  │      srv-edge .10 / srv-sis .11
+                  └──┬─────────┬───┘
+       trunk 10,99   │         │  trunk 10,99      (VLAN 20: pruned)
+              ┌──────┴───┐ ┌───┴─────┐
+              │  AS-0   │  │  AS-2   │  access switch PoE+ (FD)
+              │ mgmt.99 │  │ mgmt.99 │
+              └────┬────┘  └────┬────┘
+            reader VLAN10   reader VLAN10
 ```
 
-**Scelta a 2 VLAN.** Si mantengono due sole zone di fiducia: **reader** (VLAN 10) e **server + management** (VLAN 20). La separazione reader↔server è quella con valore di sicurezza reale — i reader sono dispositivi embedded poco aggiornabili e vanno isolati dai server che custodiscono i dati e detengono il percorso VPN verso il SUM. Il management viene accorpato nella VLAN 20 perché a livello di singola stazione gli apparati di gestione sono infrastruttura fidata al pari dei server. La protezione del management dai reader non si perde: è la ACL inter-VLAN `VLAN10-IN` a garantirla, ammettendo dai reader solo il broker edge (`10.1.2.10`) e il DNS/NTP (`10.1.2.11`) e negando tutto il resto, inclusi gli indirizzi di gestione `10.1.2.2–.9`.
+**Tre VLAN, ciascuna dimensionata sulla propria topologia.** Il **management** (VLAN 99) è distribuito a macchia di leopardo — un'interfaccia di gestione per ogni switch — quindi attraversa tutti i trunk: non è separabile fisicamente. L'**RFID** (VLAN 10) raggiunge i reader sugli access switch, quindi viaggia sui trunk CS↔AS. Il **server** (VLAN 20) è concentrato nel locale tecnico: i server sono attestati su **porte di accesso del CS**, e la VLAN 20 è **potata** dai trunk verso gli AS (dove non serve). I trunk CS↔AS trasportano così solo `10,99`; solo il trunk R-FW↔CS trasporta `10,20,99`. Configurazione lato switch:
 
-**Perché router-on-a-stick e non switch L3.** Con switch L2 + router-on-a-stick si collassa tutto il livello 3 sul solo router perimetrale: le sottointerfacce `.10/.20` sono i gateway delle VLAN, le subnet interne sono direttamente connesse (rotte automatiche), non servono rotte statiche interne né link di transito. Limite da dichiarare: `R-FW` è *single point of failure*, mitigabile con un secondo router in VRRP/HSRP dove serva la massima continuità.
+```cisco
+! CS — uplink verso R-FW
+interface <uplink-R-FW>
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,99
+!
+! CS — downlink verso gli access switch (VLAN 20 potata)
+interface range <downlink-AS>
+ switchport mode trunk
+ switchport trunk allowed vlan 10,99
+!
+! CS — porte di accesso dei server
+interface range <porte-server>
+ switchport mode access
+ switchport access vlan 20
+```
+
+**Perché router-on-a-stick.** Con un solo apparato L3 le tre subnet interne sono direttamente connesse (rotte automatiche), non servono rotte statiche interne né link di transito. Il tornante del trunk non è un collo di bottiglia con messaggi JSON piccoli. Limite: `R-FW` è *single point of failure*, mitigabile con VRRP/HSRP.
 
 ---
 
