@@ -53,10 +53,29 @@ Lo standard che permette di usare **la stessa credenziale sia su una carta sia s
 
 Il principio: il telefono **si finge una carta ISO 14443**. Il lettore (tornello, varco, POS) è un normale lettore ISO 14443 e non sa — né gli interessa — se dall'altra parte ci sia una tessera di plastica o un telefono. A livello radio sono **indistinguibili**, ed è per questo che **lo stesso lettore accetta entrambi**: il telefono ricostruisce la stessa pila di protocolli di una carta fisica.
 
+![Stack ISO 14443 / NFC: carta fisica e smartphone parlano lo stesso protocollo](nfc-iso14443-stack.svg)<img src="img/nfc-iso14443-stack.svg" alt="alt text" width="800">
 
-<img src="img/nfc-iso14443-stack.svg" alt="alt text" width="700">
 
 L'emulazione "generica" (**HCE — Host Card Emulation**, introdotta da Android 4.4) copre **solo** ciò che vive sopra il trasporto: carte basate su **ISO-DEP (ISO 14443-4)** che scambiano **APDU ISO 7816-4**. In alternativa l'emulazione può avvenire tramite **Secure Element** (eSE o SIM/UICC), approccio usato per esempio da Apple Pay. Tutto ciò che usa **protocolli proprietari sotto il trasporto** non è emulabile in HCE generico.
+
+### **HCE vs Secure Element: dove vive la credenziale**
+
+Il telefono può emulare una carta in due modi, e la differenza di fondo è **dove risiedono chiavi e logica della carta**, cioè *chi* risponde al lettore. Nel grafico è il blocco più in alto: i livelli ISO 14443-2/3/4 e 7816-4 sono identici, cambia solo il "contenitore" della credenziale.
+
+Con il **Secure Element (SE)** la credenziale sta in un **chip hardware dedicato e a prova di manomissione** (eSE saldato, SIM/UICC, microSD sicura). Quando il telefono è avvicinato al lettore, il controller NFC **instrada la comunicazione direttamente all'SE**, che esegue le applet e custodisce le chiavi in un ambiente isolato. È il livello di sicurezza più alto e può funzionare anche a telefono spento/scarico, ma è **rigido da gestire**: ogni credenziale va "provisionata" dentro l'SE con procedure controllate (storicamente gestite dagli operatori col modello SIM-SE, fonte di molti attriti). È l'approccio di Apple Pay.
+
+Con l'**HCE (Host Card Emulation)** **non c'è secure element nel percorso**: il controller NFC inoltra le APDU a un'**app normale che gira sul processore principale ("host")** e le risposte tornano al lettore. La credenziale si **distribuisce come una qualunque app via store**, senza negoziare con produttore o operatore — enorme flessibilità. Il prezzo è che **le chiavi non stanno in hardware blindato**: per non tenerle in chiaro si usano **tokenizzazione**, chiavi a uso singolo/limitato, conferma con la cloud ed eventualmente un *Trusted Execution Environment* (TEE). In genere richiede telefono acceso e app raggiungibile.
+
+| Aspetto | **Secure Element (SE)** | **HCE (Host Card Emulation)** |
+|---|---|---|
+| Dove stanno le chiavi | Chip sicuro isolato (eSE / SIM-UICC) | Processore principale (host), app dell'OS |
+| Sicurezza | In **hardware** (massima) | In **software**: tokenizzazione + cloud / TEE |
+| Distribuzione credenziale | "Provisioning" controllato nell'SE | Come una **app** dallo store |
+| Flessibilità / gestione | Rigida (accordi con OEM/operatore) | Alta, autonoma per lo sviluppatore |
+| Funziona a telefono spento | Sì (in molti casi) | No (serve OS/app attivi) |
+| Esempio | Apple Pay | Google Wallet, molti trasporti/accessi |
+
+In una riga: **SE = sicurezza in hardware, gestione rigida; HCE = flessibilità software, sicurezza demandata a tokenizzazione e cloud.** Per questo i pagamenti combinano spesso i due mondi (HCE + token + eventuale TEE), mentre Apple resta sul modello SE.
 
 **Quali "carte" un telefono può emulare → e quindi abbinare a un tornello come credenziale:**
 
