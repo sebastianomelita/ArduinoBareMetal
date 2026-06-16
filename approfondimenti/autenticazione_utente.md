@@ -376,18 +376,6 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 - Normalmente, un utente si autentica con PAP su canale HTTPS cifrato, mentre un server si autentica con autenticazione asimmetrica su canale insicuro (dopo si fa quello cifrato HTTPS)
 
 
-### 5.9 Autenticazione mista HTTPS
-
-- il client inizia il processo di autenticazione del server inviando una sfida in chiaro a cui il server risponde con una sfida firmata (con la propria chiave privata) che presenta insieme al proprio certificato utente.
-- il client per prima cosa verifica l'attendibilità del certificato utente (che autentica la chiave pubblica) verificando la firma della CA con la chiave pubblica della stessa contenuta nel certificato CA installato nel suo SO. Poi controlla che il nome di dominio con cui si presenta il server sia effettivamente quello dichiarato nel subject del certificato utente. Dopo aver controllato altri dettagli ancora (CA sia trusted e data) il certificato utente è verificato.
-- dopo di che, il client prova a convalidare la firma sulla sfida decifrandola con la chiave pubblica del server recuperata dal certificato utente di questo. Se il numero che viene fuori è esattamente il valore della sfida da lui inviata in precedenza, allora il server è autenticato.
-- a questo punto il client può usare la chiave pubblica del server per creare un canale sicuro verso il server attraverso cui inviare la propria credenziale debole (la password) per autenticarsi, cifrandola con la chiave pubblica del server.
-- una volta che pure il client è autenticato, questo genera una chiave random OTP che diventa la chiave di sessione della cifratura simmetrica dei dati in entrambe le direzioni.
-- Il client adesso invia al server la chiave di sessione appena creata su un canale sicuro cifrandola con la chiave pubblica del server.
-- Da questo momento in poi, sia il client che il server posseggono la medesima chiave di sessione che possono utilizzare per cifrare i dati in entrambe le direzioni.
-
-
-
 ## 6. Identità digitale
 
 - E’ l’identità di una persona in Internet.
