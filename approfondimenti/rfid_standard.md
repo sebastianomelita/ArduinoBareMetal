@@ -19,7 +19,7 @@ La **scelta dello standard** vincola tutto il resto del progetto: tag, reader, m
 
 ## **ISO 14443: cosa definisce davvero (e cosa no)**
 
-Punto chiave da non sbagliare alla prova: **ISO 14443 definisce solo i livelli "bassi"** di una carta contactless di prossimità. È diviso in quattro parti:
+Punto chiave: **ISO 14443 definisce solo i livelli "bassi"** di una carta contactless di prossimità. È diviso in quattro parti:
 
 1. **14443-1** — caratteristiche fisiche della carta.
 2. **14443-2** — interfaccia radio a 13,56 MHz: modulazione, codifica, intensità di campo. È qui che lo standard si divide in **Type A** (= base di MIFARE) e **Type B**.
