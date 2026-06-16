@@ -447,7 +447,10 @@ ip inspect name CBAC-OUT icmp
 !
 ip access-list extended TUN0-IN
  remark --- gestione iniziata dal SUM verso il management di stazione ---
+ remark ---  SUM possa amministrare gli SW in VLAN 99 --
  permit tcp  10.0.3.0 0.0.0.15 10.1.99.0 0.0.0.255 eq 22
+ remark ---  SUM possa amministrare il server edge in VLAN 20 ---
+ permit tcp 10.0.3.0 0.0.0.15 host 10.1.2.10 eq 22
  permit udp  10.0.3.0 0.0.0.15 10.1.99.0 0.0.0.255 eq 161
  permit icmp 10.0.3.0 0.0.0.15 10.1.99.0 0.0.0.255
  remark --- i ritorni delle sessioni edge->SUM li inserisce CBAC qui sopra ---
