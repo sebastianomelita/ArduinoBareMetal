@@ -62,7 +62,7 @@
     <path d="M605 210 C 605 244, 400 246, 380 258"/>
   </g>
   <path d="M380 272 l-7 -12 l14 0 z" fill="#8A99A4"/>
-  <text x="600" y="260" font-size="10.5" font-style="italic" fill="#7A8893" text-anchor="end">il controller NFC instrada all&#8217;uno o all&#8217;altro</text>
+  <text x="600" y="262" font-size="10.5" font-style="italic" fill="#7A8893" text-anchor="end">il controller NFC instrada all&#8217;uno o all&#8217;altro</text>
 
   <!-- ===== COMMON STACK ===== -->
   <!-- 7816-4 -->
