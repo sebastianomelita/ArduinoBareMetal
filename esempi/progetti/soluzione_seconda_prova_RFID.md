@@ -183,7 +183,7 @@ interface range <porte-server>
 | DMZ | 10.0.1.0/24 | 255.255.255.0 | .1–.253 | 253 | 10.0.1.254 | WAF + API gateway controllori (HTTPS/JWT), front-end pubblico |
 | Server farm | 10.0.2.0/24 | 255.255.255.0 | .1–.253 | 253 | 10.0.2.254 | broker MQTT cluster, app server, DB centrale (zona interna) |
 | Admin / management | 10.0.3.0/24 | 255.255.255.0 | .1–.253 | 253 | 10.0.3.254 | postazioni amministratori, NMS; gestione apparati SUM e stazioni via tunnel |
-| Dorsali VPN (lato PE) | 10.255.x.0/30 | 255.255.255.252 | .1 ↔ .2 | 2 | — (punto-punto) | terminazione dei tunnel IPsec, uno per sito |
+| Dorsali VPN (lato PE) | 10.255.x.(k*4)/30 | 255.255.255.252 | (.1 ↔ .2)+ k*4 | 2 | — (punto-punto) | terminazione dei tunnel IPsec, uno per sito |
 
 **Allocazione statica nella server farm (10.0.2.0/24):**
 
