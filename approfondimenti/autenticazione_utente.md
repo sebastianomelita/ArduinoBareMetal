@@ -350,29 +350,6 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 - L’utilizzo di DH ha il vantaggio di poter fare contemporaneamente sia l’autenticazione dell’utente (tramite nonce) che la generazione di una chiave effimera di sessione.
 
 
-### Perfect Forward Secrecy (PFS)
-
-La **Perfect Forward Secrecy** (o *Forward Secrecy*) è una proprietà cruciale dei protocolli crittografici che garantisce che la compromissione di una chiave privata a **lungo termine** non comprometta la riservatezza delle sessioni **passate**.
-
-In pratica, se un attaccante intercettasse e registrasse il traffico crittografato oggi, non sarebbe in grado di decifrarlo in futuro, anche se riuscisse a ottenere la chiave privata del server.
-
-
-#### Senza PFS (Scenario basato solo su RSA)
-
-In questo scenario, la sicurezza delle sessioni dipende interamente dalla chiave privata del server:
-
-* **Meccanismo:** La chiave di sessione viene cifrata dal client utilizzando la chiave pubblica RSA del server.
-* **Vulnerabilità:** Se in futuro la chiave privata RSA del server viene sottratta, l'attaccante può usare quella chiave per decifrare tutte le chiavi di sessione registrate in passato, rendendo leggibili tutte le comunicazioni storiche.
-
-#### Con PFS (Diffie-Hellman Effimero - DHE/ECDHE)
-
-L'introduzione di scambi di chiavi temporanei risolve il problema della dipendenza dalla chiave statica:
-
-* **Meccanismo:** Per ogni singola sessione vengono generate nuove chiavi temporanee (effimere) tramite lo scambio **Diffie-Hellman**.
-* **Ruolo di RSA:** La chiave privata RSA viene utilizzata **esclusivamente per autenticare** lo scambio di chiavi, non per cifrare la chiave di sessione stessa.
-* **Resilienza:** La chiave di sessione deriva dallo scambio DH effimero. Poiché i valori segreti utilizzati nello scambio DH sono temporanei e vengono cancellati dalla memoria al termine della sessione, anche se la chiave privata RSA venisse compromessa in futuro, le chiavi di sessione passate resterebbero **irreuperabili**.
-
-
 ### 5.8 Autenticazione di un server
 
 - Un riassunto delle fasi dell’autenticazione asimmetrica forte potrebbe essere:
@@ -405,7 +382,27 @@ Il client adesso invia al server la chiave di sessione appena creata su un canal
 
 Da questo momento in poi, sia il client che il server posseggono la medesima chiave di sessione che possono utilizzare per cifrare i dati in entrambe le direzioni.
 
+### Perfect Forward Secrecy (PFS)
 
+La **Perfect Forward Secrecy** (o *Forward Secrecy*) è una proprietà cruciale dei protocolli crittografici che garantisce che la compromissione di una chiave privata a **lungo termine** non comprometta la riservatezza delle sessioni **passate**.
+
+In pratica, se un attaccante intercettasse e registrasse il traffico crittografato oggi, non sarebbe in grado di decifrarlo in futuro, anche se riuscisse a ottenere la chiave privata del server.
+
+
+#### Senza PFS (Scenario basato solo su RSA)
+
+In questo scenario, la sicurezza delle sessioni dipende interamente dalla chiave privata del server:
+
+* **Meccanismo:** La chiave di sessione viene cifrata dal client utilizzando la chiave pubblica RSA del server.
+* **Vulnerabilità:** Se in futuro la chiave privata RSA del server viene sottratta, l'attaccante può usare quella chiave per decifrare tutte le chiavi di sessione registrate in passato, rendendo leggibili tutte le comunicazioni storiche.
+
+#### Con PFS (Diffie-Hellman Effimero - DHE/ECDHE)
+
+L'introduzione di scambi di chiavi temporanei risolve il problema della dipendenza dalla chiave statica:
+
+* **Meccanismo:** Per ogni singola sessione vengono generate nuove chiavi temporanee (effimere) tramite lo scambio **Diffie-Hellman**.
+* **Ruolo di RSA:** La chiave privata RSA viene utilizzata **esclusivamente per autenticare** lo scambio di chiavi, non per cifrare la chiave di sessione stessa.
+* **Resilienza:** La chiave di sessione deriva dallo scambio DH effimero. Poiché i valori segreti utilizzati nello scambio DH sono temporanei e vengono cancellati dalla memoria al termine della sessione, anche se la chiave privata RSA venisse compromessa in futuro, le chiavi di sessione passate resterebbero **irreuperabili**.
 
 ## 6. Identità digitale
 
