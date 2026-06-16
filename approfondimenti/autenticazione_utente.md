@@ -402,7 +402,7 @@ L'introduzione di scambi di chiavi temporanei risolve il problema della dipenden
 
 * **Meccanismo:** Per ogni singola sessione vengono generate nuove chiavi temporanee (effimere) tramite lo scambio **Diffie-Hellman**.
 * **Ruolo di RSA:** La chiave privata RSA viene utilizzata **esclusivamente per autenticare** lo scambio di chiavi, non per cifrare la chiave di sessione stessa.
-* **Resilienza:** La chiave di sessione deriva dallo scambio DH effimero. Poiché i valori segreti utilizzati nello scambio DH sono temporanei e vengono cancellati dalla memoria al termine della sessione, anche se la chiave privata RSA venisse compromessa in futuro, le chiavi di sessione passate resterebbero **irreuperabili**.
+* **Resilienza:** La chiave di sessione deriva dallo scambio DH effimero. Poiché i valori segreti utilizzati nello scambio DH sono temporanei e vengono cancellati dalla memoria al termine della sessione, anche se la chiave privata RSA venisse compromessa in futuro, le chiavi di sessione passate resterebbero **irrecuperabili**.
 
 ## 6. Identità digitale
 
