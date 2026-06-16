@@ -1,89 +1,111 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 700" font-family="Segoe UI, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 770" font-family="Segoe UI, Arial, sans-serif">
 <style>
   .lbl{font-size:12px;fill:#1f2937}.sub{font-size:10px;fill:#6b7280}.ttl{font-size:15px;font-weight:600;fill:#111827}
   .zone{font-size:11px;font-weight:600;fill:#374151}
-  .body{fill:#fff}.rt{stroke:#2F7DD1}.sw{stroke:#15A179}.fw{stroke:#E24B4A}.srv{stroke:#7F77DD}.db{stroke:#6b7280}
+  .body{fill:#fff}.sw{stroke:#15A179}.fw{stroke:#E24B4A}.srv{stroke:#7F77DD}.db{stroke:#6b7280}
   .wire{stroke:#374151;stroke-width:1.1;fill:none}
+  .trunk{stroke:#15A179;stroke-width:1.8;fill:none}
   .zbox{fill:none;stroke:#cbd5e1;stroke-width:1;stroke-dasharray:5 4}
 </style>
 <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
 
-<text class="ttl" x="490" y="30" text-anchor="middle">Schema logico apparati attivi — Sede centrale (SUM)</text>
+<text class="ttl" x="500" y="30" text-anchor="middle">Schema logico apparati attivi — Sede centrale (SUM)</text>
 
 <!-- ingressi -->
-<text class="sub" x="150" y="74" text-anchor="middle">Tunnel IPsec dai CE</text>
-<text class="sub" x="150" y="88" text-anchor="middle">(Cat. A · Cat. B · controllori)</text>
-<text class="sub" x="150" y="102" text-anchor="middle">10.255.1/2/3.0/30</text>
-<path class="wire" d="M230 100 Q360 120 458 158" marker-end="url(#a)"/>
-<text class="sub" x="830" y="74" text-anchor="middle">WAN pubblica 198.64.5.1</text>
-<text class="sub" x="830" y="88" text-anchor="middle">port-forward :8883 → broker</text>
-<text class="sub" x="830" y="102" text-anchor="middle">:443 → WAF</text>
-<path class="wire" d="M750 100 Q620 120 522 158" marker-end="url(#a)"/>
+<text class="sub" x="160" y="74" text-anchor="middle">Tunnel IPsec dai CE</text>
+<text class="sub" x="160" y="88" text-anchor="middle">(Cat. A · Cat. B · controllori)</text>
+<text class="sub" x="160" y="102" text-anchor="middle">10.255.1/2/3.0/30</text>
+<path class="wire" d="M245 100 Q370 122 468 156" marker-end="url(#a)"/>
+<text class="sub" x="845" y="74" text-anchor="middle">WAN pubblica 198.64.5.1</text>
+<text class="sub" x="845" y="88" text-anchor="middle">port-forward :8883 → broker</text>
+<text class="sub" x="845" y="102" text-anchor="middle">:443 → WAF</text>
+<path class="wire" d="M760 100 Q635 122 532 156" marker-end="url(#a)"/>
 
 <!-- FW-SUM -->
-<g transform="translate(490,170)">
+<g transform="translate(500,168)">
   <rect class="body fw" x="-27" y="-16" width="54" height="32" rx="2"/>
   <line class="fw" x1="-27" y1="-5.5" x2="27" y2="-5.5" stroke-width="0.7"/><line class="fw" x1="-27" y1="5.5" x2="27" y2="5.5" stroke-width="0.7"/>
   <line class="fw" x1="-9" y1="-16" x2="-9" y2="-5.5" stroke-width="0.7"/><line class="fw" x1="10" y1="-16" x2="10" y2="-5.5" stroke-width="0.7"/>
   <line class="fw" x1="0" y1="-5.5" x2="0" y2="5.5" stroke-width="0.7"/><line class="fw" x1="-9" y1="5.5" x2="-9" y2="16" stroke-width="0.7"/><line class="fw" x1="10" y1="5.5" x2="10" y2="16" stroke-width="0.7"/>
 </g>
-<text class="lbl" x="490" y="205" text-anchor="middle" font-weight="600">FW-SUM — gateway di confine (PE)</text>
-<text class="sub" x="490" y="220" text-anchor="middle">+ WAF + IDS/IPS · L3 multi-zona · default-deny</text>
+<text class="lbl" x="500" y="203" text-anchor="middle" font-weight="600">FW-SUM — gateway di confine (PE) + WAF + IDS/IPS</text>
+<text class="sub" x="500" y="218" text-anchor="middle">L3 · gateway inter-VLAN · default-deny</text>
 
-<!-- legami verso le 3 zone -->
-<path class="wire" d="M468 184 Q300 230 195 270" marker-end="url(#a)"/>
-<path class="wire" d="M490 186 L490 268" marker-end="url(#a)"/>
-<path class="wire" d="M512 184 Q700 230 810 270" marker-end="url(#a)"/>
+<!-- trunk verso core switch -->
+<path class="trunk" d="M500 184 L500 256"/>
+<text class="sub" x="510" y="232">trunk 802.1q — VLAN 100/200/300</text>
+
+<!-- CS-SUM core -->
+<g transform="translate(500,272)">
+  <rect class="body sw" x="-30" y="-14" width="60" height="28" rx="3"/>
+  <line class="sw" x1="-19" y1="-6" x2="15" y2="-6" marker-end="url(#a)"/><line class="sw" x1="19" y1="-1" x2="-15" y2="-1" marker-end="url(#a)"/><line class="sw" x1="-19" y1="4" x2="15" y2="4" marker-end="url(#a)"/>
+</g>
+<text class="lbl" x="500" y="304" text-anchor="middle" font-weight="600">CS-SUM — core L2 (aggregazione)</text>
+
+<!-- uplink core -> switch di accesso -->
+<path class="trunk" d="M478 280 Q300 320 185 360"/>
+<path class="trunk" d="M500 286 L500 360"/>
+<path class="trunk" d="M522 280 Q700 320 820 360"/>
+
+<!-- access switch DMZ -->
+<g transform="translate(185,372)">
+  <rect class="body sw" x="-26" y="-12" width="52" height="24" rx="3"/>
+  <line class="sw" x1="-16" y1="-5" x2="12" y2="-5" marker-end="url(#a)"/><line class="sw" x1="16" y1="2" x2="-12" y2="2" marker-end="url(#a)"/>
+</g>
+<text class="sub" x="185" y="398" text-anchor="middle">SW-DMZ (accesso L2)</text>
+<!-- access switch FARM -->
+<g transform="translate(500,372)">
+  <rect class="body sw" x="-26" y="-12" width="52" height="24" rx="3"/>
+  <line class="sw" x1="-16" y1="-5" x2="12" y2="-5" marker-end="url(#a)"/><line class="sw" x1="16" y1="2" x2="-12" y2="2" marker-end="url(#a)"/>
+</g>
+<text class="sub" x="500" y="398" text-anchor="middle">SW-FARM (accesso L2)</text>
+<!-- access switch ADMIN -->
+<g transform="translate(820,372)">
+  <rect class="body sw" x="-26" y="-12" width="52" height="24" rx="3"/>
+  <line class="sw" x1="-16" y1="-5" x2="12" y2="-5" marker-end="url(#a)"/><line class="sw" x1="16" y1="2" x2="-12" y2="2" marker-end="url(#a)"/>
+</g>
+<text class="sub" x="820" y="398" text-anchor="middle">SW-ADMIN (accesso L2)</text>
 
 <!-- ===== ZONA DMZ ===== -->
-<rect class="zbox" x="70" y="262" width="250" height="200" rx="6"/>
-<text class="zone" x="82" y="280">DMZ — 10.0.1.0/28 (gw .1)</text>
-<text class="sub" x="195" y="300" text-anchor="middle">Broker MQTT cluster active-active · VIP 10.0.1.2</text>
-<g transform="translate(160,335)"><rect class="body srv" x="-13" y="-18" width="26" height="36" rx="3"/><line class="srv" x1="-13" y1="-5" x2="13" y2="-5" stroke-width="0.7"/><line class="srv" x1="-13" y1="7" x2="13" y2="7" stroke-width="0.7"/><circle cx="-8" cy="-12" r="1.4" fill="#7F77DD"/></g>
-<g transform="translate(230,335)"><rect class="body srv" x="-13" y="-18" width="26" height="36" rx="3"/><line class="srv" x1="-13" y1="-5" x2="13" y2="-5" stroke-width="0.7"/><line class="srv" x1="-13" y1="7" x2="13" y2="7" stroke-width="0.7"/><circle cx="-8" cy="-12" r="1.4" fill="#7F77DD"/></g>
-<text class="sub" x="160" y="372" text-anchor="middle">node .3</text>
-<text class="sub" x="230" y="372" text-anchor="middle">node .4</text>
-<g transform="translate(195,415)"><rect class="body srv" x="-13" y="-16" width="26" height="32" rx="3"/><line class="srv" x1="-13" y1="-4" x2="13" y2="-4" stroke-width="0.7"/><line class="srv" x1="-13" y1="6" x2="13" y2="6" stroke-width="0.7"/></g>
-<text class="sub" x="195" y="448" text-anchor="middle">WAF / reverse-proxy · 10.0.1.5</text>
+<rect class="zbox" x="60" y="410" width="250" height="215" rx="6"/>
+<text class="zone" x="73" y="430">VLAN 100 — DMZ — 10.0.1.0/28 (gw .1)</text>
+<text class="sub" x="185" y="448" text-anchor="middle">Broker MQTT a-a · VIP 10.0.1.2</text>
+<path class="wire" d="M185 384 L185 408"/>
+<g transform="translate(150,485)"><rect class="body srv" x="-13" y="-18" width="26" height="36" rx="3"/><line class="srv" x1="-13" y1="-5" x2="13" y2="-5" stroke-width="0.7"/><line class="srv" x1="-13" y1="7" x2="13" y2="7" stroke-width="0.7"/><circle cx="-8" cy="-12" r="1.4" fill="#7F77DD"/></g>
+<g transform="translate(220,485)"><rect class="body srv" x="-13" y="-18" width="26" height="36" rx="3"/><line class="srv" x1="-13" y1="-5" x2="13" y2="-5" stroke-width="0.7"/><line class="srv" x1="-13" y1="7" x2="13" y2="7" stroke-width="0.7"/><circle cx="-8" cy="-12" r="1.4" fill="#7F77DD"/></g>
+<text class="sub" x="150" y="522" text-anchor="middle">node .3</text>
+<text class="sub" x="220" y="522" text-anchor="middle">node .4</text>
+<g transform="translate(185,575)"><rect class="body srv" x="-13" y="-16" width="26" height="32" rx="3"/><line class="srv" x1="-13" y1="-4" x2="13" y2="-4" stroke-width="0.7"/><line class="srv" x1="-13" y1="6" x2="13" y2="6" stroke-width="0.7"/></g>
+<text class="sub" x="185" y="608" text-anchor="middle">WAF/RP · 10.0.1.5</text>
 
 <!-- ===== ZONA SERVER FARM ===== -->
-<rect class="zbox" x="350" y="262" width="280" height="320" rx="6"/>
-<text class="zone" x="362" y="280">Server farm — 10.0.2.0/24 (gw .1)</text>
-<!-- core switch -->
-<g transform="translate(490,300)">
-  <rect class="body sw" x="-28" y="-13" width="56" height="26" rx="3"/>
-  <line class="sw" x1="-18" y1="-6" x2="14" y2="-6" marker-end="url(#a)"/><line class="sw" x1="18" y1="-1" x2="-14" y2="-1" marker-end="url(#a)"/><line class="sw" x1="-18" y1="4" x2="14" y2="4" marker-end="url(#a)"/>
-</g>
-<text class="sub" x="490" y="330" text-anchor="middle">CS-SUM · core L2 · 10.0.2.1</text>
-<path class="wire" d="M472 312 L405 360" /><path class="wire" d="M490 314 L490 360"/><path class="wire" d="M508 312 L575 360"/>
-<!-- app -->
-<g transform="translate(405,385)"><rect class="body srv" x="-13" y="-18" width="26" height="36" rx="3"/><line class="srv" x1="-13" y1="-5" x2="13" y2="-5" stroke-width="0.7"/><line class="srv" x1="-13" y1="7" x2="13" y2="7" stroke-width="0.7"/><circle cx="-8" cy="-12" r="1.4" fill="#7F77DD"/></g>
-<text class="sub" x="405" y="422" text-anchor="middle">App/core .2.10</text>
-<!-- db -->
-<g transform="translate(490,388)"><rect class="body db" x="-13" y="-16" width="26" height="32" rx="3"/><ellipse class="body db" cx="0" cy="-10" rx="12" ry="3.2"/><ellipse cx="0" cy="2" rx="12" ry="3.2" fill="none" stroke="#6b7280" stroke-width="0.7"/></g>
-<text class="sub" x="490" y="422" text-anchor="middle">DB m/s .2.20/.21</text>
-<!-- web -->
-<g transform="translate(575,385)"><rect class="body srv" x="-13" y="-18" width="26" height="36" rx="3"/><line class="srv" x1="-13" y1="-5" x2="13" y2="-5" stroke-width="0.7"/><line class="srv" x1="-13" y1="7" x2="13" y2="7" stroke-width="0.7"/></g>
-<text class="sub" x="575" y="422" text-anchor="middle">Web/API .2.30</text>
-<!-- siem / dns -->
-<g transform="translate(430,490)"><rect class="body db" x="-13" y="-16" width="26" height="32" rx="3"/><line class="db" x1="-13" y1="-4" x2="13" y2="-4" stroke-width="0.7"/><line class="db" x1="-13" y1="6" x2="13" y2="6" stroke-width="0.7"/></g>
-<text class="sub" x="430" y="523" text-anchor="middle">SIEM .2.40</text>
-<g transform="translate(550,490)"><rect class="body srv" x="-13" y="-16" width="26" height="32" rx="3"/><line class="srv" x1="-13" y1="-4" x2="13" y2="-4" stroke-width="0.7"/><line class="srv" x1="-13" y1="6" x2="13" y2="6" stroke-width="0.7"/></g>
-<text class="sub" x="550" y="523" text-anchor="middle">DNS/NTP .2.5</text>
-<path class="wire" d="M490 314 Q450 400 432 472"/><path class="wire" d="M490 314 Q540 400 550 472"/>
+<rect class="zbox" x="350" y="410" width="300" height="240" rx="6"/>
+<text class="zone" x="362" y="430">VLAN 200 — Server farm — 10.0.2.0/24 (gw .1)</text>
+<path class="wire" d="M500 384 L500 408"/>
+<g transform="translate(420,478)"><rect class="body srv" x="-13" y="-18" width="26" height="36" rx="3"/><line class="srv" x1="-13" y1="-5" x2="13" y2="-5" stroke-width="0.7"/><line class="srv" x1="-13" y1="7" x2="13" y2="7" stroke-width="0.7"/><circle cx="-8" cy="-12" r="1.4" fill="#7F77DD"/></g>
+<text class="sub" x="420" y="515" text-anchor="middle">App/core .2.10</text>
+<g transform="translate(500,481)"><rect class="body db" x="-13" y="-16" width="26" height="32" rx="3"/><ellipse class="body db" cx="0" cy="-10" rx="12" ry="3.2"/><ellipse cx="0" cy="2" rx="12" ry="3.2" fill="none" stroke="#6b7280" stroke-width="0.7"/></g>
+<text class="sub" x="500" y="515" text-anchor="middle">DB m/s .2.20/.21</text>
+<g transform="translate(580,478)"><rect class="body srv" x="-13" y="-18" width="26" height="36" rx="3"/><line class="srv" x1="-13" y1="-5" x2="13" y2="-5" stroke-width="0.7"/><line class="srv" x1="-13" y1="7" x2="13" y2="7" stroke-width="0.7"/></g>
+<text class="sub" x="580" y="515" text-anchor="middle">Web/API .2.30</text>
+<g transform="translate(450,580)"><rect class="body db" x="-13" y="-16" width="26" height="32" rx="3"/><line class="db" x1="-13" y1="-4" x2="13" y2="-4" stroke-width="0.7"/><line class="db" x1="-13" y1="6" x2="13" y2="6" stroke-width="0.7"/></g>
+<text class="sub" x="450" y="613" text-anchor="middle">SIEM .2.40</text>
+<g transform="translate(560,580)"><rect class="body srv" x="-13" y="-16" width="26" height="32" rx="3"/><line class="srv" x1="-13" y1="-4" x2="13" y2="-4" stroke-width="0.7"/><line class="srv" x1="-13" y1="6" x2="13" y2="6" stroke-width="0.7"/></g>
+<text class="sub" x="560" y="613" text-anchor="middle">DNS/NTP .2.5</text>
 
 <!-- ===== ZONA ADMIN ===== -->
-<rect class="zbox" x="700" y="262" width="210" height="200" rx="6"/>
-<text class="zone" x="712" y="280">Admin — 10.0.3.0/28 (gw .1)</text>
-<g transform="translate(770,340)"><rect class="body srv" x="-13" y="-18" width="26" height="36" rx="3"/><line class="srv" x1="-13" y1="-5" x2="13" y2="-5" stroke-width="0.7"/><line class="srv" x1="-13" y1="7" x2="13" y2="7" stroke-width="0.7"/><circle cx="-8" cy="-12" r="1.4" fill="#7F77DD"/></g>
-<text class="sub" x="770" y="377" text-anchor="middle">NMS / monitor · 10.0.3.10</text>
-<g transform="translate(840,340)"><rect class="body srv" x="-13" y="-18" width="26" height="36" rx="3"/><line class="srv" x1="-13" y1="-5" x2="13" y2="-5" stroke-width="0.7"/><line class="srv" x1="-13" y1="7" x2="13" y2="7" stroke-width="0.7"/></g>
-<text class="sub" x="845" y="395" text-anchor="middle">jump host · 10.0.3.11</text>
+<rect class="zbox" x="700" y="410" width="220" height="200" rx="6"/>
+<text class="zone" x="712" y="430">VLAN 300 — Admin — 10.0.3.0/28 (gw .1)</text>
+<path class="wire" d="M820 384 L820 408"/>
+<g transform="translate(775,488)"><rect class="body srv" x="-13" y="-18" width="26" height="36" rx="3"/><line class="srv" x1="-13" y1="-5" x2="13" y2="-5" stroke-width="0.7"/><line class="srv" x1="-13" y1="7" x2="13" y2="7" stroke-width="0.7"/><circle cx="-8" cy="-12" r="1.4" fill="#7F77DD"/></g>
+<text class="sub" x="775" y="525" text-anchor="middle">NMS / monitor · 10.0.3.10</text>
+<g transform="translate(855,488)"><rect class="body srv" x="-13" y="-18" width="26" height="36" rx="3"/><line class="srv" x1="-13" y1="-5" x2="13" y2="-5" stroke-width="0.7"/><line class="srv" x1="-13" y1="7" x2="13" y2="7" stroke-width="0.7"/></g>
+<text class="sub" x="858" y="543" text-anchor="middle">jump · 10.0.3.11</text>
 
 <!-- legenda -->
-<rect x="70" y="600" width="840" height="78" rx="6" fill="none" stroke="#d1d5db" stroke-width="0.5"/>
-<text class="lbl" x="86" y="622" font-weight="600">Legenda</text>
-<text class="sub" x="86" y="642">muretto = firewall (L3, zone) · box = switch L2 · tower = server · cilindro = database</text>
-<text class="sub" x="86" y="660">DMZ = unica zona esposta ai siti (broker :8883, WAF :443). Server farm e admin NON raggiungibili dai siti remoti.</text>
-<text class="sub" x="86" y="675">Filtraggio centralizzato sul FW-SUM (default-deny): le fermate Cat. B sono reader IP nativi senza policy locale.</text>
+<rect x="60" y="655" width="860" height="92" rx="6" fill="none" stroke="#d1d5db" stroke-width="0.5"/>
+<text class="lbl" x="78" y="677" font-weight="600">Legenda</text>
+<text class="sub" x="78" y="697">Due livelli L2: un core switch CS-SUM (aggregazione, trunk al firewall) + uno switch di accesso per ogni LAN (SW-DMZ, SW-FARM, SW-ADMIN).</text>
+<text class="sub" x="78" y="715">muretto = firewall (L3, inter-VLAN, policy) · box = switch L2 · tower = server · cilindro = database · linea verde = trunk/uplink 802.1q.</text>
+<text class="sub" x="78" y="733">DMZ esposta ai siti (broker :8883, WAF :443); server farm e admin non raggiungibili dai siti. Default-deny: le fermate Cat. B non filtrano.</text>
 </svg>
