@@ -26,9 +26,13 @@ Il sistema è un'infrastruttura metropolitana per la gestione di card di traspor
 
 L'infrastruttura è modellata come **rete di reti** a topologia *hub-and-spoke*. Le reti di sito sono **reti laterali (spoke)** attestate, tramite il proprio **router perimetrale di sito** (R-A/R-B/R-C), su una **rete di trasporto IP** metropolitana — un trasporto generico e **non fidato**, che può essere anche Internet pubblica. Il **gateway VPN del SUM** (hub) aggrega tutte le reti laterali: sopra il trasporto corrono **tunnel IPsec punto-punto**, uno per sito, cifrati end-to-end, che costituiscono le dorsali logiche.
 
-<img src="../img/architettura_hub_spoke_vpn_ipsec.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM" width="800px">
+<img src="../img/1_architettura_flussi_L3_L7.svg" alt="1_architettura_flussi_L3_L7.svg" width="1000px">
 
 *Figura 1 — Architettura hub-and-spoke. Le reti laterali (spoke) — Sito Cat. A, Sito Cat. B, Sede controllori — raggiungono il SUM (hub) tramite **tunnel IPsec cifrati**, instaurati dai router perimetrali R-A/R-B/R-C su una **rete di trasporto IP non fidata**. La cifratura è end-to-end tra ogni R-x e il gateway del SUM, quindi il trasporto resta attraversabile senza doversene fidare. Nel SUM, il **gateway VPN con firewall e WAF** fa da perimetro davanti alla **server farm** (broker MQTT cluster, app server, DB centrale).*
+
+<img src="../img/architettura_hub_spoke_vpn_ipsec.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM" width="800px">
+
+Figura 1 — Architettura generale (icone Cisco). Tratteggio nero = flussi L3 IP (dorsali logiche VPN tra i firewall dei siti e il firewall del SUM); punteggiato azzurro = flussi L7 MQTT (client MQTT dei siti ↔ broker centrale); bobina = interfaccia wireless L2 NFC/RFID HF (ISO 14443) tra reader e card.
 
 ### 2.1 Categoria A — luoghi ad alta frequenza (stazioni treni, metro principali, pontili capolinea)
 
