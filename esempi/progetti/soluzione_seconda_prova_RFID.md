@@ -736,8 +736,6 @@ ip access-list extended ADMIN-IN
 
 Le ACL precedenti sono **statiche**: da sole non aprono i ritorni. La risposta del broker verso il sito (`10.0.1.2 -> 10.2.x.x`) rientra dal lato DMZ e, senza stato, verrebbe scartata dal `deny ip any any` di `DMZ-IN`. Per questo si attiva **CBAC** (`ip inspect`): ispeziona le sessioni in uscita verso le risorse protette, tiene una **tabella di stato** e **apre da solo i ritorni**, inserendoli sopra i `deny` finali.
 
-> Differenza rispetto all'esempio "client interni → WAN": al SUM le sessioni sono iniziate **dai siti verso i server**, quindi l'ispezione si applica `out` su **ogni interfaccia che guarda verso una risorsa protetta** (Tunnel0, Vlan100, Vlan200), insieme alla ACL `in` di default-deny della stessa interfaccia. Su Vlan300 (admin) non serve `inspect`, perché nessuno inizia sessioni *verso* l'admin: i ritorni delle sessioni iniziate dall'admin vengono aperti sulle interfacce di destinazione (Vlan100/Vlan200).
-
 ```
 ! Passo 1 - regola di ispezione: quali protocolli tracciare
 ip inspect name CBAC-SUM tcp        ! copre MQTT/TLS 8883, HTTPS 443, SSH 22 ...
