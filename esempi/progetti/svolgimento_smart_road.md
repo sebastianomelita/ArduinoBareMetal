@@ -601,6 +601,10 @@ Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
 
 | VLAN | Subnet | Uso |
 |------|--------|-----|
+| 10 | `192.168.10.0/29` | Telecamere IP (sottorete isolata, non raggiungibile dall'esterno) |
+| 20 | `192.168.20.0/29` | Sensori IP-based |
+| 30 | `192.168.30.0/29` | Controller PMV (Pannello a Messaggio Variabile) |
+| 99 | `192.168.99.0/29` | Management (SSH, SNMP) |
 | 100 | `10.<RR>.<TT>.0/27` | Server cluster (broker, app, DB) |
 | 110 | `10.<RR>.<TT>.32/27` | Storage / NAS |
 | 120 | `10.<RR>.<TT>.64/27` | Workstation operatore |
