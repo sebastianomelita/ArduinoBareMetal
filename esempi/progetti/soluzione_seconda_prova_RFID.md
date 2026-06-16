@@ -766,6 +766,8 @@ interface Vlan300
  ip access-group ADMIN-IN in
 ```
 
+**Come funziona, in breve.** Il comando `ip access-group NOME {in|out}` *aggancia* una ACL a un'interfaccia in un verso (dal punto di vista del router): `in` filtra ciò che entra, `out` ciò che esce. Le ACL qui sono **statiche** (stateless): decidono solo *chi può iniziare* una sessione e verso quale host/porta. CBAC (`ip inspect … out`) aggiunge la **tabella di stato**: ispeziona le sessioni in uscita da un'interfaccia e apre da solo i loro **ritorni** nella ACL `in` della *stessa* interfaccia, inserendoli sopra il `deny` finale e togliendoli a fine sessione. Esempio: il SYN di un reader (`10.2.x.x → 10.0.1.2:8883`) è ammesso da `SITI-IN` su `Tunnel0 in` e ispezionato in uscita su `Vlan100`; la risposta del broker rientra da `Vlan100 in` grazie al permesso temporaneo creato da CBAC, mentre qualsiasi pacchetto **non sollecitato** (es. un reader verso il DB) cade sul `deny ip any any log`.
+
 **Confronto con la stazione Cat. A.** In Cat. A `R-FW` filtra all'origine (`VLAN10/20/99-IN`); il SUM replica la stessa logica *default-deny + named ACL per interfaccia*, ma sul **bordo centrale** e con **ispezione stateful CBAC**, perché deve difendersi anche dai siti che in loco non filtrano (Cat. B). Stessa filosofia applicata due volte: a valle dove si può, comunque a monte sull'asset critico, qui irrobustita dallo stato.
 
 
