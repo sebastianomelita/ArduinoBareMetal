@@ -608,29 +608,32 @@ task invia_heartbeat():
 
 Stesso principio della stazione (L3 collassato sul firewall, L2 sul core switch), ma il SUM è organizzato in **tre zone separate** dietro il firewall di confine, perché è il bersaglio più sensibile e i siti remoti hanno livelli di fiducia diversi.
 
-<img src="../img/7_schema_attivi_sum.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM" width="1000px">
-
 ```
-        Tunnel IPsec dai CE                     WAN pubblica 198.64.5.1
-        (Cat. A · Cat. B · controllori)          :8883 -> broker  ·  :443 -> WAF
-        10.255.1/2/3.0/30                              |
-                  \                                    |
-                   +--------------+----------------------+
-                          +--------+---------+
-                          | FW-SUM (PE) +WAF |  L3 multi-zona, DEFAULT-DENY
-                          | + IDS/IPS        |
-                          +--+------+------+--+
-                  DMZ .1.0/28 |      | farm | admin .3.0/28
-                      +-------+   .2.0/24   +--------+
-                +-----+-----+   +----+-----+    +-----+-----+
-                | Broker    |   | CS-SUM   |    | NMS .3.10 |
-                | MQTT a-a  |   | core L2  |    | jump .3.11|
-                | VIP .1.2  |   +-+--+--+--+    +-----------+
-                | WAF .1.5  |   app  DB  web   (+ SIEM .2.40,
-                +-----------+  .2.10 .20 .30      DNS/NTP .2.5)
+        Tunnel IPsec dai CE              WAN pubblica 198.64.5.1
+        10.255.1/2/3.0/30                 :8883 -> broker · :443 -> WAF
+                  \                              /
+                   +--------------+---------------+
+                          | FW-SUM (PE) +WAF+IDS/IPS |  L3, inter-VLAN, default-deny
+                          +------------+-------------+
+                                       | trunk 802.1q (VLAN 100/200/300)
+                              +--------+--------+
+                              | CS-SUM core L2  |  aggregazione
+                              +--+----+------+--+
+                  uplink 802.1q |    |        | uplink 802.1q
+                +---------------+    |        +----------------+
+          +-----+-----+    +---------+--------+         +-------+-----+
+          | SW-DMZ L2 |    |   SW-FARM L2     |         | SW-ADMIN L2 |
+          +-----+-----+    +--+-----+------+--+         +------+------+
+                |             |     |      |                   |
+          +-----+-----+    app    DB     web            +------+------+
+          | broker a-a|   .2.10  .20/.21 .2.30          | NMS  .3.10  |
+          | VIP .1.2  |   SIEM .2.40  DNS/NTP .2.5       | jump .3.11  |
+          | WAF .1.5  |                                  +-------------+
+          +-----------+   server farm 10.0.2.0/24        admin 10.0.3.0/28
+           DMZ 10.0.1.0/28
 ```
 
-*Figura 7 — `../img/7_schema_attivi_sum.svg`.* La **DMZ** è l'unica zona raggiungibile dai siti (solo broker e WAF). **Server farm** (app, DB, web, SIEM, DNS) e **admin** non sono raggiungibili dai siti remoti. Il **core switch** commuta solo a L2; il livello 3 e tutta la policy stanno sul **FW-SUM**.
+*Figura 7 — `../img/7_schema_attivi_sum.svg`.* Architettura a **due livelli L2**: un **core switch** CS-SUM aggrega (trunk verso il firewall) e sotto **uno switch di accesso per ogni LAN** (SW-DMZ, SW-FARM, SW-ADMIN), ciascuno nella propria VLAN. Il **FW-SUM** resta l'unico apparato L3, gateway inter-VLAN e punto di policy. La **DMZ** è l'unica zona raggiungibile dai siti (solo broker e WAF); **server farm** e **admin** non lo sono.
 
 ### 9.2 Tabella degli accessi del SUM
 
@@ -747,6 +750,7 @@ interface Vlan300
 ```
 
 **Confronto con la stazione Cat. A.** In Cat. A `R-FW` filtra all'origine (`VLAN10/20/99-IN`) perché ha un apparato L3 in loco; il SUM replica la stessa logica *default-deny + named ACL per interfaccia*, ma sul **bordo centrale**, perché deve difendersi anche dai siti che in loco non filtrano (Cat. B). Stessa filosofia applicata due volte: a valle dove si può, comunque a monte sull'asset critico.
+
 
 
 
