@@ -298,9 +298,9 @@ interface Tun0
  tunnel protection ipsec profile VPN-SUM
  ip access-group ACL-TUNNEL-IN in
 !
-! === Instradamento: subnet interne direttamente connesse ===
 ip route 0.0.0.0 0.0.0.0 GigabitEthernet0/0
-ip route 10.0.0.0 255.0.0.0 Tun0
+! === supponendo sia la prima subnet di dorsale logica ===
+ip route 10.0.0.0 255.0.0.0 10.255.0.2
 !
 ! === PNAT (overload), con esclusione del traffico verso il SUM (va nel tunnel) ===
 ip access-list extended NAT-INTERNI
