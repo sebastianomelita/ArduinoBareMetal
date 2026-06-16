@@ -247,6 +247,7 @@ La rete piatta `192.168.1.0/24` viene suddivisa in sottoreti a lunghezza variabi
 | Commerciale (VLAN 20) | 192.168.1.32/27 | 255.255.255.224 | .33 – .62 | 192.168.1.63 |
 | DMZ (VLAN 30) | 192.168.1.64/28 | 255.255.255.240 | .65 – .78 | 192.168.1.79 |
 | Management (VLAN 99) | 192.168.1.80/29 | 255.255.255.248 | .81 – .86 | 192.168.1.87 |
+| VPN                  | 192.168.1.80/29 | 255.255.255.248 | .81 – .86 | 192.168.1.87 |
 
 Gli host ricevono gli IP tramite DHCP (pool per VLAN, lease 24h); server, stampanti e apparati usano IP statici o reservation. Il gateway di ciascuna VLAN è l'indirizzo della sottointerfaccia 802.1Q corrispondente sul router-firewall di bordo.
 
