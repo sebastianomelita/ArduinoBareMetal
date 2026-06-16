@@ -329,9 +329,9 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 - Alice autentica Bob se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
 
 #### Autenticazione con certificato utente
-Sia nel caso di autenticazione singola che in quello di autenticazione mutua non sempre conviene memorizzare tutte le chiavi pubbliche nel sistema.
+Sia nel caso di autenticazione singola che in quello di autenticazione mutua non sempre conviene memorizzare tutte le chiavi pubbliche nel sistema anche se questa è esattamente l'operazione che fa Linux con il protocollo SSH.
 
-Nel caso di protocolli come HTTPS o RADIUS non esiste un elenco di chiavi pubbliche autenticate perchè sarebbe troppo oneroso da gestire per i loro scenari d'uso. La chiave pubblica in questi protocolli viaggia sempre autenticata dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato). 
+Nel caso di protocolli più massivi di SSH, come HTTPS o RADIUS, non esiste un elenco di chiavi pubbliche autenticate perchè sarebbe troppo oneroso da gestire per i loro scenari d'uso. La chiave pubblica in questi protocolli viaggia sempre autenticata dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato). 
 
 Il **certificato utente** viene sempre inviato da colui che si deve autenticare **contestualmente alla sfida firmata**, cioè in allegato alla sfida firmata. Colui che deve **autenticare** l'utente sbusta la chiave pubblica dal certificato (dopo aver convalidato la firma della CA che lo autentica) e con quella **convalida la firma** sulla sfida.
 
