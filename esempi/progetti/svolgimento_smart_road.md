@@ -162,7 +162,7 @@ E' l'adattamento in ambito metropolitano di una tipica architettura ethernet ind
 
 ## 5.1. Topologia logica della rete di sensori nel caso di rete fisica A2
 
-Il **dispositivo di tratta** è un PE (Provider Edge), cioè un **router di confine** di una rete **MPLS**, assimilabile in pratica ad un **tunnel TUN** tra il PE sul tratto e il router PE nella sede regionale. Essendo un tunnel L3 su di esso andrà allocata una **subnet di dorsale**.
+Il **dispositivo di tratta** è un PE (Provider Edge), cioè un **router di confine** di una rete **MPLS**, assimilabile in pratica ad un **tunnel TAP** tra il PE sul tratto e il router PE nella sede regionale. Essendo un tunnel L2 su di esso sono allocate **subnet condivise**, una per ogni VLAN trasportata dalle dorsali di trunk.
 
 In questo schema i sensori/attuatori non sono **client MQTT diretti** (non parlano MQTT loro stessi via WiFi/IP). In questo caso i sensori parlano **LoRaWAN**, non MQTT, quindi non sono publisher MQTT in prima persona. È l'**application server edge** (co-locato col gateway) che fa il publish MQTT a nome dei sensori, dopo aver decodificato il payload Cayenne LPP (vedi §3.2.7). Quindi dal punto di vista del **piano L7 MQTT** il publisher non è il sensore ma il nodo edge — il sensore è "trasparente" rispetto a MQTT. Lo riflette il disegno facendo partire il link L7 dal nodo edge, non dal sensore:
 1. **L3 e L7 non coincidono.** Un sensore del tratto A1 raggiunge il dashboard del CdC fisicamente attraverso quattro nodi IP (gateway edge → firewall A1 → dorsale → firewall CdC → switch CdC → dashboard), ma a livello applicativo MQTT ci sono solo **due salti**: gateway edge → broker, e broker → dashboard. Il broker "appiattisce" la topologia IP dal punto di vista applicativo: chi pubblica e chi si abbona vedono solo il broker, non la rete IP sottostante.
@@ -182,7 +182,7 @@ In questo caso la rete di sensori è analoga ad una grande LAN industriale compo
 
 <img src="../img/cdc_lombardia_B1_dwdm.svg" alt="cdc_lombardia_B1_due_livelli" width="900">
 
-Il link equivale ad una **dorsale di trunk** tra due switch e aggrega su di se le **dorsali logiche** di tutte le VLAN di un tratto. Il CS L2 provvederà a fondere insieme le VLAN di ogni tratto. Su ogni VLAN si allocheranno, mediante subnetting, **tre subnet separate** (una per i sensori, una per le videocamere, una per le colonnine di ricarica).
+Il link equivale ad una **dorsale di trunk** tra due switch e aggrega su di se le **dorsali logiche** di tutte le VLAN di un tratto. Il CS L2 provvederà a fondere insieme le VLAN di ogni tratto. Su ogni VLAN si allocheranno, mediante subnetting, **tre subnet separate** (una per i sensori, una per le videocamere, una per le colonnine di ricarica) condivise su tutti i tratti.
 
 ## 5.3. Componenti dello switch a ogni smart-gate
 
