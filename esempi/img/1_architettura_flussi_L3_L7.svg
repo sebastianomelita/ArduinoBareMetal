@@ -13,17 +13,14 @@
 
 <text class="ttl" x="620" y="30" text-anchor="middle">Architettura generale — flussi L3 IP e L7 MQTT (sistema RFID metropolitano)</text>
 
-<!-- ===================== CLOUDS ===================== -->
 <path class="body cl" d="M270 270 q-18 0 -22 -22 q-30 -6 -22 -34 q-20 -22 8 -36 q4 -30 40 -24 q18 -28 52 -12 q30 -18 50 8 q34 -4 30 30 q26 12 8 40 q10 30 -26 30 q-12 22 -44 12 q-26 18 -52 0 q-28 8 -30 -10 Z" transform="translate(318.6,-21.2) scale(0.6)"/>
 <path class="body cl" d="M270 270 q-18 0 -22 -22 q-30 -6 -22 -34 q-20 -22 8 -36 q4 -30 40 -24 q18 -28 52 -12 q30 -18 50 8 q34 -4 30 30 q26 12 8 40 q10 30 -26 30 q-12 22 -44 12 q-26 18 -52 0 q-28 8 -30 -10 Z" transform="translate(-11.4,238.8) scale(0.6)"/>
 <path class="body cl" d="M270 270 q-18 0 -22 -22 q-30 -6 -22 -34 q-20 -22 8 -36 q4 -30 40 -24 q18 -28 52 -12 q30 -18 50 8 q34 -4 30 30 q26 12 8 40 q10 30 -26 30 q-12 22 -44 12 q-26 18 -52 0 q-28 8 -30 -10 Z" transform="translate(328.6,423.8) scale(0.6)"/>
 <path class="body cl" d="M270 270 q-18 0 -22 -22 q-30 -6 -22 -34 q-20 -22 8 -36 q4 -30 40 -24 q18 -28 52 -12 q30 -18 50 8 q34 -4 30 30 q26 12 8 40 q10 30 -26 30 q-12 22 -44 12 q-26 18 -52 0 q-28 8 -30 -10 Z" transform="translate(858.6,178.8) scale(0.6)"/>
 
-<!-- ===================== SITO 1: GW Cat. A All-in-one (pontile) ===================== -->
 <rect x="392" y="178" width="246" height="150" rx="6" fill="none" stroke="#9ca3af" stroke-width="0.7"/>
 <line class="wire" x1="510" y1="147" x2="510" y2="200"/>
-<!-- FW -->
-<text class="sub" x="392" y="194">FW-NAT-VPN · 39.68.34.121 · .11.1</text>
+<text class="sub" x="392" y="194">FW-NAT-VPN · 39.68.34.121 · 10.255.x.1</text>
 <g transform="translate(510,216)">
   <rect class="body fw" x="-23" y="-15" width="46" height="30" rx="2"/>
   <line class="fw" x1="-23" y1="-5" x2="23" y2="-5" stroke-width="0.7"/><line class="fw" x1="-23" y1="5" x2="23" y2="5" stroke-width="0.7"/>
@@ -31,14 +28,12 @@
   <line class="fw" x1="0" y1="-5" x2="0" y2="5" stroke-width="0.7"/><line class="fw" x1="-8" y1="5" x2="-8" y2="15" stroke-width="0.7"/><line class="fw" x1="9" y1="5" x2="9" y2="15" stroke-width="0.7"/>
 </g>
 <line class="wire" x1="510" y1="231" x2="510" y2="270"/>
-<!-- server edge -->
 <text class="sub" x="510" y="266" text-anchor="middle">Server edge / Middleware (Client MQTT·VPN, bridge)</text>
 <g transform="translate(510,292)">
   <rect class="body srv" x="-13" y="-18" width="26" height="36" rx="3"/>
   <line class="srv" x1="-13" y1="-5" x2="13" y2="-5" stroke-width="0.7"/><line class="srv" x1="-13" y1="7" x2="13" y2="7" stroke-width="0.7"/><circle cx="-8" cy="-12" r="1.4" fill="#7F77DD"/>
 </g>
 <text class="lbl" x="515" y="346" text-anchor="middle" font-weight="600">GW Cat. A — All-in-one (pontile)</text>
-<!-- reader + card -->
 <text class="sub" x="250" y="126" text-anchor="middle">Reader fisso</text>
 <g transform="translate(250,150)"><rect class="rdr" x="-20" y="-15" width="40" height="30" rx="5"/><circle cx="0" cy="-1" r="7" fill="none" stroke="#BA7517"/></g>
 <path class="nfc" d="M250 167 a10 10 0 0 1 0 22 M250 171 a6 6 0 0 1 0 14"/>
@@ -46,9 +41,8 @@
 <text class="sub" x="250" y="248" text-anchor="middle">card / smartphone</text>
 <line class="wire" x1="270" y1="150" x2="487" y2="288"/>
 
-<!-- ===================== SITO 2: Stazione Cat. A full ===================== -->
 <line class="wire" x1="180" y1="407" x2="180" y2="453"/>
-<text class="sub" x="40" y="448">FW-NAT-VPN · 39.68.34.122 · .12.1</text>
+<text class="sub" x="40" y="448">FW-NAT-VPN · 39.68.34.122 · 10.255.x.5</text>
 <g transform="translate(180,470)">
   <rect class="body fw" x="-23" y="-15" width="46" height="30" rx="2"/>
   <line class="fw" x1="-23" y1="-5" x2="23" y2="-5" stroke-width="0.7"/><line class="fw" x1="-23" y1="5" x2="23" y2="5" stroke-width="0.7"/>
@@ -56,7 +50,6 @@
   <line class="fw" x1="0" y1="-5" x2="0" y2="5" stroke-width="0.7"/><line class="fw" x1="-8" y1="5" x2="-8" y2="15" stroke-width="0.7"/><line class="fw" x1="9" y1="5" x2="9" y2="15" stroke-width="0.7"/>
 </g>
 <line class="wire" x1="180" y1="485" x2="180" y2="524"/>
-<!-- CS/AS1 -->
 <text class="sub" x="180" y="520" text-anchor="middle">CS/AS1 · .2.254</text>
 <g transform="translate(180,540)">
   <rect class="body sw" x="-28" y="-13" width="56" height="26" rx="3"/>
@@ -64,12 +57,10 @@
 </g>
 <line class="wire" x1="170" y1="553" x2="115" y2="600"/>
 <line class="wire" x1="195" y1="553" x2="250" y2="600"/>
-<!-- DS1 DS2 -->
 <text class="sub" x="110" y="600" text-anchor="middle">DS1</text>
 <g transform="translate(110,624)"><rect class="body sw" x="-26" y="-12" width="52" height="24" rx="3"/><line class="sw" x1="-16" y1="-5" x2="12" y2="-5" marker-end="url(#a)"/><line class="sw" x1="16" y1="2" x2="-12" y2="2" marker-end="url(#a)"/></g>
 <text class="sub" x="255" y="600" text-anchor="middle">DS2</text>
 <g transform="translate(255,624)"><rect class="body sw" x="-26" y="-12" width="52" height="24" rx="3"/><line class="sw" x1="-16" y1="-5" x2="12" y2="-5" marker-end="url(#a)"/><line class="sw" x1="16" y1="2" x2="-12" y2="2" marker-end="url(#a)"/></g>
-<!-- GW server edge (.2.1) -->
 <line class="wire" x1="255" y1="636" x2="255" y2="676"/>
 <text class="sub" x="300" y="690" text-anchor="middle">GW (.2.1)</text>
 <text class="sub" x="300" y="703" text-anchor="middle">Client MQTT</text>
@@ -77,7 +68,6 @@
   <ellipse class="body rt" cx="0" cy="5" rx="20" ry="5.5"/><path class="body rt" d="M-20 5 V-4 A20 5.5 0 0 1 20 -4 V5"/><ellipse class="body rt" cx="0" cy="-4" rx="20" ry="5.5"/>
   <line class="rt" x1="-8" y1="-6" x2="10" y2="-6" marker-end="url(#a)"/><line class="rt" x1="8" y1="-2" x2="-10" y2="-2" marker-end="url(#a)"/>
 </g>
-<!-- reader + card -->
 <text class="sub" x="70" y="636" text-anchor="middle">Reader fisso</text>
 <g transform="translate(70,660)"><rect class="rdr" x="-20" y="-15" width="40" height="30" rx="5"/><circle cx="0" cy="-1" r="7" fill="none" stroke="#BA7517"/></g>
 <line class="wire" x1="88" y1="650" x2="110" y2="612"/>
@@ -86,9 +76,8 @@
 <text class="sub" x="70" y="758" text-anchor="middle">card</text>
 <text class="lbl" x="175" y="760" text-anchor="middle" font-weight="600">Stazione Cat. A</text>
 
-<!-- ===================== SITO 3: Fermata Cat. B ===================== -->
 <line class="wire" x1="520" y1="592" x2="520" y2="640"/>
-<text class="sub" x="392" y="636">FW-NAT-VPN 4G/5G · 39.68.34.123 · .13.1</text>
+<text class="sub" x="392" y="636">FW-NAT-VPN 4G/5G · 39.68.34.123 · 10.255.x.9</text>
 <g transform="translate(520,658)">
   <rect class="body fw" x="-23" y="-15" width="46" height="30" rx="2"/>
   <line class="fw" x1="-23" y1="-5" x2="23" y2="-5" stroke-width="0.7"/><line class="fw" x1="-23" y1="5" x2="23" y2="5" stroke-width="0.7"/>
@@ -96,7 +85,6 @@
   <line class="fw" x1="0" y1="-5" x2="0" y2="5" stroke-width="0.7"/><line class="fw" x1="-8" y1="5" x2="-8" y2="15" stroke-width="0.7"/><line class="fw" x1="9" y1="5" x2="9" y2="15" stroke-width="0.7"/>
 </g>
 <text class="lbl" x="525" y="690" text-anchor="middle" font-weight="600">Fermata Cat. B</text>
-<!-- 2 reader IP nativi MQTT -->
 <line class="wire" x1="508" y1="670" x2="475" y2="712"/>
 <line class="wire" x1="532" y1="670" x2="575" y2="712"/>
 <text class="sub" x="465" y="710" text-anchor="middle">Reader 1 (MQTT)</text>
@@ -107,28 +95,24 @@
 <g transform="translate(470,800)"><rect x="-16" y="-11" width="32" height="22" rx="3" fill="#fff" stroke="#6b7280"/><rect x="-12" y="-5" width="8" height="6" rx="1" fill="#e8c97a" stroke="#BA7517"/></g>
 <text class="sub" x="470" y="825" text-anchor="middle">card</text>
 
-<!-- ===================== BROKER centrale ===================== -->
 <text class="lbl" x="760" y="486" text-anchor="middle" font-weight="600">Broker MQTT · .0.2</text>
 <g transform="translate(760,510)">
   <rect class="body sw" x="-28" y="-13" width="56" height="26" rx="3"/>
   <line class="sw" x1="-18" y1="-6" x2="14" y2="-6" marker-end="url(#a)"/><line class="sw" x1="18" y1="-1" x2="-14" y2="-1" marker-end="url(#a)"/><line class="sw" x1="-18" y1="4" x2="14" y2="4" marker-end="url(#a)"/>
 </g>
 
-<!-- ===================== CENTRO DI GESTIONE (SUM) ===================== -->
 <text class="ttl" x="1050" y="240" text-anchor="middle">Centro di gestione e comando (SUM)</text>
 <line class="wire" x1="1050" y1="347" x2="1050" y2="400"/>
-<text class="sub" x="930" y="392">FW · port forward 8883</text>
-<text class="sub" x="930" y="405">198.64.5.1:8883</text>
 <g transform="translate(1050,420)">
   <rect class="body fw" x="-23" y="-15" width="46" height="30" rx="2"/>
   <line class="fw" x1="-23" y1="-5" x2="23" y2="-5" stroke-width="0.7"/><line class="fw" x1="-23" y1="5" x2="23" y2="5" stroke-width="0.7"/>
   <line class="fw" x1="-8" y1="-15" x2="-8" y2="-5" stroke-width="0.7"/><line class="fw" x1="9" y1="-15" x2="9" y2="-5" stroke-width="0.7"/>
   <line class="fw" x1="0" y1="-5" x2="0" y2="5" stroke-width="0.7"/><line class="fw" x1="-8" y1="5" x2="-8" y2="15" stroke-width="0.7"/><line class="fw" x1="9" y1="5" x2="9" y2="15" stroke-width="0.7"/>
 </g>
-<text class="sub" x="1080" y="414">.11.2 .12.2 .13.2</text>
-<text class="sub" x="1080" y="427">.3.254</text>
+<text class="sub" x="1080" y="395">FW · port forward 8883 (198.64.5.1)</text>
+<text class="sub" x="1080" y="411">VPN: 10.255.x.2, .6, .10</text>
+<text class="sub" x="1080" y="427">LAN: .3.254</text>
 <line class="wire" x1="1050" y1="435" x2="1050" y2="474"/>
-<!-- CS/AS1 -->
 <text class="sub" x="1050" y="470" text-anchor="middle">CS/AS1 · .3.1</text>
 <g transform="translate(1050,490)">
   <rect class="body sw" x="-28" y="-13" width="56" height="26" rx="3"/>
@@ -137,37 +121,32 @@
 <line class="wire" x1="1035" y1="503" x2="1005" y2="568"/>
 <line class="wire" x1="1065" y1="498" x2="1110" y2="556"/>
 <line class="wire" x1="1068" y1="503" x2="1112" y2="620"/>
-<!-- App server -->
 <text class="sub" x="1000" y="556" text-anchor="middle">App server / SUM core</text>
 <text class="sub" x="1000" y="569" text-anchor="middle">Client MQTT (Sub) .3.x</text>
 <g transform="translate(1000,592)"><rect class="body srv" x="-13" y="-16" width="26" height="32" rx="3"/><line class="srv" x1="-13" y1="-4" x2="13" y2="-4" stroke-width="0.7"/><line class="srv" x1="-13" y1="6" x2="13" y2="6" stroke-width="0.7"/><circle cx="-8" cy="-11" r="1.4" fill="#7F77DD"/></g>
 <text class="sub" x="1000" y="618" text-anchor="middle">Controllori: Client MQTT / HTTPS</text>
-<!-- Server Web -->
 <text class="sub" x="1120" y="540" text-anchor="middle">Server Web .3.3</text>
 <g transform="translate(1120,562)"><rect class="body db" x="-13" y="-16" width="26" height="32" rx="3"/><line class="db" x1="-13" y1="-4" x2="13" y2="-4" stroke-width="0.7"/><line class="db" x1="-13" y1="6" x2="13" y2="6" stroke-width="0.7"/></g>
-<!-- DB -->
 <text class="sub" x="1120" y="606" text-anchor="middle">Analisi/storage (DB) .3.4</text>
 <g transform="translate(1120,632)"><rect class="body db" x="-13" y="-16" width="26" height="32" rx="3"/><ellipse class="body db" cx="0" cy="-10" rx="12" ry="3.2"/><ellipse cx="0" cy="2" rx="12" ry="3.2" fill="none" stroke="#6b7280" stroke-width="0.7"/></g>
 
-<!-- ===================== FLUSSI L3 (dorsali logiche VPN) ===================== -->
 <path class="l3" d="M533 216 L1025 420"/>
-<text class="sub" x="780" y="300">Dorsale logica 1 — 10.0.11.0/30</text>
-<path class="l3" d="M203 470 L1025 422"/>
-<text class="sub" x="640" y="470">Dorsale logica 2 — 10.0.12.0/30</text>
-<path class="l3" d="M543 658 L1027 432"/>
-<text class="sub" x="800" y="585">Dorsale logica 3 — 10.0.13.0/30</text>
+<text class="sub" x="820" y="325" text-anchor="start">Dorsale logica 1 — 10.255.x.0/30</text>
 
-<!-- ===================== FLUSSI L7 (MQTT verso broker) ===================== -->
+<path class="l3" d="M203 470 L1025 422"/>
+<text class="sub" x="820" y="414" text-anchor="start">Dorsale logica 2 — 10.255.x.4/30</text>
+
+<path class="l3" d="M543 658 L1027 432"/>
+<text class="sub" x="820" y="450" text-anchor="start">Dorsale logica 3 — 10.255.x.8/30</text>
+
 <path class="l7" d="M510 310 Q640 400 734 500"/>
 <path class="l7" d="M278 700 Q540 580 734 516"/>
 <path class="l7" d="M540 730 Q660 610 740 522"/>
 <path class="l7" d="M1000 576 Q880 535 788 506"/>
 
-<!-- etichetta dentro la nuvola centrale -->
 <text class="lbl" x="480" y="425" text-anchor="middle" font-weight="600">Internet o LAN</text>
 <text class="lbl" x="480" y="443" text-anchor="middle">rete di trasporto IP</text>
 
-<!-- ===================== LEGENDA ===================== -->
 <rect x="840" y="700" width="376" height="120" rx="6" fill="none" stroke="#d1d5db" stroke-width="0.5"/>
 <text class="lbl" x="856" y="722" font-weight="600">Legenda</text>
 <line class="l3" x1="856" y1="742" x2="906" y2="742"/>
