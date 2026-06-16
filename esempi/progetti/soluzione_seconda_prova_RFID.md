@@ -606,7 +606,7 @@ task invia_heartbeat():
 
 ### 9.1 Schema logico degli apparati attivi
 
-Stesso principio della stazione (L3 collassato sul firewall, L2 sul core switch), ma il SUM è organizzato in **tre zone separate** dietro il firewall di confine, perché è il bersaglio più sensibile e i siti remoti hanno livelli di fiducia diversi.
+Architettura a **due livelli L2** dietro il firewall di confine: un **core switch** che aggrega e **uno switch di accesso per ogni LAN**. Il SUM è il bersaglio più sensibile e i siti remoti hanno livelli di fiducia diversi, quindi le risorse sono separate in tre zone.
 
 ```
         Tunnel IPsec dai CE              WAN pubblica 198.64.5.1
@@ -633,7 +633,7 @@ Stesso principio della stazione (L3 collassato sul firewall, L2 sul core switch)
            DMZ 10.0.1.0/28
 ```
 
-*Figura 7 — `../img/7_schema_attivi_sum.svg`.* Architettura a **due livelli L2**: un **core switch** CS-SUM aggrega (trunk verso il firewall) e sotto **uno switch di accesso per ogni LAN** (SW-DMZ, SW-FARM, SW-ADMIN), ciascuno nella propria VLAN. Il **FW-SUM** resta l'unico apparato L3, gateway inter-VLAN e punto di policy. La **DMZ** è l'unica zona raggiungibile dai siti (solo broker e WAF); **server farm** e **admin** non lo sono.
+*Figura 7 — `../img/7_schema_attivi_sum.svg`.* Un **core switch** CS-SUM aggrega (trunk verso il firewall) e sotto **uno switch di accesso per ogni LAN** (SW-DMZ, SW-FARM, SW-ADMIN), ciascuno nella propria VLAN. Il **FW-SUM** resta l'unico apparato L3, gateway inter-VLAN e punto di policy. La **DMZ** è l'unica zona raggiungibile dai siti (solo broker e WAF); **server farm** e **admin** non lo sono.
 
 ### 9.2 Tabella degli accessi del SUM
 
@@ -647,9 +647,9 @@ Stesso principio della stazione (L3 collassato sul firewall, L2 sul core switch)
 
 ### 9.3 ACL di protezione del datacenter (FW-SUM)
 
-A differenza della stazione Cat. A — dove il filtraggio è già fatto in loco da `R-FW` — le **fermate Cat. B sono reader IP nativi senza alcuna policy locale**: non filtrano nulla. Per questo il SUM **non si fida dei siti** e centralizza tutta la difesa sul proprio firewall, in **default-deny**: ogni classe sorgente raggiunge **una sola** destinazione su **una sola** porta. Le zone sono isolate fra loro: il broker esposto **non** parla direttamente col DB (passa dall'app server) e la zona **admin** è solo sorgente del management. Essendo il bordo **CBAC/stateful** (come in §6), le ACL definiscono solo le *connessioni iniziali ammesse*; il traffico di ritorno è gestito dall'inspection.
+A differenza della stazione Cat. A — dove il filtraggio è già fatto in loco da `R-FW` — le **fermate Cat. B sono reader IP nativi senza alcuna policy locale**: non filtrano nulla. Per questo il SUM **non si fida dei siti** e centralizza la difesa sul proprio firewall, in **default-deny**: ogni classe sorgente raggiunge **una sola** destinazione su **una sola** porta. Le zone sono isolate fra loro: il broker esposto **non** parla direttamente col DB (passa dall'app server) e la zona **admin** è solo sorgente del management.
 
-Una named ACL per interfaccia, applicata `in`, con `deny ip any any` finale esplicito (come `VLAN10/20/99-IN` in §6).
+Le ACL sotto definiscono solo le **connessioni iniziali ammesse**; il traffico di **ritorno** è aperto dinamicamente dall'ispezione **CBAC** (§9.3.1), che inserisce le aperture *sopra* il `deny ip any any log` finale. Non servono quindi righe `established` scritte a mano.
 
 #### Tunnel0 — ingresso dai siti remoti (`SITI-IN`)
 
@@ -660,7 +660,7 @@ Una named ACL per interfaccia, applicata `in`, con `deny ip any any` finale espl
 | 3 | `10.3.0.0/24` controllori | WAF `10.0.1.5` | tcp:443 | permit |
 | 4 | any | server farm `10.0.2.0/24` | ip | deny |
 | 5 | any | admin `10.0.3.0/28` | ip | deny |
-| 6 | any | any | ip | deny |
+| 6 | any | any | ip | deny (log) |
 
 ```
 ip access-list extended SITI-IN
@@ -669,11 +669,7 @@ ip access-list extended SITI-IN
  permit tcp 10.3.0.0 0.0.0.255  host 10.0.1.5 eq 443
  deny   ip  any 10.0.2.0 0.0.0.255
  deny   ip  any 10.0.3.0 0.0.0.15
- deny   ip  any any
-!
-interface Tunnel0
- description Aggregato dorsali IPsec dai siti remoti
- ip access-group SITI-IN in
+ deny   ip  any any log
 ```
 
 #### Vlan100 — DMZ (`DMZ-IN`)
@@ -685,7 +681,7 @@ interface Tunnel0
 | 3 | DMZ `10.0.1.0/28` | DNS `10.0.2.5` | udp:53 | permit |
 | 4 | DMZ `10.0.1.0/28` | DB `10.0.2.20` | ip | deny |
 | 5 | DMZ `10.0.1.0/28` | admin `10.0.3.0/28` | ip | deny |
-| 6 | any | any | ip | deny |
+| 6 | any | any | ip | deny (log) |
 
 ```
 ip access-list extended DMZ-IN
@@ -694,11 +690,7 @@ ip access-list extended DMZ-IN
  permit udp 10.0.1.0 0.0.0.15 host 10.0.2.5 eq 53
  deny   ip  10.0.1.0 0.0.0.15 host 10.0.2.20
  deny   ip  10.0.1.0 0.0.0.15 10.0.3.0 0.0.0.15
- deny   ip  any any
-!
-interface Vlan100
- description DMZ - broker MQTT, WAF
- ip access-group DMZ-IN in
+ deny   ip  any any log
 ```
 
 #### Vlan200 — Server farm (`FARM-IN`)
@@ -707,12 +699,11 @@ interface Vlan100
 | - | -------- | ------------ | ----------- | ------ |
 | 1 | app `10.0.2.10` | DB master `10.0.2.20` | tcp:5432 | permit |
 | 2 | web `10.0.2.30` | app `10.0.2.10` | tcp:8080 | permit |
-| 3 | farm `10.0.2.0/24` | DNS `10.0.2.5` | udp:53 | permit |
-| 4 | farm `10.0.2.0/24` | NTP `10.0.2.5` | udp:123 | permit |
-| 5 | farm `10.0.2.0/24` | SIEM `10.0.2.40` | udp:514 | permit |
-| 6 | farm `10.0.2.0/24` | admin `10.0.3.0/28` | ip | deny |
-| 7 | farm `10.0.2.0/24` | siti `10.1.0.0/16`,`10.2.0.0/16` | ip | deny |
-| 8 | any | any | ip | deny |
+| 3 | farm `10.0.2.0/24` | DNS/NTP `10.0.2.5` | udp:53,123 | permit |
+| 4 | farm `10.0.2.0/24` | SIEM `10.0.2.40` | udp:514 | permit |
+| 5 | farm `10.0.2.0/24` | admin `10.0.3.0/28` | ip | deny |
+| 6 | farm `10.0.2.0/24` | siti `10.1/10.2.0.0/16` | ip | deny |
+| 7 | any | any | ip | deny (log) |
 
 ```
 ip access-list extended FARM-IN
@@ -724,11 +715,7 @@ ip access-list extended FARM-IN
  deny   ip  10.0.2.0 0.0.0.255 10.0.3.0 0.0.0.15
  deny   ip  10.0.2.0 0.0.0.255 10.1.0.0 0.0.255.255
  deny   ip  10.0.2.0 0.0.0.255 10.2.0.0 0.0.255.255
- deny   ip  any any
-!
-interface Vlan200
- description Server farm - app, DB, web, SIEM, DNS/NTP
- ip access-group FARM-IN in
+ deny   ip  any any log
 ```
 
 #### Vlan300 — Admin (`ADMIN-IN`)
@@ -743,15 +730,45 @@ ip access-list extended ADMIN-IN
  permit tcp 10.0.3.0 0.0.0.15 any eq 22
  permit udp 10.0.3.0 0.0.0.15 any eq 161
  permit ip  10.0.3.0 0.0.0.15 any
+```
+
+### 9.3.1 Ispezione stateful con CBAC (Context-Based Access Control)
+
+Le ACL precedenti sono **statiche**: da sole non aprono i ritorni. La risposta del broker verso il sito (`10.0.1.2 -> 10.2.x.x`) rientra dal lato DMZ e, senza stato, verrebbe scartata dal `deny ip any any` di `DMZ-IN`. Per questo si attiva **CBAC** (`ip inspect`): ispeziona le sessioni in uscita verso le risorse protette, tiene una **tabella di stato** e **apre da solo i ritorni**, inserendoli sopra i `deny` finali.
+
+> Differenza rispetto all'esempio "client interni → WAN": al SUM le sessioni sono iniziate **dai siti verso i server**, quindi l'ispezione si applica `out` su **ogni interfaccia che guarda verso una risorsa protetta** (Tunnel0, Vlan100, Vlan200), insieme alla ACL `in` di default-deny della stessa interfaccia. Su Vlan300 (admin) non serve `inspect`, perché nessuno inizia sessioni *verso* l'admin: i ritorni delle sessioni iniziate dall'admin vengono aperti sulle interfacce di destinazione (Vlan100/Vlan200).
+
+```
+! Passo 1 - regola di ispezione: quali protocolli tracciare
+ip inspect name CBAC-SUM tcp        ! copre MQTT/TLS 8883, HTTPS 443, SSH 22 ...
+ip inspect name CBAC-SUM udp        ! copre DNS 53, NTP 123, SNMP 161, syslog 514
+ip inspect name CBAC-SUM icmp       ! ping/traceroute di ritorno
+! Nessun ALG (ftp/sip/rtsp): MQTT e HTTPS non aprono porte dinamiche.
 !
+! Passo 2 - ACL esterne con default-deny esplicito: gia' definite sopra
+!           (SITI-IN, DMZ-IN, FARM-IN, ADMIN-IN). CBAC inserisce i ritorni
+!           dinamicamente SOPRA il 'deny ip any any log'.
+!
+! Passo 3 - applicazione: ACL 'in' + ispezione 'out' sulle interfacce
+!           che guardano verso le risorse protette
+interface Tunnel0
+ description Dorsali dai siti remoti
+ ip access-group SITI-IN in
+ ip inspect CBAC-SUM out          ! apre i ritorni delle sessioni admin -> siti
+interface Vlan100
+ description DMZ - broker, WAF
+ ip access-group DMZ-IN in
+ ip inspect CBAC-SUM out          ! apre i ritorni delle sessioni  * -> DMZ
+interface Vlan200
+ description Server farm
+ ip access-group FARM-IN in
+ ip inspect CBAC-SUM out          ! apre i ritorni delle sessioni  * -> farm
 interface Vlan300
- description Admin - NMS, jump host (sola sorgente del management)
+ description Admin - solo sorgente del management
  ip access-group ADMIN-IN in
 ```
 
-**Confronto con la stazione Cat. A.** In Cat. A `R-FW` filtra all'origine (`VLAN10/20/99-IN`) perché ha un apparato L3 in loco; il SUM replica la stessa logica *default-deny + named ACL per interfaccia*, ma sul **bordo centrale**, perché deve difendersi anche dai siti che in loco non filtrano (Cat. B). Stessa filosofia applicata due volte: a valle dove si può, comunque a monte sull'asset critico.
-
-
+**Confronto con la stazione Cat. A.** In Cat. A `R-FW` filtra all'origine (`VLAN10/20/99-IN`); il SUM replica la stessa logica *default-deny + named ACL per interfaccia*, ma sul **bordo centrale** e con **ispezione stateful CBAC**, perché deve difendersi anche dai siti che in loco non filtrano (Cat. B). Stessa filosofia applicata due volte: a valle dove si può, comunque a monte sull'asset critico, qui irrobustita dallo stato.
 
 
 ---
