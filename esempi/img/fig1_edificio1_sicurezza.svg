@@ -23,7 +23,7 @@
   <line x1="624" y1="233" x2="636" y2="233" stroke="#6b7280" stroke-width="1.5"/>
   <!-- collegamento firewall -> commerciale -->
   <line x1="496" y1="240" x2="320" y2="290" stroke="#6b7280" stroke-width="1.5" marker-end="url(#a)"/>
-  <text x="420" y="258" font-size="9" fill="#374151">f0/1 10.10.10.2</text>
+  <text x="420" y="245" font-size="9" fill="#374151">f0/1 10.10.10.2</text>
   <!-- rete commerciale -->
   <ellipse cx="210" cy="300" rx="135" ry="42" fill="#bbf7d0" stroke="#16a34a" stroke-width="1.5"/>
   <text x="210" y="294" text-anchor="middle" font-size="13" font-weight="600" fill="#14532d">Rete commerciale</text>
