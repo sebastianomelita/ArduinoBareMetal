@@ -314,9 +314,11 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 - Bob manda ad Alice un messaggio contenente la sua identità è la nonce che ha scelto lui, b.
 - Alice risponde mandando la sua identità e la propria firma sulla sfida b; Fase  scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente
 - Bob autentica Alice se riesce a verificare la firma posta sulla sfida, ovvero se  decifrando la firma con la chiave pubblica di Alice, ritrova la sfida originale di Bob (Fase di verifica delle credenziali).
-
 - La sfida è inviata sempre da chi deve verificare l’autenticazione, in questo caso Bob.
 
+Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che recuperano la **chiave pubblica** da un file utilizzando come chiave di ricerca lo **username** dell'utente. Il file ha il significato di **elenco di chiavi pubbliche autenticate**. 
+
+**NB:** Nel caso di protocolli come HTTPS o RADIUS non esiste un elenco di chiavi pubbliche autenticate perchè sarebbe troppo oneroso da gestire per i loro scenari d'uso. La chiave pubblica in questi protocolli viaggia sempre autenticata dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato). Il certificato viene sempre inviato **contestualmente alla sfida firmata** da colui che si deve autenticare, cioè sfida firmata e il certificato che contiene la chiave pubblica sono mandati insieme verso colui che deve **autenticare** l'utente **convalidando la firma** sulla sdida.
 
 #### Autenticazione mutua asimmetrica con sfida in chiaro
 
@@ -328,6 +330,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 - Bob chiude il protocollo di autenticazione mutua inviando la sua firma sulla grandezza sulla sfida di A.
 - Alice autentica Bob se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
 
+**NB:** Nel caso di protocolli come HTTPS o RADIUS non esiste un elenco di chiavi pubbliche autenticate perchè sarebbe troppo oneroso da gestire per i loro scenari d'uso. La chiave pubblica in questi protocolli viaggia sempre autenticata dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato). Il certificato viene sempre inviato **contestualmente alla sfida firmata** da colui che si deve autenticare, cioè sfida firmata e il certificato che contiene la chiave pubblica sono mandati insieme verso colui che deve **autenticare** l'utente **convalidando la firma** sulla sdida.
 
 #### Autenticazione forte con Diffie-Helmann
 
