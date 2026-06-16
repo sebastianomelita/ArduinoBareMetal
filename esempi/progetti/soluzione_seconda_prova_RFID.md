@@ -183,7 +183,7 @@ interface range <porte-server>
 | DMZ | 10.0.1.0/24 | 255.255.255.0 | .1–.253 | 253 | 10.0.1.254 | WAF + API gateway controllori (HTTPS/JWT), front-end pubblico |
 | Server farm | 10.0.2.0/24 | 255.255.255.0 | .1–.253 | 253 | 10.0.2.254 | broker MQTT cluster, app server, DB centrale (zona interna) |
 | Admin / management | 10.0.3.0/24 | 255.255.255.0 | .1–.253 | 253 | 10.0.3.254 | postazioni amministratori, NMS; gestione apparati SUM e stazioni via tunnel |
-| Dorsali VPN (lato PE) | 10.255.x.(k*4)/30 | 255.255.255.252 | (.1 ↔ .2)+ k*4 | 2 | — (punto-punto) | terminazione dei tunnel IPsec, uno per sito (k= 0, 1, 2, 3,...)|
+| Dorsali VPN (lato PE) | 10.255.x.(k*4)/30 | 255.255.255.252 | (.1 ↔ .2)+ k*4 K=0,..,63| 2 | — (punto-punto) | terminazione dei tunnel IPsec, uno per sito)|
 
 **Allocazione statica nella server farm (10.0.2.0/24):**
 
@@ -204,7 +204,7 @@ interface range <porte-server>
 | 10.1.0.0/16 | Stazioni Cat. A | `10.1.N.0/24` per stazione (VLAN 10/20/99) |
 | 10.2.0.0/16 | Fermate Cat. B | `10.2.M.0/29` per fermata |
 | 10.3.0.0/16 | Sede controllori | `10.3.0.0/24` |
-| 10.255.0.0/16 | Dorsali VPN | `10.255.x.(k*4)/30` punto-punto, uno per sito (k= 0,1,2,..)|
+| 10.255.0.0/16 | Dorsali VPN | `10.255.x.(k*4)/30` con K=0,..,63 punto-punto, uno per sito )|
 
 ---
 
@@ -236,7 +236,7 @@ Instradamento inter-VLAN collassato sul solo router perimetrale, NAT overload, d
 
 | Nome Destinazione | Rete di Destinazione | Subnet Mask | Gateway (Via) |
 | --- | --- | --- | --- |
-| **SUM admin** | 10.0.3.0 | 255.255.255.0 | 10.255.x.(k*4 + 2) K=0,1,2,..|
+| **SUM admin** | 10.0.3.0 | 255.255.255.0 | 10.255.x.(k*4 + 2) con K=0,..,63|
 
 
 ```cisco
