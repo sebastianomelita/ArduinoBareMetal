@@ -283,6 +283,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 - L’autenticazione reciproca si può realizzare con:
   - Uso di chiave segreta condivisa tra le parti (Pre-shared-key) come ad esempio una password, mediante la quale crittografare il primo dei messaggi scambiati (contiene una chiave pubblica).
   - Uso di chiavi pubbliche firmate da un ente terzo (CA o utente fidato)
+  - scambio in una finestra temporale limitata in cui si è certi che esso avvenga (SSH, WDS)
 
 
 ### 5.7 Autenticazione forte asimmetrica
@@ -311,8 +312,8 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 <img src="img/authutente/auth_singola_asimmetrica.jpg" alt="Autenticazione singola asimmetrica con sfida in chiaro" width="600px">
 
-- Bob manda ad Alice un messaggio contenente la sua identità è la nonce che ha scelto lui, b.
-- Alice risponde mandando la sua identità e la propria firma sulla sfida b; Fase  scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente
+- Bob manda ad Alice un messaggio contenente la sua identità ***B*** e la nonce che ha scelto lui, ***b***.
+- Alice risponde mandando la sua identità e la propria firma sulla sfida b; Fase  scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente se questa non è contenuta in un certificato allegato alla firma.
 - Bob autentica Alice se riesce a verificare la firma posta sulla sfida, ovvero se  decifrando la firma con la chiave pubblica di Alice, ritrova la sfida originale di Bob (Fase di verifica delle credenziali).
 - La sfida è inviata sempre da chi deve verificare l’autenticazione, in questo caso Bob.
 
@@ -322,8 +323,8 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 
 <img src="img/authutente/auth_mutua_asimmetrica.jpg" alt="Autenticazione mutua asimmetrica con sfida in chiaro" width="600px">
 
-- Bob manda ad Alice un messaggio contenente la sua identità è la nonce che ha scelto lui, b;
-- Alice risponde mandando la sua identità e la sua nonce a e la propria firma sulla nonce di B); Fase di scambio credenziali (Credenziali = sfida firmata).
+- Bob manda ad Alice un messaggio contenente la sua identità ***B*** è la nonce che ha scelto lui, ***b***;
+- Alice risponde mandando la sua identità ***A*** e la sua nonce ***a*** e la propria firma sulla nonce di B); Fase di scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente se questa non è contenuta in un certificato allegato alla firma.
 - Bob autentica Alice se riesce a verificare la firma posta sulla sfida, ovvero se  decifrando la firma con la chiave pubblica di Alice, ritrova la sfida originale di Bob (Fase di verifica delle credenziali).
 - Bob chiude il protocollo di autenticazione mutua inviando la sua firma sulla grandezza sulla sfida di A.
 - Alice autentica Bob se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
