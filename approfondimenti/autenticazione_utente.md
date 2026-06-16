@@ -380,7 +380,7 @@ Abbiamo visto che autenticare un server di fatto significa autenticare una sfida
 A questo punto il client può usare la chiave pubblica del server per creare un canale sicuro (tunnel cifrato) verso il server attraverso cui inviare la propria credenziale debole (la password) per autenticarsi mediante PAP, cifrandola con la chiave pubblica del server.
 
 Una volta che pure il client è autenticato, questo genera una chiave random OTP che diventa la chiave di sessione della cifratura simmetrica dei dati in entrambe le direzioni. 
-Il client adesso invia al server la chiave di sessione appena creata su un canale sicuro cifrandola con la chiave pubblica del server (non gode di PFS). Oppure sia il client che il server utilizzano lo stesso algoritmo di Diffie Helmann per ottenere indipendentemente due chiavi OTP uguali (gode di PFS).
+Il client adesso invia al server la chiave di sessione appena creata su un canale sicuro cifrandola con la chiave pubblica del server (non gode di PFS). Oppure sia il client che il server utilizzano l'algoritmo di Diffie Helmann per ottenere indipendentemente due chiavi OTP uguali (gode di PFS).
 
 Da questo momento in poi, sia il client che il server posseggono la medesima chiave di sessione che possono utilizzare per cifrare i dati in entrambe le direzioni.
 
