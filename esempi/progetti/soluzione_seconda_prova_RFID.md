@@ -421,7 +421,62 @@ ip access-list extended ACL-TUNNEL-IN
  deny   ip any any log
 ```
 
-### 6.7 — Logging
+### 6.7 Traffico di ritorno e ACL del tunnel (`TUN0-IN`)
+
+Finora il lato `Tunnel0` della stazione era privo di filtri in ingresso: tutto ciò che arrivava dal SUM passava. Lo chiudiamo in **default-deny**, ammettendo solo il traffico lecito. Dal SUM arrivano due categorie:
+
+1. **Ritorni** delle sessioni iniziate dall'edge verso il SUM (ack del broker, risposte DNS/NTP, ecc.): non si scrivono a mano, li apre **CBAC** dinamicamente *sopra* il `deny` finale, perché ispeziona le sessioni in uscita su `Tunnel0`.
+2. **Gestione iniziata dal SUM** verso il management di stazione (NMS/jump in `10.0.3.0/28` → VLAN 99): non è un ritorno, quindi va permessa **esplicitamente**.
+
+I **reader** (VLAN 10) non sono mai raggiungibili dal SUM: la regola è esplicita, oltre al deny finale.
+
+| # | Sorgente | Destinazione | Proto:porta | Azione | Note |
+| - | -------- | ------------ | ----------- | ------ | ---- |
+| — | sessioni edge→SUM | edge `10.1.2.0/24` | (dinamico) | permit | aperto da CBAC sopra il deny |
+| 1 | SUM admin `10.0.3.0/28` | mgmt `10.1.99.0/24` | tcp:22 | permit | SSH di gestione |
+| 2 | SUM admin `10.0.3.0/28` | mgmt `10.1.99.0/24` | udp:161 | permit | polling SNMP |
+| 3 | SUM admin `10.0.3.0/28` | mgmt `10.1.99.0/24` | icmp | permit | ping/monitoraggio |
+| 4 | any | reader `10.1.1.0/24` | ip | deny (log) | reader irraggiungibili dal SUM |
+| 5 | any | any | ip | deny (log) | default-deny |
+
+```
+! Regola di ispezione (sessioni iniziate dalla stazione verso il SUM)
+ip inspect name CBAC-OUT tcp
+ip inspect name CBAC-OUT udp
+ip inspect name CBAC-OUT icmp
+!
+ip access-list extended TUN0-IN
+ remark --- gestione iniziata dal SUM verso il management di stazione ---
+ permit tcp  10.0.3.0 0.0.0.15 10.1.99.0 0.0.0.255 eq 22
+ permit udp  10.0.3.0 0.0.0.15 10.1.99.0 0.0.0.255 eq 161
+ permit icmp 10.0.3.0 0.0.0.15 10.1.99.0 0.0.0.255
+ remark --- i ritorni delle sessioni edge->SUM li inserisce CBAC qui sopra ---
+ deny   ip   any 10.1.1.0 0.0.0.255 log    ! reader mai raggiungibili dal SUM
+ deny   ip   any any log
+!
+interface Tunnel0
+ description Dorsale VPN verso SUM (10.255.1.0/30)
+ ip access-group TUN0-IN in
+ ip inspect CBAC-OUT out
+```
+
+**Alternativa senza CBAC (solo `established`).** Se non si attiva l'ispezione, i ritorni TCP si ammettono con una riga, ma restano scoperti i ritorni **UDP** (DNS/NTP) ed è una protezione **falsificabile** (basta un pacchetto con ACK forzato):
+
+```
+ip access-list extended TUN0-IN
+ permit tcp  10.0.0.0 0.255.255.255 10.1.0.0 0.0.255.255 established   ! solo ritorni TCP
+ permit tcp  10.0.3.0 0.0.0.15      10.1.99.0 0.0.0.255 eq 22
+ permit udp  10.0.3.0 0.0.0.15      10.1.99.0 0.0.0.255 eq 161
+ deny   ip   any 10.1.1.0 0.0.0.255 log
+ deny   ip   any any log
+interface Tunnel0
+ ip access-group TUN0-IN in
+```
+
+Coerente con la §9.3.1 del SUM: stesso schema *ACL `in` default-deny + `inspect … out`*, qui nella forma semplice perché è la stazione a iniziare le sessioni.
+
+
+### 6.8 — Logging
 
 ```cisco
 logging host 10.1.2.11
