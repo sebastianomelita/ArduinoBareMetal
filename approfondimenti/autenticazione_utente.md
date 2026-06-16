@@ -375,6 +375,8 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 
 #### Autenticazione mutua con tunnel
 
+Abbiamo visto che autenticare un server di fatto significa autenticare una sfida ed una chiave pubblica mediante algoritmi di firma digitale.
+
 A questo punto il client può usare la chiave pubblica del server per creare un canale sicuro (tunnel cifrato) verso il server attraverso cui inviare la propria credenziale debole (la password) per autenticarsi mediante PAP, cifrandola con la chiave pubblica del server.
 
 Una volta che pure il client è autenticato, questo genera una chiave random OTP che diventa la chiave di sessione della cifratura simmetrica dei dati in entrambe le direzioni. 
