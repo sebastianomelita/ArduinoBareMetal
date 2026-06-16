@@ -283,11 +283,9 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 - L’autenticazione reciproca si può realizzare con:
   - Uso di chiave segreta condivisa tra le parti (Pre-shared-key) come ad esempio una password, mediante la quale crittografare il primo dei messaggi scambiati (contiene una chiave pubblica).
   - Uso di chiavi pubbliche firmate da un ente terzo (CA o utente fidato)
-  - **Fiducia nel momento dello scambio iniziale** (si confida che durante lo scambio non sia presente un attaccante):
+  - **Fiducia nel momento dello scambio iniziale** (si confida che durante lo scambio non sia presente un attaccante). Il modello teorico di riferimento è il "resurrecting duckling": il dispositivo si "imprinta" sulla prima chiave che riceve, come un anatroccolo sul primo essere che vede:
        - *Trust On First Use* (TOFU): alla prima connessione si accetta e memorizza la chiave pubblica della controparte, fidandosi di quel primo contatto — è il modello usato da **SSH** con le host key.
        - *Finestra temporale limitata*: il pairing è possibile solo entro un breve intervallo (es. ~2 minuti dopo la pressione di un pulsante), come in **WPS** (Wi-Fi Protected Setup) o nel pairing **Bluetooth**.
-
-Il modello teorico di riferimento è il "resurrecting duckling": il dispositivo si "imprinta" sulla prima chiave che riceve, come un anatroccolo sul primo essere che vede.
 
 
 ### 5.7 Autenticazione forte asimmetrica
