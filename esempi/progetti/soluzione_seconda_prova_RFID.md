@@ -216,13 +216,13 @@ Instradamento inter-VLAN collassato sul solo router perimetrale, NAT overload, d
 
 > Ogni cella indica il traffico che la **sorgente (riga)** può **iniziare** verso la **destinazione (colonna)**. I ritorni delle sessioni iniziate dall'interno sono aperti dallo stateful (CBAC) e non compaiono. `✗` = negato (default-deny).
 
-| Sorgente \ Destinazione | Reader (10.1.1.0/24) | Server (10.1.2.0/24) | Management (10.1.99.0/24) | SUM broker (10.0.2.0/24) | SUM admin (10.0.3.0/28) | Internet/WAN |
+| Sorgente \ Destinazione | Reader (10.1.1.0/24) | Server (10.1.2.0/24) | Management (10.1.99.0/24) | SUM broker (10.0.2.0/24) | SUM admin (10.0.3.0/24) | Internet/WAN |
 |---|---|---|---|---|---|---|
 | **Reader** (VLAN 10) | intra-VLAN (L2) | MQTT/TLS 8883 → edge; DNS 53, NTP 123 → srv-sis | ✗ | ✗ | ✗ | ✗ |
 | **Server** (VLAN 20) | ✗ | intra-VLAN (L2) | ✗ | MQTT/TLS 8883 (solo edge, via VPN) | ✗ | DNS 53, NTP 123, HTTPS 443 |
 | **Management** (VLAN 99) | accesso pieno | accesso pieno | — | accesso pieno (via VPN) | accesso pieno | ✗ (no NAT) |
 | **SUM broker** (10.0.2.0/24) | ✗ | ✗ | ✗ | — | — | — |
-| **SUM admin** (10.0.3.0/28) | ✗ | ✗ | SSH 22, SNMP 161 (via tunnel) | ✗ | — | — |
+| **SUM admin** (10.0.3.0/24) | ✗ | ✗ | SSH 22, SNMP 161 (via tunnel) | ✗ | — | — |
 | **Internet/WAN** | ✗ | ✗ | ✗ | — | — | — |
 
 Letture chiave: i **reader** parlano solo col broker edge e con DNS/NTP interni; il **management** raggiunge tutto l'interno per gestirlo ma è isolato in ingresso (solo SUM admin via tunnel) e non esce su Internet; dalla **WAN** si ammette solo l'instaurazione del tunnel IPsec dal PE del SUM.
@@ -233,15 +233,11 @@ Instradamento inter-VLAN collassato sul solo router perimetrale, NAT overload, d
 
 ### 6.1 — Base: routing, CBAC, DHCP, NAT, interfacce
 
-Certamente, ecco una tabella semplificata che riporta esclusivamente le informazioni richieste per la rotta remota.
 
-| Rete di Destinazione | Subnet Mask | Gateway (Via) |
-| --- | --- | --- |
-| 10.0.3.0 | 255.255.255.0 | 10.255.x.2 |
+| Nome Destinazione | Rete di Destinazione | Subnet Mask | Gateway (Via) |
+| --- | --- | --- | --- |
+| **SUM admin** | 10.0.3.0 | 255.255.255.0 | 10.255.x.2 |
 
----
-
-Hai bisogno di integrare questa configurazione in un apparato specifico (ad esempio un router Cisco, Linux o un firewall) per conoscere il comando esatto da utilizzare?
 
 ```cisco
 hostname R-FW-STAZ-A
