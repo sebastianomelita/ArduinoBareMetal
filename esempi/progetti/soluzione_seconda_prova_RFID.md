@@ -600,6 +600,119 @@ task invia_heartbeat():
     pubblica_MQTT(topic="…/stato",
         { idReader, online, n_eventi_buffer, ts }, QoS=1)
 ```
+---
+
+## 9. Sede centrale (SUM): apparati attivi, accessi e ACL del datacenter
+
+### 9.1 Schema logico degli apparati attivi
+
+Stesso principio della stazione (L3 collassato sul firewall, L2 sul core switch), ma il SUM è organizzato in **tre zone separate** dietro il firewall di confine, perché è il bersaglio più sensibile e i siti remoti hanno livelli di fiducia diversi.
+
+```
+        Tunnel IPsec dai CE                     WAN pubblica 198.64.5.1
+        (Cat. A · Cat. B · controllori)          :8883 -> broker  ·  :443 -> WAF
+        10.255.1/2/3.0/30                              │
+                  \                                    │
+                   └────────────────┬──────────────────┘
+                           ┌────────┴─────────┐
+                           │ FW-SUM (PE) +WAF │  L3 multi-zona, DEFAULT-DENY
+                           │ + IDS/IPS        │
+                           └──┬──────┬──────┬─┘
+                  DMZ .1.0/28 │      │ farm │ admin .3.0/28
+                      ┌───────┘   .2.0/24   └─────────┐
+                ┌─────┴─────┐   ┌────┴─────┐    ┌─────┴─────┐
+                │ Broker    │   │ CS-SUM   │    │ NMS .3.10 │
+                │ MQTT a-a  │   │ core L2  │    │ jump .3.11│
+                │ VIP .1.2  │   └─┬──┬──┬──┘    └───────────┘
+                │ WAF .1.5  │   app  DB  web   (+ SIEM .2.40,
+                └───────────┘  .2.10 .20 .30      DNS/NTP .2.5)
+```
+
+*Figura 7 — `../img/7_schema_attivi_sum.svg`.* La **DMZ** è l'unica zona raggiungibile dai siti (solo broker e WAF). **Server farm** (app, DB, web, SIEM, DNS) e **admin** non sono raggiungibili dai siti remoti. Il **core switch** commuta solo a L2; il livello 3 e tutta la policy stanno sul **FW-SUM**.
+
+### 9.2 Tabella degli accessi del SUM
+
+| Zona | VLAN | Subnet | Gateway | Host statici | Chi vi accede |
+| ---- | ---- | ------ | ------- | ------------ | ------------- |
+| DMZ (esposta) | 100 | `10.0.1.0/28` | `10.0.1.1` | broker MQTT a-a VIP `10.0.1.2` (nodi `.3/.4`), WAF/RP `10.0.1.5` | siti remoti: **solo** `:8883` (broker) e `:443` (WAF) |
+| Server farm (interna) | 200 | `10.0.2.0/24` | `10.0.2.1` | app/core `10.0.2.10`, DB master `10.0.2.20`, DB slave `10.0.2.21`, web/API `10.0.2.30`, SIEM `10.0.2.40`, DNS/NTP `10.0.2.5` | solo DMZ (app/WAF) e admin; **mai** i siti |
+| Admin (gestione) | 300 | `10.0.3.0/28` | `10.0.3.1` | NMS `10.0.3.10`, jump host `10.0.3.11` | nessuno: è **sorgente** del management, non destinazione |
+| Dorsali VPN | — | `10.255.1/2/3.0/30` | PE `.2` di ogni `/30` | tunnel IPsec verso CE-A/B/C | terminano sul FW-SUM |
+| WAN pubblica | — | `198.64.5.1` | ISP | PNAT + port-forward `:8883→.1.2`, `:443→.1.5` | unico ingresso pubblico |
+
+**Matrice degli accessi (sorgente → destinazione : porta):**
+
+| Sorgente | Destinazione | Porta | Azione |
+| -------- | ------------ | ----- | ------ |
+| Edge Cat. A `10.1.0.0/16` | broker `10.0.1.2` | `8883/tcp` | permit |
+| Reader Cat. B `10.2.0.0/16` | broker `10.0.1.2` | `8883/tcp` | permit |
+| Controllori `10.3.0.0/24` | WAF `10.0.1.5` | `443/tcp` | permit |
+| Broker `10.0.1.2` | app `10.0.2.10` | `8883/tcp` | permit |
+| WAF `10.0.1.5` | web/API `10.0.2.30` | `443/tcp` | permit |
+| App `10.0.2.10` | DB `10.0.2.20` | `5432/tcp` | permit |
+| Admin `10.0.3.0/28` | tutte le zone | `22, 161` | permit |
+| siti remoti | server farm / admin | qualsiasi | **deny** |
+| DMZ | admin / DB diretto | qualsiasi | **deny** |
+
+### 9.3 ACL di protezione del datacenter (FW-SUM)
+
+A differenza della stazione Cat. A — dove il filtraggio è già fatto in loco da `R-FW` — le **fermate Cat. B sono reader IP nativi senza alcuna policy locale**: non filtrano nulla. Per questo il SUM **non si fida dei siti** e centralizza tutta la difesa sul proprio firewall, in **default-deny**: ogni classe sorgente può raggiungere **una sola** destinazione su **una sola** porta (micro-segmentazione). Un reader Cat. B compromesso può al massimo tentare `:8883` verso il broker in DMZ, e nient'altro. Le tre zone sono isolate fra loro: il broker esposto **non** parla direttamente col DB (passa dall'app server), e la zona **admin** è solo sorgente del management, mai raggiungibile. Essendo il bordo già **CBAC/stateful** (come in §6), le ACL sotto definiscono solo le *connessioni iniziali ammesse*: il ritorno è gestito dall'inspection.
+
+```
+hostname FW-SUM-PE
+ip routing
+!
+! ===== Ingresso dai siti remoti (tunnel) — DEFAULT DENY =====
+! Cat. B non filtra: ogni sorgente -> UNA destinazione:porta, nient'altro.
+ip access-list extended SITI-IN
+ permit tcp 10.1.0.0 0.0.255.255 host 10.0.1.2 eq 8883   ! Cat. A (edge) -> broker
+ permit tcp 10.2.0.0 0.0.255.255 host 10.0.1.2 eq 8883   ! Cat. B (reader) -> broker
+ permit tcp 10.3.0.0 0.0.0.255  host 10.0.1.5 eq 443     ! controllori -> WAF (API)
+ deny   ip  any 10.0.2.0 0.0.0.255                       ! mai server farm
+ deny   ip  any 10.0.3.0 0.0.0.15                        ! mai admin
+ deny   ip  any any
+!
+! ===== DMZ verso l'interno — la zona esposta ha accesso minimo =====
+ip access-list extended DMZ-IN
+ permit tcp host 10.0.1.2 host 10.0.2.10 eq 8883         ! broker -> app (eventi validati)
+ permit tcp host 10.0.1.5 host 10.0.2.30 eq 443          ! WAF -> web/API
+ permit udp 10.0.1.0 0.0.0.15 host 10.0.2.5 eq 53        ! DNS
+ deny   ip  10.0.1.0 0.0.0.15 host 10.0.2.20             ! broker/WAF NON toccano il DB
+ deny   ip  10.0.1.0 0.0.0.15 10.0.3.0 0.0.0.15          ! niente admin
+ deny   ip  any any
+!
+! ===== Server farm verso l'interno =====
+ip access-list extended FARM-IN
+ permit tcp host 10.0.2.10 host 10.0.2.20 eq 5432        ! app -> DB master
+ permit tcp host 10.0.2.30 host 10.0.2.10 eq 8080        ! web -> app
+ permit udp 10.0.2.0 0.0.0.255 host 10.0.2.5  eq 53      ! DNS
+ permit udp 10.0.2.0 0.0.0.255 host 10.0.2.5  eq 123     ! NTP
+ permit udp 10.0.2.0 0.0.0.255 host 10.0.2.40 eq 514     ! log -> SIEM
+ deny   ip  10.0.2.0 0.0.0.255 10.0.3.0 0.0.0.15         ! niente admin
+ deny   ip  10.0.2.0 0.0.0.255 10.1.0.0 0.0.255.255      ! la farm non inizia verso i siti
+ deny   ip  10.0.2.0 0.0.0.255 10.2.0.0 0.0.255.255
+ deny   ip  any any
+!
+! ===== Admin: sorgente del management, irraggiungibile dalle altre zone =====
+ip access-list extended ADMIN-IN
+ permit ip 10.0.3.0 0.0.0.15 any                         ! NMS/jump -> tutte le zone (SSH/SNMP)
+!
+interface Tunnel1
+ description Aggregato dorsali dai siti remoti
+ ip access-group SITI-IN in
+interface Vlan100
+ description DMZ
+ ip access-group DMZ-IN in
+interface Vlan200
+ description Server farm
+ ip access-group FARM-IN in
+interface Vlan300
+ description Admin
+ ip access-group ADMIN-IN in
+```
+
+**Confronto con la stazione Cat. A.** In Cat. A `R-FW` filtra all'origine (ACL `VLAN10/20/99-IN`) perché ha un apparato L3 in loco; il SUM replica la stessa logica *default-deny + micro-permessi*, ma sul **bordo centrale**, perché deve difendersi anche dai siti che in loco non filtrano (Cat. B). È la stessa filosofia applicata due volte: a valle dove si può, e comunque a monte sull'asset critico.
+
 
 ---
 
