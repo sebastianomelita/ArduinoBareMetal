@@ -426,11 +426,89 @@ Crittografia IPsec (ISAKMP policy AES-256/SHA-256/DH14, transform-set ESP-AES-25
 
 ## 7. Tecnologie e modalità di comunicazione
 
-**Card ↔ reader:** ISO 14443-4, 13,56 MHz, 0–10 cm, AES-128 (DESFire EV3), autenticazione mutua con chiavi diversificate per UID, anticollisione ad **albero binario** (deterministica).
+### 7.1 Card ↔ reader (interfaccia RF)
 
-**Reader/edge → SUM:** **MQTT over TLS 1.3** (porta 8883), QoS 1. Topic gerarchico-spaziale: `sum/sito/<idSito>/reader/<idReader>/{tap,stato,ack,config}`. Payload **JSON ASCII** per interoperabilità multi-vendor.
+ISO 14443-4, 13,56 MHz, distanza operativa 0–10 cm, **AES-128** (DESFire EV3) con **autenticazione mutua** e chiavi diversificate per UID; anticollisione ad **albero binario** (deterministica). La prossimità ridotta è anche difesa nativa dall'eavesdropping.
 
-**Controllori → sede:** REST su **HTTPS/TLS 1.3**, autenticazione **JWT** con refresh token; endpoint di verifica card in tempo reale.
+### 7.2 Reader/edge → SUM (canale di backhaul)
+
+Trasporto **MQTT over TLS 1.3** (porta 8883), modello *publish/subscribe* adatto a molti reader verso un consumatore centrale, **QoS 1** (consegna garantita), riconnessione automatica e persistenza. Payload **JSON ASCII** per interoperabilità multi-vendor.
+
+**Struttura dei topic (gerarchico-spaziale).** La gerarchia ricalca la topologia fisica `sito → reader`, così da poter sottoscrivere o filtrare per stazione, per reader o per tipo di messaggio:
+
+```
+sum/sito/<idSito>/reader/<idReader>/tap       (reader → SUM)  pubblica eventi di transito
+sum/sito/<idSito>/reader/<idReader>/stato     (reader → SUM)  heartbeat e diagnostica
+sum/sito/<idSito>/reader/<idReader>/ack       (SUM → reader)  esito della transazione
+sum/sito/<idSito>/reader/<idReader>/config    (SUM → reader)  push di configurazione
+sum/sito/<idSito>/controllo/verifica          (controllore → SUM)
+sum/sito/<idSito>/controllo/risposta          (SUM → controllore)
+```
+
+| Topic     | Direzione      | QoS | Retained | Contenuto                                 |
+| --------- | -------------- | --- | -------- | ----------------------------------------- |
+| `tap`     | reader → SUM   | 1   | no       | evento di passaggio card al varco         |
+| `stato`   | reader → SUM   | 1   | sì       | heartbeat: stato, conteggio tap, buffer   |
+| `ack`     | SUM → reader   | 1   | no       | esito + saldo + messaggio per il viaggiatore |
+| `config`  | SUM → reader   | 1   | sì       | parametri operativi del reader            |
+
+**Payload — evento di tap (reader → SUM):**
+
+```json
+{
+  "eventId":   "3f8a2c1d-7b91-4e02-9c4a-1d2e3f4a5b6c",
+  "eventType": "tap",
+  "timestamp": "2026-06-02T08:34:12.045Z",
+  "idReader":  "READER-CAT-B-0042",
+  "idSito":    "SITO-METRO-022",
+  "uid":       "04:A3:B2:C1:D0:E9:F8",
+  "rssi":      -35
+}
+```
+
+**Payload — risposta/ack (SUM → reader):**
+
+```json
+{
+  "eventId":      "3f8a2c1d-7b91-4e02-9c4a-1d2e3f4a5b6c",
+  "esito":        "OK",
+  "tipoEvento":   "inizio_viaggio",
+  "saldoResiduo": 18.40,
+  "messaggio":    "Buon viaggio! Saldo: €18,40"
+}
+```
+
+`esito` ∈ { `OK`, `ERRORE_CARD_DISABILITATA`, `ERRORE_SALDO_INSUFFICIENTE`, `ERRORE_CARD_SCONOSCIUTA` }. L'`eventId` (UUID) correla richiesta e risposta e abilita la **deduplica** lato SUM (finestra di 60 s).
+
+**Payload — heartbeat/stato (reader → SUM):**
+
+```json
+{
+  "eventType":     "heartbeat",
+  "timestamp":     "2026-06-02T08:35:00.000Z",
+  "idReader":      "READER-CAT-B-0042",
+  "stato":         "attivo",
+  "tapCount":      1287,
+  "bufferPendente": 0,
+  "firmware":      "1.4.2"
+}
+```
+
+Il reader invia `heartbeat` ogni 60 s; se offline accoda gli eventi nel buffer flash e li ritrasmette (QoS 1) al ripristino del collegamento.
+
+### 7.3 Autenticazione del reader
+
+L'identità del reader è verificata su **due livelli complementari**.
+
+A livello **applicativo**, il reader (o il server edge che ne aggrega i flussi) si autentica verso il broker MQTT con un **certificato X.509** dentro la sessione TLS 1.3: solo un dispositivo con coppia chiave/certificato firmata dalla PKI aziendale può pubblicare sui topic. È un'autenticazione *end-to-end* valida sia per i reader IP nativi di Cat. B sia per l'edge di Cat. A.
+
+A livello di **accesso alla rete**, nelle sole **reti cablate di Cat. A** si aggiunge **802.1X**: la porta PoE+ dell'access switch resta non autorizzata e lascia passare solo traffico EAP finché il reader (**supplicant**) non si autentica; lo switch fa da **authenticator** e inoltra via **RADIUS** le credenziali a un **authentication server**. Il metodo è **EAP-TLS**, con lo stesso certificato X.509 usato per il broker (un'unica PKI per entrambi gli usi). Solo dopo l'autenticazione la porta viene aperta e il reader è assegnato (anche dinamicamente, via attributi RADIUS) alla **VLAN 10**. Così 802.1X decide *se* il dispositivo può entrare in rete, mentre X.509/TLS verifica *che* il client che parla col broker sia un reader legittimo; **VLAN + ACL** restano il terzo livello di difesa in profondità.
+
+> Nelle fermate **Cat. B** non esiste un *authenticator* (nessuno switch locale: collegamento diretto al SUM via WAN 4G/5G), quindi 802.1X non si applica e l'autenticazione del reader si basa sul solo certificato X.509 su TLS, oltre all'autenticazione SIM/APN della rete mobile.
+
+### 7.4 Controllori → sede
+
+REST su **HTTPS/TLS 1.3**, autenticazione **JWT** con refresh token; endpoint di verifica card in tempo reale.
 
 ---
 
