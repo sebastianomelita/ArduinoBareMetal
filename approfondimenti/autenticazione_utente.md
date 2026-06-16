@@ -318,8 +318,6 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che recuperano la **chiave pubblica** da un file utilizzando come chiave di ricerca lo **username** dell'utente. Il file ha il significato di **elenco di chiavi pubbliche autenticate**. 
 
-**NB:** Nel caso di protocolli come HTTPS o RADIUS non esiste un elenco di chiavi pubbliche autenticate perchè sarebbe troppo oneroso da gestire per i loro scenari d'uso. La chiave pubblica in questi protocolli viaggia sempre autenticata dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato). Il certificato viene sempre inviato **contestualmente alla sfida firmata** da colui che si deve autenticare, cioè sfida firmata e il certificato che contiene la chiave pubblica sono mandati insieme verso colui che deve **autenticare** l'utente **convalidando la firma** sulla sdida.
-
 #### Autenticazione mutua asimmetrica con sfida in chiaro
 
 <img src="img/authutente/auth_mutua_asimmetrica.jpg" alt="Autenticazione mutua asimmetrica con sfida in chiaro" width="600px">
@@ -330,7 +328,14 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 - Bob chiude il protocollo di autenticazione mutua inviando la sua firma sulla grandezza sulla sfida di A.
 - Alice autentica Bob se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
 
-**NB:** Nel caso di protocolli come HTTPS o RADIUS non esiste un elenco di chiavi pubbliche autenticate perchè sarebbe troppo oneroso da gestire per i loro scenari d'uso. La chiave pubblica in questi protocolli viaggia sempre autenticata dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato). Il certificato viene sempre inviato **contestualmente alla sfida firmata** da colui che si deve autenticare, cioè sfida firmata e il certificato che contiene la chiave pubblica sono mandati insieme verso colui che deve **autenticare** l'utente **convalidando la firma** sulla sdida.
+#### Autenticazione con certificato utente
+Sia nel caso di autenticazione singola che in quello di autenticazione mutua non sempre conviene memorizzare tutte le chiavi pubbliche nel sistema.
+
+Nel caso di protocolli come HTTPS o RADIUS non esiste un elenco di chiavi pubbliche autenticate perchè sarebbe troppo oneroso da gestire per i loro scenari d'uso. La chiave pubblica in questi protocolli viaggia sempre autenticata dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato). 
+
+Il **certificato utente** viene sempre inviato da colui che si deve autenticare **contestualmente alla sfida firmata**, cioè in allegato alla sfida firmata. Colui che deve **autenticare** l'utente sbusta la chiave pubblica dal certificato (dopo aver convalidato la firma della CA che lo autentica) e con quella **convalida la firma** sulla sfida.
+
+I **soli certificati** che vengono memorizzati nel sistema sono i **certificati radice** delle CA che firmano i certificati utente. I certificati radice devono comunque essere **preinstallati** (non li invia ma il server) e devono essere inseriti nell'elenco dei **certificati radice attendibili** per una **certa operazione** (HTTPS, RADIUS, VPN, ecc).
 
 #### Autenticazione forte con Diffie-Helmann
 
