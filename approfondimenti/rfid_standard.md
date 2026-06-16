@@ -53,7 +53,7 @@ Lo standard che permette di usare **la stessa credenziale sia su una carta sia s
 
 Il principio: il telefono **si finge una carta ISO 14443**. Il lettore (tornello, varco, POS) è un normale lettore ISO 14443 e non sa — né gli interessa — se dall'altra parte ci sia una tessera di plastica o un telefono. A livello radio sono **indistinguibili**, ed è per questo che **lo stesso lettore accetta entrambi**: il telefono ricostruisce la stessa pila di protocolli di una carta fisica.
 
-<img src="../img/nfc-iso14443-stack.svg" alt="carta fisica e smartphone parlano lo stesso protocollo" width="600px">
+<img src="img/nfc-iso14443-stack.svg" alt="carta fisica e smartphone parlano lo stesso protocollo" width="600px">
 
 L'emulazione "generica" (**HCE — Host Card Emulation**, introdotta da Android 4.4) copre **solo** ciò che vive sopra il trasporto: carte basate su **ISO-DEP (ISO 14443-4)** che scambiano **APDU ISO 7816-4**. In alternativa l'emulazione può avvenire tramite **Secure Element** (eSE o SIM/UICC), approccio usato per esempio da Apple Pay. Tutto ciò che usa **protocolli proprietari sotto il trasporto** non è emulabile in HCE generico.
 
