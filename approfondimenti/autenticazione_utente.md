@@ -310,7 +310,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 - Lo scambio di credenziali, qualora sia possibile dimostrare che queste sono derivate dalla chiave privata autenticata dal certificato, invece, autentica a tutti gli effetti un utente, poiché solo il detentore del segreto (chi ha la chiave privata) è in grado di esibire le credenziali corrette.
 - Certificati e credenziali sono complementari nella realizzazione dell’autenticazione di un utente che accede ad una risorsa.
 
-#### Autenticazione singola asimmetrica con sfida in chiaro
+#### Autenticazione singola asimmetrica con sfida in chiaro (ad es. TLS)
 
 <img src="img/authutente/auth_singola_asimmetrica.jpg" alt="Autenticazione singola asimmetrica con sfida in chiaro" width="600px">
 
@@ -321,7 +321,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che recuperano la **chiave pubblica** da un file utilizzando come chiave di ricerca lo **username** dell'utente. Il file ha il significato di **elenco di chiavi pubbliche autenticate**. 
 
-#### Autenticazione mutua asimmetrica con sfida in chiaro
+#### Autenticazione mutua asimmetrica con sfida in chiaro (ad es. mTLS)
 
 <img src="img/authutente/auth_mutua_asimmetrica.jpg" alt="Autenticazione mutua asimmetrica con sfida in chiaro" width="600px">
 
