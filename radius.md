@@ -36,7 +36,7 @@ Autorizza o meno l’apertura di una connessione di livello 2 ISO/OSI. L’auten
 
 La tecnica utilizzata è il **PEAP**: è uno standard aperto ideato da Cisco Systems, Microsoft e RSA Security, e fornisce un elevato livello di sicurezza. È molto simile a **EAPTTLS**, richiede solo il **certificato lato server** e crea un **tunnel** sicuro con TLS per proteggere l’**autenticazione dell’utente**, autenticazione effettuata utilizzando altri metodi come MS-CHAPv2 (PEAP/EAPMSCHAPv2) basati su **username e password**.
 
-L'autenticaxione utente avviene **solamente dopo** l’autenticazione con successo del server. Un sottoprodotto di questa è lo scambio di una chiave crittografica OTP di sessione tra client e server con cui realizzare un canale cifrato sicuro. All’interno di questo tunnel cifrato è possibile procedere all’**autenticazione dell’utente**, solitamente con **autenticazioni deboli** (cmq realizzate dentro un canale cifrato inaccessibile) che normalmente prevedono:
+L'autenticazione utente avviene **solamente dopo** l’autenticazione con successo del server. Un sottoprodotto di questa è lo scambio di una chiave crittografica OTP di sessione tra client e server con cui realizzare un canale cifrato sicuro. All’interno di questo tunnel cifrato è possibile procedere all’**autenticazione dell’utente**, solitamente con **autenticazioni deboli** (cmq realizzate dentro un canale cifrato inaccessibile) che normalmente prevedono:
 - protocollo **PAP**. Scambio di password in chiaro, soggetta ad attacco replay
 - protocollo **CHAP o MSCHAP** con scambio dell’hash di password + sfida, non soggetto ad attacco di tipo replay.
 
