@@ -312,10 +312,10 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 <img src="img/authutente/auth_singola_asimmetrica.jpg" alt="Autenticazione singola asimmetrica con sfida in chiaro" width="600px">
 
-- Bob manda ad Alice un messaggio contenente la sua identità ***B*** e la nonce che ha scelto lui, ***b***.
-- Alice risponde mandando la sua identità e la propria firma sulla sfida b; Fase  scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente se questa non è contenuta in un certificato allegato alla firma.
-- Bob autentica Alice se riesce a verificare la firma posta sulla sfida, ovvero se  decifrando la firma con la chiave pubblica di Alice, ritrova la sfida originale di Bob (Fase di verifica delle credenziali).
-- La sfida è inviata sempre da chi deve verificare l’autenticazione, in questo caso Bob.
+.1 Bob manda ad Alice un messaggio contenente la sua identità ***B*** e la nonce che ha scelto lui, ***b***.
+.2 Alice risponde mandando la sua identità e la propria firma sulla sfida b; Fase  scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente se questa non è contenuta in un certificato allegato alla firma.
+.3- Bob autentica Alice se riesce a verificare la firma posta sulla sfida, ovvero se  decifrando la firma con la chiave pubblica di Alice, ritrova la sfida originale di Bob (Fase di verifica delle credenziali).
+.4 La sfida è inviata sempre da chi deve verificare l’autenticazione, in questo caso Bob.
 
 Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che recuperano la **chiave pubblica** da un file utilizzando come chiave di ricerca lo **username** dell'utente. Il file ha il significato di **elenco di chiavi pubbliche autenticate**. 
 
@@ -323,11 +323,11 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 
 <img src="img/authutente/auth_mutua_asimmetrica.jpg" alt="Autenticazione mutua asimmetrica con sfida in chiaro" width="600px">
 
-- Bob manda ad Alice un messaggio contenente la sua identità ***B*** è la nonce che ha scelto lui, ***b***;
-- Alice risponde mandando la sua identità ***A*** e la sua nonce ***a*** e la propria firma sulla nonce di B); Fase di scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente se questa non è contenuta in un certificato allegato alla firma.
-- Bob autentica Alice se riesce a verificare la firma posta sulla sfida, ovvero se  decifrando la firma con la chiave pubblica di Alice, ritrova la sfida originale di Bob (Fase di verifica delle credenziali).
-- Bob chiude il protocollo di autenticazione mutua inviando la sua firma sulla grandezza sulla sfida di A.
-- Alice autentica Bob se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
+.1 Bob manda ad Alice un messaggio contenente la sua identità ***B*** è la nonce che ha scelto lui, ***b***;
+.2 Alice risponde mandando la sua identità ***A*** e la sua nonce ***a*** e la propria firma sulla nonce di B); Fase di scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente se questa non è contenuta in un certificato allegato alla firma.
+.3 Bob autentica Alice se riesce a verificare la firma posta sulla sfida, ovvero se  decifrando la firma con la chiave pubblica di Alice, ritrova la sfida originale di Bob (Fase di verifica delle credenziali).
+.4 Bob chiude il protocollo di autenticazione mutua inviando la sua firma sulla grandezza sulla sfida di A.
+.5 Alice autentica Bob se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
 
 #### Autenticazione con certificato utente
 Sia nel caso di autenticazione singola che in quello di autenticazione mutua non sempre conviene memorizzare tutte le chiavi pubbliche nel sistema anche se questa è esattamente l'operazione che fa Linux con il protocollo SSH.
