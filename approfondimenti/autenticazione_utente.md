@@ -349,9 +349,6 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 - Anche in questo caso le chiavi pubbliche, e i certificati che le autenticano, sono scambiate o una sola volta in fase di registrazione o «al volo» in fase di setup della connessione
 - L’utilizzo di DH ha il vantaggio di poter fare contemporaneamente sia l’autenticazione dell’utente (tramite nonce) che la generazione di una chiave effimera di sessione.
 
-Ecco la spiegazione sulla **Perfect Forward Secrecy (PFS)** formattata in Markdown:
-
----
 
 ### Perfect Forward Secrecy (PFS)
 
