@@ -233,6 +233,16 @@ Instradamento inter-VLAN collassato sul solo router perimetrale, NAT overload, d
 
 ### 6.1 — Base: routing, CBAC, DHCP, NAT, interfacce
 
+Certamente, ecco una tabella semplificata che riporta esclusivamente le informazioni richieste per la rotta remota.
+
+| Rete di Destinazione | Subnet Mask | Gateway (Via) |
+| --- | --- | --- |
+| 10.0.3.0 | 255.255.255.0 | 10.255.x.2 |
+
+---
+
+Hai bisogno di integrare questa configurazione in un apparato specifico (ad esempio un router Cisco, Linux o un firewall) per conoscere il comando esatto da utilizzare?
+
 ```cisco
 hostname R-FW-STAZ-A
 ip routing
