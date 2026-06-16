@@ -608,7 +608,7 @@ task invia_heartbeat():
 
 Stesso principio della stazione (L3 collassato sul firewall, L2 sul core switch), ma il SUM è organizzato in **tre zone separate** dietro il firewall di confine, perché è il bersaglio più sensibile e i siti remoti hanno livelli di fiducia diversi.
 
-<img src="../img/7_schema_attivi_sum.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM" width="800px">
+<img src="../img/7_schema_attivi_sum.svg" alt="Architettura hub-and-spoke: reti laterali via tunnel IPsec su trasporto IP non fidato verso il SUM" width="1000px">
 
 ```
         Tunnel IPsec dai CE                     WAN pubblica 198.64.5.1
