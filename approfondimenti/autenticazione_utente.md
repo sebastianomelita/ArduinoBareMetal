@@ -384,8 +384,6 @@ Da questo momento in poi, sia il client che il server posseggono la medesima chi
 
 
 
-- 
-
 ## 6. Identità digitale
 
 - E’ l’identità di una persona in Internet.
