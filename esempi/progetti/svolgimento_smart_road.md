@@ -499,13 +499,11 @@ Caratteristiche dell'alta disponibilità del join server:
 - **Sicurezza forte end-to-end**: cifratura del payload (AppSKey), autenticazione e integrità tramite MIC (NwkSKey), OTAA per il provisioning sicuro delle chiavi di sessione.
 - **Trade-off edge gestito**: l'application server all'edge espone le AppSKey a bordo strada; il rischio è mitigato con mutua autenticazione (mTLS), custodia delle chiavi in modulo anti-tampering (Secure Element/HSM) e attestazione di integrità prima della consegna delle chiavi (§3.2.7).
 
----
-
-# 10. Server di gestione - Colui che elabora i payload
+## 6.6 Server di gestione - Colui che elabora i payload
 
 Non è un dispositivo della gerarchia LoRaWAN, non deve implementare lo stack protocollare LoRaWAN ma deve semplicemente ricevere i payload che l'AS spedisce e inoltra via MQTT.
 
-## 10.1. Comunicazione smart-gate ↔ CdC
+### 6.7. Comunicazione smart-gate ↔ CdC
 
 Questa è la tratta più delicata: deve essere ad alta banda (per gli stream video on-demand), bassa latenza, sempre disponibile.
 
@@ -515,6 +513,9 @@ Questa è la tratta più delicata: deve essere ad alta banda (per gli stream vid
   - **HTTPS / REST** per gli aggiornamenti di configurazione e per il push di nuove segnaletiche.
   - **RTSP/SRT** per gli stream video on-demand (solo quando l'operatore richiede la visione live).
 - **Backup**: connessione **5G/4G LTE** con APN privato della società autostradale, attivata automaticamente da BGP/SD-WAN in caso di failure della fibra.
+
+---
+
 
 ## 7.2. Modello dei topic MQTT per uno smart-gate
 
@@ -761,6 +762,7 @@ Solo i servizi rivolti agli utenti dell'APP hanno indirizzi pubblici. Si usa un 
 
 # 10. Continuità di servizio e sicurezza
 
+
 ## 10.1 Continuità di servizio (alta affidabilità)
 
 | Livello | Tecniche adottate |
@@ -819,6 +821,7 @@ Un'**analogia**: l'802.1X è il tornello con badge all'ingresso dell'edificio; i
 - **SOC** che monitora gli alert H24.
 - Aggiornamenti firmware sugli smart-gate via OTA (Over-The-Air), con firmware firmato e verificato dallo smart-gate prima dell'installazione.
 - Politica di **least privilege** e **separation of duties** sugli account amministrativi; accessi tramite jump host con MFA.
+
 
 ---
 
@@ -1121,4 +1124,6 @@ Payload di esempio su `smartroad/pub/LO/01/042/signage`:
 - **MQTT/WSS** dà push real-time efficiente in termini di batteria e banda (connessione persistente, payload compatti), passa attraverso firewall e proxy aziendali (porta 443).
 - Il riuso del broker MQTT già presente nell'infrastruttura riduce costi e complessità.
 - Versionamento dell'API (`/v1`, `/v2`) consente evoluzioni senza rompere i client già distribuiti.
+
+
 
