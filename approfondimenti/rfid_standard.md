@@ -89,6 +89,24 @@ In una riga: **SE = sicurezza in hardware, gestione rigida; HCE = flessibilità 
 
 **In pratica, per un tornello:** se il sistema usa **EMV** o **DESFire/AES**, la stessa credenziale può stare sia sulla carta fisica sia sullo smartphone (HCE o SE) e il lettore le tratta allo stesso modo. Se invece il sistema è ancora su **MIFARE Classic**, il telefono **non** può fare da credenziale finché non si migra a una tecnologia conforme a ISO 14443-4 con cripto AES.
 
+Domanda precisa (immagino tu intenda **NFC HCE**, Host Card Emulation). La risposta breve è: **no, le chiavi "vere" della carta non risiedono permanentemente nel telefono.**
+
+Ecco come funziona davvero.
+
+L'HCE è nato (Android 4.4, 2013) proprio per permettere l'emulazione di una carta contactless **senza** affidarsi a un Secure Element hardware: il controller NFC instrada i comandi APDU verso la CPU principale e l'app di pagamento, invece che verso un chip sicuro dedicato. Questo crea un problema di sicurezza evidente, perché la memoria normale del telefono non è un ambiente fidato e può essere compromessa (root, malware, ecc.). Per questo motivo le credenziali sensibili a lungo termine non vengono conservate sul dispositivo.
+
+La soluzione adottata dai sistemi di pagamento HCE (il modello EMVCo *Cloud-Based Payments*) si basa su due meccanismi:
+
+**Tokenizzazione.** Sul telefono non c'è il vero numero di carta (PAN) ma un token, il DPAN (Device PAN), gestito da un Token Service Provider. Il PAN reale resta lato server.
+
+**Limited Use Keys (LUK).** Invece di una chiave master permanente, il telefono riceve dal cloud chiavi a uso limitato, valide per un numero ristretto di transazioni o per un breve periodo, che vengono rigenerate e riscaricate periodicamente. Anche se qualcuno riuscisse a estrarle, il danno sarebbe circoscritto perché scadono in fretta. La chiave master vera rimane sulla piattaforma HCE dell'emittente.
+
+Quindi, riassumendo cosa sta dove: le chiavi/credenziali principali stanno **nel cloud** (emittente / Token Service Provider); sul telefono ci sono solo il token e chiavi a uso limitato, temporanee.
+
+Un'ulteriore precisazione importante: molte implementazioni moderne **non** lasciano queste LUK nella memoria normale, ma le proteggono comunque con hardware del telefono, tipicamente il **TEE** (Trusted Execution Environment) o l'Android Keystore / StrongBox. Quindi nei dispositivi recenti hai spesso un modello ibrido — HCE per la logica di emulazione, più un appoggio hardware per custodire le chiavi temporanee. Questo è diverso dal modello "puro" con Secure Element fisico (come quello usato storicamente da Apple Pay), dove invece le credenziali stanno in un chip dedicato e isolato.
+
+Se vuoi posso entrare nel dettaglio del flusso APDU o della differenza specifica tra HCE e Secure Element.
+
 ## **EPC Gen2: anatomia di una lettura**
 
 Per la seconda prova è utile conoscere il funzionamento di **EPC Gen2**, lo standard UHF più diffuso. Il reader segue un ciclo composto da tre fasi:
