@@ -34,7 +34,7 @@ Autorizza o meno l’apertura di una connessione di livello 2 ISO/OSI. L’auten
 - Nel caso di autenticazione di un dispositivo su uno **switch** il supplicant è lo switch stesso.
 - Nel caso di autenticazione di un dispositivo su un **AP** il supplicant è l'AP.
 
-<img src="img/porteradius.png" alt="alt text" width="500">
+<img src="img/porteradius.png" alt="alt text" width="700">
 
 ## **Autenticazione di un dispositivo connesso ad uno switch**
 
