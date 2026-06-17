@@ -95,9 +95,9 @@ L'HCE è nato (Android 4.4, 2013) proprio per permettere l'emulazione di una car
 
 La soluzione adottata dai sistemi di pagamento HCE (il modello EMVCo *Cloud-Based Payments*) si basa su due meccanismi:
 
-**Tokenizzazione.** Sul telefono non c'è il vero numero di carta (PAN) ma un token, il DPAN (Device PAN), gestito da un Token Service Provider. Il PAN reale resta lato server.
+- **Tokenizzazione.** Sul telefono non c'è il vero numero di carta (PAN) ma un token, il DPAN (Device PAN), gestito da un Token Service Provider. Il PAN reale resta lato server.
 
-**Limited Use Keys (LUK).** Invece di una chiave master permanente, il telefono riceve dal cloud chiavi a uso limitato, valide per un numero ristretto di transazioni o per un breve periodo, che vengono rigenerate e riscaricate periodicamente. Anche se qualcuno riuscisse a estrarle, il danno sarebbe circoscritto perché scadono in fretta. La chiave master vera rimane sulla piattaforma HCE dell'emittente.
+- **Limited Use Keys (LUK).** Invece di una chiave master permanente, il telefono riceve dal cloud chiavi a uso limitato, valide per un numero ristretto di transazioni o per un breve periodo, che vengono rigenerate e riscaricate periodicamente. Anche se qualcuno riuscisse a estrarle, il danno sarebbe circoscritto perché scadono in fretta. La chiave master vera rimane sulla piattaforma HCE dell'emittente.
 
 Quindi, riassumendo cosa sta dove: le chiavi/credenziali principali stanno **nel cloud** (emittente / Token Service Provider); sul telefono ci sono solo il token e chiavi a uso limitato, temporanee.
 
