@@ -1,7 +1,7 @@
 > [Torna a reti di sensori](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/sensornetworkshort.md) > [Torna alla dispensa principale RFID](../archrfid.md)
 
 
-# **Standard RFID**
+# **Standard RFID HF**
 
 L'RFID è coperto da una galassia di standard. I più rilevanti per la **seconda prova** sono:
 
@@ -111,6 +111,7 @@ Quindi, riassumendo cosa sta dove: le chiavi/credenziali principali stanno **nel
 Un'ulteriore precisazione importante: molte implementazioni moderne **non** lasciano queste LUK nella memoria normale, ma le proteggono comunque con hardware del telefono, tipicamente il **TEE** (Trusted Execution Environment) o l'Android Keystore / StrongBox. Quindi nei dispositivi recenti hai spesso un modello ibrido — HCE per la logica di emulazione, più un appoggio hardware per custodire le chiavi temporanee. Questo è diverso dal modello "puro" con Secure Element fisico (come quello usato storicamente da Apple Pay), dove invece le credenziali stanno in un chip dedicato e isolato.
 
 
+# **Standard RFID UHF**
 
 ## **EPC Gen2: anatomia di una lettura**
 
