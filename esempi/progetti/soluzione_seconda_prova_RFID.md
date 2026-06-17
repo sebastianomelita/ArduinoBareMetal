@@ -174,7 +174,7 @@ interface range <porte-server>
 
 | Interfaccia | Subnet | Indirizzi | Ruolo |
 |---|---|---|---|
-| `Tun0` (R-FW) ↔ PE SUM | 10.255.1.0/30 | .1 ↔ .2 | dorsale VPN IPsec di transito |
+| `Tun0` (R-FW) ↔ PE SUM | 10.255.0.0/30 | .1 ↔ .2 | dorsale VPN IPsec di transito |
 | `Gi0/0` (WAN) | assegnata da ISP | dinamica (DHCP) | uscita verso il trasporto IP |
 
 ### 5.1 Subnetting del centro SUM (datacenter)
