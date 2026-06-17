@@ -32,14 +32,6 @@ Tutto ciò che gira *sopra* questi livelli (la logica della carta, la crittograf
 
 **MIFARE non è uno standard**, ma una **famiglia di prodotti proprietari NXP** che lavora su ISO 14443 **Type A**. La differenza tra i vari MIFARE sta in *quanta parte* dello standard usano e in *quale crittografia* mettono sopra.
 
-| Prodotto | Livelli ISO 14443 usati | Crittografia | Modello memoria | Tipico impiego |
-|---|---|---|---|---|
-| **MIFARE Classic** | Solo parte 3 + **protocollo proprietario** | **Crypto1** (proprietaria, *violata*) | Settori/blocchi (flat) | Trasporti, accessi a basso costo |
-| **MIFARE Ultralight** | Solo parte 3 | Nessuna o 3DES (Ultralight C) | Pochi byte | Biglietti usa-e-getta |
-| **MIFARE Plus** | Parte 3 o 4 secondo il *Security Level* | Crypto1 → **AES-128** (in SL3) | Come Classic (migrazione facile) | Upgrade del Classic |
-| **MIFARE DESFire** | **Parte 4 completa (T=CL)** + comandi tipo ISO 7816-4 | DES / 3DES / **AES-128** | **File system** (applicazioni + file) | Trasporti e accessi sicuri |
-
-
 Ecco una tabella dei principali prodotti contactless **HF (13,56 MHz)** ordinati per livello di sicurezza crescente — restando nel mondo NXP/MiFare più il confronto con un vero Secure Element in fondo.
 
 | # | Prodotto | Crittografia / autenticazione | Tamper-resistance / certificazione | Stato e uso tipico |
