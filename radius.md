@@ -34,7 +34,7 @@ Autorizza o meno l’apertura di una connessione di livello 2 ISO/OSI. L’auten
 
 ## **Switch: filtraggio a livello di MAC**
 
-<img src="img/gate-radius.jpg" alt="alt text" width="500">
+<img src="img/gate-radius.jpg" alt="alt text" width="700">
 
 - Prima dell'autenticazione, l'identità dell’utente è sconosciuta e tutto il suo traffico è bloccato. Dopo l'autenticazione, l'identità dell’utente è nota e tutto il traffico proveniente da tale endpoint è consentito. 
 - Sul traffico dati (in chiaro) lo switch esegue il filtro del MAC di origine per garantire che solo l'endpoint autenticato sia autorizzato a inviare traffico (rischio spoofing del MAC). 
