@@ -503,7 +503,7 @@ Caratteristiche dell'alta disponibilità del join server:
 
 Non è un dispositivo della gerarchia LoRaWAN, non deve implementare lo stack protocollare LoRaWAN ma deve semplicemente ricevere i payload che l'AS spedisce e inoltra via MQTT.
 
-### 6.7. Comunicazione smart-gate ↔ CdC
+### 6.6.1. Comunicazione smart-gate ↔ CdC
 
 Questa è la tratta più delicata: deve essere ad alta banda (per gli stream video on-demand), bassa latenza, sempre disponibile.
 
