@@ -1,6 +1,6 @@
-<svg width="100%" viewBox="0 0 1100 800" xmlns="http://www.w3.org/2000/svg" role="img" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
-<title>CdC Lombardia — Opzione B1 (L2 + DWDM): rete di reti LoRaWAN</title>
-<desc>Tre tratti autostradali; in ciascuno: anello ERPS a scala km con gli switch in serie (switch di anello come uplink alla lambda DWDM piu switch di tratto verso i gateway LoRaWAN); i link radio sensore-gateway sono LoRaWAN 868 MHz; terminazione su Core Switch multilayer; overlay applicativo MQTT verso il broker centrale.</desc>
+<svg width="100%" viewBox="0 0 1100 1000" xmlns="http://www.w3.org/2000/svg" role="img" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+<title>CdC Lombardia — Opzione B1 (L2 + DWDM): rete di reti LoRaWAN con livello nazionale</title>
+<desc>Tre tratti autostradali; in ciascuno: anello ERPS a scala km con gli switch in serie (switch di anello come uplink alla lambda DWDM piu switch di tratto verso i gateway LoRaWAN); i link radio sensore-gateway sono LoRaWAN 868 MHz; terminazione su Core Switch multilayer; overlay applicativo MQTT verso il broker centrale. Dal Core Switch partono dorsali logiche per funzione (circa VRF o L3VPN) verso router nazionali distinti: sensori e controller nascono qui, telecamere arrivano dalla fabric cablata, management resta regionale.</desc>
 <defs>
 <style>
 .t  { font-size: 14px; fill: #2C2C2A; }
@@ -16,7 +16,7 @@
 <text class="ts" x="20" y="46">L2 LoRa (onde verdi) sensore↔gateway · anello ERPS a scala km (switch in serie) · trasporto su λ DWDM dedicata (ambra) · L7 MQTT (azzurro)</text>
 
 <!-- ====================== LEGENDA ====================== -->
-<rect x="690" y="86" width="395" height="108" rx="6" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="0.5" opacity="0.96"/>
+<rect x="690" y="86" width="395" height="126" rx="6" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="0.5" opacity="0.96"/>
 <text class="th" x="705" y="106">Legenda</text>
 <line x1="710" y1="122" x2="770" y2="122" stroke="#C8772E" stroke-width="2"/>
 <text class="tt" x="780" y="126">Trasporto DWDM — λ dedicata per tratta (trunk VLAN, L1/L2)</text>
@@ -26,6 +26,8 @@
 <text class="tt" x="780" y="162">Collegamento L7 MQTT (publish/subscribe)</text>
 <path d="M 710 176 Q 720 170 730 176 Q 740 182 750 176 Q 760 170 770 176" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.7"/>
 <text class="tt" x="780" y="180">Collegamento radio L2 LoRaWAN (868 MHz)</text>
+<line x1="710" y1="196" x2="770" y2="196" stroke="#8E44AD" stroke-width="2"/>
+<text class="tt" x="780" y="200">Dorsale logica per funzione (≈ VRF/L3VPN) verso router nazionale</text>
 
 <!-- ====================== NOTA B1 ====================== -->
 <rect x="320" y="296" width="300" height="74" rx="6" fill="#FFFFFF" stroke="#C8772E" stroke-width="0.6" opacity="0.95"/>
@@ -261,4 +263,44 @@
 <text class="tt" x="858" y="475" fill="#2A8FD4">subscribe</text>
 <text class="tt" x="858" y="489" fill="#2A8FD4">misure + comandi</text>
 
+<!-- ====================== DORSALI LOGICHE CS -> ROUTER NAZIONALI ====================== -->
+<!-- backbone Telecamere (VLAN 20) dal CS -->
+<path d="M 760 444 L 760 810 L 677 858" stroke="#8E44AD" stroke-width="2" fill="none"/>
+<!-- backbone Sensori (VLAN 30) dal CS — centrale -->
+<path d="M 810 444 L 810 820 L 793 858" stroke="#8E44AD" stroke-width="2" fill="none"/>
+<!-- backbone Controller (VLAN 40) dal CS -->
+<path d="M 860 444 L 866 812 L 909 858" stroke="#8E44AD" stroke-width="2" fill="none"/>
+
+<!-- ====================== LIVELLO NAZIONALE ====================== -->
+<rect x="615" y="826" width="470" height="150" rx="8" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="0.6" stroke-dasharray="5 4" opacity="0.97"/>
+<text class="th" x="627" y="846">Livello nazionale — un router per funzione (≈ VRF/L3VPN)</text>
+
+<!-- router naz. telecamere -->
+<rect x="627" y="860" width="100" height="52" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<text class="tt" x="677" y="874" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Router naz.</text>
+<text class="tt" x="677" y="888" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Telecamere</text>
+<text class="tt" x="677" y="902" text-anchor="middle" dominant-baseline="central" fill="#185FA5">VLAN 20</text>
+
+<!-- router naz. sensori -->
+<rect x="743" y="860" width="100" height="52" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<text class="tt" x="793" y="874" text-anchor="middle" dominant-baseline="central" fill="#0C5A45">Router naz.</text>
+<text class="tt" x="793" y="888" text-anchor="middle" dominant-baseline="central" fill="#0C5A45">Sensori</text>
+<text class="tt" x="793" y="902" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">VLAN 30</text>
+
+<!-- router naz. controller -->
+<rect x="859" y="860" width="100" height="52" rx="6" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.8"/>
+<text class="tt" x="909" y="874" text-anchor="middle" dominant-baseline="central" fill="#854F0B">Router naz.</text>
+<text class="tt" x="909" y="888" text-anchor="middle" dominant-baseline="central" fill="#854F0B">Controller</text>
+<text class="tt" x="909" y="902" text-anchor="middle" dominant-baseline="central" fill="#BA7517">VLAN 40</text>
+
+<!-- router management (regionale) -->
+<rect x="975" y="860" width="100" height="52" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.8" stroke-dasharray="3 3"/>
+<text class="tt" x="1025" y="874" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">Management</text>
+<text class="tt" x="1025" y="888" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">resta regionale</text>
+<text class="tt" x="1025" y="902" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">(OOB, al CdC)</text>
+
+<!-- ====================== LIVELLO NAZIONALE ====================== -->
+<text class="tt" x="627" y="932">• Tre dorsali logiche dal CS: Telecamere (VLAN 20) · Sensori (VLAN 30) · Controller (VLAN 40)</text>
+<text class="tt" x="627" y="948">• Ogni dorsale = un piano/funzione (≈ VRF/L3VPN) verso il proprio router nazionale</text>
+<text class="tt" x="627" y="964">• Management: nessuna dorsale nazionale — gestito out-of-band al CdC (regionale)</text>
 </svg>
