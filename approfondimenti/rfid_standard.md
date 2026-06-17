@@ -103,7 +103,26 @@ Quindi, riassumendo cosa sta dove: le chiavi/credenziali principali stanno **nel
 
 Un'ulteriore precisazione importante: molte implementazioni moderne **non** lasciano queste LUK nella memoria normale, ma le proteggono comunque con hardware del telefono, tipicamente il **TEE** (Trusted Execution Environment) o l'Android Keystore / StrongBox. Quindi nei dispositivi recenti hai spesso un modello ibrido — HCE per la logica di emulazione, più un appoggio hardware per custodire le chiavi temporanee. Questo è diverso dal modello "puro" con Secure Element fisico (come quello usato storicamente da Apple Pay), dove invece le credenziali stanno in un chip dedicato e isolato.
 
-Se vuoi posso entrare nel dettaglio del flusso APDU o della differenza specifica tra HCE e Secure Element.
+
+Ecco una tabella dei principali prodotti contactless **HF (13,56 MHz)** ordinati per livello di sicurezza crescente — restando nel mondo NXP/MiFare più il confronto con un vero Secure Element in fondo.
+
+| # | Prodotto | Crittografia / autenticazione | Tamper-resistance / certificazione | Stato e uso tipico |
+|---|----------|-------------------------------|-------------------------------------|--------------------|
+| 1 | **MIFARE Ultralight** | Nessuna; solo UID + memoria (le EV1 hanno una password a 32 bit) | Nessuna | Biglietti usa-e-getta, ticketing monouso |
+| 2 | **NTAG 21x** | Password 32 bit (PWD_AUTH); alcune hanno firma ECC "originality" | Nessuna vera protezione | Tag NFC, marketing, anticontraffazione leggera |
+| 3 | **MIFARE Ultralight C** | 3DES per autenticazione | Minima | Ticketing un po' più protetto |
+| 4 | **MIFARE Classic 1K/4K** | CRYPTO1 proprietario, 48 bit — **rotto dal 2008** | Nessuna efficace; clonabile | Trasporti, accessi legacy (insicuro) |
+| 5 | **MIFARE Plus** | AES-128 (in Security Level 3) | Hardware certificato Common Criteria (≈ EAL4+) | Sostituto "drop-in" della Classic |
+| 6 | **MIFARE DESFire EV1** | 3DES / AES, secure messaging, file system con chiavi multiple | CC EAL4+, contromisure HW | Trasporti, accessi, micropagamenti |
+| 7 | **MIFARE DESFire EV2/EV3** | AES-128, autenticazione mutua, secure messaging avanzato | CC ≈ EAL5+, difese side-channel e fault injection | Sistemi multi-applicazione di alto livello |
+| 8 | **Secure Element (SmartMX / Java Card + GlobalPlatform)** | Applet programmabili, crypto isolata, può emulare MIFARE | CC EAL5+/6+, vero ambiente isolato anti-tampering | Pagamenti, eID, SIM, eSE negli smartphone |
+
+Qualche nota di lettura. Il salto di sicurezza più importante è tra la riga 4 e la 5: tutto ciò che usa CRYPTO1 (Classic) va considerato compromesso, mentre da MIFARE Plus in poi si entra nel territorio AES. Dalla riga 6 in poi hai vera tamper-resistance certificata, e solo all'ultima riga hai un chip *programmabile* in senso pieno (esegue applet), che è la differenza concettuale rispetto ai chip a funzione fissa sopra.
+
+Le sigle EAL le ho indicate come ordine di grandezza tipico delle certificazioni di questi prodotti: i livelli esatti variano per singola versione e configurazione certificata, quindi per una scelta progettuale conviene sempre verificare il *Security Target* specifico del chip.
+
+Se vuoi posso aggiungere una colonna con la velocità/transazione o il costo indicativo, utile se stai valutando quale usare per un progetto concreto.
+
 
 ## **EPC Gen2: anatomia di una lettura**
 
