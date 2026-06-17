@@ -608,100 +608,139 @@ Le stazioni di ricarica utilizzano:
 
 ---
 
-## 5.4 L'L2 resta in regione: l'anello regionale
+# 8. Piano di indirizzamento completo — IPv6 GUA (senza NAT) e IPv4 (con NAT)
 
-Il dominio di livello 2 — l'anello ERPS (o il cluster DWDM, §5.2) che porta in trunk le VLAN-funzione — ha **scope regionale**. Coincide con l'estensione fisica del tratto/cluster (~50 km) e si chiude sul Core Switch del CdC. Non si estende oltre.
+Si definiscono **due scenari** di indirizzamento, mappati in modo netto sulla tecnologia, perché è la scarsità (o l'abbondanza) di indirizzi a dettare la scelta:
 
-La scelta è obbligata, non estetica: **una VLAN è un dominio di broadcast, e un dominio di broadcast esteso per mezza nazione è un dominio di guasto nazionale.** Estendere l'L2 fino a un apparato nazionale significherebbe:
+| Scenario        | Tecnologia            | NAT  | Raggiungibilità                     |
+| --------------- | --------------------- | ---- | ----------------------------------- |
+| **Senza NAT**   | **IPv6 GUA**          | no   | end-to-end (ogni dispositivo ha un indirizzo globale, entro firewall) |
+| **Con NAT**     | **IPv4 RFC1918** (`10/8`) | sì   | dispositivi dietro NAT al gateway di tratto |
 
-- far convergere **ERPS/STP** su collegamenti WAN di centinaia di km (tempi e stabilità incompatibili con il failover < 50 ms che cerchiamo localmente);
-- propagare **broadcast e ARP** di tutti i dispositivi attraverso la dorsale interregionale;
-- creare un **failure domain unico**: un singolo loop o una tempesta in una regione si propagherebbe a tutte.
+In IPv4 la penuria di indirizzi **impone** il NAT; in IPv6 l'abbondanza di indirizzi globali (GUA) rende il NAT inutile e dannoso, e abilita l'end-to-end.
 
-Per questo l'anello, **come adesso, è e resta regionale**. È il livello 2 giusto: locale, veloce, contenuto.
+I due scenari **condividono la gerarchia**: i campi alti codificano **regione (5 bit) + funzione (3 bit)**; cambia solo come si numerano **tratto** e **host** sotto di essi. In entrambi vale il confine di §5.4–5.8: l'L2 resta in regione, il **router regionale** è il primo hop L3 e gateway dei quattro piani (telecamere, sensori, controller, management).
 
-## 5.5 Il router regionale come confine L2/L3
+---
 
-Al CdC si **spilla dallo switch un router regionale** (un router/firewall dedicato, oppure SVI su uno switch multilayer). È l'unico punto in cui l'L2 della regione diventa L3, e svolge tre ruoli:
+## 8.1 Scenario SENZA NAT — IPv6 GUA (soluzione di riferimento)
 
-1. **Primo hop L3 dei quattro piani.** Ha un'interfaccia/SVI *dentro* ciascuna subnet di funzione (telecamere, sensori, controller, management) ed è il loro **default gateway**. Tutto il traffico inter-VLAN *servizi ↔ dispositivi* della regione (dashboard → telecamera, broker → gateway sensori, comando → PMV) viene instradato **sul posto**, al CdC: niente più hairpin verso il nazionale (cfr. §8.2).
-2. **Punto di policy.** Applica le ACL fra i piani, fa da **gateway promiscuo** per le Private VLAN (§8.3) e impone che i piani si parlino solo attraverso regole esplicite (gli smart-gate non si parlano tra loro, §10.2).
-3. **Confine verso la WAN.** Termina la regione e annuncia verso il nazionale **solo rotte L3** (vedi §5.6).
+### 8.1.1 Gerarchia degli indirizzi
+
+Si parte da un blocco **GUA** assegnato dall'RIR (RIPE) all'operatore — tipicamente un **`/32`** (LIR) da cui si ritaglia un **`/40`** per la rete Smart-Road, lasciando 8 bit di slack superiore per il livello nazionale / altri usi. La ripartizione dei 24 bit dal `/40` al `/64`:
 
 ```
-   ── REGIONE (L2) ────────────────┐        ── L3 ──►  NAZIONALE
-   anello ERPS / cluster DWDM      │
-   VLAN telecamere · sensori ·     │   ┌─────────────────┐
-   controller · management         ├──►│   ROUTER        │  rotte sommarizzate
-   (dominio di broadcast regionale)│   │  REGIONALE      │──────────► MPLS L3VPN
-   chiuso sul Core Switch del CdC  │   │ (confine L2/L3) │           verso il CN
-   ────────────────────────────────┘   └─────────────────┘
-                                        gateway dei 4 piani
-                                        + ACL/PVLAN + de-hairpin
+GUA  ::  [ /40 rete ]  RRRRR fff   TTTTTTTT TTTTTTTT   IID (64 bit)
+                       └─5─┘ └3┘   └────── 16 ──────┘
+                       reg.  fun.        tratto          host (SLAAC)
+                       └──── /45 ─┘
+                       └──────── /48 ────┘
+                       └─────────────────── /64 ──────┘
 ```
 
-> **Variante** — per un singolo nodo di convergenza (es. il collector/broker) è ammissibile un'**applicazione 4-homed** (una sotto-interfaccia 802.1Q per piano) che parla con ogni piano *on-link*, senza routing. In tal caso va **disabilitato l'IP forwarding** sull'host (deve essere un ponte applicativo, non un router occulto fra i piani) e l'host va trattato come confine di sicurezza. Quando i servizi che toccano i piani sono molti, è però preferibile il **router regionale**, più generale e con la policy in un punto solo.
+- **Regione**: 5 bit → **`/45` per regione** (32 regioni: 20 + riserva).
+- **Funzione**: 3 bit → **`/48` per funzione** (8 blocchi: 4 usati + 4 di riserva). Il `/48` è l'unità "sito" standard IPv6.
+- **Tratto**: 16 bit → **`/64` per tratto** (65.536 tratti per funzione/regione).
+- **Host**: i 64 bit di Interface-ID, via **SLAAC** → host praticamente illimitati per tratto.
 
-## 5.6 Verso il nazionale: solo livello 3 (MPLS L3VPN)
+I confini cadono esatti sugli **hextet**, in perfetto parallelo con l'IPv4: il 3º hextet = regione + funzione, il 4º hextet = tratto. Si legge `<GUA>:<reg×8 + funzione>:<tratto>::/64`.
 
-Tra regione e CN si viaggia **esclusivamente in L3**. Il router regionale annuncia verso il backbone, su **MPLS L3VPN**, poche **rotte sommarizzate** (un prefisso per regione, o uno per funzione — cfr. il piano di §8.1), eventualmente con una **VRF per funzione** se si vuole mantenere la separazione dei piani anche a livello nazionale.
+### 8.1.2 Esempio — Lombardia (regione = 3)
 
-Di conseguenza i **"router nazionali per funzione"** sono punti di **aggregazione/instradamento L3** (VRF): ricevono prefissi *instradati*, **non** estendono l'L2 dei piani. Nessun dominio di broadcast attraversa la WAN. Ogni dominio L2/broadcast/guasto resta circoscritto a una regione, e questo è esattamente l'obiettivo.
+Usando il prefisso di documentazione `2001:db8::/32` (il `/40` operativo è `2001:db8:00::/40`); regione 3 → `reg×8 = 24 = 0x18`, quindi **`/45` regionale `2001:db8:18::/45`**:
 
-## 5.7 Flussi verso il Centro Nazionale
+| Funzione           | Blocco `/48`          | Tratto 5 (`/64`)          |
+| ------------------ | --------------------- | ------------------------- |
+| Telecamere (fn 0)  | `2001:db8:18::/48`    | `2001:db8:18:5::/64`      |
+| Sensori (fn 1)     | `2001:db8:19::/48`    | `2001:db8:19:5::/64`      |
+| Controller (fn 2)  | `2001:db8:1a::/48`    | `2001:db8:1a:5::/64`      |
+| Management (fn 3)  | `2001:db8:1b::/48`    | `2001:db8:1b:5::/64`      |
+| Riserva (fn 4–7)   | `2001:db8:1c–1f::/48` | —                         |
 
-Il CN ha due esigenze diverse, servite da due meccanismi diversi — nessuno dei quali richiede di estendere l'L2 né di dare al CN raggiungibilità L3 grezza verso i dispositivi.
+Esempio di indirizzo: una telecamera nel tratto 5 della Lombardia → `2001:db8:18:5::a/64`.
 
-**Segnalazioni → MQTT bridge.** Le misure, gli eventi (targhe), gli allarmi e lo stato salgono via **bridge MQTT** broker-regionale → broker-nazionale (§7.3.1): è pub/sub a livello 7, quindi il CN riceve i dati **senza alcuna rotta L3 verso i dispositivi**. Flusso sempre attivo e leggero.
+### 8.1.3 Proprietà
 
-**Immagini → relay media regionale, on-demand.** Lo streaming (RTSP/SRT) non è pub/sub: per vedere una telecamera dal CN serve un percorso fino ad essa. Invece di esporre al CN migliaia di telecamere, si interpone un **relay/proxy media regionale** (può essere lo stesso nodo di convergenza, già attestato sul piano telecamere). Il CN apre lo stream **a richiesta** verso quell'unico endpoint regionale, attraverso il **firewall**, con autenticazione, logging e mascheramento (GDPR); il proxy tira il flusso dalla telecamera locale e lo rilancia a nord. Quel singolo flusso on-demand sale legittimamente in L3 via MPLS — è inter-regionale, raro, verso un solo endpoint — mentre i flussi video locali non lasciano mai la regione.
+- **End-to-end, niente NAT**: RTSP, SSH e push comandi sono nativi; la sicurezza si fa con **firewall/policy stateful esplicite** (non per effetto collaterale del NAT).
+- **Aggregazione pulita**: un `/45` per regione, un `/48` per funzione annunciati a nord.
+- **Scala**: 65.536 tratti per funzione/regione, host illimitati.
+- *(Alternativa)* per la parte puramente interna si può affiancare **ULA `fc00::/7`** alla GUA, ma per un servizio che deve essere raggiungibile (push comandi, visione immagini) la **GUA** resta l'asse portante.
 
-## 5.8 Riepilogo dei confini
+---
 
-| Flusso                                   | Dove si chiude        | Meccanismo                                  |
-| ---------------------------------------- | --------------------- | ------------------------------------------- |
-| Servizi ↔ dispositivi (locale)           | **Regione** (CdC)     | Router regionale (inter-VLAN locale)        |
-| Comandi ai PMV / decisioni di sicurezza  | **Regione / edge**    | Router regionale (+ edge in degraded)       |
-| Anello, broadcast, dominio di guasto     | **Regione**           | ERPS / DWDM confinati alla regione          |
-| Segnalazioni (misure, eventi, allarmi)   | **Nazionale**         | MQTT bridge (pub/sub L7)                     |
-| Visione immagini dal CN                  | **On-demand**         | Relay media regionale via firewall          |
-| Raggiungibilità inter-regione            | **Nazionale**         | MPLS L3VPN (solo L3, rotte sommarizzate)    |
+## 8.2 Scenario CON NAT — IPv4 RFC1918 (`10.0.0.0/8`)
 
-In una frase: **l'L2 vive in regione (l'anello), il router regionale è il confine, e oltre la regione corre solo l'L3.**
+### 8.2.1 Gerarchia base (regione `/13`, funzione `/16`)
 
-# 6 Segmentazione interna di uno smart-gate (nei due scenari)
+Spazio `10.0.0.0/8`; i 24 bit sotto il `/8`:
 
-Lo smart-gate ha al suo interno una piccola LAN con VLAN dedicate per separare i sottosistemi (segmentazione di sicurezza); il **SoC** fa da gateway tra queste VLAN e l'uplink verso l'anello/CdC. **Cosa cambia tra i due scenari è il ruolo del SoC** (router puro vs router+NAT) e l'indirizzamento interno.
+```
+10 . [ RRRRR fff ] . [ TTTTTTTT ] . [ HHHHHHHH ]
+      └─5─┘ └─3─┘      └────8────┘     └────8────┘
+      reg.  funz.        tratto          host
+      └──── /13 ───┘
+      └──────── /16 ─────┘
+```
 
-## 6.1 Scenario senza NAT — il SoC instrada (no NAT)
+- **Regione**: 5 bit → **`/13` per regione** (32 regioni: 20 + riserva).
+- **Funzione**: 3 bit → **`/16` per funzione** (8 blocchi: 4 usati + 4 riserva).
 
-Le VLAN interne sono il prolungamento locale dei **piani di funzione regionali**: i dispositivi prendono indirizzi **univoci** dalle subnet di funzione della regione (§8.2.1) o un `/64` IPv6 per VLAN (§8.2.2), e sono **direttamente raggiungibili** (entro firewall). Nessun riuso di indirizzi tra smart-gate. Il SoC instrada (o fa da semplice bridge L2 verso il trunk dell'anello, con gateway sul router regionale).
+Si legge `10.<reg×8 + funzione>.<tratto>.<host>`. **Esempio Lombardia (reg = 3)** → `/13` regionale `10.24.0.0/13`:
 
-| VLAN | Subnet (esempio IPv4, Lombardia)        | Uso                          |
-| ---- | --------------------------------------- | ---------------------------- |
-| 20   | da `10.24.0.0/16` (piano telecamere)    | Telecamere IP (ONVIF/RTSP)   |
-| 30   | da `10.25.0.0/16` (piano sensori)       | Gateway/sensori IP-based     |
-| 40   | da `10.26.0.0/16` (piano controller)    | Controller PMV               |
-| 99   | da `10.27.0.0/16` (piano management)    | Management (SSH, SNMP)       |
+| Funzione           | Blocco `/16`     |
+| ------------------ | ---------------- |
+| Telecamere         | `10.24.0.0/16`   |
+| Sensori            | `10.25.0.0/16`   |
+| Controller         | `10.26.0.0/16`   |
+| Management         | `10.27.0.0/16`   |
+| Riserva            | `10.28–31.0.0/16`|
 
-In IPv6: un `/64` per VLAN dal `/48` di funzione. Vantaggio: RTSP e management raggiungibili nativamente dal CdC; nessun port-mapping.
+Cautele: **riservare uno slot `/13` al Centro Nazionale** (es. `10.0.0.0/13` = CN, shared-services, transit, loopback); il `10/8` è interamente consumato → attenzione agli **overlap** con MPLS del telco / cloud.
 
-## 6.2 Scenario con NAT — il SoC fa da NAT
+### 8.2.2 Dimensionamento di tratto e host: due varianti
 
-Il SoC fa **NAT/PAT**: le VLAN interne usano spazio privato **riutilizzato identico in ogni smart-gate**, e verso l'alto lo smart-gate si presenta solo con i **pochi indirizzi esposti** del `/29` di tratto (§8.3).
+**Variante (a) — octet-aligned, senza NAT per tratto** (fino a 256 tratti): tratto = ottetto 3, host = ottetto 4 → **`/24` per tratto**, 256 tratti per funzione/regione (512 se si scende a 2 bit di funzione, rinunciando alla riserva). Indirizzamento privato end-to-end, NAT solo al confine Internet.
 
-| VLAN | Subnet interna (riusata per smart-gate) | Uso                          |
-| ---- | --------------------------------------- | ---------------------------- |
-| 10   | `192.168.10.0/29`                       | Telecamere IP (isolata)      |
-| 20   | `192.168.20.0/29`                       | Sensori IP-based             |
-| 30   | `192.168.30.0/29`                       | Controller PMV               |
-| 99   | `192.168.99.0/29`                       | Management (SSH, SNMP)       |
+**Variante (b) — con NAT al gateway di tratto** (densità elevata): si ridisegnano i 16 bit bassi come **13 bit di tratto + 3 bit di host**:
 
-Conseguenze: il traffico **MQTT** in uscita (dial-out verso il broker) attraversa il NAT senza problemi; gli accessi **in ingresso** (RTSP, SSH) richiedono **port-mapping** sugli indirizzi esposti del tratto. Il riuso del `192.168.x` è lecito proprio perché ogni smart-gate è isolato dietro il NAT del SoC.
+```
+10 . [ RRRRR fff ] . [ TTTTTTTT ] . [ TTTTT hhh ]
+      └─5─┘ └─3─┘      └──────── tratto 13 ──────┘ └host 3┘
+      reg.  funz.        (fino a 8192 tratti)       /29: 8 IP, 4 esposti
+```
 
-## 6.3 In entrambi gli scenari
+Il **gateway di tratto fa NAT** ed espone solo **4 IPv4 di un pool `/29`**; i dispositivi interni vivono in spazio privato **riutilizzato a ogni tratto** (`192.168.x/29`, vedi §11.2). Footprint per tratto minuscolo → **fino a 8192 tratti** per funzione/regione.
 
-Le VLAN interne restano **isolate tra loro** (PVLAN/ACL sul SoC): le telecamere non raggiungono i sensori né il controller se non tramite regole esplicite. Il SoC è il punto di policy locale dello smart-gate; in modalità *degraded* continua a gestire i propri sottosistemi anche isolato dalla rete (§2.1).
+### 8.2.3 Proprietà / trade-off del NAT
+
+- **MQTT**: i nodi edge *chiamano fuori* verso il broker → il NAT non disturba (telemetria, eventi, comandi-subscribe ok).
+- **RTSP in pull / SSH (in ingresso)**: con 4 IP esposti per tratto, gli altri dispositivi richiedono **port-mapping** → scomodo su scala.
+- Uso: **conservazione IPv4** e **dispositivi legacy** non IPv6-ready.
+
+---
+
+## 8.3 Confronto e raccomandazione
+
+| Aspetto                       | Senza NAT — IPv6 GUA                | Con NAT — IPv4 RFC1918                  |
+| ----------------------------- | ---------------------------------- | --------------------------------------- |
+| Unità per funzione/regione    | `/48` (→ `/64` per tratto)         | `/16` (→ `/24` o `/29` per tratto)      |
+| Tratti per funzione/regione   | **65.536**                         | 256 / 512 (var. a) · 8192 (var. b, NAT) |
+| Host per tratto               | illimitati (SLAAC)                 | 256 (`/24`) · 4 esposti (`/29` + NAT)   |
+| Raggiungibilità dispositivi   | diretta (entro firewall)           | solo via NAT / port-map                 |
+| RTSP / SSH in ingresso        | nativi                             | richiedono port-mapping                 |
+| MQTT (dial-out)               | ok                                 | ok                                      |
+| NAT                           | nessuno                            | al gateway di tratto                     |
+| Uso                           | **soluzione di riferimento**       | conservazione IPv4 / legacy             |
+
+**Raccomandazione:** **IPv6 GUA senza NAT** come piano di riferimento; **IPv4 RFC1918 con NAT** mantenuto in **dual-stack** per le isole di dispositivi legacy non IPv6-ready, fino alla loro dismissione.
+
+## 8.4 Elementi comuni ai due scenari
+
+- **L2 in regione, router regionale primo hop L3** (§5.4–5.6): verso il nazionale solo rotte L3 sommarizzate (un `/45`÷`/48` IPv6 o un `/13`÷`/16` IPv4 per regione/funzione).
+- **Contenimento del broadcast**: Private VLAN + storm control + IGMP snooping sulla subnet di funzione (§8 precedente).
+- **Maschere alle foglie**: in IPv4 `/29` interni allo smart-gate, `/31`–`/30` sui link punto-punto, `/32` loopback; in IPv6 `/64` ovunque.
+- **Accesso dal CN** (§5.7): segnalazioni via **MQTT bridge** (pub/sub L7, nessuna rotta L3 ai dispositivi), immagini via **relay media regionale** on-demand attraverso il firewall.
+
 
 ---
 
