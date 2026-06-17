@@ -154,7 +154,25 @@ Il problema dell'RFID non è "chi parla quando" ma "**come distinguere tag che r
 
 ### 🔐 [Sicurezza e privacy](approfondimenti/rfid_sicurezza.md)
 
-Minacce tipiche: **eavesdropping** (lettura UHF a 30-50 m), **clonazione** dei tag low-end, **tracking** spaziale, **tampering**, **DoS**, **replay**. Contromisure: **autenticazione mutua AES-128** (MIFARE DESFire EV3, NTAG 424 DNA), crittografia del payload, **TID univoco** per anti-clonazione, **kill command** per privacy alla vendita, schermatura fisica, rolling codes. Il **GDPR** richiede privacy by design: dati sul tag minimizzati, kill alla cessione, informativa visibile, log dei reader per audit. → [scheda completa](approfondimenti/rfid_sicurezza.md)
+Minacce tipiche del collegamento tra **carta e reader**: 
+- **eavesdropping** (lettura UHF a 30-50 m)
+- **clonazione** dei tag low-end
+- **tracking** spaziale
+- **tampering**
+- **DoS**
+- **replay**.
+
+Contromisure: 
+- **autenticazione mutua AES-128** (MIFARE DESFire EV3, NTAG 424 DNA) tra carta e reader
+- cifratura del payload
+- **TID univoco** per anti-clonazione
+- **kill command** per privacy alla vendita
+- schermatura fisica
+- rolling codes.
+
+Il **GDPR** richiede privacy by design: dati sul tag minimizzati, kill alla cessione, informativa visibile, log dei reader per audit. 
+
+→ [scheda completa](approfondimenti/rfid_sicurezza.md)
 
 ### 🆚 [Confronto con tecnologie alternative per scenari](approfondimenti/rfid_scenari.md)
 
