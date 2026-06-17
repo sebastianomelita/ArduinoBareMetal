@@ -669,32 +669,39 @@ Il CN ha due esigenze diverse, servite da due meccanismi diversi — nessuno dei
 
 In una frase: **l'L2 vive in regione (l'anello), il router regionale è il confine, e oltre la regione corre solo l'L3.**
 
-## 11.2 Segmentazione interna di uno smart-gate
+# 6 Segmentazione interna di uno smart-gate (nei due scenari)
 
-Lo smart-gate ha al suo interno una piccola LAN con VLAN dedicate per separare i sottosistemi (segmentazione di sicurezza):
+Lo smart-gate ha al suo interno una piccola LAN con VLAN dedicate per separare i sottosistemi (segmentazione di sicurezza); il **SoC** fa da gateway tra queste VLAN e l'uplink verso l'anello/CdC. **Cosa cambia tra i due scenari è il ruolo del SoC** (router puro vs router+NAT) e l'indirizzamento interno.
 
-| VLAN | Subnet | Uso |
-|------|--------|-----|
-| 10 | `192.168.10.0/29` | Telecamere IP (sottorete isolata, non raggiungibile dall'esterno) |
-| 20 | `192.168.20.0/29` | Sensori IP-based |
-| 30 | `192.168.30.0/29` | Controller PMV (Pannello a Messaggio Variabile) |
-| 99 | `192.168.99.0/29` | Management (SSH, SNMP) |
+## 6.1 Scenario senza NAT — il SoC instrada (no NAT)
 
-Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
+Le VLAN interne sono il prolungamento locale dei **piani di funzione regionali**: i dispositivi prendono indirizzi **univoci** dalle subnet di funzione della regione (§8.2.1) o un `/64` IPv6 per VLAN (§8.2.2), e sono **direttamente raggiungibili** (entro firewall). Nessun riuso di indirizzi tra smart-gate. Il SoC instrada (o fa da semplice bridge L2 verso il trunk dell'anello, con gateway sul router regionale).
 
-### 11.3 VLAN del CdC
+| VLAN | Subnet (esempio IPv4, Lombardia)        | Uso                          |
+| ---- | --------------------------------------- | ---------------------------- |
+| 20   | da `10.24.0.0/16` (piano telecamere)    | Telecamere IP (ONVIF/RTSP)   |
+| 30   | da `10.25.0.0/16` (piano sensori)       | Gateway/sensori IP-based     |
+| 40   | da `10.26.0.0/16` (piano controller)    | Controller PMV               |
+| 99   | da `10.27.0.0/16` (piano management)    | Management (SSH, SNMP)       |
 
-| VLAN | Subnet | Uso |
-|------|--------|-----|
-| 10 | `192.168.10.0/29` | Telecamere IP (sottorete isolata, non raggiungibile dall'esterno) |
-| 20 | `192.168.20.0/29` | Sensori IP-based |
-| 30 | `192.168.30.0/29` | Controller PMV (Pannello a Messaggio Variabile) |
-| 99 | `192.168.99.0/29` | Management (SSH, SNMP) |
-| 100 | `10.<RR>.<TT>.0/27` | Server cluster (broker, app, DB) |
-| 110 | `10.<RR>.<TT>.32/27` | Storage / NAS |
-| 120 | `10.<RR>.<TT>.64/27` | Workstation operatore |
-| 130 | `10.<RR>.<TT>.96/27` | Management/IPMI |
-| 200 | `10.<RR>.<TT>.128/25` | Subnet smart-gate (transit) |
+In IPv6: un `/64` per VLAN dal `/48` di funzione. Vantaggio: RTSP e management raggiungibili nativamente dal CdC; nessun port-mapping.
+
+## 6.2 Scenario con NAT — il SoC fa da NAT
+
+Il SoC fa **NAT/PAT**: le VLAN interne usano spazio privato **riutilizzato identico in ogni smart-gate**, e verso l'alto lo smart-gate si presenta solo con i **pochi indirizzi esposti** del `/29` di tratto (§8.3).
+
+| VLAN | Subnet interna (riusata per smart-gate) | Uso                          |
+| ---- | --------------------------------------- | ---------------------------- |
+| 10   | `192.168.10.0/29`                       | Telecamere IP (isolata)      |
+| 20   | `192.168.20.0/29`                       | Sensori IP-based             |
+| 30   | `192.168.30.0/29`                       | Controller PMV               |
+| 99   | `192.168.99.0/29`                       | Management (SSH, SNMP)       |
+
+Conseguenze: il traffico **MQTT** in uscita (dial-out verso il broker) attraversa il NAT senza problemi; gli accessi **in ingresso** (RTSP, SSH) richiedono **port-mapping** sugli indirizzi esposti del tratto. Il riuso del `192.168.x` è lecito proprio perché ogni smart-gate è isolato dietro il NAT del SoC.
+
+## 6.3 In entrambi gli scenari
+
+Le VLAN interne restano **isolate tra loro** (PVLAN/ACL sul SoC): le telecamere non raggiungono i sensori né il controller se non tramite regole esplicite. Il SoC è il punto di policy locale dello smart-gate; in modalità *degraded* continua a gestire i propri sottosistemi anche isolato dalla rete (§2.1).
 
 ---
 
