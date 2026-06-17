@@ -195,6 +195,67 @@ Lo switch tipo per questo scenario ha le seguenti caratteristiche:
 - **Supporto ERPS** (G.8032) e VLAN 802.1Q nativi.
 - **Management out-of-band** via porta console seriale e via SNMPv3/SSH dalla rete di management dedicata.
 
+## 5.4 L'L2 resta in regione: l'anello regionale
+
+Il dominio di livello 2 — l'anello ERPS (o il cluster DWDM, §5.2) che porta in trunk le VLAN-funzione — ha **scope regionale**. Coincide con l'estensione fisica del tratto/cluster (~50 km) e si chiude sul Core Switch del CdC. Non si estende oltre.
+
+La scelta è obbligata, non estetica: **una VLAN è un dominio di broadcast, e un dominio di broadcast esteso per mezza nazione è un dominio di guasto nazionale.** Estendere l'L2 fino a un apparato nazionale significherebbe:
+
+- far convergere **ERPS/STP** su collegamenti WAN di centinaia di km (tempi e stabilità incompatibili con il failover < 50 ms che cerchiamo localmente);
+- propagare **broadcast e ARP** di tutti i dispositivi attraverso la dorsale interregionale;
+- creare un **failure domain unico**: un singolo loop o una tempesta in una regione si propagherebbe a tutte.
+
+Per questo l'anello, **come adesso, è e resta regionale**. È il livello 2 giusto: locale, veloce, contenuto.
+
+## 5.5 Il router regionale come confine L2/L3
+
+Al CdC si **spilla dallo switch un router regionale** (un router/firewall dedicato, oppure SVI su uno switch multilayer). È l'unico punto in cui l'L2 della regione diventa L3, e svolge tre ruoli:
+
+1. **Primo hop L3 dei quattro piani.** Ha un'interfaccia/SVI *dentro* ciascuna subnet di funzione (telecamere, sensori, controller, management) ed è il loro **default gateway**. Tutto il traffico inter-VLAN *servizi ↔ dispositivi* della regione (dashboard → telecamera, broker → gateway sensori, comando → PMV) viene instradato **sul posto**, al CdC: niente più hairpin verso il nazionale (cfr. §8.2).
+2. **Punto di policy.** Applica le ACL fra i piani, fa da **gateway promiscuo** per le Private VLAN (§8.3) e impone che i piani si parlino solo attraverso regole esplicite (gli smart-gate non si parlano tra loro, §10.2).
+3. **Confine verso la WAN.** Termina la regione e annuncia verso il nazionale **solo rotte L3** (vedi §5.6).
+
+```
+   ── REGIONE (L2) ────────────────┐        ── L3 ──►  NAZIONALE
+   anello ERPS / cluster DWDM      │
+   VLAN telecamere · sensori ·     │   ┌─────────────────┐
+   controller · management         ├──►│   ROUTER        │  rotte sommarizzate
+   (dominio di broadcast regionale)│   │  REGIONALE      │──────────► MPLS L3VPN
+   chiuso sul Core Switch del CdC  │   │ (confine L2/L3) │           verso il CN
+   ────────────────────────────────┘   └─────────────────┘
+                                        gateway dei 4 piani
+                                        + ACL/PVLAN + de-hairpin
+```
+
+> **Variante** — per un singolo nodo di convergenza (es. il collector/broker) è ammissibile un'**applicazione 4-homed** (una sotto-interfaccia 802.1Q per piano) che parla con ogni piano *on-link*, senza routing. In tal caso va **disabilitato l'IP forwarding** sull'host (deve essere un ponte applicativo, non un router occulto fra i piani) e l'host va trattato come confine di sicurezza. Quando i servizi che toccano i piani sono molti, è però preferibile il **router regionale**, più generale e con la policy in un punto solo.
+
+## 5.6 Verso il nazionale: solo livello 3 (MPLS L3VPN)
+
+Tra regione e CN si viaggia **esclusivamente in L3**. Il router regionale annuncia verso il backbone, su **MPLS L3VPN**, poche **rotte sommarizzate** (un prefisso per regione, o uno per funzione — cfr. il piano di §8.1), eventualmente con una **VRF per funzione** se si vuole mantenere la separazione dei piani anche a livello nazionale.
+
+Di conseguenza i **"router nazionali per funzione"** sono punti di **aggregazione/instradamento L3** (VRF): ricevono prefissi *instradati*, **non** estendono l'L2 dei piani. Nessun dominio di broadcast attraversa la WAN. Ogni dominio L2/broadcast/guasto resta circoscritto a una regione, e questo è esattamente l'obiettivo.
+
+## 5.7 Flussi verso il Centro Nazionale
+
+Il CN ha due esigenze diverse, servite da due meccanismi diversi — nessuno dei quali richiede di estendere l'L2 né di dare al CN raggiungibilità L3 grezza verso i dispositivi.
+
+**Segnalazioni → MQTT bridge.** Le misure, gli eventi (targhe), gli allarmi e lo stato salgono via **bridge MQTT** broker-regionale → broker-nazionale (§7.3.1): è pub/sub a livello 7, quindi il CN riceve i dati **senza alcuna rotta L3 verso i dispositivi**. Flusso sempre attivo e leggero.
+
+**Immagini → relay media regionale, on-demand.** Lo streaming (RTSP/SRT) non è pub/sub: per vedere una telecamera dal CN serve un percorso fino ad essa. Invece di esporre al CN migliaia di telecamere, si interpone un **relay/proxy media regionale** (può essere lo stesso nodo di convergenza, già attestato sul piano telecamere). Il CN apre lo stream **a richiesta** verso quell'unico endpoint regionale, attraverso il **firewall**, con autenticazione, logging e mascheramento (GDPR); il proxy tira il flusso dalla telecamera locale e lo rilancia a nord. Quel singolo flusso on-demand sale legittimamente in L3 via MPLS — è inter-regionale, raro, verso un solo endpoint — mentre i flussi video locali non lasciano mai la regione.
+
+## 5.8 Riepilogo dei confini
+
+| Flusso                                   | Dove si chiude        | Meccanismo                                  |
+| ---------------------------------------- | --------------------- | ------------------------------------------- |
+| Servizi ↔ dispositivi (locale)           | **Regione** (CdC)     | Router regionale (inter-VLAN locale)        |
+| Comandi ai PMV / decisioni di sicurezza  | **Regione / edge**    | Router regionale (+ edge in degraded)       |
+| Anello, broadcast, dominio di guasto     | **Regione**           | ERPS / DWDM confinati alla regione          |
+| Segnalazioni (misure, eventi, allarmi)   | **Nazionale**         | MQTT bridge (pub/sub L7)                     |
+| Visione immagini dal CN                  | **On-demand**         | Relay media regionale via firewall          |
+| Raggiungibilità inter-regione            | **Nazionale**         | MPLS L3VPN (solo L3, rotte sommarizzate)    |
+
+In una frase: **l'L2 vive in regione (l'anello), il router regionale è il confine, e oltre la regione corre solo l'L3.**
+
 ---
 
 # 6 Dispositivi LoRaWAN
