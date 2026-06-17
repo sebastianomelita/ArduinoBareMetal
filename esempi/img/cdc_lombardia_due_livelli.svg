@@ -1,6 +1,6 @@
-<svg width="100%" viewBox="0 0 1100 800" xmlns="http://www.w3.org/2000/svg" role="img" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
-<title>CdC Lombardia — rete di reti LoRaWAN a due livelli (L3 IP / L7 MQTT)</title>
-<desc>Tre tratti autostradali con switch L2 di tratto e nodi edge (gateway + network server + application server) collegati al CdC Lombardia tramite dorsali IP; i link radio sensore-gateway sono LoRaWAN 868 MHz; sovrapposto il piano applicativo MQTT con il broker come router applicativo.</desc>
+<svg width="100%" viewBox="0 0 1320 800" xmlns="http://www.w3.org/2000/svg" role="img" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+<title>CdC Lombardia — dorsali TAP (L2) bridgiate verso i router nazionali</title>
+<desc>Tre tratti autostradali con switch L2 di tratto e nodi edge (gateway + network server + application server) collegati al CdC tramite dorsali realizzate come tunnel TAP di livello 2; i link radio sensore-gateway sono LoRaWAN 868 MHz. Il firewall del CdC termina i tre tunnel TAP e sotto espone un bridge che li fonde in un unico segmento L2 per VLAN, con subnet condivise per VLAN (non più per tratto); dal bridge partono tre dorsali per funzione verso i router nazionali (telecamere, sensori, controller), mentre il management resta regionale. Sovrapposto il piano applicativo MQTT con il broker come router applicativo.</desc>
 <defs>
 <style>
 .t  { font-size: 14px; fill: #2C2C2A; }
@@ -12,8 +12,15 @@
 </defs>
 
 <!-- ====================== TITOLO ====================== -->
-<text class="area-title" x="20" y="28">CdC Lombardia — rete di reti LoRaWAN a due livelli</text>
-<text class="ts" x="20" y="46">L2 LoRa (onde verdi) sensore↔gateway · L3 IP (tratteggio nero) tra firewall · L7 MQTT (puntinato azzurro) come piano applicativo sopra IP</text>
+<text class="area-title" x="20" y="28">CdC Lombardia — dorsali TAP (L2) bridgiate verso i router nazionali</text>
+<text class="ts" x="20" y="46">Dorsali = tunnel TAP L2 (non TUN) · il FW del CdC le termina e sotto espone un bridge · 3 dorsali per funzione ai router nazionali · subnet condivisa per VLAN</text>
+
+<!-- ====================== NOTA TAP / BRIDGE ====================== -->
+<rect x="315" y="92" width="375" height="86" rx="6" fill="#FFFFFF" stroke="#0F6E56" stroke-width="0.6" opacity="0.96"/>
+<text class="th" x="327" y="110" fill="#0C5A45">Dorsali = tunnel TAP (L2 bridged)</text>
+<text class="tt" x="327" y="128">Il FW del CdC le unisce in un bridge (niente routing per tratto)</text>
+<text class="tt" x="327" y="146">Subnet condivisa per VLAN: 20 cam · 30 sens · 40 ctrl (/24 estese)</text>
+<text class="tt" x="327" y="164">Dal bridge: 3 dorsali per funzione → router nazionali</text>
 
 <!-- ====================== TRATTO A1 (in alto a sinistra) ====================== -->
 <text class="area-title" x="60" y="80">Tratto A1</text>
@@ -22,13 +29,13 @@
 <ellipse cx="180" cy="115" rx="55" ry="22" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
 <text class="ts" x="180" y="119" text-anchor="middle" dominant-baseline="central">Internet/MPLS</text>
 
-<!-- firewall tratto A1 -->
+<!-- firewall tratto A1 (endpoint TAP, bridge) -->
 <rect x="155" y="155" width="50" height="36" rx="4" fill="#FBE9E1" stroke="#A32D2D" stroke-width="0.5"/>
 <text class="tt" x="180" y="170" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">FW</text>
-<text class="tt" x="180" y="184" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">.0.1</text>
+<text class="tt" x="180" y="184" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">TAP</text>
 <line x1="180" y1="137" x2="180" y2="155" stroke="#5F5E5A" stroke-width="1"/>
 <text class="tt" x="210" y="148">39.68.34.121</text>
-<text class="tt" x="210" y="178">DHCP·NAT·VPN</text>
+<text class="tt" x="210" y="178">endpoint tunnel TAP</text>
 
 <!-- switch L2 del tratto (simbolo Cisco) -->
 <g transform="translate(137,217)">
@@ -45,13 +52,13 @@
 <rect x="60" y="290" width="90" height="56" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
 <text class="tt" x="105" y="308" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Gateway km 1</text>
 <text class="tt" x="105" y="324" text-anchor="middle" dominant-baseline="central" fill="#534AB7">+ NS + AS edge</text>
-<text class="tt" x="105" y="338" text-anchor="middle" dominant-baseline="central" fill="#534AB7">.0.51</text>
+<text class="tt" x="105" y="338" text-anchor="middle" dominant-baseline="central" fill="#534AB7">10.30.0.51</text>
 
 <!-- gateway km 2 -->
 <rect x="210" y="290" width="90" height="56" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
 <text class="tt" x="255" y="308" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Gateway km 2</text>
 <text class="tt" x="255" y="324" text-anchor="middle" dominant-baseline="central" fill="#534AB7">+ NS + AS edge</text>
-<text class="tt" x="255" y="338" text-anchor="middle" dominant-baseline="central" fill="#534AB7">.0.52</text>
+<text class="tt" x="255" y="338" text-anchor="middle" dominant-baseline="central" fill="#534AB7">10.30.0.52</text>
 
 <!-- link L2 gateway -> switch del tratto -->
 <line x1="105" y1="290" x2="150" y2="263" stroke="#5F5E5A" stroke-width="1"/>
@@ -87,7 +94,7 @@
 
 <rect x="155" y="565" width="50" height="36" rx="4" fill="#FBE9E1" stroke="#A32D2D" stroke-width="0.5"/>
 <text class="tt" x="180" y="580" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">FW</text>
-<text class="tt" x="180" y="594" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">.1.1</text>
+<text class="tt" x="180" y="594" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">TAP</text>
 <line x1="180" y1="547" x2="180" y2="565" stroke="#5F5E5A" stroke-width="1"/>
 <text class="tt" x="210" y="558">39.68.34.122</text>
 
@@ -105,7 +112,7 @@
 <rect x="100" y="700" width="90" height="56" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
 <text class="tt" x="145" y="718" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Gateway km 5</text>
 <text class="tt" x="145" y="734" text-anchor="middle" dominant-baseline="central" fill="#534AB7">+ NS + AS edge</text>
-<text class="tt" x="145" y="748" text-anchor="middle" dominant-baseline="central" fill="#534AB7">.1.51</text>
+<text class="tt" x="145" y="748" text-anchor="middle" dominant-baseline="central" fill="#534AB7">10.30.0.55</text>
 
 <line x1="145" y1="700" x2="160" y2="673" stroke="#5F5E5A" stroke-width="1"/>
 
@@ -127,7 +134,7 @@
 
 <rect x="515" y="565" width="50" height="36" rx="4" fill="#FBE9E1" stroke="#A32D2D" stroke-width="0.5"/>
 <text class="tt" x="540" y="580" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">FW</text>
-<text class="tt" x="540" y="594" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">.2.1</text>
+<text class="tt" x="540" y="594" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">TAP</text>
 <line x1="540" y1="547" x2="540" y2="565" stroke="#5F5E5A" stroke-width="1"/>
 <text class="tt" x="570" y="558">39.68.34.123</text>
 
@@ -145,43 +152,47 @@
 <rect x="460" y="700" width="90" height="56" rx="6" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
 <text class="tt" x="505" y="718" text-anchor="middle" dominant-baseline="central" fill="#3C3489">Gateway km 8</text>
 <text class="tt" x="505" y="734" text-anchor="middle" dominant-baseline="central" fill="#534AB7">+ NS + AS edge</text>
-<text class="tt" x="505" y="748" text-anchor="middle" dominant-baseline="central" fill="#534AB7">.2.51</text>
+<text class="tt" x="505" y="748" text-anchor="middle" dominant-baseline="central" fill="#534AB7">10.30.0.58</text>
 
 <line x1="505" y1="700" x2="520" y2="673" stroke="#5F5E5A" stroke-width="1"/>
 
-<!-- attuatore pannello PMV (collegato in LoRaWAN) -->
-<path d="M 625 760 Q 590 740 555 756" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
-<path d="M 625 765 Q 590 745 555 760" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.6"/>
-<rect x="600" y="745" width="80" height="42" rx="4" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
-<text class="tt" x="640" y="760" text-anchor="middle" dominant-baseline="central" fill="#3C3489">pannello PMV</text>
-<text class="tt" x="640" y="775" text-anchor="middle" dominant-baseline="central" fill="#534AB7">(attuatore)</text>
-
-<!-- etichetta link radio LoRaWAN -->
-<text class="tt" x="575" y="726" text-anchor="middle" fill="#0F6E56">LoRaWAN</text>
-<text class="tt" x="575" y="738" text-anchor="middle" fill="#0F6E56">868 MHz</text>
+<!-- pannello PMV cablato Ethernet (piano Controller, VLAN 40) -->
+<rect x="590" y="745" width="112" height="42" rx="4" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.6"/>
+<text class="tt" x="646" y="759" text-anchor="middle" dominant-baseline="central" fill="#854F0B">PMV (controller)</text>
+<text class="tt" x="646" y="773" text-anchor="middle" dominant-baseline="central" fill="#BA7517">VLAN 40 · 10.40.0.81</text>
+<line x1="590" y1="756" x2="560" y2="673" stroke="#5F5E5A" stroke-width="1"/>
+<text class="tt" x="668" y="730" text-anchor="middle" fill="#5F5E5A">Ethernet cablato</text>
 
 <!-- ====================== CdC LOMBARDIA (a destra) ====================== -->
-<text class="area-title" x="800" y="200">CdC Lombardia</text>
+<text class="area-title" x="800" y="210">CdC Lombardia</text>
 
 <ellipse cx="900" cy="240" rx="55" ry="22" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
 <text class="ts" x="900" y="244" text-anchor="middle" dominant-baseline="central">Internet/MPLS</text>
 
+<!-- FW del CdC: termina i 3 tunnel TAP -->
 <rect x="875" y="280" width="50" height="36" rx="4" fill="#FBE9E1" stroke="#A32D2D" stroke-width="0.5"/>
 <text class="tt" x="900" y="295" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">FW</text>
 <text class="tt" x="900" y="309" text-anchor="middle" dominant-baseline="central" fill="#A32D2D">.10.1</text>
 <line x1="900" y1="262" x2="900" y2="280" stroke="#5F5E5A" stroke-width="1"/>
 <text class="tt" x="930" y="273">198.64.5.1</text>
+<text class="tt" x="930" y="309">termina i 3 TAP</text>
 
-<!-- broker MQTT (router applicativo, al centro) -->
+<!-- BRIDGE L2 esposto dal FW -->
+<rect x="840" y="338" width="140" height="40" rx="6" fill="#EAF0EC" stroke="#0F6E56" stroke-width="0.8"/>
+<text class="th" x="910" y="354" text-anchor="middle" dominant-baseline="central" fill="#0C5A45">Bridge L2 (br-trunk)</text>
+<text class="tt" x="910" y="370" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">unisce le 3 dorsali TAP</text>
+<line x1="900" y1="316" x2="900" y2="338" stroke="#5F5E5A" stroke-width="1"/>
+
+<!-- broker MQTT (router applicativo) -->
 <rect x="730" y="400" width="120" height="60" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
 <text class="th" x="790" y="424" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Broker MQTT</text>
 <text class="tt" x="790" y="445" text-anchor="middle" dominant-baseline="central" fill="#185FA5">router applicativo L7</text>
 
-<!-- switch/router del CdC -->
+<!-- switch/router del CdC (servizi regionali, VLAN 10) -->
 <rect x="940" y="400" width="80" height="40" rx="4" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
-<text class="tt" x="980" y="422" text-anchor="middle" dominant-baseline="central">switch CdC</text>
-<line x1="900" y1="316" x2="900" y2="380" stroke="#5F5E5A" stroke-width="1"/>
-<line x1="900" y1="380" x2="980" y2="400" stroke="#5F5E5A" stroke-width="1"/>
+<text class="tt" x="980" y="416" text-anchor="middle" dominant-baseline="central">switch CdC</text>
+<text class="tt" x="980" y="430" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">VLAN 10</text>
+<line x1="960" y1="378" x2="980" y2="400" stroke="#5F5E5A" stroke-width="1"/>
 
 <!-- server CS / AS regionale -->
 <rect x="930" y="475" width="100" height="50" rx="6" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="0.5"/>
@@ -207,55 +218,75 @@
 <text class="tt" x="980" y="720" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">.10.5</text>
 <line x1="980" y1="665" x2="980" y2="685" stroke="#5F5E5A" stroke-width="1"/>
 
-<!-- broker collegato al ramo CdC (L3) -->
+<!-- broker collegato al ramo CdC -->
 <line x1="850" y1="430" x2="940" y2="430" stroke="#5F5E5A" stroke-width="1"/>
 
-<!-- ====================== LINK L3 (dorsali) ====================== -->
-<!-- dorsale tratto A1 (10.3.0.0/24) -->
+<!-- ====================== TUNNEL TAP DI TRATTO (L2) -> FW ====================== -->
 <line x1="205" y1="173" x2="875" y2="298" stroke="#2C2C2A" stroke-width="1.2" stroke-dasharray="10 5"/>
-<text class="tt" x="500" y="220">Dorsale 1 · 10.3.0.0/24 (tratto A1)</text>
+<text class="tt" x="500" y="232">Tunnel TAP · tratto A1 (trunk VLAN)</text>
 
-<!-- dorsale tratto A14 (10.3.1.0/24) -->
-<line x1="205" y1="583" x2="875" y2="316" stroke="#2C2C2A" stroke-width="1.2" stroke-dasharray="10 5"/>
-<text class="tt" x="430" y="465">Dorsale 2 · 10.3.1.0/24 (tratto A14)</text>
+<line x1="205" y1="583" x2="875" y2="312" stroke="#2C2C2A" stroke-width="1.2" stroke-dasharray="10 5"/>
+<text class="tt" x="380" y="470">Tunnel TAP · tratto A14 (trunk VLAN)</text>
 
-<!-- dorsale tratto A22 (10.3.2.0/24) -->
-<line x1="565" y1="583" x2="875" y2="316" stroke="#2C2C2A" stroke-width="1.2" stroke-dasharray="10 5"/>
-<text class="tt" x="700" y="490">Dorsale 3 · 10.3.2.0/24 (tratto A22)</text>
+<line x1="565" y1="583" x2="875" y2="312" stroke="#2C2C2A" stroke-width="1.2" stroke-dasharray="10 5"/>
+<text class="tt" x="690" y="500">Tunnel TAP · tratto A22 (trunk VLAN)</text>
+
+<!-- ====================== DORSALI PER FUNZIONE: BRIDGE -> ROUTER NAZIONALI ====================== -->
+<path d="M 980 352 L 1110 352 L 1140 360" stroke="#8E44AD" stroke-width="2" fill="none"/>
+<path d="M 980 362 L 1120 362 L 1140 426" stroke="#8E44AD" stroke-width="2" fill="none"/>
+<path d="M 980 370 L 1126 370 L 1140 494" stroke="#8E44AD" stroke-width="2" fill="none"/>
+
+<!-- management resta regionale: collegamento al CdC -->
+<line x1="1140" y1="568" x2="1020" y2="440" stroke="#5F5E5A" stroke-width="1" stroke-dasharray="4 4"/>
+
+<!-- ====================== ROUTER NAZIONALI ====================== -->
+<text class="tt" x="1220" y="330" text-anchor="middle" fill="#5F5E5A">↑ verso CN (backbone nazionale)</text>
+
+<rect x="1140" y="340" width="160" height="48" rx="6" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.8"/>
+<text class="tt" x="1220" y="358" text-anchor="middle" dominant-baseline="central" fill="#0C447C">Router naz. Telecamere</text>
+<text class="tt" x="1220" y="374" text-anchor="middle" dominant-baseline="central" fill="#185FA5">VLAN 20 · 10.20.0.0/24</text>
+
+<rect x="1140" y="408" width="160" height="48" rx="6" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.8"/>
+<text class="tt" x="1220" y="426" text-anchor="middle" dominant-baseline="central" fill="#0C5A45">Router naz. Sensori</text>
+<text class="tt" x="1220" y="442" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">VLAN 30 · 10.30.0.0/24</text>
+
+<rect x="1140" y="476" width="160" height="48" rx="6" fill="#FAEEDA" stroke="#BA7517" stroke-width="0.8"/>
+<text class="tt" x="1220" y="494" text-anchor="middle" dominant-baseline="central" fill="#854F0B">Router naz. Controller</text>
+<text class="tt" x="1220" y="510" text-anchor="middle" dominant-baseline="central" fill="#BA7517">VLAN 40 · 10.40.0.0/24</text>
+
+<rect x="1140" y="544" width="160" height="48" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.8" stroke-dasharray="3 3"/>
+<text class="tt" x="1220" y="562" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">Management</text>
+<text class="tt" x="1220" y="578" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">resta regionale (OOB)</text>
 
 <!-- ====================== LINK L7 MQTT (puntinato azzurro) ====================== -->
-<!-- dal gateway km 1 di A1 al broker -->
 <path d="M 150 320 C 350 380, 600 410, 730 425" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
-<!-- dal gateway km 2 di A1 al broker -->
 <path d="M 300 320 C 450 370, 620 410, 730 430" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
-<!-- dal gateway km 5 di A14 al broker -->
 <path d="M 190 728 C 350 650, 600 510, 730 445" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
-<!-- dal gateway km 8 di A22 al broker -->
 <path d="M 550 728 C 620 660, 690 530, 750 460" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
-<!-- dal broker al Node-RED (subscriber) -->
 <path d="M 850 440 C 900 460, 940 540, 980 545" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
-<!-- dal broker al dashboard / web -->
 <path d="M 850 445 C 900 480, 940 605, 980 615" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
-<!-- dal broker all'archivio -->
 <path d="M 850 450 C 900 510, 940 680, 980 685" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
 
-<text class="tt" x="370" y="540" fill="#2A8FD4">publish misure</text>
-<text class="tt" x="370" y="555" fill="#2A8FD4">smartroad/.../misure</text>
+<text class="tt" x="360" y="548" fill="#2A8FD4">publish misure</text>
+<text class="tt" x="360" y="563" fill="#2A8FD4">smartroad/.../misure</text>
 
-<text class="tt" x="870" y="555" fill="#2A8FD4">subscribe</text>
-<text class="tt" x="870" y="570" fill="#2A8FD4">misure + comandi</text>
+<text class="tt" x="870" y="560" fill="#2A8FD4">subscribe</text>
+<text class="tt" x="870" y="575" fill="#2A8FD4">misure + comandi</text>
 
 <!-- ====================== LEGENDA ====================== -->
-<rect x="700" y="100" width="380" height="80" rx="6" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="0.5" opacity="0.95"/>
-<text class="th" x="715" y="120">Legenda</text>
+<rect x="700" y="100" width="380" height="92" rx="6" fill="#FFFFFF" stroke="#5F5E5A" stroke-width="0.5" opacity="0.95"/>
+<text class="th" x="715" y="118">Legenda</text>
 
-<line x1="720" y1="135" x2="780" y2="135" stroke="#2C2C2A" stroke-width="1.2" stroke-dasharray="10 5"/>
-<text class="tt" x="790" y="139">Collegamento L3 IP (dorsali, LAN del CdC)</text>
+<line x1="720" y1="132" x2="780" y2="132" stroke="#2C2C2A" stroke-width="1.2" stroke-dasharray="10 5"/>
+<text class="tt" x="790" y="136">Tunnel TAP (L2 bridged) — dorsale di tratto</text>
 
-<line x1="720" y1="152" x2="780" y2="152" stroke="#2A8FD4" stroke-width="1.5" stroke-dasharray="2 4"/>
-<text class="tt" x="790" y="156">Collegamento L7 MQTT (publish/subscribe)</text>
+<line x1="720" y1="148" x2="780" y2="148" stroke="#2A8FD4" stroke-width="1.5" stroke-dasharray="2 4"/>
+<text class="tt" x="790" y="152">Collegamento L7 MQTT (publish/subscribe)</text>
 
-<path d="M 720 168 Q 730 162 740 168 Q 750 174 760 168 Q 770 162 780 168" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.7"/>
-<text class="tt" x="790" y="172">Collegamento radio L2 LoRaWAN (868 MHz)</text>
+<path d="M 720 163 Q 730 157 740 163 Q 750 169 760 163 Q 770 157 780 163" stroke="#1D9E75" stroke-width="0.8" fill="none" opacity="0.7"/>
+<text class="tt" x="790" y="167">Collegamento radio L2 LoRaWAN (868 MHz)</text>
+
+<line x1="720" y1="180" x2="780" y2="180" stroke="#8E44AD" stroke-width="2"/>
+<text class="tt" x="790" y="184">Dorsale per funzione → router nazionale</text>
 
 </svg>
