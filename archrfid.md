@@ -145,12 +145,6 @@ Tre schemi possibili. **Reader fisso** (dominante in logistica): pochi reader co
 
 ### 🔄 [Anticollisione e accesso al canale](approfondimenti/rfid_anticollisione.md)
 
-Per garantire l'interoperabilità globale, si seguono standard rigorosi come EPC Gen2 per la logistica UHF o ISO 14443 per i pagamenti. Un aspetto critico è l'anticollisione, ovvero come leggere centinaia di tag che rispondono contemporaneamente:
-•Slotted ALOHA (UHF): Un protocollo probabilistico velocissimo, capace di leggere fino a 700 tag al secondo.
-•Binary Tree (HF): Un sistema deterministico più lento ma infallibile, ideale per applicazioni critiche come i pagamenti.
-
-
-
 Il problema dell'RFID non è "chi parla quando" ma "**come distinguere tag che rispondono tutti insieme**" alla stessa interrogazione. Due tecniche:
 - **Slotted ALOHA / Q-protocol** (UHF EPC Gen2): probabilistico, velocissimo (~700 tag/sec) ma statistico — adatto a logistica massiva.
 - **Binary Tree** (ISO 14443/15693): deterministico, più lento ma garantisce di leggere tutti i tag — adatto ad autenticazione affidabile (pagamenti, controllo accessi).
