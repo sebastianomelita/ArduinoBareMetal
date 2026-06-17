@@ -712,6 +712,17 @@ Cautele: **riservare uno slot `/13` al Centro Nazionale** (es. `10.0.0.0/13` = C
 
 Il **gateway di tratto fa NAT** ed espone solo **4 IPv4 di un pool `/29`**; i dispositivi interni vivono in spazio privato **riutilizzato a ogni tratto** (`192.168.x/29`, vedi §11.2). Footprint per tratto minuscolo → **fino a 8192 tratti** per funzione/regione.
 
+Lo smart-gate ha al suo interno una piccola LAN con VLAN dedicate per separare i sottosistemi (segmentazione di sicurezza):
+
+| VLAN | Subnet | Uso |
+|------|--------|-----|
+| 10 | `192.168.10.0/29` | Telecamere IP (sottorete isolata, non raggiungibile dall'esterno) |
+| 20 | `192.168.20.0/29` | Sensori IP-based |
+| 30 | `192.168.30.0/29` | Controller PMV (Pannello a Messaggio Variabile) |
+| 99 | `192.168.99.0/29` | Management (SSH, SNMP) |
+
+Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
+
 ### 8.2.3 Proprietà / trade-off del NAT
 
 - **MQTT**: i nodi edge *chiamano fuori* verso il broker → il NAT non disturba (telemetria, eventi, comandi-subscribe ok).
