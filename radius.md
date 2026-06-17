@@ -32,6 +32,15 @@ Autorizza o meno l’apertura di una connessione di livello 2 ISO/OSI. L’auten
 
 <img src="img/porteradius.png" alt="alt text" width="500">
 
+## **Switch: filtraggio a livello di MAC**
+
+<img src="img/gate-radius.jpg" alt="alt text" width="500">
+
+- Prima dell'autenticazione, l'identità dell’utente è sconosciuta e tutto il suo traffico è bloccato. Dopo l'autenticazione, l'identità dell’utente è nota e tutto il traffico proveniente da tale endpoint è consentito. 
+- Sul traffico dati (in chiaro) lo switch esegue il filtro del MAC di origine per garantire che solo l'endpoint autenticato sia autorizzato a inviare traffico (rischio spoofing del MAC). 
+- Se qualcuno stacca il cavo e attacca un altro dispositivo, deve ri-autenticarsi.
+- Nel caso di un AP la situazione è diversa, la connessione dati è interamente cifrata e la chiave di sessione viene cambiata ogni 90 secondi.
+
 ## **Sequenza di autenticazione utente**
 
 La tecnica utilizzata è il **PEAP**: è uno standard aperto ideato da Cisco Systems, Microsoft e RSA Security, e fornisce un elevato livello di sicurezza. È molto simile a **EAPTTLS**, richiede solo il **certificato lato server** e crea un **tunnel** sicuro con TLS per proteggere l’**autenticazione dell’utente**, autenticazione effettuata utilizzando altri metodi come MS-CHAPv2 (PEAP/EAPMSCHAPv2) basati su **username e password**.
