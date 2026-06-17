@@ -677,7 +677,7 @@ Spazio `10.0.0.0/8`; i 24 bit sotto il `/8`:
 
 ```
 10 . [ RRRRR fff ] . [ TTTTTTTT ] . [ HHHHHHHH ]
-      └─5─┘ └─3─┘      └────8────┘     └────8────┘
+     └──5─┘ └─3──┘   └────8─────┘   └────8─────┘
       reg.  funz.        tratto          host
       └──── /13 ───┘
       └──────── /16 ─────┘
@@ -705,8 +705,8 @@ Cautele: **riservare uno slot `/13` al Centro Nazionale** (es. `10.0.0.0/13` = C
 **Variante (b) — con NAT al gateway di tratto** (densità elevata): si ridisegnano i 16 bit bassi come **13 bit di tratto + 3 bit di host**:
 
 ```
-10 . [ RRRRR fff ] . [ TTTTTTTT ] . [ TTTTT hhh ]
-      └─5─┘ └─3─┘      └──────── tratto 13 ──────┘ └host 3┘
+10 . [ RRRRR fff ] . [ TTTTTTTT ] . [TTTTT   hhh  ]
+      └─5─┘ └─3─┘    └─── tratto 13 ──────┘└host 3┘
       reg.  funz.        (fino a 8192 tratti)       /29: 8 IP, 4 esposti
 ```
 
