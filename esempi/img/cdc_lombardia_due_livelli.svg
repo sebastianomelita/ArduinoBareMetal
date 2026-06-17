@@ -231,13 +231,16 @@
 <line x1="565" y1="583" x2="875" y2="312" stroke="#2C2C2A" stroke-width="1.2" stroke-dasharray="10 5"/>
 <text class="tt" x="690" y="500">Tunnel TAP · tratto A22 (trunk VLAN)</text>
 
-<!-- ====================== DORSALI PER FUNZIONE: BRIDGE -> ROUTER NAZIONALI ====================== -->
-<path d="M 980 352 L 1110 352 L 1140 360" stroke="#8E44AD" stroke-width="2" fill="none"/>
-<path d="M 980 362 L 1120 362 L 1140 426" stroke="#8E44AD" stroke-width="2" fill="none"/>
-<path d="M 980 370 L 1126 370 L 1140 494" stroke="#8E44AD" stroke-width="2" fill="none"/>
+<!-- ====================== ROUTER REGIONALE (confine L2/L3) ====================== -->
+<line x1="980" y1="360" x2="998" y2="368" stroke="#2C2C2A" stroke-width="1.2"/>
+<rect x="998" y="346" width="132" height="48" rx="6" fill="#EAF0EC" stroke="#0F6E56" stroke-width="0.8"/>
+<text class="th" x="1064" y="362" text-anchor="middle" dominant-baseline="central" fill="#0C5A45">Router regionale</text>
+<text class="tt" x="1064" y="378" text-anchor="middle" dominant-baseline="central" fill="#0F6E56">gateway dei piani · L3</text>
 
-<!-- management resta regionale: collegamento al CdC -->
-<line x1="1140" y1="568" x2="1020" y2="440" stroke="#5F5E5A" stroke-width="1" stroke-dasharray="4 4"/>
+<!-- ====================== DORSALI L3 (MPLS L3VPN): ROUTER REGIONALE -> ROUTER NAZIONALI ====================== -->
+<path d="M 1130 362 L 1140 362" stroke="#8E44AD" stroke-width="2" fill="none"/>
+<path d="M 1130 378 L 1136 378 L 1136 432 L 1140 432" stroke="#8E44AD" stroke-width="2" fill="none"/>
+<path d="M 1130 388 L 1133 388 L 1133 500 L 1140 500" stroke="#8E44AD" stroke-width="2" fill="none"/>
 
 <!-- ====================== ROUTER NAZIONALI ====================== -->
 <text class="tt" x="1220" y="330" text-anchor="middle" fill="#5F5E5A">↑ verso CN (backbone nazionale)</text>
