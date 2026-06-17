@@ -89,7 +89,18 @@ Per ogni argomento è disponibile una **scheda di approfondimento** dedicata. Qu
 
 ### 📡 [Principi fisici](approfondimenti/rfid_principi_fisici.md)
 
-Due principi distinti governano la trasmissione: **accoppiamento induttivo near-field** (LF/HF, fino a 1 m, immune a metalli) e **backscatter far-field** (UHF/microonde, fino a 12 m, sensibile a liquidi e metalli). Il **tag passivo** non ha batteria e ricava energia dal campo del reader (energy harvesting); ne consegue logica minimale, portata limitata e impossibilità di iniziare una comunicazione. I **tag attivi** (con batteria) e **semi-passivi** (BAP) superano questi limiti al costo di prezzo unitario maggiore. → [scheda completa](approfondimenti/rfid_principi_fisici.md)
+→ [scheda completa](approfondimenti/rfid_principi_fisici.md)
+
+Il **funzionamento** dell'RFID è governato da due principi fisici distinti, scelti in base alla distanza e all'ambiente:
+- **Accoppiamento Induttivo (Near-field)**: Tipico delle frequenze LF e HF. Funziona a brevi distanze (fino a 1 metro) ed è particolarmente efficace perché riesce a trapassare metalli e tessuti biologici senza interferenze significative.
+- **Backscatter (Far-field)**: Utilizzato nelle frequenze UHF e microonde. Il segnale viene riflesso dal tag verso il reader, permettendo portate fino a 12 metri, ma è sensibile alla presenza di liquidi (che lo assorbono) e metalli (che lo riflettono).
+
+In base all'**alimentazione**, si dividono ulteriormente in:
+- **tag passivi** non ha batteria e ricava energia dal campo del reader (energy harvesting); ne consegue logica minimale, portata limitata e impossibilità di iniziare una comunicazione.
+- **tag attivi** (con batteria) 
+**semi-passivi** (BAP) superano questi limiti al costo di prezzo unitario maggiore
+
+→ [scheda completa](approfondimenti/rfid_principi_fisici.md)
 
 ### 🌊 [Frequenze di lavoro e NFC](approfondimenti/rfid_frequenze.md)
 
@@ -107,7 +118,11 @@ Quattro bande con caratteristiche complementari: **LF** (125-134 kHz, microchip 
 
 ### 🏷️ [Tag e Reader](approfondimenti/rfid_tag_reader.md)
 
-Il **tag** è composto da antenna, chip integrato (IC) e substrato; i tag UHF EPC Gen2 hanno quattro banchi di memoria (Reserved, EPC, **TID** non modificabile per anti-clonazione, User). I formati commerciali principali sono inlay, smart label, hard tag, on-metal, wearable, impiantabile. Il **reader** può essere **fisso** (varchi, smart shelf, alta potenza) o **handheld** (mobile, batteria). Le **antenne** vanno scelte per polarizzazione (lineare/circolare), guadagno, beamwidth e tipo di campo (near/far-field). → [scheda completa](approfondimenti/rfid_tag_reader.md)
+Un sistema RFID è composto da elementi fisici e logici:
+- Il **Tag** (Transponder): Composto da un **microchip** (IC), un'**antenna** e un **substrato**. Può essere **passivo** (senza batteria), **attiv**o (con batteria per massima portata) o **semi-passivo (BAP)**. I tag UHF moderni hanno memorie divise in banchi, incluso il TID (un codice univoco non modificabile dal produttore).
+- Il **Reader**: Può essere **fisso** (per varchi o scaffali smart) o **handheld** (portatile a batteria). Le sue antenne devono essere scelte con cura in base alla polarizzazione (lineare o circolare) per massimizzare la qualità della lettura.
+
+ → [scheda completa](approfondimenti/rfid_tag_reader.md)
 
 ### 📚 [Standard RFID](approfondimenti/rfid_standard.md)
 
@@ -115,13 +130,22 @@ Standard chiave: **ISO 11784/11785** (animali LF), **ISO 14443** (proximity HF, 
 
 ### 🏗️ [Architettura del sistema, middleware, gateway, MQTT](approfondimenti/rfid_architettura.md)
 
-Architettura a **quattro strati**: tag fisico → reader → middleware → applicazione (ERP/WMS). Il **middleware** filtra, deduplica, smoothing, correla a trigger esterni e fa la **traduzione semantica** dell'EPC in dati di business. A differenza del BLE (semantica L7-aware nativa), l'RFID si ferma a L2 e la semantica va costruita dal middleware. Il **gateway** è il dispositivo di confine che traduce **LLRP → JSON/MQTT**, fa buffering in caso di link down, applica logica edge e protezione di rete. I **topic MQTT** seguono una gerarchia spaziale (es. `azienda/sede/area/reader/letture`). → [scheda completa](approfondimenti/rfid_architettura.md)
+**Architettura è composta di Quattro Attori**. Per trasformare una lettura radio in un dato di business, il sistema gestisce lo scambio di dati tra queste componenti disposte fisicamente in planimetria:
+1. **Tag Fisico**: L'oggetto identificato.
+2. **Reader**: Dispositivo di interrogazione.
+3. **Gateway** che traduce il protocollo dei reader (LLRP) in linguaggi moderni per il cloud come JSON o MQTT. 
+4. **Middleware**: Il software che filtra le letture duplicate (deduplicazione), aggrega i dati e li traduce semanticamente (es. trasforma un codice EPC in "Maglia Taglia L"). Talvolta risiede direttamente sul reader, altre volte è a bordo del gateway.
+5. **Server Applicativo**: Il sistema finale (ERP o WMS) che gestisce l'informazione.
+
+→ [scheda completa](approfondimenti/rfid_architettura.md)
 
 ### 🗺️ [Topologie di lettura](approfondimenti/rfid_topologie.md)
 
 Tre schemi possibili. **Reader fisso** (dominante in logistica): pochi reader costosi in punti strategici, tantissimi tag economici sugli oggetti, localizzazione a granularità di varco. **Tag attivo** (RTLS): tag con batteria che annunciano la propria presenza, scanner fissi distribuiti che ne calcolano la posizione per trilaterazione (oggi spesso sostituito da BLE 5.x con AoA o UWB). **Reader mobile (handheld)**: reader portatile in mano all'operatore, tag fissi sugli oggetti, tipico di inventario notturno e ricerca puntuale. → [scheda completa](approfondimenti/rfid_topologie.md)
 
 ### 🔄 [Anticollisione e accesso al canale](approfondimenti/rfid_anticollisione.md)
+
+
 
 Il problema dell'RFID non è "chi parla quando" ma "**come distinguere tag che rispondono tutti insieme**" alla stessa interrogazione. **Slotted ALOHA / Q-protocol** (UHF EPC Gen2): probabilistico, velocissimo (~700 tag/sec) ma statistico — adatto a logistica massiva. **Binary Tree** (ISO 14443/15693): deterministico, più lento ma garantisce di leggere tutti i tag — adatto ad autenticazione affidabile (pagamenti, controllo accessi). In dense reader environment serve **LBT** (Listen Before Talk) e **frequency planning** sui 15 canali da 200 kHz disponibili in Europa. → [scheda completa](approfondimenti/rfid_anticollisione.md)
 
