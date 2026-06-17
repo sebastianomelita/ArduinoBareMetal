@@ -703,7 +703,7 @@ Architettura a **due livelli L2** dietro il firewall di confine: un **core switc
 | DMZ (esposta) | 100 | `10.0.1.0/28` | `10.0.1.1` | broker MQTT a-a VIP `10.0.1.2` (nodi `.3/.4`), WAF/RP `10.0.1.5` | siti remoti: **solo** `:8883` (broker) e `:443` (WAF) |
 | Server farm (interna) | 200 | `10.0.2.0/24` | `10.0.2.1` | app/core `10.0.2.10`, DB master `10.0.2.20`, DB slave `10.0.2.21`, web/API `10.0.2.30`, SIEM `10.0.2.40`, DNS/NTP `10.0.2.5` | solo DMZ (app/WAF) e admin; **mai** i siti |
 | Admin (gestione) | 300 | `10.0.3.0/28` | `10.0.3.1` | NMS `10.0.3.10`, jump host `10.0.3.11` | nessuno: è **sorgente** del management, non destinazione |
-| Dorsali VPN | — | `10.255.1/2/3.0/30` | PE `.2` di ogni `/30` | tunnel IPsec verso CE-A/B/C | terminano sul FW-SUM |
+| Dorsali VPN | — | ` 10.255.x.(k*4)/30` k=0..63 | PE `.2` di ogni `/30` | tunnel IPsec verso CE-A/B/C | terminano sul FW-SUM |
 | WAN pubblica | — | `198.64.5.1` | ISP | PNAT + port-forward `:8883->.1.2`, `:443->.1.5` | unico ingresso pubblico |
 
 ### 9.3 ACL di protezione del datacenter (FW-SUM)
