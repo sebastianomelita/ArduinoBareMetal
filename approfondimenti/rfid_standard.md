@@ -89,9 +89,7 @@ In una riga: **SE = sicurezza in hardware, gestione rigida; HCE = flessibilità 
 
 **In pratica, per un tornello:** se il sistema usa **EMV** o **DESFire/AES**, la stessa credenziale può stare sia sulla carta fisica sia sullo smartphone (HCE o SE) e il lettore le tratta allo stesso modo. Se invece il sistema è ancora su **MIFARE Classic**, il telefono **non** può fare da credenziale finché non si migra a una tecnologia conforme a ISO 14443-4 con cripto AES.
 
-Domanda precisa (immagino tu intenda **NFC HCE**, Host Card Emulation). La risposta breve è: **no, le chiavi "vere" della carta non risiedono permanentemente nel telefono.**
-
-Ecco come funziona davvero.
+### **Tokenizzazione**
 
 L'HCE è nato (Android 4.4, 2013) proprio per permettere l'emulazione di una carta contactless **senza** affidarsi a un Secure Element hardware: il controller NFC instrada i comandi APDU verso la CPU principale e l'app di pagamento, invece che verso un chip sicuro dedicato. Questo crea un problema di sicurezza evidente, perché la memoria normale del telefono non è un ambiente fidato e può essere compromessa (root, malware, ecc.). Per questo motivo le credenziali sensibili a lungo termine non vengono conservate sul dispositivo.
 
