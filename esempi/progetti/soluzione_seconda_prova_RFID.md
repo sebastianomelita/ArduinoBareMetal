@@ -50,6 +50,7 @@ Il comportamento del reader è descritto da una **macchina a stati** con tre sta
 
 
 <img src="../img/macchina_stati_reader_catB.svg" alt="1_architettura_flussi_L3_L7.svg" width="600px">
+
 ---
 
 ## 3. Planimetrie fisiche e cablaggio strutturato
