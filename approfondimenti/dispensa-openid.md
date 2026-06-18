@@ -1,3 +1,11 @@
+>[Torna a reti di sensori](../sensornetworkshort.md)>[Torna a reti ethernet](../archeth.md)
+
+- [Dettaglio architettura Zigbee](../archzigbee.md)
+- [Dettaglio architettura BLE](../archble.md)
+- [Dettaglio architettura WiFi infrastruttura](../archwifi.md)
+- [Dettaglio architettura WiFi mesh](../archmesh.md) 
+- [Dettaglio architettura LoraWAN](../lorawanclasses.md) 
+
 # Dispensa pratica — Installare e configurare un servizio OpenID
 
 > **Cosa significa "OpenID" oggi.** Quando si parla di *servizio OpenID* si intende **OpenID Connect (OIDC)**, lo standard di autenticazione costruito sopra **OAuth 2.0**. (Il vecchio "OpenID 2.0" è deprecato e non si usa più.) In questa dispensa usiamo come Identity Provider concreto **Keycloak**, software open source, installato con **Docker**. I concetti valgono però per qualsiasi provider (Google, Microsoft Entra, Auth0, SPID…).
