@@ -2,6 +2,8 @@
 >
 
 
+[Testo della prova Albergo Domotizzato](/esempi/progetti/albergo.pdf)
+
 # GESTIONE ALBERGO
 ## Soluzione completa d'esame
 
