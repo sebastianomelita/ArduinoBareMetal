@@ -34,7 +34,7 @@
 <text class="ts coral-t" x="180" y="72" text-anchor="middle">tun0 · 10.0.11.0/24</text>
 
 <ellipse class="pub" cx="180" cy="110" rx="46" ry="26"/>
-<text class="ts gray-t" x="180" y="111" text-anchor="middle" dominant-baseline="central">rete pubblica</text>
+<text class="ts gray-t" x="180" y="100" text-anchor="middle" dominant-baseline="central">rete pubblica</text>
 <line class="tun" x1="88" y1="110" x2="272" y2="110"/>
 
 <circle class="gray-f" cx="70" cy="110" r="18"/>
