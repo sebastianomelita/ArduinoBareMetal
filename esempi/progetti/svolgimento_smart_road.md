@@ -760,9 +760,7 @@ Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
 - **Maschere alle foglie**: in IPv4 `/29` interni allo smart-gate, `/31`–`/30` sui link punto-punto, `/32` loopback; in IPv6 `/64` ovunque.
 - **Accesso dal CN** (§5.7): segnalazioni via **MQTT bridge** (pub/sub L7, nessuna rotta L3 ai dispositivi), immagini via **relay media regionale** on-demand attraverso il firewall.
 
-# 8.5 VLAN e subnet del CdC (drop-in)
-
-> Da inserire **subito dopo §8.4 "Elementi comuni ai due scenari"**. Completa il piano di §8: stessa gerarchia (regione `/13`, funzione `/16`; esempio Lombardia regione 3 → `10.24.0.0/13`), e ci colloca i servizi del CdC riconciliando gli indirizzi `.10.x` dell'immagine.
+## 8.5 VLAN e subnet del CdC (drop-in)
 
 Le funzioni dei dispositivi (telecamere, sensori, controller, management) sono i quattro `/16` di funzione del §8.2.1, attestati sul **router regionale** (§5.5). I **servizi del CdC** non sono un piano di campo: occupano uno dei quattro `/16` di **riserva** del `/13` regionale — qui `10.28.0.0/16` = "CdC/servizi Lombardia" — suddiviso in `/24` per VLAN (terzo ottetto = numero di VLAN).
 
