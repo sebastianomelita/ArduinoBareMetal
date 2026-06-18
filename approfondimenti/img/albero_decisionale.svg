@@ -70,7 +70,7 @@
   <text x="450" y="370" text-anchor="middle" class="out">Media&#8211;alta &#183; LoA3</text>
   <text x="450" y="388" text-anchor="middle" class="outs">OAuth 2.0 + OIDC + MFA</text>
 
-  <rect x="340" y="406" width="240" height="52" rx="8" fill="#1C5440"/>
+  <rect x="330" y="406" width="250" height="52" rx="8" fill="#1C5440"/>
   <text x="450" y="426" text-anchor="middle" class="out">Massima &#183; LoA4</text>
   <text x="450" y="444" text-anchor="middle" class="outs">certificato su HW tamper-resistant (TPM/smartcard/CIE)</text>
 
