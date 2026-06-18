@@ -9,3 +9,8 @@ Compiti d'esame di sistemi e reti svolti:
 | [Rete RFID metropolitana con tag HF/NFC](/esempi/progetti/soluzione_seconda_prova_RFID.md) | RFID HF/NFC a reader fisso, VPN TUN, ACL, continuità di servizio terminale |
 | [Cassone PC Smart con tag BLE e UHF](/esempi/progetti/soluzione_scenario_C.md) | BLE a scanner fisso, RFID UHF a reader fisso, ACL, MQTT |
 | [Negozio abbigliamento con tag UHF](/approfondimenti/rfid_seconda_prova.md) | RFID UHF a scanner fisso |
+
+
+Link utili:
+- [Cheat Sheet](cheatsheet/cheatsheet.md)
+- [Tecnologie di reti](archeth.md)
