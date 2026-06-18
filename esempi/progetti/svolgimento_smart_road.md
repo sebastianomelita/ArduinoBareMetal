@@ -736,7 +736,6 @@ Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
 - **RTSP in pull / SSH (in ingresso)**: con 4 IP esposti per tratto, gli altri dispositivi richiedono **port-mapping** → scomodo su scala.
 - Uso: **conservazione IPv4** e **dispositivi legacy** non IPv6-ready.
 
----
 
 ## 8.3 Confronto e raccomandazione
 
@@ -764,7 +763,7 @@ Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
 
 Le funzioni dei dispositivi (telecamere, sensori, controller, management) sono i quattro `/16` di funzione del §8.2.1, attestati sul **router regionale** (§5.5). I **servizi del CdC** non sono un piano di campo: occupano uno dei quattro `/16` di **riserva** del `/13` regionale — qui `10.28.0.0/16` = "CdC/servizi Lombardia" — suddiviso in `/24` per VLAN (terzo ottetto = numero di VLAN).
 
-## 8.5.1 Sede — LAN del CdC (IPv4 RFC1918)
+### 8.5.1 Sede — LAN del CdC (IPv4 RFC1918)
 
 | VLAN | Nome | Subnet (Lombardia) | Host (dall'immagine) |
 | ---- | ---- | ------------------ | -------------------- |
@@ -774,7 +773,7 @@ Le funzioni dei dispositivi (telecamere, sensori, controller, management) sono i
 
 Gli indirizzi `.10.x` dell'immagine si leggono come coda `10.x` dentro il `/16` del CdC: il broker `.10.20` è `10.28.10.20`, la dashboard `10.28.10.40`, e così via. (Per isolare il NAS dall'app-tier si può spostarlo su una VLAN 110 `10.28.11.0/24`; l'immagine lo tiene con i server, host `.50`.)
 
-## 8.5.2 Piani dei dispositivi al CdC — IPv6 GUA (consigliato), IPv4 dual-stack
+### 8.5.2 Piani dei dispositivi al CdC — IPv6 GUA (consigliato), IPv4 dual-stack
 
 Sono le VLAN che arrivano dai tratti (anello/DWDM) e terminano L3 sul router regionale. Riusano la numerazione VLAN già in uso nel documento (§5.4, §8.2.2).
 
@@ -787,7 +786,7 @@ Sono le VLAN che arrivano dai tratti (anello/DWDM) e terminano L3 sul router reg
 
 Contenimento del broadcast sui piani: **PVLAN + storm control + IGMP snooping** (§8.4). Le subnet di funzione **non** sono i `192.168.x/29` riusati dentro lo smart-gate (§8.2.2): quelli restano interni al SoC, dietro NAT nello scenario IPv4.
 
-## 8.5.3 Scelta IPv4/IPv6 per ruolo e dorsali verso il CN
+### 8.5.3 Scelta IPv4/IPv6 per ruolo e dorsali verso il CN
 
 L'indirizzamento si sceglie **per ruolo**:
 
