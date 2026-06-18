@@ -12,5 +12,5 @@ Compiti d'esame di sistemi e reti svolti:
 
 
 Link utili:
-- [Cheat Sheet](cheatsheet/cheatsheet.md)
-- [Tecnologie di reti](archeth.md)
+- [Cheat Sheet](/cheatsheet/cheatsheet.md)
+- [Tecnologie di reti](/archeth.md)
