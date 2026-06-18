@@ -326,7 +326,10 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 
 #### Autenticazione mutua asimmetrica con sfida in chiaro (ad es. mTLS)
 
-<img src="img/authutente/auth_mutua_asimmetrica.jpg" alt="Autenticazione mutua asimmetrica con sfida in chiaro" width="600px">
+
+<p align="center">
+  <img src="img/authutente/auth_mutua_asimmetrica.jpg" alt="Autenticazione mutua asimmetrica con sfida in chiaro" width="600px">
+</p>
 
 1. Bob manda ad Alice un messaggio contenente la sua identità ***B*** è la nonce che ha scelto lui, ***b***;
 2. Alice risponde mandando la sua identità ***A*** e la sua nonce ***a*** e la propria firma sulla nonce di B); Fase di scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente se questa non è contenuta in un certificato allegato alla firma.
@@ -335,9 +338,14 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 5. Alice autentica Bob se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
 
 #### Autenticazione con certificato utente
+
 Sia nel caso di autenticazione singola che in quello di autenticazione mutua non sempre conviene memorizzare tutte le chiavi pubbliche nel sistema anche se questa è esattamente l'operazione che fa Linux con il protocollo SSH.
 
 Nel caso di protocolli più massivi di SSH, come HTTPS o RADIUS, non esiste un elenco di chiavi pubbliche autenticate perchè sarebbe troppo oneroso da gestire per i loro scenari d'uso. La chiave pubblica, in questi protocolli, viaggia sempre autenticata dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato). 
+
+<p align="center">
+  <img src="img/tunnel_pap_chap.svg" alt="Autenticazione mutua con tunnel: server asimmetrico + client PAP/CHAP dentro" width="860">
+</p>
 
 Il **certificato utente** viene sempre inviato da colui che si deve autenticare **contestualmente alla sfida firmata**, cioè in allegato alla sfida firmata. Colui che deve **autenticare** l'utente sbusta la chiave pubblica dal certificato (dopo aver convalidato la firma della CA che lo autentica) e, con quella, **convalida la firma** sulla sfida.
 
@@ -365,7 +373,9 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 
 #### Verifica del certificato di un server
 
-<img src="img/authutente/verifica_certificato_server.png" alt="Verifica del certificato di un server" width="500px">
+<p align="center">
+  <img src="img/authutente/verifica_certificato_server.png" alt="Verifica del certificato di un server" width="500px">
+</p>
 
 - Un server si presenta con una credenziale firmata e con un certificato utente
 - Il controllo si basa sul presupposto che il client che controlla possegga un certificato CA che validi la firma sul certificato da controllare.
