@@ -1,3 +1,12 @@
+>[Torna a reti di sensori](../sensornetworkshort.md)>[Torna a reti ethernet](../archeth.md)
+
+- [Dettaglio architettura Zigbee](../archzigbee.md)
+- [Dettaglio architettura BLE](../archble.md)
+- [Dettaglio architettura WiFi infrastruttura](../archwifi.md)
+- [Dettaglio architettura WiFi mesh](../archmesh.md) 
+- [Dettaglio architettura LoraWAN](../lorawanclasses.md) 
+
+
 # Autenticazione di un collegamento — Guida alla scelta della tecnologia
 
 > Materiale didattico di supporto alla **sezione "autenticazione"** di un compito di Sistemi e Reti.
