@@ -165,7 +165,13 @@ Il problema dell'RFID non è "chi parla quando" ma "**come distinguere tag che r
 | **Denial of service** | rilevamento jamming, ridondanza dei reader |
 | **Replay attack** | rolling codes, nonce + AES challenge-response |
 
-Il **GDPR** richiede privacy by design: dati sul tag minimizzati, kill alla cessione, informativa visibile, log dei reader per audit. 
+Il **Garante della Privacy** italiano e il **GDPR** europeo richiedono, per i sistemi RFID che trattano dati personali (carte di lealtà, badge dipendenti, biglietti integrati), di applicare il principio **privacy by design**:
+
+- **minimizzare** i dati memorizzati sul tag (memorizzare solo un identificativo opaco; i dati personali stanno nel back-end protetto).
+- prevedere il **kill** del tag quando l'utente lo richiede o al termine del ciclo (es. uscita dal negozio).
+- **informare** l'utente della presenza del tag e della sua lettura (logo RFID visibile).
+- **registrare i log** dei reader per audit.
+
 
 → [scheda completa](approfondimenti/rfid_sicurezza.md)
 
