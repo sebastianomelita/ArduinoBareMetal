@@ -26,7 +26,7 @@ Servizi:
 - [Continuità di servizio](/approfondimenti/continuita_di_servizio.md)
 - [Backup](backup.md)
 - [Spillamento fibra](/esempi/progetti/dettaglio_spillamento_fibra.md) 
-- [Subnetting Ipv6](/esempi/progetti/svolgimento_smart_road.md)
+- [Subnetting Ipv6](/esempi/progetti/subnettingipv6.md)
 
 ## **Caso d'uso rete wiFi Mesh**
 
