@@ -831,7 +831,7 @@ Un'**analogia**: l'802.1X è il tornello con badge all'ingresso dell'edificio; i
 - **SIEM** centrale al CN che aggrega log da tutti i firewall, server, switch, broker.
 - **SOC** che monitora gli alert H24.
 - Aggiornamenti firmware sugli smart-gate via OTA (Over-The-Air), con firmware firmato e verificato dallo smart-gate prima dell'installazione.
-- Politica di **least privilege** e **separation of duties** sugli account amministrativi; accessi tramite jump host con MFA.
+- Politica di **least privilege** e **separation of duties** sugli account amministrativi; accessi tramite jump host con MFA (Apache Guacamole, Teleport, ecc).
 
 
 ---
