@@ -7,6 +7,8 @@
 
 > *Soluzione di riferimento per la commissione. Sviluppa la combinazione di ipotesi più completa fra le tre coerenti previste dalla traccia. Le altre due (UHF passivo puro e BLE attivo puro) si ottengono per riduzione, eliminando uno dei due livelli.*
 
+[Testo della prova cassone Smart](/esempi/progetti/consegna_esame.pdf)
+
 ---
 
 ## Premessa metodologica
