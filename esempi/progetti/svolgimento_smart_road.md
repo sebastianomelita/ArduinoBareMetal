@@ -760,6 +760,45 @@ Il SoC centrale fa da gateway tra queste VLAN e l'uplink verso il CdC.
 - **Maschere alle foglie**: in IPv4 `/29` interni allo smart-gate, `/31`–`/30` sui link punto-punto, `/32` loopback; in IPv6 `/64` ovunque.
 - **Accesso dal CN** (§5.7): segnalazioni via **MQTT bridge** (pub/sub L7, nessuna rotta L3 ai dispositivi), immagini via **relay media regionale** on-demand attraverso il firewall.
 
+# 8.5 VLAN e subnet del CdC (drop-in)
+
+> Da inserire **subito dopo §8.4 "Elementi comuni ai due scenari"**. Completa il piano di §8: stessa gerarchia (regione `/13`, funzione `/16`; esempio Lombardia regione 3 → `10.24.0.0/13`), e ci colloca i servizi del CdC riconciliando gli indirizzi `.10.x` dell'immagine.
+
+Le funzioni dei dispositivi (telecamere, sensori, controller, management) sono i quattro `/16` di funzione del §8.2.1, attestati sul **router regionale** (§5.5). I **servizi del CdC** non sono un piano di campo: occupano uno dei quattro `/16` di **riserva** del `/13` regionale — qui `10.28.0.0/16` = "CdC/servizi Lombardia" — suddiviso in `/24` per VLAN (terzo ottetto = numero di VLAN).
+
+## 8.5.1 Sede — LAN del CdC (IPv4 RFC1918)
+
+| VLAN | Nome | Subnet (Lombardia) | Host (dall'immagine) |
+| ---- | ---- | ------------------ | -------------------- |
+| 100  | Servizi (broker, app/K8s, DB, Node-RED, dashboard, NS/AS, NAS) | `10.28.10.0/24` | gw/FW `.1` · broker `.20` · Node-RED `.30` · dashboard `.40` · storage/NAS `.50` · NS/AS `.60` |
+| 120  | Workstation operatore | `10.28.12.0/24` | — |
+| 130  | Management / IPMI di sede (OOB) | `10.28.13.0/24` | — |
+
+Gli indirizzi `.10.x` dell'immagine si leggono come coda `10.x` dentro il `/16` del CdC: il broker `.10.20` è `10.28.10.20`, la dashboard `10.28.10.40`, e così via. (Per isolare il NAS dall'app-tier si può spostarlo su una VLAN 110 `10.28.11.0/24`; l'immagine lo tiene con i server, host `.50`.)
+
+## 8.5.2 Piani dei dispositivi al CdC — IPv6 GUA (consigliato), IPv4 dual-stack
+
+Sono le VLAN che arrivano dai tratti (anello/DWDM) e terminano L3 sul router regionale. Riusano la numerazione VLAN già in uso nel documento (§5.4, §8.2.2).
+
+| VLAN | Piano | IPv6 GUA (§8.1) | IPv4 (§8.2.1, dual-stack/legacy) |
+| ---- | ----- | --------------- | -------------------------------- |
+| 10   | Telecamere | `2001:db8:18::/48` (→ `/64` per tratto) | `10.24.0.0/16` |
+| 20   | Sensori | `2001:db8:19::/48` | `10.25.0.0/16` |
+| 30   | Controller / PMV | `2001:db8:1a::/48` | `10.26.0.0/16` |
+| 99   | Management dispositivi | `2001:db8:1b::/48` | `10.27.0.0/16` |
+
+Contenimento del broadcast sui piani: **PVLAN + storm control + IGMP snooping** (§8.4). Le subnet di funzione **non** sono i `192.168.x/29` riusati dentro lo smart-gate (§8.2.2): quelli restano interni al SoC, dietro NAT nello scenario IPv4.
+
+## 8.5.3 Scelta IPv4/IPv6 per ruolo e dorsali verso il CN
+
+L'indirizzamento si sceglie **per ruolo**:
+
+- **Sede (LAN del CdC)** — **IPv4 RFC1918**: insieme piccolo e stabile (poche decine di host, già IPv4 nell'immagine), ecosistema server/storage/management IPv4-first, ACL/802.1X/NAC semplici. Nessuna pressione di scala → IPv6 non porta vantaggi qui.
+- **Piani dei dispositivi** — **IPv6 GUA**: è dove c'è scala (1.000 smart-gate, prospettiva statali); end-to-end, senza NAT.
+- Il CdC è quindi un **punto dual-stack**: servizi in IPv4, piani in IPv6; il **router regionale** instrada tra i due e fa de-hairpin del traffico locale servizi↔dispositivi (§5.5).
+
+**Dorsali CdC → router nazionale.** **MPLS L3VPN dual-stack (6VPE)**, con **IPv6 come asse portante** (i piani salgono in GUA end-to-end al CN: telemetria, eventi targhe, video on-demand) e **IPv4** per i servizi della sede verso il CN (bridge MQTT broker↔broker, REST/gRPC). Link punto-punto di transito: **IPv6 `/127`** (RFC 6164) o *unnumbered*, più **IPv4 `/31`** (RFC 3021) se si tiene IPv4 nel control-plane; loopback `/32` + `/128`.
+
 
 ---
 
