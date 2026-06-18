@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="680" height="520" viewBox="0 0 680 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc" font-family="system-ui,-apple-system,Segoe UI,Roboto,sans-serif">
+  <title id="title">Dorsale IPv6 — anello di core router</title>
+  <desc id="desc">Quattro core router (Milano, Roma, Napoli, Torino) collegati ad anello; ogni router ha un loopback /128 dal blocco 2001:db8:1:0000::/64 e i link punto-punto usano /127 dal blocco 2001:db8:1:0001::/64.</desc>
+
+  <rect x="0" y="0" width="680" height="520" fill="#f8fafc" rx="14"/>
+  <text x="340" y="36" text-anchor="middle" font-size="18" font-weight="700" fill="#0f172a">Dorsale IPv6 — anello di core router</text>
+  <text x="340" y="58" text-anchor="middle" font-size="13" fill="#475569">Blocco infrastruttura: 2001:db8:1:0000::/56</text>
+
+  <!-- Links -->
+  <line x1="270" y1="138" x2="410" y2="138" stroke="#475569" stroke-width="2.5"/>
+  <g>
+    <rect x="280" y="126" width="120" height="24" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="340" y="142" text-anchor="middle" font-size="12" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#0f172a">0001::0/127</text>
+  </g>
+
+  <line x1="510" y1="165" x2="510" y2="355" stroke="#475569" stroke-width="2.5"/>
+  <g>
+    <rect x="450" y="248" width="120" height="24" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="510" y="264" text-anchor="middle" font-size="12" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#0f172a">0001::2/127</text>
+  </g>
+
+  <line x1="410" y1="382" x2="270" y2="382" stroke="#475569" stroke-width="2.5"/>
+  <g>
+    <rect x="280" y="370" width="120" height="24" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="340" y="386" text-anchor="middle" font-size="12" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#0f172a">0001::4/127</text>
+  </g>
+
+  <line x1="170" y1="355" x2="170" y2="165" stroke="#475569" stroke-width="2.5"/>
+  <g>
+    <rect x="110" y="248" width="120" height="24" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
+    <text x="170" y="264" text-anchor="middle" font-size="12" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#0f172a">0001::6/127</text>
+  </g>
+
+  <!-- Routers -->
+  <g>
+    <rect x="70" y="111" width="200" height="54" rx="11" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="170" y="135" text-anchor="middle" font-size="15" font-weight="700" fill="#1e1b4b">Core Milano</text>
+    <text x="170" y="154" text-anchor="middle" font-size="11.5" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#4338ca">2001:db8:1:0000::1/128</text>
+  </g>
+  <g>
+    <rect x="410" y="111" width="200" height="54" rx="11" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="510" y="135" text-anchor="middle" font-size="15" font-weight="700" fill="#1e1b4b">Core Roma</text>
+    <text x="510" y="154" text-anchor="middle" font-size="11.5" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#4338ca">2001:db8:1:0000::2/128</text>
+  </g>
+  <g>
+    <rect x="70" y="355" width="200" height="54" rx="11" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="170" y="379" text-anchor="middle" font-size="15" font-weight="700" fill="#1e1b4b">Core Torino</text>
+    <text x="170" y="398" text-anchor="middle" font-size="11.5" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#4338ca">2001:db8:1:0000::3/128</text>
+  </g>
+  <g>
+    <rect x="410" y="355" width="200" height="54" rx="11" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+    <text x="510" y="379" text-anchor="middle" font-size="15" font-weight="700" fill="#1e1b4b">Core Napoli</text>
+    <text x="510" y="398" text-anchor="middle" font-size="11.5" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#4338ca">2001:db8:1:0000::4/128</text>
+  </g>
+
+  <!-- Legend -->
+  <line x1="120" y1="468" x2="160" y2="468" stroke="#475569" stroke-width="2.5"/>
+  <text x="168" y="472" font-size="12" fill="#334155">Link P2P /127 — da 2001:db8:1:0001::/64</text>
+  <rect x="400" y="459" width="18" height="18" rx="4" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
+  <text x="426" y="472" font-size="12" fill="#334155">Loopback /128 — da 2001:db8:1:0000::/64</text>
+</svg>
