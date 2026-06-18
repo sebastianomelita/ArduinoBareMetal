@@ -314,7 +314,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 
 <p align="center">
-  <img src="img/authutente/auth_singola_asimmetrica.jpg" alt="Autenticazione singola asimmetrica con sfida in chiaro" width="600px">
+  <img src="img/authutente/auth_singola_asimmetrica.jpg" alt="Autenticazione singola asimmetrica con sfida in chiaro" width="500px">
 </p>
 
 1. Bob manda ad Alice un messaggio contenente la sua identità ***B*** e la nonce che ha scelto lui, ***b***.
