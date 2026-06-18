@@ -207,6 +207,13 @@ La scelta è obbligata, non estetica: **una VLAN è un dominio di broadcast, e u
 
 Per questo l'anello, **come adesso, è e resta regionale**. È il livello 2 giusto: locale, veloce, contenuto.
 
+| VLAN | Uso |
+|------|-----|
+| 10 |  Telecamere IP (sottorete isolata, non raggiungibile dall'esterno) |
+| 20 |  Sensori IP-based |
+| 30 |  Controller PMV (Pannello a Messaggio Variabile) |
+| 99 |  Management (SSH, SNMP) |
+
 ## 5.5 Il router regionale come confine L2/L3
 
 Al CdC si **spilla dallo switch un router regionale** (un router/firewall dedicato, oppure SVI su uno switch multilayer). È l'unico punto in cui l'L2 della regione diventa L3, e svolge tre ruoli:
