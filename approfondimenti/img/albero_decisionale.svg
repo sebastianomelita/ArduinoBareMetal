@@ -79,15 +79,21 @@
   <rect x="620" y="190" width="240" height="40" rx="9" fill="#586673"/>
   <text x="740" y="215" text-anchor="middle" class="out">Servizio / processo</text>
 
-  <line x1="740" y1="230" x2="740" y2="300" stroke="#586673" stroke-width="1.4"/>
-  <rect x="620" y="300" width="240" height="56" rx="8" fill="#1C5440"/>
-  <text x="740" y="324" text-anchor="middle" class="out">mTLS &#8212; X.509 mutuo</text>
-  <text x="740" y="342" text-anchor="middle" class="outs">three-way handshake, identit&#224; bilaterale</text>
+  <line x1="740" y1="230" x2="740" y2="248" stroke="#586673" stroke-width="1.4"/>
+  <rect x="620" y="248" width="240" height="50" rx="8" fill="#1C5440"/>
+  <text x="740" y="270" text-anchor="middle" class="out">mTLS &#8212; X.509 mutuo</text>
+  <text x="740" y="288" text-anchor="middle" class="outs">chiave privata mai trasmessa &#183; +PFS</text>
 
-  <line x1="740" y1="356" x2="740" y2="380" stroke="#1C5440" stroke-width="1.6"/>
-  <rect x="620" y="380" width="240" height="48" rx="8" fill="#1C5440" opacity="0.85"/>
-  <text x="740" y="400" text-anchor="middle" class="out">+ DHE / ECDHE</text>
-  <text x="740" y="418" text-anchor="middle" class="outs">per Perfect Forward Secrecy</text>
+  <line x1="740" y1="298" x2="740" y2="312" stroke="#586673" stroke-width="1.4"/>
+  <rect x="620" y="312" width="240" height="56" rx="8" fill="#2C5C8F"/>
+  <text x="740" y="333" text-anchor="middle" class="out">JWT / bearer token</text>
+  <text x="740" y="351" text-anchor="middle" class="outs">OAuth2 Client Credentials (L7)</text>
+  <text x="740" y="364" text-anchor="middle" class="outs">forte se private_key_jwt / DPoP</text>
+
+  <line x1="740" y1="368" x2="740" y2="382" stroke="#586673" stroke-width="1.4"/>
+  <rect x="620" y="382" width="240" height="50" rx="8" fill="#586673"/>
+  <text x="740" y="403" text-anchor="middle" class="out">Spesso insieme</text>
+  <text x="740" y="421" text-anchor="middle" class="outs">mTLS = chi sei &#183; JWT = cosa puoi fare</text>
 
   <!-- bottom note -->
   <rect x="32" y="486" width="828" height="150" rx="10" fill="#F1F4F6" stroke="#CCD4DB"/>
