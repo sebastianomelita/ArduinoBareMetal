@@ -312,7 +312,10 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 #### Autenticazione singola asimmetrica con sfida in chiaro (ad es. TLS)
 
-<img src="img/authutente/auth_singola_asimmetrica.jpg" alt="Autenticazione singola asimmetrica con sfida in chiaro" width="600px">
+
+<p align="center">
+  <img src="img/authutente/auth_singola_asimmetrica.jpg" alt="Autenticazione singola asimmetrica con sfida in chiaro" width="600px">
+</p>
 
 1. Bob manda ad Alice un messaggio contenente la sua identità ***B*** e la nonce che ha scelto lui, ***b***.
 2. Alice risponde mandando la sua identità e la propria firma sulla sfida b; Fase  scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente se questa non è contenuta in un certificato allegato alla firma.
