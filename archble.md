@@ -18,6 +18,7 @@ Servizi:
 - [Secure network moderne](/approfondimenti/dispensa_reti_moderne.md)
 - [Firewall](firewall.md)
 - [ACL](approfondimenti/acl/dispensa_sistemi_reti.md)
+- [Autenticazione di un link](/approfondimenti//autenticazione_collegamento_guida.md)
 - [Autenticazione 802.1X](radius.md)
 - [Autenticazione SSO Active Directory](/approfondimenti/00_dispensa_principale.md)
 - [Continuità di servizio](/approfondimenti/continuita_di_servizio.md)
