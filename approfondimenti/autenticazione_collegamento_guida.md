@@ -1,3 +1,12 @@
+>[Torna a reti di sensori](../sensornetworkshort.md)>[Torna a reti ethernet](../archeth.md)
+
+- [Dettaglio architettura Zigbee](../archzigbee.md)
+- [Dettaglio architettura BLE](../archble.md)
+- [Dettaglio architettura WiFi infrastruttura](../archwifi.md)
+- [Dettaglio architettura WiFi mesh](../archmesh.md) 
+- [Dettaglio architettura LoraWAN](../lorawanclasses.md) 
+
+
 # Autenticazione di un collegamento — Guida alla scelta della tecnologia
 
 > Materiale didattico di supporto alla **sezione "autenticazione"** di un compito di Sistemi e Reti.
@@ -32,7 +41,7 @@ La forza di un'autenticazione dipende da quanti e quali **fattori** usa. Un sing
 802.1X e mTLS **sembrano** alternativi perché possono usare lo stesso certificato X.509 e la stessa PKI. Ma autenticano cose diverse, a livelli diversi, verso interlocutori diversi: sono **complementari**.
 
 <p align="center">
-  <img src="img/stack_802.1x_mtls.svg" alt="Lo stesso certificato X.509 presentato a L2 (802.1X) e a L4/5 (mTLS)" width="880">
+  <img src="img/stack_802.1x_mtls.svg" alt="I quattro livelli di autenticazione di un collegamento: 802.1X a L2, mTLS/TLS a L4/5, IPsec/VPN a L3, SSH/Kerberos a L7" width="880">
 </p>
 
 | | Presenta il certificato a… | Livello | Cosa impedisce |
@@ -40,7 +49,7 @@ La forza di un'autenticazione dipende da quanti e quali **fattori** usa. Un sing
 | **802.1X / EAP-TLS** | RADIUS (NAC) | L2 — ammissione alla porta | accesso rogue alla LAN (scansioni, ARP spoofing, attacco agli apparati che non parlano mTLS) |
 | **mTLS** | il peer applicativo (es. broker) | L4/5 — sessione sul trasporto | client fasullo verso il servizio; garantisce cifratura end-to-end attraverso la WAN |
 
-Per questo in un progetto serio coesistono: il **tornello con badge** all'ingresso (802.1X) **e** il controllo del documento nella stanza dove parli (mTLS).
+Per questo in un progetto serio coesistono: il **tornello con badge** all'ingresso (802.1X) **e** il controllo del documento nella stanza dove parli (mTLS). La figura colloca anche gli altri due piani: **L3** è dove vive la classica **VPN** (IPsec), **L7** è dove **SSH** e **Kerberos** autenticano a livello applicativo — con una chiave propria, non con il certificato X.509.
 
 ---
 
