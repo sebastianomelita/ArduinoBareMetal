@@ -1,12 +1,3 @@
->[Torna a reti di sensori](../sensornetworkshort.md)>[Torna a reti ethernet](../archeth.md)
-
-- [Dettaglio architettura Zigbee](../archzigbee.md)
-- [Dettaglio architettura BLE](../archble.md)
-- [Dettaglio architettura WiFi infrastruttura](../archwifi.md)
-- [Dettaglio architettura WiFi mesh](../archmesh.md) 
-- [Dettaglio architettura LoraWAN](../lorawanclasses.md) 
-
-
 # Autenticazione di un collegamento — Guida alla scelta della tecnologia
 
 > Materiale didattico di supporto alla **sezione "autenticazione"** di un compito di Sistemi e Reti.
@@ -41,13 +32,13 @@ La forza di un'autenticazione dipende da quanti e quali **fattori** usa. Un sing
 802.1X e mTLS **sembrano** alternativi perché possono usare lo stesso certificato X.509 e la stessa PKI. Ma autenticano cose diverse, a livelli diversi, verso interlocutori diversi: sono **complementari**.
 
 <p align="center">
-  <img src="img/stack_802.1x_mtls.svg" alt="Lo stesso certificato X.509 presentato a L2 (802.1X) e a L7 (mTLS)" width="880">
+  <img src="img/stack_802.1x_mtls.svg" alt="Lo stesso certificato X.509 presentato a L2 (802.1X) e a L4/5 (mTLS)" width="880">
 </p>
 
 | | Presenta il certificato a… | Livello | Cosa impedisce |
 |---|---|---|---|
 | **802.1X / EAP-TLS** | RADIUS (NAC) | L2 — ammissione alla porta | accesso rogue alla LAN (scansioni, ARP spoofing, attacco agli apparati che non parlano mTLS) |
-| **mTLS** | il peer applicativo (es. broker) | L7 — sessione | client fasullo verso il servizio; garantisce cifratura end-to-end attraverso la WAN |
+| **mTLS** | il peer applicativo (es. broker) | L4/5 — sessione sul trasporto | client fasullo verso il servizio; garantisce cifratura end-to-end attraverso la WAN |
 
 Per questo in un progetto serio coesistono: il **tornello con badge** all'ingresso (802.1X) **e** il controllo del documento nella stanza dove parli (mTLS).
 
@@ -59,8 +50,8 @@ Per questo in un progetto serio coesistono: il **tornello con badge** all'ingres
 |---|---|---|:---:|:---:|---|
 | **802.1X / EAP-TLS** | certificato X.509 + chiave privata | L2 | sì | forte | NAC sulle porte degli switch, anti-rogue |
 | **802.1X + MAB/profiling** | indirizzo MAC + euristiche | L2 | no | debole | fallback per dispositivi legacy |
-| **mTLS (X.509 bilaterale)** | certificato + chiave privata | L7 | sì | forte | dispositivo ↔ broker MQTT; nodo edge ↔ join server |
-| **TLS server-side + credenziale device** | cert lato server + segreto device | L7 | no | media | client MQTT con username/password su TLS |
+| **mTLS (X.509 bilaterale)** | certificato + chiave privata | L4/5 | sì | forte | dispositivo ↔ broker MQTT; nodo edge ↔ join server |
+| **TLS server-side + credenziale device** | cert lato server + segreto device | L4/5 | no | media | client MQTT con username/password su TLS |
 | **Pre-shared key (PSK)** | segreto simmetrico condiviso | L2/L3/L7 | sì | media | LoRaWAN OTAA: AppKey 128 bit → AppSKey/NwkSKey |
 | **MIC / AES-CMAC sul frame** | chiave di sessione (NwkSKey) | L2 (LoRaWAN) | implicita | media-forte | autenticazione + integrità del frame |
 | **IPsec (PSK o certificati)** | PSK oppure certificato | L3 | sì | media/forte | VPN site-to-site di backup |
@@ -90,11 +81,15 @@ Per questo in un progetto serio coesistono: il **tornello con badge** all'ingres
 
 ## 5. Matrice: livello × forza
 
-La stessa informazione delle due tabelle, vista come griglia. Utile per capire al volo che lo **stesso certificato** vive in celle diverse (EAP-TLS a L2, mTLS a L7).
+La stessa informazione delle due tabelle, vista come griglia. Utile per capire al volo che lo **stesso certificato** vive in celle diverse (EAP-TLS a L2, mTLS a L4/5).
 
 <p align="center">
-  <img src="img/matrice_livello_forza.svg" alt="Matrice dei metodi di autenticazione per livello dello stack e forza" width="880">
+  <img src="img/matrice_livello_forza.svg" alt="Matrice dei metodi di autenticazione per livello dello stack e forza" width="960">
 </p>
+
+> **Precisazione sui livelli OSI.** TLS/mTLS **non** è un protocollo applicativo: opera **sopra TCP**, a livello **sessione/presentazione (L4/5)**, e mette in sicurezza il trasporto su cui poi viaggiano i protocolli di L7. **SSH** invece è di **L7** e implementa *al proprio interno* lo stesso schema concettuale (autenticazione asimmetrica del server → canale cifrato → autenticazione del client). Stessa idea, livelli diversi.
+>
+> A L7 i protocolli che reimplementano questo schema da soli sono pochi: **SSH** è il principale; **Kerberos** è l'altro grande protocollo di autenticazione nativo di L7 (ma a *ticket* tramite KDC, non "canale-poi-credenziale"). Quasi tutti gli altri protocolli applicativi (**HTTPS, FTPS, LDAPS, SMTPS, AMQPS, MQTT-over-TLS, gRPC**) non reinventano nulla: si appoggiano a TLS di L4/5. I token applicativi (**OAuth/JWT**) sono anch'essi di L7, ma *bearer*, non un handshake di canale.
 
 ---
 
@@ -121,10 +116,10 @@ La regola di scelta è **legata al rischio**: maggiore è il danno potenziale di
 
 **Come usarlo nel compito**, in quattro mosse:
 
-1. **L2 e L7 si sommano**, non si escludono: ammissione in rete (802.1X) *più* sessione applicativa (mTLS).
+1. **I livelli si sommano**, non si escludono: ammissione in rete (802.1X, L2) *più* sessione cifrata (mTLS, L4/5).
 2. **Canale insicuro** (Internet/WAN) → serve autenticazione **forte** (asimmetrica/certificati); la password va solo dentro un tunnel cifrato.
 3. **Movimenti di denaro o dati sensibili** → alza il LoA: MFA per gli utenti, hardware sicuro per le chiavi (LoA4).
-4. **Certificato ≠ mTLS**: lo stesso certificato può servire EAP-TLS (L2), TLS lato-server (L7) o mTLS (L7 mutuo).
+4. **Certificato ≠ mTLS**: lo stesso certificato può servire EAP-TLS (L2), TLS lato-server (L4/5) o mTLS (L4/5 mutuo).
 
 ---
 
@@ -137,6 +132,8 @@ Quando il compito chiede l'autenticazione **forte e mutua** (tipica di mTLS e de
 </p>
 
 Idea di fondo: chi verifica invia una **sfida fresca** (nonce); solo chi possiede la **chiave privata** può produrre la firma corretta. Il certificato (firmato da una CA fidata) serve solo ad autenticare la chiave pubblica con cui si verifica la firma. Con sfide Diffie-Hellman effimere (DHE/ECDHE) si ottiene anche la **Perfect Forward Secrecy**.
+
+> **Lo stesso schema, livelli diversi.** Questo handshake è quello di **TLS/mTLS** a **L4/5**. Lo **stesso schema concettuale** è realizzato da **SSH** a **L7**: SSH autentica il server con la *host key*, costruisce il canale cifrato e poi autentica il client (chiave pubblica o password). Cambia il livello OSI, non la logica.
 
 ### 8.1 Autenticazione mutua col tunnel (server forte + client debole dentro)
 
@@ -152,14 +149,14 @@ Le tre fasi:
 2. **Creazione del tunnel cifrato.** Il client invia una chiave di sessione cifrata con la chiave pubblica del server (semplice, ma *senza* PFS), oppure le due parti eseguono uno scambio Diffie-Hellman effimero (DHE/ECDHE) ottenendo una chiave di sessione effimera (*con* PFS).
 3. **Autenticazione del client dentro il tunnel.** Solo ora il client invia la credenziale debole: **PAP** (username + password) cifrati dal tunnel, oppure **CHAP** (il server invia un nonce, il client risponde con `HASH(nonce, password)`). Il server verifica e l'autenticazione mutua è completa.
 
-È esattamente lo schema di **PEAP / EAP-TTLS** e di **HTTPS + login**: il TLS esterno autentica il server e costruisce il canale, il metodo interno (password) autentica il client al riparo. Senza il tunnel, PAP sarebbe esposto a intercettazione, replay e MITM — per questo PAP/CHAP "da soli" vanno usati solo su canale già sicuro.
+È esattamente lo schema di **PEAP / EAP-TTLS** e di **HTTPS + login** (TLS a L4/5), ed è anche quello di **SSH con password** a L7 (host key → canale → password del client): il livello esterno autentica il server e costruisce il canale, il metodo interno (password) autentica il client al riparo. Senza il tunnel, PAP sarebbe esposto a intercettazione, replay e MITM — per questo PAP/CHAP "da soli" vanno usati solo su canale già sicuro.
 
 ---
 
 ## 9. Errori da evitare nel compito
 
 - ❌ "Uso 802.1X **oppure** mTLS." → Sono a livelli diversi: spesso si usano **entrambi**.
-- ❌ "Metto un certificato, quindi è mTLS." → Il certificato è una credenziale; mTLS è *come e dove* la si usa (mutua, a L7).
+- ❌ "Metto un certificato, quindi è mTLS." → Il certificato è una credenziale; mTLS è *come e dove* la si usa (mutua, a L4/5).
 - ❌ "Autentico con PAP/password su Internet." → La password va solo su canale già sicuro o dentro un tunnel.
 - ❌ "CHAP autentica anche il server." → No: CHAP non realizza l'autenticazione del server.
 - ❌ "I sensori LoRaWAN fanno mTLS." → Sul lato radio usano PSK (AppKey) + MIC; mTLS è sul canale IP a valle.
@@ -176,7 +173,7 @@ Le tre fasi:
 | **MAB** | MAC Authentication Bypass: ammissione basata sul solo MAC |
 | **NAC** | Network Access Control |
 | **RADIUS** | server AAA che decide l'ammissione in rete |
-| **mTLS** | mutual TLS: autenticazione bilaterale a certificati a L7 |
+| **mTLS** | mutual TLS: autenticazione bilaterale a certificati; opera a **L4/5**, sopra TCP |
 | **PSK** | Pre-Shared Key, chiave segreta simmetrica condivisa |
 | **MIC** | Message Integrity Code (in LoRaWAN, via AES-CMAC) |
 | **OTAA** | Over-The-Air Activation (provisioning chiavi LoRaWAN) |
@@ -186,7 +183,9 @@ Le tre fasi:
 | **JWT** | JSON Web Token: token con claim firmati, usato come credenziale (spesso bearer) |
 | **bearer token** | credenziale "di chi la possiede"; va protetta in transito (TLS) e con scadenza breve |
 | **Client Credentials** | flusso OAuth2 per autenticazione service-to-service (M2M) |
-| **DPoP / mTLS-bound** | token *sender-constrained*, legati a una chiave per impedirne il riuso se rubati |
+| **mTLS-bound / DPoP** | token *sender-constrained*, legati a una chiave per impedirne il riuso se rubati |
+| **SSH** | protocollo di **L7** che cifra e autentica (host key + auth del client); stesso schema di TLS ma applicativo |
+| **Kerberos** | protocollo di autenticazione mutua di **L7** a *ticket*, con terza parte fidata (KDC) |
 | **MFA / 2FA** | autenticazione a più / due fattori |
 | **PFS** | Perfect Forward Secrecy (chiavi di sessione effimere) |
 | **DHE / ECDHE** | Diffie-Hellman effimero (anche su curve ellittiche) |
