@@ -337,71 +337,9 @@ Un link tra due router usa solo 2 indirizzi (`::0` e `::1` del `/127`). La **RFC
 
 ### Figura — anello di core router
 
-<svg viewBox="0 0 720 520" xmlns="http://www.w3.org/2000/svg" style="max-width:720px;width:100%;height:auto;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif">
-  <rect x="0" y="0" width="720" height="520" fill="#f8fafc" rx="14"/>
-  <text x="360" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#0f172a">Dorsale IPv6 — anello di core router</text>
-  <text x="360" y="56" text-anchor="middle" font-size="13" fill="#475569">Blocco infrastruttura: 2001:db8:1:0000::/56</text>
-
-  <!-- Links (drawn first, boxes overlap the ends) -->
-  <!-- MI - RM (top) -->
-  <line x1="280" y1="135" x2="440" y2="135" stroke="#475569" stroke-width="2.5"/>
-  <g>
-    <rect x="300" y="123" width="120" height="24" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
-    <text x="360" y="139" text-anchor="middle" font-size="12" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#0f172a">0001::0/127</text>
-  </g>
-  <!-- RM - NA (right) -->
-  <line x1="560" y1="162" x2="560" y2="358" stroke="#475569" stroke-width="2.5"/>
-  <g>
-    <rect x="500" y="248" width="120" height="24" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
-    <text x="560" y="264" text-anchor="middle" font-size="12" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#0f172a">0001::2/127</text>
-  </g>
-  <!-- NA - TO (bottom) -->
-  <line x1="440" y1="385" x2="280" y2="385" stroke="#475569" stroke-width="2.5"/>
-  <g>
-    <rect x="300" y="373" width="120" height="24" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
-    <text x="360" y="389" text-anchor="middle" font-size="12" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#0f172a">0001::4/127</text>
-  </g>
-  <!-- TO - MI (left) -->
-  <line x1="160" y1="358" x2="160" y2="162" stroke="#475569" stroke-width="2.5"/>
-  <g>
-    <rect x="100" y="248" width="120" height="24" rx="12" fill="#ffffff" stroke="#cbd5e1"/>
-    <text x="160" y="264" text-anchor="middle" font-size="12" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#0f172a">0001::6/127</text>
-  </g>
-
-  <!-- Routers -->
-  <!-- MI top-left -->
-  <g>
-    <rect x="60" y="108" width="200" height="54" rx="11" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
-    <text x="160" y="132" text-anchor="middle" font-size="15" font-weight="700" fill="#1e1b4b">Core Milano</text>
-    <text x="160" y="151" text-anchor="middle" font-size="11.5" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#4338ca">2001:db8:1:0000::1/128</text>
-  </g>
-  <!-- RM top-right -->
-  <g>
-    <rect x="460" y="108" width="200" height="54" rx="11" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
-    <text x="560" y="132" text-anchor="middle" font-size="15" font-weight="700" fill="#1e1b4b">Core Roma</text>
-    <text x="560" y="151" text-anchor="middle" font-size="11.5" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#4338ca">2001:db8:1:0000::2/128</text>
-  </g>
-  <!-- TO bottom-left -->
-  <g>
-    <rect x="60" y="358" width="200" height="54" rx="11" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
-    <text x="160" y="382" text-anchor="middle" font-size="15" font-weight="700" fill="#1e1b4b">Core Torino</text>
-    <text x="160" y="401" text-anchor="middle" font-size="11.5" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#4338ca">2001:db8:1:0000::3/128</text>
-  </g>
-  <!-- NA bottom-right -->
-  <g>
-    <rect x="460" y="358" width="200" height="54" rx="11" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
-    <text x="560" y="382" text-anchor="middle" font-size="15" font-weight="700" fill="#1e1b4b">Core Napoli</text>
-    <text x="560" y="401" text-anchor="middle" font-size="11.5" font-family="ui-monospace,Menlo,Consolas,monospace" fill="#4338ca">2001:db8:1:0000::4/128</text>
-  </g>
-
-  <!-- Legend -->
-  <g>
-    <line x1="120" y1="468" x2="160" y2="468" stroke="#475569" stroke-width="2.5"/>
-    <text x="168" y="472" font-size="12" fill="#334155">Link P2P /127 — da 2001:db8:1:0001::/64</text>
-    <rect x="430" y="459" width="18" height="18" rx="4" fill="#eef2ff" stroke="#6366f1" stroke-width="2"/>
-    <text x="456" y="472" font-size="12" fill="#334155">Loopback /128 — da 2001:db8:1:0000::/64</text>
-  </g>
-</svg>
+<p align="center">
+  <img src="../img/dorsale-ipv6.svg" alt="Dorsale IPv6 — anello di core router" width="680">
+</p>
 
 > Le sedi regionali e provinciali (sezioni 3–4) si agganciano a questo anello tramite i propri router di edge, che ricevono a loro volta un loopback dal blocco `2001:db8:1:0000::/64` e un link `/127` dal blocco `2001:db8:1:0001::/64`.
 
