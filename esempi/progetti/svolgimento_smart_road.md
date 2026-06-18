@@ -831,7 +831,7 @@ Un'**analogia**: l'802.1X è il tornello con badge all'ingresso dell'edificio; i
 - **SIEM** centrale al CN che aggrega log da tutti i firewall, server, switch, broker.
 - **SOC** che monitora gli alert H24.
 - Aggiornamenti firmware sugli smart-gate via OTA (Over-The-Air), con firmware firmato e verificato dallo smart-gate prima dell'installazione.
-- Politica di **least privilege** e **separation of duties** sugli account amministrativi; accessi tramite jump host con MFA (Apache Guacamole, Teleport, OpenID Connect, Kerberos, ecc).
+- Politica di **least privilege** e **separation of duties** sugli account amministrativi; accessi tramite **jump host** con MFA (Apache Guacamole, Teleport, OpenID Connect, Kerberos, ecc).
 
 **OpenID Connect** è il protocollo ideale e più utilizzato oggi per gestire l'**MFA sui jump host**: 
 - **Come funziona**: Essendo un protocollo basato sul web (costruito sopra OAuth 2.0), si integra nativamente con i moderni Identity Provider (IdP) come Microsoft Entra ID (Azure AD), Okta o Keycloak.
