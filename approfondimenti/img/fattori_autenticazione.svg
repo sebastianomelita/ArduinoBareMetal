@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 320" font-family="'Segoe UI', system-ui, -apple-system, Roboto, sans-serif">
+  <style>
+    .ttl   { font-size: 19px; font-weight: 700; fill: #18212B; }
+    .card-t{ font-size: 16px; font-weight: 700; }
+    .card-s{ font-size: 12.5px; font-weight: 600; fill: #586673; letter-spacing:.04em; }
+    .ex    { font-size: 13px; fill: #586673; }
+    .foot  { font-size: 13.5px; font-weight: 600; fill: #18212B; }
+    .tag   { font-size: 11px; font-weight: 700; fill: #fff; letter-spacing:.05em; }
+  </style>
+
+  <rect x="0" y="0" width="820" height="320" fill="#FFFFFF"/>
+  <text x="32" y="40" class="ttl">I tre fattori di autenticazione &#8212; ISO 27001</text>
+  <line x1="32" y1="54" x2="788" y2="54" stroke="#CCD4DB" stroke-width="1.5"/>
+
+  <!-- SAI -->
+  <g>
+    <rect x="32" y="80" width="232" height="150" rx="12" fill="#F1F4F6" stroke="#2C5C8F" stroke-width="2"/>
+    <rect x="32" y="80" width="232" height="34" rx="12" fill="#2C5C8F"/>
+    <rect x="32" y="100" width="232" height="14" fill="#2C5C8F"/>
+    <text x="48" y="102" class="tag">QUELLO CHE SAI</text>
+    <text x="48" y="140" class="card-t" fill="#2C5C8F">Conoscenza</text>
+    <text x="48" y="168" class="ex">&#8226; password</text>
+    <text x="48" y="188" class="ex">&#8226; PIN</text>
+    <text x="48" y="208" class="ex">&#8226; passphrase</text>
+  </g>
+
+  <!-- HAI -->
+  <g>
+    <rect x="294" y="80" width="232" height="150" rx="12" fill="#F1F4F6" stroke="#1E6E66" stroke-width="2"/>
+    <rect x="294" y="80" width="232" height="34" rx="12" fill="#1E6E66"/>
+    <rect x="294" y="100" width="232" height="14" fill="#1E6E66"/>
+    <text x="310" y="102" class="tag">QUELLO CHE HAI</text>
+    <text x="310" y="140" class="card-t" fill="#1E6E66">Possesso</text>
+    <text x="310" y="168" class="ex">&#8226; smart card / token OTP</text>
+    <text x="310" y="188" class="ex">&#8226; chiave privata (certificato)</text>
+    <text x="310" y="208" class="ex">&#8226; telefono / pen drive</text>
+  </g>
+
+  <!-- SEI -->
+  <g>
+    <rect x="556" y="80" width="232" height="150" rx="12" fill="#F1F4F6" stroke="#B0531F" stroke-width="2"/>
+    <rect x="556" y="80" width="232" height="34" rx="12" fill="#B0531F"/>
+    <rect x="556" y="100" width="232" height="14" fill="#B0531F"/>
+    <text x="572" y="102" class="tag">QUELLO CHE SEI / FAI</text>
+    <text x="572" y="140" class="card-t" fill="#B0531F">Essenza (forte)</text>
+    <text x="572" y="168" class="ex">&#8226; impronta / volto</text>
+    <text x="572" y="188" class="ex">&#8226; dati biometrici</text>
+    <text x="572" y="208" class="ex">&#8226; stile di firma, gesti</text>
+  </g>
+
+  <!-- footer combination -->
+  <rect x="32" y="252" width="756" height="44" rx="10" fill="#18212B"/>
+  <text x="52" y="280" class="foot" fill="#fff">2FA / autenticazione forte = combinazione di <tspan font-weight="800">&#8805; 2 fattori di tipo diverso</tspan> (es. password + token OTP)</text>
+</svg>

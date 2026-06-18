@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 470" font-family="'Segoe UI', system-ui, -apple-system, Roboto, sans-serif">
+  <style>
+    .ttl { font-size:19px; font-weight:700; fill:#18212B; }
+    .sub { font-size:13px; fill:#586673; }
+    .act { font-size:14px; font-weight:800; fill:#fff; }
+    .acts{ font-size:11px; fill:#B8C2CC; }
+    .step{ font-size:11px; font-weight:800; fill:#fff; }
+    .msg { font-size:13px; font-weight:700; fill:#18212B; }
+    .mono{ font-family:'SFMono-Regular',Consolas,monospace; font-size:12.5px; fill:#B0531F; font-weight:700; }
+    .note{ font-size:11.5px; font-style:italic; fill:#586673; }
+  </style>
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#18212B"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="840" height="470" fill="#FFFFFF"/>
+  <text x="32" y="36" class="ttl">Autenticazione mutua a sfida (mTLS) &#8212; three-way handshake</text>
+  <text x="32" y="56" class="sub">La risposta corretta alla sfida &#232; possibile solo per chi possiede la chiave privata. Sfida sempre inviata da chi verifica.</text>
+
+  <!-- actors -->
+  <rect x="120" y="80" width="160" height="46" rx="9" fill="#1E6E66"/>
+  <text x="200" y="102" text-anchor="middle" class="act">Client (Alice)</text>
+  <text x="200" y="118" text-anchor="middle" class="acts">ha cert + chiave privata</text>
+
+  <rect x="560" y="80" width="160" height="46" rx="9" fill="#2C5C8F"/>
+  <text x="640" y="102" text-anchor="middle" class="act">Server (Bob)</text>
+  <text x="640" y="118" text-anchor="middle" class="acts">ha cert + chiave privata</text>
+
+  <!-- lifelines -->
+  <line x1="200" y1="126" x2="200" y2="392" stroke="#CCD4DB" stroke-width="2" stroke-dasharray="3 4"/>
+  <line x1="640" y1="126" x2="640" y2="392" stroke="#CCD4DB" stroke-width="2" stroke-dasharray="3 4"/>
+
+  <!-- step 1: Bob -> Alice -->
+  <circle cx="640" cy="168" r="11" fill="#18212B"/><text x="640" y="172" text-anchor="middle" class="step">1</text>
+  <line x1="636" y1="168" x2="206" y2="168" stroke="#18212B" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="300" y="158" class="msg">identit&#224; <tspan class="mono">B</tspan> + sfida <tspan class="mono">nonce b</tspan></text>
+
+  <!-- step 2: Alice -> Bob -->
+  <circle cx="200" cy="232" r="11" fill="#18212B"/><text x="200" y="236" text-anchor="middle" class="step">2</text>
+  <line x1="204" y1="232" x2="634" y2="232" stroke="#18212B" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="258" y="222" class="msg"><tspan class="mono">A</tspan> + <tspan class="mono">nonce a</tspan> + <tspan class="mono">firma(b)</tspan> + certificato</text>
+  <text x="640" y="258" text-anchor="end" class="note">Bob verifica firma(b) con la chiave pubblica di Alice &#8594; Alice autenticata</text>
+
+  <!-- step 3: Bob -> Alice -->
+  <circle cx="640" cy="312" r="11" fill="#18212B"/><text x="640" y="316" text-anchor="middle" class="step">3</text>
+  <line x1="636" y1="312" x2="206" y2="312" stroke="#18212B" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="300" y="302" class="msg"><tspan class="mono">firma(a)</tspan> + certificato</text>
+  <text x="200" y="338" class="note">Alice verifica firma(a) &#8594; Bob autenticato</text>
+
+  <!-- result -->
+  <rect x="200" y="356" width="440" height="0" />
+  <line x1="200" y1="372" x2="640" y2="372" stroke="#1C5440" stroke-width="2"/>
+  <rect x="330" y="360" width="180" height="24" rx="12" fill="#1C5440"/>
+  <text x="420" y="377" text-anchor="middle" class="step">autenticazione MUTUA</text>
+
+  <!-- footnote -->
+  <rect x="32" y="404" width="776" height="50" rx="9" fill="#F1F4F6" stroke="#CCD4DB"/>
+  <text x="48" y="426" class="sub"><tspan font-weight="800" fill="#1C5440">PFS.</tspan> Se le sfide sono chiavi pubbliche Diffie-Hellman effimere (DHE/ECDHE) firmate, si ottiene insieme autenticazione</text>
+  <text x="48" y="444" class="sub">e una chiave di sessione effimera: compromettere domani la chiave privata non espone le sessioni di oggi.</text>
+</svg>

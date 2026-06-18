@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 500" font-family="'Segoe UI', system-ui, -apple-system, Roboto, sans-serif">
+  <style>
+    .ttl  { font-size: 19px; font-weight: 700; fill:#18212B; }
+    .sub  { font-size: 13px; fill:#586673; }
+    .colh { font-size: 14px; font-weight:800; fill:#18212B; }
+    .cols { font-size: 11.5px; fill:#586673; }
+    .rowh { font-size: 14px; font-weight:800; fill:#fff; }
+    .chip { font-size: 12px; font-weight:700; fill:#fff; }
+    .chips{ font-size: 10px; fill:#fff; opacity:.92; }
+    .leg  { font-size: 12px; fill:#586673; }
+  </style>
+  <rect x="0" y="0" width="880" height="500" fill="#FFFFFF"/>
+  <text x="32" y="38" class="ttl">Matrice: livello dello stack &#215; forza del metodo</text>
+  <text x="32" y="58" class="sub">Dove agisce (colonne) e quanto &#232; robusto (righe). Stesso colore = stessa classe di forza.</text>
+
+  <!-- column headers -->
+  <text x="270" y="92" text-anchor="middle" class="colh">L2 &#183; Ammissione rete</text>
+  <text x="270" y="108" text-anchor="middle" class="cols">port-based / EAP / RADIUS</text>
+  <text x="480" y="92" text-anchor="middle" class="colh">L3 &#183; Canale</text>
+  <text x="480" y="108" text-anchor="middle" class="cols">tunnel di rete</text>
+  <text x="700" y="92" text-anchor="middle" class="colh">L7 &#183; Sessione</text>
+  <text x="700" y="108" text-anchor="middle" class="cols">applicativa / utente</text>
+
+  <!-- grid columns separators -->
+  <line x1="166" y1="120" x2="836" y2="120" stroke="#CCD4DB"/>
+  <line x1="380" y1="74" x2="380" y2="452" stroke="#E3E8EC"/>
+  <line x1="590" y1="74" x2="590" y2="452" stroke="#E3E8EC"/>
+
+  <!-- ROW: FORTE -->
+  <rect x="32" y="128" width="124" height="100" rx="9" fill="#1C5440"/>
+  <text x="94" y="172" text-anchor="middle" class="rowh">FORTE</text>
+  <text x="94" y="190" text-anchor="middle" class="chips">LoA 3&#8211;4</text>
+  <!-- L2 forte -->
+  <rect x="190" y="138" width="160" height="80" rx="8" fill="#1C5440"/>
+  <text x="270" y="172" text-anchor="middle" class="chip">802.1X &#183; EAP-TLS</text>
+  <text x="270" y="192" text-anchor="middle" class="chips">certificato sulla porta</text>
+  <!-- L3 forte -->
+  <rect x="400" y="138" width="160" height="80" rx="8" fill="#1C5440"/>
+  <text x="480" y="172" text-anchor="middle" class="chip">IPsec (certificati)</text>
+  <text x="480" y="192" text-anchor="middle" class="chips">tunnel autenticato</text>
+  <!-- L7 forte -->
+  <rect x="610" y="138" width="226" height="80" rx="8" fill="#1C5440"/>
+  <text x="723" y="166" text-anchor="middle" class="chip">mTLS &#183; OAuth2+OIDC+MFA</text>
+  <text x="723" y="186" text-anchor="middle" class="chip">DHE/ECDHE (PFS)</text>
+  <text x="723" y="204" text-anchor="middle" class="chips">asimmetrica mutua / 2FA</text>
+
+  <!-- ROW: MEDIA -->
+  <rect x="32" y="240" width="124" height="100" rx="9" fill="#2C5C8F"/>
+  <text x="94" y="284" text-anchor="middle" class="rowh">MEDIA</text>
+  <text x="94" y="302" text-anchor="middle" class="chips">LoA 2&#8211;3</text>
+  <!-- L2 media -->
+  <rect x="190" y="250" width="160" height="80" rx="8" fill="#2C5C8F"/>
+  <text x="270" y="284" text-anchor="middle" class="chip">PSK &#183; LoRaWAN OTAA</text>
+  <text x="270" y="304" text-anchor="middle" class="chips">AppKey + MIC (AES-CMAC)</text>
+  <!-- L3 media -->
+  <rect x="400" y="250" width="160" height="80" rx="8" fill="#2C5C8F"/>
+  <text x="480" y="284" text-anchor="middle" class="chip">IPsec (PSK)</text>
+  <text x="480" y="304" text-anchor="middle" class="chips">chiave condivisa</text>
+  <!-- L7 media -->
+  <rect x="610" y="250" width="226" height="80" rx="8" fill="#2C5C8F"/>
+  <text x="723" y="278" text-anchor="middle" class="chip">CHAP &#183; TOTP &#183; OAuth base</text>
+  <text x="723" y="298" text-anchor="middle" class="chips">sfida/risposta, token</text>
+  <text x="723" y="316" text-anchor="middle" class="chips">resiste a replay/intercettazione</text>
+
+  <!-- ROW: DEBOLE -->
+  <rect x="32" y="352" width="124" height="90" rx="9" fill="#95A2AD"/>
+  <text x="94" y="392" text-anchor="middle" class="rowh">DEBOLE</text>
+  <text x="94" y="410" text-anchor="middle" class="chips">LoA 1</text>
+  <!-- L2 debole -->
+  <rect x="190" y="362" width="160" height="70" rx="8" fill="#95A2AD"/>
+  <text x="270" y="392" text-anchor="middle" class="chip">MAB + profiling</text>
+  <text x="270" y="412" text-anchor="middle" class="chips">solo MAC (spoofabile)</text>
+  <!-- L3 debole (none) -->
+  <rect x="400" y="362" width="160" height="70" rx="8" fill="#EEF1F3" stroke="#CCD4DB" stroke-dasharray="4 4"/>
+  <text x="480" y="401" text-anchor="middle" class="leg">&#8212;</text>
+  <!-- L7 debole -->
+  <rect x="610" y="362" width="226" height="70" rx="8" fill="#95A2AD"/>
+  <text x="723" y="392" text-anchor="middle" class="chip">PAP (password)</text>
+  <text x="723" y="412" text-anchor="middle" class="chips">solo su canale gi&#224; sicuro</text>
+
+  <!-- legend -->
+  <circle cx="40" cy="472" r="6" fill="#1C5440"/><text x="52" y="476" class="leg">forte</text>
+  <circle cx="120" cy="472" r="6" fill="#2C5C8F"/><text x="132" y="476" class="leg">media</text>
+  <circle cx="206" cy="472" r="6" fill="#95A2AD"/><text x="218" y="476" class="leg">debole</text>
+  <text x="300" y="476" class="leg">La forza richiesta si stima dal rischio del servizio (eIDAS / LoA).</text>
+</svg>

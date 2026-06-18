@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 470" font-family="'Segoe UI', system-ui, -apple-system, Roboto, sans-serif">
+  <style>
+    .ttl  { font-size: 19px; font-weight: 700; fill:#18212B; }
+    .sub  { font-size: 13px; fill:#586673; }
+    .lane-l{ font-size: 13px; font-weight:800; letter-spacing:.06em; }
+    .lane-t{ font-size: 14.5px; font-weight:700; fill:#18212B; }
+    .lane-d{ font-size: 12.5px; fill:#586673; }
+    .node { font-size: 13.5px; font-weight:700; fill:#18212B; }
+    .node-s{ font-size:11.5px; fill:#586673; }
+    .mono { font-size: 12px; font-family:'SFMono-Regular',Consolas,'Liberation Mono',monospace; fill:#B0531F; font-weight:700;}
+    .anno { font-size: 12.5px; font-style:italic; fill:#586673; }
+    .cap  { font-size: 13px; fill:#18212B; }
+  </style>
+  <rect x="0" y="0" width="880" height="470" fill="#FFFFFF"/>
+  <text x="32" y="38" class="ttl">Stesso certificato, due punti del collegamento</text>
+  <text x="32" y="58" class="sub">802.1X e mTLS usano la stessa credenziale X.509 e la stessa PKI &#8212; ma agiscono a livelli diversi, verso interlocutori diversi.</text>
+
+  <!-- Endpoints -->
+  <g>
+    <rect x="32" y="96" width="120" height="262" rx="12" fill="#18212B"/>
+    <text x="92" y="210" text-anchor="middle" class="node" fill="#fff">Dispositivo</text>
+    <text x="92" y="230" text-anchor="middle" class="node-s" fill="#B8C2CC">Smart-gate</text>
+    <!-- certificate badge -->
+    <rect x="62" y="250" width="60" height="44" rx="6" fill="#B0531F"/>
+    <text x="92" y="270" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">CERT</text>
+    <text x="92" y="285" text-anchor="middle" font-size="9.5" fill="#fff">X.509 + key</text>
+  </g>
+  <g>
+    <rect x="728" y="96" width="120" height="262" rx="12" fill="#18212B"/>
+    <text x="788" y="200" text-anchor="middle" class="node" fill="#fff">Rete +</text>
+    <text x="788" y="220" text-anchor="middle" class="node" fill="#fff">Servizio</text>
+    <text x="788" y="244" text-anchor="middle" class="node-s" fill="#B8C2CC">RADIUS</text>
+    <text x="788" y="260" text-anchor="middle" class="node-s" fill="#B8C2CC">Broker MQTT</text>
+  </g>
+
+  <!-- LANES -->
+  <!-- L7 -->
+  <g>
+    <rect x="168" y="96" width="544" height="74" rx="10" fill="#F1F4F6" stroke="#1E6E66" stroke-width="2"/>
+    <rect x="168" y="96" width="46" height="74" rx="10" fill="#1E6E66"/>
+    <rect x="200" y="96" width="14" height="74" fill="#1E6E66"/>
+    <text x="191" y="138" text-anchor="middle" class="lane-l" fill="#fff" transform="rotate(-90 191 133)">L7</text>
+    <text x="228" y="122" class="lane-t">mTLS &#8212; sessione applicativa (end-to-end)</text>
+    <text x="228" y="142" class="lane-d">Presenta il certificato <tspan class="mono">al broker</tspan> per aprire la sessione.</text>
+    <text x="228" y="160" class="anno">analogia: mostrare il documento alla persona con cui parli, in una stanza insonorizzata</text>
+    <rect x="660" y="116" width="40" height="34" rx="5" fill="#B0531F"/>
+    <text x="680" y="137" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">CERT</text>
+  </g>
+  <!-- L3 -->
+  <g>
+    <rect x="168" y="182" width="544" height="62" rx="10" fill="#F1F4F6" stroke="#2C5C8F" stroke-width="2"/>
+    <rect x="168" y="182" width="46" height="62" rx="10" fill="#2C5C8F"/>
+    <rect x="200" y="182" width="14" height="62" fill="#2C5C8F"/>
+    <text x="191" y="218" text-anchor="middle" class="lane-l" fill="#fff" transform="rotate(-90 191 213)">L3</text>
+    <text x="228" y="208" class="lane-t">IPsec &#8212; tunnel di rete (opzionale)</text>
+    <text x="228" y="228" class="lane-d">Protegge il trasporto tra siti. Opzionale se c&#8217;&#232; gi&#224; mTLS a L7.</text>
+  </g>
+  <!-- L2 -->
+  <g>
+    <rect x="168" y="256" width="544" height="86" rx="10" fill="#F1F4F6" stroke="#B0531F" stroke-width="2"/>
+    <rect x="168" y="256" width="46" height="86" rx="10" fill="#586673"/>
+    <rect x="200" y="256" width="14" height="86" fill="#586673"/>
+    <text x="191" y="304" text-anchor="middle" class="lane-l" fill="#fff" transform="rotate(-90 191 299)">L2</text>
+    <text x="228" y="284" class="lane-t">802.1X / EAP-TLS &#8212; ammissione alla porta</text>
+    <text x="228" y="304" class="lane-d">Presenta il certificato <tspan class="mono">al RADIUS</tspan> per entrare in rete.</text>
+    <text x="228" y="322" class="anno">analogia: il tornello con badge all&#8217;ingresso dell&#8217;edificio</text>
+    <rect x="660" y="282" width="40" height="34" rx="5" fill="#B0531F"/>
+    <text x="680" y="303" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">CERT</text>
+  </g>
+
+  <!-- link line dispositivo to lanes -->
+  <line x1="152" y1="227" x2="168" y2="227" stroke="#18212B" stroke-width="2"/>
+  <line x1="712" y1="227" x2="728" y2="227" stroke="#18212B" stroke-width="2"/>
+
+  <!-- dashed link between the two CERT badges -->
+  <path d="M 680 282 L 680 150" fill="none" stroke="#B0531F" stroke-width="1.6" stroke-dasharray="4 4"/>
+
+  <!-- caption -->
+  <rect x="32" y="372" width="816" height="68" rx="10" fill="#FBF3EE" stroke="#B0531F" stroke-width="1.4"/>
+  <text x="50" y="398" class="cap"><tspan font-weight="800" fill="#B0531F">Punto chiave.</tspan> La stessa scatola arancione (CERT) compare a L2 e a L7: &#232; lo stesso documento d&#8217;identit&#224;,</text>
+  <text x="50" y="418" class="cap">presentato a due controlli distinti. Per questo 802.1X e mTLS sono <tspan font-weight="800">complementari, non alternativi</tspan>:</text>
+  <text x="50" y="431" class="anno">Solo mTLS &#8594; il rogue resta sulla LAN. Solo 802.1X &#8594; nessuna identit&#224; applicativa n&#233; cifratura end-to-end.</text>
+</svg>
