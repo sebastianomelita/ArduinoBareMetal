@@ -26,6 +26,7 @@ Servizi:
 - [Continuità di servizio](/approfondimenti/continuita_di_servizio.md)
 - [Backup](backup.md)
 - [Spillamento fibra](/esempi/progetti/dettaglio_spillamento_fibra.md) 
+- [Subnetting Ipv6](/esempi/progetti/svolgimento_smart_road.md)
   
 ## **Caso d'uso WiFi infrastruttura** 
 
