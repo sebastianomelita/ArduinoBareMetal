@@ -1,0 +1,78 @@
+<svg viewBox="0 0 760 580" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', system-ui, -apple-system, sans-serif">
+  <defs>
+    <marker id="arS" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#475569"/>
+    </marker>
+    <marker id="arR" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#BE123C"/>
+    </marker>
+    <filter id="sh3" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#0F172A" flood-opacity="0.10"/>
+    </filter>
+  </defs>
+
+  <text x="380" y="28" text-anchor="middle" font-size="17" font-weight="700" fill="#1E293B">Authorization Code Flow</text>
+
+  <!-- banda canale posteriore -->
+  <rect x="300" y="388" width="420" height="78" rx="10" fill="#FFF1F2" stroke="#FDA4AF" stroke-width="1.2" stroke-dasharray="5 4"/>
+  <text x="710" y="460" text-anchor="end" font-size="10" font-style="italic" fill="#BE123C">canale posteriore (server ↔ server)</text>
+
+  <!-- intestazioni -->
+  <g filter="url(#sh3)">
+    <rect x="40" y="46" width="160" height="46" rx="9" fill="#FEF3C7" stroke="#B45309" stroke-width="1.5"/>
+    <rect x="300" y="46" width="160" height="46" rx="9" fill="#CCFBF1" stroke="#0D9488" stroke-width="1.5"/>
+    <rect x="560" y="46" width="160" height="46" rx="9" fill="#E0E7FF" stroke="#4338CA" stroke-width="1.5"/>
+  </g>
+  <text x="120" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#92400E">Utente / Browser</text>
+  <text x="380" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#115E59">App Client</text>
+  <text x="640" y="74" text-anchor="middle" font-size="13" font-weight="700" fill="#3730A3">OpenID Provider</text>
+
+  <!-- lifelines -->
+  <line x1="120" y1="92" x2="120" y2="512" stroke="#B45309" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.6"/>
+  <line x1="380" y1="92" x2="380" y2="512" stroke="#0D9488" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.6"/>
+  <line x1="640" y1="92" x2="640" y2="512" stroke="#4338CA" stroke-width="1.2" stroke-dasharray="4 5" opacity="0.6"/>
+
+  <!-- step 1: Utente -> Client -->
+  <text x="250" y="120" text-anchor="middle" font-size="11" font-weight="600" fill="#334155">1 · Richiede una risorsa protetta</text>
+  <line x1="120" y1="128" x2="378" y2="128" stroke="#475569" stroke-width="1.6" marker-end="url(#arS)"/>
+
+  <!-- step 2: Client -> Browser -->
+  <text x="250" y="160" text-anchor="middle" font-size="11" font-weight="600" fill="#334155">2 · 302 Redirect verso /authorize</text>
+  <line x1="380" y1="168" x2="122" y2="168" stroke="#475569" stroke-width="1.6" marker-end="url(#arS)"/>
+
+  <!-- step 3: Browser -> Provider -->
+  <text x="380" y="200" text-anchor="middle" font-size="10.5" font-weight="600" fill="#334155">3 · GET /authorize  (client_id, redirect_uri, scope=openid, response_type=code)</text>
+  <line x1="120" y1="208" x2="638" y2="208" stroke="#475569" stroke-width="1.6" marker-end="url(#arS)"/>
+
+  <!-- step 4: Provider -> Browser -->
+  <text x="380" y="240" text-anchor="middle" font-size="11" font-weight="600" fill="#334155">4 · Mostra la pagina di login</text>
+  <line x1="640" y1="248" x2="122" y2="248" stroke="#475569" stroke-width="1.6" marker-end="url(#arS)"/>
+
+  <!-- step 5: Browser -> Provider -->
+  <text x="380" y="280" text-anchor="middle" font-size="11" font-weight="600" fill="#334155">5 · Inserisce credenziali e dà il consenso</text>
+  <line x1="120" y1="288" x2="638" y2="288" stroke="#475569" stroke-width="1.6" marker-end="url(#arS)"/>
+
+  <!-- step 6: Provider -> Browser -->
+  <text x="380" y="320" text-anchor="middle" font-size="10.5" font-weight="600" fill="#334155">6 · Redirect a redirect_uri?code=AUTH_CODE</text>
+  <line x1="640" y1="328" x2="122" y2="328" stroke="#475569" stroke-width="1.6" marker-end="url(#arS)"/>
+
+  <!-- step 7: Browser -> Client -->
+  <text x="250" y="360" text-anchor="middle" font-size="11" font-weight="600" fill="#334155">7 · Consegna del code</text>
+  <line x1="120" y1="368" x2="378" y2="368" stroke="#475569" stroke-width="1.6" marker-end="url(#arS)"/>
+
+  <!-- step 8: Client -> Provider (back channel) -->
+  <text x="510" y="400" text-anchor="middle" font-size="10.5" font-weight="700" fill="#BE123C">8 · POST /token  (code + client_secret)</text>
+  <line x1="380" y1="408" x2="638" y2="408" stroke="#BE123C" stroke-width="1.8" marker-end="url(#arR)"/>
+
+  <!-- step 9: Provider -> Client (back channel) -->
+  <text x="510" y="440" text-anchor="middle" font-size="10.5" font-weight="700" fill="#BE123C">9 · ID Token + Access Token (JWT)</text>
+  <line x1="640" y1="448" x2="382" y2="448" stroke="#BE123C" stroke-width="1.8" marker-end="url(#arR)"/>
+
+  <!-- step 10: Client -> Utente -->
+  <text x="250" y="500" text-anchor="middle" font-size="11" font-weight="600" fill="#115E59">10 · Accesso consentito ✓</text>
+  <line x1="380" y1="508" x2="122" y2="508" stroke="#0D9488" stroke-width="1.8" marker-end="url(#arS)"/>
+
+  <!-- legenda -->
+  <line x1="120" y1="548" x2="150" y2="548" stroke="#BE123C" stroke-width="1.8"/>
+  <text x="158" y="552" font-size="10.5" fill="#475569">Canale posteriore: scambio diretto server↔server. Il <tspan font-family="monospace" fill="#BE123C">client_secret</tspan> non passa mai dal browser.</text>
+</svg>
