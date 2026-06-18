@@ -25,7 +25,8 @@ Servizi:
 - [Autenticazione SSO OpenId](/approfondimenti/dispensa-openid.md)
 - [Continuità di servizio](/approfondimenti/continuita_di_servizio.md)
 - [Backup](backup.md)
-- [Spillamento fibra](/esempi/progetti/dettaglio_spillamento_fibra.md)
+- [Spillamento fibra](/esempi/progetti/dettaglio_spillamento_fibra.md) 
+- [Subnetting Ipv6](/esempi/progetti/svolgimento_smart_road.md)
   
 ## **Caso d'uso LoRaWan** 
 
