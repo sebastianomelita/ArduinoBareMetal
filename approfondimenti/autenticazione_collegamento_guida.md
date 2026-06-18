@@ -77,11 +77,14 @@ Per questo in un progetto serio coesistono: il **tornello con badge** all'ingres
 | **Challenge-response (CHAP)** | sai + nonce | no (no auth server) | media | autenticazione senza inviare il segreto in chiaro |
 | **2FA / TOTP** | sai + hai | no di per sé | forte — LoA3 | MFA sulle funzioni che muovono denaro |
 | **OAuth 2.0 + OpenID Connect** | token su password/MFA | no (federata) | media-forte | login app, `Authorization: Bearer <JWT>`, Auth Code + PKCE |
+| **JWT / bearer token** (OAuth2 Client Credentials) | hai (token; o firma con chiave privata) | no (bearer) | media → forte | servizio↔servizio M2M; `Authorization: Bearer <JWT>` |
 | **Asimmetrica, sfida firmata (TLS server)** | hai (chiave privata) | no | forte | il server si autentica con cert + firma sulla sfida |
 | **mTLS / asimmetrica mutua** | hai (chiave privata) su entrambi i lati | sì (3-way) | forte — LoA4 | servizio↔servizio; utente solo in contesti ad alta garanzia (smartcard/CIE) |
 | **DH effimero firmato (DHE/ECDHE)** | hai + nonce DH firmati | sì | forte + **PFS** | autenticazione *e* chiave di sessione effimera insieme |
 
 > **Attenzione alla formulazione.** Per servizi/processi mTLS è lo standard forte. Per gli **utenti umani**, al livello applicativo, la norma è **token federati (OAuth/OIDC) + MFA**; il certificato client sull'utente compare solo al LoA4 (chiave su hardware tamper-resistant). Quindi: *forte ≠ automaticamente mTLS*, nemmeno per gli utenti.
+
+> **JWT per i servizi (M2M).** Un web service si autentica spesso con un **JWT** ottenuto via OAuth 2.0 *Client Credentials*, presentato come `Authorization: Bearer <JWT>`. Differenza chiave rispetto a mTLS: il JWT è un *bearer* — **viaggia sul filo** e chi lo possiede lo può usare, quindi è replayabile fino alla scadenza se trafugato. Mitigazioni: TTL breve, validazione di `issuer`/`audience`, TLS, e soprattutto i token *sender-constrained* (**DPoP**, RFC 9449; o **mTLS-bound**, RFC 8705) che legano il token a una chiave. La forza sale a forte se il servizio si autentica con `private_key_jwt` (firma asimmetrica, RFC 7523). mTLS e JWT non si escludono: tipicamente **mTLS = identità del servizio**, **JWT = autorizzazione (claims/scope)**.
 
 ---
 
@@ -180,6 +183,10 @@ Le tre fasi:
 | **PAP / CHAP** | protocolli password / sfida-risposta |
 | **OTP / TOTP** | one-time password / OTP basata sul tempo |
 | **OAuth 2.0 / OIDC** | delega di autorizzazione / livello di identità sopra OAuth |
+| **JWT** | JSON Web Token: token con claim firmati, usato come credenziale (spesso bearer) |
+| **bearer token** | credenziale "di chi la possiede"; va protetta in transito (TLS) e con scadenza breve |
+| **Client Credentials** | flusso OAuth2 per autenticazione service-to-service (M2M) |
+| **DPoP / mTLS-bound** | token *sender-constrained*, legati a una chiave per impedirne il riuso se rubati |
 | **MFA / 2FA** | autenticazione a più / due fattori |
 | **PFS** | Perfect Forward Secrecy (chiavi di sessione effimere) |
 | **DHE / ECDHE** | Diffie-Hellman effimero (anche su curve ellittiche) |
