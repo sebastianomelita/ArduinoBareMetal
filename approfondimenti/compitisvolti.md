@@ -1,7 +1,5 @@
 Compiti d'esame di sistemi e reti svolti:
 
-Ecco la tabella:
-
 | Link del compito | Argomenti prima parte |
 |---|---|
 | [Sede centrale e sede remota unite con una VPN](/esempi/progetti/solo_router.md) | VPN TUN, ACL, routing statico, routing OSPF, crittografia |
