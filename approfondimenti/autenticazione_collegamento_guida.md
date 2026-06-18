@@ -135,6 +135,22 @@ Quando il compito chiede l'autenticazione **forte e mutua** (tipica di mTLS e de
 
 Idea di fondo: chi verifica invia una **sfida fresca** (nonce); solo chi possiede la **chiave privata** può produrre la firma corretta. Il certificato (firmato da una CA fidata) serve solo ad autenticare la chiave pubblica con cui si verifica la firma. Con sfide Diffie-Hellman effimere (DHE/ECDHE) si ottiene anche la **Perfect Forward Secrecy**.
 
+### 8.1 Autenticazione mutua col tunnel (server forte + client debole dentro)
+
+Non sempre entrambe le parti hanno un certificato. Il caso più frequente sul web è asimmetrico: il **server** è forte (certificato), il **client/utente** è debole (password). La soluzione è far autenticare per prima la parte forte, che **crea il canale cifrato**, e far autenticare la parte debole **dentro** quel tunnel.
+
+<p align="center">
+  <img src="img/tunnel_pap_chap.svg" alt="Autenticazione mutua con tunnel: server asimmetrico + client PAP/CHAP dentro" width="860">
+</p>
+
+Le tre fasi:
+
+1. **Autenticazione del server (asimmetrica, forte).** Il client invia una sfida; il server risponde con la firma sulla sfida e il proprio certificato. Il client lo valida (CA fidata, periodo di validità, dominio = URL) e verifica la firma → server autenticato.
+2. **Creazione del tunnel cifrato.** Il client invia una chiave di sessione cifrata con la chiave pubblica del server (semplice, ma *senza* PFS), oppure le due parti eseguono uno scambio Diffie-Hellman effimero (DHE/ECDHE) ottenendo una chiave di sessione effimera (*con* PFS).
+3. **Autenticazione del client dentro il tunnel.** Solo ora il client invia la credenziale debole: **PAP** (username + password) cifrati dal tunnel, oppure **CHAP** (il server invia un nonce, il client risponde con `HASH(nonce, password)`). Il server verifica e l'autenticazione mutua è completa.
+
+È esattamente lo schema di **PEAP / EAP-TTLS** e di **HTTPS + login**: il TLS esterno autentica il server e costruisce il canale, il metodo interno (password) autentica il client al riparo. Senza il tunnel, PAP sarebbe esposto a intercettazione, replay e MITM — per questo PAP/CHAP "da soli" vanno usati solo su canale già sicuro.
+
 ---
 
 ## 9. Errori da evitare nel compito
