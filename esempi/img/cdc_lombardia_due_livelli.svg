@@ -257,9 +257,8 @@
 <text class="tt" x="1220" y="494" text-anchor="middle" dominant-baseline="central" fill="#854F0B">Router naz. Controller</text>
 <text class="tt" x="1220" y="510" text-anchor="middle" dominant-baseline="central" fill="#BA7517">VLAN 40 · 10.40.0.0/24</text>
 
-<rect x="1140" y="544" width="160" height="48" rx="6" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.8" stroke-dasharray="3 3"/>
-<text class="tt" x="1220" y="562" text-anchor="middle" dominant-baseline="central" fill="#2C2C2A">Management</text>
-<text class="tt" x="1220" y="578" text-anchor="middle" dominant-baseline="central" fill="#5F5E5A">resta regionale (OOB)</text>
+<text class="tt" x="1140" y="558" fill="#5F5E5A">Management: nessun router nazionale —</text>
+<text class="tt" x="1140" y="572" fill="#5F5E5A">gateway al router regionale (OOB)</text>
 
 <!-- ====================== LINK L7 MQTT (puntinato azzurro) ====================== -->
 <path d="M 150 320 C 350 380, 600 410, 730 425" stroke="#2A8FD4" stroke-width="1.5" fill="none" stroke-dasharray="2 4"/>
@@ -290,6 +289,6 @@
 <text class="tt" x="790" y="167">Collegamento radio L2 LoRaWAN (868 MHz)</text>
 
 <line x1="720" y1="180" x2="780" y2="180" stroke="#8E44AD" stroke-width="2"/>
-<text class="tt" x="790" y="184">Dorsale per funzione → router nazionale</text>
+<text class="tt" x="790" y="184">Dorsale L3 · MPLS L3VPN → router nazionale</text>
 
 </svg>
