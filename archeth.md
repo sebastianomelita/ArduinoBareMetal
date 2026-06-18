@@ -23,7 +23,7 @@ Servizi:
 - [Autenticazione SSO Active Directory](/approfondimenti/00_dispensa_principale.md)
 - [Autenticazione utente](/approfondimenti/autenticazione_utente.md)
 - [Autenticazione di un link](/approfondimenti/autenticazione_collegamento_guida.md)
-- [Autenticazione SSO OpenId](/approfondimenti/approfondimenti/dispensa-openid.md)
+- [Autenticazione SSO OpenId](/approfondimenti/dispensa-openid.md)
 - [Continuità di servizio](/approfondimenti/continuita_di_servizio.md)
 - [Backup](backup.md)
 - [Spillamento fibra](/esempi/progetti/dettaglio_spillamento_fibra.md) 
