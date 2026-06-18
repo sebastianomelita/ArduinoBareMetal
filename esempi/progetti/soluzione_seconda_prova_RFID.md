@@ -10,6 +10,8 @@
 
 > Documento completo: analisi, architettura della rete di reti, planimetrie e cablaggio, alberi degli apparati, indirizzamento e configurazione, sicurezza e continuità di servizio, quesiti della seconda parte, motivazione delle scelte tecnologiche con riferimenti alla dispensa.
 
+[Testo della prova rete RFID metropolitana](/esempi/progetti/1_simulazione_seconda_prova_informatica_ITIA_26.pdf)
+
 ---
 
 # PRIMA PARTE
