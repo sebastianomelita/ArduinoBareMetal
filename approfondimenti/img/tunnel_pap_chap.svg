@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 620" font-family="'Segoe UI', system-ui, -apple-system, Roboto, sans-serif">
+  <style>
+    .ttl { font-size:19px; font-weight:700; fill:#18212B; }
+    .sub { font-size:13px; fill:#586673; }
+    .act { font-size:14px; font-weight:800; fill:#fff; }
+    .acts{ font-size:11px; fill:#B8C2CC; }
+    .step{ font-size:11px; font-weight:800; fill:#fff; }
+    .msg { font-size:13px; font-weight:700; fill:#18212B; }
+    .mono{ font-family:'SFMono-Regular',Consolas,monospace; font-size:12.5px; fill:#B0531F; font-weight:700; }
+    .note{ font-size:11.5px; font-style:italic; fill:#586673; }
+    .phase{ font-size:11.5px; font-weight:800; fill:#fff; letter-spacing:.03em; }
+  </style>
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#18212B"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="860" height="620" fill="#FFFFFF"/>
+  <text x="32" y="34" class="ttl">Autenticazione mutua con tunnel cifrato &#8212; server forte + client debole (PAP/CHAP) dentro</text>
+  <text x="32" y="54" class="sub">La parte forte crea il canale sicuro; la controparte si autentica con credenziale debole, al riparo dal tunnel.</text>
+
+  <!-- actors -->
+  <rect x="130" y="74" width="160" height="46" rx="9" fill="#1E6E66"/>
+  <text x="210" y="96" text-anchor="middle" class="act">Client (Alice)</text>
+  <text x="210" y="112" text-anchor="middle" class="acts">ha la password (debole)</text>
+
+  <rect x="570" y="74" width="160" height="46" rx="9" fill="#2C5C8F"/>
+  <text x="650" y="96" text-anchor="middle" class="act">Server (Bob)</text>
+  <text x="650" y="112" text-anchor="middle" class="acts">ha cert + chiave privata</text>
+
+  <!-- lifelines -->
+  <line x1="210" y1="120" x2="210" y2="548" stroke="#CCD4DB" stroke-width="2" stroke-dasharray="3 4"/>
+  <line x1="650" y1="120" x2="650" y2="548" stroke="#CCD4DB" stroke-width="2" stroke-dasharray="3 4"/>
+
+  <!-- PHASE 1 -->
+  <rect x="240" y="138" width="380" height="22" rx="11" fill="#2C5C8F"/>
+  <text x="430" y="153" text-anchor="middle" class="phase">1 &#183; AUTENTICAZIONE DEL SERVER (asimmetrica, forte)</text>
+
+  <circle cx="210" cy="186" r="11" fill="#18212B"/><text x="210" y="190" text-anchor="middle" class="step">1</text>
+  <line x1="214" y1="186" x2="644" y2="186" stroke="#18212B" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="262" y="176" class="msg">identit&#224; Client + sfida <tspan class="mono">nonce b</tspan></text>
+
+  <circle cx="650" cy="220" r="11" fill="#18212B"/><text x="650" y="224" text-anchor="middle" class="step">2</text>
+  <line x1="646" y1="220" x2="216" y2="220" stroke="#18212B" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="252" y="210" class="msg"><tspan class="mono">firma(b)</tspan> + certificato del server</text>
+  <text x="150" y="248" class="note">verifica certificato (CA, validit&#224;, dominio) + firma &#8594; SERVER autenticato</text>
+
+  <!-- PHASE 2 -->
+  <rect x="270" y="268" width="320" height="22" rx="11" fill="#1E6E66"/>
+  <text x="430" y="283" text-anchor="middle" class="phase">2 &#183; CREAZIONE DEL TUNNEL CIFRATO</text>
+
+  <circle cx="210" cy="316" r="11" fill="#18212B"/><text x="210" y="320" text-anchor="middle" class="step">3</text>
+  <line x1="214" y1="316" x2="644" y2="316" stroke="#18212B" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="244" y="306" class="msg">chiave di sessione cifrata con la <tspan class="mono">pubkey</tspan> del server</text>
+  <text x="244" y="338" class="note">oppure scambio Diffie-Hellman effimero (DHE/ECDHE) &#8594; PFS</text>
+
+  <!-- PHASE 3 : tunnel band -->
+  <rect x="150" y="356" width="560" height="150" rx="12" fill="#1E6E66" fill-opacity="0.07" stroke="#1E6E66" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <rect x="166" y="346" width="300" height="22" rx="11" fill="#1E6E66"/>
+  <text x="316" y="361" text-anchor="middle" class="phase">3 &#183; DENTRO IL TUNNEL: AUTENTICA IL CLIENT</text>
+
+  <circle cx="210" cy="406" r="11" fill="#18212B"/><text x="210" y="410" text-anchor="middle" class="step">4</text>
+  <line x1="214" y1="406" x2="644" y2="406" stroke="#18212B" stroke-width="1.8" marker-end="url(#arr)"/>
+  <text x="244" y="396" class="msg"><tspan class="mono">PAP</tspan>: username + password (cifrati dal tunnel)</text>
+  <text x="244" y="432" class="note">verifica HASH(password + salt) in tabella &#8594; CLIENT autenticato</text>
+  <text x="170" y="462" class="note">variante <tspan font-weight="700">CHAP</tspan>: il server invia un nonce, il client risponde con <tspan class="mono">HASH(nonce, pwd)</tspan></text>
+  <text x="170" y="484" class="note">senza il tunnel la password sarebbe esposta a intercettazione, replay e MITM</text>
+
+  <!-- RESULT -->
+  <line x1="210" y1="528" x2="650" y2="528" stroke="#1C5440" stroke-width="2"/>
+  <rect x="318" y="516" width="224" height="24" rx="12" fill="#1C5440"/>
+  <text x="430" y="533" text-anchor="middle" class="step">AUTENTICAZIONE MUTUA COMPLETATA</text>
+
+  <!-- footnote -->
+  <rect x="32" y="560" width="796" height="48" rx="9" fill="#F1F4F6" stroke="#CCD4DB"/>
+  <text x="48" y="582" class="sub"><tspan font-weight="800" fill="#2C5C8F">Schema PEAP / EAP-TTLS, HTTPS + login.</tspan> La parte forte (server, certificato) autentica per prima e</text>
+  <text x="48" y="600" class="sub">costruisce il canale; la parte debole (client, password) si autentica solo dopo, protetta dentro il tunnel.</text>
+</svg>
