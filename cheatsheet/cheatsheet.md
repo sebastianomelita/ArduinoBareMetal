@@ -497,6 +497,57 @@ echo "show stat" | sudo socat stdio /var/run/haproxy/admin.sock
 
 ---
 
+## RAID — tolleranza ai guasti disco (storage del NAS)
+> Ridondanza **locale** dei dischi di un nodo: tiene in piedi lo storage al guasto di uno (o due) dischi. **Non è un backup** (non copre cancellazioni, ransomware, doppio guasto oltre soglia) e **non sostituisce** la regola 3-2-1 né DRBD: si **somma** ad essi.
+
+### Scelta del livello
+
+| Livello     | Min dischi | Tollera        | Capacità utile | Uso tipico                                  |
+| ----------- | ---------- | -------------- | -------------- | ------------------------------------------- |
+| RAID 0      | 2          | nessun guasto  | 100%           | solo prestazioni (scratch) — **mai** dati   |
+| RAID 1      | 2          | 1 disco        | 50%            | mirror semplice (boot, piccoli volumi)      |
+| RAID 5      | 3          | 1 disco        | (n−1)/n        | parità singola; rebuild lungo su dischi big |
+| **RAID 6**  | 4          | **2 dischi**   | (n−2)/n        | **doppia parità** → repository capienti     |
+| **RAID 10** | 4          | 1 per coppia   | 50%            | mirror+stripe → **I/O alto** (DB, VM)       |
+
+> 🔑 File grandi e sequenziali (immagini, backup, point cloud) → **RAID 6**. Tante scritture casuali (DB) → **RAID 10**. **Mai RAID 0** per dati.
+
+### mdadm — creazione e gestione (software RAID Linux)
+
+```
+# RAID 6: 4 dischi dati + 1 hot spare, chunk 256K per file grandi
+mdadm --create /dev/md0 --level=6 --raid-devices=4 --spare-devices=1 --chunk=256 /dev/sd[b-f]
+mdadm --grow /dev/md0 --bitmap=internal          # write-intent bitmap → resync rapido dopo crash
+
+# Filesystem allineato allo stripe (ext4): stride=chunk/blocco, stripe-width=stride×dischi-dati
+mkfs.ext4 -b 4096 -E stride=64,stripe-width=128 /dev/md0     # 256K/4K=64 ; 64×2(dati)=128
+
+mdadm --detail --scan >> /etc/mdadm/mdadm.conf               # rende persistente l'array
+mdadm --monitor --scan --mail admin@host --daemonise         # alert su guasto disco
+```
+
+```
+# Operazioni tipiche
+cat /proc/mdstat                                     # stato rapido dell'array
+mdadm --detail /dev/md0                              # livello, dischi, rebuild
+mdadm /dev/md0 --fail /dev/sdb --remove /dev/sdb     # disco guasto → poi --add del nuovo
+echo check > /sys/block/md0/md/sync_action           # scrubbing on-demand (errori latenti)
+```
+
+### Cosa si configura di solito (al netto della "babele" HW/SW)
+
+- **Hot spare**: disco di riserva che subentra **da solo** al guasto (rebuild automatico).
+- **Chunk/stripe size**: grande per I/O sequenziale, piccolo per casuale.
+- **Write-intent bitmap**: resync rapido dopo crash o rimozione temporanea di un disco.
+- **Allineamento FS** (`stride`/`stripe-width`) per non spezzare le scritture sullo stripe.
+- **Monitoraggio**: `mdadm --monitor` + **SMART** (`smartd`); **scrubbing** periodico (patrol read).
+- **Cache di scrittura** (controller HW): write-back **solo con BBU/flash-backed**, altrimenti write-through.
+
+> 💡 Su **controller RAID hardware** o **ZFS** (`zpool create … raidz2`) i comandi cambiano, ma i concetti — livello, hot spare, stripe, scrubbing, cache+BBU, SMART — sono identici.
+
+---
+
+
 ## 12 · DRBD — Replica e Failover
 
 DRBD replica solo il blocco: la promozione del secondario **non è automatica**.
