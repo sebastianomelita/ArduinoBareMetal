@@ -1,0 +1,74 @@
+<svg viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .tit{font-size:13px;font-weight:700;fill:#202124}
+    .sub{font-size:11px;fill:#5f6368}
+    .nd{font-size:13px;font-weight:700;fill:#fff}
+    .coord{fill:#137333}
+    .rout{fill:#1565c0}
+    .ed{fill:#90a4ae}
+    .net{fill:#fef7e0;stroke:#ea8600}
+    .lk{stroke:#5f6368;stroke-width:2;fill:none}
+    .bk{stroke:#9aa0a6;stroke-width:2;stroke-dasharray:5 4;fill:none}
+    .up{stroke:#137333;stroke-width:3;fill:none}
+  </style>
+
+  <text x="480" y="26" text-anchor="middle" class="tit" font-size="16">WSN Zigbee come rete partecipante — ruoli, mesh, backup e uplink</text>
+
+  <!-- IP cloud -->
+  <ellipse cx="800" cy="90" rx="120" ry="48" class="net" stroke-width="2"/>
+  <text x="800" y="84" text-anchor="middle" class="tit">Rete IP / Broker MQTT</text>
+  <text x="800" y="104" text-anchor="middle" class="sub">link L7: gateway WSN ↔ broker</text>
+
+  <!-- Coordinator / gateway -->
+  <circle cx="330" cy="110" r="40" class="coord"/>
+  <text x="330" y="108" text-anchor="middle" class="nd">C</text>
+  <text x="330" y="124" text-anchor="middle" class="sub" fill="#fff">gateway</text>
+  <text x="330" y="166" text-anchor="middle" class="sub" font-weight="700">Coordinator = gateway + traduttore</text>
+
+  <!-- uplink -->
+  <path d="M370 100 Q560 70 686 86" class="up"/>
+  <text x="540" y="70" text-anchor="middle" class="sub" fill="#137333" font-weight="700">uplink Wi-Fi o Ethernet (indifferente a valle)</text>
+
+  <!-- routers -->
+  <circle cx="170" cy="280" r="32" class="rout"/>
+  <text x="170" y="285" text-anchor="middle" class="nd">R1</text>
+  <circle cx="360" cy="280" r="32" class="rout"/>
+  <text x="360" y="285" text-anchor="middle" class="nd">R2</text>
+  <circle cx="540" cy="280" r="32" class="rout"/>
+  <text x="540" y="285" text-anchor="middle" class="nd">R3</text>
+
+  <!-- coordinator to routers -->
+  <line x1="310" y1="145" x2="186" y2="252" class="lk"/>
+  <line x1="330" y1="150" x2="358" y2="248" class="lk"/>
+  <line x1="356" y1="142" x2="522" y2="254" class="lk"/>
+  <!-- mesh between routers -->
+  <line x1="202" y1="280" x2="328" y2="280" class="lk"/>
+  <line x1="392" y1="280" x2="508" y2="280" class="lk"/>
+  <!-- backup path -->
+  <path d="M180 312 Q360 400 530 312" class="bk"/>
+  <text x="360" y="378" text-anchor="middle" class="sub" fill="#9aa0a6">percorso di backup se cade un nodo centrale</text>
+
+  <!-- end devices -->
+  <circle cx="110" cy="420" r="24" class="ed"/>
+  <text x="110" y="425" text-anchor="middle" class="nd">ED</text>
+  <circle cx="200" cy="420" r="24" class="ed"/>
+  <text x="200" y="425" text-anchor="middle" class="nd">ED</text>
+  <circle cx="360" cy="420" r="24" class="ed"/>
+  <text x="360" y="425" text-anchor="middle" class="nd">ED</text>
+  <circle cx="540" cy="420" r="24" class="ed"/>
+  <text x="540" y="425" text-anchor="middle" class="nd">ED</text>
+  <line x1="150" y1="304" x2="120" y2="398" class="lk"/>
+  <line x1="178" y1="308" x2="196" y2="398" class="lk"/>
+  <line x1="360" y1="312" x2="360" y2="396" class="lk"/>
+  <line x1="540" y1="312" x2="540" y2="396" class="lk"/>
+  <text x="325" y="462" text-anchor="middle" class="sub">End Device = sensori a batteria (furto / incendio)</text>
+
+  <!-- legend -->
+  <rect x="700" y="180" width="240" height="150" rx="8" fill="#ffffff" stroke="#dadce0"/>
+  <text x="712" y="200" class="sub" font-weight="700" fill="#202124">Legenda</text>
+  <circle cx="722" cy="218" r="9" class="coord"/><text x="740" y="222" class="sub">Coordinator (= gateway)</text>
+  <circle cx="722" cy="242" r="9" class="rout"/><text x="740" y="246" class="sub">Router (alimentato, mesh)</text>
+  <circle cx="722" cy="266" r="9" class="ed"/><text x="740" y="270" class="sub">End Device (sensore)</text>
+  <line x1="713" y1="288" x2="743" y2="288" class="lk"/><text x="750" y="292" class="sub">link primario</text>
+  <line x1="713" y1="310" x2="743" y2="310" class="bk"/><text x="750" y="314" class="sub">link di backup</text>
+</svg>
