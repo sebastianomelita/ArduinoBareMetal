@@ -3,6 +3,8 @@
 
 > **Nota di metodo.** È svolta per intero la **Prima parte** (obbligatoria) e, per completezza di studio, **tutti e quattro i quesiti** della Seconda parte: in sede d'esame se ne scelgono **due**. Numeri e quantità sono *ipotesi di dimensionamento* esplicitate: l'importante in questa traccia non è il valore esatto, ma la coerenza tra ipotesi, scelte progettuali e motivazioni.
 
+> 📎 **Approfondimenti tecnici** (routing e autenticazione Wi-Fi mesh, SSID statico/dinamico, port-forward SSH in IOS, allocazione dei canali, continuità di servizio link/VPN e NAS — con comandi): vedi **[approfondimento_A038.md](approfondimento_A038.md)**.
+
 ---
 
 ## Ipotesi aggiuntive e di dimensionamento
@@ -37,14 +39,24 @@ Poiché il cantiere è temporaneo e senza cablaggio strutturato, si realizza una
 
 **Schema di indirizzamento**
 
-- IPv4 **privato** con subnet **dedicata per cantiere** per evitare sovrapposizioni nei tunnel: es. `10.10.<id_cantiere>.0/24`.
-- **Segmentazione in VLAN**: `tablet`, `telecamere`, `sensori`, `management` (riduce il dominio di broadcast e isola i flussi a fini di sicurezza).
-- **DHCP** per i client dinamici (tablet), **IP statici/reservation** per l'infrastruttura (router, AP, telecamere, gateway IoT).
+- **Indirizzamento classless, maschera unica `/24` (no VLSM)** sulle subnet di accesso. Poiché la VPN è in **TUN (L3, instradata)**, ogni cantiere ha **subnet distinte** dalla sede e dagli altri cantieri (è OSPF a propagarle, §Punto 3). Al cantiere *k* si assegna il blocco `10.k.0.0/16`.
+- **VLAN: non indispensabili** per la connettività in una rete piccola e temporanea (una **subnet unica `/24`** sarebbe accettabile), ma **consigliate per sicurezza** per isolare almeno i **sensori IoT** (dispositivi deboli) e il **management** dal traffico client. Sul Wi-Fi/mesh si realizzano come **SSID distinti** (associazione VLAN↔SSID). *(Routing e autenticazione dei nodi mesh, SSID statico/dinamico e allocazione dei canali → [approfondimento](approfondimento_A038.md).)*
+
+| VLAN | Zona | Subnet `/24` (cantiere *k*) | Esempio cantiere 1 | GW |
+|---|---|---|---|---|
+| 10 | Utenti / Tablet | `10.k.10.0/24` | `10.1.10.0/24` | `.254` |
+| 20 | Telecamere timelapse | `10.k.20.0/24` | `10.1.20.0/24` | `.254` |
+| 30 | Sensori IoT | `10.k.30.0/24` | `10.1.30.0/24` | `.254` |
+| 99 | Management | `10.k.99.0/24` | `10.1.99.0/24` | `.254` |
+
+> Variante minimale (cantiere molto piccolo): **subnet unica** `10.k.0.0/24`, senza VLAN, con segmentazione affidata alle sole regole host del firewall di gateway.
+
+- **DHCP** per i client dinamici (tablet), **IP statici/reservation** per l'infrastruttura (router `.254`, AP, telecamere, gateway IoT).
 
 **Protocolli e servizi**
 
 - **DHCP, DNS** (forwarder locale), **NTP** (sincronizzazione oraria: fondamentale per timestamp di log e timelapse).
-- **IPsec** (tunnel verso la sede); **WPA3-Enterprise / 802.1X** sul Wi-Fi.
+- **Tunnel L3/TUN (GRE) protetto da IPsec** verso la sede, con **OSPF** per il routing; **WPA3-Enterprise / 802.1X** sul Wi-Fi.
 - **MQTT** per la telemetria/allarmi dei sensori; **SFTP/FTPS/HTTPS** per il trasferimento di nuvole di punti e fotogrammi al repository di sede.
 - **Firewall** sul gateway con regole di default-deny in ingresso.
 
@@ -59,7 +71,16 @@ Poiché il cantiere è temporaneo e senza cablaggio strutturato, si realizza una
 1. **WAN.** L'ADSL è asimmetrica con upload basso: inadeguata a **ricevere** grandi nuvole di punti e flussi video da più cantieri. Si passa a **fibra FTTH simmetrica** (o connessione business) con **upload elevato**, e si aggiunge **ridondanza** (seconda linea ISP e/o failover 4G/5G).
 2. **Sicurezza perimetrale.** **NGFW/UTM** con **IPS/IDS** che funge anche da **concentratore VPN** per terminare i tunnel dei cantieri, e creazione di una **DMZ** per i servizi esposti (repository di ricezione, reverse proxy, broker MQTT).
 3. **Server e storage.** **NAS/SAN** per il repository (nuvole di punti, fotogrammi, video timelapse); **server applicativi** per il software BIM specialistico; **server di autenticazione** (Active Directory/LDAP + **RADIUS**); **database** per i dati sensori e il **registro di log storico**; **SIEM** e sistema di **backup**.
-4. **Segmentazione e core.** **Switch core L3** con **VLAN** (server, uffici tecnici, DMZ, management) e routing inter-VLAN controllato da policy.
+4. **Segmentazione e core.** **Switch core L3** con **VLAN** e routing inter-VLAN controllato da policy. In sede le **VLAN sono necessarie**: convivono livelli di fiducia diversi (server farm, DMZ, uffici, management) ed è il presupposto delle policy *default-deny* sui confini. Indirizzamento **classless `/24`** nel blocco `10.0.0.0/16`:
+
+   | VLAN | Zona | Subnet `/24` | GW |
+   |---|---|---|---|
+   | 10 | Uffici tecnici (workstation BIM) | `10.0.10.0/24` | `.254` |
+   | 20 | Wi-Fi staff | `10.0.20.0/24` | `.254` |
+   | 30 | Server farm (NAS/SAN, app BIM, AD/RADIUS, DB, MQTT) | `10.0.30.0/24` | `.254` |
+   | 40 | DMZ (repository ricezione, reverse proxy) | `10.0.40.0/24` | `.254` |
+   | 99 | Management apparati | `10.0.99.0/24` | `.254` |
+
 5. **Continuità.** **UPS**, ridondanza degli apparati critici, backup e procedura di **disaster recovery**.
 
 ## Punto 3 — Canali cantiere ↔ sede e dimensionamento della banda
@@ -86,6 +107,31 @@ Con **5 cantieri** → ~**30 GB/giorno** verso la sede. Trasferendoli in una **f
 Considerando overhead e picchi, alla sede si provvede **upload ≥ 50–100 Mbps simmetrici** (la fibra copre con ampio margine). Lato cantiere bastano i **picchi del 4G/5G** (decine di Mbps): la media per cantiere è ~1,7 Mbps. Le nuvole di punti, non real-time, si **schedulano** (es. di notte) per non saturare il link.
 
 **Apparati da adottare:** router cellulari industriali **dual-SIM** (cantiere), **NGFW/concentratore VPN** e **router fibra** (sede), con failover ISP/4G.
+
+**Indirizzamento dei link e routing.** Il piano è **a due livelli**: `/24` uniforme per le subnet di accesso/servizio e **`/30` sui link punto-punto** dei tunnel (2 host utili, nessuno spreco), tutti ricavati dal blocco `10.255.0.0/24`.
+
+| Interfaccia | Tratta | Subnet `/30` | IP lato cantiere | IP lato sede |
+|---|---|---|---|---|
+| `Tunnel1` | sede ↔ cantiere 1 | `10.255.0.0/30` | `10.255.0.1` | `10.255.0.2` |
+| `Tunnel2` | sede ↔ cantiere 2 | `10.255.0.4/30` | `10.255.0.5` | `10.255.0.6` |
+| `Tunnel3` | sede ↔ cantiere 3 | `10.255.0.8/30` | `10.255.0.9` | `10.255.0.10` |
+| `Tunnel4` | sede ↔ cantiere 4 | `10.255.0.12/30` | `10.255.0.13` | `10.255.0.14` |
+| `Tunnel5` | sede ↔ cantiere 5 | `10.255.0.16/30` | `10.255.0.17` | `10.255.0.18` |
+
+Il **routing è dinamico con OSPF** sui tunnel (`ip ospf network point-to-point`, `area 0`): ogni router annuncia i propri `/24` e la sede raggiunge tutti i cantieri (e viceversa) senza NAT interno — gli indirizzi sono tutti distinti. Il **NAT** resta solo sull'uscita Internet di ciascun router di confine. Estratto GRE lato sede (`Tunnel1`, l'altro capo è speculare):
+
+```cisco
+R-SEDE(config)# interface Tunnel1
+R-SEDE(config-if)# ip address 10.255.0.2 255.255.255.252
+R-SEDE(config-if)# tunnel source <IP-pub-sede>
+R-SEDE(config-if)# tunnel destination <IP-pub-cantiere1>
+R-SEDE(config-if)# tunnel mode gre ip
+R-SEDE(config-if)# ip ospf network point-to-point
+R-SEDE(config-if)# ip ospf 100 area 0
+R-SEDE(config-if)# no shutdown
+```
+
+> Nota sulle maschere: l'uso del `/30` solo sulla dorsale è una forma *minima* di VLSM, prassi standard sui link punto-punto. Per un piano **rigorosamente senza VLSM** si userebbe `/24` anche per ogni tratta di tunnel.
 
 ## Punto 4 — Autenticazione degli operatori (in sede e dai cantieri)
 
@@ -152,6 +198,8 @@ Oltre all'autenticazione (punto 4):
 - **QoS** per prioritizzare gli **allarmi** dei sensori sul traffico bulk.
 - **Store-and-forward** sull'edge NAS di cantiere: i dati vengono accodati durante un'interruzione e inviati al ripristino, **senza perdite**.
 - **UPS** su gateway di cantiere e apparati di sede.
+
+> Due **ipotesi di continuità di servizio** sviluppate con i comandi (VRRP/keepalived per il link/VPN; DRBD + regola 3-2-1 per il NAS centrale) sono nell'**[approfondimento](approfondimento_A038.md)**.
 
 ## Quesito III — Bloccare le piattaforme IA nella rete didattica
 
