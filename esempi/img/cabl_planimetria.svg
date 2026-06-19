@@ -1,0 +1,60 @@
+<svg viewBox="0 0 980 540" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .tit{font-size:13px;font-weight:700;fill:#202124}
+    .sub{font-size:11px;fill:#5f6368}
+    .room{fill:#f1f3f4;stroke:#9aa0a6}
+    .ced{fill:#fce8e6;stroke:#d93025}
+    .rack{fill:#137333}
+    .to{fill:#1565c0}
+    .fib{stroke:#ea8600;stroke-width:3;fill:none}
+    .lbl{font-size:11px;fill:#202124}
+  </style>
+  <text x="490" y="26" text-anchor="middle" class="tit" font-size="16">2 · Planimetria con cablaggio — sede centrale (edificio a 2 piani)</text>
+
+  <!-- Piano Terra -->
+  <rect x="30" y="50" width="440" height="430" rx="6" fill="#ffffff" stroke="#5f6368" stroke-width="2"/>
+  <text x="250" y="72" text-anchor="middle" class="tit">PIANO TERRA</text>
+  <rect x="45" y="86" width="180" height="120" class="ced"/>
+  <text x="135" y="120" text-anchor="middle" class="sub" font-weight="700">CED / Sala server</text>
+  <text x="135" y="138" text-anchor="middle" class="sub">server farm + DMZ</text>
+  <rect x="120" y="150" width="30" height="42" class="rack"/>
+  <text x="135" y="176" text-anchor="middle" class="lbl" fill="#fff" font-weight="700">BD</text>
+  <rect x="240" y="86" width="210" height="120" class="room"/>
+  <text x="345" y="120" text-anchor="middle" class="sub">Locale tecnico — ingresso WAN/fibra ISP</text>
+  <rect x="45" y="220" width="405" height="120" class="room"/>
+  <text x="247" y="240" text-anchor="middle" class="sub">Uffici / reception / sala riunioni</text>
+  <rect x="350" y="250" width="28" height="40" fill="#2e7d32"/>
+  <text x="364" y="275" text-anchor="middle" class="lbl" fill="#fff" font-weight="700">FD</text>
+  <text x="364" y="305" text-anchor="middle" class="sub">PT</text>
+  <circle cx="90" cy="300" r="6" class="to"/><circle cx="140" cy="300" r="6" class="to"/>
+  <circle cx="190" cy="300" r="6" class="to"/><circle cx="240" cy="300" r="6" class="to"/>
+  <text x="247" y="365" text-anchor="middle" class="sub">● prese TO (cablaggio orizzontale Cat6A ≤ 90 m)</text>
+  <!-- riser -->
+  <rect x="200" y="400" width="70" height="60" fill="#fff3e0" stroke="#ea8600"/>
+  <text x="235" y="425" text-anchor="middle" class="sub">cavedio</text>
+  <text x="235" y="442" text-anchor="middle" class="sub">(riser)</text>
+
+  <!-- Piano Primo -->
+  <rect x="510" y="50" width="440" height="430" rx="6" fill="#ffffff" stroke="#5f6368" stroke-width="2"/>
+  <text x="730" y="72" text-anchor="middle" class="tit">PIANO PRIMO</text>
+  <rect x="525" y="86" width="410" height="150" class="room"/>
+  <text x="730" y="110" text-anchor="middle" class="sub" font-weight="700">Uffici tecnici — workstation BIM (VLAN 10)</text>
+  <circle cx="570" cy="150" r="6" class="to"/><circle cx="620" cy="150" r="6" class="to"/>
+  <circle cx="670" cy="150" r="6" class="to"/><circle cx="720" cy="150" r="6" class="to"/>
+  <circle cx="770" cy="150" r="6" class="to"/><circle cx="820" cy="150" r="6" class="to"/>
+  <circle cx="870" cy="150" r="6" class="to"/>
+  <rect x="525" y="250" width="410" height="90" class="room"/>
+  <text x="730" y="280" text-anchor="middle" class="sub">Area Wi-Fi staff (VLAN 20) — AP a soffitto</text>
+  <rect x="610" y="400" width="28" height="40" fill="#2e7d32"/>
+  <text x="624" y="425" text-anchor="middle" class="lbl" fill="#fff" font-weight="700">FD</text>
+  <text x="624" y="392" text-anchor="middle" class="sub">P1</text>
+  <rect x="690" y="400" width="70" height="60" fill="#fff3e0" stroke="#ea8600"/>
+  <text x="725" y="425" text-anchor="middle" class="sub">cavedio</text>
+  <text x="725" y="442" text-anchor="middle" class="sub">(riser)</text>
+
+  <!-- dorsali fibra -->
+  <path d="M150 171 L235 400" class="fib"/>
+  <path d="M235 430 Q480 430 725 430" class="fib"/>
+  <path d="M725 400 L624 440" class="fib"/>
+  <text x="480" y="505" text-anchor="middle" class="sub" fill="#ea8600" font-weight="700">— dorsali di edificio in fibra OM4 (BD → FD di piano) attraverso i cavedi · armadi in posizione baricentrica</text>
+</svg>

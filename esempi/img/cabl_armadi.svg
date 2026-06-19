@@ -1,0 +1,49 @@
+<svg viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .tit{font-size:13px;font-weight:700;fill:#202124}
+    .sub{font-size:10.5px;fill:#202124}
+    .u{font-size:9px;fill:#9aa0a6}
+    .pp{fill:#e8f0fe;stroke:#1a73e8}
+    .sw{fill:#cfe2ff;stroke:#1565c0}
+    .fw{fill:#fce8e6;stroke:#d93025}
+    .srv{fill:#e6f4ea;stroke:#137333}
+    .ups{fill:#fff3e0;stroke:#ea8600}
+    .blank{fill:#f1f3f4;stroke:#dadce0}
+  </style>
+  <text x="490" y="26" text-anchor="middle" class="tit" font-size="16">6 · Schema degli armadi (rack)</text>
+
+  <!-- Rack BD -->
+  <text x="180" y="56" text-anchor="middle" class="tit">Armadio BD (CED) — 42U</text>
+  <rect x="80" y="70" width="200" height="470" fill="#fafafa" stroke="#5f6368" stroke-width="2"/>
+  <rect x="92" y="80" width="176" height="30" class="pp"/><text x="180" y="100" text-anchor="middle" class="sub">Patch panel fibra (dorsali)</text>
+  <rect x="92" y="114" width="176" height="30" class="pp"/><text x="180" y="134" text-anchor="middle" class="sub">Patch panel rame server farm</text>
+  <rect x="92" y="148" width="176" height="34" class="fw"/><text x="180" y="169" text-anchor="middle" class="sub">Router perimetrale</text>
+  <rect x="92" y="186" width="176" height="34" class="fw"/><text x="180" y="207" text-anchor="middle" class="sub">NGFW/UTM + VPN</text>
+  <rect x="92" y="224" width="176" height="34" class="sw"/><text x="180" y="245" text-anchor="middle" class="sub">Core switch L3</text>
+  <rect x="92" y="262" width="176" height="34" class="srv"/><text x="180" y="283" text-anchor="middle" class="sub">Server NAS/SAN</text>
+  <rect x="92" y="300" width="176" height="34" class="srv"/><text x="180" y="321" text-anchor="middle" class="sub">Server app BIM</text>
+  <rect x="92" y="338" width="176" height="34" class="srv"/><text x="180" y="359" text-anchor="middle" class="sub">AD/RADIUS · DB · MQTT</text>
+  <rect x="92" y="376" width="176" height="30" class="blank"/><text x="180" y="396" text-anchor="middle" class="u">organizer / patch</text>
+  <rect x="92" y="410" width="176" height="40" class="ups"/><text x="180" y="435" text-anchor="middle" class="sub">UPS</text>
+  <rect x="92" y="454" width="176" height="30" class="blank"/><text x="180" y="474" text-anchor="middle" class="u">U liberi (espansione)</text>
+
+  <!-- Rack FD-PT -->
+  <text x="490" y="56" text-anchor="middle" class="tit">Armadio FD-PT — 12U</text>
+  <rect x="400" y="70" width="180" height="240" fill="#fafafa" stroke="#5f6368" stroke-width="2"/>
+  <rect x="412" y="80" width="156" height="30" class="pp"/><text x="490" y="100" text-anchor="middle" class="sub">Patch panel rame TO</text>
+  <rect x="412" y="114" width="156" height="34" class="sw"/><text x="490" y="135" text-anchor="middle" class="sub">Switch accesso PoE</text>
+  <rect x="412" y="152" width="156" height="30" class="blank"/><text x="490" y="172" text-anchor="middle" class="u">organizer</text>
+  <rect x="412" y="186" width="156" height="38" class="ups"/><text x="490" y="209" text-anchor="middle" class="sub">UPS</text>
+  <rect x="412" y="228" width="156" height="30" class="blank"/><text x="490" y="248" text-anchor="middle" class="u">U liberi</text>
+
+  <!-- Rack FD-P1 -->
+  <text x="800" y="56" text-anchor="middle" class="tit">Armadio FD-P1 — 12U</text>
+  <rect x="710" y="70" width="180" height="240" fill="#fafafa" stroke="#5f6368" stroke-width="2"/>
+  <rect x="722" y="80" width="156" height="30" class="pp"/><text x="800" y="100" text-anchor="middle" class="sub">Patch panel rame TO</text>
+  <rect x="722" y="114" width="156" height="34" class="sw"/><text x="800" y="135" text-anchor="middle" class="sub">Switch accesso PoE</text>
+  <rect x="722" y="152" width="156" height="30" class="blank"/><text x="800" y="172" text-anchor="middle" class="u">organizer</text>
+  <rect x="722" y="186" width="156" height="38" class="ups"/><text x="800" y="209" text-anchor="middle" class="sub">UPS</text>
+  <rect x="722" y="228" width="156" height="30" class="blank"/><text x="800" y="248" text-anchor="middle" class="u">U liberi</text>
+
+  <text x="490" y="535" text-anchor="middle" class="sub" fill="#5f6368">Armadi chiusi a chiave, in locali ad accesso controllato; ogni apparato a U nota → posizione fisica ricavabile dall'IP (troubleshooting).</text>
+</svg>
