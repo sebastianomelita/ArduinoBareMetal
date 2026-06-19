@@ -5,6 +5,8 @@
 
 > 📎 **Approfondimenti tecnici** (routing e autenticazione Wi-Fi mesh, SSID statico/dinamico, port-forward SSH in IOS, allocazione dei canali, continuità di servizio link/VPN e NAS — con comandi): vedi **[approfondimento_A038.md](approfondimento_A038.md)**.
 
+> 🧩 **Cablaggio strutturato della sede** (6 documenti TIA/EIA-568B + misure di sicurezza del Quesito II): vedi **[cablaggio_sede_A038.md](cablaggio_sede_A038.md)**.
+
 ---
 
 ## Ipotesi aggiuntive e di dimensionamento
