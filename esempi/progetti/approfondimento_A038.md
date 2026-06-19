@@ -1,7 +1,7 @@
 # Approfondimenti tecnici — A038 "Sistemi e Reti"
 ### Allegato a [risoluzione_A038_sistemi_reti_2026.md](risoluzione_A038_sistemi_reti_2026.md)
 
-> Dettagli e comandi a corredo della Prima/Seconda parte: routing e autenticazione Wi-Fi mesh, SSID statico/dinamico, port-forward SSH in IOS, allocazione dei canali, dati IoT con schema MQTT comune, due ipotesi di continuità di servizio, il dettaglio comandi delle misure di sicurezza (Quesito II/III), le GPO come piano di autorizzazione e le ACL per interfaccia dei due firewall — di sede (§11) e di cantiere (§12) — con tabella accessi e comandi IOS.
+> Dettagli e comandi a corredo della Prima/Seconda parte: routing e autenticazione Wi-Fi mesh, SSID statico/dinamico, port-forward SSH in IOS, allocazione dei canali, dati IoT con schema MQTT comune, due ipotesi di continuità di servizio, il dettaglio comandi delle misure di sicurezza (Quesito II/III), le GPO come piano di autorizzazione, le ACL per interfaccia dei due firewall — di sede (§11) e di cantiere (§12) — con tabella accessi e comandi IOS, l'ispezione stateful **CBAC** (§13) e la **variante ZBF** per la sede (§14).
 
 ---
 
@@ -628,7 +628,7 @@ Le GPO sono cioè lo strumento che traduce in pratica, sugli endpoint, l'autenti
 
 ## 11 · ACL del router-firewall di sede centrale
 
-Convenzione (come nel cheatsheet, §13–17): **una ACL estesa con nome, applicata inbound** sull'interfaccia (SVI) di ogni VLAN; **LAN → default-allow** con anti-spoofing silenzioso; **confini di fiducia (Server farm, DMZ, tunnel, WAN) → default-deny esplicito con log**; i **ritorni** sono gestiti in modo **stateful** (ZBF, vedi Quesito II), quindi nelle liste si scrive solo il traffico *iniziato*.
+Convenzione (come nel cheatsheet, §13–17): **una ACL estesa con nome, applicata inbound** sull'interfaccia (SVI) di ogni VLAN; **LAN → default-allow** con anti-spoofing silenzioso; **confini di fiducia (Server farm, DMZ, tunnel, WAN) → default-deny esplicito con log**; i **ritorni** ai confini default-deny sono aperti in modo **stateful da CBAC** (§13), quindi nelle liste si scrive solo il traffico *iniziato*. *(Variante a zone ZBF per la sede: §14.)*
 
 > 🔒 **Principio di difesa autonoma.** La sicurezza della sede è garantita **dalle sole regole applicate sul firewall di sede**. In particolare l'ACL del **tunnel in ingresso** (§11.5) è il controllo **autoritativo** verso i cantieri: anche se il gateway di un cantiere — apparato temporaneo, fisicamente esposto e **manomettibile** — avesse regole d'uscita rimosse o alterate, la sede continua a bloccare tutto ciò che non sia esplicitamente ammesso. Le ACL sul cantiere (§12) sono **difesa in profondità**, eventualmente speculari, ma la sede **non vi fa affidamento**.
 
@@ -777,7 +777,7 @@ interface GigabitEthernet0/1
 
 ## 12 · ACL del router-firewall del cantiere (generico)
 
-Il gateway di cantiere (router 4G/5G + firewall + VPN client) protegge la **propria LAN** e regola l'uscita verso tunnel e Internet. Le regole che limitano il traffico **verso la sede** sono **difesa in profondità, speculari** a quelle di sede (§11.5): utili, ma **non autoritative** — se manomesse, è la sede a fermare il traffico.
+Il gateway di cantiere (router 4G/5G + firewall + VPN client) protegge la **propria LAN** e regola l'uscita verso tunnel e Internet **con sole ACL inbound** per interfaccia (nessuna regola `out`). Le regole che limitano il traffico **verso la sede** sono **difesa in profondità**, speculari a quelle di sede (§11.5): utili, ma **non autoritative** — se manomesse, è la sede a fermare il traffico.
 
 **Indirizzi (cantiere *k* — sostituire `k` con l'id):** gateway `10.k.x.254` · edge NAS `10.k.99.10` · broker MQTT edge `10.k.99.20`. Target in sede: repository `10.0.40.10`, MQTT front `10.0.40.20`, RADIUS `10.0.30.30`, mgmt sede `10.0.99.0/24`, IP pubblico VPN sede `<IP-pub-sede>`.
 
@@ -788,7 +788,8 @@ Il gateway di cantiere (router 4G/5G + firewall + VPN client) protegge la **prop
 | 1 | permit | `10.k.10.0/24` | `10.k.99.10` | tcp/445,22 | edge NAS (buffer scansioni) |
 | 2 | permit | `10.k.10.0/24` | `10.k.10.254` | udp/53 | DNS (a bordo del gateway) |
 | 3 | deny | `10.k.10.0/24` | `10.k.0.0/16` | ip | resto interno cantiere |
-| 4 | **permit** | `10.k.10.0/24` | any | ip | **← DEFAULT ALLOW (Internet/cloud)** |
+| 4 | deny | `10.k.10.0/24` | `10.0.0.0/16` | ip | sede (via tunnel) — niente accesso diretto |
+| 5 | **permit** | `10.k.10.0/24` | any | ip | **← DEFAULT ALLOW (Internet/cloud)** |
 
 ```
 ip access-list extended ACL-V10-TABLET
@@ -796,6 +797,7 @@ ip access-list extended ACL-V10-TABLET
  permit tcp 10.k.10.0 0.0.0.255 host 10.k.99.10 eq 22
  permit udp 10.k.10.0 0.0.0.255 host 10.k.10.254 eq domain
  deny   ip  10.k.10.0 0.0.0.255 10.k.0.0 0.0.255.255
+ deny   ip  10.k.10.0 0.0.0.255 10.0.0.0 0.0.255.255
  permit ip  10.k.10.0 0.0.0.255 any
 interface Vlan10
  ip access-group ACL-V10-TABLET in
@@ -839,40 +841,40 @@ interface Vlan30
 
 | # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
 |---|---|---|---|---|---|
-| 1 | permit | `10.k.99.0/24` | `10.k.0.0/16` | tcp/22 | SSH admin agli apparati |
-| 2 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
+| 1 | permit | `10.k.99.10` | `10.0.40.10` | tcp/22,443 | edge NAS → repository di sede (forward) |
+| 2 | permit | `10.k.99.20` | `10.0.40.20` | tcp/8883 | broker edge → MQTT front (bridge) |
+| 3 | permit | `10.k.99.0/24` | `10.k.0.0/16` | tcp/22 | SSH admin agli apparati |
+| 4 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
 
 ```
 ip access-list extended ACL-V99-MGMT
+ permit tcp host 10.k.99.10 host 10.0.40.10 eq 22
+ permit tcp host 10.k.99.10 host 10.0.40.10 eq 443
+ permit tcp host 10.k.99.20 host 10.0.40.20 eq 8883
  permit tcp 10.k.99.0 0.0.0.255 10.k.0.0 0.0.255.255 eq 22
  deny   ip  any any log
 interface Vlan99
  ip access-group ACL-V99-MGMT in
 ```
 
-### 12.5 Tunnel verso la sede (`Tunnel1`) — egress speculare (difesa in profondità)
+### 12.5 Tunnel (`Tunnel1`) — solo regole inbound
 
-Applicata **in uscita** sul tunnel: replica la policy autoritativa di sede (§11.5). È il livello ridondante che *può* essere manomesso sul cantiere — la sede non vi fa affidamento.
+**Nessuna ACL outbound.** L'uscita del cantiere verso la sede è già governata dalle ACL **inbound** delle VLAN (§12.1–12.4): come destinazioni in sede ammettono solo repository, MQTT front e RADIUS, il resto è negato **alla sorgente**. L'unica ACL sul tunnel è quindi **inbound**, per il traffico *dalla* sede verso il cantiere (manutenzione).
 
 | # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
 |---|---|---|---|---|---|
-| 1 | permit | cantiere | `10.0.40.10` | tcp/22,443 | repository DMZ |
-| 2 | permit | cantiere | `10.0.40.20` | tcp/8883 | MQTT front |
-| 3 | permit | cantiere | `10.0.30.30` | udp/1812 | RADIUS |
-| 4 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
+| 1 | permit | `10.0.99.0/24` (mgmt sede) | `10.k.0.0/16` | tcp/22 | SSH di manutenzione |
+| 2 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
 
 ```
-ip access-list extended ACL-TUN-OUT
- permit tcp 10.k.0.0 0.0.255.255 host 10.0.40.10 eq 22
- permit tcp 10.k.0.0 0.0.255.255 host 10.0.40.10 eq 443
- permit tcp 10.k.0.0 0.0.255.255 host 10.0.40.20 eq 8883
- permit udp 10.k.0.0 0.0.255.255 host 10.0.30.30 eq 1812
+ip access-list extended ACL-TUN-IN
+ permit tcp 10.0.99.0 0.0.0.255 10.k.0.0 0.0.255.255 eq 22
  deny   ip  any any log
 interface Tunnel1
- ip access-group ACL-TUN-OUT out
+ ip access-group ACL-TUN-IN in
 ```
 
-> Traffico **dalla sede verso il cantiere** (manutenzione): ACL inbound sul tunnel *default-deny* che ammette solo `10.0.99.0/24 → apparati tcp/22` (SSH del mgmt di sede), negando il resto.
+> La protezione della **sede** resta comunque garantita dalla sua ACL **inbound** del tunnel (§11.5), indipendentemente da queste regole del cantiere.
 
 ### 12.6 WAN 4G/5G (`Cellular0`) — default-deny + anti-spoofing
 
@@ -901,3 +903,178 @@ interface Cellular0
 ```
 
 > **Sintesi del modello di fiducia:** il cantiere protegge la propria LAN e *collabora* filtrando ciò che invia (§12.5); ma la **tenuta della sede** dipende **solo** dall'ACL del tunnel in ingresso alla sede (§11.5). Due perimetri indipendenti: se cade quello del cantiere (manomissione fisica), regge quello della sede.
+
+---
+
+## 13 · CBAC — ispezione stateful dei ritorni (sede e cantiere)
+
+Le ACL per interfaccia (§11–§12) elencano solo il traffico **iniziato**; ai **confini default-deny** (WAN, tunnel-in di sede, DMZ) i **pacchetti di ritorno** verrebbero scartati. **CBAC** (`ip inspect`) tiene una tabella di stato delle sessioni uscenti e apre i ritorni **al di sopra** del `deny ip any any`, senza toccare le liste.
+
+Dove serve in sede: ritorni Internet per uffici/Wi-Fi/server (WAN default-deny) e ritorni `DMZ→cantiere` (DMZ default-deny). Si applica **inbound** sulle interfacce fidate che *originano* le sessioni — nessuna regola `out` (`ip inspect … in` è la direzione d'ispezione, non un'ACL).
+
+```cisco
+! Regola di ispezione (globale)
+ip inspect name CBAC tcp
+ip inspect name CBAC udp
+ip inspect name CBAC icmp
+
+! Applicata INBOUND sulle interfacce che iniziano le sessioni
+interface Vlan10
+ ip inspect CBAC in          ! ritorni Internet — uffici
+interface Vlan20
+ ip inspect CBAC in          ! ritorni Internet — Wi-Fi staff
+interface Vlan30
+ ip inspect CBAC in          ! ritorni degli update dei server
+interface Tunnel1
+ ip inspect CBAC in          ! apre i ritorni DMZ→cantiere
+```
+
+> Le ACL di confine (`ACL-WAN`, `ACL-V40-DMZ-DD`, …) restano **default-deny**: CBAC inserisce i ritorni dinamicamente. Sul cantiere lo stesso schema apre i ritorni Internet dei tablet (`ip inspect CBAC in` su `Vlan10`). Verifica: `show ip inspect sessions`, `show ip inspect all`.
+
+---
+
+## 14 · Variante ZBF per la sola sede centrale
+
+In alternativa al modello "ACL per interfaccia + CBAC", la sede si può realizzare con un **Zone-Based Firewall**: il **default-deny è strutturale** (due zone senza zone-pair non si parlano) e i ritorni sono automatici nell'`inspect`. Questa variante **sostituisce** le ACL per interfaccia di §11 (le ACL restano solo come *criterio di match* per host/porte non standard).
+
+**Zone** = una per ambito di fiducia:
+
+| Zona | Interfaccia | Zona | Interfaccia |
+|---|---|---|---|
+| `UFFICI` | `Vlan10` | `DMZ` | `Vlan40` |
+| `WIFI` | `Vlan20` | `MGMT` | `Vlan99` |
+| `SRV` | `Vlan30` | `WAN` | `Gi0/1` |
+| `VPN` (cantieri) | `Tunnel1…5` | | |
+
+**Zone-pair** (unidirezionali; tutto ciò che non è elencato è **scartato** dal modello):
+
+| Zone-pair | Traffico ispezionato |
+|---|---|
+| `UFFICI → SRV` | App BIM, NAS (445), AD/DNS (53,88) |
+| `UFFICI → WAN` · `WIFI → WAN` | http, https |
+| `WIFI → SRV` | dns |
+| `SRV → WAN` | https (update) |
+| `VPN → DMZ` | ssh (22), https (443), MQTT (8883) |
+| `VPN → SRV` | radius (1812) |
+| `WAN → DMZ` | https pubblicato |
+| `MGMT → {UFFICI,WIFI,SRV,DMZ}` | ssh |
+
+```cisco
+! ── Zone ──
+zone security UFFICI
+zone security WIFI
+zone security SRV
+zone security DMZ
+zone security MGMT
+zone security WAN
+zone security VPN
+
+! ── ACL usate SOLO come criterio di match (host/porte non standard) ──
+ip access-list extended M-UFFICI-SRV
+ permit tcp 10.0.10.0 0.0.0.255 host 10.0.30.10
+ permit tcp 10.0.10.0 0.0.0.255 host 10.0.30.20 eq 445
+ permit udp 10.0.10.0 0.0.0.255 host 10.0.30.30 eq domain
+ permit tcp 10.0.10.0 0.0.0.255 host 10.0.30.30 eq 88
+ip access-list extended M-CANT-DMZ
+ permit tcp 10.0.0.0 0.255.255.255 host 10.0.40.10 eq 22
+ permit tcp 10.0.0.0 0.255.255.255 host 10.0.40.10 eq 443
+ permit tcp 10.0.0.0 0.255.255.255 host 10.0.40.20 eq 8883
+ip access-list extended M-CANT-RADIUS
+ permit udp 10.0.0.0 0.255.255.255 host 10.0.30.30 eq 1812
+ip access-list extended M-WAN-DMZ
+ permit tcp any host 10.0.40.10 eq 443
+
+! ── Class-map type inspect ──
+class-map type inspect match-any CM-WEB
+ match protocol http
+ match protocol https
+class-map type inspect CM-DNS
+ match protocol dns
+class-map type inspect CM-SSH
+ match protocol ssh
+class-map type inspect CM-UFFICI-SRV
+ match access-group name M-UFFICI-SRV
+class-map type inspect CM-CANT-DMZ
+ match access-group name M-CANT-DMZ
+class-map type inspect CM-CANT-RADIUS
+ match access-group name M-CANT-RADIUS
+class-map type inspect CM-WAN-DMZ
+ match access-group name M-WAN-DMZ
+
+! ── Policy-map: inspect la classe ammessa, drop+log il resto ──
+policy-map type inspect PM-UFFICI-SRV
+ class type inspect CM-UFFICI-SRV
+  inspect
+ class class-default
+  drop log
+policy-map type inspect PM-TO-WAN
+ class type inspect CM-WEB
+  inspect
+ class class-default
+  drop log
+policy-map type inspect PM-WIFI-SRV
+ class type inspect CM-DNS
+  inspect
+ class class-default
+  drop log
+policy-map type inspect PM-VPN-DMZ
+ class type inspect CM-CANT-DMZ
+  inspect
+ class class-default
+  drop log
+policy-map type inspect PM-VPN-SRV
+ class type inspect CM-CANT-RADIUS
+  inspect
+ class class-default
+  drop log
+policy-map type inspect PM-WAN-DMZ
+ class type inspect CM-WAN-DMZ
+  inspect
+ class class-default
+  drop log
+policy-map type inspect PM-MGMT
+ class type inspect CM-SSH
+  inspect
+ class class-default
+  drop log
+
+! ── Zone-pair (unidirezionali) ──
+zone-pair security ZP-UFFICI-SRV source UFFICI destination SRV
+ service-policy type inspect PM-UFFICI-SRV
+zone-pair security ZP-UFFICI-WAN source UFFICI destination WAN
+ service-policy type inspect PM-TO-WAN
+zone-pair security ZP-WIFI-SRV source WIFI destination SRV
+ service-policy type inspect PM-WIFI-SRV
+zone-pair security ZP-WIFI-WAN source WIFI destination WAN
+ service-policy type inspect PM-TO-WAN
+zone-pair security ZP-SRV-WAN source SRV destination WAN
+ service-policy type inspect PM-TO-WAN
+zone-pair security ZP-VPN-DMZ source VPN destination DMZ
+ service-policy type inspect PM-VPN-DMZ
+zone-pair security ZP-VPN-SRV source VPN destination SRV
+ service-policy type inspect PM-VPN-SRV
+zone-pair security ZP-WAN-DMZ source WAN destination DMZ
+ service-policy type inspect PM-WAN-DMZ
+zone-pair security ZP-MGMT-SRV source MGMT destination SRV
+ service-policy type inspect PM-MGMT
+zone-pair security ZP-MGMT-DMZ source MGMT destination DMZ
+ service-policy type inspect PM-MGMT
+
+! ── Assegnazione interfacce alle zone ──
+interface Vlan10
+ zone-member security UFFICI
+interface Vlan20
+ zone-member security WIFI
+interface Vlan30
+ zone-member security SRV
+interface Vlan40
+ zone-member security DMZ
+interface Vlan99
+ zone-member security MGMT
+interface GigabitEthernet0/1
+ zone-member security WAN
+interface Tunnel1
+ zone-member security VPN
+```
+
+> **Perché in sede conviene anche valutare ZBF:** con 7 zone il default-deny è *strutturale* (niente `deny ip any any` da ricordare su ogni lista) e i ritorni sono automatici per zona-pair. **Tre note:** (1) il traffico **intra-zona** è ammesso di default (es. server↔server nella stessa subnet, che comunque non transita dal router); (2) la gestione del **router stesso** (SSH all'apparato, OSPF/GRE sui tunnel) usa la zona speciale **`self`**, da regolare con zone-pair `… → self` se si vuole limitarla; (3) questa variante **non** si combina con le ACL inbound di §11 — si sceglie *o* §11+§13 (ACL+CBAC) *o* §14 (ZBF). Verifica: `show zone-pair security`, `show policy-map type inspect zone-pair sessions`.
