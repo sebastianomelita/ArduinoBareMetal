@@ -1408,3 +1408,158 @@ finirebbero in CSMA/CA sullo stesso canale → throughput dimezzato.
 - ❌ riuso colore tra celle troppo vicine;
 - ❌ backhaul a larghezza piena su canali dei client;
 - ❌ saltare il site survey (Ekahau / NetSpot).
+
+
+## IPsec-su-GRE — cifratura del tunnel (Cisco IOS, IKEv2)
+> *Collocazione:* **Parte II, subito dopo §18.2 (GRE)**. Il GRE trasporta ma **non cifra**: lo si protegge con IPsec in *transport mode* (il GRE incapsula già, l'IPsec aggiunge riservatezza + integrità).
+
+```
+! 1) IKEv2 — fase 1 (autenticazione + scambio chiavi)
+crypto ikev2 proposal P1
+ encryption aes-cbc-256
+ integrity  sha256
+ group 14
+crypto ikev2 policy POL
+ proposal P1
+crypto ikev2 keyring KR
+ peer PEER
+  address <IP-PUB-PEER>
+  pre-shared-key <chiave>
+crypto ikev2 profile PROF
+ match identity remote address <IP-PUB-PEER> 255.255.255.255
+ authentication remote pre-share
+ authentication local  pre-share
+ keyring local KR
+
+! 2) IPsec — fase 2 (protezione dei dati)
+crypto ipsec transform-set TS esp-aes 256 esp-sha256-hmac
+ mode transport
+crypto ipsec profile IPROF
+ set transform-set TS
+ set ikev2-profile PROF
+
+! 3) Applica al tunnel GRE (l'altro capo è speculare)
+interface Tunnel1
+ tunnel protection ipsec profile IPROF
+```
+
+| Deve combaciare ai due capi | … |
+| --------------------------- | -------------------------------------- |
+| `pre-shared-key`            | la stessa chiave                       |
+| `transform-set`             | stessi algoritmi (AES-256 / SHA-256)   |
+| IKEv2 `proposal`            | encryption / integrity / group         |
+
+```
+! ACL WAN: oltre a gre/ospf far passare l'IPsec
+ permit udp host <IP-PUB-PEER> any eq isakmp
+ permit udp host <IP-PUB-PEER> any eq non500-isakmp
+ permit esp host <IP-PUB-PEER> any
+```
+> 🔑 `mode transport` perché c'è già il GRE; **`tunnel mode`** se è IPsec puro senza GRE. Anti-replay attivo di default: `crypto ipsec security-association replay window-size 1024`. **Test:** `show crypto ikev2 sa`, `show crypto ipsec sa`.
+
+---
+
+## IP SLA — failover dual-WAN (Cisco IOS)
+> *Collocazione:* **Parte II, vicino a §10 (VRRP)**. Diverso da VRRP (HA di **nodo**): qui è failover di **link WAN** in base alla raggiungibilità.
+
+```
+ip sla 1
+ icmp-echo 8.8.8.8 source-interface GigabitEthernet0/0   ! sonda sul link primario
+ frequency 5
+ip sla schedule 1 life forever start-time now
+track 1 ip sla 1 reachability
+
+ip route 0.0.0.0 0.0.0.0 <gw-primario> track 1           ! attiva SOLO se il track è up
+ip route 0.0.0.0 0.0.0.0 <gw-backup> 10                  ! AD 10 = flottante: subentra alla caduta
+```
+
+| Elemento | Ruolo |
+| -------- | --------------------------------------------------- |
+| `ip sla` | invia probe periodici (ICMP/UDP/TCP) verso un target |
+| `track`  | lega lo stato della rotta all'esito del probe       |
+| AD `10`  | rende **flottante** la rotta di backup              |
+
+> 🔑 Quando il probe fallisce, il `track` va *down* → la rotta primaria sparisce → entra la flottante. **Con dual-WAN + NAT** servono `route-map` per associare il NAT all'interfaccia attiva. **Test:** `show ip sla statistics`, `show track 1`, `show ip route`.
+
+---
+
+## hostapd — Wi-Fi WPA3 + Client Isolation (Linux AP)
+> *Collocazione:* **Parte II, accanto a §19 (802.1X)** o **Parte I §3.2**. Lato AP: il cheatsheet copre solo lo switch RADIUS; qui c'è l'AP con WPA3-SAE e l'isolamento dei client.
+
+```
+# /etc/hostapd/hostapd.conf
+interface=wlan0
+ssid=Cantiere
+wpa=2
+wpa_key_mgmt=SAE            # WPA3-Personal (SAE). Enterprise: WPA-EAP-SHA256
+rsn_pairwise=CCMP
+ieee80211w=2               # PMF (Protected Management Frames): OBBLIGATORIO in WPA3
+sae_password=<password>
+ap_isolate=1              # Client Isolation: i client NON si parlano tra loro
+
+# Variante Enterprise (802.1X → RADIUS, vedi §19):
+# ieee8021x=1
+# auth_server_addr=10.0.30.30
+# auth_server_port=1812
+# auth_server_shared_secret=<chiave>
+```
+> 🔑 `ap_isolate=1` blocca il **movimento laterale** tra dispositivi wireless. Su WLC/AP Cisco l'equivalente è **P2P Blocking Action = Drop**. **Test:** `systemctl status hostapd`, `iw dev wlan0 station dump`.
+
+---
+
+## LUKS — cifratura dei dati a riposo (Linux)
+> *Collocazione:* **Parte III (Backup & storage)**. Protegge i dati *at rest* su NAS/dischi (furto/smarrimento).
+
+```
+# Formattazione cifrata (AES-256 in modalità XTS)
+cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --key-size 512 /dev/sdb
+cryptsetup open /dev/sdb cryptdata        # mappa il volume in /dev/mapper/cryptdata
+mkfs.ext4 /dev/mapper/cryptdata
+mount /dev/mapper/cryptdata /mnt/data
+
+# Apertura automatica al boot
+#  /etc/crypttab :  cryptdata  /dev/sdb  none  luks
+#  /etc/fstab    :  /dev/mapper/cryptdata  /mnt/data  ext4  defaults  0 2
+
+# ⚠️ Backup dell'header (senza, i dati sono irrecuperabili)
+cryptsetup luksHeaderBackup /dev/sdb --header-backup-file luks-hdr.img
+```
+> 🔑 `--key-size 512` ⇒ **AES-256**: in XTS la chiave è divisa in due metà da 256 bit. ⚠️ L'header LUKS contiene le chiavi mascherate: **va salvato** e protetto. **Test:** `cryptsetup status cryptdata`, `lsblk -f`.
+
+---
+
+## GPO — Group Policy Objects (mini-sezione)
+> *Collocazione:* **Parte I (Aspetti di progetto)** o sezione a sé. Le GPO **modulano l'accesso alle risorse** (file, software, USB, applicazioni) per **computer** e **utenti** in base alla OU — è il piano di autorizzazione centralizzato lato endpoint.
+
+**Struttura (due metà, stesso GUID):**
+
+| Parte | Dove | Contenuto |
+| ----- | ---- | --------- |
+| **GPC** | oggetto **LDAP** in `CN=Policies,CN=System` | metadati: GUID, versione, link OU (`gPLink`) |
+| **GPT** | cartella in `\\dominio\SYSVOL\…\Policies\{GUID}\` | file `.pol`, `.inf`, script, `.msi` |
+
+**Precedenza — LSDOU** (l'ultima applicata vince):
+
+| Ordine | Livello | Per |
+| ------ | ------- | --- |
+| 1 | **L**ocal | il singolo PC (senza AD) |
+| 2 | **S**ite | sito AD (es. proxy per sede) |
+| 3 | **D**omain | tutto il dominio (password, AV) |
+| 4 | **OU** | **vince su tutto**; la OU più specifica ha priorità |
+
+**Due sezioni:** *Computer Configuration* (all'avvio, per qualunque utente: USB, firewall, software) · *User Configuration* (al logon, segue l'utente: mappature, restrizioni, estensioni browser).
+
+**Come arriva al client:** DNS (record SRV) → Kerberos (TGT/ST) → LDAP (`gPLink` della OU) → download da SYSVOL → applica in LSDOU. Refresh **90 ± 30 min** (computer) / al logon (utente).
+
+```
+gpupdate /force            # ricalcolo immediato di tutte le GPO
+gpresult /r                # GPO applicate a utente/computer
+gpresult /h report.html    # report con le GPO "vincitrici"
+```
+
+```
+# Le applicazioni si interfacciano via ADMX → es. blocco estensioni Chrome (chiavi di registro):
+HKLM\Software\Policies\Google\Chrome\ExtensionInstallBlocklist   1 = "*"
+HKLM\Software\Policies\Google\Chrome\ExtensionInstallAllowlist   1 = "<id_approvato>"
+```
+> 🔑 Le GPO consumano **DNS + Kerberos + LDAP + SYSVOL**: senza quell'infrastruttura non vengono consegnate. 💡 Il *chi/cosa/dove* alle GPO (per OU/ruolo), il *quando* alla rete (le GPO si rinfrescano ogni 90±30 min).
