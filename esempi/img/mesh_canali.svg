@@ -1,0 +1,62 @@
+<svg viewBox="0 0 980 560" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .tit{font-size:13px;font-weight:700;fill:#202124}
+    .sub{font-size:11px;fill:#5f6368}
+    .nd{font-size:13px;font-weight:700;fill:#fff}
+    .bh{font-size:12px;font-weight:700}
+    .lk{stroke:#5f6368;stroke-width:2;fill:none}
+  </style>
+
+  <text x="490" y="28" text-anchor="middle" class="tit" font-size="16">Wi-Fi mesh tri-band — colori access (N=4) + backhaul alternato</text>
+
+  <!-- legend access colors -->
+  <rect x="40" y="50" width="430" height="92" rx="8" fill="#ffffff" stroke="#dadce0"/>
+  <text x="52" y="70" class="sub" font-weight="700" fill="#202124">Access 5 GHz — 4 colori (riuso N=4)</text>
+  <rect x="52" y="80" width="22" height="22" rx="4" fill="#1565c0"/><text x="80" y="96" class="sub">A · ch 36/40/44/48</text>
+  <rect x="240" y="80" width="22" height="22" rx="4" fill="#2e7d32"/><text x="268" y="96" class="sub">B · ch 52/56/60/64 (DFS)</text>
+  <rect x="52" y="110" width="22" height="22" rx="4" fill="#e8a200"/><text x="80" y="126" class="sub">C · ch 100/104/108/112 (DFS)</text>
+  <rect x="240" y="110" width="22" height="22" rx="4" fill="#c62828"/><text x="268" y="126" class="sub">D · ch 116/120/124/128 (DFS)</text>
+
+  <rect x="510" y="50" width="430" height="92" rx="8" fill="#ffffff" stroke="#dadce0"/>
+  <text x="522" y="70" class="sub" font-weight="700" fill="#202124">Backhaul (radio dedicata R3) — fuori dai 4 colori</text>
+  <rect x="522" y="80" width="22" height="22" rx="4" fill="#6a1b9a"/><text x="550" y="96" class="sub">ch 132 @ 80 MHz (DFS) — tratte fisse</text>
+  <rect x="522" y="110" width="22" height="22" rx="4" fill="#00838f"/><text x="550" y="126" class="sub">ch 149 @ 80 MHz — max EIRP outdoor, link lunghi</text>
+
+  <!-- tree -->
+  <!-- root -->
+  <circle cx="490" cy="200" r="34" fill="#455a64"/>
+  <text x="490" y="198" text-anchor="middle" class="nd">T5</text>
+  <text x="490" y="214" text-anchor="middle" class="sub" fill="#fff">root</text>
+
+  <!-- level 2 -->
+  <circle cx="300" cy="330" r="34" fill="#1565c0"/>
+  <text x="300" y="335" text-anchor="middle" class="nd">T2 (A)</text>
+  <circle cx="680" cy="330" r="34" fill="#2e7d32"/>
+  <text x="680" y="335" text-anchor="middle" class="nd">T3 (B)</text>
+
+  <line x1="466" y1="224" x2="324" y2="306" class="lk"/>
+  <text x="372" y="255" class="bh" fill="#6a1b9a">132</text>
+  <line x1="514" y1="224" x2="656" y2="306" class="lk"/>
+  <text x="600" y="255" class="bh" fill="#00838f">149</text>
+
+  <!-- leaves -->
+  <circle cx="180" cy="470" r="30" fill="#e8a200"/>
+  <text x="180" y="475" text-anchor="middle" class="nd">T1 (C)</text>
+  <circle cx="360" cy="470" r="30" fill="#c62828"/>
+  <text x="360" y="475" text-anchor="middle" class="nd">T6 (D)</text>
+  <line x1="282" y1="356" x2="196" y2="446" class="lk"/>
+  <text x="222" y="405" class="bh" fill="#00838f">149</text>
+  <line x1="318" y1="356" x2="350" y2="442" class="lk"/>
+  <text x="345" y="405" class="bh" fill="#00838f">149</text>
+
+  <circle cx="620" cy="470" r="30" fill="#e8a200"/>
+  <text x="620" y="475" text-anchor="middle" class="nd">T4 (C)</text>
+  <circle cx="800" cy="470" r="30" fill="#c62828"/>
+  <text x="800" y="475" text-anchor="middle" class="nd">T8 (D)</text>
+  <line x1="662" y1="356" x2="630" y2="442" class="lk"/>
+  <text x="628" y="405" class="bh" fill="#6a1b9a">132</text>
+  <line x1="698" y1="356" x2="786" y2="446" class="lk"/>
+  <text x="760" y="405" class="bh" fill="#6a1b9a">132</text>
+
+  <text x="490" y="535" text-anchor="middle" class="sub">Regola: le due radio mesh di uno stesso concentratore su canali opposti (132↔149) → trasmissioni in parallelo, no CSMA/CA sullo stesso canale.</text>
+</svg>

@@ -43,6 +43,6 @@
   <path d="M608 200 Q660 200 700 205" class="vpn"/>
   <path d="M610 235 Q660 240 700 245" class="vpn"/>
 
-  <text x="490" y="330" text-anchor="middle" class="sub" fill="#137333" font-weight="600">— — —  tunnel IPsec site-to-site (uno per cantiere)</text>
+  <text x="490" y="330" text-anchor="middle" class="sub" fill="#137333" font-weight="600">— — —  tunnel L3/TUN (GRE + IPsec) + OSPF · un /30 per tratta</text>
   <text x="490" y="352" text-anchor="middle" class="sub">Banda di picco a regola d'arte: ~8–10 Mbps medi aggregati ⇒ uplink sede ≥ 50–100 Mbps</text>
 </svg>

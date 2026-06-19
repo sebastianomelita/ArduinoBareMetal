@@ -1,0 +1,49 @@
+<svg viewBox="0 0 980 380" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .tit{font-size:13px;font-weight:700;fill:#202124}
+    .sub{font-size:11px;fill:#5f6368}
+    .srv{fill:#e6f4ea;stroke:#137333}
+    .net{fill:#fef7e0;stroke:#ea8600}
+    .sync{stroke:#1a73e8;stroke-width:3;fill:none}
+    .off{stroke:#9c27b0;stroke-width:2;stroke-dasharray:4 4;fill:none}
+  </style>
+  <text x="490" y="26" text-anchor="middle" class="tit" font-size="16">Continuità del NAS centrale — replica DRBD + regola 3-2-1</text>
+
+  <!-- primary -->
+  <rect x="60" y="80" width="220" height="110" rx="8" class="srv" stroke-width="2"/>
+  <text x="170" y="106" text-anchor="middle" class="tit">NAS primario</text>
+  <text x="170" y="128" text-anchor="middle" class="sub">FS montato + servizio attivo</text>
+  <text x="170" y="146" text-anchor="middle" class="sub">repository BIM (copia 1)</text>
+  <text x="170" y="170" text-anchor="middle" class="sub">/dev/drbd0 — Primary</text>
+
+  <!-- secondary -->
+  <rect x="420" y="80" width="220" height="110" rx="8" class="srv" stroke-width="2"/>
+  <text x="530" y="106" text-anchor="middle" class="tit">NAS secondario (gemello)</text>
+  <text x="530" y="128" text-anchor="middle" class="sub">standby, FS non montato</text>
+  <text x="530" y="146" text-anchor="middle" class="sub">copia 2 — 2° supporto</text>
+  <text x="530" y="170" text-anchor="middle" class="sub">/dev/drbd0 — Secondary</text>
+
+  <!-- DRBD sync -->
+  <line x1="280" y1="135" x2="420" y2="135" class="sync"/>
+  <text x="350" y="124" text-anchor="middle" class="sub" fill="#1a73e8" font-weight="700">DRBD protocol C</text>
+  <text x="350" y="156" text-anchor="middle" class="sub" fill="#1a73e8">(replica sincrona a blocchi)</text>
+
+  <!-- cloud offsite -->
+  <ellipse cx="820" cy="135" rx="100" ry="50" class="net" stroke-width="2"/>
+  <text x="820" y="130" text-anchor="middle" class="tit">Cloud off-site</text>
+  <text x="820" y="150" text-anchor="middle" class="sub">copia 3 — fuori sede</text>
+  <line x1="640" y1="135" x2="722" y2="135" class="off"/>
+  <text x="690" y="124" text-anchor="middle" class="sub" fill="#9c27b0">rsync</text>
+
+  <!-- failover note -->
+  <rect x="60" y="230" width="580" height="110" rx="8" fill="#ffffff" stroke="#dadce0"/>
+  <text x="72" y="252" class="sub" font-weight="700" fill="#202124">Failover (Pacemaker / keepalived)</text>
+  <text x="72" y="274" class="sub">guasto del primario → fence del nodo → promote del secondario a Primary →</text>
+  <text x="72" y="292" class="sub">mount FS → avvio servizio → spostamento della VIP. Nessun comando manuale.</text>
+  <text x="72" y="318" class="sub" font-weight="700" fill="#137333">3 copie · 2 supporti · 1 off-site — più snapshot/versioning sul NAS.</text>
+
+  <ellipse cx="820" cy="290" rx="100" ry="44" fill="#f1f8e9" stroke="#137333"/>
+  <text x="820" y="286" text-anchor="middle" class="sub" font-weight="700">VIP servizio</text>
+  <text x="820" y="304" text-anchor="middle" class="sub">i client BIM vedono</text>
+  <text x="820" y="320" text-anchor="middle" class="sub">sempre lo stesso IP</text>
+</svg>
