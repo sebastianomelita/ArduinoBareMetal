@@ -289,6 +289,25 @@ bridge_keyfile  /etc/mosquitto/certs/gw.key
 
 > In sede il sistema allarmi si abbona a `cantiere/+/+/+/+/alarm` per furto/incendio in tempo reale; lo stesso flusso alimenta il **DB di log storico**.
 
+### 6.5 Le WSN Zigbee come reti partecipanti (federazione)
+
+Una **WSN Zigbee** è una rete con tre ruoli di nodo, organizzati a **mesh**:
+
+- **Coordinator** (uno per WSN): forma e governa la rete; **coincide con il gateway** verso la rete IP.
+- **Router**: nodi alimentati che instradano e formano la mesh, estendendo la copertura.
+- **End Device**: sensori a batteria (furto/incendio) a basso consumo, che dormono e parlano col nodo "genitore".
+
+<img src="../img/wsn_zigbee.svg" alt="Topologia WSN Zigbee con ruoli, mesh, backup e uplink" width="800">
+
+La topologia prevede almeno **un percorso verso il coordinatore** e **percorsi di backup** se cade un nodo centrale o il gateway (§3.5). Il **gateway = Coordinator + traduttore**: chiude la WSN Zigbee e la ripubblica nel mondo IP. Il suo **uplink verso la rete IP può essere Wi-Fi oppure Ethernet** e, dal punto di vista della rete IP e di MQTT, **è indifferente**: in entrambi i casi la WSN "partecipa" alla stessa rete di distribuzione IP e pubblica sullo **stesso broker** con lo **stesso schema** (§6.2). Si possono quindi avere una WSN dietro un gateway con uplink **Wi-Fi** e un'altra dietro un gateway con uplink **Ethernet**: a livello applicativo sono identiche.
+
+**Federazione di reti** (§1.1): più WSN Zigbee, ciascuna col proprio coordinatore/gateway, si aggregano sulla **rete di distribuzione IP** e su un **broker MQTT a comune** — il link applicativo L7 è *gateway WSN ↔ broker*. Ogni WSN resta un dominio Zigbee a sé (con **PAN-ID e canale distinti** per non interferire), ma a valle convergono in un unico modello dati.
+
+- **Sede dell'elaborazione** (§3.5): **edge** sul gateway per gli allarmi locali immediati; **remota** in sede per log storico e correlazione.
+- **Tipologia di servizio**: **comando asincrono** (event-driven) per gli allarmi; **polling sincrono** per lo stato periodico.
+- **Sicurezza**: la WSN autentica i nodi con **chiave di rete/link (PSK)** — *non* mTLS, coerente con lo stack del documento centrale; la mutua a certificati (**mTLS**) compare solo sul salto **gateway → broker**.
+- **Vincoli radio**: i canali Zigbee (2.4 GHz) si scelgono per **non interferire** col Wi-Fi access (es. Zigbee ch 15/20/25/26 a cavallo dei "buchi" tra Wi-Fi 1/6/11).
+
 ---
 
 
