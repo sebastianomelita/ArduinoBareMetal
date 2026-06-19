@@ -1,7 +1,7 @@
 # Approfondimenti tecnici — A038 "Sistemi e Reti"
 ### Allegato a [risoluzione_A038_sistemi_reti_2026.md](risoluzione_A038_sistemi_reti_2026.md)
 
-> Dettagli e comandi a corredo della Prima/Seconda parte: routing e autenticazione Wi-Fi mesh, SSID statico/dinamico, port-forward SSH in IOS, allocazione dei canali, e due ipotesi di continuità di servizio.
+> Dettagli e comandi a corredo della Prima/Seconda parte: routing e autenticazione Wi-Fi mesh, SSID statico/dinamico, port-forward SSH in IOS, allocazione dei canali, dati IoT con schema MQTT comune, e due ipotesi di continuità di servizio.
 
 ---
 
@@ -178,7 +178,141 @@ EIRP (EU, indicativo): 2.4 GHz 20–24 dBm · 5 GHz DFS ~23 dBm indoor / ~30 dBm
 
 ---
 
-## 6 · Continuità di servizio — link verso la VPN
+## 6 · Dati IoT: sensori Zigbee/Wi-Fi/Ethernet e schema MQTT comune
+
+**Architettura.** I sensori di sicurezza arrivano da **trasporti diversi**, ma confluiscono in un **unico modello applicativo** MQTT:
+
+- **Zigbee — gruppo 1** → **gateway wireless** (coordinatore Zigbee con uplink **Wi-Fi** alla VLAN sensori).
+- **Zigbee — gruppo 2** → **gateway wired** (coordinatore Zigbee con uplink **Ethernet/PoE**).
+- **Sensori Wi-Fi nativi** ed **Ethernet nativi** (IP) → pubblicano **direttamente** su MQTT.
+
+I dispositivi Zigbee **non parlano IP/MQTT**: è il **coordinatore/gateway** a fare da traduttore, mappando ogni report Zigbee nello **schema comune**. I dispositivi IP pubblicano già nello stesso formato. Così **broker e consumatori vedono un solo albero di topic e un solo payload**, qualunque sia il trasporto.
+
+<img src="../img/iot_mqtt.svg" alt="Architettura dati IoT/MQTT eterogenea" width="820">
+
+Il **broker MQTT** sta **sull'edge del cantiere** (allarmi real-time locali) e fa **bridge** verso il broker di sede (segnalazioni + log storico), coerente con la Prima parte. I publisher si autenticano al broker in **mTLS** (livello L4/5 dello stack di autenticazione), con **ACL per topic** sul broker.
+
+### 6.1 Albero dei topic (comune a tutti i dispositivi)
+
+```
+cantiere/{site}/{zona}/{tipo}/{device}/{canale}
+```
+
+| Segmento | Valori | Note |
+|---|---|---|
+| `site` | `1`…`5` | id cantiere |
+| `zona` | `zona-A`, `zona-B`, … | area del cantiere |
+| `tipo` | `fire`, `intrusion`, `gas`, … | almeno **incendio** e **furto** |
+| `device` | `SMK-0007`, `PIR-0042` | id univoco del sensore |
+| `canale` | `alarm` · `state` · `cmd` · `config` | allarme · stato/heartbeat · comando · configurazione |
+
+Esempi: `cantiere/1/zona-A/fire/SMK-0007/alarm` (incendio) · `cantiere/1/zona-B/intrusion/PIR-0042/alarm` (furto).
+
+**Sottoscrizioni** (con wildcard): la sede prende **tutti gli allarmi** con `cantiere/+/+/+/+/alarm`; il notificatore locale di un cantiere usa `cantiere/1/#`; per i soli incendi `cantiere/+/+/fire/+/alarm`.
+
+### 6.2 Payload JSON comune
+
+Stesso schema per Wi-Fi, Zigbee ed Ethernet; i campi `transport` e `gateway` registrano la provenienza **senza** cambiare la struttura.
+
+| Campo | Tipo | Significato |
+|---|---|---|
+| `schema` | string | versione del formato (es. `"1.0"`) |
+| `ts` | string | timestamp ISO-8601 UTC |
+| `site` / `zone` | string | cantiere e zona |
+| `device_id` | string | id del sensore |
+| `type` | string | `fire` \| `intrusion` \| `gas` \| … |
+| `event` | string | `alarm` \| `clear` \| `heartbeat` \| `offline` |
+| `severity` | string | `info` \| `warning` \| `critical` |
+| `value` | number | misura o booleano (0/1) |
+| `transport` | string | `zigbee` \| `wifi` \| `ethernet` |
+| `gateway` | string\|null | id del gateway (per i Zigbee), `null` per i nativi IP |
+| `battery` / `rssi` | number\|null | salute del dispositivo |
+
+Allarme **furto** (sensore Zigbee dietro il gateway wired):
+
+```json
+{
+  "schema": "1.0",
+  "ts": "2026-06-19T02:41:09Z",
+  "site": "cantiere-1", "zone": "zona-B",
+  "device_id": "PIR-0042",
+  "type": "intrusion", "event": "alarm", "severity": "critical",
+  "value": 1,
+  "transport": "zigbee", "gateway": "gw-wired-01",
+  "battery": 78, "rssi": -67
+}
+```
+
+Allarme **incendio** (sensore Wi-Fi nativo):
+
+```json
+{
+  "schema": "1.0",
+  "ts": "2026-06-19T10:15:32Z",
+  "site": "cantiere-1", "zone": "zona-A",
+  "device_id": "SMK-0007",
+  "type": "fire", "event": "alarm", "severity": "critical",
+  "value": 1,
+  "transport": "wifi", "gateway": null,
+  "battery": 91, "rssi": -58
+}
+```
+
+Messaggio di **stato/heartbeat** (canale `state`) e **comando** (canale `cmd`, es. tacitazione sirena):
+
+```json
+{ "schema":"1.0","ts":"2026-06-19T10:10:00Z","site":"cantiere-1","zone":"zona-A",
+  "device_id":"SMK-0007","type":"fire","event":"heartbeat","value":0,
+  "transport":"wifi","gateway":null,"battery":91,"rssi":-58 }
+```
+```json
+{ "schema":"1.0","ts":"2026-06-19T10:16:00Z","cmd":"silence","ttl_s":60,"by":"operator:mrossi" }
+```
+
+### 6.3 Affidabilità (QoS, retain, LWT)
+
+- **Allarmi**: **QoS 1** (almeno una consegna), **non** retained → un allarme è un evento, non uno stato.
+- **Stato**: pubblicato **retained** sul canale `state` → un nuovo subscriber conosce subito l'ultimo stato noto.
+- **LWT (Last Will & Testament)**: ogni dispositivo/gateway imposta un *will* sul proprio `.../state` con `event:"offline"`; se cade, il broker lo pubblica → si rileva un sensore di sicurezza scollegato.
+
+### 6.4 Bridge edge → sede (Mosquitto, su mTLS)
+
+```ini
+# /etc/mosquitto/conf.d/bridge.conf  — broker di cantiere
+connection bridge-sede
+address broker.sede.local:8883
+topic cantiere/1/# out 1                 # inoltra (out) tutti i topic del cantiere, QoS 1
+bridge_cafile  /etc/mosquitto/certs/ca.crt
+bridge_certfile /etc/mosquitto/certs/gw.crt   # mTLS: identità del gateway
+bridge_keyfile  /etc/mosquitto/certs/gw.key
+```
+
+> In sede il sistema allarmi si abbona a `cantiere/+/+/+/+/alarm` per furto/incendio in tempo reale; lo stesso flusso alimenta il **DB di log storico**.
+
+### 6.5 Le WSN Zigbee come reti partecipanti (federazione)
+
+Una **WSN Zigbee** è una rete con tre ruoli di nodo, organizzati a **mesh**:
+
+- **Coordinator** (uno per WSN): forma e governa la rete; **coincide con il gateway** verso la rete IP.
+- **Router**: nodi alimentati che instradano e formano la mesh, estendendo la copertura.
+- **End Device**: sensori a batteria (furto/incendio) a basso consumo, che dormono e parlano col nodo "genitore".
+
+<img src="../img/wsn_zigbee.svg" alt="Topologia WSN Zigbee con ruoli, mesh, backup e uplink" width="800">
+
+La topologia prevede almeno **un percorso verso il coordinatore** e **percorsi di backup** se cade un nodo centrale o il gateway (§3.5). Il **gateway = Coordinator + traduttore**: chiude la WSN Zigbee e la ripubblica nel mondo IP. Il suo **uplink verso la rete IP può essere Wi-Fi oppure Ethernet** e, dal punto di vista della rete IP e di MQTT, **è indifferente**: in entrambi i casi la WSN "partecipa" alla stessa rete di distribuzione IP e pubblica sullo **stesso broker** con lo **stesso schema** (§6.2). Si possono quindi avere una WSN dietro un gateway con uplink **Wi-Fi** e un'altra dietro un gateway con uplink **Ethernet**: a livello applicativo sono identiche.
+
+**Federazione di reti** (§1.1): più WSN Zigbee, ciascuna col proprio coordinatore/gateway, si aggregano sulla **rete di distribuzione IP** e su un **broker MQTT a comune** — il link applicativo L7 è *gateway WSN ↔ broker*. Ogni WSN resta un dominio Zigbee a sé (con **PAN-ID e canale distinti** per non interferire), ma a valle convergono in un unico modello dati.
+
+- **Sede dell'elaborazione** (§3.5): **edge** sul gateway per gli allarmi locali immediati; **remota** in sede per log storico e correlazione.
+- **Tipologia di servizio**: **comando asincrono** (event-driven) per gli allarmi; **polling sincrono** per lo stato periodico.
+- **Sicurezza**: la WSN autentica i nodi con **chiave di rete/link (PSK)** — *non* mTLS, coerente con lo stack del documento centrale; la mutua a certificati (**mTLS**) compare solo sul salto **gateway → broker**.
+- **Vincoli radio**: i canali Zigbee (2.4 GHz) si scelgono per **non interferire** col Wi-Fi access (es. Zigbee ch 15/20/25/26 a cavallo dei "buchi" tra Wi-Fi 1/6/11).
+
+---
+
+
+
+## 7 · Continuità di servizio — link verso la VPN
 
 **Ipotesi.** Il canale cantiere↔sede non deve interrompersi: si combinano **ridondanza del link** (lato cantiere) e **alta disponibilità del concentratore VPN** (lato sede).
 
@@ -211,7 +345,7 @@ vrrp_instance VI_1 {
 
 ---
 
-## 7 · Continuità di servizio — NAS centrale (repository BIM)
+## 8 · Continuità di servizio — NAS centrale (repository BIM)
 
 **Ipotesi.** Il repository delle nuvole di punti/video è un asset critico: serve **replica**, **failover** e **copia off-site** (regola **3-2-1**).
 
