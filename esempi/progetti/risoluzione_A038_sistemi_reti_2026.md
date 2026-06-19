@@ -24,7 +24,7 @@ Queste ipotesi guidano due scelte chiave: rete di cantiere **wireless-centrica**
 
 Poiché il cantiere è temporaneo e senza cablaggio strutturato, si realizza una **LAN temporanea wireless-centrica** imperniata su un **gateway industriale 4G/5G** che fa da router, firewall e client VPN verso la sede.
 
-<img src="..img/schema_cantiere.svg" alt="Schema della rete di cantiere" width="760">
+<img src="../img/schema_cantiere.svg" alt="Schema della rete di cantiere" width="760">
 
 **Apparati e canali locali**
 
@@ -52,7 +52,7 @@ Poiché il cantiere è temporaneo e senza cablaggio strutturato, si realizza una
 
 **Situazione attuale (descritta dalla traccia).** LAN piatta con i PC degli uffici tecnici e un **router con WAN ADSL** verso Internet. È adeguata al lavoro d'ufficio ma **insufficiente** per il BIM.
 
-<img src="..img/schema_sede.svg" alt="Schema della rete di sede potenziata" width="780">
+<img src="../img/schema_sede.svg" alt="Schema della rete di sede potenziata" width="780">
 
 **Potenziamenti necessari**
 
@@ -66,7 +66,7 @@ Poiché il cantiere è temporaneo e senza cablaggio strutturato, si realizza una
 
 I cantieri sono temporanei: il collegamento più sensato è una **VPN site-to-site su Internet**, con accesso **mobile 4G/5G** lato cantiere e **fibra simmetrica** lato sede.
 
-<img src="..img/collegamento_cantiere_sede.svg" alt="Collegamento cantieri-sede" width="780">
+<img src="../img/collegamento_cantiere_sede.svg" alt="Collegamento cantieri-sede" width="780">
 
 **Stima della capacità trasmissiva (esempio motivato)**
 
@@ -97,7 +97,7 @@ Si imposta l'autenticazione **non come scelta unica fra protocolli**, ma fissand
 
 Il principio guida è che **i livelli si sommano, non si escludono**: lo stesso certificato X.509 può vivere in punti diversi (EAP-TLS a L2, IPsec a L3, mTLS a L4/5). L'identità è centralizzata su **Active Directory/LDAP** in sede, con **RADIUS** come server AAA.
 
-<img src="..img/autenticazione_stack.svg" alt="Stack a quattro livelli dell'autenticazione" width="800">
+<img src="../img/autenticazione_stack.svg" alt="Stack a quattro livelli dell'autenticazione" width="800">
 
 **Operatori — i quattro livelli applicati allo scenario**
 
@@ -176,7 +176,7 @@ Oltre all'autenticazione (punto 4):
 ssh -p 25500 administrator@200.1.1.1
 ```
 
-<img src="..img/ssh_port_forwarding.svg" alt="Schema port forwarding SSH" width="780">
+<img src="../img/ssh_port_forwarding.svg" alt="Schema port forwarding SSH" width="780">
 
 **Analisi del comando**
 - `ssh` — avvia il **client SSH** (shell remota **cifrata e autenticata**).
