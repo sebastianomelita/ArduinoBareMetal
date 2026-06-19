@@ -72,7 +72,7 @@ Poiché il cantiere è temporaneo e senza cablaggio strutturato, si realizza una
 
 1. **WAN.** L'ADSL è asimmetrica con upload basso: inadeguata a **ricevere** grandi nuvole di punti e flussi video da più cantieri. Si passa a **fibra FTTH simmetrica** (o connessione business) con **upload elevato**, e si aggiunge **ridondanza** (seconda linea ISP e/o failover 4G/5G).
 2. **Sicurezza perimetrale.** **NGFW/UTM** con **IPS/IDS** che funge anche da **concentratore VPN** per terminare i tunnel dei cantieri, e creazione di una **DMZ** per i servizi esposti (repository di ricezione, reverse proxy, broker MQTT).
-3. **Server e storage.** **NAS/SAN** per il repository (nuvole di punti, fotogrammi, video timelapse); **server applicativi** per il software BIM specialistico; **server di autenticazione** (Active Directory/LDAP + **RADIUS**); **database** per i dati sensori e il **registro di log storico**; **SIEM** e sistema di **backup**.
+3. **Server e storage.** **NAS/SAN** in **RAID 6/10** (ridondanza del singolo nodo) per il repository — che funge da **CDE (Common Data Environment)** del progetto BIM (nuvole di punti, fotogrammi, video timelapse); **server applicativi** per il software BIM specialistico; **server di autenticazione** (Active Directory/LDAP + **RADIUS**); **database** per i dati sensori e il **registro di log storico**; **SIEM** e sistema di **backup**.
 4. **Segmentazione e core.** **Switch core L3** con **VLAN** e routing inter-VLAN controllato da policy. In sede le **VLAN sono necessarie**: convivono livelli di fiducia diversi (server farm, DMZ, uffici, management) ed è il presupposto delle policy *default-deny* sui confini. Indirizzamento **classless `/24`** nel blocco `10.0.0.0/16`:
 
    | VLAN | Zona | Subnet `/24` | GW |
@@ -181,12 +181,14 @@ Il principio guida è che **i livelli si sommano, non si escludono**: lo stesso 
 
 **Proposta: soluzione ibrida.** Dati "caldi" e attivi del modello BIM su **NAS/SAN in sede** (prestazioni, il software lavora in locale); **cloud** per **backup/DR**, **archivio "freddo"** delle scansioni e **collaborazione** con le altre sedi/partner. Si ottiene il meglio: prestazioni locali e resilienza/scalabilità esterne.
 
+**Interoperabilità dei dati (dominio BIM).** A prescindere dallo storage, i modelli vanno scambiati in un formato **aperto e neutro**: lo standard **IFC (Industry Foundation Classes)** dell'approccio **openBIM** garantisce l'interoperabilità tra software diversi, evitando il *lock-in* dei formati proprietari. La condivisione "tra i vari uffici" richiesta dalla traccia si realizza con un **CDE (Common Data Environment)**: l'ambiente di dati condiviso (qui il repository in sede + cloud) che fa da unica fonte di verità del progetto, con versioning e controllo degli accessi. È il CDE, non un semplice file server, a coordinare il lavoro dei tecnici sul modello.
+
 ## Quesito II — Ulteriori misure di sicurezza e continuità trasmissiva
 
 Oltre all'autenticazione (punto 4):
 
 **Sicurezza informatica**
-- **Cifratura** end-to-end: VPN IPsec/TLS per il traffico cantiere-sede, **HTTPS/SFTP** per i trasferimenti, **WPA3** sul Wi-Fi.
+- **Cifratura** distinguendo i due stati del dato: **in transito** con VPN **IPsec** (ESP, **AES-256** per la riservatezza, **SHA-256** per integrità e **anti-replay** — utile per i log dei sensori) e **TLS** per i trasferimenti applicativi; **a riposo** (*data at rest*) con cifratura dei dischi **AES-256** su NAS/SAN e tablet. **WPA3** sul Wi-Fi con **Client Isolation** (i tablet non si parlano tra loro → niente movimento laterale in caso di compromissione).
 - **NGFW/UTM con IPS/IDS** in sede e firewall su ogni gateway di cantiere; ispezione **stateful** (CBAC o, meglio, **Zone-Based Firewall**) con apertura automatica dei ritorni.
 - **Segmentazione** (VLAN) e **DMZ** per i servizi esposti. Doctrine delle policy: **default-deny su ogni confine di fiducia** (WAN, tunnel, accesso ai server) e **default-allow solo dentro le zone già fidate**, con **ACL anti-spoofing** in ingresso sulle subnet.
 - **Endpoint security**: antivirus/EDR su tablet e PC; **MDM** sui tablet rugged (cifratura disco, **remote wipe** in caso di furto/smarrimento in cantiere).
@@ -197,7 +199,7 @@ Oltre all'autenticazione (punto 4):
 **Continuità trasmissiva del canale cantiere ↔ sede**
 - **WAN ridondata** lato cantiere: **dual-SIM** di due operatori, oppure 4G/5G **+ satellitare** in failover automatico.
 - **Doppio ISP + 4G** in failover lato sede; **alta affidabilità** (firewall ridondati).
-- **VPN** con **Dead Peer Detection** e riconnessione automatica; eventuali tunnel ridondati.
+- **VPN** con **Dead Peer Detection** e riconnessione automatica; eventuali tunnel ridondati. Failover gestito in logica **SD-WAN** con sonde **IP SLA** (latenza/jitter/perdita): al degrado del link primario il traffico passa al backup in millisecondi.
 - **QoS** per prioritizzare gli **allarmi** dei sensori sul traffico bulk.
 - **Store-and-forward** sull'edge NAS di cantiere: i dati vengono accodati durante un'interruzione e inviati al ripristino, **senza perdite**.
 - **UPS** su gateway di cantiere e apparati di sede.
@@ -214,6 +216,7 @@ Oltre all'autenticazione (punto 4):
 - **HTTPS:** poiché l'URL è cifrato, si usa **filtraggio SNI** o **ispezione SSL** (con policy/consenso adeguati), o l'**application control** dell'NGFW che riconosce il traffico verso i servizi IA.
 - **Regole firewall** per IP/domini e blocco a livello di **VLAN del laboratorio**.
 - **Policy per identità**: con **captive portal / 802.1X + gruppi AD** si distingue *studenti* (bloccati) da *docenti* (autorizzati).
+- **Restrizioni sull'endpoint (GPO)**: via **Group Policy** del dominio si applica una **blocklist/allowlist delle estensioni** del browser, per impedire plugin IA o integrazioni IA negli IDE che aggirerebbero il filtro di rete.
 
 **Schedulazione blocco/sblocco per orario e laboratorio**
 - **ACL temporizzate** (time-range) su firewall/proxy: molte soluzioni (es. pfSense) supportano regole con fasce orarie.
