@@ -51,11 +51,11 @@ Poiché il cantiere è temporaneo e senza cablaggio strutturato, si realizza una
 
 > Variante minimale (cantiere molto piccolo): **subnet unica** `10.k.0.0/24`, senza VLAN, con segmentazione affidata alle sole regole host del firewall di gateway.
 
-- **DHCP** per i client dinamici (tablet), **IP statici/reservation** per l'infrastruttura (router `.254`, AP, telecamere, gateway IoT).
+- **DHCP per i dispositivi wireless, indirizzi fissi per server e infrastruttura.** I client wireless (tablet) sono **numerosi, mobili e intermittenti**: entrano ed escono dalla rete, fanno roaming tra gli AP e cambiano a ogni montaggio/smontaggio del cantiere — configurarli a mano sarebbe impraticabile e fonte di conflitti, perciò un **server DHCP** li indirizza automaticamente da un *pool* fornendo IP, gateway `.254`, DNS e NTP. **Server, gateway e apparati** (router `.254`, AP, telecamere, gateway IoT, broker) hanno invece **indirizzo fisso** (statico o *reservation* DHCP su MAC) perché devono essere **raggiungibili a un indirizzo stabile e noto**, richiamato da record DNS, regole firewall/ACL, configurazioni client, indirizzo del broker MQTT, OSPF e port-forward: se cambiasse a ogni lease, tutti questi riferimenti si romperebbero.
 
 **Protocolli e servizi**
 
-- **DHCP, DNS** (forwarder locale), **NTP** (sincronizzazione oraria: fondamentale per timestamp di log e timelapse).
+- **DHCP e DNS a bordo del firewall/gateway** (il router 4G/5G che è anche firewall): il DHCP serve i client wireless, il DNS è un *forwarder* locale; insieme. **NTP** per la sincronizzazione oraria (fondamentale per i timestamp di log e timelapse).
 - **Tunnel L3/TUN (GRE) protetto da IPsec** verso la sede, con **OSPF** per il routing; **WPA3-Enterprise / 802.1X** sul Wi-Fi.
 - **MQTT** per la telemetria/allarmi dei sensori; **SFTP/FTPS/HTTPS** per il trasferimento di nuvole di punti e fotogrammi al repository di sede.
 - **Firewall** sul gateway con regole di default-deny in ingresso.
@@ -81,7 +81,8 @@ Poiché il cantiere è temporaneo e senza cablaggio strutturato, si realizza una
    | 40 | DMZ (repository ricezione, reverse proxy) | `10.0.40.0/24` | `.254` |
    | 99 | Management apparati | `10.0.99.0/24` | `.254` |
 
-5. **Continuità.** **UPS**, ridondanza degli apparati critici, backup e procedura di **disaster recovery**.
+5. **Servizi di sistema.** **DHCP e DNS a bordo del firewall (NGFW)**, insieme: il DHCP indirizza la VLAN Wi-Fi staff e i client d'ufficio, il DNS risolve i nomi interni. I **server della server farm** (VLAN 30) e gli apparati hanno **indirizzo fisso**, perché raggiunti per nome/IP stabile da DNS, ACL, client BIM e dal broker.
+6. **Continuità.** **UPS**, ridondanza degli apparati critici, backup e procedura di **disaster recovery**.
 
 ## Punto 3 — Canali cantiere ↔ sede e dimensionamento della banda
 
