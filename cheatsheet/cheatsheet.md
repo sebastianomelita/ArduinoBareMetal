@@ -1166,6 +1166,30 @@ R0# show running-config | section nat
 
 > `traceroute` mostra il percorso hop-by-hop: utile per capire quale router smista tra VLAN o aree OSPF.
 
+---
+
+
+## hostapd — Wi-Fi WPA3 + Client Isolation (Linux AP)
+> *Collocazione:* **Parte II, accanto a §19 (802.1X)** o **Parte I §3.2**. Lato AP: il cheatsheet copre solo lo switch RADIUS; qui c'è l'AP con WPA3-SAE e l'isolamento dei client.
+
+```
+# /etc/hostapd/hostapd.conf
+interface=wlan0
+ssid=Cantiere
+wpa=2
+wpa_key_mgmt=SAE            # WPA3-Personal (SAE). Enterprise: WPA-EAP-SHA256
+rsn_pairwise=CCMP
+ieee80211w=2               # PMF (Protected Management Frames): OBBLIGATORIO in WPA3
+sae_password=<password>
+ap_isolate=1              # Client Isolation: i client NON si parlano tra loro
+
+# Variante Enterprise (802.1X → RADIUS, vedi §19):
+# ieee8021x=1
+# auth_server_addr=10.0.30.30
+# auth_server_port=1812
+# auth_server_shared_secret=<chiave>
+```
+> 🔑 `ap_isolate=1` blocca il **movimento laterale** tra dispositivi wireless. Su WLC/AP Cisco l'equivalente è **P2P Blocking Action = Drop**. **Test:** `systemctl status hostapd`, `iw dev wlan0 station dump`.
 
 ---
 # Parte III · Backup & Ripristino
@@ -1504,33 +1528,6 @@ interface Tunnel1
  permit esp host <IP-PUB-PEER> any
 ```
 > 🔑 `mode transport` perché c'è già il GRE; **`tunnel mode`** se è IPsec puro senza GRE. Anti-replay attivo di default: `crypto ipsec security-association replay window-size 1024`. **Test:** `show crypto ikev2 sa`, `show crypto ipsec sa`.
-
----
-
-
-## hostapd — Wi-Fi WPA3 + Client Isolation (Linux AP)
-> *Collocazione:* **Parte II, accanto a §19 (802.1X)** o **Parte I §3.2**. Lato AP: il cheatsheet copre solo lo switch RADIUS; qui c'è l'AP con WPA3-SAE e l'isolamento dei client.
-
-```
-# /etc/hostapd/hostapd.conf
-interface=wlan0
-ssid=Cantiere
-wpa=2
-wpa_key_mgmt=SAE            # WPA3-Personal (SAE). Enterprise: WPA-EAP-SHA256
-rsn_pairwise=CCMP
-ieee80211w=2               # PMF (Protected Management Frames): OBBLIGATORIO in WPA3
-sae_password=<password>
-ap_isolate=1              # Client Isolation: i client NON si parlano tra loro
-
-# Variante Enterprise (802.1X → RADIUS, vedi §19):
-# ieee8021x=1
-# auth_server_addr=10.0.30.30
-# auth_server_port=1812
-# auth_server_shared_secret=<chiave>
-```
-> 🔑 `ap_isolate=1` blocca il **movimento laterale** tra dispositivi wireless. Su WLC/AP Cisco l'equivalente è **P2P Blocking Action = Drop**. **Test:** `systemctl status hostapd`, `iw dev wlan0 station dump`.
-
-
 
 ---
 
