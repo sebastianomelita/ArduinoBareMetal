@@ -1,0 +1,48 @@
+<svg viewBox="0 0 980 460" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .net{fill:#fef7e0;stroke:#ea8600}
+    .dev{fill:#e8f0fe;stroke:#1a73e8}
+    .srv{fill:#e6f4ea;stroke:#137333}
+    .tit{font-size:13px;font-weight:700;fill:#202124}
+    .sub{font-size:11px;fill:#5f6368}
+    .vpn{stroke:#137333;stroke-width:3;stroke-dasharray:3 5;fill:none;stroke-linecap:round}
+  </style>
+
+  <text x="490" y="30" text-anchor="middle" class="tit" font-size="16">Collegamento cantieri ↔ sede (WAN + VPN site-to-site)</text>
+
+  <!-- Internet cloud center -->
+  <ellipse cx="490" cy="220" rx="130" ry="64" class="net" stroke-width="2"/>
+  <text x="490" y="216" text-anchor="middle" class="tit">Internet</text>
+  <text x="490" y="236" text-anchor="middle" class="sub">trasporto pubblico cifrato</text>
+
+  <!-- Cantieri left -->
+  <g>
+    <rect x="40" y="80" width="200" height="64" rx="8" class="dev" stroke-width="2"/>
+    <text x="140" y="104" text-anchor="middle" class="tit">Cantiere 1</text>
+    <text x="140" y="123" text-anchor="middle" class="sub">router 4G/5G dual-SIM</text>
+    <path d="M240 120 Q360 150 372 195" class="vpn"/>
+
+    <rect x="40" y="190" width="200" height="64" rx="8" class="dev" stroke-width="2"/>
+    <text x="140" y="214" text-anchor="middle" class="tit">Cantiere 2</text>
+    <text x="140" y="233" text-anchor="middle" class="sub">5G + failover satellitare</text>
+    <path d="M240 222 L362 221" class="vpn"/>
+
+    <rect x="40" y="300" width="200" height="64" rx="8" class="dev" stroke-width="2"/>
+    <text x="140" y="324" text-anchor="middle" class="tit">Cantiere N</text>
+    <text x="140" y="343" text-anchor="middle" class="sub">≤ 5 cantieri attivi</text>
+    <path d="M240 324 Q360 290 372 250" class="vpn"/>
+  </g>
+
+  <!-- Sede right -->
+  <rect x="700" y="150" width="240" height="140" rx="8" class="srv" stroke-width="2"/>
+  <text x="820" y="178" text-anchor="middle" class="tit">SEDE CENTRALE</text>
+  <text x="820" y="202" text-anchor="middle" class="sub">FTTH simmetrica ≥ 100 Mbps</text>
+  <text x="820" y="222" text-anchor="middle" class="sub">NGFW + concentratore VPN</text>
+  <text x="820" y="242" text-anchor="middle" class="sub">repository + RADIUS/AD</text>
+  <text x="820" y="262" text-anchor="middle" class="sub">2ª linea ISP + 4G failover</text>
+  <path d="M608 200 Q660 200 700 205" class="vpn"/>
+  <path d="M610 235 Q660 240 700 245" class="vpn"/>
+
+  <text x="490" y="330" text-anchor="middle" class="sub" fill="#137333" font-weight="600">— — —  tunnel IPsec site-to-site (uno per cantiere)</text>
+  <text x="490" y="352" text-anchor="middle" class="sub">Banda di picco a regola d'arte: ~8–10 Mbps medi aggregati ⇒ uplink sede ≥ 50–100 Mbps</text>
+</svg>

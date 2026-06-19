@@ -1,0 +1,58 @@
+<svg viewBox="0 0 980 540" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .tit{font-size:13px;font-weight:700;fill:#202124}
+    .sub{font-size:11px;fill:#5f6368}
+    .lyr{font-size:14px;font-weight:700;fill:#fff}
+    .tag{font-size:11px;fill:#fff;font-weight:600}
+    .det{font-size:11px;fill:#202124}
+  </style>
+
+  <text x="490" y="28" text-anchor="middle" class="tit" font-size="16">I livelli di autenticazione si sommano (non si escludono)</text>
+  <text x="490" y="48" text-anchor="middle" class="sub">stesso certificato X.509, punti diversi · canale insicuro (WAN) ⇒ autenticazione forte</text>
+
+  <!-- L7 -->
+  <rect x="60" y="70" width="860" height="92" rx="8" fill="#6a1b9a"/>
+  <rect x="60" y="70" width="150" height="92" rx="8" fill="#4a148c"/>
+  <text x="135" y="110" text-anchor="middle" class="lyr">L7</text>
+  <text x="135" y="130" text-anchor="middle" class="tag">sessione app.</text>
+  <text x="230" y="96" class="tag">SSO Kerberos/AD · OpenID Connect/OAuth 2.0 · JWT bearer · SSH (amministrazione)</text>
+  <rect x="230" y="108" width="670" height="44" rx="6" fill="#ffffff" opacity="0.92"/>
+  <text x="245" y="127" class="det">Operatori → repository/software BIM con SSO + MFA (TOTP) sulle funzioni sensibili.</text>
+  <text x="245" y="144" class="det">Schema "server forte + client debole nel tunnel": HTTPS+login, SSH con password (host key → canale → credenziale).</text>
+
+  <!-- L4/5 -->
+  <rect x="60" y="174" width="860" height="92" rx="8" fill="#1565c0"/>
+  <rect x="60" y="174" width="150" height="92" rx="8" fill="#0d47a1"/>
+  <text x="135" y="214" text-anchor="middle" class="lyr">L4/5</text>
+  <text x="135" y="234" text-anchor="middle" class="tag">sessione TLS</text>
+  <text x="230" y="200" class="tag">mTLS (X.509 bilaterale) · TLS server-side + credenziale device</text>
+  <rect x="230" y="212" width="670" height="44" rx="6" fill="#ffffff" opacity="0.92"/>
+  <text x="245" y="231" class="det">Nodi di pubblicazione: tablet / gateway IoT ↔ broker MQTT con mTLS (cifratura end-to-end sulla WAN).</text>
+  <text x="245" y="248" class="det">Autentica il servizio (client fasullo escluso). Forte. Per gli utenti il cert client solo a LoA4.</text>
+
+  <!-- L3 -->
+  <rect x="60" y="278" width="860" height="92" rx="8" fill="#2e7d32"/>
+  <rect x="60" y="278" width="150" height="92" rx="8" fill="#1b5e20"/>
+  <text x="135" y="318" text-anchor="middle" class="lyr">L3</text>
+  <text x="135" y="338" text-anchor="middle" class="tag">canale / VPN</text>
+  <text x="230" y="304" class="tag">IPsec site-to-site · VPN home-to-site</text>
+  <rect x="230" y="316" width="670" height="44" rx="6" fill="#ffffff" opacity="0.92"/>
+  <text x="245" y="335" class="det">Nodi di smistamento: gateway di cantiere ↔ concentratore VPN, autenticazione di apparato via certificati.</text>
+  <text x="245" y="352" class="det">Operatori remoti (manutenzione/smartworking): VPN client con credenziali AD + MFA, validate da RADIUS.</text>
+
+  <!-- L2 -->
+  <rect x="60" y="382" width="860" height="92" rx="8" fill="#e65100"/>
+  <rect x="60" y="382" width="150" height="92" rx="8" fill="#bf360c"/>
+  <text x="135" y="422" text-anchor="middle" class="lyr">L2</text>
+  <text x="135" y="442" text-anchor="middle" class="tag">ammissione rete</text>
+  <text x="230" y="408" class="tag">802.1X / EAP → RADIUS (NAS = AP Wi-Fi / switch)</text>
+  <rect x="230" y="420" width="670" height="44" rx="6" fill="#ffffff" opacity="0.92"/>
+  <text x="245" y="439" class="det">Operatori: Wi-Fi WPA2/3-Enterprise in cantiere e in sede; porta fisica 802.1X sugli switch di sede.</text>
+  <text x="245" y="456" class="det">VLAN dinamica via RADIUS (Tunnel-Private-Group-Id) per gruppo LDAP; fallback captive portal.</text>
+
+  <!-- radio side note -->
+  <rect x="60" y="488" width="860" height="40" rx="8" fill="#fff8e1" stroke="#f9a825"/>
+  <text x="75" y="505" class="sub" font-weight="700" fill="#202124">Lato radio sensori (fuori dallo stack IP):</text>
+  <text x="295" y="505" class="sub">nodi sensori/attuatori autenticati via PSK + MIC (LoRaWAN OTAA: AppKey → chiavi di sessione) — NON mTLS.</text>
+  <text x="75" y="521" class="sub">mTLS compare solo più in alto, sul canale IP edge ↔ backend.</text>
+</svg>

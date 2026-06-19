@@ -1,0 +1,47 @@
+<svg viewBox="0 0 980 360" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .net{fill:#fef7e0;stroke:#ea8600}
+    .dev{fill:#e8f0fe;stroke:#1a73e8}
+    .sec{fill:#fce8e6;stroke:#d93025}
+    .srv{fill:#e6f4ea;stroke:#137333}
+    .tit{font-size:13px;font-weight:700;fill:#202124}
+    .sub{font-size:11px;fill:#5f6368}
+    .mono{font-size:12px;fill:#202124;font-family:Consolas,monospace}
+    .flow{stroke:#1a73e8;stroke-width:2.5;fill:none;marker-end:url(#a)}
+  </style>
+  <defs>
+    <marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6 Z" fill="#1a73e8"/>
+    </marker>
+  </defs>
+
+  <text x="490" y="30" text-anchor="middle" class="tit" font-size="16">Effetto del comando — DNAT / port forwarding</text>
+
+  <!-- Client -->
+  <rect x="30" y="120" width="180" height="80" rx="8" class="dev" stroke-width="2"/>
+  <text x="120" y="148" text-anchor="middle" class="tit">Client (amministratore)</text>
+  <text x="120" y="170" text-anchor="middle" class="mono">ssh -p 25500</text>
+  <text x="120" y="188" text-anchor="middle" class="mono">administrator@200.1.1.1</text>
+
+  <!-- Router public -->
+  <rect x="380" y="110" width="220" height="100" rx="8" class="sec" stroke-width="2"/>
+  <text x="490" y="136" text-anchor="middle" class="tit">Router / firewall</text>
+  <text x="490" y="156" text-anchor="middle" class="mono">IP pubblico 200.1.1.1</text>
+  <text x="490" y="178" text-anchor="middle" class="sub">regola DNAT:</text>
+  <text x="490" y="196" text-anchor="middle" class="mono">:25500 → 172.16.1.100:22</text>
+
+  <!-- Internal host -->
+  <rect x="760" y="120" width="190" height="80" rx="8" class="srv" stroke-width="2"/>
+  <text x="855" y="148" text-anchor="middle" class="tit">Host interno (LAN)</text>
+  <text x="855" y="170" text-anchor="middle" class="mono">172.16.1.100</text>
+  <text x="855" y="188" text-anchor="middle" class="sub">sshd in ascolto :22</text>
+
+  <!-- flows -->
+  <path d="M210 150 L378 150" class="flow"/>
+  <text x="294" y="140" text-anchor="middle" class="sub">TCP/25500</text>
+  <path d="M600 160 L758 160" class="flow"/>
+  <text x="680" y="150" text-anchor="middle" class="sub">inoltrato a :22</text>
+
+  <text x="490" y="270" text-anchor="middle" class="sub">L'IP privato 172.16.1.100 non è raggiungibile da Internet: il router lo "espone" tramite il proprio IP pubblico</text>
+  <text x="490" y="290" text-anchor="middle" class="sub">su una porta non standard. La sessione SSH termina di fatto sull'host interno (shell remota cifrata).</text>
+</svg>
