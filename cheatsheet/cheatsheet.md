@@ -443,6 +443,31 @@ sudo systemctl status keepalived
 ip addr show eth0            ← sul MASTER deve comparire 192.168.1.100
 sudo tcpdump -i eth0 vrrp    ← verifica gli advertisement
 ```
+---
+
+## IP SLA — failover dual-WAN (Cisco IOS)
+> *Collocazione:* **Parte II, vicino a §10 (VRRP)**. Diverso da VRRP (HA di **nodo**): qui è failover di **link WAN** in base alla raggiungibilità.
+
+```
+ip sla 1
+ icmp-echo 8.8.8.8 source-interface GigabitEthernet0/0   ! sonda sul link primario
+ frequency 5
+ip sla schedule 1 life forever start-time now
+track 1 ip sla 1 reachability
+
+ip route 0.0.0.0 0.0.0.0 <gw-primario> track 1           ! attiva SOLO se il track è up
+ip route 0.0.0.0 0.0.0.0 <gw-backup> 10                  ! AD 10 = flottante: subentra alla caduta
+```
+
+| Elemento | Ruolo |
+| -------- | --------------------------------------------------- |
+| `ip sla` | invia probe periodici (ICMP/UDP/TCP) verso un target |
+| `track`  | lega lo stato della rotta all'esito del probe       |
+| AD `10`  | rende **flottante** la rotta di backup              |
+
+> 🔑 Quando il probe fallisce, il `track` va *down* → la rotta primaria sparisce → entra la flottante. **Con dual-WAN + NAT** servono `route-map` per associare il NAT all'interfaccia attiva. **Test:** `show ip sla statistics`, `show track 1`, `show ip route`.
+
+---
 
 ## 11  HAProxy — ALG, clustering e HA
 
@@ -1292,6 +1317,29 @@ sudo exportfs -a && sudo systemctl restart nfs-kernel-server
 sudo chown -R nobody:nogroup /path/backup/folder
 sudo systemctl restart smbd && sudo systemctl restart nmbd
 ```
+---
+
+
+## LUKS — cifratura dei dati a riposo (Linux)
+> *Collocazione:* **Parte III (Backup & storage)**. Protegge i dati *at rest* su NAS/dischi (furto/smarrimento).
+
+```
+# Formattazione cifrata (AES-256 in modalità XTS)
+cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --key-size 512 /dev/sdb
+cryptsetup open /dev/sdb cryptdata        # mappa il volume in /dev/mapper/cryptdata
+mkfs.ext4 /dev/mapper/cryptdata
+mount /dev/mapper/cryptdata /mnt/data
+
+# Apertura automatica al boot
+#  /etc/crypttab :  cryptdata  /dev/sdb  none  luks
+#  /etc/fstab    :  /dev/mapper/cryptdata  /mnt/data  ext4  defaults  0 2
+
+# ⚠️ Backup dell'header (senza, i dati sono irrecuperabili)
+cryptsetup luksHeaderBackup /dev/sdb --header-backup-file luks-hdr.img
+```
+> 🔑 `--key-size 512` ⇒ **AES-256**: in XTS la chiave è divisa in due metà da 256 bit. ⚠️ L'header LUKS contiene le chiavi mascherate: **va salvato** e protetto. **Test:** `cryptsetup status cryptdata`, `lsblk -f`.
+
+---
 
 ## 8 · ✅ Checklist
 
@@ -1459,29 +1507,6 @@ interface Tunnel1
 
 ---
 
-## IP SLA — failover dual-WAN (Cisco IOS)
-> *Collocazione:* **Parte II, vicino a §10 (VRRP)**. Diverso da VRRP (HA di **nodo**): qui è failover di **link WAN** in base alla raggiungibilità.
-
-```
-ip sla 1
- icmp-echo 8.8.8.8 source-interface GigabitEthernet0/0   ! sonda sul link primario
- frequency 5
-ip sla schedule 1 life forever start-time now
-track 1 ip sla 1 reachability
-
-ip route 0.0.0.0 0.0.0.0 <gw-primario> track 1           ! attiva SOLO se il track è up
-ip route 0.0.0.0 0.0.0.0 <gw-backup> 10                  ! AD 10 = flottante: subentra alla caduta
-```
-
-| Elemento | Ruolo |
-| -------- | --------------------------------------------------- |
-| `ip sla` | invia probe periodici (ICMP/UDP/TCP) verso un target |
-| `track`  | lega lo stato della rotta all'esito del probe       |
-| AD `10`  | rende **flottante** la rotta di backup              |
-
-> 🔑 Quando il probe fallisce, il `track` va *down* → la rotta primaria sparisce → entra la flottante. **Con dual-WAN + NAT** servono `route-map` per associare il NAT all'interfaccia attiva. **Test:** `show ip sla statistics`, `show track 1`, `show ip route`.
-
----
 
 ## hostapd — Wi-Fi WPA3 + Client Isolation (Linux AP)
 > *Collocazione:* **Parte II, accanto a §19 (802.1X)** o **Parte I §3.2**. Lato AP: il cheatsheet copre solo lo switch RADIUS; qui c'è l'AP con WPA3-SAE e l'isolamento dei client.
@@ -1505,26 +1530,7 @@ ap_isolate=1              # Client Isolation: i client NON si parlano tra loro
 ```
 > 🔑 `ap_isolate=1` blocca il **movimento laterale** tra dispositivi wireless. Su WLC/AP Cisco l'equivalente è **P2P Blocking Action = Drop**. **Test:** `systemctl status hostapd`, `iw dev wlan0 station dump`.
 
----
 
-## LUKS — cifratura dei dati a riposo (Linux)
-> *Collocazione:* **Parte III (Backup & storage)**. Protegge i dati *at rest* su NAS/dischi (furto/smarrimento).
-
-```
-# Formattazione cifrata (AES-256 in modalità XTS)
-cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --key-size 512 /dev/sdb
-cryptsetup open /dev/sdb cryptdata        # mappa il volume in /dev/mapper/cryptdata
-mkfs.ext4 /dev/mapper/cryptdata
-mount /dev/mapper/cryptdata /mnt/data
-
-# Apertura automatica al boot
-#  /etc/crypttab :  cryptdata  /dev/sdb  none  luks
-#  /etc/fstab    :  /dev/mapper/cryptdata  /mnt/data  ext4  defaults  0 2
-
-# ⚠️ Backup dell'header (senza, i dati sono irrecuperabili)
-cryptsetup luksHeaderBackup /dev/sdb --header-backup-file luks-hdr.img
-```
-> 🔑 `--key-size 512` ⇒ **AES-256**: in XTS la chiave è divisa in due metà da 256 bit. ⚠️ L'header LUKS contiene le chiavi mascherate: **va salvato** e protetto. **Test:** `cryptsetup status cryptdata`, `lsblk -f`.
 
 ---
 
