@@ -204,7 +204,7 @@ Oltre all'autenticazione (punto 4):
 - **Store-and-forward** sull'edge NAS di cantiere: i dati vengono accodati durante un'interruzione e inviati al ripristino, **senza perdite**.
 - **UPS** su gateway di cantiere e apparati di sede.
 
-> Due **ipotesi di continuità di servizio** sviluppate con i comandi (VRRP/keepalived per il link/VPN; DRBD + regola 3-2-1 per il NAS centrale) sono nell'**[approfondimento](approfondimento_A038.md)**.
+> Le **ipotesi di continuità** (VRRP/keepalived per il link/VPN; DRBD + 3-2-1 per il NAS) e il **dettaglio comandi delle misure di sicurezza** (IPsec del tunnel, LUKS, WPA3+Client Isolation, IP SLA, RAID, GPO) sono nell'**[approfondimento](approfondimento_A038.md)** (§7–§9).
 
 ## Quesito III — Bloccare le piattaforme IA nella rete didattica
 
@@ -216,7 +216,7 @@ Oltre all'autenticazione (punto 4):
 - **HTTPS:** poiché l'URL è cifrato, si usa **filtraggio SNI** o **ispezione SSL** (con policy/consenso adeguati), o l'**application control** dell'NGFW che riconosce il traffico verso i servizi IA.
 - **Regole firewall** per IP/domini e blocco a livello di **VLAN del laboratorio**.
 - **Policy per identità**: con **captive portal / 802.1X + gruppi AD** si distingue *studenti* (bloccati) da *docenti* (autorizzati).
-- **Restrizioni sull'endpoint (GPO)**: via **Group Policy** del dominio si applica una **blocklist/allowlist delle estensioni** del browser, per impedire plugin IA o integrazioni IA negli IDE che aggirerebbero il filtro di rete.
+- **Restrizioni sull'endpoint (GPO)**: via **Group Policy** del dominio si applica una **blocklist/allowlist delle estensioni** del browser, per impedire plugin IA o integrazioni IA negli IDE che aggirerebbero il filtro di rete. *(Le GPO come piano di autorizzazione — struttura, LSDOU, ADMX, comandi → [approfondimento §10](approfondimento_A038.md).)*
 
 **Schedulazione blocco/sblocco per orario e laboratorio**
 - **ACL temporizzate** (time-range) su firewall/proxy: molte soluzioni (es. pfSense) supportano regole con fasce orarie.

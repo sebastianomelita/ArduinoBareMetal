@@ -1,7 +1,7 @@
 # Approfondimenti tecnici — A038 "Sistemi e Reti"
 ### Allegato a [risoluzione_A038_sistemi_reti_2026.md](risoluzione_A038_sistemi_reti_2026.md)
 
-> Dettagli e comandi a corredo della Prima/Seconda parte: routing e autenticazione Wi-Fi mesh, SSID statico/dinamico, port-forward SSH in IOS, allocazione dei canali, dati IoT con schema MQTT comune, e due ipotesi di continuità di servizio.
+> Dettagli e comandi a corredo della Prima/Seconda parte: routing e autenticazione Wi-Fi mesh, SSID statico/dinamico, port-forward SSH in IOS, allocazione dei canali, dati IoT con schema MQTT comune, due ipotesi di continuità di servizio, il dettaglio comandi delle misure di sicurezza (Quesito II/III) e le GPO come piano di autorizzazione.
 
 ---
 
@@ -392,3 +392,198 @@ Copia **off-site** verso il cloud (incrementale, regola 3-2-1):
 ```
 
 > In **restore** usare sempre `--numeric-ids` per conservare UID/GID. Provare prima con `--dry-run`.
+
+---
+
+## 9 · Dettaglio comandi delle misure di sicurezza (Quesito II / III)
+
+Comandi a corredo delle misure aggiunte nel Quesito II (e nel Quesito III), nello stile della dispensa.
+
+### 9.1 IPsec a protezione del tunnel GRE (IOS, IKEv2 · AES-256 / SHA-256)
+
+Cifra e autentica il tunnel `Tunnel1` del §Punto 3 (GRE già incapsula → IPsec in **transport mode**).
+
+```cisco
+crypto ikev2 proposal IKEV2-PROP
+ encryption aes-cbc-256
+ integrity  sha256
+ group 14
+crypto ikev2 policy IKEV2-POL
+ proposal IKEV2-PROP
+crypto ikev2 keyring KR
+ peer CANTIERE1
+  address <IP-pub-cantiere1>
+  pre-shared-key <chiave>
+crypto ikev2 profile IKEV2-PROF
+ match identity remote address <IP-pub-cantiere1> 255.255.255.255
+ authentication remote pre-share
+ authentication local  pre-share
+ keyring local KR
+
+crypto ipsec transform-set TS esp-aes 256 esp-sha256-hmac
+ mode transport
+crypto ipsec profile IPSEC-PROF
+ set transform-set TS
+ set ikev2-profile IKEV2-PROF
+
+interface Tunnel1
+ tunnel protection ipsec profile IPSEC-PROF
+```
+
+```cisco
+! Anti-replay (abilitato di default): si può ampliare la finestra
+crypto ipsec security-association replay window-size 128
+```
+
+> Per certificati invece di PSK: `authentication … rsa-sig` + trustpoint PKI. Verifica: `show crypto ikev2 sa`, `show crypto ipsec sa`.
+
+### 9.2 Cifratura dei dati a riposo — LUKS (AES-256-XTS)
+
+```bash
+# key-size 512 ⇒ AES-256 in modalità XTS (la chiave XTS è divisa in due metà)
+cryptsetup luksFormat --type luks2 --cipher aes-xts-plain64 --key-size 512 /dev/sdb
+cryptsetup open /dev/sdb repo_crypt
+mkfs.ext4 /dev/mapper/repo_crypt
+mount /dev/mapper/repo_crypt /mnt/repository
+```
+
+### 9.3 Wi-Fi WPA3 + Client Isolation — hostapd
+
+```ini
+# /etc/hostapd/hostapd.conf
+ssid=Cantiere-Tablet
+wpa=2
+wpa_key_mgmt=SAE          # WPA3-Personal (SAE). Enterprise: WPA-EAP-SHA256 + 802.1X/RADIUS
+rsn_pairwise=CCMP
+ieee80211w=2              # PMF obbligatorio (richiesto da WPA3)
+sae_password=<password>
+ap_isolate=1             # Client Isolation: i client non comunicano tra loro
+```
+
+> Su WLC/AP Cisco l'equivalente è il **P2P Blocking Action = Drop** sulla WLAN.
+
+### 9.4 Failover SD-WAN/dual-WAN con IP SLA (IOS)
+
+Sonda sul link primario; se cade, entra la rotta flottante di backup.
+
+```cisco
+ip sla 1
+ icmp-echo 8.8.8.8 source-interface GigabitEthernet0/1
+ frequency 5
+ip sla schedule 1 life forever start-time now
+track 1 ip sla 1 reachability
+
+ip route 0.0.0.0 0.0.0.0 <gw-primario> track 1   ! attiva solo se il track è up
+ip route 0.0.0.0 0.0.0.0 <gw-backup> 10          ! AD 10 = flottante: subentra alla caduta
+```
+
+> Verifica: `show ip sla statistics`, `show track 1`, `show ip route`.
+
+### 9.5 Ridondanza dello storage — RAID con mdadm
+
+```bash
+# RAID 6 (≥4 dischi, doppia parità) per il repository
+mdadm --create /dev/md0 --level=6 --raid-devices=4 /dev/sd[b-e]
+# in alternativa RAID 10 (≥4 dischi) per prestazioni + ridondanza
+# mdadm --create /dev/md0 --level=10 --raid-devices=4 /dev/sd[b-e]
+mkfs.ext4 /dev/md0
+mdadm --detail --scan >> /etc/mdadm/mdadm.conf   # rende persistente l'array
+```
+
+> RAID è la ridondanza del **singolo nodo**; si somma a DRBD (§8) e alla regola 3-2-1, non li sostituisce.
+
+### 9.6 Blocklist estensioni del browser via GPO (Quesito III)
+
+Policy di dominio applicate come chiavi di registro (Chrome; per Edge il ramo è `…\Microsoft\Edge\…`).
+
+```
+# Blocca tutte le estensioni e consente solo quelle approvate
+HKLM\Software\Policies\Google\Chrome\ExtensionInstallBlocklist
+  1 = "*"
+HKLM\Software\Policies\Google\Chrome\ExtensionInstallAllowlist
+  1 = "<extension_id_approvato_dai_docenti>"
+```
+
+> Impedisce i plugin IA (anche negli IDE/web) che aggirerebbero il filtro di rete; si abbina al filtraggio DNS/SNI del Quesito III.
+
+---
+
+## 10 · Le GPO come piano di autorizzazione
+
+Le **GPO (Group Policy Objects)** non sono solo un "blocca-impostazioni": sono il **piano di controllo centralizzato delle autorizzazioni sugli endpoint** di un dominio Active Directory. Applicano regole a **computer** e **utenti** in base alla loro **posizione nell'albero AD (OU)**, e così **modulano l'accesso alle risorse** (file, stampanti, software, porte USB, script, applicazioni) — autorizzandolo o negandolo per ruolo e per postazione, **senza intervenire sulle singole macchine**. È la centralizzazione operativa del *minimo privilegio* lato client.
+
+### 10.1 Struttura e memorizzazione (GPC + GPT)
+
+Una GPO vive in **due metà fisicamente separate** sul DC, legate dallo **stesso GUID**:
+
+<img src="../img/gpo_struttura.svg" alt="Struttura GPO GPC/GPT/SYSVOL e flusso" width="820">
+
+| Parte | Dove | Contenuto |
+|---|---|---|
+| **GPC** (Group Policy Container) | oggetto **LDAP** in `CN=Policies,CN=System,DC=…` | metadati: GUID, versione, link alle OU (`gPLink`); replica AD |
+| **GPT** (Group Policy Template) | cartella in `\\dominio\SYSVOL\…\Policies\{GUID}\` | i file delle impostazioni (`.pol`, `.inf`, script, `.msi`); replica DFS-R |
+
+Il **SYSVOL** è condiviso su ogni DC e accessibile dai client. Se GPC e GPT si **disallineano** (versioni diverse) i client ricevono GPO **corrotte/incomplete**: la coerenza dei due replicatori è essa stessa un requisito di sicurezza.
+
+### 10.2 Precedenza: LSDOU
+
+L'ordine di applicazione determina chi "vince" quando più GPO toccano la stessa impostazione:
+
+| Ordine | Livello | Descrizione |
+|---|---|---|
+| 1° | **L** — Local | policy locali del singolo PC (senza AD); sovrascrivibili da tutto il resto |
+| 2° | **S** — Site | legate al sito AD (es. proxy diverso per Milano e Roma) |
+| 3° | **D** — Domain | per tutto il dominio (password, screensaver, antivirus) |
+| 4° | **OU** — Organizational Unit | **vince su tutto**; più la OU è specifica/annidata, più ha priorità |
+
+> **Regola d'oro:** si applicano in ordine 1→4 e **l'ultima vince**; a parità di livello, tra più GPO quella con *link order* più basso è applicata per ultima (e prevale).
+
+### 10.3 La doppia leva: Computer vs Utente
+
+Ogni GPO ha due sezioni indipendenti — separano il *dove* dal *chi*:
+
+| Sezione | Quando | Esempi |
+|---|---|---|
+| **Computer Configuration** | all'avvio, prima del login; vale per qualunque utente | install software, firewall Windows, disabilita USB |
+| **User Configuration** | al logon; segue l'utente su qualsiasi PC | mappature stampanti/cartelle, restrizioni, blocklist estensioni |
+
+Applicato al **Quesito III**: lo *studente* (user config) non installa estensioni IA ovunque si logghi; il *PC del laboratorio* (computer config) ha le USB disabilitate per chiunque; e mettendo ogni **laboratorio in una OU** diversa si profila il blocco **per laboratorio** — la stessa profilazione fatta in rete con VLAN/IP sorgente, qui realizzata a livello di **identità/OU** (complementare).
+
+### 10.4 «Le applicazioni si interfacciano con loro»: gli ADMX
+
+Le applicazioni (Chrome, Edge, Office, antivirus, client VPN…) pubblicano **template amministrativi ADMX** che *estendono* le GPO: la stessa infrastruttura diventa il punto di controllo unico anche delle impostazioni applicative. È per questo che il blocco delle estensioni IA del Quesito III **è** una GPO — Chrome/Edge espongono via ADMX le chiavi che la GPO scrive nel ramo `Policies` del registro:
+
+```
+HKLM\Software\Policies\Google\Chrome\ExtensionInstallBlocklist  →  1 = "*"
+HKLM\Software\Policies\Google\Chrome\ExtensionInstallAllowlist  →  1 = "<id_approvato>"
+```
+
+### 10.5 Come arrivano al client (e perché aggancia tutto lo stack)
+
+1. **DNS** — il client trova il DC con i record SRV `_ldap._tcp` e `_kerberos._tcp`.
+2. **Kerberos** — autenticazione → TGT → service ticket per CIFS/SYSVOL.
+3. **LDAP** — chiede ad AD quali GPO valgono per la sua OU (`gPLink`).
+4. **SYSVOL** — scarica i file da `\\dominio\SYSVOL\…\Policies\{GUID}\`.
+5. **Applicazione** — in ordine **LSDOU**; refresh ogni **90 ± 30 min** (computer) o al logon (utente).
+
+Le GPO sono quindi il **consumatore finale** di DNS + Kerberos + LDAP + SSO/AD del Punto 4: senza quell'infrastruttura non vengono nemmeno consegnate. Chiudono il cerchio *autenticazione → autorizzazione → enforcement sull'endpoint*.
+
+```
+gpupdate /force            forza il ricalcolo immediato di tutte le GPO
+gpresult /r                mostra le GPO applicate a utente/computer
+gpresult /h report.html    report HTML con le GPO "vincitrici"
+```
+
+### 10.6 Il dettaglio fine: il «quando» resta in rete
+
+Poiché le GPO si rinfrescano ogni **90 ± 30 min** (non sono istantanee), nel Quesito III la **schedulazione oraria** del blocco IA conviene tenerla a livello di **rete** (time-based ACL/proxy), affidando alle GPO il *chi/cosa/dove* (per ruolo e per laboratorio). Lo sblocco immediato si forza con `gpupdate /force` o spostando computer/utente tra OU.
+
+### 10.7 Applicazione allo scenario BIM (sede centrale)
+
+Nello stesso dominio AD del Punto 2/4 le GPO **operativizzano il minimo privilegio** sugli endpoint:
+
+- **Accesso al repository/CDE**: mappatura unità e permessi per gruppo (user config).
+- **Hardening delle workstation BIM**: firewall Windows, USB, software consentito (computer config).
+- **Distribuzione dei certificati** per **802.1X/mTLS** e **deploy del client VPN** via GPO.
+
+Le GPO sono cioè lo strumento che traduce in pratica, sugli endpoint, l'autenticazione e l'autorizzazione progettate a livello di rete.
