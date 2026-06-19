@@ -1,0 +1,60 @@
+<svg viewBox="0 0 960 460" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .tit{font-size:13px;font-weight:700;fill:#202124}
+    .sub{font-size:11px;fill:#5f6368}
+    .mono{font-size:10.5px;fill:#202124;font-family:Consolas,monospace}
+    .dc{fill:#f8f9fa;stroke:#5f6368}
+    .gpc{fill:#e8f0fe;stroke:#1a73e8}
+    .gpt{fill:#e6f4ea;stroke:#137333}
+    .cli{fill:#fef7e0;stroke:#ea8600}
+    .step{fill:#ede7f6;stroke:#6a1b9a}
+    .flow{stroke:#6a1b9a;stroke-width:2.5;fill:none;marker-end:url(#a)}
+    .gid{stroke:#d93025;stroke-width:2;stroke-dasharray:4 3;fill:none}
+  </style>
+  <defs>
+    <marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#6a1b9a"/>
+    </marker>
+  </defs>
+  <text x="480" y="26" text-anchor="middle" class="tit" font-size="16">GPO: struttura (GPC + GPT) e flusso di applicazione</text>
+
+  <!-- DC -->
+  <rect x="40" y="60" width="360" height="320" rx="8" class="dc" stroke-width="2"/>
+  <text x="220" y="82" text-anchor="middle" class="tit">Domain Controller (AD)</text>
+
+  <rect x="60" y="100" width="320" height="92" rx="6" class="gpc" stroke-width="1.5"/>
+  <text x="220" y="122" text-anchor="middle" class="sub" font-weight="700">GPC — Group Policy Container</text>
+  <text x="220" y="142" text-anchor="middle" class="mono">LDAP: CN=Policies,CN=System,DC=…</text>
+  <text x="220" y="160" text-anchor="middle" class="sub">GUID · versione · link alle OU (gPLink)</text>
+  <text x="220" y="180" text-anchor="middle" class="sub">replica: normale replica AD</text>
+
+  <rect x="60" y="244" width="320" height="104" rx="6" class="gpt" stroke-width="1.5"/>
+  <text x="220" y="266" text-anchor="middle" class="sub" font-weight="700">GPT — Group Policy Template</text>
+  <text x="220" y="286" text-anchor="middle" class="mono">\\dominio\SYSVOL\…\Policies\{GUID}\</text>
+  <text x="220" y="304" text-anchor="middle" class="sub">file impostazioni: .pol .inf script .msi</text>
+  <text x="220" y="324" text-anchor="middle" class="sub">replica: DFS-R</text>
+
+  <path d="M220 192 L220 244" class="gid"/>
+  <text x="232" y="222" class="sub" fill="#d93025">stesso GUID (se disallineati → GPO corrotte)</text>
+
+  <!-- flow ladder -->
+  <g>
+    <rect x="470" y="96" width="170" height="34" rx="6" class="step" stroke-width="1.5"/><text x="555" y="118" text-anchor="middle" class="sub">1 · DNS — record SRV</text>
+    <rect x="470" y="146" width="170" height="34" rx="6" class="step" stroke-width="1.5"/><text x="555" y="168" text-anchor="middle" class="sub">2 · Kerberos — TGT/ST</text>
+    <rect x="470" y="196" width="170" height="34" rx="6" class="step" stroke-width="1.5"/><text x="555" y="218" text-anchor="middle" class="sub">3 · LDAP — gPLink (OU)</text>
+    <rect x="470" y="246" width="170" height="34" rx="6" class="step" stroke-width="1.5"/><text x="555" y="268" text-anchor="middle" class="sub">4 · SYSVOL — download</text>
+    <rect x="470" y="296" width="170" height="34" rx="6" class="step" stroke-width="1.5"/><text x="555" y="318" text-anchor="middle" class="sub">5 · Applica in LSDOU</text>
+  </g>
+  <path d="M470 113 L400 124" class="flow"/>
+  <path d="M470 263 L400 300" class="flow"/>
+
+  <!-- client -->
+  <rect x="700" y="150" width="220" height="130" rx="8" class="cli" stroke-width="2"/>
+  <text x="810" y="180" text-anchor="middle" class="tit">Client (PC di laboratorio)</text>
+  <text x="810" y="206" text-anchor="middle" class="sub">1–4: richiesta al DC</text>
+  <text x="810" y="226" text-anchor="middle" class="sub">5: applicazione locale</text>
+  <text x="810" y="252" text-anchor="middle" class="sub">refresh 90 ± 30 min (computer)</text>
+  <text x="810" y="270" text-anchor="middle" class="sub">/ al logon (utente)</text>
+  <path d="M700 200 L642 160" class="flow"/>
+  <path d="M700 230 L642 280" class="flow"/>
+</svg>
