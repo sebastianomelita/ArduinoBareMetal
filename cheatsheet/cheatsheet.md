@@ -446,7 +446,6 @@ sudo tcpdump -i eth0 vrrp    ← verifica gli advertisement
 ---
 
 ## IP SLA — failover dual-WAN (Cisco IOS)
-> *Collocazione:* **Parte II, vicino a §10 (VRRP)**. Diverso da VRRP (HA di **nodo**): qui è failover di **link WAN** in base alla raggiungibilità.
 
 ```
 ip sla 1
@@ -1170,7 +1169,6 @@ R0# show running-config | section nat
 
 
 ## hostapd — Wi-Fi WPA3 + Client Isolation (Linux AP)
-> *Collocazione:* **Parte II, accanto a §19 (802.1X)** o **Parte I §3.2**. Lato AP: il cheatsheet copre solo lo switch RADIUS; qui c'è l'AP con WPA3-SAE e l'isolamento dei client.
 
 ```
 # /etc/hostapd/hostapd.conf
@@ -1345,7 +1343,6 @@ sudo systemctl restart smbd && sudo systemctl restart nmbd
 
 
 ## LUKS — cifratura dei dati a riposo (Linux)
-> *Collocazione:* **Parte III (Backup & storage)**. Protegge i dati *at rest* su NAS/dischi (furto/smarrimento).
 
 ```
 # Formattazione cifrata (AES-256 in modalità XTS)
@@ -1483,7 +1480,6 @@ finirebbero in CSMA/CA sullo stesso canale → throughput dimezzato.
 
 
 ## IPsec-su-GRE — cifratura del tunnel (Cisco IOS, IKEv2)
-> *Collocazione:* **Parte II, subito dopo §18.2 (GRE)**. Il GRE trasporta ma **non cifra**: lo si protegge con IPsec in *transport mode* (il GRE incapsula già, l'IPsec aggiunge riservatezza + integrità).
 
 ```
 ! 1) IKEv2 — fase 1 (autenticazione + scambio chiavi)
@@ -1532,7 +1528,6 @@ interface Tunnel1
 ---
 
 ## GPO — Group Policy Objects (mini-sezione)
-> *Collocazione:* **Parte I (Aspetti di progetto)** o sezione a sé. Le GPO **modulano l'accesso alle risorse** (file, software, USB, applicazioni) per **computer** e **utenti** in base alla OU — è il piano di autorizzazione centralizzato lato endpoint.
 
 **Struttura (due metà, stesso GUID):**
 
