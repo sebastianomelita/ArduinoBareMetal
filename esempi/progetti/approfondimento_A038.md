@@ -1,7 +1,7 @@
 # Approfondimenti tecnici — A038 "Sistemi e Reti"
 ### Allegato a [risoluzione_A038_sistemi_reti_2026.md](risoluzione_A038_sistemi_reti_2026.md)
 
-> Dettagli e comandi a corredo della Prima/Seconda parte: routing e autenticazione Wi-Fi mesh, SSID statico/dinamico, port-forward SSH in IOS, allocazione dei canali, dati IoT con schema MQTT comune, due ipotesi di continuità di servizio, il dettaglio comandi delle misure di sicurezza (Quesito II/III) e le GPO come piano di autorizzazione.
+> Dettagli e comandi a corredo della Prima/Seconda parte: routing e autenticazione Wi-Fi mesh, SSID statico/dinamico, port-forward SSH in IOS, allocazione dei canali, dati IoT con schema MQTT comune, due ipotesi di continuità di servizio, il dettaglio comandi delle misure di sicurezza (Quesito II/III), le GPO come piano di autorizzazione e le ACL per interfaccia dei due firewall — di sede (§11) e di cantiere (§12) — con tabella accessi e comandi IOS.
 
 ---
 
@@ -623,3 +623,281 @@ Nello stesso dominio AD del Punto 2/4 le GPO **operativizzano il minimo privileg
 - **Distribuzione dei certificati** per **802.1X/mTLS** e **deploy del client VPN** via GPO.
 
 Le GPO sono cioè lo strumento che traduce in pratica, sugli endpoint, l'autenticazione e l'autorizzazione progettate a livello di rete.
+
+---
+
+## 11 · ACL del router-firewall di sede centrale
+
+Convenzione (come nel cheatsheet, §13–17): **una ACL estesa con nome, applicata inbound** sull'interfaccia (SVI) di ogni VLAN; **LAN → default-allow** con anti-spoofing silenzioso; **confini di fiducia (Server farm, DMZ, tunnel, WAN) → default-deny esplicito con log**; i **ritorni** sono gestiti in modo **stateful** (ZBF, vedi Quesito II), quindi nelle liste si scrive solo il traffico *iniziato*.
+
+> 🔒 **Principio di difesa autonoma.** La sicurezza della sede è garantita **dalle sole regole applicate sul firewall di sede**. In particolare l'ACL del **tunnel in ingresso** (§11.5) è il controllo **autoritativo** verso i cantieri: anche se il gateway di un cantiere — apparato temporaneo, fisicamente esposto e **manomettibile** — avesse regole d'uscita rimosse o alterate, la sede continua a bloccare tutto ciò che non sia esplicitamente ammesso. Le ACL sul cantiere (§12) sono **difesa in profondità**, eventualmente speculari, ma la sede **non vi fa affidamento**.
+
+**Indirizzi dei server** (server farm `10.0.30.0/24`, DMZ `10.0.40.0/24`):
+
+| Server | IP | Server | IP |
+|---|---|---|---|
+| App BIM | `10.0.30.10` | DB log | `10.0.30.40` |
+| NAS/SAN (SMB) | `10.0.30.20` | Broker MQTT interno | `10.0.30.50` |
+| AD/RADIUS/DNS (DC) | `10.0.30.30` | Repository ricezione (DMZ) | `10.0.40.10` |
+| | | Reverse proxy / MQTT front (DMZ) | `10.0.40.20` |
+
+### 11.1 VLAN 10 — Uffici tecnici (`Vlan10`, default-allow)
+
+| # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
+|---|---|---|---|---|---|
+| 1 | permit | `10.0.10.0/24` | `10.0.30.10` | tcp | App BIM |
+| 2 | permit | `10.0.10.0/24` | `10.0.30.20` | tcp/445 | NAS (SMB) |
+| 3 | permit | `10.0.10.0/24` | `10.0.30.30` | udp/53, tcp/88 | DNS + Kerberos |
+| 4 | deny | `10.0.10.0/24` | `10.0.0.0/16` | ip | resto intranet (segmentazione + anti-spoof) |
+| 5 | **permit** | `10.0.10.0/24` | any | ip | **← DEFAULT ALLOW (Internet)** |
+
+```
+ip access-list extended ACL-V10-UFFICI
+ permit tcp 10.0.10.0 0.0.0.255 host 10.0.30.10
+ permit tcp 10.0.10.0 0.0.0.255 host 10.0.30.20 eq 445
+ permit udp 10.0.10.0 0.0.0.255 host 10.0.30.30 eq domain
+ permit tcp 10.0.10.0 0.0.0.255 host 10.0.30.30 eq 88
+ deny   ip  10.0.10.0 0.0.0.255 10.0.0.0 0.0.255.255
+ permit ip  10.0.10.0 0.0.0.255 any
+interface Vlan10
+ ip access-group ACL-V10-UFFICI in
+```
+
+### 11.2 VLAN 20 — Wi-Fi staff (`Vlan20`, default-allow)
+
+| # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
+|---|---|---|---|---|---|
+| 1 | permit | `10.0.20.0/24` | `10.0.30.30` | udp/53 | solo DNS interno |
+| 2 | deny | `10.0.20.0/24` | `10.0.0.0/16` | ip | nessun accesso interno |
+| 3 | **permit** | `10.0.20.0/24` | any | ip | **← DEFAULT ALLOW (Internet)** |
+
+```
+ip access-list extended ACL-V20-WIFI
+ permit udp 10.0.20.0 0.0.0.255 host 10.0.30.30 eq domain
+ deny   ip  10.0.20.0 0.0.0.255 10.0.0.0 0.0.255.255
+ permit ip  10.0.20.0 0.0.0.255 any
+interface Vlan20
+ ip access-group ACL-V20-WIFI in
+```
+
+### 11.3 VLAN 30 — Server farm (`Vlan30`, default-deny in uscita)
+
+I server iniziano poche connessioni: il DB solo dall'App BIM, gli aggiornamenti in HTTPS, i ritorni verso le LAN.
+
+| # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
+|---|---|---|---|---|---|
+| 1 | permit | `10.0.30.10` | `10.0.30.40` | tcp | App BIM → DB |
+| 2 | deny | `10.0.30.0/24` | `10.0.99.0/24` | ip | niente verso il management |
+| 3 | permit | `10.0.30.0/24` | `10.0.0.0/16` | ip | ritorni verso le LAN |
+| 4 | permit | `10.0.30.0/24` | any | tcp/443 | update HTTPS |
+| 5 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
+
+```
+ip access-list extended ACL-V30-SRV
+ permit tcp host 10.0.30.10 host 10.0.30.40
+ deny   ip  10.0.30.0 0.0.0.255 10.0.99.0 0.0.0.255
+ permit ip  10.0.30.0 0.0.0.255 10.0.0.0 0.0.255.255
+ permit tcp 10.0.30.0 0.0.0.255 any eq 443
+ deny   ip  any any log
+interface Vlan30
+ ip access-group ACL-V30-SRV in
+```
+
+### 11.4 VLAN 40 — DMZ (`Vlan40`, default-deny)
+
+I server esposti non devono "rientrare" nella LAN, salvo i flussi sanciti: repository→NAS e bridge MQTT.
+
+| # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
+|---|---|---|---|---|---|
+| 1 | permit | `10.0.40.10` | `10.0.30.20` | tcp/445,22 | repository → NAS (sync nuvole) |
+| 2 | permit | `10.0.40.20` | `10.0.30.50` | tcp/8883 | bridge MQTT → broker interno |
+| 3 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
+
+```
+ip access-list extended ACL-V40-DMZ-DD
+ permit tcp host 10.0.40.10 host 10.0.30.20 eq 445
+ permit tcp host 10.0.40.10 host 10.0.30.20 eq 22
+ permit tcp host 10.0.40.20 host 10.0.30.50 eq 8883
+ deny   ip  any any log
+interface Vlan40
+ ip access-group ACL-V40-DMZ-DD in
+```
+
+### 11.5 Tunnel dai cantieri (`Tunnel1…5`, default-deny) — **controllo autoritativo**
+
+Sull'interfaccia di tunnel arriva solo traffico dai cantieri (`10.1.0.0`–`10.5.0.0`): si ammettono i **soli** servizi previsti. **Questa è la barriera che protegge davvero la sede**: i cantieri non raggiungono mai la server farm interna né le LAN, ma solo i front in DMZ e il RADIUS — a prescindere da cosa faccia (o non faccia più) il firewall del cantiere.
+
+| # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
+|---|---|---|---|---|---|
+| 1 | permit | cantieri | `10.0.40.10` | tcp/22,443 | SFTP/HTTPS → repository DMZ |
+| 2 | permit | cantieri | `10.0.40.20` | tcp/8883 | MQTT allarmi → front DMZ |
+| 3 | permit | cantieri | `10.0.30.30` | udp/1812 | RADIUS (auth operatori) |
+| 4 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
+
+```
+ip access-list extended ACL-TUNNEL-DD
+ permit tcp 10.0.0.0 0.255.255.255 host 10.0.40.10 eq 22
+ permit tcp 10.0.0.0 0.255.255.255 host 10.0.40.10 eq 443
+ permit tcp 10.0.0.0 0.255.255.255 host 10.0.40.20 eq 8883
+ permit udp 10.0.0.0 0.255.255.255 host 10.0.30.30 eq 1812
+ deny   ip  any any log
+interface Tunnel1
+ ip access-group ACL-TUNNEL-DD in
+```
+
+### 11.6 WAN (`Gi0/1`, default-deny + anti-spoofing)
+
+| # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
+|---|---|---|---|---|---|
+| 1–6 | deny (log) | `0.0.0.0`, `127/8`, `10/8`, `172.16/12`, `192.168/16`, `224/4` | any | ip | anti-spoofing |
+| 7 | permit | any | host `<IP-pub-VPN>` | udp/500,4500 + esp | VPN dai cantieri |
+| 8 | permit | any | host `<IP-pub-DMZ>` | tcp/443 | repository pubblicato (se esposto) |
+| 9 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
+
+```
+ip access-list extended ACL-WAN
+ deny   ip host 0.0.0.0 any log
+ deny   ip 127.0.0.0   0.255.255.255 any log
+ deny   ip 10.0.0.0    0.255.255.255 any log
+ deny   ip 172.16.0.0  0.15.255.255  any log
+ deny   ip 192.168.0.0 0.0.255.255   any log
+ deny   ip 224.0.0.0   15.255.255.255 any log
+ permit udp any host <IP-pub-VPN> eq isakmp
+ permit udp any host <IP-pub-VPN> eq non500-isakmp
+ permit esp any host <IP-pub-VPN>
+ permit tcp any host <IP-pub-DMZ> eq 443
+ deny   ip  any any log
+interface GigabitEthernet0/1
+ ip access-group ACL-WAN in
+```
+
+> **VLAN 99 (Management):** ACL analoga *default-deny* che ammette solo SSH (tcp/22) dalle workstation d'amministrazione verso gli apparati, negando il resto. Verifica di tutte: `show ip access-lists`, `show ip interface <X>` (quale ACL e direzione), e i contatori per ACE (`0 match` su un `permit` = regola mai usata).
+
+---
+
+## 12 · ACL del router-firewall del cantiere (generico)
+
+Il gateway di cantiere (router 4G/5G + firewall + VPN client) protegge la **propria LAN** e regola l'uscita verso tunnel e Internet. Le regole che limitano il traffico **verso la sede** sono **difesa in profondità, speculari** a quelle di sede (§11.5): utili, ma **non autoritative** — se manomesse, è la sede a fermare il traffico.
+
+**Indirizzi (cantiere *k* — sostituire `k` con l'id):** gateway `10.k.x.254` · edge NAS `10.k.99.10` · broker MQTT edge `10.k.99.20`. Target in sede: repository `10.0.40.10`, MQTT front `10.0.40.20`, RADIUS `10.0.30.30`, mgmt sede `10.0.99.0/24`, IP pubblico VPN sede `<IP-pub-sede>`.
+
+### 12.1 VLAN 10 — Tablet (`Vlan10`, default-allow)
+
+| # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
+|---|---|---|---|---|---|
+| 1 | permit | `10.k.10.0/24` | `10.k.99.10` | tcp/445,22 | edge NAS (buffer scansioni) |
+| 2 | permit | `10.k.10.0/24` | `10.k.10.254` | udp/53 | DNS (a bordo del gateway) |
+| 3 | deny | `10.k.10.0/24` | `10.k.0.0/16` | ip | resto interno cantiere |
+| 4 | **permit** | `10.k.10.0/24` | any | ip | **← DEFAULT ALLOW (Internet/cloud)** |
+
+```
+ip access-list extended ACL-V10-TABLET
+ permit tcp 10.k.10.0 0.0.0.255 host 10.k.99.10 eq 445
+ permit tcp 10.k.10.0 0.0.0.255 host 10.k.99.10 eq 22
+ permit udp 10.k.10.0 0.0.0.255 host 10.k.10.254 eq domain
+ deny   ip  10.k.10.0 0.0.0.255 10.k.0.0 0.0.255.255
+ permit ip  10.k.10.0 0.0.0.255 any
+interface Vlan10
+ ip access-group ACL-V10-TABLET in
+```
+
+### 12.2 VLAN 20 — Telecamere (`Vlan20`, default-deny)
+
+| # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
+|---|---|---|---|---|---|
+| 1 | permit | `10.k.20.0/24` | `10.k.99.10` | tcp | frame → edge NAS |
+| 2 | permit | `10.k.20.0/24` | `10.0.40.10` | tcp/443 | upload diretto al repository (opz.) |
+| 3 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
+
+```
+ip access-list extended ACL-V20-CAM
+ permit tcp 10.k.20.0 0.0.0.255 host 10.k.99.10
+ permit tcp 10.k.20.0 0.0.0.255 host 10.0.40.10 eq 443
+ deny   ip  any any log
+interface Vlan20
+ ip access-group ACL-V20-CAM in
+```
+
+### 12.3 VLAN 30 — Sensori IoT (`Vlan30`, default-deny)
+
+| # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
+|---|---|---|---|---|---|
+| 1 | permit | `10.k.30.0/24` | `10.k.99.20` | tcp/8883 | broker MQTT edge (locale) |
+| 2 | permit | `10.k.30.0/24` | `10.0.40.20` | tcp/8883 | allarmi → MQTT front di sede |
+| 3 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
+
+```
+ip access-list extended ACL-V30-IOT
+ permit tcp 10.k.30.0 0.0.0.255 host 10.k.99.20 eq 8883
+ permit tcp 10.k.30.0 0.0.0.255 host 10.0.40.20 eq 8883
+ deny   ip  any any log
+interface Vlan30
+ ip access-group ACL-V30-IOT in
+```
+
+### 12.4 VLAN 99 — Management (`Vlan99`, default-deny)
+
+| # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
+|---|---|---|---|---|---|
+| 1 | permit | `10.k.99.0/24` | `10.k.0.0/16` | tcp/22 | SSH admin agli apparati |
+| 2 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
+
+```
+ip access-list extended ACL-V99-MGMT
+ permit tcp 10.k.99.0 0.0.0.255 10.k.0.0 0.0.255.255 eq 22
+ deny   ip  any any log
+interface Vlan99
+ ip access-group ACL-V99-MGMT in
+```
+
+### 12.5 Tunnel verso la sede (`Tunnel1`) — egress speculare (difesa in profondità)
+
+Applicata **in uscita** sul tunnel: replica la policy autoritativa di sede (§11.5). È il livello ridondante che *può* essere manomesso sul cantiere — la sede non vi fa affidamento.
+
+| # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
+|---|---|---|---|---|---|
+| 1 | permit | cantiere | `10.0.40.10` | tcp/22,443 | repository DMZ |
+| 2 | permit | cantiere | `10.0.40.20` | tcp/8883 | MQTT front |
+| 3 | permit | cantiere | `10.0.30.30` | udp/1812 | RADIUS |
+| 4 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
+
+```
+ip access-list extended ACL-TUN-OUT
+ permit tcp 10.k.0.0 0.0.255.255 host 10.0.40.10 eq 22
+ permit tcp 10.k.0.0 0.0.255.255 host 10.0.40.10 eq 443
+ permit tcp 10.k.0.0 0.0.255.255 host 10.0.40.20 eq 8883
+ permit udp 10.k.0.0 0.0.255.255 host 10.0.30.30 eq 1812
+ deny   ip  any any log
+interface Tunnel1
+ ip access-group ACL-TUN-OUT out
+```
+
+> Traffico **dalla sede verso il cantiere** (manutenzione): ACL inbound sul tunnel *default-deny* che ammette solo `10.0.99.0/24 → apparati tcp/22` (SSH del mgmt di sede), negando il resto.
+
+### 12.6 WAN 4G/5G (`Cellular0`) — default-deny + anti-spoofing
+
+Il cantiere **inizia** la VPN in uscita: in ingresso si ammette solo l'IPsec dalla sede.
+
+| # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
+|---|---|---|---|---|---|
+| 1–6 | deny (log) | `0.0.0.0`, `127/8`, `10/8`, `172.16/12`, `192.168/16`, `224/4` | any | ip | anti-spoofing |
+| 7 | permit | host `<IP-pub-sede>` | any | udp/500,4500 + esp | VPN dalla sede |
+| 8 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
+
+```
+ip access-list extended ACL-WAN-CANTIERE
+ deny   ip host 0.0.0.0 any log
+ deny   ip 127.0.0.0   0.255.255.255 any log
+ deny   ip 10.0.0.0    0.255.255.255 any log
+ deny   ip 172.16.0.0  0.15.255.255  any log
+ deny   ip 192.168.0.0 0.0.255.255   any log
+ deny   ip 224.0.0.0   15.255.255.255 any log
+ permit udp host <IP-pub-sede> any eq isakmp
+ permit udp host <IP-pub-sede> any eq non500-isakmp
+ permit esp host <IP-pub-sede> any
+ deny   ip  any any log
+interface Cellular0
+ ip access-group ACL-WAN-CANTIERE in
+```
+
+> **Sintesi del modello di fiducia:** il cantiere protegge la propria LAN e *collabora* filtrando ciò che invia (§12.5); ma la **tenuta della sede** dipende **solo** dall'ACL del tunnel in ingresso alla sede (§11.5). Due perimetri indipendenti: se cade quello del cantiere (manomissione fisica), regge quello della sede.

@@ -187,6 +187,20 @@ Il principio guida è che **i livelli si sommano, non si escludono**: lo stesso 
 
 Oltre all'autenticazione (punto 4):
 
+**Filtraggio del traffico — tabella degli accessi.** La segmentazione è resa effettiva da un **piano di accessi** tra le zone, applicato con ACL inbound per interfaccia sul core L3 (✓ = ammesso, ✗ = negato):
+
+| Sorgente ↓ \ Dest → | Server farm (V30) | DMZ (V40) | Mgmt (V99) | Internet |
+|---|---|---|---|---|
+| Uffici V10 | App BIM, NAS, AD/DNS | ✗ | ✗ | HTTP/S |
+| Wi-Fi staff V20 | solo DNS | ✗ | ✗ | HTTP/S |
+| Server farm V30 | intra + DB (da App BIM) | ✗ | ✗ | update HTTPS |
+| DMZ V40 | repo→NAS, bridge MQTT | — | ✗ | ✗ |
+| Cantieri (tunnel) | RADIUS, MQTT | SFTP/HTTPS | ✗ | — |
+| WAN (Internet) | ✗ | HTTPS/SFTP pubblicati | ✗ | — |
+| Mgmt V99 | SSH agli apparati | SSH | — | ✗ |
+
+Convenzione: **una ACL estesa con nome, inbound per interfaccia**; **default-allow** nelle LAN (con anti-spoofing), **default-deny** sui confini (Server farm, DMZ, tunnel, WAN). **Due firewall indipendenti**: la sicurezza della sede è garantita **dalle sole regole sul firewall di sede** (l'ACL del tunnel in ingresso è il controllo autoritativo verso i cantieri); le regole sul gateway di cantiere — apparato esposto e manomettibile — sono **difesa in profondità** speculare, su cui la sede **non fa affidamento**. *(ACL complete — tabella ACE + comandi IOS — in [approfondimento §11 (sede)](approfondimento_A038.md) e §12 (cantiere).)*
+
 **Sicurezza informatica**
 - **Cifratura** distinguendo i due stati del dato: **in transito** con VPN **IPsec** (ESP, **AES-256** per la riservatezza, **SHA-256** per integrità e **anti-replay** — utile per i log dei sensori) e **TLS** per i trasferimenti applicativi; **a riposo** (*data at rest*) con cifratura dei dischi **AES-256** su NAS/SAN e tablet. **WPA3** sul Wi-Fi con **Client Isolation** (i tablet non si parlano tra loro → niente movimento laterale in caso di compromissione).
 - **NGFW/UTM con IPS/IDS** in sede e firewall su ogni gateway di cantiere; ispezione **stateful** (CBAC o, meglio, **Zone-Based Firewall**) con apertura automatica dei ritorni.
