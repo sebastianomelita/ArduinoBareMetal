@@ -194,6 +194,7 @@ Oltre all'autenticazione (punto 4):
 - **Endpoint security**: antivirus/EDR su tablet e PC; **MDM** sui tablet rugged (cifratura disco, **remote wipe** in caso di furto/smarrimento in cantiere).
 - **Hardening**: disabilitazione servizi/porte inutili, **patch management**, cambio credenziali di default, **PKI** per certificati di apparato/server.
 - **Monitoraggio**: **SIEM**, registro di **log storico**, alert su anomalie.
+- **Disponibilità dello storage (pilastro *Availability*)**: NAS/SAN in **RAID 6/10** per tollerare il guasto di uno/due dischi senza fermo né perdita, con **hot spare** e rebuild automatico. *(Livelli e parametri tipici → [approfondimento §9.5](approfondimento_A038.md).)*
 - **Sicurezza fisica** della sala server e dei rack di cantiere.
 
 **Continuità trasmissiva del canale cantiere ↔ sede**

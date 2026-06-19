@@ -479,18 +479,54 @@ ip route 0.0.0.0 0.0.0.0 <gw-backup> 10          ! AD 10 = flottante: subentra a
 
 > Verifica: `show ip sla statistics`, `show track 1`, `show ip route`.
 
-### 9.5 Ridondanza dello storage — RAID con mdadm
+### 9.5 Ridondanza dello storage — RAID
+
+Il RAID dà **tolleranza ai guasti disco** (e talvolta prestazioni) aggregando più dischi in un volume logico. È la ridondanza del **singolo nodo**: si somma a DRBD (§8) e alla regola 3-2-1, **non li sostituisce**, e **non è un backup** (non protegge da cancellazioni logiche, ransomware o doppio guasto oltre la soglia).
+
+**Scelta del livello** (i più usati):
+
+| Livello | Min dischi | Tollera | Capacità utile | Note d'uso |
+|---|---|---|---|---|
+| RAID 0 | 2 | nessun guasto | 100% | solo prestazioni (scratch) — mai per dati |
+| RAID 1 | 2 | 1 disco | 50% | mirror, semplice e robusto (boot, DB piccoli) |
+| RAID 5 | 3 | 1 disco | (n−1)/n | parità singola; rischioso su dischi grandi (rebuild lungo) |
+| **RAID 6** | 4 | **2 dischi** | (n−2)/n | **doppia parità** — consigliato per repository capienti |
+| **RAID 10** | 4 | 1 per coppia | 50% | mirror+stripe — **prestazioni + ridondanza** (DB, I/O alto) |
+
+Per il **repository BIM** (nuvole di punti, file grandi e sequenziali, alta capacità) → **RAID 6**; per i **server applicativi/DB** con molte scritture casuali → **RAID 10**.
+
+**Parametri che di solito si configurano** (al netto della "babele" hardware/software):
+
+- **Hot spare**: disco di riserva che subentra **automaticamente** al guasto, avviando il rebuild senza intervento.
+- **Chunk/stripe size**: dimensione del blocco di striping; **grande** (es. 256–512 KB) per file grandi e sequenziali (point cloud), **piccola** per I/O casuale.
+- **Write-intent bitmap** (software): velocizza il **resync** dopo crash o rimozione temporanea di un disco.
+- **Allineamento del filesystem** al RAID (`stride`/`stripe-width`) per non spezzare le scritture.
+- **Monitoraggio**: demone di notifica array + **SMART** sui dischi (preavviso di guasto); **scrubbing** periodico (patrol read) per scoprire errori latenti.
+- **Cache di scrittura** (controller hardware): write-back **solo con BBU/flash-backed cache**, altrimenti write-through per non perdere dati a un calo di tensione.
+
+**Esempio con mdadm (software RAID Linux):**
 
 ```bash
-# RAID 6 (≥4 dischi, doppia parità) per il repository
-mdadm --create /dev/md0 --level=6 --raid-devices=4 /dev/sd[b-e]
-# in alternativa RAID 10 (≥4 dischi) per prestazioni + ridondanza
-# mdadm --create /dev/md0 --level=10 --raid-devices=4 /dev/sd[b-e]
-mkfs.ext4 /dev/md0
-mdadm --detail --scan >> /etc/mdadm/mdadm.conf   # rende persistente l'array
+# RAID 6 con 4 dischi + 1 hot spare, chunk 256K per file grandi
+mdadm --create /dev/md0 --level=6 --raid-devices=4 --spare-devices=1 \
+      --chunk=256 /dev/sd[b-f]
+mdadm --grow /dev/md0 --bitmap=internal        # write-intent bitmap (resync rapido)
+
+# Filesystem allineato allo stripe (ext4): stride = chunk/blocco; stripe-width = stride × dischi-dati
+mkfs.ext4 -b 4096 -E stride=64,stripe-width=128 /dev/md0   # 256K/4K=64 ; 64×2(dati) =128
+
+mdadm --detail --scan >> /etc/mdadm/mdadm.conf  # rende persistente l'array
+mdadm --monitor --scan --mail admin@sede.local --daemonise   # alert sui guasti
 ```
 
-> RAID è la ridondanza del **singolo nodo**; si somma a DRBD (§8) e alla regola 3-2-1, non li sostituisce.
+```bash
+# Operazioni tipiche
+mdadm --detail /dev/md0                 # stato, dischi, livello
+mdadm /dev/md0 --fail /dev/sdb --remove /dev/sdb   # gestione disco guasto
+echo check > /sys/block/md0/md/sync_action          # scrubbing on-demand
+```
+
+> Su **controller RAID hardware** o **ZFS** i comandi cambiano (vendor-specific), ma i concetti — livello, hot spare, stripe, cache+BBU, scrubbing, monitoraggio SMART — sono gli stessi.
 
 ### 9.6 Blocklist estensioni del browser via GPO (Quesito III)
 
