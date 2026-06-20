@@ -270,31 +270,34 @@ R# show ip route
 R# ping 192.168.2.1 source 192.168.1.254       ← se risponde, l'inter-VLAN funziona
 ```
 
-## 6 · OSPF — fasi in `(config-router)`
+## 6 · OSPF IoS
+
+Due **fasi**:
+- impostazione router
+- impostazione delle interfacce
+
+### 6.1 · OSPF — fasi in `(config-router)`
+
+Il process-id è comune a tutti i router 
 
 ```
-R(config)# router ospf 100
+R(config)# router ospf 100                                   ← 0. abilitazione protocollo e settaggio process-id
 R(config-router)# router-id 1.1.1.1                          ← 1. Router-ID
-R(config-router)# passive-interface default                  ← 2. Blocca Hello su tutte le porte
-R(config-router)# no passive-interface GigabitEthernet0/2    ←    riabilita solo le porte di transito
-R(config-router)# area 10 stub                               ← 3. Area stub (IR e ABR)
-R(config-router)# area 10 stub no-summary                    ← 4. Totally stub (solo ABR)
-R(config-router)# area 10 range 192.168.1.0 255.255.255.0    ← 5. Summarization uscente (solo ABR)
+R(config-router)# passive-interface default                  ← 2. Blocca Hello su tutte le porte (solo aree aggregazione)
+R(config-router)# no passive-interface GigabitEthernet0/2    ←    riabilita solo le porte di transito (solo aree aggregazione)
+R(config-router)# area 10 stub                               ← 3. Solo area stub (IR e ABR)
+R(config-router)# area 10 stub no-summary                    ← 4. Solo area totally stub (solo ABR)
+R(config-router)# area 10 range 192.168.1.0 255.255.255.0    ← 5. Summarization uscente (solo ABR e opzionale)
 R(config)#        ip route 0.0.0.0 0.0.0.0 <ip-ISP>          ← 6. Default route (solo ASBR)
 R(config-router)# default-information originate
 ```
-
-> Passi 3–6 opzionali. `area range` **solo sugli ABR** (mai sulla backbone).
-> `stub` va su ABR **e** su tutti gli IR dell'area.
-> passive-interface default va solo nelle aree di aggregazione degli utenti
-
 **Test**
 ```
 R# show ip ospf neighbor       ← lo stato deve essere FULL
 R# show ip ospf database       ← LSDB con tutti i LSA ricevuti
 ```
 
-## 7 · OSPF — fasi in `(config-if)`
+###  6.2 · OSPF — fasi in `(config-if)`
 
 ```
 R(config-if)# ip address 192.168.4.2 255.255.255.252
@@ -303,6 +306,7 @@ R(config-if)# no shutdown
 ```
 
 > Ripetere per ogni interfaccia con l'area corretta (0 = backbone, 10/20 = aree stub).
+> 
 
 **Test**
 ```
