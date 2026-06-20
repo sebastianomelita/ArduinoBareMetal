@@ -1,0 +1,36 @@
+<svg viewBox="0 0 760 340" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .tit{font-size:14px;font-weight:700;fill:#202124}
+    .sub{font-size:11px;fill:#5f6368}
+    .dev{fill:#e8f0fe;stroke:#1a73e8}
+    .net{fill:#fef7e0;stroke:#ea8600}
+    .ok{stroke:#137333;stroke-width:3.5;fill:none}
+    .bk{stroke:#9aa0a6;stroke-width:3;stroke-dasharray:6 5;fill:none}
+    .probe{fill:#e6f4ea;stroke:#137333}
+  </style>
+  <text x="380" y="30" text-anchor="middle" class="tit">IP SLA — failover dual-WAN</text>
+
+  <!-- Router -->
+  <rect x="40" y="140" width="170" height="72" rx="9" class="dev" stroke-width="2"/>
+  <text x="125" y="170" text-anchor="middle" class="tit" font-size="13">Router</text>
+  <text x="125" y="190" text-anchor="middle" class="sub">dual-WAN · track 1</text>
+
+  <!-- Internet -->
+  <ellipse cx="640" cy="120" rx="86" ry="40" class="net" stroke-width="2"/>
+  <text x="640" y="124" text-anchor="middle" class="sub" font-weight="700">Internet</text>
+
+  <!-- WAN1 primaria -->
+  <path d="M210 158 Q420 90 556 110" class="ok"/>
+  <text x="385" y="92" text-anchor="middle" class="sub" fill="#137333" font-weight="700">WAN1 primaria ✓ attiva</text>
+  <rect x="300" y="120" width="190" height="34" rx="6" class="probe" stroke-width="1.5"/>
+  <text x="395" y="141" text-anchor="middle" class="sub">IP SLA ▸ 8.8.8.8 · rotta con track</text>
+
+  <!-- WAN2 backup -->
+  <path d="M210 196 Q420 250 556 150" class="bk"/>
+  <text x="385" y="246" text-anchor="middle" class="sub" fill="#9aa0a6" font-weight="700">WAN2 backup — rotta flottante (AD 10), stand-by</text>
+
+  <!-- note -->
+  <rect x="120" y="276" width="520" height="46" rx="9" fill="#fff8e1" stroke="#f9a825"/>
+  <text x="380" y="298" text-anchor="middle" class="sub" font-weight="700" fill="#202124">probe ✗  →  track DOWN  →  la primaria sparisce  →  subentra la flottante</text>
+  <text x="380" y="314" text-anchor="middle" class="sub">al ritorno del probe la primaria (AD migliore) riprende il traffico</text>
+</svg>
