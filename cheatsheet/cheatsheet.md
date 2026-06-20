@@ -751,7 +751,6 @@ Router# show ip access-lists NOME      ! contatori per ACE (0 match su un permit
 ---
 
 ## 14.3 Matrice degli accessi + ACL per interfaccia (modello)
-> *Collocazione:* **Parte II, in testa a §13–17 (ACL).** Schema riusabile: prima la **matrice** (chi raggiunge cosa), poi le **ACL per interfaccia** con la **regola di default in fondo**.
 
 **Matrice degli accessi** (✓ = ammesso con le porte indicate · ✗ = negato · — = nessun flusso):
 
@@ -760,7 +759,7 @@ Router# show ip access-lists NOME      ! contatori per ACE (0 match su un permit
 | **LAN utenti**      | solo servizi necessari | ✗ | ✗ | HTTP/S |
 | **Server farm**     | intra + DB (dall'app) | ✗ | ✗ | update HTTPS |
 | **DMZ**             | solo flussi sanciti | — | ✗ | ✗ |
-| **Remoto / VPN**    | auth (RADIUS) | servizi pubblicati | ✗ | — |
+| **VPN `tun0`** (come WAN) | solo RADIUS (1812) | solo servizi pubblicati (HTTPS/SFTP/MQTT) | ✗ | — |
 | **WAN / Internet**  | ✗ | servizi pubblicati | ✗ | — |
 | **Mgmt**            | SSH | SSH | — | ✗ |
 
@@ -769,7 +768,7 @@ Router# show ip access-lists NOME      ! contatori per ACE (0 match su un permit
 | Zona / interfaccia | Default | In più |
 | ------------------ | ------- | ------ |
 | LAN fidata | **default-allow** | anti-spoofing (deny verso le altre subnet) |
-| Server farm / DMZ / WAN / VPN | **default-deny + log** | solo i flussi della matrice |
+| Server farm / DMZ / WAN / **`tun0`** (VPN) | **default-deny + log** | anti-spoofing + **solo** i servizi specifici della matrice |
 | (tutte) | — | una ACL **estesa con nome, inbound** per interfaccia · **mai `out`** |
 
 > 🔑 I **ritorni** ai confini default-deny li apre l'ispezione **stateful** (CBAC o ZBF): nelle liste si scrive solo il traffico **iniziato**.
@@ -787,6 +786,20 @@ interface <Vlan/Gi/Tunnel>
  ip access-group ACL-<ZONA> in
 ```
 > 💡 Procedura: (1) compila la matrice; (2) una riga `permit` per ogni ✓; (3) chiudi con la **regola di default** giusta; (4) applica **inbound**; (5) aggiungi CBAC/ZBF per i ritorni.
+
+**Esempio — interfaccia `tun0` trattata come WAN (default-deny, solo servizi specifici):**
+```
+# netfilter/iptables: confine non fidato → default-deny + soli servizi pubblicati
+iptables -A FORWARD -i tun0 ! -s <reti-remote-attese> -j DROP        # anti-spoofing
+iptables -A FORWARD -i tun0 -p tcp -d <repository> --dport 443  -j ACCEPT   # HTTPS
+iptables -A FORWARD -i tun0 -p tcp -d <repository> --dport 22   -j ACCEPT   # SFTP
+iptables -A FORWARD -i tun0 -p tcp -d <mqtt-front> --dport 8883 -j ACCEPT   # MQTT
+iptables -A FORWARD -i tun0 -p udp -d <radius> --dport 1812     -j ACCEPT   # auth
+iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT          # ritorni (stateful)
+iptables -A FORWARD -i tun0 -j DROP                                         # ← DEFAULT DENY
+```
+> Equivalente Cisco: ACL estesa **inbound** su `interface TunnelN` con gli stessi `permit` + `deny ip any any log`, e CBAC/ZBF per i ritorni. 🔑 `tun0` (OpenVPN/TUN, L3) si tratta **come la WAN**: non è fidata solo perché è una VPN.
+
 
 
 ## 15 · ACL firewall — scenari tipici
