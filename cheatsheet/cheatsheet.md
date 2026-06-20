@@ -452,7 +452,33 @@ sudo tcpdump -i eth0 vrrp    ← verifica gli advertisement
 ```
 ---
 
-## 11  HAProxy — ALG, clustering e HA
+## 10.2 IP SLA — failover dual-WAN (Cisco IOS)
+> **Def./scopo:** sonda attiva che misura la **raggiungibilità** (e qualità) di un percorso — ICMP/UDP/TCP echo verso un target — e, tramite un `track`, condiziona rotte e azioni. **Scopo: failover automatico del *link* WAN** (la rete, non i dati).
+
+<img src="../img/ip_sla_failover.svg" alt="IP SLA failover dual-WAN" width="640">
+
+```
+ip sla 1
+ icmp-echo 8.8.8.8 source-interface GigabitEthernet0/0   ! sonda sul link primario
+ frequency 5
+ip sla schedule 1 life forever start-time now
+track 1 ip sla 1 reachability
+
+ip route 0.0.0.0 0.0.0.0 <gw-primario> track 1           ! attiva SOLO se il track è up
+ip route 0.0.0.0 0.0.0.0 <gw-backup> 10                  ! AD 10 = flottante: subentra alla caduta
+```
+
+| Elemento | Ruolo |
+| -------- | --------------------------------------------------- |
+| `ip sla` | invia probe periodici (ICMP/UDP/TCP) verso un target |
+| `track`  | lega lo stato della rotta all'esito del probe       |
+| AD `10`  | rende **flottante** la rotta di backup              |
+
+> 🔑 Quando il probe fallisce, il `track` va *down* → la rotta primaria sparisce → entra la flottante. **Con dual-WAN + NAT** servono `route-map` per associare il NAT all'interfaccia attiva. **Test:** `show ip sla statistics`, `show track 1`, `show ip route`.
+
+---
+
+## 10.3  HAProxy — ALG, clustering e HA
 
 HAProxy riceve sull'IP virtuale VRRP e smista ai backend.
 
@@ -652,33 +678,6 @@ node# crm_mon -1
 > | **Geografico (WAN)** | alta | **asincrona** (DRBD `protocol A` + DRBD Proxy, replica array, `rsync`) | **> 0** (finestra di dati a rischio) | **Disaster Recovery**, failover orchestrato |
 >
 > **DRBD sincrono in sede (LAN)** per l'HA dei dati; per il **fuori sede su Internet** si va **asincroni** con **rsync 3-2-1 verso il cloud** (DR, non HA a perdita zero). La scelta si fa su **RPO/RTO** — quanti dati puoi perdere e in quanto tempo devi ripartire.
-
----
-
-## IP SLA — failover dual-WAN (Cisco IOS)
-> **Def./scopo:** sonda attiva che misura la **raggiungibilità** (e qualità) di un percorso — ICMP/UDP/TCP echo verso un target — e, tramite un `track`, condiziona rotte e azioni. **Scopo: failover automatico del *link* WAN** (la rete, non i dati).
-
-<img src="../img/ip_sla_failover.svg" alt="IP SLA failover dual-WAN" width="640">
-
-```
-ip sla 1
- icmp-echo 8.8.8.8 source-interface GigabitEthernet0/0   ! sonda sul link primario
- frequency 5
-ip sla schedule 1 life forever start-time now
-track 1 ip sla 1 reachability
-
-ip route 0.0.0.0 0.0.0.0 <gw-primario> track 1           ! attiva SOLO se il track è up
-ip route 0.0.0.0 0.0.0.0 <gw-backup> 10                  ! AD 10 = flottante: subentra alla caduta
-```
-
-| Elemento | Ruolo |
-| -------- | --------------------------------------------------- |
-| `ip sla` | invia probe periodici (ICMP/UDP/TCP) verso un target |
-| `track`  | lega lo stato della rotta all'esito del probe       |
-| AD `10`  | rende **flottante** la rotta di backup              |
-
-> 🔑 Quando il probe fallisce, il `track` va *down* → la rotta primaria sparisce → entra la flottante. **Con dual-WAN + NAT** servono `route-map` per associare il NAT all'interfaccia attiva. **Test:** `show ip sla statistics`, `show track 1`, `show ip route`.
-
 
 ---
 
