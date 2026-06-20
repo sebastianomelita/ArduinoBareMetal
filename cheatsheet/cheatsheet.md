@@ -299,15 +299,13 @@ R# show ip ospf database       ← LSDB con tutti i LSA ricevuti
 
 ###  6.2 · OSPF — fasi in `(config-if)`
 
+Ripetere per ogni interfaccia con l'area corretta (0 = backbone, 10/20 = aree stub).
+
 ```
 R(config-if)# ip address 192.168.4.2 255.255.255.252
 R(config-if)# ip ospf 100 area 0
 R(config-if)# no shutdown
 ```
-
-> Ripetere per ogni interfaccia con l'area corretta (0 = backbone, 10/20 = aree stub).
-> 
-
 **Test**
 ```
 R# show ip interface brief
