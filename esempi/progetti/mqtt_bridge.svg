@@ -1,0 +1,72 @@
+<svg viewBox="0 0 980 470" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .tit{font-size:13px;font-weight:700;fill:#202124}
+    .sub{font-size:11px;fill:#5f6368}
+    .cont{fill:#f8f9fa;stroke:#dadce0}
+    .brk{fill:#ede7f6;stroke:#6a1b9a}
+    .dev{fill:#e8f0fe;stroke:#1a73e8}
+    .alarm{fill:#fce8e6;stroke:#d93025}
+    .srv{fill:#e6f4ea;stroke:#137333}
+    .out{stroke:#137333;stroke-width:3;fill:none;marker-end:url(#ag)}
+    .in{stroke:#1565c0;stroke-width:3;fill:none;marker-end:url(#ab)}
+    .q{fill:#fff;stroke:#6a1b9a}
+  </style>
+  <defs>
+    <marker id="ag" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#137333"/></marker>
+    <marker id="ab" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1565c0"/></marker>
+  </defs>
+
+  <text x="490" y="28" text-anchor="middle" class="tit" font-size="16">MQTT: due broker in bridge (edge cantiere ↔ sede)</text>
+
+  <!-- CANTIERE -->
+  <rect x="30" y="70" width="320" height="360" rx="10" class="cont" stroke-width="2"/>
+  <text x="190" y="92" text-anchor="middle" class="tit">CANTIERE</text>
+
+  <rect x="55" y="106" width="270" height="46" rx="6" class="dev" stroke-width="1.5"/>
+  <text x="190" y="124" text-anchor="middle" class="sub" font-weight="700">Sensori — furto / incendio</text>
+  <text x="190" y="141" text-anchor="middle" class="sub">Zigbee (via gateway) · Wi-Fi · Ethernet</text>
+
+  <rect x="95" y="190" width="190" height="86" rx="8" class="brk" stroke-width="2"/>
+  <text x="190" y="214" text-anchor="middle" class="tit">Broker edge</text>
+  <text x="190" y="232" text-anchor="middle" class="sub">store-and-forward</text>
+  <rect x="120" y="244" width="20" height="20" rx="3" class="q"/>
+  <rect x="146" y="244" width="20" height="20" rx="3" class="q"/>
+  <rect x="172" y="244" width="20" height="20" rx="3" class="q"/>
+  <text x="210" y="259" class="sub" fill="#6a1b9a">coda</text>
+  <line x1="190" y1="152" x2="190" y2="190" stroke="#5f6368" stroke-width="2"/>
+
+  <rect x="70" y="340" width="240" height="56" rx="8" class="alarm" stroke-width="1.5"/>
+  <text x="190" y="363" text-anchor="middle" class="sub" font-weight="700">Sirena / notifica locale</text>
+  <text x="190" y="381" text-anchor="middle" class="sub">allarme real-time · bassa latenza</text>
+  <line x1="190" y1="276" x2="190" y2="340" stroke="#d93025" stroke-width="2"/>
+
+  <!-- SEDE -->
+  <rect x="630" y="70" width="320" height="360" rx="10" class="cont" stroke-width="2"/>
+  <text x="790" y="92" text-anchor="middle" class="tit">SEDE</text>
+
+  <rect x="695" y="190" width="190" height="86" rx="8" class="brk" stroke-width="2"/>
+  <text x="790" y="222" text-anchor="middle" class="tit">Broker centrale</text>
+  <text x="790" y="242" text-anchor="middle" class="sub">aggrega i cantieri</text>
+
+  <rect x="660" y="320" width="260" height="76" rx="8" class="srv" stroke-width="1.5"/>
+  <text x="790" y="344" text-anchor="middle" class="sub" font-weight="700">Sistema allarmi + DB log storico</text>
+  <text x="790" y="362" text-anchor="middle" class="sub">sub: cantiere/+/+/+/+/alarm</text>
+  <text x="790" y="380" text-anchor="middle" class="sub">segnalazioni · elaborazioni · storico</text>
+  <line x1="790" y1="276" x2="790" y2="320" stroke="#137333" stroke-width="2"/>
+
+  <!-- BRIDGE -->
+  <text x="490" y="178" text-anchor="middle" class="tit">BRIDGE — un canale mTLS</text>
+  <path d="M285 212 L693 212" class="out"/>
+  <text x="490" y="204" text-anchor="middle" class="sub" fill="#137333" font-weight="700">out ▸ telemetria / allarmi · QoS 1</text>
+  <path d="M695 252 L287 252" class="in"/>
+  <text x="490" y="272" text-anchor="middle" class="sub" fill="#1565c0" font-weight="700">in ◂ comandi …/cmd</text>
+
+  <!-- lock + link note -->
+  <rect x="470" y="218" width="40" height="28" rx="5" fill="#fff" stroke="#6a1b9a"/>
+  <text x="490" y="237" text-anchor="middle" class="sub" fill="#6a1b9a">mTLS</text>
+
+  <rect x="345" y="300" width="290" height="64" rx="8" fill="#fff8e1" stroke="#f9a825"/>
+  <text x="490" y="322" text-anchor="middle" class="sub" font-weight="700" fill="#202124">link 4G/5G ⚡ se cade</text>
+  <text x="490" y="340" text-anchor="middle" class="sub">il broker edge continua (allarmi locali);</text>
+  <text x="490" y="356" text-anchor="middle" class="sub">il bridge accoda e rispedisce alla riconnessione</text>
+</svg>

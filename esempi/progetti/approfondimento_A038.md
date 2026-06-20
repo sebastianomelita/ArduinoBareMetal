@@ -275,19 +275,28 @@ Messaggio di **stato/heartbeat** (canale `state`) e **comando** (canale `cmd`, e
 - **Stato**: pubblicato **retained** sul canale `state` → un nuovo subscriber conosce subito l'ultimo stato noto.
 - **LWT (Last Will & Testament)**: ogni dispositivo/gateway imposta un *will* sul proprio `.../state` con `event:"offline"`; se cade, il broker lo pubblica → si rileva un sensore di sicurezza scollegato.
 
-### 6.4 Bridge edge → sede (Mosquitto, su mTLS)
+### 6.4 Architettura a due broker (edge + sede) e bridge
+
+Il sistema usa **due broker MQTT** collegati in **bridge**:
+
+- **Broker edge (cantiere)** — è quello su cui pubblicano i sensori (i gateway Zigbee traducono lì, i sensori Wi-Fi/Ethernet pubblicano direttamente). Gestisce gli **allarmi locali in tempo reale** (sirena/notifica in cantiere) con bassa latenza e **continua a funzionare anche se cade il link 4G/5G**: i sensori non restano mai senza broker.
+- **Broker centrale (sede)** — **aggrega tutti i cantieri**, alimenta il sistema d'allarme centrale e il **DB di log storico**; la sede si abbona a `cantiere/+/+/+/+/alarm`.
+- **Bridge** — un solo canale **mTLS** tra i due broker che inoltra (`out`) i topic del cantiere verso la sede, con **QoS 1** e accodamento: se il link salta, il bridge mette in coda e **rispedisce alla riconnessione** (store-and-forward).
+
+<img src="../img/mqtt_bridge.svg" alt="Bridge MQTT a due broker tra cantiere e sede" width="820">
 
 ```ini
 # /etc/mosquitto/conf.d/bridge.conf  — broker di cantiere
 connection bridge-sede
 address broker.sede.local:8883
-topic cantiere/1/# out 1                 # inoltra (out) tutti i topic del cantiere, QoS 1
+topic cantiere/1/# out 1                 # inoltra (out) telemetria/allarmi del cantiere, QoS 1
+topic cantiere/1/+/+/+/cmd in 1          # riceve (in) i comandi dalla sede (es. tacita sirena)
 bridge_cafile  /etc/mosquitto/certs/ca.crt
 bridge_certfile /etc/mosquitto/certs/gw.crt   # mTLS: identità del gateway
 bridge_keyfile  /etc/mosquitto/certs/gw.key
 ```
 
-> In sede il sistema allarmi si abbona a `cantiere/+/+/+/+/alarm` per furto/incendio in tempo reale; lo stesso flusso alimenta il **DB di log storico**.
+> Il bridge è **bidirezionale a topic**: `out` per i dati che salgono, `in` per i `…/cmd` che scendono. La connessione TCP è **una sola**, sempre aperta dal broker edge verso la sede (non serve altra regola firewall oltre a §12.4). In sede il sistema allarmi si abbona a `cantiere/+/+/+/+/alarm` per furto/incendio in tempo reale; lo stesso flusso alimenta il **DB di log storico**.
 
 ### 6.5 Le WSN Zigbee come reti partecipanti (federazione)
 
@@ -824,18 +833,18 @@ interface Vlan20
 
 | # | Azione | Sorgente | Destinazione | Proto/porta | Nota |
 |---|---|---|---|---|---|
-| 1 | permit | `10.k.30.0/24` | `10.k.99.20` | tcp/8883 | broker MQTT edge (locale) |
-| 2 | permit | `10.k.30.0/24` | `10.0.40.20` | tcp/8883 | allarmi → MQTT front di sede |
-| 3 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
+| 1 | permit | `10.k.30.0/24` | `10.k.99.20` | tcp/8883 | **solo** broker MQTT edge (locale) |
+| 2 | **deny** | any | any | ip (log) | **← DEFAULT DENY** |
 
 ```
 ip access-list extended ACL-V30-IOT
  permit tcp 10.k.30.0 0.0.0.255 host 10.k.99.20 eq 8883
- permit tcp 10.k.30.0 0.0.0.255 host 10.0.40.20 eq 8883
  deny   ip  any any log
 interface Vlan30
  ip access-group ACL-V30-IOT in
 ```
+
+> I sensori pubblicano **solo** sul broker edge; l'upstream verso la sede è fatto dal **bridge** del broker (§6.4), non dai singoli sensori — perciò qui non c'è alcun permesso diretto verso `10.0.40.20`.
 
 ### 12.4 VLAN 99 — Management (`Vlan99`, default-deny)
 
