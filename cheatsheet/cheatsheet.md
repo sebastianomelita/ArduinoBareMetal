@@ -408,6 +408,9 @@ sudo sh -c "iptables-save > /etc/iptables.ipv4.nat"
 sudo iptables -t nat -L -v
 sudo iptables -L FORWARD -v
 ```
+---
+
+# 10 ·continuità di servizio delle applicazioni
 
 ## 10 · VRRP — keepalived (IP virtuale in HA)
 
@@ -512,7 +515,11 @@ echo "show stat" | sudo socat stdio /var/run/haproxy/admin.sock
 
 ---
 
-## 12. RAID — tolleranza ai guasti disco (storage del NAS)
+# 12 · Continuità di servizio dei dischi
+
+## 12.1 RAID — Mirror tra dischi dello stesso nodo
+
+> La copia avviene a livello fisico
 > Ridondanza **locale** dei dischi di un nodo: tiene in piedi lo storage al guasto di uno (o due) dischi. **Non è un backup** (non copre cancellazioni, ransomware, doppio guasto oltre soglia) e **non sostituisce** la regola 3-2-1 né DRBD: si **somma** ad essi.
 
 ### Scelta del livello
@@ -563,8 +570,10 @@ echo check > /sys/block/md0/md/sync_action           # scrubbing on-demand (erro
 ---
 
 
-## 13 · DRBD — Replica e Failover
+## 12.2 · DRBD — Mirror tra dischi di nodi diversi nella stessa LAN
 
+> La copia avviene a livello di trasporto in rete e poi a livello di blocco sul disco.
+> 
 DRBD replica solo il blocco: la promozione del secondario **non è automatica**.
 Lo scambio di ruolo automatico è un layer in più (cluster manager).
 
@@ -646,7 +655,7 @@ node# crm_mon -1
 ```
 ---
 
-## IP SLA — failover dual-WAN (Cisco IOS)
+## 12.3. IP SLA — failover dual-WAN (Cisco IOS) - Mirror tra dischi di nodi diversi in Internet
 
 ```
 ip sla 1
@@ -669,12 +678,14 @@ ip route 0.0.0.0 0.0.0.0 <gw-backup> 10                  ! AD 10 = flottante: su
 
 ---
 
-## 14 · ACL — premessa e contesto
+# 14 . Filtraggio con ACL
 
-> Adattato al piano di indirizzamento `10.0.0.0/16` (Subnet A–F della dispensa) e alle **due politiche di default** che usiamo:
+## 14.1· ACL — premessa e contesto
+
+> Adattato al piano di indirizzamento `10.0.0.0/16` e alle **due politiche di default** in uso:
 > - **LAN → default-allow**: si elencano i `deny` (eccezioni) e si chiude con `permit ip any any`.
 > - **WAN e tunnel → default-deny**: si elencano i `permit` (servizi ammessi) e si chiude con `deny ip any any` **esplicito**.
-> - Regola di casa: la **riga di default si scrive sempre in chiaro** (anche dove l'implicit deny basterebbe), per renderla visibile e abilitare il contatore di match.
+> - Convenzione di base: la **riga di default si scrive sempre in chiaro** (anche dove l'implicit deny basterebbe), per renderla visibile e abilitare il contatore di match.
 > - Anti-spoofing **silenzioso** sulle LAN (nessun `log`); `log` riservato alla WAN.
 
 Piano di riferimento: A `10.0.1.0/24`, B `10.0.2.0/24`, C `10.0.3.0/24`, D `10.0.4.0/24`, DMZ `10.0.5.0/24`, Server Farm `10.0.6.0/24`. Intranet aggregata: `10.0.0.0 0.0.255.255`. File server `10.0.1.100`, app server `10.0.5.100`, DB `10.0.6.100`, web server `10.0.5.50`.
@@ -685,7 +696,9 @@ Piano di riferimento: A `10.0.1.0/24`, B `10.0.2.0/24`, C `10.0.3.0/24`, D `10.0
 
 Ogni subnet entra nel router su una porta dedicata; è su quell'interfaccia, in ingresso, che agisce l'ACL. In alto, separate dalle LAN, le due frontiere *default-deny* che riding sulla WAN: la WAN fisica e il tunnel logico. Mappa interfaccia → ACL: `Gi0/0`→`ACL-SUBNET-A-DA`, `Gi0/2`→`ACL-SUBNET-C-DA`, `Gi0/3`→`ACL-SUBNET-D-DA`, `Gi0/5`→`ACL-DMZ-DA`, `Gi0/6`→`ACL-SERVERFARM`, `Gi0/4`→`ACL-WAN`, `tun0`→`ACL-TUNNEL-DD`.
 
-### 13.1 · ACL — definizione e tipi
+---
+
+## 14.2 · ACL — definizione e tipi
 
 Una **ACL** è una lista ordinata di **ACE**. Il router le esamina in sequenza: alla prima
 corrispondenza esegue l'azione e si ferma. Se nessuna corrisponde → **deny all** implicito.
@@ -734,6 +747,47 @@ Router# show access-lists
 Router# show ip interface <X>          ! quale ACL è applicata e in che direzione
 Router# show ip access-lists NOME      ! contatori per ACE (0 match su un permit = regola mai usata)
 ```
+
+---
+
+## 14.3 Matrice degli accessi + ACL per interfaccia (modello)
+> *Collocazione:* **Parte II, in testa a §13–17 (ACL).** Schema riusabile: prima la **matrice** (chi raggiunge cosa), poi le **ACL per interfaccia** con la **regola di default in fondo**.
+
+**Matrice degli accessi** (✓ = ammesso con le porte indicate · ✗ = negato · — = nessun flusso):
+
+| Sorgente ↓ \ Dest → | Server farm | DMZ | Mgmt | Internet |
+| ------------------- | ----------- | --- | ---- | -------- |
+| **LAN utenti**      | solo servizi necessari | ✗ | ✗ | HTTP/S |
+| **Server farm**     | intra + DB (dall'app) | ✗ | ✗ | update HTTPS |
+| **DMZ**             | solo flussi sanciti | — | ✗ | ✗ |
+| **Remoto / VPN**    | auth (RADIUS) | servizi pubblicati | ✗ | — |
+| **WAN / Internet**  | ✗ | servizi pubblicati | ✗ | — |
+| **Mgmt**            | SSH | SSH | — | ✗ |
+
+**Convenzione (sempre la stessa):**
+
+| Zona / interfaccia | Default | In più |
+| ------------------ | ------- | ------ |
+| LAN fidata | **default-allow** | anti-spoofing (deny verso le altre subnet) |
+| Server farm / DMZ / WAN / VPN | **default-deny + log** | solo i flussi della matrice |
+| (tutte) | — | una ACL **estesa con nome, inbound** per interfaccia · **mai `out`** |
+
+> 🔑 I **ritorni** ai confini default-deny li apre l'ispezione **stateful** (CBAC o ZBF): nelle liste si scrive solo il traffico **iniziato**.
+
+**Scheletro di una ACL (la regola di default chiude sempre la lista):**
+```
+ip access-list extended ACL-<ZONA>
+ permit <proto> <sorgente> host <server> eq <porta>     ! flussi ammessi (dalla matrice)
+ permit <proto> <sorgente> host <server> eq <porta>
+ deny   ip  <sorgente> 10.0.0.0 0.0.255.255             ! (LAN) blocca il resto dell'intranet
+ permit ip  <sorgente> any                              ! ← DEFAULT ALLOW   (solo nelle LAN)
+! —— oppure, ai confini: ——
+ deny   ip  any any log                                 ! ← DEFAULT DENY    (server/DMZ/WAN/VPN)
+interface <Vlan/Gi/Tunnel>
+ ip access-group ACL-<ZONA> in
+```
+> 💡 Procedura: (1) compila la matrice; (2) una riga `permit` per ogni ✓; (3) chiudi con la **regola di default** giusta; (4) applica **inbound**; (5) aggiungi CBAC/ZBF per i ritorni.
+
 
 ## 15 · ACL firewall — scenari tipici
 
