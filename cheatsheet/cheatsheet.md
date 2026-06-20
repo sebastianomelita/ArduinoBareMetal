@@ -278,7 +278,7 @@ Due **fasi**:
 
 ### 6.1 · OSPF — fasi in `(config-router)`
 
-Il process-id è comune a tutti i router 
+Il process-id è lo stesso per tutti i router 
 
 ```
 R(config)# router ospf 100                                   ← 0. abilitazione protocollo e settaggio process-id
