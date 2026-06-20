@@ -1747,6 +1747,342 @@ mosquitto_sub -h broker -p 8883 --cafile ca.crt --cert c.crt --key c.key -t 'can
 
 ---
 
+# 🔐 Cheat Sheet — Autenticazione con certificati e PSK (Linux)
+
+> MQTT client (mTLS) · Ethernet 802.1X (EAP-TLS) · Wi-Fi 802.1X (EAP-TLS) + variante a **chiave precondivisa (PSK)**. Stile coerente con la dispensa: prima il **caso comune** (CA + cert + chiave), poi le tre tecnologie.
+
+## Indice
+
+- **1** Anatomia comune (i tre file) · **2** Generazione & verifica certificati (openssl)
+- **3** MQTT client — mTLS · **4** Ethernet 802.1X — EAP-TLS · **5** Wi-Fi 802.1X — EAP-TLS
+- **6** Variante NetworkManager (`nmcli`) · **7** Variante a chiave precondivisa (PSK) · **8** Checklist & errori comuni
+
+---
+
+## 1 · Anatomia comune — i tre file che servono SEMPRE
+
+Ogni autenticazione a certificato si regge sugli stessi tre artefatti. Cambiano solo gli strumenti che li consumano (mosquitto, wpa_supplicant, nmcli).
+
+| File              | Cosa contiene                          | Chi lo verifica          | Permessi |
+| ----------------- | -------------------------------------- | ------------------------ | -------- |
+| `ca.crt` / `ca.pem` | certificato della **CA** (catena)    | il client (valida il server/AS) | `644` |
+| `client.crt`      | certificato del **client** (firmato dalla CA) | il server/RADIUS  | `644`    |
+| `client.key`      | **chiave privata** del client          | mai trasmessa            | `600` 🔑 |
+
+> 🔑 La chiave **privata** non lascia mai il dispositivo. La CA serve a verificare *l'altro capo*; il `client.crt` serve all'altro capo per verificare *te*. In 802.1X (EAP-TLS) l'autenticazione è **reciproca**: tu verifichi l'AS RADIUS, lui verifica te.
+
+```bash
+chmod 600 client.key            # ← la chiave privata deve essere illeggibile agli altri
+chown root:root client.key
+```
+
+---
+
+## 2 · Generazione & verifica — openssl
+
+### 2.1 Da zero (CA di test + cert client)
+
+```bash
+# CA radice (una volta sola)
+openssl genrsa -out ca.key 4096
+openssl req -x509 -new -nodes -key ca.key -sha256 -days 3650 \
+  -subj "/CN=My Test CA" -out ca.crt
+
+# Chiave + CSR del client
+openssl genrsa -out client.key 2048
+openssl req -new -key client.key -subj "/CN=device@example.com" -out client.csr
+
+# Firma del client con la CA
+openssl x509 -req -in client.csr -CA ca.crt -CAkey ca.key \
+  -CAcreateserial -days 825 -sha256 -out client.crt      # ← client.crt firmato
+```
+
+### 2.2 Verifiche (da fare PRIMA di configurare i servizi)
+
+```bash
+openssl x509 -in client.crt -noout -text            # scadenza, CN, SAN, EKU
+openssl verify -CAfile ca.crt client.crt            # ← deve stampare "client.crt: OK"
+
+# chiave e certificato devono combaciare → i due hash IDENTICI
+openssl x509 -noout -modulus -in client.crt | openssl md5
+openssl rsa  -noout -modulus -in client.key | openssl md5
+```
+
+> ⚠️ In EAP-TLS l'`identity` deve combaciare con il **CN** o un **SAN** del certificato, a seconda di come è configurato il RADIUS. Mismatch silenzioso → autenticazione che fallisce senza errori chiari.
+
+---
+
+## 3 · MQTT client — mTLS (TLS mutuo)
+
+Il broker deve essere in ascolto su TLS (porta **8883**) e richiedere il certificato client (`require_certificate true`).
+
+```bash
+# Subscribe
+mosquitto_sub -h broker.example.com -p 8883 \
+  --cafile /etc/mqtt/ca.crt \
+  --cert   /etc/mqtt/client.crt \
+  --key    /etc/mqtt/client.key \
+  -t "sensori/#"
+
+# Publish
+mosquitto_pub -h broker.example.com -p 8883 \
+  --cafile /etc/mqtt/ca.crt \
+  --cert   /etc/mqtt/client.crt \
+  --key    /etc/mqtt/client.key \
+  -t "sensori/temp" -m "22.5"
+```
+
+| Opzione         | Cosa fa                                                |
+| --------------- | ------------------------------------------------------ |
+| `--cafile`      | CA con cui validare il certificato **del broker**      |
+| `--cert`/`--key`| certificato + chiave **del client** (autenticazione mTLS) |
+| `--tls-version` | forza es. `tlsv1.2` (consigliato)                      |
+| `--insecure`    | ⚠️ salta la verifica dell'hostname — **solo in test**  |
+
+**Test**
+
+```bash
+openssl s_client -connect broker.example.com:8883 -CAfile ca.crt   # ← negoziazione TLS a mano
+mosquitto_sub ... -d                                               # -d = debug del handshake
+```
+
+> Lato broker (`mosquitto.conf`): `listener 8883` · `cafile /etc/mqtt/ca.crt` · `certfile`/`keyfile` del broker · `require_certificate true` · (opz.) `use_identity_as_username true` per usare il CN come username.
+
+---
+
+## 4 · Ethernet 802.1X — EAP-TLS (rete cablata)
+
+Si usa `wpa_supplicant` con driver `wired`: la porta dello switch resta `unauthorized` finché il certificato non è validato dal RADIUS.
+
+File `/etc/wpa_supplicant/wired.conf`:
+
+```
+ctrl_interface=/run/wpa_supplicant
+eapol_version=1
+ap_scan=0                                  ← obbligatorio per il cablato (nessuna scansione)
+
+network={
+    key_mgmt=IEEE8021X                     ← 802.1X "puro" (no WPA, è cablato)
+    eap=TLS                                ← EAP-TLS = autenticazione a certificato
+    identity="device@example.com"          ← deve combaciare con CN/SAN del cert
+    ca_cert="/etc/cert/ca.pem"
+    client_cert="/etc/cert/client.pem"
+    private_key="/etc/cert/client.key"
+    private_key_passwd="password_chiave"   ← solo se la chiave è cifrata
+}
+```
+
+```bash
+# Debug in foreground (utile la prima volta)
+wpa_supplicant -D wired -i eth0 -c /etc/wpa_supplicant/wired.conf -d
+
+# In background, poi richiedi l'IP
+wpa_supplicant -B -D wired -i eth0 -c /etc/wpa_supplicant/wired.conf
+dhclient eth0                              # ← oppure dhcpcd eth0
+```
+
+| Parametro          | Valore / nota                                  |
+| ------------------ | ---------------------------------------------- |
+| `-D wired`         | driver per 802.1X su Ethernet                  |
+| `key_mgmt`         | `IEEE8021X` (cablato) — **non** `WPA-EAP`      |
+| `ap_scan=0`        | nessuna rete radio da cercare                  |
+
+**Test**
+
+```bash
+wpa_cli -i eth0 status                     # ← stato deve essere: EAP success / COMPLETED
+ip addr show eth0                          # IP ottenuto dopo l'autorizzazione
+```
+
+---
+
+## 5 · Wi-Fi 802.1X — EAP-TLS (WPA2/WPA3-Enterprise)
+
+Identico al §4, ma con `key_mgmt=WPA-EAP` e l'SSID.
+
+File `/etc/wpa_supplicant/wifi.conf`:
+
+```
+ctrl_interface=/run/wpa_supplicant
+ctrl_interface_group=0
+
+network={
+    ssid="SecureWiFi"
+    key_mgmt=WPA-EAP                        ← Enterprise (non WPA-PSK)
+    eap=TLS
+    identity="device@example.com"
+    ca_cert="/etc/cert/ca.pem"
+    client_cert="/etc/cert/client.pem"
+    private_key="/etc/cert/client.key"
+    private_key_passwd="password_chiave"
+}
+```
+
+```bash
+wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wifi.conf
+dhclient wlan0
+```
+
+> Differenza chiave §4 ↔ §5: **cablato** `key_mgmt=IEEE8021X` + `-D wired` + `ap_scan=0`; **wifi** `key_mgmt=WPA-EAP` + SSID. Il resto (la quaterna `eap/identity/ca_cert/client_cert/private_key`) è identico.
+
+**Test**
+
+```bash
+wpa_cli -i wlan0 status                    # ← CTRL: EAP success, key_mgmt=WPA2/WPA3
+iw dev wlan0 link                          # AP associato e segnale
+```
+
+---
+
+## 6 · Variante moderna — NetworkManager (`nmcli`)
+
+Se il sistema usa NetworkManager, evita i file di `wpa_supplicant`: una riga e fatto.
+
+```bash
+# — Wi-Fi 802.1X EAP-TLS
+nmcli connection add type wifi con-name "SecureWiFi" ifname wlan0 ssid "SecureWiFi" \
+  wifi-sec.key-mgmt wpa-eap \
+  802-1x.eap tls \
+  802-1x.identity "device@example.com" \
+  802-1x.ca-cert /etc/cert/ca.pem \
+  802-1x.client-cert /etc/cert/client.pem \
+  802-1x.private-key /etc/cert/client.key \
+  802-1x.private-key-password "password_chiave"
+
+# — Ethernet 802.1X EAP-TLS (stesso schema, niente ssid/wifi-sec)
+nmcli connection add type ethernet con-name "Wired8021x" ifname eth0 \
+  802-1x.eap tls \
+  802-1x.identity "device@example.com" \
+  802-1x.ca-cert /etc/cert/ca.pem \
+  802-1x.client-cert /etc/cert/client.pem \
+  802-1x.private-key /etc/cert/client.key \
+  802-1x.private-key-password "password_chiave"
+```
+
+**Test**
+
+```bash
+nmcli connection up "SecureWiFi"
+nmcli -f GENERAL,IP4 device show wlan0     # ← STATE: connected + IP assegnato
+```
+
+---
+
+## 7 · Variante a chiave precondivisa (PSK)
+
+Invece di una coppia certificato/chiave per nodo, tutti condividono **una sola chiave simmetrica**. Più semplice da distribuire, ma **non scala**: chi conosce la chiave è dentro, e una compromissione obbliga a cambiarla **su tutti** i dispositivi.
+
+| Criterio              | Certificati (EAP-TLS / mTLS)         | Chiave precondivisa (PSK)        |
+| --------------------- | ------------------------------------ | -------------------------------- |
+| Identità              | **una per nodo** (CN/SAN)            | **unica e condivisa**            |
+| Revoca                | individuale (revoca il singolo cert) | globale (cambi la chiave ovunque) |
+| Distribuzione         | PKI / CA                             | copi una stringa                 |
+| Scalabilità           | alta                                 | bassa (pochi nodi fidati)        |
+| Uso tipico            | enterprise, IoT gestito              | home, lab, link punto-punto      |
+
+### 7.1 MQTT — TLS-PSK
+
+Niente CA né certificati: l'identità è una coppia `identità : chiave-esadecimale`. Il broker tiene la mappa in un `psk_file`.
+
+```bash
+mosquitto_sub -h broker.example.com -p 8883 \
+  --psk-identity device01 \
+  --psk deadbeefcafe0011223344556677 \      # ← chiave in ESADECIMALE (no 0x, no spazi)
+  --tls-version tlsv1.2 \
+  -t "sensori/#"
+```
+
+> Lato broker (`mosquitto.conf`): `listener 8883` · `psk_file /etc/mqtt/psk.txt` · (opz.) `psk_hint nome`. Il file `psk.txt` contiene righe `identità:chiaveHEX`, es. `device01:deadbeefcafe0011223344556677`. La stessa chiave deve combaciare con `--psk`. TLS-PSK e i certificati si **escludono a vicenda** sullo stesso listener.
+
+### 7.2 Wi-Fi — WPA2-PSK / WPA3-SAE (Personal)
+
+È la modalità "casalinga": una passphrase condivisa al posto del RADIUS.
+
+File `/etc/wpa_supplicant/wifi-psk.conf`:
+
+```
+ctrl_interface=/run/wpa_supplicant
+
+network={
+    ssid="CasaWiFi"
+    key_mgmt=WPA-PSK                ← Personal (PSK). WPA3 → usa SAE
+    psk="la_mia_passphrase"         ← 8–63 caratteri ASCII
+}
+```
+
+```bash
+# Meglio: precalcola la PSK a 256 bit (la passphrase in chiaro non resta nel file)
+wpa_passphrase "CasaWiFi" "la_mia_passphrase" >> /etc/wpa_supplicant/wifi-psk.conf
+
+wpa_supplicant -B -i wlan0 -c /etc/wpa_supplicant/wifi-psk.conf
+dhclient wlan0
+```
+
+| `key_mgmt` | Standard | Nota                                            |
+| ---------- | -------- | ----------------------------------------------- |
+| `WPA-PSK`  | WPA2     | passphrase classica                             |
+| `SAE`      | WPA3     | sostituisce PSK, resiste agli attacchi offline  |
+
+Con `nmcli` in una riga:
+
+```bash
+nmcli device wifi connect "CasaWiFi" password "la_mia_passphrase"
+```
+
+### 7.3 Ethernet — MACsec con chiave statica (802.1AE)
+
+L'equivalente cablato della PSK: cifratura L2 punto-punto con chiave pre-condivisa (CAK/CKN), senza RADIUS. Stessa chiave sui due capi del cavo.
+
+```bash
+# Crea l'interfaccia MACsec sopra eth0
+ip link add link eth0 macsec0 type macsec encrypt on
+ip link set macsec0 up
+
+# Chiave di trasmissione e di ricezione (HEX, IDENTICA sui due nodi)
+ip macsec add macsec0 tx sa 0 pn 1 on key 01 0123456789abcdef0123456789abcdef
+ip macsec add macsec0 rx address <MAC-del-peer> port 1
+ip macsec add macsec0 rx address <MAC-del-peer> port 1 sa 0 pn 1 on \
+   key 02 0123456789abcdef0123456789abcdef
+```
+
+> In alternativa `wpa_supplicant` gestisce MACsec PSK con `key_mgmt=NONE` + `macsec_policy=1` e i campi `mka_cak`/`mka_ckn`. Per il cablato "vero" 802.1X resta EAP-TLS (§4): MACsec-PSK si usa soprattutto su link fissi tra apparati.
+
+**Test**
+
+```bash
+ip -s macsec show                          # ← pacchetti protetti/cifrati in salita
+mosquitto_sub ... -d                       # (MQTT) handshake con ciphersuite PSK-*
+wpa_cli -i wlan0 status                    # (wifi) key_mgmt=WPA-PSK / SAE, COMPLETED
+```
+
+---
+
+## 8 · ✅ Checklist & ❌ errori comuni
+
+**Prima di collegarti, controlla che…**
+
+- [ ] `openssl verify -CAfile ca.crt client.crt` restituisca **OK**;
+- [ ] i **modulus** di `client.crt` e `client.key` coincidano;
+- [ ] `client.key` abbia permessi **600**;
+- [ ] l'`identity` combaci con **CN/SAN** del certificato;
+- [ ] il certificato **non sia scaduto** (`-noout -enddate`);
+- [ ] cablato → `key_mgmt=IEEE8021X` + `ap_scan=0`; wifi → `key_mgmt=WPA-EAP` + SSID;
+- [ ] MQTT → broker su **8883** con `require_certificate true`;
+- [ ] **PSK**: stessa chiave (HEX per MQTT/MACsec, passphrase per Wi-Fi) **identica sui due lati**;
+- [ ] **PSK**: scelta consapevole — pochi nodi fidati, non flotte da gestire.
+
+**Da evitare:**
+
+- ❌ usare `--insecure` (MQTT) o omettere `ca_cert` (802.1X) in produzione → niente verifica del server;
+- ❌ chiave privata con permessi larghi o copiata su più dispositivi;
+- ❌ confondere `WPA-EAP` (wifi) con `IEEE8021X` (cablato);
+- ❌ `identity` diversa dal CN quando il RADIUS fa *identity matching*;
+- ❌ dimenticare la **CA intermedia** nella catena (`ca.pem` deve includerla);
+- ❌ **PSK**: passare la chiave in formato sbagliato (HEX vs ASCII) → handshake che fallisce;
+- ❌ **PSK**: riusare la stessa chiave su molti nodi senza un piano di rotazione.
+
+---
+
 # Formulario Dimensionamento Progetti — Sistemi e Reti
 
 ## Conversioni
