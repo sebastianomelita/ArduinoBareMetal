@@ -1746,3 +1746,198 @@ mosquitto_sub -h broker -p 8883 --cafile ca.crt --cert c.crt --key c.key -t 'can
 > 🔑 I sensori Zigbee non parlano MQTT: è il **gateway** a tradurre verso questo schema; i sensori IP (Wi-Fi/Ethernet) lo pubblicano direttamente. 💡 La sede si abbona a `cantiere/+/+/+/+/alarm` per furto/incendio in tempo reale.
 
 ---
+
+# Formulario Dimensionamento Progetti — Sistemi e Reti
+
+## Conversioni
+
+| Da | A | | Da | A |
+|---|---|---|---|---|
+| 1 Byte | 8 bit | | 1 Mbps | 0,125 MB/s |
+| 1 KB | 1.000 Byte | | 1 Gbps | 125 MB/s |
+| 1 MB | 1.000 KB | | 1 GB | 1.000 MB |
+| 1 TB | 1.000 GB | | 1 ora | 3.600 sec |
+
+---
+
+## Stima utenti
+
+> **Uc** = Utenti totali × Fc &nbsp;&nbsp;|&nbsp;&nbsp; **Up** = Uc × Fp &nbsp;&nbsp;|&nbsp;&nbsp; **RPS** = Up × Req/min ÷ 60
+
+**Fattore di contemporaneità (Fc)**
+
+| Tipo sistema | Fc |
+|---|---|
+| E-commerce | 5–10% |
+| Social network | 10–15% |
+| Aziendale interno | 20–30% |
+| Streaming video | 15–25% |
+| Gaming online | 20–40% |
+
+**Fattore di picco (Fp)**
+
+| Tipo sistema | Fp (picco) |
+|---|---|
+| E-commerce | 3–5× |
+| News/Media | 5–10× |
+| Aziendale | 1,5–2× |
+| Biglietteria | 10–20× |
+
+**Richieste per utente al minuto**
+
+| Tipo applicazione | Req/ut/min |
+|---|---|
+| Sito statico/blog | 2–5 |
+| E-commerce browsing | 10–20 |
+| E-commerce checkout | 30–50 |
+| Social network | 20–40 |
+| Dashboard real-time | 30–60 |
+
+---
+
+## Stima storage
+
+> **Storage** = (Dati iniziali) + (Crescita/giorno × Giorni retention) × 1,3
+
+**Dimensione dei dati**
+
+| Tipo dato | Dimensione |
+|---|---|
+| Record DB semplice | 0,5–2 KB |
+| Documento JSON | 2–10 KB |
+| Email senza allegati | 5–50 KB |
+| Pagina HTML | 50–200 KB |
+| PDF semplice | 100 KB – 2 MB |
+
+**Immagini**
+
+| Immagine | Risoluzione | Dimensione |
+|---|---|---|
+| Thumbnail | 150×150 | 5–15 KB |
+| Web bassa qualità | 800×600 | 50–100 KB |
+| Web alta qualità | 1920×1080 | 300–800 KB |
+| Foto alta ris. | 4000×3000 | 2–5 MB |
+
+**Audio**
+
+| Audio | Bitrate | MB/min |
+|---|---|---|
+| VoIP | 32 kbps | 0,24 |
+| Podcast | 128 kbps | 0,96 |
+| Musica streaming | 256 kbps | 1,92 |
+| Alta qualità | 320 kbps | 2,4 |
+
+**Video**
+
+| Video | Risoluzione | Bitrate | MB/min |
+|---|---|---|---|
+| SD | 480p | 2,5 Mbps | 19 |
+| HD | 720p | 5 Mbps | 37,5 |
+| Full HD | 1080p | 8 Mbps | 60 |
+| 4K | 2160p | 25 Mbps | 187,5 |
+
+---
+
+## Stima banda
+
+> **Banda (Mbps)** = Utenti × Banda/utente × Fattore contemporaneità
+
+| Contenuto | Banda/utente |
+|---|---|
+| Testo/HTML | 50–100 Kbps |
+| Immagini bassa ris. | 200–500 Kbps |
+| Immagini alta ris. | 1–2 Mbps |
+| Audio streaming | 128–320 Kbps |
+| Video SD (480p) | 1–2,5 Mbps |
+| Video HD (720p) | 3–5 Mbps |
+| Video Full HD (1080p) | 5–8 Mbps |
+| Video 4K | 15–25 Mbps |
+| Videoconferenza HD | 2–4 Mbps |
+| Gaming online | 1–3 Mbps |
+
+**Fattore di contemporaneità per tipo di traffico**
+
+| Tipo traffico | Fatt. contemp. |
+|---|---|
+| Streaming continuo | 0,9–1,0 |
+| Download file | 0,3–0,5 |
+| Navigazione web | 0,1–0,2 |
+| Traffico background | 0,05–0,1 |
+
+---
+
+## Server
+
+| Taglia | vCPU | RAM | Uso tipico |
+|---|---|---|---|
+| Micro | 1 | 1 GB | Test, microservizi |
+| Small | 2 | 4 GB | Siti piccoli, API leggere |
+| Medium | 4 | 8–16 GB | Applicazioni medie, DB piccoli |
+| Large | 8 | 32 GB | E-commerce, DB medi |
+| XLarge | 16+ | 64+ GB | Enterprise, DB grandi |
+
+---
+
+## Database
+
+> **Dim. DB** ≈ N. record × Dim. media record × 1,5 *(include indici)*
+
+| Tipo record | Dimensione |
+|---|---|
+| Anagrafica semplice | 200–500 byte |
+| Ordine e-commerce | 1–2 KB |
+| Documento + metadati | 2–5 KB |
+| Record con BLOB | 100 KB – 1 MB |
+
+---
+
+## Infrastruttura on-premise
+
+> **UPS (VA)** = Potenza (W) ÷ 0,85 &nbsp;&nbsp;|&nbsp;&nbsp; **BTU/ora** = Watt × 3,41
+
+**Consumo dei dispositivi**
+
+| Dispositivo | Consumo |
+|---|---|
+| Server entry-level | 200–400 W |
+| Server mid-range | 400–700 W |
+| Server high-end | 700–1500 W |
+| Switch 24–48 porte | 30–100 W |
+| Firewall | 50–200 W |
+
+**Altezza rack**
+
+| Dispositivo | Altezza rack |
+|---|---|
+| Server standard | 1U – 2U |
+| Server blade (chassis) | 6–10U |
+| Switch | 1U – 2U |
+| UPS piccolo/medio | 2–12U |
+
+---
+
+## Alta disponibilità
+
+| Livello | Uptime | Down/anno | Come ottenerlo |
+|---|---|---|---|
+| 99% | "due nove" | 3,65 giorni | Sistema singolo |
+| 99,9% | "tre nove" | 8,76 ore | Failover base |
+| 99,99% | "quattro nove" | 52,6 min | Multi-sito attivo-attivo |
+
+---
+
+## Formule rapide per l'esame
+
+| Parametro | Stima rapida |
+|---|---|
+| Utenti concorrenti | Utenti totali × 10% |
+| Utenti picco | Utenti concorrenti × 3 |
+| RPS | Utenti picco × 15 ÷ 60 |
+| Storage/utente | 10–100 MB (semplice), 1–10 GB (media) |
+| Banda/utente | 500 Kbps (web), 5 Mbps (video HD) |
+| Overhead DB (indici) | +40–50% |
+| Margine sicurezza | +30% |
+
+> **RTO** = tempo max per ripristinare il servizio  
+> **RPO** = quantità max di dati che posso perdere
+
