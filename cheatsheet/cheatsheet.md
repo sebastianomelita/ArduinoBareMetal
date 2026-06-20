@@ -1,5 +1,5 @@
 
-<img src="copertina_manuale.svg" alt="alt text" width="800">
+<img src="copertina_manuale.svg" alt="alt text" height="29.7cm">
 
 # 📚 Raccolta Cheat Sheet — Reti & Sistemi
 
