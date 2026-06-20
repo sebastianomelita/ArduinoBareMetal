@@ -136,34 +136,28 @@ R-SEDE(config-if)# no shutdown
 
 > Nota sulle maschere: l'uso del `/30` solo sulla dorsale è una forma *minima* di VLSM, prassi standard sui link punto-punto. Per un piano **rigorosamente senza VLSM** si userebbe `/24` anche per ogni tratta di tunnel.
 
-## Punto 4 — Autenticazione degli operatori (in sede e dai cantieri)
-
-Si imposta l'autenticazione **non come scelta unica fra protocolli**, ma fissando prima i **tre assi ortogonali** e poi scegliendo la tecnologia:
-
-1. **Chi/cosa** si autentica — *operatore* (utente umano), *nodo terminale* (tablet, sensore), *servizio/processo* (broker, applicativi BIM).
-2. **Dove** lo si fa — il livello dello stack: **L2** ammissione alla rete, **L3** canale/VPN, **L4/5** sessione sul trasporto, **L7** sessione applicativa.
-3. **Quanto forte** — debole/media/forte, agganciato ai livelli di garanzia **LoA/eIDAS**.
-
-Il principio guida è che **i livelli si sommano, non si escludono**: lo stesso certificato X.509 può vivere in punti diversi (EAP-TLS a L2, IPsec a L3, mTLS a L4/5). L'identità è centralizzata su **Active Directory/LDAP** in sede, con **RADIUS** come server AAA.
-
-<img src="../img/autenticazione_stack.svg" alt="Stack a quattro livelli dell'autenticazione" width="800">
-
 **Operatori — i quattro livelli applicati allo scenario**
 
-- **L2 · Ammissione alla rete (accesso alla *risorsa rete* presso il NAS).** L'operatore si autentica via **802.1X/EAP** verso **RADIUS**: porta **logica** dell'**AP Wi-Fi** (in cantiere e in sede, in **WPA2/3-Enterprise**) e porta **fisica** degli **switch** di sede. Con EAP-PEAP/EAP-TTLS la credenziale utente viaggia *dentro* il tunnel creato dal certificato del server; in alternativa EAP-TLS con certificato personale. La **VLAN** può essere assegnata dinamicamente da RADIUS (`Tunnel-Private-Group-Id`) in base al gruppo LDAP, con un unico SSID; dove l'802.1X non è praticabile, **captive portal** a L7 (username/password o voucher).
-- **L3 · Canale/VPN.** Gli **operatori remoti** (manutenzione, smartworking) accedono **home-to-site** con **VPN client** + credenziali AD **+ MFA** (OTP/TOTP), validate via RADIUS — *canale insicuro (Internet) ⇒ autenticazione forte*.
-- **L4/5 · Sessione sul trasporto.** L'accesso ai servizi web del repository avviene su **TLS**; la password dell'operatore viaggia solo **dentro** il canale cifrato (schema *server forte + client debole nel tunnel*, lo stesso di HTTPS+login e di SSH con password).
-- **L7 · Sessione applicativa e autorizzazione.** Accesso ai sistemi/repository BIM con **SSO**: **Kerberos/AD** per l'intranet, **OpenID Connect/OAuth 2.0** (token **JWT** *bearer*) per le app web; **MFA** (LoA3) sulle funzioni sensibili. Autorizzazioni per **gruppi** (minimo privilegio). L'amministrazione remota degli apparati usa **SSH** (host key → canale cifrato → chiave/credenziale del client).
+L'identità dell'operatore è **unica e centralizzata** su **Active Directory/LDAP** in sede, con **RADIUS** come server AAA: cambia solo *dove* e *quanto forte* la si verifica lungo lo stack.
 
-**Estensione agli altri nodi (richiamata anche nel Quesito II)** — coerente con la checklist "autenticazione" della dispensa:
+- **L2 · Ammissione alla rete (accesso alla *risorsa rete* presso il NAS).** Qui convivono **due profili di accesso** a seconda di *cosa* è il terminale:
 
-- **Nodi di smistamento** (gateway di cantiere ↔ concentratore VPN): **IPsec site-to-site** con autenticazione **di apparato** via **certificati X.509** e cifratura dei dati — collegamento "like wired" verso la sede.
-- **Nodi di pubblicazione/elaborazione** (tablet, gateway IoT ↔ **broker MQTT**): **mTLS** (X.509 bilaterale) sul canale IP, oppure **TLS server-side + credenziale del device**.
-- **Nodi sensori/attuatori** (lato radio): **PSK + MIC** — in LoRaWAN attivazione **OTAA** (AppKey 128 bit → chiavi di sessione `AppSKey/NwkSKey`). **Non è mTLS**: la mutua a certificati compare solo più in alto, sul canale IP edge↔backend.
+  - **(a) Dispositivo personale — BYOD (non aggiunto al dominio).** L'operatore si autentica via **802.1X/EAP** verso **RADIUS** sulla porta *logica* dell'**AP Wi-Fi** in **WPA2/3-Enterprise**. Poiché il device **non possiede un account macchina di dominio né un certificato personale**, si adotta **EAP-PEAP / EAP-TTLS**: la credenziale utente (**username + password** AD) viaggia *dentro* il **tunnel TLS** creato dal **certificato del server RADIUS**. È esattamente lo schema *server forte + credenziale debole nel tunnel* (un **PAP protetto da canale cifrato** trasportato a L2): la password non transita mai in chiaro su un canale insicuro. RADIUS valida la coppia verso AD/LDAP e può assegnare la **VLAN dinamica** (`Tunnel-Private-Group-Id`) in base al gruppo, con un unico SSID.
 
-> **Precisazioni da non sbagliare al compito.** *802.1X e mTLS non sono alternativi*: stanno a livelli diversi (L2 vs L4/5) e tipicamente **coesistono**. *Un certificato non è "mTLS"*: è una credenziale, mTLS è *come e dove* la si usa (mutua, a L4/5). *Per gli utenti* la norma forte è **token federati (OAuth/OIDC) + MFA**, non il certificato client (che compare solo a LoA4, con chiave su hardware sicuro). *PAP/password* solo su canale già cifrato o dentro un tunnel.
+  - **(b) Postazione fissa aziendale (PC aggiunto al dominio Windows).** L'utente esegue il **logon di dominio**, autenticato da **LDAP/Kerberos** verso il **Domain Controller** (AD). Sulla porta *fisica* dello **switch** di sede si applica **802.1X** con autenticazione **macchina + utente** (credenziali/certificato di dominio); l'accesso successivo alle risorse intranet sfrutta il **SSO Kerberos**. Il livello di fiducia è **più alto** del BYOD perché il PC è *gestito*, *nel dominio* e sottoposto a GPO.
 
-**Protocolli/servizi in gioco:** RADIUS/DIAMETER, LDAP/Kerberos, 802.1X/EAP(-TLS/-TTLS/-PEAP), IPsec, TLS/mTLS, OAuth 2.0/OIDC + JWT, SSH, MFA/TOTP, PKI per i certificati.
+  > Dove l'802.1X non è praticabile (ospiti, dispositivi legacy), ripiego su **captive portal** a L7 (username/password o voucher).
+
+- **L3 · Canale/VPN.** Gli **operatori remoti** (manutenzione, smartworking) accedono **home-to-site** con **VPN client** + credenziali AD **+ MFA** (OTP/TOTP), validate via RADIUS — *canale insicuro (Internet) ⇒ autenticazione forte obbligatoria*.
+
+- **L4/5 · Sessione sul trasporto — applicativi HTTPS.** L'accesso ai servizi web del repository/BIM avviene su **HTTPS**, cioè su **TLS *non mutuo* (solo server-side)**: solo il **server** espone il proprio **certificato** (autenticazione asimmetrica *singola*, sfida in chiaro) e il client lo convalida contro la **CA radice** preinstallata. *Dentro* il tunnel così stabilito l'operatore invia la propria **password** (schema **PAP nel tunnel** = *server forte + client debole*, lo stesso di HTTPS+login e di SSH con password). **Non si usa mTLS per gli utenti**: il certificato *client* comparirebbe solo a **LoA4** (chiave su hardware sicuro), sproporzionato per l'operatore comune.
+
+- **L7 · Sessione applicativa e autorizzazione.** Accesso ai sistemi/repository BIM con **SSO**: **Kerberos/AD** per l'intranet, **OpenID Connect/OAuth 2.0** (token **JWT** *bearer*) per le app web. Autorizzazioni per **gruppi** LDAP (minimo privilegio). L'amministrazione remota degli apparati usa **SSH** (host key → canale cifrato → chiave/credenziale del client).
+
+**Rinforzo con autenticazione a due fattori (2FA/MFA).** Tutto l'impianto sopra poggia, di base, su un **solo fattore** ("una cosa che sai", la password): da solo vale **LoA2 (eIDAS basso)**. Si aggiunge quindi un **secondo fattore** — un **OTP/TOTP** ("una cosa che hai", app authenticator o token) — che innalza l'autenticazione a **forte (LoA3 / eIDAS sostanziale)**. Il 2FA è **obbligatorio** sull'**accesso remoto/VPN** (L3, canale Internet) e sulle **funzioni sensibili** degli applicativi (L7), e raccomandato anche sul logon BYOD. Il secondo fattore viene sempre verificato **dentro un canale già cifrato** (il tunnel TLS/VPN), coerentemente col principio "PAP/password solo su canale sicuro".
+
+> **Sintesi del modello per gli operatori.** *Un'unica identità AD/LDAP*, verificata a più livelli che **si sommano**: **802.1X/EAP-PEAP** (BYOD) **oppure** **logon di dominio Kerberos/LDAP** (PC fisso) per **entrare in rete** (L2) → **TLS non mutuo con password-in-tunnel (PAP)** per gli **applicativi HTTPS** (L4/5–L7) → il tutto **rinforzato da 2FA OTP/TOTP** per passare da LoA2 a LoA3. Il certificato *client* (mTLS, LoA4) resta riservato ad **apparati e servizi**, non agli utenti.
+
 
 ---
 
