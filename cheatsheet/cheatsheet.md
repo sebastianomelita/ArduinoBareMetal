@@ -286,12 +286,12 @@ Ripetere per **ogni router** della rete con lo stesso process-id
 R(config)# router ospf 100                                   ← 0. abilitazione protocollo e settaggio process-id
 R(config-router)# router-id 1.1.1.1                          ← 1. Router-ID
 R(config-router)# passive-interface default                  ← 2. Blocca Hello su tutte le porte (solo aree aggregazione)
-R(config-router)# no passive-interface GigabitEthernet0/2    ←  riabilita solo le porte di transito (solo aree aggregazione)
+R(config-router)# no passive-interface GigabitEthernet0/2    ←   riabilita solo le porte di transito (solo aree aggregazione)
 R(config-router)# area 10 stub                               ← 3. Solo area stub (IR e ABR)
 R(config-router)# area 10 stub no-summary                    ← 4. Solo area totally stub (solo ABR)
 R(config-router)# area 10 range 192.168.1.0 255.255.255.0    ← 5. Summarization uscente (solo ABR e opzionale)
 R(config)#        ip route 0.0.0.0 0.0.0.0 <ip-ISP>          ← 6. Default route (solo ASBR)
-R(config-router)# default-information originate
+R(config-router)# default-information originate              ←   propagazione della default route dell'AS 
 ```
 **Test**
 ```
