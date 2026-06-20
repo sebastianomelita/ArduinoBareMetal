@@ -904,13 +904,13 @@ Router(config)# ip inspect name CBAC-OUT icmp       ! ping/traceroute di ritorno
 ! Router(config)# ip inspect name CBAC-OUT ftp
 
 ! Passo 2 — ACL esterna (entrante): default-DENY esplicito, nessun permit di ritorno scritto a mano
-Router(config)# ip access-list extended ACL_ESTERNA
+Router(config)# ip access-list extended ACL_INTERFACCIA
 Router(config-ext-nacl)# deny ip any any log         ! ← CBAC inserisce i ritorni dinamicamente SOPRA questa riga
 Router(config-ext-nacl)# exit
 
 ! Passo 3 — applica sull'interfaccia verso la WAN
 Router(config)# interface s0/0/0
-Router(config-if)# ip access-group ACL_ESTERNA in    ! blocca tutto l'ingresso non sollecitato
+Router(config-if)# ip access-group ACL_INTERFACCIA in    ! blocca tutto l'ingresso non sollecitato
 Router(config-if)# ip inspect CBAC-OUT out           ! ispeziona le sessioni uscenti e apre i ritorni
 ```
 
