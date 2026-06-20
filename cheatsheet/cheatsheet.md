@@ -1564,3 +1564,56 @@ HKLM\Software\Policies\Google\Chrome\ExtensionInstallBlocklist   1 = "*"
 HKLM\Software\Policies\Google\Chrome\ExtensionInstallAllowlist   1 = "<id_approvato>"
 ```
 > 🔑 Le GPO consumano **DNS + Kerberos + LDAP + SYSVOL**: senza quell'infrastruttura non vengono consegnate. 💡 Il *chi/cosa/dove* alle GPO (per OU/ruolo), il *quando* alla rete (le GPO si rinfrescano ogni 90±30 min).
+
+---
+
+## MQTT / Mosquitto — broker, mTLS, ACL e bridge
+> *Collocazione:* **Parte I §1.6 (IoT)**. Concretizza topic/payload e la federazione dei sensori (Wi-Fi/Zigbee/Ethernet) verso un broker comune.
+
+**Topic** (albero unico per tutti i trasporti):
+```
+cantiere/{site}/{zona}/{tipo}/{device}/{canale}     # canale: alarm | state | cmd | config
+# es.  cantiere/1/zona-A/fire/SMK-0007/alarm
+```
+**Payload** JSON comune: `ts, site, zone, device_id, type, event, severity, value, transport, gateway`.
+**Affidabilità:** allarmi **QoS 1, non retained**; `state` **retained**; **LWT** su `.../state` con `event:"offline"` per i sensori scollegati.
+
+**Broker con mTLS + ACL per topic:**
+```
+# /etc/mosquitto/mosquitto.conf
+listener 8883
+cafile   /etc/mosquitto/certs/ca.crt
+certfile /etc/mosquitto/certs/server.crt
+keyfile  /etc/mosquitto/certs/server.key
+require_certificate  true          # mTLS: il client DEVE presentare un certificato
+use_identity_as_username true      # l'identità = CN del certificato
+acl_file /etc/mosquitto/acl
+```
+```
+# /etc/mosquitto/acl
+user gw-cantiere-1
+topic write cantiere/1/#
+user sede-allarmi
+topic read  cantiere/+/+/+/+/alarm
+```
+
+**Bridge edge → sede (su mTLS):**
+```
+# /etc/mosquitto/conf.d/bridge.conf  (broker di cantiere)
+connection bridge-sede
+address broker.sede.local:8883
+topic cantiere/1/# out 1                  # inoltra (out) i topic del cantiere, QoS 1
+bridge_cafile  /etc/mosquitto/certs/ca.crt
+bridge_certfile /etc/mosquitto/certs/gw.crt
+bridge_keyfile  /etc/mosquitto/certs/gw.key
+```
+
+**Test:**
+```
+mosquitto_pub -h broker -p 8883 --cafile ca.crt --cert gw.crt --key gw.key \
+  -t cantiere/1/zona-A/fire/SMK-0007/alarm -q 1 -m '{"event":"alarm","type":"fire"}'
+mosquitto_sub -h broker -p 8883 --cafile ca.crt --cert c.crt --key c.key -t 'cantiere/+/+/+/+/alarm'
+```
+> 🔑 I sensori Zigbee non parlano MQTT: è il **gateway** a tradurre verso questo schema; i sensori IP (Wi-Fi/Ethernet) lo pubblicano direttamente. 💡 La sede si abbona a `cantiere/+/+/+/+/alarm` per furto/incendio in tempo reale.
+
+---
