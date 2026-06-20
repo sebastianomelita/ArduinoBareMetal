@@ -658,7 +658,7 @@ node# crm_mon -1
 ## IP SLA — failover dual-WAN (Cisco IOS)
 > **Def./scopo:** sonda attiva che misura la **raggiungibilità** (e qualità) di un percorso — ICMP/UDP/TCP echo verso un target — e, tramite un `track`, condiziona rotte e azioni. **Scopo: failover automatico del *link* WAN** (la rete, non i dati).
 
-<img src="../img/ip_sla_failover.svg" alt="IP SLA failover dual-WAN" width="640">
+<img src="img/ip_sla_failover.svg" alt="IP SLA failover dual-WAN" width="640">
 
 ```
 ip sla 1
