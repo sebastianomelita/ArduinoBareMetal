@@ -1030,11 +1030,11 @@ La logica è inversa: **permetto prima la subnet locale**, poi nego il resto del
 ```cisco
 ! Esempio su Gi0/0 (Subnet A, 10.0.1.0/24)
 Router(config)# ip access-list extended ACL-SUBNET-A-DA
-Router(config-ext-nacl)# permit ip 10.0.1.0 0.0.0.255  any            ! sorgente locale legittima → esce
-Router(config-ext-nacl)# deny   ip 10.0.0.0 0.0.255.255 any           ! anti-spoofing: ogni altra sorgente interna = spoof (silenzioso)
-Router(config-ext-nacl)# permit ip any any                            ! ← DEFAULT ALLOW
+Router(config-ext-nacl)# permit ip 10.0.1.0 0.0.0.255  any       ! sorgente locale legittima → esce
+Router(config-ext-nacl)# deny   ip 10.0.0.0 0.0.255.255 any      ! anti-spoofing: ogni altra sorgente interna = spoof (silenzioso)
+Router(config-ext-nacl)# permit ip any any                       ! ← DEFAULT ALLOW
 Router(config-ext-nacl)# exit
-Router(config)# interface GigabitEthernet0/0                          ! LAN (inside)
+Router(config)# interface GigabitEthernet0/0                     ! LAN (inside)
 Router(config-if)# ip access-group ACL-SUBNET-A-DA in
 ```
 
