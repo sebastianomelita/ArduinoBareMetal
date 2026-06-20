@@ -286,6 +286,7 @@ R(config-router)# default-information originate
 
 > Passi 3–6 opzionali. `area range` **solo sugli ABR** (mai sulla backbone).
 > `stub` va su ABR **e** su tutti gli IR dell'area.
+> passive-interface default va solo nelle aree di aggregazione degli utenti
 
 **Test**
 ```
