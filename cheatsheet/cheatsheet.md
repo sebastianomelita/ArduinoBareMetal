@@ -1568,7 +1568,6 @@ HKLM\Software\Policies\Google\Chrome\ExtensionInstallAllowlist   1 = "<id_approv
 ---
 
 # MQTT / Mosquitto — broker, mTLS, ACL e bridge
-> *Collocazione:* **Parte I §1.6 (IoT)**. Concretizza topic/payload e la federazione dei sensori (Wi-Fi/Zigbee/Ethernet) verso un broker comune.
 
 > **Architettura:** broker **edge** sul cantiere (allarmi locali real-time, regge la caduta del link) **+** broker **centrale** in sede (aggrega i cantieri, log storico), uniti da un **bridge** mTLS che inoltra in `out` a QoS 1 con accodamento (store-and-forward); `in` per i `…/cmd` che scendono.
 
