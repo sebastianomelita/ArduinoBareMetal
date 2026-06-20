@@ -412,12 +412,12 @@ sudo iptables -L FORWARD -v
 
 # 10 ·continuità di servizio delle applicazioni
 
-## 10 · VRRP — keepalived (IP virtuale in HA)
+## 10.1 · VRRP — keepalived (IP virtuale in HA)
 
 VRRP elegge un **MASTER** che detiene l'IP virtuale; il **BACKUP** subentra se il master cade.
 I due nodi hanno config **identica** tranne `state` e `priority`.
 
-### 10.1 Template `/etc/keepalived/keepalived.conf` (un solo file, due valori da cambiare)
+### 10.1.1 Template `/etc/keepalived/keepalived.conf` (un solo file, due valori da cambiare)
 
 ```
 vrrp_script chk_haproxy {
@@ -442,7 +442,7 @@ vrrp_instance VI_1 {
 }
 ```
 
-### 10.2 Parametri per nodo
+### 10.1.2 Parametri per nodo
 
 <img src="../img/vrrp-generico.svg" alt="alt text" width="600">
 
@@ -515,9 +515,9 @@ echo "show stat" | sudo socat stdio /var/run/haproxy/admin.sock
 
 ---
 
-# 12 · Continuità di servizio dei dischi
+# 11 · Continuità di servizio dei dischi
 
-## 12.1 RAID — Mirror tra dischi dello stesso nodo
+## 11.1 RAID — Mirror tra dischi dello stesso nodo
 
 > La copia avviene a livello fisico
 > Ridondanza **locale** dei dischi di un nodo: tiene in piedi lo storage al guasto di uno (o due) dischi. **Non è un backup** (non copre cancellazioni, ransomware, doppio guasto oltre soglia) e **non sostituisce** la regola 3-2-1 né DRBD: si **somma** ad essi.
@@ -570,7 +570,7 @@ echo check > /sys/block/md0/md/sync_action           # scrubbing on-demand (erro
 ---
 
 
-## 12.2 · DRBD — Mirror tra dischi di nodi diversi nella stessa LAN
+## 11.2 · DRBD — Mirror tra dischi di nodi diversi nella stessa LAN
 
 > La copia avviene a livello di trasporto in rete e poi a livello di blocco sul disco.
 > 
@@ -655,7 +655,7 @@ node# crm_mon -1
 ```
 ---
 
-## 12.3. IP SLA — failover dual-WAN (Cisco IOS) - Mirror tra dischi di nodi diversi in Internet
+## 11.3. IP SLA — failover dual-WAN (Cisco IOS) - Mirror tra dischi di nodi diversi in Internet
 
 ```
 ip sla 1
@@ -678,9 +678,9 @@ ip route 0.0.0.0 0.0.0.0 <gw-backup> 10                  ! AD 10 = flottante: su
 
 ---
 
-# 14 . Filtraggio con ACL
+# 12 . Filtraggio con ACL
 
-## 14.1· ACL — premessa e contesto
+## 12.1· ACL — premessa e contesto
 
 > Adattato al piano di indirizzamento `10.0.0.0/16` e alle **due politiche di default** in uso:
 > - **LAN → default-allow**: si elencano i `deny` (eccezioni) e si chiude con `permit ip any any`.
@@ -698,7 +698,7 @@ Ogni subnet entra nel router su una porta dedicata; è su quell'interfaccia, in 
 
 ---
 
-## 14.2 · ACL — definizione e tipi
+## 12.2 · ACL — definizione e tipi
 
 Una **ACL** è una lista ordinata di **ACE**. Il router le esamina in sequenza: alla prima
 corrispondenza esegue l'azione e si ferma. Se nessuna corrisponde → **deny all** implicito.
@@ -750,7 +750,7 @@ Router# show ip access-lists NOME      ! contatori per ACE (0 match su un permit
 
 ---
 
-## 14.3 Matrice degli accessi + ACL per interfaccia (modello)
+## 12.3 Matrice degli accessi + ACL per interfaccia (modello)
 
 **Matrice degli accessi** (✓ = ammesso con le porte indicate · ✗ = negato · — = nessun flusso):
 
@@ -821,9 +821,9 @@ interface Tunnel0
 > 🔑 I `permit` con **sorgente** ristretta alle reti remote attese fanno da **anti-spoofing** (il `deny ip any any` finale scarta tutto il resto). `ip inspect … in` è la *direzione d'ispezione*, **non** un'ACL `out`. `tun0`/`Tunnel0` (OpenVPN/TUN, L3) si tratta **come la WAN**: non è fidata solo perché è una VPN. **Test:** `show ip inspect sessions`, `show ip access-lists ACL-TUN0`.
 
 
-## 15 · ACL firewall — scenari tipici
+## 12.4 · ACL firewall — scenari tipici
 
-**15.1 — Whitelist a un solo host (standard) · default-DENY esplicito.** Caso "isola chiusa" come la Subnet B: si enumera ciò che passa, il resto cade.
+### **12.4.1 — Whitelist a un solo host (standard) · default-DENY esplicito.** Caso "isola chiusa" come la Subnet B: si enumera ciò che passa, il resto cade.
 
 ```cisco
 Router(config)# access-list 1 permit host 10.0.3.10
@@ -832,7 +832,7 @@ Router(config)# interface GigabitEthernet0/2
 Router(config-if)# ip access-group 1 in
 ```
 
-**15.2 — Negare un host e permettere il resto (standard) · default-ALLOW.**
+### **12.4.2 — Negare un host e permettere il resto (standard) · default-ALLOW.**
 
 ```cisco
 Router(config)# access-list 10 deny   host 10.0.1.66
@@ -841,7 +841,7 @@ Router(config)# interface GigabitEthernet0/0
 Router(config-if)# ip access-group 10 in
 ```
 
-**15.3 — Flusso singolo subnet → host (estesa) · default-DENY esplicito.** Es. Subnet B può raggiungere solo il file server.
+### **12.4.3 — Flusso singolo subnet → host (estesa) · default-DENY esplicito.** Es. Subnet B può raggiungere solo il file server.
 
 ```cisco
 Router(config)# ip access-list extended ACL-B-WHITELIST
@@ -852,7 +852,7 @@ Router(config)# interface GigabitEthernet0/1
 Router(config-if)# ip access-group ACL-B-WHITELIST in
 ```
 
-**15.4 — Negare Telnet (23) e permettere il resto · default-ALLOW.**
+### **12.4.4 — Negare Telnet (23) e permettere il resto · default-ALLOW.**
 
 ```cisco
 Router(config)# ip access-list extended ACL-NO-TELNET
@@ -863,7 +863,7 @@ Router(config)# interface GigabitEthernet0/0
 Router(config-if)# ip access-group ACL-NO-TELNET in
 ```
 
-**15.5 — Permettere solo DNS (53) verso il resolver · default-DENY esplicito.**
+**12.4.5 — Permettere solo DNS (53) verso il resolver · default-DENY esplicito.**
 
 ```cisco
 Router(config)# ip access-list extended ACL-SOLO-DNS
@@ -875,7 +875,7 @@ Router(config)# interface GigabitEthernet0/3
 Router(config-if)# ip access-group ACL-SOLO-DNS in
 ```
 
-**15.6 — Connessioni monodirezionali con `established` (stateless) · default-DENY esplicito.**
+**12.4.6 — Connessioni monodirezionali con `established` (stateless) · default-DENY esplicito.**
 
 ```cisco
 Router(config)# ip access-list extended ACL-RITORNO
@@ -889,7 +889,16 @@ Router(config-if)# ip access-group ACL-RITORNO in
 > `established` seleziona i pacchetti con flag ACK/RST (esclude i SYN puri). È **stateless**:
 > un attaccante può falsificare i flag → preferire le ACL stateful: CBAC (§15) o ZBF (§16).
 
-## 16 · ACL stateful con CBAC (Context-Based Access Control)
+---
+
+## 12.5 · ACL stateful
+
+* Definizione: È un filtro che tiene traccia del contesto e dello stato delle connessioni di rete.
+* Funzionamento: Memorizza le sessioni avviate dall'interno e approva automaticamente il traffico di ritorno, senza bisogno di configurare regole manuali in ingresso.
+* Tecnologie Cisco: Si implementa principalmente tramite Reflexive ACL, CBAC o Zone-Based Policy Firewalls.
+* Scopo: Blocca i tentativi di accesso non autorizzati dall'esterno, garantendo al contempo una navigazione sicura per gli utenti interni.
+
+### 12.5.1 · ACL stateful con CBAC (Context-Based Access Control)
 
 > Versione moderna che **sostituisce le ACL riflessive**. CBAC (`ip inspect`, a volte chiamato *Classic / legacy IOS Firewall*) ispeziona le sessioni in uscita e **apre da solo i ritorni**, tenendo una vera tabella di stato. Capisce i protocolli a livello applicativo (FTP, SIP, RTSP, TFTP…), che aprono porte dinamiche. 
 
@@ -917,7 +926,7 @@ Router(config-if)# ip inspect CBAC-OUT out           ! ispeziona le sessioni usc
 > Sul lato LAN si tiene la solita ACL inbound **default-allow** (Parte C): qui **non serve più** la lista interna con i `reflect`. La differenza pratica con le ACL riflessive classiche è tutta lì: **una ACL invece di due**, e nessuna ACE inversa da gestire.
 
 
-## 17 · ACL stateful con ZBF (Zone-Based Firewall)
+### 12.5.2 · ACL stateful con ZBF (Zone-Based Firewall)
 
 > Il gradino **più moderno**, quello che Cisco raccomanda per i progetti nuovi. Stesse capacità stateful del CBAC (§15), ma organizzate per **zone** e **zone-pair** invece che per interfaccia. Il grande vantaggio concettuale: il **default-deny è strutturale**, non una riga da ricordare — due interfacce in zone diverse non si parlano *finché non lo dici esplicitamente* con una zone-pair.
 
@@ -1002,10 +1011,11 @@ Router# show policy-map type inspect zone-pair sessions ! sessioni stateful atti
 
 > Quando usare quale: **CBAC** se vuoi il minimo indispensabile su un router con due interfacce e ti basta il drop-in delle riflessive; **ZBF** appena le zone diventano tre o più (LAN/DMZ/WAN, o più VLAN), perché il default-deny per zona evita di rincorrere `deny` espliciti su ogni lista.
 
+---
 
-## 18 · ACL anti-spoofing — WAN e LAN 
+## 12.6 · ACL anti-spoofing — WAN e LAN 
 
-### 18.1 WAN in ingresso — **default-deny** (= Caso 5)
+### 12.6.1 WAN in ingresso — **default-deny** (= Caso 5)
 
 ```cisco
 ! Blocca le sorgenti impossibili (con log), poi nega tutto il resto.
@@ -1025,7 +1035,7 @@ Router(config-if)# ip access-group ACL-WAN in
 > Se si espongono servizi in DMZ (Caso 5b), i `permit` selettivi (es. `permit tcp any host 10.0.5.50 eq 443`)
 > vanno inseriti **prima** del `deny ip any any` finale. La WAN resta comunque default-deny.
 
-### 18.2 LAN in ingresso — **default-allow** con anti-spoofing silenzioso (= Parte C)
+### 12.6.2 LAN in ingresso — **default-allow** con anti-spoofing silenzioso (= Parte C)
 
 Sul nostro piano `10.0.0.0/16` non si può negare `10.0.0.0/8` in blocco (bloccherebbe la LAN stessa).
 La logica è inversa: **permetto prima la subnet locale**, poi nego il resto dell'intranet, poi default-allow.
@@ -1053,9 +1063,9 @@ Regola pratica: **default-deny ovunque ci sia un confine di fiducia** (WAN, tunn
 ---
 
 
-## 19 · Tunnel VPN — L3-su-L3 e L2-su-L3
+# 13 · Tunnel VPN — L3-su-L3 e L2-su-L3
 
-### 19.1 Anatomia comune (vale per TUTTI i tunnel)
+## 13.1 Anatomia comune (vale per TUTTI i tunnel)
 
 Un tunnel è un **link punto-punto virtuale** su rete pubblica. Tre regole valgono **sempre**:
 
@@ -1090,7 +1100,7 @@ Un tunnel è un **link punto-punto virtuale** su rete pubblica. Tre regole valgo
 
 > Nomenclatura Linux TUN/TAP: **`tun0`** = L3 (instradato, subnet diverse) · **`tap0`** = L2 (bridgeato in `br0`, stessa VLAN). Su Cisco IOS gli equivalenti sono `Tunnel0` (GRE) e l'`xconnect` L2TPv3.
 
-### 19.2 L3-su-L3 — GRE (Cisco IOS)
+## 13.2 L3-su-L3 — GRE (Cisco IOS)
 
 ```cisco
 ! Template (un capo — l'altro è speculare, §18.1)
@@ -1129,7 +1139,7 @@ R0# show ip ospf neighbor               ! peer FULL
 R0# ping 10.0.11.1 source 10.0.11.2     ! connettività end-to-end
 ```
 
-### 19.3 L2-su-L3 — L2TPv3 (Cisco IOS, nativo)
+## 13.3 L2-su-L3 — L2TPv3 (Cisco IOS, nativo)
 
 Crea un **pseudowire** che trasporta i frame Ethernet (trunk 802.1q incluso) senza bridge software.
 
@@ -1150,7 +1160,7 @@ R0(config-if)# xconnect <IP-PUB-PEER> 100 pw-class PW-PEER
 
 **Test** (da privileged EXEC): `R0# show l2tun session all` · `R0# show xconnect all` · `R0# show mac address-table`
 
-### 19.4 L2-su-L3 — variante Linux (GRETAP / OpenVPN TAP)
+## 13.4 L2-su-L3 — variante Linux (GRETAP / OpenVPN TAP)
 
 Il **bridge è identico** per le due tecnologie: cambia **solo l'interfaccia tunnel**. I comandi girano sul gateway Linux come root.
 
@@ -1181,7 +1191,7 @@ root@gw:~# ip link set tap0 up
 
 ---
 
-## IPsec-su-GRE — cifratura del tunnel (Cisco IOS, IKEv2)
+## 13.5 IPsec-su-GRE — cifratura del tunnel (Cisco IOS, IKEv2)
 
 ```
 ! 1) IKEv2 — fase 1 (autenticazione + scambio chiavi)
@@ -1229,7 +1239,7 @@ interface Tunnel1
 
 ---
 
-## 20 · 802.1X — autenticazione sulle porte access
+# 14 · 802.1X — autenticazione sulle porte access
 
 802.1X blocca la porta switch (`unauthorized`) finché l'utente non si autentica via RADIUS.
 
@@ -1271,7 +1281,7 @@ mario  Cleartext-Password := "password123"
 > La `secret` di `clients.conf` **deve coincidere** con `key` del comando `radius-server host`:
 > un mismatch fa fallire silenziosamente tutte le autenticazioni.
 
-### 20.1 Assegnazione dinamica della VLAN via RADIUS
+## 14.1 Assegnazione dinamica della VLAN via RADIUS
 
 Nell'`Access-Accept` il RADIUS può dire al NAS **in quale VLAN** mettere l'utente (RFC 2868):
 
@@ -1298,7 +1308,7 @@ DEFAULT Auth-Type := Reject
 
 **Test**: `Switch# show dot1x all` · `Switch# show dot1x interface fa0/1` · `root@radius:~# tail -f /var/log/freeradius/radius.log`
 
-## 21 · Test end-to-end — comandi utili (da privileged EXEC)
+### 14.1.1 · Test end-to-end — comandi utili (da privileged EXEC)
 
 ```cisco
 R0# ping <ip>
@@ -1317,8 +1327,7 @@ R0# show running-config | section nat
 
 ---
 
-
-## hostapd — Wi-Fi WPA3 + Client Isolation (Linux AP)
+## 14.2 hostapd — Wi-Fi WPA3 + Client Isolation (Linux AP)
 
 ```
 # /etc/hostapd/hostapd.conf
@@ -1340,11 +1349,12 @@ ap_isolate=1              # Client Isolation: i client NON si parlano tra loro
 > 🔑 `ap_isolate=1` blocca il **movimento laterale** tra dispositivi wireless. Su WLC/AP Cisco l'equivalente è **P2P Blocking Action = Drop**. **Test:** `systemctl status hostapd`, `iw dev wlan0 station dump`.
 
 ---
-# Parte III · Backup & Ripristino
+
+# 15 · Backup & Ripristino
 
 > Backup/restore di **dati** e **VM** con `rsync`, **NFS** e **Samba**.
 
-## 1 · Concetti chiave
+## 15.1 · Concetti chiave
 
 | Termine | Significato |
 |---|---|
@@ -1376,7 +1386,7 @@ Prevedi sempre il **backup del backup** (NAS gemello + cloud).
 
 *Fig. 2 — Lo standard minimo per sopravvivere anche al caso peggiore; il "backup del backup" è il modo pratico di coprire la copia off-site.*
 
-## 2 · Chiavi SSH (autenticazione senza password)
+## 15.2 · Chiavi SSH (autenticazione senza password)
 
 ```bash
 ssh-keygen -t rsa                    # sul sistema che AVRÀ l'iniziativa
@@ -1386,7 +1396,7 @@ ssh user@host_remoto                 # verifica
 
 > 🔑 La chiave **privata** resta su chi lancia il comando; la **pubblica** va sull'host a cui ci si connette.
 
-## 3 · `rsync` — i flag che servono
+## 15.3 · `rsync` — i flag che servono
 
 ```bash
 rsync -av --delete  user@host:/sorgente/  /destinazione/
@@ -1404,7 +1414,7 @@ rsync -av --delete  user@host:/sorgente/  /destinazione/
 > ⚠️ `--delete` rende la dest. identica alla sorgente: per il versioning affidati agli **snapshot** del NAS.
 > ⚠️ La **`/` finale**: `sorgente/` copia il *contenuto*, `sorgente` copia la *cartella*.
 
-## 4 · BACKUP
+## 15.4 · BACKUP
 
 ```bash
 # 4a · PUSH rsync (gira sul server sorgente)
@@ -1424,7 +1434,7 @@ rsync -av --delete /path/dati/locali/ /mnt/backup/
 sudo umount /mnt/backup
 ```
 
-## 5 · RESTORE
+## 15.5 · RESTORE
 
 > 🔁 È un backup **al contrario**: la sorgente diventa il backup, la destinazione il sistema da recuperare.
 > 🔑 In restore usa **sempre `--numeric-ids`**.
@@ -1454,7 +1464,7 @@ sudo umount /mnt/backup
 > ℹ️ **NFSv4**: per ripristinare UID/GID, sul NAS abilita *"NFSv3 ownership model for NFSv4"* e
 > mappa **RootUser → root**, **RootGroup → wheel/root**.
 
-## 6 · Pianificazione con `cron`
+## 15.6 · Pianificazione con `cron`
 
 ```bash
 chmod +x /path/to/script.sh
@@ -1470,7 +1480,7 @@ crontab -e
 
 > 💡 **Granularità multipla** (oraria/giornaliera/settimanale/mensile) in cartelle separate.
 
-## 7 · Setup lato server
+## 15.7 · Setup lato server
 
 ```bash
 # NFS — /etc/exports
@@ -1492,7 +1502,7 @@ sudo systemctl restart smbd && sudo systemctl restart nmbd
 ---
 
 
-## LUKS — cifratura dei dati a riposo (Linux)
+## 15.8 LUKS — cifratura dei dati a riposo (Linux)
 
 ```
 # Formattazione cifrata (AES-256 in modalità XTS)
@@ -1512,7 +1522,7 @@ cryptsetup luksHeaderBackup /dev/sdb --header-backup-file luks-hdr.img
 
 ---
 
-## 8 · ✅ Checklist
+## 15.9 · ✅ Checklist
 
 - [ ] Obiettivo: recupero **dati** o **servizi/VM**?
 - [ ] Strategia: **PULL** (NAS centralizza) o **PUSH** (server autonomi)?
@@ -1526,14 +1536,13 @@ cryptsetup luksHeaderBackup /dev/sdb --header-backup-file luks-hdr.img
 
 ---
 
----
 
-# Parte IV · Wi-Fi Mesh tri-band — pianificazione canali (EU)
+# 16 · Wi-Fi Mesh tri-band — pianificazione canali (EU)
 
 > Assegnare canali ad access e backhaul senza interferenza co-canale (CCI), con
 > **riuso cellulare a 4 colori (N=4)** in banda 5 GHz.
 
-## 1 · Principio guida
+## 16.1 · Principio guida
 
 > **Vicini nello spazio → frequenze lontane. Lontani → frequenze anche vicine** (la propagazione
 > li disaccoppia, il riuso diventa possibile).
@@ -1541,7 +1550,7 @@ cryptsetup luksHeaderBackup /dev/sdb --header-backup-file luks-hdr.img
 Non mettere mai sulla stessa radio **access** (client) e **backhaul** (nodi vicini): il throughput
 si dimezza a ogni hop (CSMA/CA serializza). Da qui la scelta tri-band.
 
-## 2 · Le 3 radio (apparato tri-band)
+## 16.2 · Le 3 radio (apparato tri-band)
 
 | Radio | Banda | Ruolo | Per chi |
 |-------|-------|-------|---------|
@@ -1551,7 +1560,7 @@ si dimezza a ogni hop (CSMA/CA serializza). Da qui la scelta tri-band.
 
 > 💡 Tratte P2P critiche (es. mastio→gateway): radio **60 GHz** direttiva (Gbps, LOS richiesta).
 
-## 3 · Canali ACCESS — i 4 "colori" (riuso N=4)
+## 16.3 · Canali ACCESS — i 4 "colori" (riuso N=4)
 
 `ch X @ 80 MHz` = canale 80 MHz da X → occupa X, X+4, X+8, X+12.
 
@@ -1567,14 +1576,14 @@ A 40 MHz: A=36/40, B=52/56, C=100/104, D=116/120.
 
 **2.4 GHz**: solo **1, 6, 11** non sovrapposti → riuso a **3 colori**.
 
-## 4 · Canali BACKHAUL — sempre fuori dai 4 colori
+## 16.4 · Canali BACKHAUL — sempre fuori dai 4 colori
 
 | Canale | Slot | Banda | DFS | Perché |
 |--------|------|-------|-----|--------|
 | `ch 132 @ 80` | 132·136·140·144 | U-NII-2C | sì | lontano dall'access, stabile su tratte fisse |
 | `ch 149 @ 80` | 149·153·157·161 | U-NII-3 | **no** | **max EIRP outdoor (30 dBm)**, link lunghi |
 
-## 5 · Procedura passo-passo
+## 16.5 · Procedura passo-passo
 
 1. **Disegna la griglia** degli AP (chi è vicino a chi).
 2. **Colora le celle access** A/B/C/D: adiacenti = colori diversi.
@@ -1589,7 +1598,7 @@ T1 → 36/40 (A)   T2 → 52/56 (B)   T3 → 100/104 (C)   T4 → 116/120 (D)
 M  → 36/40 (A, riusato: lontano da T1, circondato da B/C/D)
 ```
 
-## 6 · Backhaul ad albero — regola dell'**alternanza**
+## 16.6 · Backhaul ad albero — regola dell'**alternanza**
 
 Le due radio mesh di uno stesso concentratore stanno su canali **opposti**:
 
@@ -1604,7 +1613,7 @@ Le due radio mesh di uno stesso concentratore stanno su canali **opposti**:
 ✅ Le trasmissioni concorrenti avvengono **in parallelo su 2 canali**. Senza alternanza
 finirebbero in CSMA/CA sullo stesso canale → throughput dimezzato.
 
-## 7 · EIRP (EU, indicativo)
+## 16.7 · EIRP (EU, indicativo)
 
 | Banda | EIRP tipico |
 |-------|-------------|
@@ -1612,7 +1621,7 @@ finirebbero in CSMA/CA sullo stesso canale → throughput dimezzato.
 | 5 GHz DFS (U-NII-2) | ~23 dBm indoor, ~30 dBm outdoor |
 | 5 GHz U-NII-3 (149+) | massima outdoor consentita |
 
-## 8 · ✅ Checklist & ❌ errori comuni
+## 16.8 · ✅ Checklist & ❌ errori comuni
 
 **Controlla che…**
 - [ ] access e backhaul su **radio fisiche diverse**;
@@ -1629,8 +1638,9 @@ finirebbero in CSMA/CA sullo stesso canale → throughput dimezzato.
 - ❌ saltare il site survey (Ekahau / NetSpot).
 
 ---
+# 17 Definizione dei servizi
 
-## GPO — Group Policy Objects (mini-sezione)
+## 17.1 GPO — Group Policy Objects (mini-sezione)
 
 **Struttura (due metà, stesso GUID):**
 
@@ -1667,7 +1677,7 @@ HKLM\Software\Policies\Google\Chrome\ExtensionInstallAllowlist   1 = "<id_approv
 
 ---
 
-# MQTT / Mosquitto — broker, mTLS, ACL e bridge
+## 17.2 MQTT / Mosquitto — broker, mTLS, ACL e bridge
 
 > **Architettura:** broker **edge** sul cantiere (allarmi locali real-time, regge la caduta del link) **+** broker **centrale** in sede (aggrega i cantieri, log storico), uniti da un **bridge** mTLS che inoltra in `out` a QoS 1 con accodamento (store-and-forward); `in` per i `…/cmd` che scendono.
 
