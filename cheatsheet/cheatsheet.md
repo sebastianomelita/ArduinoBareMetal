@@ -802,7 +802,7 @@ iptables -A FORWARD -i tun0 -j DROP                                         # �
 
 **Lo stesso in Cisco IOS con CBAC** (`Tunnel0` trattata come WAN):
 ```
-! Regola di ispezione → apre i ritorni delle sessioni in arrivo dalla VPN
+! Definizione della regola di ispezione CBAC-TUN → apre i ritorni delle sessioni in arrivo dalla VPN
 ip inspect name CBAC-TUN tcp
 ip inspect name CBAC-TUN udp
 
