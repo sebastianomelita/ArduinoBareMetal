@@ -226,6 +226,7 @@ SW# show interfaces fa0/1 switchport          ← mostra mode e VLAN assegnata
 ## 4 · Porte di trunk
 
 ```
+SW(config)# interface fa0/24                  (oppure: interface range fa0/23-24)
 SW(config-if)# switchport mode trunk
 SW(config-if)# switchport trunk native vlan 99
 SW(config-if)# switchport trunk allowed vlan 10,20
