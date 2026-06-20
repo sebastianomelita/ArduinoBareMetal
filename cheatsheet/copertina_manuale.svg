@@ -1,0 +1,88 @@
+<svg viewBox="0 0 600 850" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6f9fc"/>
+      <stop offset="1" stop-color="#eaf0f6"/>
+    </linearGradient>
+    <linearGradient id="band" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#161e38"/>
+      <stop offset="1" stop-color="#1f2c4d"/>
+    </linearGradient>
+  </defs>
+
+  <!-- page -->
+  <rect width="600" height="850" fill="url(#bg)"/>
+
+  <!-- decorative network mesh (faint) -->
+  <g stroke="#2ec4b6" stroke-width="1.4" fill="#2ec4b6" opacity="0.16">
+    <line x1="470" y1="150" x2="540" y2="120"/><line x1="540" y1="120" x2="560" y2="200"/>
+    <line x1="470" y1="150" x2="560" y2="200"/><line x1="540" y1="120" x2="500" y2="240"/>
+    <line x1="470" y1="150" x2="500" y2="240"/>
+    <circle cx="470" cy="150" r="6"/><circle cx="540" cy="120" r="6"/><circle cx="560" cy="200" r="6"/><circle cx="500" cy="240" r="6"/>
+    <line x1="40" y1="640" x2="100" y2="690"/><line x1="100" y1="690" x2="60" y2="740"/>
+    <line x1="40" y1="640" x2="60" y2="740"/><line x1="100" y1="690" x2="140" y2="630"/>
+    <circle cx="40" cy="640" r="6"/><circle cx="100" cy="690" r="6"/><circle cx="60" cy="740" r="6"/><circle cx="140" cy="630" r="6"/>
+  </g>
+
+  <!-- halo behind penguin -->
+  <circle cx="300" cy="470" r="188" fill="#2ec4b6" opacity="0.08"/>
+
+  <!-- top band : terminal prompt -->
+  <rect x="0" y="0" width="600" height="92" fill="url(#band)"/>
+  <text x="300" y="53" text-anchor="middle" font-family="'SFMono-Regular',Consolas,'Liberation Mono',monospace" font-size="16" fill="#2ec4b6" letter-spacing="1">root@lab:~#  reti &amp; sistemi</text>
+  <rect x="403" y="42" width="11" height="16" fill="#2ec4b6" opacity="0.85"/>
+
+  <!-- title -->
+  <text x="300" y="178" text-anchor="middle" font-size="54" font-weight="800" fill="#1b2542" letter-spacing="0.5">Manuale pratico</text>
+  <text x="300" y="234" text-anchor="middle" font-size="46" font-weight="800" fill="#0e8c84" letter-spacing="0.5">di Sistemi e Reti</text>
+
+  <!-- ground shadow -->
+  <ellipse cx="300" cy="648" rx="120" ry="20" fill="#1b2542" opacity="0.10"/>
+
+  <!-- ===== PENGUIN ===== -->
+  <!-- flippers (drawn first so body overlaps inner edge) -->
+  <ellipse cx="188" cy="498" rx="26" ry="78" fill="#1b2542" transform="rotate(15 188 498)"/>
+  <ellipse cx="412" cy="498" rx="26" ry="78" fill="#1b2542" transform="rotate(-15 412 498)"/>
+
+  <!-- feet -->
+  <ellipse cx="270" cy="636" rx="30" ry="12" fill="#f08a1c" transform="rotate(-10 270 636)"/>
+  <ellipse cx="330" cy="636" rx="30" ry="12" fill="#f08a1c" transform="rotate(10 330 636)"/>
+
+  <!-- body -->
+  <ellipse cx="300" cy="475" rx="118" ry="152" fill="#1b2542"/>
+  <!-- white belly + face -->
+  <ellipse cx="300" cy="502" rx="84" ry="120" fill="#ffffff"/>
+
+  <!-- eyes -->
+  <circle cx="278" cy="420" r="13" fill="#1b2542"/>
+  <circle cx="322" cy="420" r="13" fill="#1b2542"/>
+  <circle cx="274" cy="415" r="4.5" fill="#ffffff"/>
+  <circle cx="318" cy="415" r="4.5" fill="#ffffff"/>
+
+  <!-- beak (two-tone) -->
+  <path d="M300 438 L320 453 L280 453 Z" fill="#ffb84d"/>
+  <path d="M280 453 L320 453 L300 470 Z" fill="#f08a1c"/>
+
+  <!-- teal bow tie -->
+  <path d="M300 490 L274 480 L274 500 Z" fill="#0e8c84"/>
+  <path d="M300 490 L326 480 L326 500 Z" fill="#0e8c84"/>
+  <rect x="294" y="484" width="12" height="13" rx="2.5" fill="#0a6b65"/>
+
+  <!-- little RJ45 tag held by flipper -->
+  <g transform="rotate(-15 412 498)">
+    <line x1="412" y1="558" x2="412" y2="590" stroke="#9aa7b8" stroke-width="3"/>
+    <rect x="400" y="588" width="24" height="20" rx="3" fill="#2ec4b6"/>
+    <rect x="405" y="608" width="5" height="6" fill="#2ec4b6"/>
+    <rect x="414" y="608" width="5" height="6" fill="#2ec4b6"/>
+  </g>
+  <!-- ===== /PENGUIN ===== -->
+
+  <!-- divider -->
+  <line x1="150" y1="706" x2="450" y2="706" stroke="#0e8c84" stroke-width="2" opacity="0.55"/>
+
+  <!-- parts -->
+  <text x="300" y="736" text-anchor="middle" font-size="13.5" font-weight="600" fill="#1b2542" opacity="0.72" letter-spacing="1.5">PROGETTAZIONE · CISCO IOS / LINUX · BACKUP · WI-FI MESH</text>
+
+  <!-- footer -->
+  <text x="300" y="812" text-anchor="middle" font-size="12.5" fill="#1b2542" opacity="0.45" letter-spacing="0.5">Raccolta cheat sheet — edizione 2026</text>
+</svg>
