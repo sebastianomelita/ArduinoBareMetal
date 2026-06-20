@@ -280,6 +280,8 @@ Due **fasi**:
 
 Il process-id è lo stesso per tutti i router 
 
+Ripetere per **ogni router** della rete con lo stesso process-id
+
 ```
 R(config)# router ospf 100                                   ← 0. abilitazione protocollo e settaggio process-id
 R(config-router)# router-id 1.1.1.1                          ← 1. Router-ID
@@ -299,7 +301,7 @@ R# show ip ospf database       ← LSDB con tutti i LSA ricevuti
 
 ###  6.2 · OSPF — fasi in `(config-if)`
 
-Ripetere per ogni interfaccia con l'area corretta (0 = backbone, 10/20 = aree stub).
+Ripetere per **ogni interfaccia** con l'area corretta (0 = backbone, 10/20 = aree stub).
 
 ```
 R(config-if)# ip address 192.168.4.2 255.255.255.252
