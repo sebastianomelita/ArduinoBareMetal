@@ -586,7 +586,7 @@ echo check > /sys/block/md0/md/sync_action           # scrubbing on-demand (erro
 ---
 
 
-## 11.2 · DRBD — Mirror tra dischi di nodi diversi nella stessa LAN
+## 11.2 · DRBD — Mirror tra dischi di nodi diversi (nella stessa LAN o in Internet)
 
 > La copia avviene a livello di trasporto in rete e poi a livello di blocco sul disco.
 > 
