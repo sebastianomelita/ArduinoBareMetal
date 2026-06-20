@@ -179,6 +179,53 @@ L'identità dell'operatore è **unica e centralizzata** su **Active Directory/LD
 
 ## Quesito II — Ulteriori misure di sicurezza e continuità trasmissiva
 
+### Autenticazione reciproca dei nodi di infrastruttura
+
+L'autenticazione del Punto 4 riguarda gli **utenti**; qui si tratta l'autenticazione **fra apparati e servizi**, che è di natura **mutua** (nessuna delle due parti è "il browser di un umano" da fidare a senso unico) e va realizzata **su canali insicuri** — l'aria del Wi-Fi/mesh, Internet fra cantiere e sede, la rete IP edge↔backend. Dove i nodi lo supportano si usa l'**autenticazione forte asimmetrica (a certificati)**; sui **nodi vincolati** che non reggono una PKI/TLS — i **sensori** sul lato radio — si ricorre all'**autenticazione mutua a chiave pre-condivisa (PSK)**. I meccanismi non si escludono: vivono a **livelli diversi** dello stack (802.1X a L2, mTLS/TLS a L4/5, IPsec a L3, SSH/Kerberos a L7) e tipicamente **coesistono**.
+
+[![I quattro livelli di autenticazione di un collegamento: 802.1X a L2, IPsec/VPN a L3, mTLS/TLS a L4/5, SSH/Kerberos a L7](https://github.com/sebastianomelita/ArduinoBareMetal/raw/master/approfondimenti/img/stack_802.1x_mtls.svg)](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/approfondimenti/img/stack_802.1x_mtls.svg)
+
+#### Richiamo teorico — autenticazione forte, mutua e a tre vie
+
+- **Forte (asimmetrica).** Chi verifica invia una **sfida**; la risposta è la **sfida firmata** con la **chiave privata**. Solo chi possiede la privata produce la risposta corretta: le *credenziali* sono irreversibili e uniche, e non c'è alcun segreto da trasmettere in chiaro. È l'unica adatta ai canali insicuri.
+- **Mutua = protocollo a tre vie (3WHS).** Quando *entrambe* le parti devono autenticarsi, ciascuna lancia la propria sfida e firma quella dell'altra: è lo schema dell'**autenticazione mutua asimmetrica con sfida in chiaro**, cioè l'**mTLS** della figura sotto.
+- **Certificati vs credenziali (complementari).** Il **certificato** non autentica l'apparato: autentica solo la sua **chiave pubblica**, garantendone l'intestatario tramite la **firma di una CA** fidata. Sono le **credenziali** (la sfida firmata con la privata associata a quel certificato) ad autenticare *davvero* il nodo, perché solo il detentore della privata sa produrle.
+- **Difesa dal MITM nello scambio delle chiavi pubbliche.** L'associazione "chiave pubblica ↔ nodo" va resa autentica, altrimenti un Mallory si infila in mezzo. Tre modi:
+  1. **PSK** — una chiave segreta condivisa con cui si cifra/autentica il primo messaggio (il caso del *segreto del RADIUS*, di WPA3-SAE).
+  2. **Certificati firmati da una CA** — la via scalabile (PKI aziendale): è ciò che usano mTLS, RadSec, EAP-TLS, IPsec.
+  3. **Fiducia al primo contatto (TOFU / *resurrecting duckling*)** — alla prima connessione si accetta e si memorizza la chiave della controparte (le *host key* di SSH), eventualmente entro una **finestra temporale** di pairing (come WPS/Bluetooth). Utile per il *provisioning in campo* di un gateway nuovo in cantiere, dove la PKI non è ancora raggiungibile.
+- **Principio operativo.** Nell'autenticazione mutua è spesso **la parte più forte a creare il canale sicuro** su cui poi si autentica la controparte più debole.
+- **PFS (Perfect Forward Secrecy).** Su tutti questi canali si impone lo scambio **Diffie-Hellman effimero (DHE/ECDHE)**: la chiave privata RSA serve solo ad **autenticare** lo scambio, mentre le chiavi di sessione sono temporanee. Così la compromissione *futura* di una privata non rende leggibile il traffico *passato* registrato (rilevante per i log dei sensori e gli allarmi).
+
+[![Autenticazione mutua asimmetrica con sfida in chiaro (mTLS)](https://github.com/sebastianomelita/ArduinoBareMetal/raw/master/approfondimenti/img/authutente/auth_mutua_asimmetrica.jpg)](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/approfondimenti/img/authutente/auth_mutua_asimmetrica.jpg)
+
+*(Fase di registrazione = scambio autenticato delle chiavi pubbliche tramite certificati CA; dettaglio in [autenticazione_utente.md §5.6–5.8](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/approfondimenti/autenticazione_utente.md).)*
+
+#### Applicazione ai nodi dello scenario
+
+- **AP ↔ server RADIUS.** Il RADIUS "classico" autentica il canale AP–server con un **segreto condiviso (PSK)**: semplice ma statico, senza PFS e con autenticazione del solo messaggio. La forma robusta è **RadSec (RADIUS over TLS)** con **mTLS**: AP e server espongono ciascuno il proprio **certificato X.509** della CA aziendale → autenticazione **reciproca a tre vie**, canale cifrato con ECDHE. Impedisce sia all'AP-rogue di fingersi *authenticator*, sia al server-rogue di intercettare le credenziali EAP.
+- **AP ↔ AP (backhaul mesh).** I nodi mesh si fidano a vicenda *prima* di formare la dorsale. Due strade: **(a) WPA3-SAE** (*dragonfly*), autenticazione **mutua basata su PSK** in cui nessuno trasmette la password e si neutralizzano MITM e attacchi a dizionario, con PFS; **(b) mesh enterprise a certificati**, dove ogni AP fa **EAP-TLS** verso RADIUS e i peer si fidano via PKI/controller. La mutua blocca l'inserimento di un **evil-twin** che farebbe da MITM sul backhaul.
+- **Gateway sensori ↔ server RADIUS.** Il gateway IoT entra in rete come **supplicant 802.1X in EAP-TLS**: presenta il proprio **certificato di apparato**, il RADIUS presenta il suo → **mutua a certificati**, identica per struttura alla figura. RADIUS assegna la **VLAN 30 (sensori)** solo a gateway con certificato valido: un gateway clonato, privo della **chiave privata** corrispondente, non sa produrre la sfida firmata e viene **respinto**.
+- **Client MQTT del gateway ↔ broker MQTT.** Sul canale IP edge↔backend si usa **mTLS** (X.509 bilaterale): è esattamente lo scenario della figura — broker e client si scambiano sfida-in-chiaro + firma e ciascuno valida il certificato dell'altro contro la **CA radice** preinstallata. Variante più leggera per device vincolati: **TLS server-side + credenziale del device** (token/username nel tunnel, schema *PAP-in-tunnel*). Garantisce che **solo** i gateway autorizzati pubblichino telemetria/allarmi e che il client parli col **broker vero**, non con un impostore.
+- **Sensori ↔ AP/gateway.** Qui la scelta dipende dalla **tecnologia d'accesso** del sensore, non dal fatto che sia un sensore:
+  - **Su radio a basso consumo (LoRa/Zigbee/BLE).** Sono nodi **vincolati** (poca CPU/RAM, alimentazione a batteria): **non gestiscono certificati né l'handshake TLS**, quindi l'autenticazione mutua è **simmetrica, a chiave pre-condivisa (PSK)**. Le due parti condividono in fase di provisioning un **segreto** (la *AppKey* 128 bit in LoRaWAN, la *network/link key* in Zigbee, la chiave di *pairing* in BLE); da quel segreto, con l'attivazione **OTAA**, si derivano le **chiavi di sessione** (`AppSKey`/`NwkSKey`). La mutua nasce dal fatto che **solo** chi conosce la PSK supera la *join*: il device prova al network di possederla e il *join-accept* prova al device che il network la possiede. Da lì ogni frame porta un **MIC (AES-CMAC con NwkSKey)** che ne garantisce **autenticità + integrità**, con **contatore di frame** anti-replay. È lo schema "PSK + MIC" del Punto 4: **non è mTLS** — la mutua a certificati ricompare solo *più in alto*, sul canale IP gateway↔broker. Per il *pairing* iniziale in campo vale il modello **fiducia-al-primo-contatto entro finestra temporale** (Zigbee/BLE/WPS), il *resurrecting duckling* visto sopra.
+  - **Su Wi-Fi o Ethernet.** Quando il sensore (o il suo modulo di trasmissione) ha un'interfaccia **Wi-Fi/Ethernet** — quindi CPU e stack sufficienti — **rientra nel caso generale dei terminali**: si autentica via **802.1X / EAP-TLS** verso RADIUS con un **certificato di apparato**, esattamente come il gateway IoT. Mutua a certificati, forte, con assegnazione della **VLAN 30 (sensori)** su esito positivo. In questo scenario la PSK del lato radio **non serve**: l'ammissione alla rete è già governata dalla PKI a L2.
+
+| Accoppiamento | Meccanismo | Cosa autentica | Minaccia neutralizzata |
+| --- | --- | --- | --- |
+| AP ↔ RADIUS | PSK (classico) / **RadSec mTLS** | reciproca, certificati X.509 | AP-rogue, server-rogue |
+| AP ↔ AP (mesh) | **WPA3-SAE (PSK)** / EAP-TLS | reciproca dei nodi mesh | evil-twin, MITM sul backhaul |
+| Gateway sensori ↔ RADIUS | **802.1X / EAP-TLS** | certificato di apparato ↔ server | gateway clonato/non autorizzato |
+| Client MQTT ↔ broker | **mTLS** / TLS+credenziale device | reciproca client↔broker | publisher abusivo, broker fasullo |
+| **Sensori ↔ AP/gateway** — radio LP | **PSK + MIC** (LoRaWAN OTAA, Zigbee/BLE) | reciproca via segreto condiviso | sensore non autorizzato, frame falsi/replay |
+| **Sensori ↔ AP/gateway** — Wi-Fi/Ethernet | **802.1X / EAP-TLS** (certificati) | certificato di apparato ↔ server | nodo rogue, accesso non autorizzato |
+
+> **Nota sui livelli.** Questa è autenticazione **di apparato/servizio**, non di utente. Dove si usano **certificati** (AP, gateway, broker) punta al massimo livello di garanzia (**LoA4-like**), perché la **chiave privata** risiede su **hardware del dispositivo** (idealmente TPM/secure element, *tamper-resistant*). Sui **sensori** il segreto è simmetrico (PSK): forza **media**, adeguata al basso rischio del singolo nodo e all'impossibilità di gestire una PKI, e comunque irrobustita da MIC e anti-replay. Tutto ciò si **contrappone e si somma** all'autenticazione **utente** del Punto 4 (password + **MFA**, LoA3): *gli apparati capaci si autenticano con certificati mutui, i sensori con PSK, gli utenti con credenziali deboli rinforzate da un secondo fattore*. I piani convivono sullo stesso collegamento (es. un tablet che fa EAP-TLS *di apparato* mentre l'operatore fa il proprio login *utente*; un sensore in PSK verso il gateway che a sua volta fa mTLS verso il broker).
+
+---
+---
+---
+
 Oltre all'autenticazione (punto 4):
 
 **Filtraggio del traffico — tabella degli accessi.** La segmentazione è resa effettiva da un **piano di accessi** tra le zone, applicato con ACL inbound per interfaccia sul core L3 (✓ = ammesso, ✗ = negato):
