@@ -3,19 +3,6 @@
 > Documento unico in quattro parti. Stile e numerazione coerenti.
 > **Parte I** progettazione · **Parte II** Cisco IOS / Linux · **Parte III** backup · **Parte IV** mesh Wi-Fi.
 
-## Indice
-
-- **Parte I · Aspetti critici di progetto**
-  - 1 Aspetti comuni · 2 Documentazione cablaggio · 3 Aspetti particolari per tecnologia
-- **Parte II · Cisco IOS & Linux — VLAN · OSPF · NAT · ACL · Tunnel**
-  - 1 Subnetting · 2 VLAN · 3 Porte access · 4 Porte trunk · 5 Inter-VLAN routing
-  - 6 OSPF (config-router) · 7 OSPF (config-if) · 8 NAT Cisco · 9 NAT Linux
-  - 10 VRRP/keepalived · 11 HAProxy · 12 DRBD
-  - 13 ACL definizione e tipi · 14 ACL scenari · 15 ACL CBAC · 16 ACL ZBF
-  - 17 ACL anti-spoofing · 18 Tunnel L2/L3 · 19 802.1X · 20 Test end-to-end
-- **Parte III · Backup & Ripristino**
-- **Parte IV · Wi-Fi Mesh tri-band — pianificazione canali**
-
 ---
 # Parte 0 · Scelta della tecnologia di rete 
 
