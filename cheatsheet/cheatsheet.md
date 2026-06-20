@@ -243,24 +243,32 @@ SW# show interfaces fa0/24 switchport
 ## 5 · Inter-VLAN Routing — 3 metodi
 
 ### Tradizionale
+
 ```
-R(config-if)# ip address 192.168.1.254 255.255.255.0
-R(config-if)# no shutdown                               ← una interfaccia per VLAN
+R(config)# interface fa0/0                   ← una interfaccia fisica per VLAN
+R(config-if)# ip address 192.168.1.254 255.255.255.0   ← (esempio)
+R(config)#   ip route 0.0.0.0 0.0.0.0 <next-hop-WAN>   ← opzionale, default gateway
+R(config-if)# no shutdown                              
 ```
 
 ### Router-on-a-stick
 ```
+R(config)# interface fa0/0                   ← una interfaccia fisica comune
+R(config-if)# no shutdown                    ← da accendere
+
+R(config)# interface fa0/0.X                ← su ogni interfaccia logica per VLAN X: 10, 20,...
 R(config-if)# encapsulation dot1q 10
-R(config-if)# ip address 192.168.1.254 255.255.255.0    ← su ogni subinterface
-R(config)#   ip route 0.0.0.0 0.0.0.0 <next-hop-WAN>
+R(config-if)# ip address 192.168.1.254 255.255.255.0    ← esempio)
+R(config)#   ip route 0.0.0.0 0.0.0.0 <next-hop-WAN>    ← opzionale, default gateway
 ```
 
 ### Switch L3 (SVI)
 ```
-SW(config)#   ip routing
-SW(config-if)# ip address 192.168.1.254 255.255.255.0   ← su ogni interface vlan X
+SW(config)# ip routing
+SW(config)# interface vlanX                             ← su ogni interface vlan X
+SW(config-if)# ip address 192.168.1.254 255.255.255.0   ← (esempio)
 SW(config-if)# no switchport                            ← porta uplink verso router
-SW(config)#   ip route 0.0.0.0 0.0.0.0 10.0.3.2
+SW(config)#   ip route 0.0.0.0 0.0.0.0 10.0.3.2         ← opzionale, default gateway
 ```
 
 **Test**
