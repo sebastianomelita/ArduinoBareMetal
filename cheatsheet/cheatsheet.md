@@ -1,3 +1,6 @@
+
+<img src="copertina_manuale.svg" alt="alt text" width="800">
+
 # 📚 Raccolta Cheat Sheet — Reti & Sistemi
 
 > Documento unico in quattro parti. Stile e numerazione coerenti.
