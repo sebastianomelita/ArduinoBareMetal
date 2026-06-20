@@ -655,7 +655,10 @@ node# crm_mon -1
 
 ---
 
-## 11.3. IP SLA — failover dual-WAN (Cisco IOS) - Mirror tra dischi di nodi diversi in Internet
+## IP SLA — failover dual-WAN (Cisco IOS)
+> **Def./scopo:** sonda attiva che misura la **raggiungibilità** (e qualità) di un percorso — ICMP/UDP/TCP echo verso un target — e, tramite un `track`, condiziona rotte e azioni. **Scopo: failover automatico del *link* WAN** (la rete, non i dati).
+
+<img src="../img/ip_sla_failover.svg" alt="IP SLA failover dual-WAN" width="640">
 
 ```
 ip sla 1
@@ -675,6 +678,7 @@ ip route 0.0.0.0 0.0.0.0 <gw-backup> 10                  ! AD 10 = flottante: su
 | AD `10`  | rende **flottante** la rotta di backup              |
 
 > 🔑 Quando il probe fallisce, il `track` va *down* → la rotta primaria sparisce → entra la flottante. **Con dual-WAN + NAT** servono `route-map` per associare il NAT all'interfaccia attiva. **Test:** `show ip sla statistics`, `show track 1`, `show ip route`.
+
 
 ---
 
