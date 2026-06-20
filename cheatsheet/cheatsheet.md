@@ -397,7 +397,7 @@ sudo iptables -L FORWARD -v
 ```
 ---
 
-# 10 ·continuità di servizio delle applicazioni
+# 10 · Continuità di servizio delle applicazioni
 
 ## 10.1 · VRRP — keepalived (IP virtuale in HA)
 
