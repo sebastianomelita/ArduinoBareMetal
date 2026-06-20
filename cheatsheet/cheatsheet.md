@@ -1079,6 +1079,56 @@ root@gw:~# ip link set tap0 up
 
 **Test** (sul gateway Linux): `root@gw:~# ip -d link show <iface>` · `root@gw:~# bridge link` · `root@gw:~# arping -I br0 <IP-remoto>`
 
+---
+
+## IPsec-su-GRE — cifratura del tunnel (Cisco IOS, IKEv2)
+
+```
+! 1) IKEv2 — fase 1 (autenticazione + scambio chiavi)
+crypto ikev2 proposal P1
+ encryption aes-cbc-256
+ integrity  sha256
+ group 14
+crypto ikev2 policy POL
+ proposal P1
+crypto ikev2 keyring KR
+ peer PEER
+  address <IP-PUB-PEER>
+  pre-shared-key <chiave>
+crypto ikev2 profile PROF
+ match identity remote address <IP-PUB-PEER> 255.255.255.255
+ authentication remote pre-share
+ authentication local  pre-share
+ keyring local KR
+
+! 2) IPsec — fase 2 (protezione dei dati)
+crypto ipsec transform-set TS esp-aes 256 esp-sha256-hmac
+ mode transport
+crypto ipsec profile IPROF
+ set transform-set TS
+ set ikev2-profile PROF
+
+! 3) Applica al tunnel GRE (l'altro capo è speculare)
+interface Tunnel1
+ tunnel protection ipsec profile IPROF
+```
+
+| Deve combaciare ai due capi | … |
+| --------------------------- | -------------------------------------- |
+| `pre-shared-key`            | la stessa chiave                       |
+| `transform-set`             | stessi algoritmi (AES-256 / SHA-256)   |
+| IKEv2 `proposal`            | encryption / integrity / group         |
+
+```
+! ACL WAN: oltre a gre/ospf far passare l'IPsec
+ permit udp host <IP-PUB-PEER> any eq isakmp
+ permit udp host <IP-PUB-PEER> any eq non500-isakmp
+ permit esp host <IP-PUB-PEER> any
+```
+> 🔑 `mode transport` perché c'è già il GRE; **`tunnel mode`** se è IPsec puro senza GRE. Anti-replay attivo di default: `crypto ipsec security-association replay window-size 1024`. **Test:** `show crypto ikev2 sa`, `show crypto ipsec sa`.
+
+---
+
 ## 20 · 802.1X — autenticazione sulle porte access
 
 802.1X blocca la porta switch (`unauthorized`) finché l'utente non si autentica via RADIUS.
@@ -1477,53 +1527,6 @@ finirebbero in CSMA/CA sullo stesso canale → throughput dimezzato.
 - ❌ riuso colore tra celle troppo vicine;
 - ❌ backhaul a larghezza piena su canali dei client;
 - ❌ saltare il site survey (Ekahau / NetSpot).
-
-
-## IPsec-su-GRE — cifratura del tunnel (Cisco IOS, IKEv2)
-
-```
-! 1) IKEv2 — fase 1 (autenticazione + scambio chiavi)
-crypto ikev2 proposal P1
- encryption aes-cbc-256
- integrity  sha256
- group 14
-crypto ikev2 policy POL
- proposal P1
-crypto ikev2 keyring KR
- peer PEER
-  address <IP-PUB-PEER>
-  pre-shared-key <chiave>
-crypto ikev2 profile PROF
- match identity remote address <IP-PUB-PEER> 255.255.255.255
- authentication remote pre-share
- authentication local  pre-share
- keyring local KR
-
-! 2) IPsec — fase 2 (protezione dei dati)
-crypto ipsec transform-set TS esp-aes 256 esp-sha256-hmac
- mode transport
-crypto ipsec profile IPROF
- set transform-set TS
- set ikev2-profile PROF
-
-! 3) Applica al tunnel GRE (l'altro capo è speculare)
-interface Tunnel1
- tunnel protection ipsec profile IPROF
-```
-
-| Deve combaciare ai due capi | … |
-| --------------------------- | -------------------------------------- |
-| `pre-shared-key`            | la stessa chiave                       |
-| `transform-set`             | stessi algoritmi (AES-256 / SHA-256)   |
-| IKEv2 `proposal`            | encryption / integrity / group         |
-
-```
-! ACL WAN: oltre a gre/ospf far passare l'IPsec
- permit udp host <IP-PUB-PEER> any eq isakmp
- permit udp host <IP-PUB-PEER> any eq non500-isakmp
- permit esp host <IP-PUB-PEER> any
-```
-> 🔑 `mode transport` perché c'è già il GRE; **`tunnel mode`** se è IPsec puro senza GRE. Anti-replay attivo di default: `crypto ipsec security-association replay window-size 1024`. **Test:** `show crypto ikev2 sa`, `show crypto ipsec sa`.
 
 ---
 
