@@ -800,6 +800,25 @@ iptables -A FORWARD -i tun0 -j DROP                                         # �
 ```
 > Equivalente Cisco: ACL estesa **inbound** su `interface TunnelN` con gli stessi `permit` + `deny ip any any log`, e CBAC/ZBF per i ritorni. 🔑 `tun0` (OpenVPN/TUN, L3) si tratta **come la WAN**: non è fidata solo perché è una VPN.
 
+**Lo stesso in Cisco IOS con CBAC** (`Tunnel0` trattata come WAN):
+```
+! Regola di ispezione → apre i ritorni delle sessioni in arrivo dalla VPN
+ip inspect name CBAC-TUN tcp
+ip inspect name CBAC-TUN udp
+
+! ACL inbound: solo i servizi specifici, poi default-deny
+ip access-list extended ACL-TUN0
+ permit tcp <reti-remote> host <repository> eq 443     ! HTTPS (source-scoped = anti-spoofing)
+ permit tcp <reti-remote> host <repository> eq 22      ! SFTP
+ permit tcp <reti-remote> host <mqtt-front> eq 8883    ! MQTT
+ permit udp <reti-remote> host <radius> eq 1812        ! auth
+ deny   ip  any any log                                ! ← DEFAULT DENY (scarta anche gli spoof)
+
+interface Tunnel0
+ ip access-group ACL-TUN0 in      ! filtro inbound (mai out)
+ ip inspect CBAC-TUN in           ! stato: ritorni aperti dinamicamente
+```
+> 🔑 I `permit` con **sorgente** ristretta alle reti remote attese fanno da **anti-spoofing** (il `deny ip any any` finale scarta tutto il resto). `ip inspect … in` è la *direzione d'ispezione*, **non** un'ACL `out`. `tun0`/`Tunnel0` (OpenVPN/TUN, L3) si tratta **come la WAN**: non è fidata solo perché è una VPN. **Test:** `show ip inspect sessions`, `show ip access-lists ACL-TUN0`.
 
 
 ## 15 · ACL firewall — scenari tipici
