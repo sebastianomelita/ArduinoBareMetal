@@ -402,6 +402,15 @@ Copia **off-site** verso il cloud (incrementale, regola 3-2-1):
 
 > In **restore** usare sempre `--numeric-ids` per conservare UID/GID. Provare prima con `--dry-run`.
 
+> **HA locale vs geografico (la distanza decide sync o async).** La latenza impone il regime di replica, quindi il livello di continuità raggiungibile:
+>
+> | Regime | Distanza/latenza | Replica | RPO | Cos'è |
+> |---|---|---|---|---|
+> | **Metro / campus** | bassa (~<10 ms) | **sincrona** (DRBD `protocol C`) | **0** (nessuna perdita) | vero **HA**, failover automatico |
+> | **Geografico (WAN)** | alta | **asincrona** (DRBD `protocol A` + DRBD Proxy, replica array, `rsync`) | **> 0** (finestra di dati a rischio) | **Disaster Recovery**, failover orchestrato |
+>
+> Non è il caso di confondere questa replica **dei dati** con l'**IP SLA** (§9.4), che fa failover del **link** WAN. Nel progetto: **DRBD sincrono in sede (LAN)** per l'HA dei dati; per il **fuori sede su Internet** si va **asincroni** con **rsync 3-2-1 verso il cloud** (DR, non HA a perdita zero). La scelta si fa su **RPO/RTO** — quanti dati puoi perdere e in quanto tempo devi ripartire.
+
 ---
 
 ## 9 · Dettaglio comandi delle misure di sicurezza (Quesito II / III)
