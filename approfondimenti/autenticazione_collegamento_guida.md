@@ -65,6 +65,10 @@ Per questo in un progetto serio coesistono: il **tornello con badge** all'ingres
 | **MIC / AES-CMAC sul frame** | chiave di sessione (NwkSKey) | L2 (LoRaWAN) | implicita | media-forte | autenticazione + integrità del frame |
 | **IPsec (PSK o certificati)** | PSK oppure certificato | L3 | sì | media/forte | VPN site-to-site di backup |
 
+<p align="center" style="margin:0;padding:0;">
+  <img src="/approfondimenti/img/autenticazione-psk.svg" width="90%" style="margin:0;padding:0;">
+</p>
+
 > **Nota.** PSK e certificati sono fattori diversi e **nessuno dei due è "mTLS" di per sé**. LoRaWAN autentica i nodi via PSK (AppKey) e MIC, senza PKI sul lato radio; mTLS compare solo più in alto, sul canale IP edge↔backend.
 
 ---
