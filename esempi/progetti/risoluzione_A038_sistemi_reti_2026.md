@@ -218,7 +218,7 @@ I meccanismi non si escludono: vivono a **livelli diversi** dello stack (802.1X 
 
 
 <p align="center" style="margin:0;padding:0;">
-  <img src="./approfondimenti/img/autenticazione-x509.svg" width="49.9%" style="margin:0;padding:0;"><img src="./approfondimenti/img/autenticazione-psk.svg" width="49.9%" style="margin:0;padding:0;">
+  <img src="/approfondimenti/img/autenticazione-x509.svg" width="49.9%" style="margin:0;padding:0;"><img src="/approfondimenti/img/autenticazione-psk.svg" width="49.9%" style="margin:0;padding:0;">
 </p>
 
 A sinistra il mondo dei certificati X.509, a destra quello della chiave pre-condivisa per i dispositivi vincolati. Le due figure raccontano lo stesso dilemma da due lati opposti:
