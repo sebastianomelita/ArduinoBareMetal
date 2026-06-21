@@ -121,6 +121,25 @@ Considerando overhead e picchi, alla sede si provvede **upload ≥ 50–100 Mbps
 | `Tunnel4` | sede ↔ cantiere 4 | `10.255.0.12/30` | `10.255.0.13` | `10.255.0.14` |
 | `Tunnel5` | sede ↔ cantiere 5 | `10.255.0.16/30` | `10.255.0.17` | `10.255.0.18` |
 
+**Propagazione delle rotte.** Una volta attivi i tunnel `/30`, ogni router conosce per
+via diretta solo le proprie LAN e la dorsale del proprio tunnel: le subnet remote vanno
+rese raggiungibili. Due approcci equivalenti:
+- Con il **routing statico** si sfruttano i
+blocchi riassuntivi: ogni cantiere riceve **una sola rotta** verso `10.0.0.0/16` (la sede),
+mentre la sede riceve **una rotta per cantiere** verso `10.k.0.0/16` — compatto e
+deterministico, ma da aggiornare a mano a ogni nuovo cantiere. 
+- Con il **routing dinamico
+OSPF** (la scelta qui adottata) si eliminano le rotte manuali: ciascun router annuncia le
+proprie reti sui tunnel `point-to-point` in `area 0`, la sede impara automaticamente tutti
+i `10.k.0.0/16` e i cantieri imparano `10.0.0.0/16`, con riconvergenza automatica e nessun
+intervento sull'hub quando si aggiunge un cantiere.
+
+> 📎 **Routing sulle dorsali `/30`** — tabelle statiche lato cantiere e lato sede (con le
+> sole rotte non direttamente connesse, da inserire a mano) e soluzione OSPF equivalente
+> con comandi e verifica: vedi
+> [routing_dorsali_A038.md](routing_dorsali_A038.md).
+
+
 Il **routing è dinamico con OSPF** sui tunnel (`ip ospf network point-to-point`, `area 0`): ogni router annuncia i propri `/24` e la sede raggiunge tutti i cantieri (e viceversa) senza NAT interno — gli indirizzi sono tutti distinti. Il **NAT** resta solo sull'uscita Internet di ciascun router di confine. Estratto GRE lato sede (`Tunnel1`, l'altro capo è speculare):
 
 ```cisco
