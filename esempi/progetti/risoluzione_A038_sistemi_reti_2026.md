@@ -1,6 +1,8 @@
 # Risoluzione — A038 "Sistemi e Reti"
 ### Esame di Maturità 2026 — Sessione ordinaria · Indirizzo ITIA (Informatica e Telecomunicazioni, art. Informatica)
 
+[Traccia compito](A038_traccia_sistemi_reti_2026.md)
+
 > **Nota di metodo.** È svolta per intero la **Prima parte** (obbligatoria) e, per completezza di studio, **tutti e quattro i quesiti** della Seconda parte: in sede d'esame se ne scelgono **due**. Numeri e quantità sono *ipotesi di dimensionamento* esplicitate: l'importante in questa traccia non è il valore esatto, ma la coerenza tra ipotesi, scelte progettuali e motivazioni.
 
 > 📎 **Approfondimenti tecnici** (routing e autenticazione Wi-Fi mesh, SSID statico/dinamico, port-forward SSH in IOS, allocazione dei canali, continuità di servizio link/VPN e NAS — con comandi): vedi **[approfondimento_A038.md](approfondimento_A038.md)**.
