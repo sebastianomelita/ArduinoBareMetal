@@ -235,12 +235,3 @@ O    10.0.0.0/16 [110/...] via 10.255.0.2, Tunnel1
 
 ---
 
-## 7. Come collegarlo al documento principale
-
-Salva questo file come `routing_dorsali_A038.md` accanto agli altri e aggiungi nel Punto 3 una riga del tipo:
-
-```markdown
-> 📎 **Routing sulle dorsali `/30`** (tabelle statiche lato cantiere/sede con le sole rotte
-> non connesse, + soluzione OSPF equivalente): vedi
-> [routing_dorsali_A038.md](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/esempi/progetti/routing_dorsali_A038.md).
-```
