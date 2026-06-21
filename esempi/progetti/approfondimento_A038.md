@@ -194,6 +194,12 @@ Per il **broker MQTT** sono possibili due scenari, potrebbe stare:
 - un **broker nella sola sede** centrale che raccoglie i messaggi di ogni cantiere provenienti dal loro **gateway** dove è in stallato un **client MQTT**. 
 - sia **sull'edge del cantiere** che **nella sede centrale**, quindi due broker, dove il broker edge si occupa delle eleborazioni locali (allarmi real-time locali) e inoltre fa **bridge** verso il broker di sede che si occupa delle eleborazioni remote (segnalazioni + log storico), coerente con la Prima parte. I publisher si autenticano al broker in **mTLS** (livello L4/5 dello stack di autenticazione), con **ACL per topic** sul broker. Il vantaggio di un secondo broker è che si possono ingegnerizzare i topic sul bridge, facendo confluire i dati di un topic sul broker edge su un topic di nome diverso nel broker centrale. Ade esempio ```misureTemp``` sul broker edge diventa ```temp``` sul broker centrale.
 
+Il nostro scenario è poco aderente all'architettura LoRaWan più comune in cui sia il **Network Server (NS)** che l'**Application Server (AP)** sono dislocati nella sede centrale di gestione perchè è incopmptibile con una **elaborazione locale** dei sensori. Questo accade perchè il dato utile per l'elaborazione locale deve essere autenticato e decifrato, cioè deve essere in chiaro, ma ciò normalmente non è possibile sul gateway perchè:
+- il **dato autenticato** è disponibile solo a valle del **Network Server** che sta normalmente in **sede centrale**
+- il **dato decifrato**, cioè in chiaro, è disponibile solo a valle del **Application Server** che sta normalmente in **sede centrale**
+
+Quindi, con l'obiettivo di permettere l'**elaborazione locale** dei dati in chiaro è, nel nostro scenario, necessario **spostare** il Network Server e l'application Server nel gateway del cantiere per avere rispettivamente il **dato autenticato** dal primo server e il **dato decifrato** dal secondo server.
+
 ### 6.1 Albero dei topic (comune a tutti i dispositivi)
 
 ```
