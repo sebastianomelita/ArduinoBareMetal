@@ -219,6 +219,11 @@ I meccanismi non si escludono: vivono a **livelli diversi** dello stack (802.1X 
 
 <img src="/approfondimenti/img/stack_802.1x_mtls.svg" alt="stack_802.1x_mtls.svg" width="800">
 
+A sinistra il mondo dei certificati X.509, a destra quello della chiave pre-condivisa per i dispositivi vincolati. Le due figure raccontano lo stesso dilemma da due lati opposti:
+
+- **Certificati X.509 (asimmetrica)**: identità forte per ogni dispositivo, revoca pulita del singolo, scalabilità su grandi numeri — ma richiedono PKI, una CA e parecchia potenza di calcolo. Adatti a PC, server, smartphone.
+- **PSK (simmetrica)**: leggerissima, nessuna infrastruttura, configurazione immediata — ma segreto condiviso, revoca per singolo difficile e gestione che non scala. Adatta a sensori, AP e nodi IoT con CPU/RAM ridotte.
+
 #### Richiamo teorico — autenticazione forte, mutua e a tre vie
 
 - **Forte (asimmetrica).** Chi verifica invia una **sfida**; la risposta è la **sfida firmata** con la **chiave privata**. Solo chi possiede la privata produce la risposta corretta: le *credenziali* sono irreversibili e uniche, e non c'è alcun segreto da trasmettere in chiaro. È l'unica adatta ai canali insicuri.
