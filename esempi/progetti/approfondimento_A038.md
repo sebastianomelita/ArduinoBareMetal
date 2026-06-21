@@ -190,7 +190,9 @@ I dispositivi Zigbee **non parlano IP/MQTT**: è il **coordinatore/gateway** a f
 
 <img src="../img/iot_mqtt.svg" alt="Architettura dati IoT/MQTT eterogenea" width="820">
 
-Il **broker MQTT** sta **sull'edge del cantiere** (allarmi real-time locali) e fa **bridge** verso il broker di sede (segnalazioni + log storico), coerente con la Prima parte. I publisher si autenticano al broker in **mTLS** (livello L4/5 dello stack di autenticazione), con **ACL per topic** sul broker.
+Per il **broker MQTT** sono possibili due scenari, potrebbe stare:
+- un **broker nella sola sede** centrale che raccoglie i messaggi di ogni cantiere provenienti dal loro **gateway** dove è in stallato un **client MQTT**. 
+- sia **sull'edge del cantiere** che **nella sede centrale**, quindi due broker, dove il broker edge si occupa delle eleborazioni locali (allarmi real-time locali) e inoltre fa **bridge** verso il broker di sede che si occupa delle eleborazioni remote (segnalazioni + log storico), coerente con la Prima parte. I publisher si autenticano al broker in **mTLS** (livello L4/5 dello stack di autenticazione), con **ACL per topic** sul broker. Il vantaggio di un secondo broker è che si possono ingegnerizzare i topic sul bridge, facendo confluire i dati di un topic sul broker edge su un topic di nome diverso nel broker centrale. Ade esempio ```misureTemp``` sul broker edge diventa ```temp``` sul broker centrale.
 
 ### 6.1 Albero dei topic (comune a tutti i dispositivi)
 
