@@ -252,8 +252,6 @@ L'autenticazione del Punto 4 riguarda gli **utenti**; qui si tratta l'autenticaz
 > **Nota sui livelli.** Questa è autenticazione **di apparato/servizio**, non di utente. Dove si usano **certificati** (AP, gateway, broker) punta al massimo livello di garanzia (**LoA4-like**), perché la **chiave privata** risiede su **hardware del dispositivo** (idealmente TPM/secure element, *tamper-resistant*). Sui **sensori** il segreto è simmetrico (PSK): forza **media**, adeguata al basso rischio del singolo nodo e all'impossibilità di gestire una PKI, e comunque irrobustita da MIC e anti-replay. Tutto ciò si **contrappone e si somma** all'autenticazione **utente** del Punto 4 (password + **MFA**, LoA3): *gli apparati capaci si autenticano con certificati mutui, i sensori con PSK, gli utenti con credenziali deboli rinforzate da un secondo fattore*. I piani convivono sullo stesso collegamento (es. un tablet che fa EAP-TLS *di apparato* mentre l'operatore fa il proprio login *utente*; un sensore in PSK verso il gateway che a sua volta fa mTLS verso il broker).
 
 ---
----
----
 
 Oltre all'autenticazione (punto 4):
 
