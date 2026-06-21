@@ -221,7 +221,7 @@ I meccanismi non si escludono: vivono a **livelli diversi** dello stack (802.1X 
   <img src="/approfondimenti/img/autenticazione-x509.svg" width="50%" style="margin:0;padding:0;"><img src="/approfondimenti/img/autenticazione-psk.svg" width="50%" style="margin:0;padding:0;">
 </p>
 
-A sinistra il mondo dei certificati X.509, a destra quello della chiave pre-condivisa per i dispositivi vincolati. Le due figure raccontano lo stesso dilemma da due lati opposti:
+A sinistra il mondo dei certificati X.509, a destra quello della chiave pre-condivisa per i dispositivi vincolati. Le due figure risolvono lo stesso problema da due approcci opposti:
 
 - **Certificati X.509 (asimmetrica)**: identità forte per ogni dispositivo, revoca pulita del singolo, scalabilità su grandi numeri — ma richiedono PKI, una CA e parecchia potenza di calcolo. Adatti a PC, server, smartphone.
 - **PSK (simmetrica)**: leggerissima, nessuna infrastruttura, configurazione immediata — ma segreto condiviso, revoca per singolo difficile e gestione che non scala. Adatta a sensori, AP e nodi IoT con CPU/RAM ridotte.
