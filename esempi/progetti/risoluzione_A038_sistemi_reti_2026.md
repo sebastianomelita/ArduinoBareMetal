@@ -240,7 +240,7 @@ A sinistra il mondo dei certificati X.509, a destra quello della chiave pre-cond
 
 <img src="/approfondimenti/img/authutente/auth_mutua_asimmetrica.jpg" alt="stack_802.1x_mtls.svg" width="700">
 
-*(Fase di registrazione = scambio autenticato delle chiavi pubbliche tramite certificati CA; dettaglio in [autenticazione_utente.md §5.6–5.8](/approfondimenti/autenticazione_utente.md).)*
+*(Fase di registrazione = scambio autenticato delle chiavi pubbliche tramite certificati CA; dettaglio in [Autenticazione utente](/approfondimenti/autenticazione_utente.md))*
 
 #### Applicazione ai nodi dello scenario
 
