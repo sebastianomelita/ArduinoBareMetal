@@ -186,7 +186,7 @@ EIRP (EU, indicativo): 2.4 GHz 20–24 dBm · 5 GHz DFS ~23 dBm indoor / ~30 dBm
 - **Zigbee — gruppo 2** → **gateway wired** (coordinatore Zigbee con uplink **Ethernet/PoE**).
 - **Sensori Wi-Fi nativi** ed **Ethernet nativi** (IP) → pubblicano **direttamente** su MQTT.
 
-I dispositivi Zigbee **non parlano IP/MQTT**: è il **coordinatore/gateway** a fare da traduttore, mappando ogni report Zigbee nello **schema comune**. I dispositivi IP pubblicano già nello stesso formato. Così **broker e consumatori vedono un solo albero di topic e un solo payload**, qualunque sia il trasporto.
+I dispositivi Zigbee e LoRaWan **non parlano IP/MQTT**: è il **coordinatore/gateway** a fare da traduttore, mappando ogni report Zigbee nello **schema comune**. I dispositivi IP pubblicano già nello stesso formato. Così **broker e consumatori vedono un solo albero di topic e un solo payload**, qualunque sia il trasporto.
 
 <p style="text-align: center;">
     <img src="../img/iot_mqtt.svg" alt="Architettura dati IoT/MQTT eterogenea" width="820">
@@ -206,7 +206,8 @@ Quando un client MQTT comunica su un canale basato su IP, la pila protocollare c
 <img src="../img/stack_mqtt.svg" alt="Stack protocollare MQTT su IP" width="600">
 
 Per il **il client MQTT** sono possibili due scenari, potrebbe stare:
-- sul **sensore** se 
+- sul **sensore** solo se questo è un sensore **Ethernet** o **WiFi**.
+- sul **gateway** se il sensore non supporta il protocollo IP come accade per i dispositivi **Zigbee** e **LoRaWan**.
 
 Per il **broker MQTT** sono possibili due scenari, potrebbe stare:
 - un **broker nella sola sede** centrale che raccoglie i messaggi di ogni cantiere provenienti dal loro **gateway** dove è in stallato un **client MQTT**. 
