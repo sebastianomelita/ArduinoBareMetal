@@ -217,9 +217,10 @@ L'autenticazione del Punto 4 riguarda gli **utenti**; qui si tratta l'autenticaz
 I meccanismi non si escludono: vivono a **livelli diversi** dello stack (802.1X a L2, mTLS/TLS a L4/5, IPsec a L3, SSH/Kerberos a L7) e tipicamente **coesistono**.
 
 
-| Certificati X.509 (PKI) | Chiave pre-condivisa (PSK) |
-|-------------------------|----------------------------|
-| <img src="/approfondimenti/img/autenticazione-x509.svg" width="1000"> | <img src="/approfondimenti/img/autenticazione-psk.svg" width="1000"> |
+<p align="center">
+  <img src="/approfondimenti/img/autenticazione-x509.svg" width="49%">
+  <img src="/approfondimenti/img/autenticazione-psk.svg" width="49%">
+</p>
 
 A sinistra il mondo dei certificati X.509, a destra quello della chiave pre-condivisa per i dispositivi vincolati. Le due figure raccontano lo stesso dilemma da due lati opposti:
 
