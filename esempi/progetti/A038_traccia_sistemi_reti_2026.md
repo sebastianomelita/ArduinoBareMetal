@@ -10,6 +10,7 @@ Indirizzo **ITIA — INFORMATICA E TELECOMUNICAZIONI**, ARTICOLAZIONE "INFORMATI
 
 > *Il candidato svolga la prima parte della prova e due tra i quesiti proposti nella seconda parte.*
 
+[Link alla soluzione](risoluzione_A038_sistemi_reti_2026.md)
 ---
 
 ## PRIMA PARTE
