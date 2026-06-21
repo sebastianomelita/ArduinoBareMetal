@@ -40,8 +40,8 @@ La forza di un'autenticazione dipende da quanti e quali **fattori** usa. Un sing
 
 802.1X e mTLS **sembrano** alternativi perché possono usare lo stesso certificato X.509 e la stessa PKI. Ma autenticano cose diverse, a livelli diversi, verso interlocutori diversi: sono **complementari**.
 
-<p align="center">
-  <img src="img/stack_802.1x_mtls.svg" alt="I quattro livelli di autenticazione di un collegamento: 802.1X a L2, mTLS/TLS a L4/5, IPsec/VPN a L3, SSH/Kerberos a L7" width="880">
+<p align="center" style="margin:0;padding:0;">
+  <img src="/approfondimenti/img/autenticazione-x509.svg" width="50%" style="margin:0;padding:0;"><img src="/approfondimenti/img/autenticazione-psk.svg" width="50%" style="margin:0;padding:0;">
 </p>
 
 | | Presenta il certificato a… | Livello | Cosa impedisce |
