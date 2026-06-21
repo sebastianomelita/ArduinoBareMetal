@@ -73,7 +73,7 @@ Ecco una versione astratta, con due sole chiavi: una **radice** (segreta, condiv
 
 In una riga: *da una chiave segreta fissa + un numero casuale → una chiave usa-e-getta per la sessione.*
 
-## 2. Autenticazione asimmetrica forte 
+## 3. Autenticazione asimmetrica forte 
 
 Può essere realizzata a vari livelli della pila ISO/OSI e addirittura utilizzando lo stesso certificato in punti diversi.
 
@@ -98,7 +98,7 @@ La figura colloca anche gli altri due piani:
 
 ---
 
-## 3. Tabella — macchine / dispositivi terminali
+## 4. Tabella — macchine / dispositivi terminali
 
 | Metodo | Fattore (cosa "ha" la macchina) | Livello | Mutua? | Forza | Esempio tipico |
 |---|---|---|:---:|:---:|---|
@@ -114,7 +114,7 @@ La figura colloca anche gli altri due piani:
 
 ---
 
-## 4. Tabella — utenti / servizi / processi (livello applicativo)
+## 5. Tabella — utenti / servizi / processi (livello applicativo)
 
 | Metodo | Fattore | Mutua? | Forza / LoA | Esempio tipico |
 |---|---|:---:|:---:|---|
@@ -133,7 +133,7 @@ La figura colloca anche gli altri due piani:
 
 ---
 
-## 5. Matrice: livello × forza
+## 6. Matrice: livello × forza
 
 La stessa informazione delle due tabelle, vista come griglia. Utile per capire al volo che lo **stesso certificato** vive in celle diverse (EAP-TLS a L2, mTLS a L4/5).
 
@@ -147,7 +147,7 @@ La stessa informazione delle due tabelle, vista come griglia. Utile per capire a
 
 ---
 
-## 6. Forza e livelli di garanzia (LoA / eIDAS)
+## 7. Forza e livelli di garanzia (LoA / eIDAS)
 
 L'asse della forza si aggancia ai livelli di garanzia normati:
 
@@ -162,7 +162,7 @@ La regola di scelta è **legata al rischio**: maggiore è il danno potenziale di
 
 ---
 
-## 7. Albero decisionale
+## 8. Albero decisionale
 
 <p align="center">
   <img src="img/albero_decisionale.svg" alt="Albero decisionale per la scelta della tecnologia di autenticazione" width="900">
@@ -177,7 +177,7 @@ La regola di scelta è **legata al rischio**: maggiore è il danno potenziale di
 
 ---
 
-## 8. Come funziona l'autenticazione mutua forte
+## 9. Come funziona l'autenticazione mutua forte
 
 Quando il compito chiede l'autenticazione **forte e mutua** (tipica di mTLS e dei servizi), il meccanismo è uno scambio sfida/risposta a tre vie basato sulla firma asimmetrica.
 
@@ -189,7 +189,7 @@ Idea di fondo: chi verifica invia una **sfida fresca** (nonce); solo chi possied
 
 > **Lo stesso schema, livelli diversi.** Questo handshake è quello di **TLS/mTLS** a **L4/5**. Lo **stesso schema concettuale** è realizzato da **SSH** a **L7**: SSH autentica il server con la *host key*, costruisce il canale cifrato e poi autentica il client (chiave pubblica o password). Cambia il livello OSI, non la logica.
 
-### 8.1 Autenticazione mutua col tunnel (server forte + client debole dentro)
+### 9.1 Autenticazione mutua col tunnel (server forte + client debole dentro)
 
 Non sempre entrambe le parti hanno un certificato. Il caso più frequente sul web è asimmetrico: il **server** è forte (certificato), il **client/utente** è debole (password). La soluzione è far autenticare per prima la parte forte, che **crea il canale cifrato**, e far autenticare la parte debole **dentro** quel tunnel.
 
@@ -207,7 +207,7 @@ Le tre fasi:
 
 ---
 
-## 9. Errori da evitare nel compito
+## 10. Errori da evitare nel compito
 
 - ❌ "Uso 802.1X **oppure** mTLS." → Sono a livelli diversi: spesso si usano **entrambi**.
 - ❌ "Metto un certificato, quindi è mTLS." → Il certificato è una credenziale; mTLS è *come e dove* la si usa (mutua, a L4/5).
@@ -218,7 +218,7 @@ Le tre fasi:
 
 ---
 
-## 10. Glossario rapido delle sigle
+## 11. Glossario rapido delle sigle
 
 | Sigla | Significato |
 |---|---|
