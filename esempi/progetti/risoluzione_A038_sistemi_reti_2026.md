@@ -210,13 +210,14 @@ L'**amministrazione remota** degli apparati usa **SSH** (host key → canale cif
 
 ### Autenticazione reciproca dei nodi di infrastruttura
 
-L'autenticazione del Punto 4 riguarda gli **utenti**; qui si tratta l'autenticazione **fra apparati e servizi**, che è di natura **mutua** (nessuna delle due parti è "il browser di un umano" da fidare a senso unico) e va realizzata **su canali insicuri** — l'aria del Wi-Fi/mesh, Internet fra cantiere e sede, la rete IP edge↔backend:
-- Dove i nodi lo supportano si usa l'**autenticazione forte asimmetrica (a certificati)**;
+L'autenticazione del Punto 4 riguarda gli **utenti**; qui si tratta l'autenticazione **fra apparati e servizi**, che è di natura **mutua** (nessuna delle due parti è "il browser di un umano" da fidare a senso unico) e va realizzata **su canali insicuri** (l'aria del Wi-Fi/mesh, Internet fra cantiere e sede, la rete IP edge↔backend). A seconda della qualità dei nodi:
+- dove i nodi lo supportano si usa l'**autenticazione forte asimmetrica (a certificati)**;
 - sui **nodi a risorse limitate** che non reggono una PKI/TLS, tipicamente i **sensori** sul lato radio, si ricorre all'**autenticazione mutua a chiave pre-condivisa (PSK)**.
 
 I meccanismi non si escludono: vivono a **livelli diversi** dello stack (802.1X a L2, mTLS/TLS a L4/5, IPsec a L3, SSH/Kerberos a L7) e tipicamente **coesistono**.
 
-[![I quattro livelli di autenticazione di un collegamento: 802.1X a L2, IPsec/VPN a L3, mTLS/TLS a L4/5, SSH/Kerberos a L7](https://github.com/sebastianomelita/ArduinoBareMetal/raw/master/approfondimenti/img/stack_802.1x_mtls.svg)](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/approfondimenti/img/stack_802.1x_mtls.svg)
+
+<img src="approfondimenti/img/stack_802.1x_mtls.svg" alt="stack_802.1x_mtls.svg" width="800">
 
 #### Richiamo teorico — autenticazione forte, mutua e a tre vie
 
@@ -230,9 +231,9 @@ I meccanismi non si escludono: vivono a **livelli diversi** dello stack (802.1X 
 - **Principio operativo.** Nell'autenticazione mutua è spesso **la parte più forte a creare il canale sicuro** su cui poi si autentica la controparte più debole.
 - **PFS (Perfect Forward Secrecy).** Su tutti questi canali si impone lo scambio **Diffie-Hellman effimero (DHE/ECDHE)**: la chiave privata RSA serve solo ad **autenticare** lo scambio, mentre le chiavi di sessione sono temporanee. Così la compromissione *futura* di una privata non rende leggibile il traffico *passato* registrato (rilevante per i log dei sensori e gli allarmi).
 
-[![Autenticazione mutua asimmetrica con sfida in chiaro (mTLS)](https://github.com/sebastianomelita/ArduinoBareMetal/raw/master/approfondimenti/img/authutente/auth_mutua_asimmetrica.jpg)](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/approfondimenti/img/authutente/auth_mutua_asimmetrica.jpg)
+<img src="approfondimenti/img/authutente/auth_mutua_asimmetrica.jpg" alt="stack_802.1x_mtls.svg" width="700">
 
-*(Fase di registrazione = scambio autenticato delle chiavi pubbliche tramite certificati CA; dettaglio in [autenticazione_utente.md §5.6–5.8](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/approfondimenti/autenticazione_utente.md).)*
+*(Fase di registrazione = scambio autenticato delle chiavi pubbliche tramite certificati CA; dettaglio in [autenticazione_utente.md §5.6–5.8](approfondimenti/autenticazione_utente.md).)*
 
 #### Applicazione ai nodi dello scenario
 
