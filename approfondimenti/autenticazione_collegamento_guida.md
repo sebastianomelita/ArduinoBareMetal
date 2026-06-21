@@ -51,7 +51,11 @@ La forza di un'autenticazione dipende da quanti e quali **fattori** usa. Un sing
 
 Per questo in un progetto serio coesistono: 
 - controllo di **accesso alla rete LAN** (802.1X), metafora umana: il **tornello con badge** all'ingresso dell'edificio.
-- il controllo di **accesso al servizio specifico** (mTLS), metafora umana: controllo del documento prima di accedere alla sala di pulizia dei gioielli della  corona. La figura colloca anche gli altri due piani: **L3** è dove vive la classica **VPN** (IPsec), **L7** è dove **SSH** e **Kerberos** autenticano a livello applicativo — con una chiave propria, non con il certificato X.509.
+- il controllo di **accesso al servizio specifico** (mTLS), metafora umana: controllo del documento prima di accedere alla sala di pulizia dei gioielli della  corona.
+
+La figura colloca anche gli altri due piani: 
+- **L3** è dove vive la classica **VPN** (IPsec)
+- **L7** è dove **SSH** e **Kerberos** autenticano a livello applicativo con una chiave propria, non con il certificato X.509.
 
 ---
 
