@@ -124,51 +124,77 @@ Stesso indirizzamento, stessi tunnel: si tolgono **tutte** le rotte statiche e s
 
 Ogni `Tunnel` è un link **point‑to‑point** in **area 0**. Ogni router immette in OSPF le proprie LAN `/24` e il `/30` del tunnel. Il database link‑state si propaga: la **sede impara tutti i `10.k.0.0/16`**, ogni **cantiere impara `10.0.0.0/16`** della sede. Niente rotte a mano, e l'aggiunta del cantiere 6 non tocca la sede.
 
+> **Metodo «nuovo firmware» (per‑interfaccia).** Niente comandi `network` sotto `router ospf`: il processo contiene **solo** `router-id` e i `passive-interface`; OSPF si abilita e annuncia la rete **direttamente sull'interfaccia** con `ip ospf <pid> area <n>` (cheat sheet §6 e §7). Così l'area si legge a colpo d'occhio su ciascuna interfaccia, senza wildcard.
+
 ### 5.2 Configurazione lato sede (hub)
 
 ```
+! --- Processo: solo router-id + passive-interface (nessun "network") ---
 R-SEDE(config)# router ospf 100
 R-SEDE(config-router)#  router-id 10.255.0.2
-R-SEDE(config-router)#  passive-interface default        ! nessun hello sulle LAN...
-R-SEDE(config-router)#  no passive-interface Tunnel1      ! ...ma adiacenze sui tunnel
+R-SEDE(config-router)#  passive-interface default        ! blocca gli Hello ovunque...
+R-SEDE(config-router)#  no passive-interface Tunnel1      ! ...riabilitati solo sui tunnel
 R-SEDE(config-router)#  no passive-interface Tunnel2
 R-SEDE(config-router)#  no passive-interface Tunnel3
 R-SEDE(config-router)#  no passive-interface Tunnel4
 R-SEDE(config-router)#  no passive-interface Tunnel5
-R-SEDE(config-router)#  network 10.0.0.0 0.0.255.255 area 0     ! tutte le LAN di sede
-R-SEDE(config-router)#  network 10.255.0.0 0.0.0.255 area 0     ! tutti i /30 dei tunnel
 R-SEDE(config-router)#  exit
-! su OGNI interfaccia tunnel:
+
+! --- LAN di sede: annunciate, ma passive (nessuna adiacenza sulle VLAN) ---
+R-SEDE(config)# interface Vlan10
+R-SEDE(config-if)#  ip ospf 100 area 0
+R-SEDE(config)# interface Vlan20
+R-SEDE(config-if)#  ip ospf 100 area 0
+R-SEDE(config)# interface Vlan30
+R-SEDE(config-if)#  ip ospf 100 area 0
+R-SEDE(config)# interface Vlan40
+R-SEDE(config-if)#  ip ospf 100 area 0
+R-SEDE(config)# interface Vlan99
+R-SEDE(config-if)#  ip ospf 100 area 0
+
+! --- Dorsali: adiacenza attiva, link punto-punto ---
 R-SEDE(config)# interface range Tunnel1 - 5
-R-SEDE(config-if-range)#  ip ospf network point-to-point
+R-SEDE(config-if-range)#  ip ospf network point-to-point   ! niente DR/BDR sul link a 2 nodi
+R-SEDE(config-if-range)#  ip ospf 100 area 0
 ```
 
-> `network 10.0.0.0 0.0.255.255` cattura `10.0.10.254`, `10.0.20.254`, … (tutti i gateway `/24` della sede); `network 10.255.0.0 0.0.0.255` cattura i cinque `/30`.
+> `ip ospf 100 area 0` sull'interfaccia fa due cose insieme: **abilita** OSPF su quella porta e **annuncia** la sua subnet. Sulle VLAN il `passive-interface default` evita inutili Hello (non ci sono altri router OSPF nelle LAN), ma la subnet viene comunque propagata.
 
 ### 5.3 Configurazione lato cantiere (spoke)
 
 ```
-! Esempio: cantiere 1
+! Esempio: cantiere 1 (gli altri cambiano solo router-id e numero di Tunnel)
 R-CANT1(config)# router ospf 100
 R-CANT1(config-router)#  router-id 10.255.0.1
 R-CANT1(config-router)#  passive-interface default
 R-CANT1(config-router)#  no passive-interface Tunnel1
-R-CANT1(config-router)#  network 10.1.0.0 0.0.255.255 area 0    ! le LAN del cantiere
-R-CANT1(config-router)#  network 10.255.0.0 0.0.0.3   area 0    ! il /30 del tunnel
 R-CANT1(config-router)#  exit
+
+! --- LAN del cantiere (passive, solo annuncio) ---
+R-CANT1(config)# interface Vlan10
+R-CANT1(config-if)#  ip ospf 100 area 0
+R-CANT1(config)# interface Vlan20
+R-CANT1(config-if)#  ip ospf 100 area 0
+R-CANT1(config)# interface Vlan30
+R-CANT1(config-if)#  ip ospf 100 area 0
+R-CANT1(config)# interface Vlan99
+R-CANT1(config-if)#  ip ospf 100 area 0
+
+! --- Dorsale verso la sede ---
 R-CANT1(config)# interface Tunnel1
 R-CANT1(config-if)#  ip ospf network point-to-point
+R-CANT1(config-if)#  ip ospf 100 area 0
 ```
 
-Le `network` cambiano solo nei numeri, per cantiere:
+Per ogni cantiere cambiano **solo** il `router-id` e il `Tunnel` da riabilitare; l'`area 0` sulle interfacce resta identica:
 
-| Cantiere | LAN | Tunnel `/30` |
-| -------- | --- | ------------ |
-| 1 | `network 10.1.0.0 0.0.255.255 area 0` | `network 10.255.0.0 0.0.0.3 area 0` |
-| 2 | `network 10.2.0.0 0.0.255.255 area 0` | `network 10.255.0.4 0.0.0.3 area 0` |
-| 3 | `network 10.3.0.0 0.0.255.255 area 0` | `network 10.255.0.8 0.0.0.3 area 0` |
-| 4 | `network 10.4.0.0 0.0.255.255 area 0` | `network 10.255.0.12 0.0.0.3 area 0` |
-| 5 | `network 10.5.0.0 0.0.255.255 area 0` | `network 10.255.0.16 0.0.0.3 area 0` |
+| Cantiere | `router-id` | Dorsale | `no passive-interface` |
+| -------- | ----------- | ------- | ---------------------- |
+| 1 | `10.255.0.1`  | `Tunnel1` | `no passive-interface Tunnel1` |
+| 2 | `10.255.0.5`  | `Tunnel2` | `no passive-interface Tunnel2` |
+| 3 | `10.255.0.9`  | `Tunnel3` | `no passive-interface Tunnel3` |
+| 4 | `10.255.0.13` | `Tunnel4` | `no passive-interface Tunnel4` |
+| 5 | `10.255.0.17` | `Tunnel5` | `no passive-interface Tunnel5` |
 
 ### 5.4 Perché GRE + `point-to-point` (e non IPsec «nudo»)
 
@@ -198,7 +224,7 @@ O    10.0.0.0/16 [110/...] via 10.255.0.2, Tunnel1
 
 | Criterio | Statico | OSPF |
 | -------- | ------- | ---- |
-| Rotte da scrivere | 1 per spoke + 5 sull'hub | nessuna rotta, solo `network`/interfacce |
+| Rotte da scrivere | 1 per spoke + 5 sull'hub | nessuna rotta: `ip ospf 100 area 0` per interfaccia |
 | Aggiunta cantiere 6 | si modifica **anche** la sede | il nuovo spoke si annuncia da solo |
 | Guasto/cambio link | nessuna reazione (serve floating static) | riconvergenza automatica |
 | Spoke‑to‑spoke | da aggiungere a mano | automatico via hub |
