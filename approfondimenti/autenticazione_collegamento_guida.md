@@ -141,7 +141,7 @@ La regola di scelta è **legata al rischio**: maggiore è il danno potenziale di
 Quando il compito chiede l'autenticazione **forte e mutua** (tipica di mTLS e dei servizi), il meccanismo è uno scambio sfida/risposta a tre vie basato sulla firma asimmetrica.
 
 <p align="center">
-  <img src="img/handshake_mutuo_sfida.svg" alt="Handshake mutuo a sfida/risposta in stile mTLS" width="840">
+  <img src="img/handshake_mutuo_sfida.svg" alt="Handshake mutuo a sfida/risposta in stile mTLS" width="900">
 </p>
 
 Idea di fondo: chi verifica invia una **sfida fresca** (nonce); solo chi possiede la **chiave privata** può produrre la firma corretta. Il certificato (firmato da una CA fidata) serve solo ad autenticare la chiave pubblica con cui si verifica la firma. Con sfide Diffie-Hellman effimere (DHE/ECDHE) si ottiene anche la **Perfect Forward Secrecy**.
@@ -153,7 +153,7 @@ Idea di fondo: chi verifica invia una **sfida fresca** (nonce); solo chi possied
 Non sempre entrambe le parti hanno un certificato. Il caso più frequente sul web è asimmetrico: il **server** è forte (certificato), il **client/utente** è debole (password). La soluzione è far autenticare per prima la parte forte, che **crea il canale cifrato**, e far autenticare la parte debole **dentro** quel tunnel.
 
 <p align="center">
-  <img src="img/tunnel_pap_chap.svg" alt="Autenticazione mutua con tunnel: server asimmetrico + client PAP/CHAP dentro" width="860">
+  <img src="img/tunnel_pap_chap.svg" alt="Autenticazione mutua con tunnel: server asimmetrico + client PAP/CHAP dentro" width="900">
 </p>
 
 Le tre fasi:
