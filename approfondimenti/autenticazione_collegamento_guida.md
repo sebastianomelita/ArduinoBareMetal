@@ -49,7 +49,9 @@ La forza di un'autenticazione dipende da quanti e quali **fattori** usa. Un sing
 | **802.1X / EAP-TLS** | RADIUS (NAC) | L2 — ammissione alla porta | accesso rogue alla LAN (scansioni, ARP spoofing, attacco agli apparati che non parlano mTLS) |
 | **mTLS** | il peer applicativo (es. broker) | L4/5 — sessione sul trasporto | client fasullo verso il servizio; garantisce cifratura end-to-end attraverso la WAN |
 
-Per questo in un progetto serio coesistono: il **tornello con badge** all'ingresso (802.1X) **e** il controllo del documento nella stanza dove parli (mTLS). La figura colloca anche gli altri due piani: **L3** è dove vive la classica **VPN** (IPsec), **L7** è dove **SSH** e **Kerberos** autenticano a livello applicativo — con una chiave propria, non con il certificato X.509.
+Per questo in un progetto serio coesistono: 
+- controllo di **accesso alla rete LAN** (802.1X), metafora umana: il **tornello con badge** all'ingresso 
+- il controllo di **accesso al servizio specifico** (mTLS), metafora umana: controllo del documento prima di accedere alla sala di pulizia dei gioielli della  corona. La figura colloca anche gli altri due piani: **L3** è dove vive la classica **VPN** (IPsec), **L7** è dove **SSH** e **Kerberos** autenticano a livello applicativo — con una chiave propria, non con il certificato X.509.
 
 ---
 
