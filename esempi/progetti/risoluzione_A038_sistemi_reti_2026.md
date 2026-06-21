@@ -239,7 +239,7 @@ A sinistra il mondo dei certificati X.509, a destra quello della chiave pre-cond
 - **PFS (Perfect Forward Secrecy).** Su tutti questi canali si impone lo scambio **Diffie-Hellman effimero (DHE/ECDHE)**: la chiave privata RSA serve solo ad **autenticare** lo scambio, mentre le chiavi di sessione sono temporanee. Così la compromissione *futura* di una privata non rende leggibile il traffico *passato* registrato (rilevante per i log dei sensori e gli allarmi).
 
 
-*(Fase di registrazione = scambio autenticato delle chiavi pubbliche tramite certificati CA; dettaglio in [Autenticazione utente](/approfondimenti/autenticazione_utente.md#autenticazione-con-certificato-utente))*
+*(Fase di registrazione = scambio autenticato delle chiavi pubbliche tramite certificati CA; dettaglio in [Autenticazione utente](/approfondimenti/autenticazione_utente.md#autenticazione-mutua-asimmetrica-con-sfida-in-chiaro-ad-es-mtls))*
 
 #### Applicazione ai nodi dello scenario
 
