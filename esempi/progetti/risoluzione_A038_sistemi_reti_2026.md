@@ -172,9 +172,10 @@ L'identità dell'operatore è **unica e centralizzata** su **Active Directory/LD
      - stampanti riservate
      - NAS a vari livelli di riservatezza
      - eventuali VPN verso le sedi dei cantieri
-     - particolari Applicativi si locali che via web
+     - particolari Applicativi sia locali che via web
 
-  > Dove l'802.1X non è praticabile (ospiti, dispositivi legacy), ripiego su **captive portal** a L7 (username/password o voucher).
+
+> Dove l'802.1X non è praticabile (ospiti, dispositivi legacy), ripiego su **captive portal** a L7 (username/password o voucher).
 
 **Accesso Canale/VPN.** Gli **operatori remoti** (manutenzione, smartworking) accedono **home-to-site** con **VPN client** + credenziali AD **+ MFA** (OTP/TOTP), validate via RADIUS — *canale insicuro (Internet) ⇒ autenticazione forte obbligatoria*. Le utenze sono centralizzate su server LDAP e comuni al Domain Controller Windows.
 
