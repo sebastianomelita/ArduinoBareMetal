@@ -60,18 +60,18 @@ Due modi di gestire la chiave sui nodi IoT (livello di accesso):
   <img src="/approfondimenti/img/autenticazione-psk.svg" width="90%" style="margin:0;padding:0;">
 </p>
 
-Esempio LoRaWan: le chiavi di sessione **non vengono mai trasmesse**, ma **derivate** in modo identico
-ai due estremi.
+Ecco una versione astratta, con due sole chiavi: una **radice** (segreta, condivisa in anticipo) e una **di sessione** (derivata).
 
-1. **Provisioning.** Ogni dispositivo conserva una chiave radice segreta e unica, la **AppKey**
-   (AES-128), insieme ai propri identificativi (DevEUI, JoinEUI).
-2. **Join-Request** (device → server): il device invia JoinEUI, DevEUI e un **DevNonce**
-   (valore anti-replay), con un codice di integrità calcolato dalla AppKey.
-3. **Join-Accept** (server → device): il Join Server risponde con un **JoinNonce**, il **NetID**,
-   il **DevAddr** e i parametri di rete, il tutto protetto con la AppKey.
-4. **Derivazione** (indipendente sui due lati, con AES-128 a partire da AppKey + i nonce):
-   - `NwkSKey = AES128(AppKey, 0x01 | JoinNonce | NetID | DevNonce | pad)` → chiave di rete
-   - `AppSKey = AES128(AppKey, 0x02 | JoinNonce | NetID | DevNonce | pad)` → chiav
+**Idea di fondo:** la chiave di sessione non si trasmette mai — si *ricalcola* uguale ai due estremi a partire da un segreto che già condividono.
+
+1. **All'inizio** il dispositivo e il server conoscono la stessa **chiave radice K**, unica per quel dispositivo.
+2. **Al collegamento** i due si scambiano un **numero casuale fresco** (un *nonce*).
+3. **Ognuno per conto suo** calcola la **chiave di sessione** così:
+   `K_sessione = AES(K, nonce)`
+
+**Perché funziona:** il risultato è identico sui due lati (stessi ingredienti, stessa funzione), ma non viaggia mai in chiaro; cambia a ogni collegamento (il nonce è nuovo) ed è diverso per ogni dispositivo (la radice K è unica). La radice resta segreta e non si consuma mai.
+
+In una riga: *da una chiave segreta fissa + un numero casuale → una chiave usa-e-getta per la sessione.*
 
 ## 2. Autenticazione asimmetrica forte 
 
