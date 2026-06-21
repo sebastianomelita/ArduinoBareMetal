@@ -238,7 +238,6 @@ A sinistra il mondo dei certificati X.509, a destra quello della chiave pre-cond
 - **Principio operativo.** Nell'autenticazione mutua è spesso **la parte più forte a creare il canale sicuro** su cui poi si autentica la controparte più debole.
 - **PFS (Perfect Forward Secrecy).** Su tutti questi canali si impone lo scambio **Diffie-Hellman effimero (DHE/ECDHE)**: la chiave privata RSA serve solo ad **autenticare** lo scambio, mentre le chiavi di sessione sono temporanee. Così la compromissione *futura* di una privata non rende leggibile il traffico *passato* registrato (rilevante per i log dei sensori e gli allarmi).
 
-<img src="/approfondimenti/img/authutente/auth_mutua_asimmetrica.jpg" alt="stack_802.1x_mtls.svg" width="700">
 
 *(Fase di registrazione = scambio autenticato delle chiavi pubbliche tramite certificati CA; dettaglio in [Autenticazione utente](/approfondimenti/autenticazione_utente.md))*
 
