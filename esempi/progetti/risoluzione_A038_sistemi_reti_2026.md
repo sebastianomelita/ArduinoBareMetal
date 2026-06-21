@@ -184,7 +184,7 @@ L'**amministrazione remota** degli apparati usa **SSH** (host key → canale cif
 
 **Rinforzo con autenticazione a due fattori (2FA/MFA).** Tutto l'impianto sopra poggia, di base, su un **solo fattore** ("una cosa che sai", la password): da solo vale **LoA2 (eIDAS basso)**. Si aggiunge quindi un **secondo fattore** — un **OTP/TOTP** ("una cosa che hai", app authenticator o token) — che innalza l'autenticazione a **forte (LoA3 / eIDAS sostanziale)**. Il 2FA è **obbligatorio** sull'**accesso remoto/VPN** (L3, canale Internet) e sulle **funzioni sensibili** degli applicativi (L7), e raccomandato anche sul logon BYOD. Il secondo fattore viene sempre verificato **dentro un canale già cifrato** (il tunnel TLS/VPN), coerentemente col principio "PAP/password solo su canale sicuro".
 
-> **Sintesi del modello per gli operatori.** *Un'unica identità AD/LDAP*, verificata a più livelli che **si sommano**: **802.1X/EAP-PEAP** (BYOD) **oppure** **logon di dominio Kerberos/LDAP** (PC fisso) per **entrare in rete** (L2) → **TLS non mutuo con password-in-tunnel (PAP)** per gli **applicativi HTTPS** (L4/5–L7) → il tutto **rinforzato da 2FA OTP/TOTP** per passare da LoA2 a LoA3. Il certificato *client* (mTLS, LoA4) resta riservato ad **apparati e servizi**, non agli utenti.
+> **Sintesi del modello per gli operatori.** *Un'unica identità AD/LDAP*, verificata a più livelli che **si sommano**: **802.1X/EAP-PEAP** (BYOD) **oppure** **logon di dominio Kerberos/LDAP** (PC fisso) per **entrare in rete** → **TLS non mutuo con password-in-tunnel (PAP)** per gli **applicativi HTTPS** (L4/5–L7) → il tutto **rinforzato da 2FA OTP/TOTP** per passare da LoA2 a LoA3. Il certificato *client* (mTLS, LoA4) resta riservato ad **apparati e servizi**, non agli utenti.
 
 
 ---
