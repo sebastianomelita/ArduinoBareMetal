@@ -36,6 +36,20 @@ La forza di un'autenticazione dipende da quanti e quali **fattori** usa. Un sing
 
 ---
 
+# Autenticazione reciproca dei nodi di infrastruttura
+
+L'autenticazione del Punto 4 riguarda gli **utenti**; qui si tratta l'autenticazione **fra apparati e servizi**, che è di natura **mutua** (nessuna delle due parti è "il browser di un umano" da fidare a senso unico) e va realizzata **su canali insicuri** (l'aria del Wi-Fi/mesh, Internet fra cantiere e sede, la rete IP edge↔backend). A seconda della qualità dei nodi:
+- dove i nodi lo supportano si usa l'**autenticazione forte asimmetrica (a certificati)**;
+- sui **nodi a risorse limitate** che non reggono una PKI/TLS, tipicamente i **sensori** sul lato radio, si ricorre all'**autenticazione mutua a chiave pre-condivisa (PSK)**.
+
+I meccanismi non si escludono: vivono a **livelli diversi** dello stack (802.1X a L2, mTLS/TLS a L4/5, IPsec a L3, SSH/Kerberos a L7) e tipicamente **coesistono**.
+
+## 2. Autenticazione PSK
+
+<p align="center" style="margin:0;padding:0;">
+  <img src="/approfondimenti/img/autenticazione-psk.svg" width="90%" style="margin:0;padding:0;">
+</p>
+
 ## 2. Il punto chiave: stesso certificato, punti diversi
 
 802.1X e mTLS **sembrano** alternativi perché possono usare lo stesso certificato X.509 e la stessa PKI. Ma autenticano cose diverse, a livelli diversi, verso interlocutori diversi: sono **complementari**.
@@ -70,10 +84,6 @@ La figura colloca anche gli altri due piani:
 | **Pre-shared key (PSK)** | segreto simmetrico condiviso | L2/L3/L7 | sì | media | LoRaWAN OTAA: AppKey 128 bit → AppSKey/NwkSKey |
 | **MIC / AES-CMAC sul frame** | chiave di sessione (NwkSKey) | L2 (LoRaWAN) | implicita | media-forte | autenticazione + integrità del frame |
 | **IPsec (PSK o certificati)** | PSK oppure certificato | L3 | sì | media/forte | VPN site-to-site di backup |
-
-<p align="center" style="margin:0;padding:0;">
-  <img src="/approfondimenti/img/autenticazione-psk.svg" width="90%" style="margin:0;padding:0;">
-</p>
 
 > **Nota.** PSK e certificati sono fattori diversi e **nessuno dei due è "mTLS" di per sé**. LoRaWAN autentica i nodi via PSK (AppKey) e MIC, senza PKI sul lato radio; mTLS compare solo più in alto, sul canale IP edge↔backend.
 
