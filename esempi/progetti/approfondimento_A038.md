@@ -200,7 +200,7 @@ Quando un client MQTT comunica su un canale basato su IP, la pila protocollare c
 
 **Livelli 2 e 1 – Collegamento dati e Fisico**: dipendono dal mezzo concreto usato dal dispositivo (Ethernet, Wi-Fi, cellulare, ecc.). Gestiscono indirizzamento MAC, trama e trasmissione fisica dei bit.
 
-<img src="../img/stack_mqtt.svg" alt="Stack protocollare MQTT su IP">
+<img src="../img/stack_mqtt.svg" alt="Stack protocollare MQTT su IP" width="600">
 
 Per il **il client MQTT** sono possibili due scenari, potrebbe stare:
 - sul **sensore** se 
