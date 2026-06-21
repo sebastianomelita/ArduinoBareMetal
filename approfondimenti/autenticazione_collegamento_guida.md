@@ -46,9 +46,32 @@ I meccanismi non si escludono: vivono a **livelli diversi** dello stack (802.1X 
 
 ## 2. Autenticazione PSK
 
+Due modi di gestire la chiave sui nodi IoT (livello di accesso):
+
+- **A — PSK condivisa:** un'unica passphrase **uguale per tutti** i nodi che si associano
+  all'access point. Semplicissima, ma fragile: se il segreto trapela, **cadono tutti insieme**.
+- **B — Chiave per-dispositivo:** ogni nodo ha la **sua** chiave, diversa dalle altre. È il modello
+  di **LoRaWAN**: ogni device possiede una chiave radice unica e, tramite la procedura di **join
+  OTAA** gestita dal **Join Server**, ne derivano chiavi di sessione distinte. Si ottengono
+  **isolamento** e **revoca per singolo nodo** tipici della PKI, restando però nel mondo simmetrico,
+  leggero e adatto ai dispositivi vincolati.
+
 <p align="center" style="margin:0;padding:0;">
   <img src="/approfondimenti/img/autenticazione-psk.svg" width="90%" style="margin:0;padding:0;">
 </p>
+
+Esempio LoRaWan: le chiavi di sessione **non vengono mai trasmesse**, ma **derivate** in modo identico
+ai due estremi.
+
+1. **Provisioning.** Ogni dispositivo conserva una chiave radice segreta e unica, la **AppKey**
+   (AES-128), insieme ai propri identificativi (DevEUI, JoinEUI).
+2. **Join-Request** (device → server): il device invia JoinEUI, DevEUI e un **DevNonce**
+   (valore anti-replay), con un codice di integrità calcolato dalla AppKey.
+3. **Join-Accept** (server → device): il Join Server risponde con un **JoinNonce**, il **NetID**,
+   il **DevAddr** e i parametri di rete, il tutto protetto con la AppKey.
+4. **Derivazione** (indipendente sui due lati, con AES-128 a partire da AppKey + i nonce):
+   - `NwkSKey = AES128(AppKey, 0x01 | JoinNonce | NetID | DevNonce | pad)` → chiave di rete
+   - `AppSKey = AES128(AppKey, 0x02 | JoinNonce | NetID | DevNonce | pad)` → chiav
 
 ## 2. Autenticazione asimmetrica forte 
 
