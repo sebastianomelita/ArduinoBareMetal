@@ -1,0 +1,79 @@
+<svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="gApp" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="gTra" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#0ea5e9"/>
+      <stop offset="1" stop-color="#06b6d4"/>
+    </linearGradient>
+    <linearGradient id="gRet" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#10b981"/>
+      <stop offset="1" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="gFis" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f59e0b"/>
+      <stop offset="1" stop-color="#f97316"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+
+  <!-- Titolo -->
+  <text x="40" y="46" font-size="26" font-weight="700" fill="#0f172a">Stack protocollare MQTT su IP</text>
+  <text x="40" y="74" font-size="15" fill="#64748b">Mappatura sui livelli del modello OSI</text>
+
+  <!-- Freccia incapsulamento -->
+  <g stroke="#94a3b8" stroke-width="2" fill="none">
+    <line x1="22" y1="118" x2="22" y2="510"/>
+    <polygon points="22,520 16,506 28,506" fill="#94a3b8" stroke="none"/>
+  </g>
+  <text x="14" y="320" font-size="11" fill="#94a3b8" letter-spacing="2"
+        transform="rotate(-90 14 320)" text-anchor="middle">INCAPSULAMENTO ▸ DISCESA NELLA PILA</text>
+
+  <!-- LIVELLO 7 - Applicazione -->
+  <g filter="url(#shadow)">
+    <rect x="44" y="110" width="676" height="92" rx="16" fill="url(#gApp)"/>
+  </g>
+  <circle cx="92" cy="156" r="26" fill="#ffffff" fill-opacity="0.18"/>
+  <text x="92" y="164" font-size="24" font-weight="700" fill="#ffffff" text-anchor="middle">7</text>
+  <text x="138" y="146" font-size="12" fill="#ffffff" fill-opacity="0.85" letter-spacing="1.5">LIVELLO 7 · APPLICAZIONE</text>
+  <text x="138" y="178" font-size="26" font-weight="700" fill="#ffffff">MQTT</text>
+  <text x="704" y="150" font-size="14" fill="#ffffff" text-anchor="end">publish / subscribe</text>
+  <text x="704" y="172" font-size="14" fill="#ffffff" fill-opacity="0.9" text-anchor="end">basato su broker</text>
+
+  <!-- LIVELLO 4 - Trasporto -->
+  <g filter="url(#shadow)">
+    <rect x="44" y="217" width="676" height="92" rx="16" fill="url(#gTra)"/>
+  </g>
+  <circle cx="92" cy="263" r="26" fill="#ffffff" fill-opacity="0.18"/>
+  <text x="92" y="271" font-size="24" font-weight="700" fill="#ffffff" text-anchor="middle">4</text>
+  <text x="138" y="253" font-size="12" fill="#ffffff" fill-opacity="0.85" letter-spacing="1.5">LIVELLO 4 · TRASPORTO</text>
+  <text x="138" y="285" font-size="26" font-weight="700" fill="#ffffff">TCP</text>
+  <text x="704" y="257" font-size="14" fill="#ffffff" text-anchor="end">orientato alla connessione</text>
+  <text x="704" y="279" font-size="14" fill="#ffffff" fill-opacity="0.9" text-anchor="end">affidabile</text>
+
+  <!-- LIVELLO 3 - Rete -->
+  <g filter="url(#shadow)">
+    <rect x="44" y="324" width="676" height="92" rx="16" fill="url(#gRet)"/>
+  </g>
+  <circle cx="92" cy="370" r="26" fill="#ffffff" fill-opacity="0.18"/>
+  <text x="92" y="378" font-size="24" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+  <text x="138" y="360" font-size="12" fill="#ffffff" fill-opacity="0.85" letter-spacing="1.5">LIVELLO 3 · RETE</text>
+  <text x="138" y="392" font-size="26" font-weight="700" fill="#ffffff">IP</text>
+  <text x="704" y="364" font-size="14" fill="#ffffff" text-anchor="end">senza connessione</text>
+  <text x="704" y="386" font-size="14" fill="#ffffff" fill-opacity="0.9" text-anchor="end">best-effort</text>
+
+  <!-- LIVELLI 1-2 - Collegamento / Fisico -->
+  <g filter="url(#shadow)">
+    <rect x="44" y="431" width="676" height="92" rx="16" fill="url(#gFis)"/>
+  </g>
+  <circle cx="92" cy="477" r="26" fill="#ffffff" fill-opacity="0.18"/>
+  <text x="92" y="485" font-size="18" font-weight="700" fill="#ffffff" text-anchor="middle">1·2</text>
+  <text x="138" y="467" font-size="12" fill="#ffffff" fill-opacity="0.85" letter-spacing="1.5">LIVELLI 1–2 · COLLEGAMENTO / FISICO</text>
+  <text x="138" y="499" font-size="24" font-weight="700" fill="#ffffff">Ethernet / Wi-Fi</text>
+  <text x="704" y="471" font-size="14" fill="#ffffff" text-anchor="end">dipende dal mezzo</text>
+  <text x="704" y="493" font-size="14" fill="#ffffff" fill-opacity="0.9" text-anchor="end">trasmissione dei bit</text>
+</svg>
