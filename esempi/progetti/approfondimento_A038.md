@@ -190,6 +190,21 @@ I dispositivi Zigbee **non parlano IP/MQTT**: è il **coordinatore/gateway** a f
 
 <img src="../img/iot_mqtt.svg" alt="Architettura dati IoT/MQTT eterogenea" width="820">
 
+Quando un client MQTT comunica su un canale basato su IP, la pila protocollare coinvolge questi livelli OSI:
+
+**Livello 7 – Applicazione**: qui sta MQTT stesso. È un protocollo applicativo di messaggistica basato sul paradigma *publish/subscribe*, con un broker che fa da intermediario. È il livello che definisce i messaggi (CONNECT, PUBLISH, SUBSCRIBE, ecc.) e la QoS.
+
+**Livello 4 – Trasporto**: MQTT si appoggia su **TCP** (porta 1883 in chiaro, 8883 con TLS). TCP è un protocollo *orientato alla connessione* e *affidabile*: garantisce consegna ordinata, controllo di flusso e ritrasmissione dei pacchetti persi. MQTT non implementa l'affidabilità da solo a basso livello, la delega a TCP.
+
+**Livello 3 – Rete**: **IP** (IPv4 o IPv6). È il livello *senza connessione* e *best-effort* che si occupa dell'indirizzamento e dell'instradamento (routing) dei pacchetti tra le reti.
+
+**Livelli 2 e 1 – Collegamento dati e Fisico**: dipendono dal mezzo concreto usato dal dispositivo (Ethernet, Wi-Fi, cellulare, ecc.). Gestiscono indirizzamento MAC, trama e trasmissione fisica dei bit.
+
+<img src="../img/stack_mqtt.svg" alt="Stack protocollare MQTT su IP">
+
+Per il **il client MQTT** sono possibili due scenari, potrebbe stare:
+- sul **sensore** se 
+
 Per il **broker MQTT** sono possibili due scenari, potrebbe stare:
 - un **broker nella sola sede** centrale che raccoglie i messaggi di ogni cantiere provenienti dal loro **gateway** dove è in stallato un **client MQTT**. 
 - sia **sull'edge del cantiere** che **nella sede centrale**, quindi due broker, dove il broker edge si occupa delle eleborazioni locali (allarmi real-time locali) e inoltre fa **bridge** verso il broker di sede che si occupa delle eleborazioni remote (segnalazioni + log storico), coerente con la Prima parte. I publisher si autenticano al broker in **mTLS** (livello L4/5 dello stack di autenticazione), con **ACL per topic** sul broker. Il vantaggio di un secondo broker è che si possono ingegnerizzare i topic sul bridge, facendo confluire i dati di un topic sul broker edge su un topic di nome diverso nel broker centrale. Ade esempio ```misureTemp``` sul broker edge diventa ```temp``` sul broker centrale.
