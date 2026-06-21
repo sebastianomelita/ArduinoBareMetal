@@ -50,7 +50,9 @@ I meccanismi non si escludono: vivono a **livelli diversi** dello stack (802.1X 
   <img src="/approfondimenti/img/autenticazione-psk.svg" width="90%" style="margin:0;padding:0;">
 </p>
 
-## 2. Il punto chiave: stesso certificato, punti diversi
+## 2. Autenticazione asimmetrica forte 
+
+Può essere realizzata a vari livelli della pila ISO/OSI e addirittura utilizzando lo stesso certificato in punti diversi.
 
 802.1X e mTLS **sembrano** alternativi perché possono usare lo stesso certificato X.509 e la stessa PKI. Ma autenticano cose diverse, a livelli diversi, verso interlocutori diversi: sono **complementari**.
 
