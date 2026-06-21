@@ -188,7 +188,7 @@ EIRP (EU, indicativo): 2.4 GHz 20–24 dBm · 5 GHz DFS ~23 dBm indoor / ~30 dBm
 
 I dispositivi Zigbee **non parlano IP/MQTT**: è il **coordinatore/gateway** a fare da traduttore, mappando ogni report Zigbee nello **schema comune**. I dispositivi IP pubblicano già nello stesso formato. Così **broker e consumatori vedono un solo albero di topic e un solo payload**, qualunque sia il trasporto.
 
-<p align="center">
+<p style="text-align:center;">
     <img src="../img/iot_mqtt.svg" alt="Architettura dati IoT/MQTT eterogenea" width="820">
 </p>
 
