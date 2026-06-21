@@ -1,4 +1,4 @@
-<svg viewBox="0 0 980 540" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+<svg viewBox="0 0 980 624" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
   <style>
     .tit{font-size:13px;font-weight:700;fill:#202124}
     .sub{font-size:11px;fill:#5f6368}
@@ -8,6 +8,7 @@
     .net{fill:#fef7e0;stroke:#ea8600}
     .wire{stroke:#5f6368;stroke-width:2;fill:none;marker-end:url(#ar)}
     .zb{stroke:#ea8600;stroke-width:2;stroke-dasharray:5 4;fill:none;marker-end:url(#ar)}
+    .lora{stroke:#d81b60;stroke-width:2;stroke-dasharray:5 4;fill:none;marker-end:url(#ar)}
   </style>
   <defs>
     <marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
@@ -41,42 +42,57 @@
   <path d="M210 178 L268 178" class="zb"/>
   <text x="238" y="168" text-anchor="middle" class="sub" fill="#ea8600">Zigbee</text>
 
+  <!-- LoRaWAN -->
+  <rect x="30" y="244" width="180" height="56" rx="8" class="dev" stroke-width="1.5"/>
+  <text x="120" y="266" text-anchor="middle" class="sub" font-weight="700">Sensori LoRaWAN</text>
+  <text x="120" y="284" text-anchor="middle" class="sub">furto / incendio</text>
+  <!-- GW LoRaWAN (PF + NS + AS) -->
+  <rect x="270" y="236" width="190" height="98" rx="8" class="gw" stroke-width="2"/>
+  <text x="365" y="257" text-anchor="middle" class="sub" font-weight="700">GW LoRaWAN</text>
+  <text x="365" y="276" text-anchor="middle" class="sub">PF (concentratore)</text>
+  <text x="365" y="292" text-anchor="middle" class="sub">NS (Network Server)</text>
+  <text x="365" y="308" text-anchor="middle" class="sub">AS (Application Server)</text>
+  <text x="365" y="326" text-anchor="middle" class="sub" fill="#137333">↳ bridge → MQTT</text>
+  <path d="M210 272 L268 272" class="lora"/>
+  <text x="235" y="262" text-anchor="middle" class="sub" fill="#d81b60">LoRaWAN</text>
+
   <!-- WiFi native -->
-  <rect x="270" y="236" width="190" height="50" rx="8" class="dev" stroke-width="1.5"/>
-  <text x="365" y="257" text-anchor="middle" class="sub" font-weight="700">Sensori Wi-Fi nativi</text>
-  <text x="365" y="274" text-anchor="middle" class="sub">MQTT diretto</text>
+  <rect x="270" y="352" width="190" height="50" rx="8" class="dev" stroke-width="1.5"/>
+  <text x="365" y="373" text-anchor="middle" class="sub" font-weight="700">Sensori Wi-Fi nativi</text>
+  <text x="365" y="390" text-anchor="middle" class="sub">MQTT diretto</text>
 
   <!-- Ethernet native -->
-  <rect x="270" y="302" width="190" height="50" rx="8" class="dev" stroke-width="1.5"/>
-  <text x="365" y="323" text-anchor="middle" class="sub" font-weight="700">Sensori Ethernet nativi</text>
-  <text x="365" y="340" text-anchor="middle" class="sub">MQTT diretto</text>
+  <rect x="270" y="418" width="190" height="50" rx="8" class="dev" stroke-width="1.5"/>
+  <text x="365" y="439" text-anchor="middle" class="sub" font-weight="700">Sensori Ethernet nativi</text>
+  <text x="365" y="456" text-anchor="middle" class="sub">MQTT diretto</text>
 
   <!-- Broker edge -->
-  <rect x="540" y="150" width="180" height="110" rx="8" class="brk" stroke-width="2"/>
-  <text x="630" y="186" text-anchor="middle" class="tit">Broker MQTT</text>
-  <text x="630" y="206" text-anchor="middle" class="sub">edge cantiere</text>
-  <text x="630" y="226" text-anchor="middle" class="sub">allarmi real-time</text>
-  <text x="630" y="244" text-anchor="middle" class="sub">QoS 1 · LWT</text>
+  <rect x="540" y="160" width="180" height="220" rx="8" class="brk" stroke-width="2"/>
+  <text x="630" y="240" text-anchor="middle" class="tit">Broker MQTT</text>
+  <text x="630" y="265" text-anchor="middle" class="sub">edge cantiere</text>
+  <text x="630" y="287" text-anchor="middle" class="sub">allarmi real-time</text>
+  <text x="630" y="309" text-anchor="middle" class="sub">QoS 1 · LWT</text>
 
-  <path d="M460 90 Q500 90 538 165" class="wire"/>
+  <path d="M460 90 Q505 90 538 190" class="wire"/>
   <text x="500" y="120" class="sub">MQTT/TLS</text>
-  <path d="M460 178 L538 188" class="wire"/>
-  <path d="M460 261 Q500 261 538 230" class="wire"/>
-  <path d="M460 327 Q505 327 538 245" class="wire"/>
+  <path d="M460 178 Q505 178 538 225" class="wire"/>
+  <path d="M460 285 Q505 285 538 265" class="wire"/>
+  <path d="M460 377 Q505 377 538 305" class="wire"/>
+  <path d="M460 443 Q505 443 538 345" class="wire"/>
 
   <!-- HQ -->
-  <rect x="780" y="150" width="180" height="110" rx="8" class="net" stroke-width="2"/>
-  <text x="870" y="184" text-anchor="middle" class="tit">Sede centrale</text>
-  <text x="870" y="206" text-anchor="middle" class="sub">broker + sistema allarmi</text>
-  <text x="870" y="224" text-anchor="middle" class="sub">DB log storico</text>
-  <text x="870" y="242" text-anchor="middle" class="sub">sub: cantiere/+/+/+/+/alarm</text>
-  <path d="M720 205 L778 205" class="wire"/>
-  <text x="749" y="196" text-anchor="middle" class="sub">bridge</text>
+  <rect x="780" y="215" width="180" height="110" rx="8" class="net" stroke-width="2"/>
+  <text x="870" y="249" text-anchor="middle" class="tit">Sede centrale</text>
+  <text x="870" y="271" text-anchor="middle" class="sub">broker + sistema allarmi</text>
+  <text x="870" y="289" text-anchor="middle" class="sub">DB log storico</text>
+  <text x="870" y="307" text-anchor="middle" class="sub">sub: cantiere/+/+/+/+/alarm</text>
+  <path d="M720 270 L778 270" class="wire"/>
+  <text x="749" y="261" text-anchor="middle" class="sub">bridge</text>
 
   <!-- banner -->
-  <rect x="30" y="400" width="930" height="110" rx="8" fill="#f3e5f5" stroke="#6a1b9a"/>
-  <text x="48" y="424" class="tit" fill="#4a148c">Normalizzazione applicativa</text>
-  <text x="48" y="448" class="sub">I gateway Zigbee traducono ogni report nel formato comune; i sensori Wi-Fi/Ethernet pubblicano già nello stesso schema.</text>
-  <text x="48" y="468" class="sub">Il broker e i consumatori vedono un unico albero di topic e un unico payload JSON, indipendente dal trasporto.</text>
-  <text x="48" y="492" class="sub" font-weight="700" fill="#4a148c">cantiere/{site}/{zona}/{tipo}/{device}/{alarm|state|cmd|config}  ·  campo "transport": zigbee | wifi | ethernet</text>
+  <rect x="30" y="500" width="930" height="110" rx="8" fill="#f3e5f5" stroke="#6a1b9a"/>
+  <text x="48" y="524" class="tit" fill="#4a148c">Normalizzazione applicativa</text>
+  <text x="48" y="548" class="sub">I gateway Zigbee e LoRaWAN traducono ogni report nel formato comune; i sensori Wi-Fi/Ethernet pubblicano già nello stesso schema.</text>
+  <text x="48" y="568" class="sub">Il broker e i consumatori vedono un unico albero di topic e un unico payload JSON, indipendente dal trasporto.</text>
+  <text x="48" y="592" class="sub" font-weight="700" fill="#4a148c">cantiere/{site}/{zona}/{tipo}/{device}/{alarm|state|cmd|config}  ·  campo "transport": zigbee | wifi | ethernet | lorawan</text>
 </svg>
