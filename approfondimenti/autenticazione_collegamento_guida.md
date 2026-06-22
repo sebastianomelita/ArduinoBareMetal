@@ -238,17 +238,23 @@ La protezione fisica si gradua su tre livelli, di robustezza crescente:
 
 ### Le tecnologie usate oggi
 
-Sono tutte varianti della stessa idea — *custodire la chiave ed eseguire la crittografia in hardware* — declinata per costo, forma e contesto d'uso.
+Sono tutte varianti della stessa idea — *custodire la chiave ed eseguire la crittografia in hardware* — declinate per costo, forma e contesto d'uso. In tabella sono **ordinate per robustezza decrescente**; la riga finale è il «pavimento» da non usare.
 
-| Tecnologia | Dove vive | Uso tipico | Certificazione tipica |
-| --------------------------------------------- | --------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------ |
-| **HSM** (di rete, PCIe, USB) | server, datacenter | chiavi di **CA**, code signing, terminazione TLS, QSCD remoto | FIPS 140-3 L3 (L4 per alta sicurezza), CC EN 419 221-5 |
-| **TPM 2.0** (discreto o *firmware* fTPM) | PC, server, gateway IoT | secure boot, *attestation*, identità di dispositivo, secure storage | FIPS 140-3 / FIPS 140-2 |
-| **Secure Element (SE)** | microcontrollori, IoT (bus I²C/SPI) | identità di dispositivo (IDevID), Matter DAC; costo ~0,5–5 $/pezzo | Common Criteria |
-| **Secure Enclave / StrongBox / TEE-TrustZone** | smartphone (iOS/Android) | passkey, firma, **QSCD** del wallet EUDI | CC / certificazione QSCD |
-| **Smartcard / token PIV-CAC** | utente umano | autenticazione forte in presenza, accesso ad alta garanzia | FIPS 140-3, CC |
-| **Chiave di sicurezza FIDO2 / passkey device-bound** (es. YubiKey) | utente umano | login phishing-resistant, **AAL3** | FIPS 140-3 |
-| **PUF** (*Physically Unclonable Function*) | silicio del dispositivo | chiave derivata dalle micro-variazioni del chip: *non c'è una chiave da rubare* | — |
+| Tecnologia | In breve | Dove vive | Uso tipico | Certificazione / norma di riferimento |
+| ---------- | -------- | --------- | ---------- | ------------------------------------- |
+| **HSM** (rete, PCIe, USB) | modulo crittografico dedicato: genera e usa la chiave senza mai esportarla | server, datacenter (lato backend/CA, non sul nodo) | chiavi di **CA**, code signing, terminazione TLS, QSCD remoto | FIPS 140-3 L3/L4; CC EN 419 221-5 |
+| **Secure Element (SE) / DSC** | chip dedicato tamper-resistant con crypto a bordo; chiave non esportabile | microcontrollori, IoT (bus I²C/SPI); ~0,5–5 $/pezzo | identità di dispositivo (IDevID), Matter DAC | CC / GlobalPlatform SESIP; prescritto da **ETSI EN 303 645 §5.4-1** |
+| **UICC / SIM** (eSIM, iSIM) | il SE della SIM usato come *root of trust* per autenticare il dispositivo | dispositivi cellulari IoT | identità di dispositivo, mutua (D)TLS verso il cloud | **GSMA IoT SAFE**; EN 303 645 §5.4-1 (UICC) |
+| **TPM 2.0** (discreto) | chip di sicurezza con *Shielded Locations* dove la chiave non è leggibile | PC, server, gateway IoT | secure boot, *attestation*, identità di dispositivo, secure storage | FIPS 140-3; **IEEE 802.1AR** (IDevID), TCG |
+| **Secure Enclave / StrongBox / TEE-TrustZone** (e fTPM) | area isolata *dentro* la CPU applicativa: condivide il SoC, quindi più esposta di un chip dedicato | smartphone, SoC applicativi | passkey, firma, **QSCD** del wallet EUDI | PSA Certified, GlobalPlatform TEE; EN 303 645 §5.4-1 (TEE) |
+| **Storage cifrato HW + OTP/fuse; PUF** | chiave cifrata e ancorata al SoC, o derivata dal silicio (PUF: nessuna chiave memorizzata da rubare) | SoC/silicio del dispositivo | dispositivi vincolati senza SE/TPM; identità non clonabile | accettato da EN 303 645 §5.4-1/§5.4-2; PUF spesso con TCG DICE |
+| **Solo software** (file/keystore in flash) | chiave in un file o nel codice: estraibile con reverse engineering — *non* è custodia hardware | qualsiasi | — *(da evitare per le chiavi)* | **vietato** da EN 303 645 §5.4-3 |
+
+> **Robustezza relativa.** Le righe da SE a TPM sono di livello simile (chip dedicati, tipicamente CC EAL4+/5+): la gerarchia *interna* conta meno del salto verso il TEE/TrustZone (isolamento nel SoC, non un chip a parte) e, soprattutto, verso il pavimento software. Per l'IoT industriale **ISA/IEC 62443-4-2** non impone una tecnologia ma richiede protezione delle chiavi + identità ancorata in hardware (mTLS): accetta dallo storage cifrato in su a seconda del *Security Level*.
+
+> **Le stesse tecnologie lato utente.** La tabella sopra guarda al *dispositivo*. Lo stesso secure element, in formati pensati per le persone, regge anche l'autenticazione umana forte: la **smartcard / token PIV-CAC** (SE in formato carta, FIPS 140-3 / CC) per l'accesso ad alta garanzia in presenza, e la **chiave FIDO2 / passkey device-bound** (es. YubiKey: SE in chiavetta USB/NFC che firma la sfida senza esporre la chiave, FIPS 140-3) per il login phishing-resistant — richiesta per l'**AAL3** del NIST SP 800-63-4. Stessa idea del SE/TPM, diverso fattore di forma e interlocutore (utente anziché macchina).
+
+> **Il punto che conta per il compito.** È **questo** che distingue il LoA4 dal LoA3: non «una password più lunga» né «un certificato in più», ma il fatto che la chiave privata **non sia estraibile** dal modulo. Lo stesso certificato X.509 usato per EAP-TLS (§2/§3) o mTLS (§4) diventa *forte+* solo quando la chiave corrispondente sta in un TPM, una smartcard o un SE, e non in un file. **HSM e TPM** sono già nel glossario finale come «moduli hardware sicuri per la custodia delle chiavi»: questa sezione spiega *perché*.
 
 ---
 
