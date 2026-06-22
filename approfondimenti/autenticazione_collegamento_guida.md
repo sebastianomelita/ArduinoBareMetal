@@ -254,8 +254,6 @@ Sono tutte varianti della stessa idea — *custodire la chiave ed eseguire la cr
 
 > **Le stesse tecnologie lato utente.** La tabella sopra guarda al *dispositivo*. Lo stesso secure element, in formati pensati per le persone, regge anche l'autenticazione umana forte: la **smartcard / token PIV-CAC** (SE in formato carta, FIPS 140-3 / CC) per l'accesso ad alta garanzia in presenza, e la **chiave FIDO2 / passkey device-bound** (es. YubiKey: SE in chiavetta USB/NFC che firma la sfida senza esporre la chiave, FIPS 140-3) per il login phishing-resistant — richiesta per l'**AAL3** del NIST SP 800-63-4. Stessa idea del SE/TPM, diverso fattore di forma e interlocutore (utente anziché macchina).
 
-> **Il punto che conta per il compito.** È **questo** che distingue il LoA4 dal LoA3: non «una password più lunga» né «un certificato in più», ma il fatto che la chiave privata **non sia estraibile** dal modulo. Lo stesso certificato X.509 usato per EAP-TLS (§2/§3) o mTLS (§4) diventa *forte+* solo quando la chiave corrispondente sta in un TPM, una smartcard o un SE, e non in un file. **HSM e TPM** sono già nel glossario finale come «moduli hardware sicuri per la custodia delle chiavi»: questa sezione spiega *perché*.
-
 ---
 
 ### Le certificazioni (come si misura «quanto è sicuro»)
@@ -323,3 +321,10 @@ L'hardware tamper-resistant sta passando da «buona pratica» a **requisito norm
 | **EUDI Wallet** | European Digital Identity Wallet (eIDAS 2.0), disponibile in ogni Stato UE entro dicembre 2026 |
 | **PQC** | Post-Quantum Cryptography: FIPS 203/204/205 (ML-KEM, ML-DSA, SLH-DSA) |
 | **NIS2** | Direttiva UE 2022/2555 sulla cybersicurezza di entità essenziali e importanti |
+| **Secure Enclave / StrongBox / TEE** | aree hardware isolate dello smartphone per chiavi e operazioni crittografiche |
+| **ETSI EN 303 645** | baseline UE di cybersicurezza per l'IoT di consumo; §5.4 detta la custodia delle chiavi |
+| **IEEE 802.1AR (DevID)** | identità sicura di dispositivo (IDevID/LDevID): chiave privata in *Shielded Location* |
+| **ISA/IEC 62443-4-2** | requisiti tecnici di sicurezza per i componenti dei sistemi industriali (IACS) |
+| **GSMA IoT SAFE** | uso della SIM/eSIM/iSIM come root of trust per chiavi e (D)TLS nell'IoT cellulare |
+| **SESIP / PSA Certified** | schemi di certificazione del secure storage e del root of trust per chip embedded/IoT |
+| **TCG DICE** | Device Identifier Composition Engine: identità derivata dal silicio per dispositivi vincolati |
