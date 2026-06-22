@@ -222,11 +222,9 @@ La robustezza dell'autenticazione LOA4 non riguarda però solo i protocolli ma a
 
 ## 10. Hardware tamper-resistant per la chiave privata
 
-[#10-hardware-tamper-resistant-per-la-chiave-privata](#10-hardware-tamper-resistant-per-la-chiave-privata)
+Tutta la guida ruota su una frase: *solo chi possiede la chiave privata può produrre la firma corretta* (§8). Ma questa garanzia vale **quanto vale la protezione della chiave**. Una chiave RSA/ECC in un file `.pem` sul disco è forte come una password scritta su un foglietto: chi prende il file prende l'identità. Non è considerato sicuro generare e conservare la chiave negli ambienti normalmente condivisi con le applicazioni, quindi nè il disco, nè la RAM e neppure la CPU.
 
-> Approfondimento del concetto introdotto al §6 (LoA4, «chiavi in hardware tamper-resistant»): finora la dispensa lo cita senza spiegare *cosa* sia e *con quali tecnologie* si realizzi.
-
-Tutta la guida ruota su una frase: *solo chi possiede la chiave privata può produrre la firma corretta* (§8). Ma questa garanzia vale **quanto vale la protezione della chiave**. Una chiave RSA/ECC in un file `.pem` sul disco è forte come una password scritta su un foglietto: chi prende il file prende l'identità. Per questo ai livelli alti (LoA4 / **AAL3** del NIST) non basta *avere* una chiave: la chiave deve **nascere dentro un chip sicuro, non uscirne mai** (*non-exportable*), e tutte le operazioni crittografiche devono avvenire **a bordo** del chip. Il software vede solo il risultato (la firma), mai il segreto.
+Per questo ai livelli alti (LoA4 / **AAL3** del NIST) non basta *avere* una chiave: la chiave deve **nascere dentro un chip crittografico sicuro, non uscirne mai** (*non-exportable*), e tutte le operazioni crittografiche devono avvenire **a bordo** del chip. Il software vede solo il risultato (la firma), mai il segreto.
 
 La protezione fisica si gradua su tre livelli, di robustezza crescente:
 
@@ -236,7 +234,6 @@ La protezione fisica si gradua su tre livelli, di robustezza crescente:
 | **Tamper-resistant** | rende difficile l'effrazione senza distruggere il dispositivo | mesh anti-probing, schermature di bus/memoria |
 | **Tamper-responsive** | reagisce alla manomissione **azzerando** le chiavi (*zeroization*) | HSM di fascia alta, FIPS 140-3 Livello 3/4 |
 
----
 
 ### Le tecnologie usate oggi
 
@@ -252,16 +249,16 @@ Sono tutte varianti della stessa idea — *custodire la chiave ed eseguire la cr
 | **Chiave di sicurezza FIDO2 / passkey device-bound** (es. YubiKey) | utente umano | login phishing-resistant, **AAL3** | FIPS 140-3 |
 | **PUF** (*Physically Unclonable Function*) | silicio del dispositivo | chiave derivata dalle micro-variazioni del chip: *non c'è una chiave da rubare* | — |
 
-> **Il punto che conta per il compito.** È **questo** che distingue il LoA4 dal LoA3: non «una password più lunga» né «un certificato in più», ma il fatto che la chiave privata **non sia estraibile** dal modulo. Lo stesso certificato X.509 usato per EAP-TLS (§2/§3) o mTLS (§4) diventa *forte+* solo quando la chiave corrispondente sta in un TPM, una smartcard o un SE, e non in un file. **HSM e TPM** sono già nel glossario finale come «moduli hardware sicuri per la custodia delle chiavi»: questa sezione spiega *perché*.
-
----
 
 ### Le certificazioni (come si misura «quanto è sicuro»)
 
-Non basta dire «hardware»: la robustezza si certifica con due famiglie di standard.
-
-- **FIPS 140-3** (NIST). È lo standard federale USA per i moduli crittografici, e **sostituisce FIPS 140-2** (tutti i certificati 140-2 passano alla *Historical List* il **21 settembre 2026**). Quattro livelli fisici crescenti: L1 nessun requisito fisico; **L2** tamper-evident; **L3** rilevazione/risposta con azzeramento delle chiavi; **L4** involucro di protezione completo. La maggior parte degli HSM commerciali punta al **L3**.
-- **Common Criteria** (EAL) e, in ambito UE, i *Protection Profile* dedicati — in particolare **EN 419 221-5** («Cryptographic Module for Trust Services»), il profilo richiesto ai moduli che reggono i servizi fiduciari europei (firme qualificate, ecc.).
+Non basta dire «hardware»: la robustezza si certifica con due famiglie di standard:
+- **FIPS 140-3** (NIST). È lo standard federale USA per i moduli crittografici, e **sostituisce FIPS 140-2** (tutti i certificati 140-2 passano alla *Historical List* il **21 settembre 2026**). Quattro livelli fisici crescenti:
+     - L1 nessun requisito fisico;
+     - **L2** tamper-evident;
+     - **L3** rilevazione/risposta con azzeramento delle chiavi;
+     - **L4** involucro di protezione completo. La maggior parte degli HSM commerciali punta al **L3**.
+- **Common Criteria** (EAL) e, in ambito UE, i *Protection Profile* dedicati, in particolare **EN 419 221-5** («Cryptographic Module for Trust Services»), il profilo di sicurezza richiesto ai moduli HW che reggono i servizi fiduciari europei (firme qualificate, ecc.).
 
 ---
 
