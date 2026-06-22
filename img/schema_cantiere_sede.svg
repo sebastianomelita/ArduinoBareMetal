@@ -1,0 +1,230 @@
+<svg viewBox="0 0 2380 1480" xmlns="http://www.w3.org/2000/svg" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <linearGradient id="gBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a9fe0"/><stop offset="1" stop-color="#1f5a9c"/></linearGradient>
+    <linearGradient id="gBeige" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8d3aa"/><stop offset="1" stop-color="#b6b083"/></linearGradient>
+    <symbol id="sw" viewBox="0 0 130 84">
+      <polygon points="8,34 30,14 122,14 100,34" fill="#5aaae8"/><polygon points="100,34 122,14 122,54 100,74" fill="#194f8a"/>
+      <rect x="8" y="34" width="92" height="40" fill="url(#gBlue)"/>
+      <path d="M28 46 H80 M72 41 L82 46 L72 51" stroke="#fff" stroke-width="2.4" fill="none"/>
+      <path d="M82 60 H30 M40 55 L30 60 L40 65" stroke="#fff" stroke-width="2.4" fill="none"/>
+    </symbol>
+    <symbol id="box" viewBox="0 0 120 80">
+      <polygon points="8,30 28,12 112,12 92,30" fill="#5aaae8"/><polygon points="92,30 112,12 112,52 92,70" fill="#194f8a"/>
+      <rect x="8" y="30" width="84" height="40" fill="url(#gBlue)"/>
+    </symbol>
+    <symbol id="srv" viewBox="0 0 70 112">
+      <polygon points="8,12 20,4 60,4 48,12" fill="#e4dfbf"/><polygon points="48,12 60,4 60,96 48,104" fill="#a39d72"/>
+      <rect x="8" y="12" width="40" height="92" fill="url(#gBeige)"/>
+      <circle cx="14" cy="18" r="2" fill="#6aa84f"/><circle cx="21" cy="18" r="2" fill="#6aa84f"/>
+      <line x1="11" y1="26" x2="45" y2="26" stroke="#8f8a5f"/><line x1="11" y1="31" x2="45" y2="31" stroke="#8f8a5f"/>
+      <rect x="12" y="40" width="32" height="8" fill="#c4be90" stroke="#8f8a5f"/>
+      <rect x="12" y="52" width="32" height="8" fill="#c4be90" stroke="#8f8a5f"/>
+      <rect x="12" y="64" width="32" height="8" fill="#c4be90" stroke="#8f8a5f"/>
+    </symbol>
+    <symbol id="tab" viewBox="0 0 74 56"><rect x="5" y="4" width="64" height="48" rx="7" fill="#3a3a3a" stroke="#111"/><rect x="12" y="10" width="50" height="36" fill="#6cc1e8"/></symbol>
+    <symbol id="cam" viewBox="0 0 84 56">
+      <rect x="26" y="8" width="8" height="8" fill="#445663"/><rect x="8" y="16" width="46" height="26" rx="4" fill="#6b7a86" stroke="#2c3a44"/>
+      <rect x="6" y="14" width="40" height="6" fill="#445663"/><circle cx="58" cy="29" r="13" fill="#2c3a44"/><circle cx="58" cy="29" r="7" fill="#4aa3d6"/>
+    </symbol>
+    <symbol id="sen" viewBox="0 0 44 56">
+      <line x1="22" y1="22" x2="22" y2="7" stroke="#3f6b3a" stroke-width="2"/><circle cx="22" cy="6" r="3" fill="#3f6b3a"/>
+      <rect x="7" y="22" width="30" height="28" rx="4" fill="#7aa874" stroke="#3f6b3a"/><circle cx="22" cy="36" r="6" fill="#eaf3e7" stroke="#3f6b3a"/>
+    </symbol>
+    <symbol id="ap" viewBox="0 0 90 56">
+      <path d="M22 28 A24 24 0 0 1 68 28" stroke="#2b6fb5" stroke-width="2.5" fill="none"/>
+      <path d="M30 30 A16 16 0 0 1 60 30" stroke="#2b6fb5" stroke-width="2.5" fill="none"/>
+      <path d="M37 32 A8 8 0 0 1 53 32" stroke="#2b6fb5" stroke-width="2.5" fill="none"/>
+      <rect x="30" y="34" width="30" height="10" rx="4" fill="#2b6fb5"/><ellipse cx="45" cy="46" rx="33" ry="8" fill="url(#gBlue)" stroke="#194f8a"/>
+    </symbol>
+    <symbol id="pc" viewBox="0 0 74 66">
+      <rect x="6" y="4" width="62" height="40" rx="3" fill="#3a4a55" stroke="#1f2b33"/><rect x="11" y="9" width="52" height="30" fill="#6cc1e8"/>
+      <rect x="32" y="44" width="10" height="10" fill="#6b7a86"/><rect x="22" y="54" width="30" height="6" rx="3" fill="#6b7a86"/>
+    </symbol>
+    <symbol id="fw" viewBox="0 0 110 84">
+      <polygon points="8,30 28,12 102,12 82,30" fill="#d9776b"/><polygon points="82,30 102,12 102,52 82,70" fill="#8f2419"/>
+      <rect x="8" y="30" width="74" height="40" fill="#b03a2e"/>
+      <line x1="8" y1="43" x2="82" y2="43" stroke="#e8c9c2"/><line x1="8" y1="56" x2="82" y2="56" stroke="#e8c9c2"/>
+      <line x1="26" y1="30" x2="26" y2="43" stroke="#e8c9c2"/><line x1="46" y1="30" x2="46" y2="43" stroke="#e8c9c2"/><line x1="66" y1="30" x2="66" y2="43" stroke="#e8c9c2"/>
+      <line x1="16" y1="43" x2="16" y2="56" stroke="#e8c9c2"/><line x1="36" y1="43" x2="36" y2="56" stroke="#e8c9c2"/><line x1="56" y1="43" x2="56" y2="56" stroke="#e8c9c2"/><line x1="76" y1="43" x2="76" y2="56" stroke="#e8c9c2"/>
+      <line x1="26" y1="56" x2="26" y2="70" stroke="#e8c9c2"/><line x1="46" y1="56" x2="46" y2="70" stroke="#e8c9c2"/><line x1="66" y1="56" x2="66" y2="70" stroke="#e8c9c2"/>
+    </symbol>
+    <symbol id="cloud" viewBox="0 0 200 120"><path d="M55 100 C28 100 22 74 44 67 C40 43 78 34 92 52 C104 33 142 39 142 64 C166 64 170 96 144 100 Z" fill="#fff" stroke="#555" stroke-width="2.2"/></symbol>
+  </defs>
+
+  <rect x="0" y="0" width="2380" height="1480" fill="#ffffff"/>
+  <text x="40" y="44" font-size="25" font-weight="700" fill="#16324f">Schema logico — Cantiere k ↔ Sede centrale (VPN site-to-site, broker MQTT in bridge)</text>
+  <text x="40" y="69" font-size="14" fill="#5b6b78">Link L2 = dorsale LAN · Link L3 = tunnel VPN · Link L7 = sessioni/bridge del broker MQTT</text>
+  <text x="430" y="150" font-size="20" font-weight="700" fill="#1f5a9c">CANTIERE k</text>
+  <text x="1880" y="150" font-size="20" font-weight="700" fill="#b03a2e" text-anchor="middle">SEDE CENTRALE (BIM)</text>
+
+  <!-- cloud, WAN, tunnel -->
+  <use href="#cloud" x="1080" y="18" width="200" height="120"/>
+  <text x="1180" y="84" font-size="16" font-weight="600" text-anchor="middle" fill="#33475a">Internet</text>
+  <line x1="612" y1="226" x2="1108" y2="120" stroke="#000" stroke-width="2"/><text x="820" y="150" font-size="13" fill="#444">4G/5G dual-SIM</text>
+  <line x1="1848" y1="226" x2="1256" y2="120" stroke="#000" stroke-width="2"/><text x="1520" y="150" font-size="13" text-anchor="end" fill="#444">fibra FTTH</text>
+  <line x1="620" y1="250" x2="1840" y2="250" stroke="#16324f" stroke-width="2.6" stroke-dasharray="10 5"/>
+  <line x1="1320" y1="250" x2="1320" y2="262" stroke="#16324f" stroke-width="1.4"/>
+  <rect x="1158" y="262" width="324" height="96" rx="8" fill="#eef3fb" stroke="#16324f" stroke-dasharray="6 4"/>
+  <text x="1320" y="284" font-size="13" font-weight="700" text-anchor="middle" fill="#16324f">Tunnel TUN — L3 (GRE su IPsec)</text>
+  <text x="1320" y="305" font-size="12.5" text-anchor="middle" fill="#23404f">/30 cantiere k: 10.255.0.[4(k−1)]/30  (passo +4)</text>
+  <text x="1320" y="324" font-size="12.5" text-anchor="middle" fill="#23404f">cantiere 10.255.0.[4k−3] ↔ sede 10.255.0.[4k−2]</text>
+  <text x="1320" y="343" font-size="12.5" text-anchor="middle" fill="#23404f">routing OSPF · area 0</text>
+
+  <!-- management zones -->
+  <rect x="118" y="330" width="1024" height="302" rx="14" fill="#fafcff" stroke="#6a7b88" stroke-width="1.5" stroke-dasharray="8 5"/>
+  <text x="136" y="352" font-size="12.5" font-weight="700" fill="#3a4a56">VLAN 99 — Management cantiere · 10.k.99.0/24 (native su tutti gli SW)</text>
+  <rect x="1500" y="346" width="762" height="318" rx="14" fill="#fbfaf7" stroke="#9a7b55" stroke-width="1.5" stroke-dasharray="8 5"/>
+  <text x="1881" y="368" font-size="12.5" font-weight="700" text-anchor="middle" fill="#7a5a2f">VLAN 99 native — management a macchia di leopardo (ingloba CS + tutti gli SW d'accesso)</text>
+
+  <!-- ============ CANTIERE infra ============ -->
+  <use href="#box" x="500" y="200" width="120" height="80"/>
+  <line x1="516" y1="228" x2="502" y2="196" stroke="#194f8a" stroke-width="2.4"/><circle cx="502" cy="194" r="3" fill="#194f8a"/>
+  <line x1="534" y1="228" x2="548" y2="196" stroke="#194f8a" stroke-width="2.4"/><circle cx="548" cy="194" r="3" fill="#194f8a"/>
+  <rect x="506" y="246" width="26" height="18" fill="#b03a2e" stroke="#7d1f17"/>
+  <line x1="506" y1="255" x2="532" y2="255" stroke="#f2d6cf"/><line x1="515" y1="246" x2="515" y2="255" stroke="#f2d6cf"/><line x1="523" y1="255" x2="523" y2="264" stroke="#f2d6cf"/>
+  <text x="488" y="214" font-size="14" font-weight="700" text-anchor="end" fill="#16324f">Gateway 4G/5G</text>
+  <text x="488" y="231" font-size="12" text-anchor="end" fill="#33475a">Router · Firewall/NAT · VPN</text>
+  <text x="488" y="247" font-size="12" text-anchor="end" fill="#33475a">GW .254 · TUN 10.255.0.[4k−3]</text>
+  <text x="488" y="263" font-size="12" font-weight="700" text-anchor="end" fill="#1f7a3d">DNS · DHCP</text>
+
+  <line x1="560" y1="280" x2="560" y2="352" stroke="#2c3e50" stroke-width="2"/><text x="572" y="320" font-size="12" fill="#444">Trunk 802.1Q (L2)</text>
+  <use href="#sw" x="495" y="350" width="130" height="84"/>
+  <text x="560" y="448" font-size="13" font-weight="700" text-anchor="middle" fill="#16324f">CS — Core switch L3</text>
+
+  <line x1="625" y1="392" x2="710" y2="394" stroke="#2c3e50" stroke-width="2"/>
+  <use href="#box" x="710" y="358" width="118" height="78"/>
+  <text x="836" y="384" font-size="12.5" font-weight="700" fill="#16324f">Broker MQTT cantiere</text>
+  <text x="836" y="401" font-size="11.5" fill="#33475a">10.k.30.250 · attaccato al CS</text>
+  <text x="836" y="418" font-size="11.5" fill="#7d3c98">bridge L7 → broker sede</text>
+
+  <line x1="497" y1="404" x2="212" y2="398" stroke="#2c3e50" stroke-width="2"/>
+  <use href="#srv" x="150" y="346" width="60" height="98"/>
+  <text x="180" y="466" font-size="12" font-weight="700" text-anchor="middle" fill="#16324f">Edge NAS</text>
+  <text x="180" y="482" font-size="11" text-anchor="middle" fill="#33475a">store&amp;forward .99.10</text>
+
+  <!-- access nodes + uplinks (L2) -->
+  <g stroke="#2c3e50" stroke-width="2">
+    <line x1="545" y1="432" x2="224" y2="540"/><line x1="552" y1="434" x2="495" y2="524"/>
+    <line x1="575" y1="434" x2="775" y2="524"/><line x1="602" y1="432" x2="1054" y2="540"/>
+  </g>
+  <use href="#ap" x="180" y="535" width="88" height="54"/><text x="224" y="606" font-size="12" font-weight="700" text-anchor="middle" fill="#16324f">AP1 (Wi-Fi)</text>
+  <use href="#sw" x="440" y="520" width="110" height="72"/><text x="495" y="608" font-size="12" font-weight="700" text-anchor="middle" fill="#16324f">AS/DS1</text>
+  <use href="#sw" x="720" y="520" width="110" height="72"/><text x="775" y="608" font-size="12" font-weight="700" text-anchor="middle" fill="#16324f">AS/DS2</text>
+  <use href="#ap" x="1010" y="535" width="88" height="54"/><text x="1054" y="606" font-size="12" font-weight="700" text-anchor="middle" fill="#16324f">AP2 (Wi-Fi)</text>
+
+  <!-- bands -->
+  <ellipse cx="660" cy="750" rx="665" ry="95" fill="none" stroke="#333" stroke-width="2"/>
+  <ellipse cx="660" cy="935" rx="665" ry="95" fill="none" stroke="#333" stroke-width="2"/>
+  <ellipse cx="660" cy="1150" rx="690" ry="122" fill="none" stroke="#333" stroke-width="2"/>
+
+  <!-- L7 MQTT sessions (purple dotted) to broker bottom (769,436) -->
+  <g stroke="#7d3c98" stroke-width="1.4" stroke-dasharray="2 4">
+    <line x1="224" y1="1110" x2="763" y2="436"/><line x1="495" y1="1110" x2="766" y2="436"/>
+    <line x1="775" y1="1110" x2="772" y2="436"/><line x1="1054" y1="1110" x2="775" y2="436"/>
+    <line x1="360" y1="1095" x2="765" y2="436"/><line x1="640" y1="1095" x2="769" y2="436"/><line x1="920" y1="1095" x2="773" y2="436"/>
+  </g>
+
+  <!-- physical downlinks: AP wireless, AS L2 -->
+  <g stroke="#9aa3ab" stroke-width="1.8" stroke-dasharray="6 5"><line x1="224" y1="589" x2="224" y2="1139"/><line x1="1054" y1="589" x2="1054" y2="1139"/></g>
+  <g stroke="#2c3e50" stroke-width="2"><line x1="495" y1="592" x2="495" y2="1139"/><line x1="775" y1="592" x2="775" y2="1139"/></g>
+
+  <!-- gateway network-side uplinks -->
+  <line x1="360" y1="1075" x2="470" y2="592" stroke="#2c3e50" stroke-width="2"/>
+  <line x1="640" y1="1075" x2="750" y2="592" stroke="#2c3e50" stroke-width="2"/>
+  <line x1="920" y1="1075" x2="1024" y2="586" stroke="#9aa3ab" stroke-width="1.8" stroke-dasharray="6 5"/>
+
+  <!-- BAND 10 tablets -->
+  <use href="#tab" x="194" y="712" width="60" height="46"/><use href="#tab" x="465" y="712" width="60" height="46"/>
+  <use href="#tab" x="745" y="712" width="60" height="46"/><use href="#tab" x="1024" y="712" width="60" height="46"/>
+  <text x="224" y="778" font-size="11" text-anchor="middle" fill="#16324f">10.k.10.1</text><text x="495" y="778" font-size="11" text-anchor="middle" fill="#16324f">10.k.10.2</text>
+  <text x="775" y="778" font-size="11" text-anchor="middle" fill="#16324f">10.k.10.3</text><text x="1054" y="778" font-size="11" text-anchor="middle" fill="#16324f">10.k.10.4</text>
+  <text x="1305" y="745" font-size="14" font-weight="700" text-anchor="end" fill="#16324f">VLAN 10 · Tablet</text>
+  <text x="1305" y="763" font-size="12" text-anchor="end" fill="#33475a">10.k.10.0/24 · GW .254</text>
+
+  <!-- BAND 20 cameras -->
+  <use href="#cam" x="194" y="898" width="60" height="42"/><use href="#cam" x="465" y="898" width="60" height="42"/>
+  <use href="#cam" x="745" y="898" width="60" height="42"/><use href="#cam" x="1024" y="898" width="60" height="42"/>
+  <text x="224" y="960" font-size="11" text-anchor="middle" fill="#16324f">10.k.20.1</text><text x="495" y="960" font-size="11" text-anchor="middle" fill="#16324f">10.k.20.2</text>
+  <text x="775" y="960" font-size="11" text-anchor="middle" fill="#16324f">10.k.20.3</text><text x="1054" y="960" font-size="11" text-anchor="middle" fill="#16324f">10.k.20.4</text>
+  <text x="1305" y="930" font-size="14" font-weight="700" text-anchor="end" fill="#16324f">VLAN 20 · Telecamere</text>
+  <text x="1305" y="948" font-size="12" text-anchor="end" fill="#33475a">10.k.20.0/24 · GW .254 · PoE</text>
+
+  <!-- BAND 30 sensors -->
+  <use href="#sen" x="207" y="1095" width="34" height="44"/><use href="#sen" x="478" y="1095" width="34" height="44"/>
+  <use href="#sen" x="758" y="1095" width="34" height="44"/><use href="#sen" x="1037" y="1095" width="34" height="44"/>
+  <text x="224" y="1158" font-size="10.5" text-anchor="middle" fill="#16324f">10.k.30.1 (Wi-Fi)</text><text x="495" y="1158" font-size="10.5" text-anchor="middle" fill="#16324f">10.k.30.2 (Eth)</text>
+  <text x="775" y="1158" font-size="10.5" text-anchor="middle" fill="#16324f">10.k.30.3 (Eth)</text><text x="1054" y="1158" font-size="10.5" text-anchor="middle" fill="#16324f">10.k.30.4 (Wi-Fi)</text>
+  <text x="1315" y="1140" font-size="14" font-weight="700" text-anchor="end" fill="#16324f">VLAN 30 · Sensori IoT</text>
+  <text x="1315" y="1158" font-size="12" text-anchor="end" fill="#33475a">10.k.30.0/24 · GW .254</text>
+
+  <!-- WSN GW Zigbee -->
+  <use href="#box" x="322" y="1075" width="76" height="52"/>
+  <line x1="350" y1="1078" x2="342" y2="1060" stroke="#2e7d32" stroke-width="2"/><line x1="370" y1="1078" x2="378" y2="1060" stroke="#2e7d32" stroke-width="2"/>
+  <text x="360" y="1148" font-size="10.5" font-weight="700" text-anchor="middle" fill="#2e7d32">Zigbee coord.</text>
+  <g stroke="#2e7d32" stroke-width="1.4" stroke-dasharray="3 3"><line x1="360" y1="1127" x2="330" y2="1188"/><line x1="360" y1="1127" x2="360" y2="1196"/><line x1="360" y1="1127" x2="390" y2="1188"/></g>
+  <circle cx="330" cy="1192" r="5" fill="#cde6cd" stroke="#2e7d32"/><circle cx="360" cy="1200" r="5" fill="#cde6cd" stroke="#2e7d32"/><circle cx="390" cy="1192" r="5" fill="#cde6cd" stroke="#2e7d32"/>
+
+  <!-- WSN GW LoRaWAN -->
+  <use href="#box" x="602" y="1075" width="76" height="52"/>
+  <line x1="630" y1="1078" x2="622" y2="1060" stroke="#e07b00" stroke-width="2"/><line x1="650" y1="1078" x2="658" y2="1060" stroke="#e07b00" stroke-width="2"/>
+  <text x="640" y="1148" font-size="10.5" font-weight="700" text-anchor="middle" fill="#e07b00">LoRaWAN PF+NS+AS</text>
+  <g stroke="#e07b00" stroke-width="1.4" stroke-dasharray="3 3"><line x1="640" y1="1127" x2="610" y2="1188"/><line x1="640" y1="1127" x2="640" y2="1196"/><line x1="640" y1="1127" x2="670" y2="1188"/></g>
+  <circle cx="610" cy="1192" r="5" fill="#fbe6cd" stroke="#e07b00"/><circle cx="640" cy="1200" r="5" fill="#fbe6cd" stroke="#e07b00"/><circle cx="670" cy="1192" r="5" fill="#fbe6cd" stroke="#e07b00"/>
+
+  <!-- WSN GW BLE -->
+  <use href="#box" x="882" y="1075" width="76" height="52"/>
+  <line x1="910" y1="1078" x2="902" y2="1060" stroke="#1565c0" stroke-width="2"/><line x1="930" y1="1078" x2="938" y2="1060" stroke="#1565c0" stroke-width="2"/>
+  <text x="920" y="1148" font-size="10.5" font-weight="700" text-anchor="middle" fill="#1565c0">BLE coord.</text>
+  <g stroke="#1565c0" stroke-width="1.4" stroke-dasharray="3 3"><line x1="920" y1="1127" x2="890" y2="1188"/><line x1="920" y1="1127" x2="920" y2="1196"/><line x1="920" y1="1127" x2="950" y2="1188"/></g>
+  <circle cx="890" cy="1192" r="5" fill="#d4e4f7" stroke="#1565c0"/><circle cx="920" cy="1200" r="5" fill="#d4e4f7" stroke="#1565c0"/><circle cx="950" cy="1192" r="5" fill="#d4e4f7" stroke="#1565c0"/>
+
+  <text x="660" y="1245" font-size="11.5" text-anchor="middle" fill="#5b6b78">Versante radio: il gateway aggrega i sensori (Zigbee/LoRa/BLE) · versante IP: Zigbee &amp; LoRa via Ethernet L2 su switch, BLE via Wi-Fi su AP</text>
+
+  <!-- ============ SEDE ============ -->
+  <use href="#fw" x="1840" y="205" width="110" height="82"/>
+  <text x="1962" y="222" font-size="13" font-weight="700" fill="#16324f">NGFW / UTM · VPN</text>
+  <text x="1962" y="239" font-size="11.5" fill="#33475a">WAN .254 · TUN 10.255.0.[4k−2]</text>
+  <text x="1962" y="256" font-size="11.5" font-weight="700" fill="#1f7a3d">DNS · DHCP</text>
+
+  <line x1="1895" y1="287" x2="1895" y2="360" stroke="#2c3e50" stroke-width="2"/>
+  <use href="#sw" x="1830" y="360" width="130" height="84"/>
+  <text x="1895" y="458" font-size="12.5" font-weight="700" text-anchor="middle" fill="#16324f">CS — Core L3 (sede)</text>
+
+  <g stroke="#2c3e50" stroke-width="2"><line x1="1865" y1="442" x2="1605" y2="562"/><line x1="1895" y1="446" x2="1895" y2="562"/><line x1="1925" y1="442" x2="2185" y2="562"/></g>
+  <use href="#sw" x="1545" y="562" width="120" height="76"/><text x="1605" y="654" font-size="11.5" font-weight="700" text-anchor="middle" fill="#16324f">SW Uffici</text>
+  <use href="#sw" x="1835" y="562" width="120" height="76"/><text x="1895" y="654" font-size="11.5" font-weight="700" text-anchor="middle" fill="#16324f">SW Server farm</text>
+  <use href="#sw" x="2125" y="562" width="120" height="76"/><text x="2185" y="654" font-size="11.5" font-weight="700" text-anchor="middle" fill="#16324f">SW DMZ</text>
+
+  <!-- endpoints to access switches (L2) -->
+  <g stroke="#2c3e50" stroke-width="2">
+    <line x1="1590" y1="638" x2="1573" y2="718"/><line x1="1620" y1="638" x2="1648" y2="718"/>
+    <line x1="1875" y1="638" x2="1820" y2="718"/><line x1="1888" y1="640" x2="1882" y2="718"/><line x1="1902" y1="640" x2="1944" y2="718"/><line x1="1915" y1="638" x2="2006" y2="718"/>
+    <line x1="2170" y1="638" x2="2150" y2="718"/><line x1="2200" y1="638" x2="2218" y2="718"/>
+  </g>
+  <use href="#pc" x="1545" y="716" width="56" height="50"/><use href="#pc" x="1620" y="716" width="56" height="50"/>
+  <use href="#srv" x="1796" y="716" width="48" height="84"/><use href="#srv" x="1858" y="716" width="48" height="84"/>
+  <use href="#srv" x="1920" y="716" width="48" height="84"/><use href="#srv" x="1982" y="716" width="48" height="84"/>
+  <use href="#srv" x="2126" y="716" width="48" height="84"/><use href="#srv" x="2194" y="716" width="48" height="84"/>
+  <text x="2006" y="810" font-size="9.5" text-anchor="middle" font-weight="700" fill="#7d3c98">MQTT broker</text>
+  <text x="1820" y="812" font-size="9" text-anchor="middle" fill="#33475a">NAS/SAN</text><text x="1882" y="812" font-size="9" text-anchor="middle" fill="#33475a">App BIM</text>
+  <text x="1944" y="812" font-size="9" text-anchor="middle" fill="#33475a">AD/RADIUS·DB</text>
+
+  <text x="1605" y="838" font-size="12.5" font-weight="700" text-anchor="middle" fill="#16324f">VLAN 10 · Uffici tecnici</text><text x="1605" y="855" font-size="11" text-anchor="middle" fill="#33475a">10.0.10.0/24 · GW .254</text>
+  <text x="1913" y="838" font-size="12.5" font-weight="700" text-anchor="middle" fill="#16324f">VLAN 30 · Server farm</text><text x="1913" y="855" font-size="11" text-anchor="middle" fill="#33475a">10.0.30.0/24 · GW .254</text>
+  <text x="2185" y="838" font-size="12.5" font-weight="700" text-anchor="middle" fill="#16324f">VLAN 40 · DMZ</text><text x="2185" y="855" font-size="11" text-anchor="middle" fill="#33475a">10.0.40.0/24 (repo · rev.proxy)</text>
+
+  <!-- L7 MQTT bridge cantiere broker -> sede broker -->
+  <line x1="828" y1="398" x2="2006" y2="716" stroke="#7d3c98" stroke-width="2" stroke-dasharray="2 5"/>
+  <rect x="1330" y="556" width="206" height="36" rx="6" fill="#f6eefb" stroke="#7d3c98"/>
+  <text x="1433" y="579" font-size="12" font-weight="700" text-anchor="middle" fill="#7d3c98">bridge MQTT (L7)</text>
+
+  <!-- ============ LEGEND ============ -->
+  <rect x="118" y="1320" width="1360" height="118" rx="8" fill="#f7f9fb" stroke="#ccd6de"/>
+  <text x="136" y="1344" font-size="13" font-weight="700" fill="#16324f">Legenda dei collegamenti</text>
+  <line x1="140" y1="1370" x2="196" y2="1370" stroke="#2c3e50" stroke-width="2.4"/><text x="206" y="1374" font-size="12.5" fill="#23404f">L2 — dorsale LAN (trunk 802.1Q / access, Ethernet/PoE)</text>
+  <line x1="640" y1="1370" x2="696" y2="1370" stroke="#9aa3ab" stroke-width="2" stroke-dasharray="6 5"/><text x="706" y="1374" font-size="12.5" fill="#23404f">accesso Wi-Fi (L2 wireless)</text>
+  <line x1="1010" y1="1370" x2="1066" y2="1370" stroke="#2e7d32" stroke-width="2" stroke-dasharray="3 3"/><text x="1076" y="1374" font-size="12.5" fill="#23404f">radio WSN (Zigbee/LoRa/BLE)</text>
+  <line x1="140" y1="1402" x2="196" y2="1402" stroke="#16324f" stroke-width="2.6" stroke-dasharray="10 5"/><text x="206" y="1406" font-size="12.5" fill="#23404f">L3 — tunnel VPN site-to-site (/30, OSPF)</text>
+  <line x1="640" y1="1402" x2="696" y2="1402" stroke="#7d3c98" stroke-width="2" stroke-dasharray="2 5"/><text x="706" y="1406" font-size="12.5" fill="#23404f">L7 — sessioni e bridge del broker MQTT</text>
+  <text x="1076" y="1406" font-size="11.5" fill="#5b6b78">Mgmt = VLAN 99 native su tutti gli SW</text>
+</svg>
