@@ -30,7 +30,7 @@ Queste ipotesi guidano due scelte chiave: rete di cantiere **wireless-centrica**
 
 Poiché il cantiere è temporaneo e senza cablaggio strutturato, si realizza una **LAN temporanea wireless-centrica** imperniata su un **gateway industriale 4G/5G** che fa da router, firewall e client VPN verso la sede.
 
-<img src="../img/schema_cantiere_sede.svg" alt="Schema della rete di cantiere" width="900">
+<img src="../img/schema_cantiere_sede.svg" alt="Schema della rete di cantiere" width="1100">
 
 **Apparati e canali locali**
 
