@@ -234,6 +234,7 @@ La protezione fisica si gradua su tre livelli, di robustezza crescente:
 | **Tamper-resistant** | rende difficile l'effrazione senza distruggere il dispositivo | mesh anti-probing, schermature di bus/memoria |
 | **Tamper-responsive** | reagisce alla manomissione **azzerando** le chiavi (*zeroization*) | HSM di fascia alta, FIPS 140-3 Livello 3/4 |
 
+---
 
 ### Le tecnologie usate oggi
 
@@ -249,6 +250,7 @@ Sono tutte varianti della stessa idea — *custodire la chiave ed eseguire la cr
 | **Chiave di sicurezza FIDO2 / passkey device-bound** (es. YubiKey) | utente umano | login phishing-resistant, **AAL3** | FIPS 140-3 |
 | **PUF** (*Physically Unclonable Function*) | silicio del dispositivo | chiave derivata dalle micro-variazioni del chip: *non c'è una chiave da rubare* | — |
 
+---
 
 ### Le certificazioni (come si misura «quanto è sicuro»)
 
@@ -278,28 +280,6 @@ L'hardware tamper-resistant sta passando da «buona pratica» a **requisito norm
 
 ---
 
-### Voci da aggiungere al glossario finale
-
-| Sigla | Significato |
-| ------------------ | ----------------------------------------------------------------------------------------------- |
-| **HSM** | Hardware Security Module: modulo dedicato che genera/custodisce chiavi ed esegue crittografia a bordo |
-| **TPM** | Trusted Platform Module: chip sicuro per secure boot, attestation e custodia chiavi su PC/server |
-| **SE** | Secure Element: chip tamper-resistant a basso costo per identità di dispositivo (IoT) |
-| **Secure Enclave / StrongBox / TEE** | aree hardware isolate dello smartphone per chiavi e operazioni crittografiche |
-| **PUF** | Physically Unclonable Function: chiave derivata dalle variazioni fisiche del silicio |
-| **FIPS 140-3** | standard NIST sui moduli crittografici (4 livelli fisici); sostituisce FIPS 140-2 dal 21/09/2026 |
-| **Common Criteria / EAL** | schema internazionale di valutazione della sicurezza (EN 419 221-5 per i trust service UE) |
-| **non-exportable key** | chiave che non può uscire dal modulo hardware: vi si firma, ma non la si può copiare |
-| **QSCD** | Qualified Signature Creation Device: dispositivo certificato per la firma qualificata eIDAS |
-| **EUDI Wallet** | European Digital Identity Wallet (eIDAS 2.0), disponibile in ogni Stato UE entro dicembre 2026 |
-| **PQC** | Post-Quantum Cryptography: FIPS 203/204/205 (ML-KEM, ML-DSA, SLH-DSA) |
-| **NIS2** | Direttiva UE 2022/2555 sulla cybersicurezza di entità essenziali e importanti |
-
-
----
-
-## 11. Glossario rapido delle sigle
-
 | Sigla | Significato |
 |---|---|
 | **802.1X** | controllo d'accesso alla rete port-based (L2), basato su EAP |
@@ -325,4 +305,15 @@ L'hardware tamper-resistant sta passando da «buona pratica» a **requisito norm
 | **DHE / ECDHE** | Diffie-Hellman effimero (anche su curve ellittiche) |
 | **LoA** | Level of Assurance (garanzia dell'autenticazione) |
 | **eIDAS** | regolamento UE sui livelli di identità elettronica |
-| **TPM / HSM** | moduli hardware sicuri per la custodia delle chiavi |
+| **HSM** | Hardware Security Module: modulo dedicato che genera/custodisce chiavi ed esegue crittografia a bordo |
+| **TPM** | Trusted Platform Module: chip sicuro per secure boot, attestation e custodia chiavi su PC/server |
+| **SE** | Secure Element: chip tamper-resistant a basso costo per identità di dispositivo (IoT) |
+| **Secure Enclave / StrongBox / TEE** | aree hardware isolate dello smartphone per chiavi e operazioni crittografiche |
+| **PUF** | Physically Unclonable Function: chiave derivata dalle variazioni fisiche del silicio |
+| **FIPS 140-3** | standard NIST sui moduli crittografici (4 livelli fisici); sostituisce FIPS 140-2 dal 21/09/2026 |
+| **Common Criteria / EAL** | schema internazionale di valutazione della sicurezza (EN 419 221-5 per i trust service UE) |
+| **non-exportable key** | chiave che non può uscire dal modulo hardware: vi si firma, ma non la si può copiare |
+| **QSCD** | Qualified Signature Creation Device: dispositivo certificato per la firma qualificata eIDAS |
+| **EUDI Wallet** | European Digital Identity Wallet (eIDAS 2.0), disponibile in ogni Stato UE entro dicembre 2026 |
+| **PQC** | Post-Quantum Cryptography: FIPS 203/204/205 (ML-KEM, ML-DSA, SLH-DSA) |
+| **NIS2** | Direttiva UE 2022/2555 sulla cybersicurezza di entità essenziali e importanti |
