@@ -218,6 +218,89 @@ Le tre fasi:
 
 ---
 
+## 10. Hardware tamper-resistant per la chiave privata
+
+[#10-hardware-tamper-resistant-per-la-chiave-privata](#10-hardware-tamper-resistant-per-la-chiave-privata)
+
+> Approfondimento del concetto introdotto al §6 (LoA4, «chiavi in hardware tamper-resistant»): finora la dispensa lo cita senza spiegare *cosa* sia e *con quali tecnologie* si realizzi.
+
+Tutta la guida ruota su una frase: *solo chi possiede la chiave privata può produrre la firma corretta* (§8). Ma questa garanzia vale **quanto vale la protezione della chiave**. Una chiave RSA/ECC in un file `.pem` sul disco è forte come una password scritta su un foglietto: chi prende il file prende l'identità. Per questo ai livelli alti (LoA4 / **AAL3** del NIST) non basta *avere* una chiave: la chiave deve **nascere dentro un chip sicuro, non uscirne mai** (*non-exportable*), e tutte le operazioni crittografiche devono avvenire **a bordo** del chip. Il software vede solo il risultato (la firma), mai il segreto.
+
+La protezione fisica si gradua su tre livelli, di robustezza crescente:
+
+| Grado | Cosa fa | Esempio |
+| ----------------------- | ----------------------------------------------------------------- | ----------------------------------------------- |
+| **Tamper-evident** | lascia traccia visibile della manomissione (rivestimenti, sigilli) | involucri opachi dei TPM |
+| **Tamper-resistant** | rende difficile l'effrazione senza distruggere il dispositivo | mesh anti-probing, schermature di bus/memoria |
+| **Tamper-responsive** | reagisce alla manomissione **azzerando** le chiavi (*zeroization*) | HSM di fascia alta, FIPS 140-3 Livello 3/4 |
+
+---
+
+### Le tecnologie usate oggi
+
+Sono tutte varianti della stessa idea — *custodire la chiave ed eseguire la crittografia in hardware* — declinata per costo, forma e contesto d'uso.
+
+| Tecnologia | Dove vive | Uso tipico | Certificazione tipica |
+| --------------------------------------------- | --------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------ |
+| **HSM** (di rete, PCIe, USB) | server, datacenter | chiavi di **CA**, code signing, terminazione TLS, QSCD remoto | FIPS 140-3 L3 (L4 per alta sicurezza), CC EN 419 221-5 |
+| **TPM 2.0** (discreto o *firmware* fTPM) | PC, server, gateway IoT | secure boot, *attestation*, identità di dispositivo, secure storage | FIPS 140-3 / FIPS 140-2 |
+| **Secure Element (SE)** | microcontrollori, IoT (bus I²C/SPI) | identità di dispositivo (IDevID), Matter DAC; costo ~0,5–5 $/pezzo | Common Criteria |
+| **Secure Enclave / StrongBox / TEE-TrustZone** | smartphone (iOS/Android) | passkey, firma, **QSCD** del wallet EUDI | CC / certificazione QSCD |
+| **Smartcard / token PIV-CAC** | utente umano | autenticazione forte in presenza, accesso ad alta garanzia | FIPS 140-3, CC |
+| **Chiave di sicurezza FIDO2 / passkey device-bound** (es. YubiKey) | utente umano | login phishing-resistant, **AAL3** | FIPS 140-3 |
+| **PUF** (*Physically Unclonable Function*) | silicio del dispositivo | chiave derivata dalle micro-variazioni del chip: *non c'è una chiave da rubare* | — |
+
+> **Il punto che conta per il compito.** È **questo** che distingue il LoA4 dal LoA3: non «una password più lunga» né «un certificato in più», ma il fatto che la chiave privata **non sia estraibile** dal modulo. Lo stesso certificato X.509 usato per EAP-TLS (§2/§3) o mTLS (§4) diventa *forte+* solo quando la chiave corrispondente sta in un TPM, una smartcard o un SE, e non in un file. **HSM e TPM** sono già nel glossario finale come «moduli hardware sicuri per la custodia delle chiavi»: questa sezione spiega *perché*.
+
+---
+
+### Le certificazioni (come si misura «quanto è sicuro»)
+
+Non basta dire «hardware»: la robustezza si certifica con due famiglie di standard.
+
+- **FIPS 140-3** (NIST). È lo standard federale USA per i moduli crittografici, e **sostituisce FIPS 140-2** (tutti i certificati 140-2 passano alla *Historical List* il **21 settembre 2026**). Quattro livelli fisici crescenti: L1 nessun requisito fisico; **L2** tamper-evident; **L3** rilevazione/risposta con azzeramento delle chiavi; **L4** involucro di protezione completo. La maggior parte degli HSM commerciali punta al **L3**.
+- **Common Criteria** (EAL) e, in ambito UE, i *Protection Profile* dedicati — in particolare **EN 419 221-5** («Cryptographic Module for Trust Services»), il profilo richiesto ai moduli che reggono i servizi fiduciari europei (firme qualificate, ecc.).
+
+---
+
+### Cosa sta cambiando: NIST, NIS2, eIDAS/GDPR
+
+L'hardware tamper-resistant sta passando da «buona pratica» a **requisito normativo esplicito**. Tre fronti in evoluzione proprio nel 2025–2026:
+
+**NIST — Stati Uniti (rilevante anche in UE come riferimento de facto)**
+- **FIPS 140-3**: transizione di fatto obbligatoria entro **settembre 2026** per i nuovi sistemi federali; i fornitori si stanno già adeguando (TPM, HSM Luna, YubiHSM 2 e YubiKey FIPS sono tra i primi moduli validati 140-3).
+- **SP 800-63-4** (versione finale **luglio/agosto 2025**): irrigidisce gli *Authenticator Assurance Level*. L'**AAL3** richiede ora esplicitamente un autenticatore **hardware con chiave privata non esportabile** e **resistenza al phishing** (FIDO2/passkey *device-bound*, PIV/smartcard); l'**AAL2** deve almeno **offrire** un'opzione phishing-resistant. Le *passkey sincronizzabili* (cloud) sono ammesse solo fino ad AAL2 — per l'AAL3 serve la chiave legata all'hardware.
+- **Post-quantum (PQC)**: i nuovi standard **FIPS 203 / 204 / 205** (ML-KEM, ML-DSA, SLH-DSA) stanno entrando negli HSM e nel TPM 2.0 via aggiornamento firmware (*crypto-agility*); molti Secure Element attuali, invece, non li supportano ancora — vincolo da considerare per i dispositivi IoT a vita lunga.
+
+**Unione Europea**
+- **eIDAS 2.0** (Reg. UE **2024/1183**): conferma e rafforza il concetto di **QSCD** (*Qualified Signature Creation Device*), che per definizione deve garantire che la **chiave privata non sia estraibile né copiabile** e sia utilizzabile solo con un'**azione volontaria** del firmatario. Novità chiave: il **Wallet europeo di identità digitale (EUDI Wallet)**, che ogni Stato membro deve rendere disponibile **entro dicembre 2026**, può fungere da QSCD usando il **secure enclave / StrongBox dello smartphone** — la firma qualificata «esce» dalla smartcard fisica e si appoggia all'hardware del telefono. La validità della certificazione di un QSCD è inoltre **limitata a 5 anni**.
+- **NIS2** (Dir. UE **2022/2555**): per le entità «essenziali» e «importanti» impone misure di gestione del rischio che includono l'**autenticazione forte/MFA**; la custodia hardware delle chiavi è una delle misure tecniche con cui si dimostra l'adeguatezza.
+- **GDPR**: non parla di hardware in modo esplicito, ma l'**art. 32** («sicurezza del trattamento … tenuto conto dello stato dell'arte») e la **privacy-by-design** dell'**art. 25** rendono la protezione hardware della chiave una **misura tecnica difendibile** in caso di audit o data breach. eIDAS 2.0, NIS2 e GDPR sono pensati per essere **allineati**: il Wallet EUDI, ad esempio, incorpora per progetto sia la *data minimization* del GDPR sia i requisiti di sicurezza NIS2.
+
+> **Errore da evitare (da aggiungere idealmente al §9).** ❌ «LoA4/AAL3 = certificato + password robusta.» → No: serve una **chiave non esportabile in hardware tamper-resistant**. La regola mnemonica: *la chiave deve nascere e morire dentro il chip*.
+
+---
+
+### Voci da aggiungere al glossario finale
+
+| Sigla | Significato |
+| ------------------ | ----------------------------------------------------------------------------------------------- |
+| **HSM** | Hardware Security Module: modulo dedicato che genera/custodisce chiavi ed esegue crittografia a bordo |
+| **TPM** | Trusted Platform Module: chip sicuro per secure boot, attestation e custodia chiavi su PC/server |
+| **SE** | Secure Element: chip tamper-resistant a basso costo per identità di dispositivo (IoT) |
+| **Secure Enclave / StrongBox / TEE** | aree hardware isolate dello smartphone per chiavi e operazioni crittografiche |
+| **PUF** | Physically Unclonable Function: chiave derivata dalle variazioni fisiche del silicio |
+| **FIPS 140-3** | standard NIST sui moduli crittografici (4 livelli fisici); sostituisce FIPS 140-2 dal 21/09/2026 |
+| **Common Criteria / EAL** | schema internazionale di valutazione della sicurezza (EN 419 221-5 per i trust service UE) |
+| **non-exportable key** | chiave che non può uscire dal modulo hardware: vi si firma, ma non la si può copiare |
+| **QSCD** | Qualified Signature Creation Device: dispositivo certificato per la firma qualificata eIDAS |
+| **EUDI Wallet** | European Digital Identity Wallet (eIDAS 2.0), disponibile in ogni Stato UE entro dicembre 2026 |
+| **PQC** | Post-Quantum Cryptography: FIPS 203/204/205 (ML-KEM, ML-DSA, SLH-DSA) |
+| **NIS2** | Direttiva UE 2022/2555 sulla cybersicurezza di entità essenziali e importanti |
+
+
+---
+
 ## 11. Glossario rapido delle sigle
 
 | Sigla | Significato |
