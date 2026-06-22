@@ -236,7 +236,7 @@ La protezione fisica si gradua su tre livelli, di robustezza crescente:
 
 ---
 
-### Le tecnologie usate oggi
+### Le tecnologie usate oggi per l'IoT
 
 Sono tutte varianti della stessa idea — *custodire la chiave ed eseguire la crittografia in hardware* — declinate per costo, forma e contesto d'uso. In tabella sono **ordinate per robustezza decrescente**; la riga finale è il «pavimento» da non usare.
 
