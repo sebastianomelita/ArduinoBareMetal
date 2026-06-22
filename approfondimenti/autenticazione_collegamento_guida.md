@@ -205,7 +205,7 @@ Le tre fasi:
 
 È esattamente lo schema di **PEAP / EAP-TTLS** e di **HTTPS + login** (TLS a L4/5), ed è anche quello di **SSH con password** a L7 (host key → canale → password del client): il livello esterno autentica il server e costruisce il canale, il metodo interno (password) autentica il client al riparo. Senza il tunnel, PAP sarebbe esposto a intercettazione, replay e MITM — per questo PAP/CHAP "da soli" vanno usati solo su canale già sicuro.
 
-La robustezza dell'autenticazione LOA4 non riguarda però solo i protocolli ma anche la memorizzazione della chiave privata sul dispositivo che deve essere conservata in un **modulo HSM** o comunque in un **HW Tamper Resistant** (antiscassinamento): **LoA4/AAL3** richiedono una **chiave non esportabile** in hardware **tamper-resistant**. La regola mnemonica è: *la chiave deve nascere e morire dentro il chip*.
+La robustezza dell'autenticazione LOA4 non riguarda però solo i protocolli ma anche la **memorizzazione** della **chiave privata** sul dispositivo: **LoA4/AAL3** richiedono una **chiave non esportabile** in hardware **tamper-resistant** (antiscasso). La regola mnemonica è: *la chiave deve nascere e morire dentro il chip*.
 
 ---
 
