@@ -205,6 +205,9 @@ Le tre fasi:
 
 È esattamente lo schema di **PEAP / EAP-TTLS** e di **HTTPS + login** (TLS a L4/5), ed è anche quello di **SSH con password** a L7 (host key → canale → password del client): il livello esterno autentica il server e costruisce il canale, il metodo interno (password) autentica il client al riparo. Senza il tunnel, PAP sarebbe esposto a intercettazione, replay e MITM — per questo PAP/CHAP "da soli" vanno usati solo su canale già sicuro.
 
+La robustezza dell'autenticazione LOA4 non riguarda però solo i protocolli ma anche la conservazione della chiave privata che deve essere conservata in un modulo HSM o comunque in un modulo Tamper Resistant (antiscassinamento):
+**LoA4/AAL3** richiedono una **chiave non esportabile in hardware **tamper-resistant**. La regola mnemonica: *la chiave deve nascere e morire dentro il chip*.
+
 ---
 
 ## 10. Errori da evitare nel compito
@@ -276,8 +279,6 @@ L'hardware tamper-resistant sta passando da «buona pratica» a **requisito norm
 - **eIDAS 2.0** (Reg. UE **2024/1183**): conferma e rafforza il concetto di **QSCD** (*Qualified Signature Creation Device*), che per definizione deve garantire che la **chiave privata non sia estraibile né copiabile** e sia utilizzabile solo con un'**azione volontaria** del firmatario. Novità chiave: il **Wallet europeo di identità digitale (EUDI Wallet)**, che ogni Stato membro deve rendere disponibile **entro dicembre 2026**, può fungere da QSCD usando il **secure enclave / StrongBox dello smartphone** — la firma qualificata «esce» dalla smartcard fisica e si appoggia all'hardware del telefono. La validità della certificazione di un QSCD è inoltre **limitata a 5 anni**.
 - **NIS2** (Dir. UE **2022/2555**): per le entità «essenziali» e «importanti» impone misure di gestione del rischio che includono l'**autenticazione forte/MFA**; la custodia hardware delle chiavi è una delle misure tecniche con cui si dimostra l'adeguatezza.
 - **GDPR**: non parla di hardware in modo esplicito, ma l'**art. 32** («sicurezza del trattamento … tenuto conto dello stato dell'arte») e la **privacy-by-design** dell'**art. 25** rendono la protezione hardware della chiave una **misura tecnica difendibile** in caso di audit o data breach. eIDAS 2.0, NIS2 e GDPR sono pensati per essere **allineati**: il Wallet EUDI, ad esempio, incorpora per progetto sia la *data minimization* del GDPR sia i requisiti di sicurezza NIS2.
-
-> **Errore da evitare (da aggiungere idealmente al §9).** ❌ «LoA4/AAL3 = certificato + password robusta.» → No: serve una **chiave non esportabile in hardware tamper-resistant**. La regola mnemonica: *la chiave deve nascere e morire dentro il chip*.
 
 ---
 
