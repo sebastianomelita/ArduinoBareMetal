@@ -202,7 +202,7 @@
   <g stroke="#1565c0" stroke-width="1.4" stroke-dasharray="3 3"><line x1="758" y1="1127" x2="728" y2="1180"/><line x1="758" y1="1127" x2="758" y2="1188"/><line x1="758" y1="1127" x2="788" y2="1180"/></g>
   <circle cx="728" cy="1184" r="5" fill="#d4e4f7" stroke="#1565c0"/><circle cx="758" cy="1192" r="5" fill="#d4e4f7" stroke="#1565c0"/><circle cx="788" cy="1184" r="5" fill="#d4e4f7" stroke="#1565c0"/>
 
-  <text x="510" y="1248" font-size="11" text-anchor="middle" fill="#5b6b78">Interfaccia WSN: il gateway WSN aggrega i sensori · Interfaccia IP: traduzione in payload JSON unificato + client MQTT (L7)</text>
+  <text x="500" y="1248" font-size="11" text-anchor="middle" fill="#5b6b78">Interfaccia WSN: il gateway WSN aggrega i sensori · Interfaccia IP: traduzione in payload JSON unificato + client MQTT (L7)</text>
 
   <!-- ===== RAMO WI-FI MESH (cascata, lato sinistro) ===== -->
   <text x="-158" y="498" font-size="12.5" font-weight="700" fill="#0e7490">Ramo Wi-Fi mesh — maglia ridondante</text>
