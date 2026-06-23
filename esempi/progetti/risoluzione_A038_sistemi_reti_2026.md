@@ -31,7 +31,7 @@ Poiché il cantiere è temporaneo e senza cablaggio strutturato, si realizza una
 
 <img src="../img/schema_cantiere_sede.svg" alt="Schema della rete di cantiere" width="1100">
 
-Lo **schema degli apparati attivi** comprende tutti gli scenari di integrazione possibili che sono compatibili con la traccia del compitò, in verità **piuttosto aperta**, fermo restando la presenza di **sensori wireless e cablati**: **WiFi infrastruttura** come base cablata, poi **WiFi mesh** come base mesh per le zone senza cablaggio ma con sensori wiFi, reti **WSN** di diverse famiglie (Zigbee, lorawan o BLE), introdotte in cantiere a seconda del materiale disponibile e delle esigenze contingenti.  
+Lo **schema degli apparati attivi** comprende tutti gli scenari di integrazione possibili che sono compatibili con la traccia del compitò, in verità **piuttosto aperta**, fermo restando la presenza di **sensori wireless e cablati**: **WiFi infrastruttura** come base cablata, poi **WiFi mesh** come base mesh per le zone senza cablaggio ma con sensori wiFi, reti **WSN** di diverse famiglie (Zigbee, lorawan o BLE) introdotte in cantiere a seconda del materiale disponibile e delle esigenze contingenti.  
 
 Le **reti WSN** si amalgamano alla rete IP tramite un **gateway di frontiera** che per talune tecnologie (Zigbee, BLE) potrebbe essere già integrato a bordo degli AP WiFi, oppure essere un dispositivo indipendente posto in **posizione baricentrica** rispetto ai sensori WSN. Lo stesso criterio di dislocazione spaziale viene usato per gli **AP** aggregatori dei **sensori nativi WiFi**. 
 
