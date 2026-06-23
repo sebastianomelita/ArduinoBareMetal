@@ -39,6 +39,7 @@ I **gateway** hanno essenzialmente **funzione** di:
 - **coordinamento** della reta WSN
 - **traduzione del payload** proprietario della rete WSN nel payload JSON standard progettato ad hoc per la gestione dei dati e delle configurazioni di una flotta di sensori eterogenei
 - **client MQTT** per l'inoltro dei dati dei sensori attraverso un **canale applicativo** (L7) realizzato dal **broker MQTT** nella **sede centrale**.
+- **router multilivello** col ruolo di cerniera tra la **rete di aggregazione** di sensori WSN e la **rete di trasporto IP** interfacciata attraverso schede di rete **ethernet** o **WiFi**.
 
 **Apparati e canali locali**
 
