@@ -4,7 +4,6 @@
 [Traccia compito](A038_traccia_sistemi_reti_2026.md)
 
 > **Nota di metodo.** È svolta per intero la **Prima parte** (obbligatoria) e, per completezza di studio, **tutti e quattro i quesiti** della Seconda parte: in sede d'esame se ne scelgono **due**. Numeri e quantità sono *ipotesi di dimensionamento* esplicitate: l'importante in questa traccia non è il valore esatto, ma la coerenza tra ipotesi, scelte progettuali e motivazioni.
-
 > 📎 **Approfondimenti tecnici** (routing e autenticazione Wi-Fi mesh, SSID statico/dinamico, port-forward SSH in IOS, allocazione dei canali, continuità di servizio link/VPN e NAS — con comandi): vedi **[approfondimento_A038.md](approfondimento_A038.md)**.
 
 > 🧩 **Cablaggio strutturato della sede** (6 documenti TIA/EIA-568B + misure di sicurezza del Quesito II): vedi **[cablaggio_sede_A038.md](cablaggio_sede_A038.md)**.
@@ -36,10 +35,10 @@ Lo schema degli apparati attivi incomprende tutti gli scenari di integrazione po
 
 Le reti WSN si amalgamano alla rete IP tramite un **gateway di frontiera** che per talune tecnologie (Zigbee, BLE) potrebbe essere già integrato a bordo degli AP WiFi, oppure essere un dispositivo indipendente posto in **posizione baricentrica** rispetto ai sensori WSN. Lo stesso criterio di dislocazione spaziale viene usato per gli **AP** aggregatori dei **sensori nativi WiFi**. 
 
-I gateway hanno essenzialmente funzione di:
+I **gateway** hanno essenzialmente **funzione** di:
 - **coordinamento** della reta WSN
-- funzione di **traduzione del payload** proprietario della rete WSN nel payload JSON standard progettato per la gestione dei dati e delle configurazioni di una flotta di sensori eterogenei
-- funzione di **client MQTT** per l'inoltro dei dati dei sensori attraverso un **canale applicativo** (L7) realizzato dal **broker MQTT** nella **sede centrale**.
+- **traduzione del payload** proprietario della rete WSN nel payload JSON standard progettato per la gestione dei dati e delle configurazioni di una flotta di sensori eterogenei
+- **client MQTT** per l'inoltro dei dati dei sensori attraverso un **canale applicativo** (L7) realizzato dal **broker MQTT** nella **sede centrale**.
 
 **Apparati e canali locali**
 
