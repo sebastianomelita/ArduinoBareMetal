@@ -24,7 +24,17 @@ Il **tunneling** è costituito da **tre componenti** principali:
 
 - **Protocollo di trasporto**: Il protocollo utilizzato per trasportare il protocollo incapsulato. Il protocollo di trasporto principale è l'**IP**.
 
-## **Interfacce virtuali tun e tap**
+## Metafora stradale
+
+Un tunnel è un **canale virtuale diretto** tra subnet private remote, poi in realtà il canale reale passa pure per il firewall e include internet e indirizzi IP, ma quello un paccheto con IP privato lo vede.
+
+E' come se metti una **moto da cross** che va solo su **percorsi sterrati** e mai in **percorsi stradali** in città. Le **subnet private** sono gli sterrati, i percorsi stradali le **subnet pubbliche**.
+
+Quando una moto viene condotta da una pista sterrata all'altra, il **transito** passa per strade e autostrade, ma lo fa sempre **dentro un furgone** che è il mezzo con la **targa pubblica** mentre la moto ha solo il **numero di gara** ovvero l'indirizzo privato.
+
+Similmente, il **pacchetto privato** (la moto) vedrà solo **subnet private** (le piste sterrate). Il **tunnel** è il tragitto di transito che la moto percorre dentro il furgone.
+
+**Interfacce virtuali tun e tap**
 
 Poste ai capi di un tunnel, **TUN e TAP** sono **driver** che permettono la creazione di **periferiche di rete virtuali**.
 
