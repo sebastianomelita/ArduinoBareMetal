@@ -16,7 +16,7 @@ Per rendere concreto il progetto si assume:
 
 - **Cantieri contemporaneamente attivi:** massimo **5**.
 - **Dotazione tipica per cantiere:** 4 tablet rugged (scanner 3D/Lidar), 3 fotocamere timelapse, ~25 sensori di sicurezza, più i dispositivi personali di pochi operatori.
-- **Natura dei cantieri:** *temporanei*, in luoghi variabili, **privi di cablaggio fisso** e a volte in zone scarsamente servite da rete cablata.
+- **Natura dei cantieri:** *temporanei*, in luoghi variabili, spesso **privi di cablaggio fisso** e a volte in zone scarsamente servite da rete cablata.
 - **Traffico:** i dati "pesanti" (nuvole di punti, fotogrammi) **non sono real-time** e possono essere trasferiti a lotti/programmati; solo gli **allarmi dei sensori** richiedono bassa latenza (ma occupano banda trascurabile).
 
 Queste ipotesi guidano due scelte chiave: rete di cantiere **wireless-centrica** con backhaul **mobile (4G/5G)**, e potenziamento della WAN di sede (l'ADSL esistente è inadeguata in upload).
