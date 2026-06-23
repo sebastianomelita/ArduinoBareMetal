@@ -35,6 +35,8 @@ Lo **schema degli apparati attivi** comprende tutti gli scenari di integrazione 
 
 Le **reti WSN** si amalgamano alla rete IP tramite un **gateway di frontiera** che, per talune tecnologie (Zigbee, BLE), potrebbe essere già integrato a bordo degli AP WiFi, oppure essere un dispositivo indipendente posto in **posizione baricentrica** rispetto ai sensori WSN. Lo stesso criterio di dislocazione spaziale viene usato per gli **AP** aggregatori dei **sensori nativi WiFi**. 
 
+La rete **Mesh WiFi** è pensata per completare o sostituire del tutto la rete WiFi infrastruttura cablata. Nasce da un **AP centrale** direttamente collegato al dispositivo gateway di cantiere con funzione di router firewall e core switch. Da questo si diramano i **backhaul** che possono creare **maglie solo wireless** di AP oppure completare la maglia creata da AP cablati (soluzione scelta per lo schema proposto).
+
 I **gateway** hanno essenzialmente **funzione** di:
 - **coordinamento** della reta WSN
 - **traduzione del payload** proprietario della rete WSN nel payload JSON standard progettato ad hoc per la gestione dei dati e delle configurazioni di una flotta di sensori eterogenei
