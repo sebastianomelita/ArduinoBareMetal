@@ -32,7 +32,7 @@ E' come se si considerasse una **moto da cross** che va solo su **percorsi sterr
 
 Quando una moto viene condotta da una pista sterrata all'altra, il **transito** passa per strade e autostrade, ma la moto lo percorre sempre **dentro un furgone**, che è il mezzo con la **targa pubblica**, mentre la moto ha solo il **numero di gara** ovvero l'indirizzo privato.
 
-Similmente, un **pacchetto privato** (la moto) vedrà solo **subnet private** (le piste sterrate). Il **tunnel** è il tragitto di transito che la moto percorre dentro il furgone.
+Similmente, un **pacchetto privato** (la moto) vedrà solo **subnet private** (le piste sterrate) e l'interno di un furgone. Il **tunnel** è proprio il tragitto di transito che la moto percorre dentro il furgone, che si conclude all'arrivo su un nuovo sterrato (una subnet remota).
 
 ### **Interfacce virtuali tun e tap**
 
