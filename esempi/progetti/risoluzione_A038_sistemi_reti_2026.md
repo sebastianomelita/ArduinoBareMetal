@@ -69,7 +69,7 @@ I **gateway** hanno essenzialmente **funzione** di:
 **Protocolli e servizi**
 
 - **DHCP e DNS a bordo del firewall/gateway** (il router 4G/5G che è anche firewall): il DHCP serve i client wireless, il DNS è un *forwarder* locale; insieme. **NTP** per la sincronizzazione oraria (fondamentale per i timestamp di log e timelapse).
-- **Tunnel L3/TUN (GRE) protetto da IPsec** verso la sede, con **OSPF** per il routing; **WPA3-Enterprise / 802.1X** sul Wi-Fi.
+- **Tunnel L3/TUN (GRE) protetto da IPsec** verso la sede, con **OSPF** o configurazione di **rotte statiche** per il routing; **WPA3-Enterprise / 802.1X** sul Wi-Fi.
 - **MQTT** per la telemetria/allarmi dei sensori; **SFTP/FTPS/HTTPS** per il trasferimento di nuvole di punti e fotogrammi al repository di sede.
 - **Firewall** sul gateway con regole di default-deny in ingresso.
 
