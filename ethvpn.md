@@ -26,7 +26,7 @@ Il **tunneling** è costituito da **tre componenti** principali:
 
 ### **Metafora stradale**
 
-Un tunnel è un **canale virtuale diretto** tra subnet private remote, poi in realtà il canale reale passa pure per il firewall e include internet e indirizzi IP, ma quello un paccheto con IP privato lo vede.
+Un **tunnel** è un **canale virtuale diretto** tra subnet private remote. Poi in realtà il **canale reale** passa pure per il firewall e include internet e indirizzi IP, ma questo canale un paccheto con IP privato lo vede mai.
 
 E' come se metti una **moto da cross** che va solo su **percorsi sterrati** e mai in **percorsi stradali** in città. Le **subnet private** sono gli sterrati, i percorsi stradali le **subnet pubbliche**.
 
