@@ -28,9 +28,18 @@ Queste ipotesi guidano due scelte chiave: rete di cantiere **wireless-centrica**
 
 ## Punto 1 — Infrastruttura di rete di un cantiere
 
-Poiché il cantiere è temporaneo e senza cablaggio strutturato, si realizza una **LAN temporanea wireless-centrica** imperniata su un **gateway industriale 4G/5G** che fa da router, firewall e client VPN verso la sede.
+Poiché il cantiere è temporaneo e senza cablaggio strutturato, si realizza una **LAN temporanea infrastruttura-centrica e/o wireless-centrica** imperniata su un **gateway industriale 4G/5G** che fa da router, firewall e client VPN verso la sede.
 
 <img src="../img/schema_cantiere_sede.svg" alt="Schema della rete di cantiere" width="1100">
+
+Lo schema degli apparati attivi incomprende tutti gli scenari di integrazione possibili, compatibili con la traccia del compitò che è in realtà piuttosto aperta fermo restando la presenza di sensori wireless e cablati: **WiFi infrastruttura** come base cablata, poi **WiFi mesh** per le zone senza cablaggio ma con sensori wiFi, reti **WSN** di diverse famiglie (Zigbee, lorawan o BlE), introdotte in cantiere a seconda del materiale disponibile e delle esigenze contingenti.  
+
+Le reti WSN si amalgamano alla rete IP tramite un **gateway di frontiera** che per talune tecnologie (Zigbee, BLE) potrebbe essere già integrato a bordo degli AP WiFi, oppure essere un dispositivo indipendente posto in **posizione baricentrica** rispetto ai sensori WSN, lo stesso criterio di dislocazione spaziale viene usato per gli **AP** aggregatori dei **sensori nativi WiFi**. 
+
+I gateway hanno essenzialmente funzione di:
+- **coordinamento** della reta WSN
+- funzione di **traduzione del payload** proprietario della rete WSN nel payload JSON standard progettato per la gestione dei dati e delle configurazioni di una flotta di sensori eterogenei
+- funzione di **client MQTT** per l'inoltro dei dati dei sensori attraverso un **canale applicativo** (L7) realizzato dal **broker MQTT** nella **sede centrale**.
 
 **Apparati e canali locali**
 
