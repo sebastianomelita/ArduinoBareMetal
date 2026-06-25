@@ -232,7 +232,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 - Il server di autenticazione ha memorizzati in una tabella:
   - il nome utente di Alice
   - La password in chiaro o criptata senza salt
-- Non realizza l’autenticazione del server
+- Non realizza l’autenticazione del serverL’utente ha una finestra temporale
 
 
 ### 5.5 Autenticazione forte a due fattori (2FA)
@@ -241,18 +241,22 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 - Le più comuni forme di autenticazione a due fattori usano:
   - "una cosa che conosci" (una password come primo dei due fattori,
   - mentre come secondo fattore viene utilizzato o "una cosa che hai" (un oggetto fisico come un telefonino) o "una cosa che sei" (una caratteristica biometrica come una impronta digitale).
-- Il possesso dell’oggetto fisico è provato inviando una password temporanea che può essere visualizzata soltanto sul suo schermo detta OTP (one time pad token).
-- L’utente ha una finestra temporale (tipicamente 2 minuti) all’interno della quale può leggere la password temporanea dal dispositivo di controllo e inserirla in un campo dell’interfaccia del dispositivo di autenticazione (ad esempio sul PC).
-- A partire dal codice OTP e dal tempo, dispositivo utente e server di autenticazione generano indipendentemente una impronta hash
-- L’impronta del client di autenticazione viene inviata al server tramite un canale sicuro, o  insicuro, reso sicuro tramite un tunnel cifrato.
-- Il server confronta la copia locale con quella ricevuta e, se combaciano, convalida l’autenticazione.
+
+**Meccanismo**:
+- Il **possesso** dell’oggetto fisico è provato inviando una **password temporanea** che può essere visualizzata soltanto sul suo schermo detta **OTP (one time pad token)**.
+- L’utente ha una **finestra temporale** (tipicamente 2 minuti) all’interno della quale può leggere la password temporanea dal dispositivo di **controllo del possesso** e inserirla in un campo dell’interfaccia del dispositivo di autenticazione (ad esempio sul PC) dopo che è stata già validata la **conoscenza della password**.
+
+**Fasi**:
+1. A partire dal codice OTP e dal tempo, dispositivo utente e server di autenticazione **generano indipendentemente** una impronta **hash**
+2. L’impronta del client di autenticazione viene inviata al server di zautenticazione tramite un **canale sicuro**, o  insicuro, reso sicuro tramite un tunnel cifrato.
+3. Il server confronta la copia **generata localmente** con quella **ricevuta** e, se combaciano, **convalida** l’autenticazione.
 
 
 #### TOTP su canale insicuro
 
 <img src="img/authutente/totp.png" alt="TOTP su canale insicuro" width="800px">
 
-  - Il canale sicuro su cui effettuare l’autenticazione 2F è già stato creato (con crittografia ibrida) da una controparte che si era già in precedenza autenticata su un canale insicuro mediante una autenticazione forte.
+  - Il canale sicuro su cui effettuare l’autenticazione 2F è già stato creato (con crittografia ibrida) da una controparte (il server di autenticazione) che si era già in precedenza autenticata su un canale insicuro mediante una **autenticazione forte**. Anlogamente a quanto accade con PAP odel CHAP, l'autenticazione 2FA si realizza all'interno di un **tunnel cifrato** creato con chiave simmetrica verso un **server autenticato** con crittografia asimmetrica (autenticazione forte).
 
 
 ### 5.6 Autenticazione su canali insicuri
