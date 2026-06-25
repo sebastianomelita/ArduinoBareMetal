@@ -256,7 +256,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 <img src="img/authutente/totp.png" alt="TOTP su canale insicuro" width="800px">
 
-  - Il canale sicuro su cui effettuare l’autenticazione 2F è già stato creato (con crittografia ibrida) da una controparte (il server di autenticazione) che si era già in precedenza autenticata su un canale insicuro mediante una **autenticazione forte**. Anlogamente a quanto accade con PAP odel CHAP, l'autenticazione 2FA si realizza all'interno di un **tunnel cifrato** creato con chiave simmetrica verso un **server autenticato** con crittografia asimmetrica (autenticazione forte).
+  - Il canale sicuro su cui effettuare l’autenticazione 2F è già stato creato (con crittografia ibrida) da una controparte (il server di autenticazione) che si era già in precedenza autenticata su un canale insicuro mediante una **autenticazione forte**: analogamente a quanto accade con PAP odel CHAP, l'autenticazione 2FA si realizza all'interno di un **tunnel cifrato** creato con chiave simmetrica verso un **server autenticato** con crittografia asimmetrica (autenticazione forte).
 
 
 ### 5.6 Autenticazione su canali insicuri
