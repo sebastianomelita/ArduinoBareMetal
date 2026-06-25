@@ -244,7 +244,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 **Meccanismo**:
 - Il **possesso** dell’oggetto fisico è provato inviando una **password temporanea** che può essere visualizzata soltanto sul suo schermo detta **OTP (one time pad token)**.
-- L’utente ha una **finestra temporale** (tipicamente 2 minuti) all’interno della quale può leggere la password temporanea dal dispositivo di **controllo del possesso** e inserirla in un campo dell’interfaccia del dispositivo di autenticazione (ad esempio sul PC) dopo che è stata già validata la **conoscenza della password**.
+- L’utente ha una **finestra temporale** (tipicamente 2 minuti) all’interno della quale può leggere la password temporanea dal dispositivo di **controllo del possesso** e inserirla in un campo dell’interfaccia del dispositivo di **autenticazione** (ad esempio sul PC) dopo che è stata già validata la **conoscenza della password**.
 
 **Fasi**:
 1. A partire dal codice OTP e dal tempo, dispositivo utente e server di autenticazione **generano indipendentemente** una impronta **hash**
