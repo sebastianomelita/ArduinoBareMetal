@@ -248,7 +248,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 **Fasi**:
 1. A partire dal codice OTP e dal tempo, dispositivo utente e server di autenticazione **generano indipendentemente** una impronta **hash**
-2. L’impronta del client di autenticazione viene inviata al server di zautenticazione tramite un **canale sicuro**, o  insicuro, reso sicuro tramite un tunnel cifrato.
+2. L’impronta del client di autenticazione viene inviata al server di autenticazione tramite un **canale sicuro**, o  insicuro, reso sicuro tramite un tunnel cifrato.
 3. Il server confronta la copia **generata localmente** con quella **ricevuta** e, se combaciano, **convalida** l’autenticazione.
 
 
