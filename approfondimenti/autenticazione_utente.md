@@ -373,7 +373,7 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 - Il Client manda al server un messaggio contenente la sua identità è la sfida OTP che ha scelto lui, b.
 - Il server risponde mandando la propria identità  A e la propria firma sulla sfida b. E’ la fase di scambio delle credenziali (Credenziali = sfida firmata) in cui il server, contestualmente, invia pure la propria chiave pubblica (contenuta in un certificato utente). In definitiva il server si presenta al client con la sua sfida firmata e un certificato utente ad essa allegato.
 - Il client **autentica il server** se:
-  - riesce a **convalidare la firma dell'utente (dominio) posta sulla sfida**, ovvero se  decifrando la firma con la chiave pubblica del server, ritrova la sfida originale del client (Fase di verifica delle credenziali).
+  - riesce a ***convalidare la firma dell'utente (dominio) posta sulla sfida***, ovvero se  decifrando la firma con la chiave pubblica del server, ritrova la sfida originale del client (Fase di verifica delle credenziali).
   - Se riesce ad **autenticare la chiave pubblica** attraverso l'**autenticazione certificato utente**.
 
 #### Fase 2 - Autenticazione del certificato utente
@@ -387,7 +387,7 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 - A questo punto il **certificato utente** di un server è valido se passa tutte le seguenti verifiche:
   - La data corrente sia all’interno del periodo di validità del certificato
   - La CA proprietaria del certificato sia fidata (trusted), cioè esista un suo certificato nella lista dei certificati attendibili nel PC
-  - sia **valida la firma della CA posta sul certificato utente**. Per far ciò, si verifica che la chiave pubblica della CA in questione, prelevata da un **certificato CA radice** conservato sul PC client, effettivamente decifri la firma del certificato. **È il controllo principale**.
+  - sia ***valida la firma della CA posta sul certificato utente***. Per far ciò, si verifica che la chiave pubblica della CA in questione, prelevata da un **certificato CA radice** conservato sul PC client, effettivamente decifri la firma del certificato. **È il controllo principale**.
   - Che il nome di dominio (subject) dichiarato nel certificato del server da controllare coincida col nome di dominio dell’url del server
 - Se il certificato è valido, la chiave pubblica in esso contenuta può decifrare la credenziale del server autenticandolo
 
