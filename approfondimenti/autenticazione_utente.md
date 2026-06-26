@@ -268,10 +268,11 @@ L’**autenticazione asimmetrica** e l’**autenticazione con Diffie-Helmann** s
     - Verifica indiretta in **fase di presentazione del certificato**: condivisione integra tra Alice e Bob lungo un canale insicuro (non confidenziale) di informazioni pubbliche a ciascuno di essi **associate in maniera univoca** cioè il **certificato utente**. Si può fare più volte, contestualmente all'autenticazione, è il caso ad esempio di TLS con certificati X509. La registrazione dell'identità non avviene più presso il servizio perchè ci si fida dell'unica fase di registrazione dell'utente già avvenuta presso una CA che rimane in seguito garantita presso un servizio proprio grazie ad un **certificato utente**. 
 - Una o più **fasi di autenticazione**: scambio, lungo un canale insicuro, di una informazione derivata dal segreto in maniera non invertibile che dimostri che chi si autentica sia effettivamente in possesso del segreto.
 
-- Le **credenzial** sono rese uniche attraverso una sfida random. 
-- poichè la **fase di registrazione** scambia solo **chiavi pubbliche** cade il **vincolo della sua unicità**, cioè può essere ripetuta più volte. Unico vincolo: devono sempre essere scambiate chiavi autenticate.
-- Spesso la **fase di presentazione** viene ripetuta **ad ogni autenticazione**, cioè le due fasi sono concomitanti
-- In una **autenticazione mutua** spesso **la parte più forte** crea il **canale sicuro** su cui si autentica la controparte con autenticazione più debole
+Le **credenziali** sono rese uniche attraverso una sfida random. Poichè la **fase di registrazione** scambia solo **chiavi pubbliche** cade il **vincolo della sua unicità**, cioè può essere ripetuta più volte. Unico vincolo: devono sempre essere scambiate chiavi autenticate.
+
+Spesso la **fase di presentazione** del certificato viene ripetuta **ad ogni autenticazione**, cioè le due fasi sono concomitanti
+
+In una **autenticazione mutua** spesso **la parte più forte** crea il **canale sicuro** su cui si autentica la controparte con autenticazione più debole
 
 
 #### Fase di registrazione Scambio delle chiavi pubbliche
