@@ -262,9 +262,11 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 ### 5.6 Autenticazione su canali insicuri
 
 
-- L’autenticazione asimmetrica e l’autenticazione con Diffie-Helmann sono ritenuti un metodo di autenticazione forte e si basano su:
-  - Fase di registrazione: condivisione integra tra Alice e Bob lungo un canale insicuro (non confidenziale) di informazioni pubbliche a ciascuno di essi associate in maniera univoca (chiave pubblica o certificato)
-  - Una o più fasi di autenticazione: scambio, lungo un canale insicuro, di una informazione derivata dal segreto in maniera non invertibile che dimostri che chi si autentica sia effettivamente in possesso del segreto.
+L’**autenticazione asimmetrica** e l’**autenticazione con Diffie-Helmann** sono ritenuti metodio di **autenticazione forte** e si basano su:
+- **Fase di  verifica dell'identità** che può essere diretta o indiretta:
+      - Verifica diretta in **fase di registrazione**: condivisione integra tra Alice e Bob lungo un canale insicuro (non confidenziale) di informazioni pubbliche a ciascuno di essi **associate in maniera univoca** cioè la **chiave pubblica**. Si fa una sola volta presso ogni servizio, è il caso ad esempio di SSH.
+      - Verifica indiretta in **fase di presentazione del certificato**: condivisione integra tra Alice e Bob lungo un canale insicuro (non confidenziale) di informazioni pubbliche a ciascuno di essi **associate in maniera univoca** cioè la **il certificato utente**. Si può fare più volte, contestualmente all'autenticazione, è il caso ad esempio di TLS con certificati X509. La registrazione dell'identità presso il servizio non avviene più perchè ci si fida dell'unica fase di registrazione dell'utente presso una CA che rimane in seguito garantita presso il servizio da un certificato. 
+- Una o più **fasi di autenticazione**: scambio, lungo un canale insicuro, di una informazione derivata dal segreto in maniera non invertibile che dimostri che chi si autentica sia effettivamente in possesso del segreto.
   - Le credenziali sono rese uniche attraverso una sfida random
 - poichè la fase di registrazione scambia solo chiavi pubbliche cade il vincolo della sua unicità, cioè può essere ripetuta più volte. Unico vincolo: devono sempre essere scambiate chiavi autenticate.
   - Spesso la fase di registrazione viene ripetuta ad ogni autenticazione, cioè le due fasi sono concomitanti
@@ -431,26 +433,26 @@ L'introduzione di scambi di chiavi temporanei risolve il problema della dipenden
 
 - E’ l’identità di una persona in Internet.
 - Internet però è per sua natura sostanzialmente anonima nel senso che l’identità digitale può non corrispondere all’identità reale.
-- Identità autoaffermata (Self-asserted identity) basata su attributi personali auto-definiti. Una persona può scegliere di proteggere le proprie informazioni personali utilizzando pseudonimi per accedere ai servizi che non richiedono una identità del mondo reale. Può essere sufficiente per webmail, social network, siti di notizie, account eCommerce, ecc. La fase di registrazione dell’utente è tipicamente molto debole.
-- Identità ufficiale (Official digital identity) è basata su documenti ufficiali del mondo reale. La fase di registrazione dell’utente è molto più forte e realizza una corrispondenza affidabile tra mondo online e mondo fisico. Le persone sono tenute a presentare un documento di identità ufficiale del mondo reale (certificato di nascita, passaporto ecc.) per autenticare la propria identità prima del rilascio della credenziali utilizzabili online.
+- **Identità autoaffermata** (Self-asserted identity) basata su attributi personali auto-definiti. Una persona può scegliere di proteggere le proprie informazioni personali utilizzando pseudonimi per accedere ai servizi che non richiedono una identità del mondo reale. Può essere sufficiente per webmail, social network, siti di notizie, account eCommerce, ecc. La fase di registrazione dell’utente è tipicamente molto debole.
+- **Identità ufficiale** (Official digital identity) è basata su documenti ufficiali del mondo reale. La fase di registrazione dell’utente è molto più forte e realizza una corrispondenza affidabile tra mondo online e mondo fisico. Le persone sono tenute a presentare un documento di identità ufficiale del mondo reale (certificato di nascita, passaporto ecc.) per autenticare la propria identità prima del rilascio della credenziali utilizzabili online.
 
 
 ### 6.1 Aspetti critici di una autenticazione
 
 <img src="img/authutente/matrice_loa.png" alt="Aspetti critici di una autenticazione" width="300px">
 
-- La fiducia o il grado di confidenza in una corretta autenticazione deriva dalla forza (misurata in livelli) dei processi di:
-- registrazione dell’utente, ad esempio la prova dell'identità, la sua verifica e la sua autenticazione. Altrimenti indicato come garanzia dell'identità (identity assurance)
-- rilascio e gestione delle credenziali (token), che riguarda, ad esempio, l'entità che rilascia la credenziale e la procedura che essa segue per rilasciarla
-- autenticazione online. Altrimenti indicato come garanzia dell’autenticazione (authentication assurance).
+La **fiducia** o il **grado di confidenza** in una corretta autenticazione deriva dalla forza (misurata in livelli) dei processi di:
+- **registrazione dell’utente**, ad esempio la prova dell'identità, la sua verifica e la sua autenticazione. Altrimenti indicato come garanzia dell'identità (identity assurance)
+- **rilascio e gestione delle credenziali** (token), che riguarda, ad esempio, l'entità che rilascia la credenziale e la procedura che essa segue per rilasciarla
+- **autenticazione online**. Altrimenti indicato come garanzia dell’autenticazione (authentication assurance).
 
 
 ### 6.2 Livelli di garanzia di una autenticazione
 
 - Secondo il regolamento eIDAS (recepito da tutti gli stati UE) esistono tre livelli di garanzia (asurance levels):
-- Il livello di affidabilità basso (low) si riferisce a mezzi di identificazione elettronica che forniscono un grado di sicurezza limitato riguardo all'identità pretesa o dichiarata di una persona. (Lieve diminuzione del rischio di uso abusivo o alterazione dell'identità)
-- Il livello di affidabilità significativo (substantial) si riferisce a mezzi di identificazione elettronica che forniscono un grado di sicurezza significativo riguardo all'identità, pretesa o dichiarata, di una persona. (Significativa diminuzione del rischio di uso abusivo o alterazione dell'identità)
-- Il livello di affidabilità elevato (high) si riferisce a un mezzo di identificazione elettronica che fornisce riguardo all'identità, pretesa o dichiarata, di una persona un grado di sicurezza molto elevato. (Eliminazione del rischio di uso abusivo o alterazione dell'identità)
+- Il **livello di affidabilità basso (low)** si riferisce a mezzi di identificazione elettronica che forniscono un grado di sicurezza limitato riguardo all'identità pretesa o dichiarata di una persona. (Lieve diminuzione del rischio di uso abusivo o alterazione dell'identità)
+- Il **livello di affidabilità significativo (substantial)** si riferisce a mezzi di identificazione elettronica che forniscono un grado di sicurezza significativo riguardo all'identità, pretesa o dichiarata, di una persona. (Significativa diminuzione del rischio di uso abusivo o alterazione dell'identità)
+- Il **livello di affidabilità elevato (high)** si riferisce a un mezzo di identificazione elettronica che fornisce riguardo all'identità, pretesa o dichiarata, di una persona un grado di sicurezza molto elevato. (Eliminazione del rischio di uso abusivo o alterazione dell'identità)
 
 
 #### Scelta dei livelli legata al rischio
