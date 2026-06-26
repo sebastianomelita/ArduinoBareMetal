@@ -382,7 +382,7 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
   <img src="img/authutente/verifica_certificato_server.png" alt="Verifica del certificato di un server" width="500px">
 </p>
 
-- Un server si **presenta** con una **credenziale firmat** e con un **certificato utente**
+- Un server si **presenta** con una **credenziale firmata** e con un **certificato utente**
 - Il controllo si basa sul presupposto che il client che controlla possegga un certificato CA che validi la firma sul certificato da controllare.
 - A questo punto il **certificato utente** di un server è valido se passa tutte le seguenti verifiche:
   - La data corrente sia all’interno del periodo di validità del certificato
