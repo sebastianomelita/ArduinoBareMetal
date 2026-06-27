@@ -136,6 +136,8 @@ A differenza dell'attacco di tipo MTM di tipo modification che opera sempre in t
 
 **Meccanismo**: l'**attacco a dizionario** avviene sul **PC dell'attaccante** agento sul **database delle password sottratte** con qualche forma di **Injection**. Una volta che l’attaccante ha tutto il DB in locale sul proprio PC, l’hacker può tentare un attacco a forza bruta sul DB che, essendo in locale, non è più protetto dall’IDS/IPS del firewall aziendale.
 
+Avvenendo sul **PC dell’attaccante**, i dispositivi a protezione degli attacchi a forza bruta sul server come **gli antiintrusione sono inefficaci**.
+
 Per sbrigarsi prima l’hacker può decidere di effettuare un più efficiente attacco a dizionario utilizzando:
   - Debolezze note dell’algoritmo di hash usato per ottenere le impronte
   - Tecniche di ingegneria sociale per ottenere sottosequenze della password
