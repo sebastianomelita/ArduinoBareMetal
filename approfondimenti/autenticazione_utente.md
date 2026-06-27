@@ -270,8 +270,6 @@ L’**autenticazione asimmetrica** e l’**autenticazione con Diffie-Helmann** s
 
 Le **credenziali** sono rese uniche attraverso una sfida random. Poichè la **fase di registrazione** scambia solo **chiavi pubbliche** cade il **vincolo della sua unicità**, cioè può essere ripetuta più volte. Unico vincolo: devono sempre essere scambiate chiavi autenticate.
 
-Spesso la **fase di presentazione** del certificato viene ripetuta **ad ogni autenticazione**, cioè le due fasi sono concomitanti
-
 In una **autenticazione mutua** spesso **la parte più forte** crea il **canale sicuro** su cui si autentica la controparte con autenticazione più debole
 
 
