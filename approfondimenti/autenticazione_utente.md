@@ -61,36 +61,39 @@
 
 ### 3.3 Attacco MITM
 
-- Il MITM consiste nel dirottare il traffico generato durante la comunicazione tra due host verso un terzo host (attaccante) il quale fingerà di essere l’end-point legittimo della comunicazione.
+- Il **MITM** consiste nel dirottare il traffico generato durante la comunicazione tra due host verso un terzo host (attaccante) il quale fingerà di essere l’end-point legittimo della comunicazione.
 
 
 #### Tipi di attacco MITM (Man In The Middle)
 
 <img src="img/authutente/tipi_mitm.jpg" alt="Tipi di attacco MITM (Man In The Middle)" width="700px">
 
-- Soluzioni:
+**Soluzioni**:
 - Token di sessione per l’attacco replay
 - Autenticazione degli interlocutori per tutti gli altri attacchi
 
 
 #### Attacchi MTM: scenario bellico
 
-- Interception: avviene ascoltando una comunicazione. Immagina qualcuno che ascolta i segreti nazionali.
-- Interruption: ricezione dei messaggi e impedimento al destinatario di riceverli. Il mittente crederà che il destinatario ha ricevuto il messaggio ma il destinatario non l'ha ricevuto. Supponiamo di voler sparare un missile, ma il software missilistico non sta ricevendo i tuoi comandi, e la cosa peggiore è che tu pensi che il missile sia stato sparato.
-- Modification: l'uomo nel mezzo riceve il messaggio, lo modifica e quindi lo invia al destinatario effettivo. Immagina se l'obiettivo del missile viene cambiato nel tuo stesso paese…
-- Replay: l'uomo nel mezzo potrebbe ricevere i tuoi dati .. e quindi continuare a inviarli al destinatario (il ricevitore penserà che tu abbia inviato di nuovo i dati) .. Più missili vengono lanciati di quanti tu ne abbia ordinato
-- Fabrication: l'uomo nel mezzo fabbricherà un nuovo messaggio e lo invierà al destinatario. Il destinatario crederà che il messaggio provenga dal mittente. A questo punto, immagina che un missile venga improvvisamente da te sparato contro una tua nazione amica….
+- **Interception**: avviene ascoltando una comunicazione. Immagina qualcuno che ascolta i segreti nazionali.
+- **Interruption**: ricezione dei messaggi e impedimento al destinatario di riceverli. Il mittente crederà che il destinatario ha ricevuto il messaggio ma il destinatario non l'ha ricevuto. Supponiamo di voler sparare un missile, ma il software missilistico non sta ricevendo i tuoi comandi, e la cosa peggiore è che tu pensi che il missile sia stato sparato.
+- **Modification**: l'uomo nel mezzo riceve il messaggio, lo modifica e quindi lo invia al destinatario effettivo. Immagina se l'obiettivo del missile viene cambiato nel tuo stesso paese…
+- **Replay**: l'uomo nel mezzo potrebbe ricevere i tuoi dati .. e quindi continuare a inviarli al destinatario (il ricevitore penserà che tu abbia inviato di nuovo i dati) .. Più missili vengono lanciati di quanti tu ne abbia ordinato
+- **Fabrication**: l'uomo nel mezzo fabbricherà un nuovo messaggio e lo invierà al destinatario. Il destinatario crederà che il messaggio provenga dal mittente. A questo punto, immagina che un missile venga improvvisamente da te sparato contro una tua nazione amica….
 
 
 ### 3.4 Attacco replay
 
-- Questo attacco permette operazioni fraudolente come falsa autenticazione e/o transazioni duplicate, senza dover necessariamente decrittare la password, ma soltanto ritrasmettendola in un tempo successivo.
-- A differenza dell'attacco di tipo MTM di tipo modification che opera sempre in tempo reale, il replay attack può operare anche in modo asincrono quando la comunicazione originale è terminata.
-- Contromisure: utilizzo di un token (un id) di sessione sempre diverso
-- Fasi tipiche dell’attacco:
-  - Mallory intercetta la comunicazione tra Alice, che si sta autenticando con Bob e ne conserva il messaggio con la chiave cifrata.
-  - In un momento successivo Mallory apre una nuova comunicazione con Bob spacciandosi per Alice
-  - Quando Bob chiede a Mallory (convinto di parlare con Alice) una chiave d'autenticazione, Mallory prontamente invia quella (mai in  realtà decifrata) di Alice, instaurando così la comunicazione.
+Questo attacco permette operazioni fraudolente come falsa autenticazione e/o transazioni duplicate, senza dover necessariamente decrittare la password, ma soltanto ritrasmettendola in un tempo successivo.
+
+A differenza dell'attacco di tipo MTM di tipo modification che opera sempre in tempo reale, il replay attack può operare anche in modo asincrono quando la comunicazione originale è terminata.
+
+**Contromisure**: utilizzo di un token (un id) di sessione sempre diverso
+
+**Fasi tipiche** dell’attacco:
+- **Mallory** intercetta la comunicazione tra Alice, che si sta autenticando con Bob e ne conserva il messaggio con la chiave cifrata.
+- In un momento successivo Mallory apre una nuova comunicazione con Bob spacciandosi per Alice
+- Quando Bob chiede a Mallory (convinto di parlare con Alice) una chiave d'autenticazione, Mallory prontamente invia quella (mai in  realtà decifrata) di Alice, instaurando così la comunicazione.
 
 
 ## 4 Passwords
@@ -98,17 +101,17 @@
 ### 4.1 Criticità di una password
 
 - Una password è una informazione segreta che identifica un utente, possiede le seguenti criticità:
-  - La sua comunicazione: può essere intercettata
-  - La sua memorizzazione: può essere letta
-  - La sua costruzione: può essere scoperta
+  - La sua **comunicazione**: può essere intercettata
+  - La sua **memorizzazione**: può essere letta
+  - La sua **costruzione**: può essere scoperta
 
 
 #### Costruzione della password
 
 - Una password “ben formata” dovrebbe seguire un certo numero di criteri che ne rafforzano la inviolabilità:
-  - Lunghezza sufficiente (ad es. 8 caratteri)
-  - Sequenza diffusa (ad es. un misto di caratteri alfabetici, numerici e caratteri speciali)
-  - Sequenza confusa (stringhe senza significato nella lingua naturale o correlazioni semplici con informazioni sul proprietario come nomi propri di parenti, età, ecc.)
+  - **Lunghezza** sufficiente (ad es. 8 caratteri)
+  - Sequenza **diffusa** (ad es. un misto di caratteri alfabetici, numerici e caratteri speciali)
+  - Sequenza **confusa** (stringhe senza significato nella lingua naturale o correlazioni semplici con informazioni sul proprietario come nomi propri di parenti, età, ecc.)
 
 
 #### Conservazione della password
@@ -124,14 +127,16 @@
 #### Comunicazione della password
 
 - Una password può essere scambiata:
-  - in una rete sicura: allora può essere in chiaro
-  - In una rete insicura: allora deve essere cifrata
+  - in una **rete sicura**: allora può essere in chiaro
+  - In una **rete insicura**: allora deve essere cifrata
 
 ### 4.4 Attacco a dizionario
 
-- Prerequisito: l’attaccante deve rubare in qualche modo il database delle password. Ciò può accadere, per esempio, con la tecnica dello SQL Injection.
-- Una volta che l’attaccante ha tutto il DB in locale sul proprio PC, l’hacker può tentare un attacco a forza bruta sul DB che, essendo in locale, non è più protetto dall’IDS/IPS del firewall aziendale.
-- Per sbrigarsi prima l’hacker può decidere di effettuare un più efficiente attacco a dizionario utilizzando:
+**Prerequisito**: l’attaccante deve rubare in qualche modo il database delle password. Ciò può accadere, per esempio, con la tecnica dello SQL Injection.
+
+Una volta che l’attaccante ha tutto il DB in locale sul proprio PC, l’hacker può tentare un attacco a forza bruta sul DB che, essendo in locale, non è più protetto dall’IDS/IPS del firewall aziendale.
+
+Per sbrigarsi prima l’hacker può decidere di effettuare un più efficiente attacco a dizionario utilizzando:
   - Debolezze note dell’algoritmo di hash usato per ottenere le impronte
   - Tecniche di ingegneria sociale per ottenere sottosequenze della password
 - Protezione possibile:
