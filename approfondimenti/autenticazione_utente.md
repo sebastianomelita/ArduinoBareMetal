@@ -132,9 +132,9 @@ A differenza dell'attacco di tipo MTM di tipo modification che opera sempre in t
 
 ### 4.4 Attacco a dizionario
 
-**Prerequisito**: l’attaccante deve rubare in qualche modo il database delle password. Ciò può accadere, per esempio, con la tecnica dello SQL Injection.
+**Prerequisito**: l’attaccante deve rubare in qualche modo il database delle password. Ciò può accadere, per esempio, con la tecnica dello **SQL Injection**.
 
-Una volta che l’attaccante ha tutto il DB in locale sul proprio PC, l’hacker può tentare un attacco a forza bruta sul DB che, essendo in locale, non è più protetto dall’IDS/IPS del firewall aziendale.
+L'**attacco a dizionario** avviene sul **PC dell'attaccante** agento sul **database delle password sottratte** con qualche forma di **Injection**. Una volta che l’attaccante ha tutto il DB in locale sul proprio PC, l’hacker può tentare un attacco a forza bruta sul DB che, essendo in locale, non è più protetto dall’IDS/IPS del firewall aziendale.
 
 Per sbrigarsi prima l’hacker può decidere di effettuare un più efficiente attacco a dizionario utilizzando:
   - Debolezze note dell’algoritmo di hash usato per ottenere le impronte
