@@ -387,12 +387,12 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 
 #### Autenticazione forte con Diffie-Helmann
 
-- DH può essere utilizzato anche per la generazione delle sfide: i nonce sono proprio le chiavi pubbliche di DH (basate sui numeri random privati a e b).
-- Le chiavi pubbliche di DH sono gli esponenziali YA= ga mod p e YB= gb mod p
-- Le sfide di DH vengono firmate con la chiave privata RSA del mittente (Credenziali irreversibili ed autenticate = esponenziale firmato)
-- L’autenticazione delle chiavi pubbliche utili per verificare la firma è generalmente ottenuta inserendole in certificati firmati da una CA
+- **DH** può essere utilizzato anche per la generazione delle **sfide** inviate da chi **vuole autenticare**: i **nonce** sono proprio le **chiavi pubbliche di DH** che, basate sui numeri random privati a e b, sono esse stesse **random**.
+- Le **chiavi pubbliche di DH** sono gli **esponenziali** YA= ga mod p e YB= gb mod p che hanno la proprietà di essere **chiavi pubbliche a breve termine** contemporaneamente **random e OTP**, cioè usa e getta.
+- per autenticare un utente, le **sfide di DH** vengono **firmate** con la **chiave privata RSA** del mittente che le ha generate.
+- le **chiavi pubbliche** utili per verificare la firma sono inserite in **certificati utente firmati da una CA**.
 - Anche in questo caso le chiavi pubbliche, e i certificati che le autenticano, sono scambiate o una sola volta in fase di registrazione o «al volo» in fase di setup della connessione
-- L’utilizzo di DH ha il vantaggio di poter fare contemporaneamente sia l’autenticazione dell’utente (tramite nonce) che la generazione di una chiave effimera di sessione.
+- L’utilizzo di DH ha il vantaggio di poter fare contemporaneamente sia l’**autenticazione dell’utente** (tramite nonce) che la **generazione di una chiave effimera** di sessione.
 
 
 ### 5.8 Autenticazione di un server
