@@ -387,12 +387,13 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 
 #### Autenticazione forte con Diffie-Helmann
 
-- **DH** può essere utilizzato anche per la generazione delle **sfide** inviate da chi **vuole autenticare**: i **nonce** sono proprio le **chiavi pubbliche di DH** che, basate sui numeri random privati a e b, sono esse stesse **random**.
-- Le **chiavi pubbliche di DH** sono gli **esponenziali** YA= ga mod p e YB= gb mod p che hanno la proprietà di essere **chiavi pubbliche a breve termine** contemporaneamente **random e OTP**, cioè usa e getta.
+- **DH** permette a ciascuna parte di generare autonomamente la propria sfida (il proprio esponenziale) invece di riceverla dalla controparte come nello schema challenge/response classico. La sfida viene poi inviata firmata tramute RSA in modo da autenticare l'utente. I **nonce** sono proprio le **chiavi pubbliche di DH** che, basate sui numeri random privati a e b, sono esse stesse **random**.
+- Le **chiavi pubbliche di DH** sono gli **esponenziali** YA= ga mod p e YB= gb mod p che hanno la proprietà di essere **chiavi pubbliche a breve termine** contemporaneamente **random e effimere**, cioè usa e getta: ne viene generata una coppia nuova per **ogni sessione**.
+- Lo scambio DH, da solo, è **anonimo** (vulnerabile a MITM): è la **firma** apposta sugli esponenziali a fornire l'autenticazione. Ciascuna parte firma con la propria **chiave privata RSA a lungo termine** la **coppia** di esponenziali (il proprio e quello ricevuto), in modo da legarli tra loro.
 - per autenticare un utente, le **sfide di DH** vengono **firmate** con la **chiave privata RSA** del mittente che le ha generate.
 - le **chiavi pubbliche** utili per verificare la firma sono inserite in **certificati utente firmati da una CA**.
 - Anche in questo caso le chiavi pubbliche, e i certificati che le autenticano, sono scambiate o una sola volta in fase di registrazione o «al volo» in fase di setup della connessione
-- L’utilizzo di DH ha il vantaggio di poter fare contemporaneamente sia l’**autenticazione dell’utente** (tramite nonce) che la **generazione di una chiave effimera** di sessione.
+- L'utilizzo di DH ha il vantaggio di realizzare contemporaneamente sia l'**autenticazione dell'utente** (tramite la **firma** sul nonce) sia la **generazione di una chiave effimera** di sessione, ottenendo così anche la **Perfect Forward Secrecy**.
 
 
 ### 5.8 Autenticazione di un server
