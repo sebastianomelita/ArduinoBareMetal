@@ -136,8 +136,6 @@ A differenza dell'attacco di tipo MTM di tipo modification che opera sempre in t
 
 **Meccanismo**: l'**attacco a dizionario** avviene sul **PC dell'attaccante** agento sul **database delle password sottratte** con qualche forma di **Injection**. Una volta che l’attaccante ha tutto il DB in locale sul proprio PC, l’hacker può tentare un attacco a forza bruta sul DB che, essendo in locale, non è più protetto dall’IDS/IPS del firewall aziendale.
 
-Avvenendo sul **PC dell’attaccante**, i dispositivi a protezione degli attacchi a forza bruta sul server come **gli antiintrusione sono inefficaci**.
-
 Per sbrigarsi prima l’hacker può decidere di effettuare un più efficiente attacco a dizionario utilizzando:
   - Debolezze note dell’algoritmo di hash usato per ottenere le impronte
   - Tecniche di ingegneria sociale per ottenere sottosequenze della password
@@ -354,7 +352,12 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 
 Sia nel caso di autenticazione singola che in quello di autenticazione mutua non sempre conviene memorizzare tutte le chiavi pubbliche nel sistema anche se questa è esattamente l'operazione che fa Linux con il protocollo SSH.
 
-Nel caso di protocolli più massivi di SSH, come HTTPS o RADIUS, non esiste un elenco di chiavi pubbliche autenticate perchè sarebbe troppo oneroso da gestire per i loro scenari d'uso. La chiave pubblica, in questi protocolli, viaggia sempre autenticata dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato). 
+Nel caso di protocolli più massivi di SSH, come HTTPS o RADIUS, la registrazione degli utenti è puramente autorizzativa e spesso viene memorizzato il solo username sotto forma di CN (Common Name). La chiave pubblica, in questi protocolli, viaggia sempre autenticata dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato) . 
+
+Il fatto che il **certificato sia valido** non dice ancora *quale* utente sia. Per questo il server deve **mappare il certificato a un account**, e qui ci sono varie **strategie** comuni:
+- **Tramite i campi identitari del certificato** — il Subject DN (es. il Common Name) oppure il Subject Alternative Name (email, UPN). Il server estrae questo valore e cerca l'**utente corrispondente** nel database. È l'**approccio più diffuso**.
+- **Tramite l'impronta del certificato o la chiave pubblica** — il server salva il **fingerprint** (thumbprint) o la **chiave pubblica** e lo **associa** rigidamente a un **account specifico** (una forma di pinning a livello applicativo).
+- **Tramite serial number + issuer** — combinazione che identifica univocamente quel certificato emesso da quella CA.
 
 <p align="center">
   <img src="img/tunnel_pap_chap.svg" alt="Autenticazione mutua con tunnel: server asimmetrico + client PAP/CHAP dentro" width="860">
