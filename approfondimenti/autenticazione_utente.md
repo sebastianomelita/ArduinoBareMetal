@@ -284,13 +284,13 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 **Come si chiama?** Si chiama certificato utente o certificato cliente (client certificate)
 
 **Cosa contiene?** E’, a sua volta, un particolare documento che essenzialmente consiste in:
-- Chiave pubblica in chiaro di un utente (in genere registrato in una CA)
+- **Chiave pubblica** in chiaro di un utente (in genere registrato in una CA)
 - Informazioni inerenti all’**identità** associata alla **chiave pubblica**: nome di un utente o  nome di una CA sotto forma di **CN (Common Name)**.
 - **Firma digitale** in calce (a seguire) da parte di un ente terzo fidato (in genere una CA) che è l’**emittente (issuer)** del certificato.
 
 **Da chi è firmato?** E’ firmato **dalla CA** con la sua chiave privata detta anche (insieme alla controparte pubblica) chiave di certificazione (firma un certificato).
 
-**Qual’è lo scopo del certificato?** Contenere e autenticare una chiave pubblica come appartenente al suo proprietario (identificato da un CN) per mezzo della garanzia (firma) di uno terzo utente fidato (in genere una CA).
+**Qual’è lo scopo del certificato?** **Contenere** e **autenticare** una chiave pubblica come appartenente al suo proprietario (identificato da un CN) per mezzo della garanzia (firma) di uno terzo utente fidato (in genere una CA).
 
 
 #### Fase di registrazione Scambio delle chiavi pubbliche
