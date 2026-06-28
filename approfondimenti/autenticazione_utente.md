@@ -354,7 +354,7 @@ Sia nel caso di autenticazione singola che in quello di autenticazione mutua non
 
 Nel caso di protocolli più massivi di SSH, come HTTPS o RADIUS, la registrazione degli utenti è **puramente autorizzativa** e spesso viene memorizzato **sul DB del server** il solo username sotto forma di CN (Common Name). La chiave pubblica, in questi protocolli, viaggia sempre **autenticata** (cioè **certamente associata** ad un certo CN) dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato) . 
 
-Il fatto che il **certificato sia valido** non dice ancora *quale* utente sia. Per questo il server deve **mappare il certificato a un account**, e qui ci sono varie **strategie** comuni:
+Il fatto che il **certificato sia valido** non dice ancora se l'utente sia **effettivamente autorizzato** ad accedere al servizio. Per questo il server deve **mappare il certificato a un account**, e qui ci sono varie **strategie** comuni:
 - **Tramite i campi identitari del certificato** — il Subject DN (es. il Common Name) oppure il Subject Alternative Name (email, UPN). Il server estrae questo valore e cerca l'**utente corrispondente** nel database. È l'**approccio più diffuso**.
 - **Tramite l'impronta del certificato o la chiave pubblica** — il server salva il **fingerprint** (thumbprint) o la **chiave pubblica** e lo **associa** rigidamente a un **account specifico** (una forma di pinning a livello applicativo).
 - **Tramite serial number + issuer** — combinazione che identifica univocamente quel certificato emesso da quella CA.
