@@ -387,7 +387,7 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 
 #### Autenticazione forte con Diffie-Helmann
 
-- **DH** permette a ciascuna parte di generare autonomamente la propria sfida (il proprio esponenziale) invece di riceverla dalla controparte come nello schema challenge/response classico. La sfida viene poi inviata firmata tramute RSA in modo da autenticare l'utente. I **nonce** sono proprio le **chiavi pubbliche di DH** che, basate sui numeri random privati a e b, sono esse stesse **random**.
+- **DH** permette a ciascuna parte di generare autonomamente la propria sfida (il proprio esponenziale) invece di riceverla dalla controparte come nello schema challenge/response classico. La sfida viene poi inviata firmata tramite RSA in modo da autenticare l'utente. I **nonce** sono proprio le **chiavi pubbliche di DH** che, basate sui numeri random privati a e b, sono esse stesse **random**.
 - Le **chiavi pubbliche di DH** sono gli **esponenziali** YA= ga mod p e YB= gb mod p che hanno la proprietà di essere **chiavi pubbliche a breve termine** contemporaneamente **random e effimere**, cioè usa e getta: ne viene generata una coppia nuova per **ogni sessione**.
 - Lo scambio DH, da solo, è **anonimo** (vulnerabile a MITM): è la **firma** apposta sugli esponenziali a fornire l'autenticazione. Ciascuna parte firma con la propria **chiave privata RSA a lungo termine** la **coppia** di esponenziali (il proprio e quello ricevuto), in modo da legarli tra loro.
 - per autenticare un utente, le **sfide di DH** vengono **firmate** con la **chiave privata RSA** del mittente che le ha generate.
