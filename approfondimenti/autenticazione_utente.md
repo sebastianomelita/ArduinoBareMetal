@@ -384,7 +384,11 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 
 
 
-## 5.8 Autenticazione utente con tunnel
+## 5.8 Autenticazione mutua con tunnel 
+
+E' una autrnticazione ibrida nel senso che è forte asimmetrica quando autentica il server, mentre è debole (PAP) o media (CHAP) quando si autentica il client.
+
+Nonostante che l'autenticazione del client sia formalmente più debole (PAP o CHAP o 2FA) di quella asimmetrica essa si svolge all'interno di un **tunnel cifrato** generato dal client come sottoprodotto dell'autenticazione del server tramite cifratura con la chiave pubblica del server.
 
 <p align="center">
   <img src="img/tunnel_pap_chap.svg" alt="Autenticazione mutua con tunnel: server asimmetrico + client PAP/CHAP dentro" width="860">
