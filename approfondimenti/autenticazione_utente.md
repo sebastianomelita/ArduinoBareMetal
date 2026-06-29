@@ -178,7 +178,8 @@ Va usato su un canale sicuro perché è esposto ad attacco replay.
   - **Identificazione dell’utente** e creazione della password: è il momento in cui viene **registrato** un nuovo utente sul sistema. Si esegue una sola volta all’inizio. Viene calcolata e memorizzata l’impronta sul database.
   - **Verifica della password**: è l’**autenticazione** vera e propria di un utente e si esegue tutte le volte che un utente richiede un accesso.
 
-**Fasi di Autenticazione Protocollo PAP**:
+
+**Fasi di Autenticazione Protocollo PAP**
 
 <img src="img/authutente/pap_schema.png" alt="Protocollo di autenticazione PAP" width="400px">
 
