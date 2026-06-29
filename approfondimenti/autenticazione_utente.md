@@ -386,11 +386,16 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 
 ## 5.8 Autenticazione mutua con tunnel 
 
-E' una autrnticazione ibrida nel senso che è forte asimmetrica quando autentica il server, mentre è debole (PAP) o media (CHAP) quando si autentica il client.
+E' una **autenticazione ibrida** nel senso che è **forte asimmetrica** quando autentica il server, mentre è **debole** (PAP) o media (CHAP) quando si autentica il client. 
 
-Nonostante che l'**autenticazione del client** sia formalmente di **tipo debole** (PAP o CHAP) essa si svolge all'interno di un **tunnel cifrato** generato come sottoprodotto dell'**autenticazione del server**, procedimento che termina con la generazione di una chiave di **sessione simmetrica** effimera (temporanea) che può essere usata per scambiare dati in maniera sicura in entrambe le direzioni.
+Nonostante che l'**autenticazione del client** sia formalmente di **tipo debole** (PAP o CHAP) essa si svolge all'interno di un **tunnel cifrato** generato come sottoprodotto dell'**autenticazione del server**, procedimento che termina con la generazione di una chiave di **sessione simmetrica** effimera (temporanea) che può essere usata per scambiare dati in **maniera sicura** in entrambe le direzioni.
 
-Il protocollo di autenticazione del client avvenendo all'interno del tunnel cifrato gode di tutte le prprietà di sicurezza introdotte da questo, compresa la protezione dagli attacchi replay (dato che la chiave di sessione è temporanea).
+Il protocollo di **autenticazione del client** avvenendo **all'interno del tunnel** cifrato gode di tutte le **proprietà di sicurezza** introdotte da questo, compresa la protezione dagli **attacchi replay** (dato che la chiave di sessione è temporanea).
+
+Ricapitolando le **fasi in breve**:
+1. si **autentica il server**
+2. si **crea il tunnel cifrato** tra client e server
+3. si **autentica il client** all'interno del tunnel cifrato 
 
 
 <p align="center">
