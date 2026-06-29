@@ -404,6 +404,8 @@ Autenticare un server, di fatto, significa **autenticare una sfida** e **autenti
 
 ### 5.8.1 Autenticazione forte con Diffie-Helmann
 
+<img src="img/diffie_hellman_firmato_sts.svg" alt="TOTP su canale insicuro" width="800px">
+
 - **DH** permette a ciascuna parte di **generare autonomamente** la propria **sfida da firmare** (il proprio esponenziale) invece di riceverla dalla controparte come nello schema challenge/response classico. La sfida viene poi inviata **firmata tramite RSA** in modo da autenticare l'utente. I **nonce** sono proprio le **chiavi pubbliche di DH** che, basate sui numeri random privati a e b, sono esse stesse **random**.
 - Le **chiavi pubbliche di DH** sono gli **esponenziali** YA= ga mod p e YB= gb mod p che hanno la proprietà di essere **chiavi pubbliche a breve termine** contemporaneamente **random e effimere**, cioè usa e getta: ne viene generata una coppia nuova per **ogni sessione**.
 - Lo scambio DH, da solo, è **anonimo** (vulnerabile a MITM): è la **firma** apposta sugli esponenziali a fornire l'autenticazione. Ciascuna parte firma con la propria **chiave privata RSA a lungo termine** la **coppia** di esponenziali (il proprio e quello ricevuto), in modo da legarli tra loro.
