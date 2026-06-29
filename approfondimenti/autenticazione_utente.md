@@ -165,30 +165,31 @@ Per sbrigarsi prima l’hacker può decidere di effettuare un più efficiente at
   - La conservazione della password in un archivio
 
 
-### 5.1.1  Fasi Protocollo di autenticazione PAP
+### 5.1.1 Autenticazione PAP
 
-<img src="img/authutente/pap_schema.png" alt="Protocollo di autenticazione PAP" width="400px">
+Il Password Authentication Protocol è un protocollo di autenticazione base di un utente che chiede un accesso ad un sistema che prevede lo scambio del segreto ad ogni autenticazione.
+Va usato su un canale sicuro perché è esposto ad attacco replay.
 
-- Va usato su un canale sicuro perché è esposto ad attacco replay
-- l Password Authentication Protocol è un protocollo di autenticazione base di un utente che chiede un accesso ad un sistema che prevede lo scambio del segreto ad ogni autenticazione:
-  - Alice manda al server di autenticazione AS (Bob) le sue credenziali, cioè il suo nome utente e la password (in chiaro o criptata, ad esempio, con MD5). Fase di scambio.
-  - Bob cerca nella tabella il nome utente (username) di Alice
-  - Se il nome utente viene trovato nel DB, Bob preleva il salt, lo combina con la password  ricevuta e lo usa all'interno di una funzione di HASH (ad esempio MD5).
-  - Bob fa un confronto tra il risultato della funzione e il digest in memoria e, se i numeri sono uguali, l'autenticazione ha successo. Fase di verifica.
-
-- Il server di autenticazione ha memorizzati in una tabella:
-  - il nome utente di Alice
-  - un numero casuale di bit, detto salt.
-  - una trasformazione (digest) di password (in chiaro o criptata) e salt insieme;
-
-
-## 5.2. Registrazione Protocollo di autenticazione PAP
+**Fase di Registrazione Protocollo PAP**
 
 <img src="img/authutente/password_creazione_verifica.png" alt="Protocollo di autenticazione PAP" width="600px">
 
-- Il PAP (Password Authentication Protocol) in realtà si compone di due fasi:
-  - Identificazione dell’utente e creazione della password: è il momento in cui viene registrato un nuovo utente sul sistema. Si esegue una sola volta all’inizio. Viene calcolata e memorizzata l’impronta sul database.
-  - Verifica della password: è l’autenticazione vera e propria di un utente e si esegue tutte le volte che un utente richiede un accesso.
+- Il **PAP (Password Authentication Protocol)** in realtà si compone di **due fasi**:
+  - **Identificazione dell’utente** e creazione della password: è il momento in cui viene **registrato** un nuovo utente sul sistema. Si esegue una sola volta all’inizio. Viene calcolata e memorizzata l’impronta sul database.
+  - **Verifica della password**: è l’**autenticazione** vera e propria di un utente e si esegue tutte le volte che un utente richiede un accesso.
+
+<img src="img/authutente/pap_schema.png" alt="Protocollo di autenticazione PAP" width="400px">
+
+**Fasi di Autenticazione Protocollo PAP**:
+  1. Alice manda al server di autenticazione AS (Bob) le sue credenziali, cioè il suo nome utente e la password (in chiaro o criptata, ad esempio, con MD5). Fase di scambio.
+  2. Bob cerca nella tabella il nome utente (username) di Alice
+  3. Se il nome utente viene trovato nel DB, Bob preleva il salt, lo combina con la password  ricevuta e lo usa all'interno di una funzione di HASH (ad esempio MD5).
+  4. Bob fa un confronto tra il risultato della funzione e il digest in memoria e, se i numeri sono uguali, l'autenticazione ha successo. Fase di verifica.
+
+ Il **server di autenticazione** ha memorizzati in una **tabella** di un DB:
+  - il **nome utente** di Alice
+  - un **numero casuale** di bit, detto **salt**.
+  - una **trasformazione (digest)** di password (in chiaro o criptata) e salt insieme;
 
 
 ## 5.3 Autenticazione su canali insicuri
