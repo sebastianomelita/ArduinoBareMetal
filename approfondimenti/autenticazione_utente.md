@@ -146,12 +146,12 @@ Per sbrigarsi prima l’hacker può decidere di effettuare un più efficiente at
 
 
 
-## 5 Autenticazione utente
+# 5 Autenticazione utente
 
 <img src="img/authutente/mappa_autenticazione_utente.jpg" alt="Mappa concettuale dell'autenticazione utente" width="1000px">
 
 
-### 5.1 Autenticazione debole
+## 5.1 Autenticazione debole
 
 - Client e server devono eseguire:
   - Una fase di registrazione dell’account: condividere in partenza un segreto, la coppia di valori username e password detta account o credenziali, attraverso un canale diretto e sicuro (privatezza ed autenticazione)
@@ -165,7 +165,7 @@ Per sbrigarsi prima l’hacker può decidere di effettuare un più efficiente at
   - La conservazione della password in un archivio
 
 
-#### Fasi Protocollo di autenticazione PAP
+### 5.1.1  Fasi Protocollo di autenticazione PAP
 
 <img src="img/authutente/pap_schema.png" alt="Protocollo di autenticazione PAP" width="400px">
 
@@ -182,7 +182,7 @@ Per sbrigarsi prima l’hacker può decidere di effettuare un più efficiente at
   - una trasformazione (digest) di password (in chiaro o criptata) e salt insieme;
 
 
-## 22. Registrazione Protocollo di autenticazione PAP
+## 5.2. Registrazione Protocollo di autenticazione PAP
 
 <img src="img/authutente/password_creazione_verifica.png" alt="Protocollo di autenticazione PAP" width="600px">
 
@@ -191,14 +191,14 @@ Per sbrigarsi prima l’hacker può decidere di effettuare un più efficiente at
   - Verifica della password: è l’autenticazione vera e propria di un utente e si esegue tutte le volte che un utente richiede un accesso.
 
 
-### 5.3 Autenticazione su canali insicuri
+## 5.3 Autenticazione su canali insicuri
 
 Come realizzare la garanzia dell’autenticazione su canali insicuri:
 - Autenticazione media
 - Autenticazione forte
 
 
-#### La sfida (o challenge)
+### 5.3.1 La sfida (o challenge)
 
 - Le credenziali oltre a essere irreversibili ed autenticate hanno pure l’esigenza di dover essere uniche per proteggersi da attacchi di tipo replay
 - La sfida è un numero che rende unico una credenziale e serve a verificare l’autenticazione per proteggersi da attacchi MITM di tipo replay
@@ -221,7 +221,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
   - Le credenziali, ad ogni autenticazione, zono rese uniche attraverso una sfida random o basata sul tempo
 
 
-### Protocollo di autenticazione sfida/risposta CHAP
+### 5.4.1 Protocollo di autenticazione sfida/risposta CHAP
 
 <img src="img/authutente/chap_sfida_risposta.png" alt="Protocollo di autenticazione sfida/risposta CHAP" width="500px">
 
@@ -257,7 +257,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 3. Il server confronta la copia **generata localmente** con quella **ricevuta** e, se combaciano, **convalida** l’autenticazione.
 
 
-### TOTP su canale insicuro
+### 5.5.1 TOTP su canale insicuro
 
 <img src="img/authutente/totp.png" alt="TOTP su canale insicuro" width="800px">
 
@@ -276,7 +276,7 @@ Le **credenziali** sono rese uniche attraverso una sfida random. Poichè la **fa
 
 In una **autenticazione mutua** spesso **la parte più forte** crea il **canale sicuro** su cui si autentica la controparte con autenticazione più debole
 
-## 5.6 bis Cetificato utente
+## 5.7 Cetificato utente
 
 **Cosa certifica?**: Certifica il proprietario (titolare) di una certa chiave pubblica, in altre parole, autenticano una chiave pubblica.
 
@@ -292,7 +292,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 **Qual’è lo scopo del certificato?** **Contenere** e **autenticare** una chiave pubblica come appartenente al suo proprietario (identificato da un CN) per mezzo della garanzia (firma) di uno terzo utente fidato (in genere una CA).
 
 
-### Fase di registrazione Scambio delle chiavi pubbliche
+### 5.7.1 Scambio delle chiavi pubbliche
 
 <img src="img/authutente/scambio_chiavi_pubbliche.png" alt="Fase di registrazione Scambio delle chiavi pubbliche" width="500px">
 
@@ -302,7 +302,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 - Metodo più efficace: uso di un certificato rilasciato da una CA
 
 
-### Attacco MITM e chiavi pubbliche
+### 5.7.2 Attacco MITM e chiavi pubbliche
 
 - La modifica MITM durante uno scambio di chiavi pubbliche può essere arginata con l’autenticazione reciproca delle chiavi pubbliche delle due parti
 - L’autenticazione reciproca si può realizzare con:
@@ -313,7 +313,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
        - *Finestra temporale limitata*: il pairing è possibile solo entro un breve intervallo (es. ~2 minuti dopo la pressione di un pulsante), come in **WPS** (Wi-Fi Protected Setup) o nel pairing **Bluetooth**.
 
 
-## 5.7 Autenticazione forte asimmetrica
+## 5.8 Autenticazione forte asimmetrica
 
 - Nessun uso di password, un algoritmo di cifratura asimmetrico permette l’autenticazione degli utenti
 - Chi deve verificare l’autenticazione della controparte invia una sfida
@@ -328,14 +328,14 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 - L’autenticazione mutua necessita di un protocollo a tre vie (Three-Way-Handshake)
 
 
-### Certificati vs credenziali
+### 5.8.1 Certificati vs credenziali
 
 - Va rimarcato che lo scambio di certificati, di per se, non autentica gli utenti ma solamente autentica la loro chiave pubblica, cioè garantisce l’identità dell’intestatario (subject) dei certificati.
 - Poiché l’associazione tra una chiave pubblica e la sua chiave privata è unica, un certificato indirettamente autentica anche la chiave privata corrispondente come chiave associata allo stesso intestatario.
 - Lo scambio di credenziali, qualora sia possibile dimostrare che queste sono derivate dalla chiave privata autenticata dal certificato, invece, autentica a tutti gli effetti un utente, poiché solo il detentore del segreto (chi ha la chiave privata) è in grado di esibire le credenziali corrette.
 - Certificati e credenziali sono complementari nella realizzazione dell’autenticazione di un utente che accede ad una risorsa.
 
-### Autenticazione singola asimmetrica con sfida in chiaro (ad es. TLS)
+### 5.8.2 Autenticazione singola asimmetrica con sfida in chiaro (ad es. TLS)
 
 
 <p align="center">
@@ -349,7 +349,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 
 Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che recuperano la **chiave pubblica** da un file utilizzando come chiave di ricerca lo **username** dell'utente. Il file ha il significato di **elenco di chiavi pubbliche autenticate**. 
 
-### Autenticazione mutua asimmetrica con sfida in chiaro (ad es. mTLS)
+### 5.8.3 Autenticazione mutua asimmetrica con sfida in chiaro (ad es. mTLS)
 
 
 <p align="center">
@@ -362,14 +362,13 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 4. Bob chiude il protocollo di autenticazione mutua inviando la sua firma sulla grandezza sulla sfida di A.
 5. Alice autentica Bob se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
 
-### Autorizzazione con certificato utente
+### 5.8.3 Autorizzazione vs autenticazione
 
 Sia nel caso di autenticazione singola che in quello di autenticazione mutua non sempre conviene memorizzare tutte le chiavi pubbliche nel sistema anche se questa è esattamente l'operazione che fa Linux con il protocollo SSH.
 
 Nel caso di protocolli più massivi di SSH, come HTTPS o RADIUS, la registrazione degli utenti è **puramente autorizzativa** e spesso viene memorizzato **sul DB del server** il solo username sotto forma di CN (Common Name). 
 
 La chiave pubblica, in questi protocolli, viaggia sempre **autenticata** (cioè **certamente associata** ad un certo CN) dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato) . 
-
 
 Il fatto che il **certificato sia valido** non dice ancora se l'utente sia **effettivamente autorizzato** ad accedere al servizio. Per questo il server deve **mappare il certificato a un account**, e qui ci sono varie **strategie** comuni:
 - **Tramite i campi identitari del certificato** — il Subject DN (es. il Common Name) oppure il Subject Alternative Name (email, UPN). Il server estrae questo valore e cerca l'**utente corrispondente** nel database. È l'**approccio più diffuso**.
@@ -382,7 +381,7 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 
 
 
-## Autenticazione utente con tunnel
+## 5.9 Autenticazione utente con tunnel
 
 <p align="center">
   <img src="img/tunnel_pap_chap.svg" alt="Autenticazione mutua con tunnel: server asimmetrico + client PAP/CHAP dentro" width="860">
@@ -400,7 +399,7 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 4. Da questo momento in poi, sia il client che il server posseggono la medesima chiave di sessione che possono utilizzare per cifrare i dati in entrambe le direzioni.
 
 
-### Autenticazione forte con Diffie-Helmann
+### 5.9.1 Autenticazione forte con Diffie-Helmann
 
 - **DH** permette a ciascuna parte di **generare autonomamente** la propria **sfida da firmare** (il proprio esponenziale) invece di riceverla dalla controparte come nello schema challenge/response classico. La sfida viene poi inviata **firmata tramite RSA** in modo da autenticare l'utente. I **nonce** sono proprio le **chiavi pubbliche di DH** che, basate sui numeri random privati a e b, sono esse stesse **random**.
 - Le **chiavi pubbliche di DH** sono gli **esponenziali** YA= ga mod p e YB= gb mod p che hanno la proprietà di essere **chiavi pubbliche a breve termine** contemporaneamente **random e effimere**, cioè usa e getta: ne viene generata una coppia nuova per **ogni sessione**.
@@ -411,9 +410,9 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 - L'utilizzo di DH ha il vantaggio di realizzare contemporaneamente sia l'**autenticazione dell'utente** (tramite la **firma** sul nonce) sia la **generazione di una chiave effimera** di sessione, ottenendo così anche la **Perfect Forward Secrecy**.
 
 
-## 5.8 Autenticazione di un server
+# 6 Autenticazione di un server
 
-### Fase 1 - Autenticazione del server
+## 6.1 Fase 1 - Autenticazione del server
 
 Un riassunto delle fasi dell’**autenticazione** asimmetrica forte **di un server** potrebbe essere:
 - Il Client manda al server un messaggio contenente la sua identità è la sfida OTP che ha scelto lui, b.
@@ -422,7 +421,7 @@ Un riassunto delle fasi dell’**autenticazione** asimmetrica forte **di un serv
   - riesce a ***convalidare la firma dell'utente (dominio) posta sulla sfida***, ovvero se  decifrando la firma con la chiave pubblica del server, ritrova la sfida originale del client (Fase di verifica delle credenziali).
   - Se riesce ad **autenticare la chiave pubblica** attraverso l'**autenticazione certificato utente**.
 
-### Fase 2 - Autenticazione del certificato utente
+## 6.2 Fase 2 - Autenticazione del certificato utente
 
 Un riassunto delle fasi dell’**autenticazione di un certificato utente** potrebbe essere:
 
@@ -440,21 +439,21 @@ Un riassunto delle fasi dell’**autenticazione di un certificato utente** potre
 - Se il certificato è valido, la chiave pubblica in esso contenuta può decifrare la credenziale del server autenticandolo
 
 
-## Perfect Forward Secrecy (PFS)
+## 6.3 Perfect Forward Secrecy (PFS)
 
 La **Perfect Forward Secrecy** (o *Forward Secrecy*) è una proprietà cruciale dei protocolli crittografici che garantisce che la compromissione di una chiave privata a **lungo termine** non comprometta la riservatezza delle sessioni **passate**.
 
 In pratica, se un attaccante intercettasse e registrasse il traffico crittografato oggi, non sarebbe in grado di decifrarlo in futuro, anche se riuscisse a ottenere la chiave privata del server.
 
 
-### Senza PFS (Scenario basato solo su RSA)
+### 6.3.1 Senza PFS (Scenario basato solo su RSA)
 
 In questo scenario, la sicurezza delle sessioni dipende interamente dalla chiave privata del server:
 
 * **Meccanismo:** La chiave di sessione viene cifrata dal client utilizzando la chiave pubblica RSA del server.
 * **Vulnerabilità:** Se in futuro la chiave privata RSA del server viene sottratta, l'attaccante può usare quella chiave per decifrare tutte le chiavi di sessione registrate in passato, rendendo leggibili tutte le comunicazioni storiche.
 
-### Con PFS (Diffie-Hellman Effimero - DHE/ECDHE)
+### 6.3.2 Con PFS (Diffie-Hellman Effimero - DHE/ECDHE)
 
 L'introduzione di scambi di chiavi temporanei risolve il problema della dipendenza dalla chiave statica:
 
@@ -462,7 +461,7 @@ L'introduzione di scambi di chiavi temporanei risolve il problema della dipenden
 * **Ruolo di RSA:** La chiave privata RSA viene utilizzata **esclusivamente per autenticare** lo scambio di chiavi, non per cifrare la chiave di sessione stessa.
 * **Resilienza:** La chiave di sessione deriva dallo scambio DH effimero. Poiché i valori segreti utilizzati nello scambio DH sono temporanei e vengono cancellati dalla memoria al termine della sessione, anche se la chiave privata RSA venisse compromessa in futuro, le chiavi di sessione passate resterebbero **irrecuperabili**.
 
-## 6. Identità digitale
+# 7. Identità digitale
 
 - E’ l’identità di una persona in Internet.
 - Internet però è per sua natura sostanzialmente anonima nel senso che l’identità digitale può non corrispondere all’identità reale.
@@ -470,7 +469,7 @@ L'introduzione di scambi di chiavi temporanei risolve il problema della dipenden
 - **Identità ufficiale** (Official digital identity) è basata su documenti ufficiali del mondo reale. La fase di registrazione dell’utente è molto più forte e realizza una corrispondenza affidabile tra mondo online e mondo fisico. Le persone sono tenute a presentare un documento di identità ufficiale del mondo reale (certificato di nascita, passaporto ecc.) per autenticare la propria identità prima del rilascio della credenziali utilizzabili online.
 
 
-### 6.1 Aspetti critici di una autenticazione
+## 7.1 Aspetti critici di una autenticazione
 
 <img src="img/authutente/matrice_loa.png" alt="Aspetti critici di una autenticazione" width="300px">
 
@@ -480,7 +479,7 @@ La **fiducia** o il **grado di confidenza** in una corretta autenticazione deriv
 - **autenticazione online**. Altrimenti indicato come garanzia dell’autenticazione (authentication assurance).
 
 
-### 6.2 Livelli di garanzia di una autenticazione
+## 7.2 Livelli di garanzia di una autenticazione
 
 - Secondo il regolamento eIDAS (recepito da tutti gli stati UE) esistono tre livelli di garanzia (asurance levels):
 - Il **livello di affidabilità basso (low)** si riferisce a mezzi di identificazione elettronica che forniscono un grado di sicurezza limitato riguardo all'identità pretesa o dichiarata di una persona. (Lieve diminuzione del rischio di uso abusivo o alterazione dell'identità)
@@ -488,7 +487,7 @@ La **fiducia** o il **grado di confidenza** in una corretta autenticazione deriv
 - Il **livello di affidabilità elevato (high)** si riferisce a un mezzo di identificazione elettronica che fornisce riguardo all'identità, pretesa o dichiarata, di una persona un grado di sicurezza molto elevato. (Eliminazione del rischio di uso abusivo o alterazione dell'identità)
 
 
-#### Scelta dei livelli legata al rischio
+### 7.2.1 Scelta dei livelli legata al rischio
 
 - Il livello di garanzia richiesto può essere stimato in base a:
 - l'importanza dei dati e i potenziali danni se tali dati dovessero essere ottenuti o modificati da utenti non autorizzati
@@ -507,7 +506,7 @@ La **fiducia** o il **grado di confidenza** in una corretta autenticazione deriv
 <img src="img/authutente/livelli_spid_eidas.png" alt="Livelli di affidabilità di una autenticazione" width="800px">
 
 
-### 6.3 LOA1
+## 7.3 LOA1
 
 - In LoA1, c'è una fiducia minima (cioè poca o nessuna) nell'identità dichiarata dall’utente, ma una certa sicurezza che l’utente sia identificabile come lo stesso su eventi di autenticazione consecutivi.
 - Non ha un livello corrispondente nella definizione eIDAS.
@@ -517,7 +516,7 @@ La **fiducia** o il **grado di confidenza** in una corretta autenticazione deriv
 - I protocolli di autenticazione possono essere basici senza l’implementazione di meccanismi complessi di protezione della comunicazione ma la trasmissione della password in chiaro su un canale insicuro non è consigliabile (meglio un tunnel cifrato).
 
 
-### 6.4 LOA2
+## 7.4 LOA2
 
 - È equivalente al livello basso secondo la definizione eIDAS, che fa riferimento a una credenziale di identificazione elettronica che fornisce un grado limitato di fiducia nell'identità dichiarata di una persona.
 - In fase di registrazione viene introdotta una qualche forma di verifica dell'identità, che richiede la presentazione (anche online) di informazioni di identificazione provenienti da una fonte autorevole.
@@ -525,7 +524,7 @@ La **fiducia** o il **grado di confidenza** in una corretta autenticazione deriv
 - I protocolli di autenticazione devono proteggere da intercettazioni, attacchi replay, ecc.
 
 
-### 6.5 LOA3
+## 7.5 LOA3
 
 - È equivalente al livello sostanziale secondo la definizione eIDAS, che fa riferimento a una credenziale di identificazione elettronica che fornisce un grado sostanziale di fiducia nell'identità dichiarata di una persona.
 - In fase di registrazione viene introdotta una verifica dell'identità, che richiede la presentazione (in presenza o  online) di informazioni di identificazione provenienti da una fonte autorevole che devono essere verificate e controllate dall’autorità di registrazione.
@@ -534,7 +533,7 @@ La **fiducia** o il **grado di confidenza** in una corretta autenticazione deriv
 - LoA3 viene utilizzato quando associato ad un'autenticazione errata è associata un rischio sostanziale .
 
 
-### 6.6 LOA4
+## 7.6 LOA4
 
 - Rappresenta il più alto livello di garanzia definito dalla norma ISO/IEC 2915. È equivalente al livello alto secondo la definizione eIDAS, che fa riferimento a una credenziale di identificazione elettronica che fornisce un grado elevato di fiducia nell'identità dichiarata di una persona.
 - In fase di registrazione viene introdotta una forma forte di verifica dell'identità, che richiede la presentazione in presenza di informazioni di identificazione provenienti da una fonte autorevole che devono essere verificate e controllate dall’autorità di registrazione.
@@ -545,7 +544,7 @@ La **fiducia** o il **grado di confidenza** in una corretta autenticazione deriv
 - È usato quando un alto rischio è associato a una eventuale autenticazione errata.
 
 
-## 53. Links
+# 8. Links
 
 - https://tecadmin.net/install-lets-encrypt-create-ssl-ubuntu/
 - https://www.digitalocean.com/community/tutorials/how-to-secure-apache-with-let-s-encrypt-on-ubuntu-18-04
