@@ -170,7 +170,7 @@ Per sbrigarsi prima l’hacker può decidere di effettuare un più efficiente at
 Il Password Authentication Protocol è un protocollo di autenticazione base di un utente che chiede un accesso ad un sistema che prevede lo scambio del segreto ad ogni autenticazione.
 Va usato su un canale sicuro perché è esposto ad attacco replay.
 
-**Fase di Registrazione Protocollo PAP**
+#### **Fase di Registrazione Protocollo PAP**
 
 <img src="img/authutente/password_creazione_verifica.png" alt="Protocollo di autenticazione PAP" width="600px">
 
@@ -179,7 +179,7 @@ Va usato su un canale sicuro perché è esposto ad attacco replay.
   - **Verifica della password**: è l’**autenticazione** vera e propria di un utente e si esegue tutte le volte che un utente richiede un accesso.
 
 
-**Fasi di Autenticazione Protocollo PAP**
+#### **Fasi di Autenticazione Protocollo PAP**
 
 <img src="img/authutente/pap_schema.png" alt="Protocollo di autenticazione PAP" width="400px">
 
@@ -194,14 +194,14 @@ Va usato su un canale sicuro perché è esposto ad attacco replay.
   - una **trasformazione (digest)** di password (in chiaro o criptata) e salt insieme;
 
 
-## 5.3 Autenticazione su canali insicuri
+## 5.2 Autenticazione su canali insicuri
 
 Come realizzare la garanzia dell’autenticazione su canali insicuri:
 - Autenticazione media
 - Autenticazione forte
 
 
-### 5.3.1 La sfida (o challenge)
+### 5.2.1 La sfida (o challenge)
 
 - Le credenziali oltre a essere irreversibili ed autenticate hanno pure l’esigenza di dover essere uniche per proteggersi da attacchi di tipo replay
 - La sfida è un numero che rende unico una credenziale e serve a verificare l’autenticazione per proteggersi da attacchi MITM di tipo replay
@@ -216,7 +216,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
   - nel caso del tempo, il problema è che gli orologi di Alice e Bob devono essere sincronizzati, soluzione perlomeno costosa.
 
 
-## 5.4 Autenticazione media sfida/risposta
+## 5.3 Autenticazione media sfida/risposta
 
 - Sfida/risposta è ritenuto un metodo di autenticazione a media sicurezza e si basa su:
   - Fase di registrazione: attraverso un canale diretto e sicuro (confidenziale) o suo equivalente avviene la condivisione, integra e autenticata di una informazione privata: il segreto tra Alice e Bob (la password)
@@ -224,7 +224,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
   - Le credenziali, ad ogni autenticazione, zono rese uniche attraverso una sfida random o basata sul tempo
 
 
-### 5.4.1 Protocollo di autenticazione sfida/risposta CHAP
+### 5.3.1 Protocollo di autenticazione sfida/risposta CHAP
 
 <img src="img/authutente/chap_sfida_risposta.png" alt="Protocollo di autenticazione sfida/risposta CHAP" width="500px">
 
@@ -243,7 +243,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 - Non realizza l’autenticazione del serverL’utente ha una finestra temporale
 
 
-## 5.5 Autenticazione forte a due fattori (2FA)
+## 5.4 Autenticazione forte a due fattori (2FA)
 
 - si basa sull'utilizzo congiunto di due metodi di autenticazione individuali deboli che realizzano complessivamente un’autenticazione più affidabile (detta forte).
 - Le più comuni forme di autenticazione a due fattori usano:
@@ -260,14 +260,14 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 3. Il server confronta la copia **generata localmente** con quella **ricevuta** e, se combaciano, **convalida** l’autenticazione.
 
 
-### 5.5.1 TOTP su canale insicuro
+### 5.4.1 TOTP su canale insicuro
 
 <img src="img/authutente/totp.png" alt="TOTP su canale insicuro" width="800px">
 
   - Il canale sicuro su cui effettuare l’autenticazione 2F è già stato creato (con crittografia ibrida) da una controparte (il server di autenticazione) che si era già in precedenza autenticata su un canale insicuro mediante una **autenticazione forte**, analogamente a quanto accade con il PAP o con il CHAP.
 
 
-## 5.6 Autenticazione su canali insicuri
+## 5.5 Autenticazione su canali insicuri
 
 L’**autenticazione asimmetrica** e l’**autenticazione con Diffie-Helmann** sono ritenuti metodio di **autenticazione forte** e si basano su:
 - **Fase di  verifica dell'identità** che può essere diretta o indiretta:
@@ -279,7 +279,7 @@ Le **credenziali** sono rese uniche attraverso una sfida random. Poichè la **fa
 
 In una **autenticazione mutua** spesso **la parte più forte** crea il **canale sicuro** su cui si autentica la controparte con autenticazione più debole
 
-## 5.7 Certificato utente
+## 5.6 Certificato utente
 
 **Cosa certifica?**: Certifica il proprietario (titolare) di una certa chiave pubblica, in altre parole, autenticano una chiave pubblica.
 
@@ -295,7 +295,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 **Qual’è lo scopo del certificato?** **Contenere** e **autenticare** una chiave pubblica come appartenente al suo proprietario (identificato da un CN) per mezzo della garanzia (firma) di uno terzo utente fidato (in genere una CA).
 
 
-### 5.7.1 Scambio delle chiavi pubbliche
+### 5.6.1 Scambio delle chiavi pubbliche
 
 <img src="img/authutente/scambio_chiavi_pubbliche.png" alt="Fase di registrazione Scambio delle chiavi pubbliche" width="500px">
 
@@ -305,7 +305,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 - Metodo più efficace: uso di un certificato rilasciato da una CA
 
 
-### 5.7.2 Attacco MITM e chiavi pubbliche
+### 5.6.2 Attacco MITM e chiavi pubbliche
 
 - La modifica MITM durante uno scambio di chiavi pubbliche può essere arginata con l’autenticazione reciproca delle chiavi pubbliche delle due parti
 - L’autenticazione reciproca si può realizzare con:
@@ -316,7 +316,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
        - *Finestra temporale limitata*: il pairing è possibile solo entro un breve intervallo (es. ~2 minuti dopo la pressione di un pulsante), come in **WPS** (Wi-Fi Protected Setup) o nel pairing **Bluetooth**.
 
 
-## 5.8 Autenticazione forte asimmetrica
+## 5.7 Autenticazione forte asimmetrica
 
 - Nessun uso di password, un algoritmo di cifratura asimmetrico permette l’autenticazione degli utenti
 - Chi deve verificare l’autenticazione della controparte invia una sfida
@@ -331,14 +331,14 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 - L’autenticazione mutua necessita di un protocollo a tre vie (Three-Way-Handshake)
 
 
-### 5.8.1 Certificati vs credenziali
+### 5.7.1 Certificati vs credenziali
 
 - Va rimarcato che lo scambio di certificati, di per se, non autentica gli utenti ma solamente autentica la loro chiave pubblica, cioè garantisce l’identità dell’intestatario (subject) dei certificati.
 - Poiché l’associazione tra una chiave pubblica e la sua chiave privata è unica, un certificato indirettamente autentica anche la chiave privata corrispondente come chiave associata allo stesso intestatario.
 - Lo scambio di credenziali, qualora sia possibile dimostrare che queste sono derivate dalla chiave privata autenticata dal certificato, invece, autentica a tutti gli effetti un utente, poiché solo il detentore del segreto (chi ha la chiave privata) è in grado di esibire le credenziali corrette.
 - Certificati e credenziali sono complementari nella realizzazione dell’autenticazione di un utente che accede ad una risorsa.
 
-### 5.8.2 Autenticazione singola asimmetrica con sfida in chiaro (ad es. TLS)
+### 5.7.2 Autenticazione singola asimmetrica con sfida in chiaro (ad es. TLS)
 
 
 <p align="center">
@@ -352,7 +352,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 
 Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che recuperano la **chiave pubblica** da un file utilizzando come chiave di ricerca lo **username** dell'utente. Il file ha il significato di **elenco di chiavi pubbliche autenticate**. 
 
-### 5.8.3 Autenticazione mutua asimmetrica con sfida in chiaro (ad es. mTLS)
+### 5.7.3 Autenticazione mutua asimmetrica con sfida in chiaro (ad es. mTLS)
 
 
 <p align="center">
@@ -365,7 +365,7 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 4. Bob chiude il protocollo di autenticazione mutua inviando la sua firma sulla grandezza sulla sfida di A.
 5. Alice autentica Bob se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
 
-### 5.8.3 Autorizzazione vs autenticazione
+### 5.7.4 Autorizzazione vs autenticazione
 
 Sia nel caso di autenticazione singola che in quello di autenticazione mutua non sempre conviene memorizzare tutte le chiavi pubbliche nel sistema anche se questa è esattamente l'operazione che fa Linux con il protocollo SSH.
 
@@ -384,7 +384,7 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 
 
 
-## 5.9 Autenticazione utente con tunnel
+## 5.8 Autenticazione utente con tunnel
 
 <p align="center">
   <img src="img/tunnel_pap_chap.svg" alt="Autenticazione mutua con tunnel: server asimmetrico + client PAP/CHAP dentro" width="860">
@@ -402,7 +402,7 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 4. Da questo momento in poi, sia il client che il server posseggono la medesima chiave di sessione che possono utilizzare per cifrare i dati in entrambe le direzioni.
 
 
-### 5.9.1 Autenticazione forte con Diffie-Helmann
+### 5.8.1 Autenticazione forte con Diffie-Helmann
 
 - **DH** permette a ciascuna parte di **generare autonomamente** la propria **sfida da firmare** (il proprio esponenziale) invece di riceverla dalla controparte come nello schema challenge/response classico. La sfida viene poi inviata **firmata tramite RSA** in modo da autenticare l'utente. I **nonce** sono proprio le **chiavi pubbliche di DH** che, basate sui numeri random privati a e b, sono esse stesse **random**.
 - Le **chiavi pubbliche di DH** sono gli **esponenziali** YA= ga mod p e YB= gb mod p che hanno la proprietà di essere **chiavi pubbliche a breve termine** contemporaneamente **random e effimere**, cioè usa e getta: ne viene generata una coppia nuova per **ogni sessione**.
