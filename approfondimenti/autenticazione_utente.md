@@ -377,9 +377,13 @@ Il fatto che il **certificato sia valido** non dice ancora se l'utente sia **eff
 - **Tramite l'impronta del certificato o la chiave pubblica** — il server salva il **fingerprint** (thumbprint) o la **chiave pubblica** e lo **associa** rigidamente a un **account specifico** (una forma di pinning a livello applicativo).
 - **Tramite serial number + issuer** — combinazione che identifica univocamente quel certificato emesso da quella CA.
 
+
+#### Autenticazione utente con tunnel
+
 <p align="center">
   <img src="img/tunnel_pap_chap.svg" alt="Autenticazione mutua con tunnel: server asimmetrico + client PAP/CHAP dentro" width="860">
 </p>
+
 
 **Riassumendo**: autenticare un server di fatto significa autenticare una sfida ed una chiave pubblica mediante algoritmi di firma digitale.
 
