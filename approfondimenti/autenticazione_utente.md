@@ -404,10 +404,7 @@ Autenticare un server, di fatto, significa **autenticare una sfida** e **autenti
 
 ### 5.8.1 Autenticazione forte con Diffie-Helmann
 
-<p align="center">
-  <img src="img/diffie_hellman_firmato_sts.svg" alt="TOTP su canale insicuro" width="600px">
-</p>
-  
+ 
 - **DH** permette a ciascuna parte di **generare autonomamente** la propria **sfida da firmare** (il proprio esponenziale) invece di riceverla dalla controparte come nello schema challenge/response classico. La sfida viene poi inviata **firmata tramite RSA** in modo da autenticare l'utente. I **nonce** sono proprio le **chiavi pubbliche di DH** che, basate sui numeri random privati a e b, sono esse stesse **random**.
 - Le **chiavi pubbliche di DH** sono gli **esponenziali** YA= ga mod p e YB= gb mod p che hanno la proprietà di essere **chiavi pubbliche a breve termine** contemporaneamente **random e effimere**, cioè usa e getta: ne viene generata una coppia nuova per **ogni sessione**.
 - Lo scambio DH, da solo, è **anonimo** (vulnerabile a MITM): è la **firma** apposta sugli esponenziali a fornire l'autenticazione. Ciascuna parte firma con la propria **chiave privata RSA a lungo termine** la **coppia** di esponenziali (il proprio e quello ricevuto), in modo da legarli tra loro.
@@ -415,6 +412,23 @@ Autenticare un server, di fatto, significa **autenticare una sfida** e **autenti
 - le **chiavi pubbliche** utili per verificare la firma sono inserite in **certificati utente firmati da una CA**.
 - Anche in questo caso le chiavi pubbliche, e i certificati che le autenticano, sono scambiate o una sola volta in fase di registrazione o «al volo» in fase di setup della connessione
 - L'utilizzo di DH ha il vantaggio di realizzare contemporaneamente sia l'**autenticazione dell'utente** (tramite la **firma** sul nonce) sia la **generazione di una chiave effimera** di sessione, ottenendo così anche la **Perfect Forward Secrecy**.
+
+<p align="center">
+  <img src="img/diffie_hellman_firmato_sts.svg" alt="TOTP su canale insicuro" width="600px">
+</p>
+
+I tre messaggi numerati sono il cuore del protocollo:
+
+1. Il client manda il proprio esponenziale `YA`.
+2. Il server risponde con `YB` **più la firma su entrambi gli esponenziali** `(YA, YB)` e il certificato. È qui che si vede il dettaglio che avevi messo bene nel testo: la firma copre la coppia, non solo `YB`. Questo lega i due esponenziali e impedisce a un MITM di sostituirne uno.
+3. Il client chiude mandando a sua volta la firma sulla coppia, col proprio certificato.
+
+I due blocchi ambra ("verifica firma") sono il punto in cui scatta l'**autenticazione**: ciascuno estrae la chiave pubblica dal certificato della controparte (validato dalla CA) e controlla che la firma torni. Senza questo passaggio, lo scambio DH sarebbe anonimo e attaccabile.
+
+Il blocco verde finale è il doppio risultato di DH: entrambi arrivano alla **stessa** chiave `K = g^(ab) mod p` calcolandola per conto proprio — la chiave non viaggia mai sulla rete. E poiché `a` e `b` sono effimeri (buttati a fine sessione), anche se un domani rubassero la chiave privata RSA non potrebbero ricostruire `K`: è questa la **Perfect Forward Secrecy**.
+
+In una riga: DH fa nascere la chiave, RSA firma per autenticare, e i due esponenziali firmati insieme sono ciò che blocca il MITM.
+
 
 
 # 6 Autenticazione di un server
