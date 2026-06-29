@@ -276,7 +276,7 @@ Le **credenziali** sono rese uniche attraverso una sfida random. Poichè la **fa
 
 In una **autenticazione mutua** spesso **la parte più forte** crea il **canale sicuro** su cui si autentica la controparte con autenticazione più debole
 
-## 5.7 Cetificato utente
+## 5.7 Certificato utente
 
 **Cosa certifica?**: Certifica il proprietario (titolare) di una certa chiave pubblica, in altre parole, autenticano una chiave pubblica.
 
