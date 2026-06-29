@@ -362,7 +362,7 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 4. Bob chiude il protocollo di autenticazione mutua inviando la sua firma sulla grandezza sulla sfida di A.
 5. Alice autentica Bob se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
 
-#### Autorizzazione con certificato utente
+### Autorizzazione con certificato utente
 
 Sia nel caso di autenticazione singola che in quello di autenticazione mutua non sempre conviene memorizzare tutte le chiavi pubbliche nel sistema anche se questa è esattamente l'operazione che fa Linux con il protocollo SSH.
 
