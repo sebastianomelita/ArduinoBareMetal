@@ -420,7 +420,7 @@ Autenticare un server, di fatto, significa **autenticare una sfida** e **autenti
 I tre messaggi numerati sono il cuore del protocollo:
 
 1. Il client manda il proprio esponenziale `YA`.
-2. Il server risponde con `YB` **più la firma su entrambi gli esponenziali** `(YA, YB)` e il certificato. È qui che si vede il dettaglio che avevi messo bene nel testo: la firma copre la coppia, non solo `YB`. Questo lega i due esponenziali e impedisce a un MITM di sostituirne uno.
+2. Il server risponde con `YB` **più la firma su entrambi gli esponenziali** `(YA, YB)` e il certificato. La firma copre la coppia, non solo `YB`. Questo lega i due esponenziali e impedisce a un MITM di sostituirne uno.
 3. Il client chiude mandando a sua volta la firma sulla coppia, col proprio certificato.
 
 I due blocchi ambra ("verifica firma") sono il punto in cui scatta l'**autenticazione**: ciascuno estrae la chiave pubblica dal certificato della controparte (validato dalla CA) e controlla che la firma torni. Senza questo passaggio, lo scambio DH sarebbe anonimo e attaccabile.
