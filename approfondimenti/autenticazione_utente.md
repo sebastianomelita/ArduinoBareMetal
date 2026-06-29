@@ -178,9 +178,10 @@ Va usato su un canale sicuro perché è esposto ad attacco replay.
   - **Identificazione dell’utente** e creazione della password: è il momento in cui viene **registrato** un nuovo utente sul sistema. Si esegue una sola volta all’inizio. Viene calcolata e memorizzata l’impronta sul database.
   - **Verifica della password**: è l’**autenticazione** vera e propria di un utente e si esegue tutte le volte che un utente richiede un accesso.
 
+**Fasi di Autenticazione Protocollo PAP**:
+
 <img src="img/authutente/pap_schema.png" alt="Protocollo di autenticazione PAP" width="400px">
 
-**Fasi di Autenticazione Protocollo PAP**:
   1. Alice manda al server di autenticazione AS (Bob) le sue credenziali, cioè il suo nome utente e la password (in chiaro o criptata, ad esempio, con MD5). Fase di scambio.
   2. Bob cerca nella tabella il nome utente (username) di Alice
   3. Se il nome utente viene trovato nel DB, Bob preleva il salt, lo combina con la password  ricevuta e lo usa all'interno di una funzione di HASH (ad esempio MD5).
