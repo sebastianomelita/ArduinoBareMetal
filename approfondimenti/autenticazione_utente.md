@@ -392,7 +392,7 @@ Nonostante che l'**autenticazione del client** sia formalmente di **tipo debole*
 
 Il protocollo di **autenticazione del client** avvenendo **all'interno del tunnel** cifrato gode di tutte le **proprietà di sicurezza** introdotte da questo, compresa la protezione dagli **attacchi replay** (dato che la chiave di sessione è temporanea).
 
-Ricapitolando le **fasi in breve**:
+Autenticare un server, di fatto, significa **autenticare una sfida** e **autenticare una chiave pubblica** mediante algoritmi di **firma digitale**, questo è il solito meccanismo alla base dell'**autenticazione asimettrica forte singola**. Ricapitolando le **fasi in breve**:
 1. si **autentica il server**. A questo punto il client può usare la **chiave pubblica del server** per scambiare una **chiave effimera di sessione** da lui creata (non gode di PFS) oppure sia il client che il server utilizzano l'**algoritmo di Diffie Helmann** per ottenere indipendentemente due chiavi di sessione effimere uguali su entrambi i lati senza necessità di uno scambio (gode di PFS).
 2. si **crea il tunnel cifrato** tra client e server. Da questo momento in poi, sia il client che il server posseggono la **medesima chiave di sessione** che possono utilizzare per **cifrare i dati** in entrambe le direzioni.
 3. si **autentica il client** all'interno del tunnel cifrato utilizzando un protocollo di autenticazione debole come PAP o medio come CHAP.
@@ -401,9 +401,6 @@ Ricapitolando le **fasi in breve**:
 <p align="center">
   <img src="img/tunnel_pap_chap.svg" alt="Autenticazione mutua con tunnel: server asimmetrico + client PAP/CHAP dentro" width="860">
 </p>
-
-Autenticare un server, di fatto, significa **autenticare una sfida** e **autenticare una chiave pubblica** mediante algoritmi di **firma digitale**, questo è il solito meccanismo alla base dell'**autenticazione asimettrica forte singola**.
-
 
 ### 5.8.1 Autenticazione forte con Diffie-Helmann
 
