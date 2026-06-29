@@ -393,25 +393,16 @@ Nonostante che l'**autenticazione del client** sia formalmente di **tipo debole*
 Il protocollo di **autenticazione del client** avvenendo **all'interno del tunnel** cifrato gode di tutte le **proprietà di sicurezza** introdotte da questo, compresa la protezione dagli **attacchi replay** (dato che la chiave di sessione è temporanea).
 
 Ricapitolando le **fasi in breve**:
-1. si **autentica il server**
-2. si **crea il tunnel cifrato** tra client e server
-3. si **autentica il client** all'interno del tunnel cifrato 
+1. si **autentica il server**. A questo punto il client può usare la **chiave pubblica del server** per scambiare una **chiave effimera di sessione** da lui creata (non gode di PFS) oppure sia il client che il server utilizzano l'**algoritmo di Diffie Helmann** per ottenere indipendentemente due chiavi di sessione effimere uguali su entrambi i lati senza necessità di uno scambio (gode di PFS).
+2. si **crea il tunnel cifrato** tra client e server. Da questo momento in poi, sia il client che il server posseggono la **medesima chiave di sessione** che possono utilizzare per **cifrare i dati** in entrambe le direzioni.
+3. si **autentica il client** all'interno del tunnel cifrato utilizzando un protocollo di autenticazione debole come PAP o medio come CHAP.
 
 
 <p align="center">
   <img src="img/tunnel_pap_chap.svg" alt="Autenticazione mutua con tunnel: server asimmetrico + client PAP/CHAP dentro" width="860">
 </p>
 
-
-**Riassumendo**: autenticare un server di fatto significa autenticare una sfida ed una chiave pubblica mediante algoritmi di firma digitale.
-
-1. A questo punto il client può usare la chiave pubblica del server per creare un canale sicuro (tunnel cifrato) verso il server attraverso cui inviare la propria credenziale debole (la password) per autenticarsi mediante PAP, cifrandola con la chiave pubblica del server.
-
-2. Una volta che pure il client è autenticato, questo genera una chiave random OTP che diventa la chiave di sessione della cifratura simmetrica dei dati in entrambe le direzioni. 
-
-3. Il client adesso invia al server la chiave di sessione appena creata su un canale sicuro cifrandola con la chiave pubblica del server (non gode di PFS). Oppure sia il client che il server utilizzano l'algoritmo di Diffie Helmann per ottenere indipendentemente due chiavi OTP uguali (gode di PFS).
-
-4. Da questo momento in poi, sia il client che il server posseggono la medesima chiave di sessione che possono utilizzare per cifrare i dati in entrambe le direzioni.
+Autenticare un server, di fatto, significa **autenticare una sfida** e **autenticare una chiave pubblica** mediante algoritmi di **firma digitale**, questo è il solito meccanismo alla base dell'**autenticazione asimettrica forte singola**.
 
 
 ### 5.8.1 Autenticazione forte con Diffie-Helmann
