@@ -213,7 +213,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
   - nel caso del tempo, il problema è che gli orologi di Alice e Bob devono essere sincronizzati, soluzione perlomeno costosa.
 
 
-### 5.4 Autenticazione media sfida/risposta
+## 5.4 Autenticazione media sfida/risposta
 
 - Sfida/risposta è ritenuto un metodo di autenticazione a media sicurezza e si basa su:
   - Fase di registrazione: attraverso un canale diretto e sicuro (confidenziale) o suo equivalente avviene la condivisione, integra e autenticata di una informazione privata: il segreto tra Alice e Bob (la password)
@@ -221,7 +221,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
   - Le credenziali, ad ogni autenticazione, zono rese uniche attraverso una sfida random o basata sul tempo
 
 
-#### Protocollo di autenticazione sfida/risposta CHAP
+### Protocollo di autenticazione sfida/risposta CHAP
 
 <img src="img/authutente/chap_sfida_risposta.png" alt="Protocollo di autenticazione sfida/risposta CHAP" width="500px">
 
@@ -240,7 +240,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 - Non realizza l’autenticazione del serverL’utente ha una finestra temporale
 
 
-### 5.5 Autenticazione forte a due fattori (2FA)
+## 5.5 Autenticazione forte a due fattori (2FA)
 
 - si basa sull'utilizzo congiunto di due metodi di autenticazione individuali deboli che realizzano complessivamente un’autenticazione più affidabile (detta forte).
 - Le più comuni forme di autenticazione a due fattori usano:
@@ -257,15 +257,14 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 3. Il server confronta la copia **generata localmente** con quella **ricevuta** e, se combaciano, **convalida** l’autenticazione.
 
 
-#### TOTP su canale insicuro
+### TOTP su canale insicuro
 
 <img src="img/authutente/totp.png" alt="TOTP su canale insicuro" width="800px">
 
   - Il canale sicuro su cui effettuare l’autenticazione 2F è già stato creato (con crittografia ibrida) da una controparte (il server di autenticazione) che si era già in precedenza autenticata su un canale insicuro mediante una **autenticazione forte**, analogamente a quanto accade con il PAP o con il CHAP.
 
 
-### 5.6 Autenticazione su canali insicuri
-
+## 5.6 Autenticazione su canali insicuri
 
 L’**autenticazione asimmetrica** e l’**autenticazione con Diffie-Helmann** sono ritenuti metodio di **autenticazione forte** e si basano su:
 - **Fase di  verifica dell'identità** che può essere diretta o indiretta:
@@ -277,7 +276,7 @@ Le **credenziali** sono rese uniche attraverso una sfida random. Poichè la **fa
 
 In una **autenticazione mutua** spesso **la parte più forte** crea il **canale sicuro** su cui si autentica la controparte con autenticazione più debole
 
-### 5.6 bis Cetificato utente
+## 5.6 bis Cetificato utente
 
 **Cosa certifica?**: Certifica il proprietario (titolare) di una certa chiave pubblica, in altre parole, autenticano una chiave pubblica.
 
@@ -293,7 +292,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 **Qual’è lo scopo del certificato?** **Contenere** e **autenticare** una chiave pubblica come appartenente al suo proprietario (identificato da un CN) per mezzo della garanzia (firma) di uno terzo utente fidato (in genere una CA).
 
 
-#### Fase di registrazione Scambio delle chiavi pubbliche
+### Fase di registrazione Scambio delle chiavi pubbliche
 
 <img src="img/authutente/scambio_chiavi_pubbliche.png" alt="Fase di registrazione Scambio delle chiavi pubbliche" width="500px">
 
@@ -303,7 +302,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 - Metodo più efficace: uso di un certificato rilasciato da una CA
 
 
-#### Attacco MITM e chiavi pubbliche
+### Attacco MITM e chiavi pubbliche
 
 - La modifica MITM durante uno scambio di chiavi pubbliche può essere arginata con l’autenticazione reciproca delle chiavi pubbliche delle due parti
 - L’autenticazione reciproca si può realizzare con:
@@ -314,7 +313,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
        - *Finestra temporale limitata*: il pairing è possibile solo entro un breve intervallo (es. ~2 minuti dopo la pressione di un pulsante), come in **WPS** (Wi-Fi Protected Setup) o nel pairing **Bluetooth**.
 
 
-### 5.7 Autenticazione forte asimmetrica
+## 5.7 Autenticazione forte asimmetrica
 
 - Nessun uso di password, un algoritmo di cifratura asimmetrico permette l’autenticazione degli utenti
 - Chi deve verificare l’autenticazione della controparte invia una sfida
@@ -329,14 +328,14 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 - L’autenticazione mutua necessita di un protocollo a tre vie (Three-Way-Handshake)
 
 
-#### Certificati vs credenziali
+### Certificati vs credenziali
 
 - Va rimarcato che lo scambio di certificati, di per se, non autentica gli utenti ma solamente autentica la loro chiave pubblica, cioè garantisce l’identità dell’intestatario (subject) dei certificati.
 - Poiché l’associazione tra una chiave pubblica e la sua chiave privata è unica, un certificato indirettamente autentica anche la chiave privata corrispondente come chiave associata allo stesso intestatario.
 - Lo scambio di credenziali, qualora sia possibile dimostrare che queste sono derivate dalla chiave privata autenticata dal certificato, invece, autentica a tutti gli effetti un utente, poiché solo il detentore del segreto (chi ha la chiave privata) è in grado di esibire le credenziali corrette.
 - Certificati e credenziali sono complementari nella realizzazione dell’autenticazione di un utente che accede ad una risorsa.
 
-#### Autenticazione singola asimmetrica con sfida in chiaro (ad es. TLS)
+### Autenticazione singola asimmetrica con sfida in chiaro (ad es. TLS)
 
 
 <p align="center">
@@ -350,7 +349,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 
 Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che recuperano la **chiave pubblica** da un file utilizzando come chiave di ricerca lo **username** dell'utente. Il file ha il significato di **elenco di chiavi pubbliche autenticate**. 
 
-#### Autenticazione mutua asimmetrica con sfida in chiaro (ad es. mTLS)
+### Autenticazione mutua asimmetrica con sfida in chiaro (ad es. mTLS)
 
 
 <p align="center">
@@ -377,8 +376,13 @@ Il fatto che il **certificato sia valido** non dice ancora se l'utente sia **eff
 - **Tramite l'impronta del certificato o la chiave pubblica** — il server salva il **fingerprint** (thumbprint) o la **chiave pubblica** e lo **associa** rigidamente a un **account specifico** (una forma di pinning a livello applicativo).
 - **Tramite serial number + issuer** — combinazione che identifica univocamente quel certificato emesso da quella CA.
 
+Il **certificato utente** viene sempre inviato da colui che si deve autenticare **contestualmente alla sfida firmata**, cioè in allegato alla sfida firmata. Colui che deve **autenticare** l'utente sbusta la chiave pubblica dal certificato (dopo aver convalidato la firma della CA che lo autentica) e, con quella, **convalida la firma** sulla sfida.
 
-#### Autenticazione utente con tunnel
+I **soli certificati** che vengono memorizzati nel sistema sono i **certificati radice** delle CA che firmano i certificati utente. I certificati radice devono comunque essere **preinstallati** (non li invia mai il server) e devono essere inseriti nell'elenco dei **certificati radice attendibili** per una **certa operazione** (HTTPS, RADIUS, VPN, ecc).
+
+
+
+## Autenticazione utente con tunnel
 
 <p align="center">
   <img src="img/tunnel_pap_chap.svg" alt="Autenticazione mutua con tunnel: server asimmetrico + client PAP/CHAP dentro" width="860">
@@ -396,11 +400,7 @@ Il fatto che il **certificato sia valido** non dice ancora se l'utente sia **eff
 4. Da questo momento in poi, sia il client che il server posseggono la medesima chiave di sessione che possono utilizzare per cifrare i dati in entrambe le direzioni.
 
 
-Il **certificato utente** viene sempre inviato da colui che si deve autenticare **contestualmente alla sfida firmata**, cioè in allegato alla sfida firmata. Colui che deve **autenticare** l'utente sbusta la chiave pubblica dal certificato (dopo aver convalidato la firma della CA che lo autentica) e, con quella, **convalida la firma** sulla sfida.
-
-I **soli certificati** che vengono memorizzati nel sistema sono i **certificati radice** delle CA che firmano i certificati utente. I certificati radice devono comunque essere **preinstallati** (non li invia mai il server) e devono essere inseriti nell'elenco dei **certificati radice attendibili** per una **certa operazione** (HTTPS, RADIUS, VPN, ecc).
-
-#### Autenticazione forte con Diffie-Helmann
+### Autenticazione forte con Diffie-Helmann
 
 - **DH** permette a ciascuna parte di **generare autonomamente** la propria **sfida da firmare** (il proprio esponenziale) invece di riceverla dalla controparte come nello schema challenge/response classico. La sfida viene poi inviata **firmata tramite RSA** in modo da autenticare l'utente. I **nonce** sono proprio le **chiavi pubbliche di DH** che, basate sui numeri random privati a e b, sono esse stesse **random**.
 - Le **chiavi pubbliche di DH** sono gli **esponenziali** YA= ga mod p e YB= gb mod p che hanno la proprietà di essere **chiavi pubbliche a breve termine** contemporaneamente **random e effimere**, cioè usa e getta: ne viene generata una coppia nuova per **ogni sessione**.
@@ -411,9 +411,9 @@ I **soli certificati** che vengono memorizzati nel sistema sono i **certificati 
 - L'utilizzo di DH ha il vantaggio di realizzare contemporaneamente sia l'**autenticazione dell'utente** (tramite la **firma** sul nonce) sia la **generazione di una chiave effimera** di sessione, ottenendo così anche la **Perfect Forward Secrecy**.
 
 
-### 5.8 Autenticazione di un server
+## 5.8 Autenticazione di un server
 
-#### Fase 1 - Autenticazione del server
+### Fase 1 - Autenticazione del server
 
 Un riassunto delle fasi dell’**autenticazione** asimmetrica forte **di un server** potrebbe essere:
 - Il Client manda al server un messaggio contenente la sua identità è la sfida OTP che ha scelto lui, b.
@@ -422,7 +422,7 @@ Un riassunto delle fasi dell’**autenticazione** asimmetrica forte **di un serv
   - riesce a ***convalidare la firma dell'utente (dominio) posta sulla sfida***, ovvero se  decifrando la firma con la chiave pubblica del server, ritrova la sfida originale del client (Fase di verifica delle credenziali).
   - Se riesce ad **autenticare la chiave pubblica** attraverso l'**autenticazione certificato utente**.
 
-#### Fase 2 - Autenticazione del certificato utente
+### Fase 2 - Autenticazione del certificato utente
 
 Un riassunto delle fasi dell’**autenticazione di un certificato utente** potrebbe essere:
 
@@ -439,33 +439,22 @@ Un riassunto delle fasi dell’**autenticazione di un certificato utente** potre
   - Che il nome di dominio (subject) dichiarato nel certificato del server da controllare coincida col nome di dominio dell’url del server
 - Se il certificato è valido, la chiave pubblica in esso contenuta può decifrare la credenziale del server autenticandolo
 
-#### Autenticazione mutua con tunnel
 
-Abbiamo visto che autenticare un server di fatto significa autenticare una sfida ed una chiave pubblica mediante algoritmi di firma digitale.
-
-A questo punto il client può usare la chiave pubblica del server per creare un canale sicuro (tunnel cifrato) verso il server attraverso cui inviare la propria credenziale debole (la password) per autenticarsi mediante PAP, cifrandola con la chiave pubblica del server.
-
-Una volta che pure il client è autenticato, questo genera una chiave random OTP che diventa la chiave di sessione della cifratura simmetrica dei dati in entrambe le direzioni. 
-
-Il client adesso invia al server la chiave di sessione appena creata su un canale sicuro cifrandola con la chiave pubblica del server (non gode di PFS). Oppure sia il client che il server utilizzano l'algoritmo di Diffie Helmann per ottenere indipendentemente due chiavi OTP uguali (gode di PFS).
-
-Da questo momento in poi, sia il client che il server posseggono la medesima chiave di sessione che possono utilizzare per cifrare i dati in entrambe le direzioni.
-
-### Perfect Forward Secrecy (PFS)
+## Perfect Forward Secrecy (PFS)
 
 La **Perfect Forward Secrecy** (o *Forward Secrecy*) è una proprietà cruciale dei protocolli crittografici che garantisce che la compromissione di una chiave privata a **lungo termine** non comprometta la riservatezza delle sessioni **passate**.
 
 In pratica, se un attaccante intercettasse e registrasse il traffico crittografato oggi, non sarebbe in grado di decifrarlo in futuro, anche se riuscisse a ottenere la chiave privata del server.
 
 
-#### Senza PFS (Scenario basato solo su RSA)
+### Senza PFS (Scenario basato solo su RSA)
 
 In questo scenario, la sicurezza delle sessioni dipende interamente dalla chiave privata del server:
 
 * **Meccanismo:** La chiave di sessione viene cifrata dal client utilizzando la chiave pubblica RSA del server.
 * **Vulnerabilità:** Se in futuro la chiave privata RSA del server viene sottratta, l'attaccante può usare quella chiave per decifrare tutte le chiavi di sessione registrate in passato, rendendo leggibili tutte le comunicazioni storiche.
 
-#### Con PFS (Diffie-Hellman Effimero - DHE/ECDHE)
+### Con PFS (Diffie-Hellman Effimero - DHE/ECDHE)
 
 L'introduzione di scambi di chiavi temporanei risolve il problema della dipendenza dalla chiave statica:
 
