@@ -292,7 +292,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 
 **Da chi è firmato?** E’ firmato **dalla CA** con la sua chiave privata detta anche (insieme alla controparte pubblica) chiave di certificazione (firma un certificato).
 
-**Qual’è lo scopo del certificato?** **Contenere** e **autenticare** una chiave pubblica come appartenente al suo proprietario (identificato da un CN) per mezzo della garanzia (firma) di uno terzo utente fidato (in genere una CA).
+**Qual’è lo scopo del certificato?** **Contenere** e **autenticare** una chiave pubblica come appartenente al suo proprietario (**identificato da un CN**) per mezzo della garanzia (firma) di uno terzo utente fidato (in genere una CA).
 
 
 ### 5.6.1 Scambio delle chiavi pubbliche
