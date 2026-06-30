@@ -390,7 +390,7 @@ E' una **autenticazione ibrida** nel senso che è **forte asimmetrica** quando a
 
 Nonostante che l'**autenticazione del client** sia formalmente di **tipo debole** (PAP o CHAP) essa si svolge all'interno di un **tunnel cifrato** generato come sottoprodotto dell'**autenticazione del server**, procedimento che termina con la generazione di una chiave di **sessione simmetrica** effimera (temporanea) che può essere usata per scambiare dati in **maniera sicura** in entrambe le direzioni.
 
-Il protocollo di **autenticazione del client**, avvenendo **all'interno del tunnel** cifrato, gode di tutte le **proprietà di sicurezza** introdotte da questo, compresa la protezione dagli **attacchi replay** garantita dai meccanismi del tunnel (sequenze dei record e chiave di sessione temporanea).
+Il protocollo di **autenticazione del client**, avvenendo **all'interno del tunnel** cifrato, gode di tutte le **proprietà di sicurezza** introdotte da questo, compresa la protezione dagli **attacchi replay** garantita dai meccanismi del tunnel (numero di sequenza dei record e chiave di sessione temporanea).
 
 Autenticare un server, di fatto, significa **autenticare una sfida** e **autenticare una chiave pubblica** mediante algoritmi di **firma digitale**, questo è il solito meccanismo alla base dell'**autenticazione asimmetrica forte singola**. Ricapitolando le **fasi in breve**:
 1. **Autenticazione del server**. A questo punto il client può usare la **chiave pubblica del server** per scambiare una **chiave effimera di sessione** da lui creata (non gode di PFS) oppure sia il client che il server utilizzano l'**algoritmo di Diffie Helmann** per ottenere indipendentemente due chiavi di sessione effimere uguali su entrambi i lati (gode di PFS).
