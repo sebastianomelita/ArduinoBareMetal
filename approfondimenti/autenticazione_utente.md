@@ -436,6 +436,10 @@ In una riga: DH fa nascere la chiave, RSA firma per autenticare, e i due esponen
 
 Autenticare un server, di fatto, significa **autenticare una sfida** e **autenticare una chiave pubblica** mediante algoritmi di **firma digitale**, questo è il solito meccanismo alla base dell'**autenticazione asimmetrica forte singola**.
 
+<p align="center">
+  <img src="img/autenticazione_server_dipendenze.svg" alt="Autenticazione mutua asimmetrica con sfida in chiaro" width="900px">
+</p>
+
 Un riassunto delle fasi dell’**autenticazione** asimmetrica forte **di un server** potrebbe essere:
 - Il Client manda al server un messaggio contenente la sua identità è la sfida OTP che ha scelto lui, b.
 - Il server risponde mandando la propria identità  A e la propria firma sulla sfida b. E’ la fase di scambio delle credenziali (Credenziali = sfida firmata) in cui il server, contestualmente, invia pure la propria chiave pubblica (contenuta in un certificato utente). In definitiva il server si presenta al client con la sua sfida firmata e un certificato utente ad essa allegato.
