@@ -446,7 +446,17 @@ Un riassunto delle fasi dell’**autenticazione** asimmetrica forte **di un serv
 - Il client **autentica il server** secondo l'ordine "prima stabilisci la fiducia, poi usala", non ha senso fidarsi di una chiave prima di aver verificato a chi appartiene:
   1. Se riesce ad **autenticare la chiave pubblica** attraverso l'**autenticazione del certificato utente**.
   2. riesce a ***convalidare la firma dell'utente (dominio) posta sulla sfida***, ovvero se  decifrando la firma con la chiave pubblica del server, ritrova la sfida originale del client (Fase di verifica delle credenziali).
-  
+
+### **Variante con sfide di Diffie-Helman**
+
+<p align="center">
+  <img src="img/autenticazione_server_diffie_hellman.svg" alt="Autenticazione mutua asimmetrica con sfida in chiaro" width="700px">
+</p>
+
+La **sfida** ora è l'esponenziale `YA = gᵃ mod p`: la chiave pubblica DH del client funge da nonce. Il server risponde col proprio `YB = gᵇ mod p` **firmato** con la sua chiave privata RSA — la credenziale autenticata è proprio "l'esponenziale firmato". Il client lo verifica esattamente come prima: valida il **certificato utente**, ne estrae la **chiave pubblica** RSA fidata e con quella controlla la firma.
+
+Il vantaggio che rende DH interessante, e che lo schema RSA puro non dà, è nel blocco **Esito**: gli **stessi** esponenziali scambiati servono a *due* cose contemporaneamente. Da un lato sono le nonce firmate che **autenticano**; dall'altro permettono a entrambi di calcolare in modo indipendente la **chiave di sessione effimera** `K = gᵃᵇ mod p`. E poiché i segreti `a` e `b` sono temporanei e vengono cancellati a fine sessione, si ottiene la **Perfect Forward Secrecy** di cui parlava il documento: la firma RSA serve solo ad autenticare lo scambio, non a cifrare la chiave.
+
 ## 6.2 Autenticazione del certificato utente
 
 Un riassunto delle fasi dell’**autenticazione di un certificato utente** potrebbe essere:
