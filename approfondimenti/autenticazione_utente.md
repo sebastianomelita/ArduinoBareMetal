@@ -269,7 +269,7 @@ Come realizzare la garanzia dell’autenticazione su canali insicuri:
 
 ## 5.5 Autenticazione su canali insicuri
 
-L’**autenticazione asimmetrica** e l’**autenticazione con Diffie-Helmann** sono ritenuti metodio di **autenticazione forte** e si basano su:
+L’**autenticazione asimmetrica** e l’**autenticazione con Diffie-Helman** sono ritenuti metodio di **autenticazione forte** e si basano su:
 - **Fase di  verifica dell'identità** che può essere diretta o indiretta:
     - Verifica diretta in **fase di registrazione dell'identità**: condivisione integra tra Alice e Bob lungo un canale insicuro (non confidenziale) di informazioni pubbliche a ciascuno di essi **associate in maniera univoca** cioè la **chiave pubblica**. Si fa una sola volta **presso ogni servizio**, è il caso ad esempio di SSH.
     - Verifica indiretta in **fase di presentazione dell'identità**: condivisione integra tra Alice e Bob lungo un canale insicuro (non confidenziale) di informazioni pubbliche a ciascuno di essi **associate in maniera univoca** cioè il **certificato utente**. Si può fare più volte, contestualmente all'autenticazione, è il caso ad esempio di TLS con certificati X509. La registrazione dell'identità non avviene più presso il servizio perchè ci si fida dell'unica fase di registrazione dell'utente già avvenuta presso una CA. L'**identità** rimane in seguito garantita **presso un servizio** proprio grazie al **certificato utente**. 
@@ -393,7 +393,7 @@ Nonostante che l'**autenticazione del client** sia formalmente di **tipo debole*
 Il protocollo di **autenticazione del client**, avvenendo **all'interno del tunnel** cifrato, gode di tutte le **proprietà di sicurezza** introdotte da questo, compresa la protezione dagli **attacchi replay** garantita dai meccanismi del tunnel (numero di sequenza dei record e chiave di sessione temporanea).
 
  Ricapitolando le **fasi in breve**:
-1. **Autenticazione del server**. Di fatto, significa **autenticare sia una sfida che una chiave pubblica** mediante algoritmi di **firma digitale**, questo è il solito meccanismo alla base dell'**autenticazione asimmetrica forte singola**. A questo punto il client può usare la **chiave pubblica del server** per scambiare una **chiave effimera di sessione** da lui creata (non gode di PFS) oppure sia il client che il server utilizzano l'**algoritmo di Diffie Helmann** per ottenere indipendentemente due chiavi di sessione effimere uguali su entrambi i lati (gode di PFS).
+1. **Autenticazione del server**. Di fatto, significa **autenticare sia una sfida che una chiave pubblica** mediante algoritmi di **firma digitale**, questo è il solito meccanismo alla base dell'**autenticazione asimmetrica forte singola**. A questo punto il client può usare la **chiave pubblica del server** per scambiare una **chiave effimera di sessione** da lui creata (non gode di PFS) oppure sia il client che il server utilizzano l'**algoritmo di Diffie-Helman** per ottenere indipendentemente due chiavi di sessione effimere uguali su entrambi i lati (gode di PFS).
 2. **Creazione del tunnel cifrato**. Da questo momento in poi, sia il client che il server posseggono la **medesima chiave di sessione** che possono utilizzare per **cifrare i dati** in entrambe le direzioni.
 3. **Autenticazione del client**. Si realizza all'interno del tunnel cifrato utilizzando un protocollo di autenticazione debole come PAP o medio come CHAP.
 
@@ -402,7 +402,7 @@ Il protocollo di **autenticazione del client**, avvenendo **all'interno del tunn
   <img src="img/tunnel_pap_chap.svg" alt="Autenticazione mutua con tunnel: server asimmetrico + client PAP/CHAP dentro" width="860">
 </p>
 
-### 5.8.1 Autenticazione forte con Diffie-Helmann
+### 5.8.1 Autenticazione forte con Diffie-Helman
 
  
 - **DH** permette a ciascuna parte di **generare autonomamente** la propria **sfida da firmare** (il proprio esponenziale) invece di riceverla dalla controparte come nello schema challenge/response classico. La sfida viene poi inviata **firmata tramite RSA** in modo da autenticare l'utente. I **nonce** sono proprio le **chiavi pubbliche di DH** che, basate sui numeri random privati a e b, sono esse stesse **random**.
