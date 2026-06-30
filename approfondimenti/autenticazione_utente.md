@@ -392,8 +392,8 @@ Nonostante che l'**autenticazione del client** sia formalmente di **tipo debole*
 
 Il protocollo di **autenticazione del client**, avvenendo **all'interno del tunnel** cifrato, gode di tutte le **proprietà di sicurezza** introdotte da questo, compresa la protezione dagli **attacchi replay** garantita dai meccanismi del tunnel (numero di sequenza dei record e chiave di sessione temporanea).
 
-Autenticare un server, di fatto, significa **autenticare una sfida** e **autenticare una chiave pubblica** mediante algoritmi di **firma digitale**, questo è il solito meccanismo alla base dell'**autenticazione asimmetrica forte singola**. Ricapitolando le **fasi in breve**:
-1. **Autenticazione del server**. A questo punto il client può usare la **chiave pubblica del server** per scambiare una **chiave effimera di sessione** da lui creata (non gode di PFS) oppure sia il client che il server utilizzano l'**algoritmo di Diffie Helmann** per ottenere indipendentemente due chiavi di sessione effimere uguali su entrambi i lati (gode di PFS).
+ Ricapitolando le **fasi in breve**:
+1. **Autenticazione del server**. Autenticare un server, di fatto, significa **autenticare sia una sfida che una chiave pubblica** mediante algoritmi di **firma digitale**, questo è il solito meccanismo alla base dell'**autenticazione asimmetrica forte singola**. A questo punto il client può usare la **chiave pubblica del server** per scambiare una **chiave effimera di sessione** da lui creata (non gode di PFS) oppure sia il client che il server utilizzano l'**algoritmo di Diffie Helmann** per ottenere indipendentemente due chiavi di sessione effimere uguali su entrambi i lati (gode di PFS).
 2. **Creazione del tunnel cifrato**. Da questo momento in poi, sia il client che il server posseggono la **medesima chiave di sessione** che possono utilizzare per **cifrare i dati** in entrambe le direzioni.
 3. **Autenticazione del client**. Si realizza all'interno del tunnel cifrato utilizzando un protocollo di autenticazione debole come PAP o medio come CHAP.
 
