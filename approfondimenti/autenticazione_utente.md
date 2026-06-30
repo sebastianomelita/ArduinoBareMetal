@@ -365,7 +365,7 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 4. Bob chiude il protocollo di autenticazione mutua inviando la sua firma sulla grandezza sulla sfida di A.
 5. Analogamente, Alice autentica Bob se riesce a trovare la chiave pubblica di Bob sul suo DB e, in caso positivo, se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
 
-Nello scenario esaminato la chiave pubblica viene utilizzata sia come credenziale di **autenticazione** che come credenziale di **autorizzazione** all'accesso reciproco. Se la chiave pubblica non è nota non è possibile nè autenticare l'utente che la possiede e neppure autorizzarlo all'accesso, le due funzioni di **AA**, di fatto, **coincidono**.
+Nello scenario esaminato la chiave pubblica viene utilizzata sia come credenziale di **autenticazione** che come credenziale di **autorizzazione** all'accesso reciproco. Se la chiave pubblica non è stata **preventivamente registrata** nel sistema non è possibile nè autenticare l'utente che la possiede e neppure autorizzarlo all'accesso, le due funzioni di **AA**, di fatto, **coincidono**.
 
 Nel caso di un **server pubblico**, normalmente la **fase di registrazione** della sua **identità** non è locale sul client ma è **delegata ad una CA** che ne **certifica l'identità** per cui il client non deve conservare la chiave pubblica corrispondente che viene **inviata dal server** insieme alla sfida firmata dentro un **certificato autenticato** da una CA.
 
