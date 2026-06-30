@@ -346,7 +346,7 @@ In una **autenticazione mutua** spesso **la parte più forte** crea il **canale 
 </p>
 
 1. Bob manda ad Alice un messaggio contenente la sua identità ***B*** e la nonce che ha scelto lui, ***b***.
-2. Alice risponde mandando la sua identità e la propria firma sulla sfida b; Fase  scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente se questa non è contenuta in un certificato allegato alla firma.
+2. Alice risponde mandando la sua identità e la propria firma sulla sfida b; Fase  scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente. Se la trova il processo di autenticazione prosegue, altrimenti si interrompe e l'utente A ALice viene lasciato fuori.
 3. Bob autentica Alice se riesce a verificare la firma posta sulla sfida, ovvero se  decifrando la firma con la chiave pubblica di Alice, ritrova la sfida originale di Bob (Fase di verifica delle credenziali).
 4. La sfida è inviata sempre da chi deve verificare l’autenticazione, in questo caso Bob.
 
@@ -363,7 +363,7 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 2. Alice risponde mandando la sua identità ***A*** e la sua nonce ***a*** e la propria firma sulla nonce di B); Fase di scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente. Se la trova il processo di autenticazione prosegue, altrimenti si interrompe e l'utente A ALice viene lasciato fuori.
 3. Bob autentica Alice se riesce a verificare la firma posta sulla sfida, ovvero se  decifrando la firma con la chiave pubblica di Alice, ritrova la sfida originale di Bob (Fase di verifica delle credenziali).
 4. Bob chiude il protocollo di autenticazione mutua inviando la sua firma sulla grandezza sulla sfida di A.
-5. Alice autentica Bob se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
+5. Analogamente, Alice autentica Bob se riesce a trovare la chiave pubblica di Bob sul suo DB e, in caso positivo, se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
 
 ### 5.7.4 Autorizzazione vs autenticazione
 
