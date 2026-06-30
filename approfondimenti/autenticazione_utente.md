@@ -437,7 +437,7 @@ In una riga: DH fa nascere la chiave, RSA firma per autenticare, e i due esponen
 Autenticare un server, di fatto, significa **autenticare una sfida** e **autenticare una chiave pubblica** mediante algoritmi di **firma digitale**, questo è il solito meccanismo alla base dell'**autenticazione asimmetrica forte singola**.
 
 <p align="center">
-  <img src="img/autenticazione_server_dipendenze.svg" alt="Autenticazione mutua asimmetrica con sfida in chiaro" width="900px">
+  <img src="img/autenticazione_server_dipendenze.svg" alt="Autenticazione mutua asimmetrica con sfida in chiaro" width="700px">
 </p>
 
 Un riassunto delle fasi dell’**autenticazione** asimmetrica forte **di un server** potrebbe essere:
