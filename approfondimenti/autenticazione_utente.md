@@ -455,7 +455,7 @@ Un riassunto delle fasi dell’**autenticazione** asimmetrica forte **di un serv
 
 La **sfida** ora è l'esponenziale `YA = gᵃ mod p`: la chiave pubblica DH del client funge da nonce. Il server risponde col proprio `YB = gᵇ mod p` **firmato** con la sua chiave privata RSA — la credenziale autenticata è proprio "l'esponenziale firmato". Il client lo verifica esattamente come prima: valida il **certificato utente**, ne estrae la **chiave pubblica** RSA fidata e con quella controlla la firma.
 
-Il vantaggio che rende DH interessante, e che lo schema RSA puro non dà, è nel blocco **Esito**: gli **stessi** esponenziali scambiati servono a *due* cose contemporaneamente. Da un lato sono le nonce firmate che **autenticano**; dall'altro permettono a entrambi di calcolare in modo indipendente la **chiave di sessione effimera** `K = gᵃᵇ mod p`. E poiché i segreti `a` e `b` sono temporanei e vengono cancellati a fine sessione, si ottiene la **Perfect Forward Secrecy** di cui parlava il documento: la firma RSA serve solo ad autenticare lo scambio, non a cifrare la chiave.
+Il vantaggio che rende DH interessante, e che lo schema RSA puro non dà, è nel blocco **Esito**: gli **stessi** esponenziali scambiati servono a *due* cose contemporaneamente. Da un lato sono le nonce firmate che **autenticano**; dall'altro permettono a entrambi di calcolare in modo indipendente la **chiave di sessione effimera** `K = gᵃᵇ mod p`. E poiché i segreti `a` e `b` sono temporanei e vengono cancellati a fine sessione, si ottiene la **Perfect Forward Secrecy**: la firma RSA serve solo ad autenticare lo scambio, non a cifrare la chiave.
 
 ## 6.2 Autenticazione del certificato utente
 
