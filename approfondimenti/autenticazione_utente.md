@@ -440,9 +440,9 @@ Un riassunto delle fasi dell’**autenticazione** asimmetrica forte **di un serv
 - Il Client manda al server un messaggio contenente la sua identità è la sfida OTP che ha scelto lui, b.
 - Il server risponde mandando la propria identità  A e la propria firma sulla sfida b. E’ la fase di scambio delle credenziali (Credenziali = sfida firmata) in cui il server, contestualmente, invia pure la propria chiave pubblica (contenuta in un certificato utente). In definitiva il server si presenta al client con la sua sfida firmata e un certificato utente ad essa allegato.
 - Il client **autentica il server** se:
-  - riesce a ***convalidare la firma dell'utente (dominio) posta sulla sfida***, ovvero se  decifrando la firma con la chiave pubblica del server, ritrova la sfida originale del client (Fase di verifica delle credenziali).
-  - Se riesce ad **autenticare la chiave pubblica** attraverso l'**autenticazione certificato utente**.
-
+  1. Se riesce ad **autenticare la chiave pubblica** attraverso l'**autenticazione del certificato utente**.
+  2. riesce a ***convalidare la firma dell'utente (dominio) posta sulla sfida***, ovvero se  decifrando la firma con la chiave pubblica del server, ritrova la sfida originale del client (Fase di verifica delle credenziali).
+  
 ## 6.2 Fase 2 - Autenticazione del certificato utente
 
 Un riassunto delle fasi dell’**autenticazione di un certificato utente** potrebbe essere:
