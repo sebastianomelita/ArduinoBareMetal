@@ -360,7 +360,7 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 </p>
 
 1. Bob manda ad Alice un messaggio contenente la sua identità ***B*** è la nonce che ha scelto lui, ***b***;
-2. Alice risponde mandando la sua identità ***A*** e la sua nonce ***a*** e la propria firma sulla nonce di B); Fase di scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente se questa non è contenuta in un certificato allegato alla firma.
+2. Alice risponde mandando la sua identità ***A*** e la sua nonce ***a*** e la propria firma sulla nonce di B); Fase di scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente. Se la trova il processo di autenticazione prosegue, altrimenti si interrompe e l'utente A ALice viene lasciato fuori.
 3. Bob autentica Alice se riesce a verificare la firma posta sulla sfida, ovvero se  decifrando la firma con la chiave pubblica di Alice, ritrova la sfida originale di Bob (Fase di verifica delle credenziali).
 4. Bob chiude il protocollo di autenticazione mutua inviando la sua firma sulla grandezza sulla sfida di A.
 5. Alice autentica Bob se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
