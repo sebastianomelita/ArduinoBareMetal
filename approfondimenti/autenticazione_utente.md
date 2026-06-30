@@ -360,10 +360,14 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 </p>
 
 1. Bob manda ad Alice un messaggio contenente la sua identità ***B*** è la nonce che ha scelto lui, ***b***;
-2. Alice risponde mandando la sua identità ***A*** e la sua nonce ***a*** e la propria firma sulla nonce di B); Fase di scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente. Se la trova il processo di autenticazione prosegue, altrimenti si interrompe e l'utente A ALice viene lasciato fuori.
+2. Alice risponde mandando la sua identità ***A*** e la sua nonce ***a*** e la propria firma sulla nonce di B); Fase di scambio credenziali (Credenziali = sfida firmata). Il nome utente A serve a Bob per ricavare da un DB la chiave pubblica corrispondente. Se la trova il processo di autenticazione prosegue, altrimenti si interrompe e l'utente A Alice viene lasciato fuori.
 3. Bob autentica Alice se riesce a verificare la firma posta sulla sfida, ovvero se  decifrando la firma con la chiave pubblica di Alice, ritrova la sfida originale di Bob (Fase di verifica delle credenziali).
 4. Bob chiude il protocollo di autenticazione mutua inviando la sua firma sulla grandezza sulla sfida di A.
 5. Analogamente, Alice autentica Bob se riesce a trovare la chiave pubblica di Bob sul suo DB e, in caso positivo, se riesce a verificare la firma posta sulla sfida (Fase di verifica delle credenziali).
+
+Nello scenario esaminato la chiave pubblica viene utilizzata sia come credenziale di **autenticazione** che come credenziale di **autorizzazione** all'accesso reciproco. Se la chiave pubblica non è nota non è possibile nè autenticare l'utente che la possiede e neppure autorizzarlo all'accesso, le due funzioni di **AA**, di fatto, **coincidono**.
+
+Nel caso di un **server pubblico**, normalmente la **fase di registrazione** della sua **identità** non è locale sul client ma è **delegata ad una CA** che ne **certifica l'identità** per cui il client non deve conservare la chiave pubblica corrispondente che viene **inviata dal server** insieme alla sfida firmata dentro un **certificato autenticato** da una CA.
 
 ### 5.7.4 Autorizzazione vs autenticazione
 
