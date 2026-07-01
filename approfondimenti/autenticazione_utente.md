@@ -367,20 +367,16 @@ Questo è l'**handshake di autenticazione** tipico di protocolli come SSH che re
 
 Nello scenario esaminato la chiave pubblica viene utilizzata sia come credenziale di **autenticazione** che come credenziale di **autorizzazione** all'accesso reciproco. Se la chiave pubblica non è stata **preventivamente registrata** nel sistema non è possibile nè autenticare l'utente che la possiede e neppure autorizzarlo all'accesso, le due funzioni di **AA**, di fatto, **coincidono**.
 
-Nel caso di un **server pubblico**, normalmente la **fase di registrazione** della sua **identità** non è locale sul client ma è **delegata ad una CA** che ne **certifica l'identità** e lo **autorizza** ad esercitare il servizio. Per cui il client non deve conservare la chiave pubblica corrispondente, questa viene **inviata dal server** al seguito alla sfida firmata e contenuta all'interno di un **certificato autenticato** da una CA. Il client deve solamente autenticare il server usando la chiave pubblica garantita dalla CA. E' il caso discusso più avanti in cap. 6 **Autenticazione di un server**.
+### 5.7.4 Autorizzazione di client e server
 
-### 5.7.4 Autorizzazione vs autenticazione
+Nel caso di un **server pubblico**, normalmente la **fase di registrazione** della sua **identità** non è locale sul client ma è **delegata ad una CA** che ne **certifica l'identità** e lo **autorizza** ad esercitare il servizio. Per cui il client non deve conservare la chiave pubblica corrispondente, questa viene **inviata dal server** al seguito alla sfida firmata e contenuta all'interno di un **certificato autenticato** da una CA. Il client deve solamente autenticare il server usando la chiave pubblica garantita dalla CA.
 
-Sia nel caso di autenticazione singola che in quello di autenticazione mutua non sempre conviene memorizzare tutte le chiavi pubbliche nel sistema anche se questa è esattamente l'operazione che fa Linux con il protocollo SSH.
+Nel caso di **autenticazione di un client**, il fatto che il **certificato sia valido** non dice ancora se l'utente sia **effettivamente autorizzato** ad accedere al servizio. Per questo il server deve **mappare il certificato a un account**, e qui ci sono varie **strategie** comuni:
+- **Tramite i campi identitari del certificato**: il Subject DN (es. il Common Name) oppure il Subject Alternative Name (email, UPN). Il server estrae questo valore e cerca l'**utente corrispondente** nel database. È l'**approccio più diffuso**.
+- **Tramite l'impronta del certificato o la chiave pubblica**: il server salva il **fingerprint** (thumbprint) o la **chiave pubblica** e lo **associa** rigidamente a un **account specifico** (una forma di pinning a livello applicativo).
+- **Tramite serial number + issuer**: combinazione che identifica univocamente quel certificato emesso da quella CA.
 
-Nel caso di protocolli più massivi di SSH, come HTTPS o RADIUS, la registrazione degli utenti è **puramente autorizzativa** e spesso viene memorizzato **sul DB del server** il solo username sotto forma di CN (Common Name). 
-
-La chiave pubblica, in questi protocolli, viaggia sempre **autenticata** (cioè **certamente associata** ad un certo CN) dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato) . 
-
-Il fatto che il **certificato sia valido** non dice ancora se l'utente sia **effettivamente autorizzato** ad accedere al servizio. Per questo il server deve **mappare il certificato a un account**, e qui ci sono varie **strategie** comuni:
-- **Tramite i campi identitari del certificato** — il Subject DN (es. il Common Name) oppure il Subject Alternative Name (email, UPN). Il server estrae questo valore e cerca l'**utente corrispondente** nel database. È l'**approccio più diffuso**.
-- **Tramite l'impronta del certificato o la chiave pubblica** — il server salva il **fingerprint** (thumbprint) o la **chiave pubblica** e lo **associa** rigidamente a un **account specifico** (una forma di pinning a livello applicativo).
-- **Tramite serial number + issuer** — combinazione che identifica univocamente quel certificato emesso da quella CA.
+La **chiave pubblica**, in questi protocolli, viaggia sempre **autenticata** (cioè **certamente associata** ad un certo CN) dentro un **certificato utente** garantito dalla **firma di una CA** (ente terzo fidato). 
 
 Il **certificato utente** viene sempre inviato da colui che si deve autenticare **contestualmente alla sfida firmata**, cioè in allegato alla sfida firmata. Colui che deve **autenticare** l'utente sbusta la chiave pubblica dal certificato (dopo aver convalidato la firma della CA che lo autentica) e, con quella, **convalida la firma** sulla sfida.
 
