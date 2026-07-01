@@ -369,9 +369,9 @@ Nello scenario esaminato la chiave pubblica viene utilizzata sia come credenzial
 
 ### 5.7.4 Autorizzazione di client e server
 
-Nel caso di un **server pubblico**, normalmente la **fase di registrazione** della sua **identità** non è locale sul client ma è **delegata ad una CA** che ne **certifica l'identità** e lo **autorizza** ad esercitare il servizio. Per cui il client non deve conservare la chiave pubblica corrispondente, questa viene **inviata dal server** al seguito alla sfida firmata e contenuta all'interno di un **certificato autenticato** da una CA. Il client deve solamente autenticare il server usando la chiave pubblica garantita dalla CA.
+Nel caso di un **server pubblico**, normalmente la **fase di registrazione** della sua **identità** non è locale sul client ma è **delegata ad una CA** che ne **certifica l'identità** e lo **autorizza** ad **esercitare** il servizio. Per cui il client non deve conservare la chiave pubblica corrispondente, questa viene **inviata dal server** al seguito alla sfida firmata e contenuta all'interno di un **certificato autenticato** da una CA. Il client deve solamente autenticare il server usando la chiave pubblica garantita dalla CA.
 
-Nel caso di **autenticazione di un client**, il fatto che il **certificato sia valido** non dice ancora se l'utente sia **effettivamente autorizzato** ad accedere al servizio. Per questo il server deve **mappare il certificato a un account**, e qui ci sono varie **strategie** comuni:
+Nel caso di **autenticazione di un client**, il fatto che il **certificato sia valido** non dice ancora se l'utente sia **effettivamente autorizzato** ad **accedere** al servizio. Per questo il server deve **mappare il certificato a un account**, e qui ci sono varie **strategie** comuni:
 - **Tramite i campi identitari del certificato**: il Subject DN (es. il Common Name) oppure il Subject Alternative Name (email, UPN). Il server estrae questo valore e cerca l'**utente corrispondente** nel database. È l'**approccio più diffuso**.
 - **Tramite l'impronta del certificato o la chiave pubblica**: il server salva il **fingerprint** (thumbprint) o la **chiave pubblica** e lo **associa** rigidamente a un **account specifico** (una forma di pinning a livello applicativo).
 - **Tramite serial number + issuer**: combinazione che identifica univocamente quel certificato emesso da quella CA.
