@@ -79,12 +79,16 @@ Normalmente, bit rate e consumo sono direttamente proporzionali, quando cresce i
 - **Autenticazione nodi di smistamento** (certificati, vpn…).
 
 ### 1.6 Applicazione e dati IoT
-- Posizione del **broker MQTT**.
-- **Topic** utili per i casi d'uso richiesti.
-- **Messaggi JSON** per dispositivi IoT significativi (**comandi**, **stato**, **configurazione**).
-- **Percorso dei dati** sensori↔attuatori => **sede dell'elaborazione** (locale/edge vs remota on-premise/cloud).
+- Definizione della posizione del **sensori/attuatori**.
+- posizione del **gateway** tra eventuale **rete di aggregazione non IP (WSN o BUS di campo)** e rete di **distribuzione IP**.
+- posizione del **client MQTT**: a bordo dei sensori/attuatori per **sensori/attuatori IP**, a bordo del **gateway** per **sensori/attuatori non IP**.
+- posizione del **broker MQTT**.
+- definizione **topic** utili per i casi d'uso richiesti.
+- Definizione dei **messaggi JSON** per dispositivi IoT significativi (**comandi**, **stato**, **configurazione**).
+- Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
+  **sede dell'elaborazione dei comandi** più opportuna (locale/edge vs remota on-premise/cloud).
 - **Funzioni del firmware** di bordo (anche in **pseudocodice**).
-
+   
 ## 2 · Documentazione cablaggio
 
 Nell'**ordine**:
