@@ -79,7 +79,7 @@ Normalmente, bit rate e consumo sono direttamente proporzionali, quando cresce i
 - **Autenticazione nodi di smistamento** (certificati, vpn…).
 
 ### 1.6 Applicazione e dati IoT
-- Definizione della posizione del **sensori/attuatori**.
+- Definizione della posizione di **sensori/attuatori**.
 - posizione del **gateway** tra eventuale **rete di aggregazione non IP (WSN o BUS di campo)** e rete di **distribuzione IP**.
 - posizione del **client MQTT**: a bordo dei sensori/attuatori per **sensori/attuatori IP**, a bordo del **gateway** per **sensori/attuatori non IP**.
 - posizione del **broker MQTT**.
