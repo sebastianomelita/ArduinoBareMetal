@@ -63,7 +63,7 @@
      - Posizione del **sensori/attuatori**.
      - Posizione del **gateway** tra eventuale **rete di aggregazione non IP (WSN o BUS di campo)** e rete di **distribuzione IP**.
      - Posizione del **client MQTT**: a bordo dei sensori/attuatori per **sensori/attuatori IP**, a bordo del **gateway** per **sensori/attuatori non IP**.
-     - Posizione del **broker MQTT** (**Edge** locale, **centrale on premise**, **centrale in cloud**, **edge locale in bridge con centrale** on premise/cloud)
+     - Posizione del **broker MQTT** (**edge** locale, **centrale on premise**, **centrale in cloud**, **edge locale in bridge con centrale** on premise/cloud)
      - Definizione dei **topic** utili per i casi d'uso richiesti.
      - Definizione dei **messaggi JSON** per alcuni dispositivi IoT significativi in merito a **comandi**,
   **stato** o **configurazione**.
