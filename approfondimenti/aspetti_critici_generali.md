@@ -62,7 +62,7 @@
 - **Applicazione e dati IoT**
      - Definizione della posizione del **sensori/attuatori**.
      - Definizione della posizione del **gateway** tra eventuale **rete di aggregazione non IP (WSN o BUS di campo)** e rete di **distribuzione IP**.
-     - Definizione della posizione del **client MQTT**: **a bordo dei sensori/attuatori per **sensori/attuatori IP**, a bordo del gateway per **sensori/attuatori non IP**.
+     - Definizione della posizione del **client MQTT**: a bordo dei sensori/attuatori per **sensori/attuatori IP**, a bordo del gateway per **sensori/attuatori non IP**.
      - Definizione della posizione del **broker MQTT**.
      - Definizione dei **topic** utili per i casi d'uso richiesti.
      - Definizione dei **messaggi JSON** per alcuni dispositivi IoT significativi in merito a **comandi**,
