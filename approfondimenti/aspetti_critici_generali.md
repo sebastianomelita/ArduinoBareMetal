@@ -41,7 +41,7 @@
   delle **tabelle di routing** più significative.
   *(Eccezione: nel WiFi Mesh il routing è sempre automatico — vedi sezione dedicata.)*
 - **Servizi di rete**
-     - Definizione della posizione dei **servizi di sistema** (DHCP, DNS), dislocati a scelta a bordo del **FW**, collegati al **CS**, o inseriti in una **server farm**.
+     - Posizione dei **servizi di sistema** (DHCP, DNS), dislocati a scelta a bordo del **FW**, collegati al **CS**, o inseriti in una **server farm**.
      - Eventuale impostazione della **continuità del  servizio** mediante tecniche di replica agenti lungo il piano del servizio, il piano dei dati e il piano del ripristino (backup).
      - Eventuale installazione, sulle interfacce di **ingresso** (direzione IN) di ciascun router, delle **ACL** che definiscono il processo di **filtraggio dei pacchetti** per autorizzare/negare il traffico dati tra i gruppi di utenti del sistema.
      - Installazione sulla interfaccia WAN verso internet del processo **NAT** di traduzione degli indirizzi privati nel pool di indirizzi pubblici del router di confine sul link verso un ISP.
@@ -60,10 +60,10 @@
      - Definizione delle tecniche di **autenticazione dei nodi di elaborazione/pubblicazione** (certificati, psw, preshared key, ecc.).
      - Definizione delle tecniche di **autenticazione dei nodi di smistamento** (certificati, vpn, ecc.).
 - **Applicazione e dati IoT**
-     - Definizione della posizione del **sensori/attuatori**.
-     - Definizione della posizione del **gateway** tra eventuale **rete di aggregazione non IP (WSN o BUS di campo)** e rete di **distribuzione IP**.
-     - Definizione della posizione del **client MQTT**: a bordo dei sensori/attuatori per **sensori/attuatori IP**, a bordo del **gateway** per **sensori/attuatori non IP**.
-     - Definizione della posizione del **broker MQTT**.
+     - Posizione del **sensori/attuatori**.
+     - Posizione del **gateway** tra eventuale **rete di aggregazione non IP (WSN o BUS di campo)** e rete di **distribuzione IP**.
+     - Posizione del **client MQTT**: a bordo dei sensori/attuatori per **sensori/attuatori IP**, a bordo del **gateway** per **sensori/attuatori non IP**.
+     - Posizione del **broker MQTT** (**Edge** locale, **centrale on premise**, **centrale in cloud**, **edge locale in bridge con centrale** on premise/cloud)
      - Definizione dei **topic** utili per i casi d'uso richiesti.
      - Definizione dei **messaggi JSON** per alcuni dispositivi IoT significativi in merito a **comandi**,
   **stato** o **configurazione**.
