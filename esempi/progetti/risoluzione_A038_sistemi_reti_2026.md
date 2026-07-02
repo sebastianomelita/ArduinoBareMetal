@@ -1,3 +1,7 @@
+>[Torna a svolgimento Smart Road](svolgimento_smart_road.md)>[Torna a Dettaglio architettura Ethernet](/archeth.md) 
+>
+
+
 # Risoluzione — A038 "Sistemi e Reti"
 ### Esame di Maturità 2026 — Sessione ordinaria · Indirizzo ITIA (Informatica e Telecomunicazioni, art. Informatica)
 
