@@ -108,7 +108,7 @@ Alcuni documenti si possono **trascurare** secondo il peso della parte fisica ne
   - posizione dei nodi;
   - **albero principale** del collegamento wireless (L2 o L3) tra i nodi, con ipotesi di **collegamento secondario (backup)** in caso di guasto;
 - scenari diversi e di natura differente => replicare la planimetria per ciascuno;
-- reti assimilabili a **aggregazione di client** su una **rete di distribuzione IP** => utile uno schema logico che le rappresenti come **federazione di reti** (tunnel L2/L3 o broker MQTT).
+- reti assimilabili a **aggregazione di dispositivi** su una **rete di distribuzione IP WAN o MAN** tramite un **gateway** => utile uno schema logico che le rappresenti come **federazione di reti** (tunnel L2/L3 o broker MQTT).
 
 ## 3 · Aspetti particolari per tecnologia
 
