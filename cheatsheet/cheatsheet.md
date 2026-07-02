@@ -79,11 +79,11 @@ Normalmente, bit rate e consumo sono direttamente proporzionali, quando cresce i
 - **Autenticazione nodi di smistamento** (certificati, vpn…).
 
 ### 1.6 Applicazione e dati IoT
-- Definizione della posizione di **sensori/attuatori**.
-- posizione del **gateway** tra eventuale **rete di aggregazione non IP (WSN o BUS di campo)** e rete di **distribuzione IP**.
-- posizione del **client MQTT**: a bordo dei sensori/attuatori per **sensori/attuatori IP**, a bordo del **gateway** per **sensori/attuatori non IP**.
-- posizione del **broker MQTT**.
-- definizione **topic** utili per i casi d'uso richiesti.
+- Posizione di **sensori/attuatori**.
+- Posizione del **gateway** tra eventuale **rete di aggregazione non IP (WSN o BUS di campo)** e rete di **distribuzione IP**.
+- Posizione del **client MQTT**: a bordo dei sensori/attuatori per **sensori/attuatori IP**, a bordo del **gateway** per **sensori/attuatori non IP**.
+- Posizione del **broker MQTT**.
+- Definizione **topic** utili per i casi d'uso richiesti.
 - Definizione dei **messaggi JSON** per dispositivi IoT significativi (**comandi**, **stato**, **configurazione**).
 - Definizione del percorso dei dati tra sensori ed eventuali attuatori per stabilire la
   **sede dell'elaborazione dei comandi** più opportuna (locale/edge vs remota on-premise/cloud).
