@@ -80,9 +80,14 @@ Per il dettaglio sulla realizzazione dell'autenticazione 802.1X vedi [Autenticaz
 
 ---
 
-## **Progetto di esempio completo**
+## **Progetto di esempio completo 1**
 
 [Sede centrale e sede remota unite con una VPN](/esempi/progetti/solo_router.md)
+
+---
+## **Progetto di esempio completo 2**
+
+[cantieri uniti con una VPN](/esempi/progetti/risoluzione_A038_sistemi_reti_2026.md)
 
 ---
 
