@@ -60,6 +60,9 @@
      - Definizione delle tecniche di **autenticazione dei nodi di elaborazione/pubblicazione** (certificati, psw, preshared key, ecc.).
      - Definizione delle tecniche di **autenticazione dei nodi di smistamento** (certificati, vpn, ecc.).
 - **Applicazione e dati IoT**
+     - Definizione della posizione del **sensori/attuatori**.
+     - Definizione della posizione del **gateway** tra eventuale **rete di aggregazione non IP (WSN o BUS di campo)** e rete di **distribuzione IP**.
+     - Definizione della posizione del **client MQTT**: **a bordo dei sensori/attuatori per **sensori/attuatori IP**, a bordo del gateway per **sensori/attuatori non IP**.
      - Definizione della posizione del **broker MQTT**.
      - Definizione dei **topic** utili per i casi d'uso richiesti.
      - Definizione dei **messaggi JSON** per alcuni dispositivi IoT significativi in merito a **comandi**,
@@ -86,4 +89,4 @@ Alcuni documenti possono essere **trascurati** il relazione a quanto forte è ne
      - la posizione dei nodi
      - una ipotesi di **albero principale** del collegamento wireless (L2 o L3) reciproco tra i nodi. Consigliabile la definizione di una ipotesi di collegamento wireless secondario (backup) in caso di guasto di uno o più nodi principali di traffico.
 - se gli scenari del progetto sono diversi e di differente natura allora conviene replicare la planimetria per ciascuno.
-- se gli scenari di rete sono assimilabili a **reti di aggregazione di client** (sensori, attuatori, PC, ecc.) interconnesse da una **rete di distribuzione IP**, allora potrebbe essere utile definire uno schema logico (ad esempio degli apparati attivi) che le rappresenta insieme come **federazione di reti** con tutti i collegamenti reciproci fisici e logici (tunnel L2/L3 o broker MQTT).
+- se gli scenari di rete sono assimilabili a **reti LAN di aggregazione di dispositivi** (sensori, attuatori, PC, ecc.) interconnesse da una **rete di distribuzione IP WAN o MAN**, allora potrebbe essere utile definire uno schema logico (ad esempio degli apparati attivi) che le rappresenta insieme come **federazione di reti** con tutti i collegamenti reciproci fisici e logici (tunnel L2/L3 o broker MQTT).
