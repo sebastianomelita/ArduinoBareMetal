@@ -87,7 +87,7 @@ Per il dettaglio sulla realizzazione dell'autenticazione 802.1X vedi [Autenticaz
 ---
 ## **Progetto di esempio completo 2**
 
-[cantieri uniti con una VPN](/esempi/progetti/risoluzione_A038_sistemi_reti_2026.md)
+[Cantieri uniti con una VPN](/esempi/progetti/risoluzione_A038_sistemi_reti_2026.md)
 
 ---
 
