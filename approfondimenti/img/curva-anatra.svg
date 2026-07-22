@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="390" viewBox="0 0 680 390" role="img" aria-labelledby="t1 d1">
+<title id="t1">La curva dell'anatra e la finestra utile per il V2G</title>
+<desc id="d1">Confronto fra domanda elettrica totale e carico residuo al netto del fotovoltaico nell'arco di una giornata. Il carico residuo crolla a mezzogiorno, creando un surplus solare da assorbire, e risale ripidamente fra le 17 e le 20, creando la rampa serale da coprire.</desc>
+<style>
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif}
+.t{font-size:14px;fill:#3d3d3a}
+.ts{font-size:12px;fill:#73726c}
+.th{font-size:14px;font-weight:500;fill:#3d3d3a}
+.axis{stroke:#b4b2a9;stroke-width:1}
+.grid{stroke:#d3d1c7;stroke-width:.5;stroke-dasharray:3 3}
+.gross{stroke:#888780;stroke-width:1.5;fill:none;stroke-linejoin:round;stroke-dasharray:6 4}
+.resid{stroke:#D85A30;stroke-width:2;fill:none;stroke-linejoin:round}
+.solar{fill:#EF9F27;opacity:.18}
+@media (prefers-color-scheme:dark){
+.t,.th{fill:#c2c0b6}
+.ts{fill:#9c9a92}
+.axis{stroke:#5f5e5a}
+.grid{stroke:#444441}
+.gross{stroke:#9c9a92}
+.resid{stroke:#F0997B}
+.solar{fill:#FAC775;opacity:.16}
+}
+</style>
+
+<line class="grid" x1="212.5" y1="40" x2="212.5" y2="320"/>
+<line class="grid" x1="355" y1="40" x2="355" y2="320"/>
+<line class="grid" x1="497.5" y1="40" x2="497.5" y2="320"/>
+
+<path class="solar" d="M212.5 186 L260 174 L307.5 214 L355 250 L378.75 264 L426.25 236 L473.75 166 L497.5 124 L497.5 96 L473.75 91 L426.25 82 L378.75 82 L355 82 L307.5 95 L260 130 L212.5 180 Z"/>
+
+<polyline class="gross" points="70,166 141,194 212.5,180 283.75,110 355,82 426.25,82 497.5,96 545,54 592.5,96 640,152"/>
+<polyline class="resid" points="70,166 141,194 212.5,186 260,174 307.5,214 355,250 378.75,264 426.25,236 473.75,166 497.5,124 521.25,82 545,54 592.5,96 640,152"/>
+
+<line class="axis" x1="70" y1="320" x2="640" y2="320"/>
+<line class="axis" x1="70" y1="40" x2="70" y2="320"/>
+
+<text class="ts" x="70" y="338" text-anchor="middle">0</text>
+<text class="ts" x="212.5" y="338" text-anchor="middle">6</text>
+<text class="ts" x="355" y="338" text-anchor="middle">12</text>
+<text class="ts" x="497.5" y="338" text-anchor="middle">18</text>
+<text class="ts" x="640" y="338" text-anchor="middle">24</text>
+<text class="ts" x="46" y="184" text-anchor="middle">carico</text>
+
+<text class="th" x="340" y="298" text-anchor="middle">surplus solare — caricare</text>
+<text class="th" x="550" y="298" text-anchor="middle">picco serale — scaricare</text>
+
+<line class="gross" x1="70" y1="365" x2="100" y2="365"/>
+<text class="ts" x="108" y="369">domanda totale</text>
+<line class="resid" x1="250" y1="365" x2="280" y2="365"/>
+<text class="ts" x="288" y="369">carico residuo, al netto del fotovoltaico</text>
+</svg>

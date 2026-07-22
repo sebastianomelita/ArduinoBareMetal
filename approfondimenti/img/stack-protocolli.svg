@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="418" viewBox="0 0 680 418" role="img" aria-labelledby="t2 d2">
+<title id="t2">Lo stack di comunicazione della ricarica elettrica</title>
+<desc id="d2">Catena a quattro livelli: veicolo, colonnina, backend dell'operatore e rete elettrica, collegati rispettivamente da ISO 15118 sul cavo, da OCPP verso il backend e dalle API di aggregazione verso il mercato.</desc>
+<style>
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif}
+.ts{font-size:12px;fill:#73726c}
+.th{font-size:14px;font-weight:500;fill:#3d3d3a}
+.f-gray{fill:#F1EFE8;stroke:#5F5E5A;stroke-width:.5}
+.f-coral{fill:#FAECE7;stroke:#993C1D;stroke-width:.5}
+.tt-gray{font-size:14px;font-weight:500;fill:#444441}
+.st-gray{font-size:12px;fill:#5F5E5A}
+.tt-coral{font-size:14px;font-weight:500;fill:#712B13}
+.st-coral{font-size:12px;fill:#993C1D}
+.arr{stroke:#73726c;stroke-width:1.5;fill:none}
+@media (prefers-color-scheme:dark){
+.ts{fill:#9c9a92}.th{fill:#c2c0b6}
+.f-gray{fill:#444441;stroke:#B4B2A9}
+.f-coral{fill:#712B13;stroke:#F0997B}
+.tt-gray{fill:#D3D1C7}.st-gray{fill:#B4B2A9}
+.tt-coral{fill:#F5C4B3}.st-coral{fill:#F0997B}
+.arr{stroke:#9c9a92}
+}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<rect class="f-gray" x="180" y="30" width="200" height="56" rx="8"/>
+<text class="tt-gray" x="280" y="55" text-anchor="middle">Veicolo</text>
+<text class="st-gray" x="280" y="73" text-anchor="middle">EVCC</text>
+
+<line class="arr" x1="280" y1="90" x2="280" y2="130" marker-end="url(#a)" marker-start="url(#a)"/>
+<text class="ts" x="400" y="105">ISO 15118</text>
+<text class="ts" x="400" y="123">sul cavo, via powerline</text>
+
+<rect class="f-coral" x="180" y="134" width="200" height="56" rx="8"/>
+<text class="tt-coral" x="280" y="159" text-anchor="middle">Colonnina</text>
+<text class="st-coral" x="280" y="177" text-anchor="middle">SECC + controller</text>
+
+<line class="arr" x1="280" y1="194" x2="280" y2="234" marker-end="url(#a)" marker-start="url(#a)"/>
+<text class="ts" x="400" y="209">OCPP</text>
+<text class="ts" x="400" y="227">rete cellulare o VPN</text>
+
+<rect class="f-gray" x="180" y="238" width="200" height="56" rx="8"/>
+<text class="tt-gray" x="280" y="263" text-anchor="middle">Backend operatore</text>
+<text class="st-gray" x="280" y="281" text-anchor="middle">CSMS</text>
+
+<line class="arr" x1="280" y1="298" x2="280" y2="338" marker-end="url(#a)" marker-start="url(#a)"/>
+<text class="ts" x="400" y="313">OCPI e API di mercato</text>
+<text class="ts" x="400" y="331">UVAM, mercato MSD</text>
+
+<rect class="f-gray" x="180" y="342" width="200" height="56" rx="8"/>
+<text class="tt-gray" x="280" y="367" text-anchor="middle">Rete elettrica</text>
+<text class="st-gray" x="280" y="385" text-anchor="middle">Terna, distributore</text>
+</svg>

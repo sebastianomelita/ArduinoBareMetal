@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="490" viewBox="0 0 680 490" role="img" aria-labelledby="t3 d3">
+<title id="t3">Gli attori dell'ecosistema di ricarica e del V2G</title>
+<desc id="d3">Tre domini. Sul posto: automobilista, veicolo e colonnina. Servizi e identità: operatore delle colonnine, fornitore del servizio di mobilità e autorità di certificazione. Sistema elettrico: aggregatore, gestore della distribuzione e gestore della trasmissione.</desc>
+<style>
+text{font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",sans-serif}
+.ts{font-size:12px;fill:#73726c}
+.th{font-size:14px;font-weight:500;fill:#3d3d3a}
+.dom{fill:#faf9f5;stroke:#b4b2a9;stroke-width:.5}
+.f-coral{fill:#FAECE7;stroke:#993C1D;stroke-width:.5}
+.f-purple{fill:#EEEDFE;stroke:#534AB7;stroke-width:.5}
+.f-teal{fill:#E1F5EE;stroke:#0F6E56;stroke-width:.5}
+.tt-coral{font-size:14px;font-weight:500;fill:#712B13}
+.st-coral{font-size:12px;fill:#993C1D}
+.tt-purple{font-size:14px;font-weight:500;fill:#3C3489}
+.st-purple{font-size:12px;fill:#534AB7}
+.tt-teal{font-size:14px;font-weight:500;fill:#085041}
+.st-teal{font-size:12px;fill:#0F6E56}
+.arr{stroke:#73726c;stroke-width:1.5;fill:none}
+@media (prefers-color-scheme:dark){
+.ts{fill:#9c9a92}.th{fill:#c2c0b6}
+.dom{fill:#2b2a27;stroke:#5f5e5a}
+.f-coral{fill:#712B13;stroke:#F0997B}
+.f-purple{fill:#3C3489;stroke:#AFA9EC}
+.f-teal{fill:#085041;stroke:#5DCAA5}
+.tt-coral{fill:#F5C4B3}.st-coral{fill:#F0997B}
+.tt-purple{fill:#CECBF6}.st-purple{fill:#AFA9EC}
+.tt-teal{fill:#9FE1CB}.st-teal{fill:#5DCAA5}
+.arr{stroke:#9c9a92}
+}
+</style>
+<defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+
+<rect class="dom" x="40" y="30" width="600" height="120" rx="16"/>
+<text class="th" x="62" y="59">Sul posto</text>
+<rect class="f-coral" x="60" y="70" width="170" height="56" rx="8"/>
+<text class="tt-coral" x="145" y="95" text-anchor="middle">Automobilista</text>
+<text class="st-coral" x="145" y="113" text-anchor="middle">ha il contratto</text>
+<rect class="f-coral" x="255" y="70" width="170" height="56" rx="8"/>
+<text class="tt-coral" x="340" y="95" text-anchor="middle">Veicolo</text>
+<text class="st-coral" x="340" y="113" text-anchor="middle">EVCC, batteria</text>
+<rect class="f-coral" x="450" y="70" width="170" height="56" rx="8"/>
+<text class="tt-coral" x="535" y="95" text-anchor="middle">Colonnina</text>
+<text class="st-coral" x="535" y="113" text-anchor="middle">SECC, hardware</text>
+
+<line class="arr" x1="300" y1="150" x2="300" y2="190" marker-end="url(#a)" marker-start="url(#a)"/>
+<text class="ts" x="316" y="174">OCPP</text>
+
+<rect class="dom" x="40" y="190" width="600" height="120" rx="16"/>
+<text class="th" x="62" y="219">Servizi e identità</text>
+<rect class="f-purple" x="60" y="230" width="170" height="56" rx="8"/>
+<text class="tt-purple" x="145" y="255" text-anchor="middle">CPO</text>
+<text class="st-purple" x="145" y="273" text-anchor="middle">opera le colonnine</text>
+<rect class="f-purple" x="255" y="230" width="170" height="56" rx="8"/>
+<text class="tt-purple" x="340" y="255" text-anchor="middle">eMSP</text>
+<text class="st-purple" x="340" y="273" text-anchor="middle">fattura all'utente</text>
+<rect class="f-purple" x="450" y="230" width="170" height="56" rx="8"/>
+<text class="tt-purple" x="535" y="255" text-anchor="middle">V2G Root CA</text>
+<text class="st-purple" x="535" y="273" text-anchor="middle">radice della fiducia</text>
+
+<line class="arr" x1="300" y1="310" x2="300" y2="350" marker-end="url(#a)" marker-start="url(#a)"/>
+<text class="ts" x="316" y="334">segnali di mercato</text>
+
+<rect class="dom" x="40" y="350" width="600" height="120" rx="16"/>
+<text class="th" x="62" y="379">Sistema elettrico</text>
+<rect class="f-teal" x="60" y="390" width="170" height="56" rx="8"/>
+<text class="tt-teal" x="145" y="415" text-anchor="middle">Aggregatore</text>
+<text class="st-teal" x="145" y="433" text-anchor="middle">raggruppa in UVAM</text>
+<rect class="f-teal" x="255" y="390" width="170" height="56" rx="8"/>
+<text class="tt-teal" x="340" y="415" text-anchor="middle">DSO</text>
+<text class="st-teal" x="340" y="433" text-anchor="middle">rete locale</text>
+<rect class="f-teal" x="450" y="390" width="170" height="56" rx="8"/>
+<text class="tt-teal" x="535" y="415" text-anchor="middle">Terna (TSO)</text>
+<text class="st-teal" x="535" y="433" text-anchor="middle">bilanciamento, MSD</text>
+</svg>
