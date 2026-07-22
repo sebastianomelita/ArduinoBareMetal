@@ -37,7 +37,7 @@ In una rete con molto solare:
 - **Tramonto** — il fotovoltaico va a zero nell'arco di un paio d'ore, proprio mentre i consumi domestici salgono. Il carico residuo risale con una pendenza ripidissima.
 
 <figure>
-<img src="/img/curva-anatra.svg" alt="Confronto fra domanda elettrica totale e carico residuo al netto del fotovoltaico nell'arco di una giornata: il carico residuo crolla a mezzogiorno e risale ripidamente fra le 17 e le 20." width="680">
+<img src="img/curva-anatra.svg" alt="Confronto fra domanda elettrica totale e carico residuo al netto del fotovoltaico nell'arco di una giornata: il carico residuo crolla a mezzogiorno e risale ripidamente fra le 17 e le 20." width="680">
 <figcaption><em>Fig. 1 — La curva dell'anatra. L'area ombreggiata è il contributo del fotovoltaico. Schema qualitativo, non dati reali.</em></figcaption>
 </figure>
 
@@ -110,7 +110,7 @@ Una valutazione onesta del V2G dovrebbe sempre partire dal confronto con queste 
 L'ecosistema si articola su tre domini.
 
 <figure>
-<img src="/img/attori-ecosistema.svg" alt="Tre domini con i rispettivi attori: sul posto automobilista, veicolo e colonnina; servizi e identità con CPO, eMSP e autorità di certificazione; sistema elettrico con aggregatore, DSO e Terna." width="680">
+<img src="img/attori-ecosistema.svg" alt="Tre domini con i rispettivi attori: sul posto automobilista, veicolo e colonnina; servizi e identità con CPO, eMSP e autorità di certificazione; sistema elettrico con aggregatore, DSO e Terna." width="680">
 <figcaption><em>Fig. 2 — Gli attori dell'ecosistema, raggruppati per dominio.</em></figcaption>
 </figure>
 
@@ -142,7 +142,7 @@ L'aggregatore è l'attore che il V2G introduce ex novo rispetto alla ricarica or
 Tre protocolli coprono tre tratti distinti della catena. Non sono alternativi: sono complementari e mutuamente dipendenti.
 
 <figure>
-<img src="/img/stack-protocolli.svg" alt="Catena verticale a quattro livelli: veicolo, colonnina, backend dell'operatore e rete elettrica, collegati da ISO 15118, OCPP e API di mercato." width="680">
+<img src="img/stack-protocolli.svg" alt="Catena verticale a quattro livelli: veicolo, colonnina, backend dell'operatore e rete elettrica, collegati da ISO 15118, OCPP e API di mercato." width="680">
 <figcaption><em>Fig. 3 — I tre tratti della catena e i protocolli che li governano.</em></figcaption>
 </figure>
 
@@ -167,7 +167,7 @@ Lo stesso vale per la schedulazione: l'auto dichiara i propri bisogni energetici
 Sequenza semplificata di una sessione con Plug & Charge e scarica verso la rete. Una sessione reale scambia parecchi più messaggi, in particolare nell'handshake TLS e nel loop di erogazione.
 
 <figure>
-<img src="/img/sequenza-sessione-v2g.svg" alt="Diagramma di sequenza con quattro linee di vita e undici messaggi numerati, che alternano il canale ISO 15118 sul cavo, il canale OCPP verso il backend e il canale di mercato." width="680">
+<img src="img/sequenza-sessione-v2g.svg" alt="Diagramma di sequenza con quattro linee di vita e undici messaggi numerati, che alternano il canale ISO 15118 sul cavo, il canale OCPP verso il backend e il canale di mercato." width="680">
 <figcaption><em>Fig. 4 — Diagramma di sequenza della sessione. Si noti l'alternanza fra i tre canali: nessuna decisione rilevante si risolve su un canale solo.</em></figcaption>
 </figure>
 
@@ -210,7 +210,7 @@ Sequenza semplificata di una sessione con Plug & Charge e scarica verso la rete.
 Questa sezione è la chiave di lettura di tutta la Parte III.
 
 <figure>
-<img src="/img/collaborazione-osi.svg" alt="Diagramma di collaborazione UML: quattro nodi collegati da tre link, con tredici messaggi numerati annotati con il rispettivo livello OSI e la soglia oltre la quale il cavo diventa una rete IP." width="680">
+<img src="img/collaborazione-osi.svg" alt="Diagramma di collaborazione UML: quattro nodi collegati da tre link, con tredici messaggi numerati annotati con il rispettivo livello OSI e la soglia oltre la quale il cavo diventa una rete IP." width="680">
 <figcaption><em>Fig. 5 — Diagramma di collaborazione. La stessa sessione vista come topologia anziché come sequenza temporale, con il livello OSI di ciascun messaggio e la soglia in cui nasce IP.</em></figcaption>
 </figure>
 
