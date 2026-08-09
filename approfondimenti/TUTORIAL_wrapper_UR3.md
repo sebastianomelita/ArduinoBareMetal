@@ -28,6 +28,28 @@ Questo wrapper **non** è un gemello digitale fedele: è uno strumento didattico
 
 ## 3. Struttura del progetto
 
+### File da scaricare
+
+Il wrapper (2 file): [ur3_wrapper.py](script/ur3_wrapper.py) · [gripper.py](script/gripper.py)
+Esempio: [pick_place.py](script/pick_place.py)
+
+> I link puntano alla cartella `script/` accanto a questo documento: perché funzionino, tieni `script/` (e `img/`) nella stessa posizione del file `.md`.
+
+### Come impacchettarli (questo tutorial)
+
+```
+TUTORIAL_wrapper_UR3.md
+├── script/            # i file da scaricare
+│   ├── ur3_wrapper.py
+│   ├── gripper.py
+│   └── pick_place.py
+└── img/               # i diagrammi del tutorial
+```
+
+### Come vanno messi in Webots (runtime)
+
+In Webots i tre `.py` devono stare **insieme** nella stessa cartella del controller (altrimenti `from gripper import Gripper` non trova il modulo). Aggiungi lì anche la URDF per i MoveL:
+
 ```
 controllers/mio_controller/
 ├── ur3_wrapper.py     # il wrapper principale (classe UR3)
@@ -36,7 +58,7 @@ controllers/mio_controller/
 └── ur3e.urdf          # (per i MoveL) URDF dell'UR3e, per l'IK
 ```
 
-In Webots ogni controller vive in una cartella dentro `controllers/`. Il file con il `__main__` che vuoi eseguire va assegnato al robot nel campo `controller`.
+Ogni controller vive in una cartella dentro `controllers/`. Il file con il `__main__` che vuoi eseguire va assegnato al robot nel campo `controller`.
 
 ---
 
