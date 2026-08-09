@@ -276,14 +276,14 @@ La presa in modalità `connector` funziona con **due** Connector che si riconosc
 
 ### 10.1 Dove metterli nell'albero
 
-<img src="img/scene_tree_connector.svg" alt="Albero della scena: dove aggiungere i Connector" width="720">
+<img src="../img/scene_tree_connector.svg" alt="Albero della scena: dove aggiungere i Connector" width="720">
 
 1. **Lato robot** — seleziona il campo `toolSlot` del braccio, aggiungi un nodo **Connector** e imposta: `name "connector"`, `type "active"`, `model "grip"`, `isLocked FALSE`. Posizionalo sulla punta con una piccola `translation`, asse +Z verso l'oggetto.
 2. **Lato oggetto** — l'oggetto da prendere deve essere un **Solid con un nodo Physics**. Aggiungi un Connector figlio con `type "passive"` e lo stesso `model "grip"`, sulla superficie di presa, asse +Z verso l'esterno.
 
 ### 10.2 Come avviene l'aggancio
 
-<img src="img/connector_alignment.svg" alt="Allineamento e tolleranze dei due Connector" width="720">
+<img src="../img/connector_alignment.svg" alt="Allineamento e tolleranze dei due Connector" width="720">
 
 Perché `grip(close=True)` → `lock()` afferri davvero, al momento della presa i due Connector devono avere lo **stesso `model`**, essere **più vicini di `distanceTolerance`** e **allineati entro `axisTolerance`**. È per questo che i waypoint `approccioPick`/`pick` devono portare la punta proprio sopra e affacciata all'oggetto.
 
