@@ -1,0 +1,37 @@
+<svg viewBox="0 0 760 470" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect x="0" y="0" width="760" height="470" fill="#f7f8fa"/>
+  <text x="24" y="34" font-size="20" font-weight="700" fill="#1f2933">Albero della scena — dove aggiungere i Connector</text>
+  <text x="24" y="56" font-size="13" fill="#66707a">(diagramma schematico — sostituibile con uno screenshot reale di Webots)</text>
+
+  <!-- LATO ROBOT -->
+  <rect x="40" y="86" width="180" height="40" rx="6" fill="#dbe4ff" stroke="#4263eb" stroke-width="1.5"/>
+  <text x="130" y="111" font-size="15" font-weight="600" fill="#1f2933" text-anchor="middle">UR3e (Robot)</text>
+
+  <line x1="70" y1="126" x2="70" y2="166" stroke="#98a2b3" stroke-width="1.5"/>
+  <rect x="70" y="166" width="150" height="36" rx="6" fill="#eef2ff" stroke="#748ffc" stroke-width="1.5"/>
+  <text x="145" y="189" font-size="14" fill="#1f2933" text-anchor="middle">toolSlot</text>
+
+  <line x1="100" y1="202" x2="100" y2="242" stroke="#98a2b3" stroke-width="1.5"/>
+  <rect x="100" y="242" width="170" height="52" rx="6" fill="#d3f9d8" stroke="#2f9e44" stroke-width="1.8"/>
+  <text x="185" y="265" font-size="14" font-weight="700" fill="#1f2933" text-anchor="middle">Connector</text>
+  <text x="185" y="283" font-size="12" fill="#2b8a3e" text-anchor="middle">lato robot</text>
+
+  <rect x="300" y="238" width="420" height="60" rx="6" fill="#ffffff" stroke="#ced4da" stroke-width="1.2"/>
+  <text x="316" y="260" font-size="12.5" fill="#1f2933">name  "connector"   ·   type  "active"</text>
+  <text x="316" y="280" font-size="12.5" fill="#1f2933">model  "grip"   ·   isLocked  FALSE</text>
+  <line x1="270" y1="268" x2="300" y2="268" stroke="#adb5bd" stroke-width="1.2" stroke-dasharray="3 3"/>
+
+  <!-- LATO OGGETTO -->
+  <rect x="40" y="352" width="230" height="40" rx="6" fill="#ffe3e3" stroke="#e03131" stroke-width="1.5"/>
+  <text x="155" y="377" font-size="15" font-weight="600" fill="#1f2933" text-anchor="middle">Can (Solid + Physics)</text>
+
+  <line x1="70" y1="392" x2="70" y2="424" stroke="#98a2b3" stroke-width="1.5"/>
+  <rect x="70" y="410" width="200" height="44" rx="6" fill="#d3f9d8" stroke="#2f9e44" stroke-width="1.8"/>
+  <text x="170" y="432" font-size="14" font-weight="700" fill="#1f2933" text-anchor="middle">Connector — lato oggetto</text>
+  <text x="170" y="448" font-size="11.5" fill="#2b8a3e" text-anchor="middle">type "passive"</text>
+
+  <rect x="300" y="404" width="420" height="56" rx="6" fill="#ffffff" stroke="#ced4da" stroke-width="1.2"/>
+  <text x="316" y="426" font-size="12.5" fill="#1f2933">type  "passive"   ·   model  "grip"  (uguale al lato robot)</text>
+  <text x="316" y="445" font-size="12.5" fill="#66707a">l'oggetto deve avere un nodo Physics per essere afferrabile</text>
+  <line x1="270" y1="432" x2="300" y2="432" stroke="#adb5bd" stroke-width="1.2" stroke-dasharray="3 3"/>
+</svg>
