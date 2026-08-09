@@ -1,0 +1,45 @@
+<svg viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial, sans-serif">
+  <rect x="0" y="0" width="760" height="380" fill="#f7f8fa"/>
+  <text x="24" y="34" font-size="20" font-weight="700" fill="#1f2933">Come si agganciano i due Connector</text>
+  <text x="24" y="56" font-size="13" fill="#66707a">(diagramma schematico — la presa scatta al lock() se sono vicini e allineati sull'asse +Z)</text>
+
+  <!-- Robot flange (left) -->
+  <rect x="60" y="150" width="90" height="90" rx="8" fill="#dbe4ff" stroke="#4263eb" stroke-width="1.8"/>
+  <text x="105" y="135" font-size="13" fill="#1f2933" text-anchor="middle">flangia / toolSlot</text>
+  <rect x="150" y="178" width="34" height="34" rx="4" fill="#2f9e44"/>
+  <text x="120" y="265" font-size="12.5" fill="#2b8a3e" text-anchor="middle">Connector "active"</text>
+
+  <!-- +Z axis active -->
+  <line x1="184" y1="195" x2="360" y2="195" stroke="#1f2933" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="270" y="186" font-size="12" fill="#1f2933" text-anchor="middle">asse +Z (direzione di presa)</text>
+
+  <!-- tolerance cone -->
+  <path d="M184,195 L330,165 L330,225 Z" fill="#ffec99" fill-opacity="0.5" stroke="#f59f00" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="300" y="150" font-size="11.5" fill="#b8860b" text-anchor="middle">axisTolerance</text>
+
+  <!-- gap -->
+  <line x1="184" y1="255" x2="470" y2="255" stroke="#adb5bd" stroke-width="1"/>
+  <line x1="184" y1="250" x2="184" y2="260" stroke="#adb5bd" stroke-width="1"/>
+  <line x1="470" y1="250" x2="470" y2="260" stroke="#adb5bd" stroke-width="1"/>
+  <text x="327" y="275" font-size="12" fill="#66707a" text-anchor="middle">distanceTolerance</text>
+
+  <!-- Object (right) -->
+  <rect x="470" y="150" width="34" height="34" rx="4" transform="translate(0,11)" fill="#2f9e44"/>
+  <rect x="504" y="150" width="90" height="90" rx="8" fill="#ffe3e3" stroke="#e03131" stroke-width="1.8"/>
+  <text x="549" y="135" font-size="13" fill="#1f2933" text-anchor="middle">oggetto (Can)</text>
+  <text x="560" y="265" font-size="12.5" fill="#2b8a3e" text-anchor="middle">Connector "passive"</text>
+
+  <!-- +Z axis passive -->
+  <line x1="470" y1="195" x2="360" y2="195" stroke="#1f2933" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- condition box -->
+  <rect x="60" y="300" width="640" height="56" rx="6" fill="#ffffff" stroke="#ced4da" stroke-width="1.2"/>
+  <text x="76" y="322" font-size="12.5" fill="#1f2933">Perché lock() agganci:  stesso  model  ·  distanza &lt; distanceTolerance  ·  assi allineati entro axisTolerance</text>
+  <text x="76" y="342" font-size="12.5" fill="#66707a">Consiglio: parti con tolleranze GENEROSE, poi stringile per più realismo.</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#1f2933"/>
+    </marker>
+  </defs>
+</svg>
