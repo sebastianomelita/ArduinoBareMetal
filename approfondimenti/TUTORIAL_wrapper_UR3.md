@@ -55,6 +55,7 @@ In Webots ogni controller vive in una cartella dentro `controllers/`. Il file co
    ```
    e procurati la **URDF dell'UR3e** (dai pacchetti ROS di Universal Robots, oppure esportandola dal PROTO). Imposta `URDF_PATH` in cima a `ur3_wrapper.py`.
    > Se ti bastano giunti + I/O, salta questo passo e avvia con `UR3(use_ik=False)`.
+   > **IK analitica (opzionale, per dopo):** il wrapper include già la classe `IKBackendFast` (ur_ikfast), commentata. Non serve subito — ikpy basta per imparare. Quando la vorrai, installa `ur_ikfast` e nel costruttore cambia `self.ik = IKBackend()` in `self.ik = IKBackendFast()`: nient'altro cambia.
 3. **Parti dalla sample world** dei Universal Robots di Webots (ha già UR3e, nastro, oggetti e pinza Robotiq): è il punto di partenza più rapido.
 4. **Verifica i nomi dei dispositivi** con *View PROTO Source* sulla tua scena e aggiornali nei blocchi CONFIG in cima ai file:
    - motori dei giunti (`JOINT_NAMES`) e relativi sensori (`<giunto>_sensor`);
@@ -72,7 +73,8 @@ In Webots ogni controller vive in una cartella dentro `controllers/`. Il file co
 | `movej(q, a, v)`               | `ur.movej(q, a=1.4, v=1.05)`             | q = 6 angoli giunto [rad] |
 | `movej(p[...])` (via posa)     | `ur.movej(ur.get_inverse_kin(pose))`     | come su URScript |
 | `movel(pose, a, v)`            | `ur.movel(pose, a=1.2, v=0.25)`          | richiede IK (ikpy) |
-| `movec` / blend `r`            | — (non supportato fedelmente)            | vedi Limiti |
+| `movej/movel` con blend `r`    | `ur.movej(q, r=0.02)` / `ur.movel(pose, r=0.02)` | **effetto visivo, non fedele** (vedi Limiti) |
+| `movec`                        | — (non supportato)                       | usa più `movel` |
 | `speedj(qd, a, t)`             | `ur.speedj(qd, a, t)`                    | velocità giunti |
 | `stopj(a)`                     | `ur.stopj(a)`                            | |
 | `get_actual_joint_positions()` | `ur.get_actual_joint_positions()`        | |
@@ -92,7 +94,7 @@ Una posa è `[x, y, z, rx, ry, rz]`: posizione in **metri**, orientazione come *
 ur.grip(close=True)    # chiudi / afferra
 ur.grip(close=False)   # apri / rilascia
 ```
-La modalità (`connector` o `robotiq`) si sceglie con `GRIPPER_MODE` in `gripper.py`.
+La pinza è **già integrata** in `ur3_wrapper.py` (importa `gripper.py` da sola): non serve alcuna modifica manuale. Ti basta scegliere la modalità (`connector` o `robotiq`) con `GRIPPER_MODE` in `gripper.py`. Il pin 0 di `set_digital_out` è collegato alla pinza, quindi anche `ur.set_digital_out(0, True/False)` la comanda.
 
 ### Glossario PolyScope
 
@@ -116,7 +118,7 @@ Se parti dall'albero del teach pendant (PolyScope) invece che da URScript testua
 Il wrapper è fedele alla **logica**, non alla **fisica**. In particolare:
 
 - **Timing e profili di velocità approssimati**: le durate reali dei movimenti non coincidono con quelle del robot.
-- **Raggio di blend (`r`) non implementato**: Webots non fonde i segmenti; i raccordi tra movimenti sono netti.
+- **Raggio di blend (`r`) solo come effetto visivo**: il parametro `r` su `movej`/`movel` fa ripartire il comando successivo appena si è entro `r` dal target, così il moto non si ferma sul waypoint e l'angolo appare "tagliato". **Non riproduce la geometria né i tempi del blend reale** — è un aiuto visivo per la didattica. Per il blend fedele usa URSim. Default `r=0.0` = comportamento esatto.
 - **`movel` insegue la retta a waypoint**: la traccia è corretta, ma la dinamica lungo il percorso è semplificata.
 - **IK numerica (ikpy)**: dà una sola soluzione; la scelta di configurazione può differire da quella del controller UR (per avvicinarti usa l'IK analitica `ur_ikfast`).
 - **Geometria UR3 vs UR3e**: il modello Webots è un **UR3e**; se il tuo braccio reale è un UR3 "liscio", le pose cartesiane hanno un piccolo scostamento. Per farle coincidere, usa la URDF del *tuo* UR3.
@@ -276,14 +278,14 @@ La presa in modalità `connector` funziona con **due** Connector che si riconosc
 
 ### 10.1 Dove metterli nell'albero
 
-<img src="../img/scene_tree_connector.svg" alt="Albero della scena: dove aggiungere i Connector" width="720">
+<img src="img/scene_tree_connector.svg" alt="Albero della scena: dove aggiungere i Connector" width="720">
 
 1. **Lato robot** — seleziona il campo `toolSlot` del braccio, aggiungi un nodo **Connector** e imposta: `name "connector"`, `type "active"`, `model "grip"`, `isLocked FALSE`. Posizionalo sulla punta con una piccola `translation`, asse +Z verso l'oggetto.
 2. **Lato oggetto** — l'oggetto da prendere deve essere un **Solid con un nodo Physics**. Aggiungi un Connector figlio con `type "passive"` e lo stesso `model "grip"`, sulla superficie di presa, asse +Z verso l'esterno.
 
 ### 10.2 Come avviene l'aggancio
 
-<img src="../img/connector_alignment.svg" alt="Allineamento e tolleranze dei due Connector" width="720">
+<img src="img/connector_alignment.svg" alt="Allineamento e tolleranze dei due Connector" width="720">
 
 Perché `grip(close=True)` → `lock()` afferri davvero, al momento della presa i due Connector devono avere lo **stesso `model`**, essere **più vicini di `distanceTolerance`** e **allineati entro `axisTolerance`**. È per questo che i waypoint `approccioPick`/`pick` devono portare la punta proprio sopra e affacciata all'oggetto.
 
