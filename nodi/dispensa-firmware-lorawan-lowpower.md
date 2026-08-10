@@ -18,7 +18,7 @@ Analisi del firmware `heltec_v4_scd41_gps_lorawan.ino`, un end-device LoRaWAN au
 12. [Protezione batteria da under-discharge](#protezione-batteria-da-under-discharge)
 13. [Downlink handler e comandi remoti](#downlink-handler-e-comandi-remoti)
 14. [Modalità debug e produzione](#modalit-debug-e-produzione)
-15. [Diagnostica e osservabilità](#diagnostica-e-osservabilit)
+15. [Diagnostica e osservabilità](#diagnostica-e-osservabilità)
 
 ---
 
