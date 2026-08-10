@@ -196,11 +196,15 @@ Quando l'utente accoda un downlink, deve specificare il FPort. Ci sono tre modi:
 - Via **MQTT**, pubblicando su `application/<id>/device/<eui>/command/down` con `{"fPort": N, "object": {...}}`
 - Via **ChirpStack UI**: tab "Queue" del device, campo "FPort"
 
-**2. Codec — può sovrascriverlo**
+**2. Codec — può sovrascriverlo (ma noi non lo facciamo)**
 
-Il codec `encodeDownlink` **può ritornare un nuovo `fPort`** nel valore di ritorno, sovrascrivendo quello ricevuto. Questa è una feature meno conosciuta ma potente: permette al codec di **inferire il FPort dal contenuto del messaggio**, semplificando l'uso da parte del client MQTT.
+Il codec `encodeDownlink` in ChirpStack **può** ritornare un `fPort` nel valore di ritorno, sovrascrivendo quello ricevuto. Sarebbe possibile inferire il FPort dal contenuto del comando (es. `reboot` → FPort 10 automaticamente).
 
-Nel nostro codec, per esempio, chi manda `{"cmd":"reboot"}` non deve preoccuparsi del FPort: il codec riconosce il comando e restituisce automaticamente `{fPort: 10, bytes: [0x01]}`.
+Nel nostro codec abbiamo scelto di **non farlo**: il client MQTT deve specificare il FPort corretto per la categoria del comando, e il codec si limita a validare la coerenza. Il motivo di questa scelta:
+
+- **Il messaggio MQTT è auto-descrittivo**: guardando il `fPort` nel JSON capisci subito la categoria del comando
+- **Se un giorno vuoi bypassare il codec** (per esempio inviando `data` binaria pre-encoded invece di `object`), il FPort giusto è già lì
+- **Il debug è più semplice**: se il messaggio arriva sul FPort sbagliato, sai dove guardare
 
 **3. Trasmissione radio**
 
@@ -534,7 +538,7 @@ Il pattern classico per prevenire questi problemi è a due livelli:
 1. **Protezione hardware** — una BMS (Battery Management System) o PCM (Protection Circuit Module) esterna che monitora la tensione della cella e **fisicamente scollega il carico** quando la tensione scende sotto la soglia. Reagisce in microsecondi, funziona anche se il firmware è morto.
 
 <p align="center">
-  <img src="img/bms_1s_5a.png" alt="BMS 1S 5A per 18650" width="300">
+  <img src="img/bms_1s_5a.jpg" alt="BMS 1S 5A per 18650" width="300">
 </p>
 
 *Figura 2: scheda BMS 1S 5A per celle 18650/14500/LiPo. I quattro pad principali sono B+ e B− (verso la cella), P+ e P− (verso il carico).*
@@ -645,38 +649,38 @@ A livello LoRaWAN, la distinzione è realizzata tramite due FPort dedicati:
 | Comandi ordinari | **10** | No (one-shot) |
 | Configurazione | **20** | Sì (salvata in NVS) |
 
-### Il codec inferisce automaticamente il FPort
+### Il codec valida la coerenza cmd/FPort
 
-L'aspetto interessante del nostro codec ChirpStack è che **decide autonomamente il FPort** in base al comando ricevuto, ignorando il FPort proposto dal client MQTT. Questo è possibile grazie al fatto che ChirpStack permette a `encodeDownlink()` di **sovrascrivere** il FPort nel valore di ritorno:
+Il codec ChirpStack riceve dal client MQTT sia il comando (dentro `object`) che il FPort su cui deve viaggiare. Non sovrascrive il FPort: si limita a:
+
+1. **Verificare che il comando esista**
+2. **Verificare che sia coerente con il FPort scelto** (es. `reboot` è valido su FPort 10, non su FPort 20)
+3. **Tradurlo in byte binari**
 
 ```javascript
 function encodeDownlink(input) {
     var cmd = String(input.data.cmd).toLowerCase();
+    var port = input.fPort;
 
-    // Comandi ordinari → FPort 10
-    if (cmd === "reboot")   return { bytes: [0x01], fPort: 10 };
-    if (cmd === "identify") return { bytes: [0x02], fPort: 10 };
-    // ...
+    if (port === 10) {
+        // Comandi di azione
+        if (cmd === "reboot")   return { bytes: [0x01] };
+        if (cmd === "identify") return { bytes: [0x02] };
+        // ...
+        return { errors: ["Comando FPort 10 sconosciuto: " + cmd] };
+    }
 
-    // Configurazione → FPort 20
-    if (cmd === "set_tx_interval") return { bytes: [0x11, input.data.value], fPort: 20 };
-    // ...
+    if (port === 20) {
+        // Configurazione persistente
+        if (cmd === "set_tx_interval") return { bytes: [0x11, input.data.value] };
+        // ...
+    }
 }
 ```
 
-**Vantaggio pratico**: chi pubblica il downlink non deve conoscere la mappatura comando→FPort. Può usare sempre lo stesso valore (per esempio `"fPort":1`) e il codec fa la magia:
+Chi pubblica il downlink deve conoscere la mappatura comando→FPort. Il vantaggio è che il messaggio MQTT è **auto-descrittivo**: guardando il `fPort` capisci subito la natura del comando, e se un domani vuoi inviare un downlink saltando il codec (con `data` pre-encoded invece di `object`), il FPort è già quello corretto.
 
-```bash
-# Il codec riconosce "reboot" e lo instrada al FPort 10
-mosquitto_pub -t "application/1/device/EUI/command/down" \
-  -m '{"fPort":1,"object":{"cmd":"reboot"}}'
-
-# Il codec riconosce "set_tx_interval" e lo instrada al FPort 20
-mosquitto_pub -t "application/1/device/EUI/command/down" \
-  -m '{"fPort":1,"object":{"cmd":"set_tx_interval","value":3}}'
-```
-
-Il device riceve sul FPort corretto perché è il codec a stabilirlo, non il client.
+Se sbagli e mandi `"cmd":"reboot"` con `"fPort":20`, il codec ti risponde con un errore esplicito che elenca i comandi validi per quel FPort.
 
 ### Il primo byte come identificatore di comando
 
@@ -686,14 +690,15 @@ Esempio dello scambio per cambiare TX interval:
 
 ```
 Utente pubblica:      MQTT su application/.../command/down
-                      {"fPort":1,"object":{"cmd":"set_tx_interval","value":3}}
+                      {"fPort":20, "object":{"cmd":"set_tx_interval","value":3}}
         │
         ▼
-Codec ChirpStack:     encodeDownlink({data:{cmd:"set_tx_interval",value:3}, fPort:1})
-                        → riconosce "set_tx_interval"
-                        → ritorna { bytes: [0x11, 0x03], fPort: 20 }
-        │                                              ↑
-        ▼                                              └─ codec sovrascrive il FPort
+Codec ChirpStack:     encodeDownlink({data:{cmd:"set_tx_interval",value:3}, fPort:20})
+                        → verifica cmd valido su FPort 20 ✓
+                        → valida value=3 in range 0-5 ✓
+                        → ritorna { bytes: [0x11, 0x03] }
+        │
+        ▼
 LoRaWAN downlink:     FPort=20, payload = [0x11, 0x03]
                                             │     └─ preset 3 = 5 minuti
                                             └─────── comando SET_TX_INTERVAL
@@ -785,48 +790,48 @@ Le variabili da adattare:
 - `<app-id>` — Application ID di ChirpStack (es. `1`, lo trovi nell'URL della UI)
 - `<devEUI>` — DevEUI del device in lowercase senza trattini (es. `26a160fffe6e86bc`)
 
-Ricorda: il valore di `fPort` che scrivi nel JSON MQTT **viene ignorato dal codec**, che sceglie autonomamente il FPort corretto in base al comando. Per convenzione usiamo sempre `"fPort":1`.
+**Il campo `fPort` nel JSON deve corrispondere alla natura del comando**: `10` per azioni ordinarie, `20` per configurazione. Il codec verifica la coerenza e rifiuta i comandi inviati sul FPort sbagliato. Questa scelta rende il messaggio MQTT auto-descrittivo: guardando il JSON capisci subito la categoria del comando senza dover decodificare i byte.
 
-**Reboot del device**:
+**Reboot del device** (azione, FPort 10):
 ```bash
 mosquitto_pub -h <IP-ChirpStack> \
   -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":1,"object":{"cmd":"reboot"}}'
+  -m '{"fPort":10,"object":{"cmd":"reboot"}}'
 ```
 
-**Identify** (LED lampeggia):
+**Identify** (azione, FPort 10):
 ```bash
 mosquitto_pub -h <IP-ChirpStack> \
   -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":1,"object":{"cmd":"identify"}}'
+  -m '{"fPort":10,"object":{"cmd":"identify"}}'
 ```
 
-**Forza uplink immediato**:
+**Forza uplink immediato** (azione, FPort 10):
 ```bash
 mosquitto_pub -h <IP-ChirpStack> \
   -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":1,"object":{"cmd":"force_tx_now"}}'
+  -m '{"fPort":10,"object":{"cmd":"force_tx_now"}}'
 ```
 
-**Cambia TX interval a 10 secondi** (per test veloci):
+**Cambia TX interval a 10 secondi** (configurazione, FPort 20):
 ```bash
 mosquitto_pub -h <IP-ChirpStack> \
   -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":1,"object":{"cmd":"set_tx_interval","value":0}}'
+  -m '{"fPort":20,"object":{"cmd":"set_tx_interval","value":0}}'
 ```
 
-**Riduci potenza TX a 2 dBm** (test di attenuazione):
+**Riduci potenza TX a 2 dBm** (configurazione, FPort 20):
 ```bash
 mosquitto_pub -h <IP-ChirpStack> \
   -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":1,"object":{"cmd":"set_tx_power","value":2}}'
+  -m '{"fPort":20,"object":{"cmd":"set_tx_power","value":2}}'
 ```
 
-**Soglie batteria personalizzate**:
+**Soglie batteria personalizzate** (configurazione, FPort 20):
 ```bash
 mosquitto_pub -h <IP-ChirpStack> \
   -t "application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":1,"object":{"cmd":"set_batt_thresholds","value":{"emergency_mv":3000,"recovery_mv":3200}}}'
+  -m '{"fPort":20,"object":{"cmd":"set_batt_thresholds","value":{"emergency_mv":3000,"recovery_mv":3200}}}'
 ```
 
 Nel repository c'è anche uno **script bash `test_downlinks.sh`** che avvolge tutti questi comandi in un'interfaccia sintetica:
@@ -848,10 +853,10 @@ BROKER_HOST=192.168.1.50 EDGE_ID=lab-01 ./test_downlinks.sh identify
 
 Ricapitolando il percorso di un comando dal momento in cui viene pubblicato a quando viene eseguito:
 
-1. **Utente pubblica** su MQTT un JSON su `application/<id>/device/<eui>/command/down` con `{"fPort":1, "object":{"cmd":..., "value":...}}`
+1. **Utente pubblica** su MQTT un JSON su `application/<id>/device/<eui>/command/down` con `{"fPort":10 o 20, "object":{"cmd":..., "value":...}}` — deve scegliere il FPort corretto per la categoria di comando
 2. **ChirpStack riceve** il messaggio e chiama `encodeDownlink()` del codec
-3. **Il codec riconosce** il comando dal campo `cmd` e restituisce `{bytes: [...], fPort: 10 o 20}`
-4. **ChirpStack accoda** il downlink sul FPort scelto dal codec
+3. **Il codec valida** che il comando sia coerente con il FPort e restituisce `{bytes: [...]}` (o un errore se la coppia cmd/FPort non è valida)
+4. **ChirpStack accoda** il downlink sul FPort ricevuto
 5. **Il device fa il prossimo uplink** (secondo il suo intervallo TX)
 6. **RadioLib apre le finestre RX** (1s e 2s dopo il TX)
 7. **ChirpStack invia il downlink** nella finestra RX appropriata
