@@ -538,7 +538,7 @@ Il pattern classico per prevenire questi problemi è a due livelli:
 1. **Protezione hardware** — una BMS (Battery Management System) o PCM (Protection Circuit Module) esterna che monitora la tensione della cella e **fisicamente scollega il carico** quando la tensione scende sotto la soglia. Reagisce in microsecondi, funziona anche se il firmware è morto.
 
 <p align="center">
-  <img src="img/bms_1s_5a.jpg" alt="BMS 1S 5A per 18650" width="300">
+  <img src="img/bms_1s_5a.png" alt="BMS 1S 5A per 18650" width="300">
 </p>
 
 *Figura 2: scheda BMS 1S 5A per celle 18650/14500/LiPo. I quattro pad principali sono B+ e B− (verso la cella), P+ e P− (verso il carico).*
