@@ -260,7 +260,7 @@ Il valore `9999` in HDOP è un marker convenzionale: la dashboard può riconosce
 RadioLib è la libreria che astrae il chip SX1262 sotto uno stack LoRaWAN. La versione 7.x ha un'API leggermente diversa dalla 6.x, e il codice segue esattamente il pattern degli esempi ufficiali `LoRaWAN_ABP.ino`. La sequenza:
 
 <p align="center">
-  <img src="img/lorawan_class_a.png" alt="LoRaWAN classe A - RX windows" width="600">
+  <img src="img/lorawan_class_a.png" alt="LoRaWAN classe A - RX windows" width="500">
 </p>
 
 *Figura 5: timing delle finestre RX in LoRaWAN classe A. Dopo ogni TX, il device apre due brevi finestre di ricezione (RX1 dopo 1 secondo, RX2 dopo 2 secondi) per ricevere eventuali downlink dal server. Al di fuori di queste finestre il device è in deep sleep e non può ricevere nulla.*
