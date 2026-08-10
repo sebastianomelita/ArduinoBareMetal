@@ -16,9 +16,10 @@ Analisi del firmware `heltec_v4_scd41_gps_lorawan.ino`, un end-device LoRaWAN au
 10. [Persistenza del frame counter](#persistenza-del-frame-counter)
 11. [Deep sleep e GPIO hold](#deep-sleep-e-gpio-hold)
 12. [Protezione batteria da under-discharge](#protezione-batteria-da-under-discharge)
-13. [Downlink handler e comandi remoti](#downlink-handler-e-comandi-remoti)
-14. [Modalità debug e produzione](#modalità-debug-e-produzione)
-15. [Diagnostica e osservabilità](#diagnostica-e-osservabilità)
+13. [Watchdog hardware](#watchdog-hardware)
+14. [Downlink handler e comandi remoti](#downlink-handler-e-comandi-remoti)
+15. [Modalità debug e produzione](#modalità-debug-e-produzione)
+16. [Diagnostica e osservabilità](#diagnostica-e-osservabilità)
 
 ---
 
@@ -538,7 +539,7 @@ Il pattern classico per prevenire questi problemi è a due livelli:
 1. **Protezione hardware** — una BMS (Battery Management System) o PCM (Protection Circuit Module) esterna che monitora la tensione della cella e **fisicamente scollega il carico** quando la tensione scende sotto la soglia. Reagisce in microsecondi, funziona anche se il firmware è morto.
 
 <p align="center">
-  <img src="img/bms_1s_5a.png" alt="BMS 1S 5A per 18650" width="300">
+  <img src="img/bms_1s_5a.jpg" alt="BMS 1S 5A per 18650" width="300">
 </p>
 
 *Figura 2: scheda BMS 1S 5A per celle 18650/14500/LiPo. I quattro pad principali sono B+ e B− (verso la cella), P+ e P− (verso il carico).*
@@ -622,6 +623,110 @@ La protezione software è ottima ma non è infallibile. Casi in cui fallisce:
 *Brown-out prima di poter salvare stato*. Se la batteria è così scarica che il chip fa reset prima di poter completare il codice di emergency sleep, si entra nel loop di boot infinito descritto sopra. La BMS interrompe il carico ben prima che si arrivi a questo punto.
 
 Per un uso didattico da laboratorio, la protezione software è più che sufficiente. Per un deployment reale in scatola sigillata, si aggiunge sempre la BMS hardware come cintura + bretelle.
+
+---
+
+## Watchdog hardware
+
+Un firmware embedded può bloccarsi in modi inaspettati anche quando è stato testato a fondo:
+
+- **Bug latenti in librerie terze** che si manifestano solo con particolari sequenze di dati
+- **Deadlock su bus condivisi** (per esempio se il SCD41 non risponde al comando I²C e la libreria aspetta all'infinito)
+- **Loop infiniti** in gestori di errore mal scritti
+- **Interferenze RF** che corrompono lo stato interno di un chip a partire dal SPI o UART
+
+Se il firmware si blocca, il device non entra in deep sleep, e le periferiche restano tutte accese assorbendo corrente in continuazione. Una batteria da 1500 mAh si scarica in **~15-40 ore** a seconda di quali periferiche sono rimaste attive. Nel caso peggiore, se il device è sigillato in un case in campo aperto, non hai modo di accorgertene se non quando smette di trasmettere.
+
+### Come funziona il watchdog dell'ESP32-S3
+
+L'ESP32-S3 ha un **hardware watchdog timer** integrato: un contatore che decrementa nel tempo. Se il firmware non lo resetta periodicamente, il contatore raggiunge zero e il chip **fa un reset hardware forzato**.
+
+L'analogia da cui viene il nome è quella di un cane da guardia legato in giardino: ogni tanto il padrone deve andare a spazzolarlo (pet the dog in inglese, letteralmente accarezzarlo) per confermare la propria presenza. Se il padrone non torna per troppo tempo, il cane si insospettisce e "abbaia" (nel nostro caso: fa reset del device). Nel gergo tecnico embedded, l'operazione di ripristinare il timer viene chiamata "**pettinare il cane**" (o *feed the dog*, *kick the watchdog*): si traduce concretamente in una singola scrittura in un registro del chip che azzera il contatore.
+
+Il ciclo di vita è:
+
+1. **All'inizio del setup** si arma il watchdog con un timeout (nel nostro caso 120 secondi)
+2. **Il task corrente** (in Arduino: `loopTask`) si iscrive al watchdog
+3. **In vari punti del ciclo** si chiama `esp_task_wdt_reset()` per confermare al watchdog che il firmware è vivo
+4. **Se il firmware si blocca** e non pettina il watchdog entro il timeout, il chip fa reset
+5. **Prima del deep sleep** si rimuove il task dal watchdog (altrimenti il sleep verrebbe interpretato come blocco)
+
+Il reset causato dal watchdog è visibile nel log di boot successivo tramite `esp_reset_reason()`, permettendo di rilevare che c'è stato un problema.
+
+### La scelta del timeout
+
+Il timeout va dimensionato sul massimo tempo che un ciclo normale può richiedere, con un margine di sicurezza.
+
+Nel nostro caso, la parte più lenta è il **cold start GPS**, che può arrivare a **90 secondi**. Aggiungendo tempo per SCD41, TX LoRa, finestre RX, il ciclo attivo massimo è circa **100-110 secondi**.
+
+**Scelta**: `WDT_TIMEOUT_S = 120`. Genereo abbastanza da non scattare in condizioni normali, ma abbastanza corto da recuperare rapidamente da un blocco reale.
+
+Timeout troppo lungo (per esempio 600 s) = il device può stare bloccato molto prima del reset, con consumo alto.
+
+Timeout troppo corto (per esempio 30 s) = il watchdog scatta durante un cold start GPS normale, causando reset spuri.
+
+### Dove pettinare il watchdog
+
+Il watchdog viene resettato in tre punti chiave del firmware:
+
+**1. Nel loop di attesa fix GPS**, ogni 5 secondi (nel log periodico):
+```cpp
+#if ENABLE_WATCHDOG
+    esp_task_wdt_reset();
+#endif
+```
+Necessario perché il cold start GPS può superare il timeout senza questa chiamata.
+
+**2. Subito dopo il TX LoRa**:
+```cpp
+    Serial.println("TX ok, nessun downlink");
+#if ENABLE_WATCHDOG
+    esp_task_wdt_reset();
+#endif
+```
+Marker "sono arrivato fuori dalla parte lenta del ciclo".
+
+**3. Prima del deep sleep** (in `enterDeepSleep`), rimozione del task:
+```cpp
+#if ENABLE_WATCHDOG
+    esp_task_wdt_delete(NULL);
+#endif
+```
+Il sleep interrompe l'esecuzione, quindi il task non pettinerà più il watchdog. Se non lo togliessimo, il watchdog resetterebbe il device durante il sleep. Al prossimo wake, `setup()` lo riarma da capo.
+
+### Come attivare/disattivare
+
+Il flag `#define ENABLE_WATCHDOG` controlla tutta la logica:
+
+```cpp
+#define ENABLE_WATCHDOG    1   // 0 durante debug con breakpoint
+#define WDT_TIMEOUT_S    120
+```
+
+**Metti a 0 durante il debug attivo** con breakpoint dell'IDE: se fermi l'esecuzione a esaminare lo stato, il watchdog non sa che stai debuggando e resetta il device. Molto fastidioso.
+
+**Metti a 1 in modalità produzione**: la ridondanza è a costo zero e ti salva da situazioni impreviste.
+
+### Il costo in termini di risorse
+
+- **RAM**: alcune decine di byte per il descrittore del watchdog
+- **CPU**: le chiamate `esp_task_wdt_reset()` sono in scrittura registro, tempi nell'ordine del microsecondo
+- **Energia**: praticamente zero (nessun impatto sul consumo)
+- **Complessità**: 5-6 righe di codice sparse, tutte condizionali sotto `#if ENABLE_WATCHDOG`
+
+Un caso in cui il watchdog **non aiuta**: se il blocco avviene in un interrupt di alta priorità che tiene la CPU costantemente occupata, il task `loopTask` non gira e non può nemmeno essere resettato. Ma questi casi sono rari nell'architettura Arduino/ESP32 tipica.
+
+### Diagnostica del reset
+
+Se sospetti che il device stia venendo resettato dal watchdog, puoi verificarlo aggiungendo all'inizio del setup:
+
+```cpp
+esp_reset_reason_t reason = esp_reset_reason();
+Serial.printf("Reset reason: %d\n", reason);
+// ESP_RST_TASK_WDT = 7  → il watchdog ha fatto reset
+```
+
+Se vedi `Reset reason: 7`, sai che il ciclo precedente è stato interrotto forzatamente e vale la pena indagare cosa non andava.
 
 ---
 
@@ -896,6 +1001,7 @@ Il firmware espone alcuni flag di configurazione in cima al file per switchare t
 #define ENABLE_NVS_PERSISTENCE     0   // 0 = niente scritture flash durante il debug
 #define ENABLE_BATTERY_PROTECTION  1   // 1 = emergency sleep se vbat sotto soglia
 #define ENABLE_DOWNLINK_HANDLER    1   // 1 = interpreta i downlink come comandi
+#define ENABLE_WATCHDOG            1   // 1 = wdt hardware, 0 durante debug con breakpoint
 #define USE_OTAA                   0   // 1 = OTAA, 0 = ABP (attuale)
 ```
 
@@ -997,15 +1103,16 @@ Il firmware, per essere solo un end-device LoRaWAN "banale", incorpora concetti 
 - **Uso didattico di FPort** come discriminatore di tipo di messaggio
 - **Persistenza multilivello** (RTC memory + NVS con write batching)
 - **Downlink handler con configurazione runtime modificabile** da remoto
+- **Protezione batteria** software da under-discharge
+- **Watchdog hardware** per recupero automatico da blocchi imprevisti
 - **Modalità debug/produzione** switchabili
 - **Diagnostica strutturata** con logging e sketch dedicati
 
 Alcune cose che non si sono fatte ma che varrebbe la pena aggiungere in un progetto reale:
 
 - **OTAA invece di ABP**: elimina il problema del FCnt e semplifica il rollout. Il `#define USE_OTAA` è già predisposto
-- **Watchdog**: se il firmware si blocca in un punto imprevisto (bug in una libreria terza), il device non riesce a fare deep sleep e scarica la batteria
 - **ADR (Adaptive Data Rate)** gestito dal server: attualmente il device usa sempre SF9 fisso; ADR permetterebbe di scendere a SF7 quando il gateway è vicino, risparmiando airtime
-- **Persistenza dell'ultima posizione GPS in NVS** invece che solo in RTC memory: sopravvivrebbe anche a power-off
+- **Persistenza dell'ultima posizione GPS in NVS** invece che solo in RTC memory: sopravvivrebbe anche a power-off (scelta didattica: non implementata perché la posizione stale può essere fuorviante se il device viene spostato mentre spento)
 - **Node-RED come traduttore MQTT** per rispettare la convenzione `<ambiente>/comandi/` e `<ambiente>/config/` sul broker centrale, mappandoli al topic canonico ChirpStack
 
 Ognuna di queste sarebbe una lezione a parte.
