@@ -1124,7 +1124,7 @@ Ognuna di queste sarebbe una lezione a parte.
 Le immagini sono nella cartella `img/` accanto al file `.md`. Se una dovesse mancare o essere danneggiata, questi sono gli URL originali da cui sono state scaricate:
 
 - **Figura 1** (`img/heltec_pinout.png`) — Pinout Heltec: `https://resource.heltec.cn/download/WiFi_LoRa32_V3/HTIT-WB32LA_V3.png` — Heltec Automation
-- **Figura 2** (`img/bms_1s_5a.jpg`) — BMS 1S 5A per 18650 — immagine commerciale Amazon
+- **Figura 2** (`img/bms_1s_5a.png`) — BMS 1S 5A per 18650 — immagine commerciale Amazon
 - **Figura 3** (`img/scd41.png`) — Sensore SCD41: `https://sensirion.com/media/images/00/f5/94/1743502836/CO2-Sensor-SCD41.png/w-800.png` — Sensirion AG
 - **Figura 4** (`img/nmea_format.png`) — Struttura sentenza NMEA: `https://www.hemispheregnss.com/wp-content/uploads/2020/02/NMEA-0183-Message-Format.png` — Hemisphere GNSS
 - **Figura 5** (`img/lorawan_class_a.png`) — LoRaWAN classe A RX windows: `https://miro.medium.com/v2/resize:fit:1400/1*fpe80CIVX5PWTvLTBaBBWQ.png` — articolo Medium sulla LoRaWAN
@@ -1138,3 +1138,13 @@ Se un'immagine dovesse smettere di essere disponibile, cerca su Google Immagini 
 - "LoRaWAN class A downlink RX window"
 - "ESP32 sleep modes power"
 - "LoRaWAN architecture diagram"
+
+---
+
+## Codice sorgente
+
+I file completi descritti in questa dispensa sono disponibili in:
+
+- **Firmware Arduino**: [`FWs/heltec_v4_scd41_gps_lorawan.ino`](FWs/heltec_v4_scd41_gps_lorawan.ino)
+- **Codec JavaScript per ChirpStack**: [`codecs/chirpstack_codec.js`](codecs/chirpstack_codec.js)
+- **Script bash di test downlink**: [`tests/test_downlinks.sh`](tests/test_downlinks.sh)
