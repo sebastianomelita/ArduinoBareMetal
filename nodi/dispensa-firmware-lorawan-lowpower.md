@@ -153,7 +153,7 @@ Il pattern generale è: **accendi la periferica solo quando serve, spegnila appe
 ## Sensore SCD41: I²C e misure periodiche
 
 <p align="center">
-  <img src="img/scd41.png" alt="Sensore SCD41 Sensirion" width="150">
+  <img src="img/scd41.png" alt="Sensore SCD41 Sensirion" width="200">
 </p>
 
 *Figura 3: sensore CO₂ Sensirion SCD41. Include misura di CO₂ (400-5000 ppm) via fotoacustica, oltre a temperatura e umidità. Comunica via I²C all'indirizzo 0x62.*
