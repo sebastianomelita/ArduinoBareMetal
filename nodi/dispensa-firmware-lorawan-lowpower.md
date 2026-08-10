@@ -369,7 +369,7 @@ Durante lo sviluppo (con "skip FCnt check" attivo sul server), tenerlo a 0 evita
 L'ESP32-S3 supporta il **deep sleep** con consumo tipico <10 μA. In questa modalità:
 
 <p align="center">
-  <img src="img/esp32_sleep_modes.png" alt="ESP32 sleep modes" width="700">
+  <img src="img/esp32_sleep_modes.png" alt="ESP32 sleep modes" width="800">
 </p>
 
 *Figura 6: le modalità di risparmio energetico dell'ESP32. Il **deep sleep** spegne CPU, RAM principale, WiFi e BT, lasciando acceso solo il dominio RTC (con RTC RAM da 8 KB e i pin RTC GPIO). Il chip può svegliarsi solo tramite le sorgenti configurate (timer, GPIO, ULP).*
