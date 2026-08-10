@@ -206,7 +206,7 @@ $GNGSV,3,1,10,03,45,180,42,05,30,090,37,08,60,270,45*70
 ```
 
 <p align="center">
-  <img src="img/nmea_format.webp" alt="Struttura di una sentenza NMEA" width="600">
+  <img src="img/nmea_format.webp" alt="Struttura di una sentenza NMEA" width="800">
 </p>
 
 *Figura 4: struttura di una sentenza NMEA. Ogni riga inizia con `$`, seguita dal talker ID (GP=GPS, GN=multi-GNSS), il tipo di frase (GGA, RMC, GSV, ...), i campi separati da virgola, e termina con un checksum XOR dopo `*`.*
