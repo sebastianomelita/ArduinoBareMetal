@@ -8,16 +8,17 @@ Analisi del firmware `heltec_v4_scd41_gps_lorawan.ino`, un end-device LoRaWAN au
 2. [Architettura hardware](#architettura-hardware)
 3. [Il ciclo di vita del firmware](#il-ciclo-di-vita-del-firmware)
 4. [Schema del payload versionato](#schema-del-payload-versionato)
-5. [Gestione dell'alimentazione delle periferiche](#gestione-dellalimentazione-delle-periferiche)
-6. [Sensore SCD41: I²C e misure periodiche](#sensore-scd41-ic-e-misure-periodiche)
-7. [GPS L76K: parsing NMEA e timeout adattivo](#gps-l76k-parsing-nmea-e-timeout-adattivo)
-8. [LoRaWAN con RadioLib 7.x](#lorawan-con-radiolib-7x)
-9. [Persistenza del frame counter](#persistenza-del-frame-counter)
-10. [Deep sleep e GPIO hold](#deep-sleep-e-gpio-hold)
-11. [Protezione batteria da under-discharge](#protezione-batteria-da-under-discharge)
-12. [Downlink handler e comandi remoti](#downlink-handler-e-comandi-remoti)
-13. [Modalità debug e produzione](#modalit-debug-e-produzione)
-14. [Diagnostica e osservabilità](#diagnostica-e-osservabilit)
+5. [FPort: il discriminatore di tipo LoRaWAN](#fport-il-discriminatore-di-tipo-lorawan)
+6. [Gestione dell'alimentazione delle periferiche](#gestione-dellalimentazione-delle-periferiche)
+7. [Sensore SCD41: I²C e misure periodiche](#sensore-scd41-ic-e-misure-periodiche)
+8. [GPS L76K: parsing NMEA e timeout adattivo](#gps-l76k-parsing-nmea-e-timeout-adattivo)
+9. [LoRaWAN con RadioLib 7.x](#lorawan-con-radiolib-7x)
+10. [Persistenza del frame counter](#persistenza-del-frame-counter)
+11. [Deep sleep e GPIO hold](#deep-sleep-e-gpio-hold)
+12. [Protezione batteria da under-discharge](#protezione-batteria-da-under-discharge)
+13. [Downlink handler e comandi remoti](#downlink-handler-e-comandi-remoti)
+14. [Modalità debug e produzione](#modalit-debug-e-produzione)
+15. [Diagnostica e osservabilità](#diagnostica-e-osservabilit)
 
 ---
 
@@ -40,7 +41,7 @@ Non è un progetto commerciale: la finalità è didattica. Molte scelte sono com
 Il device è basato sulla **Heltec WiFi LoRa 32 V4**, che integra:
 
 <p align="center">
-  <img src="img/heltec_pinout.png" alt="Heltec WiFi LoRa 32 pinout" width="700">
+  <img src="img/heltec_pinout.png" alt="Heltec WiFi LoRa 32 pinout" width="600">
 </p>
 
 *Figura 1: pinout della Heltec WiFi LoRa 32. L'immagine mostra la V3, ma la V4 R8 usa la stessa piedinatura sugli header J2/J3 con l'aggiunta del connettore SH1.25-8P per il modulo di espansione (GPS/batteria).*
@@ -76,7 +77,7 @@ Un ciclo tipico dura ~30-60 secondi di attività seguiti da ~1 minuto (o più) d
 5. **Lettura di tutti i dati**: valori SCD41, coordinate GPS, tensione batteria.
 6. **Composizione payload** in una struct C impacchettata (schema versionato).
 7. **Inizializzazione radio LoRa e attivazione LoRaWAN ABP**. Ripristino del session buffer da NVS o RTC memory.
-8. **Trasmissione via `sendReceive()`**. Il device parla, poi apre due finestre RX (obbligatorie in classe A) per ricevere eventuali downlink.
+8. **Trasmissione via `sendReceive()` su FPort 1**. Il device parla, poi apre due finestre RX (obbligatorie in classe A) per ricevere eventuali downlink.
 9. **Aggiornamento persistenza**. FCnt salvato in RTC memory sempre, in NVS ogni N cicli.
 10. **Deep sleep**. Spegnimento periferiche, hold dei GPIO, timer di wake.
 
@@ -88,7 +89,7 @@ Ogni fase è confinata in una funzione dedicata. Il `setup()` è essenzialmente 
 
 Il payload LoRaWAN è progettato per essere **compatto**, **fisso**, e **riconoscibile**. Compatto perché ogni byte in più aumenta l'airtime e quindi il consumo energetico e il duty cycle usato. Fisso perché il codec sul Network Server deve poter decodificare senza dover interpretare struttura variabile. Riconoscibile perché in futuro potremmo voler aggiungere altri sensori (nuovi schemi) allo stesso Network Server, e serve un modo per distinguerli.
 
-La soluzione è un **primo byte "schema_id"** che identifica univocamente la struttura seguente:
+Tutti gli uplink applicativi partono su **FPort 1** (definito dal `#define LORAWAN_FPORT`). All'interno del payload, un **primo byte "schema_id"** identifica univocamente la struttura seguente:
 
 ```c
 #define SCHEMA_ID  0x42     // SCD41 + L76K + batteria
@@ -124,6 +125,112 @@ Alcuni dettagli notevoli:
 
 **Big picture: pacchetti versionati**. Il pattern "primo byte come discriminatore di schema" è usato anche da protocolli come CBOR, MessagePack e altri codec versionati. Consente di far coesistere versioni multiple senza ambiguità e senza dover cambiare il formato di trasporto.
 
+**Schema id vs FPort — due discriminatori sovrapposti**. Nel nostro progetto abbiamo **due meccanismi** di discriminazione: il FPort a livello LoRaWAN, e il schema_id come primo byte del payload applicativo. Sembra ridondante, ma i due discriminatori operano a **livelli diversi**: il FPort è visibile al Network Server per instradare i pacchetti al codec giusto, mentre il schema_id è interno al codec e distingue formati concreti che condividono lo stesso "canale" LoRaWAN. La prossima sezione entra nel dettaglio del ruolo di FPort.
+
+---
+
+## FPort: il discriminatore di tipo LoRaWAN
+
+Ogni pacchetto LoRaWAN che viaggia tra device e gateway contiene, oltre alle chiavi crittografiche e header MAC, due campi applicativi fondamentali:
+
+```
++--------+---------------------------+
+| FPort  | FRMPayload (0-242 byte)   |
++--------+---------------------------+
+```
+
+- **FPort**: 1 byte, valore 0-255
+- **FRMPayload**: il payload applicativo vero e proprio
+
+Il **FPort** è un campo del protocollo LoRaWAN definito dalla LoRa Alliance. **Non è una feature di ChirpStack**: esiste da sempre nella specifica, e tutti i Network Server LoRaWAN (ChirpStack, TTN, Loriot, Actility) lo espongono nello stesso modo.
+
+### A cosa serve
+
+Concettualmente, FPort è l'equivalente di:
+
+- Il **numero di porta** in TCP/UDP (che discrimina i servizi: 80=HTTP, 443=HTTPS, 22=SSH)
+- Il campo **type** in un pacchetto Ethernet (0x0800=IPv4, 0x86DD=IPv6)
+- L'**endpoint URL** in un'API REST (`/api/temperature` vs `/api/config`)
+
+Serve a **discriminare tra tipi di payload** senza dover ispezionare il contenuto. Un Network Server che vede arrivare un pacchetto con FPort=3 sa che è (per esempio) un heartbeat, senza doverne decodificare i byte per capirlo.
+
+### I range riservati dalla specifica
+
+La specifica LoRaWAN riserva alcuni range di valori con significati particolari:
+
+| FPort | Uso |
+|-------|-----|
+| **0** | Riservato per MAC commands puri (comandi di gestione del layer LoRaWAN, non applicativi) |
+| **1 - 223** | **Applicazione**: liberi per l'utente |
+| **224** | Riservato per test conformità LoRaWAN |
+| **225 - 255** | Riservati per future estensioni della specifica |
+
+Abbiamo quindi **223 valori disponibili** per organizzare i nostri messaggi.
+
+### Le convenzioni del nostro progetto
+
+Nel nostro firmware abbiamo scelto tre FPort:
+
+| FPort | Direzione | Uso | Formato interno |
+|-------|-----------|-----|-----------------|
+| **1** | Uplink | Misure ambientali | Struct binaria versionata (byte 0 = `schema_id`) |
+| **10** | Downlink | Comandi ordinari (azione) | Byte 0 = `command_id`, resto = argomenti |
+| **20** | Downlink | Configurazione persistente | Byte 0 = `config_id`, resto = argomenti |
+
+Sono numeri **arbitrari** ma scelti seguendo una piccola convenzione visiva:
+
+- Uplink su FPort bassi (1, 2, 3, ...)
+- Downlink su FPort a **decine tonde** (10, 20, 30, ...) per essere riconoscibili a colpo d'occhio nei log del Network Server
+
+Se un giorno aggiungiamo un nuovo tipo di uplink (per esempio un heartbeat separato dalle misure complete), useremo FPort 2. Se aggiungiamo un downlink per aggiornamento OTA, useremo FPort 30. Il pattern si scala facilmente.
+
+### Il flusso end-to-end del FPort in un downlink
+
+Il ciclo di vita del FPort per un downlink attraversa più componenti:
+
+**1. Origine — chi lo decide**
+
+Quando l'utente accoda un downlink, deve specificare il FPort. Ci sono tre modi:
+
+- Via **API REST** di ChirpStack, con il campo `fPort`
+- Via **MQTT**, pubblicando su `application/<id>/device/<eui>/command/down` con `{"fPort": N, "object": {...}}`
+- Via **ChirpStack UI**: tab "Queue" del device, campo "FPort"
+
+**2. Codec — può sovrascriverlo**
+
+Il codec `encodeDownlink` **può ritornare un nuovo `fPort`** nel valore di ritorno, sovrascrivendo quello ricevuto. Questa è una feature meno conosciuta ma potente: permette al codec di **inferire il FPort dal contenuto del messaggio**, semplificando l'uso da parte del client MQTT.
+
+Nel nostro codec, per esempio, chi manda `{"cmd":"reboot"}` non deve preoccuparsi del FPort: il codec riconosce il comando e restituisce automaticamente `{fPort: 10, bytes: [0x01]}`.
+
+**3. Trasmissione radio**
+
+ChirpStack accoda il messaggio con il FPort finale (quello scelto dal codec, se presente). Il gateway lo trasmette via LoRa nel pacchetto radio, dove FPort è un campo del PHY payload cifrato con la AppSKey.
+
+**4. Device — legge il FPort**
+
+Sul device, RadioLib decifra il pacchetto ed espone il FPort come parametro separato dal payload:
+
+```cpp
+uint8_t buf[64];
+size_t  len = sizeof(buf);
+uint8_t port = 0;
+node.getDownlinkData(buf, &len, &port);
+// port = 20, buf = [0x11, 0x03]
+```
+
+Il firmware fa il dispatch in base a `port`, esattamente come facciamo con `handleDownlinkPort10()` e `handleDownlinkPort20()`.
+
+### Perché non usare un solo FPort per tutto
+
+Si potrebbe pensare: perché non usare un solo FPort (es. 1) e distinguere tutto tramite il primo byte del payload, come fa il `schema_id`? Funzionerebbe, ma perdiamo alcuni vantaggi:
+
+- **Filtraggio lato Network Server**: puoi configurare regole di routing che agiscono in base al FPort (per esempio: uplink su FPort 1 vanno al dashboard, uplink su FPort 2 vanno al monitoring)
+- **Diagnostica veloce nei log**: un frame LoRaWAN visualizzato in ChirpStack mostra il FPort a colpo d'occhio, senza dover decodificare il payload
+- **Chiarezza semantica**: nel codec, `input.fPort === 1` è più immediato di "guarda il primo byte se è 0x41 o 0x42"
+- **Compatibilità con integrations esistenti**: molti tool assumono che un tipo di messaggio corrisponda a un FPort
+
+Il costo è nullo: il FPort occupa 1 byte già presente nel protocollo, non toglie spazio al payload utile.
+
 ---
 
 ## Gestione dell'alimentazione delle periferiche
@@ -153,7 +260,7 @@ Il pattern generale è: **accendi la periferica solo quando serve, spegnila appe
 ## Sensore SCD41: I²C e misure periodiche
 
 <p align="center">
-  <img src="img/scd41.png" alt="Sensore SCD41 Sensirion" width="200">
+  <img src="img/scd41.png" alt="Sensore SCD41 Sensirion" width="350">
 </p>
 
 *Figura 3: sensore CO₂ Sensirion SCD41. Include misura di CO₂ (400-5000 ppm) via fotoacustica, oltre a temperatura e umidità. Comunica via I²C all'indirizzo 0x62.*
@@ -206,7 +313,7 @@ $GNGSV,3,1,10,03,45,180,42,05,30,090,37,08,60,270,45*70
 ```
 
 <p align="center">
-  <img src="img/nmea_format.webp" alt="Struttura di una sentenza NMEA" width="800">
+  <img src="img/nmea_format.png" alt="Struttura di una sentenza NMEA" width="600">
 </p>
 
 *Figura 4: struttura di una sentenza NMEA. Ogni riga inizia con `$`, seguita dal talker ID (GP=GPS, GN=multi-GNSS), il tipo di frase (GGA, RMC, GSV, ...), i campi separati da virgola, e termina con un checksum XOR dopo `*`.*
@@ -260,7 +367,7 @@ Il valore `9999` in HDOP è un marker convenzionale: la dashboard può riconosce
 RadioLib è la libreria che astrae il chip SX1262 sotto uno stack LoRaWAN. La versione 7.x ha un'API leggermente diversa dalla 6.x, e il codice segue esattamente il pattern degli esempi ufficiali `LoRaWAN_ABP.ino`. La sequenza:
 
 <p align="center">
-  <img src="img/lorawan_class_a.png" alt="LoRaWAN classe A - RX windows" width="500">
+  <img src="img/lorawan_class_a.png" alt="LoRaWAN classe A - RX windows" width="600">
 </p>
 
 *Figura 5: timing delle finestre RX in LoRaWAN classe A. Dopo ogni TX, il device apre due brevi finestre di ricezione (RX1 dopo 1 secondo, RX2 dopo 2 secondi) per ricevere eventuali downlink dal server. Al di fuori di queste finestre il device è in deep sleep e non può ricevere nulla.*
@@ -288,9 +395,9 @@ Questo dice a RadioLib "attiva la sessione in modalità 1.0", usando la stessa `
 
 **`activateABP()` restituisce codici non-error**. La funzione ritorna `RADIOLIB_LORAWAN_NEW_SESSION` (=2) o `RADIOLIB_LORAWAN_SESSION_RESTORED` (=1), che **non sono errori** ma status. Il codice tratta i valori positivi come "OK" e prosegue.
 
-**`sendReceive` in classe A**. Il metodo `node.sendReceive(buf, len)` esegue la sequenza completa della LoRaWAN classe A:
+**`sendReceive` in classe A**. Il metodo `node.sendReceive(buf, len, LORAWAN_FPORT)` esegue la sequenza completa della LoRaWAN classe A:
 
-1. Trasmette il pacchetto
+1. Trasmette il pacchetto su `LORAWAN_FPORT` (= 1 nel nostro caso)
 2. Apre finestra RX1 (dopo 1 secondo, sulla stessa frequenza del TX ma con DR diverso)
 3. Apre finestra RX2 (dopo 2 secondi, su 869.525 MHz, DR0)
 4. Se riceve un downlink, lo decodifica automaticamente
@@ -369,7 +476,7 @@ Durante lo sviluppo (con "skip FCnt check" attivo sul server), tenerlo a 0 evita
 L'ESP32-S3 supporta il **deep sleep** con consumo tipico <10 μA. In questa modalità:
 
 <p align="center">
-  <img src="img/esp32_sleep_modes.png" alt="ESP32 sleep modes" width="800">
+  <img src="img/esp32_sleep_modes.png" alt="ESP32 sleep modes" width="700">
 </p>
 
 *Figura 6: le modalità di risparmio energetico dell'ESP32. Il **deep sleep** spegne CPU, RAM principale, WiFi e BT, lasciando acceso solo il dominio RTC (con RTC RAM da 8 KB e i pin RTC GPIO). Il chip può svegliarsi solo tramite le sorgenti configurate (timer, GPIO, ULP).*
@@ -427,7 +534,7 @@ Il pattern classico per prevenire questi problemi è a due livelli:
 1. **Protezione hardware** — una BMS (Battery Management System) o PCM (Protection Circuit Module) esterna che monitora la tensione della cella e **fisicamente scollega il carico** quando la tensione scende sotto la soglia. Reagisce in microsecondi, funziona anche se il firmware è morto.
 
 <p align="center">
-  <img src="img/bms_1s_5a.png" alt="BMS 1S 5A per 18650" width="300">
+  <img src="img/bms_1s_5a.jpg" alt="BMS 1S 5A per 18650" width="300">
 </p>
 
 *Figura 2: scheda BMS 1S 5A per celle 18650/14500/LiPo. I quattro pad principali sono B+ e B− (verso la cella), P+ e P− (verso il carico).*
@@ -496,7 +603,7 @@ La soglia critica **3.1 V** è conservativa. La cella si danneggia sotto ~2.5 V,
 
 Se usi celle di qualità inferiore o rigenerate, alza la soglia a **3.2-3.3 V** per un margine ancora più generoso.
 
-**VBAT_RECOVERY_MV = 3300 mV** (isteresi) è la soglia sopra la quale si riprende operativity normale. L'isteresi (differenza tra soglia di ingresso e uscita dall'emergency mode) è importante: se avessi la stessa soglia per entrare e uscire, il device oscillerebbe tra i due stati quando la tensione è vicina alla soglia, sprecando cicli. Con 200 mV di isteresi, l'emergency mode "sente" solo transizioni nette.
+**VBAT_RECOVERY_MV = 3300 mV** (isteresi) è la soglia sopra la quale si riprende operatività normale. L'isteresi (differenza tra soglia di ingresso e uscita dall'emergency mode) è importante: se avessi la stessa soglia per entrare e uscire, il device oscillerebbe tra i due stati quando la tensione è vicina alla soglia, sprecando cicli. Con 200 mV di isteresi, l'emergency mode "sente" solo transizioni nette.
 
 **VBAT_EMERGENCY_SLEEP_S = 6 ore** è un compromesso tra risparmio massimo (dormire per giorni) e possibilità di ripresa rapida (svegliarsi ogni ora per controllare). Con 6 ore, se il pannello solare ricarica di giorno, entro un giorno il device è di nuovo operativo.
 
@@ -524,28 +631,75 @@ Il firmware espone la possibilità di ricevere **comandi remoti** dal Network Se
 
 *Figura 7: architettura LoRaWAN end-to-end. I dati partono dal device end-node (a sinistra), attraversano il canale radio verso i gateway, che li inoltrano via IP al Network Server. L'Application Server decifra i payload applicativi e li rende disponibili a dashboard, database, API. I downlink seguono il percorso inverso.*
 
-### La filosofia: separare azione e configurazione
+### La filosofia: comandi ordinari e configurazione
 
-I comandi sono divisi in due categorie logiche, distinte tramite il campo **FPort** del pacchetto LoRaWAN:
+Seguendo la [convenzione dei topic MQTT del progetto](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/approfondimenti/messaggi_mqtt.md), i downlink al device sono divisi concettualmente in due categorie:
 
-**FPort 10 — Comandi di azione**: operazioni one-shot che non modificano lo stato persistente del device. Esempio: riavvio, identificazione visiva, richiesta di uplink immediato. Se il device si spegne e si riaccende, il "comando" non ha effetto residuo.
+- **Comandi ordinari** — azioni one-shot che non modificano lo stato persistente del device (reboot, identify, forza uplink). Corrispondono al topic MQTT `<ambiente>/comandi/<device>/`.
+- **Configurazione** — modifiche persistenti a parametri del device (intervallo TX, potenza radio, soglie di batteria). Corrispondono al topic MQTT `<ambiente>/config/<device>/`.
 
-**FPort 20 — Comandi di configurazione**: modificano parametri che restano attivi nel tempo, salvati in NVS (flash). Esempio: intervallo di trasmissione, potenza TX, soglie di batteria. Questi parametri sopravvivono a reboot, deep sleep e power-off.
+A livello LoRaWAN, la distinzione è realizzata tramite due FPort dedicati:
 
-Il pattern imita la separazione delle responsabilità delle tue [convenzioni MQTT](https://github.com/sebastianomelita/ArduinoBareMetal/blob/master/approfondimenti/messaggi_mqtt.md), dove **comandi** e **config** sono topic distinti. In LoRaWAN, invece di topic, si usa il FPort come discriminatore.
+| Categoria | FPort LoRaWAN | Persistenza |
+|-----------|---------------|-------------|
+| Comandi ordinari | **10** | No (one-shot) |
+| Configurazione | **20** | Sì (salvata in NVS) |
+
+### Il codec inferisce automaticamente il FPort
+
+L'aspetto interessante del nostro codec ChirpStack è che **decide autonomamente il FPort** in base al comando ricevuto, ignorando il FPort proposto dal client MQTT. Questo è possibile grazie al fatto che ChirpStack permette a `encodeDownlink()` di **sovrascrivere** il FPort nel valore di ritorno:
+
+```javascript
+function encodeDownlink(input) {
+    var cmd = String(input.data.cmd).toLowerCase();
+
+    // Comandi ordinari → FPort 10
+    if (cmd === "reboot")   return { bytes: [0x01], fPort: 10 };
+    if (cmd === "identify") return { bytes: [0x02], fPort: 10 };
+    // ...
+
+    // Configurazione → FPort 20
+    if (cmd === "set_tx_interval") return { bytes: [0x11, input.data.value], fPort: 20 };
+    // ...
+}
+```
+
+**Vantaggio pratico**: chi pubblica il downlink non deve conoscere la mappatura comando→FPort. Può usare sempre lo stesso valore (per esempio `"fPort":1`) e il codec fa la magia:
+
+```bash
+# Il codec riconosce "reboot" e lo instrada al FPort 10
+mosquitto_pub -t "application/1/device/EUI/command/down" \
+  -m '{"fPort":1,"object":{"cmd":"reboot"}}'
+
+# Il codec riconosce "set_tx_interval" e lo instrada al FPort 20
+mosquitto_pub -t "application/1/device/EUI/command/down" \
+  -m '{"fPort":1,"object":{"cmd":"set_tx_interval","value":3}}'
+```
+
+Il device riceve sul FPort corretto perché è il codec a stabilirlo, non il client.
 
 ### Il primo byte come identificatore di comando
 
-Su ciascun FPort, il **primo byte del payload** è il `command_id`, seguito da eventuali argomenti binari. È lo stesso pattern versionato del `schema_id` dell'uplink: puoi aggiungere comandi nuovi in futuro senza rompere quelli esistenti, e il device può respingere comandi sconosciuti in modo pulito.
+All'interno del payload di ciascun FPort, il **primo byte** è il `command_id`, seguito da eventuali argomenti binari. È lo stesso pattern versionato del `schema_id` dell'uplink: puoi aggiungere comandi nuovi in futuro senza rompere quelli esistenti, e il device può respingere comandi sconosciuti in modo pulito.
 
 Esempio dello scambio per cambiare TX interval:
 
 ```
-Il server invia:      FPort=20, payload = [0x11, 0x03]
+Utente pubblica:      MQTT su application/.../command/down
+                      {"fPort":1,"object":{"cmd":"set_tx_interval","value":3}}
+        │
+        ▼
+Codec ChirpStack:     encodeDownlink({data:{cmd:"set_tx_interval",value:3}, fPort:1})
+                        → riconosce "set_tx_interval"
+                        → ritorna { bytes: [0x11, 0x03], fPort: 20 }
+        │                                              ↑
+        ▼                                              └─ codec sovrascrive il FPort
+LoRaWAN downlink:     FPort=20, payload = [0x11, 0x03]
                                             │     └─ preset 3 = 5 minuti
                                             └─────── comando SET_TX_INTERVAL
-
-Il device dispatcha:  handleDownlinkPort20([0x11, 0x03], 2)
+        │
+        ▼
+Firmware dispatcha:   handleDownlinkPort20([0x11, 0x03], 2)
                         → riconosce CFG_SET_TX_INTERVAL
                         → valida 0x03 in range 0-5
                         → salva in NVS con chiave "tx_int"
@@ -555,28 +709,9 @@ Il device dispatcha:  handleDownlinkPort20([0x11, 0x03], 2)
 Ciclo successivo:     usa TX_INTERVAL_SECONDS[cfgTxIntervalPreset] = 300s
 ```
 
-### Il codec ChirpStack come traduttore JSON ↔ bytes
-
-Gli utenti finali (dashboard, Node-RED, script) non maneggiano byte binari — parlano JSON. Il codec JavaScript configurato in ChirpStack fa la traduzione bidirezionale:
-
-```
-Utente pubblica su MQTT:    {"cmd":"set_tx_interval","value":3}
-        │
-        ▼
-ChirpStack chiama:          encodeDownlink({data:..., fPort:20})
-        │
-        ▼
-Codec ritorna:              {bytes: [0x11, 0x03], fPort: 20}
-        │
-        ▼
-LoRaWAN downlink al device: [0x11, 0x03] su FPort 20
-```
-
-Questo permette di **modificare i comandi** senza toccare il firmware: basta aggiornare la funzione `encodeDownlink()` nel codec ChirpStack. Solo se aggiungi un comando radicalmente nuovo devi toccare anche il firmware.
-
 ### La lista dei comandi supportati
 
-**FPort 10 — Azioni**
+**FPort 10 — Comandi ordinari**
 
 | Comando | Byte | Argomenti | Descrizione |
 |---------|------|-----------|-------------|
@@ -587,7 +722,7 @@ Questo permette di **modificare i comandi** senza toccare il firmware: basta agg
 
 Il byte magic `0xA5` su `CLEAR_NVS` è una **cintura di sicurezza**: senza di esso il comando viene ignorato. Un errore accidentale (comando corrotto, checksum sbagliato) non deve poter cancellare una sessione LoRaWAN valida.
 
-**FPort 20 — Configurazione**
+**FPort 20 — Configurazione persistente**
 
 | Comando | Byte | Argomenti | Descrizione |
 |---------|------|-----------|-------------|
@@ -597,7 +732,7 @@ Il byte magic `0xA5` su `CLEAR_NVS` è una **cintura di sicurezza**: senza di es
 | `SET_GPS_TIMEOUT` | 0x14 | 2 byte LE (10-300) | Cambia timeout attesa fix GPS in secondi |
 | `SET_BATT_THRESH` | 0x15 | 4 byte (2×uint16 LE) | Cambia soglie batteria emergency + recovery |
 
-Ogni comando include **validazione dei range**: valori fuori dai limiti vengono ignorati e loggati, senza salvare in NVS. Questo evita che una NVS corrotta possa portare il device in configurazioni impossibili (es. SF=15).
+Ogni comando include **validazione dei range** sia lato codec (prima di trasmettere) sia lato firmware (prima di salvare in NVS): valori fuori dai limiti vengono ignorati e loggati. Questo evita che una NVS corrotta possa portare il device in configurazioni impossibili (es. SF=15).
 
 ### Persistenza in NVS delle configurazioni
 
@@ -638,109 +773,60 @@ Il pattern è quindi:
 
 Cambiare un `#define` e riflashare **non sovrascrive** il valore in NVS: i device sul campo mantengono la loro config remota. Solo un `CLEAR_NVS` esplicito ripristina i default.
 
-### Come inviare comandi via MQTT
+### Esempi mosquitto_pub
 
-L'infrastruttura MQTT prevede un **broker centrale** che aggrega i topic di più siti, con **bridge Mosquitto** che portano i messaggi tra il broker centrale e ChirpStack. I comandi si pubblicano sul broker centrale, il bridge li porta al RPi dove ChirpStack li accoda al device.
+Il topic canonico di ChirpStack per i downlink è:
 
-**Il topic da usare** (`mode=bridge`, produzione):
-```
-edges/<edge-id>/application/<app-id>/device/<devEUI>/command/down
-```
-
-**Il topic diretto** (`mode=direct`, test locale bypassando il bridge):
 ```
 application/<app-id>/device/<devEUI>/command/down
 ```
 
 Le variabili da adattare:
-- `<edge-id>` — identificativo del sito (es. `serra-01`)
 - `<app-id>` — Application ID di ChirpStack (es. `1`, lo trovi nell'URL della UI)
 - `<devEUI>` — DevEUI del device in lowercase senza trattini (es. `26a160fffe6e86bc`)
 
-### Esempi mosquitto_pub
+Ricorda: il valore di `fPort` che scrivi nel JSON MQTT **viene ignorato dal codec**, che sceglie autonomamente il FPort corretto in base al comando. Per convenzione usiamo sempre `"fPort":1`.
 
-Nei comandi qui sotto, gli URI dei topic assumono `EDGE_ID=serra-01`, `APP_ID=1`, `DEV_EUI=26a160fffe6e86bc`. Adatta ai tuoi valori.
-
-**Riavvia il device**:
+**Reboot del device**:
 ```bash
-mosquitto_pub -h hub.mia-rete.local \
-  -t "edges/serra-01/application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":10,"object":{"cmd":"reboot"}}'
+mosquitto_pub -h <IP-ChirpStack> \
+  -t "application/1/device/26a160fffe6e86bc/command/down" \
+  -m '{"fPort":1,"object":{"cmd":"reboot"}}'
 ```
 
-**Identifica visivamente** (LED lampeggia):
+**Identify** (LED lampeggia):
 ```bash
-mosquitto_pub -h hub.mia-rete.local \
-  -t "edges/serra-01/application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":10,"object":{"cmd":"identify"}}'
+mosquitto_pub -h <IP-ChirpStack> \
+  -t "application/1/device/26a160fffe6e86bc/command/down" \
+  -m '{"fPort":1,"object":{"cmd":"identify"}}'
 ```
 
-**Forza un uplink immediato**:
+**Forza uplink immediato**:
 ```bash
-mosquitto_pub -h hub.mia-rete.local \
-  -t "edges/serra-01/application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":10,"object":{"cmd":"force_tx_now"}}'
+mosquitto_pub -h <IP-ChirpStack> \
+  -t "application/1/device/26a160fffe6e86bc/command/down" \
+  -m '{"fPort":1,"object":{"cmd":"force_tx_now"}}'
 ```
 
-**Cancella la NVS** (usa con cautela, perde la sessione LoRaWAN):
+**Cambia TX interval a 10 secondi** (per test veloci):
 ```bash
-mosquitto_pub -h hub.mia-rete.local \
-  -t "edges/serra-01/application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":10,"object":{"cmd":"clear_nvs"}}'
-```
-
-**Cambia TX interval a 10 secondi** (comodo per test veloci):
-```bash
-mosquitto_pub -h hub.mia-rete.local \
-  -t "edges/serra-01/application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":20,"object":{"cmd":"set_tx_interval","value":0}}'
-```
-
-**Torna a TX ogni minuto**:
-```bash
-mosquitto_pub -h hub.mia-rete.local \
-  -t "edges/serra-01/application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":20,"object":{"cmd":"set_tx_interval","value":2}}'
-```
-
-**Cambia spreading factor a SF7** (device vicino al gateway):
-```bash
-mosquitto_pub -h hub.mia-rete.local \
-  -t "edges/serra-01/application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":20,"object":{"cmd":"set_lorawan_sf","value":7}}'
+mosquitto_pub -h <IP-ChirpStack> \
+  -t "application/1/device/26a160fffe6e86bc/command/down" \
+  -m '{"fPort":1,"object":{"cmd":"set_tx_interval","value":0}}'
 ```
 
 **Riduci potenza TX a 2 dBm** (test di attenuazione):
 ```bash
-mosquitto_pub -h hub.mia-rete.local \
-  -t "edges/serra-01/application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":20,"object":{"cmd":"set_tx_power","value":2}}'
-```
-
-**Timeout GPS a 30 secondi** (per uso indoor senza fix affidabile):
-```bash
-mosquitto_pub -h hub.mia-rete.local \
-  -t "edges/serra-01/application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":20,"object":{"cmd":"set_gps_timeout","value":30}}'
+mosquitto_pub -h <IP-ChirpStack> \
+  -t "application/1/device/26a160fffe6e86bc/command/down" \
+  -m '{"fPort":1,"object":{"cmd":"set_tx_power","value":2}}'
 ```
 
 **Soglie batteria personalizzate**:
 ```bash
-mosquitto_pub -h hub.mia-rete.local \
-  -t "edges/serra-01/application/1/device/26a160fffe6e86bc/command/down" \
-  -m '{"fPort":20,"object":{"cmd":"set_batt_thresholds","value":{"emergency_mv":3000,"recovery_mv":3200}}}'
-```
-
-**Monitor uplink in tempo reale** (in un altro terminale):
-```bash
-mosquitto_sub -h hub.mia-rete.local -v \
-  -t "edges/serra-01/application/+/device/26a160fffe6e86bc/event/up"
-```
-
-**Monitor downlink in transito** (per verificare che il bridge inoltri correttamente):
-```bash
-mosquitto_sub -h hub.mia-rete.local -v \
-  -t "edges/serra-01/application/+/device/26a160fffe6e86bc/command/down"
+mosquitto_pub -h <IP-ChirpStack> \
+  -t "application/1/device/26a160fffe6e86bc/command/down" \
+  -m '{"fPort":1,"object":{"cmd":"set_batt_thresholds","value":{"emergency_mv":3000,"recovery_mv":3200}}}'
 ```
 
 Nel repository c'è anche uno **script bash `test_downlinks.sh`** che avvolge tutti questi comandi in un'interfaccia sintetica:
@@ -762,17 +848,16 @@ BROKER_HOST=192.168.1.50 EDGE_ID=lab-01 ./test_downlinks.sh identify
 
 Ricapitolando il percorso di un comando dal momento in cui viene pubblicato a quando viene eseguito:
 
-1. **Utente pubblica** su MQTT del broker centrale un JSON con `fPort` e `object`
-2. **Bridge Mosquitto** rileva il topic con prefisso `edges/<edge>/command/down` e lo replica sul broker Mosquitto del RPi ChirpStack, senza prefisso
-3. **ChirpStack riceve** il messaggio sul topic canonico `application/+/device/+/command/down`
-4. **ChirpStack chiama** la funzione `encodeDownlink()` del codec JavaScript passandogli l'oggetto JSON e il FPort
-5. **Il codec restituisce** i byte binari e ChirpStack li **mette in coda** per quel device
-6. **Il device fa il prossimo uplink** (secondo il suo intervallo TX)
-7. **RadioLib apre le finestre RX** (1s e 2s dopo il TX)
-8. **ChirpStack invia il downlink** nella finestra RX appropriata
-9. **`node.sendReceive()` restituisce state > 0**, indicando che è arrivato un downlink
-10. **Il firmware chiama** `handleDownlink(port, buf, len)`, che dispatcha in base al FPort
-11. **Il comando viene eseguito**: azione immediata (FPort 10) o salvataggio in NVS (FPort 20)
+1. **Utente pubblica** su MQTT un JSON su `application/<id>/device/<eui>/command/down` con `{"fPort":1, "object":{"cmd":..., "value":...}}`
+2. **ChirpStack riceve** il messaggio e chiama `encodeDownlink()` del codec
+3. **Il codec riconosce** il comando dal campo `cmd` e restituisce `{bytes: [...], fPort: 10 o 20}`
+4. **ChirpStack accoda** il downlink sul FPort scelto dal codec
+5. **Il device fa il prossimo uplink** (secondo il suo intervallo TX)
+6. **RadioLib apre le finestre RX** (1s e 2s dopo il TX)
+7. **ChirpStack invia il downlink** nella finestra RX appropriata
+8. **`node.sendReceive()` restituisce state > 0**, indicando che è arrivato un downlink
+9. **Il firmware chiama** `handleDownlink(port, buf, len)`, che dispatcha in base al FPort
+10. **Il comando viene eseguito**: azione immediata (FPort 10) o salvataggio in NVS (FPort 20)
 
 Latenza tipica end-to-end: da alcuni secondi (se il device sta per trasmettere) a diversi minuti (se ha appena finito un ciclo).
 
@@ -786,7 +871,7 @@ TX ok + downlink in RX1
 [DOWNLINK] SET_TX_INTERVAL: preset=3 (300s)
 ```
 
-Il primo log dice **quando** è arrivato (in RX1 o RX2). Il secondo dice **cosa** è arrivato (bytes esadecimali). Il terzo dice **cosa è stato fatto** (comando riconosciuto e applicato). Se un comando fallisce la validazione, il terzo log dice il motivo:
+Il primo log dice **quando** è arrivato (in RX1 o RX2). Il secondo dice **cosa** è arrivato (bytes esadecimali). Il terzo dice **cosa è stato fatto** (comando riconosciuto e applicato). Se un comando fallisce la validazione lato firmware, il terzo log dice il motivo:
 
 ```
 [DOWNLINK] FPort=20 len=2 data=1207
@@ -799,11 +884,14 @@ Utile per debug quando il comando arriva ma il device non si comporta come attes
 
 ## Modalità debug e produzione
 
-Il firmware espone due flag di configurazione in cima al file per switchare tra sviluppo e produzione:
+Il firmware espone alcuni flag di configurazione in cima al file per switchare tra sviluppo e produzione:
 
 ```cpp
-#define DEBUG_NO_DEEP_SLEEP    1   // 1 = niente deep sleep vero (USB CDC viva)
-#define ENABLE_NVS_PERSISTENCE 0   // 0 = niente scritture flash durante il debug
+#define DEBUG_NO_DEEP_SLEEP        1   // 1 = niente deep sleep vero (USB CDC viva)
+#define ENABLE_NVS_PERSISTENCE     0   // 0 = niente scritture flash durante il debug
+#define ENABLE_BATTERY_PROTECTION  1   // 1 = emergency sleep se vbat sotto soglia
+#define ENABLE_DOWNLINK_HANDLER    1   // 1 = interpreta i downlink come comandi
+#define USE_OTAA                   0   // 1 = OTAA, 0 = ABP (attuale)
 ```
 
 **In modalità debug** (`DEBUG_NO_DEEP_SLEEP = 1`):
@@ -827,6 +915,8 @@ Ora il device è in bootloader mode indipendentemente da cosa stava facendo il f
 
 **Il flag `ENABLE_NVS_PERSISTENCE`** disattiva tutte le scritture in NVS quando è a 0. Utile per non usurare la flash durante lo sviluppo. Con NS che ha "skip FCnt check" attivo, non serve la persistenza per far funzionare il device.
 
+**Il flag `USE_OTAA`** è predisposto per futura implementazione di OTAA come alternativa ad ABP. Attualmente vale sempre 0 (ABP). Quando sarà implementato, con `USE_OTAA=1` il firmware farà il join dinamico con AppKey invece di usare chiavi statiche.
+
 ---
 
 ## Diagnostica e osservabilità
@@ -836,7 +926,7 @@ Il firmware stampa un banner esteso ad ogni boot che include informazioni utili 
 ```
 ===================================================
  Heltec V4 - SCD41 + L76K - LoRaWAN ABP
- schema=0x42  boot#3  TX=60s  SF9
+ schema=0x42  boot#3  TX=60s  SF9  TxPow=14dBm
  DevEUI: 26-A1-60-FF-FE-6E-86-BC
  DevAddr (configurato): 260B262C
 ===================================================
@@ -899,17 +989,19 @@ Il firmware, per essere solo un end-device LoRaWAN "banale", incorpora concetti 
 - **Sensori con protocolli diversi** (I²C sincrono per SCD41, UART asincrono per GPS)
 - **Payload binario compatto versionato** con schema forward-compatible
 - **Stack LoRaWAN** con classe A, ABP, banda EU868
+- **Uso didattico di FPort** come discriminatore di tipo di messaggio
 - **Persistenza multilivello** (RTC memory + NVS con write batching)
+- **Downlink handler con configurazione runtime modificabile** da remoto
 - **Modalità debug/produzione** switchabili
 - **Diagnostica strutturata** con logging e sketch dedicati
 
 Alcune cose che non si sono fatte ma che varrebbe la pena aggiungere in un progetto reale:
 
-- **OTAA invece di ABP**: elimina il problema del FCnt e semplifica il rollout
-- **Downlink handler**: attualmente il codice ignora i downlink; una configurazione remota (cambio TX interval, calibrazione soglie) sarebbe facile da aggiungere
+- **OTAA invece di ABP**: elimina il problema del FCnt e semplifica il rollout. Il `#define USE_OTAA` è già predisposto
 - **Watchdog**: se il firmware si blocca in un punto imprevisto (bug in una libreria terza), il device non riesce a fare deep sleep e scarica la batteria
 - **ADR (Adaptive Data Rate)** gestito dal server: attualmente il device usa sempre SF9 fisso; ADR permetterebbe di scendere a SF7 quando il gateway è vicino, risparmiando airtime
 - **Persistenza dell'ultima posizione GPS in NVS** invece che solo in RTC memory: sopravvivrebbe anche a power-off
+- **Node-RED come traduttore MQTT** per rispettare la convenzione `<ambiente>/comandi/` e `<ambiente>/config/` sul broker centrale, mappandoli al topic canonico ChirpStack
 
 Ognuna di queste sarebbe una lezione a parte.
 
