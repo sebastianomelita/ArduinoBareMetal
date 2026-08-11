@@ -75,6 +75,7 @@ const uint32_t TX_INTERVAL_SECONDS[] = {
 #define LORAWAN_SF  9
 
 // ---- Credenziali ABP ----
+// Usate solo se USE_OTAA = 0
 // DevAddr: 4 byte
 uint32_t devAddr = 0x260B262C;
 
@@ -87,6 +88,24 @@ uint8_t appSKey[16] = {
     0x7A, 0x95, 0x96, 0x3A, 0xB4, 0xAD, 0xC6, 0xE7,
     0xEA, 0x25, 0x19, 0x11, 0x4B, 0xD4, 0xAD, 0xF3
 };
+
+// ---- Credenziali OTAA ----
+// Usate solo se USE_OTAA = 1
+// AppEUI (JoinEUI in LoRaWAN 1.1): identita' dell'applicazione, 8 byte.
+// Spesso zeri per progetti privati (non richiede registrazione IEEE).
+// Alcuni NS pretendono un valore non-zero: verifica sulla UI ChirpStack.
+const uint64_t appEui = 0x0000000000000000ULL;
+
+// AppKey: chiave master di 16 byte. Deve corrispondere ESATTAMENTE al valore
+// configurato in ChirpStack per questo device (Device Profile → OTAA keys).
+// Genera un valore random e usalo qui, in ChirpStack incolla lo stesso.
+uint8_t appKey[16] = {
+    0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+    0x88, 0x99, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF
+};
+
+// Il DevEUI e' comune ad ABP e OTAA: viene derivato dal MAC address del chip
+// tramite la funzione getDevEuiFromMac() (definita piu' avanti nel file).
 
 // FPort applicativo
 #define LORAWAN_FPORT  1
@@ -146,6 +165,12 @@ uint8_t appSKey[16] = {
 #define NVS_KEY_GPS_TIMEOUT   "gps_t"      // uint16_t sec
 #define NVS_KEY_VBAT_EMERG    "vbat_em"    // uint16_t mV
 #define NVS_KEY_VBAT_RECOV    "vbat_rc"    // uint16_t mV
+#define NVS_KEY_ADR           "adr"        // uint8_t 0/1
+
+// Chiave NVS per nonces OTAA (solo se USE_OTAA=1)
+// Persiste DevNonce e JoinNonce cosi' il device non ripete valori dopo
+// power-off (il NS rifiuterebbe il join con "MIC mismatch")
+#define NVS_KEY_NONCES        "nonces"     // ~24 byte
 
 // ---- Downlink handler ----
 // Se attivo (1), il firmware interpreta i downlink LoRaWAN come comandi.
@@ -172,13 +197,30 @@ uint8_t appSKey[16] = {
 #define ENABLE_DOWNLINK_HANDLER  1
 
 // ---- Attivazione LoRaWAN: ABP vs OTAA ----
-// 0 = ABP - chiavi statiche (implementazione attuale)
-// 1 = OTAA - join dinamico con AppKey (NON ANCORA IMPLEMENTATO)
+// 0 = ABP  - chiavi statiche DevAddr + NwkSKey + AppSKey. La sessione LoRaWAN
+//            e' gia' attiva al boot, nessuna comunicazione radio richiesta
+//            per l'attivazione. Il FCnt e' un problema (vedi sezione
+//            "Persistenza del frame counter").
+// 1 = OTAA - chiavi statiche DevEUI + AppEUI + AppKey. Il device fa un join
+//            via radio al boot: manda JoinRequest, il NS risponde con
+//            JoinAccept che contiene DevAddr + materiale per derivare
+//            NwkSKey e AppSKey di sessione. FCnt gestito automaticamente
+//            dal NS ad ogni join.
 //
-// Predisposizione per futura implementazione OTAA. Quando sara' pronto,
-// il flag USE_OTAA=1 attivera' beginOTAA + activateOTAA con retry e
-// persistenza dei nonces. Per ora tenere 0.
+// Cambiando questo flag NON serve modificare altro nel firmware: il codice
+// in initLoRaWAN() sceglie la strategia in base a USE_OTAA. Serve pero'
+// riconfigurare il device su ChirpStack:
+//   ABP  -> Device Profile con "Device supports OTAA" = OFF, poi inserisci
+//           DevAddr + NwkSKey + AppSKey
+//   OTAA -> Device Profile con "Device supports OTAA" = ON, poi inserisci
+//           solo AppKey (DevAddr assegnato dal NS al join)
 #define USE_OTAA  0
+
+// Warning di compilazione: OTAA senza NVS = problemi al secondo power-off
+// perche' il DevNonce si perde e il NS rifiuta il nuovo join come replay
+#if USE_OTAA && !ENABLE_NVS_PERSISTENCE
+#warning "USE_OTAA=1 senza ENABLE_NVS_PERSISTENCE: rischio di join fallito dopo power-off (DevNonce non persistito). Ok solo per test rapidi."
+#endif
 
 // ---- Watchdog ----
 // Se attivo (1), il firmware arma un task watchdog hardware dell'ESP32-S3
@@ -198,6 +240,24 @@ uint8_t appSKey[16] = {
 // il device quando ti fermi a leggere lo stato).
 #define ENABLE_WATCHDOG    1
 #define WDT_TIMEOUT_S    120
+
+// ---- ADR (Adaptive Data Rate) ----
+// Meccanismo standard LoRaWAN in cui il Network Server ottimizza dinamicamente
+// SF e potenza TX in base alla qualita' del link. Con link buono il device
+// scende a SF7 (airtime ridotto ~8x, batteria piu' lunga), con link scarso
+// sale progressivamente fino a SF12.
+//
+// Politica adottata:
+//   USE_OTAA=1 -> ADR abilitato/disabilitato secondo cfgAdr (default ENABLE_ADR)
+//   USE_OTAA=0 -> ADR sempre DISABILITATO indipendentemente da cfgAdr
+//                 (in ABP il device dimentica lo stato ADR ad ogni reboot,
+//                 causando desync col NS; meglio non attivarlo affatto)
+//
+// Interazione con set_lorawan_sf (downlink FPort 20): se ADR e' attivo,
+// il comando salva il valore in NVS ma emette un warning perche' ADR
+// sovrascrivera' l'SF nel giro di pochi cicli. Se vuoi forzare SF manuale,
+// disabilita prima ADR con set_adr_enabled.
+#define ENABLE_ADR    1
 
 // ---- Schema payload ----
 #define SCHEMA_ID  0x42     // SCD41 + L76K + batteria
@@ -320,6 +380,7 @@ uint8_t  cfgTxPower;               // dBm 2-14
 uint16_t cfgGpsTimeoutS;           // secondi
 uint16_t cfgVbatEmergencyMv;       // mV
 uint16_t cfgVbatRecoveryMv;        // mV
+bool     cfgAdr;                   // ADR abilitato/disabilitato
 
 // =============================================================
 // UTILITY
@@ -414,6 +475,12 @@ void printHex(const uint8_t* buf, size_t len) {
 RTC_DATA_ATTR uint8_t rtcSessionBuffer[RADIOLIB_LORAWAN_SESSION_BUF_SIZE];
 RTC_DATA_ATTR bool    rtcSessionValid = false;
 
+// Buffer per i nonces OTAA (solo se USE_OTAA=1), in RTC memory.
+// Contiene DevNonce (2 byte), JoinNonce (3 byte) e altri metadata.
+// Persiste anche in NVS per sopravvivere ai power-off.
+RTC_DATA_ATTR uint8_t rtcNoncesBuffer[RADIOLIB_LORAWAN_NONCES_BUF_SIZE];
+RTC_DATA_ATTR bool    rtcNoncesValid = false;
+
 /**
  * Salva l'attuale buffer di sessione LoRaWAN in NVS.
  */
@@ -475,6 +542,65 @@ void cacheSessionInRTC() {
 
 
 // =============================================================
+// PERSISTENZA NONCES OTAA
+// =============================================================
+//
+// I nonces (DevNonce, JoinNonce) sono contatori antireplay che RadioLib
+// gestisce internamente durante il join OTAA. Se il device fa power-off
+// senza persisterli, al boot successivo puo' generare un DevNonce gia'
+// usato: il NS rifiuta il join con "MIC mismatch" o "DevNonce reused".
+//
+// Persistiamo il buffer completo su due livelli, come la sessione:
+//   RTC memory  -> veloce, sopravvive a deep sleep
+//   NVS (flash) -> lento, sopravvive a power-off e reflash
+
+#if USE_OTAA
+
+bool saveNoncesToNVS() {
+    uint8_t buf[RADIOLIB_LORAWAN_NONCES_BUF_SIZE];
+    int16_t rc = node.getBufferNonces(buf);
+    if (rc != RADIOLIB_ERR_NONE) {
+        Serial.printf("NVS: getBufferNonces failed rc=%d\n", rc);
+        return false;
+    }
+    if (!prefs.begin(NVS_NAMESPACE, false)) {
+        Serial.println("NVS: apertura namespace R/W fallita");
+        return false;
+    }
+    size_t written = prefs.putBytes(NVS_KEY_NONCES, buf,
+                                    RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
+    prefs.end();
+    if (written != RADIOLIB_LORAWAN_NONCES_BUF_SIZE) {
+        Serial.printf("NVS: putBytes(nonces) parziale (%u/%u)\n",
+                      (unsigned)written,
+                      (unsigned)RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
+        return false;
+    }
+    // Aggiorna anche RTC cache
+    memcpy(rtcNoncesBuffer, buf, RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
+    rtcNoncesValid = true;
+    Serial.println("Nonces OTAA salvati in NVS");
+    return true;
+}
+
+bool loadNoncesFromNVS(uint8_t* out) {
+    if (!prefs.begin(NVS_NAMESPACE, true)) {
+        return false;
+    }
+    size_t len = prefs.getBytesLength(NVS_KEY_NONCES);
+    if (len != RADIOLIB_LORAWAN_NONCES_BUF_SIZE) {
+        prefs.end();
+        return false;
+    }
+    prefs.getBytes(NVS_KEY_NONCES, out, RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
+    prefs.end();
+    return true;
+}
+
+#endif  // USE_OTAA
+
+
+// =============================================================
 // CONFIG RUNTIME - lettura/scrittura da NVS
 // =============================================================
 //
@@ -490,6 +616,7 @@ void loadRuntimeConfig() {
     cfgGpsTimeoutS      = GPS_FIX_TIMEOUT_COLD_S;
     cfgVbatEmergencyMv  = VBAT_EMERGENCY_MV;
     cfgVbatRecoveryMv   = VBAT_RECOVERY_MV;
+    cfgAdr              = (bool)ENABLE_ADR;
 
     // Prova a leggere da NVS (se una chiave manca, mantiene il default)
     if (prefs.begin(NVS_NAMESPACE, true)) {   // true = read-only
@@ -499,6 +626,7 @@ void loadRuntimeConfig() {
         cfgGpsTimeoutS      = prefs.getUShort(NVS_KEY_GPS_TIMEOUT,  cfgGpsTimeoutS);
         cfgVbatEmergencyMv  = prefs.getUShort(NVS_KEY_VBAT_EMERG,   cfgVbatEmergencyMv);
         cfgVbatRecoveryMv   = prefs.getUShort(NVS_KEY_VBAT_RECOV,   cfgVbatRecoveryMv);
+        cfgAdr              = prefs.getUChar (NVS_KEY_ADR,          cfgAdr ? 1 : 0) != 0;
         prefs.end();
     }
 
@@ -507,6 +635,7 @@ void loadRuntimeConfig() {
     if (cfgLoRaWANSF < 7 || cfgLoRaWANSF > 12) cfgLoRaWANSF = LORAWAN_SF;
     if (cfgTxPower < 2 || cfgTxPower > 14) cfgTxPower = 14;
     if (cfgGpsTimeoutS < 10 || cfgGpsTimeoutS > 300) cfgGpsTimeoutS = GPS_FIX_TIMEOUT_COLD_S;
+    // cfgAdr e' bool, nessun sanity check necessario
 }
 
 // Helper per scrivere una config in NVS
@@ -547,6 +676,7 @@ bool saveConfigUShort(const char* key, uint16_t val) {
 #define CFG_SET_TX_POWER      0x13
 #define CFG_SET_GPS_TIMEOUT   0x14
 #define CFG_SET_BATT_THRESH   0x15
+#define CFG_SET_ADR_ENABLED   0x16
 
 // Fa lampeggiare il LED N volte per identificare visivamente il device
 void identifyBlink(uint8_t times) {
@@ -637,6 +767,12 @@ void handleDownlinkPort20(uint8_t* buf, size_t len) {
             if (saveConfigUChar(NVS_KEY_LORAWAN_SF, buf[1])) {
                 cfgLoRaWANSF = buf[1];
                 Serial.printf("[DOWNLINK] SET_LORAWAN_SF: SF%u\n", buf[1]);
+#if USE_OTAA
+                if (cfgAdr) {
+                    Serial.println("[DOWNLINK] WARNING: ADR attivo, sovrascrivera' l'SF");
+                    Serial.println("           usa set_adr_enabled=0 prima, se vuoi forzare SF manuale");
+                }
+#endif
             }
             break;
 
@@ -685,6 +821,23 @@ void handleDownlinkPort20(uint8_t* buf, size_t len) {
                 cfgVbatRecoveryMv  = rc;
                 Serial.printf("[DOWNLINK] SET_BATT_THRESH: emergency=%umV recovery=%umV\n",
                               em, rc);
+            }
+            break;
+        }
+
+        case CFG_SET_ADR_ENABLED: {
+            if (len < 2 || (buf[1] != 0 && buf[1] != 1)) {
+                Serial.println("[DOWNLINK] SET_ADR_ENABLED: valore deve essere 0 o 1");
+                return;
+            }
+#if !USE_OTAA
+            Serial.println("[DOWNLINK] SET_ADR_ENABLED: valore salvato ma ADR ignorato in modo ABP");
+#endif
+            if (saveConfigUChar(NVS_KEY_ADR, buf[1])) {
+                cfgAdr = (buf[1] != 0);
+                Serial.printf("[DOWNLINK] SET_ADR_ENABLED: %s\n",
+                              cfgAdr ? "abilitato" : "disabilitato");
+                Serial.println("           applicato al prossimo initLoRaWAN (reboot o wake)");
             }
             break;
         }
@@ -847,6 +1000,24 @@ bool waitForGpsFix(uint32_t timeout_s) {
 // LoRaWAN
 // =============================================================
 
+/**
+ * Deriva il DevEUI a 64 bit dal MAC address a 48 bit dell'ESP32.
+ * Pattern IEEE MAC48-to-EUI64: inserisce FF:FE in mezzo.
+ *   MAC 48-bit:  AA:BB:CC:DD:EE:FF
+ *   DevEUI 64:   AA:BB:CC:FF:FE:DD:EE:FF
+ * Il valore e' stabile per il chip (dipende dall'efuse) e unico globalmente.
+ */
+void getDevEuiFromMac(uint8_t devEui[8]) {
+    uint64_t chipMac = ESP.getEfuseMac();
+    uint8_t mac[6];
+    for (int i = 0; i < 6; i++) {
+        mac[i] = (chipMac >> (8 * i)) & 0xFF;
+    }
+    devEui[0] = mac[0]; devEui[1] = mac[1]; devEui[2] = mac[2];
+    devEui[3] = 0xFF;   devEui[4] = 0xFE;
+    devEui[5] = mac[3]; devEui[6] = mac[4]; devEui[7] = mac[5];
+}
+
 bool initLoRaWAN() {
     Serial.println("Init SPI e SX1262...");
     SPI.begin(PIN_LORA_SCK, PIN_LORA_MISO, PIN_LORA_MOSI, PIN_LORA_NSS);
@@ -860,6 +1031,110 @@ bool initLoRaWAN() {
         return false;
     }
     Serial.println("Radio begin OK");
+
+#if USE_OTAA
+    // ================================================================
+    // OTAA - Over-The-Air Activation
+    // ================================================================
+    // Il device manda una JoinRequest, il NS risponde con JoinAccept.
+    // DevAddr e chiavi di sessione (NwkSKey, AppSKey) vengono derivate
+    // dinamicamente. Bisogna persistere i nonces per non ripeterli.
+
+    uint8_t devEui[8];
+    getDevEuiFromMac(devEui);
+
+    Serial.printf("beginOTAA con AppEUI=%016llX, DevEUI derivato da MAC\n",
+                  appEui);
+    node.beginOTAA(appEui, appKey, devEui);
+
+    // Prova a ripristinare nonces + sessione dai precedenti join (evita nuovo join)
+    // Priorita': RTC memory -> NVS -> nuovo join
+    bool restored = false;
+
+    if (rtcNoncesValid) {
+        int16_t r = node.setBufferNonces(rtcNoncesBuffer);
+        if (r == RADIOLIB_ERR_NONE) {
+            Serial.println("Nonces ripristinati da RTC memory");
+        }
+    }
+#if ENABLE_NVS_PERSISTENCE
+    if (!rtcNoncesValid) {
+        uint8_t noncesBuf[RADIOLIB_LORAWAN_NONCES_BUF_SIZE];
+        if (loadNoncesFromNVS(noncesBuf)) {
+            int16_t r = node.setBufferNonces(noncesBuf);
+            if (r == RADIOLIB_ERR_NONE) {
+                Serial.println("Nonces ripristinati da NVS");
+                memcpy(rtcNoncesBuffer, noncesBuf,
+                       RADIOLIB_LORAWAN_NONCES_BUF_SIZE);
+                rtcNoncesValid = true;
+            }
+        }
+    }
+#endif
+
+    // Sessione esistente -> saltiamo il join (risparmio airtime)
+    if (rtcSessionValid) {
+        int16_t r = node.setBufferSession(rtcSessionBuffer);
+        if (r == RADIOLIB_ERR_NONE) {
+            Serial.println("Sessione OTAA ripristinata da RTC, join saltato");
+            restored = true;
+        }
+    }
+#if ENABLE_NVS_PERSISTENCE
+    if (!restored) {
+        uint8_t sessionBuf[RADIOLIB_LORAWAN_SESSION_BUF_SIZE];
+        if (loadSessionFromNVS(sessionBuf)) {
+            int16_t r = node.setBufferSession(sessionBuf);
+            if (r == RADIOLIB_ERR_NONE) {
+                Serial.println("Sessione OTAA ripristinata da NVS, join saltato");
+                restored = true;
+                memcpy(rtcSessionBuffer, sessionBuf,
+                       RADIOLIB_LORAWAN_SESSION_BUF_SIZE);
+                rtcSessionValid = true;
+            }
+        }
+    }
+#endif
+
+    // Nessuna sessione valida -> avvia join con retry
+    if (!restored) {
+        Serial.println("Avvio join OTAA...");
+        const int MAX_JOIN_ATTEMPTS = 3;
+        for (int attempt = 1; attempt <= MAX_JOIN_ATTEMPTS; attempt++) {
+            Serial.printf("  Join tentativo %d/%d...\n", attempt, MAX_JOIN_ATTEMPTS);
+            int16_t st = node.activateOTAA();
+            if (st == RADIOLIB_LORAWAN_NEW_SESSION) {
+                Serial.println("Join OTAA riuscito!");
+                restored = true;
+                // Salva subito nonces (contengono il nuovo DevNonce usato)
+#if ENABLE_NVS_PERSISTENCE
+                saveNoncesToNVS();
+#endif
+                // Aggiorna nonces in RTC anche se NVS disabilitata
+                node.getBufferNonces(rtcNoncesBuffer);
+                rtcNoncesValid = true;
+                cacheSessionInRTC();
+                break;
+            }
+            Serial.printf("  Join fallito rc=%d\n", st);
+            // Backoff crescente prima del prossimo tentativo
+            if (attempt < MAX_JOIN_ATTEMPTS) {
+                uint32_t backoff_s = 30UL * attempt;
+                Serial.printf("  Attesa %us prima del prossimo tentativo\n", backoff_s);
+                delay(backoff_s * 1000UL);
+            }
+        }
+        if (!restored) {
+            Serial.println("Tutti i tentativi di join OTAA falliti");
+            return false;
+        }
+    }
+
+#else
+    // ================================================================
+    // ABP - Activation By Personalization
+    // ================================================================
+    // Chiavi statiche (DevAddr + NwkSKey + AppSKey). Sessione gia' attiva.
 
     // BeginABP per LoRaWAN 1.0 (Conduit usa 1.0):
     //   beginABP(devAddr, fNwkSIntKey, sNwkSIntKey, nwkSEncKey, appSKey)
@@ -935,6 +1210,7 @@ bool initLoRaWAN() {
     if (!restored) {
         Serial.println("Nessuna sessione precedente: FCnt parte da 0 (primo boot)");
     }
+#endif  // USE_OTAA
 
     // Imposta potenza TX dalla config runtime (modificabile via downlink)
     // 14 dBm = max legale EU868. Range configurabile: 2-14 dBm
@@ -945,8 +1221,24 @@ bool initLoRaWAN() {
         Serial.printf("setTxPower warning: %d\n", txPowerState);
     }
 
+    // Attivazione ADR (Adaptive Data Rate)
+    // Politica: attivo solo in modalita' OTAA. In ABP il device dimentica
+    // lo stato ADR ad ogni reboot e va in desync col NS
+#if USE_OTAA
+    if (cfgAdr) {
+        node.setADR(true);
+        Serial.println("ADR attivo (OTAA, cfgAdr=1)");
+    } else {
+        node.setADR(false);
+        Serial.println("ADR disabilitato (cfgAdr=0)");
+    }
+#else
+    node.setADR(false);
+    Serial.println("ADR ignorato: modo ABP non supporta ADR affidabilmente");
+#endif
+
     Serial.printf("FCnt uplink corrente: %lu\n", node.getFCntUp());
-    Serial.println("LoRaWAN ABP setup completato");
+    Serial.printf("LoRaWAN %s setup completato\n", USE_OTAA ? "OTAA" : "ABP");
     return true;
 }
 
@@ -1133,29 +1425,29 @@ void setup() {
     Serial.println("===================================================");
     Serial.printf(" Heltec V4 - SCD41 + L76K - LoRaWAN %s\n",
                   USE_OTAA ? "OTAA" : "ABP");
-    Serial.printf(" schema=0x%02X  boot#%u  TX=%us  SF%u  TxPow=%udBm\n",
+    Serial.printf(" schema=0x%02X  boot#%u  TX=%us  SF%u  TxPow=%udBm  ADR=%s\n",
                   SCHEMA_ID, bootCount,
                   TX_INTERVAL_SECONDS[cfgTxIntervalPreset],
-                  cfgLoRaWANSF, cfgTxPower);
+                  cfgLoRaWANSF, cfgTxPower,
+#if USE_OTAA
+                  cfgAdr ? "ON" : "OFF"
+#else
+                  "OFF(ABP)"
+#endif
+                  );
     if (forceTxNow) {
         Serial.println(" [FLAG] forceTxNow attivo (da downlink precedente)");
     }
 
     // Stampa DevEUI derivato dal MAC address (formato standard LoRaWAN)
-    // ESP.getEfuseMac() ritorna il MAC di fabbrica come uint64_t (little-endian)
-    uint64_t chipMac = ESP.getEfuseMac();
-    uint8_t mac[6];
-    for (int i = 0; i < 6; i++) {
-        mac[i] = (chipMac >> (8 * i)) & 0xFF;
-    }
-    // DevEUI = MAC[0..2] + FF FE + MAC[3..5] (schema EUI-64 da EUI-48)
-    uint8_t devEui[8] = {
-        mac[0], mac[1], mac[2], 0xFF, 0xFE, mac[3], mac[4], mac[5]
-    };
+    uint8_t devEui[8];
+    getDevEuiFromMac(devEui);
     Serial.printf(" DevEUI: %02X-%02X-%02X-%02X-%02X-%02X-%02X-%02X\n",
                   devEui[0], devEui[1], devEui[2], devEui[3],
                   devEui[4], devEui[5], devEui[6], devEui[7]);
+#if !USE_OTAA
     Serial.printf(" DevAddr (configurato): %08X\n", devAddr);
+#endif
     Serial.println("===================================================");
 
     // ---- RILASCIO HOLD GPIO al risveglio ----
