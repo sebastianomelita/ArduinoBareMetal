@@ -110,20 +110,26 @@ function decodeSchema42(b) {
 // ENCODE DOWNLINK (server -> device)
 // =============================================================
 //
-// Il codec RISPETTA il fPort ricevuto dal client MQTT (non lo sovrascrive).
-// Fa solo:
-//   1. Verifica che il comando esista
-//   2. Verifica che il comando sia coerente con il fPort scelto
-//      (es. "reboot" va su fPort 10, non su fPort 20)
-//   3. Traduce il comando in byte binari
+// Input JSON:
+//   { cmd: "nome_comando", value: <opzionale> }
 //
-// Convenzione:
-//   fPort 10 = comandi di azione (reboot, identify, force_tx, clear_nvs)
-//   fPort 20 = comandi di configurazione (set_tx_interval, set_lorawan_sf, ...)
+// I comandi disponibili per FPort:
 //
-// Esempi mosquitto_pub:
-//   {"fPort":10, "object":{"cmd":"reboot"}}
-//   {"fPort":20, "object":{"cmd":"set_tx_interval","value":3}}
+// FPort 10 - COMANDI DI AZIONE (one-shot, non persistenti)
+//   { cmd: "reboot" }                    -> [0x01]
+//   { cmd: "identify" }                  -> [0x02]
+//   { cmd: "force_tx_now" }              -> [0x03]
+//   { cmd: "clear_nvs" }                 -> [0x04, 0xA5]   (byte magic per confermare)
+//
+// FPort 20 - CONFIGURAZIONE (persistente in NVS del device)
+//   { cmd: "set_tx_interval", value: 0-5 }    -> [0x11, <preset>]
+//                                              (0=10s, 1=20s, 2=1min, 3=5min, 4=10min, 5=30min)
+//   { cmd: "set_lorawan_sf", value: 7-12 }    -> [0x12, <sf>]
+//   { cmd: "set_tx_power", value: 2-14 }      -> [0x13, <dBm>]
+//   { cmd: "set_gps_timeout", value: 10-300 } -> [0x14, <sec_LSB>, <sec_MSB>]
+//   { cmd: "set_batt_thresholds",
+//     value: { emergency_mv: 3100, recovery_mv: 3300 } }
+//                                             -> [0x15, <em_LSB>, <em_MSB>, <rec_LSB>, <rec_MSB>]
 
 function encodeDownlink(input) {
     var data = input.data;
@@ -132,18 +138,26 @@ function encodeDownlink(input) {
     if (!data || !data.cmd) {
         return { errors: ["Downlink richiede { cmd: '...' }"] };
     }
+
     var cmd = String(data.cmd).toLowerCase();
 
     // ---- FPort 10: comandi di azione ----
     if (port === 10) {
         switch (cmd) {
-            case "reboot":       return { bytes: [0x01] };
-            case "identify":     return { bytes: [0x02] };
-            case "force_tx_now": return { bytes: [0x03] };
-            case "clear_nvs":    return { bytes: [0x04, 0xA5] };
+            case "reboot":
+                return { bytes: [0x01], fPort: 10 };
+
+            case "identify":
+                return { bytes: [0x02], fPort: 10 };
+
+            case "force_tx_now":
+                return { bytes: [0x03], fPort: 10 };
+
+            case "clear_nvs":
+                return { bytes: [0x04, 0xA5], fPort: 10 };
+
             default:
-                return { errors: ["Comando FPort 10 sconosciuto: " + cmd +
-                                  " (comandi validi: reboot, identify, force_tx_now, clear_nvs)"] };
+                return { errors: ["Comando FPort 10 sconosciuto: " + cmd] };
         }
     }
 
@@ -155,25 +169,28 @@ function encodeDownlink(input) {
                 if (data.value === undefined || data.value < 0 || data.value > 5) {
                     return { errors: ["set_tx_interval richiede value 0-5"] };
                 }
-                return { bytes: [0x11, data.value] };
+                return { bytes: [0x11, data.value], fPort: 20 };
 
             case "set_lorawan_sf":
                 if (data.value === undefined || data.value < 7 || data.value > 12) {
                     return { errors: ["set_lorawan_sf richiede value 7-12"] };
                 }
-                return { bytes: [0x12, data.value] };
+                return { bytes: [0x12, data.value], fPort: 20 };
 
             case "set_tx_power":
                 if (data.value === undefined || data.value < 2 || data.value > 14) {
                     return { errors: ["set_tx_power richiede value 2-14 dBm"] };
                 }
-                return { bytes: [0x13, data.value] };
+                return { bytes: [0x13, data.value], fPort: 20 };
 
             case "set_gps_timeout":
                 if (data.value === undefined || data.value < 10 || data.value > 300) {
                     return { errors: ["set_gps_timeout richiede value 10-300 secondi"] };
                 }
-                return { bytes: [0x14, data.value & 0xFF, (data.value >> 8) & 0xFF] };
+                return {
+                    bytes: [0x14, data.value & 0xFF, (data.value >> 8) & 0xFF],
+                    fPort: 20
+                };
 
             case "set_batt_thresholds":
                 if (!data.value || !data.value.emergency_mv || !data.value.recovery_mv) {
@@ -182,21 +199,29 @@ function encodeDownlink(input) {
                 var em = data.value.emergency_mv;
                 var rc = data.value.recovery_mv;
                 if (em < 2500 || em > 4200 || rc < 2500 || rc > 4200 || rc <= em) {
-                    return { errors: ["thresholds: 2500-4200 mV, e recovery > emergency"] };
+                    return { errors: ["thresholds: 2500-4200 mV e recovery > emergency"] };
                 }
                 return {
                     bytes: [0x15,
                             em & 0xFF, (em >> 8) & 0xFF,
-                            rc & 0xFF, (rc >> 8) & 0xFF]
+                            rc & 0xFF, (rc >> 8) & 0xFF],
+                    fPort: 20
                 };
 
+            case "set_adr_enabled":
+                if (data.value !== 0 && data.value !== 1 &&
+                    data.value !== true && data.value !== false) {
+                    return { errors: ["set_adr_enabled richiede value 0/1 o true/false"] };
+                }
+                var v = (data.value === 1 || data.value === true) ? 1 : 0;
+                return { bytes: [0x16, v], fPort: 20 };
+
             default:
-                return { errors: ["Comando FPort 20 sconosciuto: " + cmd +
-                                  " (comandi validi: set_tx_interval, set_lorawan_sf, set_tx_power, set_gps_timeout, set_batt_thresholds)"] };
+                return { errors: ["Comando FPort 20 sconosciuto: " + cmd] };
         }
     }
 
-    return { errors: ["FPort " + port + " non supportato. Usa 10 per azioni, 20 per config."] };
+    return { errors: ["FPort " + port + " non supportato (usa 10 per azioni, 20 per config)"] };
 }
 
 
