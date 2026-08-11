@@ -13,14 +13,15 @@ Analisi del firmware `heltec_v4_scd41_gps_lorawan.ino`, un end-device LoRaWAN au
 7. [Sensore SCD41: I²C e misure periodiche](#sensore-scd41-ic-e-misure-periodiche)
 8. [GPS L76K: parsing NMEA e timeout adattivo](#gps-l76k-parsing-nmea-e-timeout-adattivo)
 9. [LoRaWAN con RadioLib 7.x](#lorawan-con-radiolib-7x)
-10. [Persistenza del frame counter](#persistenza-del-frame-counter)
-11. [Deep sleep e GPIO hold](#deep-sleep-e-gpio-hold)
-12. [Protezione batteria da under-discharge](#protezione-batteria-da-under-discharge)
-13. [Watchdog hardware](#watchdog-hardware)
-14. [ADR e politica di gestione dei parametri runtime](#adr-e-politica-di-gestione-dei-parametri-runtime)
-15. [Downlink handler e comandi remoti](#downlink-handler-e-comandi-remoti)
-16. [Modalità debug e produzione](#modalità-debug-e-produzione)
-17. [Diagnostica e osservabilità](#diagnostica-e-osservabilità)
+10. [ABP vs OTAA: attivazione statica o dinamica](#abp-vs-otaa-attivazione-statica-o-dinamica)
+11. [Persistenza del frame counter](#persistenza-del-frame-counter)
+12. [Deep sleep e GPIO hold](#deep-sleep-e-gpio-hold)
+13. [Protezione batteria da under-discharge](#protezione-batteria-da-under-discharge)
+14. [Watchdog hardware](#watchdog-hardware)
+15. [ADR e politica di gestione dei parametri runtime](#adr-e-politica-di-gestione-dei-parametri-runtime)
+16. [Downlink handler e comandi remoti](#downlink-handler-e-comandi-remoti)
+17. [Modalità debug e produzione](#modalità-debug-e-produzione)
+18. [Diagnostica e osservabilità](#diagnostica-e-osservabilità)
 
 ---
 
@@ -413,6 +414,140 @@ Non si può fare TX senza aprire le due finestre RX: è specifica del protocollo
 
 ---
 
+## ABP vs OTAA: attivazione statica o dinamica
+
+Prima che un device LoRaWAN possa trasmettere dati applicativi al Network Server, deve essere **attivato** — ovvero il NS deve conoscerlo, associare le sue chiavi crittografiche, e assegnargli un indirizzo di rete (`DevAddr`). La specifica LoRaWAN definisce due metodi di attivazione, alternativi e mutualmente esclusivi:
+
+<p align="center">
+  <img src="img/lorawan_provisioning_security.png" alt="Confronto tra provisioning OTAA e ABP e meccanismi di sicurezza fisica in LoRaWAN" width="750">
+</p>
+
+*Figura 8: a sinistra, il confronto tra provisioning ABP (chiavi hard-coded caricate in fabbrica, con il rischio "stolen keys = forever compromised") e OTAA (join procedure che genera session keys fresche ad ogni attivazione, garantendo forward secrecy). A destra, altri meccanismi di sicurezza LoRaWAN: assenza di accesso reverse su device dormienti, secure elements resistenti al tampering, frame counter per prevenire replay attack (rilevante per la sezione "Persistenza del frame counter" più avanti).*
+
+**ABP** (Activation By Personalization) — le chiavi di sessione e il DevAddr sono statici, generati fuori banda e caricati manualmente sia sul device sia sul NS. Nessuno scambio radio è necessario per l'attivazione.
+
+**OTAA** (Over-The-Air Activation) — il device conosce solo un DevEUI (identificativo) e un AppKey (chiave master). All'accensione fa un "join": manda una `JoinRequest` via radio, il NS risponde con `JoinAccept` che contiene DevAddr assegnato dinamicamente e materiale per derivare le chiavi di sessione (NwkSKey, AppSKey).
+
+Il firmware supporta entrambi tramite il flag `#define USE_OTAA`:
+
+```cpp
+#define USE_OTAA  0   // 0 = ABP (default), 1 = OTAA
+```
+
+Cambiare il flag e ricompilare basta a switchare comportamento: non serve modificare altro nel codice, solo riconfigurare il device su ChirpStack (o Conduit) di conseguenza.
+
+### Cosa serve caricare sul device
+
+**In ABP** servono tre cose statiche:
+- **DevAddr** (4 byte) — indirizzo di rete assegnato dal NS
+- **NwkSKey** (16 byte) — chiave di sessione per l'integrità dei pacchetti
+- **AppSKey** (16 byte) — chiave di sessione per la cifratura del payload applicativo
+
+Nel firmware, questi valori sono in cima al file:
+
+```cpp
+uint32_t devAddr = 0x260B262C;
+uint8_t nwkSKey[16] = { 0xC7, 0x7F, ... };
+uint8_t appSKey[16] = { 0x7A, 0x95, ... };
+```
+
+**In OTAA** ne servono due:
+- **AppEUI** (8 byte, chiamato anche JoinEUI in LoRaWAN 1.1) — identificativo dell'applicazione, spesso zeri per progetti privati
+- **AppKey** (16 byte) — chiave master da cui il device e il NS derivano le chiavi di sessione al join
+
+```cpp
+const uint64_t appEui = 0x0000000000000000ULL;
+uint8_t appKey[16] = { 0x00, 0x11, 0x22, ... };
+```
+
+Il **DevEUI** è comune ad entrambe le attivazioni: nel nostro firmware viene derivato deterministicamente dal MAC address del chip ESP32 tramite la funzione `getDevEuiFromMac()`. Non va inserito manualmente.
+
+### Cosa succede al boot
+
+**In ABP** la sessione LoRaWAN è già attiva al termine di `beginABP()`. Non c'è comunicazione radio per l'attivazione; il device può immediatamente trasmettere:
+
+```cpp
+node.beginABP(devAddr, NULL, NULL, nwkSKey, appSKey);
+node.activateABP();
+// Pronto a trasmettere
+```
+
+**In OTAA** il device deve prima fare il join. Manda una `JoinRequest` (piccolo pacchetto radio di ~15 byte), aspetta il `JoinAccept` nella finestra RX del join (che dura più a lungo delle finestre RX normali: 5 secondi per RX1 del join, 6 secondi per RX2). Se arriva la risposta, la sessione si attiva; altrimenti si riprova.
+
+Il firmware gestisce l'attivazione con retry e backoff crescente:
+
+```cpp
+for (int attempt = 1; attempt <= 3; attempt++) {
+    int16_t st = node.activateOTAA();
+    if (st == RADIOLIB_LORAWAN_NEW_SESSION) {
+        Serial.println("Join OTAA riuscito!");
+        break;
+    }
+    delay(30000UL * attempt);   // 30s, poi 60s, poi 90s
+}
+```
+
+Dopo un join riuscito, la sessione è come quella ABP: DevAddr e chiavi di sessione, pronte per trasmettere. La differenza è che sono state derivate dinamicamente invece che precompilate.
+
+### Il vantaggio operativo di OTAA
+
+L'attivazione statica di ABP è **funzionalmente semplice**, ma pone problemi in scenari di deployment reale:
+
+- **FCnt sync**. In ABP, se il device fa reset e perde il counter, il NS lo rifiuta come replay (a meno di attivare "skip FCnt check", che indebolisce la sicurezza). In OTAA, ogni join azzera tutto: il NS accetta il nuovo DevAddr e il FCnt riparte da zero. Nessun problema.
+
+- **Provisioning**. Con ABP, per ogni nuovo device devi generare tre chiavi (o farle generare dal NS) e caricarle manualmente. Con OTAA, tutti i device possono condividere lo **stesso AppKey**, ognuno con il proprio DevEUI derivato dal MAC. Provisioning enormemente semplificato per flotte grandi.
+
+- **Sicurezza**. In OTAA le chiavi di sessione **cambiano** ogni volta che il device rifà join (per esempio dopo un power-off). Una chiave compromessa scade quando il device ricongiungerà. In ABP le chiavi sono per sempre.
+
+Per uso didattico e prototipale, ABP è più semplice da capire e configurare (nessun retry, nessuna gestione dei nonces). Per uso di produzione con più device sul campo, OTAA è quasi sempre la scelta corretta.
+
+### Il problema dei nonces in OTAA
+
+Un dettaglio non ovvio: LoRaWAN protegge il join da attacchi di replay tramite un **DevNonce** (contatore di 2 byte che il device incrementa ad ogni `JoinRequest`). Il NS memorizza i DevNonce già visti e rifiuta i join con valori ripetuti.
+
+Se il device fa power-off e riparte da zero, senza aver salvato il DevNonce, al prossimo join potrebbe generare un valore già usato → il NS rifiuta con "MIC mismatch" o "DevNonce reused" → il device non riesce mai a connettersi.
+
+**Soluzione**: persistere il buffer dei nonces (~24 byte) in NVS. Il firmware lo fa automaticamente con `saveNoncesToNVS()` dopo ogni join riuscito, e lo ricarica con `loadNoncesFromNVS()` al boot successivo.
+
+Per questo il firmware emette un warning statico a compile-time se metti OTAA senza NVS:
+
+```cpp
+#if USE_OTAA && !ENABLE_NVS_PERSISTENCE
+#warning "USE_OTAA=1 senza ENABLE_NVS_PERSISTENCE: rischio di join fallito dopo power-off"
+#endif
+```
+
+La configurazione consigliata per OTAA è:
+
+```cpp
+#define USE_OTAA               1
+#define ENABLE_NVS_PERSISTENCE 1
+```
+
+### Come configurare ChirpStack per l'una o l'altra modalità
+
+Sulla UI di ChirpStack la scelta è nel **Device Profile**, campo "Device supports OTAA":
+
+- **OFF** → il device è ABP. Al momento della creazione del device inserisci DevAddr, NwkSKey, AppSKey.
+- **ON** → il device è OTAA. Al momento della creazione del device inserisci solo AppKey (il DevAddr viene assegnato dal NS al primo join).
+
+Il DevEUI è sempre richiesto in entrambe le modalità.
+
+Attenzione: **cambiare Device Profile su un device esistente** (per esempio da ABP a OTAA) di solito non è possibile senza cancellare il device e ricrearlo. Se vuoi migrare dopo il primo deployment, prevedi la creazione di un nuovo device sul NS con la nuova modalità.
+
+### Riepilogo: quale scegliere
+
+Nel nostro progetto didattico partiamo con **ABP** (`USE_OTAA=0`) perché:
+
+- Non richiede la gestione dei nonces
+- Un `beginABP()` + `activateABP()` sono immediati
+- Non ci sono retry o backoff da capire
+- Perfetto per iniziare a esplorare il protocollo
+
+Ma il firmware ha **OTAA completamente implementato**: basta cambiare `#define USE_OTAA 1`, ricompilare, e riconfigurare il device su ChirpStack come OTAA. La logica di join, retry, persistenza nonces e ripristino sessione è già presente e collaudata.
+
+---
+
 ## Persistenza del frame counter
 
 Il **frame counter uplink (FCnt)** è un contatore monotono che ogni end-device incrementa ad ogni trasmissione. Il Network Server ne tiene traccia e **rifiuta i pacchetti con FCnt minore di quello atteso** — protezione contro attacchi di replay.
@@ -425,7 +560,7 @@ Le soluzioni tipiche sono tre:
 
 **B) Salvare il FCnt in memoria non volatile** ed incrementarlo con margine di sicurezza al boot. Robusto ma comporta scritture su flash, che ha vita limitata (~100.000 cicli per settore).
 
-**C) Passare a OTAA** (Over-The-Air Activation). Ogni join genera un nuovo DevAddr e nuovi FCnt, senza collisioni. Ma richiede procedure di join più complesse e la partecipazione attiva del NS.
+**C) Passare a OTAA** (Over-The-Air Activation). Ogni join genera un nuovo DevAddr e nuovi FCnt, senza collisioni. Ma richiede procedure di join più complesse e la partecipazione attiva del NS. Vedi la sezione precedente "ABP vs OTAA" per il confronto dettagliato.
 
 Il firmware usa la strategia **B** con ottimizzazioni:
 
@@ -1178,7 +1313,7 @@ Ora il device è in bootloader mode indipendentemente da cosa stava facendo il f
 
 **Il flag `ENABLE_NVS_PERSISTENCE`** disattiva tutte le scritture in NVS quando è a 0. Utile per non usurare la flash durante lo sviluppo. Con NS che ha "skip FCnt check" attivo, non serve la persistenza per far funzionare il device.
 
-**Il flag `USE_OTAA`** è predisposto per futura implementazione di OTAA come alternativa ad ABP. Attualmente vale sempre 0 (ABP). Quando sarà implementato, con `USE_OTAA=1` il firmware farà il join dinamico con AppKey invece di usare chiavi statiche.
+**Il flag `USE_OTAA`** seleziona la strategia di attivazione LoRaWAN. Con `USE_OTAA=0` il firmware usa ABP (chiavi statiche); con `USE_OTAA=1` usa OTAA (join dinamico con AppKey). Entrambe le modalità sono pienamente implementate — vedi la sezione dedicata "ABP vs OTAA" per i dettagli. Ricorda che OTAA richiede anche `ENABLE_NVS_PERSISTENCE=1` per evitare il fallimento del join dopo power-off.
 
 ---
 
@@ -1281,6 +1416,7 @@ Le immagini sono nella cartella `img/` accanto al file `.md`. Se una dovesse man
 - **Figura 5** (`img/lorawan_class_a.png`) — LoRaWAN classe A RX windows: `https://miro.medium.com/v2/resize:fit:1400/1*fpe80CIVX5PWTvLTBaBBWQ.png` — articolo Medium sulla LoRaWAN
 - **Figura 6** (`img/esp32_sleep_modes.png`) — Modalità sleep ESP32: `https://lastminuteengineers.b-cdn.net/wp-content/uploads/iot/ESP32-Sleep-Modes-Comparison-Power-Consumption-Wake-up-Sources.png` — Last Minute Engineers
 - **Figura 7** (`img/lorawan_architecture.png`) — Architettura LoRaWAN: `https://www.thethingsindustries.com/docs/img/technologies/lorawan/architecture.png` — The Things Industries
+- **Figura 8** (`img/lorawan_provisioning_security.png`) — Provisioning ABP/OTAA e meccanismi di sicurezza LoRaWAN — fonte fornita dall'utente
 
 Se un'immagine dovesse smettere di essere disponibile, cerca su Google Immagini con le seguenti keyword:
 - "Heltec WiFi LoRa 32 pinout"
@@ -1289,6 +1425,7 @@ Se un'immagine dovesse smettere di essere disponibile, cerca su Google Immagini 
 - "LoRaWAN class A downlink RX window"
 - "ESP32 sleep modes power"
 - "LoRaWAN architecture diagram"
+- "LoRaWAN provisioning OTAA ABP security"
 
 ---
 
