@@ -241,6 +241,20 @@ cmd_set_batt_thresh() {
         "SET_BATT_THRESH - emergency=${em}mV recovery=${rc}mV"
 }
 
+cmd_set_adr_enabled() {
+    local val="$1"
+    if [ -z "$val" ] || { [ "$val" != "0" ] && [ "$val" != "1" ]; }; then
+        echo "Uso: $0 set_adr_enabled <0|1>"
+        echo "  1 = ADR abilitato (default in OTAA)"
+        echo "  0 = ADR disabilitato (necessario se vuoi forzare SF manuale)"
+        echo "  Nota: ADR e' comunque ignorato in modalita' ABP"
+        return 1
+    fi
+    publish_downlink \
+        "{\"fPort\":20,\"object\":{\"cmd\":\"set_adr_enabled\",\"value\":$val}}" \
+        "SET_ADR_ENABLED - ${val}"
+}
+
 
 # =============================================================================
 # MONITORING (mosquitto_sub)
@@ -317,6 +331,7 @@ COMANDI DI CONFIGURAZIONE (FPort 20):
   set_tx_power <dBm>           Potenza TX 2-14 dBm
   set_gps_timeout <secondi>    Timeout fix GPS 10-300s
   set_batt_thresh <em> <rc>    Soglie batteria emergency/recovery in mV
+  set_adr_enabled <0|1>        Abilita/disabilita ADR (solo effettivo in OTAA)
 
 MONITORING:
   sub_up                       Ascolta uplink dal device in tempo reale
@@ -366,6 +381,7 @@ case "${1:-help}" in
     set_tx_power)       cmd_set_tx_power "$2" ;;
     set_gps_timeout)    cmd_set_gps_timeout "$2" ;;
     set_batt_thresh)    cmd_set_batt_thresh "$2" "$3" ;;
+    set_adr_enabled)    cmd_set_adr_enabled "$2" ;;
 
     sub_up)             cmd_sub_up ;;
     sub_down)           cmd_sub_down ;;
